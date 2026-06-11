@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+
+# 개발/디버깅용 임시 파일
+_debug_*.py
+_debug_*.txt
+_inspect_*.py
+_saliba_*.txt
+_test_*.py
+
+# soccerdata 캐시 (수백 MB)
+downloaded_files/
+
+# 환경 변수
+.env
+.env.*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db

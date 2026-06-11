@@ -1,0 +1,36 @@
+{
+  "_comment": "팀별 25/26 포메이션. 'main'은 시즌 최다 사용, 'sub'는 두 번째. fetch_lineups.py가 자동 갱신. 문자열 형식(\"4-3-3\")도 backward-compat로 허용 — main으로 해석.",
+  "_default": "4-3-3",
+  "Manchester Utd": {
+    "main": "4-2-3-1",
+    "sub": "3-4-2-1"
+  },
+  "Chelsea": {
+    "main": "4-2-3-1",
+    "sub": "4-3-3"
+  },
+  "Tottenham": {
+    "main": "4-3-3",
+    "sub": "4-2-3-1"
+  },
+  "Arsenal": {
+    "main": "4-3-3",
+    "sub": "4-2-3-1"
+  },
+  "Liverpool": {
+    "main": "4-3-3",
+    "sub": "4-2-3-1"
+  },
+  "Manchester City": {
+    "main": "4-2-3-1",
+    "sub": "4-3-3"
+  },
+  "Newcastle Utd": {
+    "main": "4-3-3",
+    "sub": "4-2-3-1"
+  },
+  "Aston Villa": {
+    "main": "4-2-3-1",
+    "sub": "4-3-3"
+  }
+}
