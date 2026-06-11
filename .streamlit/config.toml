@@ -1,6 +1,6 @@
 [server]
 # 8501 은 영웅문 S(#AI메뉴검색)가 사용 중 → 충돌 피해 8600 사용
-port = 8600
+port = 8501
 headless = true
 
 [browser]
