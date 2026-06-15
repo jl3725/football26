@@ -34,34 +34,74 @@ H = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
 BASE = "https://api.sofascore.com/api/v1"
 PL_UT_ID = 17  # Premier League uniqueTournament id
 
-# FBref 팀명 → Sofascore 검색어 (다를 때만)
-SEARCH_ALIAS = {
+# 데이터(squad) 팀명 → Sofascore 순위표 팀명 (다를 때만).
+# search/all 엔드포인트는 Cloudflare challenge로 자주 막히므로 순위표로 ID를 받는다.
+SOFA_NAME = {
     "Manchester Utd": "Manchester United",
-    "Newcastle Utd": "Newcastle United",
-    "Nott'ham Forest": "Nottingham Forest",
-    "Tottenham": "Tottenham Hotspur",
     "Wolves": "Wolverhampton",
-    "West Ham": "West Ham United",
+    "Brighton": "Brighton & Hove Albion",
 }
 
+# 한 경기당 최빈 포메이션은 시즌 전체가 아니어도 안정적으로 수렴한다.
+# 콜 수(=차단 위험)를 줄이려 팀당 최근 N경기로 제한한다.
+MAX_MATCHES = 24
 
-def get(path: str, retries: int = 3):
+_TEAM_ID_CACHE: dict[str, int] = {}
+
+
+def get(path: str, retries: int = 3, sleep: float = 2.0):
     for _ in range(retries):
         r = tls_requests.get(BASE + path, headers=H, timeout=20)
         if r.status_code == 200:
             return r.json()
-        time.sleep(1.5)
+        time.sleep(sleep)
     return None
 
 
-def resolve_team_id(fbref_name: str) -> int | None:
-    q = SEARCH_ALIAS.get(fbref_name, fbref_name)
-    d = get(f"/search/all?q={q.replace(' ', '%20')}")
+def _pl_season_id() -> int | None:
+    d = get(f"/unique-tournament/{PL_UT_ID}/seasons")
     if not d:
         return None
-    for r in d.get("results", []):
-        if r.get("type") == "team" and r.get("entity", {}).get("sport", {}).get("name") == "Football":
-            return r["entity"]["id"]
+    for s in d.get("seasons", []):
+        if s.get("year") == "25/26":
+            return s.get("id")
+    return None
+
+
+def _load_team_ids() -> dict[str, int]:
+    """PL 순위표에서 {팀명: id} 를 한 번에 — search 엔드포인트 우회."""
+    global _TEAM_ID_CACHE
+    if _TEAM_ID_CACHE:
+        return _TEAM_ID_CACHE
+    sid = _pl_season_id()
+    if sid is None:
+        return {}
+    d = get(f"/unique-tournament/{PL_UT_ID}/season/{sid}/standings/total")
+    if not d:
+        return {}
+    out: dict[str, int] = {}
+    for grp in d.get("standings", []):
+        for row in grp.get("rows", []):
+            t = row.get("team", {})
+            if t.get("name") and t.get("id"):
+                out[t["name"]] = t["id"]
+    _TEAM_ID_CACHE = out
+    return out
+
+
+def resolve_team_id(fbref_name: str) -> int | None:
+    ids = _load_team_ids()
+    if not ids:
+        return None
+    target = SOFA_NAME.get(fbref_name, fbref_name)
+    if target in ids:
+        return ids[target]
+    # 폴백: 악센트 제거 후 부분일치
+    tnorm = unidecode(target).lower()
+    for name, tid in ids.items():
+        n = unidecode(name).lower()
+        if tnorm in n or n in tnorm:
+            return tid
     return None
 
 
@@ -107,7 +147,7 @@ def scrape_team(fbref_name: str) -> tuple[dict | None, list[dict]]:
         return None, []
     print(f"  [{fbref_name}] Sofascore id={tid}")
 
-    # 시즌 경기 수집 (페이지 0~4)
+    # 최근 경기 수집 (페이지 0~4) — MAX_MATCHES 채우면 조기 종료
     matches, seen = [], set()
     for page in range(5):
         d = get(f"/team/{tid}/events/last/{page}")
@@ -119,14 +159,19 @@ def scrape_team(fbref_name: str) -> tuple[dict | None, list[dict]]:
                     and str(e.get("season", {}).get("year")) == "25/26"
                     and e["id"] not in seen):
                 seen.add(e["id"]); matches.append(e)
-        time.sleep(0.7)
+        if len(matches) >= MAX_MATCHES:
+            break
+        time.sleep(1.0)
+    matches = matches[:MAX_MATCHES]
 
     form_counter = Counter()
     # (formation, player) → Counter(slot → count)
     per_form_slots: dict[tuple[str, str], Counter] = defaultdict(Counter)
+    name_number: dict[str, str] = {}   # 선수명 → 등번호(라인업에서 수집)
+    name_id: dict[str, str] = {}       # 선수명 → Sofascore player id(사진 URL용)
     for e in matches:
         lu = get(f"/event/{e['id']}/lineups")
-        time.sleep(0.5)
+        time.sleep(1.0)
         if not lu:
             continue
         side = "home" if e["homeTeam"]["id"] == tid else "away"
@@ -135,6 +180,15 @@ def scrape_team(fbref_name: str) -> tuple[dict | None, list[dict]]:
         if not form:
             continue
         form_counter[form] += 1
+        # 등번호 + player id 수집 (선발/교체 모두)
+        for p in s.get("players", []):
+            pl = p.get("player", {})
+            nm = pl.get("name")
+            num = pl.get("jerseyNumber") or p.get("shirtNumber")
+            if nm and num and nm not in name_number:
+                name_number[nm] = str(num)
+            if nm and pl.get("id") and nm not in name_id:
+                name_id[nm] = str(pl["id"])
         starters = [p for p in s.get("players", []) if not p.get("substitute")]
         for name, slot in assign_slots(starters, form).items():
             per_form_slots[(form, name)][slot] += 1
@@ -161,6 +215,8 @@ def scrape_team(fbref_name: str) -> tuple[dict | None, list[dict]]:
                      "norm_key": unidecode(name).lower().strip(),
                      "formation": form,
                      "slot": slot, "apps": apps,
+                     "number": name_number.get(name, ""),
+                     "sofa_id": name_id.get(name, ""),
                      "slot_dist": json.dumps(dict(slots), ensure_ascii=False)})
     return pair, rows
 
@@ -176,18 +232,33 @@ def main(argv=None) -> int:
     if SLOTS_PATH.exists():
         all_rows = pd.read_csv(SLOTS_PATH).to_dict("records")
 
-    for tm in teams:
-        print(f"\n=== {tm} ===")
+    def save() -> None:
+        FORMATIONS_PATH.write_text(json.dumps(formations, ensure_ascii=False, indent=2), encoding="utf-8")
+        pd.DataFrame(all_rows).to_csv(SLOTS_PATH, index=False, encoding="utf-8")
+
+    # 팀 간 대기(초). 짧은 버스트(=18팀 한번에)가 Cloudflare IP 차단을 유발하므로
+    # 팀 하나당 ~30 콜 후 4분 대기를 두면 시간당 콜 수가 차단 임계 아래로 유지된다.
+    TEAM_GAP = 240  # 4분
+    done = 0
+    for i, tm in enumerate(teams):
+        if i > 0:
+            remaining = TEAM_GAP
+            while remaining > 0:
+                print(f"  [대기] 다음 팀까지 {remaining}초 남음 (Cloudflare 차단 방지)...", end="\r", flush=True)
+                time.sleep(min(10, remaining))
+                remaining -= 10
+            print()
+        print(f"\n=== ({i+1}/{len(teams)}) {tm} ===")
         pair, rows = scrape_team(tm)
         if pair:
-            # 항상 dict 저장; sub 없으면 main만 키로 둠
             formations[tm] = {k: v for k, v in pair.items() if v}
-            all_rows = [r for r in all_rows if r.get("squad") != tm]  # 기존 갱신
+            all_rows = [r for r in all_rows if r.get("squad") != tm]
             all_rows += rows
+            save()
+            done += 1
+            print(f"  [저장됨] 누적 {done}팀 / {len(all_rows)}행")
 
-    FORMATIONS_PATH.write_text(json.dumps(formations, ensure_ascii=False, indent=2), encoding="utf-8")
-    pd.DataFrame(all_rows).to_csv(SLOTS_PATH, index=False, encoding="utf-8")
-    print(f"\n[OK] 저장: {FORMATIONS_PATH.name}, {SLOTS_PATH.name} ({len(all_rows)}행)")
+    print(f"\n[OK] 저장: {FORMATIONS_PATH.name}, {SLOTS_PATH.name} ({len(all_rows)}행, {done}/{len(teams)}팀 성공)")
     return 0
 
 

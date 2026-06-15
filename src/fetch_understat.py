@@ -48,7 +48,9 @@ def main() -> int:
     fb["_key"] = fb["player"].map(normalize_name)
 
     # ── 병합 ────────────────────────────────────────────────────────────────
-    u_cols = ["_key", "xg_p90", "npxg_p90", "xa_p90", "kp_p90", "shots_p90", "xg_chain_p90"]
+    # goals=페널티 포함 시즌 총득점, assists=시즌 총도움 (Understat raw 누적치)
+    u_cols = ["_key", "xg_p90", "npxg_p90", "xa_p90", "kp_p90", "shots_p90",
+              "xg_chain_p90", "goals", "assists"]
     merged = fb.merge(udf[u_cols], on="_key", how="left")
     merged = merged.drop(columns=["_key"])
 
@@ -60,6 +62,11 @@ def main() -> int:
     merged["xa_p90"]    = merged["xa_p90"].fillna(merged["ast_per90"])
     merged["shots_p90"] = merged["shots_p90"].fillna(merged["sh_per90"])
     merged["kp_p90"]    = merged["kp_p90"].fillna(merged["ast_per90"] * 3)  # 키패스≈도움의 수배
+    # 골/어시 총합 결측: per90 × 출전90 으로 추정(미매칭은 대부분 fringe 선수)
+    merged["goals"]   = merged["goals"].fillna((merged["npg_per90"] * merged["minutes"] / 90).round())
+    merged["assists"] = merged["assists"].fillna((merged["ast_per90"] * merged["minutes"] / 90).round())
+    merged["goals"]   = merged["goals"].fillna(0).astype(int)
+    merged["assists"] = merged["assists"].fillna(0).astype(int)
     # FBref basic 자체 결측(크로스/수비 등)은 0으로
     for c in ["crosses_per90", "fouled_per90", "offsides_per90",
               "interceptions_per90", "tackles_won_per90", "fouls_per90",
@@ -84,6 +91,30 @@ def main() -> int:
     except Exception as e:
         print(f"  키퍼 보강 건너뜀: {e}")
         merged["gk_save_pct"] = np.nan
+
+    # ── 팀 수비+공격 강도 머지 (있을 때만) ─────────────────────────────────
+    td_path = DATA_DIR / "team_defense_2025_2026.csv"
+    if td_path.exists():
+        td = pd.read_csv(td_path)
+        cols = ["squad", "goals_against", "goals_against_per_game", "defense_score"]
+        rename = {
+            "goals_against": "team_goals_against",
+            "goals_against_per_game": "team_ga_per_game",
+            "defense_score": "team_defense_score",
+        }
+        # 신규 컬럼 (있을 때만) — 팀 공격 강도
+        if "goals_for" in td.columns:
+            cols += ["goals_for", "goals_for_per_game", "attack_score"]
+            rename.update({
+                "goals_for": "team_goals_for",
+                "goals_for_per_game": "team_gf_per_game",
+                "attack_score": "team_attack_score",
+            })
+        merged = merged.merge(td[cols].rename(columns=rename), on="squad", how="left")
+        td_match = merged["team_defense_score"].notna().mean()
+        print(f"  팀 수비+공격 머지: 매칭률 {td_match*100:.0f}%")
+    else:
+        print("  team_defense 없음 (src/fetch_team_defense.py 먼저 실행)")
 
     # ── Sofascore advanced stats 머지 (있을 때만) ───────────────────────────
     ss_path = DATA_DIR / "players_sofascore_stats.csv"
