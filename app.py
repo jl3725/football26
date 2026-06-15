@@ -703,7 +703,7 @@ def pitch_html(placements: list[dict]) -> str:
         num_badge = f'<div class="num">{num}</div>' if num else ""
         # 사진이 있으면 헤드샷(로드 실패 시 onerror로 제거 → 뒤의 유니폼 폴백 노출)
         photo = (f'<img class="photo" src="{sid}" loading="lazy" '
-                 f'onerror="this.remove()"/>') if sid else ""
+                 f'referrerpolicy="no-referrer" onerror="this.remove()"/>') if sid else ""
         # 에이스 표시 — 토큰 좌상단 코너 배지(등번호와 같은 패턴, layout 영향 없음).
         # 1위=🌟(금색 글로우), 2-3위=⭐
         ace_badge = ""
@@ -938,7 +938,7 @@ def bench_strip_html(subs: list[dict]) -> str:
         tcol = p.get("tcol", "#444a55")
         num_badge = f'<div class="snum">{num}</div>' if num else ""
         photo = (f'<img class="sphoto" src="{sid}" loading="lazy" '
-                 f'onerror="this.remove()"/>') if sid else ""
+                 f'referrerpolicy="no-referrer" onerror="this.remove()"/>') if sid else ""
         cards.append(f"""
         <div class="sub-pl">
           <div class="stok" style="--tc:{tcol};">
