@@ -208,7 +208,14 @@ def load_players(path: Path = DATA_PATH, min_minutes: int = DEFAULT_MIN_MINUTES,
             .drop_duplicates(subset=["player"])
             .reset_index(drop=True))
     df["pos_group"] = df["player"].map(pg_map)
-    df["fine_group"] = [fine_group(row["pos"], row) for _, row in df.iterrows()]
+    # fl_group이 있으면 우선 사용, 없는 선수만 fine_group으로 폴백
+    if "fl_group" in df.columns:
+        missing = df["fl_group"].isna() | (df["fl_group"] == "")
+        df.loc[missing, "fl_group"] = [
+            fine_group(row["pos"], row) for _, row in df[missing].iterrows()
+        ]
+    else:
+        df["fl_group"] = [fine_group(row["pos"], row) for _, row in df.iterrows()]
 
     df = df[df["minutes"] >= min_minutes].reset_index(drop=True)
     if not include_gk:
@@ -310,19 +317,18 @@ def find_similar(
     result = result.drop(index=idx)
 
     if same_position:
-        # fine_group 없으면 즉석 계산 (app.py 에서 직접 df 전달 시 대비)
-        if "fine_group" not in result.columns:
-            result["fine_group"] = [fine_group(r["pos"], r) for _, r in result.iterrows()]
-        ref_fine = (df.loc[idx, "fine_group"] if "fine_group" in df.columns
-                    else fine_group(df.loc[idx, "pos"], df.loc[idx]))
-        if ref_fine not in ("OTH", "GK"):
-            result = result[result["fine_group"] == ref_fine]
+        # fl_group 우선, 없으면 fine_group 폴백
+        if "fl_group" not in result.columns:
+            result["fl_group"] = [fine_group(r["pos"], r) for _, r in result.iterrows()]
+        ref_grp = df.loc[idx, "fl_group"] if "fl_group" in df.columns else fine_group(df.loc[idx, "pos"], df.loc[idx])
+        if ref_grp not in ("OTH", "GK", ""):
+            result = result[result["fl_group"] == ref_grp]
         else:
             result = result[result["pos_group"] == pos]
     if max_value is not None:
         result = result[~(result.get("market_value_eur", pd.Series(dtype=float)) > max_value)]
 
-    want = ["player", "squad", "pos", "fine_group", "age", "market_value_eur",
+    want = ["player", "squad", "pos", "fl_group", "age", "market_value_eur",
             "style_sim", "perf_score", "score"]
     cols = [c for c in want if c in result.columns]
     return result.sort_values("score", ascending=False).head(top)[cols].reset_index(drop=True)

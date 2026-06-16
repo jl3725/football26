@@ -19,7 +19,7 @@ from unidecode import unidecode
 
 sys.path.insert(0, str(Path(__file__).resolve().parent / "src"))
 
-from similar_players import FEATURES, DATA_PATH, build_embeddings, find_similar, fine_group  # noqa: E402
+from similar_players import FEATURES, DATA_PATH, build_embeddings, find_similar, fine_group  # noqa: E402  # fine_group kept for fallback
 from team_analysis import (  # noqa: E402
     league_percentiles, assign_role, position_group,
     pick_bands, team_formations, team_goalkeeper, load_formations,
@@ -60,11 +60,758 @@ def team_color(team: str) -> str:
 
 
 def sofa_photo(sid) -> str:
-    """Sofascore 선수 id → 헤드샷 이미지 URL. id 없으면 빈 문자열."""
+    """선수 사진 URL. 값이 이미 http URL이면(API-Football photo) 그대로 통과,
+    숫자면 Sofascore 헤드샷 URL로 변환. 없으면 빈 문자열."""
+    s = str(sid).strip() if sid is not None else ""
+    if s.startswith("http"):
+        return s
     s = _num_str(sid)
     return f"https://img.sofascore.com/api/v1/player/{s}/image" if s else ""
 
-st.set_page_config(page_title="FC Analytics — 포메이션·역할", layout="wide")
+
+def _photo(sid_val, tm_val=None) -> str:
+    """Sofascore id 우선, 없으면 Transfermarkt 사진(tm_photo) 폴백."""
+    s = sofa_photo(sid_val)
+    if s:
+        return s
+    if tm_val is not None and pd.notna(tm_val) and str(tm_val).startswith("http"):
+        return str(tm_val)
+    return ""
+
+
+# 시장가치(€) 표시 + 국적 코드 (Transfermarkt 데이터)
+def fmt_value(v) -> str:
+    if v is None or pd.isna(v):
+        return "—"
+    v = float(v)
+    if v >= 1_000_000:
+        return f"€{v / 1_000_000:.0f}M"
+    if v >= 1_000:
+        return f"€{v / 1_000:.0f}K"
+    return "—"
+
+
+NATION_CODE = {
+    "England": "ENG", "Spain": "ESP", "France": "FRA", "Brazil": "BRA", "Germany": "GER",
+    "Portugal": "POR", "Netherlands": "NED", "Italy": "ITA", "Argentina": "ARG",
+    "Belgium": "BEL", "Norway": "NOR", "Egypt": "EGY", "Scotland": "SCO", "Wales": "WAL",
+    "Ireland": "IRL", "Republic of Ireland": "IRL", "Uruguay": "URU", "Colombia": "COL",
+    "Ecuador": "ECU", "Ivory Coast": "CIV", "Senegal": "SEN", "Ghana": "GHA",
+    "Nigeria": "NGA", "Japan": "JPN", "South Korea": "KOR", "Korea, South": "KOR",
+    "Denmark": "DEN", "Sweden": "SWE", "Switzerland": "SUI", "Croatia": "CRO",
+    "Serbia": "SRB", "Poland": "POL", "Austria": "AUT", "Czech Republic": "CZE",
+    "Ukraine": "UKR", "Turkey": "TUR", "Türkiye": "TUR", "Mexico": "MEX",
+    "United States": "USA", "Cameroon": "CMR", "Mali": "MLI", "Morocco": "MAR",
+    "Algeria": "ALG", "Greece": "GRE", "Hungary": "HUN", "Slovakia": "SVK",
+    "Slovenia": "SVN", "Paraguay": "PAR", "Jamaica": "JAM", "Australia": "AUS",
+    "Finland": "FIN", "Iceland": "ISL", "Albania": "ALB", "Montenegro": "MNE",
+    "Guinea": "GUI", "Zimbabwe": "ZIM", "DR Congo": "COD", "Congo": "COG", "Gabon": "GAB",
+}
+
+
+def nation_code(nat) -> str:
+    if nat is None or (isinstance(nat, float) and pd.isna(nat)):
+        return ""
+    nat = str(nat).strip()
+    if not nat or nat == "nan":
+        return ""
+    return NATION_CODE.get(nat, nat[:3].upper())
+
+
+# 국가명 → flagcdn ISO 코드 (홈네이션 gb-eng/sct/wls/nir 지원)
+NATION_ISO = {
+    "England": "gb-eng", "Scotland": "gb-sct", "Wales": "gb-wls",
+    "Northern Ireland": "gb-nir", "Spain": "es", "France": "fr", "Brazil": "br",
+    "Germany": "de", "Portugal": "pt", "Netherlands": "nl", "Italy": "it",
+    "Argentina": "ar", "Belgium": "be", "Norway": "no", "Egypt": "eg",
+    "Ireland": "ie", "Republic of Ireland": "ie", "Uruguay": "uy", "Colombia": "co",
+    "Ecuador": "ec", "Ivory Coast": "ci", "Senegal": "sn", "Ghana": "gh",
+    "Nigeria": "ng", "Japan": "jp", "South Korea": "kr", "Korea, South": "kr",
+    "Denmark": "dk", "Sweden": "se", "Switzerland": "ch", "Croatia": "hr",
+    "Serbia": "rs", "Poland": "pl", "Austria": "at", "Czech Republic": "cz",
+    "Ukraine": "ua", "Turkey": "tr", "Türkiye": "tr", "Mexico": "mx",
+    "United States": "us", "Cameroon": "cm", "Mali": "ml", "Morocco": "ma",
+    "Algeria": "dz", "Greece": "gr", "Hungary": "hu", "Slovakia": "sk",
+    "Slovenia": "si", "Paraguay": "py", "Jamaica": "jm", "Australia": "au",
+    "Finland": "fi", "Iceland": "is", "Albania": "al", "Montenegro": "me",
+    "Guinea": "gn", "Zimbabwe": "zw", "DR Congo": "cd", "Congo": "cg", "Gabon": "ga",
+}
+
+
+def flag_chip(nat, h: int = 13) -> str:
+    """국가명 → 국기 <img>. 매핑 없으면 텍스트 코드 칩 폴백. 없으면 빈 문자열."""
+    if nat is None or (isinstance(nat, float) and pd.isna(nat)):
+        return ""
+    nat = str(nat).strip()
+    if not nat or nat == "nan":
+        return ""
+    iso = NATION_ISO.get(nat)
+    if iso:
+        return (f"<img src='https://flagcdn.com/h20/{iso}.png' alt='{nation_code(nat)}' "
+                f"title='{nat}' loading='lazy' "
+                f"style='height:{h}px;border-radius:2px;vertical-align:middle;"
+                f"margin-left:6px;box-shadow:0 0 0 1px rgba(0,0,0,.08)'/>")
+    code = nation_code(nat)
+    if not code:
+        return ""
+    return (f"<span style='font-size:10px;font-weight:800;color:#8a93a5;background:#f1f3f7;"
+            f"border-radius:4px;padding:1px 5px;margin-left:6px;vertical-align:middle'>{code}</span>")
+
+st.set_page_config(
+    page_title="SCOUT.AI — EPL 25/26",
+    page_icon="⚽",
+    layout="wide",
+)
+
+
+# ── 전역 셸 테마 (Figma Football AI SCOUT: 밝은 메인 + 다크 사이드바 + 레드 액센트) ──
+# config.toml의 [theme]가 라이트 베이스를, 아래 CSS가 다크 사이드바·흰 카드·타이포를 담당.
+# 기존 커스텀 HTML(피치·FM패널·배너 등)은 components.html(iframe) 안에서 자체
+# 다크 스타일로 렌더되어 라이트 메인 위에 '다크 카드'처럼 보인다(레퍼런스 피치와 동일).
+ACCENT = "#e8344e"   # 레드 — 로고/액티브 네비/섹션 바
+SHELL_CSS = f"""
+<style>
+  :root {{
+    --bg:#eef1f6; --card:#ffffff; --card-br:#e4e8f0;
+    --accent:{ACCENT}; --txt:#1a1f2e; --muted:#8a93a5;
+    --side:#0c1322; --side-2:#0f1830; --side-txt:#cfd6e4; --side-muted:#6b7689;
+  }}
+  /* 메인 배경 — 아주 옅은 그레이 */
+  .stApp {{ background:var(--bg); }}
+  [data-testid="stHeader"] {{ background:transparent; }}
+  .block-container {{ padding-top:2rem; padding-bottom:3rem; max-width:1480px; }}
+
+  /* 타이틀/서브헤더 — 좌측 레드 바 악센트는 .sec-title 헬퍼로 별도 제공 */
+  h1, h2, h3 {{ color:var(--txt) !important; font-weight:800 !important; letter-spacing:-.4px; }}
+  [data-testid="stCaptionContainer"] {{ color:var(--muted) !important; }}
+
+  /* ── 다크 사이드바 ─────────────────────────────────────────── */
+  section[data-testid="stSidebar"] {{
+    background:var(--side);
+    border-right:1px solid rgba(255,255,255,.06);
+  }}
+  section[data-testid="stSidebar"] * {{ color:var(--side-txt); }}
+  section[data-testid="stSidebar"] [data-testid="stHeading"] h2,
+  section[data-testid="stSidebar"] h2 {{
+    font-size:11px !important; font-weight:800 !important;
+    text-transform:uppercase; letter-spacing:1.5px; color:var(--side-muted) !important;
+  }}
+  section[data-testid="stSidebar"] label {{ color:var(--side-muted) !important; }}
+  /* 사이드바 입력 필드 — 다크 */
+  section[data-testid="stSidebar"] div[data-baseweb="select"] > div {{
+    background:var(--side-2) !important; border:1px solid rgba(255,255,255,.1) !important;
+    border-radius:9px !important; color:var(--side-txt) !important;
+  }}
+
+  /* ── 메인 위젯 (라이트) ─────────────────────────────────────── */
+  /* selectbox 등 입력 — 흰 필드 */
+  div[data-baseweb="select"] > div {{
+    background:#fff !important; border:1px solid var(--card-br) !important;
+    border-radius:9px !important;
+  }}
+  [data-testid="stSlider"] [role="slider"] {{ background:var(--accent) !important; }}
+
+  /* st.metric → 흰 카드 + 소프트 섀도 */
+  [data-testid="stMetric"] {{
+    background:var(--card); border:1px solid var(--card-br);
+    border-radius:14px; padding:16px 18px;
+    box-shadow:0 1px 3px rgba(16,24,40,.04), 0 4px 16px rgba(16,24,40,.04);
+  }}
+  [data-testid="stMetricLabel"] {{ color:var(--muted) !important;
+    text-transform:uppercase; letter-spacing:.5px; font-size:11px !important; }}
+  [data-testid="stMetricValue"] {{ color:var(--txt) !important; font-weight:800; }}
+
+  /* 탭 — 언더라인형, 액티브=레드 */
+  [data-testid="stTabs"] [data-baseweb="tab-list"] {{ gap:8px; border-bottom:1px solid var(--card-br); }}
+  [data-testid="stTabs"] [data-baseweb="tab"] {{ font-weight:700; color:var(--muted); }}
+  [data-testid="stTabs"] [aria-selected="true"] {{ color:var(--accent) !important; }}
+  [data-testid="stTabs"] [data-baseweb="tab-highlight"] {{ background:var(--accent) !important; }}
+
+  [data-testid="stDataFrame"] {{ border-radius:12px; overflow:hidden;
+    border:1px solid var(--card-br); }}
+  hr {{ border-color:var(--card-br) !important; }}
+</style>
+"""
+st.markdown(SHELL_CSS, unsafe_allow_html=True)
+
+
+def sec_title(title: str, sub: str = "") -> None:
+    """레퍼런스의 '레드 세로 바 + 제목' 섹션 헤더. sub는 회색 보조설명."""
+    sub_html = f"<div style='color:#8a93a5;font-size:13px;margin-top:2px'>{sub}</div>" if sub else ""
+    st.markdown(
+        f"<div style='display:flex;gap:10px;align-items:flex-start;margin:6px 0 14px'>"
+        f"<div style='width:4px;align-self:stretch;min-height:26px;background:{ACCENT};"
+        f"border-radius:3px'></div>"
+        f"<div><div style='font-size:22px;font-weight:800;color:#1a1f2e;"
+        f"letter-spacing:-.4px'>{title}</div>{sub_html}</div></div>",
+        unsafe_allow_html=True,
+    )
+
+
+# ── 브랜딩 — 사이드바 로고 + 메인 팀 배지 헤더 (Figma 상단바 느낌) ─────────────
+BRAND_HTML = """
+<div style="display:flex;align-items:center;gap:11px;padding:2px 2px 14px;
+            border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:8px">
+  <div style="width:38px;height:38px;border-radius:10px;flex:none;
+              background:linear-gradient(135deg,#ff5b6b,#e8344e);
+              display:flex;align-items:center;justify-content:center;
+              box-shadow:0 4px 12px rgba(232,52,78,.45)">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2">
+      <circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/>
+      <circle cx="12" cy="12" r="1.3" fill="#fff" stroke="none"/>
+    </svg>
+  </div>
+  <div style="line-height:1.15">
+    <div style="font-size:17px;font-weight:800;color:#fff;letter-spacing:-.3px">Football</div>
+    <div style="font-size:10px;font-weight:800;color:#ff5b6b;letter-spacing:2px">AI SCOUT</div>
+  </div>
+</div>
+"""
+
+
+def team_header_html(team: str) -> str:
+    """메인 상단 팀 배지 헤더 — 팀 컬러 사각 이니셜 + 팀명 + 리그·시즌."""
+    tcol = team_color(team)
+    initial = team.strip()[0].upper() if team.strip() else "?"
+    return f"""
+    <div style="display:flex;align-items:center;gap:14px;margin:-6px 0 18px">
+      <div style="width:46px;height:46px;border-radius:12px;flex:none;background:{tcol};
+                  display:flex;align-items:center;justify-content:center;color:#fff;
+                  font-weight:800;font-size:21px;box-shadow:0 4px 14px rgba(0,0,0,.18)">{initial}</div>
+      <div>
+        <div style="font-size:23px;font-weight:800;color:#1a1f2e;letter-spacing:-.5px">{team}</div>
+        <div style="font-size:13px;color:#8a93a5">Premier League · 2025/26</div>
+      </div>
+    </div>"""
+
+
+# ── Transfer Recommendations — 팀 적합 영입 후보 스코어링 ──────────────────────
+# 풀: 선택 팀을 제외한 EPL 전 팀. 데이터: pct(백분위) + age/ss_rating(원본).
+# 주의: market_value_eur 컬럼은 현재 전부 결측 → 시장가치 타일 대신 실측 지표 사용.
+#   · Tactical Fit  = 팀 약점 컬럼에서의 후보 백분위(약점 심할수록 가중) → 보강 적합도
+#   · Squad Match   = 팀 스타일 벡터(분 가중 평균 백분위)와의 근접도 → 시스템 적합도
+FIT_FEATURES = [
+    "npxg_p90", "xa_p90", "key_passes_per90", "crosses_per90",
+    "successful_dribbles_per90", "pass_pct", "long_ball_pct",
+    "aerial_won_pct", "tackles_won_per90", "interceptions_per90",
+    "recoveries_per90", "big_chances_created_per90",
+]
+
+# 팀 약점 라벨(TEAM_TRAITS) → 그 약점을 메울 선수 백분위 컬럼
+TRAIT_TO_COLS: dict[str, list[str]] = {
+    "화력": ["npxg_p90", "shots_p90"],
+    "수비 견고함": ["tackles_won_per90", "interceptions_per90", "clearances_per90"],
+    "점유·빌드업": ["pass_pct"],
+    "공중 장악": ["aerial_won_pct"],
+    "측면 공격": ["crosses_per90"],
+    "전방 압박": ["recoveries_per90"],
+    "찬스 창출": ["key_passes_per90", "big_chances_created_per90"],
+    "개인 돌파": ["successful_dribbles_per90"],
+    "롱볼 활용": ["long_ball_pct"],
+}
+
+FIT_LABEL = {
+    "npxg_p90": "득점위협", "shots_p90": "슈팅", "tackles_won_per90": "태클",
+    "interceptions_per90": "인터셉트", "clearances_per90": "클리어링", "pass_pct": "패스정확도",
+    "aerial_won_pct": "공중볼", "crosses_per90": "크로스", "recoveries_per90": "볼회수",
+    "key_passes_per90": "키패스", "big_chances_created_per90": "빅찬스", "long_ball_pct": "롱볼",
+    "successful_dribbles_per90": "드리블", "xa_p90": "패스위협",
+}
+
+
+def _team_style_vector(team: str, pctdf: pd.DataFrame) -> dict[str, float]:
+    """팀 외야 선수들의 분 가중 평균 백분위 벡터(FIT_FEATURES)."""
+    t = pctdf[(pctdf["squad"] == team) & (pctdf["minutes"] > 0)]
+    vec: dict[str, float] = {}
+    for f in FIT_FEATURES:
+        if f not in t.columns:
+            continue
+        v = t[t[f].notna()]
+        w = v["minutes"].sum()
+        if w > 0:
+            vec[f] = float((v[f] * v["minutes"]).sum() / w)
+    return vec
+
+
+def recommend_signings(team: str, pctdf: pd.DataFrame, weaknesses: list,
+                       sid_map: dict, raw_rating: dict,
+                       n: int = 6, min_minutes: int = 900) -> list[dict]:
+    """팀 약점 보강 + 스타일 적합 기준 영입 후보 추천 (EPL 내 타팀 풀)."""
+    style = _team_style_vector(team, pctdf)
+    wcols: list[tuple[str, float]] = []   # (백분위 컬럼, 가중치=리그순위)
+    for label, rank in weaknesses:
+        for c in TRAIT_TO_COLS.get(label, []):
+            if c in pctdf.columns:
+                wcols.append((c, float(rank)))
+
+    pool = pctdf[(pctdf["squad"] != team) & (pctdf["minutes"] >= min_minutes)].copy()
+    pool = pool.sort_values("minutes", ascending=False).drop_duplicates("player")
+
+    scored: list[tuple] = []
+    for _, r in pool.iterrows():
+        # Tactical Fit — 약점 컬럼 가중 평균 백분위
+        num = den = 0.0
+        for c, w in wcols:
+            val = r.get(c)
+            if pd.notna(val):
+                num += w * float(val); den += w
+        tac = num / den if den else float("nan")
+        # Squad Match — 스타일 벡터 근접도
+        diffs = [abs(float(r[f]) - style[f]) for f in style
+                 if f in r.index and pd.notna(r.get(f))]
+        match = 1 - sum(diffs) / len(diffs) if diffs else float("nan")
+        if pd.isna(tac) or pd.isna(match):
+            continue
+        scored.append((0.6 * tac + 0.4 * match, tac, match, r))
+
+    scored.sort(key=lambda x: x[0], reverse=True)
+    out: list[dict] = []
+    for _, tac, match, r in scored[:n]:
+        # AI 한줄평 — 가장 잘 메우는 약점 + 대표 강점
+        best_lbl = best_col = ""
+        best_v = -1.0
+        for label, _rank in weaknesses:
+            for c in TRAIT_TO_COLS.get(label, []):
+                v = r.get(c)
+                if pd.notna(v) and float(v) > best_v:
+                    best_v, best_lbl, best_col = float(v), label, c
+        note = f"{best_lbl} 보강 · {FIT_LABEL.get(best_col, best_col)} 상위 {round(best_v*100)}%" if best_lbl else ""
+        rr = raw_rating.get(r["player"])
+        # OVR — 시장가치(품질 추정) 기반 + 현재폼 미세 보정. 가치 없으면 평점 폴백.
+        ovr = player_ovr(r.get("market_value_eur"), rr, r.get("minutes"),
+                         r.get("goals"), r.get("assists"))
+        out.append({
+            "name": r["player"], "squad": r["squad"],
+            "age": int(r["age"]) if pd.notna(r.get("age")) else None,
+            "pos": str(r.get("fl_group") or r.get("fl_pos") or r.get("pos") or ""),
+            "fit": round(tac * 100), "match": round(match * 100),
+            "ovr": ovr,
+            "value": fmt_value(r.get("market_value_eur")),
+            "nat": r.get("nationality"),
+            "note": note,
+            "sid": _photo(sid_map.get(r["player"], ""), r.get("tm_photo")),
+            "tcol": team_color(r["squad"]),
+        })
+    return out
+
+
+def signing_card_html(r: dict) -> str:
+    """영입 후보 1장 — 흰 카드(사진/OVR/포지션칩/Fit·Match·평점 타일/AI 한줄평)."""
+    ovr = r["ovr"]
+    oc = ("#2563eb" if ovr >= 85 else "#16a34a" if ovr >= 75
+          else "#d97706" if ovr >= 65 else "#6b7280")
+    sub = r["squad"] + (f" · {r['age']}세" if r["age"] else "")
+    disc = (f"background-image:url('{r['sid']}'),linear-gradient(135deg,{r['tcol']},#0b0f17);"
+            if r["sid"] else f"background:{r['tcol']};")
+    fit_c = "#16a34a" if r["fit"] >= 70 else "#d97706" if r["fit"] >= 50 else "#ef4444"
+    mat_c = "#16a34a" if r["match"] >= 70 else "#d97706" if r["match"] >= 50 else "#ef4444"
+
+    def tile(label, val, color, bar=None):
+        barhtml = (f"<div style='height:4px;border-radius:3px;background:#eef1f6;margin-top:6px'>"
+                   f"<div style='height:100%;width:{bar}%;background:{color};border-radius:3px'></div></div>"
+                   if bar is not None else
+                   "<div style='height:4px;margin-top:6px'></div>")
+        return (f"<div style='flex:1;text-align:center'>"
+                f"<div style='font-size:18px;font-weight:800;color:{color};line-height:1.1'>{val}</div>"
+                f"<div style='font-size:10px;color:#8a93a5;text-transform:uppercase;"
+                f"letter-spacing:.4px;margin-top:3px'>{label}</div>{barhtml}</div>")
+
+    note = (f"<div style='margin-top:12px;padding:8px 11px;background:#fbeaec;"
+            f"border-left:3px solid {ACCENT};border-radius:6px;font-size:12px;color:#7a2230'>"
+            f"<b style='color:{ACCENT}'>AI</b> {r['note']}</div>") if r["note"] else ""
+    nat_chip = flag_chip(r.get("nat"))
+
+    return f"""
+    <div style="background:#fff;border:1px solid #e4e8f0;border-radius:16px;padding:16px 18px;
+                box-shadow:0 1px 3px rgba(16,24,40,.04),0 6px 18px rgba(16,24,40,.05);
+                margin-bottom:16px">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="width:52px;height:52px;border-radius:50%;flex:none;{disc}
+                    background-size:cover;background-position:center;border:2px solid #e4e8f0"></div>
+        <div style="flex:1;min-width:0">
+          <div style="font-weight:800;font-size:15px;color:#1a1f2e;white-space:nowrap;
+                      overflow:hidden;text-overflow:ellipsis">{r['name']}{nat_chip}</div>
+          <div style="font-size:12px;color:#8a93a5">{sub}</div>
+        </div>
+        <div style="text-align:center;flex:none">
+          <div style="font-size:24px;font-weight:800;color:{oc};line-height:1">{ovr}</div>
+          <div style="font-size:9px;color:#8a93a5;letter-spacing:1px">OVR</div>
+        </div>
+      </div>
+      <div style="margin-top:11px">
+        <span style="display:inline-block;padding:2px 9px;background:#f1f3f7;border-radius:6px;
+                     font-size:11px;font-weight:700;color:#5a6478">{r['pos']}</span>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:14px">
+        {tile('Value', r['value'], '#16a34a')}
+        {tile('Tactical Fit', str(r['fit']) + '%', fit_c, r['fit'])}
+        {tile('Squad Match', str(r['match']) + '%', mat_c, r['match'])}
+      </div>
+      {note}
+    </div>"""
+
+
+# ── Team Overview — 4 레이팅 도넛 + 6 스탯 카드 ────────────────────────────────
+def rating_color(v: int) -> str:
+    if v >= 85: return "#2563eb"   # 엘리트(파랑)
+    if v >= 70: return "#16a34a"   # 강함(초록)
+    if v >= 55: return "#d97706"   # 평균(주황)
+    return "#ef4444"               # 약함(빨강)
+
+
+def team_ratings(team: str, traits: pd.DataFrame, standings) -> list[tuple]:
+    """팀 → [(라벨, 1~99 레이팅, 보조설명)] 4개. 20팀 랭크-백분위를 1~99로 환산."""
+    def pct_rank(col: str, asc: bool = True):
+        if col not in traits.columns or team not in traits.index:
+            return None
+        s = traits[col].dropna()
+        if team not in s.index:
+            return None
+        return float(s.rank(ascending=asc, pct=True)[team])
+
+    def tval(col):
+        if col in traits.columns and team in traits.index and pd.notna(traits.loc[team, col]):
+            return traits.loc[team, col]
+        return None
+
+    rank = None
+    ovrp = None
+    if standings is not None and (standings["squad"] == team).any():
+        srow = standings[standings["squad"] == team].iloc[0]
+        rank = int(srow["rank"])
+        ps = standings.set_index("squad")["points"]
+        ovrp = float(ps.rank(ascending=True, pct=True)[team])
+
+    att = pct_rank("gf", asc=True)          # 득점 많을수록 강함
+    deff = pct_rank("ga", asc=False)        # 실점 적을수록 강함
+    mids = [pct_rank(c, asc=True) for c in ("pass_pct", "key_passes_per90", "recoveries_per90")]
+    mids = [m for m in mids if m is not None]
+    midp = sum(mids) / len(mids) if mids else None
+
+    gf_v, ga_v, pass_v = tval("gf"), tval("ga"), tval("pass_pct")
+
+    def rt(p):
+        return fm_rating(p) if p is not None else 1
+
+    return [
+        ("Overall Rating", rt(ovrp), f"리그 {rank}위" if rank else ""),
+        ("Attack Rating", rt(att), f"{int(gf_v)}골 득점" if gf_v is not None else ""),
+        ("Midfield Rating", rt(midp), f"패스 정확도 {pass_v:.0f}%" if pass_v is not None else ""),
+        ("Defense Rating", rt(deff), f"{int(ga_v)}골 실점" if ga_v is not None else ""),
+    ]
+
+
+def donut_card_html(label: str, value: int, sub: str) -> str:
+    """레이팅 도넛 카드 — SVG 링 + 중앙 숫자 + 라벨/보조설명."""
+    import math
+    value = int(value) if value else 1
+    color = rating_color(value)
+    R, C = 30, 2 * math.pi * 30
+    dash = C * max(0.0, min(1.0, value / 99))
+    sub_html = f"<div style='font-size:12px;color:#8a93a5;margin-top:3px'>{sub}</div>" if sub else ""
+    return f"""
+    <div style="background:#fff;border:1px solid #e4e8f0;border-radius:14px;padding:16px 18px;
+                display:flex;align-items:center;gap:14px;
+                box-shadow:0 1px 3px rgba(16,24,40,.04),0 4px 16px rgba(16,24,40,.04)">
+      <svg width="74" height="74" viewBox="0 0 74 74" style="flex:none">
+        <circle cx="37" cy="37" r="{R}" fill="none" stroke="#eef1f6" stroke-width="6"/>
+        <circle cx="37" cy="37" r="{R}" fill="none" stroke="{color}" stroke-width="6"
+                stroke-linecap="round" stroke-dasharray="{dash:.1f} {C-dash:.1f}"
+                transform="rotate(-90 37 37)"/>
+        <text x="37" y="37" text-anchor="middle" dominant-baseline="central"
+              font-size="20" font-weight="800" fill="#1a1f2e">{value}</text>
+      </svg>
+      <div><div style="font-weight:800;font-size:14px;color:#1a1f2e">{label}</div>{sub_html}</div>
+    </div>"""
+
+
+def stat_card_html(value: str, label: str, color: str = "#1a1f2e", size: int = 26) -> str:
+    """단순 스탯 카드 — 큰 숫자 + 대문자 라벨."""
+    return f"""
+    <div style="background:#fff;border:1px solid #e4e8f0;border-radius:14px;padding:16px 12px;
+                text-align:center;box-shadow:0 1px 3px rgba(16,24,40,.04),0 4px 16px rgba(16,24,40,.04)">
+      <div style="font-size:{size}px;font-weight:800;color:{color};line-height:1.1">{value}</div>
+      <div style="font-size:10px;color:#8a93a5;text-transform:uppercase;letter-spacing:.6px;
+                  margin-top:7px">{label}</div>
+    </div>"""
+
+
+# ── Team Analytics — 팀 퍼포먼스 레이더 (리그 백분위) ─────────────────────────
+def team_trait_pcts(team: str, traits: pd.DataFrame) -> list[tuple[str, float]]:
+    """팀의 TEAM_TRAITS 각 항목 리그 백분위(0~1, 1=리그 최고)."""
+    out = []
+    for label, col, direction, _ in TEAM_TRAITS:
+        if col not in traits.columns or team not in traits.index:
+            continue
+        s = traits[col].dropna()
+        if team not in s.index:
+            continue
+        asc = (direction == "low")
+        rank = int(s.rank(ascending=asc, method="min")[team])
+        nt = len(s)
+        out.append((label, 1 - (rank - 1) / (nt - 1) if nt > 1 else 1.0))
+    return out
+
+
+def team_radar_html(team: str, traits: pd.DataFrame, color: str = ACCENT) -> str:
+    """팀 특성 레이더 — 흰 카드 + SVG(라이트 테마). 각 축=리그 백분위."""
+    import math
+    cats = team_trait_pcts(team, traits)
+    n = len(cats)
+    if n < 3:
+        return ""
+    W = H = 430
+    cx, cy, R = W / 2, H / 2, 125
+
+    def pt(i, frac):
+        ang = -math.pi / 2 + 2 * math.pi * i / n
+        return (cx + R * frac * math.cos(ang), cy + R * frac * math.sin(ang))
+
+    grid = "".join(
+        f'<polygon points="{" ".join(f"{x:.1f},{y:.1f}" for x, y in (pt(i, g) for i in range(n)))}" '
+        f'fill="none" stroke="#e4e8f0" stroke-width="1"/>'
+        for g in (0.25, 0.5, 0.75, 1.0)
+    )
+    axes = "".join(
+        f'<line x1="{cx}" y1="{cy}" x2="{ex:.1f}" y2="{ey:.1f}" stroke="#eef1f6" stroke-width="1"/>'
+        for ex, ey in (pt(i, 1.0) for i in range(n))
+    )
+    data_pts = " ".join(f"{x:.1f},{y:.1f}" for x, y in (pt(i, v) for i, (_, v) in enumerate(cats)))
+    verts = "".join(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="3" fill="{color}"/>'
+                    for x, y in (pt(i, v) for i, (_, v) in enumerate(cats)))
+    labels = []
+    for i, (lbl, v) in enumerate(cats):
+        lx, ly = pt(i, 1.18)
+        anchor = "middle" if abs(lx - cx) <= 8 else ("end" if lx < cx else "start")
+        labels.append(
+            f'<text x="{lx:.1f}" y="{ly-5:.1f}" fill="#1a1f2e" font-size="12.5" font-weight="700" '
+            f'text-anchor="{anchor}" dominant-baseline="central">{lbl}</text>'
+            f'<text x="{lx:.1f}" y="{ly+9:.1f}" fill="#8a93a5" font-size="11" '
+            f'text-anchor="{anchor}" dominant-baseline="central">{round(v*100)}</text>'
+        )
+    return f"""
+    <div style="background:#fff;border:1px solid #e4e8f0;border-radius:16px;padding:14px 10px 8px;
+                box-shadow:0 1px 3px rgba(16,24,40,.04),0 6px 18px rgba(16,24,40,.05);text-align:center">
+      <svg viewBox="0 0 {W} {H}" width="100%" style="max-width:380px">
+        {grid}{axes}
+        <polygon points="{data_pts}" fill="{color}22" stroke="{color}" stroke-width="2.5"
+                 stroke-linejoin="round"/>
+        {verts}{''.join(labels)}
+      </svg>
+    </div>"""
+
+
+# AI Scout Report — 강점/약점 + 전술 스타일 + 개선 제안 (강·약점 기반 규칙)
+TRAIT_STYLE = {
+    "점유·빌드업": "점유 기반 (Possession)", "측면 공격": "측면 공격 (Wing-play)",
+    "전방 압박": "전방 압박 (High press)", "롱볼 활용": "다이렉트 (Direct)",
+    "개인 돌파": "개인 돌파 (Dribble)", "공중 장악": "제공권 장악 (Aerial)",
+    "화력": "공격적 (Attacking)", "수비 견고함": "견고한 수비 (Solid)",
+    "찬스 창출": "창의적 (Creative)",
+}
+IMPROVE_MAP = {
+    "화력": "전방 득점력 보강 — 클리니컬한 9번",
+    "수비 견고함": "수비 안정성 강화 — CB/수비형 미드필더",
+    "점유·빌드업": "빌드업 강화 — 패스 좋은 미드필더",
+    "공중 장악": "제공권 보강 — 높은 수비수/타깃맨",
+    "측면 공격": "측면 침투 강화 — 윙어/크로서",
+    "전방 압박": "압박 강도 보강 — 활동량 많은 미드필더",
+    "찬스 창출": "창의성 보강 — 키패스/플레이메이커",
+    "개인 돌파": "돌파 자원 보강 — 1대1 윙어",
+    "롱볼 활용": "전개 다양화 — 롱패스 옵션",
+}
+
+
+def team_tactical_styles(team: str, traits: pd.DataFrame, formation: str,
+                         thresh: float = 0.60, top: int = 4) -> list[str]:
+    """리그 백분위 thresh 이상 강점 트레잇 → 전술 스타일 칩 (+포메이션 베이스)."""
+    pcts = sorted(team_trait_pcts(team, traits), key=lambda x: x[1], reverse=True)
+    styles = [TRAIT_STYLE[l] for l, v in pcts if v >= thresh and l in TRAIT_STYLE][:top]
+    return [f"{formation} 베이스"] + styles
+
+
+def team_improvements(weaknesses: list) -> list[str]:
+    """팀 약점 → 개선 제안 텍스트."""
+    return [IMPROVE_MAP.get(lbl, f"{lbl} 보강") for lbl, _ in weaknesses]
+
+
+def ai_scout_report_html(strengths, weaknesses, styles, improvements) -> str:
+    """AI Scout Report 카드 — 강점·약점·전술스타일 칩 + 개선 제안 리스트."""
+    def chips(items, color):
+        return "".join(
+            f"<span style='display:inline-block;padding:4px 11px;margin:3px 5px 3px 0;"
+            f"background:{color}14;color:{color};border:1px solid {color}40;border-radius:14px;"
+            f"font-size:12.5px;font-weight:700;white-space:nowrap'>{t}</span>" for t in items
+        )
+
+    def block(icon, label, color, body):
+        return (f"<div style='margin-bottom:13px'>"
+                f"<div style='font-size:11px;font-weight:800;letter-spacing:.5px;color:{color};"
+                f"margin-bottom:6px'>{icon} {label}</div>{body}</div>")
+
+    improv = "".join(
+        f"<div style='display:flex;gap:8px;align-items:flex-start;margin:5px 0;"
+        f"font-size:13px;color:#3a4253'><span style='color:{ACCENT};font-weight:800'>→</span>"
+        f"<span>{t}</span></div>" for t in improvements
+    )
+    return f"""
+    <div style="background:#fff;border:1px solid #e4e8f0;border-radius:16px;padding:18px 20px;
+                box-shadow:0 1px 3px rgba(16,24,40,.04),0 6px 18px rgba(16,24,40,.05)">
+      <div style="font-size:15px;font-weight:800;color:#1a1f2e;margin-bottom:14px">⚡ AI Scout Report
+        <span style="font-size:11px;font-weight:600;color:#8a93a5;margin-left:6px">리그 데이터 기반</span>
+      </div>
+      {block("✓", "STRENGTHS", "#16a34a", chips([l for l, _ in strengths], "#16a34a"))}
+      {block("✕", "WEAKNESSES", "#ef4444", chips([l for l, _ in weaknesses], "#ef4444"))}
+      {block("⚡", "TACTICAL STYLE", "#2563eb", chips(styles, "#2563eb"))}
+      <div style="border-top:1px solid #eef1f6;padding-top:11px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.5px;color:#d97706;
+                    margin-bottom:6px">💡 RECOMMENDED IMPROVEMENTS</div>{improv}
+      </div>
+    </div>"""
+
+
+# ── Star Players — 팀 내 ss_rating 상위 N명 ───────────────────────────────────
+def pos_chip_color(pos: str) -> str:
+    p = str(pos).upper()
+    if p in ("ST", "W", "WING_AM") or "FW" in p: return "#ef4444"
+    if p in ("CM", "AM", "DM", "CAM_CM") or "MF" in p: return "#16a34a"
+    if p in ("CB", "FB") or "DF" in p: return "#2563eb"
+    if "GK" in p: return "#d97706"
+    return "#6b7280"
+
+
+def team_star_players(team: str, full: pd.DataFrame, fine_map: dict, sid_map: dict,
+                      n: int = 5, min_minutes: int = 450) -> list[dict]:
+    """팀 내 ss_rating 상위 N명. OVR = 리그 전체 ss_rating 백분위 → 1~99."""
+    pool = full[(full["minutes"] >= min_minutes) & full["ss_rating"].notna()]
+    pool = pool.sort_values("minutes", ascending=False).drop_duplicates("player")
+    if pool.empty:
+        return []
+    t = pool[pool["squad"] == team].sort_values("ss_rating", ascending=False).head(n)
+    out = []
+    for i, (_, r) in enumerate(t.iterrows()):
+        name = r["player"]
+        pos = fine_map.get(name)
+        if not pos or (isinstance(pos, float) and pd.isna(pos)):
+            pos = "GK" if "GK" in str(r.get("pos", "")) else str(r.get("pos", "")).split(",")[0].strip()
+        out.append({
+            "rank": i + 1, "name": name, "pos": str(pos),
+            "ovr": player_ovr(r.get("market_value_eur"), r.get("ss_rating"),
+                              r.get("minutes"), r.get("goals"), r.get("assists")),
+            "rating": f"{float(r['ss_rating']):.2f}",
+            "sid": _photo(sid_map.get(name, ""), r.get("tm_photo")),
+            "tcol": team_color(team),
+            "nat": r.get("nationality"),
+            "value": fmt_value(r.get("market_value_eur")),
+            "age": int(r["age"]) if pd.notna(r.get("age")) else None,
+        })
+    return out
+
+
+def star_card_html(s: dict) -> str:
+    """스타 플레이어 1장 — 랭크#·사진·이름·포지션칩·OVR (세로 카드)."""
+    oc = rating_color(s["ovr"])
+    pc = pos_chip_color(s["pos"])
+    disc = (f"background-image:url('{s['sid']}'),linear-gradient(135deg,{s['tcol']},#0b0f17);"
+            if s["sid"] else f"background:{s['tcol']};")
+    star = ("<div style='position:absolute;top:12px;right:14px;font-size:15px;"
+            "color:#f5b301'>★</div>") if s["rank"] == 1 else ""
+    name = s["name"].split()[-1] if len(s["name"]) > 14 else s["name"]
+    nat_chip = flag_chip(s.get("nat"))
+    val = s.get("value", "—")
+    return f"""
+    <div style="position:relative;background:#fff;border:1px solid #e4e8f0;border-radius:16px;
+                padding:18px 14px 16px;text-align:center;
+                box-shadow:0 1px 3px rgba(16,24,40,.04),0 6px 18px rgba(16,24,40,.05)">
+      <div style="position:absolute;top:12px;left:14px;font-size:12px;font-weight:800;
+                  color:#c2c8d4">#{s['rank']}</div>{star}
+      <div style="width:64px;height:64px;border-radius:50%;margin:6px auto 0;{disc}
+                  background-size:cover;background-position:center;border:2px solid #e4e8f0"></div>
+      <div style="font-weight:800;font-size:14px;color:#1a1f2e;margin-top:10px;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{name}</div>
+      <div style="margin-top:6px">
+        <span style="display:inline-block;padding:2px 9px;background:{pc}1a;color:{pc};
+                     border-radius:6px;font-size:11px;font-weight:800">{s['pos']}</span>{nat_chip}
+      </div>
+      <div style="font-size:30px;font-weight:800;color:{oc};margin-top:10px;line-height:1">{s['ovr']}</div>
+      <div style="font-size:9px;color:#8a93a5;letter-spacing:1px">OVR · 평점 {s['rating']}</div>
+      <div style="font-size:12px;font-weight:800;color:#16a34a;margin-top:6px">{val}</div>
+    </div>"""
+
+
+# ── Squad Depth Chart — 포지션별 주전/백업 + 깊이 점수 ────────────────────────
+# 주전=실제 XI(placements), 백업=벤치(bench_pls). fine_group 버킷으로 묶고,
+# 깊이 점수 = 0.7·백업 최고 OVR + 0.3·스쿼드 규모(최대 100). 백업 없으면 얕음.
+def squad_depth_html(placements: list, bench_pls: list,
+                     ovr_map: dict, fine_map: dict) -> str:
+    BUCKETS = [("GK", "GK"), ("CB", "CB"), ("FB", "FB"), ("DM", "DM"),
+               ("CM", "CM"), ("W", "WG"), ("ST", "ST")]
+    valid = {b for b, _ in BUCKETS}
+
+    def bucket_of(name, kind):
+        if kind == "GK":
+            return "GK"
+        b = fine_map.get(name)
+        return b if b in valid else None
+
+    def ovr(n):
+        return ovr_map.get(n)
+
+    data = {b: {"s": [], "k": []} for b, _ in BUCKETS}
+    for p in placements:
+        b = bucket_of(p["full"], p.get("kind"))
+        if b:
+            data[b]["s"].append(p["full"])
+    for p in bench_pls:
+        b = bucket_of(p["full"], p.get("kind"))
+        if b:
+            data[b]["k"].append(p["full"])
+
+    def name_tag(n):
+        o = ovr(n)
+        c = rating_color(o) if o else "#9aa3b2"
+        ostr = f"<b style='color:{c}'>{o}</b>" if o else ""
+        return (f"<span style='display:inline-block;margin:2px 12px 2px 0;font-size:13px;color:#1a1f2e'>"
+                f"<span style='color:{c}'>●</span> {n.split()[-1]} {ostr}</span>")
+
+    rows = ""
+    for code, _label in BUCKETS:
+        s = sorted(data[code]["s"], key=lambda n: (ovr(n) or 0), reverse=True)
+        k = sorted(data[code]["k"], key=lambda n: (ovr(n) or 0), reverse=True)
+        if not s and not k:
+            continue
+        b_ovr = ovr(k[0]) if k else None
+        count = len(s) + len(k)
+        depth = round(0.7 * (b_ovr if b_ovr else 38) + 0.3 * min(100, count * 22))
+        dcol = "#16a34a" if depth >= 70 else "#d97706" if depth >= 55 else "#ef4444"
+        pc = pos_chip_color(code)
+        s_html = "".join(name_tag(n) for n in s) or "<span style='color:#b6bdc9'>—</span>"
+        k_html = "".join(name_tag(n) for n in k) or "<span style='color:#b6bdc9'>—</span>"
+        rows += (
+            f"<tr>"
+            f"<td><span style='display:inline-block;padding:3px 9px;background:{pc}1a;color:{pc};"
+            f"border-radius:6px;font-size:11px;font-weight:800'>{code}</span></td>"
+            f"<td>{s_html}</td><td>{k_html}</td>"
+            f"<td style='min-width:140px'><div style='display:flex;align-items:center;gap:8px'>"
+            f"<div style='flex:1;height:6px;background:#eef1f6;border-radius:4px'>"
+            f"<div style='height:100%;width:{depth}%;background:{dcol};border-radius:4px'></div></div>"
+            f"<b style='color:{dcol};font-size:13px'>{depth}</b></div></td></tr>"
+        )
+    return f"""
+    <style>
+      .depthtbl{{width:100%;border-collapse:collapse;font-family:sans-serif}}
+      .depthtbl th{{padding:10px;font-size:11px;color:#8a93a5;letter-spacing:.5px;text-align:left;
+                    border-bottom:1px solid #e4e8f0}}
+      .depthtbl td{{padding:11px 10px;border-bottom:1px solid #eef1f6;vertical-align:middle}}
+      .depthtbl tr:last-child td{{border-bottom:none}}
+    </style>
+    <div style="background:#fff;border:1px solid #e4e8f0;border-radius:16px;padding:6px 12px;
+                box-shadow:0 1px 3px rgba(16,24,40,.04),0 6px 18px rgba(16,24,40,.05)">
+      <table class="depthtbl">
+        <thead><tr><th>POS</th><th>STARTER</th><th>ROTATION / BACKUP</th><th>DEPTH</th></tr></thead>
+        <tbody>{rows}</tbody>
+      </table>
+    </div>"""
 
 
 STANDINGS_PATH = Path(__file__).resolve().parent / "data" / "standings_2025_2026.csv"
@@ -316,6 +1063,60 @@ def fm_color(r: int) -> str:
     if r >= 50: return "#ffd048"   # 노랑 — 평균
     if r >= 35: return "#ff9c4a"   # 주황 — 평균 이하
     return "#ff6961"                # 빨강 — 약점
+
+
+# 선수 OVR — Sofascore 평점(객관적 절대 지표)을 고정 스케일로 1~99 변환.
+# 백분위(상대 순위)와 달리, 동일 평점이면 팀·시즌 무관 동일 OVR → 객관적·비교가능.
+# 앵커: ss 6.3 → OVR 60, ss 7.7 → OVR 92 (선형, 40~99 clamp).
+#   ≈6.8(중앙값)→72 · 7.0→76 · 7.2→81 · 7.46(Rice)→87 · 7.61(리그1위)→90
+_OVR_LO_R, _OVR_LO_O = 6.3, 60
+_OVR_HI_R, _OVR_HI_O = 7.7, 92
+_OVR_SLOPE = (_OVR_HI_O - _OVR_LO_O) / (_OVR_HI_R - _OVR_LO_R)
+
+
+def ovr_from_rating(ss) -> int | None:
+    """Sofascore 평점(≈6.3~7.7) → OVR 1~99. 결측이면 None."""
+    if ss is None or pd.isna(ss):
+        return None
+    ovr = _OVR_LO_O + _OVR_SLOPE * (float(ss) - _OVR_LO_R)
+    return int(max(40, min(99, round(ovr))))
+
+
+def ovr_from_value(v):
+    """시장가치(EUR) → OVR(로그 스케일, 미clamp float). 결측이면 None.
+    앵커: €1M→62 · €10M→75 · €30M→81 · €75M→86 · €100M→88 · €200M→92."""
+    if v is None or pd.isna(v) or float(v) <= 0:
+        return None
+    import math
+    return 13.04 * math.log10(float(v)) - 16.24
+
+
+def perf_ovr(ss_rating, goals=0, assists=0):
+    """시즌 퍼포먼스 OVR — 평점 기반(60~92) + 골·도움 기여 보너스(최대 +8).
+    기여 보너스는 가산만(수비수가 골 없다고 깎이지 않음). 평점 없으면 None."""
+    base = ovr_from_rating(ss_rating)
+    if base is None:
+        return None
+    g = float(goals) if (goals is not None and not pd.isna(goals)) else 0.0
+    a = float(assists) if (assists is not None and not pd.isna(assists)) else 0.0
+    return base + min(8.0, (g + a) * 0.4)
+
+
+def player_ovr(value, ss_rating=None, minutes=0, goals=0, assists=0) -> int:
+    """OVR = 시장가치(품질) 50% + 시즌 퍼포먼스(평점+골·도움) 50% 블렌드.
+    단, 출전 적은 선수는 폼 신뢰도가 낮아 퍼포먼스 비중을 출전시간에 비례 축소
+    (min/1200, 1500분↑이면 완전 50/50). 한쪽 데이터만 있으면 그쪽만 사용."""
+    vov = ovr_from_value(value)               # 가치 OVR (float) 또는 None
+    pov = perf_ovr(ss_rating, goals, assists)  # 퍼포먼스 OVR (float) 또는 None
+    if vov is None and pov is None:
+        return 60
+    if vov is None:
+        return int(max(48, min(95, round(pov))))
+    if pov is None:
+        return int(max(48, min(95, round(vov))))
+    rel = min(1.0, (float(minutes) if (minutes and not pd.isna(minutes)) else 0) / 1200)
+    w = 0.5 * rel                              # 퍼포먼스 가중치(최대 0.5)
+    return int(max(48, min(95, round((1 - w) * vov + w * pov))))
 
 
 def _attr_rating(prow: pd.Series, cols: list[str]) -> int | None:
@@ -596,7 +1397,7 @@ def placements_from_slots(team: str, slots_df: pd.DataFrame, full: pd.DataFrame,
             chip = f"세이브% {save:.0f}" if pd.notna(save) else "GK"
             out.append({"name": r["player"].split()[-1], "x": x, "y": y, "kind": "GK",
                         "abbr": "GK", "num": _num_str(r.get("number")),
-                        "sid": sofa_photo(r.get("sofa_id")), "tcol": team_color(team),
+                        "sid": _photo(r.get("sofa_id"), drow.iloc[0].get("tm_photo") if not drow.empty else None), "tcol": team_color(team),
                         "role": slot, "chip": chip, "minutes": minutes,
                         "full": r["player"], "tip": f"{slot} · {minutes}분 · {chip}"})
         elif not prow.empty:
@@ -607,7 +1408,7 @@ def placements_from_slots(team: str, slots_df: pd.DataFrame, full: pd.DataFrame,
             tip = f"{disp} · {minutes}분{ga}<br>" + "<br>".join(f"{lab} {v}%" for lab, v in strengths)
             out.append({"name": r["player"].split()[-1], "x": x, "y": y, "kind": kind,
                         "abbr": disp, "num": _num_str(r.get("number")),
-                        "sid": sofa_photo(r.get("sofa_id")), "tcol": team_color(team),
+                        "sid": _photo(r.get("sofa_id"), drow.iloc[0].get("tm_photo") if not drow.empty else None), "tcol": team_color(team),
                         "role": f"{disp} · {role.split(' (')[0]}",
                         "chip": f"{strengths[0][0]} {strengths[0][1]}%",
                         "minutes": minutes, "full": r["player"], "tip": tip})
@@ -635,14 +1436,14 @@ def placements_from_bands(bands: list[pd.DataFrame], pct: pd.DataFrame,
             tip = f"{int(r['minutes'])}분{ga}<br>" + "<br>".join(f"{lab} {v}%" for lab, v in strengths)
             out.append({"name": r["player"].split()[-1], "x": xs[i], "y": y, "kind": kind,
                         "abbr": {"DEF": "DF", "MID": "MF", "FWD": "FW"}.get(kind, ""),
-                        "num": "", "sid": "", "tcol": tcol,
+                        "num": "", "sid": _photo("", prow.get("tm_photo")), "tcol": tcol,
                         "role": role.split(" (")[0], "chip": f"{strengths[0][0]} {strengths[0][1]}%",
                         "minutes": int(r["minutes"]), "full": r["player"], "tip": tip})
     if gk is not None:
         save = gk.get("gk_save_pct")
         chip = f"세이브% {save:.0f}" if pd.notna(save) else "GK"
         out.append({"name": gk["player"].split()[-1], "x": 50, "y": GK_Y, "kind": "GK",
-                    "abbr": "GK", "num": "", "sid": "", "tcol": tcol,
+                    "abbr": "GK", "num": "", "sid": _photo("", gk.get("tm_photo")), "tcol": tcol,
                     "role": "골키퍼", "chip": chip, "minutes": int(gk["minutes"]),
                     "full": gk["player"], "tip": f"{int(gk['minutes'])}분 · {chip}"})
     return out
@@ -787,12 +1588,38 @@ full["norm_key"] = full["player"].map(_norm)
 df = full[~full["pos"].fillna("").str.contains("GK")]  # 필드플레이어
 slots_df = load_slots()
 slot_teams = set(slots_df["squad"].unique()) if slots_df is not None else set()
-st.title("⚽ Analytics Bot — 포메이션 & 역할 (EPL 2025/26)")
 
 formations_cfg = load_formations()
 FORM_OPTIONS = ["4-3-3", "4-2-3-1", "4-4-2", "3-4-3", "3-4-2-1", "3-5-2", "4-1-4-1"]
 
+# 사이드바 네비 메뉴 (레퍼런스 좌측 네비) — 라디오를 nav 항목 스타일로 CSS 변환.
+# Formation은 Team Overview에 통합(레퍼런스 Team Overview 구성).
+NAV = ["⚡ Team Overview", "📊 Analytics", "👤 Player Detail",
+       "📋 Squad Depth", "🔁 Transfer", "📅 Schedule"]
+# nav 라디오에만 적용되도록 key("nav_menu") 컨테이너로 스코프 한정
+# → 포메이션 main/sub 라디오는 영향받지 않음.
+NAV_CSS = """
+<style>
+  .st-key-nav_menu [role="radiogroup"]{gap:2px;}
+  .st-key-nav_menu [role="radiogroup"] label{
+    display:flex;align-items:center;width:100%;padding:9px 12px;margin:0;
+    border-radius:9px;cursor:pointer;transition:background .12s;}
+  .st-key-nav_menu [role="radiogroup"] label:hover{background:rgba(255,255,255,.06);}
+  /* 라디오 동그라미 숨김 → 순수 nav 항목처럼 */
+  .st-key-nav_menu [role="radiogroup"] label > div:first-child{display:none;}
+  .st-key-nav_menu [role="radiogroup"] label p{
+    color:#cfd6e4 !important;font-size:14px;font-weight:600;}
+  .st-key-nav_menu [role="radiogroup"] label:has(input:checked){
+    background:rgba(232,52,78,.16);}
+  .st-key-nav_menu [role="radiogroup"] label:has(input:checked) p{
+    color:#ff5b6b !important;font-weight:800;}
+  .side-label{font-size:11px;font-weight:800;color:#6b7689;letter-spacing:1.5px;margin:4px 0 4px;}
+</style>
+"""
+
 with st.sidebar:
+    st.markdown(BRAND_HTML, unsafe_allow_html=True)
+    st.markdown(NAV_CSS, unsafe_allow_html=True)
     st.header("필터")
     teams = sorted(df["squad"].unique())
     default = teams.index("Arsenal") if "Arsenal" in teams else 0
@@ -828,7 +1655,14 @@ with st.sidebar:
                 idx = FORM_OPTIONS.index(main_form) if main_form in FORM_OPTIONS else 0
                 formation = st.selectbox("포메이션 수동 선택", FORM_OPTIONS, index=idx)
 
-    st.caption("실측 슬롯: fetch_lineups.py로 수집 · 포메이션: team_formations.json")
+    # ── 메뉴 (필터 아래에 배치) ──────────────────────────────────────────────
+    st.markdown("<div style='border-bottom:1px solid rgba(255,255,255,.08);margin:16px 0 12px'></div>",
+                unsafe_allow_html=True)
+    st.markdown("<div class='side-label'>MENU</div>", unsafe_allow_html=True)
+    _nav = st.radio("nav", NAV, label_visibility="collapsed", key="nav_menu")
+
+# 메인 상단 팀 배지 헤더 (사이드바에서 team 확정 후 렌더)
+st.markdown(team_header_html(team), unsafe_allow_html=True)
 
 # 백분위 baseline 하한(분). 저출전 선수의 per-90 과대값이 분포를 오염시키지
 # 않도록 이 출전시간 이상 선수로만 분포를 만든다(모든 선수는 그 분포에 매겨짐).
@@ -845,11 +1679,27 @@ dff["assists_per90"] = dff["assists"]  / _m * 90
 from similar_players import _best_pos_group  # noqa: E402
 _pg_map = dff.groupby("player")["pos"].apply(_best_pos_group).to_dict()
 dff["pos_group"] = dff["player"].map(_pg_map)
-# fine_group: 통계 기반 세부 포지션 (WING_AM / ST / CAM_CM / DM / CB / FB)
-dff["fine_group"] = [fine_group(row["pos"], row) for _, row in dff.iterrows()]
+# fl_group: FL 실측 포지션 그룹 (W / ST / CM / DM / CB / FB / GK)
+# fl_group이 없는 선수(미출전·신규)는 fine_group 통계 추정으로 폴백
+if "fl_group" not in dff.columns or dff["fl_group"].isna().all():
+    dff["fl_group"] = [fine_group(row["pos"], row) for _, row in dff.iterrows()]
+else:
+    missing = dff["fl_group"].isna() | (dff["fl_group"] == "")
+    dff.loc[missing, "fl_group"] = [fine_group(r["pos"], r) for _, r in dff[missing].iterrows()]
 pct = league_percentiles(dff, min_minutes=BASELINE_MIN)
 pct["norm_key"] = pct["player"].map(_norm)
 team_df = dff[dff["squad"] == team]
+
+# 시즌 중 이적해 이 팀을 떠난 선수(left_for 기록) → XI·벤치에서 제외하고 별도 표기.
+# 해당 선수는 새 소속 팀(left_for="")에서 정상적으로 노출됨.
+left_out: dict[str, str] = {}
+if "left_for" in full.columns:
+    for _, _r in full[full["squad"] == team].iterrows():
+        _lf = _r.get("left_for")
+        if pd.notna(_lf) and str(_lf).strip():
+            left_out[_r["player"]] = str(_lf).strip()
+if left_out:
+    team_df = team_df[~team_df["player"].isin(left_out)]
 
 # GK 별도 풀 — 외야와 percentile 분리(GK끼리 비교)
 gk_pool_df = full[full["pos"].fillna("").str.contains("GK")].reset_index(drop=True)
@@ -865,6 +1715,10 @@ if not placements:
     gk = team_goalkeeper(full, team)
     placements = placements_from_bands(bands, pct, gk, team)
 
+# 떠난 선수가 실측 슬롯 XI에 남아 있으면 제거(전술판에서 빠짐)
+if left_out and placements:
+    placements = [p for p in placements if p["full"] not in left_out]
+
 # XI 11명 중 Sofascore 평점 상위 3명에게 ace_rank 부여
 mark_team_aces(placements, full)
 
@@ -874,9 +1728,11 @@ xi_all = {p["full"] for p in placements}  # GK 포함 — 벤치 필터링용
 
 
 def bench_placements(team: str, xi_all: set[str]) -> list[dict]:
-    """XI에 없는 선수들 → 벤치 토큰 배치 리스트 (사진 포함)."""
+    """XI에 없는 선수들 → 벤치 토큰 배치 리스트 (사진 포함).
+    시즌 중 이적해 떠난 선수(left_out)는 제외 — 별도 '이적' 섹션에서 표기."""
     t = full[full["squad"] == team].copy()
-    bench = t[~t["player"].isin(xi_all)].sort_values("minutes", ascending=False)
+    bench = t[~t["player"].isin(xi_all) & ~t["player"].isin(left_out)] \
+        .sort_values("minutes", ascending=False)
     if bench.empty:
         return []
 
@@ -895,7 +1751,7 @@ def bench_placements(team: str, xi_all: set[str]) -> list[dict]:
         name = p["player"]
         pos = str(p.get("pos", ""))
         minutes = int(p["minutes"])
-        sid = sofa_photo(sid_map.get(name, ""))
+        sid = _photo(sid_map.get(name, ""), p.get("tm_photo"))
         num = num_map.get(name, "")
         g = int(p["goals"]) if "goals" in p and pd.notna(p["goals"]) else 0
         a = int(p["assists"]) if "assists" in p and pd.notna(p["assists"]) else 0
@@ -926,7 +1782,35 @@ def bench_placements(team: str, xi_all: set[str]) -> list[dict]:
     return out
 
 
-def bench_strip_html(subs: list[dict]) -> str:
+def departed_placements(team: str) -> list[dict]:
+    """시즌 중 이 팀을 떠난 선수 토큰 (→ 현 소속 표기). bench_strip_html로 렌더."""
+    if not left_out:
+        return []
+    t = full[full["squad"] == team]
+    dep = t[t["player"].isin(left_out)].sort_values("minutes", ascending=False)
+    tcol = team_color(team)
+    out = []
+    for _, p in dep.iterrows():
+        name = p["player"]
+        dest = left_out.get(name, "")
+        pos = str(p.get("pos", ""))
+        if "GK" in pos:
+            kind, abbr = "GK", "GK"
+        else:
+            kind = {"FW": "FWD", "MF": "MID", "DF": "DEF"}.get(position_group(pos), "MID")
+            abbr = pos.split(",")[0].strip()[:3]
+        out.append({
+            "name": name.split()[-1], "full": name,
+            "kind": kind, "abbr": abbr, "num": "",
+            "sid": _photo("", p.get("tm_photo")), "tcol": tcol,
+            "role": f"→ {dest}",
+            "tip": f"{int(p['minutes'])}분 · {dest}(으)로 이적",
+            "minutes": int(p["minutes"]),
+        })
+    return out
+
+
+def bench_strip_html(subs: list[dict], title: str = "벤치 &amp; 백업") -> str:
     """벤치 선수들을 가로 토큰 스트립으로 렌더링."""
     if not subs:
         return "<div style='color:#888;font-size:12px;padding:8px'>벤치 데이터 없음</div>"
@@ -984,44 +1868,113 @@ def bench_strip_html(subs: list[dict]) -> str:
                border:1px solid rgba(255,255,255,.12); box-shadow:0 4px 12px rgba(0,0,0,.5); }}
     </style>
     <div class="bench-wrap">
-      <div class="bench-title">벤치 &amp; 백업 ({len(subs)}명)</div>
+      <div class="bench-title">{title} ({len(subs)}명)</div>
       <div class="bench-row">{''.join(cards)}</div>
     </div>
     """
 
 
 bench_pls = bench_placements(team, xi_all)
+departed_pls = departed_placements(team)
 
-# ── 팀 순위 배너 + 강점/약점 ─────────────────────────────────────────────────
+# ── 공통 계산 (탭 렌더 전) ────────────────────────────────────────────────────
 _standings = load_standings()
-if _standings is not None:
-    _srow = _standings[_standings["squad"] == team]
-    if not _srow.empty:
-        st.components.v1.html(standings_banner_html(_srow.iloc[0]), height=90)
-
-# 팀 특성(리그 20팀 대비 강점 3 / 약점 3)
 _traits = team_traits_table(DATA_PATH.stat().st_mtime)
-_str, _weak = team_characteristics(team, _traits)
-if _str or _weak:
-    st.markdown(team_traits_html(_str, _weak), unsafe_allow_html=True)
+_str, _weak = team_characteristics(team, _traits)     # _weak: Transfer 탭에서 재사용
+_fine_map = dict(zip(dff["player"], dff["fl_group"]))
+_sid_all = {}
+if slots_df is not None:
+    for _, _r in slots_df.iterrows():
+        _sid_all[_r["player"]] = str(_r.get("sofa_id", "") or "")
+_raw_rating = dict(zip(full["player"], full["ss_rating"]))
+# 통합 OVR(시장가치 기반 + 폼 보정) — 전 섹션 공통 사용.
+# 시즌 중 이적 선수는 행이 여러 개 → 시장가치 있는 행 + 출전 많은 행을 대표로 선택
+# (예: Eze는 Arsenal €65m 행을 써야 함, Crystal Palace 무가치 행 아님).
+_rep = (full.assign(_mv=full["market_value_eur"].notna())
+        .sort_values(["_mv", "minutes"], ascending=[False, False])
+        .drop_duplicates("player"))
+_ovr_map = {r.player: player_ovr(r.market_value_eur, r.ss_rating, r.minutes,
+                                 r.goals, r.assists)
+            for r in _rep.itertuples(index=False)}
 
-left, right = st.columns([1.1, 1])
-with left:
-    src = "실측 라인업" if has_real else "휴리스틱"
-    tag = ""
-    if sub_form:
-        tag = " · 메인" if formation == main_form else " · 서브"
-    st.subheader(f"{team} · 주전 XI ({formation}){tag} · {src}")
-    st.caption("토큰에 호버하면 강점 지표가 라벨과 함께 표시 · 색=라인(🔴공격 🟠중원 🔵수비 🟢GK)")
+SCHEDULE_PATH = Path(__file__).resolve().parent / "data" / "schedule_2025_2026.csv"
+
+
+@st.cache_data
+def load_schedule() -> pd.DataFrame | None:
+    if not SCHEDULE_PATH.exists():
+        return None
+    return pd.read_csv(SCHEDULE_PATH)
+
+
+# ── 섹션 렌더 — 사이드바 _nav 선택에 따라 한 섹션만 표시 ──────────────────────
+# 1: Team Overview — 레이팅 도넛 + 스탯 카드 + Star Players
+if _nav == NAV[0]:
+    sec_title("Team Overview", f"{team} · Premier League · 2025/26")
+
+    _rcols = st.columns(4)
+    for _c, (_lbl, _val, _sub) in zip(_rcols, team_ratings(team, _traits, _standings)):
+        with _c:
+            st.markdown(donut_card_html(_lbl, _val, _sub), unsafe_allow_html=True)
+
+    if _standings is not None and (_standings["squad"] == team).any():
+        _s = _standings[_standings["squad"] == team].iloc[0]
+        _gd = int(_s["gd"]); _gd_str = f"+{_gd}" if _gd > 0 else str(_gd)
+        _stats = [
+            (f"{int(_s['rank'])}위", "League Position", "#d97706", 26),
+            (f"{int(_s['points'])}", "Points", "#1a1f2e", 26),
+            (f"{int(_s['won'])}-{int(_s['drawn'])}-{int(_s['lost'])}", "W-D-L", "#1a1f2e", 22),
+            (f"{int(_s['gf'])}", "Goals For", "#16a34a", 26),
+            (f"{int(_s['ga'])}", "Goals Against", "#ef4444", 26),
+            (_gd_str, "Goal Diff", "#2563eb", 26),
+        ]
+        for _c, (_v, _l, _col, _sz) in zip(st.columns(6), _stats):
+            with _c:
+                st.markdown(stat_card_html(_v, _l, _col, _sz), unsafe_allow_html=True)
+
+    _stars = team_star_players(team, full, _fine_map, _sid_all, n=5)
+    if _stars:
+        st.markdown("<div style='margin-top:10px'></div>", unsafe_allow_html=True)
+        sec_title("Star Players", "AI 종합 평점(ss_rating) 상위 5명 · OVR=객관 평점 환산")
+        for _c, _sp in zip(st.columns(5), _stars):
+            with _c:
+                st.markdown(star_card_html(_sp), unsafe_allow_html=True)
+
+    # Formation & Tactical Shape — 주전 XI 보드 + 벤치 (레퍼런스 Team Overview 구성)
+    st.markdown("<div style='margin-top:16px'></div>", unsafe_allow_html=True)
+    _tag = (" · 메인" if formation == main_form else " · 서브") if sub_form else ""
+    _src = "실측 라인업" if has_real else "휴리스틱"
+    sec_title("Formation & Tactical Shape",
+              f"주전 XI ({formation}){_tag} · {_src} · 색=라인(🔴공격 🟠중원 🔵수비 🟢GK)")
+    st.caption("토큰에 호버하면 강점 지표가 라벨과 함께 표시됩니다.")
     st.components.v1.html(pitch_html(placements), height=720)
-
     if bench_pls:
         n_rows = max(1, (len(bench_pls) + 5) // 6)
         st.components.v1.html(bench_strip_html(bench_pls), height=62 + n_rows * 112, scrolling=False)
+    if departed_pls:
+        st.caption("↪ 시즌 중 이적으로 팀을 떠난 선수 — 전술판·벤치에서 제외됨 (현 소속 표기)")
+        n_dep = max(1, (len(departed_pls) + 5) // 6)
+        st.components.v1.html(bench_strip_html(departed_pls, title="↪ 시즌 중 이적"),
+                              height=62 + n_dep * 112, scrolling=False)
 
-with right:
-    st.subheader("선수 상세")
-    # 팀 전원 풀 — XI(GK·외야) + 벤치 전원. 중복 제거하고 등장 순서 유지.
+# 2: Analytics — 팀 퍼포먼스 레이더 + AI 스카우트 리포트
+elif _nav == NAV[1]:
+    sec_title("Team Analytics", "리그 20팀 대비 팀 퍼포먼스 · 강점·약점·전술 스타일·개선점")
+    _aL, _aR = st.columns([1, 1])
+    with _aL:
+        st.markdown("**Performance Radar** · 각 축 = 리그 백분위(100=리그 최고)")
+        st.markdown(team_radar_html(team, _traits), unsafe_allow_html=True)
+    with _aR:
+        if _str or _weak:
+            _styles = team_tactical_styles(team, _traits, formation)
+            _improv = team_improvements(_weak)
+            st.markdown(ai_scout_report_html(_str, _weak, _styles, _improv), unsafe_allow_html=True)
+        else:
+            st.info("강점/약점 데이터를 계산할 수 없습니다.")
+
+# 3: Player Detail — 선수 능력치/레이더/유사선수
+elif _nav == NAV[2]:
+    sec_title("Player Detail", "선수별 능력치 · 레이더 · 스타일 유사 선수")
     bench_all = [p["full"] for p in bench_pls]
     pool = list(dict.fromkeys(xi_gk + xi_players + bench_all))
     pick = st.selectbox("선수 선택", pool)
@@ -1029,7 +1982,6 @@ with right:
     raw_match = full[full["player"] == pick]
     is_gk = (not raw_match.empty) and "GK" in str(raw_match.iloc[0]["pos"])
 
-    # ── GK 분기 — 별도 풀 percentile + GK 카테고리 패널 ──────────────────────
     if is_gk:
         prow_gk = pct_gk[pct_gk["player"] == pick]
         raw = raw_match.iloc[0]
@@ -1056,7 +2008,6 @@ with right:
                                    raw_row=raw_match.iloc[0]),
                         unsafe_allow_html=True)
     elif (prow_match := pct[pct["player"] == pick]).empty:
-        # 외야 선수인데 데이터 없음 (이름 불일치 등) — 안전 가드
         if not raw_match.empty:
             raw = raw_match.iloc[0]
             st.markdown(f"**{pick}** · {raw['pos']} · {int(raw['minutes'])}분")
@@ -1068,7 +2019,6 @@ with right:
         raw = dff[dff["player"] == pick].iloc[0]
         st.markdown(f"**{pick}** · {raw['pos']} · {int(raw['minutes'])}분 → **{role}**")
 
-        # 시즌 누적 — 골/어시/출전경기 (Understat 기준, goals=페널티 포함)
         g = int(raw["goals"]) if "goals" in raw and pd.notna(raw["goals"]) else 0
         a = int(raw["assists"]) if "assists" in raw and pd.notna(raw["assists"]) else 0
         cg, ca = st.columns(2)
@@ -1094,43 +2044,54 @@ with right:
         st.markdown(radar_html(prow, FM_DETAIL, color=team_color(team), raw_row=raw),
                     unsafe_allow_html=True)
 
-        # 기준 선수 fine_group 표시
         _pick_row = dff[dff["player"].str.lower() == pick.lower()]
         if _pick_row.empty:
             _pick_row = dff[dff["player"].str.lower().str.contains(pick.lower())]
-        _fine = _pick_row.iloc[0]["fine_group"] if not _pick_row.empty else grp
+        _fine = _pick_row.iloc[0]["fl_group"] if not _pick_row.empty else grp
         same_pos = st.checkbox(
             f"같은 세부 포지션 비교 (현재: **{_fine}**)", value=True,
-            help="WING_AM=윙어·공격형미드 / ST=스트라이커 / CAM_CM=공격형MF / DM=수비형MF / CB / FB"
+            help="W=윙어·공격형미드 / ST=스트라이커 / CM=박스투박스 / DM=수비형MF / CB / FB"
         )
         alpha = st.slider("스타일 ↔ 퍼포먼스 비중", 0.3, 0.9, 0.65, 0.05,
                           help="높을수록 스타일 우선 · 낮을수록 이번 시즌 퍼포먼스 우선")
         st.markdown("**비슷한 선수 (리그 전체)**")
         emb = build_embeddings(dff)
         sim = find_similar(dff, emb, pick, top=5, same_position=same_pos, alpha=alpha)
-        sim_show = sim[["player", "squad", "pos", "fine_group", "style_sim", "perf_score", "score"]].copy()
+        sim_show = sim[["player", "squad", "pos", "fl_group", "style_sim", "perf_score", "score"]].copy()
         sim_show.columns = ["선수", "팀", "포지션", "역할", "스타일", "퍼포먼스", "종합"]
         for col in ["스타일", "퍼포먼스", "종합"]:
             sim_show[col] = (sim_show[col] * 100).round(1).astype(str) + "%"
         st.dataframe(sim_show, hide_index=True, use_container_width=True)
 
-# ── 시즌 전적 테이블 ────────────────────────────────────────────────────────
-SCHEDULE_PATH = Path(__file__).resolve().parent / "data" / "schedule_2025_2026.csv"
+# 4: Squad Depth Chart — 포지션별 주전/백업 + 깊이 점수
+elif _nav == NAV[3]:
+    sec_title("Squad Depth Chart", "포지션별 주전/백업 + 깊이 점수 · OVR=객관 평점 환산")
+    st.markdown(squad_depth_html(placements, bench_pls, _ovr_map, _fine_map),
+                unsafe_allow_html=True)
 
+# 5: Transfer Recommendations — 팀 적합 영입 후보
+elif _nav == NAV[4]:
+    sec_title("Transfer Recommendations",
+              f"{team} 약점 보강 + 스타일 적합 · EPL 내 후보 · AI 추정 (시뮬레이션 아님)")
+    _recs = recommend_signings(team, pct, _weak, _sid_all, _raw_rating, n=6)
+    if not _recs:
+        st.info("추천 후보를 계산할 수 없습니다 — 팀 약점 또는 후보 데이터가 부족합니다.")
+    else:
+        for _i in range(0, len(_recs), 3):
+            _cols = st.columns(3)
+            for _col, _rec in zip(_cols, _recs[_i:_i + 3]):
+                with _col:
+                    st.markdown(signing_card_html(_rec), unsafe_allow_html=True)
 
-@st.cache_data
-def load_schedule() -> pd.DataFrame | None:
-    if not SCHEDULE_PATH.exists():
-        return None
-    return pd.read_csv(SCHEDULE_PATH)
-
-
-_schedule = load_schedule()
-if _schedule is not None:
-    team_sched = _schedule[_schedule["squad"] == team].sort_values("gw").copy()
-    if not team_sched.empty:
-        st.markdown("---")
-        st.subheader(f"{team} — 2025/26 시즌 전적 ({len(team_sched)}경기)")
+# 6: Schedule — 시즌 전적 테이블
+elif _nav == NAV[5]:
+    _schedule = load_schedule()
+    team_sched = (_schedule[_schedule["squad"] == team].sort_values("gw").copy()
+                  if _schedule is not None else None)
+    if team_sched is None or team_sched.empty:
+        st.info("시즌 전적 데이터가 없습니다.")
+    else:
+        sec_title(f"{team} — 2025/26 시즌 전적", f"{len(team_sched)}경기")
 
         def _result_badge(res: str) -> str:
             color = {"W": "#2e7d32", "D": "#888", "L": "#b71c1c"}.get(res, "#555")
@@ -1154,10 +2115,10 @@ if _schedule is not None:
                            else "#ef9a9a" if r["result"] == "L" else "#aaa")
             rows_html += (
                 f"<tr>"
-                f"<td style='text-align:center;color:#aaa'>{int(r['gw'])}</td>"
-                f"<td style='color:#111'>{r['date']}</td>"
+                f"<td style='text-align:center;color:#888'>{int(r['gw'])}</td>"
+                f"<td style='color:#1a1f2e'>{r['date']}</td>"
                 f"<td>{ha_badge}</td>"
-                f"<td style='font-weight:600;color:#111'>{r['opponent']}</td>"
+                f"<td style='font-weight:600;color:#1a1f2e'>{r['opponent']}</td>"
                 f"<td style='text-align:center;font-weight:700;font-size:15px;"
                 f"color:{score_color}'>{r['score']}</td>"
                 f"<td style='text-align:center'>{result_badge}</td>"
@@ -1167,11 +2128,11 @@ if _schedule is not None:
         table_html = f"""
         <style>
           .match-table {{ width:100%; border-collapse:collapse; font-family:sans-serif;
-                         font-size:13px; color:#eee; }}
-          .match-table th {{ background:#1e2a38; color:#aaa; font-weight:600;
-                             padding:7px 10px; text-align:left; border-bottom:1px solid #333; }}
-          .match-table td {{ padding:6px 10px; border-bottom:1px solid #1e1e1e; }}
-          .match-table tr:hover td {{ background:rgba(255,255,255,.04); }}
+                         font-size:13px; color:#1a1f2e; }}
+          .match-table th {{ background:#f1f3f7; color:#8a93a5; font-weight:700;
+                             padding:8px 10px; text-align:left; border-bottom:1px solid #e4e8f0; }}
+          .match-table td {{ padding:7px 10px; border-bottom:1px solid #eef1f6; }}
+          .match-table tr:hover td {{ background:#f7f9fc; }}
         </style>
         <table class="match-table">
           <thead><tr>
