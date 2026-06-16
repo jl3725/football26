@@ -5,3 +5,13 @@ headless = true
 
 [browser]
 gatherUsageStats = false
+
+# Football AI SCOUT 톤 — 밝은 메인 + 다크 사이드바 + 레드 액센트 (Figma 레퍼런스)
+# 메인은 라이트(흰 카드), 사이드바만 CSS로 다크 처리.
+[theme]
+base = "light"
+primaryColor = "#e8344e"
+backgroundColor = "#eef1f6"
+secondaryBackgroundColor = "#ffffff"
+textColor = "#1a1f2e"
+font = "sans serif"

@@ -10,6 +10,8 @@ Streamlit 프론트엔드 — 팀 포메이션 보드 + 선수 역할/프로필 
 """
 from __future__ import annotations
 
+import html
+import json
 import sys
 from pathlib import Path
 
@@ -53,6 +55,151 @@ TEAM_COLOR = {
     "Sunderland": "#EB172B", "Tottenham Hotspur": "#132257",
     "West Ham United": "#7A263A", "Wolves": "#FDB913",
 }
+
+MANAGER_PROFILES = {
+    "Arsenal": {
+        "name": "Mikel Arteta", "nationality": "Spain", "appointed": "Dec 2019",
+        "style": "Control + high press", "formation": "4-3-3",
+        "focus": "possession dominance, positional rotations, set-piece edge",
+    },
+    "Aston Villa": {
+        "name": "Unai Emery", "nationality": "Spain", "appointed": "Nov 2022",
+        "style": "Structured transition", "formation": "4-2-3-1",
+        "focus": "compact block, wide overloads, knockout-game detail",
+    },
+    "Bournemouth": {
+        "name": "Andoni Iraola", "nationality": "Spain", "appointed": "Jun 2023",
+        "style": "Aggressive press", "formation": "4-2-3-1",
+        "focus": "front-foot defending, vertical attacks, second balls",
+    },
+    "Brentford": {
+        "name": "Keith Andrews", "nationality": "Ireland", "appointed": "Jun 2025",
+        "style": "Direct + set plays", "formation": "4-2-3-1",
+        "focus": "compact spacing, restarts, fast wide service",
+    },
+    "Brighton": {
+        "name": "Fabian Hurzeler", "nationality": "Germany", "appointed": "Jun 2024",
+        "style": "Build-up control", "formation": "4-2-3-1",
+        "focus": "press resistance, rotations, young-player development",
+    },
+    "Burnley": {
+        "name": "Scott Parker", "nationality": "England", "appointed": "Jul 2024",
+        "style": "Organised possession", "formation": "4-2-3-1",
+        "focus": "defensive structure, controlled build-up, wide progression",
+    },
+    "Chelsea": {
+        "name": "Enzo Maresca", "nationality": "Italy", "appointed": "Jun 2024",
+        "style": "Positional play", "formation": "4-2-3-1",
+        "focus": "inverted full-back build-up, central overloads, ball security",
+    },
+    "Crystal Palace": {
+        "name": "Oliver Glasner", "nationality": "Austria", "appointed": "Feb 2024",
+        "style": "Back-three transition", "formation": "3-4-2-1",
+        "focus": "mid-block traps, wing-back thrust, fast attacks",
+    },
+    "Everton": {
+        "name": "David Moyes", "nationality": "Scotland", "appointed": "Jan 2025",
+        "style": "Compact + pragmatic", "formation": "4-2-3-1",
+        "focus": "box defence, set pieces, direct chance creation",
+    },
+    "Fulham": {
+        "name": "Marco Silva", "nationality": "Portugal", "appointed": "Jul 2021",
+        "style": "Balanced possession", "formation": "4-2-3-1",
+        "focus": "wide combinations, quick switches, disciplined rest defence",
+    },
+    "Leeds United": {
+        "name": "Daniel Farke", "nationality": "Germany", "appointed": "Jul 2023",
+        "style": "Possession build-up", "formation": "4-2-3-1",
+        "focus": "patient circulation, full-back width, central runners",
+    },
+    "Liverpool": {
+        "name": "Arne Slot", "nationality": "Netherlands", "appointed": "Jun 2024",
+        "style": "High-tempo control", "formation": "4-2-3-1",
+        "focus": "counter-pressing, rotations, quick central combinations",
+    },
+    "Manchester City": {
+        "name": "Pep Guardiola", "nationality": "Spain", "appointed": "Jul 2016",
+        "style": "Positional dominance", "formation": "4-3-3",
+        "focus": "territorial control, chance suppression, overload creation",
+    },
+    "Manchester Utd": {
+        "name": "Ruben Amorim", "nationality": "Portugal", "appointed": "Nov 2024",
+        "style": "Back-three press", "formation": "3-4-2-1",
+        "focus": "high pressing, wing-back width, vertical combinations",
+    },
+    "Newcastle United": {
+        "name": "Eddie Howe", "nationality": "England", "appointed": "Nov 2021",
+        "style": "Intensity football", "formation": "4-3-3",
+        "focus": "pressing volume, wide attacks, aggressive midfield duels",
+    },
+    "Nottingham Forest": {
+        "name": "Sean Dyche", "nationality": "England", "appointed": "Oct 2025",
+        "style": "Compact directness", "formation": "4-4-2",
+        "focus": "defensive distances, aerial pressure, early forward play",
+    },
+    "Sunderland": {
+        "name": "Regis Le Bris", "nationality": "France", "appointed": "Jun 2024",
+        "style": "Young + energetic", "formation": "4-2-3-1",
+        "focus": "player development, pressing triggers, quick wide attacks",
+    },
+    "Tottenham Hotspur": {
+        "name": "Thomas Frank", "nationality": "Denmark", "appointed": "Jun 2025",
+        "style": "Flexible pressing", "formation": "4-3-3",
+        "focus": "set plays, direct attacks, adaptable defensive blocks",
+    },
+    "West Ham United": {
+        "name": "Nuno Espirito Santo", "nationality": "Portugal", "appointed": "Sep 2025",
+        "style": "Transition block", "formation": "3-4-2-1",
+        "focus": "compact defending, fast counters, wing-back outlets",
+    },
+    "Wolves": {
+        "name": "Rob Edwards", "nationality": "England", "appointed": "Nov 2025",
+        "style": "Back-three intensity", "formation": "3-4-2-1",
+        "focus": "defensive organisation, wing-back runs, transition attacks",
+    },
+}
+
+MANAGER_PROFILES_PATH = Path(__file__).resolve().parent / "data" / "manager_profiles_2025_2026.json"
+TEAM_UNIT_METRICS_PATH = Path(__file__).resolve().parent / "data" / "team_unit_metrics_2025_2026.csv"
+STATBUNKER_TEAM_STATS_PATH = Path(__file__).resolve().parent / "data" / "statbunker_team_stats_2025_2026.csv"
+
+
+@st.cache_data
+def load_manager_profiles(_mtime: float = 0.0) -> dict:
+    profiles = dict(MANAGER_PROFILES)
+    if not MANAGER_PROFILES_PATH.exists():
+        return profiles
+    try:
+        with MANAGER_PROFILES_PATH.open("r", encoding="utf-8") as f:
+            file_profiles = json.load(f)
+    except (OSError, json.JSONDecodeError):
+        return profiles
+    for team, profile in file_profiles.items():
+        base = profiles.get(team, {}).copy()
+        base.update(profile)
+        profiles[team] = base
+    return profiles
+
+
+@st.cache_data
+def load_team_unit_metrics(_file_key: tuple[int, int] = (0, 0)) -> pd.DataFrame | None:
+    if not TEAM_UNIT_METRICS_PATH.exists():
+        return None
+    return pd.read_csv(TEAM_UNIT_METRICS_PATH).set_index("squad")
+
+
+@st.cache_data
+def load_statbunker_team_stats(_file_key: tuple[int, int] = (0, 0)) -> pd.DataFrame | None:
+    if not STATBUNKER_TEAM_STATS_PATH.exists():
+        return None
+    return pd.read_csv(STATBUNKER_TEAM_STATS_PATH).set_index("squad")
+
+
+def file_cache_key(path: Path) -> tuple[int, int]:
+    if not path.exists():
+        return (0, 0)
+    stat = path.stat()
+    return (stat.st_mtime_ns, stat.st_size)
 
 
 def team_color(team: str) -> str:
@@ -156,6 +303,59 @@ def flag_chip(nat, h: int = 13) -> str:
         return ""
     return (f"<span style='font-size:10px;font-weight:800;color:#8a93a5;background:#f1f3f7;"
             f"border-radius:4px;padding:1px 5px;margin-left:6px;vertical-align:middle'>{code}</span>")
+
+
+# 여름 이적시장 IN/OUT 카드 (Transfermarkt transfers 페이지)
+def fee_label(fee_eur, fee_text) -> str:
+    """이적료 표시 — 금액 있으면 €표기, 없으면 임대/자유/임대복귀 등 텍스트화."""
+    if fee_eur is not None and not pd.isna(fee_eur) and float(fee_eur) > 0:
+        return fmt_value(fee_eur)
+    t = str(fee_text or "").lower()
+    if "end of loan" in t:
+        return "임대복귀"
+    if "loan" in t:
+        return "임대"
+    if "free" in t:
+        return "자유이적"
+    return "—"
+
+
+def transfer_side_html(direction: str, rows: list, limit: int = 14) -> str:
+    """IN 또는 OUT 한쪽 카드 — 사진·이름·상대클럽·이적료 행 리스트."""
+    is_in = direction == "in"
+    color = "#16a34a" if is_in else "#ef4444"
+    title = "IN · 영입" if is_in else "OUT · 방출"
+    icon, arrow = ("↓", "←") if is_in else ("↑", "→")
+    items = []
+    for r in rows[:limit]:
+        photo = r.get("photo") or ""
+        photo = photo if isinstance(photo, str) and photo.startswith("http") else ""
+        disc = (f"background-image:url('{photo}');background-size:cover;background-position:center;"
+                if photo else "background:#cdd5e0;")
+        fee = fee_label(r.get("fee_eur"), r.get("fee_text"))
+        items.append(
+            f"<div style='display:flex;align-items:center;gap:9px;padding:7px 2px;"
+            f"border-bottom:1px solid #eef1f6'>"
+            f"<div style='width:30px;height:30px;border-radius:50%;flex:none;{disc}"
+            f"border:1px solid #e4e8f0'></div>"
+            f"<div style='flex:1;min-width:0'>"
+            f"<div style='font-size:13px;font-weight:700;color:#1a1f2e;white-space:nowrap;"
+            f"overflow:hidden;text-overflow:ellipsis'>{r['player']}</div>"
+            f"<div style='font-size:11px;color:#8a93a5;white-space:nowrap;overflow:hidden;"
+            f"text-overflow:ellipsis'>{arrow} {r['club']}</div></div>"
+            f"<div style='font-size:12px;font-weight:800;color:{color};flex:none'>{fee}</div></div>"
+        )
+    more = len(rows) - limit
+    if more > 0:
+        items.append(f"<div style='padding:7px 2px;font-size:12px;color:#8a93a5'>+{more}건 더…</div>")
+    if not items:
+        items.append("<div style='padding:10px 2px;font-size:12px;color:#b6bdc9'>기록 없음</div>")
+    return (f"<div style='background:#fff;border:1px solid #e4e8f0;border-radius:14px;"
+            f"padding:4px 14px 10px;box-shadow:0 1px 3px rgba(16,24,40,.04),0 6px 18px rgba(16,24,40,.05)'>"
+            f"<div style='font-size:13px;font-weight:800;color:{color};padding:11px 2px 7px;"
+            f"border-bottom:2px solid {color};margin-bottom:2px'>{icon} {title} ({len(rows)})</div>"
+            f"{''.join(items)}</div>")
+
 
 st.set_page_config(
     page_title="SCOUT.AI — EPL 25/26",
@@ -459,7 +659,7 @@ def rating_color(v: int) -> str:
     return "#ef4444"               # 약함(빨강)
 
 
-def team_ratings(team: str, traits: pd.DataFrame, standings) -> list[tuple]:
+def team_ratings_legacy(team: str, traits: pd.DataFrame, standings) -> list[tuple]:
     """팀 → [(라벨, 1~99 레이팅, 보조설명)] 4개. 20팀 랭크-백분위를 1~99로 환산."""
     def pct_rank(col: str, asc: bool = True):
         if col not in traits.columns or team not in traits.index:
@@ -501,6 +701,161 @@ def team_ratings(team: str, traits: pd.DataFrame, standings) -> list[tuple]:
     ]
 
 
+def _rank_pct(values: pd.Series, team: str, high_is_good: bool = True) -> float | None:
+    values = values.dropna()
+    if values.empty or team not in values.index:
+        return None
+    return float(values.rank(ascending=high_is_good, pct=True)[team])
+
+
+def _blend_pcts(parts: list[tuple[float | None, float]]) -> float | None:
+    valid = [(float(v), float(w)) for v, w in parts if v is not None and not pd.isna(v) and w > 0]
+    if not valid:
+        return None
+    total = sum(w for _, w in valid)
+    return sum(v * w for v, w in valid) / total
+
+
+def _team_metric_pct(team: str, traits: pd.DataFrame, col: str,
+                     high_is_good: bool = True) -> float | None:
+    if col not in traits.columns or team not in traits.index:
+        return None
+    return _rank_pct(traits[col], team, high_is_good=high_is_good)
+
+
+def _full_team_metric_pct(team: str, full_df: pd.DataFrame | None, col: str,
+                          high_is_good: bool = True) -> float | None:
+    if full_df is None or col not in full_df.columns or "squad" not in full_df.columns:
+        return None
+    vals = full_df.groupby("squad")[col].mean(numeric_only=True)
+    return _rank_pct(vals, team, high_is_good=high_is_good)
+
+
+def _role_quality_pct(team: str, full_df: pd.DataFrame | None, role: str) -> float | None:
+    if full_df is None or "squad" not in full_df.columns:
+        return None
+    required = {"minutes", "ss_rating", "market_value_eur", "goals", "assists"}
+    if not required.issubset(full_df.columns):
+        return None
+
+    pool = full_df[full_df["minutes"].fillna(0) > 0].copy()
+    if pool.empty:
+        return None
+    pos = pool.get("pos", pd.Series("", index=pool.index)).fillna("").str.upper()
+    fl = pool.get("fl_group", pd.Series("", index=pool.index)).fillna("").str.upper()
+
+    if role == "attack":
+        pool = pool[fl.isin(["ST", "W", "RW", "LW", "AM"]) | pos.str.contains("FW", na=False)]
+        top_n = 6
+    elif role == "midfield":
+        pool = pool[fl.isin(["DM", "CM", "AM"]) | pos.str.contains("MF", na=False)]
+        top_n = 7
+    elif role == "defense":
+        pool = pool[fl.isin(["CB", "FB", "RB", "LB", "GK"]) |
+                    pos.str.contains("DF|GK", regex=True, na=False)]
+        top_n = 7
+    else:
+        top_n = 15
+
+    if pool.empty:
+        return None
+    pool["_ovr"] = pool.apply(
+        lambda r: player_ovr(r.get("market_value_eur"), r.get("ss_rating"),
+                             r.get("minutes"), r.get("goals"), r.get("assists")),
+        axis=1,
+    )
+
+    scores = {}
+    for squad, rows in pool.groupby("squad"):
+        eligible = rows[rows["minutes"].fillna(0) >= 300]
+        if eligible.empty:
+            eligible = rows
+        top = eligible.sort_values("_ovr", ascending=False).head(top_n).copy()
+        weights = top["minutes"].fillna(0).clip(lower=1, upper=2500) ** 0.5
+        scores[squad] = float((top["_ovr"] * weights).sum() / weights.sum())
+    return _rank_pct(pd.Series(scores), team, high_is_good=True)
+
+
+def team_ratings(team: str, traits: pd.DataFrame, standings,
+                 full_df: pd.DataFrame | None = None,
+                 unit_metrics: pd.DataFrame | None = None) -> list[tuple]:
+    """Team ratings blend results, team metrics, and squad role quality."""
+    if unit_metrics is not None and team in unit_metrics.index:
+        row = unit_metrics.loc[team]
+
+        def iv(col: str) -> int:
+            v = row.get(col)
+            return int(v) if pd.notna(v) else 1
+
+        return [
+            ("종합 지수", iv("overall_index"), "성적 + 포지션별 전력"),
+            ("공격 지수", iv("attack_index"),
+             f"득점 {iv('attack_output_index')} / 창출 {iv('attack_creation_index')} / 세트피스 {iv('set_piece_attack_index')}"),
+            ("미드필드 지수", iv("midfield_index"),
+             f"장악 {iv('midfield_control_index')} / 창의성 {iv('midfield_creativity_index')} / 압박 {iv('pressing_index')}"),
+            ("수비 지수", iv("defense_index"),
+             f"실점억제 {iv('defense_output_index')} / 저지 {iv('defense_disruption_index')} / 징계관리 {iv('discipline_index')}"),
+        ]
+
+    def tval(col):
+        if col in traits.columns and team in traits.index and pd.notna(traits.loc[team, col]):
+            return traits.loc[team, col]
+        return None
+
+    rank = None
+    points_pct = None
+    if standings is not None and (standings["squad"] == team).any():
+        srow = standings[standings["squad"] == team].iloc[0]
+        rank = int(srow["rank"])
+        points_pct = _rank_pct(standings.set_index("squad")["points"], team, high_is_good=True)
+
+    squad_q = _role_quality_pct(team, full_df, "overall")
+    att_q = _role_quality_pct(team, full_df, "attack")
+    mid_q = _role_quality_pct(team, full_df, "midfield")
+    def_q = _role_quality_pct(team, full_df, "defense")
+
+    attack_perf = (
+        _full_team_metric_pct(team, full_df, "team_attack_score", True)
+        or _team_metric_pct(team, traits, "gf", True)
+    )
+    defense_perf = (
+        _full_team_metric_pct(team, full_df, "team_defense_score", True)
+        or _team_metric_pct(team, traits, "ga", False)
+    )
+    build = _blend_pcts([
+        (_team_metric_pct(team, traits, "pass_pct", True), 0.35),
+        (_team_metric_pct(team, traits, "key_passes_per90", True), 0.25),
+        (_team_metric_pct(team, traits, "recoveries_per90", True), 0.25),
+        (_team_metric_pct(team, traits, "long_ball_pct", True), 0.15),
+    ])
+    pressure = _blend_pcts([
+        (_team_metric_pct(team, traits, "recoveries_per90", True), 0.45),
+        (_team_metric_pct(team, traits, "interceptions_per90", True), 0.35),
+        (_team_metric_pct(team, traits, "aerial_won_pct", True), 0.20),
+    ])
+
+    overall = _blend_pcts([(points_pct, 0.55), (squad_q, 0.45)])
+    attack = _blend_pcts([
+        (attack_perf, 0.50),
+        (att_q, 0.35),
+        (_team_metric_pct(team, traits, "key_passes_per90", True), 0.15),
+    ])
+    midfield = _blend_pcts([(mid_q, 0.60), (build, 0.40)])
+    defense = _blend_pcts([(defense_perf, 0.60), (def_q, 0.25), (pressure, 0.15)])
+
+    gf_v, ga_v, pass_v = tval("gf"), tval("ga"), tval("pass_pct")
+
+    def rt(p):
+        return fm_rating(p) if p is not None else 1
+
+    return [
+        ("Overall Rating", rt(overall), f"League #{rank} + squad quality" if rank else "Results + squad quality"),
+        ("Attack Rating", rt(attack), f"{int(gf_v)} goals for" if gf_v is not None else "Output + attacker quality"),
+        ("Midfield Rating", rt(midfield), f"Pass accuracy {pass_v:.0f}%" if pass_v is not None else "Midfield quality + build-up"),
+        ("Defense Rating", rt(defense), f"{int(ga_v)} goals against" if ga_v is not None else "Defensive output + back line"),
+    ]
+
+
 def donut_card_html(label: str, value: int, sub: str) -> str:
     """레이팅 도넛 카드 — SVG 링 + 중앙 숫자 + 라벨/보조설명."""
     import math
@@ -537,6 +892,180 @@ def stat_card_html(value: str, label: str, color: str = "#1a1f2e", size: int = 2
 
 
 # ── Team Analytics — 팀 퍼포먼스 레이더 (리그 백분위) ─────────────────────────
+def manager_profile_html(team: str, profile: dict | None) -> str:
+    if not profile:
+        return ""
+    color = team_color(team)
+    name = profile.get("name", "Unknown")
+    initials = "".join(part[0] for part in name.split()[:2]).upper()
+    photo_url = str(profile.get("photo_url", "") or "").strip()
+    nat = profile.get("nationality", "")
+    flag = flag_chip(nat, h=14)
+    meta = " / ".join(x for x in [nat, profile.get("appointed", "")] if x)
+    if photo_url.startswith("http"):
+        avatar_img = (
+            f"<img src='{photo_url}' alt='{name}' loading='lazy' referrerpolicy='no-referrer' "
+            f"style='position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"
+            f"border-radius:50%' onerror='this.remove()'/>"
+        )
+    else:
+        avatar_img = ""
+    chips = [
+        ("기본 전형", profile.get("formation", "")),
+        ("스타일", profile.get("style", "")),
+    ]
+    chip_html = "".join(
+        f"<span style='display:inline-flex;align-items:center;gap:5px;padding:4px 9px;"
+        f"border-radius:7px;background:{color}12;color:{color};border:1px solid {color}30;"
+        f"font-size:11px;font-weight:800;white-space:nowrap'>"
+        f"<span style='color:#8a93a5;font-weight:700'>{label}</span>{value}</span>"
+        for label, value in chips if value
+    )
+    return f"""
+    <div style="background:#fff;border:1px solid #e4e8f0;border-radius:14px;padding:16px 18px;
+                box-shadow:0 1px 3px rgba(16,24,40,.04),0 4px 16px rgba(16,24,40,.04)">
+      <div style="display:flex;align-items:center;gap:14px">
+        <div style="position:relative;width:58px;height:58px;border-radius:50%;flex:none;
+                    background:radial-gradient(circle at 35% 25%,rgba(255,255,255,.34),
+                    rgba(255,255,255,0) 54%),{color};color:#fff;overflow:hidden;
+                    display:flex;align-items:center;justify-content:center;
+                    font-size:18px;font-weight:900;border:2px solid #e4e8f0">
+          <span>{initials}</span>{avatar_img}
+        </div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:10px;font-weight:900;color:#8a93a5;letter-spacing:.7px;
+                      text-transform:uppercase">2025/26 감독</div>
+          <div style="font-size:18px;font-weight:900;color:#1a1f2e;line-height:1.2;
+                      white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{name}{flag}</div>
+          <div style="font-size:12px;color:#8a93a5;margin-top:3px">{meta}</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:7px;margin-top:13px">{chip_html}</div>
+      <div style="border-top:1px solid #eef1f6;margin-top:13px;padding-top:11px;
+                  font-size:13px;color:#3a4253;line-height:1.45">
+        <span style="font-weight:800;color:#1a1f2e">감독 포커스:</span>
+        {profile.get("focus", "")}
+      </div>
+    </div>"""
+
+
+def _rank_text(df: pd.DataFrame | None, team: str, col: str,
+               high_is_good: bool = True) -> tuple[int | None, float | None]:
+    if df is None or team not in df.index or col not in df.columns:
+        return None, None
+    s = pd.to_numeric(df[col], errors="coerce").dropna()
+    if team not in s.index or s.empty:
+        return None, None
+    rank = int(s.rank(ascending=not high_is_good, method="min")[team])
+    return rank, float(s[team])
+
+
+def _ko_num(value: float | None) -> str:
+    if value is None:
+        return "-"
+    if abs(value - round(value)) < 0.01:
+        return str(int(round(value)))
+    return f"{value:.1f}"
+
+
+def _insight_item(title: str, detail: str, tone: str = "good") -> str:
+    color = "#16a34a" if tone == "good" else "#ef4444"
+    bg = "#ecfdf3" if tone == "good" else "#fff1f2"
+    return (
+        f"<div style='display:flex;gap:9px;align-items:flex-start;padding:9px 10px;"
+        f"border-radius:8px;background:{bg};border:1px solid {color}22'>"
+        f"<div style='width:7px;height:7px;border-radius:50%;background:{color};"
+        f"margin-top:7px;flex:none'></div>"
+        f"<div style='min-width:0'><div style='font-size:13px;font-weight:900;"
+        f"color:#1a1f2e'>{title}</div>"
+        f"<div style='font-size:12px;color:#667085;margin-top:2px;line-height:1.35'>"
+        f"{detail}</div></div></div>"
+    )
+
+
+def team_snapshot_html(team: str, statbunker: pd.DataFrame | None,
+                       unit_metrics: pd.DataFrame | None) -> str:
+    strengths: list[tuple[str, str]] = []
+    weaknesses: list[tuple[str, str]] = []
+
+    metric_defs = [
+        ("세트피스 파괴자", statbunker, "non_penalty_set_piece_goals", True,
+         "비PK 세트피스 득점"),
+        ("코너킥 위협", statbunker, "corner_goals", True, "코너킥 득점"),
+        ("오픈플레이 득점력", statbunker, "open_play_goals", True, "오픈플레이 득점"),
+        ("페널티 유도", statbunker, "penalties_for", True, "페널티 획득"),
+        ("페널티 관리", statbunker, "penalties_against", False, "페널티 허용"),
+        ("카드 관리", statbunker, "yellow_cards", False, "옐로카드"),
+        ("전방 압박", unit_metrics, "pressing_index", True, "압박 지수"),
+        ("미드필드 장악", unit_metrics, "midfield_control_index", True, "장악 지수"),
+        ("창의적 전진성", unit_metrics, "midfield_creativity_index", True, "창의성 지수"),
+        ("수비 안정성", unit_metrics, "defense_index", True, "수비 지수"),
+    ]
+
+    for title, df, col, high_good, label in metric_defs:
+        rank, value = _rank_text(df, team, col, high_good)
+        if rank is None:
+            continue
+        detail = f"{label} {_ko_num(value)} · 리그 {rank}위"
+        if rank <= 5:
+            strengths.append((title, detail))
+        elif rank >= 16:
+            weaknesses.append((title, detail))
+
+    if len(strengths) < 3:
+        candidates = []
+        for title, df, col, high_good, label in metric_defs:
+            rank, value = _rank_text(df, team, col, high_good)
+            if rank is not None:
+                candidates.append((rank, title, f"{label} {_ko_num(value)} · 리그 {rank}위"))
+        for _, title, detail in sorted(candidates, key=lambda x: x[0]):
+            if (title, detail) not in strengths:
+                strengths.append((title, detail))
+            if len(strengths) >= 3:
+                break
+
+    if len(weaknesses) < 3:
+        candidates = []
+        for title, df, col, high_good, label in metric_defs:
+            rank, value = _rank_text(df, team, col, high_good)
+            if rank is not None:
+                candidates.append((rank, title, f"{label} {_ko_num(value)} · 리그 {rank}위"))
+        for _, title, detail in sorted(candidates, key=lambda x: x[0], reverse=True):
+            if (title, detail) not in weaknesses:
+                weaknesses.append((title, detail))
+            if len(weaknesses) >= 3:
+                break
+
+    if not strengths and not weaknesses:
+        return ""
+
+    good_html = "".join(_insight_item(t, d, "good") for t, d in strengths[:3])
+    weak_html = "".join(_insight_item(t, d, "bad") for t, d in weaknesses[:3])
+    return f"""
+    <div style="background:#fff;border:1px solid #e4e8f0;border-radius:14px;padding:16px 18px;
+                box-shadow:0 1px 3px rgba(16,24,40,.04),0 4px 16px rgba(16,24,40,.04)">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:12px;
+                  margin-bottom:12px">
+        <div>
+          <div style="font-size:16px;font-weight:900;color:#1a1f2e">팀 스냅샷</div>
+          <div style="font-size:12px;color:#8a93a5;margin-top:2px">
+            현재 경기력에서 두드러지는 강점과 보완 지점
+          </div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px">
+        <div>
+          <div style="font-size:11px;font-weight:900;color:#16a34a;margin-bottom:7px">강점 3줄</div>
+          <div style="display:flex;flex-direction:column;gap:7px">{good_html}</div>
+        </div>
+        <div>
+          <div style="font-size:11px;font-weight:900;color:#ef4444;margin-bottom:7px">약점 3줄</div>
+          <div style="display:flex;flex-direction:column;gap:7px">{weak_html}</div>
+        </div>
+      </div>
+    </div>"""
+
+
 def team_trait_pcts(team: str, traits: pd.DataFrame) -> list[tuple[str, float]]:
     """팀의 TEAM_TRAITS 각 항목 리그 백분위(0~1, 1=리그 최고)."""
     out = []
@@ -657,17 +1186,159 @@ def ai_scout_report_html(strengths, weaknesses, styles, improvements) -> str:
     return f"""
     <div style="background:#fff;border:1px solid #e4e8f0;border-radius:16px;padding:18px 20px;
                 box-shadow:0 1px 3px rgba(16,24,40,.04),0 6px 18px rgba(16,24,40,.05)">
-      <div style="font-size:15px;font-weight:800;color:#1a1f2e;margin-bottom:14px">⚡ AI Scout Report
-        <span style="font-size:11px;font-weight:600;color:#8a93a5;margin-left:6px">리그 데이터 기반</span>
-      </div>
-      {block("✓", "STRENGTHS", "#16a34a", chips([l for l, _ in strengths], "#16a34a"))}
-      {block("✕", "WEAKNESSES", "#ef4444", chips([l for l, _ in weaknesses], "#ef4444"))}
-      {block("⚡", "TACTICAL STYLE", "#2563eb", chips(styles, "#2563eb"))}
+      <div style="font-size:15px;font-weight:800;color:#1a1f2e;margin-bottom:14px">AI 스카우트 리포트</div>
+      {block("✓", "강점", "#16a34a", chips([l for l, _ in strengths], "#16a34a"))}
+      {block("✕", "약점", "#ef4444", chips([l for l, _ in weaknesses], "#ef4444"))}
+      {block("⚡", "전술 성향", "#2563eb", chips(styles, "#2563eb"))}
       <div style="border-top:1px solid #eef1f6;padding-top:11px">
         <div style="font-size:11px;font-weight:800;letter-spacing:.5px;color:#d97706;
-                    margin-bottom:6px">💡 RECOMMENDED IMPROVEMENTS</div>{improv}
+                    margin-bottom:6px">추천 보강 포인트</div>{improv}
       </div>
     </div>"""
+
+
+# ── Team Analytics 추가 패널 (폼 · xG · 스쿼드 · 리더) ───────────────────────
+def _panel(title: str, body: str) -> str:
+    return (f"<div style='background:#fff;border:1px solid #e4e8f0;border-radius:16px;"
+            f"padding:16px 18px;box-shadow:0 1px 3px rgba(16,24,40,.04),0 6px 18px rgba(16,24,40,.05);"
+            f"margin-bottom:16px'>"
+            f"<div style='font-size:14px;font-weight:800;color:#1a1f2e;margin-bottom:12px'>{title}</div>"
+            f"{body}</div>")
+
+
+def form_block_html(sched) -> str:
+    """최근 폼(최근5) + 홈/원정 성적 + 경기당 승점."""
+    s = sched.sort_values("gw")
+    played = len(s)
+    pts = int((s["result"] == "W").sum() * 3 + (s["result"] == "D").sum())
+    ppg = pts / played if played else 0
+    LAB = {"W": "승", "D": "무", "L": "패"}
+    COL = {"W": "#16a34a", "D": "#9aa3b2", "L": "#ef4444"}
+    dots = "".join(
+        f"<span style='display:inline-flex;align-items:center;justify-content:center;width:26px;"
+        f"height:26px;border-radius:7px;background:{COL.get(r, '#9aa3b2')};color:#fff;font-size:12px;"
+        f"font-weight:800;margin-right:5px'>{LAB.get(r, r)}</span>"
+        for r in s.tail(5)["result"]
+    )
+
+    def rec(v):
+        vv = s[s["home_away"] == v]
+        w = int((vv["result"] == "W").sum()); d = int((vv["result"] == "D").sum())
+        ll = int((vv["result"] == "L").sum())
+        return f"{w}승 {d}무 {ll}패 · {int(vv['gf'].sum())}:{int(vv['ga'].sum())}"
+
+    body = (
+        f"<div style='color:#8a93a5;font-size:11px;font-weight:700;margin-bottom:6px'>최근 5경기</div>"
+        f"<div style='margin-bottom:14px'>{dots}</div>"
+        f"<div style='display:flex;gap:18px'>"
+        f"<div><div style='font-size:11px;color:#8a93a5'>🏠 홈</div>"
+        f"<div style='font-size:14px;font-weight:700;color:#1a1f2e'>{rec('H')}</div></div>"
+        f"<div><div style='font-size:11px;color:#8a93a5'>✈️ 원정</div>"
+        f"<div style='font-size:14px;font-weight:700;color:#1a1f2e'>{rec('A')}</div></div>"
+        f"<div style='margin-left:auto;text-align:right'><div style='font-size:11px;color:#8a93a5'>경기당 승점</div>"
+        f"<div style='font-size:20px;font-weight:800;color:{ACCENT}'>{ppg:.2f}</div></div></div>"
+    )
+    return _panel("최근 폼 &amp; 결과", body)
+
+
+def xg_block_html(team_xg: float, gf: int, ga: int, league_ga: float, played: int) -> str:
+    """팀 기대득점(xG) vs 실제 득점 + 실점 vs 리그평균."""
+    diff = gf - team_xg
+    if diff >= 3:
+        lab, lc = "클리니컬 (과득점)", "#16a34a"
+    elif diff <= -3:
+        lab, lc = "비효율 (저득점)", "#ef4444"
+    else:
+        lab, lc = "기대치 부합", "#d97706"
+    dstr = f"+{diff:.1f}" if diff >= 0 else f"{diff:.1f}"
+    ga_diff = ga - league_ga
+    ga_lab = "리그평균보다 견고" if ga_diff < -2 else "리그평균보다 허술" if ga_diff > 2 else "리그평균 수준"
+    ga_col = "#16a34a" if ga_diff < -2 else "#ef4444" if ga_diff > 2 else "#d97706"
+
+    def big(label, val, sub, color):
+        return (f"<div style='flex:1'><div style='font-size:11px;color:#8a93a5'>{label}</div>"
+                f"<div style='font-size:24px;font-weight:800;color:{color};line-height:1.2'>{val}</div>"
+                f"<div style='font-size:11px;color:#8a93a5'>{sub}</div></div>")
+
+    body = (
+        f"<div style='display:flex;gap:14px;margin-bottom:6px'>"
+        f"{big('기대득점 xG', f'{team_xg:.1f}', f'경기당 {team_xg/played:.2f}' if played else '', '#1a1f2e')}"
+        f"{big('실제 득점', str(gf), f'차이 {dstr}', lc)}"
+        f"{big('실점', str(ga), f'리그평균 {league_ga:.0f}', ga_col)}</div>"
+        f"<div style='display:flex;gap:6px;margin-top:8px'>"
+        f"<span style='font-size:12px;font-weight:700;color:{lc};background:{lc}14;"
+        f"border:1px solid {lc}40;border-radius:12px;padding:3px 11px'>공격: {lab}</span>"
+        f"<span style='font-size:12px;font-weight:700;color:{ga_col};background:{ga_col}14;"
+        f"border:1px solid {ga_col}40;border-radius:12px;padding:3px 11px'>수비: {ga_lab}</span></div>"
+    )
+    return _panel("xG 퍼포먼스 (결정력)", body)
+
+
+def squad_profile_html(avg_age: float, sq_value, value_rank, buckets, league_avg_age: float) -> str:
+    """평균 나이 · 스쿼드 가치(리그 순위) · 나이 분포."""
+    u23, peak, old = buckets
+    tot = max(1, u23 + peak + old)
+    bar = (
+        f"<div style='display:flex;height:10px;border-radius:5px;overflow:hidden;margin:6px 0 4px'>"
+        f"<div style='width:{u23/tot*100:.0f}%;background:#38bdf8'></div>"
+        f"<div style='width:{peak/tot*100:.0f}%;background:#16a34a'></div>"
+        f"<div style='width:{old/tot*100:.0f}%;background:#d97706'></div></div>"
+        f"<div style='font-size:11px;color:#8a93a5'>"
+        f"<span style='color:#38bdf8'>●</span> U23 {u23} · "
+        f"<span style='color:#16a34a'>●</span> 전성기(24-29) {peak} · "
+        f"<span style='color:#d97706'>●</span> 30+ {old}</div>"
+    )
+    age_col = "#16a34a" if avg_age < league_avg_age - 0.5 else "#d97706" if avg_age > league_avg_age + 0.5 else "#1a1f2e"
+    body = (
+        f"<div style='display:flex;gap:18px;margin-bottom:12px'>"
+        f"<div><div style='font-size:11px;color:#8a93a5'>평균 나이</div>"
+        f"<div style='font-size:22px;font-weight:800;color:{age_col}'>{avg_age:.1f}세</div>"
+        f"<div style='font-size:11px;color:#8a93a5'>리그평균 {league_avg_age:.1f}</div></div>"
+        f"<div><div style='font-size:11px;color:#8a93a5'>스쿼드 가치</div>"
+        f"<div style='font-size:22px;font-weight:800;color:#16a34a'>{fmt_value(sq_value)}</div>"
+        f"<div style='font-size:11px;color:#8a93a5'>리그 {int(value_rank)}위</div></div></div>"
+        f"<div style='font-size:11px;color:#8a93a5;font-weight:700'>나이 분포</div>{bar}"
+    )
+    return _panel("스쿼드 프로필", body)
+
+
+def team_leaders(team: str, full: pd.DataFrame) -> list:
+    """팀 기여 리더 — 득점/도움/xG/키패스/태클 톱."""
+    t = full[(full["squad"] == team) & (full["minutes"] > 0)].copy()
+    t = t.sort_values("minutes", ascending=False).drop_duplicates("player")
+    if t.empty:
+        return []
+    t["_xg"] = t["npxg_p90"] * t["minutes"] / 90
+    t["_kp"] = t["key_passes_per90"] * t["minutes"] / 90
+    t["_tk"] = t["tackles_won_per90"] * t["minutes"] / 90
+    out = []
+    specs = [("goals", "득점", "#ef4444", 0), ("assists", "도움", "#e8344e", 0),
+             ("_xg", "xG", "#d97706", 1), ("_kp", "키패스", "#16a34a", 0),
+             ("_tk", "태클", "#2563eb", 0)]
+    for col, label, color, dec in specs:
+        if col not in t.columns or not t[col].notna().any():
+            continue
+        r = t.loc[t[col].idxmax()]
+        v = float(r[col])
+        val = f"{v:.1f}" if dec else f"{int(round(v))}"
+        out.append((label, color, r["player"].split()[-1], val, _photo("", r.get("tm_photo"))))
+    return out
+
+
+def leader_card_html(item) -> str:
+    label, color, player, val, photo = item
+    disc = (f"background-image:url('{photo}');background-size:cover;background-position:center;"
+            if photo else "background:#cdd5e0;")
+    return (
+        f"<div style='background:#fff;border:1px solid #e4e8f0;border-radius:14px;padding:14px 10px;"
+        f"text-align:center;box-shadow:0 1px 3px rgba(16,24,40,.04),0 6px 18px rgba(16,24,40,.05)'>"
+        f"<div style='font-size:10px;font-weight:800;letter-spacing:.5px;color:{color}'>{label}</div>"
+        f"<div style='width:46px;height:46px;border-radius:50%;margin:8px auto 6px;{disc}"
+        f"border:2px solid #e4e8f0'></div>"
+        f"<div style='font-size:12px;font-weight:700;color:#1a1f2e;white-space:nowrap;overflow:hidden;"
+        f"text-overflow:ellipsis'>{player}</div>"
+        f"<div style='font-size:20px;font-weight:800;color:{color};margin-top:2px'>{val}</div></div>"
+    )
 
 
 # ── Star Players — 팀 내 ss_rating 상위 N명 ───────────────────────────────────
@@ -739,9 +1410,147 @@ def star_card_html(s: dict) -> str:
     </div>"""
 
 
+def player_picker_card_html(p: dict, selected: bool = False) -> str:
+    """Player Detail 선택용 스카우트 카드."""
+    name = html.escape(str(p.get("name", "")))
+    short_name = html.escape(str(p.get("short_name", p.get("name", ""))))
+    pos = html.escape(str(p.get("pos", "")))
+    pc = pos_chip_color(pos)
+    ovr = int(p.get("ovr") or 60)
+    oc = rating_color(ovr)
+    tcol = p.get("tcol", "#1a1f2e")
+    sid = str(p.get("sid", "") or "")
+    disc = (f"background-image:url('{sid}'),linear-gradient(135deg,{tcol},#0b0f17);"
+            if sid else f"background:{tcol};")
+    border = f"1.5px solid {tcol}" if selected else "1px solid #e4e8f0"
+    shadow = "0 12px 28px rgba(16,24,40,.13)" if selected else "0 1px 3px rgba(16,24,40,.04),0 8px 22px rgba(16,24,40,.05)"
+    badge = (
+        f"<div style='position:absolute;top:11px;right:11px;width:9px;height:9px;"
+        f"border-radius:50%;background:{tcol};box-shadow:0 0 0 4px {tcol}22'></div>"
+        if selected else ""
+    )
+    mins = p.get("minutes")
+    mins_txt = f"{int(mins)}분" if mins is not None and pd.notna(mins) else "-"
+    g = int(p.get("goals") or 0)
+    a = int(p.get("assists") or 0)
+    value = html.escape(str(p.get("value", "—")))
+    return f"""
+    <div title="{name}" style="position:relative;background:#fff;border:{border};border-radius:12px;
+                padding:0;text-align:left;min-height:214px;overflow:hidden;
+                box-shadow:{shadow}">
+      {badge}
+      <div style="height:74px;background:linear-gradient(135deg,{tcol}ee,#10151c);
+                  position:relative">
+        <div style="position:absolute;left:12px;bottom:-28px;width:62px;height:62px;border-radius:50%;
+                    {disc}background-size:cover;background-position:center;border:3px solid #fff;
+                    box-shadow:0 8px 18px rgba(16,24,40,.18)"></div>
+        <div style="position:absolute;right:12px;bottom:10px;text-align:right">
+          <div style="font-size:26px;font-weight:950;color:#fff;line-height:1">{ovr}</div>
+          <div style="font-size:9px;color:rgba(255,255,255,.72);font-weight:900;letter-spacing:.9px">OVR</div>
+        </div>
+      </div>
+      <div style="padding:35px 12px 12px">
+        <div style="font-weight:950;font-size:14px;color:#1a1f2e;line-height:1.2;
+                    white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{short_name}</div>
+        <div style="margin-top:6px;display:flex;align-items:center;justify-content:space-between;gap:8px">
+          <span style="display:inline-block;padding:3px 8px;background:{pc}1a;color:{pc};
+                       border-radius:6px;font-size:10px;font-weight:900">{pos}</span>
+          <span style="font-size:11px;font-weight:900;color:#16a34a;white-space:nowrap">{value}</span>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:11px">
+          <div style="background:#f8fafc;border:1px solid #eef1f6;border-radius:8px;padding:6px 3px;text-align:center">
+            <div style="font-size:12px;font-weight:950;color:#1a1f2e">{mins_txt}</div>
+            <div style="font-size:9px;color:#8a93a5">출전</div>
+          </div>
+          <div style="background:#f8fafc;border:1px solid #eef1f6;border-radius:8px;padding:6px 3px;text-align:center">
+            <div style="font-size:12px;font-weight:950;color:#16a34a">{g}</div>
+            <div style="font-size:9px;color:#8a93a5">골</div>
+          </div>
+          <div style="background:#f8fafc;border:1px solid #eef1f6;border-radius:8px;padding:6px 3px;text-align:center">
+            <div style="font-size:12px;font-weight:950;color:#2563eb">{a}</div>
+            <div style="font-size:9px;color:#8a93a5">도움</div>
+          </div>
+        </div>
+      </div>
+    </div>"""
+
+
+def selected_player_spotlight_html(p: dict) -> str:
+    """선택된 선수용 상단 스포트라이트."""
+    name = html.escape(str(p.get("name", "")))
+    pos = html.escape(str(p.get("pos", "")))
+    pc = pos_chip_color(pos)
+    ovr = int(p.get("ovr") or 60)
+    oc = rating_color(ovr)
+    tcol = p.get("tcol", "#1a1f2e")
+    sid = str(p.get("sid", "") or "")
+    disc = (f"background-image:url('{sid}'),linear-gradient(135deg,{tcol},#0b0f17);"
+            if sid else f"background:{tcol};")
+    mins = p.get("minutes")
+    mins_txt = f"{int(mins)}분" if mins is not None and pd.notna(mins) else "-"
+    value = html.escape(str(p.get("value", "—")))
+    g = int(p.get("goals") or 0)
+    a = int(p.get("assists") or 0)
+
+    def tile(label: str, val: str, color: str) -> str:
+        return (
+            f"<div style='background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.16);"
+            f"border-radius:9px;padding:9px 10px;min-width:86px'>"
+            f"<div style='font-size:18px;font-weight:950;color:{color};line-height:1'>{val}</div>"
+            f"<div style='font-size:10px;color:rgba(255,255,255,.68);margin-top:4px'>{label}</div></div>"
+        )
+
+    return f"""
+    <div style="position:relative;overflow:hidden;border-radius:14px;margin:2px 0 14px;
+                background:linear-gradient(135deg,{tcol},#10151c 72%);
+                box-shadow:0 12px 34px rgba(16,24,40,.16);padding:20px 22px">
+      <div style="position:absolute;right:-42px;top:-70px;width:190px;height:190px;border-radius:50%;
+                  background:rgba(255,255,255,.08)"></div>
+      <div style="display:flex;align-items:center;gap:18px;position:relative">
+        <div style="width:86px;height:86px;border-radius:50%;{disc}background-size:cover;
+                    background-position:center;border:3px solid rgba(255,255,255,.75);
+                    box-shadow:0 10px 24px rgba(0,0,0,.25);flex:none"></div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:11px;font-weight:900;letter-spacing:.8px;color:rgba(255,255,255,.62);
+                      text-transform:uppercase">선택된 선수</div>
+          <div style="font-size:26px;font-weight:950;color:#fff;line-height:1.12;
+                      white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{name}</div>
+          <div style="display:flex;align-items:center;gap:8px;margin-top:9px">
+            <span style="display:inline-block;padding:3px 9px;background:#fff;color:{pc};
+                         border-radius:7px;font-size:11px;font-weight:950">{pos}</span>
+            <span style="font-size:12px;font-weight:900;color:#bbf7d0">{value}</span>
+          </div>
+        </div>
+        <div style="width:96px;text-align:center;flex:none">
+          <div style="font-size:44px;font-weight:950;color:{oc};line-height:.95">{ovr}</div>
+          <div style="font-size:10px;color:rgba(255,255,255,.68);font-weight:900;letter-spacing:1px">OVR</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:9px;flex-wrap:wrap;margin-top:18px;position:relative">
+        {tile("출전 시간", mins_txt, "#fff")}
+        {tile("골", str(g), "#bbf7d0")}
+        {tile("도움", str(a), "#bfdbfe")}
+      </div>
+    </div>"""
+
+
 # ── Squad Depth Chart — 포지션별 주전/백업 + 깊이 점수 ────────────────────────
 # 주전=실제 XI(placements), 백업=벤치(bench_pls). fine_group 버킷으로 묶고,
 # 깊이 점수 = 0.7·백업 최고 OVR + 0.3·스쿼드 규모(최대 100). 백업 없으면 얕음.
+_SLOT_BUCKET = {
+    "GK": "GK",
+    "RB": "RB", "RWB": "RB",
+    "LB": "LB", "LWB": "LB",
+    "RCB": "CB", "LCB": "CB", "CB": "CB",
+    "DM": "DM", "RDM": "DM", "LDM": "DM",
+    "CM": "CM", "RCM": "CM", "LCM": "CM",
+    "CAM": "AM", "AM": "AM",
+    "RM": "RW", "RW": "RW",
+    "LM": "LW", "LW": "LW",
+    "ST": "ST", "FW": "ST",
+}
+
+
 def squad_depth_html(placements: list, bench_pls: list,
                      ovr_map: dict, fine_map: dict) -> str:
     BUCKETS = [("GK", "GK"), ("CB", "CB"), ("RB", "RB"), ("LB", "LB"),
@@ -750,9 +1559,13 @@ def squad_depth_html(placements: list, bench_pls: list,
                ("ST", "ST")]
     valid = {b for b, _ in BUCKETS}
 
-    def bucket_of(name, kind):
+    def bucket_of(name, kind, slot=""):
         if kind == "GK":
             return "GK"
+        if slot:
+            b = _SLOT_BUCKET.get(slot.upper())
+            if b and b in valid:
+                return b
         b = fine_map.get(name)
         return b if b in valid else None
 
@@ -761,11 +1574,11 @@ def squad_depth_html(placements: list, bench_pls: list,
 
     data = {b: {"s": [], "k": []} for b, _ in BUCKETS}
     for p in placements:
-        b = bucket_of(p["full"], p.get("kind"))
+        b = bucket_of(p["full"], p.get("kind"), p.get("slot", ""))
         if b:
             data[b]["s"].append(p["full"])
     for p in bench_pls:
-        b = bucket_of(p["full"], p.get("kind"))
+        b = bucket_of(p["full"], p.get("kind"), "")
         if b:
             data[b]["k"].append(p["full"])
 
@@ -1401,7 +2214,8 @@ def placements_from_slots(team: str, slots_df: pd.DataFrame, full: pd.DataFrame,
                         "abbr": "GK", "num": _num_str(r.get("number")),
                         "sid": _photo(r.get("sofa_id"), drow.iloc[0].get("tm_photo") if not drow.empty else None), "tcol": team_color(team),
                         "role": slot, "chip": chip, "minutes": minutes,
-                        "full": r["player"], "tip": f"{slot} · {minutes}분 · {chip}"})
+                        "full": r["player"], "tip": f"{slot} · {minutes}분 · {chip}",
+                        "slot": slot})
         elif not prow.empty:
             prow = prow.iloc[0]
             role, _ = assign_role(prow, position_group(prow["pos"]))
@@ -1413,7 +2227,8 @@ def placements_from_slots(team: str, slots_df: pd.DataFrame, full: pd.DataFrame,
                         "sid": _photo(r.get("sofa_id"), drow.iloc[0].get("tm_photo") if not drow.empty else None), "tcol": team_color(team),
                         "role": f"{disp} · {role.split(' (')[0]}",
                         "chip": f"{strengths[0][0]} {strengths[0][1]}%",
-                        "minutes": minutes, "full": r["player"], "tip": tip})
+                        "minutes": minutes, "full": r["player"], "tip": tip,
+                        "slot": slot})
     return out
 
 
@@ -1440,14 +2255,16 @@ def placements_from_bands(bands: list[pd.DataFrame], pct: pd.DataFrame,
                         "abbr": {"DEF": "DF", "MID": "MF", "FWD": "FW"}.get(kind, ""),
                         "num": "", "sid": _photo("", prow.get("tm_photo")), "tcol": tcol,
                         "role": role.split(" (")[0], "chip": f"{strengths[0][0]} {strengths[0][1]}%",
-                        "minutes": int(r["minutes"]), "full": r["player"], "tip": tip})
+                        "minutes": int(r["minutes"]), "full": r["player"], "tip": tip,
+                        "slot": ""})
     if gk is not None:
         save = gk.get("gk_save_pct")
         chip = f"세이브% {save:.0f}" if pd.notna(save) else "GK"
         out.append({"name": gk["player"].split()[-1], "x": 50, "y": GK_Y, "kind": "GK",
                     "abbr": "GK", "num": "", "sid": _photo("", gk.get("tm_photo")), "tcol": tcol,
                     "role": "골키퍼", "chip": chip, "minutes": int(gk["minutes"]),
-                    "full": gk["player"], "tip": f"{int(gk['minutes'])}분 · {chip}"})
+                    "full": gk["player"], "tip": f"{int(gk['minutes'])}분 · {chip}",
+                    "slot": "GK"})
     return out
 
 
@@ -1882,6 +2699,8 @@ departed_pls = departed_placements(team)
 # ── 공통 계산 (탭 렌더 전) ────────────────────────────────────────────────────
 _standings = load_standings()
 _traits = team_traits_table(DATA_PATH.stat().st_mtime)
+_statbunker_team_stats = load_statbunker_team_stats(file_cache_key(STATBUNKER_TEAM_STATS_PATH))
+_unit_metrics = load_team_unit_metrics(file_cache_key(TEAM_UNIT_METRICS_PATH))
 _str, _weak = team_characteristics(team, _traits)     # _weak: Transfer 탭에서 재사용
 _fine_map = dict(zip(dff["player"], dff["fl_group"]))
 _sid_all = {}
@@ -1900,6 +2719,7 @@ _ovr_map = {r.player: player_ovr(r.market_value_eur, r.ss_rating, r.minutes,
             for r in _rep.itertuples(index=False)}
 
 SCHEDULE_PATH = Path(__file__).resolve().parent / "data" / "schedule_2025_2026.csv"
+TRANSFERS_PATH = Path(__file__).resolve().parent / "data" / "transfers_2025_2026.csv"
 
 
 @st.cache_data
@@ -1909,13 +2729,20 @@ def load_schedule() -> pd.DataFrame | None:
     return pd.read_csv(SCHEDULE_PATH)
 
 
+@st.cache_data
+def load_transfers(_mtime: float = 0.0) -> pd.DataFrame | None:
+    if not TRANSFERS_PATH.exists():
+        return None
+    return pd.read_csv(TRANSFERS_PATH)
+
+
 # ── 섹션 렌더 — 사이드바 _nav 선택에 따라 한 섹션만 표시 ──────────────────────
-# 1: Team Overview — 레이팅 도넛 + 스탯 카드 + Star Players
+# 1: 팀 개요 — 레이팅 도넛 + 스탯 카드 + 핵심 선수
 if _nav == NAV[0]:
-    sec_title("Team Overview", f"{team} · Premier League · 2025/26")
+    sec_title("팀 개요", f"{team} · Premier League · 2025/26")
 
     _rcols = st.columns(4)
-    for _c, (_lbl, _val, _sub) in zip(_rcols, team_ratings(team, _traits, _standings)):
+    for _c, (_lbl, _val, _sub) in zip(_rcols, team_ratings(team, _traits, _standings, full, _unit_metrics)):
         with _c:
             st.markdown(donut_card_html(_lbl, _val, _sub), unsafe_allow_html=True)
 
@@ -1923,30 +2750,76 @@ if _nav == NAV[0]:
         _s = _standings[_standings["squad"] == team].iloc[0]
         _gd = int(_s["gd"]); _gd_str = f"+{_gd}" if _gd > 0 else str(_gd)
         _stats = [
-            (f"{int(_s['rank'])}위", "League Position", "#d97706", 26),
-            (f"{int(_s['points'])}", "Points", "#1a1f2e", 26),
-            (f"{int(_s['won'])}-{int(_s['drawn'])}-{int(_s['lost'])}", "W-D-L", "#1a1f2e", 22),
-            (f"{int(_s['gf'])}", "Goals For", "#16a34a", 26),
-            (f"{int(_s['ga'])}", "Goals Against", "#ef4444", 26),
-            (_gd_str, "Goal Diff", "#2563eb", 26),
+            (f"{int(_s['rank'])}위", "리그 순위", "#d97706", 26),
+            (f"{int(_s['points'])}", "승점", "#1a1f2e", 26),
+            (f"{int(_s['won'])}-{int(_s['drawn'])}-{int(_s['lost'])}", "승-무-패", "#1a1f2e", 22),
+            (f"{int(_s['gf'])}", "득점", "#16a34a", 26),
+            (f"{int(_s['ga'])}", "실점", "#ef4444", 26),
+            (_gd_str, "득실차", "#2563eb", 26),
         ]
         for _c, (_v, _l, _col, _sz) in zip(st.columns(6), _stats):
             with _c:
                 st.markdown(stat_card_html(_v, _l, _col, _sz), unsafe_allow_html=True)
 
+    if _statbunker_team_stats is not None and team in _statbunker_team_stats.index:
+        _sb = _statbunker_team_stats.loc[team]
+
+        def _sb_int(col: str) -> int | None:
+            _v = _sb.get(col)
+            if pd.isna(_v):
+                return None
+            return int(_v)
+
+        def _sb_fmt(col: str) -> str:
+            _v = _sb_int(col)
+            return str(_v) if _v is not None else "-"
+
+        def _sb_red_cards() -> str:
+            _straight = _sb_int("red_cards")
+            _second = _sb_int("second_yellow_reds")
+            if _straight is None and _second is None:
+                return "-"
+            return str((_straight or 0) + (_second or 0))
+
+        st.markdown("<div style='margin-top:12px'></div>", unsafe_allow_html=True)
+        sec_title("세트피스 & 징계")
+        _sp_stats = [
+            (_sb_fmt("non_penalty_set_piece_goals"), "비PK 세트피스 득점", "#2563eb", 24),
+            (_sb_fmt("corner_goals"), "코너킥 득점", "#16a34a", 24),
+            (_sb_fmt("penalties_for"), "페널티 획득", "#1a1f2e", 24),
+            (_sb_fmt("penalties_against"), "페널티 허용", "#ef4444", 24),
+            (_sb_fmt("yellow_cards"), "옐로카드", "#d97706", 24),
+            (_sb_red_cards(), "퇴장", "#b91c1c", 24),
+        ]
+        for _c, (_v, _l, _col, _sz) in zip(st.columns(6), _sp_stats):
+            with _c:
+                st.markdown(stat_card_html(_v, _l, _col, _sz), unsafe_allow_html=True)
+
+    _manager_profiles = load_manager_profiles(
+        MANAGER_PROFILES_PATH.stat().st_mtime if MANAGER_PROFILES_PATH.exists() else 0.0
+    )
+    _manager_profile = _manager_profiles.get(team)
+    if _manager_profile:
+        st.markdown("<div style='margin-top:12px'></div>", unsafe_allow_html=True)
+        st.markdown(manager_profile_html(team, _manager_profile), unsafe_allow_html=True)
+        _snapshot_html = team_snapshot_html(team, _statbunker_team_stats, _unit_metrics)
+        if _snapshot_html:
+            st.markdown("<div style='margin-top:12px'></div>", unsafe_allow_html=True)
+            st.markdown(_snapshot_html, unsafe_allow_html=True)
+
     _stars = team_star_players(team, full, _fine_map, _sid_all, n=5)
     if _stars:
         st.markdown("<div style='margin-top:10px'></div>", unsafe_allow_html=True)
-        sec_title("Star Players", "AI 종합 평점(ss_rating) 상위 5명 · OVR=객관 평점 환산")
+        sec_title("핵심 선수", "AI 종합 평점(ss_rating) 상위 5명 · OVR=객관 평점 환산")
         for _c, _sp in zip(st.columns(5), _stars):
             with _c:
                 st.markdown(star_card_html(_sp), unsafe_allow_html=True)
 
-    # Formation & Tactical Shape — 주전 XI 보드 + 벤치 (레퍼런스 Team Overview 구성)
+    # 포메이션 & 전술 구조 — 주전 XI 보드 + 벤치
     st.markdown("<div style='margin-top:16px'></div>", unsafe_allow_html=True)
     _tag = (" · 메인" if formation == main_form else " · 서브") if sub_form else ""
     _src = "실측 라인업" if has_real else "휴리스틱"
-    sec_title("Formation & Tactical Shape",
+    sec_title("포메이션 & 전술 구조",
               f"주전 XI ({formation}){_tag} · {_src} · 색=라인(🔴공격 🟠중원 🔵수비 🟢GK)")
     st.caption("토큰에 호버하면 강점 지표가 라벨과 함께 표시됩니다.")
     st.components.v1.html(pitch_html(placements), height=720)
@@ -1974,12 +2847,149 @@ elif _nav == NAV[1]:
         else:
             st.info("강점/약점 데이터를 계산할 수 없습니다.")
 
+    # ── 폼 / xG / 스쿼드 프로필 ───────────────────────────────────────────────
+    _srow_a = _standings[_standings["squad"] == team] if _standings is not None else None
+    _sched_a = load_schedule()
+    _ts = (_sched_a[_sched_a["squad"] == team] if _sched_a is not None else None)
+    _b1, _b2 = st.columns(2)
+    with _b1:
+        if _ts is not None and not _ts.empty:
+            st.markdown(form_block_html(_ts), unsafe_allow_html=True)
+    with _b2:
+        if _srow_a is not None and not _srow_a.empty:
+            _sr = _srow_a.iloc[0]
+            _team_xg = float((full.loc[full["squad"] == team, "npxg_p90"]
+                              * full.loc[full["squad"] == team, "minutes"] / 90).sum())
+            _league_ga = float(_standings["ga"].mean())
+            st.markdown(xg_block_html(_team_xg, int(_sr["gf"]), int(_sr["ga"]),
+                                      _league_ga, int(_sr["played"])), unsafe_allow_html=True)
+
+    # 스쿼드 프로필 (나이·가치 분포) — 선수별 대표행(_rep) 사용
+    _sq = _rep[_rep["squad"] == team]
+    if not _sq.empty:
+        _ages = _sq["age"].dropna()
+        _buckets = (int((_ages <= 23).sum()), int(((_ages >= 24) & (_ages <= 29)).sum()),
+                    int((_ages >= 30).sum()))
+        _team_vals = _rep.groupby("squad")["market_value_eur"].sum()
+        _vrank = _team_vals.rank(ascending=False)[team]
+        st.markdown(squad_profile_html(_ages.mean(), _sq["market_value_eur"].sum(), _vrank,
+                                       _buckets, _rep["age"].dropna().mean()),
+                    unsafe_allow_html=True)
+
+    # ── 승점 추이 (누적) ──────────────────────────────────────────────────────
+    if _ts is not None and not _ts.empty:
+        _tt = _ts.sort_values("gw").copy()
+        _tt["pts"] = _tt["result"].map({"W": 3, "D": 1, "L": 0}).fillna(0)
+        _cum = _tt[["gw"]].copy()
+        _cum["누적 승점"] = _tt["pts"].cumsum().values
+        st.markdown("<div style='font-size:14px;font-weight:800;color:#1a1f2e;margin:6px 0 4px'>"
+                    "승점 추이</div>", unsafe_allow_html=True)
+        st.line_chart(_cum.set_index("gw"), height=220, color=ACCENT)
+
+    # ── 팀 기여 리더 ──────────────────────────────────────────────────────────
+    _leaders = team_leaders(team, full)
+    if _leaders:
+        st.markdown("<div style='font-size:14px;font-weight:800;color:#1a1f2e;margin:14px 0 8px'>"
+                    "팀 기여 리더</div>", unsafe_allow_html=True)
+        for _c, _ld in zip(st.columns(len(_leaders)), _leaders):
+            with _c:
+                st.markdown(leader_card_html(_ld), unsafe_allow_html=True)
+
 # 3: Player Detail — 선수 능력치/레이더/유사선수
 elif _nav == NAV[2]:
-    sec_title("Player Detail", "선수별 능력치 · 레이더 · 스타일 유사 선수")
+    sec_title("선수 상세", "선수별 능력치 · 레이더 · 스타일 유사 선수")
     bench_all = [p["full"] for p in bench_pls]
     pool = list(dict.fromkeys(xi_gk + xi_players + bench_all))
-    pick = st.selectbox("선수 선택", pool)
+
+    state_key = f"player_detail_pick_{team}"
+    if state_key not in st.session_state or st.session_state[state_key] not in pool:
+        st.session_state[state_key] = pool[0] if pool else None
+
+    def picker_bucket(pos: str) -> str:
+        p = str(pos or "").upper()
+        if "GK" in p:
+            return "GK"
+        if p in {"CB", "FB", "RB", "LB", "DF"} or "DF" in p:
+            return "수비"
+        if p in {"DM", "CM", "AM", "MF"} or "MF" in p:
+            return "중원"
+        return "공격"
+
+    card_rows = []
+    for pname in pool:
+        raw_rows = full[full["player"] == pname]
+        raw = raw_rows.iloc[0] if not raw_rows.empty else pd.Series(dtype=object)
+        drow = dff[dff["player"] == pname]
+        drow = drow.iloc[0] if not drow.empty else raw
+        pos = _fine_map.get(pname)
+        if not pos or (isinstance(pos, float) and pd.isna(pos)):
+            pos = "GK" if "GK" in str(raw.get("pos", "")) else str(raw.get("pos", "")).split(",")[0].strip()
+        short_name = pname.split()[-1] if len(pname) > 16 else pname
+        card_rows.append({
+            "name": pname,
+            "short_name": short_name,
+            "pos": pos,
+            "minutes": raw.get("minutes"),
+            "goals": raw.get("goals", 0),
+            "assists": raw.get("assists", 0),
+            "value": fmt_value(raw.get("market_value_eur")),
+            "ovr": _ovr_map.get(pname, player_ovr(raw.get("market_value_eur"), raw.get("ss_rating"),
+                                                  raw.get("minutes"), raw.get("goals"), raw.get("assists"))),
+            "sid": _photo(_sid_all.get(pname, ""), drow.get("tm_photo") if "tm_photo" in drow.index else None),
+            "tcol": team_color(team),
+        })
+        card_rows[-1]["bucket"] = picker_bucket(pos)
+
+    selected_card = next((p for p in card_rows if p["name"] == st.session_state[state_key]), None)
+    if selected_card:
+        st.markdown(selected_player_spotlight_html(selected_card), unsafe_allow_html=True)
+
+    filter_col, sort_col = st.columns([1.4, 1])
+    with filter_col:
+        pos_filter = st.pills(
+            "포지션 필터",
+            ["전체", "공격", "중원", "수비", "GK"],
+            default="전체",
+            label_visibility="collapsed",
+            key=f"player_filter_{team}",
+        )
+    with sort_col:
+        sort_mode = st.segmented_control(
+            "정렬",
+            ["OVR", "출전", "이름"],
+            default="OVR",
+            label_visibility="collapsed",
+            key=f"player_sort_{team}",
+        )
+
+    visible_cards = [p for p in card_rows if pos_filter in (None, "전체") or p["bucket"] == pos_filter]
+    if sort_mode == "출전":
+        visible_cards.sort(key=lambda x: float(x.get("minutes") or 0), reverse=True)
+    elif sort_mode == "이름":
+        visible_cards.sort(key=lambda x: str(x.get("name", "")))
+    else:
+        visible_cards.sort(key=lambda x: int(x.get("ovr") or 0), reverse=True)
+
+    st.markdown(
+        f"<div style='font-size:12px;color:#8a93a5;font-weight:800;margin:8px 0 10px'>"
+        f"스쿼드 브라우저 · {len(visible_cards)}명</div>",
+        unsafe_allow_html=True,
+    )
+    for start in range(0, len(visible_cards), 4):
+        cols = st.columns(4)
+        for col, pdata in zip(cols, visible_cards[start:start + 4]):
+            with col:
+                selected = pdata["name"] == st.session_state[state_key]
+                st.markdown(player_picker_card_html(pdata, selected=selected), unsafe_allow_html=True)
+                if st.button("리포트 보기" if not selected else "현재 분석 중",
+                             key=f"pick_{team}_{pdata['name']}", use_container_width=True,
+                             type="primary" if selected else "secondary",
+                             disabled=selected):
+                    st.session_state[state_key] = pdata["name"]
+                    st.rerun()
+
+    pick = st.session_state[state_key]
+    st.markdown("<div style='margin-top:14px'></div>", unsafe_allow_html=True)
 
     raw_match = full[full["player"] == pick]
     is_gk = (not raw_match.empty) and "GK" in str(raw_match.iloc[0]["pos"])
@@ -2073,7 +3083,28 @@ elif _nav == NAV[3]:
 
 # 5: Transfer Recommendations — 팀 적합 영입 후보
 elif _nav == NAV[4]:
-    sec_title("Transfer Recommendations",
+    # ── 이적시장 IN/OUT (실제 이적, Transfermarkt) — 여름/겨울 분리 ───────────
+    _tdf = load_transfers(TRANSFERS_PATH.stat().st_mtime if TRANSFERS_PATH.exists() else 0.0)
+    if _tdf is not None and (_tdf["squad"] == team).any():
+        _tt = _tdf[_tdf["squad"] == team].copy()
+        _tt["_fee"] = _tt["fee_eur"].fillna(-1)
+        for _wval, _wlabel in [("summer", "Summer Transfers · 25/26"),
+                               ("winter", "Winter Transfers · 25/26 (1월)")]:
+            _w = _tt[_tt["window"] == _wval] if "window" in _tt.columns else _tt
+            _ins = _w[_w["direction"] == "in"].sort_values("_fee", ascending=False).to_dict("records")
+            _outs = _w[_w["direction"] == "out"].sort_values("_fee", ascending=False).to_dict("records")
+            if not _ins and not _outs:
+                continue
+            sec_title(_wlabel, f"{team} · 영입/방출 · Transfermarkt")
+            _ci, _co = st.columns(2)
+            with _ci:
+                st.markdown(transfer_side_html("in", _ins), unsafe_allow_html=True)
+            with _co:
+                st.markdown(transfer_side_html("out", _outs), unsafe_allow_html=True)
+            st.markdown("<div style='margin-top:20px'></div>", unsafe_allow_html=True)
+
+    # ── AI 영입 추천 (팀 적합 후보) ──────────────────────────────────────────
+    sec_title("AI Transfer Recommendations",
               f"{team} 약점 보강 + 스타일 적합 · EPL 내 후보 · AI 추정 (시뮬레이션 아님)")
     _recs = recommend_signings(team, pct, _weak, _sid_all, _raw_rating, n=6)
     if not _recs:
@@ -2150,7 +3181,3 @@ elif _nav == NAV[5]:
         """
         st.components.v1.html(table_html, height=min(38 * 34 + 60, 900), scrolling=True)
 
-st.caption(
-    "데이터: FBref + Understat(xG·골·도움) + Sofascore(라인업·고급지표) 2025/26 · "
-    "역할=리그 백분위 기반 아키타입 매칭 · 골/도움=시즌 누적 · 시뮬레이션 아님"
-)

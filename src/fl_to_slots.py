@@ -56,8 +56,8 @@ BASE_PREFS: dict[str, list[str]] = {
     "RM":  ["RM", "RCM"],
     "LM":  ["LM", "LCM"],
     "MF":  ["RCM", "CM", "LCM", "RM", "LM"],
-    "RW":  ["RM", "RCM", "RW"],                 # 오른쪽 와이드
-    "LW":  ["LM", "LCM", "LW"],                 # 왼쪽 와이드
+    "RW":  ["RM", "RCM", "RW", "LM", "LCM"],     # 오른쪽 와이드 (+반대편 폴백)
+    "LW":  ["LM", "LCM", "LW", "RM", "RCM"],     # 왼쪽 와이드 (+반대편 폴백)
     "WF":  ["RM", "LM", "RW", "LW", "RCM", "LCM"],
     "DF":  ["RCB", "LCB", "CB", "RB", "LB"],
     "FW":  ["ST", "RST", "LST", "RM", "LM", "RW", "LW"],
@@ -66,6 +66,15 @@ BASE_PREFS: dict[str, list[str]] = {
 
 RIGHT_SIDE = {"RB", "RWB", "RCB", "RST", "RM", "RW", "RDM", "RCM"}
 LEFT_SIDE  = {"LB", "LWB", "LCB", "LST", "LM", "LW", "LDM", "LCM"}
+
+# fl_group(해결된 실측 포지션) → 슬롯배정용 유효 fl_pos.
+# fl_pos는 FL 1차 표기(예: O'Reilly=BX)지만, 멀티포지션은 FBref 출전시간으로
+# 해결된 fl_group(O'Reilly=LB)이 진짜 주포지션 → 이를 배정 기준으로 쓴다.
+GROUP_TO_POS: dict[str, str] = {
+    "GK": "GK", "CB": "CB", "RB": "RB", "LB": "LB",
+    "DM": "DM", "CM": "BX", "AM": "AM",
+    "RW": "RW", "LW": "LW", "W": "WF", "ST": "ST",
+}
 
 
 # ─── 이름 정규화 ────────────────────────────────────────────────────────────
@@ -194,13 +203,17 @@ def assign_slots(
         used_names.add(p.get("_fbs", p["fl_name"]))
         result.append((slot, p))
 
+    def eff(p: dict) -> str:
+        # fl_group 해결 포지션(_eff_pos) 우선, 없으면 원시 fl_pos
+        return str(p.get("_eff_pos") or p.get("fl_pos") or "").upper()
+
     # PASS 1 — 포지션이 슬롯과 1:1인 선수 고정 (DM, RB, LB, GK, ST ...)
     for pos, target_slot in SPECIFIC_MAP.items():
         if target_slot not in available:
             continue
         cands = [
             p for p in fl_players
-            if p["fl_pos"].upper() == pos
+            if eff(p) == pos
             and p.get("_fbs") not in used_names
         ]
         if not cands:
@@ -216,7 +229,7 @@ def assign_slots(
     for p in remaining:
         if not available:
             break
-        prefs = slot_prefs(p["fl_pos"], p.get("fl_pos2", "") or "")
+        prefs = slot_prefs(eff(p), p.get("fl_pos2", "") or "")
         for slot in prefs:
             if slot in available:
                 _take(slot, p)
@@ -245,6 +258,7 @@ def process_team(
 
     fbs_names   = fbs_team["player"].tolist()
     fbs_minutes = dict(zip(fbs_team["player"], fbs_team["minutes"].fillna(0).astype(int)))
+    fbs_pos_map = dict(zip(fbs_team["player"], fbs_team["pos"].fillna("")))
 
     # FL 선수 목록에 매칭된 FBref 이름 붙이기
     players = []
@@ -253,6 +267,11 @@ def process_team(
         p = row.to_dict()
         fbs_match = match_name(p["fl_name"], fbs_names)
         p["_fbs"] = fbs_match or ""
+        # fl_group으로 해결된 실측 주포지션 → 슬롯배정용 _eff_pos
+        fbs_pos = fbs_pos_map.get(fbs_match, "") if fbs_match else ""
+        grp = compute_fl_group(str(p.get("fl_pos") or ""), p.get("fl_pos2"), fbs_pos)
+        p["_grp"] = grp
+        p["_eff_pos"] = GROUP_TO_POS.get(grp, str(p.get("fl_pos") or "").upper())
         if not fbs_match:
             unmatched.append(p["fl_name"])
         players.append(p)
@@ -267,6 +286,8 @@ def process_team(
     for slot, p in assignment:
         fbs_name = p.get("_fbs") or ""
         nb = fbs_df[fbs_df["player"] == fbs_name]
+        # FL 'starts'는 사실 전 대회(EPL+챔스+컵) 출전 경기수(선발+교체 포함).
+        # 선발 수가 아님 → apps(=appearances)로 저장. 슬롯 내 주전 판단에만 사용.
         starts_val = str(p.get("starts", "-"))
         rows.append({
             "squad":     team,

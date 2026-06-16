@@ -1,5 +1,5 @@
 """
-football-lineups.com 시즌 페이지 스크래퍼 — 팀별 상세 포지션 + 선발 횟수 + 포메이션.
+football-lineups.com 시즌 페이지 스크래퍼 — 팀별 상세 포지션 + 출전 경기수 + 포메이션.
 
 Cloudflare Turnstile 보호 → FlareSolverr(헤드리스 브라우저 프록시) 경유로 우회.
 사전 준비:
@@ -8,7 +8,7 @@ Cloudflare Turnstile 보호 → FlareSolverr(헤드리스 브라우저 프록시
 
 추출 데이터(선수별):
     fl_number(등번호) · fl_name(약식명) · age · fl_pos(주 포지션) · fl_pos2(부)
-    starts(Lnp=선발 출장수) · move(in/out 이적 메모)
+    starts(=전 대회 출전 경기수, 선발+교체 포함. EPL뿐 아니라 챔스·컵 합산) · move(in/out 이적 메모)
 팀별:
     formation(최빈 포메이션)
 
@@ -145,7 +145,7 @@ def parse_team(html: str) -> tuple[str, list[dict]]:
             "move": move,
         })
 
-    # 이름 기준 dedup — 번호 있는 행 / 선발수 많은 행 우선(요약행 중복 제거)
+    # 이름 기준 dedup — 번호 있는 행 / 출전수 많은 행 우선(요약행 중복 제거)
     def _starts_int(p):
         return int(p["starts"]) if p["starts"].isdigit() else -1
     best: dict[str, dict] = {}
@@ -213,7 +213,7 @@ def main(argv=None) -> int:
             for p in players:
                 pos = p["fl_pos"] + (f"/{p['fl_pos2']}" if p["fl_pos2"] else "")
                 print(f"      #{p['fl_number']:>2} {p['fl_name']:18} {p['age']}세 "
-                      f"{pos:8} 선발{p['starts']:>3} {p['move']}")
+                      f"{pos:8} 출전{p['starts']:>3} {p['move']}")
             print("    [DRY] 저장 안 함.")
         else:
             save(team, formation, players)
