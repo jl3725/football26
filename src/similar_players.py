@@ -317,14 +317,20 @@ def find_similar(
     result = result.drop(index=idx)
 
     if same_position:
-        # fl_group 우선, 없으면 fine_group 폴백
         if "fl_group" not in result.columns:
             result["fl_group"] = [fine_group(r["pos"], r) for _, r in result.iterrows()]
         ref_grp = df.loc[idx, "fl_group"] if "fl_group" in df.columns else fine_group(df.loc[idx, "pos"], df.loc[idx])
-        if ref_grp not in ("OTH", "GK", ""):
-            result = result[result["fl_group"] == ref_grp]
-        else:
+
+        if ref_grp in ("OTH", "GK", ""):
             result = result[result["pos_group"] == pos]
+        elif ref_grp == "W":
+            # 방향 미정 WF → RW·LW·W·AM 전체와 비교
+            result = result[result["fl_group"].isin(("W", "RW", "LW", "AM"))]
+        elif ref_grp == "AM":
+            # 중앙 AM → 인접 wide(RW/LW)·W도 포함해 풀 확장
+            result = result[result["fl_group"].isin(("AM", "RW", "LW", "W"))]
+        else:
+            result = result[result["fl_group"] == ref_grp]
     if max_value is not None:
         result = result[~(result.get("market_value_eur", pd.Series(dtype=float)) > max_value)]
 

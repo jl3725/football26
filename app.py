@@ -673,9 +673,9 @@ def ai_scout_report_html(strengths, weaknesses, styles, improvements) -> str:
 # ── Star Players — 팀 내 ss_rating 상위 N명 ───────────────────────────────────
 def pos_chip_color(pos: str) -> str:
     p = str(pos).upper()
-    if p in ("ST", "W", "WING_AM") or "FW" in p: return "#ef4444"
-    if p in ("CM", "AM", "DM", "CAM_CM") or "MF" in p: return "#16a34a"
-    if p in ("CB", "FB") or "DF" in p: return "#2563eb"
+    if p in ("ST", "RW", "LW", "W", "AM", "WING_AM") or "FW" in p: return "#ef4444"
+    if p in ("CM", "DM", "CAM_CM") or "MF" in p: return "#16a34a"
+    if p in ("CB", "RB", "LB", "FB") or "DF" in p: return "#2563eb"
     if "GK" in p: return "#d97706"
     return "#6b7280"
 
@@ -744,8 +744,10 @@ def star_card_html(s: dict) -> str:
 # 깊이 점수 = 0.7·백업 최고 OVR + 0.3·스쿼드 규모(최대 100). 백업 없으면 얕음.
 def squad_depth_html(placements: list, bench_pls: list,
                      ovr_map: dict, fine_map: dict) -> str:
-    BUCKETS = [("GK", "GK"), ("CB", "CB"), ("FB", "FB"), ("DM", "DM"),
-               ("CM", "CM"), ("W", "WG"), ("ST", "ST")]
+    BUCKETS = [("GK", "GK"), ("CB", "CB"), ("RB", "RB"), ("LB", "LB"),
+               ("DM", "DM"), ("CM", "CM"), ("AM", "AM"),
+               ("RW", "RW"), ("LW", "LW"), ("W", "WF"),
+               ("ST", "ST")]
     valid = {b for b, _ in BUCKETS}
 
     def bucket_of(name, kind):

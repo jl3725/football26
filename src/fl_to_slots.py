@@ -311,21 +311,73 @@ def update_formations_json(team: str, formation: str) -> None:
     print(f"  [formation] {team} -> {formation}")
 
 
-# ─── FL 그룹 계산 ─────────────────────────────────────────────────────────────
-def compute_fl_group(fl_pos: str, fl_pos2: str | float | None) -> str:
-    """FL 포지션 → 유사도 검색용 그룹.
+# FBref broad group (출전시간 순서 정렬 기준)
+_FL_FBS: dict[str, str] = {
+    "GK": "GK",
+    "CB": "DF", "RB": "DF", "LB": "DF", "RWB": "DF", "LWB": "DF", "DF": "DF",
+    "DM": "MF", "BX": "MF", "CM": "MF", "AM": "MF", "RM": "MF", "LM": "MF", "MF": "MF",
+    "RW": "FW", "LW": "FW", "WF": "FW", "SS": "FW", "ST": "FW", "FW": "FW",
+}
+_RIGHT_WIDE = {"RW", "RM", "RWB", "RB"}
+_LEFT_WIDE  = {"LW", "LM", "LWB", "LB"}
 
-    GK / CB / FB / DM / CM / W / ST
-    W = AM·RM·LM·RW·LW·WF (공격형 와이드·미드 전체)
+
+# ─── FL 그룹 계산 ─────────────────────────────────────────────────────────────
+def compute_fl_group(fl_pos: str, fl_pos2: str | float | None,
+                     fbs_pos: str = "") -> str:
+    """FL 포지션 → 세분화 유사도 그룹.
+
+    Groups: GK / CB / RB / LB / DM / CM / AM / RW / LW / W / ST
+
+    처리 순서:
+    1) fl_pos2 존재 + FBref pos 순서(=출전시간)로 어느 포지션이 주인지 결정
+       (예: BX/LB + FBref="DF,MF" → DF 먼저 → LB가 주 → p1 교체)
+    2) AM + pos2=wide → 방향성 wide (Rogers=AM/LW → LW, Odegaard=AM/RW → RW)
+    3) AM + FBref[0]=FW → ST (Havertz=FW 기록 → ST)
+    4) WF + pos2로 방향 결정, 없으면 W(비방향)
     """
     p1 = str(fl_pos or "").strip().upper()
-    if p1 == "GK":                         return "GK"
-    if p1 in ("CB", "DF"):                return "CB"
-    if p1 in ("RB", "LB", "RWB", "LWB"): return "FB"
-    if p1 == "DM":                         return "DM"
-    if p1 in ("BX", "CM", "MF"):          return "CM"
-    if p1 in ("AM", "RM", "LM", "RW", "LW", "WF"): return "W"
-    if p1 in ("ST", "FW", "SS"):           return "ST"
+    raw2 = fl_pos2 if (fl_pos2 and str(fl_pos2) != "nan") else ""
+    p2 = str(raw2).strip().upper()
+
+    # ── Step 1: FBref pos로 주 포지션 교체 ──────────────────────────────────
+    if p2 and fbs_pos:
+        fbs_parts = [x.strip().upper() for x in str(fbs_pos).split(",")]
+        g1 = _FL_FBS.get(p1, "")
+        g2 = _FL_FBS.get(p2, "")
+        if g1 and g2 and g1 != g2:
+            idx1 = fbs_parts.index(g1) if g1 in fbs_parts else 999
+            idx2 = fbs_parts.index(g2) if g2 in fbs_parts else 999
+            if idx2 < idx1:
+                p1, p2 = p2, p1
+
+    # ── Step 2 & 3: 포지션 → 그룹 매핑 ─────────────────────────────────────
+    if p1 == "GK":                  return "GK"
+    if p1 in ("CB", "DF"):         return "CB"
+    if p1 in ("RB", "RWB"):        return "RB"
+    if p1 in ("LB", "LWB"):        return "LB"
+    if p1 == "DM":                  return "DM"
+    if p1 in ("BX", "CM", "MF"):   return "CM"
+
+    if p1 == "AM":
+        # FBref가 FW를 먼저 기록 → 실질적 FW 역할 (Havertz)
+        if fbs_pos:
+            fbs_parts = [x.strip().upper() for x in str(fbs_pos).split(",")]
+            if fbs_parts and fbs_parts[0] == "FW":
+                return "ST"
+        # pos2 방향으로 wide 그룹 결정 (Rogers=AM/LW → LW, Odegaard=AM/RW → RW)
+        if p2 in _RIGHT_WIDE:       return "RW"
+        if p2 in _LEFT_WIDE:        return "LW"
+        return "AM"                 # 순수 중앙 AM (Foden, Buendia 등)
+
+    if p1 == "WF":
+        if p2 in _RIGHT_WIDE:       return "RW"
+        if p2 in _LEFT_WIDE:        return "LW"
+        return "W"                  # 방향 미확정 (Savinho 등)
+
+    if p1 in ("RW", "RM"):         return "RW"
+    if p1 in ("LW", "LM"):         return "LW"
+    if p1 in ("ST", "FW", "SS"):   return "ST"
     return "OTH"
 
 
@@ -347,6 +399,9 @@ def annotate_players_fl(players_path: Path = PLAYERS) -> None:
         t_fbs = fbs_df[fbs_df["squad"] == team]
         fbs_names = t_fbs["player"].tolist()
 
+        # FBref pos 조회용 딕셔너리 (player → pos)
+        fbs_pos_map = dict(zip(t_fbs["player"], t_fbs["pos"].fillna("")))
+
         for _, row in t_fl.iterrows():
             fl_name = row["fl_name"]
             matched = match_name(str(fl_name), fbs_names)
@@ -355,7 +410,8 @@ def annotate_players_fl(players_path: Path = PLAYERS) -> None:
             fp1 = str(row.get("fl_pos") or "").strip()
             fp2 = str(row.get("fl_pos2") or "").strip()
             fp2 = "" if fp2 == "nan" else fp2
-            grp = compute_fl_group(fp1, fp2)
+            fbs_pos = fbs_pos_map.get(matched, "")
+            grp = compute_fl_group(fp1, fp2, fbs_pos)
             mapping[(team, matched)] = (fp1, fp2, grp)
 
     # 컬럼 추가/갱신
