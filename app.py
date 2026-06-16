@@ -3067,13 +3067,16 @@ elif _nav == NAV[2]:
         alpha = st.slider("스타일 ↔ 퍼포먼스 비중", 0.3, 0.9, 0.65, 0.05,
                           help="높을수록 스타일 우선 · 낮을수록 이번 시즌 퍼포먼스 우선")
         st.markdown("**비슷한 선수 (리그 전체)**")
-        emb = build_embeddings(dff)
+        # 임베딩: 리그 백분위(0.5 센터링) — raw per90 z-score 대비 이상치에 강건.
+        emb = build_embeddings(dff, method="percentile")
         sim = find_similar(dff, emb, pick, top=5, same_position=same_pos, alpha=alpha)
         sim_show = sim[["player", "squad", "pos", "fl_group", "style_sim", "perf_score", "score"]].copy()
         sim_show.columns = ["선수", "팀", "포지션", "역할", "스타일", "퍼포먼스", "종합"]
         for col in ["스타일", "퍼포먼스", "종합"]:
             sim_show[col] = (sim_show[col] * 100).round(1).astype(str) + "%"
         st.dataframe(sim_show, hide_index=True, use_container_width=True)
+        st.caption("스타일은 같은 포지션 풀의 백분위 기반이라 절대값이 높게 나옵니다 — "
+                   "값보다 **순위(종합 정렬)**로 보세요. 종합 = 스타일·퍼포먼스 가중 결합.")
 
 # 4: Squad Depth Chart — 포지션별 주전/백업 + 깊이 점수
 elif _nav == NAV[3]:

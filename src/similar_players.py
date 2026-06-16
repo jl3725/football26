@@ -225,17 +225,47 @@ def load_players(path: Path = DATA_PATH, min_minutes: int = DEFAULT_MIN_MINUTES,
 
 # ── 임베딩 & 유사도 ────────────────────────────────────────────────────────
 
-def build_embeddings(df: pd.DataFrame) -> tuple[np.ndarray, list[str]]:
+def _percentile_matrix(df: pd.DataFrame, feat_list: list[str]) -> np.ndarray:
+    """각 피처를 리그(외야 풀) 백분위 0~1로 변환 후 0.5 센터링([-0.5, 0.5]).
+
+    - raw per-90 z-score보다 이상치에 강건(저출전 per90 과대값이 분포를 덜 오염).
+    - 0.5 센터링: 백분위는 전부 양수라 코사인 변별력이 떨어지므로, 평균(0.5)을
+      원점으로 옮겨 '평균 이상/이하'를 부호로 구분 → z-score 같은 방향성 회복.
+    - 결측은 0.5(=센터링 후 0, 평균적 취급)로 대치. (포지션 중앙값 대치는 2번 작업)
     """
-    z-score 표준화 임베딩.
+    n = len(df)
+    out = np.zeros((n, len(feat_list)))
+    for j, f in enumerate(feat_list):
+        col = df[f].to_numpy(dtype=float)
+        base = np.sort(col[~np.isnan(col)])
+        if base.size == 0:
+            ranks = np.full(n, 0.5)
+        else:
+            ranks = np.searchsorted(base, col, side="right") / base.size
+            ranks = np.clip(ranks, 0.0, 1.0)
+            ranks[np.isnan(col)] = 0.5
+        out[:, j] = ranks - 0.5      # 0.5 센터링
+    return out
+
+
+def build_embeddings(df: pd.DataFrame,
+                     method: str = "percentile") -> tuple[np.ndarray, list[str]]:
+    """
+    피처 임베딩 생성.
     반환: (matrix, feat_list) — feat_list는 실제 사용된 피처 순서.
     가중치는 find_similar 내에서 포지션별로 적용됨.
+
+    method:
+      - "percentile" (기본): 리그 백분위 0.5 센터링 — 이상치 강건.
+      - "zscore": 기존 z-score 표준화 (하위 비교용).
     """
     df = _add_computed(df)
     feat_list = [c for c in ALL_FEATURES if c in df.columns]
-    raw = df[feat_list].to_numpy(dtype=float)
-    raw = np.nan_to_num(raw, nan=0.0)
-    return StandardScaler().fit_transform(raw), feat_list
+    if method == "zscore":
+        raw = df[feat_list].to_numpy(dtype=float)
+        raw = np.nan_to_num(raw, nan=0.0)
+        return StandardScaler().fit_transform(raw), feat_list
+    return _percentile_matrix(df, feat_list), feat_list
 
 
 def _weight_vec(pos: str, feat_list: list[str]) -> np.ndarray:
