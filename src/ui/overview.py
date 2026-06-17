@@ -12,7 +12,7 @@ import html
 import pandas as pd
 
 from .common import (
-    ACCENT, TEAM_EXTRA, team_color, team_logo,
+    ACCENT, TEAM_EXTRA, team_color, team_logo, rating_color,
     _photo, avatar, portrait_photo, fmt_value, nation_code, flag_chip, fee_label,
 )
 from .metrics import (
@@ -315,13 +315,6 @@ TEAM_TRAITS = [
     ("개인 돌파",    "successful_dribbles_per90",   "high", "wmean"),
     ("롱볼 활용",    "long_ball_pct",              "high", "wmean"),
 ]
-
-def rating_color(v: int) -> str:
-    if v >= 85: return "#2563eb"   # 엘리트(파랑)
-    if v >= 70: return "#16a34a"   # 강함(초록)
-    if v >= 55: return "#d97706"   # 평균(주황)
-    return "#ef4444"               # 약함(빨강)
-
 
 def team_ratings_legacy(team: str, traits: pd.DataFrame, standings) -> list[tuple]:
     """팀 → [(라벨, 1~99 레이팅, 보조설명)] 4개. 20팀 랭크-백분위를 1~99로 환산."""

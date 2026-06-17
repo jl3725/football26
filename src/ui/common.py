@@ -249,6 +249,22 @@ def _grid(cards: list, ncols: int) -> str:
             + "".join(cards) + "</div>")
 
 
+def rating_color(v: int) -> str:
+    if v >= 85: return "#2563eb"   # 엘리트(파랑)
+    if v >= 70: return "#16a34a"   # 강함(초록)
+    if v >= 55: return "#d97706"   # 평균(주황)
+    return "#ef4444"               # 약함(빨강)
+
+
+def pos_chip_color(pos: str) -> str:
+    p = str(pos).upper().split("/")[0]
+    if p in ("ST", "RW", "LW", "W", "AM", "WING_AM") or "FW" in p: return "#ef4444"
+    if p in ("CM", "DM", "CAM_CM") or "MF" in p: return "#16a34a"
+    if p in ("CB", "RB", "LB", "FB") or "DF" in p: return "#2563eb"
+    if "GK" in p: return "#d97706"
+    return "#6b7280"
+
+
 def _iframe(inner_html: str, height: int, scrolling: bool = False) -> None:
     """카드 HTML을 components.html(iframe)로 렌더 — st.markdown과 달리 외부 이미지
     (background-image)가 sanitize되지 않아 선수 사진이 정상 표시된다."""
