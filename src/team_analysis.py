@@ -182,6 +182,81 @@ def formation_slots(formation: str) -> list[str]:
     return slots
 
 
+# ESPN position abbreviation → 우리 슬롯 후보(우선순위 순). 좌/우 정보를 활용해
+# CD-R→RCB, AM-L→LCM 처럼 한 쪽으로 배정되게 한다. 후보는 타깃 포메이션에
+# 실제 존재하는 슬롯과 교집합한 뒤 그리디로 채운다(espn_assign_slots).
+ESPN_SLOT_CANDS: dict[str, list[str]] = {
+    "G": ["GK"],
+    "RB": ["RB", "RWB", "RCB", "RDM", "RM"],
+    "LB": ["LB", "LWB", "LCB", "LDM", "LM"],
+    "RWB": ["RWB", "RB", "RM", "RCM"],
+    "LWB": ["LWB", "LB", "LM", "LCM"],
+    "CD-R": ["RCB", "CB", "RB"],
+    "CD-L": ["LCB", "CB", "LB"],
+    "CD": ["CB", "RCB", "LCB"],
+    "D": ["CB", "RCB", "LCB"],
+    "SW": ["CB", "RCB", "LCB"],
+    "DM": ["CM", "RDM", "LDM", "RCM", "LCM"],
+    "DM-R": ["RDM", "RCM", "CM"],
+    "DM-L": ["LDM", "LCM", "CM"],
+    "CM": ["CM", "RCM", "LCM", "RDM", "LDM"],
+    "CM-R": ["RCM", "CM", "RDM", "RM"],
+    "CM-L": ["LCM", "CM", "LDM", "LM"],
+    "RM": ["RM", "RDM", "RCM", "RW"],
+    "LM": ["LM", "LDM", "LCM", "LW"],
+    "AM": ["CM", "RCM", "LCM"],
+    "AM-R": ["RCM", "RW", "RM", "CM"],
+    "AM-L": ["LCM", "LW", "LM", "CM"],
+    "AM-C": ["CM", "RCM", "LCM"],
+    "RF": ["RW", "RST", "RM", "ST"],
+    "LF": ["LW", "LST", "LM", "ST"],
+    "CF": ["ST", "RST", "LST"],
+    "CF-R": ["RST", "RW", "ST"],
+    "CF-L": ["LST", "LW", "ST"],
+    "F": ["ST", "RST", "LST"],
+    "SS": ["ST", "CM", "RCM", "LCM"],
+}
+
+
+def espn_assign_slots(espn_positions: list[str], formation: str) -> list[str | None]:
+    """ESPN 선발 11명의 position 토큰 리스트 → 각 선수의 슬롯 리스트(같은 순서).
+
+    formation_slots(formation)이 주는 정확히 11개 슬롯에 그리디 배정한다.
+    후보 슬롯 수가 적은(=제약 강한) 선수부터 채워 충돌을 줄이고, 남은 선수는
+    남은 슬롯에 순서대로 채운다. ESPN이 좌우(R/L)를 구분해 주므로 대부분
+    첫 후보에서 정확히 배정된다.
+    """
+    target = formation_slots(formation)
+    avail = list(target)
+    n = len(espn_positions)
+    assign: list[str | None] = [None] * n
+
+    # GK 먼저 고정
+    for i, pos in enumerate(espn_positions):
+        if pos == "G" and "GK" in avail:
+            assign[i] = "GK"
+            avail.remove("GK")
+            break
+
+    def cands(pos: str) -> list[str]:
+        return [s for s in ESPN_SLOT_CANDS.get(pos, []) if s in target]
+
+    order = sorted((i for i in range(n) if assign[i] is None),
+                   key=lambda i: len(cands(espn_positions[i])) or 99)
+    for i in order:
+        for s in cands(espn_positions[i]):
+            if s in avail:
+                assign[i] = s
+                avail.remove(s)
+                break
+
+    # 미배정 선수 ↔ 남은 슬롯 순서대로 매칭(폴백)
+    leftover = [i for i in range(n) if assign[i] is None]
+    for i, s in zip(leftover, avail):
+        assign[i] = s
+    return assign
+
+
 def load_slots() -> pd.DataFrame | None:
     if SLOTS_PATH.exists():
         return pd.read_csv(SLOTS_PATH)
