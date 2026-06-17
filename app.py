@@ -33,25 +33,21 @@ from team_analysis import (  # noqa: E402
 
 # UI modules — split so agents can target specific tabs clearly
 from src.ui.analytics import analytics_dashboard_html  # Analytics tab only lives here
-from src.ui.common import team_color, team_logo, TEAM_EXTRA, _form_dots_html, _progress_bar_html
+from src.ui.common import (  # noqa: E402
+    ACCENT, LABELS, BAND_DEF, BAND_MID, BAND_FWD,
+    TEAM_COLOR, TEAM_EXTRA, team_color, team_logo,
+    sofa_photo, _photo, avatar, portrait_photo, fmt_value,
+    nation_code, flag_chip, fee_label, _num_str, _ga_str, _norm,
+    _grid, _iframe, sec_title, _form_dots_html, _progress_bar_html,
+)
+from src.ui.metrics import (  # noqa: E402
+    fm_rating, fm_color, ovr_from_rating, ovr_from_value, perf_ovr, player_ovr,
+    _series_pct, goalkeeper_ovr, season_achievement_bonus, top_strengths,
+    _rank_pct, _blend_pcts, _blend_scores, _pct_to_rating,
+    _power_from_pct, _power_from_index,
+)
 
-
-# 피처 → 한글 라벨 (숫자만 보이는 문제 해결의 핵심)
-LABELS = {
-    # 원래 10개
-    "npxg_p90": "npxG/90", "xa_p90": "xA/90", "kp_p90": "키패스/90", "shots_p90": "슈팅/90",
-    "crosses_per90": "크로스/90", "fouled_per90": "피파울/90", "offsides_per90": "침투/90",
-    "interceptions_per90": "인터셉트/90", "tackles_won_per90": "태클성공/90", "fouls_per90": "수비파울/90",
-    # v2 추가 6개
-    "goals_per90": "득점/90", "assists_per90": "어시스트/90",
-    "key_passes_per90": "키패스(SS)/90", "big_chances_created_per90": "빅찬스/90",
-    "successful_dribbles_per90": "드리블/90", "dribble_success_pct": "드리블성공률",
-}
-# 밴드 색상: 수비(파랑) → 중원(주황) → 공격(빨강)
-BAND_DEF, BAND_MID, BAND_FWD = "#4d80e0", "#e0a23a", "#e0584c"
-
-# TEAM_COLOR, TEAM_EXTRA, team_color, team_logo etc. moved to src/ui/common.py
-# (imported at top of file)
+# LABELS, BAND_*, TEAM_COLOR/EXTRA, 저수준 헬퍼는 src/ui/common.py로 이동(상단 import)
 
 MANAGER_PROFILES = {
     "Arsenal": {
@@ -480,154 +476,8 @@ def team_info_html(team: str, manager=None, rank=None, points=None, value_rank=N
     </div>"""
 
 
-def sofa_photo(sid) -> str:
-    """선수 사진 URL. 값이 이미 http URL이면(API-Football photo) 그대로 통과,
-    숫자면 Sofascore 헤드샷 URL로 변환. 없으면 빈 문자열."""
-    s = str(sid).strip() if sid is not None else ""
-    if s.startswith("http"):
-        return s
-    s = _num_str(sid)
-    return f"https://img.sofascore.com/api/v1/player/{s}/image" if s else ""
-
-
-def _photo(sid_val, tm_val=None) -> str:
-    """Sofascore id 우선, 없으면 Transfermarkt 사진(tm_photo) 폴백."""
-    s = sofa_photo(sid_val)
-    if s:
-        return s
-    if tm_val is not None and pd.notna(tm_val) and str(tm_val).startswith("http"):
-        return str(tm_val)
-    return ""
-
-
-def avatar(photo, tcol: str = "#444a55", size: int = 46,
-           extra: str = "", border: str = "2px solid #e4e8f0") -> str:
-    """원형 선수 아바타 — <img> 태그 기반(st.markdown·iframe 양쪽에서 사진 로드됨).
-    CSS background-image는 Streamlit이 sanitize하므로 반드시 <img>를 쓴다."""
-    has = isinstance(photo, str) and photo.startswith("http")
-    img = (f"<img src=\"{photo}\" referrerpolicy=\"no-referrer\" "
-           f"onerror=\"this.style.display='none'\" "
-           f"style=\"width:100%;height:100%;object-fit:cover;display:block\"/>") if has else ""
-    return (f"<div style=\"width:{size}px;height:{size}px;border-radius:50%;overflow:hidden;"
-            f"background:{tcol};border:{border};{extra}\">{img}</div>")
-
-
-# 시장가치(€) 표시 + 국적 코드 (Transfermarkt 데이터)
-def portrait_photo(photo, tcol: str = "#444a55", width: int = 62, height: int = 74,
-                   extra: str = "", radius: int = 14,
-                   border: str = "3px solid #fff", label: str = "") -> str:
-    """Portrait-safe photo block for report cards. Uses contain so faces are not cropped."""
-    has = isinstance(photo, str) and photo.startswith("http")
-    bg = f"linear-gradient(135deg,{tcol}22,#f8fafc)"
-    if has:
-        content = (
-            f"<img src=\"{photo}\" alt=\"{html.escape(label)}\" loading=\"lazy\" "
-            f"referrerpolicy=\"no-referrer\" onerror=\"this.style.display='none'\" "
-            f"style=\"width:100%;height:100%;object-fit:contain;object-position:center top;"
-            f"display:block\"/>"
-        )
-    else:
-        initials = html.escape(str(label or "")[:2].upper())
-        content = f"<span style=\"font-size:18px;font-weight:950;color:#fff\">{initials}</span>"
-        bg = f"radial-gradient(circle at 35% 25%,rgba(255,255,255,.34),rgba(255,255,255,0) 54%),{tcol}"
-    return (
-        f"<div style=\"width:{width}px;height:{height}px;border-radius:{radius}px;overflow:hidden;"
-        f"background:{bg};border:{border};display:flex;align-items:center;justify-content:center;"
-        f"flex:none;{extra}\">{content}</div>"
-    )
-
-
-def fmt_value(v) -> str:
-    if v is None or pd.isna(v):
-        return "—"
-    v = float(v)
-    if v >= 1_000_000:
-        return f"€{v / 1_000_000:.0f}M"
-    if v >= 1_000:
-        return f"€{v / 1_000:.0f}K"
-    return "—"
-
-
-NATION_CODE = {
-    "England": "ENG", "Spain": "ESP", "France": "FRA", "Brazil": "BRA", "Germany": "GER",
-    "Portugal": "POR", "Netherlands": "NED", "Italy": "ITA", "Argentina": "ARG",
-    "Belgium": "BEL", "Norway": "NOR", "Egypt": "EGY", "Scotland": "SCO", "Wales": "WAL",
-    "Ireland": "IRL", "Republic of Ireland": "IRL", "Uruguay": "URU", "Colombia": "COL",
-    "Ecuador": "ECU", "Ivory Coast": "CIV", "Senegal": "SEN", "Ghana": "GHA",
-    "Nigeria": "NGA", "Japan": "JPN", "South Korea": "KOR", "Korea, South": "KOR",
-    "Denmark": "DEN", "Sweden": "SWE", "Switzerland": "SUI", "Croatia": "CRO",
-    "Serbia": "SRB", "Poland": "POL", "Austria": "AUT", "Czech Republic": "CZE",
-    "Ukraine": "UKR", "Turkey": "TUR", "Türkiye": "TUR", "Mexico": "MEX",
-    "United States": "USA", "Cameroon": "CMR", "Mali": "MLI", "Morocco": "MAR",
-    "Algeria": "ALG", "Greece": "GRE", "Hungary": "HUN", "Slovakia": "SVK",
-    "Slovenia": "SVN", "Paraguay": "PAR", "Jamaica": "JAM", "Australia": "AUS",
-    "Finland": "FIN", "Iceland": "ISL", "Albania": "ALB", "Montenegro": "MNE",
-    "Guinea": "GUI", "Zimbabwe": "ZIM", "DR Congo": "COD", "Congo": "COG", "Gabon": "GAB",
-}
-
-
-def nation_code(nat) -> str:
-    if nat is None or (isinstance(nat, float) and pd.isna(nat)):
-        return ""
-    nat = str(nat).strip()
-    if not nat or nat == "nan":
-        return ""
-    return NATION_CODE.get(nat, nat[:3].upper())
-
-
-# 국가명 → flagcdn ISO 코드 (홈네이션 gb-eng/sct/wls/nir 지원)
-NATION_ISO = {
-    "England": "gb-eng", "Scotland": "gb-sct", "Wales": "gb-wls",
-    "Northern Ireland": "gb-nir", "Spain": "es", "France": "fr", "Brazil": "br",
-    "Germany": "de", "Portugal": "pt", "Netherlands": "nl", "Italy": "it",
-    "Argentina": "ar", "Belgium": "be", "Norway": "no", "Egypt": "eg",
-    "Ireland": "ie", "Republic of Ireland": "ie", "Uruguay": "uy", "Colombia": "co",
-    "Ecuador": "ec", "Ivory Coast": "ci", "Senegal": "sn", "Ghana": "gh",
-    "Nigeria": "ng", "Japan": "jp", "South Korea": "kr", "Korea, South": "kr",
-    "Denmark": "dk", "Sweden": "se", "Switzerland": "ch", "Croatia": "hr",
-    "Serbia": "rs", "Poland": "pl", "Austria": "at", "Czech Republic": "cz",
-    "Ukraine": "ua", "Turkey": "tr", "Türkiye": "tr", "Mexico": "mx",
-    "United States": "us", "Cameroon": "cm", "Mali": "ml", "Morocco": "ma",
-    "Algeria": "dz", "Greece": "gr", "Hungary": "hu", "Slovakia": "sk",
-    "Slovenia": "si", "Paraguay": "py", "Jamaica": "jm", "Australia": "au",
-    "Finland": "fi", "Iceland": "is", "Albania": "al", "Montenegro": "me",
-    "Guinea": "gn", "Zimbabwe": "zw", "DR Congo": "cd", "Congo": "cg", "Gabon": "ga",
-}
-
-
-def flag_chip(nat, h: int = 13) -> str:
-    """국가명 → 국기 <img>. 매핑 없으면 텍스트 코드 칩 폴백. 없으면 빈 문자열."""
-    if nat is None or (isinstance(nat, float) and pd.isna(nat)):
-        return ""
-    nat = str(nat).strip()
-    if not nat or nat == "nan":
-        return ""
-    iso = NATION_ISO.get(nat)
-    if iso:
-        return (f"<img src='https://flagcdn.com/h20/{iso}.png' alt='{nation_code(nat)}' "
-                f"title='{nat}' loading='lazy' "
-                f"style='height:{h}px;border-radius:2px;vertical-align:middle;"
-                f"margin-left:6px;box-shadow:0 0 0 1px rgba(0,0,0,.08)'/>")
-    code = nation_code(nat)
-    if not code:
-        return ""
-    return (f"<span style='font-size:10px;font-weight:800;color:#8a93a5;background:#f1f3f7;"
-            f"border-radius:4px;padding:1px 5px;margin-left:6px;vertical-align:middle'>{code}</span>")
-
-
-# 여름 이적시장 IN/OUT 카드 (Transfermarkt transfers 페이지)
-def fee_label(fee_eur, fee_text) -> str:
-    """이적료 표시 — 금액 있으면 €표기, 없으면 임대/자유/임대복귀 등 텍스트화."""
-    if fee_eur is not None and not pd.isna(fee_eur) and float(fee_eur) > 0:
-        return fmt_value(fee_eur)
-    t = str(fee_text or "").lower()
-    if "end of loan" in t:
-        return "임대복귀"
-    if "loan" in t:
-        return "임대"
-    if "free" in t:
-        return "자유이적"
-    return "—"
+# sofa_photo·_photo·avatar·portrait_photo·fmt_value·nation_code·flag_chip·fee_label
+# (+ NATION_CODE/NATION_ISO) → src/ui/common.py 로 이동(상단 import)
 
 
 def transfer_side_html(direction: str, rows: list, limit: int = 14) -> str:
@@ -675,7 +525,6 @@ st.set_page_config(
 # config.toml의 [theme]가 라이트 베이스를, 아래 CSS가 다크 사이드바·흰 카드·타이포를 담당.
 # 기존 커스텀 HTML(피치·FM패널·배너 등)은 components.html(iframe) 안에서 자체
 # 다크 스타일로 렌더되어 라이트 메인 위에 '다크 카드'처럼 보인다(레퍼런스 피치와 동일).
-ACCENT = "#e8344e"   # 레드 — 로고/액티브 네비/섹션 바
 SHELL_CSS = f"""
 <style>
   :root {{
@@ -742,17 +591,7 @@ SHELL_CSS = f"""
 st.markdown(SHELL_CSS, unsafe_allow_html=True)
 
 
-def sec_title(title: str, sub: str = "") -> None:
-    """레퍼런스의 '레드 세로 바 + 제목' 섹션 헤더. sub는 회색 보조설명."""
-    sub_html = f"<div style='color:#8a93a5;font-size:13px;margin-top:2px'>{sub}</div>" if sub else ""
-    st.markdown(
-        f"<div style='display:flex;gap:10px;align-items:flex-start;margin:6px 0 14px'>"
-        f"<div style='width:4px;align-self:stretch;min-height:26px;background:{ACCENT};"
-        f"border-radius:3px'></div>"
-        f"<div><div style='font-size:22px;font-weight:800;color:#1a1f2e;"
-        f"letter-spacing:-.4px'>{title}</div>{sub_html}</div></div>",
-        unsafe_allow_html=True,
-    )
+# sec_title → src/ui/common.py (상단 import)
 
 
 # ── 브랜딩 — 사이드바 로고 + 메인 팀 배지 헤더 (Figma 상단바 느낌) ─────────────
@@ -1003,47 +842,8 @@ def team_ratings_legacy(team: str, traits: pd.DataFrame, standings) -> list[tupl
     ]
 
 
-def _rank_pct(values: pd.Series, team: str, high_is_good: bool = True) -> float | None:
-    values = values.dropna()
-    if values.empty or team not in values.index:
-        return None
-    return float(values.rank(ascending=high_is_good, pct=True)[team])
-
-
-def _blend_pcts(parts: list[tuple[float | None, float]]) -> float | None:
-    valid = [(float(v), float(w)) for v, w in parts if v is not None and not pd.isna(v) and w > 0]
-    if not valid:
-        return None
-    total = sum(w for _, w in valid)
-    return sum(v * w for v, w in valid) / total
-
-
-def _blend_scores(parts: list[tuple[int | float | None, float]]) -> int | None:
-    valid = [(float(v), float(w)) for v, w in parts if v is not None and not pd.isna(v) and w > 0]
-    if not valid:
-        return None
-    total = sum(w for _, w in valid)
-    return int(max(1, min(99, round(sum(v * w for v, w in valid) / total))))
-
-
-def _pct_to_rating(pct: float | None) -> int | None:
-    return fm_rating(pct) if pct is not None and not pd.isna(pct) else None
-
-
-def _power_from_pct(pct: float | None, lo: int = 58, hi: int = 94) -> int | None:
-    """Convert league percentile to a display power rating, not a raw 1-99 rank score."""
-    if pct is None or pd.isna(pct):
-        return None
-    pct = max(0.0, min(1.0, float(pct)))
-    return int(round(lo + pct * (hi - lo)))
-
-
-def _power_from_index(value: int | float | None, lo: int = 58, hi: int = 94) -> int | None:
-    """Convert stored 1-99 percentile-like indices into bounded team power ratings."""
-    if value is None or pd.isna(value):
-        return None
-    pct = (max(1.0, min(99.0, float(value))) - 1.0) / 98.0
-    return int(round(lo + pct * (hi - lo)))
+# _rank_pct·_blend_pcts·_blend_scores·_pct_to_rating·_power_from_pct·_power_from_index
+# → src/ui/metrics.py (상단 import)
 
 
 def _team_metric_pct(team: str, traits: pd.DataFrame, col: str,
@@ -2048,19 +1848,7 @@ def db_player_card_html(name, squad, age, value_eur, nat, photo, ovr, display_po
     )
 
 
-def _iframe(inner_html: str, height: int, scrolling: bool = False) -> None:
-    """카드 HTML을 components.html(iframe)로 렌더 — st.markdown과 달리 외부 이미지
-    (background-image)가 sanitize되지 않아 선수 사진이 정상 표시된다."""
-    st.components.v1.html(
-        "<style>body{margin:0;background:#eef1f6;"
-        "font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}</style>" + inner_html,
-        height=height, scrolling=scrolling,
-    )
-
-
-def _grid(cards: list, ncols: int) -> str:
-    return (f"<div style='display:grid;grid-template-columns:repeat({ncols},1fr);gap:14px'>"
-            + "".join(cards) + "</div>")
+# _iframe·_grid → src/ui/common.py (상단 import)
 
 
 # ── Star Players — 팀 내 ss_rating 상위 N명 ───────────────────────────────────
@@ -2538,11 +2326,7 @@ def standings_banner_html(row: pd.Series) -> str:
     """
 
 
-def top_strengths(prow: pd.Series, n: int = 3) -> list[tuple[str, int]]:
-    # LABELS에 있고 prow에도 존재하는 피처만 사용 — 새 피처 추가 시 KeyError 방지
-    avail = [f for f in FEATURES if f in LABELS and f in prow.index and pd.notna(prow.get(f))]
-    s = prow[avail].sort_values(ascending=False)
-    return [(LABELS[f], round(prow[f] * 100)) for f in s.index[:n]]
+# top_strengths → src/ui/metrics.py (상단 import)
 
 
 # ── FM 선수 능력치 화면 스타일 ─────────────────────────────────────────────
@@ -2605,216 +2389,8 @@ GK_DETAIL: dict[str, list[tuple[str, list[str]]]] = {
 }
 
 
-def fm_rating(pct: float) -> int:
-    """0~1 리그 백분위 → 1~99 능력치."""
-    if pct is None or pd.isna(pct):
-        return 1
-    return max(1, min(99, round(1 + float(pct) * 98)))
-
-
-def fm_color(r: int) -> str:
-    """1~99 능력치 → 색상."""
-    if r >= 85: return "#4d9aff"   # 파랑 — 압도적
-    if r >= 70: return "#5cd66c"   # 초록 — 강점
-    if r >= 50: return "#ffd048"   # 노랑 — 평균
-    if r >= 35: return "#ff9c4a"   # 주황 — 평균 이하
-    return "#ff6961"                # 빨강 — 약점
-
-
-# 선수 OVR — Sofascore 평점(객관적 절대 지표)을 고정 스케일로 1~99 변환.
-# 백분위(상대 순위)와 달리, 동일 평점이면 팀·시즌 무관 동일 OVR → 객관적·비교가능.
-# 앵커: ss 6.3 → OVR 60, ss 7.7 → OVR 92 (선형, 40~99 clamp).
-#   ≈6.8(중앙값)→72 · 7.0→76 · 7.2→81 · 7.46(Rice)→87 · 7.61(리그1위)→90
-_OVR_LO_R, _OVR_LO_O = 6.3, 60
-_OVR_HI_R, _OVR_HI_O = 7.7, 92
-_OVR_SLOPE = (_OVR_HI_O - _OVR_LO_O) / (_OVR_HI_R - _OVR_LO_R)
-
-
-def ovr_from_rating(ss) -> int | None:
-    """Sofascore 평점(≈6.3~7.7) → OVR 1~99. 결측이면 None."""
-    if ss is None or pd.isna(ss):
-        return None
-    ovr = _OVR_LO_O + _OVR_SLOPE * (float(ss) - _OVR_LO_R)
-    return int(max(40, min(99, round(ovr))))
-
-
-def ovr_from_value(v):
-    """시장가치(EUR) → OVR(로그 스케일, 미clamp float). 결측이면 None.
-    앵커: €1M→62 · €10M→75 · €30M→81 · €75M→86 · €100M→88 · €200M→92."""
-    if v is None or pd.isna(v) or float(v) <= 0:
-        return None
-    import math
-    return 13.04 * math.log10(float(v)) - 16.24
-
-
-def perf_ovr(ss_rating, goals=0, assists=0):
-    """시즌 퍼포먼스 OVR — 평점 기반(60~92) + 골·도움 기여 보너스(최대 +8).
-    기여 보너스는 가산만(수비수가 골 없다고 깎이지 않음). 평점 없으면 None."""
-    base = ovr_from_rating(ss_rating)
-    if base is None:
-        return None
-    g = float(goals) if (goals is not None and not pd.isna(goals)) else 0.0
-    a = float(assists) if (assists is not None and not pd.isna(assists)) else 0.0
-    return base + min(8.0, (g + a) * 0.4)
-
-
-def player_ovr(value, ss_rating=None, minutes=0, goals=0, assists=0) -> int:
-    """OVR = 시장가치(품질) 50% + 시즌 퍼포먼스(평점+골·도움) 50% 블렌드.
-    단, 출전 적은 선수는 폼 신뢰도가 낮아 퍼포먼스 비중을 출전시간에 비례 축소
-    (min/1200, 1500분↑이면 완전 50/50). 한쪽 데이터만 있으면 그쪽만 사용."""
-    vov = ovr_from_value(value)               # 가치 OVR (float) 또는 None
-    pov = perf_ovr(ss_rating, goals, assists)  # 퍼포먼스 OVR (float) 또는 None
-    if vov is None and pov is None:
-        return 60
-    if vov is None:
-        return int(max(48, min(95, round(pov))))
-    if pov is None:
-        return int(max(48, min(95, round(vov))))
-    rel = min(1.0, (float(minutes) if (minutes and not pd.isna(minutes)) else 0) / 1200)
-    w = 0.5 * rel                              # 퍼포먼스 가중치(최대 0.5)
-    return int(max(48, min(95, round((1 - w) * vov + w * pov))))
-
-
-def _series_pct(series: pd.Series, value, high_is_good: bool = True) -> float | None:
-    s = pd.to_numeric(series, errors="coerce").dropna()
-    if value is None or pd.isna(value) or s.empty:
-        return None
-    vals = list(s) + [float(value)]
-    rank = pd.Series(vals).rank(ascending=not high_is_good, method="min").iloc[-1]
-    n = len(vals)
-    return 1 - (rank - 1) / (n - 1) if n > 1 else 1.0
-
-
-def goalkeeper_ovr(row: pd.Series, gk_pool: pd.DataFrame) -> int:
-    """GK 전용 OVR.
-
-    공통 OVR은 시장가치와 평균평점 중심이라 클린시트/박스 장악 같은 GK 성과가 눌린다.
-    여기서는 GK 풀 안에서 시즌 성과를 따로 환산하고, 클린시트 1위는 Golden Glove급
-    시즌으로 소폭 보너스를 준다.
-    """
-    base = player_ovr(row.get("market_value_eur"), row.get("ss_rating"), row.get("minutes"), 0, 0)
-    gk_pool = gk_pool[pd.to_numeric(gk_pool.get("minutes"), errors="coerce").fillna(0) >= 300]
-
-    def pct(col: str, high: bool = True) -> float | None:
-        if col not in gk_pool.columns:
-            return None
-        return _series_pct(gk_pool[col], row.get(col), high)
-
-    parts = [
-        (pct("gk_clean_sheets"), 0.33),
-        (pct("gk_cs_pct"), 0.22),
-        (pct("gk_save_pct"), 0.15),
-        (pct("gk_high_claims_per90"), 0.10),
-        (pct("gk_runs_out_per90"), 0.08),
-        (pct("minutes"), 0.12),
-    ]
-    score = _blend_pcts(parts)
-    if score is None:
-        return base
-
-    perf = fm_rating(score)
-    minutes = float(row.get("minutes") or 0)
-    weight = min(0.58, 0.30 + min(1.0, minutes / 2500) * 0.28)
-    out = (1 - weight) * base + weight * perf
-
-    clean_sheets = pd.to_numeric(gk_pool.get("gk_clean_sheets"), errors="coerce").dropna()
-    if minutes >= 1800 and pd.notna(row.get("gk_clean_sheets")) and not clean_sheets.empty:
-        if float(row.get("gk_clean_sheets")) >= float(clean_sheets.max()):
-            out += 4
-        elif float(row.get("gk_clean_sheets")) >= float(clean_sheets.quantile(0.85)):
-            out += 2
-
-    return int(max(50, min(95, round(out))))
-
-
-def season_achievement_bonus(row: pd.Series, player_pool: pd.DataFrame) -> float:
-    """포지션별 시즌 업적 보너스.
-
-    특정 선수 수동 보정이 아니라 리그 내 순위/상위 백분위에 따라 작은 보너스를 준다.
-    OVR 본체는 여전히 시장가치+평점 기반이고, 이 함수는 득점왕/도움왕/수비 리더처럼
-    시즌 서사가 분명한 선수들이 과소평가되지 않게 보정하는 레이어다.
-    """
-    minutes = float(row.get("minutes") or 0)
-    if minutes < 900:
-        return 0.0
-
-    pool = player_pool[pd.to_numeric(player_pool.get("minutes"), errors="coerce").fillna(0) >= 900].copy()
-    pos = str(row.get("pos", "")).upper()
-    fl = str(row.get("fl_group", "")).upper()
-    is_def = "DF" in pos or fl in {"CB", "FB", "RB", "LB"}
-    is_mid = "MF" in pos or fl in {"DM", "CM", "AM"}
-    is_att = "FW" in pos or fl in {"ST", "W", "RW", "LW"}
-
-    def rank_bonus(col: str, top1: float, top5: float, top10: float = 0.0) -> float:
-        if col not in pool.columns or pd.isna(row.get(col)):
-            return 0.0
-        s = pool[["player", col]].copy()
-        s[col] = pd.to_numeric(s[col], errors="coerce")
-        s = s.dropna().drop_duplicates("player").set_index("player")[col]
-        player = row.get("player")
-        if s.empty:
-            return 0.0
-        rank = int(s.rank(ascending=False, method="min").get(player, 9999))
-        if rank == 1:
-            return top1
-        if rank <= 5:
-            return top5
-        if rank <= 10:
-            return top10
-        return 0.0
-
-    def pct_bonus(col: str, p95: float, p85: float = 0.0) -> float:
-        if col not in pool.columns:
-            return 0.0
-        pct = _series_pct(pool[col], row.get(col), True)
-        if pct is None:
-            return 0.0
-        if pct >= 0.95:
-            return p95
-        if pct >= 0.85:
-            return p85
-        return 0.0
-
-    bonus = 0.0
-    goals = float(row.get("goals") or 0)
-    assists = float(row.get("assists") or 0)
-    row_ga = goals + assists
-    pool_ga = pd.to_numeric(pool.get("goals"), errors="coerce").fillna(0) + pd.to_numeric(
-        pool.get("assists"), errors="coerce"
-    ).fillna(0)
-    pool_ga.index = pool["player"]
-    if not pool_ga.empty:
-        ga_rank = int(pool_ga.rank(ascending=False, method="min").get(row.get("player"), 9999))
-        if ga_rank == 1:
-            bonus += 2.0
-        elif ga_rank <= 5:
-            bonus += 1.2
-        elif ga_rank <= 10:
-            bonus += 0.6
-
-    if is_att:
-        bonus += rank_bonus("goals", 3.0, 2.0, 1.0)
-        bonus += rank_bonus("assists", 1.4, 0.9, 0.4)
-        bonus += pct_bonus("npxg_p90", 1.0, 0.5)
-    elif is_mid:
-        bonus += rank_bonus("assists", 3.0, 2.0, 1.0)
-        bonus += pct_bonus("key_passes_per90", 1.4, 0.7)
-        bonus += pct_bonus("big_chances_created_per90", 1.4, 0.7)
-        bonus += pct_bonus("final_third_passes_per90", 0.8, 0.4)
-        bonus += pct_bonus("tackles_won_per90", 0.6, 0.3)
-        bonus += pct_bonus("interceptions_per90", 0.6, 0.3)
-    elif is_def:
-        bonus += pct_bonus("interceptions_per90", 1.2, 0.6)
-        bonus += pct_bonus("tackles_won_per90", 1.0, 0.5)
-        bonus += pct_bonus("aerial_won_pct", 0.9, 0.4)
-        bonus += pct_bonus("clearances_per90", 0.8, 0.4)
-        bonus += rank_bonus("gk_clean_sheets", 1.4, 0.8, 0.4)
-    else:
-        bonus += rank_bonus("goals", 1.5, 0.8, 0.4)
-        bonus += rank_bonus("assists", 1.5, 0.8, 0.4)
-
-    return min(4.0, bonus)
-
+# fm_rating·fm_color·ovr_from_*·perf_ovr·player_ovr·_series_pct·goalkeeper_ovr
+# ·season_achievement_bonus → src/ui/metrics.py (상단 import)
 
 def _attr_rating(prow: pd.Series, cols: list[str]) -> int | None:
     """기여 컬럼들의 평균 백분위 → 1~99. 모두 결측이면 None."""
@@ -3036,23 +2612,7 @@ def band_color(bi: int, n_bands: int) -> str:
     return "MID"
 
 
-def _num_str(v) -> str:
-    """등번호 값을 표시용 문자열로. 없으면 빈 문자열. '7.0' → '7'."""
-    if v is None or (isinstance(v, float) and pd.isna(v)):
-        return ""
-    s = str(v).strip()
-    if s in ("", "nan"):
-        return ""
-    return s[:-2] if s.endswith(".0") else s
-
-
-def _ga_str(row) -> str:
-    """선수 행(Series)에서 '· 2골 1도움' 형태 문자열. 골·도움 0이면 빈 문자열."""
-    if row is None:
-        return ""
-    g = int(row["goals"]) if "goals" in row and pd.notna(row["goals"]) else 0
-    a = int(row["assists"]) if "assists" in row and pd.notna(row["assists"]) else 0
-    return f" · {g}골 {a}도움" if (g or a) else ""
+# _num_str·_ga_str → src/ui/common.py (상단 import)
 
 
 def mark_team_aces(placements: list[dict], full: pd.DataFrame, top: int = 3) -> None:
@@ -3380,8 +2940,7 @@ def pitch_html(placements: list[dict]) -> str:
     """
 
 
-def _norm(s) -> str:
-    return unidecode(str(s)).lower().strip()
+# _norm → src/ui/common.py (상단 import)
 
 
 # ---------------- UI ----------------
