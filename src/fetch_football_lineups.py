@@ -33,8 +33,17 @@ from bs4 import BeautifulSoup
 
 DATA = Path(__file__).resolve().parent.parent / "data"
 OUT = DATA / "fl_positions_2025_2026.csv"
+MATCHES_OUT = DATA / "fl_matches_2025_2026.csv"   # 경기별 (날짜·대회·포메이션·match_id)
 SEASON = "2025-2026"
 FLARE = "http://localhost:8191/v1"
+
+# 경기 목록 파싱용
+_MONTHS = {"Jan": "01", "Feb": "02", "Mar": "03", "Apr": "04", "May": "05",
+           "Jun": "06", "Jul": "07", "Aug": "08", "Sep": "09", "Oct": "10",
+           "Nov": "11", "Dec": "12"}
+_H1 = {"Jan", "Feb", "Mar", "Apr", "May", "Jun"}     # 시즌 후반부 → 2026년
+_COMPS = ["EPL", "Champions", "EFL Trophy", "FA Cup", "Carabao",
+          "Club World", "Community", "Super Cup", "Europa", "Conference"]
 
 # 우리 squad 표기 → football-lineups URL slug
 TEAM_FL: dict[str, str] = {
@@ -176,6 +185,78 @@ def scrape_team(team: str) -> tuple[str, list[dict]] | None:
     return formation, players
 
 
+def parse_match_list(html: str) -> list[dict]:
+    """시즌 페이지 → 경기별 [{date, comp, opponent, formation, match_id}] (날짜순).
+
+    football-lineups는 같은 달 2번째 경기부터 월을 생략("23 Tottenham")하므로
+    직전 경기의 월을 상속한다. 날짜 없는 광고/추천 행은 자동 제외된다.
+    """
+    soup = BeautifulSoup(html, "lxml")
+    rows: list[dict] = []
+    cur_mon: str | None = None
+    seen: set[str] = set()
+    for a in soup.select('a[href*="/match/"]'):
+        tr = a.find_parent("tr")
+        if not tr:
+            continue
+        mid_m = re.search(r"/match/(\d+)", a.get("href", ""))
+        if not mid_m:
+            continue
+        mid = mid_m.group(1)
+        txt = tr.get_text(" ", strip=True)
+        dm = re.match(r"^\s*(\d{1,2})(?:-([A-Z][a-z]{2}))?\b", txt)
+        if not dm:
+            continue
+        day, mon = dm.group(1), dm.group(2)
+        if mon:
+            cur_mon = mon
+        if not cur_mon or cur_mon not in _MONTHS or mid in seen:
+            continue
+        seen.add(mid)
+        yr = "2026" if cur_mon in _H1 else "2025"
+        date = f"{yr}-{_MONTHS[cur_mon]}-{int(day):02d}"
+        fm = re.search(r"\b([1-5]-[1-5](?:-[1-5]){1,2})\b", txt)
+        comp = next((c for c in _COMPS if c in txt), "")
+        rest = txt[dm.end():]
+        opp = re.split(r"\b(?:%s)\b" % "|".join(_COMPS), rest)[0].strip()
+        rows.append({
+            "date": date, "comp": comp, "opponent": opp,
+            "formation": fm.group(1) if fm else "", "match_id": mid,
+        })
+    rows.sort(key=lambda r: r["date"])
+    return rows
+
+
+def scrape_team_matches(team: str) -> list[dict] | None:
+    slug = TEAM_FL.get(team)
+    if not slug:
+        print(f"  [건너뜀] slug 없음: {team}")
+        return None
+    url = f"https://www.football-lineups.com/season/{slug}/{SEASON}"
+    print(f"  [{team}] {url}")
+    html = flare_get(url)
+    if not html:
+        return None
+    rows = parse_match_list(html)
+    for r in rows:
+        r["squad"] = team
+    n_epl = sum(1 for r in rows if r["comp"] == "EPL")
+    print(f"    경기 {len(rows)}개 (EPL {n_epl})")
+    return rows
+
+
+def save_matches(team: str, rows: list[dict]) -> None:
+    cols = ["squad", "date", "comp", "opponent", "formation", "match_id"]
+    df_new = pd.DataFrame(rows)[cols]
+    if MATCHES_OUT.exists():
+        old = pd.read_csv(MATCHES_OUT)
+        old["match_id"] = old["match_id"].astype(str)
+        old = old[old["squad"] != team]            # 해당 팀 기존 행 교체
+        df_new = pd.concat([old, df_new], ignore_index=True)
+    df_new.to_csv(MATCHES_OUT, index=False, encoding="utf-8")
+    print(f"  [OK] 저장: {MATCHES_OUT.name} ({team} {len(rows)}경기)")
+
+
 def save(team: str, formation: str, players: list[dict]) -> None:
     df_new = pd.DataFrame(players)
     df_new.insert(0, "squad", team)
@@ -196,11 +277,31 @@ def main(argv=None) -> int:
     all_teams = "--all" in args
     if all_teams:
         args.remove("--all")
+    matches_mode = "--matches" in args        # 경기 목록(날짜·대회·포메이션) 수집
+    if matches_mode:
+        args.remove("--matches")
     teams = list(TEAM_FL) if all_teams else args
     if not teams:
         print("팀 이름을 지정하거나 --all 을 사용하세요.")
         print("예: python src/fetch_football_lineups.py \"Aston Villa\"")
+        print("    python src/fetch_football_lineups.py --all --matches  (경기 목록)")
         return 1
+
+    if matches_mode:
+        for i, team in enumerate(teams):
+            if i > 0:
+                time.sleep(3)
+            rows = scrape_team_matches(team)
+            if not rows:
+                continue
+            if dry:
+                for r in rows[-12:]:
+                    print(f"      {r['date']} {r['comp']:11} "
+                          f"{r['opponent'][:16]:16} {r['formation']}")
+                print("    [DRY] 저장 안 함.")
+            else:
+                save_matches(team, rows)
+        return 0
 
     for i, team in enumerate(teams):
         if i > 0:
