@@ -170,24 +170,6 @@ def selected_player_spotlight_html(p: dict) -> str:
     </div>"""
 
 
-# ── Squad Depth Chart — 포지션별 주전/백업 + 깊이 점수 ────────────────────────
-# 주전=실제 XI(placements), 백업=벤치(bench_pls). fine_group 버킷으로 묶고,
-# 깊이 점수 = 0.7·백업 최고 OVR + 0.3·스쿼드 규모(최대 100). 백업 없으면 얕음.
-_SLOT_BUCKET = {
-    "GK": "GK",
-    "RB": "RB", "RWB": "RB",
-    "LB": "LB", "LWB": "LB",
-    "RCB": "CB", "LCB": "CB", "CB": "CB",
-    "DM": "DM", "RDM": "DM", "LDM": "DM",
-    "CM": "CM", "RCM": "CM", "LCM": "CM",
-    "CAM": "AM", "AM": "AM",
-    "RM": "RW", "RW": "RW",
-    "LM": "LW", "LW": "LW",
-    "ST": "ST", "FW": "ST",
-}
-
-
-
 # ── FM 선수 능력치 화면 스타일 ─────────────────────────────────────────────
 # 대분류(6개) 아래 세부 능력치(총 19개)를 숫자+색상으로 표시. FM 능력치 화면 느낌.
 # 각 세부 능력치 = (라벨, [기여 컬럼들]) — 컬럼 평균 백분위 → 1~20.
