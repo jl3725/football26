@@ -74,7 +74,8 @@ from src.ui.transfers import (  # noqa: E402
     transfer_side_html, recommend_signings, signing_card_html,
 )
 from src.ui.news import (  # noqa: E402
-    fetch_espn_news, team_articles, translate_articles, news_cards_html, has_team_news,
+    fetch_espn_news, fetch_rss_news, team_articles, merge_news,
+    translate_articles, news_cards_html, has_team_news,
 )
 
 # LABELS, BAND_*, TEAM_COLOR/EXTRA, 저수준 헬퍼는 src/ui/common.py로 이동(상단 import)
@@ -444,7 +445,7 @@ FORM_OPTIONS = ["4-3-3", "4-2-3-1", "4-4-2", "3-4-3", "3-4-2-1", "3-5-2", "4-1-4
 # 사이드바 네비 메뉴 (레퍼런스 좌측 네비) — 라디오를 nav 항목 스타일로 CSS 변환.
 # Formation은 Team Overview에 통합(레퍼런스 Team Overview 구성).
 NAV = ["⚡ Team Overview", "📊 Analytics", "👤 Player Detail",
-       "📋 Squad Depth", "🔁 Transfer", "📅 Schedule", "🔎 Player Database", "📰 뉴스"]
+       "📋 Squad Depth", "🔁 Transfer", "📅 Schedule", "🔎 Player Database", "📰 News"]
 # nav 라디오에만 적용되도록 key("nav_menu") 컨테이너로 스코프 한정
 # → 포메이션 main/sub 라디오는 영향받지 않음.
 NAV_CSS = """
@@ -753,8 +754,14 @@ def load_news_raw() -> list:
 
 @st.cache_data(ttl=1800)
 def load_team_news(team: str) -> list:
-    """팀 필터 + 한국어 번역된 기사 (30분 캐시). 번역이 느려 결과를 캐시한다."""
-    return translate_articles(team_articles(load_news_raw(), team, limit=12))
+    """ESPN(팀) + Guardian/BBC RSS 통합 → 번역된 기사 (30분 캐시).
+
+    번역·RSS 호출이 느려 결과를 캐시한다. ESPN 팀 기사 + RSS를 합쳐 중복 제거·
+    날짜순 정렬 후 한국어로 번역한다.
+    """
+    espn = team_articles(load_news_raw(), team, limit=12)
+    rss = fetch_rss_news(team)
+    return translate_articles(merge_news(espn, rss, limit=16))
 
 
 @st.cache_data

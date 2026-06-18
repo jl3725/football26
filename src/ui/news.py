@@ -1,13 +1,15 @@
 """
-뉴스 탭 — ESPN 축구 뉴스 API + 무료 번역(deep-translator).
+뉴스 탭 — ESPN 뉴스 API + Guardian/BBC RSS + 무료 번역(deep-translator).
 
-ESPN /news 엔드포인트(키 불필요)에서 EPL 기사를 받아 팀 태그로 필터링하고,
+ESPN /news(키 불필요) + The Guardian·BBC Sport 팀별 RSS를 합쳐 기사량을 확보하고,
 영어 헤드라인·요약을 한국어로 번역해 카드로 렌더한다. 기사 전문이 아니라
-헤드라인+요약+원문 링크만 표시(저작권 안전). RSS 보강·LLM 요약은 후속 단계.
+헤드라인+요약+원문 링크만 표시(저작권 안전). LLM 요약/분류는 후속 단계.
 """
 from __future__ import annotations
 
 import html
+import re
+import time
 
 import requests
 
@@ -28,9 +30,39 @@ SQUAD_TO_NEWSTAG = {
     "West Ham United": "West Ham United", "Wolves": "Wolverhampton Wanderers",
 }
 
+# The Guardian 팀별 RSS slug (Brighton은 Guardian RSS 없음 → ESPN/BBC로 보완)
+GUARDIAN_SLUG = {
+    "Arsenal": "arsenal", "Aston Villa": "aston-villa", "Bournemouth": "bournemouth",
+    "Brentford": "brentford", "Burnley": "burnley", "Chelsea": "chelsea",
+    "Crystal Palace": "crystalpalace", "Everton": "everton", "Fulham": "fulham",
+    "Leeds United": "leedsunited", "Liverpool": "liverpool", "Manchester City": "manchestercity",
+    "Manchester Utd": "manchesterunited", "Newcastle United": "newcastleunited",
+    "Nottingham Forest": "nottinghamforest", "Sunderland": "sunderland",
+    "Tottenham Hotspur": "tottenham-hotspur", "West Ham United": "westhamunited",
+    "Wolves": "wolves",
+}
+
+# BBC Sport 팀별 RSS slug (title이 팀명이라 summary를 헤드라인으로 사용)
+BBC_SLUG = {
+    "Arsenal": "arsenal", "Aston Villa": "aston-villa", "Bournemouth": "bournemouth",
+    "Brentford": "brentford", "Brighton": "brighton-hove-albion", "Burnley": "burnley",
+    "Chelsea": "chelsea", "Crystal Palace": "crystal-palace", "Everton": "everton",
+    "Fulham": "fulham", "Leeds United": "leeds-united", "Liverpool": "liverpool",
+    "Manchester City": "manchester-city", "Manchester Utd": "manchester-united",
+    "Newcastle United": "newcastle-united", "Nottingham Forest": "nottingham-forest",
+    "Sunderland": "sunderland", "Tottenham Hotspur": "tottenham-hotspur",
+    "West Ham United": "west-ham-united", "Wolves": "wolverhampton-wanderers",
+}
+
+
+def _clean(text: str) -> str:
+    """RSS summary의 HTML 태그·과잉 공백 제거."""
+    t = re.sub(r"<[^>]+>", "", str(text or ""))
+    return re.sub(r"\s+", " ", t).strip()
+
 
 def fetch_espn_news() -> list[dict]:
-    """ESPN EPL 뉴스 50건 → [{headline, desc, published, image, link, teams}]."""
+    """ESPN EPL 뉴스 50건 → [{headline, desc, published, image, link, teams, source}]."""
     try:
         r = requests.get(ESPN_NEWS_URL, headers=_HEADERS, timeout=15)
         if not r.ok:
@@ -49,21 +81,77 @@ def fetch_espn_news() -> list[dict]:
             "link": a.get("links", {}).get("web", {}).get("href", ""),
             "teams": [c.get("description") for c in a.get("categories", [])
                       if c.get("type") == "team"],
+            "source": "ESPN",
         })
     return out
 
 
+def fetch_rss_news(team: str, per_feed: int = 12) -> list[dict]:
+    """팀별 Guardian + BBC RSS → ESPN과 동일 형식의 기사 리스트."""
+    try:
+        import feedparser
+    except Exception:
+        return []
+    feeds = []
+    if team in GUARDIAN_SLUG:
+        feeds.append(("The Guardian",
+                      f"https://www.theguardian.com/football/{GUARDIAN_SLUG[team]}/rss", False))
+    if team in BBC_SLUG:
+        feeds.append(("BBC Sport",
+                      f"https://feeds.bbci.co.uk/sport/football/teams/{BBC_SLUG[team]}/rss.xml", True))
+    out = []
+    for source, url, is_bbc in feeds:
+        try:
+            f = feedparser.parse(url)
+        except Exception:
+            continue
+        for e in f.entries[:per_feed]:
+            # BBC는 <title>이 팀명이고 <summary>가 실제 헤드라인
+            headline = _clean(e.get("summary", "")) if is_bbc else _clean(e.get("title", ""))
+            desc = "" if is_bbc else _clean(e.get("summary", ""))[:400]
+            pub = (time.strftime("%Y-%m-%d", e["published_parsed"])
+                   if e.get("published_parsed") else "")
+            img = ""
+            if e.get("media_thumbnail"):
+                img = e["media_thumbnail"][0].get("url", "")
+            elif e.get("media_content"):
+                img = e["media_content"][0].get("url", "")
+            if not headline:
+                continue
+            out.append({
+                "headline": headline, "desc": desc, "published": pub,
+                "image": img, "link": e.get("link", ""), "teams": [team], "source": source,
+            })
+    return out
+
+
 def has_team_news(articles: list[dict], team: str) -> bool:
-    """해당 팀 전용 태그 기사가 하나라도 있는지."""
+    """해당 팀 전용 태그 기사가 하나라도 있는지(ESPN 기준)."""
     tag = SQUAD_TO_NEWSTAG.get(team)
     return bool(tag and any(tag in a["teams"] for a in articles))
 
 
 def team_articles(articles: list[dict], team: str, limit: int = 12) -> list[dict]:
-    """팀 태그로 필터. 매칭 기사가 없으면 EPL 일반 뉴스 상위로 폴백."""
+    """ESPN 기사에서 팀 태그로 필터. 매칭 없으면 일반 뉴스 상위로 폴백."""
     tag = SQUAD_TO_NEWSTAG.get(team)
     hit = [a for a in articles if tag and tag in a["teams"]]
     return (hit or articles)[:limit]
+
+
+def merge_news(espn_team: list[dict], rss: list[dict], limit: int = 16) -> list[dict]:
+    """ESPN(팀) + RSS 통합 → 헤드라인 중복 제거 + 발행일 내림차순."""
+    seen: set[str] = set()
+    out = []
+    for a in sorted(espn_team + rss, key=lambda x: x.get("published", ""), reverse=True):
+        h = a.get("headline", "")
+        if not h:
+            continue
+        key = re.sub(r"[^a-z0-9]", "", h.lower())[:55]
+        if key in seen:
+            continue
+        seen.add(key)
+        out.append(a)
+    return out[:limit]
 
 
 def translate_articles(articles: list[dict]) -> list[dict]:
@@ -92,7 +180,7 @@ def translate_articles(articles: list[dict]) -> list[dict]:
 
 
 def news_cards_html(team: str, articles: list[dict]) -> str:
-    """뉴스 카드 그리드 — 썸네일·번역 헤드라인(+원문)·요약·발행일·원문 링크."""
+    """뉴스 카드 그리드 — 썸네일·번역 헤드라인(+원문)·요약·출처·발행일·원문 링크."""
     if not articles:
         return ("<div style='padding:28px;text-align:center;color:#8a93a5;"
                 "font-family:sans-serif'>관련 기사를 찾지 못했습니다.</div>")
@@ -103,6 +191,7 @@ def news_cards_html(team: str, articles: list[dict]) -> str:
         head_en = html.escape(a.get("headline", ""))
         desc_ko = html.escape(a.get("desc_ko") or a.get("desc", ""))
         pub = html.escape(a.get("published", ""))
+        src = html.escape(a.get("source", ""))
         link = html.escape(a.get("link", ""))
         img = a.get("image", "")
         thumb = (
@@ -117,16 +206,18 @@ def news_cards_html(team: str, articles: list[dict]) -> str:
             f"style='display:inline-block;margin-top:9px;font-size:11.5px;font-weight:800;"
             f"color:{tcol};text-decoration:none'>원문 보기 ↗</a>" if link else ""
         )
+        desc_html = (f"<div style='font-size:12.5px;color:#5a6273;margin-top:9px;"
+                     f"line-height:1.5'>{desc_ko}</div>") if desc_ko else ""
         cards.append(
             f"<div style='background:#fff;border:1px solid #e4e8f0;border-radius:14px;overflow:hidden;"
             f"box-shadow:0 1px 3px rgba(16,24,40,.04),0 8px 22px rgba(16,24,40,.06)'>"
             f"{thumb}"
             f"<div style='padding:13px 15px 15px'>"
             f"<div style='font-size:10.5px;color:#9aa3b2;font-weight:800;margin-bottom:6px'>"
-            f"ESPN · {pub}</div>"
+            f"{src} · {pub}</div>"
             f"<div style='font-size:14.5px;font-weight:900;color:#1a1f2e;line-height:1.32'>{head_ko}</div>"
             f"<div style='font-size:11px;color:#9aa3b2;margin-top:3px;line-height:1.3'>{head_en}</div>"
-            f"<div style='font-size:12.5px;color:#5a6273;margin-top:9px;line-height:1.5'>{desc_ko}</div>"
+            f"{desc_html}"
             f"{link_btn}</div></div>"
         )
     return (
