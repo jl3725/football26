@@ -333,11 +333,6 @@ def team_info_html(team: str, manager=None, rank=None, points=None, value_rank=N
                         font-size:10px;font-weight:950;border:1px solid {tcol}24">25/26 FILE</div>
           </div>
           <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">{facts}</div>
-          <div style="margin-top:12px;padding:11px 12px;border-radius:12px;background:#f8fafc;
-                      border:1px solid #e4e8f0;color:#526071;font-size:11.5px;line-height:1.45;font-weight:750;
-                      text-align:center">
-            {info['desc']}
-          </div>
           {comp_results}
         </div>
       </div>
@@ -624,6 +619,84 @@ def stat_card_html(value: str, label: str, color: str = "#1a1f2e", size: int = 2
     </div>"""
 
 
+STADIUM_SILHOUETTE_TYPE = {
+    "Arsenal": "bowl",
+    "Aston Villa": "classic",
+    "Bournemouth": "compact",
+    "Brentford": "modern",
+    "Brighton": "bowl",
+    "Burnley": "classic",
+    "Chelsea": "classic",
+    "Crystal Palace": "classic",
+    "Everton": "modern",
+    "Fulham": "classic",
+    "Leeds United": "classic",
+    "Liverpool": "classic",
+    "Manchester City": "bowl",
+    "Manchester Utd": "classic",
+    "Newcastle United": "classic",
+    "Nottingham Forest": "classic",
+    "Sunderland": "bowl",
+    "Tottenham Hotspur": "bowl",
+    "West Ham United": "bowl",
+    "Wolves": "classic",
+}
+
+
+def stadium_silhouette_svg(team: str) -> str:
+    """Low-opacity stadium line-art watermark for the scout dossier."""
+    typ = STADIUM_SILHOUETTE_TYPE.get(team, "modern")
+    if typ == "bowl":
+        lines = """
+          <path d="M35 130 C95 58 245 58 305 130"/>
+          <path d="M54 132 C108 86 232 86 286 132"/>
+          <path d="M75 136 L265 136"/>
+          <path d="M96 114 L244 114"/>
+          <path d="M122 96 L218 96"/>
+          <path d="M70 142 L42 166 L298 166 L270 142"/>
+        """
+    elif typ == "compact":
+        lines = """
+          <path d="M55 136 L88 82 L252 82 L285 136"/>
+          <path d="M78 136 L104 102 L236 102 L262 136"/>
+          <path d="M48 140 L292 140"/>
+          <path d="M72 158 L268 158"/>
+          <path d="M92 118 L248 118"/>
+          <path d="M120 82 L104 58 M220 82 L236 58"/>
+        """
+    elif typ == "classic":
+        lines = """
+          <path d="M42 134 L82 78 L258 78 L298 134"/>
+          <path d="M58 134 L94 96 L246 96 L282 134"/>
+          <path d="M76 134 L106 112 L234 112 L264 134"/>
+          <path d="M50 144 L290 144"/>
+          <path d="M72 162 L268 162"/>
+          <path d="M92 78 L92 134 M248 78 L248 134"/>
+        """
+    else:
+        lines = """
+          <path d="M50 136 C88 76 252 76 290 136"/>
+          <path d="M62 138 L92 96 L248 96 L278 138"/>
+          <path d="M82 138 L112 116 L228 116 L258 138"/>
+          <path d="M48 148 L292 148"/>
+          <path d="M78 166 L262 166"/>
+          <path d="M132 96 L116 62 M208 96 L224 62"/>
+        """
+    return f"""
+    <svg viewBox="0 0 340 210" aria-hidden="true"
+         style="position:absolute;right:14px;top:12px;width:310px;height:190px;
+                opacity:.18;pointer-events:none;filter:drop-shadow(0 10px 24px rgba(0,0,0,.22))">
+      <g fill="none" stroke="rgba(255,255,255,.82)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+        {lines}
+      </g>
+      <g fill="none" stroke="rgba(255,255,255,.46)" stroke-width="1.4" stroke-linecap="round">
+        <path d="M88 178 H252"/>
+        <path d="M118 190 H222"/>
+      </g>
+    </svg>
+    """
+
+
 def overview_scout_dossier_html(team: str, standings: pd.DataFrame | None,
                                 ratings: list[tuple], manager: dict | None,
                                 statbunker: pd.DataFrame | None,
@@ -631,6 +704,7 @@ def overview_scout_dossier_html(team: str, standings: pd.DataFrame | None,
     """Team Overview 상단용 스카우트 도시에어 패널."""
     color = team_color(team)
     initial = html.escape(team.strip()[0].upper() if team.strip() else "?")
+    stadium_art = stadium_silhouette_svg(team)
     scout_mark = (
         f"<div style=\"position:relative;width:70px;height:70px;border-radius:17px;overflow:hidden;"
         f"background:linear-gradient(135deg,rgba(255,255,255,.96),rgba(255,255,255,.68));"
@@ -730,6 +804,7 @@ def overview_scout_dossier_html(team: str, standings: pd.DataFrame | None,
                   background-size:38px 38px;opacity:.45"></div>
       <div style="position:absolute;right:-56px;top:-76px;width:230px;height:230px;border-radius:50%;
                   border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.05)"></div>
+      {stadium_art}
       <div style="display:grid;grid-template-columns:1.02fr 1.08fr .92fr;gap:0;position:relative;min-height:300px">
         <div style="padding:20px 20px 18px;border-right:1px solid rgba(255,255,255,.12);
                     background:rgba(0,0,0,.14);text-align:center">
@@ -823,7 +898,8 @@ def _manager_tenure(appointed) -> str:
     return f"재임 {y}년" if y else f"재임 {mo}개월"
 
 
-def manager_profile_html(team: str, profile: dict | None, standings=None) -> str:
+def manager_profile_html(team: str, profile: dict | None, standings=None,
+                         manager_changes: pd.DataFrame | None = None) -> str:
     if not profile:
         return ""
     color = team_color(team)
@@ -883,6 +959,74 @@ def manager_profile_html(team: str, profile: dict | None, standings=None) -> str
                 f"<div style='font-size:11px;font-weight:950;color:#8a93a5;letter-spacing:.5px'>{label}</div>"
                 f"<div style='font-size:13px;color:{vc};line-height:1.45'>{val}</div></div>")
 
+    timeline_html = ""
+    if manager_changes is not None and not manager_changes.empty and "team" in manager_changes.columns:
+        changes = manager_changes[manager_changes["team"].astype(str) == team].copy()
+        if not changes.empty:
+            if "detected_at" in changes.columns:
+                changes = changes.sort_values("detected_at", ascending=False)
+            ch = changes.iloc[0]
+            detected_at = html.escape(str(ch.get("detected_at", "-")))
+            prev = html.escape(str(ch.get("previous_manager", "-")))
+            new = html.escape(str(ch.get("detected_manager", name)))
+            accepted = str(ch.get("accepted", "")).lower() in {"true", "1", "yes"}
+            badge = "적용됨" if accepted else "감지됨"
+            tone = "#16a34a" if accepted else "#d97706"
+
+            def manager_side(label: str, manager_name: str, side: str) -> str:
+                is_current = side == "current"
+                bg = f"{color}10" if is_current else "#f8fafc"
+                border = f"{color}30" if is_current else "#e4e8f0"
+                title_color = color if is_current else "#8a93a5"
+                dot = color if is_current else "#c4cad5"
+                return (
+                    f"<div style='background:{bg};border:1px solid {border};border-radius:12px;"
+                    f"padding:11px 12px;min-width:0;text-align:center'>"
+                    f"<div style='display:flex;align-items:center;justify-content:center;gap:6px'>"
+                    f"<span style='width:7px;height:7px;border-radius:50%;background:{dot};display:inline-block'></span>"
+                    f"<span style='font-size:9.5px;font-weight:950;color:{title_color};letter-spacing:.6px'>{label}</span>"
+                    f"</div>"
+                    f"<div style='font-size:14px;font-weight:950;color:#1a1f2e;margin-top:7px;"
+                    f"white-space:nowrap;overflow:hidden;text-overflow:ellipsis'>{manager_name}</div>"
+                    f"</div>"
+                )
+
+            older_items = ""
+            for _, old in changes.iloc[1:3].iterrows():
+                older_items += (
+                    f"<div style='font-size:10.5px;color:#8a93a5;font-weight:800;margin-top:6px;"
+                    f"white-space:nowrap;overflow:hidden;text-overflow:ellipsis'>"
+                    f"{html.escape(str(old.get('previous_manager', '-')))} → "
+                    f"{html.escape(str(old.get('detected_manager', '-')))}</div>"
+                )
+            timeline_html = (
+                "<div style='margin-top:12px;border-top:1px solid #eef1f6;padding-top:10px'>"
+                "<div style='display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:9px'>"
+                "<div style='font-size:10px;font-weight:950;color:#8a93a5;letter-spacing:.7px'>감독 변경 타임라인</div>"
+                f"<div style='font-size:9px;font-weight:950;color:{tone};background:{tone}14;"
+                f"border:1px solid {tone}24;border-radius:999px;padding:4px 8px'>{badge}</div>"
+                "</div>"
+                "<div style='display:grid;grid-template-columns:minmax(0,1fr) 58px minmax(0,1fr);gap:9px;align-items:center'>"
+                f"{manager_side('이전 감독', prev, 'previous')}"
+                f"<div style='text-align:center'>"
+                f"<div style='font-size:21px;font-weight:950;color:{color};line-height:1'>→</div>"
+                f"<div style='font-size:9px;color:#8a93a5;font-weight:900;margin-top:5px;white-space:nowrap'>{detected_at}</div>"
+                f"</div>"
+                f"{manager_side('현재 감독', new, 'current')}"
+                "</div>"
+                f"{older_items}"
+                "</div>"
+            )
+    if not timeline_html:
+        timeline_html = (
+            "<div style='margin-top:12px;border-top:1px solid #eef1f6;padding-top:10px'>"
+            "<div style='display:flex;align-items:center;justify-content:space-between;gap:10px'>"
+            "<div style='font-size:10px;font-weight:950;color:#8a93a5;letter-spacing:.7px'>감독 변경 타임라인</div>"
+            "<div style='font-size:10px;font-weight:950;color:#16a34a;background:#f0fdf4;"
+            "border:1px solid #dcfce7;border-radius:999px;padding:4px 8px'>체제 유지</div>"
+            "</div></div>"
+        )
+
     return f"""
     <div style="background:#fff;border:1px solid #e4e8f0;border-radius:14px;padding:0;
                 overflow:hidden;box-shadow:0 1px 3px rgba(16,24,40,.04),0 10px 28px rgba(16,24,40,.08)">
@@ -908,6 +1052,7 @@ def manager_profile_html(team: str, profile: dict | None, standings=None) -> str
           {row("전술 스타일", style_val, strong=True)}
           {row("감독 포커스", focus_val)}
         </div>
+        {timeline_html}
       </div>
     </div>"""
 
@@ -1754,13 +1899,31 @@ def captain_group_html(team: str, captains: list[dict]) -> str:
     tcol = team_color(team)
     logo = team_logo(team)
     # 오각형 5점 (정주장=위 꼭지점), 카드 중심 기준 %
-    pts = [(50, 16), (85, 46), (69, 87), (31, 87), (15, 46)][:len(captains)]
-    # SVG 점선 오각형 연결선
-    poly = " ".join(f"{x},{y}" for x, y in pts)
+    # 인원수별 균형 배치 — 정주장(1번)은 항상 위쪽 강조 위치.
+    # 1=중앙, 2=세로, 3=삼각형, 4=마름모, 5=오각형. 카드 중심 기준 %.
+    _LAYOUTS = {
+        1: [(50, 44)],
+        2: [(50, 28), (50, 76)],
+        3: [(50, 18), (74, 78), (26, 78)],
+        4: [(50, 14), (84, 50), (50, 86), (16, 50)],
+        5: [(50, 16), (85, 46), (69, 87), (31, 87), (15, 46)],
+    }
+    n = len(captains)
+    pts = _LAYOUTS.get(n, _LAYOUTS[5])[:n]
+    # 연결선: 3명↑=점선 다각형, 2명=점선, 1명=없음
+    if n >= 3:
+        poly = " ".join(f"{x},{y}" for x, y in pts)
+        shape = (f"<polygon points='{poly}' fill='none' stroke='#fff' stroke-width='.4' "
+                 f"stroke-dasharray='1.6 1.6'/>")
+    elif n == 2:
+        (x1, y1), (x2, y2) = pts
+        shape = (f"<line x1='{x1}' y1='{y1}' x2='{x2}' y2='{y2}' stroke='#fff' "
+                 f"stroke-width='.4' stroke-dasharray='1.6 1.6'/>")
+    else:
+        shape = ""
     svg = (f"<svg viewBox='0 0 100 100' preserveAspectRatio='none' "
            f"style='position:absolute;inset:0;width:100%;height:100%;opacity:.28'>"
-           f"<polygon points='{poly}' fill='none' stroke='#fff' stroke-width='.4' "
-           f"stroke-dasharray='1.6 1.6'/></svg>")
+           f"{shape}</svg>") if shape else ""
     crest = (f"<img src='{logo}' referrerpolicy='no-referrer' "
              f"onerror=\"this.style.display='none'\" "
              f"style='width:128px;height:128px;object-fit:contain;opacity:.10'/>") if logo else ""
