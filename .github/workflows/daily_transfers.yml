@@ -1,0 +1,39 @@
+name: Daily Transfers Fetch
+
+# 매일 06:30 UTC, 현재 활성 이적시장(날짜로 자동 판정)을 Transfermarkt에서 긁어
+# data/transfers_2025_2026.csv에 시즌별 누적 갱신 후 변경 시에만 커밋.
+on:
+  schedule:
+    - cron: "30 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install requests beautifulsoup4 lxml pandas
+
+      - name: Fetch transfers
+        run: python src/fetch_transfers.py
+
+      - name: Commit updated transfers
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/transfers_2025_2026.csv
+          if git diff --staged --quiet; then
+            echo "변경 없음 — 커밋 생략"
+          else
+            git commit -m "chore(transfers): 일일 이적시장 수집 [skip ci]"
+            git push
+          fi

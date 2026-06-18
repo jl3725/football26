@@ -823,9 +823,13 @@ def load_espn_subs(_mtime: float = 0.0) -> pd.DataFrame | None:
 
 @st.cache_data
 def load_transfers(_mtime: float = 0.0) -> pd.DataFrame | None:
+    """이적 데이터. CSV는 전 시즌 누적이지만 화면은 현재 활성 시즌만 표시."""
     if not TRANSFERS_PATH.exists():
         return None
-    return pd.read_csv(TRANSFERS_PATH)
+    df = pd.read_csv(TRANSFERS_PATH)
+    if "season_id" in df.columns and not df.empty:
+        df = df[df["season_id"] == df["season_id"].max()].copy()
+    return df
 
 
 # ── 섹션 렌더 — 사이드바 _nav 선택에 따라 한 섹션만 표시 ──────────────────────
@@ -953,12 +957,38 @@ elif _nav == NAV[1]:
         MANAGER_PROFILES_PATH.stat().st_mtime if MANAGER_PROFILES_PATH.exists() else 0.0
     ).get(team) or MANAGER_PROFILES.get(team)
     _transfers_a = load_transfers(TRANSFERS_PATH.stat().st_mtime if TRANSFERS_PATH.exists() else 0.0)
+    _summer_in_count = 0
+    if _transfers_a is not None and not _transfers_a.empty:
+        _summer_in = _transfers_a[
+            (_transfers_a["squad"].astype(str) == team)
+            & (_transfers_a["direction"].astype(str).str.lower() == "in")
+        ]
+        if "window" in _summer_in.columns:
+            _summer_in = _summer_in[_summer_in["window"].astype(str).str.lower() == "summer"]
+        if not _summer_in.empty and full is not None and not full.empty and "player" in full.columns:
+            _team_full = full[full["squad"].astype(str) == team].copy() if "squad" in full.columns else full.copy()
+            _team_full["_audit_norm"] = _team_full["player"].map(
+                lambda v: unidecode(str(v or "")).lower().strip()
+            )
+            for _, _tr in _summer_in.iterrows():
+                _key = unidecode(str(_tr.get("norm_key") or _tr.get("player") or "")).lower().strip()
+                _match = _team_full[_team_full["_audit_norm"] == _key]
+                if _match.empty and _key:
+                    _match = _team_full[_team_full["_audit_norm"].str.contains(_key, regex=False, na=False)]
+                if _match.empty:
+                    continue
+                _minutes = int(pd.to_numeric(_match.iloc[0].get("minutes", 0), errors="coerce") or 0)
+                _age = pd.to_numeric(_tr.get("age"), errors="coerce")
+                _age = float(_age) if pd.notna(_age) else 99.0
+                if _minutes >= 300 and not (_age < 20 and _minutes < 900):
+                    _summer_in_count += 1
+    _analytics_height = 1980 + max(0, ((_summer_in_count + 2) // 3) - 1) * 178
     _iframe(
         analytics_dashboard_html(
             team, formation, _unit_metrics, _standings, _mgr_a, _ts, full, _rep, _weak,
             _statbunker_team_stats, _transfers_a, _tm_injury_history,
         ),
-        height=2120,
+        height=_analytics_height,
         scrolling=False,
     )
     if st.button("🔍 선수 숏리스트 생성 →", type="primary", key="analytics_shortlist"):

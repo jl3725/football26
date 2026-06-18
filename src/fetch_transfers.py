@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import sys
 import time
+from datetime import date
 from pathlib import Path
 
 import pandas as pd
@@ -24,7 +25,16 @@ from fetch_transfermarkt import H, TEAM_TM, norm, parse_mv  # 재사용
 
 DATA = Path(__file__).resolve().parent.parent / "data"
 OUT = DATA / "transfers_2025_2026.csv"
-SEASON = 2025
+
+
+def current_season_id(today: date | None = None) -> int:
+    """현재 활성 TM 시즌 id(=시작 연도). 여름이적이 열리는 6월부터 새 시즌으로 본다.
+    예: 2026-06 → 2026(26/27), 2026-01 → 2025(25/26 겨울)."""
+    today = today or date.today()
+    return today.year if today.month >= 6 else today.year - 1
+
+
+SEASON = current_season_id()
 
 
 def _parse_row(tr) -> dict | None:
@@ -126,12 +136,22 @@ def main(argv=None) -> int:
               f"겨울 IN{counts['winter'][0]}/OUT{counts['winter'][1]}")
 
     if dry:
-        print(f"\n[DRY] 총 {len(all_rows)}건 — 저장 안 함.")
+        print(f"\n[DRY] season {SEASON} · 총 {len(all_rows)}건 — 저장 안 함.")
         return 0
-    cols = ["squad", "window", "direction", "player", "norm_key", "pos", "age", "nat",
-            "club", "fee_eur", "fee_text", "photo"]
-    pd.DataFrame(all_rows)[cols].to_csv(OUT, index=False, encoding="utf-8")
-    print(f"\n[OK] 저장: {OUT.name} ({len(all_rows)}건)")
+    cols = ["squad", "season_id", "window", "direction", "player", "norm_key", "pos",
+            "age", "nat", "club", "fee_eur", "fee_text", "photo"]
+    df_new = pd.DataFrame(all_rows)
+    df_new["season_id"] = SEASON
+    df_new = df_new[cols]
+    # 누적 — 같은 시즌 행만 교체하고 과거 시즌은 보존(윈도우로 추가).
+    if OUT.exists():
+        old = pd.read_csv(OUT)
+        if "season_id" not in old.columns:        # 기존 25/26 데이터 마이그레이션
+            old.insert(1, "season_id", 2025)
+        old = old[old["season_id"] != SEASON]
+        df_new = pd.concat([old.reindex(columns=cols), df_new], ignore_index=True)
+    df_new.to_csv(OUT, index=False, encoding="utf-8")
+    print(f"\n[OK] 저장: {OUT.name} · season {SEASON} {len(all_rows)}건 · 누적 {len(df_new)}건")
     return 0
 
 
