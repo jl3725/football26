@@ -13,6 +13,7 @@ from __future__ import annotations
 import html
 import json
 import sys
+from datetime import datetime, date
 from pathlib import Path
 
 import pandas as pd
@@ -71,6 +72,9 @@ from src.ui.pitch import (  # noqa: E402
 )
 from src.ui.transfers import (  # noqa: E402
     transfer_side_html, recommend_signings, signing_card_html,
+)
+from src.ui.news import (  # noqa: E402
+    fetch_espn_news, team_articles, translate_articles, news_cards_html, has_team_news,
 )
 
 # LABELS, BAND_*, TEAM_COLOR/EXTRA, 저수준 헬퍼는 src/ui/common.py로 이동(상단 import)
@@ -179,6 +183,7 @@ MANAGER_PROFILES = {
 }
 
 MANAGER_PROFILES_PATH = Path(__file__).resolve().parent / "data" / "manager_profiles_2025_2026.json"
+MANAGER_CHANGES_PATH = Path(__file__).resolve().parent / "data" / "manager_changes_2025_2026.csv"
 TEAM_UNIT_METRICS_PATH = Path(__file__).resolve().parent / "data" / "team_unit_metrics_2025_2026.csv"
 STATBUNKER_TEAM_STATS_PATH = Path(__file__).resolve().parent / "data" / "statbunker_team_stats_2025_2026.csv"
 TRANSFERMARKT_INJURIES_PATH = Path(__file__).resolve().parent / "data" / "transfermarkt_injuries_2025_2026.csv"
@@ -196,9 +201,22 @@ def load_manager_profiles(_mtime: float = 0.0) -> dict:
         return profiles
     for team, profile in file_profiles.items():
         base = profiles.get(team, {}).copy()
+        if profile.get("previous_name") and base.get("name") == profile.get("previous_name"):
+            profile.setdefault("previous_nationality", base.get("nationality", ""))
+            profile.setdefault("previous_appointed", base.get("appointed", ""))
+            profile.setdefault("previous_style", base.get("style", ""))
+            profile.setdefault("previous_formation", base.get("formation", ""))
+            profile.setdefault("previous_focus", base.get("focus", ""))
         base.update(profile)
         profiles[team] = base
     return profiles
+
+
+@st.cache_data
+def load_manager_changes(_file_key: tuple[int, int] = (0, 0)) -> pd.DataFrame | None:
+    if not MANAGER_CHANGES_PATH.exists():
+        return None
+    return pd.read_csv(MANAGER_CHANGES_PATH)
 
 
 @st.cache_data
@@ -426,7 +444,7 @@ FORM_OPTIONS = ["4-3-3", "4-2-3-1", "4-4-2", "3-4-3", "3-4-2-1", "3-5-2", "4-1-4
 # 사이드바 네비 메뉴 (레퍼런스 좌측 네비) — 라디오를 nav 항목 스타일로 CSS 변환.
 # Formation은 Team Overview에 통합(레퍼런스 Team Overview 구성).
 NAV = ["⚡ Team Overview", "📊 Analytics", "👤 Player Detail",
-       "📋 Squad Depth", "🔁 Transfer", "📅 Schedule", "🔎 Player Database"]
+       "📋 Squad Depth", "🔁 Transfer", "📅 Schedule", "🔎 Player Database", "📰 뉴스"]
 # nav 라디오에만 적용되도록 key("nav_menu") 컨테이너로 스코프 한정
 # → 포메이션 main/sub 라디오는 영향받지 않음.
 NAV_CSS = """
@@ -466,6 +484,58 @@ with st.sidebar:
                 unsafe_allow_html=True)
     st.markdown("<div class='side-label'>MENU</div>", unsafe_allow_html=True)
     _nav = st.radio("nav", NAV, label_visibility="collapsed", key="nav_menu")
+
+# ── 전 탭 공통 상태바 — 현재 시각 + 풋볼 캘린더 컨텍스트(월드컵·이적시장 등) ──
+# 실제 날짜(datetime.now())로 진행 중/예정 자동 판정. 날짜는 검증 후 조정 가능.
+STATUS_EVENTS = [
+    # (이름, 시작, 종료, 아이콘, kind: event/window/kickoff)
+    ("2026 FIFA 월드컵", date(2026, 6, 11), date(2026, 7, 19), "🌍", "event"),
+    ("EPL 여름 이적시장", date(2026, 6, 16), date(2026, 9, 1), "🔁", "window"),
+    ("EPL 26/27 개막", date(2026, 8, 14), date(2026, 8, 14), "⚽", "kickoff"),
+]
+
+
+def status_bar_html() -> str:
+    now = datetime.now()
+    today = now.date()
+    chips = []
+    for name, start, end, icon, kind in STATUS_EVENTS:
+        if start <= today <= end:
+            if kind == "window":
+                d = (end - today).days
+                lab = f"{name} 열림" + (f" · 마감 D-{d}" if d <= 60 else "")
+            else:
+                lab = f"{name} 진행 중"
+            chips.append((icon, lab, "#34d399"))          # 진행 중 = 초록
+        elif today < start and (start - today).days <= 21:
+            chips.append((icon, f"{name} D-{(start - today).days}", "#fbbf24"))  # 임박 = 노랑
+    chip_html = "".join(
+        f"<span style='display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.1);"
+        f"color:{c};border:1px solid {c}55;border-radius:13px;padding:3px 11px;font-size:11.5px;"
+        f"font-weight:700;white-space:nowrap'>{icon} {lab}</span>" for icon, lab, c in chips
+    ) or "<span style='color:rgba(255,255,255,.45);font-size:11.5px'>예정된 주요 일정 없음</span>"
+    bar = (
+        "<div style='display:flex;align-items:center;justify-content:space-between;gap:12px;"
+        "flex-wrap:wrap;background:linear-gradient(90deg,#0c1322,#1a2942);border:1px solid rgba(255,255,255,.08);"
+        "border-radius:12px;padding:9px 16px;font-family:-apple-system,BlinkMacSystemFont,sans-serif'>"
+        "<div style='font-size:12.5px;font-weight:800;color:#fff'>🟢 LIVE "
+        "<span id='clk' style='color:rgba(255,255,255,.6);font-weight:600;margin-left:6px;"
+        "font-variant-numeric:tabular-nums'>--</span></div>"
+        f"<div style='display:flex;gap:7px;flex-wrap:wrap'>{chip_html}</div></div>"
+    )
+    # 브라우저에서 매초 갱신되는 실시간 시계 (서버 rerun 없음)
+    script = (
+        "<script>(function(){var D=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];"
+        "function z(n){return (n<10?'0':'')+n;}"
+        "function t(){var d=new Date();var e=document.getElementById('clk');if(!e)return;"
+        "e.textContent=d.getFullYear()+'.'+z(d.getMonth()+1)+'.'+z(d.getDate())+' ('+D[d.getDay()]+') '"
+        "+z(d.getHours())+':'+z(d.getMinutes())+':'+z(d.getSeconds());}"
+        "t();setInterval(t,1000);})();</script>"
+    )
+    return bar + script
+
+
+_iframe(status_bar_html(), height=58)
 
 # 메인 상단 팀 배지 헤더 (사이드바에서 team 확정 후 렌더) — 로고 <img> 확실히 뜨도록 iframe
 _iframe(team_header_html(team), height=72)
@@ -530,14 +600,14 @@ _recent_placements = None
 _season_form, placements = espn_frequent_xi(team, _espn_all, full, pct)
 if placements:
     formation = _season_form
-    _form_source = "ESPN 실측"
+    _form_source = "DataSource: ESPN "
     # 최근 5경기 XI (오른쪽 보드용)
     _recent_form, _recent_placements = espn_frequent_xi(team, _espn_all, full, pct, last_n=5)
 elif has_real:
     placements = placements_from_slots(team, slots_df, full, pct, formation)
     _form_source = "실측 슬롯"
 else:
-    _form_source = "휴리스틱"
+    _form_source = "Heuristic"
 if not placements:
     bands = pick_bands(team_df, formation)
     gk = team_goalkeeper(full, team)
@@ -566,6 +636,7 @@ _traits = team_traits_table(DATA_PATH.stat().st_mtime)
 _statbunker_team_stats = load_statbunker_team_stats(file_cache_key(STATBUNKER_TEAM_STATS_PATH))
 _unit_metrics = load_team_unit_metrics(file_cache_key(TEAM_UNIT_METRICS_PATH))
 _transfermarkt_injuries = load_transfermarkt_injuries(file_cache_key(TRANSFERMARKT_INJURIES_PATH))
+_manager_changes = load_manager_changes(file_cache_key(MANAGER_CHANGES_PATH))
 _str, _weak = team_characteristics(team, _traits)     # _weak: Transfer 탭에서 재사용
 _fine_map = dict(zip(dff["player"], dff["fl_group"]))
 
@@ -674,6 +745,18 @@ def load_fl_positions() -> pd.DataFrame | None:
     return pd.read_csv(FL_POSITIONS_PATH)
 
 
+@st.cache_data(ttl=1800)
+def load_news_raw() -> list:
+    """ESPN EPL 뉴스 50건 (30분 캐시)."""
+    return fetch_espn_news()
+
+
+@st.cache_data(ttl=1800)
+def load_team_news(team: str) -> list:
+    """팀 필터 + 한국어 번역된 기사 (30분 캐시). 번역이 느려 결과를 캐시한다."""
+    return translate_articles(team_articles(load_news_raw(), team, limit=12))
+
+
 @st.cache_data
 def load_schedule() -> pd.DataFrame | None:
     if not SCHEDULE_PATH.exists():
@@ -743,7 +826,7 @@ if _nav == NAV[0]:
     _fl_matches_top = load_fl_matches()
     _iframe(
         team_info_html(team, _manager_profile, _ti_rank, _ti_pts, _ti_vrank, _fl_matches_top),
-        height=372,
+        height=382,
     )
 
     _iframe(
@@ -751,7 +834,7 @@ if _nav == NAV[0]:
             team, _standings, _ratings, _manager_profile,
             _statbunker_team_stats, _unit_metrics
         ),
-        height=342,
+        height=390,
     )
 
     _snapshot_html = team_snapshot_html(team, _statbunker_team_stats, _unit_metrics)
@@ -767,7 +850,11 @@ if _nav == NAV[0]:
 
     if _manager_profile:
         st.markdown("<div style='margin-top:12px'></div>", unsafe_allow_html=True)
-        _iframe(manager_profile_html(team, _manager_profile, _standings), height=396)
+        _overview_schedule = load_schedule()
+        _iframe(
+            manager_profile_html(team, _manager_profile, _standings, _manager_changes, _overview_schedule),
+            height=640,
+        )
 
     _starter_names = {p.get("full") for p in (placements or []) if p.get("full")}
     _injury_html = injury_report_html(team, _transfermarkt_injuries, _ovr_map, _starter_names)
@@ -793,14 +880,14 @@ if _nav == NAV[0]:
     _captains = build_captains(team, load_fl_positions(), slots_df, full, n=5)
     if _captains:
         st.markdown("<div style='margin-top:16px'></div>", unsafe_allow_html=True)
-        sec_title("주장단", "주장 완장(ⓒ) 기록 · 출전수 순 · 위 꼭지점=정주장")
+        sec_title("주장단", "주장 완장(ⓒ) 기록 · 출전수 순")
         _iframe(captain_group_html(team, _captains), height=410)
 
     # 포메이션 & 전술 구조 — 시즌 평균 XI(좌) + 최근 5경기 XI(우)
     st.markdown("<div style='margin-top:16px'></div>", unsafe_allow_html=True)
-    sec_title("포메이션 & 전술 구조",
-              f"{_form_source} · 슬롯별 최빈 선발 XI · 색=라인(🔴공격 🟠중원 🔵수비 🟢GK)")
-    st.caption("토큰에 호버하면 강점 지표가 라벨과 함께 표시됩니다.")
+    sec_title("포메이션 & 전술 구조")
+              #f"{_form_source} · 슬롯별 최빈 선발 XI · 색=라인(🔴공격 🟠중원 🔵수비 🟢GK)")
+    st.caption("토큰>  강점 지표가 라벨과 함께 표시됨.")
     _pcol1, _pcol2 = st.columns(2)
     with _pcol1:
         st.markdown(f"<div style='font-size:13px;font-weight:800;color:#1a1f2e;margin-bottom:4px'>"
@@ -1366,3 +1453,18 @@ elif _nav == NAV[6]:
             height=_nrows * 158 + 8, scrolling=False)
     if len(_d) > _LIMIT:
         st.caption(f"… 외 {len(_d) - _LIMIT}명 — 필터를 좁히면 더 정확히 찾을 수 있어요.")
+
+# 8: 뉴스 — ESPN 기사 + 무료 번역(MVP)
+elif _nav == NAV[7]:
+    sec_title(f"{team} — 뉴스", "ESPN 축구 기사 · 한국어 자동 번역 · 30분 캐시")
+    with st.spinner("ESPN 기사를 불러오고 번역하는 중…"):
+        _news = load_team_news(team)
+    if not _news:
+        st.info("기사를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.")
+    else:
+        if not has_team_news(load_news_raw(), team):
+            st.caption("이 팀 전용 기사가 적어 EPL 일반 뉴스를 함께 보여줍니다.")
+        _nrows = (len(_news) + 1) // 2
+        st.components.v1.html(
+            "<style>body{margin:0;background:#eef1f6}</style>" + news_cards_html(team, _news),
+            height=_nrows * 340 + 20, scrolling=True)
