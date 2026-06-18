@@ -973,21 +973,41 @@ def manager_profile_html(team: str, profile: dict | None, standings=None,
             badge = "적용됨" if accepted else "감지됨"
             tone = "#16a34a" if accepted else "#d97706"
 
-            def manager_side(label: str, manager_name: str, side: str) -> str:
+            prev_style = html.escape(str(profile.get("previous_style", "")))
+            prev_formation = html.escape(str(profile.get("previous_formation", "")))
+            prev_focus = html.escape(str(profile.get("previous_focus", "")))
+            cur_style = html.escape(str(style_val or "Tactical profile pending"))
+            cur_formation = html.escape(str(formation or "TBD"))
+            cur_focus = html.escape(str(focus_val or "Awaiting verified tactical sample"))
+
+            def manager_side(label: str, manager_name: str, side: str,
+                             form_value: str, style_value: str, focus_value: str) -> str:
                 is_current = side == "current"
                 bg = f"{color}10" if is_current else "#f8fafc"
                 border = f"{color}30" if is_current else "#e4e8f0"
                 title_color = color if is_current else "#8a93a5"
                 dot = color if is_current else "#c4cad5"
+                def mini(k: str, v: str) -> str:
+                    return (
+                        f"<div style='display:flex;align-items:center;justify-content:space-between;gap:8px;"
+                        f"border-top:1px solid rgba(148,163,184,.18);padding-top:6px;margin-top:6px'>"
+                        f"<span style='font-size:9px;color:#8a93a5;font-weight:950;white-space:nowrap'>{k}</span>"
+                        f"<span style='font-size:10.5px;color:#1a1f2e;font-weight:900;text-align:right;"
+                        f"white-space:nowrap;overflow:hidden;text-overflow:ellipsis'>{v or '-'}</span>"
+                        f"</div>"
+                    )
                 return (
                     f"<div style='background:{bg};border:1px solid {border};border-radius:12px;"
-                    f"padding:11px 12px;min-width:0;text-align:center'>"
+                    f"padding:11px 12px;min-width:0;text-align:center;min-height:132px'>"
                     f"<div style='display:flex;align-items:center;justify-content:center;gap:6px'>"
                     f"<span style='width:7px;height:7px;border-radius:50%;background:{dot};display:inline-block'></span>"
                     f"<span style='font-size:9.5px;font-weight:950;color:{title_color};letter-spacing:.6px'>{label}</span>"
                     f"</div>"
                     f"<div style='font-size:14px;font-weight:950;color:#1a1f2e;margin-top:7px;"
                     f"white-space:nowrap;overflow:hidden;text-overflow:ellipsis'>{manager_name}</div>"
+                    f"{mini('전형', form_value)}"
+                    f"{mini('스타일', style_value)}"
+                    f"{mini('포커스', focus_value)}"
                     f"</div>"
                 )
 
@@ -1007,12 +1027,12 @@ def manager_profile_html(team: str, profile: dict | None, standings=None,
                 f"border:1px solid {tone}24;border-radius:999px;padding:4px 8px'>{badge}</div>"
                 "</div>"
                 "<div style='display:grid;grid-template-columns:minmax(0,1fr) 58px minmax(0,1fr);gap:9px;align-items:center'>"
-                f"{manager_side('이전 감독', prev, 'previous')}"
+                f"{manager_side('이전 체제', prev, 'previous', prev_formation, prev_style, prev_focus)}"
                 f"<div style='text-align:center'>"
                 f"<div style='font-size:21px;font-weight:950;color:{color};line-height:1'>→</div>"
                 f"<div style='font-size:9px;color:#8a93a5;font-weight:900;margin-top:5px;white-space:nowrap'>{detected_at}</div>"
                 f"</div>"
-                f"{manager_side('현재 감독', new, 'current')}"
+                f"{manager_side('현재 체제', new, 'current', cur_formation, cur_style, cur_focus)}"
                 "</div>"
                 f"{older_items}"
                 "</div>"
@@ -1044,6 +1064,302 @@ def manager_profile_html(team: str, profile: dict | None, standings=None,
             <div style="font-size:18px;font-weight:900;color:#1a1f2e;line-height:1.2;
                         white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{name}{flag}</div>
             <div style="font-size:12px;color:#8a93a5;margin-top:4px">{meta}</div>
+            <div style="margin-top:9px">{chip}</div>
+          </div>
+        </div>
+        {tiles_html}
+        <div style="margin-top:15px">
+          {row("전술 스타일", style_val, strong=True)}
+          {row("감독 포커스", focus_val)}
+        </div>
+        {timeline_html}
+      </div>
+    </div>"""
+
+
+def _manager_value(value, fallback: str = "") -> str:
+    if value is None:
+        return fallback
+    try:
+        if pd.isna(value):
+            return fallback
+    except TypeError:
+        pass
+    text = str(value).strip()
+    return text if text and text.lower() not in {"nan", "none", "nat"} else fallback
+
+
+def _manager_date_label(value: str, fallback: str = "확인 필요") -> str:
+    text = _manager_value(value)
+    return text if text else fallback
+
+
+def _manager_tenure_label(appointed: str) -> str:
+    value = _manager_value(appointed)
+    if not value:
+        return ""
+    m = re.search(r"([A-Za-z]{3,})?\s*(\d{4})", value)
+    if not m:
+        return ""
+    months = {
+        "jan": 1, "feb": 2, "mar": 3, "apr": 4, "may": 5, "jun": 6,
+        "jul": 7, "aug": 8, "sep": 9, "oct": 10, "nov": 11, "dec": 12,
+    }
+    year = int(m.group(2))
+    month = months.get((m.group(1) or "")[:3].lower(), 1)
+    total = (2026 - year) * 12 + (6 - month)
+    if total < 0:
+        return ""
+    years, remain = divmod(total, 12)
+    if years and remain:
+        return f"재임 {years}년 {remain}개월"
+    if years:
+        return f"재임 {years}년"
+    return f"재임 {remain}개월"
+
+
+def _manager_matches_since(schedule: pd.DataFrame | None, team: str, start_date: str) -> str:
+    start = _manager_value(start_date)
+    if schedule is None or not start or "date" not in schedule.columns or "squad" not in schedule.columns:
+        return "공식 부임일 입력 후 자동 계산"
+    start_dt = pd.to_datetime(start, errors="coerce")
+    if pd.isna(start_dt):
+        return "공식 부임일 입력 후 자동 계산"
+    rows = schedule[schedule["squad"].astype(str) == team].copy()
+    if rows.empty:
+        return "일정 데이터 확인 필요"
+    rows["date_dt"] = pd.to_datetime(rows["date"], errors="coerce")
+    rows = rows[rows["date_dt"].notna() & (rows["date_dt"] >= start_dt)]
+    n = len(rows)
+    if not n:
+        return "일정상 경기 없음"
+    if "result" not in rows.columns:
+        return f"{n}경기"
+    w = int((rows["result"] == "W").sum())
+    d = int((rows["result"] == "D").sum())
+    ll = int((rows["result"] == "L").sum())
+    pts = w * 3 + d
+    return f"{n}경기 {w}승 {d}무 {ll}패 · 승점 {pts} (PPG {pts / n:.2f})"
+
+
+def _is_pending(v: str) -> bool:
+    s = str(v or "").lower().strip()
+    return (not s) or ("pending" in s) or ("change detected" in s) or s in ("tbd", "-")
+
+
+def derive_manager_tactics(team: str, traits, formation: str) -> dict:
+    """팀 데이터(압박·점유 지수 + 강약점 + 포메이션)로 전술 프로필 합성.
+    감독 시드 텍스트가 없을 때 'Pending' 대신 채운다. (시즌 누적이라 추정)."""
+    styles = [s for s in team_tactical_styles(team, traits, formation) if "베이스" not in s]
+    style = " · ".join(styles[:3]) if styles else "데이터 기반 분석 중"
+    strengths, weaknesses = team_characteristics(team, traits)
+    parts = []
+    if strengths:
+        parts.append("강점 " + "·".join(l for l, _ in strengths[:2]))
+    if weaknesses:
+        parts.append("보완 " + "·".join(l for l, _ in weaknesses[:2]))
+    focus = (" / ".join(parts) + " · 데이터 기반 추정") if parts else "데이터 기반 추정"
+    return {"formation": formation, "style": style, "focus": focus}
+
+
+def manager_profile_html(team: str, profile: dict | None, standings=None,
+                         manager_changes: pd.DataFrame | None = None,
+                         schedule: pd.DataFrame | None = None,
+                         derived: dict | None = None) -> str:
+    if not profile:
+        return ""
+    color = team_color(team)
+    name = _manager_value(profile.get("name"), "Unknown")
+    initials = "".join(part[0] for part in name.split()[:2]).upper()
+    photo_url = _manager_value(profile.get("photo_url"))
+    nat = _manager_value(profile.get("nationality"))
+    flag = flag_chip(nat, h=14) if nat else ""
+    appointed = _manager_value(profile.get("appointed"))
+    tenure = _manager_tenure_label(appointed)
+    meta = " · ".join(x for x in [nat, f"부임 {appointed}" if appointed else "", tenure] if x)
+    style_val = _manager_value(profile.get("style"), "Tactical profile pending")
+    focus_val = _manager_value(profile.get("focus"), "Awaiting verified tactical sample")
+    formation = _manager_value(profile.get("formation"))
+    # 시드 전술 텍스트가 없거나 'Pending'이면 우리 데이터로 합성한 값으로 대체
+    if derived:
+        if _is_pending(formation):
+            formation = derived.get("formation", "") or formation
+        if _is_pending(style_val):
+            style_val = derived.get("style", "") or style_val
+        if _is_pending(focus_val):
+            focus_val = derived.get("focus", "") or focus_val
+    manager_avatar = portrait_photo(
+        photo_url, color, 92, 110,
+        "margin-top:0;box-shadow:0 12px 28px rgba(16,24,40,.14)",
+        16, "4px solid #fff", initials,
+    )
+
+    tiles_html = ""
+    if standings is not None:
+        srow = standings[standings["squad"] == team]
+        if not srow.empty:
+            s = srow.iloc[0]
+            rank, pts = int(s["rank"]), int(s["points"])
+            w, d, l = int(s["won"]), int(s["drawn"]), int(s["lost"])
+            played = w + d + l
+            ppg = pts / played if played else 0
+
+            def stat(label, val, fs=20):
+                return (f"<div style='background:#f8fafc;border:1px solid #e4e8f0;border-radius:10px;"
+                        f"padding:9px 10px;text-align:center'>"
+                        f"<div style='font-size:{fs}px;font-weight:950;color:#1a1f2e;line-height:1'>{val}</div>"
+                        f"<div style='font-size:9.5px;font-weight:800;color:#8a93a5;margin-top:5px'>{label}</div></div>")
+            tiles_html = (
+                "<div style='display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px'>"
+                + stat("리그 순위", f"{rank}위")
+                + stat("승점", str(pts))
+                + stat("전적", f"{w}-{d}-{l}", 16)
+                + stat("경기당 승점", f"{ppg:.2f}")
+                + "</div>"
+            )
+
+    chip = (f"<span style='display:inline-flex;align-items:center;gap:5px;padding:4px 10px;"
+            f"border-radius:7px;background:{color}12;color:{color};border:1px solid {color}30;"
+            f"font-size:11px;font-weight:800'>"
+            f"<span style='color:#8a93a5;font-weight:700'>기본 전형</span>{formation}</span>") if formation else ""
+
+    def row(label, val, strong=False):
+        val = _manager_value(val)
+        if not val:
+            return ""
+        vc = "#1a1f2e;font-weight:800" if strong else "#3a4253"
+        return (f"<div style='display:grid;grid-template-columns:88px minmax(0,1fr);gap:10px;"
+                f"padding:9px 0;border-bottom:1px solid #f1f3f7'>"
+                f"<div style='font-size:11px;font-weight:950;color:#8a93a5;letter-spacing:.5px'>{label}</div>"
+                f"<div style='font-size:13px;color:{vc};line-height:1.45'>{html.escape(val)}</div></div>")
+
+    timeline_html = ""
+    if manager_changes is not None and not manager_changes.empty and "team" in manager_changes.columns:
+        changes = manager_changes[manager_changes["team"].astype(str) == team].copy()
+        if not changes.empty:
+            if "detected_at" in changes.columns:
+                changes = changes.sort_values("detected_at", ascending=False)
+            ch = changes.iloc[0]
+            detected_raw = _manager_value(ch.get("detected_at"), _manager_value(profile.get("change_detected_at"), "-"))
+            official_raw = _manager_value(ch.get("official_change_date"))
+            prev = html.escape(_manager_value(ch.get("previous_manager"), _manager_value(profile.get("previous_name"), "-")))
+            new = html.escape(_manager_value(ch.get("detected_manager"), name))
+            accepted = str(ch.get("accepted", "")).lower() in {"true", "1", "yes"}
+            badge = "반영됨" if accepted else "감지됨"
+            tone = "#16a34a" if accepted else "#d97706"
+
+            prev_appointed = _manager_value(ch.get("previous_appointed"), _manager_value(profile.get("previous_appointed")))
+            prev_left = _manager_value(ch.get("previous_left_date"), _manager_value(profile.get("previous_left_date")))
+            new_appointed = _manager_value(ch.get("new_appointed"), appointed)
+            change_type = _manager_value(ch.get("change_type"), "detected")
+            change_label = html.escape(official_raw or f"감지 {detected_raw}")
+            change_help = "공식 변경일" if official_raw else "공식 퇴임/부임일 확인 필요"
+            match_count = _manager_matches_since(schedule, team, new_appointed or official_raw)
+
+            prev_style = html.escape(_manager_value(profile.get("previous_style"), "Tactical profile pending"))
+            prev_formation = html.escape(_manager_value(profile.get("previous_formation"), "TBD"))
+            prev_focus = html.escape(_manager_value(profile.get("previous_focus"), "Awaiting verified tactical sample"))
+            cur_style = html.escape(style_val)
+            cur_formation = html.escape(formation or "TBD")
+            cur_focus = html.escape(focus_val)
+
+            def manager_side(label: str, manager_name: str, side: str,
+                             form_value: str, style_value: str, focus_value: str,
+                             appointed_value: str, left_value: str = "",
+                             matches_value: str = "") -> str:
+                is_current = side == "current"
+                bg = f"{color}10" if is_current else "#f8fafc"
+                border = f"{color}30" if is_current else "#e4e8f0"
+                title_color = color if is_current else "#8a93a5"
+                dot = color if is_current else "#c4cad5"
+
+                def mini(k: str, v: str, wrap: bool = False) -> str:
+                    v = html.escape(_manager_value(v, "-"))
+                    ws = ("white-space:normal;text-align:right" if wrap
+                          else "white-space:nowrap;overflow:hidden;text-overflow:ellipsis")
+                    return (
+                        f"<div style='display:flex;align-items:center;justify-content:space-between;gap:8px;"
+                        f"border-top:1px solid rgba(148,163,184,.18);padding-top:6px;margin-top:6px'>"
+                        f"<span style='font-size:9px;color:#8a93a5;font-weight:950;white-space:nowrap'>{k}</span>"
+                        f"<span style='font-size:10.5px;color:#1a1f2e;font-weight:900;text-align:right;{ws}'>{v}</span>"
+                        f"</div>"
+                    )
+
+                date_rows = mini("부임", _manager_date_label(appointed_value))
+                if is_current:
+                    date_rows += mini("현 체제 성적", matches_value, wrap=True)
+                else:
+                    date_rows += mini("퇴임", _manager_date_label(left_value, "공식일 확인 필요"))
+                return (
+                    f"<div style='background:{bg};border:1px solid {border};border-radius:12px;"
+                    f"padding:11px 12px;min-width:0;text-align:center;min-height:174px'>"
+                    f"<div style='display:flex;align-items:center;justify-content:center;gap:6px'>"
+                    f"<span style='width:7px;height:7px;border-radius:50%;background:{dot};display:inline-block'></span>"
+                    f"<span style='font-size:9.5px;font-weight:950;color:{title_color};letter-spacing:.6px'>{label}</span>"
+                    f"</div>"
+                    f"<div style='font-size:14px;font-weight:950;color:#1a1f2e;margin-top:7px;"
+                    f"white-space:nowrap;overflow:hidden;text-overflow:ellipsis'>{manager_name}</div>"
+                    f"{date_rows}"
+                    f"{mini('전형', form_value)}"
+                    f"{mini('스타일', style_value)}"
+                    f"{mini('포커스', focus_value)}"
+                    f"</div>"
+                )
+
+            older_items = ""
+            for _, old in changes.iloc[1:3].iterrows():
+                older_items += (
+                    f"<div style='font-size:10.5px;color:#8a93a5;font-weight:800;margin-top:6px;"
+                    f"white-space:nowrap;overflow:hidden;text-overflow:ellipsis'>"
+                    f"{html.escape(_manager_value(old.get('previous_manager'), '-'))} → "
+                    f"{html.escape(_manager_value(old.get('detected_manager'), '-'))}</div>"
+                )
+            timeline_html = (
+                "<div style='margin-top:12px;border-top:1px solid #eef1f6;padding-top:10px'>"
+                "<div style='display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:9px'>"
+                "<div style='font-size:10px;font-weight:950;color:#8a93a5;letter-spacing:.7px'>감독 변경 타임라인</div>"
+                f"<div style='font-size:9px;font-weight:950;color:{tone};background:{tone}14;"
+                f"border:1px solid {tone}24;border-radius:999px;padding:4px 8px'>{badge} · {html.escape(change_type)}</div>"
+                "</div>"
+                "<div style='display:grid;grid-template-columns:minmax(0,1fr) 72px minmax(0,1fr);gap:9px;align-items:center'>"
+                f"{manager_side('이전 체제', prev, 'previous', prev_formation, prev_style, prev_focus, prev_appointed, prev_left)}"
+                f"<div style='text-align:center'>"
+                f"<div style='font-size:21px;font-weight:950;color:{color};line-height:1'>→</div>"
+                f"<div style='font-size:9px;color:#1a1f2e;font-weight:950;margin-top:5px;white-space:nowrap'>{change_label}</div>"
+                f"<div style='font-size:8.5px;color:#8a93a5;font-weight:800;margin-top:4px;line-height:1.25'>{change_help}</div>"
+                f"</div>"
+                f"{manager_side('현재 체제', new, 'current', cur_formation, cur_style, cur_focus, new_appointed, '', match_count)}"
+                "</div>"
+                f"{older_items}"
+                "</div>"
+            )
+    if not timeline_html:
+        timeline_html = (
+            "<div style='margin-top:12px;border-top:1px solid #eef1f6;padding-top:10px'>"
+            "<div style='display:flex;align-items:center;justify-content:space-between;gap:10px'>"
+            "<div style='font-size:10px;font-weight:950;color:#8a93a5;letter-spacing:.7px'>감독 변경 타임라인</div>"
+            "<div style='font-size:10px;font-weight:950;color:#16a34a;background:#f0fdf4;"
+            "border:1px solid #dcfce7;border-radius:999px;padding:4px 8px'>체제 유지</div>"
+            "</div></div>"
+        )
+
+    return f"""
+    <div style="background:#fff;border:1px solid #e4e8f0;border-radius:14px;padding:0;
+                overflow:hidden;box-shadow:0 1px 3px rgba(16,24,40,.04),0 10px 28px rgba(16,24,40,.08)">
+      <div style="height:78px;background:linear-gradient(135deg,{color},#10151c);position:relative">
+        <div style="position:absolute;right:-28px;top:-54px;width:130px;height:130px;border-radius:50%;
+                    background:rgba(255,255,255,.10)"></div>
+        <div style="position:absolute;left:18px;bottom:13px;font-size:11px;font-weight:950;
+                    color:rgba(255,255,255,.70);letter-spacing:1px">감독 리포트</div>
+      </div>
+      <div style="padding:18px 20px 20px">
+        <div style="display:flex;align-items:flex-start;gap:18px">
+          {manager_avatar}
+          <div style="flex:1;min-width:0">
+            <div style="font-size:10px;font-weight:900;color:{color};letter-spacing:.7px">2025/26 감독</div>
+            <div style="font-size:18px;font-weight:900;color:#1a1f2e;line-height:1.2;
+                        white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{html.escape(name)}{flag}</div>
+            <div style="font-size:12px;color:#8a93a5;margin-top:4px">{html.escape(meta)}</div>
             <div style="margin-top:9px">{chip}</div>
           </div>
         </div>

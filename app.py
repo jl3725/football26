@@ -52,7 +52,7 @@ from src.ui.overview import (  # noqa: E402
     TEAM_INFO, TEAM_TRAITS, _competition_label, _cup_stage,
     competition_results_html, team_info_html, team_logo_box,
     overview_scout_dossier_html, team_ratings,
-    donut_card_html, stat_card_html, manager_profile_html,
+    donut_card_html, stat_card_html, manager_profile_html, derive_manager_tactics,
     team_snapshot_html, set_piece_discipline_html, injury_report_html,
     team_radar_html, ai_scout_report_html, team_tactical_styles, team_improvements,
     form_block_html, xg_block_html, squad_profile_html, team_leaders, leader_card_html,
@@ -188,6 +188,7 @@ MANAGER_CHANGES_PATH = Path(__file__).resolve().parent / "data" / "manager_chang
 TEAM_UNIT_METRICS_PATH = Path(__file__).resolve().parent / "data" / "team_unit_metrics_2025_2026.csv"
 STATBUNKER_TEAM_STATS_PATH = Path(__file__).resolve().parent / "data" / "statbunker_team_stats_2025_2026.csv"
 TRANSFERMARKT_INJURIES_PATH = Path(__file__).resolve().parent / "data" / "transfermarkt_injuries_2025_2026.csv"
+TM_INJURY_HISTORY_PATH = Path(__file__).resolve().parent / "data" / "tm_injury_history_2025_2026.csv"
 
 
 @st.cache_data
@@ -239,6 +240,13 @@ def load_transfermarkt_injuries(_file_key: tuple[int, int] = (0, 0)) -> pd.DataF
     if not TRANSFERMARKT_INJURIES_PATH.exists():
         return None
     return pd.read_csv(TRANSFERMARKT_INJURIES_PATH)
+
+
+@st.cache_data
+def load_tm_injury_history(_file_key: tuple[int, int] = (0, 0)) -> pd.DataFrame | None:
+    if not TM_INJURY_HISTORY_PATH.exists():
+        return None
+    return pd.read_csv(TM_INJURY_HISTORY_PATH)
 
 
 def file_cache_key(path: Path) -> tuple[int, int]:
@@ -637,6 +645,7 @@ _traits = team_traits_table(DATA_PATH.stat().st_mtime)
 _statbunker_team_stats = load_statbunker_team_stats(file_cache_key(STATBUNKER_TEAM_STATS_PATH))
 _unit_metrics = load_team_unit_metrics(file_cache_key(TEAM_UNIT_METRICS_PATH))
 _transfermarkt_injuries = load_transfermarkt_injuries(file_cache_key(TRANSFERMARKT_INJURIES_PATH))
+_tm_injury_history = load_tm_injury_history(file_cache_key(TM_INJURY_HISTORY_PATH))
 _manager_changes = load_manager_changes(file_cache_key(MANAGER_CHANGES_PATH))
 _str, _weak = team_characteristics(team, _traits)     # _weak: Transfer 탭에서 재사용
 _fine_map = dict(zip(dff["player"], dff["fl_group"]))
@@ -754,11 +763,15 @@ def load_news_raw() -> list:
 
 @st.cache_data(ttl=1800)
 def load_team_news(team: str) -> list:
-    """ESPN(팀) + Guardian/BBC RSS 통합 → 번역된 기사 (30분 캐시).
+    """뉴스 sqlite(매일 배치 누적)에서 읽기. 비었으면 실시간 fetch+번역 폴백.
 
-    번역·RSS 호출이 느려 결과를 캐시한다. ESPN 팀 기사 + RSS를 합쳐 중복 제거·
-    날짜순 정렬 후 한국어로 번역한다.
+    평상시엔 GitHub Actions가 매일 채운 data/news.db를 즉시 읽어 렌더(빠름).
+    DB가 아직 없으면(첫 실행) ESPN+RSS를 실시간 수집·번역한다.
     """
+    from news_db import read_team_news
+    db_news = read_team_news(team, limit=16)
+    if db_news:
+        return db_news
     espn = team_articles(load_news_raw(), team, limit=12)
     rss = fetch_rss_news(team)
     return translate_articles(merge_news(espn, rss, limit=16))
@@ -858,8 +871,11 @@ if _nav == NAV[0]:
     if _manager_profile:
         st.markdown("<div style='margin-top:12px'></div>", unsafe_allow_html=True)
         _overview_schedule = load_schedule()
+        # 감독 전술이 비었거나 'Pending'이면 우리 데이터로 합성한 값으로 채움
+        _mgr_derived = derive_manager_tactics(team, _traits, (_recent_form or formation))
         _iframe(
-            manager_profile_html(team, _manager_profile, _standings, _manager_changes, _overview_schedule),
+            manager_profile_html(team, _manager_profile, _standings, _manager_changes,
+                                 _overview_schedule, derived=_mgr_derived),
             height=640,
         )
 
@@ -936,12 +952,14 @@ elif _nav == NAV[1]:
     _mgr_a = load_manager_profiles(
         MANAGER_PROFILES_PATH.stat().st_mtime if MANAGER_PROFILES_PATH.exists() else 0.0
     ).get(team) or MANAGER_PROFILES.get(team)
+    _transfers_a = load_transfers(TRANSFERS_PATH.stat().st_mtime if TRANSFERS_PATH.exists() else 0.0)
     _iframe(
         analytics_dashboard_html(
             team, formation, _unit_metrics, _standings, _mgr_a, _ts, full, _rep, _weak,
+            _statbunker_team_stats, _transfers_a, _tm_injury_history,
         ),
-        height=920,
-        scrolling=True,
+        height=2120,
+        scrolling=False,
     )
     if st.button("🔍 선수 숏리스트 생성 →", type="primary", key="analytics_shortlist"):
         st.session_state["nav_menu"] = NAV[4]

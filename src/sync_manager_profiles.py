@@ -9,6 +9,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import csv
 import datetime as dt
 import html
 import json
@@ -25,6 +26,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 PROFILE_PATH = ROOT / "data" / "manager_profiles_2025_2026.json"
 REPORT_PATH = ROOT / "data" / "manager_change_report.md"
+CHANGE_LOG_PATH = ROOT / "data" / "manager_changes_2025_2026.csv"
 SOURCE_TITLE = "2025-26 Premier League"
 
 TEAM_ALIASES = {
@@ -137,6 +139,39 @@ def fetch_source_managers(source_title: str = SOURCE_TITLE) -> dict[str, str]:
     raise RuntimeError("Could not find a personnel table with Team and Manager columns.")
 
 
+def fetch_appointment_dates(source_title: str = SOURCE_TITLE) -> dict[str, str]:
+    """위키 'Managerial changes' 표 → {감독명(ascii_fold): 부임일(Date of appointment)}.
+    표가 없으면 {} 반환."""
+    title = urllib.parse.quote(source_title.replace("-", "–"))
+    url = (
+        "https://en.wikipedia.org/w/api.php?action=parse"
+        f"&page={title}&prop=text&format=json&formatversion=2"
+    )
+    try:
+        parsed = fetch_json(url)
+    except Exception:
+        return {}
+    parser = WikiTableParser()
+    parser.feed(parsed["parse"]["text"])
+    out: dict[str, str] = {}
+    for table in parser.tables:
+        if not table:
+            continue
+        headers = [ascii_fold(cell) for cell in table[0]]
+        if "incoming manager" not in headers or "date of appointment" not in headers:
+            continue
+        inc_i = headers.index("incoming manager")
+        date_i = headers.index("date of appointment")
+        for row in table[1:]:
+            if len(row) <= max(inc_i, date_i):
+                continue
+            mgr = clean_text(row[inc_i])
+            appt = clean_text(row[date_i])
+            if mgr and appt:
+                out[ascii_fold(mgr)] = appt
+    return out
+
+
 def fetch_photo_urls(wiki_titles: list[str]) -> dict[str, str]:
     if not wiki_titles:
         return {}
@@ -180,6 +215,50 @@ def save_profiles(path: Path, profiles: dict) -> None:
         f.write("\n")
 
 
+def append_change_log(path: Path, changed: list[dict], write_mode: bool) -> None:
+    if not changed:
+        return
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fields = [
+        "detected_at", "team", "previous_manager", "detected_manager",
+        "official_change_date", "previous_appointed", "previous_left_date",
+        "new_appointed", "change_type", "accepted", "source",
+    ]
+    exists = path.exists()
+    seen = set()
+    if exists:
+        with path.open("r", newline="", encoding="utf-8") as f:
+            for row in csv.DictReader(f):
+                seen.add((row.get("team"), row.get("previous_manager"), row.get("detected_manager")))
+
+    now = dt.datetime.now().astimezone().strftime("%Y-%m-%d %H:%M")
+    rows = []
+    for item in changed:
+        key = (item["team"], item["local"], item["source"])
+        if key in seen:
+            continue
+        rows.append({
+            "detected_at": now,
+            "team": item["team"],
+            "previous_manager": item["local"],
+            "detected_manager": item["source"],
+            "official_change_date": item.get("official_change_date", ""),
+            "previous_appointed": item.get("previous_appointed", ""),
+            "previous_left_date": item.get("previous_left_date", ""),
+            "new_appointed": item.get("new_appointed", ""),
+            "change_type": item.get("change_type", "detected"),
+            "accepted": "true" if write_mode else "false",
+            "source": "Wikipedia 2025-26 Premier League",
+        })
+    if not rows:
+        return
+    with path.open("a", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=fields)
+        if not exists:
+            writer.writeheader()
+        writer.writerows(rows)
+
+
 def build_report(local: dict, source: dict[str, str], changed: list[dict], photo_count: int) -> str:
     now = dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     source_count = str(len(source)) if source else "not checked"
@@ -217,12 +296,14 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--profiles", type=Path, default=PROFILE_PATH)
     parser.add_argument("--report", type=Path, default=REPORT_PATH)
+    parser.add_argument("--changes", type=Path, default=CHANGE_LOG_PATH)
     parser.add_argument("--write", action="store_true")
     parser.add_argument("--photos-only", action="store_true")
     args = parser.parse_args(argv)
 
     profiles = load_profiles(args.profiles)
     source = {} if args.photos_only else fetch_source_managers()
+    appoint = {} if args.photos_only else fetch_appointment_dates()
 
     changed = []
     if source:
@@ -230,10 +311,46 @@ def main(argv: list[str] | None = None) -> int:
             source_name = source.get(team)
             local_name = profile.get("name", "")
             if source_name and ascii_fold(source_name) != ascii_fold(local_name):
-                changed.append({"team": team, "local": local_name, "source": source_name})
+                # 'Managerial changes' 표에서 새 감독 부임일 자동 매칭
+                new_app = appoint.get(ascii_fold(source_name), "")
+                changed.append({
+                    "team": team,
+                    "local": local_name,
+                    "source": source_name,
+                    "previous_appointed": profile.get("appointed", ""),
+                    "previous_left_date": "",
+                    "new_appointed": new_app,
+                    "official_change_date": new_app,
+                    "change_type": "interim" if "interim" in ascii_fold(source_name) else "detected",
+                })
                 if args.write and not args.photos_only:
+                    profile["previous_name"] = local_name
+                    profile["previous_nationality"] = profile.get("nationality", "")
+                    profile["previous_appointed"] = profile.get("appointed", "")
+                    profile["previous_left_date"] = ""
+                    profile["current_appointed_source"] = "wikipedia" if new_app else "pending"
+                    profile["previous_style"] = profile.get("style", "")
+                    profile["previous_formation"] = profile.get("formation", "")
+                    profile["previous_focus"] = profile.get("focus", "")
+                    profile["change_detected_at"] = dt.datetime.now().astimezone().strftime("%Y-%m-%d %H:%M")
                     profile["name"] = source_name
                     profile["wiki_title"] = source_name
+                    profile["nationality"] = ""
+                    profile["appointed"] = new_app
+                    profile["style"] = "Pending tactical profile"
+                    profile["formation"] = ""
+                    profile["focus"] = "Manager change detected; tactical profile pending verification"
+                    profile["photo_url"] = ""
+
+    # 이미 교체 감지됐지만 부임일이 빈(pending) 감독 백필 — 'Managerial changes' 표 기준
+    if args.write and appoint:
+        for profile in profiles.values():
+            if not str(profile.get("appointed") or "").strip():
+                d = appoint.get(ascii_fold(profile.get("name", "")))
+                if d:
+                    profile["appointed"] = d
+                    if profile.get("current_appointed_source") == "pending":
+                        profile["current_appointed_source"] = "wikipedia"
 
     missing_photo_titles = [
         profile.get("wiki_title") or profile.get("name")
@@ -251,6 +368,7 @@ def main(argv: list[str] | None = None) -> int:
     photo_count = sum(1 for p in profiles.values() if p.get("photo_url"))
     report = build_report(profiles, source, changed, photo_count)
     args.report.write_text(report, encoding="utf-8", newline="\n")
+    append_change_log(args.changes, changed, args.write and not args.photos_only)
 
     if args.write:
         save_profiles(args.profiles, profiles)

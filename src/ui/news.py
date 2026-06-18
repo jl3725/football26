@@ -206,6 +206,11 @@ def news_cards_html(team: str, articles: list[dict]) -> str:
             f"style='display:inline-block;margin-top:9px;font-size:11.5px;font-weight:800;"
             f"color:{tcol};text-decoration:none'>원문 보기 ↗</a>" if link else ""
         )
+        new_badge = (
+            "<span style='display:inline-block;margin-left:6px;padding:1px 7px;border-radius:6px;"
+            "background:#e8344e;color:#fff;font-size:9px;font-weight:950;letter-spacing:.5px;"
+            "vertical-align:middle'>NEW</span>" if a.get("is_new") else ""
+        )
         desc_html = (f"<div style='font-size:12.5px;color:#5a6273;margin-top:9px;"
                      f"line-height:1.5'>{desc_ko}</div>") if desc_ko else ""
         cards.append(
@@ -214,7 +219,7 @@ def news_cards_html(team: str, articles: list[dict]) -> str:
             f"{thumb}"
             f"<div style='padding:13px 15px 15px'>"
             f"<div style='font-size:10.5px;color:#9aa3b2;font-weight:800;margin-bottom:6px'>"
-            f"{src} · {pub}</div>"
+            f"{src} · {pub}{new_badge}</div>"
             f"<div style='font-size:14.5px;font-weight:900;color:#1a1f2e;line-height:1.32'>{head_ko}</div>"
             f"<div style='font-size:11px;color:#9aa3b2;margin-top:3px;line-height:1.3'>{head_en}</div>"
             f"{desc_html}"

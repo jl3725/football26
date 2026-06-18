@@ -34,3 +34,8 @@ Thumbs.db
 # API-Football key
 apifootball.key
 .soccerdata/
+
+# streamlit 런타임 로그
+streamlit_*.log
+*.err.log
+*.out.log

@@ -163,9 +163,12 @@ def goalkeeper_ovr(row: pd.Series, gk_pool: pd.DataFrame) -> int:
     if score is None:
         return base
 
-    perf = fm_rating(score)
+    # GK raw percentile is very team-context sensitive: clean sheets and save volume
+    # can punish good keepers on weaker teams. Convert it to a bounded power scale
+    # before blending so established PL starters do not collapse into 50s.
+    perf = _power_from_pct(score, 58, 92)
     minutes = float(row.get("minutes") or 0)
-    weight = min(0.58, 0.30 + min(1.0, minutes / 2500) * 0.28)
+    weight = min(0.48, 0.22 + min(1.0, minutes / 2500) * 0.26)
     out = (1 - weight) * base + weight * perf
 
     clean_sheets = pd.to_numeric(gk_pool.get("gk_clean_sheets"), errors="coerce").dropna()
@@ -175,7 +178,11 @@ def goalkeeper_ovr(row: pd.Series, gk_pool: pd.DataFrame) -> int:
         elif float(row.get("gk_clean_sheets")) >= float(clean_sheets.quantile(0.85)):
             out += 2
 
-    return int(max(50, min(95, round(out))))
+    floor = 58 if minutes >= 900 else 50
+    if minutes >= 1800:
+        floor = max(floor, min(72, base - 4))
+
+    return int(max(floor, min(95, round(out))))
 
 
 def season_achievement_bonus(row: pd.Series, player_pool: pd.DataFrame) -> float:
@@ -242,6 +249,41 @@ def season_achievement_bonus(row: pd.Series, player_pool: pd.DataFrame) -> float
             bonus += 1.2
         elif ga_rank <= 10:
             bonus += 0.6
+
+    squad = row.get("squad")
+    player = row.get("player")
+    if squad is not None and "squad" in pool.columns:
+        squad_pool = pool[pool["squad"] == squad].copy()
+        if len(squad_pool) >= 8:
+            squad_players = squad_pool["player"].astype(str)
+            squad_mins = pd.to_numeric(squad_pool.get("minutes"), errors="coerce").fillna(0)
+            squad_mins.index = squad_players
+            squad_ratings = pd.to_numeric(squad_pool.get("ss_rating"), errors="coerce")
+            squad_ratings.index = squad_players
+            minute_rank = int(squad_mins.rank(ascending=False, method="min").get(str(player), 9999))
+            rating_pct = _series_pct(squad_ratings, row.get("ss_rating"), True)
+            if minutes >= 2700 and minute_rank <= 2:
+                bonus += 0.8
+            elif minutes >= 2200 and minute_rank <= 4:
+                bonus += 0.4
+            if rating_pct is not None and rating_pct >= 0.85 and minutes >= 1800:
+                bonus += 0.8
+            elif rating_pct is not None and rating_pct >= 0.70 and minutes >= 1800:
+                bonus += 0.4
+
+            if player is not None:
+                squad_ga = (
+                    pd.to_numeric(squad_pool.get("goals"), errors="coerce").fillna(0)
+                    + pd.to_numeric(squad_pool.get("assists"), errors="coerce").fillna(0)
+                )
+                squad_ga.index = squad_players
+                ga_team_rank = int(squad_ga.rank(ascending=False, method="min").get(str(player), 9999))
+                if row_ga >= 12 and ga_team_rank == 1:
+                    bonus += 1.6
+                elif row_ga >= 12 and ga_team_rank <= 2:
+                    bonus += 1.3
+                elif row_ga >= 8 and ga_team_rank <= 2:
+                    bonus += 0.8
 
     if is_att:
         bonus += rank_bonus("goals", 3.0, 2.0, 1.0)

@@ -762,11 +762,28 @@ def league_percentiles(df: pd.DataFrame, min_minutes: int = 0) -> pd.DataFrame:
     return pct
 
 
-def assign_role(pct_row: pd.Series, group: str) -> tuple[str, float]:
-    if group == "DF":
-        # 크로스 백분위로 풀백 vs 센터백을 먼저 가른다.
-        if pct_row["crosses_per90"] >= FULLBACK_CROSS_PCT:
-            return ("공격형 풀백 (Attacking Full-back)", pct_row["crosses_per90"])
+def assign_role(pct_row: pd.Series, group: str, slot: str | None = None) -> tuple[str, float]:
+    # 슬롯(ESPN/실측 포지션)이 백라인이면 pos 기재와 무관하게 수비 로직을 탄다.
+    # (Lewis-Skelly처럼 pos=MF로 적힌 인버티드 풀백도 슬롯이 LB면 풀백으로 분류)
+    s = (slot or "").upper()
+    is_fb_slot = ("WB" in s) or s in ("RB", "LB")
+    is_cb_slot = "CB" in s
+    if group == "DF" or is_fb_slot or is_cb_slot:
+        is_fb = is_fb_slot
+        is_cb = is_cb_slot
+        if not (is_fb or is_cb):                       # 슬롯 정보 없으면 크로스 추정
+            is_fb = pct_row["crosses_per90"] >= FULLBACK_CROSS_PCT
+        if is_fb:
+            # 풀백 유형 = 크로스(폭) vs 전진·운반(드리블+파이널서드 패스)
+            cr = float(pct_row.get("crosses_per90", 0.0) or 0.0)
+            prog_vals = [float(pct_row[c]) for c in ("successful_dribbles_per90", "final_third_passes_per90")
+                         if c in pct_row.index and pd.notna(pct_row.get(c))]
+            prog = sum(prog_vals) / len(prog_vals) if prog_vals else 0.0
+            if cr >= 0.60:
+                return ("오버래핑 풀백 (Overlapping)", cr)
+            if prog >= 0.55:
+                return ("인버티드 풀백 (Inverted)", prog)
+            return ("수비형 풀백 (Defensive Full-back)", pct_row.get("tackles_won_per90", 0.0))
         # 센터백: 도움/피파울이 있으면 빌드업형, 아니면 스토퍼.
         if pct_row["ast_per90"] >= 0.5 or pct_row["fouled_per90"] >= 0.5:
             return ("빌드업 CB (Ball-playing)", pct_row["ast_per90"])

@@ -13,7 +13,7 @@ import pandas as pd
 
 from .common import (
     team_color, _photo, _num_str, _ga_str, _norm, portrait_photo, flag_chip, fmt_value,
-    pos_chip_color, rating_color, BAND_DEF, BAND_MID, BAND_FWD,
+    pos_chip_color, rating_color, avatar, BAND_DEF, BAND_MID, BAND_FWD,
 )
 from .metrics import player_ovr, top_strengths
 from team_analysis import (
@@ -266,7 +266,7 @@ def placements_from_slots(team: str, slots_df: pd.DataFrame, full: pd.DataFrame,
                         "slot": slot})
         elif not prow.empty:
             prow = prow.iloc[0]
-            role, _ = assign_role(prow, position_group(prow["pos"]))
+            role, _ = assign_role(prow, position_group(prow["pos"]), slot)
             strengths = top_strengths(prow)
             ga = _ga_str(drow.iloc[0] if not drow.empty else None)
             tip = f"{disp} · {minutes}분{ga}<br>" + "<br>".join(f"{lab} {v}%" for lab, v in strengths)
@@ -335,7 +335,7 @@ def placements_from_espn(team: str, starters: list[dict], formation: str,
                         "slot": slot})
         elif not prow.empty:
             prow0 = prow.iloc[0]
-            role, _ = assign_role(prow0, position_group(prow0["pos"]))
+            role, _ = assign_role(prow0, position_group(prow0["pos"]), slot)
             strengths = top_strengths(prow0)
             ga = _ga_str(drow.iloc[0] if not drow.empty else None)
             tip = f"{disp} · {minutes}분{ga}<br>" + "<br>".join(f"{lab} {v}%" for lab, v in strengths)
@@ -379,6 +379,168 @@ def espn_main_xi(team: str, espn_all):
     evid = cand.iloc[-1]["event_id"]
     mrows = et[(et["event_id"] == evid) & (et["starter"])].to_dict("records")
     return str(main_form), mrows
+
+
+def espn_frequent_xi(team: str, espn_all, full: pd.DataFrame, pct: pd.DataFrame,
+                     last_n: int | None = None):
+    """팀의 주 포메이션 + 그 포메이션에서 '슬롯별 최빈 선발 선수'로 합성한 XI.
+
+    last_n=None → 시즌 전체, last_n=5 → 최근 5경기.
+    각 formation_place(슬롯)마다 가장 자주 선발된 선수를 뽑아 평균 베스트 XI를 만든다.
+    반환: (formation, placements) 또는 (formation, None) / (None, None).
+    """
+    if espn_all is None:
+        return None, None
+    et = espn_all[(espn_all["squad"] == team) & (espn_all["starter"])].copy()
+    if et.empty:
+        return None, None
+    matches = (et.drop_duplicates("event_id")[["event_id", "date", "formation"]]
+               .dropna(subset=["formation"]).sort_values("date"))
+    if matches.empty:
+        return None, None
+    if last_n:
+        keep = set(matches.tail(last_n)["event_id"])
+        et = et[et["event_id"].isin(keep)]
+        matches = matches[matches["event_id"].isin(keep)]
+    main_form = matches["formation"].mode().iloc[0]
+    fe = et[et["formation"] == main_form]
+    if fe.empty or "formation_place" not in fe.columns:
+        return str(main_form), None
+    rows: list[dict] = []
+    for place in sorted(fe["formation_place"].dropna().unique()):
+        grp = fe[fe["formation_place"] == place]
+        top = grp["player"].mode()
+        if top.empty:
+            continue
+        tp = top.iloc[0]
+        prow = grp[grp["player"] == tp].iloc[0]
+        rows.append({"player": tp, "espn_pos": prow.get("espn_pos"),
+                     "jersey": prow.get("jersey"), "starter": True,
+                     "formation_place": place})
+    return str(main_form), placements_from_espn(team, rows[:11], str(main_form), full, pct)
+
+
+def season_workload_html(team: str, espn_all, full: pd.DataFrame, top: int = 10) -> str:
+    """시즌 누적 출전 패널 — 선발 횟수 + 총 출전시간 바 (좌측 시즌 보드 대칭용)."""
+    ft = full[(full["squad"] == team) & (full["minutes"] > 0)].copy()
+    if ft.empty:
+        return ""
+    ft = ft.sort_values("minutes", ascending=False).drop_duplicates("player").head(top)
+    starts_norm: dict[str, int] = {}
+    if espn_all is not None:
+        et = espn_all[(espn_all["squad"] == team) & (espn_all["starter"] == True)]  # noqa: E712
+        for k, v in et.groupby("player").size().items():
+            starts_norm[_norm(k)] = int(v)
+    _tm = ft["tm_photo"] if "tm_photo" in ft.columns else [None] * len(ft)
+    _sid = ft["sofa_id"] if "sofa_id" in ft.columns else [None] * len(ft)
+    pm = {_norm(p): _photo(sid, tm) for p, sid, tm in zip(ft["player"], _sid, _tm)}
+    maxmin = float(ft["minutes"].max()) or 1.0
+    tc = team_color(team)
+    rows = ""
+    for _, r in ft.iterrows():
+        p = str(r["player"]); mins = int(r["minutes"])
+        st = starts_norm.get(_norm(p), 0)
+        nm = p.split()[-1] if len(p) > 14 else p
+        bw = max(4, min(100, mins / maxmin * 100))
+        rows += (
+            f"<div style='display:flex;align-items:center;gap:9px;padding:7px 2px;"
+            f"border-bottom:1px solid #f4f6f9'>"
+            f"{avatar(pm.get(_norm(p), ''), '#cdd5e0', 26)}"
+            f"<div style='flex:1;min-width:0'>"
+            f"<div style='font-size:12.5px;font-weight:700;color:#1a1f2e;white-space:nowrap;"
+            f"overflow:hidden;text-overflow:ellipsis'>{nm}</div>"
+            f"<div style='height:6px;background:#eef1f6;border-radius:4px;margin-top:5px'>"
+            f"<div style='height:100%;width:{bw:.0f}%;background:{tc};border-radius:4px'></div></div></div>"
+            f"<div style='text-align:right;flex:none'>"
+            f"<div style='font-size:13px;font-weight:900;color:#1a1f2e'>{mins:,}<span style='font-size:10px;font-weight:700;color:#9aa3b2'>분</span></div>"
+            f"<div style='font-size:10px;color:#9aa3b2'>{st}선발</div></div></div>")
+    return (
+        "<div style='font-family:sans-serif'>"
+        "<div style='font-size:11px;font-weight:800;color:#8a93a5;margin-bottom:8px'>"
+        "시즌 누적 출전 · 총 출전시간 / 선발 횟수</div>"
+        f"{rows}</div>")
+
+
+def recent_form_html(team: str, espn_all, subs_df, full: pd.DataFrame, last_n: int = 5) -> str:
+    """최근 N경기 출전/선발 기반 '컨디션' 패널.
+    선발=팀색 채움 · 교체투입=주황 · 미출전=회색 dot. 우측=선발 횟수(많을수록 핫·빨강)."""
+    if espn_all is None:
+        return ""
+    et = espn_all[espn_all["squad"] == team]
+    if et.empty:
+        return ""
+    matches = (et.drop_duplicates("event_id")[["event_id", "date", "home_away"]]
+               .sort_values("date").tail(last_n))
+    ev = list(matches["event_id"])
+    if not ev:
+        return ""
+    ha_map = dict(zip(matches["event_id"], matches["home_away"]))
+    per: list[tuple[set, set]] = []
+    allp: set[str] = set()
+    for evid in ev:
+        sub_et = et[et["event_id"] == evid]
+        starters = set(sub_et[sub_et["starter"] == True]["player"])  # noqa: E712
+        ins: set[str] = set()
+        if subs_df is not None:
+            sd = subs_df[(subs_df["event_id"] == evid) & (subs_df["home_away"] == ha_map.get(evid))]
+            ins = set(sd["player_in"].astype(str))
+        per.append((starters, ins))
+        allp |= set(sub_et["player"]) | ins
+
+    ft = full[full["squad"] == team]
+    _tm = ft["tm_photo"] if "tm_photo" in ft.columns else [None] * len(ft)
+    _sid = ft["sofa_id"] if "sofa_id" in ft.columns else [None] * len(ft)
+    pm = {_norm(p): _photo(sid, tm) for p, sid, tm in zip(ft["player"], _sid, _tm)}
+
+    form = []
+    for p in allp:
+        seq = [("S" if p in s else ("I" if p in i else "-")) for s, i in per]
+        starts, subs = seq.count("S"), seq.count("I")
+        if starts + subs:
+            form.append((p, seq, starts, subs))
+    form.sort(key=lambda x: (x[2], x[3]), reverse=True)
+    form = form[:10]
+    if not form:
+        return ""
+
+    def heat(st):
+        r = st / max(1, last_n)
+        return ("#ef4444" if r >= 0.99 else "#f97316" if r >= 0.75 else "#f59e0b"
+                if r >= 0.5 else "#eab308" if r >= 0.3 else "#94a3b8")
+
+    tc = team_color(team)
+
+    def dots(seq):
+        out = ""
+        for s in seq:
+            c = tc if s == "S" else ("#f59e0b" if s == "I" else "#dfe3ea")
+            out += (f"<span style='display:inline-block;width:9px;height:9px;border-radius:50%;"
+                    f"background:{c};margin-right:3px'></span>")
+        return out
+
+    rows = ""
+    for p, seq, starts, _subs in form:
+        hc = heat(starts)
+        nm = p.split()[-1] if len(p) > 14 else p
+        rows += (
+            f"<div style='display:flex;align-items:center;gap:9px;padding:7px 2px;"
+            f"border-bottom:1px solid #f4f6f9'>"
+            f"{avatar(pm.get(_norm(p), ''), '#cdd5e0', 26)}"
+            f"<div style='flex:1;min-width:0'>"
+            f"<div style='font-size:12.5px;font-weight:700;color:#1a1f2e;white-space:nowrap;"
+            f"overflow:hidden;text-overflow:ellipsis'>{nm}</div>"
+            f"<div style='margin-top:4px'>{dots(seq)}</div></div>"
+            f"<div style='text-align:right;flex:none'>"
+            f"<div style='font-size:14px;font-weight:900;color:{hc}'>{starts}/{last_n}</div>"
+            f"<div style='font-size:9px;color:#9aa3b2'>선발</div></div></div>")
+    return (
+        "<div style='font-family:sans-serif'>"
+        f"<div style='font-size:11px;font-weight:800;color:#8a93a5;margin-bottom:8px'>"
+        f"최근 {last_n}경기 컨디션 · "
+        f"<span style='color:{tc}'>●</span>선발 "
+        f"<span style='color:#f59e0b'>●</span>교체 "
+        f"<span style='color:#dfe3ea'>●</span>미출전</div>"
+        f"{rows}</div>")
 
 
 def placements_from_bands(bands: list[pd.DataFrame], pct: pd.DataFrame,
@@ -631,66 +793,35 @@ def departed_placements(team: str, full: pd.DataFrame, left_out: dict) -> list[d
     return out
 
 
-def bench_strip_html(subs: list[dict], title: str = "벤치 &amp; 백업") -> str:
-    """벤치 선수들을 가로 토큰 스트립으로 렌더링."""
+def bench_strip_html(subs: list[dict], title: str = "벤치 & 백업") -> str:
+    """벤치 선수 스트립 — 라이트 카드 + 원형 사진 토큰 (앱 톤 통일)."""
     if not subs:
-        return "<div style='color:#888;font-size:12px;padding:8px'>벤치 데이터 없음</div>"
+        return ("<style>body{margin:0;background:#eef1f6}</style>"
+                "<div style='color:#94a3b8;font-size:12px;padding:10px;font-family:sans-serif'>"
+                "벤치 데이터 없음</div>")
     cards = []
     for p in subs:
-        abbr = p.get("abbr", "")
         num = p.get("num", "")
-        sid = p.get("sid", "")
         tcol = p.get("tcol", "#444a55")
-        num_badge = f'<div class="snum">{num}</div>' if num else ""
-        photo = (f'<img class="sphoto" src="{sid}" loading="lazy" '
-                 f'referrerpolicy="no-referrer" onerror="this.remove()"/>') if sid else ""
-        cards.append(f"""
-        <div class="sub-pl">
-          <div class="stok" style="--tc:{tcol};">
-            <span class="sabbr">{abbr}</span>{photo}{num_badge}
-          </div>
-          <div class="snm">{p['name']}</div>
-          <div class="srl">{p['role']}</div>
-          <div class="smins">{p['minutes']}분</div>
-          <div class="stip"><b>{p['full']}</b><br>{p['tip']}</div>
-        </div>""")
-
-    return f"""
-    <style>
-      .bench-wrap {{ background:rgba(10,20,35,.75); border:1px solid rgba(255,255,255,.1);
-                    border-radius:10px; padding:10px 14px 12px; }}
-      .bench-title {{ color:#7a8fa6; font-size:10.5px; font-weight:700; margin-bottom:10px;
-                      text-transform:uppercase; letter-spacing:1px; }}
-      .bench-row {{ display:flex; flex-wrap:wrap; gap:12px 16px; }}
-      .sub-pl {{ position:relative; text-align:center; width:68px; cursor:default; }}
-      .sub-pl:hover .stip {{ display:block; }}
-      .stok {{ position:relative; width:44px; height:44px; margin:0 auto;
-               border-radius:50%; border:2.5px solid rgba(255,255,255,.75);
-               background:radial-gradient(circle at 35% 28%,rgba(255,255,255,.22),rgba(255,255,255,0) 55%),var(--tc);
-               box-shadow:0 2px 8px rgba(0,0,0,.45);
-               display:flex; align-items:center; justify-content:center;
-               overflow:visible; transition:transform .12s ease; }}
-      .sub-pl:hover .stok {{ transform:scale(1.12); }}
-      .sabbr {{ color:#fff; font-weight:800; font-size:12px;
-                text-shadow:0 1px 2px rgba(0,0,0,.55); }}
-      .sphoto {{ position:absolute; inset:0; width:100%; height:100%;
-                 object-fit:cover; border-radius:50%; background:var(--tc); }}
-      .snum {{ position:absolute; top:-6px; right:-8px; min-width:17px; height:17px;
-               padding:0 2px; background:#10151c; color:#fff; font-size:9.5px;
-               font-weight:800; line-height:17px; border-radius:9px; z-index:3;
-               border:1px solid rgba(255,255,255,.3); }}
-      .snm {{ color:#dde; font-weight:600; font-size:11.5px; margin-top:5px;
-              white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }}
-      .srl {{ color:#8ab; font-size:10px; margin-top:2px; }}
-      .smins {{ color:#556; font-size:9.5px; margin-top:1px; }}
-      .stip {{ display:none; position:absolute; left:50%; bottom:110%; transform:translateX(-50%);
-               background:rgba(16,21,28,.97); color:#fff; padding:8px 10px; border-radius:8px;
-               font-size:11px; white-space:nowrap; z-index:20;
-               border:1px solid rgba(255,255,255,.12); box-shadow:0 4px 12px rgba(0,0,0,.5); }}
-    </style>
-    <div class="bench-wrap">
-      <div class="bench-title">{title} ({len(subs)}명)</div>
-      <div class="bench-row">{''.join(cards)}</div>
-    </div>
-    """
+        sid = p.get("sid", "")
+        num_badge = (f"<div style='position:absolute;top:-4px;right:-4px;min-width:16px;height:16px;"
+                     f"padding:0 3px;background:#10151c;color:#fff;font-size:9px;font-weight:800;"
+                     f"line-height:16px;border-radius:8px;border:1.5px solid #fff'>{num}</div>") if num else ""
+        tip = f"{p.get('full', '')} · {p.get('minutes', 0)}분"
+        cards.append(
+            f"<div title='{tip}' style='width:76px;text-align:center'>"
+            f"<div style='position:relative;width:48px;margin:0 auto'>"
+            f"{avatar(sid, tcol, 48)}{num_badge}</div>"
+            f"<div style='font-size:12px;font-weight:700;color:#1a1f2e;margin-top:7px;white-space:nowrap;"
+            f"overflow:hidden;text-overflow:ellipsis'>{p['name']}</div>"
+            f"<div style='font-size:10px;color:#8a93a5;margin-top:1px;white-space:nowrap;"
+            f"overflow:hidden;text-overflow:ellipsis'>{p['role']}</div>"
+            f"<div style='font-size:9.5px;color:#b6bdc9;margin-top:1px'>{p['minutes']}분</div></div>")
+    return (
+        "<style>body{margin:0;background:#eef1f6;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}</style>"
+        "<div style='background:#fff;border:1px solid #e4e8f0;border-radius:14px;padding:14px 16px 16px;"
+        "box-shadow:0 1px 3px rgba(16,24,40,.04),0 6px 18px rgba(16,24,40,.05)'>"
+        f"<div style='font-size:11px;font-weight:800;color:#8a93a5;letter-spacing:1px;"
+        f"text-transform:uppercase;margin-bottom:13px'>{title} ({len(subs)}명)</div>"
+        "<div style='display:flex;flex-wrap:wrap;gap:15px 12px'>" + "".join(cards) + "</div></div>")
 
