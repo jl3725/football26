@@ -7,9 +7,12 @@ Team Overview 탭 렌더 함수 + 구단 정보/특성 상수.
 """
 from __future__ import annotations
 
+import difflib
 import html
+import re
 
 import pandas as pd
+from unidecode import unidecode
 
 from .common import (
     ACCENT, TEAM_EXTRA, team_color, team_logo, rating_color,
@@ -261,9 +264,13 @@ def team_info_html(team: str, manager=None, rank=None, points=None, value_rank=N
     def fact(label, val):
         if val is None or val == "":
             return ""
-        return (f"<div><div style='font-size:10px;color:#8a93a5;text-transform:uppercase;"
-                f"letter-spacing:.5px'>{label}</div>"
-                f"<div style='font-size:13.5px;font-weight:700;color:#1a1f2e;margin-top:2px'>{val}</div></div>")
+        return (f"<div style='background:#f8fafc;border:1px solid #e4e8f0;border-radius:10px;"
+                f"padding:10px 11px;min-width:0'>"
+                f"<div style='font-size:10px;color:#8a93a5;text-transform:uppercase;"
+                f"letter-spacing:.6px;font-weight:950;white-space:nowrap;overflow:hidden;"
+                f"text-overflow:ellipsis'>{label}</div>"
+                f"<div style='font-size:14.5px;font-weight:950;color:#1a1f2e;margin-top:4px;"
+                f"white-space:nowrap;overflow:hidden;text-overflow:ellipsis'>{val}</div></div>")
 
     stad = info["stadium"] + (f" ({cap:,}석)" if cap else "")
     mgr = manager.get("name") if isinstance(manager, dict) else (manager or None)
@@ -278,26 +285,59 @@ def team_info_html(team: str, manager=None, rank=None, points=None, value_rank=N
     ])
     comp_results = competition_results_html(team, rank, points, fl_matches)
     return f"""
-    <div style="border-radius:16px;overflow:hidden;border:1px solid #e4e8f0;
-                box-shadow:0 1px 3px rgba(16,24,40,.05),0 8px 22px rgba(16,24,40,.06)">
-      <div style="background:linear-gradient(135deg,{tcol},#10151c 80%);padding:16px 20px;
-                  display:flex;align-items:center;gap:15px">
-        <div style="width:60px;height:60px;border-radius:14px;background:rgba(255,255,255,.94);
-                    display:flex;align-items:center;justify-content:center;flex:none">{crest}</div>
-        <div style="flex:1;min-width:0">
-          <div style="font-size:20px;font-weight:900;color:#fff;line-height:1.12;
-                      white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{full}</div>
-          <div style="font-size:12px;color:rgba(255,255,255,.82);margin-top:4px;line-height:1.35">
-            {info['nick']} · 프리미어리그 2025/26</div>
+    <div style="border-radius:18px;overflow:hidden;border:1px solid #dde3ec;
+                background:#fff;box-shadow:0 1px 3px rgba(16,24,40,.05),0 14px 34px rgba(16,24,40,.08)">
+      <div style="display:grid;grid-template-columns:360px minmax(0,1fr);min-height:256px">
+        <div style="position:relative;background:linear-gradient(145deg,{tcol},#10151c 72%);
+                    color:#fff;padding:24px 24px 22px;overflow:hidden">
+          <div style="position:absolute;right:-38px;bottom:-46px;width:210px;height:210px;opacity:.09">{crest}</div>
+          <div style="position:absolute;left:0;top:0;bottom:0;width:7px;background:rgba(255,255,255,.86)"></div>
+          <div style="display:flex;align-items:center;gap:15px;position:relative">
+            <div style="width:82px;height:82px;border-radius:19px;background:rgba(255,255,255,.96);
+                        display:flex;align-items:center;justify-content:center;flex:none;
+                        box-shadow:0 14px 30px rgba(0,0,0,.24)">{crest}</div>
+            <div style="min-width:0">
+              <div style="font-size:10px;font-weight:950;letter-spacing:1.7px;color:rgba(255,255,255,.64)">
+                CLUB PASSPORT
+              </div>
+              <div style="font-size:29px;font-weight:950;line-height:1.02;margin-top:6px;
+                          white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{full}</div>
+            </div>
+          </div>
+          <div style="position:relative;margin-top:18px;font-size:13px;line-height:1.5;color:rgba(255,255,255,.80);
+                      font-weight:800">{info['nick']} · 프리미어리그 2025/26</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:22px;position:relative">
+            <div>
+              <div style="font-size:9px;font-weight:950;letter-spacing:1.5px;color:rgba(255,255,255,.55)">REPUTATION</div>
+              <div style="white-space:nowrap;margin-top:4px">{stars}</div>
+            </div>
+            <div style="padding:9px 11px;border-radius:12px;background:rgba(255,255,255,.13);
+                        border:1px solid rgba(255,255,255,.18);text-align:right">
+              <div style="font-size:10px;font-weight:950;color:rgba(255,255,255,.62)">SQUAD VALUE</div>
+              <div style="font-size:18px;font-weight:950;color:#fff;line-height:1;margin-top:5px">
+                {f"리그 {value_rank}위" if value_rank else "-"}
+              </div>
+            </div>
+          </div>
         </div>
-        <div style="text-align:right;flex:none">
-          <div style="white-space:nowrap">{stars}</div>
-          <div style="font-size:9px;color:rgba(255,255,255,.65);letter-spacing:1.5px;margin-top:2px">REPUTATION</div>
+        <div style="padding:20px 22px 18px;background:
+                    linear-gradient(90deg,{tcol}0b 0 6px,transparent 6px),
+                    linear-gradient(180deg,#fff,#fbfcff)">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px">
+            <div>
+              <div style="font-size:11px;font-weight:950;color:{tcol};letter-spacing:1px">CLUB BRIEFING</div>
+              <div style="font-size:21px;font-weight:950;color:#1a1f2e;margin-top:2px">구단 기본 정보</div>
+            </div>
+            <div style="padding:7px 10px;border-radius:999px;background:{tcol}12;color:{tcol};
+                        font-size:11px;font-weight:950;border:1px solid {tcol}24">25/26 FILE</div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">{facts}</div>
+          <div style="margin-top:12px;padding:11px 12px;border-radius:12px;background:#f8fafc;
+                      border:1px solid #e4e8f0;color:#526071;font-size:12px;line-height:1.45;font-weight:750">
+            {info['desc']}
+          </div>
+          {comp_results}
         </div>
-      </div>
-      <div style="background:#fff;padding:15px 20px">
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px 14px">{facts}</div>
-        {comp_results}
       </div>
     </div>"""
 
@@ -589,16 +629,20 @@ def overview_scout_dossier_html(team: str, standings: pd.DataFrame | None,
     """Team Overview 상단용 스카우트 도시에어 패널."""
     color = team_color(team)
     initial = html.escape(team.strip()[0].upper() if team.strip() else "?")
-    safe_team = html.escape(team)
-    logo = team_logo(team)
-    crest = (
-        f"<img src=\"{logo}\" referrerpolicy=\"no-referrer\" onerror=\"this.style.display='none'\" "
-        f"style=\"width:46px;height:46px;object-fit:contain\"/>"
-        if logo else f"<span>{initial}</span>"
+    scout_mark = (
+        f"<div style=\"position:relative;width:70px;height:70px;border-radius:17px;overflow:hidden;"
+        f"background:linear-gradient(135deg,rgba(255,255,255,.96),rgba(255,255,255,.68));"
+        f"border:1px solid rgba(255,255,255,.35);box-shadow:0 10px 26px rgba(0,0,0,.18);flex:none\">"
+        f"<div style=\"position:absolute;inset:-18px;background:repeating-linear-gradient(135deg,"
+        f"{color} 0 8px,transparent 8px 15px);opacity:.22\"></div>"
+        f"<div style=\"position:absolute;left:12px;top:10px;font-size:31px;font-weight:950;color:{color};"
+        f"line-height:1\">{initial}</div>"
+        f"<div style=\"position:absolute;right:11px;bottom:10px;width:22px;height:22px;border-radius:50%;"
+        f"border:2px solid {color};box-shadow:inset 0 0 0 4px rgba(255,255,255,.85)\"></div>"
+        f"<div style=\"position:absolute;left:12px;bottom:11px;width:30px;height:3px;border-radius:999px;"
+        f"background:{color};opacity:.8\"></div>"
+        f"</div>"
     )
-    manager_name = html.escape(str((manager or {}).get("name", "감독 정보 없음")))
-    manager_style = html.escape(str((manager or {}).get("style", "전술 스타일 분석 중")))
-    formation_txt = html.escape(str((manager or {}).get("formation", "")))
 
     rank = points = record = gd_str = "-"
     gf = ga = "-"
@@ -667,9 +711,9 @@ def overview_scout_dossier_html(team: str, standings: pd.DataFrame | None,
     def tile(label: str, value: str, sub: str = "") -> str:
         return f"""
         <div style="background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.14);
-                    border-radius:10px;padding:10px 11px;min-height:62px">
-          <div style="font-size:20px;font-weight:950;color:#fff;line-height:1">{value}</div>
-          <div style="font-size:10px;color:rgba(255,255,255,.62);font-weight:800;margin-top:6px">{label}</div>
+                    border-radius:11px;padding:11px 12px;min-height:68px">
+          <div style="font-size:24px;font-weight:950;color:#fff;line-height:.95;letter-spacing:0">{value}</div>
+          <div style="font-size:10px;color:rgba(255,255,255,.66);font-weight:950;margin-top:8px">{label}</div>
           <div style="font-size:10px;color:rgba(255,255,255,.46);margin-top:2px">{sub}</div>
         </div>"""
 
@@ -683,30 +727,33 @@ def overview_scout_dossier_html(team: str, standings: pd.DataFrame | None,
                   border:1px solid rgba(255,255,255,.13)"></div>
       <div style="display:grid;grid-template-columns:1.45fr .9fr;gap:22px;position:relative">
         <div>
-          <div style="display:flex;align-items:center;gap:14px">
-            <div style="width:60px;height:60px;border-radius:15px;background:rgba(255,255,255,.94);
-                        border:1px solid rgba(255,255,255,.35);display:flex;align-items:center;
-                        justify-content:center;font-size:28px;font-weight:950;color:{color};
-                        box-shadow:0 10px 26px rgba(0,0,0,.18);flex:none">{crest}</div>
+          <div style="display:grid;grid-template-columns:70px minmax(0,1fr) 118px;gap:16px;align-items:center">
+            {scout_mark}
             <div style="min-width:0">
-              <div style="font-size:11px;color:rgba(255,255,255,.62);font-weight:900;letter-spacing:1.4px">
+              <div style="font-size:11px;color:rgba(255,255,255,.68);font-weight:950;letter-spacing:1.6px">
                 팀 스카우트 파일
               </div>
-              <div style="font-size:31px;font-weight:950;line-height:1.05;white-space:nowrap;
-                          overflow:hidden;text-overflow:ellipsis">{safe_team}</div>
-              <div style="font-size:13px;color:rgba(255,255,255,.70);margin-top:6px">
-                {manager_name} · {formation_txt} · {manager_style}
+              <div style="font-size:41px;font-weight:950;line-height:.98;white-space:nowrap;
+                          overflow:hidden;text-overflow:ellipsis">전력 상태판</div>
+              <div style="font-size:14px;color:rgba(255,255,255,.76);margin-top:9px;font-weight:800">
+                OVR {overall} · 득실 {gd_str} · 세트피스 {set_piece_idx} · 압박 {pressing} · {discipline}
               </div>
+            </div>
+            <div style="background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);
+                        border-radius:14px;padding:13px 12px;text-align:center;box-shadow:inset 0 1px 0 rgba(255,255,255,.08)">
+              <div style="font-size:10px;font-weight:950;color:rgba(255,255,255,.62);letter-spacing:1.3px">POWER</div>
+              <div style="font-size:43px;font-weight:950;color:#fff;line-height:.95;margin-top:4px">{overall}</div>
+              <div style="font-size:10px;font-weight:950;color:rgba(255,255,255,.60);margin-top:4px">OVR</div>
             </div>
           </div>
 
           <div style="display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:9px;margin-top:19px">
-            {tile("순위", rank)}
-            {tile("승점", points)}
-            {tile("승-무-패", record)}
-            {tile("득점", gf)}
-            {tile("실점", ga)}
-            {tile("득실", gd_str)}
+            {tile("전력 OVR", str(overall))}
+            {tile("득실차", gd_str)}
+            {tile("득점/실점", f"{gf}/{ga}")}
+            {tile("세트피스", set_piece_idx, f"비PK {sp_goals}")}
+            {tile("압박", pressing)}
+            {tile("규율", discipline)}
           </div>
 
           <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:15px">
@@ -1057,6 +1104,154 @@ def set_piece_discipline_html(team: str, statbunker: pd.DataFrame | None,
         </div>
       </div>
     </div>"""
+
+
+def injury_report_html(team: str, injuries: pd.DataFrame | None,
+                       ovr_map: dict | None = None,
+                       starter_names: set[str] | None = None) -> str:
+    """Overview용 현재 부상 리포트 카드."""
+    ovr_map = ovr_map or {}
+    starter_names = starter_names or set()
+    color = team_color(team)
+
+    if injuries is None or injuries.empty or "squad" not in injuries.columns:
+        active = pd.DataFrame()
+        last_checked = "-"
+    else:
+        active = injuries[injuries["squad"].astype(str) == team].copy()
+        if "active" in active.columns:
+            active = active[active["active"].astype(str).str.lower().isin({"true", "1", "yes", "y"})]
+        if "last_checked" in injuries.columns and not injuries["last_checked"].dropna().empty:
+            last_checked = str(injuries["last_checked"].dropna().iloc[0])
+        else:
+            last_checked = "-"
+
+    def sval(row, key: str, default: str = "-") -> str:
+        value = row.get(key, default)
+        if pd.isna(value):
+            return default
+        text = str(value).strip()
+        return text if text else default
+
+    def value_num(row) -> int:
+        value = pd.to_numeric(row.get("market_value_eur"), errors="coerce")
+        return int(value) if pd.notna(value) else 0
+
+    if not active.empty:
+        active["__value"] = active.apply(value_num, axis=1)
+        active["__ovr"] = active["player"].map(lambda name: ovr_map.get(str(name)))
+        active["__starter"] = active["player"].map(lambda name: str(name) in starter_names)
+        active["__core"] = active.apply(
+            lambda r: bool(r.get("__starter"))
+            or (pd.notna(r.get("__ovr")) and int(r.get("__ovr")) >= 82)
+            or int(r["__value"]) >= 40_000_000,
+            axis=1,
+        )
+        active = active.sort_values(["__value", "player"], ascending=[False, True]).head(5)
+
+    total_value = int(active["__value"].sum()) if not active.empty else 0
+    top_value = int(active["__value"].max()) if not active.empty else 0
+    core_count = int(active["__core"].sum()) if not active.empty and "__core" in active.columns else 0
+
+    def player_row(row) -> str:
+        name = html.escape(sval(row, "player"))
+        pos = html.escape(sval(row, "position"))
+        injury = html.escape(sval(row, "injury", "부상"))
+        until_raw = sval(row, "until", "복귀일 미정")
+        until = html.escape(until_raw if until_raw != "-" else "복귀일 미정")
+        photo = sval(row, "tm_photo", "")
+        ovr = row.get("__ovr")
+        ovr_badge = (
+            f"<span style='padding:2px 6px;border-radius:7px;background:#eef4ff;color:#2563eb;"
+            f"font-size:10px;font-weight:950;white-space:nowrap'>OVR {int(ovr)}</span>"
+            if pd.notna(ovr) else ""
+        )
+        photo_html = portrait_photo(
+            photo, color, 64, 76,
+            "box-shadow:0 8px 18px rgba(16,24,40,.13)",
+            12, "2px solid #fff", name,
+        )
+        return (
+            f"<div style='display:grid;grid-template-columns:74px minmax(0,1fr) 112px;gap:12px;"
+            f"align-items:center;padding:10px 0;border-bottom:1px solid #eef1f6;min-height:88px'>"
+            f"{photo_html}"
+            f"<div style='min-width:0'>"
+            f"<div style='font-size:13px;font-weight:950;color:#1a1f2e;white-space:nowrap;"
+            f"overflow:hidden;text-overflow:ellipsis'>{name}</div>"
+            f"<div style='display:flex;gap:6px;align-items:center;margin-top:5px;min-width:0'>"
+            f"<span style='padding:2px 7px;border-radius:7px;background:{color}14;color:{color};"
+            f"font-size:10px;font-weight:950;white-space:nowrap'>{pos}</span>"
+            f"{ovr_badge}"
+            f"<span style='font-size:11px;color:#697386;font-weight:800;white-space:nowrap;"
+            f"overflow:hidden;text-overflow:ellipsis'>{injury}</span>"
+            f"</div></div>"
+            f"<div style='text-align:right;font-size:11px;font-weight:950;color:#ef4444;"
+            f"white-space:nowrap'>{until}</div>"
+            f"</div>"
+        )
+
+    if active.empty:
+        rows_html = (
+            "<div style='height:132px;display:flex;align-items:center;justify-content:center;"
+            "border:1px dashed #dbe5df;border-radius:13px;background:#fbfdfc;color:#16a34a;"
+            "font-size:14px;font-weight:950'>현재 등록된 부상자 없음</div>"
+        )
+        risk_label = "정상"
+        risk_caption = "가용 전력 정상"
+        risk_color = "#16a34a"
+    elif core_count >= 2 or top_value >= 80_000_000 or total_value >= 150_000_000:
+        rows_html = "".join(player_row(r) for _, r in active.iterrows())
+        risk_label = "비상"
+        risk_caption = f"주전/핵심 결장 {core_count}명"
+        risk_color = "#dc2626"
+    elif core_count >= 1 or total_value >= 80_000_000 or len(active) >= 4:
+        rows_html = "".join(player_row(r) for _, r in active.iterrows())
+        risk_label = "높음"
+        risk_caption = f"주전/핵심 결장 {core_count}명"
+        risk_color = "#ef4444"
+    elif total_value >= 25_000_000 or len(active) >= 2:
+        rows_html = "".join(player_row(r) for _, r in active.iterrows())
+        risk_label = "주의"
+        risk_caption = "로테이션 영향"
+        risk_color = "#d97706"
+    else:
+        rows_html = "".join(player_row(r) for _, r in active.iterrows())
+        risk_label = "낮음"
+        risk_caption = "전력 영향 제한적"
+        risk_color = "#16a34a"
+    value_txt = fmt_value(total_value)
+
+    return f"""
+    <div style="background:#fff;border:1px solid #e4e8f0;border-radius:16px;overflow:hidden;
+                box-shadow:0 1px 3px rgba(16,24,40,.04),0 10px 26px rgba(16,24,40,.06)">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;
+                  padding:18px 20px 14px;border-bottom:1px solid #eef1f6">
+        <div>
+          <div style="font-size:11px;font-weight:950;color:{color};letter-spacing:.8px">AVAILABILITY CHECK</div>
+          <div style="font-size:22px;font-weight:950;color:#1a1f2e;margin-top:2px">부상 리포트</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end">
+          <span style="padding:6px 10px;border-radius:999px;background:#fff1f2;color:#ef4444;
+                       font-size:11px;font-weight:950">결장 {len(active)}명</span>
+          <span style="padding:6px 10px;border-radius:999px;background:#f8fafc;color:#697386;
+                       font-size:11px;font-weight:950">체크 {html.escape(last_checked)}</span>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:150px minmax(0,1fr);gap:16px;padding:16px 20px 18px">
+        <div style="border-radius:13px;background:linear-gradient(135deg,{risk_color},#10151c);
+                    padding:15px;color:#fff;min-height:132px;position:relative;overflow:hidden">
+          <div style="position:absolute;right:-34px;top:-44px;width:110px;height:110px;border-radius:50%;
+                      background:rgba(255,255,255,.12)"></div>
+          <div style="font-size:11px;color:rgba(255,255,255,.68);font-weight:900">전력 가용성</div>
+          <div style="font-size:28px;font-weight:950;margin-top:8px;line-height:1">{risk_label}</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.72);font-weight:800;margin-top:10px">
+            {risk_caption} · 결장 가치 {value_txt}
+          </div>
+        </div>
+        <div style="min-width:0">{rows_html}</div>
+      </div>
+    </div>
+    """
 
 
 def team_trait_pcts(team: str, traits: pd.DataFrame) -> list[tuple[str, float]]:
@@ -1448,3 +1643,126 @@ def standings_banner_html(row: pd.Series) -> str:
     """
 
 
+# ── 주장단(캡틴 그룹) — football-lineups (c) 표기 기반 ────────────────────────
+def _norm_cap(s) -> str:
+    return unidecode(str(s)).lower().strip()
+
+
+def build_captains(team: str, fl_df, slots_df, full, n: int = 5) -> list[dict]:
+    """football-lineups (c) 표기 선수를 출전수 순 상위 n명으로 주장단 구성.
+
+    1순위(최다 출전)=정주장, 나머지=부주장. 약식 표기(fl_name)를 slots/full DB와
+    difflib 유사도로 매칭해 정식 이름·사진을 채운다(맨시티 Håland→Haaland 등 보정).
+    """
+    if fl_df is None:
+        return []
+    cap = fl_df[(fl_df["squad"] == team)
+                & fl_df["fl_name"].astype(str).str.contains(r"\(c\)", na=False)].copy()
+    if cap.empty:
+        return []
+    cap["base"] = (cap["fl_name"].astype(str)
+                   .str.replace(r"\s*\(c\)", "", regex=True)
+                   .str.replace(r"\s+(in|out)\d.*", "", regex=True).str.strip())
+    cap["apps_n"] = pd.to_numeric(cap["starts"], errors="coerce").fillna(0)
+    cap = cap.sort_values("apps_n", ascending=False).drop_duplicates("base").head(n)
+
+    sl = slots_df[slots_df["squad"] == team] if slots_df is not None else None
+    fu = full[full["squad"] == team] if full is not None else None
+    sl_players = list(sl["player"]) if sl is not None and not sl.empty else []
+    fu_players = list(fu["player"]) if fu is not None and not fu.empty else []
+
+    def _match(base: str):
+        """base 약식명 → (정식이름, 사진URL). slots(sofa_id) 우선, full(tm_photo) 폴백."""
+        bl = _norm_cap(base).split()[-1]
+        for players, src in ((sl_players, "slots"), (fu_players, "full")):
+            if not players:
+                continue
+            cand = {_norm_cap(p).split()[-1]: p for p in players}
+            hit = difflib.get_close_matches(bl, list(cand), n=1, cutoff=0.7)
+            if not hit:
+                fc = difflib.get_close_matches(_norm_cap(base), [_norm_cap(p) for p in players],
+                                               n=1, cutoff=0.6)
+                player = next((p for p in players if _norm_cap(p) == fc[0]), None) if fc else None
+            else:
+                player = cand[hit[0]]
+            if player:
+                if src == "slots":
+                    row = sl[sl["player"] == player].iloc[0]
+                    frow = fu[fu["player"] == player] if fu is not None else None
+                    tm = frow.iloc[0].get("tm_photo") if frow is not None and not frow.empty else None
+                    return player, _photo(row.get("sofa_id"), tm)
+                row = fu[fu["player"] == player].iloc[0]
+                return player, _photo("", row.get("tm_photo"))
+        return None, ""
+
+    out = []
+    for i, r in enumerate(cap.itertuples(index=False)):
+        player, photo = _match(r.base)
+        name = player or r.base
+        out.append({
+            "name": name, "short": name.split()[-1],
+            "pos": str(r.fl_pos), "apps": int(r.apps_n),
+            "photo": photo, "is_main": i == 0,
+        })
+    return out
+
+
+def captain_group_html(team: str, captains: list[dict]) -> str:
+    """주장단을 오각형으로 배치한 카드. 1번=정주장(골드 ⓒ), 나머지=부주장."""
+    if not captains:
+        return ""
+    tcol = team_color(team)
+    logo = team_logo(team)
+    # 오각형 5점 (정주장=위 꼭지점), 카드 중심 기준 %
+    pts = [(50, 16), (85, 46), (69, 87), (31, 87), (15, 46)][:len(captains)]
+    # SVG 점선 오각형 연결선
+    poly = " ".join(f"{x},{y}" for x, y in pts)
+    svg = (f"<svg viewBox='0 0 100 100' preserveAspectRatio='none' "
+           f"style='position:absolute;inset:0;width:100%;height:100%;opacity:.28'>"
+           f"<polygon points='{poly}' fill='none' stroke='#fff' stroke-width='.4' "
+           f"stroke-dasharray='1.6 1.6'/></svg>")
+    crest = (f"<img src='{logo}' referrerpolicy='no-referrer' "
+             f"onerror=\"this.style.display='none'\" "
+             f"style='width:128px;height:128px;object-fit:contain;opacity:.10'/>") if logo else ""
+
+    cards = []
+    for (x, y), c in zip(pts, captains):
+        main = c.get("is_main")
+        size = 80 if main else 58
+        photo = c.get("photo", "")
+        av = avatar(photo, tcol, size, "flex:none",
+                    ("3px solid #ffd24a" if main else f"2.5px solid {tcol}"))
+        glow = ("box-shadow:0 0 0 5px rgba(255,210,74,.18),0 10px 26px rgba(0,0,0,.4);"
+                if main else "box-shadow:0 8px 20px rgba(0,0,0,.34);")
+        badge = ("<div style='position:absolute;top:-6px;right:-6px;width:26px;height:26px;"
+                 "border-radius:50%;background:linear-gradient(135deg,#ffd24a,#e0a008);"
+                 "color:#3a2a00;font-size:14px;font-weight:950;display:flex;align-items:center;"
+                 "justify-content:center;box-shadow:0 3px 8px rgba(0,0,0,.4);"
+                 "border:2px solid #fff'>C</div>") if main else ""
+        label = ("<span style='background:linear-gradient(135deg,#ffd24a,#e0a008);color:#3a2a00'>"
+                 "주장</span>" if main
+                 else f"<span style='background:rgba(255,255,255,.16);color:#e8ecf3'>부주장</span>")
+        pc_fs = 13 if main else 11.5
+        cards.append(
+            f"<div style='position:absolute;left:{x}%;top:{y}%;transform:translate(-50%,-50%);"
+            f"display:flex;flex-direction:column;align-items:center;gap:6px;width:120px;z-index:2'>"
+            f"<div style='position:relative;{glow}border-radius:50%'>{av}{badge}</div>"
+            f"<div style='font-weight:900;font-size:{pc_fs}px;color:#fff;text-align:center;"
+            f"line-height:1.1;text-shadow:0 1px 4px rgba(0,0,0,.5);white-space:nowrap'>{html.escape(c['short'])}</div>"
+            f"<div style='display:flex;gap:5px;align-items:center'>"
+            f"<span style='font-size:9.5px;font-weight:900;padding:2px 7px;border-radius:6px'>{label}</span>"
+            f"<span style='font-size:9.5px;color:rgba(255,255,255,.66);font-weight:800'>"
+            f"{html.escape(c['pos'])}·{c['apps']}경기</span></div></div>"
+        )
+
+    return (
+        f"<div style='position:relative;height:392px;border-radius:18px;overflow:hidden;"
+        f"background:radial-gradient(circle at 50% 38%,{tcol}cc,#0d1117 78%);"
+        f"border:1px solid rgba(255,255,255,.08);font-family:sans-serif'>"
+        f"<div style='position:absolute;inset:0;display:flex;flex-direction:column;"
+        f"align-items:center;justify-content:center;gap:6px;z-index:1'>"
+        f"{crest}"
+        f"<div style='font-size:10px;font-weight:950;letter-spacing:3px;color:rgba(255,255,255,.4)'>CAPTAINCY</div>"
+        f"</div>"
+        f"{svg}{''.join(cards)}</div>"
+    )

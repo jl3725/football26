@@ -52,10 +52,11 @@ from src.ui.overview import (  # noqa: E402
     competition_results_html, team_info_html, team_logo_box,
     overview_scout_dossier_html, team_ratings,
     donut_card_html, stat_card_html, manager_profile_html,
-    team_snapshot_html, set_piece_discipline_html,
+    team_snapshot_html, set_piece_discipline_html, injury_report_html,
     team_radar_html, ai_scout_report_html, team_tactical_styles, team_improvements,
     form_block_html, xg_block_html, squad_profile_html, team_leaders, leader_card_html,
     team_characteristics, team_traits_html, standings_banner_html,
+    build_captains, captain_group_html,
 )
 from src.ui.player import (  # noqa: E402
     db_player_card_html, player_picker_card_html, selected_player_spotlight_html,
@@ -65,6 +66,7 @@ from src.ui.player import (  # noqa: E402
 from src.ui.pitch import (  # noqa: E402
     team_star_players, star_card_html, squad_depth_html, mark_team_aces,
     placements_from_slots, placements_from_espn, placements_from_bands, espn_main_xi,
+    espn_frequent_xi, recent_form_html, season_workload_html,
     pitch_html, bench_placements, departed_placements, bench_strip_html,
 )
 from src.ui.transfers import (  # noqa: E402
@@ -179,6 +181,7 @@ MANAGER_PROFILES = {
 MANAGER_PROFILES_PATH = Path(__file__).resolve().parent / "data" / "manager_profiles_2025_2026.json"
 TEAM_UNIT_METRICS_PATH = Path(__file__).resolve().parent / "data" / "team_unit_metrics_2025_2026.csv"
 STATBUNKER_TEAM_STATS_PATH = Path(__file__).resolve().parent / "data" / "statbunker_team_stats_2025_2026.csv"
+TRANSFERMARKT_INJURIES_PATH = Path(__file__).resolve().parent / "data" / "transfermarkt_injuries_2025_2026.csv"
 
 
 @st.cache_data
@@ -210,6 +213,13 @@ def load_statbunker_team_stats(_file_key: tuple[int, int] = (0, 0)) -> pd.DataFr
     if not STATBUNKER_TEAM_STATS_PATH.exists():
         return None
     return pd.read_csv(STATBUNKER_TEAM_STATS_PATH).set_index("squad")
+
+
+@st.cache_data
+def load_transfermarkt_injuries(_file_key: tuple[int, int] = (0, 0)) -> pd.DataFrame | None:
+    if not TRANSFERMARKT_INJURIES_PATH.exists():
+        return None
+    return pd.read_csv(TRANSFERMARKT_INJURIES_PATH)
 
 
 def file_cache_key(path: Path) -> tuple[int, int]:
@@ -514,11 +524,15 @@ except Exception:
     _espn_all = None
 
 placements = None
-_espn_form, _espn_rows = espn_main_xi(team, _espn_all)
-if _espn_form and _espn_rows:
-    formation = _espn_form
-    placements = placements_from_espn(team, _espn_rows, formation, full, pct)
+_recent_form = None
+_recent_placements = None
+# 시즌 평균 XI = 주 포메이션에서 슬롯별 최빈 선발 선수 (전 탭 공통 canonical XI)
+_season_form, placements = espn_frequent_xi(team, _espn_all, full, pct)
+if placements:
+    formation = _season_form
     _form_source = "ESPN 실측"
+    # 최근 5경기 XI (오른쪽 보드용)
+    _recent_form, _recent_placements = espn_frequent_xi(team, _espn_all, full, pct, last_n=5)
 elif has_real:
     placements = placements_from_slots(team, slots_df, full, pct, formation)
     _form_source = "실측 슬롯"
@@ -551,6 +565,7 @@ _standings = load_standings()
 _traits = team_traits_table(DATA_PATH.stat().st_mtime)
 _statbunker_team_stats = load_statbunker_team_stats(file_cache_key(STATBUNKER_TEAM_STATS_PATH))
 _unit_metrics = load_team_unit_metrics(file_cache_key(TEAM_UNIT_METRICS_PATH))
+_transfermarkt_injuries = load_transfermarkt_injuries(file_cache_key(TRANSFERMARKT_INJURIES_PATH))
 _str, _weak = team_characteristics(team, _traits)     # _weak: Transfer 탭에서 재사용
 _fine_map = dict(zip(dff["player"], dff["fl_group"]))
 
@@ -648,6 +663,15 @@ for _r in _rep.itertuples(index=False):
 SCHEDULE_PATH = Path(__file__).resolve().parent / "data" / "schedule_2025_2026.csv"
 TRANSFERS_PATH = Path(__file__).resolve().parent / "data" / "transfers_2025_2026.csv"
 FL_MATCHES_PATH = Path(__file__).resolve().parent / "data" / "fl_matches_2025_2026.csv"
+FL_POSITIONS_PATH = Path(__file__).resolve().parent / "data" / "fl_positions_2025_2026.csv"
+
+
+@st.cache_data
+def load_fl_positions() -> pd.DataFrame | None:
+    """football-lineups 팀별 선수 포지션·출전수·주장(c) 표기."""
+    if not FL_POSITIONS_PATH.exists():
+        return None
+    return pd.read_csv(FL_POSITIONS_PATH)
 
 
 @st.cache_data
@@ -719,7 +743,7 @@ if _nav == NAV[0]:
     _fl_matches_top = load_fl_matches()
     _iframe(
         team_info_html(team, _manager_profile, _ti_rank, _ti_pts, _ti_vrank, _fl_matches_top),
-        height=322,
+        height=372,
     )
 
     _iframe(
@@ -727,7 +751,7 @@ if _nav == NAV[0]:
             team, _standings, _ratings, _manager_profile,
             _statbunker_team_stats, _unit_metrics
         ),
-        height=318,
+        height=342,
     )
 
     _snapshot_html = team_snapshot_html(team, _statbunker_team_stats, _unit_metrics)
@@ -745,18 +769,63 @@ if _nav == NAV[0]:
         st.markdown("<div style='margin-top:12px'></div>", unsafe_allow_html=True)
         _iframe(manager_profile_html(team, _manager_profile, _standings), height=396)
 
+    _starter_names = {p.get("full") for p in (placements or []) if p.get("full")}
+    _injury_html = injury_report_html(team, _transfermarkt_injuries, _ovr_map, _starter_names)
+    _injury_count = 0
+    if _transfermarkt_injuries is not None and "squad" in _transfermarkt_injuries.columns:
+        _team_injuries = _transfermarkt_injuries[_transfermarkt_injuries["squad"].astype(str) == team]
+        if "active" in _team_injuries.columns:
+            _team_injuries = _team_injuries[
+                _team_injuries["active"].astype(str).str.lower().isin({"true", "1", "yes", "y"})
+            ]
+        _injury_count = len(_team_injuries)
+    _injury_height = max(292, 136 + min(max(_injury_count, 1), 5) * 92)
+    st.markdown("<div style='margin-top:12px'></div>", unsafe_allow_html=True)
+    _iframe(_injury_html, height=_injury_height)
+
     _stars = team_star_players(team, full, _display_pos_map, _sid_all, _ovr_map, n=5)
     if _stars:
         st.markdown("<div style='margin-top:10px'></div>", unsafe_allow_html=True)
         #sec_title("핵심 선수", "AI 종합 평점(ss_rating) 상위 5명 · OVR=객관 평점 환산")
         _iframe(_grid([star_card_html(_sp) for _sp in _stars], 5), height=276)
 
-    # 포메이션 & 전술 구조 — 주전 XI 보드 + 벤치 (ESPN 실측 주 포메이션의 최근 XI)
+    # ── 주장단 (캡틴 그룹) — football-lineups (c) 기록 · 오각형 배치 ──
+    _captains = build_captains(team, load_fl_positions(), slots_df, full, n=5)
+    if _captains:
+        st.markdown("<div style='margin-top:16px'></div>", unsafe_allow_html=True)
+        sec_title("주장단", "주장 완장(ⓒ) 기록 · 출전수 순 · 위 꼭지점=정주장")
+        _iframe(captain_group_html(team, _captains), height=410)
+
+    # 포메이션 & 전술 구조 — 시즌 평균 XI(좌) + 최근 5경기 XI(우)
     st.markdown("<div style='margin-top:16px'></div>", unsafe_allow_html=True)
-    sec_title(f"포메이션 & 전술 구조 · {formation}",
-              f"{_form_source} · 주 포메이션의 최근 선발 XI · 색=라인(🔴공격 🟠중원 🔵수비 🟢GK)")
+    sec_title("포메이션 & 전술 구조",
+              f"{_form_source} · 슬롯별 최빈 선발 XI · 색=라인(🔴공격 🟠중원 🔵수비 🟢GK)")
     st.caption("토큰에 호버하면 강점 지표가 라벨과 함께 표시됩니다.")
-    st.components.v1.html(pitch_html(placements), height=720)
+    _pcol1, _pcol2 = st.columns(2)
+    with _pcol1:
+        st.markdown(f"<div style='font-size:13px;font-weight:800;color:#1a1f2e;margin-bottom:4px'>"
+                    f"📋 시즌 평균 XI <span style='color:#8a93a5;font-weight:700'>· {formation}</span></div>",
+                    unsafe_allow_html=True)
+        st.components.v1.html(pitch_html(placements), height=700)
+        _wl_html = season_workload_html(team, _espn_all, full, top=10)
+        if _wl_html:
+            _iframe(_wl_html, height=10 * 44 + 60)
+    with _pcol2:
+        if _recent_placements:
+            st.markdown(f"<div style='font-size:13px;font-weight:800;color:#1a1f2e;margin-bottom:4px'>"
+                        f"🔥 최근 5경기 XI <span style='color:#8a93a5;font-weight:700'>· {_recent_form}</span></div>",
+                        unsafe_allow_html=True)
+            st.components.v1.html(pitch_html(_recent_placements), height=700)
+            _rf_html = recent_form_html(
+                team, _espn_all,
+                load_espn_subs(ESPN_SUBS_PATH.stat().st_mtime if ESPN_SUBS_PATH.exists() else 0.0),
+                full, last_n=5)
+            if _rf_html:
+                _iframe(_rf_html, height=min(10, len(placements)) * 44 + 60)
+        else:
+            st.markdown("<div style='font-size:13px;font-weight:800;color:#1a1f2e;margin-bottom:4px'>"
+                        "🔥 최근 5경기 XI</div>", unsafe_allow_html=True)
+            st.info("최근 경기 라인업 데이터가 부족합니다.")
     if bench_pls:
         n_rows = max(1, (len(bench_pls) + 5) // 6)
         st.components.v1.html(bench_strip_html(bench_pls), height=62 + n_rows * 112, scrolling=False)
@@ -1297,4 +1366,3 @@ elif _nav == NAV[6]:
             height=_nrows * 158 + 8, scrolling=False)
     if len(_d) > _LIMIT:
         st.caption(f"… 외 {len(_d) - _LIMIT}명 — 필터를 좁히면 더 정확히 찾을 수 있어요.")
-
