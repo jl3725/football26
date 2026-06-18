@@ -1,0 +1,39 @@
+name: Daily News Fetch
+
+# 매일 06:10 UTC(한국 15:10)에 ESPN+RSS 뉴스를 수집·번역해 data/news.db에 누적 커밋.
+# 수동 실행도 가능(workflow_dispatch).
+on:
+  schedule:
+    - cron: "10 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install requests feedparser deep-translator
+
+      - name: Fetch & store news
+        run: python scripts/fetch_news_daily.py
+
+      - name: Commit updated news.db
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/news.db
+          if git diff --staged --quiet; then
+            echo "변경 없음 — 커밋 생략"
+          else
+            git commit -m "chore(news): 일일 뉴스 수집 [skip ci]"
+            git push
+          fi
