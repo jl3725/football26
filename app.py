@@ -51,7 +51,7 @@ from src.ui.metrics import (  # noqa: E402
 from src.ui.overview import (  # noqa: E402
     TEAM_INFO, TEAM_TRAITS, _competition_label, _cup_stage,
     competition_results_html, team_info_html, team_logo_box,
-    overview_scout_dossier_html, team_ratings,
+    overview_scout_dossier_html, team_ratings, transfer_ticker_html,
     donut_card_html, stat_card_html, manager_profile_html, derive_manager_tactics,
     team_snapshot_html, set_piece_discipline_html, injury_report_html,
     team_radar_html, ai_scout_report_html, team_tactical_styles, team_improvements,
@@ -546,54 +546,105 @@ with st.sidebar:
 # ── 전 탭 공통 상태바 — 현재 시각 + 풋볼 캘린더 컨텍스트(월드컵·이적시장 등) ──
 # 실제 날짜(datetime.now())로 진행 중/예정 자동 판정. 날짜는 검증 후 조정 가능.
 STATUS_EVENTS = [
-    # (이름, 시작, 종료, 아이콘, kind: event/window/kickoff)
+    # 폴백용 기본값 — 실제 이벤트는 data/calendar_events.csv 에서 로드(없으면 이 값 사용)
     ("2026 FIFA 월드컵", date(2026, 6, 11), date(2026, 7, 19), "🌍", "event"),
     ("EPL 여름 이적시장", date(2026, 6, 16), date(2026, 9, 1), "🔁", "window"),
     ("EPL 26/27 개막", date(2026, 8, 14), date(2026, 8, 14), "⚽", "kickoff"),
 ]
+CALENDAR_PATH = Path(__file__).resolve().parent / "data" / "calendar_events.csv"
 
 
-def status_bar_html() -> str:
+@st.cache_data
+def load_calendar_events(_mtime: float = 0.0):
+    """data/calendar_events.csv → [(name, start_date, end_date, icon, kind)].
+    파일에 행만 추가하면 상태바에 자동 반영. 파일 없거나 오류면 STATUS_EVENTS 폴백."""
+    if not CALENDAR_PATH.exists():
+        return STATUS_EVENTS
+    try:
+        df = pd.read_csv(CALENDAR_PATH)
+        out = []
+        for _, r in df.iterrows():
+            out.append((
+                str(r["name"]).strip(),
+                pd.to_datetime(r["start"]).date(),
+                pd.to_datetime(r["end"]).date(),
+                str(r.get("icon", "") or "").strip(),
+                str(r.get("kind", "event") or "event").strip(),
+            ))
+        return out or STATUS_EVENTS
+    except Exception:
+        return STATUS_EVENTS
+
+
+def status_bar_html(events=None) -> str:
     now = datetime.now()
     today = now.date()
+    if events is None:
+        events = STATUS_EVENTS
     chips = []
-    for name, start, end, icon, kind in STATUS_EVENTS:
+    for name, start, end, icon, kind in events:
+        span = max(1, (end - start).days)
         if start <= today <= end:
+            pct = 100 if kind == "kickoff" else int(round((today - start).days / span * 100))
+            pct = max(4, min(100, pct))
             if kind == "window":
                 d = (end - today).days
-                lab = f"{name} 열림" + (f" · 마감 D-{d}" if d <= 60 else "")
+                status = f"마감 D-{d}" if d > 0 else "오늘 마감"
+            elif kind == "kickoff":
+                status = "오늘 개막"
             else:
-                lab = f"{name} 진행 중"
-            chips.append((icon, lab, "#34d399"))          # 진행 중 = 초록
-        elif today < start and (start - today).days <= 21:
-            chips.append((icon, f"{name} D-{(start - today).days}", "#fbbf24"))  # 임박 = 노랑
+                status = "진행 중"
+            chips.append((icon, name, status, "#34d399", pct, True))     # 진행 중 = 초록 + 진행률
+        elif today < start and (start - today).days <= 30:
+            chips.append((icon, name, f"D-{(start - today).days}", "#fbbf24", 0, False))  # 임박 = 노랑
     chip_html = "".join(
-        f"<span style='display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.1);"
-        f"color:{c};border:1px solid {c}55;border-radius:13px;padding:3px 11px;font-size:11.5px;"
-        f"font-weight:700;white-space:nowrap'>{icon} {lab}</span>" for icon, lab, c in chips
+        "<div style='display:flex;flex-direction:column;gap:4px;background:rgba(255,255,255,.06);"
+        f"border:1px solid {c}44;border-radius:12px;padding:6px 12px;min-width:148px'>"
+        "<div style='display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:800;color:#fff;white-space:nowrap'>"
+        f"<span>{icon}</span><span>{name}</span>"
+        f"<span style='margin-left:auto;font-size:10px;font-weight:950;color:{c}'>{status}</span></div>"
+        + (f"<div style='height:4px;border-radius:999px;background:rgba(255,255,255,.12);overflow:hidden'>"
+           f"<div style='height:100%;width:{pct}%;background:{c};border-radius:999px'></div></div>" if active else "")
+        + "</div>"
+        for icon, name, status, c, pct, active in chips
     ) or "<span style='color:rgba(255,255,255,.45);font-size:11.5px'>예정된 주요 일정 없음</span>"
-    bar = (
-        "<div style='display:flex;align-items:center;justify-content:space-between;gap:12px;"
-        "flex-wrap:wrap;background:linear-gradient(90deg,#0c1322,#1a2942);border:1px solid rgba(255,255,255,.08);"
-        "border-radius:12px;padding:9px 16px;font-family:-apple-system,BlinkMacSystemFont,sans-serif'>"
-        "<div style='font-size:12.5px;font-weight:800;color:#fff'>🟢 LIVE "
-        "<span id='clk' style='color:rgba(255,255,255,.6);font-weight:600;margin-left:6px;"
-        "font-variant-numeric:tabular-nums'>--</span></div>"
-        f"<div style='display:flex;gap:7px;flex-wrap:wrap'>{chip_html}</div></div>"
-    )
-    # 브라우저에서 매초 갱신되는 실시간 시계 (서버 rerun 없음)
+    bar = f"""
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Teko:wght@500;600&family=Oswald:wght@600&display=swap');
+    @keyframes sbpulse {{ 0%{{box-shadow:0 0 0 0 rgba(255,59,71,.6)}} 70%{{box-shadow:0 0 0 7px rgba(255,59,71,0)}} 100%{{box-shadow:0 0 0 0 rgba(255,59,71,0)}} }}
+    </style>
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;
+                background:linear-gradient(100deg,#0a0f1a,#16233c);border:1px solid rgba(255,255,255,.09);
+                border-radius:13px;padding:9px 16px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="display:flex;align-items:center;gap:6px;background:rgba(255,59,71,.14);border:1px solid rgba(255,59,71,.4);
+                    border-radius:8px;padding:4px 9px">
+          <span style="width:8px;height:8px;border-radius:50%;background:#ff3b47;animation:sbpulse 1.6s infinite"></span>
+          <span style="font-family:'Oswald',sans-serif;font-size:11px;font-weight:600;letter-spacing:1.5px;color:#ff6068">LIVE</span>
+        </div>
+        <div style="display:flex;align-items:baseline;gap:9px">
+          <span id="clk-time" style="font-family:'Teko',sans-serif;font-style:italic;font-size:26px;font-weight:600;
+                color:#fff;line-height:1;letter-spacing:1px;font-variant-numeric:tabular-nums">--:--:--</span>
+          <span id="clk-date" style="font-family:'Oswald',sans-serif;font-size:11px;font-weight:600;letter-spacing:.8px;
+                color:rgba(255,255,255,.6)">----.--.-- ---</span>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">{chip_html}</div>
+    </div>"""
     script = (
-        "<script>(function(){var D=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];"
+        "<script>(function(){var D=['SUN','MON','TUE','WED','THU','FRI','SAT'];"
         "function z(n){return (n<10?'0':'')+n;}"
-        "function t(){var d=new Date();var e=document.getElementById('clk');if(!e)return;"
-        "e.textContent=d.getFullYear()+'.'+z(d.getMonth()+1)+'.'+z(d.getDate())+' ('+D[d.getDay()]+') '"
-        "+z(d.getHours())+':'+z(d.getMinutes())+':'+z(d.getSeconds());}"
+        "function t(){var d=new Date();var T=document.getElementById('clk-time'),"
+        "E=document.getElementById('clk-date');if(!T)return;"
+        "T.textContent=z(d.getHours())+':'+z(d.getMinutes())+':'+z(d.getSeconds());"
+        "if(E)E.textContent=d.getFullYear()+'.'+z(d.getMonth()+1)+'.'+z(d.getDate())+' '+D[d.getDay()];}"
         "t();setInterval(t,1000);})();</script>"
     )
     return bar + script
 
 
-_iframe(status_bar_html(), height=58)
+_iframe(status_bar_html(load_calendar_events(
+    CALENDAR_PATH.stat().st_mtime if CALENDAR_PATH.exists() else 0.0)), height=72)
 
 # 메인 상단 팀 배지 헤더 (사이드바에서 team 확정 후 렌더) — 로고 <img> 확실히 뜨도록 iframe
 _iframe(team_header_html(team), height=72)
@@ -887,6 +938,10 @@ def _season_label(sid) -> str:
 # ── 섹션 렌더 — 사이드바 _nav 선택에 따라 한 섹션만 표시 ──────────────────────
 # 1: 팀 개요 — 레이팅 도넛 + 스탯 카드 + 핵심 선수
 if _nav == NAV[0]:
+    _ticker_tf = load_transfers(TRANSFERS_PATH.stat().st_mtime if TRANSFERS_PATH.exists() else 0.0)
+    _ticker_html = transfer_ticker_html(team, _ticker_tf)
+    if _ticker_html:
+        _iframe(_ticker_html, height=46)
     _manager_profiles = load_manager_profiles(
         MANAGER_PROFILES_PATH.stat().st_mtime if MANAGER_PROFILES_PATH.exists() else 0.0
     )

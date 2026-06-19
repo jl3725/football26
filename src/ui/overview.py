@@ -10,6 +10,9 @@ from __future__ import annotations
 import difflib
 import html
 import re
+from functools import lru_cache
+from pathlib import Path
+from urllib.parse import quote
 
 import pandas as pd
 from unidecode import unidecode
@@ -722,6 +725,129 @@ STADIUM_SILHOUETTE_TYPE = {
 }
 
 
+KIT_DATA_PATH = Path(__file__).resolve().parents[2] / "data" / "team_home_kits_2025_2026.csv"
+
+
+@lru_cache(maxsize=1)
+def _team_home_kits() -> dict[str, dict]:
+    if not KIT_DATA_PATH.exists():
+        return {}
+    try:
+        df = pd.read_csv(KIT_DATA_PATH).fillna("")
+    except Exception:
+        return {}
+    out: dict[str, dict] = {}
+    for _, row in df.iterrows():
+        team = str(row.get("team", "")).strip()
+        if not team:
+            continue
+        out[team] = {k: str(row.get(k, "")).strip() for k in df.columns}
+    return out
+
+
+def _kit_svg_data_uri(team: str, primary: str, secondary: str, accent: str, pattern: str) -> str:
+    primary = primary or team_color(team)
+    secondary = secondary or "#ffffff"
+    accent = accent or secondary
+    pattern = (pattern or "solid").lower()
+    stripes = ""
+    if pattern == "stripes":
+        stripes = f"""
+        <rect x="37" y="18" width="18" height="72" fill="{secondary}" opacity=".98"/>
+        <rect x="74" y="18" width="18" height="72" fill="{secondary}" opacity=".98"/>
+        """
+    elif pattern == "halves":
+        stripes = f"<rect x=\"64\" y=\"16\" width=\"45\" height=\"76\" fill=\"{secondary}\" opacity=\".96\"/>"
+    elif pattern == "hoops":
+        stripes = "".join(
+            f"<rect x='24' y='{y}' width='82' height='9' rx='2' fill='{secondary}' opacity='.96'/>"
+            for y in (26, 45, 64)
+        )
+    elif pattern == "sash":
+        stripes = f"<path d=\"M28 20 L48 16 L105 78 L91 92 Z\" fill=\"{secondary}\" opacity=\".94\"/>"
+    elif pattern == "sleeves":
+        stripes = f"""
+        <path d="M25 21 L5 36 L18 53 L32 43 Z" fill="{secondary}" opacity=".98"/>
+        <path d="M107 21 L127 36 L114 53 L100 43 Z" fill="{secondary}" opacity=".98"/>
+        """
+    elif pattern == "center":
+        stripes = f"<rect x=\"56\" y=\"17\" width=\"17\" height=\"74\" rx=\"3\" fill=\"{secondary}\" opacity=\".95\"/>"
+    elif pattern == "pinstripe":
+        stripes = "".join(
+            f"<rect x='{x}' y='19' width='3' height='69' rx='1.5' fill='{secondary}' opacity='.5'/>"
+            for x in (39, 52, 65, 78, 91)
+        )
+    elif pattern == "diagonal":
+        stripes = f"<path d=\"M92 16 L108 24 L42 92 L27 92 Z\" fill=\"{secondary}\" opacity=\".88\"/>"
+
+    svg = f"""
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 132 116">
+      <defs>
+        <linearGradient id="shade" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#ffffff" stop-opacity=".28"/>
+          <stop offset=".42" stop-color="#ffffff" stop-opacity="0"/>
+          <stop offset="1" stop-color="#000000" stop-opacity=".18"/>
+        </linearGradient>
+        <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%">
+          <feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#111827" flood-opacity=".28"/>
+        </filter>
+      </defs>
+      <g filter="url(#shadow)">
+        <path d="M45 13 L66 20 L87 13 L108 21 L127 37 L113 56 L102 49 L102 92
+                 Q102 99 95 99 L37 99 Q30 99 30 92 L30 49 L19 56 L5 37 L24 21 Z"
+              fill="{primary}"/>
+        {stripes}
+        <path d="M45 13 Q66 31 87 13 L78 20 Q66 26 54 20 Z" fill="{accent}" opacity=".96"/>
+        <path d="M32 47 L32 91 Q32 97 38 97 H94 Q100 97 100 91 L100 47"
+              fill="none" stroke="rgba(255,255,255,.24)" stroke-width="2"/>
+        <path d="M24 21 L45 13 M87 13 L108 21" stroke="rgba(255,255,255,.34)" stroke-width="2"/>
+        <path d="M5 37 L19 56 M127 37 L113 56" stroke="rgba(0,0,0,.18)" stroke-width="2"/>
+        <path d="M45 13 L66 20 L87 13 L108 21 L127 37 L113 56 L102 49 L102 92
+                 Q102 99 95 99 L37 99 Q30 99 30 92 L30 49 L19 56 L5 37 L24 21 Z"
+              fill="url(#shade)"/>
+      </g>
+    </svg>
+    """
+    return "data:image/svg+xml;charset=utf-8," + quote(svg)
+
+
+def team_home_kit_mark(team: str, color: str) -> str:
+    """Home-kit visual for the scout dossier mark.
+
+    Uses scraped/curated image_url when present. Falls back to a generated kit
+    silhouette so the UI still looks like a kit even when a source blocks hotlinking.
+    """
+    kit = _team_home_kits().get(team, {})
+    image_url = str(kit.get("image_url", "")).strip()
+    primary = kit.get("primary", color)
+    secondary = kit.get("secondary", "#ffffff")
+    accent = kit.get("accent", secondary)
+    pattern = kit.get("pattern", "solid")
+    src = image_url if image_url.startswith("http") else _kit_svg_data_uri(team, primary, secondary, accent, pattern)
+    initial = html.escape(team.strip()[0].upper() if team.strip() else "?")
+    img = (
+        f"<img src=\"{html.escape(src)}\" alt=\"{html.escape(team)} home kit\" loading=\"lazy\" "
+        f"referrerpolicy=\"no-referrer\" onerror=\"this.style.display='none';this.nextElementSibling.style.display='flex'\" "
+        f"style=\"position:absolute;left:5px;right:5px;bottom:0;width:60px;height:58px;object-fit:contain;"
+        f"filter:drop-shadow(0 10px 16px rgba(15,23,42,.20));z-index:3\"/>"
+        f"<div style=\"display:none;position:absolute;inset:0;align-items:center;justify-content:center;"
+        f"font-size:29px;font-weight:950;color:{color};z-index:3\">{initial}</div>"
+    )
+    return (
+        f"<div style=\"position:relative;width:70px;height:70px;border-radius:17px;overflow:hidden;"
+        f"background:linear-gradient(135deg,rgba(255,255,255,.98),rgba(255,255,255,.70));"
+        f"border:1px solid rgba(255,255,255,.35);box-shadow:0 10px 26px rgba(0,0,0,.18);flex:none\">"
+        f"<div style=\"position:absolute;inset:-16px;background:repeating-linear-gradient(135deg,"
+        f"{color} 0 8px,transparent 8px 15px);opacity:.16\"></div>"
+        f"<div style=\"position:absolute;left:9px;top:8px;font-size:9px;font-weight:950;color:{color};"
+        f"letter-spacing:1px;z-index:4\">HOME</div>"
+        f"{img}"
+        f"<div style=\"position:absolute;right:8px;bottom:8px;width:18px;height:18px;border-radius:50%;"
+        f"background:{color};border:3px solid rgba(255,255,255,.92);z-index:4\"></div>"
+        f"</div>"
+    )
+
+
 def stadium_silhouette_svg(team: str) -> str:
     """Low-opacity stadium line-art watermark for the scout dossier."""
     typ = STADIUM_SILHOUETTE_TYPE.get(team, "modern")
@@ -776,6 +902,124 @@ def stadium_silhouette_svg(team: str) -> str:
     """
 
 
+def _ticker_fee(fee_text) -> str | None:
+    """이적료 텍스트 → 표시용. 임대복귀(End of loan)는 None(제외)."""
+    import re as _re
+    s = str(fee_text or "").strip()
+    low = s.lower()
+    if low.startswith("end of loan"):
+        return None
+    if "free" in low:
+        return "자유계약"
+    if low.startswith("loan fee"):
+        m = _re.search(r"€[\d.]+[mk]?", s)
+        return f"임대료 {m.group(0)}" if m else "임대"
+    if low in ("loan transfer", "loan"):
+        return "임대"
+    if s.startswith("€"):
+        return s
+    return ""  # '-' 등 불명 — 이적료 없이 표기
+
+
+def _current_transfer_window(today=None) -> tuple:
+    """오늘 날짜 → (시즌라벨 '26/27', season_id 2026, window 'summer'/'winter', 한글창명).
+    이적창 밖이면 (라벨, season_id, None, None). 매치 캘린더가 아닌 이적시장 캘린더 기준."""
+    import datetime
+    if today is None:
+        today = datetime.date.today()
+    y, m, d = today.year, today.month, today.day
+    # 여름 이적창: 6/14 ~ 9/1  → 해당 연도 시작 시즌
+    if (m == 6 and d >= 14) or m in (7, 8) or (m == 9 and d == 1):
+        return (f"{y % 100:02d}/{(y + 1) % 100:02d}", y, "summer", "여름")
+    # 겨울 이적창: 1/1 ~ 2/3   → 전년 시작 시즌
+    if m == 1 or (m == 2 and d <= 3):
+        return (f"{(y - 1) % 100:02d}/{y % 100:02d}", y - 1, "winter", "겨울")
+    # 닫힘 — 다음 창 안내용 라벨(다가오는 여름 기준)
+    season_y = y if m >= 7 else y - 1
+    return (f"{season_y % 100:02d}/{(season_y + 1) % 100:02d}", season_y, None, None)
+
+
+def transfer_ticker_html(team: str, transfers: pd.DataFrame | None, today=None) -> str:
+    """Overview 상단 이적 뉴스 티커. 현재 시즌·이적창 자동 감지 → 그 창 이적만.
+    창이 닫혔거나 데이터가 없으면 안내 메시지로 폴백."""
+    if transfers is None or transfers.empty or "squad" not in transfers.columns:
+        return ""
+    color = team_color(team)
+    label, season_id, window, win_ko = _current_transfer_window(today)
+
+    def bar(left_label: str, body_html: str, animate: bool = True, dur: int = 60) -> str:
+        if animate:
+            track = (f"<div style=\"display:inline-flex;white-space:nowrap;align-items:center;"
+                     f"animation:tkr {dur}s linear infinite\" "
+                     f"onmouseover=\"this.style.animationPlayState='paused'\" "
+                     f"onmouseout=\"this.style.animationPlayState='running'\">"
+                     f"<span style='display:inline-flex'>{body_html}</span>"
+                     f"<span style='display:inline-flex' aria-hidden='true'>{body_html}</span></div>")
+        else:
+            track = (f"<div style='display:flex;align-items:center;height:38px;padding-left:16px;"
+                     f"color:rgba(255,255,255,.82);font-weight:700'>{body_html}</div>")
+        return f"""
+    <div style="display:flex;align-items:center;background:linear-gradient(135deg,{color},#10151c);
+                border-radius:12px;overflow:hidden;box-shadow:0 6px 18px rgba(16,24,40,.16);
+                font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12.5px">
+      <div style="flex:none;display:flex;align-items:center;gap:6px;padding:0 13px;height:38px;
+                  background:rgba(0,0,0,.28);color:#fff;font-weight:950;font-size:11px;letter-spacing:.4px;
+                  border-right:1px solid rgba(255,255,255,.14);white-space:nowrap">{left_label}</div>
+      <div style="flex:1;overflow:hidden;position:relative">{track}</div>
+    </div>
+    <style>@keyframes tkr {{ from {{ transform:translateX(0) }} to {{ transform:translateX(-50%) }} }}</style>
+    """
+
+    # 이적창 닫힘 → 폴백
+    if window is None:
+        return bar("📰 이적 시장",
+                   f"현재 이적시장은 닫혀 있습니다 · 다음 {html.escape(label)} 여름 이적시장 오픈 예정",
+                   animate=False)
+
+    left = f"📰 {html.escape(label)} {html.escape(win_ko)} 이적"
+    df = transfers[transfers["squad"].astype(str) == team].copy()
+    if "season_id" in df.columns:
+        df = df[pd.to_numeric(df["season_id"], errors="coerce") == season_id]
+    if "window" in df.columns:
+        df = df[df["window"].astype(str).str.lower() == window]
+    if df.empty:
+        return bar(left, f"{html.escape(label)} {html.escape(win_ko)} 이적시장 소식이 아직 없습니다", animate=False)
+
+    df["_fee_num"] = pd.to_numeric(df.get("fee_eur"), errors="coerce").fillna(0)
+    _ACAD = ("u21", "u23", "u19", "u18", "youth", "academy")
+    items = []
+    for _, r in df.sort_values("_fee_num", ascending=False).iterrows():
+        if len(items) >= 18:   # 헤드라인은 이적료 상위만
+            break
+        club = str(r.get("club") or "").strip()
+        if any(a in club.lower() for a in _ACAD):
+            continue
+        fee = _ticker_fee(r.get("fee_text"))
+        if not fee:   # 임대복귀(None)·이적료 불명('-') 제외 — 헤드라인은 실거래만
+            continue
+        player = str(r.get("player") or "").strip()
+        if not player:
+            continue
+        is_in = str(r.get("direction") or "").lower() == "in"
+        tag = "IN" if is_in else "OUT"
+        tcol = "#16a34a" if is_in else "#ef4444"
+        if is_in:
+            body = f"{html.escape(club)}에서 {html.escape(fee)} 영입" if fee else f"{html.escape(club)}에서 영입"
+        else:
+            body = f"{html.escape(club)}(으)로 {html.escape(fee)} 이적" if fee else f"{html.escape(club)}(으)로 이적"
+        items.append(
+            "<span style='display:inline-flex;align-items:center;gap:8px;margin:0 26px'>"
+            f"<span style='font-size:9.5px;font-weight:950;color:#fff;background:{tcol};"
+            f"border-radius:5px;padding:2px 6px;letter-spacing:.5px'>{tag}</span>"
+            f"<b style='color:#fff;font-weight:900'>{html.escape(player)}</b>"
+            f"<span style='color:rgba(255,255,255,.78)'>{body}</span>"
+            f"<span style='color:{tcol};font-weight:900'>· 완료</span></span>"
+        )
+    if not items:
+        return bar(left, f"{html.escape(label)} {html.escape(win_ko)} 이적시장 소식이 아직 없습니다", animate=False)
+    return bar(left, "".join(items), animate=True, dur=max(18, len(items) * 6))
+
+
 def overview_scout_dossier_html(team: str, standings: pd.DataFrame | None,
                                 ratings: list[tuple], manager: dict | None,
                                 statbunker: pd.DataFrame | None,
@@ -798,6 +1042,8 @@ def overview_scout_dossier_html(team: str, standings: pd.DataFrame | None,
         f"background:{color};opacity:.8\"></div>"
         f"</div>"
     )
+
+    scout_mark = team_home_kit_mark(team, color)
 
     rank = points = record = gd_str = "-"
     gf = ga = "-"
