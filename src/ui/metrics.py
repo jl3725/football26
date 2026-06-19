@@ -10,7 +10,7 @@ import math
 
 import pandas as pd
 
-from similar_players import FEATURES
+from ..similar_players import FEATURES
 from .common import LABELS
 
 

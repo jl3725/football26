@@ -1,9 +1,14 @@
 """
 Build derived team unit metrics from the current 2025/26 player dataset.
 
-This is intentionally stdlib-only so it can run even before the project venv is
-ready. It creates data/team_unit_metrics_2025_2026.csv, which the Streamlit app
-uses for more explainable Attack/Midfield/Defense indices.
+League-focused metrics (Attack/Mid/Def indices etc.) are computed relative to
+other EPL teams.
+
+Additionally (Option A), we attach multi-competition context from fl_matches:
+- european_games, domestic_cup_games, extra_games, total_games_approx
+
+This allows the UI to understand schedule load for European/cup teams (Arsenal,
+Villa, etc.) without polluting the core league percentiles.
 """
 from __future__ import annotations
 
@@ -139,6 +144,21 @@ def main() -> int:
         with STATBUNKER_TEAMS.open("r", encoding="utf-8-sig", newline="") as f:
             statbunker = {r["squad"]: r for r in csv.DictReader(f)}
 
+    # Multi-competition context (Option A)
+    # League metrics stay pure. We add extra context for heavy-schedule teams
+    # (Champions League, Europa, FA Cup, etc.) from fl_matches data.
+    comp_context = {}
+    ctx_path = DATA / "team_comp_context_2025_2026.csv"
+    if ctx_path.exists():
+        with ctx_path.open("r", encoding="utf-8-sig", newline="") as f:
+            for row in csv.DictReader(f):
+                comp_context[row["squad"]] = {
+                    "european_games": int(float(row.get("euro_games", 0) or 0)),
+                    "domestic_cup_games": int(float(row.get("domestic_cup_games", 0) or 0)),
+                    "extra_games": int(float(row.get("extra_games", 0) or 0)),
+                    "total_games_approx": int(float(row.get("total_games_approx", 0) or 0)),
+                }
+
     teams = sorted({r["squad"] for r in players})
     by_team = defaultdict(list)
     for row in players:
@@ -204,6 +224,13 @@ def main() -> int:
             ]),
         }
 
+        # Attach competition context (non-league games)
+        ctx = comp_context.get(team, {})
+        raw[team]["european_games"] = ctx.get("european_games", 0)
+        raw[team]["domestic_cup_games"] = ctx.get("domestic_cup_games", 0)
+        raw[team]["extra_games"] = ctx.get("extra_games", 0)
+        raw[team]["total_games_approx"] = ctx.get("total_games_approx", 0)
+
     directions = {
         "points": HIGH_GOOD, "gd": HIGH_GOOD, "gf": HIGH_GOOD, "ga": LOW_GOOD,
         "non_penalty_set_piece_goals": HIGH_GOOD, "dead_ball_goals_including_pens": HIGH_GOOD,
@@ -228,6 +255,13 @@ def main() -> int:
         r = {"squad": team}
         for col in directions:
             r[f"{col}_pct"] = percentiles[col][team]
+
+        # Competition context (raw counts, not percentiled)
+        ctx = comp_context.get(team, {})
+        r["european_games"] = ctx.get("european_games", 0)
+        r["domestic_cup_games"] = ctx.get("domestic_cup_games", 0)
+        r["extra_games"] = ctx.get("extra_games", 0)
+        r["total_games_approx"] = ctx.get("total_games_approx", 0)
 
         r["attack_output_index"] = idx(blend(r, [("gf_pct", 0.55), ("attack_threat_raw_pct", 0.45)]))
         r["attack_creation_index"] = idx(blend(r, [
@@ -319,6 +353,8 @@ def main() -> int:
         "pressing_index",
         "defense_index", "defense_output_index", "defense_disruption_index",
         "defense_box_aerial_index", "discipline_index",
+        # Multi-competition context (Option A - league metrics stay clean)
+        "european_games", "domestic_cup_games", "extra_games", "total_games_approx",
     ]
     OUT.parent.mkdir(parents=True, exist_ok=True)
     with OUT.open("w", encoding="utf-8", newline="") as f:

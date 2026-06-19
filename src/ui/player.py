@@ -15,7 +15,7 @@ from .common import (
     rating_color, pos_chip_color,
 )
 from .metrics import fm_rating, fm_color, player_ovr
-from similar_players import fine_group
+from ..similar_players import fine_group
 
 
 # ==== 아래 함수/상수는 app.py에서 sed로 이동됨 ====
@@ -74,11 +74,26 @@ def player_picker_card_html(p: dict, selected: bool = False) -> str:
     g = int(p.get("goals") or 0)
     a = int(p.get("assists") or 0)
     value = html.escape(str(p.get("value", "—")))
+    age = p.get("age")
+    age_txt = f"{int(age)}세" if age is not None and pd.notna(age) else "-"
+    contract = html.escape(str(p.get("contract") or "-"))
+    contract_badge = html.escape(str(p.get("contract_badge") or "").upper())
+    badge_tone = str(p.get("contract_badge_tone") or "").lower()
+    is_yellow_badge = contract_badge == "RENEW" or badge_tone == "yellow"
+    badge_bg = "linear-gradient(135deg,#f59e0b,#d97706)" if is_yellow_badge else "linear-gradient(135deg,#22c55e,#16a34a)"
+    badge_shadow = "rgba(217,119,6,.28)" if is_yellow_badge else "rgba(22,163,74,.28)"
+    contract_badge_html = (
+        f"<div style='position:absolute;top:10px;left:10px;z-index:2;background:{badge_bg};"
+        f"color:#fff;border:1px solid rgba(255,255,255,.55);border-radius:999px;padding:3px 8px;"
+        f"font-size:9px;font-weight:950;letter-spacing:.6px;box-shadow:0 6px 14px {badge_shadow}'>{contract_badge}</div>"
+        if contract_badge else ""
+    )
     return f"""
     <div title="{name}" style="position:relative;background:#fff;border:{border};border-radius:12px;
-                padding:0;text-align:left;min-height:214px;overflow:hidden;
+                padding:0;text-align:left;min-height:256px;overflow:hidden;
                 box-shadow:{shadow}">
       {badge}
+      {contract_badge_html}
       <div style="height:74px;background:linear-gradient(135deg,{tcol}ee,#10151c);
                   position:relative">
         {avatar(sid, tcol, 62, 'position:absolute;left:12px;bottom:-28px;box-shadow:0 8px 18px rgba(16,24,40,.18)', '3px solid #fff')}
@@ -109,6 +124,16 @@ def player_picker_card_html(p: dict, selected: bool = False) -> str:
             <div style="font-size:9px;color:#8a93a5">도움</div>
           </div>
         </div>
+        <div style="display:grid;grid-template-columns:.75fr 1.25fr;gap:6px;margin-top:6px">
+          <div style="background:#f8fafc;border:1px solid #eef1f6;border-radius:8px;padding:6px 5px;text-align:center">
+            <div style="font-size:12px;font-weight:950;color:#1a1f2e;white-space:nowrap">{age_txt}</div>
+            <div style="font-size:9px;color:#8a93a5">나이</div>
+          </div>
+          <div style="background:#f8fafc;border:1px solid #eef1f6;border-radius:8px;padding:6px 7px;text-align:center;min-width:0">
+            <div style="font-size:12px;font-weight:950;color:#1a1f2e;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{contract}</div>
+            <div style="font-size:9px;color:#8a93a5">계약</div>
+          </div>
+        </div>
       </div>
     </div>"""
 
@@ -129,6 +154,19 @@ def selected_player_spotlight_html(p: dict) -> str:
     value = html.escape(str(p.get("value", "—")))
     g = int(p.get("goals") or 0)
     a = int(p.get("assists") or 0)
+    age = p.get("age")
+    age_txt = f"{int(age)}세" if age is not None and pd.notna(age) else "-"
+    contract = html.escape(str(p.get("contract") or "-"))
+    contract_badge = html.escape(str(p.get("contract_badge") or "").upper())
+    badge_tone = str(p.get("contract_badge_tone") or "").lower()
+    is_yellow_badge = contract_badge == "RENEW" or badge_tone == "yellow"
+    badge_bg = "linear-gradient(135deg,#f59e0b,#d97706)" if is_yellow_badge else "linear-gradient(135deg,#22c55e,#16a34a)"
+    contract_badge_html = (
+        f"<span style='display:inline-block;padding:3px 9px;background:{badge_bg};"
+        f"color:#fff;border:1px solid rgba(255,255,255,.44);border-radius:999px;"
+        f"font-size:10px;font-weight:950;letter-spacing:.7px'>{contract_badge}</span>"
+        if contract_badge else ""
+    )
 
     def tile(label: str, val: str, color: str) -> str:
         return (
@@ -155,6 +193,7 @@ def selected_player_spotlight_html(p: dict) -> str:
             <span style="display:inline-block;padding:3px 9px;background:#fff;color:{pc};
                          border-radius:7px;font-size:11px;font-weight:950">{pos}</span>
             <span style="font-size:12px;font-weight:900;color:#bbf7d0">{value}</span>
+            {contract_badge_html}
           </div>
         </div>
         <div style="width:96px;text-align:center;flex:none">
@@ -166,6 +205,8 @@ def selected_player_spotlight_html(p: dict) -> str:
         {tile("출전 시간", mins_txt, "#fff")}
         {tile("골", str(g), "#bbf7d0")}
         {tile("도움", str(a), "#bfdbfe")}
+        {tile("나이", age_txt, "#fde68a")}
+        {tile("계약", contract, "#e0e7ff")}
       </div>
     </div>"""
 
@@ -434,5 +475,3 @@ def radar_html(prow: pd.Series, detail: dict, color: str = "#4d9aff",
         {''.join(nodes)}
       </svg>
     </div>"""
-
-

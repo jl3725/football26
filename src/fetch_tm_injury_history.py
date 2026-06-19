@@ -47,7 +47,7 @@ H = {
     "Accept-Language": "en-US,en;q=0.9",
 }
 FIELDS = ["squad", "player", "tm_player_id", "season", "games_missed",
-          "spells", "days_out", "injuries", "last_checked"]
+          "spells", "days_out", "injuries", "spells_json", "last_checked"]
 
 
 def checked_date() -> str:
@@ -65,8 +65,9 @@ def parse_history(page_html: str) -> dict:
     table = soup.select_one("table.items")
     games = days = spells = 0
     injuries: list[str] = []
+    spell_rows: list[dict] = []
     if not table:
-        return {"games_missed": 0, "spells": 0, "days_out": 0, "injuries": ""}
+        return {"games_missed": 0, "spells": 0, "days_out": 0, "injuries": "", "spells_json": "[]"}
     for tr in table.select("tbody tr"):
         tds = tr.select("td")
         if len(tds) < 6:
@@ -74,14 +75,20 @@ def parse_history(page_html: str) -> dict:
         if tds[0].get_text(strip=True) != SEASON:
             continue
         spells += 1
-        injuries.append(tds[1].get_text(" ", strip=True))
+        injury = tds[1].get_text(" ", strip=True)
+        injuries.append(injury)
+        frm = tds[2].get_text(" ", strip=True)
+        until = tds[3].get_text(" ", strip=True)
         dtxt = re.sub(r"[^0-9]", "", tds[4].get_text(strip=True))
+        gtxt = tds[5].get_text(strip=True)
+        gnum = int(gtxt) if gtxt.isdigit() else 0
         if dtxt:
             days += int(dtxt)
-        gtxt = tds[5].get_text(strip=True)
-        if gtxt.isdigit():
-            games += int(gtxt)
+        games += gnum
+        spell_rows.append({"injury": injury, "from": frm, "until": until, "games": gnum})
+    import json
     return {
+        "spells_json": json.dumps(spell_rows, ensure_ascii=False),
         "games_missed": games,
         "spells": spells,
         "days_out": days,

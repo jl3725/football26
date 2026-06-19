@@ -1,0 +1,123 @@
+AI Scout Agent Architecture Plan
+Context
+The football26 project is actively being refactored from a monolithic Streamlit dashboard + ETL scripts into a modular, agent-targetable "AI Scout" system for player/team analysis, role classification, similarity search, gap analysis, and transfer recommendations.
+Recent work split app.py (~4600 lines) into src/ui/ modules (explicit goal: "split so agents can target specific tabs clearly").
+Current "AI" is rule-based (percentiles, weighted cosine, trait mapping) with labels like "Vector RAG" (sklearn only).
+DESIGN.md (the north star) describes a full hybrid Graph RAG + Vector RAG:
+Vector: player stats embeddings for "similar players".
+Graph: relations (plays_for, transferred, managed_by, teammate_of) in Neo4j.
+LLM Orchestrator (LangGraph suggested) for routing + synthesis.
+Current scope: EPL 25/26 only. Hardcoded sources, fixed 20-team dicts.
+Scheduled "agents" exist but are external (Task Scheduler PS1 scripts + GH Actions for fetch_transfermarkt_injuries, sync_manager_profiles, fetch_news_daily).
+Gaps: No real Vector DB / Graph DB / LangGraph / LLM orchestration yet. Many cross-cutting concerns still live in app.py (data prep, routing, Schedule/Player DB tabs not yet extracted).
+Future: League expansion, full RAG, multi-agent scouting (beyond the current Streamlit surface).
+The user needs a concrete plan for how many agents should emerge, what they should be, and how to structure the agentization to support the AI Scout vision while enabling league expansion + Vector/Graph DB integration.
+Recommended Approach
+Decompose into 11 specialized agents grouped into 4 layers. This provides clear ownership, testability, and incremental rollout without over-fragmentation. Use the existing pure functions as "skills/tools" that agents call.
+
+Layered Structure (total 11 agents):
+Data Layer (5 agents) — Independent ingestion/monitoring. Make league-agnostic (config-driven sources). Feed Vector + Graph DBs.
+Players Stats Ingestion Agent (FBref + Understat + Sofascore enrichment).
+Transfers & Roster Lifecycle Agent.
+Injury Monitor Agent (already "agent"-named; add change detection + alerts).
+Match / Lineups / Formations Agent (multi-source: FL, ESPN, API-Football).
+News & External Signals Ingestion Agent (daily batch + DB updates).
+Analysis Layer (3 agents) — Compute derived signals used by scouts.
+Role & Archetype Classifier Agent (assign_role + badges + fine_group).
+Similarity / Vector Scout Agent (build_embeddings + find_similar; evolves to real vector DB).
+Team Metrics & Context Agent (build_team_unit_metrics + comp_context + schedule load).
+Scout Layer (2 agents) — Core "AI Scout" output.
+Tactical / Gap Analyst Agent (analytics factor lab, weaknesses, leader/gap extraction, injury impact, context briefs).
+Transfer / Recruitment Scout Agent (recommend_signings + style vector fit + signing cards).
+Orchestration & RAG Layer (1 agent) — The brain.
+Scout Orchestrator Agent (LangGraph-based): query routing (Vector vs Graph vs Hybrid), calls specialist agents, Vector DB retrieval, Graph traversal (Text2Cypher or equivalent), synthesis + natural language explanations. Supports league expansion via config.
+Why this number and grouping?
+Aligns with current modularity (src/ui/analytics.py already documents itself as "evidence layer for the transfer agent").
+Matches DESIGN.md phases and components (Vector for similarity, Graph for relations, LLM router).
+Reuses existing code heavily (see below) instead of rewriting.
+Supports expansion: Data agents become per-league or multi-league configurable; Orchestrator handles cross-league queries.
+Avoids too few (monolith) or too many (micro-agents that are hard to orchestrate). 11 is manageable for one project.
+Streamlit (app.py + src/ui) remains one consumer/view; agents expose structured data + HTML snippets for reports, CLI, future API, or other UIs.
+Incremental: Start by wrapping existing functions; later replace sklearn with real embeddings/Vector DB and add Neo4j client to Graph-aware agents.
+Trade-offs considered:
+Monolithic "Scout Agent" (too coarse) vs 20+ tiny agents (high overhead).
+Full LangGraph from day 1 vs start with simple router + evolve.
+Per-league agents now vs single agents with league param (prefer latter for simplicity).
+UI ownership: Keep rendering in src/ui; agents focus on logic + data.
+Integration with DBs & Expansion
+Data Layer agents write to shared raw DB + populate:
+Vector DB (pgvector or Qdrant): player stat embeddings + text reports.
+Graph DB (Neo4j): nodes (Player, Team, Manager, League) + edges from transfers/lineups/contracts.
+Add LeagueConfig / source registry so agents work for EPL + future leagues (e.g., Bundesliga, LaLiga).
+Orchestrator becomes the entrypoint for "AI Scout" queries: "Find similar players for my 4-3-3 in new league with budget X".
+Critical Files to Modify / Create
+New structure (under src/):
+src/agents/ (new package)
+__init__.py
+base.py (common Agent base + tool decorator)
+data_agents.py (or per-agent files: players_agent.py, transfers_agent.py, etc.)
+analysis_agents.py
+scout_agents.py
+orchestrator.py (LangGraph graph definition + routing)
+tools/ (thin wrappers around existing pure functions for tool calling)
+Files to refactor (reuse logic, change signatures minimally for agent-friendliness):
+src/ui/analytics.py
+src/ui/transfers.py
+src/ui/overview.py (team_characteristics, etc.)
+src/ui/player.py
+src/ui/pitch.py
+src/similar_players.py
+src/team_analysis.py
+src/build_team_unit_metrics.py + src/collect_team_comp_context.py
+All src/fetch_.py and src/sync_.py
+src/news_db.py + src/ui/news.py
+app.py (data prep + router can delegate to agents over time)
+src/ui/common.py, src/ui/metrics.py (shared utilities)
+Data/Config:
+Add config/leagues.yaml or LeagueRegistry (current hardcodes in fetchers become data-driven).
+Update DESIGN.md or add AGENTS.md for the new architecture.
+Other:
+scripts/ (keep/extend the PS1 registrations as agent runners).
+requirements.txt (add langgraph, neo4j, vector DB client when implementing orchestrator).
+Existing Functions & Utilities to Reuse (with File Paths)
+Core reusable (pure, data-in → structured-out):
+similar_players.find_similar, build_embeddings, fine_group, ROLE_WEIGHTS (src/similar_players.py)
+team_analysis.assign_role, compute_player_badges, league_percentiles, position_group, pick_bands, espn_assign_slots, team_xi_from_slots (src/team_analysis.py)
+ui/transfers.recommend_signings, _team_style_vector, FIT_FEATURES, TRAIT_TO_COLS (src/ui/transfers.py)
+ui/analytics.analytics_dashboard_html + internal _factor_verdict, _player_metric_gaps/_player_metric_leaders, Match Factor Lab specs (src/ui/analytics.py) — treat the whole as Tactical Analyst skill
+ui/overview.team_characteristics, team_improvements, ai_scout_report_html, team_tactical_styles (src/ui/overview.py)
+ui/metrics.* (player_ovr, fm_rating, top_strengths, etc.) (src/ui/metrics.py)
+ui/common.* helpers + constants (src/ui/common.py)
+Fetch/sync mains as tool entrypoints: fetch_fbref.main, fetch_transfermarkt_injuries, sync_manager_profiles, fetch_news_daily logic, build_team_unit_metrics.main, collect_team_comp_context (various src/*.py + scripts/)
+news_db upsert/read + ui/news fetchers (src/news_db.py, src/ui/news.py)
+fl_matches comp categorization (used in collect + build)
+App integration points:
+app.py data loading (@st.cache_data) + _weak from team_characteristics + calls to recommend_signings, analytics_dashboard_html, find_similar, etc.
+_iframe + HTML returns from UI modules (agents can return same for reports).
+Agents will import these directly (or wrap as LangGraph @tool).
+Verification Section (End-to-End Testing)
+No-regression baseline:
+streamlit run app.py on port 8501 still works fully (all 8 NAV tabs render identical output using the same functions).
+Existing data pipelines still produce identical CSVs when run manually (python src/fetch_*.py, python src/build_team_unit_metrics.py, etc.).
+Agent isolation & targeting:
+Each agent can be imported and called standalone: e.g., from src.agents.analysis import RoleClassifierAgent; agent = RoleClassifierAgent(); roles = agent.run(team_df, pct).
+UI modules remain importable by agents (test from src.ui.analytics import ... inside a mock agent).
+Agent count & structure validation:
+Run a smoke orchestrator query that routes to ≥3 different agents and composes results (e.g., "Analyze Arsenal gaps and recommend similar players").
+Verify 11 agents (or grouped equivalent) exist with clear boundaries (no cross-layer direct calls except through orchestrator).
+League expansion prep:
+Add a second league config (e.g., mock Bundesliga) and show at least one Data Agent + Orchestrator handling it without hardcodes.
+Metrics/roles/similarity remain comparable or configurable.
+DB integration path:
+Demonstrate (in test or script) a Data Agent writing player embeddings to a local Vector store stub and relations to a graph stub.
+Orchestrator example using both (even if mocks initially).
+Full flow:
+End-to-end: User query (or test) → Orchestrator → Vector retrieval + Graph path + 2 specialist agents → synthesized scout report (text + HTML from existing UI renderers).
+Scheduled agents still run independently and feed the stores.
+Metrics:
+Unit tests (new pytest) for each agent (mock dataframes).
+Integration test in CI that exercises the modular imports + one full agent chain.
+Confirm Streamlit uses agents for at least Analytics/Transfers/Player tabs (optional first step; can be gradual).
+Start small: Wrap existing functions → add thin agent classes → implement Orchestrator → wire real DBs + expand leagues.
+
+This plan is ready for execution once approved. It reuses >90% of existing logic while providing the missing agent count/structure/roadmap the user requested

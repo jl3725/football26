@@ -189,6 +189,7 @@ TEAM_UNIT_METRICS_PATH = Path(__file__).resolve().parent / "data" / "team_unit_m
 STATBUNKER_TEAM_STATS_PATH = Path(__file__).resolve().parent / "data" / "statbunker_team_stats_2025_2026.csv"
 TRANSFERMARKT_INJURIES_PATH = Path(__file__).resolve().parent / "data" / "transfermarkt_injuries_2025_2026.csv"
 TM_INJURY_HISTORY_PATH = Path(__file__).resolve().parent / "data" / "tm_injury_history_2025_2026.csv"
+TRANSFERMARKT_CONTRACTS_PATH = Path(__file__).resolve().parent / "data" / "transfermarkt_contracts_2025_2026.csv"
 
 
 @st.cache_data
@@ -247,6 +248,13 @@ def load_tm_injury_history(_file_key: tuple[int, int] = (0, 0)) -> pd.DataFrame 
     if not TM_INJURY_HISTORY_PATH.exists():
         return None
     return pd.read_csv(TM_INJURY_HISTORY_PATH)
+
+
+@st.cache_data
+def load_transfermarkt_contracts(_file_key: tuple[int, int] = (0, 0)) -> pd.DataFrame | None:
+    if not TRANSFERMARKT_CONTRACTS_PATH.exists():
+        return None
+    return pd.read_csv(TRANSFERMARKT_CONTRACTS_PATH)
 
 
 def file_cache_key(path: Path) -> tuple[int, int]:
@@ -443,6 +451,47 @@ def team_traits_table(_mtime: float = 0.0) -> pd.DataFrame:
 # ---------------- UI ----------------
 full = load(DATA_PATH.stat().st_mtime).copy()   # mtime 캐시 키 — CSV 교체 시 자동 무효화
 full["norm_key"] = full["player"].map(_norm)
+_contract_snap = load_transfermarkt_contracts(file_cache_key(TRANSFERMARKT_CONTRACTS_PATH))
+if (
+    _contract_snap is not None
+    and not _contract_snap.empty
+    and {"squad", "norm_key", "contract_until"}.issubset(_contract_snap.columns)
+):
+    _contract_cols = ["squad", "norm_key", "contract_until"]
+    if "tm_id" in _contract_snap.columns:
+        _contract_cols.append("tm_id")
+    if "joined_date" in _contract_snap.columns:
+        _contract_cols.append("joined_date")
+    if "contract_signal" in _contract_snap.columns:
+        _contract_cols.append("contract_signal")
+    _contracts = _contract_snap[_contract_cols].dropna(subset=["squad", "norm_key"]).copy()
+    _contracts = _contracts.drop_duplicates(["squad", "norm_key"], keep="last")
+    full = full.merge(
+        _contracts,
+        on=["squad", "norm_key"],
+        how="left",
+        suffixes=("", "_contract_snap"),
+    )
+    if "contract_until" in full.columns:
+        if "tm_contract_until" not in full.columns:
+            full["tm_contract_until"] = pd.NA
+        full["tm_contract_until"] = full["tm_contract_until"].fillna(full["contract_until"])
+        full = full.drop(columns=["contract_until"])
+    if "tm_id_contract_snap" in full.columns:
+        if "tm_id" not in full.columns:
+            full["tm_id"] = pd.NA
+        full["tm_id"] = full["tm_id"].fillna(full["tm_id_contract_snap"])
+        full = full.drop(columns=["tm_id_contract_snap"])
+    if "joined_date" in full.columns:
+        if "tm_joined_date" not in full.columns:
+            full["tm_joined_date"] = pd.NA
+        full["tm_joined_date"] = full["tm_joined_date"].fillna(full["joined_date"])
+        full = full.drop(columns=["joined_date"])
+    if "contract_signal" in full.columns:
+        if "tm_contract_signal" not in full.columns:
+            full["tm_contract_signal"] = pd.NA
+        full["tm_contract_signal"] = full["tm_contract_signal"].fillna(full["contract_signal"])
+        full = full.drop(columns=["contract_signal"])
 df = full[~full["pos"].fillna("").str.contains("GK")]  # 필드플레이어
 slots_df = load_slots()
 slot_teams = set(slots_df["squad"].unique()) if slots_df is not None else set()
@@ -823,13 +872,16 @@ def load_espn_subs(_mtime: float = 0.0) -> pd.DataFrame | None:
 
 @st.cache_data
 def load_transfers(_mtime: float = 0.0) -> pd.DataFrame | None:
-    """이적 데이터. CSV는 전 시즌 누적이지만 화면은 현재 활성 시즌만 표시."""
+    """이적 데이터(전 시즌 누적). 시즌 필터는 화면(세그먼트 토글)에서 선택."""
     if not TRANSFERS_PATH.exists():
         return None
-    df = pd.read_csv(TRANSFERS_PATH)
-    if "season_id" in df.columns and not df.empty:
-        df = df[df["season_id"] == df["season_id"].max()].copy()
-    return df
+    return pd.read_csv(TRANSFERS_PATH)
+
+
+def _season_label(sid) -> str:
+    """season_id(시작 연도) → '25/26' 표기."""
+    s = int(sid)
+    return f"{s % 100:02d}/{(s + 1) % 100:02d}"
 
 
 # ── 섹션 렌더 — 사이드바 _nav 선택에 따라 한 섹션만 표시 ──────────────────────
@@ -958,6 +1010,10 @@ elif _nav == NAV[1]:
     ).get(team) or MANAGER_PROFILES.get(team)
     _transfers_a = load_transfers(TRANSFERS_PATH.stat().st_mtime if TRANSFERS_PATH.exists() else 0.0)
     _summer_in_count = 0
+    _audit_rows_by_season = {}
+    _stats_season = 2025
+    if full is not None and not full.empty and "season_id" in full.columns and full["season_id"].notna().any():
+        _stats_season = int(float(full["season_id"].dropna().max()))
     if _transfers_a is not None and not _transfers_a.empty:
         _summer_in = _transfers_a[
             (_transfers_a["squad"].astype(str) == team)
@@ -971,6 +1027,19 @@ elif _nav == NAV[1]:
                 lambda v: unidecode(str(v or "")).lower().strip()
             )
             for _, _tr in _summer_in.iterrows():
+                _fee_text_l = str(_tr.get("fee_text") or "").lower()
+                if (
+                    "end of loan" in _fee_text_l
+                    or "loan return" in _fee_text_l
+                    or "return from loan" in _fee_text_l
+                ):
+                    continue
+                _transfer_season = pd.to_numeric(_tr.get("season_id"), errors="coerce")
+                if pd.notna(_transfer_season) and int(_transfer_season) != _stats_season:
+                    _summer_in_count += 1
+                    _season_key = int(_transfer_season)
+                    _audit_rows_by_season[_season_key] = _audit_rows_by_season.get(_season_key, 0) + 1
+                    continue
                 _key = unidecode(str(_tr.get("norm_key") or _tr.get("player") or "")).lower().strip()
                 _match = _team_full[_team_full["_audit_norm"] == _key]
                 if _match.empty and _key:
@@ -982,7 +1051,22 @@ elif _nav == NAV[1]:
                 _age = float(_age) if pd.notna(_age) else 99.0
                 if _minutes >= 300 and not (_age < 20 and _minutes < 900):
                     _summer_in_count += 1
-    _analytics_height = 1980 + max(0, ((_summer_in_count + 2) // 3) - 1) * 178
+                    _season_key = _tr.get("season_id") if "season_id" in _tr.index else "current"
+                    _audit_rows_by_season[_season_key] = _audit_rows_by_season.get(_season_key, 0) + 1
+    _audit_section_count = len(_audit_rows_by_season)
+    _audit_card_rows = sum((int(count) + 2) // 3 for count in _audit_rows_by_season.values())
+    # 부상 블록 높이 — 결장 선수(games_missed>0) 최대 9명, 3열 그리드 행수만큼 가산
+    _inj_n = 0
+    if _tm_injury_history is not None and "squad" in _tm_injury_history.columns:
+        _inj_t = _tm_injury_history[_tm_injury_history["squad"].astype(str) == team]
+        _inj_n = int((pd.to_numeric(_inj_t.get("games_missed"), errors="coerce").fillna(0) > 0).sum())
+    _inj_rows = (min(9, _inj_n) + 2) // 3
+    _analytics_height = (
+        2620
+        + max(0, _audit_card_rows - 1) * 430
+        + max(0, _audit_section_count - 1) * 260
+        + max(0, _inj_rows - 1) * 190
+    )
     _iframe(
         analytics_dashboard_html(
             team, formation, _unit_metrics, _standings, _mgr_a, _ts, full, _rep, _weak,
@@ -998,10 +1082,66 @@ elif _nav == NAV[1]:
 # 3: Player Detail — 선수 능력치/레이더/유사선수
 elif _nav == NAV[2]:
     sec_title("선수 상세", "선수별 능력치 · 레이더 · 스타일 유사 선수")
-    bench_all = [p["full"] for p in bench_pls]
-    pool = list(dict.fromkeys(xi_gk + xi_players + bench_all))
+    _transfers_detail = load_transfers(TRANSFERS_PATH.stat().st_mtime if TRANSFERS_PATH.exists() else 0.0)
+    _team_transfers = pd.DataFrame()
+    if _transfers_detail is not None and not _transfers_detail.empty:
+        _team_transfers = _transfers_detail[_transfers_detail["squad"].astype(str) == team].copy()
 
-    state_key = f"player_detail_pick_{team}"
+    _detail_seasons = [2025]
+    if not _team_transfers.empty and "season_id" in _team_transfers.columns:
+        _detail_seasons += [
+            int(s) for s in pd.to_numeric(_team_transfers["season_id"], errors="coerce").dropna().unique()
+        ]
+    _detail_seasons = sorted(set(_detail_seasons))
+    _season_options = {_season_label(s): s for s in _detail_seasons}
+    _default_detail_label = _season_label(max(_detail_seasons))
+    if len(_season_options) > 1:
+        _selected_detail_label = st.segmented_control(
+            "시즌",
+            list(_season_options.keys()),
+            default=_default_detail_label,
+            label_visibility="collapsed",
+            key=f"player_detail_season_{team}",
+        )
+    else:
+        _selected_detail_label = _default_detail_label
+    _selected_detail_sid = _season_options.get(_selected_detail_label, max(_detail_seasons))
+
+    _team_full = full[full["squad"].astype(str) == team].copy()
+    _team_full["_pd_norm"] = _team_full["player"].map(_norm)
+    _full_name_by_norm = dict(zip(_team_full["_pd_norm"], _team_full["player"]))
+    _transfer_row_by_norm = {}
+
+    if _team_transfers.empty:
+        _season_transfers = pd.DataFrame()
+    else:
+        _season_transfers = _team_transfers[
+            pd.to_numeric(_team_transfers["season_id"], errors="coerce") == int(_selected_detail_sid)
+        ].copy()
+    if _season_transfers.empty:
+        _pool_rows = _team_full.sort_values("minutes", ascending=False)
+        pool = list(dict.fromkeys(_pool_rows["player"].tolist()))
+    else:
+        _in_rows = _season_transfers[_season_transfers["direction"].astype(str).str.lower() == "in"].copy()
+        _out_rows = _season_transfers[_season_transfers["direction"].astype(str).str.lower() == "out"].copy()
+        _in_norms = set(_in_rows["norm_key"].astype(str))
+        _out_norms = set(_out_rows["norm_key"].astype(str)) - _in_norms
+        _new_add_rows = _in_rows[
+            ~_in_rows.get("fee_text", pd.Series("", index=_in_rows.index))
+            .astype(str).str.lower().str.contains("end of loan|loan return|return from loan", regex=True, na=False)
+        ].copy()
+        pool = [
+            name for norm_key, name in _full_name_by_norm.items()
+            if norm_key not in _out_norms and name not in left_out
+        ]
+        for _, _tr in _new_add_rows.iterrows():
+            _norm_key = str(_tr.get("norm_key") or _norm(_tr.get("player")))
+            _name = _full_name_by_norm.get(_norm_key, str(_tr.get("player") or "Unknown"))
+            _transfer_row_by_norm[_norm_key] = _tr
+            if _name not in pool:
+                pool.append(_name)
+
+    state_key = f"player_detail_pick_{team}_{_selected_detail_sid}"
     if state_key not in st.session_state or st.session_state[state_key] not in pool:
         st.session_state[state_key] = pool[0] if pool else None
 
@@ -1016,12 +1156,98 @@ elif _nav == NAV[2]:
         return "공격"
 
     card_rows = []
+    _loan_to_buy = set()
+    if not _team_transfers.empty:
+        if not _team_transfers.empty and "season_id" in _team_transfers.columns:
+            _season_nums = pd.to_numeric(_team_transfers["season_id"], errors="coerce")
+            _max_transfer_season = int(_season_nums.dropna().max()) if _season_nums.notna().any() else None
+            if _max_transfer_season is not None:
+                for _pname, _rows in _team_transfers.groupby("norm_key"):
+                    _fee_text = _rows.get("fee_text", pd.Series("", index=_rows.index)).astype(str).str.lower()
+                    _direction = _rows.get("direction", pd.Series("", index=_rows.index)).astype(str).str.lower()
+                    _season = pd.to_numeric(_rows.get("season_id"), errors="coerce")
+                    _fee = pd.to_numeric(_rows.get("fee_eur"), errors="coerce").fillna(0)
+                    _had_loan = (
+                        (_direction == "in")
+                        & _fee_text.str.contains("loan transfer", na=False)
+                        & (_season < _max_transfer_season)
+                    ).any()
+                    _became_permanent = (
+                        (_direction == "in")
+                        & (_season == _max_transfer_season)
+                        & (_fee > 0)
+                        & ~_fee_text.str.contains("loan", na=False)
+                    ).any()
+                    if _had_loan and _became_permanent:
+                        _loan_to_buy.add(str(_pname))
+
+    def _contract_label(row) -> str:
+        _joined = str(row.get("tm_joined_date") or "").strip()
+        for _col in (
+            "contract_until", "contract_expires", "contract_expiry",
+            "contract_end", "contract", "tm_contract_until",
+        ):
+            if _col in row.index:
+                _val = row.get(_col)
+                if pd.notna(_val) and str(_val).strip() and str(_val).strip().lower() != "nan":
+                    _contract = str(_val).strip()
+                    if _joined and _contract == _joined:
+                        return "-"
+                    return _contract
+        return "-"
+
+    def _contract_badge(row) -> tuple[str, str]:
+        if str(row.get("norm_key") or "") in _loan_to_buy:
+            return "NEW", "yellow"
+        _signal = str(row.get("tm_contract_signal") or "").strip().upper()
+        if _signal in {"NEW", "RENEW", "RENEWED"}:
+            _badge = "RENEW" if _signal == "RENEWED" else _signal
+            return _badge, "yellow" if _badge == "RENEW" else "green"
+        _joined = str(row.get("tm_joined_date") or "").strip()
+        try:
+            _joined_ts = pd.to_datetime(_joined, errors="coerce")
+            _checked = pd.to_datetime(row.get("tm_contract_checked_at"), errors="coerce")
+            if pd.isna(_checked):
+                _checked = pd.Timestamp.now()
+            _window_start = (
+                pd.Timestamp(year=int(_checked.year), month=6, day=1)
+                if int(_checked.month) >= 6
+                else pd.Timestamp(year=int(_checked.year), month=1, day=1)
+            )
+            if _joined and pd.notna(_joined_ts) and _joined_ts >= _window_start:
+                return "NEW", "green"
+            if pd.notna(_joined_ts) and pd.notna(_checked):
+                _delta = (_checked.normalize() - _joined_ts.normalize()).days
+                if 0 <= _delta <= 90:
+                    return "RENEW", "yellow"
+        except Exception:
+            pass
+        return "", ""
+
     for pname in pool:
         raw_rows = full[full["player"] == pname]
+        _pool_norm = _norm(pname)
+        _transfer_row = _transfer_row_by_norm.get(_pool_norm)
         raw = raw_rows.iloc[0] if not raw_rows.empty else pd.Series(dtype=object)
+        if raw.empty and _transfer_row is not None:
+            raw = pd.Series({
+                "player": pname,
+                "squad": team,
+                "norm_key": _pool_norm,
+                "pos": _transfer_row.get("pos", ""),
+                "age": _transfer_row.get("age"),
+                "minutes": 0,
+                "goals": 0,
+                "assists": 0,
+                "market_value_eur": _transfer_row.get("fee_eur"),
+                "tm_photo": _transfer_row.get("photo"),
+                "tm_contract_signal": "NEW",
+            })
         drow = dff[dff["player"] == pname]
         drow = drow.iloc[0] if not drow.empty else raw
         pos = _display_pos_map.get(pname) or _fine_map.get(pname)
+        if _transfer_row is not None and (not pos or (isinstance(pos, float) and pd.isna(pos))):
+            pos = str(_transfer_row.get("pos") or "").split(",")[0].strip()
         if not pos or (isinstance(pos, float) and pd.isna(pos)):
             pos = "GK" if "GK" in str(raw.get("pos", "")) else str(raw.get("pos", "")).split(",")[0].strip()
         short_name = pname.split()[-1] if len(pname) > 16 else pname
@@ -1029,10 +1255,15 @@ elif _nav == NAV[2]:
         if card_ovr is None:
             card_ovr = player_ovr(raw.get("market_value_eur"), raw.get("ss_rating"),
                                   raw.get("minutes"), raw.get("goals"), raw.get("assists"))
+        _badge_text, _badge_tone = _contract_badge(raw)
         card_rows.append({
             "name": pname,
             "short_name": short_name,
             "pos": pos,
+            "age": raw.get("age"),
+            "contract": _contract_label(raw),
+            "contract_badge": _badge_text,
+            "contract_badge_tone": _badge_tone,
             "minutes": raw.get("minutes"),
             "goals": raw.get("goals", 0),
             "assists": raw.get("assists", 0),
@@ -1045,7 +1276,7 @@ elif _nav == NAV[2]:
 
     selected_card = next((p for p in card_rows if p["name"] == st.session_state[state_key]), None)
     if selected_card:
-        st.markdown(selected_player_spotlight_html(selected_card), unsafe_allow_html=True)
+        _iframe(selected_player_spotlight_html(selected_card), height=188, scrolling=False)
 
     filter_col, sort_col = st.columns([1.4, 1])
     with filter_col:
@@ -1075,7 +1306,7 @@ elif _nav == NAV[2]:
 
     st.markdown(
         f"<div style='font-size:12px;color:#8a93a5;font-weight:800;margin:8px 0 10px'>"
-        f"스쿼드 브라우저 · {len(visible_cards)}명</div>",
+        f"스쿼드 브라우저 · {_selected_detail_label} · {len(visible_cards)}명</div>",
         unsafe_allow_html=True,
     )
     for start in range(0, len(visible_cards), 4):
@@ -1193,9 +1424,27 @@ elif _nav == NAV[4]:
     _tdf = load_transfers(TRANSFERS_PATH.stat().st_mtime if TRANSFERS_PATH.exists() else 0.0)
     if _tdf is not None and (_tdf["squad"] == team).any():
         _tt = _tdf[_tdf["squad"] == team].copy()
+
+        # ── 시즌 토글 — CSV는 전 시즌 누적, 한 시즌만 골라서 표시 ───────────────
+        _slabel = ""
+        if "season_id" in _tt.columns and _tt["season_id"].notna().any():
+            _seasons = sorted(_tt["season_id"].dropna().unique(), reverse=True)
+            _smap = {_season_label(s): s for s in _seasons}
+            if len(_smap) > 1:
+                _sel = st.segmented_control(
+                    "시즌", list(_smap), default=list(_smap)[0],
+                    label_visibility="collapsed", key=f"transfer_season_{team}",
+                )
+                _sel_sid = _smap.get(_sel, _seasons[0])
+            else:
+                _sel_sid = _seasons[0]
+            _slabel = _season_label(_sel_sid)
+            _tt = _tt[_tt["season_id"] == _sel_sid].copy()
+
         _tt["_fee"] = _tt["fee_eur"].fillna(-1)
-        for _wval, _wlabel in [("summer", "Summer Transfers · 25/26"),
-                               ("winter", "Winter Transfers · 25/26 (1월)")]:
+        for _wval, _wtitle, _wnote in [("summer", "Summer Transfers", ""),
+                                       ("winter", "Winter Transfers", " (1월)")]:
+            _wlabel = f"{_wtitle} · {_slabel}{_wnote}" if _slabel else f"{_wtitle}{_wnote}"
             _w = _tt[_tt["window"] == _wval] if "window" in _tt.columns else _tt
             _ins = _w[_w["direction"] == "in"].sort_values("_fee", ascending=False).to_dict("records")
             _outs = _w[_w["direction"] == "out"].sort_values("_fee", ascending=False).to_dict("records")

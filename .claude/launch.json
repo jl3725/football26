@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "football26",
+      "runtimeExecutable": "C:\\Users\\leeju\\Documents\\football26\\.venv\\Scripts\\streamlit.exe",
+      "runtimeArgs": ["run", "app.py", "--server.port", "8501"],
+      "port": 8501
+    }
+  ]
+}
