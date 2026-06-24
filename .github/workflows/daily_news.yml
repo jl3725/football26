@@ -21,7 +21,7 @@ jobs:
           python-version: "3.12"
 
       - name: Install dependencies
-        run: pip install requests feedparser deep-translator
+        run: pip install requests feedparser deep-translator pandas
 
       - name: Fetch & store news
         run: python scripts/fetch_news_daily.py
