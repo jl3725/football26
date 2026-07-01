@@ -4,24 +4,26 @@ Streamlit Cloud(1개 서비스) 대신, 이제 **Next.js 프론트 + FastAPI 백
 git 연동으로 배포한다. 데이터는 로컬 agent 가 매일 CSV 를 git push → 클라우드 자동 재배포.
 
 ```
-브라우저 → Vercel(Next.js, /api/* 프록시) → Railway(FastAPI) → football.db(CSV에서 생성)
-                                                     ▲ 매일 로컬 agent 가 CSV git push
+브라우저 → Vercel(Next.js, /api/* 프록시) → Render(FastAPI) → football.db(CSV에서 생성)
+                                                    ▲ 매일 로컬 agent 가 CSV git push
 ```
 
 ---
 
-## 1) 백엔드 — Railway
+## 1) 백엔드 — Render (무료 권장)
 
-1. https://railway.app → **New Project → Deploy from GitHub repo** → `football26` 선택
-2. Railway 가 자동 감지: `requirements.txt`(Python) + `Procfile`(start 명령)
-   - Procfile: `python scripts/build_db.py && uvicorn api.main:app --host 0.0.0.0 --port $PORT`
-   - Root Directory = **저장소 루트(기본값 그대로)** — api/·src/·scripts/·data/ 가 루트에 있음
-3. (선택) Variables 에 `NIXPACKS_PYTHON_VERSION = 3.12` (기본으로도 대개 OK)
-4. Deploy 완료 후 **Settings → Networking → Generate Domain** 으로 공개 URL 발급
-   - 예: `https xxx.up.railway.app`
-5. 확인: `https://xxx.up.railway.app/api/health` → `{"ok": true, ...}`
+Railway 는 무료 상시 티어가 없어졌다(트라이얼→유료). **Render 무료 웹서비스**를 쓴다.
+카드 불필요·만료 없음. 단 15분 미사용 시 sleep → 다음 요청 때 콜드스타트(~30-60s).
 
-> 무료 사용량 한도가 있음. 상시 가동이 필요하면 Hobby 플랜 권장.
+1. https://render.com → **New → Blueprint** → `football26` repo 선택
+   → repo 루트의 `render.yaml` 을 자동 인식(빌드/시작 명령 포함)
+   - 또는 수동: New → Web Service → Build `pip install -r requirements.txt`,
+     Start `python scripts/build_db.py && uvicorn api.main:app --host 0.0.0.0 --port $PORT`
+2. Plan = **Free** 선택 → Deploy
+3. 발급 URL 예: `https://football26-api.onrender.com`
+4. 확인: `https://football26-api.onrender.com/api/health` → `{"ok": true, ...}`
+
+> 대안(무료): **Hugging Face Spaces**(Docker Space 로 FastAPI), 상시성 필요하면 Railway/Render 유료($5~).
 
 ---
 
@@ -31,7 +33,7 @@ git 연동으로 배포한다. 데이터는 로컬 agent 가 매일 CSV 를 git 
 2. **Root Directory = `web`** ← 반드시 지정 (Next.js 앱이 web/ 안에 있음)
 3. Framework Preset: **Next.js** (자동 감지)
 4. **Environment Variables** 에 추가:
-   - `API_BASE = https://xxx.up.railway.app`  (1단계 Railway URL, 끝 슬래시 없이)
+   - `API_BASE = https://football26-api.onrender.com`  (1단계 Render URL, 끝 슬래시 없이)
 5. Deploy → `https://football26-xxx.vercel.app` 발급
    - 프론트는 항상 `/api/*` 로 호출하고 Vercel 이 서버사이드로 Railway 에 프록시
      → 브라우저 입장에선 same-origin (CORS 불필요)
@@ -43,7 +45,7 @@ git 연동으로 배포한다. 데이터는 로컬 agent 가 매일 CSV 를 git 
 ## 3) 데이터 신선도 — 매일 자동 push
 
 로컬 수집 agent(07:50~08:40)가 CSV/DB 를 갱신한 뒤, **08:50 에 git push** 하면
-클라우드가 자동 재배포되며 최신 데이터를 반영한다.
+Render(백엔드)가 자동 재배포되며 최신 데이터를 반영한다.
 
 한 번만 등록:
 ```powershell

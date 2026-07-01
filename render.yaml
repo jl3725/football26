@@ -1,0 +1,17 @@
+# Render Blueprint — FastAPI 백엔드 무료 배포.
+# render.com → New → Blueprint → 이 repo 선택하면 자동 구성.
+# 무료 티어: 카드 불필요·만료 없음. 15분 미사용 시 sleep → 다음 요청 때 콜드스타트(~30-60s).
+services:
+  - type: web
+    name: football26-api
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: python scripts/build_db.py && uvicorn api.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.12.7"
+      - key: ALLOWED_ORIGINS
+        value: "*"
