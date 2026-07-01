@@ -1,0 +1,9 @@
+# 로컬 전용 — Streamlit 대시보드(app.py) + 일일 수집 agent 의존성.
+# 클라우드(Railway) 백엔드는 requirements.txt 만 쓴다(이 파일 미사용).
+#   전체 로컬 설치:  pip install -r requirements-agents.txt
+-r requirements.txt
+streamlit==1.57.0
+soccerdata==1.9.0
+wrapper-tls-requests==1.2.5
+deep-translator==1.9.1
+feedparser==6.0.12

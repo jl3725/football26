@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import datetime
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -34,9 +35,12 @@ from team_analysis import (  # noqa: E402  (streamlit 비의존)
 )
 
 app = FastAPI(title="Football Scout API", version="0.1.0")
+# CORS — 배포 시 ALLOWED_ORIGINS 환경변수(쉼표구분)로 도메인 지정. 기본 "*"
+# (읽기전용 공개 API. 단, Vercel rewrites 로 프록시하면 브라우저는 same-origin 이라 CORS 미발생)
+_origins = [o.strip() for o in os.getenv("ALLOWED_ORIGINS", "*").split(",") if o.strip()]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
+    allow_origins=_origins,
     allow_methods=["*"],
     allow_headers=["*"],
 )

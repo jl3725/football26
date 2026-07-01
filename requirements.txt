@@ -1,9 +1,10 @@
-streamlit==1.57.0
+# FastAPI 백엔드(api/main.py) + 웹 데이터 계층 런타임 의존성.
+# Railway/Nixpacks 가 이 파일로 pip install 한다 (가볍게 유지 → 빠른 빌드).
+# 로컬에서 Streamlit 대시보드(app.py) + 일일 수집 agent 까지 돌리려면:
+#     pip install -r requirements-agents.txt
+fastapi>=0.115,<1.0
+uvicorn[standard]>=0.30
 pandas==2.2.3
 numpy==2.2.5
 scikit-learn==1.6.1
 Unidecode==1.4.0
-soccerdata==1.9.0
-wrapper-tls-requests==1.2.5
-deep-translator==1.9.1
-feedparser==6.0.12

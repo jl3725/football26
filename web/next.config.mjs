@@ -1,10 +1,14 @@
 /** @type {import('next').NextConfig} */
+// 백엔드(FastAPI) 주소. 로컬은 127.0.0.1:8000, 배포는 Vercel 환경변수 API_BASE 에
+// Railway 백엔드 URL 지정(예: https://xxx.up.railway.app). 프론트는 항상 /api/* 로만
+// 호출하고 여기서 실제 백엔드로 프록시 → 브라우저는 same-origin(=CORS 불필요).
+const API_BASE = process.env.API_BASE || "http://127.0.0.1:8000";
+
 const nextConfig = {
   reactStrictMode: true,
-  // 개발 편의: API 를 같은 오리진(/api/*)으로 프록시해 CORS 신경 안 쓰게.
   async rewrites() {
     return [
-      { source: "/api/:path*", destination: "http://127.0.0.1:8000/api/:path*" },
+      { source: "/api/:path*", destination: `${API_BASE}/api/:path*` },
     ];
   },
 };
