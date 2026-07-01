@@ -1,11 +1,21 @@
 # Manager Change Report
 
-- Checked: 2026-06-18 23:10 UTC
-- Source: https://en.wikipedia.org/wiki/2025%E2%80%9326_Premier_League
+- Checked: 2026-07-01 07:00 UTC
+- Source: https://en.wikipedia.org/wiki/2026%E2%80%9327_Premier_League
 - Teams tracked: 20
 - Source teams matched: 20
-- Photos available locally: 16
+- Photos available locally: 17
 
 ## Change Candidates
 
-- None
+- Bournemouth: local `Andoni Iraola` -> source `Marco Rose`
+- Chelsea: local `Calum McFarlane (interim)` -> source `Xabi Alonso`
+- Crystal Palace: local `Oliver Glasner` -> source `Pierre Sage`
+- Liverpool: local `Arne Slot` -> source `Andoni Iraola`
+- Manchester City: local `Pep Guardiola` -> source `Enzo Maresca`
+
+## Missing In Source
+
+- Burnley: local `Mike Jackson (interim)`
+- West Ham United: local `Nuno Espirito Santo`
+- Wolves: local `Rob Edwards`

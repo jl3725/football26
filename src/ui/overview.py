@@ -489,7 +489,13 @@ def team_ratings(team: str, traits: pd.DataFrame, standings,
                  full_df: pd.DataFrame | None = None,
                  unit_metrics: pd.DataFrame | None = None) -> list[tuple]:
     """Team ratings blend results, team metrics, and squad role quality."""
-    if unit_metrics is not None and team in unit_metrics.index:
+    # 레이팅 공식은 src/ratings.py 로 추출(streamlit·API 공유 단일 소스). 여기선 위임만.
+    # ⚠️ 공식 수정은 반드시 src/ratings.py 에서. 아래 `if False:` 블록은 미사용 레거시.
+    from ratings import compute_team_ratings
+    _r = compute_team_ratings(team, full_df, standings, unit_metrics)
+    if _r is not None:
+        return _r
+    if False:  # superseded by ratings.compute_team_ratings 위 위임
         row = unit_metrics.loc[team]
 
         def iv(col: str) -> int:

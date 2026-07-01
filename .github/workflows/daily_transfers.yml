@@ -3,8 +3,10 @@ name: Daily Transfers Fetch
 # 매일 06:30 UTC, 현재 활성 이적시장(날짜로 자동 판정)을 Transfermarkt에서 긁어
 # data/transfers_2025_2026.csv에 시즌별 누적 갱신 후 변경 시에만 커밋.
 on:
-  schedule:
-    - cron: "30 6 * * *"
+  # 로컬 작업 스케줄러(football26-transfers-agent)로 이관 — GH Actions 러너 IP가
+  # Transfermarkt에 차단돼 매일 실패하므로 cron 비활성화. 수동 실행만 유지.
+  # schedule:
+  #   - cron: "30 6 * * *"
   workflow_dispatch:
 
 permissions:

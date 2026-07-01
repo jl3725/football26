@@ -39,3 +39,16 @@ apifootball.key
 streamlit_*.log
 *.err.log
 *.out.log
+_st.log
+_st.err
+_tf_out.txt
+
+# 가상환경
+.venv/
+
+# 파생 DB (build_db.py 로 CSV에서 재생성 — 커밋 불필요)
+data/football.db
+
+# Next.js 웹 빌드 산출물 (web/.gitignore 로도 처리)
+node_modules/
+web/.next/

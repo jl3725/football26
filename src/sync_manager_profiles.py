@@ -27,7 +27,19 @@ ROOT = Path(__file__).resolve().parent.parent
 PROFILE_PATH = ROOT / "data" / "manager_profiles_2025_2026.json"
 REPORT_PATH = ROOT / "data" / "manager_change_report.md"
 CHANGE_LOG_PATH = ROOT / "data" / "manager_changes_2025_2026.csv"
-SOURCE_TITLE = "2025-26 Premier League"
+
+
+def tracking_season_title(today: "dt.date | None" = None) -> str:
+    """추적할 시즌 위키 문서 제목. 오프시즌/시즌 진행 중 모두 '현재(진행/임박) 시즌'을 가리킴.
+    6월 이후면 그 해 시작 시즌(2026-6월 → '2026-27'), 그 이전이면 전년도 시작 시즌."""
+    import datetime as _dt
+    today = today or _dt.date.today()
+    start = today.year if today.month >= 6 else today.year - 1
+    return f"{start}-{str(start + 1)[-2:]} Premier League"
+
+
+# 추적 시즌(오프시즌 26/27 감독 변경까지 감지). 필요 시 --source-title 로 override.
+SOURCE_TITLE = tracking_season_title()
 
 TEAM_ALIASES = {
     "Brighton & Hove Albion": "Brighton",
@@ -248,7 +260,7 @@ def append_change_log(path: Path, changed: list[dict], write_mode: bool) -> None
             "new_appointed": item.get("new_appointed", ""),
             "change_type": item.get("change_type", "detected"),
             "accepted": "true" if write_mode else "false",
-            "source": "Wikipedia 2025-26 Premier League",
+            "source": f"Wikipedia {SOURCE_TITLE}",
         })
     if not rows:
         return
@@ -266,7 +278,7 @@ def build_report(local: dict, source: dict[str, str], changed: list[dict], photo
         "# Manager Change Report",
         "",
         f"- Checked: {now}",
-        f"- Source: https://en.wikipedia.org/wiki/2025%E2%80%9326_Premier_League",
+        f"- Source: https://en.wikipedia.org/wiki/{urllib.parse.quote(SOURCE_TITLE.replace('-', '–').replace(' ', '_'))}",
         f"- Teams tracked: {len(local)}",
         f"- Source teams matched: {source_count}",
         f"- Photos available locally: {photo_count}",
@@ -299,17 +311,26 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--changes", type=Path, default=CHANGE_LOG_PATH)
     parser.add_argument("--write", action="store_true")
     parser.add_argument("--photos-only", action="store_true")
+    parser.add_argument("--source-title", default=None,
+                        help="위키 시즌 문서 제목 override (기본: 날짜 기반 자동, 예 '2026-27 Premier League')")
     args = parser.parse_args(argv)
 
+    global SOURCE_TITLE
+    if args.source_title:
+        SOURCE_TITLE = args.source_title
+    print(f"[manager-sync] tracking season: {SOURCE_TITLE}")
+
     profiles = load_profiles(args.profiles)
-    source = {} if args.photos_only else fetch_source_managers()
-    appoint = {} if args.photos_only else fetch_appointment_dates()
+    source = {} if args.photos_only else fetch_source_managers(SOURCE_TITLE)
+    appoint = {} if args.photos_only else fetch_appointment_dates(SOURCE_TITLE)
 
     changed = []
     if source:
         for team, profile in profiles.items():
             source_name = source.get(team)
             local_name = profile.get("name", "")
+            if source_name and source_name.strip().upper() in ("TBD", "TBA", "TBC"):
+                continue  # 미확정 감독은 변경으로 기록하지 않음
             if source_name and ascii_fold(source_name) != ascii_fold(local_name):
                 # 'Managerial changes' 표에서 새 감독 부임일 자동 매칭
                 new_app = appoint.get(ascii_fold(source_name), "")

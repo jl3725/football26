@@ -3,8 +3,10 @@ name: Daily News Fetch
 # 매일 06:10 UTC(한국 15:10)에 ESPN+RSS 뉴스를 수집·번역해 data/news.db에 누적 커밋.
 # 수동 실행도 가능(workflow_dispatch).
 on:
-  schedule:
-    - cron: "10 6 * * *"
+  # 로컬 작업 스케줄러(football26-news-agent)로 이관 — GH Actions 러너 IP가
+  # 소스 사이트에 차단돼 매일 실패하므로 cron 비활성화. 수동 실행만 유지.
+  # schedule:
+  #   - cron: "10 6 * * *"
   workflow_dispatch:
 
 permissions:

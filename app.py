@@ -78,6 +78,9 @@ from src.ui.news import (  # noqa: E402
     translate_articles, news_cards_html, has_team_news,
 )
 
+# 데이터 접근 계층 — DB(football.db) 우선, CSV 폴백. 리그/시즌 확장의 토대.
+from datastore import read_table  # noqa: E402
+
 # LABELS, BAND_*, TEAM_COLOR/EXTRA, 저수준 헬퍼는 src/ui/common.py로 이동(상단 import)
 
 MANAGER_PROFILES = {
@@ -217,44 +220,39 @@ def load_manager_profiles(_mtime: float = 0.0) -> dict:
 
 @st.cache_data
 def load_manager_changes(_file_key: tuple[int, int] = (0, 0)) -> pd.DataFrame | None:
-    if not MANAGER_CHANGES_PATH.exists():
-        return None
-    return pd.read_csv(MANAGER_CHANGES_PATH)
+    return read_table("manager_changes")
 
 
 @st.cache_data
 def load_team_unit_metrics(_file_key: tuple[int, int] = (0, 0)) -> pd.DataFrame | None:
-    if not TEAM_UNIT_METRICS_PATH.exists():
+    # datastore 경유(DB 우선, CSV 폴백). _file_key 는 CSV mtime 기반 캐시버스터로 유지.
+    df = read_table("team_unit_metrics")
+    if df is None or df.empty:
         return None
-    return pd.read_csv(TEAM_UNIT_METRICS_PATH).set_index("squad")
+    return df.set_index("squad")
 
 
 @st.cache_data
 def load_statbunker_team_stats(_file_key: tuple[int, int] = (0, 0)) -> pd.DataFrame | None:
-    if not STATBUNKER_TEAM_STATS_PATH.exists():
+    df = read_table("statbunker_team_stats")
+    if df is None or df.empty:
         return None
-    return pd.read_csv(STATBUNKER_TEAM_STATS_PATH).set_index("squad")
+    return df.set_index("squad")
 
 
 @st.cache_data
 def load_transfermarkt_injuries(_file_key: tuple[int, int] = (0, 0)) -> pd.DataFrame | None:
-    if not TRANSFERMARKT_INJURIES_PATH.exists():
-        return None
-    return pd.read_csv(TRANSFERMARKT_INJURIES_PATH)
+    return read_table("transfermarkt_injuries")
 
 
 @st.cache_data
 def load_tm_injury_history(_file_key: tuple[int, int] = (0, 0)) -> pd.DataFrame | None:
-    if not TM_INJURY_HISTORY_PATH.exists():
-        return None
-    return pd.read_csv(TM_INJURY_HISTORY_PATH)
+    return read_table("tm_injury_history")
 
 
 @st.cache_data
 def load_transfermarkt_contracts(_file_key: tuple[int, int] = (0, 0)) -> pd.DataFrame | None:
-    if not TRANSFERMARKT_CONTRACTS_PATH.exists():
-        return None
-    return pd.read_csv(TRANSFERMARKT_CONTRACTS_PATH)
+    return read_table("transfermarkt_contracts")
 
 
 def file_cache_key(path: Path) -> tuple[int, int]:
@@ -395,14 +393,13 @@ STANDINGS_PATH = Path(__file__).resolve().parent / "data" / "standings_2025_2026
 
 @st.cache_data
 def load(_mtime: float = 0.0) -> pd.DataFrame:
-    return pd.read_csv(DATA_PATH)
+    df = read_table("players_full")
+    return df if df is not None and not df.empty else pd.read_csv(DATA_PATH)
 
 
 @st.cache_data
 def load_standings() -> pd.DataFrame | None:
-    if not STANDINGS_PATH.exists():
-        return None
-    return pd.read_csv(STANDINGS_PATH)
+    return read_table("standings")
 
 
 # 팀 특성 지표: (라벨, 컬럼, 방향) — 방향 high=높을수록 강점, low=낮을수록 강점.
@@ -413,7 +410,9 @@ def load_standings() -> pd.DataFrame | None:
 @st.cache_data
 def team_traits_table(_mtime: float = 0.0) -> pd.DataFrame:
     """전 팀 × 특성지표 표 — 강점/약점 백분위 산정용."""
-    fulldf = pd.read_csv(DATA_PATH)
+    fulldf = read_table("players_full")
+    if fulldf is None or fulldf.empty:
+        fulldf = pd.read_csv(DATA_PATH)
     out = fulldf[~fulldf["pos"].fillna("").str.contains("GK")].copy()  # 외야만
     stnd = load_standings()
     teams = sorted(fulldf["squad"].unique())
@@ -558,10 +557,10 @@ CALENDAR_PATH = Path(__file__).resolve().parent / "data" / "calendar_events.csv"
 def load_calendar_events(_mtime: float = 0.0):
     """data/calendar_events.csv → [(name, start_date, end_date, icon, kind)].
     파일에 행만 추가하면 상태바에 자동 반영. 파일 없거나 오류면 STATUS_EVENTS 폴백."""
-    if not CALENDAR_PATH.exists():
+    df = read_table("calendar_events")
+    if df is None or df.empty:
         return STATUS_EVENTS
     try:
-        df = pd.read_csv(CALENDAR_PATH)
         out = []
         for _, r in df.iterrows():
             out.append((
@@ -850,9 +849,7 @@ FL_POSITIONS_PATH = Path(__file__).resolve().parent / "data" / "fl_positions_202
 @st.cache_data
 def load_fl_positions() -> pd.DataFrame | None:
     """football-lineups 팀별 선수 포지션·출전수·주장(c) 표기."""
-    if not FL_POSITIONS_PATH.exists():
-        return None
-    return pd.read_csv(FL_POSITIONS_PATH)
+    return read_table("fl_positions")
 
 
 @st.cache_data(ttl=1800)
@@ -879,17 +876,15 @@ def load_team_news(team: str) -> list:
 
 @st.cache_data
 def load_schedule() -> pd.DataFrame | None:
-    if not SCHEDULE_PATH.exists():
-        return None
-    return pd.read_csv(SCHEDULE_PATH)
+    return read_table("schedule")
 
 
 @st.cache_data
 def load_fl_matches() -> pd.DataFrame | None:
     """football-lineups 경기별 (날짜·대회·포메이션·match_id). schedule와 date로 조인."""
-    if not FL_MATCHES_PATH.exists():
+    df = read_table("fl_matches")
+    if df is None or df.empty:
         return None
-    df = pd.read_csv(FL_MATCHES_PATH)
     df["match_id"] = df["match_id"].astype(str)
     return df
 
@@ -903,9 +898,9 @@ ESPN_SUBS_PATH = Path(__file__).resolve().parent / "data" / "espn_subs_2025_2026
 @st.cache_data
 def load_espn_lineups(_mtime: float = 0.0) -> pd.DataFrame | None:
     """ESPN 경기별 라인업(선발+교체 · 포메이션 · 포지션). 스케줄 탭 피치용."""
-    if not ESPN_LINEUPS_PATH.exists():
+    df = read_table("espn_lineups")
+    if df is None or df.empty:
         return None
-    df = pd.read_csv(ESPN_LINEUPS_PATH)
     df["event_id"] = df["event_id"].astype(str)
     df["date"] = df["date"].astype(str)
     return df
@@ -914,9 +909,9 @@ def load_espn_lineups(_mtime: float = 0.0) -> pd.DataFrame | None:
 @st.cache_data
 def load_espn_subs(_mtime: float = 0.0) -> pd.DataFrame | None:
     """ESPN 경기별 교체 이벤트(분·IN·OUT). 스케줄 탭 교체 타임라인용."""
-    if not ESPN_SUBS_PATH.exists():
+    df = read_table("espn_subs")
+    if df is None or df.empty:
         return None
-    df = pd.read_csv(ESPN_SUBS_PATH)
     df["event_id"] = df["event_id"].astype(str)
     return df
 
@@ -924,9 +919,7 @@ def load_espn_subs(_mtime: float = 0.0) -> pd.DataFrame | None:
 @st.cache_data
 def load_transfers(_mtime: float = 0.0) -> pd.DataFrame | None:
     """이적 데이터(전 시즌 누적). 시즌 필터는 화면(세그먼트 토글)에서 선택."""
-    if not TRANSFERS_PATH.exists():
-        return None
-    return pd.read_csv(TRANSFERS_PATH)
+    return read_table("transfers")
 
 
 def _season_label(sid) -> str:
