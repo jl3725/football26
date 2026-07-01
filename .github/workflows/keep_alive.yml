@@ -1,0 +1,29 @@
+name: Keep backend awake
+
+# Render 무료 티어는 15분 미사용 시 sleep → 콜드스타트(~30-60s).
+# 10분마다 /api/health 를 핑해 깨어있게 유지한다.
+# 백엔드 URL 은 repo Variable 로 지정: Settings → Secrets and variables → Actions
+#   → Variables 탭 → New: BACKEND_URL = https://football26-api.onrender.com
+on:
+  schedule:
+    - cron: "*/10 * * * *"   # 10분마다 (GitHub cron 은 best-effort — 다소 지연될 수 있음)
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping /api/health
+        run: |
+          URL="${{ vars.BACKEND_URL }}"
+          if [ -z "$URL" ]; then
+            echo "repo variable BACKEND_URL 미설정 — 스킵"; exit 0
+          fi
+          for i in 1 2 3; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 90 "${URL%/}/api/health") || code=000
+            echo "attempt $i -> HTTP $code"
+            if [ "$code" = "200" ]; then echo "awake ✔"; exit 0; fi
+            sleep 20
+          done
+          echo "200 아님(콜드스타트 중일 수 있음) — 실패로 처리하지 않음"
+          exit 0
