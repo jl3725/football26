@@ -2,13 +2,13 @@
 
 export const TABS = [
   { key: "overview", label: "Overview", icon: "⚡", ready: true },
-  { key: "signals", label: "Signals", icon: "🔔", ready: true },
+  { key: "signals", label: "Inbox", icon: "📥", ready: true },
   { key: "analytics", label: "Analytics", icon: "📊", ready: true },
   { key: "squad", label: "Squad", icon: "📋", ready: true },
   { key: "schedule", label: "Schedule", icon: "📅", ready: true },
   { key: "player", label: "Player", icon: "👤", ready: true },
   { key: "database", label: "Database", icon: "🔎", ready: true },
-  { key: "transfer", label: "Transfer", icon: "🔁", ready: true },
+  { key: "transfer", label: "Recruit", icon: "🧭", ready: true },
   { key: "news", label: "News", icon: "📰", ready: true },
 ] as const;
 

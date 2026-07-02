@@ -1162,34 +1162,40 @@ def similar(player: str, same_position: bool = True, alpha: float = 0.6, league:
 
 @app.get("/api/recommend/{team}")
 def recommend(team: str, league: str = ACTIVE_LEAGUE):
+    """후보 평가 에이전트 — 열린(미보강) 약점 라인의 후보 + 왜맞음/왜위험/데이터 신뢰도,
+    그리고 이번 창 타팀으로 간 고평가 선수(Lost Target Review)."""
     full = ds.read_table("players_full", league=league)
-    um_df = ds.read_table("team_unit_metrics", league=league)
-    stand = ds.read_table("standings", league=league)
     if full is None:
-        return {"team": team, "weakest": None, "recommendations": []}
+        return {"team": team, "weakest": None, "recommendations": [], "lost_targets": [], "addressed": False}
 
-    # 가장 약한 유닛 판정
-    weakest_line, weakest_label = "MID", "미드필드"
-    if um_df is not None and "squad" in um_df.columns:
-        rl = rt.compute_team_ratings(team, full, stand, um_df.set_index("squad"))
-        if rl:
-            vals = {lbl: int(v) for (lbl, v, _s) in rl}
-            units = {"FWD": vals.get("공격 지수", 99), "MID": vals.get("미드필드 지수", 99), "DEF": vals.get("수비 지수", 99)}
-            weakest_line = min(units, key=units.get)
-            weakest_label = {"FWD": "공격", "MID": "미드필드", "DEF": "수비"}[weakest_line]
+    # 약점 유닛 (v2 절대) — 이번 창에 이미 보강한 라인은 우선순위에서 뺌
+    trr = rv.team_ratings(full, team) or {}
+    units = {"ATT": trr.get("attack", 99), "MID": trr.get("midfield", 99), "DEF": trr.get("defense", 99)}
+    win = _current_window()
+    tr = ds.read_table("transfers", league=league)
+    signed = set()
+    if tr is not None and "squad" in tr.columns:
+        tt, _wf = _window_filter(tr[(tr["squad"] == team) & (tr["direction"] == "in")].copy(), win)
+        tt = tt[~tt["fee_text"].astype(str).str.lower().str.contains("loan", na=False)]
+        for _, r in tt.iterrows():
+            signed.add(_pos_to_line(r.get("pos")))
+    open_units = {k: v for k, v in units.items() if k not in signed} or units
+    target = min(open_units, key=open_units.get)
+    addressed = target in signed
+    label = {"ATT": "공격", "MID": "미드필드", "DEF": "수비"}[target]
 
-    # 해당 라인의 리그 최고 선수(타팀), OVR 순
     pool = full[full["squad"] != team].copy()
     pool = pool[pd.to_numeric(pool["minutes"], errors="coerce").fillna(0) >= 600]
-    if "left_for" in pool.columns:
-        pool = pool[pool["left_for"].isna() | (pool["left_for"].astype(str).str.strip() == "")]
-    pool = pool[pool.apply(lambda r: _line_of(r.get("fl_group"), r.get("pos")) == weakest_line, axis=1)].copy()
+    inln = pool.apply(lambda r: _pos_to_line(r.get("fl_group") or r.get("pos")) == target, axis=1)
+    left = (pool["left_for"].notna() & (pool["left_for"].astype(str).str.strip() != "")) \
+        if "left_for" in pool.columns else pd.Series(False, index=pool.index)
+    avail = pool[inln & ~left].copy()
+    lost = pool[inln & left].copy()
 
-    # 전술 적합도 = 약점 라인 핵심 지표 백분위, 스쿼드 매치 = 평점 백분위
-    fit_col = {"FWD": "npxg_p90", "MID": "key_passes_per90", "DEF": "tackles_won_per90_ss"}[weakest_line]
-    fit_label = {"FWD": "득점 위협", "MID": "찬스 창출", "DEF": "수비 기여"}[weakest_line]
-    fit_s = pd.to_numeric(pool.get(fit_col), errors="coerce") if fit_col in pool.columns else pd.Series(dtype=float)
-    rate_s = pd.to_numeric(pool.get("ss_rating"), errors="coerce")
+    fit_col = {"ATT": "npxg_p90", "MID": "key_passes_per90", "DEF": "tackles_won_per90_ss"}[target]
+    fit_label = {"ATT": "득점 위협", "MID": "찬스 창출", "DEF": "수비 기여"}[target]
+    fit_s = pd.to_numeric(avail.get(fit_col), errors="coerce") if fit_col in avail.columns else pd.Series(dtype=float)
+    rate_s = pd.to_numeric(avail.get("ss_rating"), errors="coerce")
 
     def _pct_in(s, v):
         sv = s.dropna()
@@ -1201,22 +1207,162 @@ def recommend(team: str, league: str = ACTIVE_LEAGUE):
             return 0
         return int(round((sv < v).mean() * 100))
 
-    pool["_ovr"] = pool.apply(_player_ovr, axis=1)
-    pool = pool.sort_values("_ovr", ascending=False).head(6)
+    avail["_ovr"] = avail.apply(_player_ovr, axis=1)
+    avail = avail.sort_values("_ovr", ascending=False).head(6)
     recs = []
-    for _, r in pool.iterrows():
+    for _, r in avail.iterrows():
+        age, mn = int(_num(r.get("age"))), int(_num(r.get("minutes")))
+        val = _num(r.get("market_value_eur")); rating = round(_num(r.get("ss_rating")), 2)
+        fit = _pct_in(fit_s, r.get(fit_col)); match = _pct_in(rate_s, r.get("ss_rating"))
+        why_fit, why_risk = [], []
+        if fit >= 65:
+            why_fit.append(f"{fit_label} 리그 상위 {max(1, 100 - fit)}%")
+        if match >= 65:
+            why_fit.append(f"평점 {rating} 상위권")
+        if 23 <= age <= 28:
+            why_fit.append(f"{age}세 피크")
+        if mn >= 2000:
+            why_fit.append("풀시즌 주전")
+        if age >= 31:
+            why_risk.append(f"{age}세 노쇠 구간")
+        if mn < 1000:
+            why_risk.append(f"출전 {mn}′ 표본 부족")
+        if val >= 80_000_000:
+            why_risk.append(f"고가 €{val / 1e6:.0f}M")
+        if not why_fit:
+            why_fit.append("OVR 상위 후보")
+        conf = "high" if mn >= 1500 else ("med" if mn >= 700 else "low")
         recs.append({
             "player": r["player"], "squad": str(r.get("squad") or ""),
             "logo": tm.team_logo(str(r.get("squad") or "")),
-            "pos": str(r.get("fl_group") or r.get("pos") or ""), "age": int(_num(r.get("age"))),
-            "ovr": int(r["_ovr"]), "value_eur": _num(r.get("market_value_eur")),
-            "photo": _photo(r), "rating": round(_num(r.get("ss_rating")), 2),
-            "tactical_fit": _pct_in(fit_s, r.get(fit_col)),
-            "squad_match": _pct_in(rate_s, r.get("ss_rating")),
+            "pos": str(r.get("fl_group") or r.get("pos") or ""), "age": age,
+            "ovr": int(r["_ovr"]), "value_eur": val, "photo": _photo(r), "rating": rating,
+            "tactical_fit": fit, "squad_match": match,
+            "why_fit": why_fit, "why_risk": why_risk, "confidence": conf,
         })
+
+    # Lost Target Review — 이 라인 고평가 선수 중 이번 창 타팀 이적
+    lost_out = []
+    if not lost.empty:
+        lost["_ovr"] = lost.apply(_player_ovr, axis=1)
+        for _, r in lost.sort_values("_ovr", ascending=False).head(4).iterrows():
+            lost_out.append({
+                "player": r["player"], "from": str(r.get("squad") or ""),
+                "to": str(r.get("left_for") or ""), "ovr": int(r["_ovr"]),
+                "pos": str(r.get("fl_group") or r.get("pos") or ""), "photo": _photo(r),
+            })
+
     return {"team": team, "color": tm.team_color(team),
-            "weakest": {"line": weakest_line, "label": weakest_label, "fit_label": fit_label},
-            "recommendations": recs}
+            "weakest": {"line": target, "label": label, "fit_label": fit_label},
+            "addressed": addressed, "recommendations": recs, "lost_targets": lost_out}
+
+
+_NEED_LINES = {
+    "GK": {"label": "골키퍼", "expect": 2},
+    "DEF": {"label": "수비", "expect": 7},
+    "MID": {"label": "미드필드", "expect": 5},
+    "ATT": {"label": "공격", "expect": 5},
+}
+
+
+def _pos_to_line(pos) -> str:
+    p = str(pos or "").lower()
+    if "keeper" in p or p.strip() == "gk":
+        return "GK"
+    if "back" in p or "defen" in p or p in ("cb", "fb", "rb", "lb", "df"):
+        return "DEF"
+    if "wing" in p or "forward" in p or "striker" in p or p in ("st", "w", "rw", "lw", "fw"):
+        return "ATT"
+    return "MID"
+
+
+@app.get("/api/needs/{team}")
+def needs(team: str, league: str = ACTIVE_LEAGUE):
+    """스카우트 데스크 — 팀 니즈 자동 산출 + 이번 창 상황 모드.
+
+    현실(스쿼드·부상·이적)에서 니즈를 뽑고, 각 니즈가 이번 창 영입으로 보강됐는지/
+    방출로 악화됐는지 상태를 붙인다. AI는 '사라'가 아니라 '지금 상황 판단'.
+    """
+    full = ds.read_table("players_full", league=league)
+    if full is None:
+        raise HTTPException(404, "players not found")
+    sq = full[full["squad"] == team].copy()
+    if "left_for" in sq.columns:
+        sq = sq[sq["left_for"].isna() | (sq["left_for"].astype(str).str.strip() == "")]
+
+    byline: dict = {k: [] for k in _NEED_LINES}
+    for _, r in sq.iterrows():
+        ln = _pos_to_line(r.get("fl_group") or r.get("pos"))
+        byline[ln].append({"ovr": _player_ovr(r), "age": int(_num(r.get("age"))),
+                           "min": int(_num(r.get("minutes")))})
+
+    win = _current_window()
+    tr = ds.read_table("transfers", league=league)
+    ins_line, outs_line, signings, departures = {}, {}, [], []
+    if tr is not None and "squad" in tr.columns:
+        tt, _wf = _window_filter(tr[tr["squad"] == team].copy(), win)
+        tt = tt[~tt["fee_text"].astype(str).str.lower().str.contains("loan", na=False)]
+        for _, r in tt.iterrows():
+            ln = _pos_to_line(r.get("pos"))
+            nm = str(r.get("player") or "")
+            if str(r.get("direction")) == "in":
+                ins_line.setdefault(ln, []).append(nm)
+                signings.append({"player": nm, "line": ln, "pos": str(r.get("pos") or ""), "fee": str(r.get("fee_text") or "")})
+            elif str(r.get("direction")) == "out":
+                outs_line.setdefault(ln, []).append(nm)
+                departures.append({"player": nm, "line": ln, "pos": str(r.get("pos") or "")})
+
+    inj = ds.read_table("transfermarkt_injuries", league=league)
+    inj_line: dict = {}
+    if inj is not None and "squad" in inj.columns:
+        ti = inj[inj["squad"].astype(str) == team]
+        if "active" in ti.columns:
+            ti = ti[ti["active"].astype(str).str.lower().isin({"true", "1", "yes", "y"})]
+        for _, r in ti.iterrows():
+            ln = _pos_to_line(r.get("position"))
+            inj_line[ln] = inj_line.get(ln, 0) + 1
+
+    out_needs = []
+    for ln, cfg in _NEED_LINES.items():
+        players = byline[ln]
+        quality = [p for p in players if p["ovr"] >= 72]
+        core = sorted(players, key=lambda x: -x["min"])[:3]
+        ages = [p["age"] for p in core if p["age"] > 0]
+        avg_age = sum(ages) / len(ages) if ages else 0
+        young_q = any(p["age"] and p["age"] <= 22 and p["ovr"] >= 70 for p in players)
+        n_inj = inj_line.get(ln, 0)
+        sigs, lefts = ins_line.get(ln, []), outs_line.get(ln, [])
+
+        found = []
+        gap = cfg["expect"] - len(quality)
+        if gap >= 1:
+            found.append(("depth", "질·뎁스 부족", "high" if gap >= 2 else "med",
+                          f"{cfg['label']} 준척(OVR 72+) {len(quality)}명 · 권장 {cfg['expect']}"))
+        if core and avg_age >= 30 and not young_q:
+            found.append(("aging", "노쇠·승계 필요", "med",
+                          f"{cfg['label']} 주축 평균 {avg_age:.0f}세 · 젊은 대체자 부족"))
+        if n_inj >= 2 or (n_inj >= 1 and len(quality) <= cfg["expect"] - 1):
+            found.append(("injury", "부상 공백", "high" if n_inj >= 2 else "med",
+                          f"{cfg['label']} 현재 부상 {n_inj}명"))
+
+        for kind, title, sev, reason in found:
+            status, rel = "open", None
+            if sigs:
+                status, rel = "addressed", sigs[0]
+            elif lefts:
+                status, rel = "worsened", lefts[0]
+            out_needs.append({"line": ln, "line_label": cfg["label"], "kind": kind,
+                              "title": title, "severity": sev, "reason": reason,
+                              "status": status, "player": rel})
+
+    _sev = {"high": 0, "med": 1, "low": 2}
+    out_needs.sort(key=lambda n: (0 if n["status"] == "open" else 1, _sev.get(n["severity"], 3)))
+
+    mode = "evaluate" if signings else ("gap" if departures else "recruit")
+    return {"team": team, "color": tm.team_color(team), "mode": mode,
+            "window": {"is_open": win["is_open"], "label": win["label"], "kr": win.get("kr"),
+                       "signings": signings, "departures": departures},
+            "needs": out_needs}
 
 
 @app.get("/api/database")

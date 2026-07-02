@@ -353,6 +353,41 @@ html, body {
 .sc-pot { opacity: .85; }
 .star-pot { font-size: 11px; margin-left: 2px; color: #4fc27f; font-family: Inter, sans-serif; font-weight: 700; }
 
+/* 스카우트 데스크 (Needs Board) */
+.scout-desk, .inbox-hd { border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; margin-bottom: 16px; background: linear-gradient(120deg, rgba(255,255,255,0.05), transparent 60%); }
+.inbox-hd { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.inbox-hd b { font-size: 15px; }
+.scout-hd { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
+.scout-tag { font-family: Oswald, sans-serif; font-size: 11px; letter-spacing: 2px; font-weight: 700; }
+.scout-hd b { font-size: 15px; }
+.scout-d { font-size: 11.5px; color: var(--muted); flex: 1; min-width: 140px; }
+.scout-cnt { font-family: Oswald, sans-serif; font-size: 11px; color: var(--muted); }
+.need-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 10px; }
+.need-card { border: 1px solid var(--line); border-radius: 11px; padding: 11px 12px; background: var(--panel); border-left: 3px solid var(--muted); }
+.need-card.st-addressed { border-left-color: #4fc27f; }
+.need-card.st-worsened { border-left-color: #e0556b; }
+.need-card.st-open { border-left-color: #f4cf5e; }
+.need-top { display: flex; align-items: center; gap: 7px; margin-bottom: 6px; }
+.need-line { font-size: 10px; font-weight: 700; letter-spacing: .5px; color: var(--muted); background: rgba(255,255,255,0.06); padding: 2px 7px; border-radius: 999px; }
+.need-title { flex: 1; font-size: 13px; font-weight: 700; }
+.need-sev { font-size: 9.5px; font-weight: 700; padding: 2px 6px; border-radius: 5px; }
+.need-sev.high { background: rgba(224,85,107,0.16); color: #e0556b; }
+.need-sev.med { background: rgba(244,207,94,0.14); color: #f4cf5e; }
+.need-sev.low { background: rgba(255,255,255,0.08); color: var(--muted); }
+.need-reason { font-size: 11.5px; color: var(--muted); line-height: 1.5; }
+.need-status { font-size: 11px; margin-top: 7px; font-weight: 600; }
+.need-status.ok { color: #4fc27f; }
+.need-status.bad { color: #e0556b; }
+
+/* 후보 평가 근거 */
+.rec-addr { font-size: 11px; color: var(--muted); font-weight: 500; margin-left: 4px; }
+.rec-why { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; justify-content: center; }
+.why { font-size: 10px; padding: 2px 6px; border-radius: 6px; line-height: 1.35; }
+.why.fit { background: rgba(79,194,127,0.14); color: #4fc27f; }
+.why.risk { background: rgba(224,85,107,0.14); color: #e0556b; }
+.rec-conf { font-size: 10px; margin-top: 7px; font-weight: 600; }
+.lt-ovr { font-size: 11px; color: var(--muted); font-family: Oswald, sans-serif; margin-left: 4px; }
+
 /* ── Main ─────────────────────────────── */
 .main { padding: 20px 30px 60px; max-width: 1240px; width: 100%; }
 

@@ -35,7 +35,7 @@ function Row({ s, showTeam }: { s: Signal; showTeam: boolean }) {
   );
 }
 
-export default function SignalsTab({ team }: { team: string; accent: string }) {
+export default function SignalsTab({ team, accent }: { team: string; accent: string }) {
   const [mine, setMine] = useState<Signals | null>(null);
   const [league, setLeague] = useState<Signals | null>(null);
   useEffect(() => {
@@ -52,6 +52,12 @@ export default function SignalsTab({ team }: { team: string; accent: string }) {
 
   return (
     <div className="fade">
+      <div className="inbox-hd">
+        <span className="scout-tag" style={{ color: accent }}>📥 AUTO-DETECT INBOX</span>
+        <b>자동 감지 인박스</b>
+        <span className="scout-d">부상·감독·시장가·유망주·계약 변화를 에이전트가 자동 수집</span>
+        <span className="scout-cnt">{team} {mine.signals.length}건</span>
+      </div>
       <div className="sig-cat-grid">
         {GROUPS.map((g) => {
           const items = byGroup(g);

@@ -165,8 +165,9 @@ export type Analytics = {
 };
 
 export type SimilarResult = { player: string; squad: string; pos: string; age: number; value_eur: number; logo: string; score: number; style: number; perf: number };
-export type Recommendation = { player: string; squad: string; logo: string; pos: string; age: number; ovr: number; value_eur: number; photo: string; rating: number; tactical_fit: number; squad_match: number };
-export type Recommend = { team: string; color: string; weakest: { line: string; label: string; fit_label: string } | null; recommendations: Recommendation[] };
+export type Recommendation = { player: string; squad: string; logo: string; pos: string; age: number; ovr: number; value_eur: number; photo: string; rating: number; tactical_fit: number; squad_match: number; why_fit: string[]; why_risk: string[]; confidence: string };
+export type LostTarget = { player: string; from: string; to: string; ovr: number; pos: string; photo: string };
+export type Recommend = { team: string; color: string; weakest: { line: string; label: string; fit_label: string } | null; addressed: boolean; recommendations: Recommendation[]; lost_targets: LostTarget[] };
 
 const q = (team: string, league: string) =>
   `${encodeURIComponent(team)}?league=${encodeURIComponent(league)}`;
@@ -197,6 +198,12 @@ export const getCaptains = (t: string, l = _league) =>
 export const getSimilar = (p: string, l = _league) =>
   j<{ player: string; results: SimilarResult[] }>(`/api/similar/${encodeURIComponent(p)}?league=${encodeURIComponent(l)}`);
 export const getRecommend = (t: string, l = _league) => j<Recommend>(`/api/recommend/${q(t, l)}`);
+
+// ── 스카우트 데스크 (Needs Board) ──
+export type NeedItem = { line: string; line_label: string; kind: string; title: string; severity: string; reason: string; status: string; player: string | null };
+export type NeedsWindow = { is_open: boolean; label: string; kr: string | null; signings: { player: string; line: string; pos: string; fee: string }[]; departures: { player: string; line: string; pos: string }[] };
+export type Needs = { team: string; color: string; mode: string; window: NeedsWindow; needs: NeedItem[] };
+export const getNeeds = (t: string, l = _league) => j<Needs>(`/api/needs/${q(t, l)}`);
 export const getContext = () => j<Context>(`/api/context`);
 
 export type DbPlayer = { player: string; squad: string; logo: string; pos: string; line: string; age: number; nationality: string; value_eur: number; ovr: number; photo: string };
