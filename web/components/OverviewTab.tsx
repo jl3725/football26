@@ -196,7 +196,7 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
                     {st.ovr}{st.pot && st.pot > st.ovr ? <span className="star-pot">↗{st.pot}</span> : null}
                   </div>
                   <div className="star-name">{st.player}</div>
-                  <div className="star-meta">{st.pos} · ★{st.rating}</div>
+                  <div className="star-meta">{st.pos}{st.form ? <> · 폼 <b style={{ color: st.form >= 85 ? "#4fc27f" : st.form >= 75 ? "#f4cf5e" : "#e0707a" }}>{st.form}</b></> : ""}</div>
                   <div className="star-ga">{st.goals}G {st.assists}A</div>
                 </div>
               );

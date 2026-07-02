@@ -29,7 +29,7 @@ sys.path.insert(0, str(ROOT / "src"))
 import datastore as ds  # noqa: E402
 import teammeta as tm  # noqa: E402
 import ratings as rt  # noqa: E402
-import ratings_v2 as rv  # noqa: E402  (절대·퍼포먼스 우선 모델)
+import ratings_v3 as rv3  # noqa: E402  (절대 클래스·폼·POT·신뢰도)
 import transfer_adjust as ta  # noqa: E402
 from leagues import ACTIVE_LEAGUE, league_config  # noqa: E402
 from team_analysis import (  # noqa: E402  (streamlit 비의존)
@@ -254,9 +254,9 @@ def overview(team: str, league: str = ACTIVE_LEAGUE):
     }
     ovr_delta = {"overall": 0, "attack": 0, "midfield": 0, "defense": 0}
     full_df = ds.read_table("players_full", league=league)
-    base = rv.team_ratings(full_df, team)                       # 이적 전(현재 스쿼드)
+    base = rv3.team_ratings(full_df, team)                       # 이적 전(현재 스쿼드)
     if base:
-        adj = rv.team_ratings(ta.build_adjusted_full(full_df, tr, win), team) or base  # 이번 창 반영
+        adj = rv3.team_ratings(ta.build_adjusted_full(full_df, tr, win), team) or base  # 이번 창 반영
         for k in ("overall", "attack", "midfield", "defense"):
             ovr[k] = adj[k]
             ovr_delta[k] = adj[k] - base[k]
@@ -287,7 +287,8 @@ def overview(team: str, league: str = ACTIVE_LEAGUE):
         for _, r in sq.sort_values("_r", ascending=False).head(5).iterrows():
             stars.append({
                 "player": r["player"], "pos": str(r.get("fl_group") or r.get("pos") or ""),
-                "ovr": _player_ovr(r), "pot": _player_pot(r), "rating": round(_num(r.get("_r")), 2),
+                "ovr": _player_ovr(r), "pot": _player_pot(r), "form": _player_form(r),
+                "rating": round(_num(r.get("_r")), 2),
                 "goals": int(_num(r.get("goals"))), "assists": int(_num(r.get("assists"))),
                 "photo": _photo(r),
             })
@@ -304,7 +305,7 @@ def overview(team: str, league: str = ACTIVE_LEAGUE):
                 continue
             p_ovr = _player_ovr(r)  # 팀 ovr dict 과 이름 충돌 금지
             squad_ratings.append({
-                "player": r["player"], "ovr": p_ovr, "pot": _player_pot(r),
+                "player": r["player"], "ovr": p_ovr, "pot": _player_pot(r), "form": _player_form(r),
                 "age": int(_num(r.get("age"))), "minutes": mn,
                 "line": _line(r.get("fl_group") or r.get("pos")),
             })
@@ -459,17 +460,25 @@ def _line_of(fl_group, pos) -> str:
 
 
 def _player_ovr(row) -> int:
-    # v2: 퍼포먼스 앵커 + 표본회귀 + 나이곡선, 시장가치는 약한 prior (잠재력 분리)
-    return rv.current_ovr(
-        ss_rating=row.get("ss_rating"), minutes=row.get("minutes"), age=row.get("age"),
-        value=row.get("market_value_eur"), goals=row.get("goals"), assists=row.get("assists"),
+    # v3 절대 OVR = 커리어 클래스 (시장가치 + 포지션 공정 보정 + 검증/베테랑, 어린 미검증 게이팅)
+    return rv3.absolute_ovr(
+        value=row.get("market_value_eur"), ss_rating=row.get("ss_rating"),
+        minutes=row.get("minutes"), age=row.get("age"),
+        pos_group=str(row.get("fl_group") or row.get("pos") or ""),
+    )
+
+
+def _player_form(row):
+    return rv3.form_rating(
+        ss_rating=row.get("ss_rating"), minutes=row.get("minutes"),
+        goals=row.get("goals"), assists=row.get("assists"),
         pos_group=str(row.get("fl_group") or row.get("pos") or ""),
     )
 
 
 def _player_pot(row) -> int:
-    return rv.potential(current=_player_ovr(row), age=row.get("age"),
-                        value=row.get("market_value_eur"))
+    return rv3.potential(absolute=_player_ovr(row), age=row.get("age"),
+                         value=row.get("market_value_eur"))
 
 
 def _squad_df(team: str, league: str):
@@ -882,7 +891,7 @@ def analytics(team: str, league: str = ACTIVE_LEAGUE):
                 except (TypeError, ValueError):
                     return dflt
             # 코어 OVR은 v2 절대모델로 통일(Overview 와 일치). form 은 v1(성적 기반), set_piece 는 지수.
-            _t2 = rv.team_ratings(full, team) or {}
+            _t2 = rv3.team_ratings(full, team) or {}
             ovr = {"overall": _t2.get("overall", v.get("종합 지수", 60)), "form": v.get("시즌 폼", 60),
                    "attack": _t2.get("attack", v.get("공격 지수", 60)), "midfield": _t2.get("midfield", v.get("미드필드 지수", 60)),
                    "defense": _t2.get("defense", v.get("수비 지수", 60)), "set_piece": _u("set_piece_attack_index")}
@@ -1174,7 +1183,7 @@ def recommend(team: str, league: str = ACTIVE_LEAGUE):
     # 열린 니즈 없으면 v2 절대 유닛 중 최약체로 폴백.
     nd = _compute_needs(team, league)
     open_out = [n for n in nd["needs"] if n["status"] == "open" and n["line"] in ("ATT", "MID", "DEF")]
-    trr = rv.team_ratings(full, team) or {}
+    trr = rv3.team_ratings(full, team) or {}
     units = {"ATT": trr.get("attack", 99), "MID": trr.get("midfield", 99), "DEF": trr.get("defense", 99)}
     signed = {s["line"] for s in nd["window"]["signings"]}
     target = open_out[0]["line"] if open_out else min(units, key=units.get)
@@ -1321,11 +1330,11 @@ def _compute_needs(team: str, league: str) -> dict:
     out_needs = []
     for ln, cfg in _NEED_LINES.items():
         players = byline[ln]
-        quality = [p for p in players if p["ovr"] >= 72]
+        quality = [p for p in players if p["ovr"] >= 80]  # v3 절대 스케일
         core = sorted(players, key=lambda x: -x["min"])[:3]
         ages = [p["age"] for p in core if p["age"] > 0]
         avg_age = sum(ages) / len(ages) if ages else 0
-        young_q = any(p["age"] and p["age"] <= 22 and p["ovr"] >= 70 for p in players)
+        young_q = any(p["age"] and p["age"] <= 22 and p["ovr"] >= 78 for p in players)
         n_inj = inj_line.get(ln, 0)
         sigs, lefts = ins_line.get(ln, []), outs_line.get(ln, [])
 
@@ -1333,7 +1342,7 @@ def _compute_needs(team: str, league: str) -> dict:
         gap = cfg["expect"] - len(quality)
         if gap >= 1:
             found.append(("depth", "질·뎁스 부족", "high" if gap >= 2 else "med",
-                          f"{cfg['label']} 준척(OVR 72+) {len(quality)}명 · 권장 {cfg['expect']}"))
+                          f"{cfg['label']} 준척(OVR 80+) {len(quality)}명 · 권장 {cfg['expect']}"))
         if core and avg_age >= 30 and not young_q:
             found.append(("aging", "노쇠·승계 필요", "med",
                           f"{cfg['label']} 주축 평균 {avg_age:.0f}세 · 젊은 대체자 부족"))
