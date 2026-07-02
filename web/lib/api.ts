@@ -201,6 +201,24 @@ export type Signals = { team: string; window: Window; counts: Record<string, num
 export const getSignals = (team = "", l = "EPL", limit = 60) =>
   j<Signals>(`/api/signals?team=${encodeURIComponent(team)}&league=${encodeURIComponent(l)}&limit=${limit}`);
 
+// ── 홈 대시보드 ──
+export type HomeDeal = { player: string; to: string; to_logo: string; from: string; pos: string; fee_eur: number; fee_text: string };
+export type HomeNet = { team: string; logo: string; spend: number; income: number; net: number };
+export type HomeMgr = { team: string; logo: string; previous: string; current: string; photo: string; formation: string; changed_at: string };
+export type HomeNews = { headline: string; team: string; source: string; image: string; link: string };
+export type BuzzItem = { title: string; title_en: string; source: string; tier: string; link: string; published: string };
+export type Home = {
+  season: string; window: Window;
+  kpi: { spend: number; deals: number; mgr_changes: number; injuries: number };
+  buzz: BuzzItem[];
+  transfers: { top_deals: HomeDeal[]; net_spend: HomeNet[] };
+  signals: Signal[]; signal_counts: Record<string, number>;
+  manager_changes: HomeMgr[]; news: HomeNews[];
+  standings: Team[]; roster_next: NextSeason;
+};
+export const getHome = (league = "EPL") =>
+  j<Home>(`/api/home?league=${encodeURIComponent(league)}`);
+
 export function fmtEur(v: number): string {
   if (!v) return "-";
   if (v >= 1e6) return `€${(v / 1e6).toFixed(1)}M`;

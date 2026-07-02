@@ -1426,6 +1426,99 @@ def signals(team: str = "", league: str = ACTIVE_LEAGUE, limit: int = 60):
     return {"team": team, "window": win, "counts": counts, "signals": out[:limit]}
 
 
+@app.get("/api/home")
+def home(league: str = ACTIVE_LEAGUE):
+    """리그 홈 대시보드 집계 — 이적 펄스·시그널·감독교체·순위·뉴스 한 번에."""
+    win = _current_window()
+
+    # 1) 이적 펄스 (이번 창 · 영구이적만)
+    tr = ds.read_table("transfers", league=league)
+    top_deals, net = [], []
+    spend_total, deals_in = 0.0, 0
+    if tr is not None and "squad" in tr.columns:
+        tt, _wf = _window_filter(tr.copy(), win)
+        tt = tt[~tt["fee_text"].astype(str).str.lower().str.contains("loan", na=False)].copy()
+        tt["_fee"] = tt["fee_eur"].map(lambda v: _num(v, 0.0))
+        _in = tt[tt["direction"] == "in"]
+        deals_in = int(len(_in))
+        spend_total = float(_in["_fee"].sum())
+        for _, r in tt[tt["direction"] == "in"].sort_values("_fee", ascending=False).head(8).iterrows():
+            sq = str(r.get("squad") or "")
+            top_deals.append({
+                "player": str(r.get("player") or ""), "to": sq, "to_logo": tm.team_logo(sq),
+                "from": str(r.get("club") or ""), "pos": str(r.get("pos") or ""),
+                "fee_eur": _num(r.get("fee_eur"), 0.0), "fee_text": str(r.get("fee_text") or ""),
+            })
+        for sq, g in tt.groupby("squad"):
+            spend = float(g[g["direction"] == "in"]["_fee"].sum())
+            income = float(g[g["direction"] == "out"]["_fee"].sum())
+            if spend == 0 and income == 0:
+                continue
+            net.append({"team": str(sq), "logo": tm.team_logo(str(sq)),
+                        "spend": spend, "income": income, "net": spend - income})
+        net.sort(key=lambda x: -x["spend"])
+
+    # 2) 시그널 (리그 전체) · 3) 감독 교체 · 4) 뉴스 헤드라인
+    sig = signals(team="", league=league, limit=24)
+
+    changes = []
+    for t, p in _managers().items():
+        if p.get("previous_name"):
+            changes.append({
+                "team": t, "logo": tm.team_logo(t),
+                "previous": p.get("previous_name", ""), "current": p.get("name", ""),
+                "photo": p.get("photo_url", "") if str(p.get("photo_url") or "").startswith("http") else "",
+                "formation": p.get("formation", ""),
+                "changed_at": str(p.get("change_detected_at") or "")[:10],
+            })
+    changes.sort(key=lambda x: x["changed_at"], reverse=True)
+
+    na = ds.read_table("news_articles", league=league)
+    news_out, seen = [], set()
+    if na is not None:
+        nn = na.sort_values("published", ascending=False) if "published" in na.columns else na
+        for _, r in nn.iterrows():
+            h = str(r.get("headline_ko") or r.get("headline") or "")
+            if not h or h in seen:
+                continue
+            seen.add(h)
+            news_out.append({
+                "headline": h, "team": str(r.get("team") or ""),
+                "source": str(r.get("source") or ""),
+                "image": str(r.get("image") or "") if str(r.get("image") or "").startswith("http") else "",
+                "link": str(r.get("link") or ""),
+            })
+            if len(news_out) >= 10:
+                break
+
+    # 5) 이적 속보/루머 피드 (Guardian·BBC RSS → 번역·분류)
+    bz = ds.read_table("transfer_buzz", league=league)
+    buzz = []
+    if bz is not None:
+        for _, r in bz.head(18).iterrows():
+            buzz.append({
+                "title": str(r.get("title_ko") or r.get("title_en") or ""),
+                "title_en": str(r.get("title_en") or ""),
+                "source": str(r.get("source") or ""),
+                "tier": str(r.get("tier") or "rumor"),
+                "link": str(r.get("link") or ""),
+                "published": str(r.get("published") or ""),
+            })
+
+    return {
+        "season": _data_season_label(), "window": win,
+        "kpi": {
+            "spend": spend_total, "deals": deals_in,
+            "mgr_changes": len(changes), "injuries": int(sig["counts"].get("injury", 0)),
+        },
+        "buzz": buzz,
+        "transfers": {"top_deals": top_deals, "net_spend": net[:8]},
+        "signals": sig["signals"], "signal_counts": sig["counts"],
+        "manager_changes": changes, "news": news_out,
+        "standings": teams(league=league), "roster_next": teams_next(league=league),
+    }
+
+
 def _pos_line(tm_pos: str) -> str:
     p = str(tm_pos or "").lower()
     if "keeper" in p or p == "gk":

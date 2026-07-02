@@ -22,10 +22,11 @@ function zoneOf(rank: number, total: number): { cls: string; tag: string } {
 }
 
 export default function Sidebar({
-  teams, sel, onSelect, seasonLabel = "25/26", next = null,
+  teams, sel, onSelect, seasonLabel = "25/26", next = null, atHome = false, onHome,
 }: {
   teams: Team[]; sel: string; onSelect: (t: string) => void;
   seasonLabel?: string; next?: NextSeason | null;
+  atHome?: boolean; onHome?: () => void;
 }) {
   const [q, setQ] = useState("");
   const [seasonTab, setSeasonTab] = useState<"next" | "cur">("next"); // 새 시즌 먼저
@@ -50,6 +51,15 @@ export default function Sidebar({
           <div className="brand-sub">Football Intelligence</div>
         </div>
       </div>
+
+      <button className={`home-nav${atHome ? " active" : ""}`} onClick={() => onHome?.()}>
+        <span className="home-nav-mark" />
+        <span className="home-nav-txt">
+          <span className="home-nav-t">리그 홈</span>
+          <span className="home-nav-sub">PREMIER LEAGUE</span>
+        </span>
+        <span className="home-nav-dot" />
+      </button>
 
       <div className="search">
         <span>⌕</span>

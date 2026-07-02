@@ -6,6 +6,7 @@ import { accent as toAccent } from "@/lib/ui";
 import Sidebar from "@/components/Sidebar";
 import StatusBar from "@/components/StatusBar";
 import TabBar, { TABS, type TabKey } from "@/components/TabBar";
+import HomeDashboard from "@/components/HomeDashboard";
 import OverviewTab from "@/components/OverviewTab";
 import SignalsTab from "@/components/SignalsTab";
 import AnalyticsTab from "@/components/AnalyticsTab";
@@ -21,6 +22,7 @@ export default function Page() {
   const [nextS, setNextS] = useState<NextSeason | null>(null);
   const [sel, setSel] = useState<string>("Arsenal");
   const [tab, setTab] = useState<TabKey>("overview");
+  const [home, setHome] = useState(true); // 첫 랜딩 = 리그 홈(전역)
   const [ov, setOv] = useState<Overview | null>(null);
   const [ctx, setCtx] = useState<Context | null>(null);
   const [loading, setLoading] = useState(false);
@@ -44,8 +46,10 @@ export default function Page() {
   const meta = TABS.find((t) => t.key === tab)!;
 
   const isPromoted = !!nextS?.promoted?.includes(sel);
+  const pickTeam = (t: string) => { setHome(false); setSel(t); setTab("overview"); };
 
   function renderTab() {
+    if (home) return <HomeDashboard accent={accent} onPickTeam={pickTeam} />;
     if (ovErr) return (
       <div className="nodata-card">
         <div className="nodata-emoji">{isPromoted ? "🆙" : "📭"}</div>
@@ -75,25 +79,28 @@ export default function Page() {
 
   return (
     <div className="app">
-      <Sidebar teams={teams} sel={sel} onSelect={setSel} seasonLabel={seasonLabel} next={nextS} />
+      <Sidebar teams={teams} sel={sel}
+        onSelect={(t) => { setSel(t); if (home) { setHome(false); setTab("overview"); } }}
+        seasonLabel={seasonLabel} next={nextS} atHome={home} onHome={() => setHome(true)} />
       <main className="main">
         <StatusBar accent={accent} ctx={ctx} />
         <div className="topbar">
           <div className="tb-team">
-            {ov?.logo && <img src={ov.logo} alt="" />}
-            <span>{sel}</span>
-            <span className="tb-sep">/</span>
-            <span className="tb-tab">{meta.label}</span>
+            {home
+              ? <><span>🏠 리그 홈</span><span className="tb-sep">/</span><span className="tb-tab">Premier League</span></>
+              : <>{ov?.logo && <img src={ov.logo} alt="" />}<span>{sel}</span><span className="tb-sep">/</span><span className="tb-tab">{meta.label}</span></>}
           </div>
-          <div className="tb-live">
-            <span className="livedot" />
-            {win?.is_open ? `${win.label} ${win.kr ?? ""} 이적시장 OPEN` : `${seasonLabel} 시즌`}
-          </div>
+          {!home && (
+            <div className="tb-live">
+              <span className="livedot" />
+              {win?.is_open ? `${win.label} ${win.kr ?? ""} 이적시장 OPEN` : `${seasonLabel} 시즌`}
+            </div>
+          )}
         </div>
 
-        <TabBar active={tab} onChange={setTab} accent={accent} />
+        {!home && <TabBar active={tab} onChange={setTab} accent={accent} />}
 
-        <div className="content" key={tab}>
+        <div className="content" key={home ? "home" : tab}>
           {renderTab()}
         </div>
       </main>
