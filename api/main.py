@@ -278,6 +278,7 @@ def overview(team: str, league: str = ACTIVE_LEAGUE):
 
     # 핵심 선수 — ss_rating 상위 5
     stars = []
+    squad_ratings = []
     if full_df is not None:
         sq = full_df[full_df["squad"] == team].copy()
         if "left_for" in sq.columns:
@@ -290,6 +291,24 @@ def overview(team: str, league: str = ACTIVE_LEAGUE):
                 "goals": int(_num(r.get("goals"))), "assists": int(_num(r.get("assists"))),
                 "photo": _photo(r),
             })
+        # 절대 OVR/POT 분포·산점도용 (45분+ 출전)
+        def _line(pos):
+            p = str(pos or "").upper()
+            if p in ("GK",): return "GK"
+            if p in ("CB", "FB", "RB", "LB", "DF"): return "DEF"
+            if p in ("ST", "W", "RW", "LW", "FW"): return "ATT"
+            return "MID"
+        for _, r in sq.iterrows():
+            mn = int(_num(r.get("minutes")))
+            if mn < 45:
+                continue
+            ovr = _player_ovr(r)
+            squad_ratings.append({
+                "player": r["player"], "ovr": ovr, "pot": _player_pot(r),
+                "age": int(_num(r.get("age"))), "minutes": mn,
+                "line": _line(r.get("fl_group") or r.get("pos")),
+            })
+        squad_ratings.sort(key=lambda x: -x["ovr"])
 
     # 득점 유형 + 규율(statbunker)
     sb = _team_row("statbunker_team_stats", team, league)
@@ -388,6 +407,7 @@ def overview(team: str, league: str = ACTIVE_LEAGUE):
         "snapshot": snapshot,
         "edge": edge,
         "stars": stars,
+        "squad_ratings": squad_ratings,
         "leaders": leaders,
         "departed": departed,
         "injuries": injuries,

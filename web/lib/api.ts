@@ -45,6 +45,7 @@ export type Overview = {
   edge: { strengths: { label: string; value: number }[]; weaknesses: { label: string; value: number }[] };
   snapshot: { open_play: number; set_piece: number; penalty: number; yellows: number; reds: number; yellow_per_match: number } | null;
   stars: Star[];
+  squad_ratings: { player: string; ovr: number; pot: number; age: number; minutes: number; line: string }[];
   leaders: { label: string; player: string; photo: string; value: number }[];
   departed: { player: string; left_for: string; pos: string; photo: string }[];
   injuries: Injury[];

@@ -344,6 +344,15 @@ html, body {
 .stx-pts { font-size: 18px; color: var(--muted); flex-shrink: 0; }
 .stx-foot { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line); font-size: 11px; color: var(--muted); line-height: 1.7; }
 
+/* 스쿼드 절대 평가 산점도 */
+.ovr-scatter { width: 100%; height: auto; display: block; margin-top: 6px; }
+.sc-lbl { fill: var(--muted); font-size: 9px; font-family: Oswald, sans-serif; }
+.sc-legend { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 10px; font-size: 10.5px; color: var(--muted); }
+.sc-legend span { display: inline-flex; align-items: center; gap: 5px; }
+.sc-legend i { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+.sc-pot { opacity: .85; }
+.star-pot { font-size: 11px; margin-left: 2px; color: #4fc27f; font-family: Inter, sans-serif; font-weight: 700; }
+
 /* ── Main ─────────────────────────────── */
 .main { padding: 20px 30px 60px; max-width: 1240px; width: 100%; }
 

@@ -3,6 +3,7 @@ import type { Overview } from "@/lib/api";
 import { fmtEur } from "@/lib/api";
 import { tier, hexA } from "@/lib/ui";
 import Radar from "./Radar";
+import RatingsBoard from "./RatingsBoard";
 import TransferTicker from "./TransferTicker";
 import LineupBoard from "./LineupBoard";
 import CaptainBoard from "./CaptainBoard";
@@ -191,7 +192,9 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
               return (
                 <div className="star-card" key={i}>
                   {st.photo ? <img src={st.photo} alt="" /> : <span className="star-ph" />}
-                  <div className="star-ovr" style={{ color: tt.light }}>{st.ovr}</div>
+                  <div className="star-ovr" style={{ color: tt.light }}>
+                    {st.ovr}{st.pot && st.pot > st.ovr ? <span className="star-pot">↗{st.pot}</span> : null}
+                  </div>
                   <div className="star-name">{st.player}</div>
                   <div className="star-meta">{st.pos} · ★{st.rating}</div>
                   <div className="star-ga">{st.goals}G {st.assists}A</div>
@@ -201,6 +204,9 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
           </div>
         </div>
       )}
+
+      {/* 스쿼드 절대 평가 — OVR/POT 산점도 */}
+      <RatingsBoard ov={ov} accent={accent} />
 
       {/* 팀 리더 */}
       {ov.leaders.length > 0 && (
