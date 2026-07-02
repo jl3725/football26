@@ -7,8 +7,10 @@ if (-not $Root) { $Root = Resolve-Path (Join-Path $PSScriptRoot "..") }
 $Python = Join-Path $Root ".venv\Scripts\python.exe"
 Set-Location $Root
 
-Write-Host "[news-agent] 1/2 fetch_news_daily"
+Write-Host "[news-agent] 1/3 fetch_news_daily"
 & $Python (Join-Path $Root "scripts\fetch_news_daily.py")
-Write-Host "[news-agent] 2/2 fetch_transfer_buzz"
+Write-Host "[news-agent] 2/3 fetch_transfer_buzz"
 & $Python (Join-Path $Root "src\fetch_transfer_buzz.py")
+Write-Host "[news-agent] 3/3 fetch_wc (2026 월드컵 · 진행 중)"
+& $Python (Join-Path $Root "src\fetch_wc.py")
 Write-Host "[news-agent] done"
