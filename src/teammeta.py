@@ -17,6 +17,8 @@ TEAM_COLOR: dict[str, str] = {
     "Newcastle United": "#241F20", "Nottingham Forest": "#DD0000",
     "Sunderland": "#EB172B", "Tottenham Hotspur": "#132257",
     "West Ham United": "#7A263A", "Wolves": "#FDB913",
+    # 26/27 승격
+    "Coventry City": "#7BB6E0", "Hull City": "#F5A12D", "Ipswich Town": "#2A5CAF",
 }
 
 # Transfermarkt verein id (크레스트 로고용)
@@ -27,6 +29,8 @@ TEAM_VEREIN: dict[str, int] = {
     "Manchester City": 281, "Manchester Utd": 985, "Newcastle United": 762,
     "Nottingham Forest": 703, "Sunderland": 289, "Tottenham Hotspur": 148,
     "West Ham United": 379, "Wolves": 543,
+    # 26/27 승격
+    "Coventry City": 1049, "Hull City": 3008, "Ipswich Town": 677,
 }
 
 # 풀네임 + 홈구장 수용인원
@@ -41,6 +45,9 @@ TEAM_EXTRA: dict[str, tuple[str, int]] = {
     "Newcastle United": ("Newcastle United FC", 52305), "Nottingham Forest": ("Nottingham Forest FC", 30404),
     "Sunderland": ("Sunderland AFC", 49000), "Tottenham Hotspur": ("Tottenham Hotspur FC", 62850),
     "West Ham United": ("West Ham United FC", 62500), "Wolves": ("Wolverhampton Wanderers FC", 31750),
+    # 26/27 승격
+    "Coventry City": ("Coventry City FC", 32609), "Hull City": ("Hull City AFC", 25586),
+    "Ipswich Town": ("Ipswich Town FC", 30311),
 }
 
 
@@ -66,6 +73,10 @@ TEAM_INFO: dict[str, dict] = {
     "Tottenham Hotspur": {"city": "런던 (북부·토트넘)", "stadium": "토트넘 홋스퍼 스타디움", "founded": 1882, "nick": "Spurs", "desc": "북런던 클럽. 24/25 유로파리그 우승."},
     "West Ham United": {"city": "런던 (동부·스트랫퍼드)", "stadium": "런던 스타디움", "founded": 1895, "nick": "The Hammers", "desc": "이스트런던 클럽. 22/23 컨퍼런스리그 우승."},
     "Wolves": {"city": "울버햄프턴", "stadium": "몰리뉴 스타디움", "founded": 1877, "nick": "Wolves", "desc": "미들랜즈 전통 클럽. 강한 포르투갈 커넥션."},
+    # 26/27 승격
+    "Coventry City": {"city": "코번트리", "stadium": "코번트리 빌딩 소사이어티 아레나", "founded": 1883, "nick": "The Sky Blues", "desc": "26/27 승격. 잉글랜드 미들랜즈의 스카이 블루스."},
+    "Hull City": {"city": "킹스턴어폰헐", "stadium": "MKM 스타디움", "founded": 1904, "nick": "The Tigers", "desc": "26/27 승격. 요크셔 험버사이드의 타이거스."},
+    "Ipswich Town": {"city": "입스위치", "stadium": "포트먼 로드", "founded": 1878, "nick": "The Tractor Boys", "desc": "26/27 승격. 이스트앵글리아의 트랙터 보이스."},
 }
 
 

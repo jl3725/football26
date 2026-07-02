@@ -362,6 +362,10 @@ def main(argv: list[str] | None = None) -> int:
                     profile["formation"] = ""
                     profile["focus"] = "Manager change detected; tactical profile pending verification"
                     profile["photo_url"] = ""
+                    # 위키 자동 설명은 새 감독 것으로 재수집돼야 하므로 비운다
+                    # (enrich_manager_profiles.py 가 다음 단계에서 채움).
+                    for _k in ("bio_ko", "bio_source", "tactics_ko", "tactics_source"):
+                        profile.pop(_k, None)
 
     # 이미 교체 감지됐지만 부임일이 빈(pending) 감독 백필 — 'Managerial changes' 표 기준
     if args.write and appoint:

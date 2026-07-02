@@ -6,17 +6,15 @@ param(
 $ErrorActionPreference = "Stop"
 
 $Root = Resolve-Path (Join-Path $PSScriptRoot "..")
-$Python = Join-Path $Root ".venv\Scripts\python.exe"
-$Script = Join-Path $Root "src\sync_manager_profiles.py"
+$Pwsh = (Get-Command powershell.exe).Source
+$Script = Join-Path $Root "scripts\run_manager_agent.ps1"
 
-if (-not (Test-Path $Python)) {
-    throw "Python executable not found: $Python"
-}
 if (-not (Test-Path $Script)) {
-    throw "Manager sync script not found: $Script"
+    throw "Manager agent script not found: $Script"
 }
 
-$Action = New-ScheduledTaskAction -Execute $Python -Argument "`"$Script`" --write" -WorkingDirectory $Root
+# sync(교체감지) → enrich(위키 bio/전술 자동수집) 파이프라인 실행
+$Action = New-ScheduledTaskAction -Execute $Pwsh -Argument "-ExecutionPolicy Bypass -File `"$Script`"" -WorkingDirectory $Root
 $Trigger = New-ScheduledTaskTrigger -Daily -At $DailyAt
 $Settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -StartWhenAvailable
 
