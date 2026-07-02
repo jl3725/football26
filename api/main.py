@@ -302,9 +302,9 @@ def overview(team: str, league: str = ACTIVE_LEAGUE):
             mn = int(_num(r.get("minutes")))
             if mn < 45:
                 continue
-            ovr = _player_ovr(r)
+            p_ovr = _player_ovr(r)  # 팀 ovr dict 과 이름 충돌 금지
             squad_ratings.append({
-                "player": r["player"], "ovr": ovr, "pot": _player_pot(r),
+                "player": r["player"], "ovr": p_ovr, "pot": _player_pot(r),
                 "age": int(_num(r.get("age"))), "minutes": mn,
                 "line": _line(r.get("fl_group") or r.get("pos")),
             })
@@ -881,9 +881,11 @@ def analytics(team: str, league: str = ACTIVE_LEAGUE):
                     return int(u[c]) if u is not None and pd.notna(u.get(c)) else dflt
                 except (TypeError, ValueError):
                     return dflt
-            ovr = {"overall": v.get("종합 지수", 60), "form": v.get("시즌 폼", 60),
-                   "attack": v.get("공격 지수", 60), "midfield": v.get("미드필드 지수", 60),
-                   "defense": v.get("수비 지수", 60), "set_piece": _u("set_piece_attack_index")}
+            # 코어 OVR은 v2 절대모델로 통일(Overview 와 일치). form 은 v1(성적 기반), set_piece 는 지수.
+            _t2 = rv.team_ratings(full, team) or {}
+            ovr = {"overall": _t2.get("overall", v.get("종합 지수", 60)), "form": v.get("시즌 폼", 60),
+                   "attack": _t2.get("attack", v.get("공격 지수", 60)), "midfield": _t2.get("midfield", v.get("미드필드 지수", 60)),
+                   "defense": _t2.get("defense", v.get("수비 지수", 60)), "set_piece": _u("set_piece_attack_index")}
             radar = [
                 {"axis": "ATT OUT", "value": _u("attack_output_index")},
                 {"axis": "CREATE", "value": _u("attack_creation_index")},
@@ -1168,19 +1170,14 @@ def recommend(team: str, league: str = ACTIVE_LEAGUE):
     if full is None:
         return {"team": team, "weakest": None, "recommendations": [], "lost_targets": [], "addressed": False}
 
-    # 약점 유닛 (v2 절대) — 이번 창에 이미 보강한 라인은 우선순위에서 뺌
+    # 타깃 라인 = Scout Desk 니즈의 최우선 '열린' 아웃필드 니즈 (Needs Board 와 동일 소스).
+    # 열린 니즈 없으면 v2 절대 유닛 중 최약체로 폴백.
+    nd = _compute_needs(team, league)
+    open_out = [n for n in nd["needs"] if n["status"] == "open" and n["line"] in ("ATT", "MID", "DEF")]
     trr = rv.team_ratings(full, team) or {}
     units = {"ATT": trr.get("attack", 99), "MID": trr.get("midfield", 99), "DEF": trr.get("defense", 99)}
-    win = _current_window()
-    tr = ds.read_table("transfers", league=league)
-    signed = set()
-    if tr is not None and "squad" in tr.columns:
-        tt, _wf = _window_filter(tr[(tr["squad"] == team) & (tr["direction"] == "in")].copy(), win)
-        tt = tt[~tt["fee_text"].astype(str).str.lower().str.contains("loan", na=False)]
-        for _, r in tt.iterrows():
-            signed.add(_pos_to_line(r.get("pos")))
-    open_units = {k: v for k, v in units.items() if k not in signed} or units
-    target = min(open_units, key=open_units.get)
+    signed = {s["line"] for s in nd["window"]["signings"]}
+    target = open_out[0]["line"] if open_out else min(units, key=units.get)
     addressed = target in signed
     label = {"ATT": "공격", "MID": "미드필드", "DEF": "수비"}[target]
 
@@ -1276,9 +1273,8 @@ def _pos_to_line(pos) -> str:
     return "MID"
 
 
-@app.get("/api/needs/{team}")
-def needs(team: str, league: str = ACTIVE_LEAGUE):
-    """스카우트 데스크 — 팀 니즈 자동 산출 + 이번 창 상황 모드.
+def _compute_needs(team: str, league: str) -> dict:
+    """스카우트 데스크 니즈 산출 (단일 소스). /api/needs 와 /api/recommend 가 공유.
 
     현실(스쿼드·부상·이적)에서 니즈를 뽑고, 각 니즈가 이번 창 영입으로 보강됐는지/
     방출로 악화됐는지 상태를 붙인다. AI는 '사라'가 아니라 '지금 상황 판단'.
@@ -1363,6 +1359,11 @@ def needs(team: str, league: str = ACTIVE_LEAGUE):
             "window": {"is_open": win["is_open"], "label": win["label"], "kr": win.get("kr"),
                        "signings": signings, "departures": departures},
             "needs": out_needs}
+
+
+@app.get("/api/needs/{team}")
+def needs(team: str, league: str = ACTIVE_LEAGUE):
+    return _compute_needs(team, league)
 
 
 @app.get("/api/database")
