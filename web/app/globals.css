@@ -80,6 +80,38 @@ html, body {
 .team-btn .pts { color: var(--muted); font-size: 11px; font-family: Oswald, sans-serif; }
 .empty { color: var(--muted); font-size: 12px; padding: 16px 10px; }
 
+/* 시즌 탭 (26/27 · 25/26) */
+.side-tabs { display: flex; gap: 6px; padding: 4px 8px 0; }
+.side-tabs button {
+  flex: 1; padding: 6px 8px; border-radius: 8px; border: 1px solid var(--line);
+  background: transparent; color: var(--muted); font-size: 12px; font-weight: 700;
+  font-family: Oswald, sans-serif; letter-spacing: .5px; cursor: pointer; transition: all .15s ease;
+}
+.side-tabs button:hover { color: var(--txt); }
+.side-tabs button.active { background: var(--panel-2); color: var(--txt); border-color: transparent; }
+
+/* 진출권/강등 존 — 순위 칩 색으로 표시 */
+.team-btn.z-title .rankchip { background: #f4cf5e; color: #141414; }
+.team-btn.z-ucl   .rankchip { background: #4a86ff; color: #fff; }
+.team-btn.z-uel   .rankchip { background: #ff8a3d; color: #241200; }
+.team-btn.z-ecl   .rankchip { background: #2fbfa0; color: #06120e; }
+.team-btn.z-rel   .rankchip { background: #e0556b; color: #fff; }
+
+.zone-legend { display: flex; flex-wrap: wrap; gap: 7px 11px; padding: 10px; border-top: 1px solid var(--line); }
+.zone-legend span { display: inline-flex; align-items: center; gap: 5px; font-size: 10px; color: var(--muted); }
+.z-dot { width: 8px; height: 8px; border-radius: 2px; display: inline-block; }
+.z-dot.z-title { background: #f4cf5e; } .z-dot.z-ucl { background: #4a86ff; }
+.z-dot.z-uel { background: #ff8a3d; } .z-dot.z-ecl { background: #2fbfa0; } .z-dot.z-rel { background: #e0556b; }
+.side-note { padding: 10px; font-size: 10px; color: var(--muted); opacity: .85; line-height: 1.6; border-top: 1px solid var(--line); }
+.promo-badge {
+  font-size: 9px; font-weight: 700; letter-spacing: .5px; padding: 2px 6px; border-radius: 999px;
+  background: rgba(79, 194, 127, 0.16); color: #4fc27f; font-family: Inter, sans-serif;
+}
+.nodata-card { text-align: center; padding: 60px 20px; color: var(--muted); }
+.nodata-card .nodata-emoji { font-size: 40px; margin-bottom: 12px; }
+.nodata-card h3 { font-size: 20px; color: var(--txt); margin-bottom: 8px; }
+.nodata-card p { font-size: 13px; line-height: 1.6; max-width: 420px; margin: 0 auto; }
+
 /* ── Main ─────────────────────────────── */
 .main { padding: 20px 30px 60px; max-width: 1240px; width: 100%; }
 
@@ -445,6 +477,10 @@ html, body {
 .unit-top { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 5px; }
 .unit-top b { font-family: Oswald, sans-serif; letter-spacing: 1px; font-weight: 500; }
 .unit-top span { font-family: Teko, sans-serif; font-size: 20px; line-height: 1; }
+.delta { font-family: Inter, sans-serif; font-weight: 700; letter-spacing: 0; }
+.unit-top span.delta { font-size: 11.5px; margin-right: 6px; vertical-align: middle; }
+.ovr-sub .delta { font-size: 10px; margin-left: 5px; }
+.rating-note { font-family: Inter, sans-serif; font-size: 10px; font-weight: 500; color: var(--muted); margin-left: 7px; letter-spacing: 0; }
 .bar { height: 8px; border-radius: 6px; background: rgba(255, 255, 255, 0.07); overflow: hidden; }
 .bar > span { display: block; height: 100%; border-radius: 6px; transition: width .55s cubic-bezier(.2, .8, .2, 1); }
 
@@ -461,12 +497,25 @@ html, body {
 .mgr-avatar {
   width: 54px; height: 54px; border-radius: 14px; display: grid; place-items: center;
   font-family: Oswald, sans-serif; font-weight: 600; font-size: 20px; color: #fff;
-  border: 1px solid var(--line);
+  border: 1px solid var(--line); flex-shrink: 0;
+}
+.mgr-photo {
+  width: 58px; height: 58px; border-radius: 14px; object-fit: cover; object-position: top center;
+  border: 1px solid var(--line); flex-shrink: 0; background: #11161f;
 }
 .mgr-name { font-size: 19px; font-weight: 700; }
 .mgr-meta { color: var(--muted); font-size: 12.5px; margin-top: 3px; }
-.mgr-style { font-size: 12.5px; margin-top: 6px; color: #c3ccdc; }
+.mgr-change { font-size: 12px; margin-top: 5px; font-weight: 600; }
+.mgr-change em { color: var(--muted); font-weight: 400; font-style: normal; }
+.mgr-style { font-size: 12.5px; margin-top: 12px; color: #c3ccdc; }
 .mgr-focus { font-size: 12px; margin-top: 5px; color: var(--muted); line-height: 1.5; }
+.mgr-bio { font-size: 12.5px; margin-top: 13px; color: #c3ccdc; line-height: 1.65; }
+.mgr-tactics { font-size: 12.5px; margin-top: 10px; color: var(--muted); line-height: 1.65; }
+.mgr-tag {
+  display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 1px;
+  padding: 2px 8px; border-radius: 999px; margin-right: 7px; vertical-align: middle;
+}
+.mgr-src { font-size: 10.5px; margin-top: 10px; color: var(--muted); opacity: 0.6; }
 .edge-box { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px; }
 .edge-h { font-family: Oswald, sans-serif; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 7px; }
 .edge-chip { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; padding: 4px 9px; border-radius: 999px; margin: 0 5px 5px 0; border: 1px solid var(--line); }

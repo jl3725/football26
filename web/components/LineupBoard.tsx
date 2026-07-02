@@ -8,10 +8,10 @@ type Departed = { player: string; left_for: string; pos: string; photo: string }
 export default function LineupBoard({ team, accent, departed = [] }: { team: string; accent: string; departed?: Departed[] }) {
   const [lu, setLu] = useState<Lineup | null>(null);
   const [pj, setPj] = useState<Projection | null>(null);
-  const [leftView, setLeftView] = useState<"cur" | "next">("cur");
+  const [leftView, setLeftView] = useState<"cur" | "next">("next");
 
   useEffect(() => {
-    let a = true; setLu(null); setPj(null); setLeftView("cur");
+    let a = true; setLu(null); setPj(null); setLeftView("next");
     getLineup(team).then((d) => a && setLu(d)).catch(() => {});
     getProjection(team).then((d) => a && setPj(d)).catch(() => {});
     return () => { a = false; };
@@ -29,10 +29,10 @@ export default function LineupBoard({ team, accent, departed = [] }: { team: str
         {/* LEFT — 시즌 베스트 XI + 시즌 토글 */}
         <div>
           <div className="proj-toggle" style={{ marginBottom: 10 }}>
-            <button className={leftView === "cur" ? "active" : ""} onClick={() => setLeftView("cur")}
-              style={leftView === "cur" ? { background: accent, color: "#0b0f17" } : undefined}>{curLabel} BEST XI</button>
             <button className={leftView === "next" ? "active" : ""} onClick={() => setLeftView("next")}
               style={leftView === "next" ? { background: accent, color: "#0b0f17" } : undefined}>🔮 {nextLabel} 예상</button>
+            <button className={leftView === "cur" ? "active" : ""} onClick={() => setLeftView("cur")}
+              style={leftView === "cur" ? { background: accent, color: "#0b0f17" } : undefined}>{curLabel} BEST XI</button>
           </div>
           {leftBoard
             ? <Pitch placements={leftBoard.placements} accent={accent} />

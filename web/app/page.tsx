@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getTeams, getOverview, getContext, type Team, type Overview, type Context } from "@/lib/api";
+import { getTeams, getNextTeams, getOverview, getContext, type Team, type NextSeason, type Overview, type Context } from "@/lib/api";
 import { accent as toAccent } from "@/lib/ui";
 import Sidebar from "@/components/Sidebar";
 import StatusBar from "@/components/StatusBar";
@@ -18,26 +18,43 @@ import NewsTab from "@/components/NewsTab";
 
 export default function Page() {
   const [teams, setTeams] = useState<Team[]>([]);
+  const [nextS, setNextS] = useState<NextSeason | null>(null);
   const [sel, setSel] = useState<string>("Arsenal");
   const [tab, setTab] = useState<TabKey>("overview");
   const [ov, setOv] = useState<Overview | null>(null);
   const [ctx, setCtx] = useState<Context | null>(null);
   const [loading, setLoading] = useState(false);
+  const [ovErr, setOvErr] = useState(false);
 
-  useEffect(() => { getTeams().then(setTeams).catch(() => {}); getContext().then(setCtx).catch(() => {}); }, []);
+  useEffect(() => {
+    getTeams().then(setTeams).catch(() => {});
+    getNextTeams().then(setNextS).catch(() => {});
+    getContext().then(setCtx).catch(() => {});
+  }, []);
   useEffect(() => {
     let alive = true;
-    setLoading(true);
+    setLoading(true); setOvErr(false);
     getOverview(sel)
       .then((d) => { if (alive) { setOv(d); setLoading(false); } })
-      .catch(() => { if (alive) setLoading(false); });
+      .catch(() => { if (alive) { setOv(null); setOvErr(true); setLoading(false); } });
     return () => { alive = false; };
   }, [sel]);
 
   const accent = ov ? toAccent(ov.color) : "#ff4d5e";
   const meta = TABS.find((t) => t.key === tab)!;
 
+  const isPromoted = !!nextS?.promoted?.includes(sel);
+
   function renderTab() {
+    if (ovErr) return (
+      <div className="nodata-card">
+        <div className="nodata-emoji">{isPromoted ? "🆙" : "📭"}</div>
+        <h3>{sel}</h3>
+        <p>{isPromoted
+          ? `${nextS?.season_label ?? ""} 승격팀입니다. 프리미어리그 스탯·라인업은 시즌 시작 후 수집됩니다.`
+          : "이 구단의 데이터가 아직 없습니다."}</p>
+      </div>
+    );
     if (tab === "overview") return ov ? <OverviewTab key={sel} ov={ov} accent={accent} /> : <div className="loading">불러오는 중…</div>;
     const props = { team: sel, accent };
     switch (tab) {
@@ -58,7 +75,7 @@ export default function Page() {
 
   return (
     <div className="app">
-      <Sidebar teams={teams} sel={sel} onSelect={setSel} seasonLabel={seasonLabel} />
+      <Sidebar teams={teams} sel={sel} onSelect={setSel} seasonLabel={seasonLabel} next={nextS} />
       <main className="main">
         <StatusBar accent={accent} ctx={ctx} />
         <div className="topbar">

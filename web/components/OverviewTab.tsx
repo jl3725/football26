@@ -14,11 +14,21 @@ function repStars(rank?: number | null): string {
   return "★".repeat(n) + "☆".repeat(5 - n);
 }
 
-function Unit({ label, value, color }: { label: string; value: number; color: string }) {
+function Delta({ d }: { d?: number }) {
+  if (!d) return null;
+  const up = d > 0;
+  return (
+    <span className="delta" style={{ color: up ? "#4fc27f" : "#e07070" }} title="26/27 이적 반영 변화">
+      {up ? "▲" : "▼"}{Math.abs(d)}
+    </span>
+  );
+}
+
+function Unit({ label, value, color, delta }: { label: string; value: number; color: string; delta?: number }) {
   const t = tier(value);
   return (
     <div className="unit">
-      <div className="unit-top"><b>{label}</b><span style={{ color: t.light }}>{value}</span></div>
+      <div className="unit-top"><b>{label}</b><span><Delta d={delta} /><span style={{ color: t.light }}>{value}</span></span></div>
       <div className="bar"><span style={{ width: `${value}%`, background: `linear-gradient(90deg, ${t.deep}, ${t.light})` }} /></div>
     </div>
   );
@@ -59,7 +69,7 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
         <div className="ovr-badge" style={{ borderColor: hexA(t.light, 0.5) }}>
           <div className="teko ovr-n" style={{ color: t.light }}>{ov.ovr.overall}</div>
           <div className="ovr-cap" style={{ color: t.light }}>{t.name}</div>
-          <div className="ovr-sub">OVERALL</div>
+          <div className="ovr-sub">OVERALL{ov.ovr_delta?.overall ? <Delta d={ov.ovr_delta.overall} /> : null}</div>
         </div>
       </div>
 
@@ -78,11 +88,12 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
       {/* GRID */}
       <div className="grid">
         <div className="card">
-          <h3>Unit Ratings</h3>
+          <h3>Unit Ratings{(ov.ovr_delta && (ov.ovr_delta.attack || ov.ovr_delta.midfield || ov.ovr_delta.defense || ov.ovr_delta.overall))
+            ? <span className="rating-note">· {ov.window?.label ?? ""} 이적 반영 <b style={{ color: "#4fc27f" }}>▲</b>/<b style={{ color: "#e07070" }}>▼</b></span> : null}</h3>
           <div className="unit-list">
-            <Unit label="ATTACK" value={ov.ovr.attack} color={accent} />
-            <Unit label="MIDFIELD" value={ov.ovr.midfield} color={accent} />
-            <Unit label="DEFENSE" value={ov.ovr.defense} color={accent} />
+            <Unit label="ATTACK" value={ov.ovr.attack} color={accent} delta={ov.ovr_delta?.attack} />
+            <Unit label="MIDFIELD" value={ov.ovr.midfield} color={accent} delta={ov.ovr_delta?.midfield} />
+            <Unit label="DEFENSE" value={ov.ovr.defense} color={accent} delta={ov.ovr_delta?.defense} />
           </div>
           <div className="stat-strip">
             <div className="stat"><div className="v">{s.points}</div><div className="l">Points</div></div>
@@ -128,17 +139,38 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
         <div className="card">
           <h3>Manager</h3>
           {ov.manager ? (
-            <div className="mgr">
-              <div className="mgr-avatar" style={{ background: `linear-gradient(135deg, ${hexA(accent, 0.5)}, ${hexA(accent, 0.15)})` }}>
-                {ov.manager.name.split(" ").map((w) => w[0]).slice(0, 2).join("")}
+            <>
+              <div className="mgr">
+                {ov.manager.photo ? (
+                  <img className="mgr-photo" src={ov.manager.photo} alt={ov.manager.name}
+                    style={{ borderColor: hexA(accent, 0.4) }} />
+                ) : (
+                  <div className="mgr-avatar" style={{ background: `linear-gradient(135deg, ${hexA(accent, 0.5)}, ${hexA(accent, 0.15)})` }}>
+                    {ov.manager.name.split(" ").map((w) => w[0]).slice(0, 2).join("")}
+                  </div>
+                )}
+                <div style={{ minWidth: 0 }}>
+                  <div className="mgr-name">{ov.manager.name}</div>
+                  <div className="mgr-meta">
+                    {[ov.manager.nationality, ov.manager.formation, ov.manager.appointed ? "부임 " + ov.manager.appointed : ""].filter(Boolean).join(" · ")}
+                  </div>
+                  {ov.manager.previous && (
+                    <div className="mgr-change" style={{ color: accent }}>
+                      ⟲ {ov.manager.previous.name} → {ov.manager.name.replace(/\s*\(interim\)/i, "")}
+                      {ov.manager.changed_at ? <em> · {ov.manager.changed_at} 교체</em> : null}
+                    </div>
+                  )}
+                </div>
               </div>
-              <div>
-                <div className="mgr-name">{ov.manager.name}</div>
-                <div className="mgr-meta">{ov.manager.nationality} · {ov.manager.formation}{ov.manager.appointed ? " · 부임 " + ov.manager.appointed : ""}</div>
-                <div className="mgr-style">{ov.manager.style}</div>
-                {ov.manager.focus && <div className="mgr-focus">🎯 {ov.manager.focus}</div>}
-              </div>
-            </div>
+              {ov.manager.bio && <div className="mgr-bio">{ov.manager.bio}</div>}
+              {ov.manager.tactics && (
+                <div className="mgr-tactics">
+                  <span className="mgr-tag" style={{ background: hexA(accent, 0.18), color: accent }}>전술</span>
+                  {ov.manager.tactics}
+                </div>
+              )}
+              <div className="mgr-src">ℹ️ 설명·전술: Wikipedia 자동 수집</div>
+            </>
           ) : <div className="mgr-meta">감독 정보 없음</div>}
         </div>
       </div>

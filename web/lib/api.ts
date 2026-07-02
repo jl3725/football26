@@ -33,9 +33,15 @@ export type Overview = {
     gf: number; ga: number; gd: number; points: number;
   };
   ovr: { overall: number; attack: number; midfield: number; defense: number };
+  ovr_delta?: { overall: number; attack: number; midfield: number; defense: number };
   radar: { axis: string; value: number }[];
   form: string[];
-  manager: { name: string; nationality: string; style: string; formation: string; appointed: string; focus: string } | null;
+  manager: {
+    name: string; nationality: string; style: string; formation: string; appointed: string; focus: string;
+    photo?: string; bio?: string; tactics?: string;
+    previous?: { name: string; left_date: string };
+    changed_at?: string;
+  } | null;
   edge: { strengths: { label: string; value: number }[]; weaknesses: { label: string; value: number }[] };
   snapshot: { open_play: number; set_piece: number; penalty: number; yellows: number; reds: number; yellow_per_match: number } | null;
   stars: Star[];
@@ -65,6 +71,14 @@ async function j<T>(url: string): Promise<T> {
 
 export const getTeams = (league = "EPL") =>
   j<Team[]>(`/api/teams?league=${encodeURIComponent(league)}`);
+
+export type NextTeam = { name: string; color: string; logo: string; promoted: boolean };
+export type NextSeason = {
+  season_label: string; source_title: string; detected_at: string;
+  teams: NextTeam[]; promoted: string[]; relegated: string[]; meta_missing: string[];
+};
+export const getNextTeams = (league = "EPL") =>
+  j<NextSeason>(`/api/teams/next?league=${encodeURIComponent(league)}`);
 
 export const getOverview = (team: string, league = "EPL") =>
   j<Overview>(`/api/overview/${encodeURIComponent(team)}?league=${encodeURIComponent(league)}`);

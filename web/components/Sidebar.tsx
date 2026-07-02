@@ -1,12 +1,46 @@
 "use client";
 import { useState } from "react";
-import type { Team } from "@/lib/api";
+import type { Team, NextSeason } from "@/lib/api";
+
+// 다음 시즌 라벨 ("25/26" → "26/27")
+function nextSeasonLabel(cur: string): string {
+  const m = cur.match(/(\d{2})\s*\/\s*(\d{2})/);
+  if (!m) return "26/27";
+  const a = (parseInt(m[1], 10) + 1) % 100;
+  const b = (parseInt(m[2], 10) + 1) % 100;
+  return `${String(a).padStart(2, "0")}/${String(b).padStart(2, "0")}`;
+}
+
+// 리그 순위 → 진출권/강등 존. EPL 기준(잉글랜드 5 UCL 보유 시즌).
+function zoneOf(rank: number, total: number): { cls: string; tag: string } {
+  if (total >= 6 && rank >= total - 2) return { cls: "z-rel", tag: "강등" };
+  if (rank === 1) return { cls: "z-title", tag: "우승" };
+  if (rank <= 5) return { cls: "z-ucl", tag: "UCL" };
+  if (rank === 6) return { cls: "z-uel", tag: "UEL" };
+  if (rank === 7) return { cls: "z-ecl", tag: "ECL" };
+  return { cls: "", tag: "" };
+}
 
 export default function Sidebar({
-  teams, sel, onSelect, seasonLabel = "25/26",
-}: { teams: Team[]; sel: string; onSelect: (t: string) => void; seasonLabel?: string }) {
+  teams, sel, onSelect, seasonLabel = "25/26", next = null,
+}: {
+  teams: Team[]; sel: string; onSelect: (t: string) => void;
+  seasonLabel?: string; next?: NextSeason | null;
+}) {
   const [q, setQ] = useState("");
-  const shown = teams.filter((t) => t.name.toLowerCase().includes(q.toLowerCase()));
+  const [seasonTab, setSeasonTab] = useState<"next" | "cur">("next"); // 새 시즌 먼저
+  const nextLabel = next?.season_label || nextSeasonLabel(seasonLabel);
+  const match = (name: string) => name.toLowerCase().includes(q.toLowerCase());
+  const total = teams.length;
+
+  // 25/26: 최종 순위순
+  const curShown = teams.filter((t) => match(t.name)).sort((a, b) => a.rank - b.rank);
+  // 26/27: 감지된 실제 로스터(승격/강등 반영), 알파벳순. 없으면 현재 팀 폴백.
+  const nextShown = (next?.teams?.length
+    ? next.teams
+    : teams.map((t) => ({ name: t.name, color: t.color, logo: t.logo, promoted: false }))
+  ).filter((t) => match(t.name)).sort((a, b) => a.name.localeCompare(b.name));
+
   return (
     <aside className="side">
       <div className="brand">
@@ -22,21 +56,60 @@ export default function Sidebar({
         <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="구단 검색…" />
       </div>
 
-      <div className="side-label">Premier League · {seasonLabel}</div>
-      <div className="team-scroll">
-        {shown.map((t) => (
-          <button key={t.name}
-            className={`team-btn${t.name === sel ? " active" : ""}`}
-            onClick={() => onSelect(t.name)}
-            style={t.name === sel ? { ["--tc" as any]: t.color } : undefined}>
-            <span className="rankchip">{t.rank}</span>
-            {t.logo ? <img src={t.logo} alt="" /> : <span style={{ width: 22 }} />}
-            <span className="tn">{t.name}</span>
-            <span className="pts">{t.points}</span>
-          </button>
-        ))}
-        {shown.length === 0 && <div className="empty">검색 결과 없음</div>}
+      <div className="side-tabs">
+        <button className={seasonTab === "next" ? "active" : ""} onClick={() => setSeasonTab("next")}>{nextLabel}</button>
+        <button className={seasonTab === "cur" ? "active" : ""} onClick={() => setSeasonTab("cur")}>{seasonLabel}</button>
       </div>
+      <div className="side-label">
+        Premier League · {seasonTab === "next" ? `${nextLabel} (개막 전)` : seasonLabel}
+      </div>
+
+      <div className="team-scroll">
+        {seasonTab === "cur"
+          ? curShown.map((t) => {
+              const z = zoneOf(t.rank, total);
+              return (
+                <button key={t.name}
+                  className={`team-btn ${z.cls}${t.name === sel ? " active" : ""}`}
+                  onClick={() => onSelect(t.name)}
+                  style={t.name === sel ? { ["--tc" as any]: t.color } : undefined}>
+                  <span className="rankchip">{t.rank}</span>
+                  {t.logo ? <img src={t.logo} alt="" /> : <span style={{ width: 22 }} />}
+                  <span className="tn">{t.name}</span>
+                  <span className="pts">{t.points}</span>
+                </button>
+              );
+            })
+          : nextShown.map((t) => (
+              <button key={t.name}
+                className={`team-btn${t.name === sel ? " active" : ""}`}
+                onClick={() => onSelect(t.name)}
+                style={t.name === sel ? { ["--tc" as any]: t.color } : undefined}>
+                <span className="rankchip">·</span>
+                {t.logo ? <img src={t.logo} alt="" /> : <span style={{ width: 22 }} />}
+                <span className="tn">{t.name}</span>
+                {t.promoted && <span className="promo-badge">승격</span>}
+              </button>
+            ))}
+        {(seasonTab === "cur" ? curShown : nextShown).length === 0 && <div className="empty">검색 결과 없음</div>}
+      </div>
+
+      {seasonTab === "cur" && (
+        <div className="zone-legend">
+          <span><i className="z-dot z-title" />우승</span>
+          <span><i className="z-dot z-ucl" />UCL</span>
+          <span><i className="z-dot z-uel" />UEL</span>
+          <span><i className="z-dot z-ecl" />ECL</span>
+          <span><i className="z-dot z-rel" />강등</span>
+        </div>
+      )}
+      {seasonTab === "next" && (
+        <div className="side-note">
+          {next?.promoted?.length
+            ? <>개막 전 · 알파벳순 · <b style={{ color: "#4fc27f" }}>승격</b> {next.promoted.join(", ")} / <b style={{ color: "#e07070" }}>강등</b> {next.relegated.join(", ")}</>
+            : "개막 전 · 알파벳순. 승격/강등 반영은 시즌 감지 후 갱신됩니다."}
+        </div>
+      )}
     </aside>
   );
 }

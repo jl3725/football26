@@ -29,6 +29,7 @@ sys.path.insert(0, str(ROOT / "src"))
 import datastore as ds  # noqa: E402
 import teammeta as tm  # noqa: E402
 import ratings as rt  # noqa: E402
+import transfer_adjust as ta  # noqa: E402
 from leagues import ACTIVE_LEAGUE, league_config  # noqa: E402
 from team_analysis import (  # noqa: E402  (streamlit 비의존)
     espn_assign_slots, slot_xy, slot_kind, formation_slots, display_slot,
@@ -46,11 +47,21 @@ app.add_middleware(
 )
 
 MANAGER_JSON = ROOT / "data" / "manager_profiles_2025_2026.json"
+TEAM_PROFILES_JSON = ROOT / "data" / "team_profiles.json"
+SEASON_TEAMS_JSON = ROOT / "data" / "season_teams.json"
 
 
 def _managers() -> dict:
     try:
         return json.loads(MANAGER_JSON.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {}
+
+
+def _team_profiles() -> dict:
+    """위키백과 자동 수집 구단 설명(enrich_team_profiles.py). teammeta 하드코딩 폴백."""
+    try:
+        return json.loads(TEAM_PROFILES_JSON.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError):
         return {}
 
@@ -145,6 +156,26 @@ def teams(league: str = ACTIVE_LEAGUE):
     ]
 
 
+@app.get("/api/teams/next")
+def teams_next(league: str = ACTIVE_LEAGUE):
+    """다음 시즌(개막 전) 로스터 — detect_season_teams.py 가 위키에서 감지해 기록.
+    없으면 현재 팀을 폴백으로 반환(승격/강등 미반영)."""
+    try:
+        d = json.loads(SEASON_TEAMS_JSON.read_text(encoding="utf-8"))
+        if d.get("teams"):
+            return d
+    except (OSError, json.JSONDecodeError):
+        pass
+    st = ds.read_table("standings", league=league)
+    teams = []
+    if st is not None and "squad" in st.columns:
+        for sq in sorted(st["squad"].astype(str)):
+            teams.append({"name": sq, "color": tm.team_color(sq),
+                          "logo": tm.team_logo(sq), "promoted": False})
+    return {"season_label": "", "source_title": "", "detected_at": "",
+            "teams": teams, "promoted": [], "relegated": [], "meta_missing": []}
+
+
 @app.get("/api/overview/{team}")
 def overview(team: str, league: str = ACTIVE_LEAGUE):
     stand = _team_row("standings", team, league)
@@ -172,7 +203,16 @@ def overview(team: str, league: str = ACTIVE_LEAGUE):
             "formation": mgr.get("formation", ""),
             "appointed": mgr.get("appointed", ""),
             "focus": mgr.get("focus", ""),
+            "photo": mgr.get("photo_url", "") if str(mgr.get("photo_url") or "").startswith("http") else "",
+            "bio": mgr.get("bio_ko", ""),          # 위키백과 자동 (감독 바뀌면 자동 갱신)
+            "tactics": mgr.get("tactics_ko", ""),  # 감독 본인 위키 전술 섹션
         }
+        if mgr.get("previous_name"):
+            manager["previous"] = {
+                "name": mgr.get("previous_name", ""),
+                "left_date": str(mgr.get("previous_left_date") or ""),
+            }
+            manager["changed_at"] = str(mgr.get("change_detected_at") or "")[:10]
 
     # 이적 — 현재 활성 윈도우(26/27 등)만. 없으면 폴백. 임대복귀는 제외.
     win = _current_window()
@@ -209,22 +249,32 @@ def overview(team: str, league: str = ACTIVE_LEAGUE):
         "midfield": _idx_to_ovr(_ix("midfield_index")),
         "defense": _idx_to_ovr(_ix("defense_index")),
     }
+    # 표시 OVR = 이번 창 이적 반영 스쿼드 기준. delta = 이적 전(지난 시즌) 대비 변화.
+    _KMAP = {"overall": "종합 지수", "attack": "공격 지수",
+             "midfield": "미드필드 지수", "defense": "수비 지수"}
+    ovr_delta = {"overall": 0, "attack": 0, "midfield": 0, "defense": 0}
     um_df = ds.read_table("team_unit_metrics", league=league)
     full_df = ds.read_table("players_full", league=league)
     stand_df = ds.read_table("standings", league=league)
     if um_df is not None and "squad" in um_df.columns:
-        rl = rt.compute_team_ratings(team, full_df, stand_df, um_df.set_index("squad"))
-        if rl:  # [종합, 폼, 공격, 미드, 수비]
-            vals = {lbl: int(v) for (lbl, v, _sub) in rl}
-            ovr = {
-                "overall": vals.get("종합 지수", ovr["overall"]),
-                "attack": vals.get("공격 지수", ovr["attack"]),
-                "midfield": vals.get("미드필드 지수", ovr["midfield"]),
-                "defense": vals.get("수비 지수", ovr["defense"]),
-            }
+        um_idx = um_df.set_index("squad")
+        rl_base = rt.compute_team_ratings(team, full_df, stand_df, um_idx)  # 이적 전
+        adj_full = ta.build_adjusted_full(full_df, tr, win)                 # 이번 창 반영
+        rl_adj = rt.compute_team_ratings(team, adj_full, stand_df, um_idx)
+        base_vals = {lbl: int(v) for (lbl, v, _s) in rl_base} if rl_base else {}
+        adj_vals = {lbl: int(v) for (lbl, v, _s) in rl_adj} if rl_adj else base_vals
+        for k, lbl in _KMAP.items():
+            if lbl in adj_vals:
+                ovr[k] = adj_vals[lbl]
+            if lbl in adj_vals and lbl in base_vals:
+                ovr_delta[k] = adj_vals[lbl] - base_vals[lbl]
 
     # 구단 정보 + 스쿼드 가치 순위
     info = dict(tm.team_info(team))
+    # 팀 설명 — 위키백과 자동 수집분으로 덮어씀(없으면 teammeta 하드코딩 유지)
+    tp = _team_profiles().get(team)
+    if tp and tp.get("desc_ko"):
+        info["desc"] = tp["desc_ko"]
     value_rank = None
     if full_df is not None and "market_value_eur" in full_df.columns:
         tv = full_df.groupby("squad")["market_value_eur"].sum()
@@ -331,6 +381,7 @@ def overview(team: str, league: str = ACTIVE_LEAGUE):
             "points": int(stand["points"]),
         },
         "ovr": ovr,
+        "ovr_delta": ovr_delta,
         "radar": [
             {"axis": "ATT OUT", "value": _ix("attack_output_index")},
             {"axis": "CREATE", "value": _ix("attack_creation_index")},

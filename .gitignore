@@ -52,3 +52,4 @@ data/football.db
 # Next.js 웹 빌드 산출물 (web/.gitignore 로도 처리)
 node_modules/
 web/.next/
+web/tsconfig.tsbuildinfo
