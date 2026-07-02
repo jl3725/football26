@@ -19,6 +19,13 @@ TEAM_COLOR: dict[str, str] = {
     "West Ham United": "#7A263A", "Wolves": "#FDB913",
     # 26/27 승격
     "Coventry City": "#7BB6E0", "Hull City": "#F5A12D", "Ipswich Town": "#2A5CAF",
+    # La Liga 25/26
+    "Barcelona": "#A50044", "Real Madrid": "#FEBE10", "Villarreal": "#F4D03F",
+    "Atlético Madrid": "#CB3524", "Real Betis": "#00954C", "Celta Vigo": "#8AC3EE",
+    "Getafe": "#005999", "Rayo Vallecano": "#E53027", "Valencia": "#F18E00",
+    "Real Sociedad": "#0067B1", "Espanyol": "#007FC8", "Athletic Club": "#EE2523",
+    "Elche": "#00963E", "Alavés": "#0761AF", "Sevilla": "#D81920", "Osasuna": "#0A346F",
+    "Mallorca": "#E20613", "Levante": "#004E9E", "Girona": "#CE1126", "Oviedo": "#004B9E",
 }
 
 # Transfermarkt verein id (크레스트 로고용)
@@ -29,8 +36,13 @@ TEAM_VEREIN: dict[str, int] = {
     "Manchester City": 281, "Manchester Utd": 985, "Newcastle United": 762,
     "Nottingham Forest": 703, "Sunderland": 289, "Tottenham Hotspur": 148,
     "West Ham United": 379, "Wolves": 543,
-    # 26/27 승격
-    "Coventry City": 1049, "Hull City": 3008, "Ipswich Town": 677,
+    # 26/27 승격 팀 로고는 TEAM_LOGO_URL(ESPN) override 사용 (verein id 미확정)
+    # La Liga 25/26 (Transfermarkt verein id)
+    "Barcelona": 131, "Real Madrid": 418, "Villarreal": 1050, "Atlético Madrid": 13,
+    "Real Betis": 150, "Celta Vigo": 940, "Getafe": 3709, "Rayo Vallecano": 367,
+    "Valencia": 1049, "Real Sociedad": 681, "Espanyol": 714, "Athletic Club": 621,
+    "Elche": 1531, "Alavés": 1108, "Sevilla": 368, "Osasuna": 331, "Mallorca": 237,
+    "Levante": 3368, "Girona": 12321, "Oviedo": 2497,
 }
 
 # 풀네임 + 홈구장 수용인원
@@ -48,6 +60,17 @@ TEAM_EXTRA: dict[str, tuple[str, int]] = {
     # 26/27 승격
     "Coventry City": ("Coventry City FC", 32609), "Hull City": ("Hull City AFC", 25586),
     "Ipswich Town": ("Ipswich Town FC", 30311),
+    # La Liga 25/26
+    "Barcelona": ("FC Barcelona", 99354), "Real Madrid": ("Real Madrid CF", 78297),
+    "Villarreal": ("Villarreal CF", 23500), "Atlético Madrid": ("Atlético de Madrid", 70460),
+    "Real Betis": ("Real Betis Balompié", 60720), "Celta Vigo": ("RC Celta de Vigo", 29000),
+    "Getafe": ("Getafe CF", 17393), "Rayo Vallecano": ("Rayo Vallecano", 14708),
+    "Valencia": ("Valencia CF", 49430), "Real Sociedad": ("Real Sociedad", 39500),
+    "Espanyol": ("RCD Espanyol", 40000), "Athletic Club": ("Athletic Club", 53289),
+    "Elche": ("Elche CF", 33732), "Alavés": ("Deportivo Alavés", 19840),
+    "Sevilla": ("Sevilla FC", 43883), "Osasuna": ("CA Osasuna", 23576),
+    "Mallorca": ("RCD Mallorca", 23142), "Levante": ("Levante UD", 26354),
+    "Girona": ("Girona FC", 14624), "Oviedo": ("Real Oviedo", 30500),
 }
 
 
@@ -77,6 +100,27 @@ TEAM_INFO: dict[str, dict] = {
     "Coventry City": {"city": "코번트리", "stadium": "코번트리 빌딩 소사이어티 아레나", "founded": 1883, "nick": "The Sky Blues", "desc": "26/27 승격. 잉글랜드 미들랜즈의 스카이 블루스."},
     "Hull City": {"city": "킹스턴어폰헐", "stadium": "MKM 스타디움", "founded": 1904, "nick": "The Tigers", "desc": "26/27 승격. 요크셔 험버사이드의 타이거스."},
     "Ipswich Town": {"city": "입스위치", "stadium": "포트먼 로드", "founded": 1878, "nick": "The Tractor Boys", "desc": "26/27 승격. 이스트앵글리아의 트랙터 보이스."},
+    # La Liga 25/26
+    "Barcelona": {"city": "바르셀로나", "stadium": "스포티파이 캄 노우", "founded": 1899, "nick": "Blaugrana", "desc": "카탈루냐 명문. 티키타카의 상징."},
+    "Real Madrid": {"city": "마드리드", "stadium": "산티아고 베르나베우", "founded": 1902, "nick": "Los Blancos", "desc": "유러피언컵 최다 우승의 세계적 명문."},
+    "Villarreal": {"city": "비야레알", "stadium": "에스타디오 데 라 세라미카", "founded": 1923, "nick": "Yellow Submarine", "desc": "발렌시아주 소도시 클럽. 유럽대항전 단골."},
+    "Atlético Madrid": {"city": "마드리드", "stadium": "메트로폴리타노", "founded": 1903, "nick": "Los Colchoneros", "desc": "시메오네의 강한 조직력·수비."},
+    "Real Betis": {"city": "세비야", "stadium": "베니토 비야마린", "founded": 1907, "nick": "Los Verdiblancos", "desc": "안달루시아 열성 팬덤의 녹백 클럽."},
+    "Celta Vigo": {"city": "비고", "stadium": "발라이도스", "founded": 1923, "nick": "Os Celestes", "desc": "갈리시아 연고의 하늘색 클럽."},
+    "Getafe": {"city": "헤타페", "stadium": "콜리세움", "founded": 1983, "nick": "Azulones", "desc": "마드리드 근교의 강한 수비 클럽."},
+    "Rayo Vallecano": {"city": "마드리드 (바예카스)", "stadium": "바예카스", "founded": 1924, "nick": "Los Franjirrojos", "desc": "노동자 동네의 열성 클럽."},
+    "Valencia": {"city": "발렌시아", "stadium": "메스타야", "founded": 1919, "nick": "Los Che", "desc": "지중해 연안 전통 명문."},
+    "Real Sociedad": {"city": "산세바스티안", "stadium": "레알레 아레나", "founded": 1909, "nick": "La Real", "desc": "바스크 육성 명가."},
+    "Espanyol": {"city": "바르셀로나 (코르네야)", "stadium": "RCDE 스타디움", "founded": 1900, "nick": "Los Pericos", "desc": "바르셀로나의 또 다른 클럽."},
+    "Athletic Club": {"city": "빌바오", "stadium": "산 마메스", "founded": 1898, "nick": "Los Leones", "desc": "바스크 순혈주의 정책의 전통 명문."},
+    "Elche": {"city": "엘체", "stadium": "마르티네스 발레로", "founded": 1923, "nick": "Franjiverdes", "desc": "발렌시아주 녹색 띠 클럽."},
+    "Alavés": {"city": "비토리아", "stadium": "멘디소로사", "founded": 1921, "nick": "Babazorros", "desc": "바스크 알라바 연고 클럽."},
+    "Sevilla": {"city": "세비야", "stadium": "라몬 산체스 피스후안", "founded": 1890, "nick": "Los Nervionenses", "desc": "유로파리그 최다 우승 클럽."},
+    "Osasuna": {"city": "팜플로나", "stadium": "엘 사다르", "founded": 1920, "nick": "Los Rojillos", "desc": "나바라 연고의 붉은 클럽."},
+    "Mallorca": {"city": "팔마", "stadium": "손 모이시", "founded": 1916, "nick": "Los Bermellones", "desc": "발레아레스 제도 연고 클럽."},
+    "Levante": {"city": "발렌시아", "stadium": "시우타트 데 발렌시아", "founded": 1909, "nick": "Granotes", "desc": "발렌시아의 청적 클럽."},
+    "Girona": {"city": "지로나", "stadium": "몬틸리비", "founded": 1930, "nick": "Gironins", "desc": "시티 풋볼 그룹 소속 카탈루냐 클럽."},
+    "Oviedo": {"city": "오비에도", "stadium": "카를로스 타르티에레", "founded": 1926, "nick": "Los Carbayones", "desc": "아스투리아스 전통 클럽."},
 }
 
 
@@ -105,7 +149,18 @@ def team_color(team: str) -> str:
     return TEAM_COLOR.get(team, "#444a55")
 
 
+# ESPN 로고 override — Transfermarkt verein id 가 불확실/충돌하는 팀(승격팀 등).
+# (예: 1049 는 Valencia. 승격팀은 ESPN 라벨이 정확해 ESPN 로고 URL 을 직접 지정.)
+TEAM_LOGO_URL: dict[str, str] = {
+    "Coventry City": "https://a.espncdn.com/i/teamlogos/soccer/500/388.png",
+    "Hull City": "https://a.espncdn.com/i/teamlogos/soccer/500/306.png",
+    "Ipswich Town": "https://a.espncdn.com/i/teamlogos/soccer/500/373.png",
+}
+
+
 def team_logo(team: str) -> str:
+    if team in TEAM_LOGO_URL:
+        return TEAM_LOGO_URL[team]
     vid = TEAM_VEREIN.get(team)
     return f"https://tmssl.akamaized.net/images/wappen/head/{vid}.png" if vid else ""
 
