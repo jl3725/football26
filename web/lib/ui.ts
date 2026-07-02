@@ -16,6 +16,14 @@ export function hexA(hex: string, a: number): string {
   return `rgba(${(n >> 16) & 255},${(n >> 8) & 255},${n & 255},${a})`;
 }
 
+// 역할(Role Reality) 태그 → 색 계열 (검증 강도 순). 대회별 사용량 기반.
+export function roleClass(role: string): string {
+  if (role === "핵심 주전") return "r-core";
+  if (role === "주전·유럽 로테이션" || role === "리그 주전") return "r-starter";
+  if (role === "로테이션" || role === "유망주 출전") return "r-rot";
+  return "r-fringe"; // 백업 · 컵 전용 · 주변 자원
+}
+
 // 어두운 팀컬러는 살짝 밝혀 강조색으로.
 export function accent(hex: string): string {
   const h = hex.replace("#", "");

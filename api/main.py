@@ -31,7 +31,7 @@ import teammeta as tm  # noqa: E402
 import ratings as rt  # noqa: E402
 import ratings_v3 as rv3  # noqa: E402  (절대 클래스·폼·POT·신뢰도)
 import transfer_adjust as ta  # noqa: E402
-from leagues import ACTIVE_LEAGUE, league_config  # noqa: E402
+from leagues import ACTIVE_LEAGUE, league_config, data_path  # noqa: E402
 from team_analysis import (  # noqa: E402  (streamlit 비의존)
     espn_assign_slots, slot_xy, slot_kind, formation_slots, display_slot,
 )
@@ -52,9 +52,11 @@ TEAM_PROFILES_JSON = ROOT / "data" / "team_profiles.json"
 SEASON_TEAMS_JSON = ROOT / "data" / "season_teams.json"
 
 
-def _managers() -> dict:
+def _managers(league: str = "EPL") -> dict:
+    """감독 프로필(리그별). LaLiga 등은 manager_profiles_{league}_*.json — 없으면 {} (EPL 감독 오출력 방지)."""
+    path = MANAGER_JSON if league == "EPL" else data_path("manager_profiles", league, ext="json")
     try:
-        return json.loads(MANAGER_JSON.read_text(encoding="utf-8"))
+        return json.loads(path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError):
         return {}
 
@@ -194,7 +196,7 @@ def overview(team: str, league: str = ACTIVE_LEAGUE):
         form = [str(x) for x in ts["result"].dropna().tolist()[-5:]]
 
     # 감독
-    mgr = _managers().get(team)
+    mgr = _managers(league).get(team)
     manager = None
     if mgr:
         manager = {
@@ -253,7 +255,7 @@ def overview(team: str, league: str = ACTIVE_LEAGUE):
         "top_xi": _idx_to_ovr(_ix("overall_index")),
     }
     ovr_delta = {"overall": 0, "attack": 0, "midfield": 0, "defense": 0}
-    full_df = ds.read_table("players_full", league=league)
+    full_df = _pf(league)
     base = rv3.team_ratings(full_df, team)                       # 이적 전(현재 스쿼드)
     if base:
         adj = rv3.team_ratings(ta.build_adjusted_full(full_df, tr, win), team) or base  # 이번 창 반영
@@ -280,25 +282,21 @@ def overview(team: str, league: str = ACTIVE_LEAGUE):
     stars = []
     squad_ratings = []
     if full_df is not None:
+        usage_idx = _comp_usage(league)
         sq = full_df[full_df["squad"] == team].copy()
         if "left_for" in sq.columns:
             sq = sq[sq["left_for"].isna() | (sq["left_for"].astype(str).str.strip() == "")]
         sq["_r"] = pd.to_numeric(sq.get("ss_rating"), errors="coerce").fillna(0)
         for _, r in sq.sort_values("_r", ascending=False).head(5).iterrows():
+            prof = _comp_profile(r, usage_idx)
             stars.append({
                 "player": r["player"], "pos": str(r.get("fl_group") or r.get("pos") or ""),
                 "ovr": _player_ovr(r), "pot": _player_pot(r), "form": _player_form(r),
                 "rating": round(_num(r.get("_r")), 2),
                 "goals": int(_num(r.get("goals"))), "assists": int(_num(r.get("assists"))),
-                "photo": _photo(r),
+                "photo": _photo(r), "role": prof["role"], "big_match": prof["big_match"],
             })
         # 절대 OVR/POT 분포·산점도용 (45분+ 출전)
-        def _line(pos):
-            p = str(pos or "").upper()
-            if p in ("GK",): return "GK"
-            if p in ("CB", "FB", "RB", "LB", "DF"): return "DEF"
-            if p in ("ST", "W", "RW", "LW", "FW"): return "ATT"
-            return "MID"
         for _, r in sq.iterrows():
             mn = int(_num(r.get("minutes")))
             if mn < 45:
@@ -307,7 +305,7 @@ def overview(team: str, league: str = ACTIVE_LEAGUE):
             squad_ratings.append({
                 "player": r["player"], "ovr": p_ovr, "pot": _player_pot(r), "form": _player_form(r),
                 "age": int(_num(r.get("age"))), "minutes": mn,
-                "line": _line(r.get("fl_group") or r.get("pos")),
+                "line": rv3.line_of_row(r),
             })
         squad_ratings.sort(key=lambda x: -x["ovr"])
 
@@ -445,26 +443,100 @@ def _photo(row) -> str:
     return str(p) if p is not None and not pd.isna(p) and str(p).startswith("http") else ""
 
 
-def _line_of(fl_group, pos) -> str:
-    g = str(fl_group or "").upper()
-    p = str(pos or "").upper()
-    if g == "GK" or "GK" in p:
-        return "GK"
-    if g in ("CB", "FB", "RB", "LB") or "DF" in p:
-        return "DEF"
-    if g in ("DM", "CM", "AM") or "MF" in p:
-        return "MID"
-    if g in ("ST", "W", "RW", "LW") or "FW" in p:
-        return "FWD"
-    return "MID"
+_XPHOTO_CACHE: dict = {}
+
+
+def _xtra_photo(league: str) -> dict:
+    """players_full 에 없는 선수(임대/방출/신규) 사진 폴백 맵 — TM 이적·계약·부상 소스 통합."""
+    if league in _XPHOTO_CACHE:
+        return _XPHOTO_CACHE[league]
+    from unidecode import unidecode
+    m: dict[str, str] = {}
+    for tbl, pcol in (("transfers", "photo"), ("transfermarkt_contracts", "tm_photo"),
+                      ("transfermarkt_injuries", "tm_photo")):
+        t = ds.read_table(tbl, league=league)
+        if t is not None and pcol in t.columns and "player" in t.columns:
+            for _, r in t.iterrows():
+                ph = str(r.get(pcol) or "")
+                if ph.startswith("http"):
+                    m.setdefault(unidecode(str(r.get("player"))).lower().strip(), ph)
+    _XPHOTO_CACHE[league] = m
+    return m
+
+
+def _resolve_photo(name, resolve, league: str) -> str:
+    """이름 → 사진 URL. players_full(resolve) 우선, 없으면 TM 폴백 맵(정확 이름 키)."""
+    if not name:
+        return ""
+    from unidecode import unidecode
+    r = resolve(name)
+    ph = _photo(r) if r is not None else ""
+    return ph or _xtra_photo(league).get(unidecode(str(name)).lower().strip(), "")
+
+
+
+
+def _pf(league: str):
+    """players_full 로드 + 대회별 선발수 컬럼 머지(빅매치 가산점·역할용) — 단일 진입점.
+
+    comp usage 있는 리그(EPL·LaLiga…)만 머지. 없으면 컬럼 없음 → absolute_ovr 가 0 처리.
+    """
+    df = ds.read_table("players_full", league=league)
+    if df is not None:
+        # norm_key 비었으면(예: LaLiga — 컬럼은 있으나 전부 null) player 로 생성 → 조인 정합
+        from unidecode import unidecode
+        df = df.copy()
+        if "norm_key" not in df.columns:
+            df["norm_key"] = None
+        _m = df["norm_key"].isna() | (df["norm_key"].astype(str).str.strip().isin(["", "nan", "None"]))
+        if _m.any():
+            df.loc[_m, "norm_key"] = df.loc[_m, "player"].map(lambda x: unidecode(str(x)).lower().strip())
+        try:
+            u = pd.read_csv(data_path("player_comp_usage", league),
+                            usecols=["squad", "norm_key", "ucl_starts", "uel_starts", "conf_starts", "cup_starts"])
+            df = df.merge(u, on=["squad", "norm_key"], how="left")
+        except (OSError, KeyError, ValueError):
+            pass
+    return df
+
+
+def _lineups(league: str):
+    """espn_lineups(리그) + 컵·유럽 라인업 concat — 스케줄/경기상세용. 리그별 파일."""
+    base = ds.read_table("espn_lineups", league=league)
+    try:
+        cup = pd.read_csv(data_path("espn_lineups_cups", league))
+    except (OSError, ValueError):
+        cup = None
+    if base is None:
+        return cup
+    if cup is None:
+        return base
+    return pd.concat([base, cup], ignore_index=True)
+
+
+def _subs(league: str):
+    """espn_subs(리그) + 컵·유럽 교체 concat."""
+    base = ds.read_table("espn_subs", league=league)
+    try:
+        cup = pd.read_csv(data_path("espn_subs_cups", league))
+    except (OSError, ValueError):
+        cup = None
+    if base is None:
+        return cup
+    if cup is None:
+        return base
+    return pd.concat([base, cup], ignore_index=True)
 
 
 def _player_ovr(row) -> int:
-    # v3 절대 OVR = 커리어 클래스 (시장가치 + 포지션 공정 보정 + 검증/베테랑, 어린 미검증 게이팅)
+    # v3 절대 OVR = 커리어 클래스 (시장가+포지션 공정보정+검증/베테랑, GK 는 선방%/CS%, 빅매치 소량 가산)
     return rv3.absolute_ovr(
         value=row.get("market_value_eur"), ss_rating=row.get("ss_rating"),
         minutes=row.get("minutes"), age=row.get("age"),
         pos_group=str(row.get("fl_group") or row.get("pos") or ""),
+        gk_save_pct=row.get("gk_save_pct"), gk_cs_pct=row.get("gk_cs_pct"),
+        ucl_starts=row.get("ucl_starts"), uel_starts=row.get("uel_starts"),
+        conf_starts=row.get("conf_starts"), cup_starts=row.get("cup_starts"),
     )
 
 
@@ -481,8 +553,80 @@ def _player_pot(row) -> int:
                          value=row.get("market_value_eur"))
 
 
+# ── 대회별 사용량 (역할 축 · EPL Phase 1) ─────────────────────────────
+# 리그 minutes = 능력치, 대회별 선발/출전 = '실제 역할'. 컵 스탯을 OVR 에 섞지 않는다.
+_COMP_USAGE_CACHE: dict = {}
+
+
+def _comp_usage(league: str):
+    """player_comp_usage → {'exact':{(squad,norm_key):row}, 'last':{(squad,성):row}}.
+    리그별(EPL·LaLiga…). 파일 없으면 None → 역할은 리그 출전만으로 폴백."""
+    if league in _COMP_USAGE_CACHE:
+        return _COMP_USAGE_CACHE[league]
+    idx = None
+    try:
+        df = pd.read_csv(data_path("player_comp_usage", league))
+        exact, last = {}, {}
+        for _, r in df.iterrows():
+            d = r.to_dict()
+            sq, nk = str(r["squad"]), str(r["norm_key"])
+            exact[(sq, nk)] = d
+            toks = nk.split()
+            if toks:
+                last.setdefault((sq, toks[-1]), d)  # 성 폴백(Andy↔Andrew 등)
+        idx = {"exact": exact, "last": last}
+    except (OSError, KeyError, ValueError):
+        idx = None
+    _COMP_USAGE_CACHE[league] = idx
+    return idx
+
+
+def _usage_for(idx, squad, norm_key):
+    if not idx:
+        return None
+    row = idx["exact"].get((str(squad), str(norm_key)))
+    if row is None:
+        toks = str(norm_key).split()
+        if toks:
+            row = idx["last"].get((str(squad), toks[-1]))
+    return row
+
+
+_COMP_LABELS = [("ucl", "챔피언스리그"), ("uel", "유로파리그"), ("conf", "컨퍼런스리그"),
+                ("facup", "FA컵"), ("lcup", "리그컵"), ("copa", "코파델레이")]
+
+
+def _comp_profile(row, usage_idx) -> dict:
+    """players_full 행 + comp usage → 역할 + 대회별 상세(선발/출전).
+
+    role/big_match 는 리그분 + 유럽/컵 사용량 기반. comps 는 출전>0 대회만.
+    comp usage 없으면(라리가 등) comps=[], 역할은 리그분만으로 폴백.
+    """
+    u = _usage_for(usage_idx, row.get("squad"), row.get("norm_key")) or {}
+    es, ea = _num(u.get("euro_starts")), _num(u.get("euro_apps"))
+    cs, ca = _num(u.get("cup_starts")), _num(u.get("cup_apps"))
+    lm = _num(row.get("minutes"))
+    role = rv3.role_tag(league_min=lm, euro_starts=es, euro_apps=ea,
+                        cup_starts=cs, cup_apps=ca, age=row.get("age"))
+    comps = []
+    for key, label in _COMP_LABELS:
+        st, ap = int(_num(u.get(f"{key}_starts"))), int(_num(u.get(f"{key}_apps")))
+        if ap > 0:
+            comps.append({"key": key, "label": label, "starts": st, "apps": ap})
+    parts = [f"리그 {int(lm)}′"] + [f"{c['label']} {c['starts']}선발" for c in comps if c["starts"]]
+    return {"role": role, "role_evidence": " · ".join(parts),
+            "big_match": rv3.big_match_proven(euro_starts=es, euro_apps=ea),
+            "league_min": int(lm), "comps": comps}
+
+
+def _role_for(row, usage_idx) -> dict:
+    """{role, role_evidence, big_match} — recommend 카드용 서브셋(단일 소스)."""
+    p = _comp_profile(row, usage_idx)
+    return {"role": p["role"], "role_evidence": p["role_evidence"], "big_match": p["big_match"]}
+
+
 def _squad_df(team: str, league: str):
-    full = ds.read_table("players_full", league=league)
+    full = _pf(league)
     if full is None:
         return None
     df = full[full["squad"] == team].copy()
@@ -496,9 +640,9 @@ def squad(team: str, league: str = ACTIVE_LEAGUE):
     df = _squad_df(team, league)
     if df is None or df.empty:
         raise HTTPException(404, "squad not found")
-    lines: dict[str, list] = {"GK": [], "DEF": [], "MID": [], "FWD": []}
+    lines: dict[str, list] = {"GK": [], "DEF": [], "MID": [], "ATT": []}
     for _, r in df.iterrows():
-        line = _line_of(r.get("fl_group"), r.get("pos"))
+        line = rv3.line_of_row(r)
         lines[line].append({
             "player": r["player"],
             "pos": str(r.get("fl_group") or r.get("pos") or ""),
@@ -540,31 +684,58 @@ def squad(team: str, league: str = ACTIVE_LEAGUE):
     return {"team": team, "color": tm.team_color(team), "lines": lines, "buckets": buckets}
 
 
-@app.get("/api/schedule/{team}")
-def schedule(team: str, league: str = ACTIVE_LEAGUE):
-    sch = ds.read_table("schedule", league=league)
-    if sch is None:
-        raise HTTPException(404, "schedule not found")
-    ts = sch[sch["squad"] == team].copy()
-    if "gw" in ts.columns:
-        ts = ts.sort_values("gw")
+def _avail_schedule_seasons(league: str) -> list[str]:
+    """schedule_full_*.csv 존재하는 시즌(최신 우선) — 리그별."""
+    out = []
+    for s in ("2026_2027", "2025_2026"):
+        if data_path("schedule_full", league, s).exists():
+            out.append(s)
+    return out
 
-    # espn 라인업이 있는 경기: date → (event_id, formation) 매핑
-    el = ds.read_table("espn_lineups", league=league)
-    date_ev: dict[str, tuple[str, str]] = {}
+
+@app.get("/api/schedule/{team}")
+def schedule(team: str, league: str = ACTIVE_LEAGUE, season: str = ""):
+    """대회 통합 스케줄 — 리그+컵+유럽. season 미지정 시 최신(26/27) 기본.
+    치러진 경기는 라인업 event_id 로 포메이션 링크."""
+    seasons = _avail_schedule_seasons(league)
+    if not seasons:  # 레거시 폴백(schedule_full 없는 리그)
+        sch = ds.read_table("schedule", league=league)
+        if sch is None:
+            raise HTTPException(404, "schedule not found")
+        ts = sch[sch["squad"] == team].copy()
+        if "gw" in ts.columns:
+            ts = ts.sort_values("gw")
+        out = [{"comp": "리그", "date": str(r.get("date") or ""),
+                "home_away": str(r.get("home_away") or ""),
+                "opponent": str(r.get("opponent") or ""),
+                "opp_logo": tm.team_logo(str(r.get("opponent") or "")),
+                "gf": None if pd.isna(r.get("gf")) else int(_num(r.get("gf"))),
+                "ga": None if pd.isna(r.get("ga")) else int(_num(r.get("ga"))),
+                "score": str(r.get("score") or ""), "result": str(r.get("result") or ""),
+                "status": "completed" if str(r.get("score") or "") else "scheduled",
+                "event_id": None, "formation": None, "has_lineup": False}
+               for _, r in ts.iterrows()]
+        return {"team": team, "color": tm.team_color(team), "season": "", "seasons": [], "matches": out}
+
+    sea = season if season in seasons else seasons[0]
+    sch = pd.read_csv(data_path("schedule_full", league, sea))
+    ts = sch[sch["squad"] == team].copy().sort_values("date")
+
+    # 라인업(리그+컵·유럽) event_id → formation
+    el = _lineups(league)
+    ev_formation: dict[str, str] = {}
     if el is not None:
         te = el[el["squad"] == team]
         for eid, g in te.groupby("event_id"):
-            d = str(g["date"].iloc[0])
-            date_ev[d] = (str(eid), str(g["formation"].iloc[0]))
+            ev_formation[str(eid)] = str(g["formation"].iloc[0])
 
     out = []
     for _, r in ts.iterrows():
-        d = str(r.get("date") or "")
-        ev = date_ev.get(d)
+        eid = str(r.get("event_id") or "")
+        formation = ev_formation.get(eid)
         out.append({
-            "gw": int(_num(r.get("gw"))),
-            "date": d,
+            "comp": str(r.get("comp") or ""),
+            "date": str(r.get("date") or ""),
             "home_away": str(r.get("home_away") or ""),
             "opponent": str(r.get("opponent") or ""),
             "opp_logo": tm.team_logo(str(r.get("opponent") or "")),
@@ -572,15 +743,18 @@ def schedule(team: str, league: str = ACTIVE_LEAGUE):
             "ga": None if pd.isna(r.get("ga")) else int(_num(r.get("ga"))),
             "score": str(r.get("score") or ""),
             "result": str(r.get("result") or ""),
-            "event_id": ev[0] if ev else None,
-            "formation": ev[1] if ev else None,
+            "status": str(r.get("status") or ""),
+            "event_id": eid or None,
+            "formation": formation,
+            "has_lineup": formation is not None,
         })
-    return {"team": team, "color": tm.team_color(team), "matches": out}
+    return {"team": team, "color": tm.team_color(team), "season": sea,
+            "seasons": seasons, "matches": out}
 
 
 @app.get("/api/match/{team}/{event_id}")
 def match(team: str, event_id: str, league: str = ACTIVE_LEAGUE):
-    el = ds.read_table("espn_lineups", league=league)
+    el = _lineups(league)
     if el is None:
         raise HTTPException(404, "lineups not found")
     m = el[(el["squad"] == team) & (el["event_id"].astype(str) == str(event_id))]
@@ -607,8 +781,8 @@ def match(team: str, event_id: str, league: str = ACTIVE_LEAGUE):
             "ovr": _player_ovr(pr) if pr is not None else None, "photo": _photo(pr) if pr is not None else "",
         })
 
-    # 교체 타임라인
-    subs_tbl = ds.read_table("espn_subs", league=league)
+    # 교체 타임라인 (리그+컵·유럽)
+    subs_tbl = _subs(league)
     subs = []
     if subs_tbl is not None:
         sm = subs_tbl[subs_tbl["event_id"].astype(str) == str(event_id)]
@@ -633,17 +807,20 @@ def players(team: str, league: str = ACTIVE_LEAGUE):
     df = df.copy()
     df["_ovr"] = df.apply(_player_ovr, axis=1)
     df = df.sort_values("_ovr", ascending=False)
+    usage_idx = _comp_usage(league)
     out = []
     for _, r in df.iterrows():
+        prof = _comp_profile(r, usage_idx)
         out.append({
             "player": r["player"],
             "pos": str(r.get("fl_group") or r.get("pos") or ""),
-            "line": _line_of(r.get("fl_group"), r.get("pos")),
+            "line": rv3.line_of_row(r),
             "age": int(_num(r.get("age"))),
             "nationality": str(r.get("nationality") or ""),
             "value_eur": _num(r.get("market_value_eur")),
             "ovr": int(r["_ovr"]),
             "photo": _photo(r),
+            "role": prof["role"], "big_match": prof["big_match"], "comps": prof["comps"],
         })
     return {"team": team, "color": tm.team_color(team), "players": out}
 
@@ -673,7 +850,7 @@ _BADGE_METRICS = [
 
 @app.get("/api/player/{team}/{player}")
 def player_detail(team: str, player: str, league: str = ACTIVE_LEAGUE):
-    full = ds.read_table("players_full", league=league)
+    full = _pf(league)
     if full is None:
         raise HTTPException(404, "players not found")
     hit = full[(full["squad"] == team) & (full["player"] == player)]
@@ -682,13 +859,13 @@ def player_detail(team: str, player: str, league: str = ACTIVE_LEAGUE):
     if hit.empty:
         raise HTTPException(404, f"player '{player}' not found")
     row = hit.iloc[0]
-    is_gk = _line_of(row.get("fl_group"), row.get("pos")) == "GK"
+    is_gk = rv3.line_of_row(row) == "GK"
 
     pool = full.copy()
     min_min = 300 if is_gk else 450
     pool = pool[pd.to_numeric(pool["minutes"], errors="coerce").fillna(0) >= min_min]
     if is_gk:
-        pool = pool[pool.apply(lambda r: _line_of(r.get("fl_group"), r.get("pos")) == "GK", axis=1)]
+        pool = pool[pool.apply(lambda r: rv3.line_of_row(r) == "GK", axis=1)]
 
     def pctile(col: str) -> int | None:
         if col not in pool.columns:
@@ -739,7 +916,7 @@ def player_detail(team: str, player: str, league: str = ACTIVE_LEAGUE):
     return {
         "player": row["player"], "team": team, "color": tm.team_color(team),
         "pos": str(row.get("fl_group") or row.get("pos") or ""),
-        "line": _line_of(row.get("fl_group"), row.get("pos")),
+        "line": rv3.line_of_row(row),
         "age": int(_num(row.get("age"))), "nationality": str(row.get("nationality") or ""),
         "value_eur": _num(row.get("market_value_eur")), "photo": _photo(row),
         "ovr": _player_ovr(row), "ss_rating": _num(row.get("ss_rating")),
@@ -747,6 +924,7 @@ def player_detail(team: str, player: str, league: str = ACTIVE_LEAGUE):
         "assists": int(_num(row.get("assists"))),
         "contract_until": str(row.get("tm_contract_until") or ""),
         "is_gk": is_gk, "categories": categories, "radar": radar, "badges": badges,
+        "comp_usage": _comp_profile(row, _comp_usage(league)),
     }
 
 
@@ -821,12 +999,13 @@ def news(team: str, league: str = ACTIVE_LEAGUE):
 def analytics(team: str, league: str = ACTIVE_LEAGUE):
     # 부상 임팩트 — 결장 경기 상위, 라인별 집계
     inj = ds.read_table("tm_injury_history", league=league)
-    full = ds.read_table("players_full", league=league)
+    full = _pf(league)
+    resolve = _players_lookup(league)
     line_map = {}
     if full is not None:
         for _, r in full[full["squad"] == team].iterrows():
-            line_map[str(r["player"])] = _line_of(r.get("fl_group"), r.get("pos"))
-    injuries, line_missed = [], {"GK": 0, "DEF": 0, "MID": 0, "FWD": 0}
+            line_map[str(r["player"])] = rv3.line_of_row(r)
+    injuries, line_missed = [], {"GK": 0, "DEF": 0, "MID": 0, "ATT": 0}
     if inj is not None:
         ti = inj[inj["squad"] == team].copy()
         ti["_gm"] = ti["games_missed"].map(lambda v: _num(v))
@@ -842,7 +1021,8 @@ def analytics(team: str, league: str = ACTIVE_LEAGUE):
             gm = int(r["_gm"])
             line_missed[line] = line_missed.get(line, 0) + gm
             injuries.append({"player": str(r["player"]), "games_missed": gm,
-                             "days_out": int(_num(r.get("days_out"))), "injury": latest, "line": line})
+                             "days_out": int(_num(r.get("days_out"))), "injury": latest, "line": line,
+                             "photo": _resolve_photo(str(r["player"]), resolve, league)})
     total_missed = sum(line_missed.values()) or 1
     line_share = {k: round(v / total_missed * 100) for k, v in line_missed.items()}
 
@@ -928,7 +1108,7 @@ def analytics(team: str, league: str = ACTIVE_LEAGUE):
         "factors": factors,
         "transfer_summary": tf_summary,
         "audit": _signing_audit(team, league, full),
-        "manager_evo": _manager_evo(team),
+        "manager_evo": _manager_evo(team, league),
     }
 
 
@@ -966,7 +1146,7 @@ def _match_factors(team, league, full, um_df):
         if full is None:
             return []
         sq = full[full["squad"] == team].copy()
-        sq = sq[sq.apply(lambda r: _line_of(r.get("fl_group"), r.get("pos")) == line, axis=1)]
+        sq = sq[sq.apply(lambda r: rv3.line_of_row(r) == line, axis=1)]
         sq["_r"] = pd.to_numeric(sq.get("ss_rating"), errors="coerce").fillna(0)
         return [{"player": r["player"], "photo": _photo(r), "ovr": _player_ovr(r)}
                 for _, r in sq.sort_values("_r", ascending=False).head(3).iterrows()]
@@ -1000,19 +1180,23 @@ def _signing_audit(team: str, league: str, full):
             verdict, tone = "적응 중", "low"
         else:
             verdict, tone = "출전 기회 부족", "bad"
+        ph = str(r.get("photo") or "")
+        if not ph.startswith("http") and pf is not None:
+            ph = str(pf.get("tm_photo") or "")
         out.append({
             "player": name, "fee_text": str(r.get("fee_text") or ""),
             "fee_eur": _num(r.get("fee_eur")), "pos": str(r.get("pos") or ""),
             "minutes": mins, "goals": goals, "assists": assists,
             "verdict": verdict, "tone": tone,
+            "photo": ph if ph.startswith("http") else "",
         })
     out.sort(key=lambda x: -x["fee_eur"])
     return out[:8]
 
 
-def _manager_evo(team: str):
+def _manager_evo(team: str, league: str = "EPL"):
     """감독 전술 진화 — 현재 vs 이전(감독 교체 시)."""
-    mp = _managers().get(team)
+    mp = _managers(league).get(team)
     if not mp:
         return None
     evo = {
@@ -1036,20 +1220,35 @@ def _players_lookup(league):
     def norm(x):
         return unidecode(str(x)).lower().strip()
 
-    full = ds.read_table("players_full", league=league)
-    exact, byfull, last, first = {}, {}, {}, {}
+    full = _pf(league)
+    exact, byfull, last = {}, {}, {}
+    last_names: dict[str, set] = {}
     if full is not None:
-        for _, r in full.iterrows():
+        # 중복 행(이적으로 떠난 옛 소속 행 + 새 소속 행) 대비:
+        # '미이적(현 소속) · 사진 보유 · 고출전' 순으로 정렬 후 setdefault(먼저 = 최선)로 채운다.
+        f = full.copy()
+        if "left_for" in f.columns:
+            f["_dep"] = f["left_for"].notna() & (f["left_for"].astype(str).str.strip() != "")
+        else:
+            f["_dep"] = False
+        f["_pic"] = f.get("tm_photo", pd.Series("", index=f.index)).astype(str).str.startswith("http")
+        f["_mn"] = pd.to_numeric(f.get("minutes"), errors="coerce").fillna(0)
+        f = f.sort_values(["_dep", "_pic", "_mn"], ascending=[True, False, False])
+        for _, r in f.iterrows():
             nm = str(r["player"])
-            exact[nm] = r
+            exact.setdefault(nm, r)
             n = norm(nm)
-            byfull[n] = r
+            byfull.setdefault(n, r)
             toks = n.split()
             if toks:
                 last.setdefault(toks[-1], r)
-                first.setdefault(toks[0], r)
+                last_names.setdefault(toks[-1], set()).add(n)
+    # 동명(성 중복)은 폴백에서 제외 — 오매칭 방지
+    ambiguous = {k for k, v in last_names.items() if len(v) > 1}
 
     def resolve(name):
+        # first-name 폴백은 엉뚱한 동명이인(예: Emegha→다른 Emmanuel)을 물어 제거.
+        # 성(last) 폴백만, 그것도 동명이인 아닐 때만 사용.
         if name is None:
             return None
         s = str(name)
@@ -1061,10 +1260,8 @@ def _players_lookup(league):
         toks = n.split()
         if not toks:
             return None
-        r = last.get(toks[-1])
-        if r is None:
-            r = first.get(toks[0])
-        return r
+        ln = toks[-1]
+        return last.get(ln) if ln not in ambiguous else None
 
     return resolve
 
@@ -1171,37 +1368,218 @@ def similar(player: str, same_position: bool = True, alpha: float = 0.6, league:
     return {"player": player, "results": out}
 
 
+# 세부 포지션 버킷 (좌우·라인 구분) — 포메이션 내 특정 약점 포지션 추천용
+_BUCKET_LABEL = {"GK": "골키퍼", "CB": "센터백", "LB": "왼쪽 풀백", "RB": "오른쪽 풀백",
+                 "DM": "수비형MF", "CM": "중앙MF", "AM": "공격형MF",
+                 "LW": "왼쪽 윙어", "RW": "오른쪽 윙어", "ST": "스트라이커"}
+_BUCKET_BY_LINE = {"ATT": ["ST", "LW", "RW"], "MID": ["DM", "CM", "AM"],
+                   "DEF": ["CB", "LB", "RB"], "GK": ["GK"]}
+_STARTER_ROLES = {"핵심 주전", "주전·유럽 로테이션", "리그 주전"}
+
+
+def _pos_bucket(row) -> str:
+    """세부 포지션 버킷. tm_position(역할) 우선 — fl_group(포메이션 슬롯)은 좌우 판별 보조.
+    예: Elliot Anderson fl_group=LW 지만 tm_position='Central Midfield' → CM."""
+    t = str(row.get("tm_position") or "").lower()
+    g = str(row.get("fl_group") or "").upper()
+    # 1) tm_position(역할)이 명확하면 그걸로
+    if t:
+        if "keeper" in t:
+            return "GK"
+        if "back" in t:
+            if "left" in t:
+                return "LB"
+            if "right" in t:
+                return "RB"
+            return "CB" if ("centre" in t or "center" in t) else "RB"
+        if "defensive mid" in t:
+            return "DM"
+        if "attacking mid" in t:
+            return "AM"
+        if "midfield" in t:            # central/left/right midfield → CM
+            return "CM"
+        if "wing" in t or "winger" in t:
+            return "LW" if "left" in t else ("RW" if "right" in t else ("RW" if g == "RW" else "LW"))
+        if "striker" in t or "forward" in t:
+            return "ST"
+    # 2) fl_group 폴백
+    if g == "GK":
+        return "GK"
+    if g == "CB":
+        return "CB"
+    if g in ("LB", "LWB"):
+        return "LB"
+    if g in ("RB", "RWB"):
+        return "RB"
+    if g in ("FB", "WB"):
+        return "RB"
+    if g == "DM":
+        return "DM"
+    if g == "AM":
+        return "AM"
+    if g == "LW":
+        return "LW"
+    if g == "RW":
+        return "RW"
+    if g == "W":
+        return "LW"
+    if g in ("ST", "CF", "FW"):
+        return "ST"
+    return "CM"
+
+
+_CLUB_STR_CACHE: dict = {}
+
+
+def _club_strength(league: str) -> dict:
+    """{클럽: 팀 종합 OVR} — 영입 현실성(클럽 티어) 판단용. 캐시."""
+    if league in _CLUB_STR_CACHE:
+        return _CLUB_STR_CACHE[league]
+    full = _pf(league)
+    m: dict[str, float] = {}
+    if full is not None:
+        for c in full["squad"].dropna().unique():
+            tr = rv3.team_ratings(full, str(c))
+            m[str(c)] = tr["overall"] if tr else 75
+    _CLUB_STR_CACHE[league] = m
+    return m
+
+
+def _attainable(cand_ovr: int, club_ovr: float, team_ovr: float, role: str, minutes) -> tuple[bool, str]:
+    """현실적 영입 가능성 + 사유 — 하드 티어컷이 아니라 '가용성(밀리는 선수)'을 반영.
+
+    핵심: 강팀이라도 '밀리는(비주전·출전감소)' 선수는 이적 가능. 진짜 주전만 동급까지로 제한.
+    - 비주전/저출전 → reach 넓음(상위팀에서도 데려올 여지)
+    - 확실한 주전 → 동급 클럽까지만 (홀란드 같은 상위팀 핵심은 제외)
+    - 우리 수준 대비 월등한 선수(약팀이 초고평가) → 비현실
+    """
+    mn = _num(minutes)
+    starter = role in _STARTER_ROLES and mn >= 1200      # 밀리는 주전(<1200′)은 주전 취급 안 함
+    gap = club_ovr - team_ovr                            # +면 후보 클럽이 더 강함
+    reach = 1.5 if starter else 5.0
+    if gap > reach:
+        return False, ("상위팀 주전(비현실)" if starter else "격상위팀(비현실)")
+    if cand_ovr >= team_ovr + 7:                          # 우리 최고 수준보다 월등 → 비현실
+        return False, "팀 수준 대비 월등(비현실)"
+    if gap <= -3:
+        return True, "약체 클럽 → 영입 현실적"
+    if not starter and gap > 1.5:
+        return True, "상위팀 비주전 → 이적 여지"
+    if not starter:
+        return True, "비주전 → 이적 가능"
+    return True, "동급 클럽 주전"
+
+
+# 리그 레벨(교차 이적 projection용). EPL 기준 100.
+_LEAGUE_LEVEL = {"EPL": 100.0, "LaLiga": 98.0, "SerieA": 96.0, "Bundesliga": 96.0, "Ligue1": 93.0}
+
+
+def _project_ovr(base: int, source: str, target: str, big_match: bool, age, bucket: str) -> tuple[int, str, str]:
+    """타 리그 → 우리 리그 이적 시 예상 OVR + (검증근거, 적응리스크 노트).
+
+    기본 OVR(그 리그 실력)은 그대로 두고, '오면 얼마나 통할까'만 보정:
+      - 리그 계수(더 센 리그로 갈수록 감점, 약한 리그로 가도 인플레 없음)
+      - 유럽(UCL/UEL) 검증 → 완화   - 나이·포지션 적응 리스크(공격수 템포↑, 수비/GK 이식 잘됨)
+    """
+    if source == target:
+        return base, "", ""
+    lvl_s, lvl_t = _LEAGUE_LEVEL.get(source, 96.0), _LEAGUE_LEVEL.get(target, 100.0)
+    adj = base * (min(1.0, lvl_s / lvl_t) - 1.0)      # ≤0
+    euro = 1.5 if big_match else 0.0
+    risk, notes = 0.0, []
+    if _num(age) >= 30:
+        risk += 1.0; notes.append("노쇠 적응")
+    if bucket in ("LW", "RW", "ST", "AM"):
+        risk += 1.0; notes.append("템포·피지컬 적응")
+    elif bucket in ("CB", "DM", "GK"):
+        risk -= 0.5                                    # 수비·전술은 이식 잘 됨
+    proj = int(round(base + adj + euro - risk))
+    proof = "빅매치(유럽) 검증" if big_match else ""
+    return proj, proof, (" · ".join(notes))
+
+
+_TOUT_CACHE: dict = {}
+
+
+def _transferred_out(league: str) -> dict:
+    """이번 창 '방출(out, 임대 제외)' → {(출발클럽, norm_key): 목적지클럽}. players_full left_for 미동기 보완.
+
+    (source, name) 키로 두어 '리그 내 이적으로 새 클럽에 이미 도착한 선수'(예: João Pedro Brighton→Chelsea)를
+    새 클럽에서 떠난 것으로 오판하지 않는다. Gordon(Newcastle 리스트인데 Barcelona행)만 이탈로 잡힘."""
+    if league in _TOUT_CACHE:
+        return _TOUT_CACHE[league]
+    from unidecode import unidecode
+    m: dict[tuple, str] = {}
+    tr = ds.read_table("transfers", league=league)
+    if tr is not None and "direction" in tr.columns:
+        out = tr[tr["direction"] == "out"].copy()
+        if "fee_text" in out.columns:
+            out = out[~out["fee_text"].astype(str).str.lower().str.contains("loan", na=False)]
+        for _, r in out.iterrows():
+            dest = str(r.get("club") or "").strip()
+            if not dest or dest.lower() in ("without club", "retired", "career break", "unknown", "-"):
+                continue  # 자유계약/은퇴 등 모호한 목적지는 이탈로 안 봄(스크랩 아티팩트 방지)
+            key = (str(r.get("squad") or ""), unidecode(str(r.get("player"))).lower().strip())
+            m[key] = dest
+    _TOUT_CACHE[league] = m
+    return m
+
+
 @app.get("/api/recommend/{team}")
 def recommend(team: str, league: str = ACTIVE_LEAGUE):
-    """후보 평가 에이전트 — 열린(미보강) 약점 라인의 후보 + 왜맞음/왜위험/데이터 신뢰도,
-    그리고 이번 창 타팀으로 간 고평가 선수(Lost Target Review)."""
-    full = ds.read_table("players_full", league=league)
+    """보강 후보 — 현 포메이션의 '가장 얇은 세부 포지션'에, 팀 티어에 맞는 현실적 후보만.
+    (라인 전체 OVR 정렬 X: 선더랜드가 홀란드를 추천하지 않도록 클럽 티어×역할로 필터)"""
+    full = _pf(league)
     if full is None:
         return {"team": team, "weakest": None, "recommendations": [], "lost_targets": [], "addressed": False}
 
-    # 타깃 라인 = Scout Desk 니즈의 최우선 '열린' 아웃필드 니즈 (Needs Board 와 동일 소스).
-    # 열린 니즈 없으면 v2 절대 유닛 중 최약체로 폴백.
     nd = _compute_needs(team, league)
     open_out = [n for n in nd["needs"] if n["status"] == "open" and n["line"] in ("ATT", "MID", "DEF")]
     trr = rv3.team_ratings(full, team) or {}
+    team_ovr = trr.get("overall", 78)
     units = {"ATT": trr.get("attack", 99), "MID": trr.get("midfield", 99), "DEF": trr.get("defense", 99)}
     signed = {s["line"] for s in nd["window"]["signings"]}
     target = open_out[0]["line"] if open_out else min(units, key=units.get)
     addressed = target in signed
     label = {"ATT": "공격", "MID": "미드필드", "DEF": "수비"}[target]
 
-    pool = full[full["squad"] != team].copy()
-    pool = pool[pd.to_numeric(pool["minutes"], errors="coerce").fillna(0) >= 600]
-    inln = pool.apply(lambda r: _pos_to_line(r.get("fl_group") or r.get("pos")) == target, axis=1)
-    left = (pool["left_for"].notna() & (pool["left_for"].astype(str).str.strip() != "")) \
-        if "left_for" in pool.columns else pd.Series(False, index=pool.index)
-    avail = pool[inln & ~left].copy()
-    lost = pool[inln & left].copy()
+    # 현 스쿼드에서 타깃 라인의 세부 포지션(LW/RW/ST 등)별 뎁스 → '얇은 포지션(들)' 선정
+    sq = _squad_df(team, league)
+    buckets = _BUCKET_BY_LINE[target]
+    depth: dict[str, tuple] = {}
+    if sq is not None:
+        for bk in buckets:
+            ovrs = sorted((_player_ovr(p) for _, p in sq.iterrows() if _pos_bucket(p) == bk), reverse=True)
+            strong = sum(1 for o in ovrs if o >= team_ovr - 5)     # 스쿼드급 옵션 수
+            depth[bk] = (strong, round(sum(ovrs[:2])))             # 적을수록 얇음
+    ranked = sorted(buckets, key=lambda b: depth.get(b, (0, 0)))
+    # 스쿼드급 옵션 2명 미만인 포지션 = 약점(없으면 가장 얇은 1곳). 최대 3개.
+    weak_buckets = [b for b in ranked if depth.get(b, (0, 0))[0] < 2][:3] or ranked[:1]
+
+    club_str = _club_strength(league)
+    usage_idx = _comp_usage(league)
+    resolve = _players_lookup(league)
 
     fit_col = {"ATT": "npxg_p90", "MID": "key_passes_per90", "DEF": "tackles_won_per90_ss"}[target]
     fit_label = {"ATT": "득점 위협", "MID": "찬스 창출", "DEF": "수비 기여"}[target]
-    fit_s = pd.to_numeric(avail.get(fit_col), errors="coerce") if fit_col in avail.columns else pd.Series(dtype=float)
-    rate_s = pd.to_numeric(avail.get("ss_rating"), errors="coerce")
+
+    tout = _transferred_out(league)  # {norm_key: 목적지} — 이적완료(left_for 미동기 보완)
+    pool = full[full["squad"] != team].copy()
+    pool["_mn"] = pd.to_numeric(pool["minutes"], errors="coerce").fillna(0)
+    pool["_bucket"] = pool.apply(_pos_bucket, axis=1)
+    pool["_ovr"] = pool.apply(_player_ovr, axis=1)
+    _lf = (pool["left_for"].notna() & (pool["left_for"].astype(str).str.strip() != "")) \
+        if "left_for" in pool.columns else pd.Series(False, index=pool.index)
+    _to = pool.apply(lambda r: (str(r.get("squad") or ""), str(r.get("norm_key"))) in tout, axis=1)
+    pool["_left"] = _lf | _to
+
+    def _dest(r):
+        lf = str(r.get("left_for") or "").strip()
+        return lf if lf else tout.get((str(r.get("squad") or ""), str(r.get("norm_key"))), "")
+
+    line_ref = pool[pool["_bucket"].isin(buckets)]
+    fit_s = pd.to_numeric(line_ref.get(fit_col), errors="coerce") if fit_col in line_ref.columns else pd.Series(dtype=float)
+    rate_s = pd.to_numeric(line_ref.get("ss_rating"), errors="coerce")
 
     def _pct_in(s, v):
         sv = s.dropna()
@@ -1213,54 +1591,142 @@ def recommend(team: str, league: str = ACTIVE_LEAGUE):
             return 0
         return int(round((sv < v).mean() * 100))
 
-    avail["_ovr"] = avail.apply(_player_ovr, axis=1)
-    avail = avail.sort_values("_ovr", ascending=False).head(6)
+    # 교차 리그 후보 — 타 리그(EPL↔LaLiga) 선수를 우리 리그로 projection(GPT 2층 모델)
+    other = {"EPL": "LaLiga", "LaLiga": "EPL"}.get(league)
+    usage_other = _comp_usage(other) if other else None
+    club_other = _club_strength(other) if other else {}
+    resolve_other = _players_lookup(other) if other else resolve
+
+    def _rphoto(r, src):  # 행 자체 사진 우선, 없으면 소속 리그 resolver 폴백
+        return _photo(r) or _resolve_photo(r["player"], resolve if src == league else resolve_other, src)
+
+    cross = None
+    fit_s_o = rate_s_o = pd.Series(dtype=float)
+    if other:
+        cx = _pf(other)
+        if cx is not None:
+            cx = cx.copy()
+            cx["_mn"] = pd.to_numeric(cx["minutes"], errors="coerce").fillna(0)
+            cx["_bucket"] = cx.apply(_pos_bucket, axis=1)
+            cx["_ovr"] = cx.apply(_player_ovr, axis=1)
+            cx["_left"] = (cx["left_for"].notna() & (cx["left_for"].astype(str).str.strip() != "")) \
+                if "left_for" in cx.columns else False
+            cross = cx
+            cl = cx[cx["_bucket"].isin(buckets)]
+            fit_s_o = pd.to_numeric(cl.get(fit_col), errors="coerce") if fit_col in cl.columns else pd.Series(dtype=float)
+            rate_s_o = pd.to_numeric(cl.get("ss_rating"), errors="coerce")
+
+    def _score(r, src):
+        role = _role_for(r, usage_idx if src == league else usage_other)
+        base = int(r["_ovr"])
+        if src == league:
+            proj, proof, risk_note = base, "", ""
+            cstr = club_str.get(str(r.get("squad") or ""), 78)
+        else:
+            proj, proof, risk_note = _project_ovr(base, src, league, role["big_match"], r.get("age"), r["_bucket"])
+            cstr = club_other.get(str(r.get("squad") or ""), 78)
+        ok, why = _attainable(proj, cstr, team_ovr, role["role"], r.get("minutes"))
+        return role, base, proj, proof, risk_note, ok, why
+
+    # 얇은 포지션별: 현실적(picked) + 비현실 눈에띄는(longshots). projection OVR 순.
+    per = max(3, -(-9 // len(weak_buckets)))
+    picked, longshots, seen_long = [], [], set()
+    for bk in weak_buckets:
+        cand = [(r, league) for _, r in pool[(pool["_bucket"] == bk) & (~pool["_left"]) & (pool["_mn"] >= 600)]
+                .sort_values("_ovr", ascending=False).head(25).iterrows()]
+        if cross is not None:
+            cand += [(r, other) for _, r in cross[(cross["_bucket"] == bk) & (~cross["_left"]) & (cross["_mn"] >= 600)]
+                     .sort_values("_ovr", ascending=False).head(20).iterrows()]
+        scored = []
+        for r, src in cand:
+            role, base, proj, proof, risk_note, ok, why = _score(r, src)
+            scored.append((r, src, role, base, proj, proof, risk_note, ok, why))
+        scored.sort(key=lambda x: -x[4])
+        n = 0
+        for r, src, role, base, proj, proof, risk_note, ok, why in scored:
+            if ok and n < per:
+                picked.append((r, src, role, base, proj, proof, risk_note, why, bk)); n += 1
+            elif (not ok) and proj >= team_ovr and r["player"] not in seen_long and len(longshots) < 4:
+                seen_long.add(r["player"]); longshots.append((r, src, role, base, proj, why, bk))
+    picked.sort(key=lambda x: -x[4])
+    longshots.sort(key=lambda x: -x[4])
+
     recs = []
-    for _, r in avail.iterrows():
+    for r, src, role, base, proj, proof, risk_note, attain_why, bk in picked[:9]:
         age, mn = int(_num(r.get("age"))), int(_num(r.get("minutes")))
         val = _num(r.get("market_value_eur")); rating = round(_num(r.get("ss_rating")), 2)
-        fit = _pct_in(fit_s, r.get(fit_col)); match = _pct_in(rate_s, r.get("ss_rating"))
-        why_fit, why_risk = [], []
+        cross_lg = src != league
+        _fs, _rs = (fit_s_o, rate_s_o) if cross_lg else (fit_s, rate_s)
+        fit = _pct_in(_fs, r.get(fit_col)); match = _pct_in(_rs, r.get("ss_rating"))
+        srclabel = {"LaLiga": "라리가", "EPL": "EPL"}.get(src, src)
+        why_fit, why_risk = [f"영입 현실성: {attain_why}"], []
+        if cross_lg:
+            why_fit.append(f"{srclabel} OVR {base} → 예상 {proj}")
         if fit >= 65:
-            why_fit.append(f"{fit_label} 리그 상위 {max(1, 100 - fit)}%")
+            why_fit.append(f"{fit_label} {srclabel} 상위 {max(1, 100 - fit)}%")
         if match >= 65:
             why_fit.append(f"평점 {rating} 상위권")
         if 23 <= age <= 28:
             why_fit.append(f"{age}세 피크")
-        if mn >= 2000:
-            why_fit.append("풀시즌 주전")
+        if role["big_match"]:
+            why_fit.append("빅매치(유럽) 검증")
+        if cross_lg and risk_note:
+            why_risk.append(f"적응: {risk_note}")
         if age >= 31:
             why_risk.append(f"{age}세 노쇠 구간")
         if mn < 1000:
             why_risk.append(f"출전 {mn}′ 표본 부족")
-        if val >= 80_000_000:
-            why_risk.append(f"고가 €{val / 1e6:.0f}M")
-        if not why_fit:
-            why_fit.append("OVR 상위 후보")
+        if role["role"] in ("컵 전용", "백업", "주변 자원"):
+            why_risk.append(f"역할: {role['role']}")
         conf = "high" if mn >= 1500 else ("med" if mn >= 700 else "low")
         recs.append({
             "player": r["player"], "squad": str(r.get("squad") or ""),
             "logo": tm.team_logo(str(r.get("squad") or "")),
             "pos": str(r.get("fl_group") or r.get("pos") or ""), "age": age,
-            "ovr": int(r["_ovr"]), "value_eur": val, "photo": _photo(r), "rating": rating,
+            "ovr": proj, "current_ovr": base, "projected_ovr": proj,
+            "cross_league": cross_lg, "source_league": srclabel, "value_eur": val,
+            "photo": _rphoto(r, src), "rating": rating,
             "tactical_fit": fit, "squad_match": match,
+            "bucket": bk, "bucket_label": _BUCKET_LABEL.get(bk, bk),
+            "role": role["role"], "role_evidence": role["role_evidence"],
+            "big_match": role["big_match"],
             "why_fit": why_fit, "why_risk": why_risk, "confidence": conf,
         })
 
-    # Lost Target Review — 이 라인 고평가 선수 중 이번 창 타팀 이적
-    lost_out = []
-    if not lost.empty:
-        lost["_ovr"] = lost.apply(_player_ovr, axis=1)
-        for _, r in lost.sort_values("_ovr", ascending=False).head(4).iterrows():
-            lost_out.append({
-                "player": r["player"], "from": str(r.get("squad") or ""),
-                "to": str(r.get("left_for") or ""), "ovr": int(r["_ovr"]),
-                "pos": str(r.get("fl_group") or r.get("pos") or ""), "photo": _photo(r),
-            })
+    # 롱샷 — 최상위급이나 티어·라이벌상 영입 가능성 낮은 선수(별도 섹션)
+    longshots_out = []
+    for r, src, role, base, proj, why, bk in longshots[:4]:
+        srclabel = {"LaLiga": "라리가", "EPL": "EPL"}.get(src, src)
+        longshots_out.append({
+            "player": r["player"], "squad": str(r.get("squad") or ""),
+            "logo": tm.team_logo(str(r.get("squad") or "")),
+            "ovr": proj, "pos": str(r.get("fl_group") or r.get("pos") or ""),
+            "photo": _rphoto(r, src),
+            "role": role["role"], "bucket_label": _BUCKET_LABEL.get(bk, bk),
+            "cross_league": src != league, "source_league": srclabel, "current_ovr": base,
+            "reason": why,
+        })
 
+    # Lost Target Review — 약점 라인 선수 중 이번 창 이적(완료). 최고가치 1명 별표.
+    lost_out = []
+    lost = pool[pool["_bucket"].isin(buckets) & pool["_left"]].sort_values("_ovr", ascending=False)
+    for i, (_, r) in enumerate(lost.head(4).iterrows()):
+        lost_out.append({
+            "player": r["player"], "from": str(r.get("squad") or ""),
+            "to": _dest(r) or "타팀", "ovr": int(r["_ovr"]),
+            "pos": str(r.get("fl_group") or r.get("pos") or ""),
+            "photo": _resolve_photo(r["player"], resolve, league),
+            "role": _role_for(r, usage_idx)["role"],
+            "top_loss": i == 0,
+        })
+
+    weak_labels = [_BUCKET_LABEL.get(b, b) for b in weak_buckets]
     return {"team": team, "color": tm.team_color(team),
-            "weakest": {"line": target, "label": label, "fit_label": fit_label},
-            "addressed": addressed, "recommendations": recs, "lost_targets": lost_out}
+            "weakest": {"line": target, "label": label, "fit_label": fit_label,
+                        "bucket": weak_buckets[0], "bucket_label": " · ".join(weak_labels),
+                        "buckets": weak_labels},
+            "addressed": addressed, "recommendations": recs,
+            "longshots": longshots_out, "lost_targets": lost_out}
 
 
 _NEED_LINES = {
@@ -1288,7 +1754,7 @@ def _compute_needs(team: str, league: str) -> dict:
     현실(스쿼드·부상·이적)에서 니즈를 뽑고, 각 니즈가 이번 창 영입으로 보강됐는지/
     방출로 악화됐는지 상태를 붙인다. AI는 '사라'가 아니라 '지금 상황 판단'.
     """
-    full = ds.read_table("players_full", league=league)
+    full = _pf(league)
     if full is None:
         raise HTTPException(404, "players not found")
     sq = full[full["squad"] == team].copy()
@@ -1297,7 +1763,7 @@ def _compute_needs(team: str, league: str) -> dict:
 
     byline: dict = {k: [] for k in _NEED_LINES}
     for _, r in sq.iterrows():
-        ln = _pos_to_line(r.get("fl_group") or r.get("pos"))
+        ln = rv3.line_of_row(r)
         byline[ln].append({"ovr": _player_ovr(r), "age": int(_num(r.get("age"))),
                            "min": int(_num(r.get("minutes")))})
 
@@ -1378,7 +1844,7 @@ def needs(team: str, league: str = ACTIVE_LEAGUE):
 @app.get("/api/database")
 def database(league: str = ACTIVE_LEAGUE):
     """전 리그 선수 DB — 클라이언트에서 필터링(이름/포지션/나이/가치/국적)."""
-    full = ds.read_table("players_full", league=league)
+    full = _pf(league)
     if full is None:
         raise HTTPException(404, "players not found")
     df = full.copy()
@@ -1386,16 +1852,19 @@ def database(league: str = ACTIVE_LEAGUE):
         df = df[df["left_for"].isna() | (df["left_for"].astype(str).str.strip() == "")]
     df["_ovr"] = df.apply(_player_ovr, axis=1)
     df = df.sort_values("_ovr", ascending=False)
+    usage_idx = _comp_usage(league)
     out = []
     for _, r in df.iterrows():
+        prof = _comp_profile(r, usage_idx)
         out.append({
             "player": r["player"], "squad": str(r.get("squad") or ""),
             "logo": tm.team_logo(str(r.get("squad") or "")),
             "pos": str(r.get("fl_group") or r.get("pos") or ""),
-            "line": _line_of(r.get("fl_group"), r.get("pos")),
+            "line": rv3.line_of_row(r),
             "age": int(_num(r.get("age"))), "nationality": str(r.get("nationality") or ""),
             "value_eur": _num(r.get("market_value_eur")), "ovr": int(r["_ovr"]),
             "photo": _photo(r),
+            "role": prof["role"], "big_match": prof["big_match"],
         })
     nats = sorted({p["nationality"] for p in out if p["nationality"]})
     return {"league": league, "players": out, "nationalities": nats}
@@ -1462,11 +1931,12 @@ def signals(team: str = "", league: str = ACTIVE_LEAGUE, limit: int = 60):
             return sq == team
         return (not valid) or (sq in valid)
 
+    # 사진: players_full(resolve) 우선, 없으면 TM 폴백 맵(이적·계약·부상) — 단일 헬퍼.
     def add(date, sq, typ, tone, icon, player, title, detail):
-        r = resolve(player) if player else None
         out.append({"date": date, "team": sq, "logo": tm.team_logo(sq), "type": typ,
                     "tone": tone, "icon": icon, "player": player or "",
-                    "photo": _photo(r) if r is not None else "", "title": title, "detail": detail})
+                    "photo": _resolve_photo(player, resolve, league),
+                    "title": title, "detail": detail})
 
     # 1. 부상 변화 (신규/복귀)
     ic = ds.read_table("transfermarkt_injury_changes", league=league)
@@ -1538,7 +2008,7 @@ def signals(team: str = "", league: str = ACTIVE_LEAGUE, limit: int = 60):
                 f"{'+' if up else '-'}€{abs(delta) / 1e6:.1f}M ({pct:+.0f}%)")
 
     # 6. 프로스펙트 레이더 (나이·시장가치·출전 기반 다층 감지)
-    pf = ds.read_table("players_full", league=league)
+    pf = _pf(league)
     if pf is not None:
         yb = pf.copy()
         if "left_for" in yb.columns:
@@ -1622,10 +2092,12 @@ def home(league: str = ACTIVE_LEAGUE):
         spend_total = float(_in["_fee"].sum())
         for _, r in tt[tt["direction"] == "in"].sort_values("_fee", ascending=False).head(8).iterrows():
             sq = str(r.get("squad") or "")
+            ph = str(r.get("photo") or "")
             top_deals.append({
                 "player": str(r.get("player") or ""), "to": sq, "to_logo": tm.team_logo(sq),
                 "from": str(r.get("club") or ""), "pos": str(r.get("pos") or ""),
                 "fee_eur": _num(r.get("fee_eur"), 0.0), "fee_text": str(r.get("fee_text") or ""),
+                "photo": ph if ph.startswith("http") else "",
             })
         for sq, g in tt.groupby("squad"):
             spend = float(g[g["direction"] == "in"]["_fee"].sum())
@@ -1640,12 +2112,13 @@ def home(league: str = ACTIVE_LEAGUE):
     sig = signals(team="", league=league, limit=24)
 
     changes = []
-    for t, p in _managers().items():
+    for t, p in _managers(league).items():
         if p.get("previous_name"):
             changes.append({
                 "team": t, "logo": tm.team_logo(t),
                 "previous": p.get("previous_name", ""), "current": p.get("name", ""),
                 "photo": p.get("photo_url", "") if str(p.get("photo_url") or "").startswith("http") else "",
+                "previous_photo": p.get("previous_photo", "") if str(p.get("previous_photo") or "").startswith("http") else "",
                 "formation": p.get("formation", ""),
                 "changed_at": str(p.get("change_detected_at") or "")[:10],
             })
@@ -1712,7 +2185,7 @@ def _wc_epl_index():
     from unidecode import unidecode
     def norm(s):
         return unidecode(str(s)).lower().strip()
-    pf = ds.read_table("players_full", league=ACTIVE_LEAGUE)
+    pf = _pf(ACTIVE_LEAGUE)
     idx = {}
     if pf is not None:
         for _, r in pf.iterrows():
@@ -1775,6 +2248,77 @@ def world_cup():
                 "logo": nation_logo.get(str(r.get("nation")), ""),
             })
 
+    # 도움 순위 + 나이맵 + 임팩트(득점+도움) 선수 풀
+    ast = _wc_read("wc_assists")
+    assistmap, assists_board = {}, []
+    if ast is not None:
+        for _, r in ast.iterrows():
+            assistmap[norm(r.get("player"))] = int(_num(r.get("assists")))
+        for _, r in ast.head(20).iterrows():
+            assists_board.append({
+                "player": str(r.get("player") or ""), "nation": str(r.get("nation") or ""),
+                "assists": int(_num(r.get("assists"))), "logo": nation_logo.get(str(r.get("nation")), ""),
+            })
+    agemap = {}
+    if sq is not None:
+        for _, r in sq.iterrows():
+            agemap[norm(r.get("player"))] = int(_num(r.get("age")))
+
+    contrib = {}
+    if sc is not None:
+        for _, r in sc.iterrows():
+            n = norm(r.get("player"))
+            contrib[n] = {"player": str(r.get("player") or ""), "nation": str(r.get("nation") or ""),
+                          "goals": int(_num(r.get("goals"))), "assists": assistmap.get(n, 0),
+                          "age": agemap.get(n, 0)}
+    if ast is not None:
+        for _, r in ast.iterrows():
+            n = norm(r.get("player"))
+            if n not in contrib:
+                contrib[n] = {"player": str(r.get("player") or ""), "nation": str(r.get("nation") or ""),
+                              "goals": goalmap.get(n, 0), "assists": int(_num(r.get("assists"))),
+                              "age": agemap.get(n, 0)}
+
+    def _impact_card(c):
+        n = norm(c["player"])
+        hit = idx.get(n)
+        return {"player": c["player"], "nation": c["nation"], "age": c["age"],
+                "goals": c["goals"], "assists": c["assists"], "ga": c["goals"] + c["assists"],
+                "logo": nation_logo.get(c["nation"], ""),
+                "club": str(hit["squad"]) if hit is not None else "", "photo": _photo(hit) if hit is not None else ""}
+
+    rising = sorted([c for c in contrib.values() if 0 < c["age"] <= 21 and (c["goals"] + c["assists"]) >= 1],
+                    key=lambda x: -(x["goals"] + x["assists"]))[:6]
+    veterans = sorted([c for c in contrib.values() if c["age"] >= 33 and (c["goals"] + c["assists"]) >= 1],
+                      key=lambda x: -(x["goals"] + x["assists"]))[:6]
+    rising = [_impact_card(c) for c in rising]
+    veterans = [_impact_card(c) for c in veterans]
+
+    # 조별 탈락 영웅 — 넉아웃 진출 못 했지만 조별리그 선전한 팀 + 대표선수
+    adv = set()
+    if "round" in m.columns:
+        ko = m[m["round"] != "group-stage"] if "group-stage" in set(m["round"].astype(str)) else m[m["round"].astype(str).str.contains("round|final|quarter|semi", case=False, na=False)]
+        for _, r in ko.iterrows():
+            adv.add(str(r.get("home") or "")); adv.add(str(r.get("away") or ""))
+    group_heroes = []
+    if g is not None:
+        elim = [r for _, r in g.iterrows() if str(r.get("team")) not in adv]
+        elim.sort(key=lambda r: (-int(_num(r.get("Pts"))), -int(_num(r.get("GD"))), -int(_num(r.get("GF")))))
+        # '잘했지만 탈락' — 승점 3+ (전형적 불운한 탈락) 우선, 없으면 상위 기록순
+        strong = [r for r in elim if int(_num(r.get("Pts"))) >= 3]
+        elim = strong or elim[:4]
+        for r in elim[:6]:
+            nat = str(r.get("team") or "")
+            stars = sorted([c for c in contrib.values() if c["nation"] == nat and (c["goals"] + c["assists"]) >= 1],
+                           key=lambda x: -(x["goals"] + x["assists"]))[:2]
+            group_heroes.append({
+                "team": nat, "logo": str(r.get("logo") or "") or nation_logo.get(nat, ""),
+                "group": str(r.get("group") or ""),
+                "P": int(_num(r.get("P"))), "W": int(_num(r.get("W"))), "D": int(_num(r.get("D"))),
+                "L": int(_num(r.get("L"))), "GD": int(_num(r.get("GD"))), "Pts": int(_num(r.get("Pts"))),
+                "stars": [{"player": s["player"], "goals": s["goals"], "assists": s["assists"]} for s in stars],
+            })
+
     byclub = {}
     if sq is not None:
         for _, r in sq.iterrows():
@@ -1803,6 +2347,8 @@ def world_cup():
         nations = [{"nation": n, "logo": nation_logo.get(n, ""), "count": c} for n, c in sorted(seen.items())]
 
     return {"matches": rounds, "groups": groups_list, "scorers": scorers,
+            "assists": assists_board, "rising_stars": rising, "veterans": veterans,
+            "group_heroes": group_heroes,
             "epl_clubs": epl_clubs, "nations": nations}
 
 
@@ -1876,7 +2422,7 @@ def projection(team: str, league: str = ACTIVE_LEAGUE):
         tt = tt[(tt["direction"] == "out") & ~tt["fee_text"].astype(str).str.lower().str.contains("loan", na=False)]
         for _, r in tt.iterrows():
             departing[_last(r.get("player"))] = {"player": str(r.get("player") or ""), "club": str(r.get("club") or "")}
-    full = ds.read_table("players_full", league=league)
+    full = _pf(league)
     if full is not None and "left_for" in full.columns:
         lf = full[(full["squad"] == team) & full["left_for"].notna() & (full["left_for"].astype(str).str.strip() != "")]
         for _, r in lf.iterrows():
@@ -1900,7 +2446,7 @@ def projection(team: str, league: str = ACTIVE_LEAGUE):
         sd = squad.copy()
         sd["_ovr"] = sd.apply(_player_ovr, axis=1)
         for _, r in sd.sort_values("_ovr", ascending=False).iterrows():
-            squad_pool.append({"player": str(r["player"]), "line": _line_of(r.get("fl_group"), r.get("pos")),
+            squad_pool.append({"player": str(r["player"]), "line": rv3.line_of_row(r),
                                "ovr": int(r["_ovr"]), "photo": _photo(r)})
 
     xi_names = {_last(p["player"]) for p in season["placements"]}

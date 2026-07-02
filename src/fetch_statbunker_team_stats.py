@@ -17,13 +17,20 @@ from pathlib import Path
 import requests
 from bs4 import BeautifulSoup
 
+from leagues import ACTIVE_LEAGUE, data_path
+
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
-COMP_ID = 776
+COMP_IDS = {
+    "EPL": 776,
+    "LaLiga": 777,
+    "SerieA": 785,
+}
+COMP_ID = COMP_IDS.get(ACTIVE_LEAGUE, 776)
 BASE = "https://www.statbunker.com/competitions/{slug}?comp_id={comp_id}"
-OUT_TEAMS = DATA / "statbunker_team_stats_2025_2026.csv"
-OUT_PENALTY_TAKERS = DATA / "statbunker_penalty_takers_2025_2026.csv"
+OUT_TEAMS = data_path("statbunker_team_stats")
+OUT_PENALTY_TAKERS = data_path("statbunker_penalty_takers")
 
 
 TEAM_ALIASES = {
@@ -31,6 +38,48 @@ TEAM_ALIASES = {
     "Wolverhampton Wanderers": "Wolves",
     "AFC Bournemouth": "Bournemouth",
     "Brighton & Hove Albion": "Brighton",
+    "Deportivo Alavés": "Alavés",
+    "Atlético Madrid": "Atlético Madrid",
+    "Atlético de Madrid": "Atlético Madrid",
+    "Athletic Bilbao": "Athletic Club",
+    "FC Barcelona": "Barcelona",
+    "Celta Vigo": "Celta Vigo",
+    "Celta de Vigo": "Celta Vigo",
+    "Villarreal CF": "Villarreal",
+    "Real Betis Balompie": "Real Betis",
+    "Real Betis Balompié": "Real Betis",
+    "Sevilla FC": "Sevilla",
+    "Valencia CF": "Valencia",
+    "RCD Espanyol": "Espanyol",
+    "Espanyol Barcelona": "Espanyol",
+    "Elche CF": "Elche",
+    "Levante UD": "Levante",
+    "CA Osasuna": "Osasuna",
+    "Getafe CF": "Getafe",
+    "RCD Mallorca": "Mallorca",
+    "Real Oviedo": "Oviedo",
+    "AC Milan": "Milan",
+    "ACF Fiorentina": "Fiorentina",
+    "AS Roma": "Roma",
+    "Atalanta BC": "Atalanta",
+    "Bologna FC": "Bologna",
+    "Bologna FC 1909": "Bologna",
+    "Cagliari Calcio": "Cagliari",
+    "Como 1907": "Como",
+    "FC Internazionale Milano": "Inter",
+    "Genoa CFC": "Genoa",
+    "Inter Milan": "Inter",
+    "Internazionale": "Inter",
+    "Juventus FC": "Juventus",
+    "Parma Calcio 1913": "Parma",
+    "Pisa SC": "Pisa",
+    "SSC Napoli": "Napoli",
+    "SS Lazio": "Lazio",
+    "Torino FC": "Torino",
+    "Udinese Calcio": "Udinese",
+    "US Cremonese": "Cremonese",
+    "US Lecce": "Lecce",
+    "US Sassuolo": "Sassuolo",
 }
 
 
@@ -62,7 +111,7 @@ def fetch_html(slug: str) -> str:
     url = BASE.format(slug=slug, comp_id=COMP_ID)
     response = requests.get(
         url,
-        timeout=30,
+        timeout=90,
         headers={
             "User-Agent": (
                 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "

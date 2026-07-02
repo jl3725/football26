@@ -1,7 +1,7 @@
 "use client";
 import type { Overview } from "@/lib/api";
 import { fmtEur } from "@/lib/api";
-import { tier, hexA } from "@/lib/ui";
+import { tier, hexA, roleClass } from "@/lib/ui";
 import Radar from "./Radar";
 import RatingsBoard from "./RatingsBoard";
 import TransferTicker from "./TransferTicker";
@@ -191,6 +191,7 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
               const tt = tier(st.ovr);
               return (
                 <div className="star-card" key={i}>
+                  {st.big_match && <span className="star-bm" title="UCL/UEL 급 무대 검증">⚡</span>}
                   {st.photo ? <img src={st.photo} alt="" /> : <span className="star-ph" />}
                   <div className="star-ovr" style={{ color: tt.light }}>
                     {st.ovr}{st.pot && st.pot > st.ovr ? <span className="star-pot">↗{st.pot}</span> : null}
@@ -198,6 +199,7 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
                   <div className="star-name">{st.player}</div>
                   <div className="star-meta">{st.pos}{st.form ? <> · 폼 <b style={{ color: st.form >= 85 ? "#4fc27f" : st.form >= 75 ? "#f4cf5e" : "#e0707a" }}>{st.form}</b></> : ""}</div>
                   <div className="star-ga">{st.goals}G {st.assists}A</div>
+                  {st.role && <span className={"role-tag sm " + roleClass(st.role)}>{st.role}</span>}
                 </div>
               );
             })}

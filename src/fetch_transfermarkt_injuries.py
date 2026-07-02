@@ -22,12 +22,15 @@ try:
 except ImportError:
     from .fetch_transfermarkt import H, TEAM_TM, parse_mv
 
+from leagues import data_path, league_config
+
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
-OUT = DATA / "transfermarkt_injuries_2025_2026.csv"
-CHANGES_OUT = DATA / "transfermarkt_injury_changes_2025_2026.csv"
-URL = "https://www.transfermarkt.com/premier-league/verletztespieler/wettbewerb/GB1"
+OUT = data_path("transfermarkt_injuries")
+CHANGES_OUT = data_path("transfermarkt_injury_changes")
+CFG = league_config()
+URL = f"https://www.transfermarkt.com/{CFG.tm_slug}/verletztespieler/wettbewerb/{CFG.tm_id}"
 
 _VID_TO_SQUAD = {vid: squad for squad, (_slug, vid) in TEAM_TM.items()}
 _TEAM_ALIASES = {
@@ -49,6 +52,43 @@ _TEAM_ALIASES = {
     "Tottenham Hotspur": "Tottenham Hotspur",
     "West Ham United": "West Ham United",
     "Wolverhampton Wanderers": "Wolves",
+    "Deportivo Alavés": "Alavés",
+    "Atlético de Madrid": "Atlético Madrid",
+    "Athletic Bilbao": "Athletic Club",
+    "FC Barcelona": "Barcelona",
+    "Celta de Vigo": "Celta Vigo",
+    "Villarreal CF": "Villarreal",
+    "Real Betis Balompié": "Real Betis",
+    "Sevilla FC": "Sevilla",
+    "Valencia CF": "Valencia",
+    "RCD Espanyol Barcelona": "Espanyol",
+    "Elche CF": "Elche",
+    "Levante UD": "Levante",
+    "CA Osasuna": "Osasuna",
+    "Getafe CF": "Getafe",
+    "RCD Mallorca": "Mallorca",
+    "Real Oviedo": "Oviedo",
+    "AC Milan": "Milan",
+    "ACF Fiorentina": "Fiorentina",
+    "AS Roma": "Roma",
+    "Atalanta BC": "Atalanta",
+    "Bologna FC 1909": "Bologna",
+    "Cagliari Calcio": "Cagliari",
+    "Como 1907": "Como",
+    "FC Internazionale Milano": "Inter",
+    "Genoa CFC": "Genoa",
+    "Inter Milan": "Inter",
+    "Inter Mailand": "Inter",
+    "Juventus FC": "Juventus",
+    "Parma Calcio 1913": "Parma",
+    "Pisa Sporting Club": "Pisa",
+    "SSC Napoli": "Napoli",
+    "SS Lazio": "Lazio",
+    "Torino FC": "Torino",
+    "Udinese Calcio": "Udinese",
+    "US Cremonese": "Cremonese",
+    "US Lecce": "Lecce",
+    "US Sassuolo": "Sassuolo",
 }
 
 

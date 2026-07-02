@@ -173,6 +173,40 @@ def fetch_squads(sleep: float = 0.15) -> list[dict]:
     return out
 
 
+def fetch_assists(event_ids: list[str], sleep: float = 0.12) -> list[dict]:
+    """완료 경기 summary 로스터의 goalAssists 집계 → 도움 순위. (스코어보드엔 도움 없음)"""
+    acc: dict = defaultdict(lambda: {"player": "", "nation": "", "assists": 0})
+    for i, eid in enumerate(event_ids):
+        try:
+            s = _get(f"{BASE}/summary?event={eid}")
+        except Exception:
+            continue
+        for ros in s.get("rosters", []):
+            nation = (ros.get("team") or {}).get("displayName", "")
+            for p in ros.get("roster", []):
+                ath = p.get("athlete") or {}
+                a = 0
+                for st in (p.get("stats") or []):
+                    if (st.get("name") or st.get("abbreviation")) == "goalAssists":
+                        try:
+                            a = int(float(st.get("value") if st.get("value") is not None
+                                          else (st.get("displayValue") or 0)))
+                        except (TypeError, ValueError):
+                            a = 0
+                        break
+                if a > 0:
+                    pid = str(ath.get("id") or ath.get("displayName"))
+                    cell = acc[pid]
+                    cell["player"] = ath.get("displayName", "") or cell["player"]
+                    cell["nation"] = nation or cell["nation"]
+                    cell["assists"] += a
+        time.sleep(sleep)
+        if (i + 1) % 20 == 0:
+            print(f"[wc] assists {i+1}/{len(event_ids)}경기")
+    rows = sorted(acc.values(), key=lambda x: -x["assists"])
+    return [r for r in rows if r["assists"] > 0]
+
+
 def main(argv: list[str] | None = None) -> int:
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
@@ -193,6 +227,13 @@ def main(argv: list[str] | None = None) -> int:
     _write(DATA / "wc_groups.csv",
            ["group", "team", "abbr", "logo", "P", "W", "D", "L", "GF", "GA", "GD", "Pts"], groups)
     print(f"[wc] matches {len(matches)} · scorers {len(scorers)} · group-rows {len(groups)}")
+
+    # 도움 — 완료 경기 summary 에서 집계
+    completed_ids = [str(e.get("id")) for e in events
+                     if (e.get("competitions") or [{}])[0].get("status", {}).get("type", {}).get("completed")]
+    assists = fetch_assists(completed_ids)
+    _write(DATA / "wc_assists.csv", ["player", "nation", "assists"], assists)
+    print(f"[wc] assists rows {len(assists)} (완료 {len(completed_ids)}경기)")
 
     if not args.no_squads:
         squads = fetch_squads()

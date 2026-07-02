@@ -1,12 +1,13 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
 import { getDatabase, fmtEur, type DbPlayer } from "@/lib/api";
-import { tier } from "@/lib/ui";
+import { tier, roleClass } from "@/lib/ui";
 
 const LINES = [
   { key: "ALL", label: "전체" }, { key: "GK", label: "GK" }, { key: "DEF", label: "수비" },
-  { key: "MID", label: "중원" }, { key: "FWD", label: "공격" },
+  { key: "MID", label: "중원" }, { key: "ATT", label: "공격" },
 ];
+const ROLES = ["핵심 주전", "주전·유럽 로테이션", "리그 주전", "로테이션", "유망주 출전", "컵 전용", "백업", "주변 자원"];
 const LIMIT = 24;
 
 export default function DatabaseTab({ accent }: { team: string; accent: string }) {
@@ -15,6 +16,8 @@ export default function DatabaseTab({ accent }: { team: string; accent: string }
   const [q, setQ] = useState("");
   const [line, setLine] = useState("ALL");
   const [nat, setNat] = useState("ALL");
+  const [role, setRole] = useState("ALL");
+  const [bmOnly, setBmOnly] = useState(false);
   const [maxAge, setMaxAge] = useState(40);
   const [maxVal, setMaxVal] = useState(200);
 
@@ -24,9 +27,11 @@ export default function DatabaseTab({ accent }: { team: string; accent: string }
     (!q || p.player.toLowerCase().includes(q.toLowerCase())) &&
     (line === "ALL" || p.line === line) &&
     (nat === "ALL" || p.nationality === nat) &&
+    (role === "ALL" || p.role === role) &&
+    (!bmOnly || p.big_match) &&
     (p.age <= maxAge) &&
     (p.value_eur <= maxVal * 1e6)
-  ), [all, q, line, nat, maxAge, maxVal]);
+  ), [all, q, line, nat, role, bmOnly, maxAge, maxVal]);
 
   const shown = filtered.slice(0, LIMIT);
 
@@ -48,6 +53,12 @@ export default function DatabaseTab({ accent }: { team: string; accent: string }
             <option value="ALL">국적 전체</option>
             {nats.map((n) => <option key={n} value={n}>{n}</option>)}
           </select>
+          <select className="db-select" value={role} onChange={(e) => setRole(e.target.value)}>
+            <option value="ALL">역할 전체</option>
+            {ROLES.map((r) => <option key={r} value={r}>{r}</option>)}
+          </select>
+          <button className={`db-pill${bmOnly ? " active" : ""}`} onClick={() => setBmOnly((v) => !v)}
+            style={bmOnly ? { background: accent, color: "#0b0f17" } : undefined}>⚡ 빅매치 검증</button>
           <label className="db-range">나이 ≤ <b>{maxAge}</b><input type="range" min={16} max={40} value={maxAge} onChange={(e) => setMaxAge(+e.target.value)} /></label>
           <label className="db-range">가치 ≤ <b>€{maxVal}M</b><input type="range" min={0} max={200} step={5} value={maxVal} onChange={(e) => setMaxVal(+e.target.value)} /></label>
         </div>
@@ -60,10 +71,12 @@ export default function DatabaseTab({ accent }: { team: string; accent: string }
           return (
             <div className="db-card" key={i}>
               <div className="db-ovr" style={{ color: t.light }}>{p.ovr}</div>
+              {p.big_match && <span className="db-bm" title="UCL/UEL 급 무대 검증">⚡</span>}
               {p.photo ? <img className="db-photo" src={p.photo} alt="" /> : <span className="db-photo ph" />}
               <div className="db-name">{p.player}</div>
               <div className="db-club">{p.logo && <img src={p.logo} alt="" />}{p.squad}</div>
               <div className="db-meta">{p.pos} · {p.age}세{p.nationality ? " · " + p.nationality : ""}</div>
+              {p.role && <span className={"role-tag sm " + roleClass(p.role)}>{p.role}</span>}
               <div className="db-val">{fmtEur(p.value_eur)}</div>
             </div>
           );

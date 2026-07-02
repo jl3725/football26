@@ -21,7 +21,8 @@ function Sec({ en, kr, accent, right }: { en: string; kr: string; accent: string
 export default function HomeDashboard({ accent, onPickTeam, leagueLabel = "EPL" }: { accent: string; onPickTeam: (t: string) => void; leagueLabel?: string }) {
   const [h, setH] = useState<Home | null>(null);
   const [comp, setComp] = useState<"EPL" | "WC">("EPL");
-  useEffect(() => { let a = true; getHome().then((d) => a && setH(d)).catch(() => {}); return () => { a = false; }; }, []);
+  // leagueLabel 변경(리그 전환) 시 재조회 — getHome 은 모듈 활성리그(_league) 사용
+  useEffect(() => { let a = true; setH(null); getHome().then((d) => a && setH(d)).catch(() => {}); return () => { a = false; }; }, [leagueLabel]);
 
   const switcher = (
     <div className="comp-seg">
@@ -29,7 +30,6 @@ export default function HomeDashboard({ accent, onPickTeam, leagueLabel = "EPL" 
         style={comp === "EPL" ? { ["--tc" as any]: accent } : undefined}>{leagueLabel}</button>
       <button className={`wc${comp === "WC" ? " active" : ""}`} onClick={() => setComp("WC")} title="2026 월드컵"
         style={comp === "WC" ? { ["--tc" as any]: accent } : undefined}><span className="wc-dot" />WC 26</button>
-      <button className="soon">OTHER<em>SOON</em></button>
     </div>
   );
 
@@ -97,7 +97,8 @@ export default function HomeDashboard({ accent, onPickTeam, leagueLabel = "EPL" 
             <button className="feat" onClick={() => onPickTeam(feat.to)} style={{ ["--tc" as any]: accent }}>
               <div className="feat-tag">최대어</div>
               <div className="feat-row">
-                {feat.to_logo && <img className="feat-logo" src={feat.to_logo} alt="" />}
+                {feat.photo ? <img className="feat-photo" src={feat.photo} alt="" />
+                  : feat.to_logo && <img className="feat-logo" src={feat.to_logo} alt="" />}
                 <div className="feat-mid">
                   <div className="feat-name">{feat.player}</div>
                   <div className="feat-move">{feat.from} <span className="feat-arr">→</span> {feat.to}</div>
@@ -110,7 +111,8 @@ export default function HomeDashboard({ accent, onPickTeam, leagueLabel = "EPL" 
             {deals.slice(1, 6).map((d, i) => (
               <button className="row2" key={i} onClick={() => onPickTeam(d.to)}>
                 <span className="row2-idx">{i + 2}</span>
-                {d.to_logo ? <img src={d.to_logo} alt="" /> : <span className="ph22" />}
+                {d.photo ? <img className="row2-photo" src={d.photo} alt="" />
+                  : d.to_logo ? <img src={d.to_logo} alt="" /> : <span className="ph22" />}
                 <div className="row2-mid"><b>{d.player}</b><span>{d.from} → {d.to}</span></div>
                 <span className="row2-r teko">{d.fee_text}</span>
               </button>
@@ -141,7 +143,9 @@ export default function HomeDashboard({ accent, onPickTeam, leagueLabel = "EPL" 
         <div className="sig-grid">
           {h.signals.slice(0, 8).map((s, i) => (
             <button className={`sigx ${s.tone}`} key={i} onClick={() => s.team && onPickTeam(s.team)}>
-              <span className="sigx-ic">{s.icon}</span>
+              {s.photo
+                ? <span className="sigx-av"><img src={s.photo} alt="" /><em>{s.icon}</em></span>
+                : <span className="sigx-ic">{s.icon}</span>}
               <div className="sigx-mid">
                 <b>{s.title}</b>
                 <span>{[s.player, s.detail].filter(Boolean).join(" · ")}</span>
@@ -163,7 +167,10 @@ export default function HomeDashboard({ accent, onPickTeam, leagueLabel = "EPL" 
                 {c.photo ? <img className="mgx-photo" src={c.photo} alt="" /> : <span className="mgx-ph" />}
                 {c.logo && <img className="mgx-logo" src={c.logo} alt="" />}
                 <div className="mgx-name">{c.current.replace(/\s*\(interim\)/i, "")}</div>
-                <div className="mgx-prev">← {c.previous.replace(/\s*\(interim\)/i, "")}</div>
+                <div className="mgx-prev">
+                  {c.previous_photo && <img className="mgx-prev-photo" src={c.previous_photo} alt="" />}
+                  ← {c.previous.replace(/\s*\(interim\)/i, "")}
+                </div>
                 <div className="mgx-meta">{[c.formation, c.changed_at].filter(Boolean).join(" · ")}</div>
               </button>
             ))}

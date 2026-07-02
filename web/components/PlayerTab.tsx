@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { getPlayers, getPlayerDetail, getSimilar, fmtEur, type Players, type PlayerDetail, type SimilarResult } from "@/lib/api";
-import { tier, hexA } from "@/lib/ui";
+import { tier, hexA, roleClass } from "@/lib/ui";
 import Radar from "./Radar";
 
 function Bar({ label, pct, raw, accent }: { label: string; pct: number; raw: number; accent: string }) {
@@ -46,6 +46,30 @@ function Detail({ team, player, accent }: { team: string; player: string; accent
               {b.medal} {b.label} <em style={{ color: accent }}>리그 #{b.rank}</em>
             </span>
           ))}
+        </div>
+      )}
+      {d.comp_usage && (
+        <div className="pd-comp">
+          <div className="pd-comp-head">
+            <span className="pd-comp-title">이번 시즌 대회별 출전</span>
+            <span className={"role-tag " + roleClass(d.comp_usage.role)}>{d.comp_usage.role}</span>
+            {d.comp_usage.big_match && <span className="role-bm" title="UCL/UEL 급 무대 검증">⚡ 빅매치 검증</span>}
+          </div>
+          <div className="pd-comp-chips">
+            <div className="cchip lg">
+              <span className="cchip-comp">리그</span>
+              <span className="cchip-val">{d.comp_usage.league_min.toLocaleString()}′</span>
+            </div>
+            {d.comp_usage.comps.map((c) => (
+              <div className="cchip" key={c.key}>
+                <span className="cchip-comp">{c.label}</span>
+                <span className="cchip-val">{c.starts}선발 · {c.apps}출전</span>
+              </div>
+            ))}
+            {d.comp_usage.comps.length === 0 && (
+              <div className="cchip empty"><span className="cchip-comp">컵·유럽 출전 없음</span></div>
+            )}
+          </div>
         </div>
       )}
       <div className="pd-body">
@@ -102,9 +126,11 @@ export default function PlayerTab({ team, accent }: { team: string; accent: stri
               onClick={() => setSel(p.player)}
               style={sel === p.player ? { borderColor: accent } : undefined}>
               <span className="pl-ovr" style={{ color: t.light }}>{p.ovr}</span>
+              {p.big_match && <span className="pl-bm" title="UCL/UEL 급 무대 검증">⚡</span>}
               {p.photo ? <img className="pl-photo" src={p.photo} alt="" /> : <span className="pl-photo ph" />}
               <div className="pl-name">{p.player}</div>
               <div className="pl-pos">{p.pos} · {p.age}</div>
+              {p.role && <span className={"pl-role role-tag sm " + roleClass(p.role)}>{p.role}</span>}
             </button>
           );
         })}

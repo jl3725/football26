@@ -20,11 +20,13 @@ import numpy as np
 import pandas as pd
 import soccerdata as sd
 
+from leagues import SEASON_FBREF, data_path, league_config
+
 DATA_DIR = Path(__file__).resolve().parent.parent / "data"
-OUT = DATA_DIR / "players_2025_2026.csv"
-SAMPLE = DATA_DIR / "players_sample.csv"
-LEAGUE = "ENG-Premier League"
-SEASON = "2025-2026"
+OUT = data_path("players")
+SAMPLE = data_path("players_sample")
+LEAGUE = league_config().fbref_id
+SEASON = SEASON_FBREF
 
 
 def find_col(df: pd.DataFrame, child: str, parent: str | None = None) -> pd.Series:

@@ -167,6 +167,7 @@ html, body {
 .comp-seg button.soon em { font-style: normal; font-size: 8px; letter-spacing: 1px; }
 .comp-seg button.wc { opacity: .85; }
 .wc-dot { width: 6px; height: 6px; border-radius: 50%; background: #ff4d5e; box-shadow: 0 0 7px #ff4d5e; animation: wcpulse 1.6s ease-in-out infinite; }
+.comp-seg button.wc .wc-dot { background: #4fc27f; box-shadow: 0 0 7px #4fc27f; }
 @keyframes wcpulse { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
 .hx-live { font-size: 11.5px; color: var(--muted); display: inline-flex; align-items: center; gap: 6px; font-weight: 600; }
 
@@ -202,6 +203,8 @@ html, body {
 .feat-tag { display: inline-block; font-size: 10px; letter-spacing: .5px; color: var(--tc); font-weight: 800; }
 .feat-row { display: flex; align-items: center; gap: 13px; margin-top: 8px; }
 .feat-logo { width: 44px; height: 44px; object-fit: contain; flex-shrink: 0; }
+.feat-photo { width: 46px; height: 46px; border-radius: 50%; object-fit: cover; flex-shrink: 0; background: #1a2230; }
+.row2-photo { width: 26px !important; height: 26px !important; border-radius: 50%; object-fit: cover !important; background: #1a2230; }
 .feat-mid { flex: 1; min-width: 0; }
 .feat-name { font-size: 18px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .feat-move { font-size: 12px; color: var(--muted); margin-top: 2px; }
@@ -223,7 +226,8 @@ html, body {
 .netx-val { flex: 0 0 auto; min-width: 52px; text-align: right; font-size: 18px; color: var(--muted); }
 
 /* 이적 속보 wire */
-.wire-live { display: inline-flex; align-items: center; gap: 5px; font-family: Oswald, sans-serif; font-size: 11px; letter-spacing: 1.5px; color: #ff4d5e; font-weight: 600; }
+.wire-live { display: inline-flex; align-items: center; gap: 5px; font-family: Oswald, sans-serif; font-size: 11px; letter-spacing: 1.5px; color: #4fc27f; font-weight: 600; }
+.wire-live .wc-dot { background: #4fc27f; box-shadow: 0 0 7px #4fc27f; }
 .wire { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 16px; }
 @media (max-width: 760px) { .wire { grid-template-columns: 1fr; } }
 .wire-row { display: flex; align-items: center; gap: 10px; padding: 8px 6px; border-radius: 9px; text-decoration: none; color: var(--txt); border-bottom: 1px solid rgba(255,255,255,0.04); }
@@ -242,6 +246,9 @@ html, body {
 .sigx.good { box-shadow: inset 3px 0 0 #4fc27f; } .sigx.bad { box-shadow: inset 3px 0 0 #e0556b; }
 .sigx.warn { box-shadow: inset 3px 0 0 #f4cf5e; } .sigx.info { box-shadow: inset 3px 0 0 #4a86ff; }
 .sigx-ic { font-size: 14px; width: 18px; text-align: center; flex-shrink: 0; }
+.sigx-av { position: relative; width: 30px; height: 30px; flex-shrink: 0; }
+.sigx-av img { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; background: #1a2230; }
+.sigx-av em { position: absolute; right: -3px; bottom: -3px; font-size: 10px; font-style: normal; line-height: 1; filter: drop-shadow(0 1px 1px rgba(0,0,0,0.6)); }
 .sigx-mid { flex: 1; min-width: 0; }
 .sigx-mid b { display: block; font-size: 12.5px; }
 .sigx-mid span { display: block; font-size: 10.5px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -256,7 +263,8 @@ html, body {
 .mgx-ph { width: 60px; height: 60px; border-radius: 50%; background: rgba(255,255,255,0.06); margin: 0 auto 9px; display: block; }
 .mgx-logo { position: absolute; top: 12px; right: 12px; width: 22px; height: 22px; object-fit: contain; }
 .mgx-name { font-size: 13.5px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.mgx-prev { font-size: 10.5px; color: var(--muted); margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mgx-prev { font-size: 10.5px; color: var(--muted); margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; justify-content: center; gap: 4px; }
+.mgx-prev-photo { width: 18px; height: 18px; border-radius: 50%; object-fit: cover; object-position: top center; filter: grayscale(0.4); flex-shrink: 0; }
 .mgx-meta { font-size: 9.5px; color: var(--muted); margin-top: 6px; letter-spacing: .3px; }
 
 /* 뉴스 */
@@ -294,6 +302,26 @@ html, body {
 .wc-scorer-nm { font-size: 13px; font-weight: 600; }
 .wc-scorer-nat { flex: 1; font-size: 11px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .wc-scorer-g { font-size: 20px; }
+
+/* WC 신예·노장 임팩트 + 조별 영웅 */
+.wc-two { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 820px) { .wc-two { grid-template-columns: 1fr; } }
+.wc-sub { font-size: 10.5px; color: var(--muted); font-weight: 500; margin-left: 6px; }
+.wc-imp { display: flex; align-items: center; gap: 9px; padding: 6px 2px; border-bottom: 1px solid rgba(255,255,255,0.04); }
+.wc-imp-ph { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; background: #1a2230; flex-shrink: 0; }
+.wc-imp-flag { width: 22px; height: 15px; object-fit: contain; flex-shrink: 0; }
+.wc-imp-mid { flex: 1; min-width: 0; }
+.wc-imp-mid b { display: block; font-size: 12.5px; }
+.wc-imp-mid span { display: block; font-size: 10.5px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.wc-imp-ga { font-family: Oswald, sans-serif; font-weight: 700; font-size: 12.5px; flex-shrink: 0; }
+.wc-heroes { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 10px; }
+.wc-hero { border: 1px solid var(--line); border-left: 3px solid #e0a24d; border-radius: 11px; padding: 11px 13px; background: rgba(224,162,77,0.05); }
+.wc-hero-logo { width: 26px; height: 18px; object-fit: contain; }
+.wc-hero-nm { font-weight: 700; font-size: 13.5px; margin-top: 4px; }
+.wc-hero-grp { font-size: 10.5px; color: var(--muted); font-weight: 500; margin-left: 6px; }
+.wc-hero-rec { font-size: 11px; color: var(--muted); margin-top: 3px; }
+.wc-hero-stars { display: flex; flex-direction: column; gap: 1px; margin-top: 6px; font-size: 11px; }
+.wc-hero-stars em { color: #e8c86a; font-style: normal; font-family: Oswald, sans-serif; }
 
 /* 대진표 */
 .wc-bracket { display: flex; gap: 14px; overflow-x: auto; padding-bottom: 8px; }
@@ -387,6 +415,17 @@ html, body {
 .why.risk { background: rgba(224,85,107,0.14); color: #e0556b; }
 .rec-conf { font-size: 10px; margin-top: 7px; font-weight: 600; }
 .lt-ovr { font-size: 11px; color: var(--muted); font-family: Oswald, sans-serif; margin-left: 4px; }
+
+/* 역할(Role Reality) 축 — 대회별 사용량 기반 */
+.rec-role { display: flex; gap: 5px; justify-content: center; align-items: center; margin-top: 8px; flex-wrap: wrap; }
+.role-tag { font-size: 10.5px; font-weight: 700; padding: 2px 8px; border-radius: 999px; letter-spacing: -0.2px; }
+.role-tag.sm { font-size: 9.5px; padding: 1px 6px; margin-left: 6px; font-weight: 600; }
+.role-tag.r-core { background: rgba(120,180,255,0.18); color: #78b4ff; border: 1px solid rgba(120,180,255,0.4); }
+.role-tag.r-starter { background: rgba(79,194,127,0.15); color: #5fd08c; }
+.role-tag.r-rot { background: rgba(244,207,94,0.14); color: #f4cf5e; }
+.role-tag.r-fringe { background: rgba(150,150,160,0.15); color: #9aa0ab; }
+.role-bm { font-size: 10px; font-weight: 700; color: #ffcf4d; background: rgba(255,207,77,0.13); padding: 2px 7px; border-radius: 999px; }
+.rec-role-ev { font-size: 9.5px; color: var(--muted); text-align: center; margin-top: 4px; letter-spacing: -0.1px; }
 
 /* ── Main ─────────────────────────────── */
 .main { padding: 20px 30px 60px; max-width: 1240px; width: 100%; }
@@ -498,6 +537,7 @@ html, body {
 .db-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-top: 16px; }
 .db-card { position: relative; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 15px 8px 12px; border: 1px solid var(--line); border-radius: 14px; background: linear-gradient(160deg, var(--panel-2), var(--panel)); }
 .db-ovr { position: absolute; top: 8px; left: 10px; font-family: Teko, sans-serif; font-size: 21px; line-height: 1; }
+.db-bm { position: absolute; top: 9px; right: 10px; font-size: 13px; }
 .db-photo { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; }
 .db-photo.ph { background: linear-gradient(135deg, #232c3d, #161c28); }
 .db-name { font-weight: 600; font-size: 12.5px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
@@ -536,6 +576,7 @@ html, body {
 .star-card { display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 14px 8px; border: 1px solid var(--line); border-radius: 14px; background: rgba(255, 255, 255, 0.02); position: relative; }
 .star-card img, .star-ph { width: 54px; height: 54px; border-radius: 50%; object-fit: cover; background: linear-gradient(135deg, #232c3d, #161c28); }
 .star-ovr { position: absolute; top: 8px; right: 10px; font-family: Teko, sans-serif; font-size: 22px; line-height: 1; }
+.star-bm { position: absolute; top: 9px; left: 10px; font-size: 13px; }
 .star-name { font-weight: 600; font-size: 12.5px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
 .star-meta { color: var(--muted); font-size: 11px; }
 .star-ga { font-family: Oswald, sans-serif; font-size: 11.5px; color: #c3ccdc; }
@@ -649,6 +690,10 @@ html, body {
 .rec-club { display: flex; align-items: center; gap: 4px; color: var(--muted); font-size: 10.5px; }
 .rec-club img { width: 14px; height: 14px; object-fit: contain; }
 .rec-meta { color: var(--muted); font-size: 10.5px; text-align: center; }
+.rec-target { font-size: 10.5px; font-weight: 700; text-align: center; margin-top: 2px; }
+.rec-card.longshot { opacity: 0.82; border-style: dashed; }
+.rec-cross { font-size: 9.5px; font-weight: 700; color: #d8a24d; text-align: center; margin-top: 2px; }
+.tf2-row.top-loss { background: rgba(224,112,112,0.09); border-radius: 9px; box-shadow: inset 3px 0 0 #e0a24d; }
 .rec-fit { width: 100%; margin-top: 8px; display: flex; flex-direction: column; gap: 5px; }
 .rec-fit-row { display: flex; align-items: center; gap: 6px; font-size: 9.5px; color: var(--muted); }
 .rec-fit-row span { width: 46px; }
@@ -661,8 +706,10 @@ html, body {
 .audit-card { padding: 12px 14px; border: 1px solid var(--line); border-left-width: 3px; border-radius: 12px; background: rgba(255, 255, 255, 0.02); }
 .audit-card.good { border-left-color: #4fc27f; } .audit-card.ok { border-left-color: #6aa6e0; }
 .audit-card.low { border-left-color: #caa64e; } .audit-card.bad { border-left-color: #e07070; }
-.audit-top { display: flex; justify-content: space-between; align-items: baseline; }
-.audit-name { font-weight: 700; font-size: 13.5px; }
+.audit-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.audit-photo { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; flex-shrink: 0; background: #1a2230; }
+.audit-photo.ph { background: linear-gradient(135deg, #232c3d, #161c28); }
+.audit-name { font-weight: 700; font-size: 13.5px; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .audit-fee { font-family: Oswald, sans-serif; font-size: 11.5px; color: var(--muted); }
 .audit-verdict { font-size: 12.5px; margin: 5px 0 3px; color: #c3ccdc; }
 .audit-stat { font-family: Oswald, sans-serif; font-size: 11.5px; color: var(--muted); }
@@ -839,6 +886,14 @@ html, body {
 .sc-res { width: 22px; height: 22px; border-radius: 6px; display: grid; place-items: center; font-size: 11px; font-weight: 700; font-family: Oswald, sans-serif; color: #fff; }
 .sc-res.W { background: #1f8a4c; } .sc-res.D { background: #5a6270; } .sc-res.L { background: #a5202f; }
 .sc-res.upcoming { background: rgba(255, 255, 255, 0.06); color: var(--muted); }
+.sc-comp { width: 6px; height: 22px; border-radius: 3px; flex-shrink: 0; }
+
+/* 시즌 토글 · 대회 필터 · 대회 배지 */
+.season-toggle { display: inline-flex; gap: 3px; padding: 3px; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; }
+.season-toggle .seg { border: none; background: transparent; color: var(--muted); font-family: Oswald, sans-serif; font-weight: 600; font-size: 13px; padding: 5px 16px; border-radius: 7px; cursor: pointer; }
+.comp-filter { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.comp-pill { border: 1px solid var(--line); background: var(--panel); color: var(--txt); font-size: 12px; font-weight: 600; padding: 4px 11px; border-radius: 999px; cursor: pointer; }
+.comp-badge { font-size: 10.5px; font-weight: 700; padding: 1px 7px; border: 1px solid; border-radius: 999px; margin-right: 7px; }
 
 /* ── Schedule master-detail ─────────────────────────────── */
 .sched-layout { display: grid; grid-template-columns: 340px 1fr; gap: 16px; margin-top: 16px; align-items: start; }
@@ -914,6 +969,8 @@ html, body {
 /* ── Analytics ─────────────────────────────── */
 .inj-list { display: flex; flex-direction: column; gap: 4px; }
 .inj-row { display: flex; align-items: center; gap: 11px; padding: 8px 6px; border-radius: 9px; }
+.inj-photo { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; flex-shrink: 0; background: #1a2230; }
+.inj-photo.ph { background: linear-gradient(135deg, #232c3d, #161c28); }
 .inj-row:hover { background: rgba(255, 255, 255, 0.03); }
 .inj-line { width: 42px; text-align: center; padding: 4px 0; border-radius: 7px; font-size: 10.5px; font-weight: 700; font-family: Oswald, sans-serif; }
 .inj-info { flex: 1; min-width: 0; }
@@ -941,6 +998,19 @@ html, body {
 .pl-photo { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; }
 .pl-name { font-weight: 600; font-size: 12.5px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
 .pl-pos { color: var(--muted); font-size: 10.5px; }
+.pl-bm { position: absolute; top: 7px; right: 9px; font-size: 12px; }
+.pl-role { margin-top: 3px; }
+
+/* 선수 상세 — 대회별 출전 */
+.pd-comp { padding: 6px 22px 4px; }
+.pd-comp-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 9px; }
+.pd-comp-title { font-size: 12px; font-weight: 700; color: var(--muted); letter-spacing: -0.2px; }
+.pd-comp-chips { display: flex; flex-wrap: wrap; gap: 7px; }
+.cchip { display: flex; flex-direction: column; gap: 1px; padding: 6px 11px; border: 1px solid var(--line); border-radius: 10px; background: rgba(255,255,255,0.02); }
+.cchip.lg { border-color: rgba(255,255,255,0.14); }
+.cchip.empty { color: var(--muted); }
+.cchip-comp { font-size: 10px; color: var(--muted); }
+.cchip-val { font-size: 12.5px; font-weight: 700; font-family: Oswald, sans-serif; }
 .pl-detail { position: sticky; top: 10px; }
 .pd-card { padding: 0; overflow: hidden; }
 .pd-head { display: flex; align-items: center; gap: 16px; padding: 20px 22px; }

@@ -9,19 +9,19 @@ FBref 일정 데이터에서 EPL 25/26 순위표 + 팀별 전적 목록을 계�
 """
 from __future__ import annotations
 
-from pathlib import Path
-
 import pandas as pd
 import soccerdata as sd
 
-DATA_DIR = Path(__file__).resolve().parent.parent / "data"
-OUT_STANDINGS = DATA_DIR / "standings_2025_2026.csv"
-OUT_SCHEDULE  = DATA_DIR / "schedule_2025_2026.csv"
+from leagues import SEASON_FBREF, data_path, league_config
+
+OUT_STANDINGS = data_path("standings")
+OUT_SCHEDULE = data_path("schedule")
 
 
 def main() -> int:
-    print("-> FBref 일정 로드 ...", end=" ", flush=True)
-    fb = sd.FBref(leagues="ENG-Premier League", seasons="2025-2026")
+    cfg = league_config()
+    print(f"-> FBref 일정 로드 ({cfg.name}) ...", end=" ", flush=True)
+    fb = sd.FBref(leagues=cfg.fbref_id, seasons=SEASON_FBREF)
     sched = fb.read_schedule().reset_index()
     sched.columns = ["_".join(c).strip("_") if isinstance(c, tuple) else c
                      for c in sched.columns]

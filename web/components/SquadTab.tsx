@@ -5,7 +5,7 @@ import { tier } from "@/lib/ui";
 
 const LINES: { key: string; label: string }[] = [
   { key: "GK", label: "골키퍼" }, { key: "DEF", label: "수비" },
-  { key: "MID", label: "미드필드" }, { key: "FWD", label: "공격" },
+  { key: "MID", label: "미드필드" }, { key: "ATT", label: "공격" },
 ];
 const POS_LABEL: Record<string, string> = {
   GK: "골키퍼", CB: "센터백", RB: "라이트백", LB: "레프트백", DM: "수비형MF",

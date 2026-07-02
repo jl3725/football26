@@ -26,9 +26,11 @@ from bs4 import BeautifulSoup
 from unidecode import unidecode
 
 DATA = Path(__file__).resolve().parent.parent / "data"
-# 앱이 실제로 읽는 파일(= similar_players.DATA_PATH)에 채운다.
-from similar_players import DATA_PATH as _APP_DATA_PATH  # noqa: E402
-PLAYERS = Path(_APP_DATA_PATH)
+from leagues import ACTIVE_LEAGUE, data_path  # noqa: E402
+
+PLAYERS = data_path("players_full")
+if not PLAYERS.exists():
+    PLAYERS = data_path("players")
 SEASON = 2025
 
 H = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
@@ -36,7 +38,7 @@ H = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
      "Accept-Language": "en-US,en;q=0.9", "Accept": "text/html"}
 
 # 우리 squad 이름 → (Transfermarkt slug, verein id). id가 라우팅 핵심(slug는 표시용).
-TEAM_TM: dict[str, tuple[str, int]] = {
+EPL_TEAM_TM: dict[str, tuple[str, int]] = {
     "Arsenal": ("fc-arsenal", 11),
     "Aston Villa": ("aston-villa", 405),
     "Bournemouth": ("afc-bournemouth", 989),
@@ -58,6 +60,60 @@ TEAM_TM: dict[str, tuple[str, int]] = {
     "West Ham United": ("west-ham-united", 379),
     "Wolves": ("wolverhampton-wanderers", 543),
 }
+
+LALIGA_TEAM_TM: dict[str, tuple[str, int]] = {
+    "Alavés": ("deportivo-alaves", 1108),
+    "Athletic Club": ("athletic-bilbao", 621),
+    "Atlético Madrid": ("atletico-madrid", 13),
+    "Barcelona": ("fc-barcelona", 131),
+    "Celta Vigo": ("celta-vigo", 940),
+    "Elche": ("fc-elche", 1531),
+    "Espanyol": ("espanyol-barcelona", 714),
+    "Getafe": ("fc-getafe", 3709),
+    "Girona": ("fc-girona", 12321),
+    "Levante": ("ud-levante", 3368),
+    "Mallorca": ("rcd-mallorca", 237),
+    "Osasuna": ("ca-osasuna", 331),
+    "Oviedo": ("real-oviedo", 2497),
+    "Rayo Vallecano": ("rayo-vallecano", 367),
+    "Real Betis": ("real-betis-sevilla", 150),
+    "Real Madrid": ("real-madrid", 418),
+    "Real Sociedad": ("real-sociedad-san-sebastian", 681),
+    "Sevilla": ("fc-sevilla", 368),
+    "Valencia": ("fc-valencia", 1049),
+    "Villarreal": ("fc-villarreal", 1050),
+}
+
+SERIEA_TEAM_TM: dict[str, tuple[str, int]] = {
+    "Atalanta": ("atalanta-bergamo", 800),
+    "Bologna": ("fc-bologna", 1025),
+    "Cagliari": ("cagliari-calcio", 1390),
+    "Como": ("como-1907", 1047),
+    "Cremonese": ("us-cremonese", 2239),
+    "Fiorentina": ("ac-florenz", 430),
+    "Genoa": ("fc-genua", 252),
+    "Hellas Verona": ("hellas-verona", 276),
+    "Inter": ("inter-mailand", 46),
+    "Juventus": ("juventus-turin", 506),
+    "Lazio": ("lazio-rom", 398),
+    "Lecce": ("us-lecce", 1005),
+    "Milan": ("ac-mailand", 5),
+    "Napoli": ("ssc-neapel", 6195),
+    "Parma": ("parma-calcio-1913", 130),
+    "Pisa": ("pisa-sporting-club", 4171),
+    "Roma": ("as-rom", 12),
+    "Sassuolo": ("us-sassuolo", 6574),
+    "Torino": ("fc-turin", 416),
+    "Udinese": ("udinese-calcio", 410),
+}
+
+TEAM_TM_BY_LEAGUE: dict[str, dict[str, tuple[str, int]]] = {
+    "EPL": EPL_TEAM_TM,
+    "LaLiga": LALIGA_TEAM_TM,
+    "SerieA": SERIEA_TEAM_TM,
+}
+
+TEAM_TM: dict[str, tuple[str, int]] = TEAM_TM_BY_LEAGUE.get(ACTIVE_LEAGUE, EPL_TEAM_TM)
 
 
 # verein id → 우리 squad 표기 (현재 소속 클럽 역매핑용)

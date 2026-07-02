@@ -25,9 +25,18 @@ from pathlib import Path
 import pandas as pd
 import requests
 
+from leagues import ACTIVE_LEAGUE, data_path
+
 DATA = Path(__file__).resolve().parent.parent / "data"
-OUT = DATA / "espn_lineups_2025_2026.csv"
-ESPN = "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1"
+OUT = data_path("espn_lineups")
+ESPN_CODES = {
+    "EPL": "eng.1",
+    "LaLiga": "esp.1",
+    "Bundesliga": "ger.1",
+    "SerieA": "ita.1",
+    "Ligue1": "fra.1",
+}
+ESPN = f"https://site.api.espn.com/apis/site/v2/sports/soccer/{ESPN_CODES.get(ACTIVE_LEAGUE, 'eng.1')}"
 HEADERS = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
 
 # ESPN abbreviation → 우리 squad 표기
@@ -40,8 +49,63 @@ SQUAD_BY_ABBR: dict[str, str] = {
     "WHU": "West Ham United", "WOL": "Wolves",
 }
 
+TEAM_ALIASES = {
+    "Deportivo Alavés": "Alavés",
+    "Athletic Bilbao": "Athletic Club",
+    "Atlético Madrid": "Atlético Madrid",
+    "Barcelona": "Barcelona",
+    "Celta Vigo": "Celta Vigo",
+    "Elche": "Elche",
+    "Espanyol": "Espanyol",
+    "Getafe": "Getafe",
+    "Girona": "Girona",
+    "Levante": "Levante",
+    "Mallorca": "Mallorca",
+    "Osasuna": "Osasuna",
+    "Real Betis": "Real Betis",
+    "Real Madrid": "Real Madrid",
+    "Real Oviedo": "Oviedo",
+    "Real Sociedad": "Real Sociedad",
+    "Rayo Vallecano": "Rayo Vallecano",
+    "Sevilla": "Sevilla",
+    "Valencia": "Valencia",
+    "Villarreal": "Villarreal",
+    "AC Milan": "Milan",
+    "AS Roma": "Roma",
+    "Atalanta": "Atalanta",
+    "Bologna": "Bologna",
+    "Cagliari": "Cagliari",
+    "Como": "Como",
+    "Cremonese": "Cremonese",
+    "Fiorentina": "Fiorentina",
+    "Genoa": "Genoa",
+    "Hellas Verona": "Hellas Verona",
+    "Internazionale": "Inter",
+    "Inter Milan": "Inter",
+    "Juventus": "Juventus",
+    "Lazio": "Lazio",
+    "Lecce": "Lecce",
+    "Napoli": "Napoli",
+    "Parma": "Parma",
+    "Pisa": "Pisa",
+    "Roma": "Roma",
+    "Sassuolo": "Sassuolo",
+    "Torino": "Torino",
+    "Udinese": "Udinese",
+}
+
 COLS = ["squad", "date", "opponent", "home_away", "formation",
         "starter", "jersey", "player", "espn_pos", "formation_place", "event_id"]
+
+
+def normalize_team(team: dict | str | None) -> str:
+    if isinstance(team, dict):
+        raw = team.get("displayName") or team.get("name") or team.get("shortDisplayName") or team.get("abbreviation") or ""
+        abbr = team.get("abbreviation")
+    else:
+        raw = str(team or "")
+        abbr = raw
+    return TEAM_ALIASES.get(raw, SQUAD_BY_ABBR.get(abbr, raw))
 
 
 def _get(url: str, tries: int = 3) -> dict | None:
@@ -81,14 +145,13 @@ def parse_lineup(summary: dict, date: str, event_id: str) -> list[dict]:
     if len(rosters) < 2:
         return []
     # 양팀 abbreviation으로 상대팀 산출
-    by_ha = {t.get("homeAway"): t.get("team", {}).get("abbreviation") for t in rosters}
+    by_ha = {t.get("homeAway"): t.get("team", {}) for t in rosters}
     rows: list[dict] = []
     for t in rosters:
         ha = t.get("homeAway")
-        abbr = t.get("team", {}).get("abbreviation")
-        squad = SQUAD_BY_ABBR.get(abbr, abbr)
-        opp_abbr = by_ha.get("away" if ha == "home" else "home")
-        opponent = SQUAD_BY_ABBR.get(opp_abbr, opp_abbr)
+        squad = normalize_team(t.get("team", {}))
+        opp_team = by_ha.get("away" if ha == "home" else "home")
+        opponent = normalize_team(opp_team)
         formation = t.get("formation", "")
         for p in t.get("roster", []):
             pos = p.get("position", {}) or {}

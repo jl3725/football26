@@ -4,8 +4,8 @@ import { getAnalytics, fmtEur, type Analytics, type Factor } from "@/lib/api";
 import { tier, hexA } from "@/lib/ui";
 import Radar from "./Radar";
 
-const LINE_LABEL: Record<string, string> = { GK: "골키퍼", DEF: "수비", MID: "미드필드", FWD: "공격" };
-const LINE_COLOR: Record<string, string> = { GK: "#7fb4f0", DEF: "#6aa6e0", MID: "#caa64e", FWD: "#d98169" };
+const LINE_LABEL: Record<string, string> = { GK: "골키퍼", DEF: "수비", MID: "미드필드", ATT: "공격" };
+const LINE_COLOR: Record<string, string> = { GK: "#7fb4f0", DEF: "#6aa6e0", MID: "#caa64e", ATT: "#d98169" };
 
 function GameTile({ label, value }: { label: string; value: number }) {
   const t = tier(value);
@@ -111,6 +111,7 @@ export default function AnalyticsTab({ team, accent }: { team: string; accent: s
           <div className="inj-list">
             {data.injuries.map((x, i) => (
               <div className="inj-row" key={i}>
+                {x.photo ? <img className="inj-photo" src={x.photo} alt="" /> : <span className="inj-photo ph" />}
                 <span className="inj-line" style={{ background: hexA(LINE_COLOR[x.line] || "#888", 0.22), color: LINE_COLOR[x.line] || "#aaa" }}>{x.line}</span>
                 <div className="inj-info">
                   <div className="inj-name">{x.player}</div>
@@ -125,7 +126,7 @@ export default function AnalyticsTab({ team, accent }: { team: string; accent: s
         <div className="card">
           <h3>라인별 부상 공백 비중</h3>
           <div className="ls-list">
-            {["FWD", "MID", "DEF", "GK"].map((k) => (
+            {["ATT", "MID", "DEF", "GK"].map((k) => (
               <div className="ls-row" key={k}>
                 <span className="ls-label">{LINE_LABEL[k]}</span>
                 <div className="ls-bar"><span style={{ width: `${data.line_share[k] || 0}%`, background: LINE_COLOR[k] }} /></div>
@@ -149,6 +150,7 @@ export default function AnalyticsTab({ team, accent }: { team: string; accent: s
             {data.audit.map((a, i) => (
               <div className={`audit-card ${a.tone}`} key={i}>
                 <div className="audit-top">
+                  {a.photo ? <img className="audit-photo" src={a.photo} alt="" /> : <span className="audit-photo ph" />}
                   <span className="audit-name">{a.player}</span>
                   <span className="audit-fee">{a.fee_text || "-"}</span>
                 </div>

@@ -24,12 +24,14 @@ from bs4 import BeautifulSoup
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
-PLAYERS_FULL = DATA / "players_full_2025_2026.csv"
-PLAYERS_BASE = DATA / "players_2025_2026.csv"
-SNAPSHOT = DATA / "transfermarkt_contracts_2025_2026.csv"
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+from leagues import data_path  # noqa: E402
 from fetch_transfermarkt import H, SEASON, TEAM_TM, norm  # noqa: E402
+
+PLAYERS_FULL = data_path("players_full")
+PLAYERS_BASE = data_path("players")
+SNAPSHOT = data_path("transfermarkt_contracts")
 
 MONTHS = (
     "Jan", "Feb", "Mar", "Apr", "May", "Jun",

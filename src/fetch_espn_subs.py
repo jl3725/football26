@@ -19,10 +19,19 @@ from pathlib import Path
 import pandas as pd
 import requests
 
+from leagues import ACTIVE_LEAGUE, data_path
+
 DATA = Path(__file__).resolve().parent.parent / "data"
-LINEUPS = DATA / "espn_lineups_2025_2026.csv"
-OUT = DATA / "espn_subs_2025_2026.csv"
-API = "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/summary"
+LINEUPS = data_path("espn_lineups")
+OUT = data_path("espn_subs")
+ESPN_CODES = {
+    "EPL": "eng.1",
+    "LaLiga": "esp.1",
+    "Bundesliga": "ger.1",
+    "SerieA": "ita.1",
+    "Ligue1": "fra.1",
+}
+API = f"https://site.api.espn.com/apis/site/v2/sports/soccer/{ESPN_CODES.get(ACTIVE_LEAGUE, 'eng.1')}/summary"
 H = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
      "(KHTML, like Gecko) Chrome/126.0 Safari/537.36"}
 SLEEP = 0.4

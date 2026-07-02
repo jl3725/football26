@@ -16,9 +16,13 @@ import pandas as pd
 import soccerdata as sd
 from unidecode import unidecode
 
+from leagues import SEASON_FBREF, data_path, league_config
+
 DATA_DIR = Path(__file__).resolve().parent.parent / "data"
-FBREF   = DATA_DIR / "players_2025_2026.csv"
-OUT     = DATA_DIR / "players_full_2025_2026.csv"
+FBREF = data_path("players")
+OUT = data_path("players_full")
+CFG = league_config()
+LEAGUE = CFG.fbref_id
 
 
 def normalize_name(s: str) -> str:
@@ -26,10 +30,14 @@ def normalize_name(s: str) -> str:
     return unidecode(str(s)).lower().strip()
 
 
+def merge_key(team: str, player: str) -> str:
+    return f"{normalize_name(team)}|{normalize_name(player)}"
+
+
 def main() -> int:
     # ── Understat 수집 ──────────────────────────────────────────────────────
     print("→ Understat xG 수집 ...", end=" ", flush=True)
-    us = sd.Understat(leagues="ENG-Premier League", seasons="2025-2026")
+    us = sd.Understat(leagues=LEAGUE, seasons=SEASON_FBREF)
     udf = us.read_player_season_stats().reset_index()
     print(f"{len(udf)}명 ✓")
 
@@ -41,11 +49,11 @@ def main() -> int:
     udf["shots_p90"]    = (udf["shots"]       / n90).round(3)
     udf["xg_chain_p90"] = (udf["xg_chain"]    / n90).round(3)
 
-    udf["_key"] = udf["player"].map(normalize_name)
+    udf["_key"] = [merge_key(t, p) for t, p in zip(udf["team"], udf["player"])]
 
     # ── FBref 기본 로드 ─────────────────────────────────────────────────────
     fb = pd.read_csv(FBREF)
-    fb["_key"] = fb["player"].map(normalize_name)
+    fb["_key"] = [merge_key(t, p) for t, p in zip(fb["squad"], fb["player"])]
 
     # ── 병합 ────────────────────────────────────────────────────────────────
     # goals=페널티 포함 시즌 총득점, assists=시즌 총도움 (Understat raw 누적치)
@@ -75,17 +83,17 @@ def main() -> int:
 
     # ── FBref 키퍼 지표 보강 (GK 슬롯 표시용) ────────────────────────────────
     try:
-        fbk = sd.FBref(leagues="ENG-Premier League", seasons="2025-2026")
+        fbk = sd.FBref(leagues=LEAGUE, seasons=SEASON_FBREF)
         kdf = fbk.read_player_season_stats("keeper").reset_index()
         kdf.columns = ["_".join(c).strip("_") if isinstance(c, tuple) else c for c in kdf.columns]
         save_col = next((c for c in kdf.columns if c.endswith("Save%")), None)
         cs_col   = next((c for c in kdf.columns if c.endswith("CS%")), None)
-        kdf["_key"] = kdf["player"].map(normalize_name)
+        kdf["_key"] = [merge_key(t, p) for t, p in zip(kdf["team"], kdf["player"])]
         keep = {"_key": "_key"}
         if save_col: keep[save_col] = "gk_save_pct"
         if cs_col:   keep[cs_col]   = "gk_cs_pct"
         kk = kdf[list(keep)].rename(columns=keep)
-        merged["_key"] = merged["player"].map(normalize_name)
+        merged["_key"] = [merge_key(t, p) for t, p in zip(merged["squad"], merged["player"])]
         merged = merged.merge(kk, on="_key", how="left").drop(columns=["_key"])
         print(f"  키퍼 지표 보강: Save%={save_col is not None}, CS%={cs_col is not None}")
     except Exception as e:
@@ -93,7 +101,7 @@ def main() -> int:
         merged["gk_save_pct"] = np.nan
 
     # ── 팀 수비+공격 강도 머지 (있을 때만) ─────────────────────────────────
-    td_path = DATA_DIR / "team_defense_2025_2026.csv"
+    td_path = data_path("team_defense")
     if td_path.exists():
         td = pd.read_csv(td_path)
         cols = ["squad", "goals_against", "goals_against_per_game", "defense_score"]
@@ -117,14 +125,14 @@ def main() -> int:
         print("  team_defense 없음 (src/fetch_team_defense.py 먼저 실행)")
 
     # ── Sofascore advanced stats 머지 (있을 때만) ───────────────────────────
-    ss_path = DATA_DIR / "players_sofascore_stats.csv"
+    ss_path = data_path("players_sofascore_stats")
     if ss_path.exists():
         ss = pd.read_csv(ss_path)
         # 평탄화: per-90 + 비율 컬럼 묶음
         m = ss["minutesPlayed"].replace(0, np.nan)
         n90 = m / 90.0
         ss_add = pd.DataFrame({
-            "_key": ss["norm_key"],
+            "_key": [merge_key(t, p) for t, p in zip(ss["squad"], ss["player"])],
             # 비율 (이미 % 형태)
             "ss_rating":            ss["rating"],
             "pass_pct":             ss["accuratePassesPercentage"],
@@ -160,7 +168,7 @@ def main() -> int:
             "ss_appearances":         ss["appearances"],
             "ss_minutes":             ss["minutesPlayed"],
         })
-        merged["_key"] = merged["player"].map(normalize_name)
+        merged["_key"] = [merge_key(t, p) for t, p in zip(merged["squad"], merged["player"])]
         merged = merged.merge(ss_add, on="_key", how="left").drop(columns=["_key"])
         ss_match = merged["ss_rating"].notna().mean()
         print(f"  Sofascore stats 머지: {len(ss_add)}행 → 매칭률 {ss_match*100:.0f}%")
@@ -170,8 +178,8 @@ def main() -> int:
     merged.to_csv(OUT, index=False, encoding="utf-8")
 
     print(f"[OK] 저장: {OUT.name}  ({len(merged)}명, Understat 매칭률 {match_rate*100:.0f}%)")
-    print("\n[Understat 보강 후 아스날 샘플]")
-    ars = merged[merged["squad"] == "Arsenal"].sort_values("minutes", ascending=False)
+    print(f"\n[Understat 보강 후 {CFG.default_team} 샘플]")
+    ars = merged[merged["squad"] == CFG.default_team].sort_values("minutes", ascending=False)
     print(ars[["player", "minutes", "npxg_p90", "xa_p90", "kp_p90", "shots_p90",
                "interceptions_per90", "tackles_won_per90"]].head(8).to_string(index=False))
     return 0

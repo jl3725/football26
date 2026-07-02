@@ -27,8 +27,10 @@ import pandas as pd
 import tls_requests
 from unidecode import unidecode
 
+from leagues import ACTIVE_LEAGUE, data_path, league_config
+
 DATA = Path(__file__).resolve().parent.parent / "data"
-OUT = DATA / "players_sofascore_stats.csv"
+OUT = data_path("players_sofascore_stats")
 
 H = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
      "(KHTML, like Gecko) Chrome/126.0 Safari/537.36",
@@ -36,6 +38,40 @@ H = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
      "Referer": "https://www.sofascore.com/"}
 BASE = "https://api.sofascore.com/api/v1"
 PL_UT_ID = 17
+SOFASCORE_UT_IDS = {
+    "EPL": 17,
+    "LaLiga": 8,
+    "Bundesliga": 35,
+    "SerieA": 23,
+    "Ligue1": 34,
+}
+UT_ID = SOFASCORE_UT_IDS.get(ACTIVE_LEAGUE, PL_UT_ID)
+
+TEAM_ALIASES = {
+    "LaLiga": {
+        "Deportivo Alavés": "Alavés",
+        "FC Barcelona": "Barcelona",
+        "Girona FC": "Girona",
+        "Levante UD": "Levante",
+        "Real Oviedo": "Oviedo",
+    },
+    "SerieA": {
+        "AC Milan": "Milan",
+        "AS Roma": "Roma",
+        "Como 1907": "Como",
+        "Inter Milan": "Inter",
+        "Internazionale": "Inter",
+        "Pisa SC": "Pisa",
+        "SS Lazio": "Lazio",
+        "US Cremonese": "Cremonese",
+        "US Lecce": "Lecce",
+        "US Sassuolo": "Sassuolo",
+    },
+}
+
+
+def normalize_team_name(name: str) -> str:
+    return TEAM_ALIASES.get(ACTIVE_LEAGUE, {}).get(name, name)
 
 # 수집할 Sofascore 통계 키 — 평탄화 후 컬럼명도 그대로 사용
 STAT_KEYS = [
@@ -89,7 +125,7 @@ def get(path: str, retries: int = 3, delay: float = 0.6):
 
 
 def find_season_id() -> int | None:
-    d = get("/unique-tournament/{}/seasons".format(PL_UT_ID), delay=0.2)
+    d = get("/unique-tournament/{}/seasons".format(UT_ID), delay=0.2)
     if not d:
         return None
     for s in d.get("seasons", []):
@@ -99,7 +135,7 @@ def find_season_id() -> int | None:
 
 
 def fetch_teams(season_id: int) -> list[dict]:
-    d = get(f"/unique-tournament/{PL_UT_ID}/season/{season_id}/standings/total", delay=0.2)
+    d = get(f"/unique-tournament/{UT_ID}/season/{season_id}/standings/total", delay=0.2)
     if not d:
         return []
     rows = d.get("standings", [{}])[0].get("rows", [])
@@ -112,17 +148,18 @@ def fetch_team_players(team_id: int) -> list[dict]:
 
 
 def fetch_player_stats(player_id: int, season_id: int) -> dict:
-    d = get(f"/player/{player_id}/unique-tournament/{PL_UT_ID}"
+    d = get(f"/player/{player_id}/unique-tournament/{UT_ID}"
             f"/season/{season_id}/statistics/overall")
     return (d or {}).get("statistics", {})
 
 
 def main(argv=None) -> int:
+    cfg = league_config()
     season_id = find_season_id()
     if season_id is None:
         print("EPL 25/26 시즌 id 조회 실패")
         return 1
-    print(f"EPL 25/26 season id = {season_id}")
+    print(f"{cfg.name} 25/26 season id = {season_id}")
 
     teams = fetch_teams(season_id)
     if not teams:
@@ -142,7 +179,7 @@ def main(argv=None) -> int:
             row = {
                 "sofascore_id": p["id"],
                 "player": p["name"],
-                "squad": t["name"],
+                "squad": normalize_team_name(t["name"]),
                 "norm_key": unidecode(str(p["name"])).lower().strip(),
             }
             for k in STAT_KEYS:

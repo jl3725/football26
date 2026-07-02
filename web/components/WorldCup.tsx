@@ -42,10 +42,10 @@ export default function WorldCup({ accent, onPickTeam }: { accent: string; onPic
         <div className="hx-meta">북중미 공동 개최 · 48개국 · <span style={{ color: "#e8c86a" }}>녹아웃 스테이지 진행 중</span></div>
       </div>
 
-      {/* 우리 클럽의 월드컵 — EPL 차출 */}
+      {/* 클럽별 월드컵 차출 */}
       {d.epl_clubs.length > 0 && (
         <>
-          <WSec en="CLUB WATCH" kr="우리 클럽의 월드컵" accent={accent}
+          <WSec en="CLUB CALL-UPS" kr="클럽별 월드컵 차출" accent={accent}
             right={<span className="sec-count">{d.epl_clubs.reduce((a, c) => a + c.count, 0)}</span>} />
           <div className="wc-clubs">
             {d.epl_clubs.map((c) => (
@@ -86,6 +86,76 @@ export default function WorldCup({ accent, onPickTeam }: { accent: string; onPic
           ))}
         </div>
       </div>
+
+      {/* 도움왕 */}
+      {d.assists && d.assists.length > 0 && (
+        <>
+          <WSec en="PLAYMAKERS" kr="도움왕" accent={accent} />
+          <div className="card">
+            <div className="wc-scorers">
+              {d.assists.map((s, i) => (
+                <div className="wc-scorer" key={i}>
+                  <span className="wc-rk" style={i === 0 ? { color: "#7fb4f0" } : undefined}>{i + 1}</span>
+                  {s.logo && <img src={s.logo} alt="" />}
+                  <span className="wc-scorer-nm">{s.player}</span>
+                  <span className="wc-scorer-nat">{s.nation}</span>
+                  <span className="wc-scorer-g teko" style={{ color: "#7fb4f0" }}>{s.assists}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* 신예 · 노장 (득점+도움 임팩트) */}
+      {((d.rising_stars?.length ?? 0) > 0 || (d.veterans?.length ?? 0) > 0) && (
+        <>
+          <WSec en="STANDOUTS" kr="신예 · 노장" accent={accent} />
+          <div className="wc-two">
+            <div className="card">
+              <div className="card-h">🌱 떠오르는 신예 <span className="wc-sub">21세 이하</span></div>
+              {d.rising_stars.map((c, i) => (
+                <div className="wc-imp" key={i}>
+                  {c.photo ? <img className="wc-imp-ph" src={c.photo} alt="" /> : (c.logo && <img className="wc-imp-flag" src={c.logo} alt="" />)}
+                  <div className="wc-imp-mid"><b>{c.player}</b><span>{c.nation} · {c.age}세{c.club ? " · " + c.club : ""}</span></div>
+                  <span className="wc-imp-ga" style={{ color: "#5fd08c" }}>{c.goals}G {c.assists}A</span>
+                </div>
+              ))}
+              {d.rising_stars.length === 0 && <div className="mgr-meta">해당 없음</div>}
+            </div>
+            <div className="card">
+              <div className="card-h">🔥 노장 투혼 <span className="wc-sub">33세 이상</span></div>
+              {d.veterans.map((c, i) => (
+                <div className="wc-imp" key={i}>
+                  {c.photo ? <img className="wc-imp-ph" src={c.photo} alt="" /> : (c.logo && <img className="wc-imp-flag" src={c.logo} alt="" />)}
+                  <div className="wc-imp-mid"><b>{c.player}</b><span>{c.nation} · {c.age}세{c.club ? " · " + c.club : ""}</span></div>
+                  <span className="wc-imp-ga" style={{ color: "#e0a24d" }}>{c.goals}G {c.assists}A</span>
+                </div>
+              ))}
+              {d.veterans.length === 0 && <div className="mgr-meta">해당 없음</div>}
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* 조별리그 영웅 — 아쉬운 탈락 */}
+      {d.group_heroes && d.group_heroes.length > 0 && (
+        <>
+          <WSec en="GALLANT EXITS" kr="조별리그 영웅 · 아쉬운 탈락" accent={accent} />
+          <div className="card">
+            <div className="wc-heroes">
+              {d.group_heroes.map((t, i) => (
+                <div className="wc-hero" key={i}>
+                  {t.logo && <img className="wc-hero-logo" src={t.logo} alt="" />}
+                  <div className="wc-hero-nm">{t.team}<span className="wc-hero-grp">조 {t.group}</span></div>
+                  <div className="wc-hero-rec">{t.W}승 {t.D}무 {t.L}패 · <b>{t.Pts}점</b> · GD {t.GD >= 0 ? "+" : ""}{t.GD}</div>
+                  <div className="wc-hero-stars">{t.stars.map((s, j) => <span key={j}>{s.player} <em>{s.goals}G{s.assists}A</em></span>)}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </>
+      )}
 
       {/* 대진표 */}
       <WSec en="KNOCKOUT" kr="대진표" accent={accent} />

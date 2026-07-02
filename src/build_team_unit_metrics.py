@@ -17,13 +17,14 @@ import math
 from collections import defaultdict
 from pathlib import Path
 
+from leagues import data_path
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
-PLAYERS = DATA / "players_full_2025_2026.csv"
-STANDINGS = DATA / "standings_2025_2026.csv"
-STATBUNKER_TEAMS = DATA / "statbunker_team_stats_2025_2026.csv"
-OUT = DATA / "team_unit_metrics_2025_2026.csv"
+PLAYERS = data_path("players_full")
+STANDINGS = data_path("standings")
+STATBUNKER_TEAMS = data_path("statbunker_team_stats")
+OUT = data_path("team_unit_metrics")
 
 
 HIGH_GOOD = True

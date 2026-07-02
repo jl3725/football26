@@ -24,7 +24,9 @@ from bs4 import BeautifulSoup
 from fetch_transfermarkt import H, TEAM_TM, norm, parse_mv  # 재사용
 
 DATA = Path(__file__).resolve().parent.parent / "data"
-OUT = DATA / "transfers_2025_2026.csv"
+from leagues import data_path
+
+OUT = data_path("transfers")
 
 
 def current_season_id(today: date | None = None) -> int:

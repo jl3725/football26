@@ -16,7 +16,7 @@ export type Transfer = {
   pos: string;
 };
 
-export type Star = { player: string; pos: string; ovr: number; pot?: number; form?: number | null; rating: number; goals: number; assists: number; photo: string };
+export type Star = { player: string; pos: string; ovr: number; pot?: number; form?: number | null; rating: number; goals: number; assists: number; photo: string; role?: string; big_match?: boolean };
 export type Injury = { player: string; injury: string; until: string; pos: string; photo: string };
 export type Window = { season_id: number; window: string; label: string; state: string; is_open: boolean; kr: string | null };
 
@@ -99,19 +99,22 @@ export type Bucket = { pos: string; count: number; depth: number; starter: Depth
 export type Squad = { team: string; color: string; lines: Record<string, SquadPlayer[]>; buckets: Bucket[] };
 
 export type Match = {
-  gw: number; date: string; home_away: string; opponent: string; opp_logo: string;
-  gf: number | null; ga: number | null; score: string; result: string;
-  event_id: string | null; formation: string | null;
+  gw?: number; comp: string; date: string; home_away: string; opponent: string; opp_logo: string;
+  gf: number | null; ga: number | null; score: string; result: string; status: string;
+  event_id: string | null; formation: string | null; has_lineup: boolean;
 };
-export type Schedule = { team: string; color: string; matches: Match[] };
+export type Schedule = { team: string; color: string; season: string; seasons: string[]; matches: Match[] };
 export type MatchDetail = {
   team: string; color: string; event_id: string; formation: string; home_away: string;
   placements: Placement[]; subs: { minute: string; player_in: string; player_out: string }[]; bench: string[];
 };
 
+export type CompUse = { key: string; label: string; starts: number; apps: number };
+export type CompProfile = { role: string; role_evidence: string; big_match: boolean; league_min: number; comps: CompUse[] };
 export type PlayerCard = {
   player: string; pos: string; line: string; age: number;
   nationality: string; value_eur: number; ovr: number; photo: string;
+  role: string; big_match: boolean; comps: CompUse[];
 };
 export type Players = { team: string; color: string; players: PlayerCard[] };
 
@@ -126,6 +129,7 @@ export type PlayerDetail = {
   categories: MetricCat[];
   radar: { axis: string; value: number }[];
   badges: Badge[];
+  comp_usage: CompProfile;
 };
 
 export type TransferItem = {
@@ -146,7 +150,7 @@ export type Article = {
 };
 export type News = { team: string; color: string; articles: Article[]; sparse: boolean };
 
-export type AuditItem = { player: string; fee_text: string; fee_eur: number; pos: string; minutes: number; goals: number; assists: number; verdict: string; tone: string };
+export type AuditItem = { player: string; fee_text: string; fee_eur: number; pos: string; minutes: number; goals: number; assists: number; verdict: string; tone: string; photo: string };
 export type ManagerEvo = { name: string; style: string; formation: string; focus: string; appointed: string; previous?: { name: string; style: string; formation: string } };
 export type FactorPlayer = { player: string; photo: string; ovr: number };
 export type Factor = { label: string; value: number; line: string; players: FactorPlayer[] };
@@ -154,7 +158,7 @@ export type Analytics = {
   team: string; color: string;
   ovr: { overall: number; form: number; attack: number; midfield: number; defense: number; set_piece: number };
   radar: { axis: string; value: number }[];
-  injuries: { player: string; games_missed: number; days_out: number; injury: string; line: string }[];
+  injuries: { player: string; games_missed: number; days_out: number; injury: string; line: string; photo: string }[];
   line_missed: Record<string, number>;
   line_share: Record<string, number>;
   context: { home_ppg: number; away_ppg: number; tier_ppg: { top: number; mid: number; bottom: number } };
@@ -165,15 +169,16 @@ export type Analytics = {
 };
 
 export type SimilarResult = { player: string; squad: string; pos: string; age: number; value_eur: number; logo: string; score: number; style: number; perf: number };
-export type Recommendation = { player: string; squad: string; logo: string; pos: string; age: number; ovr: number; value_eur: number; photo: string; rating: number; tactical_fit: number; squad_match: number; why_fit: string[]; why_risk: string[]; confidence: string };
-export type LostTarget = { player: string; from: string; to: string; ovr: number; pos: string; photo: string };
-export type Recommend = { team: string; color: string; weakest: { line: string; label: string; fit_label: string } | null; addressed: boolean; recommendations: Recommendation[]; lost_targets: LostTarget[] };
+export type Recommendation = { player: string; squad: string; logo: string; pos: string; age: number; ovr: number; value_eur: number; photo: string; rating: number; tactical_fit: number; squad_match: number; why_fit: string[]; why_risk: string[]; confidence: string; role: string; role_evidence: string; big_match: boolean; bucket?: string; bucket_label?: string; cross_league?: boolean; source_league?: string; current_ovr?: number; projected_ovr?: number };
+export type LostTarget = { player: string; from: string; to: string; ovr: number; pos: string; photo: string; role: string; top_loss?: boolean };
+export type Longshot = { player: string; squad: string; logo: string; ovr: number; pos: string; photo: string; role: string; bucket_label: string; reason: string; cross_league?: boolean; source_league?: string; current_ovr?: number };
+export type Recommend = { team: string; color: string; weakest: { line: string; label: string; fit_label: string; bucket?: string; bucket_label?: string } | null; addressed: boolean; recommendations: Recommendation[]; longshots?: Longshot[]; lost_targets: LostTarget[] };
 
 const q = (team: string, league: string) =>
   `${encodeURIComponent(team)}?league=${encodeURIComponent(league)}`;
 
 export const getSquad = (t: string, l = _league) => j<Squad>(`/api/squad/${q(t, l)}`);
-export const getSchedule = (t: string, l = _league) => j<Schedule>(`/api/schedule/${q(t, l)}`);
+export const getSchedule = (t: string, season = "", l = _league) => j<Schedule>(`/api/schedule/${q(t, l)}${season ? `&season=${season}` : ""}`);
 export const getMatch = (t: string, eid: string, l = _league) =>
   j<MatchDetail>(`/api/match/${encodeURIComponent(t)}/${encodeURIComponent(eid)}?league=${encodeURIComponent(l)}`);
 export const getPlayers = (t: string, l = _league) => j<Players>(`/api/players/${q(t, l)}`);
@@ -206,7 +211,7 @@ export type Needs = { team: string; color: string; mode: string; window: NeedsWi
 export const getNeeds = (t: string, l = _league) => j<Needs>(`/api/needs/${q(t, l)}`);
 export const getContext = () => j<Context>(`/api/context`);
 
-export type DbPlayer = { player: string; squad: string; logo: string; pos: string; line: string; age: number; nationality: string; value_eur: number; ovr: number; photo: string };
+export type DbPlayer = { player: string; squad: string; logo: string; pos: string; line: string; age: number; nationality: string; value_eur: number; ovr: number; photo: string; role: string; big_match: boolean };
 export const getDatabase = (l = _league) => j<{ league: string; players: DbPlayer[]; nationalities: string[] }>(`/api/database?league=${encodeURIComponent(l)}`);
 
 export type Signal = { date: string; team: string; logo: string; type: string; tone: string; icon: string; player: string; photo: string; title: string; detail: string };
@@ -215,9 +220,9 @@ export const getSignals = (team = "", l = _league, limit = 60) =>
   j<Signals>(`/api/signals?team=${encodeURIComponent(team)}&league=${encodeURIComponent(l)}&limit=${limit}`);
 
 // ── 홈 대시보드 ──
-export type HomeDeal = { player: string; to: string; to_logo: string; from: string; pos: string; fee_eur: number; fee_text: string };
+export type HomeDeal = { player: string; to: string; to_logo: string; from: string; pos: string; fee_eur: number; fee_text: string; photo: string };
 export type HomeNet = { team: string; logo: string; spend: number; income: number; net: number };
-export type HomeMgr = { team: string; logo: string; previous: string; current: string; photo: string; formation: string; changed_at: string };
+export type HomeMgr = { team: string; logo: string; previous: string; current: string; photo: string; previous_photo: string; formation: string; changed_at: string };
 export type HomeNews = { headline: string; team: string; source: string; image: string; link: string };
 export type BuzzItem = { title: string; title_en: string; source: string; tier: string; link: string; published: string };
 export type Home = {
@@ -238,10 +243,13 @@ export type WCRound = { round: string; label: string; matches: WCMatch[] };
 export type WCGroupRow = { team: string; logo: string; P: number; W: number; D: number; L: number; GF: number; GA: number; GD: number; Pts: number };
 export type WCGroup = { group: string; table: WCGroupRow[] };
 export type WCScorer = { player: string; nation: string; goals: number; pens: number; logo: string };
+export type WCAssist = { player: string; nation: string; assists: number; logo: string };
+export type WCImpact = { player: string; nation: string; age: number; goals: number; assists: number; ga: number; logo: string; club: string; photo: string };
+export type WCHeroTeam = { team: string; logo: string; group: string; P: number; W: number; D: number; L: number; GD: number; Pts: number; stars: { player: string; goals: number; assists: number }[] };
 export type WCClubPlayer = { player: string; nation: string; pos: string; photo: string; goals: number };
 export type WCClub = { club: string; logo: string; count: number; players: WCClubPlayer[] };
 export type WCNation = { nation: string; logo: string; count: number };
-export type WorldCupData = { matches: WCRound[]; groups: WCGroup[]; scorers: WCScorer[]; epl_clubs: WCClub[]; nations: WCNation[] };
+export type WorldCupData = { matches: WCRound[]; groups: WCGroup[]; scorers: WCScorer[]; assists: WCAssist[]; rising_stars: WCImpact[]; veterans: WCImpact[]; group_heroes: WCHeroTeam[]; epl_clubs: WCClub[]; nations: WCNation[] };
 export const getWC = () => j<WorldCupData>(`/api/wc`);
 export type WCSquadPlayer = { player: string; pos: string; jersey: string; age: string; epl_club: string; club_logo: string; photo: string };
 export type WCSquad = { nation: string; count: number; players: WCSquadPlayer[] };
