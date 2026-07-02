@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState, type ReactNode } from "react";
 import { getHome, type Home } from "@/lib/api";
+import WorldCup from "./WorldCup";
 
 const eurM = (v: number) => (v >= 1e6 ? `€${Math.round(v / 1e6)}M` : v > 0 ? `€${Math.round(v / 1e3)}K` : "€0");
 
@@ -17,9 +18,24 @@ function Sec({ en, kr, accent, right }: { en: string; kr: string; accent: string
   );
 }
 
-export default function HomeDashboard({ accent, onPickTeam }: { accent: string; onPickTeam: (t: string) => void }) {
+export default function HomeDashboard({ accent, onPickTeam, leagueLabel = "EPL" }: { accent: string; onPickTeam: (t: string) => void; leagueLabel?: string }) {
   const [h, setH] = useState<Home | null>(null);
+  const [comp, setComp] = useState<"EPL" | "WC">("EPL");
   useEffect(() => { let a = true; getHome().then((d) => a && setH(d)).catch(() => {}); return () => { a = false; }; }, []);
+
+  const switcher = (
+    <div className="comp-seg">
+      <button className={comp === "EPL" ? "active" : ""} onClick={() => setComp("EPL")}
+        style={comp === "EPL" ? { ["--tc" as any]: accent } : undefined}>{leagueLabel}</button>
+      <button className={`wc${comp === "WC" ? " active" : ""}`} onClick={() => setComp("WC")} title="2026 월드컵"
+        style={comp === "WC" ? { ["--tc" as any]: accent } : undefined}><span className="wc-dot" />WC 26</button>
+      <button className="soon">OTHER<em>SOON</em></button>
+    </div>
+  );
+
+  if (comp === "WC") return (
+    <div className="fade home"><div className="wc-topbar">{switcher}</div><WorldCup accent={accent} onPickTeam={onPickTeam} /></div>
+  );
   if (!h) return <div className="loading">불러오는 중…</div>;
 
   const nextLabel = h.roster_next?.season_label || "26/27";
@@ -33,11 +49,7 @@ export default function HomeDashboard({ accent, onPickTeam }: { accent: string; 
       <div className="hx" style={{ ["--tc" as any]: accent }}>
         <div className="hx-glow" style={{ background: `radial-gradient(60% 120% at 85% 0%, ${accent}44, transparent 70%)` }} />
         <div className="hx-top">
-          <div className="comp-seg">
-            <button className="active">EPL</button>
-            <button className="soon wc" title="2026 월드컵 진행 중 · 데이터 연동 예정"><span className="wc-dot" />WC 26</button>
-            <button className="soon">OTHER<em>SOON</em></button>
-          </div>
+          {switcher}
           <div className="hx-live">
             <span className="livedot" />
             {h.window.is_open ? `${h.window.label} ${h.window.kr ?? ""} 이적시장 OPEN` : `${h.season} 시즌`}

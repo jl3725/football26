@@ -29,6 +29,7 @@ sys.path.insert(0, str(ROOT / "src"))
 import datastore as ds  # noqa: E402
 import teammeta as tm  # noqa: E402
 import ratings as rt  # noqa: E402
+import ratings_v2 as rv  # noqa: E402  (절대·퍼포먼스 우선 모델)
 import transfer_adjust as ta  # noqa: E402
 from leagues import ACTIVE_LEAGUE, league_config  # noqa: E402
 from team_analysis import (  # noqa: E402  (streamlit 비의존)
@@ -242,32 +243,24 @@ def overview(team: str, league: str = ACTIVE_LEAGUE):
         except (TypeError, ValueError):
             return default
 
-    # 정확한 OVR — 유저 튜닝 공식(ratings.compute_team_ratings). 실패 시 인덱스 근사.
+    # 절대 OVR (v2) — 스쿼드 현재 실력의 출전가중 평균. 리그 순위·폼과 분리.
+    # 표시 OVR = 이번 창 이적 반영 스쿼드 기준. delta = 이적 전 대비 변화.
     ovr = {
         "overall": _idx_to_ovr(_ix("overall_index")),
         "attack": _idx_to_ovr(_ix("attack_index")),
         "midfield": _idx_to_ovr(_ix("midfield_index")),
         "defense": _idx_to_ovr(_ix("defense_index")),
+        "top_xi": _idx_to_ovr(_ix("overall_index")),
     }
-    # 표시 OVR = 이번 창 이적 반영 스쿼드 기준. delta = 이적 전(지난 시즌) 대비 변화.
-    _KMAP = {"overall": "종합 지수", "attack": "공격 지수",
-             "midfield": "미드필드 지수", "defense": "수비 지수"}
     ovr_delta = {"overall": 0, "attack": 0, "midfield": 0, "defense": 0}
-    um_df = ds.read_table("team_unit_metrics", league=league)
     full_df = ds.read_table("players_full", league=league)
-    stand_df = ds.read_table("standings", league=league)
-    if um_df is not None and "squad" in um_df.columns:
-        um_idx = um_df.set_index("squad")
-        rl_base = rt.compute_team_ratings(team, full_df, stand_df, um_idx)  # 이적 전
-        adj_full = ta.build_adjusted_full(full_df, tr, win)                 # 이번 창 반영
-        rl_adj = rt.compute_team_ratings(team, adj_full, stand_df, um_idx)
-        base_vals = {lbl: int(v) for (lbl, v, _s) in rl_base} if rl_base else {}
-        adj_vals = {lbl: int(v) for (lbl, v, _s) in rl_adj} if rl_adj else base_vals
-        for k, lbl in _KMAP.items():
-            if lbl in adj_vals:
-                ovr[k] = adj_vals[lbl]
-            if lbl in adj_vals and lbl in base_vals:
-                ovr_delta[k] = adj_vals[lbl] - base_vals[lbl]
+    base = rv.team_ratings(full_df, team)                       # 이적 전(현재 스쿼드)
+    if base:
+        adj = rv.team_ratings(ta.build_adjusted_full(full_df, tr, win), team) or base  # 이번 창 반영
+        for k in ("overall", "attack", "midfield", "defense"):
+            ovr[k] = adj[k]
+            ovr_delta[k] = adj[k] - base[k]
+        ovr["top_xi"] = adj.get("top_xi", adj["overall"])
 
     # 구단 정보 + 스쿼드 가치 순위
     info = dict(tm.team_info(team))
@@ -293,7 +286,7 @@ def overview(team: str, league: str = ACTIVE_LEAGUE):
         for _, r in sq.sort_values("_r", ascending=False).head(5).iterrows():
             stars.append({
                 "player": r["player"], "pos": str(r.get("fl_group") or r.get("pos") or ""),
-                "ovr": _player_ovr(r), "rating": round(_num(r.get("_r")), 2),
+                "ovr": _player_ovr(r), "pot": _player_pot(r), "rating": round(_num(r.get("_r")), 2),
                 "goals": int(_num(r.get("goals"))), "assists": int(_num(r.get("assists"))),
                 "photo": _photo(r),
             })
@@ -446,8 +439,17 @@ def _line_of(fl_group, pos) -> str:
 
 
 def _player_ovr(row) -> int:
-    return rt.player_ovr(row.get("market_value_eur"), row.get("ss_rating"),
-                         row.get("minutes"), row.get("goals"), row.get("assists"))
+    # v2: 퍼포먼스 앵커 + 표본회귀 + 나이곡선, 시장가치는 약한 prior (잠재력 분리)
+    return rv.current_ovr(
+        ss_rating=row.get("ss_rating"), minutes=row.get("minutes"), age=row.get("age"),
+        value=row.get("market_value_eur"), goals=row.get("goals"), assists=row.get("assists"),
+        pos_group=str(row.get("fl_group") or row.get("pos") or ""),
+    )
+
+
+def _player_pot(row) -> int:
+    return rv.potential(current=_player_ovr(row), age=row.get("age"),
+                        value=row.get("market_value_eur"))
 
 
 def _squad_df(team: str, league: str):
@@ -1517,6 +1519,149 @@ def home(league: str = ACTIVE_LEAGUE):
         "manager_changes": changes, "news": news_out,
         "standings": teams(league=league), "roster_next": teams_next(league=league),
     }
+
+
+_WC_ROUNDS = ["group-stage", "round-of-32", "round-of-16", "quarterfinals",
+              "semifinals", "3rd-place-match", "final"]
+_WC_ROUND_KR = {"group-stage": "조별리그", "round-of-32": "32강", "round-of-16": "16강",
+                "quarterfinals": "8강", "semifinals": "4강", "3rd-place-match": "3·4위전", "final": "결승"}
+
+
+def _wc_read(table):
+    return ds.read_table(table, league=ACTIVE_LEAGUE)
+
+
+def _wc_epl_index():
+    """WC 선수명(norm) → EPL players_full 행. 클럽 교차참조용."""
+    from unidecode import unidecode
+    def norm(s):
+        return unidecode(str(s)).lower().strip()
+    pf = ds.read_table("players_full", league=ACTIVE_LEAGUE)
+    idx = {}
+    if pf is not None:
+        for _, r in pf.iterrows():
+            idx[norm(r["player"])] = r
+    return idx, norm
+
+
+@app.get("/api/wc")
+def world_cup():
+    """2026 월드컵 — 경기(라운드별)·조별순위·득점왕 + EPL 클럽 차출 교차참조."""
+    m = _wc_read("wc_matches")
+    if m is None:
+        raise HTTPException(404, "WC 데이터 없음 — src/fetch_wc.py 실행 필요")
+    g, sc, sq = _wc_read("wc_groups"), _wc_read("wc_scorers"), _wc_read("wc_squads")
+
+    nation_logo = {}
+    for _, r in m.iterrows():
+        for nm, lg in ((str(r.get("home")), str(r.get("home_logo"))), (str(r.get("away")), str(r.get("away_logo")))):
+            if nm and lg and lg.startswith("http") and nm not in nation_logo:
+                nation_logo[nm] = lg
+
+    def _mrow(r):
+        return {
+            "date": str(r.get("date") or ""), "group": str(r.get("group") or ""),
+            "home": str(r.get("home") or ""), "home_abbr": str(r.get("home_abbr") or ""),
+            "home_logo": str(r.get("home_logo") or ""), "home_score": _numornone(r.get("home_score")),
+            "away": str(r.get("away") or ""), "away_abbr": str(r.get("away_abbr") or ""),
+            "away_logo": str(r.get("away_logo") or ""), "away_score": _numornone(r.get("away_score")),
+            "status": str(r.get("status") or ""), "completed": bool(r.get("completed")),
+        }
+
+    rounds = []
+    for slug in _WC_ROUNDS:
+        sub = m[m["round"] == slug] if "round" in m.columns else m.iloc[0:0]
+        items = [_mrow(r) for _, r in sub.iterrows()]
+        if items:
+            rounds.append({"round": slug, "label": _WC_ROUND_KR.get(slug, slug), "matches": items})
+
+    groups = {}
+    if g is not None:
+        for _, r in g.iterrows():
+            groups.setdefault(str(r.get("group")), []).append({
+                "team": str(r.get("team") or ""), "logo": str(r.get("logo") or ""),
+                "P": int(_num(r.get("P"))), "W": int(_num(r.get("W"))), "D": int(_num(r.get("D"))),
+                "L": int(_num(r.get("L"))), "GF": int(_num(r.get("GF"))), "GA": int(_num(r.get("GA"))),
+                "GD": int(_num(r.get("GD"))), "Pts": int(_num(r.get("Pts"))),
+            })
+    groups_list = [{"group": k, "table": v} for k, v in sorted(groups.items()) if k]
+
+    idx, norm = _wc_epl_index()
+    goalmap = {}
+    scorers = []
+    if sc is not None:
+        for _, r in sc.iterrows():
+            goalmap[norm(r.get("player"))] = int(_num(r.get("goals")))
+        for _, r in sc.head(20).iterrows():
+            scorers.append({
+                "player": str(r.get("player") or ""), "nation": str(r.get("nation") or ""),
+                "goals": int(_num(r.get("goals"))), "pens": int(_num(r.get("pens"))),
+                "logo": nation_logo.get(str(r.get("nation")), ""),
+            })
+
+    byclub = {}
+    if sq is not None:
+        for _, r in sq.iterrows():
+            hit = idx.get(norm(r.get("player")))
+            if hit is None:
+                continue
+            club = str(hit["squad"])
+            byclub.setdefault(club, []).append({
+                "player": str(r.get("player") or ""), "nation": str(r.get("nation") or ""),
+                "pos": str(r.get("pos") or ""), "photo": _photo(hit),
+                "goals": goalmap.get(norm(r.get("player")), 0),
+            })
+    epl_clubs = []
+    for club, players in byclub.items():
+        players.sort(key=lambda x: -x["goals"])
+        epl_clubs.append({"club": club, "logo": tm.team_logo(club), "count": len(players), "players": players})
+    epl_clubs.sort(key=lambda x: -x["count"])
+
+    nations = []
+    if sq is not None:
+        seen = {}
+        for _, r in sq.iterrows():
+            n = str(r.get("nation") or "")
+            if n:
+                seen[n] = seen.get(n, 0) + 1
+        nations = [{"nation": n, "logo": nation_logo.get(n, ""), "count": c} for n, c in sorted(seen.items())]
+
+    return {"matches": rounds, "groups": groups_list, "scorers": scorers,
+            "epl_clubs": epl_clubs, "nations": nations}
+
+
+@app.get("/api/wc/squad/{nation}")
+def wc_squad(nation: str):
+    """국가대표 스쿼드 (선수 + EPL 소속이면 클럽 표시)."""
+    sq = _wc_read("wc_squads")
+    if sq is None or "nation" not in sq.columns:
+        raise HTTPException(404, "WC 스쿼드 데이터 없음")
+    idx, norm = _wc_epl_index()
+    rows = sq[sq["nation"].astype(str) == nation]
+    if rows.empty:
+        raise HTTPException(404, f"'{nation}' 스쿼드 없음")
+    players = []
+    for _, r in rows.iterrows():
+        hit = idx.get(norm(r.get("player")))
+        players.append({
+            "player": str(r.get("player") or ""), "pos": str(r.get("pos") or ""),
+            "jersey": str(r.get("jersey") or ""), "age": str(r.get("age") or ""),
+            "epl_club": str(hit["squad"]) if hit is not None else "",
+            "club_logo": tm.team_logo(str(hit["squad"])) if hit is not None else "",
+            "photo": _photo(hit) if hit is not None else "",
+        })
+    _order = {"G": 0, "D": 1, "M": 2, "F": 3}
+    players.sort(key=lambda p: (_order.get(p["pos"], 9), p["player"]))
+    return {"nation": nation, "count": len(players), "players": players}
+
+
+def _numornone(v):
+    try:
+        if v is None or (isinstance(v, str) and not v.strip()):
+            return None
+        return int(float(v))
+    except (TypeError, ValueError):
+        return None
 
 
 def _pos_line(tm_pos: str) -> str:

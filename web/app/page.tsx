@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getTeams, getNextTeams, getOverview, getContext, type Team, type NextSeason, type Overview, type Context } from "@/lib/api";
+import { getTeams, getNextTeams, getOverview, getContext, setActiveLeague, type Team, type NextSeason, type Overview, type Context } from "@/lib/api";
 import { accent as toAccent } from "@/lib/ui";
 import Sidebar from "@/components/Sidebar";
 import StatusBar from "@/components/StatusBar";
@@ -23,16 +23,18 @@ export default function Page() {
   const [sel, setSel] = useState<string>("Arsenal");
   const [tab, setTab] = useState<TabKey>("overview");
   const [home, setHome] = useState(true); // 첫 랜딩 = 리그 홈(전역)
+  const [league, setLeagueSel] = useState("EPL");
   const [ov, setOv] = useState<Overview | null>(null);
   const [ctx, setCtx] = useState<Context | null>(null);
   const [loading, setLoading] = useState(false);
   const [ovErr, setOvErr] = useState(false);
 
   useEffect(() => {
+    setActiveLeague(league); // 모든 fetcher 기본 리그 갱신
     getTeams().then(setTeams).catch(() => {});
     getNextTeams().then(setNextS).catch(() => {});
     getContext().then(setCtx).catch(() => {});
-  }, []);
+  }, [league]);
   useEffect(() => {
     let alive = true;
     setLoading(true); setOvErr(false);
@@ -47,9 +49,18 @@ export default function Page() {
 
   const isPromoted = !!nextS?.promoted?.includes(sel);
   const pickTeam = (t: string) => { setHome(false); setSel(t); setTab("overview"); };
+  const DEFAULT_TEAM: Record<string, string> = { EPL: "Arsenal", LaLiga: "Barcelona" };
+  const leagueName = league === "LaLiga" ? "La Liga" : "Premier League";
+  const switchLeague = (l: string) => {
+    if (l === league) return;
+    setActiveLeague(l);
+    setLeagueSel(l);
+    setSel(DEFAULT_TEAM[l] ?? "");
+    setHome(true);
+  };
 
   function renderTab() {
-    if (home) return <HomeDashboard accent={accent} onPickTeam={pickTeam} />;
+    if (home) return <HomeDashboard accent={accent} onPickTeam={pickTeam} leagueLabel={league === "LaLiga" ? "LA LIGA" : "EPL"} />;
     if (ovErr) return (
       <div className="nodata-card">
         <div className="nodata-emoji">{isPromoted ? "🆙" : "📭"}</div>
@@ -81,13 +92,14 @@ export default function Page() {
     <div className="app">
       <Sidebar teams={teams} sel={sel}
         onSelect={(t) => { setSel(t); if (home) { setHome(false); setTab("overview"); } }}
-        seasonLabel={seasonLabel} next={nextS} atHome={home} onHome={() => setHome(true)} />
+        seasonLabel={seasonLabel} next={nextS} atHome={home} onHome={() => setHome(true)}
+        league={league} onLeague={switchLeague} />
       <main className="main">
         <StatusBar accent={accent} ctx={ctx} />
         <div className="topbar">
           <div className="tb-team">
             {home
-              ? <><span>🏠 리그 홈</span><span className="tb-sep">/</span><span className="tb-tab">Premier League</span></>
+              ? <><span>🏠 리그 홈</span><span className="tb-sep">/</span><span className="tb-tab">{leagueName}</span></>
               : <>{ov?.logo && <img src={ov.logo} alt="" />}<span>{sel}</span><span className="tb-sep">/</span><span className="tb-tab">{meta.label}</span></>}
           </div>
           {!home && (

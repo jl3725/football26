@@ -16,7 +16,7 @@ export type Transfer = {
   pos: string;
 };
 
-export type Star = { player: string; pos: string; ovr: number; rating: number; goals: number; assists: number; photo: string };
+export type Star = { player: string; pos: string; ovr: number; pot?: number; rating: number; goals: number; assists: number; photo: string };
 export type Injury = { player: string; injury: string; until: string; pos: string; photo: string };
 export type Window = { season_id: number; window: string; label: string; state: string; is_open: boolean; kr: string | null };
 
@@ -32,7 +32,7 @@ export type Overview = {
     rank: number; played: number; won: number; drawn: number; lost: number;
     gf: number; ga: number; gd: number; points: number;
   };
-  ovr: { overall: number; attack: number; midfield: number; defense: number };
+  ovr: { overall: number; attack: number; midfield: number; defense: number; top_xi?: number };
   ovr_delta?: { overall: number; attack: number; midfield: number; defense: number };
   radar: { axis: string; value: number }[];
   form: string[];
@@ -69,7 +69,12 @@ async function j<T>(url: string): Promise<T> {
   return res.json();
 }
 
-export const getTeams = (league = "EPL") =>
+// 활성 리그 — 사이드바에서 전환. 아래 모든 fetcher 기본값이 이 값을 참조(호출 시점 평가).
+let _league: string = "EPL";
+export const setActiveLeague = (l: string) => { _league = l; };
+export const activeLeague = (): string => _league;
+
+export const getTeams = (league = _league) =>
   j<Team[]>(`/api/teams?league=${encodeURIComponent(league)}`);
 
 export type NextTeam = { name: string; color: string; logo: string; promoted: boolean };
@@ -77,10 +82,10 @@ export type NextSeason = {
   season_label: string; source_title: string; detected_at: string;
   teams: NextTeam[]; promoted: string[]; relegated: string[]; meta_missing: string[];
 };
-export const getNextTeams = (league = "EPL") =>
+export const getNextTeams = (league = _league) =>
   j<NextSeason>(`/api/teams/next?league=${encodeURIComponent(league)}`);
 
-export const getOverview = (team: string, league = "EPL") =>
+export const getOverview = (team: string, league = _league) =>
   j<Overview>(`/api/overview/${encodeURIComponent(team)}?league=${encodeURIComponent(league)}`);
 
 // ── 탭별 타입 ─────────────────────────────
@@ -165,18 +170,18 @@ export type Recommend = { team: string; color: string; weakest: { line: string; 
 const q = (team: string, league: string) =>
   `${encodeURIComponent(team)}?league=${encodeURIComponent(league)}`;
 
-export const getSquad = (t: string, l = "EPL") => j<Squad>(`/api/squad/${q(t, l)}`);
-export const getSchedule = (t: string, l = "EPL") => j<Schedule>(`/api/schedule/${q(t, l)}`);
-export const getMatch = (t: string, eid: string, l = "EPL") =>
+export const getSquad = (t: string, l = _league) => j<Squad>(`/api/squad/${q(t, l)}`);
+export const getSchedule = (t: string, l = _league) => j<Schedule>(`/api/schedule/${q(t, l)}`);
+export const getMatch = (t: string, eid: string, l = _league) =>
   j<MatchDetail>(`/api/match/${encodeURIComponent(t)}/${encodeURIComponent(eid)}?league=${encodeURIComponent(l)}`);
-export const getPlayers = (t: string, l = "EPL") => j<Players>(`/api/players/${q(t, l)}`);
-export const getPlayerDetail = (t: string, p: string, l = "EPL") =>
+export const getPlayers = (t: string, l = _league) => j<Players>(`/api/players/${q(t, l)}`);
+export const getPlayerDetail = (t: string, p: string, l = _league) =>
   j<PlayerDetail>(`/api/player/${encodeURIComponent(t)}/${encodeURIComponent(p)}?league=${encodeURIComponent(l)}`);
-export const getTransfers = (t: string, l = "EPL") => j<Transfers>(`/api/transfers/${q(t, l)}`);
-export const getNews = (t: string, l = "EPL") => j<News>(`/api/news/${q(t, l)}`);
-export const getAnalytics = (t: string, l = "EPL") => j<Analytics>(`/api/analytics/${q(t, l)}`);
+export const getTransfers = (t: string, l = _league) => j<Transfers>(`/api/transfers/${q(t, l)}`);
+export const getNews = (t: string, l = _league) => j<News>(`/api/news/${q(t, l)}`);
+export const getAnalytics = (t: string, l = _league) => j<Analytics>(`/api/analytics/${q(t, l)}`);
 export const getCalendar = () => j<{ events: CalEvent[] }>(`/api/calendar`);
-export const getLineup = (t: string, l = "EPL") => j<Lineup>(`/api/lineup/${q(t, l)}`);
+export const getLineup = (t: string, l = _league) => j<Lineup>(`/api/lineup/${q(t, l)}`);
 export type Diag = { kind: string; severity: string; player: string; slot: string; line: string; to?: string; fee?: string; replacement: string; note: string; photo: string };
 export type Projection = {
   team: string; color: string; current_label: string; next_label: string;
@@ -184,21 +189,21 @@ export type Projection = {
   projected: { formation: string; placements: Placement[] };
   diagnosis: Diag[];
 };
-export const getProjection = (t: string, l = "EPL") => j<Projection>(`/api/projection/${q(t, l)}`);
+export const getProjection = (t: string, l = _league) => j<Projection>(`/api/projection/${q(t, l)}`);
 export type Captain = { name: string; photo: string; ovr: number | null; pos: string; role: string; is_main: boolean };
-export const getCaptains = (t: string, l = "EPL") =>
+export const getCaptains = (t: string, l = _league) =>
   j<{ team: string; color: string; captains: Captain[] }>(`/api/captains/${q(t, l)}`);
-export const getSimilar = (p: string, l = "EPL") =>
+export const getSimilar = (p: string, l = _league) =>
   j<{ player: string; results: SimilarResult[] }>(`/api/similar/${encodeURIComponent(p)}?league=${encodeURIComponent(l)}`);
-export const getRecommend = (t: string, l = "EPL") => j<Recommend>(`/api/recommend/${q(t, l)}`);
+export const getRecommend = (t: string, l = _league) => j<Recommend>(`/api/recommend/${q(t, l)}`);
 export const getContext = () => j<Context>(`/api/context`);
 
 export type DbPlayer = { player: string; squad: string; logo: string; pos: string; line: string; age: number; nationality: string; value_eur: number; ovr: number; photo: string };
-export const getDatabase = (l = "EPL") => j<{ league: string; players: DbPlayer[]; nationalities: string[] }>(`/api/database?league=${encodeURIComponent(l)}`);
+export const getDatabase = (l = _league) => j<{ league: string; players: DbPlayer[]; nationalities: string[] }>(`/api/database?league=${encodeURIComponent(l)}`);
 
 export type Signal = { date: string; team: string; logo: string; type: string; tone: string; icon: string; player: string; photo: string; title: string; detail: string };
 export type Signals = { team: string; window: Window; counts: Record<string, number>; signals: Signal[] };
-export const getSignals = (team = "", l = "EPL", limit = 60) =>
+export const getSignals = (team = "", l = _league, limit = 60) =>
   j<Signals>(`/api/signals?team=${encodeURIComponent(team)}&league=${encodeURIComponent(l)}&limit=${limit}`);
 
 // ── 홈 대시보드 ──
@@ -216,8 +221,23 @@ export type Home = {
   manager_changes: HomeMgr[]; news: HomeNews[];
   standings: Team[]; roster_next: NextSeason;
 };
-export const getHome = (league = "EPL") =>
+export const getHome = (league = _league) =>
   j<Home>(`/api/home?league=${encodeURIComponent(league)}`);
+
+// ── 월드컵 2026 ──
+export type WCMatch = { date: string; group: string; home: string; home_abbr: string; home_logo: string; home_score: number | null; away: string; away_abbr: string; away_logo: string; away_score: number | null; status: string; completed: boolean };
+export type WCRound = { round: string; label: string; matches: WCMatch[] };
+export type WCGroupRow = { team: string; logo: string; P: number; W: number; D: number; L: number; GF: number; GA: number; GD: number; Pts: number };
+export type WCGroup = { group: string; table: WCGroupRow[] };
+export type WCScorer = { player: string; nation: string; goals: number; pens: number; logo: string };
+export type WCClubPlayer = { player: string; nation: string; pos: string; photo: string; goals: number };
+export type WCClub = { club: string; logo: string; count: number; players: WCClubPlayer[] };
+export type WCNation = { nation: string; logo: string; count: number };
+export type WorldCupData = { matches: WCRound[]; groups: WCGroup[]; scorers: WCScorer[]; epl_clubs: WCClub[]; nations: WCNation[] };
+export const getWC = () => j<WorldCupData>(`/api/wc`);
+export type WCSquadPlayer = { player: string; pos: string; jersey: string; age: string; epl_club: string; club_logo: string; photo: string };
+export type WCSquad = { nation: string; count: number; players: WCSquadPlayer[] };
+export const getWCSquad = (nation: string) => j<WCSquad>(`/api/wc/squad/${encodeURIComponent(nation)}`);
 
 export function fmtEur(v: number): string {
   if (!v) return "-";
