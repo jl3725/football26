@@ -211,8 +211,8 @@ export type Needs = { team: string; color: string; mode: string; window: NeedsWi
 export const getNeeds = (t: string, l = _league) => j<Needs>(`/api/needs/${q(t, l)}`);
 export const getContext = () => j<Context>(`/api/context`);
 
-export type DbPlayer = { player: string; squad: string; logo: string; pos: string; line: string; age: number; nationality: string; value_eur: number; ovr: number; photo: string; role: string; big_match: boolean };
-export const getDatabase = (l = _league) => j<{ league: string; players: DbPlayer[]; nationalities: string[] }>(`/api/database?league=${encodeURIComponent(l)}`);
+export type DbPlayer = { player: string; squad: string; league: string; logo: string; pos: string; line: string; age: number; nationality: string; value_eur: number; ovr: number; photo: string; role: string; big_match: boolean };
+export const getDatabase = () => j<{ league: string; players: DbPlayer[]; nationalities: string[]; leagues: string[] }>(`/api/database`);
 
 export type Signal = { date: string; team: string; logo: string; type: string; tone: string; icon: string; player: string; photo: string; title: string; detail: string };
 export type Signals = { team: string; window: Window; counts: Record<string, number>; signals: Signal[] };

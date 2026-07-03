@@ -1171,7 +1171,8 @@ def _match_factors(team, league, full, um_df):
         if full is None:
             return []
         sq = full[full["squad"] == team].copy()
-        sq = sq[sq.apply(lambda r: rv3.line_of_row(r) == line, axis=1)]
+        # _FACTOR_DEFS 는 'FWD', line_of_row 는 'ATT' → 정규화 후 비교(공격 팩터에 선수 누락 방지)
+        sq = sq[sq.apply(lambda r: _canon_line(rv3.line_of_row(r)) == _canon_line(line), axis=1)]
         sq["_r"] = pd.to_numeric(sq.get("ss_rating"), errors="coerce").fillna(0)
         return [{"player": r["player"], "photo": _photo(r), "ovr": _player_ovr(r)}
                 for _, r in sq.sort_values("_r", ascending=False).head(3).iterrows()]
@@ -1896,31 +1897,40 @@ def needs(team: str, league: str = ACTIVE_LEAGUE):
 
 @app.get("/api/database")
 def database(league: str = ACTIVE_LEAGUE):
-    """전 리그 선수 DB — 클라이언트에서 필터링(이름/포지션/나이/가치/국적)."""
-    full = _pf(league)
-    if full is None:
+    """전 리그 선수 DB — 데이터 있는 모든 리그(EPL·LaLiga·…)를 합쳐 반환.
+    클라이언트에서 필터링(이름/포지션/나이/가치/국적/리그). 확장성: 리그 추가되면 자동 포함."""
+    out, nats, leagues = [], set(), []
+    for lg in ds.available_leagues():
+        full = _pf(lg)
+        if full is None or "player" not in full.columns:
+            continue
+        df = full.copy()
+        if "left_for" in df.columns:
+            df = df[df["left_for"].isna() | (df["left_for"].astype(str).str.strip() == "")]
+        df["_ovr"] = df.apply(_player_ovr, axis=1)
+        usage_idx = _comp_usage(lg)
+        n0 = len(out)
+        for _, r in df.iterrows():
+            prof = _comp_profile(r, usage_idx)
+            nat = str(r.get("nationality") or "")
+            if nat:
+                nats.add(nat)
+            out.append({
+                "player": r["player"], "squad": str(r.get("squad") or ""), "league": lg,
+                "logo": tm.team_logo(str(r.get("squad") or "")),
+                "pos": str(r.get("fl_group") or r.get("pos") or ""),
+                "line": rv3.line_of_row(r),
+                "age": int(_num(r.get("age"))), "nationality": nat,
+                "value_eur": _num(r.get("market_value_eur")), "ovr": int(r["_ovr"]),
+                "photo": _photo(r),
+                "role": prof["role"], "big_match": prof["big_match"],
+            })
+        if len(out) > n0:
+            leagues.append(lg)
+    out.sort(key=lambda p: -p["ovr"])
+    if not out:
         raise HTTPException(404, "players not found")
-    df = full.copy()
-    if "left_for" in df.columns:
-        df = df[df["left_for"].isna() | (df["left_for"].astype(str).str.strip() == "")]
-    df["_ovr"] = df.apply(_player_ovr, axis=1)
-    df = df.sort_values("_ovr", ascending=False)
-    usage_idx = _comp_usage(league)
-    out = []
-    for _, r in df.iterrows():
-        prof = _comp_profile(r, usage_idx)
-        out.append({
-            "player": r["player"], "squad": str(r.get("squad") or ""),
-            "logo": tm.team_logo(str(r.get("squad") or "")),
-            "pos": str(r.get("fl_group") or r.get("pos") or ""),
-            "line": rv3.line_of_row(r),
-            "age": int(_num(r.get("age"))), "nationality": str(r.get("nationality") or ""),
-            "value_eur": _num(r.get("market_value_eur")), "ovr": int(r["_ovr"]),
-            "photo": _photo(r),
-            "role": prof["role"], "big_match": prof["big_match"],
-        })
-    nats = sorted({p["nationality"] for p in out if p["nationality"]})
-    return {"league": league, "players": out, "nationalities": nats}
+    return {"league": "ALL", "players": out, "nationalities": sorted(nats), "leagues": leagues}
 
 
 @app.get("/api/captains/{team}")
