@@ -41,13 +41,14 @@ export default function Pitch({ placements, accent }: { placements: Placement[];
         const top = ((4 + (p.y / 100) * 100) / 108) * 100;
         return (
           <div className="ptok" key={i} style={{ left: `${left}%`, top: `${top}%` }}>
-            <div className="ptok-face" style={{ borderColor: c }}>
+            <div className="ptok-face" style={{ borderColor: p.in ? "#5fd08c" : c }}>
               {p.photo
                 ? <img src={p.photo} alt="" />
                 : <span className="ptok-init" style={{ background: `linear-gradient(135deg, ${c}44, #10151e)`, color: "#eef2f8" }}>{initials(p.player)}</span>}
               {p.ovr != null && <span className="ptok-ovr" style={{ background: c }}>{p.ovr}</span>}
+              {p.in && <span className="ptok-in">IN</span>}
             </div>
-            <div className="ptok-name">{lastName(p.player)}</div>
+            <div className="ptok-name">{lastName(p.player)}{p.out && <span className="ptok-out">↔ {lastName(p.out)}</span>}</div>
           </div>
         );
       })}

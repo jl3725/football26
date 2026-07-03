@@ -56,7 +56,7 @@ export type Overview = {
 
 export type CalEvent = { name: string; start: string; end: string; icon: string; kind: string };
 
-export type Placement = { slot: string; player: string; x: number; y: number; kind: string; ovr: number | null; photo: string; changed?: boolean };
+export type Placement = { slot: string; player: string; x: number; y: number; kind: string; ovr: number | null; photo: string; changed?: boolean; in?: boolean; out?: string };
 export type Lineup = {
   team: string; color: string;
   season: { formation: string; placements: Placement[] };

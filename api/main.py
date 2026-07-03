@@ -2511,6 +2511,28 @@ def _canon_line(x) -> str:
     return "ATT" if x in ("FWD", "ATT", "ATTACK") else x
 
 
+def _fine_bucket(s) -> str:
+    """슬롯명(LCB·LB·RCM…) 또는 포지션 텍스트(Centre-Back…) → 세부 버킷.
+    영입이 같은 자리 주전을 밀어낼 때 정밀 매칭용(CB↔CB, LB↔LB, 윙↔윙…)."""
+    t = str(s or "").upper()
+    if "GK" in t or "KEEPER" in t:
+        return "GK"
+    if "LWB" in t or "LEFT-BACK" in t or "LEFT BACK" in t or t == "LB":
+        return "LB"
+    if "RWB" in t or "RIGHT-BACK" in t or "RIGHT BACK" in t or t == "RB":
+        return "RB"
+    if "CB" in t or "CENTRE-BACK" in t or "CENTER-BACK" in t or "CENTRE BACK" in t:
+        return "CB"
+    if "RW" in t or "LW" in t or "RM" in t or "LM" in t or "WING" in t:
+        return "W"
+    if ("DM" in t or "CM" in t or "AM" in t or "MID" in t
+            or "MIDFIELD" in t):
+        return "CM"
+    if "ST" in t or "CF" in t or "STRIKER" in t or "FORWARD" in t:
+        return "ST"
+    return ""
+
+
 def _is_loan_move(fee_text) -> bool:
     """순수 임대(아웃 임대·임대 이적)면 True. '임대 종료(End of loan)'는 실제 이탈이므로 False."""
     f = str(fee_text or "").lower()
@@ -2629,7 +2651,45 @@ def projection(team: str, league: str = ACTIVE_LEAGUE):
         else:
             projected.append({**p, "changed": False})
 
-    # 사용되지 않은 영입 = 보강
+    def _signing_ovr(s):
+        r = resolve(s["player"])
+        ovr = _player_ovr(r) if r is not None else None
+        photo = s["photo"] or (_photo(r) if r is not None else "")
+        if ovr is None:                        # 타 리그 영입 — 교차리그 projection
+            x_ovr, x_photo = _incoming_ovr(s["player"], league)
+            ovr = x_ovr
+            photo = photo or x_photo
+        return ovr, photo
+
+    # 영입이 같은 자리 최약체 주전을 밀어내고 선발 진입(IN) — 이탈이 없어도 스쿼드가 갱신되도록.
+    # (예: 코나테→아센시오, 쿠쿠레야→카레라스. 25/26 과 똑같이 안 나오게 하는 트리거)
+    for s in signings:
+        if s["used"]:
+            continue
+        sb = _fine_bucket(s["pos"])
+        if not sb:
+            continue
+        cands = [p for p in projected if _fine_bucket(p["slot"]) == sb
+                 and not p.get("in") and not p.get("changed") and p["player"] not in ("—", "영입 필요")]
+        if not cands:
+            continue
+        weakest = min(cands, key=lambda p: (p.get("ovr") or 0))
+        inc_ovr = weakest.get("ovr") or 0
+        s_ovr, s_photo = _signing_ovr(s)
+        # OVR 미상(유스·하위리그 영입)이거나 약체 백업이면 선발 교체 안 함(보강으로 남김)
+        if s_ovr is None or s_ovr < inc_ovr - 4:
+            continue
+        s["used"] = True
+        displaced = weakest["player"]
+        weakest.update({"player": s["player"], "ovr": s_ovr,
+                        "photo": s_photo or weakest.get("photo", ""),
+                        "changed": True, "in": True, "out": displaced})
+        diagnosis.append({"kind": "gain", "severity": "선발 영입", "player": s["player"],
+                          "slot": weakest["slot"], "line": weakest["kind"], "fee": s["fee"],
+                          "replacement": displaced,
+                          "note": f"{displaced} 밀어내고 선발 진입", "photo": s_photo or s["photo"]})
+
+    # 사용되지 않은 영입 = 보강(뎁스)
     line_top = {}
     for p in season["placements"]:
         k = _canon_line(p["kind"])
@@ -2642,10 +2702,14 @@ def projection(team: str, league: str = ACTIVE_LEAGUE):
         r = resolve(s["player"])
         diagnosis.append({"kind": "gain", "severity": "보강", "player": s["player"], "slot": s["pos"],
                           "line": s["line"], "fee": s["fee"], "replacement": "",
-                          "note": (f"기존 {rival} 경쟁/보강" if rival else f"{s['line']} 보강"),
+                          "note": (f"기존 {rival} 경쟁/뎁스 보강" if rival else f"{s['line']} 뎁스 보강"),
                           "photo": s["photo"] or (_photo(r) if r is not None else "")})
 
-    diagnosis.sort(key=lambda d: 0 if d["kind"] == "loss" and d["severity"] == "핵심" else (1 if d["kind"] == "loss" else 2))
+    def _dsort(d):
+        if d["kind"] == "loss":
+            return 0 if d.get("severity") == "핵심" else 1
+        return 2 if d.get("severity") == "선발 영입" else 3
+    diagnosis.sort(key=_dsort)
 
     return {"team": team, "color": tm.team_color(team),
             "current_label": _data_season_label(), "next_label": next_label,

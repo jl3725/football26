@@ -634,7 +634,9 @@ html, body {
 .ptok-face img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
 .ptok-init { position: absolute; inset: 0; display: grid; place-items: center; border-radius: 50%; font-family: Oswald, sans-serif; font-size: 13px; font-weight: 700; }
 .ptok-ovr { position: absolute; top: -4px; right: -6px; font-family: Oswald, sans-serif; font-size: 10px; font-weight: 700; color: #0b0f17; padding: 0 4px; border-radius: 6px; line-height: 1.5; }
-.ptok-name { font-size: 10.5px; font-weight: 600; color: #eef2f8; white-space: nowrap; text-shadow: 0 1px 3px rgba(0,0,0,.95); max-width: 72px; overflow: hidden; text-overflow: ellipsis; }
+.ptok-in { position: absolute; top: -5px; left: -6px; font-family: Oswald, sans-serif; font-size: 8.5px; font-weight: 700; letter-spacing: .5px; color: #0b0f17; background: #5fd08c; padding: 0 4px; border-radius: 5px; line-height: 1.55; }
+.ptok-name { font-size: 10.5px; font-weight: 600; color: #eef2f8; white-space: nowrap; text-shadow: 0 1px 3px rgba(0,0,0,.95); max-width: 82px; overflow: hidden; text-overflow: ellipsis; }
+.ptok-out { color: #ef8b96; font-size: 8.5px; font-weight: 600; margin-left: 3px; }
 .bench-strip { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); }
 .bench-strip.departed { opacity: .82; }
 .bench-title { font-family: Oswald, sans-serif; font-size: 11px; letter-spacing: 1px; color: var(--muted); text-transform: uppercase; margin-right: 4px; }
