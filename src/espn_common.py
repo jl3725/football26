@@ -28,10 +28,19 @@ LEAGUE_DISPLAY: dict[str, dict[str, str]] = {
         "real madrid": "Real Madrid", "sociedad": "Real Sociedad",
         "sevilla": "Sevilla", "valencia": "Valencia", "villarreal": "Villarreal",
     },
+    "SerieA": {
+        # 'inter' 를 'milan' 보다 먼저 — 'Inter Milan' 이 'milan' 에 먼저 걸리지 않게
+        "inter": "Inter", "internazionale": "Inter", "milan": "Milan",
+        "juventus": "Juventus", "napoli": "Napoli", "roma": "Roma", "lazio": "Lazio",
+        "atalanta": "Atalanta", "fiorentina": "Fiorentina", "bologna": "Bologna",
+        "torino": "Torino", "udinese": "Udinese", "genoa": "Genoa", "cagliari": "Cagliari",
+        "como": "Como", "cremonese": "Cremonese", "verona": "Hellas Verona",
+        "lecce": "Lecce", "parma": "Parma", "pisa": "Pisa", "sassuolo": "Sassuolo",
+    },
 }
 
 # 리그 대회 코드
-LEAGUE_CODE = {"EPL": ("eng.1", "리그"), "LaLiga": ("esp.1", "리그")}
+LEAGUE_CODE = {"EPL": ("eng.1", "리그"), "LaLiga": ("esp.1", "리그"), "SerieA": ("ita.1", "리그")}
 
 # 유럽 대회 (공통)
 EURO_COMPS = [
@@ -44,6 +53,7 @@ EURO_COMPS = [
 DOMESTIC_CUPS = {
     "EPL": [("eng.fa", "FA컵", "facup"), ("eng.league_cup", "EFL컵", "lcup")],
     "LaLiga": [("esp.copa_del_rey", "코파델레이", "copa")],
+    "SerieA": [("ita.coppa_italia", "코파 이탈리아", "coppa")],
 }
 
 

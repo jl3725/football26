@@ -72,6 +72,8 @@ def main(argv: list[str] | None = None) -> int:
     for team in sorted(cur):
         c = str(cur[team] or "").strip()
         p = str(prev.get(team) or "").strip()
+        if c.upper() == "TBA" or p.upper() == "TBA":   # 미정은 교체로 안 봄
+            continue
         if c and p and c != p:
             rows.append({
                 "detected_at": now, "team": team,

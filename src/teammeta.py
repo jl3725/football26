@@ -28,6 +28,14 @@ TEAM_COLOR: dict[str, str] = {
     "Mallorca": "#E20613", "Levante": "#004E9E", "Girona": "#CE1126", "Oviedo": "#004B9E",
     # La Liga 26/27 승격
     "Deportivo A Coruña": "#0075BE", "Málaga": "#0067B1", "Racing Santander": "#009B48",
+    # Serie A 25/26
+    "Inter": "#0A2896", "Milan": "#FB090B", "Juventus": "#1A1A1A", "Napoli": "#009DE0",
+    "Roma": "#8E1F2F", "Lazio": "#6AADE4", "Atalanta": "#1961B3", "Fiorentina": "#5D2E8C",
+    "Bologna": "#A5152A", "Torino": "#7B1E1E", "Udinese": "#2B2B2B", "Genoa": "#B0182B",
+    "Cagliari": "#B31942", "Como": "#0B4DA1", "Cremonese": "#A61C2B", "Hellas Verona": "#1C2E63",
+    "Lecce": "#D4A017", "Parma": "#F4C400", "Pisa": "#12284B", "Sassuolo": "#00A752",
+    # Serie A 26/27 승격
+    "Frosinone": "#0055A5", "Monza": "#E2001A", "Venezia": "#0A5C36",
 }
 
 # Transfermarkt verein id (크레스트 로고용)
@@ -47,6 +55,13 @@ TEAM_VEREIN: dict[str, int] = {
     "Levante": 3368, "Girona": 12321, "Oviedo": 2497,
     # La Liga 26/27 승격 (Segunda → Primera)
     "Deportivo A Coruña": 897, "Málaga": 1084, "Racing Santander": 630,
+    # Serie A 25/26 (Transfermarkt verein id)
+    "Inter": 46, "Milan": 5, "Juventus": 506, "Napoli": 6195, "Roma": 12, "Lazio": 398,
+    "Atalanta": 800, "Fiorentina": 430, "Bologna": 1025, "Torino": 416, "Udinese": 410,
+    "Genoa": 252, "Cagliari": 1390, "Como": 1047, "Cremonese": 2239, "Hellas Verona": 276,
+    "Lecce": 1005, "Parma": 130, "Pisa": 4171, "Sassuolo": 6574,
+    # Serie A 26/27 승격
+    "Frosinone": 8970, "Monza": 2919, "Venezia": 607,
 }
 
 # 풀네임 + 홈구장 수용인원
@@ -78,6 +93,20 @@ TEAM_EXTRA: dict[str, tuple[str, int]] = {
     # La Liga 26/27 승격
     "Deportivo A Coruña": ("RC Deportivo de La Coruña", 32000),
     "Málaga": ("Málaga CF", 30044), "Racing Santander": ("Real Racing Club", 22222),
+    # Serie A 25/26
+    "Inter": ("FC Internazionale Milano", 75923), "Milan": ("AC Milan", 75923),
+    "Juventus": ("Juventus FC", 41507), "Napoli": ("SSC Napoli", 54726),
+    "Roma": ("AS Roma", 70634), "Lazio": ("SS Lazio", 70634),
+    "Atalanta": ("Atalanta BC", 19300), "Fiorentina": ("ACF Fiorentina", 43147),
+    "Bologna": ("Bologna FC 1909", 38279), "Torino": ("Torino FC", 27958),
+    "Udinese": ("Udinese Calcio", 25144), "Genoa": ("Genoa CFC", 33205),
+    "Cagliari": ("Cagliari Calcio", 16416), "Como": ("Como 1907", 13602),
+    "Cremonese": ("US Cremonese", 16003), "Hellas Verona": ("Hellas Verona FC", 39211),
+    "Lecce": ("US Lecce", 31533), "Parma": ("Parma Calcio 1913", 22885),
+    "Pisa": ("Pisa SC", 17000), "Sassuolo": ("US Sassuolo", 21584),
+    # Serie A 26/27 승격
+    "Frosinone": ("Frosinone Calcio", 16227), "Monza": ("AC Monza", 16917),
+    "Venezia": ("Venezia FC", 11150),
 }
 
 
@@ -132,6 +161,31 @@ TEAM_INFO: dict[str, dict] = {
     "Deportivo A Coruña": {"city": "아 코루냐", "stadium": "리아소르", "founded": 1906, "nick": "Superdépor", "desc": "갈리시아 전통 명문. 26/27 시즌 승격."},
     "Málaga": {"city": "말라가", "stadium": "라 로살레다", "founded": 1904, "nick": "Los Boquerones", "desc": "안달루시아 코스타델솔 클럽. 26/27 시즌 승격."},
     "Racing Santander": {"city": "산탄데르", "stadium": "엘 사르디네로", "founded": 1913, "nick": "Los Racinguistas", "desc": "칸타브리아 전통 클럽. 26/27 시즌 승격."},
+    # Serie A 25/26
+    "Inter": {"city": "밀라노", "stadium": "산 시로 (주세페 메아차)", "founded": 1908, "nick": "Nerazzurri", "desc": "밀라노 명문. 최근 세리에A 최강 중 하나, 강한 조직력."},
+    "Milan": {"city": "밀라노", "stadium": "산 시로 (주세페 메아차)", "founded": 1899, "nick": "Rossoneri", "desc": "유러피언컵 다관왕의 세계적 명문. 붉은-검정 클럽."},
+    "Juventus": {"city": "토리노", "stadium": "알리안츠 스타디움", "founded": 1897, "nick": "La Vecchia Signora", "desc": "이탈리아 최다 우승의 명문. 흑백 유니폼."},
+    "Napoli": {"city": "나폴리", "stadium": "디에고 아르만도 마라도나", "founded": 1926, "nick": "Partenopei", "desc": "남부의 자존심. 마라도나 전설의 하늘색 클럽."},
+    "Roma": {"city": "로마", "stadium": "스타디오 올림피코", "founded": 1927, "nick": "Giallorossi", "desc": "수도 로마의 열성 클럽. 늑대 상징."},
+    "Lazio": {"city": "로마", "stadium": "스타디오 올림피코", "founded": 1900, "nick": "Biancocelesti", "desc": "로마 더비의 하늘색 클럽. 독수리 상징."},
+    "Atalanta": {"city": "베르가모", "stadium": "게비스 스타디움", "founded": 1907, "nick": "La Dea", "desc": "가스페리니의 공격 축구로 유럽대항전 단골이 된 돌풍의 팀."},
+    "Fiorentina": {"city": "피렌체", "stadium": "아르테미오 프랑키", "founded": 1926, "nick": "Viola", "desc": "토스카나의 보라색 클럽."},
+    "Bologna": {"city": "볼로냐", "stadium": "레나토 달라라", "founded": 1909, "nick": "Rossoblù", "desc": "에밀리아로마냐 전통 클럽. 최근 유럽대항전 진출."},
+    "Torino": {"city": "토리노", "stadium": "올림피코 그란데 토리노", "founded": 1906, "nick": "Il Toro", "desc": "토리노 더비의 적갈색(그라나타) 클럽."},
+    "Udinese": {"city": "우디네", "stadium": "블루에너지 스타디움", "founded": 1896, "nick": "Le Zebrette", "desc": "프리울리 연고. 스카우팅·육성 강점의 클럽."},
+    "Genoa": {"city": "제노바", "stadium": "루이지 페라리스", "founded": 1893, "nick": "Il Grifone", "desc": "이탈리아 최고(最古) 클럽 중 하나. 붉은-파랑."},
+    "Cagliari": {"city": "칼리아리 (사르데냐)", "stadium": "우니폴 도무스", "founded": 1920, "nick": "Casteddu", "desc": "사르데냐 섬 연고 클럽."},
+    "Como": {"city": "코모", "stadium": "주세페 시니갈리아", "founded": 1907, "nick": "Lariani", "desc": "코모 호반 클럽. 대규모 투자로 부활."},
+    "Cremonese": {"city": "크레모나", "stadium": "조반니 지니", "founded": 1903, "nick": "Grigiorossi", "desc": "롬바르디아 크레모나 연고 클럽."},
+    "Hellas Verona": {"city": "베로나", "stadium": "마르칸토니오 벤테고디", "founded": 1903, "nick": "Gialloblù", "desc": "베네토 베로나의 노랑-파랑 클럽."},
+    "Lecce": {"city": "레체", "stadium": "비아 델 마레", "founded": 1908, "nick": "I Salentini", "desc": "풀리아 살렌토 반도 연고 클럽."},
+    "Parma": {"city": "파르마", "stadium": "엔니오 타르디니", "founded": 1913, "nick": "Crociati", "desc": "에밀리아 명문. 90~00년대 유럽대항전 강호."},
+    "Pisa": {"city": "피사", "stadium": "아레나 가리발디", "founded": 1909, "nick": "Nerazzurri", "desc": "토스카나 피사 연고. 오랜만의 세리에A 복귀."},
+    "Sassuolo": {"city": "사수올로 (레조에밀리아)", "stadium": "마페이 스타디움", "founded": 1920, "nick": "Neroverdi", "desc": "에밀리아 소도시의 녹-검정 클럽."},
+    # Serie A 26/27 승격
+    "Frosinone": {"city": "프로시노네 (라치오)", "stadium": "베니토 스티르페", "founded": 1928, "nick": "Canarini", "desc": "라치오주 프로시노네 연고. 26/27 승격."},
+    "Monza": {"city": "몬차 (롬바르디아)", "stadium": "U-파워 스타디움", "founded": 1912, "nick": "Biancorossi", "desc": "롬바르디아 몬차 연고. 26/27 승격."},
+    "Venezia": {"city": "베네치아", "stadium": "피에르 루이지 펜초", "founded": 1907, "nick": "Arancioneroverdi", "desc": "베네치아 연고. 감각적 유니폼으로 유명. 26/27 승격."},
 }
 
 

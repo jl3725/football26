@@ -32,6 +32,9 @@ FEEDS_BY_LEAGUE = {
     "LaLiga": [
         ("Marca", "https://e00-marca.uecdn.es/rss/futbol/mercado-fichajes.xml"),
     ],
+    "SerieA": [
+        ("Gazzetta", "https://www.gazzetta.it/rss/calciomercato.xml"),
+    ],
 }
 
 # 합의/임박 신호 키워드 (영어+스페인어). 없으면 루머로 분류.
@@ -39,7 +42,8 @@ _AGREED = re.compile(
     r"\b(agree|agreed|complete|completed|seal|sealed|sign|signs|signed|signing|"
     r"done deal|here we go|medical|unveil|wins? race|win the race|buy|bought|sold|"
     r"joins?|joining|confirm|confirmed|announce|announced|"
-    r"acuerdo|fichaj|fichado|oficial|cierra|firma|firmar|vendido|traspaso|refuerzo|llega)\b",
+    r"acuerdo|fichaj|fichado|oficial|cierra|firma|firmar|vendido|traspaso|refuerzo|llega|"
+    r"ufficiale|accordo|firma|acquisto|acquist|ceduto|colpo|visite mediche|preso|arriva)\b",
     re.I,
 )
 

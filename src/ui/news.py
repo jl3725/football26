@@ -42,8 +42,18 @@ LALIGA_NEWSTAG = {
     "Villarreal": "Villarreal",
 }
 
-NEWSTAG_BY_LEAGUE = {"EPL": SQUAD_TO_NEWSTAG, "LaLiga": LALIGA_NEWSTAG}
-_ALL_NEWSTAG = {**SQUAD_TO_NEWSTAG, **LALIGA_NEWSTAG}
+# Serie A squad → ESPN ita.1 뉴스 팀 태그 (팀별 RSS 없음 → ESPN만; 이탈리아어 흔한단어 오매칭 회피)
+SERIEA_NEWSTAG = {
+    "Inter": "Inter Milan", "Milan": "AC Milan", "Juventus": "Juventus", "Napoli": "Napoli",
+    "Roma": "Roma", "Lazio": "Lazio", "Atalanta": "Atalanta", "Fiorentina": "Fiorentina",
+    "Bologna": "Bologna", "Torino": "Torino", "Udinese": "Udinese", "Genoa": "Genoa",
+    "Cagliari": "Cagliari", "Como": "Como", "Cremonese": "Cremonese",
+    "Hellas Verona": "Hellas Verona", "Lecce": "Lecce", "Parma": "Parma", "Pisa": "Pisa",
+    "Sassuolo": "Sassuolo",
+}
+
+NEWSTAG_BY_LEAGUE = {"EPL": SQUAD_TO_NEWSTAG, "LaLiga": LALIGA_NEWSTAG, "SerieA": SERIEA_NEWSTAG}
+_ALL_NEWSTAG = {**SQUAD_TO_NEWSTAG, **LALIGA_NEWSTAG, **SERIEA_NEWSTAG}
 
 
 def newstags(league: str = "EPL") -> dict:

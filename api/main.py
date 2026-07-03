@@ -2196,8 +2196,9 @@ def home(league: str = ACTIVE_LEAGUE):
     # 2) 시그널 (리그 전체) · 3) 감독 교체 · 4) 뉴스 헤드라인
     sig = signals(team="", league=league, limit=24)
 
+    mgrs = _managers(league)
     changes = []
-    for t, p in _managers(league).items():
+    for t, p in mgrs.items():
         if p.get("previous_name"):
             changes.append({
                 "team": t, "logo": tm.team_logo(t),
@@ -2207,6 +2208,23 @@ def home(league: str = ACTIVE_LEAGUE):
                 "formation": p.get("formation", ""),
                 "changed_at": str(p.get("change_detected_at") or "")[:10],
             })
+    # 프로필에 previous_name 이 없는 리그(LaLiga·SerieA)는 manager_changes 테이블로 폴백
+    if not changes:
+        mc = ds.read_table("manager_changes", league=league)
+        if mc is not None and "team" in mc.columns:
+            for _, r in mc.iterrows():
+                t = str(r.get("team") or "")
+                prof = mgrs.get(t, {})
+                ph = str(prof.get("photo_url") or "")
+                changes.append({
+                    "team": t, "logo": tm.team_logo(t),
+                    "previous": str(r.get("previous_manager") or ""),
+                    "current": str(r.get("detected_manager") or ""),
+                    "photo": ph if ph.startswith("http") else "",
+                    "previous_photo": "",
+                    "formation": str(prof.get("formation") or ""),
+                    "changed_at": str(r.get("detected_at") or "")[:10],
+                })
     changes.sort(key=lambda x: x["changed_at"], reverse=True)
 
     na = ds.read_table("news_articles", league=league)
@@ -2271,8 +2289,8 @@ def _wc_read(table):
 
 
 # WC 클럽 차출 교차참조 대상 — UI 로 탐색 가능한(로고·오버뷰 완비) 리그만.
-# Bundesliga·SerieA 는 데이터는 있으나 teammeta 로고/네비 미완이라 제외(추후 확장).
-_WC_CLUB_LEAGUES = ("EPL", "LaLiga")
+# Bundesliga 는 teammeta 로고/네비 미완이라 제외(추후 확장).
+_WC_CLUB_LEAGUES = ("EPL", "LaLiga", "SerieA")
 
 
 def _wc_player_index():

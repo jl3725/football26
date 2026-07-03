@@ -54,8 +54,9 @@ export default function Page() {
     if (lg && lg !== league) { setActiveLeague(lg); setLeagueSel(lg); }
     setHome(false); setSel(t); setTab("overview");
   };
-  const DEFAULT_TEAM: Record<string, string> = { EPL: "Arsenal", LaLiga: "Barcelona" };
-  const leagueName = league === "LaLiga" ? "La Liga" : "Premier League";
+  const DEFAULT_TEAM: Record<string, string> = { EPL: "Arsenal", LaLiga: "Barcelona", SerieA: "Inter" };
+  const leagueName = league === "LaLiga" ? "La Liga" : league === "SerieA" ? "Serie A" : "Premier League";
+  const leagueLabel = league === "LaLiga" ? "LA LIGA" : league === "SerieA" ? "SERIE A" : "EPL";
   const switchLeague = (l: string) => {
     if (l === league) return;
     setActiveLeague(l);
@@ -65,7 +66,7 @@ export default function Page() {
   };
 
   function renderTab() {
-    if (home) return <HomeDashboard accent={accent} onPickTeam={pickTeam} onPickLeagueTeam={pickLeagueTeam} leagueLabel={league === "LaLiga" ? "LA LIGA" : "EPL"} />;
+    if (home) return <HomeDashboard accent={accent} onPickTeam={pickTeam} onPickLeagueTeam={pickLeagueTeam} leagueLabel={leagueLabel} />;
     if (ovErr) return (
       <div className="nodata-card">
         <div className="nodata-emoji">{isPromoted ? "🆙" : "📭"}</div>

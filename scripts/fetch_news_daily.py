@@ -23,7 +23,7 @@ from ui.news import (  # noqa: E402
 )
 from news_db import init_db, upsert_articles, stats  # noqa: E402
 
-LEAGUES = ["EPL", "LaLiga"]
+LEAGUES = ["EPL", "LaLiga", "SerieA"]
 
 
 def run_league(league: str) -> tuple[int, int]:

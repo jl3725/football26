@@ -22,6 +22,12 @@ Write-Host "[profiles-agent] 5/6 fetch_laliga_managers (감독 + 26/27 팀)"
 & $Python (Join-Path $Root "src\fetch_laliga_managers.py")
 Write-Host "[profiles-agent] 6/7 detect_season_teams --league LaLiga --write (승격팀 감지)"
 & $Python (Join-Path $Root "src\detect_season_teams.py") --league LaLiga --write
-Write-Host "[profiles-agent] 7/7 detect_manager_changes --league LaLiga --write (감독 교체 감지)"
+Write-Host "[profiles-agent] 7/10 detect_manager_changes --league LaLiga --write (감독 교체 감지)"
 & $Python (Join-Path $Root "src\detect_manager_changes.py") --league LaLiga --write
+Write-Host "[profiles-agent] 8/10 fetch_serie_managers (Serie A 감독 + 26/27)"
+& $Python (Join-Path $Root "src\fetch_serie_managers.py")
+Write-Host "[profiles-agent] 9/10 detect_season_teams --league SerieA --write (승격팀)"
+& $Python (Join-Path $Root "src\detect_season_teams.py") --league SerieA --write
+Write-Host "[profiles-agent] 10/10 detect_manager_changes --league SerieA --write (감독 교체)"
+& $Python (Join-Path $Root "src\detect_manager_changes.py") --league SerieA --write
 Write-Host "[profiles-agent] done"

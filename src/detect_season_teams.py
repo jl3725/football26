@@ -34,6 +34,8 @@ def _source_title(league: str, base_title: str) -> str:
         return base_title
     if league == "LaLiga":
         return base_title.replace("Premier League", "La Liga")
+    if league == "SerieA":
+        return base_title.replace("Premier League", "Serie A")
     raise SystemExit(f"[season-teams] 지원하지 않는 리그: {league}")
 
 
@@ -41,6 +43,9 @@ def _normalizer(league):
     """위키 팀명 → 우리 squad 표기 정규화기."""
     if league == "LaLiga":
         from fetch_laliga_managers import to_squad
+        return to_squad
+    if league == "SerieA":
+        from fetch_serie_managers import to_squad
         return to_squad
     return lambda t: t
 
