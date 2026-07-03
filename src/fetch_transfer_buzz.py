@@ -33,7 +33,8 @@ FEEDS_BY_LEAGUE = {
         ("Marca", "https://e00-marca.uecdn.es/rss/futbol/mercado-fichajes.xml"),
     ],
     "SerieA": [
-        ("Gazzetta", "https://www.gazzetta.it/rss/calciomercato.xml"),
+        # Gazzetta calciomercato RSS 는 2023 아카이브라 스테일 → Football Italia(영문·최신) 사용
+        ("Football Italia", "https://football-italia.net/feed/"),
     ],
 }
 

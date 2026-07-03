@@ -2,6 +2,7 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { getHome, type Home } from "@/lib/api";
 import WorldCup from "./WorldCup";
+import AllDashboard from "./AllDashboard";
 
 const eurM = (v: number) => (v >= 1e6 ? `€${Math.round(v / 1e6)}M` : v > 0 ? `€${Math.round(v / 1e3)}K` : "€0");
 
@@ -26,14 +27,17 @@ export default function HomeDashboard({ accent, onPickTeam, onPickLeagueTeam, le
   leagueLabel?: string; league?: string; leagues?: LeagueOpt[]; onLeague?: (l: string) => void;
 }) {
   const [h, setH] = useState<Home | null>(null);
-  const [comp, setComp] = useState<"league" | "WC">("league");   // 리그 홈 vs 월드컵
+  const [comp, setComp] = useState<"all" | "league" | "WC">("all");   // 전체 · 리그 홈 · 월드컵
   // leagueLabel 변경(리그 전환) 시 재조회 — getHome 은 모듈 활성리그(_league) 사용
   useEffect(() => { let a = true; setH(null); getHome().then((d) => a && setH(d)).catch(() => {}); return () => { a = false; }; }, [leagueLabel]);
 
-  // 모든 리그 + WC 를 홈에서 바로 전환하는 탭(리그 홈은 다리그 허브)
+  // 전체(통합) + 모든 리그 + WC 를 홈에서 바로 전환하는 탭(리그 홈은 다리그 허브)
   const opts: LeagueOpt[] = leagues.length ? leagues : [{ key: league, label: leagueLabel }];
+  const pickTL = onPickLeagueTeam ?? ((t: string) => onPickTeam(t));
   const switcher = (
     <div className="comp-seg">
+      <button className={comp === "all" ? "active" : ""} onClick={() => setComp("all")}
+        style={comp === "all" ? { ["--tc" as any]: accent } : undefined}>🌐 전체</button>
       {opts.map((l) => {
         const on = comp === "league" && league === l.key;
         return (
@@ -47,8 +51,11 @@ export default function HomeDashboard({ accent, onPickTeam, onPickLeagueTeam, le
     </div>
   );
 
+  if (comp === "all") return (
+    <div className="fade home"><div className="wc-topbar">{switcher}</div><AllDashboard accent={accent} onPick={pickTL} /></div>
+  );
   if (comp === "WC") return (
-    <div className="fade home"><div className="wc-topbar">{switcher}</div><WorldCup accent={accent} onPickTeam={onPickLeagueTeam ?? onPickTeam} /></div>
+    <div className="fade home"><div className="wc-topbar">{switcher}</div><WorldCup accent={accent} onPickTeam={pickTL} /></div>
   );
   if (!h) return <div className="loading">불러오는 중…</div>;
 

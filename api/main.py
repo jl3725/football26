@@ -2309,6 +2309,90 @@ def home(league: str = ACTIVE_LEAGUE):
     }
 
 
+_HUB_LEAGUES = ("EPL", "LaLiga", "SerieA")   # 통합 대시보드 대상 — UI 지원 리그
+
+
+@app.get("/api/home/all")
+def home_all():
+    """전 리그 통합 대시보드 — 빅딜·이적속보·감독교체·순위 스냅샷을 한 화면에."""
+    win = _current_window()
+    avail = set(ds.available_leagues())
+    leagues = [lg for lg in _HUB_LEAGUES if lg in avail]
+
+    def _lname(lg):
+        try:
+            return league_config(lg).name
+        except KeyError:
+            return lg
+
+    deals, buzz, changes, snaps = [], [], [], []
+    for lg in leagues:
+        lname = _lname(lg)
+        tr = ds.read_table("transfers", league=lg)
+        if tr is not None and "squad" in tr.columns:
+            tt, _wf = _window_filter(tr.copy(), win)
+            tt = tt[(tt["direction"] == "in")
+                    & ~tt["fee_text"].astype(str).str.lower().str.contains("loan", na=False)].copy()
+            tt["_fee"] = tt["fee_eur"].map(lambda v: _num(v, 0.0))
+            for _, r in tt.sort_values("_fee", ascending=False).head(6).iterrows():
+                sq, ph = str(r.get("squad") or ""), str(r.get("photo") or "")
+                deals.append({"player": str(r.get("player") or ""), "to": sq, "to_logo": tm.team_logo(sq),
+                              "from": str(r.get("club") or ""), "pos": str(r.get("pos") or ""),
+                              "fee_eur": _num(r.get("fee_eur"), 0.0), "fee_text": str(r.get("fee_text") or ""),
+                              "photo": ph if ph.startswith("http") else "", "league": lg, "league_name": lname})
+        bz = ds.read_table("transfer_buzz", league=lg)
+        if bz is not None:
+            for _, r in bz.head(10).iterrows():
+                buzz.append({"title": str(r.get("title_ko") or r.get("title_en") or ""),
+                             "source": str(r.get("source") or ""), "tier": str(r.get("tier") or "rumor"),
+                             "link": str(r.get("link") or ""), "published": str(r.get("published") or ""),
+                             "league": lg, "league_name": lname})
+        mc = ds.read_table("manager_changes", league=lg)
+        mgrs = _managers(lg)
+        if mc is not None and "team" in mc.columns:
+            for _, r in mc.iterrows():
+                t = str(r.get("team") or "")
+                prof = mgrs.get(t, {})
+                ph = str(prof.get("photo_url") or "")
+                changes.append({"team": t, "logo": tm.team_logo(t),
+                                "previous": str(r.get("previous_manager") or ""),
+                                "current": str(r.get("detected_manager") or ""),
+                                "photo": ph if ph.startswith("http") else "",
+                                "changed_at": str(r.get("detected_at") or "")[:10],
+                                "league": lg, "league_name": lname})
+        st = ds.read_table("standings", league=lg)
+        table = []
+        if st is not None and "rank" in st.columns:
+            for _, r in st.sort_values("rank").head(4).iterrows():
+                sq = str(r.get("squad") or "")
+                table.append({"rank": int(_num(r.get("rank"))), "team": sq,
+                              "logo": tm.team_logo(sq), "points": int(_num(r.get("points")))})
+        snaps.append({"league": lg, "league_name": lname,
+                      "color": tm.team_color(table[0]["team"]) if table else "#888", "table": table})
+
+    def _interleave(items, limit):
+        """리그별 라운드로빈 — 한 리그가 최신순 정렬에 밀려 빠지지 않게 고루 노출."""
+        groups: dict[str, list] = {}
+        for it in items:
+            groups.setdefault(it["league"], []).append(it)
+        out, i = [], 0
+        while len(out) < limit and any(i < len(g) for g in groups.values()):
+            for g in groups.values():
+                if i < len(g):
+                    out.append(g[i])
+                if len(out) >= limit:
+                    break
+            i += 1
+        return out
+
+    deals.sort(key=lambda d: -d["fee_eur"])       # 빅딜은 이적료 순(리그 무관 최대)
+    buzz.sort(key=lambda b: b["published"], reverse=True)   # 리그별 최신순 → 인터리브
+    changes.sort(key=lambda c: c["changed_at"], reverse=True)
+    return {"window": win, "leagues": [{"key": lg, "name": _lname(lg)} for lg in leagues],
+            "top_deals": deals[:12], "buzz": _interleave(buzz, 18),
+            "manager_changes": _interleave(changes, 12), "snapshots": snaps}
+
+
 _WC_ROUNDS = ["group-stage", "round-of-32", "round-of-16", "quarterfinals",
               "semifinals", "3rd-place-match", "final"]
 _WC_ROUND_KR = {"group-stage": "조별리그", "round-of-32": "32강", "round-of-16": "16강",

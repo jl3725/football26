@@ -255,6 +255,15 @@ export type WCNation = { nation: string; logo: string; count: number };
 export type WCFifaRank = { rank: number; team: string; code: string; points: number; official_rank: number; rank_change: number; points_change: number; confederation: string; flag: string };
 export type WorldCupData = { matches: WCRound[]; groups: WCGroup[]; scorers: WCScorer[]; assists: WCAssist[]; rising_stars: WCImpact[]; veterans: WCImpact[]; group_heroes: WCHeroTeam[]; club_callups: WCClub[]; nations: WCNation[]; fifa_ranking: WCFifaRank[]; fifa_updated: string; fifa_live: boolean };
 export const getWC = () => j<WorldCupData>(`/api/wc`);
+
+// ── 전 리그 통합 대시보드 ──
+export type HubDeal = { player: string; to: string; to_logo: string; from: string; pos: string; fee_eur: number; fee_text: string; photo: string; league: string; league_name: string };
+export type HubBuzz = { title: string; source: string; tier: string; link: string; published: string; league: string; league_name: string };
+export type HubChange = { team: string; logo: string; previous: string; current: string; photo: string; changed_at: string; league: string; league_name: string };
+export type HubSnapRow = { rank: number; team: string; logo: string; points: number };
+export type HubSnapshot = { league: string; league_name: string; color: string; table: HubSnapRow[] };
+export type HomeAll = { window: Context["window"]; leagues: { key: string; name: string }[]; top_deals: HubDeal[]; buzz: HubBuzz[]; manager_changes: HubChange[]; snapshots: HubSnapshot[] };
+export const getHomeAll = () => j<HomeAll>(`/api/home/all`);
 export type WCSquadPlayer = { player: string; pos: string; jersey: string; age: string; club: string; league: string; club_logo: string; photo: string };
 export type WCSquad = { nation: string; count: number; players: WCSquadPlayer[] };
 export const getWCSquad = (nation: string) => j<WCSquad>(`/api/wc/squad/${encodeURIComponent(nation)}`);

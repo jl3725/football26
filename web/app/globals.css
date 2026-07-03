@@ -283,6 +283,51 @@ html, body {
 .wc-club { background: var(--panel); border: 1px solid var(--line); border-radius: 13px; padding: 12px 13px; }
 .wc-club-h { display: flex; align-items: center; gap: 9px; width: 100%; background: transparent; border: none; color: var(--txt); cursor: pointer; padding: 0 0 9px; }
 .wc-club-h img { width: 24px; height: 24px; object-fit: contain; }
+/* 전 리그 통합 대시보드 (Hub) */
+.hub-hero { position: relative; border: 1px solid var(--line); border-radius: 16px; padding: 22px 24px; margin-bottom: 18px; background: linear-gradient(120deg, var(--tc, #ff4d5e)18, transparent 60%); overflow: hidden; }
+.hub-hero-k { font-family: Oswald, sans-serif; font-size: 11px; letter-spacing: 2px; color: var(--tc, #ff4d5e); text-transform: uppercase; }
+.hub-hero-t { font-family: Teko, sans-serif; font-size: 40px; line-height: 1; margin: 6px 0 8px; }
+.hub-hero-m { font-size: 12.5px; color: var(--muted); }
+.hub-h { font-family: Oswald, sans-serif; font-size: 15px; letter-spacing: .5px; margin: 20px 0 11px; }
+.hub-snaps { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
+.hub-snap { padding: 12px 14px; }
+.hub-snap-h { font-family: Oswald, sans-serif; font-size: 13px; font-weight: 700; letter-spacing: .3px; padding-bottom: 8px; margin-bottom: 6px; border-bottom: 2px solid; }
+.hub-snap-row { display: flex; align-items: center; gap: 8px; width: 100%; background: transparent; border: none; color: var(--txt); cursor: pointer; padding: 4px 0; font-size: 12.5px; }
+.hub-snap-row:hover { color: var(--tc, #ff4d5e); }
+.hub-rk { width: 16px; font-family: Teko, sans-serif; font-size: 15px; color: var(--muted); text-align: center; }
+.hub-snap-row img { width: 18px; height: 18px; object-fit: contain; }
+.hub-snap-team { flex: 1; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hub-snap-pts { font-family: Teko, sans-serif; font-size: 17px; }
+.hub-lg { font-family: Oswald, sans-serif; font-size: 8.5px; letter-spacing: .4px; color: var(--muted); border: 1px solid var(--line); border-radius: 4px; padding: 1px 5px; text-transform: uppercase; margin-left: 6px; white-space: nowrap; }
+.hub-deals { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; }
+.hub-deal { display: flex; align-items: center; gap: 11px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 12px; background: rgba(255,255,255,0.02); cursor: pointer; text-align: left; }
+.hub-deal:hover { border-color: var(--tc, #ff4d5e); }
+.hub-deal-ph { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+.hub-deal-ph.ph { background: rgba(255,255,255,0.08); }
+.hub-deal-body { flex: 1; min-width: 0; }
+.hub-deal-top { display: flex; align-items: center; font-size: 13.5px; font-weight: 700; color: var(--txt); }
+.hub-deal-top b { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hub-deal-mv { display: flex; align-items: center; gap: 4px; font-size: 11px; color: var(--muted); margin-top: 2px; }
+.hub-deal-mv img { width: 14px; height: 14px; object-fit: contain; }
+.hub-deal-fee { font-family: Teko, sans-serif; font-size: 22px; line-height: 1; flex-shrink: 0; }
+.hub-two { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
+@media (max-width: 900px) { .hub-two { grid-template-columns: 1fr; } }
+.hub-list { max-height: 460px; overflow-y: auto; }
+.hub-buzz { display: flex; align-items: center; gap: 8px; padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.05); text-decoration: none; color: var(--txt); }
+.hub-buzz:hover { color: var(--tc, #ff4d5e); }
+.hub-tier { font-family: Oswald, sans-serif; font-size: 9px; font-weight: 700; padding: 1px 6px; border-radius: 5px; flex-shrink: 0; }
+.hub-tier.agreed { background: #2b6b46; color: #b8f0cf; }
+.hub-tier.rumor { background: rgba(255,255,255,0.08); color: var(--muted); }
+.hub-buzz-t { flex: 1; font-size: 12.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hub-buzz-src { font-size: 10px; color: var(--muted); display: flex; align-items: center; white-space: nowrap; }
+.hub-mgr { display: flex; align-items: center; gap: 10px; width: 100%; padding: 8px 4px; border: none; border-bottom: 1px solid rgba(255,255,255,0.05); background: transparent; color: var(--txt); cursor: pointer; text-align: left; }
+.hub-mgr:hover { color: var(--tc, #ff4d5e); }
+.hub-mgr-ph { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; flex-shrink: 0; background: rgba(255,255,255,0.06); }
+.hub-mgr-body { flex: 1; min-width: 0; }
+.hub-mgr-team { font-size: 12.5px; font-weight: 700; display: flex; align-items: center; }
+.hub-mgr-ch { font-size: 11px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hub-mgr-ch b { color: var(--txt); }
+
 /* FIFA 랭킹 */
 .wc-fifa-upd { font-family: Oswald, sans-serif; font-size: 10.5px; letter-spacing: .5px; color: var(--muted); text-transform: uppercase; }
 .wc-fifa-note { font-size: 11px; color: var(--muted); margin-bottom: 10px; line-height: 1.5; }
