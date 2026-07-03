@@ -353,6 +353,13 @@ html, body {
 .wc-match { background: var(--panel); border: 1px solid var(--line); border-radius: 9px; padding: 7px 9px; margin-bottom: 7px; }
 .wc-match.done { opacity: .82; }
 .wc-match-date { font-family: Oswald, sans-serif; font-size: 9.5px; letter-spacing: .5px; color: var(--muted); text-align: center; margin-bottom: 4px; text-transform: uppercase; }
+.wc-md-ft { opacity: .6; }
+.wc-match.live { border-color: #ef4d5e; }
+.wc-match.live .wc-match-date { color: #ef6b7b; }
+.wc-pager { display: flex; justify-content: center; align-items: center; gap: 5px; margin-top: 14px; flex-wrap: wrap; }
+.wc-pager button { min-width: 28px; height: 28px; font-family: Oswald, sans-serif; font-size: 12px; border: 1px solid var(--line); background: transparent; color: var(--muted); border-radius: 6px; cursor: pointer; }
+.wc-pager button.active { border-color: transparent; font-weight: 700; }
+.wc-pager button:disabled { opacity: .35; cursor: default; }
 .wc-side { display: flex; align-items: center; gap: 7px; padding: 2px 0; }
 .wc-side img { width: 16px; height: 16px; object-fit: contain; flex-shrink: 0; }
 .wc-ab { flex: 1; font-size: 11.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }

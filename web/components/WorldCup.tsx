@@ -27,6 +27,7 @@ export default function WorldCup({ accent, onPickTeam }: { accent: string; onPic
   const [nation, setNation] = useState<string | null>(null);
   const [squad, setSquad] = useState<WCSquad | null>(null);
   const [clubLeague, setClubLeague] = useState<string>("");   // "" = 전체
+  const [clubPage, setClubPage] = useState(0);
 
   useEffect(() => { let a = true; getWC().then((x) => a && setD(x)).catch(() => {}); return () => { a = false; }; }, []);
   useEffect(() => {
@@ -39,7 +40,13 @@ export default function WorldCup({ accent, onPickTeam }: { accent: string; onPic
   if (!d) return <div className="loading">월드컵 데이터 불러오는 중…</div>;
   const knockout = d.matches.filter((r) => r.round !== "group-stage");
   const clubLeagues = Array.from(new Set(d.club_callups.map((c) => c.league).filter(Boolean)));
-  const clubs = clubLeague ? d.club_callups.filter((c) => c.league === clubLeague) : d.club_callups;
+  // 전체: 알파벳순 / 특정 리그: 차출 수 순(백엔드 정렬 유지)
+  const clubsF = clubLeague ? d.club_callups.filter((c) => c.league === clubLeague)
+                            : [...d.club_callups].sort((a, b) => a.club.localeCompare(b.club));
+  const CLUB_PER = 20;
+  const clubPages = Math.ceil(clubsF.length / CLUB_PER);
+  const cpage = Math.min(clubPage, Math.max(0, clubPages - 1));
+  const pagedClubs = clubsF.slice(cpage * CLUB_PER, cpage * CLUB_PER + CLUB_PER);
 
   return (
     <div className="fade home">
@@ -89,17 +96,17 @@ export default function WorldCup({ accent, onPickTeam }: { accent: string; onPic
             right={
               clubLeagues.length > 1 ? (
                 <div className="wc-lg-filter">
-                  <button className={clubLeague === "" ? "active" : ""} onClick={() => setClubLeague("")}
+                  <button className={clubLeague === "" ? "active" : ""} onClick={() => { setClubLeague(""); setClubPage(0); }}
                     style={clubLeague === "" ? { background: accent, color: "#0b0f17" } : undefined}>전체</button>
                   {clubLeagues.map((lg) => (
-                    <button key={lg} className={clubLeague === lg ? "active" : ""} onClick={() => setClubLeague(lg)}
+                    <button key={lg} className={clubLeague === lg ? "active" : ""} onClick={() => { setClubLeague(lg); setClubPage(0); }}
                       style={clubLeague === lg ? { background: accent, color: "#0b0f17" } : undefined}>{lg}</button>
                   ))}
                 </div>
-              ) : <span className="sec-count">{clubs.reduce((a, c) => a + c.count, 0)}</span>
+              ) : <span className="sec-count">{clubsF.reduce((a, c) => a + c.count, 0)}</span>
             } />
           <div className="wc-clubs">
-            {clubs.map((c) => (
+            {pagedClubs.map((c) => (
               <div className="wc-club" key={c.club}>
                 <button className="wc-club-h" onClick={() => onPickTeam(c.club, c.league)}>
                   {c.logo && <img src={c.logo} alt="" />}
@@ -120,6 +127,16 @@ export default function WorldCup({ accent, onPickTeam }: { accent: string; onPic
               </div>
             ))}
           </div>
+          {clubPages > 1 && (
+            <div className="wc-pager">
+              <button disabled={cpage === 0} onClick={() => setClubPage(cpage - 1)}>‹</button>
+              {Array.from({ length: clubPages }, (_, i) => (
+                <button key={i} className={i === cpage ? "active" : ""} onClick={() => setClubPage(i)}
+                  style={i === cpage ? { background: accent, color: "#0b0f17" } : undefined}>{i + 1}</button>
+              ))}
+              <button disabled={cpage >= clubPages - 1} onClick={() => setClubPage(cpage + 1)}>›</button>
+            </div>
+          )}
         </>
       )}
 
@@ -216,13 +233,18 @@ export default function WorldCup({ accent, onPickTeam }: { accent: string; onPic
           {knockout.map((r) => (
             <div className="wc-round" key={r.round}>
               <div className="wc-round-h">{r.label}</div>
-              {r.matches.map((m, i) => (
-                <div className={`wc-match${m.completed ? " done" : ""}`} key={i}>
-                  <div className="wc-match-date">{m.completed ? "FT" : (m.status && m.status !== "STATUS_SCHEDULED" ? m.status : fmtD(m.date))}</div>
+              {r.matches.map((m, i) => {
+                const st = (m.status || "").toLowerCase();
+                const live = !m.completed && st !== "" && st !== "scheduled";  // "32'", "HT" 등
+                const label = live ? m.status : fmtD(m.date);   // 예정/종료=날짜, 진행중=분
+                return (
+                <div className={`wc-match${m.completed ? " done" : ""}${live ? " live" : ""}`} key={i}>
+                  <div className="wc-match-date">{label}{m.completed && <span className="wc-md-ft"> · 종료</span>}</div>
                   <div className="wc-side">{m.home_logo && <img src={m.home_logo} alt="" />}<span className="wc-ab">{m.home_abbr || m.home}</span><Score s={m.home_score} /></div>
                   <div className="wc-side">{m.away_logo && <img src={m.away_logo} alt="" />}<span className="wc-ab">{m.away_abbr || m.away}</span><Score s={m.away_score} /></div>
                 </div>
-              ))}
+                );
+              })}
             </div>
           ))}
         </div>
