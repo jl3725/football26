@@ -1,12 +1,14 @@
 name: Daily World Cup Fetch
 
-# 대회 기간 매일 06:00 UTC(한국 15:00)에 ESPN(fifa.world)에서 월드컵 데이터를 수집해
+# 대회 기간 하루 2회(한국 08:00·12:00)에 ESPN(fifa.world)에서 월드컵 데이터를 수집해
 # data/wc_*.csv 를 커밋 → Render 재배포 시 DB 재빌드로 반영.
+# 북중미 개최라 경기가 한국 오전에 몰려, 오전 결과를 빠르게 반영하려 08/12시 2회.
 # WC 는 ESPN 순수 JSON API 만 쓰므로(번역·RSS 없음) GH Actions 러너에서도 안정적.
-# 대회 종료 후에는 이 워크플로를 비활성(cron 주석)하면 됨.
+# (GH 예약 실행은 부하 시 수~수십분 지연될 수 있음). 대회 종료 후 cron 주석 처리.
 on:
   schedule:
-    - cron: "0 6 * * *"
+    - cron: "0 23 * * *"   # 08:00 KST (전날 23:00 UTC)
+    - cron: "0 3 * * *"    # 12:00 KST (03:00 UTC)
   workflow_dispatch:
 
 permissions:

@@ -1,22 +1,22 @@
 param(
     [string]$TaskName = "football26-wc-agent",
-    [string]$DailyAt = "15:20"
+    [string[]]$DailyAt = @("08:00", "12:00")
 )
 
-# 월드컵 일일 수집(로컬 폴백). 기본 자동화는 .github/workflows/daily_wc.yml(GH Actions,
-# ESPN 순수 API라 러너에서 안정적·자동 커밋/배포). GH 가 막히면 이 로컬 스케줄러 사용.
+# 월드컵 수집(로컬 폴백) — 하루 2회(기본 08:00·12:00). 북중미 개최라 경기가 한국 오전에
+# 몰려, 오전 결과를 빠르게 반영. 기본 자동화는 .github/workflows/daily_wc.yml(GH Actions).
+# GH 가 막히거나 지연될 때 이 로컬 스케줄러 사용. fetch_wc + fetch_fifa_ranking 둘 다 실행.
 $ErrorActionPreference = "Stop"
 
 $Root = Resolve-Path (Join-Path $PSScriptRoot "..")
-$Python = Join-Path $Root ".venv\Scripts\python.exe"
-$Script = Join-Path $Root "src\fetch_wc.py"
+$Runner = Join-Path $Root "scripts\run_wc_agent.ps1"
+if (-not (Test-Path $Runner)) { throw "WC agent runner not found: $Runner" }
 
-if (-not (Test-Path $Python)) { throw "Python not found: $Python" }
-if (-not (Test-Path $Script)) { throw "WC fetch script not found: $Script" }
-
-$Action = New-ScheduledTaskAction -Execute $Python -Argument "`"$Script`"" -WorkingDirectory $Root
-$Trigger = New-ScheduledTaskTrigger -Daily -At $DailyAt
+$PS = (Get-Command powershell.exe).Source
+$Action = New-ScheduledTaskAction -Execute $PS `
+    -Argument "-NoProfile -ExecutionPolicy Bypass -File `"$Runner`"" -WorkingDirectory $Root
+$Triggers = $DailyAt | ForEach-Object { New-ScheduledTaskTrigger -Daily -At $_ }
 $Settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -StartWhenAvailable
 
-Register-ScheduledTask -TaskName $TaskName -Action $Action -Trigger $Trigger -Settings $Settings -Force | Out-Null
-Write-Host "Registered $TaskName at $DailyAt (로컬 폴백 — 기본은 GH Actions daily_wc.yml)"
+Register-ScheduledTask -TaskName $TaskName -Action $Action -Trigger $Triggers -Settings $Settings -Force | Out-Null
+Write-Host "Registered $TaskName at $($DailyAt -join ', ') (로컬 폴백 — 기본은 GH Actions daily_wc.yml)"
