@@ -26,6 +26,8 @@ TEAM_COLOR: dict[str, str] = {
     "Real Sociedad": "#0067B1", "Espanyol": "#007FC8", "Athletic Club": "#EE2523",
     "Elche": "#00963E", "Alavés": "#0761AF", "Sevilla": "#D81920", "Osasuna": "#0A346F",
     "Mallorca": "#E20613", "Levante": "#004E9E", "Girona": "#CE1126", "Oviedo": "#004B9E",
+    # La Liga 26/27 승격
+    "Deportivo A Coruña": "#0075BE", "Málaga": "#0067B1", "Racing Santander": "#009B48",
 }
 
 # Transfermarkt verein id (크레스트 로고용)
@@ -43,6 +45,8 @@ TEAM_VEREIN: dict[str, int] = {
     "Valencia": 1049, "Real Sociedad": 681, "Espanyol": 714, "Athletic Club": 621,
     "Elche": 1531, "Alavés": 1108, "Sevilla": 368, "Osasuna": 331, "Mallorca": 237,
     "Levante": 3368, "Girona": 12321, "Oviedo": 2497,
+    # La Liga 26/27 승격 (Segunda → Primera)
+    "Deportivo A Coruña": 897, "Málaga": 1084, "Racing Santander": 630,
 }
 
 # 풀네임 + 홈구장 수용인원
@@ -71,6 +75,9 @@ TEAM_EXTRA: dict[str, tuple[str, int]] = {
     "Sevilla": ("Sevilla FC", 43883), "Osasuna": ("CA Osasuna", 23576),
     "Mallorca": ("RCD Mallorca", 23142), "Levante": ("Levante UD", 26354),
     "Girona": ("Girona FC", 14624), "Oviedo": ("Real Oviedo", 30500),
+    # La Liga 26/27 승격
+    "Deportivo A Coruña": ("RC Deportivo de La Coruña", 32000),
+    "Málaga": ("Málaga CF", 30044), "Racing Santander": ("Real Racing Club", 22222),
 }
 
 
@@ -121,6 +128,10 @@ TEAM_INFO: dict[str, dict] = {
     "Levante": {"city": "발렌시아", "stadium": "시우타트 데 발렌시아", "founded": 1909, "nick": "Granotes", "desc": "발렌시아의 청적 클럽."},
     "Girona": {"city": "지로나", "stadium": "몬틸리비", "founded": 1930, "nick": "Gironins", "desc": "시티 풋볼 그룹 소속 카탈루냐 클럽."},
     "Oviedo": {"city": "오비에도", "stadium": "카를로스 타르티에레", "founded": 1926, "nick": "Los Carbayones", "desc": "아스투리아스 전통 클럽."},
+    # La Liga 26/27 승격
+    "Deportivo A Coruña": {"city": "아 코루냐", "stadium": "리아소르", "founded": 1906, "nick": "Superdépor", "desc": "갈리시아 전통 명문. 26/27 시즌 승격."},
+    "Málaga": {"city": "말라가", "stadium": "라 로살레다", "founded": 1904, "nick": "Los Boquerones", "desc": "안달루시아 코스타델솔 클럽. 26/27 시즌 승격."},
+    "Racing Santander": {"city": "산탄데르", "stadium": "엘 사르디네로", "founded": 1913, "nick": "Los Racinguistas", "desc": "칸타브리아 전통 클럽. 26/27 시즌 승격."},
 }
 
 

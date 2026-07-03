@@ -291,7 +291,10 @@ def overview(team: str, league: str = ACTIVE_LEAGUE):
             info["squad_value"] = float(tv[team])
     info["value_rank"] = value_rank
 
-    # 핵심 선수 — ss_rating 상위 5
+    # 이번 창 이탈 선수(이적 OUT·임대종료 + left_for) — 핵심선수/떠난선수 일관 처리
+    deps = _departures(team, league, win)
+
+    # 핵심 선수 — ss_rating 상위 5 (이탈 선수 제외)
     stars = []
     squad_ratings = []
     if full_df is not None:
@@ -299,8 +302,14 @@ def overview(team: str, league: str = ACTIVE_LEAGUE):
         sq = full_df[full_df["squad"] == team].copy()
         if "left_for" in sq.columns:
             sq = sq[sq["left_for"].isna() | (sq["left_for"].astype(str).str.strip() == "")]
+        if deps:
+            sq = sq[~sq["player"].map(_dep_last).isin(deps.keys())]
         sq["_r"] = pd.to_numeric(sq.get("ss_rating"), errors="coerce").fillna(0)
-        for _, r in sq.sort_values("_r", ascending=False).head(5).iterrows():
+        # 소표본 유스 인플레 방지 — 출전시간 확보 선수만(부족하면 완화)
+        sq_star = sq[pd.to_numeric(sq.get("minutes"), errors="coerce").fillna(0) >= 450]
+        if len(sq_star) < 5:
+            sq_star = sq
+        for _, r in sq_star.sort_values("_r", ascending=False).head(5).iterrows():
             prof = _comp_profile(r, usage_idx)
             stars.append({
                 "player": r["player"], "pos": str(r.get("fl_group") or r.get("pos") or ""),
@@ -365,14 +374,14 @@ def overview(team: str, league: str = ACTIVE_LEAGUE):
                     leaders.append({"label": label, "player": r["player"], "photo": _photo(r),
                                     "value": round(float(r["_v"]), 2) if kind == "p90" else int(r["_v"])})
 
-    # 시즌 중 이적으로 팀을 떠난 선수
+    # 시즌 중 이적으로 팀을 떠난 선수 (이적 OUT·임대종료 + left_for 통합)
     departed = []
-    if full_df is not None and "left_for" in full_df.columns:
-        dep = full_df[(full_df["squad"] == team) & full_df["left_for"].notna()
-                      & (full_df["left_for"].astype(str).str.strip() != "")]
-        for _, r in dep.iterrows():
-            departed.append({"player": r["player"], "left_for": str(r.get("left_for") or ""),
-                             "pos": str(r.get("fl_group") or r.get("pos") or ""), "photo": _photo(r)})
+    resolve_dep = _players_lookup(league)
+    for v in deps.values():
+        r = resolve_dep(v["player"])
+        departed.append({"player": v["player"], "left_for": v["club"],
+                         "pos": v["pos"] or (str(r.get("fl_group") or r.get("pos") or "") if r is not None else ""),
+                         "photo": _photo(r) if r is not None else ""})
 
     # 강점/약점 (지수 상·하위 라벨)
     edge = {"strengths": [], "weaknesses": []}
@@ -1511,6 +1520,34 @@ def _project_ovr(base: int, source: str, target: str, big_match: bool, age, buck
     return proj, proof, (" · ".join(notes))
 
 
+def _incoming_ovr(name: str, target_league: str):
+    """우리 리그 players_full 에 없는 영입(타 리그에서 온 선수)의 예상 OVR + 사진.
+    타 리그 players_full 에서 찾아 base OVR → 리그계수 projection(교차리그). 없으면 (None, '')."""
+    from unidecode import unidecode
+    nk = unidecode(str(name)).lower().strip()
+    ln = nk.split()[-1] if nk.split() else nk
+    for src in _LEAGUE_LEVEL:
+        if src == target_league:
+            continue
+        pf = _pf(src)
+        if pf is None or "player" not in pf.columns:
+            continue
+        norm = pf["player"].map(lambda x: unidecode(str(x)).lower().strip())
+        cand = pf[norm == nk]
+        if cand.empty:                                      # 성(last name)만 매칭 — 유일할 때만
+            cand = pf[norm.map(lambda s: s.split()[-1] if s.split() else "") == ln]
+            if len(cand) != 1:
+                continue
+        r = (cand.sort_values("minutes", ascending=False).iloc[0]
+             if "minutes" in cand.columns else cand.iloc[0])
+        base = _player_ovr(r)
+        if not base:
+            continue
+        proj, _proof, _risk = _project_ovr(base, src, target_league, False, r.get("age"), _pos_bucket(r))
+        return proj, (_photo(r) or "")
+    return None, ""
+
+
 _TOUT_CACHE: dict = {}
 
 
@@ -2417,6 +2454,46 @@ def _pos_line(tm_pos: str) -> str:
     return "MID"
 
 
+def _canon_line(x) -> str:
+    """라인 토큰 통일 — slot_kind/_pos_line 은 'FWD', line_of_row 는 'ATT' 를 쓴다.
+    대체 매칭이 어긋나지 않도록 하나로 정규화(ATT)."""
+    x = str(x or "").upper()
+    return "ATT" if x in ("FWD", "ATT", "ATTACK") else x
+
+
+def _is_loan_move(fee_text) -> bool:
+    """순수 임대(아웃 임대·임대 이적)면 True. '임대 종료(End of loan)'는 실제 이탈이므로 False."""
+    f = str(fee_text or "").lower()
+    return "loan" in f and "end of loan" not in f
+
+
+def _dep_last(nm) -> str:
+    t = str(nm).split()
+    return t[-1].lower() if t else str(nm).lower()
+
+
+def _departures(team: str, league: str, win: dict) -> dict:
+    """이번 창 이탈 선수 — 이적 OUT(순수 임대아웃 제외·임대종료 포함) + players_full left_for.
+    left_for 미동기 리그(LaLiga)에서도 이적 테이블로 이탈을 잡는다. 반환 {last_name: {player, club, pos}}."""
+    dep: dict[str, dict] = {}
+    tr = ds.read_table("transfers", league=league)
+    if tr is not None and "squad" in tr.columns:
+        tt, _wf = _window_filter(tr[tr["squad"] == team].copy(), win)
+        tt = tt[(tt["direction"] == "out") & ~tt["fee_text"].map(_is_loan_move)]
+        for _, r in tt.iterrows():
+            dep[_dep_last(r.get("player"))] = {"player": str(r.get("player") or ""),
+                "club": str(r.get("club") or ""), "pos": str(r.get("pos") or "")}
+    full = _pf(league)
+    if full is not None and "left_for" in full.columns:
+        lf = full[(full["squad"] == team) & full["left_for"].notna()
+                  & (full["left_for"].astype(str).str.strip() != "")]
+        for _, r in lf.iterrows():
+            dep.setdefault(_dep_last(r.get("player")), {"player": str(r["player"]),
+                "club": str(r.get("left_for") or ""),
+                "pos": str(r.get("tm_position") or r.get("fl_group") or r.get("pos") or "")})
+    return dep
+
+
 @app.get("/api/projection/{team}")
 def projection(team: str, league: str = ACTIVE_LEAGUE):
     """다음 시즌(현재 이적창) 예상 XI + 진단.
@@ -2432,28 +2509,19 @@ def projection(team: str, league: str = ACTIVE_LEAGUE):
         t = str(nm).split()
         return t[-1].lower() if t else str(nm).lower()
 
-    # 이탈: 이적 OUT(현재창, 임대제외) + left_for
+    # 이탈: 이적 OUT(현재창) + left_for. 순수 임대아웃만 제외 — '임대 종료(로anee 반환)'는 이탈.
     tr = ds.read_table("transfers", league=league)
-    departing = {}   # last-name → {player, club}
-    if tr is not None:
-        tt, _wf = _window_filter(tr[tr["squad"] == team].copy(), win)
-        tt = tt[(tt["direction"] == "out") & ~tt["fee_text"].astype(str).str.lower().str.contains("loan", na=False)]
-        for _, r in tt.iterrows():
-            departing[_last(r.get("player"))] = {"player": str(r.get("player") or ""), "club": str(r.get("club") or "")}
-    full = _pf(league)
-    if full is not None and "left_for" in full.columns:
-        lf = full[(full["squad"] == team) & full["left_for"].notna() & (full["left_for"].astype(str).str.strip() != "")]
-        for _, r in lf.iterrows():
-            departing.setdefault(_last(r.get("player")), {"player": str(r["player"]), "club": str(r.get("left_for") or "")})
+    departing = {k: {**v, "line": _canon_line(_pos_line(v["pos"]))}
+                 for k, v in _departures(team, league, win).items()}
 
-    # 영입: 이적 IN(현재창, 임대제외)
+    # 영입: 이적 IN(현재창, 임대제외 — 임대영입·복귀는 투기적이라 XI 반영 안 함)
     signings = []
     if tr is not None:
         ins, _wf = _window_filter(tr[tr["squad"] == team].copy(), win)
         ins = ins[(ins["direction"] == "in") & ~ins["fee_text"].astype(str).str.lower().str.contains("loan", na=False)]
         for _, r in ins.iterrows():
             signings.append({"player": str(r.get("player") or ""), "pos": str(r.get("pos") or ""),
-                             "line": _pos_line(r.get("pos")), "fee": str(r.get("fee_text") or ""),
+                             "line": _canon_line(_pos_line(r.get("pos"))), "fee": str(r.get("fee_text") or ""),
                              "photo": str(r.get("photo") or "") if str(r.get("photo") or "").startswith("http") else "",
                              "used": False})
 
@@ -2464,21 +2532,34 @@ def projection(team: str, league: str = ACTIVE_LEAGUE):
         sd = squad.copy()
         sd["_ovr"] = sd.apply(_player_ovr, axis=1)
         for _, r in sd.sort_values("_ovr", ascending=False).iterrows():
-            squad_pool.append({"player": str(r["player"]), "line": rv3.line_of_row(r),
+            squad_pool.append({"player": str(r["player"]), "line": _canon_line(rv3.line_of_row(r)),
                                "ovr": int(r["_ovr"]), "photo": _photo(r)})
 
     xi_names = {_last(p["player"]) for p in season["placements"]}
 
-    def _pick_replacement(line):
-        # 영입 우선(같은 라인), 없으면 스쿼드 미출전 선수
-        for s in signings:
-            if not s["used"] and s["line"] == line:
-                s["used"] = True
-                r = resolve(s["player"])
-                return {"player": s["player"], "ovr": _player_ovr(r) if r is not None else None,
-                        "photo": s["photo"] or (_photo(r) if r is not None else ""), "src": "signing"}
-        for c in squad_pool:
-            if c["line"] == line and _last(c["player"]) not in xi_names:
+    def _pick_replacement(slot_line, want_line=None):
+        """이탈 선수 자리 대체자. 이탈 선수의 실제 포지션(want_line) 영입 → 슬롯 라인 영입 →
+        슬롯 라인 스쿼드 순. (4-2-3-1 등에서 LW 가 LCM 슬롯=MID 로 잡혀도 윙어 영입이 들어가도록)"""
+        slot_line = _canon_line(slot_line)
+        targets = []
+        if want_line and _canon_line(want_line) not in targets:
+            targets.append(_canon_line(want_line))
+        if slot_line not in targets:
+            targets.append(slot_line)
+        for tgt in targets:                       # 영입 우선(이탈 포지션 → 슬롯 라인)
+            for s in signings:
+                if not s["used"] and s["line"] == tgt:
+                    s["used"] = True
+                    r = resolve(s["player"])
+                    ovr = _player_ovr(r) if r is not None else None
+                    photo = s["photo"] or (_photo(r) if r is not None else "")
+                    if ovr is None:                # 타 리그 영입(예: Gordon EPL→LaLiga) — 교차리그 projection
+                        x_ovr, x_photo = _incoming_ovr(s["player"], league)
+                        ovr = x_ovr
+                        photo = photo or x_photo
+                    return {"player": s["player"], "ovr": ovr, "photo": photo, "src": "signing"}
+        for c in squad_pool:                      # 스쿼드 내부 승격(슬롯 라인)
+            if c["line"] == slot_line and _last(c["player"]) not in xi_names:
                 xi_names.add(_last(c["player"]))
                 return {"player": c["player"], "ovr": c["ovr"], "photo": c["photo"], "src": "squad"}
         return {"player": "영입 필요", "ovr": None, "photo": "", "src": "gap"}
@@ -2487,7 +2568,7 @@ def projection(team: str, league: str = ACTIVE_LEAGUE):
     for p in season["placements"]:
         key = _last(p["player"])
         if key in departing and p["player"] != "—":
-            rep = _pick_replacement(p["kind"])
+            rep = _pick_replacement(p["kind"], departing[key].get("line"))
             projected.append({**p, "player": rep["player"], "ovr": rep["ovr"], "photo": rep["photo"], "changed": True})
             sev = "핵심" if (p.get("ovr") or 0) >= 80 else "로테이션"
             note = (f"{rep['player']} 승격" if rep["src"] == "squad"
@@ -2501,7 +2582,7 @@ def projection(team: str, league: str = ACTIVE_LEAGUE):
     # 사용되지 않은 영입 = 보강
     line_top = {}
     for p in season["placements"]:
-        k = p["kind"]
+        k = _canon_line(p["kind"])
         if k not in line_top or (p.get("ovr") or 0) > line_top[k][1]:
             line_top[k] = (p["player"], p.get("ovr") or 0)
     for s in signings:

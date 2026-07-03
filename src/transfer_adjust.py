@@ -59,18 +59,21 @@ def build_adjusted_full(full_df, transfers, win) -> "pd.DataFrame | None":
         tt = tt[tt["window"].astype(str) == str(win.get("window"))]
     if tt.empty:
         return full_df
-    # 임대/임대복귀 제외
-    if "fee_text" in tt.columns:
-        tt = tt[~tt["fee_text"].astype(str).str.lower().str.contains("loan", na=False)]
-    if tt.empty:
-        return full_df
 
     valid_squads = set(full_df["squad"].astype(str)) if "squad" in full_df.columns else set()
     adj = full_df.copy()
     adj["_norm"] = adj["player"].map(_norm)
 
-    ins = tt[tt["direction"] == "in"]
-    outs = tt[tt["direction"] == "out"]
+    ins = tt[tt["direction"] == "in"].copy()
+    outs = tt[tt["direction"] == "out"].copy()
+    # 임대는 영구 스쿼드 변화가 아님. 단, OUT 의 '임대 종료(End of loan)'는 로anee 반환 = 실제 이탈.
+    if "fee_text" in ins.columns:
+        ins = ins[~ins["fee_text"].astype(str).str.lower().str.contains("loan", na=False)]
+    if "fee_text" in outs.columns:
+        ofee = outs["fee_text"].astype(str).str.lower()
+        outs = outs[~(ofee.str.contains("loan", na=False) & ~ofee.str.contains("end of loan", na=False))]
+    if ins.empty and outs.empty:
+        return full_df
 
     consumed: set[str] = set()      # 리그 내 이동으로 원 소속에서 빠질 선수(norm)
     relocated: list = []            # 목적팀으로 옮긴 실제 행
