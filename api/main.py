@@ -398,7 +398,7 @@ def overview(team: str, league: str = ACTIVE_LEAGUE):
                 val = int(um[col]) if pd.notna(um.get(col)) else None
             except (TypeError, ValueError):
                 val = None
-            if val is not None:
+            if val is not None and val > 0:   # 0 = 소스 데이터 미수집(예: SerieA 압박지표) → 제외
                 scored.append((label, val))
         scored.sort(key=lambda x: -x[1])
         edge = {"strengths": [{"label": l, "value": v} for l, v in scored[:3]],
@@ -1103,14 +1103,11 @@ def analytics(team: str, league: str = ACTIVE_LEAGUE):
             ovr = {"overall": _t2.get("overall", v.get("종합 지수", 60)), "form": v.get("시즌 폼", 60),
                    "attack": _t2.get("attack", v.get("공격 지수", 60)), "midfield": _t2.get("midfield", v.get("미드필드 지수", 60)),
                    "defense": _t2.get("defense", v.get("수비 지수", 60)), "set_piece": _u("set_piece_attack_index")}
-            radar = [
-                {"axis": "ATT OUT", "value": _u("attack_output_index")},
-                {"axis": "CREATE", "value": _u("attack_creation_index")},
-                {"axis": "CONTROL", "value": _u("midfield_control_index")},
-                {"axis": "PRESS", "value": _u("pressing_index")},
-                {"axis": "DEF OUT", "value": _u("defense_output_index")},
-                {"axis": "SET PC", "value": _u("set_piece_attack_index")},
-            ]
+            radar = [{"axis": ax, "value": _u(col)} for ax, col in [
+                ("ATT OUT", "attack_output_index"), ("CREATE", "attack_creation_index"),
+                ("CONTROL", "midfield_control_index"), ("PRESS", "pressing_index"),
+                ("DEF OUT", "defense_output_index"), ("SET PC", "set_piece_attack_index"),
+            ] if _u(col) > 0]   # 0 = 소스 미수집(SerieA 압박 등) → 축 제외
 
     # Match Factor Lab — 지수 상/하위 팩터 + 기여 선수
     factors = _match_factors(team, league, full, um_df)
@@ -1166,7 +1163,7 @@ def _match_factors(team, league, full, um_df):
             val = int(u[col]) if pd.notna(u.get(col)) else None
         except (TypeError, ValueError):
             val = None
-        if val is not None:
+        if val is not None and val > 0:   # 0 = 소스 미수집 지표 → 강점/약점에서 제외
             scored.append((label, line, val))
     scored.sort(key=lambda x: -x[2])
 
@@ -1582,61 +1579,62 @@ def _transferred_out(league: str) -> dict:
     return m
 
 
+_LINE_OF_BUCKET = {"GK": "GK", "CB": "DEF", "LB": "DEF", "RB": "DEF",
+                   "DM": "MID", "CM": "MID", "AM": "MID", "LW": "ATT", "RW": "ATT", "ST": "ATT"}
+_ALL_BUCKETS = ["GK", "CB", "LB", "RB", "DM", "CM", "AM", "LW", "RW", "ST"]
+_FIT_BY_LINE = {"ATT": ("npxg_p90", "득점 위협"), "MID": ("key_passes_per90", "찬스 창출"),
+                "DEF": ("tackles_won_per90_ss", "수비 기여"), "GK": ("", "안정감")}
+_SRC_LABEL = {"EPL": "EPL", "LaLiga": "라리가", "SerieA": "세리에A",
+              "Bundesliga": "분데스리가", "Ligue1": "리그1"}
+
+
+def _formation_bucket_needs(team: str, league: str) -> dict:
+    """팀 베스트 XI(현 포메이션)에서 세부 포지션별 필요 인원. 예 4-3-3 → CB 2·LW 1…"""
+    pl = _placements(team, league)
+    if not pl:
+        return {}
+    resolve = _players_lookup(league)
+    cnt: dict[str, int] = {}
+    for p in pl["placements"]:
+        r = resolve(p.get("player"))
+        bk = _pos_bucket(r) if r is not None else _fine_bucket(p.get("slot"))
+        if bk == "W":                       # _fine_bucket 은 윙어를 W로 → 슬롯 좌우로 분리
+            s = str(p.get("slot") or "").upper()
+            bk = "RW" if s.startswith("R") else "LW"
+        if bk in _LINE_OF_BUCKET:
+            cnt[bk] = cnt.get(bk, 0) + 1
+    return cnt
+
+
 @app.get("/api/recommend/{team}")
 def recommend(team: str, league: str = ACTIVE_LEAGUE):
-    """보강 후보 — 현 포메이션의 '가장 얇은 세부 포지션'에, 팀 티어에 맞는 현실적 후보만.
-    (라인 전체 OVR 정렬 X: 선더랜드가 홀란드를 추천하지 않도록 클럽 티어×역할로 필터)"""
+    """보강 후보 — 포메이션 전 포지션에서 '얇은 세부 포지션(CB/RB/DM…)' 을 가려내고,
+    각 포지션마다 팀 티어에 맞는 현실적 후보를 **전 리그(교차리그 projection)** 에서 추천."""
     full = _pf(league)
     if full is None:
         return {"team": team, "weakest": None, "recommendations": [], "lost_targets": [], "addressed": False}
 
     nd = _compute_needs(team, league)
-    open_out = [n for n in nd["needs"] if n["status"] == "open" and n["line"] in ("ATT", "MID", "DEF")]
     trr = rv3.team_ratings(full, team) or {}
     team_ovr = trr.get("overall", 78)
-    units = {"ATT": trr.get("attack", 99), "MID": trr.get("midfield", 99), "DEF": trr.get("defense", 99)}
-    signed = {s["line"] for s in nd["window"]["signings"]}
-    target = open_out[0]["line"] if open_out else min(units, key=units.get)
-    addressed = target in signed
-    label = {"ATT": "공격", "MID": "미드필드", "DEF": "수비"}[target]
+    signed_lines = {s["line"] for s in nd["window"]["signings"]}
 
-    # 현 스쿼드에서 타깃 라인의 세부 포지션(LW/RW/ST 등)별 뎁스 → '얇은 포지션(들)' 선정
+    # 1) 포메이션 요구 인원 + 스쿼드 세부 포지션 뎁스 → 라인 무관 '얇은 포지션' 선정
     sq = _squad_df(team, league)
-    buckets = _BUCKET_BY_LINE[target]
-    depth: dict[str, tuple] = {}
+    need_cnt = _formation_bucket_needs(team, league) or \
+        {"GK": 1, "CB": 2, "LB": 1, "RB": 1, "DM": 1, "CM": 2, "LW": 1, "RW": 1, "ST": 1}
+    depth: dict[str, int] = {}
     if sq is not None:
-        for bk in buckets:
-            ovrs = sorted((_player_ovr(p) for _, p in sq.iterrows() if _pos_bucket(p) == bk), reverse=True)
-            strong = sum(1 for o in ovrs if o >= team_ovr - 5)     # 스쿼드급 옵션 수
-            depth[bk] = (strong, round(sum(ovrs[:2])))             # 적을수록 얇음
-    ranked = sorted(buckets, key=lambda b: depth.get(b, (0, 0)))
-    # 스쿼드급 옵션 2명 미만인 포지션 = 약점(없으면 가장 얇은 1곳). 최대 3개.
-    weak_buckets = [b for b in ranked if depth.get(b, (0, 0))[0] < 2][:3] or ranked[:1]
+        for bk in _ALL_BUCKETS:
+            ovrs = [_player_ovr(p) for _, p in sq.iterrows() if _pos_bucket(p) == bk]
+            depth[bk] = sum(1 for o in ovrs if o >= team_ovr - 5)   # 스쿼드급 옵션 수
+    used = [b for b in _ALL_BUCKETS if need_cnt.get(b, 0) > 0]
+    # 얇은 정도 = 스쿼드급옵션 − (필요+1). 낮을수록(음수) 시급. 라인 무관 최대 5곳.
+    ranked = sorted(used, key=lambda b: depth.get(b, 0) - (need_cnt.get(b, 0) + 1))
+    weak_buckets = [b for b in ranked if depth.get(b, 0) < need_cnt.get(b, 0) + 1][:5] or ranked[:2]
+    addressed = bool({_LINE_OF_BUCKET[b] for b in weak_buckets} & signed_lines)
 
-    club_str = _club_strength(league)
-    usage_idx = _comp_usage(league)
-    resolve = _players_lookup(league)
-
-    fit_col = {"ATT": "npxg_p90", "MID": "key_passes_per90", "DEF": "tackles_won_per90_ss"}[target]
-    fit_label = {"ATT": "득점 위협", "MID": "찬스 창출", "DEF": "수비 기여"}[target]
-
-    tout = _transferred_out(league)  # {norm_key: 목적지} — 이적완료(left_for 미동기 보완)
-    pool = full[full["squad"] != team].copy()
-    pool["_mn"] = pd.to_numeric(pool["minutes"], errors="coerce").fillna(0)
-    pool["_bucket"] = pool.apply(_pos_bucket, axis=1)
-    pool["_ovr"] = pool.apply(_player_ovr, axis=1)
-    _lf = (pool["left_for"].notna() & (pool["left_for"].astype(str).str.strip() != "")) \
-        if "left_for" in pool.columns else pd.Series(False, index=pool.index)
-    _to = pool.apply(lambda r: (str(r.get("squad") or ""), str(r.get("norm_key"))) in tout, axis=1)
-    pool["_left"] = _lf | _to
-
-    def _dest(r):
-        lf = str(r.get("left_for") or "").strip()
-        return lf if lf else tout.get((str(r.get("squad") or ""), str(r.get("norm_key"))), "")
-
-    line_ref = pool[pool["_bucket"].isin(buckets)]
-    fit_s = pd.to_numeric(line_ref.get(fit_col), errors="coerce") if fit_col in line_ref.columns else pd.Series(dtype=float)
-    rate_s = pd.to_numeric(line_ref.get("ss_rating"), errors="coerce")
+    tout = _transferred_out(league)
 
     def _pct_in(s, v):
         sv = s.dropna()
@@ -1648,74 +1646,95 @@ def recommend(team: str, league: str = ACTIVE_LEAGUE):
             return 0
         return int(round((sv < v).mean() * 100))
 
-    # 교차 리그 후보 — 타 리그(EPL↔LaLiga) 선수를 우리 리그로 projection(GPT 2층 모델)
-    other = {"EPL": "LaLiga", "LaLiga": "EPL"}.get(league)
-    usage_other = _comp_usage(other) if other else None
-    club_other = _club_strength(other) if other else {}
-    resolve_other = _players_lookup(other) if other else resolve
+    def _prep(df):
+        df = df.copy()
+        df["_mn"] = pd.to_numeric(df["minutes"], errors="coerce").fillna(0)
+        df["_bucket"] = df.apply(_pos_bucket, axis=1)
+        df["_ovr"] = df.apply(_player_ovr, axis=1)
+        df["_left"] = (df["left_for"].notna() & (df["left_for"].astype(str).str.strip() != "")) \
+            if "left_for" in df.columns else False
+        return df
 
-    def _rphoto(r, src):  # 행 자체 사진 우선, 없으면 소속 리그 resolver 폴백
-        return _photo(r) or _resolve_photo(r["player"], resolve if src == league else resolve_other, src)
+    # 2) 후보 풀 — 같은 리그 + 데이터 있는 모든 타 리그(EPL·LaLiga·SerieA·…)
+    pool = _prep(full[full["squad"] != team])
+    pool["_left"] = pool["_left"] | pool.apply(
+        lambda r: (str(r.get("squad") or ""), str(r.get("norm_key"))) in tout, axis=1)
+    src_meta = {league: {"pool": pool, "usage": _comp_usage(league),
+                         "club": _club_strength(league), "resolve": _players_lookup(league)}}
+    for olg in ds.available_leagues():
+        if olg == league:
+            continue
+        ox = _pf(olg)
+        if ox is None or "player" not in ox.columns:
+            continue
+        src_meta[olg] = {"pool": _prep(ox), "usage": _comp_usage(olg),
+                         "club": _club_strength(olg), "resolve": _players_lookup(olg)}
 
-    cross = None
-    fit_s_o = rate_s_o = pd.Series(dtype=float)
-    if other:
-        cx = _pf(other)
-        if cx is not None:
-            cx = cx.copy()
-            cx["_mn"] = pd.to_numeric(cx["minutes"], errors="coerce").fillna(0)
-            cx["_bucket"] = cx.apply(_pos_bucket, axis=1)
-            cx["_ovr"] = cx.apply(_player_ovr, axis=1)
-            cx["_left"] = (cx["left_for"].notna() & (cx["left_for"].astype(str).str.strip() != "")) \
-                if "left_for" in cx.columns else False
-            cross = cx
-            cl = cx[cx["_bucket"].isin(buckets)]
-            fit_s_o = pd.to_numeric(cl.get(fit_col), errors="coerce") if fit_col in cl.columns else pd.Series(dtype=float)
-            rate_s_o = pd.to_numeric(cl.get("ss_rating"), errors="coerce")
+    _dist_cache: dict = {}
 
-    def _score(r, src):
-        role = _role_for(r, usage_idx if src == league else usage_other)
+    def _dist(src, bk, col):
+        key = (src, bk, col)
+        if key not in _dist_cache:
+            p = src_meta[src]["pool"]
+            sub = p[p["_bucket"] == bk]
+            _dist_cache[key] = (pd.to_numeric(sub.get(col), errors="coerce")
+                                if col and col in sub.columns else pd.Series(dtype=float))
+        return _dist_cache[key]
+
+    def _rphoto(r, src):
+        return _photo(r) or _resolve_photo(r["player"], src_meta[src]["resolve"], src)
+
+    def _dest(r):
+        lf = str(r.get("left_for") or "").strip()
+        return lf if lf else tout.get((str(r.get("squad") or ""), str(r.get("norm_key"))), "")
+
+    def _score(r, src, bk):
+        role = _role_for(r, src_meta[src]["usage"])
         base = int(r["_ovr"])
         if src == league:
-            proj, proof, risk_note = base, "", ""
-            cstr = club_str.get(str(r.get("squad") or ""), 78)
+            proj, proof, risk = base, "", ""
         else:
-            proj, proof, risk_note = _project_ovr(base, src, league, role["big_match"], r.get("age"), r["_bucket"])
-            cstr = club_other.get(str(r.get("squad") or ""), 78)
+            proj, proof, risk = _project_ovr(base, src, league, role["big_match"], r.get("age"), bk)
+        cstr = src_meta[src]["club"].get(str(r.get("squad") or ""), 78)
         ok, why = _attainable(proj, cstr, team_ovr, role["role"], r.get("minutes"))
-        return role, base, proj, proof, risk_note, ok, why
+        return role, base, proj, proof, risk, ok, why
 
-    # 얇은 포지션별: 현실적(picked) + 비현실 눈에띄는(longshots). projection OVR 순.
-    per = max(3, -(-9 // len(weak_buckets)))
+    # 3) 얇은 포지션마다 전 리그 후보 스코어 → 현실적(picked) + 롱샷
+    per = max(2, -(-9 // len(weak_buckets)))
     picked, longshots, seen_long = [], [], set()
     for bk in weak_buckets:
-        cand = [(r, league) for _, r in pool[(pool["_bucket"] == bk) & (~pool["_left"]) & (pool["_mn"] >= 600)]
-                .sort_values("_ovr", ascending=False).head(25).iterrows()]
-        if cross is not None:
-            cand += [(r, other) for _, r in cross[(cross["_bucket"] == bk) & (~cross["_left"]) & (cross["_mn"] >= 600)]
-                     .sort_values("_ovr", ascending=False).head(20).iterrows()]
+        line = _LINE_OF_BUCKET.get(bk, "MID")
+        fit_col, fit_label = _FIT_BY_LINE.get(line, ("", ""))
+        cand = []
+        for src, meta in src_meta.items():
+            p = meta["pool"]
+            sub = p[(p["_bucket"] == bk) & (~p["_left"]) & (p["_mn"] >= 600)] \
+                .sort_values("_ovr", ascending=False).head(25 if src == league else 15)
+            cand += [(r, src) for _, r in sub.iterrows()]
         scored = []
         for r, src in cand:
-            role, base, proj, proof, risk_note, ok, why = _score(r, src)
-            scored.append((r, src, role, base, proj, proof, risk_note, ok, why))
+            role, base, proj, proof, risk, ok, why = _score(r, src, bk)
+            fit = _pct_in(_dist(src, bk, fit_col), r.get(fit_col)) if fit_col else 0
+            match = _pct_in(_dist(src, bk, "ss_rating"), r.get("ss_rating"))
+            scored.append((r, src, role, base, proj, proof, risk, ok, why, fit, match, fit_label, bk))
         scored.sort(key=lambda x: -x[4])
         n = 0
-        for r, src, role, base, proj, proof, risk_note, ok, why in scored:
+        for t in scored:
+            r, src, proj, ok, pl_name = t[0], t[1], t[4], t[7], t[0]["player"]
             if ok and n < per:
-                picked.append((r, src, role, base, proj, proof, risk_note, why, bk)); n += 1
-            elif (not ok) and proj >= team_ovr and r["player"] not in seen_long and len(longshots) < 4:
-                seen_long.add(r["player"]); longshots.append((r, src, role, base, proj, why, bk))
+                picked.append(t); n += 1
+            elif (not ok) and proj >= team_ovr and pl_name not in seen_long and len(longshots) < 4:
+                seen_long.add(pl_name); longshots.append(t)
     picked.sort(key=lambda x: -x[4])
     longshots.sort(key=lambda x: -x[4])
 
     recs = []
-    for r, src, role, base, proj, proof, risk_note, attain_why, bk in picked[:9]:
+    for t in picked[:9]:
+        r, src, role, base, proj, proof, risk_note, ok, attain_why, fit, match, fit_label, bk = t
         age, mn = int(_num(r.get("age"))), int(_num(r.get("minutes")))
         val = _num(r.get("market_value_eur")); rating = round(_num(r.get("ss_rating")), 2)
         cross_lg = src != league
-        _fs, _rs = (fit_s_o, rate_s_o) if cross_lg else (fit_s, rate_s)
-        fit = _pct_in(_fs, r.get(fit_col)); match = _pct_in(_rs, r.get("ss_rating"))
-        srclabel = {"LaLiga": "라리가", "EPL": "EPL"}.get(src, src)
+        srclabel = _SRC_LABEL.get(src, src)
         why_fit, why_risk = [f"영입 현실성: {attain_why}"], []
         if cross_lg:
             why_fit.append(f"{srclabel} OVR {base} → 예상 {proj}")
@@ -1750,23 +1769,24 @@ def recommend(team: str, league: str = ACTIVE_LEAGUE):
             "why_fit": why_fit, "why_risk": why_risk, "confidence": conf,
         })
 
-    # 롱샷 — 최상위급이나 티어·라이벌상 영입 가능성 낮은 선수(별도 섹션)
     longshots_out = []
-    for r, src, role, base, proj, why, bk in longshots[:4]:
-        srclabel = {"LaLiga": "라리가", "EPL": "EPL"}.get(src, src)
+    for t in longshots[:4]:
+        r, src, role, base, proj, bk = t[0], t[1], t[2], t[3], t[4], t[12]
         longshots_out.append({
             "player": r["player"], "squad": str(r.get("squad") or ""),
             "logo": tm.team_logo(str(r.get("squad") or "")),
             "ovr": proj, "pos": str(r.get("fl_group") or r.get("pos") or ""),
             "photo": _rphoto(r, src),
             "role": role["role"], "bucket_label": _BUCKET_LABEL.get(bk, bk),
-            "cross_league": src != league, "source_league": srclabel, "current_ovr": base,
-            "reason": why,
+            "cross_league": src != league, "source_league": _SRC_LABEL.get(src, src),
+            "current_ovr": base, "reason": t[8],
         })
 
-    # Lost Target Review — 약점 라인 선수 중 이번 창 이적(완료). 최고가치 1명 별표.
+    # Lost Target Review — 약점 포지션 선수 중 이번 창 이적(완료). 최고가치 1명 별표.
     lost_out = []
-    lost = pool[pool["_bucket"].isin(buckets) & pool["_left"]].sort_values("_ovr", ascending=False)
+    resolve = src_meta[league]["resolve"]
+    usage_idx = src_meta[league]["usage"]
+    lost = pool[pool["_bucket"].isin(weak_buckets) & pool["_left"]].sort_values("_ovr", ascending=False)
     for i, (_, r) in enumerate(lost.head(4).iterrows()):
         lost_out.append({
             "player": r["player"], "from": str(r.get("squad") or ""),
@@ -1778,10 +1798,12 @@ def recommend(team: str, league: str = ACTIVE_LEAGUE):
         })
 
     weak_labels = [_BUCKET_LABEL.get(b, b) for b in weak_buckets]
+    top_line = _LINE_OF_BUCKET.get(weak_buckets[0], "MID") if weak_buckets else "MID"
     return {"team": team, "color": tm.team_color(team),
-            "weakest": {"line": target, "label": label, "fit_label": fit_label,
-                        "bucket": weak_buckets[0], "bucket_label": " · ".join(weak_labels),
-                        "buckets": weak_labels},
+            "weakest": {"line": top_line, "label": " · ".join(weak_labels),
+                        "fit_label": _FIT_BY_LINE.get(top_line, ("", ""))[1],
+                        "bucket": weak_buckets[0] if weak_buckets else "",
+                        "bucket_label": " · ".join(weak_labels), "buckets": weak_labels},
             "addressed": addressed, "recommendations": recs,
             "longshots": longshots_out, "lost_targets": lost_out}
 
