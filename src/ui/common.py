@@ -9,8 +9,11 @@ other ui modules. Move shared HTML/format primitives here.
 import html
 
 import pandas as pd
-import streamlit as st
 from unidecode import unidecode
+
+# streamlit 은 레거시 Streamlit 앱(app.py) 렌더 헬퍼(_iframe·sec_title)에서만 필요.
+# 데이터/뉴스 수집 체인(fetch_news_daily → ui.news → ui.common)은 team_color 만 쓰므로
+# 여기서 top-level import 하지 않는다(그러면 GH Actions 러너에 streamlit 불필요).
 
 ACCENT = "#e8344e"   # 레드 — 로고/액티브 네비/섹션 바
 
@@ -268,6 +271,7 @@ def pos_chip_color(pos: str) -> str:
 def _iframe(inner_html: str, height: int, scrolling: bool = False) -> None:
     """카드 HTML을 components.html(iframe)로 렌더 — st.markdown과 달리 외부 이미지
     (background-image)가 sanitize되지 않아 선수 사진이 정상 표시된다."""
+    import streamlit as st  # 레거시 앱 전용 — 지연 import
     st.components.v1.html(
         "<style>body{margin:0;background:#eef1f6;"
         "font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}</style>" + inner_html,
@@ -277,6 +281,7 @@ def _iframe(inner_html: str, height: int, scrolling: bool = False) -> None:
 
 def sec_title(title: str, sub: str = "") -> None:
     """레퍼런스의 '레드 세로 바 + 제목' 섹션 헤더. sub는 회색 보조설명."""
+    import streamlit as st  # 레거시 앱 전용 — 지연 import
     sub_html = f"<div style='color:#8a93a5;font-size:13px;margin-top:2px'>{sub}</div>" if sub else ""
     st.markdown(
         f"<div style='display:flex;gap:10px;align-items:flex-start;margin:6px 0 14px'>"

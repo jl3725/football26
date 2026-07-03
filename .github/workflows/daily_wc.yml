@@ -1,14 +1,13 @@
 name: Daily World Cup Fetch
 
-# 대회 기간 하루 2회(한국 08:00·12:00)에 ESPN(fifa.world)에서 월드컵 데이터를 수집해
+# 대회 기간 매시간 ESPN(fifa.world)에서 월드컵 데이터를 수집해
 # data/wc_*.csv 를 커밋 → Render 재배포 시 DB 재빌드로 반영.
-# 북중미 개최라 경기가 한국 오전에 몰려, 오전 결과를 빠르게 반영하려 08/12시 2회.
+# 당일 녹아웃 결과를 최대한 빨리 반영하려 매시간(daily 2회로는 당일 결과 지연).
 # WC 는 ESPN 순수 JSON API 만 쓰므로(번역·RSS 없음) GH Actions 러너에서도 안정적.
 # (GH 예약 실행은 부하 시 수~수십분 지연될 수 있음). 대회 종료 후 cron 주석 처리.
 on:
   schedule:
-    - cron: "0 23 * * *"   # 08:00 KST (전날 23:00 UTC)
-    - cron: "0 3 * * *"    # 12:00 KST (03:00 UTC)
+    - cron: "0 * * * *"    # 매시간 (대회 기간 — 당일 결과 빠른 반영). 종료 후 주석 처리.
   workflow_dispatch:
 
 permissions:
@@ -38,6 +37,9 @@ jobs:
           if git diff --staged --quiet; then
             echo "변경 없음 — 커밋 생략"
           else
-            git commit -m "chore(wc): 일일 월드컵 수집 [skip ci]"
-            git push
+            git commit -m "chore(wc): 월드컵 수집 [skip ci]"
+            # 동시 실행 push 충돌 대비 — rebase 후 재시도
+            for i in 1 2 3; do
+              git pull --rebase --autostash origin main && git push && break || sleep 5
+            done
           fi
