@@ -714,6 +714,10 @@ html, body {
 .pd-sim-score { font-family: Oswald, sans-serif; font-weight: 600; }
 
 /* ── Recommendations ─────────────────────────────── */
+.rec-pos-group { margin-top: 14px; }
+.rec-pos-group:first-of-type { margin-top: 8px; }
+.rec-pos-h { display: flex; align-items: center; gap: 8px; font-family: Oswald, sans-serif; font-size: 14px; font-weight: 700; letter-spacing: .3px; padding: 6px 0 9px; border-bottom: 2px solid; margin-bottom: 11px; }
+.rec-pos-n { margin-left: auto; font-size: 11px; color: var(--muted); font-weight: 500; }
 .rec-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
 .rec-card { position: relative; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 14px 8px; border: 1px solid var(--line); border-radius: 14px; background: rgba(255, 255, 255, 0.02); }
 .rec-photo { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; }

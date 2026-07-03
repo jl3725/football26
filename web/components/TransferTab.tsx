@@ -98,42 +98,57 @@ export default function TransferTab({ team, accent }: { team: string; accent: st
         </div>
       </div>
 
-      {/* 후보 평가 */}
+      {/* 후보 평가 — 포지션별 그룹 */}
       {rec && rec.recommendations.length > 0 && (
         <div className="card" style={{ marginTop: 16 }}>
-          <h3>🎯 후보 평가 · {rec.weakest?.label}
-            {rec.weakest?.bucket_label && <span style={{ color: accent }}> · {rec.weakest.bucket_label}</span>}
+          <h3>🎯 포지션별 보강 후보
             {rec.addressed && <span className="rec-addr">· 이번 창 보강됨, 추가 옵션</span>}</h3>
-          <div className="rec-grid">
-            {rec.recommendations.map((r, i) => {
-              const t = tier(r.ovr);
-              const cf = r.confidence === "high" ? "#4fc27f" : r.confidence === "med" ? "#f4cf5e" : "#e0556b";
-              const cfl = r.confidence === "high" ? "신뢰 높음" : r.confidence === "med" ? "신뢰 중간" : "표본 적음";
-              return (
-                <div className="rec-card" key={i}>
-                  {r.photo ? <img className="rec-photo" src={r.photo} alt="" /> : <span className="rec-photo ph" />}
-                  <div className="rec-ovr" style={{ color: t.light }}>{r.ovr}</div>
-                  <div className="rec-name">{r.player}</div>
-                  <div className="rec-club">{r.logo && <img src={r.logo} alt="" />}{r.squad}</div>
-                  {r.cross_league && <div className="rec-cross">↗ {r.source_league} 이적 · 현재 {r.current_ovr} → 예상 {r.projected_ovr}</div>}
-                  {r.bucket_label && <div className="rec-target" style={{ color: accent }}>◎ {r.bucket_label} 보강</div>}
-                  <div className="rec-meta">{r.pos} · {r.age}세 · {fmtEur(r.value_eur)}</div>
-                  {r.role && (
-                    <div className="rec-role">
-                      <span className={"role-tag " + roleClass(r.role)}>{r.role}</span>
-                      {r.big_match && <span className="role-bm" title="UCL/UEL 급 무대 검증">⚡ 빅매치</span>}
-                    </div>
-                  )}
-                  {r.role_evidence && <div className="rec-role-ev">{r.role_evidence}</div>}
-                  <div className="rec-why">
-                    {r.why_fit.map((w, k) => <span className="why fit" key={"f" + k}>✓ {w}</span>)}
-                    {r.why_risk.map((w, k) => <span className="why risk" key={"r" + k}>△ {w}</span>)}
-                  </div>
-                  <div className="rec-conf" style={{ color: cf }}>◆ 데이터 {cfl}</div>
+          {(() => {
+            const order: string[] = [];
+            const byPos: Record<string, typeof rec.recommendations> = {};
+            for (const r of rec.recommendations) {
+              const key = r.bucket_label || "기타";
+              if (!byPos[key]) { byPos[key] = []; order.push(key); }
+              byPos[key].push(r);
+            }
+            return order.map((pos) => (
+              <div className="rec-pos-group" key={pos}>
+                <div className="rec-pos-h" style={{ borderColor: accent }}>
+                  <span style={{ color: accent }}>◎</span> {pos}
+                  <span className="rec-pos-n">{byPos[pos].length}명</span>
                 </div>
-              );
-            })}
-          </div>
+                <div className="rec-grid">
+                  {byPos[pos].map((r, i) => {
+                    const t = tier(r.ovr);
+                    const cf = r.confidence === "high" ? "#4fc27f" : r.confidence === "med" ? "#f4cf5e" : "#e0556b";
+                    const cfl = r.confidence === "high" ? "신뢰 높음" : r.confidence === "med" ? "신뢰 중간" : "표본 적음";
+                    return (
+                      <div className="rec-card" key={i}>
+                        {r.photo ? <img className="rec-photo" src={r.photo} alt="" /> : <span className="rec-photo ph" />}
+                        <div className="rec-ovr" style={{ color: t.light }}>{r.ovr}</div>
+                        <div className="rec-name">{r.player}</div>
+                        <div className="rec-club">{r.logo && <img src={r.logo} alt="" />}{r.squad}</div>
+                        {r.cross_league && <div className="rec-cross">↗ {r.source_league} 이적 · 현재 {r.current_ovr} → 예상 {r.projected_ovr}</div>}
+                        <div className="rec-meta">{r.pos} · {r.age}세 · {fmtEur(r.value_eur)}</div>
+                        {r.role && (
+                          <div className="rec-role">
+                            <span className={"role-tag " + roleClass(r.role)}>{r.role}</span>
+                            {r.big_match && <span className="role-bm" title="UCL/UEL 급 무대 검증">⚡ 빅매치</span>}
+                          </div>
+                        )}
+                        {r.role_evidence && <div className="rec-role-ev">{r.role_evidence}</div>}
+                        <div className="rec-why">
+                          {r.why_fit.map((w, k) => <span className="why fit" key={"f" + k}>✓ {w}</span>)}
+                          {r.why_risk.map((w, k) => <span className="why risk" key={"r" + k}>△ {w}</span>)}
+                        </div>
+                        <div className="rec-conf" style={{ color: cf }}>◆ 데이터 {cfl}</div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            ));
+          })()}
         </div>
       )}
 
