@@ -2310,12 +2310,20 @@ def home(league: str = ACTIVE_LEAGUE):
 
 
 _HUB_LEAGUES = ("EPL", "LaLiga", "SerieA")   # 통합 대시보드 대상 — UI 지원 리그
+_HUB_CACHE: dict = {"key": None, "body": None}
 
 
 @app.get("/api/home/all")
 def home_all():
-    """전 리그 통합 대시보드 — 빅딜·이적속보·감독교체·순위 스냅샷을 한 화면에."""
+    """전 리그 통합 대시보드 — 빅딜·이적속보·감독교체·순위 + 부상속보·최고폼·곧FA·득점리더.
+    무거워서 DB 수정시각 기준 직렬화 바이트 캐시(재빌드 시 자동 무효화)."""
+    key = _db_mtime()
+    if _HUB_CACHE["body"] is not None and _HUB_CACHE["key"] == key:
+        return Response(content=_HUB_CACHE["body"], media_type="application/json")
+
+    from unidecode import unidecode
     win = _current_window()
+    today = datetime.date.today()
     avail = set(ds.available_leagues())
     leagues = [lg for lg in _HUB_LEAGUES if lg in avail]
 
@@ -2326,6 +2334,7 @@ def home_all():
             return lg
 
     deals, buzz, changes, snaps = [], [], [], []
+    form_c, goal_c, contract_c, injuries = [], [], [], []
     for lg in leagues:
         lname = _lname(lg)
         tr = ds.read_table("transfers", league=lg)
@@ -2370,6 +2379,48 @@ def home_all():
         snaps.append({"league": lg, "league_name": lname,
                       "color": tm.team_color(table[0]["team"]) if table else "#888", "table": table})
 
+        # players_full → 최고 폼 · 득점 리더 · 곧 FA (정렬은 벡터화, OVR 은 최종 노출분만)
+        pf = _pf(lg)
+        if pf is not None and "player" in pf.columns:
+            p = pf.copy()
+            if "left_for" in p.columns:
+                p = p[p["left_for"].isna() | (p["left_for"].astype(str).str.strip() == "")]
+            p["_mn"] = pd.to_numeric(p.get("minutes"), errors="coerce").fillna(0)
+            p["_ss"] = pd.to_numeric(p.get("ss_rating"), errors="coerce").fillna(0)
+            p["_g"] = pd.to_numeric(p.get("goals"), errors="coerce").fillna(0)
+            for _, r in p[p["_mn"] >= 900].sort_values("_ss", ascending=False).head(6).iterrows():
+                form_c.append((r, lg))
+            for _, r in p.sort_values("_g", ascending=False).head(6).iterrows():
+                goal_c.append((r, lg))
+            if "tm_contract_until" in p.columns:
+                cu = pd.to_datetime(p["tm_contract_until"], errors="coerce")
+                dd = (cu - pd.Timestamp(today)).dt.days
+                exp = p[(dd >= 0) & (dd <= 400)].copy()
+                exp["_mv"] = pd.to_numeric(exp.get("market_value_eur"), errors="coerce").fillna(0)
+                for _, r in exp.sort_values("_mv", ascending=False).head(6).iterrows():
+                    contract_c.append((r, lg))
+
+        # 부상 속보 (신규/복귀)
+        ic = ds.read_table("transfermarkt_injury_changes", league=lg)
+        if ic is not None and "player" in ic.columns:
+            xp = _xtra_photo(lg)
+            _sub = ic.sort_values("run_date", ascending=False) if "run_date" in ic.columns else ic
+            n = 0
+            for _, r in _sub.iterrows():
+                if n >= 6:
+                    break
+                pl = str(r.get("player") or "")
+                new = str(r.get("event_type")) == "new_injury"
+                ph = xp.get(unidecode(pl).lower().strip(), "")
+                injuries.append({"player": pl, "club": str(r.get("squad") or ""),
+                                 "club_logo": tm.team_logo(str(r.get("squad") or "")),
+                                 "event": "new" if new else "return",
+                                 "injury": str(r.get("new_injury") or r.get("old_injury") or "부상"),
+                                 "date": str(r.get("run_date") or "")[:10],
+                                 "photo": ph if ph.startswith("http") else "",
+                                 "league": lg, "league_name": lname})
+                n += 1
+
     def _interleave(items, limit):
         """리그별 라운드로빈 — 한 리그가 최신순 정렬에 밀려 빠지지 않게 고루 노출."""
         groups: dict[str, list] = {}
@@ -2388,9 +2439,33 @@ def home_all():
     deals.sort(key=lambda d: -d["fee_eur"])       # 빅딜은 이적료 순(리그 무관 최대)
     buzz.sort(key=lambda b: b["published"], reverse=True)   # 리그별 최신순 → 인터리브
     changes.sort(key=lambda c: c["changed_at"], reverse=True)
-    return {"window": win, "leagues": [{"key": lg, "name": _lname(lg)} for lg in leagues],
-            "top_deals": deals[:12], "buzz": _interleave(buzz, 18),
-            "manager_changes": _interleave(changes, 12), "snapshots": snaps}
+
+    form_c.sort(key=lambda t: -t[0]["_ss"])
+    hot_form = [{"player": r["player"], "club": str(r.get("squad") or ""),
+                 "club_logo": tm.team_logo(str(r.get("squad") or "")),
+                 "rating": round(_num(r.get("ss_rating")), 2), "ovr": _player_ovr(r),
+                 "pos": str(r.get("fl_group") or r.get("pos") or ""), "photo": _photo(r),
+                 "league": lg, "league_name": _lname(lg)} for r, lg in form_c[:10]]
+    goal_c.sort(key=lambda t: (-_num(t[0].get("goals")), -_num(t[0].get("assists"))))
+    goal_leaders = [{"player": r["player"], "club": str(r.get("squad") or ""),
+                     "club_logo": tm.team_logo(str(r.get("squad") or "")),
+                     "goals": int(_num(r.get("goals"))), "assists": int(_num(r.get("assists"))),
+                     "photo": _photo(r), "league": lg, "league_name": _lname(lg)} for r, lg in goal_c[:10]]
+    contract_c.sort(key=lambda t: -_num(t[0].get("market_value_eur")))
+    contracts_out = [{"player": r["player"], "club": str(r.get("squad") or ""),
+                      "club_logo": tm.team_logo(str(r.get("squad") or "")),
+                      "until": str(r.get("tm_contract_until") or "")[:10],
+                      "value_eur": _num(r.get("market_value_eur")), "ovr": _player_ovr(r),
+                      "photo": _photo(r), "league": lg, "league_name": _lname(lg)} for r, lg in contract_c[:10]]
+
+    result = {"window": win, "leagues": [{"key": lg, "name": _lname(lg)} for lg in leagues],
+              "top_deals": deals[:12], "buzz": _interleave(buzz, 18),
+              "manager_changes": _interleave(changes, 12), "snapshots": snaps,
+              "injuries": _interleave(injuries, 12), "hot_form": hot_form,
+              "goal_leaders": goal_leaders, "contracts": contracts_out}
+    body = json.dumps(result, ensure_ascii=False).encode("utf-8")
+    _HUB_CACHE.update(key=key, body=body)
+    return Response(content=body, media_type="application/json")
 
 
 _WC_ROUNDS = ["group-stage", "round-of-32", "round-of-16", "quarterfinals",

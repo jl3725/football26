@@ -262,7 +262,11 @@ export type HubBuzz = { title: string; source: string; tier: string; link: strin
 export type HubChange = { team: string; logo: string; previous: string; current: string; photo: string; changed_at: string; league: string; league_name: string };
 export type HubSnapRow = { rank: number; team: string; logo: string; points: number };
 export type HubSnapshot = { league: string; league_name: string; color: string; table: HubSnapRow[] };
-export type HomeAll = { window: Context["window"]; leagues: { key: string; name: string }[]; top_deals: HubDeal[]; buzz: HubBuzz[]; manager_changes: HubChange[]; snapshots: HubSnapshot[] };
+export type HubForm = { player: string; club: string; club_logo: string; rating: number; ovr: number; pos: string; photo: string; league: string; league_name: string };
+export type HubGoal = { player: string; club: string; club_logo: string; goals: number; assists: number; photo: string; league: string; league_name: string };
+export type HubContract = { player: string; club: string; club_logo: string; until: string; value_eur: number; ovr: number; photo: string; league: string; league_name: string };
+export type HubInjury = { player: string; club: string; club_logo: string; event: string; injury: string; date: string; photo: string; league: string; league_name: string };
+export type HomeAll = { window: Context["window"]; leagues: { key: string; name: string }[]; top_deals: HubDeal[]; buzz: HubBuzz[]; manager_changes: HubChange[]; snapshots: HubSnapshot[]; injuries: HubInjury[]; hot_form: HubForm[]; goal_leaders: HubGoal[]; contracts: HubContract[] };
 export const getHomeAll = () => j<HomeAll>(`/api/home/all`);
 export type WCSquadPlayer = { player: string; pos: string; jersey: string; age: string; club: string; league: string; club_logo: string; photo: string };
 export type WCSquad = { nation: string; count: number; players: WCSquadPlayer[] };

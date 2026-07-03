@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { getHomeAll, fmtEur, type HomeAll } from "@/lib/api";
+import { tier } from "@/lib/ui";
 
 // 세련된 라인 화살표 (텍스트 → 대체)
 function Arrow({ color = "currentColor" }: { color?: string }) {
@@ -71,6 +72,46 @@ export default function AllDashboard({ accent, onPick }: { accent: string; onPic
         {d.top_deals.length === 0 && <div className="mgr-meta">No major deals this window</div>}
       </div>
 
+      {/* 최고 폼 + 득점 리더 */}
+      <div className="hub-two">
+        <div>
+          {sec("HOT FORM XI", "이번 시즌 최고 폼")}
+          <div className="card hub-list">
+            {d.hot_form.map((p, i) => (
+              <button className="hub-plr" key={i} onClick={() => onPick(p.club, p.league)}>
+                <span className="hub-plr-rk">{i + 1}</span>
+                {p.photo ? <img className="hub-plr-ph" src={p.photo} alt="" /> : <span className="hub-plr-ph ph" />}
+                <div className="hub-plr-body">
+                  <div className="hub-plr-nm">{p.player} {tag(p.league_name)}</div>
+                  <div className="hub-plr-sub">{p.club_logo && <img src={p.club_logo} alt="" />}{p.club} · {p.pos}</div>
+                </div>
+                <span className="hub-plr-ovr" style={{ color: tier(p.ovr).light }}>{p.ovr}</span>
+                <span className="hub-plr-metric" style={{ color: accent }}>{p.rating.toFixed(2)}</span>
+              </button>
+            ))}
+            {d.hot_form.length === 0 && <div className="mgr-meta">No data</div>}
+          </div>
+        </div>
+        <div>
+          {sec("GOAL LEADERS", "득점 리더")}
+          <div className="card hub-list">
+            {d.goal_leaders.map((p, i) => (
+              <button className="hub-plr" key={i} onClick={() => onPick(p.club, p.league)}>
+                <span className="hub-plr-rk">{i + 1}</span>
+                {p.photo ? <img className="hub-plr-ph" src={p.photo} alt="" /> : <span className="hub-plr-ph ph" />}
+                <div className="hub-plr-body">
+                  <div className="hub-plr-nm">{p.player} {tag(p.league_name)}</div>
+                  <div className="hub-plr-sub">{p.club_logo && <img src={p.club_logo} alt="" />}{p.club}</div>
+                </div>
+                <span className="hub-plr-metric big" style={{ color: accent }}>⚽{p.goals}</span>
+                <span className="hub-plr-a">{p.assists}A</span>
+              </button>
+            ))}
+            {d.goal_leaders.length === 0 && <div className="mgr-meta">No data</div>}
+          </div>
+        </div>
+      </div>
+
       {/* 이적 속보 + 감독 교체 */}
       <div className="hub-two">
         <div>
@@ -102,6 +143,43 @@ export default function AllDashboard({ accent, onPick }: { accent: string; onPic
               </button>
             ))}
             {d.manager_changes.length === 0 && <div className="mgr-meta">No manager changes</div>}
+          </div>
+        </div>
+      </div>
+
+      {/* 부상 속보 + 곧 FA */}
+      <div className="hub-two">
+        <div>
+          {sec("INJURY WATCH", "부상 속보")}
+          <div className="card hub-list">
+            {d.injuries.map((p, i) => (
+              <button className="hub-plr" key={i} onClick={() => onPick(p.club, p.league)}>
+                {p.photo ? <img className="hub-plr-ph" src={p.photo} alt="" /> : <span className="hub-plr-ph ph" />}
+                <div className="hub-plr-body">
+                  <div className="hub-plr-nm">{p.player} {tag(p.league_name)}</div>
+                  <div className="hub-plr-sub">{p.club_logo && <img src={p.club_logo} alt="" />}{p.club} · {p.injury}</div>
+                </div>
+                <span className={`hub-inj ${p.event}`}>{p.event === "return" ? "복귀" : "부상"}</span>
+              </button>
+            ))}
+            {d.injuries.length === 0 && <div className="mgr-meta">No injury updates</div>}
+          </div>
+        </div>
+        <div>
+          {sec("CONTRACT COUNTDOWN", "곧 FA · 계약 만료 임박")}
+          <div className="card hub-list">
+            {d.contracts.map((p, i) => (
+              <button className="hub-plr" key={i} onClick={() => onPick(p.club, p.league)}>
+                {p.photo ? <img className="hub-plr-ph" src={p.photo} alt="" /> : <span className="hub-plr-ph ph" />}
+                <div className="hub-plr-body">
+                  <div className="hub-plr-nm">{p.player} {tag(p.league_name)}</div>
+                  <div className="hub-plr-sub">{p.club_logo && <img src={p.club_logo} alt="" />}{p.club} · {fmtEur(p.value_eur)}</div>
+                </div>
+                <span className="hub-plr-ovr" style={{ color: tier(p.ovr).light }}>{p.ovr}</span>
+                <span className="hub-plr-until">~{p.until?.slice(2)}</span>
+              </button>
+            ))}
+            {d.contracts.length === 0 && <div className="mgr-meta">No expiring contracts</div>}
           </div>
         </div>
       </div>
