@@ -13,10 +13,12 @@ Write-Host "[news-agent] 2/6 fetch_transfer_buzz EPL"
 & $Python (Join-Path $Root "src\fetch_transfer_buzz.py")
 Write-Host "[news-agent] 3/6 fetch_transfer_buzz LaLiga (Marca)"
 & $Python (Join-Path $Root "src\fetch_transfer_buzz.py") --league LaLiga
-Write-Host "[news-agent] 4/6 fetch_transfer_buzz SerieA (Gazzetta)"
+Write-Host "[news-agent] 4/7 fetch_transfer_buzz SerieA (Football Italia)"
 & $Python (Join-Path $Root "src\fetch_transfer_buzz.py") --league SerieA
-Write-Host "[news-agent] 5/6 fetch_wc (2026 월드컵 · 진행 중)"
+Write-Host "[news-agent] 5/7 fetch_transfer_buzz Bundesliga (kicker)"
+& $Python (Join-Path $Root "src\fetch_transfer_buzz.py") --league Bundesliga
+Write-Host "[news-agent] 6/7 fetch_wc (2026 월드컵 · 진행 중)"
 & $Python (Join-Path $Root "src\fetch_wc.py")
-Write-Host "[news-agent] 6/6 fetch_fifa_ranking (FIFA 랭킹 TOP 30)"
+Write-Host "[news-agent] 7/7 fetch_fifa_ranking (FIFA 랭킹 TOP 30)"
 & $Python (Join-Path $Root "src\fetch_fifa_ranking.py")
 Write-Host "[news-agent] done"

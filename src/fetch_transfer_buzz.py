@@ -36,6 +36,9 @@ FEEDS_BY_LEAGUE = {
         # Gazzetta calciomercato RSS 는 2023 아카이브라 스테일 → Football Italia(영문·최신) 사용
         ("Football Italia", "https://football-italia.net/feed/"),
     ],
+    "Bundesliga": [
+        ("kicker", "https://newsfeed.kicker.de/news/fussball"),
+    ],
 }
 
 # 합의/임박 신호 키워드 (영어+스페인어). 없으면 루머로 분류.
@@ -44,7 +47,9 @@ _AGREED = re.compile(
     r"done deal|here we go|medical|unveil|wins? race|win the race|buy|bought|sold|"
     r"joins?|joining|confirm|confirmed|announce|announced|"
     r"acuerdo|fichaj|fichado|oficial|cierra|firma|firmar|vendido|traspaso|refuerzo|llega|"
-    r"ufficiale|accordo|firma|acquisto|acquist|ceduto|colpo|visite mediche|preso|arriva)\b",
+    r"ufficiale|accordo|firma|acquisto|acquist|ceduto|colpo|visite mediche|preso|arriva|"
+    r"offiziell|wechselt|verpflichtet|verpflichtung|unterschreibt|unterschrieb|holt|bindet|"
+    r"verlängert|leihe|neuzugang|fixiert)\b",
     re.I,
 )
 

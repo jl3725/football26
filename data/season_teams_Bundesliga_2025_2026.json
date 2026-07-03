@@ -1,0 +1,126 @@
+{
+  "season_label": "26/27",
+  "source_title": "2026-27 Bundesliga",
+  "detected_at": "2026-07-03 17:30",
+  "teams": [
+    {
+      "name": "Augsburg",
+      "color": "#BA3733",
+      "logo": "https://tmssl.akamaized.net/images/wappen/head/167.png",
+      "promoted": false
+    },
+    {
+      "name": "Bayern Munich",
+      "color": "#DC052D",
+      "logo": "https://tmssl.akamaized.net/images/wappen/head/27.png",
+      "promoted": false
+    },
+    {
+      "name": "Dortmund",
+      "color": "#FDE100",
+      "logo": "https://tmssl.akamaized.net/images/wappen/head/16.png",
+      "promoted": false
+    },
+    {
+      "name": "Frankfurt",
+      "color": "#E1000F",
+      "logo": "https://tmssl.akamaized.net/images/wappen/head/24.png",
+      "promoted": false
+    },
+    {
+      "name": "Freiburg",
+      "color": "#C4122E",
+      "logo": "https://tmssl.akamaized.net/images/wappen/head/60.png",
+      "promoted": false
+    },
+    {
+      "name": "Gladbach",
+      "color": "#00843D",
+      "logo": "https://tmssl.akamaized.net/images/wappen/head/18.png",
+      "promoted": false
+    },
+    {
+      "name": "Hamburger SV",
+      "color": "#003DA5",
+      "logo": "https://tmssl.akamaized.net/images/wappen/head/41.png",
+      "promoted": false
+    },
+    {
+      "name": "Hoffenheim",
+      "color": "#1961B4",
+      "logo": "https://tmssl.akamaized.net/images/wappen/head/533.png",
+      "promoted": false
+    },
+    {
+      "name": "Köln",
+      "color": "#ED1C24",
+      "logo": "https://tmssl.akamaized.net/images/wappen/head/3.png",
+      "promoted": false
+    },
+    {
+      "name": "Leverkusen",
+      "color": "#E32219",
+      "logo": "https://tmssl.akamaized.net/images/wappen/head/15.png",
+      "promoted": false
+    },
+    {
+      "name": "Mainz 05",
+      "color": "#C3141E",
+      "logo": "https://tmssl.akamaized.net/images/wappen/head/39.png",
+      "promoted": false
+    },
+    {
+      "name": "RB Leipzig",
+      "color": "#DD0741",
+      "logo": "https://tmssl.akamaized.net/images/wappen/head/23826.png",
+      "promoted": false
+    },
+    {
+      "name": "SC Paderborn",
+      "color": "#164194",
+      "logo": "https://tmssl.akamaized.net/images/wappen/head/127.png",
+      "promoted": true
+    },
+    {
+      "name": "SV Elversberg",
+      "color": "#C4122E",
+      "logo": "https://tmssl.akamaized.net/images/wappen/head/64.png",
+      "promoted": true
+    },
+    {
+      "name": "Schalke 04",
+      "color": "#004D9D",
+      "logo": "https://tmssl.akamaized.net/images/wappen/head/33.png",
+      "promoted": true
+    },
+    {
+      "name": "Stuttgart",
+      "color": "#E32219",
+      "logo": "https://tmssl.akamaized.net/images/wappen/head/79.png",
+      "promoted": false
+    },
+    {
+      "name": "Union Berlin",
+      "color": "#EB1923",
+      "logo": "https://tmssl.akamaized.net/images/wappen/head/89.png",
+      "promoted": false
+    },
+    {
+      "name": "Werder Bremen",
+      "color": "#1D9053",
+      "logo": "https://tmssl.akamaized.net/images/wappen/head/86.png",
+      "promoted": false
+    }
+  ],
+  "promoted": [
+    "SC Paderborn",
+    "SV Elversberg",
+    "Schalke 04"
+  ],
+  "relegated": [
+    "Heidenheim",
+    "St Pauli",
+    "Wolfsburg"
+  ],
+  "meta_missing": []
+}

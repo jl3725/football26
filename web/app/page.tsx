@@ -17,7 +17,7 @@ import DatabaseTab from "@/components/DatabaseTab";
 import TransferTab from "@/components/TransferTab";
 import NewsTab from "@/components/NewsTab";
 
-const LEAGUE_TABS = [{ key: "EPL", label: "EPL" }, { key: "LaLiga", label: "LA LIGA" }, { key: "SerieA", label: "SERIE A" }];
+const LEAGUE_TABS = [{ key: "EPL", label: "EPL" }, { key: "LaLiga", label: "LA LIGA" }, { key: "SerieA", label: "SERIE A" }, { key: "Bundesliga", label: "BUNDESLIGA" }];
 
 export default function Page() {
   const [teams, setTeams] = useState<Team[]>([]);
@@ -56,9 +56,9 @@ export default function Page() {
     if (lg && lg !== league) { setActiveLeague(lg); setLeagueSel(lg); }
     setHome(false); setSel(t); setTab("overview");
   };
-  const DEFAULT_TEAM: Record<string, string> = { EPL: "Arsenal", LaLiga: "Barcelona", SerieA: "Inter" };
-  const leagueName = league === "LaLiga" ? "La Liga" : league === "SerieA" ? "Serie A" : "Premier League";
-  const leagueLabel = league === "LaLiga" ? "LA LIGA" : league === "SerieA" ? "SERIE A" : "EPL";
+  const DEFAULT_TEAM: Record<string, string> = { EPL: "Arsenal", LaLiga: "Barcelona", SerieA: "Inter", Bundesliga: "Bayern Munich" };
+  const leagueName = league === "LaLiga" ? "La Liga" : league === "SerieA" ? "Serie A" : league === "Bundesliga" ? "Bundesliga" : "Premier League";
+  const leagueLabel = league === "LaLiga" ? "LA LIGA" : league === "SerieA" ? "SERIE A" : league === "Bundesliga" ? "BUNDESLIGA" : "EPL";
   const switchLeague = (l: string) => {
     if (l === league) return;
     setActiveLeague(l);

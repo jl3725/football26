@@ -81,10 +81,11 @@ html, body {
 .empty { color: var(--muted); font-size: 12px; padding: 16px 10px; }
 
 /* 리그 선택 토글 (EPL / La Liga) */
-.league-seg { display: flex; gap: 6px; padding: 6px 8px 2px; }
+.league-seg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; padding: 6px 8px 2px; }
 .league-seg button {
-  flex: 1; padding: 7px 6px; border-radius: 9px; border: 1px solid var(--line);
-  background: transparent; color: var(--muted); font-size: 12px; font-weight: 700; cursor: pointer;
+  padding: 7px 4px; border-radius: 9px; border: 1px solid var(--line);
+  background: transparent; color: var(--muted); font-size: 11.5px; font-weight: 700; cursor: pointer;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   transition: background .15s ease, color .15s ease;
 }
 .league-seg button:hover { color: var(--txt); }

@@ -2309,7 +2309,7 @@ def home(league: str = ACTIVE_LEAGUE):
     }
 
 
-_HUB_LEAGUES = ("EPL", "LaLiga", "SerieA")   # 통합 대시보드 대상 — UI 지원 리그
+_HUB_LEAGUES = ("EPL", "LaLiga", "SerieA", "Bundesliga")   # 통합 대시보드 대상 — UI 지원 리그
 _HUB_CACHE: dict = {"key": None, "body": None}
 
 
@@ -2478,9 +2478,8 @@ def _wc_read(table):
     return ds.read_table(table, league=ACTIVE_LEAGUE)
 
 
-# WC 클럽 차출 교차참조 대상 — UI 로 탐색 가능한(로고·오버뷰 완비) 리그만.
-# Bundesliga 는 teammeta 로고/네비 미완이라 제외(추후 확장).
-_WC_CLUB_LEAGUES = ("EPL", "LaLiga", "SerieA")
+# WC 클럽 차출 교차참조 대상 — UI 로 탐색 가능한(로고·오버뷰 완비) 리그.
+_WC_CLUB_LEAGUES = ("EPL", "LaLiga", "SerieA", "Bundesliga")
 
 
 def _wc_player_index():

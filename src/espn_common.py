@@ -37,10 +37,21 @@ LEAGUE_DISPLAY: dict[str, dict[str, str]] = {
         "como": "Como", "cremonese": "Cremonese", "verona": "Hellas Verona",
         "lecce": "Lecce", "parma": "Parma", "pisa": "Pisa", "sassuolo": "Sassuolo",
     },
+    "Bundesliga": {
+        "bayern": "Bayern Munich", "leverkusen": "Leverkusen", "dortmund": "Dortmund",
+        "leipzig": "RB Leipzig", "stuttgart": "Stuttgart", "frankfurt": "Frankfurt",
+        "freiburg": "Freiburg", "gladbach": "Gladbach", "mönchengladbach": "Gladbach",
+        "monchengladbach": "Gladbach", "wolfsburg": "Wolfsburg", "mainz": "Mainz 05",
+        "augsburg": "Augsburg", "hoffenheim": "Hoffenheim", "union": "Union Berlin",
+        "werder": "Werder Bremen", "bremen": "Werder Bremen", "köln": "Köln",
+        "koln": "Köln", "cologne": "Köln", "pauli": "St Pauli", "hamburg": "Hamburger SV",
+        "heidenheim": "Heidenheim",
+    },
 }
 
 # 리그 대회 코드
-LEAGUE_CODE = {"EPL": ("eng.1", "리그"), "LaLiga": ("esp.1", "리그"), "SerieA": ("ita.1", "리그")}
+LEAGUE_CODE = {"EPL": ("eng.1", "리그"), "LaLiga": ("esp.1", "리그"),
+               "SerieA": ("ita.1", "리그"), "Bundesliga": ("ger.1", "리그")}
 
 # 유럽 대회 (공통)
 EURO_COMPS = [
@@ -54,6 +65,7 @@ DOMESTIC_CUPS = {
     "EPL": [("eng.fa", "FA컵", "facup"), ("eng.league_cup", "EFL컵", "lcup")],
     "LaLiga": [("esp.copa_del_rey", "코파델레이", "copa")],
     "SerieA": [("ita.coppa_italia", "코파 이탈리아", "coppa")],
+    "Bundesliga": [("ger.dfb_pokal", "DFB-포칼", "pokal")],
 }
 
 

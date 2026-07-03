@@ -36,6 +36,8 @@ def _source_title(league: str, base_title: str) -> str:
         return base_title.replace("Premier League", "La Liga")
     if league == "SerieA":
         return base_title.replace("Premier League", "Serie A")
+    if league == "Bundesliga":
+        return base_title.replace("Premier League", "Bundesliga")
     raise SystemExit(f"[season-teams] 지원하지 않는 리그: {league}")
 
 
@@ -46,6 +48,9 @@ def _normalizer(league):
         return to_squad
     if league == "SerieA":
         from fetch_serie_managers import to_squad
+        return to_squad
+    if league == "Bundesliga":
+        from fetch_bundes_managers import to_squad
         return to_squad
     return lambda t: t
 
@@ -99,7 +104,9 @@ def main(argv: list[str] | None = None) -> int:
         print(f"[season-teams] ERROR fetch: {exc}", file=sys.stderr)
         return 1  # 기존 파일 유지(덮어쓰지 않음)
 
-    next_teams = sorted({norm(t) for t in src.keys()})
+    # 위키 킷 스폰서 표(Front/Sleeve/Back 열) 등 팀이 아닌 파싱 잡음 제거
+    _NOISE = {"Front", "Sleeve", "Back", "Kit", "Shirt", "Sponsor", "Chest", "Team"}
+    next_teams = sorted({norm(t) for t in src.keys()} - _NOISE)
     if len(next_teams) < 10:
         print(f"[season-teams] 팀 수 비정상({len(next_teams)}) — 중단, 기존 파일 유지", file=sys.stderr)
         return 1

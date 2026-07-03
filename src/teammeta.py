@@ -36,6 +36,15 @@ TEAM_COLOR: dict[str, str] = {
     "Lecce": "#D4A017", "Parma": "#F4C400", "Pisa": "#12284B", "Sassuolo": "#00A752",
     # Serie A 26/27 승격
     "Frosinone": "#0055A5", "Monza": "#E2001A", "Venezia": "#0A5C36",
+    # Bundesliga 25/26
+    "Bayern Munich": "#DC052D", "Dortmund": "#FDE100", "Leverkusen": "#E32219",
+    "RB Leipzig": "#DD0741", "Stuttgart": "#E32219", "Frankfurt": "#E1000F",
+    "Freiburg": "#C4122E", "Union Berlin": "#EB1923", "Werder Bremen": "#1D9053",
+    "Gladbach": "#00843D", "Wolfsburg": "#65B32E", "Mainz 05": "#C3141E",
+    "Augsburg": "#BA3733", "Hoffenheim": "#1961B4", "Köln": "#ED1C24",
+    "St Pauli": "#61371C", "Hamburger SV": "#003DA5", "Heidenheim": "#E30613",
+    # Bundesliga 26/27 승격
+    "Schalke 04": "#004D9D", "SC Paderborn": "#164194", "SV Elversberg": "#C4122E",
 }
 
 # Transfermarkt verein id (크레스트 로고용)
@@ -62,6 +71,14 @@ TEAM_VEREIN: dict[str, int] = {
     "Lecce": 1005, "Parma": 130, "Pisa": 4171, "Sassuolo": 6574,
     # Serie A 26/27 승격
     "Frosinone": 8970, "Monza": 2919, "Venezia": 607,
+    # Bundesliga 25/26 (Transfermarkt verein id)
+    "Bayern Munich": 27, "Dortmund": 16, "Leverkusen": 15, "RB Leipzig": 23826,
+    "Stuttgart": 79, "Frankfurt": 24, "Freiburg": 60, "Union Berlin": 89,
+    "Werder Bremen": 86, "Gladbach": 18, "Wolfsburg": 82, "Mainz 05": 39,
+    "Augsburg": 167, "Hoffenheim": 533, "Köln": 3, "St Pauli": 35,
+    "Hamburger SV": 41, "Heidenheim": 2036,
+    # Bundesliga 26/27 승격
+    "Schalke 04": 33, "SC Paderborn": 127, "SV Elversberg": 64,
 }
 
 # 풀네임 + 홈구장 수용인원
@@ -107,6 +124,19 @@ TEAM_EXTRA: dict[str, tuple[str, int]] = {
     # Serie A 26/27 승격
     "Frosinone": ("Frosinone Calcio", 16227), "Monza": ("AC Monza", 16917),
     "Venezia": ("Venezia FC", 11150),
+    # Bundesliga 25/26
+    "Bayern Munich": ("FC Bayern München", 75024), "Dortmund": ("Borussia Dortmund", 81365),
+    "Leverkusen": ("Bayer 04 Leverkusen", 30210), "RB Leipzig": ("RB Leipzig", 47069),
+    "Stuttgart": ("VfB Stuttgart", 60449), "Frankfurt": ("Eintracht Frankfurt", 58000),
+    "Freiburg": ("SC Freiburg", 34700), "Union Berlin": ("1. FC Union Berlin", 22012),
+    "Werder Bremen": ("SV Werder Bremen", 42100), "Gladbach": ("Borussia Mönchengladbach", 54042),
+    "Wolfsburg": ("VfL Wolfsburg", 30000), "Mainz 05": ("1. FSV Mainz 05", 33305),
+    "Augsburg": ("FC Augsburg", 30660), "Hoffenheim": ("TSG 1899 Hoffenheim", 30150),
+    "Köln": ("1. FC Köln", 50000), "St Pauli": ("FC St. Pauli", 29546),
+    "Hamburger SV": ("Hamburger SV", 57000), "Heidenheim": ("1. FC Heidenheim", 15000),
+    # Bundesliga 26/27 승격
+    "Schalke 04": ("FC Schalke 04", 62271), "SC Paderborn": ("SC Paderborn 07", 15000),
+    "SV Elversberg": ("SV 07 Elversberg", 10000),
 }
 
 
@@ -186,6 +216,29 @@ TEAM_INFO: dict[str, dict] = {
     "Frosinone": {"city": "프로시노네 (라치오)", "stadium": "베니토 스티르페", "founded": 1928, "nick": "Canarini", "desc": "라치오주 프로시노네 연고. 26/27 승격."},
     "Monza": {"city": "몬차 (롬바르디아)", "stadium": "U-파워 스타디움", "founded": 1912, "nick": "Biancorossi", "desc": "롬바르디아 몬차 연고. 26/27 승격."},
     "Venezia": {"city": "베네치아", "stadium": "피에르 루이지 펜초", "founded": 1907, "nick": "Arancioneroverdi", "desc": "베네치아 연고. 감각적 유니폼으로 유명. 26/27 승격."},
+    # Bundesliga 25/26
+    "Bayern Munich": {"city": "뮌헨", "stadium": "알리안츠 아레나", "founded": 1900, "nick": "Die Roten", "desc": "독일 최고 명문. 분데스리가 최다 우승."},
+    "Dortmund": {"city": "도르트문트", "stadium": "지그날 이두나 파크", "founded": 1909, "nick": "BVB", "desc": "노란 벽(옐로월)의 열성 팬덤. 강한 압박·역습."},
+    "Leverkusen": {"city": "레버쿠젠", "stadium": "바이아레나", "founded": 1904, "nick": "Die Werkself", "desc": "바이엘 제약 모기업. 사비 알론소 체제서 무패 우승."},
+    "RB Leipzig": {"city": "라이프치히", "stadium": "레드불 아레나", "founded": 2009, "nick": "Die Roten Bullen", "desc": "레드불 프로젝트. 젊은 영입·고강도 압박."},
+    "Stuttgart": {"city": "슈투트가르트", "stadium": "MHP아레나", "founded": 1893, "nick": "Die Schwaben", "desc": "슈바벤 지역 전통 클럽."},
+    "Frankfurt": {"city": "프랑크푸르트", "stadium": "도이체방크 파크", "founded": 1899, "nick": "Die Adler", "desc": "22 유로파리그 우승. 열광적 홈 분위기."},
+    "Freiburg": {"city": "프라이부르크", "stadium": "유로파-파크 슈타디온", "founded": 1904, "nick": "Breisgau-Brasilianer", "desc": "육성·운영의 모범 소도시 클럽."},
+    "Union Berlin": {"city": "베를린 (쾨페니크)", "stadium": "알테 푀르스터라이", "founded": 1966, "nick": "Die Eisernen", "desc": "노동자 정서의 열성 클럽. 최근 유럽대항전."},
+    "Werder Bremen": {"city": "브레멘", "stadium": "베저슈타디온", "founded": 1899, "nick": "Die Werderaner", "desc": "북부 전통 명문. 녹백 클럽."},
+    "Gladbach": {"city": "묀헨글라트바흐", "stadium": "보루시아-파크", "founded": 1900, "nick": "Die Fohlen", "desc": "70년대 황금기의 전통 클럽."},
+    "Wolfsburg": {"city": "볼프스부르크", "stadium": "폭스바겐 아레나", "founded": 1945, "nick": "Die Wölfe", "desc": "폭스바겐 연고. 09 분데스 우승."},
+    "Mainz 05": {"city": "마인츠", "stadium": "메바 아레나", "founded": 1905, "nick": "Die Nullfünfer", "desc": "클롭·투헬을 배출한 라인란트 클럽."},
+    "Augsburg": {"city": "아우크스부르크", "stadium": "WWK 아레나", "founded": 1907, "nick": "Die Fuggerstädter", "desc": "바이에른 슈바벤 연고 클럽."},
+    "Hoffenheim": {"city": "진스하임", "stadium": "프리제로 아레나", "founded": 1899, "nick": "Die Kraichgauer", "desc": "SAP 창업주 후원의 크라이히가우 클럽."},
+    "Köln": {"city": "쾰른", "stadium": "라인에네르기슈타디온", "founded": 1948, "nick": "Die Geißböcke", "desc": "라인란트 대도시 열성 클럽. 염소 마스코트."},
+    "St Pauli": {"city": "함부르크 (장크트파울리)", "stadium": "밀레른토어 슈타디온", "founded": 1910, "nick": "Kiezkicker", "desc": "반체제·서브컬처로 유명한 함부르크 항구 클럽."},
+    "Hamburger SV": {"city": "함부르크", "stadium": "폭스파르크슈타디온", "founded": 1887, "nick": "Die Rothosen", "desc": "북부 명문. 오랜만의 분데스 복귀."},
+    "Heidenheim": {"city": "하이덴하임", "stadium": "포이트-아레나", "founded": 1846, "nick": "FCH", "desc": "바덴뷔르템베르크 소도시 클럽."},
+    # Bundesliga 26/27 승격
+    "Schalke 04": {"city": "겔젠키르헨", "stadium": "펠틴스-아레나", "founded": 1904, "nick": "Die Knappen", "desc": "루르 지역 광부 정서의 전통 명문. 26/27 승격."},
+    "SC Paderborn": {"city": "파더보른", "stadium": "홈 도이체 아레나", "founded": 1907, "nick": "SCP", "desc": "노르트라인베스트팔렌 소도시 클럽. 26/27 승격."},
+    "SV Elversberg": {"city": "슈피저 (자를란트)", "stadium": "우르잔 아레나", "founded": 1907, "nick": "Die SVE", "desc": "자를란트 소도시 클럽. 26/27 승격."},
 }
 
 

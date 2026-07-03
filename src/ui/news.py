@@ -52,8 +52,20 @@ SERIEA_NEWSTAG = {
     "Sassuolo": "Sassuolo",
 }
 
-NEWSTAG_BY_LEAGUE = {"EPL": SQUAD_TO_NEWSTAG, "LaLiga": LALIGA_NEWSTAG, "SerieA": SERIEA_NEWSTAG}
-_ALL_NEWSTAG = {**SQUAD_TO_NEWSTAG, **LALIGA_NEWSTAG, **SERIEA_NEWSTAG}
+# Bundesliga squad → ESPN ger.1 뉴스 팀 태그
+BUNDESLIGA_NEWSTAG = {
+    "Bayern Munich": "Bayern Munich", "Dortmund": "Borussia Dortmund",
+    "Leverkusen": "Bayer Leverkusen", "RB Leipzig": "RB Leipzig", "Stuttgart": "VfB Stuttgart",
+    "Frankfurt": "Eintracht Frankfurt", "Freiburg": "SC Freiburg", "Union Berlin": "Union Berlin",
+    "Werder Bremen": "Werder Bremen", "Gladbach": "Borussia Monchengladbach",
+    "Wolfsburg": "VfL Wolfsburg", "Mainz 05": "Mainz", "Augsburg": "FC Augsburg",
+    "Hoffenheim": "TSG Hoffenheim", "Köln": "FC Koln", "St Pauli": "FC St. Pauli",
+    "Hamburger SV": "Hamburger SV", "Heidenheim": "1. FC Heidenheim",
+}
+
+NEWSTAG_BY_LEAGUE = {"EPL": SQUAD_TO_NEWSTAG, "LaLiga": LALIGA_NEWSTAG,
+                     "SerieA": SERIEA_NEWSTAG, "Bundesliga": BUNDESLIGA_NEWSTAG}
+_ALL_NEWSTAG = {**SQUAD_TO_NEWSTAG, **LALIGA_NEWSTAG, **SERIEA_NEWSTAG, **BUNDESLIGA_NEWSTAG}
 
 
 def newstags(league: str = "EPL") -> dict:
