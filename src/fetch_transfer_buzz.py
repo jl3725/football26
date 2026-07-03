@@ -18,18 +18,28 @@ import time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT / "src"))
+from leagues import data_path  # noqa: E402
+
 OUT_PATH = ROOT / "data" / "transfer_buzz.csv"
 
-FEEDS = [
-    ("Guardian", "https://www.theguardian.com/football/transfer-window/rss"),
-    ("BBC", "https://feeds.bbci.co.uk/sport/football/gossip/rss.xml"),
-]
+# 리그별 이적 속보 피드 — EPL: Guardian/BBC, LaLiga: Marca 이적(mercado-fichajes, 스페인어)
+FEEDS_BY_LEAGUE = {
+    "EPL": [
+        ("Guardian", "https://www.theguardian.com/football/transfer-window/rss"),
+        ("BBC", "https://feeds.bbci.co.uk/sport/football/gossip/rss.xml"),
+    ],
+    "LaLiga": [
+        ("Marca", "https://e00-marca.uecdn.es/rss/futbol/mercado-fichajes.xml"),
+    ],
+}
 
-# 합의/임박 신호 키워드 (없으면 루머로 분류)
+# 합의/임박 신호 키워드 (영어+스페인어). 없으면 루머로 분류.
 _AGREED = re.compile(
     r"\b(agree|agreed|complete|completed|seal|sealed|sign|signs|signed|signing|"
     r"done deal|here we go|medical|unveil|wins? race|win the race|buy|bought|sold|"
-    r"joins?|joining|confirm|confirmed|announce|announced)\b",
+    r"joins?|joining|confirm|confirmed|announce|announced|"
+    r"acuerdo|fichaj|fichado|oficial|cierra|firma|firmar|vendido|traspaso|refuerzo|llega)\b",
     re.I,
 )
 
@@ -48,17 +58,17 @@ def _to_ko(text: str) -> str:
     try:
         if _translator is None:
             from deep_translator import GoogleTranslator
-            _translator = GoogleTranslator(source="en", target="ko")
+            _translator = GoogleTranslator(source="auto", target="ko")
         return _translator.translate(text[:480]) or ""
     except Exception as exc:
         print(f"    [translate 실패] {exc}", file=sys.stderr)
         return ""
 
 
-def _fetch() -> list[dict]:
+def _fetch(league: str = "EPL") -> list[dict]:
     import feedparser
     rows, seen = [], set()
-    for src, url in FEEDS:
+    for src, url in FEEDS_BY_LEAGUE.get(league, FEEDS_BY_LEAGUE["EPL"]):
         try:
             feed = feedparser.parse(url)
         except Exception as exc:
@@ -87,12 +97,15 @@ def main(argv: list[str] | None = None) -> int:
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     ap = argparse.ArgumentParser()
-    ap.add_argument("--out", type=Path, default=OUT_PATH)
+    ap.add_argument("--league", default="EPL")
+    ap.add_argument("--out", type=Path, default=None)
     ap.add_argument("--no-translate", action="store_true")
     ap.add_argument("--limit", type=int, default=40)
     args = ap.parse_args(argv)
+    if args.out is None:
+        args.out = OUT_PATH if args.league == "EPL" else data_path("transfer_buzz", args.league)
 
-    rows = _fetch()
+    rows = _fetch(args.league)
     if not rows:
         print("[buzz] 항목 없음 — 기존 파일 유지", file=sys.stderr)
         return 1
