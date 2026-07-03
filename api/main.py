@@ -2140,6 +2140,11 @@ def home(league: str = ACTIVE_LEAGUE):
     na = ds.read_table("news_articles", league=league)
     news_out, seen = [], set()
     if na is not None:
+        # news_articles 는 전 리그 통합 테이블 → 이 리그 소속 팀 기사만 (EPL/LaLiga 혼입 방지)
+        _stn = ds.read_table("standings", league=league)
+        lg_teams = set(_stn["squad"].astype(str)) if _stn is not None and "squad" in _stn.columns else set()
+        if lg_teams and "team" in na.columns:
+            na = na[na["team"].astype(str).isin(lg_teams)]
         nn = na.sort_values("published", ascending=False) if "published" in na.columns else na
         for _, r in nn.iterrows():
             h = str(r.get("headline_ko") or r.get("headline") or "")
