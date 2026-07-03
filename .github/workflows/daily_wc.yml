@@ -1,0 +1,38 @@
+name: Daily World Cup Fetch
+
+# 대회 기간 매일 06:00 UTC(한국 15:00)에 ESPN(fifa.world)에서 월드컵 데이터를 수집해
+# data/wc_*.csv 를 커밋 → Render 재배포 시 DB 재빌드로 반영.
+# WC 는 ESPN 순수 JSON API 만 쓰므로(번역·RSS 없음) GH Actions 러너에서도 안정적.
+# 대회 종료 후에는 이 워크플로를 비활성(cron 주석)하면 됨.
+on:
+  schedule:
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Fetch World Cup data (matches·scorers·assists·groups·squads)
+        run: python src/fetch_wc.py
+
+      - name: Commit updated wc_*.csv
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/wc_matches.csv data/wc_scorers.csv data/wc_assists.csv data/wc_groups.csv data/wc_squads.csv
+          if git diff --staged --quiet; then
+            echo "변경 없음 — 커밋 생략"
+          else
+            git commit -m "chore(wc): 일일 월드컵 수집 [skip ci]"
+            git push
+          fi

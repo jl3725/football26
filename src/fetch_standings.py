@@ -28,6 +28,9 @@ def main() -> int:
 
     finished = sched[sched["score"].notna() & sched["score"].str.contains("–", na=False)].copy()
     finished[["hg", "ag"]] = finished["score"].str.split("–", expand=True).astype(int)
+    if "week" in finished.columns:
+        week = pd.to_numeric(finished["week"], errors="coerce")
+        finished = finished[week.between(1, cfg.games_per_team)].copy()
     print(f"{len(finished)} matches OK")
 
     # ── 순위표 집계 ──────────────────────────────────────────────────────────

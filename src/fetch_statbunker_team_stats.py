@@ -27,7 +27,7 @@ COMP_IDS = {
     "LaLiga": 777,
     "SerieA": 785,
 }
-COMP_ID = COMP_IDS.get(ACTIVE_LEAGUE, 776)
+COMP_ID = COMP_IDS.get(ACTIVE_LEAGUE)
 BASE = "https://www.statbunker.com/competitions/{slug}?comp_id={comp_id}"
 OUT_TEAMS = data_path("statbunker_team_stats")
 OUT_PENALTY_TAKERS = data_path("statbunker_penalty_takers")
@@ -80,6 +80,33 @@ TEAM_ALIASES = {
     "US Cremonese": "Cremonese",
     "US Lecce": "Lecce",
     "US Sassuolo": "Sassuolo",
+    "1. FC Heidenheim": "Heidenheim",
+    "1. FC Heidenheim 1846": "Heidenheim",
+    "1. FC Köln": "Köln",
+    "1. FC Koln": "Köln",
+    "1. FC Union Berlin": "Union Berlin",
+    "1. FSV Mainz 05": "Mainz 05",
+    "Bayer Leverkusen": "Leverkusen",
+    "Bayer 04 Leverkusen": "Leverkusen",
+    "Borussia Dortmund": "Dortmund",
+    "Borussia M'gladbach": "Gladbach",
+    "Borussia Monchengladbach": "Gladbach",
+    "Borussia Mönchengladbach": "Gladbach",
+    "Bayern Munich": "Bayern Munich",
+    "Eintracht Frankfurt": "Frankfurt",
+    "FC Augsburg": "Augsburg",
+    "FC Bayern Munich": "Bayern Munich",
+    "FC Bayern München": "Bayern Munich",
+    "FC St Pauli": "St Pauli",
+    "FC St. Pauli": "St Pauli",
+    "Hamburger SV": "Hamburger SV",
+    "RB Leipzig": "RB Leipzig",
+    "SC Freiburg": "Freiburg",
+    "SV Werder Bremen": "Werder Bremen",
+    "TSG 1899 Hoffenheim": "Hoffenheim",
+    "TSG Hoffenheim": "Hoffenheim",
+    "VfB Stuttgart": "Stuttgart",
+    "VfL Wolfsburg": "Wolfsburg",
 }
 
 
@@ -108,6 +135,8 @@ def normalize_team(team: str) -> str:
 
 
 def fetch_html(slug: str) -> str:
+    if COMP_ID is None:
+        raise RuntimeError(f"No StatBunker comp_id configured for {ACTIVE_LEAGUE}")
     url = BASE.format(slug=slug, comp_id=COMP_ID)
     response = requests.get(
         url,

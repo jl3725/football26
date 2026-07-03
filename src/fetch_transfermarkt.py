@@ -107,9 +107,31 @@ SERIEA_TEAM_TM: dict[str, tuple[str, int]] = {
     "Udinese": ("udinese-calcio", 410),
 }
 
+BUNDESLIGA_TEAM_TM: dict[str, tuple[str, int]] = {
+    "Augsburg": ("fc-augsburg", 167),
+    "Bayern Munich": ("fc-bayern-munchen", 27),
+    "Dortmund": ("borussia-dortmund", 16),
+    "Frankfurt": ("eintracht-frankfurt", 24),
+    "Freiburg": ("sc-freiburg", 60),
+    "Gladbach": ("borussia-monchengladbach", 18),
+    "Hamburger SV": ("hamburger-sv", 41),
+    "Heidenheim": ("1-fc-heidenheim-1846", 2036),
+    "Hoffenheim": ("tsg-1899-hoffenheim", 533),
+    "Köln": ("1-fc-koln", 3),
+    "Leverkusen": ("bayer-04-leverkusen", 15),
+    "Mainz 05": ("1-fsv-mainz-05", 39),
+    "RB Leipzig": ("rasenballsport-leipzig", 23826),
+    "St Pauli": ("fc-st-pauli", 35),
+    "Stuttgart": ("vfb-stuttgart", 79),
+    "Union Berlin": ("1-fc-union-berlin", 89),
+    "Werder Bremen": ("sv-werder-bremen", 86),
+    "Wolfsburg": ("vfl-wolfsburg", 82),
+}
+
 TEAM_TM_BY_LEAGUE: dict[str, dict[str, tuple[str, int]]] = {
     "EPL": EPL_TEAM_TM,
     "LaLiga": LALIGA_TEAM_TM,
+    "Bundesliga": BUNDESLIGA_TEAM_TM,
     "SerieA": SERIEA_TEAM_TM,
 }
 

@@ -57,7 +57,7 @@ export default function HomeDashboard({ accent, onPickTeam, leagueLabel = "EPL" 
         </div>
 
         <div className="hx-kicker">{nextLabel} SEASON · TRANSFER WINDOW</div>
-        <h1 className="hx-title">PREMIER LEAGUE</h1>
+        <h1 className="hx-title">{leagueLabel === "EPL" ? "PREMIER LEAGUE" : leagueLabel}</h1>
         <div className="hx-meta">{h.season} 시즌 종료 · {nextLabel} 개막 전{h.window.is_open ? " · 여름 이적시장 진행 중" : ""}</div>
 
         <div className="kpis">

@@ -5,7 +5,9 @@ GitHub Actions cron이 매일 실행하고 data/news.db를 repo에 커밋한다.
 (link, team) 복합키로 중복 없이 누적되며, 새 기사만 first_seen=오늘으로 들어간다.
 
 수동 실행:
-    python scripts/fetch_news_daily.py
+    python scripts/fetch_news_daily.py                 # EPL (기본)
+    python scripts/fetch_news_daily.py --league LaLiga # ESPN esp.1 (Guardian/BBC 없이)
+    python scripts/fetch_news_daily.py --all           # 전 리그
 """
 from __future__ import annotations
 
@@ -16,32 +18,48 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
 from ui.news import (  # noqa: E402
-    fetch_espn_news, fetch_rss_news, team_articles, merge_news, translate_articles,
-    SQUAD_TO_NEWSTAG,
+    fetch_espn_news, fetch_rss_news, team_articles, merge_news, translate_articles, newstags,
+    fetch_es_wire, es_wire_for_team,
 )
 from news_db import init_db, upsert_articles, stats  # noqa: E402
 
-TEAMS = list(SQUAD_TO_NEWSTAG)
+LEAGUES = ["EPL", "LaLiga"]
 
 
-def main() -> int:
-    init_db()
-    espn = fetch_espn_news()
-    print(f"ESPN 기사 {len(espn)}건 수집. {len(TEAMS)}팀 처리 시작...")
-    total_new = total = 0
-    for i, team in enumerate(TEAMS, 1):
+def run_league(league: str) -> tuple[int, int]:
+    tags = newstags(league)
+    espn = fetch_espn_news(league)
+    wire = fetch_es_wire() if league == "LaLiga" else []   # AS·MD·Sport 리그 와이어 1회
+    print(f"[{league}] ESPN {len(espn)}건 · ES와이어 {len(wire)}건 · {len(tags)}팀 처리…")
+    new = tot = 0
+    for i, team in enumerate(tags, 1):
         e = team_articles(espn, team, 12)
-        r = fetch_rss_news(team)
-        merged = merge_news(e, r, 16)
-        translated = translate_articles(merged)   # 헤드라인·요약 한국어 번역
+        r = fetch_rss_news(team)                    # EPL: Guardian/BBC · LaLiga: Marca 팀별
+        w = es_wire_for_team(wire, team)            # LaLiga: AS/MD/Sport 팀명 매칭
+        merged = merge_news(e, r + w, 20)
+        translated = translate_articles(merged)
         n = upsert_articles(translated, team)
-        total_new += n
-        total += len(translated)
-        print(f"  [{i:2}/{len(TEAMS)}] {team:18} {len(translated):2}건 (신규 {n})")
-        time.sleep(0.3)   # 번역 API 매너
+        new += n; tot += len(translated)
+        print(f"  [{i:2}/{len(tags)}] {team:18} {len(translated):2}건 (신규 {n})")
+        time.sleep(0.3)
+    return new, tot
+
+
+def main(argv=None) -> int:
+    args = list(argv if argv is not None else sys.argv[1:])
+    if "--all" in args:
+        leagues = LEAGUES
+    elif "--league" in args:
+        leagues = [args[args.index("--league") + 1]]
+    else:
+        leagues = ["EPL"]
+    init_db()
+    tn = tt = 0
+    for lg in leagues:
+        n, t = run_league(lg)
+        tn += n; tt += t
     s = stats()
-    print(f"\n완료 — 이번 신규 {total_new} / 처리 {total} · DB 누적 {s['articles']}건 "
-          f"({s['teams']}팀, 최신 {s['last_fetch']})")
+    print(f"\n완료 — 신규 {tn} / 처리 {tt} · DB 누적 {s['articles']}건 ({s['teams']}팀)")
     return 0
 
 

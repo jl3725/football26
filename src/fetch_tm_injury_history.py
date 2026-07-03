@@ -31,14 +31,12 @@ import requests
 from bs4 import BeautifulSoup
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-try:
-    from similar_players import DATA_PATH  # type: ignore
-except Exception:  # pragma: no cover - fallback
-    DATA_PATH = Path(__file__).resolve().parent.parent / "players_full_2025_2026.csv"
+from leagues import data_path  # noqa: E402  (리그 인지 — FB_LEAGUE 로 EPL/LaLiga 전환)
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
-OUT = DATA / "tm_injury_history_2025_2026.csv"
+DATA_PATH = data_path("players_full")           # 활성 리그 players_full
+OUT = data_path("tm_injury_history")            # 활성 리그 tm_injury_history
 SEASON = "25/26"
 
 H = {

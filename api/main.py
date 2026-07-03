@@ -161,14 +161,27 @@ def teams(league: str = ACTIVE_LEAGUE):
 
 @app.get("/api/teams/next")
 def teams_next(league: str = ACTIVE_LEAGUE):
-    """다음 시즌(개막 전) 로스터 — detect_season_teams.py 가 위키에서 감지해 기록.
-    없으면 현재 팀을 폴백으로 반환(승격/강등 미반영)."""
+    """다음 시즌(개막 전) 로스터 — 리그별. season_teams JSON(EPL 감지) → 26/27 스케줄 도출 → 현 순위."""
+    # 1) 리그별 season_teams JSON (EPL 은 위키 감지본, 승격/강등 플래그 포함)
+    path = SEASON_TEAMS_JSON if league == "EPL" else data_path("season_teams", league, ext="json")
     try:
-        d = json.loads(SEASON_TEAMS_JSON.read_text(encoding="utf-8"))
+        d = json.loads(path.read_text(encoding="utf-8"))
         if d.get("teams"):
             return d
     except (OSError, json.JSONDecodeError):
         pass
+    # 2) 26/27 스케줄에서 팀 도출 (LaLiga 등 — 승격 감지본 없을 때)
+    try:
+        sf = pd.read_csv(data_path("schedule_full", league, "2026_2027"))
+        squads = sorted(set(sf["squad"].astype(str)))
+        if squads:
+            teams = [{"name": s, "color": tm.team_color(s), "logo": tm.team_logo(s), "promoted": False}
+                     for s in squads]
+            return {"season_label": "26/27", "source_title": "schedule 2026-27", "detected_at": "",
+                    "teams": teams, "promoted": [], "relegated": [], "meta_missing": []}
+    except (OSError, KeyError, ValueError):
+        pass
+    # 3) 최종 폴백 — 현 시즌 순위
     st = ds.read_table("standings", league=league)
     teams = []
     if st is not None and "squad" in st.columns:

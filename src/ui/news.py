@@ -15,7 +15,8 @@ import requests
 
 from .common import team_color
 
-ESPN_NEWS_URL = "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/news?limit=50"
+ESPN_NEWS_CODES = {"EPL": "eng.1", "LaLiga": "esp.1", "SerieA": "ita.1",
+                   "Bundesliga": "ger.1", "Ligue1": "fra.1"}
 _HEADERS = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
 
 # 우리 squad 표기 → ESPN 뉴스 팀 태그(longName)
@@ -28,6 +29,98 @@ SQUAD_TO_NEWSTAG = {
     "Newcastle United": "Newcastle United", "Nottingham Forest": "Nottingham Forest",
     "Sunderland": "Sunderland", "Tottenham Hotspur": "Tottenham Hotspur",
     "West Ham United": "West Ham United", "Wolves": "Wolverhampton Wanderers",
+}
+
+# LaLiga squad → ESPN esp.1 뉴스 팀 태그 (Guardian/BBC RSS 없음 → ESPN만)
+LALIGA_NEWSTAG = {
+    "Alavés": "Deportivo Alavés", "Athletic Club": "Athletic Bilbao",
+    "Atlético Madrid": "Atlético Madrid", "Barcelona": "Barcelona", "Celta Vigo": "Celta Vigo",
+    "Elche": "Elche", "Espanyol": "Espanyol", "Getafe": "Getafe", "Girona": "Girona",
+    "Levante": "Levante", "Mallorca": "Mallorca", "Osasuna": "Osasuna", "Oviedo": "Real Oviedo",
+    "Rayo Vallecano": "Rayo Vallecano", "Real Betis": "Real Betis", "Real Madrid": "Real Madrid",
+    "Real Sociedad": "Real Sociedad", "Sevilla": "Sevilla", "Valencia": "Valencia",
+    "Villarreal": "Villarreal",
+}
+
+NEWSTAG_BY_LEAGUE = {"EPL": SQUAD_TO_NEWSTAG, "LaLiga": LALIGA_NEWSTAG}
+_ALL_NEWSTAG = {**SQUAD_TO_NEWSTAG, **LALIGA_NEWSTAG}
+
+
+def newstags(league: str = "EPL") -> dict:
+    return NEWSTAG_BY_LEAGUE.get(league, SQUAD_TO_NEWSTAG)
+
+
+# 스페인 리그 전체 와이어(팀별 RSS 없음 → 헤드라인 팀명 매칭). AS·Mundo Deportivo·Sport.
+ES_WIRE_FEEDS = [
+    ("AS", "https://as.com/rss/futbol/portada.xml"),
+    ("Mundo Deportivo", "https://www.mundodeportivo.com/feed/rss/futbol/"),
+    ("Sport", "https://www.sport.es/es/rss/futbol/rss.xml"),
+]
+# 팀 → 매칭 토큰(고유 별칭 우선, 모호한 'madrid' 단독 등은 제외)
+ES_MATCH = {
+    "Barcelona": ["barça", "barcelona", "barsa", "azulgrana", "culé"],
+    "Real Madrid": ["real madrid", "madridista", "merengue", "blancos"],
+    "Atlético Madrid": ["atlético", "atleti", "colchonero"],
+    "Sevilla": ["sevilla", "sevillista", "nervionense"],
+    "Real Betis": ["betis", "bético", "verdiblanco"],
+    "Valencia": ["valencia", "valencianista"],
+    "Villarreal": ["villarreal", "groguet", "submarino amarillo"],
+    "Athletic Club": ["athletic", "bilbao", "leones"],
+    "Real Sociedad": ["real sociedad", "txuri", "donostia", "erreala"],
+    "Celta Vigo": ["celta", "celeste", "vigo"],
+    "Espanyol": ["espanyol", "perico", "periquito"],
+    "Getafe": ["getafe", "azulón"],
+    "Girona": ["girona", "gironí"],
+    "Osasuna": ["osasuna", "rojillo", "pamplona"],
+    "Rayo Vallecano": ["rayo", "vallecano", "franjirrojo"],
+    "Alavés": ["alavés", "alaves", "babazorro"],
+    "Mallorca": ["mallorca", "bermellón"],
+    "Elche": ["elche", "franjiverde"],
+    "Levante": ["levante", "granota"],
+    "Oviedo": ["oviedo", "carbayón"],
+}
+
+
+def fetch_es_wire() -> list[dict]:
+    """AS·MD·Sport 리그 전체 축구 피드(스페인어) — 리그 실행당 1회. 팀은 이후 매칭."""
+    try:
+        import feedparser
+    except Exception:
+        return []
+    out = []
+    for source, url in ES_WIRE_FEEDS:
+        try:
+            f = feedparser.parse(url)
+        except Exception:
+            continue
+        for e in f.entries[:60]:
+            head = _clean(e.get("title", ""))
+            if not head:
+                continue
+            pub = (time.strftime("%Y-%m-%d", e["published_parsed"]) if e.get("published_parsed") else "")
+            out.append({"headline": head, "desc": _clean(e.get("summary", ""))[:400],
+                        "published": pub, "image": "", "link": e.get("link", ""),
+                        "teams": [], "source": source, "_text": (head + " " + _clean(e.get("summary", ""))).lower()})
+    return out
+
+
+def es_wire_for_team(wire: list[dict], team: str, limit: int = 6) -> list[dict]:
+    """리그 와이어에서 팀명 토큰 매칭 기사만."""
+    toks = ES_MATCH.get(team)
+    if not toks:
+        return []
+    hit = [dict(a, teams=[team]) for a in wire if any(t in a.get("_text", "") for t in toks)]
+    return hit[:limit]
+
+
+# Marca 팀별 RSS 슬러그 (LaLiga — 스페인 원매체, Guardian/BBC 대응). 전 20팀 확인됨.
+MARCA_SLUG = {
+    "Alavés": "alaves", "Athletic Club": "athletic", "Atlético Madrid": "atletico",
+    "Barcelona": "barcelona", "Celta Vigo": "celta", "Elche": "elche", "Espanyol": "espanyol",
+    "Getafe": "getafe", "Girona": "girona", "Levante": "levante", "Mallorca": "mallorca",
+    "Osasuna": "osasuna", "Oviedo": "oviedo", "Rayo Vallecano": "rayo", "Real Betis": "betis",
+    "Real Madrid": "real-madrid", "Real Sociedad": "real-sociedad", "Sevilla": "sevilla",
+    "Valencia": "valencia", "Villarreal": "villarreal",
 }
 
 # The Guardian 팀별 RSS slug (Brighton은 Guardian RSS 없음 → ESPN/BBC로 보완)
@@ -61,10 +154,12 @@ def _clean(text: str) -> str:
     return re.sub(r"\s+", " ", t).strip()
 
 
-def fetch_espn_news() -> list[dict]:
-    """ESPN EPL 뉴스 50건 → [{headline, desc, published, image, link, teams, source}]."""
+def fetch_espn_news(league: str = "EPL") -> list[dict]:
+    """ESPN 리그 뉴스 50건 → [{headline, desc, published, image, link, teams, source}]."""
+    code = ESPN_NEWS_CODES.get(league, "eng.1")
+    url = f"https://site.api.espn.com/apis/site/v2/sports/soccer/{code}/news?limit=50"
     try:
-        r = requests.get(ESPN_NEWS_URL, headers=_HEADERS, timeout=15)
+        r = requests.get(url, headers=_HEADERS, timeout=15)
         if not r.ok:
             return []
         arts = r.json().get("articles", [])
@@ -99,6 +194,9 @@ def fetch_rss_news(team: str, per_feed: int = 12) -> list[dict]:
     if team in BBC_SLUG:
         feeds.append(("BBC Sport",
                       f"https://feeds.bbci.co.uk/sport/football/teams/{BBC_SLUG[team]}/rss.xml", True))
+    if team in MARCA_SLUG:   # LaLiga — 스페인 원매체(팀별 RSS)
+        feeds.append(("Marca",
+                      f"https://e00-marca.uecdn.es/rss/futbol/{MARCA_SLUG[team]}.xml", False))
     out = []
     for source, url, is_bbc in feeds:
         try:
@@ -127,13 +225,13 @@ def fetch_rss_news(team: str, per_feed: int = 12) -> list[dict]:
 
 def has_team_news(articles: list[dict], team: str) -> bool:
     """해당 팀 전용 태그 기사가 하나라도 있는지(ESPN 기준)."""
-    tag = SQUAD_TO_NEWSTAG.get(team)
+    tag = _ALL_NEWSTAG.get(team)
     return bool(tag and any(tag in a["teams"] for a in articles))
 
 
 def team_articles(articles: list[dict], team: str, limit: int = 12) -> list[dict]:
-    """ESPN 기사에서 팀 태그로 필터. 매칭 없으면 일반 뉴스 상위로 폴백."""
-    tag = SQUAD_TO_NEWSTAG.get(team)
+    """ESPN 기사에서 팀 태그로 필터(EPL·LaLiga). 매칭 없으면 일반 뉴스 상위로 폴백."""
+    tag = _ALL_NEWSTAG.get(team)
     hit = [a for a in articles if tag and tag in a["teams"]]
     return (hit or articles)[:limit]
 
@@ -158,7 +256,7 @@ def translate_articles(articles: list[dict]) -> list[dict]:
     """헤드라인·요약을 한국어로 번역해 headline_ko·desc_ko 추가. 실패 시 원문 유지."""
     try:
         from deep_translator import GoogleTranslator
-        tr = GoogleTranslator(source="en", target="ko")
+        tr = GoogleTranslator(source="auto", target="ko")  # en(EPL)·es(Marca) 자동 감지
     except Exception:
         tr = None
 
