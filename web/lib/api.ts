@@ -247,11 +247,11 @@ export type WCAssist = { player: string; nation: string; assists: number; logo: 
 export type WCImpact = { player: string; nation: string; age: number; goals: number; assists: number; ga: number; logo: string; club: string; photo: string };
 export type WCHeroTeam = { team: string; logo: string; group: string; P: number; W: number; D: number; L: number; GD: number; Pts: number; stars: { player: string; goals: number; assists: number }[] };
 export type WCClubPlayer = { player: string; nation: string; pos: string; photo: string; goals: number };
-export type WCClub = { club: string; logo: string; count: number; players: WCClubPlayer[] };
+export type WCClub = { club: string; league: string; logo: string; count: number; players: WCClubPlayer[] };
 export type WCNation = { nation: string; logo: string; count: number };
-export type WorldCupData = { matches: WCRound[]; groups: WCGroup[]; scorers: WCScorer[]; assists: WCAssist[]; rising_stars: WCImpact[]; veterans: WCImpact[]; group_heroes: WCHeroTeam[]; epl_clubs: WCClub[]; nations: WCNation[] };
+export type WorldCupData = { matches: WCRound[]; groups: WCGroup[]; scorers: WCScorer[]; assists: WCAssist[]; rising_stars: WCImpact[]; veterans: WCImpact[]; group_heroes: WCHeroTeam[]; club_callups: WCClub[]; nations: WCNation[] };
 export const getWC = () => j<WorldCupData>(`/api/wc`);
-export type WCSquadPlayer = { player: string; pos: string; jersey: string; age: string; epl_club: string; club_logo: string; photo: string };
+export type WCSquadPlayer = { player: string; pos: string; jersey: string; age: string; club: string; league: string; club_logo: string; photo: string };
 export type WCSquad = { nation: string; count: number; players: WCSquadPlayer[] };
 export const getWCSquad = (nation: string) => j<WCSquad>(`/api/wc/squad/${encodeURIComponent(nation)}`);
 

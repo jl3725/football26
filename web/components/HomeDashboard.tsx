@@ -18,7 +18,7 @@ function Sec({ en, kr, accent, right }: { en: string; kr: string; accent: string
   );
 }
 
-export default function HomeDashboard({ accent, onPickTeam, leagueLabel = "EPL" }: { accent: string; onPickTeam: (t: string) => void; leagueLabel?: string }) {
+export default function HomeDashboard({ accent, onPickTeam, onPickLeagueTeam, leagueLabel = "EPL" }: { accent: string; onPickTeam: (t: string) => void; onPickLeagueTeam?: (t: string, league?: string) => void; leagueLabel?: string }) {
   const [h, setH] = useState<Home | null>(null);
   const [comp, setComp] = useState<"EPL" | "WC">("EPL");
   // leagueLabel 변경(리그 전환) 시 재조회 — getHome 은 모듈 활성리그(_league) 사용
@@ -34,7 +34,7 @@ export default function HomeDashboard({ accent, onPickTeam, leagueLabel = "EPL" 
   );
 
   if (comp === "WC") return (
-    <div className="fade home"><div className="wc-topbar">{switcher}</div><WorldCup accent={accent} onPickTeam={onPickTeam} /></div>
+    <div className="fade home"><div className="wc-topbar">{switcher}</div><WorldCup accent={accent} onPickTeam={onPickLeagueTeam ?? onPickTeam} /></div>
   );
   if (!h) return <div className="loading">불러오는 중…</div>;
 

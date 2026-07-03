@@ -284,7 +284,11 @@ html, body {
 .wc-club-h { display: flex; align-items: center; gap: 9px; width: 100%; background: transparent; border: none; color: var(--txt); cursor: pointer; padding: 0 0 9px; }
 .wc-club-h img { width: 24px; height: 24px; object-fit: contain; }
 .wc-club-name { flex: 1; text-align: left; font-weight: 700; font-size: 13.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.wc-club-lg { font-family: Oswald, sans-serif; font-size: 9px; letter-spacing: .5px; color: var(--muted); border: 1px solid var(--line); border-radius: 5px; padding: 1px 5px; text-transform: uppercase; flex-shrink: 0; }
 .wc-club-n { font-family: Teko, sans-serif; font-size: 24px; line-height: 1; }
+.wc-lg-filter { display: flex; gap: 5px; }
+.wc-lg-filter button { font-family: Oswald, sans-serif; font-size: 10.5px; letter-spacing: .5px; padding: 3px 10px; border-radius: 6px; border: 1px solid var(--line); background: transparent; color: var(--muted); cursor: pointer; text-transform: uppercase; }
+.wc-lg-filter button.active { border-color: transparent; font-weight: 700; }
 .wc-club-players { display: flex; flex-wrap: wrap; gap: 6px; }
 .wc-pl { display: inline-flex; align-items: center; gap: 5px; background: rgba(255,255,255,0.05); border-radius: 999px; padding: 3px 8px 3px 3px; font-size: 11px; }
 .wc-pl img, .wc-pl-ph { width: 18px; height: 18px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
@@ -330,6 +334,7 @@ html, body {
 .wc-round-h { font-family: Oswald, sans-serif; font-size: 11px; letter-spacing: 1px; color: var(--muted); text-transform: uppercase; margin-bottom: 8px; text-align: center; }
 .wc-match { background: var(--panel); border: 1px solid var(--line); border-radius: 9px; padding: 7px 9px; margin-bottom: 7px; }
 .wc-match.done { opacity: .82; }
+.wc-match-date { font-family: Oswald, sans-serif; font-size: 9.5px; letter-spacing: .5px; color: var(--muted); text-align: center; margin-bottom: 4px; text-transform: uppercase; }
 .wc-side { display: flex; align-items: center; gap: 7px; padding: 2px 0; }
 .wc-side img { width: 16px; height: 16px; object-fit: contain; flex-shrink: 0; }
 .wc-ab { flex: 1; font-size: 11.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }

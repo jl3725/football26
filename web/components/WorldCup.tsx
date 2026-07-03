@@ -16,10 +16,17 @@ function Score({ s }: { s: number | null }) {
   return <span className="wc-sc">{s === null ? "-" : s}</span>;
 }
 
-export default function WorldCup({ accent, onPickTeam }: { accent: string; onPickTeam: (t: string) => void }) {
+// "2026-06-28" → "6/28"
+function fmtD(iso: string): string {
+  const p = String(iso || "").split("-");
+  return p.length === 3 ? `${+p[1]}/${+p[2]}` : iso || "";
+}
+
+export default function WorldCup({ accent, onPickTeam }: { accent: string; onPickTeam: (t: string, league?: string) => void }) {
   const [d, setD] = useState<WorldCupData | null>(null);
   const [nation, setNation] = useState<string | null>(null);
   const [squad, setSquad] = useState<WCSquad | null>(null);
+  const [clubLeague, setClubLeague] = useState<string>("");   // "" = 전체
 
   useEffect(() => { let a = true; getWC().then((x) => a && setD(x)).catch(() => {}); return () => { a = false; }; }, []);
   useEffect(() => {
@@ -31,6 +38,8 @@ export default function WorldCup({ accent, onPickTeam }: { accent: string; onPic
 
   if (!d) return <div className="loading">월드컵 데이터 불러오는 중…</div>;
   const knockout = d.matches.filter((r) => r.round !== "group-stage");
+  const clubLeagues = Array.from(new Set(d.club_callups.map((c) => c.league).filter(Boolean)));
+  const clubs = clubLeague ? d.club_callups.filter((c) => c.league === clubLeague) : d.club_callups;
 
   return (
     <div className="fade home">
@@ -43,16 +52,28 @@ export default function WorldCup({ accent, onPickTeam }: { accent: string; onPic
       </div>
 
       {/* 클럽별 월드컵 차출 */}
-      {d.epl_clubs.length > 0 && (
+      {d.club_callups.length > 0 && (
         <>
           <WSec en="CLUB CALL-UPS" kr="클럽별 월드컵 차출" accent={accent}
-            right={<span className="sec-count">{d.epl_clubs.reduce((a, c) => a + c.count, 0)}</span>} />
+            right={
+              clubLeagues.length > 1 ? (
+                <div className="wc-lg-filter">
+                  <button className={clubLeague === "" ? "active" : ""} onClick={() => setClubLeague("")}
+                    style={clubLeague === "" ? { background: accent, color: "#0b0f17" } : undefined}>전체</button>
+                  {clubLeagues.map((lg) => (
+                    <button key={lg} className={clubLeague === lg ? "active" : ""} onClick={() => setClubLeague(lg)}
+                      style={clubLeague === lg ? { background: accent, color: "#0b0f17" } : undefined}>{lg}</button>
+                  ))}
+                </div>
+              ) : <span className="sec-count">{clubs.reduce((a, c) => a + c.count, 0)}</span>
+            } />
           <div className="wc-clubs">
-            {d.epl_clubs.map((c) => (
+            {clubs.map((c) => (
               <div className="wc-club" key={c.club}>
-                <button className="wc-club-h" onClick={() => onPickTeam(c.club)}>
+                <button className="wc-club-h" onClick={() => onPickTeam(c.club, c.league)}>
                   {c.logo && <img src={c.logo} alt="" />}
                   <span className="wc-club-name">{c.club}</span>
+                  {c.league && <span className="wc-club-lg">{c.league}</span>}
                   <span className="wc-club-n" style={{ color: accent }}>{c.count}</span>
                 </button>
                 <div className="wc-club-players">
@@ -166,6 +187,7 @@ export default function WorldCup({ accent, onPickTeam }: { accent: string; onPic
               <div className="wc-round-h">{r.label}</div>
               {r.matches.map((m, i) => (
                 <div className={`wc-match${m.completed ? " done" : ""}`} key={i}>
+                  <div className="wc-match-date">{m.completed ? "FT" : (m.status && m.status !== "STATUS_SCHEDULED" ? m.status : fmtD(m.date))}</div>
                   <div className="wc-side">{m.home_logo && <img src={m.home_logo} alt="" />}<span className="wc-ab">{m.home_abbr || m.home}</span><Score s={m.home_score} /></div>
                   <div className="wc-side">{m.away_logo && <img src={m.away_logo} alt="" />}<span className="wc-ab">{m.away_abbr || m.away}</span><Score s={m.away_score} /></div>
                 </div>
@@ -212,14 +234,14 @@ export default function WorldCup({ accent, onPickTeam }: { accent: string; onPic
           <div className="wc-squad">
             {!squad && <div className="loading" style={{ padding: 20 }}>불러오는 중…</div>}
             {squad && squad.players.map((p, i) => (
-              <button className="wc-sqp" key={i} onClick={() => p.epl_club && onPickTeam(p.epl_club)} disabled={!p.epl_club}>
+              <button className="wc-sqp" key={i} onClick={() => p.club && onPickTeam(p.club, p.league)} disabled={!p.club}>
                 <span className="wc-sqp-jsy">{p.jersey || "-"}</span>
                 {p.photo ? <img src={p.photo} alt="" /> : <span className="wc-sqp-ph">{p.pos}</span>}
                 <div className="wc-sqp-mid">
                   <b>{p.player}</b>
                   <span>{p.pos}{p.age ? ` · ${p.age}세` : ""}</span>
                 </div>
-                {p.epl_club && <span className="wc-sqp-club">{p.club_logo && <img src={p.club_logo} alt="" />}{p.epl_club}</span>}
+                {p.club && <span className="wc-sqp-club">{p.club_logo && <img src={p.club_logo} alt="" />}{p.club}</span>}
               </button>
             ))}
           </div>

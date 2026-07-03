@@ -49,6 +49,11 @@ export default function Page() {
 
   const isPromoted = !!nextS?.promoted?.includes(sel);
   const pickTeam = (t: string) => { setHome(false); setSel(t); setTab("overview"); };
+  // 리그를 함께 받아 필요 시 리그 전환 후 팀 선택 (월드컵 탭에서 타 리그 클럽 클릭용)
+  const pickLeagueTeam = (t: string, lg?: string) => {
+    if (lg && lg !== league) { setActiveLeague(lg); setLeagueSel(lg); }
+    setHome(false); setSel(t); setTab("overview");
+  };
   const DEFAULT_TEAM: Record<string, string> = { EPL: "Arsenal", LaLiga: "Barcelona" };
   const leagueName = league === "LaLiga" ? "La Liga" : "Premier League";
   const switchLeague = (l: string) => {
@@ -60,7 +65,7 @@ export default function Page() {
   };
 
   function renderTab() {
-    if (home) return <HomeDashboard accent={accent} onPickTeam={pickTeam} leagueLabel={league === "LaLiga" ? "LA LIGA" : "EPL"} />;
+    if (home) return <HomeDashboard accent={accent} onPickTeam={pickTeam} onPickLeagueTeam={pickLeagueTeam} leagueLabel={league === "LaLiga" ? "LA LIGA" : "EPL"} />;
     if (ovErr) return (
       <div className="nodata-card">
         <div className="nodata-emoji">{isPromoted ? "🆙" : "📭"}</div>

@@ -2238,17 +2238,38 @@ def _wc_read(table):
     return ds.read_table(table, league=ACTIVE_LEAGUE)
 
 
-def _wc_epl_index():
-    """WC 선수명(norm) → EPL players_full 행. 클럽 교차참조용."""
+# WC 클럽 차출 교차참조 대상 — UI 로 탐색 가능한(로고·오버뷰 완비) 리그만.
+# Bundesliga·SerieA 는 데이터는 있으나 teammeta 로고/네비 미완이라 제외(추후 확장).
+_WC_CLUB_LEAGUES = ("EPL", "LaLiga")
+
+
+def _wc_player_index():
+    """WC 선수명(norm) → (players_full 행, 리그). EPL·LaLiga 클럽 교차참조용.
+    한 선수가 여러 리그에 있으면 출전시간 많은 쪽 채택."""
     from unidecode import unidecode
     def norm(s):
         return unidecode(str(s)).lower().strip()
-    pf = _pf(ACTIVE_LEAGUE)
-    idx = {}
-    if pf is not None:
+    tmp: dict[str, tuple] = {}   # norm -> (row, league, minutes)
+    avail = set(ds.available_leagues())
+    for lg in _WC_CLUB_LEAGUES:
+        if lg not in avail:
+            continue
+        try:
+            pf = _pf(lg)
+        except Exception:  # noqa: BLE001
+            pf = None
+        if pf is None or "player" not in pf.columns:
+            continue
+        # 이탈 선수(left_for) 제외 — 현재 소속 클럽만 차출 집계에 반영
+        if "left_for" in pf.columns:
+            pf = pf[pf["left_for"].isna() | (pf["left_for"].astype(str).str.strip() == "")]
         for _, r in pf.iterrows():
-            idx[norm(r["player"])] = r
-    return idx, norm
+            n = norm(r["player"])
+            mn = _num(r.get("minutes"))
+            prev = tmp.get(n)
+            if prev is None or mn > prev[2]:
+                tmp[n] = (r, lg, mn)
+    return {n: (v[0], v[1]) for n, v in tmp.items()}, norm
 
 
 @app.get("/api/wc")
@@ -2293,7 +2314,7 @@ def world_cup():
             })
     groups_list = [{"group": k, "table": v} for k, v in sorted(groups.items()) if k]
 
-    idx, norm = _wc_epl_index()
+    idx, norm = _wc_player_index()
     goalmap = {}
     scorers = []
     if sc is not None:
@@ -2340,10 +2361,11 @@ def world_cup():
     def _impact_card(c):
         n = norm(c["player"])
         hit = idx.get(n)
+        row = hit[0] if hit else None
         return {"player": c["player"], "nation": c["nation"], "age": c["age"],
                 "goals": c["goals"], "assists": c["assists"], "ga": c["goals"] + c["assists"],
                 "logo": nation_logo.get(c["nation"], ""),
-                "club": str(hit["squad"]) if hit is not None else "", "photo": _photo(hit) if hit is not None else ""}
+                "club": str(row["squad"]) if row is not None else "", "photo": _photo(row) if row is not None else ""}
 
     rising = sorted([c for c in contrib.values() if 0 < c["age"] <= 21 and (c["goals"] + c["assists"]) >= 1],
                     key=lambda x: -(x["goals"] + x["assists"]))[:6]
@@ -2383,17 +2405,22 @@ def world_cup():
             hit = idx.get(norm(r.get("player")))
             if hit is None:
                 continue
-            club = str(hit["squad"])
-            byclub.setdefault(club, []).append({
+            row, lg = hit
+            club = str(row["squad"])
+            b = byclub.setdefault(club, {"league": lg, "players": []})
+            b["players"].append({
                 "player": str(r.get("player") or ""), "nation": str(r.get("nation") or ""),
-                "pos": str(r.get("pos") or ""), "photo": _photo(hit),
+                "pos": str(r.get("pos") or ""), "photo": _photo(row),
                 "goals": goalmap.get(norm(r.get("player")), 0),
             })
-    epl_clubs = []
-    for club, players in byclub.items():
+    club_callups = []
+    for club, info in byclub.items():
+        players = info["players"]
         players.sort(key=lambda x: -x["goals"])
-        epl_clubs.append({"club": club, "logo": tm.team_logo(club), "count": len(players), "players": players})
-    epl_clubs.sort(key=lambda x: -x["count"])
+        club_callups.append({"club": club, "league": info["league"], "logo": tm.team_logo(club),
+                             "count": len(players), "players": players})
+    # 차출 많은 클럽 우선 → 리그 → 클럽명
+    club_callups.sort(key=lambda x: (-x["count"], x["league"], x["club"]))
 
     nations = []
     if sq is not None:
@@ -2407,28 +2434,30 @@ def world_cup():
     return {"matches": rounds, "groups": groups_list, "scorers": scorers,
             "assists": assists_board, "rising_stars": rising, "veterans": veterans,
             "group_heroes": group_heroes,
-            "epl_clubs": epl_clubs, "nations": nations}
+            "club_callups": club_callups, "nations": nations}
 
 
 @app.get("/api/wc/squad/{nation}")
 def wc_squad(nation: str):
-    """국가대표 스쿼드 (선수 + EPL 소속이면 클럽 표시)."""
+    """국가대표 스쿼드 (선수 + 소속 클럽 표시 · 전 리그 교차참조)."""
     sq = _wc_read("wc_squads")
     if sq is None or "nation" not in sq.columns:
         raise HTTPException(404, "WC 스쿼드 데이터 없음")
-    idx, norm = _wc_epl_index()
+    idx, norm = _wc_player_index()
     rows = sq[sq["nation"].astype(str) == nation]
     if rows.empty:
         raise HTTPException(404, f"'{nation}' 스쿼드 없음")
     players = []
     for _, r in rows.iterrows():
         hit = idx.get(norm(r.get("player")))
+        row = hit[0] if hit else None
+        club = str(row["squad"]) if row is not None else ""
         players.append({
             "player": str(r.get("player") or ""), "pos": str(r.get("pos") or ""),
             "jersey": str(r.get("jersey") or ""), "age": str(r.get("age") or ""),
-            "epl_club": str(hit["squad"]) if hit is not None else "",
-            "club_logo": tm.team_logo(str(hit["squad"])) if hit is not None else "",
-            "photo": _photo(hit) if hit is not None else "",
+            "club": club, "league": hit[1] if hit else "",
+            "club_logo": tm.team_logo(club) if club else "",
+            "photo": _photo(row) if row is not None else "",
         })
     _order = {"G": 0, "D": 1, "M": 2, "F": 3}
     players.sort(key=lambda p: (_order.get(p["pos"], 9), p["player"]))
