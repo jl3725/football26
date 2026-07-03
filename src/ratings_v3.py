@@ -114,9 +114,12 @@ def absolute_ovr(*, value, ss_rating, minutes, age, pos_group,
         vet_adj = 3.0 if (a >= 30 and mn >= 1500) else 0.0   # 검증된 베테랑은 시장가 저평가 보정
         raw = base + _POS_ADJ[ln] + perf_adj + vet_adj
     raw += _big_match_bonus(ucl_starts, uel_starts, conf_starts, cup_starts)
-    # 어린 미검증만 게이팅(누적 커리어 부족) — 기성 선수는 저출전이어도 클래스 유지(부상 등)
+    # 어린 미검증만 게이팅(누적 커리어 부족). '검증'은 나이가 아니라 출전시간으로 본다:
+    # 어릴수록 완전검증에 필요한 출전이 많지만, 풀시즌을 뛴 유망주(예: Yamal 2262분·16G11A)는
+    # 나이로 깎지 않는다. 저출전 유망주만 60 쪽으로 보수화(과대평가 방지).
     if 0 < a <= 21:
-        proven = _clamp(mn / 900.0, 0.1, 1.0) * _clamp((a - 13) / 8.0, 0.2, 1.0)
+        proven_min = 900.0 + (21 - a) * 120.0     # 21세=900분, 18세=1260, 15세=1620 필요
+        proven = _clamp(mn / proven_min, 0.1, 1.0)
         raw = proven * raw + (1 - proven) * 60.0
     return int(_clamp(round(_soft_cap(raw)), 45, 99))
 

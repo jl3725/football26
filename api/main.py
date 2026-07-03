@@ -294,7 +294,9 @@ def overview(team: str, league: str = ACTIVE_LEAGUE):
     # 이번 창 이탈 선수(이적 OUT·임대종료 + left_for) — 핵심선수/떠난선수 일관 처리
     deps = _departures(team, league, win)
 
-    # 핵심 선수 — ss_rating 상위 5 (이탈 선수 제외)
+    # 핵심 선수 — 절대 OVR(실력) 상위 5. 이탈 선수 제외.
+    # ss_rating(경기당 폼)은 소표본 유스·저출전 수비수를 과대평가(예: Militão 1139분이 벨링엄 상회)
+    # 하므로 OVR 로 정렬하고 ss_rating 은 동점 처리·표시용으로만 쓴다.
     stars = []
     squad_ratings = []
     if full_df is not None:
@@ -305,11 +307,12 @@ def overview(team: str, league: str = ACTIVE_LEAGUE):
         if deps:
             sq = sq[~sq["player"].map(_dep_last).isin(deps.keys())]
         sq["_r"] = pd.to_numeric(sq.get("ss_rating"), errors="coerce").fillna(0)
+        sq["_ovr"] = sq.apply(_player_ovr, axis=1)
         # 소표본 유스 인플레 방지 — 출전시간 확보 선수만(부족하면 완화)
         sq_star = sq[pd.to_numeric(sq.get("minutes"), errors="coerce").fillna(0) >= 450]
         if len(sq_star) < 5:
             sq_star = sq
-        for _, r in sq_star.sort_values("_r", ascending=False).head(5).iterrows():
+        for _, r in sq_star.sort_values(["_ovr", "_r"], ascending=False).head(5).iterrows():
             prof = _comp_profile(r, usage_idx)
             stars.append({
                 "player": r["player"], "pos": str(r.get("fl_group") or r.get("pos") or ""),
