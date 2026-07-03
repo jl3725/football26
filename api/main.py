@@ -2016,11 +2016,19 @@ def signals(team: str = "", league: str = ACTIVE_LEAGUE, limit: int = 60):
             return sq == team
         return (not valid) or (sq in valid)
 
-    # 사진: players_full(resolve) 우선, 없으면 TM 폴백 맵(이적·계약·부상) — 단일 헬퍼.
-    def add(date, sq, typ, tone, icon, player, title, detail):
+    # 사진: 소스 사진(명시) → TM 소스맵(정확 이름 키·부상/계약/이적) → players_full resolve.
+    # resolve 는 성(last-name) 폴백이 있어 동명이인 오매칭 위험 → TM 소스맵을 먼저 써 오류 방지.
+    from unidecode import unidecode
+    _xp = _xtra_photo(league)
+
+    def _nk(x):
+        return unidecode(str(x or "")).lower().strip()
+
+    def add(date, sq, typ, tone, icon, player, title, detail, photo=""):
+        ph = photo or _xp.get(_nk(player), "") or _resolve_photo(player, resolve, league)
         out.append({"date": date, "team": sq, "logo": tm.team_logo(sq), "type": typ,
                     "tone": tone, "icon": icon, "player": player or "",
-                    "photo": _resolve_photo(player, resolve, league),
+                    "photo": ph if str(ph).startswith("http") else "",
                     "title": title, "detail": detail})
 
     # 1. 부상 변화 (신규/복귀)
@@ -2070,12 +2078,13 @@ def signals(team: str = "", league: str = ACTIVE_LEAGUE, limit: int = 60):
             except ValueError:
                 continue
             days = (du - today).days
+            _cph = str(r.get("tm_photo") or "")   # 계약 레코드 본인 사진(가장 정확)
             if 0 <= days <= 365:
                 add(cu[:10], sq, "contract", "bad", "📄", str(r.get("player") or ""),
-                    "계약 만료 임박", f"{cu[:10]} · {_fmt_remaining(days)}")
+                    "계약 만료 임박", f"{cu[:10]} · {_fmt_remaining(days)}", photo=_cph)
             elif 365 < days <= 730:
                 add(cu[:10], sq, "resign", "warn", "✍️", str(r.get("player") or ""),
-                    "재계약 대상", f"{cu[:10]} · {_fmt_remaining(days)}")
+                    "재계약 대상", f"{cu[:10]} · {_fmt_remaining(days)}", photo=_cph)
 
     # 5. 시장가치 급등/급락 (market-value agent 델타)
     mv = ds.read_table("market_value_changes", league=league)
