@@ -121,7 +121,12 @@ def absolute_ovr(*, value, ss_rating, minutes, age, pos_group,
         proven_min = 900.0 + (21 - a) * 120.0     # 21세=900분, 18세=1260, 15세=1620 필요
         proven = _clamp(mn / proven_min, 0.1, 1.0)
         raw = proven * raw + (1 - proven) * 60.0
-    return int(_clamp(round(_soft_cap(raw)), 45, 99))
+    ovr = _soft_cap(raw)
+    # 유망주 상한 — 아무리 잘해도 established 슈퍼스타(92+)를 넘지 않게 나이별 천장.
+    # 18세 91 · 19세 92 · 20세 93 · 21세 94(사실상 무제한). 진짜 최상위는 성숙이 필요.
+    if 0 < a <= 21:
+        ovr = min(ovr, 88.0 + (a - 15) * 1.0)
+    return int(_clamp(round(ovr), 45, 99))
 
 
 # ── 폼 (이번 시즌) ────────────────────────────────────────────────
