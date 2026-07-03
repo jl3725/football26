@@ -318,7 +318,7 @@ html, body {
 .hub-deal-fee { font-family: Teko, sans-serif; font-size: 22px; line-height: 1; flex-shrink: 0; }
 .hub-two { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
 @media (max-width: 900px) { .hub-two { grid-template-columns: 1fr; } }
-.hub-list { max-height: 460px; overflow-y: auto; }
+.hub-list { }
 .hub-buzz { display: flex; align-items: center; gap: 8px; padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.05); text-decoration: none; color: var(--txt); }
 .hub-buzz:hover { color: var(--tc, #ff4d5e); }
 .hub-tier { font-family: Oswald, sans-serif; font-size: 9px; font-weight: 700; padding: 1px 6px; border-radius: 5px; flex-shrink: 0; }
