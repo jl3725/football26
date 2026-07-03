@@ -212,7 +212,10 @@ export const getNeeds = (t: string, l = _league) => j<Needs>(`/api/needs/${q(t, 
 export const getContext = () => j<Context>(`/api/context`);
 
 export type DbPlayer = { player: string; squad: string; league: string; logo: string; pos: string; line: string; age: number; nationality: string; value_eur: number; ovr: number; photo: string; role: string; big_match: boolean };
-export const getDatabase = () => j<{ league: string; players: DbPlayer[]; nationalities: string[]; leagues: string[] }>(`/api/database`);
+type DbResp = { league: string; players: DbPlayer[]; nationalities: string[]; leagues: string[] };
+// 세션 내 캐시 — DB 는 세션 중 불변. 탭 재방문 시 재요청 없이 즉시(대용량 전리그 목록).
+let _dbCache: Promise<DbResp> | null = null;
+export const getDatabase = () => (_dbCache ??= j<DbResp>(`/api/database`).catch((e) => { _dbCache = null; throw e; }));
 
 export type Signal = { date: string; team: string; logo: string; type: string; tone: string; icon: string; player: string; photo: string; title: string; detail: string };
 export type Signals = { team: string; window: Window; counts: Record<string, number>; signals: Signal[] };

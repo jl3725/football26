@@ -20,8 +20,9 @@ import sys
 from pathlib import Path
 
 import pandas as pd
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Response
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.gzip import GZipMiddleware
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
@@ -37,6 +38,8 @@ from team_analysis import (  # noqa: E402  (streamlit 비의존)
 )
 
 app = FastAPI(title="Football Scout API", version="0.1.0")
+# gzip — 큰 응답(예: database 전리그 766KB) 전송량을 ~5분의 1로 줄여 로딩 단축.
+app.add_middleware(GZipMiddleware, minimum_size=1024)
 # CORS — 배포 시 ALLOWED_ORIGINS 환경변수(쉼표구분)로 도메인 지정. 기본 "*"
 # (읽기전용 공개 API. 단, Vercel rewrites 로 프록시하면 브라우저는 same-origin 이라 CORS 미발생)
 _origins = [o.strip() for o in os.getenv("ALLOWED_ORIGINS", "*").split(",") if o.strip()]
@@ -1895,10 +1898,26 @@ def needs(team: str, league: str = ACTIVE_LEAGUE):
     return _compute_needs(team, league)
 
 
+_DB_CACHE: dict = {"key": None, "body": None}
+
+
+def _db_mtime() -> float:
+    """football.db 수정시각 — 캐시 무효화 키(재빌드되면 자동 갱신)."""
+    try:
+        return os.path.getmtime(ds.DB_PATH)
+    except OSError:
+        return 0.0
+
+
 @app.get("/api/database")
 def database(league: str = ACTIVE_LEAGUE):
     """전 리그 선수 DB — 데이터 있는 모든 리그(EPL·LaLiga·…)를 합쳐 반환.
-    클라이언트에서 필터링(이름/포지션/나이/가치/국적/리그). 확장성: 리그 추가되면 자동 포함."""
+    클라이언트에서 필터링(이름/포지션/나이/가치/국적/리그). 확장성: 리그 추가되면 자동 포함.
+    2000+명 OVR·프로필 계산 + 직렬화가 무거워 DB 수정시각 기준으로 '직렬화된 바이트'를 캐시
+    (FastAPI 기본 jsonable_encoder 재직렬화를 우회 → 캐시히트 시 즉시 응답). 재빌드 시 자동 무효화."""
+    key = _db_mtime()
+    if _DB_CACHE["body"] is not None and _DB_CACHE["key"] == key:
+        return Response(content=_DB_CACHE["body"], media_type="application/json")
     out, nats, leagues = [], set(), []
     for lg in ds.available_leagues():
         full = _pf(lg)
@@ -1930,7 +1949,10 @@ def database(league: str = ACTIVE_LEAGUE):
     out.sort(key=lambda p: -p["ovr"])
     if not out:
         raise HTTPException(404, "players not found")
-    return {"league": "ALL", "players": out, "nationalities": sorted(nats), "leagues": leagues}
+    result = {"league": "ALL", "players": out, "nationalities": sorted(nats), "leagues": leagues}
+    body = json.dumps(result, ensure_ascii=False).encode("utf-8")   # 빠른 직렬화(jsonable_encoder 우회)
+    _DB_CACHE.update(key=key, body=body)
+    return Response(content=body, media_type="application/json")
 
 
 @app.get("/api/captains/{team}")
