@@ -18,16 +18,30 @@ function Sec({ en, kr, accent, right }: { en: string; kr: string; accent: string
   );
 }
 
-export default function HomeDashboard({ accent, onPickTeam, onPickLeagueTeam, leagueLabel = "EPL" }: { accent: string; onPickTeam: (t: string) => void; onPickLeagueTeam?: (t: string, league?: string) => void; leagueLabel?: string }) {
+type LeagueOpt = { key: string; label: string };
+
+export default function HomeDashboard({ accent, onPickTeam, onPickLeagueTeam, leagueLabel = "EPL",
+  league = "EPL", leagues = [], onLeague }: {
+  accent: string; onPickTeam: (t: string) => void; onPickLeagueTeam?: (t: string, league?: string) => void;
+  leagueLabel?: string; league?: string; leagues?: LeagueOpt[]; onLeague?: (l: string) => void;
+}) {
   const [h, setH] = useState<Home | null>(null);
-  const [comp, setComp] = useState<"EPL" | "WC">("EPL");
+  const [comp, setComp] = useState<"league" | "WC">("league");   // 리그 홈 vs 월드컵
   // leagueLabel 변경(리그 전환) 시 재조회 — getHome 은 모듈 활성리그(_league) 사용
   useEffect(() => { let a = true; setH(null); getHome().then((d) => a && setH(d)).catch(() => {}); return () => { a = false; }; }, [leagueLabel]);
 
+  // 모든 리그 + WC 를 홈에서 바로 전환하는 탭(리그 홈은 다리그 허브)
+  const opts: LeagueOpt[] = leagues.length ? leagues : [{ key: league, label: leagueLabel }];
   const switcher = (
     <div className="comp-seg">
-      <button className={comp === "EPL" ? "active" : ""} onClick={() => setComp("EPL")}
-        style={comp === "EPL" ? { ["--tc" as any]: accent } : undefined}>{leagueLabel}</button>
+      {opts.map((l) => {
+        const on = comp === "league" && league === l.key;
+        return (
+          <button key={l.key} className={on ? "active" : ""}
+            onClick={() => { setComp("league"); onLeague?.(l.key); }}
+            style={on ? { ["--tc" as any]: accent } : undefined}>{l.label}</button>
+        );
+      })}
       <button className={`wc${comp === "WC" ? " active" : ""}`} onClick={() => setComp("WC")} title="2026 월드컵"
         style={comp === "WC" ? { ["--tc" as any]: accent } : undefined}><span className="wc-dot" />WC 26</button>
     </div>

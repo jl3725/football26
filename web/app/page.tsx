@@ -17,6 +17,8 @@ import DatabaseTab from "@/components/DatabaseTab";
 import TransferTab from "@/components/TransferTab";
 import NewsTab from "@/components/NewsTab";
 
+const LEAGUE_TABS = [{ key: "EPL", label: "EPL" }, { key: "LaLiga", label: "LA LIGA" }, { key: "SerieA", label: "SERIE A" }];
+
 export default function Page() {
   const [teams, setTeams] = useState<Team[]>([]);
   const [nextS, setNextS] = useState<NextSeason | null>(null);
@@ -66,7 +68,8 @@ export default function Page() {
   };
 
   function renderTab() {
-    if (home) return <HomeDashboard accent={accent} onPickTeam={pickTeam} onPickLeagueTeam={pickLeagueTeam} leagueLabel={leagueLabel} />;
+    if (home) return <HomeDashboard accent={accent} onPickTeam={pickTeam} onPickLeagueTeam={pickLeagueTeam}
+      leagueLabel={leagueLabel} league={league} leagues={LEAGUE_TABS} onLeague={switchLeague} />;
     if (ovErr) return (
       <div className="nodata-card">
         <div className="nodata-emoji">{isPromoted ? "🆙" : "📭"}</div>
