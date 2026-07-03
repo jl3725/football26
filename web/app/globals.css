@@ -287,8 +287,9 @@ html, body {
 .wc-fifa-upd { font-family: Oswald, sans-serif; font-size: 10.5px; letter-spacing: .5px; color: var(--muted); text-transform: uppercase; }
 .wc-fifa-note { font-size: 11px; color: var(--muted); margin-bottom: 10px; line-height: 1.5; }
 .wc-fifa-note b { color: var(--txt); }
-.wc-fifa { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2px 18px; }
-.wc-fifa-row { display: flex; align-items: center; gap: 9px; padding: 5px 4px; border-bottom: 1px solid var(--line); }
+/* 세로 흐름(1~15 왼쪽 → 16~30 오른쪽) — 순위 읽기 편하게 CSS 멀티컬럼 */
+.wc-fifa { columns: 300px 2; column-gap: 18px; }
+.wc-fifa-row { display: flex; align-items: center; gap: 9px; padding: 5px 4px; border-bottom: 1px solid var(--line); break-inside: avoid; }
 .wc-fr-rk { font-family: Teko, sans-serif; font-size: 20px; line-height: 1; min-width: 22px; text-align: right; }
 .wc-fr-ch { font-size: 10px; font-weight: 700; min-width: 26px; }
 .wc-fr-ch.up { color: #5fd08c; }
@@ -315,10 +316,9 @@ html, body {
 .wc-pl-g { color: #e8c86a; font-weight: 700; }
 .wc-pl-more { font-size: 11px; color: var(--muted); align-self: center; }
 
-/* 득점왕 */
-.wc-scorers { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 18px; }
-@media (max-width: 760px) { .wc-scorers { grid-template-columns: 1fr; } }
-.wc-scorer { display: flex; align-items: center; gap: 9px; padding: 7px 4px; border-bottom: 1px solid rgba(255,255,255,0.04); }
+/* 득점왕/도움왕 — 세로 흐름(1~10 왼쪽 → 11~20 오른쪽) */
+.wc-scorers { columns: 280px 2; column-gap: 18px; }
+.wc-scorer { display: flex; align-items: center; gap: 9px; padding: 7px 4px; border-bottom: 1px solid rgba(255,255,255,0.04); break-inside: avoid; }
 .wc-scorer img { width: 20px; height: 14px; object-fit: contain; flex-shrink: 0; }
 .wc-rk { width: 20px; text-align: center; font-family: Oswald, sans-serif; font-weight: 700; font-size: 13px; color: var(--muted); flex-shrink: 0; }
 .wc-scorer-nm { font-size: 13px; font-weight: 600; }
