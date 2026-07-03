@@ -27,7 +27,7 @@ DATA = ROOT / "data"
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from leagues import data_path  # noqa: E402
-from fetch_transfermarkt import H, SEASON, TEAM_TM, norm  # noqa: E402
+from fetch_transfermarkt import H, TEAM_TM, norm  # noqa: E402
 
 PLAYERS_FULL = data_path("players_full")
 PLAYERS_BASE = data_path("players")
@@ -105,7 +105,9 @@ def _parse_joined_from_row(tr) -> str:
 
 def scrape_team_contracts(team: str) -> list[dict]:
     slug, vid = TEAM_TM[team]
-    url = f"https://www.transfermarkt.com/{slug}/kader/verein/{vid}/saison_id/{SEASON}/plus/1"
+    # 현재 시즌 상세 스쿼드(plus/1) — saison_id 를 붙이면 과거시즌 뷰가 되어 'Contract until'
+    # 컬럼이 사라지고 'Joined'/'Current club' 이 나와 계약일이 아닌 입단일이 긁힌다.
+    url = f"https://www.transfermarkt.com/{slug}/kader/verein/{vid}/plus/1"
     response = requests.get(url, headers=H, timeout=25)
     response.raise_for_status()
 
