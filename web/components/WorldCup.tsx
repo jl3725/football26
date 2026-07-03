@@ -51,19 +51,20 @@ export default function WorldCup({ accent, onPickTeam }: { accent: string; onPic
         <div className="hx-meta">북중미 공동 개최 · 48개국 · <span style={{ color: "#e8c86a" }}>녹아웃 스테이지 진행 중</span></div>
       </div>
 
-      {/* FIFA 랭킹 TOP 30 */}
+      {/* FIFA 랭킹 TOP 30 — 월드컵 결과 실시간 반영 */}
       {d.fifa_ranking && d.fifa_ranking.length > 0 && (
         <>
-          <WSec en="FIFA WORLD RANKING" kr="FIFA 랭킹 TOP 30" accent={accent}
-            right={d.fifa_updated ? <span className="wc-fifa-upd">기준 {d.fifa_updated}</span> : undefined} />
+          <WSec en="FIFA WORLD RANKING" kr={d.fifa_live ? "FIFA 랭킹 TOP 30 · 월드컵 실시간 반영" : "FIFA 랭킹 TOP 30"} accent={accent}
+            right={<span className="wc-fifa-upd">{d.fifa_live ? "🔴 예상 " : ""}{d.fifa_updated ? `공식 ${d.fifa_updated} 기준` : ""}</span>} />
           <div className="card">
+            {d.fifa_live && <div className="wc-fifa-note">공식 점수({d.fifa_updated})에 월드컵 경기 결과를 FIFA 공식 산식으로 반영한 <b>예상 순위</b>입니다. 변동(▲▼)은 공식 순위 대비.</div>}
             <div className="wc-fifa">
               {d.fifa_ranking.map((f) => {
                 const tone = f.rank_change > 0 ? "up" : f.rank_change < 0 ? "down" : "same";
                 return (
-                  <div className="wc-fifa-row" key={f.rank}>
+                  <div className="wc-fifa-row" key={f.code || f.rank}>
                     <span className="wc-fr-rk" style={f.rank === 1 ? { color: "#e8c86a" } : undefined}>{f.rank}</span>
-                    <span className={`wc-fr-ch ${tone}`}>
+                    <span className={`wc-fr-ch ${tone}`} title={`공식 ${f.official_rank}위`}>
                       {tone === "up" ? `▲${f.rank_change}` : tone === "down" ? `▼${-f.rank_change}` : "–"}
                     </span>
                     {f.flag && <img className="wc-fr-flag" src={f.flag} alt="" />}

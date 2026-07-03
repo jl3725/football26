@@ -285,6 +285,8 @@ html, body {
 .wc-club-h img { width: 24px; height: 24px; object-fit: contain; }
 /* FIFA 랭킹 */
 .wc-fifa-upd { font-family: Oswald, sans-serif; font-size: 10.5px; letter-spacing: .5px; color: var(--muted); text-transform: uppercase; }
+.wc-fifa-note { font-size: 11px; color: var(--muted); margin-bottom: 10px; line-height: 1.5; }
+.wc-fifa-note b { color: var(--txt); }
 .wc-fifa { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2px 18px; }
 .wc-fifa-row { display: flex; align-items: center; gap: 9px; padding: 5px 4px; border-bottom: 1px solid var(--line); }
 .wc-fr-rk { font-family: Teko, sans-serif; font-size: 20px; line-height: 1; min-width: 22px; text-align: right; }

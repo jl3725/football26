@@ -2282,6 +2282,57 @@ def _wc_player_index():
     return {n: (v[0], v[1]) for n, v in tmp.items()}, norm
 
 
+def _fifa_live_ranking():
+    """공식 FIFA 점수(기준일) + 월드컵 경기 결과로 재계산한 '실시간 예상' 랭킹.
+    FIFA 공식 SUM(Elo) 공식: P += I·(W − We), We = 1/(10^(−dr/600)+1).
+    I(중요도): 월드컵 조별 50 · 녹아웃 60. 대회 중엔 공식 갱신이 없어 이걸로 근사한다.
+    반환: (전체 랭킹 리스트[예상순위·공식순위·변동·점수변동], 공식 기준일)."""
+    import math
+    fr = _wc_read("fifa_ranking")
+    if fr is None or "code" not in fr.columns or fr.empty:
+        return [], ""
+    pts, meta = {}, {}
+    for _, r in fr.iterrows():
+        code = str(r.get("code") or "").strip()
+        if not code:
+            continue
+        pts[code] = _num(r.get("points"))
+        meta[code] = {"team": str(r.get("team") or ""), "flag": str(r.get("flag") or ""),
+                      "confederation": str(r.get("confederation") or ""),
+                      "official_rank": int(_num(r.get("rank")))}
+    base_pts = dict(pts)                      # 공식 점수 스냅샷(변동 계산용)
+    updated = str(fr.iloc[0].get("updated") or "")
+
+    m = _wc_read("wc_matches")
+    if m is not None and "completed" in m.columns:
+        done = m[m["completed"].astype(str).str.lower().isin({"true", "1", "yes"})].copy()
+        if "date" in done.columns:
+            done = done.sort_values("date")
+        for _, g in done.iterrows():
+            hc, ac = str(g.get("home_abbr") or "").strip(), str(g.get("away_abbr") or "").strip()
+            if hc not in pts or ac not in pts:
+                continue
+            hs, as_ = _numornone(g.get("home_score")), _numornone(g.get("away_score"))
+            if hs is None or as_ is None:
+                continue
+            imp = 50.0 if str(g.get("round")) == "group-stage" else 60.0
+            we_h = 1.0 / (10 ** (-(pts[hc] - pts[ac]) / 600.0) + 1.0)
+            w_h = 1.0 if hs > as_ else (0.0 if hs < as_ else 0.5)
+            pts[hc] += imp * (w_h - we_h)
+            pts[ac] += imp * ((1.0 - w_h) - (1.0 - we_h))
+
+    ranked = sorted(pts.items(), key=lambda kv: -kv[1])
+    out = []
+    for i, (code, p) in enumerate(ranked, start=1):
+        mt = meta.get(code, {})
+        orank = mt.get("official_rank", i)
+        out.append({"rank": i, "team": mt.get("team", code), "code": code,
+                    "points": round(p, 2), "official_rank": orank,
+                    "rank_change": orank - i, "points_change": round(p - base_pts.get(code, p), 2),
+                    "confederation": mt.get("confederation", ""), "flag": mt.get("flag", "")})
+    return out, updated
+
+
 @app.get("/api/wc")
 def world_cup():
     """2026 월드컵 — 경기(라운드별)·조별순위·득점왕 + EPL 클럽 차출 교차참조."""
@@ -2441,28 +2492,16 @@ def world_cup():
                 seen[n] = seen.get(n, 0) + 1
         nations = [{"nation": n, "logo": nation_logo.get(n, ""), "count": c} for n, c in sorted(seen.items())]
 
-    # FIFA 랭킹 TOP 30 (순위·점수 + 직전 대비 변동)
-    fr = _wc_read("fifa_ranking")
-    fifa_ranking, fifa_updated = [], ""
-    if fr is not None and "rank" in fr.columns:
-        fr = fr.sort_values("rank").head(30)
-        for _, r in fr.iterrows():
-            fifa_ranking.append({
-                "rank": int(_num(r.get("rank"))), "team": str(r.get("team") or ""),
-                "code": str(r.get("code") or ""), "points": round(_num(r.get("points")), 2),
-                "rank_change": int(_num(r.get("rank_change"))),
-                "points_change": round(_num(r.get("points_change")), 2),
-                "confederation": str(r.get("confederation") or ""),
-                "flag": str(r.get("flag") or ""),
-            })
-        if not fr.empty:
-            fifa_updated = str(fr.iloc[0].get("updated") or "")
+    # FIFA 랭킹 TOP 30 — 공식 기준점수 + 월드컵 결과로 실시간 예상(대회 중 공식 갱신 없음)
+    fifa_all, fifa_updated = _fifa_live_ranking()
+    fifa_ranking = fifa_all[:30]
+    fifa_live = any(f["points_change"] for f in fifa_all)   # 반영된 WC 결과 있으면 True
 
     return {"matches": rounds, "groups": groups_list, "scorers": scorers,
             "assists": assists_board, "rising_stars": rising, "veterans": veterans,
             "group_heroes": group_heroes,
             "club_callups": club_callups, "nations": nations,
-            "fifa_ranking": fifa_ranking, "fifa_updated": fifa_updated}
+            "fifa_ranking": fifa_ranking, "fifa_updated": fifa_updated, "fifa_live": fifa_live}
 
 
 @app.get("/api/wc/squad/{nation}")
