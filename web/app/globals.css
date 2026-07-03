@@ -283,6 +283,22 @@ html, body {
 .wc-club { background: var(--panel); border: 1px solid var(--line); border-radius: 13px; padding: 12px 13px; }
 .wc-club-h { display: flex; align-items: center; gap: 9px; width: 100%; background: transparent; border: none; color: var(--txt); cursor: pointer; padding: 0 0 9px; }
 .wc-club-h img { width: 24px; height: 24px; object-fit: contain; }
+/* FIFA 랭킹 */
+.wc-fifa-upd { font-family: Oswald, sans-serif; font-size: 10.5px; letter-spacing: .5px; color: var(--muted); text-transform: uppercase; }
+.wc-fifa { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2px 18px; }
+.wc-fifa-row { display: flex; align-items: center; gap: 9px; padding: 5px 4px; border-bottom: 1px solid var(--line); }
+.wc-fr-rk { font-family: Teko, sans-serif; font-size: 20px; line-height: 1; min-width: 22px; text-align: right; }
+.wc-fr-ch { font-size: 10px; font-weight: 700; min-width: 26px; }
+.wc-fr-ch.up { color: #5fd08c; }
+.wc-fr-ch.down { color: #ef6b7b; }
+.wc-fr-ch.same { color: var(--muted); }
+.wc-fr-flag { width: 22px; height: 15px; object-fit: cover; border-radius: 2px; flex-shrink: 0; }
+.wc-fr-team { flex: 1; font-weight: 600; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.wc-fr-conf { font-family: Oswald, sans-serif; font-size: 8.5px; letter-spacing: .5px; color: var(--muted); border: 1px solid var(--line); border-radius: 4px; padding: 1px 4px; }
+.wc-fr-pts { font-size: 17px; min-width: 40px; text-align: right; }
+.wc-fr-dp { font-size: 10px; min-width: 42px; text-align: right; }
+.wc-fr-dp.up { color: #5fd08c; }
+.wc-fr-dp.down { color: #ef6b7b; }
 .wc-club-name { flex: 1; text-align: left; font-weight: 700; font-size: 13.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .wc-club-lg { font-family: Oswald, sans-serif; font-size: 9px; letter-spacing: .5px; color: var(--muted); border: 1px solid var(--line); border-radius: 5px; padding: 1px 5px; text-transform: uppercase; flex-shrink: 0; }
 .wc-club-n { font-family: Teko, sans-serif; font-size: 24px; line-height: 1; }

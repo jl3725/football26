@@ -2431,10 +2431,28 @@ def world_cup():
                 seen[n] = seen.get(n, 0) + 1
         nations = [{"nation": n, "logo": nation_logo.get(n, ""), "count": c} for n, c in sorted(seen.items())]
 
+    # FIFA 랭킹 TOP 30 (순위·점수 + 직전 대비 변동)
+    fr = _wc_read("fifa_ranking")
+    fifa_ranking, fifa_updated = [], ""
+    if fr is not None and "rank" in fr.columns:
+        fr = fr.sort_values("rank").head(30)
+        for _, r in fr.iterrows():
+            fifa_ranking.append({
+                "rank": int(_num(r.get("rank"))), "team": str(r.get("team") or ""),
+                "code": str(r.get("code") or ""), "points": round(_num(r.get("points")), 2),
+                "rank_change": int(_num(r.get("rank_change"))),
+                "points_change": round(_num(r.get("points_change")), 2),
+                "confederation": str(r.get("confederation") or ""),
+                "flag": str(r.get("flag") or ""),
+            })
+        if not fr.empty:
+            fifa_updated = str(fr.iloc[0].get("updated") or "")
+
     return {"matches": rounds, "groups": groups_list, "scorers": scorers,
             "assists": assists_board, "rising_stars": rising, "veterans": veterans,
             "group_heroes": group_heroes,
-            "club_callups": club_callups, "nations": nations}
+            "club_callups": club_callups, "nations": nations,
+            "fifa_ranking": fifa_ranking, "fifa_updated": fifa_updated}
 
 
 @app.get("/api/wc/squad/{nation}")

@@ -51,6 +51,36 @@ export default function WorldCup({ accent, onPickTeam }: { accent: string; onPic
         <div className="hx-meta">북중미 공동 개최 · 48개국 · <span style={{ color: "#e8c86a" }}>녹아웃 스테이지 진행 중</span></div>
       </div>
 
+      {/* FIFA 랭킹 TOP 30 */}
+      {d.fifa_ranking && d.fifa_ranking.length > 0 && (
+        <>
+          <WSec en="FIFA WORLD RANKING" kr="FIFA 랭킹 TOP 30" accent={accent}
+            right={d.fifa_updated ? <span className="wc-fifa-upd">기준 {d.fifa_updated}</span> : undefined} />
+          <div className="card">
+            <div className="wc-fifa">
+              {d.fifa_ranking.map((f) => {
+                const tone = f.rank_change > 0 ? "up" : f.rank_change < 0 ? "down" : "same";
+                return (
+                  <div className="wc-fifa-row" key={f.rank}>
+                    <span className="wc-fr-rk" style={f.rank === 1 ? { color: "#e8c86a" } : undefined}>{f.rank}</span>
+                    <span className={`wc-fr-ch ${tone}`}>
+                      {tone === "up" ? `▲${f.rank_change}` : tone === "down" ? `▼${-f.rank_change}` : "–"}
+                    </span>
+                    {f.flag && <img className="wc-fr-flag" src={f.flag} alt="" />}
+                    <span className="wc-fr-team">{f.team}</span>
+                    <span className="wc-fr-conf">{f.confederation}</span>
+                    <span className="wc-fr-pts teko">{f.points.toFixed(0)}</span>
+                    <span className={`wc-fr-dp ${f.points_change >= 0 ? "up" : "down"}`}>
+                      {f.points_change >= 0 ? "+" : ""}{f.points_change.toFixed(1)}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </>
+      )}
+
       {/* 클럽별 월드컵 차출 */}
       {d.club_callups.length > 0 && (
         <>
