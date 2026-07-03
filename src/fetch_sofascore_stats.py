@@ -48,6 +48,12 @@ SOFASCORE_UT_IDS = {
 UT_ID = SOFASCORE_UT_IDS.get(ACTIVE_LEAGUE, PL_UT_ID)
 
 TEAM_ALIASES = {
+    "EPL": {
+        "Brighton & Hove Albion": "Brighton",
+        "Liverpool FC": "Liverpool",
+        "Manchester United": "Manchester Utd",
+        "Wolverhampton": "Wolves",
+    },
     "LaLiga": {
         "Deportivo Alavés": "Alavés",
         "FC Barcelona": "Barcelona",
@@ -61,6 +67,7 @@ TEAM_ALIASES = {
         "Como 1907": "Como",
         "Inter Milan": "Inter",
         "Internazionale": "Inter",
+        "SSC Napoli": "Napoli",
         "Pisa SC": "Pisa",
         "SS Lazio": "Lazio",
         "US Cremonese": "Cremonese",
@@ -92,6 +99,39 @@ TEAM_ALIASES = {
         "TSG Hoffenheim": "Hoffenheim",
         "VfB Stuttgart": "Stuttgart",
         "VfL Wolfsburg": "Wolfsburg",
+    },
+    "Ligue1": {
+        "AJ Auxerre": "Auxerre",
+        "AS Monaco": "Monaco",
+        "Angers": "Angers",
+        "Angers SCO": "Angers",
+        "Brest": "Brest",
+        "FC Lorient": "Lorient",
+        "FC Metz": "Metz",
+        "FC Nantes": "Nantes",
+        "Le Havre": "Le Havre",
+        "Le Havre AC": "Le Havre",
+        "Lille": "Lille",
+        "LOSC Lille": "Lille",
+        "Olympique Lyon": "Lyon",
+        "Olympique Lyonnais": "Lyon",
+        "Olympique de Marseille": "Marseille",
+        "Olympique Marseille": "Marseille",
+        "OGC Nice": "Nice",
+        "Paris FC": "Paris FC",
+        "Paris Saint-Germain": "PSG",
+        "PSG": "PSG",
+        "RC Lens": "Lens",
+        "Rennes": "Rennes",
+        "Stade Rennais": "Rennes",
+        "Stade Rennais FC": "Rennes",
+        "Stade Brestois": "Brest",
+        "Stade Brestois 29": "Brest",
+        "Strasbourg": "Strasbourg",
+        "RC Strasbourg": "Strasbourg",
+        "RC Strasbourg Alsace": "Strasbourg",
+        "Toulouse": "Toulouse",
+        "Toulouse FC": "Toulouse",
     },
 }
 
@@ -179,6 +219,51 @@ def fetch_player_stats(player_id: int, season_id: int) -> dict:
     return (d or {}).get("statistics", {})
 
 
+def fetch_tournament_player_stats(season_id: int) -> list[dict]:
+    rows: list[dict] = []
+    fields = ",".join(STAT_KEYS)
+    limit = 100
+    offset = 0
+    pages = None
+
+    while pages is None or (offset // limit) < pages:
+        d = get(
+            f"/unique-tournament/{UT_ID}/season/{season_id}/statistics"
+            f"?limit={limit}&offset={offset}&order=-minutesPlayed"
+            f"&accumulation=total&fields={fields}",
+            delay=0.25,
+        )
+        if not d:
+            break
+        results = d.get("results", [])
+        page = d.get("page", offset // limit + 1)
+        pages = d.get("pages", page)
+        print(f"  tournament stats page {page}/{pages}: {len(results)} players")
+        if not results:
+            break
+
+        for item in results:
+            p = item.get("player") or {}
+            t = item.get("team") or {}
+            if item.get("appearances", 0) == 0:
+                continue
+            row = {
+                "sofascore_id": p.get("id"),
+                "player": p.get("name", ""),
+                "squad": normalize_team_name(t.get("name", "")),
+                "norm_key": unidecode(str(p.get("name", ""))).lower().strip(),
+            }
+            for k in STAT_KEYS:
+                row[k] = item.get(k)
+            rows.append(row)
+
+        if page >= pages:
+            break
+        offset += limit
+
+    return rows
+
+
 def main(argv=None) -> int:
     cfg = league_config()
     season_id = find_season_id()
@@ -186,6 +271,15 @@ def main(argv=None) -> int:
         print("EPL 25/26 시즌 id 조회 실패")
         return 1
     print(f"{cfg.name} 25/26 season id = {season_id}")
+
+    rows = fetch_tournament_player_stats(season_id)
+    if rows:
+        df = pd.DataFrame(rows)
+        df.to_csv(OUT, index=False, encoding="utf-8")
+        print(f"\n[OK] saved {OUT.name} - {len(df)} players")
+        return 0
+
+    print("Tournament stats unavailable; falling back to team rosters.")
 
     teams = fetch_teams(season_id)
     if not teams:

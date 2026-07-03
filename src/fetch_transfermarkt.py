@@ -128,11 +128,33 @@ BUNDESLIGA_TEAM_TM: dict[str, tuple[str, int]] = {
     "Wolfsburg": ("vfl-wolfsburg", 82),
 }
 
+LIGUE1_TEAM_TM: dict[str, tuple[str, int]] = {
+    "Angers": ("sco-angers", 1420),
+    "Auxerre": ("aj-auxerre", 290),
+    "Brest": ("stade-brest-29", 3911),
+    "Le Havre": ("ac-le-havre", 738),
+    "Lens": ("rc-lens", 826),
+    "Lille": ("losc-lille", 1082),
+    "Lorient": ("fc-lorient", 1158),
+    "Lyon": ("olympique-lyon", 1041),
+    "Marseille": ("olympique-marseille", 244),
+    "Metz": ("fc-metz", 347),
+    "Monaco": ("as-monaco", 162),
+    "Nantes": ("fc-nantes", 995),
+    "Nice": ("ogc-nizza", 417),
+    "PSG": ("fc-paris-saint-germain", 583),
+    "Paris FC": ("paris-fc", 10004),
+    "Rennes": ("fc-stade-rennes", 273),
+    "Strasbourg": ("rc-strassburg-alsace", 667),
+    "Toulouse": ("fc-toulouse", 415),
+}
+
 TEAM_TM_BY_LEAGUE: dict[str, dict[str, tuple[str, int]]] = {
     "EPL": EPL_TEAM_TM,
     "LaLiga": LALIGA_TEAM_TM,
     "Bundesliga": BUNDESLIGA_TEAM_TM,
     "SerieA": SERIEA_TEAM_TM,
+    "Ligue1": LIGUE1_TEAM_TM,
 }
 
 TEAM_TM: dict[str, tuple[str, int]] = TEAM_TM_BY_LEAGUE.get(ACTIVE_LEAGUE, EPL_TEAM_TM)
@@ -155,6 +177,23 @@ TM_ALIAS: dict[str, str] = {
     "igor": "Igor Julio",          # West Ham(→Brighton) — 단일이름 'Igor'(브라질 CB)
     "john": "John Victor",         # Nott'm Forest — 단일이름 'John'(브라질 GK)
 }
+
+
+TM_ALIAS_BY_TEAM: dict[tuple[str, str], str] = {
+    ("Alavés", "jonny castro"): "Jonny Otto",
+    ("Girona", "viktor tsyhankov"): "Viktor Tsygankov",
+    ("Real Betis", "cucho"): "Cucho Hernández",
+    ("Espanyol", "kike"): "Kike García",
+    ("Sevilla", "peque"): "Peque Fernández",
+    ("Espanyol", "jofre"): "Jofre Carreras",
+    ("Levante", "brugui"): "Roger Brugué",
+    ("Espanyol", "urko gonzalez"): "Urko González de Zárate",
+    ("Sevilla", "joaquin martinez gauna"): "Joaquín Martínez",
+}
+
+
+def tm_alias(player: str, squad: str) -> str | None:
+    return TM_ALIAS_BY_TEAM.get((squad, norm(player))) or TM_ALIAS.get(norm(player))
 
 
 def parse_mv(s: str) -> int | None:
@@ -328,7 +367,7 @@ def mark_transfers(dry: bool = False, min_minutes: int = 500) -> int:
     # ── 2단계: 후보만 검색해 현재 클럽 확정 → left_for 기록 ──────────────────────
     n_left = 0
     for idx, player, squad in candidates:
-        q = TM_ALIAS.get(norm(player), player)
+        q = tm_alias(player, squad) or player
         rec = search_player(q)
         time.sleep(1.2)
         if not rec:
@@ -423,7 +462,7 @@ def main(argv=None) -> int:
         if not no_search:
             ours_miss = sub[(~sub.index.isin(used)) & (sub["minutes"] >= search_min)]
             for idx, row in ours_miss.iterrows():
-                alias = TM_ALIAS.get(norm(row["player"]))
+                alias = tm_alias(row["player"], team)
                 q = alias or row["player"]
                 # 단일 토큰 이름은 모호('Lucas'→Lucas Hernández 오매칭) → 스킵.
                 # 단, 큐레이션된 별칭이면 단일 토큰이라도 신뢰하고 검색.

@@ -16,7 +16,7 @@ import pandas as pd
 import soccerdata as sd
 from unidecode import unidecode
 
-from leagues import SEASON_FBREF, data_path, league_config
+from leagues import ACTIVE_LEAGUE, SEASON_FBREF, data_path, league_config
 
 DATA_DIR = Path(__file__).resolve().parent.parent / "data"
 FBREF = data_path("players")
@@ -32,6 +32,133 @@ def normalize_name(s: str) -> str:
 
 def merge_key(team: str, player: str) -> str:
     return f"{normalize_name(team)}|{normalize_name(player)}"
+
+
+SofascoreMergeTarget = str | tuple[str, str]
+
+SOFASCORE_PLAYER_ALIASES: dict[str, dict[tuple[str, str], SofascoreMergeTarget]] = {
+    "EPL": {
+        ("crystal palace", "yeremy pino"): "Yeremi Pino",
+        ("nottingham forest", "callum hudson odoi"): "Callum Hudson-Odoi",
+        ("aston villa", "emiliano buendia"): "Emi Buendía",
+        ("manchester city", "nico gonzalez"): "Nicolás González",
+        ("burnley", "lucas pires"): "Lucas",
+        ("manchester city", "antoine semenyo"): ("Bournemouth", "Antoine Semenyo"),
+        ("crystal palace", "jorgen strand larsen"): ("Wolves", "Jørgen Strand Larsen"),
+    },
+    "LaLiga": {
+        ("osasuna", "alejandro catena"): "Catena",
+        ("alaves", "jonny otto"): "Jonny Castro",
+        ("alaves", "youssef enriquez"): "Youssef Lekhedim",
+        ("alaves", "mariano diaz"): "Mariano",
+        ("athletic club", "hugo rincon"): ("Girona", "Hugo Rincón"),
+        ("athletic club", "julen agirrezabala"): ("Valencia", "Julen Agirrezabala"),
+        ("girona", "viktor tsygankov"): "Viktor Tsyhankov",
+        ("athletic club", "nico serrano"): "Nicolás Serrano",
+        ("atletico madrid", "thomas lemar"): ("Girona", "Thomas Lemar"),
+        ("atletico madrid", "carlos martin"): ("Rayo Vallecano", "Carlos Martín"),
+        ("atletico madrid", "dani martinez"): "Daniel Martinez",
+        ("barcelona", "pablo gavi"): "Gavi",
+        ("celta vigo", "aleix febas"): ("Elche", "Aleix Febas"),
+        ("celta vigo", "manuel sanchez"): ("Levante", "Manu Sánchez"),
+        ("celta vigo", "javi galan"): ("Osasuna", "Javi Galán"),
+        ("celta vigo", "hugo burcio"): "Hugo García",
+        ("real betis", "cucho hernandez"): "Cucho",
+        ("espanyol", "jofre carreras"): "Jofre",
+        ("espanyol", "antoniu roca"): "Antoniu",
+        ("espanyol", "miguel rubio"): "Miguel Ángel Rubio",
+        ("espanyol", "angel fortuno"): "Fortuño",
+        ("getafe", "damian caceres"): "Damián",
+        ("getafe", "jose luis perez"): "Joselu Pérez",
+        ("getafe", "juan iglesias"): "Iglesias",
+        ("girona", "lass kourouma"): "Lancinet Kourouma",
+        ("levante", "roger brugue"): "Brugui",
+        ("levante", "manuel sanchez"): "Manu Sánchez",
+        ("levante", "tai abed"): "Tay Abed",
+        ("osasuna", "raul garcia de haro"): "Raúl",
+        ("oviedo", "abdel rahim"): "Rahim Bonkano",
+        ("sevilla", "jose angel carmona"): "Carmona",
+        ("athletic club", "dani vivian"): "Daniel Vivian",
+        ("villarreal", "luiz junior"): "Luiz Lúcio Reis Júnior",
+        ("rayo vallecano", "isi palazon"): "Isaac Palazón Camacho",
+        ("rayo vallecano", "alemao"): "Alexandre Alemão",
+        ("real betis", "abdessamad ezzalzouli"): "Abde Ezzalzouli",
+        ("real betis", "nobel mendy"): ("Rayo Vallecano", "Nobel Mendy"),
+        ("valencia", "jose luis gaya"): "José Luis Gayà",
+        ("rayo vallecano", "pathe ismael ciss"): "Pathé Ciss",
+        ("real madrid", "thiago pitarch"): "Thiago Pinar",
+        ("real sociedad", "jon pacheco"): ("Alavés", "Jon Pacheco"),
+        ("real sociedad", "javi lopez"): ("Oviedo", "Javi López"),
+        ("real sociedad", "orri oskarsson"): "Orri Steinn Óskarsson",
+        ("real sociedad", "job ochieng"): "Job Ochieng'",
+        ("real sociedad", "gorka carrera zarranz"): "Gorka Carrera",
+        ("real sociedad", "dani diaz"): "Daniel Díaz",
+        ("valencia", "jose copete"): "Copete",
+        ("valencia", "pepelu"): "José Luis García Vayá",
+        ("espanyol", "kike garcia"): "Kiké",
+        ("levante", "jon ander olasagasti"): "Olasagasti",
+        ("alaves", "abderrahman rebbach"): "Abde Rebbach",
+        ("levante", "etta eyong"): "Karl Etta Eyong",
+        ("celta vigo", "javier rueda"): "Javi Rueda",
+        ("athletic club", "robert navarro"): "Roberto Navarro",
+        ("athletic club", "alejandro rego mora"): "Alejandro Rego",
+        ("sevilla", "juan iglesias"): ("Getafe", "Iglesias"),
+        ("sevilla", "rafa mir"): ("Elche", "Rafa Mir"),
+        ("sevilla", "oso"): "Joaquín Martínez Gauna",
+        ("sevilla", "peque fernandez"): "Peque",
+        ("sevilla", "miguel sierra"): "Miguel Ángel Sierra",
+        ("valencia", "andre almeida"): "Domingos André Ribeiro Almeida",
+        ("villarreal", "carlos romero"): ("Espanyol", "Carlos Romero"),
+        ("villarreal", "ramon terrats"): ("Espanyol", "Ramón Terrats"),
+        ("villarreal", "dani parejo"): "Daniel Parejo",
+        ("villarreal", "alexander freeman"): "Alex Freeman",
+        ("sevilla", "andres castrin"): "Castrin",
+        ("rayo vallecano", "fran perez"): "Francisco Perez",
+    },
+    "SerieA": {
+        ("cagliari", "michel adopo"): "Michel Ndary Adopo",
+        ("como", "nico paz"): "Nicolás Paz",
+        ("roma", "evan ndicka"): "Obite N'Dicka",
+        ("como", "marc kempf"): "Marc-Oliver Kempf",
+        ("atalanta", "ederson"): "Éderson Silva",
+        ("juventus", "bremer"): "Gleison Bremer",
+        ("inter", "yann bisseck"): "Yann Aurel Bisseck",
+        ("parma", "oliver sorensen"): "Oliver Jensen",
+        ("lecce", "kialonda gaspar"): "Kialonda",
+        ("napoli", "eljif elmas"): "Elif Elmas",
+        ("napoli", "frank anguissa"): "Andre-Frank Zambo Anguissa",
+        ("cagliari", "ze pedro"): "Zé Pedro Figueiredo",
+        ("cremonese", "romano floriani mussolini"): "Romano Floriani",
+        ("torino", "rafael obrador"): "Rafel Obrador",
+        ("inter", "francesco pio esposito"): "Francesco Esposito",
+        ("lazio", "oliver provstgaard"): "Oliver Nielsen",
+        ("pisa", "henrik wendel meister"): "Henrik Meister",
+        ("hellas verona", "jean daniel akpa-akpro"): "Jean-Daniel Akpa-Akpro",
+        ("hellas verona", "armel bella-kotchap"): "Armel Bella Kotchap",
+        ("hellas verona", "moatasem al-musrati"): "Al-Musrati",
+        ("bologna", "charalampos lykogiannis"): "Babis Lykogiannis",
+        ("pisa", "nicolas"): "Nícolas Andrade",
+        ("udinese", "vakoun issouf bayo"): "Vakoun Bayo",
+        ("juventus", "juan cabal"): "Juan David Cabal",
+        ("torino", "tino anjorin"): "Faustino Anjorin",
+        ("cremonese", "mikayil faye"): "Mikayil Ngor Faye",
+        ("parma", "benjamin cremaschi"): "Ben Cremaschi",
+        ("pisa", "samuel iling junior"): "Samuel Iling-Junior",
+        ("cremonese", "faris moumbagna"): "Faris Pemi Moumbagna",
+        ("genoa", "wedtoin latif ouedraogo"): "Latif Ouedraogo",
+        ("napoli", "nikita contini"): "Nikita Contini Baranovsky",
+        ("milan", "cheveyo mul-balentien"): "Cheveyo Muy",
+        ("genoa", "joi xheto nuredini"): "Joi Nuredini",
+    },
+}
+
+
+def sofascore_identity_for_merge(team: str, player: str) -> tuple[str, str]:
+    aliases = SOFASCORE_PLAYER_ALIASES.get(ACTIVE_LEAGUE, {})
+    target = aliases.get((normalize_name(team), normalize_name(player)))
+    if isinstance(target, tuple):
+        return target
+    return team, target or player
 
 
 def main() -> int:
@@ -132,7 +259,10 @@ def main() -> int:
         m = ss["minutesPlayed"].replace(0, np.nan)
         n90 = m / 90.0
         ss_add = pd.DataFrame({
-            "_key": [merge_key(t, p) for t, p in zip(ss["squad"], ss["player"])],
+            "_key": [
+                merge_key(*sofascore_identity_for_merge(t, p))
+                for t, p in zip(ss["squad"], ss["player"])
+            ],
             # 비율 (이미 % 형태)
             "ss_rating":            ss["rating"],
             "pass_pct":             ss["accuratePassesPercentage"],
