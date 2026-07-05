@@ -23,7 +23,8 @@ OUT_PATH = ROOT / "data" / "fifa_ranking.csv"
 H = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
      "(KHTML, like Gecko) Chrome/126.0 Safari/537.36", "Accept": "application/json"}
 PAGE = "https://www.fifa.com/fifa-world-ranking/men"
-API = "https://inside.fifa.com/api/ranking-overview?locale=en&dateId=id{}"
+API = "https://inside.fifa.com/api/ranking-overview?locale=en&dateId={}"
+_MAX_PROBE = 12   # date-picker 최신 후보 중 데이터 있는 것까지만 탐색(무한루프 방지)
 
 
 def _get(url: str, timeout: int = 25) -> str:
@@ -32,26 +33,30 @@ def _get(url: str, timeout: int = 25) -> str:
         return resp.read().decode("utf-8", "replace")
 
 
-def _latest_date_id() -> int | None:
-    """랭킹 페이지에서 최신(가장 큰) 숫자 dateId 탐지."""
+def _ranking_date_ids() -> list[str]:
+    """랭킹 페이지 date-picker 에서 dateId 를 날짜(matchWindowEndDate) 내림차순으로.
+
+    FIFA 가 id 포맷을 바꿔서(구: 'id14870' 숫자형, 신: 'FRS_Male_Football_YYYYMMDD')
+    '가장 큰 숫자 id' 방식은 최신을 못 잡는다. date-picker 의 실제 날짜로 정렬해
+    최신부터 후보를 만든 뒤, fetch() 가 '데이터가 실제로 있는 첫 dateId' 를 고른다.
+    (신 포맷 날짜는 API 에 아직 데이터가 없어 빈 응답 → 자동으로 다음 후보로 폴백)
+    """
     try:
         html = _get(PAGE)
     except (urllib.error.URLError, OSError) as exc:
         print(f"[fifa] 페이지 로드 실패: {exc}", file=sys.stderr)
-        return None
-    ids = sorted({int(x) for x in re.findall(r'"id(\d{4,6})"', html)}, reverse=True)
-    return ids[0] if ids else None
+        return []
+    entries = re.findall(
+        r'"id":"([^"]+)","iso":"[^"]*","dateText":"[^"]*","matchWindowEndDate":"(\d{4}-\d{2}-\d{2})"',
+        html,
+    )
+    uniq: dict[str, str] = {}
+    for i, d in entries:
+        uniq.setdefault(i, d)
+    return [i for i, _ in sorted(uniq.items(), key=lambda x: x[1], reverse=True)]
 
 
-def fetch(date_id: int | None = None) -> list[dict]:
-    date_id = date_id or _latest_date_id()
-    if not date_id:
-        return []
-    try:
-        data = json.loads(_get(API.format(date_id), timeout=20))
-    except (urllib.error.URLError, OSError, ValueError) as exc:
-        print(f"[fifa] API 실패(id{date_id}): {exc}", file=sys.stderr)
-        return []
+def _parse_rows(data: dict) -> list[dict]:
     rows = []
     for e in data.get("rankings", []):
         it = e.get("rankingItem") or {}
@@ -76,6 +81,21 @@ def fetch(date_id: int | None = None) -> list[dict]:
         })
     rows.sort(key=lambda r: r["rank"])
     return rows
+
+
+def fetch(date_id: str | None = None) -> list[dict]:
+    """최신 날짜부터 후보 dateId 를 훑어 데이터가 있는 첫 랭킹을 반환."""
+    candidates = [date_id] if date_id else _ranking_date_ids()[:_MAX_PROBE]
+    for cid in candidates:
+        try:
+            data = json.loads(_get(API.format(cid), timeout=20))
+        except (urllib.error.URLError, OSError, ValueError) as exc:
+            print(f"[fifa] API 실패({cid}): {exc}", file=sys.stderr)
+            continue
+        rows = _parse_rows(data)
+        if rows:
+            return rows
+    return []
 
 
 def main() -> int:

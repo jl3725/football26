@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import csv
 import re
+import sys
 from pathlib import Path
 
 import requests
@@ -26,6 +27,9 @@ COMP_IDS = {
     "EPL": 776,
     "LaLiga": 777,
     "SerieA": 785,
+    # TODO(Bundesliga·Ligue1): StatBunker comp_id 미확인. 대회 드롭다운에서 확보 필요.
+    #   (2026-07 확인 시도했으나 StatBunker 가 IP 차단(404/403)으로 조회 불가 — 서버 정상화 후
+    #    /competitions/TeamsGoalScorersTypeOfPlay?comp_id=776 의 대회 선택 목록에서 확인)
 }
 COMP_ID = COMP_IDS.get(ACTIVE_LEAGUE)
 BASE = "https://www.statbunker.com/competitions/{slug}?comp_id={comp_id}"
@@ -302,6 +306,11 @@ def write_csv(path: Path, rows: list[dict]) -> None:
 
 
 def main() -> int:
+    if COMP_ID is None:
+        # comp_id 없는 리그(예: Bundesliga·Ligue1)는 크래시 대신 정상 종료 —
+        # 파이프라인이 이 스텝을 안전하게 건너뛰도록.
+        print(f"[skip] StatBunker comp_id 미설정 리그({ACTIVE_LEAGUE}) — 수집 생략", file=sys.stderr)
+        return 0
     team_rows = build_team_stats()
     penalty_takers = build_penalty_takers()
     write_csv(OUT_TEAMS, team_rows)
