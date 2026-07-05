@@ -1,0 +1,80 @@
+name: Daily Data Fetch
+
+# 리그홈·오버뷰가 쓰는 "로컬 전용" 수집기들을 클라우드로 이관 — 하루 1회.
+#   감독 프로필/교체 · 승격 로스터 · 이적 루머(buzz) · 순위 · 부상 · 계약 · 시장가치 · 일정
+# 이 데이터들이 그동안 로컬 PC(작업 스케줄러)에서만 갱신돼 리그홈이 멈춰 보였음.
+# Transfermarkt·ESPN·위키 모두 GH 러너에서 정상(daily_transfers 가 이미 증명) → 전부 이관 가능.
+# 각 단계는 best-effort(|| echo) — 하나 실패해도 나머지 수집·커밋은 진행.
+# (무거운 tm_injury_history 는 weekly_injury.yml 로 분리)
+on:
+  schedule:
+    - cron: "30 4 * * *"   # 매일 04:30 UTC (한국 13:30) — WC(매시간 :00)·이적(05:00)·뉴스(짝수시 :00)와 시차
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install requests beautifulsoup4 lxml pandas unidecode feedparser deep-translator
+
+      - name: Managers · season teams · manager changes (전 리그)
+        run: |
+          python src/sync_manager_profiles.py --write || echo "sync_manager_profiles 실패"
+          python src/enrich_manager_profiles.py --write --only-missing --sleep 1.0 || echo "enrich_manager 실패"
+          python src/enrich_team_profiles.py --write --only-missing --sleep 1.0 || echo "enrich_team 실패"
+          python src/detect_season_teams.py --write || echo "season_teams EPL 실패"
+          python src/fetch_laliga_managers.py || echo "laliga_managers 실패"
+          python src/detect_season_teams.py --league LaLiga --write || echo "season_teams LaLiga 실패"
+          python src/detect_manager_changes.py --league LaLiga --write || echo "mgr_changes LaLiga 실패"
+          python src/fetch_serie_managers.py || echo "serie_managers 실패"
+          python src/detect_season_teams.py --league SerieA --write || echo "season_teams SerieA 실패"
+          python src/detect_manager_changes.py --league SerieA --write || echo "mgr_changes SerieA 실패"
+          python src/fetch_bundes_managers.py || echo "bundes_managers 실패"
+          python src/detect_season_teams.py --league Bundesliga --write || echo "season_teams Bundesliga 실패"
+          python src/detect_manager_changes.py --league Bundesliga --write || echo "mgr_changes Bundesliga 실패"
+
+      - name: Transfer buzz · schedule (전 리그)
+        run: |
+          python src/fetch_transfer_buzz.py || echo "buzz EPL 실패"
+          for LG in LaLiga SerieA Bundesliga; do
+            python src/fetch_transfer_buzz.py --league $LG || echo "buzz $LG 실패"
+          done
+          for LG in EPL LaLiga SerieA Bundesliga; do
+            python src/fetch_schedule.py --league $LG || echo "schedule $LG 실패"
+          done
+
+      # 주의: 순위(fetch_standings)는 soccerdata(FBref) 의존 + 25/26 최종 확정 상태라 제외.
+      # 26/27 시즌 개막(8월) 시 fetch_standings + soccerdata 를 이 워크플로에 추가할 것.
+      - name: Injuries · contracts · market values (전 리그, Transfermarkt)
+        run: |
+          for LG in EPL LaLiga SerieA Bundesliga; do
+            echo "── $LG ──"
+            FB_LEAGUE=$LG python src/fetch_transfermarkt_injuries.py || echo "injuries $LG 실패"
+            FB_LEAGUE=$LG python src/sync_transfermarkt_contracts.py --write || echo "contracts $LG 실패"
+            FB_LEAGUE=$LG python scripts/snapshot_market_values.py || echo "market_value $LG 실패"
+          done
+
+      - name: Commit updated data
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/
+          if git diff --staged --quiet; then
+            echo "변경 없음 — 커밋 생략"
+          else
+            git commit -m "chore(data): 감독·순위·부상·계약·루머·시장가치 수집 [skip ci]"
+            # 동시 실행 push 충돌 대비 — rebase 후 재시도
+            for i in 1 2 3; do
+              git pull --rebase --autostash origin main && git push && break || sleep 5
+            done
+          fi

@@ -1,0 +1,47 @@
+name: Weekly Injury History
+
+# 선수별 통산 부상 이력(결장 경기수) — Analytics 부상 임팩트용.
+# 선수 1인당 Transfermarkt 페이지를 훑어 매우 무거우므로(리그당 수백명) 주 1회만.
+# 현재(활성) 부상은 daily_data.yml 의 fetch_transfermarkt_injuries 가 매일 갱신함.
+on:
+  schedule:
+    - cron: "0 3 * * 1"   # 매주 월요일 03:00 UTC (한국 월 12:00)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install requests beautifulsoup4 lxml pandas unidecode
+
+      - name: Injury history (전 리그)
+        run: |
+          for LG in EPL LaLiga SerieA Bundesliga; do
+            echo "── $LG ──"
+            FB_LEAGUE=$LG python src/fetch_tm_injury_history.py || echo "injury_history $LG 실패"
+          done
+
+      - name: Commit updated injury history
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/tm_injury_history_*.csv
+          if git diff --staged --quiet; then
+            echo "변경 없음 — 커밋 생략"
+          else
+            git commit -m "chore(data): 통산 부상 이력 주간 수집 [skip ci]"
+            for i in 1 2 3; do
+              git pull --rebase --autostash origin main && git push && break || sleep 5
+            done
+          fi
