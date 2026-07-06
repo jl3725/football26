@@ -571,6 +571,16 @@ def scout(q: str, team: str = "", league: str = ACTIVE_LEAGUE,
     return sa.answer(q, team or None, league)
 
 
+@app.get("/api/discover/{team}")
+def discover(team: str, role: str = "", league: str = ACTIVE_LEAGUE):
+    """벡터(Qdrant) 스타일-핏 교차리그 발굴 + KG 신호(루머·선례). Recruit 탭·스카우트 공용.
+
+    로컬/호스팅 Qdrant 필요. 미가동 시 available=False degrade. role 없으면 얇은 역할 자동.
+    """
+    import transfer_fit as tf  # noqa: PLC0415 (지연 import — Qdrant 의존)
+    return tf.discover_fits(team, role or None, top=12)
+
+
 @app.get("/api/calendar")
 def calendar():
     cal = ds.read_table("calendar_events")

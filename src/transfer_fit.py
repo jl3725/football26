@@ -138,7 +138,7 @@ def _elite_archetype(qc, role):
     return np.mean([p.vector for p in ref], axis=0) if ref else None
 
 
-def _weak_roles(team, pool, k=2):
+def _weak_roles(team, pool, k=3):
     """팀 스쿼드에서 세부 역할 뎁스가 얇은(<=2명) 주요 역할 top-k."""
     sq = pool[pool["squad"].astype(str) == team]
     played = sq[sq["_min"] > 300]
@@ -147,6 +147,51 @@ def _weak_roles(team, pool, k=2):
             "Attacking Midfield", "Right Winger", "Left Winger", "Centre-Forward"]
     thin = sorted([r for r in MAIN if cnt.get(r, 0) <= 2], key=lambda r: cnt.get(r, 0))
     return thin[:k] or ["Central Midfield"]
+
+
+def _kg_enrich(team, recs, tgt_league):
+    """KG(Neo4j) 신호로 후보 보강(best-effort, Neo4j 없으면 그대로).
+
+    RUMORED_WITH: 후보가 이미 이 클럽과 루머로 연결(그래프 엣지) → 부스트+배지.
+    precedent: 후보 리그→타깃 리그 이적 선례 수(TransferEvent) → 신뢰 컨텍스트.
+    """
+    if not recs:
+        return recs
+    try:
+        from neo4j import GraphDatabase
+        d = GraphDatabase.driver(NEO4J_URI, auth=NEO4J_AUTH)
+    except Exception:  # noqa: BLE001
+        return recs   # Neo4j 미가동 → KG 신호 없이 degrade
+    names = [r["player"] for r in recs]
+    rumored, prec = {}, {}
+    try:
+        with d.session() as s:
+            for row in s.run(
+                    "MATCH (p:Player)-[x:RUMORED_WITH]->(c:Club {name:$club}) "
+                    "WHERE p.name IN $names RETURN p.name AS n, x.probability AS prob",
+                    club=team, names=names).data():
+                rumored[row["n"]] = row.get("prob")
+            for lg in {r["source_league"] for r in recs if r["cross_league"]}:
+                prec[lg] = s.run(
+                    "MATCH (fr:Club)-[:COMPETES_IN]->(:League {key:$src}) "
+                    "MATCH (fr)<-[:FROM]-(t:TransferEvent)-[:TO]->(to:Club)-[:COMPETES_IN]->(:League {key:$tgt}) "
+                    "RETURN count(t) AS n", src=lg, tgt=tgt_league).single()["n"]
+    except Exception:  # noqa: BLE001
+        pass
+    finally:
+        d.close()
+    for r in recs:
+        pr = rumored.get(r["player"])
+        if pr is not None:
+            r["kg_rumored"] = True
+            r["kg_rumor_prob"] = pr
+            r["why_fit"].append(f"🔗 이 클럽과 루머 연결{f' ({int(pr)}%)' if pr else ''}")
+            r["_score"] += 6
+        pc = prec.get(r["source_league"])
+        if pc:
+            r["kg_precedent"] = int(pc)
+    recs.sort(key=lambda x: -x["_score"])
+    return recs
 
 
 def discover_fits(team: str, role: str | None = None, top: int = 8) -> dict:
@@ -210,6 +255,7 @@ def discover_fits(team: str, role: str | None = None, top: int = 8) -> dict:
                 "photo": str(r.get("photo") or ""), "why_fit": why, "_score": round(score, 1),
             })
     recs.sort(key=lambda x: -x["_score"])
+    recs = _kg_enrich(team, recs[:max(top * 2, 16)], tgt_league)   # KG 신호(루머·선례)로 보강·재정렬
     return {"available": True, "team": team, "target_league": tgt_league,
             "target_roles": roles, "weakest": {"label": " · ".join(roles)},
             "recommendations": recs[:top]}

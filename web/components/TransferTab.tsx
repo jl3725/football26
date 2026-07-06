@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { getTransfers, getRecommend, getNeeds, fmtEur, type Transfers, type TransferItem, type Recommend, type Needs } from "@/lib/api";
+import { getTransfers, getRecommend, getNeeds, getDiscover, fmtEur, type Transfers, type TransferItem, type Recommend, type Needs, type Discover } from "@/lib/api";
 import { tier, roleClass, hexA } from "@/lib/ui";
 import FitEvaluator from "./FitEvaluator";
 import ManagerSimPanel from "./ManagerSimPanel";
@@ -28,12 +28,14 @@ export default function TransferTab({ team, accent }: { team: string; accent: st
   const [data, setData] = useState<Transfers | null>(null);
   const [rec, setRec] = useState<Recommend | null>(null);
   const [needs, setNeeds] = useState<Needs | null>(null);
+  const [disc, setDisc] = useState<Discover | null>(null);
   const [view, setView] = useState<"scout" | "fit" | "sim">("scout");
   useEffect(() => {
-    let a = true; setData(null); setRec(null); setNeeds(null);
+    let a = true; setData(null); setRec(null); setNeeds(null); setDisc(null);
     getTransfers(team).then((d) => a && setData(d)).catch(() => {});
     getRecommend(team).then((d) => a && setRec(d)).catch(() => {});
     getNeeds(team).then((d) => a && setNeeds(d)).catch(() => {});
+    getDiscover(team).then((d) => a && setDisc(d)).catch(() => {});
     return () => { a = false; };
   }, [team]);
   if (!data) return <div className="loading">불러오는 중…</div>;
@@ -125,16 +127,21 @@ export default function TransferTab({ team, accent }: { team: string; accent: st
         </div>
       </div>
 
-      {/* 후보 평가 — 포지션별 그룹 */}
-      {rec && rec.recommendations.length > 0 && (
+      {/* 포지션별 보강 후보 — 벡터(Qdrant) 스타일-핏 · 전 리그 · KG 신호 */}
+      {disc && !disc.available && (
+        <div className="nodata-card" style={{ marginTop: 16 }}>
+          <div style={{ fontSize: 28 }}>🔌</div><b>벡터 추천 비활성</b>
+          <div className="mgr-meta" style={{ marginTop: 6 }}>{disc.reason || "Qdrant 스택 필요 (로컬/호스팅)"}</div>
+        </div>
+      )}
+      {disc && disc.available && disc.recommendations.length > 0 && (
         <div className="card" style={{ marginTop: 16 }}>
-          <h3>🎯 포지션별 보강 후보
-            {rec.addressed && <span className="rec-addr">· 이번 창 보강됨, 추가 옵션</span>}</h3>
+          <h3>🎯 포지션별 보강 후보 <span className="rating-note">· 벡터 스타일-핏 · 전 리그 · KG 신호</span></h3>
           {(() => {
             const order: string[] = [];
-            const byPos: Record<string, typeof rec.recommendations> = {};
-            for (const r of rec.recommendations) {
-              const key = r.bucket_label || "기타";
+            const byPos: Record<string, typeof disc.recommendations> = {};
+            for (const r of disc.recommendations) {
+              const key = r.pos || "기타";
               if (!byPos[key]) { byPos[key] = []; order.push(key); }
               byPos[key].push(r);
             }
@@ -147,28 +154,24 @@ export default function TransferTab({ team, accent }: { team: string; accent: st
                 <div className="rec-grid">
                   {byPos[pos].map((r, i) => {
                     const t = tier(r.ovr);
-                    const cf = r.confidence === "high" ? "#4fc27f" : r.confidence === "med" ? "#f4cf5e" : "#e0556b";
-                    const cfl = r.confidence === "high" ? "신뢰 높음" : r.confidence === "med" ? "신뢰 중간" : "표본 적음";
                     return (
                       <div className="rec-card" key={i}>
                         {r.photo ? <img className="rec-photo" src={r.photo} alt="" /> : <span className="rec-photo ph" />}
                         <div className="rec-ovr" style={{ color: t.light }}>{r.ovr}</div>
-                        <div className="rec-name">{r.player}</div>
-                        <div className="rec-club">{r.logo && <img src={r.logo} alt="" />}{r.squad}</div>
-                        {r.cross_league && <div className="rec-cross">↗ {r.source_league} 이적 · 현재 {r.current_ovr} → 예상 {r.projected_ovr}</div>}
-                        <div className="rec-meta">{r.pos} · {r.age}세 · {fmtEur(r.value_eur)}</div>
-                        {r.role && (
-                          <div className="rec-role">
-                            <span className={"role-tag " + roleClass(r.role)}>{r.role}</span>
-                            {r.big_match && <span className="role-bm" title="UCL/UEL 급 무대 검증">⚡ 빅매치</span>}
-                          </div>
-                        )}
-                        {r.role_evidence && <div className="rec-role-ev">{r.role_evidence}</div>}
+                        <div className="rec-name">{r.player}{r.kg_rumored && <span title="이미 이 클럽과 루머로 연결(KG)"> 🔗</span>}</div>
+                        <div className="rec-club">{r.squad}</div>
+                        <div style={{ margin: "5px 0" }}>
+                          <div style={{ display: "flex", justifyContent: "space-between", fontSize: 10, opacity: 0.7, marginBottom: 2 }}>
+                            <span>스타일 적합</span><span style={{ color: accent }}>{r.style_fit}</span></div>
+                          <div style={{ height: 4, borderRadius: 3, background: hexA("#ffffff", 0.08) }}>
+                            <span style={{ display: "block", height: "100%", borderRadius: 3, width: `${r.style_fit}%`, background: accent }} /></div>
+                        </div>
+                        {r.cross_league && <div className="rec-cross">↗ {r.source_league} · 현재 {r.current_ovr} → 예상 {r.projected_ovr}</div>}
+                        <div className="rec-meta">{r.age ? r.age + "세 · " : ""}{fmtEur(r.value_eur || 0)}{r.euro ? " · ⚡유럽" : ""}</div>
                         <div className="rec-why">
                           {r.why_fit.map((w, k) => <span className="why fit" key={"f" + k}>✓ {w}</span>)}
-                          {r.why_risk.map((w, k) => <span className="why risk" key={"r" + k}>△ {w}</span>)}
                         </div>
-                        <div className="rec-conf" style={{ color: cf }}>◆ 데이터 {cfl}</div>
+                        {r.kg_precedent ? <div className="rec-conf" style={{ color: accent }}>◆ 선례 {r.kg_precedent}건 (KG)</div> : null}
                       </div>
                     );
                   })}

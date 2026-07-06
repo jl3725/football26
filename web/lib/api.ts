@@ -287,6 +287,21 @@ export const getSimilar = (p: string, l = _league) =>
   j<{ player: string; results: SimilarResult[] }>(`/api/similar/${encodeURIComponent(p)}?league=${encodeURIComponent(l)}`);
 export const getRecommend = (t: string, l = _league) => j<Recommend>(`/api/recommend/${q(t, l)}`);
 
+// ── 벡터(Qdrant) 스타일-핏 교차리그 발굴 + KG 신호 (로컬 전용) ──
+export type DiscoverPick = {
+  player: string; squad: string; pos: string; ovr: number; current_ovr: number; projected_ovr: number;
+  cross_league: boolean; source_league: string; value_eur: number | null; style_fit: number;
+  euro: boolean; age: number | null; photo: string; why_fit: string[];
+  kg_rumored?: boolean; kg_rumor_prob?: number | null; kg_precedent?: number;
+};
+export type Discover = {
+  available: boolean; reason?: string; error?: string;
+  team?: string; target_league?: string; target_roles?: string[];
+  recommendations: DiscoverPick[];
+};
+export const getDiscover = (t: string, role = "", l = _league) =>
+  j<Discover>(`/api/discover/${encodeURIComponent(t)}?role=${encodeURIComponent(role)}&league=${encodeURIComponent(l)}`);
+
 // ── 스카우트 데스크 (Needs Board) ──
 export type NeedItem = { line: string; line_label: string; kind: string; title: string; severity: string; reason: string; status: string; player: string | null };
 export type NeedsWindow = { is_open: boolean; label: string; kr: string | null; signings: { player: string; line: string; pos: string; fee: string }[]; departures: { player: string; line: string; pos: string }[] };
