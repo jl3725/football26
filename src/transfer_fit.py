@@ -26,11 +26,12 @@ sys.path.insert(0, str(ROOT / "api"))
 sys.path.insert(0, str(ROOT / "src"))
 from leagues import data_path  # noqa: E402
 from manager_tactics import tactical_profile  # noqa: E402
+from club_profile import price_realism, recruit_fit  # noqa: E402
 
 QDRANT_URL = os.getenv("QDRANT_URL", "http://localhost:6335")
 NEO4J_URI = os.getenv("NEO4J_URI", "bolt://localhost:7687")
 NEO4J_AUTH = (os.getenv("NEO4J_USER", "neo4j"), os.getenv("NEO4J_PASSWORD", "football26"))
-LEAGUES = ["EPL", "LaLiga", "SerieA", "Bundesliga", "Ligue1", "LigaPortugal"]
+LEAGUES = ["EPL", "LaLiga", "SerieA", "Bundesliga", "Ligue1", "LigaPortugal", "Eredivisie"]
 QCOLLECTION = "players"
 TM_POS_NORM = {"CB": "Centre-Back", "RB": "Right-Back", "LB": "Left-Back", "RWB": "Right-Back",
                "LWB": "Left-Back", "DM": "Defensive Midfield", "CM": "Central Midfield",
@@ -222,9 +223,17 @@ def evaluate_fit(candidate: str, target_club: str, target_role: str,
     risk += 25 if gap >= 5 else (10 if gap >= 2 else 0)
     risk = _clamp(risk)
 
+    # RecruitFit(구단 영입 나이성향 매칭) + PriceRealism(예상이적료 vs 구단 가격상한)
+    rf = recruit_fit(target_club, age)
+    mv = row.get("_mv")
+    likely_fee = float(mv) * 1.2 if pd.notna(mv) else None   # 시장가치 대비 이적료 프리미엄 근사
+    pr = price_realism(target_club, likely_fee)
+    recruitfit, pricerealism = float(rf["score"]), float(pr["score"])
+
     euro_bonus = 5.0 if euro else 0.0
-    fit = _clamp(0.18 * rolefit + 0.16 * tacticalfit + 0.18 * team_need + 0.16 * translation
-                 + 0.12 * potential + 0.10 * value - 0.12 * risk + euro_bonus)
+    fit = _clamp(0.16 * rolefit + 0.14 * tacticalfit + 0.16 * team_need + 0.14 * translation
+                 + 0.10 * potential + 0.08 * value + 0.07 * recruitfit + 0.07 * pricerealism
+                 - 0.12 * risk + euro_bonus)
 
     if proj >= 80 and translation >= 90:
         kind = "Ready-now"
@@ -242,8 +251,13 @@ def evaluate_fit(candidate: str, target_club: str, target_role: str,
         "components": {"RoleFit": round(rolefit), "TacticalFit": round(tacticalfit),
                        "TeamNeed": round(team_need), "Translation": round(translation),
                        "Potential": round(potential), "Value": round(value),
+                       "RecruitFit": round(recruitfit), "PriceRealism": round(pricerealism),
                        "Risk": round(risk), "Euro": int(euro_bonus)},
         "fit_score": round(fit), "signing_type": kind, "risk_level": risk_lv,
+        "affordability": {"verdict": pr["verdict"], "likely_fee_eur": pr.get("likely_fee_eur"),
+                          "ceiling_eur": pr.get("ceiling_eur"), "spend_tier": pr.get("spend_tier"),
+                          "club_recruit_profile": rf.get("age_profile"),
+                          "club_avg_signing_age": rf.get("club_avg_age")},
         "manager": {"name": mp.get("manager"), "formation": mp.get("formation"),
                     "style_tags": mp.get("style_tags")},
         "team_need_detail": {"depth": depth, "best_ss": None if best_ss is None else round(float(best_ss), 2),
@@ -251,6 +265,19 @@ def evaluate_fit(candidate: str, target_club: str, target_role: str,
         "similar_players": similar, "euro_experience": bool(euro),
         "precedent_transfers": _precedent(src, tgt), "notes": (proof + " " + risknote).strip(),
     }
+
+
+def _afford_line(a: dict) -> str:
+    if not a:
+        return "  구단성향/예산: -"
+    lf = a.get("likely_fee_eur")
+    cl = a.get("ceiling_eur")
+    fee_s = f"{lf/1e6:.0f}M" if lf else "?"
+    cl_s = f"{cl/1e6:.0f}M" if cl else "?"
+    v = {"within": "적정", "stretch": "무리", "over-budget": "예산초과", "unknown": "?"}.get(a.get("verdict"), a.get("verdict"))
+    return (f"  구단성향/예산: {a.get('club_recruit_profile') or '?'} "
+            f"(평균영입나이 {a.get('club_avg_signing_age') or '?'}) · "
+            f"{a.get('spend_tier') or '?'} tier · 가격 {fee_s}/상한 {cl_s} → {v}")
 
 
 def format_report(r: dict) -> str:
@@ -262,10 +289,12 @@ def format_report(r: dict) -> str:
         f"  base OVR {r['base_ovr']} → proj OVR {r['proj_ovr']} ({r['target_league']})",
         f"  RoleFit {c['RoleFit']} · TacticalFit {c['TacticalFit']} · TeamNeed {c['TeamNeed']} · "
         f"Translation {c['Translation']} · Potential {c['Potential']} · Value {c['Value']} · "
+        f"RecruitFit {c['RecruitFit']} · PriceRealism {c['PriceRealism']} · "
         f"Risk {c['Risk']} · Euro +{c['Euro']}",
         f"  감독: {(r.get('manager') or {}).get('name') or '?'} "
         f"({(r.get('manager') or {}).get('formation') or '?'}) "
         f"{', '.join((r.get('manager') or {}).get('style_tags') or [])}",
+        _afford_line(r.get("affordability") or {}),
         f"  ▶ Fit Score {r['fit_score']}/100 · 유형 {r['signing_type']} · Risk {r['risk_level']}",
         f"  팀니즈: {r['role']} 뎁스 {r['team_need_detail']['depth']}명 "
         f"(최고 ss {r['team_need_detail']['best_ss']}, 평균나이 {r['team_need_detail']['avg_age']})",
