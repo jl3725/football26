@@ -3,3 +3,4 @@
 -r requirements.txt
 neo4j==5.28.1
 qdrant-client==1.12.1
+openai>=1.40,<2   # Ask Scout(자연어 라우팅) — 로컬 전용, OPENAI_API_KEY 필요

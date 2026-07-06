@@ -555,6 +555,16 @@ def managersim(club: str, manager: str, league: str = ACTIVE_LEAGUE):
     }
 
 
+@app.get("/api/scout")
+def scout(q: str, team: str = "", league: str = ACTIVE_LEAGUE):
+    """Ask Scout — 자연어 질문 → OpenAI 툴 라우팅 → 결정적 엔진 실행 → 답변 + 카드용 결과.
+
+    LLM은 라우팅·요약만, 판단은 엔진. OPENAI_API_KEY 없으면 available=False.
+    """
+    import scout_agent as sa  # noqa: PLC0415 (지연 import — OpenAI 의존)
+    return sa.answer(q, team or None, league)
+
+
 @app.get("/api/calendar")
 def calendar():
     cal = ds.read_table("calendar_events")

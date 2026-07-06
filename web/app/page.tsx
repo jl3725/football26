@@ -15,6 +15,7 @@ import ScheduleTab from "@/components/ScheduleTab";
 import PlayerTab from "@/components/PlayerTab";
 import DatabaseTab from "@/components/DatabaseTab";
 import TransferTab from "@/components/TransferTab";
+import ScoutChat from "@/components/ScoutChat";
 import NewsTab from "@/components/NewsTab";
 
 const LEAGUE_TABS = [{ key: "EPL", label: "EPL" }, { key: "LaLiga", label: "LA LIGA" }, { key: "SerieA", label: "SERIE A" }, { key: "Bundesliga", label: "BUNDESLIGA" }, { key: "Ligue1", label: "LIGUE 1" }, { key: "LigaPortugal", label: "LIGA PORTUGAL" }];
@@ -89,6 +90,7 @@ export default function Page() {
       case "player": return <PlayerTab key={sel} {...props} />;
       case "database": return <DatabaseTab key="db" {...props} />;
       case "transfer": return <TransferTab key={sel} {...props} />;
+      case "scout": return <ScoutChat key={sel} team={sel} league={league} accent={accent} />;
       case "news": return <NewsTab key={sel} {...props} />;
       default: return null;
     }

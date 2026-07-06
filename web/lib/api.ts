@@ -158,6 +158,18 @@ export type ManagerSim = {
 export const getManagerSim = (club: string, manager: string, l = _league) =>
   j<ManagerSim>(`/api/managersim?club=${encodeURIComponent(club)}&manager=${encodeURIComponent(manager)}&league=${encodeURIComponent(l)}`);
 
+// ── Ask Scout (자연어 라우팅 · 로컬 전용 · OpenAI) ──
+// result 는 intent 에 따라 Recommend|Fit|ManagerSim|{results}|Identity 중 하나(느슨하게).
+export type Scout = {
+  available: boolean; reason?: string; error?: string;
+  intent?: string | null; args?: Record<string, unknown>;
+  answer?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  result?: any;
+};
+export const getScout = (q: string, team = "", l = _league) =>
+  j<Scout>(`/api/scout?q=${encodeURIComponent(q)}&team=${encodeURIComponent(team)}&league=${encodeURIComponent(l)}`);
+
 // ── 탭별 타입 ─────────────────────────────
 export type SquadPlayer = {
   player: string; pos: string; age: number; minutes: number;
