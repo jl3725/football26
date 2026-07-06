@@ -1497,7 +1497,36 @@ def _attainable(cand_ovr: int, club_ovr: float, team_ovr: float, role: str, minu
 
 
 # 리그 레벨(교차 이적 projection용). EPL 기준 100.
-_LEAGUE_LEVEL = {"EPL": 100.0, "LaLiga": 98.0, "SerieA": 96.0, "Bundesliga": 96.0, "Ligue1": 93.0}
+# UEFA 협회계수(data/uefa_association_coefficients)로 근거화 — 없으면 폴백값.
+# 리그 키 → UEFA 협회계수 국가명. (신규 리그는 GPT 가 쓰는 키에 맞춤: LigaPortugal·Eredivisie)
+_LEAGUE_COUNTRY = {"EPL": "England", "LaLiga": "Spain", "SerieA": "Italy",
+                   "Bundesliga": "Germany", "Ligue1": "France",
+                   "LigaPortugal": "Portugal", "Eredivisie": "Netherlands"}
+_LEAGUE_LEVEL_FALLBACK = {"EPL": 100.0, "LaLiga": 98.0, "SerieA": 96.0,
+                          "Bundesliga": 96.0, "Ligue1": 93.0}
+
+
+def _build_league_level() -> dict:
+    """UEFA 협회계수 → 압축 리그레벨. 최상위(잉글랜드)=100, 기울기 0.2로 압축
+    (선수 품질 차이는 유럽성적 계수 비율보다 작음 → 과도한 감점 방지), 하한 82.
+    계수 데이터 없으면 폴백값 유지. 신규 리그(포르투갈·네덜란드)도 자동 배치."""
+    out = dict(_LEAGUE_LEVEL_FALLBACK)
+    try:
+        df = ds.read_table("uefa_association_coefficients")
+        if df is None or df.empty:
+            return out
+        coeff = {str(r["country"]): float(r["coefficient"]) for _, r in df.iterrows()}
+        top = max(coeff.values())
+        for lg, country in _LEAGUE_COUNTRY.items():
+            c = coeff.get(country)
+            if c is not None:
+                out[lg] = round(max(82.0, 100.0 - 0.2 * (top - c)), 1)
+    except Exception:  # noqa: BLE001
+        pass
+    return out
+
+
+_LEAGUE_LEVEL = _build_league_level()
 
 
 def _project_ovr(base: int, source: str, target: str, big_match: bool, age, bucket: str) -> tuple[int, str, str]:

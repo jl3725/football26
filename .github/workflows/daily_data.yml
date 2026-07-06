@@ -67,6 +67,9 @@ jobs:
             FB_LEAGUE=$LG python scripts/snapshot_market_values.py || echo "market_value $LG 실패"
           done
 
+      - name: UEFA 계수 (협회·클럽, 리그강도 근거화)
+        run: python src/fetch_uefa_coefficients.py || echo "uefa_coefficients 실패"
+
       - name: Commit updated data
         run: |
           git config user.name  "github-actions[bot]"
