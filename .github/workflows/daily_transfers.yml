@@ -1,7 +1,8 @@
 name: Daily Transfers Fetch
 
-# 매일 06:30 UTC, 현재 활성 이적시장(날짜로 자동 판정)을 Transfermarkt에서 긁어
-# data/transfers_2025_2026.csv에 시즌별 누적 갱신 후 변경 시에만 커밋.
+# 하루 3회, 현재 활성 이적시장(날짜로 자동 판정)을 Transfermarkt에서 긁어
+# 5대 리그 전부 transfers_<리그>_<시즌>.csv 에 누적 갱신 후 변경 시에만 커밋.
+# (EPL 은 레거시 파일명 transfers_2025_2026.csv)
 on:
   schedule:
     - cron: "0 23,5,11 * * *"   # 하루 3회 08·14·20 KST (23·05·11 UTC). TM 부하·차단 위험 고려해 시간단위 지양.
@@ -23,14 +24,18 @@ jobs:
       - name: Install dependencies
         run: pip install requests beautifulsoup4 lxml pandas unidecode
 
-      - name: Fetch transfers
-        run: python src/fetch_transfers.py
+      - name: Fetch transfers (전 리그)
+        run: |
+          for LG in EPL LaLiga SerieA Bundesliga Ligue1; do
+            echo "── $LG ──"
+            FB_LEAGUE=$LG python src/fetch_transfers.py || echo "transfers $LG 실패"
+          done
 
       - name: Commit updated transfers
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/transfers_2025_2026.csv
+          git add data/transfers_*.csv
           if git diff --staged --quiet; then
             echo "변경 없음 — 커밋 생략"
           else
