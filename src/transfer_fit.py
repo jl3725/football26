@@ -25,7 +25,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "api"))
 sys.path.insert(0, str(ROOT / "src"))
 from leagues import data_path  # noqa: E402
-from manager_tactics import tactical_profile  # noqa: E402
+from manager_tactics import tactical_profile, tendency_clubs  # noqa: E402
 from club_profile import price_realism, recruit_fit  # noqa: E402
 
 QDRANT_URL = os.getenv("QDRANT_URL", "http://localhost:6335")
@@ -113,13 +113,28 @@ def _cos(a, b) -> float:
     return float(a @ b / (na * nb)) if na and nb else 0.0
 
 
-def _style_fits(qc, cand_name, role, target_club):
-    """(RoleFit=리그 엘리트 역할 원형, TacticalFit=대상 클럽 해당역할 스타일=감독 기용방식, 유사선수)."""
+def _role_centroid_for(qc, role, clubs):
+    """주어진 클럽 표본에서 해당 역할 선수들의 스타일 centroid."""
+    from qdrant_client import models
+    if not clubs:
+        return None
+    f = models.Filter(must=[models.FieldCondition(key="pos_detail", match=models.MatchValue(value=role)),
+                            models.FieldCondition(key="club", match=models.MatchAny(any=list(clubs)))])
+    pts = qc.scroll(QCOLLECTION, scroll_filter=f, with_vectors=True, limit=2000)[0]
+    return np.mean([p.vector for p in pts], axis=0) if pts else None
+
+
+def _style_fits(qc, cand_name, role, target_club, tendency_cl):
+    """RoleFit(리그 엘리트 원형) + CurrentFit(대상 클럽 현재 스냅샷) + TendencyFit(감독 성향 표본) + 유사선수.
+
+    CurrentFit = 지금 그 팀이 그 역할을 쓰는 방식(빠르게 변함).
+    TendencyFit = 감독 장기성향과 스타일 겹치는 클럽들의 그 역할(느리게 변함, 새 감독 대비).
+    """
     from qdrant_client import models
     f_name = models.Filter(must=[models.FieldCondition(key="name", match=models.MatchValue(value=cand_name))])
     got = qc.scroll(QCOLLECTION, scroll_filter=f_name, with_vectors=True, limit=1)[0]
     if not got:
-        return None, None, []
+        return None, None, None, []
     cand_vec = got[0].vector
     # RoleFit — 리그 엘리트(해당 pos_detail) 원형
     f_role = models.Filter(must=[models.FieldCondition(key="pos_detail", match=models.MatchValue(value=role))])
@@ -128,15 +143,15 @@ def _style_fits(qc, cand_name, role, target_club):
     ref = elite or pts
     role_vec = np.mean([p.vector for p in ref], axis=0) if ref else None
     rolefit = _clamp(max(0.0, _cos(cand_vec, role_vec)) * 100) if role_vec is not None else None
-    # TacticalFit — 대상 클럽의 해당 역할 선수 스타일 centroid(감독이 실제 그 역할을 쓰는 방식)
-    f_club = models.Filter(must=[models.FieldCondition(key="club", match=models.MatchValue(value=target_club)),
-                                 models.FieldCondition(key="pos_detail", match=models.MatchValue(value=role))])
-    tpts = qc.scroll(QCOLLECTION, scroll_filter=f_club, with_vectors=True, limit=50)[0]
-    tvec = np.mean([p.vector for p in tpts], axis=0) if tpts else None
-    tacticalfit = _clamp(max(0.0, _cos(cand_vec, tvec)) * 100) if tvec is not None else None
+    # CurrentFit — 대상 클럽의 해당 역할 선수 스타일 centroid(현재 시즌 스냅샷)
+    cvec = _role_centroid_for(qc, role, [target_club])
+    current_fit = _clamp(max(0.0, _cos(cand_vec, cvec)) * 100) if cvec is not None else None
+    # TendencyFit — 감독 성향과 스타일 겹치는 클럽 표본의 해당 역할
+    tvec = _role_centroid_for(qc, role, tendency_cl)
+    tendency_fit = _clamp(max(0.0, _cos(cand_vec, tvec)) * 100) if tvec is not None else None
     sim = qc.search(QCOLLECTION, query_vector=cand_vec, limit=6)
     similar = [f"{h.payload['name']} ({h.payload['league']})" for h in sim[1:]]
-    return rolefit, tacticalfit, similar
+    return rolefit, current_fit, tendency_fit, similar
 
 
 # ── KG(Neo4j): 선례(유사 리그점프) — best-effort ────────────────────────────
@@ -178,15 +193,21 @@ def evaluate_fit(candidate: str, target_club: str, target_role: str,
     euro = (row.get("_euro") or 0) > 0
     proj, proof, risknote = api._project_ovr(base, src, tgt, euro, age, bucket)
 
-    # RoleFit(리그원형) + TacticalFit(감독 기용방식) + 유사선수 (Qdrant)
+    # RoleFit(리그원형) + CurrentFit(현재 스냅샷) + TendencyFit(감독 성향) + 유사선수 (Qdrant)
+    mp = tactical_profile(target_club) or {}
+    ten = mp.get("tenure") or {"w_current": 0.65, "w_tendency": 0.35, "is_new": False}
     try:
-        rolefit, tacticalfit, similar = _style_fits(_qdrant(), candidate, role, target_club)
+        rolefit, current_fit, tendency_fit, similar = _style_fits(
+            _qdrant(), candidate, role, target_club, tendency_clubs(target_club))
     except Exception as e:  # noqa: BLE001
-        rolefit, tacticalfit, similar = None, None, []
+        rolefit, current_fit, tendency_fit, similar = None, None, None, []
         proof = (proof + f" [qdrant 오류: {str(e)[:40]}]").strip()
     rolefit = 60.0 if rolefit is None else rolefit
-    tacticalfit = rolefit if tacticalfit is None else tacticalfit   # 클럽 역할표본 없으면 RoleFit 대체
-    mp = tactical_profile(target_club) or {}
+    current_fit = rolefit if current_fit is None else current_fit    # 클럽 역할표본 없으면 RoleFit 대체
+    tendency_fit = current_fit if tendency_fit is None else tendency_fit
+    # TacticalFit = 재임 기반 블렌드(안정=현재 중심 / 새 부임=감독 성향 중심)
+    wc, wt = ten["w_current"], ten["w_tendency"]
+    tacticalfit = _clamp(wc * current_fit + wt * tendency_fit)
 
     # TeamNeed — 대상 클럽 해당 역할 뎁스·나이·품질·계약
     rp = tgt_rows[tgt_rows["_pos_detail"] == role]
@@ -254,6 +275,10 @@ def evaluate_fit(candidate: str, target_club: str, target_role: str,
                        "RecruitFit": round(recruitfit), "PriceRealism": round(pricerealism),
                        "Risk": round(risk), "Euro": int(euro_bonus)},
         "fit_score": round(fit), "signing_type": kind, "risk_level": risk_lv,
+        "tactical_detail": {"current_fit": round(current_fit), "tendency_fit": round(tendency_fit),
+                            "blended": round(tacticalfit), "w_current": wc, "w_tendency": wt,
+                            "is_new_manager": ten.get("is_new"), "appointed": ten.get("appointed"),
+                            "descriptor_tags": mp.get("descriptor_tags") or []},
         "affordability": {"verdict": pr["verdict"], "likely_fee_eur": pr.get("likely_fee_eur"),
                           "ceiling_eur": pr.get("ceiling_eur"), "spend_tier": pr.get("spend_tier"),
                           "club_recruit_profile": rf.get("age_profile"),
@@ -265,6 +290,16 @@ def evaluate_fit(candidate: str, target_club: str, target_role: str,
         "similar_players": similar, "euro_experience": bool(euro),
         "precedent_transfers": _precedent(src, tgt), "notes": (proof + " " + risknote).strip(),
     }
+
+
+def _tactical_line(t: dict) -> str:
+    if not t:
+        return "  전술적합: -"
+    stab = "새 부임" if t.get("is_new_manager") else "안정"
+    return (f"  전술적합: 현재 {t.get('current_fit')} · 감독성향 {t.get('tendency_fit')} "
+            f"→ 블렌드 {t.get('blended')} "
+            f"(재임 {t.get('appointed') or '?'}, {stab}: 현재{int((t.get('w_current') or 0)*100)}%"
+            f"/성향{int((t.get('w_tendency') or 0)*100)}%)")
 
 
 def _afford_line(a: dict) -> str:
@@ -294,6 +329,7 @@ def format_report(r: dict) -> str:
         f"  감독: {(r.get('manager') or {}).get('name') or '?'} "
         f"({(r.get('manager') or {}).get('formation') or '?'}) "
         f"{', '.join((r.get('manager') or {}).get('style_tags') or [])}",
+        _tactical_line(r.get("tactical_detail") or {}),
         _afford_line(r.get("affordability") or {}),
         f"  ▶ Fit Score {r['fit_score']}/100 · 유형 {r['signing_type']} · Risk {r['risk_level']}",
         f"  팀니즈: {r['role']} 뎁스 {r['team_need_detail']['depth']}명 "
