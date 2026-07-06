@@ -172,6 +172,62 @@ def _extract_formation(text: str) -> str:
     return Counter(forms).most_common(1)[0][0]
 
 
+# 감독 전술 텍스트 → 표준 성향 태그. manager_tactics._TEXT_TAGS 어휘와 호환되게
+# style/focus 라벨을 만든다(그래야 descriptor_tags 가 인식). 영어 위키 본문 기준.
+_WIKI_TAGS = {
+    "press": ["press", "pressing", "gegenpress", "high line", "counter-press", "counterpress",
+              "high block", "front-foot"],
+    "possession": ["possession", "positional play", "build-up", "build up", "build from the back",
+                   "tiki-taka", "patient", "dominate", "keep the ball", "short passing"],
+    "direct": ["counter-attack", "counter attack", "counterattack", "direct play", "direct style",
+               "vertical", "fast break"],
+    "low_block": ["low block", "low-block", "compact", "deep block", "pragmatic",
+                  "defensive solidity", "sit deep", "defensive"],
+    "wing": ["wing", "width", "crossing", "wide areas", "flank", "overlap", "wing-back", "wingback"],
+    "aerial": ["set piece", "set-piece", "aerial", "long ball", "physical", "long balls"],
+    "attacking": ["attacking", "attack-minded", "offensive", "expansive", "high-scoring", "free-flowing"],
+}
+_TAG_PHRASE = {"press": "high press", "possession": "possession", "direct": "direct/counter-attack",
+               "low_block": "compact low block", "wing": "wing play",
+               "aerial": "set-piece & aerial", "attacking": "attacking"}
+
+
+def _classify_tactics(text: str) -> tuple[str, str]:
+    """감독 전술 본문 → (style 라벨, focus 문자열). 감지 없으면 ('','')."""
+    tl = (text or "").lower()
+    scored = []
+    for tag, kws in _WIKI_TAGS.items():
+        hits = sum(tl.count(k) for k in kws)
+        if hits:
+            scored.append((hits, tag))
+    if not scored:
+        return "", ""
+    scored.sort(reverse=True)
+    top = [t for _, t in scored[:2]]
+    style = " + ".join(_TAG_PHRASE[t].capitalize() if i == 0 else _TAG_PHRASE[t]
+                       for i, t in enumerate(top))
+    focus = ", ".join(_TAG_PHRASE[t] for _, t in scored[:4])
+    return style, focus
+
+
+def _tactics_combined(title: str) -> str:
+    """감독 위키의 전술 섹션들(Tactics/Manager profile ...) 합본 텍스트."""
+    try:
+        secs = _wiki_sections("en", title)
+    except Exception as exc:  # noqa: BLE001
+        print(f"    [sections 실패] {title}: {exc}", file=sys.stderr)
+        return ""
+    idxs = [s.get("index") for s in secs
+            if _MGR_SECTION_RE.search(s.get("line", "") or "")][:3]
+    texts = []
+    for i in idxs:
+        try:
+            texts.append(_section_text("en", title, i))
+        except Exception as exc:  # noqa: BLE001
+            print(f"    [section {i} 실패] {title}: {exc}", file=sys.stderr)
+    return " ".join(texts).strip()
+
+
 def enrich_one(profile: dict) -> dict:
     """감독 1명 프로필에 위키 설명 필드 계산. profile 은 변경하지 않고 새 값 dict 반환."""
     title = profile.get("wiki_title") or profile.get("name") or ""
@@ -199,22 +255,8 @@ def enrich_one(profile: dict) -> dict:
 
     # --- 감독 전술 섹션 (영어 위키, 상세함) ---
     # 선수 'Style of play' 는 제외하고, 감독 섹션(Tactics/Manager profile/Style of
-    # management ...)을 모두 합쳐 포메이션·전술문장을 뽑는다.
-    try:
-        secs = _wiki_sections("en", title)
-    except Exception as exc:
-        print(f"    [sections 실패] {title}: {exc}", file=sys.stderr)
-        secs = []
-    # 감독 전용 전술 섹션만 사용(서술형 career 섹션은 뉴스·전기 노이즈라 제외).
-    idxs = [s.get("index") for s in secs
-            if _MGR_SECTION_RE.search(s.get("line", "") or "")][:3]
-    texts = []
-    for i in idxs:
-        try:
-            texts.append(_section_text("en", title, i))
-        except Exception as exc:
-            print(f"    [section {i} 실패] {title}: {exc}", file=sys.stderr)
-    combined = " ".join(texts).strip()
+    # management ...)을 모두 합쳐 포메이션·전술문장·style/focus 를 뽑는다.
+    combined = _tactics_combined(title)
     if combined:
         form = _extract_formation(combined)
         if form:
@@ -224,6 +266,11 @@ def enrich_one(profile: dict) -> dict:
             ko = _translate_ko(sent)
             result["tactics_ko"] = ko or sent
             result["tactics_source"] = "en-wiki" + ("" if ko else "-raw")
+        style, focus = _classify_tactics(combined)
+        if style:
+            result["style"] = style
+            result["focus"] = focus
+            result["style_source"] = "en-wiki"
     return result
 
 
@@ -236,18 +283,46 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--only", default=None, help="한 팀/감독만 (팀명 또는 감독명 부분일치)")
     ap.add_argument("--only-missing", action="store_true",
                     help="bio_ko 가 이미 있는 감독은 건너뜀 (신규·교체 감독만 — 데일리용)")
+    ap.add_argument("--styles", action="store_true",
+                    help="style/focus 만 빠르게 채움(bio/번역 생략). 이미 style 있으면 건너뜀")
     ap.add_argument("--sleep", type=float, default=1.0)
     args = ap.parse_args(argv)
 
     profiles = json.loads(args.profiles.read_text(encoding="utf-8"))
-    n_bio = n_tac = n_form = 0
+    n_bio = n_tac = n_form = n_sty = 0
     for team, prof in profiles.items():
         if args.only and args.only.lower() not in team.lower() \
                 and args.only.lower() not in str(prof.get("name", "")).lower():
             continue
+        name = prof.get("name", "")
+
+        # --styles: style/focus 만 채우는 경량 경로(섹션만 fetch, bio/번역 생략)
+        if args.styles:
+            if prof.get("style") and prof.get("focus"):
+                continue
+            title = prof.get("wiki_title") or name or ""
+            if not title:
+                continue
+            print(f"\n### {team} — {name}")
+            try:
+                style, focus = _classify_tactics(_tactics_combined(title))
+            except Exception as exc:  # noqa: BLE001
+                print(f"    [styles 실패 — 건너뜀] {name}: {exc}", file=sys.stderr)
+                continue
+            if style:
+                n_sty += 1
+                print(f"  style : {style}\n  focus : {focus}")
+                if args.write:
+                    prof["style"], prof["focus"], prof["style_source"] = style, focus, "en-wiki"
+                    args.profiles.write_text(
+                        json.dumps(profiles, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+            else:
+                print("  (전술 섹션 없음 — 미채움)")
+            time.sleep(args.sleep)
+            continue
+
         if args.only_missing and prof.get("bio_ko"):
             continue
-        name = prof.get("name", "")
         print(f"\n### {team} — {name}")
         try:
             r = enrich_one(prof)
@@ -263,8 +338,11 @@ def main(argv: list[str] | None = None) -> int:
         if r.get("tactics_ko"):
             n_tac += 1
             print(f"  tactics_ko: {r['tactics_ko'][:180]}")
+        if r.get("style"):
+            n_sty += 1
+            print(f"  style/focus: {r['style']} — {r['focus']}")
         if args.write:
-            for k in ("bio_ko", "bio_source", "tactics_ko", "tactics_source"):
+            for k in ("bio_ko", "bio_source", "tactics_ko", "tactics_source", "style", "focus", "style_source"):
                 if r.get(k):
                     prof[k] = r[k]
             if r.get("formation"):
@@ -275,7 +353,7 @@ def main(argv: list[str] | None = None) -> int:
             )
         time.sleep(args.sleep)
 
-    print(f"\n요약: bio {n_bio} · tactics {n_tac} · formation {n_form}")
+    print(f"\n요약: bio {n_bio} · tactics {n_tac} · formation {n_form} · style {n_sty}")
     if args.write:
         print(f"WROTE {args.profiles}")
     return 0

@@ -8,6 +8,7 @@ import TransferTicker from "./TransferTicker";
 import LineupBoard from "./LineupBoard";
 import CaptainBoard from "./CaptainBoard";
 import OverviewSignals from "./OverviewSignals";
+import IdentityCard from "./IdentityCard";
 
 function repStars(rank?: number | null): string {
   if (!rank) return "★★★☆☆";
@@ -175,6 +176,9 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
           ) : <div className="mgr-meta">감독 정보 없음</div>}
         </div>
       </div>
+
+      {/* 팀 정체성 — 감독 전술 블렌드 · 영입 성향 · 예산 */}
+      <IdentityCard team={ov.team} league={ov.league} accent={accent} />
 
       {/* 주장단 */}
       <CaptainBoard team={ov.team} accent={accent} />

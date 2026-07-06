@@ -89,6 +89,30 @@ export const getNextTeams = (league = _league) =>
 export const getOverview = (team: string, league = _league) =>
   j<Overview>(`/api/overview/${encodeURIComponent(team)}?league=${encodeURIComponent(league)}`);
 
+// ── 팀 정체성 (감독 전술 블렌드 · 영입 성향 · 예산 프록시) ──
+export type Identity = {
+  team: string; league: string;
+  tactics: {
+    manager: string; formation: string | null;
+    current_tags: string[]; tendency_tags: string[];
+    vector: Record<string, number>;
+    role_usage: { role: string; share: number }[];
+    tenure: { appointed: string | null; months: number | null; is_new: boolean; w_current: number; w_tendency: number };
+  } | null;
+  recruitment: {
+    age_profile: string; spend_profile: string; profile: string;
+    avg_age: number | null; u21_ratio: number | null; u23_ratio: number | null;
+    prime_ratio: number | null; veteran_ratio: number | null;
+    n_signings: number; avg_fee_eur: number | null;
+  } | null;
+  budget: {
+    spend_tier: string; squad_value_eur: number; net_spend_eur: number; gross_spend_eur: number;
+    max_fee_paid_eur: number; price_ceiling_eur: number; value_pct: number;
+  } | null;
+};
+export const getIdentity = (t: string, l = _league) =>
+  j<Identity>(`/api/identity/${encodeURIComponent(t)}?league=${encodeURIComponent(l)}`);
+
 // ── 탭별 타입 ─────────────────────────────
 export type SquadPlayer = {
   player: string; pos: string; age: number; minutes: number;

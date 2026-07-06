@@ -444,6 +444,59 @@ def overview(team: str, league: str = ACTIVE_LEAGUE):
     }
 
 
+@app.get("/api/identity/{team}")
+def identity(team: str, league: str = ACTIVE_LEAGUE):
+    """팀 정체성 — 감독 전술(현재 스냅샷 + 장기성향 블렌드·재임) · 영입 성향 · 예산(프록시).
+
+    CSV만 사용(Qdrant/Neo4j 불필요)하므로 배포 환경에서도 동작. 실패 시 부분 null 반환.
+    """
+    import manager_tactics as mt  # noqa: PLC0415 (지연 import — 이 엔드포인트만 CSV 로더 사용)
+    import club_profile as cp     # noqa: PLC0415
+
+    tactics = None
+    try:
+        p = mt.tactical_profile(team)
+    except Exception:  # noqa: BLE001
+        p = None
+    if p:
+        ten = p.get("tenure") or {}
+        v = p.get("tactical_vector") or {}
+        tactics = {
+            "manager": p.get("manager"), "formation": p.get("formation"),
+            "current_tags": p.get("style_tags") or [],
+            "tendency_tags": p.get("descriptor_tags") or [],
+            "vector": {k: v.get(k) for k in
+                       ("pressing", "control", "creativity", "attack_output", "aerial", "disruption")
+                       if v.get(k) is not None},
+            "role_usage": [{"role": r["role"], "share": r["minutes_share"]}
+                           for r in (p.get("role_usage") or [])[:5]],
+            "tenure": {"appointed": ten.get("appointed"), "months": ten.get("months"),
+                       "is_new": ten.get("is_new"), "w_current": ten.get("w_current"),
+                       "w_tendency": ten.get("w_tendency")},
+        }
+
+    recruitment = budget = None
+    try:
+        dna = cp.recruitment_dna(team)
+    except Exception:  # noqa: BLE001
+        dna = None
+    if dna:
+        recruitment = {k: dna.get(k) for k in
+                       ("age_profile", "spend_profile", "profile", "avg_age", "u21_ratio",
+                        "u23_ratio", "prime_ratio", "veteran_ratio", "n_signings", "avg_fee_eur")}
+    try:
+        aff = cp.affordability(team)
+    except Exception:  # noqa: BLE001
+        aff = None
+    if aff:
+        budget = {k: aff.get(k) for k in
+                  ("spend_tier", "squad_value_eur", "net_spend_eur", "gross_spend_eur",
+                   "max_fee_paid_eur", "price_ceiling_eur", "value_pct")}
+
+    return {"team": team, "league": league, "tactics": tactics,
+            "recruitment": recruitment, "budget": budget}
+
+
 @app.get("/api/calendar")
 def calendar():
     cal = ds.read_table("calendar_events")
