@@ -59,13 +59,14 @@ export default function Sidebar({
         <button className={league === "LaLiga" ? "active" : ""} onClick={() => onLeague?.("LaLiga")}>🇪🇸 La Liga</button>
         <button className={league === "SerieA" ? "active" : ""} onClick={() => onLeague?.("SerieA")}>🇮🇹 Serie A</button>
         <button className={league === "Bundesliga" ? "active" : ""} onClick={() => onLeague?.("Bundesliga")}>🇩🇪 Bundesliga</button>
+        <button className={league === "Ligue1" ? "active" : ""} onClick={() => onLeague?.("Ligue1")}>🇫🇷 Ligue 1</button>
       </div>
 
       <button className={`home-nav${atHome ? " active" : ""}`} onClick={() => onHome?.()}>
         <span className="home-nav-mark" />
         <span className="home-nav-txt">
           <span className="home-nav-t">리그 홈</span>
-          <span className="home-nav-sub">{league === "LaLiga" ? "LA LIGA" : league === "SerieA" ? "SERIE A" : league === "Bundesliga" ? "BUNDESLIGA" : "PREMIER LEAGUE"}</span>
+          <span className="home-nav-sub">{league === "LaLiga" ? "LA LIGA" : league === "SerieA" ? "SERIE A" : league === "Bundesliga" ? "BUNDESLIGA" : league === "Ligue1" ? "LIGUE 1" : "PREMIER LEAGUE"}</span>
         </span>
         <span className="home-nav-dot" />
       </button>

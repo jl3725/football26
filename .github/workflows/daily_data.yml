@@ -42,14 +42,17 @@ jobs:
           python src/fetch_bundes_managers.py || echo "bundes_managers 실패"
           python src/detect_season_teams.py --league Bundesliga --write || echo "season_teams Bundesliga 실패"
           python src/detect_manager_changes.py --league Bundesliga --write || echo "mgr_changes Bundesliga 실패"
+          python src/fetch_ligue_managers.py || echo "ligue_managers 실패"
+          python src/detect_season_teams.py --league Ligue1 --write || echo "season_teams Ligue1 실패"
+          python src/detect_manager_changes.py --league Ligue1 --write || echo "mgr_changes Ligue1 실패"
 
       - name: Transfer buzz · schedule (전 리그)
         run: |
           python src/fetch_transfer_buzz.py || echo "buzz EPL 실패"
-          for LG in LaLiga SerieA Bundesliga; do
+          for LG in LaLiga SerieA Bundesliga Ligue1; do
             python src/fetch_transfer_buzz.py --league $LG || echo "buzz $LG 실패"
           done
-          for LG in EPL LaLiga SerieA Bundesliga; do
+          for LG in EPL LaLiga SerieA Bundesliga Ligue1; do
             python src/fetch_schedule.py --league $LG || echo "schedule $LG 실패"
           done
 
@@ -57,7 +60,7 @@ jobs:
       # 26/27 시즌 개막(8월) 시 fetch_standings + soccerdata 를 이 워크플로에 추가할 것.
       - name: Injuries · contracts · market values (전 리그, Transfermarkt)
         run: |
-          for LG in EPL LaLiga SerieA Bundesliga; do
+          for LG in EPL LaLiga SerieA Bundesliga Ligue1; do
             echo "── $LG ──"
             FB_LEAGUE=$LG python src/fetch_transfermarkt_injuries.py || echo "injuries $LG 실패"
             FB_LEAGUE=$LG python src/sync_transfermarkt_contracts.py --write || echo "contracts $LG 실패"

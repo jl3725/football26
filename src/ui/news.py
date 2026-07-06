@@ -63,9 +63,20 @@ BUNDESLIGA_NEWSTAG = {
     "Hamburger SV": "Hamburger SV", "Heidenheim": "1. FC Heidenheim",
 }
 
+LIGUE1_NEWSTAG = {
+    "PSG": "Paris Saint-Germain", "Marseille": "Marseille", "Monaco": "AS Monaco",
+    "Lyon": "Lyon", "Lille": "Lille", "Nice": "Nice", "Lens": "Lens",
+    "Rennes": "Stade Rennais", "Strasbourg": "Strasbourg", "Nantes": "Nantes",
+    "Toulouse": "Toulouse", "Brest": "Brest", "Auxerre": "AJ Auxerre",
+    "Angers": "Angers", "Le Havre": "Le Havre AC", "Metz": "Metz",
+    "Lorient": "Lorient", "Paris FC": "Paris FC",
+}
+
 NEWSTAG_BY_LEAGUE = {"EPL": SQUAD_TO_NEWSTAG, "LaLiga": LALIGA_NEWSTAG,
-                     "SerieA": SERIEA_NEWSTAG, "Bundesliga": BUNDESLIGA_NEWSTAG}
-_ALL_NEWSTAG = {**SQUAD_TO_NEWSTAG, **LALIGA_NEWSTAG, **SERIEA_NEWSTAG, **BUNDESLIGA_NEWSTAG}
+                     "SerieA": SERIEA_NEWSTAG, "Bundesliga": BUNDESLIGA_NEWSTAG,
+                     "Ligue1": LIGUE1_NEWSTAG}
+_ALL_NEWSTAG = {**SQUAD_TO_NEWSTAG, **LALIGA_NEWSTAG, **SERIEA_NEWSTAG,
+                **BUNDESLIGA_NEWSTAG, **LIGUE1_NEWSTAG}
 
 
 def newstags(league: str = "EPL") -> dict:

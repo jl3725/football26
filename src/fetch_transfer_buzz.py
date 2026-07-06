@@ -39,6 +39,9 @@ FEEDS_BY_LEAGUE = {
     "Bundesliga": [
         ("kicker", "https://newsfeed.kicker.de/news/fussball"),
     ],
+    "Ligue1": [
+        ("L'Équipe", "https://dwh.lequipe.fr/api/edito/rss?path=/Football/"),
+    ],
 }
 
 # 합의/임박 신호 키워드 (영어+스페인어). 없으면 루머로 분류.
@@ -49,7 +52,8 @@ _AGREED = re.compile(
     r"acuerdo|fichaj|fichado|oficial|cierra|firma|firmar|vendido|traspaso|refuerzo|llega|"
     r"ufficiale|accordo|firma|acquisto|acquist|ceduto|colpo|visite mediche|preso|arriva|"
     r"offiziell|wechselt|verpflichtet|verpflichtung|unterschreibt|unterschrieb|holt|bindet|"
-    r"verlängert|leihe|neuzugang|fixiert)\b",
+    r"verlängert|leihe|neuzugang|fixiert|"
+    r"officiel|officielle|signe|rejoint|s.engage|recrue|transfert|accord|prêt|bouclé)\b",
     re.I,
 )
 

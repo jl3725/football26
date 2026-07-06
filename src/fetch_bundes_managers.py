@@ -67,7 +67,7 @@ def main() -> int:
 
     def _clean(v):
         v = str(v or "").strip()
-        return "" if v.upper() == "TBA" else v
+        return "" if v.upper() in ("TBA", "TBD", "N/A", "-") else v
 
     teams = (set(cur) | set(nxt)) & set(OUR)   # 캐논 18팀만(노이즈·승격전용 제외)
     managers = {}

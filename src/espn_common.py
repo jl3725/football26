@@ -47,11 +47,21 @@ LEAGUE_DISPLAY: dict[str, dict[str, str]] = {
         "koln": "Köln", "cologne": "Köln", "pauli": "St Pauli", "hamburg": "Hamburger SV",
         "heidenheim": "Heidenheim",
     },
+    "Ligue1": {
+        # 'paris fc' 를 'saint-germain'(PSG) 보다 구분되게 — 서로 부분문자열 아님
+        "paris fc": "Paris FC", "saint-germain": "PSG", "psg": "PSG",
+        "marseille": "Marseille", "monaco": "Monaco", "lyon": "Lyon", "lille": "Lille",
+        "losc": "Lille", "nice": "Nice", "lens": "Lens", "rennes": "Rennes",
+        "strasbourg": "Strasbourg", "nantes": "Nantes", "toulouse": "Toulouse",
+        "brest": "Brest", "auxerre": "Auxerre", "angers": "Angers", "havre": "Le Havre",
+        "metz": "Metz", "lorient": "Lorient",
+    },
 }
 
 # 리그 대회 코드
 LEAGUE_CODE = {"EPL": ("eng.1", "리그"), "LaLiga": ("esp.1", "리그"),
-               "SerieA": ("ita.1", "리그"), "Bundesliga": ("ger.1", "리그")}
+               "SerieA": ("ita.1", "리그"), "Bundesliga": ("ger.1", "리그"),
+               "Ligue1": ("fra.1", "리그")}
 
 # 유럽 대회 (공통)
 EURO_COMPS = [
@@ -66,6 +76,7 @@ DOMESTIC_CUPS = {
     "LaLiga": [("esp.copa_del_rey", "코파델레이", "copa")],
     "SerieA": [("ita.coppa_italia", "코파 이탈리아", "coppa")],
     "Bundesliga": [("ger.dfb_pokal", "DFB-포칼", "pokal")],
+    "Ligue1": [("fra.coupe_de_france", "쿠프 드 프랑스", "coupe")],
 }
 
 

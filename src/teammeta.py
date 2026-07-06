@@ -45,6 +45,14 @@ TEAM_COLOR: dict[str, str] = {
     "St Pauli": "#61371C", "Hamburger SV": "#003DA5", "Heidenheim": "#E30613",
     # Bundesliga 26/27 승격
     "Schalke 04": "#004D9D", "SC Paderborn": "#164194", "SV Elversberg": "#C4122E",
+    # Ligue 1 25/26
+    "PSG": "#004170", "Marseille": "#009DDC", "Monaco": "#CE1126", "Lyon": "#C8102E",
+    "Lille": "#E01E13", "Nice": "#ED1C24", "Lens": "#E1122C", "Rennes": "#E1002A",
+    "Strasbourg": "#005BBB", "Nantes": "#FDDA24", "Toulouse": "#5F259F", "Brest": "#E30613",
+    "Auxerre": "#003DA5", "Angers": "#1A1A1A", "Le Havre": "#005BAC", "Metz": "#862633",
+    "Lorient": "#F58220", "Paris FC": "#0055A4",
+    # Ligue 1 26/27 승격
+    "Le Mans": "#E30613", "Troyes": "#003DA5",
 }
 
 # Transfermarkt verein id (크레스트 로고용)
@@ -79,6 +87,13 @@ TEAM_VEREIN: dict[str, int] = {
     "Hamburger SV": 41, "Heidenheim": 2036,
     # Bundesliga 26/27 승격
     "Schalke 04": 33, "SC Paderborn": 127, "SV Elversberg": 64,
+    # Ligue 1 25/26 (Transfermarkt verein id)
+    "PSG": 583, "Marseille": 244, "Monaco": 162, "Lyon": 1041, "Lille": 1082,
+    "Nice": 417, "Lens": 826, "Rennes": 273, "Strasbourg": 667, "Nantes": 995,
+    "Toulouse": 415, "Brest": 3911, "Auxerre": 290, "Angers": 1420, "Le Havre": 738,
+    "Metz": 347, "Lorient": 1158, "Paris FC": 10004,
+    # Ligue 1 26/27 승격
+    "Le Mans": 1164, "Troyes": 1095,
 }
 
 # 풀네임 + 홈구장 수용인원
@@ -137,6 +152,18 @@ TEAM_EXTRA: dict[str, tuple[str, int]] = {
     # Bundesliga 26/27 승격
     "Schalke 04": ("FC Schalke 04", 62271), "SC Paderborn": ("SC Paderborn 07", 15000),
     "SV Elversberg": ("SV 07 Elversberg", 10000),
+    # Ligue 1 25/26
+    "PSG": ("Paris Saint-Germain", 47929), "Marseille": ("Olympique de Marseille", 67394),
+    "Monaco": ("AS Monaco", 18523), "Lyon": ("Olympique Lyonnais", 59186),
+    "Lille": ("LOSC Lille", 50186), "Nice": ("OGC Nice", 35624),
+    "Lens": ("RC Lens", 38223), "Rennes": ("Stade Rennais FC", 29778),
+    "Strasbourg": ("RC Strasbourg Alsace", 26109), "Nantes": ("FC Nantes", 35322),
+    "Toulouse": ("Toulouse FC", 33150), "Brest": ("Stade Brestois 29", 15931),
+    "Auxerre": ("AJ Auxerre", 21379), "Angers": ("Angers SCO", 18752),
+    "Le Havre": ("Le Havre AC", 25178), "Metz": ("FC Metz", 30681),
+    "Lorient": ("FC Lorient", 18110), "Paris FC": ("Paris FC", 20000),
+    # Ligue 1 26/27 승격
+    "Le Mans": ("Le Mans FC", 25064), "Troyes": ("ESTAC Troyes", 20400),
 }
 
 
@@ -239,6 +266,28 @@ TEAM_INFO: dict[str, dict] = {
     "Schalke 04": {"city": "겔젠키르헨", "stadium": "펠틴스-아레나", "founded": 1904, "nick": "Die Knappen", "desc": "루르 지역 광부 정서의 전통 명문. 26/27 승격."},
     "SC Paderborn": {"city": "파더보른", "stadium": "홈 도이체 아레나", "founded": 1907, "nick": "SCP", "desc": "노르트라인베스트팔렌 소도시 클럽. 26/27 승격."},
     "SV Elversberg": {"city": "슈피저 (자를란트)", "stadium": "우르잔 아레나", "founded": 1907, "nick": "Die SVE", "desc": "자를란트 소도시 클럽. 26/27 승격."},
+    # Ligue 1 25/26
+    "PSG": {"city": "파리", "stadium": "파르크 데 프랭스", "founded": 1970, "nick": "Les Parisiens", "desc": "프랑스 최강. 카타르 자본 이후 리그 지배 + 첫 UCL 우승."},
+    "Marseille": {"city": "마르세유", "stadium": "오랑주 벨로드롬", "founded": 1899, "nick": "OM", "desc": "프랑스 유일 UCL 우승(1993). 열광적 남부 항구 클럽."},
+    "Monaco": {"city": "모나코", "stadium": "스타드 루이 2세", "founded": 1924, "nick": "Les Monégasques", "desc": "공국 연고. 유망주 육성·매각의 명가."},
+    "Lyon": {"city": "리옹", "stadium": "그루파마 스타디움", "founded": 1950, "nick": "Les Gones", "desc": "2000년대 리그 7연패의 전통 강호."},
+    "Lille": {"city": "릴", "stadium": "스타드 피에르-모루아", "founded": 1944, "nick": "Les Dogues", "desc": "21 리그 우승. 오드프랑스 대표 클럽."},
+    "Nice": {"city": "니스", "stadium": "알리안츠 리비에라", "founded": 1904, "nick": "Les Aiglons", "desc": "코트다쥐르 연고. 이네오스 소유."},
+    "Lens": {"city": "랑스", "stadium": "스타드 볼라르-들르리", "founded": 1906, "nick": "Sang et Or", "desc": "광산 지역의 열성 팬덤. 피-금색."},
+    "Rennes": {"city": "렌", "stadium": "로아종 파크", "founded": 1901, "nick": "Rouge et Noir", "desc": "브르타뉴 대표. 피노 그룹 후원."},
+    "Strasbourg": {"city": "스트라스부르", "stadium": "스타드 드 라 메노", "founded": 1906, "nick": "Le Racing", "desc": "알자스 연고. BlueCo(첼시) 산하."},
+    "Nantes": {"city": "낭트", "stadium": "스타드 드 라 보주아르", "founded": 1943, "nick": "Les Canaris", "desc": "8회 우승의 전통 명문. 노랑-초록."},
+    "Toulouse": {"city": "툴루즈", "stadium": "스타디움 드 툴루즈", "founded": 1970, "nick": "Le Téfécé", "desc": "옥시타니 연고. 레드버드 소유."},
+    "Brest": {"city": "브레스트", "stadium": "스타드 프랑시스-르 블레", "founded": 1950, "nick": "Ti Zefs", "desc": "브르타뉴 소도시. 최근 UCL 진출 돌풍."},
+    "Auxerre": {"city": "옥세르", "stadium": "스타드 드 라베-데샹", "founded": 1905, "nick": "AJA", "desc": "기 루 감독기 황금기의 부르고뉴 클럽."},
+    "Angers": {"city": "앙제", "stadium": "스타드 레몽 코파", "founded": 1919, "nick": "SCO", "desc": "멘에루아르 연고 클럽."},
+    "Le Havre": {"city": "르아브르", "stadium": "스타드 오세안", "founded": 1872, "nick": "HAC", "desc": "프랑스 最古 클럽. 노르망디 항구도시."},
+    "Metz": {"city": "메스", "stadium": "스타드 생-생포리앙", "founded": 1932, "nick": "Les Grenats", "desc": "로렌 연고. 적갈색(grenat) 클럽."},
+    "Lorient": {"city": "로리앙", "stadium": "스타드 뒤 무스투아르", "founded": 1926, "nick": "Les Merlus", "desc": "브르타뉴 항구도시. 주황-검정."},
+    "Paris FC": {"city": "파리", "stadium": "스타드 장-부앵", "founded": 1969, "nick": "Le Paris FC", "desc": "파리 제2클럽. 아르노·킬리안 자본으로 승격."},
+    # Ligue 1 26/27 승격
+    "Le Mans": {"city": "르망", "stadium": "MMArena", "founded": 1985, "nick": "Les Sang et Or", "desc": "르망 24시 자동차 경주로 유명한 도시 클럽. 26/27 승격."},
+    "Troyes": {"city": "트루아", "stadium": "스타드 드 로브", "founded": 1986, "nick": "ESTAC", "desc": "샹파뉴 연고. 시티풋볼그룹 산하. 26/27 승격."},
 }
 
 
