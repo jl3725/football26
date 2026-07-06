@@ -77,13 +77,18 @@ def build_matrix():
     for _, r in allp.iterrows():
         pid = _pid(r)
         ids.append(_point_id(pid))
+        nat = r.get("nationality")
+        nat = str(nat).split("/")[0].split(",")[0].strip() if pd.notna(nat) else None
         payloads.append({
-            "pid": pid, "name": str(r.get("player") or ""), "club": str(r.get("squad") or ""),
+            "pid": pid, "tm_id": None if pd.isna(r.get("tm_id")) else int(r.get("tm_id")),
+            "name": str(r.get("player") or ""), "club": str(r.get("squad") or ""),
             "league": str(r.get("_league") or ""), "pos": str(r.get("pos") or ""),
+            "nationality": nat,
             "age": None if pd.isna(r.get("age")) else int(r.get("age")),
             "market_value_eur": None if pd.isna(r.get("market_value_eur")) else float(r.get("market_value_eur")),
             "ss_rating": None if pd.isna(r.get("ss_rating")) else float(r.get("ss_rating")),
             "minutes": None if pd.isna(r.get("minutes")) else int(r.get("minutes")),
+            "contract_until": (str(r.get("tm_contract_until"))[:10] if pd.notna(r.get("tm_contract_until")) else None),
         })
     return ids, Xn, payloads, feats
 
