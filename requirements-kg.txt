@@ -1,0 +1,5 @@
+# KG/벡터 레이어 전용 (로컬). 백엔드(requirements.txt)와 분리 — Render 미사용.
+#   pip install -r requirements-kg.txt
+-r requirements.txt
+neo4j==5.28.1
+qdrant-client==1.12.1
