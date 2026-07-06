@@ -347,7 +347,10 @@
     "ko_title": "코모 1907"
   },
   "Cremonese": {
-    "wiki_title": "US Cremonese"
+    "wiki_title": "US Cremonese",
+    "desc_ko": "우니오네 스포르티바 크레모네세(이탈리아어: Unione Sportiva Cremonese S.p.A.)는 1903년에 창단된 이탈리아 롬바르디아주 크레모나에 위치한 스타디오 조반니 치니 경기장을 근거로 하는 이탈리아의 축구 클럽으로 현재 세리에 A에 소속되어 있다.",
+    "desc_source": "ko-wiki",
+    "ko_title": "US 크레모네세"
   },
   "Hellas Verona": {
     "wiki_title": "Hellas Verona F.C.",
@@ -478,7 +481,10 @@
     "wiki_title": "1. F.C. Köln"
   },
   "St Pauli": {
-    "wiki_title": "FC St. Pauli"
+    "wiki_title": "FC St. Pauli",
+    "desc_ko": "FC 장크트파울리(Fußball-Club St. Pauli)는 독일 함부르크의 축구 클럽으로, 현재 2.",
+    "desc_source": "ko-wiki",
+    "ko_title": "FC 장크트파울리"
   },
   "Hamburger SV": {
     "wiki_title": "Hamburger SV",
@@ -506,5 +512,211 @@
     "desc_ko": "SV 07 엘페르스베르크(SV 07 Elversberg)는 1907년에 창단된 독일 자를란트주 슈피젠엘페르스베르크을 연고로 하는 축구 클럽이다.",
     "desc_source": "ko-wiki",
     "ko_title": "SV 엘페르스베르크"
+  },
+  "PSG": {
+    "wiki_title": "Paris Saint-Germain",
+    "desc_ko": "파리 생제르맹 풋볼 클뢰브(프랑스어: Paris Saint-Germain Football Club), 약칭으로 파리 생제르맹(프랑스어: Paris Saint-Germain)이나 더 줄여서 파리 SG(프랑스어: Paris SG) 혹은 PSG(프랑스어: PSG 뻬에스제[*])는 프랑스의 수도 파리를 연고로 하는 프로 축구 클럽이다. 이 구단은 1970년 8월 12일, 파리 FC",
+    "desc_source": "ko-wiki",
+    "ko_title": "파리 생제르맹 FC"
+  },
+  "Marseille": {
+    "wiki_title": "Olympique de Marseille",
+    "desc_ko": "올랭피크 드 마르세유(프랑스어: Olympique de Marseille)는 흔히 OM으로 알려진 마르세유를 연고로 하는 프랑스의 축구 클럽이다. 1899년에 창단 되었으며 현재 리그 1에 속해 있다.",
+    "desc_source": "ko-wiki",
+    "ko_title": "올랭피크 드 마르세유"
+  },
+  "Monaco": {
+    "wiki_title": "AS Monaco",
+    "desc_ko": "일반적으로 AS 모나코라고 불리는 Association Sportive de Monaco Football Club은 모나코 퐁비에유에 본사를 둔 프로 축구 클럽입니다. 프랑스는 아니지만 프랑스 축구 연맹(FFF)에 소속되어 있으며 현재 리그 1, t에서 활동하고 있습니다.",
+    "desc_source": "en-wiki-translated"
+  },
+  "Lyon": {
+    "wiki_title": "Olympique Lyonnais",
+    "desc_ko": "올랭피크 리옹으로도 불리는 올랭피크 리오네(프랑스어: Olympique Lyonnais, 프랑스어 발음: ​[ɔlɛ̃pik ljɔnɛ])는 오베르뉴-론-알프 지방 리옹을 연고로 하는 프랑스의 프로 축구단이다. 1950년에 창단되었으며 현재 프랑스 축구 1부 리그인 리그 1에 소속되어 있다.",
+    "desc_source": "ko-wiki",
+    "ko_title": "올랭피크 리옹"
+  },
+  "Lille": {
+    "wiki_title": "LOSC Lille",
+    "desc_ko": "릴 올랭피크 스포르팅 클뤼브(프랑스어: Lille Olympique Sporting Club)는 릴의 위성도시 빌뇌브-다스크에 위치한 스타드 피에르 모루아 경기장을 근거로 하는 프랑스의 축구 클럽이다. 흔히 LOSC나 릴 OSC라고도 불리며 현재 감독은 브뤼노 제네시오다.",
+    "desc_source": "ko-wiki",
+    "ko_title": "릴 OSC"
+  },
+  "Nice": {
+    "wiki_title": "OGC Nice",
+    "desc_ko": "올랭피크 짐나스트 클뢰브 드 니스 코트다쥐르(프랑스어: Olympique Gymnaste Club Nice Côte d'Azur)는 니스를 연고로 하는 프랑스의 축구 클럽이다. 또한 OGC 니스는 1904년에 창단 되었으며 현재 프랑스 최상위 리그 리그 1에 참가 중이다.",
+    "desc_source": "ko-wiki",
+    "ko_title": "OGC 니스"
+  },
+  "Lens": {
+    "wiki_title": "RC Lens",
+    "desc_ko": "라싱 클뢰브 드 랑스(프랑스어: Racing Club de Lens)는 프랑스 북부의 도시 랑스를 연고로 하고, 스타드 펠릭스 볼라르트를 홈구장으로 하는 프랑스의 축구 클럽이다. 클럽 별명은 피와 금(Sang et Or)이며 랑스 지역의 전통적인 색상인 빨간색과 금색에서 유래한 것이다.",
+    "desc_source": "ko-wiki",
+    "ko_title": "RC 랑스"
+  },
+  "Rennes": {
+    "wiki_title": "Stade Rennais F.C."
+  },
+  "Strasbourg": {
+    "wiki_title": "RC Strasbourg Alsace",
+    "desc_ko": "라싱 클뢰브 드 스트라스부르 알자스(프랑스어: Racing Club de Strasbourg Alsace)는 1906년에 창설된 프랑스의 축구 클럽으로 알자스의 스트라스부르를 연고로 하고 있다. 1933년에 이래로 프로 축구단의 지위를 보유하고 있으며 리그 2 2016-17 시즌을 우승하여 프랑스의 최상위 리그 리그 1의 2017-18 시즌을 참가 중이다.",
+    "desc_source": "ko-wiki",
+    "ko_title": "RC 스트라스부르"
+  },
+  "Nantes": {
+    "wiki_title": "FC Nantes",
+    "desc_ko": "풋볼 클뢰브 드 낭트(프랑스어: Football Club de Nantes)는 프랑스의 축구 클럽으로 루아르아틀랑티크주 낭트를 연고로 하며, 현재 리그 2에서 경기하고 있다. 인상적인 역사가 있는 클럽 가운데 하나로, 프랑스 축구에선 리그 1에서 8번의 우승, 쿠프 드 프랑스에서 3번의 우승 경력을 가지고 있다.",
+    "desc_source": "ko-wiki",
+    "ko_title": "FC 낭트"
+  },
+  "Toulouse": {
+    "wiki_title": "Toulouse F.C.",
+    "desc_ko": "툴루즈 풋볼 클뢰브(프랑스어: Toulouse Football Club)는 툴루즈를 연고로 하는 프랑스의 축구 클럽이다. 1970년에 창단되어 현재 프랑스 1부 리그인 리그 1에 참가 중이다.",
+    "desc_source": "ko-wiki",
+    "ko_title": "툴루즈 FC"
+  },
+  "Brest": {
+    "wiki_title": "Stade Brestois 29",
+    "desc_ko": "스타드 브레스투아 29(프랑스어: Stade Brestois 29), 흔히 스타드 브레스투아(프랑스어: Stade Brestois) 또는 간단히 브레스트(프랑스어: Brest)로 알려진 이 클럽은 브레스트에 위치한 프랑스의 프로 축구 클럽이다. 1903년에 설립된 아르모리켕 드 브레스트(프랑스어: Armoricaine de Brest)를 포함한 다섯 개의 지역 후원 단체가 ",
+    "desc_source": "ko-wiki",
+    "ko_title": "스타드 브레스투아 29"
+  },
+  "Auxerre": {
+    "wiki_title": "AJ Auxerre",
+    "desc_ko": "AJ 오세르(Association de la Jeunesse Auxerroise)는 부르고뉴 오세르에 위치한 스타드 드 라베 데샹 경기장을 근거로 하는 프랑스의 축구 클럽이다.",
+    "desc_source": "ko-wiki",
+    "ko_title": "AJ 오세르"
+  },
+  "Angers": {
+    "wiki_title": "Angers SCO"
+  },
+  "Le Havre": {
+    "wiki_title": "Le Havre AC",
+    "desc_ko": "르아브르 AC(프랑스어: Le Havre Athletic Club)는 르아브르를 연고로 하는 프랑스의 축구 클럽으로, 1872년에 설립된 프랑스에서 가장 오래된 축구 클럽이며, 럭비 클럽에도 등록되어 있다. 르아브르 AC는 현재 리그 1 소속이며, 홈 경기장은 스타드 오세안(Stade Océane)이다.",
+    "desc_source": "ko-wiki",
+    "ko_title": "르아브르 AC"
+  },
+  "Metz": {
+    "wiki_title": "FC Metz",
+    "desc_ko": "풋볼 클뢰브 드 메스(Football Club de Metz)는 메스에 위치한 스타드 뮈니시팔 생 심포리앵 경기장을 홈 구장으로 하는 프랑스의 축구 클럽이다.",
+    "desc_source": "ko-wiki",
+    "ko_title": "FC 메스"
+  },
+  "Lorient": {
+    "wiki_title": "FC Lorient",
+    "desc_ko": "FC 로리앙(Football Club Lorient-Bretagne Sud; 프랑스어 발음: ​[lɔʁjɑ̃ bʁətaɲ syd])은 브르타뉴의 로리앙을 연고로 하는 프랑스의 프로 축구 클럽으로 1926년에 창단 되었다.",
+    "desc_source": "ko-wiki",
+    "ko_title": "FC 로리앙"
+  },
+  "Paris FC": {
+    "wiki_title": "Paris F.C.",
+    "desc_ko": "파리 FC(프랑스어: Paris Football Club)는 또는 간단히 PFC로 불리는 이 팀은 프랑스 파리에 연고를 둔 프로 축구 클럽이다. 이들은 2024–25년 시즌 리그 2를 마치고 승격에 성공하여 2025–26년 시즌부터 프랑스 최상위 리그 리그 1에서 경쟁할 예정이다.",
+    "desc_source": "ko-wiki",
+    "ko_title": "파리 FC"
+  },
+  "Le Mans": {
+    "wiki_title": "Le Mans F.C."
+  },
+  "Troyes": {
+    "wiki_title": "ESTAC Troyes"
+  },
+  "Sporting CP": {
+    "wiki_title": "Sporting Clube de Portugal",
+    "desc_ko": "스포르팅 클루브 드 포르투갈(포르투갈어: Sporting Clube de Portugal)은 포르투갈의 리스본을 연고로 하는 축구 클럽으로 1906년 7월 1일에 창단 되었다. 이 팀은 현재 포르투갈 최상위 축구리그 포르투갈 리가에서 벤피카, 포르투와 더불어 1934년 이래로 단 한 번도 강등된 적이 없으며 빅3(Três Grandes)라고 불리는 포르투갈의 가장 강력한 클",
+    "desc_source": "ko-wiki",
+    "ko_title": "스포르팅 CP"
+  },
+  "Porto": {
+    "wiki_title": "FC Porto",
+    "desc_ko": "푸트볼 클루브 두 포르투(Futebol Clube do Porto, 유로넥스트: FCP) 또는 흔히 알려진 FC 포르투, 포르투, 혹은 FCP는 북부 포르투갈의 포르투를 연고로 한 종합 스포츠 클럽이다. 다른 스포츠 영역에서도 성공적인 모습을 보이는 포르투이지만, 포르투는 축구 팀으로 더 유명하다.",
+    "desc_source": "ko-wiki",
+    "ko_title": "FC 포르투"
+  },
+  "Benfica": {
+    "wiki_title": "SL Benfica",
+    "desc_ko": "스포르트 리스보아 이 벤피카(포르투갈어: Sport Lisboa e Benfica; 유로넥스트: SLBEN), 혹은 단순하게 줄여서 벤피카(Benfica) 또는 벤피카 리스본(Benfica Lisbon)은 리스본을 연고로 하는 포르투갈의 종합 스포츠 클럽이다. 그들은 다양한 스포츠 부를 두고 있지만, 벤피카는 축구팀으로 가장 유명하다.",
+    "desc_source": "ko-wiki",
+    "ko_title": "SL 벤피카"
+  },
+  "Braga": {
+    "wiki_title": "SC Braga",
+    "desc_ko": "흔히 SC 브라가 또는 브라가로 불리는 스포르팅 클루브 드 브라가(Sporting Clube de Braga)는 포르투갈의 축구 클럽으로 1921년 1월 19일에 창단 되었다. 현재 프리메이라리가에 속해 있으며 포르투갈의 도시 브라가를 연고로 한다.",
+    "desc_source": "ko-wiki",
+    "ko_title": "SC 브라가"
+  },
+  "Famalicão": {
+    "wiki_title": "FC Famalicão",
+    "desc_ko": "푸트볼 클루브 드 파말리캉(포르투갈어: Futebol Clube de Famalicão), 혹은 단순하게 줄여서 파말리캉(Famalicão)은 포르투갈의 빌라 노바 데 파말리캉을 연고로 하는 프로 축구 클럽이다. 파말리캉은 현재 포르투갈의 최상위 리그인 프리메이라리가에 소속되어 있다.",
+    "desc_source": "ko-wiki",
+    "ko_title": "FC 파말리캉"
+  },
+  "Vit. Guimarães": {
+    "wiki_title": "Vitória SC"
+  },
+  "Gil Vicente FC": {
+    "wiki_title": "Gil Vicente F.C.",
+    "desc_ko": "질 비센트 푸테볼 클루브(포르투갈어: Gil Vicente Futebol Clube, Gil Vicente F.C.), 는 포르투갈 바르셀루스를 연고지로 하는 프로 축구 클럽이다. 현재 포르투갈 1부 리그인 프리메이라리가에 소속되어 있다.",
+    "desc_source": "ko-wiki",
+    "ko_title": "질 비센트 FC"
+  },
+  "Estoril": {
+    "wiki_title": "GD Estoril Praia",
+    "desc_ko": "흔히 이스토릴(Estoril)로 알려진 그루푸 데스포르티부 이스토릴 프라이아 는 포르투갈 리스보아현 카스카이스의 이스토릴을 연고로 하는 스포츠 클럽이다. 클럽은 1939년 5월 17일에 설립 되었으며 8,015명을 수용할 수 있는 이스타디우 안토니우 코임브라 다 모타 경기장을 사용하고 있다.",
+    "desc_source": "ko-wiki",
+    "ko_title": "GD 이스토릴 프라이아"
+  },
+  "Alverca": {
+    "wiki_title": "FC Alverca",
+    "desc_ko": "Futebol Clube de Alverca는 Vila Franca de Xira의 Alverca do Ribatejo를 연고로 하는 포르투갈의 축구 클럽입니다. 현재 팀은 포르투갈 축구의 최상위 리그인 리가 포르투갈에서 뛰고 있습니다.",
+    "desc_source": "en-wiki-translated"
+  },
+  "Rio Ave": {
+    "wiki_title": "Rio Ave F.C.",
+    "desc_ko": "히우 아브 푸테볼 클루브(Rio Ave Futebol Clube) 또는 히우 아브 FC(Rio Ave F.C.)는 포르투갈 빌라두콘드의 축구 클럽으로, 현재 포르투갈 리가 소속으로 활동하고 있다. 흔히 히우 아브(Rio Ave)라고 부르기도 한다.",
+    "desc_source": "ko-wiki",
+    "ko_title": "히우 아브 FC"
+  },
+  "Santa Clara": {
+    "wiki_title": "CD Santa Clara",
+    "desc_ko": "CD 산타클라라(포르투갈어: Clube Desportivo Santa Clara)는 포르투갈 아소르스 제도의 폰타델가다를 연고지로 하는 축구팀으로 1927년 5월 12일에 창단 되었으며 현재 프리메이라리가에 참가하고 있다. 산타클라라는 아소르스 제도에서 가장 성공적인 클럽으로 포르투갈 군도의 축구팀 중 유일하게 UEFA가 주관하는 유럽 대항전에 참가 했으며 2002년 UEF",
+    "desc_source": "ko-wiki",
+    "ko_title": "CD 산타클라라"
+  },
+  "Moreirense": {
+    "wiki_title": "Moreirense F.C.",
+    "desc_ko": "모레이렌세 푸테볼 클럽(Moreirense Futebol Clube)은 미뉴 기마랑이스 지방자치단체 모레이라 데 코네고스를 연고로 하는 포르투갈의 프로 축구 클럽이다. 1938년 11월 1일에 창단되었으며 프리메이라 리가에서 뛰고 있으며 Parque de Jogos Comendador Joaquim de Almeida Freit에서 홈 경기를 개최합니다.",
+    "desc_source": "en-wiki-translated"
+  },
+  "Estrela": {
+    "wiki_title": "CF Estrela da Amadora",
+    "desc_ko": "클럽 축구 Estrela Amadora SAD(때때로 Estrela da Amadora라고도 함)는 리스본 북서쪽 아마도라에 본거지를 둔 포르투갈의 프로 스포츠 클럽입니다. 팀은 현재 승격 우승 후 포르투갈 축구의 최고 리그인 프리메이라 리가에 출전하고 있습니다.",
+    "desc_source": "en-wiki-translated"
+  },
+  "Casa Pia": {
+    "wiki_title": "Casa Pia AC",
+    "desc_ko": "카사 피아 AC(Casa Pia Atlético Clube)는 1920년에 창단된 포르투갈의 종합 스포츠 구단으로 포르투갈 리스본이 연고지이다. 특히 프리메이라리가에 참가하는 프로 축구단이 가장 널리 알려져 있는데 구단 이름은 포르투갈 어린이 자선 단체 카사 피아(Casa Pia)의 이름을 따서 지어졌다.",
+    "desc_source": "ko-wiki",
+    "ko_title": "카사 피아 AC"
+  },
+  "Arouca": {
+    "wiki_title": "FC Arouca",
+    "desc_ko": "푸테볼 클루브 드 아로카(포르투갈어: Futebol Clube de Arouca)는 포르투갈 아로카를 연고지로 하는 프로 축구 클럽이다. 현재 포로투갈의 프리메이라리가에 참가 중이다.",
+    "desc_source": "ko-wiki",
+    "ko_title": "FC 아로카"
+  },
+  "Tondela": {
+    "wiki_title": "CD Tondela",
+    "desc_ko": "CD 톤델라(C.D. Tondela)는 포르투갈에 있는 톤델라를 연고로 하는 축구팀으로 1933년 6월 6일에 창단헸다.",
+    "desc_source": "ko-wiki",
+    "ko_title": "CD 톤델라"
+  },
+  "Nacional": {
+    "wiki_title": "CD Nacional",
+    "desc_ko": "클루브 데스포르티부 나시오날(Clube Desportivo Nacional) 또는 CD 나시오날(C.D. Nacional)은 포르투갈 마데이라 제도 푼샬의 축구 클럽으로, 현재 프리메이라리가에서 활동하고 있다.",
+    "desc_source": "ko-wiki",
+    "ko_title": "CD 나시오날"
+  },
+  "AVS Futebol": {
+    "wiki_title": "AVS"
   }
 }
