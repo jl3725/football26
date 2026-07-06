@@ -19,10 +19,13 @@ MODEL = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
 TOOLS = [
     {"type": "function", "function": {
         "name": "recommend_players",
-        "description": "특정 팀의 약한 포지션에 대한 영입 후보(교차리그 포함)를 추천. '아스날 6번 추천', "
-                       "'우리 팀 여름 보강 우선순위' 같은 질문.",
+        "description": "특정 팀의 약한 포지션에 대한 영입 후보를 Qdrant 스타일-핏 기반으로 전 리그에서 추천. "
+                       "'아스날 6번 추천', '우리 팀 여름 보강 우선순위' 같은 질문. role 있으면 그 역할로 좁힘.",
         "parameters": {"type": "object", "properties": {
-            "team": {"type": "string", "description": "팀명(정확한 데이터 표기)"}}, "required": ["team"]}}},
+            "team": {"type": "string", "description": "팀명(정확한 데이터 표기)"},
+            "role": {"type": "string", "description": "세부 역할(선택, 예: Defensive Midfield, Centre-Back). "
+                     "'6번'=Defensive Midfield, '8번'=Central Midfield, '10번'=Attacking Midfield"}},
+            "required": ["team"]}}},
     {"type": "function", "function": {
         "name": "evaluate_fit",
         "description": "특정 선수를 특정 클럽의 특정 역할로 영입할 때의 적합도를 정밀 분해. "
@@ -127,7 +130,8 @@ def _execute(name: str, args: dict, league: str):
     if api is None:
         return None, {"error": "api.main 미로드"}
     if name == "recommend_players":
-        return "recommend", api.recommend(_resolve_club(args.get("team", "")), league)
+        import transfer_fit as tf  # Qdrant 스타일-핏 발굴(교차리그, 리그 중립)
+        return "recommend", tf.discover_fits(_resolve_club(args.get("team", "")), args.get("role") or None)
     if name == "evaluate_fit":
         return "fit", api.fit(args.get("candidate", ""), _resolve_club(args.get("club", "")),
                               args.get("role", ""), "", league)
@@ -147,10 +151,11 @@ def _slim(intent: str, r: dict) -> dict:
     if r.get("available") is False or r.get("error"):
         return {"unavailable": r.get("reason") or r.get("error")}
     if intent == "recommend":
-        return {"weakest": (r.get("weakest") or {}).get("label"),
+        return {"target_roles": r.get("target_roles"),
                 "picks": [{"player": x["player"], "club": x["squad"], "pos": x["pos"], "ovr": x["ovr"],
-                           "proj": x.get("projected_ovr"), "why": x.get("why_fit"),
-                           "cross_league": x.get("cross_league"), "from": x.get("source_league")}
+                           "style_fit": x.get("style_fit"), "proj": x.get("projected_ovr"),
+                           "why": x.get("why_fit"), "cross_league": x.get("cross_league"),
+                           "from": x.get("source_league")}
                           for x in (r.get("recommendations") or [])[:6]]}
     if intent == "fit":
         return {k: r.get(k) for k in ("candidate", "target_club", "role", "fit_score",

@@ -41,7 +41,8 @@ function ResultCard({ d, accent }: { d: Scout; accent: string }) {
             {p.photo ? <img src={p.photo} alt="" style={{ width: 26, height: 26, borderRadius: "50%", objectFit: "cover" }} /> : <span style={{ width: 26 }} />}
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ fontSize: 12.5, fontWeight: 600 }}>{p.player} <span style={{ opacity: 0.5, fontWeight: 400 }}>{p.squad}</span></div>
-              <div style={{ fontSize: 10.5, opacity: 0.6 }}>{p.pos} · {fmtEur(p.value_eur)}{p.cross_league ? ` · ↗${p.source_league}` : ""}</div>
+              <div style={{ fontSize: 10.5, opacity: 0.6 }}>{p.pos} · {fmtEur(p.value_eur)}{p.cross_league ? ` · ↗${p.source_league}` : ""}
+                {p.style_fit != null ? <span style={{ color: accent }}> · 스타일 {p.style_fit}</span> : null}</div>
             </div>
             <div style={{ fontSize: 15, fontWeight: 800, color: tier(p.ovr).light }}>{p.projected_ovr || p.ovr}</div>
           </div>

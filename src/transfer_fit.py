@@ -128,6 +128,93 @@ def _role_centroid_for(qc, role, clubs):
     return np.mean([p.vector for p in pts], axis=0) if pts else None
 
 
+def _elite_archetype(qc, role):
+    """리그 엘리트(해당 pos_detail) 스타일 원형 centroid."""
+    from qdrant_client import models
+    f = models.Filter(must=[models.FieldCondition(key="pos_detail", match=models.MatchValue(value=role))])
+    pts = qc.scroll(QCOLLECTION, scroll_filter=f, with_vectors=True, with_payload=True, limit=2000)[0]
+    elite = [p for p in pts if (p.payload.get("ss_rating") or 0) >= 7.0 and (p.payload.get("minutes") or 0) >= 900]
+    ref = elite or pts
+    return np.mean([p.vector for p in ref], axis=0) if ref else None
+
+
+def _weak_roles(team, pool, k=2):
+    """팀 스쿼드에서 세부 역할 뎁스가 얇은(<=2명) 주요 역할 top-k."""
+    sq = pool[pool["squad"].astype(str) == team]
+    played = sq[sq["_min"] > 300]
+    cnt = played["_pos_detail"].value_counts().to_dict()
+    MAIN = ["Centre-Back", "Right-Back", "Left-Back", "Defensive Midfield", "Central Midfield",
+            "Attacking Midfield", "Right Winger", "Left Winger", "Centre-Forward"]
+    thin = sorted([r for r in MAIN if cnt.get(r, 0) <= 2], key=lambda r: cnt.get(r, 0))
+    return thin[:k] or ["Central Midfield"]
+
+
+def discover_fits(team: str, role: str | None = None, top: int = 8) -> dict:
+    """Qdrant 기반 교차리그 스타일-핏 발굴(리그 중립) — 스카우트 추천의 핵심.
+
+    팀의 해당 역할 사용 스타일 centroid(없으면 리그 엘리트 원형)로 전 리그 벡터 검색 →
+    스타일적합(코사인) + 리그변환(_project_ovr) + 유럽검증으로 랭크. EPL 편향 없음.
+    """
+    api, pool = _api(), _pool()
+    tgt = pool[pool["squad"].astype(str) == team]
+    if tgt.empty:
+        return {"available": True, "error": f"클럽 '{team}' 없음", "recommendations": []}
+    tgt_league = tgt.iloc[0]["_league"]
+    try:
+        qc = _qdrant()
+        qc.get_collections()
+    except Exception as e:  # noqa: BLE001
+        return {"available": False, "reason": f"Qdrant 미가동: {str(e)[:60]}", "recommendations": []}
+
+    roles = [(_pos_detail(role) or role)] if role else _weak_roles(team, pool)
+    recs, seen = [], set()
+    for rl in roles:
+        target = _role_centroid_for(qc, rl, [team])
+        if target is None:
+            target = _elite_archetype(qc, rl)
+        if target is None:
+            continue
+        hits = qc.search(QCOLLECTION, query_vector=target.tolist(), limit=60)
+        for h in hits:
+            pay = h.payload or {}
+            nm, clb, lg = pay.get("name"), pay.get("club"), pay.get("league")
+            if not nm or clb == team or pay.get("pos_detail") != rl or nm in seen:
+                continue
+            prow = pool[(pool["player"].astype(str) == nm) & (pool["_league"] == lg)]
+            if prow.empty:
+                continue
+            r = prow.iloc[0]
+            base = int(api._player_ovr(r))
+            age = None if pd.isna(r.get("_age")) else int(r["_age"])
+            euro = bool((r.get("_euro") or 0) > 0)
+            bucket = api._pos_bucket(r)
+            proj = base if lg == tgt_league else int(api._project_ovr(base, lg, tgt_league, euro, age, bucket)[0])
+            style_fit = int(round(max(0.0, h.score) * 100))
+            proj_norm = _clamp((proj - 55) / 37 * 100)
+            score = 0.55 * style_fit + 0.35 * proj_norm + (5 if euro else 0)
+            cross = bool(lg != tgt_league)
+            why = [f"스타일 적합 {style_fit}"]
+            if cross:
+                why.append(f"{lg} OVR {base}→예상 {proj}")
+            if euro:
+                why.append("유럽 검증")
+            if age is not None and age <= 22:
+                why.append(f"{age}세 성장형")
+            seen.add(nm)
+            recs.append({
+                "player": nm, "squad": clb or "", "pos": rl, "role_bucket": rl,
+                "ovr": proj, "current_ovr": base, "projected_ovr": proj,
+                "cross_league": cross, "source_league": lg,
+                "value_eur": None if pd.isna(r.get("_mv")) else int(r["_mv"]),
+                "style_fit": style_fit, "euro": euro, "age": age,
+                "photo": str(r.get("photo") or ""), "why_fit": why, "_score": round(score, 1),
+            })
+    recs.sort(key=lambda x: -x["_score"])
+    return {"available": True, "team": team, "target_league": tgt_league,
+            "target_roles": roles, "weakest": {"label": " · ".join(roles)},
+            "recommendations": recs[:top]}
+
+
 def _style_fits(qc, cand_name, role, target_club, tendency_cl):
     """RoleFit(리그 엘리트 원형) + CurrentFit(대상 클럽 현재 스냅샷) + TendencyFit(감독 성향 표본) + 유사선수.
 
