@@ -49,6 +49,9 @@ def _pos_detail(v):
 
 @lru_cache(maxsize=1)
 def _api():
+    # uvicorn 안에서는 이미 로드된 api.main 재사용(중복 로드 방지). 단독 실행 시 main 로드.
+    if "api.main" in sys.modules:
+        return sys.modules["api.main"]
     import main as api  # api/main.py — _player_ovr·_pos_bucket·_project_ovr·_LEAGUE_LEVEL 재사용
     return api
 

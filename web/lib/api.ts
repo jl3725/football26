@@ -113,6 +113,37 @@ export type Identity = {
 export const getIdentity = (t: string, l = _league) =>
   j<Identity>(`/api/identity/${encodeURIComponent(t)}?league=${encodeURIComponent(l)}`);
 
+// ── Transfer Fit Evaluator (로컬 전용 · Qdrant/Neo4j 필요) ──
+export type FitComponents = {
+  RoleFit: number; TacticalFit: number; TeamNeed: number; Translation: number;
+  Potential: number; Value: number; RecruitFit: number; PriceRealism: number; Risk: number; Euro: number;
+};
+export type Fit = {
+  available: boolean; reason?: string; error?: string;
+  candidate: string; club?: string; role: string;
+  source_league?: string; target_club?: string; target_league?: string;
+  base_ovr?: number; proj_ovr?: number;
+  components?: FitComponents;
+  fit_score?: number; signing_type?: string; risk_level?: string;
+  tactical_detail?: {
+    current_fit: number; tendency_fit: number; blended: number;
+    w_current: number; w_tendency: number; is_new_manager: boolean;
+    appointed: string | null; descriptor_tags: string[];
+  };
+  affordability?: {
+    verdict: string; likely_fee_eur: number | null; ceiling_eur: number | null;
+    spend_tier?: string; club_recruit_profile?: string; club_avg_signing_age?: number | null;
+  };
+  manager?: { name: string | null; formation: string | null; style_tags: string[] | null };
+  team_need_detail?: { depth: number; best_ss: number | null; avg_age: number | null };
+  similar_players?: string[]; euro_experience?: boolean;
+  precedent_transfers?: number | null; notes?: string;
+};
+export const getFit = (candidate: string, club: string, role: string, sourceLeague = "", l = _league) =>
+  j<Fit>(`/api/fit?candidate=${encodeURIComponent(candidate)}&club=${encodeURIComponent(club)}`
+    + `&role=${encodeURIComponent(role)}&source_league=${encodeURIComponent(sourceLeague)}`
+    + `&league=${encodeURIComponent(l)}`);
+
 // ── 탭별 타입 ─────────────────────────────
 export type SquadPlayer = {
   player: string; pos: string; age: number; minutes: number;

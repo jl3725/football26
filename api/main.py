@@ -497,6 +497,29 @@ def identity(team: str, league: str = ACTIVE_LEAGUE):
             "recruitment": recruitment, "budget": budget}
 
 
+@app.get("/api/fit")
+def fit(candidate: str, club: str, role: str, source_league: str = "",
+        league: str = ACTIVE_LEAGUE):
+    """Transfer Fit Evaluator — (후보, 대상클럽, 역할) → Fit Score + 전 컴포넌트 분해.
+
+    로컬 전용: Qdrant(스타일 벡터)·Neo4j(선례) 필요. 스택 미가동 시 available=False 로
+    우아하게 degrade(프론트가 안내 표시). 온디맨드(버튼)로만 호출되는 무거운 계산.
+    """
+    try:
+        import transfer_fit as tf  # noqa: PLC0415 (지연 import — 이 엔드포인트만 벡터스택 사용)
+        tf._qdrant().get_collections()  # 가용성 프로브
+    except Exception as e:  # noqa: BLE001
+        return {"available": False, "candidate": candidate, "club": club, "role": role,
+                "reason": f"로컬 벡터/그래프 스택 미가동 (Qdrant): {str(e)[:80]}"}
+    try:
+        r = tf.evaluate_fit(candidate, club, role, source_league or None)
+    except Exception as e:  # noqa: BLE001
+        return {"available": True, "error": str(e)[:140],
+                "candidate": candidate, "club": club, "role": role}
+    r["available"] = True
+    return r
+
+
 @app.get("/api/calendar")
 def calendar():
     cal = ds.read_table("calendar_events")
