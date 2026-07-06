@@ -64,6 +64,24 @@ _SYSTEM = (
 )
 
 
+def _load_dotenv():
+    """OPENAI_API_KEY 가 env 에 없으면 프로젝트 루트 .env 에서 로드(의존성 없이)."""
+    if os.getenv("OPENAI_API_KEY"):
+        return
+    from pathlib import Path
+    env = Path(__file__).resolve().parent.parent / ".env"
+    if not env.exists():
+        return
+    for line in env.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        k, v = line.split("=", 1)
+        k, v = k.strip(), v.strip().strip('"').strip("'")
+        if k and v and not os.getenv(k):
+            os.environ[k] = v
+
+
 def _api():
     return sys.modules.get("api.main") or sys.modules.get("main")
 
@@ -152,6 +170,7 @@ def _slim(intent: str, r: dict) -> dict:
 
 
 def answer(message: str, team: str | None = None, league: str = "EPL") -> dict:
+    _load_dotenv()
     key = os.getenv("OPENAI_API_KEY")
     if not key:
         return {"available": False, "reason": "OPENAI_API_KEY 미설정 — 서버 환경변수에 키 설정 후 API 재시작"}
