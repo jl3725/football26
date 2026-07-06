@@ -107,7 +107,8 @@ def _clamp(x, lo=0.0, hi=100.0):
 # ── Qdrant: Role Fit + 유사선수 ────────────────────────────────────────────
 def _qdrant():
     from qdrant_client import QdrantClient
-    return QdrantClient(url=QDRANT_URL)
+    # QDRANT_API_KEY 있으면 사용(Qdrant Cloud 등 호스팅). 로컬 docker는 키 없음.
+    return QdrantClient(url=QDRANT_URL, api_key=os.getenv("QDRANT_API_KEY") or None)
 
 
 def _cos(a, b) -> float:

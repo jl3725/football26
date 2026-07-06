@@ -20,7 +20,7 @@ import sys
 from pathlib import Path
 
 import pandas as pd
-from fastapi import FastAPI, HTTPException, Response
+from fastapi import FastAPI, Header, HTTPException, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 
@@ -556,11 +556,17 @@ def managersim(club: str, manager: str, league: str = ACTIVE_LEAGUE):
 
 
 @app.get("/api/scout")
-def scout(q: str, team: str = "", league: str = ACTIVE_LEAGUE):
+def scout(q: str, team: str = "", league: str = ACTIVE_LEAGUE,
+          x_scout_token: str = Header(default="")):
     """Ask Scout — 자연어 질문 → OpenAI 툴 라우팅 → 결정적 엔진 실행 → 답변 + 카드용 결과.
 
     LLM은 라우팅·요약만, 판단은 엔진. OPENAI_API_KEY 없으면 available=False.
+    SCOUT_TOKEN 설정 시 X-Scout-Token 헤더 일치 필요(공개 배포 시 OpenAI 크레딧 보호).
     """
+    need = os.getenv("SCOUT_TOKEN")
+    if need and x_scout_token != need:
+        return {"available": False, "auth_required": True,
+                "reason": "Ask Scout 접근 토큰이 필요합니다 (비밀번호 입력)"}
     import scout_agent as sa  # noqa: PLC0415 (지연 import — OpenAI 의존)
     return sa.answer(q, team or None, league)
 

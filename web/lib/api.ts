@@ -161,14 +161,16 @@ export const getManagerSim = (club: string, manager: string, l = _league) =>
 // ── Ask Scout (자연어 라우팅 · 로컬 전용 · OpenAI) ──
 // result 는 intent 에 따라 Recommend|Fit|ManagerSim|{results}|Identity 중 하나(느슨하게).
 export type Scout = {
-  available: boolean; reason?: string; error?: string;
+  available: boolean; reason?: string; error?: string; auth_required?: boolean;
   intent?: string | null; args?: Record<string, unknown>;
   answer?: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   result?: any;
 };
-export const getScout = (q: string, team = "", l = _league) =>
-  j<Scout>(`/api/scout?q=${encodeURIComponent(q)}&team=${encodeURIComponent(team)}&league=${encodeURIComponent(l)}`);
+export const getScout = (q: string, team = "", l = _league, token = "") =>
+  fetch(`/api/scout?q=${encodeURIComponent(q)}&team=${encodeURIComponent(team)}&league=${encodeURIComponent(l)}`,
+    { cache: "no-store", headers: token ? { "X-Scout-Token": token } : {} })
+    .then((r) => r.json() as Promise<Scout>);
 
 // ── 탭별 타입 ─────────────────────────────
 export type SquadPlayer = {

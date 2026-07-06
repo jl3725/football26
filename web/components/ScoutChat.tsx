@@ -115,18 +115,29 @@ export default function ScoutChat({ team, league, accent }: { team: string; leag
   const [msgs, setMsgs] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [token, setToken] = useState("");
+  const [needAuth, setNeedAuth] = useState(false);
+  const [pw, setPw] = useState("");
   const endRef = useRef<HTMLDivElement>(null);
+  useEffect(() => { setToken(localStorage.getItem("scout_token") || ""); }, []);
   useEffect(() => { endRef.current?.scrollIntoView({ behavior: "smooth" }); }, [msgs, loading]);
 
-  const send = (q = input) => {
+  const send = (q = input, tok = token) => {
     const text = q.trim();
     if (!text || loading) return;
     setMsgs((m) => [...m, { role: "user", text }]);
     setInput(""); setLoading(true);
-    getScout(text, team, league)
-      .then((d) => setMsgs((m) => [...m, { role: "assistant", text: d.answer || d.reason || d.error || "응답 없음", data: d }]))
+    getScout(text, team, league, tok)
+      .then((d) => {
+        if (d.auth_required) { setNeedAuth(true); setMsgs((m) => [...m, { role: "assistant", text: "🔒 " + (d.reason || "비밀번호가 필요합니다") }]); return; }
+        setMsgs((m) => [...m, { role: "assistant", text: d.answer || d.reason || d.error || "응답 없음", data: d }]);
+      })
       .catch(() => setMsgs((m) => [...m, { role: "assistant", text: "요청 실패 — API/키 확인" }]))
       .finally(() => setLoading(false));
+  };
+  const saveToken = () => {
+    const t = pw.trim(); if (!t) return;
+    localStorage.setItem("scout_token", t); setToken(t); setNeedAuth(false); setPw("");
   };
 
   return (
@@ -165,6 +176,16 @@ export default function ScoutChat({ team, league, accent }: { team: string; leag
             <button key={e} onClick={() => send(e)} style={{ fontSize: 11.5, padding: "4px 10px", borderRadius: 12, cursor: "pointer",
               background: hexA(accent, 0.1), border: `1px solid ${hexA(accent, 0.25)}`, color: "inherit" }}>{e}</button>
           ))}
+        </div>
+      )}
+
+      {/* 비밀번호 게이트 */}
+      {needAuth && (
+        <div style={{ display: "flex", gap: 8, marginTop: 8, alignItems: "center", padding: "8px 10px", borderRadius: 10, background: hexA("#e0a53a", 0.1), border: `1px solid ${hexA("#e0a53a", 0.4)}` }}>
+          <span style={{ fontSize: 12 }}>🔒 접근 비밀번호</span>
+          <input type="password" value={pw} onChange={(e) => setPw(e.target.value)} onKeyDown={(e) => e.key === "Enter" && saveToken()}
+            placeholder="SCOUT_TOKEN" style={{ flex: 1, padding: "6px 10px", borderRadius: 8, fontSize: 12, background: hexA("#ffffff", 0.06), border: `1px solid ${hexA(accent, 0.3)}`, color: "inherit" }} />
+          <button onClick={saveToken} style={{ padding: "6px 14px", borderRadius: 8, fontSize: 12, fontWeight: 700, cursor: "pointer", border: "none", background: accent, color: "#0a0a0a" }}>저장</button>
         </div>
       )}
 

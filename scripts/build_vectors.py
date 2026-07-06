@@ -120,7 +120,7 @@ def main() -> int:
     dim = len(feats)
     print(f"[vec] {len(ids)}명 · {dim}피처 (min {MIN_MINUTES}분)")
 
-    client = QdrantClient(url=QDRANT_URL)
+    client = QdrantClient(url=QDRANT_URL, api_key=os.getenv("QDRANT_API_KEY") or None)
     if client.collection_exists(COLLECTION):
         client.delete_collection(COLLECTION)
     client.create_collection(COLLECTION,
