@@ -23,6 +23,13 @@ function Chip({ t, accent }: { t: string; accent: string }) {
   return <span style={{ fontSize: 10.5, padding: "2px 7px", borderRadius: 9, background: hexA(accent, 0.14), color: accent }}>{t}</span>;
 }
 
+function fmtCell(v: unknown): string {
+  if (v == null) return "-";
+  if (typeof v === "number") return Number.isInteger(v) ? String(v) : v.toFixed(2);
+  if (typeof v === "object") return JSON.stringify(v);
+  return String(v);
+}
+
 // intent 별 컴팩트 결과 카드(자세히는 Overview/Recruit 탭)
 function ResultCard({ d, accent }: { d: Scout; accent: string }) {
   const r = d.result;
@@ -97,6 +104,26 @@ function ResultCard({ d, accent }: { d: Scout; accent: string }) {
       </div>
     );
   }
+  if (d.intent === "graph") {
+    const rows: Record<string, unknown>[] = r.rows || [];
+    if (r.error) return <div style={{ fontSize: 12, opacity: 0.6 }}>🔍 {r.error}</div>;
+    if (rows.length === 0) return <div style={{ fontSize: 12, opacity: 0.6, ...box }}>결과 없음{r.cypher ? <div style={{ opacity: 0.4, marginTop: 4, fontFamily: "monospace", fontSize: 10 }}>{r.cypher}</div> : null}</div>;
+    const cols = Object.keys(rows[0]);
+    return (
+      <div style={box}>
+        <div style={{ overflowX: "auto" }}>
+          <table style={{ borderCollapse: "collapse", fontSize: 11.5, width: "100%" }}>
+            <thead><tr>{cols.map((c) => <th key={c} style={{ textAlign: "left", padding: "3px 8px", opacity: 0.6, borderBottom: `1px solid ${hexA(accent, 0.3)}`, whiteSpace: "nowrap" }}>{c.replace(/^[a-z]\./, "")}</th>)}</tr></thead>
+            <tbody>{rows.slice(0, 15).map((row, i) => (
+              <tr key={i}>{cols.map((c) => <td key={c} style={{ padding: "3px 8px", borderBottom: `1px solid ${hexA("#fff", 0.05)}`, whiteSpace: "nowrap" }}>{fmtCell(row[c])}</td>)}</tr>
+            ))}</tbody>
+          </table>
+        </div>
+        {r.count > 15 ? <div style={{ fontSize: 10, opacity: 0.5, marginTop: 4 }}>+{r.count - 15}건 더</div> : null}
+        {r.cypher ? <div style={{ opacity: 0.35, marginTop: 6, fontFamily: "monospace", fontSize: 9.5, whiteSpace: "pre-wrap" }}>◆ {r.cypher}</div> : null}
+      </div>
+    );
+  }
   if (d.intent === "identity") {
     const tc = r.tactics, rc = r.recruitment, bg = r.budget;
     return (
@@ -126,9 +153,10 @@ export default function ScoutChat({ team, league, accent }: { team: string; leag
   const send = (q = input, tok = token) => {
     const text = q.trim();
     if (!text || loading) return;
+    const hist = msgs.map((m) => ({ role: m.role, content: m.text }));   // 대화 메모리(후속 질문용)
     setMsgs((m) => [...m, { role: "user", text }]);
     setInput(""); setLoading(true);
-    getScout(text, team, league, tok)
+    getScout(text, team, league, tok, hist)
       .then((d) => {
         if (d.auth_required) { setNeedAuth(true); setMsgs((m) => [...m, { role: "assistant", text: "🔒 " + (d.reason || "비밀번호가 필요합니다") }]); return; }
         setMsgs((m) => [...m, { role: "assistant", text: d.answer || d.reason || d.error || "응답 없음", data: d }]);

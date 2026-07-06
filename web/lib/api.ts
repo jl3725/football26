@@ -167,10 +167,13 @@ export type Scout = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   result?: any;
 };
-export const getScout = (q: string, team = "", l = _league, token = "") =>
-  fetch(`/api/scout?q=${encodeURIComponent(q)}&team=${encodeURIComponent(team)}&league=${encodeURIComponent(l)}`,
-    { cache: "no-store", headers: token ? { "X-Scout-Token": token } : {} })
-    .then((r) => r.json() as Promise<Scout>);
+export type ScoutTurn = { role: "user" | "assistant"; content: string };
+export const getScout = (q: string, team = "", l = _league, token = "", history: ScoutTurn[] = []) =>
+  fetch(`/api/scout`, {
+    method: "POST", cache: "no-store",
+    headers: { "Content-Type": "application/json", ...(token ? { "X-Scout-Token": token } : {}) },
+    body: JSON.stringify({ q, team, league: l, history }),
+  }).then((r) => r.json() as Promise<Scout>);
 
 // ── 탭별 타입 ─────────────────────────────
 export type SquadPlayer = {

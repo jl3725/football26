@@ -15,6 +15,56 @@ import sys
 from functools import lru_cache
 
 MODEL = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
+NEO4J_URI = os.getenv("NEO4J_URI", "bolt://localhost:7687")
+NEO4J_AUTH = (os.getenv("NEO4J_USER", "neo4j"), os.getenv("NEO4J_PASSWORD", "football26"))
+
+# GraphRAG용 KG 스키마(라이브 introspect 기반). LLM이 이 라벨/관계/속성만 써서 Cypher 작성.
+_KG_SCHEMA = """노드:
+  Player {name, pos, pos_detail, age, nationality, league, market_value_eur, minutes, goals, assists, ss_rating, contract_until, career_games_missed}
+  Club {name, spend_tier, squad_value_eur, net_spend_eur, max_fee_paid_eur, price_ceiling_eur, recruit_profile, recruit_avg_age, europe_coefficient}
+  League {key, name, level}  (key: EPL/LaLiga/SerieA/Bundesliga/Ligue1/LigaPortugal)
+  Country {name, fifa_rank, fifa_points}
+  Manager {name, formation, appointed, is_new, months_tenure, style_tags, tendency_tags, tac_pressing, tac_control, tac_creativity, tac_attack, tac_aerial, tac_disruption}
+  TransferEvent {player, fee_eur, fee_text, window, season}
+  Competition {name}  (UEFA Champions League / Europa League / Conference League)
+  Role {name} · TacticalSnapshot · Scout · ScoutReport
+관계(방향 정확히):
+  (Player)-[:PLAYS_FOR]->(Club)
+  (Player)-[:TEAMMATE_OF]->(Player)        // 같은 팀 선발 공유
+  (Player)-[:REPRESENTS]->(Country)         // 국가대표
+  (Player)-[:PLAYED_IN]->(Competition)      // 유럽대항전 출전
+  (Player)-[:RUMORED_WITH {probability}]->(Club)   // 이적 루머/링크
+  (Club)-[:COMPETES_IN]->(League)
+  (Manager)-[:MANAGES]->(Club)
+  (Manager)-[:EMPHASIZES]->(Role)
+  (TransferEvent)-[:OF]->(Player), (TransferEvent)-[:FROM]->(Club), (TransferEvent)-[:TO]->(Club)
+  (League)-[:IN_COUNTRY]->(Country)"""
+
+_WRITE_RE = re.compile(r"(?i)(?<![a-z])(create|merge|delete|detach|set|remove|drop|foreach|load\s+csv)(?![a-z])")
+
+
+def _run_cypher(cypher: str) -> dict:
+    """읽기 전용 Cypher 실행(가드레일: 쓰기 차단·LIMIT 주입·타임아웃·READ 모드)."""
+    if not cypher or not cypher.strip():
+        return {"error": "빈 쿼리"}
+    if _WRITE_RE.search(cypher):
+        return {"error": "읽기 전용 Cypher만 허용됩니다(쓰기 키워드 감지)"}
+    c = cypher.strip().rstrip(";")
+    if not re.search(r"(?i)\blimit\b", c):
+        c += "\nLIMIT 25"
+    try:
+        from neo4j import GraphDatabase, Query
+        d = GraphDatabase.driver(NEO4J_URI, auth=NEO4J_AUTH)
+    except Exception as e:  # noqa: BLE001
+        return {"error": f"Neo4j 미가동: {str(e)[:60]}"}
+    try:
+        with d.session(default_access_mode="READ") as s:
+            rows = s.run(Query(c, timeout=8.0)).data()
+    except Exception as e:  # noqa: BLE001
+        return {"error": f"Cypher 오류: {str(e)[:140]}", "cypher": c}
+    finally:
+        d.close()
+    return {"rows": rows[:25], "count": len(rows), "cypher": c}
 
 TOOLS = [
     {"type": "function", "function": {
@@ -55,15 +105,31 @@ TOOLS = [
                        "'아스날은 어떤 팀?', 'X팀 영입 성향' 같은 질문.",
         "parameters": {"type": "object", "properties": {
             "team": {"type": "string", "description": "팀명"}}, "required": ["team"]}}},
+    {"type": "function", "function": {
+        "name": "graph_query",
+        "description": "위 5개 툴로 안 되는 열린 그래프 질문에 read-only Cypher를 직접 작성해 실행. "
+                       "특히 **이적 루머/링크**('아스날에 링크나는 선수'=RUMORED_WITH), 관계 traversal"
+                       "('국대 동료','팀 동료'), 다중 조건 필터('챔스 뛴 U23 풀백'), 이적 경로"
+                       "('PSG→EPL 이적'), 집계('유럽 출전 최다 MF'). 반드시 스키마의 라벨/관계/속성만 사용.",
+        "parameters": {"type": "object", "properties": {
+            "cypher": {"type": "string", "description": "읽기 전용 Cypher(스키마 준수, 항상 LIMIT). "
+                       "예: MATCH (p:Player)-[r:RUMORED_WITH]->(c:Club {name:'Arsenal'}) "
+                       "RETURN p.name, p.pos_detail, r.probability ORDER BY r.probability DESC LIMIT 15"}},
+            "required": ["cypher"]}}},
 ]
 
 _SYSTEM = (
     "너는 'Chief Scout' — 축구 스카우팅 AI 어시스턴트다. 사용자의 질문을 적절한 툴로 라우팅한다.\n"
     "규칙:\n"
-    "- 선수·수치·추천을 절대 지어내지 마라. 모든 판단은 툴 결과에서만 온다. 툴을 반드시 호출하라.\n"
+    "- 선수·수치·추천을 절대 지어내지 마라. 모든 판단은 툴 결과에서만 온다.\n"
     "- 클럽명은 아래 '가능한 클럽' 목록의 정확한 표기를 써라(예: Manchester United→'Manchester Utd').\n"
     "- 답변은 한국어로, 스카우트 브리핑처럼 간결하게. 툴 결과의 근거(팀니즈·유럽검증·시장가·전술적합)를 짚어라.\n"
     "- '우리 팀'/'이 팀'은 현재 보고 있는 팀 컨텍스트를 쓴다.\n"
+    "- **'링크/루머/관심/영입설'은 추천이 아니라 RUMORED_WITH 조회다 → graph_query 사용.**\n"
+    "- 관계·다중필터·집계·이적경로 질문도 graph_query(read-only Cypher). 5개 구조화 툴이 맞으면 그걸 우선.\n"
+    "- **'왜/이유/근거/설명해줘' 같은 메타 질문은 툴을 절대 호출하지 말고, 직전 답변을 근거로 텍스트로만 설명하라.**\n"
+    "- 후속 질문('더 싸게','좁혀줘','~빼고')은 조건을 바꿔 새로 조회. 그 외 후속은 맥락 참고.\n"
+    "\nKG 스키마(graph_query용, 이 라벨/관계/속성만 사용):\n" + _KG_SCHEMA + "\n"
 )
 
 
@@ -141,6 +207,8 @@ def _execute(name: str, args: dict, league: str):
         return "managersim", api.managersim(_resolve_club(args.get("club", "")), args.get("manager", ""), league)
     if name == "club_identity":
         return "identity", api.identity(_resolve_club(args.get("team", "")), league)
+    if name == "graph_query":
+        return "graph", _run_cypher(args.get("cypher", ""))
     return None, {"error": f"알 수 없는 툴: {name}"}
 
 
@@ -171,10 +239,14 @@ def _slim(intent: str, r: dict) -> dict:
             "misfit": (r.get("squad_misfit") or [])[:4], "priorities": (r.get("priorities") or [])[:3]}
     if intent == "identity":
         return r
+    if intent == "graph":
+        return {"cypher": r.get("cypher"), "count": r.get("count"),
+                "rows": (r.get("rows") or [])[:15], "error": r.get("error")}
     return r
 
 
-def answer(message: str, team: str | None = None, league: str = "EPL") -> dict:
+def answer(message: str, team: str | None = None, league: str = "EPL",
+           history: list | None = None) -> dict:
     _load_dotenv()
     key = os.getenv("OPENAI_API_KEY")
     if not key:
@@ -188,7 +260,14 @@ def answer(message: str, team: str | None = None, league: str = "EPL") -> dict:
     sys_prompt = _SYSTEM + f"\n가능한 클럽: {', '.join(clubs)}"
     if team:
         sys_prompt += f"\n현재 팀 컨텍스트: {team} (리그 {league})"
-    msgs = [{"role": "system", "content": sys_prompt}, {"role": "user", "content": message}]
+    msgs = [{"role": "system", "content": sys_prompt}]
+    # 대화 메모리(직전 몇 턴) — 후속 질문 맥락 유지
+    for h in (history or [])[-6:]:
+        role = "assistant" if h.get("role") == "assistant" else "user"
+        content = str(h.get("content") or h.get("text") or "")[:1500]
+        if content:
+            msgs.append({"role": role, "content": content})
+    msgs.append({"role": "user", "content": message})
     client = OpenAI(api_key=key)
     try:
         r1 = client.chat.completions.create(model=MODEL, messages=msgs, tools=TOOLS,
