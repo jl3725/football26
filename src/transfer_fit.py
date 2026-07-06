@@ -25,6 +25,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "api"))
 sys.path.insert(0, str(ROOT / "src"))
 from leagues import data_path  # noqa: E402
+from manager_tactics import tactical_profile  # noqa: E402
 
 QDRANT_URL = os.getenv("QDRANT_URL", "http://localhost:6335")
 NEO4J_URI = os.getenv("NEO4J_URI", "bolt://localhost:7687")
@@ -111,22 +112,30 @@ def _cos(a, b) -> float:
     return float(a @ b / (na * nb)) if na and nb else 0.0
 
 
-def _role_fit(qc, cand_name, role):
+def _style_fits(qc, cand_name, role, target_club):
+    """(RoleFit=리그 엘리트 역할 원형, TacticalFit=대상 클럽 해당역할 스타일=감독 기용방식, 유사선수)."""
     from qdrant_client import models
     f_name = models.Filter(must=[models.FieldCondition(key="name", match=models.MatchValue(value=cand_name))])
     got = qc.scroll(QCOLLECTION, scroll_filter=f_name, with_vectors=True, limit=1)[0]
     if not got:
         return None, None, []
     cand_vec = got[0].vector
+    # RoleFit — 리그 엘리트(해당 pos_detail) 원형
     f_role = models.Filter(must=[models.FieldCondition(key="pos_detail", match=models.MatchValue(value=role))])
     pts = qc.scroll(QCOLLECTION, scroll_filter=f_role, with_vectors=True, with_payload=True, limit=2000)[0]
     elite = [p for p in pts if (p.payload.get("ss_rating") or 0) >= 7.0 and (p.payload.get("minutes") or 0) >= 900]
     ref = elite or pts
     role_vec = np.mean([p.vector for p in ref], axis=0) if ref else None
     rolefit = _clamp(max(0.0, _cos(cand_vec, role_vec)) * 100) if role_vec is not None else None
+    # TacticalFit — 대상 클럽의 해당 역할 선수 스타일 centroid(감독이 실제 그 역할을 쓰는 방식)
+    f_club = models.Filter(must=[models.FieldCondition(key="club", match=models.MatchValue(value=target_club)),
+                                 models.FieldCondition(key="pos_detail", match=models.MatchValue(value=role))])
+    tpts = qc.scroll(QCOLLECTION, scroll_filter=f_club, with_vectors=True, limit=50)[0]
+    tvec = np.mean([p.vector for p in tpts], axis=0) if tpts else None
+    tacticalfit = _clamp(max(0.0, _cos(cand_vec, tvec)) * 100) if tvec is not None else None
     sim = qc.search(QCOLLECTION, query_vector=cand_vec, limit=6)
     similar = [f"{h.payload['name']} ({h.payload['league']})" for h in sim[1:]]
-    return rolefit, cand_vec, similar
+    return rolefit, tacticalfit, similar
 
 
 # ── KG(Neo4j): 선례(유사 리그점프) — best-effort ────────────────────────────
@@ -168,13 +177,15 @@ def evaluate_fit(candidate: str, target_club: str, target_role: str,
     euro = (row.get("_euro") or 0) > 0
     proj, proof, risknote = api._project_ovr(base, src, tgt, euro, age, bucket)
 
-    # RoleFit + 유사선수 (Qdrant)
+    # RoleFit(리그원형) + TacticalFit(감독 기용방식) + 유사선수 (Qdrant)
     try:
-        rolefit, _cv, similar = _role_fit(_qdrant(), candidate, role)
+        rolefit, tacticalfit, similar = _style_fits(_qdrant(), candidate, role, target_club)
     except Exception as e:  # noqa: BLE001
-        rolefit, similar = None, []
+        rolefit, tacticalfit, similar = None, None, []
         proof = (proof + f" [qdrant 오류: {str(e)[:40]}]").strip()
     rolefit = 60.0 if rolefit is None else rolefit
+    tacticalfit = rolefit if tacticalfit is None else tacticalfit   # 클럽 역할표본 없으면 RoleFit 대체
+    mp = tactical_profile(target_club) or {}
 
     # TeamNeed — 대상 클럽 해당 역할 뎁스·나이·품질·계약
     rp = tgt_rows[tgt_rows["_pos_detail"] == role]
@@ -212,8 +223,8 @@ def evaluate_fit(candidate: str, target_club: str, target_role: str,
     risk = _clamp(risk)
 
     euro_bonus = 5.0 if euro else 0.0
-    fit = _clamp(0.22 * rolefit + 0.20 * team_need + 0.20 * translation
-                 + 0.14 * potential + 0.12 * value - 0.12 * risk + euro_bonus)
+    fit = _clamp(0.18 * rolefit + 0.16 * tacticalfit + 0.18 * team_need + 0.16 * translation
+                 + 0.12 * potential + 0.10 * value - 0.12 * risk + euro_bonus)
 
     if proj >= 80 and translation >= 90:
         kind = "Ready-now"
@@ -228,10 +239,13 @@ def evaluate_fit(candidate: str, target_club: str, target_role: str,
     return {
         "candidate": candidate, "source_league": src, "target_club": target_club,
         "target_league": tgt, "role": role, "base_ovr": base, "proj_ovr": proj,
-        "components": {"RoleFit": round(rolefit), "TeamNeed": round(team_need),
-                       "Translation": round(translation), "Potential": round(potential),
-                       "Value": round(value), "Risk": round(risk), "Euro": int(euro_bonus)},
+        "components": {"RoleFit": round(rolefit), "TacticalFit": round(tacticalfit),
+                       "TeamNeed": round(team_need), "Translation": round(translation),
+                       "Potential": round(potential), "Value": round(value),
+                       "Risk": round(risk), "Euro": int(euro_bonus)},
         "fit_score": round(fit), "signing_type": kind, "risk_level": risk_lv,
+        "manager": {"name": mp.get("manager"), "formation": mp.get("formation"),
+                    "style_tags": mp.get("style_tags")},
         "team_need_detail": {"depth": depth, "best_ss": None if best_ss is None else round(float(best_ss), 2),
                              "avg_age": None if avg_age is None else round(float(avg_age), 1)},
         "similar_players": similar, "euro_experience": bool(euro),
@@ -246,8 +260,12 @@ def format_report(r: dict) -> str:
     lines = [
         f"후보: {r['candidate']} ({r['source_league']}) → {r['target_club']} / {r['role']}",
         f"  base OVR {r['base_ovr']} → proj OVR {r['proj_ovr']} ({r['target_league']})",
-        f"  RoleFit {c['RoleFit']} · TeamNeed {c['TeamNeed']} · Translation {c['Translation']} · "
-        f"Potential {c['Potential']} · Value {c['Value']} · Risk {c['Risk']} · Euro +{c['Euro']}",
+        f"  RoleFit {c['RoleFit']} · TacticalFit {c['TacticalFit']} · TeamNeed {c['TeamNeed']} · "
+        f"Translation {c['Translation']} · Potential {c['Potential']} · Value {c['Value']} · "
+        f"Risk {c['Risk']} · Euro +{c['Euro']}",
+        f"  감독: {(r.get('manager') or {}).get('name') or '?'} "
+        f"({(r.get('manager') or {}).get('formation') or '?'}) "
+        f"{', '.join((r.get('manager') or {}).get('style_tags') or [])}",
         f"  ▶ Fit Score {r['fit_score']}/100 · 유형 {r['signing_type']} · Risk {r['risk_level']}",
         f"  팀니즈: {r['role']} 뎁스 {r['team_need_detail']['depth']}명 "
         f"(최고 ss {r['team_need_detail']['best_ss']}, 평균나이 {r['team_need_detail']['avg_age']})",
