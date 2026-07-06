@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { getTransfers, getRecommend, getNeeds, fmtEur, type Transfers, type TransferItem, type Recommend, type Needs } from "@/lib/api";
 import { tier, roleClass, hexA } from "@/lib/ui";
 import FitEvaluator from "./FitEvaluator";
+import ManagerSimPanel from "./ManagerSimPanel";
 
 const MODE: Record<string, { t: string; d: string }> = {
   evaluate: { t: "영입 평가 모드", d: "이번 창 영입이 각 니즈를 얼마나 해소했는지 점검" },
@@ -27,7 +28,7 @@ export default function TransferTab({ team, accent }: { team: string; accent: st
   const [data, setData] = useState<Transfers | null>(null);
   const [rec, setRec] = useState<Recommend | null>(null);
   const [needs, setNeeds] = useState<Needs | null>(null);
-  const [view, setView] = useState<"scout" | "fit">("scout");
+  const [view, setView] = useState<"scout" | "fit" | "sim">("scout");
   useEffect(() => {
     let a = true; setData(null); setRec(null); setNeeds(null);
     getTransfers(team).then((d) => a && setData(d)).catch(() => {});
@@ -52,8 +53,8 @@ export default function TransferTab({ team, accent }: { team: string; accent: st
   return (
     <div className="fade">
       {/* 서브탭 토글 */}
-      <div style={{ display: "flex", gap: 8, marginBottom: 14 }}>
-        {([["scout", "🧭 스카우트 데스크"], ["fit", "🎯 Fit 평가"]] as const).map(([v, label]) => (
+      <div style={{ display: "flex", gap: 8, marginBottom: 14, flexWrap: "wrap" }}>
+        {([["scout", "🧭 스카우트 데스크"], ["fit", "🎯 Fit 평가"], ["sim", "🔄 감독 시뮬"]] as const).map(([v, label]) => (
           <button key={v} onClick={() => setView(v)}
             style={{ padding: "7px 16px", borderRadius: 8, fontSize: 13, fontWeight: 700, cursor: "pointer",
               border: `1px solid ${view === v ? accent : hexA(accent, 0.25)}`,
@@ -64,6 +65,8 @@ export default function TransferTab({ team, accent }: { team: string; accent: st
 
       {view === "fit" ? (
         <FitEvaluator team={team} accent={accent} suggestions={suggestions} />
+      ) : view === "sim" ? (
+        <ManagerSimPanel team={team} accent={accent} />
       ) : (<>
       {/* ── SCOUT DESK ── */}
       {needs && (

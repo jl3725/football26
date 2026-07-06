@@ -520,6 +520,41 @@ def fit(candidate: str, club: str, role: str, source_league: str = "",
     return r
 
 
+@app.get("/api/managersim")
+def managersim(club: str, manager: str, league: str = ACTIVE_LEAGUE):
+    """Manager Change Simulator — 새 감독 부임 시 전술변화·스쿼드 미스핏·영입 우선순위.
+
+    manager 는 감독명(현 클럽 전술로 대체) 또는 클럽명. 로컬 전용(Qdrant/Neo4j).
+    """
+    try:
+        import transfer_fit as tf  # noqa: PLC0415
+        tf._qdrant().get_collections()
+    except Exception as e:  # noqa: BLE001
+        return {"available": False, "club": club, "manager": manager,
+                "reason": f"로컬 벡터/그래프 스택 미가동 (Qdrant): {str(e)[:80]}"}
+    try:
+        import manager_sim as ms  # noqa: PLC0415
+        r = ms.simulate(club, manager)
+    except Exception as e:  # noqa: BLE001
+        return {"available": True, "error": str(e)[:140], "club": club, "manager": manager}
+    if "error" in r:
+        return {"available": True, "error": r["error"], "club": club, "manager": manager}
+    cur, new = r["current"], r["new"]
+    axes = ["pressing", "control", "creativity", "attack_output", "aerial", "disruption"]
+    changes = []
+    for ax in axes:
+        a, b = cur["tactical_vector"].get(ax), new["tactical_vector"].get(ax)
+        if a is not None and b is not None:
+            changes.append({"axis": ax, "from": round(a), "to": round(b), "delta": round(b - a)})
+    return {
+        "available": True, "target_club": r["target_club"], "new_manager": r["new_manager"],
+        "new_from_club": r["new_from_club"],
+        "current": {"manager": cur["manager"], "formation": cur["formation"], "style_tags": cur["style_tags"]},
+        "new": {"manager": new["manager"], "formation": new["formation"], "style_tags": new["style_tags"]},
+        "vector_changes": changes, "squad_misfit": r["squad_misfit"], "priorities": r["priorities"],
+    }
+
+
 @app.get("/api/calendar")
 def calendar():
     cal = ds.read_table("calendar_events")

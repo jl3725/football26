@@ -144,6 +144,20 @@ export const getFit = (candidate: string, club: string, role: string, sourceLeag
     + `&role=${encodeURIComponent(role)}&source_league=${encodeURIComponent(sourceLeague)}`
     + `&league=${encodeURIComponent(l)}`);
 
+// ── Manager Change Simulator (로컬 전용) ──
+export type SimChange = { axis: string; from: number; to: number; delta: number };
+export type SimMisfit = { player: string; role: string; sys_fit: number };
+export type SimPriority = { role: string; share: number; depth: number; candidates: string[] };
+export type ManagerSim = {
+  available: boolean; reason?: string; error?: string;
+  target_club?: string; new_manager?: string; new_from_club?: string;
+  current?: { manager: string; formation: string | null; style_tags: string[] };
+  new?: { manager: string; formation: string | null; style_tags: string[] };
+  vector_changes?: SimChange[]; squad_misfit?: SimMisfit[]; priorities?: SimPriority[];
+};
+export const getManagerSim = (club: string, manager: string, l = _league) =>
+  j<ManagerSim>(`/api/managersim?club=${encodeURIComponent(club)}&manager=${encodeURIComponent(manager)}&league=${encodeURIComponent(l)}`);
+
 // ── 탭별 타입 ─────────────────────────────
 export type SquadPlayer = {
   player: string; pos: string; age: number; minutes: number;
