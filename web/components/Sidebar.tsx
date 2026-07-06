@@ -35,6 +35,7 @@ export default function Sidebar({
   const nextLabel = next?.season_label || nextSeasonLabel(seasonLabel);
   const match = (name: string) => name.toLowerCase().includes(q.toLowerCase());
   const total = teams.length;
+  const leagueTitle = league === "LaLiga" ? "La Liga" : league === "SerieA" ? "Serie A" : league === "Bundesliga" ? "Bundesliga" : league === "Ligue1" ? "Ligue 1" : league === "LigaPortugal" ? "Liga Portugal" : "Premier League";
 
   // 25/26: 최종 순위순
   const curShown = teams.filter((t) => match(t.name)).sort((a, b) => a.rank - b.rank);
@@ -60,13 +61,14 @@ export default function Sidebar({
         <button className={league === "SerieA" ? "active" : ""} onClick={() => onLeague?.("SerieA")}>🇮🇹 Serie A</button>
         <button className={league === "Bundesliga" ? "active" : ""} onClick={() => onLeague?.("Bundesliga")}>🇩🇪 Bundesliga</button>
         <button className={league === "Ligue1" ? "active" : ""} onClick={() => onLeague?.("Ligue1")}>🇫🇷 Ligue 1</button>
+        <button className={league === "LigaPortugal" ? "active" : ""} onClick={() => onLeague?.("LigaPortugal")}>🇵🇹 Liga Portugal</button>
       </div>
 
       <button className={`home-nav${atHome ? " active" : ""}`} onClick={() => onHome?.()}>
         <span className="home-nav-mark" />
         <span className="home-nav-txt">
           <span className="home-nav-t">리그 홈</span>
-          <span className="home-nav-sub">{league === "LaLiga" ? "LA LIGA" : league === "SerieA" ? "SERIE A" : league === "Bundesliga" ? "BUNDESLIGA" : league === "Ligue1" ? "LIGUE 1" : "PREMIER LEAGUE"}</span>
+          <span className="home-nav-sub">{league === "LaLiga" ? "LA LIGA" : league === "SerieA" ? "SERIE A" : league === "Bundesliga" ? "BUNDESLIGA" : league === "Ligue1" ? "LIGUE 1" : league === "LigaPortugal" ? "LIGA PORTUGAL" : "PREMIER LEAGUE"}</span>
         </span>
         <span className="home-nav-dot" />
       </button>
@@ -81,7 +83,7 @@ export default function Sidebar({
         <button className={seasonTab === "cur" ? "active" : ""} onClick={() => setSeasonTab("cur")}>{seasonLabel}</button>
       </div>
       <div className="side-label">
-        Premier League · {seasonTab === "next" ? `${nextLabel} (개막 전)` : seasonLabel}
+        {leagueTitle} · {seasonTab === "next" ? `${nextLabel} (개막 전)` : seasonLabel}
       </div>
 
       <div className="team-scroll">

@@ -56,12 +56,21 @@ LEAGUE_DISPLAY: dict[str, dict[str, str]] = {
         "brest": "Brest", "auxerre": "Auxerre", "angers": "Angers", "havre": "Le Havre",
         "metz": "Metz", "lorient": "Lorient",
     },
+    "LigaPortugal": {
+        "avs": "AVS Futebol", "arouca": "Arouca", "benfica": "Benfica",
+        "braga": "Braga", "casa pia": "Casa Pia", "estoril": "Estoril",
+        "estrela": "Estrela", "famalic": "Famalicão", "gil vicente": "Gil Vicente FC",
+        "moreirense": "Moreirense", "nacional": "Nacional", "porto": "Porto",
+        "rio ave": "Rio Ave", "santa clara": "Santa Clara", "sporting": "Sporting CP",
+        "tondela": "Tondela", "vitoria": "Vit. Guimarães", "vitória": "Vit. Guimarães",
+        "alverca": "Alverca",
+    },
 }
 
 # 리그 대회 코드
 LEAGUE_CODE = {"EPL": ("eng.1", "리그"), "LaLiga": ("esp.1", "리그"),
                "SerieA": ("ita.1", "리그"), "Bundesliga": ("ger.1", "리그"),
-               "Ligue1": ("fra.1", "리그")}
+               "Ligue1": ("fra.1", "리그"), "LigaPortugal": ("por.1", "리그")}
 
 # 유럽 대회 (공통)
 EURO_COMPS = [
@@ -77,6 +86,7 @@ DOMESTIC_CUPS = {
     "SerieA": [("ita.coppa_italia", "코파 이탈리아", "coppa")],
     "Bundesliga": [("ger.dfb_pokal", "DFB-포칼", "pokal")],
     "Ligue1": [("fra.coupe_de_france", "쿠프 드 프랑스", "coupe")],
+    "LigaPortugal": [("por.taca", "Taça de Portugal", "taca"), ("por.taca_liga", "Taça da Liga", "leaguecup")],
 }
 
 

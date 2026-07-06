@@ -27,7 +27,7 @@ jobs:
 
       - name: Injury history (전 리그)
         run: |
-          for LG in EPL LaLiga SerieA Bundesliga Ligue1; do
+          for LG in EPL LaLiga SerieA Bundesliga Ligue1 LigaPortugal; do
             echo "── $LG ──"
             FB_LEAGUE=$LG python src/fetch_tm_injury_history.py || echo "injury_history $LG 실패"
           done

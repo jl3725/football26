@@ -30,6 +30,7 @@ ESPN_CODES = {
     "Bundesliga": "ger.1",
     "SerieA": "ita.1",
     "Ligue1": "fra.1",
+    "LigaPortugal": "por.1",
 }
 API = f"https://site.api.espn.com/apis/site/v2/sports/soccer/{ESPN_CODES.get(ACTIVE_LEAGUE, 'eng.1')}/summary"
 H = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "

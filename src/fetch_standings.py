@@ -12,7 +12,9 @@ from __future__ import annotations
 import pandas as pd
 import soccerdata as sd
 
-from leagues import SEASON_FBREF, data_path, league_config
+from leagues import SEASON_FBREF, data_path, league_config, register_soccerdata_custom_leagues
+
+register_soccerdata_custom_leagues()
 
 OUT_STANDINGS = data_path("standings")
 OUT_SCHEDULE = data_path("schedule")

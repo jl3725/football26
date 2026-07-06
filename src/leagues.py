@@ -79,6 +79,11 @@ LEAGUES: dict[str, LeagueConfig] = {
         fbref_id="FRA-Ligue 1", tm_id="FR1", tm_slug="ligue-1",
         api_football_id=61, default_team="Paris Saint-Germain",
     ),
+    "LigaPortugal": LeagueConfig(
+        key="LigaPortugal", name="Liga Portugal", country="Portugal",
+        fbref_id="POR-Primeira Liga", tm_id="PO1", tm_slug="liga-portugal-betclic",
+        api_football_id=94, default_team="Sporting CP", teams=18, games_per_team=34,
+    ),
 }
 
 # 레거시 파일명(`*_2025_2026.csv`, 리그 토큰 없음)을 쓰는 리그.
@@ -93,6 +98,23 @@ if ACTIVE_LEAGUE not in LEAGUES:
 def league_config(league: str | None = None) -> LeagueConfig:
     """리그키 → LeagueConfig (미지정 시 ACTIVE_LEAGUE)."""
     return LEAGUES[league or ACTIVE_LEAGUE]
+
+
+def register_soccerdata_custom_leagues() -> None:
+    try:
+        import soccerdata._config as sd_config
+    except Exception:  # noqa: BLE001
+        return
+    sd_config.LEAGUE_DICT.setdefault(
+        "POR-Primeira Liga",
+        {
+            "FBref": "Primeira Liga",
+            "ESPN": "por.1",
+            "Sofascore": "Liga Portugal Betclic",
+            "season_start": "Aug",
+            "season_end": "May",
+        },
+    )
 
 
 def data_path(stem: str, league: str | None = None,

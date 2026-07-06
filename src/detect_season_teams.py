@@ -40,6 +40,8 @@ def _source_title(league: str, base_title: str) -> str:
         return base_title.replace("Premier League", "Bundesliga")
     if league == "Ligue1":
         return base_title.replace("Premier League", "Ligue 1")
+    if league == "LigaPortugal":
+        return base_title.replace("Premier League", "Primeira Liga")
     raise SystemExit(f"[season-teams] 지원하지 않는 리그: {league}")
 
 
@@ -56,6 +58,9 @@ def _normalizer(league):
         return to_squad
     if league == "Ligue1":
         from fetch_ligue_managers import to_squad
+        return to_squad
+    if league == "LigaPortugal":
+        from fetch_ligaportugal_managers import to_squad
         return to_squad
     return lambda t: t
 
@@ -103,22 +108,34 @@ def main(argv: list[str] | None = None) -> int:
     label = _label_from_title(title)
     print(f"[season-teams] {league} tracking: {title} ({label})")
 
-    try:
-        src = fetch_source_managers(title)  # {team: manager} — 다음 시즌 팀
-    except Exception as exc:
-        print(f"[season-teams] ERROR fetch: {exc}", file=sys.stderr)
-        return 1  # 기존 파일 유지(덮어쓰지 않음)
-
     # 위키 킷 스폰서 표(Front/Sleeve/Back 열) 등 팀이 아닌 파싱 잡음 제거
     _NOISE = {"Front", "Sleeve", "Back", "Kit", "Shirt", "Sponsor", "Chest", "Team"}
-    next_teams = sorted({norm(t) for t in src.keys()} - _NOISE)
+
+    def _fetch(t):
+        try:
+            return {norm(k) for k in fetch_source_managers(t).keys()} - _NOISE
+        except Exception as exc:  # noqa: BLE001
+            print(f"[season-teams] {t} fetch 실패: {exc}", file=sys.stderr)
+            return set()
+
+    next_teams = sorted(_fetch(title))
+    used_fallback = False
+    if len(next_teams) < 10:
+        # 다음 시즌 위키 문서가 아직 미완(개막 전)이면 현재 시즌으로 폴백
+        m = re.search(r"(\d{4})-(\d{2})", title)
+        prev_title = (title[:m.start()] + f"{int(m.group(1))-1}-{int(m.group(1)) % 100:02d}"
+                      + title[m.end():]) if m else title
+        print(f"[season-teams] 다음시즌({title}) 미완 → 현재시즌({prev_title}) 폴백", file=sys.stderr)
+        next_teams = sorted(_fetch(prev_title))
+        used_fallback = True
     if len(next_teams) < 10:
         print(f"[season-teams] 팀 수 비정상({len(next_teams)}) — 중단, 기존 파일 유지", file=sys.stderr)
         return 1
 
     prev = _prev_season_teams(league)
-    promoted = sorted(set(next_teams) - prev)
-    relegated = sorted(prev - set(next_teams))
+    # 폴백(현재 시즌 = 다음 시즌 근사)일 땐 승격/강등 표기 안 함(실제 26/27 미확정)
+    promoted = [] if used_fallback else sorted(set(next_teams) - prev)
+    relegated = [] if used_fallback else sorted(prev - set(next_teams))
 
     teams, missing = [], []
     for t in next_teams:

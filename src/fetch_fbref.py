@@ -20,7 +20,9 @@ import numpy as np
 import pandas as pd
 import soccerdata as sd
 
-from leagues import SEASON_FBREF, data_path, league_config
+from leagues import SEASON_FBREF, data_path, league_config, register_soccerdata_custom_leagues
+
+register_soccerdata_custom_leagues()
 
 DATA_DIR = Path(__file__).resolve().parent.parent / "data"
 OUT = data_path("players")

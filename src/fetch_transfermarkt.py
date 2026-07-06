@@ -149,12 +149,34 @@ LIGUE1_TEAM_TM: dict[str, tuple[str, int]] = {
     "Toulouse": ("fc-toulouse", 415),
 }
 
+LIGAPORTUGAL_TEAM_TM: dict[str, tuple[str, int]] = {
+    "Sporting CP": ("sporting-lissabon", 336),
+    "Porto": ("fc-porto", 720),
+    "Benfica": ("benfica-lissabon", 294),
+    "Braga": ("sc-braga", 1075),
+    "Famalicão": ("fc-famalicao", 3329),
+    "Vit. Guimarães": ("vitoria-guimaraes-sc", 2420),
+    "Gil Vicente FC": ("gil-vicente-fc", 2424),
+    "Estoril": ("gd-estoril-praia", 1465),
+    "Alverca": ("fc-alverca", 2521),
+    "Rio Ave": ("rio-ave-fc", 2425),
+    "Santa Clara": ("cd-santa-clara", 2423),
+    "Moreirense": ("moreirense-fc", 979),
+    "Estrela": ("cf-estrela-amadora-sad", 2431),
+    "Casa Pia": ("casa-pia-ac", 3268),
+    "Arouca": ("fc-arouca", 8024),
+    "Tondela": ("cd-tondela", 7179),
+    "Nacional": ("cd-nacional", 982),
+    "AVS Futebol": ("avs-futebol-sad", 110302),
+}
+
 TEAM_TM_BY_LEAGUE: dict[str, dict[str, tuple[str, int]]] = {
     "EPL": EPL_TEAM_TM,
     "LaLiga": LALIGA_TEAM_TM,
     "Bundesliga": BUNDESLIGA_TEAM_TM,
     "SerieA": SERIEA_TEAM_TM,
     "Ligue1": LIGUE1_TEAM_TM,
+    "LigaPortugal": LIGAPORTUGAL_TEAM_TM,
 }
 
 TEAM_TM: dict[str, tuple[str, int]] = TEAM_TM_BY_LEAGUE.get(ACTIVE_LEAGUE, EPL_TEAM_TM)
@@ -189,6 +211,24 @@ TM_ALIAS_BY_TEAM: dict[tuple[str, str], str] = {
     ("Levante", "brugui"): "Roger Brugué",
     ("Espanyol", "urko gonzalez"): "Urko González de Zárate",
     ("Sevilla", "joaquin martinez gauna"): "Joaquín Martínez",
+    ("Santa Clara", "sidney"): "Sidney Lima",
+    ("Casa Pia", "larra"): "Gaizka Larrazabal",
+    ("Nacional", "kaique"): "Kaique Pereira",
+    ("Vit. Guimarães", "beni"): "Beni Mukendi",
+    ("AVS Futebol", "cristian castro"): "Cristian Devenish",
+    ("Estoril", "francisco reis ferreira"): "Ferro",
+    ("Moreirense", "rodri"): "Rodri Alonso",
+    ("Porto", "samu omorodion"): "Samu Aghehowa",
+    ("Casa Pia", "khaly"): "Kaly",
+    ("Gil Vicente FC", "antonio espigare"): "Antonio Espigares",
+    ("Moreirense", "yan lincon"): "Yan Maranhão",
+    ("Alverca", "ikker"): "Ikker Julian",
+    ("AVS Futebol", "edson"): "Edson Mucuana",
+    ("Santa Clara", "gabriel vieira"): "Gabriel Silva",
+    ("Santa Clara", "vinicius"): "Vinícius Lopes",
+    ("Santa Clara", "adriano"): "Adriano Firmino",
+    ("Rio Ave", "andre inacio"): "André Luiz",
+    ("Tondela", "hugo sequeira"): "Hugo Félix",
 }
 
 
@@ -438,7 +478,9 @@ def main(argv=None) -> int:
         for rec in recs:
             cand = sub[sub["__norm"] == rec["norm"]]
             if not cand.empty:
-                apply(cand.index[0], rec)
+                for match_idx in cand.index:
+                    if match_idx not in used:
+                        apply(match_idx, rec)
             else:
                 pending.append(rec)
 

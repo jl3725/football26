@@ -16,7 +16,7 @@ import requests
 from .common import team_color
 
 ESPN_NEWS_CODES = {"EPL": "eng.1", "LaLiga": "esp.1", "SerieA": "ita.1",
-                   "Bundesliga": "ger.1", "Ligue1": "fra.1"}
+                   "Bundesliga": "ger.1", "Ligue1": "fra.1", "LigaPortugal": "por.1"}
 _HEADERS = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
 
 # 우리 squad 표기 → ESPN 뉴스 팀 태그(longName)
@@ -72,11 +72,20 @@ LIGUE1_NEWSTAG = {
     "Lorient": "Lorient", "Paris FC": "Paris FC",
 }
 
+LIGAPORTUGAL_NEWSTAG = {
+    "Sporting CP": "Sporting CP", "Porto": "FC Porto", "Benfica": "Benfica", "Braga": "Braga",
+    "Famalicão": "FC Famalicao", "Vit. Guimarães": "Vitória de Guimaraes",
+    "Gil Vicente FC": "Gil Vicente", "Estoril": "Estoril", "Alverca": "Alverca",
+    "Rio Ave": "Rio Ave", "Santa Clara": "Santa Clara", "Moreirense": "Moreirense",
+    "Estrela": "Estrela", "Casa Pia": "Casa Pia", "Arouca": "Arouca", "Tondela": "Tondela",
+    "Nacional": "C.D. Nacional", "AVS Futebol": "AVS",
+}
+
 NEWSTAG_BY_LEAGUE = {"EPL": SQUAD_TO_NEWSTAG, "LaLiga": LALIGA_NEWSTAG,
                      "SerieA": SERIEA_NEWSTAG, "Bundesliga": BUNDESLIGA_NEWSTAG,
-                     "Ligue1": LIGUE1_NEWSTAG}
+                     "Ligue1": LIGUE1_NEWSTAG, "LigaPortugal": LIGAPORTUGAL_NEWSTAG}
 _ALL_NEWSTAG = {**SQUAD_TO_NEWSTAG, **LALIGA_NEWSTAG, **SERIEA_NEWSTAG,
-                **BUNDESLIGA_NEWSTAG, **LIGUE1_NEWSTAG}
+                **BUNDESLIGA_NEWSTAG, **LIGUE1_NEWSTAG, **LIGAPORTUGAL_NEWSTAG}
 
 
 def newstags(league: str = "EPL") -> dict:

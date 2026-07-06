@@ -16,7 +16,15 @@ import pandas as pd
 import soccerdata as sd
 from unidecode import unidecode
 
-from leagues import ACTIVE_LEAGUE, SEASON_FBREF, data_path, league_config
+from leagues import (
+    ACTIVE_LEAGUE,
+    SEASON_FBREF,
+    data_path,
+    league_config,
+    register_soccerdata_custom_leagues,
+)
+
+register_soccerdata_custom_leagues()
 
 DATA_DIR = Path(__file__).resolve().parent.parent / "data"
 FBREF = data_path("players")
@@ -161,11 +169,37 @@ def sofascore_identity_for_merge(team: str, player: str) -> tuple[str, str]:
     return team, target or player
 
 
+def read_understat_or_empty(fb: pd.DataFrame) -> pd.DataFrame:
+    empty = pd.DataFrame(columns=[
+        "team",
+        "player",
+        "minutes",
+        "xg",
+        "np_xg",
+        "xa",
+        "key_passes",
+        "shots",
+        "xg_chain",
+        "goals",
+        "assists",
+    ])
+    try:
+        if ACTIVE_LEAGUE == "LigaPortugal":
+            raise RuntimeError("Understat does not cover Liga Portugal")
+        us = sd.Understat(leagues=LEAGUE, seasons=SEASON_FBREF)
+        return us.read_player_season_stats().reset_index()
+    except Exception as e:
+        print(f"skip ({e})", end=" ", flush=True)
+        return empty
+
+
 def main() -> int:
+    fb = pd.read_csv(FBREF)
+    fb["_key"] = [merge_key(t, p) for t, p in zip(fb["squad"], fb["player"])]
+
     # ── Understat 수집 ──────────────────────────────────────────────────────
     print("→ Understat xG 수집 ...", end=" ", flush=True)
-    us = sd.Understat(leagues=LEAGUE, seasons=SEASON_FBREF)
-    udf = us.read_player_season_stats().reset_index()
+    udf = read_understat_or_empty(fb)
     print(f"{len(udf)}명 ✓")
 
     n90 = udf["minutes"] / 90
@@ -219,7 +253,7 @@ def main() -> int:
         keep = {"_key": "_key"}
         if save_col: keep[save_col] = "gk_save_pct"
         if cs_col:   keep[cs_col]   = "gk_cs_pct"
-        kk = kdf[list(keep)].rename(columns=keep)
+        kk = kdf[list(keep)].rename(columns=keep).drop_duplicates("_key", keep="first")
         merged["_key"] = [merge_key(t, p) for t, p in zip(merged["squad"], merged["player"])]
         merged = merged.merge(kk, on="_key", how="left").drop(columns=["_key"])
         print(f"  키퍼 지표 보강: Save%={save_col is not None}, CS%={cs_col is not None}")
@@ -263,6 +297,9 @@ def main() -> int:
                 merge_key(*sofascore_identity_for_merge(t, p))
                 for t, p in zip(ss["squad"], ss["player"])
             ],
+            "_ss_squad": ss["squad"],
+            "_ss_player": ss["player"],
+            "_ss_minutes_raw": ss["minutesPlayed"],
             # 비율 (이미 % 형태)
             "ss_rating":            ss["rating"],
             "pass_pct":             ss["accuratePassesPercentage"],
@@ -299,9 +336,32 @@ def main() -> int:
             "ss_minutes":             ss["minutesPlayed"],
         })
         merged["_key"] = [merge_key(t, p) for t, p in zip(merged["squad"], merged["player"])]
-        merged = merged.merge(ss_add, on="_key", how="left").drop(columns=["_key"])
+        ss_add = ss_add.sort_values("ss_minutes", ascending=False).drop_duplicates("_key", keep="first")
+        ss_value_cols = [c for c in ss_add.columns if not c.startswith("_")]
+        merged = merged.merge(ss_add[["_key", *ss_value_cols]], on="_key", how="left")
+        minute_fallback = 0
+        if ACTIVE_LEAGUE == "LigaPortugal":
+            used_ss_keys = set(merged.loc[merged["ss_rating"].notna(), "_key"])
+            available = ss_add[~ss_add["_key"].isin(used_ss_keys)].copy()
+            for idx, row in merged[merged["ss_rating"].isna()].sort_values("minutes", ascending=False).iterrows():
+                team_pool = available[available["_ss_squad"] == row["squad"]].copy()
+                if team_pool.empty or pd.isna(row.get("minutes")):
+                    continue
+                team_pool["_minute_diff"] = (team_pool["_ss_minutes_raw"] - row["minutes"]).abs()
+                team_pool = team_pool.sort_values("_minute_diff")
+                best = team_pool.iloc[0]
+                second_diff = team_pool.iloc[1]["_minute_diff"] if len(team_pool) > 1 else 9999
+                if best["_minute_diff"] <= 8 or (best["_minute_diff"] <= 20 and second_diff - best["_minute_diff"] >= 8):
+                    for col in ss_value_cols:
+                        merged.at[idx, col] = best[col]
+                    available = available.drop(index=best.name)
+                    minute_fallback += 1
+
+        merged = merged.drop(columns=["_key"])
         ss_match = merged["ss_rating"].notna().mean()
         print(f"  Sofascore stats 머지: {len(ss_add)}행 → 매칭률 {ss_match*100:.0f}%")
+        if minute_fallback:
+            print(f"  Sofascore minutes fallback: {minute_fallback}명")
     else:
         print("  Sofascore stats 없음 (src/fetch_sofascore_stats.py 먼저 실행)")
 

@@ -53,6 +53,12 @@ TEAM_COLOR: dict[str, str] = {
     "Lorient": "#F58220", "Paris FC": "#0055A4",
     # Ligue 1 26/27 승격
     "Le Mans": "#E30613", "Troyes": "#003DA5",
+    # Liga Portugal 25/26
+    "Sporting CP": "#008057", "Porto": "#0F4C9A", "Benfica": "#E30613", "Braga": "#C4122E",
+    "Famalicão": "#0067B1", "Vit. Guimarães": "#1A1A1A", "Gil Vicente FC": "#D2122E",
+    "Estoril": "#F4C430", "Alverca": "#E2001A", "Rio Ave": "#007A3D", "Santa Clara": "#B71C2E",
+    "Moreirense": "#0A5C36", "Estrela": "#C8102E", "Casa Pia": "#111111", "Arouca": "#F0A500",
+    "Tondela": "#1E7A46", "Nacional": "#111111", "AVS Futebol": "#0E7A3C",
 }
 
 # Transfermarkt verein id (크레스트 로고용)
@@ -94,6 +100,11 @@ TEAM_VEREIN: dict[str, int] = {
     "Metz": 347, "Lorient": 1158, "Paris FC": 10004,
     # Ligue 1 26/27 승격
     "Le Mans": 1164, "Troyes": 1095,
+    # Liga Portugal 25/26 (Transfermarkt verein id)
+    "Sporting CP": 336, "Porto": 720, "Benfica": 294, "Braga": 1075, "Famalicão": 3329,
+    "Vit. Guimarães": 2420, "Gil Vicente FC": 2424, "Estoril": 1465, "Alverca": 2521,
+    "Rio Ave": 2425, "Santa Clara": 2423, "Moreirense": 979, "Estrela": 2431,
+    "Casa Pia": 3268, "Arouca": 8024, "Tondela": 7179, "Nacional": 982, "AVS Futebol": 110302,
 }
 
 # 풀네임 + 홈구장 수용인원
@@ -164,6 +175,16 @@ TEAM_EXTRA: dict[str, tuple[str, int]] = {
     "Lorient": ("FC Lorient", 18110), "Paris FC": ("Paris FC", 20000),
     # Ligue 1 26/27 승격
     "Le Mans": ("Le Mans FC", 25064), "Troyes": ("ESTAC Troyes", 20400),
+    # Liga Portugal 25/26
+    "Sporting CP": ("Sporting Clube de Portugal", 50095), "Porto": ("FC Porto", 50033),
+    "Benfica": ("SL Benfica", 64642), "Braga": ("SC Braga", 30286),
+    "Famalicão": ("FC Famalicão", 5307), "Vit. Guimarães": ("Vitória SC", 30029),
+    "Gil Vicente FC": ("Gil Vicente FC", 12046), "Estoril": ("GD Estoril Praia", 8000),
+    "Alverca": ("FC Alverca", 12000), "Rio Ave": ("Rio Ave FC", 12815),
+    "Santa Clara": ("CD Santa Clara", 12500), "Moreirense": ("Moreirense FC", 6153),
+    "Estrela": ("CF Estrela da Amadora", 9288), "Casa Pia": ("Casa Pia AC", 5000),
+    "Arouca": ("FC Arouca", 5600), "Tondela": ("CD Tondela", 5000),
+    "Nacional": ("CD Nacional", 5132), "AVS Futebol": ("AVS", 6288),
 }
 
 
@@ -288,6 +309,25 @@ TEAM_INFO: dict[str, dict] = {
     # Ligue 1 26/27 승격
     "Le Mans": {"city": "르망", "stadium": "MMArena", "founded": 1985, "nick": "Les Sang et Or", "desc": "르망 24시 자동차 경주로 유명한 도시 클럽. 26/27 승격."},
     "Troyes": {"city": "트루아", "stadium": "스타드 드 로브", "founded": 1986, "nick": "ESTAC", "desc": "샹파뉴 연고. 시티풋볼그룹 산하. 26/27 승격."},
+    # Liga Portugal 25/26
+    "Sporting CP": {"city": "리스본", "stadium": "이스타디우 조제 알발라드", "founded": 1906, "nick": "Leões", "desc": "리스본 명문. 유망주 사관학교(호날두 배출)."},
+    "Porto": {"city": "포르투", "stadium": "이스타디우 두 드라강", "founded": 1893, "nick": "Dragões", "desc": "04 UCL 우승. 포르투갈 북부 최강."},
+    "Benfica": {"city": "리스본", "stadium": "이스타디우 다 루스", "founded": 1904, "nick": "Águias", "desc": "포르투갈 최다 우승. 유럽 빅클럽 공급원."},
+    "Braga": {"city": "브라가", "stadium": "이스타디우 무니시팔 지 브라가", "founded": 1921, "nick": "Arsenalistas", "desc": "북부 강호. 채석장 스타디움으로 유명."},
+    "Famalicão": {"city": "빌라노바지파말리캉", "stadium": "이스타디우 무니시팔", "founded": 1931, "nick": "Famalicenses", "desc": "미뉴 지역 클럽."},
+    "Vit. Guimarães": {"city": "기마랑이스", "stadium": "D. 아폰수 엔히크스", "founded": 1922, "nick": "Vitorianos", "desc": "포르투갈 건국도시 연고 전통 클럽."},
+    "Gil Vicente FC": {"city": "바르셀루스", "stadium": "시다드 지 바르셀루스", "founded": 1924, "nick": "Galos", "desc": "미뉴 바르셀루스 연고 클럽."},
+    "Estoril": {"city": "이스토릴", "stadium": "안토니우 코임브라 다 모타", "founded": 1939, "nick": "Canarinhos", "desc": "리스본 근교 리비에라 클럽."},
+    "Alverca": {"city": "알베르카", "stadium": "이스타디우 두 알베르카", "founded": 1939, "nick": "Alverquenses", "desc": "리스본 근교 클럽. 25/26 승격."},
+    "Rio Ave": {"city": "빌라두콘드", "stadium": "이스타디우 두스 아르쿠스", "founded": 1939, "nick": "Vilacondenses", "desc": "북부 해안도시 클럽."},
+    "Santa Clara": {"city": "폰타델가다 (아소르스)", "stadium": "이스타디우 지 상 미겔", "founded": 1927, "nick": "Açorianos", "desc": "아소르스 제도 연고 클럽."},
+    "Moreirense": {"city": "모레이라지코네고스", "stadium": "코멘다도르 조아킴 지 알메이다 프레이타스", "founded": 1938, "nick": "Cónegos", "desc": "미뉴 소도시 클럽."},
+    "Estrela": {"city": "아마도라", "stadium": "이스타디우 조제 고메스", "founded": 1932, "nick": "Tricolores", "desc": "리스본 근교 아마도라 클럽."},
+    "Casa Pia": {"city": "리스본", "stadium": "이스타디우 피나 마니크", "founded": 1920, "nick": "Gansos", "desc": "리스본 자선학교 뿌리의 전통 클럽."},
+    "Arouca": {"city": "아로우카", "stadium": "이스타디우 무니시팔 지 아로우카", "founded": 1952, "nick": "Lobos", "desc": "북부 아베이루 소도시 클럽."},
+    "Tondela": {"city": "톤델라", "stadium": "이스타디우 조앙 카르도주", "founded": 1933, "nick": "Beirões", "desc": "베이라 지역 소도시 클럽."},
+    "Nacional": {"city": "푼샬 (마데이라)", "stadium": "이스타디우 다 마데이라", "founded": 1910, "nick": "Alvinegros", "desc": "마데이라 제도 연고 클럽."},
+    "AVS Futebol": {"city": "빌라 다스 아베스", "stadium": "이스타디우 CD 아베스", "founded": 1930, "nick": "Avenses", "desc": "빌라 다스 아베스 연고 클럽."},
 }
 
 
