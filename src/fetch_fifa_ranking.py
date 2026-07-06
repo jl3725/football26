@@ -1,8 +1,12 @@
-"""FIFA 남자 세계 랭킹 수집 — 공식 FIFA API(무료).
+"""FIFA 남자 세계 랭킹 수집 — 위키피디아(최신) + FIFA API(폴백·전체 커버).
 
-fifa.com/fifa-world-ranking/men 페이지에서 최신 dateId 를 자동 탐지한 뒤
-inside.fifa.com/api/ranking-overview 로 전체 랭킹을 받아 data/fifa_ranking.csv 에 기록.
-순위·점수 + 직전 대비 변동(순위/점수)까지 담아 월드컵 탭 상단에 사용한다.
+FIFA 무료 API(inside.fifa.com/api/ranking-overview)는 id 포맷 변경 후 2025-09 까지만
+데이터를 주고 이후는 빈 응답이라, 최신 공식 랭킹은 위키피디아에서 가져온다:
+- 위키 'FIFA Men's World Ranking' 표(Top 20, 현재 공식 기준일·점수·순위) = 최신.
+- FIFA API(전체 ~210개국, 다소 과거) = 국가코드/국기/대륙 + 하위권 커버(월드컵 실시간
+  예상 랭킹 산식이 전 참가국 base 점수를 필요로 함) 용도.
+→ 위키 최신 Top20 점수/순위를 API 전체 위에 덮어써서 data/fifa_ranking.csv 생성.
+stdlib(urllib/re)만 사용 → daily_wc.yml(무-pip) 에서도 동작.
 
 사용:
     python src/fetch_fifa_ranking.py
@@ -24,7 +28,14 @@ H = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
      "(KHTML, like Gecko) Chrome/126.0 Safari/537.36", "Accept": "application/json"}
 PAGE = "https://www.fifa.com/fifa-world-ranking/men"
 API = "https://inside.fifa.com/api/ranking-overview?locale=en&dateId={}"
+WIKI = "https://en.wikipedia.org/wiki/FIFA_Men%27s_World_Ranking"
 _MAX_PROBE = 12   # date-picker 최신 후보 중 데이터 있는 것까지만 탐색(무한루프 방지)
+_MONTHS = {"january": "01", "february": "02", "march": "03", "april": "04",
+           "may": "05", "june": "06", "july": "07", "august": "08",
+           "september": "09", "october": "10", "november": "11", "december": "12"}
+# 위키 팀명 → FIFA API 팀명 정합(대부분 동일, 예외만)
+_WIKI_ALIAS = {"IR Iran": "Iran", "Korea Republic": "South Korea",
+               "United States": "USA", "Ivory Coast": "Côte d'Ivoire"}
 
 
 def _get(url: str, timeout: int = 25) -> str:
@@ -98,23 +109,110 @@ def fetch(date_id: str | None = None) -> list[dict]:
     return []
 
 
+def _strip(html: str) -> str:
+    return re.sub(r"\s+", " ", re.sub(r"<[^>]+>", "", html)).strip()
+
+
+def fetch_wikipedia() -> tuple[str, list[dict]]:
+    """위키 'FIFA Men's World Ranking' 최신 표 → (기준일 ISO, [{rank, team, points}])."""
+    try:
+        html = _get(WIKI, timeout=25)
+    except (urllib.error.URLError, OSError) as exc:
+        print(f"[fifa] 위키 로드 실패: {exc}", file=sys.stderr)
+        return "", []
+    md = re.search(r"rankings as of (\d{1,2}) (\w+) (\d{4})", html)
+    updated = ""
+    if md:
+        updated = f"{md.group(3)}-{_MONTHS.get(md.group(2).lower(), '01')}-{int(md.group(1)):02d}"
+    rows = []
+    for tr in re.findall(r"<tr[^>]*>(.*?)</tr>", html, re.S):
+        cells = re.findall(r"<t[dh][^>]*>(.*?)</t[dh]>", tr, re.S)
+        if len(cells) < 4:
+            continue
+        rank_s, team_s, pts_s = _strip(cells[0]), _strip(cells[2]), _strip(cells[3])
+        if not rank_s.isdigit():
+            continue
+        try:
+            pts = float(pts_s.replace(",", ""))
+        except ValueError:
+            continue
+        team = _WIKI_ALIAS.get(team_s, team_s)
+        if team:
+            rows.append({"rank": int(rank_s), "team": team, "points": pts})
+    return updated, rows
+
+
 def main() -> int:
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
-    rows = fetch()
-    if not rows:
+
+    base = fetch()                       # FIFA API 전체(코드/국기/대륙 + 하위권 커버, 다소 과거)
+    wdate, wiki = fetch_wikipedia()      # 위키 최신 Top20(공식 기준일·점수·순위)
+
+    if not base and not wiki:
         print("[fifa] 항목 없음 — 기존 파일 유지", file=sys.stderr)
         return 1
+
     fields = ["rank", "team", "code", "points", "previous_rank", "previous_points",
               "rank_change", "points_change", "confederation", "flag", "updated"]
+
+    if wiki and base:
+        # 위키 최신 Top20 을 API 전체 위에 덮어씀 — 코드/국기/대륙은 API 에서 보존.
+        by_name = {r["team"].lower(): r for r in base}
+        used = set()
+        merged = []
+        for w in sorted(wiki, key=lambda x: x["rank"]):
+            b = by_name.get(w["team"].lower())
+            code = (b or {}).get("code", "")
+            merged.append({
+                "rank": w["rank"], "team": w["team"], "code": code,
+                "points": round(w["points"], 2), "previous_rank": w["rank"],
+                "previous_points": round(w["points"], 2), "rank_change": 0, "points_change": 0.0,
+                "confederation": (b or {}).get("confederation", ""),
+                "flag": (b or {}).get("flag", ""), "updated": wdate,
+            })
+            if b:
+                used.add(b["code"])
+        # 위키에 없는 하위권(21위~) = API 값 유지(월드컵 예상 산식의 전 참가국 base 확보)
+        tail = [r for r in base if r["code"] not in used]
+        tail.sort(key=lambda r: -_num_pts(r))
+        for i, r in enumerate(tail, start=len(merged) + 1):
+            r = dict(r)
+            r["rank"] = i
+            r["updated"] = wdate or r.get("updated", "")
+            merged.append(r)
+        rows = merged
+        src = f"위키 Top{len(wiki)} 최신 + API 하위권"
+    else:
+        rows = wiki_to_rows(wiki, wdate) if wiki else base
+        src = "위키 전용" if wiki else "API 전용(폴백)"
+
     with OUT_PATH.open("w", newline="", encoding="utf-8") as fh:
         w = csv.DictWriter(fh, fieldnames=fields)
         w.writeheader()
         w.writerows(rows)
-    up = rows[0]["updated"]
-    print(f"[fifa] {len(rows)}개국 기록 (기준일 {up}) -> {OUT_PATH}")
+    up = rows[0].get("updated", "")
+    print(f"[fifa] {len(rows)}개국 기록 (기준일 {up} · {src}) -> {OUT_PATH}")
     print("  TOP5: " + " · ".join(f"{r['rank']}.{r['team']}({r['points']})" for r in rows[:5]))
     return 0
+
+
+def _num_pts(r: dict) -> float:
+    try:
+        return float(r.get("points") or 0)
+    except (TypeError, ValueError):
+        return 0.0
+
+
+def wiki_to_rows(wiki: list[dict], wdate: str) -> list[dict]:
+    """API 폴백 실패 시 위키만으로 CSV 행 구성(코드/국기 없음 → 예상 산식은 제한적)."""
+    out = []
+    for w in sorted(wiki, key=lambda x: x["rank"]):
+        out.append({"rank": w["rank"], "team": w["team"], "code": "",
+                    "points": round(w["points"], 2), "previous_rank": w["rank"],
+                    "previous_points": round(w["points"], 2), "rank_change": 0,
+                    "points_change": 0.0, "confederation": "", "flag": "", "updated": wdate})
+    return out
 
 
 if __name__ == "__main__":
