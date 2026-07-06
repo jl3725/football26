@@ -40,6 +40,23 @@ FEATURES = [
 ]
 
 
+# Transfermarkt 세부 포지션 약어 → 정식명 정규화 (CB/RB … 혼용 통일)
+TM_POS_NORM = {
+    "CB": "Centre-Back", "RB": "Right-Back", "LB": "Left-Back", "RWB": "Right-Back",
+    "LWB": "Left-Back", "DM": "Defensive Midfield", "CM": "Central Midfield",
+    "AM": "Attacking Midfield", "RM": "Right Midfield", "LM": "Left Midfield",
+    "RW": "Right Winger", "LW": "Left Winger", "CF": "Centre-Forward",
+    "SS": "Second Striker", "GK": "Goalkeeper",
+}
+
+
+def _pos_detail(v):
+    if v is None or (isinstance(v, float) and pd.isna(v)):
+        return None
+    s = str(v).strip()
+    return TM_POS_NORM.get(s, s) or None
+
+
 def _pid(r) -> str:
     tm = r.get("tm_id")
     if pd.notna(tm):
@@ -83,7 +100,7 @@ def build_matrix():
             "pid": pid, "tm_id": None if pd.isna(r.get("tm_id")) else int(r.get("tm_id")),
             "name": str(r.get("player") or ""), "club": str(r.get("squad") or ""),
             "league": str(r.get("_league") or ""), "pos": str(r.get("pos") or ""),
-            "nationality": nat,
+            "pos_detail": _pos_detail(r.get("tm_position")), "nationality": nat,
             "age": None if pd.isna(r.get("age")) else int(r.get("age")),
             "market_value_eur": None if pd.isna(r.get("market_value_eur")) else float(r.get("market_value_eur")),
             "ss_rating": None if pd.isna(r.get("ss_rating")) else float(r.get("ss_rating")),

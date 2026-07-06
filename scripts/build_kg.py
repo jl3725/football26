@@ -66,6 +66,24 @@ def _norm(s) -> str:
     return unidecode(str(s or "")).lower().strip()
 
 
+# Transfermarkt 세부 포지션 약어 → 정식명
+TM_POS_NORM = {
+    "CB": "Centre-Back", "RB": "Right-Back", "LB": "Left-Back", "RWB": "Right-Back",
+    "LWB": "Left-Back", "DM": "Defensive Midfield", "CM": "Central Midfield",
+    "AM": "Attacking Midfield", "RM": "Right Midfield", "LM": "Left Midfield",
+    "RW": "Right Winger", "LW": "Left Winger", "CF": "Centre-Forward",
+    "SS": "Second Striker", "GK": "Goalkeeper",
+}
+
+
+def _pos_detail(v):
+    v = _clean(v)
+    if v is None:
+        return None
+    s = str(v).strip()
+    return TM_POS_NORM.get(s, s) or None
+
+
 def _clean(v):
     if v is None or (isinstance(v, float) and pd.isna(v)):
         return None
@@ -106,7 +124,8 @@ def _players_and_map(league: str):
         nat = str(nat).split("/")[0].split(",")[0].strip() if nat else None
         rows.append({
             "id": pid, "name": str(nm), "club": str(r.get("squad") or ""),
-            "pos": _clean(r.get("pos")), "age": _num(r.get("age")), "nat": nat,
+            "pos": _clean(r.get("pos")), "pos_detail": _pos_detail(r.get("tm_position")),
+            "age": _num(r.get("age")), "nat": nat,
             "mv": _num(r.get("market_value_eur")), "ss": _num(r.get("ss_rating")),
             "goals": _num(r.get("goals")), "assists": _num(r.get("assists")),
             "minutes": _num(r.get("minutes")),
@@ -245,7 +264,7 @@ def main() -> int:
                      "UNWIND $rows AS r MERGE (c:Club {name:r.club}) "
                      "MERGE (l:League {key:$key}) MERGE (c)-[:COMPETES_IN]->(l) "
                      "MERGE (p:Player {id:r.id}) "
-                     "  SET p.name=r.name, p.pos=r.pos, p.age=r.age, p.nationality=r.nat, "
+                     "  SET p.name=r.name, p.pos=r.pos, p.pos_detail=r.pos_detail, p.age=r.age, p.nationality=r.nat, "
                      "      p.market_value_eur=r.mv, p.ss_rating=r.ss, p.goals=r.goals, "
                      "      p.assists=r.assists, p.minutes=r.minutes, p.contract_until=r.contract_until, "
                      "      p.league=$key "
