@@ -7,7 +7,7 @@ services:
     runtime: python
     plan: free
     buildCommand: pip install -r requirements.txt
-    startCommand: python scripts/build_db.py && uvicorn api.main:app --host 0.0.0.0 --port $PORT
+    startCommand: python scripts/build_db.py && (python scripts/precompute_hub.py || true) && uvicorn api.main:app --host 0.0.0.0 --port $PORT
     healthCheckPath: /api/health
     autoDeploy: true
     envVars:

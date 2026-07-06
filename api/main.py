@@ -2343,14 +2343,13 @@ _HUB_LEAGUES = ("EPL", "LaLiga", "SerieA", "Bundesliga", "Ligue1", "LigaPortugal
 _HUB_CACHE: dict = {"key": None, "body": None}
 
 
-@app.get("/api/home/all")
-def home_all():
-    """전 리그 통합 대시보드 — 빅딜·이적속보·감독교체·순위 + 부상속보·최고폼·곧FA·득점리더.
-    무거워서 DB 수정시각 기준 직렬화 바이트 캐시(재빌드 시 자동 무효화)."""
-    key = _db_mtime()
-    if _HUB_CACHE["body"] is not None and _HUB_CACHE["key"] == key:
-        return Response(content=_HUB_CACHE["body"], media_type="application/json")
+_HUB_FILE = ds.DB_PATH.parent / "home_all.json"
 
+
+def _compute_hub_body() -> bytes:
+    """전 리그 통합 대시보드 페이로드 계산 — 전 리그 집계라 무겁다(Render 무료티어 1워커를
+    수십초 점유 → 헬스체크 실패·재시작). 배포 시 scripts/precompute_hub.py 로 미리
+    data/home_all.json 에 생성해 두고, 런타임엔 그 파일을 서빙한다(_hub_body)."""
     from unidecode import unidecode
     win = _current_window()
     today = datetime.date.today()
@@ -2493,9 +2492,33 @@ def home_all():
               "manager_changes": _interleave(changes, 12), "snapshots": snaps,
               "injuries": _interleave(injuries, 12), "hot_form": hot_form,
               "goal_leaders": goal_leaders, "contracts": contracts_out}
-    body = json.dumps(result, ensure_ascii=False).encode("utf-8")
+    return json.dumps(result, ensure_ascii=False).encode("utf-8")
+
+
+def _hub_body() -> bytes:
+    """메모리(DB-mtime) 캐시 → 디스크 프리컴퓨트(배포본) → 즉석 계산 순."""
+    key = _db_mtime()
+    if _HUB_CACHE["body"] is not None and _HUB_CACHE["key"] == key:
+        return _HUB_CACHE["body"]
+    try:
+        if _HUB_FILE.exists() and os.path.getmtime(_HUB_FILE) >= key:
+            body = _HUB_FILE.read_bytes()
+            _HUB_CACHE.update(key=key, body=body)
+            return body
+    except OSError:
+        pass
+    body = _compute_hub_body()                    # 폴백: 즉석 계산(느림 — 배포 precompute 실패시만)
     _HUB_CACHE.update(key=key, body=body)
-    return Response(content=body, media_type="application/json")
+    try:
+        _HUB_FILE.write_bytes(body)
+    except OSError:
+        pass
+    return body
+
+
+@app.get("/api/home/all")
+def home_all():
+    return Response(content=_hub_body(), media_type="application/json")
 
 
 _WC_ROUNDS = ["group-stage", "round-of-32", "round-of-16", "quarterfinals",
