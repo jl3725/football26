@@ -2644,13 +2644,15 @@ def _hub_body() -> bytes:
     if _HUB_CACHE["body"] is not None and _HUB_CACHE["key"] == key:
         return _HUB_CACHE["body"]
     try:
-        if _HUB_FILE.exists() and os.path.getmtime(_HUB_FILE) >= key:
+        # 디스크 프리컴퓨트(배포본)가 있으면 서빙. 시작 시 build_db 로 db mtime 이 갱신돼
+        # 캐시가 '오래됨'으로 보여도 즉석계산(OOM/타임아웃) 대신 커밋된 스냅샷을 우선.
+        if _HUB_FILE.exists():
             body = _HUB_FILE.read_bytes()
             _HUB_CACHE.update(key=key, body=body)
             return body
     except OSError:
         pass
-    body = _compute_hub_body()                    # 폴백: 즉석 계산(느림 — 배포 precompute 실패시만)
+    body = _compute_hub_body()                    # 폴백: 파일 없을 때만 즉석 계산(느림)
     _HUB_CACHE.update(key=key, body=body)
     try:
         _HUB_FILE.write_bytes(body)

@@ -54,4 +54,4 @@ node_modules/
 web/.next/
 web/tsconfig.tsbuildinfo
 .pnpm-store/
-data/home_all.json
+# data/home_all.json 은 배포 캐시로 커밋(precompute 를 startCommand 에서 뺐으므로 서빙용)

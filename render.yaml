@@ -7,7 +7,9 @@ services:
     runtime: python
     plan: free
     buildCommand: pip install -r requirements.txt
-    startCommand: python scripts/build_db.py && (python scripts/precompute_hub.py || true) && uvicorn api.main:app --host 0.0.0.0 --port $PORT
+    # precompute 는 startCommand 에서 제외(느려서 health check 타임아웃 유발). 커밋된
+    # data/home_all.json 스냅샷을 _hub_body 가 서빙. 시작=build_db + uvicorn 로 빠르게.
+    startCommand: python scripts/build_db.py && uvicorn api.main:app --host 0.0.0.0 --port $PORT
     healthCheckPath: /api/health
     autoDeploy: true
     envVars:
@@ -23,4 +25,10 @@ services:
       - key: OPENAI_API_KEY      # Ask Scout(자연어 라우팅)
         sync: false
       - key: SCOUT_TOKEN         # Ask Scout 접근 비밀번호(설정 시 이 토큰 필요, 미설정=공개)
+        sync: false
+      - key: NEO4J_URI           # AuraDB 연결(neo4j+s://…) — graph_query·KG
+        sync: false
+      - key: NEO4J_USERNAME      # AuraDB username(이 인스턴스는 인스턴스ID, neo4j 아님)
+        sync: false
+      - key: NEO4J_PASSWORD      # AuraDB 비밀번호
         sync: false
