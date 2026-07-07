@@ -7,7 +7,7 @@ Atalanta,2026,summer,in,Daniel Maldini,daniel maldini,Attacking Midfield,24,Ital
 Atalanta,2026,summer,in,Ibrahim Sulemana,ibrahim sulemana,Defensive Midfield,23,Ghana,Cagliari,,End of loan 30/06/2026,https://img.a.transfermarkt.technology/portrait/medium/982267-1695033715.jpg?lm=1
 Atalanta,2026,summer,in,Ben Godfrey,ben godfrey,Centre-Back,28,England,Bröndby IF,,End of loan 30/06/2026,https://img.a.transfermarkt.technology/portrait/medium/343475-1700739275.jpg?lm=1
 Atalanta,2026,summer,in,Giovanni Bonfanti,giovanni bonfanti,Centre-Back,23,Italy,Spezia Calcio,,End of loan 30/06/2026,https://img.a.transfermarkt.technology/portrait/medium/663900-1757604741.jpg?lm=1
-Atalanta,2026,summer,in,Samuel Giovane,samuel giovane,Central Midfield,23,Italy,Palermo,,End of loan 30/06/2026,https://img.a.transfermarkt.technology/portrait/medium/567470-1603283523.jpg?lm=1
+Atalanta,2026,summer,in,Vanja Vlahović,vanja vlahovic,Centre-Forward,22,Serbia,Spezia Calcio,,End of loan 30/06/2026,https://img.a.transfermarkt.technology/portrait/medium/698546-1730123337.jpg?lm=1
 Atalanta,2026,summer,in,Giorgio Cittadini,giorgio cittadini,Centre-Back,24,Italy,Frosinone,,End of loan 30/06/2026,https://img.a.transfermarkt.technology/portrait/medium/616628-1664874587.png?lm=1
 Atalanta,2026,summer,out,Marco Palestra,marco palestra,Right-Back,21,Italy,Chelsea,57000000.0,€57.00m,https://img.a.transfermarkt.technology/portrait/medium/895937-1704902310.jpg?lm=1
 Atalanta,2026,summer,out,Marco Brescianini,marco brescianini,Central Midfield,26,Italy,Fiorentina,10000000.0,€10.00m,https://img.a.transfermarkt.technology/portrait/medium/459128-1730183739.jpg?lm=1
@@ -15,6 +15,7 @@ Atalanta,2026,summer,out,Ben Godfrey,ben godfrey,Centre-Back,28,England,Rangers,
 Atalanta,2026,summer,out,Yunus Musah,yunus musah,Central Midfield,23,United States,AC Milan,,End of loan 30/06/2026,https://img.a.transfermarkt.technology/portrait/medium/503991-1684913655.jpg?lm=1
 Bologna,2026,summer,in,Tommaso Pobega,tommaso pobega,Central Midfield,26,Italy,AC Milan,7000000.0,€7.00m,https://img.a.transfermarkt.technology/portrait/medium/392538-1661767249.jpg?lm=1
 Bologna,2026,summer,in,Luigi Caccavo,luigi caccavo,Centre-Forward,22,Italy,Lumezzane,300000.0,€300k,https://img.a.transfermarkt.technology/portrait/medium/815787-1752499407.jpg?lm=1
+Bologna,2026,summer,in,Dimitar Papazov,dimitar papazov,Left-Back,19,Bulgaria,Bologna U20,,-,https://img.a.transfermarkt.technology/portrait/medium/1108253-1696356049.png?lm=1
 Bologna,2026,summer,in,Emil Holm,emil holm,Right-Back,26,Sweden,Juventus,,End of loan 30/06/2026,https://img.a.transfermarkt.technology/portrait/medium/496745-1688450376.jpg?lm=1
 Bologna,2026,summer,in,Giovanni Fabbian,giovanni fabbian,Attacking Midfield,23,Italy,Fiorentina,,End of loan 30/06/2026,https://img.a.transfermarkt.technology/portrait/medium/633668-1695027735.jpg?lm=1
 Bologna,2026,summer,in,Michel Aebischer,michel aebischer,Central Midfield,29,Switzerland,Pisa,,End of loan 30/06/2026,https://img.a.transfermarkt.technology/portrait/medium/237658-1669289063.jpg?lm=1
@@ -40,7 +41,6 @@ Bologna,2026,summer,out,Michel Aebischer,michel aebischer,Central Midfield,29,Sw
 Bologna,2026,summer,out,Tommaso Corazza,tommaso corazza,Left-Back,22,Italy,LR Vicenza,,loan transfer,https://img.a.transfermarkt.technology/portrait/medium/818880-1692278831.jpg?lm=1
 Bologna,2026,summer,out,Remo Freuler,remo freuler,Central Midfield,34,Switzerland,Without Club,,-,https://img.a.transfermarkt.technology/portrait/medium/148252-1688044464.jpg?lm=1
 Bologna,2026,summer,out,Charalampos Lykogiannis,charalampos lykogiannis,Left-Back,32,Greece,Without Club,,-,https://img.a.transfermarkt.technology/portrait/medium/136514-1663656826.jpg?lm=1
-Bologna,2026,summer,out,Lorenzo De Silvestri,lorenzo de silvestri,Right-Back,38,Italy,Without Club,,-,https://img.a.transfermarkt.technology/portrait/medium/33571-1595929290.jpg?lm=1
 Bologna,2026,summer,out,Kevin Bonifazi,kevin bonifazi,Centre-Back,30,Italy,Without Club,,-,https://img.a.transfermarkt.technology/portrait/medium/247377-1663656615.jpg?lm=1
 Bologna,2026,summer,out,Orji Okwonkwo,orji okwonkwo,Right Winger,28,Nigeria,Without Club,,-,https://img.a.transfermarkt.technology/portrait/medium/401935-1634109024.jpg?lm=1
 Bologna,2026,summer,out,Giuseppe Battimelli,giuseppe battimelli,Centre-Forward,21,Italy,Without Club,,-,https://img.a.transfermarkt.technology/portrait/medium/1055861-1695645252.png?lm=1
@@ -158,6 +158,7 @@ Cremonese,2026,summer,out,Youssef Maleh,youssef maleh,Central Midfield,27,Morocc
 Fiorentina,2026,summer,in,Viery,viery,Centre-Back,21,Brazil,Grêmio,15000000.0,€15.00m,https://img.a.transfermarkt.technology/portrait/medium/950393-1773183484.jpg?lm=1
 Fiorentina,2026,summer,in,Giovanni Fabbian,giovanni fabbian,Attacking Midfield,23,Italy,Bologna,13000000.0,€13.00m,https://img.a.transfermarkt.technology/portrait/medium/633668-1695027735.jpg?lm=1
 Fiorentina,2026,summer,in,Marco Brescianini,marco brescianini,Central Midfield,26,Italy,Atalanta,10000000.0,€10.00m,https://img.a.transfermarkt.technology/portrait/medium/459128-1730183739.jpg?lm=1
+Fiorentina,2026,summer,in,Radu Drăgușin,radu dragusin,Centre-Back,24,Romania,Tottenham,,Loan fee: €1.50m,https://img.a.transfermarkt.technology/portrait/medium/568559-1704716630.jpg?lm=1
 Fiorentina,2026,summer,in,Simon Sohm,simon sohm,Central Midfield,25,Switzerland,Bologna,,End of loan 30/06/2026,https://img.a.transfermarkt.technology/portrait/medium/507486-1753435341.jpg?lm=1
 Fiorentina,2026,summer,in,Lucas Beltrán,lucas beltran,Centre-Forward,25,Argentina,Valencia,,End of loan 30/06/2026,https://img.a.transfermarkt.technology/portrait/medium/628366-1692881138.jpg?lm=1
 Fiorentina,2026,summer,in,Lorenzo Amatucci,lorenzo amatucci,Defensive Midfield,22,Italy,UD Las Palmas,,End of loan 30/06/2026,https://img.a.transfermarkt.technology/portrait/medium/707450-1751270499.jpg?lm=1
@@ -221,6 +222,7 @@ Genoa,2026,summer,out,Jeff Ekhator,jeff ekhator,Centre-Forward,19,Italy,Juventus
 Genoa,2026,summer,out,David Ankeye,david ankeye,Centre-Forward,24,Nigeria,Zelez. Pancevo,500000.0,€500k,https://img.a.transfermarkt.technology/portrait/medium/881610-1737554623.jpg?lm=1
 Genoa,2026,summer,out,Ruslan Malinovskyi,ruslan malinovskyi,Central Midfield,33,Ukraine,Trabzonspor,,free transfer,https://img.a.transfermarkt.technology/portrait/medium/207877-1663583019.jpg?lm=1
 Genoa,2026,summer,out,Leonardo Consiglio,leonardo consiglio,Goalkeeper,19,Italy,Modena,,free transfer,https://img.a.transfermarkt.technology/portrait/medium/default.jpg?lm=1
+Genoa,2026,summer,out,Edoardo Meconi,edoardo meconi,Left-Back,21,Italy,AS Gubbio,,loan transfer,https://img.a.transfermarkt.technology/portrait/medium/937669-1745691736.png?lm=1
 Genoa,2026,summer,out,Caleb Ekuban,caleb ekuban,Centre-Forward,32,Ghana,Without Club,,-,https://img.a.transfermarkt.technology/portrait/medium/199953-1707213734.jpg?lm=1
 Genoa,2026,summer,out,Nicola Leali,nicola leali,Goalkeeper,33,Italy,Without Club,,-,https://img.a.transfermarkt.technology/portrait/medium/136111-1692963337.jpg?lm=1
 Genoa,2026,summer,out,Daniele Sommariva,daniele sommariva,Goalkeeper,28,Italy,Without Club,,-,https://img.a.transfermarkt.technology/portrait/medium/312773-1692963278.jpg?lm=1
