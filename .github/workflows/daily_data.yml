@@ -70,6 +70,13 @@ jobs:
             FB_LEAGUE=$LG python scripts/snapshot_market_values.py || echo "market_value $LG 실패"
           done
 
+      - name: Transfer rumors (전 리그, Transfermarkt Gerüchte)
+        run: |
+          python src/fetch_transfer_rumors.py || echo "rumors EPL 실패"
+          for LG in LaLiga SerieA Bundesliga Ligue1 LigaPortugal Eredivisie; do
+            FB_LEAGUE=$LG python src/fetch_transfer_rumors.py || echo "rumors $LG 실패"
+          done
+
       - name: UEFA 계수 (협회·클럽, 리그강도 근거화)
         run: python src/fetch_uefa_coefficients.py || echo "uefa_coefficients 실패"
 

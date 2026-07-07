@@ -20,4 +20,12 @@ Write-Host "[pull-agent] build_db.py (football.db 재빌드)"
 if ($LASTEXITCODE -ne 0) {
     Write-Host "[pull-agent] build_db 실패 — uvicorn 이 DB 를 잠갔을 수 있음(개발 중이면 정상). pull 은 완료됨."
 }
+
+# 루머 KG 갱신 — 클라우드가 수집한 최신 transfer_rumors_*.csv 를 로컬 Neo4j RUMORED_WITH 로 적재.
+# KG 는 로컬 전용이라 여기서만 갱신. Neo4j 미가동 시 best-effort skip.
+Write-Host "[pull-agent] rumor_eval.sync_to_kg (Neo4j RUMORED_WITH 갱신)"
+& $Python -c "import sys; sys.path.insert(0,'src'); import rumor_eval; print('[rumor-kg]', rumor_eval.sync_to_kg(), '건')"
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "[pull-agent] rumor KG 적재 skip (Neo4j 미가동 — docker compose up 후 재시도)"
+}
 Write-Host "[pull-agent] done"
