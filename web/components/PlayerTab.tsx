@@ -88,7 +88,7 @@ function Detail({ team, player, accent }: { team: string; player: string; accent
       </div>
       {sim.length > 0 && (
         <div className="pd-similar">
-          <div className="pd-sim-title">🔍 스타일 유사 선수</div>
+          <div className="pd-sim-title">스타일 유사 선수</div>
           <div className="pd-sim-list">
             {sim.map((s, i) => (
               <div className="pd-sim-row" key={i}>

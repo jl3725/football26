@@ -62,7 +62,7 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
         <div style={{ flex: 1, minWidth: 0 }}>
           <div className="hero-rank">#{s.rank} · PREMIER LEAGUE · {info.nick || ""}</div>
           <h1>{ov.team}</h1>
-          <div className="full">{ov.fullName} · 🏟 {info.stadium || ""} · {ov.capacity.toLocaleString()}석</div>
+          <div className="full">{ov.fullName} · {info.stadium || ""} · {ov.capacity.toLocaleString()}석</div>
           <div className="form-row">
             {ov.form.length === 0 && <span className="full">최근 경기 없음</span>}
             {ov.form.map((f, i) => <div key={i} className={`dot ${f}`}>{f}</div>)}
@@ -85,7 +85,7 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
       {info.desc && <div className="info-desc" style={{ borderColor: hexA(accent, 0.3) }}>{info.desc}</div>}
 
       {/* 최근 감지 변화 */}
-      <OverviewSignals team={ov.team} />
+      <OverviewSignals team={ov.team} accent={accent} />
 
       {/* GRID */}
       <div className="grid">

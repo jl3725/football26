@@ -1,15 +1,16 @@
 "use client";
+import Icon from "./Icon";
 
 export const TABS = [
-  { key: "overview", label: "Overview", icon: "⚡", ready: true },
-  { key: "signals", label: "Inbox", icon: "📥", ready: true },
-  { key: "analytics", label: "Analytics", icon: "📊", ready: true },
-  { key: "squad", label: "Squad", icon: "📋", ready: true },
-  { key: "schedule", label: "Schedule", icon: "📅", ready: true },
-  { key: "player", label: "Player", icon: "👤", ready: true },
-  { key: "database", label: "Database", icon: "🔎", ready: true },
-  { key: "transfer", label: "Recruit", icon: "🧭", ready: true },
-  { key: "news", label: "News", icon: "📰", ready: true },
+  { key: "overview", label: "Overview", icon: "activity", ready: true },
+  { key: "signals", label: "Inbox", icon: "inbox", ready: true },
+  { key: "analytics", label: "Analytics", icon: "bars", ready: true },
+  { key: "squad", label: "Squad", icon: "users", ready: true },
+  { key: "schedule", label: "Schedule", icon: "calendar", ready: true },
+  { key: "player", label: "Player", icon: "user", ready: true },
+  { key: "database", label: "Database", icon: "search", ready: true },
+  { key: "transfer", label: "Recruit", icon: "target", ready: true },
+  { key: "news", label: "News", icon: "file", ready: true },
 ] as const;
 
 export type TabKey = (typeof TABS)[number]["key"];
@@ -24,7 +25,9 @@ export default function TabBar({
           className={`tab${active === t.key ? " active" : ""}`}
           onClick={() => onChange(t.key)}
           style={active === t.key ? { ["--tc" as any]: accent } : undefined}>
-          <span className="ti">{t.icon}</span>
+          <span className="ti" style={{ display: "inline-flex", alignItems: "center" }}>
+            <Icon name={t.icon} size={16} color={active === t.key ? accent : "currentColor"} />
+          </span>
           <span>{t.label}</span>
         </button>
       ))}

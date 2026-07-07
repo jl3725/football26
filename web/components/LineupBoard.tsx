@@ -48,14 +48,14 @@ export default function LineupBoard({ team, accent, departed = [] }: { team: str
           {lu?.recent
             ? <Pitch placements={lu.recent.placements} accent={accent} />
             : <div className="loading" style={{ padding: 30 }}>{lu ? "최근 경기 데이터 부족" : "불러오는 중…"}</div>}
-          <div className="pitch-cap">🔥 최근 5경기 <span>{lu?.recent?.formation || ""}</span></div>
+          <div className="pitch-cap">최근 5경기 <span>{lu?.recent?.formation || ""}</span></div>
         </div>
       </div>
 
       {/* 26/27 예상 효과 — 이탈/보강 진단 */}
       {leftView === "next" && pj && pj.diagnosis.length > 0 && (
         <div className="effect-box">
-          <div className="effect-title" style={{ color: accent }}>🔮 {nextLabel} 이적 반영 효과</div>
+          <div className="effect-title" style={{ color: accent }}>{nextLabel} 이적 반영 효과</div>
           <div className="effect-grid">
             {pj.diagnosis.map((d, i) => (
               <div className={`effect-row ${d.kind}`} key={i}>

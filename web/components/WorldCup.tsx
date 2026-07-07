@@ -182,7 +182,7 @@ export default function WorldCup({ accent, onPickTeam }: { accent: string; onPic
           <WSec en="STANDOUTS" kr="신예 · 노장" accent={accent} />
           <div className="wc-two">
             <div className="card">
-              <div className="card-h">🌱 떠오르는 신예 <span className="wc-sub">21세 이하</span></div>
+              <div className="card-h">떠오르는 신예 <span className="wc-sub">21세 이하</span></div>
               {d.rising_stars.map((c, i) => (
                 <div className="wc-imp" key={i}>
                   {c.photo ? <img className="wc-imp-ph" src={c.photo} alt="" /> : (c.logo && <img className="wc-imp-flag" src={c.logo} alt="" />)}
@@ -193,7 +193,7 @@ export default function WorldCup({ accent, onPickTeam }: { accent: string; onPic
               {d.rising_stars.length === 0 && <div className="mgr-meta">해당 없음</div>}
             </div>
             <div className="card">
-              <div className="card-h">🔥 노장 투혼 <span className="wc-sub">33세 이상</span></div>
+              <div className="card-h">노장 투혼 <span className="wc-sub">33세 이상</span></div>
               {d.veterans.map((c, i) => (
                 <div className="wc-imp" key={i}>
                   {c.photo ? <img className="wc-imp-ph" src={c.photo} alt="" /> : (c.logo && <img className="wc-imp-flag" src={c.logo} alt="" />)}

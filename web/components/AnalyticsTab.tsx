@@ -96,11 +96,11 @@ export default function AnalyticsTab({ team, accent }: { team: string; accent: s
       <div className="card" style={{ marginTop: 16 }}>
         <h3>상대·환경별 성과 (PPG)</h3>
         <div className="ctx-grid">
-          <div className="ctx-item"><span>🏠 홈</span><b style={{ color: accent }}>{data.context.home_ppg}</b></div>
-          <div className="ctx-item"><span>✈️ 원정</span><b style={{ color: accent }}>{data.context.away_ppg}</b></div>
-          <div className="ctx-item"><span>🔝 상위권</span><b>{tp.top}</b></div>
-          <div className="ctx-item"><span>➖ 중위권</span><b>{tp.mid}</b></div>
-          <div className="ctx-item"><span>🔻 하위권</span><b>{tp.bottom}</b></div>
+          <div className="ctx-item"><span>홈</span><b style={{ color: accent }}>{data.context.home_ppg}</b></div>
+          <div className="ctx-item"><span>원정</span><b style={{ color: accent }}>{data.context.away_ppg}</b></div>
+          <div className="ctx-item"><span>상위권</span><b>{tp.top}</b></div>
+          <div className="ctx-item"><span>중위권</span><b>{tp.mid}</b></div>
+          <div className="ctx-item"><span>하위권</span><b>{tp.bottom}</b></div>
         </div>
       </div>
 

@@ -17,7 +17,7 @@ export default function ProjectionBoard({ team, accent }: { team: string; accent
 
   return (
     <div className="card" style={{ marginTop: 16 }}>
-      <h3>🔮 시즌별 예상 XI · 이적 반영 진단</h3>
+      <h3>시즌별 예상 XI · 이적 반영 진단</h3>
       <div className="proj-toggle">
         <button className={view === "cur" ? "active" : ""} onClick={() => setView("cur")}
           style={view === "cur" ? { background: accent, color: "#0b0f17" } : undefined}>{pj.current_label} 현재</button>
