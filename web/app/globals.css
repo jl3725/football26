@@ -91,6 +91,18 @@ html, body {
 .league-seg button:hover { color: var(--txt); }
 .league-seg button.active { background: var(--panel-2); color: var(--txt); }
 
+/* 리그 티어 그룹 라벨 (Tier S = 빅5 골드 / Tier A = 기타) */
+.league-tiers { margin-bottom: 2px; }
+.tier-label {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 9.5px; letter-spacing: 0.9px; text-transform: uppercase; font-weight: 800;
+  color: var(--muted); padding: 9px 10px 3px;
+}
+.tier-label::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.tier-label em { font-style: normal; font-size: 9px; font-weight: 700; letter-spacing: 0; opacity: 0.75; }
+.tier-label.tier-s { color: #f4cf5e; }
+.tier-label.tier-s::after { background: linear-gradient(90deg, rgba(244, 207, 94, 0.35), transparent); }
+
 /* 리그 홈 전역 내비 (사이드바 상단) */
 .home-nav {
   display: flex; align-items: center; gap: 11px; width: 100%; text-align: left;

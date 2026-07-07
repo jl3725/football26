@@ -18,7 +18,7 @@ import TransferTab from "@/components/TransferTab";
 import ScoutDock from "@/components/ScoutDock";
 import NewsTab from "@/components/NewsTab";
 
-const LEAGUE_TABS = [{ key: "EPL", label: "EPL" }, { key: "LaLiga", label: "LA LIGA" }, { key: "SerieA", label: "SERIE A" }, { key: "Bundesliga", label: "BUNDESLIGA" }, { key: "Ligue1", label: "LIGUE 1" }, { key: "LigaPortugal", label: "LIGA PORTUGAL" }, { key: "Eredivisie", label: "EREDIVISIE" }];
+const LEAGUE_TABS = [{ key: "EPL", label: "EPL" }, { key: "LaLiga", label: "LA LIGA" }, { key: "SerieA", label: "SERIE A" }, { key: "Bundesliga", label: "BUNDESLIGA" }, { key: "Ligue1", label: "LIGUE 1" }, { key: "LigaPortugal", label: "LIGA PORTUGAL" }, { key: "Eredivisie", label: "EREDIVISIE" }, { key: "BelgianProLeague", label: "BELGIUM" }];
 
 export default function Page() {
   const [teams, setTeams] = useState<Team[]>([]);

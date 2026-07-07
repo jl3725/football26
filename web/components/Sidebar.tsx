@@ -2,6 +2,17 @@
 import { useState } from "react";
 import type { Team, NextSeason } from "@/lib/api";
 
+// 리그 티어 — 빅5(Tier S) / 기타(Tier A). 리그 확장 시 여기에만 추가.
+const TIER_S: { k: string; label: string }[] = [
+  { k: "EPL", label: "🏴 EPL" }, { k: "LaLiga", label: "🇪🇸 La Liga" },
+  { k: "SerieA", label: "🇮🇹 Serie A" }, { k: "Bundesliga", label: "🇩🇪 Bundesliga" },
+  { k: "Ligue1", label: "🇫🇷 Ligue 1" },
+];
+const TIER_A: { k: string; label: string }[] = [
+  { k: "Eredivisie", label: "🇳🇱 Eredivisie" }, { k: "LigaPortugal", label: "🇵🇹 Liga Portugal" },
+  { k: "BelgianProLeague", label: "🇧🇪 Belgian Pro" },
+];
+
 // 다음 시즌 라벨 ("25/26" → "26/27")
 function nextSeasonLabel(cur: string): string {
   const m = cur.match(/(\d{2})\s*\/\s*(\d{2})/);
@@ -53,14 +64,19 @@ export default function Sidebar({
         </div>
       </div>
 
-      <div className="league-seg">
-        <button className={league === "EPL" ? "active" : ""} onClick={() => onLeague?.("EPL")}>🏴 EPL</button>
-        <button className={league === "LaLiga" ? "active" : ""} onClick={() => onLeague?.("LaLiga")}>🇪🇸 La Liga</button>
-        <button className={league === "SerieA" ? "active" : ""} onClick={() => onLeague?.("SerieA")}>🇮🇹 Serie A</button>
-        <button className={league === "Bundesliga" ? "active" : ""} onClick={() => onLeague?.("Bundesliga")}>🇩🇪 Bundesliga</button>
-        <button className={league === "Ligue1" ? "active" : ""} onClick={() => onLeague?.("Ligue1")}>🇫🇷 Ligue 1</button>
-        <button className={league === "LigaPortugal" ? "active" : ""} onClick={() => onLeague?.("LigaPortugal")}>🇵🇹 Liga Portugal</button>
-        <button className={league === "Eredivisie" ? "active" : ""} onClick={() => onLeague?.("Eredivisie")}>🇳🇱 Eredivisie</button>
+      <div className="league-tiers">
+        <div className="tier-label tier-s">TIER&nbsp;S <em>빅5</em></div>
+        <div className="league-seg">
+          {TIER_S.map((l) => (
+            <button key={l.k} className={league === l.k ? "active" : ""} onClick={() => onLeague?.(l.k)}>{l.label}</button>
+          ))}
+        </div>
+        <div className="tier-label">TIER&nbsp;A</div>
+        <div className="league-seg">
+          {TIER_A.map((l) => (
+            <button key={l.k} className={league === l.k ? "active" : ""} onClick={() => onLeague?.(l.k)}>{l.label}</button>
+          ))}
+        </div>
       </div>
 
       <button className={`home-nav${atHome ? " active" : ""}`} onClick={() => onHome?.()}>
