@@ -30,20 +30,18 @@ export default function Sidebar({
   atHome?: boolean; onHome?: () => void;
   league?: string; onLeague?: (l: string) => void;
 }) {
-  const [q, setQ] = useState("");
   const [seasonTab, setSeasonTab] = useState<"next" | "cur">("next"); // 새 시즌 먼저
   const nextLabel = next?.season_label || nextSeasonLabel(seasonLabel);
-  const match = (name: string) => name.toLowerCase().includes(q.toLowerCase());
   const total = teams.length;
   const leagueTitle = league === "LaLiga" ? "La Liga" : league === "SerieA" ? "Serie A" : league === "Bundesliga" ? "Bundesliga" : league === "Ligue1" ? "Ligue 1" : league === "LigaPortugal" ? "Liga Portugal" : league === "Eredivisie" ? "Eredivisie" : league === "BelgianProLeague" ? "Belgian Pro League" : "Premier League";
 
   // 25/26: 최종 순위순
-  const curShown = teams.filter((t) => match(t.name)).sort((a, b) => a.rank - b.rank);
+  const curShown = [...teams].sort((a, b) => a.rank - b.rank);
   // 26/27: 감지된 실제 로스터(승격/강등 반영), 알파벳순. 없으면 현재 팀 폴백.
   const nextShown = (next?.teams?.length
     ? next.teams
     : teams.map((t) => ({ name: t.name, color: t.color, logo: t.logo, promoted: false }))
-  ).filter((t) => match(t.name)).sort((a, b) => a.name.localeCompare(b.name));
+  ).slice().sort((a, b) => a.name.localeCompare(b.name));
 
   return (
     <aside className="side">
@@ -73,11 +71,6 @@ export default function Sidebar({
         </span>
         <span className="home-nav-dot" />
       </button>
-
-      <div className="search">
-        <span>⌕</span>
-        <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="구단 검색…" />
-      </div>
 
       <div className="side-tabs">
         <button className={seasonTab === "next" ? "active" : ""} onClick={() => setSeasonTab("next")}>{nextLabel}</button>
