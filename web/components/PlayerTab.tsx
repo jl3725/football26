@@ -105,15 +105,21 @@ function Detail({ team, player, accent }: { team: string; player: string; accent
   );
 }
 
-export default function PlayerTab({ team, accent }: { team: string; accent: string }) {
+export default function PlayerTab({ team, accent, initialPlayer }: { team: string; accent: string; initialPlayer?: string }) {
   const [data, setData] = useState<Players | null>(null);
   const [sel, setSel] = useState<string | null>(null);
   useEffect(() => {
     let a = true;
     setData(null); setSel(null);
-    getPlayers(team).then((d) => { if (a) { setData(d); setSel(d.players[0]?.player ?? null); } }).catch(() => {});
+    getPlayers(team).then((d) => {
+      if (!a) return;
+      setData(d);
+      // 딥링크(전역 검색)로 지정된 선수가 스쿼드에 있으면 그걸 선택, 없으면 첫 선수
+      const hit = initialPlayer && d.players.find((p) => p.player === initialPlayer);
+      setSel((hit ? hit.player : d.players[0]?.player) ?? null);
+    }).catch(() => {});
     return () => { a = false; };
-  }, [team]);
+  }, [team, initialPlayer]);
   if (!data) return <div className="loading">불러오는 중…</div>;
 
   return (

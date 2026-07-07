@@ -13,7 +13,7 @@ import AnalyticsTab from "@/components/AnalyticsTab";
 import SquadTab from "@/components/SquadTab";
 import ScheduleTab from "@/components/ScheduleTab";
 import PlayerTab from "@/components/PlayerTab";
-import DatabaseTab from "@/components/DatabaseTab";
+import GlobalSearch from "@/components/GlobalSearch";
 import TransferTab from "@/components/TransferTab";
 import ScoutDock from "@/components/ScoutDock";
 import NewsTab from "@/components/NewsTab";
@@ -31,6 +31,7 @@ export default function Page() {
   const [ctx, setCtx] = useState<Context | null>(null);
   const [loading, setLoading] = useState(false);
   const [ovErr, setOvErr] = useState(false);
+  const [pendingPlayer, setPendingPlayer] = useState("");   // 전역 검색 딥링크용
 
   useEffect(() => {
     setActiveLeague(league); // 모든 fetcher 기본 리그 갱신
@@ -56,6 +57,10 @@ export default function Page() {
   const pickLeagueTeam = (t: string, lg?: string) => {
     if (lg && lg !== league) { setActiveLeague(lg); setLeagueSel(lg); }
     setHome(false); setSel(t); setTab("overview");
+  };
+  const pickPlayer = (club: string, lg: string, player: string) => {
+    if (lg && lg !== league) { setActiveLeague(lg); setLeagueSel(lg); }
+    setHome(false); setSel(club); setPendingPlayer(player); setTab("player");
   };
   const DEFAULT_TEAM: Record<string, string> = { EPL: "Arsenal", LaLiga: "Barcelona", SerieA: "Inter", Bundesliga: "Bayern Munich", Ligue1: "PSG", LigaPortugal: "Sporting CP" };
   const leagueName = league === "LaLiga" ? "La Liga" : league === "SerieA" ? "Serie A" : league === "Bundesliga" ? "Bundesliga" : league === "Ligue1" ? "Ligue 1" : league === "LigaPortugal" ? "Liga Portugal" : "Premier League";
@@ -87,8 +92,7 @@ export default function Page() {
       case "analytics": return <AnalyticsTab key={sel} {...props} />;
       case "squad": return <SquadTab key={sel} {...props} />;
       case "schedule": return <ScheduleTab key={sel} {...props} />;
-      case "player": return <PlayerTab key={sel} {...props} />;
-      case "database": return <DatabaseTab key="db" {...props} />;
+      case "player": return <PlayerTab key={sel} team={sel} accent={accent} initialPlayer={pendingPlayer} />;
       case "transfer": return <TransferTab key={sel} {...props} />;
       case "news": return <NewsTab key={sel} {...props} />;
       default: return null;
@@ -106,6 +110,7 @@ export default function Page() {
         league={league} onLeague={switchLeague} />
       <main className="main">
         <StatusBar accent={accent} ctx={ctx} />
+        <GlobalSearch accent={accent} onPickPlayer={pickPlayer} onPickTeam={pickLeagueTeam} />
         <div className="topbar">
           <div className="tb-team">
             {home
