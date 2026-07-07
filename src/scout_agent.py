@@ -83,12 +83,19 @@ def _run_cypher(cypher: str) -> dict:
 TOOLS = [
     {"type": "function", "function": {
         "name": "recommend_players",
-        "description": "특정 팀의 약한 포지션에 대한 영입 후보를 Qdrant 스타일-핏 기반으로 전 리그에서 추천. "
-                       "'아스날 6번 추천', '우리 팀 여름 보강 우선순위' 같은 질문. role 있으면 그 역할로 좁힘.",
+        "description": "특정 팀의 약한 포지션에 대한 영입 후보를 Qdrant 스타일-핏 기반으로 추천. "
+                       "'아스날 6번 추천', '여름 보강 우선순위' 같은 질문. 후속 질문('프랑스 리그에서?', "
+                       "'더 젊은 선수로')이면 이전 role/team 을 유지하고 조건만 바꿔 재호출.",
         "parameters": {"type": "object", "properties": {
             "team": {"type": "string", "description": "팀명(정확한 데이터 표기)"},
-            "role": {"type": "string", "description": "세부 역할(선택, 예: Defensive Midfield, Centre-Back). "
-                     "'6번'=Defensive Midfield, '8번'=Central Midfield, '10번'=Attacking Midfield"}},
+            "role": {"type": "string", "description": "세부 역할(선택, 예: Defensive Midfield, Left Winger, Centre-Back). "
+                     "'6번'=Defensive Midfield, '8번'=Central Midfield, '10번'=Attacking Midfield"},
+            "leagues": {"type": "array", "items": {"type": "string"},
+                        "description": "후보를 특정 소스 리그로 제한(선택). 키: EPL·LaLiga·SerieA·Bundesliga·"
+                        "Ligue1·LigaPortugal. '프랑스 리그'=[\"Ligue1\"], '분데스'=[\"Bundesliga\"], "
+                        "'스페인'=[\"LaLiga\"], '이탈리아'=[\"SerieA\"], '포르투갈'=[\"LigaPortugal\"]"},
+            "max_age": {"type": "integer", "description": "최대 나이(선택, '더 젊은' 등)"},
+            "max_value": {"type": "integer", "description": "최대 시장가 EUR(선택, '더 싼' 등, 예: 50000000)"}},
             "required": ["team"]}}},
     {"type": "function", "function": {
         "name": "evaluate_fit",
@@ -211,7 +218,10 @@ def _execute(name: str, args: dict, league: str):
         return None, {"error": "api.main 미로드"}
     if name == "recommend_players":
         import transfer_fit as tf  # Qdrant 스타일-핏 발굴(교차리그, 리그 중립)
-        return "recommend", tf.discover_fits(_resolve_club(args.get("team", "")), args.get("role") or None)
+        return "recommend", tf.discover_fits(
+            _resolve_club(args.get("team", "")), args.get("role") or None,
+            leagues=args.get("leagues") or None,
+            max_age=args.get("max_age") or None, max_value=args.get("max_value") or None)
     if name == "evaluate_fit":
         return "fit", api.fit(args.get("candidate", ""), _resolve_club(args.get("club", "")),
                               args.get("role", ""), "", league)
