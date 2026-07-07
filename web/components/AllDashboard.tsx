@@ -16,6 +16,7 @@ function Arrow({ color = "currentColor" }: { color?: string }) {
 // 전 리그 통합 대시보드 — 빅딜·이적속보·감독교체·순위 스냅샷을 한 화면에.
 export default function AllDashboard({ accent, onPick }: { accent: string; onPick: (t: string, league?: string) => void }) {
   const [d, setD] = useState<HomeAll | null>(null);
+  const [spot, setSpot] = useState("form");   // 선수 스포트라이트 세그먼트
   useEffect(() => { let a = true; getHomeAll().then((x) => a && setD(x)).catch(() => {}); return () => { a = false; }; }, []);
   if (!d) return <div className="loading">Loading all leagues…</div>;
 
@@ -72,45 +73,56 @@ export default function AllDashboard({ accent, onPick }: { accent: string; onPic
         {d.top_deals.length === 0 && <div className="mgr-meta">No major deals this window</div>}
       </div>
 
-      {/* 최고 폼 + 득점 리더 */}
-      <div className="hub-two">
-        <div>
-          {sec("HOT FORM XI", "이번 시즌 최고 폼")}
-          <div className="card hub-list">
-            {d.hot_form.map((p, i) => (
-              <button className="hub-plr" key={i} onClick={() => onPick(p.club, p.league)}>
-                <span className="hub-plr-rk">{i + 1}</span>
-                {p.photo ? <img className="hub-plr-ph" src={p.photo} alt="" /> : <span className="hub-plr-ph ph" />}
-                <div className="hub-plr-body">
-                  <div className="hub-plr-nm">{p.player} {tag(p.league_name)}</div>
-                  <div className="hub-plr-sub">{p.club_logo && <img src={p.club_logo} alt="" />}{p.club} · {p.pos}</div>
-                </div>
-                <span className="hub-plr-ovr" style={{ color: tier(p.ovr).light }}>{p.ovr}</span>
-                <span className="hub-plr-metric" style={{ color: accent }}>{p.rating.toFixed(2)}</span>
-              </button>
-            ))}
-            {d.hot_form.length === 0 && <div className="mgr-meta">No data</div>}
-          </div>
-        </div>
-        <div>
-          {sec("GOAL LEADERS", "득점 리더")}
-          <div className="card hub-list">
-            {d.goal_leaders.map((p, i) => (
-              <button className="hub-plr" key={i} onClick={() => onPick(p.club, p.league)}>
-                <span className="hub-plr-rk">{i + 1}</span>
-                {p.photo ? <img className="hub-plr-ph" src={p.photo} alt="" /> : <span className="hub-plr-ph ph" />}
-                <div className="hub-plr-body">
-                  <div className="hub-plr-nm">{p.player} {tag(p.league_name)}</div>
-                  <div className="hub-plr-sub">{p.club_logo && <img src={p.club_logo} alt="" />}{p.club}</div>
-                </div>
-                <span className="hub-plr-metric big" style={{ color: accent }}>⚽{p.goals}</span>
-                <span className="hub-plr-a">{p.assists}A</span>
-              </button>
-            ))}
-            {d.goal_leaders.length === 0 && <div className="mgr-meta">No data</div>}
-          </div>
-        </div>
-      </div>
+      {/* 선수 스포트라이트 — 세그먼티드(폼·유망주·베테랑·가성비·득점·급등) */}
+      {(() => {
+        const SPOTS = [
+          { k: "form", en: "HOT FORM", kr: "최고 폼", list: (d.hot_form ?? []) as any[] },
+          { k: "prospect", en: "PROSPECTS", kr: "유망주 원석", list: (d.prospects ?? []) as any[] },
+          { k: "veteran", en: "VETERANS", kr: "베테랑 32+", list: (d.veterans ?? []) as any[] },
+          { k: "value", en: "VALUE PICKS", kr: "저평가 가성비", list: (d.value_picks ?? []) as any[] },
+          { k: "goal", en: "GOAL LEADERS", kr: "득점 리더", list: (d.goal_leaders ?? []) as any[] },
+          { k: "riser", en: "VALUE RISERS", kr: "시장가치 급등", list: (d.risers ?? []) as any[] },
+        ].filter((s) => s.list.length > 0);
+        if (!SPOTS.length) return null;
+        const cur = SPOTS.find((s) => s.k === spot) || SPOTS[0];
+        return (
+          <>
+            <div className="hub-h">
+              <span className="hub-h-bar" style={{ background: accent }} />
+              <span className="hub-h-en">PLAYER SPOTLIGHT</span><span className="hub-h-kr">선수 스포트라이트</span>
+              <div style={{ display: "inline-flex", flexWrap: "wrap", gap: 3, marginLeft: "auto", padding: 3, borderRadius: 10, background: "rgba(255,255,255,0.05)" }}>
+                {SPOTS.map((s) => (
+                  <button key={s.k} onClick={() => setSpot(s.k)}
+                    style={{ padding: "5px 11px", borderRadius: 7, fontSize: 11.5, fontWeight: 700, cursor: "pointer", border: "none",
+                      background: cur.k === s.k ? accent : "transparent", color: cur.k === s.k ? "#0a0a0a" : "inherit", opacity: cur.k === s.k ? 1 : 0.6 }}>{s.kr}</button>
+                ))}
+              </div>
+            </div>
+            <div className="card hub-list" style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: "1px 16px" }}>
+              {cur.list.map((p: any, i: number) => (
+                <button className="hub-plr" key={i} onClick={() => onPick(p.club, p.league)}>
+                  <span className="hub-plr-rk">{i + 1}</span>
+                  {p.photo ? <img className="hub-plr-ph" src={p.photo} alt="" /> : <span className="hub-plr-ph ph" />}
+                  <div className="hub-plr-body">
+                    <div className="hub-plr-nm">{p.player} {tag(p.league_name)}</div>
+                    <div className="hub-plr-sub">
+                      {p.club_logo && <img src={p.club_logo} alt="" />}{p.club}
+                      {(cur.k === "prospect" || cur.k === "veteran") && p.age ? ` · ${p.age}세` : ""}
+                      {(cur.k === "value" || cur.k === "riser") && p.value_eur ? ` · ${fmtEur(p.value_eur)}` : (cur.k !== "goal" && p.pos ? ` · ${p.pos}` : "")}
+                    </div>
+                  </div>
+                  {cur.k === "goal"
+                    ? (<><span className="hub-plr-metric big" style={{ color: accent }}>⚽{p.goals}</span><span className="hub-plr-a">{p.assists}A</span></>)
+                    : cur.k === "riser"
+                      ? (<span className="hub-plr-metric big" style={{ color: "#4fc27f" }}>▲{p.pct}%</span>)
+                      : (<><span className="hub-plr-ovr" style={{ color: tier(p.ovr).light }}>{p.ovr}</span>
+                          {p.rating != null && <span className="hub-plr-metric" style={{ color: accent }}>{p.rating.toFixed(2)}</span>}</>)}
+                </button>
+              ))}
+            </div>
+          </>
+        );
+      })()}
 
       {/* 이적 속보 + 감독 교체 */}
       <div className="hub-two">

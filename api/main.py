@@ -2516,6 +2516,8 @@ def _compute_hub_body() -> bytes:
 
     deals, buzz, changes, snaps = [], [], [], []
     form_c, goal_c, contract_c, injuries = [], [], [], []
+    prospect_c, veteran_c, value_c = [], [], []      # 유망주 U21 · 베테랑 32+ · 저평가 가성비
+    squad2league: dict[str, str] = {}                # 시장가치 급등의 리그 매핑용
     for lg in leagues:
         lname = _lname(lg)
         tr = ds.read_table("transfers", league=lg)
@@ -2553,6 +2555,8 @@ def _compute_hub_body() -> bytes:
         st = ds.read_table("standings", league=lg)
         table = []
         if st is not None and "rank" in st.columns:
+            for _sq in st.get("squad", pd.Series(dtype=str)).astype(str):
+                squad2league.setdefault(_sq, lg)
             for _, r in st.sort_values("rank").head(4).iterrows():
                 sq = str(r.get("squad") or "")
                 table.append({"rank": int(_num(r.get("rank"))), "team": sq,
@@ -2573,6 +2577,16 @@ def _compute_hub_body() -> bytes:
                 form_c.append((r, lg))
             for _, r in p.sort_values("_g", ascending=False).head(6).iterrows():
                 goal_c.append((r, lg))
+            p["_age"] = pd.to_numeric(p.get("age"), errors="coerce").fillna(0)
+            p["_mv"] = pd.to_numeric(p.get("market_value_eur"), errors="coerce").fillna(0)
+            for _, r in p[(p["_age"] > 0) & (p["_age"] <= 21) & (p["_mn"] >= 450)].sort_values("_ss", ascending=False).head(6).iterrows():
+                prospect_c.append((r, lg))          # 유망주 원석
+            for _, r in p[(p["_age"] >= 32) & (p["_mn"] >= 900)].sort_values("_ss", ascending=False).head(6).iterrows():
+                veteran_c.append((r, lg))           # 베테랑 32+
+            vp = p[(p["_ss"] >= 6.9) & (p["_mn"] >= 900) & (p["_mv"] > 0)].copy()
+            vp["_ratio"] = vp["_ss"] / (vp["_mv"] / 1e6 + 3.0)   # 평점 대비 저가일수록↑
+            for _, r in vp.sort_values("_ratio", ascending=False).head(6).iterrows():
+                value_c.append((r, lg))             # 저평가 가성비
             if "tm_contract_until" in p.columns:
                 cu = pd.to_datetime(p["tm_contract_until"], errors="coerce")
                 dd = (cu - pd.Timestamp(today)).dt.days
@@ -2621,29 +2635,59 @@ def _compute_hub_body() -> bytes:
     buzz.sort(key=lambda b: b["published"], reverse=True)   # 리그별 최신순 → 인터리브
     changes.sort(key=lambda c: c["changed_at"], reverse=True)
 
+    def _pcard(r, lg, **extra):
+        d = {"player": r["player"], "club": str(r.get("squad") or ""),
+             "club_logo": tm.team_logo(str(r.get("squad") or "")), "ovr": _player_ovr(r),
+             "pos": str(r.get("fl_group") or r.get("pos") or ""), "age": int(_num(r.get("age"))),
+             "photo": _photo(r), "league": lg, "league_name": _lname(lg)}
+        d.update(extra)
+        return d
+
+    # 선수 스포트라이트 — 전부 리그별 인터리브(빅리그 독식 방지, 전 리그 노출)
     form_c.sort(key=lambda t: -t[0]["_ss"])
-    hot_form = [{"player": r["player"], "club": str(r.get("squad") or ""),
-                 "club_logo": tm.team_logo(str(r.get("squad") or "")),
-                 "rating": round(_num(r.get("ss_rating")), 2), "ovr": _player_ovr(r),
-                 "pos": str(r.get("fl_group") or r.get("pos") or ""), "photo": _photo(r),
-                 "league": lg, "league_name": _lname(lg)} for r, lg in form_c[:10]]
+    hot_form = _interleave([_pcard(r, lg, rating=round(_num(r.get("ss_rating")), 2)) for r, lg in form_c], 12)
     goal_c.sort(key=lambda t: (-_num(t[0].get("goals")), -_num(t[0].get("assists"))))
-    goal_leaders = [{"player": r["player"], "club": str(r.get("squad") or ""),
-                     "club_logo": tm.team_logo(str(r.get("squad") or "")),
-                     "goals": int(_num(r.get("goals"))), "assists": int(_num(r.get("assists"))),
-                     "photo": _photo(r), "league": lg, "league_name": _lname(lg)} for r, lg in goal_c[:10]]
+    goal_leaders = _interleave([_pcard(r, lg, goals=int(_num(r.get("goals"))), assists=int(_num(r.get("assists")))) for r, lg in goal_c], 12)
+    prospect_c.sort(key=lambda t: -t[0]["_ss"])
+    prospects = _interleave([_pcard(r, lg, rating=round(_num(r.get("ss_rating")), 2)) for r, lg in prospect_c], 12)
+    veteran_c.sort(key=lambda t: -t[0]["_ss"])
+    veterans = _interleave([_pcard(r, lg, rating=round(_num(r.get("ss_rating")), 2)) for r, lg in veteran_c], 12)
+    value_c.sort(key=lambda t: -t[0]["_ratio"])
+    value_picks = _interleave([_pcard(r, lg, rating=round(_num(r.get("ss_rating")), 2), value_eur=_num(r.get("market_value_eur"))) for r, lg in value_c], 12)
     contract_c.sort(key=lambda t: -_num(t[0].get("market_value_eur")))
-    contracts_out = [{"player": r["player"], "club": str(r.get("squad") or ""),
-                      "club_logo": tm.team_logo(str(r.get("squad") or "")),
-                      "until": str(r.get("tm_contract_until") or "")[:10],
-                      "value_eur": _num(r.get("market_value_eur")), "ovr": _player_ovr(r),
-                      "photo": _photo(r), "league": lg, "league_name": _lname(lg)} for r, lg in contract_c[:10]]
+    contracts_out = _interleave([_pcard(r, lg, until=str(r.get("tm_contract_until") or "")[:10], value_eur=_num(r.get("market_value_eur"))) for r, lg in contract_c], 12)
+
+    # 시장가치 급등 — market_value_history 델타(최초 vs 최신 스냅샷). 스냅샷 누적될수록 정확.
+    risers = []
+    try:
+        mvh = ds.read_table("market_value_history")
+        if mvh is not None and not mvh.empty and "player" in mvh.columns:
+            m = mvh.copy()
+            m["_v"] = pd.to_numeric(m["market_value_eur"], errors="coerce")
+            m = m.dropna(subset=["_v"]).sort_values("date")
+            rows = []
+            for player, grp in m.groupby("player"):
+                if len(grp) < 2:
+                    continue
+                first, last = float(grp.iloc[0]["_v"]), float(grp.iloc[-1]["_v"])
+                sq = str(grp.iloc[-1]["squad"]); lg = squad2league.get(sq)
+                if not lg or first <= 0 or last <= first:
+                    continue
+                rows.append({"player": str(player), "club": sq, "club_logo": tm.team_logo(sq),
+                             "value_eur": last, "delta_eur": last - first,
+                             "pct": round((last - first) / first * 100), "photo": "",
+                             "league": lg, "league_name": _lname(lg)})
+            rows.sort(key=lambda x: -x["pct"])
+            risers = _interleave(rows, 12)
+    except Exception:  # noqa: BLE001
+        pass
 
     result = {"window": win, "leagues": [{"key": lg, "name": _lname(lg)} for lg in leagues],
               "top_deals": deals[:12], "buzz": _interleave(buzz, 18),
               "manager_changes": _interleave(changes, 12), "snapshots": snaps,
               "injuries": _interleave(injuries, 12), "hot_form": hot_form,
-              "goal_leaders": goal_leaders, "contracts": contracts_out}
+              "goal_leaders": goal_leaders, "prospects": prospects, "veterans": veterans,
+              "value_picks": value_picks, "risers": risers, "contracts": contracts_out}
     return json.dumps(result, ensure_ascii=False).encode("utf-8")
 
 
