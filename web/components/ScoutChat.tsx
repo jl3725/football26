@@ -31,7 +31,7 @@ function fmtCell(v: unknown): string {
 }
 
 // intent 별 컴팩트 결과 카드(자세히는 Overview/Recruit 탭)
-function ResultCard({ d, accent }: { d: Scout; accent: string }) {
+function ResultCard({ d, accent, onNavigate }: { d: Scout; accent: string; onNavigate?: (t: string, l?: string) => void }) {
   const r = d.result;
   if (!r) return null;
   if (r.available === false) return <div style={{ fontSize: 12, opacity: 0.6 }}>🔌 {r.reason}</div>;
@@ -44,7 +44,8 @@ function ResultCard({ d, accent }: { d: Scout; accent: string }) {
       <div style={box}>
         {r.weakest?.label && <div style={{ fontSize: 11, opacity: 0.6, marginBottom: 6 }}>약점 라인: {r.weakest.label}</div>}
         {picks.map((p: any, i: number) => (
-          <div key={i} style={{ display: "flex", alignItems: "center", gap: 8, padding: "5px 0", borderBottom: i < picks.length - 1 ? `1px solid ${hexA("#fff", 0.05)}` : "none" }}>
+          <div key={i} onClick={() => p.squad && onNavigate?.(p.squad, p.source_league)} title={p.squad ? `${p.squad} 보기` : ""}
+            style={{ display: "flex", alignItems: "center", gap: 8, padding: "5px 0", cursor: onNavigate && p.squad ? "pointer" : "default", borderBottom: i < picks.length - 1 ? `1px solid ${hexA("#fff", 0.05)}` : "none" }}>
             {p.photo ? <img src={p.photo} alt="" style={{ width: 26, height: 26, borderRadius: "50%", objectFit: "cover" }} /> : <span style={{ width: 26 }} />}
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ fontSize: 12.5, fontWeight: 600 }}>{p.player} <span style={{ opacity: 0.5, fontWeight: 400 }}>{p.squad}</span></div>
@@ -139,7 +140,8 @@ function ResultCard({ d, accent }: { d: Scout; accent: string }) {
   return null;
 }
 
-export default function ScoutChat({ team, league, accent }: { team: string; league: string; accent: string }) {
+export default function ScoutChat({ team, league, accent, onNavigate, embedded }:
+  { team: string; league: string; accent: string; onNavigate?: (t: string, l?: string) => void; embedded?: boolean }) {
   const [msgs, setMsgs] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -170,11 +172,14 @@ export default function ScoutChat({ team, league, accent }: { team: string; leag
   };
 
   return (
-    <div className="fade" style={{ display: "flex", flexDirection: "column", height: "calc(100vh - 190px)" }}>
-      <div className="card" style={{ marginBottom: 10 }}>
-        <h3>💬 Ask Scout <span style={{ fontSize: 11, fontWeight: 400, opacity: 0.5 }}>· Chief Scout에게 물어보세요 (현재 팀: {team})</span></h3>
-        <div style={{ fontSize: 10.5, opacity: 0.45 }}>ℹ️ 판단·수치는 데이터 엔진, LLM은 라우팅·설명만 · 로컬(OpenAI) 사용</div>
-      </div>
+    <div className="fade" style={{ display: "flex", flexDirection: "column", height: embedded ? "100%" : "calc(100vh - 190px)" }}>
+      {!embedded && (
+        <div className="card" style={{ marginBottom: 10 }}>
+          <h3>💬 Ask Scout <span style={{ fontSize: 11, fontWeight: 400, opacity: 0.5 }}>· Chief Scout에게 물어보세요 (현재 팀: {team})</span></h3>
+          <div style={{ fontSize: 10.5, opacity: 0.45 }}>ℹ️ 판단·수치는 데이터 엔진, LLM은 라우팅·설명만 · 로컬(OpenAI) 사용</div>
+        </div>
+      )}
+      {embedded && <div style={{ fontSize: 10.5, opacity: 0.5, padding: "8px 2px" }}>현재 팀: <b>{team || "-"}</b> · 판단은 데이터 엔진, LLM은 라우팅·설명</div>}
 
       {/* 메시지 */}
       <div style={{ flex: 1, overflowY: "auto", paddingRight: 4 }}>
@@ -190,7 +195,7 @@ export default function ScoutChat({ team, league, accent }: { team: string; leag
               border: m.role === "user" ? `1px solid ${hexA(accent, 0.3)}` : `1px solid ${hexA("#ffffff", 0.07)}` }}>
               {m.role === "assistant" && <span style={{ fontSize: 11, opacity: 0.5, marginRight: 5 }}>🤖 Chief Scout</span>}
               <span style={{ whiteSpace: "pre-wrap" }}>{m.text}</span>
-              {m.data && <ResultCard d={m.data} accent={accent} />}
+              {m.data && <ResultCard d={m.data} accent={accent} onNavigate={onNavigate} />}
             </div>
           </div>
         ))}

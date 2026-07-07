@@ -9,7 +9,6 @@ export const TABS = [
   { key: "player", label: "Player", icon: "👤", ready: true },
   { key: "database", label: "Database", icon: "🔎", ready: true },
   { key: "transfer", label: "Recruit", icon: "🧭", ready: true },
-  { key: "scout", label: "Ask Scout", icon: "💬", ready: true },
   { key: "news", label: "News", icon: "📰", ready: true },
 ] as const;
 
