@@ -1,10 +1,14 @@
 "use client";
+import { useState } from "react";
 import type { Overview } from "@/lib/api";
+import { hexA } from "@/lib/ui";
+import SquadGraph from "./SquadGraph";
 
 const LINE_COLOR: Record<string, string> = { ATT: "#ff6b6b", MID: "#f4cf5e", DEF: "#4a86ff", GK: "#4fc27f" };
 const BANDS = [90, 85, 80, 75, 70, 60];
 
 export default function RatingsBoard({ ov, accent }: { ov: Overview; accent: string }) {
+  const [view, setView] = useState<"network" | "scatter">("network");
   const sr = ov.squad_ratings || [];
   if (sr.length === 0) return null;
 
@@ -16,8 +20,17 @@ export default function RatingsBoard({ ov, accent }: { ov: Overview; accent: str
 
   return (
     <div className="card" style={{ marginTop: 16 }}>
-      <h3>스쿼드 절대 평가<span className="rating-note">· 나이 대비 OVR/POT</span></h3>
-      <svg viewBox={`0 0 ${W} ${H}`} className="ovr-scatter" preserveAspectRatio="xMidYMid meet">
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
+        <h3 style={{ margin: 0 }}>스쿼드 {view === "network" ? "네트워크" : "평가"}
+          <span className="rating-note">· {view === "network" ? "함께 뛴 조합" : "나이 대비 OVR/POT"}</span></h3>
+        <div style={{ display: "inline-flex", gap: 2, padding: 3, borderRadius: 9, background: hexA("#ffffff", 0.05), border: `1px solid ${hexA(accent, 0.15)}` }}>
+          {([["network", "네트워크"], ["scatter", "산점도"]] as const).map(([v, l]) => (
+            <button key={v} onClick={() => setView(v)} style={{ padding: "5px 12px", borderRadius: 6, fontSize: 12, fontWeight: 600, cursor: "pointer", border: "none", background: view === v ? accent : "transparent", color: view === v ? "#0a0a0a" : "inherit", opacity: view === v ? 1 : 0.6 }}>{l}</button>
+          ))}
+        </div>
+      </div>
+      {view === "network" ? <SquadGraph team={ov.team} accent={accent} /> : (
+      <><svg viewBox={`0 0 ${W} ${H}`} className="ovr-scatter" preserveAspectRatio="xMidYMid meet">
         {/* 피크 나이 구간 24–29 음영 */}
         <rect x={x(24)} y={padT} width={x(29) - x(24)} height={H - padB - padT} fill="rgba(255,255,255,0.035)" />
         {/* OVR 밴드 그리드 */}
@@ -56,7 +69,7 @@ export default function RatingsBoard({ ov, accent }: { ov: Overview; accent: str
         <span><i style={{ background: LINE_COLOR.DEF }} />수비</span>
         <span><i style={{ background: LINE_COLOR.GK }} />GK</span>
         <span className="sc-pot">○┄ 위쪽 = POT(성장여지)</span>
-      </div>
+      </div></>)}
     </div>
   );
 }

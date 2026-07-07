@@ -264,6 +264,12 @@ const q = (team: string, league: string) =>
   `${encodeURIComponent(team)}?league=${encodeURIComponent(league)}`;
 
 export const getSquad = (t: string, l = _league) => j<Squad>(`/api/squad/${q(t, l)}`);
+
+// ── 스쿼드 네트워크 (KG TEAMMATE_OF) ──
+export type SGNode = { id: string; name: string; pos: string; line: string; rating: number | null };
+export type SGEdge = { a: string; b: string; matches: number };
+export type SquadGraphData = { available: boolean; reason?: string; error?: string; team?: string; nodes: SGNode[]; edges: SGEdge[] };
+export const getSquadGraph = (t: string, l = _league) => j<SquadGraphData>(`/api/squad-graph/${q(t, l)}`);
 export const getSchedule = (t: string, season = "", l = _league) => j<Schedule>(`/api/schedule/${q(t, l)}${season ? `&season=${season}` : ""}`);
 export const getMatch = (t: string, eid: string, l = _league) =>
   j<MatchDetail>(`/api/match/${encodeURIComponent(t)}/${encodeURIComponent(eid)}?league=${encodeURIComponent(l)}`);

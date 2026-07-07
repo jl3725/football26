@@ -587,6 +587,13 @@ def discover(team: str, role: str = "", leagues: str = "", min_age: int = 0,
                             max_value=max_value or None)
 
 
+@app.get("/api/squad-graph/{team}")
+def squad_graph_ep(team: str, league: str = ACTIVE_LEAGUE):
+    """스쿼드 네트워크 — KG(Neo4j) TEAMMATE_OF 로 '같이 뛴' 관계 그래프. 미가동 시 degrade."""
+    import kg_graph  # noqa: PLC0415 (지연 import — Neo4j 의존)
+    return kg_graph.squad_graph(team, min_matches=6, edge_limit=32)
+
+
 @app.get("/api/calendar")
 def calendar():
     cal = ds.read_table("calendar_events")
