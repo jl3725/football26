@@ -165,12 +165,6 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
                 </div>
               </div>
               {ov.manager.bio && <div className="mgr-bio">{ov.manager.bio}</div>}
-              {ov.manager.tactics && (
-                <div className="mgr-tactics">
-                  <span className="mgr-tag" style={{ background: hexA(accent, 0.18), color: accent }}>전술</span>
-                  {ov.manager.tactics}
-                </div>
-              )}
               <div className="mgr-src">출처: Wikipedia</div>
             </>
           ) : <div className="mgr-meta">감독 정보 없음</div>}

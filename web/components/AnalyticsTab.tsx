@@ -2,20 +2,9 @@
 import { useEffect, useState } from "react";
 import { getAnalytics, fmtEur, type Analytics, type Factor } from "@/lib/api";
 import { tier, hexA } from "@/lib/ui";
-import Radar from "./Radar";
 
 const LINE_LABEL: Record<string, string> = { GK: "골키퍼", DEF: "수비", MID: "미드필드", ATT: "공격" };
 const LINE_COLOR: Record<string, string> = { GK: "#7fb4f0", DEF: "#6aa6e0", MID: "#caa64e", ATT: "#d98169" };
-
-function GameTile({ label, value }: { label: string; value: number }) {
-  const t = tier(value);
-  return (
-    <div className="gtile">
-      <div className="gtile-l">{label}</div>
-      <div className="gtile-v teko" style={{ color: t.light }}>{value}</div>
-    </div>
-  );
-}
 
 function FactorCard({ f, kind, accent }: { f: Factor; kind: "s" | "w"; accent: string }) {
   const t = tier(f.value);
@@ -46,37 +35,10 @@ export default function AnalyticsTab({ team, accent }: { team: string; accent: s
 
   const worst = Object.entries(data.line_share).sort((a, b) => b[1] - a[1])[0];
   const s = data.transfer_summary;
-  const ovr = data.ovr;
   const tp = data.context.tier_ppg;
-  const ot = tier(ovr.overall || 0);
 
   return (
     <div className="fade">
-      {/* OVR + 게임타일 + 레이더 */}
-      <div className="grid" style={{ marginTop: 0 }}>
-        <div className="card">
-          <h3>Squad Signal</h3>
-          <div className="asig">
-            <div className="asig-ovr" style={{ borderColor: hexA(ot.light, 0.5) }}>
-              <div className="teko" style={{ fontSize: 60, lineHeight: .8, color: ot.light }}>{ovr.overall || "-"}</div>
-              <div className="ovr-cap" style={{ color: ot.light }}>{ot.name}</div>
-              <div className="ovr-sub">SQUAD OVR</div>
-            </div>
-            <div className="asig-tiles">
-              <GameTile label="공격" value={ovr.attack || 0} />
-              <GameTile label="미드" value={ovr.midfield || 0} />
-              <GameTile label="수비" value={ovr.defense || 0} />
-              <GameTile label="폼" value={ovr.form || 0} />
-              <GameTile label="세트피스" value={ovr.set_piece || 0} />
-            </div>
-          </div>
-        </div>
-        <div className="card">
-          <h3>Team Ability Radar</h3>
-          <Radar data={data.radar} color={accent} />
-        </div>
-      </div>
-
       {/* Match Factor Lab */}
       <div className="card" style={{ marginTop: 16 }}>
         <h3>Match Factor Lab · 강점 / 보강</h3>
