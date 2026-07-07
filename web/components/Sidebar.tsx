@@ -2,15 +2,22 @@
 import { useState } from "react";
 import type { Team, NextSeason } from "@/lib/api";
 
-// 리그 티어 — 빅5(Tier S) / 기타(Tier A). 리그 확장 시 여기에만 추가.
-const TIER_S: { k: string; label: string }[] = [
+// 리그 티어 — 리그 확장 시 여기 배열에만 추가.
+//   TIER S = 빅5 · TIER A = 유럽 강호 · 원석 발굴(TALENT) = 셀링/유망주 공급 리그
+type LeagueBtn = { k: string; label: string; soon?: boolean };
+const TIER_S: LeagueBtn[] = [
   { k: "EPL", label: "🏴 EPL" }, { k: "LaLiga", label: "🇪🇸 La Liga" },
   { k: "SerieA", label: "🇮🇹 Serie A" }, { k: "Bundesliga", label: "🇩🇪 Bundesliga" },
   { k: "Ligue1", label: "🇫🇷 Ligue 1" },
 ];
-const TIER_A: { k: string; label: string }[] = [
+const TIER_A: LeagueBtn[] = [
   { k: "Eredivisie", label: "🇳🇱 Eredivisie" }, { k: "LigaPortugal", label: "🇵🇹 Liga Portugal" },
+];
+const TIER_TALENT: LeagueBtn[] = [
   { k: "BelgianProLeague", label: "🇧🇪 Belgian Pro" },
+  { k: "Austria", label: "🇦🇹 Austria", soon: true },
+  { k: "Brazil", label: "🇧🇷 Brazil", soon: true },
+  { k: "Argentina", label: "🇦🇷 Argentina", soon: true },
 ];
 
 // 다음 시즌 라벨 ("25/26" → "26/27")
@@ -71,11 +78,18 @@ export default function Sidebar({
             <button key={l.k} className={league === l.k ? "active" : ""} onClick={() => onLeague?.(l.k)}>{l.label}</button>
           ))}
         </div>
-        <div className="tier-label">TIER&nbsp;A</div>
+        <div className="tier-label">TIER&nbsp;A <em>유럽 강호</em></div>
         <div className="league-seg">
           {TIER_A.map((l) => (
             <button key={l.k} className={league === l.k ? "active" : ""} onClick={() => onLeague?.(l.k)}>{l.label}</button>
           ))}
+        </div>
+        <div className="tier-label tier-talent">원석 발굴 <em>TALENT</em></div>
+        <div className="league-seg">
+          {TIER_TALENT.map((l) => l.soon
+            ? <button key={l.k} className="soon" disabled title="곧 추가 예정">{l.label}</button>
+            : <button key={l.k} className={league === l.k ? "active" : ""} onClick={() => onLeague?.(l.k)}>{l.label}</button>
+          )}
         </div>
       </div>
 

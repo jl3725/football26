@@ -102,6 +102,10 @@ html, body {
 .tier-label em { font-style: normal; font-size: 9px; font-weight: 700; letter-spacing: 0; opacity: 0.75; }
 .tier-label.tier-s { color: #f4cf5e; }
 .tier-label.tier-s::after { background: linear-gradient(90deg, rgba(244, 207, 94, 0.35), transparent); }
+.tier-label.tier-talent { color: #4fc27f; }
+.tier-label.tier-talent::after { background: linear-gradient(90deg, rgba(79, 194, 127, 0.35), transparent); }
+.league-seg button.soon { opacity: 0.34; cursor: default; }
+.league-seg button.soon:hover { color: var(--muted); }
 
 /* 리그 홈 전역 내비 (사이드바 상단) */
 .home-nav {
