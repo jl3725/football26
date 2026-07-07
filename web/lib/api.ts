@@ -385,6 +385,11 @@ export type HubContract = { player: string; club: string; club_logo: string; unt
 export type HubInjury = { player: string; club: string; club_logo: string; event: string; injury: string; date: string; photo: string; league: string; league_name: string };
 export type HomeAll = { window: Context["window"]; leagues: { key: string; name: string }[]; top_deals: HubDeal[]; buzz: HubBuzz[]; manager_changes: HubChange[]; snapshots: HubSnapshot[]; injuries: HubInjury[]; hot_form: HubForm[]; goal_leaders: HubGoal[]; prospects: HubForm[]; veterans: HubForm[]; value_picks: HubValue[]; risers: HubRiser[]; contracts: HubContract[] };
 export const getHomeAll = () => j<HomeAll>(`/api/home/all`);
+// 선수 시즌 히트맵(Sofascore) — analytics 포지셔널 히트맵
+export type HeatmapPlayer = { player: string; pos: string; line: string; minutes: number; ovr: number; photo: string; n_points: number; grid: number[] };
+export type HeatmapData = { available: boolean; team: string; gw: number; gh: number; players: HeatmapPlayer[] };
+export const getHeatmaps = (team: string, league = _league) =>
+  j<HeatmapData>(`/api/heatmaps/${encodeURIComponent(team)}?league=${encodeURIComponent(league)}`);
 export type WCSquadPlayer = { player: string; pos: string; jersey: string; age: string; club: string; league: string; club_logo: string; photo: string };
 export type WCSquad = { nation: string; count: number; players: WCSquadPlayer[] };
 export const getWCSquad = (nation: string) => j<WCSquad>(`/api/wc/squad/${encodeURIComponent(nation)}`);

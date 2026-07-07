@@ -678,6 +678,45 @@ def _pf(league: str):
     return df
 
 
+@app.get("/api/heatmaps/{team}")
+def heatmaps(team: str, league: str = ACTIVE_LEAGUE):
+    """팀 선수별 시즌 히트맵(Sofascore) — analytics 포지셔널 히트맵용. norm_key 로 players_full 조인."""
+    hm = ds.read_table("player_heatmaps", league=league)
+    if hm is None or hm.empty or "norm_key" not in hm.columns:
+        return {"available": False, "team": team, "players": []}
+    pf = _pf(league)
+    if pf is None or pf.empty:
+        return {"available": False, "team": team, "players": []}
+    tp = pf[pf["squad"].astype(str) == team].copy()
+    if tp.empty:
+        return {"available": False, "team": team, "players": []}
+    tp["_mn"] = pd.to_numeric(tp.get("minutes"), errors="coerce").fillna(0)
+    meta = {}
+    for _, r in tp.iterrows():
+        k = str(r.get("norm_key") or "")
+        if k:
+            meta[k] = {"player": str(r.get("player") or ""), "pos": str(r.get("pos") or ""),
+                       "line": str(r.get("fl_group") or r.get("line") or ""),
+                       "minutes": int(r["_mn"]), "ovr": _player_ovr(r), "photo": _photo(r)}
+    gw = gh = None
+    players = []
+    for _, r in hm.iterrows():
+        k = str(r.get("norm_key") or "")
+        if k not in meta:
+            continue
+        try:
+            grid = [int(x) for x in str(r.get("grid") or "").split()]
+        except ValueError:
+            continue
+        if not grid:
+            continue
+        gw = int(_num(r.get("gw"))) or 12
+        gh = int(_num(r.get("gh"))) or 8
+        players.append({**meta[k], "n_points": int(_num(r.get("n_points"))), "grid": grid})
+    players.sort(key=lambda p: -p["minutes"])
+    return {"available": len(players) > 0, "team": team, "gw": gw or 12, "gh": gh or 8, "players": players[:26]}
+
+
 def _lineups(league: str):
     """espn_lineups(리그) + 컵·유럽 라인업 concat — 스케줄/경기상세용. 리그별 파일."""
     base = ds.read_table("espn_lineups", league=league)
