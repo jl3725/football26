@@ -8,6 +8,7 @@ pandas==2.2.3
 numpy==2.2.5
 scikit-learn==1.6.1
 Unidecode==1.4.0
-# Fit·감독시뮬(Qdrant) + Ask Scout(OpenAI) 운영 배포용. Neo4j(선례)는 없으면 자동 degrade라 제외.
+# 벡터/그래프 스카우팅 운영 배포용: Fit·추천·시뮬(Qdrant) · Ask Scout(OpenAI) · graph_query·KG(Neo4j AuraDB)
 qdrant-client==1.12.1
 openai>=1.40,<2
+neo4j==5.28.1
