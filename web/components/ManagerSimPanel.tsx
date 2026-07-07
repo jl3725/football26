@@ -40,7 +40,7 @@ export default function ManagerSimPanel({ team, accent }: { team: string; accent
   return (
     <div className="fade">
       <div className="card">
-        <h3><Bar c={accent} />감독 교체 시뮬레이션 <span style={{ fontSize: 11, fontWeight: 400, opacity: 0.5 }}>· {team}에 새 감독 부임 시 전술·스쿼드·영입 변화</span></h3>
+        <h3><Bar c={accent} />감독 교체 시뮬레이션</h3>
         <div style={{ display: "flex", flexWrap: "wrap", gap: 8, alignItems: "center", margin: "6px 0 4px" }}>
           <input value={mgr} onChange={(e) => setMgr(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && run()} placeholder="새 감독명 또는 클럽명 (예: Hansi Flick / Barcelona)"
@@ -60,7 +60,6 @@ export default function ManagerSimPanel({ team, accent }: { team: string; accent
                 background: hexA(accent, 0.12), border: `1px solid ${hexA(accent, 0.3)}`, color: "inherit" }}>{q}</button>
           ))}
         </div>
-        <div style={{ fontSize: 10, opacity: 0.4, marginTop: 8 }}>ℹ️ 새 감독의 현 소속 클럽 전술을 대입 · 로컬 벡터/그래프 스택 사용</div>
       </div>
 
       {loading && <div className="loading" style={{ marginTop: 16 }}>시뮬레이션 중…</div>}

@@ -177,10 +177,9 @@ export default function ScoutChat({ team, league, accent, onNavigate, embedded }
       {!embedded && (
         <div className="card" style={{ marginBottom: 10 }}>
           <h3><Bar c={accent} />Ask Scout <span style={{ fontSize: 11, fontWeight: 400, opacity: 0.5 }}>· Chief Scout에게 물어보세요 (현재 팀: {team})</span></h3>
-          <div style={{ fontSize: 10.5, opacity: 0.45 }}>ℹ️ 판단·수치는 데이터 엔진, LLM은 라우팅·설명만 · 로컬(OpenAI) 사용</div>
         </div>
       )}
-      {embedded && <div style={{ fontSize: 10.5, opacity: 0.5, padding: "8px 2px" }}>현재 팀: <b>{team || "-"}</b> · 판단은 데이터 엔진, LLM은 라우팅·설명</div>}
+      {embedded && <div style={{ fontSize: 10.5, opacity: 0.5, padding: "8px 2px" }}>현재 팀: <b>{team || "-"}</b></div>}
 
       {/* 메시지 */}
       <div style={{ flex: 1, overflowY: "auto", paddingRight: 4 }}>

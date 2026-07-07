@@ -57,7 +57,7 @@ export default function FitEvaluator({ team, accent, suggestions }:
   return (
     <div className="fade">
       <div className="card">
-        <h3><Bar c={accent} />적합도 평가 <span style={{ fontSize: 11, fontWeight: 400, opacity: 0.5 }}>· {team} 영입 시 적합도 정밀 분해</span></h3>
+        <h3><Bar c={accent} />적합도 평가</h3>
         {/* 입력 */}
         <div style={{ display: "flex", flexWrap: "wrap", gap: 8, alignItems: "center", margin: "6px 0 4px" }}>
           <input value={cand} onChange={(e) => setCand(e.target.value)} list="fit-cands"
@@ -88,7 +88,6 @@ export default function FitEvaluator({ team, accent, suggestions }:
             ))}
           </div>
         )}
-        <div style={{ fontSize: 10, opacity: 0.4, marginTop: 8 }}>ℹ️ 로컬 벡터·그래프 스택(Qdrant/Neo4j) 사용 · 온디맨드 계산</div>
       </div>
 
       {loading && <div className="loading" style={{ marginTop: 16 }}>Fit 계산 중…</div>}
@@ -156,7 +155,7 @@ function FitCard({ r, accent }: { r: Fit; accent: string }) {
           <span style={{ opacity: 0.6 }}> ({td.is_new_manager ? "새 부임" : "안정"}
             {td.appointed ? ` · ${td.appointed}` : ""}: 현재 {Math.round(td.w_current * 100)}% / 성향 {Math.round(td.w_tendency * 100)}%)</span>
           {td.is_new_manager && td.descriptor_tags.length === 0 &&
-            <div style={{ opacity: 0.5, marginTop: 3 }}>ℹ️ 감독 성향 데이터 없음 → 현재 스냅샷으로 폴백</div>}
+            <div style={{ opacity: 0.5, marginTop: 3 }}>감독 성향 데이터 없음</div>}
         </div>
       )}
 

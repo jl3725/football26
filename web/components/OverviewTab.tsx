@@ -171,7 +171,7 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
                   {ov.manager.tactics}
                 </div>
               )}
-              <div className="mgr-src">ℹ️ 설명·전술: Wikipedia 자동 수집</div>
+              <div className="mgr-src">출처: Wikipedia</div>
             </>
           ) : <div className="mgr-meta">감독 정보 없음</div>}
         </div>

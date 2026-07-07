@@ -130,14 +130,14 @@ export default function TransferTab({ team, accent }: { team: string; accent: st
 
       {/* 포지션별 보강 후보 — 벡터 스타일-핏 + 필터/KPI/정렬 (RecruitPool) */}
       <div className="card" style={{ marginTop: 16 }}>
-        <h3><Bar c={accent} />스카우팅 풀 <span className="rating-note">· 벡터 스타일-핏 · 전 리그 · KG 신호 · 필터/정렬</span></h3>
+        <h3><Bar c={accent} />스카우팅 풀 <span className="rating-note">· 전 리그</span></h3>
         <RecruitPool team={team} accent={accent} />
       </div>
 
       {/* 드림 타깃 — 최상위급이나 티어·라이벌상 비현실 */}
       {rec && rec.longshots && rec.longshots.length > 0 && (
         <div className="card" style={{ marginTop: 16 }}>
-          <h3><Bar c={accent} />드림 타깃 <span className="rating-note">· 포지션 최상위급이나 티어·라이벌상 영입 가능성 낮음</span></h3>
+          <h3><Bar c={accent} />드림 타깃 <span className="rating-note">· 영입 가능성 낮음</span></h3>
           <div className="rec-grid">
             {rec.longshots.map((l, i) => {
               const t = tier(l.ovr);
@@ -161,7 +161,7 @@ export default function TransferTab({ team, accent }: { team: string; accent: st
       {/* Lost Target Review */}
       {rec && rec.lost_targets && rec.lost_targets.length > 0 && (
         <div className="card" style={{ marginTop: 16 }}>
-          <h3><Bar c={accent} />놓친 타깃 <span className="rating-note">· {rec.weakest?.label} 라인에서 타팀으로 이적</span></h3>
+          <h3><Bar c={accent} />놓친 타깃 <span className="rating-note">· 타팀 이적</span></h3>
           <div className="tf2-list">
             {rec.lost_targets.map((l, i) => (
               <div className={`tf2-row${l.top_loss ? " top-loss" : ""}`} key={i}>

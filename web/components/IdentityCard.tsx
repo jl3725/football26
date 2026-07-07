@@ -150,7 +150,7 @@ export default function IdentityCard({ team, league, accent }: { team: string; l
               <div><div style={{ fontSize: 15, fontWeight: 700 }}>{fmtEur(bg.max_fee_paid_eur)}</div><div style={{ fontSize: 10, opacity: 0.55 }}>최고 이적료</div></div>
               <div><div style={{ fontSize: 15, fontWeight: 700, color: accent }}>{fmtEur(bg.price_ceiling_eur)}</div><div style={{ fontSize: 10, opacity: 0.55 }}>가격 상한(추정)</div></div>
             </div>
-            <div style={{ fontSize: 9.5, opacity: 0.4 }}>ℹ️ 시장가치+드러난 지출 기반 추정 · 실제 예산·급여 아님</div>
+            <div style={{ fontSize: 9.5, opacity: 0.4 }}>추정치</div>
           </Panel>
         )}
       </div>

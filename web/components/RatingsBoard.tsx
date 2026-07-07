@@ -16,7 +16,7 @@ export default function RatingsBoard({ ov, accent }: { ov: Overview; accent: str
 
   return (
     <div className="card" style={{ marginTop: 16 }}>
-      <h3>스쿼드 절대 평가<span className="rating-note">· 나이 대비 OVR / POT(성장여지) · 절대 기준</span></h3>
+      <h3>스쿼드 절대 평가<span className="rating-note">· 나이 대비 OVR/POT</span></h3>
       <svg viewBox={`0 0 ${W} ${H}`} className="ovr-scatter" preserveAspectRatio="xMidYMid meet">
         {/* 피크 나이 구간 24–29 음영 */}
         <rect x={x(24)} y={padT} width={x(29) - x(24)} height={H - padB - padT} fill="rgba(255,255,255,0.035)" />
