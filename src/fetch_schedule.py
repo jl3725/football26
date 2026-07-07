@@ -111,7 +111,7 @@ def run_season(season: str, league: str) -> int:
     return 0
 
 
-LEAGUES = ["EPL", "LaLiga"]  # --league 미지정 시 전 리그 자동 갱신(agent용)
+LEAGUES = ["EPL", "LaLiga", "SerieA", "Bundesliga", "Ligue1", "LigaPortugal", "Eredivisie", "BelgianProLeague"]  # --league 미지정 시 전 리그 자동 갱신(agent용)
 
 
 def main(argv=None) -> int:

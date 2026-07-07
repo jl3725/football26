@@ -45,6 +45,10 @@ FEEDS_BY_LEAGUE = {
     "LigaPortugal": [
         ("Record", "https://www.record.pt/rss"),
     ],
+    "Eredivisie": [
+        ("NOS", "https://feeds.nos.nl/nossportvoetbal"),
+    ],
+    "BelgianProLeague": [],
 }
 
 # 합의/임박 신호 키워드 (영어+스페인어). 없으면 루머로 분류.
@@ -57,7 +61,8 @@ _AGREED = re.compile(
     r"offiziell|wechselt|verpflichtet|verpflichtung|unterschreibt|unterschrieb|holt|bindet|"
     r"verlängert|leihe|neuzugang|fixiert|"
     r"officiel|officielle|signe|rejoint|s.engage|recrue|transfert|accord|prêt|bouclé|"
-    r"oficial|assina|assinou|refor.o|contrata|transfer.ncia|acordo|empr.stimo|fechado|rumo a)\b",
+    r"oficial|assina|assinou|refor.o|contrata|transfer.ncia|acordo|empr.stimo|fechado|rumo a|"
+    r"officieel|tekent|getekend|akkoord|aanwinst|vastgelegd|overstap|verhuurd|inkomende|haalt|versterkt)\b",
     re.I,
 )
 

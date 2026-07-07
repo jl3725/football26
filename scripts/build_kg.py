@@ -46,6 +46,8 @@ LEAGUE_META = {
     "Bundesliga": ("Bundesliga", "Germany", 94.7),
     "Ligue1": ("Ligue 1", "France", 92.8),
     "LigaPortugal": ("Liga Portugal", "Portugal", 90.7),
+    "Eredivisie": ("Eredivisie", "Netherlands", 88.5),
+    "BelgianProLeague": ("Belgian Pro League", "Belgium", 87.5),
 }
 # comp_usage 컬럼 → Competition 노드(유럽대항전 = 스카우팅 검증 신호)
 EURO_COMPS = [("ucl", "UEFA Champions League"), ("uel", "UEFA Europa League"),

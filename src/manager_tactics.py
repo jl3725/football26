@@ -31,7 +31,7 @@ except Exception:  # noqa: BLE001
 
 NEO4J_URI = os.getenv("NEO4J_URI", "bolt://localhost:7687")
 NEO4J_AUTH = (os.getenv("NEO4J_USER") or os.getenv("NEO4J_USERNAME") or "neo4j", os.getenv("NEO4J_PASSWORD", "football26"))
-LEAGUES = ["EPL", "LaLiga", "SerieA", "Bundesliga", "Ligue1", "LigaPortugal"]
+LEAGUES = ["EPL", "LaLiga", "SerieA", "Bundesliga", "Ligue1", "LigaPortugal", "Eredivisie", "BelgianProLeague"]
 
 # 전술 축 → team_unit_metrics 컬럼 (0-100)
 AXES = {"pressing": "pressing_index", "ball_winning": "midfield_ball_winning_index",

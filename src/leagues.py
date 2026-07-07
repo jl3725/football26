@@ -84,6 +84,16 @@ LEAGUES: dict[str, LeagueConfig] = {
         fbref_id="POR-Primeira Liga", tm_id="PO1", tm_slug="liga-portugal-betclic",
         api_football_id=94, default_team="Sporting CP", teams=18, games_per_team=34,
     ),
+    "Eredivisie": LeagueConfig(
+        key="Eredivisie", name="Eredivisie", country="Netherlands",
+        fbref_id="NED-Eredivisie", tm_id="NL1", tm_slug="eredivisie",
+        api_football_id=88, default_team="PSV", teams=18, games_per_team=34,
+    ),
+    "BelgianProLeague": LeagueConfig(
+        key="BelgianProLeague", name="Belgian Pro League", country="Belgium",
+        fbref_id="BEL-Belgian Pro League", tm_id="BE1", tm_slug="jupiler-pro-league",
+        api_football_id=144, default_team="Club Brugge", teams=16, games_per_team=30,
+    ),
 }
 
 # 레거시 파일명(`*_2025_2026.csv`, 리그 토큰 없음)을 쓰는 리그.
@@ -112,6 +122,26 @@ def register_soccerdata_custom_leagues() -> None:
             "ESPN": "por.1",
             "Sofascore": "Liga Portugal Betclic",
             "season_start": "Aug",
+            "season_end": "May",
+        },
+    )
+    sd_config.LEAGUE_DICT.setdefault(
+        "NED-Eredivisie",
+        {
+            "FBref": "Eredivisie",
+            "ESPN": "ned.1",
+            "Sofascore": "Eredivisie",
+            "season_start": "Aug",
+            "season_end": "May",
+        },
+    )
+    sd_config.LEAGUE_DICT.setdefault(
+        "BEL-Belgian Pro League",
+        {
+            "FBref": "Belgian Pro League",
+            "ESPN": "bel.1",
+            "Sofascore": "Pro League",
+            "season_start": "Jul",
             "season_end": "May",
         },
     )

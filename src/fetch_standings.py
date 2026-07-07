@@ -28,8 +28,10 @@ def main() -> int:
     sched.columns = ["_".join(c).strip("_") if isinstance(c, tuple) else c
                      for c in sched.columns]
 
-    finished = sched[sched["score"].notna() & sched["score"].str.contains("–", na=False)].copy()
-    finished[["hg", "ag"]] = finished["score"].str.split("–", expand=True).astype(int)
+    scored = sched[sched["score"].notna()].copy()
+    goals = scored["score"].astype(str).str.extract(r"^\s*(\d+)\D+(\d+)\s*$")
+    finished = scored[goals[0].notna() & goals[1].notna()].copy()
+    finished[["hg", "ag"]] = goals.loc[finished.index].astype(int)
     if "week" in finished.columns:
         week = pd.to_numeric(finished["week"], errors="coerce")
         finished = finished[week.between(1, cfg.games_per_team)].copy()

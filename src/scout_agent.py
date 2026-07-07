@@ -22,7 +22,7 @@ NEO4J_AUTH = (os.getenv("NEO4J_USER") or os.getenv("NEO4J_USERNAME") or "neo4j",
 _KG_SCHEMA = """노드:
   Player {name, pos, pos_detail, age, nationality, league, market_value_eur, minutes, goals, assists, ss_rating, contract_until, career_games_missed}
   Club {name, spend_tier, squad_value_eur, net_spend_eur, max_fee_paid_eur, price_ceiling_eur, recruit_profile, recruit_avg_age, europe_coefficient}
-  League {key, name, level}  (key: EPL/LaLiga/SerieA/Bundesliga/Ligue1/LigaPortugal)
+  League {key, name, level}  (key: EPL/LaLiga/SerieA/Bundesliga/Ligue1/LigaPortugal/Eredivisie/BelgianProLeague)
   Country {name, fifa_rank, fifa_points}
   Manager {name, formation, appointed, is_new, months_tenure, style_tags, tendency_tags, tac_pressing, tac_control, tac_creativity, tac_attack, tac_aerial, tac_disruption}
   TransferEvent {player, fee_eur, fee_text, window, season}
@@ -44,7 +44,7 @@ _KG_SCHEMA = """노드:
 _CYPHER_TIPS = """graph_query Cypher 팁:
 - pos_detail 값: Centre-Back, Right-Back, Left-Back, Defensive Midfield, Central Midfield, Attacking Midfield, Right Winger, Left Winger, Centre-Forward, Second Striker, Goalkeeper.
 - Competition.name = 'UEFA Champions League'/'UEFA Europa League'/'UEFA Conference League' → 부분일치 CONTAINS 'Champions'.
-- League.key = EPL/LaLiga/SerieA/Bundesliga/Ligue1/LigaPortugal. contract_until 형식 'YYYY-MM-DD'(계약임박=CONTAINS '2026').
+- League.key = EPL/LaLiga/SerieA/Bundesliga/Ligue1/LigaPortugal/Eredivisie/BelgianProLeague. contract_until 형식 'YYYY-MM-DD'(계약임박=CONTAINS '2026').
 - 이름 애매하면 WHERE x.name CONTAINS '...'. ORDER BY 속성엔 WHERE 속성 IS NOT NULL(NULL이 DESC 최상단 오는 것 방지). 반드시 LIMIT.
 예시:
   [루머] MATCH (p:Player)-[r:RUMORED_WITH]->(c:Club {name:'Arsenal'}) WHERE r.probability IS NOT NULL RETURN p.name, p.pos_detail, r.probability ORDER BY r.probability DESC LIMIT 15
@@ -92,8 +92,9 @@ TOOLS = [
                      "'6번'=Defensive Midfield, '8번'=Central Midfield, '10번'=Attacking Midfield"},
             "leagues": {"type": "array", "items": {"type": "string"},
                         "description": "후보를 특정 소스 리그로 제한(선택). 키: EPL·LaLiga·SerieA·Bundesliga·"
-                        "Ligue1·LigaPortugal. '프랑스 리그'=[\"Ligue1\"], '분데스'=[\"Bundesliga\"], "
-                        "'스페인'=[\"LaLiga\"], '이탈리아'=[\"SerieA\"], '포르투갈'=[\"LigaPortugal\"]"},
+                        "Ligue1·LigaPortugal·Eredivisie·BelgianProLeague. '프랑스 리그'=[\"Ligue1\"], '분데스'=[\"Bundesliga\"], "
+                        "'스페인'=[\"LaLiga\"], '이탈리아'=[\"SerieA\"], '포르투갈'=[\"LigaPortugal\"], "
+                        "'네덜란드'=[\"Eredivisie\"], '벨기에'=[\"BelgianProLeague\"]"},
             "max_age": {"type": "integer", "description": "최대 나이(선택, '더 젊은' 등)"},
             "max_value": {"type": "integer", "description": "최대 시장가 EUR(선택, '더 싼' 등, 예: 50000000)"}},
             "required": ["team"]}}},

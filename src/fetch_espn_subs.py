@@ -31,6 +31,8 @@ ESPN_CODES = {
     "SerieA": "ita.1",
     "Ligue1": "fra.1",
     "LigaPortugal": "por.1",
+    "Eredivisie": "ned.1",
+    "BelgianProLeague": "bel.1",
 }
 API = f"https://site.api.espn.com/apis/site/v2/sports/soccer/{ESPN_CODES.get(ACTIVE_LEAGUE, 'eng.1')}/summary"
 H = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
@@ -38,6 +40,7 @@ H = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
 SLEEP = 0.4
 
 _RE = re.compile(r"\.\s*(.+?)\s+replaces\s+(.+?)\.?\s*$")
+_RE_IN_ONLY = re.compile(r"^\s*(.+?)\s+\(.+?\)\s+Substitution\b", re.I)
 
 
 def scrape_event(event_id) -> list[dict]:
@@ -67,6 +70,9 @@ def scrape_event(event_id) -> list[dict]:
         m = _RE.search(ev.get("text", "") or "")
         p_in = m.group(1).strip() if m else ""
         p_out = m.group(2).strip() if m else ""
+        if not (p_in or p_out):
+            m_in = _RE_IN_ONLY.search(ev.get("text", "") or "")
+            p_in = m_in.group(1).strip() if m_in else ""
         if not (p_in or p_out):
             continue
         out.append({"event_id": event_id, "home_away": ha.get(tid, ""),

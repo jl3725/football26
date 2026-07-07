@@ -59,6 +59,21 @@ TEAM_COLOR: dict[str, str] = {
     "Estoril": "#F4C430", "Alverca": "#E2001A", "Rio Ave": "#007A3D", "Santa Clara": "#B71C2E",
     "Moreirense": "#0A5C36", "Estrela": "#C8102E", "Casa Pia": "#111111", "Arouca": "#F0A500",
     "Tondela": "#1E7A46", "Nacional": "#111111", "AVS Futebol": "#0E7A3C",
+    # Eredivisie 25/26
+    "PSV": "#EC1C24", "Ajax": "#D2122E", "Feyenoord": "#DA020E", "AZ Alkmaar": "#E4002B",
+    "Utrecht": "#C1272D", "Twente": "#E2001A", "NEC Nijmegen": "#B71234", "Heerenveen": "#005EB8",
+    "Groningen": "#007A3D", "Sparta R.": "#C8102E", "Go Ahead Eagles": "#EE3124", "Fortuna Sittard": "#009639",
+    "Zwolle": "#003DA5", "Excelsior": "#B01E28", "Volendam": "#F58220", "Heracles Almelo": "#111111",
+    "Telstar": "#546E7A", "NAC Breda": "#F7C600",
+    # Eredivisie 26/27 승격
+    "ADO Den Haag": "#00A94F", "Cambuur": "#FFCC00", "Willem II": "#E30613",
+    # Belgian Pro League 25/26
+    "Club Brugge": "#005BAC", "Genk": "#0055A4", "Union SG": "#F4C400",
+    "Anderlecht": "#552583", "Antwerp": "#D71920", "Gent": "#0057B8",
+    "Westerlo": "#F4D03F", "Sint-Truiden": "#FFD200", "Mechelen": "#FFD200",
+    "Standard Liège": "#D71920", "Charleroi": "#111111", "Cercle Brugge": "#0B8F3A",
+    "OH Leuven": "#D71920", "Zulte Waregem": "#D71920", "Dender": "#111111",
+    "La Louvière": "#00843D",
 }
 
 # Transfermarkt verein id (크레스트 로고용)
@@ -105,6 +120,19 @@ TEAM_VEREIN: dict[str, int] = {
     "Vit. Guimarães": 2420, "Gil Vicente FC": 2424, "Estoril": 1465, "Alverca": 2521,
     "Rio Ave": 2425, "Santa Clara": 2423, "Moreirense": 979, "Estrela": 2431,
     "Casa Pia": 3268, "Arouca": 8024, "Tondela": 7179, "Nacional": 982, "AVS Futebol": 110302,
+    # Eredivisie 25/26 (Transfermarkt verein id)
+    "PSV": 383, "Ajax": 610, "Feyenoord": 234, "AZ Alkmaar": 1090, "Utrecht": 200,
+    "Twente": 317, "NEC Nijmegen": 467, "Heerenveen": 306, "Groningen": 202, "Sparta R.": 468,
+    "Go Ahead Eagles": 1435, "Fortuna Sittard": 385, "Zwolle": 1269, "Excelsior": 798,
+    "Volendam": 724, "Heracles Almelo": 1304, "Telstar": 1434, "NAC Breda": 132,
+    # Eredivisie 26/27 승격 (Transfermarkt verein id)
+    "ADO Den Haag": 484, "Cambuur": 1265, "Willem II": 426,
+    # Belgian Pro League 25/26 (Transfermarkt verein id)
+    "Club Brugge": 2282, "Genk": 1184, "Union SG": 3948, "Anderlecht": 58,
+    "Antwerp": 1096, "Gent": 157, "Westerlo": 968, "Sint-Truiden": 475,
+    "Mechelen": 354, "Standard Liège": 3057, "Charleroi": 172,
+    "Cercle Brugge": 520, "OH Leuven": 2727, "Zulte Waregem": 3508,
+    "Dender": 9010, "La Louvière": 3901,
 }
 
 # 풀네임 + 홈구장 수용인원
@@ -185,6 +213,28 @@ TEAM_EXTRA: dict[str, tuple[str, int]] = {
     "Estrela": ("CF Estrela da Amadora", 9288), "Casa Pia": ("Casa Pia AC", 5000),
     "Arouca": ("FC Arouca", 5600), "Tondela": ("CD Tondela", 5000),
     "Nacional": ("CD Nacional", 5132), "AVS Futebol": ("AVS", 6288),
+    # Eredivisie 25/26
+    "PSV": ("PSV Eindhoven", 35000), "Ajax": ("AFC Ajax", 54990),
+    "Feyenoord": ("Feyenoord Rotterdam", 47500), "AZ Alkmaar": ("AZ Alkmaar", 19478),
+    "Utrecht": ("FC Utrecht", 23750), "Twente": ("FC Twente", 30205),
+    "NEC Nijmegen": ("NEC Nijmegen", 12500), "Heerenveen": ("SC Heerenveen", 27224),
+    "Groningen": ("FC Groningen", 22550), "Sparta R.": ("Sparta Rotterdam", 11026),
+    "Go Ahead Eagles": ("Go Ahead Eagles", 10000), "Fortuna Sittard": ("Fortuna Sittard", 12500),
+    "Zwolle": ("PEC Zwolle", 12500), "Excelsior": ("SBV Excelsior", 4400),
+    "Volendam": ("FC Volendam", 7384), "Heracles Almelo": ("Heracles Almelo", 12080),
+    "Telstar": ("SC Telstar", 3625), "NAC Breda": ("NAC Breda", 19000),
+    # Eredivisie 26/27 승격
+    "ADO Den Haag": ("ADO Den Haag", 15000), "Cambuur": ("SC Cambuur", 10000),
+    "Willem II": ("Willem II", 14700),
+    # Belgian Pro League 25/26
+    "Club Brugge": ("Club Brugge KV", 29042), "Genk": ("KRC Genk", 24956),
+    "Union SG": ("Royale Union Saint-Gilloise", 9400), "Anderlecht": ("RSC Anderlecht", 21500),
+    "Antwerp": ("Royal Antwerp FC", 16649), "Gent": ("KAA Gent", 20000),
+    "Westerlo": ("KVC Westerlo", 8035), "Sint-Truiden": ("Sint-Truidense VV", 14600),
+    "Mechelen": ("KV Mechelen", 16672), "Standard Liège": ("Standard Liège", 27670),
+    "Charleroi": ("Royal Charleroi SC", 15000), "Cercle Brugge": ("Cercle Brugge", 29042),
+    "OH Leuven": ("Oud-Heverlee Leuven", 10020), "Zulte Waregem": ("Zulte Waregem", 12500),
+    "Dender": ("FCV Dender EH", 6429), "La Louvière": ("RAAL La Louvière", 12000),
 }
 
 
@@ -328,6 +378,29 @@ TEAM_INFO: dict[str, dict] = {
     "Tondela": {"city": "톤델라", "stadium": "이스타디우 조앙 카르도주", "founded": 1933, "nick": "Beirões", "desc": "베이라 지역 소도시 클럽."},
     "Nacional": {"city": "푼샬 (마데이라)", "stadium": "이스타디우 다 마데이라", "founded": 1910, "nick": "Alvinegros", "desc": "마데이라 제도 연고 클럽."},
     "AVS Futebol": {"city": "빌라 다스 아베스", "stadium": "이스타디우 CD 아베스", "founded": 1930, "nick": "Avenses", "desc": "빌라 다스 아베스 연고 클럽."},
+    # Eredivisie 25/26
+    "PSV": {"city": "에인트호번", "stadium": "필립스 스타디온", "founded": 1913, "nick": "Boeren", "desc": "필립스 후원의 남부 명문. 네덜란드 3강이자 유망주 판매의 강자."},
+    "Ajax": {"city": "암스테르담", "stadium": "요한 크라위프 아레나", "founded": 1900, "nick": "Godenzonen", "desc": "토탈풋볼의 상징. 세계적 유망주 사관학교."},
+    "Feyenoord": {"city": "로테르담", "stadium": "더 카위프 (De Kuip)", "founded": 1908, "nick": "Trots van Zuid", "desc": "로테르담 노동자 정서의 열성 명문."},
+    "AZ Alkmaar": {"city": "알크마르", "stadium": "AFAS 스타디온", "founded": 1967, "nick": "Cheese Farmers", "desc": "육성·데이터 운영으로 상위권을 다투는 강호."},
+    "Utrecht": {"city": "위트레흐트", "stadium": "스타디온 갈헨바르트", "founded": 1970, "nick": "Domstedelingen", "desc": "중부 위트레흐트 연고의 열성 클럽."},
+    "Twente": {"city": "엔스헤데", "stadium": "더 흐롤스 페스터", "founded": 1965, "nick": "Tukkers", "desc": "동부 트벤터 지역 클럽. 2010 리그 우승."},
+    "NEC Nijmegen": {"city": "네이메헌", "stadium": "호페르트스타디온", "founded": 1900, "nick": "De Trots van het Oosten", "desc": "동부 네이메헌 연고 클럽."},
+    "Heerenveen": {"city": "헤이렌베인", "stadium": "아버 렌스트라 스타디온", "founded": 1920, "nick": "Superfriezen", "desc": "프리슬란트 연고. 청백에 붉은 하트 문양으로 유명."},
+    "Groningen": {"city": "흐로닝언", "stadium": "에우로보르흐", "founded": 1971, "nick": "Trots van het Noorden", "desc": "북부 흐로닝언 연고의 녹백 클럽."},
+    "Sparta R.": {"city": "로테르담", "stadium": "헤트 카스텔 (성)", "founded": 1888, "nick": "Kasteelheren", "desc": "네덜란드 최고(最古) 프로클럽. 로테르담 제3클럽."},
+    "Go Ahead Eagles": {"city": "데벤터르", "stadium": "더 아델라르스호르스트", "founded": 1902, "nick": "Kowet", "desc": "데벤터르 연고의 붉은-노랑 전통 클럽."},
+    "Fortuna Sittard": {"city": "시타르트", "stadium": "포르투나 시타르트 스타디온", "founded": 1968, "nick": "Fortunezen", "desc": "림뷔르흐 시타르트 연고 클럽."},
+    "Zwolle": {"city": "즈볼러", "stadium": "MAC³PARK 스타디온", "founded": 1910, "nick": "Blauwvingers", "desc": "오버레이설 즈볼러 연고의 청백 클럽."},
+    "Excelsior": {"city": "로테르담", "stadium": "판 동어 & 더 로 스타디온", "founded": 1902, "nick": "Kralingers", "desc": "로테르담의 소규모 전통 클럽."},
+    "Volendam": {"city": "폴렌담", "stadium": "크라스 스타디온", "founded": 1920, "nick": "Het Andere Oranje", "desc": "어촌 폴렌담 연고. 주황-검정 유니폼."},
+    "Heracles Almelo": {"city": "알멜로", "stadium": "에르버 아시토", "founded": 1903, "nick": "Heraclieden", "desc": "동부 알멜로 연고의 흑백 클럽."},
+    "Telstar": {"city": "펠센 (IJmuiden)", "stadium": "711 스타디온", "founded": 1963, "nick": "Witte Leeuwen", "desc": "북해 연안 펠센 연고 클럽."},
+    "NAC Breda": {"city": "브레다", "stadium": "랏 페를레흐 스타디온", "founded": 1912, "nick": "Parels van het Zuiden", "desc": "남부 브레다 연고. 노랑-검정 열성 팬덤."},
+    # Eredivisie 26/27 승격
+    "ADO Den Haag": {"city": "헤이그", "stadium": "빙올 스타디온", "founded": 1905, "nick": "De Ooievaars", "desc": "헤이그 연고의 녹황 클럽. 26/27 승격."},
+    "Cambuur": {"city": "레이우아르던", "stadium": "캄뷔르 스타디온", "founded": 1964, "nick": "De Kette", "desc": "프리슬란트 레이우아르던 연고 황청 클럽. 26/27 승격."},
+    "Willem II": {"city": "틸뷔르흐", "stadium": "코닝 빌럼 2세 스타디온", "founded": 1896, "nick": "Tricolores", "desc": "틸뷔르흐 연고 전통 클럽. 26/27 승격."},
 }
 
 

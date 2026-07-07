@@ -11,6 +11,7 @@ const POS_BTNS: [string, string][] = [
 const LEAGUES: [string, string][] = [
   ["EPL", "Premier League"], ["LaLiga", "La Liga"], ["SerieA", "Serie A"], ["Bundesliga", "Bundesliga"],
   ["Ligue1", "Ligue 1"], ["LigaPortugal", "Liga Portugal"], ["Eredivisie", "Eredivisie"],
+  ["BelgianProLeague", "Belgian Pro League"],
 ];
 const SORTS: [string, string][] = [["style", "유사도"], ["ovr", "예상 OVR"], ["value", "시장가"], ["age", "나이"]];
 

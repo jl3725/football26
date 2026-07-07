@@ -158,6 +158,12 @@ SOFASCORE_PLAYER_ALIASES: dict[str, dict[tuple[str, str], SofascoreMergeTarget]]
         ("milan", "cheveyo mul-balentien"): "Cheveyo Muy",
         ("genoa", "joi xheto nuredini"): "Joi Nuredini",
     },
+    "Eredivisie": {
+        ("twente", "kristian nokkvi hlynsson"): "Kristian Hlynsson",
+        ("ajax", "oliver edvardsen"): "Oliver Valaker Edvardsen",
+        ("heerenveen", "nikolai hopland"): "Nikolai Soyset Hopland",
+        ("feyenoord", "tobias elshout van den"): "Tobias van den Elshout",
+    },
 }
 
 
@@ -184,8 +190,8 @@ def read_understat_or_empty(fb: pd.DataFrame) -> pd.DataFrame:
         "assists",
     ])
     try:
-        if ACTIVE_LEAGUE == "LigaPortugal":
-            raise RuntimeError("Understat does not cover Liga Portugal")
+        if ACTIVE_LEAGUE in {"LigaPortugal", "Eredivisie", "BelgianProLeague"}:
+            raise RuntimeError(f"Understat does not cover {CFG.name}")
         us = sd.Understat(leagues=LEAGUE, seasons=SEASON_FBREF)
         return us.read_player_season_stats().reset_index()
     except Exception as e:
@@ -340,7 +346,7 @@ def main() -> int:
         ss_value_cols = [c for c in ss_add.columns if not c.startswith("_")]
         merged = merged.merge(ss_add[["_key", *ss_value_cols]], on="_key", how="left")
         minute_fallback = 0
-        if ACTIVE_LEAGUE == "LigaPortugal":
+        if ACTIVE_LEAGUE in {"LigaPortugal", "Eredivisie", "BelgianProLeague"}:
             used_ss_keys = set(merged.loc[merged["ss_rating"].notna(), "_key"])
             available = ss_add[~ss_add["_key"].isin(used_ss_keys)].copy()
             for idx, row in merged[merged["ss_rating"].isna()].sort_values("minutes", ascending=False).iterrows():

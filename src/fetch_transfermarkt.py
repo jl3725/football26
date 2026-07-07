@@ -170,6 +170,46 @@ LIGAPORTUGAL_TEAM_TM: dict[str, tuple[str, int]] = {
     "AVS Futebol": ("avs-futebol-sad", 110302),
 }
 
+EREDIVISIE_TEAM_TM: dict[str, tuple[str, int]] = {
+    "PSV": ("psv-eindhoven", 383),
+    "Ajax": ("ajax-amsterdam", 610),
+    "Feyenoord": ("feyenoord-rotterdam", 234),
+    "AZ Alkmaar": ("az-alkmaar", 1090),
+    "Utrecht": ("fc-utrecht", 200),
+    "Twente": ("fc-twente-enschede", 317),
+    "NEC Nijmegen": ("nec-nijmegen", 467),
+    "Heerenveen": ("sc-heerenveen", 306),
+    "Groningen": ("fc-groningen", 202),
+    "Sparta R.": ("sparta-rotterdam", 468),
+    "Go Ahead Eagles": ("go-ahead-eagles-deventer", 1435),
+    "Fortuna Sittard": ("fortuna-sittard", 385),
+    "Zwolle": ("pec-zwolle", 1269),
+    "Excelsior": ("sbv-excelsior-rotterdam", 798),
+    "Volendam": ("fc-volendam", 724),
+    "Heracles Almelo": ("heracles-almelo", 1304),
+    "Telstar": ("sc-telstar", 1434),
+    "NAC Breda": ("nac-breda", 132),
+}
+
+BELGIANPROLEAGUE_TEAM_TM: dict[str, tuple[str, int]] = {
+    "Club Brugge": ("fc-brugge", 2282),
+    "Genk": ("krc-genk", 1184),
+    "Union SG": ("royale-union-saint-gilloise", 3948),
+    "Anderlecht": ("rsc-anderlecht", 58),
+    "Antwerp": ("royal-antwerpen-fc", 1096),
+    "Gent": ("kaa-gent", 157),
+    "Westerlo": ("kvc-westerlo", 968),
+    "Sint-Truiden": ("vv-st-truiden", 475),
+    "Mechelen": ("kv-mechelen", 354),
+    "Standard Liège": ("standard-luttich", 3057),
+    "Charleroi": ("rsc-charleroi", 172),
+    "Cercle Brugge": ("cercle-brugge", 520),
+    "OH Leuven": ("oud-heverlee-leuven", 2727),
+    "Zulte Waregem": ("sv-zulte-waregem", 3508),
+    "Dender": ("fcv-dender-eh", 9010),
+    "La Louvière": ("raal-la-louviere", 3901),
+}
+
 TEAM_TM_BY_LEAGUE: dict[str, dict[str, tuple[str, int]]] = {
     "EPL": EPL_TEAM_TM,
     "LaLiga": LALIGA_TEAM_TM,
@@ -177,6 +217,8 @@ TEAM_TM_BY_LEAGUE: dict[str, dict[str, tuple[str, int]]] = {
     "SerieA": SERIEA_TEAM_TM,
     "Ligue1": LIGUE1_TEAM_TM,
     "LigaPortugal": LIGAPORTUGAL_TEAM_TM,
+    "Eredivisie": EREDIVISIE_TEAM_TM,
+    "BelgianProLeague": BELGIANPROLEAGUE_TEAM_TM,
 }
 
 TEAM_TM: dict[str, tuple[str, int]] = TEAM_TM_BY_LEAGUE.get(ACTIVE_LEAGUE, EPL_TEAM_TM)

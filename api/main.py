@@ -1651,7 +1651,8 @@ def _attainable(cand_ovr: int, club_ovr: float, team_ovr: float, role: str, minu
 # 리그 키 → UEFA 협회계수 국가명. (신규 리그는 GPT 가 쓰는 키에 맞춤: LigaPortugal·Eredivisie)
 _LEAGUE_COUNTRY = {"EPL": "England", "LaLiga": "Spain", "SerieA": "Italy",
                    "Bundesliga": "Germany", "Ligue1": "France",
-                   "LigaPortugal": "Portugal", "Eredivisie": "Netherlands"}
+                   "LigaPortugal": "Portugal", "Eredivisie": "Netherlands",
+                   "BelgianProLeague": "Belgium"}
 _LEAGUE_LEVEL_FALLBACK = {"EPL": 100.0, "LaLiga": 98.0, "SerieA": 96.0,
                           "Bundesliga": 96.0, "Ligue1": 93.0}
 
@@ -1765,7 +1766,8 @@ _FIT_BY_LINE = {"ATT": ("npxg_p90", "득점 위협"), "MID": ("key_passes_per90"
                 "DEF": ("tackles_won_per90_ss", "수비 기여"), "GK": ("", "안정감")}
 _SRC_LABEL = {"EPL": "EPL", "LaLiga": "라리가", "SerieA": "세리에A",
               "Bundesliga": "분데스리가", "Ligue1": "리그1",
-              "LigaPortugal": "포르투갈 리그"}
+              "LigaPortugal": "포르투갈 리그", "Eredivisie": "에레디비시",
+              "BelgianProLeague": "벨기에 리그"}
 
 
 def _formation_bucket_needs(team: str, league: str) -> dict:
@@ -2489,7 +2491,7 @@ def home(league: str = ACTIVE_LEAGUE):
     }
 
 
-_HUB_LEAGUES = ("EPL", "LaLiga", "SerieA", "Bundesliga", "Ligue1", "LigaPortugal")   # 통합 대시보드 대상 — UI 지원 리그
+_HUB_LEAGUES = ("EPL", "LaLiga", "SerieA", "Bundesliga", "Ligue1", "LigaPortugal", "Eredivisie", "BelgianProLeague")   # 통합 대시보드 대상 — UI 지원 리그
 _HUB_CACHE: dict = {"key": None, "body": None}
 
 
@@ -2684,7 +2686,7 @@ def _wc_read(table):
 
 
 # WC 클럽 차출 교차참조 대상 — UI 로 탐색 가능한(로고·오버뷰 완비) 리그.
-_WC_CLUB_LEAGUES = ("EPL", "LaLiga", "SerieA", "Bundesliga", "Ligue1", "LigaPortugal")
+_WC_CLUB_LEAGUES = ("EPL", "LaLiga", "SerieA", "Bundesliga", "Ligue1", "LigaPortugal", "Eredivisie", "BelgianProLeague")
 
 
 def _wc_player_index():

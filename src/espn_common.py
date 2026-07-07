@@ -65,12 +65,36 @@ LEAGUE_DISPLAY: dict[str, dict[str, str]] = {
         "tondela": "Tondela", "vitoria": "Vit. Guimarães", "vitória": "Vit. Guimarães",
         "alverca": "Alverca",
     },
+    "Eredivisie": {
+        "ajax": "Ajax", "az alkmaar": "AZ Alkmaar", "alkmaar": "AZ Alkmaar",
+        "excelsior": "Excelsior", "feyenoord": "Feyenoord",
+        "fortuna": "Fortuna Sittard", "go ahead": "Go Ahead Eagles",
+        "groningen": "Groningen", "heerenveen": "Heerenveen",
+        "heracles": "Heracles Almelo", "nac breda": "NAC Breda",
+        "nec nijmegen": "NEC Nijmegen", "nijmegen": "NEC Nijmegen", "psv": "PSV",
+        "sparta": "Sparta R.", "telstar": "Telstar", "twente": "Twente",
+        "utrecht": "Utrecht", "volendam": "Volendam", "zwolle": "Zwolle",
+    },
+    "BelgianProLeague": {
+        "club brugge": "Club Brugge", "cercle brugge": "Cercle Brugge",
+        "genk": "Genk", "union st": "Union SG", "union saint": "Union SG",
+        "union sg": "Union SG", "anderlecht": "Anderlecht",
+        "antwerp": "Antwerp", "gent": "Gent", "westerlo": "Westerlo",
+        "sint-truid": "Sint-Truiden", "st truid": "Sint-Truiden",
+        "mechelen": "Mechelen", "standard": "Standard Liège",
+        "charleroi": "Charleroi", "oud-heverlee": "OH Leuven",
+        "oh leuven": "OH Leuven", "leuven": "OH Leuven",
+        "zulte": "Zulte Waregem", "dender": "Dender",
+        "la louvi": "La Louvière",
+    },
 }
 
 # 리그 대회 코드
 LEAGUE_CODE = {"EPL": ("eng.1", "리그"), "LaLiga": ("esp.1", "리그"),
                "SerieA": ("ita.1", "리그"), "Bundesliga": ("ger.1", "리그"),
-               "Ligue1": ("fra.1", "리그"), "LigaPortugal": ("por.1", "리그")}
+               "Ligue1": ("fra.1", "리그"), "LigaPortugal": ("por.1", "리그"),
+               "Eredivisie": ("ned.1", "리그"),
+               "BelgianProLeague": ("bel.1", "리그")}
 
 # 유럽 대회 (공통)
 EURO_COMPS = [
@@ -87,6 +111,7 @@ DOMESTIC_CUPS = {
     "Bundesliga": [("ger.dfb_pokal", "DFB-포칼", "pokal")],
     "Ligue1": [("fra.coupe_de_france", "쿠프 드 프랑스", "coupe")],
     "LigaPortugal": [("por.taca", "Taça de Portugal", "taca"), ("por.taca_liga", "Taça da Liga", "leaguecup")],
+    "Eredivisie": [("ned.knvb_beker", "KNVB Beker", "beker")],
 }
 
 

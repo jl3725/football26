@@ -26,7 +26,7 @@ jobs:
 
       - name: Fetch transfers (전 리그)
         run: |
-          for LG in EPL LaLiga SerieA Bundesliga Ligue1 LigaPortugal; do
+          for LG in EPL LaLiga SerieA Bundesliga Ligue1 LigaPortugal Eredivisie; do
             echo "── $LG ──"
             FB_LEAGUE=$LG python src/fetch_transfers.py || echo "transfers $LG 실패"
           done

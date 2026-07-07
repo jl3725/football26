@@ -27,7 +27,7 @@ except Exception:  # noqa: BLE001
 
 QDRANT_URL = os.getenv("QDRANT_URL", "http://localhost:6333")
 COLLECTION = "players"
-LEAGUES = ["EPL", "LaLiga", "SerieA", "Bundesliga", "Ligue1", "LigaPortugal"]
+LEAGUES = ["EPL", "LaLiga", "SerieA", "Bundesliga", "Ligue1", "LigaPortugal", "Eredivisie", "BelgianProLeague"]
 MIN_MINUTES = 270   # per90 스탯이 의미 있으려면 최소 출전
 
 # 스타일 피처(공격 생산·창출·드리블·수비·경합) — players_full 에 존재하는 per90 컬럼

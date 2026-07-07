@@ -42,6 +42,8 @@ def _source_title(league: str, base_title: str) -> str:
         return base_title.replace("Premier League", "Ligue 1")
     if league == "LigaPortugal":
         return base_title.replace("Premier League", "Primeira Liga")
+    if league == "Eredivisie":
+        return base_title.replace("Premier League", "Eredivisie")
     raise SystemExit(f"[season-teams] 지원하지 않는 리그: {league}")
 
 
@@ -61,6 +63,9 @@ def _normalizer(league):
         return to_squad
     if league == "LigaPortugal":
         from fetch_ligaportugal_managers import to_squad
+        return to_squad
+    if league == "Eredivisie":
+        from fetch_eredivisie_managers import to_squad
         return to_squad
     return lambda t: t
 

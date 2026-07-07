@@ -31,7 +31,7 @@ from club_profile import price_realism, recruit_fit  # noqa: E402
 QDRANT_URL = os.getenv("QDRANT_URL", "http://localhost:6335")
 NEO4J_URI = os.getenv("NEO4J_URI", "bolt://localhost:7687")
 NEO4J_AUTH = (os.getenv("NEO4J_USER") or os.getenv("NEO4J_USERNAME") or "neo4j", os.getenv("NEO4J_PASSWORD", "football26"))
-LEAGUES = ["EPL", "LaLiga", "SerieA", "Bundesliga", "Ligue1", "LigaPortugal", "Eredivisie"]
+LEAGUES = ["EPL", "LaLiga", "SerieA", "Bundesliga", "Ligue1", "LigaPortugal", "Eredivisie", "BelgianProLeague"]
 QCOLLECTION = "players"
 TM_POS_NORM = {"CB": "Centre-Back", "RB": "Right-Back", "LB": "Left-Back", "RWB": "Right-Back",
                "LWB": "Left-Back", "DM": "Defensive Midfield", "CM": "Central Midfield",

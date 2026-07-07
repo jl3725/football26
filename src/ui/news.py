@@ -16,7 +16,8 @@ import requests
 from .common import team_color
 
 ESPN_NEWS_CODES = {"EPL": "eng.1", "LaLiga": "esp.1", "SerieA": "ita.1",
-                   "Bundesliga": "ger.1", "Ligue1": "fra.1", "LigaPortugal": "por.1"}
+                   "Bundesliga": "ger.1", "Ligue1": "fra.1", "LigaPortugal": "por.1",
+                   "Eredivisie": "ned.1", "BelgianProLeague": "bel.1"}
 _HEADERS = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
 
 # 우리 squad 표기 → ESPN 뉴스 팀 태그(longName)
@@ -81,11 +82,32 @@ LIGAPORTUGAL_NEWSTAG = {
     "Nacional": "C.D. Nacional", "AVS Futebol": "AVS",
 }
 
+EREDIVISIE_NEWSTAG = {
+    "PSV": "PSV Eindhoven", "Ajax": "Ajax", "Feyenoord": "Feyenoord", "AZ Alkmaar": "AZ Alkmaar",
+    "Utrecht": "FC Utrecht", "Twente": "FC Twente", "NEC Nijmegen": "NEC Nijmegen",
+    "Heerenveen": "SC Heerenveen", "Groningen": "FC Groningen", "Sparta R.": "Sparta Rotterdam",
+    "Go Ahead Eagles": "Go Ahead Eagles", "Fortuna Sittard": "Fortuna Sittard",
+    "Zwolle": "PEC Zwolle", "Excelsior": "Excelsior", "Volendam": "FC Volendam",
+    "Heracles Almelo": "Heracles Almelo", "Telstar": "Telstar", "NAC Breda": "NAC Breda",
+}
+
+BELGIANPROLEAGUE_NEWSTAG = {
+    "Club Brugge": "Club Brugge", "Genk": "Genk", "Union SG": "Union Saint-Gilloise",
+    "Anderlecht": "Anderlecht", "Antwerp": "Royal Antwerp", "Gent": "Gent",
+    "Westerlo": "Westerlo", "Sint-Truiden": "Sint-Truidense", "Mechelen": "Mechelen",
+    "Standard Liège": "Standard Liege", "Charleroi": "Charleroi",
+    "Cercle Brugge": "Cercle Brugge", "OH Leuven": "Oud-Heverlee Leuven",
+    "Zulte Waregem": "Zulte Waregem", "Dender": "Dender", "La Louvière": "La Louviere",
+}
+
 NEWSTAG_BY_LEAGUE = {"EPL": SQUAD_TO_NEWSTAG, "LaLiga": LALIGA_NEWSTAG,
                      "SerieA": SERIEA_NEWSTAG, "Bundesliga": BUNDESLIGA_NEWSTAG,
-                     "Ligue1": LIGUE1_NEWSTAG, "LigaPortugal": LIGAPORTUGAL_NEWSTAG}
+                     "Ligue1": LIGUE1_NEWSTAG, "LigaPortugal": LIGAPORTUGAL_NEWSTAG,
+                     "Eredivisie": EREDIVISIE_NEWSTAG,
+                     "BelgianProLeague": BELGIANPROLEAGUE_NEWSTAG}
 _ALL_NEWSTAG = {**SQUAD_TO_NEWSTAG, **LALIGA_NEWSTAG, **SERIEA_NEWSTAG,
-                **BUNDESLIGA_NEWSTAG, **LIGUE1_NEWSTAG, **LIGAPORTUGAL_NEWSTAG}
+                **BUNDESLIGA_NEWSTAG, **LIGUE1_NEWSTAG, **LIGAPORTUGAL_NEWSTAG,
+                **EREDIVISIE_NEWSTAG, **BELGIANPROLEAGUE_NEWSTAG}
 
 
 def newstags(league: str = "EPL") -> dict:
