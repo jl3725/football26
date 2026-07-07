@@ -40,6 +40,20 @@ _KG_SCHEMA = """노드:
   (TransferEvent)-[:OF]->(Player), (TransferEvent)-[:FROM]->(Club), (TransferEvent)-[:TO]->(Club)
   (League)-[:IN_COUNTRY]->(Country)"""
 
+# graph_query Cypher 작성 가이드 + few-shot(정확도↑). 라이브 값 기반.
+_CYPHER_TIPS = """graph_query Cypher 팁:
+- pos_detail 값: Centre-Back, Right-Back, Left-Back, Defensive Midfield, Central Midfield, Attacking Midfield, Right Winger, Left Winger, Centre-Forward, Second Striker, Goalkeeper.
+- Competition.name = 'UEFA Champions League'/'UEFA Europa League'/'UEFA Conference League' → 부분일치 CONTAINS 'Champions'.
+- League.key = EPL/LaLiga/SerieA/Bundesliga/Ligue1/LigaPortugal. contract_until 형식 'YYYY-MM-DD'(계약임박=CONTAINS '2026').
+- 이름 애매하면 WHERE x.name CONTAINS '...'. ORDER BY 속성엔 WHERE 속성 IS NOT NULL(NULL이 DESC 최상단 오는 것 방지). 반드시 LIMIT.
+예시:
+  [루머] MATCH (p:Player)-[r:RUMORED_WITH]->(c:Club {name:'Arsenal'}) WHERE r.probability IS NOT NULL RETURN p.name, p.pos_detail, r.probability ORDER BY r.probability DESC LIMIT 15
+  [챔스 U23 풀백] MATCH (p:Player)-[:PLAYED_IN]->(comp:Competition) WHERE comp.name CONTAINS 'Champions' AND p.age<=23 AND p.pos_detail IN ['Right-Back','Left-Back'] RETURN DISTINCT p.name,p.age,p.pos_detail,p.league,p.ss_rating ORDER BY p.ss_rating DESC LIMIT 15
+  [이적경로 Ligue1→EPL] MATCH (fr:Club)-[:COMPETES_IN]->(:League {key:'Ligue1'}) MATCH (fr)<-[:FROM]-(t:TransferEvent)-[:TO]->(to:Club)-[:COMPETES_IN]->(:League {key:'EPL'}) MATCH (t)-[:OF]->(p:Player) RETURN p.name,fr.name,to.name,t.fee_text LIMIT 15
+  [국대 동료] MATCH (a:Player {name:'Bukayo Saka'})-[:REPRESENTS]->(ctry)<-[:REPRESENTS]-(b:Player) WHERE a<>b RETURN b.name,b.pos_detail,b.league LIMIT 15
+  [팀동료 중 루머] MATCH (a:Player {name:'Vitinha'})-[:TEAMMATE_OF]-(b:Player)-[:RUMORED_WITH]->(c:Club) RETURN DISTINCT b.name,c.name LIMIT 15
+  [계약임박 CB] MATCH (p:Player) WHERE p.contract_until CONTAINS '2026' AND p.pos_detail='Centre-Back' AND p.age<=26 RETURN p.name,p.contract_until,p.league,p.market_value_eur ORDER BY p.market_value_eur DESC LIMIT 15"""
+
 _WRITE_RE = re.compile(r"(?i)(?<![a-z])(create|merge|delete|detach|set|remove|drop|foreach|load\s+csv)(?![a-z])")
 
 
@@ -129,7 +143,7 @@ _SYSTEM = (
     "- 관계·다중필터·집계·이적경로 질문도 graph_query(read-only Cypher). 5개 구조화 툴이 맞으면 그걸 우선.\n"
     "- **'왜/이유/근거/설명해줘' 같은 메타 질문은 툴을 절대 호출하지 말고, 직전 답변을 근거로 텍스트로만 설명하라.**\n"
     "- 후속 질문('더 싸게','좁혀줘','~빼고')은 조건을 바꿔 새로 조회. 그 외 후속은 맥락 참고.\n"
-    "\nKG 스키마(graph_query용, 이 라벨/관계/속성만 사용):\n" + _KG_SCHEMA + "\n"
+    "\nKG 스키마(graph_query용, 이 라벨/관계/속성만 사용):\n" + _KG_SCHEMA + "\n\n" + _CYPHER_TIPS + "\n"
 )
 
 
