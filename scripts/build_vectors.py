@@ -125,6 +125,10 @@ def main() -> int:
         client.delete_collection(COLLECTION)
     client.create_collection(COLLECTION,
                              vectors_config=models.VectorParams(size=dim, distance=models.Distance.COSINE))
+    # payload 인덱스 — Qdrant Cloud 는 필터(scroll/search FieldCondition)에 인덱스 필수
+    # (로컬 docker 는 불필요). 없으면 discover/fit/sim 필터가 400 Bad Request.
+    for _f in ("pos_detail", "club", "name", "league"):
+        client.create_payload_index(COLLECTION, field_name=_f, field_schema=models.PayloadSchemaType.KEYWORD)
 
     points = [models.PointStruct(id=i, vector=v.tolist(), payload=p)
               for i, v, p in zip(ids, vecs, payloads)]
