@@ -296,6 +296,7 @@ export type DiscoverPick = {
   cross_league: boolean; source_league: string; value_eur: number | null; style_fit: number;
   euro: boolean; age: number | null; photo: string; why_fit: string[];
   goals?: number; assists?: number; rating?: number;
+  price_verdict?: string; likely_fee_eur?: number | null; recruit_fit?: number; contract_until?: string;
   kg_rumored?: boolean; kg_rumor_prob?: number | null; kg_precedent?: number;
 };
 export type Discover = {

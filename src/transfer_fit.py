@@ -202,6 +202,20 @@ def _kg_enrich(team, recs, tgt_league):
     return recs
 
 
+@lru_cache(maxsize=1)
+def _departed_keys() -> set:
+    """이번 창 이적한 선수(transfers direction=out) norm_key — 추천에서 제외(이미 떠남)."""
+    try:
+        import club_profile as cp
+        t = cp._transfers()
+        if t.empty or "norm_key" not in t.columns:
+            return set()
+        out = t[t.get("direction") == "out"]
+        return {str(x).lower() for x in out["norm_key"].dropna().tolist() if str(x).strip()}
+    except Exception:  # noqa: BLE001
+        return set()
+
+
 def discover_fits(team: str, role: str | None = None, top: int = 24,
                   leagues: list | None = None, min_age: int | None = None,
                   max_age: int | None = None, max_value: float | None = None) -> dict:
@@ -223,6 +237,7 @@ def discover_fits(team: str, role: str | None = None, top: int = 24,
         return {"available": False, "reason": f"Qdrant 미가동: {str(e)[:60]}", "recommendations": []}
 
     lgset = set(leagues) if leagues else None
+    departed = _departed_keys()                    # 이번 창 이적 완료 선수 제외
     roles = [(_pos_detail(role) or role)] if role else _weak_roles(team, pool)
     recs, seen = [], set()
     for rl in roles:
@@ -243,6 +258,8 @@ def discover_fits(team: str, role: str | None = None, top: int = 24,
             if prow.empty:
                 continue
             r = prow.iloc[0]
+            if str(r.get("norm_key") or "").lower() in departed:   # 이번 창 이적 완료 → 제외
+                continue
             base = int(api._player_ovr(r))
             age = None if pd.isna(r.get("_age")) else int(r["_age"])
             mv = None if pd.isna(r.get("_mv")) else int(r["_mv"])
@@ -257,7 +274,12 @@ def discover_fits(team: str, role: str | None = None, top: int = 24,
             proj = base if lg == tgt_league else int(api._project_ovr(base, lg, tgt_league, euro, age, bucket)[0])
             style_fit = int(round(max(0.0, h.score) * 100))
             proj_norm = _clamp((proj - 55) / 37 * 100)
-            score = 0.55 * style_fit + 0.35 * proj_norm + (5 if euro else 0)
+            likely_fee = float(mv) * 1.2 if mv else None      # 시장가 대비 이적료 근사
+            pr = price_realism(team, likely_fee)              # 가격 현실성(구단 상한 대비)
+            rf = recruit_fit(team, age)                       # 영입 나이기조 부합
+            contract = str(r.get("contract_until") or "")
+            score = (0.42 * style_fit + 0.22 * proj_norm + 0.14 * pr["score"]
+                     + 0.10 * float(rf["score"]) + (6 if euro else 0))
             cross = bool(lg != tgt_league)
             why = [f"스타일 적합 {style_fit}"]
             if cross:
@@ -266,6 +288,12 @@ def discover_fits(team: str, role: str | None = None, top: int = 24,
                 why.append("유럽 검증")
             if age is not None and age <= 22:
                 why.append(f"{age}세 성장형")
+            if pr["verdict"] == "over-budget":
+                why.append("예산 초과 우려")
+            elif pr["verdict"] == "stretch":
+                why.append("가격 다소 무리")
+            if contract[:4] in ("2026", "2027"):
+                why.append(f"계약 {contract[:4]} 만료")
             seen.add(nm)
             recs.append({
                 "player": nm, "squad": clb or "", "pos": rl, "role_bucket": rl,
@@ -274,6 +302,8 @@ def discover_fits(team: str, role: str | None = None, top: int = 24,
                 "goals": int(_num0(r.get("goals"))), "assists": int(_num0(r.get("assists"))),
                 "rating": round(float(_num0(r.get("ss_rating"))), 2),
                 "style_fit": style_fit, "euro": euro, "age": age,
+                "price_verdict": pr["verdict"], "likely_fee_eur": pr.get("likely_fee_eur"),
+                "recruit_fit": int(rf["score"]), "contract_until": contract,
                 "photo": str(r.get("photo") or ""), "why_fit": why, "_score": round(score, 1),
             })
     recs.sort(key=lambda x: -x["_score"])
