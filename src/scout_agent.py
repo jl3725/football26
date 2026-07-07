@@ -16,7 +16,7 @@ from functools import lru_cache
 
 MODEL = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
 NEO4J_URI = os.getenv("NEO4J_URI", "bolt://localhost:7687")
-NEO4J_AUTH = (os.getenv("NEO4J_USER", "neo4j"), os.getenv("NEO4J_PASSWORD", "football26"))
+NEO4J_AUTH = (os.getenv("NEO4J_USER") or os.getenv("NEO4J_USERNAME") or "neo4j", os.getenv("NEO4J_PASSWORD", "football26"))
 
 # GraphRAG용 KG 스키마(라이브 introspect 기반). LLM이 이 라벨/관계/속성만 써서 Cypher 작성.
 _KG_SCHEMA = """노드:
