@@ -1,6 +1,6 @@
 # Manager Change Report
 
-- Checked: 2026-07-06 08:48 UTC
+- Checked: 2026-07-07 08:00 UTC
 - Source: https://en.wikipedia.org/wiki/2026%E2%80%9327_Premier_League
 - Teams tracked: 20
 - Source teams matched: 20
@@ -8,7 +8,7 @@
 
 ## Change Candidates
 
-- None
+- Nottingham Forest: local `Vítor Pereira` -> source `Oliver Glasner`
 
 ## Missing In Source
 
