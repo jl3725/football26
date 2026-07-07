@@ -295,15 +295,22 @@ export type DiscoverPick = {
   player: string; squad: string; pos: string; ovr: number; current_ovr: number; projected_ovr: number;
   cross_league: boolean; source_league: string; value_eur: number | null; style_fit: number;
   euro: boolean; age: number | null; photo: string; why_fit: string[];
+  goals?: number; assists?: number; rating?: number;
   kg_rumored?: boolean; kg_rumor_prob?: number | null; kg_precedent?: number;
 };
 export type Discover = {
   available: boolean; reason?: string; error?: string;
   team?: string; target_league?: string; target_roles?: string[];
+  kpi?: { count: number; avg_age: number | null; avg_value: number | null; leagues: string[] };
   recommendations: DiscoverPick[];
 };
-export const getDiscover = (t: string, role = "", l = _league) =>
-  j<Discover>(`/api/discover/${encodeURIComponent(t)}?role=${encodeURIComponent(role)}&league=${encodeURIComponent(l)}`);
+export type DiscoverOpts = { role?: string; top?: number };
+export const getDiscover = (t: string, opts: DiscoverOpts = {}, l = _league) => {
+  const p = new URLSearchParams({ league: l });
+  if (opts.role) p.set("role", opts.role);
+  if (opts.top) p.set("top", String(opts.top));
+  return j<Discover>(`/api/discover/${encodeURIComponent(t)}?${p.toString()}`);
+};
 
 // ── 스카우트 데스크 (Needs Board) ──
 export type NeedItem = { line: string; line_label: string; kind: string; title: string; severity: string; reason: string; status: string; player: string | null };

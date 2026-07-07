@@ -104,6 +104,14 @@ def _clamp(x, lo=0.0, hi=100.0):
     return max(lo, min(hi, x))
 
 
+def _num0(v):
+    try:
+        f = float(v)
+        return 0.0 if pd.isna(f) else f
+    except (TypeError, ValueError):
+        return 0.0
+
+
 # ── Qdrant: Role Fit + 유사선수 ────────────────────────────────────────────
 def _qdrant():
     from qdrant_client import QdrantClient
@@ -194,11 +202,14 @@ def _kg_enrich(team, recs, tgt_league):
     return recs
 
 
-def discover_fits(team: str, role: str | None = None, top: int = 8) -> dict:
+def discover_fits(team: str, role: str | None = None, top: int = 24,
+                  leagues: list | None = None, min_age: int | None = None,
+                  max_age: int | None = None, max_value: float | None = None) -> dict:
     """Qdrant 기반 교차리그 스타일-핏 발굴(리그 중립) — 스카우트 추천의 핵심.
 
     팀의 해당 역할 사용 스타일 centroid(없으면 리그 엘리트 원형)로 전 리그 벡터 검색 →
     스타일적합(코사인) + 리그변환(_project_ovr) + 유럽검증으로 랭크. EPL 편향 없음.
+    필터: leagues(소스리그 화이트리스트)·min_age/max_age·max_value(시장가 상한).
     """
     api, pool = _api(), _pool()
     tgt = pool[pool["squad"].astype(str) == team]
@@ -211,6 +222,7 @@ def discover_fits(team: str, role: str | None = None, top: int = 8) -> dict:
     except Exception as e:  # noqa: BLE001
         return {"available": False, "reason": f"Qdrant 미가동: {str(e)[:60]}", "recommendations": []}
 
+    lgset = set(leagues) if leagues else None
     roles = [(_pos_detail(role) or role)] if role else _weak_roles(team, pool)
     recs, seen = [], set()
     for rl in roles:
@@ -219,11 +231,13 @@ def discover_fits(team: str, role: str | None = None, top: int = 8) -> dict:
             target = _elite_archetype(qc, rl)
         if target is None:
             continue
-        hits = qc.search(QCOLLECTION, query_vector=target.tolist(), limit=60)
+        hits = qc.search(QCOLLECTION, query_vector=target.tolist(), limit=120)
         for h in hits:
             pay = h.payload or {}
             nm, clb, lg = pay.get("name"), pay.get("club"), pay.get("league")
             if not nm or clb == team or pay.get("pos_detail") != rl or nm in seen:
+                continue
+            if lgset and lg not in lgset:
                 continue
             prow = pool[(pool["player"].astype(str) == nm) & (pool["_league"] == lg)]
             if prow.empty:
@@ -231,6 +245,13 @@ def discover_fits(team: str, role: str | None = None, top: int = 8) -> dict:
             r = prow.iloc[0]
             base = int(api._player_ovr(r))
             age = None if pd.isna(r.get("_age")) else int(r["_age"])
+            mv = None if pd.isna(r.get("_mv")) else int(r["_mv"])
+            if min_age and age is not None and age < min_age:
+                continue
+            if max_age and age is not None and age > max_age:
+                continue
+            if max_value and mv is not None and mv > max_value:
+                continue
             euro = bool((r.get("_euro") or 0) > 0)
             bucket = api._pos_bucket(r)
             proj = base if lg == tgt_league else int(api._project_ovr(base, lg, tgt_league, euro, age, bucket)[0])
@@ -249,16 +270,23 @@ def discover_fits(team: str, role: str | None = None, top: int = 8) -> dict:
             recs.append({
                 "player": nm, "squad": clb or "", "pos": rl, "role_bucket": rl,
                 "ovr": proj, "current_ovr": base, "projected_ovr": proj,
-                "cross_league": cross, "source_league": lg,
-                "value_eur": None if pd.isna(r.get("_mv")) else int(r["_mv"]),
+                "cross_league": cross, "source_league": lg, "value_eur": mv,
+                "goals": int(_num0(r.get("goals"))), "assists": int(_num0(r.get("assists"))),
+                "rating": round(float(_num0(r.get("ss_rating"))), 2),
                 "style_fit": style_fit, "euro": euro, "age": age,
                 "photo": str(r.get("photo") or ""), "why_fit": why, "_score": round(score, 1),
             })
     recs.sort(key=lambda x: -x["_score"])
-    recs = _kg_enrich(team, recs[:max(top * 2, 16)], tgt_league)   # KG 신호(루머·선례)로 보강·재정렬
+    recs = _kg_enrich(team, recs[:max(top * 2, 24)], tgt_league)[:top]   # KG 신호 보강·재정렬
+    ages = [x["age"] for x in recs if x["age"] is not None]
+    vals = [x["value_eur"] for x in recs if x["value_eur"]]
+    kpi = {"count": len(recs),
+           "avg_age": round(sum(ages) / len(ages), 1) if ages else None,
+           "avg_value": round(sum(vals) / len(vals)) if vals else None,
+           "leagues": sorted({x["source_league"] for x in recs})}
     return {"available": True, "team": team, "target_league": tgt_league,
             "target_roles": roles, "weakest": {"label": " · ".join(roles)},
-            "recommendations": recs[:top]}
+            "kpi": kpi, "recommendations": recs}
 
 
 def _style_fits(qc, cand_name, role, target_club, tendency_cl):

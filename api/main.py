@@ -572,13 +572,19 @@ def scout(body: dict, x_scout_token: str = Header(default="")):
 
 
 @app.get("/api/discover/{team}")
-def discover(team: str, role: str = "", league: str = ACTIVE_LEAGUE):
+def discover(team: str, role: str = "", leagues: str = "", min_age: int = 0,
+             max_age: int = 0, max_value: float = 0, top: int = 24,
+             league: str = ACTIVE_LEAGUE):
     """벡터(Qdrant) 스타일-핏 교차리그 발굴 + KG 신호(루머·선례). Recruit 탭·스카우트 공용.
 
+    필터: role(포지션)·leagues(쉼표구분 소스리그)·min_age/max_age·max_value(EUR 상한).
     로컬/호스팅 Qdrant 필요. 미가동 시 available=False degrade. role 없으면 얇은 역할 자동.
     """
     import transfer_fit as tf  # noqa: PLC0415 (지연 import — Qdrant 의존)
-    return tf.discover_fits(team, role or None, top=12)
+    lgs = [s for s in leagues.split(",") if s] or None
+    return tf.discover_fits(team, role or None, top=top or 24, leagues=lgs,
+                            min_age=min_age or None, max_age=max_age or None,
+                            max_value=max_value or None)
 
 
 @app.get("/api/calendar")
