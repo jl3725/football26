@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import ScoutChat from "./ScoutChat";
 import { hexA } from "@/lib/ui";
+import Bar from "./Bar";
 
 // 전역 AI 어시스턴트 — 우하단 플로팅 버블 → 우측 슬라이드 드로어.
 // 어느 탭/팀을 보든 접근(컨텍스트=현재 팀). ScoutChat 은 계속 마운트되어 대화 유지.
@@ -37,7 +38,7 @@ export default function ScoutDock({ team, league, accent, onNavigate }:
       }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between",
           padding: "13px 16px", borderBottom: `1px solid ${hexA(accent, 0.2)}` }}>
-          <b style={{ fontSize: 14 }}>💬 Ask Scout <span style={{ fontWeight: 400, opacity: 0.5, fontSize: 11 }}>· Chief Scout</span></b>
+          <b style={{ fontSize: 14 }}><Bar c={accent} />Ask Scout <span style={{ fontWeight: 400, opacity: 0.5, fontSize: 11 }}>· Chief Scout</span></b>
           <button onClick={() => setOpen(false)} title="닫기 (Esc)" style={{
             border: "none", background: hexA("#ffffff", 0.08), color: "inherit", cursor: "pointer",
             width: 28, height: 28, borderRadius: 8, fontSize: 14 }}>✕</button>
@@ -54,7 +55,12 @@ export default function ScoutDock({ team, league, accent, onNavigate }:
         background: `linear-gradient(135deg, ${accent}, ${hexA(accent, 0.75)})`, color: "#0a0a0a",
         fontSize: 22, fontWeight: 800, boxShadow: `0 6px 22px ${hexA(accent, 0.55)}`,
         transition: "transform .15s", transform: open ? "scale(0.9)" : "scale(1)",
-      }}>{open ? "✕" : "✨"}</button>
+        display: "flex", alignItems: "center", justifyContent: "center",
+      }}>{open ? "✕" : (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+        </svg>
+      )}</button>
     </>
   );
 }

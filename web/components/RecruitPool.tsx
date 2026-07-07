@@ -35,7 +35,8 @@ function Card({ p, accent }: { p: DiscoverPick; accent: string }) {
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ fontSize: 13.5, fontWeight: 700, display: "flex", alignItems: "center", gap: 5 }}>
             {p.player}
-            {p.kg_rumored && <span title={`이 팀과 루머 연결${p.kg_rumor_prob ? ` ${p.kg_rumor_prob}%` : ""}`} style={{ fontSize: 11 }}>🔗</span>}
+            {p.kg_rumored && <span title={`이 팀과 루머 연결${p.kg_rumor_prob ? ` ${p.kg_rumor_prob}%` : ""}`}
+              style={{ fontSize: 9, fontWeight: 700, padding: "1px 5px", borderRadius: 5, background: hexA(accent, 0.2), color: accent }}>링크</span>}
           </div>
           <div style={{ fontSize: 10.5, opacity: 0.6, marginTop: 1 }}>{p.squad} · {p.source_league}</div>
           <span style={{ fontSize: 9.5, padding: "1px 6px", borderRadius: 6, background: hexA(accent, 0.14), color: accent, marginTop: 4, display: "inline-block" }}>{p.pos}</span>
@@ -62,8 +63,8 @@ function Card({ p, accent }: { p: DiscoverPick; accent: string }) {
         </div>
       </div>
       <div style={{ display: "flex", gap: 5, marginTop: 8, flexWrap: "wrap" }}>
-        <span style={{ fontSize: 9.5, padding: "1px 7px", borderRadius: 8, background: hexA(rising ? "#4fc27f" : "#8aa", 0.15), color: rising ? "#4fc27f" : "#9ab" }}>{rising ? "🌱 성장형" : "안정"}</span>
-        {p.euro && <span style={{ fontSize: 9.5, padding: "1px 7px", borderRadius: 8, background: hexA("#f4cf5e", 0.15), color: "#f4cf5e" }}>⚡ 유럽검증</span>}
+        <span style={{ fontSize: 9.5, padding: "1px 7px", borderRadius: 8, background: hexA(rising ? "#4fc27f" : "#8aa", 0.15), color: rising ? "#4fc27f" : "#9ab" }}>{rising ? "성장형" : "안정"}</span>
+        {p.euro && <span style={{ fontSize: 9.5, padding: "1px 7px", borderRadius: 8, background: hexA("#f4cf5e", 0.15), color: "#f4cf5e" }}>유럽 검증</span>}
         {p.kg_precedent ? <span style={{ fontSize: 9.5, padding: "1px 7px", borderRadius: 8, background: hexA(accent, 0.12), color: accent }}>선례 {p.kg_precedent}</span> : null}
       </div>
     </div>
@@ -104,7 +105,7 @@ export default function RecruitPool({ team, accent }: { team: string; accent: st
 
   if (disc && !disc.available) return (
     <div className="nodata-card" style={{ marginTop: 16 }}>
-      <div style={{ fontSize: 28 }}>🔌</div><b>벡터 추천 비활성</b>
+      <b>벡터 추천 비활성</b>
       <div className="mgr-meta" style={{ marginTop: 6 }}>{disc.reason || "Qdrant 스택 필요 (로컬/호스팅)"}</div>
     </div>
   );

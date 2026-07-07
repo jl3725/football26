@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { getFit, fmtEur, type Fit } from "@/lib/api";
 import { hexA, tier } from "@/lib/ui";
+import Bar from "./Bar";
 
 const ROLES = [
   ["Centre-Back", "센터백"], ["Right-Back", "라이트백"], ["Left-Back", "레프트백"],
@@ -56,7 +57,7 @@ export default function FitEvaluator({ team, accent, suggestions }:
   return (
     <div className="fade">
       <div className="card">
-        <h3>🎯 Fit 평가 <span style={{ fontSize: 11, fontWeight: 400, opacity: 0.5 }}>· {team} 영입 시 적합도 정밀 분해</span></h3>
+        <h3><Bar c={accent} />적합도 평가 <span style={{ fontSize: 11, fontWeight: 400, opacity: 0.5 }}>· {team} 영입 시 적합도 정밀 분해</span></h3>
         {/* 입력 */}
         <div style={{ display: "flex", flexWrap: "wrap", gap: 8, alignItems: "center", margin: "6px 0 4px" }}>
           <input value={cand} onChange={(e) => setCand(e.target.value)} list="fit-cands"
@@ -93,7 +94,6 @@ export default function FitEvaluator({ team, accent, suggestions }:
       {loading && <div className="loading" style={{ marginTop: 16 }}>Fit 계산 중…</div>}
       {res && !res.available && (
         <div className="nodata-card" style={{ marginTop: 16 }}>
-          <div style={{ fontSize: 30 }}>🔌</div>
           <b>로컬 스택 미가동</b>
           <div className="mgr-meta" style={{ marginTop: 6 }}>{res.reason}</div>
           <div className="mgr-meta" style={{ marginTop: 6, opacity: 0.7 }}>docker compose up -d 후 QDRANT_URL=http://localhost:6335 로 API 재시작</div>
@@ -101,7 +101,7 @@ export default function FitEvaluator({ team, accent, suggestions }:
       )}
       {res && res.available && res.error && (
         <div className="nodata-card" style={{ marginTop: 16 }}>
-          <div style={{ fontSize: 30 }}>🔍</div><b>{res.error}</b>
+          <b>{res.error}</b>
           <div className="mgr-meta" style={{ marginTop: 6 }}>선수명·역할을 확인해주세요 (전 리그 players_full 기준)</div>
         </div>
       )}
@@ -153,7 +153,7 @@ function FitCard({ r, accent }: { r: Fit; accent: string }) {
         <div style={{ marginTop: 12, padding: "10px 12px", borderRadius: 8, background: hexA(accent, 0.06),
           borderLeft: `3px solid ${hexA(accent, 0.5)}`, fontSize: 12 }}>
           <b>전술 적합</b> · 현재 전술 {td.current_fit} · 감독 성향 {td.tendency_fit} → 블렌드 <b style={{ color: accent }}>{td.blended}</b>
-          <span style={{ opacity: 0.6 }}> ({td.is_new_manager ? "🆕 새 부임" : "안정"}
+          <span style={{ opacity: 0.6 }}> ({td.is_new_manager ? "새 부임" : "안정"}
             {td.appointed ? ` · ${td.appointed}` : ""}: 현재 {Math.round(td.w_current * 100)}% / 성향 {Math.round(td.w_tendency * 100)}%)</span>
           {td.is_new_manager && td.descriptor_tags.length === 0 &&
             <div style={{ opacity: 0.5, marginTop: 3 }}>ℹ️ 감독 성향 데이터 없음 → 현재 스냅샷으로 폴백</div>}

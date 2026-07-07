@@ -5,6 +5,7 @@ import { tier, roleClass, hexA } from "@/lib/ui";
 import FitEvaluator from "./FitEvaluator";
 import ManagerSimPanel from "./ManagerSimPanel";
 import RecruitPool from "./RecruitPool";
+import Bar from "./Bar";
 
 const MODE: Record<string, { t: string; d: string }> = {
   evaluate: { t: "영입 평가 모드", d: "이번 창 영입이 각 니즈를 얼마나 해소했는지 점검" },
@@ -54,13 +55,14 @@ export default function TransferTab({ team, accent }: { team: string; accent: st
   return (
     <div className="fade">
       {/* 서브탭 토글 */}
-      <div style={{ display: "flex", gap: 8, marginBottom: 14, flexWrap: "wrap" }}>
-        {([["scout", "🧭 스카우트 데스크"], ["fit", "🎯 Fit 평가"], ["sim", "🔄 감독 시뮬"]] as const).map(([v, label]) => (
+      <div style={{ display: "inline-flex", gap: 2, marginBottom: 16, padding: 3, borderRadius: 10,
+        background: hexA("#ffffff", 0.05), border: `1px solid ${hexA(accent, 0.15)}` }}>
+        {([["scout", "스카우트 데스크"], ["fit", "적합도 평가"], ["sim", "감독 시뮬레이션"]] as const).map(([v, label]) => (
           <button key={v} onClick={() => setView(v)}
-            style={{ padding: "7px 16px", borderRadius: 8, fontSize: 13, fontWeight: 700, cursor: "pointer",
-              border: `1px solid ${view === v ? accent : hexA(accent, 0.25)}`,
-              background: view === v ? hexA(accent, 0.18) : "transparent",
-              color: view === v ? accent : "inherit", opacity: view === v ? 1 : 0.7 }}>{label}</button>
+            style={{ padding: "7px 16px", borderRadius: 7, fontSize: 12.5, fontWeight: 600, cursor: "pointer",
+              border: "none", letterSpacing: 0.2, transition: "all .15s",
+              background: view === v ? accent : "transparent",
+              color: view === v ? "#0a0a0a" : "inherit", opacity: view === v ? 1 : 0.6 }}>{label}</button>
         ))}
       </div>
 
@@ -73,7 +75,7 @@ export default function TransferTab({ team, accent }: { team: string; accent: st
       {needs && (
         <div className="scout-desk">
           <div className="scout-hd">
-            <span className="scout-tag" style={{ color: accent }}>🧭 SCOUT DESK</span>
+            <span className="scout-tag" style={{ color: accent }}>SCOUT DESK</span>
             <b>{mode?.t}</b>
             <span className="scout-d">{mode?.d}</span>
             <span className="scout-cnt">영입 {needs.window.signings.length} · 방출 {needs.window.departures.length}</span>
@@ -128,14 +130,14 @@ export default function TransferTab({ team, accent }: { team: string; accent: st
 
       {/* 포지션별 보강 후보 — 벡터 스타일-핏 + 필터/KPI/정렬 (RecruitPool) */}
       <div className="card" style={{ marginTop: 16 }}>
-        <h3>🎯 스카우팅 풀 <span className="rating-note">· 벡터 스타일-핏 · 전 리그 · KG 신호 · 필터/정렬</span></h3>
+        <h3><Bar c={accent} />스카우팅 풀 <span className="rating-note">· 벡터 스타일-핏 · 전 리그 · KG 신호 · 필터/정렬</span></h3>
         <RecruitPool team={team} accent={accent} />
       </div>
 
       {/* 드림 타깃 — 최상위급이나 티어·라이벌상 비현실 */}
       {rec && rec.longshots && rec.longshots.length > 0 && (
         <div className="card" style={{ marginTop: 16 }}>
-          <h3>🌟 드림 타깃 <span className="rating-note">· 포지션 최상위급이나 티어·라이벌상 영입 가능성 낮음</span></h3>
+          <h3><Bar c={accent} />드림 타깃 <span className="rating-note">· 포지션 최상위급이나 티어·라이벌상 영입 가능성 낮음</span></h3>
           <div className="rec-grid">
             {rec.longshots.map((l, i) => {
               const t = tier(l.ovr);
@@ -159,7 +161,7 @@ export default function TransferTab({ team, accent }: { team: string; accent: st
       {/* Lost Target Review */}
       {rec && rec.lost_targets && rec.lost_targets.length > 0 && (
         <div className="card" style={{ marginTop: 16 }}>
-          <h3>🕵 놓친 타깃 · Lost Targets <span className="rating-note">· {rec.weakest?.label} 라인에서 타팀으로 이적</span></h3>
+          <h3><Bar c={accent} />놓친 타깃 <span className="rating-note">· {rec.weakest?.label} 라인에서 타팀으로 이적</span></h3>
           <div className="tf2-list">
             {rec.lost_targets.map((l, i) => (
               <div className={`tf2-row${l.top_loss ? " top-loss" : ""}`} key={i}>

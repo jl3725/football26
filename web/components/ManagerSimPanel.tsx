@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { getManagerSim, type ManagerSim } from "@/lib/api";
 import { hexA, tier } from "@/lib/ui";
+import Bar from "./Bar";
 
 const AXIS_KO: Record<string, string> = {
   pressing: "압박", control: "점유·제어", creativity: "창의성", attack_output: "공격생산",
@@ -39,7 +40,7 @@ export default function ManagerSimPanel({ team, accent }: { team: string; accent
   return (
     <div className="fade">
       <div className="card">
-        <h3>🔄 감독 교체 시뮬 <span style={{ fontSize: 11, fontWeight: 400, opacity: 0.5 }}>· {team}에 새 감독 부임 시 전술·스쿼드·영입 변화</span></h3>
+        <h3><Bar c={accent} />감독 교체 시뮬레이션 <span style={{ fontSize: 11, fontWeight: 400, opacity: 0.5 }}>· {team}에 새 감독 부임 시 전술·스쿼드·영입 변화</span></h3>
         <div style={{ display: "flex", flexWrap: "wrap", gap: 8, alignItems: "center", margin: "6px 0 4px" }}>
           <input value={mgr} onChange={(e) => setMgr(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && run()} placeholder="새 감독명 또는 클럽명 (예: Hansi Flick / Barcelona)"
@@ -65,13 +66,13 @@ export default function ManagerSimPanel({ team, accent }: { team: string; accent
       {loading && <div className="loading" style={{ marginTop: 16 }}>시뮬레이션 중…</div>}
       {res && !res.available && (
         <div className="nodata-card" style={{ marginTop: 16 }}>
-          <div style={{ fontSize: 30 }}>🔌</div><b>로컬 스택 미가동</b>
+          <b>로컬 스택 미가동</b>
           <div className="mgr-meta" style={{ marginTop: 6 }}>{res.reason}</div>
         </div>
       )}
       {res && res.available && res.error && (
         <div className="nodata-card" style={{ marginTop: 16 }}>
-          <div style={{ fontSize: 30 }}>🔍</div><b>{res.error}</b>
+          <b>{res.error}</b>
           <div className="mgr-meta" style={{ marginTop: 6 }}>감독명 또는 클럽명을 확인해주세요 (7대 리그 기준)</div>
         </div>
       )}
@@ -127,7 +128,7 @@ function SimResult({ r, accent }: { r: ManagerSim; accent: string }) {
       {/* 스쿼드 미스핏 + 영입 우선순위 2열 */}
       <div className="grid" style={{ marginTop: 16 }}>
         <div className="card">
-          <h3 style={{ color: "#e0857a" }}>🔻 새 시스템 부적합 <span className="rating-note">· 교체 검토</span></h3>
+          <h3 style={{ color: "#e0857a" }}>새 시스템 부적합 <span className="rating-note">· 교체 검토</span></h3>
           <div className="tf2-list">
             {(r.squad_misfit || []).map((m, i) => {
               const c = m.sys_fit < 30 ? "#e0556b" : m.sys_fit < 50 ? "#f4cf5e" : "#4fc27f";
@@ -145,7 +146,7 @@ function SimResult({ r, accent }: { r: ManagerSim; accent: string }) {
           </div>
         </div>
         <div className="card">
-          <h3 style={{ color: accent }}>🎯 새 시스템 영입 우선순위 <span className="rating-note">· 강조 역할 · 스쿼드 얇음</span></h3>
+          <h3 style={{ color: accent }}>새 시스템 영입 우선순위 <span className="rating-note">· 강조 역할 · 스쿼드 얇음</span></h3>
           <div className="tf2-list">
             {(r.priorities || []).map((p, i) => (
               <div key={i} style={{ padding: "8px 0", borderBottom: `1px solid ${hexA("#ffffff", 0.06)}` }}>

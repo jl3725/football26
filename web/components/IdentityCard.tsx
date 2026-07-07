@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { getIdentity, fmtEur, type Identity } from "@/lib/api";
 import { hexA, tier } from "@/lib/ui";
+import HBar from "./Bar";
 
 // 전술 태그 → 한국어. current(팀 벡터 유래) + tendency(descriptor) 두 어휘 모두 커버.
 const TAG_KO: Record<string, string> = {
@@ -70,7 +71,7 @@ export default function IdentityCard({ team, league, accent }: { team: string; l
 
   return (
     <div className="card" style={{ marginTop: 16 }}>
-      <h3>🧭 팀 정체성 <span style={{ fontSize: 11, fontWeight: 400, opacity: 0.5 }}>· 감독 전술 · 영입 성향 · 예산</span></h3>
+      <h3><HBar c={accent} />팀 정체성 <span style={{ fontSize: 11, fontWeight: 400, opacity: 0.5 }}>· 감독 전술 · 영입 성향 · 예산</span></h3>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(230px, 1fr))", gap: 18, marginTop: 6 }}>
 
         {/* 감독 전술 (현재 스냅샷 + 장기성향 블렌드) */}
@@ -81,7 +82,7 @@ export default function IdentityCard({ team, league, accent }: { team: string; l
             {/* 재임 기반 블렌드 */}
             <div style={{ margin: "8px 0 6px" }}>
               <div style={{ display: "flex", justifyContent: "space-between", fontSize: 10.5, opacity: 0.7, marginBottom: 3 }}>
-                <span>{tc.tenure.is_new ? "🆕 새 부임" : "안정"}{tc.tenure.appointed ? ` · ${tc.tenure.appointed}` : ""}</span>
+                <span>{tc.tenure.is_new ? "새 부임" : "안정"}{tc.tenure.appointed ? ` · ${tc.tenure.appointed}` : ""}</span>
                 <span>현재 {Math.round(tc.tenure.w_current * 100)}% / 성향 {Math.round(tc.tenure.w_tendency * 100)}%</span>
               </div>
               <div style={{ display: "flex", height: 5, borderRadius: 3, overflow: "hidden" }}>

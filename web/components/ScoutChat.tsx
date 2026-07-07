@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import { getScout, fmtEur, type Scout } from "@/lib/api";
 import { hexA, tier } from "@/lib/ui";
+import Bar from "./Bar";
 
 type Msg = { role: "user" | "assistant"; text: string; data?: Scout };
 
@@ -34,8 +35,8 @@ function fmtCell(v: unknown): string {
 function ResultCard({ d, accent, onNavigate }: { d: Scout; accent: string; onNavigate?: (t: string, l?: string) => void }) {
   const r = d.result;
   if (!r) return null;
-  if (r.available === false) return <div style={{ fontSize: 12, opacity: 0.6 }}>🔌 {r.reason}</div>;
-  if (r.error) return <div style={{ fontSize: 12, opacity: 0.6 }}>🔍 {r.error}</div>;
+  if (r.available === false) return <div style={{ fontSize: 12, opacity: 0.6 }}>{r.reason}</div>;
+  if (r.error) return <div style={{ fontSize: 12, opacity: 0.6 }}>{r.error}</div>;
   const box: React.CSSProperties = { marginTop: 8, padding: "10px 12px", borderRadius: 10, background: hexA("#ffffff", 0.04), border: `1px solid ${hexA(accent, 0.15)}` };
 
   if (d.intent === "recommend") {
@@ -107,7 +108,7 @@ function ResultCard({ d, accent, onNavigate }: { d: Scout; accent: string; onNav
   }
   if (d.intent === "graph") {
     const rows: Record<string, unknown>[] = r.rows || [];
-    if (r.error) return <div style={{ fontSize: 12, opacity: 0.6 }}>🔍 {r.error}</div>;
+    if (r.error) return <div style={{ fontSize: 12, opacity: 0.6 }}>{r.error}</div>;
     if (rows.length === 0) return <div style={{ fontSize: 12, opacity: 0.6, ...box }}>결과 없음{r.cypher ? <div style={{ opacity: 0.4, marginTop: 4, fontFamily: "monospace", fontSize: 10 }}>{r.cypher}</div> : null}</div>;
     const cols = Object.keys(rows[0]);
     return (
@@ -160,7 +161,7 @@ export default function ScoutChat({ team, league, accent, onNavigate, embedded }
     setInput(""); setLoading(true);
     getScout(text, team, league, tok, hist)
       .then((d) => {
-        if (d.auth_required) { setNeedAuth(true); setMsgs((m) => [...m, { role: "assistant", text: "🔒 " + (d.reason || "비밀번호가 필요합니다") }]); return; }
+        if (d.auth_required) { setNeedAuth(true); setMsgs((m) => [...m, { role: "assistant", text: d.reason || "접근 비밀번호가 필요합니다" }]); return; }
         setMsgs((m) => [...m, { role: "assistant", text: d.answer || d.reason || d.error || "응답 없음", data: d }]);
       })
       .catch(() => setMsgs((m) => [...m, { role: "assistant", text: "요청 실패 — API/키 확인" }]))
@@ -175,7 +176,7 @@ export default function ScoutChat({ team, league, accent, onNavigate, embedded }
     <div className="fade" style={{ display: "flex", flexDirection: "column", height: embedded ? "100%" : "calc(100vh - 190px)" }}>
       {!embedded && (
         <div className="card" style={{ marginBottom: 10 }}>
-          <h3>💬 Ask Scout <span style={{ fontSize: 11, fontWeight: 400, opacity: 0.5 }}>· Chief Scout에게 물어보세요 (현재 팀: {team})</span></h3>
+          <h3><Bar c={accent} />Ask Scout <span style={{ fontSize: 11, fontWeight: 400, opacity: 0.5 }}>· Chief Scout에게 물어보세요 (현재 팀: {team})</span></h3>
           <div style={{ fontSize: 10.5, opacity: 0.45 }}>ℹ️ 판단·수치는 데이터 엔진, LLM은 라우팅·설명만 · 로컬(OpenAI) 사용</div>
         </div>
       )}
@@ -193,13 +194,13 @@ export default function ScoutChat({ team, league, accent, onNavigate, embedded }
             <div style={{ maxWidth: "82%", padding: "9px 13px", borderRadius: 12, fontSize: 13, lineHeight: 1.55,
               background: m.role === "user" ? hexA(accent, 0.18) : hexA("#ffffff", 0.05),
               border: m.role === "user" ? `1px solid ${hexA(accent, 0.3)}` : `1px solid ${hexA("#ffffff", 0.07)}` }}>
-              {m.role === "assistant" && <span style={{ fontSize: 11, opacity: 0.5, marginRight: 5 }}>🤖 Chief Scout</span>}
+              {m.role === "assistant" && <span style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: 0.3, opacity: 0.5, marginRight: 6, color: accent }}>CHIEF SCOUT</span>}
               <span style={{ whiteSpace: "pre-wrap" }}>{m.text}</span>
               {m.data && <ResultCard d={m.data} accent={accent} onNavigate={onNavigate} />}
             </div>
           </div>
         ))}
-        {loading && <div style={{ opacity: 0.55, fontSize: 12, margin: "10px 0" }}>🤖 스카우트가 데이터를 뒤지는 중…</div>}
+        {loading && <div style={{ opacity: 0.55, fontSize: 12, margin: "10px 0" }}>스카우트가 데이터를 분석하는 중…</div>}
         <div ref={endRef} />
       </div>
 
@@ -216,7 +217,7 @@ export default function ScoutChat({ team, league, accent, onNavigate, embedded }
       {/* 비밀번호 게이트 */}
       {needAuth && (
         <div style={{ display: "flex", gap: 8, marginTop: 8, alignItems: "center", padding: "8px 10px", borderRadius: 10, background: hexA("#e0a53a", 0.1), border: `1px solid ${hexA("#e0a53a", 0.4)}` }}>
-          <span style={{ fontSize: 12 }}>🔒 접근 비밀번호</span>
+          <span style={{ fontSize: 12 }}>접근 비밀번호</span>
           <input type="password" value={pw} onChange={(e) => setPw(e.target.value)} onKeyDown={(e) => e.key === "Enter" && saveToken()}
             placeholder="SCOUT_TOKEN" style={{ flex: 1, padding: "6px 10px", borderRadius: 8, fontSize: 12, background: hexA("#ffffff", 0.06), border: `1px solid ${hexA(accent, 0.3)}`, color: "inherit" }} />
           <button onClick={saveToken} style={{ padding: "6px 14px", borderRadius: 8, fontSize: 12, fontWeight: 700, cursor: "pointer", border: "none", background: accent, color: "#0a0a0a" }}>저장</button>
