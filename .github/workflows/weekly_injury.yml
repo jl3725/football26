@@ -23,7 +23,7 @@ jobs:
           python-version: "3.12"
 
       - name: Install dependencies
-        run: pip install requests beautifulsoup4 lxml pandas unidecode
+        run: pip install requests beautifulsoup4 lxml pandas unidecode wrapper-tls-requests
 
       - name: Injury history (전 리그)
         run: |
@@ -32,15 +32,22 @@ jobs:
             FB_LEAGUE=$LG python src/fetch_tm_injury_history.py || echo "injury_history $LG 실패"
           done
 
-      - name: Commit updated injury history
+      - name: Player heatmaps (Sofascore 시즌 활동 구역)
+        run: |
+          for LG in EPL LaLiga SerieA Bundesliga Ligue1 LigaPortugal Eredivisie; do
+            echo "── $LG ──"
+            FB_LEAGUE=$LG python src/fetch_sofascore_heatmaps.py || echo "heatmap $LG 실패"
+          done
+
+      - name: Commit updated data
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/tm_injury_history_*.csv
+          git add data/tm_injury_history_*.csv data/player_heatmaps_*.csv
           if git diff --staged --quiet; then
             echo "변경 없음 — 커밋 생략"
           else
-            git commit -m "chore(data): 통산 부상 이력 주간 수집 [skip ci]"
+            git commit -m "chore(data): 통산 부상 이력 + 선수 히트맵 주간 수집 [skip ci]"
             for i in 1 2 3; do
               git pull --rebase --autostash origin main && git push && break || sleep 5
             done
