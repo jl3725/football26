@@ -1,5 +1,5 @@
 squad,comp,comp_code,date,home_away,opponent,gf,ga,score,result,status,event_id
-Angers,리그,fra.1,2026-08-22,H,Lille,0,0,0-0,,scheduled,401876493
+Angers,리그,fra.1,2026-08-23,H,Lille,0,0,0-0,,scheduled,401876493
 Angers,리그,fra.1,2026-08-29,A,Auxerre,0,0,0-0,,scheduled,401876484
 Angers,리그,fra.1,2026-09-05,H,Stade Rennais,0,0,0-0,,scheduled,401876475
 Angers,리그,fra.1,2026-09-12,A,Le Havre,0,0,0-0,,scheduled,401876464
@@ -101,7 +101,7 @@ Brest,리그,fra.1,2027-05-08,H,Auxerre,0,0,0-0,,scheduled,401876222
 Brest,리그,fra.1,2027-05-16,H,Le Havre,0,0,0-0,,scheduled,401876213
 Brest,리그,fra.1,2027-05-22,A,Angers,0,0,0-0,,scheduled,401876205
 Brest,리그,fra.1,2027-05-29,H,Lens,0,0,0-0,,scheduled,401876195
-Le Havre,리그,fra.1,2026-08-22,H,Monaco,0,0,0-0,,scheduled,401876492
+Le Havre,리그,fra.1,2026-08-23,H,Monaco,0,0,0-0,,scheduled,401876492
 Le Havre,리그,fra.1,2026-08-29,A,Lyon,0,0,0-0,,scheduled,401876481
 Le Havre,리그,fra.1,2026-09-05,H,Brest,0,0,0-0,,scheduled,401876474
 Le Havre,리그,fra.1,2026-09-12,H,Angers,0,0,0-0,,scheduled,401876464
@@ -169,8 +169,8 @@ Lens,리그,fra.1,2027-05-08,H,Monaco,0,0,0-0,,scheduled,401876220
 Lens,리그,fra.1,2027-05-16,A,Marseille,0,0,0-0,,scheduled,401876210
 Lens,리그,fra.1,2027-05-22,H,Stade Rennais,0,0,0-0,,scheduled,401876202
 Lens,리그,fra.1,2027-05-29,A,Brest,0,0,0-0,,scheduled,401876195
-Lille,리그,fra.1,2026-08-22,A,Angers,0,0,0-0,,scheduled,401876493
-Lille,리그,fra.1,2026-08-30,H,PSG,0,0,0-0,,scheduled,401876476
+Lille,리그,fra.1,2026-08-23,A,Angers,0,0,0-0,,scheduled,401876493
+Lille,리그,fra.1,2026-08-28,H,PSG,0,0,0-0,,scheduled,401876476
 Lille,리그,fra.1,2026-09-05,A,Toulouse,0,0,0-0,,scheduled,401876468
 Lille,리그,fra.1,2026-09-12,H,Troyes,0,0,0-0,,scheduled,401876462
 Lille,리그,fra.1,2026-09-19,A,Nice,0,0,0-0,,scheduled,401876452
@@ -271,8 +271,8 @@ Lyon,리그,fra.1,2027-05-09,H,PSG,0,0,0-0,,scheduled,401876215
 Lyon,리그,fra.1,2027-05-16,H,Le Mans,0,0,0-0,,scheduled,401876211
 Lyon,리그,fra.1,2027-05-22,A,Lorient,0,0,0-0,,scheduled,401876201
 Lyon,리그,fra.1,2027-05-29,H,Paris FC,0,0,0-0,,scheduled,401876193
-Marseille,리그,fra.1,2026-08-22,H,Strasbourg,0,0,0-0,,scheduled,401876489
-Marseille,리그,fra.1,2026-08-29,A,Monaco,0,0,0-0,,scheduled,401876480
+Marseille,리그,fra.1,2026-08-21,H,Strasbourg,0,0,0-0,,scheduled,401876489
+Marseille,리그,fra.1,2026-08-30,A,Monaco,0,0,0-0,,scheduled,401876480
 Marseille,리그,fra.1,2026-09-05,H,Paris FC,0,0,0-0,,scheduled,401876471
 Marseille,리그,fra.1,2026-09-12,A,Stade Rennais,0,0,0-0,,scheduled,401876459
 Marseille,리그,fra.1,2026-09-20,H,PSG,0,0,0-0,,scheduled,401876449
@@ -305,8 +305,8 @@ Marseille,리그,fra.1,2027-05-08,A,Nice,0,0,0-0,,scheduled,401876218
 Marseille,리그,fra.1,2027-05-16,H,Lens,0,0,0-0,,scheduled,401876210
 Marseille,리그,fra.1,2027-05-22,A,Paris FC,0,0,0-0,,scheduled,401876199
 Marseille,리그,fra.1,2027-05-29,H,Lorient,0,0,0-0,,scheduled,401876192
-Monaco,리그,fra.1,2026-08-22,A,Le Havre,0,0,0-0,,scheduled,401876492
-Monaco,리그,fra.1,2026-08-29,H,Marseille,0,0,0-0,,scheduled,401876480
+Monaco,리그,fra.1,2026-08-23,A,Le Havre,0,0,0-0,,scheduled,401876492
+Monaco,리그,fra.1,2026-08-30,H,Marseille,0,0,0-0,,scheduled,401876480
 Monaco,리그,fra.1,2026-09-05,A,PSG,0,0,0-0,,scheduled,401876469
 Monaco,리그,fra.1,2026-09-12,A,Strasbourg,0,0,0-0,,scheduled,401876458
 Monaco,리그,fra.1,2026-09-19,H,Lens,0,0,0-0,,scheduled,401876453
@@ -340,7 +340,7 @@ Monaco,리그,fra.1,2027-05-16,H,Paris FC,0,0,0-0,,scheduled,401876209
 Monaco,리그,fra.1,2027-05-22,A,Nice,0,0,0-0,,scheduled,401876200
 Monaco,리그,fra.1,2027-05-29,H,Troyes,0,0,0-0,,scheduled,401876191
 Nice,리그,fra.1,2026-08-22,H,Lorient,0,0,0-0,,scheduled,401876488
-Nice,리그,fra.1,2026-08-29,A,Paris FC,0,0,0-0,,scheduled,401876479
+Nice,리그,fra.1,2026-08-30,A,Paris FC,0,0,0-0,,scheduled,401876479
 Nice,리그,fra.1,2026-09-05,H,Le Mans,0,0,0-0,,scheduled,401876470
 Nice,리그,fra.1,2026-09-12,A,Auxerre,0,0,0-0,,scheduled,401876466
 Nice,리그,fra.1,2026-09-19,H,Lille,0,0,0-0,,scheduled,401876452
@@ -373,8 +373,8 @@ Nice,리그,fra.1,2027-05-08,H,Marseille,0,0,0-0,,scheduled,401876218
 Nice,리그,fra.1,2027-05-16,A,PSG,0,0,0-0,,scheduled,401876208
 Nice,리그,fra.1,2027-05-22,H,Monaco,0,0,0-0,,scheduled,401876200
 Nice,리그,fra.1,2027-05-29,A,Strasbourg,0,0,0-0,,scheduled,401876188
-PSG,리그,fra.1,2026-08-22,H,Stade Rennais,0,0,0-0,,scheduled,401876487
-PSG,리그,fra.1,2026-08-30,A,Lille,0,0,0-0,,scheduled,401876476
+PSG,리그,fra.1,2026-08-23,H,Stade Rennais,0,0,0-0,,scheduled,401876487
+PSG,리그,fra.1,2026-08-28,A,Lille,0,0,0-0,,scheduled,401876476
 PSG,리그,fra.1,2026-09-05,H,Monaco,0,0,0-0,,scheduled,401876469
 PSG,리그,fra.1,2026-09-12,A,Brest,0,0,0-0,,scheduled,401876465
 PSG,리그,fra.1,2026-09-20,A,Marseille,0,0,0-0,,scheduled,401876449
@@ -408,7 +408,7 @@ PSG,리그,fra.1,2027-05-16,H,Nice,0,0,0-0,,scheduled,401876208
 PSG,리그,fra.1,2027-05-22,A,Troyes,0,0,0-0,,scheduled,401876197
 PSG,리그,fra.1,2027-05-29,H,Toulouse,0,0,0-0,,scheduled,401876190
 Paris FC,리그,fra.1,2026-08-22,A,Troyes,0,0,0-0,,scheduled,401876485
-Paris FC,리그,fra.1,2026-08-29,H,Nice,0,0,0-0,,scheduled,401876479
+Paris FC,리그,fra.1,2026-08-30,H,Nice,0,0,0-0,,scheduled,401876479
 Paris FC,리그,fra.1,2026-09-05,A,Marseille,0,0,0-0,,scheduled,401876471
 Paris FC,리그,fra.1,2026-09-12,H,Lyon,0,0,0-0,,scheduled,401876460
 Paris FC,리그,fra.1,2026-09-19,H,Strasbourg,0,0,0-0,,scheduled,401876451
@@ -441,7 +441,7 @@ Paris FC,리그,fra.1,2027-05-08,H,Lille,0,0,0-0,,scheduled,401876217
 Paris FC,리그,fra.1,2027-05-16,A,Monaco,0,0,0-0,,scheduled,401876209
 Paris FC,리그,fra.1,2027-05-22,H,Marseille,0,0,0-0,,scheduled,401876199
 Paris FC,리그,fra.1,2027-05-29,A,Lyon,0,0,0-0,,scheduled,401876193
-Strasbourg,리그,fra.1,2026-08-22,A,Marseille,0,0,0-0,,scheduled,401876489
+Strasbourg,리그,fra.1,2026-08-21,A,Marseille,0,0,0-0,,scheduled,401876489
 Strasbourg,리그,fra.1,2026-08-29,H,Lens,0,0,0-0,,scheduled,401876477
 Strasbourg,리그,fra.1,2026-09-05,A,Troyes,0,0,0-0,,scheduled,401876467
 Strasbourg,리그,fra.1,2026-09-12,H,Monaco,0,0,0-0,,scheduled,401876458

@@ -1,7 +1,7 @@
 squad,comp,comp_code,date,home_away,opponent,gf,ga,score,result,status,event_id
 Arsenal,리그,eng.1,2026-08-21,H,Coventry City,0,0,0-0,,scheduled,401879301
-Arsenal,리그,eng.1,2026-08-29,A,Aston Villa,0,0,0-0,,scheduled,401879295
-Arsenal,리그,eng.1,2026-09-05,H,Chelsea,0,0,0-0,,scheduled,401879292
+Arsenal,리그,eng.1,2026-08-31,A,Aston Villa,0,0,0-0,,scheduled,401879295
+Arsenal,리그,eng.1,2026-09-06,H,Chelsea,0,0,0-0,,scheduled,401879292
 Arsenal,리그,eng.1,2026-09-12,A,Sunderland,0,0,0-0,,scheduled,401878779
 Arsenal,리그,eng.1,2026-09-19,A,Brighton,0,0,0-0,,scheduled,401879274
 Arsenal,리그,eng.1,2026-10-10,H,Leeds United,0,0,0-0,,scheduled,401879268
@@ -38,7 +38,7 @@ Arsenal,리그,eng.1,2027-05-15,H,Nottingham Forest,0,0,0-0,,scheduled,401879079
 Arsenal,리그,eng.1,2027-05-23,A,Everton,0,0,0-0,,scheduled,401879070
 Arsenal,리그,eng.1,2027-05-30,H,Brighton,0,0,0-0,,scheduled,401878660
 Aston Villa,리그,eng.1,2026-08-23,A,Brighton,0,0,0-0,,scheduled,401879297
-Aston Villa,리그,eng.1,2026-08-29,H,Arsenal,0,0,0-0,,scheduled,401879295
+Aston Villa,리그,eng.1,2026-08-31,H,Arsenal,0,0,0-0,,scheduled,401879295
 Aston Villa,리그,eng.1,2026-09-05,A,Hull City,0,0,0-0,,scheduled,401878781
 Aston Villa,리그,eng.1,2026-09-12,H,Nottingham Forest,0,0,0-0,,scheduled,401879284
 Aston Villa,리그,eng.1,2026-09-19,A,Tottenham Hotspur,0,0,0-0,,scheduled,401879269
@@ -79,7 +79,7 @@ Bournemouth,리그,eng.1,2026-08-23,A,Manchester City,0,0,0-0,,scheduled,4018793
 Bournemouth,리그,eng.1,2026-08-29,H,Everton,0,0,0-0,,scheduled,401879296
 Bournemouth,리그,eng.1,2026-09-05,A,Newcastle United,0,0,0-0,,scheduled,401879286
 Bournemouth,리그,eng.1,2026-09-12,H,Brentford,0,0,0-0,,scheduled,401879285
-Bournemouth,리그,eng.1,2026-09-19,H,Liverpool,0,0,0-0,,scheduled,401879276
+Bournemouth,리그,eng.1,2026-09-20,H,Liverpool,0,0,0-0,,scheduled,401879276
 Bournemouth,리그,eng.1,2026-10-10,A,Chelsea,0,0,0-0,,scheduled,401878775
 Bournemouth,리그,eng.1,2026-10-17,H,Sunderland,0,0,0-0,,scheduled,401879263
 Bournemouth,리그,eng.1,2026-10-24,A,Manchester Utd,0,0,0-0,,scheduled,401879252
@@ -114,10 +114,10 @@ Bournemouth,리그,eng.1,2027-05-15,A,Sunderland,0,0,0-0,,scheduled,401879073
 Bournemouth,리그,eng.1,2027-05-23,H,Chelsea,0,0,0-0,,scheduled,401879072
 Bournemouth,리그,eng.1,2027-05-30,A,Liverpool,0,0,0-0,,scheduled,401879059
 Brentford,리그,eng.1,2026-08-22,H,Tottenham Hotspur,0,0,0-0,,scheduled,401879321
-Brentford,리그,eng.1,2026-08-29,A,Leeds United,0,0,0-0,,scheduled,401879315
+Brentford,리그,eng.1,2026-08-30,A,Leeds United,0,0,0-0,,scheduled,401879315
 Brentford,리그,eng.1,2026-09-05,H,Sunderland,0,0,0-0,,scheduled,401879311
 Brentford,리그,eng.1,2026-09-12,A,Bournemouth,0,0,0-0,,scheduled,401879285
-Brentford,리그,eng.1,2026-09-19,H,Chelsea,0,0,0-0,,scheduled,401879275
+Brentford,리그,eng.1,2026-09-18,H,Chelsea,0,0,0-0,,scheduled,401879275
 Brentford,리그,eng.1,2026-10-10,A,Aston Villa,0,0,0-0,,scheduled,401878776
 Brentford,리그,eng.1,2026-10-17,H,Liverpool,0,0,0-0,,scheduled,401879262
 Brentford,리그,eng.1,2026-10-24,A,Hull City,0,0,0-0,,scheduled,401878766
@@ -152,9 +152,9 @@ Brentford,리그,eng.1,2027-05-15,A,Liverpool,0,0,0-0,,scheduled,401878663
 Brentford,리그,eng.1,2027-05-23,H,Hull City,0,0,0-0,,scheduled,401879071
 Brentford,리그,eng.1,2027-05-30,A,Chelsea,0,0,0-0,,scheduled,401879063
 Brighton,리그,eng.1,2026-08-23,H,Aston Villa,0,0,0-0,,scheduled,401879297
-Brighton,리그,eng.1,2026-08-29,A,Chelsea,0,0,0-0,,scheduled,401879317
+Brighton,리그,eng.1,2026-08-30,A,Chelsea,0,0,0-0,,scheduled,401879317
 Brighton,리그,eng.1,2026-09-05,H,Leeds United,0,0,0-0,,scheduled,401879290
-Brighton,리그,eng.1,2026-09-12,A,Coventry City,0,0,0-0,,scheduled,401879282
+Brighton,리그,eng.1,2026-09-13,A,Coventry City,0,0,0-0,,scheduled,401879282
 Brighton,리그,eng.1,2026-09-19,H,Arsenal,0,0,0-0,,scheduled,401879274
 Brighton,리그,eng.1,2026-10-10,A,Sunderland,0,0,0-0,,scheduled,401878772
 Brighton,리그,eng.1,2026-10-17,H,Crystal Palace,0,0,0-0,,scheduled,401879261
@@ -191,10 +191,10 @@ Brighton,리그,eng.1,2027-05-23,H,Liverpool,0,0,0-0,,scheduled,401878662
 Brighton,리그,eng.1,2027-05-30,A,Arsenal,0,0,0-0,,scheduled,401878660
 Burnley,EFL컵,eng.league_cup,2026-08-08,H,Notts County,0,0,0-0,,scheduled,401880603
 Chelsea,리그,eng.1,2026-08-24,A,Fulham,0,0,0-0,,scheduled,401879318
-Chelsea,리그,eng.1,2026-08-29,H,Brighton,0,0,0-0,,scheduled,401879317
-Chelsea,리그,eng.1,2026-09-05,A,Arsenal,0,0,0-0,,scheduled,401879292
+Chelsea,리그,eng.1,2026-08-30,H,Brighton,0,0,0-0,,scheduled,401879317
+Chelsea,리그,eng.1,2026-09-06,A,Arsenal,0,0,0-0,,scheduled,401879292
 Chelsea,리그,eng.1,2026-09-12,H,Hull City,0,0,0-0,,scheduled,401879283
-Chelsea,리그,eng.1,2026-09-19,A,Brentford,0,0,0-0,,scheduled,401879275
+Chelsea,리그,eng.1,2026-09-18,A,Brentford,0,0,0-0,,scheduled,401879275
 Chelsea,리그,eng.1,2026-10-10,H,Bournemouth,0,0,0-0,,scheduled,401878775
 Chelsea,리그,eng.1,2026-10-17,A,Everton,0,0,0-0,,scheduled,401878771
 Chelsea,리그,eng.1,2026-10-24,H,Tottenham Hotspur,0,0,0-0,,scheduled,401878767
@@ -229,7 +229,7 @@ Chelsea,리그,eng.1,2027-05-15,H,Everton,0,0,0-0,,scheduled,401879078
 Chelsea,리그,eng.1,2027-05-23,A,Bournemouth,0,0,0-0,,scheduled,401879072
 Chelsea,리그,eng.1,2027-05-30,H,Brentford,0,0,0-0,,scheduled,401879063
 Crystal Palace,리그,eng.1,2026-08-22,A,Everton,0,0,0-0,,scheduled,401879300
-Crystal Palace,리그,eng.1,2026-08-29,H,Manchester City,0,0,0-0,,scheduled,401879294
+Crystal Palace,리그,eng.1,2026-08-28,H,Manchester City,0,0,0-0,,scheduled,401879294
 Crystal Palace,리그,eng.1,2026-09-05,A,Fulham,0,0,0-0,,scheduled,401879289
 Crystal Palace,리그,eng.1,2026-09-12,H,Ipswich Town,0,0,0-0,,scheduled,401879281
 Crystal Palace,리그,eng.1,2026-09-19,A,Leeds United,0,0,0-0,,scheduled,401879273
@@ -268,7 +268,7 @@ Crystal Palace,리그,eng.1,2027-05-23,A,Newcastle United,0,0,0-0,,scheduled,401
 Crystal Palace,리그,eng.1,2027-05-30,H,Leeds United,0,0,0-0,,scheduled,401879062
 Everton,리그,eng.1,2026-08-22,H,Crystal Palace,0,0,0-0,,scheduled,401879300
 Everton,리그,eng.1,2026-08-29,A,Bournemouth,0,0,0-0,,scheduled,401879296
-Everton,리그,eng.1,2026-09-05,H,Manchester Utd,0,0,0-0,,scheduled,401879291
+Everton,리그,eng.1,2026-09-06,H,Manchester Utd,0,0,0-0,,scheduled,401879291
 Everton,리그,eng.1,2026-09-12,A,Tottenham Hotspur,0,0,0-0,,scheduled,401879277
 Everton,리그,eng.1,2026-09-19,H,Ipswich Town,0,0,0-0,,scheduled,401878778
 Everton,리그,eng.1,2026-10-10,A,Hull City,0,0,0-0,,scheduled,401878774
@@ -305,10 +305,10 @@ Everton,리그,eng.1,2027-05-15,A,Chelsea,0,0,0-0,,scheduled,401879078
 Everton,리그,eng.1,2027-05-23,H,Arsenal,0,0,0-0,,scheduled,401879070
 Everton,리그,eng.1,2027-05-30,A,Ipswich Town,0,0,0-0,,scheduled,401879060
 Fulham,리그,eng.1,2026-08-24,H,Chelsea,0,0,0-0,,scheduled,401879318
-Fulham,리그,eng.1,2026-08-29,A,Sunderland,0,0,0-0,,scheduled,401879313
+Fulham,리그,eng.1,2026-08-30,A,Sunderland,0,0,0-0,,scheduled,401879313
 Fulham,리그,eng.1,2026-09-05,H,Crystal Palace,0,0,0-0,,scheduled,401879289
 Fulham,리그,eng.1,2026-09-12,A,Liverpool,0,0,0-0,,scheduled,401879279
-Fulham,리그,eng.1,2026-09-19,H,Manchester Utd,0,0,0-0,,scheduled,401878777
+Fulham,리그,eng.1,2026-09-20,H,Manchester Utd,0,0,0-0,,scheduled,401878777
 Fulham,리그,eng.1,2026-10-10,A,Ipswich Town,0,0,0-0,,scheduled,401879265
 Fulham,리그,eng.1,2026-10-17,H,Hull City,0,0,0-0,,scheduled,401878770
 Fulham,리그,eng.1,2026-10-24,A,Coventry City,0,0,0-0,,scheduled,401879255
@@ -343,9 +343,9 @@ Fulham,리그,eng.1,2027-05-15,A,Hull City,0,0,0-0,,scheduled,401879076
 Fulham,리그,eng.1,2027-05-23,H,Coventry City,0,0,0-0,,scheduled,401879069
 Fulham,리그,eng.1,2027-05-30,A,Manchester Utd,0,0,0-0,,scheduled,401879058
 Leeds United,리그,eng.1,2026-08-22,A,Nottingham Forest,0,0,0-0,,scheduled,401879298
-Leeds United,리그,eng.1,2026-08-29,H,Brentford,0,0,0-0,,scheduled,401879315
+Leeds United,리그,eng.1,2026-08-30,H,Brentford,0,0,0-0,,scheduled,401879315
 Leeds United,리그,eng.1,2026-09-05,A,Brighton,0,0,0-0,,scheduled,401879290
-Leeds United,리그,eng.1,2026-09-12,H,Newcastle United,0,0,0-0,,scheduled,401879280
+Leeds United,리그,eng.1,2026-09-14,H,Newcastle United,0,0,0-0,,scheduled,401879280
 Leeds United,리그,eng.1,2026-09-19,H,Crystal Palace,0,0,0-0,,scheduled,401879273
 Leeds United,리그,eng.1,2026-10-10,A,Arsenal,0,0,0-0,,scheduled,401879268
 Leeds United,리그,eng.1,2026-10-17,H,Manchester Utd,0,0,0-0,,scheduled,401879260
@@ -382,9 +382,9 @@ Leeds United,리그,eng.1,2027-05-23,H,Sunderland,0,0,0-0,,scheduled,401879068
 Leeds United,리그,eng.1,2027-05-30,A,Crystal Palace,0,0,0-0,,scheduled,401879062
 Liverpool,리그,eng.1,2026-08-23,A,Newcastle United,0,0,0-0,,scheduled,401879319
 Liverpool,리그,eng.1,2026-08-29,H,Nottingham Forest,0,0,0-0,,scheduled,401879314
-Liverpool,리그,eng.1,2026-09-05,A,Ipswich Town,0,0,0-0,,scheduled,401879288
+Liverpool,리그,eng.1,2026-09-04,A,Ipswich Town,0,0,0-0,,scheduled,401879288
 Liverpool,리그,eng.1,2026-09-12,H,Fulham,0,0,0-0,,scheduled,401879279
-Liverpool,리그,eng.1,2026-09-19,A,Bournemouth,0,0,0-0,,scheduled,401879276
+Liverpool,리그,eng.1,2026-09-20,A,Bournemouth,0,0,0-0,,scheduled,401879276
 Liverpool,리그,eng.1,2026-10-10,H,Manchester City,0,0,0-0,,scheduled,401879264
 Liverpool,리그,eng.1,2026-10-17,A,Brentford,0,0,0-0,,scheduled,401879262
 Liverpool,리그,eng.1,2026-10-24,H,Brighton,0,0,0-0,,scheduled,401878765
@@ -419,9 +419,9 @@ Liverpool,리그,eng.1,2027-05-15,H,Brentford,0,0,0-0,,scheduled,401878663
 Liverpool,리그,eng.1,2027-05-23,A,Brighton,0,0,0-0,,scheduled,401878662
 Liverpool,리그,eng.1,2027-05-30,H,Bournemouth,0,0,0-0,,scheduled,401879059
 Manchester City,리그,eng.1,2026-08-23,H,Bournemouth,0,0,0-0,,scheduled,401879320
-Manchester City,리그,eng.1,2026-08-29,A,Crystal Palace,0,0,0-0,,scheduled,401879294
+Manchester City,리그,eng.1,2026-08-28,A,Crystal Palace,0,0,0-0,,scheduled,401879294
 Manchester City,리그,eng.1,2026-09-05,H,Coventry City,0,0,0-0,,scheduled,401879287
-Manchester City,리그,eng.1,2026-09-12,A,Manchester Utd,0,0,0-0,,scheduled,401879278
+Manchester City,리그,eng.1,2026-09-13,A,Manchester Utd,0,0,0-0,,scheduled,401879278
 Manchester City,리그,eng.1,2026-09-19,H,Sunderland,0,0,0-0,,scheduled,401879272
 Manchester City,리그,eng.1,2026-10-10,A,Liverpool,0,0,0-0,,scheduled,401879264
 Manchester City,리그,eng.1,2026-10-17,H,Ipswich Town,0,0,0-0,,scheduled,401879259
@@ -457,10 +457,10 @@ Manchester City,리그,eng.1,2027-05-15,A,Ipswich Town,0,0,0-0,,scheduled,401879
 Manchester City,리그,eng.1,2027-05-23,H,Aston Villa,0,0,0-0,,scheduled,401879067
 Manchester City,리그,eng.1,2027-05-30,A,Sunderland,0,0,0-0,,scheduled,401878658
 Manchester Utd,리그,eng.1,2026-08-22,A,Hull City,0,0,0-0,,scheduled,401879322
-Manchester Utd,리그,eng.1,2026-08-29,H,Ipswich Town,0,0,0-0,,scheduled,401879293
-Manchester Utd,리그,eng.1,2026-09-05,A,Everton,0,0,0-0,,scheduled,401879291
-Manchester Utd,리그,eng.1,2026-09-12,H,Manchester City,0,0,0-0,,scheduled,401879278
-Manchester Utd,리그,eng.1,2026-09-19,A,Fulham,0,0,0-0,,scheduled,401878777
+Manchester Utd,리그,eng.1,2026-08-30,H,Ipswich Town,0,0,0-0,,scheduled,401879293
+Manchester Utd,리그,eng.1,2026-09-06,A,Everton,0,0,0-0,,scheduled,401879291
+Manchester Utd,리그,eng.1,2026-09-13,H,Manchester City,0,0,0-0,,scheduled,401879278
+Manchester Utd,리그,eng.1,2026-09-20,A,Fulham,0,0,0-0,,scheduled,401878777
 Manchester Utd,리그,eng.1,2026-10-10,H,Tottenham Hotspur,0,0,0-0,,scheduled,401878773
 Manchester Utd,리그,eng.1,2026-10-17,A,Leeds United,0,0,0-0,,scheduled,401879260
 Manchester Utd,리그,eng.1,2026-10-24,H,Bournemouth,0,0,0-0,,scheduled,401879252
@@ -497,7 +497,7 @@ Manchester Utd,리그,eng.1,2027-05-30,H,Fulham,0,0,0-0,,scheduled,401879058
 Newcastle United,리그,eng.1,2026-08-23,H,Liverpool,0,0,0-0,,scheduled,401879319
 Newcastle United,리그,eng.1,2026-08-29,A,Tottenham Hotspur,0,0,0-0,,scheduled,401879312
 Newcastle United,리그,eng.1,2026-09-05,H,Bournemouth,0,0,0-0,,scheduled,401879286
-Newcastle United,리그,eng.1,2026-09-12,A,Leeds United,0,0,0-0,,scheduled,401879280
+Newcastle United,리그,eng.1,2026-09-14,A,Leeds United,0,0,0-0,,scheduled,401879280
 Newcastle United,리그,eng.1,2026-09-19,H,Hull City,0,0,0-0,,scheduled,401879271
 Newcastle United,리그,eng.1,2026-10-10,A,Coventry City,0,0,0-0,,scheduled,401879267
 Newcastle United,리그,eng.1,2026-10-17,H,Aston Villa,0,0,0-0,,scheduled,401879258
@@ -571,7 +571,7 @@ Nottingham Forest,리그,eng.1,2027-05-15,A,Arsenal,0,0,0-0,,scheduled,401879079
 Nottingham Forest,리그,eng.1,2027-05-23,H,Ipswich Town,0,0,0-0,,scheduled,401878661
 Nottingham Forest,리그,eng.1,2027-05-30,A,Coventry City,0,0,0-0,,scheduled,401878659
 Sunderland,리그,eng.1,2026-08-22,A,Ipswich Town,0,0,0-0,,scheduled,401879299
-Sunderland,리그,eng.1,2026-08-29,H,Fulham,0,0,0-0,,scheduled,401879313
+Sunderland,리그,eng.1,2026-08-30,H,Fulham,0,0,0-0,,scheduled,401879313
 Sunderland,리그,eng.1,2026-09-05,A,Brentford,0,0,0-0,,scheduled,401879311
 Sunderland,리그,eng.1,2026-09-12,H,Arsenal,0,0,0-0,,scheduled,401878779
 Sunderland,리그,eng.1,2026-09-19,A,Manchester City,0,0,0-0,,scheduled,401879272
@@ -647,4 +647,4 @@ Tottenham Hotspur,리그,eng.1,2027-05-15,A,Coventry City,0,0,0-0,,scheduled,401
 Tottenham Hotspur,리그,eng.1,2027-05-23,H,Manchester Utd,0,0,0-0,,scheduled,401879065
 Tottenham Hotspur,리그,eng.1,2027-05-30,A,Aston Villa,0,0,0-0,,scheduled,401879064
 West Ham United,EFL컵,eng.league_cup,2026-08-08,H,Portsmouth,0,0,0-0,,scheduled,401881125
-Wolves,EFL컵,eng.league_cup,2026-08-08,H,Port Vale,0,0,0-0,,scheduled,401880604
+Wolves,EFL컵,eng.league_cup,2026-08-07,H,Port Vale,0,0,0-0,,scheduled,401880604
