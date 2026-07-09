@@ -4,6 +4,7 @@ import { getPlayers, getPlayerDetail, getSimilar, getHeatmaps, fmtEur, type Play
 import { tier, hexA, roleClass } from "@/lib/ui";
 import Radar from "./Radar";
 import HeatmapPitch from "./HeatmapPitch";
+import ComparePanel from "./ComparePanel";
 
 function Bar({ label, pct, raw, accent }: { label: string; pct: number; raw: number; accent: string }) {
   const c = pct >= 80 ? "#5ec98a" : pct >= 60 ? "#6aa6e0" : pct >= 40 ? "#caa64e" : "#d98169";
@@ -141,11 +142,13 @@ function Detail({ team, player, accent, heatmap }: { team: string; player: strin
 export default function PlayerTab({ team, accent, initialPlayer }: { team: string; accent: string; initialPlayer?: string }) {
   const [data, setData] = useState<Players | null>(null);
   const [sel, setSel] = useState<string | null>(null);
+  const [cmpMode, setCmpMode] = useState(false);   // 비교 모드
+  const [cmp, setCmp] = useState<string | null>(null);   // 2번째(B) 선수
   const [hm, setHm] = useState<HeatmapData | null>(null);
   useEffect(() => { let a = true; setHm(null); getHeatmaps(team).then((x) => a && setHm(x)).catch(() => a && setHm(null)); return () => { a = false; }; }, [team]);
   useEffect(() => {
     let a = true;
-    setData(null); setSel(null);
+    setData(null); setSel(null); setCmp(null);
     getPlayers(team).then((d) => {
       if (!a) return;
       setData(d);
@@ -157,27 +160,47 @@ export default function PlayerTab({ team, accent, initialPlayer }: { team: strin
   }, [team, initialPlayer]);
   if (!data) return <div className="loading">불러오는 중…</div>;
 
+  const CB = "#e0a05e";
+  const onCard = (name: string) => {
+    if (cmpMode) { if (name !== sel) setCmp(name === cmp ? null : name); }
+    else setSel(name);
+  };
   return (
-    <div className="fade player-layout">
-      <div className="pl-grid">
-        {data.players.map((p) => {
-          const t = tier(p.ovr);
-          return (
-            <button key={p.player} className={`pl-card${sel === p.player ? " active" : ""}`}
-              onClick={() => setSel(p.player)}
-              style={sel === p.player ? { borderColor: accent } : undefined}>
-              <span className="pl-ovr" style={{ color: t.light }}>{p.ovr}</span>
-              {p.big_match && <span className="pl-bm" title="UCL/UEL 급 무대 검증">⚡</span>}
-              {p.photo ? <img className="pl-photo" src={p.photo} alt="" /> : <span className="pl-photo ph" />}
-              <div className="pl-name">{p.player}</div>
-              <div className="pl-pos">{p.pos} · {p.age}</div>
-              {p.role && <span className={"pl-role role-tag sm " + roleClass(p.role)}>{p.role}</span>}
-            </button>
-          );
-        })}
+    <div className="fade">
+      <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 8 }}>
+        <button onClick={() => { setCmpMode((m) => !m); setCmp(null); }}
+          style={{ padding: "6px 14px", borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: "pointer",
+            border: `1px solid ${hexA(accent, 0.3)}`, background: cmpMode ? accent : "transparent", color: cmpMode ? "#0a0a0a" : "inherit" }}>
+          ⚖ 선수 비교{cmpMode ? " ON" : ""}
+        </button>
       </div>
-      <div className="pl-detail">
-        {sel && <Detail team={team} player={sel} accent={accent} heatmap={hm} />}
+      <div className="player-layout">
+        <div className="pl-grid">
+          {data.players.map((p) => {
+            const t = tier(p.ovr);
+            const isA = sel === p.player, isB = cmp === p.player;
+            return (
+              <button key={p.player} className={`pl-card${isA ? " active" : ""}`}
+                onClick={() => onCard(p.player)}
+                style={{ position: "relative", ...(isA ? { borderColor: accent } : isB ? { borderColor: CB } : {}) }}>
+                {cmpMode && (isA || isB) && <span style={{ position: "absolute", top: 4, left: 5, fontSize: 10, fontWeight: 800, color: isA ? accent : CB }}>{isA ? "A" : "B"}</span>}
+                <span className="pl-ovr" style={{ color: t.light }}>{p.ovr}</span>
+                {p.big_match && <span className="pl-bm" title="UCL/UEL 급 무대 검증">⚡</span>}
+                {p.photo ? <img className="pl-photo" src={p.photo} alt="" /> : <span className="pl-photo ph" />}
+                <div className="pl-name">{p.player}</div>
+                <div className="pl-pos">{p.pos} · {p.age}</div>
+                {p.role && <span className={"pl-role role-tag sm " + roleClass(p.role)}>{p.role}</span>}
+              </button>
+            );
+          })}
+        </div>
+        <div className="pl-detail">
+          {cmpMode
+            ? (sel && cmp
+                ? <ComparePanel team={team} a={sel} b={cmp} accent={accent} onClear={() => setCmp(null)} />
+                : <div className="card"><div className="mgr-meta" style={{ padding: 20 }}>비교할 <b>2번째 선수(B)</b>를 왼쪽에서 선택하세요. (현재 A: {sel})</div></div>)
+            : (sel && <Detail team={team} player={sel} accent={accent} heatmap={hm} />)}
+        </div>
       </div>
     </div>
   );
