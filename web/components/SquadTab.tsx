@@ -1,7 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
-import { getSquad, fmtEur, type Squad, type SquadPlayer } from "@/lib/api";
-import { tier } from "@/lib/ui";
+import { getSquad, getPlayers, fmtEur, type Squad, type SquadPlayer, type PlayerCard } from "@/lib/api";
+import { tier, hexA } from "@/lib/ui";
+import SquadBuilder from "./SquadBuilder";
 
 const LINES: { key: string; label: string }[] = [
   { key: "GK", label: "골키퍼" }, { key: "DEF", label: "수비" },
@@ -27,13 +28,41 @@ function Row({ p }: { p: SquadPlayer }) {
   );
 }
 
-export default function SquadTab({ team }: { team: string; accent: string }) {
+export default function SquadTab({ team, accent }: { team: string; accent: string }) {
   const [data, setData] = useState<Squad | null>(null);
+  const [pl, setPl] = useState<PlayerCard[]>([]);
+  const [view, setView] = useState<"squad" | "builder">("squad");
   useEffect(() => { let a = true; getSquad(team).then((d) => a && setData(d)).catch(() => {}); return () => { a = false; }; }, [team]);
+  useEffect(() => { let a = true; getPlayers(team).then((d) => a && setPl(d.players)).catch(() => {}); return () => { a = false; }; }, [team]);
   if (!data) return <div className="loading">불러오는 중…</div>;
+
+  const toggle = (
+    <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 12 }}>
+      <div style={{ display: "inline-flex", gap: 2, padding: 3, borderRadius: 9, background: hexA("#ffffff", 0.05) }}>
+        {([["squad", "스쿼드"], ["builder", "Best XI 빌더"]] as const).map(([v, l]) => (
+          <button key={v} onClick={() => setView(v)}
+            style={{ padding: "6px 13px", borderRadius: 6, fontSize: 12, fontWeight: 700, cursor: "pointer", border: "none",
+              background: view === v ? accent : "transparent", color: view === v ? "#0a0a0a" : "inherit", opacity: view === v ? 1 : 0.6 }}>{l}</button>
+        ))}
+      </div>
+    </div>
+  );
+
+  if (view === "builder") {
+    return (
+      <div className="fade">
+        {toggle}
+        <div className="card">
+          <h3>Best XI 빌더 <span className="rating-note">· 포메이션 선택 · 슬롯 클릭으로 교체</span></h3>
+          {pl.length ? <SquadBuilder players={pl} accent={accent} /> : <div className="loading">불러오는 중…</div>}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="fade">
+      {toggle}
       {/* 포지션별 뎁스 차트 */}
       <div className="card">
         <h3>포지션별 뎁스 차트</h3>
