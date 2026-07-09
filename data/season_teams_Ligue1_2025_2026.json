@@ -1,7 +1,7 @@
 {
   "season_label": "26/27",
   "source_title": "2026-27 Ligue 1",
-  "detected_at": "2026-07-08 07:21",
+  "detected_at": "2026-07-09 08:30",
   "teams": [
     {
       "name": "Angers",
@@ -26,12 +26,6 @@
       "color": "#005BAC",
       "logo": "https://tmssl.akamaized.net/images/wappen/head/738.png",
       "promoted": false
-    },
-    {
-      "name": "Le Mans",
-      "color": "#E30613",
-      "logo": "https://tmssl.akamaized.net/images/wappen/head/1164.png",
-      "promoted": true
     },
     {
       "name": "Lens",
@@ -64,9 +58,21 @@
       "promoted": false
     },
     {
+      "name": "Metz",
+      "color": "#862633",
+      "logo": "https://tmssl.akamaized.net/images/wappen/head/347.png",
+      "promoted": false
+    },
+    {
       "name": "Monaco",
       "color": "#CE1126",
       "logo": "https://tmssl.akamaized.net/images/wappen/head/162.png",
+      "promoted": false
+    },
+    {
+      "name": "Nantes",
+      "color": "#FDDA24",
+      "logo": "https://tmssl.akamaized.net/images/wappen/head/995.png",
       "promoted": false
     },
     {
@@ -104,21 +110,9 @@
       "color": "#5F259F",
       "logo": "https://tmssl.akamaized.net/images/wappen/head/415.png",
       "promoted": false
-    },
-    {
-      "name": "Troyes",
-      "color": "#003DA5",
-      "logo": "https://tmssl.akamaized.net/images/wappen/head/1095.png",
-      "promoted": true
     }
   ],
-  "promoted": [
-    "Le Mans",
-    "Troyes"
-  ],
-  "relegated": [
-    "Metz",
-    "Nantes"
-  ],
+  "promoted": [],
+  "relegated": [],
   "meta_missing": []
 }
