@@ -74,6 +74,31 @@ function Detail({ team, player, accent, heatmap }: { team: string; player: strin
           </div>
         </div>
       )}
+      {d.value_history && d.value_history.length >= 2 && (() => {
+        const vs = d.value_history, vals = vs.map((x) => x.value_eur);
+        const mn = Math.min(...vals), mx = Math.max(...vals), rng = mx - mn || 1;
+        const first = vals[0], last = vals[vals.length - 1];
+        const pct = first > 0 ? Math.round(((last - first) / first) * 100) : 0;
+        const w = 150, h = 34;
+        const pts = vs.map((x, i) => `${(i / (vs.length - 1)) * w},${h - ((x.value_eur - mn) / rng) * (h - 6) - 3}`).join(" ");
+        return (
+          <div style={{ display: "flex", alignItems: "center", gap: 14, margin: "2px 0 10px" }}>
+            <div>
+              <div style={{ fontSize: 10, opacity: 0.5, letterSpacing: 0.3 }}>시장가치 추이</div>
+              <div style={{ fontSize: 13.5, fontWeight: 700 }}>{fmtEur(last)}
+                {pct !== 0 && <span style={{ color: pct > 0 ? "#4fc27f" : "#e07070", fontSize: 11, marginLeft: 5 }}>{pct > 0 ? "▲" : "▼"}{Math.abs(pct)}%</span>}</div>
+            </div>
+            <svg viewBox={`0 0 ${w} ${h}`} width={w} height={h} style={{ overflow: "visible" }}>
+              <polyline points={pts} fill="none" stroke={accent} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>
+        );
+      })()}
+      {d.peers?.n > 0 && (
+        <div style={{ fontSize: 11, opacity: 0.5, margin: "0 0 4px" }}>
+          지표 = {({ GK: "골키퍼", DEF: "수비수", MID: "미드필더", ATT: "공격수" } as Record<string, string>)[d.peers.line] || "포지션"} 대비 백분위 · {d.peers.n}명 기준
+        </div>
+      )}
       <div className="pd-body">
         <div className="pd-cats">
           {d.categories.map((c, i) => (

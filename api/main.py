@@ -1081,8 +1081,8 @@ def player_detail(team: str, player: str, league: str = ACTIVE_LEAGUE):
     pool = full.copy()
     min_min = 300 if is_gk else 450
     pool = pool[pd.to_numeric(pool["minutes"], errors="coerce").fillna(0) >= min_min]
-    if is_gk:
-        pool = pool[pool.apply(lambda r: rv3.line_of_row(r) == "GK", axis=1)]
+    my_line = rv3.line_of_row(row)
+    pool = pool[pool.apply(lambda r: rv3.line_of_row(r) == my_line, axis=1)]   # 같은 라인 대비 백분위
 
     def pctile(col: str) -> int | None:
         if col not in pool.columns:
@@ -1130,8 +1130,28 @@ def player_detail(team: str, player: str, league: str = ACTIVE_LEAGUE):
                            "medal": "🥇" if rank == 1 else ("🥈" if rank == 2 else "🥉")})
     badges.sort(key=lambda b: b["rank"])
 
+    # 시장가치 추이 (market_value_history — 이름/norm_key 매칭)
+    vhist = []
+    try:
+        mvh = ds.read_table("market_value_history")
+        if mvh is not None and not mvh.empty and "player" in mvh.columns:
+            from unidecode import unidecode  # noqa: PLC0415
+            sub = mvh[mvh["player"].astype(str) == str(row["player"])]
+            nk = str(row.get("norm_key") or "")
+            if sub.empty and nk:
+                sub = mvh[mvh["player"].astype(str).map(lambda x: unidecode(str(x)).lower().strip()) == nk]
+            seen_d = set()
+            for _, r in sub.sort_values("date").iterrows():
+                dt = str(r.get("date") or "")[:10]
+                if dt and dt not in seen_d:
+                    seen_d.add(dt)
+                    vhist.append({"date": dt, "value_eur": _num(r.get("market_value_eur"))})
+    except Exception:  # noqa: BLE001
+        pass
+
     return {
         "player": row["player"], "team": team, "color": tm.team_color(team),
+        "value_history": vhist, "peers": {"line": my_line, "n": int(len(pool))},
         "pos": str(row.get("fl_group") or row.get("pos") or ""),
         "line": rv3.line_of_row(row),
         "age": int(_num(row.get("age"))), "nationality": str(row.get("nationality") or ""),

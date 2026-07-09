@@ -216,6 +216,8 @@ export type PlayerDetail = {
   radar: { axis: string; value: number }[];
   badges: Badge[];
   comp_usage: CompProfile;
+  value_history: { date: string; value_eur: number }[];
+  peers: { line: string; n: number };
 };
 
 export type TransferItem = {
