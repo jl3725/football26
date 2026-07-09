@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { getAnalytics, fmtEur, type Analytics, type Factor } from "@/lib/api";
 import { tier, hexA } from "@/lib/ui";
-import PlayerHeatmap from "./PlayerHeatmap";
+import TeamTerritory from "./TeamTerritory";
 
 const LINE_LABEL: Record<string, string> = { GK: "골키퍼", DEF: "수비", MID: "미드필드", ATT: "공격" };
 const LINE_COLOR: Record<string, string> = { GK: "#7fb4f0", DEF: "#6aa6e0", MID: "#caa64e", ATT: "#d98169" };
@@ -55,10 +55,10 @@ export default function AnalyticsTab({ team, accent }: { team: string; accent: s
         </div>
       </div>
 
-      {/* 포지셔널 히트맵 (Sofascore 시즌 활동 구역) */}
+      {/* 팀 포지셔널 맵 (스쿼드 히트맵 집계) */}
       <div className="card" style={{ marginTop: 16 }}>
-        <h3>포지셔널 히트맵 <span className="rating-note">· 선수 시즌 활동 구역 (Sofascore)</span></h3>
-        <PlayerHeatmap team={team} accent={accent} />
+        <h3>팀 포지셔널 맵 <span className="rating-note">· 점유 구역 · 평균 대형 (Sofascore)</span></h3>
+        <TeamTerritory team={team} accent={accent} />
       </div>
 
       {/* 상대·환경별 성과 */}

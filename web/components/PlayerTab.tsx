@@ -1,8 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
-import { getPlayers, getPlayerDetail, getSimilar, fmtEur, type Players, type PlayerDetail, type SimilarResult } from "@/lib/api";
+import { getPlayers, getPlayerDetail, getSimilar, getHeatmaps, fmtEur, type Players, type PlayerDetail, type SimilarResult, type HeatmapData } from "@/lib/api";
 import { tier, hexA, roleClass } from "@/lib/ui";
 import Radar from "./Radar";
+import HeatmapPitch from "./HeatmapPitch";
 
 function Bar({ label, pct, raw, accent }: { label: string; pct: number; raw: number; accent: string }) {
   const c = pct >= 80 ? "#5ec98a" : pct >= 60 ? "#6aa6e0" : pct >= 40 ? "#caa64e" : "#d98169";
@@ -14,9 +15,10 @@ function Bar({ label, pct, raw, accent }: { label: string; pct: number; raw: num
   );
 }
 
-function Detail({ team, player, accent }: { team: string; player: string; accent: string }) {
+function Detail({ team, player, accent, heatmap }: { team: string; player: string; accent: string; heatmap: HeatmapData | null }) {
   const [d, setD] = useState<PlayerDetail | null>(null);
   const [sim, setSim] = useState<SimilarResult[]>([]);
+  const hm = heatmap?.players?.find((p) => p.player === player);
   useEffect(() => {
     let a = true; setD(null); setSim([]);
     getPlayerDetail(team, player).then((x) => a && setD(x)).catch(() => {});
@@ -86,6 +88,12 @@ function Detail({ team, player, accent }: { team: string; player: string; accent
         </div>
         <div className="pd-radar"><Radar data={d.radar} color={accent} /></div>
       </div>
+      {hm && heatmap && (
+        <div className="pd-heatmap" style={{ marginTop: 4 }}>
+          <div className="pd-sim-title">시즌 활동 구역 <span style={{ opacity: 0.5, fontWeight: 400, fontSize: 11 }}>· {hm.n_points.toLocaleString()} 위치 표본 · Sofascore</span></div>
+          <div style={{ maxWidth: 470 }}><HeatmapPitch grid={hm.grid} gw={heatmap.gw} gh={heatmap.gh} id={`pd-${player.replace(/\s+/g, "")}`} /></div>
+        </div>
+      )}
       {sim.length > 0 && (
         <div className="pd-similar">
           <div className="pd-sim-title">스타일 유사 선수</div>
@@ -108,6 +116,8 @@ function Detail({ team, player, accent }: { team: string; player: string; accent
 export default function PlayerTab({ team, accent, initialPlayer }: { team: string; accent: string; initialPlayer?: string }) {
   const [data, setData] = useState<Players | null>(null);
   const [sel, setSel] = useState<string | null>(null);
+  const [hm, setHm] = useState<HeatmapData | null>(null);
+  useEffect(() => { let a = true; setHm(null); getHeatmaps(team).then((x) => a && setHm(x)).catch(() => a && setHm(null)); return () => { a = false; }; }, [team]);
   useEffect(() => {
     let a = true;
     setData(null); setSel(null);
@@ -142,7 +152,7 @@ export default function PlayerTab({ team, accent, initialPlayer }: { team: strin
         })}
       </div>
       <div className="pl-detail">
-        {sel && <Detail team={team} player={sel} accent={accent} />}
+        {sel && <Detail team={team} player={sel} accent={accent} heatmap={hm} />}
       </div>
     </div>
   );
