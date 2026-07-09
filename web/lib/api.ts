@@ -272,6 +272,12 @@ export type SGNode = { id: string; name: string; pos: string; line: string; rati
 export type SGEdge = { a: string; b: string; matches: number };
 export type SquadGraphData = { available: boolean; reason?: string; error?: string; team?: string; nodes: SGNode[]; edges: SGEdge[] };
 export const getSquadGraph = (t: string, l = _league) => j<SquadGraphData>(`/api/squad-graph/${q(t, l)}`);
+// 케미스트리 — KG TEAMMATE_OF 기반 최고의 듀오·삼각편대
+export type ChemCard = { name: string; line: string; pos: string; rating: number | null; photo: string };
+export type ChemDuo = { a: ChemCard; b: ChemCard; matches: number; chem: number };
+export type ChemTrio = { players: ChemCard[]; score: number };
+export type ChemistryData = { available: boolean; reason?: string; team?: string; duos: ChemDuo[]; trios: ChemTrio[] };
+export const getChemistry = (t: string, l = _league) => j<ChemistryData>(`/api/chemistry/${q(t, l)}`);
 export const getSchedule = (t: string, season = "", l = _league) => j<Schedule>(`/api/schedule/${q(t, l)}${season ? `&season=${season}` : ""}`);
 export const getMatch = (t: string, eid: string, l = _league) =>
   j<MatchDetail>(`/api/match/${encodeURIComponent(t)}/${encodeURIComponent(eid)}?league=${encodeURIComponent(l)}`);

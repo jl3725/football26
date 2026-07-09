@@ -594,6 +594,53 @@ def squad_graph_ep(team: str, league: str = ACTIVE_LEAGUE):
     return kg_graph.squad_graph(team, min_matches=6, edge_limit=32)
 
 
+@app.get("/api/chemistry/{team}")
+def chemistry_ep(team: str, league: str = ACTIVE_LEAGUE):
+    """케미스트리 — KG TEAMMATE_OF{matches} 로 최고의 듀오·삼각편대. Neo4j 미가동 시 degrade."""
+    import kg_graph  # noqa: PLC0415
+    g = kg_graph.squad_graph(team, min_matches=4, edge_limit=300)
+    if not g.get("available"):
+        return {"available": False, "reason": g.get("reason", ""), "duos": [], "trios": []}
+    edges = g.get("edges", [])
+    if not edges:
+        return {"available": True, "team": team, "duos": [], "trios": []}
+    nodes = {n["id"]: n for n in g.get("nodes", [])}
+    pf = _pf(league)
+    pmap = {}
+    if pf is not None and "player" in pf.columns:
+        for _, r in pf.iterrows():
+            pmap[str(r.get("player"))] = _photo(r)
+
+    def card(name: str) -> dict:
+        n = nodes.get(name, {})
+        return {"name": name, "line": n.get("line", "MID"), "pos": n.get("pos", ""),
+                "rating": n.get("rating"), "photo": pmap.get(name, "")}
+
+    maxm = max(e["matches"] for e in edges) or 1
+    duos = [{"a": card(e["a"]), "b": card(e["b"]), "matches": e["matches"],
+             "chem": round(e["matches"] / maxm * 100)}
+            for e in sorted(edges, key=lambda e: -e["matches"])[:8]]
+
+    em, adj = {}, {}
+    for e in edges:
+        a, b = e["a"], e["b"]
+        em[(a, b)] = em[(b, a)] = e["matches"]
+        adj.setdefault(a, set()).add(b)
+        adj.setdefault(b, set()).add(a)
+    trios, seen = [], set()
+    for a in adj:
+        for b in adj[a]:
+            for c in adj[a] & adj[b]:
+                key = tuple(sorted((a, b, c)))
+                if key in seen:
+                    continue
+                seen.add(key)
+                sc = em[(a, b)] + em[(b, c)] + em[(a, c)]
+                trios.append({"players": [card(a), card(b), card(c)], "score": int(sc)})
+    trios.sort(key=lambda t: -t["score"])
+    return {"available": True, "team": team, "duos": duos, "trios": trios[:4]}
+
+
 @app.get("/api/calendar")
 def calendar():
     cal = ds.read_table("calendar_events")
