@@ -1,9 +1,8 @@
 target_club,player,pos_detail,age,current_club,market_value_eur,probability,date
-Augsburg,Hennes Behrens,Left-Back,21,TSG 1899 Hoffenheim,5000000.0,68,08/07/2026
-Augsburg,Sima Suso,Central Midfield,21,Fortuna Düsseldorf,2800000.0,92,07/07/2026
-Augsburg,Tom Wisbereit,Goalkeeper,18,Without ClubWithout Club,,85,03/07/2026
+Augsburg,Hennes Behrens,Left-Back,21,TSG 1899 Hoffenheim,5000000.0,69,10/07/2026
+Augsburg,Tom Wisbereit,Goalkeeper,18,Without ClubWithout Club,,92,10/07/2026
 Augsburg,Taylan Bulut,Right-Back,20,Besiktas JK,5000000.0,29,02/07/2026
-Augsburg,Elias Baum,Right-Back,20,Eintracht Frankfurt,4000000.0,36,02/07/2026
+Augsburg,Elias Baum,Right-Back,20,Eintracht Frankfurt,4000000.0,,02/07/2026
 Augsburg,Vasilios Zagaritis,Left-Back,25,SC Heerenveen,3000000.0,,24/06/2026
 Augsburg,Pablo Pagis,Left Winger,23,FC Lorient,15000000.0,,16/06/2026
 Augsburg,Michel Aebischer,Central Midfield,29,Pisa Sporting Club,4000000.0,,15/06/2026
@@ -18,100 +17,49 @@ Augsburg,Nikolas Polster,Goalkeeper,24,Wolfsberger AC,2000000.0,,13/05/2026
 Augsburg,Márton Dárdai,Centre-Back,24,Hertha BSC,2500000.0,,01/05/2026
 Augsburg,Tjark Ernst,Goalkeeper,23,Hertha BSC,4000000.0,,16/04/2026
 Augsburg,Dzenis Burnic,Defensive Midfield,28,Without ClubWithout Club,1200000.0,,14/04/2026
-Bayern Munich,Lucas Herrington,Centre-Back,18,Colorado Rapids,4500000.0,,09/07/2026
-Bayern Munich,Bremer,Centre-Back,29,Juventus FC,35000000.0,30,05/07/2026
-Bayern Munich,Lukas Hornicek,Goalkeeper,23,SC Braga,18000000.0,25,04/07/2026
-Bayern Munich,Ayyoub Bouaddi,Central Midfield,18,LOSC Lille,50000000.0,26,29/06/2026
+Bayern Munich,Jules Koundé,Right-Back,27,FC Barcelona,60000000.0,,11/07/2026
+Bayern Munich,Bremer,Centre-Back,29,Juventus FC,35000000.0,32,10/07/2026
+Bayern Munich,Lucas Herrington,Centre-Back,18,Colorado Rapids,4500000.0,53,09/07/2026
+Bayern Munich,Lukas Hornicek,Goalkeeper,23,SC Braga,18000000.0,30,04/07/2026
+Bayern Munich,Ayyoub Bouaddi,Central Midfield,18,LOSC Lille,50000000.0,32,29/06/2026
 Bayern Munich,Antonio Nusa,Left Winger,21,RB Leipzig,32000000.0,28,24/06/2026
 Bayern Munich,Felix Nmecha,Central Midfield,25,Borussia Dortmund,50000000.0,15,23/06/2026
-Bayern Munich,Yann Bisseck,Centre-Back,25,Inter Milan,50000000.0,36,23/06/2026
+Bayern Munich,Yann Bisseck,Centre-Back,25,Inter Milan,50000000.0,32,23/06/2026
 Bayern Munich,Lucas Bergvall,Central Midfield,20,Tottenham Hotspur,35000000.0,28,22/06/2026
-Bayern Munich,Aron Vucic,Centre-Forward,15,FC Koper U17,,66,14/06/2026
-Bayern Munich,Cody Gakpo,Left Winger,27,Liverpool FC,60000000.0,31,14/06/2026
-Bayern Munich,Marcus Rashford,Left Winger,28,Manchester United,40000000.0,54,13/06/2026
-Bayern Munich,Nicolò Tresoldi,Centre-Forward,21,Club Brugge KV,25000000.0,27,12/06/2026
+Bayern Munich,Aron Vučić,Centre-Forward,15,FC Koper U17,,,14/06/2026
+Bayern Munich,Cody Gakpo,Left Winger,27,Liverpool FC,60000000.0,20,14/06/2026
+Bayern Munich,Marcus Rashford,Left Winger,28,Manchester United,40000000.0,43,13/06/2026
+Bayern Munich,Nicolò Tresoldi,Centre-Forward,21,Club Brugge KV,25000000.0,29,12/06/2026
 Bayern Munich,Josko Gvardiol,Centre-Back,24,Manchester City,70000000.0,28,10/06/2026
 Bayern Munich,Tomás Araújo,Centre-Back,24,SL Benfica,30000000.0,,05/06/2026
-Bayern Munich,Martin Baturina,Attacking Midfield,23,Como 1907,30000000.0,43,05/06/2026
+Bayern Munich,Martin Baturina,Attacking Midfield,23,Como 1907,30000000.0,32,05/06/2026
 Bayern Munich,Rio Ngumoha,Left Winger,17,Liverpool FC,30000000.0,3,05/06/2026
 Bayern Munich,Sergiño Dest,Right-Back,25,PSV Eindhoven,18000000.0,,04/06/2026
 Bayern Munich,Ben Nwachukwu,Centre-Back,16,1.FC Köln U19,,,04/06/2026
-Bayern Munich,Gabriel Martinelli,Left Winger,25,Arsenal FC,45000000.0,9,01/06/2026
+Bayern Munich,Gabriel Martinelli,Left Winger,25,Arsenal FC,45000000.0,10,01/06/2026
 Bayern Munich,Matias Fernandez-Pardo,Centre-Forward,21,LOSC Lille,35000000.0,,01/06/2026
 Bayern Munich,Junior Kroupi,Centre-Forward,20,AFC Bournemouth,70000000.0,,01/06/2026
-Bayern Munich,Zion Suzuki,Goalkeeper,23,Parma Calcio 1913,20000000.0,19,24/05/2026
+Bayern Munich,Zion Suzuki,Goalkeeper,23,Parma Calcio 1913,20000000.0,28,24/05/2026
 Bayern Munich,John Stones,Centre-Back,32,Without ClubWithout Club,12000000.0,,22/05/2026
 Bayern Munich,Belinho,Attacking Midfield,17,NK Kustosija Zagreb,,,15/05/2026
-Bayern Munich,Charles De Ketelaere,Attacking Midfield,25,Atalanta BC,30000000.0,,14/05/2026
-Dortmund,Randal Kolo Muani,Centre-Forward,27,Paris Saint-Germain,20000000.0,19,08/07/2026
-Dortmund,Mikey Moore,Left Winger,18,Tottenham Hotspur,18000000.0,,07/07/2026
-Dortmund,Folarin Balogun,Centre-Forward,25,AS Monaco,40000000.0,26,30/06/2026
-Dortmund,Benjamin Tahirović,Central Midfield,23,Bröndby IF,4500000.0,40,29/06/2026
-Dortmund,Anan Khalaili,Right Midfield,21,Union Saint-Gilloise,23000000.0,24,28/06/2026
-Dortmund,Matviy Ponomarenko,Centre-Forward,20,Dynamo Kyiv,12000000.0,57,24/06/2026
-Dortmund,Matías Soulé,Right Winger,23,AS Roma,35000000.0,16,24/06/2026
-Dortmund,Guéla Doué,Right-Back,23,RC Strasbourg Alsace,20000000.0,32,23/06/2026
-Dortmund,Marc Oliver Kempf,Centre-Back,31,Como 1907,3500000.0,41,22/06/2026
-Dortmund,Tomás Araújo,Centre-Back,24,SL Benfica,30000000.0,12,21/06/2026
-Dortmund,Said El Mala,Left Winger,19,1.FC Köln,45000000.0,23,18/06/2026
-Dortmund,Farès Ghedjemis,Right Winger,23,Frosinone Calcio,7500000.0,17,18/06/2026
-Dortmund,Giovanni Baroni,Attacking Midfield,17,CA Talleres,2500000.0,21,17/06/2026
-Dortmund,Dyran Stam,Left-Back,16,PSV Eindhoven U17,,,17/06/2026
-Dortmund,Han-beom Lee,Centre-Back,24,FC Midtjylland,3000000.0,,16/06/2026
-Dortmund,Nathan De Cat,Central Midfield,17,RSC Anderlecht,27000000.0,1,16/06/2026
-Dortmund,Mateus Mané,Attacking Midfield,18,Wolverhampton Wanderers,20000000.0,,15/06/2026
-Dortmund,Emmanuel Fernandez,Centre-Back,24,Rangers FC,18000000.0,,14/06/2026
-Dortmund,Diego Moreira,Left Midfield,21,RC Strasbourg Alsace,25000000.0,,12/06/2026
-Dortmund,Anis Hadj Moussa,Right Winger,24,Feyenoord Rotterdam,23000000.0,21,12/06/2026
-Dortmund,Milton Delgado,Defensive Midfield,21,CA Boca Juniors,10000000.0,,10/06/2026
-Dortmund,Ismaëlo Ganiou,Centre-Back,21,RC Lens,20000000.0,,09/06/2026
-Dortmund,Kacper Potulski,Centre-Back,18,1.FSV Mainz 05,18000000.0,,08/06/2026
-Dortmund,Bastien Meupiyou,Centre-Back,20,FC Alverca,7000000.0,,08/06/2026
-Dortmund,Benjamin Pavard,Centre-Back,30,Inter Milan,12000000.0,,08/06/2026
-Frankfurt,Robert Andrich,Defensive Midfield,31,Bayer 04 Leverkusen,6000000.0,38,08/07/2026
-Frankfurt,Raphael Onyedika,Defensive Midfield,25,Club Brugge KV,23000000.0,34,08/07/2026
-Frankfurt,Noel Aseko,Defensive Midfield,20,Bayern Munich,12000000.0,58,08/07/2026
-Frankfurt,Anton Gaaei,Right-Back,23,Ajax Amsterdam,5000000.0,48,08/07/2026
-Frankfurt,Nobel Mendy,Centre-Back,21,Rayo Vallecano,7500000.0,23,08/07/2026
-Frankfurt,Edson Álvarez,Defensive Midfield,28,West Ham United,15000000.0,25,08/07/2026
-Frankfurt,Louey Ben Farhat,Second Striker,19,Karlsruher SC,10000000.0,63,08/07/2026
-Frankfurt,Moritz Nicolas,Goalkeeper,28,Borussia Mönchengladbach,8000000.0,31,08/07/2026
-Frankfurt,Víctor Valdepeñas,Centre-Back,19,Real Madrid Castilla,5000000.0,50,05/07/2026
-Frankfurt,Ermin Mahmic,Attacking Midfield,21,FC Slovan Liberec,5000000.0,59,29/06/2026
-Frankfurt,Jacob Widell Zetterström,Goalkeeper,27,Derby County,2500000.0,45,26/06/2026
-Frankfurt,Dzenan Pejcinovic,Centre-Forward,21,VfL Wolfsburg,15000000.0,10,22/06/2026
-Frankfurt,Ivan Basic,Central Midfield,24,FC Astana,1500000.0,39,21/06/2026
-Frankfurt,Ismail Badjie,Attacking Midfield,20,VfL Osnabrück,800000.0,23,19/06/2026
-Frankfurt,Mateus Mané,Attacking Midfield,18,Wolverhampton Wanderers,20000000.0,,15/06/2026
-Frankfurt,Mert Kömür,Attacking Midfield,20,FC Augsburg,12000000.0,,15/06/2026
-Frankfurt,Arnaud Kalimuendo,Centre-Forward,24,Nottingham Forest,25000000.0,,15/06/2026
-Frankfurt,Darlington Osuchukwu,Goalkeeper,16,Manchester United Youth,,,15/06/2026
-Frankfurt,Bilal Nadir,Central Midfield,22,Without ClubWithout Club,8000000.0,,12/06/2026
-Frankfurt,Mathys Tel,Centre-Forward,21,Tottenham Hotspur,22000000.0,,10/06/2026
-Frankfurt,Milton Delgado,Defensive Midfield,21,CA Boca Juniors,10000000.0,,09/06/2026
-Frankfurt,Djylian N'Guessan,Centre-Forward,17,AS Saint-Étienne,4000000.0,,06/06/2026
-Frankfurt,Diogo Leite,Centre-Back,27,Without ClubWithout Club,12000000.0,,05/06/2026
-Frankfurt,Loïs Openda,Centre-Forward,26,Juventus FC,25000000.0,,03/06/2026
-Frankfurt,Michael Parker,Centre-Back,21,Örgryte IS,2000000.0,,03/06/2026
+Freiburg,Yannik Engelhardt,Defensive Midfield,25,Como 1907,7000000.0,76,09/07/2026
+Freiburg,Dzenan Pejcinovic,Centre-Forward,21,VfL Wolfsburg,15000000.0,2,09/07/2026
 Freiburg,Muhammed Damar,Attacking Midfield,22,TSG 1899 Hoffenheim,5000000.0,,04/07/2026
-Freiburg,Dzenan Pejcinovic,Centre-Forward,21,VfL Wolfsburg,15000000.0,2,01/07/2026
 Freiburg,Oleksandr Romanchuk,Centre-Back,26,Universitatea Craiova,2500000.0,,07/06/2026
 Freiburg,Mihajlo Cvetkovic,Centre-Forward,19,RSC Anderlecht,10000000.0,,01/06/2026
 Freiburg,Tanner Tessmann,Defensive Midfield,24,Olympique Lyon,10000000.0,,27/05/2026
 Freiburg,Ivan Ilić,Central Midfield,25,Torino FC,7000000.0,,21/05/2026
 Freiburg,Kjell Scherpen,Goalkeeper,26,Union Saint-Gilloise,8000000.0,,19/05/2026
 Freiburg,Wilfried Gnonto,Right Winger,22,Leeds United,16000000.0,,17/05/2026
-Freiburg,Nathan-Dylan Saliba,Central Midfield,22,RSC Anderlecht,7500000.0,34,17/05/2026
+Freiburg,Nathan-Dylan Saliba,Central Midfield,22,RSC Anderlecht,7500000.0,26,17/05/2026
 Freiburg,Bamba Dieng,Centre-Forward,26,Without ClubWithout Club,15000000.0,,14/05/2026
-Freiburg,Yannik Engelhardt,Defensive Midfield,25,Como 1907,7000000.0,,06/05/2026
 Freiburg,Mohamed Bayo,Centre-Forward,28,LOSC Lille,4500000.0,,06/05/2026
 Freiburg,Reece Welch,Centre-Back,22,Without ClubWithout Club,250000.0,,04/05/2026
 Freiburg,Prince Amoako Junior,Left Winger,19,FC Nordsjaelland,7000000.0,,22/04/2026
 Freiburg,Tjark Ernst,Goalkeeper,23,Hertha BSC,4000000.0,,16/04/2026
-Freiburg,Rafael Lubach,Central Midfield,21,1.FC Nuremberg,3500000.0,,31/03/2026
-Gladbach,Vitaliy Laturnus,Centre-Forward,17,FC Aktobe,250000.0,33,08/07/2026
+Gladbach,Vitaliy Laturnus,Centre-Forward,17,FC Aktobe,250000.0,28,10/07/2026
 Gladbach,Jakhongir Urozov,Centre-Back,22,Dinamo Samarqand,600000.0,32,07/07/2026
-Gladbach,Tjark Ernst,Goalkeeper,23,Hertha BSC,4000000.0,39,07/07/2026
+Gladbach,Tjark Ernst,Goalkeeper,23,Hertha BSC,4000000.0,41,07/07/2026
 Gladbach,Linus Gechter,Centre-Back,22,Hertha BSC,3500000.0,24,06/07/2026
 Gladbach,Ko Itakura,Centre-Back,29,Ajax Amsterdam,8000000.0,21,29/06/2026
 Gladbach,Rani Khedira,Defensive Midfield,32,1.FC Union Berlin,2000000.0,7,25/06/2026
@@ -130,14 +78,16 @@ Gladbach,Ryotaro Ito,Attacking Midfield,28,Without ClubWithout Club,6000000.0,,2
 Gladbach,Ismail Badjie,Attacking Midfield,20,VfL Osnabrück,800000.0,,27/04/2026
 Gladbach,Rayane Bounida,Attacking Midfield,20,Ajax Amsterdam,5000000.0,,24/04/2026
 Gladbach,Luca Sirch,Centre-Back,27,Without ClubWithout Club,2200000.0,,17/03/2026
-Hamburger SV,Sidiki Chérif,Centre-Forward,19,Fenerbahce,18000000.0,40,08/07/2026
-Hamburger SV,Elias Baum,Right-Back,20,Eintracht Frankfurt,4000000.0,45,07/07/2026
-Hamburger SV,Yanis Cimignani,Left Midfield,24,FC Lugano,2000000.0,33,06/07/2026
+Hamburger SV,Alan Virginius,Left Midfield,23,BSC Young Boys,3000000.0,19,11/07/2026
+Hamburger SV,Martin Adeline,Attacking Midfield,22,ESTAC Troyes,10000000.0,56,10/07/2026
+Hamburger SV,Elias Baum,Right-Back,20,Eintracht Frankfurt,4000000.0,39,10/07/2026
+Hamburger SV,Sidiki Chérif,Centre-Forward,19,Fenerbahce,18000000.0,43,08/07/2026
+Hamburger SV,Yanis Cimignani,Left Midfield,24,FC Lugano,2000000.0,25,06/07/2026
 Hamburger SV,Tomas Bobcek,Centre-Forward,24,Lechia Gdansk,8000000.0,52,06/07/2026
 Hamburger SV,Mamadou Doumbia,Centre-Forward,20,Watford FC,4000000.0,21,05/07/2026
-Hamburger SV,Hennes Behrens,Left-Back,21,TSG 1899 Hoffenheim,5000000.0,28,30/06/2026
-Hamburger SV,Muhammed Damar,Attacking Midfield,22,TSG 1899 Hoffenheim,5000000.0,33,28/06/2026
-Hamburger SV,Fábio Vieira,Attacking Midfield,26,Arsenal FC,18000000.0,40,19/06/2026
+Hamburger SV,Hennes Behrens,Left-Back,21,TSG 1899 Hoffenheim,5000000.0,,30/06/2026
+Hamburger SV,Muhammed Damar,Attacking Midfield,22,TSG 1899 Hoffenheim,5000000.0,37,28/06/2026
+Hamburger SV,Fábio Vieira,Attacking Midfield,26,Arsenal FC,18000000.0,39,19/06/2026
 Hamburger SV,Michel Aebischer,Central Midfield,29,Pisa Sporting Club,4000000.0,,15/06/2026
 Hamburger SV,Keasse Bah,Right Winger,21,FC Stade-Lausanne-Ouchy,700000.0,,12/06/2026
 Hamburger SV,Luka Vuskovic,Centre-Back,19,Tottenham Hotspur,60000000.0,,12/06/2026
@@ -148,18 +98,15 @@ Hamburger SV,Ko Itakura,Centre-Back,29,Ajax Amsterdam,8000000.0,,29/05/2026
 Hamburger SV,Kento Shiogai,Centre-Forward,21,VfL Wolfsburg,8000000.0,,26/05/2026
 Hamburger SV,Frank Magri,Centre-Forward,26,Without ClubWithout Club,3000000.0,,21/05/2026
 Hamburger SV,Jacques Ekomié,Left-Back,22,Angers SCO,9000000.0,,19/05/2026
-Hamburger SV,Martin Adeline,Attacking Midfield,22,ESTAC Troyes,10000000.0,,18/05/2026
 Hamburger SV,Thomas Jørgensen,Central Midfield,20,Viborg FF,5000000.0,,05/05/2026
 Hamburger SV,Noel Futkeu,Centre-Forward,23,Eintracht Frankfurt,7500000.0,,05/05/2026
 Hamburger SV,Tjark Ernst,Goalkeeper,23,Hertha BSC,4000000.0,,16/04/2026
 Hamburger SV,Younes Taha,Right Winger,23,FC Twente Enschede,4000000.0,,10/04/2026
-Hamburger SV,Jens Hjertø-Dahl,Central Midfield,20,Tromsø IL,10000000.0,,08/04/2026
 Hamburger SV,Joseph Kalulu,Left-Back,21,Pau FC,2000000.0,,10/02/2026
 Heidenheim,Tim Skarke,Centre-Forward,29,1.FC Union Berlin,1500000.0,,06/05/2026
-Hoffenheim,Jens Stage,Central Midfield,29,SV Werder Bremen,14000000.0,13,08/07/2026
-Hoffenheim,Nathan De Cat,Central Midfield,17,RSC Anderlecht,27000000.0,71,08/07/2026
+Hoffenheim,Jens Stage,Central Midfield,29,SV Werder Bremen,14000000.0,12,08/07/2026
 Hoffenheim,Robbie Ure,Centre-Forward,22,IK Sirius,5000000.0,,04/07/2026
-Hoffenheim,Kodai Sano,Central Midfield,22,NEC Nijmegen,12000000.0,44,02/07/2026
+Hoffenheim,Kodai Sano,Central Midfield,22,NEC Nijmegen,12000000.0,48,02/07/2026
 Hoffenheim,Ermin Mahmic,Attacking Midfield,21,FC Slovan Liberec,5000000.0,,29/06/2026
 Hoffenheim,Elisha Owusu,Defensive Midfield,28,AJ Auxerre,4000000.0,21,23/06/2026
 Hoffenheim,Ghislain Konan,Left-Back,30,Gil Vicente FC,3000000.0,,16/06/2026
@@ -173,49 +120,46 @@ Hoffenheim,Zavier Gozo,Right Winger,19,Real Salt Lake City,6000000.0,,15/05/2026
 Hoffenheim,Bamba Dieng,Centre-Forward,26,Without ClubWithout Club,15000000.0,,13/05/2026
 Hoffenheim,Boris Matic,Right-Back,21,Wolfsberger AC,1200000.0,,13/05/2026
 Hoffenheim,Cameron Ashia,Attacking Midfield,21,Huddersfield Town,125000.0,,11/05/2026
-Hoffenheim,Thomas Jørgensen,Central Midfield,20,Viborg FF,5000000.0,,09/04/2026
-Köln,Gideon Mensah,Left-Back,27,Without ClubWithout Club,4000000.0,80,08/07/2026
-Köln,Stefano Russo,Defensive Midfield,26,Arminia Bielefeld,1200000.0,38,08/07/2026
-Köln,Edson Álvarez,Defensive Midfield,28,West Ham United,15000000.0,44,07/07/2026
+Köln,Ellyes Skhiri,Defensive Midfield,31,Eintracht Frankfurt,5000000.0,50,10/07/2026
+Köln,Gideon Mensah,Left-Back,27,Without ClubWithout Club,4000000.0,85,10/07/2026
+Köln,Paul Okon-Engstler,Defensive Midfield,21,Sydney FC,1200000.0,88,10/07/2026
+Köln,Edson Álvarez,Defensive Midfield,28,West Ham United,15000000.0,49,09/07/2026
+Köln,Stefano Russo,Defensive Midfield,26,Arminia Bielefeld,1200000.0,31,08/07/2026
 Köln,Mikey Moore,Left Winger,18,Tottenham Hotspur,18000000.0,32,05/07/2026
-Köln,Hennes Behrens,Left-Back,21,TSG 1899 Hoffenheim,5000000.0,32,02/07/2026
-Köln,Marvin Pieringer,Centre-Forward,26,1.FC Heidenheim 1846,3000000.0,44,02/07/2026
+Köln,Hennes Behrens,Left-Back,21,TSG 1899 Hoffenheim,5000000.0,30,02/07/2026
+Köln,Marvin Pieringer,Centre-Forward,26,1.FC Heidenheim 1846,3000000.0,41,02/07/2026
 Köln,José Marsà,Centre-Back,24,KV Mechelen,3500000.0,29,01/07/2026
 Köln,Chido Obi,Centre-Forward,18,Manchester United,5000000.0,51,30/06/2026
-Köln,Ermin Mahmic,Attacking Midfield,21,FC Slovan Liberec,5000000.0,18,29/06/2026
-Köln,Almugera Kabar,Left-Back,20,Borussia Dortmund,3000000.0,34,26/06/2026
+Köln,Ermin Mahmic,Attacking Midfield,21,FC Slovan Liberec,5000000.0,19,29/06/2026
+Köln,Almugera Kabar,Left-Back,20,Borussia Dortmund,3000000.0,29,26/06/2026
 Köln,Giovani Versini,Right Winger,22,Pau FC,5000000.0,62,25/06/2026
 Köln,Vasilios Zagaritis,Left-Back,25,SC Heerenveen,3000000.0,,24/06/2026
-Köln,Mateusz Zukowski,Centre-Forward,24,1.FC Magdeburg,6000000.0,17,21/06/2026
+Köln,Mateusz Zukowski,Centre-Forward,24,1.FC Magdeburg,6000000.0,16,21/06/2026
 Köln,Pablo Pagis,Left Winger,23,FC Lorient,15000000.0,,16/06/2026
 Köln,Abubacarr Sedi Kinteh,Centre-Back,19,Tromsø IL,7000000.0,,11/06/2026
 Köln,Laurin Curda,Right Midfield,24,SC Paderborn 07,3000000.0,,09/06/2026
-Köln,Salih Özcan,Defensive Midfield,28,Without ClubWithout Club,3500000.0,,01/06/2026
 Köln,Sebastiaan Bornauw,Centre-Back,27,Leeds United,8000000.0,,01/06/2026
 Köln,Arda Ünyay,Centre-Back,19,Galatasaray,1000000.0,,28/05/2026
-Köln,Martin Adeline,Attacking Midfield,22,ESTAC Troyes,10000000.0,,27/05/2026
+Köln,Martin Adeline,Attacking Midfield,22,ESTAC Troyes,10000000.0,38,27/05/2026
 Köln,Umut Tohumcu,Central Midfield,21,TSG 1899 Hoffenheim,3500000.0,,26/05/2026
-Köln,Mika Schroers,Centre-Forward,24,Alemannia Aachen,750000.0,35,26/05/2026
+Köln,Mika Schroers,Centre-Forward,24,Alemannia Aachen,750000.0,36,26/05/2026
 Köln,Amario Cozier-Duberry,Right Winger,21,Brighton & Hove Albion,5000000.0,,25/05/2026
 Köln,David Martínez,Right Winger,20,Los Angeles FC,5000000.0,,23/05/2026
-Köln,Ihlas Bebou,Centre-Forward,32,Without ClubWithout Club,600000.0,,08/05/2026
-Leverkusen,Kenan Doganay,Defensive Midfield,17,Olympique Lyon U19,,93,08/07/2026
-Leverkusen,Krépin Diatta,Right Midfield,27,Without ClubWithout Club,6000000.0,36,06/07/2026
+Leverkusen,Krépin Diatta,Right Midfield,27,Without ClubWithout Club,6000000.0,38,06/07/2026
 Leverkusen,Dayann Methalie,Left-Back,20,FC Toulouse,18000000.0,61,02/07/2026
 Leverkusen,Andrei Rațiu,Right-Back,28,Rayo Vallecano,18000000.0,56,29/06/2026
 Leverkusen,Pep Chavarría,Left-Back,28,Rayo Vallecano,10000000.0,22,26/06/2026
 Leverkusen,Raphaël Guerreiro,Left-Back,32,Without ClubWithout Club,5000000.0,43,25/06/2026
 Leverkusen,Konstantinos Mavropanos,Centre-Back,28,West Ham United,18000000.0,53,25/06/2026
 Leverkusen,Arsène Kouassi,Left-Back,22,FC Lorient,15000000.0,58,25/06/2026
-Leverkusen,Sergiño Dest,Right-Back,25,PSV Eindhoven,18000000.0,57,25/06/2026
-Leverkusen,Matías Soulé,Right Winger,23,AS Roma,35000000.0,34,23/06/2026
+Leverkusen,Sergiño Dest,Right-Back,25,PSV Eindhoven,18000000.0,58,25/06/2026
+Leverkusen,Matías Soulé,Right Winger,23,AS Roma,35000000.0,35,23/06/2026
 Leverkusen,Dzenan Pejcinovic,Centre-Forward,21,VfL Wolfsburg,15000000.0,38,22/06/2026
 Leverkusen,Emmanuel Fernandez,Centre-Back,24,Rangers FC,18000000.0,,16/06/2026
 Leverkusen,Kacper Potulski,Centre-Back,18,1.FSV Mainz 05,18000000.0,34,08/06/2026
 Leverkusen,Milton Delgado,Defensive Midfield,21,CA Boca Juniors,10000000.0,,08/06/2026
 Leverkusen,Jorge Salinas,Left-Back,19,Racing Santander,8000000.0,,01/06/2026
 Leverkusen,Fábio Vieira,Attacking Midfield,26,Arsenal FC,18000000.0,,27/05/2026
-Leverkusen,Nathan De Cat,Central Midfield,17,RSC Anderlecht,27000000.0,,23/05/2026
 Leverkusen,Maxime Estève,Centre-Back,24,Burnley FC,28000000.0,,19/05/2026
 Leverkusen,Nick Woltemade,Centre-Forward,24,Newcastle United,55000000.0,,16/05/2026
 Leverkusen,Héctor Fort,Right-Back,19,FC Barcelona,12000000.0,,01/05/2026
@@ -224,8 +168,10 @@ Leverkusen,Chibuike Nwaiwu,Centre-Back,22,Trabzonspor,10000000.0,31,27/04/2026
 Leverkusen,Jesús Fortea,Right-Back,19,Real Madrid Castilla,3000000.0,,27/04/2026
 Leverkusen,Dyran Stam,Left-Back,16,PSV Eindhoven U17,,,22/04/2026
 Leverkusen,Danilo,Central Midfield,25,Botafogo de Futebol e Regatas,32000000.0,,21/04/2026
-Mainz 05,Gauthier Hein,Right Winger,29,FC Metz,5000000.0,62,08/07/2026
-Mainz 05,Laurin Curda,Right Midfield,24,SC Paderborn 07,3000000.0,59,08/07/2026
+Leverkusen,Roggerio Nyakossi,Centre-Back,22,Oud-Heverlee Leuven,5000000.0,,16/04/2026
+Leverkusen,Dorgeles Nene,Right Winger,23,Fenerbahce,20000000.0,,09/04/2026
+Mainz 05,Gauthier Hein,Right Winger,29,FC Metz,5000000.0,44,08/07/2026
+Mainz 05,Laurin Curda,Right Midfield,24,SC Paderborn 07,3000000.0,54,08/07/2026
 Mainz 05,Sung-jun Yoon,Defensive Midfield,19,Kyoto Sanga,400000.0,,07/07/2026
 Mainz 05,Ermin Mahmic,Attacking Midfield,21,FC Slovan Liberec,5000000.0,33,29/06/2026
 Mainz 05,Janik Haberer,Central Midfield,32,1.FC Union Berlin,2000000.0,,12/06/2026
@@ -238,44 +184,43 @@ Mainz 05,Nikola Vasilj,Goalkeeper,30,Without ClubWithout Club,4500000.0,,20/05/2
 Mainz 05,Pape Moussa Fall,Centre-Forward,22,FC Metz,3500000.0,,11/05/2026
 Mainz 05,Yannick Gerhardt,Central Midfield,32,VfL Wolfsburg,1800000.0,,07/05/2026
 Mainz 05,Tjark Ernst,Goalkeeper,23,Hertha BSC,4000000.0,,16/04/2026
-RB Leipzig,Brajan Gruda,Attacking Midfield,22,Brighton & Hove Albion,28000000.0,69,07/07/2026
+RB Leipzig,Said El Mala,Left Winger,19,1.FC Köln,45000000.0,47,10/07/2026
+RB Leipzig,Nobel Mendy,Centre-Back,21,Rayo Vallecano,7500000.0,,10/07/2026
+RB Leipzig,Maxime Estève,Centre-Back,24,Burnley FC,28000000.0,73,10/07/2026
+RB Leipzig,Brajan Gruda,Attacking Midfield,22,Brighton & Hove Albion,28000000.0,71,07/07/2026
 RB Leipzig,Tyler Dibling,Right Winger,20,Everton FC,17000000.0,,07/07/2026
 RB Leipzig,Simon Adingra,Left Winger,24,Sunderland AFC,22000000.0,,06/07/2026
 RB Leipzig,Mamadou Doumbia,Centre-Forward,20,Watford FC,4000000.0,,05/07/2026
 RB Leipzig,Maykel Gomis,Centre-Forward,15,FC Metz U17,,,04/07/2026
 RB Leipzig,Nadiem Amiri,Central Midfield,29,1.FSV Mainz 05,17000000.0,40,04/07/2026
-RB Leipzig,Maxime Estève,Centre-Back,24,Burnley FC,28000000.0,,02/07/2026
-RB Leipzig,Esmir Bajraktarevic,Right Winger,21,PSV Eindhoven,8000000.0,41,27/06/2026
+RB Leipzig,Esmir Bajraktarevic,Right Winger,21,PSV Eindhoven,8000000.0,40,27/06/2026
 RB Leipzig,Samú Costa,Defensive Midfield,25,RCD Mallorca,15000000.0,60,25/06/2026
 RB Leipzig,Christ Inao Oulaï,Central Midfield,20,Trabzonspor,23000000.0,40,23/06/2026
 RB Leipzig,Mamadou Sarr,Centre-Back,20,Chelsea FC,22000000.0,28,22/06/2026
-RB Leipzig,Thierno Barry,Centre-Forward,23,Everton FC,30000000.0,31,18/06/2026
+RB Leipzig,Thierno Barry,Centre-Forward,23,Everton FC,30000000.0,56,18/06/2026
 RB Leipzig,Dyran Stam,Left-Back,16,PSV Eindhoven U17,,,17/06/2026
 RB Leipzig,Han-beom Lee,Centre-Back,24,FC Midtjylland,3000000.0,,16/06/2026
 RB Leipzig,Mert Kömür,Attacking Midfield,20,FC Augsburg,12000000.0,,15/06/2026
-RB Leipzig,Nathan De Cat,Central Midfield,17,RSC Anderlecht,27000000.0,,12/06/2026
 RB Leipzig,Ibrahima Cissé,Centre-Forward,18,Jong KAA Gent,900000.0,,07/06/2026
-RB Leipzig,Fisnik Asllani,Centre-Forward,23,TSG 1899 Hoffenheim,35000000.0,47,06/06/2026
+RB Leipzig,Fisnik Asllani,Centre-Forward,23,TSG 1899 Hoffenheim,35000000.0,45,06/06/2026
 RB Leipzig,Lovro Majer,Attacking Midfield,28,VfL Wolfsburg,8000000.0,,31/05/2026
 RB Leipzig,Ermin Mahmic,Attacking Midfield,21,FC Slovan Liberec,5000000.0,,18/05/2026
 RB Leipzig,Otto Rosengren,Central Midfield,23,Malmö FF,3000000.0,,15/05/2026
 RB Leipzig,Harvey Elliott,Attacking Midfield,23,Liverpool FC,20000000.0,,15/05/2026
 RB Leipzig,Luka Vuskovic,Centre-Back,19,Tottenham Hotspur,60000000.0,11,13/05/2026
 RB Leipzig,Salomon Kourouma,Right Winger,15,Servette FC U16,,,09/05/2026
-RB Leipzig,Abdul Fatawu,Right Winger,22,Leicester City,20000000.0,,07/05/2026
 St Pauli,Johannes Schenk,Goalkeeper,23,Preußen Münster,1500000.0,,20/05/2026
 St Pauli,Bamba Dieng,Centre-Forward,26,Without ClubWithout Club,15000000.0,,25/04/2026
 St Pauli,Mika Schroers,Centre-Forward,24,Alemannia Aachen,750000.0,29,25/03/2026
-Stuttgart,Ladislav Krejci,Centre-Back,27,Wolverhampton Wanderers,22000000.0,19,07/07/2026
-Stuttgart,Kodai Sano,Central Midfield,22,NEC Nijmegen,12000000.0,17,02/07/2026
-Stuttgart,Dzenan Pejcinovic,Centre-Forward,21,VfL Wolfsburg,15000000.0,15,01/07/2026
+Stuttgart,Dzenan Pejcinovic,Centre-Forward,21,VfL Wolfsburg,15000000.0,46,10/07/2026
+Stuttgart,Ladislav Krejci,Centre-Back,27,Wolverhampton Wanderers,22000000.0,19,09/07/2026
+Stuttgart,Kodai Sano,Central Midfield,22,NEC Nijmegen,12000000.0,14,02/07/2026
 Stuttgart,Nobel Mendy,Centre-Back,21,Rayo Vallecano,7500000.0,18,01/07/2026
 Stuttgart,Emmanuel Mbemba,Left-Back,18,Without ClubWithout Club,,14,30/06/2026
 Stuttgart,Matías Soulé,Right Winger,23,AS Roma,35000000.0,21,28/06/2026
 Stuttgart,Almugera Kabar,Left-Back,20,Borussia Dortmund,3000000.0,30,26/06/2026
-Stuttgart,Nathan De Cat,Central Midfield,17,RSC Anderlecht,27000000.0,29,12/06/2026
 Stuttgart,Neo Jönsson,Right Winger,19,IK Sirius,5000000.0,,12/06/2026
-Stuttgart,Bilal Nadir,Central Midfield,22,Without ClubWithout Club,8000000.0,39,12/06/2026
+Stuttgart,Bilal Nadir,Central Midfield,22,Without ClubWithout Club,8000000.0,40,12/06/2026
 Stuttgart,Djaoui Cissé,Central Midfield,22,Stade Rennais FC,10000000.0,,11/06/2026
 Stuttgart,Caspar Jander,Central Midfield,23,Southampton FC,18000000.0,,07/06/2026
 Stuttgart,Sami Ouaissa,Right Midfield,21,NEC Nijmegen,8000000.0,,03/06/2026
@@ -286,11 +231,12 @@ Stuttgart,Ilija Despotovic,Centre-Forward,18,FC Lausanne-Sport U19,,,26/05/2026
 Stuttgart,Finn Dahmen,Goalkeeper,28,FC Augsburg,12000000.0,,26/05/2026
 Stuttgart,Dorgeles Nene,Right Winger,23,Fenerbahce,20000000.0,,25/05/2026
 Stuttgart,Sebastian Nanasi,Left Winger,24,RC Strasbourg Alsace,15000000.0,,25/05/2026
-Stuttgart,Giannis Konstantelias,Attacking Midfield,23,PAOK Thessaloniki,22000000.0,9,21/05/2026
+Stuttgart,Giannis Konstantelias,Attacking Midfield,23,PAOK Thessaloniki,22000000.0,7,21/05/2026
 Stuttgart,Nick Woltemade,Centre-Forward,24,Newcastle United,55000000.0,,16/05/2026
 Stuttgart,Cameron Ashia,Attacking Midfield,21,Huddersfield Town,125000.0,,11/05/2026
 Stuttgart,Pape Moussa Fall,Centre-Forward,22,FC Metz,3500000.0,,11/05/2026
 Stuttgart,Mohamed Bayo,Centre-Forward,28,LOSC Lille,4500000.0,,07/05/2026
+Stuttgart,Peer Koopmeiners,Defensive Midfield,26,AZ Alkmaar,12000000.0,,05/05/2026
 Union Berlin,Johannes Schenk,Goalkeeper,23,Preußen Münster,1500000.0,39,05/07/2026
 Union Berlin,Valmir Matoshi,Left Midfield,23,FC Thun,1500000.0,53,01/07/2026
 Union Berlin,Kastriot Imeri,Left Midfield,26,BSC Young Boys,2000000.0,74,01/07/2026
@@ -298,18 +244,16 @@ Union Berlin,Arthur Avom,Central Midfield,21,FC Lorient,20000000.0,,02/06/2026
 Union Berlin,Ihlas Bebou,Centre-Forward,32,Without ClubWithout Club,600000.0,,08/05/2026
 Union Berlin,Yannick Gerhardt,Central Midfield,32,VfL Wolfsburg,1800000.0,,07/05/2026
 Union Berlin,Eray Cömert,Centre-Back,28,Without ClubWithout Club,2500000.0,,05/05/2026
-Werder Bremen,Oskar Wójcik,Centre-Back,22,Cracovia,5000000.0,73,08/07/2026
 Werder Bremen,Niclas Füllkrug,Centre-Forward,33,West Ham United,3500000.0,31,02/07/2026
 Werder Bremen,Beau Reus,Goalkeeper,24,Without ClubWithout Club,1500000.0,28,29/06/2026
-Werder Bremen,Thijs Dallinga,Centre-Forward,25,Bologna FC 1909,9000000.0,26,28/06/2026
+Werder Bremen,Thijs Dallinga,Centre-Forward,25,Bologna FC 1909,9000000.0,25,28/06/2026
 Werder Bremen,Jovan Milosevic,Centre-Forward,20,VfB Stuttgart,7000000.0,0,23/06/2026
 Werder Bremen,Ebenezer Akinsanmiro,Central Midfield,21,Inter Milan,7000000.0,18,22/06/2026
-Werder Bremen,Elias Baum,Right-Back,20,Eintracht Frankfurt,4000000.0,30,18/06/2026
+Werder Bremen,Elias Baum,Right-Back,20,Eintracht Frankfurt,4000000.0,,18/06/2026
 Werder Bremen,Kayne van Oevelen,Goalkeeper,22,FC Volendam,2000000.0,,16/06/2026
 Werder Bremen,Dom Ballard,Centre-Forward,21,Leyton Orient,2000000.0,,12/06/2026
-Werder Bremen,Arthur Piedfort,Defensive Midfield,21,AJ Auxerre,4000000.0,,10/06/2026
 Werder Bremen,Oleksandr Romanchuk,Centre-Back,26,Universitatea Craiova,2500000.0,,08/06/2026
-Werder Bremen,Tomas Bobcek,Centre-Forward,24,Lechia Gdansk,8000000.0,,02/06/2026
+Werder Bremen,Tomas Bobcek,Centre-Forward,24,Lechia Gdansk,8000000.0,35,02/06/2026
 Werder Bremen,Noel Futkeu,Centre-Forward,23,Eintracht Frankfurt,7500000.0,,01/06/2026
 Werder Bremen,Julius Berthel Askou,Centre-Back,20,Odense Boldklub,2500000.0,,30/05/2026
 Werder Bremen,Mika Baur,Central Midfield,22,SC Paderborn 07,5000000.0,,29/05/2026
@@ -317,19 +261,17 @@ Werder Bremen,Oumar Diakité,Centre-Forward,22,Stade Reims,5000000.0,,28/05/2026
 Werder Bremen,Roggerio Nyakossi,Centre-Back,22,Oud-Heverlee Leuven,5000000.0,,27/05/2026
 Werder Bremen,Camilo Rey Domenech,Defensive Midfield,20,CA Boca Juniors,400000.0,,21/05/2026
 Werder Bremen,Sadibou Sané,Centre-Back,22,AS Monaco,7000000.0,,21/05/2026
-Werder Bremen,Salih Özcan,Defensive Midfield,28,Without ClubWithout Club,3500000.0,,20/05/2026
 Werder Bremen,Nacho Miras,Goalkeeper,28,KV Mechelen,3500000.0,,18/05/2026
 Werder Bremen,Filip Bilbija,Left Winger,26,Without ClubWithout Club,3000000.0,,13/05/2026
 Werder Bremen,Ismail Badjie,Attacking Midfield,20,VfL Osnabrück,800000.0,,28/04/2026
 Werder Bremen,Bamba Dieng,Centre-Forward,26,Without ClubWithout Club,15000000.0,,13/04/2026
-Wolfsburg,Killian Sardella,Right-Back,24,RSC Anderlecht,2500000.0,21,09/07/2026
-Wolfsburg,Tjark Ernst,Goalkeeper,23,Hertha BSC,4000000.0,42,07/07/2026
+Wolfsburg,Michael Zetterer,Goalkeeper,30,Eintracht Frankfurt,4000000.0,12,09/07/2026
+Wolfsburg,Killian Sardella,Right-Back,24,RSC Anderlecht,2500000.0,26,09/07/2026
+Wolfsburg,Tjark Ernst,Goalkeeper,23,Hertha BSC,4000000.0,39,07/07/2026
 Wolfsburg,Stefan Ortega,Goalkeeper,33,Without ClubWithout Club,4000000.0,23,06/07/2026
-Wolfsburg,Florian Kastenmeier,Goalkeeper,29,Without ClubWithout Club,1000000.0,51,06/07/2026
-Wolfsburg,Michael Zetterer,Goalkeeper,30,Eintracht Frankfurt,4000000.0,21,06/07/2026
+Wolfsburg,Florian Kastenmeier,Goalkeeper,29,Without ClubWithout Club,1000000.0,47,06/07/2026
 Wolfsburg,Moritz Nicolas,Goalkeeper,28,Borussia Mönchengladbach,8000000.0,12,06/07/2026
 Wolfsburg,Christopher Olivier,Right-Back,20,VfB Stuttgart II,1200000.0,,30/06/2026
-Wolfsburg,Leeron Danioko,Left Winger,17,Without ClubWithout Club,,84,28/06/2026
 Wolfsburg,Muhammed Damar,Attacking Midfield,22,TSG 1899 Hoffenheim,5000000.0,,28/06/2026
 Wolfsburg,Patrick Mainka,Centre-Back,31,1.FC Heidenheim 1846,2500000.0,,14/06/2026
 Wolfsburg,Yari Otto,Central Midfield,27,SC Verl,250000.0,,10/06/2026
@@ -347,3 +289,4 @@ Wolfsburg,Adrián Angyal,Striker,16,MTK Budapest Youth,,,29/04/2026
 Wolfsburg,Linus Gechter,Centre-Back,22,Hertha BSC,3500000.0,,22/04/2026
 Wolfsburg,Haris Tabakovic,Centre-Forward,32,TSG 1899 Hoffenheim,3500000.0,,22/04/2026
 Wolfsburg,Andy Pelmard,Centre-Back,26,Clermont Foot 63,2000000.0,,16/04/2026
+Wolfsburg,Rafael Lubach,Central Midfield,21,1.FC Nuremberg,3500000.0,,31/03/2026
