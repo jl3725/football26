@@ -1,22 +1,21 @@
 target_club,player,pos_detail,age,current_club,market_value_eur,probability,date
 Arsenal,Ezri Konsa,Centre-Back,28,Aston Villa,40000000.0,,10/07/2026
-Arsenal,Lutsharel Geertruida,Right-Back,25,RB Leipzig,20000000.0,,10/07/2026
+Arsenal,Lutsharel Geertruida,Right-Back,25,RB Leipzig,20000000.0,12,10/07/2026
 Arsenal,Antonio Nusa,Left Winger,21,RB Leipzig,32000000.0,,09/07/2026
-Arsenal,Bruno Guimarães,Central Midfield,28,Newcastle United,70000000.0,55,09/07/2026
+Arsenal,Bruno Guimarães,Central Midfield,28,Newcastle United,70000000.0,57,09/07/2026
 Arsenal,Christian Kofane,Centre-Forward,19,Bayer 04 Leverkusen,40000000.0,30,04/07/2026
 Arsenal,Alex Scott,Central Midfield,22,AFC Bournemouth,50000000.0,,01/07/2026
 Arsenal,Kaishu Sano,Defensive Midfield,25,1.FSV Mainz 05,40000000.0,,30/06/2026
 Arsenal,Julián Alvarez,Centre-Forward,26,Atlético de Madrid,100000000.0,18,27/06/2026
-Arsenal,Morgan Rogers,Attacking Midfield,23,Aston Villa,90000000.0,75,26/06/2026
-Arsenal,Jeremy Monga,Left Winger,17,Leicester City,15000000.0,52,26/06/2026
+Arsenal,Morgan Rogers,Attacking Midfield,23,Aston Villa,90000000.0,77,26/06/2026
 Arsenal,Darío Osorio,Right Winger,22,FC Midtjylland,15000000.0,,24/06/2026
-Arsenal,Felix Nmecha,Central Midfield,25,Borussia Dortmund,50000000.0,43,20/06/2026
-Arsenal,Bradley Barcola,Left Winger,23,Paris Saint-Germain,70000000.0,39,18/06/2026
-Arsenal,Manu Koné,Central Midfield,25,AS Roma,50000000.0,24,17/06/2026
-Arsenal,Ibrahim Maza,Attacking Midfield,20,Bayer 04 Leverkusen,45000000.0,42,14/06/2026
+Arsenal,Felix Nmecha,Central Midfield,25,Borussia Dortmund,50000000.0,44,20/06/2026
+Arsenal,Bradley Barcola,Left Winger,23,Paris Saint-Germain,70000000.0,44,18/06/2026
+Arsenal,Manu Koné,Central Midfield,25,AS Roma,50000000.0,22,17/06/2026
+Arsenal,Ibrahim Maza,Attacking Midfield,20,Bayer 04 Leverkusen,45000000.0,47,14/06/2026
 Arsenal,Ayyoub Bouaddi,Central Midfield,18,LOSC Lille,50000000.0,47,14/06/2026
 Arsenal,Christos Tzolis,Left Winger,24,Club Brugge KV,40000000.0,91,14/06/2026
-Arsenal,Kenan Yıldız,Left Winger,21,Juventus FC,75000000.0,10,13/06/2026
+Arsenal,Kenan Yıldız,Left Winger,21,Juventus FC,75000000.0,,13/06/2026
 Arsenal,Luiz Henrique,Right Winger,25,Zenit St. Petersburg,24000000.0,38,13/06/2026
 Arsenal,Konstantinos Tzolakis,Goalkeeper,23,Olympiacos Piraeus,18000000.0,,07/06/2026
 Arsenal,Emmanuel Mbemba,Left-Back,18,Without ClubWithout Club,,,06/06/2026
@@ -24,10 +23,11 @@ Arsenal,Marcus Rashford,Left Winger,28,Manchester United,40000000.0,,01/06/2026
 Arsenal,Junior Kroupi,Centre-Forward,20,AFC Bournemouth,70000000.0,,01/06/2026
 Arsenal,Tijjani Reijnders,Central Midfield,27,Manchester City,50000000.0,,31/05/2026
 Arsenal,Oskar Pietuszewski,Left Winger,18,FC Porto,25000000.0,,31/05/2026
+Arsenal,William Gomes,Right Winger,20,FC Porto,25000000.0,,30/05/2026
+Aston Villa,Julián Quiñones,Centre-Forward,29,Al-Qadsiah FC,14000000.0,,11/07/2026
 Aston Villa,El Bilal Touré,Left Winger,24,Atalanta BC,13000000.0,,09/07/2026
 Aston Villa,Antonio Nusa,Left Winger,21,RB Leipzig,32000000.0,,09/07/2026
 Aston Villa,Anan Khalaili,Right Midfield,21,Union Saint-Gilloise,23000000.0,,07/07/2026
-Aston Villa,Arthur Atta,Central Midfield,23,Udinese Calcio,25000000.0,,07/07/2026
 Aston Villa,Ibrahim Mbaye,Right Winger,18,Paris Saint-Germain,30000000.0,,06/07/2026
 Aston Villa,James Maddison,Attacking Midfield,29,Tottenham Hotspur,20000000.0,,30/06/2026
 Aston Villa,Anis Hadj Moussa,Right Winger,24,Feyenoord Rotterdam,23000000.0,,30/06/2026
@@ -36,7 +36,7 @@ Aston Villa,Guillaume Restes,Goalkeeper,21,FC Toulouse,18000000.0,,30/06/2026
 Aston Villa,Lloyd Kelly,Centre-Back,27,Juventus FC,23000000.0,41,29/06/2026
 Aston Villa,Femi Azeez,Right Midfield,25,Millwall FC,15000000.0,,29/06/2026
 Aston Villa,Kacper Potulski,Centre-Back,18,1.FSV Mainz 05,18000000.0,21,28/06/2026
-Aston Villa,Emerson Royal,Right-Back,27,CR Flamengo,5000000.0,87,23/06/2026
+Aston Villa,Emerson Royal,Right-Back,27,CR Flamengo,5000000.0,89,23/06/2026
 Aston Villa,Jarrod Bowen,Right Winger,29,West Ham United,30000000.0,,23/06/2026
 Aston Villa,Matias Fernandez-Pardo,Centre-Forward,21,LOSC Lille,35000000.0,,17/06/2026
 Aston Villa,Anatoliy Trubin,Goalkeeper,24,SL Benfica,25000000.0,,11/06/2026
@@ -49,8 +49,8 @@ Aston Villa,Moritz Nicolas,Goalkeeper,28,Borussia Mönchengladbach,8000000.0,,30
 Aston Villa,Ngal'ayel Mukau,Defensive Midfield,21,LOSC Lille,15000000.0,,30/05/2026
 Aston Villa,Gabriel Sara,Central Midfield,27,Galatasaray,27000000.0,,26/05/2026
 Aston Villa,Danilho Doekhi,Centre-Back,28,Without ClubWithout Club,13000000.0,,23/05/2026
+Bournemouth,Tarik Muharemović,Centre-Back,23,US Sassuolo,25000000.0,,11/07/2026
 Bournemouth,Luis Henrique,Right Midfield,24,Inter Milan,22000000.0,,09/07/2026
-Bournemouth,Tarik Muharemović,Centre-Back,23,US Sassuolo,25000000.0,,07/07/2026
 Bournemouth,Keito Nakamura,Left Winger,25,Stade Reims,10000000.0,,03/07/2026
 Bournemouth,Álvaro Rodríguez,Centre-Forward,21,Elche CF,10000000.0,96,02/07/2026
 Bournemouth,Emmanuel Mbemba,Left-Back,18,Without ClubWithout Club,,,27/06/2026
@@ -86,7 +86,7 @@ Brighton,Said El Mala,Left Winger,19,1.FC Köln,45000000.0,4,08/07/2026
 Brighton,Lamine Camara,Central Midfield,22,AS Monaco,40000000.0,,06/07/2026
 Brighton,Andrea Natali,Centre-Back,18,Bayer 04 Leverkusen U19,400000.0,,04/07/2026
 Brighton,Pape Gueye,Central Midfield,27,Villarreal CF,40000000.0,,01/07/2026
-Brighton,Luka Vuskovic,Centre-Back,19,Tottenham Hotspur,60000000.0,82,01/07/2026
+Brighton,Luka Vuskovic,Centre-Back,19,Tottenham Hotspur,60000000.0,87,01/07/2026
 Brighton,Lassine Sinayoko,Centre-Forward,26,AJ Auxerre,10000000.0,,26/06/2026
 Brighton,Honest Ahanor,Centre-Back,18,Atalanta BC,30000000.0,,26/06/2026
 Brighton,Marvin Keller,Goalkeeper,24,BSC Young Boys,6000000.0,,08/06/2026
@@ -106,14 +106,15 @@ Brighton,Maicon,Left-Back,26,Levski Sofia,3500000.0,,16/04/2026
 Brighton,Zan Vipotnik,Centre-Forward,24,Swansea City,22000000.0,,14/04/2026
 Burnley,Sorriso,Left Winger,25,FC Famalicão,5000000.0,,05/06/2026
 Burnley,Jordan James,Central Midfield,22,Stade Rennais FC,12000000.0,,20/04/2026
+Chelsea,Julián Quiñones,Centre-Forward,29,Al-Qadsiah FC,14000000.0,,11/07/2026
 Chelsea,Lucas Herrington,Centre-Back,18,Colorado Rapids,4500000.0,,09/07/2026
 Chelsea,Karim Coulibaly,Centre-Back,19,SV Werder Bremen,28000000.0,36,07/07/2026
 Chelsea,Crysencio Summerville,Left Winger,24,West Ham United,35000000.0,,03/07/2026
 Chelsea,Folarin Balogun,Centre-Forward,25,AS Monaco,40000000.0,,29/06/2026
 Chelsea,Granit Xhaka,Defensive Midfield,33,Sunderland AFC,8000000.0,53,28/06/2026
-Chelsea,Pep Chavarría,Left-Back,28,Rayo Vallecano,10000000.0,,28/06/2026
-Chelsea,Maxence Lacroix,Centre-Back,26,Crystal Palace,50000000.0,76,27/06/2026
-Chelsea,Jacobo Ramón,Centre-Back,21,Como 1907,30000000.0,,26/06/2026
+Chelsea,Pep Chavarría,Left-Back,28,Rayo Vallecano,10000000.0,58,28/06/2026
+Chelsea,Maxence Lacroix,Centre-Back,26,Crystal Palace,50000000.0,79,27/06/2026
+Chelsea,Jacobo Ramón,Centre-Back,21,Como 1907,30000000.0,40,26/06/2026
 Chelsea,Gabriel Gudmundsson,Left-Back,27,Leeds United,20000000.0,34,24/06/2026
 Chelsea,Jonathan Rowe,Left Winger,23,Bologna FC 1909,28000000.0,,22/06/2026
 Chelsea,Felix Nmecha,Central Midfield,25,Borussia Dortmund,50000000.0,,16/06/2026
@@ -126,13 +127,12 @@ Chelsea,Alex Scott,Central Midfield,22,AFC Bournemouth,50000000.0,,23/05/2026
 Chelsea,Valentín Barco,Central Midfield,21,RC Strasbourg Alsace,40000000.0,,22/05/2026
 Chelsea,Vangelis Pavlidis,Centre-Forward,27,SL Benfica,28000000.0,,20/05/2026
 Chelsea,Aaron Bibout,Centre-Forward,21,KRC Genk,3500000.0,,20/05/2026
-Chelsea,Victor Osimhen,Centre-Forward,27,Galatasaray,75000000.0,83,19/05/2026
+Chelsea,Victor Osimhen,Centre-Forward,27,Galatasaray,75000000.0,84,19/05/2026
 Chelsea,Bendegúz Kovács,Centre-Forward,19,AZ Alkmaar U21,1500000.0,,15/05/2026
 Chelsea,Yan Diomande,Left Winger,19,RB Leipzig,90000000.0,,14/05/2026
 Chelsea,Francisco Trincão,Attacking Midfield,26,Sporting CP,40000000.0,,13/05/2026
-Chelsea,Said El Mala,Left Winger,19,1.FC Köln,45000000.0,,06/05/2026
 Crystal Palace,Antonio Nusa,Left Winger,21,RB Leipzig,32000000.0,,09/07/2026
-Crystal Palace,Arthur Theate,Centre-Back,26,Eintracht Frankfurt,17000000.0,43,08/07/2026
+Crystal Palace,Arthur Theate,Centre-Back,26,Eintracht Frankfurt,17000000.0,47,08/07/2026
 Crystal Palace,Dwight McNeil,Left Winger,26,Everton FC,18000000.0,,04/07/2026
 Crystal Palace,Pape Gueye,Central Midfield,27,Villarreal CF,40000000.0,,01/07/2026
 Crystal Palace,Vitaliy Laturnus,Centre-Forward,17,FC Aktobe,250000.0,,22/06/2026
@@ -148,6 +148,7 @@ Crystal Palace,Bailey Rice,Defensive Midfield,19,Kilmarnock FC,800000.0,,02/05/2
 Crystal Palace,Jordan James,Central Midfield,22,Stade Rennais FC,12000000.0,,24/04/2026
 Crystal Palace,João Gomes,Central Midfield,25,Wolverhampton Wanderers,40000000.0,,22/04/2026
 Crystal Palace,Jamil Siebert,Centre-Back,24,US Lecce,4500000.0,,17/04/2026
+Everton,Jacob Murphy,Right Winger,31,Newcastle United,12000000.0,,11/07/2026
 Everton,Sam Johnstone,Goalkeeper,33,Wolverhampton Wanderers,2000000.0,,10/07/2026
 Everton,Anan Khalaili,Right Midfield,21,Union Saint-Gilloise,23000000.0,,07/07/2026
 Everton,Djed Spence,Left-Back,25,Tottenham Hotspur,30000000.0,,07/07/2026
@@ -164,20 +165,40 @@ Everton,Ngal'ayel Mukau,Defensive Midfield,21,LOSC Lille,15000000.0,,30/05/2026
 Everton,Benjamin Nygren,Attacking Midfield,25,Celtic FC,14000000.0,,30/05/2026
 Everton,Georgios Vagiannidis,Right-Back,24,Sporting CP,8000000.0,,29/05/2026
 Everton,Darío Osorio,Right Winger,22,FC Midtjylland,15000000.0,,26/05/2026
-Everton,Arthur Atta,Central Midfield,23,Udinese Calcio,25000000.0,,25/05/2026
 Everton,Jamie Leweling,Right Winger,25,VfB Stuttgart,40000000.0,,21/05/2026
 Everton,Diogo Leite,Centre-Back,27,Without ClubWithout Club,12000000.0,,21/05/2026
 Everton,Maxime Estève,Centre-Back,24,Burnley FC,28000000.0,,19/05/2026
 Everton,Abdul Fatawu,Right Winger,22,Leicester City,20000000.0,,19/05/2026
 Everton,Léo Scienza,Attacking Midfield,27,Southampton FC,12000000.0,,18/05/2026
-Everton,Loum Tchaouna,Right Winger,22,Burnley FC,13000000.0,,17/05/2026
+Everton,Loum Tchaouna,Right Winger,22,Coventry City,13000000.0,,17/05/2026
 Everton,Mohamed Amoura,Centre-Forward,26,VfL Wolfsburg,20000000.0,,15/05/2026
 Everton,Enzo Boyomo,Centre-Back,24,CA Osasuna,15000000.0,,04/05/2026
-Leeds United,Ørjan Nyland,Goalkeeper,35,Without ClubWithout Club,800000.0,,09/07/2026
+Fulham,Erskine Rennie,Centre-Forward,16,Celtic FC Youth,,,11/07/2026
+Fulham,Gonzalo García,Centre-Forward,22,Real Madrid,30000000.0,,08/07/2026
+Fulham,Fran García,Left-Back,26,Real Betis Balompié,10000000.0,,08/07/2026
+Fulham,Franco Mastantuono,Right Winger,18,Real Madrid,45000000.0,,08/07/2026
+Fulham,Crysencio Summerville,Left Winger,24,West Ham United,35000000.0,,03/07/2026
+Fulham,Keito Nakamura,Left Winger,25,Stade Reims,10000000.0,,03/07/2026
+Fulham,Christ Inao Oulaï,Central Midfield,20,Trabzonspor,23000000.0,23,23/06/2026
+Fulham,Arnau Martínez,Right-Back,23,Girona FC,10000000.0,,15/06/2026
+Fulham,Raoul Bellanova,Right Midfield,26,Atalanta BC,15000000.0,,04/06/2026
+Fulham,Roland Sallai,Right-Back,29,Galatasaray,14000000.0,,26/05/2026
+Fulham,Andrej Ilic,Centre-Forward,26,1.FC Union Berlin,9000000.0,,21/05/2026
+Fulham,Said El Mala,Left Winger,19,1.FC Köln,45000000.0,,06/05/2026
+Fulham,Moustapha Mbow,Centre-Back,26,Paris FC,9000000.0,,05/05/2026
+Fulham,Danilo,Central Midfield,25,Botafogo de Futebol e Regatas,32000000.0,,28/04/2026
+Fulham,Wagner Pina,Right-Back,23,Trabzonspor,11000000.0,,27/04/2026
+Fulham,Chibuike Nwaiwu,Centre-Back,22,Trabzonspor,10000000.0,,27/04/2026
+Fulham,Richard Ríos,Defensive Midfield,26,SL Benfica,25000000.0,,24/04/2026
+Fulham,Kareem Tunde,Right Winger,20,Levante UD,2000000.0,,24/04/2026
+Fulham,Ricardo Pepi,Centre-Forward,23,PSV Eindhoven,30000000.0,,02/04/2026
+Leeds United,Tarik Muharemović,Centre-Back,23,US Sassuolo,25000000.0,,11/07/2026
+Leeds United,Yunus Musah,Central Midfield,23,AC Milan,14000000.0,,11/07/2026
+Leeds United,Ørjan Nyland,Goalkeeper,35,Without ClubWithout Club,800000.0,37,09/07/2026
 Leeds United,Zion Suzuki,Goalkeeper,23,Parma Calcio 1913,20000000.0,48,03/07/2026
 Leeds United,Harry Wilson,Right Winger,29,Leeds United,25000000.0,,02/07/2026
 Leeds United,Lassine Sinayoko,Centre-Forward,26,AJ Auxerre,10000000.0,,26/06/2026
-Leeds United,Nico Elvedi,Centre-Back,29,Borussia Mönchengladbach,8000000.0,57,20/06/2026
+Leeds United,Nico Elvedi,Centre-Back,29,Borussia Mönchengladbach,8000000.0,60,20/06/2026
 Leeds United,Julian Brandt,Attacking Midfield,30,Without ClubWithout Club,15000000.0,38,19/06/2026
 Leeds United,Han-beom Lee,Centre-Back,24,FC Midtjylland,3000000.0,,16/06/2026
 Leeds United,Diogo Leite,Centre-Back,27,Without ClubWithout Club,12000000.0,,15/06/2026
@@ -191,22 +212,22 @@ Leeds United,Tanner Tessmann,Defensive Midfield,24,Olympique Lyon,10000000.0,,19
 Leeds United,Loïs Openda,Centre-Forward,26,Juventus FC,25000000.0,,18/05/2026
 Leeds United,Ladislav Krejci,Centre-Back,27,Wolverhampton Wanderers,22000000.0,,22/04/2026
 Liverpool,João Gomes,Central Midfield,25,Wolverhampton Wanderers,40000000.0,,11/07/2026
-Liverpool,Lutsharel Geertruida,Right-Back,25,RB Leipzig,20000000.0,,10/07/2026
+Liverpool,Lutsharel Geertruida,Right-Back,25,RB Leipzig,20000000.0,22,10/07/2026
 Liverpool,Gilberto Mora,Attacking Midfield,17,Club Tijuana,10000000.0,,06/07/2026
 Liverpool,Dara Jikiemi,Centre-Back,16,Celtic FC Youth,,,06/07/2026
-Liverpool,Pedro Neto,Right Winger,26,Chelsea FC,60000000.0,14,04/07/2026
+Liverpool,Pedro Neto,Right Winger,26,Chelsea FC,60000000.0,19,04/07/2026
 Liverpool,Luca Koleosho,Right Winger,21,Burnley FC,6000000.0,,04/07/2026
-Liverpool,Bradley Barcola,Left Winger,23,Paris Saint-Germain,70000000.0,41,30/06/2026
-Liverpool,Kaishu Sano,Defensive Midfield,25,1.FSV Mainz 05,40000000.0,56,30/06/2026
+Liverpool,Bradley Barcola,Left Winger,23,Paris Saint-Germain,70000000.0,39,30/06/2026
+Liverpool,Kaishu Sano,Defensive Midfield,25,1.FSV Mainz 05,40000000.0,52,30/06/2026
 Liverpool,Yan Diomande,Left Winger,19,RB Leipzig,90000000.0,44,28/06/2026
-Liverpool,Felix Nmecha,Central Midfield,25,Borussia Dortmund,50000000.0,34,25/06/2026
+Liverpool,Felix Nmecha,Central Midfield,25,Borussia Dortmund,50000000.0,30,25/06/2026
 Liverpool,Andria Bartishvili,Attacking Midfield,17,Iberia 1999 Tbilisi,1500000.0,,22/06/2026
-Liverpool,Said El Mala,Left Winger,19,1.FC Köln,45000000.0,24,21/06/2026
+Liverpool,Said El Mala,Left Winger,19,1.FC Köln,45000000.0,19,21/06/2026
 Liverpool,Matias Fernandez-Pardo,Centre-Forward,21,LOSC Lille,35000000.0,,21/06/2026
 Liverpool,Yankuba Minteh,Right Winger,21,Brighton & Hove Albion,45000000.0,,21/06/2026
 Liverpool,Andrei Rațiu,Right-Back,28,Rayo Vallecano,18000000.0,58,21/06/2026
 Liverpool,Han-beom Lee,Centre-Back,24,FC Midtjylland,3000000.0,,16/06/2026
-Liverpool,Joel Ordóñez,Centre-Back,22,Club Brugge KV,33000000.0,58,15/06/2026
+Liverpool,Joel Ordóñez,Centre-Back,22,Club Brugge KV,33000000.0,,15/06/2026
 Liverpool,Khéphren Thuram,Central Midfield,25,Juventus FC,38000000.0,,11/06/2026
 Liverpool,Darwin Núñez,Centre-Forward,27,Al-Hilal SFC,20000000.0,50,08/06/2026
 Liverpool,Ilya Zabarnyi,Centre-Back,23,Paris Saint-Germain,40000000.0,66,03/06/2026
@@ -218,10 +239,9 @@ Liverpool,Emiliano Martínez,Goalkeeper,33,Aston Villa,12000000.0,,12/05/2026
 Manchester City,Ørjan Nyland,Goalkeeper,35,Without ClubWithout Club,800000.0,,09/07/2026
 Manchester City,Lucas Herrington,Centre-Back,18,Colorado Rapids,4500000.0,,09/07/2026
 Manchester City,Lukas Hornicek,Goalkeeper,23,SC Braga,18000000.0,,05/07/2026
-Manchester City,Jeremy Monga,Left Winger,17,Leicester City,15000000.0,,05/07/2026
 Manchester City,Eduardo Camavinga,Central Midfield,23,Real Madrid,50000000.0,,01/07/2026
 Manchester City,Ayyoub Bouaddi,Central Midfield,18,LOSC Lille,50000000.0,26,30/06/2026
-Manchester City,Malo Gusto,Right-Back,23,Chelsea FC,35000000.0,38,28/06/2026
+Manchester City,Malo Gusto,Right-Back,23,Chelsea FC,35000000.0,46,28/06/2026
 Manchester City,Gilberto Mora,Attacking Midfield,17,Club Tijuana,10000000.0,,28/06/2026
 Manchester City,Mathys Detourbet,Left Winger,19,AS Monaco,15000000.0,,28/06/2026
 Manchester City,Felix Nmecha,Central Midfield,25,Borussia Dortmund,50000000.0,,25/06/2026
@@ -236,11 +256,12 @@ Manchester City,Enzo Fernández,Central Midfield,25,Chelsea FC,90000000.0,,26/04
 Manchester City,Luis Maturana,Attacking Midfield,16,Independiente Medellín U20,,,26/04/2026
 Manchester City,Azzedine Ounahi,Central Midfield,26,Girona FC,10000000.0,,24/04/2026
 Manchester City,Eduardo Conceição,Left Winger,16,SE Palmeiras São Paulo U20,,,14/04/2026
-Manchester Utd,Éderson,Central Midfield,27,Atalanta BC,45000000.0,58,11/07/2026
+Manchester Utd,Manu Koné,Central Midfield,25,AS Roma,50000000.0,36,11/07/2026
+Manchester Utd,Éderson,Central Midfield,27,Atalanta BC,45000000.0,48,11/07/2026
 Manchester Utd,João Gomes,Central Midfield,25,Wolverhampton Wanderers,40000000.0,,11/07/2026
 Manchester Utd,Sander Berge,Defensive Midfield,28,Fulham FC,25000000.0,,10/07/2026
 Manchester Utd,Lucas Herrington,Centre-Back,18,Colorado Rapids,4500000.0,,09/07/2026
-Manchester Utd,Andrey Santos,Central Midfield,22,Chelsea FC,40000000.0,88,08/07/2026
+Manchester Utd,Andrey Santos,Central Midfield,22,Chelsea FC,40000000.0,89,08/07/2026
 Manchester Utd,Julian Ryerson,Right-Back,28,Borussia Dortmund,25000000.0,,07/07/2026
 Manchester Utd,Orlando Gill,Goalkeeper,26,CA San Lorenzo de Almagro,6000000.0,,07/07/2026
 Manchester Utd,Aurélien Tchouaméni,Defensive Midfield,26,Real Madrid,70000000.0,37,06/07/2026
@@ -260,10 +281,35 @@ Manchester Utd,Mamadou Sangaré,Central Midfield,24,RC Lens,40000000.0,,11/06/20
 Manchester Utd,Khéphren Thuram,Central Midfield,25,Juventus FC,38000000.0,,11/06/2026
 Manchester Utd,Karl Darlow,Goalkeeper,35,Without ClubWithout Club,200000.0,,09/06/2026
 Manchester Utd,Cristian Romero,Centre-Back,28,Tottenham Hotspur,45000000.0,,09/06/2026
-Manchester Utd,Waldemar Anton,Centre-Back,29,Borussia Dortmund,18000000.0,,08/06/2026
+Newcastle United,Antonio Nusa,Left Winger,21,RB Leipzig,32000000.0,,09/07/2026
+Newcastle United,Johan Manzambi,Central Midfield,20,SC Freiburg,50000000.0,60,09/07/2026
+Newcastle United,Moritz Nicolas,Goalkeeper,28,Borussia Mönchengladbach,8000000.0,19,08/07/2026
+Newcastle United,Said El Mala,Left Winger,19,1.FC Köln,45000000.0,36,08/07/2026
+Newcastle United,Angelo Stiller,Defensive Midfield,25,VfB Stuttgart,45000000.0,23,05/07/2026
+Newcastle United,Andrey Santos,Central Midfield,22,Chelsea FC,40000000.0,,05/07/2026
+Newcastle United,Christian Kofane,Centre-Forward,19,Bayer 04 Leverkusen,40000000.0,27,04/07/2026
+Newcastle United,Kaishu Sano,Defensive Midfield,25,1.FSV Mainz 05,40000000.0,46,03/07/2026
+Newcastle United,Archie Gray,Defensive Midfield,20,Tottenham Hotspur,35000000.0,,01/07/2026
+Newcastle United,Anis Hadj Moussa,Right Winger,24,Feyenoord Rotterdam,23000000.0,,30/06/2026
+Newcastle United,Folarin Balogun,Centre-Forward,25,AS Monaco,40000000.0,,29/06/2026
+Newcastle United,Kacper Potulski,Centre-Back,18,1.FSV Mainz 05,18000000.0,28,28/06/2026
+Newcastle United,Felix Nmecha,Central Midfield,25,Borussia Dortmund,50000000.0,14,26/06/2026
+Newcastle United,Kerim Alajbegovic,Left Winger,18,Bayer 04 Leverkusen,22000000.0,,24/06/2026
+Newcastle United,Sergej Levak,Central Midfield,20,Atalanta U23,2800000.0,,17/06/2026
+Newcastle United,Víctor Muñoz,Left Winger,22,Liverpool FC,30000000.0,,16/06/2026
+Newcastle United,Cody Gakpo,Left Winger,27,Liverpool FC,60000000.0,,14/06/2026
+Newcastle United,James Trafford,Goalkeeper,23,Manchester City,25000000.0,,12/06/2026
+Newcastle United,Michael Parker,Centre-Back,21,Örgryte IS,2000000.0,,04/06/2026
+Newcastle United,Giorgio Scalvini,Centre-Back,22,Atalanta BC,38000000.0,,03/06/2026
+Newcastle United,Jorge Salinas,Left-Back,19,Racing Santander,8000000.0,,02/06/2026
+Newcastle United,Mikkel Bro Hansen,Centre-Forward,17,FK Bodø/Glimt,800000.0,,29/05/2026
+Newcastle United,Abde Ezzalzouli,Left Winger,24,Real Betis Balompié,40000000.0,,29/05/2026
+Newcastle United,Savinho,Left Winger,22,Manchester City,35000000.0,,26/05/2026
+Newcastle United,Gabriel Sara,Central Midfield,27,Galatasaray,27000000.0,,23/05/2026
+Nottingham Forest,Mauricio,Attacking Midfield,25,Sociedade Esportiva Palmeiras,15000000.0,,11/07/2026
+Nottingham Forest,Mbekezeli Mbokazi,Centre-Back,20,Chicago Fire FC,3500000.0,,11/07/2026
 Nottingham Forest,Dodô,Right-Back,27,ACF Fiorentina,16000000.0,,11/07/2026
 Nottingham Forest,Givairo Read,Right-Back,20,Feyenoord Rotterdam,25000000.0,,09/07/2026
-Nottingham Forest,Mbekezeli Mbokazi,Centre-Back,20,Chicago Fire FC,3500000.0,,07/07/2026
 Nottingham Forest,Davide Frattesi,Central Midfield,26,Inter Milan,22000000.0,,07/07/2026
 Nottingham Forest,Dwight McNeil,Left Winger,26,Everton FC,18000000.0,,04/07/2026
 Nottingham Forest,Lucas Bergvall,Central Midfield,20,Tottenham Hotspur,35000000.0,35,02/07/2026
@@ -283,12 +329,11 @@ Nottingham Forest,Raoul Bellanova,Right Midfield,26,Atalanta BC,15000000.0,,04/0
 Nottingham Forest,Jan Ziolkowski,Centre-Back,21,AS Roma,12000000.0,,30/05/2026
 Nottingham Forest,Maxime Estève,Centre-Back,24,Burnley FC,28000000.0,,19/05/2026
 Nottingham Forest,Jacques Ekomié,Left-Back,22,Angers SCO,9000000.0,,19/05/2026
-Nottingham Forest,Archie Brown,Left-Back,24,Fenerbahce,12000000.0,91,05/05/2026
+Nottingham Forest,Archie Brown,Left-Back,24,Fenerbahce,12000000.0,92,05/05/2026
 Nottingham Forest,Bailey Rice,Defensive Midfield,19,Kilmarnock FC,800000.0,,02/05/2026
-Nottingham Forest,Nobel Mendy,Centre-Back,21,Rayo Vallecano,7500000.0,,30/04/2026
+Sunderland,Tarik Muharemović,Centre-Back,23,US Sassuolo,25000000.0,,11/07/2026
 Sunderland,Mariano Troilo,Centre-Back,23,Parma Calcio 1913,10000000.0,,08/07/2026
 Sunderland,Matías Soulé,Right Winger,23,AS Roma,35000000.0,,08/07/2026
-Sunderland,Tarik Muharemović,Centre-Back,23,US Sassuolo,25000000.0,,07/07/2026
 Sunderland,Pape Gueye,Central Midfield,27,Villarreal CF,40000000.0,,01/07/2026
 Sunderland,André Luiz,Right Winger,24,Olympiacos Piraeus,6000000.0,,29/06/2026
 Sunderland,Arne Engels,Central Midfield,22,Celtic FC,20000000.0,,18/06/2026
@@ -299,33 +344,8 @@ Sunderland,Michael Parker,Centre-Back,21,Örgryte IS,2000000.0,,04/06/2026
 Sunderland,Arthur Avom,Central Midfield,21,FC Lorient,20000000.0,,03/06/2026
 Sunderland,Enzo Boyomo,Centre-Back,24,CA Osasuna,15000000.0,,04/05/2026
 Sunderland,Rumarn Burrell,Centre-Forward,25,Queens Park Rangers,6000000.0,,24/04/2026
-Tottenham Hotspur,Francisco Trincão,Attacking Midfield,26,Sporting CP,40000000.0,,09/07/2026
-Tottenham Hotspur,Antonio Nusa,Left Winger,21,RB Leipzig,32000000.0,,09/07/2026
-Tottenham Hotspur,Ibrahim Mbaye,Right Winger,18,Paris Saint-Germain,30000000.0,,07/07/2026
-Tottenham Hotspur,João Palhinha,Defensive Midfield,31,Bayern Munich,15000000.0,22,02/07/2026
-Tottenham Hotspur,Omar Marmoush,Centre-Forward,27,Manchester City,50000000.0,,27/06/2026
-Tottenham Hotspur,Cody Gakpo,Left Winger,27,Liverpool FC,60000000.0,29,27/06/2026
-Tottenham Hotspur,Martin Dúbravka,Goalkeeper,37,Tottenham Hotspur,500000.0,,26/06/2026
-Tottenham Hotspur,Jean-Mattéo Bahoya,Left Winger,21,Eintracht Frankfurt,25000000.0,46,25/06/2026
-Tottenham Hotspur,Said El Mala,Left Winger,19,1.FC Köln,45000000.0,27,17/06/2026
-Tottenham Hotspur,Malick Fofana,Left Winger,21,Olympique Lyon,30000000.0,,16/06/2026
-Tottenham Hotspur,Joel Ordóñez,Centre-Back,22,Club Brugge KV,33000000.0,,15/06/2026
-Tottenham Hotspur,Savinho,Left Winger,22,Manchester City,35000000.0,,14/06/2026
-Tottenham Hotspur,Ibrahim Maza,Attacking Midfield,20,Bayer 04 Leverkusen,45000000.0,,14/06/2026
-Tottenham Hotspur,Anan Khalaili,Right Midfield,21,Union Saint-Gilloise,23000000.0,,10/06/2026
-Tottenham Hotspur,Antonio Vergara,Attacking Midfield,23,SSC Napoli,15000000.0,,09/06/2026
-Tottenham Hotspur,Raoul Bellanova,Right Midfield,26,Atalanta BC,15000000.0,,04/06/2026
-Tottenham Hotspur,Carlos Baleba,Defensive Midfield,22,Brighton & Hove Albion,55000000.0,,31/05/2026
-Tottenham Hotspur,Ngal'ayel Mukau,Defensive Midfield,21,LOSC Lille,15000000.0,,30/05/2026
-Tottenham Hotspur,Anatoliy Trubin,Goalkeeper,24,SL Benfica,25000000.0,,27/05/2026
-Tottenham Hotspur,Roland Sallai,Right-Back,29,Galatasaray,14000000.0,,23/05/2026
-Tottenham Hotspur,Léo Scienza,Attacking Midfield,27,Southampton FC,12000000.0,,18/05/2026
-Tottenham Hotspur,Eduardo Camavinga,Central Midfield,23,Real Madrid,50000000.0,,16/05/2026
-Tottenham Hotspur,Serhou Guirassy,Centre-Forward,30,Borussia Dortmund,32000000.0,,11/05/2026
-Tottenham Hotspur,Benjamin Nygren,Attacking Midfield,25,Celtic FC,14000000.0,,07/05/2026
-Tottenham Hotspur,James Tavernier,Right-Back,34,Without ClubWithout Club,500000.0,,29/04/2026
 West Ham United,Mory Gbane,Defensive Midfield,25,Stade Reims,4000000.0,,11/07/2026
-West Ham United,Ísak Jóhannesson,Central Midfield,23,1.FC Köln,8000000.0,36,09/07/2026
+West Ham United,Ísak Jóhannesson,Central Midfield,23,1.FC Köln,8000000.0,32,09/07/2026
 West Ham United,James McAtee,Attacking Midfield,23,Nottingham Forest,18000000.0,,07/07/2026
 West Ham United,Gustavo Sá,Attacking Midfield,21,FC Famalicão,25000000.0,,05/07/2026
 West Ham United,Dwight McNeil,Left Winger,26,Everton FC,18000000.0,,04/07/2026
@@ -341,8 +361,7 @@ West Ham United,Jan Ziolkowski,Centre-Back,21,AS Roma,12000000.0,,07/05/2026
 West Ham United,Moustapha Mbow,Centre-Back,26,Paris FC,9000000.0,,05/05/2026
 West Ham United,Ismail Badjie,Attacking Midfield,20,VfL Osnabrück,800000.0,,28/04/2026
 West Ham United,Emmanuel Fernandez,Centre-Back,24,Rangers FC,18000000.0,,21/04/2026
-Wolves,Rafiki Saïd,Left Winger,26,Standard Liège,5000000.0,,09/07/2026
-Wolves,Mbekezeli Mbokazi,Centre-Back,20,Chicago Fire FC,3500000.0,,07/07/2026
+Wolves,Mbekezeli Mbokazi,Centre-Back,20,Chicago Fire FC,3500000.0,,11/07/2026
 Wolves,Niko Sigur,Defensive Midfield,22,HNK Hajduk Split,4000000.0,,06/07/2026
 Wolves,André Luiz,Right Winger,24,Olympiacos Piraeus,6000000.0,,29/06/2026
 Wolves,Dan Neil,Central Midfield,24,Rangers FC,4500000.0,,26/06/2026

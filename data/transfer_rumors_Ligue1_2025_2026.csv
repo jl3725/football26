@@ -1,15 +1,19 @@
 target_club,player,pos_detail,age,current_club,market_value_eur,probability,date
+Angers,Branco van den Boomen,Central Midfield,30,Angers SCO,2500000.0,,02/07/2026
+Angers,Florián Monzón,Centre-Forward,25,CA Vélez Sarsfield,2500000.0,,30/06/2026
+Angers,Jacques Siwe,Centre-Forward,24,Rubin Kazan,2500000.0,,16/06/2026
+Angers,Anthony Bermont,Left Winger,21,Angers SCO,1000000.0,,11/06/2026
+Angers,Alexis Trouillet,Central Midfield,25,Standard Liège,800000.0,,06/06/2026
 Auxerre,Christ Makosso,Centre-Back,22,Luton Town,800000.0,,30/06/2026
 Auxerre,Kylian Madi,Right Midfield,17,SC Aubagne Air Bel U17,50000.0,,24/06/2026
 Auxerre,Taïryk Arconte,Centre-Forward,22,Millwall FC,3000000.0,,06/06/2026
 Auxerre,Danny Namaso,Left Winger,25,AJ Auxerre,6000000.0,,18/05/2026
 Brest,Mohamed Hany,Right-Back,30,Al Ahly FC,1500000.0,,19/06/2026
-Brest,Alexis Trouillet,Central Midfield,25,Rodez AF,800000.0,,06/06/2026
+Brest,Alexis Trouillet,Central Midfield,25,Standard Liège,800000.0,,06/06/2026
 Brest,Andy Pelmard,Centre-Back,26,Clermont Foot 63,2000000.0,,18/04/2026
 Le Havre,Saba Sazonov,Centre-Back,24,Without ClubWithout Club,800000.0,,10/07/2026
 Le Havre,Aïmen Moueffek,Central Midfield,25,AS Saint-Étienne,2000000.0,,01/07/2026
 Le Havre,Mohamed Abdallah,Right Winger,20,Al Ahly FC,200000.0,,30/06/2026
-Le Havre,Thierno Ballo,Left Winger,24,Wolfsberger AC,6000000.0,36,30/06/2026
 Le Havre,Ugo Raghouber,Defensive Midfield,22,LOSC Lille,3000000.0,,29/06/2026
 Lens,Armando Obispo,Centre-Back,27,PSV Eindhoven,4000000.0,,10/07/2026
 Lens,Gift Links,Left Midfield,27,Aarhus GF,2500000.0,,09/07/2026
@@ -61,6 +65,29 @@ Lorient,Robbie Ure,Centre-Forward,22,IK Sirius,5000000.0,,02/06/2026
 Lorient,Antoine Sekongo,Central Midfield,22,USL Dunkerque,4000000.0,,19/05/2026
 Lorient,Martin Adeline,Attacking Midfield,22,ESTAC Troyes,10000000.0,,18/05/2026
 Lorient,Pape Moussa Fall,Centre-Forward,22,FC Metz,3500000.0,,11/05/2026
+Lyon,Wissem Chaouali,Centre-Back,19,Al-Ettifaq FC,25000.0,,10/07/2026
+Lyon,Hidemasa Morita,Central Midfield,31,Without ClubWithout Club,8000000.0,,09/07/2026
+Lyon,Youssef Chermiti,Centre-Forward,22,Rangers FC,15000000.0,,07/07/2026
+Lyon,Ime Okon,Centre-Back,22,Hannover 96,2000000.0,,06/07/2026
+Lyon,Cláudio Braga,Centre-Forward,26,Heart of Midlothian FC,7000000.0,,23/06/2026
+Lyon,Jonathan David,Centre-Forward,26,Juventus FC,30000000.0,,22/06/2026
+Lyon,Loïs Openda,Centre-Forward,26,Juventus FC,25000000.0,,20/06/2026
+Lyon,Han-beom Lee,Centre-Back,24,FC Midtjylland,3000000.0,,16/06/2026
+Lyon,Brian Gutiérrez,Attacking Midfield,23,Deportivo Guadalajara,8000000.0,,16/06/2026
+Lyon,Hyun-seok Hong,Attacking Midfield,27,1.FSV Mainz 05,2500000.0,,12/06/2026
+Lyon,Pablo Pagis,Left Winger,23,FC Lorient,15000000.0,,09/06/2026
+Lyon,Vitinho,Right-Back,26,Botafogo de Futebol e Regatas,9000000.0,,05/06/2026
+Lyon,Kader Meïté,Centre-Forward,18,Al-Hilal SFC,18000000.0,,01/06/2026
+Lyon,Zavier Gozo,Right Winger,19,Real Salt Lake City,6000000.0,,18/05/2026
+Lyon,Tomas Bobcek,Centre-Forward,24,Lechia Gdansk,8000000.0,,12/05/2026
+Lyon,Oussama Targhalline,Defensive Midfield,24,Feyenoord Rotterdam,16000000.0,,12/05/2026
+Lyon,Kévin Danois,Central Midfield,22,AJ Auxerre,20000000.0,,11/05/2026
+Lyon,Kaïl Boudache,Right Winger,20,Olympique Lyon,5000000.0,,29/04/2026
+Lyon,Virgilio Olaya,Centre-Back,18,SD Aucas,1200000.0,,26/04/2026
+Lyon,Melayro Bogarde,Defensive Midfield,24,LASK,4000000.0,,19/04/2026
+Lyon,El Chadaille Bitshiabu,Centre-Back,21,RB Leipzig,18000000.0,,15/04/2026
+Lyon,Thomas Kristensen,Centre-Back,24,Udinese Calcio,12000000.0,,13/04/2026
+Lyon,Louey Ben Farhat,Second Striker,19,Karlsruher SC,10000000.0,,09/03/2026
 Marseille,Hidemasa Morita,Central Midfield,31,Without ClubWithout Club,8000000.0,,09/07/2026
 Marseille,Martin Terrier,Left Winger,29,Bayer 04 Leverkusen,8000000.0,54,08/07/2026
 Marseille,Hervé Koffi,Goalkeeper,29,RC Lens,6000000.0,,29/06/2026
@@ -81,8 +108,6 @@ Marseille,John Stones,Centre-Back,32,Without ClubWithout Club,12000000.0,,29/04/
 Marseille,Alfie Osborne,Centre-Back,17,Heart of Midlothian FC U18,,,17/04/2026
 Marseille,Adam Aznou,Left-Back,20,Everton FC,6000000.0,,17/04/2026
 Marseille,Taras Mykhavko,Centre-Back,21,Dynamo Kyiv,10000000.0,,16/03/2026
-Metz,Alassane Sy,Defensive Midfield,21,AS Académie Génération Foot,250000.0,,11/06/2026
-Metz,Abdourahmane Mbodji,Centre-Forward,18,AS Académie Génération Foot,700000.0,,11/05/2026
 Monaco,Hidemasa Morita,Central Midfield,31,Without ClubWithout Club,8000000.0,,09/07/2026
 Monaco,Mohamed-Ali Cho,Right Winger,22,OGC Nice,15000000.0,,08/07/2026
 Monaco,Evertton Araújo,Defensive Midfield,23,CR Flamengo,10000000.0,,06/07/2026
@@ -106,13 +131,13 @@ Monaco,Aymen Assab,Central Midfield,17,AS Monaco U21,,,19/05/2026
 Monaco,Oussama Targhalline,Defensive Midfield,24,Feyenoord Rotterdam,16000000.0,,12/05/2026
 Monaco,Tomas Bobcek,Centre-Forward,24,Lechia Gdansk,8000000.0,,11/05/2026
 Monaco,Adem Arous,Centre-Back,21,Kasimpasa,4000000.0,,10/05/2026
-Monaco,Barış Alper Yılmaz,Left Winger,26,Galatasaray,30000000.0,80,29/04/2026
+Monaco,Barış Alper Yılmaz,Left Winger,26,Galatasaray,30000000.0,86,29/04/2026
 Monaco,Matthis Abline,Centre-Forward,23,FC Nantes,20000000.0,,26/04/2026
+Nantes,Killian Corredor,Centre-Forward,25,SV Darmstadt 98,2800000.0,78,11/07/2026
 Nantes,Mathieu Cafaro,Right Winger,29,Paris FC,1500000.0,,08/07/2026
-Nantes,Killian Corredor,Centre-Forward,25,SV Darmstadt 98,2800000.0,73,04/07/2026
 Nantes,Wilitty Younoussa,Central Midfield,24,FC Nantes,900000.0,,22/06/2026
 Nantes,Maxime Dupé,Goalkeeper,33,FC Nantes,700000.0,,16/06/2026
-Nantes,Alexis Trouillet,Central Midfield,25,Rodez AF,800000.0,,06/06/2026
+Nantes,Alexis Trouillet,Central Midfield,25,Standard Liège,800000.0,,06/06/2026
 Nice,Darlin Yongwa,Left-Back,25,Without ClubWithout Club,5000000.0,,10/07/2026
 Nice,Olivier Ntcham,Central Midfield,30,Without ClubWithout Club,2000000.0,,09/07/2026
 Nice,Simon Banza,Centre-Forward,29,Al-Jazira Club,10000000.0,,07/07/2026
@@ -129,31 +154,6 @@ Nice,Anthony Martial,Centre-Forward,30,Without ClubWithout Club,3500000.0,,09/06
 Nice,Lenny Joseph,Centre-Forward,25,Ferencvárosi TC,2000000.0,,02/06/2026
 Nice,Élie N'Gatta,Right-Back,20,FC Sochaux-Montbéliard,800000.0,,06/05/2026
 Nice,Elye Wahi,Centre-Forward,23,Eintracht Frankfurt,18000000.0,,29/04/2026
-PSG,Ferran Torres,Centre-Forward,26,FC Barcelona,50000000.0,,11/07/2026
-PSG,Folarin Balogun,Centre-Forward,25,AS Monaco,40000000.0,,03/07/2026
-PSG,Yan Diomande,Left Winger,19,RB Leipzig,90000000.0,63,30/06/2026
-PSG,Maghnes Akliouche,Right Winger,24,AS Monaco,50000000.0,,28/06/2026
-PSG,Julián Alvarez,Centre-Forward,26,Atlético de Madrid,100000000.0,,27/06/2026
-PSG,Khéphren Thuram,Central Midfield,25,Juventus FC,38000000.0,,24/06/2026
-PSG,Alessandro Circati,Centre-Back,22,Parma Calcio 1913,12000000.0,,22/06/2026
-PSG,Michael Olise,Right Winger,24,Bayern Munich,150000000.0,21,19/06/2026
-PSG,Arda Güler,Attacking Midfield,21,Real Madrid,90000000.0,,15/06/2026
-PSG,Ayyoub Bouaddi,Central Midfield,18,LOSC Lille,50000000.0,,13/06/2026
-PSG,Junior Kroupi,Centre-Forward,20,AFC Bournemouth,70000000.0,,02/06/2026
-PSG,Jorge Salinas,Left-Back,19,Racing Santander,8000000.0,,02/06/2026
-PSG,Aleksey Batrakov,Attacking Midfield,21,Lokomotiv Moscow,28000000.0,33,02/06/2026
-PSG,Morgan Rogers,Attacking Midfield,23,Aston Villa,90000000.0,,31/05/2026
-PSG,Konstantinos Karetsas,Attacking Midfield,18,KRC Genk,35000000.0,,25/05/2026
-PSG,Adem Avdic,Left-Back,18,Red Star Belgrade,10000000.0,,19/05/2026
-PSG,Mile Svilar,Goalkeeper,26,AS Roma,35000000.0,,19/05/2026
-PSG,Elia Caprile,Goalkeeper,24,Cagliari Calcio,15000000.0,,19/05/2026
-PSG,Anatoliy Trubin,Goalkeeper,24,SL Benfica,25000000.0,,19/05/2026
-PSG,Joaquin Seys,Left-Back,21,Club Brugge KV,20000000.0,,18/05/2026
-PSG,Karim Adeyemi,Right Winger,24,Borussia Dortmund,40000000.0,,17/05/2026
-PSG,Matvey Kislyak,Central Midfield,20,CSKA Moscow,25000000.0,,13/05/2026
-PSG,Federico Valverde,Central Midfield,27,Real Madrid,90000000.0,,13/05/2026
-PSG,Gabriel Mec,Attacking Midfield,18,Grêmio Foot-Ball Porto Alegrense,16000000.0,,12/05/2026
-PSG,Estéban Lepaul,Centre-Forward,26,Stade Rennais FC,35000000.0,,11/05/2026
 Paris FC,Matthis Abline,Centre-Forward,23,FC Nantes,20000000.0,,11/07/2026
 Paris FC,Diego Coppola,Centre-Back,22,Brighton & Hove Albion,18000000.0,,09/07/2026
 Paris FC,Luca Koleosho,Right Winger,21,Burnley FC,6000000.0,,07/07/2026
@@ -165,20 +165,11 @@ Paris FC,Emmanuel Mbemba,Left-Back,18,Without ClubWithout Club,,,09/06/2026
 Paris FC,Anthony Martial,Centre-Forward,30,Without ClubWithout Club,3500000.0,,09/06/2026
 Paris FC,Mohamed Alì Zoma,Second Striker,22,1.FC Nuremberg,8000000.0,,04/06/2026
 Paris FC,Lorenz Assignon,Right-Back,26,VfB Stuttgart,9000000.0,,25/05/2026
-Paris FC,Mason Greenwood,Right Winger,24,Olympique Marseille,55000000.0,15,19/05/2026
+Paris FC,Mason Greenwood,Right Winger,24,Olympique Marseille,55000000.0,13,19/05/2026
 Paris FC,Gustavo Varela,Centre-Forward,21,SL Benfica B,3000000.0,,15/05/2026
 Paris FC,Adrien Thomasson,Central Midfield,32,Stade Rennais FC,4000000.0,,10/05/2026
 Paris FC,Pablo Pagis,Left Winger,23,FC Lorient,15000000.0,,05/05/2026
 Paris FC,Matt O'Riley,Central Midfield,25,Brighton & Hove Albion,18000000.0,,19/04/2026
-Rennes,Issa Kaboré,Right-Back,25,Manchester City,4000000.0,,09/07/2026
-Rennes,Charlie Cresswell,Centre-Back,23,FC Toulouse,25000000.0,,03/07/2026
-Rennes,Lucas Chevalier,Goalkeeper,24,Paris Saint-Germain,25000000.0,,09/06/2026
-Rennes,Diego Moreira,Left Midfield,21,RC Strasbourg Alsace,25000000.0,,27/05/2026
-Rennes,Kévin Danois,Central Midfield,22,AJ Auxerre,20000000.0,,19/05/2026
-Rennes,Antoine Sekongo,Central Midfield,22,USL Dunkerque,4000000.0,,19/05/2026
-Rennes,Nabil Bentaleb,Defensive Midfield,31,Without ClubWithout Club,4500000.0,,19/05/2026
-Rennes,Adrien Thomasson,Central Midfield,32,Stade Rennais FC,4000000.0,,15/05/2026
-Rennes,Adem Arous,Centre-Back,21,Kasimpasa,4000000.0,,11/05/2026
 Strasbourg,Matías Galarza,Central Midfield,24,CA River Plate,3000000.0,,08/07/2026
 Strasbourg,Marcel Reguła,Attacking Midfield,19,Zaglebie Lubin,7000000.0,,08/07/2026
 Strasbourg,Fynn Schenten,Centre-Forward,18,1.FC Köln,1000000.0,,25/06/2026
@@ -197,6 +188,7 @@ Strasbourg,Tobías Andrada,Central Midfield,19,CA Vélez Sarsfield,9000000.0,,29
 Strasbourg,Bilal Nadir,Central Midfield,22,Without ClubWithout Club,8000000.0,,20/04/2026
 Strasbourg,Xavier Mandza,Midfielder,17,OGC Nice U17,,,15/04/2026
 Strasbourg,Nicolò Tresoldi,Centre-Forward,21,Club Brugge KV,25000000.0,,16/03/2026
+Toulouse,Andrej Bacanin,Defensive Midfield,19,FC Basel 1893,3000000.0,47,11/07/2026
 Toulouse,Matias Siltanen,Central Midfield,19,Djurgårdens IF,10000000.0,,08/07/2026
 Toulouse,Miguel Chaiwa,Defensive Midfield,22,Hibernian FC,3000000.0,,15/06/2026
 Toulouse,Thomas Jørgensen,Central Midfield,20,Viborg FF,5000000.0,,14/06/2026
