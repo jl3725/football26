@@ -1,7 +1,7 @@
 squad,comp,comp_code,date,home_away,opponent,gf,ga,score,result,status,event_id
 Augsburg,DFB-포칼,ger.dfb_pokal,2026-08-22,A,Energie Cottbus,0,0,0-0,,scheduled,401875177
-Augsburg,리그,ger.1,2026-08-29,H,Schalke 04,0,0,0-0,,scheduled,401884813
-Augsburg,리그,ger.1,2026-09-05,A,Frankfurt,0,0,0-0,,scheduled,401884805
+Augsburg,리그,ger.1,2026-08-30,H,Schalke 04,0,0,0-0,,scheduled,401884813
+Augsburg,리그,ger.1,2026-09-06,A,Frankfurt,0,0,0-0,,scheduled,401884805
 Augsburg,리그,ger.1,2026-09-12,H,Leverkusen,0,0,0-0,,scheduled,401884795
 Augsburg,리그,ger.1,2026-09-19,A,Werder Bremen,0,0,0-0,,scheduled,401884784
 Augsburg,리그,ger.1,2026-10-10,H,Bayern Munich,0,0,0-0,,scheduled,401884777
@@ -37,8 +37,8 @@ Augsburg,리그,ger.1,2027-05-22,H,Hamburger SV,0,0,0-0,,scheduled,401884497
 Bayern Munich,리그,ger.1,2026-08-28,H,Stuttgart,0,0,0-0,,scheduled,401884817
 Bayern Munich,DFB-포칼,ger.dfb_pokal,2026-09-02,A,VfL Osnabruck,0,0,0-0,,scheduled,401875174
 Bayern Munich,리그,ger.1,2026-09-05,A,Schalke 04,0,0,0-0,,scheduled,401884801
-Bayern Munich,리그,ger.1,2026-09-12,A,SV Elversberg,0,0,0-0,,scheduled,401884791
-Bayern Munich,리그,ger.1,2026-09-19,H,Union Berlin,0,0,0-0,,scheduled,401884790
+Bayern Munich,리그,ger.1,2026-09-13,A,SV Elversberg,0,0,0-0,,scheduled,401884791
+Bayern Munich,리그,ger.1,2026-09-18,H,Union Berlin,0,0,0-0,,scheduled,401884790
 Bayern Munich,리그,ger.1,2026-10-10,A,Augsburg,0,0,0-0,,scheduled,401884777
 Bayern Munich,리그,ger.1,2026-10-17,H,RB Leipzig,0,0,0-0,,scheduled,401884772
 Bayern Munich,리그,ger.1,2026-10-24,A,Freiburg,0,0,0-0,,scheduled,401884759
@@ -106,7 +106,7 @@ Dortmund,리그,ger.1,2027-05-15,H,Köln,0,0,0-0,,scheduled,401884529
 Dortmund,리그,ger.1,2027-05-22,A,Freiburg,0,0,0-0,,scheduled,401884498
 Frankfurt,DFB-포칼,ger.dfb_pokal,2026-08-21,A,SC St. Tönis,0,0,0-0,,scheduled,401875189
 Frankfurt,리그,ger.1,2026-08-29,A,Union Berlin,0,0,0-0,,scheduled,401884811
-Frankfurt,리그,ger.1,2026-09-05,H,Augsburg,0,0,0-0,,scheduled,401884805
+Frankfurt,리그,ger.1,2026-09-06,H,Augsburg,0,0,0-0,,scheduled,401884805
 Frankfurt,리그,ger.1,2026-09-12,A,Mainz 05,0,0,0-0,,scheduled,401884794
 Frankfurt,리그,ger.1,2026-09-19,H,Freiburg,0,0,0-0,,scheduled,401884787
 Frankfurt,리그,ger.1,2026-10-10,A,RB Leipzig,0,0,0-0,,scheduled,401884780
@@ -140,7 +140,7 @@ Frankfurt,리그,ger.1,2027-05-08,A,Schalke 04,0,0,0-0,,scheduled,401884531
 Frankfurt,리그,ger.1,2027-05-15,H,SV Elversberg,0,0,0-0,,scheduled,401884525
 Frankfurt,리그,ger.1,2027-05-22,A,Bayern Munich,0,0,0-0,,scheduled,401884500
 Freiburg,DFB-포칼,ger.dfb_pokal,2026-08-23,A,Fortuna Düsseldorf,0,0,0-0,,scheduled,401874901
-Freiburg,리그,ger.1,2026-08-29,H,Werder Bremen,0,0,0-0,,scheduled,401884814
+Freiburg,리그,ger.1,2026-08-30,H,Werder Bremen,0,0,0-0,,scheduled,401884814
 Freiburg,리그,ger.1,2026-09-05,A,SC Paderborn 07,0,0,0-0,,scheduled,401884800
 Freiburg,리그,ger.1,2026-09-12,H,Gladbach,0,0,0-0,,scheduled,401884796
 Freiburg,리그,ger.1,2026-09-19,A,Frankfurt,0,0,0-0,,scheduled,401884787
@@ -212,8 +212,8 @@ Gladbach,리그,ger.1,2027-05-22,A,Union Berlin,0,0,0-0,,scheduled,401884495
 Hamburger SV,DFB-포칼,ger.dfb_pokal,2026-08-24,A,SC Verl 1924,0,0,0-0,,scheduled,401874898
 Hamburger SV,리그,ger.1,2026-08-29,A,Dortmund,0,0,0-0,,scheduled,401884816
 Hamburger SV,DFB-포칼,ger.dfb_pokal,2026-09-01,H,Dortmund,0,0,0-0,,scheduled,401875201
-Hamburger SV,리그,ger.1,2026-09-05,H,Mainz 05,0,0,0-0,,scheduled,401884803
-Hamburger SV,리그,ger.1,2026-09-12,A,RB Leipzig,0,0,0-0,,scheduled,401884798
+Hamburger SV,리그,ger.1,2026-09-06,H,Mainz 05,0,0,0-0,,scheduled,401884803
+Hamburger SV,리그,ger.1,2026-09-13,A,RB Leipzig,0,0,0-0,,scheduled,401884798
 Hamburger SV,리그,ger.1,2026-09-19,H,Köln,0,0,0-0,,scheduled,401884785
 Hamburger SV,리그,ger.1,2026-10-10,A,Hoffenheim,0,0,0-0,,scheduled,401884779
 Hamburger SV,리그,ger.1,2026-10-17,H,Stuttgart,0,0,0-0,,scheduled,401884767
@@ -250,7 +250,7 @@ Hoffenheim,DFB-포칼,ger.dfb_pokal,2026-08-22,A,FC Erzgebirge Aue,0,0,0-0,,sche
 Hoffenheim,리그,ger.1,2026-08-29,A,Köln,0,0,0-0,,scheduled,401884810
 Hoffenheim,리그,ger.1,2026-09-05,H,Dortmund,0,0,0-0,,scheduled,401884807
 Hoffenheim,리그,ger.1,2026-09-12,H,Stuttgart,0,0,0-0,,scheduled,401884797
-Hoffenheim,리그,ger.1,2026-09-19,A,SC Paderborn 07,0,0,0-0,,scheduled,401884782
+Hoffenheim,리그,ger.1,2026-09-20,A,SC Paderborn 07,0,0,0-0,,scheduled,401884782
 Hoffenheim,리그,ger.1,2026-10-10,H,Hamburger SV,0,0,0-0,,scheduled,401884779
 Hoffenheim,리그,ger.1,2026-10-17,A,Gladbach,0,0,0-0,,scheduled,401884768
 Hoffenheim,리그,ger.1,2026-10-24,H,Leverkusen,0,0,0-0,,scheduled,401884760
@@ -284,7 +284,7 @@ Hoffenheim,리그,ger.1,2027-05-22,A,RB Leipzig,0,0,0-0,,scheduled,401884499
 Köln,DFB-포칼,ger.dfb_pokal,2026-08-22,H,1. FC Nürnberg,0,0,0-0,,scheduled,401875180
 Köln,DFB-포칼,ger.dfb_pokal,2026-08-24,A,Würzburger Kickers,0,0,0-0,,scheduled,401874896
 Köln,리그,ger.1,2026-08-29,H,Hoffenheim,0,0,0-0,,scheduled,401884810
-Köln,리그,ger.1,2026-09-05,A,Stuttgart,0,0,0-0,,scheduled,401884808
+Köln,리그,ger.1,2026-09-04,A,Stuttgart,0,0,0-0,,scheduled,401884808
 Köln,리그,ger.1,2026-09-12,H,Werder Bremen,0,0,0-0,,scheduled,401884792
 Köln,리그,ger.1,2026-09-19,A,Hamburger SV,0,0,0-0,,scheduled,401884785
 Köln,리그,ger.1,2026-10-10,H,Gladbach,0,0,0-0,,scheduled,401884774
@@ -321,7 +321,7 @@ Leverkusen,DFB-포칼,ger.dfb_pokal,2026-08-22,A,SV Wehen Wiesbaden,0,0,0-0,,sch
 Leverkusen,리그,ger.1,2026-08-29,A,SV Elversberg,0,0,0-0,,scheduled,401884809
 Leverkusen,리그,ger.1,2026-09-05,H,Union Berlin,0,0,0-0,,scheduled,401884806
 Leverkusen,리그,ger.1,2026-09-12,A,Augsburg,0,0,0-0,,scheduled,401884795
-Leverkusen,리그,ger.1,2026-09-19,H,RB Leipzig,0,0,0-0,,scheduled,401884788
+Leverkusen,리그,ger.1,2026-09-20,H,RB Leipzig,0,0,0-0,,scheduled,401884788
 Leverkusen,리그,ger.1,2026-10-10,A,Mainz 05,0,0,0-0,,scheduled,401884776
 Leverkusen,리그,ger.1,2026-10-17,H,Freiburg,0,0,0-0,,scheduled,401884771
 Leverkusen,리그,ger.1,2026-10-24,A,Hoffenheim,0,0,0-0,,scheduled,401884760
@@ -354,7 +354,7 @@ Leverkusen,리그,ger.1,2027-05-15,H,Bayern Munich,0,0,0-0,,scheduled,401884526
 Leverkusen,리그,ger.1,2027-05-22,A,Schalke 04,0,0,0-0,,scheduled,401884493
 Mainz 05,DFB-포칼,ger.dfb_pokal,2026-08-23,A,VFB Krieschow,0,0,0-0,,scheduled,401875190
 Mainz 05,리그,ger.1,2026-08-29,H,SC Paderborn 07,0,0,0-0,,scheduled,401884812
-Mainz 05,리그,ger.1,2026-09-05,A,Hamburger SV,0,0,0-0,,scheduled,401884803
+Mainz 05,리그,ger.1,2026-09-06,A,Hamburger SV,0,0,0-0,,scheduled,401884803
 Mainz 05,리그,ger.1,2026-09-12,H,Frankfurt,0,0,0-0,,scheduled,401884794
 Mainz 05,리그,ger.1,2026-09-19,A,Gladbach,0,0,0-0,,scheduled,401884786
 Mainz 05,리그,ger.1,2026-10-10,H,Leverkusen,0,0,0-0,,scheduled,401884776
@@ -390,8 +390,8 @@ Mainz 05,리그,ger.1,2027-05-22,H,Stuttgart,0,0,0-0,,scheduled,401884496
 RB Leipzig,DFB-포칼,ger.dfb_pokal,2026-08-22,A,Eintracht Trier,0,0,0-0,,scheduled,401874893
 RB Leipzig,리그,ger.1,2026-08-29,H,Gladbach,0,0,0-0,,scheduled,401884815
 RB Leipzig,리그,ger.1,2026-09-05,A,Werder Bremen,0,0,0-0,,scheduled,401884802
-RB Leipzig,리그,ger.1,2026-09-12,H,Hamburger SV,0,0,0-0,,scheduled,401884798
-RB Leipzig,리그,ger.1,2026-09-19,A,Leverkusen,0,0,0-0,,scheduled,401884788
+RB Leipzig,리그,ger.1,2026-09-13,H,Hamburger SV,0,0,0-0,,scheduled,401884798
+RB Leipzig,리그,ger.1,2026-09-20,A,Leverkusen,0,0,0-0,,scheduled,401884788
 RB Leipzig,리그,ger.1,2026-10-10,H,Frankfurt,0,0,0-0,,scheduled,401884780
 RB Leipzig,리그,ger.1,2026-10-17,A,Bayern Munich,0,0,0-0,,scheduled,401884772
 RB Leipzig,리그,ger.1,2026-10-24,H,SV Elversberg,0,0,0-0,,scheduled,401884762
@@ -425,7 +425,7 @@ RB Leipzig,리그,ger.1,2027-05-22,H,Hoffenheim,0,0,0-0,,scheduled,401884499
 St Pauli,DFB-포칼,ger.dfb_pokal,2026-08-23,A,Rot-Weiss Essen,0,0,0-0,,scheduled,401875188
 Stuttgart,DFB-포칼,ger.dfb_pokal,2026-08-21,A,Hansa Rostock,0,0,0-0,,scheduled,401875187
 Stuttgart,리그,ger.1,2026-08-28,A,Bayern Munich,0,0,0-0,,scheduled,401884817
-Stuttgart,리그,ger.1,2026-09-05,H,Köln,0,0,0-0,,scheduled,401884808
+Stuttgart,리그,ger.1,2026-09-04,H,Köln,0,0,0-0,,scheduled,401884808
 Stuttgart,리그,ger.1,2026-09-12,A,Hoffenheim,0,0,0-0,,scheduled,401884797
 Stuttgart,리그,ger.1,2026-09-19,H,Dortmund,0,0,0-0,,scheduled,401884789
 Stuttgart,리그,ger.1,2026-10-10,A,SC Paderborn 07,0,0,0-0,,scheduled,401884773
@@ -461,8 +461,8 @@ Stuttgart,리그,ger.1,2027-05-22,A,Mainz 05,0,0,0-0,,scheduled,401884496
 Union Berlin,DFB-포칼,ger.dfb_pokal,2026-08-23,A,TSV Eintracht Braunschweig,0,0,0-0,,scheduled,401875218
 Union Berlin,리그,ger.1,2026-08-29,H,Frankfurt,0,0,0-0,,scheduled,401884811
 Union Berlin,리그,ger.1,2026-09-05,A,Leverkusen,0,0,0-0,,scheduled,401884806
-Union Berlin,리그,ger.1,2026-09-12,H,Schalke 04,0,0,0-0,,scheduled,401884793
-Union Berlin,리그,ger.1,2026-09-19,A,Bayern Munich,0,0,0-0,,scheduled,401884790
+Union Berlin,리그,ger.1,2026-09-11,H,Schalke 04,0,0,0-0,,scheduled,401884793
+Union Berlin,리그,ger.1,2026-09-18,A,Bayern Munich,0,0,0-0,,scheduled,401884790
 Union Berlin,리그,ger.1,2026-10-10,H,SV Elversberg,0,0,0-0,,scheduled,401884775
 Union Berlin,리그,ger.1,2026-10-17,H,Dortmund,0,0,0-0,,scheduled,401884769
 Union Berlin,리그,ger.1,2026-10-24,A,Augsburg,0,0,0-0,,scheduled,401884758
@@ -494,7 +494,7 @@ Union Berlin,리그,ger.1,2027-05-08,H,Werder Bremen,0,0,0-0,,scheduled,40188453
 Union Berlin,리그,ger.1,2027-05-15,A,SC Paderborn 07,0,0,0-0,,scheduled,401884501
 Union Berlin,리그,ger.1,2027-05-22,H,Gladbach,0,0,0-0,,scheduled,401884495
 Werder Bremen,DFB-포칼,ger.dfb_pokal,2026-08-22,A,Lüneburger SK Hansa,0,0,0-0,,scheduled,401875176
-Werder Bremen,리그,ger.1,2026-08-29,A,Freiburg,0,0,0-0,,scheduled,401884814
+Werder Bremen,리그,ger.1,2026-08-30,A,Freiburg,0,0,0-0,,scheduled,401884814
 Werder Bremen,리그,ger.1,2026-09-05,H,RB Leipzig,0,0,0-0,,scheduled,401884802
 Werder Bremen,리그,ger.1,2026-09-12,A,Köln,0,0,0-0,,scheduled,401884792
 Werder Bremen,리그,ger.1,2026-09-19,H,Augsburg,0,0,0-0,,scheduled,401884784
