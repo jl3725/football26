@@ -1,7 +1,7 @@
 {
   "season_label": "26/27",
   "source_title": "2026-27 Premier League",
-  "detected_at": "2026-07-20 07:44",
+  "detected_at": "2026-07-21 07:14",
   "teams": [
     {
       "name": "Arsenal",
@@ -34,16 +34,16 @@
       "promoted": false
     },
     {
-      "name": "Burnley",
-      "color": "#6C1D45",
-      "logo": "https://tmssl.akamaized.net/images/wappen/head/1132.png",
-      "promoted": false
-    },
-    {
       "name": "Chelsea",
       "color": "#034694",
       "logo": "https://tmssl.akamaized.net/images/wappen/head/631.png",
       "promoted": false
+    },
+    {
+      "name": "Coventry City",
+      "color": "#7BB6E0",
+      "logo": "https://a.espncdn.com/i/teamlogos/soccer/500/388.png",
+      "promoted": true
     },
     {
       "name": "Crystal Palace",
@@ -62,6 +62,18 @@
       "color": "#1d1d1f",
       "logo": "https://tmssl.akamaized.net/images/wappen/head/931.png",
       "promoted": false
+    },
+    {
+      "name": "Hull City",
+      "color": "#F5A12D",
+      "logo": "https://a.espncdn.com/i/teamlogos/soccer/500/306.png",
+      "promoted": true
+    },
+    {
+      "name": "Ipswich Town",
+      "color": "#2A5CAF",
+      "logo": "https://a.espncdn.com/i/teamlogos/soccer/500/373.png",
+      "promoted": true
     },
     {
       "name": "Leeds United",
@@ -110,21 +122,17 @@
       "color": "#132257",
       "logo": "https://tmssl.akamaized.net/images/wappen/head/148.png",
       "promoted": false
-    },
-    {
-      "name": "West Ham United",
-      "color": "#7A263A",
-      "logo": "https://tmssl.akamaized.net/images/wappen/head/379.png",
-      "promoted": false
-    },
-    {
-      "name": "Wolves",
-      "color": "#FDB913",
-      "logo": "https://tmssl.akamaized.net/images/wappen/head/543.png",
-      "promoted": false
     }
   ],
-  "promoted": [],
-  "relegated": [],
+  "promoted": [
+    "Coventry City",
+    "Hull City",
+    "Ipswich Town"
+  ],
+  "relegated": [
+    "Burnley",
+    "West Ham United",
+    "Wolves"
+  ],
   "meta_missing": []
 }

@@ -1,7 +1,7 @@
 {
   "season_label": "26/27",
   "source_title": "2026-27 Serie A",
-  "detected_at": "2026-07-20 07:51",
+  "detected_at": "2026-07-21 07:21",
   "teams": [
     {
       "name": "Atalanta",
@@ -28,27 +28,21 @@
       "promoted": false
     },
     {
-      "name": "Cremonese",
-      "color": "#A61C2B",
-      "logo": "https://tmssl.akamaized.net/images/wappen/head/2239.png",
-      "promoted": false
-    },
-    {
       "name": "Fiorentina",
       "color": "#5D2E8C",
       "logo": "https://tmssl.akamaized.net/images/wappen/head/430.png",
       "promoted": false
     },
     {
+      "name": "Frosinone",
+      "color": "#0055A5",
+      "logo": "https://tmssl.akamaized.net/images/wappen/head/8970.png",
+      "promoted": true
+    },
+    {
       "name": "Genoa",
       "color": "#B0182B",
       "logo": "https://tmssl.akamaized.net/images/wappen/head/252.png",
-      "promoted": false
-    },
-    {
-      "name": "Hellas Verona",
-      "color": "#1C2E63",
-      "logo": "https://tmssl.akamaized.net/images/wappen/head/276.png",
       "promoted": false
     },
     {
@@ -82,6 +76,12 @@
       "promoted": false
     },
     {
+      "name": "Monza",
+      "color": "#E2001A",
+      "logo": "https://tmssl.akamaized.net/images/wappen/head/2919.png",
+      "promoted": true
+    },
+    {
       "name": "Napoli",
       "color": "#009DE0",
       "logo": "https://tmssl.akamaized.net/images/wappen/head/6195.png",
@@ -91,12 +91,6 @@
       "name": "Parma",
       "color": "#F4C400",
       "logo": "https://tmssl.akamaized.net/images/wappen/head/130.png",
-      "promoted": false
-    },
-    {
-      "name": "Pisa",
-      "color": "#12284B",
-      "logo": "https://tmssl.akamaized.net/images/wappen/head/4171.png",
       "promoted": false
     },
     {
@@ -122,9 +116,23 @@
       "color": "#2B2B2B",
       "logo": "https://tmssl.akamaized.net/images/wappen/head/410.png",
       "promoted": false
+    },
+    {
+      "name": "Venezia",
+      "color": "#0A5C36",
+      "logo": "https://tmssl.akamaized.net/images/wappen/head/607.png",
+      "promoted": true
     }
   ],
-  "promoted": [],
-  "relegated": [],
+  "promoted": [
+    "Frosinone",
+    "Monza",
+    "Venezia"
+  ],
+  "relegated": [
+    "Cremonese",
+    "Hellas Verona",
+    "Pisa"
+  ],
   "meta_missing": []
 }
