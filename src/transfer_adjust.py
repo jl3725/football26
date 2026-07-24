@@ -117,5 +117,9 @@ def build_adjusted_full(full_df, transfers, win) -> "pd.DataFrame | None":
         parts.append(pd.DataFrame(relocated))
     if synth:
         parts.append(pd.DataFrame(synth))
-    out = pd.concat(parts, ignore_index=True)
+    # pandas 2.x/3.x 간 all-NA 열 dtype 추론 차이를 피한다. 원래 스키마는
+    # reindex 로 복원하므로 합성 행의 빈 열도 안정적으로 유지된다.
+    columns = list(base.columns)
+    concat_parts = [part.dropna(axis=1, how="all") for part in parts]
+    out = pd.concat(concat_parts, ignore_index=True).reindex(columns=columns)
     return out.drop(columns=["_norm"], errors="ignore")

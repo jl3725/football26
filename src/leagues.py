@@ -32,7 +32,20 @@ DATA_DIR = ROOT / "data"
 
 # ── 시즌 ─────────────────────────────────────────────────────────────
 # 단일 활성 시즌. (다중 시즌은 datastore 레벨에서 season 인자로 처리)
-SEASON_START = 2025
+# 배포/수집기가 같은 시즌을 명시할 수 있도록 환경변수로 덮어쓸 수 있다.
+def parse_season_start(value: str | None) -> int:
+    """환경변수 값을 시즌 시작 연도로 검증해 반환한다."""
+    raw = (value or "2025").strip()
+    try:
+        year = int(raw)
+    except ValueError as exc:
+        raise RuntimeError(f"FB_SEASON_START must be a year, got {raw!r}") from exc
+    if not 2000 <= year <= 2100:
+        raise RuntimeError(f"FB_SEASON_START out of range: {year}")
+    return year
+
+
+SEASON_START = parse_season_start(os.getenv("FB_SEASON_START"))
 SEASON = f"{SEASON_START}_{SEASON_START + 1}"        # 파일명 토큰
 SEASON_FBREF = f"{SEASON_START}-{SEASON_START + 1}"  # soccerdata 형식
 
@@ -52,7 +65,7 @@ class LeagueConfig:
     games_per_team: int = 38
 
 
-# 확장 시 여기 항목만 추가하면 된다. (EPL 외는 아직 데이터 미수집 — 식별자만 선점)
+# 지원 리그의 소스 식별자와 기본 UI 메타.
 LEAGUES: dict[str, LeagueConfig] = {
     "EPL": LeagueConfig(
         key="EPL", name="Premier League", country="England",

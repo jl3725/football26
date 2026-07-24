@@ -18,11 +18,13 @@ export default function TabBar({
   active, onChange, accent,
 }: { active: TabKey; onChange: (k: TabKey) => void; accent: string }) {
   return (
-    <div className="tabbar">
+    <div className="tabbar" role="tablist" aria-label="구단 분석 메뉴">
       {TABS.map((t) => (
         <button key={t.key}
           className={`tab${active === t.key ? " active" : ""}`}
           onClick={() => onChange(t.key)}
+          role="tab"
+          aria-selected={active === t.key}
           style={active === t.key ? { ["--tc" as any]: accent } : undefined}>
           <span className="ti" style={{ display: "inline-flex", alignItems: "center" }}>
             <Icon name={t.icon} size={16} color={active === t.key ? accent : "currentColor"} />

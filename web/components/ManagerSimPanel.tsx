@@ -62,7 +62,14 @@ export default function ManagerSimPanel({ team, accent }: { team: string; accent
         </div>
       </div>
 
-      {loading && <div className="loading" style={{ marginTop: 16 }}>시뮬레이션 중…</div>}
+      {loading && (
+        <div className="skel-wrap" style={{ marginTop: 16 }}>
+          <div className="skel-stack">
+            <span className="skel" style={{ height: 70, borderRadius: 14 }} />
+            <span className="skel" style={{ height: 180, borderRadius: 14 }} />
+          </div>
+        </div>
+      )}
       {res && !res.available && (
         <div className="nodata-card" style={{ marginTop: 16 }}>
           <b>로컬 스택 미가동</b>

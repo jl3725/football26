@@ -140,7 +140,7 @@ export default function GlobalSearch({ accent, onPickPlayer, onPickTeam }: {
   return (
     <>
       {/* 트리거 (상단바 자리) */}
-      <button onClick={() => setOpen(true)}
+      <button className="global-search-trigger" onClick={() => setOpen(true)}
         style={{ display: "flex", alignItems: "center", gap: 9, width: "100%", margin: "0 0 4px",
           padding: "9px 14px", borderRadius: 12, cursor: "text", textAlign: "left",
           background: hexA("#ffffff", 0.05), border: `1px solid ${hexA("#ffffff", 0.1)}`, color: "inherit",
@@ -154,12 +154,12 @@ export default function GlobalSearch({ accent, onPickPlayer, onPickTeam }: {
 
       {/* 커맨드 팔레트 오버레이 */}
       {open && (
-        <div onMouseDown={close}
+        <div className="command-overlay" onMouseDown={close}
           style={{ position: "fixed", inset: 0, zIndex: 100, display: "flex", justifyContent: "center", alignItems: "flex-start",
             paddingTop: "11vh", background: hexA("#05060a", shown ? 0.62 : 0),
             backdropFilter: shown ? "blur(7px)" : "blur(0px)", WebkitBackdropFilter: shown ? "blur(7px)" : "blur(0px)",
             transition: "background .2s, backdrop-filter .2s" }}>
-          <div onMouseDown={(e) => e.stopPropagation()}
+          <div className="command-palette" onMouseDown={(e) => e.stopPropagation()}
             style={{ width: "min(600px, 92vw)", background: "rgba(15,16,23,0.985)", borderRadius: 18,
               border: `1px solid ${hexA(accent, 0.3)}`, boxShadow: `0 24px 80px rgba(0,0,0,0.6), 0 0 0 1px ${hexA(accent, 0.08)}`,
               overflow: "hidden", opacity: shown ? 1 : 0,

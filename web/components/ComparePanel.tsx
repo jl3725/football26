@@ -51,7 +51,19 @@ export default function ComparePanel({ team, a, b, accent, onClear }: {
     getPlayerDetail(team, b).then((x) => ok && setDb(x)).catch(() => {});
     return () => { ok = false; };
   }, [team, a, b]);
-  if (!da || !db) return <div className="card"><div className="loading">불러오는 중…</div></div>;
+  if (!da || !db) return (
+    <div className="card skel-wrap">
+      <div className="skel-row" style={{ justifyContent: "space-between" }}>
+        <span className="skel skel-circle" style={{ width: 46, height: 46 }} />
+        <span className="skel" style={{ width: 90, height: 16 }} />
+        <span className="skel skel-circle" style={{ width: 46, height: 46 }} />
+      </div>
+      <div className="skel-stack" style={{ marginTop: 14 }}>
+        <span className="skel" style={{ height: 200, borderRadius: 12 }} />
+        <span className="skel" style={{ height: 12 }} /><span className="skel" style={{ height: 12 }} /><span className="skel" style={{ height: 12, width: "70%" }} />
+      </div>
+    </div>
+  );
 
   const head = (d: PlayerDetail, color: string, right = false) => {
     const t = tier(d.ovr);

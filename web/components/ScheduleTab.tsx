@@ -2,6 +2,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { getSchedule, getMatch, type Schedule, type MatchDetail, type Match } from "@/lib/api";
 import Pitch from "./Pitch";
+import { usePeek } from "./PlayerPeek";
+import { Skel, SkelPitch, SkelRows } from "./Skeleton";
 
 const seasonLabel = (s: string) => (s ? s.slice(2, 4) + "/" + s.slice(7, 9) : "");
 // 대회 배지 색
@@ -13,6 +15,7 @@ const compColor = (c: string) => COMP_STYLE[c] || "#8aa0b8";
 
 function MatchDetailView({ team, match, accent }: { team: string; match: Match; accent: string }) {
   const [d, setD] = useState<MatchDetail | null>(null);
+  const peek = usePeek();
   useEffect(() => {
     let a = true; setD(null);
     if (match.event_id && match.has_lineup) getMatch(team, match.event_id).then((x) => a && setD(x)).catch(() => {});
@@ -41,10 +44,10 @@ function MatchDetailView({ team, match, accent }: { team: string; match: Match; 
       ) : !match.has_lineup ? (
         <div className="mgr-meta" style={{ padding: 20 }}>이 경기의 라인업 데이터가 아직 없습니다{match.comp !== "리그" ? " (컵·유럽 라인업 수집 예정)" : ""}.</div>
       ) : !d ? (
-        <div className="loading" style={{ padding: 30 }}>불러오는 중…</div>
+        <SkelPitch />
       ) : (
         <div className="scd-body">
-          <Pitch placements={d.placements} formation={d.formation} accent={accent} idKey={`m${match.event_id}`} />
+          <Pitch placements={d.placements} formation={d.formation} accent={accent} idKey={`m${match.event_id}`} team={team} />
           <div className="scd-side">
             {d.subs.length > 0 ? (
               <>
@@ -52,15 +55,15 @@ function MatchDetailView({ team, match, accent }: { team: string; match: Match; 
                 {d.subs.map((s, i) => (
                   <div className="scd-sub" key={i}>
                     <span className="scd-min">{s.minute}</span>
-                    <span className="scd-in">▲ {s.player_in}</span>
-                    <span className="scd-out">▼ {s.player_out}</span>
+                    <span className="scd-in peekable" onClick={(e) => peek(e, { name: s.player_in, club: team })}>▲ {s.player_in}</span>
+                    <span className="scd-out peekable" onClick={(e) => peek(e, { name: s.player_out, club: team })}>▼ {s.player_out}</span>
                   </div>
                 ))}
               </>
             ) : (
               <>
                 <div className="scd-sub-title">벤치 · {d.bench.length}</div>
-                {d.bench.map((b, i) => <div className="scd-bench" key={i}>{b}</div>)}
+                {d.bench.map((b, i) => <div className="scd-bench peekable" key={i} onClick={(e) => peek(e, { name: b, club: team })}>{b}</div>)}
               </>
             )}
           </div>
@@ -87,7 +90,15 @@ export default function ScheduleTab({ team, accent }: { team: string; accent: st
     }).catch(() => {});
     return () => { a = false; };
   }, [team, season]);
-  if (!data) return <div className="loading">불러오는 중…</div>;
+  if (!data) return (
+    <div className="skel-wrap">
+      <Skel h={64} r={13} style={{ marginBottom: 14 }} />
+      <div className="skel-grid" style={{ gridTemplateColumns: "1fr 1.1fr" }}>
+        <SkelRows n={10} h={36} />
+        <Skel h={420} r={16} />
+      </div>
+    </div>
+  );
 
   const comps = Array.from(new Set(data.matches.map((m) => m.comp)));
   const shown = data.matches.map((m, i) => ({ m, i })).filter((x) => comp === "전체" || x.m.comp === comp);

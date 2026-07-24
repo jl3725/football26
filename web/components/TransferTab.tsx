@@ -6,6 +6,8 @@ import FitEvaluator from "./FitEvaluator";
 import ManagerSimPanel from "./ManagerSimPanel";
 import RecruitPool from "./RecruitPool";
 import Bar from "./Bar";
+import { usePeek } from "./PlayerPeek";
+import { SkelTab } from "./Skeleton";
 
 const MODE: Record<string, { t: string; d: string }> = {
   evaluate: { t: "영입 평가 모드", d: "이번 창 영입이 각 니즈를 얼마나 해소했는지 점검" },
@@ -13,9 +15,11 @@ const MODE: Record<string, { t: string; d: string }> = {
   recruit: { t: "보강 후보 모드", d: "이번 창 영입 없음 · 니즈 기반 보강 방향" },
 };
 
-function Row({ x, dir }: { x: TransferItem; dir: "in" | "out" }) {
+function Row({ x, dir, team }: { x: TransferItem; dir: "in" | "out"; team: string }) {
+  const peek = usePeek();
   return (
-    <div className={`tf2-row ${dir}`}>
+    <div className={`tf2-row ${dir} peekable`}
+      onClick={(e) => peek(e, { name: x.player, club: dir === "in" ? team : x.club, hint: { photo: x.photo, pos: x.pos, age: x.age, nationality: x.nat } })}>
       {x.photo ? <img className="tf2-photo" src={x.photo} alt="" /> : <span className="tf2-photo ph" />}
       <div className="tf2-info">
         <div className="tf2-name">{x.player}</div>
@@ -38,7 +42,8 @@ export default function TransferTab({ team, accent }: { team: string; accent: st
     getNeeds(team).then((d) => a && setNeeds(d)).catch(() => {});
     return () => { a = false; };
   }, [team]);
-  if (!data) return <div className="loading">불러오는 중…</div>;
+  const peek = usePeek();
+  if (!data) return <SkelTab />;
   const s = data.summary;
   const net = s.net;
 
@@ -115,14 +120,14 @@ export default function TransferTab({ team, accent }: { team: string; accent: st
         <div className="card">
           <h3 style={{ color: "#4fc27f" }}>▲ 영입 · IN ({data.in.length})</h3>
           <div className="tf2-list">
-            {data.in.map((x, i) => <Row key={i} x={x} dir="in" />)}
+            {data.in.map((x, i) => <Row key={i} x={x} dir="in" team={team} />)}
             {data.in.length === 0 && <div className="mgr-meta">영입 없음</div>}
           </div>
         </div>
         <div className="card">
           <h3 style={{ color: "#e07070" }}>▼ 방출 · OUT ({data.out.length})</h3>
           <div className="tf2-list">
-            {data.out.map((x, i) => <Row key={i} x={x} dir="out" />)}
+            {data.out.map((x, i) => <Row key={i} x={x} dir="out" team={team} />)}
             {data.out.length === 0 && <div className="mgr-meta">방출 없음</div>}
           </div>
         </div>
@@ -142,7 +147,8 @@ export default function TransferTab({ team, accent }: { team: string; accent: st
             {rec.longshots.map((l, i) => {
               const t = tier(l.ovr);
               return (
-                <div className="rec-card longshot" key={i}>
+                <div className="rec-card longshot hoverable" key={i} style={{ cursor: "pointer" }}
+                  onClick={(e) => peek(e, { name: l.player, club: l.squad, hint: { photo: l.photo, ovr: l.ovr, pos: l.pos, role: l.role } })}>
                   {l.photo ? <img className="rec-photo" src={l.photo} alt="" /> : <span className="rec-photo ph" />}
                   <div className="rec-ovr" style={{ color: t.light }}>{l.ovr}</div>
                   <div className="rec-name">{l.player}</div>
@@ -164,7 +170,8 @@ export default function TransferTab({ team, accent }: { team: string; accent: st
           <h3><Bar c={accent} />놓친 타깃 <span className="rating-note">· 타팀 이적</span></h3>
           <div className="tf2-list">
             {rec.lost_targets.map((l, i) => (
-              <div className={`tf2-row${l.top_loss ? " top-loss" : ""}`} key={i}>
+              <div className={`tf2-row${l.top_loss ? " top-loss" : ""} peekable`} key={i}
+                onClick={(e) => peek(e, { name: l.player, club: l.to, hint: { photo: l.photo, ovr: l.ovr, pos: l.pos, role: l.role } })}>
                 {l.photo ? <img className="tf2-photo" src={l.photo} alt="" /> : <span className="tf2-photo ph" />}
                 <div className="tf2-info">
                   <div className="tf2-name">{l.top_loss && <span title="가장 아까운 이탈">⭐ </span>}{l.player} <span className="lt-ovr">OVR {l.ovr}</span>

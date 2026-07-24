@@ -1,6 +1,8 @@
 "use client";
 import { useEffect, useState, type ReactNode } from "react";
 import { getWC, getWCSquad, type WorldCupData, type WCSquad } from "@/lib/api";
+import { usePeek } from "./PlayerPeek";
+import { Skel, SkelCards, SkelRows } from "./Skeleton";
 
 function WSec({ en, kr, accent, right }: { en: string; kr: string; accent: string; right?: ReactNode }) {
   return (
@@ -29,6 +31,7 @@ export default function WorldCup({ accent, onPickTeam }: { accent: string; onPic
   const [clubLeague, setClubLeague] = useState<string>("");   // "" = 전체
   const [clubPage, setClubPage] = useState(0);
 
+  const peek = usePeek();
   useEffect(() => { let a = true; getWC().then((x) => a && setD(x)).catch(() => {}); return () => { a = false; }; }, []);
   useEffect(() => {
     if (!nation) { setSquad(null); return; }
@@ -37,7 +40,14 @@ export default function WorldCup({ accent, onPickTeam }: { accent: string; onPic
     return () => { a = false; };
   }, [nation]);
 
-  if (!d) return <div className="loading">월드컵 데이터 불러오는 중…</div>;
+  if (!d) return (
+    <div className="skel-wrap">
+      <Skel h={128} r={18} style={{ marginBottom: 16 }} />
+      <SkelRows n={6} h={44} />
+      <div style={{ height: 10 }} />
+      <SkelCards n={6} />
+    </div>
+  );
   const knockout = d.matches.filter((r) => r.round !== "group-stage");
   const clubLeagues = Array.from(new Set(d.club_callups.map((c) => c.league).filter(Boolean)));
   // 전체: 알파벳순 / 특정 리그: 차출 수 순(백엔드 정렬 유지)
@@ -285,9 +295,10 @@ export default function WorldCup({ accent, onPickTeam }: { accent: string; onPic
         </div>
         {nation && (
           <div className="wc-squad">
-            {!squad && <div className="loading" style={{ padding: 20 }}>불러오는 중…</div>}
+            {!squad && <div style={{ padding: 12, width: "100%" }}><SkelRows n={6} h={38} /></div>}
             {squad && squad.players.map((p, i) => (
-              <button className="wc-sqp" key={i} onClick={() => p.club && onPickTeam(p.club, p.league)} disabled={!p.club}>
+              <button className="wc-sqp" key={i}
+                onClick={(e) => peek(e, { name: p.player, club: p.club || undefined, league: p.league || undefined, hint: { photo: p.photo, pos: p.pos, logo: p.club_logo } })}>
                 <span className="wc-sqp-jsy">{p.jersey || "-"}</span>
                 {p.photo ? <img src={p.photo} alt="" /> : <span className="wc-sqp-ph">{p.pos}</span>}
                 <div className="wc-sqp-mid">

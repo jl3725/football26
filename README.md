@@ -1,64 +1,114 @@
-# Football26 — EPL 25/26 전술 분석 대시보드
+# Football26
 
-EPL 2025-26 시즌 선수 통계를 기반으로 **팀 포메이션 보드**, **선수 역할 분류**, **유사 선수 추천**을 제공하는 Streamlit 앱.
+8개 유럽 리그와 월드컵 데이터를 통합해 팀 분석, 선수 탐색, 이적 적합도,
+라인업과 스쿼드 계획을 제공하는 축구 스카우팅 플랫폼입니다.
 
----
+## 현재 제품 구성
+
+- **주력 UI:** Next.js SPA (`web/`)
+- **백엔드:** FastAPI (`api/`)
+- **분석·수집:** Python (`src/`, `scripts/`)
+- **데이터:** 시즌별 CSV/JSON과 `news.db`가 원본, `football.db`는 배포 시 재생성
+- **선택 기능:** Qdrant(벡터 탐색), Neo4j(관계 그래프), OpenAI(Ask Scout)
+- **내부 분석 UI:** Streamlit (`app.py`, `src/ui/`)
+
+지원 리그는 Premier League, La Liga, Bundesliga, Serie A, Ligue 1,
+Liga Portugal, Eredivisie, Belgian Pro League입니다.
 
 ## 주요 기능
 
-| 기능 | 설명 |
-|---|---|
-| 포메이션 보드 | 팀별 실측 라인업(Sofascore) 기반 RB/CB/LB 정확 배치 |
-| 선수 역할 | 90분당 지표 백분위로 아키타입 자동 분류 (스트라이커 / 인사이드 윙어 / 앵커 등) |
-| 유사 선수 | 10개 xG 기반 피처 코사인 유사도로 스타일 유사 선수 추천 (Vector RAG) |
-| 배지 시스템 | 리그 상위 선수 자동 하이라이트 (득점 머신 / 키패스 장인 등) |
+- 팀 오버뷰, 전력 지표, 일정, 라인업과 선수 상세
+- 이적 내역·루머·부상·계약·시장가치 시그널
+- 스쿼드 약점 진단과 선수 추천
+- Transfer Fit 및 감독 교체 시뮬레이션
+- 스쿼드 관계 그래프와 케미스트리
+- 전 리그 통합 홈과 월드컵 대시보드
+- 자연어 Ask Scout
 
-## 데이터 소스
+## 구조
 
-- **FBref** — 출전시간·크로스·태클·인터셉트 등 기본 지표
-- **Understat** — xG, npxG, xA, 키패스 (90분당)
-- **Sofascore** — 경기별 라인업 (포메이션 + RB/CB/LB 슬롯 도출)
+```text
+GitHub Actions / src/fetch_*.py
+                │
+                ▼
+        data/*.csv · *.json · news.db
+                │ scripts/build_db.py
+                ▼
+            data/football.db
+                │
+        src 분석·추천 도메인 로직
+                │
+                ▼
+          FastAPI /api/*
+                │
+                ▼
+             Next.js
+```
+
+자세한 계층과 변경 원칙은 [ARCHITECTURE.md](ARCHITECTURE.md)를 참고하세요.
 
 ## 로컬 실행
 
-```bash
-pip install -r requirements.txt
-python -m streamlit run app.py
-# → http://localhost:8600
+Python 환경:
+
+```powershell
+.\.venv\Scripts\python.exe scripts\build_db.py
+.\.venv\Scripts\python.exe -m uvicorn api.main:app --reload --port 8000
 ```
 
-### 데이터 갱신 (선택)
+프론트엔드:
 
-```bash
-# 1. FBref 기본 스탯
-python src/fetch_fbref.py
-
-# 2. Understat xG 병합
-python src/fetch_understat.py
-
-# 3. Sofascore 라인업 (팀 지정)
-python src/fetch_lineups.py "Arsenal" "Liverpool" "Manchester City"
+```powershell
+cd web
+npm install
+npm run dev
 ```
 
-## 프로젝트 구조
+브라우저에서 `http://localhost:3000`을 엽니다. Next.js가 `/api/*` 요청을
+기본적으로 `http://127.0.0.1:8000`에 프록시합니다.
 
-```
-app.py                          # Streamlit 메인
-src/
-  similar_players.py            # Vector RAG (코사인 유사도)
-  team_analysis.py              # 포메이션 / 역할 분석
-  fetch_fbref.py                # FBref 수집
-  fetch_understat.py            # Understat xG 수집
-  fetch_lineups.py              # Sofascore 라인업 스크래퍼
-data/
-  players_full_2025_2026.csv    # 선수 통계 (551명)
-  player_slots_2025_2026.csv    # 선수별 포메이션 슬롯
-  team_formations.json          # 팀별 주요 포메이션
+내부 Streamlit 분석 화면이 필요할 때만 다음을 실행합니다.
+
+```powershell
+.\.venv\Scripts\python.exe -m streamlit run app.py
 ```
 
-## 기술 스택
+## 검증
 
-- **Streamlit** — 프론트엔드
-- **scikit-learn** — 벡터 임베딩 / 코사인 유사도
-- **soccerdata** — FBref / Understat API 래퍼
-- **pandas / numpy** — 데이터 처리
+```powershell
+.\.venv\Scripts\python.exe -m pytest
+.\.venv\Scripts\python.exe scripts\validate_data.py --no-optional
+cd web
+npm run build
+```
+
+CI는 Python 컴파일, 8개 리그 API 스모크 테스트, 데이터 계약 검사와 Next.js
+프로덕션 빌드를 수행합니다.
+
+## 설정
+
+- `FB_SEASON_START`: 활성 데이터 시즌 시작 연도. 기본값 `2025`
+- `FB_LEAGUE`: 로컬 수집기의 기본 리그. 기본값 `EPL`
+- `API_BASE`: Next.js가 프록시할 FastAPI 주소
+- `QDRANT_URL`, `QDRANT_API_KEY`: 벡터 탐색
+- `NEO4J_URI`, `NEO4J_USERNAME`, `NEO4J_PASSWORD`: 그래프 기능
+- `OPENAI_API_KEY`: Ask Scout
+- `SCOUT_TOKEN`: Ask Scout 접근 토큰
+- `SCOUT_ALLOW_PUBLIC`: 로컬에서만 토큰 없는 Ask Scout를 허용할 때 `true`
+- `ALLOWED_ORIGINS`: FastAPI에 직접 접근을 허용할 브라우저 origin 목록
+
+민감한 값은 `.env` 또는 배포 서비스의 비밀 환경변수에만 저장합니다.
+
+## 주요 디렉터리
+
+```text
+api/                 FastAPI 앱, 도메인별 라우터와 API 서비스
+src/                 도메인 로직, 데이터 접근, 수집기, Streamlit 내부 UI
+scripts/             DB 빌드, 데이터 검증, 벡터·KG 빌드, 운영 스크립트
+tests/               API·시즌·데이터 계약 테스트
+web/                 Next.js 주력 UI
+data/                원본 데이터와 사전 계산 결과
+.github/workflows/   CI와 정기 데이터 수집
+```
+
+배포 절차는 [DEPLOY.md](DEPLOY.md)를 참고하세요.

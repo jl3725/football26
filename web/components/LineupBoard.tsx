@@ -2,6 +2,8 @@
 import { useEffect, useState } from "react";
 import { getLineup, getProjection, type Lineup, type Projection } from "@/lib/api";
 import Pitch from "./Pitch";
+import { usePeek } from "./PlayerPeek";
+import { SkelPitch } from "./Skeleton";
 
 type Departed = { player: string; left_for: string; pos: string; photo: string };
 
@@ -9,6 +11,7 @@ export default function LineupBoard({ team, accent, departed = [] }: { team: str
   const [lu, setLu] = useState<Lineup | null>(null);
   const [pj, setPj] = useState<Projection | null>(null);
   const [leftView, setLeftView] = useState<"cur" | "next">("next");
+  const peek = usePeek();
 
   useEffect(() => {
     let a = true; setLu(null); setPj(null); setLeftView("next");
@@ -35,8 +38,8 @@ export default function LineupBoard({ team, accent, departed = [] }: { team: str
               style={leftView === "cur" ? { background: accent, color: "#0b0f17" } : undefined}>{curLabel} BEST XI</button>
           </div>
           {leftBoard
-            ? <Pitch placements={leftBoard.placements} accent={accent} />
-            : <div className="loading" style={{ padding: 30 }}>불러오는 중…</div>}
+            ? <Pitch placements={leftBoard.placements} accent={accent} team={team} />
+            : <SkelPitch />}
           <div className="pitch-cap"><span>{leftFormation || ""}</span></div>
         </div>
 
@@ -46,8 +49,8 @@ export default function LineupBoard({ team, accent, departed = [] }: { team: str
             <button>_</button>
           </div>
           {lu?.recent
-            ? <Pitch placements={lu.recent.placements} accent={accent} />
-            : <div className="loading" style={{ padding: 30 }}>{lu ? "최근 경기 데이터 부족" : "불러오는 중…"}</div>}
+            ? <Pitch placements={lu.recent.placements} accent={accent} team={team} />
+            : lu ? <div className="loading" style={{ padding: 30 }}>최근 경기 데이터 부족</div> : <SkelPitch />}
           <div className="pitch-cap">최근 5경기 <span>{lu?.recent?.formation || ""}</span></div>
         </div>
       </div>
@@ -58,7 +61,8 @@ export default function LineupBoard({ team, accent, departed = [] }: { team: str
           <div className="effect-title" style={{ color: accent }}>{nextLabel} 이적 반영 효과</div>
           <div className="effect-grid">
             {pj.diagnosis.map((d, i) => (
-              <div className={`effect-row ${d.kind}`} key={i}>
+              <div className={`effect-row ${d.kind} peekable`} key={i}
+                onClick={(e) => peek(e, { name: d.player, club: d.kind === "loss" ? undefined : team, hint: { photo: d.photo } })}>
                 {d.photo ? <img src={d.photo} alt="" /> : <span className="effect-ph" />}
                 <div className="effect-body">
                   <div className="effect-top">
@@ -78,7 +82,8 @@ export default function LineupBoard({ team, accent, departed = [] }: { team: str
         <div className="bench-strip">
           <div className="bench-title">벤치 뎁스</div>
           {lu.bench.map((b, i) => (
-            <div className="bench-chip" key={i}>
+            <div className="bench-chip peekable" key={i}
+              onClick={(e) => peek(e, { name: b.player, club: team, hint: { photo: b.photo, ovr: b.ovr, pos: b.pos } })}>
               {b.photo ? <img src={b.photo} alt="" /> : <span className="bench-ph" />}
               <span className="bench-name">{b.player.split(" ").slice(-1)[0]}</span>
               <span className="bench-ovr" style={{ color: accent }}>{b.ovr}</span>
@@ -90,7 +95,8 @@ export default function LineupBoard({ team, accent, departed = [] }: { team: str
         <div className="bench-strip departed">
           <div className="bench-title">↪ 시즌 중 이적</div>
           {departed.map((d, i) => (
-            <div className="bench-chip" key={i}>
+            <div className="bench-chip peekable" key={i}
+              onClick={(e) => peek(e, { name: d.player, hint: { photo: d.photo, pos: d.pos } })}>
               {d.photo ? <img src={d.photo} alt="" /> : <span className="bench-ph" />}
               <span className="bench-name">{d.player.split(" ").slice(-1)[0]}</span>
               <span className="bench-to">→ {d.left_for}</span>

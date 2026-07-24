@@ -2,6 +2,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { getSquadGraph, type SquadGraphData, type SGNode } from "@/lib/api";
 import { hexA } from "@/lib/ui";
+import { usePeek } from "./PlayerPeek";
+import { Skel } from "./Skeleton";
 
 const LINE_COLOR: Record<string, string> = { GK: "#f4cf5e", DEF: "#6aa6e0", MID: "#4fc27f", ATT: "#e0707a" };
 const LINE_KO: Record<string, string> = { GK: "GK", DEF: "수비", MID: "미드", ATT: "공격" };
@@ -51,6 +53,7 @@ function layout(nodes: SGNode[], edges: { a: string; b: string; matches: number 
 
 export default function SquadGraph({ team, accent }: { team: string; accent: string }) {
   const [d, setD] = useState<SquadGraphData | null>(null);
+  const peek = usePeek();
   useEffect(() => { let a = true; setD(null); getSquadGraph(team).then((x) => a && setD(x)).catch(() => a && setD(null)); return () => { a = false; }; }, [team]);
 
   const g = useMemo(() => {
@@ -59,7 +62,7 @@ export default function SquadGraph({ team, accent }: { team: string; accent: str
     return { pos, idx, maxM };
   }, [d]);
 
-  if (!d) return <div className="loading">불러오는 중…</div>;
+  if (!d) return <div className="skel-wrap"><Skel h={360} r={14} /></div>;
   if (!d.available) return <div className="mgr-meta">네트워크 비활성 — {d.reason || "그래프 스택 필요"}</div>;
   if (!d.nodes.length || !g) return <div className="mgr-meta">함께 뛴 데이터 부족</div>;
 
@@ -78,7 +81,9 @@ export default function SquadGraph({ team, accent }: { team: string; accent: str
         {d.nodes.map((n, i) => {
           const c = LINE_COLOR[n.line] || "#8a94a8";
           return (
-            <g key={i} transform={`translate(${g.pos[i].x},${g.pos[i].y})`}>
+            <g key={i} transform={`translate(${g.pos[i].x},${g.pos[i].y})`} style={{ cursor: "pointer" }}
+              onClick={(e) => peek(e, { name: n.name, club: team, hint: { pos: n.pos } })}>
+              <title>{n.name}{n.rating != null ? ` · 평점 ${n.rating}` : ""}</title>
               <circle r={rr(n)} fill={hexA(c, 0.9)} stroke={hexA("#000", 0.3)} strokeWidth="1" />
               <text y={rr(n) + 11} textAnchor="middle" fontSize="10" fill={hexA("#ffffff", 0.85)}
                 style={{ pointerEvents: "none" }}>{n.name.split(" ").slice(-1)[0]}</text>

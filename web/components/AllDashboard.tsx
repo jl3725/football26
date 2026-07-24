@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { getHomeAll, fmtEur, type HomeAll } from "@/lib/api";
 import { tier } from "@/lib/ui";
+import { Skel, SkelCards } from "./Skeleton";
 
 // 세련된 라인 화살표 (텍스트 → 대체)
 function Arrow({ color = "currentColor" }: { color?: string }) {
@@ -18,7 +19,12 @@ export default function AllDashboard({ accent, onPick }: { accent: string; onPic
   const [d, setD] = useState<HomeAll | null>(null);
   const [spot, setSpot] = useState("form");   // 선수 스포트라이트 세그먼트
   useEffect(() => { let a = true; getHomeAll().then((x) => a && setD(x)).catch(() => {}); return () => { a = false; }; }, []);
-  if (!d) return <div className="loading">Loading all leagues…</div>;
+  if (!d) return (
+    <div className="skel-wrap">
+      <Skel h={130} r={18} style={{ marginBottom: 16 }} />
+      <SkelCards n={8} cols="repeat(auto-fill, minmax(230px, 1fr))" />
+    </div>
+  );
 
   const tag = (name: string) => <span className="hub-lg">{name}</span>;
   const sec = (en: string, kr: string) => (

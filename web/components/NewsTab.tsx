@@ -1,11 +1,12 @@
 "use client";
 import { useEffect, useState } from "react";
 import { getNews, type News } from "@/lib/api";
+import { SkelCards } from "./Skeleton";
 
 export default function NewsTab({ team, accent }: { team: string; accent: string }) {
   const [data, setData] = useState<News | null>(null);
   useEffect(() => { let a = true; getNews(team).then((d) => a && setData(d)).catch(() => {}); return () => { a = false; }; }, [team]);
-  if (!data) return <div className="loading">불러오는 중…</div>;
+  if (!data) return <div className="skel-wrap"><SkelCards n={6} cols="repeat(auto-fill, minmax(280px, 1fr))" face={false} /></div>;
   if (data.articles.length === 0)
     return <div className="placeholder"><div className="ph-icon">📰</div><div className="ph-title">뉴스 없음</div><div className="ph-sub">이 구단의 최근 기사가 아직 없습니다</div></div>;
 

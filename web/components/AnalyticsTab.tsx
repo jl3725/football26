@@ -4,12 +4,15 @@ import { getAnalytics, fmtEur, type Analytics, type Factor } from "@/lib/api";
 import { tier, hexA } from "@/lib/ui";
 import TeamTerritory from "./TeamTerritory";
 import Chemistry from "./Chemistry";
+import { usePeek } from "./PlayerPeek";
+import { SkelTab } from "./Skeleton";
 
 const LINE_LABEL: Record<string, string> = { GK: "골키퍼", DEF: "수비", MID: "미드필드", ATT: "공격" };
 const LINE_COLOR: Record<string, string> = { GK: "#7fb4f0", DEF: "#6aa6e0", MID: "#caa64e", ATT: "#d98169" };
 
-function FactorCard({ f, kind, accent }: { f: Factor; kind: "s" | "w"; accent: string }) {
+function FactorCard({ f, kind, accent, team }: { f: Factor; kind: "s" | "w"; accent: string; team: string }) {
   const t = tier(f.value);
+  const peek = usePeek();
   return (
     <div className={`fac-card ${kind}`}>
       <div className="fac-top">
@@ -19,7 +22,8 @@ function FactorCard({ f, kind, accent }: { f: Factor; kind: "s" | "w"; accent: s
       </div>
       <div className="fac-players">
         {f.players.map((p, i) => (
-          <span className="fac-chip" key={i}>
+          <span className="fac-chip peekable" key={i}
+            onClick={(e) => peek(e, { name: p.player, club: team, hint: { photo: p.photo, ovr: p.ovr } })}>
             {p.photo ? <img src={p.photo} alt="" /> : <span className="fac-ph" />}
             {p.player.split(" ").slice(-1)[0]}
           </span>
@@ -32,8 +36,9 @@ function FactorCard({ f, kind, accent }: { f: Factor; kind: "s" | "w"; accent: s
 
 export default function AnalyticsTab({ team, accent }: { team: string; accent: string }) {
   const [data, setData] = useState<Analytics | null>(null);
+  const peek = usePeek();
   useEffect(() => { let a = true; getAnalytics(team).then((d) => a && setData(d)).catch(() => {}); return () => { a = false; }; }, [team]);
-  if (!data) return <div className="loading">불러오는 중…</div>;
+  if (!data) return <SkelTab />;
 
   const worst = Object.entries(data.line_share).sort((a, b) => b[1] - a[1])[0];
   const s = data.transfer_summary;
@@ -47,11 +52,11 @@ export default function AnalyticsTab({ team, accent }: { team: string; accent: s
         <div className="fac-grid">
           <div>
             <div className="fac-col-title" style={{ color: "#4fc27f" }}>▲ 강점 팩터</div>
-            {data.factors.strengths.map((f, i) => <FactorCard key={i} f={f} kind="s" accent={accent} />)}
+            {data.factors.strengths.map((f, i) => <FactorCard key={i} f={f} kind="s" accent={accent} team={team} />)}
           </div>
           <div>
             <div className="fac-col-title" style={{ color: "#e07070" }}>▽ 보강 검토</div>
-            {data.factors.weaknesses.map((f, i) => <FactorCard key={i} f={f} kind="w" accent={accent} />)}
+            {data.factors.weaknesses.map((f, i) => <FactorCard key={i} f={f} kind="w" accent={accent} team={team} />)}
           </div>
         </div>
       </div>
@@ -86,7 +91,8 @@ export default function AnalyticsTab({ team, accent }: { team: string; accent: s
           <h3>부상 임팩트 · 결장 경기 상위</h3>
           <div className="inj-list">
             {data.injuries.map((x, i) => (
-              <div className="inj-row" key={i}>
+              <div className="inj-row peekable" key={i}
+                onClick={(e) => peek(e, { name: x.player, club: team, hint: { photo: x.photo } })}>
                 {x.photo ? <img className="inj-photo" src={x.photo} alt="" /> : <span className="inj-photo ph" />}
                 <span className="inj-line" style={{ background: hexA(LINE_COLOR[x.line] || "#888", 0.22), color: LINE_COLOR[x.line] || "#aaa" }}>{x.line}</span>
                 <div className="inj-info">
@@ -124,7 +130,8 @@ export default function AnalyticsTab({ team, accent }: { team: string; accent: s
           <h3>여름 영입 감사 · 소화도 평가</h3>
           <div className="audit-grid">
             {data.audit.map((a, i) => (
-              <div className={`audit-card ${a.tone}`} key={i}>
+              <div className={`audit-card ${a.tone} peekable`} key={i}
+                onClick={(e) => peek(e, { name: a.player, club: team, hint: { photo: a.photo, pos: a.pos } })}>
                 <div className="audit-top">
                   {a.photo ? <img className="audit-photo" src={a.photo} alt="" /> : <span className="audit-photo ph" />}
                   <span className="audit-name">{a.player}</span>

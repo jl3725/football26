@@ -15,8 +15,8 @@ services:
     envVars:
       - key: PYTHON_VERSION
         value: "3.12.7"
-      - key: ALLOWED_ORIGINS
-        value: "*"
+      - key: FB_SEASON_START
+        value: "2025"
       # 아래는 Render 대시보드에서 값 설정(시크릿). 미설정 시 해당 기능만 우아하게 비활성.
       - key: QDRANT_URL          # Qdrant Cloud 클러스터 URL (Fit·감독시뮬)
         sync: false
@@ -24,7 +24,7 @@ services:
         sync: false
       - key: OPENAI_API_KEY      # Ask Scout(자연어 라우팅)
         sync: false
-      - key: SCOUT_TOKEN         # Ask Scout 접근 비밀번호(설정 시 이 토큰 필요, 미설정=공개)
+      - key: SCOUT_TOKEN         # Ask Scout 접근 비밀번호(운영에서는 필수)
         sync: false
       - key: NEO4J_URI           # AuraDB 연결(neo4j+s://…) — graph_query·KG
         sync: false

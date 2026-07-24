@@ -2,6 +2,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { getDatabase, fmtEur, type DbPlayer } from "@/lib/api";
 import { tier, roleClass } from "@/lib/ui";
+import { usePeek } from "./PlayerPeek";
+import { SkelCards } from "./Skeleton";
 
 const LINES = [
   { key: "ALL", label: "전체" }, { key: "GK", label: "GK" }, { key: "DEF", label: "수비" },
@@ -22,6 +24,8 @@ export default function DatabaseTab({ accent }: { team: string; accent: string }
   const [bmOnly, setBmOnly] = useState(false);
   const [maxAge, setMaxAge] = useState(40);
   const [maxVal, setMaxVal] = useState(200);
+  const [limit, setLimit] = useState(LIMIT);
+  const peek = usePeek();
 
   useEffect(() => { let a = true; getDatabase().then((d) => { if (a) { setAll(d.players); setNats(d.nationalities); setLeagues(d.leagues || []); } }).catch(() => {}); return () => { a = false; }; }, []);
 
@@ -36,7 +40,11 @@ export default function DatabaseTab({ accent }: { team: string; accent: string }
     (p.value_eur <= maxVal * 1e6)
   ), [all, q, lg, line, nat, role, bmOnly, maxAge, maxVal]);
 
-  const shown = filtered.slice(0, LIMIT);
+  // 필터가 바뀌면 표시 수 초기화
+  useEffect(() => { setLimit(LIMIT); }, [q, lg, line, nat, role, bmOnly, maxAge, maxVal]);
+
+  const shown = filtered.slice(0, limit);
+  if (all.length === 0) return <div className="skel-wrap"><SkelCards n={12} cols="repeat(auto-fill, minmax(200px, 1fr))" /></div>;
 
   return (
     <div className="fade">
@@ -82,7 +90,8 @@ export default function DatabaseTab({ accent }: { team: string; accent: string }
         {shown.map((p, i) => {
           const t = tier(p.ovr);
           return (
-            <div className="db-card" key={i}>
+            <div className="db-card hoverable" key={i} style={{ cursor: "pointer" }}
+              onClick={(e) => peek(e, { name: p.player, club: p.squad, league: p.league, hint: p })}>
               <div className="db-ovr" style={{ color: t.light }}>{p.ovr}</div>
               {p.big_match && <span className="db-bm" title="UCL/UEL 급 무대 검증">⚡</span>}
               {p.photo ? <img className="db-photo" src={p.photo} alt="" /> : <span className="db-photo ph" />}
@@ -95,7 +104,11 @@ export default function DatabaseTab({ accent }: { team: string; accent: string }
           );
         })}
       </div>
-      {filtered.length > LIMIT && <div className="db-more">… 외 {filtered.length - LIMIT}명 — 필터를 좁히면 더 정확히 찾을 수 있어요.</div>}
+      {filtered.length > limit && (
+        <button className="more-btn" onClick={() => setLimit((v) => v + LIMIT)}>
+          더 보기 +{Math.min(LIMIT, filtered.length - limit)} <span style={{ opacity: 0.55 }}>(남은 {filtered.length - limit}명)</span>
+        </button>
+      )}
       {filtered.length === 0 && <div className="placeholder"><div className="ph-icon">🔎</div><div className="ph-title">결과 없음</div><div className="ph-sub">필터를 완화해 보세요</div></div>}
     </div>
   );

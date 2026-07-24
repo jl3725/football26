@@ -19,6 +19,7 @@ const TIER_TALENT: LeagueBtn[] = [
   { k: "Brazil", label: "🇧🇷 Brazil", soon: true },
   { k: "Argentina", label: "🇦🇷 Argentina", soon: true },
 ];
+const ACTIVE_LEAGUES = [...TIER_S, ...TIER_A, ...TIER_TALENT.filter((league) => !league.soon)];
 
 // 다음 시즌 라벨 ("25/26" → "26/27")
 function nextSeasonLabel(cur: string): string {
@@ -62,38 +63,33 @@ export default function Sidebar({
   ).slice().sort((a, b) => a.name.localeCompare(b.name));
 
   return (
-    <aside className="side">
+    <aside id="primary-navigation" className="side">
       <div className="brand">
-        <div className="brand-orb" />
+        <div className="brand-orb" aria-hidden="true"><span /><span /></div>
         <div>
-          <div className="brand-name">SCOUT<span style={{ color: "var(--accent)" }}>.AI</span></div>
-          <div className="brand-sub">Football Intelligence</div>
+          <div className="brand-name">SCOUT<span>.AI</span></div>
+          <div className="brand-sub">Decision intelligence</div>
+        </div>
+        <span className="brand-version">26</span>
+      </div>
+
+      <div className="competition-picker">
+        <label htmlFor="competition-select">Competition</label>
+        <div className="competition-select-wrap">
+          <span className="competition-mark" aria-hidden="true" />
+          <select
+            id="competition-select"
+            value={league}
+            onChange={(event) => onLeague?.(event.target.value)}
+            aria-label="리그 선택"
+          >
+            {ACTIVE_LEAGUES.map((item) => <option key={item.k} value={item.k}>{item.label}</option>)}
+          </select>
+          <span className="competition-chevron" aria-hidden="true">⌄</span>
         </div>
       </div>
 
-      <div className="league-tiers">
-        <div className="tier-label tier-s">TIER&nbsp;S <em>빅5</em></div>
-        <div className="league-seg">
-          {TIER_S.map((l) => (
-            <button key={l.k} className={league === l.k ? "active" : ""} onClick={() => onLeague?.(l.k)}>{l.label}</button>
-          ))}
-        </div>
-        <div className="tier-label">TIER&nbsp;A <em>유럽 강호</em></div>
-        <div className="league-seg">
-          {TIER_A.map((l) => (
-            <button key={l.k} className={league === l.k ? "active" : ""} onClick={() => onLeague?.(l.k)}>{l.label}</button>
-          ))}
-        </div>
-        <div className="tier-label tier-talent">원석 발굴 <em>TALENT</em></div>
-        <div className="league-seg">
-          {TIER_TALENT.map((l) => l.soon
-            ? <button key={l.k} className="soon" disabled title="곧 추가 예정">{l.label}</button>
-            : <button key={l.k} className={league === l.k ? "active" : ""} onClick={() => onLeague?.(l.k)}>{l.label}</button>
-          )}
-        </div>
-      </div>
-
-      <button className={`home-nav${atHome ? " active" : ""}`} onClick={() => onHome?.()}>
+      <button className={`home-nav${atHome ? " active" : ""}`} onClick={() => onHome?.()} aria-current={atHome ? "page" : undefined}>
         <span className="home-nav-mark" />
         <span className="home-nav-txt">
           <span className="home-nav-t">리그 홈</span>
@@ -118,6 +114,7 @@ export default function Sidebar({
                 <button key={t.name}
                   className={`team-btn ${z.cls}${t.name === sel ? " active" : ""}`}
                   onClick={() => onSelect(t.name)}
+                  aria-current={t.name === sel ? "page" : undefined}
                   style={t.name === sel ? { ["--tc" as any]: t.color } : undefined}>
                   <span className="rankchip">{t.rank}</span>
                   {t.logo ? <img src={t.logo} alt="" /> : <span style={{ width: 22 }} />}
@@ -130,6 +127,7 @@ export default function Sidebar({
               <button key={t.name}
                 className={`team-btn${t.name === sel ? " active" : ""}`}
                 onClick={() => onSelect(t.name)}
+                aria-current={t.name === sel ? "page" : undefined}
                 style={t.name === sel ? { ["--tc" as any]: t.color } : undefined}>
                 <span className="rankchip">·</span>
                 {t.logo ? <img src={t.logo} alt="" /> : <span style={{ width: 22 }} />}

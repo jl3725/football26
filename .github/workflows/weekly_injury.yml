@@ -8,6 +8,10 @@ on:
     - cron: "0 3 * * 1"   # 매주 월요일 03:00 UTC (한국 월 12:00)
   workflow_dispatch:
 
+concurrency:
+  group: weekly-injury-${{ github.ref }}
+  cancel-in-progress: false
+
 permissions:
   contents: write
 
@@ -27,17 +31,25 @@ jobs:
 
       - name: Injury history (전 리그)
         run: |
-          for LG in EPL LaLiga SerieA Bundesliga Ligue1 LigaPortugal Eredivisie; do
+          for LG in EPL LaLiga SerieA Bundesliga Ligue1 LigaPortugal Eredivisie BelgianProLeague; do
             echo "── $LG ──"
             FB_LEAGUE=$LG python src/fetch_tm_injury_history.py || echo "injury_history $LG 실패"
           done
 
       - name: Player heatmaps (Sofascore 시즌 활동 구역)
         run: |
-          for LG in EPL LaLiga SerieA Bundesliga Ligue1 LigaPortugal Eredivisie; do
+          for LG in EPL LaLiga SerieA Bundesliga Ligue1 LigaPortugal Eredivisie BelgianProLeague; do
             echo "── $LG ──"
             FB_LEAGUE=$LG python src/fetch_sofascore_heatmaps.py || echo "heatmap $LG 실패"
           done
+
+      - name: Publish collection summary
+        if: always()
+        run: |
+          echo "### Weekly injury data changes" >> "$GITHUB_STEP_SUMMARY"
+          echo '```text' >> "$GITHUB_STEP_SUMMARY"
+          git status --short data/tm_injury_history_*.csv data/player_heatmaps_*.csv >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
 
       - name: Commit updated data
         run: |

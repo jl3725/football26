@@ -1,5 +1,6 @@
 "use client";
 import type { Placement } from "@/lib/api";
+import { usePeek } from "./PlayerPeek";
 
 const KIND_COLOR: Record<string, string> = { GK: "#37c98a", DEF: "#4c8ef0", MID: "#e0a53a", FWD: "#e2564f" };
 
@@ -17,7 +18,9 @@ function initials(name: string): string {
 }
 
 // SVG 배경(잔디+라인) + HTML 토큰(둥근 얼굴). clipPath 미사용 → id 충돌·렌더 불안정 없음.
-export default function Pitch({ placements, accent }: { placements: Placement[]; formation?: string; accent?: string; idKey?: string }) {
+// team 을 주면 토큰 클릭 → PlayerPeek 미니 프로필.
+export default function Pitch({ placements, accent, team }: { placements: Placement[]; formation?: string; accent?: string; idKey?: string; team?: string }) {
+  const peek = usePeek();
   return (
     <div className="pitch2">
       <svg viewBox="0 0 100 108" className="pitch2-bg" preserveAspectRatio="none">
@@ -39,8 +42,11 @@ export default function Pitch({ placements, accent }: { placements: Placement[];
         const c = KIND_COLOR[p.kind] || "#888";
         const left = 4 + (p.x / 100) * 92;          // viewBox width 100 → %
         const top = ((4 + (p.y / 100) * 100) / 108) * 100;
+        const real = p.player && p.player !== "—" && p.player !== "영입 필요";
         return (
-          <div className="ptok" key={i} style={{ left: `${left}%`, top: `${top}%` }}>
+          <div className={`ptok${real ? " clickable" : ""}`} key={i} style={{ left: `${left}%`, top: `${top}%` }}
+            title={real ? `${p.player}${p.ovr != null ? ` · OVR ${p.ovr}` : ""}` : undefined}
+            onClick={real ? (e) => peek(e, { name: p.player, club: team, hint: { photo: p.photo, ovr: p.ovr ?? undefined } }) : undefined}>
             <div className="ptok-face" style={{ borderColor: p.in ? "#5fd08c" : c }}>
               {p.photo
                 ? <img src={p.photo} alt="" />

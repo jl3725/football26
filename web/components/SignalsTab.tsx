@@ -1,8 +1,10 @@
 "use client";
 import { useEffect, useState } from "react";
-import { getSignals, type Signals, type Signal } from "@/lib/api";
+import { getSignals, activeLeague, type Signals, type Signal } from "@/lib/api";
 import Icon from "./Icon";
 import Bar from "./Bar";
+import { usePeek } from "./PlayerPeek";
+import { SkelCards } from "./Skeleton";
 
 const TONE: Record<string, string> = { good: "#4fc27f", bad: "#e07070", warn: "#e0a53a", info: "#6aa6e0" };
 
@@ -18,8 +20,10 @@ const GROUPS: { key: string; label: string; icon: string; types: string[] }[] = 
 
 function Row({ s, showTeam }: { s: Signal; showTeam: boolean }) {
   const c = TONE[s.tone] || "#8a94a8";
+  const peek = usePeek();
   return (
-    <div className="sig-row" style={{ borderLeftColor: c }}>
+    <div className={`sig-row${s.player ? " peekable" : ""}`} style={{ borderLeftColor: c }}
+      onClick={s.player ? (e) => peek(e, { name: s.player, club: s.team, hint: { photo: s.photo } }) : undefined}>
       <span className="sig-icon">{s.icon}</span>
       {s.photo ? <img className="sig-photo" src={s.photo} alt="" /> : null}
       <div className="sig-body">
@@ -44,10 +48,10 @@ export default function SignalsTab({ team, accent }: { team: string; accent: str
     let a = true;
     setMine(null);
     getSignals(team).then((d) => a && setMine(d)).catch(() => {});
-    getSignals("", "EPL", 50).then((d) => a && setLeague(d)).catch(() => {});
+    getSignals("", activeLeague(), 50).then((d) => a && setLeague(d)).catch(() => {});
     return () => { a = false; };
   }, [team]);
-  if (!mine) return <div className="loading">불러오는 중…</div>;
+  if (!mine) return <div className="skel-wrap"><SkelCards n={6} cols="repeat(auto-fill, minmax(300px, 1fr))" face={false} /></div>;
 
   const byGroup = (g: typeof GROUPS[number]) => mine.signals.filter((s) => g.types.includes(s.type));
   const leagueEvents = league?.signals.filter((s) => ["injury_new", "injury_return", "manager", "value", "risk"].includes(s.type)) ?? [];

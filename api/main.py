@@ -1,14 +1,13 @@
-"""
-FastAPI 백엔드 — football.db(datastore)를 JSON API 로 노출.
+"""Football26 FastAPI 백엔드.
 
-이 POC 는 "Next.js + FastAPI 로 앱 느낌을 낼 수 있는가"를 증명하기 위한 것.
-데이터 층은 이미 만든 src/datastore.py 를 그대로 재사용하므로, UI 프레임워크와
-무관하게 리그/시즌 좌표로 데이터를 얻는다.
+football.db와 도메인 분석 로직을 팀·선수·이적·스카우팅 JSON API로 노출한다.
+데이터 계층은 src/datastore.py를 사용하므로 UI 프레임워크와 무관하게
+리그/시즌 좌표로 데이터를 얻는다.
 
 실행:
     .venv\\Scripts\\python.exe -m uvicorn api.main:app --reload --port 8000
 
-주의: OVR/레이더 수치는 team_unit_metrics 인덱스를 그대로/근사 매핑한 POC 값.
+주의: OVR/레이더 수치는 team_unit_metrics 인덱스를 그대로/근사 매핑한 값.
 추후 overview.team_ratings(유저가 튜닝한 공식)를 순수 로직으로 추출해 교체 가능.
 """
 from __future__ import annotations
@@ -16,16 +15,13 @@ from __future__ import annotations
 import datetime
 import json
 import os
-import sys
-from pathlib import Path
 
 import pandas as pd
 from fastapi import FastAPI, Header, HTTPException, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 
-ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "src"))
+from api.bootstrap import ROOT  # noqa: E402,F401
 
 import datastore as ds  # noqa: E402
 import teammeta as tm  # noqa: E402
@@ -33,16 +29,30 @@ import ratings as rt  # noqa: E402
 import ratings_v3 as rv3  # noqa: E402  (절대 클래스·폼·POT·신뢰도)
 import transfer_adjust as ta  # noqa: E402
 from leagues import ACTIVE_LEAGUE, league_config, data_path  # noqa: E402
+from season_context import current_window as _current_window  # noqa: E402
+from season_context import season_label as _data_season_label  # noqa: E402
 from team_analysis import (  # noqa: E402  (streamlit 비의존)
     espn_assign_slots, slot_xy, slot_kind, formation_slots, display_slot,
 )
+from api.routers.meta import router as meta_router  # noqa: E402
+from api.routers.teams import router as teams_router  # noqa: E402
+from api.routers.teams import teams, teams_next  # noqa: E402
+from api.routers.world_cup import router as world_cup_router  # noqa: E402
+from api.services.player_data import extra_photo_map as _xtra_photo  # noqa: E402
+from api.services.player_data import number as _num  # noqa: E402
+from api.services.player_data import photo_url as _photo  # noqa: E402
+from api.services.player_data import player_frame as _pf  # noqa: E402
+from api.services.player_data import resolve_photo as _resolve_photo  # noqa: E402
 
-app = FastAPI(title="Football Scout API", version="0.1.0")
+app = FastAPI(title="Football Scout API", version="0.2.0")
+app.include_router(meta_router)
+app.include_router(teams_router)
+app.include_router(world_cup_router)
 # gzip — 큰 응답(예: database 전리그 766KB) 전송량을 ~5분의 1로 줄여 로딩 단축.
 app.add_middleware(GZipMiddleware, minimum_size=1024)
-# CORS — 배포 시 ALLOWED_ORIGINS 환경변수(쉼표구분)로 도메인 지정. 기본 "*"
-# (읽기전용 공개 API. 단, Vercel rewrites 로 프록시하면 브라우저는 same-origin 이라 CORS 미발생)
-_origins = [o.strip() for o in os.getenv("ALLOWED_ORIGINS", "*").split(",") if o.strip()]
+# CORS — 브라우저에서 API에 직접 접근할 origin만 명시한다.
+# Vercel rewrite는 same-origin이므로 기본값을 비워도 정상 동작한다.
+_origins = [o.strip() for o in os.getenv("ALLOWED_ORIGINS", "").split(",") if o.strip()]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=_origins,
@@ -52,7 +62,6 @@ app.add_middleware(
 
 MANAGER_JSON = ROOT / "data" / "manager_profiles_2025_2026.json"
 TEAM_PROFILES_JSON = ROOT / "data" / "team_profiles.json"
-SEASON_TEAMS_JSON = ROOT / "data" / "season_teams.json"
 
 
 def _managers(league: str = "EPL") -> dict:
@@ -73,7 +82,7 @@ def _team_profiles() -> dict:
 
 
 def _idx_to_ovr(idx: float) -> int:
-    """team_unit_metrics 인덱스(0-99) → 체감 OVR 밴드(대략 60-90). POC 근사."""
+    """team_unit_metrics 인덱스(0-99) → 체감 OVR 밴드(대략 60-90)."""
     return int(round(55 + float(idx) * 0.36))
 
 
@@ -85,32 +94,6 @@ def _team_row(table: str, team: str, league: str, key: str = "squad"):
     return hit.iloc[0] if not hit.empty else None
 
 
-def _current_window(today: datetime.date | None = None) -> dict:
-    """현재 날짜 기준 활성 이적시장 감지 (Streamlit _current_transfer_window 포팅).
-
-    season_id = 시즌 시작 연도. 여름(6/14~9/1)=season_id y, 겨울(1월~2/3)=season_id y-1.
-    그 외에는 시즌 진행 중(윈도우 닫힘).
-    """
-    today = today or datetime.date.today()
-    y, m, d = today.year, today.month, today.day
-    if (m == 6 and d >= 14) or m in (7, 8) or (m == 9 and d == 1):
-        sy = y
-        return {"season_id": sy, "window": "summer", "label": f"{sy % 100:02d}/{(sy + 1) % 100:02d}",
-                "state": "summer", "is_open": True, "kr": "여름"}
-    if m == 1 or (m == 2 and d <= 3):
-        sy = y - 1
-        return {"season_id": sy, "window": "winter", "label": f"{sy % 100:02d}/{(sy + 1) % 100:02d}",
-                "state": "winter", "is_open": True, "kr": "겨울"}
-    sy = y if m >= 7 else y - 1
-    return {"season_id": sy, "window": "summer", "label": f"{sy % 100:02d}/{(sy + 1) % 100:02d}",
-            "state": "closed", "is_open": False, "kr": None}
-
-
-def _data_season_label() -> str:
-    from leagues import SEASON_START
-    return f"{SEASON_START % 100:02d}/{(SEASON_START + 1) % 100:02d}"
-
-
 def _window_filter(tt, win):
     """이적 DF 를 활성 윈도우로 필터. 해당 윈도우 데이터 없으면 (원본, False)."""
     if tt is None or "season_id" not in tt.columns or "window" not in tt.columns:
@@ -120,79 +103,6 @@ def _window_filter(tt, win):
     if f.empty:
         return tt, False
     return f, True
-
-
-@app.get("/api/context")
-def context():
-    win = _current_window()
-    return {
-        "today": str(datetime.date.today()),
-        "data_season": _data_season_label(),
-        "window": win,
-    }
-
-
-@app.get("/api/leagues")
-def leagues():
-    out = []
-    for lk in ds.available_leagues():
-        try:
-            cfg = league_config(lk)
-            out.append({"key": lk, "name": cfg.name, "country": cfg.country})
-        except KeyError:
-            out.append({"key": lk, "name": lk, "country": ""})
-    return out
-
-
-@app.get("/api/teams")
-def teams(league: str = ACTIVE_LEAGUE):
-    st = ds.read_table("standings", league=league)
-    if st is None:
-        raise HTTPException(404, "standings not found")
-    st = st.sort_values("rank")
-    return [
-        {
-            "name": r["squad"],
-            "color": tm.team_color(r["squad"]),
-            "logo": tm.team_logo(r["squad"]),
-            "rank": int(r["rank"]),
-            "points": int(r["points"]),
-        }
-        for _, r in st.iterrows()
-    ]
-
-
-@app.get("/api/teams/next")
-def teams_next(league: str = ACTIVE_LEAGUE):
-    """다음 시즌(개막 전) 로스터 — 리그별. season_teams JSON(EPL 감지) → 26/27 스케줄 도출 → 현 순위."""
-    # 1) 리그별 season_teams JSON (EPL 은 위키 감지본, 승격/강등 플래그 포함)
-    path = SEASON_TEAMS_JSON if league == "EPL" else data_path("season_teams", league, ext="json")
-    try:
-        d = json.loads(path.read_text(encoding="utf-8"))
-        if d.get("teams"):
-            return d
-    except (OSError, json.JSONDecodeError):
-        pass
-    # 2) 26/27 스케줄에서 팀 도출 (LaLiga 등 — 승격 감지본 없을 때)
-    try:
-        sf = pd.read_csv(data_path("schedule_full", league, "2026_2027"))
-        squads = sorted(set(sf["squad"].astype(str)))
-        if squads:
-            teams = [{"name": s, "color": tm.team_color(s), "logo": tm.team_logo(s), "promoted": False}
-                     for s in squads]
-            return {"season_label": "26/27", "source_title": "schedule 2026-27", "detected_at": "",
-                    "teams": teams, "promoted": [], "relegated": [], "meta_missing": []}
-    except (OSError, KeyError, ValueError):
-        pass
-    # 3) 최종 폴백 — 현 시즌 순위
-    st = ds.read_table("standings", league=league)
-    teams = []
-    if st is not None and "squad" in st.columns:
-        for sq in sorted(st["squad"].astype(str)):
-            teams.append({"name": sq, "color": tm.team_color(sq),
-                          "logo": tm.team_logo(sq), "promoted": False})
-    return {"season_label": "", "source_title": "", "detected_at": "",
-            "teams": teams, "promoted": [], "relegated": [], "meta_missing": []}
 
 
 @app.get("/api/overview/{team}")
@@ -563,6 +473,13 @@ def scout(body: dict, x_scout_token: str = Header(default="")):
     OPENAI_API_KEY 없으면 available=False. SCOUT_TOKEN 설정 시 X-Scout-Token 헤더 필요.
     """
     need = os.getenv("SCOUT_TOKEN")
+    allow_public = os.getenv("SCOUT_ALLOW_PUBLIC", "").lower() in {"1", "true", "yes"}
+    if os.getenv("OPENAI_API_KEY") and not need and not allow_public:
+        return {
+            "available": False,
+            "auth_required": True,
+            "reason": "서버에 SCOUT_TOKEN을 설정해야 Ask Scout를 사용할 수 있습니다",
+        }
     if need and x_scout_token != need:
         return {"available": False, "auth_required": True,
                 "reason": "Ask Scout 접근 토큰이 필요합니다 (비밀번호 입력)"}
@@ -653,76 +570,6 @@ def calendar():
                 "kind": str(r.get("kind") or "event"),
             })
     return {"events": events}
-
-
-def _num(v, default=0.0):
-    try:
-        f = float(v)
-        return default if pd.isna(f) else f
-    except (TypeError, ValueError):
-        return default
-
-
-def _photo(row) -> str:
-    p = row.get("tm_photo")
-    return str(p) if p is not None and not pd.isna(p) and str(p).startswith("http") else ""
-
-
-_XPHOTO_CACHE: dict = {}
-
-
-def _xtra_photo(league: str) -> dict:
-    """players_full 에 없는 선수(임대/방출/신규) 사진 폴백 맵 — TM 이적·계약·부상 소스 통합."""
-    if league in _XPHOTO_CACHE:
-        return _XPHOTO_CACHE[league]
-    from unidecode import unidecode
-    m: dict[str, str] = {}
-    for tbl, pcol in (("transfers", "photo"), ("transfermarkt_contracts", "tm_photo"),
-                      ("transfermarkt_injuries", "tm_photo")):
-        t = ds.read_table(tbl, league=league)
-        if t is not None and pcol in t.columns and "player" in t.columns:
-            for _, r in t.iterrows():
-                ph = str(r.get(pcol) or "")
-                if ph.startswith("http"):
-                    m.setdefault(unidecode(str(r.get("player"))).lower().strip(), ph)
-    _XPHOTO_CACHE[league] = m
-    return m
-
-
-def _resolve_photo(name, resolve, league: str) -> str:
-    """이름 → 사진 URL. players_full(resolve) 우선, 없으면 TM 폴백 맵(정확 이름 키)."""
-    if not name:
-        return ""
-    from unidecode import unidecode
-    r = resolve(name)
-    ph = _photo(r) if r is not None else ""
-    return ph or _xtra_photo(league).get(unidecode(str(name)).lower().strip(), "")
-
-
-
-
-def _pf(league: str):
-    """players_full 로드 + 대회별 선발수 컬럼 머지(빅매치 가산점·역할용) — 단일 진입점.
-
-    comp usage 있는 리그(EPL·LaLiga…)만 머지. 없으면 컬럼 없음 → absolute_ovr 가 0 처리.
-    """
-    df = ds.read_table("players_full", league=league)
-    if df is not None:
-        # norm_key 비었으면(예: LaLiga — 컬럼은 있으나 전부 null) player 로 생성 → 조인 정합
-        from unidecode import unidecode
-        df = df.copy()
-        if "norm_key" not in df.columns:
-            df["norm_key"] = None
-        _m = df["norm_key"].isna() | (df["norm_key"].astype(str).str.strip().isin(["", "nan", "None"]))
-        if _m.any():
-            df.loc[_m, "norm_key"] = df.loc[_m, "player"].map(lambda x: unidecode(str(x)).lower().strip())
-        try:
-            u = pd.read_csv(data_path("player_comp_usage", league),
-                            usecols=["squad", "norm_key", "ucl_starts", "uel_starts", "conf_starts", "cup_starts"])
-            df = df.merge(u, on=["squad", "norm_key"], how="left")
-        except (OSError, KeyError, ValueError):
-            pass
-    return df
 
 
 @app.get("/api/heatmaps/{team}")
@@ -2825,307 +2672,6 @@ def home_all():
     return Response(content=_hub_body(), media_type="application/json")
 
 
-_WC_ROUNDS = ["group-stage", "round-of-32", "round-of-16", "quarterfinals",
-              "semifinals", "3rd-place-match", "final"]
-_WC_ROUND_KR = {"group-stage": "조별리그", "round-of-32": "32강", "round-of-16": "16강",
-                "quarterfinals": "8강", "semifinals": "4강", "3rd-place-match": "3·4위전", "final": "결승"}
-
-
-def _wc_read(table):
-    return ds.read_table(table, league=ACTIVE_LEAGUE)
-
-
-# WC 클럽 차출 교차참조 대상 — UI 로 탐색 가능한(로고·오버뷰 완비) 리그.
-_WC_CLUB_LEAGUES = ("EPL", "LaLiga", "SerieA", "Bundesliga", "Ligue1", "LigaPortugal", "Eredivisie", "BelgianProLeague")
-
-
-def _wc_player_index():
-    """WC 선수명(norm) → (players_full 행, 리그). EPL·LaLiga 클럽 교차참조용.
-    한 선수가 여러 리그에 있으면 출전시간 많은 쪽 채택."""
-    from unidecode import unidecode
-    def norm(s):
-        return unidecode(str(s)).lower().strip()
-    tmp: dict[str, tuple] = {}   # norm -> (row, league, minutes)
-    avail = set(ds.available_leagues())
-    for lg in _WC_CLUB_LEAGUES:
-        if lg not in avail:
-            continue
-        try:
-            pf = _pf(lg)
-        except Exception:  # noqa: BLE001
-            pf = None
-        if pf is None or "player" not in pf.columns:
-            continue
-        # 이탈 선수(left_for) 제외 — 현재 소속 클럽만 차출 집계에 반영
-        if "left_for" in pf.columns:
-            pf = pf[pf["left_for"].isna() | (pf["left_for"].astype(str).str.strip() == "")]
-        for _, r in pf.iterrows():
-            n = norm(r["player"])
-            mn = _num(r.get("minutes"))
-            prev = tmp.get(n)
-            if prev is None or mn > prev[2]:
-                tmp[n] = (r, lg, mn)
-    return {n: (v[0], v[1]) for n, v in tmp.items()}, norm
-
-
-def _fifa_live_ranking():
-    """공식 FIFA 점수(기준일) + 월드컵 경기 결과로 재계산한 '실시간 예상' 랭킹.
-    FIFA 공식 SUM(Elo) 공식: P += I·(W − We), We = 1/(10^(−dr/600)+1).
-    I(중요도): 월드컵 조별 50 · 녹아웃 60. 대회 중엔 공식 갱신이 없어 이걸로 근사한다.
-    반환: (전체 랭킹 리스트[예상순위·공식순위·변동·점수변동], 공식 기준일)."""
-    import math
-    fr = _wc_read("fifa_ranking")
-    if fr is None or "code" not in fr.columns or fr.empty:
-        return [], ""
-    pts, meta = {}, {}
-    for _, r in fr.iterrows():
-        code = str(r.get("code") or "").strip()
-        if not code:
-            continue
-        pts[code] = _num(r.get("points"))
-        meta[code] = {"team": str(r.get("team") or ""), "flag": str(r.get("flag") or ""),
-                      "confederation": str(r.get("confederation") or ""),
-                      "official_rank": int(_num(r.get("rank")))}
-    base_pts = dict(pts)                      # 공식 점수 스냅샷(변동 계산용)
-    updated = str(fr.iloc[0].get("updated") or "")
-
-    m = _wc_read("wc_matches")
-    if m is not None and "completed" in m.columns:
-        done = m[m["completed"].astype(str).str.lower().isin({"true", "1", "yes"})].copy()
-        if "date" in done.columns:
-            done = done.sort_values("date")
-        for _, g in done.iterrows():
-            hc, ac = str(g.get("home_abbr") or "").strip(), str(g.get("away_abbr") or "").strip()
-            if hc not in pts or ac not in pts:
-                continue
-            hs, as_ = _numornone(g.get("home_score")), _numornone(g.get("away_score"))
-            if hs is None or as_ is None:
-                continue
-            imp = 50.0 if str(g.get("round")) == "group-stage" else 60.0
-            we_h = 1.0 / (10 ** (-(pts[hc] - pts[ac]) / 600.0) + 1.0)
-            w_h = 1.0 if hs > as_ else (0.0 if hs < as_ else 0.5)
-            pts[hc] += imp * (w_h - we_h)
-            pts[ac] += imp * ((1.0 - w_h) - (1.0 - we_h))
-
-    ranked = sorted(pts.items(), key=lambda kv: -kv[1])
-    out = []
-    for i, (code, p) in enumerate(ranked, start=1):
-        mt = meta.get(code, {})
-        orank = mt.get("official_rank", i)
-        out.append({"rank": i, "team": mt.get("team", code), "code": code,
-                    "points": round(p, 2), "official_rank": orank,
-                    "rank_change": orank - i, "points_change": round(p - base_pts.get(code, p), 2),
-                    "confederation": mt.get("confederation", ""), "flag": mt.get("flag", "")})
-    return out, updated
-
-
-@app.get("/api/wc")
-def world_cup():
-    """2026 월드컵 — 경기(라운드별)·조별순위·득점왕 + EPL 클럽 차출 교차참조."""
-    m = _wc_read("wc_matches")
-    if m is None:
-        raise HTTPException(404, "WC 데이터 없음 — src/fetch_wc.py 실행 필요")
-    g, sc, sq = _wc_read("wc_groups"), _wc_read("wc_scorers"), _wc_read("wc_squads")
-
-    nation_logo = {}
-    for _, r in m.iterrows():
-        for nm, lg in ((str(r.get("home")), str(r.get("home_logo"))), (str(r.get("away")), str(r.get("away_logo")))):
-            if nm and lg and lg.startswith("http") and nm not in nation_logo:
-                nation_logo[nm] = lg
-
-    def _mrow(r):
-        return {
-            "date": str(r.get("date") or ""), "group": str(r.get("group") or ""),
-            "home": str(r.get("home") or ""), "home_abbr": str(r.get("home_abbr") or ""),
-            "home_logo": str(r.get("home_logo") or ""), "home_score": _numornone(r.get("home_score")),
-            "away": str(r.get("away") or ""), "away_abbr": str(r.get("away_abbr") or ""),
-            "away_logo": str(r.get("away_logo") or ""), "away_score": _numornone(r.get("away_score")),
-            "status": str(r.get("status") or ""), "completed": bool(r.get("completed")),
-        }
-
-    rounds = []
-    for slug in _WC_ROUNDS:
-        sub = m[m["round"] == slug] if "round" in m.columns else m.iloc[0:0]
-        items = [_mrow(r) for _, r in sub.iterrows()]
-        if items:
-            rounds.append({"round": slug, "label": _WC_ROUND_KR.get(slug, slug), "matches": items})
-
-    groups = {}
-    if g is not None:
-        for _, r in g.iterrows():
-            groups.setdefault(str(r.get("group")), []).append({
-                "team": str(r.get("team") or ""), "logo": str(r.get("logo") or ""),
-                "P": int(_num(r.get("P"))), "W": int(_num(r.get("W"))), "D": int(_num(r.get("D"))),
-                "L": int(_num(r.get("L"))), "GF": int(_num(r.get("GF"))), "GA": int(_num(r.get("GA"))),
-                "GD": int(_num(r.get("GD"))), "Pts": int(_num(r.get("Pts"))),
-            })
-    groups_list = [{"group": k, "table": v} for k, v in sorted(groups.items()) if k]
-
-    idx, norm = _wc_player_index()
-    goalmap = {}
-    scorers = []
-    if sc is not None:
-        for _, r in sc.iterrows():
-            goalmap[norm(r.get("player"))] = int(_num(r.get("goals")))
-        for _, r in sc.head(20).iterrows():
-            scorers.append({
-                "player": str(r.get("player") or ""), "nation": str(r.get("nation") or ""),
-                "goals": int(_num(r.get("goals"))), "pens": int(_num(r.get("pens"))),
-                "logo": nation_logo.get(str(r.get("nation")), ""),
-            })
-
-    # 도움 순위 + 나이맵 + 임팩트(득점+도움) 선수 풀
-    ast = _wc_read("wc_assists")
-    assistmap, assists_board = {}, []
-    if ast is not None:
-        for _, r in ast.iterrows():
-            assistmap[norm(r.get("player"))] = int(_num(r.get("assists")))
-        for _, r in ast.head(20).iterrows():
-            assists_board.append({
-                "player": str(r.get("player") or ""), "nation": str(r.get("nation") or ""),
-                "assists": int(_num(r.get("assists"))), "logo": nation_logo.get(str(r.get("nation")), ""),
-            })
-    agemap = {}
-    if sq is not None:
-        for _, r in sq.iterrows():
-            agemap[norm(r.get("player"))] = int(_num(r.get("age")))
-
-    contrib = {}
-    if sc is not None:
-        for _, r in sc.iterrows():
-            n = norm(r.get("player"))
-            contrib[n] = {"player": str(r.get("player") or ""), "nation": str(r.get("nation") or ""),
-                          "goals": int(_num(r.get("goals"))), "assists": assistmap.get(n, 0),
-                          "age": agemap.get(n, 0)}
-    if ast is not None:
-        for _, r in ast.iterrows():
-            n = norm(r.get("player"))
-            if n not in contrib:
-                contrib[n] = {"player": str(r.get("player") or ""), "nation": str(r.get("nation") or ""),
-                              "goals": goalmap.get(n, 0), "assists": int(_num(r.get("assists"))),
-                              "age": agemap.get(n, 0)}
-
-    def _impact_card(c):
-        n = norm(c["player"])
-        hit = idx.get(n)
-        row = hit[0] if hit else None
-        return {"player": c["player"], "nation": c["nation"], "age": c["age"],
-                "goals": c["goals"], "assists": c["assists"], "ga": c["goals"] + c["assists"],
-                "logo": nation_logo.get(c["nation"], ""),
-                "club": str(row["squad"]) if row is not None else "", "photo": _photo(row) if row is not None else ""}
-
-    rising = sorted([c for c in contrib.values() if 0 < c["age"] <= 21 and (c["goals"] + c["assists"]) >= 1],
-                    key=lambda x: -(x["goals"] + x["assists"]))[:6]
-    veterans = sorted([c for c in contrib.values() if c["age"] >= 33 and (c["goals"] + c["assists"]) >= 1],
-                      key=lambda x: -(x["goals"] + x["assists"]))[:6]
-    rising = [_impact_card(c) for c in rising]
-    veterans = [_impact_card(c) for c in veterans]
-
-    # 조별 탈락 영웅 — 넉아웃 진출 못 했지만 조별리그 선전한 팀 + 대표선수
-    adv = set()
-    if "round" in m.columns:
-        ko = m[m["round"] != "group-stage"] if "group-stage" in set(m["round"].astype(str)) else m[m["round"].astype(str).str.contains("round|final|quarter|semi", case=False, na=False)]
-        for _, r in ko.iterrows():
-            adv.add(str(r.get("home") or "")); adv.add(str(r.get("away") or ""))
-    group_heroes = []
-    if g is not None:
-        elim = [r for _, r in g.iterrows() if str(r.get("team")) not in adv]
-        elim.sort(key=lambda r: (-int(_num(r.get("Pts"))), -int(_num(r.get("GD"))), -int(_num(r.get("GF")))))
-        # '잘했지만 탈락' — 승점 3+ (전형적 불운한 탈락) 우선, 없으면 상위 기록순
-        strong = [r for r in elim if int(_num(r.get("Pts"))) >= 3]
-        elim = strong or elim[:4]
-        for r in elim[:6]:
-            nat = str(r.get("team") or "")
-            stars = sorted([c for c in contrib.values() if c["nation"] == nat and (c["goals"] + c["assists"]) >= 1],
-                           key=lambda x: -(x["goals"] + x["assists"]))[:2]
-            group_heroes.append({
-                "team": nat, "logo": str(r.get("logo") or "") or nation_logo.get(nat, ""),
-                "group": str(r.get("group") or ""),
-                "P": int(_num(r.get("P"))), "W": int(_num(r.get("W"))), "D": int(_num(r.get("D"))),
-                "L": int(_num(r.get("L"))), "GD": int(_num(r.get("GD"))), "Pts": int(_num(r.get("Pts"))),
-                "stars": [{"player": s["player"], "goals": s["goals"], "assists": s["assists"]} for s in stars],
-            })
-
-    byclub = {}
-    if sq is not None:
-        for _, r in sq.iterrows():
-            hit = idx.get(norm(r.get("player")))
-            if hit is None:
-                continue
-            row, lg = hit
-            club = str(row["squad"])
-            b = byclub.setdefault(club, {"league": lg, "players": []})
-            b["players"].append({
-                "player": str(r.get("player") or ""), "nation": str(r.get("nation") or ""),
-                "pos": str(r.get("pos") or ""), "photo": _photo(row),
-                "goals": goalmap.get(norm(r.get("player")), 0),
-            })
-    club_callups = []
-    for club, info in byclub.items():
-        players = info["players"]
-        players.sort(key=lambda x: -x["goals"])
-        club_callups.append({"club": club, "league": info["league"], "logo": tm.team_logo(club),
-                             "count": len(players), "players": players})
-    # 차출 많은 클럽 우선 → 리그 → 클럽명
-    club_callups.sort(key=lambda x: (-x["count"], x["league"], x["club"]))
-
-    nations = []
-    if sq is not None:
-        seen = {}
-        for _, r in sq.iterrows():
-            n = str(r.get("nation") or "")
-            if n:
-                seen[n] = seen.get(n, 0) + 1
-        nations = [{"nation": n, "logo": nation_logo.get(n, ""), "count": c} for n, c in sorted(seen.items())]
-
-    # FIFA 랭킹 TOP 30 — 공식 기준점수 + 월드컵 결과로 실시간 예상(대회 중 공식 갱신 없음)
-    fifa_all, fifa_updated = _fifa_live_ranking()
-    fifa_ranking = fifa_all[:30]
-    fifa_live = any(f["points_change"] for f in fifa_all)   # 반영된 WC 결과 있으면 True
-
-    return {"matches": rounds, "groups": groups_list, "scorers": scorers,
-            "assists": assists_board, "rising_stars": rising, "veterans": veterans,
-            "group_heroes": group_heroes,
-            "club_callups": club_callups, "nations": nations,
-            "fifa_ranking": fifa_ranking, "fifa_updated": fifa_updated, "fifa_live": fifa_live}
-
-
-@app.get("/api/wc/squad/{nation}")
-def wc_squad(nation: str):
-    """국가대표 스쿼드 (선수 + 소속 클럽 표시 · 전 리그 교차참조)."""
-    sq = _wc_read("wc_squads")
-    if sq is None or "nation" not in sq.columns:
-        raise HTTPException(404, "WC 스쿼드 데이터 없음")
-    idx, norm = _wc_player_index()
-    rows = sq[sq["nation"].astype(str) == nation]
-    if rows.empty:
-        raise HTTPException(404, f"'{nation}' 스쿼드 없음")
-    players = []
-    for _, r in rows.iterrows():
-        hit = idx.get(norm(r.get("player")))
-        row = hit[0] if hit else None
-        club = str(row["squad"]) if row is not None else ""
-        players.append({
-            "player": str(r.get("player") or ""), "pos": str(r.get("pos") or ""),
-            "jersey": str(r.get("jersey") or ""), "age": str(r.get("age") or ""),
-            "club": club, "league": hit[1] if hit else "",
-            "club_logo": tm.team_logo(club) if club else "",
-            "photo": _photo(row) if row is not None else "",
-        })
-    _order = {"G": 0, "D": 1, "M": 2, "F": 3}
-    players.sort(key=lambda p: (_order.get(p["pos"], 9), p["player"]))
-    return {"nation": nation, "count": len(players), "players": players}
-
-
-def _numornone(v):
-    try:
-        if v is None or (isinstance(v, str) and not v.strip()):
-            return None
-        return int(float(v))
-    except (TypeError, ValueError):
-        return None
-
-
 def _pos_line(tm_pos: str) -> str:
     p = str(tm_pos or "").lower()
     if "keeper" in p or p == "gk":
@@ -3350,8 +2896,3 @@ def projection(team: str, league: str = ACTIVE_LEAGUE):
             "current_label": _data_season_label(), "next_label": next_label,
             "current": season, "projected": {"formation": season["formation"], "placements": projected},
             "diagnosis": diagnosis}
-
-
-@app.get("/api/health")
-def health():
-    return {"ok": True, "active_league": ACTIVE_LEAGUE, "leagues": ds.available_leagues()}

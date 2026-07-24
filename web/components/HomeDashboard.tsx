@@ -3,6 +3,7 @@ import { useEffect, useState, type ReactNode } from "react";
 import { getHome, type Home } from "@/lib/api";
 import WorldCup from "./WorldCup";
 import AllDashboard from "./AllDashboard";
+import { Skel, SkelCards } from "./Skeleton";
 
 const eurM = (v: number) => (v >= 1e6 ? `€${Math.round(v / 1e6)}M` : v > 0 ? `€${Math.round(v / 1e3)}K` : "€0");
 
@@ -57,7 +58,13 @@ export default function HomeDashboard({ accent, onPickTeam, onPickLeagueTeam, le
   if (comp === "WC") return (
     <div className="fade home"><div className="wc-topbar">{switcher}</div><WorldCup accent={accent} onPickTeam={pickTL} /></div>
   );
-  if (!h) return <div className="loading">불러오는 중…</div>;
+  if (!h) return (
+    <div className="fade home skel-wrap">
+      <div className="wc-topbar">{switcher}</div>
+      <Skel h={140} r={18} style={{ marginBottom: 16 }} />
+      <SkelCards n={6} />
+    </div>
+  );
 
   const nextLabel = h.roster_next?.season_label || "26/27";
   const deals = h.transfers.top_deals;

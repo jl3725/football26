@@ -9,6 +9,7 @@ import LineupBoard from "./LineupBoard";
 import CaptainBoard from "./CaptainBoard";
 import OverviewSignals from "./OverviewSignals";
 import IdentityCard from "./IdentityCard";
+import { usePeek } from "./PlayerPeek";
 
 function repStars(rank?: number | null): string {
   if (!rank) return "★★★☆☆";
@@ -41,6 +42,8 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
   const s = ov.standing;
   const info = ov.info || {};
   const snap = ov.snapshot;
+  const peek = usePeek();
+  const leagueCap = (ov.league || "EPL").replace(/([a-z])([A-Z])/g, "$1 $2").replace(/([a-zA-Z])(\d)/g, "$1 $2").toUpperCase();
 
   return (
     <div className="fade">
@@ -60,7 +63,7 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
         <div className="hero-glow" style={{ background: `radial-gradient(circle, ${hexA(accent, 0.5)}, transparent 70%)` }} />
         {ov.logo && <img className="hero-logo" src={ov.logo} alt="" />}
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div className="hero-rank">#{s.rank} · PREMIER LEAGUE · {info.nick || ""}</div>
+          <div className="hero-rank">#{s.rank} · {leagueCap} · {info.nick || ""}</div>
           <h1>{ov.team}</h1>
           <div className="full">{ov.fullName} · {info.stadium || ""} · {ov.capacity.toLocaleString()}석</div>
           <div className="form-row">
@@ -188,7 +191,8 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
             {ov.stars.map((st, i) => {
               const tt = tier(st.ovr);
               return (
-                <div className="star-card" key={i}>
+                <div className="star-card hoverable" key={i} style={{ cursor: "pointer" }}
+                  onClick={(e) => peek(e, { name: st.player, club: ov.team, hint: { photo: st.photo, ovr: st.ovr, pos: st.pos, role: st.role, big_match: st.big_match } })}>
                   {st.big_match && <span className="star-bm" title="UCL/UEL 급 무대 검증">⚡</span>}
                   {st.photo ? <img src={st.photo} alt="" /> : <span className="star-ph" />}
                   <div className="star-ovr" style={{ color: tt.light }}>
@@ -214,7 +218,8 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
           <h3>팀 리더 · 부문별 1위</h3>
           <div className="leaders-row">
             {ov.leaders.map((ld, i) => (
-              <div className="leader" key={i}>
+              <div className="leader peekable" key={i}
+                onClick={(e) => peek(e, { name: ld.player, club: ov.team, hint: { photo: ld.photo } })}>
                 <div className="leader-lbl" style={{ color: accent }}>{ld.label}</div>
                 {ld.photo ? <img src={ld.photo} alt="" /> : <span className="leader-ph" />}
                 <div className="leader-name">{ld.player.split(" ").slice(-1)[0]}</div>
@@ -231,7 +236,8 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
           <h3>현재 부상자 · {ov.injuries.length}명</h3>
           <div className="tf2-list">
             {ov.injuries.map((x, i) => (
-              <div className="tf2-row" key={i}>
+              <div className="tf2-row peekable" key={i}
+                onClick={(e) => peek(e, { name: x.player, club: ov.team, hint: { photo: x.photo, pos: x.pos } })}>
                 {x.photo ? <img className="tf2-photo" src={x.photo} alt="" /> : <span className="tf2-photo ph" />}
                 <div className="tf2-info">
                   <div className="tf2-name">{x.player}</div>
@@ -248,13 +254,15 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
           <h3>이적 · In / Out</h3>
           <div className="tf-list">
             {ov.transfers.in.slice(0, 4).map((x, i) => (
-              <div key={"i" + i} className="tf-row tf-in">
+              <div key={"i" + i} className="tf-row tf-in peekable"
+                onClick={(e) => peek(e, { name: x.player, club: ov.team, hint: { pos: x.pos } })}>
                 <span className="tf-ar">▲</span><span className="tf-name">{x.player}</span>
                 <span className="tf-pos">{x.pos}</span><span className="tf-fee">{x.fee_text || "-"}</span>
               </div>
             ))}
             {ov.transfers.out.slice(0, 3).map((x, i) => (
-              <div key={"o" + i} className="tf-row tf-out">
+              <div key={"o" + i} className="tf-row tf-out peekable"
+                onClick={(e) => peek(e, { name: x.player, hint: { pos: x.pos } })}>
                 <span className="tf-ar">▼</span><span className="tf-name">{x.player}</span>
                 <span className="tf-pos">{x.pos}</span><span className="tf-fee">{x.fee_text || "-"}</span>
               </div>

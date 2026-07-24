@@ -10,6 +10,10 @@ on:
     - cron: "0 * * * *"    # 매시간 (대회 기간 — 당일 결과 빠른 반영). 종료 후 주석 처리.
   workflow_dispatch:
 
+concurrency:
+  group: daily-world-cup-${{ github.ref }}
+  cancel-in-progress: false
+
 permissions:
   contents: write
 
@@ -28,6 +32,14 @@ jobs:
 
       - name: Fetch FIFA world ranking (top 30 · 변동)
         run: python src/fetch_fifa_ranking.py
+
+      - name: Publish collection summary
+        if: always()
+        run: |
+          echo "### World Cup data changes" >> "$GITHUB_STEP_SUMMARY"
+          echo '```text' >> "$GITHUB_STEP_SUMMARY"
+          git status --short data/wc_*.csv data/fifa_ranking.csv >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
 
       - name: Commit updated wc_*.csv
         run: |

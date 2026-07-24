@@ -3,6 +3,8 @@ import { useState } from "react";
 import { getFit, fmtEur, type Fit } from "@/lib/api";
 import { hexA, tier } from "@/lib/ui";
 import Bar from "./Bar";
+import { usePeek } from "./PlayerPeek";
+import { SkelCards } from "./Skeleton";
 
 const ROLES = [
   ["Centre-Back", "센터백"], ["Right-Back", "라이트백"], ["Left-Back", "레프트백"],
@@ -90,7 +92,7 @@ export default function FitEvaluator({ team, accent, suggestions }:
         )}
       </div>
 
-      {loading && <div className="loading" style={{ marginTop: 16 }}>Fit 계산 중…</div>}
+      {loading && <div style={{ marginTop: 16 }}><SkelCards n={2} cols="1fr" face={false} /></div>}
       {res && !res.available && (
         <div className="nodata-card" style={{ marginTop: 16 }}>
           <b>로컬 스택 미가동</b>
@@ -114,6 +116,7 @@ function FitCard({ r, accent }: { r: Fit; accent: string }) {
   const t = tier(r.fit_score || 0);
   const td = r.tactical_detail;
   const af = r.affordability;
+  const peek = usePeek();
   return (
     <div className="card" style={{ marginTop: 16 }}>
       {/* 헤더 + 총점 */}
@@ -171,8 +174,12 @@ function FitCard({ r, accent }: { r: Fit; accent: string }) {
 
       {/* 유사선수 · 선례 */}
       {r.similar_players && r.similar_players.length > 0 && (
-        <div style={{ marginTop: 12, fontSize: 12 }}>
-          <span style={{ opacity: 0.6 }}>유사 스타일: </span>{r.similar_players.slice(0, 5).join(", ")}
+        <div style={{ marginTop: 12, fontSize: 12, display: "flex", flexWrap: "wrap", gap: 5, alignItems: "center" }}>
+          <span style={{ opacity: 0.6 }}>유사 스타일:</span>
+          {r.similar_players.slice(0, 5).map((sp, i) => (
+            <span key={i} className="peekable" style={{ padding: "2px 8px", border: `1px solid ${hexA(accent, 0.25)}`, borderRadius: 9 }}
+              onClick={(e) => peek(e, { name: sp })}>{sp}</span>
+          ))}
         </div>
       )}
       <div style={{ marginTop: 8, fontSize: 11, opacity: 0.55 }}>

@@ -2,6 +2,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { getDiscover, fmtEur, type Discover, type DiscoverPick } from "@/lib/api";
 import { hexA, tier } from "@/lib/ui";
+import { usePeek } from "./PlayerPeek";
+import { SkelCards } from "./Skeleton";
 
 const POS_BTNS: [string, string][] = [
   ["", "전체"], ["Centre-Back", "CB"], ["Left-Back", "LB"], ["Right-Back", "RB"],
@@ -28,8 +30,10 @@ function Kpi({ label, value, sub, accent }: { label: string; value: string; sub?
 function Card({ p, accent }: { p: DiscoverPick; accent: string }) {
   const t = tier(p.ovr);
   const rising = (p.age ?? 30) <= 21;
+  const peek = usePeek();
   return (
-    <div className="card" style={{ padding: 13 }}>
+    <div className="card hoverable" style={{ padding: 13, cursor: "pointer" }}
+      onClick={(e) => peek(e, { name: p.player, club: p.squad, league: p.source_league, hint: { photo: p.photo, ovr: p.current_ovr ?? p.ovr, pos: p.pos, age: p.age ?? undefined, value_eur: p.value_eur ?? undefined } })}>
       <div style={{ display: "flex", gap: 11, alignItems: "flex-start" }}>
         {p.photo ? <img src={p.photo} alt="" style={{ width: 46, height: 46, borderRadius: "50%", objectFit: "cover", border: `1px solid ${hexA(accent, 0.3)}` }} />
           : <span style={{ width: 46, height: 46, borderRadius: "50%", background: hexA("#fff", 0.06), display: "inline-block" }} />}
@@ -165,7 +169,7 @@ export default function RecruitPool({ team, accent }: { team: string; accent: st
               </select>
             </label>
           </div>
-          {loading ? <div className="loading">불러오는 중…</div>
+          {loading ? <SkelCards n={6} cols="repeat(auto-fill, minmax(280px, 1fr))" />
             : picks.length === 0 ? <div className="mgr-meta">조건에 맞는 후보 없음 — 필터를 넓혀보세요</div>
               : <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 12 }}>
                 {picks.map((p, i) => <Card key={i} p={p} accent={accent} />)}

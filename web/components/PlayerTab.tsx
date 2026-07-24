@@ -5,6 +5,8 @@ import { tier, hexA, roleClass } from "@/lib/ui";
 import Radar from "./Radar";
 import HeatmapPitch from "./HeatmapPitch";
 import ComparePanel from "./ComparePanel";
+import { usePeek } from "./PlayerPeek";
+import { Skel, SkelCards } from "./Skeleton";
 
 function Bar({ label, pct, raw, accent }: { label: string; pct: number; raw: number; accent: string }) {
   const c = pct >= 80 ? "#5ec98a" : pct >= 60 ? "#6aa6e0" : pct >= 40 ? "#caa64e" : "#d98169";
@@ -19,6 +21,7 @@ function Bar({ label, pct, raw, accent }: { label: string; pct: number; raw: num
 function Detail({ team, player, accent, heatmap }: { team: string; player: string; accent: string; heatmap: HeatmapData | null }) {
   const [d, setD] = useState<PlayerDetail | null>(null);
   const [sim, setSim] = useState<SimilarResult[]>([]);
+  const peek = usePeek();
   const hm = heatmap?.players?.find((p) => p.player === player);
   useEffect(() => {
     let a = true; setD(null); setSim([]);
@@ -26,7 +29,16 @@ function Detail({ team, player, accent, heatmap }: { team: string; player: strin
     getSimilar(player).then((x) => a && setSim(x.results)).catch(() => {});
     return () => { a = false; };
   }, [team, player]);
-  if (!d) return <div className="card"><div className="loading">불러오는 중…</div></div>;
+  if (!d) return (
+    <div className="card">
+      <div className="skel-row" style={{ padding: 8 }}>
+        <Skel w={86} h={86} circle />
+        <div className="skel-stack" style={{ flex: 1 }}><Skel w="55%" h={20} /><Skel w="38%" h={12} /><Skel w="46%" h={12} /></div>
+        <Skel w={72} h={64} r={13} />
+      </div>
+      <div className="skel-stack" style={{ padding: 8 }}><Skel h={10} /><Skel h={10} /><Skel w="70%" h={10} /><Skel h={160} r={12} /></div>
+    </div>
+  );
   const t = tier(d.ovr);
   return (
     <div className="card pd-card">
@@ -125,7 +137,8 @@ function Detail({ team, player, accent, heatmap }: { team: string; player: strin
           <div className="pd-sim-title">스타일 유사 선수</div>
           <div className="pd-sim-list">
             {sim.map((s, i) => (
-              <div className="pd-sim-row" key={i}>
+              <div className="pd-sim-row peekable" key={i}
+                onClick={(e) => peek(e, { name: s.player, club: s.squad, hint: { pos: s.pos, age: s.age, value_eur: s.value_eur, logo: s.logo } })}>
                 {s.logo ? <img src={s.logo} alt="" /> : <span className="pd-sim-logo" />}
                 <span className="pd-sim-name">{s.player}</span>
                 <span className="pd-sim-squad">{s.squad}</span>
@@ -158,7 +171,12 @@ export default function PlayerTab({ team, accent, initialPlayer }: { team: strin
     }).catch(() => {});
     return () => { a = false; };
   }, [team, initialPlayer]);
-  if (!data) return <div className="loading">불러오는 중…</div>;
+  if (!data) return (
+    <div className="player-layout skel-wrap">
+      <SkelCards n={8} cols="repeat(2, 1fr)" />
+      <div className="skel-stack"><Skel h={300} r={16} /><Skel h={180} r={16} /></div>
+    </div>
+  );
 
   const CB = "#e0a05e";
   const onCard = (name: string) => {

@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { getHeatmaps, type HeatmapData } from "@/lib/api";
 import { hexA } from "@/lib/ui";
 import HeatmapPitch from "./HeatmapPitch";
+import { Skel } from "./Skeleton";
 
 const LINE_COLOR: Record<string, string> = { GK: "#f4cf5e", DEF: "#6aa6e0", MID: "#4fc27f", ATT: "#e0707a" };
 
@@ -35,7 +36,7 @@ export default function TeamTerritory({ team, accent }: { team: string; accent: 
     return { gw, gh, territory, dots };
   }, [d]);
 
-  if (!d) return <div className="loading">불러오는 중…</div>;
+  if (!d) return <div style={{ maxWidth: 520, margin: "0 auto" }}><Skel h={320} r={14} /></div>;
   if (!d.available || !agg) return <div className="mgr-meta">히트맵 데이터 없음 (Sofascore 미수집 리그)</div>;
 
   return (

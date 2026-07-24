@@ -7,6 +7,10 @@ on:
     - cron: "0 */2 * * *"   # 2시간마다 (뉴스 신선도 — 구글 번역 rate-limit 고려해 매시간은 지양)
   workflow_dispatch:
 
+concurrency:
+  group: daily-news-${{ github.ref }}
+  cancel-in-progress: false
+
 permissions:
   contents: write
 
@@ -25,7 +29,15 @@ jobs:
         run: pip install requests feedparser deep-translator pandas unidecode
 
       - name: Fetch & store news
-        run: python scripts/fetch_news_daily.py --all   # EPL + LaLiga + SerieA + Bundesliga
+        run: python scripts/fetch_news_daily.py --all   # 지원 8개 리그
+
+      - name: Publish collection summary
+        if: always()
+        run: |
+          echo "### News data changes" >> "$GITHUB_STEP_SUMMARY"
+          echo '```text' >> "$GITHUB_STEP_SUMMARY"
+          git status --short data/news.db >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
 
       - name: Commit updated news.db
         run: |

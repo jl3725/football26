@@ -1,25 +1,38 @@
-# SCOUT.AI Web (Next.js + FastAPI POC)
+# Football26 Web
 
-Streamlit 대비 "앱 느낌"(SPA)을 검증하기 위한 Overview 탭 프로토타입.
-데이터는 기존 `data/football.db`(→ `src/datastore.py`)를 그대로 재사용한다.
+Football26의 사용자 대상 주력 UI입니다. Next.js App Router 기반 SPA이며
+FastAPI의 `/api/*`를 사용합니다.
 
-## 실행 (터미널 2개)
+## 실행
 
-**1) API (FastAPI, 포트 8000)** — 프로젝트 루트에서:
+프로젝트 루트에서 FastAPI를 먼저 시작합니다.
+
+```powershell
+.\.venv\Scripts\python.exe -m uvicorn api.main:app --reload --port 8000
 ```
-.venv\Scripts\python.exe -m uvicorn api.main:app --reload --port 8000
-```
 
-**2) Web (Next.js, 포트 3000)** — `web/` 에서:
-```
-npm install    # 최초 1회
+다른 터미널에서:
+
+```powershell
+cd web
+npm install
 npm run dev
 ```
 
-브라우저에서 http://localhost:3000 접속.
-`next.config.mjs` 의 rewrites 가 `/api/*` 를 8000 으로 프록시하므로 CORS 신경 안 써도 됨.
+기본 개발 주소는 `http://localhost:3000`입니다. `next.config.mjs`가 API를
+`API_BASE`로 프록시하며, 미설정 시 `http://127.0.0.1:8000`을 사용합니다.
 
 ## 구조
-- `app/page.tsx` — 사이드바(팀 선택) + Overview. 팀 클릭 시 **리로드 없이** 해당 부분만 갱신(앱 느낌 핵심).
-- `lib/api.ts` — API 타입 + fetch 헬퍼.
-- 백엔드 `api/main.py` — datastore 를 JSON 으로 노출. UI 프레임워크와 무관.
+
+- `app/page.tsx`: 전역 화면 상태와 탭 라우팅
+- `components/`: 기능별 화면 컴포넌트
+- `lib/api.ts`: API 타입과 fetch 함수
+- `lib/ui.ts`: 공통 UI 유틸리티
+
+## 검증
+
+```powershell
+npm run build
+```
+
+프로덕션 빌드에는 TypeScript 검사와 정적 페이지 생성 검사가 포함됩니다.

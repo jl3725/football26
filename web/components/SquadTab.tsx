@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { getSquad, getPlayers, fmtEur, type Squad, type SquadPlayer, type PlayerCard } from "@/lib/api";
 import { tier, hexA } from "@/lib/ui";
 import SquadBuilder from "./SquadBuilder";
+import { usePeek } from "./PlayerPeek";
+import { SkelCards } from "./Skeleton";
 
 const LINES: { key: string; label: string }[] = [
   { key: "GK", label: "골키퍼" }, { key: "DEF", label: "수비" },
@@ -13,10 +15,12 @@ const POS_LABEL: Record<string, string> = {
   CM: "중앙MF", AM: "공격형MF", RW: "우측WG", LW: "좌측WG", W: "윙어", ST: "스트라이커",
 };
 
-function Row({ p }: { p: SquadPlayer }) {
+function Row({ p, team }: { p: SquadPlayer; team: string }) {
   const t = tier(p.ovr);
+  const peek = usePeek();
   return (
-    <div className="sq-row">
+    <div className="sq-row peekable"
+      onClick={(e) => peek(e, { name: p.player, club: team, hint: { photo: p.photo, ovr: p.ovr, pos: p.pos, age: p.age, value_eur: p.value_eur } })}>
       <span className="sq-ovr" style={{ color: t.light, borderColor: t.deep }}>{p.ovr}</span>
       {p.photo ? <img className="sq-photo" src={p.photo} alt="" /> : <span className="sq-photo ph" />}
       <div className="sq-info">
@@ -34,7 +38,8 @@ export default function SquadTab({ team, accent }: { team: string; accent: strin
   const [view, setView] = useState<"squad" | "builder">("squad");
   useEffect(() => { let a = true; getSquad(team).then((d) => a && setData(d)).catch(() => {}); return () => { a = false; }; }, [team]);
   useEffect(() => { let a = true; getPlayers(team).then((d) => a && setPl(d.players)).catch(() => {}); return () => { a = false; }; }, [team]);
-  if (!data) return <div className="loading">불러오는 중…</div>;
+  const peek = usePeek();
+  if (!data) return <div className="skel-wrap"><SkelCards n={8} cols="repeat(auto-fill, minmax(280px, 1fr))" /></div>;
 
   const toggle = (
     <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 12 }}>
@@ -54,7 +59,7 @@ export default function SquadTab({ team, accent }: { team: string; accent: strin
         {toggle}
         <div className="card">
           <h3>Best XI 빌더 <span className="rating-note">· 포메이션 선택 · 슬롯 클릭으로 교체</span></h3>
-          {pl.length ? <SquadBuilder players={pl} accent={accent} /> : <div className="loading">불러오는 중…</div>}
+          {pl.length ? <SquadBuilder players={pl} accent={accent} /> : <div className="skel-wrap"><span className="skel" style={{ display: "block", height: 430, borderRadius: 16 }} /></div>}
         </div>
       </div>
     );
@@ -75,12 +80,14 @@ export default function SquadTab({ team, accent }: { team: string; accent: strin
           return (
             <div className="depth-row" key={b.pos}>
               <span className="depth-pos">{POS_LABEL[b.pos] || b.pos}</span>
-              <span className="depth-starter">
+              <span className="depth-starter peekable"
+                onClick={(e) => peek(e, { name: b.starter.player, club: team, hint: { photo: b.starter.photo, ovr: b.starter.ovr, age: b.starter.age } })}>
                 <b style={{ color: st.light }}>{b.starter.ovr}</b> {b.starter.player.split(" ").slice(-1)[0]}
               </span>
               <span className="depth-rot">
                 {b.rotation.length === 0 ? <em>백업 없음</em> :
-                  b.rotation.map((r, i) => <span key={i} className="depth-rp"><b style={{ color: tier(r.ovr).light }}>{r.ovr}</b> {r.player.split(" ").slice(-1)[0]}</span>)}
+                  b.rotation.map((r, i) => <span key={i} className="depth-rp peekable"
+                    onClick={(e) => peek(e, { name: r.player, club: team, hint: { photo: r.photo, ovr: r.ovr, age: r.age } })}><b style={{ color: tier(r.ovr).light }}>{r.ovr}</b> {r.player.split(" ").slice(-1)[0]}</span>)}
               </span>
               <span className="depth-score">
                 <div className="depth-bar"><span style={{ width: `${b.depth}%`, background: dc }} /></div>
@@ -99,7 +106,7 @@ export default function SquadTab({ team, accent }: { team: string; accent: strin
             <div className="card" key={ln.key}>
               <h3>{ln.label} · {players.length}</h3>
               <div className="sq-list">
-                {players.map((p, i) => <Row key={i} p={p} />)}
+                {players.map((p, i) => <Row key={i} p={p} team={team} />)}
                 {players.length === 0 && <div className="mgr-meta">선수 없음</div>}
               </div>
             </div>
