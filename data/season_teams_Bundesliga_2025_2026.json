@@ -1,7 +1,7 @@
 {
   "season_label": "26/27",
   "source_title": "2026-27 Bundesliga",
-  "detected_at": "2026-08-18 05:18",
+  "detected_at": "2026-08-19 05:18",
   "teams": [
     {
       "name": "Augsburg",
@@ -46,12 +46,6 @@
       "promoted": false
     },
     {
-      "name": "Heidenheim",
-      "color": "#E30613",
-      "logo": "https://tmssl.akamaized.net/images/wappen/head/2036.png",
-      "promoted": false
-    },
-    {
       "name": "Hoffenheim",
       "color": "#1961B4",
       "logo": "https://tmssl.akamaized.net/images/wappen/head/533.png",
@@ -82,10 +76,22 @@
       "promoted": false
     },
     {
-      "name": "St Pauli",
-      "color": "#61371C",
-      "logo": "https://tmssl.akamaized.net/images/wappen/head/35.png",
-      "promoted": false
+      "name": "SC Paderborn",
+      "color": "#164194",
+      "logo": "https://tmssl.akamaized.net/images/wappen/head/127.png",
+      "promoted": true
+    },
+    {
+      "name": "SV Elversberg",
+      "color": "#C4122E",
+      "logo": "https://tmssl.akamaized.net/images/wappen/head/64.png",
+      "promoted": true
+    },
+    {
+      "name": "Schalke 04",
+      "color": "#004D9D",
+      "logo": "https://tmssl.akamaized.net/images/wappen/head/33.png",
+      "promoted": true
     },
     {
       "name": "Stuttgart",
@@ -104,15 +110,17 @@
       "color": "#1D9053",
       "logo": "https://tmssl.akamaized.net/images/wappen/head/86.png",
       "promoted": false
-    },
-    {
-      "name": "Wolfsburg",
-      "color": "#65B32E",
-      "logo": "https://tmssl.akamaized.net/images/wappen/head/82.png",
-      "promoted": false
     }
   ],
-  "promoted": [],
-  "relegated": [],
+  "promoted": [
+    "SC Paderborn",
+    "SV Elversberg",
+    "Schalke 04"
+  ],
+  "relegated": [
+    "Heidenheim",
+    "St Pauli",
+    "Wolfsburg"
+  ],
   "meta_missing": []
 }
