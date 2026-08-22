@@ -1,7 +1,7 @@
 {
   "season_label": "26/27",
   "source_title": "2026-27 La Liga",
-  "detected_at": "2026-08-21 05:14",
+  "detected_at": "2026-08-22 05:03",
   "teams": [
     {
       "name": "Alavés",
@@ -34,12 +34,6 @@
       "promoted": false
     },
     {
-      "name": "Deportivo A Coruña",
-      "color": "#0075BE",
-      "logo": "https://tmssl.akamaized.net/images/wappen/head/897.png",
-      "promoted": true
-    },
-    {
       "name": "Elche",
       "color": "#00963E",
       "logo": "https://tmssl.akamaized.net/images/wappen/head/1531.png",
@@ -58,16 +52,22 @@
       "promoted": false
     },
     {
+      "name": "Girona",
+      "color": "#CE1126",
+      "logo": "https://tmssl.akamaized.net/images/wappen/head/12321.png",
+      "promoted": false
+    },
+    {
       "name": "Levante",
       "color": "#004E9E",
       "logo": "https://tmssl.akamaized.net/images/wappen/head/3368.png",
       "promoted": false
     },
     {
-      "name": "Málaga",
-      "color": "#0067B1",
-      "logo": "https://tmssl.akamaized.net/images/wappen/head/1084.png",
-      "promoted": true
+      "name": "Mallorca",
+      "color": "#E20613",
+      "logo": "https://tmssl.akamaized.net/images/wappen/head/237.png",
+      "promoted": false
     },
     {
       "name": "Osasuna",
@@ -76,10 +76,10 @@
       "promoted": false
     },
     {
-      "name": "Racing Santander",
-      "color": "#009B48",
-      "logo": "https://tmssl.akamaized.net/images/wappen/head/630.png",
-      "promoted": true
+      "name": "Oviedo",
+      "color": "#004B9E",
+      "logo": "https://tmssl.akamaized.net/images/wappen/head/2497.png",
+      "promoted": false
     },
     {
       "name": "Rayo Vallecano",
@@ -124,15 +124,7 @@
       "promoted": false
     }
   ],
-  "promoted": [
-    "Deportivo A Coruña",
-    "Málaga",
-    "Racing Santander"
-  ],
-  "relegated": [
-    "Girona",
-    "Mallorca",
-    "Oviedo"
-  ],
+  "promoted": [],
+  "relegated": [],
   "meta_missing": []
 }
