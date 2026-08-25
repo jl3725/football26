@@ -1,6 +1,6 @@
 # Manager Change Report
 
-- Checked: 2026-08-24 05:20 UTC
+- Checked: 2026-08-25 05:07 UTC
 - Source: https://en.wikipedia.org/wiki/2026%E2%80%9327_Premier_League
 - Teams tracked: 20
 - Source teams matched: 20
