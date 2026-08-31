@@ -1,8 +1,14 @@
 {
   "season_label": "26/27",
   "source_title": "2026-27 Eredivisie",
-  "detected_at": "2026-08-30 10:37",
+  "detected_at": "2026-08-31 11:35",
   "teams": [
+    {
+      "name": "ADO Den Haag",
+      "color": "#00A94F",
+      "logo": "https://tmssl.akamaized.net/images/wappen/head/484.png",
+      "promoted": true
+    },
     {
       "name": "AZ Alkmaar",
       "color": "#E4002B",
@@ -14,6 +20,12 @@
       "color": "#D2122E",
       "logo": "https://tmssl.akamaized.net/images/wappen/head/610.png",
       "promoted": false
+    },
+    {
+      "name": "Cambuur",
+      "color": "#FFCC00",
+      "logo": "https://tmssl.akamaized.net/images/wappen/head/1265.png",
+      "promoted": true
     },
     {
       "name": "Excelsior",
@@ -49,18 +61,6 @@
       "name": "Heerenveen",
       "color": "#005EB8",
       "logo": "https://tmssl.akamaized.net/images/wappen/head/306.png",
-      "promoted": false
-    },
-    {
-      "name": "Heracles Almelo",
-      "color": "#111111",
-      "logo": "https://tmssl.akamaized.net/images/wappen/head/1304.png",
-      "promoted": false
-    },
-    {
-      "name": "NAC Breda",
-      "color": "#F7C600",
-      "logo": "https://tmssl.akamaized.net/images/wappen/head/132.png",
       "promoted": false
     },
     {
@@ -100,10 +100,10 @@
       "promoted": false
     },
     {
-      "name": "Volendam",
-      "color": "#F58220",
-      "logo": "https://tmssl.akamaized.net/images/wappen/head/724.png",
-      "promoted": false
+      "name": "Willem II",
+      "color": "#E30613",
+      "logo": "https://tmssl.akamaized.net/images/wappen/head/426.png",
+      "promoted": true
     },
     {
       "name": "Zwolle",
@@ -112,7 +112,15 @@
       "promoted": false
     }
   ],
-  "promoted": [],
-  "relegated": [],
+  "promoted": [
+    "ADO Den Haag",
+    "Cambuur",
+    "Willem II"
+  ],
+  "relegated": [
+    "Heracles Almelo",
+    "NAC Breda",
+    "Volendam"
+  ],
   "meta_missing": []
 }
