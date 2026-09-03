@@ -1,13 +1,13 @@
 {
   "season_label": "26/27",
   "source_title": "2026-27 Primeira Liga",
-  "detected_at": "2026-09-02 09:19",
+  "detected_at": "2026-09-03 09:32",
   "teams": [
     {
-      "name": "AVS Futebol",
-      "color": "#0E7A3C",
-      "logo": "https://tmssl.akamaized.net/images/wappen/head/110302.png",
-      "promoted": false
+      "name": "Académico de Viseu",
+      "color": "#444a55",
+      "logo": "",
+      "promoted": true
     },
     {
       "name": "Alverca",
@@ -64,6 +64,12 @@
       "promoted": false
     },
     {
+      "name": "Marítimo",
+      "color": "#444a55",
+      "logo": "",
+      "promoted": true
+    },
+    {
       "name": "Moreirense",
       "color": "#0A5C36",
       "logo": "https://tmssl.akamaized.net/images/wappen/head/979.png",
@@ -100,19 +106,22 @@
       "promoted": false
     },
     {
-      "name": "Tondela",
-      "color": "#1E7A46",
-      "logo": "https://tmssl.akamaized.net/images/wappen/head/7179.png",
-      "promoted": false
-    },
-    {
       "name": "Vit. Guimarães",
       "color": "#1A1A1A",
       "logo": "https://tmssl.akamaized.net/images/wappen/head/2420.png",
       "promoted": false
     }
   ],
-  "promoted": [],
-  "relegated": [],
-  "meta_missing": []
+  "promoted": [
+    "Académico de Viseu",
+    "Marítimo"
+  ],
+  "relegated": [
+    "AVS Futebol",
+    "Tondela"
+  ],
+  "meta_missing": [
+    "Académico de Viseu",
+    "Marítimo"
+  ]
 }
