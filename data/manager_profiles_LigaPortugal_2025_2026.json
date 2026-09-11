@@ -1,14 +1,4 @@
 {
-  "Estrela": {
-    "name": "Pepa",
-    "wiki_title": "Pepa",
-    "appointed": "",
-    "nationality": "",
-    "style": "",
-    "formation": "",
-    "focus": "",
-    "photo_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c7/Santa_Cruz_1X0_Sport_-_Pernambucano_BetNacional_2025_-_54302316338.jpg/250px-Santa_Cruz_1X0_Sport_-_Pernambucano_BetNacional_2025_-_54302316338.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
-  },
   "Porto": {
     "name": "Francesco Farioli",
     "wiki_title": "Francesco Farioli",
@@ -18,10 +8,70 @@
     "formation": "5-3-2",
     "focus": "",
     "photo_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/76/Francesco_Farioli_2025.jpg/250px-Francesco_Farioli_2025.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-    "bio_ko": "프란체스코 파리올리(Francesco Farioli)는 현재 프리메이라 리가 클럽 포르투의 수석 코치인 이탈리아 축구 감독입니다.",
-    "bio_source": "en-wiki-translated",
-    "tactics_ko": "미드 블록이 우회되면 그의 팀은 일반적으로 5-3-2/5-4-1 로우 블록을 사용하여 컴팩트한 구조를 우선시하고 뒤쪽 공간을 중립화합니다. 클럽에 도착할 때 Farioli의 우선 순위는 견고한 수비 기반을 만드는 것입니다.",
-    "tactics_source": "en-wiki"
+    "bio_ko": "Francesco Farioli is an Italian football manager who is currently the head coach of Primeira Liga club Porto.",
+    "bio_source": "en-wiki",
+    "tactics_ko": "If the mid-block is bypassed his teams typically resort to a 5-3-2/5-4-1 low-block, prioritising compact structure and neutralising space in behind. Farioli's priority when arriving at clubs has been creating solid defensive foundations.",
+    "tactics_source": "en-wiki-raw"
+  },
+  "Estrela": {
+    "name": "Pepa",
+    "wiki_title": "Pepa",
+    "appointed": "",
+    "nationality": "",
+    "style": "",
+    "formation": "",
+    "focus": "",
+    "photo_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c7/Santa_Cruz_1X0_Sport_-_Pernambucano_BetNacional_2025_-_54302316338.jpg/250px-Santa_Cruz_1X0_Sport_-_Pernambucano_BetNacional_2025_-_54302316338.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "bio_ko": "Pepa may refer to:",
+    "bio_source": "en-wiki"
+  },
+  "Braga": {
+    "name": "Carlos Vicens",
+    "wiki_title": "Carlos Vicens",
+    "appointed": "",
+    "nationality": "",
+    "style": "",
+    "formation": "",
+    "focus": "",
+    "photo_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e5/2023-10-04_Fu%C3%9Fball%2C_M%C3%A4nner%2C_UEFA_Champions_League%2C_RB_Leipzig_-_Manchester_City_FC_1DX_2620.jpg/250px-2023-10-04_Fu%C3%9Fball%2C_M%C3%A4nner%2C_UEFA_Champions_League%2C_RB_Leipzig_-_Manchester_City_FC_1DX_2620.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "bio_ko": "Juan Carlos Vicens Gómez is a Spanish football manager and former player who played as a midfielder. He is the current manager of Portuguese club Braga.",
+    "bio_source": "en-wiki"
+  },
+  "Benfica": {
+    "name": "Marco Silva",
+    "wiki_title": "Marco Silva",
+    "appointed": "",
+    "nationality": "",
+    "style": "",
+    "formation": "",
+    "focus": "",
+    "photo_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/99/Marco_Silva_20042025_%282%29_%28cropped%29.jpg/250px-Marco_Silva_20042025_%282%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "bio_ko": "마르쿠 알렉산드르 사라이바 다 실바(포르투갈어: Marco Alexandre Saraiva da Silva, 1977년 6월 12일, 리스본 ~ )는 라이트백로 활약하였던 포르투갈의 전 축구 선수로, 현재는 벤피카 감독의 감독을 역임하고 있다. 그는 2017년 헐 시티의 감독으로 선임되었으나 강등을 피하지 못하고 사임하였으며, 이후 왓퍼드의 발테르 마차리 감독의 후임으로 재선임되었다.",
+    "bio_source": "ko-wiki"
+  },
+  "Nacional": {
+    "name": "Alexandre Santos",
+    "wiki_title": "Alexandre Santos",
+    "appointed": "",
+    "nationality": "",
+    "style": "",
+    "formation": "",
+    "focus": "",
+    "photo_url": "",
+    "bio_ko": "Alexander, Alexandre, or Alex Santos may refer to:Alex Santos (newscaster), Filipino newscaster and reporter\nAlexandro da Silva Santos, Brazilian striker\nAlexandre José Maria dos Santos (1924–2021), Mozambican Roman Catholic cardinal\nAlexandre Santos, Portuguese football manager\nAlessandro Santos, Brazilian-born Japanese footballer, known as Alex\nAlex dos Santos (footballer), Brazilian football defender\nAlex Santos (footballer), Brazilian footballer\nAlex Santos (baseball), American baseball player",
+    "bio_source": "en-wiki"
+  },
+  "AVS Futebol": {
+    "name": "João Henriques",
+    "wiki_title": "João Henriques",
+    "appointed": "",
+    "nationality": "",
+    "style": "",
+    "formation": "",
+    "focus": "",
+    "photo_url": "",
+    "bio_ko": "João Henriques may refer to:João Henriques (captain-major), Portuguese captain-major of Ceylon in the 1500s\nJoão Henriques, Portuguese football manager",
+    "bio_source": "en-wiki"
   },
   "Gil Vicente FC": {
     "name": "Luís Pinto",
@@ -35,28 +85,16 @@
     "bio_ko": "Luís Pinto may refer to:Luís Filipe Santos Pinto, Portuguese football player\nLuís Miguel Correia Pinto, Portuguese football manager and former player\nLuís Pinto de Soveral, 1st Marquis of Soveral\nLuís Pinto de Sousa Coutinho, 1st Viscount of Balsemão",
     "bio_source": "en-wiki"
   },
-  "Sporting CP": {
-    "name": "Rui Borges",
-    "wiki_title": "Rui Borges",
-    "appointed": "",
-    "nationality": "",
-    "style": "",
-    "formation": "",
-    "focus": "",
-    "photo_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2a/Rui_Borges.png/250px-Rui_Borges.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-    "bio_ko": "루이 마누엘 고메스 보르헤스(Rui Manuel Gomes Borges)는 포르투갈의 프로 축구 감독이자 프리메이라 리가 클럽 스포르팅 CP의 수석 코치인 전 선수입니다. 그는 2017년에 감독 경력을 시작하기 전에 포르투갈의 여러 클럽에서 윙어로 활약했습니다. 2023년에 그는 모레이렌세의 수석 코치로 프리메이라 리가에 합류했으며, 2024년 12월 현재 클럽인 스포르팅 CP에 합류하기 전에 비토리아 데 기마랑이스도 코치했습니다. 그는 스포르팅 CP를 2024-25 프리메이라 리가 및 타사 데 포르투갈 타이틀로 이끌었습니다.",
-    "bio_source": "en-wiki-translated"
-  },
-  "Santa Clara": {
-    "name": "Petit",
-    "wiki_title": "Petit",
+  "Casa Pia": {
+    "name": "Filipe Coelho",
+    "wiki_title": "Filipe Coelho",
     "appointed": "",
     "nationality": "",
     "style": "",
     "formation": "",
     "focus": "",
     "photo_url": "",
-    "bio_ko": "Petit is a French-language surname literally meaning \"small\" or \"little\". Notable people with the surname include:Adriana Petit, Spanish multidisciplinary artist\nAlexis Thérèse Petit (1791–1820), French physicist\nAmandine Petit, French model, beauty pageant titleholder, and Miss France 2021\nAntoine Petit (1722–1794), French physician\nAntoni Martí Petit, prime minister of Andorra\nCavelier Petit, American politician\nFrançois Pourfour du Petit (1664–1741), French anatomist\nGabrielle Petit (1893–1916), Belgian spy\nGabrielle Petit (feminist) (1860–1952), French feminist activist, anticlerical, libertarian socialist, newspaper editor\nHenriette Petit (1894-1983), Chilean painter\nJean-Martin Petit (1772–1856), French General during the Napoleonic Wars\nLuis Romero Petit (1917–2017), Venezuelan baseball player\nMonique Ruck-Petit, Swiss and French chess master\nPaul Petit (aviator) (1890-1918), French flying ace\nPaul Petit, French racing driver\nPhilippe Petit, French high-wire artist\nPierre Petit (photographer) (1832–1909), French photographer\nPierre Petit (scholar) (1617–1687), French scholar, medical writer, and poet\nPierre Petit (engineer), (1598–1677), French military engineer, mathematician, and physicist\nPierre Petit (cinematographer) (1920–1997), French cinematographer\nPierre Petit (composer) (1922–2000), French composer\nPierre Petit (politician) (1930–2022), Martinique politician\nPierre Petit (driver),, French racecar driver\nRoland Petit (1924–2011), French choreographer and dancer\nThe surname for a prominent Parsi family of India, whose members include:\nDinshaw Maneckji Petit, (1823–1901), Indian industrialist\nHis granddaughter Rattanbai Petit (1900–1929), wife of Jinnah, founder of Pakistan\nThe Petit Family, 2007 Connecticut home invasion and murder victims\nJohn F. Petit (1887–1963), American businessman and politician\nJohn Louis Petit (1801–1868), English clergyman and architectural artist\nRosa Petit, Venezuelan politician\nSauveur Abel Aubert Petit de la Saussaye (1792–1870), French malacologist\nYusmeiro Petit, Venezuelan baseball player",
+    "bio_ko": "Filipe Coelho may refer to:Filipe Coelho, Portuguese football manager\nFilipe Coelho, Portuguese football manager",
     "bio_source": "en-wiki"
   },
   "Vit. Guimarães": {
@@ -71,90 +109,6 @@
     "bio_ko": "Tiago Miguel Carvalho Margarido is a Portuguese former footballer who played mainly as a midfielder, and is the manager of Vitória de Guimarães.",
     "bio_source": "en-wiki"
   },
-  "Moreirense": {
-    "name": "Vasco Botelho da Costa",
-    "wiki_title": "Vasco Botelho da Costa",
-    "appointed": "",
-    "nationality": "",
-    "style": "",
-    "formation": "",
-    "focus": "",
-    "photo_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/be/Vasco_Botelho_da_Costa_in_a_press_conference_in_September_2025_%28cropped%29.png/250px-Vasco_Botelho_da_Costa_in_a_press_conference_in_September_2025_%28cropped%29.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-    "bio_ko": "Vasco Maria de Albuquerque Botelho da Costa는 포르투갈의 축구 감독이며 현재 Primeira Liga 클럽 Moreirense의 수석 코치입니다.",
-    "bio_source": "en-wiki-translated"
-  },
-  "Casa Pia": {
-    "name": "Filipe Coelho",
-    "wiki_title": "Filipe Coelho",
-    "appointed": "",
-    "nationality": "",
-    "style": "",
-    "formation": "",
-    "focus": "",
-    "photo_url": "",
-    "bio_ko": "Filipe Coelho는 다음을 참조할 수 있습니다.Filipe Coelho, 포르투갈 축구 감독\n포르투갈의 축구 감독 필리페 코엘류",
-    "bio_source": "en-wiki-translated"
-  },
-  "AVS Futebol": {
-    "name": "João Henriques",
-    "wiki_title": "João Henriques",
-    "appointed": "",
-    "nationality": "",
-    "style": "",
-    "formation": "",
-    "focus": "",
-    "photo_url": "",
-    "bio_ko": "João Henriques는 다음을 참조할 수 있습니다. João Henriques(대장), 1500년대 포르투갈 실론 대장\n포르투갈의 축구 감독 주앙 엔리케스",
-    "bio_source": "en-wiki-translated"
-  },
-  "Braga": {
-    "name": "Carlos Vicens",
-    "wiki_title": "Carlos Vicens",
-    "appointed": "",
-    "nationality": "",
-    "style": "",
-    "formation": "",
-    "focus": "",
-    "photo_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e5/2023-10-04_Fu%C3%9Fball%2C_M%C3%A4nner%2C_UEFA_Champions_League%2C_RB_Leipzig_-_Manchester_City_FC_1DX_2620.jpg/250px-2023-10-04_Fu%C3%9Fball%2C_M%C3%A4nner%2C_UEFA_Champions_League%2C_RB_Leipzig_-_Manchester_City_FC_1DX_2620.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-    "bio_ko": "Juan Carlos Vicens Gómez는 스페인 축구 감독이자 미드필더로 활약한 전직 선수입니다. 그는 현재 포르투갈 클럽 브라가의 감독이다.",
-    "bio_source": "en-wiki-translated"
-  },
-  "Benfica": {
-    "name": "Marco Silva",
-    "wiki_title": "Marco Silva",
-    "appointed": "",
-    "nationality": "",
-    "style": "",
-    "formation": "4-2-3-1",
-    "focus": "",
-    "photo_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/99/Marco_Silva_20042025_%282%29_%28cropped%29.jpg/250px-Marco_Silva_20042025_%282%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-    "bio_ko": "마르쿠 알렉산드르 사라이바 다 실바(포르투갈어: Marco Alexandre Saraiva da Silva, 1977년 6월 12일, 리스본 ~ )는 라이트백로 활약하였던 포르투갈의 전 축구 선수로, 현재는 벤피카 감독의 감독을 역임하고 있다. 그는 2017년 헐 시티의 감독으로 선임되었으나 강등을 피하지 못하고 사임하였으며, 이후 왓퍼드의 발테르 마차리 감독의 후임으로 재선임되었다.",
-    "bio_source": "ko-wiki",
-    "tactics_ko": "실바는 점진적인 패스와 폭넓은 위치 회전에 중점을 두고 팀을 4-2-3-1 포메이션으로 구성하는 경향이 있습니다. 특히 스트라이커와 10번 스왑 역할을 하는 두 윙어가 내부 채널에 합류하여 타이트한 공격 유닛을 만드는 것이 특징입니다. 공이 없을 때 그는 미드블록 수비 ​​위치를 활용하고",
-    "tactics_source": "en-wiki"
-  },
-  "Rio Ave": {
-    "name": "Sotiris Sylaidopoulos",
-    "wiki_title": "Sotiris Sylaidopoulos",
-    "appointed": "",
-    "nationality": "",
-    "style": "",
-    "formation": "",
-    "focus": "",
-    "photo_url": ""
-  },
-  "Tondela": {
-    "name": "Gonçalo Feio",
-    "wiki_title": "Gonçalo Feio",
-    "appointed": "",
-    "nationality": "",
-    "style": "",
-    "formation": "",
-    "focus": "",
-    "photo_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/17/Goncalo_Feio_2024.jpg/250px-Goncalo_Feio_2024.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-    "bio_ko": "Gonçalo Filipe Belchior Feio는 포르투갈의 프로 축구 감독이자 전직 선수입니다.",
-    "bio_source": "en-wiki-translated"
-  },
   "Arouca": {
     "name": "Vasco Seabra",
     "wiki_title": "Vasco Seabra",
@@ -164,30 +118,8 @@
     "formation": "",
     "focus": "",
     "photo_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/91/Vasco_seabra_2023.png/250px-Vasco_seabra_2023.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-    "bio_ko": "Vasco César Freire de Seabra는 현재 Primeira Liga 클럽 Arouca를 담당하고 있는 포르투갈 프로 축구 감독입니다.",
-    "bio_source": "en-wiki-translated"
-  },
-  "Estoril": {
-    "name": "Vasco Matos",
-    "wiki_title": "Vasco Matos",
-    "appointed": "",
-    "nationality": "",
-    "style": "",
-    "formation": "",
-    "focus": "",
-    "photo_url": "",
-    "bio_ko": "바스코 미구엘 로페스 데 마토스(Vasco Miguel Lopes de Matos)는 포르투갈의 전직 프로 축구 선수로 윙어로 활약했습니다. 그는 현재 Primeira Liga 클럽 Estoril의 감독입니다.",
-    "bio_source": "en-wiki-translated"
-  },
-  "Alverca": {
-    "name": "Sérgio Ferreira",
-    "wiki_title": "Sérgio Ferreira",
-    "appointed": "",
-    "nationality": "",
-    "style": "",
-    "formation": "",
-    "focus": "",
-    "photo_url": ""
+    "bio_ko": "Vasco César Freire de Seabra is a Portuguese professional football manager, currently in charge of Primeira Liga club Arouca.",
+    "bio_source": "en-wiki"
   },
   "Famalicão": {
     "name": "Carlos Carvalhal",
@@ -198,19 +130,89 @@
     "formation": "",
     "focus": "",
     "photo_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/68/Carvalhal.JPG/250px-Carvalhal.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-    "bio_ko": "Carlos Augusto Soares da Costa Faria Carvalhal은 포르투갈의 전직 프로 축구 선수로 센터백으로 활약했습니다. 그는 현재 Primeira Liga 클럽 Famalicão의 감독입니다.",
-    "bio_source": "en-wiki-translated"
+    "bio_ko": "Carlos Augusto Soares da Costa Faria Carvalhal is a Portuguese former professional footballer who played as a centre-back. He is currently manager of Primeira Liga club Famalicão.",
+    "bio_source": "en-wiki"
   },
-  "Nacional": {
-    "name": "Alexandre Santos",
-    "wiki_title": "Alexandre Santos",
+  "Alverca": {
+    "name": "Sérgio Ferreira",
+    "wiki_title": "Sérgio Ferreira",
     "appointed": "",
     "nationality": "",
     "style": "",
     "formation": "",
     "focus": "",
     "photo_url": "",
-    "bio_ko": "Alexander, Alexandre 또는 Alex Santos는 다음을 참조할 수 있습니다.Alex Santos(뉴스 진행자), 필리핀 뉴스 진행자 및 기자\n알렉산드루 다 실바 산토스(브라질 공격수)\nAlexandre José Maria dos Santos (1924-2021), 모잠비크 로마 가톨릭 추기경\n포르투갈의 축구 감독 알렉상드르 산토스\n알렉산드로 산토스(Alessandro Santos)는 브라질 태생의 일본 축구 선수입니다.\n알렉스 두스 산토스(축구 선수), 브라질 축구 수비수\n알렉스 산토스(축구 선수): 브라질의 축구 선수\n알렉스 산토스(야구): 미국의 야구 선수",
-    "bio_source": "en-wiki-translated"
+    "bio_ko": "Sérgio Ferreira may refer to:Sérgio Henrique Ferreira (1934–2016), Brazilian physician and pharmacologist\nSérgio Ferreira (footballer), Portuguese football manager and former player\nSérgio Ferreira (writer) (1946–2006), Portuguese-Cape Verdean writer and filmmaker",
+    "bio_source": "en-wiki"
+  },
+  "Sporting CP": {
+    "name": "Rui Borges",
+    "wiki_title": "Rui Borges",
+    "appointed": "",
+    "nationality": "",
+    "style": "",
+    "formation": "",
+    "focus": "",
+    "photo_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2a/Rui_Borges.png/250px-Rui_Borges.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "bio_ko": "Rui Manuel Gomes Borges is a Portuguese professional football manager and former player who is the head coach of Primeira Liga club Sporting CP. He played as a winger for several clubs in Portugal, before starting a managerial career in 2017. In 2023 he broke into the Primeira Liga as head coach of Moreirense, and also coached Vitória de Guimarães before joining his current club, Sporting CP, in December 2024. He led Sporting CP to the 2024–25 Primeira Liga and Taça de Portugal titles.",
+    "bio_source": "en-wiki"
+  },
+  "Moreirense": {
+    "name": "Vasco Botelho da Costa",
+    "wiki_title": "Vasco Botelho da Costa",
+    "appointed": "",
+    "nationality": "",
+    "style": "",
+    "formation": "",
+    "focus": "",
+    "photo_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/be/Vasco_Botelho_da_Costa_in_a_press_conference_in_September_2025_%28cropped%29.png/250px-Vasco_Botelho_da_Costa_in_a_press_conference_in_September_2025_%28cropped%29.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "bio_ko": "Vasco Maria de Albuquerque Botelho da Costa is a Portuguese football manager, who is currently the head coach of Primeira Liga club Moreirense.",
+    "bio_source": "en-wiki"
+  },
+  "Tondela": {
+    "name": "Gonçalo Feio",
+    "wiki_title": "Gonçalo Feio",
+    "appointed": "",
+    "nationality": "",
+    "style": "",
+    "formation": "",
+    "focus": "",
+    "photo_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/17/Goncalo_Feio_2024.jpg/250px-Goncalo_Feio_2024.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "bio_ko": "Gonçalo Filipe Belchior Feio is a Portuguese professional football manager and former player.",
+    "bio_source": "en-wiki"
+  },
+  "Rio Ave": {
+    "name": "Sotiris Sylaidopoulos",
+    "wiki_title": "Sotiris Sylaidopoulos",
+    "appointed": "",
+    "nationality": "",
+    "style": "",
+    "formation": "",
+    "focus": "",
+    "photo_url": "",
+    "bio_ko": "Sotiris Sylaidopoulos is a Greek professional football manager and former player who played as a midfielder. He is the current manager of Portuguese club Rio Ave.",
+    "bio_source": "en-wiki"
+  },
+  "Santa Clara": {
+    "name": "Petit",
+    "wiki_title": "Petit",
+    "appointed": "",
+    "nationality": "",
+    "style": "",
+    "formation": "",
+    "focus": "",
+    "photo_url": ""
+  },
+  "Estoril": {
+    "name": "Vasco Matos",
+    "wiki_title": "Vasco Matos",
+    "appointed": "",
+    "nationality": "",
+    "style": "",
+    "formation": "",
+    "focus": "",
+    "photo_url": "",
+    "bio_ko": "Vasco Miguel Lopes de Matos is a Portuguese former professional footballer who played as a winger. He is currently manager of Primeira Liga club Estoril.",
+    "bio_source": "en-wiki"
   }
 }
