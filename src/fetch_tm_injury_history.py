@@ -3,7 +3,7 @@ Transfermarkt per-player INJURY HISTORY → season games missed.
 
 Unlike fetch_transfermarkt_injuries.py (which only scrapes currently-injured
 players), this walks each squad player's injury-history page and sums the
-"Games missed" column for the 2025/26 season. This is what powers the Analytics
+"Games missed" column for the active data season (FB_SEASON_START). This is what powers the Analytics
 "시즌 부상 결장" block: how many league/cup matches a player sat out injured.
 
 Writes (merge, per squad):
@@ -31,13 +31,13 @@ import requests
 from bs4 import BeautifulSoup
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from leagues import data_path  # noqa: E402  (리그 인지 — FB_LEAGUE 로 EPL/LaLiga 전환)
+from leagues import SEASON_START, data_path  # noqa: E402  (리그 인지 — FB_LEAGUE 로 EPL/LaLiga 전환)
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
 DATA_PATH = data_path("players_full")           # 활성 리그 players_full
 OUT = data_path("tm_injury_history")            # 활성 리그 tm_injury_history
-SEASON = "25/26"
+SEASON = f"{SEASON_START % 100:02d}/{(SEASON_START + 1) % 100:02d}"   # TM 부상표 시즌 표기(예 "26/27")
 
 H = {
     "User-Agent": ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
