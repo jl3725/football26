@@ -1,21 +1,57 @@
 squad,comp,comp_code,date,home_away,opponent,gf,ga,score,result,status,event_id
-Alverca,리그,por.1,2026-08-09,A,Porto,0,0,0-0,,scheduled,401885487
-Alverca,리그,por.1,2026-08-15,H,Estrela,0,0,0-0,,scheduled,401885482
-Alverca,리그,por.1,2026-08-23,A,Sporting CP,0,0,0-0,,scheduled,401885467
-Alverca,리그,por.1,2026-08-30,H,Santa Clara,0,0,0-0,,scheduled,401885464
-Alverca,리그,por.1,2026-09-06,H,Braga,0,0,0-0,,scheduled,401885456
-Alverca,리그,por.1,2026-09-13,A,Nacional,0,0,0-0,,scheduled,401885441
-Alverca,리그,por.1,2026-09-20,H,Rio Ave,0,0,0-0,,scheduled,401885438
-Alverca,리그,por.1,2026-10-11,A,Famalicão,0,0,0-0,,scheduled,401885425
-Alverca,리그,por.1,2026-10-25,H,Arouca,0,0,0-0,,scheduled,401885420
-Alverca,리그,por.1,2026-11-01,A,Benfica,0,0,0-0,,scheduled,401885403
-Alverca,리그,por.1,2026-11-08,H,Casa Pia,0,0,0-0,,scheduled,401885402
-Alverca,리그,por.1,2026-11-29,A,Académico de Viseu,0,0,0-0,,scheduled,401885393
+Académico de Viseu,리그,por.1,2026-08-09,A,Benfica,2,2,2-2,D,completed,401885485
+Académico de Viseu,리그,por.1,2026-08-15,H,Santa Clara,0,1,0-1,L,completed,401885483
+Académico de Viseu,리그,por.1,2026-08-22,A,Marítimo,2,2,2-2,D,completed,401885471
+Académico de Viseu,리그,por.1,2026-08-29,H,Porto,0,3,0-3,L,completed,401885465
+Académico de Viseu,리그,por.1,2026-09-06,A,Gil Vicente FC,1,0,1-0,W,completed,401885453
+Académico de Viseu,리그,por.1,2026-09-12,H,Vit. Guimarães,2,1,2-1,W,completed,401885447
+Académico de Viseu,리그,por.1,2026-09-20,A,Estrela,2,0,2-0,W,completed,401885437
+Académico de Viseu,리그,por.1,2026-10-10,H,Estoril,2,1,2-1,W,completed,401885429
+Académico de Viseu,Taça de Portugal,por.taca.portugal,2026-10-18,A,Fatima,0,0,0-0,,scheduled,401924407
+Académico de Viseu,리그,por.1,2026-10-25,A,Sporting CP,0,0,0-0,,scheduled,401885413
+Académico de Viseu,리그,por.1,2026-11-01,H,Rio Ave,0,0,0-0,,scheduled,401885411
+Académico de Viseu,리그,por.1,2026-11-07,A,Nacional,0,0,0-0,,scheduled,401885398
+Académico de Viseu,리그,por.1,2026-11-28,H,Alverca,0,0,0-0,,scheduled,401885393
+Académico de Viseu,리그,por.1,2026-12-06,A,Famalicão,0,0,0-0,,scheduled,401885380
+Académico de Viseu,리그,por.1,2026-12-13,H,Arouca,0,0,0-0,,scheduled,401885375
+Académico de Viseu,리그,por.1,2026-12-20,A,Braga,0,0,0-0,,scheduled,401885363
+Académico de Viseu,리그,por.1,2026-12-27,A,Moreirense,0,0,0-0,,scheduled,401885353
+Académico de Viseu,리그,por.1,2027-01-10,H,Casa Pia,0,0,0-0,,scheduled,401885348
+Académico de Viseu,리그,por.1,2027-01-17,H,Benfica,0,0,0-0,,scheduled,401885332
+Académico de Viseu,리그,por.1,2027-01-24,A,Santa Clara,0,0,0-0,,scheduled,401885330
+Académico de Viseu,리그,por.1,2027-01-31,H,Marítimo,0,0,0-0,,scheduled,401885318
+Académico de Viseu,리그,por.1,2027-02-07,A,Porto,0,0,0-0,,scheduled,401885312
+Académico de Viseu,리그,por.1,2027-02-14,H,Gil Vicente FC,0,0,0-0,,scheduled,401885300
+Académico de Viseu,리그,por.1,2027-02-21,A,Vit. Guimarães,0,0,0-0,,scheduled,401885294
+Académico de Viseu,리그,por.1,2027-02-28,H,Estrela,0,0,0-0,,scheduled,401885284
+Académico de Viseu,리그,por.1,2027-03-07,A,Estoril,0,0,0-0,,scheduled,401885276
+Académico de Viseu,리그,por.1,2027-03-14,H,Sporting CP,0,0,0-0,,scheduled,401885260
+Académico de Viseu,리그,por.1,2027-03-21,A,Rio Ave,0,0,0-0,,scheduled,401885258
+Académico de Viseu,리그,por.1,2027-04-04,H,Nacional,0,0,0-0,,scheduled,401885245
+Académico de Viseu,리그,por.1,2027-04-11,A,Alverca,0,0,0-0,,scheduled,401885240
+Académico de Viseu,리그,por.1,2027-04-18,H,Famalicão,0,0,0-0,,scheduled,401885227
+Académico de Viseu,리그,por.1,2027-04-25,A,Arouca,0,0,0-0,,scheduled,401885222
+Académico de Viseu,리그,por.1,2027-05-02,H,Braga,0,0,0-0,,scheduled,401884843
+Académico de Viseu,리그,por.1,2027-05-09,H,Moreirense,0,0,0-0,,scheduled,401884833
+Académico de Viseu,리그,por.1,2027-05-16,A,Casa Pia,0,0,0-0,,scheduled,401884828
+Alverca,리그,por.1,2026-08-09,A,Porto,0,2,0-2,L,completed,401885487
+Alverca,리그,por.1,2026-08-15,H,Estrela,2,2,2-2,D,completed,401885482
+Alverca,리그,por.1,2026-08-22,A,Sporting CP,1,3,1-3,L,completed,401885467
+Alverca,리그,por.1,2026-08-29,H,Santa Clara,1,1,1-1,D,completed,401885464
+Alverca,리그,por.1,2026-09-05,H,Braga,1,2,1-2,L,completed,401885456
+Alverca,리그,por.1,2026-09-12,A,Nacional,3,1,3-1,W,completed,401885441
+Alverca,리그,por.1,2026-09-19,H,Rio Ave,1,0,1-0,W,completed,401885438
+Alverca,리그,por.1,2026-10-12,A,Famalicão,4,1,4-1,W,completed,401885425
+Alverca,Taça de Portugal,por.taca.portugal,2026-10-18,A,Tondela,0,0,0-0,,scheduled,401924426
+Alverca,리그,por.1,2026-10-24,H,Arouca,0,0,0-0,,scheduled,401885420
+Alverca,리그,por.1,2026-11-02,A,Benfica,0,0,0-0,,scheduled,401885403
+Alverca,리그,por.1,2026-11-07,H,Casa Pia,0,0,0-0,,scheduled,401885402
+Alverca,리그,por.1,2026-11-28,A,Académico de Viseu,0,0,0-0,,scheduled,401885393
 Alverca,리그,por.1,2026-12-06,H,Moreirense,0,0,0-0,,scheduled,401885384
 Alverca,리그,por.1,2026-12-13,A,Vit. Guimarães,0,0,0-0,,scheduled,401885367
 Alverca,리그,por.1,2026-12-20,H,Gil Vicente FC,0,0,0-0,,scheduled,401885366
 Alverca,리그,por.1,2026-12-27,A,Estoril,0,0,0-0,,scheduled,401885356
-Alverca,리그,por.1,2027-01-10,H,Maritimo,0,0,0-0,,scheduled,401885347
+Alverca,리그,por.1,2027-01-10,H,Marítimo,0,0,0-0,,scheduled,401885347
 Alverca,리그,por.1,2027-01-17,H,Porto,0,0,0-0,,scheduled,401885334
 Alverca,리그,por.1,2027-01-24,A,Estrela,0,0,0-0,,scheduled,401885329
 Alverca,리그,por.1,2027-01-31,H,Sporting CP,0,0,0-0,,scheduled,401885314
@@ -32,19 +68,20 @@ Alverca,리그,por.1,2027-04-18,A,Moreirense,0,0,0-0,,scheduled,401885231
 Alverca,리그,por.1,2027-04-25,H,Vit. Guimarães,0,0,0-0,,scheduled,401884847
 Alverca,리그,por.1,2027-05-02,A,Gil Vicente FC,0,0,0-0,,scheduled,401884846
 Alverca,리그,por.1,2027-05-09,H,Estoril,0,0,0-0,,scheduled,401884836
-Alverca,리그,por.1,2027-05-16,A,Maritimo,0,0,0-0,,scheduled,401884827
-Arouca,리그,por.1,2026-08-08,A,Vit. Guimarães,0,0,0-0,,scheduled,401885484
-Arouca,리그,por.1,2026-08-16,H,Moreirense,0,0,0-0,,scheduled,401885481
-Arouca,리그,por.1,2026-08-23,A,Porto,0,0,0-0,,scheduled,401885469
-Arouca,리그,por.1,2026-08-30,H,Maritimo,0,0,0-0,,scheduled,401885463
-Arouca,리그,por.1,2026-09-06,A,Estoril,0,0,0-0,,scheduled,401885454
-Arouca,리그,por.1,2026-09-13,H,Santa Clara,0,0,0-0,,scheduled,401885446
-Arouca,리그,por.1,2026-09-20,A,Sporting CP,0,0,0-0,,scheduled,401885431
-Arouca,리그,por.1,2026-10-11,H,Estrela,0,0,0-0,,scheduled,401885428
-Arouca,리그,por.1,2026-10-25,A,Alverca,0,0,0-0,,scheduled,401885420
+Alverca,리그,por.1,2027-05-16,A,Marítimo,0,0,0-0,,scheduled,401884827
+Arouca,리그,por.1,2026-08-08,A,Vit. Guimarães,1,0,1-0,W,completed,401885484
+Arouca,리그,por.1,2026-08-16,H,Moreirense,4,0,4-0,W,completed,401885481
+Arouca,리그,por.1,2026-08-23,A,Porto,0,2,0-2,L,completed,401885469
+Arouca,리그,por.1,2026-08-29,H,Marítimo,2,1,2-1,W,completed,401885463
+Arouca,리그,por.1,2026-09-07,A,Estoril,0,0,0-0,D,completed,401885454
+Arouca,리그,por.1,2026-09-13,H,Santa Clara,1,2,1-2,L,completed,401885446
+Arouca,리그,por.1,2026-09-19,A,Sporting CP,2,2,2-2,D,completed,401885431
+Arouca,리그,por.1,2026-10-11,H,Estrela,1,0,1-0,W,completed,401885428
+Arouca,Taça de Portugal,por.taca.portugal,2026-10-18,A,Os Belenenses,0,0,0-0,,scheduled,401924424
+Arouca,리그,por.1,2026-10-24,A,Alverca,0,0,0-0,,scheduled,401885420
 Arouca,리그,por.1,2026-11-01,H,Nacional,0,0,0-0,,scheduled,401885410
-Arouca,리그,por.1,2026-11-08,A,Famalicão,0,0,0-0,,scheduled,401885399
-Arouca,리그,por.1,2026-11-29,H,Rio Ave,0,0,0-0,,scheduled,401885392
+Arouca,리그,por.1,2026-11-06,A,Famalicão,0,0,0-0,,scheduled,401885399
+Arouca,리그,por.1,2026-11-28,H,Rio Ave,0,0,0-0,,scheduled,401885392
 Arouca,리그,por.1,2026-12-06,A,Braga,0,0,0-0,,scheduled,401885382
 Arouca,리그,por.1,2026-12-13,A,Académico de Viseu,0,0,0-0,,scheduled,401885375
 Arouca,리그,por.1,2026-12-20,H,Casa Pia,0,0,0-0,,scheduled,401885364
@@ -53,7 +90,7 @@ Arouca,리그,por.1,2027-01-10,H,Benfica,0,0,0-0,,scheduled,401885345
 Arouca,리그,por.1,2027-01-17,H,Vit. Guimarães,0,0,0-0,,scheduled,401885331
 Arouca,리그,por.1,2027-01-24,A,Moreirense,0,0,0-0,,scheduled,401885328
 Arouca,리그,por.1,2027-01-31,H,Porto,0,0,0-0,,scheduled,401885316
-Arouca,리그,por.1,2027-02-07,A,Maritimo,0,0,0-0,,scheduled,401885310
+Arouca,리그,por.1,2027-02-07,A,Marítimo,0,0,0-0,,scheduled,401885310
 Arouca,리그,por.1,2027-02-14,H,Estoril,0,0,0-0,,scheduled,401885301
 Arouca,리그,por.1,2027-02-21,A,Santa Clara,0,0,0-0,,scheduled,401885293
 Arouca,리그,por.1,2027-02-28,H,Sporting CP,0,0,0-0,,scheduled,401885278
@@ -67,28 +104,39 @@ Arouca,리그,por.1,2027-04-25,H,Académico de Viseu,0,0,0-0,,scheduled,40188522
 Arouca,리그,por.1,2027-05-02,A,Casa Pia,0,0,0-0,,scheduled,401884844
 Arouca,리그,por.1,2027-05-09,H,Gil Vicente FC,0,0,0-0,,scheduled,401884835
 Arouca,리그,por.1,2027-05-16,A,Benfica,0,0,0-0,,scheduled,401884825
-Benfica,리그,por.1,2026-08-09,H,Académico de Viseu,0,0,0-0,,scheduled,401885485
-Benfica,리그,por.1,2026-08-16,A,Casa Pia,0,0,0-0,,scheduled,401885479
-Benfica,리그,por.1,2026-08-23,A,Moreirense,0,0,0-0,,scheduled,401885470
-Benfica,리그,por.1,2026-08-30,H,Estoril,0,0,0-0,,scheduled,401885457
-Benfica,리그,por.1,2026-09-06,A,Maritimo,0,0,0-0,,scheduled,401885452
-Benfica,리그,por.1,2026-09-13,H,Gil Vicente FC,0,0,0-0,,scheduled,401885439
-Benfica,리그,por.1,2026-09-20,A,Porto,0,0,0-0,,scheduled,401885433
-Benfica,리그,por.1,2026-10-11,H,Vit. Guimarães,0,0,0-0,,scheduled,401885421
-Benfica,리그,por.1,2026-10-25,A,Santa Clara,0,0,0-0,,scheduled,401885414
-Benfica,리그,por.1,2026-11-01,H,Alverca,0,0,0-0,,scheduled,401885403
+Benfica,리그,por.1,2026-08-09,H,Académico de Viseu,2,2,2-2,D,completed,401885485
+Benfica,리그,por.1,2026-08-17,A,Casa Pia,7,0,7-0,W,completed,401885479
+Benfica,Taça de Portugal,por.taca.portugal,2026-08-29,A,Fatima,1,3,1-3,L,completed,401906015
+Benfica,Taça de Portugal,por.taca.portugal,2026-08-30,H,Viana Alentejo,3,0,3-0,W,completed,401909608
+Benfica,리그,por.1,2026-08-31,H,Estoril,2,1,2-1,W,completed,401885457
+Benfica,리그,por.1,2026-09-05,A,Marítimo,3,0,3-0,W,completed,401885452
+Benfica,리그,por.1,2026-09-09,A,Moreirense,4,0,4-0,W,completed,401885470
+Benfica,리그,por.1,2026-09-13,H,Gil Vicente FC,3,1,3-1,W,completed,401885439
+Benfica,유로파리그,uefa.europa,2026-09-16,A,AC Milan,2,0,2-0,W,completed,401915586
+Benfica,리그,por.1,2026-09-20,A,Porto,1,3,1-3,L,completed,401885433
+Benfica,Taça de Portugal,por.taca.portugal,2026-09-20,A,Alcochetense,0,2,0-2,L,completed,401915762
+Benfica,리그,por.1,2026-10-11,H,Vit. Guimarães,2,0,2-0,W,completed,401885421
+Benfica,유로파리그,uefa.europa,2026-10-15,H,Celtic,0,0,0-0,,scheduled,401915562
+Benfica,유로파리그,uefa.europa,2026-10-22,A,Omonia Nicosia,0,0,0-0,,scheduled,401915544
+Benfica,리그,por.1,2026-10-26,A,Santa Clara,0,0,0-0,,scheduled,401885414
+Benfica,리그,por.1,2026-11-02,H,Alverca,0,0,0-0,,scheduled,401885403
+Benfica,유로파리그,uefa.europa,2026-11-05,H,Lech Poznan,0,0,0-0,,scheduled,401915525
 Benfica,리그,por.1,2026-11-08,A,Estrela,0,0,0-0,,scheduled,401885401
-Benfica,리그,por.1,2026-11-29,H,Famalicão,0,0,0-0,,scheduled,401885386
+Benfica,유로파리그,uefa.europa,2026-11-26,A,Viktoria Plzen,0,0,0-0,,scheduled,401915518
+Benfica,리그,por.1,2026-11-30,H,Famalicão,0,0,0-0,,scheduled,401885386
 Benfica,리그,por.1,2026-12-06,A,Nacional,0,0,0-0,,scheduled,401885379
+Benfica,유로파리그,uefa.europa,2026-12-10,H,OFI Crete,0,0,0-0,,scheduled,401915491
 Benfica,리그,por.1,2026-12-13,H,Braga,0,0,0-0,,scheduled,401885368
 Benfica,리그,por.1,2026-12-20,A,Rio Ave,0,0,0-0,,scheduled,401885360
 Benfica,리그,por.1,2026-12-27,H,Sporting CP,0,0,0-0,,scheduled,401885350
 Benfica,리그,por.1,2027-01-10,A,Arouca,0,0,0-0,,scheduled,401885345
 Benfica,리그,por.1,2027-01-17,A,Académico de Viseu,0,0,0-0,,scheduled,401885332
+Benfica,유로파리그,uefa.europa,2027-01-21,A,NEC Nijmegen,0,0,0-0,,scheduled,401915433
 Benfica,리그,por.1,2027-01-24,H,Casa Pia,0,0,0-0,,scheduled,401885326
+Benfica,유로파리그,uefa.europa,2027-01-28,H,AZ Alkmaar,0,0,0-0,,scheduled,401915468
 Benfica,리그,por.1,2027-01-31,H,Moreirense,0,0,0-0,,scheduled,401885317
 Benfica,리그,por.1,2027-02-07,A,Estoril,0,0,0-0,,scheduled,401885304
-Benfica,리그,por.1,2027-02-14,H,Maritimo,0,0,0-0,,scheduled,401885299
+Benfica,리그,por.1,2027-02-14,H,Marítimo,0,0,0-0,,scheduled,401885299
 Benfica,리그,por.1,2027-02-21,A,Gil Vicente FC,0,0,0-0,,scheduled,401885286
 Benfica,리그,por.1,2027-02-28,H,Porto,0,0,0-0,,scheduled,401885280
 Benfica,리그,por.1,2027-03-07,A,Vit. Guimarães,0,0,0-0,,scheduled,401885268
@@ -101,22 +149,31 @@ Benfica,리그,por.1,2027-04-25,A,Braga,0,0,0-0,,scheduled,401884848
 Benfica,리그,por.1,2027-05-02,H,Rio Ave,0,0,0-0,,scheduled,401884840
 Benfica,리그,por.1,2027-05-09,A,Sporting CP,0,0,0-0,,scheduled,401884830
 Benfica,리그,por.1,2027-05-16,H,Arouca,0,0,0-0,,scheduled,401884825
-Braga,리그,por.1,2026-08-09,A,Moreirense,0,0,0-0,,scheduled,401885488
-Braga,리그,por.1,2026-08-16,H,Gil Vicente FC,0,0,0-0,,scheduled,401885480
-Braga,리그,por.1,2026-08-23,A,Estrela,0,0,0-0,,scheduled,401885474
-Braga,리그,por.1,2026-08-30,H,Vit. Guimarães,0,0,0-0,,scheduled,401885462
-Braga,리그,por.1,2026-09-06,A,Alverca,0,0,0-0,,scheduled,401885456
-Braga,리그,por.1,2026-09-13,H,Estoril,0,0,0-0,,scheduled,401885445
-Braga,리그,por.1,2026-09-20,A,Santa Clara,0,0,0-0,,scheduled,401885432
-Braga,리그,por.1,2026-10-11,H,Sporting CP,0,0,0-0,,scheduled,401885427
+Braga,리그,por.1,2026-08-09,A,Moreirense,2,2,2-2,D,completed,401885488
+Braga,Taça de Portugal,por.taca.portugal,2026-08-30,A,Rebordelo,4,0,4-0,W,completed,401906009
+Braga,리그,por.1,2026-08-31,H,Vit. Guimarães,1,0,1-0,W,completed,401885462
+Braga,리그,por.1,2026-09-05,A,Alverca,2,1,2-1,W,completed,401885456
+Braga,리그,por.1,2026-09-10,A,Estrela,1,2,1-2,L,completed,401885474
+Braga,리그,por.1,2026-09-14,H,Estoril,1,0,1-0,W,completed,401885445
+Braga,리그,por.1,2026-09-20,A,Santa Clara,0,0,0-0,D,completed,401885432
+Braga,Taça de Portugal,por.taca.portugal,2026-09-20,H,Celoricense,6,1,6-1,W,completed,401915758
+Braga,리그,por.1,2026-10-09,H,Sporting CP,1,3,1-3,L,completed,401885427
+Braga,컨퍼런스리그,uefa.europa.conf,2026-10-15,A,F.C. København,0,0,0-0,,scheduled,401915852
+Braga,Taça de Portugal,por.taca.portugal,2026-10-17,A,Uniao Leiria,0,0,0-0,,scheduled,401924405
+Braga,리그,por.1,2026-10-19,H,Gil Vicente FC,0,0,0-0,,scheduled,401885480
+Braga,컨퍼런스리그,uefa.europa.conf,2026-10-22,H,KAA Gent,0,0,0-0,,scheduled,401915832
 Braga,리그,por.1,2026-10-25,A,Nacional,0,0,0-0,,scheduled,401885416
 Braga,리그,por.1,2026-11-01,H,Famalicão,0,0,0-0,,scheduled,401885409
+Braga,컨퍼런스리그,uefa.europa.conf,2026-11-05,A,AGF,0,0,0-0,,scheduled,401915831
 Braga,리그,por.1,2026-11-08,A,Rio Ave,0,0,0-0,,scheduled,401885397
-Braga,리그,por.1,2026-11-29,A,Casa Pia,0,0,0-0,,scheduled,401885391
+Braga,컨퍼런스리그,uefa.europa.conf,2026-11-26,H,KuPS Kuopio,0,0,0-0,,scheduled,401915802
+Braga,리그,por.1,2026-11-30,A,Casa Pia,0,0,0-0,,scheduled,401885391
 Braga,리그,por.1,2026-12-06,H,Arouca,0,0,0-0,,scheduled,401885382
+Braga,컨퍼런스리그,uefa.europa.conf,2026-12-10,A,SK Brann,0,0,0-0,,scheduled,401915797
 Braga,리그,por.1,2026-12-13,A,Benfica,0,0,0-0,,scheduled,401885368
+Braga,컨퍼런스리그,uefa.europa.conf,2026-12-17,H,Egnatia,0,0,0-0,,scheduled,401915614
 Braga,리그,por.1,2026-12-20,H,Académico de Viseu,0,0,0-0,,scheduled,401885363
-Braga,리그,por.1,2026-12-27,A,Maritimo,0,0,0-0,,scheduled,401885354
+Braga,리그,por.1,2026-12-27,A,Marítimo,0,0,0-0,,scheduled,401885354
 Braga,리그,por.1,2027-01-10,H,Porto,0,0,0-0,,scheduled,401885344
 Braga,리그,por.1,2027-01-17,H,Moreirense,0,0,0-0,,scheduled,401885335
 Braga,리그,por.1,2027-01-24,A,Gil Vicente FC,0,0,0-0,,scheduled,401885327
@@ -133,26 +190,27 @@ Braga,리그,por.1,2027-04-11,H,Casa Pia,0,0,0-0,,scheduled,401885238
 Braga,리그,por.1,2027-04-18,A,Arouca,0,0,0-0,,scheduled,401885229
 Braga,리그,por.1,2027-04-25,H,Benfica,0,0,0-0,,scheduled,401884848
 Braga,리그,por.1,2027-05-02,A,Académico de Viseu,0,0,0-0,,scheduled,401884843
-Braga,리그,por.1,2027-05-09,H,Maritimo,0,0,0-0,,scheduled,401884834
+Braga,리그,por.1,2027-05-09,H,Marítimo,0,0,0-0,,scheduled,401884834
 Braga,리그,por.1,2027-05-16,A,Porto,0,0,0-0,,scheduled,401884824
-Casa Pia,리그,por.1,2026-08-08,A,Maritimo,0,0,0-0,,scheduled,401885489
-Casa Pia,리그,por.1,2026-08-16,H,Benfica,0,0,0-0,,scheduled,401885479
-Casa Pia,리그,por.1,2026-08-23,A,Gil Vicente FC,0,0,0-0,,scheduled,401885472
-Casa Pia,리그,por.1,2026-08-30,H,Moreirense,0,0,0-0,,scheduled,401885461
-Casa Pia,리그,por.1,2026-09-06,A,Vit. Guimarães,0,0,0-0,,scheduled,401885448
-Casa Pia,리그,por.1,2026-09-13,H,Porto,0,0,0-0,,scheduled,401885444
-Casa Pia,리그,por.1,2026-09-20,A,Estoril,0,0,0-0,,scheduled,401885436
-Casa Pia,리그,por.1,2026-10-11,H,Santa Clara,0,0,0-0,,scheduled,401885426
-Casa Pia,리그,por.1,2026-10-25,A,Estrela,0,0,0-0,,scheduled,401885419
-Casa Pia,리그,por.1,2026-11-01,H,Sporting CP,0,0,0-0,,scheduled,401885408
-Casa Pia,리그,por.1,2026-11-08,A,Alverca,0,0,0-0,,scheduled,401885402
-Casa Pia,리그,por.1,2026-11-29,H,Braga,0,0,0-0,,scheduled,401885391
+Casa Pia,리그,por.1,2026-08-08,A,Marítimo,0,1,0-1,L,completed,401885489
+Casa Pia,리그,por.1,2026-08-17,H,Benfica,0,7,0-7,L,completed,401885479
+Casa Pia,리그,por.1,2026-08-24,A,Gil Vicente FC,0,2,0-2,L,completed,401885472
+Casa Pia,리그,por.1,2026-08-30,H,Moreirense,0,1,0-1,L,completed,401885461
+Casa Pia,리그,por.1,2026-09-06,A,Vit. Guimarães,0,0,0-0,D,completed,401885448
+Casa Pia,리그,por.1,2026-09-12,H,Porto,1,4,1-4,L,completed,401885444
+Casa Pia,리그,por.1,2026-09-20,A,Estoril,2,1,2-1,W,completed,401885436
+Casa Pia,리그,por.1,2026-10-10,H,Santa Clara,0,1,0-1,L,completed,401885426
+Casa Pia,Taça de Portugal,por.taca.portugal,2026-10-18,A,Alpendorada,0,0,0-0,,scheduled,401924381
+Casa Pia,리그,por.1,2026-10-24,A,Estrela,0,0,0-0,,scheduled,401885419
+Casa Pia,리그,por.1,2026-10-30,H,Sporting CP,0,0,0-0,,scheduled,401885408
+Casa Pia,리그,por.1,2026-11-07,A,Alverca,0,0,0-0,,scheduled,401885402
+Casa Pia,리그,por.1,2026-11-30,H,Braga,0,0,0-0,,scheduled,401885391
 Casa Pia,리그,por.1,2026-12-06,A,Rio Ave,0,0,0-0,,scheduled,401885378
 Casa Pia,리그,por.1,2026-12-13,H,Nacional,0,0,0-0,,scheduled,401885374
 Casa Pia,리그,por.1,2026-12-20,A,Arouca,0,0,0-0,,scheduled,401885364
 Casa Pia,리그,por.1,2026-12-27,H,Famalicão,0,0,0-0,,scheduled,401885357
 Casa Pia,리그,por.1,2027-01-10,A,Académico de Viseu,0,0,0-0,,scheduled,401885348
-Casa Pia,리그,por.1,2027-01-17,H,Maritimo,0,0,0-0,,scheduled,401885336
+Casa Pia,리그,por.1,2027-01-17,H,Marítimo,0,0,0-0,,scheduled,401885336
 Casa Pia,리그,por.1,2027-01-24,A,Benfica,0,0,0-0,,scheduled,401885326
 Casa Pia,리그,por.1,2027-01-31,H,Gil Vicente FC,0,0,0-0,,scheduled,401885319
 Casa Pia,리그,por.1,2027-02-07,A,Moreirense,0,0,0-0,,scheduled,401885308
@@ -169,17 +227,18 @@ Casa Pia,리그,por.1,2027-04-25,A,Nacional,0,0,0-0,,scheduled,401885221
 Casa Pia,리그,por.1,2027-05-02,H,Arouca,0,0,0-0,,scheduled,401884844
 Casa Pia,리그,por.1,2027-05-09,A,Famalicão,0,0,0-0,,scheduled,401884837
 Casa Pia,리그,por.1,2027-05-16,H,Académico de Viseu,0,0,0-0,,scheduled,401884828
-Estoril,리그,por.1,2026-08-07,H,Famalicão,0,0,0-0,,scheduled,401885491
-Estoril,리그,por.1,2026-08-16,A,Nacional,0,0,0-0,,scheduled,401885477
-Estoril,리그,por.1,2026-08-23,H,Rio Ave,0,0,0-0,,scheduled,401885473
-Estoril,리그,por.1,2026-08-30,A,Benfica,0,0,0-0,,scheduled,401885457
-Estoril,리그,por.1,2026-09-06,H,Arouca,0,0,0-0,,scheduled,401885454
-Estoril,리그,por.1,2026-09-13,A,Braga,0,0,0-0,,scheduled,401885445
-Estoril,리그,por.1,2026-09-20,H,Casa Pia,0,0,0-0,,scheduled,401885436
-Estoril,리그,por.1,2026-10-11,A,Académico de Viseu,0,0,0-0,,scheduled,401885429
+Estoril,리그,por.1,2026-08-07,H,Famalicão,1,1,1-1,D,completed,401885491
+Estoril,리그,por.1,2026-08-16,A,Nacional,0,2,0-2,L,completed,401885477
+Estoril,리그,por.1,2026-08-22,H,Rio Ave,0,2,0-2,L,completed,401885473
+Estoril,리그,por.1,2026-08-31,A,Benfica,1,2,1-2,L,completed,401885457
+Estoril,리그,por.1,2026-09-07,H,Arouca,0,0,0-0,D,completed,401885454
+Estoril,리그,por.1,2026-09-14,A,Braga,0,1,0-1,L,completed,401885445
+Estoril,리그,por.1,2026-09-20,H,Casa Pia,1,2,1-2,L,completed,401885436
+Estoril,리그,por.1,2026-10-10,A,Académico de Viseu,1,2,1-2,L,completed,401885429
+Estoril,Taça de Portugal,por.taca.portugal,2026-10-18,A,Sagueiros,0,0,0-0,,scheduled,401924413
 Estoril,리그,por.1,2026-10-25,H,Moreirense,0,0,0-0,,scheduled,401885418
-Estoril,리그,por.1,2026-11-01,A,Porto,0,0,0-0,,scheduled,401885404
-Estoril,리그,por.1,2026-11-08,H,Maritimo,0,0,0-0,,scheduled,401885400
+Estoril,리그,por.1,2026-10-31,A,Porto,0,0,0-0,,scheduled,401885404
+Estoril,리그,por.1,2026-11-08,H,Marítimo,0,0,0-0,,scheduled,401885400
 Estoril,리그,por.1,2026-11-29,A,Gil Vicente FC,0,0,0-0,,scheduled,401885390
 Estoril,리그,por.1,2026-12-06,H,Vit. Guimarães,0,0,0-0,,scheduled,401885381
 Estoril,리그,por.1,2026-12-13,H,Santa Clara,0,0,0-0,,scheduled,401885373
@@ -196,28 +255,29 @@ Estoril,리그,por.1,2027-02-28,A,Casa Pia,0,0,0-0,,scheduled,401885283
 Estoril,리그,por.1,2027-03-07,H,Académico de Viseu,0,0,0-0,,scheduled,401885276
 Estoril,리그,por.1,2027-03-14,A,Moreirense,0,0,0-0,,scheduled,401885265
 Estoril,리그,por.1,2027-03-21,H,Porto,0,0,0-0,,scheduled,401885251
-Estoril,리그,por.1,2027-04-04,A,Maritimo,0,0,0-0,,scheduled,401885247
+Estoril,리그,por.1,2027-04-04,A,Marítimo,0,0,0-0,,scheduled,401885247
 Estoril,리그,por.1,2027-04-11,H,Gil Vicente FC,0,0,0-0,,scheduled,401885237
 Estoril,리그,por.1,2027-04-18,A,Vit. Guimarães,0,0,0-0,,scheduled,401885228
 Estoril,리그,por.1,2027-04-25,A,Santa Clara,0,0,0-0,,scheduled,401884853
 Estoril,리그,por.1,2027-05-02,H,Sporting CP,0,0,0-0,,scheduled,401884838
 Estoril,리그,por.1,2027-05-09,A,Alverca,0,0,0-0,,scheduled,401884836
 Estoril,리그,por.1,2027-05-16,H,Estrela,0,0,0-0,,scheduled,401884826
-Estrela,리그,por.1,2026-08-08,H,Sporting CP,0,0,0-0,,scheduled,401885492
-Estrela,리그,por.1,2026-08-15,A,Alverca,0,0,0-0,,scheduled,401885482
-Estrela,리그,por.1,2026-08-23,H,Braga,0,0,0-0,,scheduled,401885474
-Estrela,리그,por.1,2026-08-30,A,Nacional,0,0,0-0,,scheduled,401885459
-Estrela,리그,por.1,2026-09-06,H,Famalicão,0,0,0-0,,scheduled,401885455
-Estrela,리그,por.1,2026-09-13,A,Rio Ave,0,0,0-0,,scheduled,401885440
-Estrela,리그,por.1,2026-09-20,H,Académico de Viseu,0,0,0-0,,scheduled,401885437
-Estrela,리그,por.1,2026-10-11,A,Arouca,0,0,0-0,,scheduled,401885428
-Estrela,리그,por.1,2026-10-25,H,Casa Pia,0,0,0-0,,scheduled,401885419
-Estrela,리그,por.1,2026-11-01,A,Moreirense,0,0,0-0,,scheduled,401885405
+Estrela,리그,por.1,2026-08-08,H,Sporting CP,2,2,2-2,D,completed,401885492
+Estrela,리그,por.1,2026-08-15,A,Alverca,2,2,2-2,D,completed,401885482
+Estrela,리그,por.1,2026-08-30,A,Nacional,3,2,3-2,W,completed,401885459
+Estrela,리그,por.1,2026-09-05,H,Famalicão,2,2,2-2,D,completed,401885455
+Estrela,리그,por.1,2026-09-10,H,Braga,2,1,2-1,W,completed,401885474
+Estrela,리그,por.1,2026-09-14,A,Rio Ave,3,3,3-3,D,completed,401885440
+Estrela,리그,por.1,2026-09-20,H,Académico de Viseu,0,2,0-2,L,completed,401885437
+Estrela,리그,por.1,2026-10-11,A,Arouca,0,1,0-1,L,completed,401885428
+Estrela,Taça de Portugal,por.taca.portugal,2026-10-17,A,AD Fazendense,0,0,0-0,,scheduled,401924411
+Estrela,리그,por.1,2026-10-24,H,Casa Pia,0,0,0-0,,scheduled,401885419
+Estrela,리그,por.1,2026-10-31,A,Moreirense,0,0,0-0,,scheduled,401885405
 Estrela,리그,por.1,2026-11-08,H,Benfica,0,0,0-0,,scheduled,401885401
-Estrela,리그,por.1,2026-11-29,A,Vit. Guimarães,0,0,0-0,,scheduled,401885385
+Estrela,리그,por.1,2026-11-28,A,Vit. Guimarães,0,0,0-0,,scheduled,401885385
 Estrela,리그,por.1,2026-12-06,H,Gil Vicente FC,0,0,0-0,,scheduled,401885383
 Estrela,리그,por.1,2026-12-13,A,Porto,0,0,0-0,,scheduled,401885369
-Estrela,리그,por.1,2026-12-20,H,Maritimo,0,0,0-0,,scheduled,401885365
+Estrela,리그,por.1,2026-12-20,H,Marítimo,0,0,0-0,,scheduled,401885365
 Estrela,리그,por.1,2026-12-27,A,Santa Clara,0,0,0-0,,scheduled,401885351
 Estrela,리그,por.1,2027-01-10,H,Estoril,0,0,0-0,,scheduled,401885346
 Estrela,리그,por.1,2027-01-17,A,Sporting CP,0,0,0-0,,scheduled,401885339
@@ -234,28 +294,29 @@ Estrela,리그,por.1,2027-04-04,A,Benfica,0,0,0-0,,scheduled,401885248
 Estrela,리그,por.1,2027-04-11,H,Vit. Guimarães,0,0,0-0,,scheduled,401885232
 Estrela,리그,por.1,2027-04-18,A,Gil Vicente FC,0,0,0-0,,scheduled,401885230
 Estrela,리그,por.1,2027-04-25,H,Porto,0,0,0-0,,scheduled,401884849
-Estrela,리그,por.1,2027-05-02,A,Maritimo,0,0,0-0,,scheduled,401884845
+Estrela,리그,por.1,2027-05-02,A,Marítimo,0,0,0-0,,scheduled,401884845
 Estrela,리그,por.1,2027-05-09,H,Santa Clara,0,0,0-0,,scheduled,401884831
 Estrela,리그,por.1,2027-05-16,A,Estoril,0,0,0-0,,scheduled,401884826
-Famalicão,리그,por.1,2026-08-07,A,Estoril,0,0,0-0,,scheduled,401885491
-Famalicão,리그,por.1,2026-08-16,H,Maritimo,0,0,0-0,,scheduled,401885478
-Famalicão,리그,por.1,2026-08-23,A,Santa Clara,0,0,0-0,,scheduled,401885468
-Famalicão,리그,por.1,2026-08-30,H,Gil Vicente FC,0,0,0-0,,scheduled,401885460
-Famalicão,리그,por.1,2026-09-06,A,Estrela,0,0,0-0,,scheduled,401885455
-Famalicão,리그,por.1,2026-09-13,H,Sporting CP,0,0,0-0,,scheduled,401885443
-Famalicão,리그,por.1,2026-09-20,A,Nacional,0,0,0-0,,scheduled,401885434
-Famalicão,리그,por.1,2026-10-11,H,Alverca,0,0,0-0,,scheduled,401885425
+Famalicão,리그,por.1,2026-08-07,A,Estoril,1,1,1-1,D,completed,401885491
+Famalicão,리그,por.1,2026-08-16,H,Marítimo,1,2,1-2,L,completed,401885478
+Famalicão,리그,por.1,2026-08-23,A,Santa Clara,0,1,0-1,L,completed,401885468
+Famalicão,리그,por.1,2026-08-30,H,Gil Vicente FC,0,0,0-0,D,completed,401885460
+Famalicão,리그,por.1,2026-09-05,A,Estrela,2,2,2-2,D,completed,401885455
+Famalicão,리그,por.1,2026-09-13,H,Sporting CP,1,1,1-1,D,completed,401885443
+Famalicão,리그,por.1,2026-09-19,A,Nacional,4,0,4-0,W,completed,401885434
+Famalicão,리그,por.1,2026-10-12,H,Alverca,1,4,1-4,L,completed,401885425
+Famalicão,Taça de Portugal,por.taca.portugal,2026-10-18,A,Paredes,0,0,0-0,,scheduled,401924425
 Famalicão,리그,por.1,2026-10-25,A,Rio Ave,0,0,0-0,,scheduled,401885415
 Famalicão,리그,por.1,2026-11-01,A,Braga,0,0,0-0,,scheduled,401885409
-Famalicão,리그,por.1,2026-11-08,H,Arouca,0,0,0-0,,scheduled,401885399
-Famalicão,리그,por.1,2026-11-29,A,Benfica,0,0,0-0,,scheduled,401885386
+Famalicão,리그,por.1,2026-11-06,H,Arouca,0,0,0-0,,scheduled,401885399
+Famalicão,리그,por.1,2026-11-30,A,Benfica,0,0,0-0,,scheduled,401885386
 Famalicão,리그,por.1,2026-12-06,H,Académico de Viseu,0,0,0-0,,scheduled,401885380
 Famalicão,리그,por.1,2026-12-13,A,Moreirense,0,0,0-0,,scheduled,401885370
 Famalicão,리그,por.1,2026-12-20,H,Porto,0,0,0-0,,scheduled,401885362
 Famalicão,리그,por.1,2026-12-27,A,Casa Pia,0,0,0-0,,scheduled,401885357
 Famalicão,리그,por.1,2027-01-10,H,Vit. Guimarães,0,0,0-0,,scheduled,401885343
 Famalicão,리그,por.1,2027-01-17,H,Estoril,0,0,0-0,,scheduled,401885338
-Famalicão,리그,por.1,2027-01-24,A,Maritimo,0,0,0-0,,scheduled,401885325
+Famalicão,리그,por.1,2027-01-24,A,Marítimo,0,0,0-0,,scheduled,401885325
 Famalicão,리그,por.1,2027-01-31,H,Santa Clara,0,0,0-0,,scheduled,401885315
 Famalicão,리그,por.1,2027-02-07,A,Gil Vicente FC,0,0,0-0,,scheduled,401885307
 Famalicão,리그,por.1,2027-02-14,H,Estrela,0,0,0-0,,scheduled,401885302
@@ -271,16 +332,17 @@ Famalicão,리그,por.1,2027-04-25,H,Moreirense,0,0,0-0,,scheduled,401884850
 Famalicão,리그,por.1,2027-05-02,A,Porto,0,0,0-0,,scheduled,401884842
 Famalicão,리그,por.1,2027-05-09,H,Casa Pia,0,0,0-0,,scheduled,401884837
 Famalicão,리그,por.1,2027-05-16,A,Vit. Guimarães,0,0,0-0,,scheduled,401884823
-Gil Vicente FC,리그,por.1,2026-08-09,H,Rio Ave,0,0,0-0,,scheduled,401885490
-Gil Vicente FC,리그,por.1,2026-08-16,A,Braga,0,0,0-0,,scheduled,401885480
-Gil Vicente FC,리그,por.1,2026-08-23,H,Casa Pia,0,0,0-0,,scheduled,401885472
-Gil Vicente FC,리그,por.1,2026-08-30,A,Famalicão,0,0,0-0,,scheduled,401885460
-Gil Vicente FC,리그,por.1,2026-09-06,H,Académico de Viseu,0,0,0-0,,scheduled,401885453
-Gil Vicente FC,리그,por.1,2026-09-13,A,Benfica,0,0,0-0,,scheduled,401885439
-Gil Vicente FC,리그,por.1,2026-09-20,H,Maritimo,0,0,0-0,,scheduled,401885435
-Gil Vicente FC,리그,por.1,2026-10-11,A,Moreirense,0,0,0-0,,scheduled,401885423
-Gil Vicente FC,리그,por.1,2026-10-25,H,Porto,0,0,0-0,,scheduled,401885417
-Gil Vicente FC,리그,por.1,2026-11-01,H,Vit. Guimarães,0,0,0-0,,scheduled,401885407
+Gil Vicente FC,리그,por.1,2026-08-09,H,Rio Ave,1,0,1-0,W,completed,401885490
+Gil Vicente FC,리그,por.1,2026-08-24,H,Casa Pia,2,0,2-0,W,completed,401885472
+Gil Vicente FC,리그,por.1,2026-08-30,A,Famalicão,0,0,0-0,D,completed,401885460
+Gil Vicente FC,리그,por.1,2026-09-06,H,Académico de Viseu,0,1,0-1,L,completed,401885453
+Gil Vicente FC,리그,por.1,2026-09-13,A,Benfica,1,3,1-3,L,completed,401885439
+Gil Vicente FC,리그,por.1,2026-09-19,H,Marítimo,1,1,1-1,D,completed,401885435
+Gil Vicente FC,리그,por.1,2026-10-09,A,Moreirense,1,0,1-0,W,completed,401885423
+Gil Vicente FC,Taça de Portugal,por.taca.portugal,2026-10-14,A,União Santarém,0,0,0-0,,scheduled,401924423
+Gil Vicente FC,리그,por.1,2026-10-19,A,Braga,0,0,0-0,,scheduled,401885480
+Gil Vicente FC,리그,por.1,2026-10-24,H,Porto,0,0,0-0,,scheduled,401885417
+Gil Vicente FC,리그,por.1,2026-11-02,H,Vit. Guimarães,0,0,0-0,,scheduled,401885407
 Gil Vicente FC,리그,por.1,2026-11-08,A,Santa Clara,0,0,0-0,,scheduled,401885396
 Gil Vicente FC,리그,por.1,2026-11-29,H,Estoril,0,0,0-0,,scheduled,401885390
 Gil Vicente FC,리그,por.1,2026-12-06,A,Estrela,0,0,0-0,,scheduled,401885383
@@ -294,7 +356,7 @@ Gil Vicente FC,리그,por.1,2027-01-31,A,Casa Pia,0,0,0-0,,scheduled,401885319
 Gil Vicente FC,리그,por.1,2027-02-07,H,Famalicão,0,0,0-0,,scheduled,401885307
 Gil Vicente FC,리그,por.1,2027-02-14,A,Académico de Viseu,0,0,0-0,,scheduled,401885300
 Gil Vicente FC,리그,por.1,2027-02-21,H,Benfica,0,0,0-0,,scheduled,401885286
-Gil Vicente FC,리그,por.1,2027-02-28,A,Maritimo,0,0,0-0,,scheduled,401885282
+Gil Vicente FC,리그,por.1,2027-02-28,A,Marítimo,0,0,0-0,,scheduled,401885282
 Gil Vicente FC,리그,por.1,2027-03-07,H,Moreirense,0,0,0-0,,scheduled,401885270
 Gil Vicente FC,리그,por.1,2027-03-14,A,Porto,0,0,0-0,,scheduled,401885264
 Gil Vicente FC,리그,por.1,2027-03-21,A,Vit. Guimarães,0,0,0-0,,scheduled,401885254
@@ -305,18 +367,54 @@ Gil Vicente FC,리그,por.1,2027-04-25,A,Sporting CP,0,0,0-0,,scheduled,40188485
 Gil Vicente FC,리그,por.1,2027-05-02,H,Alverca,0,0,0-0,,scheduled,401884846
 Gil Vicente FC,리그,por.1,2027-05-09,A,Arouca,0,0,0-0,,scheduled,401884835
 Gil Vicente FC,리그,por.1,2027-05-16,H,Nacional,0,0,0-0,,scheduled,401884822
-Moreirense,리그,por.1,2026-08-09,H,Braga,0,0,0-0,,scheduled,401885488
-Moreirense,리그,por.1,2026-08-16,A,Arouca,0,0,0-0,,scheduled,401885481
-Moreirense,리그,por.1,2026-08-23,H,Benfica,0,0,0-0,,scheduled,401885470
-Moreirense,리그,por.1,2026-08-30,A,Casa Pia,0,0,0-0,,scheduled,401885461
-Moreirense,리그,por.1,2026-09-06,A,Porto,0,0,0-0,,scheduled,401885451
-Moreirense,리그,por.1,2026-09-13,H,Maritimo,0,0,0-0,,scheduled,401885442
-Moreirense,리그,por.1,2026-09-20,A,Vit. Guimarães,0,0,0-0,,scheduled,401885430
-Moreirense,리그,por.1,2026-10-11,H,Gil Vicente FC,0,0,0-0,,scheduled,401885423
+Marítimo,리그,por.1,2026-08-08,H,Casa Pia,1,0,1-0,W,completed,401885489
+Marítimo,리그,por.1,2026-08-16,A,Famalicão,2,1,2-1,W,completed,401885478
+Marítimo,리그,por.1,2026-08-22,H,Académico de Viseu,2,2,2-2,D,completed,401885471
+Marítimo,리그,por.1,2026-08-29,A,Arouca,1,2,1-2,L,completed,401885463
+Marítimo,리그,por.1,2026-09-05,H,Benfica,0,3,0-3,L,completed,401885452
+Marítimo,리그,por.1,2026-09-14,A,Moreirense,1,3,1-3,L,completed,401885442
+Marítimo,리그,por.1,2026-09-19,A,Gil Vicente FC,1,1,1-1,D,completed,401885435
+Marítimo,리그,por.1,2026-10-10,H,Porto,1,2,1-2,L,completed,401885424
+Marítimo,Taça de Portugal,por.taca.portugal,2026-10-18,A,Alcochetense,0,0,0-0,,scheduled,401924412
+Marítimo,리그,por.1,2026-10-23,A,Vit. Guimarães,0,0,0-0,,scheduled,401885412
+Marítimo,리그,por.1,2026-11-01,H,Santa Clara,0,0,0-0,,scheduled,401885406
+Marítimo,리그,por.1,2026-11-08,A,Estoril,0,0,0-0,,scheduled,401885400
+Marítimo,리그,por.1,2026-11-27,H,Nacional,0,0,0-0,,scheduled,401885389
+Marítimo,리그,por.1,2026-12-06,A,Sporting CP,0,0,0-0,,scheduled,401885376
+Marítimo,리그,por.1,2026-12-13,H,Rio Ave,0,0,0-0,,scheduled,401885371
+Marítimo,리그,por.1,2026-12-20,A,Estrela,0,0,0-0,,scheduled,401885365
+Marítimo,리그,por.1,2026-12-27,H,Braga,0,0,0-0,,scheduled,401885354
+Marítimo,리그,por.1,2027-01-10,A,Alverca,0,0,0-0,,scheduled,401885347
+Marítimo,리그,por.1,2027-01-17,A,Casa Pia,0,0,0-0,,scheduled,401885336
+Marítimo,리그,por.1,2027-01-24,H,Famalicão,0,0,0-0,,scheduled,401885325
+Marítimo,리그,por.1,2027-01-31,A,Académico de Viseu,0,0,0-0,,scheduled,401885318
+Marítimo,리그,por.1,2027-02-07,H,Arouca,0,0,0-0,,scheduled,401885310
+Marítimo,리그,por.1,2027-02-14,A,Benfica,0,0,0-0,,scheduled,401885299
+Marítimo,리그,por.1,2027-02-21,H,Moreirense,0,0,0-0,,scheduled,401885289
+Marítimo,리그,por.1,2027-02-28,H,Gil Vicente FC,0,0,0-0,,scheduled,401885282
+Marítimo,리그,por.1,2027-03-07,A,Porto,0,0,0-0,,scheduled,401885271
+Marítimo,리그,por.1,2027-03-14,H,Vit. Guimarães,0,0,0-0,,scheduled,401885259
+Marítimo,리그,por.1,2027-03-21,A,Santa Clara,0,0,0-0,,scheduled,401885253
+Marítimo,리그,por.1,2027-04-04,H,Estoril,0,0,0-0,,scheduled,401885247
+Marítimo,리그,por.1,2027-04-11,A,Nacional,0,0,0-0,,scheduled,401885236
+Marítimo,리그,por.1,2027-04-18,H,Sporting CP,0,0,0-0,,scheduled,401885223
+Marítimo,리그,por.1,2027-04-25,A,Rio Ave,0,0,0-0,,scheduled,401884851
+Marítimo,리그,por.1,2027-05-02,H,Estrela,0,0,0-0,,scheduled,401884845
+Marítimo,리그,por.1,2027-05-09,A,Braga,0,0,0-0,,scheduled,401884834
+Marítimo,리그,por.1,2027-05-16,H,Alverca,0,0,0-0,,scheduled,401884827
+Moreirense,리그,por.1,2026-08-09,H,Braga,2,2,2-2,D,completed,401885488
+Moreirense,리그,por.1,2026-08-16,A,Arouca,0,4,0-4,L,completed,401885481
+Moreirense,리그,por.1,2026-08-30,A,Casa Pia,1,0,1-0,W,completed,401885461
+Moreirense,리그,por.1,2026-09-04,A,Porto,1,2,1-2,L,completed,401885451
+Moreirense,리그,por.1,2026-09-09,H,Benfica,0,4,0-4,L,completed,401885470
+Moreirense,리그,por.1,2026-09-14,H,Marítimo,3,1,3-1,W,completed,401885442
+Moreirense,리그,por.1,2026-09-20,A,Vit. Guimarães,1,1,1-1,D,completed,401885430
+Moreirense,리그,por.1,2026-10-09,H,Gil Vicente FC,0,1,0-1,L,completed,401885423
+Moreirense,Taça de Portugal,por.taca.portugal,2026-10-17,A,AVS Futebol,0,0,0-0,,scheduled,401924409
 Moreirense,리그,por.1,2026-10-25,A,Estoril,0,0,0-0,,scheduled,401885418
-Moreirense,리그,por.1,2026-11-01,H,Estrela,0,0,0-0,,scheduled,401885405
-Moreirense,리그,por.1,2026-11-08,A,Sporting CP,0,0,0-0,,scheduled,401885395
-Moreirense,리그,por.1,2026-11-29,H,Santa Clara,0,0,0-0,,scheduled,401885388
+Moreirense,리그,por.1,2026-10-31,H,Estrela,0,0,0-0,,scheduled,401885405
+Moreirense,리그,por.1,2026-11-07,A,Sporting CP,0,0,0-0,,scheduled,401885395
+Moreirense,리그,por.1,2026-11-28,H,Santa Clara,0,0,0-0,,scheduled,401885388
 Moreirense,리그,por.1,2026-12-06,A,Alverca,0,0,0-0,,scheduled,401885384
 Moreirense,리그,por.1,2026-12-13,H,Famalicão,0,0,0-0,,scheduled,401885370
 Moreirense,리그,por.1,2026-12-20,A,Nacional,0,0,0-0,,scheduled,401885361
@@ -327,7 +425,7 @@ Moreirense,리그,por.1,2027-01-24,H,Arouca,0,0,0-0,,scheduled,401885328
 Moreirense,리그,por.1,2027-01-31,A,Benfica,0,0,0-0,,scheduled,401885317
 Moreirense,리그,por.1,2027-02-07,H,Casa Pia,0,0,0-0,,scheduled,401885308
 Moreirense,리그,por.1,2027-02-14,H,Porto,0,0,0-0,,scheduled,401885298
-Moreirense,리그,por.1,2027-02-21,A,Maritimo,0,0,0-0,,scheduled,401885289
+Moreirense,리그,por.1,2027-02-21,A,Marítimo,0,0,0-0,,scheduled,401885289
 Moreirense,리그,por.1,2027-02-28,H,Vit. Guimarães,0,0,0-0,,scheduled,401885277
 Moreirense,리그,por.1,2027-03-07,A,Gil Vicente FC,0,0,0-0,,scheduled,401885270
 Moreirense,리그,por.1,2027-03-14,H,Estoril,0,0,0-0,,scheduled,401885265
@@ -339,18 +437,19 @@ Moreirense,리그,por.1,2027-04-25,A,Famalicão,0,0,0-0,,scheduled,401884850
 Moreirense,리그,por.1,2027-05-02,H,Nacional,0,0,0-0,,scheduled,401884841
 Moreirense,리그,por.1,2027-05-09,A,Académico de Viseu,0,0,0-0,,scheduled,401884833
 Moreirense,리그,por.1,2027-05-16,H,Rio Ave,0,0,0-0,,scheduled,401884821
-Nacional,리그,por.1,2026-08-10,A,Santa Clara,0,0,0-0,,scheduled,401885486
-Nacional,리그,por.1,2026-08-16,H,Estoril,0,0,0-0,,scheduled,401885477
-Nacional,리그,por.1,2026-08-23,A,Vit. Guimarães,0,0,0-0,,scheduled,401885466
-Nacional,리그,por.1,2026-08-30,H,Estrela,0,0,0-0,,scheduled,401885459
-Nacional,리그,por.1,2026-09-06,A,Sporting CP,0,0,0-0,,scheduled,401885449
-Nacional,리그,por.1,2026-09-13,H,Alverca,0,0,0-0,,scheduled,401885441
-Nacional,리그,por.1,2026-09-20,H,Famalicão,0,0,0-0,,scheduled,401885434
-Nacional,리그,por.1,2026-10-11,A,Rio Ave,0,0,0-0,,scheduled,401885422
+Nacional,리그,por.1,2026-08-10,A,Santa Clara,2,2,2-2,D,completed,401885486
+Nacional,리그,por.1,2026-08-16,H,Estoril,2,0,2-0,W,completed,401885477
+Nacional,리그,por.1,2026-08-23,A,Vit. Guimarães,0,1,0-1,L,completed,401885466
+Nacional,리그,por.1,2026-08-30,H,Estrela,2,3,2-3,L,completed,401885459
+Nacional,리그,por.1,2026-09-05,A,Sporting CP,0,2,0-2,L,completed,401885449
+Nacional,리그,por.1,2026-09-12,H,Alverca,1,3,1-3,L,completed,401885441
+Nacional,리그,por.1,2026-09-19,H,Famalicão,0,4,0-4,L,completed,401885434
+Nacional,리그,por.1,2026-10-11,A,Rio Ave,2,3,2-3,L,completed,401885422
+Nacional,Taça de Portugal,por.taca.portugal,2026-10-17,A,Sanjoanense,0,0,0-0,,scheduled,401924382
 Nacional,리그,por.1,2026-10-25,H,Braga,0,0,0-0,,scheduled,401885416
 Nacional,리그,por.1,2026-11-01,A,Arouca,0,0,0-0,,scheduled,401885410
-Nacional,리그,por.1,2026-11-08,H,Académico de Viseu,0,0,0-0,,scheduled,401885398
-Nacional,리그,por.1,2026-11-29,A,Maritimo,0,0,0-0,,scheduled,401885389
+Nacional,리그,por.1,2026-11-07,H,Académico de Viseu,0,0,0-0,,scheduled,401885398
+Nacional,리그,por.1,2026-11-27,A,Marítimo,0,0,0-0,,scheduled,401885389
 Nacional,리그,por.1,2026-12-06,H,Benfica,0,0,0-0,,scheduled,401885379
 Nacional,리그,por.1,2026-12-13,A,Casa Pia,0,0,0-0,,scheduled,401885374
 Nacional,리그,por.1,2026-12-20,H,Moreirense,0,0,0-0,,scheduled,401885361
@@ -367,37 +466,45 @@ Nacional,리그,por.1,2027-03-07,H,Rio Ave,0,0,0-0,,scheduled,401885269
 Nacional,리그,por.1,2027-03-14,A,Braga,0,0,0-0,,scheduled,401885263
 Nacional,리그,por.1,2027-03-21,H,Arouca,0,0,0-0,,scheduled,401885257
 Nacional,리그,por.1,2027-04-04,A,Académico de Viseu,0,0,0-0,,scheduled,401885245
-Nacional,리그,por.1,2027-04-11,H,Maritimo,0,0,0-0,,scheduled,401885236
+Nacional,리그,por.1,2027-04-11,H,Marítimo,0,0,0-0,,scheduled,401885236
 Nacional,리그,por.1,2027-04-18,A,Benfica,0,0,0-0,,scheduled,401885226
 Nacional,리그,por.1,2027-04-25,H,Casa Pia,0,0,0-0,,scheduled,401885221
 Nacional,리그,por.1,2027-05-02,A,Moreirense,0,0,0-0,,scheduled,401884841
 Nacional,리그,por.1,2027-05-09,H,Porto,0,0,0-0,,scheduled,401884832
 Nacional,리그,por.1,2027-05-16,A,Gil Vicente FC,0,0,0-0,,scheduled,401884822
-Porto,리그,por.1,2026-08-09,H,Alverca,0,0,0-0,,scheduled,401885487
-Porto,리그,por.1,2026-08-15,A,Rio Ave,0,0,0-0,,scheduled,401885476
-Porto,리그,por.1,2026-08-23,H,Arouca,0,0,0-0,,scheduled,401885469
-Porto,리그,por.1,2026-08-30,A,Académico de Viseu,0,0,0-0,,scheduled,401885465
-Porto,리그,por.1,2026-09-06,H,Moreirense,0,0,0-0,,scheduled,401885451
-Porto,리그,por.1,2026-09-13,A,Casa Pia,0,0,0-0,,scheduled,401885444
-Porto,리그,por.1,2026-09-20,H,Benfica,0,0,0-0,,scheduled,401885433
-Porto,리그,por.1,2026-10-11,A,Maritimo,0,0,0-0,,scheduled,401885424
-Porto,리그,por.1,2026-10-25,A,Gil Vicente FC,0,0,0-0,,scheduled,401885417
-Porto,리그,por.1,2026-11-01,H,Estoril,0,0,0-0,,scheduled,401885404
+Porto,리그,por.1,2026-08-09,H,Alverca,2,0,2-0,W,completed,401885487
+Porto,리그,por.1,2026-08-15,A,Rio Ave,2,0,2-0,W,completed,401885476
+Porto,리그,por.1,2026-08-23,H,Arouca,2,0,2-0,W,completed,401885469
+Porto,리그,por.1,2026-08-29,A,Académico de Viseu,3,0,3-0,W,completed,401885465
+Porto,리그,por.1,2026-09-04,H,Moreirense,2,1,2-1,W,completed,401885451
+Porto,챔피언스리그,uefa.champions,2026-09-08,H,Manchester City,0,2,0-2,L,completed,401915425
+Porto,리그,por.1,2026-09-12,A,Casa Pia,4,1,4-1,W,completed,401885444
+Porto,리그,por.1,2026-09-20,H,Benfica,3,1,3-1,W,completed,401885433
+Porto,리그,por.1,2026-10-10,A,Marítimo,2,1,2-1,W,completed,401885424
+Porto,챔피언스리그,uefa.champions,2026-10-14,A,Real Betis,0,0,0-0,,scheduled,401915408
+Porto,챔피언스리그,uefa.champions,2026-10-20,H,PSV Eindhoven,0,0,0-0,,scheduled,401915398
+Porto,리그,por.1,2026-10-24,A,Gil Vicente FC,0,0,0-0,,scheduled,401885417
+Porto,리그,por.1,2026-10-31,H,Estoril,0,0,0-0,,scheduled,401885404
+Porto,챔피언스리그,uefa.champions,2026-11-04,H,Napoli,0,0,0-0,,scheduled,401915301
 Porto,리그,por.1,2026-11-08,A,Vit. Guimarães,0,0,0-0,,scheduled,401885394
+Porto,챔피언스리그,uefa.champions,2026-11-24,A,Feyenoord Rotterdam,0,0,0-0,,scheduled,401915294
 Porto,리그,por.1,2026-11-29,H,Sporting CP,0,0,0-0,,scheduled,401885387
 Porto,리그,por.1,2026-12-06,A,Santa Clara,0,0,0-0,,scheduled,401885377
+Porto,챔피언스리그,uefa.champions,2026-12-09,A,Liverpool,0,0,0-0,,scheduled,401915369
 Porto,리그,por.1,2026-12-13,H,Estrela,0,0,0-0,,scheduled,401885369
 Porto,리그,por.1,2026-12-20,A,Famalicão,0,0,0-0,,scheduled,401885362
 Porto,리그,por.1,2026-12-27,H,Nacional,0,0,0-0,,scheduled,401885352
 Porto,리그,por.1,2027-01-10,A,Braga,0,0,0-0,,scheduled,401885344
 Porto,리그,por.1,2027-01-17,A,Alverca,0,0,0-0,,scheduled,401885334
+Porto,챔피언스리그,uefa.champions,2027-01-19,H,Slavia Prague,0,0,0-0,,scheduled,401915278
 Porto,리그,por.1,2027-01-24,H,Rio Ave,0,0,0-0,,scheduled,401885323
+Porto,챔피언스리그,uefa.champions,2027-01-27,A,LASK Linz,0,0,0-0,,scheduled,401915355
 Porto,리그,por.1,2027-01-31,A,Arouca,0,0,0-0,,scheduled,401885316
 Porto,리그,por.1,2027-02-07,H,Académico de Viseu,0,0,0-0,,scheduled,401885312
 Porto,리그,por.1,2027-02-14,A,Moreirense,0,0,0-0,,scheduled,401885298
 Porto,리그,por.1,2027-02-21,H,Casa Pia,0,0,0-0,,scheduled,401885291
 Porto,리그,por.1,2027-02-28,A,Benfica,0,0,0-0,,scheduled,401885280
-Porto,리그,por.1,2027-03-07,H,Maritimo,0,0,0-0,,scheduled,401885271
+Porto,리그,por.1,2027-03-07,H,Marítimo,0,0,0-0,,scheduled,401885271
 Porto,리그,por.1,2027-03-14,H,Gil Vicente FC,0,0,0-0,,scheduled,401885264
 Porto,리그,por.1,2027-03-21,A,Estoril,0,0,0-0,,scheduled,401885251
 Porto,리그,por.1,2027-04-04,H,Vit. Guimarães,0,0,0-0,,scheduled,401885241
@@ -407,20 +514,21 @@ Porto,리그,por.1,2027-04-25,A,Estrela,0,0,0-0,,scheduled,401884849
 Porto,리그,por.1,2027-05-02,H,Famalicão,0,0,0-0,,scheduled,401884842
 Porto,리그,por.1,2027-05-09,A,Nacional,0,0,0-0,,scheduled,401884832
 Porto,리그,por.1,2027-05-16,H,Braga,0,0,0-0,,scheduled,401884824
-Rio Ave,리그,por.1,2026-08-09,A,Gil Vicente FC,0,0,0-0,,scheduled,401885490
-Rio Ave,리그,por.1,2026-08-15,H,Porto,0,0,0-0,,scheduled,401885476
-Rio Ave,리그,por.1,2026-08-23,A,Estoril,0,0,0-0,,scheduled,401885473
-Rio Ave,리그,por.1,2026-08-30,H,Sporting CP,0,0,0-0,,scheduled,401885458
-Rio Ave,리그,por.1,2026-09-06,A,Santa Clara,0,0,0-0,,scheduled,401885450
-Rio Ave,리그,por.1,2026-09-13,H,Estrela,0,0,0-0,,scheduled,401885440
-Rio Ave,리그,por.1,2026-09-20,A,Alverca,0,0,0-0,,scheduled,401885438
-Rio Ave,리그,por.1,2026-10-11,H,Nacional,0,0,0-0,,scheduled,401885422
+Rio Ave,리그,por.1,2026-08-09,A,Gil Vicente FC,0,1,0-1,L,completed,401885490
+Rio Ave,리그,por.1,2026-08-15,H,Porto,0,2,0-2,L,completed,401885476
+Rio Ave,리그,por.1,2026-08-22,A,Estoril,2,0,2-0,W,completed,401885473
+Rio Ave,리그,por.1,2026-08-28,H,Sporting CP,0,4,0-4,L,completed,401885458
+Rio Ave,리그,por.1,2026-09-06,A,Santa Clara,0,4,0-4,L,completed,401885450
+Rio Ave,리그,por.1,2026-09-14,H,Estrela,3,3,3-3,D,completed,401885440
+Rio Ave,리그,por.1,2026-09-19,A,Alverca,0,1,0-1,L,completed,401885438
+Rio Ave,리그,por.1,2026-10-11,H,Nacional,3,2,3-2,W,completed,401885422
+Rio Ave,Taça de Portugal,por.taca.portugal,2026-10-17,A,Louletano,0,0,0-0,,scheduled,401924380
 Rio Ave,리그,por.1,2026-10-25,H,Famalicão,0,0,0-0,,scheduled,401885415
 Rio Ave,리그,por.1,2026-11-01,A,Académico de Viseu,0,0,0-0,,scheduled,401885411
 Rio Ave,리그,por.1,2026-11-08,H,Braga,0,0,0-0,,scheduled,401885397
-Rio Ave,리그,por.1,2026-11-29,A,Arouca,0,0,0-0,,scheduled,401885392
+Rio Ave,리그,por.1,2026-11-28,A,Arouca,0,0,0-0,,scheduled,401885392
 Rio Ave,리그,por.1,2026-12-06,H,Casa Pia,0,0,0-0,,scheduled,401885378
-Rio Ave,리그,por.1,2026-12-13,A,Maritimo,0,0,0-0,,scheduled,401885371
+Rio Ave,리그,por.1,2026-12-13,A,Marítimo,0,0,0-0,,scheduled,401885371
 Rio Ave,리그,por.1,2026-12-20,H,Benfica,0,0,0-0,,scheduled,401885360
 Rio Ave,리그,por.1,2026-12-27,A,Vit. Guimarães,0,0,0-0,,scheduled,401885349
 Rio Ave,리그,por.1,2027-01-10,H,Moreirense,0,0,0-0,,scheduled,401885341
@@ -437,22 +545,23 @@ Rio Ave,리그,por.1,2027-03-21,H,Académico de Viseu,0,0,0-0,,scheduled,4018852
 Rio Ave,리그,por.1,2027-04-04,A,Braga,0,0,0-0,,scheduled,401885244
 Rio Ave,리그,por.1,2027-04-11,H,Arouca,0,0,0-0,,scheduled,401885239
 Rio Ave,리그,por.1,2027-04-18,A,Casa Pia,0,0,0-0,,scheduled,401885225
-Rio Ave,리그,por.1,2027-04-25,H,Maritimo,0,0,0-0,,scheduled,401884851
+Rio Ave,리그,por.1,2027-04-25,H,Marítimo,0,0,0-0,,scheduled,401884851
 Rio Ave,리그,por.1,2027-05-02,A,Benfica,0,0,0-0,,scheduled,401884840
 Rio Ave,리그,por.1,2027-05-09,H,Vit. Guimarães,0,0,0-0,,scheduled,401884829
 Rio Ave,리그,por.1,2027-05-16,A,Moreirense,0,0,0-0,,scheduled,401884821
-Santa Clara,리그,por.1,2026-08-10,H,Nacional,0,0,0-0,,scheduled,401885486
-Santa Clara,리그,por.1,2026-08-15,A,Académico de Viseu,0,0,0-0,,scheduled,401885483
-Santa Clara,리그,por.1,2026-08-23,H,Famalicão,0,0,0-0,,scheduled,401885468
-Santa Clara,리그,por.1,2026-08-30,A,Alverca,0,0,0-0,,scheduled,401885464
-Santa Clara,리그,por.1,2026-09-06,H,Rio Ave,0,0,0-0,,scheduled,401885450
-Santa Clara,리그,por.1,2026-09-13,A,Arouca,0,0,0-0,,scheduled,401885446
-Santa Clara,리그,por.1,2026-09-20,H,Braga,0,0,0-0,,scheduled,401885432
-Santa Clara,리그,por.1,2026-10-11,A,Casa Pia,0,0,0-0,,scheduled,401885426
-Santa Clara,리그,por.1,2026-10-25,H,Benfica,0,0,0-0,,scheduled,401885414
-Santa Clara,리그,por.1,2026-11-01,A,Maritimo,0,0,0-0,,scheduled,401885406
+Santa Clara,리그,por.1,2026-08-10,H,Nacional,2,2,2-2,D,completed,401885486
+Santa Clara,리그,por.1,2026-08-15,A,Académico de Viseu,1,0,1-0,W,completed,401885483
+Santa Clara,리그,por.1,2026-08-23,H,Famalicão,1,0,1-0,W,completed,401885468
+Santa Clara,리그,por.1,2026-08-29,A,Alverca,1,1,1-1,D,completed,401885464
+Santa Clara,리그,por.1,2026-09-06,H,Rio Ave,4,0,4-0,W,completed,401885450
+Santa Clara,리그,por.1,2026-09-13,A,Arouca,2,1,2-1,W,completed,401885446
+Santa Clara,리그,por.1,2026-09-20,H,Braga,0,0,0-0,D,completed,401885432
+Santa Clara,리그,por.1,2026-10-10,A,Casa Pia,1,0,1-0,W,completed,401885426
+Santa Clara,Taça de Portugal,por.taca.portugal,2026-10-18,A,Mafra,0,0,0-0,,scheduled,401924410
+Santa Clara,리그,por.1,2026-10-26,H,Benfica,0,0,0-0,,scheduled,401885414
+Santa Clara,리그,por.1,2026-11-01,A,Marítimo,0,0,0-0,,scheduled,401885406
 Santa Clara,리그,por.1,2026-11-08,H,Gil Vicente FC,0,0,0-0,,scheduled,401885396
-Santa Clara,리그,por.1,2026-11-29,A,Moreirense,0,0,0-0,,scheduled,401885388
+Santa Clara,리그,por.1,2026-11-28,A,Moreirense,0,0,0-0,,scheduled,401885388
 Santa Clara,리그,por.1,2026-12-06,H,Porto,0,0,0-0,,scheduled,401885377
 Santa Clara,리그,por.1,2026-12-13,A,Estoril,0,0,0-0,,scheduled,401885373
 Santa Clara,리그,por.1,2026-12-20,H,Vit. Guimarães,0,0,0-0,,scheduled,401885359
@@ -467,7 +576,7 @@ Santa Clara,리그,por.1,2027-02-21,H,Arouca,0,0,0-0,,scheduled,401885293
 Santa Clara,리그,por.1,2027-02-28,A,Braga,0,0,0-0,,scheduled,401885279
 Santa Clara,리그,por.1,2027-03-07,H,Casa Pia,0,0,0-0,,scheduled,401885273
 Santa Clara,리그,por.1,2027-03-14,A,Benfica,0,0,0-0,,scheduled,401885261
-Santa Clara,리그,por.1,2027-03-21,H,Maritimo,0,0,0-0,,scheduled,401885253
+Santa Clara,리그,por.1,2027-03-21,H,Marítimo,0,0,0-0,,scheduled,401885253
 Santa Clara,리그,por.1,2027-04-04,A,Gil Vicente FC,0,0,0-0,,scheduled,401885243
 Santa Clara,리그,por.1,2027-04-11,H,Moreirense,0,0,0-0,,scheduled,401885235
 Santa Clara,리그,por.1,2027-04-18,A,Porto,0,0,0-0,,scheduled,401885224
@@ -475,25 +584,34 @@ Santa Clara,리그,por.1,2027-04-25,H,Estoril,0,0,0-0,,scheduled,401884853
 Santa Clara,리그,por.1,2027-05-02,A,Vit. Guimarães,0,0,0-0,,scheduled,401884839
 Santa Clara,리그,por.1,2027-05-09,A,Estrela,0,0,0-0,,scheduled,401884831
 Santa Clara,리그,por.1,2027-05-16,H,Sporting CP,0,0,0-0,,scheduled,401884820
-Sporting CP,리그,por.1,2026-08-08,A,Estrela,0,0,0-0,,scheduled,401885492
-Sporting CP,리그,por.1,2026-08-14,H,Vit. Guimarães,0,0,0-0,,scheduled,401885475
-Sporting CP,리그,por.1,2026-08-23,H,Alverca,0,0,0-0,,scheduled,401885467
-Sporting CP,리그,por.1,2026-08-30,A,Rio Ave,0,0,0-0,,scheduled,401885458
-Sporting CP,리그,por.1,2026-09-06,H,Nacional,0,0,0-0,,scheduled,401885449
-Sporting CP,리그,por.1,2026-09-13,A,Famalicão,0,0,0-0,,scheduled,401885443
-Sporting CP,리그,por.1,2026-09-20,H,Arouca,0,0,0-0,,scheduled,401885431
-Sporting CP,리그,por.1,2026-10-11,A,Braga,0,0,0-0,,scheduled,401885427
+Sporting CP,리그,por.1,2026-08-08,A,Estrela,2,2,2-2,D,completed,401885492
+Sporting CP,리그,por.1,2026-08-14,H,Vit. Guimarães,3,2,3-2,W,completed,401885475
+Sporting CP,리그,por.1,2026-08-22,H,Alverca,3,1,3-1,W,completed,401885467
+Sporting CP,리그,por.1,2026-08-28,A,Rio Ave,4,0,4-0,W,completed,401885458
+Sporting CP,Taça de Portugal,por.taca.portugal,2026-08-30,H,Mortágua,0,0,0-0,D,completed,401906016
+Sporting CP,리그,por.1,2026-09-05,H,Nacional,2,0,2-0,W,completed,401885449
+Sporting CP,챔피언스리그,uefa.champions,2026-09-09,H,Galatasaray,3,1,3-1,W,completed,401915447
+Sporting CP,리그,por.1,2026-09-13,A,Famalicão,1,1,1-1,D,completed,401885443
+Sporting CP,리그,por.1,2026-09-19,H,Arouca,2,2,2-2,D,completed,401885431
+Sporting CP,리그,por.1,2026-10-09,A,Braga,3,1,3-1,W,completed,401885427
+Sporting CP,챔피언스리그,uefa.champions,2026-10-13,A,Lens,0,0,0-0,,scheduled,401915418
+Sporting CP,챔피언스리그,uefa.champions,2026-10-21,H,LASK Linz,0,0,0-0,,scheduled,401915391
 Sporting CP,리그,por.1,2026-10-25,H,Académico de Viseu,0,0,0-0,,scheduled,401885413
-Sporting CP,리그,por.1,2026-11-01,A,Casa Pia,0,0,0-0,,scheduled,401885408
-Sporting CP,리그,por.1,2026-11-08,H,Moreirense,0,0,0-0,,scheduled,401885395
+Sporting CP,리그,por.1,2026-10-30,A,Casa Pia,0,0,0-0,,scheduled,401885408
+Sporting CP,챔피언스리그,uefa.champions,2026-11-03,A,Shakhtar Donetsk,0,0,0-0,,scheduled,401915310
+Sporting CP,리그,por.1,2026-11-07,H,Moreirense,0,0,0-0,,scheduled,401885395
+Sporting CP,챔피언스리그,uefa.champions,2026-11-25,H,Manchester United,0,0,0-0,,scheduled,401915373
 Sporting CP,리그,por.1,2026-11-29,A,Porto,0,0,0-0,,scheduled,401885387
-Sporting CP,리그,por.1,2026-12-06,H,Maritimo,0,0,0-0,,scheduled,401885376
+Sporting CP,리그,por.1,2026-12-06,H,Marítimo,0,0,0-0,,scheduled,401885376
+Sporting CP,챔피언스리그,uefa.champions,2026-12-08,A,AS Roma,0,0,0-0,,scheduled,401915288
 Sporting CP,리그,por.1,2026-12-13,A,Gil Vicente FC,0,0,0-0,,scheduled,401885372
 Sporting CP,리그,por.1,2026-12-20,H,Estoril,0,0,0-0,,scheduled,401885358
 Sporting CP,리그,por.1,2026-12-27,A,Benfica,0,0,0-0,,scheduled,401885350
 Sporting CP,리그,por.1,2027-01-10,H,Santa Clara,0,0,0-0,,scheduled,401885340
 Sporting CP,리그,por.1,2027-01-17,H,Estrela,0,0,0-0,,scheduled,401885339
+Sporting CP,챔피언스리그,uefa.champions,2027-01-20,H,Barcelona,0,0,0-0,,scheduled,401915356
 Sporting CP,리그,por.1,2027-01-24,A,Vit. Guimarães,0,0,0-0,,scheduled,401885322
+Sporting CP,챔피언스리그,uefa.champions,2027-01-27,A,Manchester City,0,0,0-0,,scheduled,401915352
 Sporting CP,리그,por.1,2027-01-31,A,Alverca,0,0,0-0,,scheduled,401885314
 Sporting CP,리그,por.1,2027-02-07,H,Rio Ave,0,0,0-0,,scheduled,401885305
 Sporting CP,리그,por.1,2027-02-14,A,Nacional,0,0,0-0,,scheduled,401885296
@@ -504,23 +622,29 @@ Sporting CP,리그,por.1,2027-03-14,A,Académico de Viseu,0,0,0-0,,scheduled,401
 Sporting CP,리그,por.1,2027-03-21,H,Casa Pia,0,0,0-0,,scheduled,401885255
 Sporting CP,리그,por.1,2027-04-04,A,Moreirense,0,0,0-0,,scheduled,401885242
 Sporting CP,리그,por.1,2027-04-11,H,Porto,0,0,0-0,,scheduled,401885234
-Sporting CP,리그,por.1,2027-04-18,A,Maritimo,0,0,0-0,,scheduled,401885223
+Sporting CP,리그,por.1,2027-04-18,A,Marítimo,0,0,0-0,,scheduled,401885223
 Sporting CP,리그,por.1,2027-04-25,H,Gil Vicente FC,0,0,0-0,,scheduled,401884852
 Sporting CP,리그,por.1,2027-05-02,A,Estoril,0,0,0-0,,scheduled,401884838
 Sporting CP,리그,por.1,2027-05-09,H,Benfica,0,0,0-0,,scheduled,401884830
 Sporting CP,리그,por.1,2027-05-16,A,Santa Clara,0,0,0-0,,scheduled,401884820
-Vit. Guimarães,리그,por.1,2026-08-08,H,Arouca,0,0,0-0,,scheduled,401885484
-Vit. Guimarães,리그,por.1,2026-08-14,A,Sporting CP,0,0,0-0,,scheduled,401885475
-Vit. Guimarães,리그,por.1,2026-08-23,H,Nacional,0,0,0-0,,scheduled,401885466
-Vit. Guimarães,리그,por.1,2026-08-30,A,Braga,0,0,0-0,,scheduled,401885462
-Vit. Guimarães,리그,por.1,2026-09-06,H,Casa Pia,0,0,0-0,,scheduled,401885448
-Vit. Guimarães,리그,por.1,2026-09-13,A,Académico de Viseu,0,0,0-0,,scheduled,401885447
-Vit. Guimarães,리그,por.1,2026-09-20,H,Moreirense,0,0,0-0,,scheduled,401885430
-Vit. Guimarães,리그,por.1,2026-10-11,A,Benfica,0,0,0-0,,scheduled,401885421
-Vit. Guimarães,리그,por.1,2026-10-25,H,Maritimo,0,0,0-0,,scheduled,401885412
-Vit. Guimarães,리그,por.1,2026-11-01,A,Gil Vicente FC,0,0,0-0,,scheduled,401885407
+Vit. Guimarães,리그,por.1,2026-08-08,H,Arouca,0,1,0-1,L,completed,401885484
+Vit. Guimarães,리그,por.1,2026-08-14,A,Sporting CP,2,3,2-3,L,completed,401885475
+Vit. Guimarães,리그,por.1,2026-08-23,H,Nacional,1,0,1-0,W,completed,401885466
+Vit. Guimarães,Taça de Portugal,por.taca.portugal,2026-08-30,A,Nazarenos,3,0,3-0,W,completed,401909251
+Vit. Guimarães,리그,por.1,2026-08-31,A,Braga,0,1,0-1,L,completed,401885462
+Vit. Guimarães,리그,por.1,2026-09-06,H,Casa Pia,0,0,0-0,D,completed,401885448
+Vit. Guimarães,리그,por.1,2026-09-12,A,Académico de Viseu,1,2,1-2,L,completed,401885447
+Vit. Guimarães,Taça de Portugal,por.taca.portugal,2026-09-19,H,Varzim,2,1,2-1,W,completed,401915579
+Vit. Guimarães,리그,por.1,2026-09-20,H,Moreirense,1,1,1-1,D,completed,401885430
+Vit. Guimarães,Taça de Portugal,por.taca.portugal,2026-09-20,A,Alcains,2,0,2-0,W,completed,401913983
+Vit. Guimarães,리그,por.1,2026-10-11,A,Benfica,0,2,0-2,L,completed,401885421
+Vit. Guimarães,Taça de Portugal,por.taca.portugal,2026-10-17,A,ACDR Lamelas,0,0,0-0,,scheduled,401924408
+Vit. Guimarães,Taça de Portugal,por.taca.portugal,2026-10-18,A,Brito,0,0,0-0,,scheduled,401924427
+Vit. Guimarães,Taça de Portugal,por.taca.portugal,2026-10-18,H,Uniao da Serra,0,0,0-0,,scheduled,401924428
+Vit. Guimarães,리그,por.1,2026-10-23,H,Marítimo,0,0,0-0,,scheduled,401885412
+Vit. Guimarães,리그,por.1,2026-11-02,A,Gil Vicente FC,0,0,0-0,,scheduled,401885407
 Vit. Guimarães,리그,por.1,2026-11-08,H,Porto,0,0,0-0,,scheduled,401885394
-Vit. Guimarães,리그,por.1,2026-11-29,H,Estrela,0,0,0-0,,scheduled,401885385
+Vit. Guimarães,리그,por.1,2026-11-28,H,Estrela,0,0,0-0,,scheduled,401885385
 Vit. Guimarães,리그,por.1,2026-12-06,A,Estoril,0,0,0-0,,scheduled,401885381
 Vit. Guimarães,리그,por.1,2026-12-13,H,Alverca,0,0,0-0,,scheduled,401885367
 Vit. Guimarães,리그,por.1,2026-12-20,A,Santa Clara,0,0,0-0,,scheduled,401885359
@@ -534,7 +658,7 @@ Vit. Guimarães,리그,por.1,2027-02-14,A,Casa Pia,0,0,0-0,,scheduled,401885295
 Vit. Guimarães,리그,por.1,2027-02-21,H,Académico de Viseu,0,0,0-0,,scheduled,401885294
 Vit. Guimarães,리그,por.1,2027-02-28,A,Moreirense,0,0,0-0,,scheduled,401885277
 Vit. Guimarães,리그,por.1,2027-03-07,H,Benfica,0,0,0-0,,scheduled,401885268
-Vit. Guimarães,리그,por.1,2027-03-14,A,Maritimo,0,0,0-0,,scheduled,401885259
+Vit. Guimarães,리그,por.1,2027-03-14,A,Marítimo,0,0,0-0,,scheduled,401885259
 Vit. Guimarães,리그,por.1,2027-03-21,H,Gil Vicente FC,0,0,0-0,,scheduled,401885254
 Vit. Guimarães,리그,por.1,2027-04-04,A,Porto,0,0,0-0,,scheduled,401885241
 Vit. Guimarães,리그,por.1,2027-04-11,A,Estrela,0,0,0-0,,scheduled,401885232

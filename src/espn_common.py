@@ -141,8 +141,10 @@ DOMESTIC_CUPS = {
     "SerieA": [("ita.coppa_italia", "코파 이탈리아", "coppa")],
     "Bundesliga": [("ger.dfb_pokal", "DFB-포칼", "pokal")],
     "Ligue1": [("fra.coupe_de_france", "쿠프 드 프랑스", "coupe")],
-    "LigaPortugal": [("por.taca", "Taça de Portugal", "taca"), ("por.taca_liga", "Taça da Liga", "leaguecup")],
-    "Eredivisie": [("ned.knvb_beker", "KNVB Beker", "beker")],
+    # 2026 중 ESPN 이 컵 코드를 변경(por.taca→por.taca.portugal, ned.knvb_beker→ned.cup)하고
+    # 타사 다 리가(por.taca_liga)는 제공 중단.
+    "LigaPortugal": [("por.taca.portugal", "Taça de Portugal", "taca")],
+    "Eredivisie": [("ned.cup", "KNVB Beker", "beker")],
 }
 
 
