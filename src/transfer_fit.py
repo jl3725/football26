@@ -24,7 +24,10 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "api"))
 sys.path.insert(0, str(ROOT / "src"))
-from leagues import data_path  # noqa: E402
+from leagues import SEASON_START, data_path  # noqa: E402
+
+# 계약 임박 = 이번 시즌 종료·다음 시즌 종료 해에 만료 (25/26 → 2026·2027)
+_EXPIRING_YEARS = (str(SEASON_START + 1), str(SEASON_START + 2))
 from manager_tactics import tactical_profile, tendency_clubs  # noqa: E402
 from club_profile import price_realism, recruit_fit  # noqa: E402
 
@@ -292,7 +295,7 @@ def discover_fits(team: str, role: str | None = None, top: int = 24,
                 why.append("예산 초과 우려")
             elif pr["verdict"] == "stretch":
                 why.append("가격 다소 무리")
-            if contract[:4] in ("2026", "2027"):
+            if contract[:4] in _EXPIRING_YEARS:
                 why.append(f"계약 {contract[:4]} 만료")
             seen.add(nm)
             recs.append({

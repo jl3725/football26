@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import type { Team, NextSeason } from "@/lib/api";
+import { showNextSeason, type Phase } from "@/lib/season";
 
 // 리그 티어 — 리그 확장 시 여기 배열에만 추가.
 //   TIER S = 빅5 · TIER A = 유럽 강호 · 원석 발굴(TALENT) = 셀링/유망주 공급 리그
@@ -42,21 +43,24 @@ function zoneOf(rank: number, total: number): { cls: string; tag: string } {
 
 export default function Sidebar({
   teams, sel, onSelect, seasonLabel = "25/26", next = null, atHome = false, onHome,
-  league = "EPL", onLeague,
+  league = "EPL", onLeague, phase,
 }: {
   teams: Team[]; sel: string; onSelect: (t: string) => void;
-  seasonLabel?: string; next?: NextSeason | null;
+  seasonLabel?: string; next?: NextSeason | null; phase?: Phase;
   atHome?: boolean; onHome?: () => void;
   league?: string; onLeague?: (l: string) => void;
 }) {
-  const [seasonTab, setSeasonTab] = useState<"next" | "cur">("next"); // 새 시즌 먼저
+  const [pickedTab, setSeasonTab] = useState<"next" | "cur">("next"); // 오프시즌엔 새 시즌 먼저
+  // 시즌 중에는 '다음 시즌' 탭이 현재 시즌과 같아 숨기고 현재 순위만
+  const hasNext = showNextSeason({ phase });
+  const seasonTab = hasNext ? pickedTab : "cur";
   const nextLabel = next?.season_label || nextSeasonLabel(seasonLabel);
   const total = teams.length;
   const leagueTitle = league === "LaLiga" ? "La Liga" : league === "SerieA" ? "Serie A" : league === "Bundesliga" ? "Bundesliga" : league === "Ligue1" ? "Ligue 1" : league === "LigaPortugal" ? "Liga Portugal" : league === "Eredivisie" ? "Eredivisie" : league === "BelgianProLeague" ? "Belgian Pro League" : "Premier League";
 
-  // 25/26: 최종 순위순
+  // 현재 데이터 시즌: 순위순
   const curShown = [...teams].sort((a, b) => a.rank - b.rank);
-  // 26/27: 감지된 실제 로스터(승격/강등 반영), 알파벳순. 없으면 현재 팀 폴백.
+  // 다음 시즌: 감지된 실제 로스터(승격/강등 반영), 알파벳순. 없으면 현재 팀 폴백.
   const nextShown = (next?.teams?.length
     ? next.teams
     : teams.map((t) => ({ name: t.name, color: t.color, logo: t.logo, promoted: false }))
@@ -98,10 +102,12 @@ export default function Sidebar({
         <span className="home-nav-dot" />
       </button>
 
-      <div className="side-tabs">
-        <button className={seasonTab === "next" ? "active" : ""} onClick={() => setSeasonTab("next")}>{nextLabel}</button>
-        <button className={seasonTab === "cur" ? "active" : ""} onClick={() => setSeasonTab("cur")}>{seasonLabel}</button>
-      </div>
+      {hasNext && (
+        <div className="side-tabs">
+          <button className={seasonTab === "next" ? "active" : ""} onClick={() => setSeasonTab("next")}>{nextLabel}</button>
+          <button className={seasonTab === "cur" ? "active" : ""} onClick={() => setSeasonTab("cur")}>{seasonLabel}</button>
+        </div>
+      )}
       <div className="side-label">
         {leagueTitle} · {seasonTab === "next" ? `${nextLabel} (개막 전)` : seasonLabel}
       </div>

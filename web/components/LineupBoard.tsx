@@ -4,6 +4,7 @@ import { getLineup, getProjection, type Lineup, type Projection } from "@/lib/ap
 import Pitch from "./Pitch";
 import { usePeek } from "./PlayerPeek";
 import { SkelPitch } from "./Skeleton";
+import { showNextSeason } from "@/lib/season";
 
 type Departed = { player: string; left_for: string; pos: string; photo: string };
 
@@ -20,10 +21,13 @@ export default function LineupBoard({ team, accent, departed = [] }: { team: str
     return () => { a = false; };
   }, [team]);
 
-  const curLabel = pj?.current_label ?? "25/26";
-  const nextLabel = pj?.next_label ?? "26/27";
-  const leftBoard = leftView === "cur" ? lu?.season : pj?.projected;
-  const leftFormation = leftView === "cur" ? lu?.season.formation : pj?.projected.formation;
+  const curLabel = pj?.current_label ?? "";
+  const nextLabel = pj?.next_label ?? "";
+  // 시즌 중에는 '다음 시즌 예상'이 의미 없음(같은 시즌) → 현재 시즌 BEST XI 만
+  const hasNext = !!pj && showNextSeason(pj);
+  const view = hasNext ? leftView : "cur";
+  const leftBoard = view === "cur" ? lu?.season : pj?.projected;
+  const leftFormation = view === "cur" ? lu?.season.formation : pj?.projected.formation;
 
   return (
     <div className="card" style={{ marginTop: 16 }}>
@@ -32,10 +36,10 @@ export default function LineupBoard({ team, accent, departed = [] }: { team: str
         {/* LEFT — 시즌 베스트 XI + 시즌 토글 */}
         <div>
           <div className="proj-toggle" style={{ marginBottom: 10 }}>
-            <button className={leftView === "next" ? "active" : ""} onClick={() => setLeftView("next")}
-              style={leftView === "next" ? { background: accent, color: "#0b0f17" } : undefined}>🔮 {nextLabel} 예상</button>
-            <button className={leftView === "cur" ? "active" : ""} onClick={() => setLeftView("cur")}
-              style={leftView === "cur" ? { background: accent, color: "#0b0f17" } : undefined}>{curLabel} BEST XI</button>
+            {hasNext && <button className={view === "next" ? "active" : ""} onClick={() => setLeftView("next")}
+              style={view === "next" ? { background: accent, color: "#0b0f17" } : undefined}>🔮 {nextLabel} 예상</button>}
+            <button className={view === "cur" ? "active" : ""} onClick={() => setLeftView("cur")}
+              style={view === "cur" ? { background: accent, color: "#0b0f17" } : undefined}>{curLabel} BEST XI</button>
           </div>
           {leftBoard
             ? <Pitch placements={leftBoard.placements} accent={accent} team={team} />
@@ -56,7 +60,7 @@ export default function LineupBoard({ team, accent, departed = [] }: { team: str
       </div>
 
       {/* 26/27 예상 효과 — 이탈/보강 진단 */}
-      {leftView === "next" && pj && pj.diagnosis.length > 0 && (
+      {view === "next" && pj && pj.diagnosis.length > 0 && (
         <div className="effect-box">
           <div className="effect-title" style={{ color: accent }}>{nextLabel} 이적 반영 효과</div>
           <div className="effect-grid">

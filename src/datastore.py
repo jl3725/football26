@@ -67,20 +67,32 @@ def _read_from_db(table: str, league: str, season: str) -> pd.DataFrame | None:
     try:
         if not _table_exists(conn, table):
             return None
-        df = pd.read_sql(f'SELECT * FROM "{table}"', conn)
+        # league/season 필터는 SQL 에서 — 전 리그·전 시즌을 읽고 pandas 로 거르면 시즌이 쌓일수록
+        # 요청당 메모리가 배로 늘어 무료 인스턴스(512MB)에서 위험하다.
+        decl = {r[1]: str(r[2]).upper() for r in conn.execute(f'PRAGMA table_info("{table}")')}
+        cols = set(decl)
+        where, params = [], []
+        if "league" in cols:
+            where.append("league = ?")
+            params.append(league)
+        if "season" in cols:
+            where.append("season = ?")
+            params.append(season)
+        sql = f'SELECT * FROM "{table}"' + (f" WHERE {' AND '.join(where)}" if where else "")
+        df = pd.read_sql(sql, conn, params=params)
+        if df.empty:
+            return None
+        # 이 리그·시즌에서 전부 비어 있는 컬럼은 None(object) 으로 읽힌다. 전체 테이블을 읽던 이전
+        # 동작에선 다른 리그의 숫자 값 때문에 float NaN 이었으므로, 그런 컬럼만 float 으로 맞춘다.
+        for c in df.columns:
+            if df[c].dtype == object and df[c].isna().all() and decl.get(c) in ("REAL", "INTEGER"):
+                if conn.execute(f'SELECT 1 FROM "{table}" WHERE "{c}" IS NOT NULL LIMIT 1').fetchone():
+                    df[c] = df[c].astype("float64")
     except Exception:  # noqa: BLE001
         return None
     finally:
         conn.close()
 
-    if df.empty:
-        return None
-    if "league" in df.columns:
-        df = df[df["league"] == league]
-    if "season" in df.columns:
-        df = df[df["season"] == season]
-    if df.empty:
-        return None
     return df.drop(columns=[c for c in ("league", "season") if c in df.columns]).reset_index(drop=True)
 
 

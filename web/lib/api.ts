@@ -18,7 +18,10 @@ export type Transfer = {
 
 export type Star = { player: string; pos: string; ovr: number; pot?: number; form?: number | null; rating: number; goals: number; assists: number; photo: string; role?: string; big_match?: boolean };
 export type Injury = { player: string; injury: string; until: string; pos: string; photo: string };
-export type Window = { season_id: number; window: string; label: string; state: string; is_open: boolean; kr: string | null };
+export type Window = {
+  season_id: number; window: string; label: string; state: string; is_open: boolean; kr: string | null;
+  phase?: "in_season" | "offseason" | "stale"; data_season_id?: number;
+};
 
 export type Overview = {
   team: string;
@@ -291,7 +294,7 @@ export const getCalendar = () => j<{ events: CalEvent[] }>(`/api/calendar`);
 export const getLineup = (t: string, l = _league) => j<Lineup>(`/api/lineup/${q(t, l)}`);
 export type Diag = { kind: string; severity: string; player: string; slot: string; line: string; to?: string; fee?: string; replacement: string; note: string; photo: string };
 export type Projection = {
-  team: string; color: string; current_label: string; next_label: string;
+  team: string; color: string; current_label: string; next_label: string; phase?: "in_season" | "offseason" | "stale";
   current: { formation: string; placements: Placement[] };
   projected: { formation: string; placements: Placement[] };
   diagnosis: Diag[];

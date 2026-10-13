@@ -114,7 +114,7 @@ export default function Page() {
       <button className="nav-scrim" aria-label="메뉴 닫기" onClick={() => setNavOpen(false)} />
       <Sidebar teams={teams} sel={sel}
         onSelect={(t) => { setSel(t); setNavOpen(false); if (home) { setHome(false); setTab("overview"); } }}
-        seasonLabel={seasonLabel} next={nextS} atHome={home} onHome={() => {
+        seasonLabel={seasonLabel} next={nextS} phase={ctx?.window?.phase} atHome={home} onHome={() => {
           setHome(true);
           setNavOpen(false);
         }}

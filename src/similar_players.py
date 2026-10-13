@@ -82,10 +82,11 @@ ROLE_WEIGHTS: dict[str, dict[str, float]] = {
 }
 _DEFAULT_WEIGHTS = {f: 1.0 for f in ALL_FEATURES}
 
-# full > basic > sample 순으로 폴백
-_DATA_DIR = Path(__file__).resolve().parent.parent / "data"
-for _p in ["players_full_2025_2026.csv", "players_2025_2026.csv", "players_sample.csv"]:
-    DATA_PATH = _DATA_DIR / _p
+# full > basic > sample 순으로 폴백 (활성 데이터 시즌 · EPL)
+from leagues import data_path  # noqa: E402
+
+for DATA_PATH in [data_path("players_full", "EPL"), data_path("players", "EPL"),
+                  data_path("players_sample", "EPL")]:
     if DATA_PATH.exists():
         break
 

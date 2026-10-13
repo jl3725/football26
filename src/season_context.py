@@ -32,7 +32,25 @@ def current_window(today: dt.date | None = None) -> dict:
         "state": state,
         "is_open": is_open,
         "kr": label_kr,
+        "phase": season_phase(season_start, state),
+        "data_season_id": SEASON_START,
     }
+
+
+def season_phase(calendar_season: int, state: str, data_season: int | None = None) -> str:
+    """데이터 시즌(FB_SEASON_START)과 달력상 시즌의 관계.
+
+    - ``in_season`` : 달력 시즌 == 데이터 시즌 → 이번 시즌 순위·라인업 중심, '다음 시즌' 뷰 숨김
+    - ``offseason`` : 달력 시즌이 한 시즌 앞서고 여름 창이 열림(6/14~9/1) → 다음 시즌 로스터·예상 XI
+    - ``stale``     : 달력 시즌이 앞섰는데 이적시장도 닫힘 → 새 시즌이 시작됐는데 데이터 전환이 안 됨
+    """
+    data_season = SEASON_START if data_season is None else data_season
+    gap = calendar_season - data_season
+    if gap <= 0:
+        return "in_season"
+    if gap == 1 and state == "summer":
+        return "offseason"
+    return "stale"
 
 
 def season_label(start_year: int = SEASON_START) -> str:

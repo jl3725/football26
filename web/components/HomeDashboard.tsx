@@ -4,6 +4,7 @@ import { getHome, type Home } from "@/lib/api";
 import WorldCup from "./WorldCup";
 import AllDashboard from "./AllDashboard";
 import { Skel, SkelCards } from "./Skeleton";
+import { phaseOf, seasonStatusText } from "@/lib/season";
 
 const eurM = (v: number) => (v >= 1e6 ? `€${Math.round(v / 1e6)}M` : v > 0 ? `€${Math.round(v / 1e3)}K` : "€0");
 
@@ -66,7 +67,8 @@ export default function HomeDashboard({ accent, onPickTeam, onPickLeagueTeam, le
     </div>
   );
 
-  const nextLabel = h.roster_next?.season_label || "26/27";
+  const nextLabel = h.roster_next?.season_label || h.window.label;
+  const inSeason = phaseOf(h.window) === "in_season";
   const deals = h.transfers.top_deals;
   const feat = deals[0];
   const maxSpend = Math.max(1, ...h.transfers.net_spend.map((n) => n.spend));
@@ -84,9 +86,9 @@ export default function HomeDashboard({ accent, onPickTeam, onPickLeagueTeam, le
           </div>
         </div>
 
-        <div className="hx-kicker">{nextLabel} SEASON · TRANSFER WINDOW</div>
+        <div className="hx-kicker">{inSeason ? `${h.season} SEASON${h.window.is_open ? " · TRANSFER WINDOW" : ""}` : `${nextLabel} SEASON · TRANSFER WINDOW`}</div>
         <h1 className="hx-title">{leagueLabel === "EPL" ? "PREMIER LEAGUE" : leagueLabel}</h1>
-        <div className="hx-meta">{h.season} 시즌 종료 · {nextLabel} 개막 전{h.window.is_open ? " · 여름 이적시장 진행 중" : ""}</div>
+        <div className="hx-meta">{seasonStatusText(h.window, h.season, nextLabel)}</div>
 
         <div className="kpis">
           <div className="kpi"><div className="kpi-n teko" style={{ color: accent }}>{eurM(h.kpi.spend)}</div><div className="kpi-l">이적 총지출</div></div>
@@ -223,7 +225,7 @@ export default function HomeDashboard({ accent, onPickTeam, onPickLeagueTeam, le
         </div>
 
         <div className="card">
-          <div className="card-h">{h.season} 최종 순위</div>
+          <div className="card-h">{h.season} {inSeason ? "순위" : "최종 순위"}</div>
           <div className="rows">
             {h.standings.slice(0, 10).map((t) => (
               <button className="stx" key={t.name} onClick={() => onPickTeam(t.name)}>

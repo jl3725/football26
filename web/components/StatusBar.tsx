@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { getCalendar, type CalEvent, type Context } from "@/lib/api";
+import { seasonChip } from "@/lib/season";
 
 function daysBetween(a: Date, b: Date) {
   return Math.round((b.getTime() - a.getTime()) / 86400000);
@@ -41,7 +42,7 @@ export default function StatusBar({ accent, ctx }: { accent: string; ctx: Contex
       </div>
       {ctx && (
         <div className="sb-season">
-          <span className="sb-season-done">{ctx.data_season} 시즌 종료</span>
+          <span className="sb-season-done">{seasonChip(ctx.window, ctx.data_season)}</span>
           {ctx.window.is_open
             ? <span className="sb-season-open" style={{ background: accent }}>{ctx.window.label} {ctx.window.kr} 이적시장 OPEN</span>
             : <span className="sb-season-closed">이적시장 마감</span>}

@@ -5,7 +5,7 @@ import datetime as dt
 import pytest
 
 from leagues import parse_season_start
-from season_context import current_window, season_label
+from season_context import current_window, season_label, season_phase
 
 
 @pytest.mark.parametrize(
@@ -30,3 +30,17 @@ def test_season_label() -> None:
 def test_invalid_season_start(value: str) -> None:
     with pytest.raises(RuntimeError):
         parse_season_start(value)
+
+
+@pytest.mark.parametrize(
+    ("calendar", "state", "data", "phase"),
+    [
+        (2026, "closed", 2026, "in_season"),   # 26/27 시즌 중, 데이터 26/27
+        (2026, "winter", 2026, "in_season"),   # 겨울 이적시장도 시즌 중
+        (2027, "summer", 2026, "offseason"),   # 27/28 여름 이적시장 — 다음 시즌 준비
+        (2026, "closed", 2025, "stale"),       # 26/27 개막했는데 데이터는 25/26 (2026-10 상황)
+        (2028, "summer", 2026, "stale"),
+    ],
+)
+def test_season_phase(calendar: int, state: str, data: int, phase: str) -> None:
+    assert season_phase(calendar, state, data) == phase

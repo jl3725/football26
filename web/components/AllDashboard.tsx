@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { getHomeAll, fmtEur, type HomeAll } from "@/lib/api";
 import { tier } from "@/lib/ui";
 import { Skel, SkelCards } from "./Skeleton";
+import { seasonLongLabel } from "@/lib/season";
 
 // 세련된 라인 화살표 (텍스트 → 대체)
 function Arrow({ color = "currentColor" }: { color?: string }) {
@@ -35,7 +36,7 @@ export default function AllDashboard({ accent, onPick }: { accent: string; onPic
   return (
     <div className="fade home">
       <div className="hub-hero" style={{ ["--tc" as any]: accent }}>
-        <div className="hub-hero-k">ALL LEAGUES · 2025/26</div>
+        <div className="hub-hero-k">ALL LEAGUES · {seasonLongLabel(d.window?.data_season_id) || "2025/26"}</div>
         <h1 className="hub-hero-t">GLOBAL DASHBOARD</h1>
         <div className="hub-hero-m">{d.leagues.map((l) => l.name).join("  ·  ")}
           {d.window?.is_open && <span style={{ color: accent }}>  ·  {d.window.label} TRANSFER WINDOW OPEN</span>}</div>

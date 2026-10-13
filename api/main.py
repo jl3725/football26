@@ -28,7 +28,7 @@ import teammeta as tm  # noqa: E402
 import ratings as rt  # noqa: E402
 import ratings_v3 as rv3  # noqa: E402  (절대 클래스·폼·POT·신뢰도)
 import transfer_adjust as ta  # noqa: E402
-from leagues import ACTIVE_LEAGUE, league_config, data_path  # noqa: E402
+from leagues import ACTIVE_LEAGUE, SEASON_START, league_config, data_path  # noqa: E402
 from season_context import current_window as _current_window  # noqa: E402
 from season_context import season_label as _data_season_label  # noqa: E402
 from team_analysis import (  # noqa: E402  (streamlit 비의존)
@@ -60,7 +60,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-MANAGER_JSON = ROOT / "data" / "manager_profiles_2025_2026.json"
+MANAGER_JSON = data_path("manager_profiles", "EPL", ext="json")
 TEAM_PROFILES_JSON = ROOT / "data" / "team_profiles.json"
 
 
@@ -222,7 +222,7 @@ def overview(team: str, league: str = ACTIVE_LEAGUE):
         sq["_r"] = pd.to_numeric(sq.get("ss_rating"), errors="coerce").fillna(0)
         sq["_ovr"] = sq.apply(_player_ovr, axis=1)
         # 소표본 유스 인플레 방지 — 출전시간 확보 선수만(부족하면 완화)
-        sq_star = sq[pd.to_numeric(sq.get("minutes"), errors="coerce").fillna(0) >= 450]
+        sq_star = sq[pd.to_numeric(sq.get("minutes"), errors="coerce").fillna(0) >= _mm(450, league)]
         if len(sq_star) < 5:
             sq_star = sq
         for _, r in sq_star.sort_values(["_ovr", "_r"], ascending=False).head(5).iterrows():
@@ -648,6 +648,7 @@ def _player_ovr(row) -> int:
         gk_save_pct=row.get("gk_save_pct"), gk_cs_pct=row.get("gk_cs_pct"),
         ucl_starts=row.get("ucl_starts"), uel_starts=row.get("uel_starts"),
         conf_starts=row.get("conf_starts"), cup_starts=row.get("cup_starts"),
+        prev_minutes=row.get("prev_minutes"), prev_ss_rating=row.get("prev_ss_rating"),
     )
 
 
@@ -797,16 +798,14 @@ def squad(team: str, league: str = ACTIVE_LEAGUE):
 
 def _avail_schedule_seasons(league: str) -> list[str]:
     """schedule_full_*.csv 존재하는 시즌(최신 우선) — 리그별."""
-    out = []
-    for s in ("2026_2027", "2025_2026"):
-        if data_path("schedule_full", league, s).exists():
-            out.append(s)
-    return out
+    # 데이터 시즌 기준 다음·현재·직전 시즌 (하드코딩 없이 매 시즌 자동)
+    cands = [f"{y}_{y + 1}" for y in (SEASON_START + 1, SEASON_START, SEASON_START - 1)]
+    return [s for s in cands if data_path("schedule_full", league, s).exists()]
 
 
 @app.get("/api/schedule/{team}")
 def schedule(team: str, league: str = ACTIVE_LEAGUE, season: str = ""):
-    """대회 통합 스케줄 — 리그+컵+유럽. season 미지정 시 최신(26/27) 기본.
+    """대회 통합 스케줄 — 리그+컵+유럽. season 미지정 시 최신 시즌 기본.
     치러진 경기는 라인업 event_id 로 포메이션 링크."""
     seasons = _avail_schedule_seasons(league)
     if not seasons:  # 레거시 폴백(schedule_full 없는 리그)
@@ -1465,13 +1464,35 @@ def lineup(team: str, league: str = ACTIVE_LEAGUE):
 
 # 유사 선수 엔진 — 임베딩은 최초 1회 빌드 후 캐시(요청마다 재계산 방지)
 _SIM = None
+_PROGRESS: dict[str, float] = {}
+
+
+def _progress(league: str) -> float:
+    """리그 진행률(0~1) — 순위표 최다 경기수 / 시즌 총 경기수. 시즌 끝난 데이터는 1.0."""
+    if league not in _PROGRESS:
+        st = ds.read_table("standings", league=league)
+        played = 0.0
+        if st is not None and "played" in st.columns:
+            played = float(pd.to_numeric(st["played"], errors="coerce").max() or 0)
+        try:
+            total = float(league_config(league).games_per_team)
+        except KeyError:
+            total = 38.0
+        _PROGRESS[league] = max(0.05, min(1.0, played / total)) if played > 0 else 1.0
+    return _PROGRESS[league]
+
+
+def _mm(full: float, league: str = ACTIVE_LEAGUE) -> float:
+    """풀시즌 기준 출전시간 임계값을 리그 진행률만큼 축소 — 시즌 초 '표본 부족' 일괄 탈락 방지.
+    끝난 시즌(진행률 1.0)은 기존 임계값 그대로."""
+    return max(90.0, full * _progress(league))
 
 
 def _sim_engine():
     global _SIM
     if _SIM is None:
         from similar_players import load_players, build_embeddings
-        df = load_players()
+        df = load_players(min_minutes=int(_mm(900, "EPL")))
         _SIM = (df, build_embeddings(df))
     return _SIM
 
@@ -1843,7 +1864,7 @@ def recommend(team: str, league: str = ACTIVE_LEAGUE):
         cand = []
         for src, meta in src_meta.items():
             p = meta["pool"]
-            sub = p[(p["_bucket"] == bk) & (~p["_left"]) & (p["_mn"] >= 600)] \
+            sub = p[(p["_bucket"] == bk) & (~p["_left"]) & (p["_mn"] >= _mm(600, src))] \
                 .sort_values("_ovr", ascending=False).head(25 if src == league else 15)
             cand += [(r, src) for _, r in sub.iterrows()]
         scored = []
@@ -2526,17 +2547,17 @@ def _compute_hub_body() -> bytes:
             p["_mn"] = pd.to_numeric(p.get("minutes"), errors="coerce").fillna(0)
             p["_ss"] = pd.to_numeric(p.get("ss_rating"), errors="coerce").fillna(0)
             p["_g"] = pd.to_numeric(p.get("goals"), errors="coerce").fillna(0)
-            for _, r in p[p["_mn"] >= 900].sort_values("_ss", ascending=False).head(6).iterrows():
+            for _, r in p[p["_mn"] >= _mm(900, lg)].sort_values("_ss", ascending=False).head(6).iterrows():
                 form_c.append((r, lg))
             for _, r in p.sort_values("_g", ascending=False).head(6).iterrows():
                 goal_c.append((r, lg))
             p["_age"] = pd.to_numeric(p.get("age"), errors="coerce").fillna(0)
             p["_mv"] = pd.to_numeric(p.get("market_value_eur"), errors="coerce").fillna(0)
-            for _, r in p[(p["_age"] > 0) & (p["_age"] <= 21) & (p["_mn"] >= 450)].sort_values("_ss", ascending=False).head(6).iterrows():
+            for _, r in p[(p["_age"] > 0) & (p["_age"] <= 21) & (p["_mn"] >= _mm(450, lg))].sort_values("_ss", ascending=False).head(6).iterrows():
                 prospect_c.append((r, lg))          # 유망주 원석
-            for _, r in p[(p["_age"] >= 32) & (p["_mn"] >= 900)].sort_values("_ss", ascending=False).head(6).iterrows():
+            for _, r in p[(p["_age"] >= 32) & (p["_mn"] >= _mm(900, lg))].sort_values("_ss", ascending=False).head(6).iterrows():
                 veteran_c.append((r, lg))           # 베테랑 32+
-            vp = p[(p["_ss"] >= 6.9) & (p["_mn"] >= 900) & (p["_mv"] > 0)].copy()
+            vp = p[(p["_ss"] >= 6.9) & (p["_mn"] >= _mm(900, lg)) & (p["_mv"] > 0)].copy()
             vp["_ratio"] = vp["_ss"] / (vp["_mv"] / 1e6 + 3.0)   # 평점 대비 저가일수록↑
             for _, r in vp.sort_values("_ratio", ascending=False).head(6).iterrows():
                 value_c.append((r, lg))             # 저평가 가성비
@@ -2893,6 +2914,6 @@ def projection(team: str, league: str = ACTIVE_LEAGUE):
     diagnosis.sort(key=_dsort)
 
     return {"team": team, "color": tm.team_color(team),
-            "current_label": _data_season_label(), "next_label": next_label,
+            "current_label": _data_season_label(), "next_label": next_label, "phase": win.get("phase"),
             "current": season, "projected": {"formation": season["formation"], "placements": projected},
             "diagnosis": diagnosis}

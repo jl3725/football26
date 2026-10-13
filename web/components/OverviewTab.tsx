@@ -10,6 +10,7 @@ import CaptainBoard from "./CaptainBoard";
 import OverviewSignals from "./OverviewSignals";
 import IdentityCard from "./IdentityCard";
 import { usePeek } from "./PlayerPeek";
+import { phaseOf } from "@/lib/season";
 
 function repStars(rank?: number | null): string {
   if (!rank) return "★★★☆☆";
@@ -51,7 +52,7 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
         label={ov.window?.is_open ? `${ov.window.label} ${ov.window.kr ?? ""} 이적` : `${ov.data_season} 이적`} />
       {ov.window && (
         <div className="season-note">
-          <b>{ov.data_season} 시즌 종료</b>
+          <b>{ov.data_season} 시즌 {phaseOf(ov.window) === "in_season" ? "진행 중" : "종료"}</b>
           {ov.window.is_open
             ? <> · <span style={{ color: accent }}>{ov.window.label} {ov.window.kr} 이적시장 진행 중</span> — 아래 이적 정보는 이번 창(window) 기준</>
             : <> · 현재 이적시장 마감</>}

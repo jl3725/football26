@@ -92,13 +92,32 @@ def _soft_cap(raw: float) -> float:
     return _CAP_KNEE + (raw - _CAP_KNEE) * _CAP_SLOPE if raw > _CAP_KNEE else raw
 
 
+def blended_ss(ss_rating, minutes, prev_ss_rating=None, prev_minutes=None) -> float:
+    """이번 시즌 평점에 직전 시즌 평점을 표본 가중으로 섞는다 — 시즌 초 소표본 흔들림 완화.
+
+    직전 시즌 가중 = 직전 출전의 절반 × (1 - 이번 시즌 출전/2500) → 시즌이 진행될수록 0.
+    직전 시즌 값이 없으면(25/26 데이터 등) 이번 시즌 평점 그대로.
+    """
+    ss, mn = _num(ss_rating), _num(minutes)
+    pss, pmn = _num(prev_ss_rating), _num(prev_minutes)
+    w_prev = 0.5 * pmn * max(0.0, 1.0 - mn / 2500.0) if pss > 0 else 0.0
+    w_cur = mn if ss > 0 else 0.0
+    if w_cur + w_prev <= 0:
+        return ss
+    return (ss * w_cur + pss * w_prev) / (w_cur + w_prev)
+
+
 def absolute_ovr(*, value, ss_rating, minutes, age, pos_group,
                  gk_save_pct=None, gk_cs_pct=None,
-                 ucl_starts=0, uel_starts=0, conf_starts=0, cup_starts=0) -> int:
+                 ucl_starts=0, uel_starts=0, conf_starts=0, cup_starts=0,
+                 prev_minutes=None, prev_ss_rating=None) -> int:
     ln = line_of(pos_group)
-    mn, a = _num(minutes), _num(age)
+    a = _num(age)
+    # '검증'(유망주 게이팅·베테랑 보정)은 직전 시즌 출전까지 합산 — 시즌 초 전원 미검증 방지.
+    # 직전 시즌 컬럼이 없으면 이번 시즌 출전만(기존 동작).
+    mn = _num(minutes) + _num(prev_minutes)
     vov = value_ovr(value)
-    ss = _num(ss_rating)
+    ss = blended_ss(ss_rating, minutes, prev_ss_rating, prev_minutes)
     base = vov if vov is not None else 60.0
     if ln == "GK":
         # GK 는 시장가·ss 로 변별 불가(값 압축) → 선방%/CS% 를 성능축으로. flat 보정 축소(8→3).
@@ -220,7 +239,8 @@ def player_line(row) -> dict:
                       minutes=row.get("minutes"), age=row.get("age"), pos_group=pos,
                       gk_save_pct=row.get("gk_save_pct"), gk_cs_pct=row.get("gk_cs_pct"),
                       ucl_starts=row.get("ucl_starts"), uel_starts=row.get("uel_starts"),
-                      conf_starts=row.get("conf_starts"), cup_starts=row.get("cup_starts"))
+                      conf_starts=row.get("conf_starts"), cup_starts=row.get("cup_starts"),
+                      prev_minutes=row.get("prev_minutes"), prev_ss_rating=row.get("prev_ss_rating"))
     fm = form_rating(ss_rating=row.get("ss_rating"), minutes=row.get("minutes"),
                      goals=row.get("goals"), assists=row.get("assists"), pos_group=pos)
     return {"ovr": ab, "form": fm, "pot": potential(absolute=ab, age=row.get("age"), value=row.get("market_value_eur")),

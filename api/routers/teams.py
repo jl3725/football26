@@ -11,6 +11,7 @@ import api.bootstrap  # noqa: F401
 import datastore as ds
 import teammeta as tm
 from leagues import ACTIVE_LEAGUE, ROOT, data_path
+from season_context import current_window, season_label
 
 router = APIRouter(prefix="/api", tags=["teams"])
 SEASON_TEAMS_JSON = Path(ROOT) / "data" / "season_teams.json"
@@ -36,7 +37,11 @@ def teams(league: str = ACTIVE_LEAGUE):
 
 @router.get("/teams/next")
 def teams_next(league: str = ACTIVE_LEAGUE):
-    """다음 시즌 로스터: 감지 JSON → 일정 → 현재 순위 순으로 폴백."""
+    """다음 시즌 로스터: 감지 JSON → 일정 → 현재 순위 순으로 폴백.
+
+    '다음 시즌' = 달력상 시즌(current_window). 시즌 중(phase=in_season)에는 데이터 시즌과 같다.
+    """
+    next_id = current_window()["season_id"]
     path = (
         SEASON_TEAMS_JSON
         if league == "EPL"
@@ -50,7 +55,7 @@ def teams_next(league: str = ACTIVE_LEAGUE):
         pass
 
     try:
-        schedule = pd.read_csv(data_path("schedule_full", league, "2026_2027"))
+        schedule = pd.read_csv(data_path("schedule_full", league, f"{next_id}_{next_id + 1}"))
         squads = sorted(set(schedule["squad"].astype(str)))
         if squads:
             items = [
@@ -63,8 +68,8 @@ def teams_next(league: str = ACTIVE_LEAGUE):
                 for squad in squads
             ]
             return {
-                "season_label": "26/27",
-                "source_title": "schedule 2026-27",
+                "season_label": season_label(next_id),
+                "source_title": f"schedule {next_id}-{(next_id + 1) % 100:02d}",
                 "detected_at": "",
                 "teams": items,
                 "promoted": [],
