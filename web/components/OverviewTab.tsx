@@ -11,6 +11,7 @@ import OverviewSignals from "./OverviewSignals";
 import IdentityCard from "./IdentityCard";
 import { usePeek } from "./PlayerPeek";
 import { phaseOf } from "@/lib/season";
+import { useEffect, useState } from "react";
 
 function repStars(rank?: number | null): string {
   if (!rank) return "★★★☆☆";
@@ -44,6 +45,9 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
   const info = ov.info || {};
   const snap = ov.snapshot;
   const peek = usePeek();
+  const [more, setMore] = useState(false);
+  useEffect(() => { try { setMore(localStorage.getItem("ov_more") === "1"); } catch { /* 저장소 차단 */ } }, []);
+  const toggleMore = (v: boolean) => { setMore(v); try { localStorage.setItem("ov_more", v ? "1" : "0"); } catch { /* 무시 */ } };
   const leagueCap = (ov.league || "EPL").replace(/([a-z])([A-Z])/g, "$1 $2").replace(/([a-zA-Z])(\d)/g, "$1 $2").toUpperCase();
 
   return (
@@ -127,18 +131,6 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
               <span className="disc yellow">🟨 {snap.yellows}</span>
               <span className="disc red">🟥 {snap.reds}</span>
             </div>
-            {(ov.edge.strengths.length > 0 || ov.edge.weaknesses.length > 0) && (
-              <div className="edge-box">
-                <div className="edge-col">
-                  <div className="edge-h" style={{ color: "#4fc27f" }}>강점</div>
-                  {ov.edge.strengths.map((e, i) => <span className="edge-chip s" key={i}>{e.label} <b>{e.value}</b></span>)}
-                </div>
-                <div className="edge-col">
-                  <div className="edge-h" style={{ color: "#e07070" }}>보강</div>
-                  {ov.edge.weaknesses.map((e, i) => <span className="edge-chip w" key={i}>{e.label} <b>{e.value}</b></span>)}
-                </div>
-              </div>
-            )}
           </div>
         )}
 
@@ -175,11 +167,7 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
         </div>
       </div>
 
-      {/* 팀 정체성 — 감독 전술 블렌드 · 영입 성향 · 예산 */}
-      <IdentityCard team={ov.team} league={ov.league} accent={accent} />
 
-      {/* 주장단 */}
-      <CaptainBoard team={ov.team} accent={accent} />
 
       {/* 포메이션 (시즌평균 / 최근5 / 26/27예상 토글) */}
       <LineupBoard team={ov.team} accent={accent} departed={ov.departed} />
@@ -210,9 +198,19 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
         </div>
       )}
 
+      {/* 더 보기 — 정체성 · 주장단 · 스쿼드 평가 · 리더 · 부상/이적. 첫 화면은 '지금 이 팀이 어떤가'에 집중하고
+          나머지는 요청 시 펼친다(선택은 이 브라우저에 기억). */}
+      <button type="button" className="more-btn" aria-expanded={more} onClick={() => toggleMore(!more)}>
+        {more ? "간단히 보기 ↑" : "더 보기 · 정체성 · 주장단 · 스쿼드 평가 · 리더 · 부상/이적 ↓"}
+      </button>
+      {more && (
+        <>
+      {/* 팀 정체성 — 감독 전술 블렌드 · 영입 성향 · 예산 */}
+      <IdentityCard team={ov.team} league={ov.league} accent={accent} />
+      {/* 주장단 */}
+      <CaptainBoard team={ov.team} accent={accent} />
       {/* 스쿼드 절대 평가 — OVR/POT 산점도 */}
       <RatingsBoard ov={ov} accent={accent} />
-
       {/* 팀 리더 */}
       {ov.leaders.length > 0 && (
         <div className="card" style={{ marginTop: 16 }}>
@@ -230,7 +228,6 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
           </div>
         </div>
       )}
-
       {/* 부상 + 이적 2열 */}
       <div className="grid" style={{ marginTop: 16 }}>
         <div className="card">
@@ -271,6 +268,8 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
           </div>
         </div>
       </div>
+        </>
+      )}
     </div>
   );
 }

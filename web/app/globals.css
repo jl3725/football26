@@ -891,7 +891,7 @@ html, body {
   border-radius: 20px; border: 1px solid var(--line); position: relative; overflow: hidden;
   transition: background .35s ease;
 }
-.hero-glow { position: absolute; right: -60px; top: -80px; width: 320px; height: 320px; opacity: .5; pointer-events: none; }
+.hero-glow { position: absolute; right: -60px; top: -80px; width: 320px; height: 320px; opacity: .22; pointer-events: none; }
 .hero-logo { width: 84px; height: 84px; object-fit: contain; filter: drop-shadow(0 8px 18px rgba(0, 0, 0, .6)); z-index: 1; }
 .hero-rank { font-family: Oswald, sans-serif; font-size: 11px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; }
 .hero h1 { font-size: 44px; line-height: 1; font-weight: 800; letter-spacing: -1px; margin: 4px 0 2px; }
@@ -1321,7 +1321,7 @@ body::before {
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(760px 520px at 88% 2%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 70%),
+    radial-gradient(760px 520px at 88% 2%, color-mix(in srgb, var(--accent) 6%, transparent), transparent 70%),
     linear-gradient(115deg, transparent 50%, color-mix(in srgb, var(--accent) 2.5%, transparent));
 }
 .app-atmosphere::after {
@@ -1448,7 +1448,7 @@ body::before {
   margin-left: 11px;
   border-radius: 3px;
   background: var(--accent);
-  box-shadow: 0 0 16px color-mix(in srgb, var(--accent) 60%, transparent);
+  box-shadow: 0 0 6px color-mix(in srgb, var(--accent) 35%, transparent);
 }
 .competition-select-wrap select {
   min-width: 0;
@@ -1501,7 +1501,7 @@ body::before {
 .home-nav-sub { font-family: var(--mono); font-size: 10px; }
 .home-nav.active .home-nav-dot {
   background: var(--accent);
-  box-shadow: 0 0 10px color-mix(in srgb, var(--accent) 70%, transparent);
+  box-shadow: 0 0 5px color-mix(in srgb, var(--accent) 40%, transparent);
 }
 
 .side-tabs {
@@ -1620,7 +1620,7 @@ body::before {
 .sb-chip-name, .sb-dday, .sb-livetag { font-family: var(--mono); font-size: 10.5px; }
 .livedot {
   background: var(--accent);
-  box-shadow: 0 0 9px color-mix(in srgb, var(--accent) 75%, transparent);
+  box-shadow: 0 0 5px color-mix(in srgb, var(--accent) 45%, transparent);
 }
 
 .workspace-header {
@@ -1794,7 +1794,7 @@ body::before {
   width: 88px;
   height: 2px;
   background: var(--accent);
-  box-shadow: 0 0 18px color-mix(in srgb, var(--accent) 70%, transparent);
+  box-shadow: 0 0 6px color-mix(in srgb, var(--accent) 35%, transparent);
 }
 .hx { padding: clamp(23px, 3vw, 35px); margin-bottom: 14px; }
 .hx-kicker,
