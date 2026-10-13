@@ -299,7 +299,7 @@ export const getPlayerDetail = (t: string, p: string, l = _league) =>
 export const getTransfers = (t: string, l = _league) => j<Transfers>(`/api/transfers/${q(t, l)}`);
 export const getNews = (t: string, l = _league) => j<News>(`/api/news/${q(t, l)}`);
 export const getAnalytics = (t: string, l = _league) => j<Analytics>(`/api/analytics/${q(t, l)}`);
-export const getCalendar = () => j<{ events: CalEvent[] }>(`/api/calendar`);
+export const getCalendar = (league: string = _league) => j<{ events: CalEvent[] }>(`/api/calendar?league=${encodeURIComponent(league)}`);
 export const getLineup = (t: string, l = _league) => j<Lineup>(`/api/lineup/${q(t, l)}`);
 export type Diag = { kind: string; severity: string; player: string; slot: string; line: string; to?: string; fee?: string; replacement: string; note: string; photo: string };
 export type Projection = {

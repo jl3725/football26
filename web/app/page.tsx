@@ -131,7 +131,7 @@ export default function Page() {
             >
               <span /><span /><span />
             </button>
-            <StatusBar accent={accent} ctx={ctx} />
+            <StatusBar accent={accent} ctx={ctx} league={league} />
           </div>
 
           <header className="workspace-header">

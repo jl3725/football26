@@ -607,16 +607,60 @@ def chemistry_ep(team: str, league: str = ACTIVE_LEAGUE):
 
 
 @app.get("/api/calendar")
-def calendar():
+@_memo(ttl=1800)
+def calendar(league: str = ACTIVE_LEAGUE):
+    """상태바 달력 — 리그 일정·이적시장에서 자동 생성(수기 calendar_events.csv 는 월드컵 같은 특별 이벤트만).
+
+    예전엔 수기 파일만 읽어 '26/27 개막 8/14' 같은 지난 일정이 시즌 내내 남았다.
+    """
+    today = datetime.date.today()
+    iso = today.isoformat()
+    events: list[dict] = []
+
     cal = ds.read_table("calendar_events")
-    events = []
     if cal is not None:
         for _, r in cal.iterrows():
-            events.append({
-                "name": str(r.get("name") or ""), "start": str(r.get("start") or ""),
-                "end": str(r.get("end") or ""), "icon": str(r.get("icon") or ""),
-                "kind": str(r.get("kind") or "event"),
-            })
+            end = str(r.get("end") or r.get("start") or "")
+            if end >= iso:
+                events.append({"name": str(r.get("name") or ""), "start": str(r.get("start") or ""),
+                               "end": end, "icon": str(r.get("icon") or ""), "kind": str(r.get("kind") or "event")})
+
+    try:
+        lname = league_config(league).name
+    except KeyError:
+        lname = league
+    sf = ds.read_table("schedule_full", league=league)
+    if sf is not None and "date" in sf.columns:
+        sf = sf[sf["date"].astype(str) >= iso]
+        code = sf["comp_code"].astype(str)
+        nxt_league = sf[code.str.endswith(".1")]["date"].min()
+        if isinstance(nxt_league, str):
+            events.append({"name": f"{lname} 다음 라운드", "start": nxt_league, "end": nxt_league, "icon": "⚽", "kind": "kickoff"})
+        euro = sf[code.str.startswith("uefa.")]
+        if not euro.empty:
+            d0 = euro["date"].min()
+            comp = str(euro[euro["date"] == d0]["comp"].iloc[0])
+            events.append({"name": f"{comp} 매치데이", "start": d0, "end": d0, "icon": "⭐", "kind": "kickoff"})
+        last = sf[code.str.endswith(".1")]["date"].max()
+        if isinstance(last, str) and last != nxt_league:
+            events.append({"name": f"{lname} 최종전", "start": last, "end": last, "icon": "🏁", "kind": "kickoff"})
+
+    # 이적시장 — 열려 있으면 그 창, 아니면 다음 창(겨울 1/1~2/3 → 여름 6/14~9/1)
+    win = _current_window()
+    y = int(win["season_id"])
+    windows = [("겨울 이적시장", f"{y + 1}-01-01", f"{y + 1}-02-03"), ("여름 이적시장", f"{y + 1}-06-14", f"{y + 1}-09-01")]
+    if win["is_open"]:
+        name = "여름 이적시장" if win["window"] == "summer" else "겨울 이적시장"
+        end = f"{y}-09-01" if win["window"] == "summer" else f"{y + 1}-02-03"
+        start = f"{y}-06-14" if win["window"] == "summer" else f"{y + 1}-01-01"
+        events.append({"name": name, "start": start, "end": end, "icon": "🔁", "kind": "window"})
+    else:
+        for name, start, end in windows:
+            if end >= iso:
+                events.append({"name": name, "start": start, "end": end, "icon": "🔁", "kind": "window"})
+                break
+
+    events.sort(key=lambda e: e["start"])
     return {"events": events}
 
 

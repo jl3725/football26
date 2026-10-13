@@ -7,16 +7,16 @@ function daysBetween(a: Date, b: Date) {
   return Math.round((b.getTime() - a.getTime()) / 86400000);
 }
 
-export default function StatusBar({ accent, ctx }: { accent: string; ctx: Context | null }) {
+export default function StatusBar({ accent, ctx, league = "EPL" }: { accent: string; ctx: Context | null; league?: string }) {
   const [now, setNow] = useState<Date | null>(null);
   const [events, setEvents] = useState<CalEvent[]>([]);
 
   useEffect(() => {
     setNow(new Date());
     const t = setInterval(() => setNow(new Date()), 1000);
-    getCalendar().then((d) => setEvents(d.events)).catch(() => {});
+    getCalendar(league).then((d) => setEvents(d.events)).catch(() => {});
     return () => clearInterval(t);
-  }, []);
+  }, [league]);
 
   const today = now ?? new Date();
   const chips = events.map((e) => {
