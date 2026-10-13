@@ -295,8 +295,8 @@ def get(path: str, retries: int = 3, delay: float = 0.6):
                 return None  # 출전 없는 선수 등
             if status == 403:
                 sofascore_client.reset()   # 챌린지 쿠키 갱신 후 재시도
-        except Exception:  # noqa: BLE001
-            pass
+        except Exception as e:  # noqa: BLE001
+            print(f"  [sofascore] {path[:60]} 실패({i + 1}/{retries}): {type(e).__name__}: {str(e)[:100]}", flush=True)
         time.sleep(1.5 * (i + 1))
     return None
 

@@ -28,16 +28,27 @@ _driver = None
 
 
 def _open():
+    """브라우저를 열고 사이트에 접속. 직전 단계(soccerdata)가 남긴 드라이버 정리 직후에는 첫 기동이
+    실패할 수 있어 두 번 시도한다(빌드 체인에서 '시즌 id 조회 실패'로만 보이던 원인)."""
     global _driver
-    if _driver is None:
-        import seleniumbase as sb
+    import seleniumbase as sb
 
-        _driver = sb.Driver(uc=True, headless=True)
-        _driver.set_script_timeout(40)
-        atexit.register(close)
-    _driver.get(ORIGIN + "/")
-    time.sleep(5)          # 챌린지 쿠키가 붙을 시간
-    return _driver
+    last = None
+    for attempt in range(2):
+        try:
+            if _driver is None:
+                _driver = sb.Driver(uc=True, headless=True)
+                _driver.set_script_timeout(40)
+                atexit.register(close)
+            _driver.get(ORIGIN + "/")
+            time.sleep(5)          # 챌린지 쿠키가 붙을 시간
+            return _driver
+        except Exception as e:  # noqa: BLE001
+            last = e
+            print(f"[sofascore] 브라우저 기동 실패({attempt + 1}/2): {type(e).__name__}: {str(e)[:120]}", flush=True)
+            close()
+            time.sleep(5)
+    raise RuntimeError(f"Sofascore 브라우저를 열 수 없음: {last}")
 
 
 def reset() -> None:
@@ -48,7 +59,13 @@ def reset() -> None:
 def get_json(path: str) -> tuple[int, dict | None]:
     """`/api/v1{path}` 응답 → (HTTP status, JSON | None). 네트워크 오류는 status 0."""
     drv = _driver or _open()
-    status, body = drv.execute_async_script(_JS_FETCH, f"{ORIGIN}/api/v1{path}")
+    try:
+        status, body = drv.execute_async_script(_JS_FETCH, f"{ORIGIN}/api/v1{path}")
+    except Exception as e:  # noqa: BLE001  — 세션이 죽었으면(드라이버 종료 등) 한 번 다시 연다
+        print(f"[sofascore] 세션 오류, 재접속: {type(e).__name__}: {str(e)[:100]}", flush=True)
+        close()
+        drv = _open()
+        status, body = drv.execute_async_script(_JS_FETCH, f"{ORIGIN}/api/v1{path}")
     if status == 200:
         try:
             return 200, json.loads(body)
