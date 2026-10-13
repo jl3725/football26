@@ -336,7 +336,9 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--pause", type=float, default=2.0, help="Seconds between team requests.")
     args = parser.parse_args(argv)
 
-    teams = args.teams or list(season_clubs())   # 달력상 현재 시즌 소속 클럽(승격·강등 반영)
+    clubs = season_clubs()   # 달력상 현재 시즌 소속 클럽(승격·강등 반영)
+    TEAM_TM.update(clubs)    # 정적 맵에 없는 승격팀도 slug·verein 을 알도록
+    teams = args.teams or list(clubs)
     unknown = [team for team in teams if team not in TEAM_TM]
     if unknown:
         raise SystemExit(f"Unknown team(s): {', '.join(unknown)}")
