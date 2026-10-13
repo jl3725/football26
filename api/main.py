@@ -183,8 +183,11 @@ def overview(team: str, league: str = ACTIVE_LEAGUE):
     ovr_delta = {"overall": 0, "attack": 0, "midfield": 0, "defense": 0}
     full_df = _pf(league)
     base = rv3.team_ratings(full_df, team)                       # 이적 전(현재 스쿼드)
+    # 이적 보정은 아직 실제 스쿼드·스탯에 반영되지 않은 창일 때만 — 시즌 중 닫힌 창(여름 이적이 이미
+    # 데이터에 들어감)에 또 적용하면 영입 선수를 이중 계산한다.
+    adjust = win.get("phase") != "in_season" or win.get("is_open")
     if base:
-        adj = rv3.team_ratings(ta.build_adjusted_full(full_df, tr, win), team) or base  # 이번 창 반영
+        adj = (rv3.team_ratings(ta.build_adjusted_full(full_df, tr, win), team) or base) if adjust else base
         for k in ("overall", "attack", "midfield", "defense"):
             ovr[k] = adj[k]
             ovr_delta[k] = adj[k] - base[k]

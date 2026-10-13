@@ -36,7 +36,7 @@ export default function AllDashboard({ accent, onPick }: { accent: string; onPic
   return (
     <div className="fade home">
       <div className="hub-hero" style={{ ["--tc" as any]: accent }}>
-        <div className="hub-hero-k">ALL LEAGUES · {seasonLongLabel(d.window?.data_season_id) || "2025/26"}</div>
+        <div className="hub-hero-k">ALL LEAGUES{d.window?.data_season_id ? ` · ${seasonLongLabel(d.window.data_season_id)}` : ""}</div>
         <h1 className="hub-hero-t">GLOBAL DASHBOARD</h1>
         <div className="hub-hero-m">{d.leagues.map((l) => l.name).join("  ·  ")}
           {d.window?.is_open && <span style={{ color: accent }}>  ·  {d.window.label} TRANSFER WINDOW OPEN</span>}</div>

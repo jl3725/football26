@@ -104,7 +104,7 @@ export default function Page() {
     }
   }
 
-  const seasonLabel = ctx ? ctx.data_season : "25/26";
+  const seasonLabel = ctx ? ctx.data_season : "";
   const win = ctx?.window;
 
   return (

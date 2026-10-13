@@ -22,7 +22,7 @@ function Delta({ d }: { d?: number }) {
   if (!d) return null;
   const up = d > 0;
   return (
-    <span className="delta" style={{ color: up ? "#4fc27f" : "#e07070" }} title="26/27 이적 반영 변화">
+    <span className="delta" style={{ color: up ? "#4fc27f" : "#e07070" }} title="이번 이적시장 반영 변화">
       {up ? "▲" : "▼"}{Math.abs(d)}
     </span>
   );

@@ -51,8 +51,8 @@ export default function Sidebar({
   league?: string; onLeague?: (l: string) => void;
 }) {
   const [pickedTab, setSeasonTab] = useState<"next" | "cur">("next"); // 오프시즌엔 새 시즌 먼저
-  // 시즌 중에는 '다음 시즌' 탭이 현재 시즌과 같아 숨기고 현재 순위만
-  const hasNext = showNextSeason({ phase });
+  // 시즌 중에는 '다음 시즌' 탭이 현재 시즌과 같아 숨기고 현재 순위만(단계 로딩 전에도 깜빡임 없이 현재 순위)
+  const hasNext = !!phase && showNextSeason({ phase });
   const seasonTab = hasNext ? pickedTab : "cur";
   const nextLabel = next?.season_label || nextSeasonLabel(seasonLabel);
   const total = teams.length;
