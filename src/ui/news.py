@@ -1,5 +1,5 @@
 """
-뉴스 탭 — ESPN 뉴스 API + Guardian/BBC RSS + 무료 번역(deep-translator).
+뉴스 탭 — ESPN 뉴스 API + Guardian/BBC RSS (번역은 scripts/fetch_news_daily.py → src/translate.py).
 
 ESPN /news(키 불필요) + The Guardian·BBC Sport 팀별 RSS를 합쳐 기사량을 확보하고,
 영어 헤드라인·요약을 한국어로 번역해 카드로 렌더한다. 기사 전문이 아니라
@@ -314,31 +314,6 @@ def merge_news(espn_team: list[dict], rss: list[dict], limit: int = 16) -> list[
         seen.add(key)
         out.append(a)
     return out[:limit]
-
-
-def translate_articles(articles: list[dict]) -> list[dict]:
-    """헤드라인·요약을 한국어로 번역해 headline_ko·desc_ko 추가. 실패 시 원문 유지."""
-    try:
-        from deep_translator import GoogleTranslator
-        tr = GoogleTranslator(source="auto", target="ko")  # en(EPL)·es(Marca) 자동 감지
-    except Exception:
-        tr = None
-
-    def _t(text: str) -> str:
-        if not text or tr is None:
-            return text
-        try:
-            return tr.translate(text) or text
-        except Exception:
-            return text
-
-    out = []
-    for a in articles:
-        b = dict(a)
-        b["headline_ko"] = _t(a["headline"])
-        b["desc_ko"] = _t(a["desc"])
-        out.append(b)
-    return out
 
 
 def news_cards_html(team: str, articles: list[dict]) -> str:

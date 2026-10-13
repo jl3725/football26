@@ -1,10 +1,11 @@
 name: Daily News Fetch
 
-# 매일 06:10 UTC(한국 15:10)에 ESPN+RSS 뉴스를 수집·번역해 data/news.db에 누적 커밋.
-# 수동 실행도 가능(workflow_dispatch).
+# 2시간마다 ESPN+RSS 뉴스를 수집해 data/news.db 에 누적하고, 번역 안 된 기사를 묶어 번역한 뒤 커밋.
+# 번역은 무료 공급자만(src/translate.py): GEMINI_API_KEY 시크릿이 있으면 Gemini 무료 등급, 없거나
+# 한도 소진이면 구글 무료 번역. 실패한 건 비워 두고 다음 실행이 채운다. 수동 실행도 가능(workflow_dispatch).
 on:
   schedule:
-    - cron: "0 */2 * * *"   # 2시간마다 (뉴스 신선도 — 구글 번역 rate-limit 고려해 매시간은 지양)
+    - cron: "0 */2 * * *"   # 2시간마다 (뉴스 신선도 — 무료 번역 한도 고려해 매시간은 지양)
   workflow_dispatch:
 
 concurrency:
@@ -26,9 +27,11 @@ jobs:
 
       - name: Install dependencies
         # 뉴스 수집 체인 실제 의존성만(ui.common 이 unidecode 사용, streamlit 은 이제 지연 import 라 불필요)
-        run: pip install requests feedparser deep-translator pandas unidecode
+        run: pip install requests feedparser pandas unidecode
 
       - name: Fetch & store news
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python scripts/fetch_news_daily.py --all   # 지원 8개 리그
 
       - name: Publish collection summary
@@ -53,3 +56,7 @@ jobs:
               git pull --rebase --autostash origin main && git push && break || sleep 5
             done
           fi
+
+      # 커밋 뒤에 검사 — 번역이 막혀도 수집분은 저장하고, 실패는 빨간 실행으로 드러낸다
+      - name: Check translation rate
+        run: python scripts/fetch_news_daily.py --check

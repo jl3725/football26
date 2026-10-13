@@ -114,21 +114,12 @@ def _ko_title(en_title: str) -> str:
     return ""
 
 
-_translator = None
-
-
 def _translate_ko(text: str) -> str:
-    global _translator
+    """영어 → 한국어(src/translate.py — 무료 공급자). 실패 시 ""."""
     if not text:
         return ""
-    try:
-        if _translator is None:
-            from deep_translator import GoogleTranslator
-            _translator = GoogleTranslator(source="en", target="ko")
-        return _translator.translate(text[:1500]) or ""
-    except Exception as exc:
-        print(f"    [translate 실패] {exc}", file=sys.stderr)
-        return ""
+    from translate import translate_one
+    return translate_one(text, max_chars=1500) or ""
 
 
 _STYLE_KW = re.compile(

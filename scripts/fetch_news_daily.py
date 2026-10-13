@@ -1,13 +1,17 @@
 """
-일일 뉴스 수집 배치 — ESPN + Guardian/BBC RSS → 번역 → sqlite 누적.
+일일 뉴스 수집 배치 — ESPN + Guardian/BBC RSS → sqlite 누적 → 번역 백필.
 
-GitHub Actions cron이 매일 실행하고 data/news.db를 repo에 커밋한다.
+GitHub Actions cron이 2시간마다 실행하고 data/news.db를 repo에 커밋한다.
 (link, team) 복합키로 중복 없이 누적되며, 새 기사만 first_seen=오늘으로 들어간다.
+번역은 수집 중에 하지 않고, 끝난 뒤 번역 안 된 기사를 최신순으로 묶어 한 번에 보낸다
+(공급자·무료 한도는 src/translate.py). 실패한 건 비워 두고 다음 실행이 다시 채운다.
 
 수동 실행:
     python scripts/fetch_news_daily.py                 # EPL (기본)
     python scripts/fetch_news_daily.py --league LaLiga # ESPN esp.1 (Guardian/BBC 없이)
     python scripts/fetch_news_daily.py --all           # 전 리그
+    python scripts/fetch_news_daily.py --backfill 2000 # 수집 없이 밀린 번역만
+    python scripts/fetch_news_daily.py --check         # 최근 2일 번역률 50% 미만이면 종료코드 1
 """
 from __future__ import annotations
 
@@ -18,10 +22,11 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
 from ui.news import (  # noqa: E402
-    fetch_espn_news, fetch_rss_news, team_articles, merge_news, translate_articles, newstags,
+    fetch_espn_news, fetch_rss_news, team_articles, merge_news, newstags,
     fetch_es_wire, es_wire_for_team,
 )
-from news_db import init_db, upsert_articles, stats  # noqa: E402
+from news_db import init_db, upsert_articles, stats, untranslated, set_translation, translation_stats  # noqa: E402
+from translate import translate_many, STATS  # noqa: E402
 
 LEAGUES = ["EPL", "LaLiga", "SerieA", "Bundesliga", "Ligue1", "LigaPortugal", "Eredivisie", "BelgianProLeague"]
 
@@ -37,29 +42,70 @@ def run_league(league: str) -> tuple[int, int]:
         r = fetch_rss_news(team)                    # EPL: Guardian/BBC · LaLiga: Marca 팀별
         w = es_wire_for_team(wire, team)            # LaLiga: AS/MD/Sport 팀명 매칭
         merged = merge_news(e, r + w, 20)
-        translated = translate_articles(merged)
-        n = upsert_articles(translated, team)
-        new += n; tot += len(translated)
-        print(f"  [{i:2}/{len(tags)}] {team:18} {len(translated):2}건 (신규 {n})")
+        n = upsert_articles(merged, team)          # 번역은 끝난 뒤 backfill 이 묶어서
+        new += n; tot += len(merged)
+        print(f"  [{i:2}/{len(tags)}] {team:18} {len(merged):2}건 (신규 {n})")
         time.sleep(0.3)
     return new, tot
 
 
+BACKFILL_PER_RUN = 300   # 실행마다 번역 안 된 기사를 최신순으로 이만큼(새 기사 포함, 2시간에 보통 ~15건)
+
+
+def _days_ago(n: int) -> str:
+    from datetime import date, timedelta
+    return (date.today() - timedelta(days=n)).isoformat()
+
+
+def backfill(limit: int) -> int:
+    """번역이 비었거나 원문이 들어간 기사를 최신순으로 번역해 채운다."""
+    rows = untranslated(limit)
+    if not rows:
+        return 0
+    texts = []
+    for r in rows:
+        texts += [r["headline"] or "", r["descr"] or ""]
+    kos = translate_many(texts)
+    done = sum(1 for i, r in enumerate(rows) if set_translation(r["link"], kos[2 * i], kos[2 * i + 1]))
+    print(f"[translate] {done}/{len(rows)}건 번역 · 공급자별 {dict(STATS)}")
+    return done
+
+
+def check() -> int:
+    """최근 2일 번역률 감시 — 워크플로가 커밋 뒤 마지막 단계로 돌려 실패를 드러낸다."""
+    ts = translation_stats(_days_ago(2))
+    print("번역률(2일):", ts)
+    if ts["articles"] and ts["translated_pct"] is not None and ts["translated_pct"] < 50:
+        print("[FAIL] 최근 2일 번역률 50% 미만 — 번역 공급자 확인 필요(GEMINI_API_KEY·구글 차단 여부)")
+        return 1
+    return 0
+
+
 def main(argv=None) -> int:
     args = list(argv if argv is not None else sys.argv[1:])
+    init_db()
+    if "--check" in args:
+        return check()
+    if "--backfill" in args:                     # 수집 없이 밀린 번역만: --backfill [건수]
+        i = args.index("--backfill")
+        n = int(args[i + 1]) if len(args) > i + 1 and args[i + 1].isdigit() else 2000
+        backfill(n)
+        print("번역률(30일):", translation_stats(_days_ago(30)))
+        return 0
     if "--all" in args:
         leagues = LEAGUES
     elif "--league" in args:
         leagues = [args[args.index("--league") + 1]]
     else:
         leagues = ["EPL"]
-    init_db()
     tn = tt = 0
     for lg in leagues:
         n, t = run_league(lg)
         tn += n; tt += t
     s = stats()
     print(f"\n완료 — 신규 {tn} / 처리 {tt} · DB 누적 {s['articles']}건 ({s['teams']}팀)")
+    backfill(BACKFILL_PER_RUN)
+    print("번역률(2일):", translation_stats(_days_ago(2)))
     return 0
 
 

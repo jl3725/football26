@@ -72,21 +72,13 @@ def _classify(title: str) -> str:
     return "agreed" if _AGREED.search(title) else "rumor"
 
 
-_translator = None
-
-
-def _to_ko(text: str) -> str:
-    global _translator
-    if not text:
-        return ""
-    try:
-        if _translator is None:
-            from deep_translator import GoogleTranslator
-            _translator = GoogleTranslator(source="auto", target="ko")
-        return _translator.translate(text[:480]) or ""
-    except Exception as exc:
-        print(f"    [translate 실패] {exc}", file=sys.stderr)
-        return ""
+def _known_ko(path: Path) -> dict[str, str]:
+    """기존 파일에서 이미 번역된 제목(title_en → title_ko). 같은 제목은 다시 번역하지 않는다."""
+    if not path.exists():
+        return {}
+    with path.open(encoding="utf-8") as fh:
+        return {r["title_en"]: r["title_ko"] for r in csv.DictReader(fh)
+                if r.get("title_ko") and r["title_ko"] != r.get("title_en")}
 
 
 def _fetch(league: str = "EPL") -> list[dict]:
@@ -135,16 +127,21 @@ def main(argv: list[str] | None = None) -> int:
         print("[buzz] 항목 없음 — 기존 파일 유지", file=sys.stderr)
         return 1
 
-    if not args.no_translate:
-        for r in rows:
-            r["title_ko"] = _to_ko(r["title_en"]) or r["title_en"]
-            time.sleep(0.2)
-    else:
-        for r in rows:
-            r["title_ko"] = r["title_en"]
-
     rows.sort(key=lambda r: r["published"], reverse=True)
     rows = rows[:args.limit]
+
+    # 번역 실패 시 원문을 넣되, 다음 실행이 원문인 제목만 다시 번역한다(src/translate.py — 무료 공급자)
+    known = {} if args.no_translate else _known_ko(args.out)
+    todo = [r for r in rows if r["title_en"] not in known]
+    if todo and not args.no_translate:
+        from translate import translate_many
+        for r, ko in zip(todo, translate_many([r["title_en"] for r in todo])):
+            if ko:
+                known[r["title_en"]] = ko
+    for r in rows:
+        r["title_ko"] = known.get(r["title_en"]) or r["title_en"]
+    if todo and not args.no_translate:
+        print(f"[buzz] 번역 {sum(1 for r in todo if r['title_en'] in known)}/{len(todo)}건(신규) · 재사용 {len(rows) - len(todo)}건")
 
     fields = ["source", "title_en", "title_ko", "tier", "link", "published"]
     with args.out.open("w", newline="", encoding="utf-8") as fh:

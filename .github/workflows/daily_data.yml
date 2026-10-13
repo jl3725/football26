@@ -23,6 +23,8 @@ permissions:
 jobs:
   fetch:
     runs-on: ubuntu-latest
+    env:
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}   # 감독 소개·이적 소문 번역(무료 등급, src/translate.py)
     steps:
       - uses: actions/checkout@v4
 
@@ -31,7 +33,7 @@ jobs:
           python-version: "3.12"
 
       - name: Install dependencies
-        run: pip install requests beautifulsoup4 lxml pandas unidecode feedparser deep-translator
+        run: pip install requests beautifulsoup4 lxml pandas unidecode feedparser
 
       - name: Managers · season teams · manager changes (전 리그)
         run: |

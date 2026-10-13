@@ -41,6 +41,9 @@ def init_db() -> None:
         c.execute("CREATE INDEX IF NOT EXISTS idx_team_pub ON articles(team, published)")
 
 
+_UNTRANSLATED = "(headline_ko IS NULL OR headline_ko='' OR headline_ko=headline)"
+
+
 def upsert_articles(articles: list[dict], team: str) -> int:
     """기사 리스트를 (link, team) 기준 upsert. 신규 삽입 건수를 반환."""
     today = date.today().isoformat()
@@ -57,16 +60,54 @@ def upsert_articles(articles: list[dict], team: str) -> int:
                 c.execute("UPDATE articles SET fetched_at=? WHERE link=? AND team=?",
                           (today, link, team))
             else:
+                hk, dk = a.get("headline_ko", ""), a.get("desc_ko", "")
+                if not hk:                       # 다른 팀으로 이미 번역된 같은 기사면 그 번역을 재사용
+                    prev = c.execute(
+                        f"SELECT headline_ko, descr_ko FROM articles WHERE link=? AND NOT {_UNTRANSLATED} LIMIT 1",
+                        (link,)).fetchone()
+                    if prev:
+                        hk, dk = prev
                 c.execute(
                     """INSERT INTO articles
                        (link, team, source, headline, headline_ko, descr, descr_ko,
                         published, image, first_seen, fetched_at)
                        VALUES (?,?,?,?,?,?,?,?,?,?,?)""",
                     (link, team, a.get("source", ""), a.get("headline", ""),
-                     a.get("headline_ko", ""), a.get("desc", ""), a.get("desc_ko", ""),
+                     hk, a.get("desc", ""), dk,
                      a.get("published", ""), a.get("image", ""), today, today))
                 new += 1
     return new
+
+
+def untranslated(limit: int = 400) -> list[dict]:
+    """번역이 비었거나 원문이 들어간 기사(최신순). 같은 링크는 한 번만."""
+    with _conn() as c:
+        rows = c.execute(
+            f"""SELECT link, max(headline) AS headline, max(descr) AS descr FROM articles
+                WHERE {_UNTRANSLATED} GROUP BY link ORDER BY max(first_seen) DESC, max(published) DESC LIMIT ?""",
+            (limit,)).fetchall()
+    return [dict(r) for r in rows]
+
+
+def set_translation(link: str, headline_ko: str | None, descr_ko: str | None) -> int:
+    """링크의 모든 팀 행에 번역을 채운다(헤드라인 번역이 없으면 건너뜀)."""
+    if not headline_ko:
+        return 0
+    with _conn() as c:
+        cur = c.execute("UPDATE articles SET headline_ko=?, descr_ko=? WHERE link=?",
+                        (headline_ko, descr_ko or "", link))
+        return cur.rowcount
+
+
+def translation_stats(since: str) -> dict:
+    """since(YYYY-MM-DD) 이후 수집 기사의 번역률 — 감시용."""
+    with _conn() as c:
+        tot, bad = c.execute(
+            f"SELECT count(*), sum(CASE WHEN {_UNTRANSLATED} THEN 1 ELSE 0 END) FROM articles WHERE first_seen>=?",
+            (since,)).fetchone()
+    tot, bad = int(tot or 0), int(bad or 0)
+    return {"since": since, "articles": tot, "untranslated": bad,
+            "translated_pct": round(100 * (tot - bad) / tot, 1) if tot else None}
 
 
 def read_team_news(team: str, limit: int = 16) -> list[dict]:
