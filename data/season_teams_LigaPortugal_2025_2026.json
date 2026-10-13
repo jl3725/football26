@@ -1,12 +1,12 @@
 {
   "season_label": "26/27",
   "source_title": "2026-27 Primeira Liga",
-  "detected_at": "2026-10-12 12:46",
+  "detected_at": "2026-10-13 06:23",
   "teams": [
     {
       "name": "Académico de Viseu",
       "color": "#444a55",
-      "logo": "",
+      "logo": "https://tmssl.akamaized.net/images/wappen/head/7788.png",
       "promoted": true
     },
     {
@@ -66,7 +66,7 @@
     {
       "name": "Marítimo",
       "color": "#444a55",
-      "logo": "",
+      "logo": "https://tmssl.akamaized.net/images/wappen/head/1301.png",
       "promoted": true
     },
     {
@@ -120,8 +120,5 @@
     "AVS Futebol",
     "Tondela"
   ],
-  "meta_missing": [
-    "Académico de Viseu",
-    "Marítimo"
-  ]
+  "meta_missing": []
 }
