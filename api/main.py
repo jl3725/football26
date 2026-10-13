@@ -779,9 +779,9 @@ def _comp_usage(league: str):
             toks = nk.split()
             if toks:
                 last.setdefault((sq, toks[-1]), d)  # 성 폴백(Andy↔Andrew 등)
-        idx = {"exact": exact, "last": last}
+        idx = {"exact": exact, "last": last, "league": league}
     except (OSError, KeyError, ValueError):
-        idx = None
+        idx = {"exact": {}, "last": {}, "league": league}   # 사용량 없음 — 역할은 리그 출전만으로
     _COMP_USAGE_CACHE[league] = idx
     return idx
 
@@ -811,8 +811,12 @@ def _comp_profile(row, usage_idx) -> dict:
     es, ea = _num(u.get("euro_starts")), _num(u.get("euro_apps"))
     cs, ca = _num(u.get("cup_starts")), _num(u.get("cup_apps"))
     lm = _num(row.get("minutes"))
-    role = rv3.role_tag(league_min=lm, euro_starts=es, euro_apps=ea,
-                        cup_starts=cs, cup_apps=ca, age=row.get("age"))
+    # 역할 임계값(리그 1800′·유럽 6선발 등)은 풀시즌 기준 — 시즌 초엔 전원 '백업'이 되므로
+    # 리그 진행률로 풀시즌 환산해 판정한다(끝난 시즌은 진행률 1.0 → 그대로).
+    lg = (usage_idx or {}).get("league")
+    scale = 1.0 / _progress(lg) if lg else 1.0
+    role = rv3.role_tag(league_min=min(lm * scale, 3420.0), euro_starts=es * scale, euro_apps=ea * scale,
+                        cup_starts=cs * scale, cup_apps=ca * scale, age=row.get("age"))
     comps = []
     for key, label in _COMP_LABELS:
         st, ap = int(_num(u.get(f"{key}_starts"))), int(_num(u.get(f"{key}_apps")))
