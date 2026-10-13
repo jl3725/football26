@@ -24,9 +24,12 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parent.parent
-PROFILE_PATH = ROOT / "data" / "manager_profiles_2025_2026.json"
+sys.path.insert(0, str(ROOT / "src"))
+from leagues import data_path  # noqa: E402  (활성 데이터 시즌)
+
+PROFILE_PATH = data_path("manager_profiles", "EPL", ext="json")
 REPORT_PATH = ROOT / "data" / "manager_change_report.md"
-CHANGE_LOG_PATH = ROOT / "data" / "manager_changes_2025_2026.csv"
+CHANGE_LOG_PATH = data_path("manager_changes", "EPL")
 
 
 def tracking_season_title(today: "dt.date | None" = None) -> str:

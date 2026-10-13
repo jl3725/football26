@@ -541,7 +541,9 @@ def main(argv=None) -> int:
     for a in list(args):
         if a.startswith("--search-min="):
             search_min = int(a.split("=", 1)[1]); args.remove(a)
-    teams = args if args else list(TEAM_TM)
+    clubs = season_clubs(season=SEASON)   # 활성 데이터 시즌 소속 클럽
+    TEAM_TM.update(clubs)                 # 정적 맵에 없는 승격팀도 scrape_team 이 찾도록
+    teams = args if args else list(clubs)
 
     df = pd.read_csv(PLAYERS)
     df["__norm"] = df["player"].map(norm)

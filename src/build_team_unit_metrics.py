@@ -22,6 +22,7 @@ from leagues import data_path
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
 PLAYERS = data_path("players_full")
+SCHEDULE_FULL = data_path("schedule_full")
 STANDINGS = data_path("standings")
 STATBUNKER_TEAMS = data_path("statbunker_team_stats")
 OUT = data_path("team_unit_metrics")
@@ -30,6 +31,25 @@ OUT = data_path("team_unit_metrics")
 HIGH_GOOD = True
 LOW_GOOD = False
 
+
+
+def comp_context_from_schedule() -> dict[str, dict]:
+    """ESPN schedule_full(리그+유럽+국내컵)의 완료 경기로 팀별 대회 부담을 센다 — 전 리그 공용."""
+    if not SCHEDULE_FULL.exists():
+        return {}
+    games: dict[str, dict] = defaultdict(lambda: {"league": 0, "euro": 0, "cup": 0})
+    with SCHEDULE_FULL.open("r", encoding="utf-8-sig", newline="") as f:
+        for r in csv.DictReader(f):
+            if r.get("status") != "completed":
+                continue
+            code = r.get("comp_code") or ""
+            kind = "euro" if code.startswith("uefa.") else ("league" if code.endswith(".1") else "cup")
+            games[r["squad"]][kind] += 1
+    return {
+        sq: {"european_games": g["euro"], "domestic_cup_games": g["cup"],
+             "extra_games": g["euro"] + g["cup"], "total_games_approx": g["league"] + g["euro"] + g["cup"]}
+        for sq, g in games.items()
+    }
 
 def as_float(value) -> float | None:
     if value is None or value == "":
@@ -149,8 +169,10 @@ def main() -> int:
     # League metrics stay pure. We add extra context for heavy-schedule teams
     # (Champions League, Europa, FA Cup, etc.) from fl_matches data.
     comp_context = {}
-    ctx_path = DATA / "team_comp_context_2025_2026.csv"
-    if ctx_path.exists():
+    ctx_path = data_path("team_comp_context")   # 레거시: EPL 25/26 football-lineups 기반
+    if not ctx_path.exists():
+        comp_context = comp_context_from_schedule()   # 그 외: ESPN 전 대회 일정(schedule_full)
+    else:
         with ctx_path.open("r", encoding="utf-8-sig", newline="") as f:
             for row in csv.DictReader(f):
                 comp_context[row["squad"]] = {

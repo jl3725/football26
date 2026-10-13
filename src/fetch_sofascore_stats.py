@@ -1,11 +1,13 @@
 """
-Sofascore 비공식 API로 25/26 EPL 선수 시즌 통계(고급 지표 포함) 수집.
+Sofascore 비공식 API로 활성 시즌(FB_SEASON_START) 리그 선수 시즌 통계(고급 지표 포함) 수집.
+
+2026 중 Sofascore 가 직접 요청에 403 을 반환해 전송은 sofascore_client(헤드리스 브라우저 경유)로 한다 — 로컬 전용.
 
 FBref가 25/26 시즌 advanced 컬럼(공중볼·패스성공률·캐리·키퍼 PSxG 등)을 비워둔
 이슈를 해결하기 위해 Sofascore에서 직접 수집한다.
 
 수집 흐름:
-  1) EPL 25/26 season id 조회
+  1) 활성 시즌 season id 조회
   2) 시즌 standings 에서 20개 팀 ID 확보
   3) 팀별 선수 목록(`/team/{id}/players`) 조회
   4) 선수별 시즌 통계(`/player/{id}/unique-tournament/17/season/{sid}/statistics/overall`)
@@ -24,10 +26,10 @@ import time
 from pathlib import Path
 
 import pandas as pd
-import tls_requests
 from unidecode import unidecode
 
-from leagues import ACTIVE_LEAGUE, data_path, league_config
+import sofascore_client
+from leagues import ACTIVE_LEAGUE, SEASON_START, data_path, league_config
 
 DATA = Path(__file__).resolve().parent.parent / "data"
 OUT = data_path("players_sofascore_stats")
@@ -37,6 +39,7 @@ H = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
      "Accept": "application/json",
      "Referer": "https://www.sofascore.com/"}
 BASE = "https://api.sofascore.com/api/v1"
+SEASON_YEAR = f"{SEASON_START % 100:02d}/{(SEASON_START + 1) % 100:02d}"   # Sofascore 시즌 표기(예 "26/27")
 PL_UT_ID = 17
 SOFASCORE_UT_IDS = {
     "EPL": 17,
@@ -285,12 +288,14 @@ def get(path: str, retries: int = 3, delay: float = 0.6):
     for i in range(retries):
         time.sleep(delay)
         try:
-            r = tls_requests.get(BASE + path, headers=H, timeout=20)
-            if r.status_code == 200:
-                return r.json()
-            if r.status_code == 404:
+            status, data = sofascore_client.get_json(path)
+            if status == 200:
+                return data
+            if status == 404:
                 return None  # 출전 없는 선수 등
-        except Exception:
+            if status == 403:
+                sofascore_client.reset()   # 챌린지 쿠키 갱신 후 재시도
+        except Exception:  # noqa: BLE001
             pass
         time.sleep(1.5 * (i + 1))
     return None
@@ -301,7 +306,7 @@ def find_season_id() -> int | None:
     if not d:
         return None
     for s in d.get("seasons", []):
-        if s.get("year") == "25/26":
+        if s.get("year") == SEASON_YEAR:
             return s["id"]
     return None
 
@@ -374,9 +379,9 @@ def main(argv=None) -> int:
     cfg = league_config()
     season_id = find_season_id()
     if season_id is None:
-        print("EPL 25/26 시즌 id 조회 실패")
+        print(f"{cfg.name} {SEASON_YEAR} 시즌 id 조회 실패")
         return 1
-    print(f"{cfg.name} 25/26 season id = {season_id}")
+    print(f"{cfg.name} {SEASON_YEAR} season id = {season_id}")
 
     rows = fetch_tournament_player_stats(season_id)
     if rows:

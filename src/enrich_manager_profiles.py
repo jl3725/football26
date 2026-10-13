@@ -34,7 +34,10 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from sync_manager_profiles import fetch_json  # 429 백오프 포함 재사용
 
 ROOT = Path(__file__).resolve().parent.parent
-PROFILE_PATH = ROOT / "data" / "manager_profiles_2025_2026.json"
+sys.path.insert(0, str(ROOT / "src"))
+from leagues import data_path  # noqa: E402  (활성 데이터 시즌)
+
+PROFILE_PATH = data_path("manager_profiles", "EPL", ext="json")
 
 # 감독 전술 섹션. 선수 시절 'Style of play' 는 의도적으로 제외
 # (감독 섹션은 'Style of management' / 'Tactics' / 'Manager profile' 등으로 표기됨).

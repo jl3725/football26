@@ -22,7 +22,7 @@ except Exception:  # noqa: BLE001
     pass
 
 from unidecode import unidecode  # noqa: E402
-from fetch_sofascore_stats import (get, find_season_id, fetch_teams,  # noqa: E402
+from fetch_sofascore_stats import (SEASON_YEAR, get, find_season_id, fetch_teams,  # noqa: E402
                                     fetch_team_players, UT_ID)
 from leagues import data_path, ACTIVE_LEAGUE  # noqa: E402
 
@@ -54,7 +54,7 @@ def main() -> int:
     league = ACTIVE_LEAGUE
     sid = find_season_id()
     if not sid:
-        print(f"[heatmap] {league}: 25/26 시즌 id 못 찾음", file=sys.stderr)
+        print(f"[heatmap] {league}: {SEASON_YEAR} 시즌 id 못 찾음", file=sys.stderr)
         return 1
     teams = fetch_teams(sid)
     if not teams:

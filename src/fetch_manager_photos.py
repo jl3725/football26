@@ -26,7 +26,10 @@ except Exception:  # noqa: BLE001
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from sync_manager_profiles import fetch_photo_urls, load_profiles, save_profiles  # noqa: E402
 
-JSON = Path(__file__).resolve().parent.parent / "data" / "manager_profiles_2025_2026.json"
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from leagues import data_path  # noqa: E402  (활성 데이터 시즌)
+
+JSON = data_path("manager_profiles", "EPL", ext="json")
 _PAREN = re.compile(r"\s*\([^)]*\)\s*$")  # "(interim)" 등 제거
 
 

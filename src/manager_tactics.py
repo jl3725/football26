@@ -22,7 +22,7 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
-from leagues import data_path  # noqa: E402
+from leagues import SEASON as _ACTIVE_SEASON, data_path  # noqa: E402
 
 try:
     sys.stdout.reconfigure(encoding="utf-8")
@@ -45,7 +45,7 @@ TM_POS_NORM = {"CB": "Centre-Back", "RB": "Right-Back", "LB": "Left-Back", "RWB"
                "RW": "Right Winger", "LW": "Left Winger", "CF": "Centre-Forward",
                "SS": "Second Striker", "GK": "Goalkeeper"}
 
-SEASON = os.getenv("FB_SEASON", "2025_2026")   # 현재 스냅샷 시즌(시즌 쌓이면 append)
+SEASON = os.getenv("FB_SEASON", _ACTIVE_SEASON)   # 현재 스냅샷 시즌(기본=활성 데이터 시즌)
 _MONTHS = {m: i + 1 for i, m in enumerate(
     ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"])}
 

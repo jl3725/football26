@@ -24,6 +24,7 @@ from leagues import (
     register_soccerdata_custom_leagues,
 )
 
+from squads import canonical_squad  # noqa: E402  (소스별 클럽 표기 → 앱 표준)
 register_soccerdata_custom_leagues()
 
 DATA_DIR = Path(__file__).resolve().parent.parent / "data"
@@ -216,7 +217,7 @@ def main() -> int:
     udf["shots_p90"]    = (udf["shots"]       / n90).round(3)
     udf["xg_chain_p90"] = (udf["xg_chain"]    / n90).round(3)
 
-    udf["_key"] = [merge_key(t, p) for t, p in zip(udf["team"], udf["player"])]
+    udf["_key"] = [merge_key(canonical_squad(t, CFG.key), p) for t, p in zip(udf["team"], udf["player"])]
 
     # ── FBref 기본 로드 ─────────────────────────────────────────────────────
     fb = pd.read_csv(FBREF)
@@ -255,7 +256,7 @@ def main() -> int:
         kdf.columns = ["_".join(c).strip("_") if isinstance(c, tuple) else c for c in kdf.columns]
         save_col = next((c for c in kdf.columns if c.endswith("Save%")), None)
         cs_col   = next((c for c in kdf.columns if c.endswith("CS%")), None)
-        kdf["_key"] = [merge_key(t, p) for t, p in zip(kdf["team"], kdf["player"])]
+        kdf["_key"] = [merge_key(canonical_squad(t, CFG.key), p) for t, p in zip(kdf["team"], kdf["player"])]
         keep = {"_key": "_key"}
         if save_col: keep[save_col] = "gk_save_pct"
         if cs_col:   keep[cs_col]   = "gk_cs_pct"

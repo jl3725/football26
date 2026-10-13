@@ -13,6 +13,7 @@ import pandas as pd
 import soccerdata as sd
 
 from leagues import SEASON_FBREF, data_path, league_config, register_soccerdata_custom_leagues
+from squads import canonical_squad
 
 register_soccerdata_custom_leagues()
 
@@ -36,6 +37,9 @@ def main() -> int:
         week = pd.to_numeric(finished["week"], errors="coerce")
         finished = finished[week.between(1, cfg.games_per_team)].copy()
     print(f"{len(finished)} matches OK")
+    # FBref 표기 → 앱 표준(squads.py) — 2026-27부터 일부 클럽 표기가 바뀌어 일정·선수와 끊김
+    for c in ("home_team", "away_team"):
+        finished[c] = finished[c].map(lambda v: canonical_squad(v, cfg.key))
 
     # ── 순위표 집계 ──────────────────────────────────────────────────────────
     standing_rows = []

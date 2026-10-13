@@ -18,15 +18,19 @@ from pathlib import Path
 import requests
 from bs4 import BeautifulSoup
 
-from leagues import ACTIVE_LEAGUE, data_path
+from leagues import ACTIVE_LEAGUE, SEASON_START, data_path
 
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
+# StatBunker comp_id 는 시즌마다 다르다(같은 리그라도 시즌별 별도 대회 id).
+# 모르는 시즌에 25/26 id 를 쓰면 지난 시즌 데이터가 새 시즌 파일에 들어가므로 시즌별로 관리한다.
+COMP_IDS_BY_SEASON: dict[int, dict[str, int]] = {
+    2025: {"EPL": 776, "LaLiga": 777, "SerieA": 785},
+    # 2026: 26/27 comp_id 미확인 — statbunker.com 대회 선택 목록에서 확인 후 추가
+}
 COMP_IDS = {
-    "EPL": 776,
-    "LaLiga": 777,
-    "SerieA": 785,
+    **COMP_IDS_BY_SEASON.get(SEASON_START, {}),
     # TODO(Bundesliga·Ligue1): StatBunker comp_id 미확인. 대회 드롭다운에서 확보 필요.
     #   (2026-07 확인 시도했으나 StatBunker 가 IP 차단(404/403)으로 조회 불가 — 서버 정상화 후
     #    /competitions/TeamsGoalScorersTypeOfPlay?comp_id=776 의 대회 선택 목록에서 확인)
@@ -309,7 +313,7 @@ def main() -> int:
     if COMP_ID is None:
         # comp_id 없는 리그(예: Bundesliga·Ligue1)는 크래시 대신 정상 종료 —
         # 파이프라인이 이 스텝을 안전하게 건너뛰도록.
-        print(f"[skip] StatBunker comp_id 미설정 리그({ACTIVE_LEAGUE}) — 수집 생략", file=sys.stderr)
+        print(f"[skip] StatBunker comp_id 미설정({ACTIVE_LEAGUE} {SEASON_START}) — 수집 생략", file=sys.stderr)
         return 0
     team_rows = build_team_stats()
     penalty_takers = build_penalty_takers()

@@ -21,6 +21,7 @@ import pandas as pd
 import soccerdata as sd
 
 from leagues import SEASON_FBREF, data_path, league_config, register_soccerdata_custom_leagues
+from squads import canonical_squad
 
 register_soccerdata_custom_leagues()
 
@@ -28,6 +29,7 @@ DATA_DIR = Path(__file__).resolve().parent.parent / "data"
 OUT = data_path("players")
 SAMPLE = data_path("players_sample")
 LEAGUE = league_config().fbref_id
+LEAGUE_KEY = league_config().key
 SEASON = SEASON_FBREF
 
 
@@ -46,7 +48,7 @@ def keyed(df: pd.DataFrame) -> pd.DataFrame:
     """인덱스(league,season,team,player)에서 team/player 키 컬럼을 뽑아낸다."""
     idx = df.index.to_frame(index=False)
     df = df.reset_index(drop=True).copy()
-    df["_team"] = idx["team"].values
+    df["_team"] = [canonical_squad(t, LEAGUE_KEY) for t in idx["team"].values]   # FBref 표기 → 앱 표준
     df["_player"] = idx["player"].values
     return df
 

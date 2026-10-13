@@ -1,7 +1,7 @@
 name: Daily Data Fetch
 
 # 리그홈·오버뷰가 쓰는 "로컬 전용" 수집기들을 클라우드로 이관 — 하루 1회.
-#   감독 프로필/교체 · 승격 로스터 · 이적 소문(buzz, 뉴스 RSS) · 일정 · UEFA 계수 · FIFA 랭킹
+#   감독 프로필/교체 · 승격 로스터 · 이적 소문(buzz, 뉴스 RSS) · 일정·순위·라인업 · UEFA 계수 · FIFA 랭킹
 # (Transfermarkt 계열은 GH 러너 차단으로 로컬 agent 담당 — 아래 주석 참고)
 # 이 데이터들이 그동안 로컬 PC(작업 스케줄러)에서만 갱신돼 리그홈이 멈춰 보였음.
 # Transfermarkt·ESPN·위키 모두 GH 러너에서 정상(daily_transfers 가 이미 증명) → 전부 이관 가능.
@@ -67,8 +67,16 @@ jobs:
             bash scripts/ci_try.sh "schedule $LG" python src/fetch_schedule.py --league $LG
           done
 
-      # 주의: 순위(fetch_standings)는 soccerdata(FBref) 의존 + 25/26 최종 확정 상태라 제외.
-      # 26/27 시즌 개막(8월) 시 fetch_standings + soccerdata 를 이 워크플로에 추가할 것.
+      # 시즌 중 매일: ESPN 결과 → 순위표, 새로 끝난 리그 경기 라인업·교체(증분). 전부 ESPN 이라 GH 에서 동작.
+      # (선수 시즌 스탯은 FBref·Sofascore 브라우저가 필요해 로컬 주간 빌드 scripts/build_season.py 담당)
+      - name: Standings · lineups · subs (전 리그, ESPN)
+        run: |
+          for LG in EPL LaLiga SerieA Bundesliga Ligue1 LigaPortugal Eredivisie BelgianProLeague; do
+            FB_LEAGUE=$LG bash scripts/ci_try.sh "standings $LG" python src/standings_from_schedule.py
+            FB_LEAGUE=$LG bash scripts/ci_try.sh "lineups $LG" python src/fetch_espn_lineups.py
+            FB_LEAGUE=$LG bash scripts/ci_try.sh "subs $LG" python src/fetch_espn_subs.py
+          done
+
       # Transfermarkt 계열(현재 부상·계약·루머·시장가치 스냅샷·이적)은 2026-07-15부터 TM(AWS WAF)이
       # GH 러너 IP 에 202 챌린지를 반환해 클라우드 수집 불가 → 로컬 PC agent 로 이관
       # (scripts/run_tm_agent.ps1 · register_tm_agent.ps1, 매일 10:30/18:30).
@@ -78,6 +86,14 @@ jobs:
 
       - name: FIFA 랭킹 (월드컵 탭 TOP30 — daily_wc 비활성화로 이관)
         run: bash scripts/ci_try.sh "fifa_ranking" python src/fetch_fifa_ranking.py
+
+      # 전 리그 홈(/api/home/all)은 data/home_all.json 스냅샷을 서빙한다(Render 시작 시간 절약).
+      # 이걸 매일 다시 만들지 않으면 홈이 마지막 수동 생성 시점(2026-07-07)에 멈춘다.
+      - name: Refresh global home snapshot (home_all.json)
+        run: |
+          pip install -q -r requirements.txt
+          python scripts/build_db.py > /dev/null
+          bash scripts/ci_try.sh "precompute_hub" python scripts/precompute_hub.py
 
       - name: Validate core data contracts
         run: python scripts/validate_data.py --no-optional   # 품질 게이트 — 실패 시 커밋 차단
