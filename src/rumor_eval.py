@@ -8,6 +8,8 @@ AI evaluate_fit 을 돌려: 루머를 AI 적합도순 랭킹 + TM 확률 vs AI F
 """
 from __future__ import annotations
 
+from kg_graph import connect as _neo4j_connect  # noqa: E402  (차단기 포함 Neo4j 연결)
+
 import os
 import sys
 from pathlib import Path
@@ -79,7 +81,7 @@ def sync_to_kg() -> int:
              "prob": None if pd.isna(r.get("probability")) else int(r["probability"]),
              "cur": str(r.get("current_club") or "")}
             for _, r in df.iterrows()]
-    d = GraphDatabase.driver(NEO4J_URI, auth=NEO4J_AUTH)
+    d = _neo4j_connect()
     linked = 0
     with d.session() as s:
         for i in range(0, len(rows), 300):

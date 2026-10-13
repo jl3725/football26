@@ -16,6 +16,8 @@
 """
 from __future__ import annotations
 
+from kg_graph import connect as _neo4j_connect  # noqa: E402  (차단기 포함 Neo4j 연결)
+
 import os
 import sys
 from functools import lru_cache
@@ -231,7 +233,7 @@ def sync_to_kg() -> int:
     from neo4j import GraphDatabase
     sv = _squad_value()
     clubs = sorted(sv["club"].unique())
-    d = GraphDatabase.driver(NEO4J_URI, auth=NEO4J_AUTH)
+    d = _neo4j_connect()
     n = 0
     with d.session() as s:
         for club in clubs:

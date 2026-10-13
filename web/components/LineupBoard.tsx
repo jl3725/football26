@@ -4,6 +4,7 @@ import { getLineup, getProjection, type Lineup, type Projection } from "@/lib/ap
 import Pitch from "./Pitch";
 import { usePeek } from "./PlayerPeek";
 import { SkelPitch } from "./Skeleton";
+import EmptyState from "./EmptyState";
 import { showNextSeason } from "@/lib/season";
 
 type Departed = { player: string; left_for: string; pos: string; photo: string };
@@ -12,12 +13,13 @@ export default function LineupBoard({ team, accent, departed = [] }: { team: str
   const [lu, setLu] = useState<Lineup | null>(null);
   const [pj, setPj] = useState<Projection | null>(null);
   const [leftView, setLeftView] = useState<"cur" | "next">("next");
+  const [err, setErr] = useState(false);
   const peek = usePeek();
 
   useEffect(() => {
-    let a = true; setLu(null); setPj(null); setLeftView("next");
-    getLineup(team).then((d) => a && setLu(d)).catch(() => {});
-    getProjection(team).then((d) => a && setPj(d)).catch(() => {});
+    let a = true; setLu(null); setPj(null); setErr(false); setLeftView("next");
+    getLineup(team).then((d) => a && setLu(d)).catch(() => a && setErr(true));
+    getProjection(team).then((d) => a && setPj(d)).catch(() => a && setErr(true));
     return () => { a = false; };
   }, [team]);
 
@@ -43,6 +45,7 @@ export default function LineupBoard({ team, accent, departed = [] }: { team: str
           </div>
           {leftBoard
             ? <Pitch placements={leftBoard.placements} accent={accent} team={team} />
+            : err ? <EmptyState title="라인업을 불러오지 못했습니다" note="잠시 후 다시 열어 주세요" />
             : <SkelPitch />}
           <div className="pitch-cap"><span>{leftFormation || ""}</span></div>
         </div>

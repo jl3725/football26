@@ -4,6 +4,7 @@ import { getSquadGraph, type SquadGraphData, type SGNode } from "@/lib/api";
 import { hexA } from "@/lib/ui";
 import { usePeek } from "./PlayerPeek";
 import { Skel } from "./Skeleton";
+import EmptyState from "./EmptyState";
 
 const LINE_COLOR: Record<string, string> = { GK: "#f4cf5e", DEF: "#6aa6e0", MID: "#4fc27f", ATT: "#e0707a" };
 const LINE_KO: Record<string, string> = { GK: "GK", DEF: "수비", MID: "미드", ATT: "공격" };
@@ -54,7 +55,7 @@ function layout(nodes: SGNode[], edges: { a: string; b: string; matches: number 
 export default function SquadGraph({ team, accent }: { team: string; accent: string }) {
   const [d, setD] = useState<SquadGraphData | null>(null);
   const peek = usePeek();
-  useEffect(() => { let a = true; setD(null); getSquadGraph(team).then((x) => a && setD(x)).catch(() => a && setD(null)); return () => { a = false; }; }, [team]);
+  useEffect(() => { let a = true; setD(null); getSquadGraph(team).then((x) => a && setD(x)).catch(() => a && setD({ available: false, reason: "응답 없음", nodes: [], edges: [] } as unknown as SquadGraphData)); return () => { a = false; }; }, [team]);
 
   const g = useMemo(() => {
     if (!d || !d.nodes?.length) return null;
@@ -63,8 +64,8 @@ export default function SquadGraph({ team, accent }: { team: string; accent: str
   }, [d]);
 
   if (!d) return <div className="skel-wrap"><Skel h={360} r={14} /></div>;
-  if (!d.available) return <div className="mgr-meta">네트워크 비활성 — {d.reason || "그래프 스택 필요"}</div>;
-  if (!d.nodes.length || !g) return <div className="mgr-meta">함께 뛴 데이터 부족</div>;
+    if (!d.available) return <EmptyState title="스쿼드 네트워크 준비 중" note="함께 뛴 기록(관계 그래프)이 연결되면 표시됩니다" />;
+  if (!d.nodes.length || !g) return <EmptyState title="함께 뛴 데이터 부족" note="경기 수가 쌓이면 자연스럽게 채워집니다" />;
 
   const rr = (n: SGNode) => 7 + Math.max(0, Math.min(1, ((n.rating ?? 6) - 6) / 1.6)) * 7;   // 반지름 by 평점
 

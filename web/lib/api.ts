@@ -67,10 +67,19 @@ export type Lineup = {
   bench: { player: string; pos: string; ovr: number; photo: string }[];
 };
 
+// 응답 상한 — 넘기면 실패로 처리해 화면이 스켈레톤에 영원히 머물지 않게 한다(Render 콜드스타트 ~60s 감안).
+const FETCH_TIMEOUT_MS = 70_000;
+
 async function j<T>(url: string): Promise<T> {
-  const res = await fetch(url, { cache: "no-store" });
-  if (!res.ok) throw new Error(`${res.status} ${url}`);
-  return res.json();
+  const ctl = new AbortController();
+  const timer = setTimeout(() => ctl.abort(), FETCH_TIMEOUT_MS);
+  try {
+    const res = await fetch(url, { cache: "no-store", signal: ctl.signal });
+    if (!res.ok) throw new Error(`${res.status} ${url}`);
+    return res.json();
+  } finally {
+    clearTimeout(timer);
+  }
 }
 
 // 활성 리그 — 사이드바에서 전환. 아래 모든 fetcher 기본값이 이 값을 참조(호출 시점 평가).

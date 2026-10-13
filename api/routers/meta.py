@@ -8,6 +8,7 @@ from fastapi import APIRouter
 import api.bootstrap  # noqa: F401
 import datastore as ds
 from leagues import ACTIVE_LEAGUE, league_config
+import infra_health
 from season_context import current_window, season_label
 
 router = APIRouter(prefix="/api", tags=["meta"])
@@ -42,4 +43,5 @@ def health():
         "ok": True,
         "active_league": ACTIVE_LEAGUE,
         "leagues": ds.available_leagues(),
+        "infra": infra_health.status(),   # 차단 중인 선택 인프라(neo4j·qdrant)
     }

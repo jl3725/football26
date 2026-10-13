@@ -8,6 +8,8 @@
 """
 from __future__ import annotations
 
+from kg_graph import connect as _neo4j_connect  # noqa: E402  (차단기 포함 Neo4j 연결)
+
 import json
 import os
 import re
@@ -71,7 +73,7 @@ def _run_cypher(cypher: str) -> dict:
         c += "\nLIMIT 25"
     try:
         from neo4j import GraphDatabase, Query
-        d = GraphDatabase.driver(NEO4J_URI, auth=NEO4J_AUTH)
+        d = _neo4j_connect()
     except Exception as e:  # noqa: BLE001
         return {"error": f"Neo4j 미가동: {str(e)[:60]}"}
     try:

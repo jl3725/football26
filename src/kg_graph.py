@@ -21,10 +21,25 @@ _LINE = {
 }
 
 
+def connect():
+    """연결 확인된 Neo4j 드라이버. 꺼져 있으면 차단기(infra_health)가 10분간 즉시 실패시킨다.
+
+    GraphDatabase.driver() 는 지연 연결이라 생성은 성공하고 첫 쿼리에서 DNS·타임아웃으로 수 초를
+    쓴다 — verify_connectivity 로 여기서 확정하고, 실패는 차단기에 기록한다."""
+    import infra_health as ih
+    if ih.is_down("neo4j"):
+        raise RuntimeError("Neo4j 차단 중(최근 연결 실패) " + ih.reason("neo4j"))
+    from neo4j import GraphDatabase
+    with ih.guard("neo4j"):
+        d = GraphDatabase.driver(NEO4J_URI, auth=NEO4J_AUTH, connection_timeout=5,
+                                 max_connection_lifetime=300)
+        d.verify_connectivity()
+    return d
+
+
 def squad_graph(team: str, min_matches: int = 4, edge_limit: int = 60) -> dict:
     try:
-        from neo4j import GraphDatabase
-        d = GraphDatabase.driver(NEO4J_URI, auth=NEO4J_AUTH)
+        d = connect()
     except Exception as e:  # noqa: BLE001
         return {"available": False, "reason": f"Neo4j 미가동: {str(e)[:60]}", "nodes": [], "edges": []}
     try:

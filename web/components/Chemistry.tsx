@@ -4,6 +4,7 @@ import { getChemistry, type ChemistryData, type ChemCard } from "@/lib/api";
 import { hexA } from "@/lib/ui";
 import { usePeek } from "./PlayerPeek";
 import { SkelCards } from "./Skeleton";
+import EmptyState from "./EmptyState";
 
 const LINE_COLOR: Record<string, string> = { GK: "#f4cf5e", DEF: "#6aa6e0", MID: "#4fc27f", ATT: "#e0707a" };
 const last = (n: string) => n.split(" ").slice(-1)[0];
@@ -25,11 +26,11 @@ export default function Chemistry({ team, accent }: { team: string; accent: stri
   const [d, setD] = useState<ChemistryData | null>(null);
   useEffect(() => {
     let a = true; setD(null);
-    getChemistry(team).then((x) => a && setD(x)).catch(() => a && setD(null));
+    getChemistry(team).then((x) => a && setD(x)).catch(() => a && setD({ available: false, reason: "응답 없음", duos: [], trios: [] } as ChemistryData));
     return () => { a = false; };
   }, [team]);
   if (!d) return <SkelCards n={6} />;
-  if (!d.available || !d.duos.length) return <div className="mgr-meta">케미스트리 데이터 없음 (KG 미가동 리그)</div>;
+    if (!d.available || !d.duos.length) return <EmptyState title="케미스트리 준비 중" note="함께 뛴 기록(관계 그래프)이 연결되면 표시됩니다" />;
 
   return (
     <div>

@@ -10,6 +10,8 @@ data/scout_reports.csv 의 휴먼 스카우트 추천에 AI evaluate_fit 을 돌
 """
 from __future__ import annotations
 
+from kg_graph import connect as _neo4j_connect  # noqa: E402  (차단기 포함 Neo4j 연결)
+
 import os
 import sys
 from pathlib import Path
@@ -75,7 +77,7 @@ def evaluate_reports() -> list[dict]:
 
 def sync_to_kg(rows: list[dict]) -> None:
     from neo4j import GraphDatabase
-    d = GraphDatabase.driver(NEO4J_URI, auth=NEO4J_AUTH)
+    d = _neo4j_connect()
     reports = load_reports().set_index("report_id")
     with d.session() as s:
         s.run("CREATE CONSTRAINT scout_report_id IF NOT EXISTS "

@@ -4,6 +4,7 @@ import { getDiscover, fmtEur, type Discover, type DiscoverPick } from "@/lib/api
 import { hexA, tier } from "@/lib/ui";
 import { usePeek } from "./PlayerPeek";
 import { SkelCards } from "./Skeleton";
+import EmptyState from "./EmptyState";
 
 const POS_BTNS: [string, string][] = [
   ["", "전체"], ["Centre-Back", "CB"], ["Left-Back", "LB"], ["Right-Back", "RB"],
@@ -111,10 +112,7 @@ export default function RecruitPool({ team, accent }: { team: string; accent: st
   const avgVal = kVal.length ? kVal.reduce((s, x) => s + x, 0) / kVal.length : 0;
 
   if (disc && !disc.available) return (
-    <div className="nodata-card" style={{ marginTop: 16 }}>
-      <b>벡터 추천 비활성</b>
-      <div className="mgr-meta" style={{ marginTop: 6 }}>{disc.reason || "Qdrant 스택 필요 (로컬/호스팅)"}</div>
-    </div>
+    <EmptyState title="스타일 유사 선수 추천 준비 중" note="벡터 검색 저장소가 연결되면 전 리그 후보를 추천합니다" />
   );
 
   const railLabel: React.CSSProperties = { fontSize: 10, fontWeight: 700, opacity: 0.5, textTransform: "uppercase", letterSpacing: 0.5, margin: "14px 0 7px" };

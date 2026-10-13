@@ -60,7 +60,7 @@ html, body {
 .search input { flex: 1; background: none; border: none; outline: none; color: var(--txt); font-size: 13px; }
 .search input::placeholder { color: var(--muted); }
 
-.side-label { color: var(--muted); font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; padding: 6px 10px 8px; }
+.side-label { color: var(--muted); font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; padding: 6px 10px 8px; }
 .team-scroll { overflow-y: auto; flex: 1; padding-right: 2px; }
 .team-scroll::-webkit-scrollbar { width: 6px; }
 .team-scroll::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 6px; }
@@ -201,20 +201,20 @@ html, body {
 .kpis { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; margin-top: 20px; background: var(--line); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
 .kpi { background: rgba(9,12,19,0.72); padding: 14px 16px; }
 .kpi-n { font-family: Teko, sans-serif; font-size: 33px; line-height: 1; font-weight: 600; }
-.kpi-l { font-size: 10.5px; color: var(--muted); margin-top: 3px; letter-spacing: .5px; }
+.kpi-l { font-size: 11.5px; color: var(--muted); margin-top: 3px; letter-spacing: .4px; }
 @media (max-width: 720px) { .kpis { grid-template-columns: repeat(2, 1fr); } .hx-title { font-size: 40px; } }
 
 /* SECTION HEAD */
 .sec-head { display: flex; align-items: center; gap: 11px; margin: 26px 2px 13px; }
 .sec-bar { width: 4px; height: 30px; border-radius: 3px; flex-shrink: 0; }
 .sec-txt { flex: 1; }
-.sec-en { font-family: Oswald, sans-serif; font-size: 10px; letter-spacing: 2.5px; color: var(--muted); font-weight: 600; }
+.sec-en { font-family: Oswald, sans-serif; font-size: 11px; letter-spacing: 2px; color: var(--muted); font-weight: 600; }
 .sec-kr { font-size: 17px; font-weight: 700; line-height: 1.15; }
 .sec-count { font-family: Teko, sans-serif; font-size: 26px; color: var(--muted); }
 
 .home-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
 @media (max-width: 1000px) { .home-grid { grid-template-columns: 1fr; } }
-.card-h { font-size: 11.5px; letter-spacing: .3px; color: var(--muted); font-weight: 700; margin-bottom: 10px; }
+.card-h { font-size: 12.5px; letter-spacing: .2px; color: var(--muted); font-weight: 700; margin-bottom: 10px; }
 .rows { display: flex; flex-direction: column; }
 .ph22 { width: 22px; height: 22px; border-radius: 5px; background: rgba(255,255,255,0.06); flex-shrink: 0; }
 
@@ -1241,7 +1241,7 @@ button:focus-visible, .peekable:focus-visible, a:focus-visible {
 .peek-sub img { width: 15px; height: 15px; object-fit: contain; }
 .peek-ovr { text-align: center; flex-shrink: 0; }
 .peek-ovr b { font-family: Teko, sans-serif; font-size: 34px; line-height: .9; display: block; }
-.peek-ovr span { font-size: 8.5px; letter-spacing: 1.6px; color: var(--muted); font-weight: 700; }
+.peek-ovr span { font-size: 11px; letter-spacing: 1.6px; color: var(--muted); font-weight: 700; }
 .peek-tags { display: flex; gap: 5px; flex-wrap: wrap; padding: 0 16px 10px; }
 .peek-stats {
   display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
@@ -1249,9 +1249,9 @@ button:focus-visible, .peekable:focus-visible, a:focus-visible {
 }
 .peek-stat { background: rgba(10, 14, 21, 0.75); text-align: center; padding: 9px 4px 7px; }
 .peek-stat b { font-family: Teko, sans-serif; font-size: 21px; line-height: 1; display: block; font-weight: 600; }
-.peek-stat span { font-size: 9px; letter-spacing: .8px; color: var(--muted); font-weight: 700; text-transform: uppercase; }
+.peek-stat span { font-size: 11px; letter-spacing: .8px; color: var(--muted); font-weight: 700; text-transform: uppercase; }
 .peek-spark { padding: 10px 16px 4px; }
-.peek-spark-cap { display: flex; justify-content: space-between; font-size: 9.5px; color: var(--muted); letter-spacing: .6px; font-weight: 700; margin-bottom: 3px; }
+.peek-spark-cap { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); letter-spacing: .6px; font-weight: 700; margin-bottom: 3px; }
 .peek-actions { display: flex; gap: 8px; padding: 12px 14px 14px; }
 .peek-actions button {
   flex: 1; padding: 9px 6px; border-radius: 10px; border: 1px solid var(--line);
@@ -1397,7 +1397,7 @@ body::before {
   margin-top: 3px;
   color: #6f7986;
   font-family: var(--mono);
-  font-size: 8px;
+  font-size: 10.5px;
   letter-spacing: 1.25px;
 }
 .brand-version {
@@ -1408,7 +1408,7 @@ body::before {
   border-radius: 5px;
   color: var(--muted);
   font-family: var(--mono);
-  font-size: 8px;
+  font-size: 10.5px;
   letter-spacing: 0.6px;
 }
 
@@ -1421,7 +1421,7 @@ body::before {
   margin: 0 0 6px 2px;
   color: #6f7885;
   font-family: var(--mono);
-  font-size: 8.5px;
+  font-size: 11px;
   font-weight: 600;
   letter-spacing: 1.15px;
   text-transform: uppercase;
@@ -1498,7 +1498,7 @@ body::before {
     color-mix(in srgb, var(--accent) 28%, #121923);
 }
 .home-nav-t { font-family: var(--display); font-size: 13px; }
-.home-nav-sub { font-family: var(--mono); font-size: 7.5px; }
+.home-nav-sub { font-family: var(--mono); font-size: 10px; }
 .home-nav.active .home-nav-dot {
   background: var(--accent);
   box-shadow: 0 0 10px color-mix(in srgb, var(--accent) 70%, transparent);
@@ -1514,7 +1514,7 @@ body::before {
   padding: 7px 8px;
   background: transparent;
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: 11px;
 }
 .side-tabs button.active {
   background: rgba(255, 255, 255, 0.065);
@@ -1525,7 +1525,7 @@ body::before {
   padding: 10px 7px 7px;
   color: #68717d;
   font-family: var(--mono);
-  font-size: 8px;
+  font-size: 10.5px;
   letter-spacing: 0.75px;
 }
 .team-scroll { padding: 0 1px 5px 0; }
@@ -1554,18 +1554,18 @@ body::before {
   height: 19px;
   border-radius: 5px;
   font-family: var(--mono);
-  font-size: 8.5px;
+  font-size: 11px;
 }
-.team-btn .pts { font-family: var(--mono); font-size: 9px; }
+.team-btn .pts { font-family: var(--mono); font-size: 11px; }
 .zone-legend {
   gap: 5px 9px;
   padding: 9px 5px 5px;
 }
-.zone-legend span { font-family: var(--mono); font-size: 8px; }
+.zone-legend span { font-family: var(--mono); font-size: 10.5px; }
 .z-dot { width: 6px; height: 6px; border-radius: 50%; }
 .side-note {
   padding: 9px 5px 3px;
-  font-size: 9px;
+  font-size: 11px;
   line-height: 1.55;
 }
 
@@ -1599,14 +1599,14 @@ body::before {
   border-radius: 0;
 }
 .sb-clock { font-family: var(--mono); }
-.sb-time { font-family: var(--mono) !important; font-size: 10px; letter-spacing: .45px; }
-.sb-date { font-size: 9px; }
+.sb-time { font-family: var(--mono) !important; font-size: 11px; letter-spacing: .45px; }
+.sb-date { font-size: 11px; }
 .sb-season { margin-left: auto; }
 .sb-season-done,
 .sb-season-closed,
 .sb-season-open {
   font-family: var(--mono);
-  font-size: 8px;
+  font-size: 10.5px;
   letter-spacing: .3px;
   text-transform: uppercase;
 }
@@ -1617,7 +1617,7 @@ body::before {
   border-radius: 7px;
   background: rgba(255, 255, 255, 0.025);
 }
-.sb-chip-name, .sb-dday, .sb-livetag { font-family: var(--mono); font-size: 8px; }
+.sb-chip-name, .sb-dday, .sb-livetag { font-family: var(--mono); font-size: 10.5px; }
 .livedot {
   background: var(--accent);
   box-shadow: 0 0 9px color-mix(in srgb, var(--accent) 75%, transparent);
@@ -1638,7 +1638,7 @@ body::before {
   margin-bottom: 7px;
   color: color-mix(in srgb, var(--accent) 75%, #b6c0ca);
   font-family: var(--mono);
-  font-size: 8.5px;
+  font-size: 11px;
   font-weight: 600;
   letter-spacing: 1.7px;
 }
@@ -1679,7 +1679,7 @@ body::before {
   margin-top: 6px;
   color: #6f7985;
   font-family: var(--mono);
-  font-size: 8.5px;
+  font-size: 11px;
   letter-spacing: .5px;
   text-transform: uppercase;
 }
@@ -1695,7 +1695,7 @@ body::before {
   background: rgba(255, 255, 255, 0.025);
   color: #939da8;
   font-family: var(--mono);
-  font-size: 8px;
+  font-size: 10.5px;
   letter-spacing: .5px;
 }
 .global-search-wrap {
@@ -1742,7 +1742,7 @@ body::before {
   padding: 7px 11px;
   border-radius: 8px;
   font-family: var(--mono);
-  font-size: 8.5px;
+  font-size: 11px;
   font-weight: 600;
   letter-spacing: .25px;
 }
@@ -1800,7 +1800,7 @@ body::before {
 .hx-kicker,
 .hero-rank {
   font-family: var(--mono);
-  font-size: 8.5px;
+  font-size: 11px;
   letter-spacing: 2.2px;
 }
 .hx-title {
@@ -1821,7 +1821,7 @@ body::before {
 .comp-seg button {
   border-radius: 6px;
   font-family: var(--mono);
-  font-size: 8px;
+  font-size: 10.5px;
   letter-spacing: .35px;
 }
 .kpis {
@@ -1845,7 +1845,7 @@ body::before {
   border-bottom: 1px solid rgba(255,255,255,.22);
 }
 .kpi-n { font-family: var(--display); font-size: 31px; letter-spacing: -1.2px; }
-.kpi-l { font-family: var(--mono); font-size: 8px; letter-spacing: .4px; text-transform: uppercase; }
+.kpi-l { font-family: var(--mono); font-size: 10.5px; letter-spacing: .4px; text-transform: uppercase; }
 
 .section-head { margin: 28px 0 12px; }
 .section-head h2,
@@ -1884,7 +1884,7 @@ body::before {
 .card-h,
 .hub-sec-k {
   font-family: var(--mono);
-  font-size: 8.5px;
+  font-size: 11px;
   letter-spacing: 1.1px;
 }
 .card:hover,
@@ -1925,7 +1925,7 @@ body::before {
 .more-btn {
   border-radius: 9px 3px 9px 3px;
   font-family: var(--mono);
-  font-size: 9px;
+  font-size: 11px;
   letter-spacing: .45px;
 }
 
@@ -2003,11 +2003,11 @@ body::before {
 
 @media (max-width: 620px) {
   .workspace-shell { padding-inline: 13px; }
-  .workspace-kicker { font-size: 7.5px; letter-spacing: 1.2px; }
+  .workspace-kicker { font-size: 10px; letter-spacing: 1.2px; }
   .topbar { align-items: flex-end; }
   .tb-team > img { width: 39px; height: 39px; }
   .tb-team h1 { font-size: 29px; letter-spacing: -1px; }
-  .tb-path { font-size: 7.5px; }
+  .tb-path { font-size: 10px; }
   .tb-live { display: none; }
   .statusbar { min-height: 31px; }
   .sb-date,
@@ -2027,3 +2027,12 @@ body::before {
   .card { padding: 16px; }
   .peek { width: min(316px, calc(100vw - 24px)); }
 }
+
+
+/* ── 빈 상태 (사용 불가 · 데이터 없음 · 실패) — 스켈레톤이 영원히 남지 않게 한 가지 모양으로 ── */
+.empty-state { display: grid; justify-items: center; gap: 6px; padding: 34px 18px; text-align: center;
+  border: 1px dashed var(--line); border-radius: 12px; color: var(--muted); }
+.empty-state b { color: var(--text, #e6ebf2); font-size: 13.5px; font-weight: 700; }
+.empty-state span { font-size: 12.5px; line-height: 1.5; max-width: 42ch; }
+.empty-state .es-ico { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center;
+  border: 1px solid var(--line); margin-bottom: 4px; font-size: 14px; }

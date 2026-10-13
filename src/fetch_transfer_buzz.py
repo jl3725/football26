@@ -100,6 +100,7 @@ def _fetch(league: str = "EPL") -> list[dict]:
             continue
         for e in feed.entries[:25]:
             title = re.sub(r"\s+", " ", (e.get("title") or "")).strip()
+            title = re.sub(r"^<!\[CDATA\[\s*|\s*\]\]>$", "", title)   # 일부 피드(Record)의 CDATA 래퍼
             title = re.sub(r"\s*[-–]\s*\w+'s gossip$", "", title, flags=re.I)  # BBC 꼬리표 제거
             if not title or title.lower() in seen:
                 continue

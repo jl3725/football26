@@ -4,6 +4,7 @@ import { getHeatmaps, type HeatmapData } from "@/lib/api";
 import { hexA } from "@/lib/ui";
 import HeatmapPitch from "./HeatmapPitch";
 import { Skel } from "./Skeleton";
+import EmptyState from "./EmptyState";
 
 const LINE_COLOR: Record<string, string> = { GK: "#f4cf5e", DEF: "#6aa6e0", MID: "#4fc27f", ATT: "#e0707a" };
 
@@ -13,7 +14,7 @@ export default function TeamTerritory({ team, accent }: { team: string; accent: 
   const [view, setView] = useState<"territory" | "shape">("territory");
   useEffect(() => {
     let a = true; setD(null);
-    getHeatmaps(team).then((x) => a && setD(x)).catch(() => a && setD(null));
+    getHeatmaps(team).then((x) => a && setD(x)).catch(() => a && setD({ available: false, team, players: [] } as unknown as HeatmapData));
     return () => { a = false; };
   }, [team]);
 
@@ -37,7 +38,7 @@ export default function TeamTerritory({ team, accent }: { team: string; accent: 
   }, [d]);
 
   if (!d) return <div style={{ maxWidth: 520, margin: "0 auto" }}><Skel h={320} r={14} /></div>;
-  if (!d.available || !agg) return <div className="mgr-meta">히트맵 데이터 없음 (Sofascore 미수집 리그)</div>;
+    if (!d.available || !agg) return <EmptyState title="포지셔널 맵 없음" note="이 팀의 시즌 히트맵이 아직 수집되지 않았습니다" />;
 
   return (
     <div>

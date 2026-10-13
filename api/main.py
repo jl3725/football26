@@ -28,6 +28,47 @@ import teammeta as tm  # noqa: E402
 import ratings as rt  # noqa: E402
 import ratings_v3 as rv3  # noqa: E402  (절대 클래스·폼·POT·신뢰도)
 import transfer_adjust as ta  # noqa: E402
+
+# ── 응답 캐시 ──────────────────────────────────────────────────────────────
+# 무거운 집계(overview·projection·recommend…)를 요청마다 다시 계산하면 단일 워커가 수 초씩 멈춘다.
+# 키에 football.db 수정 시각을 넣어 데이터가 갱신되면 자동 무효화. 프로세스 메모리, 상한 512개.
+_MEMO: dict[tuple, tuple[float, object]] = {}
+_MEMO_MAX = 512
+
+
+def _clean_title(v) -> str:
+    """RSS 제목의 CDATA 래퍼·공백 정리(이미 저장된 데이터용)."""
+    import re as _re
+    return _re.sub(r"^<!\[CDATA\[\s*|\s*\]\]>$", "", str(v or "")).strip()
+
+
+def _db_stamp() -> float:
+    try:
+        return ds.DB_PATH.stat().st_mtime
+    except OSError:
+        return 0.0
+
+
+def _memo(ttl: float = 3600.0):
+    import functools
+    import time as _t
+
+    def deco(fn):
+        @functools.wraps(fn)
+        def wrapped(*args, **kwargs):
+            key = (fn.__name__, args, tuple(sorted(kwargs.items())), _db_stamp())
+            hit = _MEMO.get(key)
+            now = _t.monotonic()
+            if hit and hit[0] > now:
+                return hit[1]
+            out = fn(*args, **kwargs)
+            if len(_MEMO) >= _MEMO_MAX:
+                for k in [k for k, v in _MEMO.items() if v[0] <= now][:64] or [next(iter(_MEMO))]:
+                    _MEMO.pop(k, None)
+            _MEMO[key] = (now + ttl, out)
+            return out
+        return wrapped
+    return deco
 from leagues import ACTIVE_LEAGUE, SEASON_START, league_config, data_path  # noqa: E402
 from season_context import current_window as _current_window  # noqa: E402
 from season_context import season_label as _data_season_label  # noqa: E402
@@ -106,6 +147,7 @@ def _window_filter(tt, win):
 
 
 @app.get("/api/overview/{team}")
+@_memo(ttl=3600)
 def overview(team: str, league: str = ACTIVE_LEAGUE):
     stand = _team_row("standings", team, league)
     if stand is None:
@@ -492,6 +534,7 @@ def scout(body: dict, x_scout_token: str = Header(default="")):
 
 
 @app.get("/api/discover/{team}")
+@_memo(ttl=1800)
 def discover(team: str, role: str = "", leagues: str = "", min_age: int = 0,
              max_age: int = 0, max_value: float = 0, top: int = 24,
              league: str = ACTIVE_LEAGUE):
@@ -508,6 +551,7 @@ def discover(team: str, role: str = "", leagues: str = "", min_age: int = 0,
 
 
 @app.get("/api/squad-graph/{team}")
+@_memo(ttl=3600)
 def squad_graph_ep(team: str, league: str = ACTIVE_LEAGUE):
     """스쿼드 네트워크 — KG(Neo4j) TEAMMATE_OF 로 '같이 뛴' 관계 그래프. 미가동 시 degrade."""
     import kg_graph  # noqa: PLC0415 (지연 import — Neo4j 의존)
@@ -515,6 +559,7 @@ def squad_graph_ep(team: str, league: str = ACTIVE_LEAGUE):
 
 
 @app.get("/api/chemistry/{team}")
+@_memo(ttl=3600)
 def chemistry_ep(team: str, league: str = ACTIVE_LEAGUE):
     """케미스트리 — KG TEAMMATE_OF{matches} 로 최고의 듀오·삼각편대. Neo4j 미가동 시 degrade."""
     import kg_graph  # noqa: PLC0415
@@ -576,6 +621,7 @@ def calendar():
 
 
 @app.get("/api/heatmaps/{team}")
+@_memo(ttl=3600)
 def heatmaps(team: str, league: str = ACTIVE_LEAGUE):
     """팀 선수별 시즌 히트맵(Sofascore) — analytics 포지셔널 히트맵용. norm_key 로 players_full 조인."""
     hm = ds.read_table("player_heatmaps", league=league)
@@ -1129,6 +1175,7 @@ def news(team: str, league: str = ACTIVE_LEAGUE):
 
 
 @app.get("/api/analytics/{team}")
+@_memo(ttl=3600)
 def analytics(team: str, league: str = ACTIVE_LEAGUE):
     # 부상 임팩트 — 결장 경기 상위, 라인별 집계
     inj = ds.read_table("tm_injury_history", league=league)
@@ -1446,6 +1493,7 @@ def _placements(team: str, league: str, last_n: int | None = None):
 
 
 @app.get("/api/lineup/{team}")
+@_memo(ttl=3600)
 def lineup(team: str, league: str = ACTIVE_LEAGUE):
     season = _placements(team, league)
     if season is None:
@@ -1468,6 +1516,8 @@ def lineup(team: str, league: str = ACTIVE_LEAGUE):
 # 유사 선수 엔진 — 임베딩은 최초 1회 빌드 후 캐시(요청마다 재계산 방지)
 _SIM = None
 _PROGRESS: dict[str, float] = {}
+
+
 
 
 def _progress(league: str) -> float:
@@ -1766,6 +1816,7 @@ def _formation_bucket_needs(team: str, league: str) -> dict:
 
 
 @app.get("/api/recommend/{team}")
+@_memo(ttl=1800)
 def recommend(team: str, league: str = ACTIVE_LEAGUE):
     """보강 후보 — 포메이션 전 포지션에서 '얇은 세부 포지션(CB/RB/DM…)' 을 가려내고,
     각 포지션마다 팀 티어에 맞는 현실적 후보를 **전 리그(교차리그 projection)** 에서 추천."""
@@ -2350,6 +2401,7 @@ def signals(team: str = "", league: str = ACTIVE_LEAGUE, limit: int = 60):
 
 
 @app.get("/api/home")
+@_memo(ttl=1800)
 def home(league: str = ACTIVE_LEAGUE):
     """리그 홈 대시보드 집계 — 이적 펄스·시그널·감독교체·순위·뉴스 한 번에."""
     win = _current_window()
@@ -2446,8 +2498,8 @@ def home(league: str = ACTIVE_LEAGUE):
     if bz is not None:
         for _, r in bz.head(18).iterrows():
             buzz.append({
-                "title": str(r.get("title_ko") or r.get("title_en") or ""),
-                "title_en": str(r.get("title_en") or ""),
+                "title": _clean_title(r.get("title_ko") or r.get("title_en")),
+                "title_en": _clean_title(r.get("title_en")),
                 "source": str(r.get("source") or ""),
                 "tier": str(r.get("tier") or "rumor"),
                 "link": str(r.get("link") or ""),
@@ -2512,7 +2564,7 @@ def _compute_hub_body() -> bytes:
         bz = ds.read_table("transfer_buzz", league=lg)
         if bz is not None:
             for _, r in bz.head(10).iterrows():
-                buzz.append({"title": str(r.get("title_ko") or r.get("title_en") or ""),
+                buzz.append({"title": _clean_title(r.get("title_ko") or r.get("title_en")),
                              "source": str(r.get("source") or ""), "tier": str(r.get("tier") or "rumor"),
                              "link": str(r.get("link") or ""), "published": str(r.get("published") or ""),
                              "league": lg, "league_name": lname})
@@ -2772,6 +2824,7 @@ def _departures(team: str, league: str, win: dict) -> dict:
 
 
 @app.get("/api/projection/{team}")
+@_memo(ttl=3600)
 def projection(team: str, league: str = ACTIVE_LEAGUE):
     """다음 시즌(현재 이적창) 예상 XI + 진단.
     25/26 주전 XI 에서 이탈 선수를 빼고 영입/스쿼드로 채운 뒤, 손실·보강 진단을 낸다."""

@@ -13,6 +13,8 @@
 """
 from __future__ import annotations
 
+from kg_graph import connect as _neo4j_connect  # noqa: E402  (차단기 포함 Neo4j 연결)
+
 import os
 import sys
 from functools import lru_cache
@@ -117,9 +119,16 @@ def _num0(v):
 
 # ── Qdrant: Role Fit + 유사선수 ────────────────────────────────────────────
 def _qdrant():
+    """연결 확인된 Qdrant 클라이언트. 꺼져 있으면 차단기(infra_health)가 10분간 즉시 실패시킨다."""
+    import infra_health as ih
+    if ih.is_down("qdrant"):
+        raise RuntimeError("Qdrant 차단 중(최근 연결 실패) " + ih.reason("qdrant"))
     from qdrant_client import QdrantClient
     # QDRANT_API_KEY 있으면 사용(Qdrant Cloud 등 호스팅). 로컬 docker는 키 없음.
-    return QdrantClient(url=QDRANT_URL, api_key=os.getenv("QDRANT_API_KEY") or None)
+    with ih.guard("qdrant"):
+        qc = QdrantClient(url=QDRANT_URL, api_key=os.getenv("QDRANT_API_KEY") or None, timeout=5)
+        qc.get_collections()
+    return qc
 
 
 def _cos(a, b) -> float:
@@ -170,7 +179,7 @@ def _kg_enrich(team, recs, tgt_league):
         return recs
     try:
         from neo4j import GraphDatabase
-        d = GraphDatabase.driver(NEO4J_URI, auth=NEO4J_AUTH)
+        d = _neo4j_connect()
     except Exception:  # noqa: BLE001
         return recs   # Neo4j 미가동 → KG 신호 없이 degrade
     names = [r["player"] for r in recs]
@@ -356,7 +365,7 @@ def _style_fits(qc, cand_name, role, target_club, tendency_cl):
 def _precedent(source_league, target_league):
     try:
         from neo4j import GraphDatabase
-        d = GraphDatabase.driver(NEO4J_URI, auth=NEO4J_AUTH)
+        d = _neo4j_connect()
         with d.session() as s:
             n = s.run(
                 "MATCH (fr:Club)-[:COMPETES_IN]->(:League {key:$src}) "
