@@ -79,6 +79,8 @@ function Card({ p, accent }: { p: DiscoverPick; accent: string }) {
   );
 }
 
+const PAGE = 12;
+
 export default function RecruitPool({ team, accent }: { team: string; accent: string }) {
   const [disc, setDisc] = useState<Discover | null>(null);
   const [loading, setLoading] = useState(true);
@@ -88,6 +90,7 @@ export default function RecruitPool({ team, accent }: { team: string; accent: st
   const [ageMax, setAgeMax] = useState(34);
   const [valMax, setValMax] = useState(200);         // M€
   const [sortBy, setSortBy] = useState("style");
+  const [shown, setShown] = useState(PAGE);          // 한 번에 다 그리면 카드 35장·페이지 4,400px — 12장씩
 
   useEffect(() => {
     let a = true; setLoading(true); setDisc(null);
@@ -105,6 +108,7 @@ export default function RecruitPool({ team, accent }: { team: string; accent: st
     const key = (p: DiscoverPick) => sortBy === "ovr" ? p.ovr : sortBy === "value" ? (p.value_eur || 0) : sortBy === "age" ? -(p.age || 99) : p.style_fit;
     return [...f].sort((a, b) => key(b) - key(a));
   }, [disc, lgs, ageMin, ageMax, valMax, sortBy]);
+  useEffect(() => { setShown(PAGE); }, [team, role, lgs, ageMin, ageMax, valMax, sortBy]);
 
   const kAge = picks.filter((p) => p.age).map((p) => p.age as number);
   const kVal = picks.filter((p) => p.value_eur).map((p) => p.value_eur as number);
@@ -158,7 +162,7 @@ export default function RecruitPool({ team, accent }: { team: string; accent: st
         <div>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
             <span style={{ fontSize: 12, opacity: 0.7 }}>
-              {loading ? "불러오는 중…" : `${picks.length}명`}
+              {loading ? "—" : `${picks.length}명`}
               {disc?.target_roles && !role ? <span style={{ opacity: 0.6 }}> · 약점 {disc.target_roles.join("·")}</span> : null}
             </span>
             <label style={{ fontSize: 12, opacity: 0.7 }}>정렬{" "}
@@ -169,9 +173,16 @@ export default function RecruitPool({ team, accent }: { team: string; accent: st
           </div>
           {loading ? <SkelCards n={6} cols="repeat(auto-fill, minmax(280px, 1fr))" />
             : picks.length === 0 ? <div className="mgr-meta">조건에 맞는 후보 없음 — 필터를 넓혀보세요</div>
-              : <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 12 }}>
-                {picks.map((p, i) => <Card key={i} p={p} accent={accent} />)}
-              </div>}
+              : <>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 12 }}>
+                  {picks.slice(0, shown).map((p, i) => <Card key={i} p={p} accent={accent} />)}
+                </div>
+                {picks.length > shown && (
+                  <button className="more-btn" onClick={() => setShown((v) => v + PAGE)}>
+                    더 보기 · {Math.min(PAGE, picks.length - shown)}명 더 ({shown}/{picks.length})
+                  </button>
+                )}
+              </>}
         </div>
       </div>
     </div>

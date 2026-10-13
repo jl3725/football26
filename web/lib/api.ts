@@ -286,9 +286,10 @@ export type SquadGraphData = { available: boolean; reason?: string; error?: stri
 export const getSquadGraph = (t: string, l = _league) => j<SquadGraphData>(`/api/squad-graph/${q(t, l)}`);
 // 케미스트리 — KG TEAMMATE_OF 기반 최고의 듀오·삼각편대
 export type ChemCard = { name: string; line: string; pos: string; rating: number | null; photo: string };
-export type ChemDuo = { a: ChemCard; b: ChemCard; matches: number; chem: number };
-export type ChemTrio = { players: ChemCard[]; score: number };
-export type ChemistryData = { available: boolean; reason?: string; team?: string; duos: ChemDuo[]; trios: ChemTrio[] };
+// basis=minutes: 실제로 함께 그라운드에 있던 시간(분) · chem=팀 전체 시간 대비 % / matches: KG 경기 수 폴백
+export type ChemDuo = { a: ChemCard; b: ChemCard; matches: number; chem: number; minutes?: number };
+export type ChemTrio = { players: ChemCard[]; score: number; minutes?: number };
+export type ChemistryData = { available: boolean; reason?: string; team?: string; basis?: "minutes" | "matches"; games?: number; duos: ChemDuo[]; trios: ChemTrio[] };
 export const getChemistry = (t: string, l = _league) => j<ChemistryData>(`/api/chemistry/${q(t, l)}`);
 export const getSchedule = (t: string, season = "", l = _league) => j<Schedule>(`/api/schedule/${q(t, l)}${season ? `&season=${season}` : ""}`);
 export const getMatch = (t: string, eid: string, l = _league) =>

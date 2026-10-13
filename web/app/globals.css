@@ -708,6 +708,14 @@ html, body {
 
 /* ── Pitch ─────────────────────────────── */
 .pitch-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: start; }
+.pitch-grid.single { grid-template-columns: minmax(0, 440px); justify-content: center; }
+.span-all { grid-column: 1 / -1; }
+/* 전체 폭 감독 카드 — 사진·이름 왼쪽, 소개 오른쪽 */
+.mgr-wide { display: grid; grid-template-columns: minmax(240px, 0.8fr) 1.6fr; column-gap: 28px; align-items: start; }
+.mgr-wide > h3 { grid-column: 1 / -1; }
+.mgr-wide .mgr-bio { grid-column: 2; grid-row: 2 / span 2; margin-top: 0; }
+.mgr-wide .mgr-src { grid-column: 1; }
+@media (max-width: 760px) { .mgr-wide { display: block; } .mgr-wide .mgr-bio { margin-top: 12px; } }
 .pitch-cap { text-align: center; font-size: 12px; font-weight: 600; color: #c3ccdc; margin-top: 8px; }
 .pitch-cap span { font-family: Oswald, sans-serif; color: var(--muted); margin-left: 6px; }
 
@@ -791,7 +799,8 @@ html, body {
 .pd-badges { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 22px 4px; }
 .pd-badge { font-size: 11.5px; font-weight: 600; padding: 5px 11px; border: 1px solid; border-radius: 999px; background: rgba(255, 255, 255, 0.03); }
 .pd-badge em { font-family: Oswald, sans-serif; font-style: normal; font-weight: 700; }
-.pd-cats { display: flex; flex-direction: column; gap: 14px; }
+.pd-cats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 26px; }
+@media (max-width: 640px) { .pd-cats { grid-template-columns: 1fr; } }
 .pd-cat-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 7px; }
 .pd-cat-head span { font-family: Oswald, sans-serif; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); }
 .pd-cat-head b { font-family: Teko, sans-serif; font-size: 20px; line-height: 1; }
@@ -1148,13 +1157,14 @@ html, body {
 .pd-name { font-size: 24px; font-weight: 800; letter-spacing: -.4px; }
 .pd-meta { color: var(--muted); font-size: 12.5px; margin-top: 2px; }
 .pd-ovr { text-align: center; padding: 8px 14px; border: 1.5px solid; border-radius: 13px; background: rgba(0, 0, 0, 0.25); }
-.pd-body { display: grid; grid-template-columns: 1.2fr 1fr; gap: 18px; padding: 8px 22px 22px; }
+/* 요약(레이더) → 상세(카테고리 막대 2열) 순서. 예전엔 막대가 좁은 왼쪽 열에 길게 늘어서고 레이더가 오른쪽 가운데 떠 있었다 */
+.pd-body { display: grid; grid-template-columns: 1fr; gap: 10px; padding: 8px 22px 22px; }
 .pd-metrics { display: flex; flex-direction: column; gap: 11px; }
 .pm-top { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; }
 .pm-top b { font-family: Teko, sans-serif; font-size: 18px; line-height: 1; }
 .pm-bar { height: 7px; border-radius: 5px; background: rgba(255, 255, 255, 0.07); overflow: hidden; }
 .pm-bar > span { display: block; height: 100%; border-radius: 5px; transition: width .5s cubic-bezier(.2, .8, .2, 1); }
-.pd-radar { display: flex; align-items: center; }
+.pd-radar { display: flex; justify-content: center; order: -1; }
 
 @media (max-width: 1100px) { .player-layout { grid-template-columns: 1fr; } .news-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 900px) { .grid, .squad-grid { grid-template-columns: 1fr; } }
@@ -2036,3 +2046,6 @@ body::before {
 .empty-state span { font-size: 12.5px; line-height: 1.5; max-width: 42ch; }
 .empty-state .es-ico { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center;
   border: 1px solid var(--line); margin-bottom: 4px; font-size: 14px; }
+
+/* 숫자 정렬 — 값이 바뀌어도 자릿수 폭이 흔들리지 않게 */
+.num { font-variant-numeric: tabular-nums; }

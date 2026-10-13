@@ -20,6 +20,7 @@ import NewsTab from "@/components/NewsTab";
 import { PeekProvider } from "@/components/PlayerPeek";
 import { SkelTab } from "@/components/Skeleton";
 
+const DEFAULT_TEAM: Record<string, string> = { EPL: "Arsenal", LaLiga: "Barcelona", SerieA: "Inter", Bundesliga: "Bayern Munich", Ligue1: "PSG", LigaPortugal: "Sporting CP", Eredivisie: "PSV", BelgianProLeague: "Club Brugge" };
 const LEAGUE_TABS = [{ key: "EPL", label: "EPL" }, { key: "LaLiga", label: "LA LIGA" }, { key: "SerieA", label: "SERIE A" }, { key: "Bundesliga", label: "BUNDESLIGA" }, { key: "Ligue1", label: "LIGUE 1" }, { key: "LigaPortugal", label: "LIGA PORTUGAL" }, { key: "Eredivisie", label: "EREDIVISIE" }, { key: "BelgianProLeague", label: "BELGIUM" }];
 
 export default function Page() {
@@ -35,21 +36,55 @@ export default function Page() {
   const [ovErr, setOvErr] = useState(false);
   const [pendingPlayer, setPendingPlayer] = useState("");   // 전역 검색 딥링크용
   const [navOpen, setNavOpen] = useState(false);
+  const [urlReady, setUrlReady] = useState(false);
+
+  // 화면 상태 ↔ 주소(?league=LaLiga&team=Barcelona&tab=squad) — 새로고침·링크 공유·뒤로가기 유지.
+  // 서버 렌더와 어긋나지 않게 첫 렌더 뒤에 주소를 읽고, 그 전에는 데이터를 부르지 않는다.
+  useEffect(() => {
+    const apply = () => {
+      const p = new URLSearchParams(window.location.search);
+      const lg = p.get("league") ?? "";
+      const l = LEAGUE_TABS.some((x) => x.key === lg) ? lg : "EPL";
+      const t = p.get("team");
+      const tb = p.get("tab");
+      setActiveLeague(l); setLeagueSel(l);
+      if (t) {
+        setSel(t); setHome(false);
+        setTab(TABS.some((x) => x.key === tb) ? (tb as TabKey) : "overview");
+      } else {
+        setSel(DEFAULT_TEAM[l] ?? ""); setHome(true);
+      }
+    };
+    apply();
+    setUrlReady(true);
+    window.addEventListener("popstate", apply);
+    return () => window.removeEventListener("popstate", apply);
+  }, []);
+  useEffect(() => {
+    if (!urlReady) return;
+    const p = new URLSearchParams();
+    if (league !== "EPL") p.set("league", league);
+    if (!home && sel) { p.set("team", sel); if (tab !== "overview") p.set("tab", tab); }
+    const qs = p.toString() ? `?${p.toString()}` : "";
+    if (window.location.search !== qs) window.history.pushState(null, "", qs || window.location.pathname);
+  }, [urlReady, league, home, sel, tab]);
 
   useEffect(() => {
+    if (!urlReady) return;
     setActiveLeague(league); // 모든 fetcher 기본 리그 갱신
     getTeams().then(setTeams).catch(() => {});
     getNextTeams().then(setNextS).catch(() => {});
     getContext().then(setCtx).catch(() => {});
-  }, [league]);
+  }, [league, urlReady]);
   useEffect(() => {
+    if (!urlReady || !sel) return;
     let alive = true;
     setLoading(true); setOvErr(false);
     getOverview(sel)
       .then((d) => { if (alive) { setOv(d); setLoading(false); } })
       .catch(() => { if (alive) { setOv(null); setOvErr(true); setLoading(false); } });
     return () => { alive = false; };
-  }, [sel]);
+  }, [sel, urlReady]);
 
   const accent = ov ? toAccent(ov.color) : "#ff4d5e";
   const meta = TABS.find((t) => t.key === tab)!;
@@ -66,7 +101,6 @@ export default function Page() {
     if (lg && lg !== league) { setActiveLeague(lg); setLeagueSel(lg); }
     setHome(false); setSel(club); setPendingPlayer(player); setTab("player"); setNavOpen(false);
   };
-  const DEFAULT_TEAM: Record<string, string> = { EPL: "Arsenal", LaLiga: "Barcelona", SerieA: "Inter", Bundesliga: "Bayern Munich", Ligue1: "PSG", LigaPortugal: "Sporting CP", Eredivisie: "PSV", BelgianProLeague: "Club Brugge" };
   const leagueName = league === "LaLiga" ? "La Liga" : league === "SerieA" ? "Serie A" : league === "Bundesliga" ? "Bundesliga" : league === "Ligue1" ? "Ligue 1" : league === "LigaPortugal" ? "Liga Portugal" : league === "Eredivisie" ? "Eredivisie" : league === "BelgianProLeague" ? "Belgian Pro League" : "Premier League";
   const leagueLabel = league === "LaLiga" ? "LA LIGA" : league === "SerieA" ? "SERIE A" : league === "Bundesliga" ? "BUNDESLIGA" : league === "Ligue1" ? "LIGUE 1" : league === "LigaPortugal" ? "LIGA PORTUGAL" : league === "Eredivisie" ? "EREDIVISIE" : league === "BelgianProLeague" ? "BELGIUM" : "EPL";
   const switchLeague = (l: string) => {
@@ -79,6 +113,7 @@ export default function Page() {
   };
 
   function renderTab() {
+    if (!urlReady) return <SkelTab />;
     if (home) return <HomeDashboard accent={accent} onPickTeam={pickTeam} onPickLeagueTeam={pickLeagueTeam}
       leagueLabel={leagueLabel} league={league} leagues={LEAGUE_TABS} onLeague={switchLeague} />;
     if (ovErr) return (

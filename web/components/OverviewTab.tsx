@@ -134,7 +134,8 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
           </div>
         )}
 
-        <div className="card">
+        {/* 득점 유형 카드가 없으면(시즌 초) 감독 카드가 홀로 반 칸만 차지해 오른쪽이 비었다 → 전체 폭 */}
+        <div className={`card${snap ? "" : " span-all mgr-wide"}`}>
           <h3>Manager</h3>
           {ov.manager ? (
             <>

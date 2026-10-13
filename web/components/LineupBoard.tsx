@@ -30,11 +30,15 @@ export default function LineupBoard({ team, accent, departed = [] }: { team: str
   const view = hasNext ? leftView : "cur";
   const leftBoard = view === "cur" ? lu?.season : pj?.projected;
   const leftFormation = view === "cur" ? lu?.season.formation : pj?.projected.formation;
+  // 시즌 초엔 시즌 BEST XI 와 최근 5경기 XI 가 같은 경우가 많다 — 같은 그림을 두 번 그리지 않는다
+  const sig = (b?: { formation: string; placements: { slot: string; player: string }[] } | null) =>
+    b ? `${b.formation}|${b.placements.map((x) => `${x.slot}:${x.player}`).sort().join(",")}` : "";
+  const sameXI = view === "cur" && !!lu?.recent && sig(lu.season) === sig(lu.recent);
 
   return (
     <div className="card" style={{ marginTop: 16 }}>
       <h3>포메이션 & 전술 구조</h3>
-      <div className="pitch-grid">
+      <div className={`pitch-grid${sameXI ? " single" : ""}`}>
         {/* LEFT — 시즌 베스트 XI + 시즌 토글 */}
         <div>
           <div className="proj-toggle" style={{ marginBottom: 10 }}>
@@ -47,11 +51,13 @@ export default function LineupBoard({ team, accent, departed = [] }: { team: str
             ? <Pitch placements={leftBoard.placements} accent={accent} team={team} />
             : err ? <EmptyState title="라인업을 불러오지 못했습니다" note="잠시 후 다시 열어 주세요" />
             : <SkelPitch />}
-          <div className="pitch-cap"><span>{leftFormation || ""}</span></div>
+          <div className="pitch-cap">
+            {sameXI ? <>최근 5경기와 같은 XI · </> : null}<span>{leftFormation || ""}</span>
+          </div>
         </div>
 
-        {/* RIGHT — 최근 5경기 XI */}
-        <div>
+        {/* RIGHT — 최근 5경기 XI (시즌 BEST XI 와 같으면 생략) */}
+        {!sameXI && <div>
           <div className="proj-toggle" style={{ marginBottom: 10, visibility: "hidden" }}>
             <button>_</button>
           </div>
@@ -59,7 +65,7 @@ export default function LineupBoard({ team, accent, departed = [] }: { team: str
             ? <Pitch placements={lu.recent.placements} accent={accent} team={team} />
             : lu ? <div className="loading" style={{ padding: 30 }}>최근 경기 데이터 부족</div> : <SkelPitch />}
           <div className="pitch-cap">최근 5경기 <span>{lu?.recent?.formation || ""}</span></div>
-        </div>
+        </div>}
       </div>
 
       {/* 26/27 예상 효과 — 이탈/보강 진단 */}
@@ -100,7 +106,7 @@ export default function LineupBoard({ team, accent, departed = [] }: { team: str
       )}
       {departed.length > 0 && (
         <div className="bench-strip departed">
-          <div className="bench-title">↪ 시즌 중 이적</div>
+          <div className="bench-title">↪ 떠난 선수</div>
           {departed.map((d, i) => (
             <div className="bench-chip peekable" key={i}
               onClick={(e) => peek(e, { name: d.player, hint: { photo: d.photo, pos: d.pos } })}>

@@ -16,6 +16,12 @@ function Arrow({ color = "currentColor" }: { color?: string }) {
 }
 
 // 전 리그 통합 대시보드 — 빅딜·이적속보·감독교체·순위 스냅샷을 한 화면에.
+const LG_SHORT: Record<string, string> = {
+  "Premier League": "EPL", "La Liga": "LALIGA", "Serie A": "SERIE A", "Bundesliga": "BUNDES",
+  "Ligue 1": "LIGUE 1", "Liga Portugal": "PORTUGAL", "Primeira Liga": "PORTUGAL", "Eredivisie": "EREDIV",
+  "Belgian Pro League": "BELGIUM",
+};
+
 export default function AllDashboard({ accent, onPick }: { accent: string; onPick: (t: string, league?: string) => void }) {
   const [d, setD] = useState<HomeAll | null>(null);
   const [spot, setSpot] = useState("form");   // 선수 스포트라이트 세그먼트
@@ -27,7 +33,8 @@ export default function AllDashboard({ accent, onPick }: { accent: string; onPic
     </div>
   );
 
-  const tag = (name: string) => <span className="hub-lg">{name}</span>;
+  // 리그 배지는 짧은 코드로 — 'PREMIER LEAGUE' 가 카드 폭을 먹어 선수 이름이 'Enzo Ferná…' 로 잘렸다
+  const tag = (name: string) => <span className="hub-lg" title={name}>{LG_SHORT[name] ?? name}</span>;
   const sec = (en: string, kr: string) => (
     <div className="hub-h"><span className="hub-h-bar" style={{ background: accent }} />
       <span className="hub-h-en">{en}</span><span className="hub-h-kr">{kr}</span></div>
@@ -195,7 +202,7 @@ export default function AllDashboard({ accent, onPick }: { accent: string; onPic
                   <div className="hub-plr-sub">{p.club_logo && <img src={p.club_logo} alt="" />}{p.club} · {fmtEur(p.value_eur)}</div>
                 </div>
                 <span className="hub-plr-ovr" style={{ color: tier(p.ovr).light }}>{p.ovr}</span>
-                <span className="hub-plr-until">~{p.until?.slice(2)}</span>
+                <span className="hub-plr-until" title={p.until}>{p.until ? `${p.until.slice(0, 7).replace("-", ".")} 만료` : ""}</span>
               </button>
             ))}
             {d.contracts.length === 0 && <div className="mgr-meta">No expiring contracts</div>}

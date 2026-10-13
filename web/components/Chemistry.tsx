@@ -32,9 +32,12 @@ export default function Chemistry({ team, accent }: { team: string; accent: stri
   if (!d) return <SkelCards n={6} />;
     if (!d.available || !d.duos.length) return <EmptyState title="케미스트리 준비 중" note="함께 뛴 기록(관계 그래프)이 연결되면 표시됩니다" />;
 
+  const byMin = d.basis === "minutes";
   return (
     <div>
-      <div style={{ fontSize: 11, opacity: 0.5, marginBottom: 9 }}>함께 뛴 경기(TEAMMATE_OF) 기반 — 손발 맞는 조합</div>
+      <div style={{ fontSize: 11, opacity: 0.5, marginBottom: 9 }}>
+        {byMin ? `실제로 함께 그라운드에 있던 시간 — 시즌 ${d.games}경기 라인업·교체 기록 기준` : "함께 뛴 경기(관계 그래프) 기준"}
+      </div>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(230px, 1fr))", gap: 10 }}>
         {d.duos.map((duo, i) => (
           <div key={i} style={{ background: hexA("#ffffff", 0.03), border: `1px solid ${hexA("#ffffff", 0.08)}`, borderRadius: 12, padding: "11px 13px" }}>
@@ -43,13 +46,15 @@ export default function Chemistry({ team, accent }: { team: string; accent: stri
               <span style={{ opacity: 0.4, fontSize: 14 }}>⟷</span>
               <Face c={duo.b} team={team} />
               <div style={{ marginLeft: "auto", textAlign: "right" }}>
-                <div style={{ fontSize: 21, fontWeight: 800, color: accent, lineHeight: 1 }}>{duo.chem}</div>
-                <div style={{ fontSize: 9, opacity: 0.5, letterSpacing: 1 }}>CHEM</div>
+                <div className="num" style={{ fontSize: 21, fontWeight: 800, color: accent, lineHeight: 1 }}>
+                  {byMin ? <>{duo.minutes}<span style={{ fontSize: 12, opacity: 0.7 }}>′</span></> : duo.chem}
+                </div>
+                <div style={{ fontSize: 9, opacity: 0.5, letterSpacing: 1 }}>{byMin ? "함께 뛴 시간" : "CHEM"}</div>
               </div>
             </div>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: 12, fontWeight: 600, marginTop: 8 }}>
               <span>{last(duo.a.name)}</span>
-              <span style={{ opacity: 0.45, fontWeight: 400, fontSize: 10.5 }}>{duo.matches}경기</span>
+              <span style={{ opacity: 0.45, fontWeight: 400, fontSize: 10.5 }}>{duo.matches}경기{byMin ? ` · ${duo.chem}%` : ""}</span>
               <span>{last(duo.b.name)}</span>
             </div>
             <div style={{ height: 4, borderRadius: 2, background: hexA("#ffffff", 0.08), marginTop: 6 }}>
@@ -70,7 +75,9 @@ export default function Chemistry({ team, accent }: { team: string; accent: stri
                 </div>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ fontSize: 12, fontWeight: 600, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{tr.players.map((p) => last(p.name)).join(" · ")}</div>
-                  <div style={{ fontSize: 10, opacity: 0.5, marginTop: 2 }}>합산 {tr.score}경기</div>
+                  <div style={{ fontSize: 10, opacity: 0.5, marginTop: 2 }}>
+                    {tr.minutes != null ? `셋이 함께 ${tr.minutes}′ · ${tr.score}경기` : `합산 ${tr.score}경기`}
+                  </div>
                 </div>
               </div>
             ))}
