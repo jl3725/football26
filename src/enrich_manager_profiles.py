@@ -315,7 +315,8 @@ def main(argv: list[str] | None = None) -> int:
             time.sleep(args.sleep)
             continue
 
-        if args.only_missing and prof.get("bio_ko"):
+        # 번역 실패로 영어 원문이 들어간 소개(bio_source=en-wiki)는 '없음'으로 보고 다시 시도
+        if args.only_missing and prof.get("bio_ko") and prof.get("bio_source") != "en-wiki":
             continue
         print(f"\n### {team} — {name}")
         try:

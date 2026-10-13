@@ -357,6 +357,22 @@ def main(argv: list[str] | None = None) -> int:
     source = {} if args.photos_only else fetch_source_managers(SOURCE_TITLE)
     appoint = {} if args.photos_only else fetch_appointment_dates(SOURCE_TITLE)
 
+    # 시즌 전환: 현재 시즌 순위표 팀 기준으로 승격팀 추가·강등팀 제외(지난 시즌 파일엔 그대로 남음).
+    # 예전엔 기존 프로필 팀만 갱신해 26/27 전환 뒤 승격 3팀 감독이 비고 강등 3팀이 남았다(2026-10).
+    if source and args.write and not args.photos_only:
+        current = current_teams("EPL", list(profiles))
+        for team in [t for t in profiles if t not in current]:
+            print(f"[manager-sync] 이번 시즌 팀 아님 — 제외: {team}")
+            profiles.pop(team)
+        for team in [t for t in current if t not in profiles]:
+            name = source.get(team, "")
+            if not name or name.strip().upper() in ("TBD", "TBA", "TBC"):
+                print(f"[manager-sync] 새 팀 {team}: 위키 감독표에 없음({name or '-'})", file=sys.stderr)
+                continue
+            profiles[team] = {"name": name, "wiki_title": name, "appointed": appoint.get(ascii_fold(name), ""),
+                              "nationality": "", "style": "", "formation": "", "focus": "", "photo_url": ""}
+            print(f"[manager-sync] 새 팀 추가: {team} — {name}")
+
     changed = []
     if source:
         for team, profile in profiles.items():

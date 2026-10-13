@@ -11,6 +11,7 @@
   workflows daily_data·daily_news·keep_alive·CI 최근 실행이 성공인가
   news      news.db 마지막 수집 1일 이내, 최근 2일 번역률 50% 이상
   tm_agent  로컬 TM agent(이 PC 작업 스케줄러) 산출물이 최근에 커밋됐는가
+  coverage  현재 시즌 팀 전원에게 감독 프로필이 있는가(시즌 전환 뒤 승격팀 누락·강등팀 잔류 탐지)
 
 사용:
   python scripts/watchdog.py            # 결과 출력, 실패가 있으면 종료코드 1
@@ -179,8 +180,29 @@ def check_tm_agent() -> list[str]:
     return []
 
 
+def check_coverage() -> list[str]:
+    import csv
+    out = []
+    for lg in LEAGUES:
+        st, mp = data_path("standings", lg), data_path("manager_profiles", lg, ext="json")
+        if not st.exists():
+            out.append(f"{lg} 현재 시즌 순위표 없음({st.name})")
+            continue
+        if not mp.exists():
+            continue                                      # 감독 수집 미지원 리그(벨기에 — 위키 시즌 문서에 감독표 없음)
+        with st.open(encoding="utf-8") as fh:
+            teams = {r["squad"] for r in csv.DictReader(fh) if r.get("squad")}
+        prof = set(json.loads(mp.read_text(encoding="utf-8")))
+        miss, extra = sorted(teams - prof), sorted(prof - teams)
+        if miss:
+            out.append(f"{lg} 감독 프로필 누락 {miss}" + (f" · 다른 시즌 팀 잔류 {extra}" if extra else "")
+                       + " — daily_data 감독 수집 단계 확인")
+    return out
+
+
 CHECKS = {"season": check_season, "hub": check_hub, "frontend": check_frontend,
-          "workflows": check_workflows, "news": check_news, "tm_agent": check_tm_agent}
+          "workflows": check_workflows, "news": check_news, "tm_agent": check_tm_agent,
+          "coverage": check_coverage}
 
 
 def run() -> dict[str, list[str]]:
