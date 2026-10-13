@@ -1,13 +1,13 @@
 {
   "season_label": "26/27",
   "source_title": "2026-27 Primeira Liga",
-  "detected_at": "2026-10-13 06:23",
+  "detected_at": "2026-10-13 12:11",
   "teams": [
     {
       "name": "Académico de Viseu",
       "color": "#444a55",
       "logo": "https://tmssl.akamaized.net/images/wappen/head/7788.png",
-      "promoted": true
+      "promoted": false
     },
     {
       "name": "Alverca",
@@ -67,7 +67,7 @@
       "name": "Marítimo",
       "color": "#444a55",
       "logo": "https://tmssl.akamaized.net/images/wappen/head/1301.png",
-      "promoted": true
+      "promoted": false
     },
     {
       "name": "Moreirense",
@@ -112,13 +112,7 @@
       "promoted": false
     }
   ],
-  "promoted": [
-    "Académico de Viseu",
-    "Marítimo"
-  ],
-  "relegated": [
-    "AVS Futebol",
-    "Tondela"
-  ],
+  "promoted": [],
+  "relegated": [],
   "meta_missing": []
 }

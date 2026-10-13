@@ -1,7 +1,7 @@
 {
   "season_label": "26/27",
   "source_title": "2026-27 La Liga",
-  "detected_at": "2026-10-13 06:05",
+  "detected_at": "2026-10-13 12:06",
   "teams": [
     {
       "name": "Alavés",
@@ -37,7 +37,7 @@
       "name": "Deportivo A Coruña",
       "color": "#0075BE",
       "logo": "https://tmssl.akamaized.net/images/wappen/head/897.png",
-      "promoted": true
+      "promoted": false
     },
     {
       "name": "Elche",
@@ -67,7 +67,7 @@
       "name": "Málaga",
       "color": "#0067B1",
       "logo": "https://tmssl.akamaized.net/images/wappen/head/1084.png",
-      "promoted": true
+      "promoted": false
     },
     {
       "name": "Osasuna",
@@ -79,7 +79,7 @@
       "name": "Racing Santander",
       "color": "#009B48",
       "logo": "https://tmssl.akamaized.net/images/wappen/head/630.png",
-      "promoted": true
+      "promoted": false
     },
     {
       "name": "Rayo Vallecano",
@@ -124,15 +124,7 @@
       "promoted": false
     }
   ],
-  "promoted": [
-    "Deportivo A Coruña",
-    "Málaga",
-    "Racing Santander"
-  ],
-  "relegated": [
-    "Girona",
-    "Mallorca",
-    "Oviedo"
-  ],
+  "promoted": [],
+  "relegated": [],
   "meta_missing": []
 }

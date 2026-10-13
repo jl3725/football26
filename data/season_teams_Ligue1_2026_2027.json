@@ -1,7 +1,7 @@
 {
   "season_label": "26/27",
   "source_title": "2026-27 Ligue 1",
-  "detected_at": "2026-10-13 06:17",
+  "detected_at": "2026-10-13 12:09",
   "teams": [
     {
       "name": "Angers",
@@ -31,7 +31,7 @@
       "name": "Le Mans",
       "color": "#E30613",
       "logo": "https://tmssl.akamaized.net/images/wappen/head/1164.png",
-      "promoted": true
+      "promoted": false
     },
     {
       "name": "Lens",
@@ -109,16 +109,10 @@
       "name": "Troyes",
       "color": "#003DA5",
       "logo": "https://tmssl.akamaized.net/images/wappen/head/1095.png",
-      "promoted": true
+      "promoted": false
     }
   ],
-  "promoted": [
-    "Le Mans",
-    "Troyes"
-  ],
-  "relegated": [
-    "Metz",
-    "Nantes"
-  ],
+  "promoted": [],
+  "relegated": [],
   "meta_missing": []
 }
