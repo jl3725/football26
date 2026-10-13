@@ -11,12 +11,14 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "api"))
+# api/main.py 는 7/24 라우터 분리 이후 `import api.bootstrap` 등 패키지 import 를 쓴다 —
+# 저장소 루트가 경로에 있어야 한다(없으면 'No module named api' 로 스냅샷이 7/7 에 멈춰 있었음).
+sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "src"))
 
 
 def main() -> int:
-    import main as api  # api/main.py (FastAPI 앱 + 계산 로직)
+    import api.main as api  # FastAPI 앱 + 계산 로직
     body = api._compute_hub_body()
     api._HUB_FILE.write_bytes(body)
     print(f"[precompute-hub] wrote {api._HUB_FILE} ({len(body)} bytes)")
