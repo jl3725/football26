@@ -1,0 +1,38 @@
+name: Watchdog
+
+# 운영 감시 — 매일 운영 API·프론트 배포·수집 워크플로·뉴스 번역·로컬 TM agent 를 점검해,
+# 실패가 있으면 'watchdog' 이슈를 열고(이미 있으면 갱신, 실패 항목이 바뀌면 댓글) 전부 정상이 되면 닫는다.
+# 점검 내용은 scripts/watchdog.py 참고. 알림 채널은 이슈 하나로 통일해 실행 자체는 초록으로 끝난다.
+on:
+  schedule:
+    - cron: "0 8 * * *"   # 매일 08:00 UTC (한국 17:00) — daily_data(04:30, 지연 시 ~06:30 종료) 결과까지 반영
+  workflow_dispatch:
+
+concurrency:
+  group: watchdog
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  issues: write
+  actions: read
+  deployments: read
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install
+        run: pip install requests
+
+      - name: Check production
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          BACKEND_URL: ${{ vars.BACKEND_URL }}
+        run: python scripts/watchdog.py --issue

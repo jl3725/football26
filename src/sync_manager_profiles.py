@@ -41,6 +41,25 @@ def tracking_season_title(today: "dt.date | None" = None) -> str:
     return f"{start}-{str(start + 1)[-2:]} Premier League"
 
 
+def season_page_title(name: str) -> str:
+    """데이터 시즌(leagues.SEASON_START)의 위키 시즌 문서 제목 — 예: '2026-27 Serie A'."""
+    from leagues import SEASON_START
+    return f"{SEASON_START}-{str(SEASON_START + 1)[-2:]} {name}"
+
+
+def current_teams(league: str, fallback: list[str]) -> list[str]:
+    """현재 데이터 시즌 팀 명단(순위표 squad). 리그별 수집기가 지난 시즌 명단을 박아 둬서
+    시즌 전환 뒤 승격팀 감독이 빠지던 문제(2026-10) — 순위표가 없을 때만 fallback."""
+    p = data_path("standings", league)
+    if p.exists():
+        with p.open(encoding="utf-8") as fh:
+            teams = [r["squad"] for r in csv.DictReader(fh) if r.get("squad")]
+        if teams:
+            return teams
+    print(f"[managers] {p.name} 없음 — 하드코딩 명단으로 대체(시즌 빌드 후 다시 실행)", file=sys.stderr)
+    return fallback
+
+
 # 추적 시즌(오프시즌 26/27 감독 변경까지 감지). 필요 시 --source-title 로 override.
 SOURCE_TITLE = tracking_season_title()
 

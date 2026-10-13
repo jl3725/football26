@@ -16,18 +16,18 @@ try:
 except Exception:  # noqa: BLE001
     pass
 
-from sync_manager_profiles import (fetch_source_managers, fetch_photo_urls,  # noqa: E402
+from sync_manager_profiles import (season_page_title, current_teams, fetch_source_managers, fetch_photo_urls,  # noqa: E402
                                    fetch_appointment_dates, save_profiles, tracking_season_title)
 from enrich_manager_profiles import enrich_one  # noqa: E402
 from fetch_manager_photos import _search_photo, _tm_photo  # noqa: E402
 from leagues import data_path  # noqa: E402
 
 SOURCE_NEXT = tracking_season_title().replace("Premier League", "Ligue 1")
-SOURCE_CUR = "2025-26 Ligue 1"
+SOURCE_CUR = season_page_title("Ligue 1")                                  # 데이터 시즌(현재 표시 팀)
 
-OUR = ["Angers", "Auxerre", "Brest", "Le Havre", "Lens", "Lille", "Lorient", "Lyon",
+OUR = current_teams("Ligue1", ["Angers", "Auxerre", "Brest", "Le Havre", "Lens", "Lille", "Lorient", "Lyon",
        "Marseille", "Metz", "Monaco", "Nantes", "Nice", "PSG", "Paris FC", "Rennes",
-       "Strasbourg", "Toulouse"]
+       "Strasbourg", "Toulouse"])   # 순위표 우선, 없으면 지난 명단
 ALIAS = {"Paris Saint-Germain": "PSG", "Paris Saint-Germain F.C.": "PSG",
          "Olympique de Marseille": "Marseille", "Olympique Marseille": "Marseille",
          "AS Monaco": "Monaco", "AS Monaco FC": "Monaco", "Olympique Lyonnais": "Lyon",

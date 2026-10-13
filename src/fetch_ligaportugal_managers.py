@@ -16,18 +16,18 @@ try:
 except Exception:  # noqa: BLE001
     pass
 
-from sync_manager_profiles import (fetch_source_managers, fetch_photo_urls,  # noqa: E402
+from sync_manager_profiles import (season_page_title, current_teams, fetch_source_managers, fetch_photo_urls,  # noqa: E402
                                    fetch_appointment_dates, save_profiles, tracking_season_title)
 from enrich_manager_profiles import enrich_one  # noqa: E402
 from fetch_manager_photos import _search_photo, _tm_photo  # noqa: E402
 from leagues import data_path  # noqa: E402
 
 SOURCE_NEXT = tracking_season_title().replace("Premier League", "Primeira Liga")
-SOURCE_CUR = "2025-26 Primeira Liga"
+SOURCE_CUR = season_page_title("Primeira Liga")                                  # 데이터 시즌(현재 표시 팀)
 
-OUR = ["Sporting CP", "Porto", "Benfica", "Braga", "Famalicão", "Vit. Guimarães",
+OUR = current_teams("LigaPortugal", ["Sporting CP", "Porto", "Benfica", "Braga", "Famalicão", "Vit. Guimarães",
        "Gil Vicente FC", "Estoril", "Alverca", "Rio Ave", "Santa Clara", "Moreirense",
-       "Estrela", "Casa Pia", "Arouca", "Tondela", "Nacional", "AVS Futebol"]
+       "Estrela", "Casa Pia", "Arouca", "Tondela", "Nacional", "AVS Futebol"])   # 순위표 우선, 없으면 지난 명단
 ALIAS = {"Sporting CP": "Sporting CP", "Sporting Lisbon": "Sporting CP", "Sporting": "Sporting CP",
          "FC Porto": "Porto", "S.L. Benfica": "Benfica", "SL Benfica": "Benfica",
          "SC Braga": "Braga", "Sporting Braga": "Braga", "Sporting CP Braga": "Braga",

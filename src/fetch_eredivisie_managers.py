@@ -16,18 +16,18 @@ try:
 except Exception:  # noqa: BLE001
     pass
 
-from sync_manager_profiles import (fetch_source_managers, fetch_photo_urls,  # noqa: E402
+from sync_manager_profiles import (season_page_title, current_teams, fetch_source_managers, fetch_photo_urls,  # noqa: E402
                                    fetch_appointment_dates, save_profiles, tracking_season_title)
 from enrich_manager_profiles import enrich_one  # noqa: E402
 from fetch_manager_photos import _search_photo, _tm_photo  # noqa: E402
 from leagues import data_path  # noqa: E402
 
 SOURCE_NEXT = tracking_season_title().replace("Premier League", "Eredivisie")
-SOURCE_CUR = "2025-26 Eredivisie"
+SOURCE_CUR = season_page_title("Eredivisie")                                  # 데이터 시즌(현재 표시 팀)
 
-OUR = ["PSV", "Ajax", "Feyenoord", "AZ Alkmaar", "Utrecht", "Twente", "NEC Nijmegen",
+OUR = current_teams("Eredivisie", ["PSV", "Ajax", "Feyenoord", "AZ Alkmaar", "Utrecht", "Twente", "NEC Nijmegen",
        "Heerenveen", "Groningen", "Sparta R.", "Go Ahead Eagles", "Fortuna Sittard",
-       "Zwolle", "Excelsior", "Volendam", "Heracles Almelo", "Telstar", "NAC Breda"]
+       "Zwolle", "Excelsior", "Volendam", "Heracles Almelo", "Telstar", "NAC Breda"])   # 순위표 우선, 없으면 지난 명단
 ALIAS = {"PSV Eindhoven": "PSV", "PSV": "PSV", "AFC Ajax": "Ajax", "Ajax": "Ajax",
          "Ajax Amsterdam": "Ajax", "Feyenoord": "Feyenoord", "Feyenoord Rotterdam": "Feyenoord",
          "AZ": "AZ Alkmaar", "AZ Alkmaar": "AZ Alkmaar", "FC Utrecht": "Utrecht", "Utrecht": "Utrecht",

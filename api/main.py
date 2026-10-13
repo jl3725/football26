@@ -2764,7 +2764,9 @@ def _compute_hub_body() -> bytes:
               "manager_changes": _interleave(changes, 12), "snapshots": snaps,
               "injuries": _interleave(injuries, 12), "hot_form": hot_form,
               "goal_leaders": goal_leaders, "prospects": prospects, "veterans": veterans,
-              "value_picks": value_picks, "risers": risers, "contracts": contracts_out}
+              "value_picks": value_picks, "risers": risers, "contracts": contracts_out,
+              # 스냅샷 생성 시각 — scripts/watchdog.py 가 운영 홈이 멈췄는지 본다
+              "generated_at": datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds")}
     return json.dumps(result, ensure_ascii=False).encode("utf-8")
 
 

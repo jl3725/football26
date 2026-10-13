@@ -18,18 +18,18 @@ try:
 except Exception:  # noqa: BLE001
     pass
 
-from sync_manager_profiles import (fetch_source_managers, fetch_photo_urls,  # noqa: E402
+from sync_manager_profiles import (season_page_title, current_teams, fetch_source_managers, fetch_photo_urls,  # noqa: E402
                                    fetch_appointment_dates, save_profiles, tracking_season_title)
 from enrich_manager_profiles import enrich_one  # noqa: E402
 from fetch_manager_photos import _search_photo, _tm_photo  # noqa: E402
 from leagues import data_path  # noqa: E402
 
 SOURCE_NEXT = tracking_season_title().replace("Premier League", "Serie A")   # 예: 2026-27 Serie A
-SOURCE_CUR = "2025-26 Serie A"                                               # 현재 표시 데이터 팀
+SOURCE_CUR = season_page_title("Serie A")                                  # 데이터 시즌(현재 표시 팀)
 
-OUR = ["Atalanta", "Bologna", "Cagliari", "Como", "Cremonese", "Fiorentina", "Genoa",
+OUR = current_teams("SerieA", ["Atalanta", "Bologna", "Cagliari", "Como", "Cremonese", "Fiorentina", "Genoa",
        "Hellas Verona", "Inter", "Juventus", "Lazio", "Lecce", "Milan", "Napoli",
-       "Parma", "Pisa", "Roma", "Sassuolo", "Torino", "Udinese"]
+       "Parma", "Pisa", "Roma", "Sassuolo", "Torino", "Udinese"])   # 순위표 우선, 없으면 지난 명단
 ALIAS = {"Inter Milan": "Inter", "Internazionale": "Inter", "FC Internazionale Milano": "Inter",
          "AC Milan": "Milan", "Associazione Calcio Milan": "Milan", "Verona": "Hellas Verona"}
 
@@ -72,7 +72,7 @@ def main() -> int:
     def _clean(v):
         v = str(v or "").strip()
         return "" if v.upper() in ("TBA", "TBD", "N/A", "-") else v
-    teams = set(cur) | (set(nxt) & set(OUR))
+    teams = (set(cur) | set(nxt)) & set(OUR)   # 현재 시즌 팀만(강등팀 제외)
     managers = {}
     for t in teams:
         m = _clean(nxt.get(t)) or _clean(cur.get(t))

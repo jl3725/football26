@@ -22,10 +22,10 @@ const TIER_TALENT: LeagueBtn[] = [
 ];
 const ACTIVE_LEAGUES = [...TIER_S, ...TIER_A, ...TIER_TALENT.filter((league) => !league.soon)];
 
-// 다음 시즌 라벨 ("25/26" → "26/27")
+// 다음 시즌 라벨 (현재 "YY/YY" → 한 해 뒤). 시즌 문구는 박아 두지 않는다 — scripts/check_season_literals.py
 function nextSeasonLabel(cur: string): string {
   const m = cur.match(/(\d{2})\s*\/\s*(\d{2})/);
-  if (!m) return "26/27";
+  if (!m) return "";
   const a = (parseInt(m[1], 10) + 1) % 100;
   const b = (parseInt(m[2], 10) + 1) % 100;
   return `${String(a).padStart(2, "0")}/${String(b).padStart(2, "0")}`;
@@ -42,7 +42,7 @@ function zoneOf(rank: number, total: number): { cls: string; tag: string } {
 }
 
 export default function Sidebar({
-  teams, sel, onSelect, seasonLabel = "25/26", next = null, atHome = false, onHome,
+  teams, sel, onSelect, seasonLabel = "", next = null, atHome = false, onHome,
   league = "EPL", onLeague, phase,
 }: {
   teams: Team[]; sel: string; onSelect: (t: string) => void;

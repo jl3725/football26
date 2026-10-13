@@ -35,6 +35,10 @@ jobs:
       - name: Compile Python
         run: python -m compileall -q api src scripts app.py
 
+      - name: Check hardcoded season labels
+        # 화면 코드(web·api)에 "25/26" 같은 시즌 문구가 박히면 실패 — 시즌은 /api/context 에서 받는다
+        run: python scripts/check_season_literals.py
+
       - name: Test
         run: pytest
 
