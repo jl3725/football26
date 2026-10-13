@@ -27,6 +27,7 @@
     FB_SEASON_START=2026 python scripts/build_season.py EPL LaLiga          # 일부 리그
     FB_SEASON_START=2026 python scripts/build_season.py --from understat EPL  # 특정 단계부터
     FB_SEASON_START=2026 python scripts/build_season.py --only espn_lineups,espn_subs
+    FB_SEASON_START=2026 python scripts/build_season.py --skip heatmaps          # 특정 단계 제외
 """
 from __future__ import annotations
 
@@ -73,6 +74,10 @@ def _parse(argv: list[str]) -> tuple[list[str], list[str]]:
         a = argv[i]
         if a == "--from":
             steps = STEP_NAMES[STEP_NAMES.index(argv[i + 1]):]
+            i += 2
+        elif a == "--skip":
+            skip = set(argv[i + 1].split(","))
+            steps = [s for s in steps if s not in skip]
             i += 2
         elif a == "--only":
             steps = [s for s in argv[i + 1].split(",") if s]

@@ -14,7 +14,7 @@ jobs:
   backend:
     runs-on: ubuntu-latest
     env:
-      FB_SEASON_START: "2025"
+      FB_SEASON_START: "2026"
     steps:
       - uses: actions/checkout@v4
 

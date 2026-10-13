@@ -4,9 +4,21 @@
 
 ### 1. 수집
 
-`src/fetch_*.py`, `src/sync_*.py`와 GitHub Actions가 외부 축구 데이터를
-리그·시즌별 CSV/JSON 또는 `news.db`로 저장합니다. 수집 결과는 재현 가능한
-원본이며 애플리케이션 코드가 직접 수정하지 않습니다.
+`src/fetch_*.py`, `src/sync_*.py`가 외부 축구 데이터를 리그·시즌별 CSV/JSON 또는
+`news.db`로 저장합니다. 수집 결과는 재현 가능한 원본이며 애플리케이션 코드가 직접 수정하지
+않습니다. 수집기는 실행 위치에 따라 둘로 나뉩니다.
+
+| 위치 | 주기 | 대상 | 이유 |
+|---|---|---|---|
+| GitHub Actions `daily_data` | 매일 | ESPN 일정·결과·순위·라인업, 위키 감독, 뉴스 RSS 소문, UEFA·FIFA, 홈 스냅샷 | 일반 HTTP 로 수집 가능 |
+| GitHub Actions `daily_news` | 2시간 | 뉴스(`news.db`) | |
+| 로컬 `football26-tm-agent` | 매일 10:30·18:30 | Transfermarkt 이적·현재 부상·계약·루머 | TM 이 데이터센터 IP 를 202 챌린지로 차단 |
+| 로컬 `football26-tm-weekly` | 월 12:30 | 선수별 통산 부상 이력 | 위와 같음 |
+| 로컬 `football26-season-weekly` | 수 12:30 | 선수 시즌 스탯(FBref·Sofascore·Understat·TM 시장가치)·히트맵 | FBref·Sofascore 는 브라우저 필요 |
+
+로컬 작업은 `scripts/register_tm_agent.ps1`, `scripts/register_season_agent.ps1`로 등록하며
+데이터 경로만 커밋·푸시합니다. 워크플로 단계는 `scripts/ci_try.sh`로 감싸 실패해도 나머지
+수집·커밋은 진행하되, 마지막에 실패 목록을 요약하고 워크플로를 실패 처리합니다.
 
 ### 2. 저장
 
@@ -50,16 +62,29 @@ Next.js에 우선 구현하고 공통 계산은 Python 도메인 계층에서 �
 ## 시즌과 리그
 
 `src/leagues.py`가 리그 식별자와 데이터 파일명 규칙을 관리합니다.
-활성 시즌은 `FB_SEASON_START`로 지정하며 기본값은 `2025`입니다.
-실제 날짜 기반 이적시장 상태는 `src/season_context.py`가 별도로 계산합니다.
+활성 시즌은 `FB_SEASON_START`로 지정하며 기본값은 `2026`(26/27)입니다.
+`src/season_context.py`는 날짜 기반 이적시장 상태와 시즌 단계(`phase`)를 계산합니다.
 
-시즌 전환 시 다음을 함께 변경·검증합니다.
+- `in_season`: 데이터 시즌 = 달력 시즌. 순위·라인업 중심, '다음 시즌' 뷰를 숨깁니다.
+- `offseason`: 여름 이적시장(6/14~9/1)에 다음 시즌 로스터·예상 XI 를 먼저 보여줍니다.
+- `stale`: 새 시즌이 시작됐는데 데이터 전환 전입니다 — 전환이 필요하다는 신호입니다.
 
-1. 배포와 수집 환경의 `FB_SEASON_START`
-2. 새 시즌 핵심 CSV 생성 여부
-3. `scripts/validate_data.py`
-4. 8개 리그 API 스모크 테스트
-5. `data/home_all.json` 재계산
+시즌 초에는 출전 시간이 적어 OVR·추천이 흔들리므로 `src/attach_prev_season.py`가 직전 시즌
+출전·평점(`prev_*`)을 붙이고 `ratings_v3`가 이를 가중해 쓰며, API 의 출전 시간 임계값은 리그
+진행률만큼 축소됩니다(`_mm`).
+
+클럽 표기는 소스마다 다르므로 `src/squads.py`가 표준 표기로 맞춥니다. 새 시즌에 승격팀이나 표기
+변경이 생기면 `python src/squads.py`로 대조합니다.
+
+### 시즌 전환 절차 (매년 8~9월)
+
+1. soccerdata 시즌 목록 캐시 정리: `~/soccerdata/data/FBref/seasons_*.html`, `~/soccerdata/data/Understat/leagues.json`
+2. 승격팀 매핑: `src/espn_common.py`(ESPN), `src/fetch_transfermarkt.py`·`src/teammeta.py`(TM verein), `src/squads.py`
+3. 새 시즌 데이터 빌드: `FB_SEASON_START=<새 시즌> python scripts/build_season.py`
+4. 현재 상태 파일 이관: `FB_SEASON_START=<새 시즌> python scripts/switch_season.py --write`
+5. `src/leagues.py` 기본값·`render.yaml`·`.github/workflows/ci.yml`의 `FB_SEASON_START`를 함께 변경
+   (Render 대시보드에 같은 환경변수가 따로 있으면 그것도 변경)
+6. `scripts/build_db.py` → `scripts/validate_data.py` → `pytest` → `scripts/precompute_hub.py`
 
 ## 선택 인프라
 

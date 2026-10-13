@@ -43,7 +43,7 @@
 
 Render에는 다음 값을 설정한다.
 
-- `FB_SEASON_START=2025`
+- `FB_SEASON_START=2026` (render.yaml 과 같은 값 — 시즌 전환 시 함께 변경)
 - `ALLOWED_ORIGINS`: FastAPI에 직접 브라우저 접근을 허용할 때만 Vercel origin 지정
 - `QDRANT_URL`, `QDRANT_API_KEY`: 벡터 기능 사용 시
 - `NEO4J_URI`, `NEO4J_USERNAME`, `NEO4J_PASSWORD`: 그래프 기능 사용 시
@@ -55,9 +55,13 @@ Render에는 다음 값을 설정한다.
 
 ## 4) 데이터 신선도
 
-`.github/workflows/`의 예약 작업이 뉴스, 이적, 부상, 감독, 일정과 월드컵
-데이터를 갱신합니다. 핵심 데이터는 커밋 전 `scripts/validate_data.py`로
-검증됩니다. `football.db`는 파생 파일이므로 Git에 올리지 않습니다.
+`.github/workflows/`의 예약 작업이 뉴스, 감독, 일정·순위·라인업과 홈 스냅샷을 매일
+갱신하고, Transfermarkt·선수 시즌 스탯은 로컬 PC 작업(ARCHITECTURE.md 표 참고)이 갱신해
+푸시합니다. 핵심 데이터는 커밋 전 `scripts/validate_data.py`로 검증됩니다.
+`football.db`는 파생 파일이므로 Git에 올리지 않습니다.
+
+데이터 커밋은 Render 를 재배포하지만, 프론트는 `web/vercel.json`의 `ignoreCommand`로
+`web/` 변경이 없으면 빌드를 건너뜁니다.
 
 ---
 

@@ -35,7 +35,7 @@ DATA_DIR = ROOT / "data"
 # 배포/수집기가 같은 시즌을 명시할 수 있도록 환경변수로 덮어쓸 수 있다.
 def parse_season_start(value: str | None) -> int:
     """환경변수 값을 시즌 시작 연도로 검증해 반환한다."""
-    raw = (value or "2025").strip()
+    raw = (value or "2026").strip()   # 활성 데이터 시즌 — 전환 시 render.yaml·ci.yml 과 함께 변경
     try:
         year = int(raw)
     except ValueError as exc:
@@ -105,7 +105,8 @@ LEAGUES: dict[str, LeagueConfig] = {
     "BelgianProLeague": LeagueConfig(
         key="BelgianProLeague", name="Belgian Pro League", country="Belgium",
         fbref_id="BEL-Belgian Pro League", tm_id="BE1", tm_slug="jupiler-pro-league",
-        api_football_id=144, default_team="Club Brugge", teams=16, games_per_team=30,
+        # 26/27 부터 18팀(ESPN·TM 리그 페이지 기준) — 정규 34라운드 + 플레이오프
+        api_football_id=144, default_team="Club Brugge", teams=18, games_per_team=34,
     ),
 }
 
@@ -158,6 +159,11 @@ def register_soccerdata_custom_leagues() -> None:
             "season_end": "May",
         },
     )
+    # FBref 가 2026 중 세리에A 대회명을 'Serie A (M)'으로 바꿨다(여자부 'Serie A (F)'와 구분).
+    # soccerdata 기본값('Serie A')으로는 시즌 목록을 못 찾아 'No objects to concatenate' 로 실패.
+    ita = sd_config.LEAGUE_DICT.get("ITA-Serie A")
+    if ita is not None:
+        ita["FBref"] = "Serie A (M)"
 
 
 def data_path(stem: str, league: str | None = None,

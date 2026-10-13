@@ -16,7 +16,7 @@ services:
       - key: PYTHON_VERSION
         value: "3.12.7"
       - key: FB_SEASON_START
-        value: "2025"
+        value: "2026"
       # 아래는 Render 대시보드에서 값 설정(시크릿). 미설정 시 해당 기능만 우아하게 비활성.
       - key: QDRANT_URL          # Qdrant Cloud 클러스터 URL (Fit·감독시뮬)
         sync: false

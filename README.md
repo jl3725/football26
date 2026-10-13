@@ -87,7 +87,7 @@ CI는 Python 컴파일, 8개 리그 API 스모크 테스트, 데이터 계약 �
 
 ## 설정
 
-- `FB_SEASON_START`: 활성 데이터 시즌 시작 연도. 기본값 `2025`
+- `FB_SEASON_START`: 활성 데이터 시즌 시작 연도. 기본값 `2026` (전환 절차는 ARCHITECTURE.md)
 - `FB_LEAGUE`: 로컬 수집기의 기본 리그. 기본값 `EPL`
 - `API_BASE`: Next.js가 프록시할 FastAPI 주소
 - `QDRANT_URL`, `QDRANT_API_KEY`: 벡터 탐색
