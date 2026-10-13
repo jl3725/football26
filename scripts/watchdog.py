@@ -246,10 +246,10 @@ def file_issue(res: dict[str, list[str]]) -> None:
                                          "body": body, "labels": [LABEL]})
         print(f"이슈 #{new['number']} 생성")
         return
-    before = (issue.get("body") or "").split("-->")[0]
+    before = (issue.get("body") or "").split("\n", 1)[0]  # 첫 줄 = <!-- watchdog:실패항목 -->
     gh(f"issues/{issue['number']}", "PATCH",
        json={"title": f"[watchdog] 운영 점검 실패: {', '.join(failing)}", "body": body})
-    if f"<!-- watchdog:{','.join(failing)}" != before:   # 실패 항목이 바뀌었을 때만 알림(댓글)
+    if body.split("\n", 1)[0] != before:                 # 실패 항목이 바뀌었을 때만 알림(댓글)
         gh(f"issues/{issue['number']}/comments", "POST", json={"body": "실패 항목이 바뀌었습니다.\n\n" + body})
     print(f"이슈 #{issue['number']} 갱신")
 
