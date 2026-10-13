@@ -61,19 +61,30 @@ def clean_text(value: str) -> str:
     return value.strip()
 
 
+# Wikimedia User-Agent 정책: "<이름>/<버전> (<연락처>)". 연락처 없는 일반 UA 는 429 를 훨씬 자주 받는다
+# (2026-10 daily_data 에서 감독 수집 3건이 429 로 실패).
+_WIKI_UA = "football26-scout/1.1 (https://github.com/jl3725/football26) python-urllib"
+_MIN_INTERVAL = 0.5          # 같은 프로세스 내 위키 요청 최소 간격(초) — 연속 호출 버스트 방지
+_last_call = 0.0
+
+
 def fetch_json(url: str) -> dict:
-    req = urllib.request.Request(
-        url,
-        headers={"User-Agent": "football26-manager-monitor/1.0 (local dashboard)"},
-    )
-    for attempt in range(4):
+    global _last_call
+    req = urllib.request.Request(url, headers={"User-Agent": _WIKI_UA})
+    for attempt in range(5):
+        wait = _MIN_INTERVAL - (time.monotonic() - _last_call)
+        if wait > 0:
+            time.sleep(wait)
+        _last_call = time.monotonic()
         try:
             with urllib.request.urlopen(req, timeout=30) as resp:
                 return json.loads(resp.read().decode("utf-8"))
         except urllib.error.HTTPError as exc:
-            if exc.code != 429 or attempt == 3:
+            if exc.code != 429 or attempt == 4:
                 raise
-            time.sleep(4 * (attempt + 1))
+            retry_after = exc.headers.get("Retry-After") if exc.headers else None
+            delay = int(retry_after) if (retry_after or "").isdigit() else 5 * 2 ** attempt   # 5·10·20·40s
+            time.sleep(min(delay, 60))
     raise RuntimeError("unreachable fetch retry state")
 
 
