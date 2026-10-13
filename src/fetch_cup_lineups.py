@@ -20,15 +20,15 @@ import time
 import pandas as pd
 import requests
 
-from espn_common import EURO_COMPS, DOMESTIC_CUPS, squad_of
-from leagues import data_path
+from espn_common import (EURO_COMPS, DOMESTIC_CUPS, scoreboard_events, season_bounds,
+                         season_squad_of, squad_of)
+from leagues import SEASON_START, data_path
 
 try:
     sys.stdout.reconfigure(encoding="utf-8")
 except Exception:  # noqa: BLE001
     pass
 
-SEASON_RANGE = "20250701-20260630"
 HEADERS = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
 BASE = "https://site.api.espn.com/apis/site/v2/sports/soccer"
 _SUB_RE = re.compile(r"\.\s*(.+?)\s+replaces\s+(.+?)\.?\s*$")
@@ -51,13 +51,17 @@ def _get(url: str, tries: int = 3) -> dict | None:
 
 
 def season_events(code: str, league: str) -> list[str]:
-    data = _get(f"{BASE}/{code}/scoreboard?dates={SEASON_RANGE}&limit=500")
+    """활성 시즌(FB_SEASON_START) 대회 `code` 에서 우리 리그 팀이 뛴 완료 경기 id."""
+    ours = season_squad_of(league, SEASON_START)
+    events = scoreboard_events(code, *season_bounds(SEASON_START))
+    if events is None:   # 부분 수집으로 기존 파일을 덮어쓰지 않도록 저장 전에 중단
+        raise RuntimeError(f"ESPN {code} scoreboard 조회 실패")
     out = []
-    for e in (data or {}).get("events", []):
+    for e in events:
         comp = (e.get("competitions") or [{}])[0]
         if not comp.get("status", {}).get("type", {}).get("completed"):
             continue
-        if any(squad_of(c.get("team", {}), league) for c in comp.get("competitors", [])):
+        if any(ours(c.get("team", {})) for c in comp.get("competitors", [])):
             out.append(e.get("id"))
     return [x for x in out if x]
 
@@ -74,7 +78,7 @@ def parse_summary(code: str, eid: str, league: str) -> tuple[list[dict], list[di
     except Exception:  # noqa: BLE001
         date = ""
     for t in rosters:
-        squad = squad_of(t.get("team", {}), league)
+        squad = season_squad_of(league, SEASON_START)(t.get("team", {}))
         if not squad:
             continue
         ha = t.get("homeAway")
@@ -95,7 +99,7 @@ def parse_summary(code: str, eid: str, league: str) -> tuple[list[dict], list[di
         for c in s["header"]["competitions"][0]["competitors"]:
             tid = str(c["team"]["id"])
             ha_by_tid[tid] = c.get("homeAway", "")
-            if squad_of(c.get("team", {}), league):
+            if season_squad_of(league, SEASON_START)(c.get("team", {})):
                 our_tid.add(tid)
     except (KeyError, IndexError):
         pass

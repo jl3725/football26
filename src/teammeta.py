@@ -125,14 +125,18 @@ TEAM_VEREIN: dict[str, int] = {
     "Twente": 317, "NEC Nijmegen": 467, "Heerenveen": 306, "Groningen": 202, "Sparta R.": 468,
     "Go Ahead Eagles": 1435, "Fortuna Sittard": 385, "Zwolle": 1269, "Excelsior": 798,
     "Volendam": 724, "Heracles Almelo": 1304, "Telstar": 1434, "NAC Breda": 132,
-    # Eredivisie 26/27 승격 (Transfermarkt verein id)
-    "ADO Den Haag": 484, "Cambuur": 1265, "Willem II": 426,
+    # Eredivisie 26/27 승격 (Transfermarkt verein id — 2026-10 TM 리그 페이지로 검증·정정)
+    "ADO Den Haag": 1268, "Cambuur": 133, "Willem II": 403,
     # Belgian Pro League 25/26 (Transfermarkt verein id)
     "Club Brugge": 2282, "Genk": 1184, "Union SG": 3948, "Anderlecht": 58,
     "Antwerp": 1096, "Gent": 157, "Westerlo": 968, "Sint-Truiden": 475,
     "Mechelen": 354, "Standard Liège": 3057, "Charleroi": 172,
     "Cercle Brugge": 520, "OH Leuven": 2727, "Zulte Waregem": 3508,
     "Dender": 9010, "La Louvière": 3901,
+    # 26/27 승격 — EPL·리가 포르투갈·벨기에 (Transfermarkt verein id, 2026-10 TM 리그 페이지 기준)
+    "Coventry City": 990, "Hull City": 3008, "Ipswich Town": 677,
+    "Académico de Viseu": 7788, "Marítimo": 1301,
+    "Kortrijk": 601, "Lommel": 5026, "Beveren": 28643,
 }
 
 # 풀네임 + 홈구장 수용인원

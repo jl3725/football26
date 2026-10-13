@@ -3,9 +3,12 @@ name: Daily Transfers Fetch
 # 하루 3회, 현재 활성 이적시장(날짜로 자동 판정)을 Transfermarkt에서 긁어
 # 지원 8개 리그의 transfers_<리그>_<시즌>.csv 를 누적 갱신 후 변경 시에만 커밋.
 # (EPL 은 레거시 파일명 transfers_2025_2026.csv)
+# 2026-07-15부터 Transfermarkt(AWS WAF)이 GH 러너 IP 에 202 챌린지를 반환해 전 리그 실패
+# (TLS 위장으로도 우회 불가 — 2026-10 진단). 예약 실행은 끄고 로컬 agent(scripts/run_tm_agent.ps1)가 담당.
+# TM 이 차단을 풀면 아래 schedule 주석을 해제.
 on:
-  schedule:
-    - cron: "0 23,5,11 * * *"   # 하루 3회 08·14·20 KST (23·05·11 UTC). TM 부하·차단 위험 고려해 시간단위 지양.
+  # schedule:
+  #   - cron: "0 23,5,11 * * *"   # 하루 3회 08·14·20 KST
   workflow_dispatch:
 
 concurrency:
@@ -32,7 +35,7 @@ jobs:
         run: |
           for LG in EPL LaLiga SerieA Bundesliga Ligue1 LigaPortugal Eredivisie BelgianProLeague; do
             echo "── $LG ──"
-            FB_LEAGUE=$LG python src/fetch_transfers.py || echo "transfers $LG 실패"
+            FB_LEAGUE=$LG bash scripts/ci_try.sh "transfers $LG" python src/fetch_transfers.py
           done
 
       - name: Validate transfer data
@@ -60,3 +63,7 @@ jobs:
               git pull --rebase --autostash origin main && git push && break || sleep 5
             done
           fi
+
+      - name: Report collector failures
+        if: always()
+        run: bash scripts/ci_report.sh

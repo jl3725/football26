@@ -1,9 +1,12 @@
 """
-Transfermarkt 여름 이적시장 IN/OUT 스크래퍼 (2025/26).
+Transfermarkt 이적시장 IN/OUT 스크래퍼 (달력상 현재 시즌의 여름·겨울 창).
 
-각 팀의 transfers 페이지에서 Arrivals(영입)·Departures(방출)를 긁어
-data/transfers_2025_2026.csv 로 저장한다.
-컬럼: squad, direction(in/out), player, pos, age, nat, club, fee_eur, fee_text, photo
+시즌 소속 클럽(season_clubs — 승격·강등 자동 반영)의 transfers 페이지에서
+Arrivals(영입)·Departures(방출)를 긁어 data/transfers[_<리그>]_<시즌>.csv 에 누적한다.
+컬럼: squad, season_id, window, direction(in/out), player, pos, age, nat, club, fee_eur, fee_text, photo
+
+저장은 팀 단위 교체 — 두 창(여름·겨울)을 모두 받아온 팀의 이번 시즌 행만 바꾸고,
+요청이 실패한 팀(차단·타임아웃)은 기존 행을 그대로 둔다. 한 팀도 못 받으면 저장하지 않고 exit 1.
 
 사용:
     python src/fetch_transfers.py            # EPL 전 팀
@@ -21,7 +24,7 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 
-from fetch_transfermarkt import H, TEAM_TM, norm, parse_mv  # 재사용
+from fetch_transfermarkt import H, norm, parse_mv, season_clubs  # 재사용
 
 DATA = Path(__file__).resolve().parent.parent / "data"
 from leagues import data_path
@@ -70,9 +73,8 @@ def _parse_row(tr) -> dict | None:
             "photo": photo}
 
 
-def scrape_transfers(team: str, window: str = "s") -> list[dict]:
-    """window: 's'=여름, 'w'=겨울 (?w_s 쿼리 파라미터)."""
-    slug, vid = TEAM_TM[team]
+def scrape_transfers(team: str, slug: str, vid: int, window: str = "s") -> list[dict] | None:
+    """window: 's'=여름, 'w'=겨울 (?w_s 쿼리 파라미터). 요청 실패(차단 202 포함) 시 None."""
     url = f"https://www.transfermarkt.com/{slug}/transfers/verein/{vid}/saison_id/{SEASON}"
     r = None
     for attempt in range(3):
@@ -83,10 +85,10 @@ def scrape_transfers(team: str, window: str = "s") -> list[dict]:
             time.sleep(4)
     if r is None:
         print(f"  [{team}/{window}] 요청 실패(타임아웃)")
-        return []
+        return None
     if r.status_code != 200:
-        print(f"  [{team}] HTTP {r.status_code}")
-        return []
+        print(f"  [{team}/{window}] HTTP {r.status_code}")
+        return None
     soup = BeautifulSoup(r.text, "lxml")
     rows = []
     for box in soup.select("div.box"):
@@ -114,47 +116,66 @@ def main(argv=None) -> int:
     dry = "--dry" in args
     if dry:
         args.remove("--dry")
-    teams = args if args else list(TEAM_TM)
+    clubs = season_clubs(season=SEASON)
+    teams = args if args else list(clubs)
 
     WINDOWS = {"s": "summer", "w": "winter"}
     all_rows = []
+    ok_teams: list[str] = []
+    failed: list[str] = []
     first = True
     for team in teams:
-        if team not in TEAM_TM:
-            print(f"  [건너뜀] {team}")
+        if team not in clubs:
+            print(f"  [건너뜀] {team} — {SEASON} 시즌 소속 아님")
             continue
+        slug, vid = clubs[team]
         counts = {}
+        team_rows: list[dict] = []
+        complete = True
         for wk, wname in WINDOWS.items():
             if not first:
                 time.sleep(3)
             first = False
-            rows = scrape_transfers(team, wk)
+            rows = scrape_transfers(team, slug, vid, wk)
+            if rows is None:
+                complete = False
+                break
             for r in rows:
                 r["window"] = wname
             counts[wname] = (sum(1 for r in rows if r["direction"] == "in"),
                              sum(1 for r in rows if r["direction"] == "out"))
-            all_rows += rows
+            team_rows += rows
+        if not complete:
+            failed.append(team)
+            continue
+        ok_teams.append(team)
+        all_rows += team_rows
         print(f"  [{team}] 여름 IN{counts['summer'][0]}/OUT{counts['summer'][1]} · "
               f"겨울 IN{counts['winter'][0]}/OUT{counts['winter'][1]}")
 
+    if failed:
+        print(f"  [실패] {len(failed)}팀 — 기존 행 유지: {', '.join(failed)}")
+    if not ok_teams:
+        print("[FAIL] 수집 성공 팀 없음 — 저장 안 함.")
+        return 1
     if dry:
         print(f"\n[DRY] season {SEASON} · 총 {len(all_rows)}건 — 저장 안 함.")
         return 0
     cols = ["squad", "season_id", "window", "direction", "player", "norm_key", "pos",
             "age", "nat", "club", "fee_eur", "fee_text", "photo"]
-    df_new = pd.DataFrame(all_rows)
+    df_new = pd.DataFrame(all_rows, columns=[c for c in cols if c != "season_id"])
     df_new["season_id"] = SEASON
     df_new = df_new[cols]
-    # 누적 — 같은 시즌 행만 교체하고 과거 시즌은 보존(윈도우로 추가).
+    # 누적 — 이번에 받아온 팀의 이번 시즌 행만 교체. 과거 시즌·실패 팀 행은 보존.
     if OUT.exists():
         old = pd.read_csv(OUT)
         if "season_id" not in old.columns:        # 기존 25/26 데이터 마이그레이션
             old.insert(1, "season_id", 2025)
-        old = old[old["season_id"] != SEASON]
+        old = old[~((old["season_id"] == SEASON) & old["squad"].isin(ok_teams))]
         df_new = pd.concat([old.reindex(columns=cols), df_new], ignore_index=True)
     df_new.to_csv(OUT, index=False, encoding="utf-8")
-    print(f"\n[OK] 저장: {OUT.name} · season {SEASON} {len(all_rows)}건 · 누적 {len(df_new)}건")
-    return 0
+    print(f"\n[OK] 저장: {OUT.name} · season {SEASON} {len(ok_teams)}팀 {len(all_rows)}건 · 누적 {len(df_new)}건")
+    return 1 if failed else 0
 
 
 if __name__ == "__main__":

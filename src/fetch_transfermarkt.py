@@ -26,12 +26,12 @@ from bs4 import BeautifulSoup
 from unidecode import unidecode
 
 DATA = Path(__file__).resolve().parent.parent / "data"
-from leagues import ACTIVE_LEAGUE, data_path  # noqa: E402
+from leagues import ACTIVE_LEAGUE, LEAGUES, SEASON_START, data_path  # noqa: E402
 
 PLAYERS = data_path("players_full")
 if not PLAYERS.exists():
     PLAYERS = data_path("players")
-SEASON = 2025
+SEASON = SEASON_START   # 스쿼드 페이지 saison_id — 활성 데이터 시즌(FB_SEASON_START)
 
 H = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
      "(KHTML, like Gecko) Chrome/126.0 Safari/537.36",
@@ -59,6 +59,10 @@ EPL_TEAM_TM: dict[str, tuple[str, int]] = {
     "Tottenham Hotspur": ("tottenham-hotspur", 148),
     "West Ham United": ("west-ham-united", 379),
     "Wolves": ("wolverhampton-wanderers", 543),
+    # 26/27 승격
+    "Coventry City": ("coventry-city", 990),
+    "Hull City": ("hull-city", 3008),
+    "Ipswich Town": ("ipswich-town", 677),
 }
 
 LALIGA_TEAM_TM: dict[str, tuple[str, int]] = {
@@ -168,6 +172,9 @@ LIGAPORTUGAL_TEAM_TM: dict[str, tuple[str, int]] = {
     "Tondela": ("cd-tondela", 7179),
     "Nacional": ("cd-nacional", 982),
     "AVS Futebol": ("avs-futebol-sad", 110302),
+    # 26/27 승격
+    "Académico de Viseu": ("academico-viseu-fc", 7788),
+    "Marítimo": ("cs-maritimo", 1301),
 }
 
 EREDIVISIE_TEAM_TM: dict[str, tuple[str, int]] = {
@@ -189,6 +196,10 @@ EREDIVISIE_TEAM_TM: dict[str, tuple[str, int]] = {
     "Heracles Almelo": ("heracles-almelo", 1304),
     "Telstar": ("sc-telstar", 1434),
     "NAC Breda": ("nac-breda", 132),
+    # 26/27 승격
+    "ADO Den Haag": ("ado-den-haag", 1268),
+    "Cambuur": ("sc-cambuur-leeuwarden", 133),
+    "Willem II": ("willem-ii-tilburg", 403),
 }
 
 BELGIANPROLEAGUE_TEAM_TM: dict[str, tuple[str, int]] = {
@@ -208,6 +219,10 @@ BELGIANPROLEAGUE_TEAM_TM: dict[str, tuple[str, int]] = {
     "Zulte Waregem": ("sv-zulte-waregem", 3508),
     "Dender": ("fcv-dender-eh", 9010),
     "La Louvière": ("raal-la-louviere", 3901),
+    # 26/27 승격 (16→18팀)
+    "Kortrijk": ("kv-kortrijk", 601),
+    "Lommel": ("lommel-sk", 5026),
+    "Beveren": ("waasland-beveren", 28643),
 }
 
 TEAM_TM_BY_LEAGUE: dict[str, dict[str, tuple[str, int]]] = {
@@ -221,7 +236,49 @@ TEAM_TM_BY_LEAGUE: dict[str, dict[str, tuple[str, int]]] = {
     "BelgianProLeague": BELGIANPROLEAGUE_TEAM_TM,
 }
 
+# 리그별 정적 맵은 여러 시즌 클럽의 합집합(강등팀 포함) — verein id → squad 역매핑용.
+# 실제 순회 대상은 season_clubs() 로 시즌 소속 클럽만 고른다.
 TEAM_TM: dict[str, tuple[str, int]] = TEAM_TM_BY_LEAGUE.get(ACTIVE_LEAGUE, EPL_TEAM_TM)
+
+
+def season_clubs(league: str = ACTIVE_LEAGUE, season: int | None = None) -> dict[str, tuple[str, int]]:
+    """시즌 `season`(시작 연도, 기본=달력상 현재 시즌) 리그 소속 클럽 {squad: (slug, verein)}.
+
+    Transfermarkt 리그 페이지(startseite/wettbewerb)의 클럽 목록이 기준 — 승격·강등이 자동 반영된다.
+    verein id 는 정적 맵(TEAM_TM_BY_LEAGUE)·teammeta.TEAM_VEREIN 으로 우리 squad 표기로 바꾸고,
+    모르는 클럽(새 승격팀)은 TM 표기 그대로 쓰며 경고한다. 리그 페이지 조회 실패 시 정적 맵 전체로 폴백.
+    """
+    import re
+    from season_context import current_window
+    from teammeta import TEAM_VEREIN
+
+    season = current_window()["season_id"] if season is None else season
+    static = TEAM_TM_BY_LEAGUE.get(league, EPL_TEAM_TM)
+    cfg = LEAGUES[league]
+    url = f"https://www.transfermarkt.com/{cfg.tm_slug}/startseite/wettbewerb/{cfg.tm_id}/saison_id/{season}"
+    try:
+        r = requests.get(url, headers=H, timeout=30)
+        html = r.text if r.status_code == 200 else ""
+    except requests.RequestException:
+        html = ""
+    clubs: dict[int, tuple[str, str]] = {}
+    for a in BeautifulSoup(html, "lxml").select("table.items td.hauptlink a[href*='/startseite/verein/']"):
+        m = re.match(r"/([^/]+)/startseite/verein/(\d+)", a.get("href", ""))
+        if m and a.get_text(strip=True):
+            clubs[int(m.group(2))] = (m.group(1), a.get_text(strip=True))
+    if len(clubs) < cfg.teams - 2:   # 차단(202)·레이아웃 변경 — 정적 맵으로 폴백
+        print(f"  [season_clubs] {league} {season} TM 리그 페이지 실패({len(clubs)}개) — 정적 맵 사용")
+        return dict(static)
+    by_vid = {vid: sq for sq, vid in TEAM_VEREIN.items()}
+    by_vid.update({vid: sq for sq, (_slug, vid) in static.items()})
+    out: dict[str, tuple[str, int]] = {}
+    for vid, (slug, tm_name) in clubs.items():
+        squad = by_vid.get(vid)
+        if not squad:
+            print(f"  [season_clubs] {league} 미등록 클럽 {tm_name}(verein {vid}) — teammeta/TEAM_TM 에 추가 필요")
+            squad = tm_name
+        out[squad] = (slug, vid)
+    return out
 
 
 # verein id → 우리 squad 표기 (현재 소속 클럽 역매핑용)

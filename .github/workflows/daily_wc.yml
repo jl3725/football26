@@ -5,9 +5,11 @@ name: Daily World Cup Fetch
 # 당일 녹아웃 결과를 최대한 빨리 반영하려 매시간(daily 2회로는 당일 결과 지연).
 # WC 는 ESPN 순수 JSON API 만 쓰므로(번역·RSS 없음) GH Actions 러너에서도 안정적.
 # (GH 예약 실행은 부하 시 수~수십분 지연될 수 있음). 대회 종료 후 cron 주석 처리.
+# 2026 월드컵 종료(7/19) — 예약 실행 비활성화. ESPN 이 대회 기간 밖 조회에 400 을 반환해
+# 매시간 실패만 쌓였음. 다음 대회(유로 2028 등) 때 아래 schedule 주석을 해제.
 on:
-  schedule:
-    - cron: "0 * * * *"    # 매시간 (대회 기간 — 당일 결과 빠른 반영). 종료 후 주석 처리.
+  # schedule:
+  #   - cron: "0 * * * *"    # 매시간 (대회 기간 — 당일 결과 빠른 반영)
   workflow_dispatch:
 
 concurrency:

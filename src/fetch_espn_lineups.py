@@ -9,10 +9,14 @@ ESPN site API는 키 불필요·빠른 JSON 단일 호출로 다음을 제공한
 ESPN position 토큰 → 우리 슬롯 매핑은 app.py(렌더링) 쪽에서 처리하므로,
 여기선 raw(espn_pos)만 저장한다 — 매핑 로직 변경 시 재스크래핑 불필요.
 
-저장: data/espn_lineups_2025_2026.csv  (전 경기 일괄)
+저장: data/espn_lineups[_<리그>]_<시즌>.csv  (활성 시즌 FB_SEASON_START 의 리그 완료 경기)
+
+기본은 증분 수집 — 파일에 이미 있는 event 는 건너뛰고 새로 끝난 경기만 받는다(매일 실행용).
+시즌 경기 목록은 espn_common.scoreboard_events(연 단위 조회)로 받는다.
 
 사용:
-    python src/fetch_espn_lineups.py            # 전 시즌 수집
+    python src/fetch_espn_lineups.py            # 증분 수집
+    python src/fetch_espn_lineups.py --full     # 시즌 전체 재수집
     python src/fetch_espn_lineups.py --dry      # 저장 안 함(샘플 출력)
     python src/fetch_espn_lineups.py 740602     # 특정 event만(디버그)
 """
@@ -25,7 +29,8 @@ from pathlib import Path
 import pandas as pd
 import requests
 
-from leagues import ACTIVE_LEAGUE, data_path
+from espn_common import LEAGUE_CODE, scoreboard_events, season_bounds, squad_of
+from leagues import ACTIVE_LEAGUE, SEASON_START, data_path
 
 DATA = Path(__file__).resolve().parent.parent / "data"
 OUT = data_path("espn_lineups")
@@ -271,7 +276,9 @@ def normalize_team(team: dict | str | None) -> str:
     else:
         raw = str(team or "")
         abbr = raw
-    return TEAM_ALIASES.get(raw, SQUAD_BY_ABBR.get(abbr, raw))
+    # 공용 매핑(espn_common) 우선 — 순위·일정과 같은 squad 표기를 쓰도록.
+    common = squad_of({"displayName": raw}, ACTIVE_LEAGUE) if raw else None
+    return common or TEAM_ALIASES.get(raw, SQUAD_BY_ABBR.get(abbr, raw))
 
 
 def _get(url: str, tries: int = 3) -> dict | None:
@@ -286,22 +293,17 @@ def _get(url: str, tries: int = 3) -> dict | None:
     return None
 
 
-def calendar_dates() -> list[str]:
-    """시즌 전체 매치데이 날짜(YYYYMMDD) 목록. 첫 scoreboard의 calendar에서."""
-    data = _get(f"{ESPN}/scoreboard?dates=20250816")
-    cal = (data or {}).get("leagues", [{}])[0].get("calendar", [])
-    return [c[:10].replace("-", "") for c in cal]
-
-
-def events_for_date(yyyymmdd: str) -> dict[str, str]:
-    """해당 날짜의 EPL 경기 {event_id: date(YYYY-MM-DD)}."""
-    data = _get(f"{ESPN}/scoreboard?dates={yyyymmdd}")
+def season_events() -> dict[str, str]:
+    """활성 시즌 리그의 완료 경기 {event_id: date(YYYY-MM-DD)}."""
+    code = LEAGUE_CODE.get(ACTIVE_LEAGUE, LEAGUE_CODE["EPL"])[0]
+    events = scoreboard_events(code, *season_bounds(SEASON_START))
+    if events is None:
+        raise RuntimeError(f"ESPN {code} scoreboard 조회 실패")
     out: dict[str, str] = {}
-    for e in (data or {}).get("events", []):
-        eid = e.get("id")
-        date = (e.get("date") or "")[:10]
-        if eid:
-            out[eid] = date
+    for e in events:
+        comp = (e.get("competitions") or [{}])[0]
+        if comp.get("status", {}).get("type", {}).get("completed"):
+            out[str(e["id"])] = (e.get("date") or "")[:10]
     return out
 
 
@@ -347,8 +349,8 @@ def fetch_event(event_id: str, date: str = "") -> list[dict]:
 def main(argv=None) -> int:
     args = list(argv if argv is not None else sys.argv[1:])
     dry = "--dry" in args
-    if dry:
-        args.remove("--dry")
+    full = "--full" in args
+    args = [a for a in args if a not in ("--dry", "--full")]
 
     # 특정 event만(디버그)
     if args:
@@ -360,29 +362,34 @@ def main(argv=None) -> int:
         print(f"  총 {len(rows)}행")
         return 0
 
-    dates = calendar_dates()
-    print(f"매치데이 {len(dates)}일 — event 수집 중...")
-    events: dict[str, str] = {}
-    for i, d in enumerate(dates):
-        events.update(events_for_date(d))
-        time.sleep(0.12)
-        if (i + 1) % 20 == 0:
-            print(f"  {i+1}/{len(dates)}일 · event {len(events)}개")
-    print(f"총 event {len(events)}개 — 라인업 수집 중...")
+    events = season_events()
+    # 증분: 이번 시즌 완료 경기 중 파일에 이미 있는 event 는 유지하고 나머지만 받는다.
+    # (다른 시즌 행은 event 목록에 없으므로 자연히 빠진다.)
+    keep = pd.DataFrame(columns=COLS)
+    if OUT.exists() and not full:
+        old = pd.read_csv(OUT, dtype={"event_id": str})
+        keep = old[old["event_id"].isin(events)]
+        keep = keep.assign(squad=keep["squad"].map(lambda x: normalize_team(str(x))),
+                           opponent=keep["opponent"].map(lambda x: normalize_team(str(x))))
+    have = set(keep["event_id"].astype(str))
+    todo = {eid: d for eid, d in events.items() if eid not in have}
+    print(f"[{ACTIVE_LEAGUE} {SEASON_START}] 완료 경기 {len(events)}개 · 보유 {len(have)} · 신규 {len(todo)} — 라인업 수집 중...")
 
     all_rows: list[dict] = []
-    for i, (eid, date) in enumerate(sorted(events.items(), key=lambda x: x[1])):
+    for i, (eid, date) in enumerate(sorted(todo.items(), key=lambda x: x[1])):
         rows = fetch_event(eid, date)
         all_rows += rows
         time.sleep(0.12)
         if (i + 1) % 40 == 0:
-            print(f"  {i+1}/{len(events)}경기 · {len(all_rows)}행")
+            print(f"  {i+1}/{len(todo)}경기 · {len(all_rows)}행")
 
-    if not all_rows:
+    if not all_rows and keep.empty:
         print("수집된 라인업이 없습니다.")
         return 1
 
-    df = pd.DataFrame(all_rows)[COLS]
+    new = pd.DataFrame(all_rows, columns=COLS)
+    # 기존 행 순서는 유지하고 새 경기만 뒤에 붙인다(불필요한 diff 방지).
+    df = pd.concat([keep[COLS], new], ignore_index=True) if not keep.empty else new
     n_games = df["event_id"].nunique()
     n_starters = df[df["starter"]].shape[0]
     print(f"\n경기 {n_games} · 선수행 {len(df)}(선발 {n_starters}) · 팀 {df['squad'].nunique()}")

@@ -18,7 +18,7 @@ import requests
 from bs4 import BeautifulSoup
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from fetch_transfermarkt import TEAM_TM  # noqa: E402  (활성 리그 팀→(slug, verein))
+from fetch_transfermarkt import season_clubs  # noqa: E402  (시즌 소속 팀→(slug, verein))
 from leagues import ACTIVE_LEAGUE, data_path  # noqa: E402
 
 try:
@@ -87,14 +87,18 @@ def main() -> int:
     session = requests.Session()
     session.headers.update(H)
     allrows: list[dict] = []
-    teams = sorted(TEAM_TM.items())
+    failed: list[str] = []
+    teams = sorted(season_clubs(league).items())
     for i, (team, (slug, vid)) in enumerate(teams, 1):
         try:
             r = session.get(URL.format(slug=slug, vid=vid), timeout=20)
-            rows = _parse(r.text, team) if r.status_code == 200 else []
+            if r.status_code != 200:   # 202 = WAF 챌린지
+                raise requests.RequestException(f"HTTP {r.status_code}")
+            rows = _parse(r.text, team)
         except requests.RequestException as exc:
             print(f"  [{team}] 실패: {str(exc)[:50]}", file=sys.stderr)
-            rows = []
+            failed.append(team)
+            continue
         allrows.extend(rows)
         print(f"  [{i:2}/{len(teams)}] {team:18} 루머 {len(rows)}")
         time.sleep(1.5)
@@ -105,12 +109,19 @@ def main() -> int:
     out = data_path("transfer_rumors", league)
     fields = ["target_club", "player", "pos_detail", "age", "current_club",
               "market_value_eur", "probability", "date"]
+    if failed and out.exists():
+        # 요청이 실패한 팀은 이전 루머를 유지(부분 실패로 팀 루머가 통째로 사라지지 않게).
+        with out.open(newline="", encoding="utf-8") as fh:
+            allrows += [r for r in csv.DictReader(fh) if r.get("target_club") in failed]
     with out.open("w", newline="", encoding="utf-8") as fh:
         w = csv.DictWriter(fh, fieldnames=fields)
         w.writeheader()
         w.writerows(allrows)
     withp = sum(1 for r in allrows if r["probability"] is not None)
     print(f"[rumors] {league}: {len(allrows)}건 (확률표기 {withp}) -> {out.name}")
+    if failed:
+        print(f"[rumors] 실패 {len(failed)}팀(이전 루머 유지): {', '.join(failed)}", file=sys.stderr)
+        return 1
     return 0
 
 

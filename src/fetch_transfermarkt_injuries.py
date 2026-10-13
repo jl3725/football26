@@ -271,6 +271,10 @@ def parse_injury_rows(page_html: str) -> list[dict]:
 def fetch_page() -> str:
     response = requests.get(URL, headers=H, timeout=30)
     response.raise_for_status()
+    # TM(AWS WAF)은 데이터센터 IP 에 202 + 챌린지 페이지를 준다. raise_for_status 를 통과하므로
+    # 그대로 파싱하면 0행이 되어 부상자 파일을 비우고 '전원 복귀' 가짜 이벤트를 남긴다(2026-07-15 사고).
+    if response.status_code != 200 or 'class="items"' not in response.text:
+        raise RuntimeError(f"Transfermarkt 부상자 페이지 비정상 응답(HTTP {response.status_code}) — 저장 안 함")
     return response.text
 
 
@@ -364,7 +368,8 @@ def main() -> int:
     previous = read_previous_rows()
     rows = parse_injury_rows(fetch_page())
     rows.sort(key=lambda r: (r["squad"], r["player"]))
-    changes = detect_changes(previous, rows)
+    # 이전 스냅샷이 비어 있으면(최초 수집·유실 복구) 전원이 'new_injury' 로 찍히지 않게 기준선만 잡는다.
+    changes = detect_changes(previous, rows) if previous else []
     write_csv(rows)
     append_changes(changes)
     print(f"Wrote {len(rows)} active injury rows to {OUT}")

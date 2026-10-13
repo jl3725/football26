@@ -27,7 +27,7 @@ DATA = ROOT / "data"
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from leagues import data_path  # noqa: E402
-from fetch_transfermarkt import H, TEAM_TM, norm  # noqa: E402
+from fetch_transfermarkt import H, TEAM_TM, norm, season_clubs  # noqa: E402
 
 PLAYERS_FULL = data_path("players_full")
 PLAYERS_BASE = data_path("players")
@@ -330,13 +330,13 @@ def write_snapshot(contracts: pd.DataFrame, fetched_teams: list[str]) -> pd.Data
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Sync Transfermarkt contract expiry dates.")
-    parser.add_argument("teams", nargs="*", help="Team names to fetch. Defaults to all EPL teams.")
+    parser.add_argument("teams", nargs="*", help="Team names to fetch. Defaults to current-season clubs of FB_LEAGUE.")
     parser.add_argument("--write", action="store_true", help="Write snapshot and merge player CSVs.")
     parser.add_argument("--snapshot-only", action="store_true", help="Do not merge into player CSVs.")
     parser.add_argument("--pause", type=float, default=2.0, help="Seconds between team requests.")
     args = parser.parse_args(argv)
 
-    teams = args.teams or list(TEAM_TM)
+    teams = args.teams or list(season_clubs())   # 달력상 현재 시즌 소속 클럽(승격·강등 반영)
     unknown = [team for team in teams if team not in TEAM_TM]
     if unknown:
         raise SystemExit(f"Unknown team(s): {', '.join(unknown)}")

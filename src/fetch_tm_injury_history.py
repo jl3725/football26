@@ -98,6 +98,10 @@ def fetch_player(tm_id: str) -> dict:
     url = f"https://www.transfermarkt.com/-/verletzungen/spieler/{tm_id}"
     resp = requests.get(url, headers=H, timeout=30)
     resp.raise_for_status()
+    # TM(AWS WAF)은 데이터센터 IP 에 202 + 챌린지 페이지를 준다. 이를 파싱하면 결장 0경기로
+    # 기존 이력을 덮어쓴다(2026-07-20~10-12 GH 주간 수집이 전 리그를 0으로 만든 사고).
+    if resp.status_code != 200:
+        raise RuntimeError(f"HTTP {resp.status_code} (WAF 챌린지 추정)")
     return parse_history(resp.text)
 
 
@@ -131,8 +135,12 @@ def main(argv: list[str]) -> int:
     rowmap = read_existing()
     today = checked_date()
     done = skipped = 0
+    streak = 0          # 연속 요청 실패 — 전면 차단이면 일찍 중단
+    MAX_STREAK = 15
 
     for team in teams:
+        if streak >= MAX_STREAK:
+            break
         squad = df[df["squad"].astype(str) == team]
         if squad.empty:
             print(f"  ! no players for '{team}'")
@@ -149,8 +157,13 @@ def main(argv: list[str]) -> int:
             except Exception as e:  # noqa: BLE001
                 print(f"    x {player} ({tm_id}): {e}")
                 skipped += 1
+                streak += 1
+                if streak >= MAX_STREAK:
+                    print(f"  ! 연속 {streak}회 실패 — 차단으로 보고 중단(기존 이력 유지)")
+                    break
                 time.sleep(1.0)
                 continue
+            streak = 0
             rowmap[f"{team}::{player}"] = {
                 "squad": team, "player": player, "tm_player_id": tm_id,
                 "season": SEASON, "last_checked": today, **info,
@@ -162,7 +175,7 @@ def main(argv: list[str]) -> int:
         write_rows(rowmap)  # checkpoint after each team
 
     print(f"Done. scraped={done} skipped={skipped} → {OUT}")
-    return 0
+    return 1 if (streak >= MAX_STREAK or done == 0) else 0
 
 
 if __name__ == "__main__":

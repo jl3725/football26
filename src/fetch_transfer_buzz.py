@@ -46,7 +46,8 @@ FEEDS_BY_LEAGUE = {
         ("Record", "https://www.record.pt/rss"),
     ],
     "Eredivisie": [
-        ("NOS", "https://feeds.nos.nl/nossportvoetbal"),
+        ("NOS", "https://feeds.nos.nl/nosvoetbal"),   # 구 nossportvoetbal 은 2026 중 404
+        ("VoetbalPrimeur", "https://www.voetbalprimeur.nl/rss/"),
     ],
     "BelgianProLeague": [],
 }

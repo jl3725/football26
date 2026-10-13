@@ -21,15 +21,15 @@ import pandas as pd
 import requests
 from unidecode import unidecode
 
-from espn_common import EURO_COMPS, DOMESTIC_CUPS, squad_of
-from leagues import data_path
+from espn_common import (EURO_COMPS, DOMESTIC_CUPS, scoreboard_events, season_bounds,
+                         season_squad_of)
+from leagues import SEASON_START, data_path
 
 try:
     sys.stdout.reconfigure(encoding="utf-8")
 except Exception:  # noqa: BLE001
     pass
 
-SEASON_RANGE = "20250701-20260630"
 HEADERS = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
 BASE = "https://site.api.espn.com/apis/site/v2/sports/soccer"
 
@@ -51,13 +51,17 @@ def _get(url: str, tries: int = 3) -> dict | None:
 
 
 def season_events(code: str, league: str) -> list[str]:
-    data = _get(f"{BASE}/{code}/scoreboard?dates={SEASON_RANGE}&limit=500")
+    """활성 시즌(FB_SEASON_START) 대회 `code` 에서 우리 리그 팀이 뛴 완료 경기 id."""
+    ours = season_squad_of(league, SEASON_START)
+    events = scoreboard_events(code, *season_bounds(SEASON_START))
+    if events is None:   # 부분 수집으로 기존 파일을 덮어쓰지 않도록 저장 전에 중단
+        raise RuntimeError(f"ESPN {code} scoreboard 조회 실패")
     out = []
-    for e in (data or {}).get("events", []):
+    for e in events:
         comp = (e.get("competitions") or [{}])[0]
         if not comp.get("status", {}).get("type", {}).get("completed"):
             continue
-        if any(squad_of(c.get("team", {}), league) for c in comp.get("competitors", [])):
+        if any(ours(c.get("team", {})) for c in comp.get("competitors", [])):
             out.append(e.get("id"))
     return [x for x in out if x]
 
@@ -69,7 +73,7 @@ def collect_comp(code: str, league: str) -> dict[tuple, dict]:
     for i, eid in enumerate(eids):
         s = _get(f"{BASE}/{code}/summary?event={eid}")
         for r in (s or {}).get("rosters", []):
-            squad = squad_of(r.get("team", {}), league)
+            squad = season_squad_of(league, SEASON_START)(r.get("team", {}))
             if not squad:
                 continue
             for p in r.get("roster", []):

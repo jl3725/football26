@@ -6,9 +6,11 @@ ESPN scoreboard 로 대회별 경기를 긁어 우리 팀 관점 행(대회·상
 
 저장: data/schedule_full[_LaLiga]_{2025_2026|2026_2027}.csv
 사용:
-    python src/fetch_schedule.py                              # EPL 두 시즌
+    python src/fetch_schedule.py                              # 전 리그 · 기본 시즌
     python src/fetch_schedule.py --league LaLiga
     python src/fetch_schedule.py --league LaLiga 2026_2027
+
+기본 시즌 = 활성 데이터 시즌(FB_SEASON_START) + 달력상 현재 시즌(season_context) — 보통 1~2개.
 """
 from __future__ import annotations
 
@@ -16,19 +18,25 @@ import sys
 import time
 
 import pandas as pd
-import requests
 
-from espn_common import LEAGUE_CODE, EURO_COMPS, DOMESTIC_CUPS, squad_of
-from leagues import data_path
+from espn_common import (LEAGUE_CODE, EURO_COMPS, DOMESTIC_CUPS, scoreboard_events,
+                         season_bounds, season_squad_of, squad_of)
+from leagues import SEASON_START, data_path
+from season_context import current_window
 
 try:
     sys.stdout.reconfigure(encoding="utf-8")
 except Exception:  # noqa: BLE001
     pass
 
-HEADERS = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
-BASE = "https://site.api.espn.com/apis/site/v2/sports/soccer"
-SEASONS = {"2025_2026": "20250701-20260630", "2026_2027": "20260701-20270630"}
+
+def _season_token(start_year: int) -> str:
+    return f"{start_year}_{start_year + 1}"
+
+
+def default_seasons() -> list[str]:
+    years = sorted({SEASON_START, current_window()["season_id"]})
+    return [_season_token(y) for y in years]
 
 
 def _comps(league: str):
@@ -37,22 +45,13 @@ def _comps(league: str):
         + [(c, l) for c, l, _ in DOMESTIC_CUPS.get(league, [])]
 
 
-def _get(url: str, tries: int = 3) -> dict | None:
-    for i in range(tries):
-        try:
-            r = requests.get(url, headers=HEADERS, timeout=25)
-            if r.ok:
-                return r.json()
-        except Exception as e:  # noqa: BLE001
-            print(f"    [재시도 {i+1}] {e}")
-        time.sleep(0.6)
-    return None
-
-
-def collect_comp(code: str, label: str, date_range: str, league: str) -> list[dict]:
-    data = _get(f"{BASE}/{code}/scoreboard?dates={date_range}&limit=500")
+def collect_comp(code: str, label: str, start_year: int, league: str, ours) -> list[dict] | None:
+    """대회 하나의 시즌 경기 → 우리 팀 관점 행. 조회 실패 시 None."""
+    events = scoreboard_events(code, *season_bounds(start_year))
+    if events is None:
+        return None
     rows: list[dict] = []
-    for e in (data or {}).get("events", []):
+    for e in events:
         comp = (e.get("competitions") or [{}])[0]
         cs = comp.get("competitors", [])
         if len(cs) != 2:
@@ -66,7 +65,7 @@ def collect_comp(code: str, label: str, date_range: str, league: str) -> list[di
         date = (e.get("date") or "")[:10]
         eid = str(e.get("id") or "")
         for side, opp in ((home, away), (away, home)):
-            sq = squad_of(side.get("team", {}), league)
+            sq = ours(side.get("team", {}))
             if not sq:
                 continue
             gf, ga = side.get("score"), opp.get("score")
@@ -92,11 +91,16 @@ def collect_comp(code: str, label: str, date_range: str, league: str) -> list[di
 
 
 def run_season(season: str, league: str) -> int:
-    date_range = SEASONS[season]
+    start_year = int(season[:4])
     print(f"=== [{league}] 시즌 {season} ===")
+    ours = season_squad_of(league, start_year)   # 강등팀이 다음 시즌 컵 경기로 섞이지 않게
     all_rows: list[dict] = []
     for code, label in _comps(league):
-        rows = collect_comp(code, label, date_range, league)
+        rows = collect_comp(code, label, start_year, league, ours)
+        if rows is None:
+            # 부분 수집으로 기존 파일을 덮어쓰면 대회 하나가 통째로 사라진다 — 저장 중단.
+            print(f"  {label:10} {code:20} 조회 실패 — 기존 파일 유지")
+            return 1
         print(f"  {label:10} {code:20} 경기행 {len(rows)}")
         all_rows += rows
         time.sleep(0.2)
@@ -121,7 +125,7 @@ def main(argv=None) -> int:
         i = args.index("--league")
         leagues = [args[i + 1]]
         del args[i:i + 2]
-    seasons = [a for a in args if a in SEASONS] or list(SEASONS)
+    seasons = [a for a in args if len(a) == 9 and a[4] == "_"] or default_seasons()
     rc = 0
     for lg in leagues:
         for s in seasons:
