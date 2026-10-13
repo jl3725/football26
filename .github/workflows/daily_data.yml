@@ -84,6 +84,19 @@ jobs:
       - name: UEFA 계수 (협회·클럽, 리그강도 근거화)
         run: bash scripts/ci_try.sh "uefa_coefficients" python src/fetch_uefa_coefficients.py
 
+      # 무료 티어는 미사용 시 정지된다(AuraDB 3일, Qdrant Cloud 수일) — 2026-07~10 두 번 다 사라졌음.
+      # 매일 한 번 가벼운 조회로 '사용 중' 상태를 유지한다. 시크릿이 없으면 건너뜀.
+      - name: Keep optional infra awake (Qdrant · Neo4j)
+        env:
+          QDRANT_URL: ${{ secrets.QDRANT_URL }}
+          QDRANT_API_KEY: ${{ secrets.QDRANT_API_KEY }}
+          NEO4J_URI: ${{ secrets.NEO4J_URI }}
+          NEO4J_USERNAME: ${{ secrets.NEO4J_USERNAME }}
+          NEO4J_PASSWORD: ${{ secrets.NEO4J_PASSWORD }}
+        run: |
+          pip install -q qdrant-client==1.12.1 neo4j==5.28.1
+          bash scripts/ci_try.sh "infra_ping" python scripts/ping_infra.py
+
       - name: FIFA 랭킹 (월드컵 탭 TOP30 — daily_wc 비활성화로 이관)
         run: bash scripts/ci_try.sh "fifa_ranking" python src/fetch_fifa_ranking.py
 
