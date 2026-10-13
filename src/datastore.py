@@ -12,6 +12,8 @@ CSV 를 그대로 읽어 반환하므로, 점진 이관 중에도 앱이 깨지�
 from __future__ import annotations
 
 import sqlite3
+import threading
+from collections import OrderedDict
 from pathlib import Path
 
 import pandas as pd
@@ -21,6 +23,12 @@ from leagues import (
 )
 
 DB_PATH = DATA_DIR / "football.db"
+
+# DB 읽기 캐시 — API 요청 하나가 같은 테이블을 수십 번 읽었다(추천 1회에 read_table 40회, 무료 인스턴스
+# 에서 수 초). 키에 DB 수정 시각을 넣어 배포·재빌드 시 자동 무효화. 호출부가 고쳐 써도 안전하게 사본을 준다.
+_CACHE: "OrderedDict[tuple, pd.DataFrame]" = OrderedDict()
+_CACHE_MAX = 48
+_CACHE_LOCK = threading.Lock()
 
 
 def _db_mtime() -> float:
@@ -51,10 +59,21 @@ def read_table(
     league = league or ACTIVE_LEAGUE
     season = season or SEASON
 
+    key = (table, league, season, _db_mtime())
+    with _CACHE_LOCK:
+        hit = _CACHE.get(key)
+        if hit is not None:
+            _CACHE.move_to_end(key)
+    if hit is not None:
+        return hit.copy()
     df = _read_from_db(table, league, season)
     if df is not None:
-        return df
-    return _read_from_csv(table, league, season)
+        with _CACHE_LOCK:
+            _CACHE[key] = df
+            while len(_CACHE) > _CACHE_MAX:
+                _CACHE.popitem(last=False)
+        return df.copy()
+    return _read_from_csv(table, league, season)          # CSV 폴백은 파일이 수시로 바뀌므로 캐시 안 함
 
 
 def _read_from_db(table: str, league: str, season: str) -> pd.DataFrame | None:

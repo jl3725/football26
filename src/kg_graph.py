@@ -21,20 +21,51 @@ _LINE = {
 }
 
 
+class _SharedDriver:
+    """프로세스 공유 드라이버 — 호출부의 close() 는 무시한다(기존 호출부 수정 없이 재사용)."""
+
+    def __init__(self, d):
+        self._d = d
+
+    def close(self) -> None:
+        pass
+
+    def __getattr__(self, name):
+        return getattr(self._d, name)
+
+
+_DRIVER = None
+_DRIVER_AT = 0.0
+_REVERIFY_S = 600
+
+
 def connect():
     """연결 확인된 Neo4j 드라이버. 꺼져 있으면 차단기(infra_health)가 10분간 즉시 실패시킨다.
 
     GraphDatabase.driver() 는 지연 연결이라 생성은 성공하고 첫 쿼리에서 DNS·타임아웃으로 수 초를
-    쓴다 — verify_connectivity 로 여기서 확정하고, 실패는 차단기에 기록한다."""
+    쓴다 — verify_connectivity 로 여기서 확정하고, 실패는 차단기에 기록한다.
+    드라이버는 프로세스에서 공유하고 10분마다만 재확인한다(예전엔 호출마다 생성·TLS 확인·종료로
+    API 한 번에 1~2초를 썼다, 2026-10)."""
+    global _DRIVER, _DRIVER_AT
+    import time
     import infra_health as ih
     if ih.is_down("neo4j"):
         raise RuntimeError("Neo4j 차단 중(최근 연결 실패) " + ih.reason("neo4j"))
+    if _DRIVER is not None and time.monotonic() - _DRIVER_AT < _REVERIFY_S:
+        return _SharedDriver(_DRIVER)
     from neo4j import GraphDatabase
     with ih.guard("neo4j"):
-        d = GraphDatabase.driver(NEO4J_URI, auth=NEO4J_AUTH, connection_timeout=5,
-                                 max_connection_lifetime=300)
-        d.verify_connectivity()
-    return d
+        if _DRIVER is None:
+            _DRIVER = GraphDatabase.driver(NEO4J_URI, auth=NEO4J_AUTH, connection_timeout=5,
+                                           max_connection_lifetime=300)
+        try:
+            _DRIVER.verify_connectivity()
+        except Exception:
+            d, _DRIVER = _DRIVER, None
+            d.close()
+            raise
+    _DRIVER_AT = time.monotonic()
+    return _SharedDriver(_DRIVER)
 
 
 def squad_graph(team: str, min_matches: int = 4, edge_limit: int = 60) -> dict:

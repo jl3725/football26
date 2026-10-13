@@ -118,16 +118,26 @@ def _num0(v):
 
 
 # ── Qdrant: Role Fit + 유사선수 ────────────────────────────────────────────
+_QC = None
+_QC_AT = 0.0
+
+
 def _qdrant():
-    """연결 확인된 Qdrant 클라이언트. 꺼져 있으면 차단기(infra_health)가 10분간 즉시 실패시킨다."""
+    """연결 확인된 Qdrant 클라이언트. 꺼져 있으면 차단기(infra_health)가 10분간 즉시 실패시킨다.
+    클라이언트는 프로세스에서 공유하고 10분마다만 연결을 재확인한다(예전엔 호출마다 생성+확인 요청)."""
+    global _QC, _QC_AT
+    import time
     import infra_health as ih
     if ih.is_down("qdrant"):
         raise RuntimeError("Qdrant 차단 중(최근 연결 실패) " + ih.reason("qdrant"))
+    if _QC is not None and time.monotonic() - _QC_AT < 600:
+        return _QC
     from qdrant_client import QdrantClient
     # QDRANT_API_KEY 있으면 사용(Qdrant Cloud 등 호스팅). 로컬 docker는 키 없음.
     with ih.guard("qdrant"):
         qc = QdrantClient(url=QDRANT_URL, api_key=os.getenv("QDRANT_API_KEY") or None, timeout=5)
         qc.get_collections()
+    _QC, _QC_AT = qc, time.monotonic()
     return qc
 
 
@@ -148,14 +158,23 @@ def _role_centroid_for(qc, role, clubs):
     return np.mean([p.vector for p in pts], axis=0) if pts else None
 
 
+_ARCH: dict = {}
+
+
 def _elite_archetype(qc, role):
-    """리그 엘리트(해당 pos_detail) 스타일 원형 centroid."""
+    """리그 엘리트(해당 pos_detail) 스타일 원형 centroid. 팀과 무관해 역할별로 1시간 캐시."""
+    import time
+    hit = _ARCH.get(role)
+    if hit and time.monotonic() - hit[0] < 3600:
+        return hit[1]
     from qdrant_client import models
     f = models.Filter(must=[models.FieldCondition(key="pos_detail", match=models.MatchValue(value=role))])
     pts = qc.scroll(QCOLLECTION, scroll_filter=f, with_vectors=True, with_payload=True, limit=2000)[0]
     elite = [p for p in pts if (p.payload.get("ss_rating") or 0) >= 7.0 and (p.payload.get("minutes") or 0) >= 900]
     ref = elite or pts
-    return np.mean([p.vector for p in ref], axis=0) if ref else None
+    out = np.mean([p.vector for p in ref], axis=0) if ref else None
+    _ARCH[role] = (time.monotonic(), out)
+    return out
 
 
 def _weak_roles(team, pool, k=3):
@@ -243,8 +262,7 @@ def discover_fits(team: str, role: str | None = None, top: int = 24,
         return {"available": True, "error": f"클럽 '{team}' 없음", "recommendations": []}
     tgt_league = tgt.iloc[0]["_league"]
     try:
-        qc = _qdrant()
-        qc.get_collections()
+        qc = _qdrant()                              # 연결 확인은 _qdrant 가 한다(중복 왕복 제거)
     except Exception as e:  # noqa: BLE001
         return {"available": False, "reason": f"Qdrant 미가동: {str(e)[:60]}", "recommendations": []}
 

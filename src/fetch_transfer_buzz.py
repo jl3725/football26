@@ -81,6 +81,10 @@ def _known_ko(path: Path) -> dict[str, str]:
                 if r.get("title_ko") and r["title_ko"] != r.get("title_en")}
 
 
+# 종합 스포츠 피드(Record 등)의 축구 외 기사 — 기사 주소의 섹션 경로로 거른다(F1·하키·사진첩이 '이적 소식'에 섞였음)
+_OFF_TOPIC_LINK = re.compile(r"/(modalidades|motores|fora-de-campo|multimedia|opiniao)/", re.I)
+
+
 def _fetch(league: str = "EPL") -> list[dict]:
     import feedparser
     rows, seen = [], set()
@@ -94,7 +98,7 @@ def _fetch(league: str = "EPL") -> list[dict]:
             title = re.sub(r"\s+", " ", (e.get("title") or "")).strip()
             title = re.sub(r"^<!\[CDATA\[\s*|\s*\]\]>$", "", title)   # 일부 피드(Record)의 CDATA 래퍼
             title = re.sub(r"\s*[-–]\s*\w+'s gossip$", "", title, flags=re.I)  # BBC 꼬리표 제거
-            if not title or title.lower() in seen:
+            if not title or title.lower() in seen or _OFF_TOPIC_LINK.search(e.get("link") or ""):
                 continue
             seen.add(title.lower())
             pub = ""

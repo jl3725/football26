@@ -15,6 +15,7 @@ from __future__ import annotations
 import datetime
 import json
 import os
+import re
 
 import pandas as pd
 from fastapi import FastAPI, Header, HTTPException, Response
@@ -49,6 +50,8 @@ def _db_stamp() -> float:
         return 0.0
 
 
+# 데이터 API 는 football.db 에서만 계산되고 키에 DB 수정 시각(_db_stamp)이 들어가 배포 시 자동 무효화된다 —
+# 그래서 무거운 엔드포인트는 TTL 을 6시간으로 길게 둔다(무료 인스턴스에서 첫 호출이 수 초~십여 초).
 def _memo(ttl: float = 3600.0):
     import functools
     import time as _t
@@ -147,7 +150,7 @@ def _window_filter(tt, win):
 
 
 @app.get("/api/overview/{team}")
-@_memo(ttl=3600)
+@_memo(ttl=21600)
 def overview(team: str, league: str = ACTIVE_LEAGUE):
     stand = _team_row("standings", team, league)
     if stand is None:
@@ -400,6 +403,7 @@ def overview(team: str, league: str = ACTIVE_LEAGUE):
 
 
 @app.get("/api/identity/{team}")
+@_memo(ttl=21600)
 def identity(team: str, league: str = ACTIVE_LEAGUE):
     """팀 정체성 — 감독 전술(현재 스냅샷 + 장기성향 블렌드·재임) · 영입 성향 · 예산(프록시).
 
@@ -534,7 +538,7 @@ def scout(body: dict, x_scout_token: str = Header(default="")):
 
 
 @app.get("/api/discover/{team}")
-@_memo(ttl=1800)
+@_memo(ttl=21600)
 def discover(team: str, role: str = "", leagues: str = "", min_age: int = 0,
              max_age: int = 0, max_value: float = 0, top: int = 24,
              league: str = ACTIVE_LEAGUE):
@@ -551,17 +555,128 @@ def discover(team: str, role: str = "", leagues: str = "", min_age: int = 0,
 
 
 @app.get("/api/squad-graph/{team}")
-@_memo(ttl=3600)
+@_memo(ttl=21600)
 def squad_graph_ep(team: str, league: str = ACTIVE_LEAGUE):
     """스쿼드 네트워크 — KG(Neo4j) TEAMMATE_OF 로 '같이 뛴' 관계 그래프. 미가동 시 degrade."""
     import kg_graph  # noqa: PLC0415 (지연 import — Neo4j 의존)
     return kg_graph.squad_graph(team, min_matches=6, edge_limit=32)
 
 
+def _on_pitch(team: str, league: str) -> tuple[dict[str, dict], int]:
+    """경기별 출전 구간 {event_id: {선수: (들어간 분, 나간 분)}}, 경기 수 — 라인업(선발)+교체 기록(리그·컵)."""
+    lu, subs = _lineups(league), _subs(league)
+    if lu is None or lu.empty:
+        return {}, 0
+    lu = lu[lu["squad"] == team]
+    if lu.empty:
+        return {}, 0
+    starter = lu["starter"].astype(str).str.lower().isin(["true", "1", "1.0"])
+    side = lu.groupby("event_id")["home_away"].first().to_dict()
+    sub_in: dict = {}
+    sub_out: dict = {}
+    if subs is not None and not subs.empty:
+        for _, r in subs.iterrows():
+            eid = r.get("event_id")
+            if side.get(eid) != r.get("home_away"):
+                continue
+            m = _num(r.get("minute_sec")) / 60 or _num(str(r.get("minute") or "").rstrip("'"))
+            pin = str(r.get("player_in") or "").strip()
+            pout = re.split(r" because | due to ", str(r.get("player_out") or ""))[0].strip()
+            if pin:
+                sub_in[(eid, pin)] = m
+            if pout:
+                sub_out[(eid, pout)] = m
+    out: dict[str, dict] = {}
+    for (eid, pl), st in zip(zip(lu["event_id"], lu["player"].astype(str)), starter):
+        a = 0.0 if st else sub_in.get((eid, pl))
+        if a is None:                                     # 벤치에서 안 들어온 선수
+            continue
+        b = sub_out.get((eid, pl), 90.0)
+        if b > a:
+            out.setdefault(eid, {})[pl] = (a, b)
+    return out, len(out)
+
+
 @app.get("/api/chemistry/{team}")
-@_memo(ttl=3600)
+@_memo(ttl=21600)
 def chemistry_ep(team: str, league: str = ACTIVE_LEAGUE):
-    """케미스트리 — KG TEAMMATE_OF{matches} 로 최고의 듀오·삼각편대. Neo4j 미가동 시 degrade."""
+    """케미스트리 — 실제로 함께 그라운드에 있던 시간(라인업·교체 기록)으로 최고의 듀오·삼각편대.
+
+    예전엔 KG TEAMMATE_OF '함께 뛴 경기 수 ÷ 최다'라 시즌 초엔 거의 모든 조합이 100 이었다(2026-10).
+    한 선수가 카드를 독차지하지 않게 듀오는 선수당 최대 2번. 라인업이 없으면 KG 경기 수로 폴백.
+    """
+    pf = _pf(league)
+    pmap, lmap = {}, {}
+    if pf is not None and "player" in pf.columns:
+        for _, r in pf[pf["squad"] == team].iterrows():
+            pmap[str(r.get("player"))] = _photo(r)
+            lmap[str(r.get("player"))] = (rv3.line_of_row(r), str(r.get("pos") or ""))
+
+    def card(name: str, node: dict | None = None) -> dict:
+        line, pos = lmap.get(name, ((node or {}).get("line", "MID"), (node or {}).get("pos", "")))
+        return {"name": name, "line": line, "pos": pos, "rating": (node or {}).get("rating"), "photo": pmap.get(name, "")}
+
+    def pick_duos(scored: list[tuple[str, str, float, int]]) -> list[tuple]:
+        used: dict[str, int] = {}
+        picked = []
+        for a, b, v, n in sorted(scored, key=lambda x: (-x[2], -x[3])):
+            if used.get(a, 0) >= 2 or used.get(b, 0) >= 2:
+                continue
+            picked.append((a, b, v, n))
+            used[a] = used.get(a, 0) + 1
+            used[b] = used.get(b, 0) + 1
+            if len(picked) == 8:
+                break
+        return picked
+
+    games, n_games = _on_pitch(team, league)
+    if n_games:
+        tot: dict[str, float] = {}
+        for g in games.values():
+            for pl, (a, b) in g.items():
+                tot[pl] = tot.get(pl, 0) + (b - a)
+        core = [pl for pl, _ in sorted(tot.items(), key=lambda x: -x[1])[:14]]
+
+        def overlap(names) -> tuple[float, int]:
+            mins, n = 0.0, 0
+            for g in games.values():
+                if all(x in g for x in names):
+                    o = min(g[x][1] for x in names) - max(g[x][0] for x in names)
+                    if o > 0:
+                        mins += o
+                        n += 1
+            return mins, n
+
+        pairs = []
+        for i, a in enumerate(core):
+            for b in core[i + 1:]:
+                m, n = overlap((a, b))
+                if n >= 2:
+                    pairs.append((a, b, m, n))
+        full = n_games * 90
+        duos = [{"a": card(a), "b": card(b), "matches": n, "minutes": round(m),
+                 "chem": min(100, round(m / full * 100))} for a, b, m, n in pick_duos(pairs)]
+        trios = []
+        top = core[:9]
+        for i, a in enumerate(top):
+            for j in range(i + 1, len(top)):
+                for c in top[j + 1:]:
+                    m, n = overlap((a, top[j], c))
+                    if n >= 2:
+                        trios.append({"players": [card(a), card(top[j]), card(c)], "score": n, "minutes": round(m)})
+        trios.sort(key=lambda t: -t["minutes"])
+        seen_lead: set[str] = set()
+        trios_div = []
+        for t in trios:                                   # 같은 두 사람 조합 반복 방지 — 첫 두 명 기준
+            k = "|".join(sorted(p["name"] for p in t["players"][:2]))
+            if k in seen_lead:
+                continue
+            seen_lead.add(k)
+            trios_div.append(t)
+            if len(trios_div) == 4:
+                break
+        return {"available": True, "team": team, "basis": "minutes", "games": n_games, "duos": duos, "trios": trios_div}
+
     import kg_graph  # noqa: PLC0415
     g = kg_graph.squad_graph(team, min_matches=4, edge_limit=300)
     if not g.get("available"):
@@ -570,40 +685,10 @@ def chemistry_ep(team: str, league: str = ACTIVE_LEAGUE):
     if not edges:
         return {"available": True, "team": team, "duos": [], "trios": []}
     nodes = {n["id"]: n for n in g.get("nodes", [])}
-    pf = _pf(league)
-    pmap = {}
-    if pf is not None and "player" in pf.columns:
-        for _, r in pf.iterrows():
-            pmap[str(r.get("player"))] = _photo(r)
-
-    def card(name: str) -> dict:
-        n = nodes.get(name, {})
-        return {"name": name, "line": n.get("line", "MID"), "pos": n.get("pos", ""),
-                "rating": n.get("rating"), "photo": pmap.get(name, "")}
-
     maxm = max(e["matches"] for e in edges) or 1
-    duos = [{"a": card(e["a"]), "b": card(e["b"]), "matches": e["matches"],
-             "chem": round(e["matches"] / maxm * 100)}
-            for e in sorted(edges, key=lambda e: -e["matches"])[:8]]
-
-    em, adj = {}, {}
-    for e in edges:
-        a, b = e["a"], e["b"]
-        em[(a, b)] = em[(b, a)] = e["matches"]
-        adj.setdefault(a, set()).add(b)
-        adj.setdefault(b, set()).add(a)
-    trios, seen = [], set()
-    for a in adj:
-        for b in adj[a]:
-            for c in adj[a] & adj[b]:
-                key = tuple(sorted((a, b, c)))
-                if key in seen:
-                    continue
-                seen.add(key)
-                sc = em[(a, b)] + em[(b, c)] + em[(a, c)]
-                trios.append({"players": [card(a), card(b), card(c)], "score": int(sc)})
-    trios.sort(key=lambda t: -t["score"])
-    return {"available": True, "team": team, "duos": duos, "trios": trios[:4]}
+    duos = [{"a": card(a, nodes.get(a)), "b": card(b, nodes.get(b)), "matches": n, "chem": round(n / maxm * 100)}
+            for a, b, _, n in pick_duos([(e["a"], e["b"], e["matches"], e["matches"]) for e in edges])]
+    return {"available": True, "team": team, "basis": "matches", "duos": duos, "trios": []}
 
 
 @app.get("/api/calendar")
@@ -665,7 +750,7 @@ def calendar(league: str = ACTIVE_LEAGUE):
 
 
 @app.get("/api/heatmaps/{team}")
-@_memo(ttl=3600)
+@_memo(ttl=21600)
 def heatmaps(team: str, league: str = ACTIVE_LEAGUE):
     """팀 선수별 시즌 히트맵(Sofascore) — analytics 포지셔널 히트맵용. norm_key 로 players_full 조인."""
     hm = ds.read_table("player_heatmaps", league=league)
@@ -872,8 +957,12 @@ def squad(team: str, league: str = ACTIVE_LEAGUE):
                   "DM": "DM", "CM": "CM", "AM": "AM", "RW": "RW", "LW": "LW", "W": "W", "ST": "ST"}
     raw: dict[str, list] = {}
     for _, r in df.iterrows():
-        g = str(r.get("fl_group") or "").upper()
-        bucket = BUCKET_MAP.get(g)
+        # 세부 포지션: tm_position(역할) 우선, fl_group 보조(_pos_bucket). 26/27 부터 football-lineups
+        # fl_group 이 없어 fl_group 만 보던 뎁스 차트가 통째로 비었다(2026-10). 둘 다 없으면 라인으로.
+        if any(pd.notna(r.get(c)) and str(r.get(c)).strip() for c in ("tm_position", "fl_group")):
+            bucket = BUCKET_MAP.get(_pos_bucket(r))
+        else:
+            bucket = {"GK": "GK", "DEF": "CB", "MID": "CM", "ATT": "ST"}.get(rv3.line_of_row(r))
         if bucket is None:
             continue
         raw.setdefault(bucket, []).append({
@@ -1056,6 +1145,7 @@ _BADGE_METRICS = [
 
 
 @app.get("/api/player/{team}/{player}")
+@_memo(ttl=21600)
 def player_detail(team: str, player: str, league: str = ACTIVE_LEAGUE):
     full = _pf(league)
     if full is None:
@@ -1198,6 +1288,7 @@ def transfers(team: str, league: str = ACTIVE_LEAGUE, window: str = "current"):
 
 
 @app.get("/api/news/{team}")
+@_memo(ttl=21600)
 def news(team: str, league: str = ACTIVE_LEAGUE):
     na = ds.read_table("news_articles", league=league)
     if na is None:
@@ -1223,7 +1314,7 @@ def news(team: str, league: str = ACTIVE_LEAGUE):
 
 
 @app.get("/api/analytics/{team}")
-@_memo(ttl=3600)
+@_memo(ttl=21600)
 def analytics(team: str, league: str = ACTIVE_LEAGUE):
     # 부상 임팩트 — 결장 경기 상위, 라인별 집계
     inj = ds.read_table("tm_injury_history", league=league)
@@ -1390,6 +1481,9 @@ def _signing_audit(team: str, league: str, full):
     ins = tr[(tr["squad"] == team) & (tr["direction"] == "in")].copy()
     if "window" in ins.columns:
         ins = ins[ins["window"].astype(str).str.lower().str.contains("summer") | (ins["window"].astype(str) == "")]
+    # 임대 복귀(End of loan)는 영입이 아니다 — 감사 카드에서 제외
+    ins = ins[~ins["fee_text"].astype(str).str.lower().str.startswith("end of loan")]
+    core, rot = _mm(1500, league), _mm(600, league)       # 시즌 진행률만큼 축소한 기준
     fmap = {str(r["player"]): r for _, r in full[full["squad"] == team].iterrows()}
     out = []
     for _, r in ins.iterrows():
@@ -1398,9 +1492,9 @@ def _signing_audit(team: str, league: str, full):
         mins = int(_num(pf.get("minutes"))) if pf is not None else 0
         goals = int(_num(pf.get("goals"))) if pf is not None else 0
         assists = int(_num(pf.get("assists"))) if pf is not None else 0
-        if mins >= 1500:
+        if mins >= core:
             verdict, tone = "핵심 전력화", "good"
-        elif mins >= 600:
+        elif mins >= rot:
             verdict, tone = "로테이션 정착", "ok"
         elif mins > 0:
             verdict, tone = "적응 중", "low"
@@ -1541,7 +1635,7 @@ def _placements(team: str, league: str, last_n: int | None = None):
 
 
 @app.get("/api/lineup/{team}")
-@_memo(ttl=3600)
+@_memo(ttl=21600)
 def lineup(team: str, league: str = ACTIVE_LEAGUE):
     season = _placements(team, league)
     if season is None:
@@ -1864,7 +1958,7 @@ def _formation_bucket_needs(team: str, league: str) -> dict:
 
 
 @app.get("/api/recommend/{team}")
-@_memo(ttl=1800)
+@_memo(ttl=21600)
 def recommend(team: str, league: str = ACTIVE_LEAGUE):
     """보강 후보 — 포메이션 전 포지션에서 '얇은 세부 포지션(CB/RB/DM…)' 을 가려내고,
     각 포지션마다 팀 티어에 맞는 현실적 후보를 **전 리그(교차리그 projection)** 에서 추천."""
@@ -2236,6 +2330,7 @@ def database(league: str = ACTIVE_LEAGUE):
 
 
 @app.get("/api/captains/{team}")
+@_memo(ttl=21600)
 def captains(team: str, league: str = ACTIVE_LEAGUE):
     """주장단 — 공식 주장(TEAM_CAPTAINS) + football-lineups (c) 기록 부주장."""
     from unidecode import unidecode
@@ -2280,6 +2375,7 @@ def captains(team: str, league: str = ACTIVE_LEAGUE):
 
 
 @app.get("/api/signals")
+@_memo(ttl=900)
 def signals(team: str = "", league: str = ACTIVE_LEAGUE, limit: int = 60):
     """agent 자동감지 통합 피드 — 부상·감독·이적·계약 변화를 한 곳에.
     team 지정 시 해당 팀만, 없으면 리그 전체."""
@@ -2874,7 +2970,7 @@ def _departures(team: str, league: str, win: dict) -> dict:
 
 
 @app.get("/api/projection/{team}")
-@_memo(ttl=3600)
+@_memo(ttl=21600)
 def projection(team: str, league: str = ACTIVE_LEAGUE):
     """다음 시즌(현재 이적창) 예상 XI + 진단.
     25/26 주전 XI 에서 이탈 선수를 빼고 영입/스쿼드로 채운 뒤, 손실·보강 진단을 낸다."""
