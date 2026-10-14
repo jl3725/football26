@@ -422,6 +422,15 @@ export type Fixture = { event_id: string | null; comp_code: string; comp: string
 export const getFixtures = (days = 7, league = "", limit = 6) =>
   j<{ days: number; count: number; big: Fixture[]; today: Fixture[]; matches?: Fixture[] }>(
     `/api/fixtures?days=${days}&limit=${limit}${league ? `&league=${encodeURIComponent(league)}` : ""}`);
+// 홈 '지금' 정보 — 최근 결과(이변)·리그별 주목할 매치·우승 경쟁 승점 추이·전력 대비 성적(/api/hub/pulse)
+export type ResultSide = FixtureSide & { goals: number };
+export type ResultMatch = Omit<Fixture, "home" | "away"> & { home: ResultSide; away: ResultSide; upset: string };
+export type WatchMatch = Fixture & { watch: number; why: string[]; league: string };
+export type RaceTeam = { team: string; logo: string; color: string; points: number[]; rank: number };
+export type TableGap = { team: string; logo: string; league: string; rank: number; str_rank: number; gap: number; ovr: number;
+  points: number; n: number; manager: string; hot_seat: boolean };
+export type HubPulse = { results: ResultMatch[]; watch: WatchMatch[]; race: { league: string; teams: RaceTeam[] }[]; over: TableGap[]; under: TableGap[] };
+export const getHubPulse = () => j<HubPulse>(`/api/hub/pulse`);
 export const getTeamFixtures = (team: string, l = _league) =>
   j<{ team: string; next: Fixture[] }>(`/api/fixtures/${encodeURIComponent(team)}?league=${encodeURIComponent(l)}`);
 // 선수 시즌 히트맵(Sofascore) — analytics 포지셔널 히트맵

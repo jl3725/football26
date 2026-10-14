@@ -2984,7 +2984,9 @@ def _compute_hub_body() -> bytes:
                     continue
                 rows.append({"player": str(player), "club": sq, "club_logo": tm.team_logo(sq),
                              "value_eur": last, "delta_eur": last - first,
-                             "pct": round((last - first) / first * 100), "photo": "",
+                             "pct": round((last - first) / first * 100),
+                             # 예전엔 비워 둬서 '시장가치 급등' 탭 사진이 전부 빠졌다(Dowman 등)
+                             "photo": _resolve_photo(str(player), _players_lookup(lg), lg),
                              "league": lg, "league_name": _lname(lg)})
             rows.sort(key=lambda x: -x["pct"])
             risers = _interleave(rows, 12)
@@ -3078,6 +3080,73 @@ def fixtures(days: int = 7, limit: int = 6, league: str = ""):
     if league:
         out["matches"] = ms[:80]
     return out
+
+
+@app.get("/api/hub/pulse")
+@_memo(ttl=1800)
+def hub_pulse(days_back: int = 3, days: int = 7):
+    """홈 '지금' 정보(요청 시 계산·30분 캐시 — 일정·결과는 daily_data 가 매일 갱신):
+    results = 최근 경기 결과(이변 표시), watch = 리그별 주목할 매치(같은 리그 순위 승부처),
+    race = 리그별 상위 4팀 누적 승점, table_gap = 팀 전력(OVR) 순위 대비 실제 순위(기대 이상·이하, 감독 압박)."""
+    import match_center as mc  # noqa: PLC0415
+    src = _fx_sources()
+    today = _today_kst()
+    leagues = [lg for lg in _HUB_LEAGUES if lg in set(ds.available_leagues())]
+
+    results = []
+    for m in mc.results_from(src["rows"], today, days_back):
+        m = _fx_enrich(m, src)
+        m["upset"] = mc.upset_note(m)
+        results.append(m)
+    results.sort(key=lambda m: (m["date"], bool(m["upset"]), m["big"]), reverse=True)
+
+    watch = []
+    upcoming = [_fx_enrich(m, src) for m in mc.matches_from(src["rows"], today, days)]
+    for lg in leagues:
+        st = ds.read_table("standings", league=lg)
+        n_teams = 0 if st is None else int(len(st))
+        best = None
+        for m in upcoming:
+            if not str(m["comp_code"]).endswith(".1") or m["home"].get("league") != lg:
+                continue
+            sc, why = mc.watch_score(m, n_teams)
+            if sc >= 20 and (best is None or sc > best[0]):
+                best = (sc, why, m)
+        if best:
+            watch.append({**best[2], "watch": round(best[0]), "why": best[1], "league": lg})
+    watch.sort(key=lambda m: -m["watch"])
+
+    race, gaps = [], []
+    for lg in leagues:
+        st = ds.read_table("standings", league=lg)
+        if st is None or "rank" not in st.columns or st.empty:
+            continue
+        st = st.sort_values("rank")
+        rows = src["rows"].get(lg)
+        teams = []
+        for _, r in st.head(4).iterrows():
+            t = str(r["squad"])
+            teams.append({"team": t, "logo": tm.team_logo(t), "color": tm.team_color(t),
+                          "points": mc.points_path(rows, t), "rank": int(_num(r.get("rank")))})
+        race.append({"league": lg, "teams": teams})
+        strength = _club_strength(lg)
+        by_str = sorted(strength.items(), key=lambda kv: -kv[1])
+        str_rank = {t: i + 1 for i, (t, _) in enumerate(by_str)}
+        mgrs = _managers(lg)
+        n = len(st)
+        for _, r in st.iterrows():
+            t = str(r["squad"])
+            if t not in str_rank:
+                continue
+            rk, srk = int(_num(r.get("rank"))), str_rank[t]
+            mg = mgrs.get(t) or {}
+            gaps.append({"team": t, "logo": tm.team_logo(t), "league": lg, "rank": rk, "str_rank": srk,
+                         "gap": srk - rk, "ovr": round(float(strength[t])), "points": int(_num(r.get("points"))),
+                         "n": n, "manager": str(mg.get("name") or ""),
+                         "hot_seat": (rk - srk) >= 6 and rk > n / 2})
+    over = sorted([g for g in gaps if g["gap"] >= 3], key=lambda g: (-g["gap"], g["rank"]))[:10]
+    under = sorted([g for g in gaps if g["gap"] <= -3], key=lambda g: (g["gap"], -g["rank"]))[:10]
+    return {"results": results[:30], "watch": watch, "race": race, "over": over, "under": under}
 
 
 @app.get("/api/fixtures/{team}")

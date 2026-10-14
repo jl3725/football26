@@ -1,6 +1,7 @@
 "use client";
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { getHomeAll, getFixtures, fmtEur, feeLabel, type HomeAll, type Fixture, type HubMover, type Trend } from "@/lib/api";
+import { getHomeAll, getFixtures, getHubPulse, fmtEur, feeLabel, type HomeAll, type Fixture, type HubMover, type HubPulse, type Trend } from "@/lib/api";
+import { ResultsTicker, WatchGrid, TitleRace, OverUnder } from "./HubPulse";
 import { Skel, SkelCards } from "./Skeleton";
 import CountUp from "./CountUp";
 import MatchCard, { MatchHero } from "./MatchCard";
@@ -33,7 +34,7 @@ function PlayerRow({ r, rank, onPick }: { r: Row; rank?: number; onPick: Pick })
     <div className="pr5">
       {rank != null && <span className="pr5-rk">{rank}</span>}
       <button className="pr5-ph peekable" onClick={(e) => peek(e, { name: r.player, club: r.club, league: r.league })} aria-label={`${r.player} 미리보기`}>
-        {r.photo ? <img src={r.photo} alt="" /> : <span />}
+        {r.photo ? <img src={r.photo} alt="" /> : r.club_logo ? <img className="logo" src={r.club_logo} alt="" /> : <span />}
       </button>
       <button className="pr5-who" onClick={() => onPick(r.club, r.league)} title={`${r.club} 팀 화면`}>
         <b>{r.player}</b>
@@ -69,6 +70,7 @@ const ddays = (until: string) => Math.round((new Date(until).getTime() - Date.no
 export default function AllDashboard({ onPick, switcher }: { accent?: string; onPick: Pick; switcher?: ReactNode }) {
   const [d, setD] = useState<HomeAll | null>(null);
   const [fx, setFx] = useState<Fixture[] | null>(null);
+  const [pulse, setPulse] = useState<HubPulse | null>(null);
   const [mv, setMv] = useState<string>("up");
   const [mvMore, setMvMore] = useState(false);
   const [lg, setLg] = useState<string>("");
@@ -89,6 +91,7 @@ export default function AllDashboard({ onPick, switcher }: { accent?: string; on
   }, [d]);
   const closeOpener = useCallback(() => setOpener(false), []);
   useEffect(() => { let a = true; getFixtures(7).then((x) => a && setFx(x.big)).catch(() => a && setFx([])); return () => { a = false; }; }, []);
+  useEffect(() => { let a = true; getHubPulse().then((x) => a && setPulse(x)).catch(() => {}); return () => { a = false; }; }, []);
 
   const pinned = useMemo(() => new Set(pins.map((p) => p.team)), [pins]);
 
@@ -122,6 +125,7 @@ export default function AllDashboard({ onPick, switcher }: { accent?: string; on
   const snaps = d.snapshots.filter((s) => s.table.length > 0);
   const snap = snaps.find((s) => s.league === lg) ?? snaps[0];
   const top = snap?.table[0]?.points || 1;
+  const race = pulse?.race.find((r) => r.league === snap?.league);
 
   // ── 주의 보드: 부상·복귀 + 계약 만료, 내 팀 먼저 ──
   type W = { key: string; player: string; club: string; club_logo: string; league: string; photo: string; sub: string; badge: string; tone: string; kind: "inj" | "con" };
@@ -158,6 +162,8 @@ export default function AllDashboard({ onPick, switcher }: { accent?: string; on
         {switcher}
       </header>
 
+      {pulse && pulse.results.length > 0 && <ResultsTicker results={pulse.results} onPick={onPick} />}
+
       <div className="h5-hero-row">
         {hero ? <MatchHero m={hero} onPick={(t, l) => l && onPick(t, l)} />
           : fx === null ? <Skel h={300} r={18} /> : <div className="card h5-hero-empty">이번 주에는 빅매치 기준(지수 35+)을 넘는 경기가 없습니다.</div>}
@@ -182,21 +188,25 @@ export default function AllDashboard({ onPick, switcher }: { accent?: string; on
         </section>
       )}
 
-      <div className="h5-row">
-        {curMv && (
+      {pulse && pulse.watch.length > 0 && (
+        <section className="h5-sec">
+          <SectionHead title="MATCHES TO WATCH" kr="주목할 매치" meta="리그별 순위 승부처 · 7일 이내" />
+          <WatchGrid items={pulse.watch} onPick={onPick} />
+        </section>
+      )}
+
+      {snap && (
+        <div className="h5-row">
           <section className="card h5-card">
-            <SectionHead title="MOVERS" kr="무엇이 바뀌었나" meta={curMv.k === "up" || curMv.k === "down" ? `OVR · ${basisTxt} 대비` : "8개 리그"} />
-            <Tabs items={MV.map((t) => ({ k: t.k, label: t.label }))} cur={curMv.k} onChange={(k) => { setMv(k); setMvMore(false); }} />
-            <div className="pr5-list">{mvRows.map((r, i) => <PlayerRow key={r.key} r={r} rank={i + 1} onPick={onPick} />)}</div>
-            {curMv.rows.length > 6 && <button className="more5" onClick={() => setMvMore((v) => !v)}>{mvMore ? "SHOW LESS" : `SHOW ${curMv.rows.length - 6} MORE`}</button>}
-          </section>
-        )}
-        {snap && (
-          <section className="card h5-card h5-side">
-            <SectionHead title="STANDINGS" kr="리그 순위" meta="1위와 승점 차" />
+            <SectionHead title="TITLE RACE" kr="우승 경쟁" meta="상위 4팀 누적 승점" />
             <div className="seg5">
               {snaps.map((x) => <button key={x.league} className={x.league === snap.league ? "on" : ""} onClick={() => setLg(x.league)}>{lgEn(x.league) || x.league_name}</button>)}
             </div>
+            {race && race.teams.length > 0 ? <TitleRace teams={race.teams} league={snap.league} onPick={onPick} />
+              : pulse ? <p className="empty5">경기 기록 없음</p> : <Skel h={220} r={12} />}
+          </section>
+          <section className="card h5-card h5-side">
+            <SectionHead title="STANDINGS" kr="리그 순위" meta={`${lgEn(snap.league) || snap.league_name} · 1위와 승점 차`} />
             <div className="st5">
               {snap.table.map((t) => (
                 <button className="st5-row" key={t.rank} onClick={() => onPick(t.team, snap.league)}>
@@ -210,7 +220,22 @@ export default function AllDashboard({ onPick, switcher }: { accent?: string; on
               ))}
             </div>
           </section>
+        </div>
+      )}
+
+      <div className="h5-row">
+        {curMv && (
+          <section className="card h5-card">
+            <SectionHead title="MOVERS" kr="무엇이 바뀌었나" meta={curMv.k === "up" || curMv.k === "down" ? `OVR · ${basisTxt} 대비` : "8개 리그"} />
+            <Tabs items={MV.map((t) => ({ k: t.k, label: t.label }))} cur={curMv.k} onChange={(k) => { setMv(k); setMvMore(false); }} />
+            <div className="pr5-list">{mvRows.map((r, i) => <PlayerRow key={r.key} r={r} rank={i + 1} onPick={onPick} />)}</div>
+            {curMv.rows.length > 6 && <button className="more5" onClick={() => setMvMore((v) => !v)}>{mvMore ? "SHOW LESS" : `SHOW ${curMv.rows.length - 6} MORE`}</button>}
+          </section>
         )}
+        <section className="card h5-card h5-side">
+          <SectionHead title="OVER / UNDER" kr="전력 대비 성적" meta="팀 OVR 순위 vs 실제 순위" />
+          {pulse ? <OverUnder over={pulse.over} under={pulse.under} onPick={onPick} /> : <Skel h={260} r={12} />}
+        </section>
       </div>
 
       <div className="h5-row">
