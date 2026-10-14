@@ -28,7 +28,8 @@ jobs:
           python-version: "3.12"
 
       - name: Install dependencies
-        run: pip install -q -r requirements.txt
+        # 수집기는 requests·bs4 를 쓰는데 백엔드 requirements.txt 엔 없다(daily_data 와 같은 목록 + 백엔드)
+        run: pip install -q requests beautifulsoup4 lxml pandas unidecode && pip install -q -r requirements.txt
 
       - name: Schedule · standings (전 리그, ESPN)
         run: |
