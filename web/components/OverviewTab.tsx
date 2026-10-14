@@ -13,6 +13,7 @@ import { usePeek } from "./PlayerPeek";
 import { phaseOf } from "@/lib/season";
 import { useEffect, useState } from "react";
 import { TrendArrow } from "./Trend";
+import NextMatch from "./NextMatch";
 
 function repStars(rank?: number | null): string {
   if (!rank) return "★★★☆☆";
@@ -95,6 +96,9 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
 
       {/* 최근 감지 변화 */}
       <OverviewSignals team={ov.team} accent={accent} />
+
+      {/* 다음 경기(전 대회) — 상대 순위·최근 폼·전력 비교 */}
+      <NextMatch team={ov.team} />
 
       {/* GRID */}
       <div className="grid">

@@ -18,6 +18,9 @@ const Ctx = createContext<OpenFn>(() => {});
 
 /** 어디서든: const peek = usePeek(); onClick={(e)=>peek(e,{name, club})} */
 export const usePeek = () => useContext(Ctx);
+// 구단 화면으로 이동(어느 컴포넌트에서든 — 예: Overview '다음 경기'의 상대 팀)
+const TeamCtx = createContext<((club: string, league: string) => void) | undefined>(undefined);
+export const useOpenTeam = () => useContext(TeamCtx);
 
 function norm(s: string): string {
   return s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().trim();
@@ -121,7 +124,9 @@ export function PeekProvider({ children, onOpenPlayer, onOpenTeam }: {
 
   return (
     <Ctx.Provider value={open}>
+      <TeamCtx.Provider value={onOpenTeam}>
       {children}
+      </TeamCtx.Provider>
       {req && (
         <>
           <div className="peek-backdrop" onClick={close} />

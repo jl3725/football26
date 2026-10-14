@@ -102,6 +102,7 @@ export default function ScheduleTab({ team, accent }: { team: string; accent: st
 
   const comps = Array.from(new Set(data.matches.map((m) => m.comp)));
   const shown = data.matches.map((m, i) => ({ m, i })).filter((x) => comp === "전체" || x.m.comp === comp);
+  const nextIdx = data.matches.findIndex((m) => m.status !== "completed");
   const played = data.matches.filter((m) => m.status === "completed");
   const w = played.filter((m) => m.result === "W").length;
   const dd = played.filter((m) => m.result === "D").length;
@@ -159,13 +160,13 @@ export default function ScheduleTab({ team, accent }: { team: string; accent: st
           <h3>{shown.length} Matches{comp !== "전체" ? ` · ${comp}` : ""}</h3>
           <div className="sched-list">
             {shown.map(({ m, i }) => (
-              <button className={`sched-row${sel === i ? " active" : ""}`} key={i} onClick={() => setSel(i)}
+              <button className={`sched-row${sel === i ? " active" : ""}${i === nextIdx ? " next" : ""}`} key={i} onClick={() => setSel(i)}
                 style={sel === i ? { background: `${accent}22` } : undefined}>
                 <span className="sc-comp" style={{ background: compColor(m.comp) }} title={m.comp} />
                 <span className="sc-date">{m.date.slice(5)}</span>
                 <span className={`sc-ha ${m.home_away === "H" ? "h" : "a"}`}>{m.home_away}</span>
                 {m.opp_logo ? <img className="sc-logo" src={m.opp_logo} alt="" /> : <span className="sc-logo" />}
-                <span className="sc-opp">{m.opponent}</span>
+                <span className="sc-opp">{m.opponent}{i === nextIdx && <em className="sc-next">다음 경기</em>}</span>
                 <span className="sc-score">{m.status === "completed" ? (m.score || "—") : <em className="sc-vs">vs</em>}</span>
                 {/* 결과는 W/D/L 만 — 예전엔 API 의 'nan' 이 그대로 찍혔다 */}
                 {["W", "D", "L"].includes(m.result)

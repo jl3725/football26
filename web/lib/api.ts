@@ -411,6 +411,14 @@ export type HomeAll = { window: Context["window"]; leagues: { key: string; name:
   // 리그 전체 집계(목록은 리그별 상위 몇 건뿐) — 예전 스냅샷엔 없을 수 있음
   summary?: { spend_eur: number; signings: number; manager_changes: number; injured: number }; generated_at?: string };
 export const getHomeAll = () => j<HomeAll>(`/api/home/all`);
+// 매치 센터 — 다가오는 경기·빅매치(src/match_center.py). kst 는 한국 시간 표기, d_day 는 오늘 기준.
+export type FixtureSide = { team: string; league: string | null; rank: number | null; points: number | null;
+  logo: string; color: string; ovr: number | null; form: string[] };
+export type Fixture = { event_id: string | null; comp_code: string; comp: string; kickoff: string; kst: string;
+  date: string; d_day: number; home: FixtureSide; away: FixtureSide; big: number; tags: string[] };
+export const getFixtures = (days = 7) => j<{ days: number; count: number; big: Fixture[]; today: Fixture[] }>(`/api/fixtures?days=${days}`);
+export const getTeamFixtures = (team: string, l = _league) =>
+  j<{ team: string; next: Fixture[] }>(`/api/fixtures/${encodeURIComponent(team)}?league=${encodeURIComponent(l)}`);
 // 선수 시즌 히트맵(Sofascore) — analytics 포지셔널 히트맵
 export type HeatmapPlayer = { player: string; pos: string; line: string; minutes: number; ovr: number; photo: string; n_points: number; grid: number[] };
 export type HeatmapData = { available: boolean; team: string; gw: number; gh: number; players: HeatmapPlayer[] };

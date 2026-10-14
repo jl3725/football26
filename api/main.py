@@ -3002,6 +3002,61 @@ def _hub_body() -> bytes:
     return body
 
 
+# ── 매치 센터(다음 경기 · 이번 주 빅매치) — src/match_center.py ─────────────────
+@_memo(ttl=1800)
+def _fx_sources() -> dict:
+    """리그별 일정(schedule_full)과 팀 → (순위, 승점, 리그) — 매치 센터 공용."""
+    rows, ranks = {}, {}
+    for lg in ds.available_leagues():
+        rows[lg] = ds.read_table("schedule_full", league=lg)
+        st = ds.read_table("standings", league=lg)
+        if st is not None and "squad" in st.columns:
+            for _, r in st.iterrows():
+                ranks[str(r["squad"])] = (int(_num(r.get("rank"))), int(_num(r.get("points"))), lg)
+    return {"rows": rows, "ranks": ranks}
+
+
+def _fx_enrich(m: dict, src: dict) -> dict:
+    import match_center as mc  # noqa: PLC0415
+    for side in ("home", "away"):
+        t = m[side]
+        rk = src["ranks"].get(t["team"])
+        lg = t.get("league") or (rk[2] if rk else None)
+        t["league"] = lg
+        t["rank"], t["points"] = (rk[0], rk[1]) if rk else (None, None)
+        t["logo"] = tm.team_logo(t["team"])
+        t["color"] = tm.team_color(t["team"])
+        t["ovr"] = _club_strength(lg).get(t["team"]) if lg else None
+        t["form"] = mc.recent_form(src["rows"].get(lg), t["team"]) if lg else []
+    m["big"], m["tags"] = mc.big_score(m)
+    return m
+
+
+def _today_kst() -> datetime.date:
+    return (datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(hours=9)).date()
+
+
+@app.get("/api/fixtures")
+@_memo(ttl=1800)
+def fixtures(days: int = 7, limit: int = 6):
+    """전 리그 다가오는 경기 — 빅매치(점수 30+ 상위)와 오늘 경기. 일정은 daily_data 가 매일 갱신."""
+    import match_center as mc  # noqa: PLC0415
+    src = _fx_sources()
+    ms = [_fx_enrich(m, src) for m in mc.matches_from(src["rows"], _today_kst(), days)]
+    big = sorted([m for m in ms if m["big"] >= 30], key=lambda m: (-m["big"], m["date"]))[:limit]
+    return {"days": days, "count": len(ms), "big": big, "today": [m for m in ms if m["d_day"] == 0][:12]}
+
+
+@app.get("/api/fixtures/{team}")
+@_memo(ttl=1800)
+def team_fixtures(team: str, league: str = ACTIVE_LEAGUE, n: int = 3):
+    """팀의 다음 경기들(전 대회) — Overview '다음 경기' 카드."""
+    import match_center as mc  # noqa: PLC0415
+    src = _fx_sources()
+    ms = mc.matches_from({league: src["rows"].get(league)}, _today_kst(), 75, team=team)[:n]
+    return {"team": team, "next": [_fx_enrich(m, src) for m in ms]}
+
+
 @app.on_event("startup")
 def _warm_up() -> None:
     """서버가 뜨자마자 백그라운드에서 공용 계산을 미리 데운다.
@@ -3021,6 +3076,7 @@ def _warm_up() -> None:
                 _trend_base(lg)
                 _rec_pool(lg)
                 _players_lookup(lg)
+                _club_strength(lg)
             _prev_season()
             _hub_body()
             print(f"[warm-up] 완료 {_t.monotonic() - t0:.1f}s", flush=True)

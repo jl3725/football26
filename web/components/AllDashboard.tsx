@@ -1,10 +1,11 @@
 "use client";
 import { useEffect, useState } from "react";
-import { getHomeAll, fmtEur, type HomeAll } from "@/lib/api";
+import { getHomeAll, fmtEur, type HomeAll, getFixtures, type Fixture } from "@/lib/api";
 import { tier } from "@/lib/ui";
 import { Skel, SkelCards } from "./Skeleton";
 import { seasonLongLabel } from "@/lib/season";
 import CountUp from "./CountUp";
+import MatchCard from "./MatchCard";
 
 // 세련된 라인 화살표 (텍스트 → 대체)
 function Arrow({ color = "currentColor" }: { color?: string }) {
@@ -26,7 +27,9 @@ const LG_SHORT: Record<string, string> = {
 export default function AllDashboard({ accent, onPick }: { accent: string; onPick: (t: string, league?: string) => void }) {
   const [d, setD] = useState<HomeAll | null>(null);
   const [spot, setSpot] = useState("form");   // 선수 스포트라이트 세그먼트
+  const [fx, setFx] = useState<Fixture[] | null>(null);   // 이번 주 빅매치(매치 센터)
   useEffect(() => { let a = true; getHomeAll().then((x) => a && setD(x)).catch(() => {}); return () => { a = false; }; }, []);
+  useEffect(() => { let a = true; getFixtures(7).then((x) => a && setFx(x.big)).catch(() => a && setFx([])); return () => { a = false; }; }, []);
   if (!d) return (
     <div className="skel-wrap">
       <Skel h={130} r={18} style={{ marginBottom: 16 }} />
@@ -64,6 +67,14 @@ export default function AllDashboard({ accent, onPick }: { accent: string; onPic
           ))}
         </div>
       </div>
+
+      {/* 이번 주 빅매치 — 일정(ESPN, 매일 갱신)에서 챔스·상위권 맞대결·강팀 대결을 점수로 골라 한국 시간으로 */}
+      {fx && fx.length > 0 && (<>
+        {sec("BIG MATCHES", "이번 주 빅매치")}
+        <div className="mc-grid">
+          {fx.map((m, i) => <MatchCard key={m.event_id ?? i} m={m} onPick={(t, lg) => lg && onPick(t, lg)} />)}
+        </div>
+      </>)}
 
       {/* 리그 스냅샷 */}
       {sec("STANDINGS", "리그 순위")}

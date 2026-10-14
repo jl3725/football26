@@ -63,6 +63,7 @@ def collect_comp(code: str, label: str, start_year: int, league: str, ours) -> l
         status = comp.get("status", {}).get("type", {})
         completed = bool(status.get("completed"))
         date = (e.get("date") or "")[:10]
+        kickoff = e.get("date") or ""          # UTC ISO(예 2026-10-18T14:00Z) — 화면은 한국 시간으로 바꿔 쓴다
         eid = str(e.get("id") or "")
         for side, opp in ((home, away), (away, home)):
             sq = ours(side.get("team", {}))
@@ -78,7 +79,7 @@ def collect_comp(code: str, label: str, start_year: int, league: str, ours) -> l
             if completed and gf is not None and ga is not None:
                 result = "W" if gf > ga else ("L" if gf < ga else "D")
             rows.append({
-                "squad": sq, "comp": label, "comp_code": code, "date": date,
+                "squad": sq, "comp": label, "comp_code": code, "date": date, "kickoff": kickoff,
                 "home_away": "H" if side is home else "A",
                 "opponent": squad_of(opp.get("team", {}), league) or (opp.get("team", {}) or {}).get("displayName", ""),
                 "gf": gf, "ga": ga,
