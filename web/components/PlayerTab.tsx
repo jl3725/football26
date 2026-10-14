@@ -7,6 +7,7 @@ import HeatmapPitch from "./HeatmapPitch";
 import ComparePanel from "./ComparePanel";
 import { usePeek } from "./PlayerPeek";
 import { Skel, SkelCards } from "./Skeleton";
+import { TrendArrow, TrendLine } from "./Trend";
 
 function Bar({ label, pct, raw, accent }: { label: string; pct: number; raw: number; accent: string }) {
   const c = pct >= 80 ? "#5ec98a" : pct >= 60 ? "#6aa6e0" : pct >= 40 ? "#caa64e" : "#d98169";
@@ -54,6 +55,7 @@ function Detail({ team, player, accent, heatmap }: { team: string; player: strin
           <div style={{ fontSize: 9, letterSpacing: 1, color: "var(--muted)" }}>OVR</div>
         </div>
       </div>
+      <TrendLine t={d.trend} ovr={d.ovr} />
       {d.badges.length > 0 && (
         <div className="pd-badges">
           {d.badges.map((b, i) => (
@@ -202,7 +204,7 @@ export default function PlayerTab({ team, accent, initialPlayer }: { team: strin
                 onClick={() => onCard(p.player)}
                 style={{ position: "relative", ...(isA ? { borderColor: accent } : isB ? { borderColor: CB } : {}) }}>
                 {cmpMode && (isA || isB) && <span style={{ position: "absolute", top: 4, left: 5, fontSize: 10, fontWeight: 800, color: isA ? accent : CB }}>{isA ? "A" : "B"}</span>}
-                <span className="pl-ovr" style={{ color: t.light }}>{p.ovr}</span>
+                <span className="pl-ovr" style={{ color: t.light }}>{p.ovr}<TrendArrow t={p.trend} ovr={p.ovr} /></span>
                 {p.big_match && <span className="pl-bm" title="UCL/UEL 급 무대 검증">⚡</span>}
                 {p.photo ? <img className="pl-photo" src={p.photo} alt="" /> : <span className="pl-photo ph" />}
                 <div className="pl-name">{p.player}</div>

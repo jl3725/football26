@@ -279,6 +279,7 @@ def overview(team: str, league: str = ACTIVE_LEAGUE):
             stars.append({
                 "player": r["player"], "pos": str(r.get("fl_group") or r.get("pos") or ""),
                 "ovr": _player_ovr(r), "pot": _player_pot(r), "form": _player_form(r),
+                "trend": _trend(r, league),
                 "rating": round(_num(r.get("_r")), 2),
                 "goals": int(_num(r.get("goals"))), "assists": int(_num(r.get("assists"))),
                 "photo": _photo(r), "role": prof["role"], "big_match": prof["big_match"],
@@ -850,6 +851,36 @@ def _player_pot(row) -> int:
                          value=row.get("market_value_eur"))
 
 
+# ── 평점 추이(2주 전 대비 · 지난 시즌 대비) — src/rating_history.py ─────────────
+@_memo(ttl=3600)
+def _trend_base(league: str) -> dict:
+    import rating_history as rh  # noqa: PLC0415
+    return rh.trend_baseline(league)
+
+
+@_memo(ttl=21600)
+def _prev_season() -> dict:
+    import rating_history as rh  # noqa: PLC0415
+    return rh.prev_season_ovr()
+
+
+def _trend(row, league: str, ovr: int | None = None, form: int | None = None) -> dict:
+    """{ovr_d, form_d: 2주 전 대비(기록이 2주치 쌓여야 생김), ovr_prev: 지난 시즌 OVR(300분+ 뛴 경우)}."""
+    import rating_history as rh  # noqa: PLC0415
+    ovr = _player_ovr(row) if ovr is None else ovr
+    form = _player_form(row) if form is None else form
+    out: dict = {"ovr_d": None, "form_d": None, "ovr_prev": None}
+    base = _trend_base(league).get(rh.pid(row))
+    if base:
+        out["ovr_d"] = ovr - base["ovr"]
+        if form is not None and base["form"] is not None:
+            out["form_d"] = form - base["form"]
+    prev = rh.lookup_prev(_prev_season(), row)
+    if prev and prev.get("minutes", 0) >= 300:
+        out["ovr_prev"] = prev["ovr"]
+    return out
+
+
 # ── 대회별 사용량 (역할 축 · EPL Phase 1) ─────────────────────────────
 # 리그 minutes = 능력치, 대회별 선발/출전 = '실제 역할'. 컵 스탯을 OVR 에 섞지 않는다.
 _COMP_USAGE_CACHE: dict = {}
@@ -944,13 +975,15 @@ def squad(team: str, league: str = ACTIVE_LEAGUE):
     lines: dict[str, list] = {"GK": [], "DEF": [], "MID": [], "ATT": []}
     for _, r in df.iterrows():
         line = rv3.line_of_row(r)
+        _o = _player_ovr(r)
         lines[line].append({
             "player": r["player"],
             "pos": str(r.get("fl_group") or r.get("pos") or ""),
             "age": int(_num(r.get("age"))),
             "minutes": int(_num(r.get("minutes"))),
             "value_eur": _num(r.get("market_value_eur")),
-            "ovr": _player_ovr(r),
+            "ovr": _o,
+            "trend": _trend(r, league, ovr=_o),
             "photo": _photo(r),
             "goals": int(_num(r.get("goals"))),
             "assists": int(_num(r.get("assists"))),
@@ -1124,6 +1157,7 @@ def players(team: str, league: str = ACTIVE_LEAGUE):
             "ovr": int(r["_ovr"]),
             "photo": _photo(r),
             "role": prof["role"], "big_match": prof["big_match"], "comps": prof["comps"],
+            "trend": _trend(r, league, ovr=int(r["_ovr"])),
         })
     return {"team": team, "color": tm.team_color(team), "players": out}
 
@@ -1243,7 +1277,7 @@ def player_detail(team: str, player: str, league: str = ACTIVE_LEAGUE):
         "line": rv3.line_of_row(row),
         "age": int(_num(row.get("age"))), "nationality": str(row.get("nationality") or ""),
         "value_eur": _num(row.get("market_value_eur")), "photo": _photo(row),
-        "ovr": _player_ovr(row), "ss_rating": _num(row.get("ss_rating")),
+        "ovr": _player_ovr(row), "trend": _trend(row, league), "ss_rating": _num(row.get("ss_rating")),
         "minutes": int(_num(row.get("minutes"))), "goals": int(_num(row.get("goals"))),
         "assists": int(_num(row.get("assists"))),
         "contract_until": str(row.get("tm_contract_until") or ""),

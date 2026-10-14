@@ -67,17 +67,18 @@ def resolve_photo(name, resolve, league: str) -> str:
 _FRAME_CACHE: dict = {}
 
 
-def player_frame(league: str):
+def player_frame(league: str, season: str | None = None):
     """players_full과 대회별 선발 수를 합친 선수 데이터 단일 진입점.
 
     리그 레벨(_league_level)과 리그 내 순위 폼(_form)을 붙인다. 요청마다 수십 번 불리므로 DB 수정
-    시각 기준으로 캐시하고, 호출부가 고쳐 써도 안전하게 사본을 준다.
+    시각 기준으로 캐시하고, 호출부가 고쳐 써도 안전하게 사본을 준다. season(예: "2025_2026")을 주면
+    그 시즌 표(지난 시즌 대비 성장 계산용).
     """
-    key = (league, ds._db_mtime())
+    key = (league, season, ds._db_mtime())
     hit = _FRAME_CACHE.get(key)
     if hit is not None:
         return hit.copy()
-    frame = _build_frame(league)
+    frame = _build_frame(league, season)
     if frame is not None:
         if len(_FRAME_CACHE) > 16:
             _FRAME_CACHE.clear()
@@ -86,8 +87,8 @@ def player_frame(league: str):
     return None
 
 
-def _build_frame(league: str):
-    frame = ds.read_table("players_full", league=league)
+def _build_frame(league: str, season: str | None = None):
+    frame = ds.read_table("players_full", league=league, season=season)
     if frame is None:
         return None
 
@@ -107,7 +108,7 @@ def _build_frame(league: str):
 
     try:
         usage = pd.read_csv(
-            data_path("player_comp_usage", league),
+            data_path("player_comp_usage", league, season),
             usecols=[
                 "squad",
                 "norm_key",

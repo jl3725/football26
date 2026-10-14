@@ -16,7 +16,9 @@ export type Transfer = {
   pos: string;
 };
 
-export type Star = { player: string; pos: string; ovr: number; pot?: number; form?: number | null; rating: number; goals: number; assists: number; photo: string; role?: string; big_match?: boolean };
+// 평점 추이 — ovr_d·form_d: 2주 전 대비(기록 2주치 쌓인 뒤), ovr_prev: 지난 시즌 OVR(300분+)
+export type Trend = { ovr_d: number | null; form_d: number | null; ovr_prev: number | null };
+export type Star = { trend?: Trend; player: string; pos: string; ovr: number; pot?: number; form?: number | null; rating: number; goals: number; assists: number; photo: string; role?: string; big_match?: boolean };
 export type Injury = { player: string; injury: string; until: string; pos: string; photo: string };
 export type Window = {
   season_id: number; window: string; label: string; state: string; is_open: boolean; kr: string | null;
@@ -190,7 +192,7 @@ export const getScout = (q: string, team = "", l = _league, token = "", history:
 // ── 탭별 타입 ─────────────────────────────
 export type SquadPlayer = {
   player: string; pos: string; age: number; minutes: number;
-  value_eur: number; ovr: number; photo: string; goals: number; assists: number;
+  value_eur: number; ovr: number; photo: string; goals: number; assists: number; trend?: Trend;
 };
 export type DepthPlayer = { player: string; ovr: number; minutes: number; age: number; photo: string };
 export type Bucket = { pos: string; count: number; depth: number; starter: DepthPlayer; rotation: DepthPlayer[] };
@@ -212,7 +214,7 @@ export type CompProfile = { role: string; role_evidence: string; big_match: bool
 export type PlayerCard = {
   player: string; pos: string; line: string; age: number;
   nationality: string; value_eur: number; ovr: number; photo: string;
-  role: string; big_match: boolean; comps: CompUse[];
+  role: string; big_match: boolean; comps: CompUse[]; trend?: Trend;
 };
 export type Players = { team: string; color: string; players: PlayerCard[] };
 
@@ -223,7 +225,7 @@ export type PlayerDetail = {
   player: string; team: string; color: string; pos: string; line: string;
   age: number; nationality: string; value_eur: number; photo: string;
   ovr: number; ss_rating: number; minutes: number; goals: number; assists: number;
-  contract_until: string; is_gk: boolean;
+  contract_until: string; is_gk: boolean; trend?: Trend;
   categories: MetricCat[];
   radar: { axis: string; value: number }[];
   badges: Badge[];

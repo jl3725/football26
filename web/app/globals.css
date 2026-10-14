@@ -2086,3 +2086,16 @@ body::before {
 }
 .empty-state.compact { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: flex-start; gap: 10px; min-height: 0; padding: 12px 14px; text-align: left; }
 .empty-state.compact .es-ico { display: none; }
+
+/* 평점 추이 화살표(Trend.tsx) — 진한 것=2주 전 대비, 흐린 것=지난 시즌 대비 */
+.trend { font-family: Teko, sans-serif; font-size: 13px; font-weight: 600; margin-left: 3px; letter-spacing: 0; line-height: 1; }
+.trend.up { color: #4fc27f; }
+.trend.down { color: #e07070; }
+.trend.season { opacity: 0.55; }
+.sq-trend { min-width: 24px; margin-left: -6px; display: inline-flex; justify-content: flex-start; }
+.trend-line { display: flex; flex-wrap: wrap; gap: 4px 14px; padding: 0 22px 10px; font-size: 11.5px; color: var(--muted); }
+.trend-line b { font-family: Teko, sans-serif; font-size: 15px; font-weight: 600; margin-left: 2px; }
+.trend-line b.up { color: #4fc27f; }
+.trend-line b.down { color: #e07070; }
+.trend-line b.flat { color: var(--muted); }
+

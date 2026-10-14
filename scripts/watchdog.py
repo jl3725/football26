@@ -12,6 +12,7 @@
   news      news.db 마지막 수집 1일 이내, 최근 2일 번역률 50% 이상
   tm_agent  로컬 TM agent(이 PC 작업 스케줄러) 산출물이 최근에 커밋됐는가
   coverage  현재 시즌 팀 전원에게 감독 프로필이 있는가(시즌 전환 뒤 승격팀 누락·강등팀 잔류 탐지)
+  rating_history  선수 평점 일일 기록(▲▼ 추이 원천)이 3일 안에 갱신됐는가
 
 사용:
   python scripts/watchdog.py            # 결과 출력, 실패가 있으면 종료코드 1
@@ -200,9 +201,20 @@ def check_coverage() -> list[str]:
     return out
 
 
+def check_rating_history() -> list[str]:
+    """평점 추이 기록(daily_data → record_ratings)이 멈추면 ▲▼ 가 조용히 사라진다."""
+    p = data_path("rating_history", "EPL")
+    if not p.exists():
+        return [f"{p.name} 없음 — daily_data 'Record player ratings' 단계 확인"]
+    last = max((ln.split(",", 1)[0] for ln in p.read_text(encoding="utf-8").splitlines()[1:] if ln), default="")
+    if last < (NOW.date() - dt.timedelta(days=3)).isoformat():
+        return [f"평점 추이 마지막 기록 {last} — daily_data 'Record player ratings' 단계 확인"]
+    return []
+
+
 CHECKS = {"season": check_season, "hub": check_hub, "frontend": check_frontend,
           "workflows": check_workflows, "news": check_news, "tm_agent": check_tm_agent,
-          "coverage": check_coverage}
+          "coverage": check_coverage, "rating_history": check_rating_history}
 
 
 def run() -> dict[str, list[str]]:

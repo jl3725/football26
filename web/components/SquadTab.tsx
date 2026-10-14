@@ -5,6 +5,7 @@ import { tier, hexA } from "@/lib/ui";
 import SquadBuilder from "./SquadBuilder";
 import { usePeek } from "./PlayerPeek";
 import { SkelCards } from "./Skeleton";
+import { TrendArrow } from "./Trend";
 
 const LINES: { key: string; label: string }[] = [
   { key: "GK", label: "골키퍼" }, { key: "DEF", label: "수비" },
@@ -22,6 +23,7 @@ function Row({ p, team }: { p: SquadPlayer; team: string }) {
     <div className="sq-row peekable"
       onClick={(e) => peek(e, { name: p.player, club: team, hint: { photo: p.photo, ovr: p.ovr, pos: p.pos, age: p.age, value_eur: p.value_eur } })}>
       <span className="sq-ovr" style={{ color: t.light, borderColor: t.deep }}>{p.ovr}</span>
+      <span className="sq-trend"><TrendArrow t={p.trend} ovr={p.ovr} /></span>
       {p.photo ? <img className="sq-photo" src={p.photo} alt="" /> : <span className="sq-photo ph" />}
       <div className="sq-info">
         <div className="sq-name">{p.player}</div>

@@ -12,6 +12,7 @@ import IdentityCard from "./IdentityCard";
 import { usePeek } from "./PlayerPeek";
 import { phaseOf } from "@/lib/season";
 import { useEffect, useState } from "react";
+import { TrendArrow } from "./Trend";
 
 function repStars(rank?: number | null): string {
   if (!rank) return "★★★☆☆";
@@ -186,7 +187,7 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
                   {st.big_match && <span className="star-bm" title="UCL/UEL 급 무대 검증">⚡</span>}
                   {st.photo ? <img src={st.photo} alt="" /> : <span className="star-ph" />}
                   <div className="star-ovr" style={{ color: tt.light }}>
-                    {st.ovr}{st.pot && st.pot > st.ovr ? <span className="star-pot">↗{st.pot}</span> : null}
+                    {st.ovr}<TrendArrow t={st.trend} ovr={st.ovr} />{st.pot && st.pot > st.ovr ? <span className="star-pot">↗{st.pot}</span> : null}
                   </div>
                   <div className="star-name">{st.player}</div>
                   <div className="star-meta">{st.pos}{st.form ? <> · 폼 <b style={{ color: st.form >= 85 ? "#4fc27f" : st.form >= 75 ? "#f4cf5e" : "#e0707a" }}>{st.form}</b></> : ""}</div>
