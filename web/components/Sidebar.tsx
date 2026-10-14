@@ -2,6 +2,7 @@
 import { useState } from "react";
 import type { Team, NextSeason } from "@/lib/api";
 import { showNextSeason, type Phase } from "@/lib/season";
+import { usePins } from "@/lib/pins";
 
 // 리그 티어 — 리그 확장 시 여기 배열에만 추가.
 //   TIER S = 빅5 · TIER A = 유럽 강호 · 원석 발굴(TALENT) = 셀링/유망주 공급 리그
@@ -43,13 +44,15 @@ function zoneOf(rank: number, total: number): { cls: string; tag: string } {
 
 export default function Sidebar({
   teams, sel, onSelect, seasonLabel = "", next = null, atHome = false, onHome,
-  league = "EPL", onLeague, phase,
+  league = "EPL", onLeague, phase, onPickTeam,
 }: {
   teams: Team[]; sel: string; onSelect: (t: string) => void;
   seasonLabel?: string; next?: NextSeason | null; phase?: Phase;
   atHome?: boolean; onHome?: () => void;
   league?: string; onLeague?: (l: string) => void;
+  onPickTeam?: (team: string, league: string) => void;
 }) {
+  const { pins } = usePins();
   const [pickedTab, setSeasonTab] = useState<"next" | "cur">("next"); // 오프시즌엔 새 시즌 먼저
   // 시즌 중에는 '다음 시즌' 탭이 현재 시즌과 같아 숨기고 현재 순위만(단계 로딩 전에도 깜빡임 없이 현재 순위)
   const hasNext = !!phase && showNextSeason({ phase });
@@ -101,6 +104,21 @@ export default function Sidebar({
         </span>
         <span className="home-nav-dot" />
       </button>
+
+      {/* 내 팀 — 팀 화면 ☆ 로 고정(이 브라우저에만 저장). 리그가 달라도 한 번에 이동 */}
+      {pins.length > 0 && (
+        <div className="side-pins">
+          <div className="side-label">내 팀</div>
+          {pins.map((p) => (
+            <button key={p.team} className={`team-btn pin${p.team === sel && !atHome ? " active" : ""}`}
+              onClick={() => onPickTeam?.(p.team, p.league)}>
+              <span className="rankchip pin-star">★</span>
+              {p.logo ? <img src={p.logo} alt="" /> : <span style={{ width: 22 }} />}
+              <span className="tn">{p.team}</span>
+            </button>
+          ))}
+        </div>
+      )}
 
       {hasNext && (
         <div className="side-tabs">

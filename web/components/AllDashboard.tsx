@@ -1,240 +1,259 @@
 "use client";
-import { useEffect, useState } from "react";
-import { getHomeAll, fmtEur, type HomeAll, getFixtures, type Fixture } from "@/lib/api";
-import { tier } from "@/lib/ui";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { getHomeAll, getFixtures, fmtEur, feeLabel, type HomeAll, type Fixture, type HubMover, type Trend } from "@/lib/api";
 import { Skel, SkelCards } from "./Skeleton";
-import { seasonLongLabel } from "@/lib/season";
 import CountUp from "./CountUp";
-import MatchCard from "./MatchCard";
+import MatchCard, { MatchHero } from "./MatchCard";
+import SectionHead from "./SectionHead";
+import { TrendArrow } from "./Trend";
+import { usePeek } from "./PlayerPeek";
+import { usePins } from "@/lib/pins";
+import { lgKo } from "@/lib/match";
+import { seasonStatusText } from "@/lib/season";
 
-// 세련된 라인 화살표 (텍스트 → 대체)
-function Arrow({ color = "currentColor" }: { color?: string }) {
+// 전 리그 홈(디자인 v5) — '오늘 무엇을 봐야 하나' 순서로:
+//   이번 주 최대 빅매치(크게) + 요약 숫자 → 빅매치 3 → 무엇이 바뀌었나 · 리그 순위 → 빅딜 · 주의 보드 → 이적 소식 · 감독 교체.
+// 데이터: /api/home/all(배포 시 미리 계산) + /api/fixtures(매일 갱신 일정).
+
+type Pick = (team: string, league?: string) => void;
+type Row = {
+  key: string; player: string; club: string; club_logo: string; league: string; photo: string;
+  sub: string; why: string; ovr?: number; trend?: Trend; right?: ReactNode;
+};
+
+const TODAY_EN = () => {
+  const d = new Date();
+  return `${String(d.getMonth() + 1).padStart(2, "0")}.${String(d.getDate()).padStart(2, "0")} ${d.toLocaleDateString("en-US", { weekday: "short" }).toUpperCase()}`;
+};
+
+function PlayerRow({ r, rank, onPick }: { r: Row; rank?: number; onPick: Pick }) {
+  const peek = usePeek();
   return (
-    <svg className="hub-arw" width="18" height="9" viewBox="0 0 18 9" aria-hidden style={{ color }}>
-      <path d="M0.8 4.5h14M11 1l4 3.5-4 3.5" stroke="currentColor" strokeWidth="1.3"
-        fill="none" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
+    <div className="pr5">
+      {rank != null && <span className="pr5-rk">{rank}</span>}
+      <button className="pr5-ph peekable" onClick={(e) => peek(e, { name: r.player, club: r.club, league: r.league })} aria-label={`${r.player} 미리보기`}>
+        {r.photo ? <img src={r.photo} alt="" /> : <span />}
+      </button>
+      <button className="pr5-who" onClick={() => onPick(r.club, r.league)} title={`${r.club} 팀 화면`}>
+        <b>{r.player}</b>
+        <span>{r.club_logo && <img src={r.club_logo} alt="" />}{r.sub}</span>
+      </button>
+      <span className="pr5-why">{r.why}</span>
+      {r.right ?? (r.ovr != null && <span className="pr5-ovr">{r.ovr}{r.trend && <TrendArrow t={r.trend} ovr={r.ovr} />}</span>)}
+    </div>
   );
 }
 
-// 전 리그 통합 대시보드 — 빅딜·이적속보·감독교체·순위 스냅샷을 한 화면에.
-const LG_SHORT: Record<string, string> = {
-  "Premier League": "EPL", "La Liga": "LALIGA", "Serie A": "SERIE A", "Bundesliga": "BUNDES",
-  "Ligue 1": "LIGUE 1", "Liga Portugal": "PORTUGAL", "Primeira Liga": "PORTUGAL", "Eredivisie": "EREDIV",
-  "Belgian Pro League": "BELGIUM",
-};
+function Tabs<T extends string>({ items, cur, onChange }: { items: { k: T; label: string; n?: number }[]; cur: T; onChange: (k: T) => void }) {
+  return (
+    <div className="tabs5" role="tablist">
+      {items.map((t) => (
+        <button key={t.k} role="tab" aria-selected={cur === t.k} className={cur === t.k ? "on" : ""} onClick={() => onChange(t.k)}>
+          {t.label}{t.n != null && <em>{t.n}</em>}
+        </button>
+      ))}
+    </div>
+  );
+}
 
-export default function AllDashboard({ accent, onPick }: { accent: string; onPick: (t: string, league?: string) => void }) {
+const sub = (club: string, pos?: string, extra?: string) => [club, pos, extra].filter(Boolean).join(" · ");
+const POS_SHORT: Record<string, string> = {
+  "Goalkeeper": "GK", "Centre-Back": "CB", "Left-Back": "LB", "Right-Back": "RB", "Defensive Midfield": "DM",
+  "Central Midfield": "CM", "Attacking Midfield": "AM", "Left Midfield": "LM", "Right Midfield": "RM",
+  "Left Winger": "LW", "Right Winger": "RW", "Second Striker": "SS", "Centre-Forward": "CF",
+};
+const posShort = (p: string) => POS_SHORT[p] ?? p;
+const ddays = (until: string) => Math.round((new Date(until).getTime() - Date.now()) / 86400000);
+
+export default function AllDashboard({ onPick, switcher }: { accent?: string; onPick: Pick; switcher?: ReactNode }) {
   const [d, setD] = useState<HomeAll | null>(null);
-  const [spot, setSpot] = useState("form");   // 선수 스포트라이트 세그먼트
-  const [fx, setFx] = useState<Fixture[] | null>(null);   // 이번 주 빅매치(매치 센터)
+  const [fx, setFx] = useState<Fixture[] | null>(null);
+  const [mv, setMv] = useState<string>("up");
+  const [mvMore, setMvMore] = useState(false);
+  const [lg, setLg] = useState<string>("");
+  const [watch, setWatch] = useState<"all" | "inj" | "con">("all");
+  const [dealsMore, setDealsMore] = useState(false);
+  const { pins } = usePins();
   useEffect(() => { let a = true; getHomeAll().then((x) => a && setD(x)).catch(() => {}); return () => { a = false; }; }, []);
   useEffect(() => { let a = true; getFixtures(7).then((x) => a && setFx(x.big)).catch(() => a && setFx([])); return () => { a = false; }; }, []);
+
+  const pinned = useMemo(() => new Set(pins.map((p) => p.team)), [pins]);
+
   if (!d) return (
-    <div className="skel-wrap">
-      <Skel h={130} r={18} style={{ marginBottom: 16 }} />
-      <SkelCards n={8} cols="repeat(auto-fill, minmax(230px, 1fr))" />
+    <div className="h5 skel-wrap">
+      <Skel h={60} w={320} r={12} style={{ marginBottom: 20 }} />
+      <Skel h={300} r={18} style={{ marginBottom: 24 }} />
+      <SkelCards n={6} cols="repeat(auto-fill, minmax(320px, 1fr))" />
     </div>
   );
 
-  // 리그 배지는 짧은 코드로 — 'PREMIER LEAGUE' 가 카드 폭을 먹어 선수 이름이 'Enzo Ferná…' 로 잘렸다
-  const tag = (name: string) => <span className="hub-lg" title={name}>{LG_SHORT[name] ?? name}</span>;
-  const sec = (en: string, kr: string) => (
-    <div className="hub-h"><span className="hub-h-bar" style={{ background: accent }} />
-      <span className="hub-h-en">{en}</span><span className="hub-h-kr">{kr}</span></div>
-  );
+  // ── 무엇이 바뀌었나(OVR 변화 + 기존 스포트라이트 묶음) ──
+  const basisTxt = d.movers_basis === "2w" ? "2주 전" : "지난 시즌";
+  const moverRow = (p: HubMover): Row => ({
+    key: p.player + p.club, player: p.player, club: p.club, club_logo: p.club_logo, league: p.league, photo: p.photo,
+    sub: sub(p.club, p.pos), why: `${basisTxt} ${p.ovr_prev} → ${p.ovr}${p.rating ? ` · 평점 ${p.rating.toFixed(2)}` : ""}`,
+    ovr: p.ovr, trend: p.basis === "2w" ? { ovr_d: p.delta, form_d: null, ovr_prev: null } : { ovr_d: null, form_d: null, ovr_prev: p.ovr_prev },
+  });
+  const MV: { k: string; label: string; rows: Row[] }[] = [
+    { k: "up", label: "급상승", rows: (d.movers_up ?? []).map(moverRow) },
+    { k: "down", label: "급하락", rows: (d.movers_down ?? []).map(moverRow) },
+    { k: "form", label: "폼 TOP", rows: d.hot_form.map((p) => ({ key: p.player + p.club, player: p.player, club: p.club, club_logo: p.club_logo, league: p.league, photo: p.photo, sub: sub(p.club, p.pos), why: `평균 평점 ${p.rating.toFixed(2)}`, ovr: p.ovr })) },
+    { k: "prospect", label: "유망주", rows: d.prospects.map((p) => ({ key: p.player + p.club, player: p.player, club: p.club, club_logo: p.club_logo, league: p.league, photo: p.photo, sub: sub(p.club, p.pos), why: `${p.age}세 · 평점 ${p.rating.toFixed(2)}`, ovr: p.ovr })) },
+    { k: "goal", label: "득점", rows: d.goal_leaders.map((p) => ({ key: p.player + p.club, player: p.player, club: p.club, club_logo: p.club_logo, league: p.league, photo: p.photo, sub: sub(p.club), why: `${p.goals}골 ${p.assists}도움`, ovr: p.ovr })) },
+    { k: "value", label: "가성비", rows: d.value_picks.map((p) => ({ key: p.player + p.club, player: p.player, club: p.club, club_logo: p.club_logo, league: p.league, photo: p.photo, sub: sub(p.club, p.pos), why: `시장가치 ${fmtEur(p.value_eur)} · 평점 ${p.rating.toFixed(2)}`, ovr: p.ovr })) },
+    { k: "riser", label: "시장가치 급등", rows: d.risers.map((p) => ({ key: p.player + p.club, player: p.player, club: p.club, club_logo: p.club_logo, league: p.league, photo: p.photo, sub: sub(p.club), why: `${fmtEur(p.value_eur)}`, right: <span className="td up">▲{p.pct}%</span> })) },
+  ].filter((t) => t.rows.length > 0);
+  const curMv = MV.find((t) => t.k === mv) ?? MV[0];
+
+  // ── 리그 순위 ──
+  const snaps = d.snapshots.filter((s) => s.table.length > 0);
+  const snap = snaps.find((s) => s.league === lg) ?? snaps[0];
+  const top = snap?.table[0]?.points || 1;
+
+  // ── 주의 보드: 부상·복귀 + 계약 만료, 내 팀 먼저 ──
+  type W = { key: string; player: string; club: string; club_logo: string; league: string; photo: string; sub: string; badge: string; tone: string; kind: "inj" | "con" };
+  const W_ALL: W[] = [
+    ...d.injuries.map((p): W => ({ key: "i" + p.player + p.date, player: p.player, club: p.club, club_logo: p.club_logo, league: p.league, photo: p.photo,
+      sub: sub(p.club, p.injury), badge: p.event === "return" ? "복귀" : "부상", tone: p.event === "return" ? "up" : "warn", kind: "inj" })),
+    ...d.contracts.map((p): W => ({ key: "c" + p.player, player: p.player, club: p.club, club_logo: p.club_logo, league: p.league, photo: p.photo,
+      sub: sub(p.club, `OVR ${p.ovr}`, p.until ? `${p.until.slice(0, 7).replace("-", ".")} 만료` : ""), badge: p.until ? `D-${ddays(p.until)}` : "만료 임박", tone: "neutral", kind: "con" })),
+  ];
+  const wList = W_ALL.filter((w) => watch === "all" || w.kind === watch)
+    .sort((a, b) => Number(pinned.has(b.club)) - Number(pinned.has(a.club)));
+
+  const hero = fx && fx.length ? fx[0] : null;
+  const rest = fx ? fx.slice(1, 4) : [];
+  const s = d.summary;
+  const mvRows = curMv ? curMv.rows.slice(0, mvMore ? 12 : 6) : [];
 
   return (
-    <div className="fade home">
-      {/* 상단 — 제목 + 리그 전체 요약 수치(예전엔 리그 이름 나열뿐인 큰 박스) */}
-      <div className="hub-hero" style={{ ["--tc" as any]: accent }}>
-        <div className="hub-hero-main">
-          <div className="hub-hero-k">ALL LEAGUES{d.window?.data_season_id ? ` · ${seasonLongLabel(d.window.data_season_id)}` : ""}
-            {d.window?.is_open && <span style={{ color: accent }}> · {d.window.label} WINDOW OPEN</span>}</div>
-          <h1 className="hub-hero-t">GLOBAL DASHBOARD</h1>
+    <div className="h5 fade">
+      <header className="h5-head">
+        <div>
+          <div className="h5-eyebrow">MATCHDAY · {TODAY_EN()}</div>
+          <h1 className="h5-title">오늘의 축구</h1>
+          <p className="h5-sub">{seasonStatusText(d.window, d.window?.label ?? "", d.window?.label ?? "")}{!d.window?.is_open ? " · 이적시장 마감" : ""}</p>
         </div>
-        <div className="hub-kpis">
-          {([
-            [d.leagues.length, undefined, "리그"],
-            ...(d.summary ? [
-              [d.summary.spend_eur, (v: number) => (v < 1e6 ? "€0" : fmtEur(v)), `${d.window?.label ?? ""} 여름 이적 총액`],
-              [d.summary.signings, undefined, "영입(임대 제외)"],
-              [d.summary.manager_changes, undefined, "감독 교체"],
-              [d.summary.injured, undefined, "현재 부상자"],
-            ] : []),
-          ] as [number, ((v: number) => string) | undefined, string][]).map(([v, f, l]) => (
-            <div className="hub-kpi" key={l}><b className="num"><CountUp value={v} format={f} /></b><span>{l}</span></div>
-          ))}
-        </div>
-      </div>
+        {switcher}
+      </header>
 
-      {/* 이번 주 빅매치 — 일정(ESPN, 매일 갱신)에서 챔스·상위권 맞대결·강팀 대결을 점수로 골라 한국 시간으로 */}
-      {fx && fx.length > 0 && (<>
-        {sec("BIG MATCHES", "이번 주 빅매치")}
-        <div className="mc-grid">
-          {fx.map((m, i) => <MatchCard key={m.event_id ?? i} m={m} onPick={(t, lg) => lg && onPick(t, lg)} />)}
-        </div>
-      </>)}
-
-      {/* 리그 스냅샷 */}
-      {sec("STANDINGS", "리그 순위")}
-      <div className="hub-snaps">
-        {d.snapshots.map((s) => (
-          <div className="card hub-snap" key={s.league}>
-            <div className="hub-snap-h" style={{ borderColor: s.color }}>{s.league_name}</div>
-            {s.table.map((t) => (
-              <button className="hub-snap-row" key={t.rank} onClick={() => onPick(t.team, s.league)}>
-                <span className="hub-rk">{t.rank}</span>
-                {t.logo && <img src={t.logo} alt="" />}
-                <span className="hub-snap-team">{t.team}</span>
-                <span className="hub-snap-pts">{t.points}</span>
-              </button>
+      <div className="h5-hero-row">
+        {hero ? <MatchHero m={hero} onPick={(t, l) => l && onPick(t, l)} />
+          : fx === null ? <Skel h={300} r={18} /> : <div className="card h5-hero-empty">이번 주에는 빅매치 기준(지수 35+)을 넘는 경기가 없습니다.</div>}
+        {s && (
+          <div className="h5-kpis">
+            {([
+              ["여름 이적 총액", s.spend_eur, (v: number) => (v < 1e6 ? "€0" : fmtEur(v)), `${d.leagues.length}개 리그 합계`],
+              ["이적 건수", s.signings, undefined, "임대 제외"],
+              ["감독 교체", s.manager_changes, undefined, "시즌 시작 후"],
+              ["현재 부상자", s.injured, undefined, `${d.leagues.length}개 리그 결장`],
+            ] as [string, number, ((v: number) => string) | undefined, string][]).map(([l, v, f, m]) => (
+              <div className="kpi5" key={l}><span className="kpi5-l">{l}</span><b className="kpi5-v"><CountUp value={v} format={f} /></b><span className="kpi5-m">{m}</span></div>
             ))}
           </div>
-        ))}
+        )}
       </div>
 
-      {/* 전 리그 빅딜 */}
-      {sec("TOP TRANSFERS", "전 리그 빅딜")}
-      <div className="hub-deals">
-        {d.top_deals.map((x, i) => (
-          <button className="hub-deal" key={i} onClick={() => onPick(x.to, x.league)}>
-            {x.photo ? <img className="hub-deal-ph" src={x.photo} alt="" /> : <span className="hub-deal-ph ph" />}
-            <div className="hub-deal-body">
-              <div className="hub-deal-top"><b>{x.player}</b>{tag(x.league_name)}</div>
-              <div className="hub-deal-mv">
-                <span className="hub-from">{x.from || "—"}</span>
-                <Arrow color={accent} />
-                {x.to_logo && <img src={x.to_logo} alt="" />}<span className="hub-to">{x.to}</span>
-              </div>
-            </div>
-            <div className="hub-deal-fee" style={{ color: accent }}>{fmtEur(x.fee_eur)}</div>
-          </button>
-        ))}
-        {d.top_deals.length === 0 && <div className="mgr-meta">No major deals this window</div>}
-      </div>
+      {rest.length > 0 && (
+        <section className="h5-sec">
+          <SectionHead title="이번 주 빅매치" meta={`7일 이내 · 빅매치 지수 35+ · ${fx!.length}경기`} />
+          <div className="h5-grid3">{rest.map((m, i) => <MatchCard key={m.event_id ?? i} m={m} onPick={(t, l) => l && onPick(t, l)} />)}</div>
+        </section>
+      )}
 
-      {/* 선수 스포트라이트 — 세그먼티드(폼·유망주·베테랑·가성비·득점·급등) */}
-      {(() => {
-        const SPOTS = [
-          { k: "form", en: "HOT FORM", kr: "최고 폼", list: (d.hot_form ?? []) as any[] },
-          { k: "prospect", en: "PROSPECTS", kr: "유망주 원석", list: (d.prospects ?? []) as any[] },
-          { k: "veteran", en: "VETERANS", kr: "베테랑 32+", list: (d.veterans ?? []) as any[] },
-          { k: "value", en: "VALUE PICKS", kr: "저평가 가성비", list: (d.value_picks ?? []) as any[] },
-          { k: "goal", en: "GOAL LEADERS", kr: "득점 리더", list: (d.goal_leaders ?? []) as any[] },
-          { k: "riser", en: "VALUE RISERS", kr: "시장가치 급등", list: (d.risers ?? []) as any[] },
-        ].filter((s) => s.list.length > 0);
-        if (!SPOTS.length) return null;
-        const cur = SPOTS.find((s) => s.k === spot) || SPOTS[0];
-        return (
-          <>
-            <div className="hub-h hub-spot-head">
-              <span className="hub-h-bar" style={{ background: accent }} />
-              <span className="hub-h-en">PLAYER SPOTLIGHT</span><span className="hub-h-kr">선수 스포트라이트</span>
-              <div className="hub-spot-filters" style={{ display: "inline-flex", flexWrap: "wrap", gap: 3, marginLeft: "auto", padding: 3, borderRadius: 10, background: "rgba(255,255,255,0.05)" }}>
-                {SPOTS.map((s) => (
-                  <button key={s.k} onClick={() => setSpot(s.k)}
-                    style={{ padding: "5px 11px", borderRadius: 7, fontSize: 11.5, fontWeight: 700, cursor: "pointer", border: "none",
-                      background: cur.k === s.k ? accent : "transparent", color: cur.k === s.k ? "#0a0a0a" : "inherit", opacity: cur.k === s.k ? 1 : 0.6 }}>{s.kr}</button>
-                ))}
-              </div>
+      <div className="h5-row">
+        {curMv && (
+          <section className="card h5-card">
+            <SectionHead title="무엇이 바뀌었나" meta={curMv.k === "up" || curMv.k === "down" ? `OVR · ${basisTxt} 대비` : "8개 리그"} />
+            <Tabs items={MV.map((t) => ({ k: t.k, label: t.label }))} cur={curMv.k} onChange={(k) => { setMv(k); setMvMore(false); }} />
+            <div className="pr5-list">{mvRows.map((r, i) => <PlayerRow key={r.key} r={r} rank={i + 1} onPick={onPick} />)}</div>
+            {curMv.rows.length > 6 && <button className="more5" onClick={() => setMvMore((v) => !v)}>{mvMore ? "접기" : `${curMv.rows.length - 6}명 더 보기`}</button>}
+          </section>
+        )}
+        {snap && (
+          <section className="card h5-card h5-side">
+            <SectionHead title="리그 순위" meta="1위와 승점 차" />
+            <div className="seg5">
+              {snaps.map((x) => <button key={x.league} className={x.league === snap.league ? "on" : ""} onClick={() => setLg(x.league)}>{lgKo(x.league) || x.league_name}</button>)}
             </div>
-            <div className="card hub-list hub-spot-grid">
-              {cur.list.map((p: any, i: number) => (
-                <button className="hub-plr" key={i} onClick={() => onPick(p.club, p.league)}>
-                  <span className="hub-plr-rk">{i + 1}</span>
-                  {p.photo ? <img className="hub-plr-ph" src={p.photo} alt="" /> : <span className="hub-plr-ph ph" />}
-                  <div className="hub-plr-body">
-                    <div className="hub-plr-nm">{p.player} {tag(p.league_name)}</div>
-                    <div className="hub-plr-sub">
-                      {p.club_logo && <img src={p.club_logo} alt="" />}{p.club}
-                      {(cur.k === "prospect" || cur.k === "veteran") && p.age ? ` · ${p.age}세` : ""}
-                      {(cur.k === "value" || cur.k === "riser") && p.value_eur ? ` · ${fmtEur(p.value_eur)}` : (cur.k !== "goal" && p.pos ? ` · ${p.pos}` : "")}
-                    </div>
-                  </div>
-                  {cur.k === "goal"
-                    ? (<><span className="hub-plr-metric big" style={{ color: accent }}>⚽{p.goals}</span><span className="hub-plr-a">{p.assists}A</span></>)
-                    : cur.k === "riser"
-                      ? (<span className="hub-plr-metric big" style={{ color: "#4fc27f" }}>▲{p.pct}%</span>)
-                      : (<><span className="hub-plr-ovr" style={{ color: tier(p.ovr).light }}>{p.ovr}</span>
-                          {p.rating != null && <span className="hub-plr-metric" style={{ color: accent }}>{p.rating.toFixed(2)}</span>}</>)}
+            <div className="st5">
+              {snap.table.map((t) => (
+                <button className="st5-row" key={t.rank} onClick={() => onPick(t.team, snap.league)}>
+                  <span className="st5-rk">{t.rank}</span>
+                  {t.logo ? <img src={t.logo} alt="" /> : <span className="st5-ph" />}
+                  <span className="st5-nm">{t.team}</span>
+                  <span className="st5-bar"><span style={{ width: `${Math.max(4, (t.points / top) * 100)}%` }} /></span>
+                  <span className="st5-gap">{t.rank === 1 ? "—" : `-${top - t.points}`}</span>
+                  <b className="st5-pts">{t.points}</b>
                 </button>
               ))}
             </div>
-          </>
-        );
-      })()}
-
-      {/* 이적 속보 + 감독 교체 */}
-      <div className="hub-two">
-        <div>
-          {sec("TRANSFER WIRE", "이적 속보")}
-          <div className="card hub-list">
-            {d.buzz.map((b, i) => (
-              <a className="hub-buzz" href={b.link || undefined} target="_blank" rel="noopener noreferrer" key={i}>
-                <span className={`hub-tier ${b.tier}`}>{b.tier === "agreed" ? "DONE" : "RUMOUR"}</span>
-                <span className="hub-buzz-t">{b.title}</span>
-                <span className="hub-buzz-src">{tag(b.league_name)} {b.source}</span>
-              </a>
-            ))}
-            {d.buzz.length === 0 && <div className="mgr-meta">No transfer news</div>}
-          </div>
-        </div>
-        <div>
-          {sec("MANAGER MOVES", "감독 교체")}
-          <div className="card hub-list">
-            {d.manager_changes.map((c, i) => (
-              <button className="hub-mgr" key={i} onClick={() => onPick(c.team, c.league)}>
-                {c.photo ? <img className="hub-mgr-ph" src={c.photo} alt="" /> : (c.logo && <img className="hub-mgr-ph" src={c.logo} alt="" />)}
-                <div className="hub-mgr-body">
-                  <div className="hub-mgr-team">{c.team} {tag(c.league_name)}</div>
-                  <div className="hub-mgr-ch">
-                    <span className="hub-mgr-prev">{c.previous}</span>
-                    <Arrow color={accent} /><b>{c.current}</b>
-                  </div>
-                </div>
-              </button>
-            ))}
-            {d.manager_changes.length === 0 && <div className="mgr-meta">No manager changes</div>}
-          </div>
-        </div>
+          </section>
+        )}
       </div>
 
-      {/* 부상 속보 + 곧 FA */}
-      <div className="hub-two">
-        <div>
-          {sec("INJURY WATCH", "부상 속보")}
-          <div className="card hub-list">
-            {d.injuries.map((p, i) => (
-              <button className="hub-plr" key={i} onClick={() => onPick(p.club, p.league)}>
-                {p.photo ? <img className="hub-plr-ph" src={p.photo} alt="" /> : <span className="hub-plr-ph ph" />}
-                <div className="hub-plr-body">
-                  <div className="hub-plr-nm">{p.player} {tag(p.league_name)}</div>
-                  <div className="hub-plr-sub">{p.club_logo && <img src={p.club_logo} alt="" />}{p.club} · {p.injury}</div>
-                </div>
-                <span className={`hub-inj ${p.event}`}>{p.event === "return" ? "복귀" : "부상"}</span>
+      <div className="h5-row">
+        <section className="card h5-card">
+          <SectionHead title="여름 빅딜 TOP" meta="이적료 순 · 8개 리그" />
+          <div className="dl5-list">
+            {d.top_deals.slice(0, dealsMore ? 12 : 6).map((x, i) => (
+              <button className="dl5" key={x.player + i} onClick={() => onPick(x.to, x.league)}>
+                <span className="pr5-rk">{i + 1}</span>
+                {x.photo ? <img className="dl5-ph" src={x.photo} alt="" /> : <span className="dl5-ph" />}
+                <span className="dl5-who"><b>{x.player}</b>
+                  <span className="dl5-route">{x.from || "—"}<svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                    {x.to_logo && <img src={x.to_logo} alt="" />}<em>{x.to}</em></span>
+                </span>
+                <span className="dl5-pos" title={x.pos}>{posShort(x.pos)}</span>
+                <b className="dl5-fee">{feeLabel(x.fee_eur, x.fee_text)}</b>
               </button>
             ))}
-            {d.injuries.length === 0 && <div className="mgr-meta">No injury updates</div>}
+            {d.top_deals.length === 0 && <p className="empty5">이번 창 영구 이적 없음</p>}
           </div>
-        </div>
-        <div>
-          {sec("CONTRACT COUNTDOWN", "곧 FA · 계약 만료 임박")}
-          <div className="card hub-list">
-            {d.contracts.map((p, i) => (
-              <button className="hub-plr" key={i} onClick={() => onPick(p.club, p.league)}>
-                {p.photo ? <img className="hub-plr-ph" src={p.photo} alt="" /> : <span className="hub-plr-ph ph" />}
-                <div className="hub-plr-body">
-                  <div className="hub-plr-nm">{p.player} {tag(p.league_name)}</div>
-                  <div className="hub-plr-sub">{p.club_logo && <img src={p.club_logo} alt="" />}{p.club} · {fmtEur(p.value_eur)}</div>
-                </div>
-                <span className="hub-plr-ovr" style={{ color: tier(p.ovr).light }}>{p.ovr}</span>
-                <span className="hub-plr-until" title={p.until}>{p.until ? `${p.until.slice(0, 7).replace("-", ".")} 만료` : ""}</span>
+          {d.top_deals.length > 6 && <button className="more5" onClick={() => setDealsMore((v) => !v)}>{dealsMore ? "접기" : `${d.top_deals.length - 6}건 더 보기`}</button>}
+        </section>
+
+        <section className="card h5-card h5-side">
+          <SectionHead title="주의 보드" meta={pins.length ? "내 팀 먼저" : "팀 화면 ☆ 로 내 팀 고정"} />
+          <Tabs items={[{ k: "all" as const, label: "전체" }, { k: "inj" as const, label: "부상·복귀" }, { k: "con" as const, label: "계약 만료" }]} cur={watch} onChange={setWatch} />
+          <div className="pr5-list">
+            {wList.slice(0, 7).map((w) => (
+              <PlayerRow key={w.key} onPick={onPick}
+                r={{ key: w.key, player: w.player, club: w.club, club_logo: w.club_logo, league: w.league, photo: w.photo, sub: w.sub, why: "",
+                  right: <span className={`bdg ${w.tone}`}>{pinned.has(w.club) ? "★ " : ""}{w.badge}</span> }} />
+            ))}
+            {wList.length === 0 && <p className="empty5">표시할 항목이 없습니다.</p>}
+          </div>
+        </section>
+      </div>
+
+      <div className="h5-row">
+        <section className="card h5-card">
+          <SectionHead title="이적 소식" meta="루머 · 합의 · 최신순" />
+          <div className="bz5-list">
+            {d.buzz.slice(0, 8).map((b, i) => (
+              <a className="bz5" key={i} href={b.link || undefined} target="_blank" rel="noopener noreferrer">
+                <span className={`bdg ${b.tier === "agreed" ? "up" : "neutral"}`}>{b.tier === "agreed" ? "합의" : "루머"}</span>
+                <span className="bz5-t">{b.title}</span>
+                <span className="bz5-src">{lgKo(b.league) || b.league_name} · {b.source}</span>
+              </a>
+            ))}
+            {d.buzz.length === 0 && <p className="empty5">새 이적 소식 없음</p>}
+          </div>
+        </section>
+        <section className="card h5-card h5-side">
+          <SectionHead title="감독 교체" meta={`${d.manager_changes.length}건`} />
+          <div className="pr5-list">
+            {d.manager_changes.slice(0, 7).map((c, i) => (
+              <button className="mg5" key={i} onClick={() => onPick(c.team, c.league)}>
+                {c.photo ? <img className="mg5-ph" src={c.photo} alt="" /> : c.logo ? <img className="mg5-ph logo" src={c.logo} alt="" /> : <span className="mg5-ph" />}
+                <span className="mg5-who"><b>{c.current}</b><span>{c.logo && <img src={c.logo} alt="" />}{c.team} · {c.previous} 후임</span></span>
+                <span className="mg5-date">{c.changed_at.slice(5).replace("-", ".")}</span>
               </button>
             ))}
-            {d.contracts.length === 0 && <div className="mgr-meta">No expiring contracts</div>}
+            {d.manager_changes.length === 0 && <p className="empty5">감독 교체 없음</p>}
           </div>
-        </div>
+        </section>
       </div>
     </div>
   );

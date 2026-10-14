@@ -2796,6 +2796,7 @@ def _compute_hub_body() -> bytes:
     # 홈 상단 요약 — 아래 목록들은 리그별 상위 몇 건만 담으므로 전체 수치는 따로 센다
     summary = {"spend_eur": 0.0, "signings": 0, "manager_changes": 0, "injured": 0}
     prospect_c, veteran_c, value_c = [], [], []      # 유망주 U21 · 베테랑 32+ · 저평가 가성비
+    mover_c = []                                     # 무엇이 바뀌었나 — OVR 변화(2주 전 또는 지난 시즌 대비)
     squad2league: dict[str, str] = {}                # 시장가치 급등의 리그 매핑용
     for lg in leagues:
         lname = _lname(lg)
@@ -2841,7 +2842,7 @@ def _compute_hub_body() -> bytes:
         if st is not None and "rank" in st.columns:
             for _sq in st.get("squad", pd.Series(dtype=str)).astype(str):
                 squad2league.setdefault(_sq, lg)
-            for _, r in st.sort_values("rank").head(4).iterrows():
+            for _, r in st.sort_values("rank").head(6).iterrows():
                 sq = str(r.get("squad") or "")
                 table.append({"rank": int(_num(r.get("rank"))), "team": sq,
                               "logo": tm.team_logo(sq), "points": int(_num(r.get("points")))})
@@ -2878,6 +2879,17 @@ def _compute_hub_body() -> bytes:
                 exp["_mv"] = pd.to_numeric(exp.get("market_value_eur"), errors="coerce").fillna(0)
                 for _, r in exp.sort_values("_mv", ascending=False).head(6).iterrows():
                     contract_c.append((r, lg))
+            # 무엇이 바뀌었나 — 기록이 2주치 쌓이면 '2주 전 대비', 그 전엔 '지난 시즌 대비'(300분+ 뛴 선수만)
+            for _, r in p[p["_mn"] >= max(360.0, _mm(600, lg))].iterrows():
+                # 골키퍼 OVR 은 선방률 표본에 크게 흔들려 시즌 초엔 ±10 이 흔하다 → 900분(10경기)부터
+                if rv3.line_of_row(r) == "GK" and r["_mn"] < 900:
+                    continue
+                o = _player_ovr(r)
+                t_ = _trend(r, lg, ovr=o)
+                if t_["ovr_d"]:
+                    mover_c.append((r, lg, "2w", int(t_["ovr_d"]), o, o - int(t_["ovr_d"])))
+                elif t_["ovr_prev"] is not None and o != t_["ovr_prev"]:
+                    mover_c.append((r, lg, "season", o - int(t_["ovr_prev"]), o, int(t_["ovr_prev"])))
 
         cur_inj = ds.read_table("transfermarkt_injuries", league=lg)
         summary["injured"] += 0 if cur_inj is None else int(len(cur_inj))
@@ -2943,6 +2955,17 @@ def _compute_hub_body() -> bytes:
     contract_c.sort(key=lambda t: -_num(t[0].get("market_value_eur")))
     contracts_out = _interleave([_pcard(r, lg, until=str(r.get("tm_contract_until") or "")[:10], value_eur=_num(r.get("market_value_eur"))) for r, lg in contract_c], 12)
 
+    # 무엇이 바뀌었나 — 2주 기록이 하나라도 있으면 그 기준만, 아니면 지난 시즌 대비
+    basis = "2w" if any(t[2] == "2w" for t in mover_c) else "season"
+    mv = [t for t in mover_c if t[2] == basis]
+
+    def _mcard(t):
+        r, lg, b, d, o, prev = t
+        return _pcard(r, lg, delta=d, ovr_prev=prev, basis=b, rating=round(_num(r.get("ss_rating")), 2),
+                      minutes=int(_num(r.get("minutes"))))
+    movers_up = _interleave([_mcard(t) for t in sorted((t for t in mv if t[3] > 0), key=lambda t: (-t[3], -t[4]))], 12)
+    movers_down = _interleave([_mcard(t) for t in sorted((t for t in mv if t[3] < 0), key=lambda t: (t[3], -t[4]))], 12)
+
     # 시장가치 급등 — market_value_history 델타(최초 vs 최신 스냅샷). 스냅샷 누적될수록 정확.
     risers = []
     try:
@@ -2974,6 +2997,7 @@ def _compute_hub_body() -> bytes:
               "injuries": _interleave(injuries, 12), "hot_form": hot_form,
               "goal_leaders": goal_leaders, "prospects": prospects, "veterans": veterans,
               "value_picks": value_picks, "risers": risers, "contracts": contracts_out, "summary": summary,
+              "movers_up": movers_up, "movers_down": movers_down, "movers_basis": basis,
               # 스냅샷 생성 시각 — scripts/watchdog.py 가 운영 홈이 멈췄는지 본다
               "generated_at": datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds")}
     return json.dumps(result, ensure_ascii=False).encode("utf-8")

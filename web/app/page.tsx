@@ -19,6 +19,7 @@ import TransferTab from "@/components/TransferTab";
 import ScoutDock from "@/components/ScoutDock";
 import NewsTab from "@/components/NewsTab";
 import { PeekProvider } from "@/components/PlayerPeek";
+import { MatchPreviewProvider } from "@/components/MatchPreview";
 import { SkelTab } from "@/components/Skeleton";
 
 const DEFAULT_TEAM: Record<string, string> = { EPL: "Arsenal", LaLiga: "Barcelona", SerieA: "Inter", Bundesliga: "Bayern Munich", Ligue1: "PSG", LigaPortugal: "Sporting CP", Eredivisie: "PSV", BelgianProLeague: "Club Brugge" };
@@ -107,7 +108,8 @@ export default function Page() {
     return () => { alive = false; };
   }, [sel, urlReady]);
 
-  const accent = ov ? toAccent(ov.color) : "#ff4d5e";
+  // 팀 색은 팀 화면에서만 — 전체·리그 홈은 브랜드 색(예전엔 홈도 마지막 팀(아스날) 빨강으로 물들었다)
+  const accent = !home && ov ? toAccent(ov.color) : "#ff4d5e";
   const meta = TABS.find((t) => t.key === tab)!;
 
   const isPromoted = !!nextS?.promoted?.includes(sel);
@@ -165,7 +167,8 @@ export default function Page() {
 
   return (
     <PeekProvider onOpenPlayer={(club, lg, p) => pickPlayer(club, lg, p)} onOpenTeam={(club, lg) => pickLeagueTeam(club, lg)}>
-    <div className={`app${navOpen ? " nav-open" : ""}`} style={{ ["--accent" as any]: accent }}>
+    <MatchPreviewProvider>
+    <div className={`app${navOpen ? " nav-open" : ""}${home ? " at-home" : ""}`} style={{ ["--accent" as any]: accent }}>
       <div className="app-atmosphere" aria-hidden="true" />
       <button className="nav-scrim" aria-label="메뉴 닫기" onClick={() => setNavOpen(false)} />
       <Sidebar teams={teams} sel={sel}
@@ -174,7 +177,7 @@ export default function Page() {
           setHome(true);
           setNavOpen(false);
         }}
-        league={league} onLeague={switchLeague} />
+        league={league} onLeague={switchLeague} onPickTeam={pickLeagueTeam} />
       <main className="main">
         <div className="workspace-shell">
           <div className="workspace-rail">
@@ -190,8 +193,9 @@ export default function Page() {
             <StatusBar accent={accent} ctx={ctx} league={league} />
           </div>
 
-          <header className="workspace-header">
-            <div className="workspace-context">
+          <header className={`workspace-header${home ? " is-home" : ""}`}>
+            {/* 홈은 대시보드가 자기 제목을 갖는다('오늘의 축구'·리그 이름) — 여기선 검색만 */}
+            {!home && <div className="workspace-context">
               <div className="workspace-kicker">
                 <span className="context-pulse" />
                 {home ? "LEAGUE INTELLIGENCE" : `${leagueLabel} · CLUB WORKSPACE`}
@@ -213,7 +217,7 @@ export default function Page() {
                   {win?.is_open ? `${win.label} ${win.kr ?? ""} WINDOW` : `${seasonLabel} SEASON`}
                 </div>
               </div>
-            </div>
+            </div>}
             <div className="global-search-wrap">
               <span className="search-caption">GLOBAL DATABASE</span>
               <GlobalSearch accent={accent} onPickPlayer={pickPlayer} onPickTeam={pickLeagueTeam} />
@@ -237,6 +241,7 @@ export default function Page() {
       {/* 전역 AI 어시스턴트 — 어느 탭/팀에서도 우하단 버블(⌘K)로 열림, 컨텍스트=현재 팀 */}
       <ScoutDock team={home ? "" : sel} league={league} accent={accent} onNavigate={pickLeagueTeam} />
     </div>
+    </MatchPreviewProvider>
     </PeekProvider>
   );
 }

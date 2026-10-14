@@ -6,20 +6,13 @@ import AllDashboard from "./AllDashboard";
 import { Skel, SkelCards } from "./Skeleton";
 import { phaseOf, seasonStatusText } from "@/lib/season";
 import LeagueFixtures from "./LeagueFixtures";
+import SectionHead from "./SectionHead";
 
 const eurM = (v: number) => (v >= 1e6 ? `€${Math.round(v / 1e6)}M` : v > 0 ? `€${Math.round(v / 1e3)}K` : "€0");
 
-function Sec({ en, kr, accent, right }: { en: string; kr: string; accent: string; right?: ReactNode }) {
-  return (
-    <div className="sec-head">
-      <span className="sec-bar" style={{ background: accent }} />
-      <div className="sec-txt">
-        <div className="sec-en">{en}</div>
-        <div className="sec-kr">{kr}</div>
-      </div>
-      {right && <div className="sec-right">{right}</div>}
-    </div>
-  );
+// 섹션 머리 — 디자인 v5 공통형(한글 제목 + 작은 영문 메타)
+function Sec({ en, kr, right }: { en: string; kr: string; accent?: string; right?: ReactNode }) {
+  return <SectionHead title={kr} meta={en} right={right} />;
 }
 
 type LeagueOpt = { key: string; label: string };
@@ -38,24 +31,21 @@ export default function HomeDashboard({ accent, onPickTeam, onPickLeagueTeam, le
   const opts: LeagueOpt[] = leagues.length ? leagues : [{ key: league, label: leagueLabel }];
   const pickTL = onPickLeagueTeam ?? ((t: string) => onPickTeam(t));
   const switcher = (
-    <div className="comp-seg">
-      <button className={comp === "all" ? "active" : ""} onClick={() => setComp("all")}
-        style={comp === "all" ? { ["--tc" as any]: accent } : undefined}>🌐 전체</button>
+    <div className="comp-seg chips5">
+      <button className={comp === "all" ? "active" : ""} onClick={() => setComp("all")}>전체</button>
       {opts.map((l) => {
         const on = comp === "league" && league === l.key;
         return (
           <button key={l.key} className={on ? "active" : ""}
-            onClick={() => { setComp("league"); onLeague?.(l.key); }}
-            style={on ? { ["--tc" as any]: accent } : undefined}>{l.label}</button>
+            onClick={() => { setComp("league"); onLeague?.(l.key); }}>{l.label}</button>
         );
       })}
-      <button className={`wc${comp === "WC" ? " active" : ""}`} onClick={() => setComp("WC")} title="2026 월드컵"
-        style={comp === "WC" ? { ["--tc" as any]: accent } : undefined}><span className="wc-dot" />WC 26</button>
+      <button className={`wc${comp === "WC" ? " active" : ""}`} onClick={() => setComp("WC")} title="2026 월드컵"><span className="wc-dot" />WC 26</button>
     </div>
   );
 
   if (comp === "all") return (
-    <div className="fade home"><div className="wc-topbar">{switcher}</div><AllDashboard accent={accent} onPick={pickTL} /></div>
+    <div className="fade home"><AllDashboard accent={accent} onPick={pickTL} switcher={switcher} /></div>
   );
   if (comp === "WC") return (
     <div className="fade home"><div className="wc-topbar">{switcher}</div><WorldCup accent={accent} onPickTeam={pickTL} /></div>

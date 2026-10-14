@@ -14,6 +14,7 @@ import { phaseOf } from "@/lib/season";
 import { useEffect, useState } from "react";
 import { TrendArrow } from "./Trend";
 import NextMatch from "./NextMatch";
+import { usePins } from "@/lib/pins";
 
 function repStars(rank?: number | null): string {
   if (!rank) return "★★★☆☆";
@@ -56,7 +57,8 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
     <div className="fade">
       <TransferTicker tin={ov.transfers.in} tout={ov.transfers.out} accent={accent}
         label={ov.window?.is_open ? `${ov.window.label} ${ov.window.kr ?? ""} 이적` : `${ov.data_season} 이적`} />
-      {ov.window && (
+      {/* 이적시장이 열렸을 때만 — 닫혀 있으면 상단 상태 줄과 같은 말의 반복이었다 */}
+      {ov.window?.is_open && (
         <div className="season-note">
           <b>{ov.data_season} 시즌 {phaseOf(ov.window) === "in_season" ? "진행 중" : "종료"}</b>
           {ov.window.is_open
@@ -77,6 +79,7 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
           <div className="form-row">
             {ov.form.length === 0 && <span className="full">최근 경기 없음</span>}
             {ov.form.map((f, i) => <div key={i} className={`dot ${f}`}>{f}</div>)}
+            <PinButton team={ov.team} league={ov.league} logo={ov.logo} />
           </div>
         </div>
         <div className="ovr-badge" style={{ borderColor: hexA(t.light, 0.5) }}>
@@ -278,5 +281,17 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
         </>
       )}
     </div>
+  );
+}
+
+// 내 팀 고정 — 사이드바 '내 팀'·홈 주의 보드가 먼저 보여 준다(이 브라우저에만 저장)
+function PinButton({ team, league, logo }: { team: string; league: string; logo?: string }) {
+  const { isPinned, toggle } = usePins();
+  const on = isPinned(team);
+  return (
+    <button className={`pin-btn${on ? " on" : ""}`} aria-pressed={on} onClick={() => toggle({ team, league, logo })}
+      title={on ? "내 팀에서 빼기" : "내 팀으로 고정 — 사이드바와 홈에서 먼저 보여 줍니다"}>
+      {on ? "★ 내 팀" : "☆ 내 팀 고정"}
+    </button>
   );
 }

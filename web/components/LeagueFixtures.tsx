@@ -2,22 +2,24 @@
 import { useEffect, useState } from "react";
 import { getFixtures, type Fixture } from "@/lib/api";
 import MatchCard from "./MatchCard";
+import { BIG } from "@/lib/match";
+import { useMatchPreview } from "@/lib/matchPreview";
 
 // 리그 탭 '이번 주 경기' — 위: 그 리그 빅매치 강조 카드, 아래: 날짜별 전 경기(소속 팀의 유럽대회 포함).
 // 일정은 클라우드 daily_data 가 매일 갱신, 순위·폼·D-day 는 열 때 계산(src/match_center.py).
-const BIG = 35;   // 빅매치 기준 점수(서버 BIG_MIN 과 같음)
 
 function Row({ m, league, onPick }: { m: Fixture; league: string; onPick: (t: string, lg?: string) => void }) {
   const big = m.big >= BIG;
+  const preview = useMatchPreview();
   const side = (s: Fixture["home"]) => (
-    <button className="lf-team" disabled={!s.league} onClick={() => s.league && onPick(s.team, s.league)}>
+    <button className="lf-team" disabled={!s.league} onClick={(e) => { e.stopPropagation(); if (s.league) onPick(s.team, s.league); }}>
       {s.logo ? <img src={s.logo} alt="" /> : <span className="lf-ph" style={{ background: s.color }} />}
       <span className="lf-name">{s.team}</span>
       {s.rank && s.league === league ? <em>{s.rank}</em> : null}
     </button>
   );
   return (
-    <div className={`lf-row${big ? " big" : ""}`}>
+    <div className={`lf-row${big ? " big" : ""}${preview ? " clickable" : ""}`} onClick={() => preview?.(m)} title="매치 프리뷰">
       <span className="lf-time">{m.kst.split(" ")[1] ?? ""}</span>
       <div className="lf-match">{side(m.home)}<span className="lf-vs">vs</span>{side(m.away)}</div>
       <span className="lf-side">
