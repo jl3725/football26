@@ -91,10 +91,13 @@ def from_page() -> list[dict]:
 
 
 def main() -> int:
+    raw, src = [], "api"
     try:
-        raw, src = from_api(), "api"
+        raw = from_api()
     except Exception as e:  # noqa: BLE001
-        print(f"[clubelo] API 실패({type(e).__name__}) — 웹 표로", flush=True)
+        print(f"[clubelo] API 실패({type(e).__name__})", flush=True)
+    if not raw:                       # API 가 응답은 해도 빈 표를 줄 때가 있다(2026-10-15 아침) → 웹 표로
+        print("[clubelo] API 결과 없음 — 웹 표로", flush=True)
         raw, src = from_page(), "page"
     ours = _our_teams()
     names = list(ours)
