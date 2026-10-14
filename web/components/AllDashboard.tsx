@@ -1,7 +1,7 @@
 "use client";
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { getHomeAll, getFixtures, getHubPulse, fmtEur, feeLabel, type HomeAll, type Fixture, type HubMover, type HubPulse, type Trend } from "@/lib/api";
-import { ResultsTicker, WatchGrid, TitleRace, OverUnder } from "./HubPulse";
+import { ResultsTicker, WatchGrid, TitleRace, OverUnder, GoldenBoot, TeamOfSeason, InjuryImpact } from "./HubPulse";
 import { Skel, SkelCards } from "./Skeleton";
 import CountUp from "./CountUp";
 import MatchCard, { MatchHero } from "./MatchCard";
@@ -115,7 +115,6 @@ export default function AllDashboard({ onPick, switcher }: { accent?: string; on
     { k: "down", label: "FALLERS", rows: (d.movers_down ?? []).map(moverRow) },
     { k: "form", label: "HOT FORM", rows: d.hot_form.map((p) => ({ key: p.player + p.club, player: p.player, club: p.club, club_logo: p.club_logo, league: p.league, photo: p.photo, sub: sub(p.club, p.pos), why: `평균 평점 ${p.rating.toFixed(2)}`, ovr: p.ovr })) },
     { k: "prospect", label: "PROSPECTS", rows: d.prospects.map((p) => ({ key: p.player + p.club, player: p.player, club: p.club, club_logo: p.club_logo, league: p.league, photo: p.photo, sub: sub(p.club, p.pos), why: `${p.age}세 · 평점 ${p.rating.toFixed(2)}`, ovr: p.ovr })) },
-    { k: "goal", label: "GOALS", rows: d.goal_leaders.map((p) => ({ key: p.player + p.club, player: p.player, club: p.club, club_logo: p.club_logo, league: p.league, photo: p.photo, sub: sub(p.club), why: `${p.goals}골 ${p.assists}도움`, ovr: p.ovr })) },
     { k: "value", label: "VALUE PICKS", rows: d.value_picks.map((p) => ({ key: p.player + p.club, player: p.player, club: p.club, club_logo: p.club_logo, league: p.league, photo: p.photo, sub: sub(p.club, p.pos), why: `시장가치 ${fmtEur(p.value_eur)} · 평점 ${p.rating.toFixed(2)}`, ovr: p.ovr })) },
     { k: "riser", label: "MARKET ▲", rows: d.risers.map((p) => ({ key: p.player + p.club, player: p.player, club: p.club, club_logo: p.club_logo, league: p.league, photo: p.photo, sub: sub(p.club), why: `${fmtEur(p.value_eur)}`, right: <span className="td up">▲{p.pct}%</span> })) },
   ].filter((t) => t.rows.length > 0);
@@ -126,6 +125,8 @@ export default function AllDashboard({ onPick, switcher }: { accent?: string; on
   const snap = snaps.find((s) => s.league === lg) ?? snaps[0];
   const top = snap?.table[0]?.points || 1;
   const race = pulse?.race.find((r) => r.league === snap?.league);
+  const tots = (snap && d.tots?.[snap.league]) || [];
+  const boot = (snap && d.golden_boot?.[snap.league]) || [];
 
   // ── 주의 보드: 부상·복귀 + 계약 만료, 내 팀 먼저 ──
   type W = { key: string; player: string; club: string; club_logo: string; league: string; photo: string; sub: string; badge: string; tone: string; kind: "inj" | "con" };
@@ -196,37 +197,52 @@ export default function AllDashboard({ onPick, switcher }: { accent?: string; on
       )}
 
       {snap && (
-        <div className="h5-row">
-          <section className="card h5-card">
-            <SectionHead title="TITLE RACE" kr="우승 경쟁" meta="상위 4팀 누적 승점" />
-            <div className="seg5">
+        <section className="h5-sec">
+          <SectionHead title="LEAGUE FOCUS" kr="리그 집중" meta="우승 경쟁 · 순위 · 베스트 XI · 득점왕"
+            right={<div className="seg5 seg5-head">
               {snaps.map((x) => <button key={x.league} className={x.league === snap.league ? "on" : ""} onClick={() => setLg(x.league)}>{lgEn(x.league) || x.league_name}</button>)}
+            </div>} />
+          <div className="h5-stack">
+            <div className="h5-row">
+              <section className="card h5-card">
+                <SectionHead title="TITLE RACE" kr="우승 경쟁" meta="상위 4팀 누적 승점" />
+                {race && race.teams.length > 0 ? <TitleRace teams={race.teams} league={snap.league} onPick={onPick} />
+                  : pulse ? <p className="empty5">경기 기록 없음</p> : <Skel h={220} r={12} />}
+              </section>
+              <section className="card h5-card h5-side">
+                <SectionHead title="STANDINGS" kr="리그 순위" meta="1위와 승점 차" />
+                <div className="st5">
+                  {snap.table.map((t) => (
+                    <button className="st5-row" key={t.rank} onClick={() => onPick(t.team, snap.league)}>
+                      <span className="st5-rk">{t.rank}</span>
+                      {t.logo ? <img src={t.logo} alt="" /> : <span className="st5-ph" />}
+                      <span className="st5-nm">{t.team}</span>
+                      <span className="st5-bar"><span style={{ width: `${Math.max(4, (t.points / top) * 100)}%` }} /></span>
+                      <span className="st5-gap">{t.rank === 1 ? "—" : `-${top - t.points}`}</span>
+                      <b className="st5-pts">{t.points}</b>
+                    </button>
+                  ))}
+                </div>
+              </section>
             </div>
-            {race && race.teams.length > 0 ? <TitleRace teams={race.teams} league={snap.league} onPick={onPick} />
-              : pulse ? <p className="empty5">경기 기록 없음</p> : <Skel h={220} r={12} />}
-          </section>
-          <section className="card h5-card h5-side">
-            <SectionHead title="STANDINGS" kr="리그 순위" meta={`${lgEn(snap.league) || snap.league_name} · 1위와 승점 차`} />
-            <div className="st5">
-              {snap.table.map((t) => (
-                <button className="st5-row" key={t.rank} onClick={() => onPick(t.team, snap.league)}>
-                  <span className="st5-rk">{t.rank}</span>
-                  {t.logo ? <img src={t.logo} alt="" /> : <span className="st5-ph" />}
-                  <span className="st5-nm">{t.team}</span>
-                  <span className="st5-bar"><span style={{ width: `${Math.max(4, (t.points / top) * 100)}%` }} /></span>
-                  <span className="st5-gap">{t.rank === 1 ? "—" : `-${top - t.points}`}</span>
-                  <b className="st5-pts">{t.points}</b>
-                </button>
-              ))}
+            <div className="h5-row">
+              <section className="card h5-card">
+                <SectionHead title="TEAM OF THE SEASON" kr="시즌 베스트 XI" meta="4-3-3 · 시즌 평균 평점" />
+                {tots.length ? <TeamOfSeason players={tots} league={snap.league} /> : <p className="empty5">출전 기록이 아직 부족합니다</p>}
+              </section>
+              <section className="card h5-card h5-side">
+                <SectionHead title="GOLDEN BOOT" kr="득점왕 레이스" meta="골 · 도움 · 골당 출전 시간" />
+                <GoldenBoot rows={boot} onPick={onPick} />
+              </section>
             </div>
-          </section>
-        </div>
+          </div>
+        </section>
       )}
 
       <div className="h5-row">
         {curMv && (
           <section className="card h5-card">
-            <SectionHead title="MOVERS" kr="무엇이 바뀌었나" meta={curMv.k === "up" || curMv.k === "down" ? `OVR · ${basisTxt} 대비` : "8개 리그"} />
+            <SectionHead title="MOVERS" kr="선수 동향" meta={curMv.k === "up" || curMv.k === "down" ? `OVR · ${basisTxt} 대비` : "8개 리그"} />
             <Tabs items={MV.map((t) => ({ k: t.k, label: t.label }))} cur={curMv.k} onChange={(k) => { setMv(k); setMvMore(false); }} />
             <div className="pr5-list">{mvRows.map((r, i) => <PlayerRow key={r.key} r={r} rank={i + 1} onPick={onPick} />)}</div>
             {curMv.rows.length > 6 && <button className="more5" onClick={() => setMvMore((v) => !v)}>{mvMore ? "SHOW LESS" : `SHOW ${curMv.rows.length - 6} MORE`}</button>}
@@ -235,6 +251,25 @@ export default function AllDashboard({ onPick, switcher }: { accent?: string; on
         <section className="card h5-card h5-side">
           <SectionHead title="OVER / UNDER" kr="전력 대비 성적" meta="팀 OVR 순위 vs 실제 순위" />
           {pulse ? <OverUnder over={pulse.over} under={pulse.under} onPick={onPick} /> : <Skel h={260} r={12} />}
+        </section>
+      </div>
+
+      <div className="h5-row">
+        <section className="card h5-card">
+          <SectionHead title="INJURY IMPACT" kr="부상 타격" meta="부상자 때문에 줄어든 베스트 XI 평균 전력" />
+          <InjuryImpact rows={d.injury_impact ?? []} onPick={onPick} />
+        </section>
+        <section className="card h5-card h5-side">
+          <SectionHead title="WATCHLIST" kr="주의 보드" meta={pins.length ? "내 팀 먼저" : "팀 화면 ☆ 로 내 팀 고정"} />
+          <Tabs items={[{ k: "all" as const, label: "ALL" }, { k: "inj" as const, label: "INJURIES" }, { k: "con" as const, label: "CONTRACTS" }]} cur={watch} onChange={setWatch} />
+          <div className="pr5-list">
+            {wList.slice(0, 7).map((w) => (
+              <PlayerRow key={w.key} onPick={onPick}
+                r={{ key: w.key, player: w.player, club: w.club, club_logo: w.club_logo, league: w.league, photo: w.photo, sub: w.sub, why: "",
+                  right: <span className={`bdg ${w.tone}`}>{pinned.has(w.club) ? "★ " : ""}{w.badge}</span> }} />
+            ))}
+            {wList.length === 0 && <p className="empty5">표시할 항목이 없습니다.</p>}
+          </div>
         </section>
       </div>
 
@@ -258,35 +293,6 @@ export default function AllDashboard({ onPick, switcher }: { accent?: string; on
           </div>
           {d.top_deals.length > 6 && <button className="more5" onClick={() => setDealsMore((v) => !v)}>{dealsMore ? "SHOW LESS" : `SHOW ${d.top_deals.length - 6} MORE`}</button>}
         </section>
-
-        <section className="card h5-card h5-side">
-          <SectionHead title="WATCHLIST" kr="주의 보드" meta={pins.length ? "내 팀 먼저" : "팀 화면 ☆ 로 내 팀 고정"} />
-          <Tabs items={[{ k: "all" as const, label: "ALL" }, { k: "inj" as const, label: "INJURIES" }, { k: "con" as const, label: "CONTRACTS" }]} cur={watch} onChange={setWatch} />
-          <div className="pr5-list">
-            {wList.slice(0, 7).map((w) => (
-              <PlayerRow key={w.key} onPick={onPick}
-                r={{ key: w.key, player: w.player, club: w.club, club_logo: w.club_logo, league: w.league, photo: w.photo, sub: w.sub, why: "",
-                  right: <span className={`bdg ${w.tone}`}>{pinned.has(w.club) ? "★ " : ""}{w.badge}</span> }} />
-            ))}
-            {wList.length === 0 && <p className="empty5">표시할 항목이 없습니다.</p>}
-          </div>
-        </section>
-      </div>
-
-      <div className="h5-row">
-        <section className="card h5-card">
-          <SectionHead title="TRANSFER WIRE" kr="이적 소식" meta="최신순" />
-          <div className="bz5-list">
-            {d.buzz.slice(0, 8).map((b, i) => (
-              <a className="bz5" key={i} href={b.link || undefined} target="_blank" rel="noopener noreferrer">
-                <span className={`bdg ${b.tier === "agreed" ? "up" : "neutral"}`}>{b.tier === "agreed" ? "DONE" : "RUMOUR"}</span>
-                <span className="bz5-t">{b.title}</span>
-                <span className="bz5-src">{lgEn(b.league) || b.league_name} · {b.source}</span>
-              </a>
-            ))}
-            {d.buzz.length === 0 && <p className="empty5">새 이적 소식 없음</p>}
-          </div>
-        </section>
         <section className="card h5-card h5-side">
           <SectionHead title="MANAGER MOVES" kr="감독 교체" meta={`${d.manager_changes.length}건`} />
           <div className="pr5-list">
@@ -301,6 +307,20 @@ export default function AllDashboard({ onPick, switcher }: { accent?: string; on
           </div>
         </section>
       </div>
+
+      <section className="card h5-card">
+        <SectionHead title="TRANSFER WIRE" kr="이적 소식" meta="최신순" />
+        <div className="bz5-list">
+          {d.buzz.slice(0, 10).map((b, i) => (
+            <a className="bz5" key={i} href={b.link || undefined} target="_blank" rel="noopener noreferrer">
+              <span className={`bdg ${b.tier === "agreed" ? "up" : "neutral"}`}>{b.tier === "agreed" ? "DONE" : "RUMOUR"}</span>
+              <span className="bz5-t">{b.title}</span>
+              <span className="bz5-src">{lgEn(b.league) || b.league_name} · {b.source}</span>
+            </a>
+          ))}
+          {d.buzz.length === 0 && <p className="empty5">새 이적 소식 없음</p>}
+        </div>
+      </section>
     </div>
   );
 }

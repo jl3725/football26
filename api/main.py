@@ -2775,6 +2775,112 @@ _HUB_CACHE: dict = {"key": None, "body": None}
 _HUB_FILE = ds.DB_PATH.parent / "home_all.json"
 
 
+# ── 홈 리그 집중 보드(득점왕 레이스 · 시즌 베스트 XI · 부상 타격) — _compute_hub_body 가 리그마다 부른다 ──
+def _golden_boot(p, lg: str, n: int = 6) -> list[dict]:
+    """득점 순(동률은 도움 → 적은 출전시간). 90분당 득점도 함께."""
+    q = p[p["_g"] > 0].copy()
+    if q.empty:
+        return []
+    q["_a"] = pd.to_numeric(q.get("assists"), errors="coerce").fillna(0)
+    out = []
+    for _, r in q.sort_values(["_g", "_a", "_mn"], ascending=[False, False, True]).head(n).iterrows():
+        sq = str(r.get("squad") or "")
+        g, mn = int(r["_g"]), int(r["_mn"])
+        out.append({"player": str(r["player"]), "club": sq, "club_logo": tm.team_logo(sq), "goals": g,
+                    "assists": int(r["_a"]), "minutes": mn, "mpg": round(mn / g) if g else None,
+                    "ovr": _player_ovr(r), "photo": _photo(r), "league": lg})
+    return out
+
+
+# 4-3-3 자리(세로 경기장, x·y 는 0~100 — components/Pitch.tsx 좌표)
+_TOTS_SLOTS = [("ST", "FWD", 50, 10), ("LW", "FWD", 17, 18), ("RW", "FWD", 83, 18),
+               ("LCM", "MID", 27, 44), ("CM", "MID", 50, 50), ("RCM", "MID", 73, 44),
+               ("LB", "DEF", 11, 71), ("LCB", "DEF", 37, 77), ("RCB", "DEF", 63, 77), ("RB", "DEF", 89, 71),
+               ("GK", "GK", 50, 93)]
+
+
+def _team_of_season(p, lg: str) -> list[dict]:
+    """시즌 지금까지 베스트 XI — 평점(Sofascore 시즌 평균) 순, 리그 진행률만큼 줄인 최소 출전시간.
+    자리는 TM 세부 포지션(왼/오른쪽 구분)으로 채우고, 비면 같은 라인의 다음 선수로."""
+    q = p[(p["_mn"] >= max(270.0, _mm(600, lg))) & (p["_ss"] > 0)].copy()
+    if q.empty:
+        return []
+    q["_pos"] = q.get("tm_position", pd.Series("", index=q.index)).astype(str)
+    q["_b"] = q["_pos"].map(_fine_bucket)
+    q = q.sort_values("_ss", ascending=False)
+    used: set = set()
+
+    def take(pred):
+        for idx, r in q.iterrows():
+            if idx in used:
+                continue
+            if pred(r):
+                used.add(idx)
+                return r
+        return None
+
+    side = lambda r, w: w in r["_pos"].lower()  # noqa: E731
+    picks = {
+        "GK": take(lambda r: r["_b"] == "GK"),
+        "LB": take(lambda r: r["_b"] == "LB"), "RB": take(lambda r: r["_b"] == "RB"),
+        "LCB": take(lambda r: r["_b"] == "CB"), "RCB": take(lambda r: r["_b"] == "CB"),
+        "LCM": take(lambda r: r["_b"] == "CM"), "CM": take(lambda r: r["_b"] == "CM"), "RCM": take(lambda r: r["_b"] == "CM"),
+        "ST": take(lambda r: r["_b"] == "ST"),
+        "LW": take(lambda r: r["_b"] == "W" and side(r, "left")), "RW": take(lambda r: r["_b"] == "W" and side(r, "right")),
+    }
+    fallback = {"LB": ("CB", "LB", "RB"), "RB": ("CB", "RB", "LB"), "LCB": ("CB", "LB", "RB"), "RCB": ("CB", "LB", "RB"),
+                "LW": ("W", "ST"), "RW": ("W", "ST"), "ST": ("ST", "W"), "LCM": ("CM",), "CM": ("CM",), "RCM": ("CM",)}
+    for k, bs in fallback.items():
+        if picks.get(k) is None:
+            picks[k] = take(lambda r, bs=bs: r["_b"] in bs)
+    out = []
+    for slot, kind, x, y in _TOTS_SLOTS:
+        r = picks.get(slot)
+        if r is None:
+            continue
+        sq = str(r.get("squad") or "")
+        out.append({"slot": slot, "kind": kind, "x": x, "y": y, "player": str(r["player"]), "club": sq,
+                    "club_logo": tm.team_logo(sq), "rating": round(float(r["_ss"]), 2), "ovr": _player_ovr(r),
+                    "photo": _photo(r), "minutes": int(r["_mn"])})
+    return out
+
+
+def _injury_impact(p, cur_inj, lg: str) -> list[dict]:
+    """부상으로 잃은 전력 — 팀 베스트 XI 평균 강함(rv3.team_ratings 와 같은 식) 전체 vs 부상자 뺀 것.
+    이번 시즌 출전 기록이 있는 선수만 계산에 들어간다(시즌 내내 빠진 선수는 '지금 전력'에 원래 없음)."""
+    if cur_inj is None or cur_inj.empty or "squad" not in cur_inj.columns:
+        return []
+    inj = cur_inj.copy()
+    if "active" in inj.columns:
+        inj = inj[inj["active"].astype(str).str.lower().isin(["true", "1", "yes"])]
+    ids = {str(int(float(x))) for x in inj.get("tm_player_id", pd.Series(dtype=float)).dropna()}
+    from unidecode import unidecode  # noqa: PLC0415
+    names = {unidecode(str(x)).lower().strip() for x in inj["player"]}
+
+    def strength(r):
+        pl = rv3.player_line(r)
+        return pl["ovr"] if pl["form"] is None else 0.55 * pl["ovr"] + 0.45 * pl["form"]
+
+    out = []
+    for sq, grp in p.groupby("squad"):
+        n_all = int((inj["squad"] == sq).sum())
+        if not n_all:
+            continue
+        hurt_idx = {i for i, r in grp.iterrows()
+                    if (str(r.get("tm_id")).split(".")[0] in ids) or unidecode(str(r["player"])).lower().strip() in names}
+        hurt = [grp.loc[i] for i in hurt_idx]
+        st = [(strength(r), i) for i, r in grp.iterrows()]
+        top = sorted((x for x, _ in st), reverse=True)[:11]
+        rest = sorted((x for x, i in st if i not in hurt_idx), reverse=True)[:11]
+        if not top or not rest:
+            continue
+        loss = sum(top) / len(top) - sum(rest) / len(rest)
+        key = [str(r["player"]) for r in sorted(hurt, key=lambda r: -_player_ovr(r))[:3]]
+        out.append({"team": str(sq), "logo": tm.team_logo(str(sq)), "league": lg, "n": n_all,
+                    "loss": round(loss, 1), "key": key, "ovr": round(sum(top) / len(top))})
+    return [x for x in out if x["loss"] > 0 or x["n"] >= 4]
+
+
 def _compute_hub_body() -> bytes:
     """전 리그 통합 대시보드 페이로드 계산 — 전 리그 집계라 무겁다(Render 무료티어 1워커를
     수십초 점유 → 헬스체크 실패·재시작). 배포 시 scripts/precompute_hub.py 로 미리
@@ -2796,7 +2902,8 @@ def _compute_hub_body() -> bytes:
     # 홈 상단 요약 — 아래 목록들은 리그별 상위 몇 건만 담으므로 전체 수치는 따로 센다
     summary = {"spend_eur": 0.0, "signings": 0, "manager_changes": 0, "injured": 0}
     prospect_c, veteran_c, value_c = [], [], []      # 유망주 U21 · 베테랑 32+ · 저평가 가성비
-    mover_c = []                                     # 무엇이 바뀌었나 — OVR 변화(2주 전 또는 지난 시즌 대비)
+    mover_c = []                                     # 선수 동향 — OVR 변화(2주 전 또는 지난 시즌 대비)
+    golden_boot, tots, injury_impact = {}, {}, []    # 리그별 득점왕 레이스 · 시즌 베스트 XI · 부상으로 잃은 전력
     squad2league: dict[str, str] = {}                # 시장가치 급등의 리그 매핑용
     for lg in leagues:
         lname = _lname(lg)
@@ -2893,6 +3000,10 @@ def _compute_hub_body() -> bytes:
 
         cur_inj = ds.read_table("transfermarkt_injuries", league=lg)
         summary["injured"] += 0 if cur_inj is None else int(len(cur_inj))
+        if pf is not None and "player" in pf.columns:
+            golden_boot[lg] = _golden_boot(p, lg)
+            tots[lg] = _team_of_season(p, lg)
+            injury_impact += _injury_impact(p, cur_inj, lg)
         # 부상 속보 (신규/복귀)
         ic = ds.read_table("transfermarkt_injury_changes", league=lg)
         if ic is not None and "player" in ic.columns:
@@ -3000,6 +3111,8 @@ def _compute_hub_body() -> bytes:
               "goal_leaders": goal_leaders, "prospects": prospects, "veterans": veterans,
               "value_picks": value_picks, "risers": risers, "contracts": contracts_out, "summary": summary,
               "movers_up": movers_up, "movers_down": movers_down, "movers_basis": basis,
+              "golden_boot": golden_boot, "tots": tots,
+              "injury_impact": sorted(injury_impact, key=lambda x: (-x["loss"], -x["n"]))[:10],
               # 스냅샷 생성 시각 — scripts/watchdog.py 가 운영 홈이 멈췄는지 본다
               "generated_at": datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds")}
     return json.dumps(result, ensure_ascii=False).encode("utf-8")

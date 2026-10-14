@@ -2835,3 +2835,60 @@ body {
   .tk5-track { animation: none; } .tk5-viewport { overflow-x: auto; } .tk5-dup { display: none; }
   .tr5-line path { animation: none; stroke-dashoffset: 0; } .tr5-line circle, .tr5-line image, .tr5-line text, .tr5-lead { animation: none; opacity: 1; }
 }
+
+/* ── v5.3: 리그 집중(LEAGUE FOCUS) — 리그 선택 하나로 우승 경쟁·순위·베스트 XI·득점왕 ── */
+.h5-stack { display: flex; flex-direction: column; gap: 18px; }
+.sh .seg5-head { margin: 0; flex-wrap: wrap; justify-content: flex-end; }
+.ptok-face img { object-position: 50% 30%; }
+
+/* GOLDEN BOOT */
+.gb5 { display: flex; flex-direction: column; }
+.gb5-row { display: flex; align-items: center; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--line); }
+.gb5-row:last-child { border-bottom: 0; }
+.gb5-who { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; background: none; border: 0; color: inherit; text-align: left; cursor: pointer; padding: 0; }
+.gb5-who b { font-size: 14px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gb5-who:hover b { color: #fff; }
+.gb5-who em { display: flex; align-items: center; gap: 5px; font-style: normal; font-size: 11.5px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gb5-who em img { width: 13px; height: 13px; object-fit: contain; }
+.gb5-bar { display: block; height: 4px; border-radius: 2px; background: var(--overlay); overflow: hidden; }
+.gb5-bar i { display: block; height: 100%; border-radius: 2px; background: linear-gradient(90deg, #c99a2e, #f4cf5e); }
+.gb5-row:first-child .gb5-bar i { background: linear-gradient(90deg, #f4cf5e, #ffe7a3); box-shadow: 0 0 10px rgba(244, 207, 94, 0.5); }
+.gb5-n { display: flex; flex-direction: column; align-items: flex-end; min-width: 34px; flex-shrink: 0; }
+.gb5-n b { font: 700 24px/0.95 var(--font-num); }
+.gb5-row:first-child .gb5-n b { color: #f4cf5e; }
+.gb5-n small { font: 600 11px/1 var(--font-num); color: var(--muted-2); letter-spacing: 0.06em; margin-top: 3px; }
+
+/* TEAM OF THE SEASON */
+.tots5 { display: grid; grid-template-columns: minmax(0, 330px) minmax(0, 1fr); gap: 20px; align-items: center; }
+.tots5-pitch .pitch2 { border-color: rgba(255, 255, 255, 0.08); background: linear-gradient(180deg, #11301f, #0b2216); }
+.tots5-list { display: flex; flex-direction: column; }
+.tots5-row { display: flex; align-items: center; gap: 10px; padding: 7px 0; border: 0; border-bottom: 1px solid var(--line); background: none; color: inherit; text-align: left; cursor: pointer; width: 100%; }
+.tots5-row:last-child { border-bottom: 0; }
+.tots5-row:hover b { color: #fff; }
+.tots5-slot { width: 30px; font: 700 11.5px/1 var(--font-num); letter-spacing: 0.08em; color: var(--muted-2); flex-shrink: 0; }
+.tots5-row img, .tots5-ph { width: 18px; height: 18px; object-fit: contain; flex-shrink: 0; }
+.tots5-row b { flex: 1; min-width: 0; font-size: 13.5px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tots5-r { font: 700 16px/1 var(--font-num); color: #f4cf5e; }
+
+/* INJURY IMPACT */
+.ii5 { display: flex; flex-direction: column; }
+.ii5-row { display: flex; align-items: center; gap: 12px; padding: 10px 0; border: 0; border-bottom: 1px solid var(--line); background: none; color: inherit; text-align: left; cursor: pointer; width: 100%; }
+.ii5-row:last-child { border-bottom: 0; }
+.ii5-row > img { width: 28px; height: 28px; object-fit: contain; flex-shrink: 0; }
+.ii5-who { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.ii5-who b { display: flex; align-items: baseline; gap: 7px; font-size: 14px; font-weight: 600; }
+.ii5-who b em { font: 600 10.5px/1 var(--font-num); letter-spacing: 0.1em; color: var(--muted-2); font-style: normal; }
+.ii5-who span { font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ii5-row:hover .ii5-who b { color: #fff; }
+.ii5-bar { width: 110px; height: 6px; border-radius: 3px; background: var(--overlay); overflow: hidden; flex-shrink: 0; }
+.ii5-bar i { display: block; height: 100%; border-radius: 3px; background: linear-gradient(90deg, rgba(255, 114, 133, 0.55), var(--danger)); }
+.ii5-row .td { min-width: 44px; text-align: right; }
+
+@media (max-width: 1180px) { .sh .seg5-head { justify-content: flex-start; } }
+@media (max-width: 760px) {
+  .tots5 { grid-template-columns: 1fr; }
+  .tots5-pitch { max-width: 340px; margin: 0 auto; width: 100%; }
+  .ii5-bar { width: 56px; }
+  .sh:has(.seg5-head) { flex-direction: column; align-items: flex-start; }
+}
+.sh:has(.seg5-head) { flex-wrap: wrap; row-gap: 10px; }

@@ -19,7 +19,7 @@ function initials(name: string): string {
 
 // SVG 배경(잔디+라인) + HTML 토큰(둥근 얼굴). clipPath 미사용 → id 충돌·렌더 불안정 없음.
 // team 을 주면 토큰 클릭 → PlayerPeek 미니 프로필.
-export default function Pitch({ placements, accent, team }: { placements: Placement[]; formation?: string; accent?: string; idKey?: string; team?: string }) {
+export default function Pitch({ placements, accent, team, metric = "OVR" }: { placements: Placement[]; formation?: string; accent?: string; idKey?: string; team?: string; metric?: string }) {
   const peek = usePeek();
   return (
     <div className="pitch2">
@@ -45,8 +45,8 @@ export default function Pitch({ placements, accent, team }: { placements: Placem
         const real = p.player && p.player !== "—" && p.player !== "영입 필요";
         return (
           <div className={`ptok${real ? " clickable" : ""}`} key={i} style={{ left: `${left}%`, top: `${top}%` }}
-            title={real ? `${p.player}${p.ovr != null ? ` · OVR ${p.ovr}` : ""}` : undefined}
-            onClick={real ? (e) => peek(e, { name: p.player, club: team, hint: { photo: p.photo, ovr: p.ovr ?? undefined } }) : undefined}>
+            title={real ? `${p.player}${p.club ? ` · ${p.club}` : ""}${p.ovr != null ? ` · ${metric} ${p.ovr}` : ""}` : undefined}
+            onClick={real ? (e) => peek(e, { name: p.player, club: p.club ?? team, hint: { photo: p.photo, ovr: metric === "OVR" ? p.ovr ?? undefined : undefined } }) : undefined}>
             <div className="ptok-face" style={{ borderColor: p.in ? "#5fd08c" : c }}>
               {p.photo
                 ? <img src={p.photo} alt="" />

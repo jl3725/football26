@@ -1,6 +1,8 @@
 "use client";
 import { useMemo, useState } from "react";
-import type { RaceTeam, ResultMatch, TableGap, WatchMatch } from "@/lib/api";
+import type { HubBoot, InjuryImpactRow, RaceTeam, ResultMatch, TableGap, TotsPlayer, WatchMatch } from "@/lib/api";
+import Pitch from "./Pitch";
+import { usePeek } from "./PlayerPeek";
 import { colorsClose, compLabel, compTone, ddayLabel, lgEn, liftHex, splitKst } from "@/lib/match";
 import { useMatchPreview } from "@/lib/matchPreview";
 import { Crest } from "./MatchCard";
@@ -160,5 +162,74 @@ export function OverUnder({ over, under, onPick }: { over: TableGap[]; under: Ta
         {rows.length === 0 && <p className="empty5">해당 팀 없음</p>}
       </div>
     </>
+  );
+}
+
+// ── GOLDEN BOOT: 리그 득점 순위(선두 대비 막대) ──
+export function GoldenBoot({ rows, onPick }: { rows: HubBoot[]; onPick: Pick }) {
+  const peek = usePeek();
+  if (!rows.length) return <p className="empty5">득점 기록 없음</p>;
+  const lead = rows[0].goals || 1;
+  return (
+    <div className="gb5">
+      {rows.map((r, i) => (
+        <div className="gb5-row" key={r.player + r.club}>
+          <span className="pr5-rk">{i + 1}</span>
+          <button className="pr5-ph peekable" onClick={(e) => peek(e, { name: r.player, club: r.club, league: r.league })} aria-label={`${r.player} 미리보기`}>
+            {r.photo ? <img src={r.photo} alt="" /> : r.club_logo ? <img className="logo" src={r.club_logo} alt="" /> : <span />}
+          </button>
+          <button className="gb5-who" onClick={() => onPick(r.club, r.league)}>
+            <b>{r.player}</b>
+            <span className="gb5-bar"><i style={{ width: `${(r.goals / lead) * 100}%` }} /></span>
+            <em>{r.club_logo && <img src={r.club_logo} alt="" />}{r.club}{r.mpg ? ` · ${r.mpg}분당 1골` : ""}</em>
+          </button>
+          <span className="gb5-n"><b>{r.goals}</b><small>{r.assists}A</small></span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// ── TEAM OF THE SEASON: 4-3-3 경기장 + 명단 ──
+export function TeamOfSeason({ players, league }: { players: TotsPlayer[]; league: string }) {
+  const peek = usePeek();
+  const placements = players.map((p) => ({ slot: p.slot, player: p.player, x: p.x, y: p.y, kind: p.kind, ovr: Math.round(p.rating * 10) / 10, photo: p.photo, club: p.club }));
+  const order = ["GK", "RB", "RCB", "LCB", "LB", "RCM", "CM", "LCM", "RW", "ST", "LW"];
+  const list = [...players].sort((a, b) => order.indexOf(a.slot) - order.indexOf(b.slot));
+  return (
+    <div className="tots5">
+      <div className="tots5-pitch"><Pitch placements={placements} metric="평점" /></div>
+      <div className="tots5-list">
+        {list.map((p) => (
+          <button key={p.slot} className="tots5-row" onClick={(e) => peek(e, { name: p.player, club: p.club, league })}>
+            <span className="tots5-slot">{p.slot.replace(/^[LR](CB|CM)$/, "$1")}</span>
+            {p.club_logo ? <img src={p.club_logo} alt="" /> : <span className="tots5-ph" />}
+            <b>{p.player}</b>
+            <span className="tots5-r">{p.rating.toFixed(2)}</span>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ── INJURY IMPACT: 부상으로 줄어든 베스트 XI 평균 전력 ──
+export function InjuryImpact({ rows, onPick }: { rows: InjuryImpactRow[]; onPick: Pick }) {
+  if (!rows.length) return <p className="empty5">눈에 띄는 부상 타격 없음</p>;
+  const max = Math.max(...rows.map((r) => r.loss), 0.1);
+  return (
+    <div className="ii5">
+      {rows.slice(0, 7).map((r) => (
+        <button className="ii5-row" key={r.league + r.team} onClick={() => onPick(r.team, r.league)}>
+          {r.logo ? <img src={r.logo} alt="" /> : <span className="ou5-ph" />}
+          <span className="ii5-who">
+            <b>{r.team}<em>{lgEn(r.league)}</em></b>
+            <span>결장 {r.n}명{r.key.length ? ` · ${r.key.join(", ")}` : ""}</span>
+          </span>
+          <span className="ii5-bar"><i style={{ width: `${(r.loss / max) * 100}%` }} /></span>
+          <span className="td down">−{r.loss.toFixed(1)}</span>
+        </button>
+      ))}
+    </div>
   );
 }
