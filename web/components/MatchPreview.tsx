@@ -11,7 +11,8 @@ import { Skel } from "./Skeleton";
 // 매치 프리뷰 서랍 — 경기 카드를 누르면 열린다. 두 팀 Overview(전력·폼·핵심 선수·결장)를 불러
 // 규칙으로 '관전 포인트'를 만든다(유료 AI 없음). 데이터는 매일 자동 갱신분 그대로.
 
-const UNITS: [string, "overall" | "attack" | "midfield" | "defense"][] = [["종합", "overall"], ["공격", "attack"], ["중원", "midfield"], ["수비", "defense"]];
+const UNITS: [string, "overall" | "attack" | "midfield" | "defense"][] = [["OVERALL", "overall"], ["ATTACK", "attack"], ["MIDFIELD", "midfield"], ["DEFENSE", "defense"]];
+const KO_UNIT: Record<string, string> = { ATTACK: "공격", MIDFIELD: "중원", DEFENSE: "수비" };
 
 function keyPoints(m: Fixture, H: Overview | null, A: Overview | null): string[] {
   const out: string[] = [];
@@ -27,7 +28,7 @@ function keyPoints(m: Fixture, H: Overview | null, A: Overview | null): string[]
   if (H && A) {
     const diffs = UNITS.slice(1).map(([k, u]) => [k, H.ovr[u] - A.ovr[u]] as const);
     const [k, d] = diffs.reduce((x, y) => (Math.abs(y[1]) > Math.abs(x[1]) ? y : x));
-    if (Math.abs(d) >= 2) out.push(`${k} 전력 ${d > 0 ? h.team : a.team} 우세 (+${Math.abs(d)})`);
+    if (Math.abs(d) >= 2) out.push(`${KO_UNIT[k]} 전력 ${d > 0 ? h.team : a.team} 우세 (+${Math.abs(d)})`);
     const hEdge = H.ovr.attack - A.ovr.defense, aEdge = A.ovr.attack - H.ovr.defense;
     if (Math.abs(hEdge - aEdge) >= 3) {
       out.push(hEdge > aEdge
@@ -79,7 +80,7 @@ function Drawer({ m, onClose }: { m: Fixture; onClose: () => void }) {
           <div className="pv-top">
             <span className={`bdg ${compTone(m.comp_code)}`}>{compLabel(m)}</span>
             <span className={`bdg ${m.d_day <= 1 ? "hot" : "neutral"}`}>{ddayLabel(m.d_day)}</span>
-            <span className="pv-when">{m.kst} · 한국 시간</span>
+            <span className="pv-when">{m.kst} KST</span>
             <button className="pv-x" onClick={onClose} aria-label="닫기">×</button>
           </div>
           <div className="pv-teams">{head(m.home, m.away)}<span className="pv-vs">VS</span>{head(m.away, m.home)}</div>
@@ -87,14 +88,14 @@ function Drawer({ m, onClose }: { m: Fixture; onClose: () => void }) {
 
         <div className="pv-body">
           <section>
-            <h3>관전 포인트</h3>
+            <h3>KEY POINTS<span>관전 포인트</span></h3>
             {loading ? <><Skel h={14} style={{ marginBottom: 8 }} /><Skel h={14} w="80%" /></>
               : pts.length ? <ul className="pv-points">{pts.map((p) => <li key={p}>{p}</li>)}</ul>
               : <p className="pv-empty">두 팀 데이터가 부족해 요약을 만들지 못했습니다.</p>}
           </section>
 
           <section>
-            <h3>전력 비교</h3>
+            <h3>TEAM STRENGTH<span>전력 비교 · 팀 OVR</span></h3>
             {UNITS.map(([k, u]) => {
               const hv = u === "overall" ? (H?.ovr.overall ?? m.home.ovr) : H?.ovr[u];
               const av = u === "overall" ? (A?.ovr.overall ?? m.away.ovr) : A?.ovr[u];
@@ -113,14 +114,14 @@ function Drawer({ m, onClose }: { m: Fixture; onClose: () => void }) {
           </section>
 
           <section>
-            <h3>리그 최근 5경기</h3>
+            <h3>FORM<span>리그 최근 5경기</span></h3>
             {[m.home, m.away].map((s) => (
               <div className="pv-form" key={s.team}><Crest s={s} size={20} /><span>{s.team}</span>{s.form.length ? <FormBoxes form={s.form} /> : <em>기록 없음</em>}</div>
             ))}
           </section>
 
           <section>
-            <h3>핵심 선수</h3>
+            <h3>KEY PLAYERS<span>핵심 선수</span></h3>
             <div className="pv-two">
               {[[m.home, H], [m.away, A]].map(([s, o], i) => {
                 const side = s as FixtureSide, ov = o as Overview | null | undefined;
@@ -141,7 +142,7 @@ function Drawer({ m, onClose }: { m: Fixture; onClose: () => void }) {
           </section>
 
           <section>
-            <h3>결장</h3>
+            <h3>ABSENCES<span>결장</span></h3>
             <div className="pv-two">
               {[[m.home, H], [m.away, A]].map(([s, o], i) => {
                 const ov = o as Overview | null | undefined;
@@ -159,7 +160,7 @@ function Drawer({ m, onClose }: { m: Fixture; onClose: () => void }) {
           </section>
 
           <div className="pv-actions">
-            {[m.home, m.away].map((s) => <button key={s.team} disabled={!s.league || !openTeam} onClick={() => go(s)}>{s.team} 팀 화면</button>)}
+            {[m.home, m.away].map((s) => <button key={s.team} disabled={!s.league || !openTeam} onClick={() => go(s)}>{s.team} →</button>)}
           </div>
           <p className="pv-note">전력(팀 OVR)·최근 결과·결장은 매일 자동으로 갱신되는 데이터로 계산한 규칙 기반 요약입니다.</p>
         </div>

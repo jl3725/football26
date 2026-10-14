@@ -41,7 +41,7 @@ export function PowerBar({ m }: { m: Fixture }) {
   const ac = colorsClose(hc, ac0) ? "#8a94a8" : ac0;
   return (
     <div className="mc5-power" title={`팀 OVR ${m.home.ovr} : ${m.away.ovr}`}>
-      <div className="mc5-power-l"><b>{m.home.ovr}</b><span>전력 · 팀 OVR</span><b>{m.away.ovr}</b></div>
+      <div className="mc5-power-l"><b>{m.home.ovr}</b><span>TEAM OVR</span><b>{m.away.ovr}</b></div>
       <div className="mc5-bar"><span style={{ flexBasis: `${share}%`, background: hc }} /><span style={{ flexBasis: `${100 - share}%`, background: ac }} /></div>
     </div>
   );
@@ -84,8 +84,8 @@ export default function MatchCard({ m, onPick, compact = false }: { m: Fixture; 
       </div>
       <PowerBar m={m} />
       <div className="mc5-foot">
-        {why ? <span className="mc5-why"><em>왜 빅매치?</em>{why}</span> : <span />}
-        {preview && <span className="mc5-cta">프리뷰<Chevron /></span>}
+        {why ? <span className="mc5-why"><em>WHY</em>{why}</span> : <span />}
+        {preview && <span className="mc5-cta">PREVIEW<Chevron /></span>}
       </div>
     </div>
   );
@@ -114,18 +114,18 @@ export function MatchHero({ m, onPick }: { m: Fixture; onPick?: Pick_ }) {
       <div className="mh5-top">
         <span className={`bdg ${tone}`}>{compLabel(m)}</span>
         <span className={`bdg ${m.d_day <= 1 ? "hot" : "neutral"}`}>{ddayLabel(m.d_day)}</span>
-        <span className="mh5-kicker">이번 주 최대 빅매치</span>
-        <span className="mh5-score">빅매치 지수 {m.big}</span>
+        <span className="mh5-kicker">MATCH OF THE WEEK</span>
+        <span className="mh5-score">BIG SCORE {m.big}</span>
       </div>
       <div className="mh5-teams">
         {side(m.home, m.away, false)}
-        <div className="mh5-ko"><b>{time}</b><span>{date} · 한국 시간</span></div>
+        <div className="mh5-ko"><b>{time}</b><span>{date} · KST</span></div>
         {side(m.away, m.home, true)}
       </div>
       <PowerBar m={m} />
       <div className="mh5-foot">
-        <span className="mc5-why"><span className="bdg neutral">왜 빅매치?</span>{why}</span>
-        {preview && <button className="btn5" onClick={() => preview(m)}>매치 프리뷰<Chevron /></button>}
+        <span className="mc5-why"><span className="bdg neutral">WHY</span>{why}</span>
+        {preview && <button className="btn5" onClick={() => preview(m)}>MATCH PREVIEW<Chevron /></button>}
       </div>
     </div>
   );

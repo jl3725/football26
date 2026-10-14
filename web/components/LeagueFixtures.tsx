@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { getFixtures, type Fixture } from "@/lib/api";
 import MatchCard from "./MatchCard";
-import { BIG } from "@/lib/match";
+import { BIG, compLabel, ddayLabel } from "@/lib/match";
 import { useMatchPreview } from "@/lib/matchPreview";
 
 // 리그 탭 '이번 주 경기' — 위: 그 리그 빅매치 강조 카드, 아래: 날짜별 전 경기(소속 팀의 유럽대회 포함).
@@ -23,8 +23,8 @@ function Row({ m, league, onPick }: { m: Fixture; league: string; onPick: (t: st
       <span className="lf-time">{m.kst.split(" ")[1] ?? ""}</span>
       <div className="lf-match">{side(m.home)}<span className="lf-vs">vs</span>{side(m.away)}</div>
       <span className="lf-side">
-        {!m.comp_code.endsWith(".1") && <span className={`lf-comp${m.comp_code === "uefa.champions" ? " ucl" : ""}`}>{m.comp}</span>}
-        {big && <span className="lf-big" title={m.tags.join(" · ")}>빅매치</span>}
+        {!m.comp_code.endsWith(".1") && <span className={`lf-comp${m.comp_code === "uefa.champions" ? " ucl" : ""}`}>{compLabel(m)}</span>}
+        {big && <span className="lf-big" title={m.tags.join(" · ")}>BIG</span>}
       </span>
     </div>
   );
@@ -57,7 +57,7 @@ export default function LeagueFixtures({ league, accent, onPick }:
       <div className="card lf-list">
         {days.map((g) => (
           <div className="lf-day" key={g.label}>
-            <div className="lf-day-h">{g.label}<span>{g.d <= 0 ? "오늘" : g.d === 1 ? "내일" : `D-${g.d}`}</span></div>
+            <div className="lf-day-h">{g.label}<span>{ddayLabel(g.d)}</span></div>
             {g.items.map((m, i) => <Row key={m.event_id ?? i} m={m} league={league} onPick={onPick} />)}
           </div>
         ))}

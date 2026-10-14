@@ -1,7 +1,8 @@
 "use client";
 import type { ReactNode } from "react";
 
-// 섹션 머리 공통형(디자인 v5) — 한글 제목 + 범위·개수 메타 + 오른쪽 동작. 영문 대문자 꼬리표는 쓰지 않는다.
+// 섹션 머리 공통형 — 영어 대문자 제목(크게) + 한글 보조(작게) + 범위·개수 메타 + 오른쪽 동작.
+// 제목은 영어 위주가 사용자 선호(디자인 v5 에서 한글 제목으로 바꿨다가 되돌림).
 export function Chevron() {
   return (
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -10,13 +11,14 @@ export function Chevron() {
   );
 }
 
-export default function SectionHead({ title, meta, action, onAction, right }: {
-  title: string; meta?: ReactNode; action?: string; onAction?: () => void; right?: ReactNode;
+export default function SectionHead({ title, kr, meta, action, onAction, right }: {
+  title: string; kr?: string; meta?: ReactNode; action?: string; onAction?: () => void; right?: ReactNode;
 }) {
   return (
     <div className="sh">
       <div className="sh-l">
         <h2 className="sh-t">{title}</h2>
+        {kr ? <span className="sh-kr">{kr}</span> : null}
         {meta ? <span className="sh-m">{meta}</span> : null}
       </div>
       {right ?? (action && onAction ? <button className="sh-a" onClick={onAction}>{action}<Chevron /></button> : null)}

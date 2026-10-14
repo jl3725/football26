@@ -10,9 +10,9 @@ import SectionHead from "./SectionHead";
 
 const eurM = (v: number) => (v >= 1e6 ? `€${Math.round(v / 1e6)}M` : v > 0 ? `€${Math.round(v / 1e3)}K` : "€0");
 
-// 섹션 머리 — 디자인 v5 공통형(한글 제목 + 작은 영문 메타)
+// 섹션 머리 — 영어 제목 + 작은 한글 보조(디자인 v5 공통형)
 function Sec({ en, kr, right }: { en: string; kr: string; accent?: string; right?: ReactNode }) {
-  return <SectionHead title={kr} meta={en} right={right} />;
+  return <SectionHead title={en} kr={kr} right={right} />;
 }
 
 type LeagueOpt = { key: string; label: string };

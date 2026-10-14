@@ -8,8 +8,13 @@ const LG_KO: Record<string, string> = {
   LigaPortugal: "포르투갈", Eredivisie: "에레디비시", BelgianProLeague: "벨기에",
 };
 export const lgKo = (lg?: string | null) => (lg && LG_KO[lg]) || "";
+const LG_EN: Record<string, string> = {
+  EPL: "EPL", LaLiga: "LALIGA", SerieA: "SERIE A", Bundesliga: "BUNDESLIGA", Ligue1: "LIGUE 1",
+  LigaPortugal: "PORTUGAL", Eredivisie: "EREDIVISIE", BelgianProLeague: "BELGIUM",
+};
+export const lgEn = (lg?: string | null) => (lg && LG_EN[lg]) || "";
 
-export const ddayLabel = (d: number) => (d <= 0 ? "오늘" : d === 1 ? "내일" : `D-${d}`);
+export const ddayLabel = (d: number) => (d <= 0 ? "TODAY" : `D-${d}`);
 
 // '10/15(목) 04:00' → 날짜·시각
 export function splitKst(kst: string) {
@@ -23,10 +28,15 @@ export function compTone(code: string): "ucl" | "uel" | "neutral" {
   return "neutral";
 }
 
-// 리그 경기는 '리그' 대신 리그 이름으로
+// 대회 꼬리표 — 영어 약칭(UCL·EPL·FA CUP …), 모르는 컵은 원래 이름
+const COMP_EN: Record<string, string> = {
+  "uefa.champions": "UCL", "uefa.europa": "UEL", "uefa.europa.conf": "UECL",
+  "eng.fa": "FA CUP", "eng.league_cup": "EFL CUP", "esp.copa_del_rey": "COPA DEL REY", "ita.coppa_italia": "COPPA ITALIA",
+  "ger.dfb_pokal": "DFB-POKAL", "fra.coupe_de_france": "COUPE DE FRANCE", "por.taca.portugal": "TAÇA", "ned.cup": "KNVB BEKER",
+};
 export function compLabel(m: Fixture): string {
-  if (m.comp_code.endsWith(".1")) return lgKo(m.home.league) || lgKo(m.away.league) || m.comp;
-  return m.comp;
+  if (m.comp_code.endsWith(".1")) return lgEn(m.home.league) || lgEn(m.away.league) || m.comp;
+  return COMP_EN[m.comp_code] ?? m.comp;
 }
 
 // 다른 리그 팀끼리면 '라리가 1위', 같은 리그면 '1위'
