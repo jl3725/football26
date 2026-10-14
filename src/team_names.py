@@ -2,7 +2,7 @@
 팀 이름 맞추기 — 외부 출처(Sofascore 팬 투표·ClubElo 예측)의 표기를 우리 표기(standings 의 squad)로.
 
 출처마다 'Man City' · 'Manchester City' · 'Liverpool FC' 처럼 다르게 쓴다. 정규화(악센트·FC 류 접두/접미 제거) 후
-같으면 1.0, 한쪽이 다른 쪽을 포함하면 0.9, 아니면 단어 겹침 비율로 점수를 매겨 가장 높은 후보(0.5 이상)를 고른다.
+같으면 1.0, 한쪽 단어들이 다른 쪽에 모두 들어 있으면 0.9, 아니면 단어 겹침 비율로 점수를 매겨 가장 높은 후보(0.5 이상)를 고른다.
 """
 from __future__ import annotations
 
@@ -46,9 +46,14 @@ def score(a: str, b: str) -> float:
         return 0.0
     if na == nb:
         return 1.0
-    if na in nb or nb in na:
-        return 0.9
     ta, tb = set(na.split()), set(nb.split())
+    # 2군·유스('Jong AZ', 'Real Madrid B', 'Barcelona II')는 1군과 다른 팀
+    reserve = {"jong", "ii", "b", "u19", "u21", "u23", "reserves", "youth", "castilla", "atletic"}
+    if bool(ta & reserve) != bool(tb & reserve):
+        return 0.0
+    # 포함은 단어 단위로만 — 글자 단위면 'Lech'→'Anderlecht', 'Lillestrøm'→'Lille' 처럼 엉뚱하게 붙었다
+    if ta <= tb or tb <= ta:
+        return 0.9
     return len(ta & tb) / len(ta | tb)
 
 

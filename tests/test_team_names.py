@@ -17,3 +17,15 @@ def test_similar_names_stay_apart():
     assert team_names.best("Manchester City", ["Manchester Utd", "Manchester City"]) == "Manchester City"
     assert team_names.best("Newcastle United", ["Manchester Utd", "Newcastle United"]) == "Newcastle United"
     assert team_names.best("Totally Unknown", ["Arsenal", "Chelsea"]) is None
+
+
+def test_no_substring_false_match():
+    ours = ["Anderlecht", "Lille", "Union SG", "Real Sociedad"]
+    assert team_names.best("Lech", ours) is None
+    assert team_names.best("Lillestrøm", ours) is None
+    assert team_names.best("Lille", ours) == "Lille"
+
+
+def test_reserve_teams_not_matched_to_first_team():
+    assert team_names.best("Jong AZ", ["AZ Alkmaar", "PSV"]) is None
+    assert team_names.best("AZ", ["AZ Alkmaar", "PSV"]) == "AZ Alkmaar"
