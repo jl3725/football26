@@ -131,7 +131,7 @@ export default function RecruitPool({ team, accent }: { team: string; accent: st
         <Kpi label="커버 리그" value={String(new Set(picks.map((p) => p.source_league)).size)} accent={accent} />
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "210px 1fr", gap: 16, alignItems: "start" }}>
+      <div className="rp-layout">
         {/* 필터 레일 */}
         <div className="card" style={{ position: "sticky", top: 8 }}>
           <div style={{ ...railLabel, marginTop: 0 }}>리그</div>
