@@ -4,6 +4,7 @@ import { getHomeAll, fmtEur, type HomeAll } from "@/lib/api";
 import { tier } from "@/lib/ui";
 import { Skel, SkelCards } from "./Skeleton";
 import { seasonLongLabel } from "@/lib/season";
+import CountUp from "./CountUp";
 
 // 세련된 라인 화살표 (텍스트 → 대체)
 function Arrow({ color = "currentColor" }: { color?: string }) {
@@ -50,16 +51,16 @@ export default function AllDashboard({ accent, onPick }: { accent: string; onPic
           <h1 className="hub-hero-t">GLOBAL DASHBOARD</h1>
         </div>
         <div className="hub-kpis">
-          {[
-            [String(d.leagues.length), "리그"],
+          {([
+            [d.leagues.length, undefined, "리그"],
             ...(d.summary ? [
-              [fmtEur(d.summary.spend_eur), `${d.window?.label ?? ""} 여름 이적 총액`],
-              [d.summary.signings.toLocaleString(), "영입(임대 제외)"],
-              [String(d.summary.manager_changes), "감독 교체"],
-              [String(d.summary.injured), "현재 부상자"],
+              [d.summary.spend_eur, (v: number) => (v < 1e6 ? "€0" : fmtEur(v)), `${d.window?.label ?? ""} 여름 이적 총액`],
+              [d.summary.signings, undefined, "영입(임대 제외)"],
+              [d.summary.manager_changes, undefined, "감독 교체"],
+              [d.summary.injured, undefined, "현재 부상자"],
             ] : []),
-          ].map(([v, l]) => (
-            <div className="hub-kpi" key={l}><b className="num">{v}</b><span>{l}</span></div>
+          ] as [number, ((v: number) => string) | undefined, string][]).map(([v, f, l]) => (
+            <div className="hub-kpi" key={l}><b className="num"><CountUp value={v} format={f} /></b><span>{l}</span></div>
           ))}
         </div>
       </div>

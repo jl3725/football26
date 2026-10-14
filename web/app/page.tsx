@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { flushSync } from "react-dom";
 import { getTeams, getNextTeams, getOverview, getContext, getRecommend, getDiscover, setActiveLeague, type Team, type NextSeason, type Overview, type Context } from "@/lib/api";
 import { accent as toAccent } from "@/lib/ui";
 import Sidebar from "@/components/Sidebar";
@@ -209,7 +210,13 @@ export default function Page() {
             </div>
           </header>
 
-          {!home && <TabBar active={tab} onChange={setTab} accent={accent} />}
+          {!home && <TabBar active={tab} accent={accent} onChange={(k) => {
+            // 탭 전환을 부드럽게 — View Transitions API(크롬·엣지·사파리 18+), 미지원·움직임 줄이기 설정이면 즉시
+            const d = document as Document & { startViewTransition?: (cb: () => void) => unknown };
+            const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            if (d.startViewTransition && !reduce) d.startViewTransition(() => flushSync(() => setTab(k)));
+            else setTab(k);
+          }} />}
 
           <div className="content" key={home ? "home" : tab}>
             {renderTab()}
