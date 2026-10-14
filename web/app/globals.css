@@ -2964,3 +2964,45 @@ body {
 .bw5-m small { position: relative; font: 600 9px/1 var(--font-num); letter-spacing: 0.1em; color: var(--muted); }
 .bw5-m b { position: relative; font: 700 15px/1.1 var(--font-num); }
 .bw5-note { margin-top: 10px; font-size: 11.5px; color: var(--muted-2); }
+
+/* ── v5.5: 예측(팬 투표·ClubElo) · 전체 순위표 · 베스트 XI 후보 ── */
+.pb5.fans .pb5-l > span { color: #c9a9ff; }
+.pv-src { display: flex; align-items: baseline; gap: 8px; margin: 2px 0 8px; font: 700 12.5px/1 var(--font-num); letter-spacing: 0.14em; color: var(--txt); }
+.pv-src em { font: 500 11.5px/1 var(--font-ui); letter-spacing: 0; color: var(--muted); font-style: normal; }
+.pv-side-votes { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-top: 10px; font-size: 12.5px; color: var(--muted); }
+.pv-side-votes b { color: var(--txt); font-weight: 600; }
+.pv-elo { margin-top: 16px; padding-top: 14px; border-top: 1px dashed var(--line); }
+
+.tots5-who { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.tots5-who b { font-size: 13.5px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tots5-who em { font-style: normal; font-size: 11px; color: var(--muted-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tots5-row:hover .tots5-who b { color: #fff; }
+
+.tb5-wrap { overflow-x: auto; margin: 0 -4px; }
+.tb5 { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.tb5 th { font: 600 11px/1 var(--font-num); letter-spacing: 0.12em; color: var(--muted-2); text-align: center; padding: 8px 6px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+.tb5 td { text-align: center; padding: 8px 6px; font: 600 14px/1 var(--font-num); color: var(--muted); border-bottom: 1px solid rgba(255, 255, 255, 0.045); white-space: nowrap; }
+.tb5 .l { text-align: left; }
+.tb5 tbody tr { cursor: pointer; transition: background .12s; }
+.tb5 tbody tr:hover { background: rgba(255, 255, 255, 0.03); }
+.tb5 tbody tr:hover .tb5-team b { color: #fff; }
+.tb5 td.rk { color: var(--muted-2); width: 28px; }
+.tb5 tr.lead td.rk { color: var(--brand); }
+.tb5 tr.rel td.rk { color: var(--danger); }
+.tb5 tr.rel { background: linear-gradient(90deg, rgba(255, 114, 133, 0.05), transparent 40%); }
+.tb5-team { display: inline-flex; align-items: center; gap: 9px; min-width: 0; }
+.tb5-team img, .tb5-team i { width: 20px; height: 20px; object-fit: contain; flex-shrink: 0; }
+.tb5-team b { font: 600 14px/1.2 var(--font-ui); color: var(--txt); }
+.tb5-team em { font: 500 11px/1 var(--font-ui); color: var(--muted-2); font-style: normal; }
+.tb5 td.pts { font-size: 17px; font-weight: 700; color: var(--txt); }
+.tb5 td.up { color: var(--positive); } .tb5 td.down { color: var(--danger); }
+.tb5 td .fbx i { width: 15px; height: 15px; font-size: 10px; }
+.tb5-gap { margin-left: 5px; font-size: 11.5px; }
+.tb5-gap.up { color: var(--positive); } .tb5-gap.down { color: var(--danger); }
+.tb5-note { margin-top: 10px; font-size: 11.5px; color: var(--muted-2); }
+@media (max-width: 900px) { .tb5 .m, .tb5-team em { display: none; } }
+/* 검색을 제목 줄에 띄우는 건 전체 홈(.h5)일 때만 — 리그 탭에선 상단 칩을 가렸다 */
+@media (min-width: 761px) {
+  .workspace-shell:not(:has(.h5)) .workspace-header.is-home { position: static; height: auto; margin-bottom: 10px; }
+  .workspace-shell:not(:has(.h5)) .workspace-header.is-home .global-search-wrap { position: static; }
+}

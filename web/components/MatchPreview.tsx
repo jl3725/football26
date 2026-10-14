@@ -4,7 +4,7 @@ import { getOverview, type Fixture, type FixtureSide, type Overview } from "@/li
 import { colorsClose, compLabel, compTone, ddayLabel, lgKo, liftHex, rankLabel, streak } from "@/lib/match";
 import { MatchPreviewCtx } from "@/lib/matchPreview";
 import { futTier, hexA } from "@/lib/ui";
-import { Crest, FormBoxes, ProbBar } from "./MatchCard";
+import { Crest, FormBoxes, PredictBar } from "./MatchCard";
 import { usePeek, useOpenTeam } from "./PlayerPeek";
 import { Skel } from "./Skeleton";
 
@@ -87,16 +87,35 @@ function Drawer({ m, onClose }: { m: Fixture; onClose: () => void }) {
         </header>
 
         <div className="pv-body">
-          {m.prob && (
+          {(m.fans || m.elo) && (
             <section>
-              <h3>WIN PROBABILITY<span>승리 확률 · 모델</span></h3>
-              <div className="pv-prob">
-                <div><b>{Math.round(m.prob.h * 100)}%</b><span>{m.home.team} 승</span></div>
-                <div><b>{Math.round(m.prob.d * 100)}%</b><span>무승부</span></div>
-                <div><b>{Math.round(m.prob.a * 100)}%</b><span>{m.away.team} 승</span></div>
-              </div>
-              <ProbBar m={m} detail />
-              <p className="pv-note">팀 전력(OVR) 차이와 이번 시즌 경기당 골득실로 두 팀의 기대 득점을 잡고, 포아송 분포로 모든 스코어의 확률을 더한 값입니다. 베팅 배당이 아닙니다.</p>
+              <h3>PREDICTIONS<span>팬 투표 · 예측 모델</span></h3>
+              {m.fans && (
+                <>
+                  <div className="pv-src">FAN VOTE <em>Sofascore 사용자 {m.fans.n.toLocaleString()}표</em></div>
+                  <div className="pv-prob">
+                    <div><b>{Math.round(m.fans.h * 100)}%</b><span>{m.home.team} 승</span></div>
+                    <div><b>{Math.round(m.fans.d * 100)}%</b><span>무승부</span></div>
+                    <div><b>{Math.round(m.fans.a * 100)}%</b><span>{m.away.team} 승</span></div>
+                  </div>
+                  <PredictBar m={{ ...m, elo: undefined }} slim />
+                  {(m.fans.btts != null || m.fans.first_h != null) && (
+                    <div className="pv-side-votes">
+                      {m.fans.btts != null && <span>양 팀 모두 득점 <b>{Math.round(m.fans.btts * 100)}%</b></span>}
+                      {m.fans.first_h != null && m.fans.first_a != null && (
+                        <span>선제골 <b>{m.home.team} {Math.round(m.fans.first_h * 100)}%</b> · <b>{m.away.team} {Math.round(m.fans.first_a * 100)}%</b></span>
+                      )}
+                    </div>
+                  )}
+                </>
+              )}
+              {m.elo && (
+                <div className="pv-elo">
+                  <div className="pv-src">CLUBELO <em>유럽 클럽 Elo 레이팅 기반 독립 예측 모델</em></div>
+                  <PredictBar m={{ ...m, fans: undefined }} slim />
+                </div>
+              )}
+              <p className="pv-note">팬 투표는 Sofascore 앱 사용자 투표(재미용), ClubElo 는 clubelo.com 의 공개 예측입니다. 베팅 정보가 아닙니다.</p>
             </section>
           )}
 

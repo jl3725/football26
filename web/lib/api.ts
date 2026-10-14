@@ -415,9 +415,15 @@ export type LabFinish = { player: string; club: string; goals: number; xg: numbe
 export type LabCreate = { player: string; club: string; assists: number; xa: number; kp: number };
 export type LabBallWinner = { player: string; club: string; club_logo: string; photo: string; minutes: number; tackles: number; inter: number; recov: number; score: number };
 export type TeamStyle = { team: string; logo: string; rank: number; xg_pg: number; gf_pg: number; ga_pg: number };
-export type LeagueLab = { league: string; playmakers: LabPlaymaker[]; finishing: LabFinish[]; creating: LabCreate[]; ball_winners: LabBallWinner[]; team_style: TeamStyle[] };
+export type TableRow = { rank: number; team: string; logo: string; played: number; won: number; drawn: number; lost: number; gf: number; ga: number; gd: number;
+  points: number; form: string[]; xg_pg: number | null; ovr: number | null; str_rank: number | null; manager: string };
+export type LeagueLab = { league: string; playmakers: LabPlaymaker[]; finishing: LabFinish[]; creating: LabCreate[]; ball_winners: LabBallWinner[]; team_style: TeamStyle[];
+  table?: TableRow[]; race?: RaceTeam[]; over?: TableGap[]; under?: TableGap[]; results?: ResultMatch[]; watch?: WatchMatch[];
+  tots?: TotsPlayer[]; golden_boot?: HubBoot[]; injury_impact?: InjuryImpactRow[] };
 export const getLeagueLab = (league: string) => j<LeagueLab>(`/api/league-lab/${encodeURIComponent(league)}`);
-export type TotsPlayer = { slot: string; kind: string; x: number; y: number; player: string; club: string; club_logo: string; rating: number; ovr: number; photo: string; minutes: number };
+export type TotsAlt = { player: string; club: string; rating: number; minutes: number; goals: number; assists: number };
+export type TotsPlayer = { slot: string; kind: string; x: number; y: number; player: string; club: string; club_logo: string; rating: number; ovr: number; photo: string; minutes: number;
+  goals?: number; assists?: number; pos?: string; alts?: TotsAlt[] };
 export type InjuryImpactRow = { team: string; logo: string; league: string; n: number; loss: number; key: string[]; ovr: number };
 // 선수 동향 — OVR 변화. basis 2w = 2주 전 대비(기록 2주+ 쌓인 뒤), season = 지난 시즌 대비
 export type HubMover = HubForm & { delta: number; ovr_prev: number; basis: "2w" | "season"; minutes: number };
@@ -432,8 +438,12 @@ export type FixtureSide = { team: string; league: string | null; rank: number | 
   logo: string; color: string; ovr: number | null; form: string[] };
 // 승리 확률 — 팀 OVR 차이 + 경기당 골득실 → 포아송 모델(src/match_center.win_prob). 베팅 배당 아님.
 export type WinProb = { h: number; d: number; a: number; xg_h: number; xg_a: number };
+// 외부 예측 — fans = Sofascore 팬 투표(n 표, BTTS·선제골 투표 포함), elo = ClubElo 독립 Elo 모델
+export type FanVote = { h: number; d: number; a: number; n: number; btts: number | null; first_h: number | null; first_a: number | null };
+export type EloProb = { h: number; d: number; a: number };
 export type Fixture = { event_id: string | null; comp_code: string; comp: string; kickoff: string; kst: string;
-  date: string; d_day: number; home: FixtureSide; away: FixtureSide; big: number; tags: string[]; prob?: WinProb | null };
+  date: string; d_day: number; home: FixtureSide; away: FixtureSide; big: number; tags: string[]; prob?: WinProb | null;
+  fans?: FanVote; elo?: EloProb };
 export const getFixtures = (days = 7, league = "", limit = 6) =>
   j<{ days: number; count: number; big: Fixture[]; today: Fixture[]; matches?: Fixture[] }>(
     `/api/fixtures?days=${days}&limit=${limit}${league ? `&league=${encodeURIComponent(league)}` : ""}`);

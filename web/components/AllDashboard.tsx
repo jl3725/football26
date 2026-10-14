@@ -1,8 +1,8 @@
 "use client";
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { getHomeAll, getFixtures, getHubPulse, getLeagueLab, fmtEur, feeLabel, type HomeAll, type Fixture, type HubMover, type HubPulse, type LeagueLab, type Trend } from "@/lib/api";
-import { ExpectedBoard, Playmakers, BallWinners, TeamStyleMap } from "./LeagueLab";
-import { ResultsTicker, WatchGrid, TitleRace, OverUnder, GoldenBoot, TeamOfSeason, InjuryImpact } from "./HubPulse";
+import { ResultsTicker, WatchGrid, OverUnder, InjuryImpact } from "./HubPulse";
+import LeagueFocus from "./LeagueFocus";
 import { Skel, SkelCards } from "./Skeleton";
 import CountUp from "./CountUp";
 import MatchCard, { MatchHero } from "./MatchCard";
@@ -134,9 +134,7 @@ export default function AllDashboard({ onPick, switcher }: { accent?: string; on
   const snaps = d.snapshots.filter((s) => s.table.length > 0);
   const snap = snaps.find((s) => s.league === lg) ?? snaps[0];
   const top = snap?.table[0]?.points || 1;
-  const race = pulse?.race.find((r) => r.league === snap?.league);
-  const tots = (snap && d.tots?.[snap.league]) || [];
-  const boot = (snap && d.golden_boot?.[snap.league]) || [];
+
 
   // ── 주의 보드: 부상·복귀 + 계약 만료, 내 팀 먼저 ──
   type W = { key: string; player: string; club: string; club_logo: string; league: string; photo: string; sub: string; badge: string; tone: string; kind: "inj" | "con" };
@@ -212,60 +210,7 @@ export default function AllDashboard({ onPick, switcher }: { accent?: string; on
             right={<div className="seg5 seg5-head">
               {snaps.map((x) => <button key={x.league} className={x.league === snap.league ? "on" : ""} onClick={() => setLg(x.league)}>{lgEn(x.league) || x.league_name}</button>)}
             </div>} />
-          <div className="h5-stack">
-            <div className="h5-row">
-              <section className="card h5-card">
-                <SectionHead title="TITLE RACE" kr="우승 경쟁" meta="상위 4팀 누적 승점" />
-                {race && race.teams.length > 0 ? <TitleRace teams={race.teams} league={snap.league} onPick={onPick} />
-                  : pulse ? <p className="empty5">경기 기록 없음</p> : <Skel h={220} r={12} />}
-              </section>
-              <section className="card h5-card h5-side">
-                <SectionHead title="STANDINGS" kr="리그 순위" meta="1위와 승점 차" />
-                <div className="st5">
-                  {snap.table.map((t) => (
-                    <button className="st5-row" key={t.rank} onClick={() => onPick(t.team, snap.league)}>
-                      <span className="st5-rk">{t.rank}</span>
-                      {t.logo ? <img src={t.logo} alt="" /> : <span className="st5-ph" />}
-                      <span className="st5-nm">{t.team}</span>
-                      <span className="st5-bar"><span style={{ width: `${Math.max(4, (t.points / top) * 100)}%` }} /></span>
-                      <span className="st5-gap">{t.rank === 1 ? "—" : `-${top - t.points}`}</span>
-                      <b className="st5-pts">{t.points}</b>
-                    </button>
-                  ))}
-                </div>
-              </section>
-            </div>
-            <div className="h5-row">
-              <section className="card h5-card">
-                <SectionHead title="TEAM OF THE SEASON" kr="시즌 베스트 XI" meta="4-3-3 · 시즌 평균 평점" />
-                {tots.length ? <TeamOfSeason players={tots} league={snap.league} /> : <p className="empty5">출전 기록이 아직 부족합니다</p>}
-              </section>
-              <section className="card h5-card h5-side">
-                <SectionHead title="GOLDEN BOOT" kr="득점왕 레이스" meta="골 · 도움 · 골당 출전 시간" />
-                <GoldenBoot rows={boot} onPick={onPick} />
-              </section>
-            </div>
-            <div className="h5-row">
-              <section className="card h5-card">
-                <SectionHead title="EXPECTED vs ACTUAL" kr="기대값 대비 결과" meta="골 vs xG · 도움 vs xA · 점을 누르면 선수" />
-                {lab ? <ExpectedBoard finishing={lab.finishing} creating={lab.creating} league={snap.league} /> : <Skel h={280} r={12} />}
-              </section>
-              <section className="card h5-card h5-side">
-                <SectionHead title="PLAYMAKERS" kr="도움왕 · 찬스 메이커" meta="도움 · xA · 빅찬스 · 키패스" />
-                {lab ? <Playmakers rows={lab.playmakers} onPick={onPick} league={snap.league} /> : <Skel h={280} r={12} />}
-              </section>
-            </div>
-            <div className="h5-row">
-              <section className="card h5-card">
-                <SectionHead title="TEAM STYLE MAP" kr="팀 스타일 지도" meta="경기당 xG vs 경기당 실점 · 점선 = 리그 평균" />
-                {lab ? <TeamStyleMap teams={lab.team_style} onPick={onPick} league={snap.league} /> : <Skel h={300} r={12} />}
-              </section>
-              <section className="card h5-card h5-side">
-                <SectionHead title="BALL WINNERS" kr="볼 위닝" meta="90분당 수비 액션" />
-                {lab ? <BallWinners rows={lab.ball_winners} league={snap.league} /> : <Skel h={280} r={12} />}
-              </section>
-            </div>
-          </div>
+          <LeagueFocus league={snap.league} lab={lab} onPick={onPick} />
         </section>
       )}
 

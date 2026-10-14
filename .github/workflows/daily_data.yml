@@ -100,6 +100,9 @@ jobs:
           bash scripts/ci_try.sh "infra_ping" python scripts/ping_infra.py
 
       # 팀 대표색(ESPN) — 손으로 고른 색이 없는 승격팀이 회색으로 나오지 않게(teammeta 대체값)
+      - name: Predictions (ClubElo — 독립 Elo 예측 모델, 회사 회선에선 막혀 클라우드에서)
+        run: bash scripts/ci_try.sh "clubelo" python src/fetch_clubelo.py
+
       - name: Team colors (ESPN)
         run: bash scripts/ci_try.sh "team_colors" python src/fetch_team_colors.py
 

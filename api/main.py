@@ -2817,7 +2817,10 @@ _TOTS_SLOTS = [("ST", "FWD", 50, 10), ("LW", "FWD", 17, 18), ("RW", "FWD", 83, 1
 def _team_of_season(p, lg: str) -> list[dict]:
     """시즌 지금까지 베스트 XI — 평점(Sofascore 시즌 평균) 순, 리그 진행률만큼 줄인 최소 출전시간.
     자리는 TM 세부 포지션(왼/오른쪽 구분)으로 채우고, 비면 같은 라인의 다음 선수로."""
-    q = p[(p["_mn"] >= max(270.0, _mm(600, lg))) & (p["_ss"] > 0)].copy()
+    st = ds.read_table("standings", league=lg)
+    games = int(pd.to_numeric(st["played"], errors="coerce").max()) if st is not None and "played" in st.columns and len(st) else 0
+    min_mn = max(270.0, 0.5 * games * 90)     # 팀 경기의 절반 이상 — 예전 _mm(600) 은 시즌 후반 600분(약 7경기)까지 내려갔다
+    q = p[(p["_mn"] >= min_mn) & (p["_ss"] > 0)].copy()
     if q.empty:
         return []
     q["_pos"] = q.get("tm_position", pd.Series("", index=q.index)).astype(str)
@@ -2848,15 +2851,24 @@ def _team_of_season(p, lg: str) -> list[dict]:
     for k, bs in fallback.items():
         if picks.get(k) is None:
             picks[k] = take(lambda r, bs=bs: r["_b"] in bs)
+    # 자리별 다음 후보 — 같은 세부 포지션(윙·풀백은 같은 쪽)에서 뽑히지 않은 상위 2명
+    prim = {"GK": lambda r: r["_b"] == "GK", "LB": lambda r: r["_b"] == "LB", "RB": lambda r: r["_b"] == "RB",
+            "LCB": lambda r: r["_b"] == "CB", "RCB": lambda r: r["_b"] == "CB", "LCM": lambda r: r["_b"] == "CM",
+            "CM": lambda r: r["_b"] == "CM", "RCM": lambda r: r["_b"] == "CM", "ST": lambda r: r["_b"] == "ST",
+            "LW": lambda r: r["_b"] == "W" and side(r, "left"), "RW": lambda r: r["_b"] == "W" and side(r, "right")}
     out = []
     for slot, kind, x, y in _TOTS_SLOTS:
         r = picks.get(slot)
         if r is None:
             continue
         sq = str(r.get("squad") or "")
+        alts = [{"player": str(a["player"]), "club": str(a.get("squad") or ""), "rating": round(float(a["_ss"]), 2),
+                 "minutes": int(a["_mn"]), "goals": int(_num(a.get("goals"))), "assists": int(_num(a.get("assists")))}
+                for i, a in q.iterrows() if i not in used and prim[slot](a)][:2]
         out.append({"slot": slot, "kind": kind, "x": x, "y": y, "player": str(r["player"]), "club": sq,
                     "club_logo": tm.team_logo(sq), "rating": round(float(r["_ss"]), 2), "ovr": _player_ovr(r),
-                    "photo": _photo(r), "minutes": int(r["_mn"])})
+                    "photo": _photo(r), "minutes": int(r["_mn"]), "goals": int(_num(r.get("goals"))),
+                    "assists": int(_num(r.get("assists"))), "pos": str(r.get("tm_position") or ""), "alts": alts})
     return out
 
 
@@ -3187,7 +3199,68 @@ def _fx_enrich(m: dict, src: dict) -> dict:
     m["big"], m["tags"] = mc.big_score(m)
     gd = lambda t: (src["ranks"].get(t["team"]) or (0, 0, None, 0.0))[3]  # noqa: E731
     m["prob"] = mc.win_prob(m["home"].get("ovr"), m["away"].get("ovr"), gd(m["home"]), gd(m["away"]))
+    _attach_predictions(m)
     return m
+
+
+@_memo(ttl=1800)
+def _predictions() -> dict:
+    """외부 예측 — data/fan_votes.csv(Sofascore 팬 투표, 로컬 하루 2회) · data/clubelo_fixtures.csv(ClubElo, 클라우드 매일).
+    (날짜, 홈, 원정) 키. 없으면 빈 dict."""
+    out: dict = {"fans": {}, "elo": {}}
+    base = ds.DB_PATH.parent
+    try:
+        fv = pd.read_csv(base / "fan_votes.csv")
+        for _, r in fv.iterrows():
+            out["fans"][(str(r["date"]), str(r["home"]), str(r["away"]))] = r.to_dict()
+    except (OSError, ValueError, KeyError):
+        pass
+    try:
+        ce = pd.read_csv(base / "clubelo_fixtures.csv")
+        for _, r in ce.iterrows():
+            out["elo"][(str(r["date"]), str(r["home"]), str(r["away"]))] = r.to_dict()
+    except (OSError, ValueError, KeyError):
+        pass
+    return out
+
+
+def _pred_lookup(table: dict, date: str, h: str, a: str):
+    """(날짜, 홈, 원정) 정확히 → 없으면 같은 날 경기 중 두 팀 이름이 가장 비슷한 것(우리 리그 밖 상대는 표기가 달라서)."""
+    hit = table.get((date, h, a))
+    if hit is not None:
+        return hit
+    import team_names  # noqa: PLC0415
+    best, best_s = None, 0.0
+    for (d, hh, aa), row in table.items():
+        if d != date:
+            continue
+        sc = min(team_names.score(h, hh), team_names.score(a, aa))
+        if sc > best_s:
+            best, best_s = row, sc
+    return best if best_s >= 0.6 else None
+
+
+def _attach_predictions(m: dict) -> None:
+    """경기에 팬 투표(fans)·ClubElo(elo) — 날짜는 하루 어긋남(시간대) 허용."""
+    pr = _predictions()
+    h, a = m["home"]["team"], m["away"]["team"]
+    d0 = datetime.date.fromisoformat(m["date"])
+    for k in (0, -1, 1):
+        day = (d0 + datetime.timedelta(days=k)).isoformat()
+        f = _pred_lookup(pr["fans"], day, h, a)
+        if f and "fans" not in m:
+            n = int(f["vote_home"]) + int(f["vote_draw"]) + int(f["vote_away"])
+            if n >= 30:
+                bt = int(f["btts_yes"]) + int(f["btts_no"])
+                fs = int(f["first_home"]) + int(f["first_none"]) + int(f["first_away"])
+                m["fans"] = {"h": round(int(f["vote_home"]) / n, 3), "d": round(int(f["vote_draw"]) / n, 3),
+                             "a": round(int(f["vote_away"]) / n, 3), "n": n,
+                             "btts": round(int(f["btts_yes"]) / bt, 3) if bt >= 20 else None,
+                             "first_h": round(int(f["first_home"]) / fs, 3) if fs >= 20 else None,
+                             "first_a": round(int(f["first_away"]) / fs, 3) if fs >= 20 else None}
+        e = _pred_lookup(pr["elo"], day, h, a)
+        if e and "elo" not in m:
+            m["elo"] = {"h": float(e["p_home"]), "d": float(e["p_draw"]), "a": float(e["p_away"])}
 
 
 def _today_kst() -> datetime.date:
@@ -3265,8 +3338,70 @@ def league_lab(league: str):
             team_style.append({"team": sq, "logo": tm.team_logo(sq), "rank": int(_num(r.get("rank"))),
                                "xg_pg": round(float(xg_by.get(sq, 0.0)) / pl, 2),
                                "gf_pg": round(_num(r.get("gf")) / pl, 2), "ga_pg": round(_num(r.get("ga")) / pl, 2)})
+    # ── 리그 홈·LEAGUE FOCUS 공용: 전체 순위표 · 우승 경쟁 · 베스트 XI · 득점왕 · 부상 타격 · 전력 대비 · 결과 · 주목할 매치 ──
+    import match_center as mc  # noqa: PLC0415
+    src = _fx_sources()
+    rows = src["rows"].get(league)
+    pf = _pf(league)
+    pp = None
+    if pf is not None and "player" in pf.columns:
+        pp = pf.copy()
+        if "left_for" in pp.columns:
+            pp = pp[pp["left_for"].isna() | (pp["left_for"].astype(str).str.strip() == "")]
+        pp["_mn"] = pd.to_numeric(pp.get("minutes"), errors="coerce").fillna(0)
+        pp["_ss"] = pd.to_numeric(pp.get("ss_rating"), errors="coerce").fillna(0)
+        pp["_g"] = pd.to_numeric(pp.get("goals"), errors="coerce").fillna(0)
+    table, race, gaps = [], [], []
+    if st is not None and not st.empty:
+        st = st.sort_values("rank")
+        strength = _club_strength(league)
+        str_rank = {t_: i + 1 for i, (t_, _) in enumerate(sorted(strength.items(), key=lambda kv: -kv[1]))}
+        xg_by = t.groupby("squad")["expectedGoals"].sum()
+        mgrs = _managers(league)
+        n = len(st)
+        for _, r in st.iterrows():
+            sq, pl = str(r["squad"]), _num(r.get("played"))
+            row = {"rank": int(_num(r.get("rank"))), "team": sq, "logo": tm.team_logo(sq), "played": int(pl),
+                   "won": int(_num(r.get("won"))), "drawn": int(_num(r.get("drawn"))), "lost": int(_num(r.get("lost"))),
+                   "gf": int(_num(r.get("gf"))), "ga": int(_num(r.get("ga"))), "gd": int(_num(r.get("gd"))),
+                   "points": int(_num(r.get("points"))), "form": mc.recent_form(rows, sq),
+                   "xg_pg": round(float(xg_by.get(sq, 0.0)) / pl, 2) if pl else None,
+                   "ovr": round(float(strength[sq])) if sq in strength else None, "str_rank": str_rank.get(sq),
+                   "manager": str((mgrs.get(sq) or {}).get("name") or "")}
+            table.append(row)
+            if row["str_rank"]:
+                g = row["str_rank"] - row["rank"]
+                gaps.append({"team": sq, "logo": row["logo"], "league": league, "rank": row["rank"], "str_rank": row["str_rank"],
+                             "gap": g, "ovr": row["ovr"], "points": row["points"], "n": n, "manager": row["manager"],
+                             "hot_seat": -g >= 6 and row["rank"] > n / 2})
+        for row in table[:4]:
+            race.append({"team": row["team"], "logo": row["logo"], "color": tm.team_color(row["team"]),
+                         "points": mc.points_path(rows, row["team"]), "rank": row["rank"]})
+    over = sorted([g for g in gaps if g["gap"] >= 2], key=lambda g: (-g["gap"], g["rank"]))[:8]
+    under = sorted([g for g in gaps if g["gap"] <= -2], key=lambda g: (g["gap"], -g["rank"]))[:8]
+    today = _today_kst()
+    results = []
+    for m in mc.results_from({league: rows}, today, 7):
+        m = _fx_enrich(m, src)
+        m["upset"] = mc.upset_note(m)
+        results.append(m)
+    watch = []
+    n_teams = 0 if st is None else len(st)
+    for m in mc.matches_from({league: rows}, today, 7):
+        if not str(m["comp_code"]).endswith(".1"):
+            continue
+        m = _fx_enrich(m, src)
+        sc, why = mc.watch_score(m, n_teams)
+        if sc >= 15:
+            watch.append({**m, "watch": round(sc), "why": why, "league": league})
+    watch.sort(key=lambda m: -m["watch"])
+    cur_inj = ds.read_table("transfermarkt_injuries", league=league)
     return {"league": league, "playmakers": playmakers, "finishing": finishing, "creating": creating,
-            "ball_winners": ball_winners, "team_style": team_style}
+            "ball_winners": ball_winners, "team_style": team_style,
+            "table": table, "race": race, "over": over, "under": under, "results": results[:20], "watch": watch[:3],
+            "tots": _team_of_season(pp, league) if pp is not None else [],
+            "golden_boot": _golden_boot(pp, league) if pp is not None else [],
+            "injury_impact": sorted(_injury_impact(pp, cur_inj, league), key=lambda x: (-x["loss"], -x["n"]))[:8] if pp is not None else []}
 
 
 @app.get("/api/hub/pulse")
@@ -3406,22 +3541,24 @@ def _canon_line(x) -> str:
 def _fine_bucket(s) -> str:
     """슬롯명(LCB·LB·RCM…) 또는 포지션 텍스트(Centre-Back…) → 세부 버킷.
     영입이 같은 자리 주전을 밀어낼 때 정밀 매칭용(CB↔CB, LB↔LB, 윙↔윙…)."""
+    import re as _re  # noqa: PLC0415
     t = str(s or "").upper()
-    if "GK" in t or "KEEPER" in t:
+    toks = set(_re.split(r"[^A-Z]+", t))
+    if toks & {"GK"} or "KEEPER" in t:
         return "GK"
-    if "LWB" in t or "LEFT-BACK" in t or "LEFT BACK" in t or t == "LB":
+    if toks & {"LWB", "LB"} or "LEFT-BACK" in t or "LEFT BACK" in t:
         return "LB"
-    if "RWB" in t or "RIGHT-BACK" in t or "RIGHT BACK" in t or t == "RB":
+    if toks & {"RWB", "RB"} or "RIGHT-BACK" in t or "RIGHT BACK" in t:
         return "RB"
-    if "CB" in t or "CENTRE-BACK" in t or "CENTER-BACK" in t or "CENTRE BACK" in t:
+    if toks & {"CB", "LCB", "RCB"} or "CENTRE-BACK" in t or "CENTER-BACK" in t or "CENTRE BACK" in t:
         return "CB"
-    if "RW" in t or "LW" in t or "RM" in t or "LM" in t or "WING" in t:
-        return "W"
-    if ("DM" in t or "CM" in t or "AM" in t or "MID" in t
-            or "MIDFIELD" in t):
-        return "CM"
-    if "ST" in t or "CF" in t or "STRIKER" in t or "FORWARD" in t:
+    # 공격수를 윙보다 먼저 — 예전엔 'Centre-FoRWard' 안의 'RW' 때문에 모든 센터포워드가 윙(W)이 됐다
+    if toks & {"ST", "CF", "SS"} or "STRIKER" in t or "FORWARD" in t:
         return "ST"
+    if toks & {"RW", "LW", "RM", "LM"} or "WING" in t or "LEFT MIDFIELD" in t or "RIGHT MIDFIELD" in t:
+        return "W"
+    if toks & {"DM", "CM", "AM", "CDM", "CAM", "LCM", "RCM", "LDM", "RDM"} or "MID" in t:
+        return "CM"
     return ""
 
 

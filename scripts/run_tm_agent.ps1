@@ -50,8 +50,8 @@ if ($Weekly) {
         @{ Name = "market_value"; Args = @("scripts\snapshot_market_values.py") }
     )
     $Paths = @("data/transfers_*.csv", "data/transfermarkt_*.csv", "data/transfer_rumors_*.csv",
-               "data/players_*.csv", "data/market_value_*.csv")
-    $Subject = "이적·부상·계약·루머"
+               "data/players_*.csv", "data/market_value_*.csv", "data/fan_votes.csv")
+    $Subject = "이적·부상·계약·루머·팬 투표"
 }
 
 $Leagues = @("EPL", "LaLiga", "SerieA", "Bundesliga", "Ligue1", "LigaPortugal", "Eredivisie", "BelgianProLeague")
@@ -65,6 +65,13 @@ foreach ($lg in $Leagues) {
     }
 }
 Remove-Item Env:FB_LEAGUE -ErrorAction SilentlyContinue
+
+# 팬 승부 예측 투표(Sofascore) — 리그 무관 한 번. Sofascore 는 GH 러너에서 막혀 로컬에서만.
+if (-not $Weekly) {
+    Write-Host "[$Tag] ── fan_votes"
+    & $Python src\fetch_fan_votes.py
+    if ($LASTEXITCODE -ne 0) { $Failed += "fan_votes" }
+}
 
 # 품질 게이트 — 핵심 데이터 계약이 깨지면 커밋하지 않고 TM 산출물 변경을 되돌린다.
 & $Python scripts\validate_data.py --no-optional

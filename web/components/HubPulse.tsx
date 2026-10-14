@@ -5,7 +5,7 @@ import Pitch from "./Pitch";
 import { usePeek } from "./PlayerPeek";
 import { colorsClose, compLabel, compTone, ddayLabel, lgEn, liftHex, splitKst } from "@/lib/match";
 import { useMatchPreview } from "@/lib/matchPreview";
-import { Crest, ProbBar } from "./MatchCard";
+import { Crest, PredictBar } from "./MatchCard";
 
 // 홈 '지금' 섹션들 — /api/hub/pulse(요청 시 계산·30분 캐시, 일정·결과는 daily_data 가 매일 갱신)
 type Pick = (team: string, league?: string) => void;
@@ -66,7 +66,7 @@ export function WatchGrid({ items, onPick }: { items: WatchMatch[]; onPick: Pick
                 <span className="wt5-pts">{s.points}<em>점</em></span>
               </button>
             ))}
-            <ProbBar m={m} slim />
+            <PredictBar m={m} slim />
             <div className="wt5-why">
               {m.why.map((t, i) => <span key={t} className={i === 0 ? "lead" : ""}>{t}</span>)}
             </div>
@@ -197,18 +197,28 @@ export function TeamOfSeason({ players, league }: { players: TotsPlayer[]; leagu
   const placements = players.map((p) => ({ slot: p.slot, player: p.player, x: p.x, y: p.y, kind: p.kind, ovr: Math.round(p.rating * 10) / 10, photo: p.photo, club: p.club }));
   const order = ["GK", "RB", "RCB", "LCB", "LB", "RCM", "CM", "LCM", "RW", "ST", "LW"];
   const list = [...players].sort((a, b) => order.indexOf(a.slot) - order.indexOf(b.slot));
+  const seen = new Set<string>();
   return (
     <div className="tots5">
       <div className="tots5-pitch"><Pitch placements={placements} metric="평점" /></div>
       <div className="tots5-list">
-        {list.map((p) => (
-          <button key={p.slot} className="tots5-row" onClick={(e) => peek(e, { name: p.player, club: p.club, league })}>
-            <span className="tots5-slot">{p.slot.replace(/^[LR](CB|CM)$/, "$1")}</span>
-            {p.club_logo ? <img src={p.club_logo} alt="" /> : <span className="tots5-ph" />}
-            <b>{p.player}</b>
-            <span className="tots5-r">{p.rating.toFixed(2)}</span>
-          </button>
-        ))}
+        {list.map((p) => {
+          // 같은 자리(CB 2·CM 3)는 다음 후보가 같아서 첫 줄에만
+          const ak = (p.alts ?? []).map((a) => a.player).join("|");
+          const showAlts = ak && !seen.has(ak);
+          if (ak) seen.add(ak);
+          return (
+            <button key={p.slot} className="tots5-row" onClick={(e) => peek(e, { name: p.player, club: p.club, league })}>
+              <span className="tots5-slot">{p.slot.replace(/^[LR](CB|CM)$/, "$1")}</span>
+              {p.club_logo ? <img src={p.club_logo} alt="" /> : <span className="tots5-ph" />}
+              <span className="tots5-who">
+                <b>{p.player}</b>
+                <em>{p.minutes}분{p.goals || p.assists ? ` · ${p.goals ?? 0}골 ${p.assists ?? 0}도움` : ""}{showAlts ? ` · 다음 ${p.alts!.map((a) => `${a.player.split(" ").slice(-1)[0]} ${a.rating.toFixed(2)}`).join(", ")}` : ""}</em>
+              </span>
+              <span className="tots5-r">{p.rating.toFixed(2)}</span>
+            </button>
+          );
+        })}
       </div>
     </div>
   );

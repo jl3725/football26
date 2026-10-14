@@ -1,6 +1,8 @@
 "use client";
 import { useEffect, useState, type ReactNode } from "react";
-import { feeLabel, getHome, type Home } from "@/lib/api";
+import { feeLabel, getHome, getLeagueLab, type Home, type LeagueLab } from "@/lib/api";
+import LeagueFocus from "./LeagueFocus";
+import { ResultsTicker, WatchGrid } from "./HubPulse";
 import WorldCup from "./WorldCup";
 import AllDashboard from "./AllDashboard";
 import { Skel, SkelCards } from "./Skeleton";
@@ -24,8 +26,15 @@ export default function HomeDashboard({ accent, onPickTeam, onPickLeagueTeam, le
 }) {
   const [h, setH] = useState<Home | null>(null);
   const [comp, setComp] = useState<"all" | "league" | "WC">("all");   // 전체 · 리그 홈 · 월드컵
+  const [lab, setLab] = useState<LeagueLab | null>(null);              // 리그 분석 랩(결과·주목할 매치·순위표·베스트 XI …)
   // leagueLabel 변경(리그 전환) 시 재조회 — getHome 은 모듈 활성리그(_league) 사용
   useEffect(() => { let a = true; setH(null); getHome().then((d) => a && setH(d)).catch(() => {}); return () => { a = false; }; }, [leagueLabel]);
+  useEffect(() => {
+    if (comp !== "league") return;
+    let a = true; setLab(null);
+    getLeagueLab(league).then((d) => a && setLab(d)).catch(() => {});
+    return () => { a = false; };
+  }, [league, comp]);
 
   // 전체(통합) + 모든 리그 + WC 를 홈에서 바로 전환하는 탭(리그 홈은 다리그 허브)
   const opts: LeagueOpt[] = leagues.length ? leagues : [{ key: league, label: leagueLabel }];
@@ -89,9 +98,22 @@ export default function HomeDashboard({ accent, onPickTeam, onPickLeagueTeam, le
         </div>
       </div>
 
+      {lab && (lab.results ?? []).length > 0 && <div style={{ marginTop: 18 }}><ResultsTicker results={lab.results!} onPick={(t, lg) => pickTL(t, lg)} /></div>}
+
       {/* ── 이번 주 경기(매치 센터) — 시즌 중엔 이적보다 먼저. 빅매치는 강조 카드 + 목록 배지 ── */}
       <Sec en="THIS WEEK" kr="이번 주 경기" accent={accent} />
       <LeagueFixtures league={league} accent={accent} onPick={(t, lg) => pickTL(t, lg)} />
+
+      {lab && (lab.watch ?? []).length > 0 && (
+        <>
+          <Sec en="MATCHES TO WATCH" kr="주목할 매치" />
+          <WatchGrid items={lab.watch!} onPick={(t, lg) => pickTL(t, lg)} />
+        </>
+      )}
+
+      {/* ── 리그 집중: 전체 순위표 · 우승 경쟁 · 전력 대비 · 베스트 XI · 득점왕 · 기대값 · 도움왕 · 팀 스타일 · 볼 위닝 · 부상 타격 ── */}
+      <Sec en="LEAGUE FOCUS" kr="리그 집중" />
+      <LeagueFocus league={league} lab={lab} onPick={(t, lg) => pickTL(t, lg)} full />
 
       {/* ── 이적 속보 (LIVE 피드) ── */}
       {h.buzz && h.buzz.length > 0 && (
@@ -204,7 +226,7 @@ export default function HomeDashboard({ accent, onPickTeam, onPickLeagueTeam, le
       )}
 
       {/* ── 뉴스 · 순위 ── */}
-      <Sec en="LATEST" kr="뉴스 · 순위" accent={accent} />
+      <Sec en="LATEST" kr="뉴스 · 승격·강등" accent={accent} />
       <div className="home-grid">
         <div className="card">
           <div className="card-h">헤드라인</div>
@@ -220,18 +242,8 @@ export default function HomeDashboard({ accent, onPickTeam, onPickLeagueTeam, le
         </div>
 
         <div className="card">
-          <div className="card-h">{h.season} {inSeason ? "순위" : "최종 순위"}</div>
-          <div className="rows">
-            {h.standings.slice(0, 10).map((t) => (
-              <button className="stx" key={t.name} onClick={() => onPickTeam(t.name)}>
-                <span className={`stx-rank${t.rank <= 5 ? " ucl" : t.rank >= h.standings.length - 2 ? " rel" : ""}`}>{t.rank}</span>
-                {t.logo ? <img src={t.logo} alt="" /> : <span className="ph22" />}
-                <span className="stx-name">{t.name}</span>
-                <span className="stx-pts teko">{t.points}</span>
-              </button>
-            ))}
-          </div>
-          <div className="stx-foot">
+          <div className="card-h">승격 · 강등</div>
+          <div className="stx-foot" style={{ marginTop: 0 }}>
             {nextLabel} 승격 <b style={{ color: "#4fc27f" }}>{h.roster_next?.promoted?.join(", ") || "-"}</b>
             <br />강등 <b style={{ color: "#e0556b" }}>{h.roster_next?.relegated?.join(", ") || "-"}</b>
           </div>
