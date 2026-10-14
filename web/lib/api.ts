@@ -416,7 +416,9 @@ export type FixtureSide = { team: string; league: string | null; rank: number | 
   logo: string; color: string; ovr: number | null; form: string[] };
 export type Fixture = { event_id: string | null; comp_code: string; comp: string; kickoff: string; kst: string;
   date: string; d_day: number; home: FixtureSide; away: FixtureSide; big: number; tags: string[] };
-export const getFixtures = (days = 7) => j<{ days: number; count: number; big: Fixture[]; today: Fixture[] }>(`/api/fixtures?days=${days}`);
+export const getFixtures = (days = 7, league = "", limit = 6) =>
+  j<{ days: number; count: number; big: Fixture[]; today: Fixture[]; matches?: Fixture[] }>(
+    `/api/fixtures?days=${days}&limit=${limit}${league ? `&league=${encodeURIComponent(league)}` : ""}`);
 export const getTeamFixtures = (team: string, l = _league) =>
   j<{ team: string; next: Fixture[] }>(`/api/fixtures/${encodeURIComponent(team)}?league=${encodeURIComponent(l)}`);
 // 선수 시즌 히트맵(Sofascore) — analytics 포지셔널 히트맵

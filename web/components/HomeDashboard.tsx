@@ -5,6 +5,7 @@ import WorldCup from "./WorldCup";
 import AllDashboard from "./AllDashboard";
 import { Skel, SkelCards } from "./Skeleton";
 import { phaseOf, seasonStatusText } from "@/lib/season";
+import LeagueFixtures from "./LeagueFixtures";
 
 const eurM = (v: number) => (v >= 1e6 ? `€${Math.round(v / 1e6)}M` : v > 0 ? `€${Math.round(v / 1e3)}K` : "€0");
 
@@ -97,6 +98,10 @@ export default function HomeDashboard({ accent, onPickTeam, onPickLeagueTeam, le
           <div className="kpi"><div className="kpi-n teko">{h.kpi.injuries}</div><div className="kpi-l">부상 변동</div></div>
         </div>
       </div>
+
+      {/* ── 이번 주 경기(매치 센터) — 시즌 중엔 이적보다 먼저. 빅매치는 강조 카드 + 목록 배지 ── */}
+      <Sec en="THIS WEEK" kr="이번 주 경기" accent={accent} />
+      <LeagueFixtures league={league} accent={accent} onPick={(t, lg) => pickTL(t, lg)} />
 
       {/* ── 이적 속보 (LIVE 피드) ── */}
       {h.buzz && h.buzz.length > 0 && (

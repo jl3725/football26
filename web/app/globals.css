@@ -2213,3 +2213,32 @@ h1, .hub-hero-t, .pd-name, .tb-team h1 { letter-spacing: -0.02em; }
 .sched-row.next { box-shadow: inset 2px 0 0 var(--accent); background: rgba(255, 255, 255, 0.035); }
 .sc-next { font-style: normal; font-size: 10px; font-weight: 700; color: var(--accent); margin-left: 6px; }
 
+/* 리그 탭 '이번 주 경기'(LeagueFixtures) — 날짜별 목록, 빅매치는 강조선 + 배지 */
+.lf-list { padding: 6px 14px 10px; }
+.lf-day + .lf-day { border-top: 1px solid var(--line); }
+.lf-day-h { display: flex; align-items: baseline; gap: 8px; padding: 12px 0 6px; font-size: 12.5px; font-weight: 700; }
+.lf-day-h span { font-size: 11px; font-weight: 600; color: var(--accent); }
+.lf-row { display: grid; grid-template-columns: 46px 1fr auto; align-items: center; gap: 10px; padding: 7px 8px; border-radius: 10px; }
+.lf-row:hover { background: rgba(255, 255, 255, 0.03); }
+.lf-row.big { background: linear-gradient(90deg, color-mix(in srgb, var(--tc, var(--accent)) 14%, transparent), transparent 70%);
+  box-shadow: inset 2px 0 0 var(--tc, var(--accent)); }
+.lf-time { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.lf-match { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 8px; min-width: 0; }
+.lf-match .lf-team:first-child { flex-direction: row-reverse; justify-content: flex-start; }   /* 홈팀은 vs 쪽으로 붙인다 */
+.lf-match { max-width: 640px; }
+.lf-team { display: flex; align-items: center; gap: 7px; min-width: 0; background: none; border: 0; color: inherit; cursor: pointer; padding: 0; font: inherit; }
+.lf-team:disabled { cursor: default; }
+.lf-team img, .lf-ph { width: 20px; height: 20px; object-fit: contain; flex: none; border-radius: 50%; }
+.lf-name { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.lf-team em { font-style: normal; font-size: 10.5px; color: var(--muted); }
+.lf-vs { font-size: 10.5px; color: var(--muted); }
+.lf-side { display: flex; gap: 6px; justify-content: flex-end; }
+.lf-comp { font-size: 10.5px; padding: 2px 7px; border-radius: 999px; background: rgba(255, 255, 255, 0.06); color: #c9d0db; white-space: nowrap; }
+.lf-comp.ucl { background: rgba(70, 110, 255, 0.18); color: #9db8ff; }
+.lf-big { font-size: 10.5px; font-weight: 700; padding: 2px 8px; border-radius: 999px; background: var(--tc, var(--accent)); color: #0b0f17; white-space: nowrap; }
+@media (max-width: 760px) {
+  .lf-row { grid-template-columns: 38px 1fr; }
+  .lf-side { grid-column: 2; justify-content: flex-start; }
+  .lf-name { font-size: 12px; }
+}
+

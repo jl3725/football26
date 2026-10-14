@@ -3036,15 +3036,24 @@ def _today_kst() -> datetime.date:
     return (datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(hours=9)).date()
 
 
+BIG_MIN = 35   # 빅매치 기준 — 챔스 가산(30)만으로는 넘지 못하게(LASK 대 리버풀 같은 경기 제외)
+
+
 @app.get("/api/fixtures")
 @_memo(ttl=1800)
-def fixtures(days: int = 7, limit: int = 6):
-    """전 리그 다가오는 경기 — 빅매치(점수 30+ 상위)와 오늘 경기. 일정은 daily_data 가 매일 갱신."""
+def fixtures(days: int = 7, limit: int = 6, league: str = ""):
+    """다가오는 경기 — 빅매치(점수 30+ 상위)·오늘 경기·(리그 지정 시) 그 리그 팀이 뛰는 전 경기(유럽대회 포함).
+    일정은 daily_data 가 매일 갱신하고, 순위·폼·D-day 는 요청 시 계산(30분 캐시)이라 따로 돌릴 배치가 없다."""
     import match_center as mc  # noqa: PLC0415
     src = _fx_sources()
     ms = [_fx_enrich(m, src) for m in mc.matches_from(src["rows"], _today_kst(), days)]
-    big = sorted([m for m in ms if m["big"] >= 30], key=lambda m: (-m["big"], m["date"]))[:limit]
-    return {"days": days, "count": len(ms), "big": big, "today": [m for m in ms if m["d_day"] == 0][:12]}
+    if league:
+        ms = [m for m in ms if league in (m["home"].get("league"), m["away"].get("league"))]
+    big = sorted([m for m in ms if m["big"] >= BIG_MIN], key=lambda m: (-m["big"], m["date"]))[:limit]
+    out = {"days": days, "count": len(ms), "big": big, "today": [m for m in ms if m["d_day"] == 0][:12]}
+    if league:
+        out["matches"] = ms[:80]
+    return out
 
 
 @app.get("/api/fixtures/{team}")
