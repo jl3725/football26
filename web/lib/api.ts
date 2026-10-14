@@ -404,7 +404,9 @@ export type HubRiser = { player: string; club: string; club_logo: string; value_
 export type HubGoal = { player: string; club: string; club_logo: string; goals: number; assists: number; ovr: number; age: number; photo: string; league: string; league_name: string };
 export type HubContract = { player: string; club: string; club_logo: string; until: string; value_eur: number; ovr: number; age: number; photo: string; league: string; league_name: string };
 export type HubInjury = { player: string; club: string; club_logo: string; event: string; injury: string; date: string; photo: string; league: string; league_name: string };
-export type HomeAll = { window: Context["window"]; leagues: { key: string; name: string }[]; top_deals: HubDeal[]; buzz: HubBuzz[]; manager_changes: HubChange[]; snapshots: HubSnapshot[]; injuries: HubInjury[]; hot_form: HubForm[]; goal_leaders: HubGoal[]; prospects: HubForm[]; veterans: HubForm[]; value_picks: HubValue[]; risers: HubRiser[]; contracts: HubContract[] };
+export type HomeAll = { window: Context["window"]; leagues: { key: string; name: string }[]; top_deals: HubDeal[]; buzz: HubBuzz[]; manager_changes: HubChange[]; snapshots: HubSnapshot[]; injuries: HubInjury[]; hot_form: HubForm[]; goal_leaders: HubGoal[]; prospects: HubForm[]; veterans: HubForm[]; value_picks: HubValue[]; risers: HubRiser[]; contracts: HubContract[];
+  // 리그 전체 집계(목록은 리그별 상위 몇 건뿐) — 예전 스냅샷엔 없을 수 있음
+  summary?: { spend_eur: number; signings: number; manager_changes: number; injured: number }; generated_at?: string };
 export const getHomeAll = () => j<HomeAll>(`/api/home/all`);
 // 선수 시즌 히트맵(Sofascore) — analytics 포지셔널 히트맵
 export type HeatmapPlayer = { player: string; pos: string; line: string; minutes: number; ovr: number; photo: string; n_points: number; grid: number[] };
@@ -417,6 +419,7 @@ export const getWCSquad = (nation: string) => j<WCSquad>(`/api/wc/squad/${encode
 
 export function fmtEur(v: number): string {
   if (!v) return "-";
+  if (v >= 1e9) return `€${(v / 1e9).toFixed(2)}B`;
   if (v >= 1e6) return `€${(v / 1e6).toFixed(1)}M`;
   if (v >= 1e3) return `€${Math.round(v / 1e3)}K`;
   return `€${Math.round(v)}`;

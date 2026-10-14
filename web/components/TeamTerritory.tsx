@@ -38,7 +38,7 @@ export default function TeamTerritory({ team, accent }: { team: string; accent: 
   }, [d]);
 
   if (!d) return <div style={{ maxWidth: 520, margin: "0 auto" }}><Skel h={320} r={14} /></div>;
-    if (!d.available || !agg) return <EmptyState title="포지셔널 맵 없음" note="이 팀의 시즌 히트맵이 아직 수집되지 않았습니다" />;
+    if (!d.available || !agg) return <EmptyState compact title="포지셔널 맵 없음" note="이번 시즌 히트맵은 아직 수집 전입니다" />;
 
   return (
     <div>

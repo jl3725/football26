@@ -69,7 +69,7 @@ export default function AnalyticsTab({ team, accent }: { team: string; accent: s
 
       {/* 케미스트리 · 파트너십 (KG) */}
       <div className="card" style={{ marginTop: 16 }}>
-        <h3>케미스트리 <span className="rating-note">· 최고의 파트너십 (KG · 함께 뛴 경기)</span></h3>
+        <h3>케미스트리 <span className="rating-note">· 함께 뛴 시간 기준 최고의 파트너십</span></h3>
         <Chemistry team={team} accent={accent} />
       </div>
 

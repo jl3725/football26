@@ -2689,6 +2689,8 @@ def _compute_hub_body() -> bytes:
 
     deals, buzz, changes, snaps = [], [], [], []
     form_c, goal_c, contract_c, injuries = [], [], [], []
+    # 홈 상단 요약 — 아래 목록들은 리그별 상위 몇 건만 담으므로 전체 수치는 따로 센다
+    summary = {"spend_eur": 0.0, "signings": 0, "manager_changes": 0, "injured": 0}
     prospect_c, veteran_c, value_c = [], [], []      # 유망주 U21 · 베테랑 32+ · 저평가 가성비
     squad2league: dict[str, str] = {}                # 시장가치 급등의 리그 매핑용
     for lg in leagues:
@@ -2699,6 +2701,8 @@ def _compute_hub_body() -> bytes:
             tt = tt[(tt["direction"] == "in")
                     & ~tt["fee_text"].astype(str).str.lower().str.contains("loan", na=False)].copy()
             tt["_fee"] = tt["fee_eur"].map(lambda v: _num(v, 0.0))
+            summary["spend_eur"] += float(tt["_fee"].sum())
+            summary["signings"] += int(len(tt))
             for _, r in tt.sort_values("_fee", ascending=False).head(6).iterrows():
                 sq, ph = str(r.get("squad") or ""), str(r.get("photo") or "")
                 deals.append({"player": str(r.get("player") or ""), "to": sq, "to_logo": tm.team_logo(sq),
@@ -2715,6 +2719,7 @@ def _compute_hub_body() -> bytes:
         mc = ds.read_table("manager_changes", league=lg)
         mgrs = _managers(lg)
         if mc is not None and "team" in mc.columns:
+            summary["manager_changes"] += int(len(mc))
             for _, r in mc.iterrows():
                 t = str(r.get("team") or "")
                 prof = mgrs.get(t, {})
@@ -2768,6 +2773,8 @@ def _compute_hub_body() -> bytes:
                 for _, r in exp.sort_values("_mv", ascending=False).head(6).iterrows():
                     contract_c.append((r, lg))
 
+        cur_inj = ds.read_table("transfermarkt_injuries", league=lg)
+        summary["injured"] += 0 if cur_inj is None else int(len(cur_inj))
         # 부상 속보 (신규/복귀)
         ic = ds.read_table("transfermarkt_injury_changes", league=lg)
         if ic is not None and "player" in ic.columns:
@@ -2860,7 +2867,7 @@ def _compute_hub_body() -> bytes:
               "manager_changes": _interleave(changes, 12), "snapshots": snaps,
               "injuries": _interleave(injuries, 12), "hot_form": hot_form,
               "goal_leaders": goal_leaders, "prospects": prospects, "veterans": veterans,
-              "value_picks": value_picks, "risers": risers, "contracts": contracts_out,
+              "value_picks": value_picks, "risers": risers, "contracts": contracts_out, "summary": summary,
               # 스냅샷 생성 시각 — scripts/watchdog.py 가 운영 홈이 멈췄는지 본다
               "generated_at": datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds")}
     return json.dumps(result, ensure_ascii=False).encode("utf-8")

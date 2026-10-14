@@ -42,11 +42,26 @@ export default function AllDashboard({ accent, onPick }: { accent: string; onPic
 
   return (
     <div className="fade home">
+      {/* 상단 — 제목 + 리그 전체 요약 수치(예전엔 리그 이름 나열뿐인 큰 박스) */}
       <div className="hub-hero" style={{ ["--tc" as any]: accent }}>
-        <div className="hub-hero-k">ALL LEAGUES{d.window?.data_season_id ? ` · ${seasonLongLabel(d.window.data_season_id)}` : ""}</div>
-        <h1 className="hub-hero-t">GLOBAL DASHBOARD</h1>
-        <div className="hub-hero-m">{d.leagues.map((l) => l.name).join("  ·  ")}
-          {d.window?.is_open && <span style={{ color: accent }}>  ·  {d.window.label} TRANSFER WINDOW OPEN</span>}</div>
+        <div className="hub-hero-main">
+          <div className="hub-hero-k">ALL LEAGUES{d.window?.data_season_id ? ` · ${seasonLongLabel(d.window.data_season_id)}` : ""}
+            {d.window?.is_open && <span style={{ color: accent }}> · {d.window.label} WINDOW OPEN</span>}</div>
+          <h1 className="hub-hero-t">GLOBAL DASHBOARD</h1>
+        </div>
+        <div className="hub-kpis">
+          {[
+            [String(d.leagues.length), "리그"],
+            ...(d.summary ? [
+              [fmtEur(d.summary.spend_eur), `${d.window?.label ?? ""} 여름 이적 총액`],
+              [d.summary.signings.toLocaleString(), "영입(임대 제외)"],
+              [String(d.summary.manager_changes), "감독 교체"],
+              [String(d.summary.injured), "현재 부상자"],
+            ] : []),
+          ].map(([v, l]) => (
+            <div className="hub-kpi" key={l}><b className="num">{v}</b><span>{l}</span></div>
+          ))}
+        </div>
       </div>
 
       {/* 리그 스냅샷 */}
@@ -101,10 +116,10 @@ export default function AllDashboard({ accent, onPick }: { accent: string; onPic
         const cur = SPOTS.find((s) => s.k === spot) || SPOTS[0];
         return (
           <>
-            <div className="hub-h">
+            <div className="hub-h hub-spot-head">
               <span className="hub-h-bar" style={{ background: accent }} />
               <span className="hub-h-en">PLAYER SPOTLIGHT</span><span className="hub-h-kr">선수 스포트라이트</span>
-              <div style={{ display: "inline-flex", flexWrap: "wrap", gap: 3, marginLeft: "auto", padding: 3, borderRadius: 10, background: "rgba(255,255,255,0.05)" }}>
+              <div className="hub-spot-filters" style={{ display: "inline-flex", flexWrap: "wrap", gap: 3, marginLeft: "auto", padding: 3, borderRadius: 10, background: "rgba(255,255,255,0.05)" }}>
                 {SPOTS.map((s) => (
                   <button key={s.k} onClick={() => setSpot(s.k)}
                     style={{ padding: "5px 11px", borderRadius: 7, fontSize: 11.5, fontWeight: 700, cursor: "pointer", border: "none",
@@ -112,7 +127,7 @@ export default function AllDashboard({ accent, onPick }: { accent: string; onPic
                 ))}
               </div>
             </div>
-            <div className="card hub-list" style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: "1px 16px" }}>
+            <div className="card hub-list hub-spot-grid">
               {cur.list.map((p: any, i: number) => (
                 <button className="hub-plr" key={i} onClick={() => onPick(p.club, p.league)}>
                   <span className="hub-plr-rk">{i + 1}</span>
