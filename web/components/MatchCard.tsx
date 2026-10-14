@@ -4,6 +4,26 @@ import { BIG, colorsClose, compLabel, compTone, ddayLabel, liftHex, powerShare, 
 import { useMatchPreview } from "@/lib/matchPreview";
 import { hexA } from "@/lib/ui";
 import { Chevron } from "./SectionHead";
+import { useLive, liveLabel, type LiveEvent } from "@/lib/live";
+
+// 라이브 상태 배지·가운데 스코어 — 진행 중이면 빨간 LIVE·경기 시간, 끝났으면 FT(일정은 하루 갱신이라 화면이 먼저 안다)
+function StateBadge({ m, lv }: { m: Fixture; lv?: LiveEvent }) {
+  if (lv?.state === "in") return <span className="bdg live"><i />LIVE {liveLabel(lv)}</span>;
+  if (lv?.state === "post") return <span className="bdg ft">{liveLabel(lv)}</span>;
+  return <span className={`bdg ${m.d_day <= 1 ? "hot" : "neutral"}`}>{ddayLabel(m.d_day)}</span>;
+}
+function Center({ lv, time, date, cls, sub }: { lv?: LiveEvent; time: string; date: string; cls: string; sub?: string }) {
+  if (lv && lv.state !== "pre") {
+    const h = lv.home.score ?? "0", a = lv.away.score ?? "0";
+    return (
+      <div className={`${cls} score${lv.state === "in" ? " in" : ""}`}>
+        <b><span className={lv.home.winner ? "w" : ""}>{h}</span><em>:</em><span className={lv.away.winner ? "w" : ""}>{a}</span></b>
+        <span>{lv.state === "in" ? <><i className="live-dot" />{liveLabel(lv)}</> : `${liveLabel(lv)} · ${date}`}</span>
+      </div>
+    );
+  }
+  return <div className={cls}><b>{time}</b><span>{sub ?? date}</span></div>;
+}
 
 // 경기 카드(디자인 v5) — 글로벌 빅매치·리그 '이번 주 경기'·팀 '다음 경기' 공용.
 // 가운데는 'vs' 대신 킥오프(한국 시간)를 크게, 최근 결과는 색 + 글자(W/D/L), 빅매치면 '왜?' 한 줄.
@@ -85,10 +105,14 @@ export default function MatchCard({ m, onPick, compact = false }: { m: Fixture; 
   const tone = compTone(m.comp_code);
   const big = m.big >= BIG;
   const open = () => preview?.(m);
+  const lv = useLive(m.event_id);
+  const played = lv && lv.state !== "pre";
 
   if (compact) return (
-    <button className={`mc5 compact${tone === "ucl" ? " ucl" : ""}`} onClick={open} disabled={!preview}>
-      <span className="mc5-ko-s"><b>{time}</b><span>{date}</span></span>
+    <button className={`mc5 compact${tone === "ucl" ? " ucl" : ""}${lv?.state === "in" ? " is-live" : ""}`} onClick={open} disabled={!preview}>
+      {played
+        ? <span className="mc5-ko-s score"><b>{lv!.home.score ?? 0}:{lv!.away.score ?? 0}</b><span className={lv!.state === "in" ? "in" : ""}>{liveLabel(lv!)}</span></span>
+        : <span className="mc5-ko-s"><b>{time}</b><span>{date}</span></span>}
       <span className="mc5-rows">
         {([[m.home, m.away], [m.away, m.home]] as const).map(([s, o], i) => (
           <span className="mc5-row" key={i}><Crest s={s} size={20} /><b>{s.team}</b>{s.rank ? <em>{rankLabel(s, o)}</em> : null}</span>
@@ -103,15 +127,15 @@ export default function MatchCard({ m, onPick, compact = false }: { m: Fixture; 
 
   const why = big ? whyBig(m, true) : "";
   return (
-    <div className={`mc5${tone === "ucl" ? " ucl" : ""}${big ? " big" : ""}`} role={preview ? "button" : undefined} tabIndex={preview ? 0 : undefined}
+    <div className={`mc5${tone === "ucl" ? " ucl" : ""}${big ? " big" : ""}${lv?.state === "in" ? " is-live" : ""}`} role={preview ? "button" : undefined} tabIndex={preview ? 0 : undefined}
       onClick={open} onKeyDown={(e) => { if (e.key === "Enter") open(); }}>
       <div className="mc5-top">
         <span className={`bdg ${tone}`}>{compLabel(m)}</span>
-        <span className={`bdg ${m.d_day <= 1 ? "hot" : "neutral"}`}>{ddayLabel(m.d_day)}</span>
+        <StateBadge m={m} lv={lv} />
       </div>
       <div className="mc5-teams">
         <Side s={m.home} other={m.away} onPick={onPick} align="l" />
-        <div className="mc5-ko"><b>{time}</b><span>{date}</span></div>
+        <Center lv={lv} time={time} date={date} cls="mc5-ko" />
         <Side s={m.away} other={m.home} onPick={onPick} align="r" />
       </div>
       <PredictBar m={m} />
@@ -130,6 +154,7 @@ export function MatchHero({ m, onPick }: { m: Fixture; onPick?: Pick_ }) {
   const tone = compTone(m.comp_code);
   const hc = liftHex(m.home.color), ac = liftHex(m.away.color);
   const why = whyBig(m);
+  const lv = useLive(m.event_id);
   const side = (s: FixtureSide, o: FixtureSide, r: boolean) => (
     <button className={`mh5-side${r ? " r" : ""}`} disabled={!onPick || !s.league}
       onClick={() => { if (onPick && s.league) onPick(s.team, s.league); }} title={s.league ? `${s.team} 팀 화면` : s.team}>
@@ -142,16 +167,16 @@ export function MatchHero({ m, onPick }: { m: Fixture; onPick?: Pick_ }) {
     </button>
   );
   return (
-    <div className="mh5" style={{ ["--hc" as any]: hexA(hc, 0.34), ["--ac" as any]: hexA(ac, 0.42) }}>
+    <div className={`mh5${lv?.state === "in" ? " is-live" : ""}`} style={{ ["--hc" as any]: hexA(hc, 0.34), ["--ac" as any]: hexA(ac, 0.42) }}>
       <div className="mh5-top">
         <span className={`bdg ${tone}`}>{compLabel(m)}</span>
-        <span className={`bdg ${m.d_day <= 1 ? "hot" : "neutral"}`}>{ddayLabel(m.d_day)}</span>
-        <span className="mh5-kicker">MATCH OF THE WEEK</span>
+        <StateBadge m={m} lv={lv} />
+        <span className="mh5-kicker">MATCH OF THE WEEK{lv?.state === "post" ? " · FULL TIME" : lv?.state === "in" ? " · LIVE" : ""}</span>
         <span className="mh5-score">BIG SCORE {m.big}</span>
       </div>
       <div className="mh5-teams">
         {side(m.home, m.away, false)}
-        <div className="mh5-ko"><b>{time}</b><span>{date} · KST</span></div>
+        <Center lv={lv} time={time} date={date} cls="mh5-ko" sub={`${date} · KST`} />
         {side(m.away, m.home, true)}
       </div>
       <PredictBar m={m} detail />

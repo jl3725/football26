@@ -20,6 +20,7 @@ import ScoutDock from "@/components/ScoutDock";
 import NewsTab from "@/components/NewsTab";
 import { PeekProvider } from "@/components/PlayerPeek";
 import { MatchPreviewProvider } from "@/components/MatchPreview";
+import { LiveProvider } from "@/lib/live";
 import { SkelTab } from "@/components/Skeleton";
 
 const DEFAULT_TEAM: Record<string, string> = { EPL: "Arsenal", LaLiga: "Barcelona", SerieA: "Inter", Bundesliga: "Bayern Munich", Ligue1: "PSG", LigaPortugal: "Sporting CP", Eredivisie: "PSV", BelgianProLeague: "Club Brugge" };
@@ -167,6 +168,7 @@ export default function Page() {
 
   return (
     <PeekProvider onOpenPlayer={(club, lg, p) => pickPlayer(club, lg, p)} onOpenTeam={(club, lg) => pickLeagueTeam(club, lg)}>
+    <LiveProvider>
     <MatchPreviewProvider>
     <div className={`app${navOpen ? " nav-open" : ""}${home ? " at-home" : ""}`} style={{ ["--accent" as any]: accent }}>
       <div className="app-atmosphere" aria-hidden="true" />
@@ -242,6 +244,7 @@ export default function Page() {
       <ScoutDock team={home ? "" : sel} league={league} accent={accent} onNavigate={pickLeagueTeam} />
     </div>
     </MatchPreviewProvider>
+    </LiveProvider>
     </PeekProvider>
   );
 }

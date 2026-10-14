@@ -1,0 +1,67 @@
+name: Match Refresh
+
+# 유럽 경기가 끝난 직후(한국 아침) 결과·순위·전 리그 홈을 한 번 더 갱신한다.
+# daily_data(04:30 UTC = 한국 13:30)만으로는 새벽 경기 결과가 낮까지 '예정'으로 남았다(2026-10-15 사용자 지적).
+# 경기 중·직후 화면의 스코어는 Vercel 서버 라우트(web/app/live-scores, ESPN 30초)가 바로 덮어쓰고,
+# 이 작업은 원본 데이터(순위·폼·결과 띠·빅매치 목록·주목할 매치)를 맞춘다. 라인업·교체·감독 등은 daily_data 담당.
+# 데이터 커밋마다 Render 가 재배포되므로 하루 1회만(필요하면 cron 을 늘린다).
+on:
+  schedule:
+    - cron: "15 23 * * *"   # 매일 23:15 UTC (한국 08:15) — 유럽 야간 경기 종료 후
+  workflow_dispatch:
+
+concurrency:
+  group: match-refresh-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -q -r requirements.txt
+
+      - name: Schedule · standings (전 리그, ESPN)
+        run: |
+          for LG in EPL LaLiga SerieA Bundesliga Ligue1 LigaPortugal Eredivisie BelgianProLeague; do
+            bash scripts/ci_try.sh "schedule $LG" python src/fetch_schedule.py --league $LG
+            FB_LEAGUE=$LG bash scripts/ci_try.sh "standings $LG" python src/standings_from_schedule.py
+          done
+
+      - name: Predictions (ClubElo)
+        run: bash scripts/ci_try.sh "clubelo" python src/fetch_clubelo.py
+
+      - name: Refresh global home snapshot (home_all.json)
+        run: |
+          python scripts/build_db.py > /dev/null
+          bash scripts/ci_try.sh "precompute_hub" python scripts/precompute_hub.py
+
+      - name: Validate core data contracts
+        run: python scripts/validate_data.py --no-optional
+
+      - name: Commit updated data
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/
+          if git diff --staged --quiet; then
+            echo "변경 없음 — 커밋 생략"
+          else
+            git commit -m "chore(data): 경기 결과·순위 아침 갱신 [skip ci]"
+            for i in 1 2 3; do
+              git pull --rebase --autostash origin main && git push && break || sleep 5
+            done
+          fi
+
+      - name: Report collector failures
+        if: always()
+        run: bash scripts/ci_report.sh

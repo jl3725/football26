@@ -6,13 +6,34 @@ import { usePeek } from "./PlayerPeek";
 import { colorsClose, compLabel, compTone, ddayLabel, lgEn, liftHex, splitKst } from "@/lib/match";
 import { useMatchPreview } from "@/lib/matchPreview";
 import { Crest, PredictBar } from "./MatchCard";
+import { useLiveAll, liveLabel, type LiveEvent } from "@/lib/live";
 
 // 홈 '지금' 섹션들 — /api/hub/pulse(요청 시 계산·30분 캐시, 일정·결과는 daily_data 가 매일 갱신)
 type Pick = (team: string, league?: string) => void;
 
 // ── RESULTS: 최근 결과 띠(방송 하단 자막처럼 천천히 흐름, 마우스를 올리면 멈춤) ──
-export function ResultsTicker({ results, onPick }: { results: ResultMatch[]; onPick: Pick }) {
-  if (!results.length) return null;
+export function ResultsTicker({ results, onPick, comps }: { results: ResultMatch[]; onPick: Pick; comps?: string[] }) {
+  // 하루 갱신 결과 + 라이브(진행 중·방금 끝난 경기, ESPN) — 아직 일정 파일에 안 들어온 경기를 앞에
+  const live = useLiveAll();
+  const known = new Set(results.map((r) => r.event_id));
+  const cutoff = Date.now() - 20 * 3600 * 1000;
+  const extra = Object.values(live)
+    .filter((e) => e.state !== "pre" && !known.has(e.id) && Date.parse(e.date) >= cutoff && (!comps || comps.includes(e.comp)))
+    .sort((a, b) => (a.state === "in" ? 0 : 1) - (b.state === "in" ? 0 : 1) || Date.parse(b.date) - Date.parse(a.date));
+  if (!results.length && !extra.length) return null;
+  const liveItem = (e: LiveEvent, k: string) => {
+    const hw = e.home.winner, aw = e.away.winner;
+    return (
+      <span className={`tk5-item${e.state === "in" ? " live" : ""}`} key={k}>
+        <span className={`tk5-comp ${e.comp === "uefa.champions" ? "ucl" : e.comp.startsWith("uefa.europa") ? "uel" : ""}`}>
+          {e.state === "in" ? <><i className="live-dot" />{liveLabel(e)}</> : liveLabel(e)}
+        </span>
+        <span className={`tk5-team${aw ? " lose" : ""}`}>{e.home.logo && <img className="crest" src={e.home.logo} alt="" style={{ width: 18, height: 18 }} />}{e.home.name}</span>
+        <b className="tk5-score"><span className={hw ? "w" : ""}>{e.home.score ?? 0}</span>–<span className={aw ? "w" : ""}>{e.away.score ?? 0}</span></b>
+        <span className={`tk5-team${hw ? " lose" : ""}`}>{e.away.name}{e.away.logo && <img className="crest" src={e.away.logo} alt="" style={{ width: 18, height: 18 }} />}</span>
+      </span>
+    );
+  };
   const item = (m: ResultMatch, k: string) => {
     const hw = m.home.goals > m.away.goals, aw = m.away.goals > m.home.goals;
     return (
@@ -31,11 +52,12 @@ export function ResultsTicker({ results, onPick }: { results: ResultMatch[]; onP
   };
   return (
     <div className="tk5" aria-label="최근 경기 결과">
-      <span className="tk5-label">RESULTS<em>최근 3일</em></span>
+      <span className="tk5-label">{extra.some((e) => e.state === "in") ? <><i className="live-dot" />LIVE</> : "RESULTS"}<em>최근 3일</em></span>
       <div className="tk5-viewport">
-        <div className="tk5-track" style={{ animationDuration: `${Math.max(40, results.length * 5)}s` }}>
+        <div className="tk5-track" style={{ animationDuration: `${Math.max(40, (results.length + extra.length) * 5)}s` }}>
+          {extra.map((e, i) => liveItem(e, `la${i}`))}
           {results.map((m, i) => item(m, `a${i}`))}
-          <span aria-hidden="true" className="tk5-dup">{results.map((m, i) => item(m, `b${i}`))}</span>
+          <span aria-hidden="true" className="tk5-dup">{extra.map((e, i) => liveItem(e, `lb${i}`))}{results.map((m, i) => item(m, `b${i}`))}</span>
         </div>
       </div>
     </div>
@@ -45,25 +67,32 @@ export function ResultsTicker({ results, onPick }: { results: ResultMatch[]; onP
 // ── MATCHES TO WATCH: 리그 안의 승부처(순위가 붙은 경기) ──
 export function WatchGrid({ items, onPick }: { items: WatchMatch[]; onPick: Pick }) {
   const preview = useMatchPreview();
+  const live = useLiveAll();
   if (!items.length) return null;
   return (
     <div className="wt5-grid">
       {items.map((m) => {
         const { date, time } = splitKst(m.kst);
+        const lv = m.event_id ? live[m.event_id] : undefined;
+        const played = lv && lv.state !== "pre";
         return (
           <div className="wt5" key={m.event_id ?? m.home.team + m.away.team} role="button" tabIndex={0}
             onClick={() => preview?.(m)} onKeyDown={(e) => { if (e.key === "Enter") preview?.(m); }}>
             <div className="wt5-top">
               <span className="bdg neutral">{lgEn(m.league)}</span>
               <span className="wt5-when">{date} {time}</span>
-              <span className={`bdg ${m.d_day <= 1 ? "hot" : "neutral"}`}>{ddayLabel(m.d_day)}</span>
+              {lv?.state === "in" ? <span className="bdg live"><i />LIVE {liveLabel(lv)}</span>
+                : lv?.state === "post" ? <span className="bdg ft">{liveLabel(lv)}</span>
+                : <span className={`bdg ${m.d_day <= 1 ? "hot" : "neutral"}`}>{ddayLabel(m.d_day)}</span>}
             </div>
-            {[m.home, m.away].map((s) => (
+            {[m.home, m.away].map((s, i) => (
               <button className="wt5-team" key={s.team} onClick={(e) => { e.stopPropagation(); if (s.league) onPick(s.team, s.league); }}>
                 <Crest s={s} size={26} />
                 <b>{s.team}</b>
                 <span className="wt5-rank">{s.rank}위</span>
-                <span className="wt5-pts">{s.points}<em>점</em></span>
+                {played
+                  ? <span className={`wt5-goal${(i === 0 ? lv!.home.winner : lv!.away.winner) ? " w" : ""}`}>{(i === 0 ? lv!.home.score : lv!.away.score) ?? 0}</span>
+                  : <span className="wt5-pts">{s.points}<em>점</em></span>}
               </button>
             ))}
             <PredictBar m={m} slim />

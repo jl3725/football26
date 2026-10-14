@@ -171,7 +171,7 @@ export default function AllDashboard({ onPick, switcher }: { accent?: string; on
         {switcher}
       </header>
 
-      {pulse && pulse.results.length > 0 && <ResultsTicker results={pulse.results} onPick={onPick} />}
+      {pulse && <ResultsTicker results={pulse.results} onPick={onPick} />}
 
       <div className="h5-hero-row">
         {hero ? <MatchHero m={hero} onPick={(t, l) => l && onPick(t, l)} />

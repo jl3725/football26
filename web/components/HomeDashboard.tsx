@@ -10,6 +10,8 @@ import { phaseOf, seasonStatusText } from "@/lib/season";
 import LeagueFixtures from "./LeagueFixtures";
 import SectionHead from "./SectionHead";
 
+const ESPN_CODE: Record<string, string> = { EPL: "eng.1", LaLiga: "esp.1", SerieA: "ita.1", Bundesliga: "ger.1", Ligue1: "fra.1",
+  LigaPortugal: "por.1", Eredivisie: "ned.1", BelgianProLeague: "bel.1" };
 const eurM = (v: number) => (v >= 1e6 ? `€${Math.round(v / 1e6)}M` : v > 0 ? `€${Math.round(v / 1e3)}K` : "€0");
 
 // 섹션 머리 — 영어 제목 + 작은 한글 보조(디자인 v5 공통형)
@@ -98,7 +100,7 @@ export default function HomeDashboard({ accent, onPickTeam, onPickLeagueTeam, le
         </div>
       </div>
 
-      {lab && (lab.results ?? []).length > 0 && <div style={{ marginTop: 18 }}><ResultsTicker results={lab.results!} onPick={(t, lg) => pickTL(t, lg)} /></div>}
+      {lab && <div style={{ marginTop: 18 }}><ResultsTicker results={lab.results ?? []} onPick={(t, lg) => pickTL(t, lg)} comps={[ESPN_CODE[league] ?? ""]} /></div>}
 
       {/* ── 이번 주 경기(매치 센터) — 시즌 중엔 이적보다 먼저. 빅매치는 강조 카드 + 목록 배지 ── */}
       <Sec en="THIS WEEK" kr="이번 주 경기" accent={accent} />

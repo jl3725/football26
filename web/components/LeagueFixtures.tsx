@@ -4,6 +4,7 @@ import { getFixtures, type Fixture } from "@/lib/api";
 import MatchCard from "./MatchCard";
 import { BIG, compLabel, ddayLabel } from "@/lib/match";
 import { useMatchPreview } from "@/lib/matchPreview";
+import { useLive, liveLabel } from "@/lib/live";
 
 // 리그 탭 '이번 주 경기' — 위: 그 리그 빅매치 강조 카드, 아래: 날짜별 전 경기(소속 팀의 유럽대회 포함).
 // 일정은 클라우드 daily_data 가 매일 갱신, 순위·폼·D-day 는 열 때 계산(src/match_center.py).
@@ -11,6 +12,7 @@ import { useMatchPreview } from "@/lib/matchPreview";
 function Row({ m, league, onPick }: { m: Fixture; league: string; onPick: (t: string, lg?: string) => void }) {
   const big = m.big >= BIG;
   const preview = useMatchPreview();
+  const lv = useLive(m.event_id);
   const side = (s: Fixture["home"]) => (
     <button className="lf-team" disabled={!s.league} onClick={(e) => { e.stopPropagation(); if (s.league) onPick(s.team, s.league); }}>
       {s.logo ? <img src={s.logo} alt="" /> : <span className="lf-ph" style={{ background: s.color }} />}
@@ -20,8 +22,8 @@ function Row({ m, league, onPick }: { m: Fixture; league: string; onPick: (t: st
   );
   return (
     <div className={`lf-row${big ? " big" : ""}${preview ? " clickable" : ""}`} onClick={() => preview?.(m)} title="매치 프리뷰">
-      <span className="lf-time">{m.kst.split(" ")[1] ?? ""}</span>
-      <div className="lf-match">{side(m.home)}<span className="lf-vs">vs</span>{side(m.away)}</div>
+      <span className={`lf-time${lv?.state === "in" ? " in" : ""}`}>{lv && lv.state !== "pre" ? liveLabel(lv) : (m.kst.split(" ")[1] ?? "")}</span>
+      <div className="lf-match">{side(m.home)}<span className="lf-vs">{lv && lv.state !== "pre" ? `${lv.home.score ?? 0} : ${lv.away.score ?? 0}` : "vs"}</span>{side(m.away)}</div>
       <span className="lf-side">
         {!m.comp_code.endsWith(".1") && <span className={`lf-comp${m.comp_code === "uefa.champions" ? " ucl" : ""}`}>{compLabel(m)}</span>}
         {big && <span className="lf-big" title={m.tags.join(" · ")}>BIG</span>}

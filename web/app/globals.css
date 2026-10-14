@@ -3057,3 +3057,30 @@ body {
 @media (max-width: 760px) { .wire { grid-template-columns: minmax(0, 1fr); } }
 .wire-row, .wire-mid { min-width: 0; }
 .wire-mid b { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* ── v5.7 라이브 스코어(ESPN 30초) — 진행 중은 빨간 LIVE·경기 시간, 종료는 FT·최종 스코어 ── */
+@keyframes live-pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .35; transform: scale(.75); } }
+.live-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #ff3b4f; margin-right: 5px; vertical-align: 1px; animation: live-pulse 1.4s ease-in-out infinite; }
+.bdg.live { background: #ff3b4f; color: #fff; }
+.bdg.live i { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #fff; animation: live-pulse 1.4s ease-in-out infinite; }
+.bdg.ft { background: rgba(255, 255, 255, 0.9); color: #0a0d12; font-weight: 700; }
+.mc5-ko.score b, .mh5-ko.score b { display: inline-flex; align-items: baseline; gap: 6px; }
+.mc5-ko.score b span, .mh5-ko.score b span { color: var(--muted); }
+.mc5-ko.score b span.w, .mh5-ko.score b span.w { color: var(--txt); }
+.mc5-ko.score b em, .mh5-ko.score b em { font-style: normal; color: var(--muted-2); font-size: .7em; }
+.mc5-ko.score.in b span, .mh5-ko.score.in b span { color: var(--txt); }
+.mc5-ko.score > span, .mh5-ko.score > span { font-weight: 600; letter-spacing: .04em; }
+.mc5-ko.score.in > span, .mh5-ko.score.in > span { color: #ff6b7a; }
+.mc5.is-live, .mh5.is-live { border-color: rgba(255, 59, 79, 0.55); box-shadow: 0 0 0 1px rgba(255, 59, 79, 0.25), 0 12px 28px -16px rgba(255, 59, 79, 0.45); }
+.mc5-ko-s.score b { font-size: 19px; }
+.mc5-ko-s.score span.in { color: #ff6b7a; font-weight: 600; }
+.wt5-goal { font: 700 20px/1 var(--font-num); min-width: 34px; text-align: right; color: var(--muted); }
+.wt5-goal.w { color: var(--txt); }
+.lf-time.in { color: #ff6b7a; font-weight: 700; }
+.tk5-item.live { background: linear-gradient(180deg, rgba(255, 59, 79, 0.10), transparent); }
+.tk5-label .live-dot { margin-right: 6px; }
+@media (prefers-reduced-motion: reduce) { .live-dot, .bdg.live i { animation: none; } }
+/* 스코어 숫자는 b 의 큰 글자를 그대로(날짜 줄용 '.mh5-ko span' 규칙이 숫자까지 작게 만들던 것) */
+.mh5-ko.score > b > span, .mc5-ko.score > b > span, .mh5-ko.score > b > em, .mc5-ko.score > b > em { font-size: inherit; line-height: inherit; white-space: nowrap; }
+.mh5-ko.score > b > em, .mc5-ko.score > b > em { font-size: .6em; align-self: center; }
+.mh5-ko.score > b { font-size: 64px; }
