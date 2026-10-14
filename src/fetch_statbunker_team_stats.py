@@ -27,7 +27,9 @@ DATA = ROOT / "data"
 # 모르는 시즌에 25/26 id 를 쓰면 지난 시즌 데이터가 새 시즌 파일에 들어가므로 시즌별로 관리한다.
 COMP_IDS_BY_SEASON: dict[int, dict[str, int]] = {
     2025: {"EPL": 776, "LaLiga": 777, "SerieA": 785},
-    # 2026: 26/27 comp_id 미확인 — statbunker.com 대회 선택 목록에서 확인 후 추가
+    # 26/27 — 25/26 대회 페이지의 대회 선택 목록에서 확인(2026-10-14). 다음 시즌도 같은 방법:
+    #   /competitions/TeamsGoalScorersTypeOfPlay?comp_id=<지난 시즌 id> 의 <option> 첫 항목
+    2026: {"EPL": 791, "LaLiga": 792, "SerieA": 797},
 }
 COMP_IDS = {
     **COMP_IDS_BY_SEASON.get(SEASON_START, {}),
@@ -165,18 +167,24 @@ def fetch_html(slug: str) -> str:
     if COMP_ID is None:
         raise RuntimeError(f"No StatBunker comp_id configured for {ACTIVE_LEAGUE}")
     url = BASE.format(slug=slug, comp_id=COMP_ID)
-    response = requests.get(
-        url,
-        timeout=90,
-        headers={
-            "User-Agent": (
-                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-                "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125 Safari/537.36"
-            )
-        },
-    )
-    response.raise_for_status()
-    return response.text
+    headers = {"User-Agent": ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                              "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125 Safari/537.36")}
+    # StatBunker 는 502/504·응답 지연이 잦다 — 페이지 하나 실패로 리그 전체가 멈추지 않게 간격 두고 재시도
+    import time
+    last: Exception | None = None
+    for attempt in range(4):
+        try:
+            response = requests.get(url, timeout=90, headers=headers)
+            if response.status_code >= 500:
+                raise requests.HTTPError(f"{response.status_code} {url}")
+            response.raise_for_status()
+            time.sleep(1.5)
+            return response.text
+        except (requests.HTTPError, requests.ConnectionError, requests.Timeout) as e:
+            last = e
+            print(f"  [statbunker] {slug} 재시도 {attempt + 1}/4: {str(e)[:80]}", file=sys.stderr)
+            time.sleep(10 * (attempt + 1))
+    raise last  # type: ignore[misc]
 
 
 def parse_table_rows(html: str) -> list[list[str]]:

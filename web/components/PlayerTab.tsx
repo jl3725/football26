@@ -183,7 +183,13 @@ export default function PlayerTab({ team, accent, initialPlayer }: { team: strin
   const CB = "#e0a05e";
   const onCard = (name: string) => {
     if (cmpMode) { if (name !== sel) setCmp(name === cmp ? null : name); }
-    else setSel(name);
+    else {
+      setSel(name);
+      // 모바일(가로 띠 목록)에선 상세가 아래에 있으므로 고른 선수 상세로 내려 준다
+      if (typeof window !== "undefined" && window.matchMedia("(max-width: 760px)").matches) {
+        setTimeout(() => document.querySelector(".pl-detail")?.scrollIntoView({ behavior: "smooth", block: "start" }), 60);
+      }
+    }
   };
   return (
     <div className="fade">

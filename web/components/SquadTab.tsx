@@ -20,14 +20,16 @@ function Row({ p, team }: { p: SquadPlayer; team: string }) {
   const t = tier(p.ovr);
   const peek = usePeek();
   return (
-    <div className="sq-row peekable"
+    <div className={`sq-row peekable${p.roster_only ? " dnp" : ""}`}
       onClick={(e) => peek(e, { name: p.player, club: team, hint: { photo: p.photo, ovr: p.ovr, pos: p.pos, age: p.age, value_eur: p.value_eur } })}>
       <span className="sq-ovr" style={{ color: t.light, borderColor: t.deep }}>{p.ovr}</span>
       <span className="sq-trend"><TrendArrow t={p.trend} ovr={p.ovr} /></span>
       {p.photo ? <img className="sq-photo" src={p.photo} alt="" /> : <span className="sq-photo ph" />}
       <div className="sq-info">
         <div className="sq-name">{p.player}</div>
-        <div className="sq-meta">{p.pos} · {p.age}세 · {p.minutes.toLocaleString()}′</div>
+        <div className="sq-meta">{p.pos} · {p.age}세 · {p.roster_only
+          ? <span className="sq-dnp" title="이번 시즌 출전 기록 없음 — OVR·가치는 지난 시즌 기준">출전 없음</span>
+          : <>{p.minutes.toLocaleString()}′</>}</div>
       </div>
       <span className="sq-val">{fmtEur(p.value_eur)}</span>
     </div>

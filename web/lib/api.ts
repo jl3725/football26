@@ -193,6 +193,7 @@ export const getScout = (q: string, team = "", l = _league, token = "", history:
 export type SquadPlayer = {
   player: string; pos: string; age: number; minutes: number;
   value_eur: number; ovr: number; photo: string; goals: number; assists: number; trend?: Trend;
+  roster_only?: boolean;   // 이번 시즌 출전 없음(TM 스쿼드 명단에서 보강 — 지난 시즌 기록 기준)
 };
 export type DepthPlayer = { player: string; ovr: number; minutes: number; age: number; photo: string };
 export type Bucket = { pos: string; count: number; depth: number; starter: DepthPlayer; rotation: DepthPlayer[] };

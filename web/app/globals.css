@@ -2105,3 +2105,17 @@ body::before {
 .fac-none { color: var(--muted); font-size: 12px; padding: 12px 4px; }
 .fac-col-note { color: var(--muted); font-weight: 400; font-size: 11px; margin-left: 6px; }
 
+/* 모바일 Player 탭 — 세로 스크롤 상자에 갇힌 2열 목록 → 옆으로 넘기는 선수 띠(상세는 바로 아래) */
+@media (max-width: 760px) {
+  .pl-grid { display: grid; grid-auto-flow: column; grid-auto-columns: 132px; grid-template-columns: none;
+    max-height: none; overflow-x: auto; overflow-y: hidden; padding: 2px 2px 8px; scroll-snap-type: x proximity;
+    scrollbar-width: none; }
+  .pl-grid::-webkit-scrollbar { display: none; }
+  .pl-grid .pl-card { scroll-snap-align: start; }
+  .pl-detail { scroll-margin-top: 64px; }
+}
+
+/* 스쿼드 — 이번 시즌 출전 없는 선수(TM 명단 보강): 흐리게 + '출전 없음' */
+.sq-row.dnp { opacity: 0.62; }
+.sq-dnp { color: #f4cf5e; }
+

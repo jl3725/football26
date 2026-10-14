@@ -962,11 +962,69 @@ def _squad_df(team: str, league: str):
     return df
 
 
+@_memo(ttl=21600)
+def _prev_rows() -> dict:
+    """pid(tm id) → 지난 시즌 선수 행(출전 가장 많은 것) — 이번 시즌 출전 없는 스쿼드 선수 보강용."""
+    import rating_history as rh  # noqa: PLC0415
+    from leagues import LEAGUES  # noqa: PLC0415
+    season = f"{SEASON_START - 1}_{SEASON_START}"
+    out: dict = {}
+    for lg in LEAGUES:
+        df = _pf(lg, season)
+        if df is None:
+            continue
+        for _, r in df.iterrows():
+            k = rh.pid(r)
+            mn = _num(r.get("minutes"))
+            if k.startswith("tm") and (k not in out or _num(out[k].get("minutes")) < mn):
+                out[k] = r.to_dict()
+    return out
+
+
+def _roster_extras(team: str, league: str, df) -> list[dict]:
+    """이번 시즌 출전이 없어 players_full 에 없는 스쿼드 선수(TM 스쿼드 명단 = 계약 데이터).
+
+    예전엔 출전자만 보여 백업 GK(케파·메슬리에)·부상 장기 결장(살리바)이 스쿼드에서 빠지고 뎁스 차트가
+    'GK 백업 없음'이라고 했다. 포지션·시장가치·직전 평점은 지난 시즌 기록(tm id)에서 가져오고,
+    지난 시즌 기록도 없는 선수(유스 등)는 포지션을 몰라 넣지 않는다.
+    """
+    import league_level  # noqa: PLC0415
+    ct = ds.read_table("transfermarkt_contracts", league=league)
+    if ct is None or "squad" not in ct.columns:
+        return []
+    have_tm = {str(int(_num(t))) for t in df.get("tm_id", pd.Series(dtype=float)).dropna()} if df is not None else set()
+    have_nk = set(df["norm_key"].astype(str)) if df is not None and "norm_key" in df.columns else set()
+    prev = _prev_rows()
+    out = []
+    for _, r in ct[ct["squad"] == team].iterrows():
+        tid = str(int(_num(r.get("tm_id")))) if pd.notna(r.get("tm_id")) else ""
+        if (tid and tid in have_tm) or str(r.get("norm_key")) in have_nk:
+            continue
+        pr = prev.get(f"tm{tid}") if tid else None
+        if not pr:
+            continue
+        row = dict(pr)
+        row.update({
+            "player": r.get("player"), "squad": team, "norm_key": r.get("norm_key"), "tm_id": r.get("tm_id"),
+            "minutes": 0, "goals": 0, "assists": 0, "ss_rating": None,
+            "prev_minutes": pr.get("minutes"), "prev_ss_rating": pr.get("ss_rating"),
+            "age": (_num(pr.get("age")) + 1) if pr.get("age") is not None else None,
+            "tm_photo": r.get("tm_photo") or pr.get("tm_photo"),
+            "_ovr": None, "_form": None, "_league_level": league_level.level(league),
+            "left_for": None, "_roster_only": True,
+        })
+        out.append(row)
+    return out
+
+
 @app.get("/api/squad/{team}")
 def squad(team: str, league: str = ACTIVE_LEAGUE):
     df = _squad_df(team, league)
     if df is None or df.empty:
         raise HTTPException(404, "squad not found")
+    extras = _roster_extras(team, league, df)
+    if extras:
+        df = pd.concat([df, pd.DataFrame(extras).dropna(axis=1, how="all")], ignore_index=True)
     lines: dict[str, list] = {"GK": [], "DEF": [], "MID": [], "ATT": []}
     for _, r in df.iterrows():
         line = rv3.line_of_row(r)
@@ -979,6 +1037,7 @@ def squad(team: str, league: str = ACTIVE_LEAGUE):
             "value_eur": _num(r.get("market_value_eur")),
             "ovr": _o,
             "trend": _trend(r, league, ovr=_o),
+            "roster_only": bool(r.get("_roster_only") is True),
             "photo": _photo(r),
             "goals": int(_num(r.get("goals"))),
             "assists": int(_num(r.get("assists"))),

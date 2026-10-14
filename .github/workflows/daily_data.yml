@@ -99,6 +99,10 @@ jobs:
           pip install -q qdrant-client==1.12.1 neo4j==5.28.1
           bash scripts/ci_try.sh "infra_ping" python scripts/ping_infra.py
 
+      # 팀 대표색(ESPN) — 손으로 고른 색이 없는 승격팀이 회색으로 나오지 않게(teammeta 대체값)
+      - name: Team colors (ESPN)
+        run: bash scripts/ci_try.sh "team_colors" python src/fetch_team_colors.py
+
       - name: FIFA 랭킹 (월드컵 탭 TOP30 — daily_wc 비활성화로 이관)
         run: bash scripts/ci_try.sh "fifa_ranking" python src/fetch_fifa_ranking.py
 

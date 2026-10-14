@@ -429,8 +429,25 @@ def team_captain(team: str) -> str:
     return TEAM_CAPTAINS.get(team, "")
 
 
+_ESPN_COLORS: dict | None = None
+
+
+def _espn_colors() -> dict:
+    """data/team_colors.json(src/fetch_team_colors.py) — 손으로 고른 색이 없는 팀(시즌마다 바뀌는 승격팀)용."""
+    global _ESPN_COLORS
+    if _ESPN_COLORS is None:
+        import json
+        from pathlib import Path
+        p = Path(__file__).resolve().parent.parent / "data" / "team_colors.json"
+        try:
+            _ESPN_COLORS = json.loads(p.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            _ESPN_COLORS = {}
+    return _ESPN_COLORS
+
+
 def team_color(team: str) -> str:
-    return TEAM_COLOR.get(team, "#444a55")
+    return TEAM_COLOR.get(team) or _espn_colors().get(team) or "#444a55"
 
 
 # ESPN 로고 override — Transfermarkt verein id 가 불확실/충돌하는 팀(승격팀 등).
