@@ -1,5 +1,6 @@
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
-@import url("https://fonts.googleapis.com/css2?family=Teko:wght@500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Teko:wght@500;600;700&family=Barlow+Condensed:wght@500;600;700;800&display=swap");
+@import url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT@2/fonts/variable/woff2/SUIT-Variable.css");
 
 :root {
   --bg: #07090d;
@@ -18,6 +19,10 @@
      (라벨용 Oswald 는 101곳에 지정돼 있었지만 로드된 적이 없어 OS 기본 글꼴로 보였다) */
   --font-ui: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
   --font-label: var(--font-ui);
+  /* 디자인 4차: 제목·숫자에 개성 — 기본 'sport' = 영문 Barlow Condensed + 한글 G마켓 산스, 숫자 Barlow Condensed.
+     ?font=modern(SUIT) · ?font=classic(이전: Pretendard + Teko) 로 바꿔 볼 수 있다(html[data-font]) */
+  --font-display: "Barlow Condensed", "GmarketSans", var(--font-ui);
+  --font-num: "Barlow Condensed", var(--font-ui);
   --mono: var(--font-ui);
   --display: var(--font-ui);
 }
@@ -36,7 +41,7 @@ html, body {
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
 }
-.teko { font-family: Teko, sans-serif; }
+.teko { font-family: var(--font-num); }
 .osw { font-family: var(--font-label); }
 
 .app { display: grid; grid-template-columns: 272px 1fr; min-height: 100vh; }
@@ -202,11 +207,11 @@ html, body {
 .hx-live { font-size: 11.5px; color: var(--muted); display: inline-flex; align-items: center; gap: 6px; font-weight: 600; }
 
 .hx-kicker { position: relative; margin-top: 22px; font-family: var(--font-label); font-size: 11px; letter-spacing: 3px; color: var(--tc, var(--accent)); font-weight: 600; }
-.hx-title { position: relative; font-family: Teko, sans-serif; font-weight: 600; font-size: 52px; line-height: .95; margin: 2px 0 6px; letter-spacing: .5px; }
+.hx-title { position: relative; font-family: var(--font-num); font-weight: 600; font-size: 52px; line-height: .95; margin: 2px 0 6px; letter-spacing: .5px; }
 .hx-meta { position: relative; font-size: 12.5px; color: var(--muted); }
 .kpis { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; margin-top: 20px; background: var(--line); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
 .kpi { background: rgba(9,12,19,0.72); padding: 14px 16px; }
-.kpi-n { font-family: Teko, sans-serif; font-size: 33px; line-height: 1; font-weight: 600; }
+.kpi-n { font-family: var(--font-num); font-size: 33px; line-height: 1; font-weight: 600; }
 .kpi-l { font-size: 11.5px; color: var(--muted); margin-top: 3px; letter-spacing: .4px; }
 @media (max-width: 720px) { .kpis { grid-template-columns: repeat(2, 1fr); } .hx-title { font-size: 40px; } }
 
@@ -216,7 +221,7 @@ html, body {
 .sec-txt { flex: 1; }
 .sec-en { font-family: var(--font-label); font-size: 11px; letter-spacing: 2px; color: var(--muted); font-weight: 600; }
 .sec-kr { font-size: 17px; font-weight: 700; line-height: 1.15; }
-.sec-count { font-family: Teko, sans-serif; font-size: 26px; color: var(--muted); }
+.sec-count { font-family: var(--font-num); font-size: 26px; color: var(--muted); }
 
 .home-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
 @media (max-width: 1000px) { .home-grid { grid-template-columns: 1fr; } }
@@ -239,7 +244,7 @@ html, body {
 .feat-name { font-size: 18px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .feat-move { font-size: 12px; color: var(--muted); margin-top: 2px; }
 .feat-arr { color: var(--tc); font-weight: 700; }
-.feat-fee { font-family: Teko, sans-serif; font-size: 30px; line-height: 1; font-weight: 600; flex-shrink: 0; }
+.feat-fee { font-family: var(--font-num); font-size: 30px; line-height: 1; font-weight: 600; flex-shrink: 0; }
 
 .row2, .netx, .stx { display: flex; align-items: center; gap: 10px; width: 100%; text-align: left; background: transparent; border: none; color: var(--txt); cursor: pointer; padding: 8px 4px; border-radius: 8px; }
 .row2:hover, .netx:hover, .sigx:hover, .newx:hover, .stx:hover { background: rgba(255,255,255,0.045); }
@@ -316,12 +321,12 @@ html, body {
 /* 전 리그 통합 대시보드 (Hub) */
 .hub-hero { position: relative; border: 1px solid var(--line); border-radius: 16px; padding: 24px 26px; margin-bottom: 18px; background: linear-gradient(120deg, color-mix(in srgb, var(--tc, #ff4d5e) 14%, transparent), transparent 62%); overflow: hidden; }
 .hub-hero-k { font-family: var(--font-label); font-size: 11px; letter-spacing: 2px; color: var(--tc, #ff4d5e); text-transform: uppercase; }
-.hub-hero-t { font-family: Teko, sans-serif; font-size: 40px; line-height: 1; margin: 6px 0 8px; }
+.hub-hero-t { font-family: var(--font-num); font-size: 40px; line-height: 1; margin: 6px 0 8px; }
 .hub-hero { display: flex; align-items: center; justify-content: space-between; gap: 18px 28px; flex-wrap: wrap; padding: 18px 24px; }
 .hub-hero .hub-hero-t { font-size: 34px; margin: 4px 0 0; }
 .hub-kpis { display: flex; gap: 10px; flex-wrap: wrap; }
 .hub-kpi { display: flex; flex-direction: column; gap: 3px; min-width: 92px; padding: 9px 14px; border: 1px solid var(--line); border-radius: 12px; background: rgba(0, 0, 0, 0.22); }
-.hub-kpi b { font-family: Teko, sans-serif; font-size: 26px; line-height: 1; font-weight: 600; color: var(--txt); }
+.hub-kpi b { font-family: var(--font-num); font-size: 26px; line-height: 1; font-weight: 600; color: var(--txt); }
 .hub-kpi span { font-size: 10.5px; color: var(--muted); white-space: nowrap; }
 @media (max-width: 760px) {
   .hub-hero { padding: 16px; }
@@ -340,10 +345,10 @@ html, body {
 .hub-snap-h { font-family: var(--font-label); font-size: 13px; font-weight: 700; letter-spacing: .3px; padding-bottom: 8px; margin-bottom: 6px; border-bottom: 2px solid; }
 .hub-snap-row { display: flex; align-items: center; gap: 8px; width: 100%; background: transparent; border: none; color: var(--txt); cursor: pointer; padding: 4px 0; font-size: 12.5px; }
 .hub-snap-row:hover { color: var(--tc, #ff4d5e); }
-.hub-rk { width: 16px; font-family: Teko, sans-serif; font-size: 15px; color: var(--muted); text-align: center; }
+.hub-rk { width: 16px; font-family: var(--font-num); font-size: 15px; color: var(--muted); text-align: center; }
 .hub-snap-row img { width: 18px; height: 18px; object-fit: contain; }
 .hub-snap-team { flex: 1; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.hub-snap-pts { font-family: Teko, sans-serif; font-size: 17px; }
+.hub-snap-pts { font-family: var(--font-num); font-size: 17px; }
 .hub-lg { font-family: var(--font-label); font-size: 8.5px; letter-spacing: .4px; color: var(--muted); border: 1px solid var(--line); border-radius: 4px; padding: 1px 5px; text-transform: uppercase; margin-left: 6px; white-space: nowrap; }
 .hub-deals { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; }
 .hub-deal { display: flex; align-items: center; gap: 11px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 12px; background: rgba(255,255,255,0.02); cursor: pointer; text-align: left; }
@@ -357,7 +362,7 @@ html, body {
 .hub-deal-mv img { width: 14px; height: 14px; object-fit: contain; margin-right: 4px; }
 .hub-from { max-width: 90px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .hub-to { color: var(--txt); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.hub-deal-fee { font-family: Teko, sans-serif; font-size: 22px; line-height: 1; flex-shrink: 0; }
+.hub-deal-fee { font-family: var(--font-num); font-size: 22px; line-height: 1; flex-shrink: 0; }
 .hub-two { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
 @media (max-width: 900px) { .hub-two { grid-template-columns: 1fr; } }
 .hub-list { }
@@ -379,14 +384,14 @@ html, body {
 /* 선수 리더보드 행 (폼·득점·부상·계약) */
 .hub-plr { display: flex; align-items: center; gap: 9px; width: 100%; padding: 7px 4px; border: none; border-bottom: 1px solid rgba(255,255,255,0.05); background: transparent; color: var(--txt); cursor: pointer; text-align: left; }
 .hub-plr:hover { color: var(--tc, #ff4d5e); }
-.hub-plr-rk { width: 16px; font-family: Teko, sans-serif; font-size: 16px; color: var(--muted); text-align: center; flex-shrink: 0; }
+.hub-plr-rk { width: 16px; font-family: var(--font-num); font-size: 16px; color: var(--muted); text-align: center; flex-shrink: 0; }
 .hub-plr-ph { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; flex-shrink: 0; background: rgba(255,255,255,0.06); }
 .hub-plr-body { flex: 1; min-width: 0; }
 .hub-plr-nm { font-size: 12.5px; font-weight: 600; display: flex; align-items: center; white-space: nowrap; overflow: hidden; }
 .hub-plr-sub { display: flex; align-items: center; gap: 3px; font-size: 10.5px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 1px; }
 .hub-plr-sub img { width: 13px; height: 13px; object-fit: contain; }
 .hub-plr-ovr { font-family: var(--font-label); font-size: 13px; font-weight: 700; flex-shrink: 0; min-width: 22px; text-align: right; }
-.hub-plr-metric { font-family: Teko, sans-serif; font-size: 18px; flex-shrink: 0; min-width: 42px; text-align: right; }
+.hub-plr-metric { font-family: var(--font-num); font-size: 18px; flex-shrink: 0; min-width: 42px; text-align: right; }
 .hub-plr-metric.big { font-size: 20px; }
 .hub-plr-a { font-size: 10px; color: var(--muted); flex-shrink: 0; min-width: 20px; }
 .hub-plr-until { font-family: var(--font-label); font-size: 10.5px; color: var(--muted); flex-shrink: 0; min-width: 42px; text-align: right; }
@@ -401,7 +406,7 @@ html, body {
 /* 세로 흐름(1~15 왼쪽 → 16~30 오른쪽) — 순위 읽기 편하게 CSS 멀티컬럼 */
 .wc-fifa { columns: 300px 2; column-gap: 18px; }
 .wc-fifa-row { display: flex; align-items: center; gap: 9px; padding: 5px 4px; border-bottom: 1px solid var(--line); break-inside: avoid; }
-.wc-fr-rk { font-family: Teko, sans-serif; font-size: 20px; line-height: 1; min-width: 22px; text-align: right; }
+.wc-fr-rk { font-family: var(--font-num); font-size: 20px; line-height: 1; min-width: 22px; text-align: right; }
 .wc-fr-ch { font-size: 10px; font-weight: 700; min-width: 26px; }
 .wc-fr-ch.up { color: #5fd08c; }
 .wc-fr-ch.down { color: #ef6b7b; }
@@ -415,7 +420,7 @@ html, body {
 .wc-fr-dp.down { color: #ef6b7b; }
 .wc-club-name { flex: 1; text-align: left; font-weight: 700; font-size: 13.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .wc-club-lg { font-family: var(--font-label); font-size: 9px; letter-spacing: .5px; color: var(--muted); border: 1px solid var(--line); border-radius: 5px; padding: 1px 5px; text-transform: uppercase; flex-shrink: 0; }
-.wc-club-n { font-family: Teko, sans-serif; font-size: 24px; line-height: 1; }
+.wc-club-n { font-family: var(--font-num); font-size: 24px; line-height: 1; }
 .wc-lg-filter { display: flex; gap: 5px; }
 .wc-lg-filter button { font-family: var(--font-label); font-size: 10.5px; letter-spacing: .5px; padding: 3px 10px; border-radius: 6px; border: 1px solid var(--line); background: transparent; color: var(--muted); cursor: pointer; text-transform: uppercase; }
 .wc-lg-filter button.active { border-color: transparent; font-weight: 700; }
@@ -474,7 +479,7 @@ html, body {
 .wc-side { display: flex; align-items: center; gap: 7px; padding: 2px 0; }
 .wc-side img { width: 16px; height: 16px; object-fit: contain; flex-shrink: 0; }
 .wc-ab { flex: 1; font-size: 11.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.wc-sc { font-family: Teko, sans-serif; font-size: 16px; min-width: 14px; text-align: right; }
+.wc-sc { font-family: var(--font-num); font-size: 16px; min-width: 14px; text-align: right; }
 
 /* 조별 순위 */
 .wc-groups { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 12px; }
@@ -680,7 +685,7 @@ html, body {
 .db-count { color: var(--muted); font-size: 12px; margin-top: 12px; }
 .db-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-top: 16px; }
 .db-card { position: relative; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 15px 8px 12px; border: 1px solid var(--line); border-radius: 14px; background: linear-gradient(160deg, var(--panel-2), var(--panel)); }
-.db-ovr { position: absolute; top: 8px; left: 10px; font-family: Teko, sans-serif; font-size: 21px; line-height: 1; }
+.db-ovr { position: absolute; top: 8px; left: 10px; font-family: var(--font-num); font-size: 21px; line-height: 1; }
 .db-bm { position: absolute; top: 9px; right: 10px; font-size: 13px; }
 .db-photo { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; }
 .db-photo.ph { background: linear-gradient(135deg, #232c3d, #161c28); }
@@ -720,7 +725,7 @@ html, body {
 .stars-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
 .star-card { display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 14px 8px; border: 1px solid var(--line); border-radius: 14px; background: rgba(255, 255, 255, 0.02); position: relative; }
 .star-card img, .star-ph { width: 54px; height: 54px; border-radius: 50%; object-fit: cover; background: linear-gradient(135deg, #232c3d, #161c28); }
-.star-ovr { position: absolute; top: 8px; right: 10px; font-family: Teko, sans-serif; font-size: 22px; line-height: 1; }
+.star-ovr { position: absolute; top: 8px; right: 10px; font-family: var(--font-num); font-size: 22px; line-height: 1; }
 .star-bm { position: absolute; top: 9px; left: 10px; font-size: 13px; }
 .star-name { font-weight: 600; font-size: 12.5px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
 .star-meta { color: var(--muted); font-size: 11px; }
@@ -824,7 +829,7 @@ html, body {
 @media (max-width: 640px) { .pd-cats { grid-template-columns: 1fr; } }
 .pd-cat-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 7px; }
 .pd-cat-head span { font-family: var(--font-label); font-size: 12px; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); }
-.pd-cat-head b { font-family: Teko, sans-serif; font-size: 20px; line-height: 1; }
+.pd-cat-head b { font-family: var(--font-num); font-size: 20px; line-height: 1; }
 .pd-cat .pm { margin-bottom: 7px; }
 .pd-similar { padding: 0 22px 20px; }
 .pd-sim-title { font-family: var(--font-label); font-size: 12px; letter-spacing: 1px; color: var(--muted); margin-bottom: 8px; }
@@ -845,7 +850,7 @@ html, body {
 .rec-card { position: relative; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 14px 8px; border: 1px solid var(--line); border-radius: 14px; background: rgba(255, 255, 255, 0.02); }
 .rec-photo { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; }
 .rec-photo.ph { background: linear-gradient(135deg, #232c3d, #161c28); }
-.rec-ovr { position: absolute; top: 8px; right: 10px; font-family: Teko, sans-serif; font-size: 20px; line-height: 1; }
+.rec-ovr { position: absolute; top: 8px; right: 10px; font-family: var(--font-num); font-size: 20px; line-height: 1; }
 .rec-name { font-weight: 600; font-size: 12px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
 .rec-club { display: flex; align-items: center; gap: 4px; color: var(--muted); font-size: 10.5px; }
 .rec-club img { width: 14px; height: 14px; object-fit: contain; }
@@ -889,7 +894,7 @@ html, body {
 .fac-top { display: flex; align-items: center; gap: 9px; }
 .fac-tag { font-family: var(--font-label); font-size: 10.5px; font-weight: 700; }
 .fac-label { font-weight: 700; font-size: 14px; }
-.fac-val { margin-left: auto; font-family: Teko, sans-serif; font-size: 24px; line-height: 1; }
+.fac-val { margin-left: auto; font-family: var(--font-num); font-size: 24px; line-height: 1; }
 .fac-players { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 9px; }
 .fac-chip { display: inline-flex; align-items: center; gap: 5px; background: rgba(255, 255, 255, 0.05); border-radius: 999px; padding: 3px 9px 3px 3px; font-size: 11.5px; }
 .fac-chip img, .fac-ph { width: 18px; height: 18px; border-radius: 50%; object-fit: cover; background: #232c3d; }
@@ -898,7 +903,7 @@ html, body {
 .ctx-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
 .ctx-item { display: flex; flex-direction: column; gap: 4px; align-items: center; padding: 14px 8px; border: 1px solid var(--line); border-radius: 12px; background: rgba(255, 255, 255, 0.02); }
 .ctx-item span { color: var(--muted); font-size: 11.5px; }
-.ctx-item b { font-family: Teko, sans-serif; font-size: 30px; line-height: 1; }
+.ctx-item b { font-family: var(--font-num); font-size: 30px; line-height: 1; }
 
 .handoff { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-top: 16px; padding: 12px 16px; border: 1px solid; border-radius: 12px; background: rgba(255, 255, 255, 0.03); font-size: 12.5px; color: #c3ccdc; }
 .ho-tag { font-family: var(--font-label); font-size: 10.5px; font-weight: 700; letter-spacing: .5px; color: #0b0f17; padding: 5px 11px; border-radius: 999px; }
@@ -959,7 +964,7 @@ html, body {
 .unit-list { display: flex; flex-direction: column; gap: 13px; }
 .unit-top { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 5px; }
 .unit-top b { font-family: var(--font-label); letter-spacing: 1px; font-weight: 500; }
-.unit-top span { font-family: Teko, sans-serif; font-size: 20px; line-height: 1; }
+.unit-top span { font-family: var(--font-num); font-size: 20px; line-height: 1; }
 .delta { font-family: Inter, sans-serif; font-weight: 700; letter-spacing: 0; }
 .unit-top span.delta { font-size: 11.5px; margin-right: 6px; vertical-align: middle; }
 .ovr-sub .delta { font-size: 10px; margin-left: 5px; }
@@ -972,7 +977,7 @@ html, body {
   background: rgba(255, 255, 255, 0.03); border: 1px solid var(--line);
   border-radius: 12px; padding: 12px 10px; text-align: center;
 }
-.stat .v { font-family: Teko, sans-serif; font-size: 26px; line-height: 1; }
+.stat .v { font-family: var(--font-num); font-size: 26px; line-height: 1; }
 .stat .l { color: var(--muted); font-size: 10px; letter-spacing: 1px; text-transform: uppercase; margin-top: 4px; }
 
 /* Manager */
@@ -1065,7 +1070,7 @@ html, body {
 .scd-head { display: flex; align-items: center; gap: 14px; padding: 18px 22px; }
 .scd-gw { font-family: var(--font-label); font-size: 11px; letter-spacing: 1px; color: var(--muted); text-transform: uppercase; }
 .scd-opp { font-size: 22px; font-weight: 800; margin-top: 3px; }
-.scd-score { font-family: Teko, sans-serif; font-size: 36px; line-height: 1; margin-left: auto; }
+.scd-score { font-family: var(--font-num); font-size: 36px; line-height: 1; margin-left: auto; }
 .scd-score span { font-family: Inter, sans-serif; font-size: 12px; margin-left: 6px; }
 .scd-form { font-family: var(--font-label); font-size: 13px; color: #c3ccdc; border: 1px solid var(--line); border-radius: 8px; padding: 4px 10px; }
 .scd-body { display: grid; grid-template-columns: 1.4fr 1fr; gap: 16px; padding: 8px 22px 22px; }
@@ -1088,14 +1093,14 @@ html, body {
 .depth-score { display: flex; align-items: center; gap: 8px; }
 .depth-bar { flex: 1; height: 7px; border-radius: 5px; background: rgba(255,255,255,0.07); overflow: hidden; }
 .depth-bar > span { display: block; height: 100%; border-radius: 5px; transition: width .5s cubic-bezier(.2,.8,.2,1); }
-.depth-score b { font-family: Teko, sans-serif; font-size: 18px; width: 26px; text-align: right; }
+.depth-score b { font-family: var(--font-num); font-size: 18px; width: 26px; text-align: right; }
 
 /* ── Squad ─────────────────────────────── */
 .squad-grid { display: grid; gap: 16px; grid-template-columns: repeat(2, 1fr); align-items: start; }  /* 짧은 카드(GK)가 옆 높이로 늘어나 비지 않게 */
 .sq-list { display: flex; flex-direction: column; gap: 3px; }
 .sq-row { display: flex; align-items: center; gap: 11px; padding: 7px 6px; border-radius: 9px; }
 .sq-row:hover { background: rgba(255, 255, 255, 0.03); }
-.sq-ovr { width: 32px; text-align: center; font-family: Teko, sans-serif; font-size: 21px; line-height: 1; border-right: 2px solid; padding-right: 8px; }
+.sq-ovr { width: 32px; text-align: center; font-family: var(--font-num); font-size: 21px; line-height: 1; border-right: 2px solid; padding-right: 8px; }
 .sq-photo { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; background: #1a2130; }
 .sq-photo.ph, .pl-photo.ph, .pd-photo.ph, .tf2-photo.ph { background: linear-gradient(135deg, #232c3d, #161c28); }
 .sq-info { flex: 1; min-width: 0; }
@@ -1137,7 +1142,7 @@ html, body {
 .inj-info { flex: 1; min-width: 0; }
 .inj-name { font-weight: 600; font-size: 13.5px; }
 .inj-meta { color: var(--muted); font-size: 11px; }
-.inj-gm { font-family: Teko, sans-serif; font-size: 24px; line-height: 1; }
+.inj-gm { font-family: var(--font-num); font-size: 24px; line-height: 1; }
 .inj-gm span { font-family: Inter, sans-serif; font-size: 10px; color: var(--muted); margin-left: 3px; }
 .ls-list { display: flex; flex-direction: column; gap: 13px; }
 .ls-row { display: flex; align-items: center; gap: 12px; }
@@ -1155,7 +1160,7 @@ html, body {
 .pl-card { position: relative; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 14px 8px 11px; border: 1px solid var(--line); border-radius: 14px; background: var(--panel); cursor: pointer; transition: transform .14s ease, border-color .14s ease; }
 .pl-card:hover { transform: translateY(-2px); }
 .pl-card.active { background: var(--panel-2); }
-.pl-ovr { position: absolute; top: 7px; left: 9px; font-family: Teko, sans-serif; font-size: 20px; line-height: 1; }
+.pl-ovr { position: absolute; top: 7px; left: 9px; font-family: var(--font-num); font-size: 20px; line-height: 1; }
 .pl-photo { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; }
 .pl-name { font-weight: 600; font-size: 12.5px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
 .pl-pos { color: var(--muted); font-size: 10.5px; }
@@ -1183,7 +1188,7 @@ html, body {
 .pd-body { display: grid; grid-template-columns: 1fr; gap: 10px; padding: 8px 22px 22px; }
 .pd-metrics { display: flex; flex-direction: column; gap: 11px; }
 .pm-top { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; }
-.pm-top b { font-family: Teko, sans-serif; font-size: 18px; line-height: 1; }
+.pm-top b { font-family: var(--font-num); font-size: 18px; line-height: 1; }
 .pm-bar { height: 7px; border-radius: 5px; background: rgba(255, 255, 255, 0.07); overflow: hidden; }
 .pm-bar > span { display: block; height: 100%; border-radius: 5px; transition: width .5s cubic-bezier(.2, .8, .2, 1); }
 .pd-radar { display: flex; justify-content: center; order: -1; }
@@ -1272,7 +1277,7 @@ button:focus-visible, .peekable:focus-visible, a:focus-visible {
 .peek-sub { display: flex; align-items: center; gap: 6px; color: var(--muted); font-size: 11.5px; margin-top: 3px; flex-wrap: wrap; }
 .peek-sub img { width: 15px; height: 15px; object-fit: contain; }
 .peek-ovr { text-align: center; flex-shrink: 0; }
-.peek-ovr b { font-family: Teko, sans-serif; font-size: 34px; line-height: .9; display: block; }
+.peek-ovr b { font-family: var(--font-num); font-size: 34px; line-height: .9; display: block; }
 .peek-ovr span { font-size: 11px; letter-spacing: 1.6px; color: var(--muted); font-weight: 700; }
 .peek-tags { display: flex; gap: 5px; flex-wrap: wrap; padding: 0 16px 10px; }
 .peek-stats {
@@ -1280,7 +1285,7 @@ button:focus-visible, .peekable:focus-visible, a:focus-visible {
   background: var(--line); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
 }
 .peek-stat { background: rgba(10, 14, 21, 0.75); text-align: center; padding: 9px 4px 7px; }
-.peek-stat b { font-family: Teko, sans-serif; font-size: 21px; line-height: 1; display: block; font-weight: 600; }
+.peek-stat b { font-family: var(--font-num); font-size: 21px; line-height: 1; display: block; font-weight: 600; }
 .peek-stat span { font-size: 11px; letter-spacing: .8px; color: var(--muted); font-weight: 700; text-transform: uppercase; }
 .peek-spark { padding: 10px 16px 4px; }
 .peek-spark-cap { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); letter-spacing: .6px; font-weight: 700; margin-bottom: 3px; }
@@ -2098,13 +2103,13 @@ body::before {
 .empty-state.compact .es-ico { display: none; }
 
 /* 평점 추이 화살표(Trend.tsx) — 진한 것=2주 전 대비, 흐린 것=지난 시즌 대비 */
-.trend { font-family: Teko, sans-serif; font-size: 13px; font-weight: 600; margin-left: 3px; letter-spacing: 0; line-height: 1; }
+.trend { font-family: var(--font-num); font-size: 13px; font-weight: 600; margin-left: 3px; letter-spacing: 0; line-height: 1; }
 .trend.up { color: #4fc27f; }
 .trend.down { color: #e07070; }
 .trend.season { opacity: 0.55; }
 .sq-trend { min-width: 24px; margin-left: -6px; display: inline-flex; justify-content: flex-start; }
 .trend-line { display: flex; flex-wrap: wrap; gap: 4px 14px; padding: 0 22px 10px; font-size: 11.5px; color: var(--muted); }
-.trend-line b { font-family: Teko, sans-serif; font-size: 15px; font-weight: 600; margin-left: 2px; }
+.trend-line b { font-family: var(--font-num); font-size: 15px; font-weight: 600; margin-left: 2px; }
 .trend-line b.up { color: #4fc27f; }
 .trend-line b.down { color: #e07070; }
 .trend-line b.flat { color: var(--muted); }
@@ -2241,4 +2246,76 @@ h1, .hub-hero-t, .pd-name, .tb-team h1 { letter-spacing: -0.02em; }
   .lf-side { grid-column: 2; justify-content: flex-start; }
   .lf-name { font-size: 12px; }
 }
+
+/* ═══════════════════════════════════════════════════════════
+   디자인 4차 — 보이는 변화: 제목 글꼴 · 팀 상단 · 선수 카드 등급 (2026-10-14)
+   ═══════════════════════════════════════════════════════════ */
+@font-face { font-family: "GmarketSans"; font-weight: 700; font-display: swap;
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansBold.woff") format("woff"); }
+@font-face { font-family: "GmarketSans"; font-weight: 500; font-display: swap;
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff") format("woff"); }
+html[data-font="modern"] {
+  --font-ui: "SUIT Variable", "Pretendard Variable", Pretendard, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "SUIT Variable", var(--font-ui);
+  --font-num: "SUIT Variable", var(--font-ui);
+}
+html[data-font="classic"] { --font-display: var(--font-ui); --font-num: Teko, var(--font-ui); }
+
+/* 제목 계열 — 팀·리그 이름은 크게, 대문자, 장평 좁은 글꼴 */
+.hero h1, .tb-team h1, .hx-title, .hub-hero-t, .pd-name {
+  font-family: var(--font-display); font-weight: 800; text-transform: uppercase; letter-spacing: 0.005em; line-height: 0.95;
+}
+.hero h1 { font-size: clamp(44px, 6vw, 76px); }
+.tb-team h1 { font-size: clamp(30px, 3.6vw, 44px); }
+.hx-title { font-size: clamp(44px, 6vw, 72px); }
+.hub-hero-t { font-size: clamp(32px, 4vw, 46px); }
+.pd-name { font-size: 30px; text-transform: none; }
+html[data-font="classic"] .hero h1, html[data-font="classic"] .tb-team h1 { text-transform: none; letter-spacing: -0.02em; }
+
+/* 섹션 제목 — 한글 제목은 G마켓 산스 굵게, 영문 꼬리표는 작게 */
+.sec-kr { font-family: var(--font-display); font-weight: 700; font-size: 19px; letter-spacing: -0.01em; }
+.sec-en { font-size: 10.5px; letter-spacing: 0.18em; }
+.hub-h-en { font-family: var(--font-display); font-weight: 800; font-size: 21px; letter-spacing: 0.02em; }
+.hub-h-kr { font-size: 12px; }
+
+/* 큰 숫자 — 장평 좁은 숫자 글꼴은 같은 크기에서 작아 보여 한 단계 키운다 */
+.ovr-n { font-size: 64px !important; font-weight: 800; }
+.kpi-n, .hub-kpi b { font-weight: 800; }
+.pm-top b, .pd-cat-head b, .fac-val { font-weight: 700; }
+
+/* 팀 상단(Overview) — 팀 색 그라데이션 위에 큰 엠블럼 워터마크 */
+.hero { overflow: hidden; isolation: isolate; min-height: 190px; }
+.hero-mark { position: absolute; right: 120px; top: 50%; width: 300px; height: 300px; object-fit: contain;
+  transform: translateY(-50%) rotate(-10deg); opacity: 0.07; filter: grayscale(0.2); pointer-events: none; z-index: -1; }
+.hero .ovr-badge { backdrop-filter: blur(8px); background: rgba(8, 10, 14, 0.45); }
+@media (max-width: 760px) { .hero-mark { right: -60px; width: 220px; height: 220px; } }
+
+/* 선수 카드 등급(FUT 카드 느낌) — 엘리트 89+ · 골드 84+ · 실버 76+ · 브론즈 */
+.fut { position: relative; overflow: hidden; isolation: isolate; border: 1px solid var(--fut-edge) !important;
+  background: linear-gradient(160deg, var(--fut-a) 0%, var(--fut-b) 58%, rgba(10, 12, 16, 0.96) 100%) !important; }
+.fut::before { content: ""; position: absolute; inset: -40% -60%; z-index: -1; pointer-events: none;
+  background: linear-gradient(115deg, transparent 42%, rgba(255, 255, 255, 0.10) 50%, transparent 58%);
+  transform: translateX(-30%); transition: transform .6s ease; }
+.fut:hover::before { transform: translateX(30%); }
+.fut.elite  { --fut-a: #5a4210; --fut-b: #241a07; --fut-edge: rgba(255, 214, 102, 0.65); box-shadow: 0 0 0 1px rgba(255, 214, 102, 0.15), 0 10px 30px rgba(255, 190, 60, 0.10); }
+.fut.gold   { --fut-a: #43340f; --fut-b: #1c1609; --fut-edge: rgba(244, 207, 94, 0.42); }
+.fut.silver { --fut-a: #343b46; --fut-b: #161a20; --fut-edge: rgba(205, 214, 228, 0.30); }
+.fut.bronze { --fut-a: #3d2919; --fut-b: #18110c; --fut-edge: rgba(205, 127, 50, 0.32); }
+.fut.elite .pl-ovr, .fut.elite .star-ovr { color: #ffd76a !important; }
+.fut.gold .pl-ovr, .fut.gold .star-ovr { color: #f4cf5e !important; }
+.fut.silver .pl-ovr, .fut.silver .star-ovr { color: #dfe5ee !important; }
+.fut.bronze .pl-ovr, .fut.bronze .star-ovr { color: #e0a36a !important; }
+.fut .pl-ovr, .fut .star-ovr { font-family: var(--font-num); font-weight: 800; font-size: 28px; line-height: 0.9; }
+.fut .pl-photo, .fut img:not(.lf-ph) { box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45); border: 2px solid var(--fut-edge); }
+.fut .pl-name, .fut .star-name { font-family: var(--font-display); font-weight: 700; font-size: 15px; letter-spacing: 0.01em; }
+.pl-card.fut { padding-top: 16px; }
+.pl-card.fut .pl-photo { width: 60px; height: 60px; }
+.star-card.fut img, .star-card.fut .star-ph { width: 66px; height: 66px; }
+/* 등급 카드의 추이 화살표는 OVR 숫자 아래로(커진 숫자 옆에 두면 사진과 겹침) */
+.fut .pl-ovr, .fut .star-ovr { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.fut .pl-ovr .trend, .fut .star-ovr .trend { margin-left: 0; font-size: 12px; line-height: 1; }
+.fut .star-ovr .star-pot { font-size: 12px; }
+/* 경기 카드 팀 이름도 제목 글꼴(목록형 이번 주 경기는 본문 글꼴 유지 — 밀도) */
+.mc-team { font-family: var(--font-display); font-weight: 700; font-size: 15px; letter-spacing: 0.01em; }
+.mc-card.compact .mc-team { font-size: 13.5px; }
 

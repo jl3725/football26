@@ -39,6 +39,16 @@ export default function Page() {
   const [navOpen, setNavOpen] = useState(false);
   const [urlReady, setUrlReady] = useState(false);
 
+  // 글꼴 프리셋(?font=sport|modern|classic) — 고르면 이 브라우저에 기억
+  useEffect(() => {
+    try {
+      const q = new URLSearchParams(window.location.search).get("font");
+      const f = q || localStorage.getItem("font") || "sport";
+      if (q) localStorage.setItem("font", q);
+      document.documentElement.dataset.font = f;
+    } catch { document.documentElement.dataset.font = "sport"; }
+  }, []);
+
   // 화면 상태 ↔ 주소(?league=LaLiga&team=Barcelona&tab=squad) — 새로고침·링크 공유·뒤로가기 유지.
   // 서버 렌더와 어긋나지 않게 첫 렌더 뒤에 주소를 읽고, 그 전에는 데이터를 부르지 않는다.
   useEffect(() => {

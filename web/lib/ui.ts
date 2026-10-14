@@ -9,6 +9,11 @@ export function tier(v: number): Tier {
   return { light: "#aeb7c7", deep: "#5b6576", name: "DEVELOPING" };
 }
 
+// 선수 카드 등급(FUT 카드 느낌) — 엘리트 89+ · 골드 84+ · 실버 76+ · 브론즈
+export function futTier(ovr: number): "elite" | "gold" | "silver" | "bronze" {
+  return ovr >= 89 ? "elite" : ovr >= 84 ? "gold" : ovr >= 76 ? "silver" : "bronze";
+}
+
 export function hexA(hex: string, a: number): string {
   const h = hex.replace("#", "");
   const full = h.length === 3 ? h.split("").map((c) => c + c).join("") : h;

@@ -1,7 +1,7 @@
 "use client";
 import type { Overview } from "@/lib/api";
 import { feeLabel, fmtEur } from "@/lib/api";
-import { tier, hexA, roleClass } from "@/lib/ui";
+import { tier, hexA, roleClass, futTier } from "@/lib/ui";
 import Radar from "./Radar";
 import RatingsBoard from "./RatingsBoard";
 import TransferTicker from "./TransferTicker";
@@ -68,6 +68,7 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
       {/* HERO */}
       <div className="hero" style={{ background: `linear-gradient(120deg, ${hexA(ov.color, 0.30)}, ${hexA(ov.color, 0.03)} 55%, transparent)` }}>
         <div className="hero-glow" style={{ background: `radial-gradient(circle, ${hexA(accent, 0.5)}, transparent 70%)` }} />
+        {ov.logo && <img className="hero-mark" src={ov.logo} alt="" aria-hidden="true" />}
         {ov.logo && <img className="hero-logo" src={ov.logo} alt="" />}
         <div style={{ flex: 1, minWidth: 0 }}>
           <div className="hero-rank">#{s.rank} · {leagueCap} · {info.nick || ""}</div>
@@ -186,7 +187,7 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
             {ov.stars.map((st, i) => {
               const tt = tier(st.ovr);
               return (
-                <div className="star-card hoverable" key={i} style={{ cursor: "pointer" }}
+                <div className={`star-card hoverable fut ${futTier(st.ovr)}`} key={i} style={{ cursor: "pointer" }}
                   onClick={(e) => peek(e, { name: st.player, club: ov.team, hint: { photo: st.photo, ovr: st.ovr, pos: st.pos, role: st.role, big_match: st.big_match } })}>
                   {st.big_match && <span className="star-bm" title="UCL/UEL 급 무대 검증">⚡</span>}
                   {st.photo ? <img src={st.photo} alt="" /> : <span className="star-ph" />}

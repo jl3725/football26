@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { getPlayers, getPlayerDetail, getSimilar, getHeatmaps, fmtEur, type Players, type PlayerDetail, type SimilarResult, type HeatmapData } from "@/lib/api";
-import { tier, hexA, roleClass } from "@/lib/ui";
+import { tier, hexA, roleClass, futTier } from "@/lib/ui";
 import Radar from "./Radar";
 import HeatmapPitch from "./HeatmapPitch";
 import ComparePanel from "./ComparePanel";
@@ -206,7 +206,7 @@ export default function PlayerTab({ team, accent, initialPlayer }: { team: strin
             const t = tier(p.ovr);
             const isA = sel === p.player, isB = cmp === p.player;
             return (
-              <button key={p.player} className={`pl-card${isA ? " active" : ""}`}
+              <button key={p.player} className={`pl-card fut ${futTier(p.ovr)}${isA ? " active" : ""}`}
                 onClick={() => onCard(p.player)}
                 style={{ position: "relative", ...(isA ? { borderColor: accent } : isB ? { borderColor: CB } : {}) }}>
                 {cmpMode && (isA || isB) && <span style={{ position: "absolute", top: 4, left: 5, fontSize: 10, fontWeight: 800, color: isA ? accent : CB }}>{isA ? "A" : "B"}</span>}

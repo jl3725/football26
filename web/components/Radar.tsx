@@ -37,7 +37,7 @@ export default function Radar({ data, color }: { data: { axis: string; value: nu
             {/* 축소 표시돼도 읽히게 — viewBox 300 기준 12.5/15 (예전 10/11 은 실제 8px 대) */}
             <text x={lx} y={ly - 2} fontSize={12.5} fill="#9aa4b8" textAnchor="middle" dominantBaseline="middle"
               style={{ fontFamily: "var(--font-label)", fontWeight: 600 }} letterSpacing={0.3}>{d.axis}</text>
-            <text x={lx} y={ly + 13} fontSize={15} fill="#e8edf6" textAnchor="middle" fontFamily="Teko, sans-serif">{d.value}</text>
+            <text x={lx} y={ly + 13} fontSize={15} fill="#e8edf6" textAnchor="middle" style={{ fontFamily: "var(--font-num)", fontWeight: 700 }}>{d.value}</text>
           </g>
         );
       })}
