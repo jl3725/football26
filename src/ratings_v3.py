@@ -301,6 +301,18 @@ def big_match_proven(*, euro_starts=0, euro_apps=0) -> bool:
     return _num(euro_starts) >= 4 or _num(euro_apps) >= 6
 
 
+def ovr_of_row(row) -> int:
+    """선수 행 → 절대 OVR (API _player_ovr 와 같은 입력). player_frame 이 리그 표에 `_ovr` 로 미리 붙인다."""
+    return absolute_ovr(
+        value=row.get("market_value_eur"), ss_rating=row.get("ss_rating"),
+        minutes=row.get("minutes"), age=row.get("age"), pos_group=line_of_row(row),
+        gk_save_pct=row.get("gk_save_pct"), gk_cs_pct=row.get("gk_cs_pct"),
+        ucl_starts=row.get("ucl_starts"), uel_starts=row.get("uel_starts"),
+        conf_starts=row.get("conf_starts"), cup_starts=row.get("cup_starts"),
+        prev_minutes=row.get("prev_minutes"), prev_ss_rating=row.get("prev_ss_rating"),
+        league_level=row.get("_league_level"))
+
+
 def player_line(row) -> dict:
     # 라인은 역할(tm_position) 우선 — FBref 'MF'·'FW,MF' 같은 대분류로 윙어를 미드로 보던 것 수정
     pos = line_of_row(row)

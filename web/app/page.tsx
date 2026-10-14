@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getTeams, getNextTeams, getOverview, getContext, setActiveLeague, type Team, type NextSeason, type Overview, type Context } from "@/lib/api";
+import { getTeams, getNextTeams, getOverview, getContext, getRecommend, getDiscover, setActiveLeague, type Team, type NextSeason, type Overview, type Context } from "@/lib/api";
 import { accent as toAccent } from "@/lib/ui";
 import Sidebar from "@/components/Sidebar";
 import StatusBar from "@/components/StatusBar";
@@ -76,6 +76,16 @@ export default function Page() {
     getNextTeams().then(setNextS).catch(() => {});
     getContext().then(setCtx).catch(() => {});
   }, [league, urlReady]);
+  // Recruit 탭의 무거운 계산(추천·탐색)을 Overview 를 보는 사이 미리 요청 — 서버 캐시가 채워져 탭을 열면
+  // 바로 뜬다(무료 서버 첫 계산 수 초). 팀을 빠르게 넘길 때 낭비하지 않게 2.5초 머문 경우만.
+  useEffect(() => {
+    if (!urlReady || !sel || home) return;
+    const t = setTimeout(() => {
+      getRecommend(sel).catch(() => {});
+      getDiscover(sel, { top: 40 }).catch(() => {});
+    }, 2500);
+    return () => clearTimeout(t);
+  }, [sel, home, urlReady]);
   useEffect(() => {
     if (!urlReady || !sel) return;
     let alive = true;

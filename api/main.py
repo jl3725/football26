@@ -821,17 +821,12 @@ def _subs(league: str):
 
 def _player_ovr(row) -> int:
     # v3 절대 OVR = 커리어 클래스 (시장가+포지션 공정보정+검증/베테랑, GK 는 선방%/CS%, 빅매치 소량 가산)
-    # 라인은 역할(tm_position) 우선, 평점은 표본 수축·리그 보정(_league_level — player_frame 이 붙임)
-    return rv3.absolute_ovr(
-        value=row.get("market_value_eur"), ss_rating=row.get("ss_rating"),
-        minutes=row.get("minutes"), age=row.get("age"),
-        pos_group=rv3.line_of_row(row),
-        gk_save_pct=row.get("gk_save_pct"), gk_cs_pct=row.get("gk_cs_pct"),
-        ucl_starts=row.get("ucl_starts"), uel_starts=row.get("uel_starts"),
-        conf_starts=row.get("conf_starts"), cup_starts=row.get("cup_starts"),
-        prev_minutes=row.get("prev_minutes"), prev_ss_rating=row.get("prev_ss_rating"),
-        league_level=row.get("_league_level"),
-    )
+    # 라인은 역할(tm_position) 우선, 평점은 표본 수축·리그 보정(_league_level — player_frame 이 붙임).
+    # player_frame 이 미리 계산한 `_ovr` 가 있으면 그대로(이적 반영용 가상 행 등은 없어서 계산).
+    v = row.get("_ovr")
+    if v is not None and v == v:
+        return int(v)
+    return rv3.ovr_of_row(row)
 
 
 def _player_form(row):
@@ -1590,6 +1585,7 @@ def _manager_evo(team: str, league: str = "EPL"):
     return evo
 
 
+@_memo(ttl=21600)
 def _players_lookup(league):
     """이름 → 선수행 resolver. 악센트/이름순서 차이에 강건.
     예: 'Martin Odegaard'↔'Martin Ødegaard', ESPN 'Alisson Becker'↔'Alisson'."""
@@ -1995,6 +1991,22 @@ def _formation_bucket_needs(team: str, league: str) -> dict:
     return cnt
 
 
+@_memo(ttl=21600)
+def _rec_pool(league: str):
+    """추천 후보 풀용 리그 표 — 출전·세부 포지션·OVR·이탈 여부. 팀과 무관해 리그별로 한 번만 만든다
+    (예전엔 추천 1회마다 8개 리그 3,500명을 다시 준비). 공유 캐시라 호출부는 고쳐 쓰지 않는다."""
+    df = _pf(league)
+    if df is None:
+        return None
+    df["_mn"] = pd.to_numeric(df["minutes"], errors="coerce").fillna(0)
+    df["_bucket"] = df.apply(_pos_bucket, axis=1)
+    if "_ovr" not in df.columns:
+        df["_ovr"] = df.apply(_player_ovr, axis=1)
+    df["_left"] = (df["left_for"].notna() & (df["left_for"].astype(str).str.strip() != "")) \
+        if "left_for" in df.columns else False
+    return df
+
+
 @app.get("/api/recommend/{team}")
 @_memo(ttl=21600)
 def recommend(team: str, league: str = ACTIVE_LEAGUE):
@@ -2026,27 +2038,21 @@ def recommend(team: str, league: str = ACTIVE_LEAGUE):
 
     tout = _transferred_out(league)
 
+    import numpy as _np
+
     def _pct_in(s, v):
-        sv = s.dropna()
+        """s = 정렬된 numpy 배열(_dist). v 보다 작은 비율(%)."""
         try:
             v = float(v)
         except (TypeError, ValueError):
             return 0
-        if pd.isna(v) or sv.empty:
+        if v != v or len(s) == 0:
             return 0
-        return int(round((sv < v).mean() * 100))
+        return int(round(_np.searchsorted(s, v, side="left") / len(s) * 100))
 
-    def _prep(df):
-        df = df.copy()
-        df["_mn"] = pd.to_numeric(df["minutes"], errors="coerce").fillna(0)
-        df["_bucket"] = df.apply(_pos_bucket, axis=1)
-        df["_ovr"] = df.apply(_player_ovr, axis=1)
-        df["_left"] = (df["left_for"].notna() & (df["left_for"].astype(str).str.strip() != "")) \
-            if "left_for" in df.columns else False
-        return df
-
-    # 2) 후보 풀 — 같은 리그 + 데이터 있는 모든 타 리그(EPL·LaLiga·SerieA·…)
-    pool = _prep(full[full["squad"] != team])
+    # 2) 후보 풀 — 같은 리그 + 데이터 있는 모든 타 리그(EPL·LaLiga·SerieA·…). 리그별 준비는 캐시(_rec_pool)
+    pool = _rec_pool(league)
+    pool = pool[pool["squad"] != team].copy()
     pool["_left"] = pool["_left"] | pool.apply(
         lambda r: (str(r.get("squad") or ""), str(r.get("norm_key"))) in tout, axis=1)
     src_meta = {league: {"pool": pool, "usage": _comp_usage(league),
@@ -2054,10 +2060,10 @@ def recommend(team: str, league: str = ACTIVE_LEAGUE):
     for olg in ds.available_leagues():
         if olg == league:
             continue
-        ox = _pf(olg)
-        if ox is None or "player" not in ox.columns:
+        op = _rec_pool(olg)
+        if op is None or "player" not in op.columns:
             continue
-        src_meta[olg] = {"pool": _prep(ox), "usage": _comp_usage(olg),
+        src_meta[olg] = {"pool": op, "usage": _comp_usage(olg),
                          "club": _club_strength(olg), "resolve": _players_lookup(olg)}
 
     _dist_cache: dict = {}
@@ -2067,8 +2073,9 @@ def recommend(team: str, league: str = ACTIVE_LEAGUE):
         if key not in _dist_cache:
             p = src_meta[src]["pool"]
             sub = p[p["_bucket"] == bk]
-            _dist_cache[key] = (pd.to_numeric(sub.get(col), errors="coerce")
-                                if col and col in sub.columns else pd.Series(dtype=float))
+            vals = (pd.to_numeric(sub.get(col), errors="coerce").dropna().to_numpy(dtype=float)
+                    if col and col in sub.columns else _np.array([], dtype=float))
+            _dist_cache[key] = _np.sort(vals)
         return _dist_cache[key]
 
     def _rphoto(r, src):
@@ -2953,6 +2960,8 @@ def _warm_up() -> None:
             for lg in ds.available_leagues():
                 _pf(lg)
                 _trend_base(lg)
+                _rec_pool(lg)
+                _players_lookup(lg)
             _prev_season()
             _hub_body()
             print(f"[warm-up] 완료 {_t.monotonic() - t0:.1f}s", flush=True)

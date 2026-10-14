@@ -122,4 +122,7 @@ def _build_frame(league: str, season: str | None = None):
     except (OSError, KeyError, ValueError):
         pass
     import ratings_v3 as rv3  # noqa: PLC0415
-    return rv3.add_form_column(frame)
+    frame = rv3.add_form_column(frame)
+    # OVR 은 행 데이터만으로 정해지므로 표를 만들 때 한 번만 — 추천 1회에 3,500번 다시 계산하던 것
+    frame["_ovr"] = [rv3.ovr_of_row(r) for _, r in frame.iterrows()]
+    return frame
