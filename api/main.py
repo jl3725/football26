@@ -208,7 +208,8 @@ def overview(team: str, league: str = ACTIVE_LEAGUE):
                     "pos": str(r.get("pos") or ""),
                 })
 
-    def _ix(col, default=50):
+    def _ix(col, default=None):
+        """팀 지표(1~99). 원천 미수집이면 None — 레이더에서 그 축을 뺀다(예전엔 50 으로 채움)."""
         if um is None or col not in um:
             return default
         try:
@@ -379,14 +380,14 @@ def overview(team: str, league: str = ACTIVE_LEAGUE):
         },
         "ovr": ovr,
         "ovr_delta": ovr_delta,
-        "radar": [
+        "radar": [ax for ax in [
             {"axis": "ATT OUT", "value": _ix("attack_output_index")},
             {"axis": "CREATE", "value": _ix("attack_creation_index")},
             {"axis": "CONTROL", "value": _ix("midfield_control_index")},
             {"axis": "PRESS", "value": _ix("pressing_index")},
             {"axis": "DEF OUT", "value": _ix("defense_output_index")},
             {"axis": "SET PC", "value": _ix("set_piece_attack_index")},
-        ],
+        ] if ax["value"] is not None],
         "form": form,
         "manager": manager,
         "snapshot": snapshot,
@@ -819,22 +820,28 @@ def _subs(league: str):
 
 def _player_ovr(row) -> int:
     # v3 절대 OVR = 커리어 클래스 (시장가+포지션 공정보정+검증/베테랑, GK 는 선방%/CS%, 빅매치 소량 가산)
+    # 라인은 역할(tm_position) 우선, 평점은 표본 수축·리그 보정(_league_level — player_frame 이 붙임)
     return rv3.absolute_ovr(
         value=row.get("market_value_eur"), ss_rating=row.get("ss_rating"),
         minutes=row.get("minutes"), age=row.get("age"),
-        pos_group=str(row.get("fl_group") or row.get("pos") or ""),
+        pos_group=rv3.line_of_row(row),
         gk_save_pct=row.get("gk_save_pct"), gk_cs_pct=row.get("gk_cs_pct"),
         ucl_starts=row.get("ucl_starts"), uel_starts=row.get("uel_starts"),
         conf_starts=row.get("conf_starts"), cup_starts=row.get("cup_starts"),
         prev_minutes=row.get("prev_minutes"), prev_ss_rating=row.get("prev_ss_rating"),
+        league_level=row.get("_league_level"),
     )
 
 
 def _player_form(row):
+    fm = row.get("_form")                          # player_frame 이 붙인 리그 내 순위 폼(우선)
+    if fm is not None and fm == fm:
+        return int(fm)
     return rv3.form_rating(
         ss_rating=row.get("ss_rating"), minutes=row.get("minutes"),
         goals=row.get("goals"), assists=row.get("assists"),
-        pos_group=str(row.get("fl_group") or row.get("pos") or ""),
+        pos_group=rv3.line_of_row(row),
+        prev_ss_rating=row.get("prev_ss_rating"), prev_minutes=row.get("prev_minutes"),
     )
 
 
@@ -1398,7 +1405,7 @@ def analytics(team: str, league: str = ACTIVE_LEAGUE):
                 ("ATT OUT", "attack_output_index"), ("CREATE", "attack_creation_index"),
                 ("CONTROL", "midfield_control_index"), ("PRESS", "pressing_index"),
                 ("DEF OUT", "defense_output_index"), ("SET PC", "set_piece_attack_index"),
-            ] if _u(col) > 0]   # 0 = 소스 미수집(SerieA 압박 등) → 축 제외
+            ] if _u(col, 0) > 0]   # 빈칸·0 = 소스 미수집(26/27 세트피스 등) → 축 제외(기본값 50 으로 채우지 않음)
 
     # Match Factor Lab — 지수 상/하위 팩터 + 기여 선수
     factors = _match_factors(team, league, full, um_df)
@@ -1815,38 +1822,10 @@ def _attainable(cand_ovr: int, club_ovr: float, team_ovr: float, role: str, minu
     return True, "동급 클럽 주전"
 
 
-# 리그 레벨(교차 이적 projection용). EPL 기준 100.
-# UEFA 협회계수(data/uefa_association_coefficients)로 근거화 — 없으면 폴백값.
-# 리그 키 → UEFA 협회계수 국가명. (신규 리그는 GPT 가 쓰는 키에 맞춤: LigaPortugal·Eredivisie)
-_LEAGUE_COUNTRY = {"EPL": "England", "LaLiga": "Spain", "SerieA": "Italy",
-                   "Bundesliga": "Germany", "Ligue1": "France",
-                   "LigaPortugal": "Portugal", "Eredivisie": "Netherlands",
-                   "BelgianProLeague": "Belgium"}
-_LEAGUE_LEVEL_FALLBACK = {"EPL": 100.0, "LaLiga": 98.0, "SerieA": 96.0,
-                          "Bundesliga": 96.0, "Ligue1": 93.0}
+# 리그 레벨(교차 이적 projection·평점 리그 보정 공용). EPL 기준 100 — src/league_level.py
+import league_level as _ll  # noqa: E402
 
-
-def _build_league_level() -> dict:
-    """UEFA 협회계수 → 압축 리그레벨. 최상위(잉글랜드)=100, 기울기 0.2로 압축
-    (선수 품질 차이는 유럽성적 계수 비율보다 작음 → 과도한 감점 방지), 하한 82.
-    계수 데이터 없으면 폴백값 유지. 신규 리그(포르투갈·네덜란드)도 자동 배치."""
-    out = dict(_LEAGUE_LEVEL_FALLBACK)
-    try:
-        df = ds.read_table("uefa_association_coefficients")
-        if df is None or df.empty:
-            return out
-        coeff = {str(r["country"]): float(r["coefficient"]) for _, r in df.iterrows()}
-        top = max(coeff.values())
-        for lg, country in _LEAGUE_COUNTRY.items():
-            c = coeff.get(country)
-            if c is not None:
-                out[lg] = round(max(82.0, 100.0 - 0.2 * (top - c)), 1)
-    except Exception:  # noqa: BLE001
-        pass
-    return out
-
-
-_LEAGUE_LEVEL = _build_league_level()
+_LEAGUE_LEVEL = _ll.levels()
 
 
 def _project_ovr(base: int, source: str, target: str, big_match: bool, age, bucket: str) -> tuple[int, str, str]:
@@ -2703,7 +2682,9 @@ def _compute_hub_body() -> bytes:
             tt["_fee"] = tt["fee_eur"].map(lambda v: _num(v, 0.0))
             summary["spend_eur"] += float(tt["_fee"].sum())
             summary["signings"] += int(len(tt))
-            for _, r in tt.sort_values("_fee", ascending=False).head(6).iterrows():
+            # 리그당 6건으로 먼저 자르면 EPL 7~9위(€87~95M, 기마랑이스 등)가 빠지고 타 리그 €50M 이 들어갔다
+            # → 리그 구분 없이 이적료 순 상위 12건(아래 deals.sort 후 [:12])이 되게 넉넉히 담는다
+            for _, r in tt.sort_values("_fee", ascending=False).head(12).iterrows():
                 sq, ph = str(r.get("squad") or ""), str(r.get("photo") or "")
                 deals.append({"player": str(r.get("player") or ""), "to": sq, "to_logo": tm.team_logo(sq),
                               "from": str(r.get("club") or ""), "pos": str(r.get("pos") or ""),

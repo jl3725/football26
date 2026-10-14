@@ -62,3 +62,6 @@ web/tsconfig.tsbuildinfo
 
 # 로컬 수집 agent 로그 (scripts/run_tm_agent.ps1)
 logs/
+
+# 평점 평가 스냅샷(scripts/eval_ratings.py) — 기준 선수(golden.csv)만 커밋
+data/eval/ratings_*.csv

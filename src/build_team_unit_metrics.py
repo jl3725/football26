@@ -125,15 +125,32 @@ def role_quality(rows: list[dict], role: str, top_n: int) -> float | None:
     return sum(v * w for v, w in scored) / total_w
 
 
+# 시즌 초 표본 수축 — 리그 경기 수 g 일 때 백분위를 0.5 쪽으로 g/(g+SHRINK_GAMES) 만큼만 반영.
+# (7경기면 0.64 → 최대 82 안팎. 시즌이 쌓일수록 1 에 가까워진다)
+SHRINK_GAMES = 4.0
+_SHRINK_W = 1.0
+
+
 def pct_map(values: dict[str, float | None], high_good: bool = True) -> dict[str, float | None]:
-    valid = [(team, value) for team, value in values.items() if value is not None]
-    valid.sort(key=lambda x: x[1], reverse=high_good)
-    n = len(valid)
-    if n <= 1:
-        return {team: 1.0 if value is not None else None for team, value in values.items()}
-    out = {team: None for team in values}
-    for i, (team, _value) in enumerate(valid):
-        out[team] = 1 - i / (n - 1)
+    """리그 안 상대 위치(0~1). 예전엔 순위(1위=1.0)라 근소한 차이도 99/1 로 벌어지고 동률이 정렬 순서
+    (=알파벳)대로 다른 값을 받았다 — 26/27 세트피스·규율 원천이 비어 전원 0 이던 때 알파벳 첫 팀이 99.
+    이제 평균·표준편차 기준 z → 정규 누적확률(크기 반영·동률 동일), 값이 모두 같으면 0.5, 표본 수축 적용."""
+    import math
+    valid = [v for v in values.values() if v is not None]
+    if len(valid) < 3:
+        return {team: None for team in values}
+    mean = sum(valid) / len(valid)
+    sd = (sum((v - mean) ** 2 for v in valid) / (len(valid) - 1)) ** 0.5
+    out: dict[str, float | None] = {}
+    for team, v in values.items():
+        if v is None:
+            out[team] = None
+            continue
+        z = 0.0 if sd == 0 else (v - mean) / sd
+        if not high_good:
+            z = -z
+        p = 0.5 * (1.0 + math.erf(z / math.sqrt(2.0)))
+        out[team] = 0.5 + (p - 0.5) * _SHRINK_W
     return out
 
 
@@ -149,10 +166,24 @@ def blend(row: dict[str, float | None], parts: list[tuple[str, float]]) -> float
     return total / weight if weight else None
 
 
-def idx(value: float | None) -> int:
+def idx(value: float | None) -> int | None:
+    """0~1 → 1~99. 원천이 없으면 None(CSV 빈칸) — 예전엔 0 을 써 '0점'처럼 보였다."""
     if value is None:
-        return 0
+        return None
     return max(1, min(99, round(1 + value * 98)))
+
+
+def per_game(v: float | None, games: float | None) -> float | None:
+    """누적 기록 → 경기당(경기 수가 다른 팀끼리 비교되게)."""
+    if v is None or not games:
+        return None
+    return v / games
+
+
+def sum_or_none(*vals: float | None) -> float | None:
+    """여러 원천 합계 — 전부 없으면 None(0 으로 만들지 않는다)."""
+    got = [v for v in vals if v is not None]
+    return sum(got) if got else None
 
 
 def main() -> int:
@@ -183,6 +214,11 @@ def main() -> int:
                 }
 
     teams = sorted({r["squad"] for r in players})
+    global _SHRINK_W
+    played = sorted(as_float(r.get("played")) or 0 for r in standings.values())
+    g_med = played[len(played) // 2] if played else 0
+    _SHRINK_W = g_med / (g_med + SHRINK_GAMES) if g_med else 1.0
+    print(f"[unit-metrics] 리그 경기 수 중앙값 {g_med:.0f} → 표본 수축 계수 {_SHRINK_W:.2f}")
     by_team = defaultdict(list)
     for row in players:
         by_team[row["squad"]].append(row)
@@ -195,26 +231,25 @@ def main() -> int:
         defs = [r for r in rows if norm_role(r) in {"defense", "gk"}]
         s = standings.get(team, {})
         sb = statbunker.get(team, {})
+        g = as_float(s.get("played"))
         raw[team] = {
-            "points": as_float(s.get("points")),
-            "gd": as_float(s.get("gd")),
-            "gf": as_float(s.get("gf")),
-            "ga": as_float(s.get("ga")),
-            "non_penalty_set_piece_goals": as_float(sb.get("non_penalty_set_piece_goals")),
-            "dead_ball_goals_including_pens": as_float(sb.get("dead_ball_goals_including_pens")),
-            "corner_goals": as_float(sb.get("corner_goals")),
-            "free_kick_family_goals": sum(v for v in [
-                as_float(sb.get("free_kick_goals")) or 0,
-                as_float(sb.get("direct_free_kick_goals")) or 0,
-                as_float(sb.get("throw_in_goals")) or 0,
-            ]),
-            "penalties_for": as_float(sb.get("penalties_for")),
-            "penalties_against": as_float(sb.get("penalties_against")),
+            # 누적 기록은 경기당으로(시즌 초 경기 수가 1~2경기씩 다르다)
+            "points": per_game(as_float(s.get("points")), g),
+            "gd": per_game(as_float(s.get("gd")), g),
+            "gf": per_game(as_float(s.get("gf")), g),
+            "ga": per_game(as_float(s.get("ga")), g),
+            # StatBunker(세트피스·페널티·카드) — 원천이 없으면 None 그대로(예전엔 0 으로 채워 가짜 순위)
+            "non_penalty_set_piece_goals": per_game(as_float(sb.get("non_penalty_set_piece_goals")), g),
+            "dead_ball_goals_including_pens": per_game(as_float(sb.get("dead_ball_goals_including_pens")), g),
+            "corner_goals": per_game(as_float(sb.get("corner_goals")), g),
+            "free_kick_family_goals": per_game(sum_or_none(
+                as_float(sb.get("free_kick_goals")), as_float(sb.get("direct_free_kick_goals")),
+                as_float(sb.get("throw_in_goals"))), g),
+            "penalties_for": per_game(as_float(sb.get("penalties_for")), g),
+            "penalties_against": per_game(as_float(sb.get("penalties_against")), g),
             "yellow_cards_per_match": as_float(sb.get("yellow_cards_per_match")),
-            "red_card_points": sum(v for v in [
-                as_float(sb.get("red_cards")) or 0,
-                as_float(sb.get("second_yellow_reds")) or 0,
-            ]),
+            "red_card_points": per_game(sum_or_none(
+                as_float(sb.get("red_cards")), as_float(sb.get("second_yellow_reds"))), g),
             "attack_quality_raw": role_quality(rows, "attack", 6),
             "midfield_quality_raw": role_quality(rows, "midfield", 7),
             "defense_quality_raw": role_quality(rows, "defense", 7),

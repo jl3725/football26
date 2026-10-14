@@ -64,13 +64,37 @@ def resolve_photo(name, resolve, league: str) -> str:
     return photo or extra_photo_map(league).get(key, "")
 
 
+_FRAME_CACHE: dict = {}
+
+
 def player_frame(league: str):
-    """players_full과 대회별 선발 수를 합친 선수 데이터 단일 진입점."""
+    """players_full과 대회별 선발 수를 합친 선수 데이터 단일 진입점.
+
+    리그 레벨(_league_level)과 리그 내 순위 폼(_form)을 붙인다. 요청마다 수십 번 불리므로 DB 수정
+    시각 기준으로 캐시하고, 호출부가 고쳐 써도 안전하게 사본을 준다.
+    """
+    key = (league, ds._db_mtime())
+    hit = _FRAME_CACHE.get(key)
+    if hit is not None:
+        return hit.copy()
+    frame = _build_frame(league)
+    if frame is not None:
+        if len(_FRAME_CACHE) > 16:
+            _FRAME_CACHE.clear()
+        _FRAME_CACHE[key] = frame
+        return frame.copy()
+    return None
+
+
+def _build_frame(league: str):
     frame = ds.read_table("players_full", league=league)
     if frame is None:
         return None
 
     frame = frame.copy()
+    # 평점 리그 보정용(ratings_v3) — 행마다 리그 레벨을 실어 어느 호출부에서든 같은 보정이 되게
+    import league_level  # noqa: PLC0415
+    frame["_league_level"] = league_level.level(league)
     if "norm_key" not in frame.columns:
         frame["norm_key"] = None
     missing = frame["norm_key"].isna() | frame["norm_key"].astype(str).str.strip().isin(
@@ -96,4 +120,5 @@ def player_frame(league: str):
         frame = frame.merge(usage, on=["squad", "norm_key"], how="left")
     except (OSError, KeyError, ValueError):
         pass
-    return frame
+    import ratings_v3 as rv3  # noqa: PLC0415
+    return rv3.add_form_column(frame)

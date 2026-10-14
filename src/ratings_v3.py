@@ -15,6 +15,8 @@ import math
 
 import pandas as pd
 
+from league_level import rating_offset
+
 
 def _num(v, d: float = 0.0) -> float:
     try:
@@ -107,17 +109,38 @@ def blended_ss(ss_rating, minutes, prev_ss_rating=None, prev_minutes=None) -> fl
     return (ss * w_cur + pss * w_prev) / (w_cur + w_prev)
 
 
+_CLASS_PRIOR_MIN = 600.0   # 클래스 평점을 포지션 평균 쪽으로 당기는 가상 출전(분)
+_YOUTH_PREMIUM = 0.12      # 24세 미만 1살당 — 같은 시장가치에서 어린 선수 경기력이 낮은 만큼(25/26 1,450명 회귀)
+
+
+def class_ss(ss_rating, minutes, prev_ss_rating, prev_minutes, ln: str, league_level=None) -> float:
+    """OVR(커리어 클래스)용 평점 — 표본 수축 + 리그 보정(EPL 기준 환산).
+
+    이번 시즌·직전 시즌을 출전 시간으로 가중하고 포지션 평균을 600분어치 섞는다. 시즌 초 600분짜리
+    고평점(예: 포르투갈 8.44)이 클래스를 끌어올리지 않게 하고, 리그 안 상대평가인 Sofascore 평점을
+    리그 레벨만큼 낮춰 리그 간에 비교 가능하게 한다(src/league_level.py).
+    """
+    ss, mn, pss, pmn = _num(ss_rating), _num(minutes), _num(prev_ss_rating), _num(prev_minutes)
+    if ss <= 0 and pss <= 0:
+        return 0.0
+    mid = _SS_MID[ln]
+    w_cur = mn if ss > 0 else 0.0
+    w_prev = pmn if pss > 0 else 0.0
+    v = (ss * w_cur + pss * w_prev + mid * _CLASS_PRIOR_MIN) / (w_cur + w_prev + _CLASS_PRIOR_MIN)
+    return v - rating_offset(league_level)
+
+
 def absolute_ovr(*, value, ss_rating, minutes, age, pos_group,
                  gk_save_pct=None, gk_cs_pct=None,
                  ucl_starts=0, uel_starts=0, conf_starts=0, cup_starts=0,
-                 prev_minutes=None, prev_ss_rating=None) -> int:
+                 prev_minutes=None, prev_ss_rating=None, league_level=None) -> int:
     ln = line_of(pos_group)
     a = _num(age)
     # '검증'(유망주 게이팅·베테랑 보정)은 직전 시즌 출전까지 합산 — 시즌 초 전원 미검증 방지.
     # 직전 시즌 컬럼이 없으면 이번 시즌 출전만(기존 동작).
     mn = _num(minutes) + _num(prev_minutes)
     vov = value_ovr(value)
-    ss = blended_ss(ss_rating, minutes, prev_ss_rating, prev_minutes)
+    ss = class_ss(ss_rating, minutes, prev_ss_rating, prev_minutes, ln, league_level)
     base = vov if vov is not None else 60.0
     if ln == "GK":
         # GK 는 시장가·ss 로 변별 불가(값 압축) → 선방%/CS% 를 성능축으로. flat 보정 축소(8→3).
@@ -133,6 +156,8 @@ def absolute_ovr(*, value, ss_rating, minutes, age, pos_group,
         vet_adj = 3.0 if (a >= 30 and mn >= 1500) else 0.0   # 검증된 베테랑은 시장가 저평가 보정
         raw = base + _POS_ADJ[ln] + perf_adj + vet_adj
     raw += _big_match_bonus(ucl_starts, uel_starts, conf_starts, cup_starts)
+    if 0 < a < 24 and vov is not None:
+        raw -= _YOUTH_PREMIUM * (24 - a)        # 시장가치의 잠재력 프리미엄(20세 −0.5)
     # 어린 미검증만 게이팅(누적 커리어 부족). '검증'은 나이가 아니라 출전시간으로 본다:
     # 어릴수록 완전검증에 필요한 출전이 많지만, 풀시즌을 뛴 유망주(예: Yamal 2262분·16G11A)는
     # 나이로 깎지 않는다. 저출전 유망주만 60 쪽으로 보수화(과대평가 방지).
@@ -149,32 +174,75 @@ def absolute_ovr(*, value, ss_rating, minutes, age, pos_group,
 
 
 # ── 폼 (이번 시즌) ────────────────────────────────────────────────
-_F_LO_SS = {"GK": 6.50, "DEF": 6.60, "MID": 6.70, "ATT": 6.55}
-_F_HI_SS = {"GK": 7.00, "DEF": 7.30, "MID": 7.50, "ATT": 7.45}
-_F_LO = {"GK": 72.0, "DEF": 70.0, "MID": 70.0, "ATT": 68.0}
-_F_HI = 95.0
+# 포지션별 Sofascore 평점 분포 — 25/26 8개 리그 900분+ 정규 출전 2,359명(리그 평균은 거의 같음).
+# 예전 공식은 구간 상한(GK 7.00)을 넘으면 계속 올라 GK 정규 주전 중앙값이 96, 99 가 157명이었다.
+_F_MEAN = {"GK": 7.02, "DEF": 6.81, "MID": 6.87, "ATT": 6.81}
+_F_SD = {"GK": 0.19, "DEF": 0.195, "MID": 0.21, "ATT": 0.23}
+_F_PRIOR_MIN = 900.0       # 이번 시즌 평점을 직전 시즌(없으면 포지션 평균) 쪽으로 당기는 가상 출전
 
 
 def _output_bonus(ln: str, minutes, goals, assists) -> float:
+    """공격포인트 가산(z 단위). 270분 미만은 없음."""
     mn = _num(minutes)
     if mn < 270:
         return 0.0
     per90 = (_num(goals) + _num(assists)) / (mn / 90.0)
     if ln == "ATT":
-        return min(6.0, per90 * 6.0)
+        return min(0.6, per90 * 0.6)
     if ln == "MID":
-        return min(4.0, per90 * 5.0)
-    return min(2.0, per90 * 4.0)
+        return min(0.45, per90 * 0.6)
+    return min(0.2, per90 * 0.4)
 
 
-def form_rating(*, ss_rating, minutes, goals=0, assists=0, pos_group="") -> int | None:
+def form_score(*, ss_rating, minutes, goals=0, assists=0, pos_group="",
+               prev_ss_rating=None, prev_minutes=None) -> float | None:
+    """폼 원점수(z) — 평점을 직전 시즌(없으면 포지션 평균) 쪽으로 900분어치 수축 + 공격포인트 가산."""
     ss, mn = _num(ss_rating), _num(minutes)
     if ss <= 0 or mn < 200:
         return None   # 표본 부족 → 폼 미산정
     ln = line_of(pos_group)
-    t = _clamp((ss - _F_LO_SS[ln]) / (_F_HI_SS[ln] - _F_LO_SS[ln]), 0.0, 1.2)
-    f = _F_LO[ln] + t * (_F_HI - _F_LO[ln]) + _output_bonus(ln, minutes, goals, assists) * 0.5
-    return int(_clamp(round(f), 40, 99))
+    pss, pmn = _num(prev_ss_rating), _num(prev_minutes)
+    prior = pss if (pss > 0 and pmn >= 450) else _F_MEAN[ln]
+    shrunk = (ss * mn + prior * _F_PRIOR_MIN) / (mn + _F_PRIOR_MIN)
+    return (shrunk - _F_MEAN[ln]) / _F_SD[ln] + _output_bonus(ln, minutes, goals, assists)
+
+
+def _form_scale(p: float) -> int:
+    """0~1 위치 → 45~99. 중앙 72 · 상위 10% 94 · 상위 1% 99."""
+    return int(_clamp(round(45.0 + 54.0 * p), 40, 99))
+
+
+def form_rating(*, ss_rating, minutes, goals=0, assists=0, pos_group="",
+                prev_ss_rating=None, prev_minutes=None) -> int | None:
+    """폼(단일 선수, 모집단 없이) — z 를 정규분포 백분위로 근사. 보통은 add_form_column 의 리그 내 순위를 쓴다."""
+    z = form_score(ss_rating=ss_rating, minutes=minutes, goals=goals, assists=assists, pos_group=pos_group,
+                   prev_ss_rating=prev_ss_rating, prev_minutes=prev_minutes)
+    if z is None:
+        return None
+    return _form_scale(0.5 * (1.0 + math.erf(z / math.sqrt(2.0))))
+
+
+def add_form_column(df: pd.DataFrame) -> pd.DataFrame:
+    """리그 선수 표에 `_form` 열 — 이번 시즌 같은 리그·같은 포지션 안 순위(백분위)를 45~99 로.
+
+    고정 공식은 시즌 초 평점 흩어짐(표준편차 0.32~0.44, 풀시즌 0.19~0.23)을 감당 못 해 99 가
+    수십~백여 명이었다. 순위 기준이면 시즌 어느 시점이든 99 는 포지션별 최상위 1~2% 뿐이다.
+    """
+    if df is None or df.empty:
+        return df
+    lines = df.apply(line_of_row, axis=1)
+    z = [form_score(ss_rating=r.get("ss_rating"), minutes=r.get("minutes"), goals=r.get("goals"),
+                    assists=r.get("assists"), pos_group=ln, prev_ss_rating=r.get("prev_ss_rating"),
+                    prev_minutes=r.get("prev_minutes"))
+         for (_, r), ln in zip(df.iterrows(), lines)]
+    zs = pd.Series(z, index=df.index, dtype="float64")
+    pct = zs.groupby(lines).rank(pct=True, method="average")
+    n = zs.groupby(lines).transform("count")
+    # (순위−0.5)/n 꼴로 — 최상위가 1.0(=99) 에 딱 붙지 않게, 표본 작은 포지션은 덜 극단으로
+    p = (pct * n - 0.5) / n
+    out = df.copy()
+    out["_form"] = [(_form_scale(v) if v == v else None) for v in p]
+    return out
 
 
 # ── 잠재력 ────────────────────────────────────────────────────────
@@ -234,15 +302,22 @@ def big_match_proven(*, euro_starts=0, euro_apps=0) -> bool:
 
 
 def player_line(row) -> dict:
-    pos = str(row.get("fl_group") or row.get("pos") or "")
+    # 라인은 역할(tm_position) 우선 — FBref 'MF'·'FW,MF' 같은 대분류로 윙어를 미드로 보던 것 수정
+    pos = line_of_row(row)
     ab = absolute_ovr(value=row.get("market_value_eur"), ss_rating=row.get("ss_rating"),
                       minutes=row.get("minutes"), age=row.get("age"), pos_group=pos,
                       gk_save_pct=row.get("gk_save_pct"), gk_cs_pct=row.get("gk_cs_pct"),
                       ucl_starts=row.get("ucl_starts"), uel_starts=row.get("uel_starts"),
                       conf_starts=row.get("conf_starts"), cup_starts=row.get("cup_starts"),
-                      prev_minutes=row.get("prev_minutes"), prev_ss_rating=row.get("prev_ss_rating"))
-    fm = form_rating(ss_rating=row.get("ss_rating"), minutes=row.get("minutes"),
-                     goals=row.get("goals"), assists=row.get("assists"), pos_group=pos)
+                      prev_minutes=row.get("prev_minutes"), prev_ss_rating=row.get("prev_ss_rating"),
+                      league_level=row.get("_league_level"))
+    fm = row.get("_form")
+    if fm is None or fm != fm:                     # 리그 내 순위 폼이 없으면(단독 행) 근사식
+        fm = form_rating(ss_rating=row.get("ss_rating"), minutes=row.get("minutes"),
+                         goals=row.get("goals"), assists=row.get("assists"), pos_group=pos,
+                         prev_ss_rating=row.get("prev_ss_rating"), prev_minutes=row.get("prev_minutes"))
+    else:
+        fm = int(fm)
     return {"ovr": ab, "form": fm, "pot": potential(absolute=ab, age=row.get("age"), value=row.get("market_value_eur")),
             "confidence": confidence(minutes=row.get("minutes"), ss_rating=row.get("ss_rating"))}
 
