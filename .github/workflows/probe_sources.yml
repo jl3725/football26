@@ -1,0 +1,26 @@
+name: Probe Sources
+
+# 수집 소스 접근성 진단(수동 실행 전용) — GH 러너(데이터센터 IP)에서 Transfermarkt·Understat·
+# Sofascore·FBref 가 열리는지 확인해, 어떤 수집을 클라우드로 옮길 수 있는지 판단한다. 데이터는 저장하지 않는다.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install
+        run: pip install requests pandas lxml soccerdata==1.9.0 seleniumbase
+
+      - name: Probe
+        run: python scripts/probe_sources.py
