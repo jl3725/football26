@@ -2776,12 +2776,23 @@ _HUB_FILE = ds.DB_PATH.parent / "home_all.json"
 
 
 # ── 홈 리그 집중 보드(득점왕 레이스 · 시즌 베스트 XI · 부상 타격) — _compute_hub_body 가 리그마다 부른다 ──
+def _ss_map(lg: str) -> dict:
+    """Sofascore 시즌 기록(xG·xA·키패스 …) — (팀, 정규화 이름) → 행."""
+    from unidecode import unidecode  # noqa: PLC0415
+    t = ds.read_table("players_sofascore_stats", league=lg)
+    if t is None or t.empty:
+        return {}
+    return {(str(r.get("squad")), unidecode(str(r.get("player"))).lower().strip()): r for _, r in t.iterrows()}
+
+
 def _golden_boot(p, lg: str, n: int = 6) -> list[dict]:
-    """득점 순(동률은 도움 → 적은 출전시간). 90분당 득점도 함께."""
+    """득점 순(동률은 도움 → 적은 출전시간). 90분당 득점·xG(기대 득점)도 함께."""
     q = p[p["_g"] > 0].copy()
     if q.empty:
         return []
     q["_a"] = pd.to_numeric(q.get("assists"), errors="coerce").fillna(0)
+    from unidecode import unidecode  # noqa: PLC0415
+    ssm = _ss_map(lg)
     out = []
     for _, r in q.sort_values(["_g", "_a", "_mn"], ascending=[False, False, True]).head(n).iterrows():
         sq = str(r.get("squad") or "")
@@ -2789,6 +2800,10 @@ def _golden_boot(p, lg: str, n: int = 6) -> list[dict]:
         out.append({"player": str(r["player"]), "club": sq, "club_logo": tm.team_logo(sq), "goals": g,
                     "assists": int(r["_a"]), "minutes": mn, "mpg": round(mn / g) if g else None,
                     "ovr": _player_ovr(r), "photo": _photo(r), "league": lg})
+        ss = ssm.get((sq, unidecode(str(r["player"])).lower().strip()))
+        if ss is not None:
+            out[-1]["xg"] = round(_num(ss.get("expectedGoals")), 2)
+            out[-1]["shots"] = int(_num(ss.get("totalShots")))
     return out
 
 
@@ -3151,7 +3166,9 @@ def _fx_sources() -> dict:
         st = ds.read_table("standings", league=lg)
         if st is not None and "squad" in st.columns:
             for _, r in st.iterrows():
-                ranks[str(r["squad"])] = (int(_num(r.get("rank"))), int(_num(r.get("points"))), lg)
+                pl = _num(r.get("played")) or 0
+                ranks[str(r["squad"])] = (int(_num(r.get("rank"))), int(_num(r.get("points"))), lg,
+                                          (_num(r.get("gd")) / pl) if pl else 0.0)
     return {"rows": rows, "ranks": ranks}
 
 
@@ -3168,6 +3185,8 @@ def _fx_enrich(m: dict, src: dict) -> dict:
         t["ovr"] = _club_strength(lg).get(t["team"]) if lg else None
         t["form"] = mc.recent_form(src["rows"].get(lg), t["team"]) if lg else []
     m["big"], m["tags"] = mc.big_score(m)
+    gd = lambda t: (src["ranks"].get(t["team"]) or (0, 0, None, 0.0))[3]  # noqa: E731
+    m["prob"] = mc.win_prob(m["home"].get("ovr"), m["away"].get("ovr"), gd(m["home"]), gd(m["away"]))
     return m
 
 
@@ -3193,6 +3212,61 @@ def fixtures(days: int = 7, limit: int = 6, league: str = ""):
     if league:
         out["matches"] = ms[:80]
     return out
+
+
+@app.get("/api/league-lab/{league}")
+@_memo(ttl=21600)
+def league_lab(league: str):
+    """리그 분석 랩(홈 LEAGUE FOCUS) — Sofascore 시즌 기록 기반, 분석가가 보는 지표:
+    playmakers(도움·xA·빅찬스·키패스) · finishing(골 vs xG) · creating(도움 vs xA) ·
+    ball_winners(태클·인터셉트·볼 회수 /90) · team_style(경기당 xG vs 경기당 실점)."""
+    t = ds.read_table("players_sofascore_stats", league=league)
+    st = ds.read_table("standings", league=league)
+    if t is None or t.empty:
+        return {"league": league, "playmakers": [], "finishing": [], "creating": [], "ball_winners": [], "team_style": []}
+    t = t.copy()
+    for c in ("goals", "expectedGoals", "assists", "expectedAssists", "bigChancesCreated", "keyPasses", "minutesPlayed",
+              "tacklesWon", "interceptions", "ballRecovery", "totalShots"):
+        t[c] = pd.to_numeric(t.get(c), errors="coerce").fillna(0)
+    look = _players_lookup(league)
+
+    def card(r, **extra):
+        sq = str(r.get("squad") or "")
+        d = {"player": str(r["player"]), "club": sq, "club_logo": tm.team_logo(sq),
+             "photo": _resolve_photo(str(r["player"]), look, league), "minutes": int(r["minutesPlayed"])}
+        d.update(extra)
+        return d
+
+    pm = t[(t["assists"] > 0) | (t["expectedAssists"] >= 0.5)].sort_values(
+        ["assists", "expectedAssists", "bigChancesCreated"], ascending=False).head(6)
+    playmakers = [card(r, assists=int(r["assists"]), xa=round(r["expectedAssists"], 2), bcc=int(r["bigChancesCreated"]),
+                       kp=int(r["keyPasses"])) for _, r in pm.iterrows()]
+    fin = t[t["expectedGoals"] >= 0.6].sort_values("expectedGoals", ascending=False).head(28)
+    finishing = [{"player": str(r["player"]), "club": str(r["squad"]), "goals": int(r["goals"]),
+                  "xg": round(r["expectedGoals"], 2), "shots": int(r["totalShots"])} for _, r in fin.iterrows()]
+    cre = t[t["expectedAssists"] >= 0.4].sort_values("expectedAssists", ascending=False).head(28)
+    creating = [{"player": str(r["player"]), "club": str(r["squad"]), "assists": int(r["assists"]),
+                 "xa": round(r["expectedAssists"], 2), "kp": int(r["keyPasses"])} for _, r in cre.iterrows()]
+    mn_min = max(270.0, _mm(600, league))
+    # 골키퍼는 볼 회수가 많아 섞이면 순위가 틀어진다(선방 기록이 있으면 GK)
+    bw = t[(t["minutesPlayed"] >= mn_min) & (pd.to_numeric(t.get("saves"), errors="coerce").fillna(0) == 0)].copy()
+    per = lambda c: bw[c] * 90 / bw["minutesPlayed"]  # noqa: E731
+    bw["_t"], bw["_i"], bw["_r"] = per("tacklesWon"), per("interceptions"), per("ballRecovery")
+    bw["_s"] = bw["_t"] + bw["_i"] + 0.5 * bw["_r"]
+    ball_winners = [card(r, tackles=round(r["_t"], 1), inter=round(r["_i"], 1), recov=round(r["_r"], 1),
+                         score=round(r["_s"], 1)) for _, r in bw.sort_values("_s", ascending=False).head(6).iterrows()]
+    team_style = []
+    if st is not None and not st.empty:
+        xg_by = t.groupby("squad")["expectedGoals"].sum()
+        for _, r in st.iterrows():
+            sq, pl = str(r["squad"]), _num(r.get("played"))
+            if not pl:
+                continue
+            team_style.append({"team": sq, "logo": tm.team_logo(sq), "rank": int(_num(r.get("rank"))),
+                               "xg_pg": round(float(xg_by.get(sq, 0.0)) / pl, 2),
+                               "gf_pg": round(_num(r.get("gf")) / pl, 2), "ga_pg": round(_num(r.get("ga")) / pl, 2)})
+    return {"league": league, "playmakers": playmakers, "finishing": finishing, "creating": creating,
+            "ball_winners": ball_winners, "team_style": team_style}
 
 
 @app.get("/api/hub/pulse")
@@ -3295,6 +3369,8 @@ def _warm_up() -> None:
             _prev_season()
             _hub_body()
             hub_pulse()              # 홈 결과 띠·주목할 매치·우승 경쟁(로컬 0.9초 → 운영 수 초라 미리)
+            for lg in _HUB_LEAGUES:
+                league_lab(lg)       # 홈 LEAGUE FOCUS 분석 랩
             print(f"[warm-up] 완료 {_t.monotonic() - t0:.1f}s", flush=True)
         except Exception as e:  # noqa: BLE001 — 데우기는 실패해도 서비스엔 영향 없음
             print(f"[warm-up] 건너뜀: {type(e).__name__}: {e}", flush=True)

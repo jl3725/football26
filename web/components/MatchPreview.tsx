@@ -4,7 +4,7 @@ import { getOverview, type Fixture, type FixtureSide, type Overview } from "@/li
 import { colorsClose, compLabel, compTone, ddayLabel, lgKo, liftHex, rankLabel, streak } from "@/lib/match";
 import { MatchPreviewCtx } from "@/lib/matchPreview";
 import { futTier, hexA } from "@/lib/ui";
-import { Crest, FormBoxes } from "./MatchCard";
+import { Crest, FormBoxes, ProbBar } from "./MatchCard";
 import { usePeek, useOpenTeam } from "./PlayerPeek";
 import { Skel } from "./Skeleton";
 
@@ -87,6 +87,19 @@ function Drawer({ m, onClose }: { m: Fixture; onClose: () => void }) {
         </header>
 
         <div className="pv-body">
+          {m.prob && (
+            <section>
+              <h3>WIN PROBABILITY<span>승리 확률 · 모델</span></h3>
+              <div className="pv-prob">
+                <div><b>{Math.round(m.prob.h * 100)}%</b><span>{m.home.team} 승</span></div>
+                <div><b>{Math.round(m.prob.d * 100)}%</b><span>무승부</span></div>
+                <div><b>{Math.round(m.prob.a * 100)}%</b><span>{m.away.team} 승</span></div>
+              </div>
+              <ProbBar m={m} detail />
+              <p className="pv-note">팀 전력(OVR) 차이와 이번 시즌 경기당 골득실로 두 팀의 기대 득점을 잡고, 포아송 분포로 모든 스코어의 확률을 더한 값입니다. 베팅 배당이 아닙니다.</p>
+            </section>
+          )}
+
           <section>
             <h3>KEY POINTS<span>관전 포인트</span></h3>
             {loading ? <><Skel h={14} style={{ marginBottom: 8 }} /><Skel h={14} w="80%" /></>

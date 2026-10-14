@@ -5,7 +5,7 @@ import Pitch from "./Pitch";
 import { usePeek } from "./PlayerPeek";
 import { colorsClose, compLabel, compTone, ddayLabel, lgEn, liftHex, splitKst } from "@/lib/match";
 import { useMatchPreview } from "@/lib/matchPreview";
-import { Crest } from "./MatchCard";
+import { Crest, ProbBar } from "./MatchCard";
 
 // 홈 '지금' 섹션들 — /api/hub/pulse(요청 시 계산·30분 캐시, 일정·결과는 daily_data 가 매일 갱신)
 type Pick = (team: string, league?: string) => void;
@@ -66,6 +66,7 @@ export function WatchGrid({ items, onPick }: { items: WatchMatch[]; onPick: Pick
                 <span className="wt5-pts">{s.points}<em>점</em></span>
               </button>
             ))}
+            <ProbBar m={m} slim />
             <div className="wt5-why">
               {m.why.map((t, i) => <span key={t} className={i === 0 ? "lead" : ""}>{t}</span>)}
             </div>
@@ -181,9 +182,9 @@ export function GoldenBoot({ rows, onPick }: { rows: HubBoot[]; onPick: Pick }) 
           <button className="gb5-who" onClick={() => onPick(r.club, r.league)}>
             <b>{r.player}</b>
             <span className="gb5-bar"><i style={{ width: `${(r.goals / lead) * 100}%` }} /></span>
-            <em>{r.club_logo && <img src={r.club_logo} alt="" />}{r.club}{r.mpg ? ` · ${r.mpg}분당 1골` : ""}</em>
+            <em>{r.club_logo && <img src={r.club_logo} alt="" />}{r.club}{r.xg != null ? ` · xG ${r.xg.toFixed(1)}` : ""}{r.mpg ? ` · ${r.mpg}분당 1골` : ""}</em>
           </button>
-          <span className="gb5-n"><b>{r.goals}</b><small>{r.assists}A</small></span>
+          <span className="gb5-n"><b>{r.goals}</b><small className={r.xg != null && r.goals - r.xg >= 1 ? "hot" : ""}>{r.xg != null ? `${r.goals - r.xg >= 0 ? "+" : ""}${(r.goals - r.xg).toFixed(1)} xG` : `${r.assists}A`}</small></span>
         </div>
       ))}
     </div>

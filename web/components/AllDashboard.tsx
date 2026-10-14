@@ -1,6 +1,7 @@
 "use client";
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { getHomeAll, getFixtures, getHubPulse, fmtEur, feeLabel, type HomeAll, type Fixture, type HubMover, type HubPulse, type Trend } from "@/lib/api";
+import { getHomeAll, getFixtures, getHubPulse, getLeagueLab, fmtEur, feeLabel, type HomeAll, type Fixture, type HubMover, type HubPulse, type LeagueLab, type Trend } from "@/lib/api";
+import { ExpectedBoard, Playmakers, BallWinners, TeamStyleMap } from "./LeagueLab";
 import { ResultsTicker, WatchGrid, TitleRace, OverUnder, GoldenBoot, TeamOfSeason, InjuryImpact } from "./HubPulse";
 import { Skel, SkelCards } from "./Skeleton";
 import CountUp from "./CountUp";
@@ -71,6 +72,7 @@ export default function AllDashboard({ onPick, switcher }: { accent?: string; on
   const [d, setD] = useState<HomeAll | null>(null);
   const [fx, setFx] = useState<Fixture[] | null>(null);
   const [pulse, setPulse] = useState<HubPulse | null>(null);
+  const [lab, setLab] = useState<LeagueLab | null>(null);
   const [mv, setMv] = useState<string>("up");
   const [mvMore, setMvMore] = useState(false);
   const [lg, setLg] = useState<string>("");
@@ -90,6 +92,14 @@ export default function AllDashboard({ onPick, switcher }: { accent?: string; on
     } catch { /* 저장소 없음 — 오프닝 생략 */ }
   }, [d]);
   const closeOpener = useCallback(() => setOpener(false), []);
+  // 리그 분석 랩 — 고른 리그만 불러온다(서버 6시간 캐시)
+  const focusLg = lg || d?.snapshots.find((x) => x.table.length > 0)?.league || "";
+  useEffect(() => {
+    if (!focusLg) return;
+    let a = true; setLab(null);
+    getLeagueLab(focusLg).then((x) => a && setLab(x)).catch(() => {});
+    return () => { a = false; };
+  }, [focusLg]);
   useEffect(() => { let a = true; getFixtures(7).then((x) => a && setFx(x.big)).catch(() => a && setFx([])); return () => { a = false; }; }, []);
   useEffect(() => { let a = true; getHubPulse().then((x) => a && setPulse(x)).catch(() => {}); return () => { a = false; }; }, []);
 
@@ -233,6 +243,26 @@ export default function AllDashboard({ onPick, switcher }: { accent?: string; on
               <section className="card h5-card h5-side">
                 <SectionHead title="GOLDEN BOOT" kr="득점왕 레이스" meta="골 · 도움 · 골당 출전 시간" />
                 <GoldenBoot rows={boot} onPick={onPick} />
+              </section>
+            </div>
+            <div className="h5-row">
+              <section className="card h5-card">
+                <SectionHead title="EXPECTED vs ACTUAL" kr="기대값 대비 결과" meta="골 vs xG · 도움 vs xA · 점을 누르면 선수" />
+                {lab ? <ExpectedBoard finishing={lab.finishing} creating={lab.creating} league={snap.league} /> : <Skel h={280} r={12} />}
+              </section>
+              <section className="card h5-card h5-side">
+                <SectionHead title="PLAYMAKERS" kr="도움왕 · 찬스 메이커" meta="도움 · xA · 빅찬스 · 키패스" />
+                {lab ? <Playmakers rows={lab.playmakers} onPick={onPick} league={snap.league} /> : <Skel h={280} r={12} />}
+              </section>
+            </div>
+            <div className="h5-row">
+              <section className="card h5-card">
+                <SectionHead title="TEAM STYLE MAP" kr="팀 스타일 지도" meta="경기당 xG vs 경기당 실점 · 점선 = 리그 평균" />
+                {lab ? <TeamStyleMap teams={lab.team_style} onPick={onPick} league={snap.league} /> : <Skel h={300} r={12} />}
+              </section>
+              <section className="card h5-card h5-side">
+                <SectionHead title="BALL WINNERS" kr="볼 위닝" meta="90분당 수비 액션" />
+                {lab ? <BallWinners rows={lab.ball_winners} league={snap.league} /> : <Skel h={280} r={12} />}
               </section>
             </div>
           </div>

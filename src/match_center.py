@@ -227,3 +227,32 @@ def points_path(rows, team: str) -> list[int]:
         out.append(acc)
     return out
 
+
+def _pois(lam: float, k: int) -> float:
+    import math
+    return math.exp(-lam) * lam ** k / math.factorial(k)
+
+
+def win_prob(h_ovr, a_ovr, h_gdpg: float = 0.0, a_gdpg: float = 0.0) -> dict | None:
+    """승·무·패 확률과 예상 득점 — 팀 OVR 차이 + 이번 시즌 경기당 골득실(±2로 자름)로 양 팀 득점 기대값을 잡고
+    포아송 분포로 스코어 확률을 더한다. 홈 이점은 기본 득점(홈 1.40 · 원정 1.10)에 들어 있다.
+    베팅 시장 배당이 아니라 우리 데이터로 만든 모델 값이다."""
+    if not h_ovr or not a_ovr:
+        return None
+    import math
+    clip = lambda v: max(-2.0, min(2.0, float(v or 0.0)))  # noqa: E731
+    sgap = 0.05 * (float(h_ovr) - float(a_ovr)) + 0.10 * (clip(h_gdpg) - clip(a_gdpg))
+    lh, la = 1.40 * math.exp(sgap / 2), 1.10 * math.exp(-sgap / 2)
+    ph = pd_ = pa = 0.0
+    for i in range(11):
+        for j in range(11):
+            q = _pois(lh, i) * _pois(la, j)
+            if i > j:
+                ph += q
+            elif i == j:
+                pd_ += q
+            else:
+                pa += q
+    t = ph + pd_ + pa
+    return {"h": round(ph / t, 3), "d": round(pd_ / t, 3), "a": round(pa / t, 3), "xg_h": round(lh, 2), "xg_a": round(la, 2)}
+

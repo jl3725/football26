@@ -408,7 +408,15 @@ export type HubGoal = { player: string; club: string; club_logo: string; goals: 
 export type HubContract = { player: string; club: string; club_logo: string; until: string; value_eur: number; ovr: number; age: number; photo: string; league: string; league_name: string };
 export type HubInjury = { player: string; club: string; club_logo: string; event: string; injury: string; date: string; photo: string; league: string; league_name: string };
 // 리그 집중 보드 — 득점왕 레이스 · 시즌 베스트 XI(4-3-3, 시즌 평균 평점) · 부상으로 줄어든 베스트 XI 평균 전력
-export type HubBoot = { player: string; club: string; club_logo: string; goals: number; assists: number; minutes: number; mpg: number | null; ovr: number; photo: string; league: string };
+export type HubBoot = { player: string; club: string; club_logo: string; goals: number; assists: number; minutes: number; mpg: number | null; ovr: number; photo: string; league: string; xg?: number; shots?: number };
+// 리그 분석 랩(/api/league-lab/{league}) — Sofascore 시즌 기록
+export type LabPlaymaker = { player: string; club: string; club_logo: string; photo: string; minutes: number; assists: number; xa: number; bcc: number; kp: number };
+export type LabFinish = { player: string; club: string; goals: number; xg: number; shots: number };
+export type LabCreate = { player: string; club: string; assists: number; xa: number; kp: number };
+export type LabBallWinner = { player: string; club: string; club_logo: string; photo: string; minutes: number; tackles: number; inter: number; recov: number; score: number };
+export type TeamStyle = { team: string; logo: string; rank: number; xg_pg: number; gf_pg: number; ga_pg: number };
+export type LeagueLab = { league: string; playmakers: LabPlaymaker[]; finishing: LabFinish[]; creating: LabCreate[]; ball_winners: LabBallWinner[]; team_style: TeamStyle[] };
+export const getLeagueLab = (league: string) => j<LeagueLab>(`/api/league-lab/${encodeURIComponent(league)}`);
 export type TotsPlayer = { slot: string; kind: string; x: number; y: number; player: string; club: string; club_logo: string; rating: number; ovr: number; photo: string; minutes: number };
 export type InjuryImpactRow = { team: string; logo: string; league: string; n: number; loss: number; key: string[]; ovr: number };
 // 선수 동향 — OVR 변화. basis 2w = 2주 전 대비(기록 2주+ 쌓인 뒤), season = 지난 시즌 대비
@@ -422,8 +430,10 @@ export const getHomeAll = () => j<HomeAll>(`/api/home/all`);
 // 매치 센터 — 다가오는 경기·빅매치(src/match_center.py). kst 는 한국 시간 표기, d_day 는 오늘 기준.
 export type FixtureSide = { team: string; league: string | null; rank: number | null; points: number | null;
   logo: string; color: string; ovr: number | null; form: string[] };
+// 승리 확률 — 팀 OVR 차이 + 경기당 골득실 → 포아송 모델(src/match_center.win_prob). 베팅 배당 아님.
+export type WinProb = { h: number; d: number; a: number; xg_h: number; xg_a: number };
 export type Fixture = { event_id: string | null; comp_code: string; comp: string; kickoff: string; kst: string;
-  date: string; d_day: number; home: FixtureSide; away: FixtureSide; big: number; tags: string[] };
+  date: string; d_day: number; home: FixtureSide; away: FixtureSide; big: number; tags: string[]; prob?: WinProb | null };
 export const getFixtures = (days = 7, league = "", limit = 6) =>
   j<{ days: number; count: number; big: Fixture[]; today: Fixture[]; matches?: Fixture[] }>(
     `/api/fixtures?days=${days}&limit=${limit}${league ? `&league=${encodeURIComponent(league)}` : ""}`);

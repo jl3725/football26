@@ -47,6 +47,31 @@ export function PowerBar({ m }: { m: Fixture }) {
   );
 }
 
+// 승리 확률(모델) — 홈 · 무 · 원정. 확률이 없으면(전력 모름) 전력 막대로
+export function ProbBar({ m, detail = false, slim = false }: { m: Fixture; detail?: boolean; slim?: boolean }) {
+  const p = m.prob;
+  if (!p) return slim ? null : <PowerBar m={m} />;
+  const hc = liftHex(m.home.color), ac0 = liftHex(m.away.color);
+  const ac = colorsClose(hc, ac0) ? "#8a94a8" : ac0;
+  const pc = (v: number) => `${Math.round(v * 100)}%`;
+  const fav = p.h >= p.a ? "h" : "a";
+  return (
+    <div className={`pb5${slim ? " slim" : ""}`} title={`모델 승리 확률 — ${m.home.team} ${pc(p.h)} · 무 ${pc(p.d)} · ${m.away.team} ${pc(p.a)} · 예상 득점 ${p.xg_h} : ${p.xg_a}${m.home.ovr && m.away.ovr ? ` · 팀 OVR ${m.home.ovr} : ${m.away.ovr}` : ""}`}>
+      <div className="pb5-l">
+        <b className={fav === "h" ? "fav" : ""}>{pc(p.h)}</b>
+        <span>{slim ? `DRAW ${pc(p.d)}` : <>WIN PROBABILITY<em>무 {pc(p.d)}</em></>}</span>
+        <b className={fav === "a" ? "fav" : ""}>{pc(p.a)}</b>
+      </div>
+      <div className="pb5-bar">
+        <span style={{ flexBasis: `${p.h * 100}%`, background: hc }} />
+        <span className="draw" style={{ flexBasis: `${p.d * 100}%` }} />
+        <span style={{ flexBasis: `${p.a * 100}%`, background: ac }} />
+      </div>
+      {detail && <div className="pb5-x">예상 스코어 <b>{p.xg_h.toFixed(1)} : {p.xg_a.toFixed(1)}</b>{m.home.ovr && m.away.ovr ? <> · 팀 OVR {m.home.ovr} : {m.away.ovr}</> : null} · 모델 추정</div>}
+    </div>
+  );
+}
+
 export default function MatchCard({ m, onPick, compact = false }: { m: Fixture; onPick?: Pick_; compact?: boolean }) {
   const preview = useMatchPreview();
   const { date, time } = splitKst(m.kst);
@@ -82,7 +107,7 @@ export default function MatchCard({ m, onPick, compact = false }: { m: Fixture; 
         <div className="mc5-ko"><b>{time}</b><span>{date}</span></div>
         <Side s={m.away} other={m.home} onPick={onPick} align="r" />
       </div>
-      <PowerBar m={m} />
+      <ProbBar m={m} />
       <div className="mc5-foot">
         {why ? <span className="mc5-why"><em>WHY</em>{why}</span> : <span />}
         {preview && <span className="mc5-cta">PREVIEW<Chevron /></span>}
@@ -122,7 +147,7 @@ export function MatchHero({ m, onPick }: { m: Fixture; onPick?: Pick_ }) {
         <div className="mh5-ko"><b>{time}</b><span>{date} · KST</span></div>
         {side(m.away, m.home, true)}
       </div>
-      <PowerBar m={m} />
+      <ProbBar m={m} detail />
       <div className="mh5-foot">
         <span className="mc5-why"><span className="bdg neutral">WHY</span>{why}</span>
         {preview && <button className="btn5" onClick={() => preview(m)}>MATCH PREVIEW<Chevron /></button>}
