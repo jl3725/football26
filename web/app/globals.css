@@ -3006,3 +3006,5 @@ body {
   .workspace-shell:not(:has(.h5)) .workspace-header.is-home { position: static; height: auto; margin-bottom: 10px; }
   .workspace-shell:not(:has(.h5)) .workspace-header.is-home .global-search-wrap { position: static; }
 }
+/* 베스트 XI 다음 후보가 잘리지 않게 두 줄까지 */
+.tots5-who em { white-space: normal; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; line-height: 1.35; }
