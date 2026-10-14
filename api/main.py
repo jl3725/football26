@@ -2911,6 +2911,32 @@ def _hub_body() -> bytes:
     return body
 
 
+@app.on_event("startup")
+def _warm_up() -> None:
+    """서버가 뜨자마자 백그라운드에서 공용 계산을 미리 데운다.
+
+    Render 무료 인스턴스는 잠들었다 깨거나 배포될 때마다 메모리 캐시가 비어, 첫 방문자의 화면이
+    수십 초 걸렸다(2026-10-14: Overview 첫 호출 33초). 리그별 선수 표·지난 시즌 OVR·평점 추이 기준값·
+    홈 스냅샷만 데우면 이후 요청은 0.2~1초. 응답(헬스체크)을 막지 않게 데몬 스레드로.
+    """
+    import threading
+
+    def run():
+        import time as _t
+        t0 = _t.monotonic()
+        try:
+            for lg in ds.available_leagues():
+                _pf(lg)
+                _trend_base(lg)
+            _prev_season()
+            _hub_body()
+            print(f"[warm-up] 완료 {_t.monotonic() - t0:.1f}s", flush=True)
+        except Exception as e:  # noqa: BLE001 — 데우기는 실패해도 서비스엔 영향 없음
+            print(f"[warm-up] 건너뜀: {type(e).__name__}: {e}", flush=True)
+
+    threading.Thread(target=run, name="warm-up", daemon=True).start()
+
+
 @app.get("/api/home/all")
 def home_all():
     return Response(content=_hub_body(), media_type="application/json")
