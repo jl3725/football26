@@ -1,5 +1,6 @@
 "use client";
 import type { Transfer } from "@/lib/api";
+import { feeLabel } from "@/lib/api";
 
 // 자동 슬라이드 이적 티커 — IN/OUT 최근 영입·방출을 한 줄로 흐르게.
 export default function TransferTicker({ tin, tout, accent, label = "TRANSFERS" }: { tin: Transfer[]; tout: Transfer[]; accent: string; label?: string }) {
@@ -21,7 +22,7 @@ export default function TransferTicker({ tin, tout, accent, label = "TRANSFERS" 
               <span className={`tk-ar ${x.dir}`}>{x.dir === "in" ? "▲" : "▼"}</span>
               <b>{x.player}</b>
               <span className="tk-club">{x.dir === "in" ? "←" : "→"} {x.club}</span>
-              <span className="tk-fee" style={{ color: x.dir === "in" ? "#4fc27f" : "#e07070" }}>{x.fee_text}</span>
+              <span className="tk-fee" style={{ color: x.dir === "in" ? "#4fc27f" : "#e07070" }}>{feeLabel(x.fee_eur, x.fee_text)}</span>
               <span className="tk-dot">·</span>
             </span>
           ))}

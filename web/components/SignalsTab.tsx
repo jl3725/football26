@@ -18,6 +18,8 @@ const GROUPS: { key: string; label: string; icon: string; types: string[] }[] = 
   { key: "resign", label: "재계약 대상", icon: "fileCheck", types: ["resign"] },
 ];
 
+const SHOW = 4;   // 분류 카드에 먼저 보이는 건수(나머지는 더 보기 — 카드 속 스크롤 대신)
+
 function Row({ s, showTeam }: { s: Signal; showTeam: boolean }) {
   const c = TONE[s.tone] || "#8a94a8";
   const peek = usePeek();
@@ -44,6 +46,7 @@ function Row({ s, showTeam }: { s: Signal; showTeam: boolean }) {
 export default function SignalsTab({ team, accent }: { team: string; accent: string }) {
   const [mine, setMine] = useState<Signals | null>(null);
   const [league, setLeague] = useState<Signals | null>(null);
+  const [open, setOpen] = useState<Record<string, boolean>>({});
   useEffect(() => {
     let a = true;
     setMine(null);
@@ -64,20 +67,27 @@ export default function SignalsTab({ team, accent }: { team: string; accent: str
         <span className="scout-d">부상·감독·시장가·유망주·계약 변화를 에이전트가 자동 수집</span>
         <span className="scout-cnt">{team} {mine.signals.length}건</span>
       </div>
+      {/* 항목이 있는 분류만 카드로(많은 순), 빈 분류는 한 줄로 — 예전엔 빈 카드 4장이 같은 크기로 자리를 차지 */}
       <div className="sig-cat-grid">
-        {GROUPS.map((g) => {
-          const items = byGroup(g);
-          return (
-            <div className="card sig-cat" key={g.key}>
-              <h3 style={{ display: "flex", alignItems: "center", gap: 7 }}><Icon name={g.icon} size={15} color={accent} />{g.label} <span className="sig-cat-n">{items.length}</span></h3>
-              <div className="sig-list">
-                {items.map((s, i) => <Row key={i} s={s} showTeam={false} />)}
-                {items.length === 0 && <div className="sig-empty">감지된 항목 없음</div>}
+        {GROUPS.map((g) => ({ g, items: byGroup(g) })).filter((x) => x.items.length > 0)
+          .sort((a, b) => b.items.length - a.items.length)
+          .map(({ g, items }) => {
+            const all = open[g.key] || items.length <= SHOW;
+            return (
+              <div className="card sig-cat" key={g.key}>
+                <h3 style={{ display: "flex", alignItems: "center", gap: 7 }}><Icon name={g.icon} size={15} color={accent} />{g.label} <span className="sig-cat-n">{items.length}</span></h3>
+                <div className="sig-list">
+                  {(all ? items : items.slice(0, SHOW)).map((s, i) => <Row key={i} s={s} showTeam={false} />)}
+                </div>
+                {!all && <button className="sig-more" onClick={() => setOpen((o) => ({ ...o, [g.key]: true }))}>
+                  {items.length - SHOW}건 더 보기</button>}
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
       </div>
+      {GROUPS.some((g) => byGroup(g).length === 0) && (
+        <div className="sig-quiet">변화 없음 · {GROUPS.filter((g) => byGroup(g).length === 0).map((g) => g.label).join(" · ")}</div>
+      )}
 
       <div className="card" style={{ marginTop: 16 }}>
         <h3><Bar c={accent} />리그 전체 · 최근 감지 (이적 제외)</h3>

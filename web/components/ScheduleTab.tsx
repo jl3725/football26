@@ -166,8 +166,9 @@ export default function ScheduleTab({ team, accent }: { team: string; accent: st
                 <span className={`sc-ha ${m.home_away === "H" ? "h" : "a"}`}>{m.home_away}</span>
                 {m.opp_logo ? <img className="sc-logo" src={m.opp_logo} alt="" /> : <span className="sc-logo" />}
                 <span className="sc-opp">{m.opponent}</span>
-                <span className="sc-score">{m.status === "completed" ? (m.score || "—") : "·"}</span>
-                {m.result
+                <span className="sc-score">{m.status === "completed" ? (m.score || "—") : <em className="sc-vs">vs</em>}</span>
+                {/* 결과는 W/D/L 만 — 예전엔 API 의 'nan' 이 그대로 찍혔다 */}
+                {["W", "D", "L"].includes(m.result)
                   ? <span className={`sc-res ${m.result}`}>{m.result}</span>
                   : <span className="sc-res upcoming">·</span>}
               </button>

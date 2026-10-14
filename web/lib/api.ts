@@ -253,7 +253,7 @@ export type Article = {
 export type News = { team: string; color: string; articles: Article[]; sparse: boolean };
 
 export type AuditItem = { player: string; fee_text: string; fee_eur: number; pos: string; minutes: number; goals: number; assists: number; verdict: string; tone: string; photo: string };
-export type ManagerEvo = { name: string; style: string; formation: string; focus: string; appointed: string; previous?: { name: string; style: string; formation: string } };
+export type ManagerEvo = { name: string; style: string; formation: string; focus: string; tactics?: string; appointed: string; previous?: { name: string; style: string; formation: string } };
 export type FactorPlayer = { player: string; photo: string; ovr: number };
 export type Factor = { label: string; value: number; line: string; players: FactorPlayer[] };
 export type Analytics = {
@@ -418,6 +418,18 @@ export const getHeatmaps = (team: string, league = _league) =>
 export type WCSquadPlayer = { player: string; pos: string; jersey: string; age: string; club: string; league: string; club_logo: string; photo: string };
 export type WCSquad = { nation: string; count: number; players: WCSquadPlayer[] };
 export const getWCSquad = (nation: string) => j<WCSquad>(`/api/wc/squad/${encodeURIComponent(nation)}`);
+
+// 이적료 표기 통일 — Transfermarkt 원문('€87.50m'·'free transfer'·'loan'·'-')을 화면 형식으로
+export function feeLabel(feeEur: number | null | undefined, feeText?: string | null): string {
+  const t = String(feeText ?? "").trim().toLowerCase();
+  if (t.startsWith("end of loan")) return "임대 복귀";
+  if (t.includes("loan fee")) return feeEur ? `임대 ${fmtEur(feeEur)}` : "임대";
+  if (t.includes("loan")) return "임대";
+  if (t.includes("free")) return "자유 이적";
+  if (feeEur && feeEur > 0) return fmtEur(feeEur);
+  if (!t || t === "-" || t === "?") return "비공개";
+  return String(feeText);
+}
 
 export function fmtEur(v: number): string {
   if (!v) return "-";

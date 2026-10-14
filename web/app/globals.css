@@ -640,14 +640,17 @@ html, body {
 .sig-icon { font-size: 15px; }
 .sig-photo { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; background: #232c3d; }
 .sig-body { flex: 1; min-width: 0; }
-.sig-title { display: flex; align-items: baseline; gap: 8px; font-size: 13px; }
-.sig-title b { font-size: 12.5px; }
-.sig-player { font-weight: 600; }
+.sig-title { display: flex; align-items: baseline; gap: 8px; font-size: 13px; min-width: 0; }
+.sig-title b { font-size: 12.5px; white-space: nowrap; flex: none; }   /* '시장가치 급/등' 처럼 단어 중간 줄바꿈 방지 */
+.sig-player { font-weight: 600; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .sig-detail { display: flex; align-items: center; gap: 5px; color: var(--muted); font-size: 11.5px; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .sig-teamlogo { width: 14px; height: 14px; object-fit: contain; }
 .sig-date { font-family: Oswald, sans-serif; font-size: 11px; color: var(--muted); white-space: nowrap; }
-.sig-cat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-.sig-cat .sig-list { max-height: 300px; }
+.sig-cat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; align-items: start; }
+.sig-cat .sig-list { max-height: none; overflow: visible; }
+.sig-more { margin-top: 8px; width: 100%; padding: 7px; border-radius: 9px; border: 1px dashed var(--line); background: transparent; color: var(--muted); font-size: 12px; cursor: pointer; }
+.sig-more:hover { color: var(--txt); border-color: rgba(255, 255, 255, 0.2); }
+.sig-quiet { margin-top: 12px; padding: 10px 14px; border: 1px solid var(--line); border-radius: 12px; color: var(--muted); font-size: 12px; }
 .sig-cat-n { font-family: Oswald, sans-serif; color: var(--muted); font-weight: 600; margin-left: 4px; }
 .sig-empty { color: var(--muted); font-size: 12px; padding: 10px 4px; }
 @media (max-width: 1200px) { .sig-cat-grid { grid-template-columns: repeat(2, 1fr); } }
@@ -1024,7 +1027,8 @@ html, body {
 
 /* ── Schedule ─────────────────────────────── */
 .sched-list { display: flex; flex-direction: column; gap: 2px; }
-.sched-row { display: flex; align-items: center; gap: 12px; padding: 8px 8px; border-radius: 9px; font-size: 13px; }
+.sched-row { display: flex; align-items: center; gap: 9px; padding: 8px 8px; border-radius: 9px; font-size: 13px; }
+.sc-vs { font-style: normal; font-size: 11px; color: var(--muted); font-weight: 400; }
 .sched-row:hover { background: rgba(255, 255, 255, 0.03); }
 .sc-gw { font-family: Oswald, sans-serif; color: var(--muted); font-size: 11px; width: 40px; }
 .sc-date { color: var(--muted); font-size: 11px; width: 44px; }
@@ -1047,7 +1051,7 @@ html, body {
 .comp-badge { font-size: 10.5px; font-weight: 700; padding: 1px 7px; border: 1px solid; border-radius: 999px; margin-right: 7px; }
 
 /* ── Schedule master-detail ─────────────────────────────── */
-.sched-layout { display: grid; grid-template-columns: 340px 1fr; gap: 16px; margin-top: 16px; align-items: start; }
+.sched-layout { display: grid; grid-template-columns: 400px 1fr; gap: 16px; margin-top: 16px; align-items: start; }  /* 340px 은 상대 팀명이 7자에서 잘렸다 */
 .sched-list-card .sched-list { max-height: 620px; overflow-y: auto; }
 .sched-row { display: flex; align-items: center; gap: 9px; width: 100%; text-align: left; border: none; background: transparent; color: var(--txt); cursor: pointer; padding: 8px; border-radius: 9px; font-size: 12.5px; }
 .sched-row:hover { background: rgba(255, 255, 255, 0.04); }
@@ -2098,4 +2102,6 @@ body::before {
 .trend-line b.up { color: #4fc27f; }
 .trend-line b.down { color: #e07070; }
 .trend-line b.flat { color: var(--muted); }
+.fac-none { color: var(--muted); font-size: 12px; padding: 12px 4px; }
+.fac-col-note { color: var(--muted); font-weight: 400; font-size: 11px; margin-left: 6px; }
 

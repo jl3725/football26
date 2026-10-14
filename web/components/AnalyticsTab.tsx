@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { getAnalytics, fmtEur, type Analytics, type Factor } from "@/lib/api";
+import { feeLabel, getAnalytics, fmtEur, type Analytics, type Factor } from "@/lib/api";
 import { tier, hexA } from "@/lib/ui";
 import TeamTerritory from "./TeamTerritory";
 import Chemistry from "./Chemistry";
@@ -20,7 +20,7 @@ function FactorCard({ f, kind, accent, team }: { f: Factor; kind: "s" | "w"; acc
         <span className="fac-label">{f.label}</span>
         <span className="fac-val" style={{ color: t.light }}>{f.value}</span>
       </div>
-      <div className="fac-players">
+      {f.players.length > 0 && <div className="fac-players">
         {f.players.map((p, i) => (
           <span className="fac-chip peekable" key={i}
             onClick={(e) => peek(e, { name: p.player, club: team, hint: { photo: p.photo, ovr: p.ovr } })}>
@@ -28,8 +28,7 @@ function FactorCard({ f, kind, accent, team }: { f: Factor; kind: "s" | "w"; acc
             {p.player.split(" ").slice(-1)[0]}
           </span>
         ))}
-        {f.players.length === 0 && <span className="fac-none">—</span>}
-      </div>
+      </div>}
     </div>
   );
 }
@@ -53,10 +52,12 @@ export default function AnalyticsTab({ team, accent }: { team: string; accent: s
           <div>
             <div className="fac-col-title" style={{ color: "#4fc27f" }}>▲ 강점 팩터</div>
             {data.factors.strengths.map((f, i) => <FactorCard key={i} f={f} kind="s" accent={accent} team={team} />)}
+            {data.factors.strengths.length === 0 && <div className="fac-none">리그 평균(50)을 넘는 지표가 아직 없습니다</div>}
           </div>
           <div>
-            <div className="fac-col-title" style={{ color: "#e07070" }}>▽ 보강 검토</div>
+            <div className="fac-col-title" style={{ color: "#e07070" }}>▽ 보강 검토 <span className="fac-col-note">리그 평균(50) 아래</span></div>
             {data.factors.weaknesses.map((f, i) => <FactorCard key={i} f={f} kind="w" accent={accent} team={team} />)}
+            {data.factors.weaknesses.length === 0 && <div className="fac-none">평균 아래 지표 없음 — 뚜렷한 약점이 보이지 않습니다</div>}
           </div>
         </div>
       </div>
@@ -135,7 +136,7 @@ export default function AnalyticsTab({ team, accent }: { team: string; accent: s
                 <div className="audit-top">
                   {a.photo ? <img className="audit-photo" src={a.photo} alt="" /> : <span className="audit-photo ph" />}
                   <span className="audit-name">{a.player}</span>
-                  <span className="audit-fee">{a.fee_text || "-"}</span>
+                  <span className="audit-fee">{feeLabel(a.fee_eur, a.fee_text)}</span>
                 </div>
                 <div className="audit-verdict">{a.verdict}</div>
                 <div className="audit-stat">{a.minutes.toLocaleString()}′ · {a.goals}G {a.assists}A</div>
@@ -154,14 +155,17 @@ export default function AnalyticsTab({ team, accent }: { team: string; accent: s
               <div className="evo-tag" style={{ color: accent }}>현재</div>
               <div className="evo-name">{data.manager_evo.name}</div>
               <div className="evo-form">{data.manager_evo.formation}</div>
-              <div className="evo-style">{data.manager_evo.style}</div>
+              {data.manager_evo.style && <div className="evo-style">{data.manager_evo.style}</div>}
               {data.manager_evo.focus && <div className="evo-focus">{data.manager_evo.focus}</div>}
+              {data.manager_evo.tactics
+                ? <div className="evo-focus">{data.manager_evo.tactics}</div>
+                : !data.manager_evo.style && <div className="evo-focus">전술 요약은 위키 문서에서 수집되는 대로 표시됩니다</div>}
             </div>
             {data.manager_evo.previous && (
               <div className="evo-col prev">
                 <div className="evo-tag">이전 · {data.manager_evo.previous.name}</div>
                 <div className="evo-form">{data.manager_evo.previous.formation}</div>
-                <div className="evo-style">{data.manager_evo.previous.style}</div>
+                {data.manager_evo.previous.style && <div className="evo-style">{data.manager_evo.previous.style}</div>}
               </div>
             )}
           </div>

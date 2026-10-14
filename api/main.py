@@ -277,7 +277,7 @@ def overview(team: str, league: str = ACTIVE_LEAGUE):
         for _, r in sq_star.sort_values(["_ovr", "_r"], ascending=False).head(5).iterrows():
             prof = _comp_profile(r, usage_idx)
             stars.append({
-                "player": r["player"], "pos": str(r.get("fl_group") or r.get("pos") or ""),
+                "player": r["player"], "pos": _pos_label(r),
                 "ovr": _player_ovr(r), "pot": _player_pot(r), "form": _player_form(r),
                 "trend": _trend(r, league),
                 "rating": round(_num(r.get("_r")), 2),
@@ -978,7 +978,7 @@ def squad(team: str, league: str = ACTIVE_LEAGUE):
         _o = _player_ovr(r)
         lines[line].append({
             "player": r["player"],
-            "pos": str(r.get("fl_group") or r.get("pos") or ""),
+            "pos": _pos_label(r),
             "age": int(_num(r.get("age"))),
             "minutes": int(_num(r.get("minutes"))),
             "value_eur": _num(r.get("market_value_eur")),
@@ -1065,21 +1065,27 @@ def schedule(team: str, league: str = ACTIVE_LEAGUE, season: str = ""):
         for eid, g in te.groupby("event_id"):
             ev_formation[str(eid)] = str(g["formation"].iloc[0])
 
+    def _txt(v) -> str:
+        """NaN 은 빈 문자열 — str(NaN) 이 화면에 'nan' 으로 찍히던 것."""
+        return "" if v is None or (isinstance(v, float) and v != v) else str(v)
+
     out = []
     for _, r in ts.iterrows():
         eid = str(r.get("event_id") or "")
         formation = ev_formation.get(eid)
+        done = _txt(r.get("status")) == "completed" or bool(_txt(r.get("result")))
         out.append({
             "comp": str(r.get("comp") or ""),
             "date": str(r.get("date") or ""),
             "home_away": str(r.get("home_away") or ""),
             "opponent": str(r.get("opponent") or ""),
             "opp_logo": tm.team_logo(str(r.get("opponent") or "")),
-            "gf": None if pd.isna(r.get("gf")) else int(_num(r.get("gf"))),
-            "ga": None if pd.isna(r.get("ga")) else int(_num(r.get("ga"))),
-            "score": str(r.get("score") or ""),
-            "result": str(r.get("result") or ""),
-            "status": str(r.get("status") or ""),
+            # 예정 경기는 원천이 0-0·0·0 으로 채워 둔다 → 결과 칸은 비운다
+            "gf": None if (not done or pd.isna(r.get("gf"))) else int(_num(r.get("gf"))),
+            "ga": None if (not done or pd.isna(r.get("ga"))) else int(_num(r.get("ga"))),
+            "score": _txt(r.get("score")) if done else "",
+            "result": _txt(r.get("result")),
+            "status": _txt(r.get("status")),
             "event_id": eid or None,
             "formation": formation,
             "has_lineup": formation is not None,
@@ -1149,7 +1155,7 @@ def players(team: str, league: str = ACTIVE_LEAGUE):
         prof = _comp_profile(r, usage_idx)
         out.append({
             "player": r["player"],
-            "pos": str(r.get("fl_group") or r.get("pos") or ""),
+            "pos": _pos_label(r),
             "line": rv3.line_of_row(r),
             "age": int(_num(r.get("age"))),
             "nationality": str(r.get("nationality") or ""),
@@ -1273,7 +1279,7 @@ def player_detail(team: str, player: str, league: str = ACTIVE_LEAGUE):
     return {
         "player": row["player"], "team": team, "color": tm.team_color(team),
         "value_history": vhist, "peers": {"line": my_line, "n": int(len(pool))},
-        "pos": str(row.get("fl_group") or row.get("pos") or ""),
+        "pos": _pos_label(row),
         "line": rv3.line_of_row(row),
         "age": int(_num(row.get("age"))), "nationality": str(row.get("nationality") or ""),
         "value_eur": _num(row.get("market_value_eur")), "photo": _photo(row),
@@ -1509,8 +1515,10 @@ def _match_factors(team, league, full, um_df):
         return [{"player": r["player"], "photo": _photo(r), "ovr": _player_ovr(r)}
                 for _, r in sq.sort_values("_r", ascending=False).head(3).iterrows()]
 
-    strengths = [{"label": l, "value": v, "line": ln, "players": _contrib(ln)} for l, ln, v in scored[:3]]
-    weaknesses = [{"label": l, "value": v, "line": ln, "players": _contrib(ln)} for l, ln, v in scored[-3:][::-1]]
+    # 지표는 리그 평균이 50(z 기반) — 강점은 평균 위, 약점은 평균 아래만. 예전엔 낮은 순 3개를 무조건
+    # 약점으로 넣어 '공중 장악 62'(평균 이상)도 보강 대상으로 떴다. 약점 카드엔 '기여 선수'를 붙이지 않는다.
+    strengths = [{"label": l, "value": v, "line": ln, "players": _contrib(ln)} for l, ln, v in scored[:3] if v > 50]
+    weaknesses = [{"label": l, "value": v, "line": ln, "players": []} for l, ln, v in scored[::-1] if v < 50][:3]
     return {"strengths": strengths, "weaknesses": weaknesses}
 
 
@@ -1560,14 +1568,23 @@ def _manager_evo(team: str, league: str = "EPL"):
     mp = _managers(league).get(team)
     if not mp:
         return None
+    import re as _re2
+
+    def _ko(v) -> str:
+        """화면엔 한국어만 — 25/26 수기 영어 라벨('Control + high press')·대기 문구
+        ('Pending tactical profile')는 숨기고, 위키에서 자동 수집·번역한 전술 요약(tactics_ko)을 쓴다."""
+        t = str(v or "").strip()
+        return t if _re2.search(r"[가-힣]", t) else ""
+
     evo = {
-        "name": mp.get("name", ""), "style": mp.get("style", ""),
-        "formation": mp.get("formation", ""), "focus": mp.get("focus", ""),
+        "name": mp.get("name", ""), "style": _ko(mp.get("style")),
+        "formation": mp.get("formation", ""), "focus": _ko(mp.get("focus")),
+        "tactics": _ko(mp.get("tactics_ko")),
         "appointed": mp.get("appointed", ""),
     }
     if mp.get("previous_name"):
         evo["previous"] = {
-            "name": mp.get("previous_name", ""), "style": mp.get("previous_style", ""),
+            "name": mp.get("previous_name", ""), "style": _ko(mp.get("previous_style")),
             "formation": mp.get("previous_formation", ""),
         }
     return evo
@@ -1761,6 +1778,14 @@ _BUCKET_LABEL = {"GK": "골키퍼", "CB": "센터백", "LB": "왼쪽 풀백", "R
 _BUCKET_BY_LINE = {"ATT": ["ST", "LW", "RW"], "MID": ["DM", "CM", "AM"],
                    "DEF": ["CB", "LB", "RB"], "GK": ["GK"]}
 _STARTER_ROLES = {"핵심 주전", "주전·유럽 로테이션", "리그 주전"}
+
+
+def _pos_label(row) -> str:
+    """화면 표시용 세부 포지션(CB·DM·RW…). FBref 대분류 'MF'·'FW,MF' 로는 사카·라이스가 다 'MF' 였다.
+    역할 정보(tm_position·fl_group)가 없으면 FBref 값 그대로."""
+    if any(pd.notna(row.get(c)) and str(row.get(c)).strip() for c in ("tm_position", "fl_group")):
+        return _pos_bucket(row)
+    return str(row.get("pos") or "")
 
 
 def _pos_bucket(row) -> str:

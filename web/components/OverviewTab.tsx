@@ -1,6 +1,6 @@
 "use client";
 import type { Overview } from "@/lib/api";
-import { fmtEur } from "@/lib/api";
+import { feeLabel, fmtEur } from "@/lib/api";
 import { tier, hexA, roleClass } from "@/lib/ui";
 import Radar from "./Radar";
 import RatingsBoard from "./RatingsBoard";
@@ -257,14 +257,14 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
               <div key={"i" + i} className="tf-row tf-in peekable"
                 onClick={(e) => peek(e, { name: x.player, club: ov.team, hint: { pos: x.pos } })}>
                 <span className="tf-ar">▲</span><span className="tf-name">{x.player}</span>
-                <span className="tf-pos">{x.pos}</span><span className="tf-fee">{x.fee_text || "-"}</span>
+                <span className="tf-pos">{x.pos}</span><span className="tf-fee">{feeLabel(x.fee_eur, x.fee_text)}</span>
               </div>
             ))}
             {ov.transfers.out.slice(0, 3).map((x, i) => (
               <div key={"o" + i} className="tf-row tf-out peekable"
                 onClick={(e) => peek(e, { name: x.player, hint: { pos: x.pos } })}>
                 <span className="tf-ar">▼</span><span className="tf-name">{x.player}</span>
-                <span className="tf-pos">{x.pos}</span><span className="tf-fee">{x.fee_text || "-"}</span>
+                <span className="tf-pos">{x.pos}</span><span className="tf-fee">{feeLabel(x.fee_eur, x.fee_text)}</span>
               </div>
             ))}
           </div>

@@ -20,7 +20,7 @@ export function TrendArrow({ t, ovr }: { t?: Trend | null; ovr: number }) {
   return null;
 }
 
-const sign = (d: number) => (d > 0 ? `▲${d}` : d < 0 ? `▼${-d}` : "−");
+const sign = (d: number) => (d > 0 ? `▲${d}` : d < 0 ? `▼${-d}` : "±0");
 const tone = (d: number) => (d > 0 ? "up" : d < 0 ? "down" : "flat");
 
 // 선수 상세용 — 두 기준을 글로 함께

@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState, type ReactNode } from "react";
-import { getHome, type Home } from "@/lib/api";
+import { feeLabel, getHome, type Home } from "@/lib/api";
 import WorldCup from "./WorldCup";
 import AllDashboard from "./AllDashboard";
 import { Skel, SkelCards } from "./Skeleton";
@@ -133,7 +133,7 @@ export default function HomeDashboard({ accent, onPickTeam, onPickLeagueTeam, le
                   <div className="feat-name">{feat.player}</div>
                   <div className="feat-move">{feat.from} <span className="feat-arr">→</span> {feat.to}</div>
                 </div>
-                <div className="feat-fee teko" style={{ color: accent }}>{feat.fee_text}</div>
+                <div className="feat-fee teko" style={{ color: accent }}>{feeLabel(feat.fee_eur, feat.fee_text)}</div>
               </div>
             </button>
           )}
@@ -144,7 +144,7 @@ export default function HomeDashboard({ accent, onPickTeam, onPickLeagueTeam, le
                 {d.photo ? <img className="row2-photo" src={d.photo} alt="" />
                   : d.to_logo ? <img src={d.to_logo} alt="" /> : <span className="ph22" />}
                 <div className="row2-mid"><b>{d.player}</b><span>{d.from} → {d.to}</span></div>
-                <span className="row2-r teko">{d.fee_text}</span>
+                <span className="row2-r teko">{feeLabel(d.fee_eur, d.fee_text)}</span>
               </button>
             ))}
             {deals.length === 0 && <div className="mgr-meta">이번 창 영구이적 없음</div>}

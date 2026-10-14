@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { getTransfers, getRecommend, getNeeds, fmtEur, type Transfers, type TransferItem, type Recommend, type Needs } from "@/lib/api";
+import { feeLabel, getTransfers, getRecommend, getNeeds, fmtEur, type Transfers, type TransferItem, type Recommend, type Needs } from "@/lib/api";
 import { tier, roleClass, hexA } from "@/lib/ui";
 import FitEvaluator from "./FitEvaluator";
 import ManagerSimPanel from "./ManagerSimPanel";
@@ -25,7 +25,7 @@ function Row({ x, dir, team }: { x: TransferItem; dir: "in" | "out"; team: strin
         <div className="tf2-name">{x.player}</div>
         <div className="tf2-meta">{x.pos || "-"} · {x.age || "?"}세 · {dir === "in" ? "from" : "to"} {x.club || "-"}</div>
       </div>
-      <span className="tf2-fee">{x.fee_text || fmtEur(x.fee_eur)}</span>
+      <span className="tf2-fee">{feeLabel(x.fee_eur, x.fee_text)}</span>
     </div>
   );
 }
