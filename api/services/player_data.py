@@ -88,6 +88,40 @@ def player_frame(league: str, season: str | None = None):
 
 
 _MOVED_CACHE: dict = {}
+_ROLE_CACHE: dict = {}
+
+
+def role_counts(season: str | None = None) -> dict:
+    """전 리그 ESPN 선발(그 시즌 1.0 + 직전 시즌 0.5) → {정규화 이름: Counter(역할)} — src/positions.py."""
+    import positions as ps  # noqa: PLC0415
+    from leagues import DATA_DIR, SEASON_START  # noqa: PLC0415
+    start = int(season[:4]) if season else SEASON_START
+    key = (start, ds._db_mtime())
+    if key in _ROLE_CACHE:
+        return _ROLE_CACHE[key]
+    frames, weights = [], []
+    for tag, w in ((f"{start}_{start + 1}", 1.0), (f"{start - 1}_{start}", 0.5)):
+        for path in sorted(DATA_DIR.glob(f"espn_lineups*_{tag}.csv")):
+            try:
+                frames.append(pd.read_csv(path, usecols=["squad", "event_id", "formation", "starter", "player",
+                                                         "espn_pos", "formation_place"]))
+                weights.append(w)
+            except (ValueError, OSError):
+                continue
+    _ROLE_CACHE.clear()
+    _ROLE_CACHE[key] = ps.role_counts(frames, weights)
+    return _ROLE_CACHE[key]
+
+
+def _played_line(frame: pd.DataFrame, season: str | None) -> list:
+    """실제로 선 자리(선발 3회+)의 라인 — TM 이 '수비형 미드'로 둔 풀백(Lewis-Skelly) 등을 실제 역할로."""
+    import positions as ps  # noqa: PLC0415
+    rc = role_counts(season)
+    out = []
+    for name, tmp in zip(frame["player"], frame.get("tm_position", pd.Series([None] * len(frame), index=frame.index))):
+        prof = ps.profile(ps.lookup(rc, name), tmp if isinstance(tmp, str) else None)
+        out.append(ps.LINE_OF.get(prof.get("primary")) if prof.get("source") != "tm" else None)
+    return out
 
 
 def _nk(row) -> str:
@@ -157,6 +191,10 @@ def _build_frame(league: str, season: str | None = None):
     except (OSError, KeyError, ValueError):
         pass
     import ratings_v3 as rv3  # noqa: PLC0415
+    try:
+        frame["_line"] = _played_line(frame, season)
+    except Exception:  # noqa: BLE001 — 라인업이 없으면 TM 역할로
+        frame["_line"] = None
     frame = rv3.add_form_column(frame)
     # OVR 은 행 데이터만으로 정해지므로 표를 만들 때 한 번만 — 추천 1회에 3,500번 다시 계산하던 것
     frame["_ovr"] = [rv3.ovr_of_row(r) for _, r in frame.iterrows()]

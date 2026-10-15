@@ -7,6 +7,7 @@ import RatingsBoard from "./RatingsBoard";
 import TransferTicker from "./TransferTicker";
 import LineupBoard from "./LineupBoard";
 import CaptainBoard from "./CaptainBoard";
+import OvrGuide from "./OvrGuide";
 import OverviewSignals from "./OverviewSignals";
 import IdentityCard from "./IdentityCard";
 import { usePeek } from "./PlayerPeek";
@@ -191,7 +192,7 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
       {/* 핵심 선수 */}
       {ov.stars.length > 0 && (
         <div className="card" style={{ marginTop: 16 }}>
-          <SectionHead title="KEY PLAYERS" kr="핵심 선수" meta="평점(OVR) TOP 5" />
+          <SectionHead title="KEY PLAYERS" kr="핵심 선수" meta="평점(OVR) TOP 5" right={<OvrGuide />} />
           <div className="stars-row">
             {ov.stars.map((st, i) => {
               const tt = tier(st.ovr);

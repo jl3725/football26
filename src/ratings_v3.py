@@ -54,6 +54,10 @@ def line_of_row(row) -> str:
     """
     def _s(v):  # NaN(float) 은 truthy → 'or' 폴백을 깨므로 빈 문자열로 정규화
         return "" if v is None or (isinstance(v, float) and v != v) else str(v)
+    # player_frame 이 붙인 '실제로 선 자리'(ESPN 선발 3회+) 우선 — TM '수비형 미드' Lewis-Skelly 는 실제로 풀백(2026-10-15)
+    pl = _s(row.get("_line"))
+    if pl in ("GK", "DEF", "MID", "ATT"):
+        return pl
     t = _s(row.get("tm_position")).lower()
     if "keeper" in t:
         return "GK"
@@ -74,7 +78,11 @@ def value_ovr(v) -> float | None:
 
 
 # ── 절대 OVR (커리어 클래스) ──────────────────────────────────────
-_POS_ADJ = {"DEF": 2.0, "MID": 2.0, "ATT": 1.0}   # 시장이 수비를 저평가 → 보정 (GK 는 별도 분기)
+# 포지션 보정 — 시장은 수비수를 덜, 공격형·창의형 미드를 더 쳐준다. v3.4 까지 DEF·MID +2 · ATT +1 이라
+# 몸값 €60~70M 중간대가 일괄로 떠 Zubimendi 88 · Eze 87 · White 85(사용자 기준 85 · 83~84 · 83, 2026-10-15).
+# golden(사용자 기준)·스카우트 기준표 조합 탐색으로 정함(GK 는 별도 분기의 _GK_BASE).
+_POS_ADJ = {"DEF": 0.5, "MID": -0.5, "ATT": 0.0}
+_GK_BASE = 2.0
 _SS_MID = {"GK": 6.85, "DEF": 6.95, "MID": 7.05, "ATT": 6.95}  # 포지션별 '평범한 주전' 평점
 
 
@@ -116,13 +124,15 @@ def blended_ss(ss_rating, minutes, prev_ss_rating=None, prev_minutes=None) -> fl
 
 _CLASS_PRIOR_MIN = 600.0   # 클래스 평점을 포지션 평균 쪽으로 당기는 가상 출전(분)
 # 모델 버전 — 바뀌면 rating_history 가 과거 기록을 평행이동해 모델 변경이 선수 추이(▲▼)로 보이지 않게 한다
-MODEL_VERSION = "v3.4"
+MODEL_VERSION = "v3.5"
 # 잠재력 프리미엄 — 같은 시장가치·리그에서 어린 선수의 실제 경기력(리그 보정 평점)이 낮은 만큼(vov 환산).
 # 25/26 1,500분+ 1,450명 회귀(27~29세 기준): 17~20세 −6.8 · 21세 −4.9 · 22세 −5.1 · 23세 −4.4 · 24세 −3.9 ·
 # 25세 −3.8 · 26세 −2.4 (같은 회귀에서 30~32세 +5.3 · 33세+ +9.4 — 베테랑 보정과 같은 근거).
 # 성능 보정이 평균 −0.8 정도를 이미 반영하므로 그만큼 뺀 값. 예전엔 24세 미만 1살당 0.12 라
 # 23세 €120M Anderson 91, 19세 Cubarsí 89 처럼 몸값의 잠재력 몫이 현재 기량으로 들어갔다(2026-10-15 사용자 지적).
-_YOUTH_AGES, _YOUTH_ADJ = (20.0, 21.0, 23.0, 25.0, 26.0, 27.0), (-5.5, -4.3, -3.6, -3.0, -1.9, 0.0)
+# v3.5: 24~25세 주전(Timber·Calafiori)까지 −3 깎던 것을 줄임 — 상위 몸값 구간의 나이 차는 표본이 작아(±2.5)
+# 사용자 기준(Timber 86 · Calafiori 85)을 따른다. 21세 이하는 데이터대로 유지(Lewis-Skelly 81~84).
+_YOUTH_AGES, _YOUTH_ADJ = (20.0, 21.0, 23.0, 25.0, 26.0, 27.0), (-3.5, -2.5, -1.0, 0.0, 0.0, 0.0)
 # 몸값 급등 감쇠 — 직전 시즌보다 오른 시장가치는 한 시즌 활약을 시장이 미리 반영한 몫이라(성능 보정과 이중 계산)
 # 새 수준에서 검증되기 전엔 절반만 인정(최대 −3). 26/27 시장가치 2,371명 중 75% 는 그대로, 상위 10% 가 ×1.5+.
 # 직전 가치 €5M 미만은 제외 — 1군 데뷔 유망주의 정상 성장이거나 매칭 오류(Cho 직전 €150K)라서.
@@ -253,7 +263,7 @@ def absolute_ovr(*, value, ss_rating, minutes, age, pos_group,
             age_adj = max(_GK_AGE_LO, _GK_AGE_SLOPE * (a - _GK_AGE_PIVOT))
         else:
             age_adj = _interp(a, _GK_VET_AGES, _GK_VET_ADJ) * proven
-        raw = base + 3.0 + perf + age_adj
+        raw = base + _GK_BASE + perf + age_adj
     else:
         # 리그 보정은 상한 밖에서 — 약한 리그 최상위가 상한(+3.5)에 걸려 보정이 사라지지 않게
         perf_adj = _clamp((rel - _SS_MID[ln]) * 8.0, -3.5, 3.5) - off * 8.0 if rel > 0 else 0.0

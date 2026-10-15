@@ -1,31 +1,39 @@
 {
  "date": "2026-10-15",
- "model": "v3.4",
+ "model": "v3.5",
  "players": 3423,
  "golden": [],
  "scout": [
+  {
+   "player": "Jeremy Doku",
+   "league": "EPL",
+   "ovr": 88,
+   "lo": 82,
+   "hi": 86,
+   "off": 2
+  },
+  {
+   "player": "Marc Guéhi",
+   "league": "EPL",
+   "ovr": 89,
+   "lo": 84,
+   "hi": 87,
+   "off": 2
+  },
+  {
+   "player": "Yan Diomandé",
+   "league": "LaLiga",
+   "ovr": 87,
+   "lo": 76,
+   "hi": 85,
+   "off": 2
+  },
   {
    "player": "Rayan Cherki",
    "league": "EPL",
    "ovr": 88,
    "lo": 83,
    "hi": 87,
-   "off": 1
-  },
-  {
-   "player": "Bruno Fernandes",
-   "league": "EPL",
-   "ovr": 91,
-   "lo": 87,
-   "hi": 90,
-   "off": 1
-  },
-  {
-   "player": "Bruno Guimarães",
-   "league": "EPL",
-   "ovr": 90,
-   "lo": 86,
-   "hi": 89,
    "off": 1
   },
   {
@@ -37,7 +45,7 @@
    "off": 1
   },
   {
-   "player": "Jeremy Doku",
+   "player": "Bradley Barcola",
    "league": "EPL",
    "ovr": 87,
    "lo": 82,
@@ -45,15 +53,15 @@
    "off": 1
   },
   {
-   "player": "Marc Guéhi",
+   "player": "Martin Ødegaard",
    "league": "EPL",
-   "ovr": 88,
-   "lo": 84,
-   "hi": 87,
-   "off": 1
+   "ovr": 86,
+   "lo": 87,
+   "hi": 90,
+   "off": -1
   },
   {
-   "player": "Matheus Cunha",
+   "player": "Antoine Semenyo",
    "league": "EPL",
    "ovr": 88,
    "lo": 83,
@@ -69,19 +77,27 @@
    "off": -1
   },
   {
-   "player": "Yan Diomandé",
-   "league": "LaLiga",
-   "ovr": 86,
-   "lo": 76,
-   "hi": 85,
-   "off": 1
+   "player": "Alexis Mac Allister",
+   "league": "EPL",
+   "ovr": 84,
+   "lo": 85,
+   "hi": 88,
+   "off": -1
   },
   {
-   "player": "Nico Williams",
+   "player": "Trent Alexander-Arnold",
    "league": "LaLiga",
-   "ovr": 80,
-   "lo": 81,
-   "hi": 86,
+   "ovr": 84,
+   "lo": 85,
+   "hi": 88,
+   "off": -1
+  },
+  {
+   "player": "Cristian Romero",
+   "league": "LaLiga",
+   "ovr": 84,
+   "lo": 85,
+   "hi": 88,
    "off": -1
   },
   {
@@ -93,29 +109,53 @@
    "off": -1
   },
   {
-   "player": "Gianluca Prestianni",
-   "league": "LigaPortugal",
-   "ovr": 77,
-   "lo": 78,
-   "hi": 84,
+   "player": "Nicolò Barella",
+   "league": "SerieA",
+   "ovr": 85,
+   "lo": 86,
+   "hi": 89,
+   "off": -1
+  },
+  {
+   "player": "Scott McTominay",
+   "league": "SerieA",
+   "ovr": 83,
+   "lo": 84,
+   "hi": 87,
+   "off": -1
+  },
+  {
+   "player": "Kevin De Bruyne",
+   "league": "SerieA",
+   "ovr": 81,
+   "lo": 82,
+   "hi": 87,
+   "off": -1
+  },
+  {
+   "player": "Christian Pulisic",
+   "league": "SerieA",
+   "ovr": 82,
+   "lo": 83,
+   "hi": 87,
    "off": -1
   }
  ],
  "scout_far": [],
  "audit": {
   "rise": {
-   "n": 12,
+   "n": 15,
    "limit": 25,
    "desc": "지난 시즌(1,500분+) 대비 +6 이상 — 한 시즌 급등",
    "examples": [
-    "Luis Milla(Como, 32) 80 ← 73",
-    "Nobel Mendy(Hull City, 22) 73 ← 67",
-    "Noah Cadiou(Lorient, 27) 72 ← 66",
-    "Adnane Abid(Standard Liège, 23) 68 ← 61",
-    "Thom van Bergen(Groningen, 22) 68 ← 61",
-    "Abraham Marcus(Estrela, 26) 66 ← 58",
-    "David van der Werff(Groningen, 22) 66 ← 58",
-    "Barbero(Arouca, 28) 64 ← 56"
+    "Luis Milla(Como, 32) 77 ← 70",
+    "Nobel Mendy(Hull City, 22) 74 ← 68",
+    "Fedde Leysen(Sassuolo, 23) 71 ← 65",
+    "Adnane Abid(Standard Liège, 23) 69 ← 62",
+    "Ibrahim Karamoko(Standard Liège, 25) 68 ← 62",
+    "Thom van Bergen(Groningen, 22) 68 ← 62",
+    "Tibe De Vlieger(Gent, 20) 68 ← 62",
+    "David van der Werff(Groningen, 22) 67 ← 59"
    ]
   },
   "fall": {
@@ -125,13 +165,11 @@
    "examples": []
   },
   "underperf_high": {
-   "n": 3,
+   "n": 1,
    "limit": 10,
    "desc": "OVR 86+ 인데 리그 보정 평점이 포지션 평균보다 0.1 넘게 낮음(900분+)",
    "examples": [
-    "Alexis Mac Allister(Liverpool, 27) 86 ← 85",
-    "Trent Alexander-Arnold(Real Madrid, 28) 86 ← 84",
-    "João Neves(PSG, 22) 86 ← 86"
+    "João Neves(PSG, 22) 86 ← 85"
    ]
   },
   "young_elite": {
@@ -139,18 +177,16 @@
    "limit": 6,
    "desc": "21세 이하 OVR 88+",
    "examples": [
-    "Lamine Yamal(Barcelona, 19) 89 ← 89"
+    "Lamine Yamal(Barcelona, 19) 90 ← 90"
    ]
   },
   "no_value_high": {
-   "n": 4,
+   "n": 2,
    "limit": 10,
    "desc": "시장가치 없이 OVR 80+ (TM 매칭 실패·이적 잔류 행)",
    "examples": [
-    "Yehor Yarmoliuk(Brentford, ) 82",
-    "Jack Grealish(Manchester City, ) 82",
-    "Samu Omorodion(Porto, ) 82",
-    "Richard Ríos(Benfica, ) 80"
+    "Jack Grealish(Manchester City, ) 81",
+    "Samu Omorodion(Porto, ) 81"
    ]
   }
  }
