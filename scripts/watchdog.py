@@ -176,8 +176,8 @@ def check_tm_agent() -> list[str]:
     if not ages:
         return ["TM 부상 파일 커밋 기록 없음"]
     if min(ages) > 72:
-        return [f"로컬 TM agent 산출물이 {min(ages) / 24:.1f}일째 그대로 — PC 전원·작업 스케줄러"
-                "(football26-tm-agent)·logs/tm-agent-*.log 확인"]
+        return [f"TM 수집 산출물이 {min(ages) / 24:.1f}일째 그대로 — GitHub Actions 'TM Data' 실행 기록 확인"
+                "(WAF 토큰 실패면 로그에 '[tm_http]')"]
     return []
 
 

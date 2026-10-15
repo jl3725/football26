@@ -15,6 +15,8 @@ import time
 from pathlib import Path
 
 import requests
+
+import tm_http  # noqa: E402  — 클라우드(WAF 202)에서도 열리게: 202 면 브라우저 토큰 후 재요청
 from bs4 import BeautifulSoup
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -84,14 +86,12 @@ def _parse(html: str, club: str) -> list[dict]:
 
 def main() -> int:
     league = ACTIVE_LEAGUE
-    session = requests.Session()
-    session.headers.update(H)
     allrows: list[dict] = []
     failed: list[str] = []
     teams = sorted(season_clubs(league).items())
     for i, (team, (slug, vid)) in enumerate(teams, 1):
         try:
-            r = session.get(URL.format(slug=slug, vid=vid), timeout=20)
+            r = tm_http.get(URL.format(slug=slug, vid=vid), headers=H, timeout=20)
             if r.status_code != 200:   # 202 = WAF 챌린지
                 raise requests.RequestException(f"HTTP {r.status_code}")
             rows = _parse(r.text, team)

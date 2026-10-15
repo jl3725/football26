@@ -15,6 +15,8 @@ from datetime import datetime
 from pathlib import Path
 
 import requests
+
+import tm_http  # noqa: E402  — 클라우드(WAF 202)에서도 열리게: 202 면 브라우저 토큰 후 재요청
 from bs4 import BeautifulSoup
 
 try:
@@ -269,7 +271,7 @@ def parse_injury_rows(page_html: str) -> list[dict]:
 
 
 def fetch_page() -> str:
-    response = requests.get(URL, headers=H, timeout=30)
+    response = tm_http.get(URL, headers=H, timeout=30)
     response.raise_for_status()
     # TM(AWS WAF)은 데이터센터 IP 에 202 + 챌린지 페이지를 준다. raise_for_status 를 통과하므로
     # 그대로 파싱하면 0행이 되어 부상자 파일을 비우고 '전원 복귀' 가짜 이벤트를 남긴다(2026-07-15 사고).

@@ -22,6 +22,8 @@ from pathlib import Path
 
 import pandas as pd
 import requests
+
+import tm_http  # noqa: E402  — 클라우드(WAF 202)에서도 열리게: 202 면 브라우저 토큰 후 재요청
 from bs4 import BeautifulSoup
 
 from fetch_transfermarkt import H, norm, parse_mv, season_clubs  # 재사용
@@ -79,7 +81,7 @@ def scrape_transfers(team: str, slug: str, vid: int, window: str = "s") -> list[
     r = None
     for attempt in range(3):
         try:
-            r = requests.get(url, headers=H, params={"w_s": window}, timeout=30)
+            r = tm_http.get(url, headers=H, params={"w_s": window}, timeout=30)
             break
         except requests.exceptions.RequestException:
             time.sleep(4)

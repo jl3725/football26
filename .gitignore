@@ -65,3 +65,4 @@ logs/
 
 # 평점 평가 스냅샷(scripts/eval_ratings.py) — 기준 선수(golden.csv)만 커밋
 data/eval/ratings_*.csv
+.cache/

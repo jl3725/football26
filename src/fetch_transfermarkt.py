@@ -22,6 +22,8 @@ from pathlib import Path
 
 import pandas as pd
 import requests
+
+import tm_http  # noqa: E402  — 클라우드(WAF 202)에서도 열리게: 202 면 브라우저 토큰 후 재요청
 from bs4 import BeautifulSoup
 from unidecode import unidecode
 
@@ -257,7 +259,7 @@ def season_clubs(league: str = ACTIVE_LEAGUE, season: int | None = None) -> dict
     cfg = LEAGUES[league]
     url = f"https://www.transfermarkt.com/{cfg.tm_slug}/startseite/wettbewerb/{cfg.tm_id}/saison_id/{season}"
     try:
-        r = requests.get(url, headers=H, timeout=30)
+        r = tm_http.get(url, headers=H, timeout=30)
         html = r.text if r.status_code == 200 else ""
     except requests.RequestException:
         html = ""
@@ -361,7 +363,7 @@ def search_player(name: str) -> dict | None:
     url = ("https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche"
            f"?query={quote(name)}")
     try:
-        r = requests.get(url, headers=H, timeout=20)
+        r = tm_http.get(url, headers=H, timeout=20)
     except Exception:
         return None
     if r.status_code != 200:
@@ -411,7 +413,7 @@ def search_player(name: str) -> dict | None:
 def scrape_team(team: str) -> list[dict]:
     slug, vid = TEAM_TM[team]
     url = f"https://www.transfermarkt.com/{slug}/kader/verein/{vid}/saison_id/{SEASON}/plus/1"
-    r = requests.get(url, headers=H, timeout=25)
+    r = tm_http.get(url, headers=H, timeout=25)
     if r.status_code != 200:
         print(f"  [{team}] HTTP {r.status_code}")
         return []

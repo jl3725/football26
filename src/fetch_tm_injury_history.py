@@ -28,6 +28,8 @@ from pathlib import Path
 
 import pandas as pd
 import requests
+
+import tm_http  # noqa: E402  — 클라우드(WAF 202)에서도 열리게: 202 면 브라우저 토큰 후 재요청
 from bs4 import BeautifulSoup
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -96,7 +98,7 @@ def parse_history(page_html: str) -> dict:
 
 def fetch_player(tm_id: str) -> dict:
     url = f"https://www.transfermarkt.com/-/verletzungen/spieler/{tm_id}"
-    resp = requests.get(url, headers=H, timeout=30)
+    resp = tm_http.get(url, headers=H, timeout=30)
     resp.raise_for_status()
     # TM(AWS WAF)은 데이터센터 IP 에 202 + 챌린지 페이지를 준다. 이를 파싱하면 결장 0경기로
     # 기존 이력을 덮어쓴다(2026-07-20~10-12 GH 주간 수집이 전 리그를 0으로 만든 사고).

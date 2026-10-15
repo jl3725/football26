@@ -2,12 +2,10 @@ name: Daily Data Fetch
 
 # 리그홈·오버뷰가 쓰는 "로컬 전용" 수집기들을 클라우드로 이관 — 하루 1회.
 #   감독 프로필/교체 · 승격 로스터 · 이적 소문(buzz, 뉴스 RSS) · 일정·순위·라인업 · UEFA 계수 · FIFA 랭킹
-# (Transfermarkt 계열은 GH 러너 차단으로 로컬 agent 담당 — 아래 주석 참고)
+# (Transfermarkt 계열은 tm_data.yml — 브라우저 토큰으로 클라우드 수집)
 # 이 데이터들이 그동안 로컬 PC(작업 스케줄러)에서만 갱신돼 리그홈이 멈춰 보였음.
-# Transfermarkt·ESPN·위키 모두 GH 러너에서 정상(daily_transfers 가 이미 증명) → 전부 이관 가능.
 # 각 단계는 scripts/ci_try.sh 로 감싸 하나 실패해도 나머지 수집·커밋은 진행하고,
 # 마지막 단계(ci_report.sh)에서 실패 목록을 요약한 뒤 워크플로를 실패 처리한다.
-# (무거운 tm_injury_history 는 weekly_injury.yml 로 분리)
 on:
   schedule:
     - cron: "30 4 * * *"   # 매일 04:30 UTC (한국 13:30) — WC(매시간 :00)·이적(05:00)·뉴스(짝수시 :00)와 시차
@@ -79,9 +77,8 @@ jobs:
             FB_LEAGUE=$LG bash scripts/ci_try.sh "subs $LG" python src/fetch_espn_subs.py
           done
 
-      # Transfermarkt 계열(현재 부상·계약·루머·시장가치 스냅샷·이적)은 2026-07-15부터 TM(AWS WAF)이
-      # GH 러너 IP 에 202 챌린지를 반환해 클라우드 수집 불가 → 로컬 PC agent 로 이관
-      # (scripts/run_tm_agent.ps1 · register_tm_agent.ps1, 매일 10:30/18:30).
+      # Transfermarkt 계열(현재 부상·계약·루머·시장가치 스냅샷·이적)은 tm_data.yml 이 하루 2회 수집한다
+      # (TM WAF 202 → 브라우저 토큰, src/tm_http.py). 2026-07~10 은 로컬 PC agent 가 맡았었다.
 
       - name: UEFA 계수 (협회·클럽, 리그강도 근거화)
         run: bash scripts/ci_try.sh "uefa_coefficients" python src/fetch_uefa_coefficients.py

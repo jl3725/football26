@@ -20,6 +20,8 @@ from pathlib import Path
 
 import pandas as pd
 import requests
+
+import tm_http  # noqa: E402  — 클라우드(WAF 202)에서도 열리게: 202 면 브라우저 토큰 후 재요청
 from bs4 import BeautifulSoup
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -108,7 +110,7 @@ def scrape_team_contracts(team: str) -> list[dict]:
     # 현재 시즌 상세 스쿼드(plus/1) — saison_id 를 붙이면 과거시즌 뷰가 되어 'Contract until'
     # 컬럼이 사라지고 'Joined'/'Current club' 이 나와 계약일이 아닌 입단일이 긁힌다.
     url = f"https://www.transfermarkt.com/{slug}/kader/verein/{vid}/plus/1"
-    response = requests.get(url, headers=H, timeout=25)
+    response = tm_http.get(url, headers=H, timeout=25)
     response.raise_for_status()
 
     soup = BeautifulSoup(response.text, "lxml")
