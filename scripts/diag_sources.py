@@ -42,8 +42,10 @@ def http(src: str, url: str, marker: str) -> None:
 def browser_checks() -> None:
     import seleniumbase as sb
 
-    for mode in ("xvfb", "headless"):
-        kw = {"uc": True, "xvfb": True} if mode == "xvfb" else {"uc": True, "headless": True}
+    modes = next((a.split("=", 1)[1].split(",") for a in sys.argv if a.startswith("--modes=")), ["headless"])
+    for mode in modes:
+        # headed = 가상 화면(xvfb-run) 위의 일반 창 — Cloudflare 는 헤드리스를 더 잘 잡는다
+        kw = {"uc": True, "headless": mode == "headless"}
         try:
             d = sb.Driver(**kw)
         except Exception as e:  # noqa: BLE001
@@ -68,7 +70,7 @@ def browser_checks() -> None:
                 names = [c["name"] for c in d.get_cookies()][:6]
                 note("Transfermarkt", f"browser→requests 쿠키/{mode}", f"HTTP {r.status_code} · {'OK' if got else '표 없음'} · 쿠키 {names}")
             # FBref — Cloudflare
-            d.get(FBREF)
+            d.uc_open_with_reconnect(FBREF, 6)   # UC: 드라이버 연결을 잠시 끊어 Cloudflare 검사를 통과
             for _ in range(20):
                 if "stats_squads_standard_for" in d.page_source or "results20" in d.page_source:
                     break
@@ -76,8 +78,8 @@ def browser_checks() -> None:
             ok = "stats_squads_standard_for" in d.page_source or "results20" in d.page_source
             note("FBref", f"browser/{mode}", f"{'OK' if ok else '표 없음'} · title={d.title[:40]!r}")
             # Sofascore — 사이트를 연 뒤 브라우저 안에서 API fetch(앱의 sofascore_client 와 같은 방식)
-            d.get("https://www.sofascore.com/")
-            time.sleep(5)
+            d.uc_open_with_reconnect("https://www.sofascore.com/", 6)
+            time.sleep(4)
             res = d.execute_async_script(
                 "const done = arguments[arguments.length - 1];"
                 "fetch(arguments[0], {credentials: 'include', headers: {Accept: 'application/json'}})"

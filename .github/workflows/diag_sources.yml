@@ -22,7 +22,7 @@ jobs:
       - name: Install
         run: pip install -q requests seleniumbase
       - name: Diagnose
-        run: python scripts/diag_sources.py
+        run: xvfb-run -a python scripts/diag_sources.py --modes=headed,headless
       - uses: actions/upload-artifact@v4
         if: always()
         with:
