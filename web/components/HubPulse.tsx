@@ -6,7 +6,7 @@ import { usePeek } from "./PlayerPeek";
 import { colorsClose, compLabel, compTone, ddayLabel, lgEn, liftHex, splitKst } from "@/lib/match";
 import { useMatchPreview } from "@/lib/matchPreview";
 import { Crest, PredictBar } from "./MatchCard";
-import { useLiveAll, liveLabel, type LiveEvent } from "@/lib/live";
+import { useLiveAll, liveLabel, fixtureFromLive, type LiveEvent } from "@/lib/live";
 
 // 홈 '지금' 섹션들 — /api/hub/pulse(요청 시 계산·30분 캐시, 일정·결과는 daily_data 가 매일 갱신)
 type Pick = (team: string, league?: string) => void;
@@ -15,35 +15,39 @@ type Pick = (team: string, league?: string) => void;
 export function ResultsTicker({ results, onPick, comps }: { results: ResultMatch[]; onPick: Pick; comps?: string[] }) {
   // 하루 갱신 결과 + 라이브(진행 중·방금 끝난 경기, ESPN) — 아직 일정 파일에 안 들어온 경기를 앞에
   const live = useLiveAll();
+  const preview = useMatchPreview();   // 스코어를 누르면 경기 리뷰(매치 서랍)
   const known = new Set(results.map((r) => r.event_id));
   const cutoff = Date.now() - 20 * 3600 * 1000;
   const extra = Object.values(live)
     .filter((e) => e.state !== "pre" && !known.has(e.id) && Date.parse(e.date) >= cutoff && (!comps || comps.includes(e.comp)))
     .sort((a, b) => (a.state === "in" ? 0 : 1) - (b.state === "in" ? 0 : 1) || Date.parse(b.date) - Date.parse(a.date));
   if (!results.length && !extra.length) return null;
-  const liveItem = (e: LiveEvent, k: string) => {
+  const liveItem = (e: LiveEvent, k: string, dup = false) => {
     const hw = e.home.winner, aw = e.away.winner;
     return (
-      <span className={`tk5-item${e.state === "in" ? " live" : ""}`} key={k}>
+      <button className={`tk5-item tk5-btn${e.state === "in" ? " live" : ""}`} key={k} tabIndex={dup ? -1 : undefined}
+        onClick={() => preview?.(fixtureFromLive(e))} title="경기 리뷰 보기">
         <span className={`tk5-comp ${e.comp === "uefa.champions" ? "ucl" : e.comp.startsWith("uefa.europa") ? "uel" : ""}`}>
           {e.state === "in" ? <><i className="live-dot" />{liveLabel(e)}</> : liveLabel(e)}
         </span>
         <span className={`tk5-team${aw ? " lose" : ""}`}>{e.home.logo && <img className="crest" src={e.home.logo} alt="" style={{ width: 18, height: 18 }} />}{e.home.name}</span>
         <b className="tk5-score"><span className={hw ? "w" : ""}>{e.home.score ?? 0}</span>–<span className={aw ? "w" : ""}>{e.away.score ?? 0}</span></b>
         <span className={`tk5-team${hw ? " lose" : ""}`}>{e.away.name}{e.away.logo && <img className="crest" src={e.away.logo} alt="" style={{ width: 18, height: 18 }} />}</span>
-      </span>
+      </button>
     );
   };
-  const item = (m: ResultMatch, k: string) => {
+  const item = (m: ResultMatch, k: string, dup = false) => {
     const hw = m.home.goals > m.away.goals, aw = m.away.goals > m.home.goals;
     return (
       <span className={`tk5-item${m.upset ? " upset" : ""}`} key={k} title={m.upset || `${m.kst}`}>
         <span className={`tk5-comp ${compTone(m.comp_code)}`}>{compLabel(m)}</span>
-        <button className={`tk5-team${aw ? " lose" : ""}`} disabled={!m.home.league} onClick={() => m.home.league && onPick(m.home.team, m.home.league)}>
+        <button className={`tk5-team${aw ? " lose" : ""}`} disabled={!m.home.league} tabIndex={dup ? -1 : undefined} onClick={() => m.home.league && onPick(m.home.team, m.home.league)}>
           <Crest s={m.home} size={18} />{m.home.team}
         </button>
-        <b className="tk5-score"><span className={hw ? "w" : ""}>{m.home.goals}</span>–<span className={aw ? "w" : ""}>{m.away.goals}</span></b>
-        <button className={`tk5-team${hw ? " lose" : ""}`} disabled={!m.away.league} onClick={() => m.away.league && onPick(m.away.team, m.away.league)}>
+        <button className="tk5-score" disabled={!m.event_id} tabIndex={dup ? -1 : undefined} onClick={() => preview?.(m)} title="경기 리뷰 보기">
+          <span className={hw ? "w" : ""}>{m.home.goals}</span>–<span className={aw ? "w" : ""}>{m.away.goals}</span>
+        </button>
+        <button className={`tk5-team${hw ? " lose" : ""}`} disabled={!m.away.league} tabIndex={dup ? -1 : undefined} onClick={() => m.away.league && onPick(m.away.team, m.away.league)}>
           {m.away.team}<Crest s={m.away} size={18} />
         </button>
         {m.upset && <span className="bdg warn">UPSET</span>}
@@ -57,7 +61,7 @@ export function ResultsTicker({ results, onPick, comps }: { results: ResultMatch
         <div className="tk5-track" style={{ animationDuration: `${Math.max(40, (results.length + extra.length) * 5)}s` }}>
           {extra.map((e, i) => liveItem(e, `la${i}`))}
           {results.map((m, i) => item(m, `a${i}`))}
-          <span aria-hidden="true" className="tk5-dup">{extra.map((e, i) => liveItem(e, `lb${i}`))}{results.map((m, i) => item(m, `b${i}`))}</span>
+          <span aria-hidden="true" className="tk5-dup">{extra.map((e, i) => liveItem(e, `lb${i}`, true))}{results.map((m, i) => item(m, `b${i}`, true))}</span>
         </div>
       </div>
     </div>

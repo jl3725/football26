@@ -1,15 +1,18 @@
 "use client";
 import { useCallback, useEffect, useState } from "react";
-import { getOverview, type Fixture, type FixtureSide, type Overview } from "@/lib/api";
+import { getOverview, type Fixture, type FixtureSide, type Overview, type ResultMatch } from "@/lib/api";
+import { liveLabel, useLive } from "@/lib/live";
 import { colorsClose, compLabel, compTone, ddayLabel, lgKo, liftHex, rankLabel, streak } from "@/lib/match";
 import { MatchPreviewCtx } from "@/lib/matchPreview";
 import { futTier, hexA } from "@/lib/ui";
 import { Crest, FormBoxes, PredictBar } from "./MatchCard";
 import { usePeek, useOpenTeam } from "./PlayerPeek";
 import { Skel } from "./Skeleton";
+import { ReviewSections } from "./MatchReview";
 
-// 매치 프리뷰 서랍 — 경기 카드를 누르면 열린다. 두 팀 Overview(전력·폼·핵심 선수·결장)를 불러
+// 매치 서랍 — 경기 카드를 누르면 열린다. 두 팀 Overview(전력·폼·핵심 선수·결장)를 불러
 // 규칙으로 '관전 포인트'를 만든다(유료 AI 없음). 데이터는 매일 자동 갱신분 그대로.
+// 진행 중·끝난 경기면 맨 위에 경기 리뷰(MatchReview — ESPN 경기 상세 기반)를 붙이고 경기 전 예측·관전 포인트는 접는다.
 
 const UNITS: [string, "overall" | "attack" | "midfield" | "defense"][] = [["OVERALL", "overall"], ["ATTACK", "attack"], ["MIDFIELD", "midfield"], ["DEFENSE", "defense"]];
 const KO_UNIT: Record<string, string> = { ATTACK: "공격", MIDFIELD: "중원", DEFENSE: "수비" };
@@ -58,8 +61,14 @@ function Drawer({ m, onClose }: { m: Fixture; onClose: () => void }) {
     return () => { alive = false; window.removeEventListener("keydown", esc); };
   }, [m, onClose]);
 
+  const lv = useLive(m.event_id);
+  const res = (m as ResultMatch).home && "goals" in m.home ? (m as ResultMatch) : null;   // 결과 띠에서 연 경기
+  const state = lv?.state ?? (res || m.d_day < 0 ? "post" : "pre");
+  const score = lv && lv.state !== "pre" ? { h: Number(lv.home.score ?? 0), a: Number(lv.away.score ?? 0) }
+    : res ? { h: res.home.goals, a: res.away.goals } : null;
+  const ours = !!(m.home.league || m.away.league);   // 우리가 다루는 리그 팀이 없으면(유럽대회 상대끼리) 전력·결장 섹션 생략
   const loading = H === undefined || A === undefined;
-  const hc = liftHex(m.home.color), ac0 = liftHex(m.away.color);
+  const hc = liftHex(m.home.color || lv?.home.color || "#8a94a8"), ac0 = liftHex(m.away.color || lv?.away.color || "#8a94a8");   // 일정 밖 경기는 ESPN 팀 색
   const ac = colorsClose(hc, ac0) ? "#8a94a8" : ac0;   // 비슷한 색이면 원정은 중립색(막대가 한 덩어리로 보이지 않게)
   const pts = loading ? [] : keyPoints(m, H ?? null, A ?? null);
   const go = (s: FixtureSide) => { if (s.league && openTeam) { onClose(); openTeam(s.team, s.league); } };
@@ -75,19 +84,25 @@ function Drawer({ m, onClose }: { m: Fixture; onClose: () => void }) {
   return (
     <>
       <button className="pv-scrim" aria-label="프리뷰 닫기" onClick={onClose} />
-      <aside className="pv" role="dialog" aria-modal="true" aria-label={`${m.home.team} 대 ${m.away.team} 매치 프리뷰`}>
+      <aside className="pv" role="dialog" aria-modal="true" aria-label={`${m.home.team} 대 ${m.away.team} ${state === "pre" ? "매치 프리뷰" : "경기 리뷰"}`}>
         <header className="pv-head" style={{ ["--hc" as any]: hexA(hc, 0.32), ["--ac" as any]: hexA(ac, 0.38) }}>
           <div className="pv-top">
             <span className={`bdg ${compTone(m.comp_code)}`}>{compLabel(m)}</span>
-            <span className={`bdg ${m.d_day <= 1 ? "hot" : "neutral"}`}>{ddayLabel(m.d_day)}</span>
-            <span className="pv-when">{m.kst} KST</span>
+            {state === "in" ? <span className="bdg live"><i className="live-dot" />LIVE {lv ? liveLabel(lv) : ""}</span>
+              : state === "post" ? <span className="bdg ft">{lv ? liveLabel(lv) : "FT"}</span>
+              : <span className={`bdg ${m.d_day <= 1 ? "hot" : "neutral"}`}>{ddayLabel(m.d_day)}</span>}
+            {m.kst && <span className="pv-when">{m.kst} KST</span>}
             <button className="pv-x" onClick={onClose} aria-label="닫기">×</button>
           </div>
-          <div className="pv-teams">{head(m.home, m.away)}<span className="pv-vs">VS</span>{head(m.away, m.home)}</div>
+          <div className="pv-teams">{head(m.home, m.away)}
+            {score ? <span className={`pv-score${state === "in" ? " is-live" : ""}`}><span className={score.h > score.a ? "w" : ""}>{score.h}</span>–<span className={score.a > score.h ? "w" : ""}>{score.a}</span></span>
+              : <span className="pv-vs">VS</span>}
+            {head(m.away, m.home)}</div>
         </header>
 
         <div className="pv-body">
-          {(m.fans || m.elo) && (
+          {state !== "pre" && m.event_id && <ReviewSections m={m} inPlay={state === "in"} hc={hc} ac={ac} />}
+          {state !== "post" && (m.fans || m.elo) && (
             <section>
               <h3>PREDICTIONS<span>팬 투표 · 예측 모델</span></h3>
               {m.fans && (
@@ -119,13 +134,14 @@ function Drawer({ m, onClose }: { m: Fixture; onClose: () => void }) {
             </section>
           )}
 
-          <section>
+          {state === "pre" && <section>
             <h3>KEY POINTS<span>관전 포인트</span></h3>
             {loading ? <><Skel h={14} style={{ marginBottom: 8 }} /><Skel h={14} w="80%" /></>
               : pts.length ? <ul className="pv-points">{pts.map((p) => <li key={p}>{p}</li>)}</ul>
               : <p className="pv-empty">두 팀 데이터가 부족해 요약을 만들지 못했습니다.</p>}
-          </section>
+          </section>}
 
+          {ours && <>
           <section>
             <h3>TEAM STRENGTH<span>전력 비교 · 팀 OVR</span></h3>
             {UNITS.map(([k, u]) => {
@@ -195,6 +211,7 @@ function Drawer({ m, onClose }: { m: Fixture; onClose: () => void }) {
             {[m.home, m.away].map((s) => <button key={s.team} disabled={!s.league || !openTeam} onClick={() => go(s)}>{s.team} →</button>)}
           </div>
           <p className="pv-note">전력(팀 OVR)·최근 결과·결장은 매일 자동으로 갱신되는 데이터로 계산한 규칙 기반 요약입니다.</p>
+          </>}
         </div>
       </aside>
     </>

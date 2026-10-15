@@ -419,7 +419,9 @@ export type TableRow = { rank: number; team: string; logo: string; played: numbe
   points: number; form: string[]; xg_pg: number | null; ovr: number | null; str_rank: number | null; manager: string };
 export type LeagueLab = { league: string; playmakers: LabPlaymaker[]; finishing: LabFinish[]; creating: LabCreate[]; ball_winners: LabBallWinner[]; team_style: TeamStyle[];
   table?: TableRow[]; race?: RaceTeam[]; over?: TableGap[]; under?: TableGap[]; results?: ResultMatch[]; watch?: WatchMatch[];
-  tots?: TotsPlayer[]; golden_boot?: HubBoot[]; injury_impact?: InjuryImpactRow[] };
+  tots?: TotsPlayer[]; golden_boot?: HubBoot[]; injury_impact?: InjuryImpactRow[];
+  // 아직 결과가 반영되지 않은 최근·오늘 리그 경기(event_id → 우리 표기 팀) — 라이브 스코어로 잠정 순위를 만든다
+  pending?: Record<string, { home: string; away: string }> };
 export const getLeagueLab = (league: string) => j<LeagueLab>(`/api/league-lab/${encodeURIComponent(league)}`);
 export type TotsAlt = { player: string; club: string; rating: number; minutes: number; goals: number; assists: number };
 export type TotsPlayer = { slot: string; kind: string; x: number; y: number; player: string; club: string; club_logo: string; rating: number; ovr: number; photo: string; minutes: number;
@@ -456,6 +458,20 @@ export type TableGap = { team: string; logo: string; league: string; rank: numbe
   points: number; n: number; manager: string; hot_seat: boolean };
 export type HubPulse = { results: ResultMatch[]; watch: WatchMatch[]; race: { league: string; teams: RaceTeam[] }[]; over: TableGap[]; under: TableGap[] };
 export const getHubPulse = () => j<HubPulse>(`/api/hub/pulse`);
+// 경기 리뷰 — ESPN 경기 상세로 만든 규칙 기반 리포트(src/match_review.py). 종료 하루·진행 중 1분 캐시
+export type ReviewSide = "home" | "away";
+export type ReviewGoal = { minute: string; m: number; side: ReviewSide; scorer: string; assist: string; kind: "" | "pen" | "og" | "header" };
+export type ReviewCard = { minute: string; m: number; side: ReviewSide; player: string; color: "yellow" | "red" };
+export type ReviewPen = { minute: string; m: number; side: ReviewSide; player: string; result: "saved" | "missed" };
+export type ReviewStat = { key: string; label: string; h: number; a: number; fmt: "pct" | "int" | "ratio" };
+export type ReviewTeam = { team: string; league: string | null; logo: string; color: string };
+export type MatchReview = { event_id: string; comp: string; date: string; state: "pre" | "in" | "post"; detail: string;
+  score: { home: number; away: number }; headline: string; lines: string[]; goals: ReviewGoal[]; cards: ReviewCard[]; pens: ReviewPen[];
+  stats: ReviewStat[]; star: { player: string; side: ReviewSide; goals: number; assists: number } | null;
+  predictions: { source: string; pick: string; p: number; hit: boolean }[]; venue: string; attendance: number | null;
+  ht: { home: number; away: number } | null; home: ReviewTeam; away: ReviewTeam };
+export const getReview = (eventId: string, comp = "") =>
+  j<MatchReview>(`/api/review/${encodeURIComponent(eventId)}${comp ? `?comp=${encodeURIComponent(comp)}` : ""}`);
 export const getTeamFixtures = (team: string, l = _league) =>
   j<{ team: string; next: Fixture[] }>(`/api/fixtures/${encodeURIComponent(team)}?league=${encodeURIComponent(l)}`);
 // 선수 시즌 히트맵(Sofascore) — analytics 포지셔널 히트맵

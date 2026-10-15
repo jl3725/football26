@@ -1,8 +1,9 @@
 "use client";
 import { useEffect, useState, type ReactNode } from "react";
-import { feeLabel, getHome, getLeagueLab, type Home, type LeagueLab } from "@/lib/api";
+import { feeLabel, getHome, getLeagueLab, type Fixture, type Home, type LeagueLab } from "@/lib/api";
 import LeagueFocus from "./LeagueFocus";
 import { ResultsTicker, WatchGrid } from "./HubPulse";
+import { MatchRecap } from "./MatchReview";
 import WorldCup from "./WorldCup";
 import AllDashboard from "./AllDashboard";
 import { Skel, SkelCards } from "./Skeleton";
@@ -20,6 +21,19 @@ function Sec({ en, kr, right }: { en: string; kr: string; accent?: string; right
 }
 
 type LeagueOpt = { key: string; label: string };
+
+// 결과 파일에 아직 없는 최근·오늘 리그 경기(lab.pending) → 방금 끝난(FT) 경기를 MATCH RECAP 에 바로 올리기 위한 Fixture
+function pendingFixtures(lab: LeagueLab, league: string): Fixture[] {
+  const row = (n: string) => (lab.table ?? []).find((t) => t.team === n);
+  const side = (n: string) => {
+    const t = row(n);
+    return { team: n, league, rank: t?.rank ?? null, points: t?.points ?? null, logo: t?.logo ?? "", color: "", ovr: t?.ovr ?? null, form: t?.form ?? [] };
+  };
+  return Object.entries(lab.pending ?? {}).map(([id, p]) => ({
+    event_id: id, comp_code: ESPN_CODE[league] ?? "", comp: "", kickoff: "", kst: "", date: "", d_day: 0,
+    home: side(p.home), away: side(p.away), big: 0, tags: [],
+  }));
+}
 
 export default function HomeDashboard({ accent, onPickTeam, onPickLeagueTeam, leagueLabel = "EPL",
   league = "EPL", leagues = [], onLeague }: {
@@ -105,6 +119,13 @@ export default function HomeDashboard({ accent, onPickTeam, onPickLeagueTeam, le
       {/* ── 이번 주 경기(매치 센터) — 시즌 중엔 이적보다 먼저. 빅매치는 강조 카드 + 목록 배지 ── */}
       <Sec en="THIS WEEK" kr="이번 주 경기" accent={accent} />
       <LeagueFixtures league={league} accent={accent} onPick={(t, lg) => pickTL(t, lg)} />
+
+      {lab && (lab.results ?? []).length > 0 && (
+        <>
+          <Sec en="MATCH RECAP" kr="경기 리뷰" />
+          <MatchRecap results={lab.results!} extra={pendingFixtures(lab, league)} />
+        </>
+      )}
 
       {lab && (lab.watch ?? []).length > 0 && (
         <>

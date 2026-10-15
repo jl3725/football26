@@ -6,23 +6,41 @@ import { FormBoxes } from "./MatchCard";
 import { TitleRace, GoldenBoot, TeamOfSeason, OverUnder, InjuryImpact } from "./HubPulse";
 import { ExpectedBoard, Playmakers, BallWinners, TeamStyleMap } from "./LeagueLab";
 import { lgEn } from "@/lib/match";
+import { liveLabel, useLiveAll } from "@/lib/live";
+import { liveTable, type LiveTableRow } from "@/lib/liveTable";
 
 // 리그 집중 묶음 — 글로벌 대시보드(리그 선택)와 각 리그 탭(full: 전체 순위표·전력 대비·부상 타격 추가)이 함께 쓴다.
 // 데이터는 /api/league-lab/{league} 하나(6시간 캐시).
 type Pick = (team: string, league?: string) => void;
 
+// 진행 중·방금 끝난 경기 표시 — 'LIVE 67' 2-1' / 'FT 2-1'(그 팀 기준 득실)
+function LiveChip({ t }: { t: LiveTableRow }) {
+  if (!t.live) return null;
+  const { state, label, gf, ga, res } = t.live;
+  return <span className={`lv5 ${state} ${res}`} title={state === "in" ? "진행 중 — 지금 끝나면 기준" : "종료 — 공식 반영 전"}>{state === "in" && <i className="live-dot" />}{label} {gf}-{ga}</span>;
+}
+function Move({ t }: { t: LiveTableRow }) {
+  if (!t.move) return null;
+  return <span className={`lv5-mv ${t.move > 0 ? "up" : "down"}`}>{t.move > 0 ? "▲" : "▼"}{Math.abs(t.move)}</span>;
+}
+function LiveNote({ inPlay }: { inPlay: boolean }) {
+  return <p className="lv5-note"><i className="live-dot" />{inPlay ? "LIVE 순위 — 진행 중 경기를 지금 스코어로 반영" : "잠정 순위 — 방금 끝난 경기 반영"} · 공식 순위는 매일 08:15 갱신</p>;
+}
+
 function StandingsMini({ lab, league, onPick }: { lab: LeagueLab; league: string; onPick: Pick }) {
-  const rows = (lab.table ?? []).slice(0, 6);
+  const lt = liveTable(lab.table, lab.pending, useLiveAll(), liveLabel);
+  const rows = lt.rows.slice(0, 6);
   const top = rows[0]?.points || 1;
   return (
     <div className="st5">
+      {lt.on && <LiveNote inPlay={lt.inPlay} />}
       {rows.map((t) => (
-        <button className="st5-row" key={t.team} onClick={() => onPick(t.team, league)}>
+        <button className={`st5-row${t.live ? " is-live" : ""}`} key={t.team} onClick={() => onPick(t.team, league)}>
           <span className="st5-rk">{t.rank}</span>
           {t.logo ? <img src={t.logo} alt="" /> : <span className="st5-ph" />}
-          <span className="st5-nm">{t.team}</span>
+          <span className={`st5-nm${t.live || t.move ? " has-live" : ""}`}><span className="st5-nm-t">{t.team}</span><Move t={t} /><LiveChip t={t} /></span>
           <span className="st5-bar"><span style={{ width: `${Math.max(4, (t.points / top) * 100)}%` }} /></span>
-          <span className="st5-gap">{t.rank === 1 ? "—" : `-${top - t.points}`}</span>
+          <span className="st5-gap">{t.rank === 1 ? "—" : top - t.points ? `-${top - t.points}` : "0"}</span>
           <b className="st5-pts">{t.points}</b>
         </button>
       ))}
@@ -32,14 +50,16 @@ function StandingsMini({ lab, league, onPick }: { lab: LeagueLab; league: string
 
 // 전체 순위표 — 경기·승무패·득실·승점·최근 5경기·경기당 xG·전력 순위(OVR)·감독
 function StandingsFull({ lab, league, onPick }: { lab: LeagueLab; league: string; onPick: Pick }) {
-  const rows = lab.table ?? [];
+  const lt = liveTable(lab.table, lab.pending, useLiveAll(), liveLabel);
+  const rows = lt.rows;
   const n = rows.length;
   return (
     <div className="tb5-wrap">
+      {lt.on && <LiveNote inPlay={lt.inPlay} />}
       <table className="tb5">
         <thead>
           <tr>
-            <th>#</th><th className="l">TEAM</th><th>P</th><th>W</th><th>D</th><th>L</th><th className="m">GF</th><th className="m">GA</th>
+            <th>#</th><th className="l">TEAM</th><th>P</th><th className="s">W</th><th className="s">D</th><th className="s">L</th><th className="m">GF</th><th className="m">GA</th>
             <th>GD</th><th>PTS</th><th className="m">FORM</th><th className="m" title="경기당 기대 득점">xG/G</th><th className="m" title="팀 전력(OVR) 순위">OVR</th>
           </tr>
         </thead>
@@ -47,10 +67,10 @@ function StandingsFull({ lab, league, onPick }: { lab: LeagueLab; league: string
           {rows.map((t) => {
             const gap = t.str_rank ? t.str_rank - t.rank : 0;
             return (
-              <tr key={t.team} onClick={() => onPick(t.team, league)} className={t.rank === 1 ? "lead" : t.rank > n - 3 ? "rel" : ""}>
-                <td className="rk">{t.rank}</td>
-                <td className="l"><span className="tb5-team">{t.logo ? <img src={t.logo} alt="" /> : <i />}<b>{t.team}</b>{t.manager && <em>{t.manager}</em>}</span></td>
-                <td>{t.played}</td><td>{t.won}</td><td>{t.drawn}</td><td>{t.lost}</td>
+              <tr key={t.team} onClick={() => onPick(t.team, league)} className={[t.rank === 1 ? "lead" : t.rank > n - 3 ? "rel" : "", t.live ? "is-live" : ""].join(" ").trim()}>
+                <td className="rk">{t.rank}<Move t={t} /></td>
+                <td className="l"><span className="tb5-team">{t.logo ? <img src={t.logo} alt="" /> : <i />}<b>{t.team}</b><LiveChip t={t} />{t.manager && <em>{t.manager}</em>}</span></td>
+                <td>{t.played}</td><td className="s">{t.won}</td><td className="s">{t.drawn}</td><td className="s">{t.lost}</td>
                 <td className="m">{t.gf}</td><td className="m">{t.ga}</td>
                 <td className={t.gd > 0 ? "up" : t.gd < 0 ? "down" : ""}>{t.gd > 0 ? `+${t.gd}` : t.gd}</td>
                 <td className="pts">{t.points}</td>

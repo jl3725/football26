@@ -3,6 +3,7 @@ import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } fro
 import { getHomeAll, getFixtures, getHubPulse, getLeagueLab, fmtEur, feeLabel, type HomeAll, type Fixture, type HubMover, type HubPulse, type LeagueLab, type Trend } from "@/lib/api";
 import { ResultsTicker, WatchGrid, OverUnder, InjuryImpact } from "./HubPulse";
 import LeagueFocus from "./LeagueFocus";
+import { MatchRecap } from "./MatchReview";
 import { Skel, SkelCards } from "./Skeleton";
 import CountUp from "./CountUp";
 import MatchCard, { MatchHero } from "./MatchCard";
@@ -71,6 +72,7 @@ const ddays = (until: string) => Math.round((new Date(until).getTime() - Date.no
 export default function AllDashboard({ onPick, switcher }: { accent?: string; onPick: Pick; switcher?: ReactNode }) {
   const [d, setD] = useState<HomeAll | null>(null);
   const [fx, setFx] = useState<Fixture[] | null>(null);
+  const [fxToday, setFxToday] = useState<Fixture[]>([]);   // 오늘 경기 — 방금 끝난(FT) 경기를 MATCH RECAP 에 바로 올린다
   const [pulse, setPulse] = useState<HubPulse | null>(null);
   const [lab, setLab] = useState<LeagueLab | null>(null);
   const [mv, setMv] = useState<string>("up");
@@ -100,7 +102,7 @@ export default function AllDashboard({ onPick, switcher }: { accent?: string; on
     getLeagueLab(focusLg).then((x) => a && setLab(x)).catch(() => {});
     return () => { a = false; };
   }, [focusLg]);
-  useEffect(() => { let a = true; getFixtures(7).then((x) => a && setFx(x.big)).catch(() => a && setFx([])); return () => { a = false; }; }, []);
+  useEffect(() => { let a = true; getFixtures(7).then((x) => { if (a) { setFx(x.big); setFxToday([...x.big, ...x.today]); } }).catch(() => a && setFx([])); return () => { a = false; }; }, []);
   useEffect(() => { let a = true; getHubPulse().then((x) => a && setPulse(x)).catch(() => {}); return () => { a = false; }; }, []);
 
   const pinned = useMemo(() => new Set(pins.map((p) => p.team)), [pins]);
@@ -195,6 +197,10 @@ export default function AllDashboard({ onPick, switcher }: { accent?: string; on
           <SectionHead title="BIG MATCHES" kr="이번 주 빅매치" meta={`7일 이내 · ${fx!.length}경기`} />
           <div className="h5-grid3">{rest.map((m, i) => <MatchCard key={m.event_id ?? i} m={m} onPick={(t, l) => l && onPick(t, l)} />)}</div>
         </section>
+      )}
+
+      {pulse && pulse.results.length + fxToday.length > 0 && (
+        <MatchRecapSec results={pulse.results} extra={fxToday} />
       )}
 
       {pulse && pulse.watch.length > 0 && (
@@ -297,5 +303,15 @@ export default function AllDashboard({ onPick, switcher }: { accent?: string; on
         </div>
       </section>
     </div>
+  );
+}
+
+// MATCH RECAP — 최근 주요 결과의 자동 리뷰 카드(결과가 하나도 없으면 섹션째 숨김)
+function MatchRecapSec({ results, extra }: { results: HubPulse["results"]; extra: Fixture[] }) {
+  return (
+    <section className="h5-sec rc5-sec">
+      <SectionHead title="MATCH RECAP" kr="경기 리뷰" meta="최근 주요 결과 · ESPN 기록 기반 자동 리포트" />
+      <MatchRecap results={results} extra={extra} />
+    </section>
   );
 }

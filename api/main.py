@@ -3381,7 +3381,10 @@ def league_lab(league: str):
     under = sorted([g for g in gaps if g["gap"] <= -2], key=lambda g: (g["gap"], -g["rank"]))[:8]
     today = _today_kst()
     results = []
-    for m in mc.results_from({league: rows}, today, 7):
+    # 전 리그 파일로 묶어야 상대 팀도 우리 표기가 된다(ESPN 'Paris Saint-Germain' → 'PSG') — 그중 이 리그 팀 경기만
+    for m in mc.results_from(src["rows"], today, 7):
+        if league not in (m["home"].get("league"), m["away"].get("league")):
+            continue
         m = _fx_enrich(m, src)
         m["upset"] = mc.upset_note(m)
         results.append(m)
@@ -3395,13 +3398,83 @@ def league_lab(league: str):
         if sc >= 15:
             watch.append({**m, "watch": round(sc), "why": why, "league": league})
     watch.sort(key=lambda m: -m["watch"])
+    pending: dict = {}
+    if rows is not None and not rows.empty and "event_id" in rows.columns:
+        lo, hi = (today - datetime.timedelta(days=3)).isoformat(), (today + datetime.timedelta(days=1)).isoformat()
+        pr = rows[(rows["status"] != "completed") & rows["comp_code"].astype(str).str.endswith(".1")
+                  & (rows["date"].astype(str).str[:10] >= lo) & (rows["date"].astype(str).str[:10] <= hi)]
+        for r in pr.itertuples(index=False):
+            e = pending.setdefault(str(r.event_id), {})
+            e["home" if r.home_away == "H" else "away"] = str(r.squad)
+        pending = {k: v for k, v in pending.items() if "home" in v and "away" in v}
     cur_inj = ds.read_table("transfermarkt_injuries", league=league)
-    return {"league": league, "playmakers": playmakers, "finishing": finishing, "creating": creating,
+    return {"league": league, "pending": pending, "playmakers": playmakers, "finishing": finishing, "creating": creating,
             "ball_winners": ball_winners, "team_style": team_style,
             "table": table, "race": race, "over": over, "under": under, "results": results[:20], "watch": watch[:3],
             "tots": _team_of_season(pp, league) if pp is not None else [],
             "golden_boot": _golden_boot(pp, league) if pp is not None else [],
             "injury_impact": sorted(_injury_impact(pp, cur_inj, league), key=lambda x: (-x["loss"], -x["n"]))[:8] if pp is not None else []}
+
+
+_REVIEW_CACHE: dict = {}
+
+
+@app.get("/api/review/{event_id}")
+def match_review_api(event_id: str, comp: str = ""):
+    """경기 리뷰(Match Review) — ESPN 경기 상세로 규칙 기반 리포트(src/match_review.py). 유료 AI 없음.
+    종료 경기는 하루, 진행 중은 1분 캐시. 우리 일정에 있으면 우리 표기·로고·예측(팬 투표·ClubElo)을 붙이고,
+    없으면(유럽대회 상대끼리 등) comp 로 ESPN 표기 그대로."""
+    import json as _json
+    import time as _t
+    import urllib.request
+    import match_review as mrv  # noqa: PLC0415
+    hit = _REVIEW_CACHE.get(event_id)
+    if hit and _t.time() < hit[0]:
+        return hit[1]
+    src = _fx_sources()
+    home = away = lg_h = lg_a = date = None
+    for lg, df in src["rows"].items():
+        if df is None or df.empty or "event_id" not in df.columns:
+            continue
+        sub = df[df["event_id"].astype(str) == str(event_id)]
+        for r in sub.itertuples(index=False):
+            comp = comp or str(r.comp_code)
+            date = str(r.date)[:10]
+            if r.home_away == "H":
+                home, lg_h = str(r.squad), lg
+                away = away or str(r.opponent)
+            else:
+                away, lg_a = str(r.squad), lg
+                home = home or str(r.opponent)
+    if not comp:
+        raise HTTPException(status_code=404, detail="unknown event")
+    url = f"https://site.api.espn.com/apis/site/v2/sports/soccer/{comp}/summary?event={event_id}"
+    try:
+        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (football26)"})
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            data = _json.loads(resp.read().decode("utf-8"))
+    except Exception as e:  # noqa: BLE001
+        raise HTTPException(status_code=502, detail=f"espn {type(e).__name__}") from e
+    p = mrv.parse(data)
+    cps = {c.get("homeAway"): c for c in ((data.get("header", {}).get("competitions") or [{}])[0].get("competitors", []))}
+    # 일정 밖 경기는 ESPN 이름 — 결과 띠(scoreboard shortDisplayName)와 같은 짧은 이름을 먼저
+    _nm = lambda side: next((t.get(k) for t in [(cps.get(side) or {}).get("team", {})]  # noqa: E731
+                             for k in ("shortDisplayName", "displayName", "name") if t.get(k)), "")
+    home = home or _nm("home")
+    away = away or _nm("away")
+    date = date or str(((data.get("header", {}).get("competitions") or [{}])[0].get("date") or ""))[:10]
+    m = {"date": date or _today_kst().isoformat(), "home": {"team": home}, "away": {"team": away}}
+    try:
+        _attach_predictions(m)
+    except Exception:  # noqa: BLE001
+        pass
+    rv = mrv.build(p, home, away, m.get("fans"), m.get("elo"))
+    logo = lambda t, side: tm.team_logo(t) or ((cps.get(side) or {}).get("team", {}).get("logo") or "")  # noqa: E731
+    rv.update({"event_id": event_id, "comp": comp, "date": date,
+               "home": {"team": home, "league": lg_h, "logo": logo(home, "home"), "color": tm.team_color(home)},
+               "away": {"team": away, "league": lg_a, "logo": logo(away, "away"), "color": tm.team_color(away)}})
+    _REVIEW_CACHE[event_id] = (_t.time() + (86400 if p["state"] == "post" else 60), rv)
+    return rv
 
 
 @app.get("/api/hub/pulse")

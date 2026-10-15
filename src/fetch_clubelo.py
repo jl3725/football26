@@ -113,8 +113,16 @@ def main() -> int:
     if not rows:
         print(f"[clubelo] 우리 리그 경기 0건(원자료 {len(raw)}) — 기존 파일 유지")
         return 1
-    pd.DataFrame(rows).to_csv(OUT, index=False)
-    print(f"[OK] {OUT.name} · {len(rows)}경기 ({src})")
+    new = pd.DataFrame(rows)
+    if OUT.exists():   # 페이지에서 빠진 지난 경기 예측도 7일간 보관(경기 리뷰의 예측 적중 판정용)
+        import datetime as _dt
+        old = pd.read_csv(OUT)
+        cut = (_dt.date.today() - _dt.timedelta(days=7)).isoformat()
+        key = lambda d: d["date"].astype(str) + "|" + d["home"].astype(str) + "|" + d["away"].astype(str)  # noqa: E731
+        old = old[(old["date"].astype(str) >= cut) & ~key(old).isin(set(key(new)))]
+        new = pd.concat([old, new], ignore_index=True)
+    new.sort_values("date").to_csv(OUT, index=False)
+    print(f"[OK] {OUT.name} · {len(rows)}경기 ({src}, 지난 7일 보관 {len(new) - len(rows)})")
     return 0
 
 

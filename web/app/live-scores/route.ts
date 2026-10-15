@@ -12,7 +12,7 @@ const CODES = [
   "eng.fa", "eng.league_cup", "esp.copa_del_rey", "ita.coppa_italia", "ger.dfb_pokal", "fra.coupe_de_france",
 ];
 
-type Side = { name: string; score: string | null; logo: string; winner: boolean };
+type Side = { name: string; score: string | null; logo: string; winner: boolean; color: string };
 export type LiveEvent = { id: string; comp: string; date: string; state: "pre" | "in" | "post"; detail: string; clock: string; home: Side; away: Side };
 
 const ymd = (d: Date) => `${d.getUTCFullYear()}${String(d.getUTCMonth() + 1).padStart(2, "0")}${String(d.getUTCDate()).padStart(2, "0")}`;
@@ -25,7 +25,8 @@ async function board(code: string, date: string): Promise<LiveEvent[]> {
     const c = e.competitions?.[0] ?? {};
     const side = (ha: string): Side => {
       const x = (c.competitors ?? []).find((t: any) => t.homeAway === ha) ?? {};
-      return { name: x.team?.shortDisplayName ?? x.team?.displayName ?? "", score: x.score ?? null, logo: x.team?.logo ?? "", winner: !!x.winner };
+      return { name: x.team?.shortDisplayName ?? x.team?.displayName ?? "", score: x.score ?? null, logo: x.team?.logo ?? "", winner: !!x.winner,
+        color: x.team?.color ? `#${x.team.color}` : "" };
     };
     return {
       id: String(e.id), comp: code, date: e.date, state: e.status?.type?.state ?? "pre",

@@ -100,8 +100,14 @@ def main() -> int:
     if not rows:
         print("[fan_votes] 수집 0건 — 기존 파일 유지")
         return 1
-    pd.DataFrame(rows).sort_values(["date", "comp"]).to_csv(OUT, index=False)
-    print(f"[OK] {OUT.name} · {len(rows)}경기")
+    new = pd.DataFrame(rows)
+    if OUT.exists():   # 끝난 경기의 마지막 투표는 7일간 남긴다 — 경기 리뷰가 '팬 예측 적중'을 판정
+        old = pd.read_csv(OUT)
+        cut = (dt.datetime.now(KST).date() - dt.timedelta(days=7)).isoformat()
+        old = old[(old["date"].astype(str) >= cut) & ~old["sofascore_id"].isin(new["sofascore_id"])]
+        new = pd.concat([old, new], ignore_index=True)
+    new.sort_values(["date", "comp"]).to_csv(OUT, index=False)
+    print(f"[OK] {OUT.name} · {len(rows)}경기(+ 지난 7일 보관 {len(new) - len(rows)})")
     return 0
 
 

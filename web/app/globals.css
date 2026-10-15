@@ -2522,7 +2522,7 @@ body {
 .st5-row:hover .st5-nm { color: #fff; }
 .st5-bar { width: 80px; height: 6px; border-radius: 3px; background: var(--overlay); overflow: hidden; flex-shrink: 0; }
 .st5-bar span { display: block; height: 100%; border-radius: 3px; background: rgba(255, 255, 255, 0.42); }
-.st5-row:first-child .st5-bar span { background: var(--brand); }
+.st5-row:first-of-type .st5-bar span { background: var(--brand); }   /* 위에 잠정 순위 안내(p)가 붙어도 1위 막대 강조 */
 .st5-gap { width: 26px; text-align: right; font: 500 13px/1 var(--font-num); color: var(--muted-2); flex-shrink: 0; }
 .st5-pts { width: 26px; text-align: right; font: 700 19px/1 var(--font-num); flex-shrink: 0; }
 .dl5 { display: flex; align-items: center; gap: 12px; padding: 10px 0; border: 0; border-bottom: 1px solid var(--line); background: none; color: inherit; text-align: left; cursor: pointer; width: 100%; }
@@ -2651,7 +2651,7 @@ body {
 .mh5-side .crest { width: 76px !important; height: 76px !important; }
 .mh5-team { font-size: clamp(20px, 1.85vw, 26px); }
 /* 홈: 검색은 제목 줄 오른쪽에 띄운다(검색만 있는 빈 줄이 화면 위를 차지했다) */
-@media (min-width: 761px) {
+@media (min-width: 1300px) {   /* 이보다 좁으면(iPad 가로 1194 + 사이드바 포함) 제목·SEASON OPENER 와 겹쳐 위 줄에 따로 둔다 */
   .workspace-header.is-home { position: relative; height: 0; margin: 0; z-index: 6; }
   .workspace-header.is-home .global-search-wrap { position: absolute; right: 0; top: 30px; }
 }
@@ -3002,7 +3002,7 @@ body {
 .tb5-note { margin-top: 10px; font-size: 11.5px; color: var(--muted-2); }
 @media (max-width: 900px) { .tb5 .m, .tb5-team em { display: none; } }
 /* 검색을 제목 줄에 띄우는 건 전체 홈(.h5)일 때만 — 리그 탭에선 상단 칩을 가렸다 */
-@media (min-width: 761px) {
+@media (min-width: 1300px) {
   .workspace-shell:not(:has(.h5)) .workspace-header.is-home { position: static; height: auto; margin-bottom: 10px; }
   .workspace-shell:not(:has(.h5)) .workspace-header.is-home .global-search-wrap { position: static; }
 }
@@ -3084,3 +3084,146 @@ body {
 .mh5-ko.score > b > span, .mc5-ko.score > b > span, .mh5-ko.score > b > em, .mc5-ko.score > b > em { font-size: inherit; line-height: inherit; white-space: nowrap; }
 .mh5-ko.score > b > em, .mc5-ko.score > b > em { font-size: .6em; align-self: center; }
 .mh5-ko.score > b { font-size: 64px; }
+
+
+/* ── v5.8: 경기 리뷰(MATCH REVIEW)·MATCH RECAP·잠정 순위(LIVE TABLE)·터치 기기 ── */
+/* 결과 띠: 스코어 = 경기 리뷰 열기 */
+.tk5-btn { background: none; border: 0; border-right: 1px solid rgba(255, 255, 255, 0.05); color: inherit; font: inherit; cursor: pointer; }
+button.tk5-score { background: none; border: 0; padding: 4px 6px; border-radius: 6px; cursor: pointer; }
+button.tk5-score:hover:not(:disabled), .tk5-btn:hover .tk5-score { background: rgba(255, 255, 255, 0.07); color: var(--txt); }
+button.tk5-score:disabled { cursor: default; }
+/* 터치 기기(iPad·폰)는 hover 가 없어 흐르는 띠를 멈출 수 없다 → 손가락으로 넘기는 띠 */
+@media (hover: none) {
+  .tk5-track { animation: none; }
+  .tk5-viewport { overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; overscroll-behavior-x: contain; }
+  .tk5-viewport::-webkit-scrollbar { display: none; }
+  .tk5-dup { display: none; }
+}
+
+/* 매치 서랍: 스코어(진행 중·종료) */
+.pv-score { font: 800 44px/1 var(--font-display); letter-spacing: 0.02em; color: var(--muted); display: flex; align-items: center; gap: 6px; font-variant-numeric: tabular-nums; }
+.pv-score .w { color: var(--txt); }
+.pv-score.is-live span:not(.w) { color: var(--txt); }
+.pv-score.is-live { text-shadow: 0 0 22px rgba(255, 59, 79, 0.35); }
+.rv5-head { font: 700 19px/1.35 var(--font-ui); color: var(--txt); margin: 2px 0 10px; letter-spacing: -0.01em; }
+.rv5-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.rv5-star, .rv5-pred { display: inline-flex; flex-direction: column; gap: 3px; padding: 9px 12px; border-radius: 10px; background: var(--overlay); border: 1px solid var(--line); min-width: 0; }
+.rv5-star em, .rv5-pred em { font: 600 10px/1 var(--font-num); letter-spacing: 0.14em; color: var(--muted-2); font-style: normal; }
+.rv5-star b { font-size: 15px; color: var(--txt); }
+.rv5-star span, .rv5-pred span { font-size: 12px; color: var(--muted); }
+.rv5-star { border-color: rgba(244, 207, 94, 0.35); background: linear-gradient(180deg, rgba(244, 207, 94, 0.08), transparent); }
+.rv5-pred b { font-size: 14px; }
+.rv5-pred.hit { border-color: rgba(52, 211, 153, 0.35); }
+.rv5-pred.hit b { color: var(--positive); }
+.rv5-pred.miss b { color: var(--muted); }
+/* 타임라인: 홈(왼쪽) | 분 | 원정(오른쪽) */
+.rv5-tl { display: flex; flex-direction: column; gap: 2px; }
+.rv5-ev { display: grid; grid-template-columns: minmax(0, 1fr) 54px minmax(0, 1fr); align-items: center; gap: 8px; min-height: 36px; }
+.rv5-ev-side { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.rv5-ev.h .rv5-ev-side:first-child { justify-content: flex-end; text-align: right; }
+.rv5-ev-t { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.rv5-ev-t b { font-size: 13.5px; color: var(--txt); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rv5-ev-t em { font-size: 11px; color: var(--muted-2); font-style: normal; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rv5-min { text-align: center; font: 700 13px/1 var(--font-num); color: var(--muted); padding: 5px 0; border-radius: 6px; background: var(--overlay); }
+.rv5-ico { width: 12px; height: 12px; flex-shrink: 0; border-radius: 50%; background: var(--txt); box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.08); }
+.rv5-ico.og { background: transparent; border: 2px solid var(--danger); box-shadow: none; }
+.rv5-ico.red { width: 9px; height: 13px; border-radius: 2px; background: #ff3b4f; box-shadow: none; }
+.rv5-ico.pmiss { background: transparent; border: 2px dashed var(--muted); box-shadow: none; }
+.rv5-ht { display: flex; align-items: center; gap: 10px; margin: 6px 0; font: 600 11px/1 var(--font-num); letter-spacing: 0.12em; color: var(--muted-2); }
+.rv5-ht::before, .rv5-ht::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+
+/* MATCH RECAP 카드 */
+.rc5-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.rc5 { display: flex; flex-direction: column; gap: 10px; padding: 16px 18px; text-align: left; color: inherit; font: inherit; cursor: pointer; border: 1px solid var(--line); min-width: 0; transition: transform .15s, border-color .15s; }
+.rc5:hover { border-color: rgba(255, 255, 255, 0.16); transform: translateY(-1px); }
+.rc5-top { display: flex; align-items: center; gap: 8px; }
+.rc5-when { font: 600 12px/1 var(--font-num); color: var(--muted-2); letter-spacing: 0.06em; }
+.rc5-top .bdg.warn { margin-left: auto; }
+.rc5-score { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 10px; }
+.rc5-t { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.rc5-t.r { justify-content: flex-end; text-align: right; }
+.rc5-t b { font-size: 14px; color: var(--txt); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.rc5-t.lose b { color: var(--muted); font-weight: 500; }
+.rc5-num { font: 800 30px/1 var(--font-display); color: var(--muted); letter-spacing: 0.02em; font-variant-numeric: tabular-nums; }
+.rc5-num .w { color: var(--txt); }
+.rc5-head { font: 700 15px/1.35 var(--font-ui); color: var(--txt); margin: 0; }
+.rc5-line { font-size: 12.5px; line-height: 1.5; color: var(--muted); margin: 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.rc5-foot { display: flex; align-items: center; gap: 8px; margin-top: auto; padding-top: 4px; }
+.rc5-star { font-size: 12px; font-weight: 600; color: #f4cf5e; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.rc5-more { margin-left: auto; font: 600 11px/1 var(--font-num); letter-spacing: 0.12em; color: var(--muted-2); flex-shrink: 0; }
+.rc5:hover .rc5-more { color: var(--txt); }
+@media (max-width: 1280px) { .rc5-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .rc5-grid > :nth-child(3) { display: none; } }
+@media (max-width: 760px) { .rc5-grid { grid-template-columns: minmax(0, 1fr); } .rc5-grid > :nth-child(3) { display: flex; } }
+
+/* 잠정 순위 — 진행 중·방금 끝난 경기 반영 */
+.lv5-note { display: flex; align-items: center; gap: 7px; margin: 0 0 8px; font-size: 11.5px; color: var(--muted); }
+.lv5 { display: inline-flex; align-items: center; gap: 4px; margin-left: 7px; padding: 3px 6px; border-radius: 5px; font: 700 10.5px/1 var(--font-num); letter-spacing: 0.04em; white-space: nowrap; flex-shrink: 0;
+  background: var(--overlay); color: var(--muted); vertical-align: middle; }
+.lv5.in { background: rgba(255, 59, 79, 0.14); color: #ff8a97; }
+.lv5.post.W { color: var(--positive); }
+.lv5.post.L { color: var(--danger); }
+.lv5 .live-dot { width: 6px; height: 6px; }
+.lv5-mv { margin-left: 4px; font: 600 10.5px/1 var(--font-num); }
+.lv5-mv.up { color: var(--positive); }
+.lv5-mv.down { color: var(--danger); }
+.tb5 tr.is-live td { background: rgba(255, 59, 79, 0.035); }
+.st5-row.is-live { background: linear-gradient(90deg, rgba(255, 59, 79, 0.06), transparent 60%); }
+.st5-nm.has-live { display: flex; align-items: center; }
+.st5-nm-t { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+
+/* ── v5.9 태블릿(iPad 768~1180) 보정 — 2026-10-15 교차 기기 점검(WebKit iPad Mini·Air·Pro) ── */
+/* 칩은 줄어들지 않고 한 줄(‘전
+체’·‘LA
+LIGA’처럼 글자가 접히던 것) — 넘치면 가로로 넘긴다 */
+.chips5 button, .comp-seg.chips5 button { flex-shrink: 0; white-space: nowrap; }
+/* 사이드바가 보이는 1181~1280(iPad Pro 가로)도 본문이 860px 안팎이라 히어로·2단 묶음은 한 줄씩 */
+@media (max-width: 1280px) { .h5-row, .h5-hero-row { grid-template-columns: minmax(0, 1fr); } }
+@media (min-width: 901px) and (max-width: 1280px) { .h5-kpis { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (min-width: 761px) and (max-width: 1299px) {
+  .workspace-header.is-home { margin-bottom: 6px; }
+  /* 베스트 XI: 피치는 위에 붙이고(가운데 정렬로 위아래가 비던 것) 목록과 나란히 */
+  .tots5 { grid-template-columns: minmax(0, 300px) minmax(0, 1fr); align-items: start; }
+  /* 다음 경기: 큰 카드 한 줄 + 나머지 두 장 나란히(옆 칸이 좁아 팀 이름이 'B…'로 잘리던 것) */
+  .next-match { grid-template-columns: minmax(0, 1fr); }
+  .next-rest { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+}
+
+/* 구형 사파리(iOS·iPadOS 16.1 이하) — color-mix() 를 모르면 var() 가 섞인 선언이 통째로 무효가 되어
+   테두리는 글자색(밝은 회색 선)으로, 배경·강조색은 사라진다. 지원 안 할 때만 단색으로 대신한다. */
+@supports not (color: color-mix(in srgb, red 50%, blue)) {
+  .feat { border: 1px solid var(--line); background: rgba(255, 255, 255, 0.03); }
+  .mgx:hover, .pl-card:hover { border-color: rgba(255, 255, 255, 0.18); }
+  .competition-select-wrap:hover { border-color: rgba(255, 255, 255, 0.2); background: rgba(255, 255, 255, 0.05); }
+  .home-nav.active { border-color: rgba(255, 255, 255, 0.14); background: rgba(255, 255, 255, 0.06); }
+  .home-nav-mark { background: var(--accent); }
+  .brand-orb { background: var(--accent); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.22); }
+  .tb-team > img { border: 1px solid var(--line); }
+  .global-search-trigger:hover { border-color: rgba(255, 255, 255, 0.2) !important; }
+  .tab.active { background: rgba(255, 255, 255, 0.07); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12); }
+  .team-btn.active { background: rgba(255, 255, 255, 0.06); }
+  .wc-nat.active { background: rgba(255, 255, 255, 0.08); }
+  .lf-row.big { background: rgba(255, 255, 255, 0.04); }
+  .hub-hero { background: rgba(255, 255, 255, 0.03); }
+  button:focus-visible, .peekable:focus-visible, a:focus-visible { outline: 2px solid var(--accent); }
+}
+/* overflow-x: clip 은 사파리 16+ — 그 전 버전은 hidden 으로(상단 탭의 sticky 는 멈추지만 화면 전체가 넓어져 축소되는 것보다 낫다) */
+@supports not (overflow-x: clip) { .app { overflow-x: hidden; } }
+
+/* iOS·iPadOS 보정 — 입력창 글자가 16px 미만이면 아이폰 사파리가 포커스 때 화면을 확대하고 돌아오지 않는다 /
+ 사이드바 높이는 주소창·툴바를 뺀 실제 보이는 높이(dvh, 미지원이면 위 100vh) / 서랍 안 스크롤이 뒤 페이지로 번지지 않게 */
+@media (hover: none) and (pointer: coarse) {
+  input:not([type="range"]):not([type="checkbox"]):not([type="radio"]), select, textarea { font-size: 16px !important; }
+}
+.side { height: 100dvh; }
+@media (max-width: 900px) { .side { height: auto; } }
+.pv-body, .side { overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
+/* 폰: 순위표 핵심(P·GD·PTS)이 가로 스크롤 밖으로 밀리지 않게 승·무·패 열은 접는다 */
+@media (max-width: 560px) { .tb5 .s { display: none; } .tb5 th, .tb5 td { padding-inline: 5px; } }
+/* 한국어 문장은 어절 단위로 줄바꿈("역\n전승" 방지), 긴 영어 이름은 필요하면 끊는다 */
+.rv5-head, .rc5-head, .rc5-line, .pv-points li, .lv5-note { word-break: keep-all; overflow-wrap: anywhere; }
+/* 폰 리그 탭: 이적 시장 두 카드가 1fr(=내용 최소폭) 칸이라 긴 이름에 밀려 화면보다 넓어지던 것(iPhone SE 375 → 388px) */
+.home-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 1000px) { .home-grid { grid-template-columns: minmax(0, 1fr); } }
+.home-grid > *, .feat, .feat-mid, .row2-mid { min-width: 0; }
+.feat-name, .feat-move, .row2-mid b, .row2-mid span, .netx-team { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.row2-mid span { display: block; }
