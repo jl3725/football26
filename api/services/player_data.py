@@ -80,7 +80,7 @@ def player_frame(league: str, season: str | None = None):
         return hit.copy()
     frame = _build_frame(league, season)
     if frame is not None:
-        if len(_FRAME_CACHE) > 16:
+        if len(_FRAME_CACHE) > 24:      # 8개 리그 × 이번·지난 시즌(16) + 여유 — 넘치면 전부 비워 다시 계산하므로 넉넉히
             _FRAME_CACHE.clear()
         _FRAME_CACHE[key] = frame
         return frame.copy()

@@ -52,8 +52,15 @@ def _db_stamp() -> float:
 
 # 데이터 API 는 football.db 에서만 계산되고 키에 DB 수정 시각(_db_stamp)이 들어가 배포 시 자동 무효화된다 —
 # 그래서 무거운 엔드포인트는 TTL 을 6시간으로 길게 둔다(무료 인스턴스에서 첫 호출이 수 초~십여 초).
+_MEMO_LOCKS: dict = {}
+_MEMO_GUARD = __import__("threading").Lock()
+
+
 def _memo(ttl: float = 3600.0):
+    """메모이즈(ttl 초) — 같은 키는 한 스레드만 계산하고 나머지는 결과를 기다린다.
+    Render 무료(0.1 CPU)에서 데우기 스레드와 첫 요청이 같은 리그 전체 계산을 동시에 돌려 Overview 가 30초를 넘겼다(2026-10-15)."""
     import functools
+    import threading
     import time as _t
 
     def deco(fn):
@@ -61,15 +68,22 @@ def _memo(ttl: float = 3600.0):
         def wrapped(*args, **kwargs):
             key = (fn.__name__, args, tuple(sorted(kwargs.items())), _db_stamp())
             hit = _MEMO.get(key)
-            now = _t.monotonic()
-            if hit and hit[0] > now:
+            if hit and hit[0] > _t.monotonic():
                 return hit[1]
-            out = fn(*args, **kwargs)
-            if len(_MEMO) >= _MEMO_MAX:
-                for k in [k for k, v in _MEMO.items() if v[0] <= now][:64] or [next(iter(_MEMO))]:
-                    _MEMO.pop(k, None)
-            _MEMO[key] = (now + ttl, out)
-            return out
+            with _MEMO_GUARD:
+                lock = _MEMO_LOCKS.setdefault(key, threading.Lock())
+            with lock:
+                hit = _MEMO.get(key)
+                now = _t.monotonic()
+                if hit and hit[0] > now:
+                    return hit[1]
+                out = fn(*args, **kwargs)
+                if len(_MEMO) >= _MEMO_MAX:
+                    for k in [k for k, v in _MEMO.items() if v[0] <= now][:64] or [next(iter(_MEMO))]:
+                        _MEMO.pop(k, None)
+                        _MEMO_LOCKS.pop(k, None)
+                _MEMO[key] = (now + ttl, out)
+                return out
         return wrapped
     return deco
 from leagues import ACTIVE_LEAGUE, SEASON_START, league_config, data_path  # noqa: E402
@@ -171,6 +185,7 @@ def _with_roster(full_df, team: str, league: str):
     return pd.concat([sq, ex_df], ignore_index=True)
 
 
+@_memo(ttl=21600)
 def _sh_reader(league: str, season: str):
     return ds.read_table("standings", league=league, season=season)
 
@@ -1208,14 +1223,22 @@ def _loans_out(team: str, league: str) -> dict:
         out[k] = {"player": str(r.get("player") or ""), "club": str(c.get("squad") or ""),
                   "pos": str(r.get("pos") or ""), "nat": str(r.get("nat") or ""),
                   "photo": ph if ph.startswith("http") else "", "source": "wiki"}
-    # 행선지 리그의 이번 시즌 기록(우리 데이터 안이면) — 임대 가서 얼마나 뛰는지
     for k, v in out.items():
         c = ca.get(k)
         if c is not None and not v["photo"]:
             ph = str(c.get("tm_photo") or "")
             v["photo"] = ph if ph.startswith("http") else ""
-        v["minutes"] = None
-        v["ovr"] = None
+    return out
+
+
+def _loan_details(team: str, league: str) -> list[dict]:
+    """임대 보낸 선수 + 임대지 이번 시즌 출전·OVR(우리 데이터 안 리그) — 스쿼드 화면 OUT ON LOAN 전용.
+    다른 리그 선수 표를 불러와야 해서 _loans_out(Overview·팀 OVR 이 매번 부름)에서 뺐다."""
+    ca = _contracts_all()
+    out = []
+    for k, v0 in _loans_out(team, league).items():
+        v = {**v0, "minutes": None, "ovr": None}
+        c = ca.get(k)
         if c is not None and str(c.get("squad")) != team:
             try:
                 f2 = _pf(c["league"])
@@ -1228,26 +1251,32 @@ def _loans_out(team: str, league: str) -> dict:
                     v["photo"] = v["photo"] or _photo(h)
             except Exception:  # noqa: BLE001
                 pass
+        out.append(v)
     return out
 
 
 @_memo(ttl=21600)
-def _prev_rows() -> dict:
+def _prev_rows() -> pd.DataFrame:
     """pid(tm id) → 지난 시즌 선수 행(출전 가장 많은 것) — 이번 시즌 출전 없는 스쿼드 선수 보강용."""
     import rating_history as rh  # noqa: PLC0415
     from leagues import LEAGUES  # noqa: PLC0415
     season = f"{SEASON_START - 1}_{SEASON_START}"
-    out: dict = {}
+    frames = []
     for lg in LEAGUES:
         df = _pf(lg, season)
-        if df is None:
+        if df is None or "tm_id" not in df.columns:
             continue
-        for _, r in df.iterrows():
-            k = rh.pid(r)
-            mn = _num(r.get("minutes"))
-            if k.startswith("tm") and (k not in out or _num(out[k].get("minutes")) < mn):
-                out[k] = r.to_dict()
-    return out
+        tid = pd.to_numeric(df["tm_id"], errors="coerce")
+        sub = df[tid.notna()].copy()
+        sub["_pid"] = "tm" + tid[tid.notna()].astype("int64").astype(str)
+        sub["_mn"] = pd.to_numeric(sub.get("minutes"), errors="coerce").fillna(0)
+        frames.append(sub)
+    if not frames:
+        return pd.DataFrame()
+    # 한 선수가 여러 행(시즌 중 이적)이면 출전이 가장 많은 행. 표 그대로(pid 색인) 두고 필요한 행만 꺼낸다 —
+    # 예전엔 전 리그 ~5천 행을 iterrows 로 dict 로 풀어(운영 0.1 CPU 에서 수십 초 · 메모리 수십 MB) 데우기가 길어졌다.
+    allp = pd.concat(frames, ignore_index=True).sort_values("_mn", ascending=False).drop_duplicates("_pid")
+    return allp.drop(columns=["_mn"]).set_index("_pid")
 
 
 def _roster_extras(team: str, league: str, df) -> list[dict]:
@@ -1269,9 +1298,10 @@ def _roster_extras(team: str, league: str, df) -> list[dict]:
         tid = str(int(_num(r.get("tm_id")))) if pd.notna(r.get("tm_id")) else ""
         if (tid and tid in have_tm) or str(r.get("norm_key")) in have_nk:
             continue
-        pr = prev.get(f"tm{tid}") if tid else None
-        if not pr:
+        pid = f"tm{tid}" if tid else None
+        if pid is None or prev.empty or pid not in prev.index:
             continue
+        pr = prev.loc[pid].to_dict()
         row = dict(pr)
         row.update({
             "player": r.get("player"), "squad": team, "norm_key": r.get("norm_key"), "tm_id": r.get("tm_id"),
@@ -1382,7 +1412,7 @@ def squad(team: str, league: str = ACTIVE_LEAGUE):
         depth = round(0.55 * o2 + 0.25 * o3 + 0.2 * min(100, len(opts) * 25))
         buckets.append({"pos": b, "count": len(main), "multi": len(alt), "depth": depth,
                         "starter": opts[0], "rotation": opts[1:6]})
-    loans = sorted(_loans_out(team, league).values(),
+    loans = sorted(_loan_details(team, league),
                    key=lambda x: (x["club"] == "", -(x["ovr"] or 0), -(x["minutes"] or 0), x["player"]))
     return {"team": team, "color": tm.team_color(team), "lines": lines, "buckets": buckets, "loans": loans}
 
@@ -2363,12 +2393,10 @@ def _club_strength(league: str) -> dict:
     """{클럽: 팀 종합 OVR} — 영입 현실성(클럽 티어) 판단용. 캐시."""
     if league in _CLUB_STR_CACHE:
         return _CLUB_STR_CACHE[league]
+    lu = _league_units(league)                     # 라인 순위와 같은 계산 재사용(리그 전체를 두 번 계산하던 것)
     full = _pf(league)
-    m: dict[str, float] = {}
-    if full is not None:
-        for c in full["squad"].dropna().unique():
-            tr = rv3.team_ratings(_with_roster(full, str(c), league), str(c), perf=_team_perf(str(c), league))
-            m[str(c)] = tr["overall"] if tr else 75
+    squads = [str(c) for c in full["squad"].dropna().unique()] if full is not None else list(lu)
+    m: dict[str, float] = {c: (lu[c]["overall"] if c in lu else 75) for c in squads}
     _CLUB_STR_CACHE[league] = m
     return m
 

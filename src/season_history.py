@@ -35,10 +35,18 @@ def short(season: str) -> str:
     return f"{a[-2:]}/{b[-2:]}" if b else season
 
 
+_HIST_CACHE: dict = {}
+
+
 def _history(league: str) -> pd.DataFrame:
+    """standings_history.csv 의 이 리그 행 — 파일 수정 시각이 같으면 다시 읽지 않는다(팀마다 부른다)."""
     if not HISTORY.exists():
         return pd.DataFrame()
-    h = pd.read_csv(HISTORY)
+    mt = HISTORY.stat().st_mtime
+    if _HIST_CACHE.get("mtime") != mt:
+        _HIST_CACHE.clear()
+        _HIST_CACHE.update({"mtime": mt, "df": pd.read_csv(HISTORY)})
+    h = _HIST_CACHE["df"]
     return h[h["league"] == league]
 
 
