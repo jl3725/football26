@@ -8,6 +8,7 @@ import ComparePanel from "./ComparePanel";
 import { usePeek } from "./PlayerPeek";
 import { Skel, SkelCards } from "./Skeleton";
 import { TrendArrow, TrendLine } from "./Trend";
+import SeasonLog from "./SeasonLog";
 
 function Bar({ label, pct, raw, accent }: { label: string; pct: number; raw: number; accent: string }) {
   const c = pct >= 80 ? "#5ec98a" : pct >= 60 ? "#6aa6e0" : pct >= 40 ? "#caa64e" : "#d98169";
@@ -48,7 +49,13 @@ function Detail({ team, player, accent, heatmap }: { team: string; player: strin
         <div style={{ flex: 1 }}>
           <div className="pd-name">{d.player}</div>
           <div className="pd-meta">{d.pos} · {d.age}세 · {d.nationality}</div>
-          <div className="pd-meta">{d.minutes.toLocaleString()}′ · {d.goals}G {d.assists}A · {fmtEur(d.value_eur)}</div>
+          <div className="pd-meta">
+            리그 {d.minutes.toLocaleString()}′ · {d.goals}G {d.assists}A
+            {d.season_log?.available && d.season_log.by_comp.length > 1 && (
+              <> · <b>전체 {d.season_log.total.minutes.toLocaleString()}′ · {d.season_log.total.goals}G {d.season_log.total.assists}A</b></>
+            )}
+            {" · "}{fmtEur(d.value_eur)}
+          </div>
         </div>
         <div className="pd-ovr" style={{ color: t.light, borderColor: hexA(t.light, 0.5) }}>
           <div className="teko" style={{ fontSize: 46, lineHeight: .8 }}>{d.ovr}</div>
@@ -68,10 +75,11 @@ function Detail({ team, player, accent, heatmap }: { team: string; player: strin
       {d.comp_usage && (
         <div className="pd-comp">
           <div className="pd-comp-head">
-            <span className="pd-comp-title">이번 시즌 대회별 출전</span>
+            <span className="pd-comp-title">이번 시즌 역할</span>
             <span className={"role-tag " + roleClass(d.comp_usage.role)}>{d.comp_usage.role}</span>
             {d.comp_usage.big_match && <span className="role-bm" title="UCL/UEL 급 무대 검증">⚡ 빅매치 검증</span>}
           </div>
+          {d.season_log?.available ? <SeasonLog log={d.season_log} accent={accent} /> : (
           <div className="pd-comp-chips">
             <div className="cchip lg">
               <span className="cchip-comp">리그</span>
@@ -87,6 +95,7 @@ function Detail({ team, player, accent, heatmap }: { team: string; player: strin
               <div className="cchip empty"><span className="cchip-comp">컵·유럽 출전 없음</span></div>
             )}
           </div>
+          )}
         </div>
       )}
       {d.value_history && d.value_history.length >= 2 && (() => {
@@ -111,7 +120,7 @@ function Detail({ team, player, accent, heatmap }: { team: string; player: strin
       })()}
       {d.peers?.n > 0 && (
         <div style={{ fontSize: 11, opacity: 0.5, margin: "0 0 4px" }}>
-          지표 = {({ GK: "골키퍼", DEF: "수비수", MID: "미드필더", ATT: "공격수" } as Record<string, string>)[d.peers.line] || "포지션"} 대비 백분위 · {d.peers.n}명 기준
+          아래 지표 = <b>리그 경기 기준</b> · {({ GK: "골키퍼", DEF: "수비수", MID: "미드필더", ATT: "공격수" } as Record<string, string>)[d.peers.line] || "포지션"} 대비 백분위 · {d.peers.n}명 기준(컵·유럽 제외)
         </div>
       )}
       <div className="pd-body">

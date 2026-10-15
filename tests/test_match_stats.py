@@ -30,3 +30,19 @@ def test_rows_for_both_sides_and_pass_pct() -> None:
     assert a["pass_pct"] == 88.2 and c["pass_pct"] == 77.4          # 성공/전체로 직접 계산(ESPN 0.9 표시값 아님)
     assert a["goal_min_for"] == "10;88" and a["goal_min_against"] == "45+2"
     assert a["red_against"] == 1 and c["red_for"] == 1
+
+
+def test_player_events_split_by_side_and_none_marker() -> None:
+    import pandas as pd
+    import fetch_match_stats as fms
+    sched = pd.DataFrame([{"event_id": "1", "date": "2026-09-09", "comp_code": "uefa.champions", "squad": "Arsenal",
+                           "home_away": "H", "opponent": "X"}])
+    p = {"goals": [{"minute": "23'", "side": "home", "scorer": "Bukayo Saka", "assist": "Declan Rice", "kind": ""},
+                   {"minute": "70'", "side": "away", "scorer": "Other", "assist": "", "kind": ""},
+                   {"minute": "80'", "side": "home", "scorer": "Kai Havertz", "assist": "", "kind": "pen"}],
+         "cards": [{"minute": "50'", "side": "home", "player": "Declan Rice", "color": "yellow"}]}
+    ev = fms._events_for(sched, p)
+    assert [(e["type"], e["player"]) for e in ev] == [("goal", "Bukayo Saka"), ("assist", "Declan Rice"),
+                                                      ("pen", "Kai Havertz"), ("yellow", "Declan Rice")]
+    none = fms._events_for(sched, {"goals": [], "cards": []})
+    assert none[0]["type"] == "none"                # 기록 없는 경기도 '받았음' 표시

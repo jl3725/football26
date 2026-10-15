@@ -1,6 +1,7 @@
 """경기별 팀 기록 — 분석 탭 '경기별 흐름·득실 시간대·리그 백분위' 원천(2026-10-15).
 
   ESPN 경기 상세(summary): 점유율·슈팅·유효 슈팅·코너·패스·파울·선방·태클·인터셉트 + 득점·퇴장 분
+  + 선수 이벤트(골·도움·카드) → data/match_events_<리그>_<시즌>.csv (Player 탭 대회별 골·도움)
      → 끝난 경기(전 대회, schedule_full)마다 한 번만 받는다(증분 — 이미 있는 event_id 는 건너뜀)
   Understat(5대 리그 리그 경기만): xG·npxG·PPDA(압박 강도)·딥 컴플리션·기대 승점 — 매 실행 리그당 한 번 받아 빈칸 채움
 
@@ -135,6 +136,32 @@ def _attach_understat(df: pd.DataFrame, league: str) -> pd.DataFrame:
     return df
 
 
+EVENT_COLS = ["event_id", "date", "comp_code", "squad", "minute", "type", "player"]
+
+
+def _events_for(sched_rows: pd.DataFrame, p: dict) -> list[dict]:
+    """선수 이벤트(골·PK·자책·도움·경고·퇴장) — Player 탭 대회별 골·도움(리그·컵·유럽 분리·합산) 원천.
+    이벤트가 없는 경기(0-0·카드 없음)도 'none' 한 줄을 남겨 다시 받지 않게 한다."""
+    out = []
+    for r in sched_rows.itertuples(index=False):
+        me = "home" if r.home_away == "H" else "away"
+        base = {"event_id": str(r.event_id), "date": str(r.date)[:10], "comp_code": r.comp_code, "squad": r.squad}
+        n0 = len(out)
+        for g in p["goals"]:
+            if g["side"] != me:
+                continue
+            typ = {"pen": "pen", "og": "og"}.get(g["kind"], "goal")
+            out.append({**base, "minute": _min_txt(g["minute"]), "type": typ, "player": g["scorer"]})
+            if g.get("assist"):
+                out.append({**base, "minute": _min_txt(g["minute"]), "type": "assist", "player": g["assist"]})
+        for c in p["cards"]:
+            if c["side"] == me:
+                out.append({**base, "minute": _min_txt(c["minute"]), "type": c["color"], "player": c["player"]})
+        if len(out) == n0:
+            out.append({**base, "minute": "", "type": "none", "player": ""})
+    return out
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--max", type=int, default=400, help="한 번에 새로 받을 경기 수 상한")
@@ -150,9 +177,15 @@ def main() -> int:
     out_p = data_path("match_stats", league)
     old = pd.read_csv(out_p, dtype={"event_id": str}) if out_p.exists() else pd.DataFrame()
     have = set(old["event_id"].astype(str)) if not old.empty else set()
-    todo = [e for e in sch["event_id"].unique() if e not in have][: a.max]
-    print(f"[match-stats] {league}: 끝난 경기 {sch['event_id'].nunique()} · 새로 받을 {len(todo)}", flush=True)
-    rows, fail = [], 0
+    ev_p = data_path("match_events", league)
+    old_ev = pd.read_csv(ev_p, dtype={"event_id": str}) if ev_p.exists() else pd.DataFrame(columns=EVENT_COLS)
+    have_ev = set(old_ev["event_id"].astype(str)) if not old_ev.empty else set()
+    todo_st = [e for e in sch["event_id"].unique() if e not in have]
+    todo_ev = [e for e in sch["event_id"].unique() if e not in have_ev]       # 예전 경기도 이벤트가 없으면 소급
+    todo = list(dict.fromkeys(todo_st + todo_ev))[: a.max]
+    print(f"[match-stats] {league}: 끝난 경기 {sch['event_id'].nunique()} · 새로 받을 {len(todo)}"
+          f"(기록 {len(todo_st)} · 선수 이벤트 {len(todo_ev)})", flush=True)
+    rows, evs, fail = [], [], 0
     for k, eid in enumerate(todo, 1):
         srows = sch[sch["event_id"] == eid]
         js = _summary(str(srows.iloc[0]["comp_code"]), eid)
@@ -162,10 +195,18 @@ def main() -> int:
         p = mrv.parse(js)
         if p["state"] != "post":
             continue
-        rows += _rows_for(srows, p)
+        if eid not in have:
+            rows += _rows_for(srows, p)
+        if eid not in have_ev:
+            evs += _events_for(srows, p)
         if k % 25 == 0:
             print(f"  … {k}/{len(todo)}", flush=True)
         time.sleep(0.25)
+    if evs:
+        ev = pd.concat([old_ev, pd.DataFrame(evs, columns=EVENT_COLS)], ignore_index=True)
+        ev = ev.drop_duplicates().sort_values(["date", "event_id"])
+        ev.to_csv(ev_p, index=False)
+        print(f"[OK] {ev_p.name} · {len(ev)}행(새 {len(evs)})", flush=True)
     df = pd.concat([old, pd.DataFrame(rows)], ignore_index=True) if rows else old
     if df.empty:
         print("! 기록 없음 — 저장 안 함")

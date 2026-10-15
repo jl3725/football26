@@ -240,7 +240,16 @@ export type PlayerDetail = {
   comp_usage: CompProfile;
   value_history: { date: string; value_eur: number }[];
   peers: { line: string; n: number };
+  season_log?: SeasonLog;
 };
+// 선수 시즌 기록 — 경기별(대회·출전 분·골·도움) + 대회별 합계 + 전체 합산(리그·컵·유럽 분리)
+export type SeasonLogMatch = { date: string; comp: string; comp_code: string; opponent: string; home_away: string; score: string;
+  result: string; status: "start" | "sub" | "bench" | "out"; minutes: number; goals: number; pens: number; assists: number;
+  yellow: number; red: number; has_events: boolean };
+export type SeasonLogComp = { comp: string; matches: number; apps: number; starts: number; minutes: number; goals: number;
+  assists: number; yellow: number; red: number };
+export type SeasonLog = { available: boolean; espn_name?: string | null; matches: SeasonLogMatch[]; by_comp: SeasonLogComp[];
+  total: SeasonLogComp; events_coverage: number };
 
 export type TransferItem = {
   player: string; club: string; pos: string; age: number; nat: string;

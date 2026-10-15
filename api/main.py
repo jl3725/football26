@@ -1313,6 +1313,88 @@ _BADGE_METRICS = [
 ]
 
 
+
+def _espn_name(ours: str, names) -> str | None:
+    """우리 표기 → 그 팀 ESPN 표기 — 'Gabriel Magalhães' ↔ 'Gabriel', 'Martin Ødegaard' ↔ 'Martin Odegaard'."""
+    from unidecode import unidecode  # noqa: PLC0415
+
+    def nz(x):
+        return " ".join(unidecode(str(x)).lower().replace("-", " ").replace(".", " ").split())
+    o = nz(ours)
+    ot = o.split()
+    if not ot:
+        return None
+    hits = []
+    for n in set(names):
+        k = nz(n)
+        t = k.split()
+        if not t:
+            continue
+        if k == o:
+            return n
+        if (t[-1] == ot[-1] and t[0][:1] == ot[0][:1]) or (len(t) == 1 and t[0] in ot) or (len(ot) == 1 and ot[0] in t):
+            hits.append(n)
+    return hits[0] if len(hits) == 1 else None
+
+
+def _season_log(team: str, player: str, league: str) -> dict:
+    """선수 시즌 기록 — 경기별(대회·상대·결과·출전 분·선발·골·도움·카드) + 대회별 합계 + 전체 합산.
+    리그·국내컵·유럽대항전 라인업/교체(ESPN) + 선수 이벤트(data/match_events, src/fetch_match_stats.py).
+    예전 Player 탭은 리그 스탯과 컵·유럽 선발 수만 있어 '챔스+리그 합산·분리'가 안 보였다(2026-10-15)."""
+    sch = ds.read_table("schedule_full", league=league)
+    if sch is None or "squad" not in sch.columns:
+        return {"available": False}
+    sch = sch[(sch["squad"] == team) & (sch["status"] == "completed") & sch["event_id"].notna()].copy()
+    if sch.empty:
+        return {"available": False}
+    sch["eid"] = pd.to_numeric(sch["event_id"], errors="coerce").astype("Int64").astype(str)
+    games, _ = _on_pitch(team, league)
+    games = {str(int(float(k))): v for k, v in games.items()}
+    lu = _lineups(league)
+    listed: dict[str, set] = {}
+    if lu is not None and not lu.empty:
+        lu = lu[lu["squad"] == team]
+        for eid, g in lu.groupby("event_id"):
+            listed[str(int(float(eid)))] = set(g["player"].astype(str))
+    all_names = {n for g in games.values() for n in g} | {n for v in listed.values() for n in v}
+    me = _espn_name(player, all_names)
+    ev = ds.read_table("match_events", league=league)
+    evs: dict[str, list] = {}
+    if ev is not None and not ev.empty:
+        ev = ev[ev["squad"] == team]
+        ev_names = set(ev["player"].dropna().astype(str))
+        me_ev = _espn_name(player, ev_names | ({me} if me else set()))
+        for r in ev[ev["player"].astype(str) == (me_ev or "")].itertuples():
+            evs.setdefault(str(int(float(r.event_id))), []).append(r.type)
+    else:
+        ev = None
+    rows = []
+    for r in sch.sort_values("date").itertuples():
+        e = r.eid
+        on = games.get(e, {}).get(me) if me else None
+        mins = round(on[1] - on[0]) if on else 0
+        t = evs.get(e, [])
+        status = "start" if on and on[0] == 0 else "sub" if on else ("bench" if me and me in listed.get(e, set()) else "out")
+        rows.append({"date": str(r.date)[:10], "comp": str(r.comp), "comp_code": str(getattr(r, "comp_code", "") or ""),
+                     "opponent": str(r.opponent), "home_away": r.home_away, "score": str(r.score or ""), "result": str(r.result or ""),
+                     "status": status, "minutes": mins, "goals": t.count("goal") + t.count("pen"), "pens": t.count("pen"),
+                     "assists": t.count("assist"), "yellow": t.count("yellow"), "red": t.count("red"),
+                     "has_events": ev is not None and e in set(ev["event_id"].astype(str).str.replace(r"\.0$", "", regex=True))})
+    by: dict[str, dict] = {}
+    for x in rows:
+        b = by.setdefault(x["comp"], {"comp": x["comp"], "matches": 0, "apps": 0, "starts": 0, "minutes": 0, "goals": 0,
+                                      "assists": 0, "yellow": 0, "red": 0})
+        b["matches"] += 1
+        b["apps"] += 1 if x["minutes"] > 0 else 0
+        b["starts"] += 1 if x["status"] == "start" else 0
+        for k in ("minutes", "goals", "assists", "yellow", "red"):
+            b[k] += x[k]
+    comps = sorted(by.values(), key=lambda b: (b["comp"] != "리그", -b["matches"]))
+    tot = {"comp": "합계", **{k: sum(b[k] for b in comps) for k in ("matches", "apps", "starts", "minutes", "goals", "assists", "yellow", "red")}}
+    return {"available": bool(me), "espn_name": me, "matches": rows, "by_comp": comps, "total": tot,
+            "events_coverage": round(sum(1 for x in rows if x["has_events"]) / max(1, len(rows)), 2)}
+
+
 @app.get("/api/player/{team}/{player}")
 @_memo(ttl=21600)
 def player_detail(team: str, player: str, league: str = ACTIVE_LEAGUE):
@@ -1411,6 +1493,7 @@ def player_detail(team: str, player: str, league: str = ACTIVE_LEAGUE):
         "contract_until": str(row.get("tm_contract_until") or ""),
         "is_gk": is_gk, "categories": categories, "radar": radar, "badges": badges,
         "comp_usage": _comp_profile(row, _comp_usage(league)),
+        "season_log": _season_log(str(row.get("squad") or team), str(row["player"]), league),
     }
 
 

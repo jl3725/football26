@@ -117,3 +117,10 @@ def test_manager_graph_network_and_brought() -> None:
                           [{"name": "P", "prev_squad": "X"}, {"name": "Q", "prev_squad": "Z"}], 2026)
     assert mg["network"][0]["manager"] == "B" and mg["network"][0]["shared"][0]["club"] == "Y"
     assert mg["brought"] == ["P"]
+
+
+def test_prev_season_name_variant_same_club() -> None:
+    import attach_prev_season as aps
+    assert aps._variant("frank anguissa", "andre frank zambo anguissa")
+    assert aps._variant("jair", "jair cunha")
+    assert not aps._variant("marcos fernandez", "roberto fernandez")     # 성만 같은 다른 사람

@@ -3731,3 +3731,42 @@ LIGA’처럼 글자가 접히던 것) — 넘치면 가로로 넘긴다 */
 .net-mgr-head b { display: block; font: 700 24px/1.1 var(--font-display); margin: 4px 0; }
 .net-mgr-head span { font-size: 12.5px; color: var(--muted); }
 @media (max-width: 560px) { .net-tie-list { grid-template-columns: minmax(0, 1fr); } }
+
+/* 일정 탭 경기 상세 — 좁은 화면에서 피치·교체를 한 칸으로(모바일에서 피치가 150px 로 쪼그라들어 선수 원이 겹쳤다, 2026-10-15) */
+.sc-detail { container-type: inline-size; }
+.scd-form { white-space: nowrap; }
+@container (max-width: 620px) {
+  .scd-body { grid-template-columns: minmax(0, 1fr); padding: 6px 14px 18px; }
+  .scd-side { padding-top: 2px; }
+}
+@media (max-width: 760px) {
+  .scd-body { grid-template-columns: minmax(0, 1fr); padding: 6px 12px 16px; }
+  .scd-head { flex-wrap: wrap; gap: 8px 12px; padding: 14px 16px; }
+  .scd-head > div:first-child { flex: 1 1 100%; min-width: 0; }
+  .scd-opp { font-size: 19px; }
+  .scd-score { font-size: 30px; margin-left: 0; }
+  .scd-form { margin-left: auto; }
+  .scd-sub { display: grid; grid-template-columns: 34px minmax(0, 1fr) minmax(0, 1fr); gap: 8px; }
+}
+
+/* SEASON LOG — 선수 대회별 분리·합산(components/SeasonLog.tsx) */
+.slog { margin-top: 10px; }
+.slog-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.slog-table { display: flex; flex-direction: column; margin: 4px 0 8px; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+.slog-row { display: grid; grid-template-columns: minmax(110px, 1.4fr) 1.1fr 0.9fr 0.5fr 0.5fr 0.8fr; gap: 8px; align-items: center; padding: 8px 12px;
+  border: 0; border-bottom: 1px solid rgba(255,255,255,0.05); background: none; color: inherit; text-align: left; font-size: 12.5px; cursor: pointer; }
+.slog-row.h { cursor: default; font: 600 10.5px/1 var(--font-ui); color: var(--muted-2); letter-spacing: 0.04em; background: rgba(255,255,255,0.02); }
+.slog-row:not(.h):not(.tot):hover, .slog-row.on { background: rgba(255,255,255,0.04); }
+.slog-row span:first-child { display: inline-flex; align-items: center; gap: 7px; font-weight: 600; }
+.slog-row span i { width: 8px; height: 8px; border-radius: 2px; display: inline-block; }
+.slog-row em { font-style: normal; color: var(--muted); margin-left: 2px; }
+.slog-row small { color: var(--muted-2); font-size: 10.5px; }
+.slog-row span:nth-child(n+3) { font-family: var(--font-num); font-size: 14px; font-weight: 700; }
+.slog-row.tot { cursor: default; border-bottom: 0; background: rgba(255,255,255,0.035); font-weight: 700; }
+.slog-row.tot span:first-child { font: 700 12px/1 var(--font-display); letter-spacing: 0.1em; }
+.slog-foot { min-height: 30px; padding: 6px 2px 0; font-size: 11.5px; color: var(--muted); }
+.slog-foot b { margin-right: 4px; }
+@media (max-width: 560px) {
+  .slog-row { grid-template-columns: minmax(84px, 1.3fr) 1fr 0.9fr 0.45fr 0.45fr; font-size: 12px; padding: 7px 9px; }
+  .slog-row span:nth-child(6) { display: none; }
+}

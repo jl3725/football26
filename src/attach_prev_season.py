@@ -64,6 +64,15 @@ def load_prev(season_start: int) -> pd.DataFrame:
     return prev.sort_values("minutes", ascending=False)
 
 
+def _variant(a: str, b: str) -> bool:
+    """같은 팀 안 표기 변형 — 'frank anguissa' ↔ 'andre frank zambo anguissa', 'jair' ↔ 'jair cunha'.
+    성이 상대 이름에 있고, 이름(또는 첫 글자)도 맞아야 한다('marcos fernandez' ↔ 'roberto fernandez' 는 다른 사람)."""
+    ta, tb = a.replace("-", " ").split(), b.replace("-", " ").split()
+    if not ta or not tb or a == b or len(ta[-1]) < 4 or ta[-1] not in tb:
+        return False
+    return len(ta) == 1 or ta[0] in tb or ta[0][:1] == tb[0][:1]
+
+
 def _same_person(cur_row, prev_row, cur_league: str) -> bool:
     """이름만 같은 후보 — 같은 리그면 그대로, 다른 리그면 국적이 둘 다 있고 같아야 같은 사람으로 본다."""
     if getattr(prev_row, "league", None) == cur_league:
@@ -79,7 +88,7 @@ def attach(cur: pd.DataFrame, prev: pd.DataFrame) -> tuple[pd.DataFrame, dict]:
     if prev.empty:
         for c in PREV_COLS:
             out[c] = pd.NA
-        return out, {"tm_id": 0, "name+squad": 0, "name": 0, "none": len(out)}
+        return out, {"tm_id": 0, "name+squad": 0, "name": 0, "name~squad": 0, "none": len(out)}
 
     by_tid = {t: r for t, r in prev[prev["tid"] != ""].groupby("tid").head(1).set_index("tid").iterrows()}
     by_nk_sq = {(r.nk, r.squad): r for r in prev.groupby(["nk", "squad"]).head(1).itertuples()}
@@ -87,9 +96,12 @@ def attach(cur: pd.DataFrame, prev: pd.DataFrame) -> tuple[pd.DataFrame, dict]:
     by_nk = {r.nk: r for r in prev.groupby("nk").head(1).itertuples()
              if nk_counts.get(r.nk, 0) <= 1}
 
-    stats = {"tm_id": 0, "name+squad": 0, "name": 0, "none": 0}
+    stats = {"tm_id": 0, "name+squad": 0, "name": 0, "name~squad": 0, "none": 0}
     vals = []
     cur_lg = ACTIVE_LEAGUE
+    by_squad: dict = {}
+    for r in prev.itertuples():
+        by_squad.setdefault(r.squad, []).append(r)
     for _, r in out.iterrows():
         nk = _norm(r.get("norm_key") or r.get("player"))
         hit, how = None, "none"
@@ -100,6 +112,10 @@ def attach(cur: pd.DataFrame, prev: pd.DataFrame) -> tuple[pd.DataFrame, dict]:
             hit, how = by_nk_sq[(nk, r.get("squad"))], "name+squad"
         elif nk in by_nk and _same_person(r, by_nk[nk], cur_lg):
             hit, how = by_nk[nk], "name"
+        else:
+            cand = [c for c in by_squad.get(r.get("squad"), []) if _variant(nk, c.nk)]
+            if len(cand) == 1:
+                hit, how = cand[0], "name~squad"
         stats[how] += 1
         if hit is None:
             vals.append((pd.NA,) * len(PREV_COLS))
@@ -123,7 +139,7 @@ def main() -> int:
     out.to_csv(path, index=False, encoding="utf-8")
     hit = len(out) - stats["none"]
     print(f"[prev] {ACTIVE_LEAGUE} {SEASON_START}: {hit}/{len(out)} 매칭 "
-          f"(tm_id {stats['tm_id']} · 이름+팀 {stats['name+squad']} · 이름 {stats['name']}) -> {path.name}")
+          f"(tm_id {stats['tm_id']} · 이름+팀 {stats['name+squad']} · 이름 {stats['name']} · 표기변형 {stats['name~squad']}) -> {path.name}")
     return 0
 
 
