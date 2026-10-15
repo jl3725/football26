@@ -83,6 +83,21 @@ def test_league_weight_applies_beyond_perf_cap() -> None:
     assert rv3.absolute_ovr(league_level=90.7, **gk) <= 88       # Diogo Costa 90 → 88
 
 
+def test_expensive_breakout_is_not_a_proven_star() -> None:
+    # 23세·€120M(직전 €75M)·한 시즌 활약 vs 27세·€120M(직전 €120M)·수년 검증 — 예전엔 둘 다 91
+    kw = dict(value=120e6, minutes=503, pos_group="MID", league_level=100)
+    anderson = rv3.absolute_ovr(age=23, ss_rating=7.55, prev_minutes=3331, prev_ss_rating=7.34, prev_value=75e6, **kw)
+    rice = rv3.absolute_ovr(age=27, ss_rating=7.35, prev_minutes=3094, prev_ss_rating=7.46, prev_value=120e6, **kw)
+    assert rice - anderson >= 3 and anderson <= 88
+
+
+def test_value_jump_guard_ignores_tiny_prev_value() -> None:
+    # 직전 시장가치 €150K(매칭 오류·1군 데뷔)는 '급등'으로 보지 않는다 — Cho 77→60 같은 폭락 방지
+    kw = dict(value=15e6, ss_rating=6.93, minutes=76, age=22, pos_group="ATT", prev_minutes=1667,
+              prev_ss_rating=6.78, league_level=100)
+    assert rv3.absolute_ovr(prev_value=150e3, **kw) == rv3.absolute_ovr(prev_value=None, **kw)
+
+
 def test_form_percentile_scale() -> None:
     rows = [{"player": f"p{i}", "pos": "FW", "tm_position": "Centre-Forward", "ss_rating": 6.4 + i * 0.02,
              "minutes": 600, "goals": 0, "assists": 0} for i in range(100)]

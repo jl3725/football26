@@ -6,6 +6,9 @@ daily_data 가 하루 한 번 record() 를 돌려 data/rating_history[_리그]_<
 값이 바뀐 선수만 한 줄씩 쓰는 변경분 저장이라(하루 수백 줄) 저장소가 크게 늘지 않는다.
 '날짜 D 의 값' = 그 선수의 D 이전 마지막 기록.
 
+모델(ratings_v3.MODEL_VERSION)이 바뀌면 그날 과거 기록을 '오늘 새 값 − 마지막 기록' 만큼 평행이동한다 —
+공식 변경이 선수 추이(예: Modrić ▲8)로 보이지 않게. 하루치 실제 변화는 그 차이에 섞여 사라진다.
+
     python -m rating_history            # 전 리그 오늘자 기록(scripts/record_ratings.py 가 호출)
 """
 from __future__ import annotations
@@ -17,7 +20,7 @@ import pandas as pd
 
 from leagues import LEAGUES, SEASON_START, data_path
 
-COLS = ["date", "pid", "squad", "player", "norm_key", "ovr", "form", "pot"]
+COLS = ["date", "pid", "squad", "player", "norm_key", "ovr", "form", "pot", "model"]
 TREND_DAYS = 14
 
 
@@ -53,8 +56,32 @@ def current_ratings(league: str) -> pd.DataFrame:
     for _, r in df.iterrows():
         pl = rv3.player_line(r)
         rows.append({"pid": pid(r), "squad": r.get("squad"), "player": r.get("player"), "norm_key": r.get("norm_key"),
-                     "ovr": pl["ovr"], "form": pl["form"], "pot": pl["pot"]})
+                     "ovr": pl["ovr"], "form": pl["form"], "pot": pl["pot"], "model": rv3.MODEL_VERSION})
     return pd.DataFrame(rows)
+
+
+def rebase(hist: pd.DataFrame, cur: pd.DataFrame, today: str) -> pd.DataFrame:
+    """다른 모델 버전으로 남은 기록을 (오늘 값 − 그 선수 마지막 기록) 만큼 옮기고 현재 버전으로 표시."""
+    if hist.empty or cur.empty or "model" not in cur.columns:
+        return hist
+    ver = str(cur["model"].iloc[0])
+    hist = hist.copy()
+    if "model" not in hist.columns:
+        hist["model"] = ""
+    old = hist["model"].fillna("").astype(str) != ver
+    if not old.any():
+        return hist
+    last = state_at(hist, today).set_index("pid")
+    c = cur.set_index("pid")
+    common = c.index.intersection(last.index)
+    d_ovr = (c.loc[common, "ovr"] - last.loc[common, "ovr"]).to_dict()
+    d_pot = (c.loc[common, "pot"] - last.loc[common, "pot"]).to_dict()
+    hist.loc[old, "ovr"] = hist.loc[old, "ovr"] + hist.loc[old, "pid"].map(d_ovr).fillna(0)
+    hist.loc[old, "pot"] = hist.loc[old, "pot"] + hist.loc[old, "pid"].map(d_pot).fillna(0)
+    hist["ovr"] = hist["ovr"].round().astype(int)
+    hist["pot"] = hist["pot"].round().astype(int)
+    hist.loc[old, "model"] = ver
+    return hist
 
 
 def load(league: str) -> pd.DataFrame:
@@ -80,6 +107,11 @@ def record(league: str, today: str | None = None) -> int:
     cur = current_ratings(league)
     if cur.empty:
         return 0
+    if "model" not in cur.columns:
+        cur["model"] = ""
+    if "model" not in hist.columns:
+        hist = hist.assign(model="")
+    hist = rebase(hist, cur, today)
     prev = state_at(hist, today)
     cur["date"] = today
     if not prev.empty:

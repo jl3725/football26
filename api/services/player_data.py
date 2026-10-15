@@ -87,12 +87,47 @@ def player_frame(league: str, season: str | None = None):
     return None
 
 
+_MOVED_CACHE: dict = {}
+
+
+def _nk(row) -> str:
+    k = row.get("norm_key")
+    return unidecode(str(k if isinstance(k, str) and k.strip() else row.get("player") or "")).lower().strip()
+
+
+def _moved_out(season: str | None) -> set[tuple[str, str]]:
+    """(norm_key, 떠난 팀) — 다른 팀(전 리그)에 TM 매칭된 행이 있고 그 행의 직전 팀이 이 팀인 선수."""
+    from leagues import LEAGUES  # noqa: PLC0415
+    key = (season, ds._db_mtime())
+    if key in _MOVED_CACHE:
+        return _MOVED_CACHE[key]
+    out: set[tuple[str, str]] = set()
+    for lg in LEAGUES:
+        f = ds.read_table("players_full", league=lg, season=season)
+        if f is None or "tm_id" not in f.columns or "prev_squad" not in f.columns:
+            continue
+        for _, r in f[f["tm_id"].notna() & f["prev_squad"].notna()].iterrows():
+            if r["prev_squad"] != r.get("squad"):
+                out.add((_nk(r), str(r["prev_squad"])))
+    _MOVED_CACHE.clear()
+    _MOVED_CACHE[key] = out
+    return out
+
+
 def _build_frame(league: str, season: str | None = None):
     frame = ds.read_table("players_full", league=league, season=season)
     if frame is None:
         return None
 
     frame = frame.copy()
+    # 이적 전 팀 잔류 행 제거 — 시즌 중 옮긴 선수의 옛 팀 행(TM 매칭 없음)이 리그 목록에 중복으로 남아
+    # 'Enzo Fernández(Chelsea) 89' 처럼 보였다. 새 팀 행의 직전 팀이 이 팀일 때만(동명이인 보호).
+    if "tm_id" in frame.columns:
+        moved = _moved_out(season)
+        if moved:
+            stale = frame["tm_id"].isna() & pd.Series(
+                [(_nk(r), str(r.get("squad"))) in moved for _, r in frame.iterrows()], index=frame.index)
+            frame = frame[~stale].copy()
     # 평점 리그 보정용(ratings_v3) — 행마다 리그 레벨을 실어 어느 호출부에서든 같은 보정이 되게
     import league_level  # noqa: PLC0415
     frame["_league_level"] = league_level.level(league)

@@ -43,6 +43,10 @@ jobs:
       - name: Test
         run: pytest
 
+      - name: Rating guard (사용자 기준 선수 golden.csv)
+        # 평점 공식을 바꿔 사용자가 정한 기대치(Raya ≥ Verbruggen, Costa ≤ 88 등)를 깨면 실패
+        run: python scripts/eval_ratings.py --tag ci --check --no-snapshot
+
   frontend:
     runs-on: ubuntu-latest
     defaults:

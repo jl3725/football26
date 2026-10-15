@@ -13,6 +13,8 @@
   tm_agent  로컬 TM agent(이 PC 작업 스케줄러) 산출물이 최근에 커밋됐는가
   coverage  현재 시즌 팀 전원에게 감독 프로필이 있는가(시즌 전환 뒤 승격팀 누락·강등팀 잔류 탐지)
   rating_history  선수 평점 일일 기록(▲▼ 추이 원천)이 3일 안에 갱신됐는가
+  ratings   평점 자체 검증(data/eval/rating_audit.json, daily_data 가 매일 생성) — 사용자 기준(golden) 위반,
+            스카우트 기준표 3 이상 이탈, 자동 점검(한 시즌 급등·급락·고평점 이상치) 한도 초과
 
 사용:
   python scripts/watchdog.py            # 결과 출력, 실패가 있으면 종료코드 1
@@ -212,9 +214,27 @@ def check_rating_history() -> list[str]:
     return []
 
 
+def check_ratings() -> list[str]:
+    """선수 OVR 이 사람 눈에 이상해지기 전에 — daily_data 의 eval_ratings --audit-json 결과를 읽는다."""
+    p = ROOT / "data" / "eval" / "rating_audit.json"
+    if not p.exists():
+        return [f"{p.name} 없음 — daily_data 'Rating audit' 단계 확인"]
+    a = json.loads(p.read_text(encoding="utf-8"))
+    out = []
+    if a.get("date", "") < (NOW.date() - dt.timedelta(days=3)).isoformat():
+        out.append(f"평점 자체 검증 마지막 실행 {a.get('date')} — daily_data 'Rating audit' 단계 확인")
+    out += [f"사용자 기준 위반: {b}" for b in a.get("golden", [])]
+    out += [f"스카우트 기준 이탈: {x['player']} {x['ovr']} (기대 {x['lo']}~{x['hi']})" for x in a.get("scout_far", [])]
+    for k, v in (a.get("audit") or {}).items():
+        if v.get("n", 0) > v.get("limit", 1e9):
+            out.append(f"자동 점검 {k} {v['n']}건 > 한도 {v['limit']} — {v.get('desc', '')}: "
+                       + ", ".join(v.get("examples", [])[:4]))
+    return out
+
+
 CHECKS = {"season": check_season, "hub": check_hub, "frontend": check_frontend,
           "workflows": check_workflows, "news": check_news, "tm_agent": check_tm_agent,
-          "coverage": check_coverage, "rating_history": check_rating_history}
+          "coverage": check_coverage, "rating_history": check_rating_history, "ratings": check_ratings}
 
 
 def run() -> dict[str, list[str]]:

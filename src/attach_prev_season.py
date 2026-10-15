@@ -8,7 +8,8 @@ ratings_v3 가 prev_minutes·prev_ss_rating 이 있으면 이를 합산·가중�
 여기서는 그 컬럼만 채운다(없으면 기존 동작 그대로 — 25/26 데이터와 호환).
 
 매칭: 직전 시즌 8개 리그 전체 players_full 에서 tm_id → (norm_key, 같은 squad) → norm_key(유일할 때만)
-순으로 찾는다. 리그를 옮긴 선수(EPL→LaLiga 등)도 잡힌다. 리그가 다르면 출전시간을 리그 강도로
+순으로 찾는다. 이름만으로 다른 리그 선수를 붙일 땐 국적이 같아야 한다 — 예전엔 TM 매칭이 없는 Casa Pia
+'João Pedro' 에 Chelsea João Pedro(€80M)가 붙어 OVR 87 이 됐다(2026-10-15). 리그를 옮긴 선수(EPL→LaLiga 등)도 잡힌다. 리그가 다르면 출전시간을 리그 강도로
 환산하지 않고 그대로 쓴다(검증 '양'의 근거로만 쓰므로).
 
 사용: FB_LEAGUE=EPL FB_SEASON_START=2026 python src/attach_prev_season.py
@@ -46,8 +47,8 @@ def load_prev(season_start: int) -> pd.DataFrame:
         if not path.exists():
             continue
         df = pd.read_csv(path, usecols=lambda c: c in {"player", "squad", "minutes", "ss_rating", "tm_id", "norm_key",
-                                                       "gk_save_pct", "gk_cs_pct", "market_value_eur"})
-        for c in ("gk_save_pct", "gk_cs_pct", "market_value_eur"):
+                                                       "gk_save_pct", "gk_cs_pct", "market_value_eur", "nationality"})
+        for c in ("gk_save_pct", "gk_cs_pct", "market_value_eur", "nationality"):
             if c not in df.columns:
                 df[c] = pd.NA
         df["league"] = lg
@@ -61,6 +62,16 @@ def load_prev(season_start: int) -> pd.DataFrame:
     prev["minutes"] = pd.to_numeric(prev["minutes"], errors="coerce").fillna(0)
     # 한 선수가 여러 행(시즌 중 이적)이면 출전이 가장 많은 행을 대표로
     return prev.sort_values("minutes", ascending=False)
+
+
+def _same_person(cur_row, prev_row, cur_league: str) -> bool:
+    """이름만 같은 후보 — 같은 리그면 그대로, 다른 리그면 국적이 둘 다 있고 같아야 같은 사람으로 본다."""
+    if getattr(prev_row, "league", None) == cur_league:
+        return True
+    a, b = cur_row.get("nationality"), getattr(prev_row, "nationality", None)
+    if not isinstance(a, str) or not a or not isinstance(b, str) or not b:
+        return False
+    return _norm(a) == _norm(b)
 
 
 def attach(cur: pd.DataFrame, prev: pd.DataFrame) -> tuple[pd.DataFrame, dict]:
@@ -78,6 +89,7 @@ def attach(cur: pd.DataFrame, prev: pd.DataFrame) -> tuple[pd.DataFrame, dict]:
 
     stats = {"tm_id": 0, "name+squad": 0, "name": 0, "none": 0}
     vals = []
+    cur_lg = ACTIVE_LEAGUE
     for _, r in out.iterrows():
         nk = _norm(r.get("norm_key") or r.get("player"))
         hit, how = None, "none"
@@ -86,7 +98,7 @@ def attach(cur: pd.DataFrame, prev: pd.DataFrame) -> tuple[pd.DataFrame, dict]:
             hit, how = by_tid[tid], "tm_id"
         elif (nk, r.get("squad")) in by_nk_sq:
             hit, how = by_nk_sq[(nk, r.get("squad"))], "name+squad"
-        elif nk in by_nk:
+        elif nk in by_nk and _same_person(r, by_nk[nk], cur_lg):
             hit, how = by_nk[nk], "name"
         stats[how] += 1
         if hit is None:

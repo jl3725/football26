@@ -123,6 +123,10 @@ jobs:
       - name: Record player ratings (평점 추이)
         run: bash scripts/ci_try.sh "rating_history" python scripts/record_ratings.py
 
+      # 평점 자체 검증 — 사용자 기준·스카우트 기준표·이상치(한 시즌 급등 등) 점검 결과를 남기면 watchdog 이 읽어 이슈로 알린다
+      - name: Rating audit (평점 자체 검증)
+        run: bash scripts/ci_try.sh "rating_audit" python scripts/eval_ratings.py --audit-json data/eval/rating_audit.json --no-snapshot
+
       - name: Validate core data contracts
         run: python scripts/validate_data.py --no-optional   # 품질 게이트 — 실패 시 커밋 차단
 

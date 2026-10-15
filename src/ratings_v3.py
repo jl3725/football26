@@ -91,7 +91,8 @@ def _big_match_bonus(ucl_starts=0, uel_starts=0, conf_starts=0, cup_starts=0) ->
 
 # 상단 소프트 압축 — 88 이상은 절반 기울기로 눌러 최상위 인플레(Haaland 98 등)를 잡는다.
 # 미드티어(~85 이하)는 그대로. 유저 그라운드-트루스에 맞춤.
-_CAP_KNEE, _CAP_SLOPE = 88.0, 0.5
+# v3.4: 잠재력 보정으로 '몸값만 비싼' 젊은 선수가 내려간 만큼 검증된 최상위가 같이 눌리지 않게 0.5→0.6.
+_CAP_KNEE, _CAP_SLOPE = 88.0, 0.6
 
 
 def _soft_cap(raw: float) -> float:
@@ -114,7 +115,18 @@ def blended_ss(ss_rating, minutes, prev_ss_rating=None, prev_minutes=None) -> fl
 
 
 _CLASS_PRIOR_MIN = 600.0   # 클래스 평점을 포지션 평균 쪽으로 당기는 가상 출전(분)
-_YOUTH_PREMIUM = 0.12      # 24세 미만 1살당 — 같은 시장가치에서 어린 선수 경기력이 낮은 만큼(25/26 1,450명 회귀)
+# 모델 버전 — 바뀌면 rating_history 가 과거 기록을 평행이동해 모델 변경이 선수 추이(▲▼)로 보이지 않게 한다
+MODEL_VERSION = "v3.4"
+# 잠재력 프리미엄 — 같은 시장가치·리그에서 어린 선수의 실제 경기력(리그 보정 평점)이 낮은 만큼(vov 환산).
+# 25/26 1,500분+ 1,450명 회귀(27~29세 기준): 17~20세 −6.8 · 21세 −4.9 · 22세 −5.1 · 23세 −4.4 · 24세 −3.9 ·
+# 25세 −3.8 · 26세 −2.4 (같은 회귀에서 30~32세 +5.3 · 33세+ +9.4 — 베테랑 보정과 같은 근거).
+# 성능 보정이 평균 −0.8 정도를 이미 반영하므로 그만큼 뺀 값. 예전엔 24세 미만 1살당 0.12 라
+# 23세 €120M Anderson 91, 19세 Cubarsí 89 처럼 몸값의 잠재력 몫이 현재 기량으로 들어갔다(2026-10-15 사용자 지적).
+_YOUTH_AGES, _YOUTH_ADJ = (20.0, 21.0, 23.0, 25.0, 26.0, 27.0), (-5.5, -4.3, -3.6, -3.0, -1.9, 0.0)
+# 몸값 급등 감쇠 — 직전 시즌보다 오른 시장가치는 한 시즌 활약을 시장이 미리 반영한 몫이라(성능 보정과 이중 계산)
+# 새 수준에서 검증되기 전엔 절반만 인정(최대 −3). 26/27 시장가치 2,371명 중 75% 는 그대로, 상위 10% 가 ×1.5+.
+# 직전 가치 €5M 미만은 제외 — 1군 데뷔 유망주의 정상 성장이거나 매칭 오류(Cho 직전 €150K)라서.
+_VALUE_JUMP_KEEP, _JUMP_MAX_CUT, _JUMP_MIN_PREV = 0.5, 3.0, 5e6
 # 리그를 옮긴 선수의 직전 시즌 평점 가중 — 옮긴 선수는 직전 평점이 이번 평점을 훨씬 덜 설명한다
 # (26/27 270분+·직전 900분+ 회귀 기울기: 잔류 946명 0.82, 이동 106명 0.51, 4레벨+ 상위 리그행 39명 0.33).
 _MOVED_PREV_W = 0.4
@@ -213,10 +225,15 @@ def absolute_ovr(*, value, ss_rating, minutes, age, pos_group,
     # 직전 시즌 컬럼이 없으면 이번 시즌 출전만(기존 동작).
     mn = _num(minutes) + _num(prev_minutes)
     vov = value_ovr(value)
+    pv = value_ovr(prev_value)
     if vov is None:
-        vov = value_ovr(prev_value)
+        vov = pv
+    elif pv is not None and vov > pv and _num(prev_value) >= _JUMP_MIN_PREV:
+        vov -= min(_JUMP_MAX_CUT, (1.0 - _VALUE_JUMP_KEEP) * (vov - pv))
     rel, off = _class_parts(ss_rating, minutes, prev_ss_rating, prev_minutes, ln, league_level, prev_league_level)
-    lg_off = rating_offset(league_level) * 8.0     # GK 성능 리그 보정(평점과 같은 척도)
+    # GK 성능 리그 보정 — 평점 척도(×8)의 1.5배: 선방·클린시트는 팀 지배력 영향이 커 약한 리그 강팀 GK 가
+    # 더 부풀려진다(포르투갈 주전 GK CS 35% vs EPL 31.5%, Porto Costa 직전 시즌 CS 63.6%)
+    lg_off = rating_offset(league_level) * 12.0
     base = vov if vov is not None else _vov_fallback(ln, mn)
     proven = _clamp(mn / 1500.0, 0.0, 1.0)
     if ln == "GK":
@@ -243,8 +260,8 @@ def absolute_ovr(*, value, ss_rating, minutes, age, pos_group,
         vet_adj = _interp(a, _VET_AGES, _VET_ADJ) * proven if a > 0 else 0.0
         raw = base + _POS_ADJ[ln] + perf_adj + vet_adj
     raw += _big_match_bonus(ucl_starts, uel_starts, conf_starts, cup_starts)
-    if 0 < a < 24 and vov is not None and ln != "GK":     # GK 는 위 나이 보정에 포함
-        raw -= _YOUTH_PREMIUM * (24 - a)        # 시장가치의 잠재력 프리미엄(20세 −0.5)
+    if 0 < a < _YOUTH_AGES[-1] and vov is not None and ln != "GK":     # GK 는 위 나이 보정에 포함
+        raw += _interp(a, _YOUTH_AGES, _YOUTH_ADJ)       # 시장가치의 잠재력 프리미엄
     # 어린 미검증만 게이팅(누적 커리어 부족). '검증'은 나이가 아니라 출전시간으로 본다:
     # 어릴수록 완전검증에 필요한 출전이 많지만, 풀시즌을 뛴 유망주(예: Yamal 2262분·16G11A)는
     # 나이로 깎지 않는다. 저출전 유망주만 60 쪽으로 보수화(과대평가 방지).
