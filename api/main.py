@@ -3218,6 +3218,7 @@ def _fx_enrich(m: dict, src: dict) -> dict:
     gd = lambda t: (src["ranks"].get(t["team"]) or (0, 0, None, 0.0))[3]  # noqa: E731
     m["prob"] = mc.win_prob(m["home"].get("ovr"), m["away"].get("ovr"), gd(m["home"]), gd(m["away"]))
     _attach_predictions(m)
+    _attach_model(m)
     return m
 
 
@@ -3279,6 +3280,42 @@ def _attach_predictions(m: dict) -> None:
         e = _pred_lookup(pr["elo"], day, h, a)
         if e and "elo" not in m:
             m["elo"] = {"h": float(e["p_home"]), "d": float(e["p_draw"]), "a": float(e["p_away"])}
+
+
+_MODEL_CACHE: dict = {}
+
+
+def _model_state(league: str, before: str | None = None):
+    """우리 예측 모델 v2 상태(src/predict_model.py) — 끝난 리그 경기(match_stats) + 팀 OVR, 30분 캐시.
+    before(YYYY-MM-DD)가 있으면 그 날짜 전 경기만 — 끝난 경기 리뷰에서 '경기 전 예측'을 정직하게 다시 계산할 때."""
+    import time as _t
+    import predict_model as pm  # noqa: PLC0415
+    key = (league, before)
+    hit = _MODEL_CACHE.get(key)
+    if hit and _t.time() < hit[0]:
+        return hit[1]
+    mt = pm.league_matches(ds.read_table("match_stats", league=league))
+    if before:
+        mt = mt[mt["date"] < before]
+    st = pm.build_state(mt, _club_strength(league))
+    _MODEL_CACHE[key] = (_t.time() + 1800, st)
+    return st
+
+
+def _attach_model(m: dict, before: str | None = None) -> None:
+    """경기에 우리 모델 예측(model: 승무패·예상 득점·예상 스코어·BTTS·2.5골+). 우리 리그 밖 팀이 끼면 생략."""
+    import predict_model as pm  # noqa: PLC0415
+    hl, al = m["home"].get("league"), m["away"].get("league")
+    if not hl or not al:
+        return
+    try:
+        sh = _model_state(hl, before)
+        sa = sh if al == hl else _model_state(al, before)
+        r = pm.predict(sh, m["home"]["team"], None if sa is sh else sa, m["away"]["team"])
+        if r:
+            m["model"] = r
+    except Exception:  # noqa: BLE001
+        pass
 
 
 def _today_kst() -> datetime.date:
@@ -3481,12 +3518,13 @@ def match_review_api(event_id: str, comp: str = ""):
     home = home or _nm("home")
     away = away or _nm("away")
     date = date or str(((data.get("header", {}).get("competitions") or [{}])[0].get("date") or ""))[:10]
-    m = {"date": date or _today_kst().isoformat(), "home": {"team": home}, "away": {"team": away}}
+    m = {"date": date or _today_kst().isoformat(), "home": {"team": home, "league": lg_h}, "away": {"team": away, "league": lg_a}}
     try:
         _attach_predictions(m)
+        _attach_model(m, before=m["date"])   # 그 경기 전 데이터만으로 다시 계산한 모델 예측(결과 누설 없음)
     except Exception:  # noqa: BLE001
         pass
-    rv = mrv.build(p, home, away, m.get("fans"), m.get("elo"))
+    rv = mrv.build(p, home, away, m.get("fans"), m.get("elo"), m.get("model"))
     logo = lambda t, side: tm.team_logo(t) or ((cps.get(side) or {}).get("team", {}).get("logo") or "")  # noqa: E731
     rv.update({"event_id": event_id, "comp": comp, "date": date,
                "home": {"team": home, "league": lg_h, "logo": logo(home, "home"), "color": tm.team_color(home)},

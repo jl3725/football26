@@ -64,7 +64,8 @@ def parse(summary: dict, home_espn_id: str | None = None) -> dict:
             "venue": (gi.get("venue") or {}).get("fullName", ""), "attendance": gi.get("attendance")}
 
 
-def build(p: dict, home: str, away: str, fans: dict | None = None, elo: dict | None = None) -> dict:
+def build(p: dict, home: str, away: str, fans: dict | None = None, elo: dict | None = None,
+          model: dict | None = None) -> dict:
     """사건·기록 → 화면용 리뷰(한국어 문장)."""
     hs, as_ = p["score"]["home"], p["score"]["away"]
     live = p["state"] == "in"
@@ -166,7 +167,7 @@ def build(p: dict, home: str, away: str, fans: dict | None = None, elo: dict | N
     # 예측 적중
     pred = []
     outcome = "h" if win == "home" else "a" if win == "away" else "d"
-    for label, v in (("팬 투표", fans), ("ClubElo", elo)):
+    for label, v in (("팬 투표", fans), ("모델", model), ("ClubElo", elo)):
         if not v:
             continue
         pick = max(("h", "d", "a"), key=lambda k: v.get(k) or 0)
