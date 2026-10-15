@@ -27,6 +27,8 @@ _ALIAS = {
     "wolverhampton wanderers": "wolverhampton", "tottenham hotspur": "tottenham", "nottingham": "nottingham forest",
     "olympique lyonnais": "lyon", "olympique de marseille": "marseille", "olympique marseille": "marseille",
     "inter": "inter", "ac milan": "milan", "milan": "milan", "atletico de madrid": "atletico madrid",
+    # Understat 표기(경기별 xG 연결용)
+    "fc cologne": "koln", "cologne": "koln", "fc koln": "koln", "1 fc koln": "koln", "rasenballsport leipzig": "rb leipzig", "rb leipzig": "rb leipzig",
 }
 
 

@@ -3660,6 +3660,89 @@ def team_season(team: str, league: str = ACTIVE_LEAGUE):
     }
 
 
+# 분석 탭 '리그 백분위' 지표 — (컬럼 또는 계산 키, 영어, 한글, 높을수록 좋은가, 표시 형식)
+_TREND_METRICS = [
+    ("gf", "GOALS", "경기당 득점", True, "f2"), ("ga", "CONCEDED", "경기당 실점", False, "f2"),
+    ("xg", "xG", "경기당 기대 득점", True, "f2"), ("xga", "xGA", "경기당 기대 실점", False, "f2"),
+    ("shots", "SHOTS", "경기당 슈팅", True, "f1"), ("opp_shots", "SHOTS CONCEDED", "경기당 허용 슈팅", False, "f1"),
+    ("sot", "ON TARGET", "경기당 유효 슈팅", True, "f1"), ("poss", "POSSESSION", "점유율", True, "pct"),
+    ("pass_pct", "PASS ACCURACY", "패스 성공률", True, "pct"), ("ppda", "PPDA", "압박 강도(낮을수록 강함)", False, "f1"),
+    ("deep", "DEEP COMPLETIONS", "상대 박스 근처 패스 성공", True, "f1"), ("corners", "CORNERS", "경기당 코너킥", True, "f1"),
+]
+_TIME_BUCKETS = [(1, 15), (16, 30), (31, 45), (46, 60), (61, 75), (76, 90)]
+
+
+def _bucket_of(tok: str) -> int | None:
+    """'45+3' → 31-45 칸, '90+5' → 76-90 칸, '67' → 61-75 칸."""
+    try:
+        base = int(str(tok).split("+")[0])
+    except (TypeError, ValueError):
+        return None
+    for i, (lo, hi) in enumerate(_TIME_BUCKETS):
+        if lo <= base <= hi:
+            return i
+    return len(_TIME_BUCKETS) - 1 if base > 90 else None
+
+
+@app.get("/api/team-trends/{team}")
+@_memo(ttl=3600)
+def team_trends(team: str, league: str = ACTIVE_LEAGUE):
+    """분석 탭 — 경기별 흐름(xG·슈팅·결과), 득실 시간대(15분 단위), 리그 백분위(리그 경기 기준 경기당 평균).
+    원천: data/match_stats(ESPN 경기 상세 + 5대 리그 Understat xG·PPDA, src/fetch_match_stats.py)."""
+    ms = ds.read_table("match_stats", league=league)
+    if ms is None or ms.empty or team not in set(ms["squad"]):
+        return {"team": team, "league": league, "available": False, "matches": [], "timing": None, "percentiles": [], "has_xg": False}
+    ms = ms.copy()
+    ms["event_id"] = ms["event_id"].astype(str).str.replace(r"\.0$", "", regex=True)
+    mine = ms[ms["squad"] == team].sort_values("date")
+
+    def _f(v):
+        x = _num(v, None)
+        return None if x is None or x != x else round(float(x), 3)
+    matches = []
+    for r in mine.itertuples(index=False):
+        matches.append({"event_id": r.event_id, "date": str(r.date)[:10], "comp_code": r.comp_code,
+                        "opponent": r.opponent, "opp_logo": tm.team_logo(r.opponent) or "", "home_away": r.home_away,
+                        "gf": int(_num(r.gf)), "ga": int(_num(r.ga)), "result": r.result,
+                        "xg": _f(getattr(r, "xg", None)), "xga": _f(getattr(r, "xga", None)),
+                        "shots": _f(r.shots), "opp_shots": _f(r.opp_shots), "sot": _f(r.sot), "opp_sot": _f(r.opp_sot),
+                        "poss": _f(r.poss), "ppda": _f(getattr(r, "ppda", None)), "xpts": _f(getattr(r, "xpts", None))})
+
+    # 득실 시간대(전 대회)
+    scored, conceded = [0] * len(_TIME_BUCKETS), [0] * len(_TIME_BUCKETS)
+    for col, arr in (("goal_min_for", scored), ("goal_min_against", conceded)):
+        for v in mine[col].dropna().astype(str):
+            for tok in v.split(";"):
+                b = _bucket_of(tok.strip())
+                if b is not None:
+                    arr[b] += 1
+    timing = {"buckets": [f"{lo}-{hi}" for lo, hi in _TIME_BUCKETS], "scored": scored, "conceded": conceded,
+              "games": int(len(mine))}
+
+    # 리그 백분위 — 리그 경기만, 팀별 경기당 평균
+    lg = ms[ms["comp_code"].astype(str).str.endswith(".1")]
+    pcts = []
+    if not lg.empty and team in set(lg["squad"]):
+        agg = lg.groupby("squad").agg({c: "mean" for c, *_ in _TREND_METRICS if c in lg.columns})
+        n_games = int((lg["squad"] == team).sum())
+        for col, en, kr, high, fmt in _TREND_METRICS:
+            if col not in agg.columns:
+                continue
+            s = pd.to_numeric(agg[col], errors="coerce").dropna()
+            if team not in s.index or len(s) < 5:
+                continue
+            v = float(s[team])
+            better = (s < v).sum() if high else (s > v).sum()
+            ties = (s == v).sum() - 1
+            pct = round((better + 0.5 * ties) / (len(s) - 1) * 100) if len(s) > 1 else 50
+            rank = int((s > v).sum() + 1) if high else int((s < v).sum() + 1)
+            pcts.append({"key": col, "en": en, "kr": kr, "value": round(v, 2), "fmt": fmt, "pct": int(pct),
+                         "rank": rank, "n": int(len(s)), "high_good": high, "league_avg": round(float(s.mean()), 2)})
+        timing["league_games"] = n_games
+    return {"team": team, "league": league, "available": True, "matches": matches, "timing": timing,
+            "percentiles": pcts, "has_xg": any(m["xg"] is not None for m in matches)}
+
+
 @app.on_event("startup")
 def _warm_up() -> None:
     """서버가 뜨자마자 백그라운드에서 공용 계산을 미리 데운다.

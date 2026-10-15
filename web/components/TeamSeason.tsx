@@ -22,7 +22,7 @@ export function useTeamSeason(team: string, league: string) {
 }
 
 // 누적 승점 흐름 — 우리 팀(굵게) vs 1위·4위(점선)
-function useNarrow(q = "(max-width: 640px)") {
+export function useNarrow(q = "(max-width: 640px)") {
   const [n, setN] = useState(false);
   useEffect(() => {
     const m = window.matchMedia(q);

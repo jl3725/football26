@@ -478,6 +478,16 @@ export type ProfileAxis = { key: string; en: string; kr: string; value: number; 
 export type TeamSeason = { team: string; league: string; n: number;
   standing: { rank: number; played: number; won: number; drawn: number; lost: number; gf: number; ga: number; gd: number; points: number } | null;
   xg_pg: number | null; str_rank: number | null; path: PointsPath; refs: PointsPath[]; recent: ResultMatch[]; profile: ProfileAxis[] };
+// 분석 탭 — 경기별 흐름·득실 시간대·리그 백분위(/api/team-trends, 원천 match_stats: ESPN 경기 기록 + 5대 리그 Understat xG)
+export type TrendMatch = { event_id: string; date: string; comp_code: string; opponent: string; opp_logo: string; home_away: string;
+  gf: number; ga: number; result: string; xg: number | null; xga: number | null; shots: number | null; opp_shots: number | null;
+  sot: number | null; opp_sot: number | null; poss: number | null; ppda: number | null; xpts: number | null };
+export type TrendPct = { key: string; en: string; kr: string; value: number; fmt: "f1" | "f2" | "pct"; pct: number; rank: number; n: number;
+  high_good: boolean; league_avg: number };
+export type TeamTrends = { team: string; league: string; available: boolean; has_xg: boolean; matches: TrendMatch[];
+  timing: { buckets: string[]; scored: number[]; conceded: number[]; games: number; league_games?: number } | null; percentiles: TrendPct[] };
+export const getTeamTrends = (team: string, l = _league) =>
+  j<TeamTrends>(`/api/team-trends/${encodeURIComponent(team)}?league=${encodeURIComponent(l)}`);
 export const getTeamSeason = (team: string, l = _league) =>
   j<TeamSeason>(`/api/team-season/${encodeURIComponent(team)}?league=${encodeURIComponent(l)}`);
 export const getTeamFixtures = (team: string, l = _league) =>

@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
-import { getSchedule, getMatch, type Schedule, type MatchDetail, type Match } from "@/lib/api";
+import { getSchedule, getMatch, type Schedule, type MatchDetail, type Match, type Fixture } from "@/lib/api";
+import { ReviewSections } from "./MatchReview";
 import Pitch from "./Pitch";
 import { usePeek } from "./PlayerPeek";
 import { Skel, SkelPitch, SkelRows } from "./Skeleton";
@@ -69,8 +70,22 @@ function MatchDetailView({ team, match, accent }: { team: string; match: Match; 
           </div>
         </div>
       )}
+      {/* 경기 리뷰(헤드라인·요약·타임라인·기록 비교) — 홈·매치 서랍과 같은 /api/review */}
+      {match.status === "completed" && match.event_id && (
+        <div className="pv-body scd-review">
+          <ReviewSections m={asFixture(team, match, accent)} inPlay={false} hc={accent} ac="#8a94a8" />
+        </div>
+      )}
     </div>
   );
+}
+
+// 일정 행 → 리뷰 컴포넌트가 쓰는 최소 Fixture(팀 이름·로고만 필요)
+function asFixture(team: string, m: Match, color: string): Fixture {
+  const me = { team, league: null, rank: null, points: null, logo: "", color, ovr: null, form: [] as string[] };
+  const op = { team: m.opponent, league: null, rank: null, points: null, logo: m.opp_logo, color: "#8a94a8", ovr: null, form: [] as string[] };
+  const [home, away] = m.home_away === "H" ? [me, op] : [op, me];
+  return { event_id: m.event_id, comp_code: "", comp: m.comp, kickoff: "", kst: "", date: m.date, d_day: -1, home, away, big: 0, tags: [] };
 }
 
 export default function ScheduleTab({ team, accent }: { team: string; accent: string }) {

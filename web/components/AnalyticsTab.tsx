@@ -6,6 +6,8 @@ import TeamTerritory from "./TeamTerritory";
 import Chemistry from "./Chemistry";
 import { usePeek } from "./PlayerPeek";
 import { SkelTab } from "./Skeleton";
+import SectionHead from "./SectionHead";
+import TeamTrendsBoard from "./TeamTrends";
 
 const LINE_LABEL: Record<string, string> = { GK: "골키퍼", DEF: "수비", MID: "미드필드", ATT: "공격" };
 const LINE_COLOR: Record<string, string> = { GK: "#7fb4f0", DEF: "#6aa6e0", MID: "#caa64e", ATT: "#d98169" };
@@ -45,9 +47,12 @@ export default function AnalyticsTab({ team, accent }: { team: string; accent: s
 
   return (
     <div className="fade">
+      {/* 경기별 흐름 · 리그 백분위 · 득실 시간대(/api/team-trends) */}
+      <TeamTrendsBoard team={team} color={data.color || accent} />
+
       {/* Match Factor Lab */}
       <div className="card" style={{ marginTop: 16 }}>
-        <h3>Match Factor Lab · 강점 / 보강</h3>
+        <SectionHead title="MATCH FACTOR LAB" kr="강점 · 보강" meta="팀 지수 상·하위 · 기여 선수" />
         <div className="fac-grid">
           <div>
             <div className="fac-col-title" style={{ color: "#4fc27f" }}>▲ 강점 팩터</div>
@@ -64,19 +69,19 @@ export default function AnalyticsTab({ team, accent }: { team: string; accent: s
 
       {/* 팀 포지셔널 맵 (스쿼드 히트맵 집계) */}
       <div className="card" style={{ marginTop: 16 }}>
-        <h3>팀 포지셔널 맵 <span className="rating-note">· 점유 구역 · 평균 대형 (Sofascore)</span></h3>
+        <SectionHead title="TERRITORY" kr="팀 포지셔널 맵" meta="점유 구역 · 평균 대형 · Sofascore" />
         <TeamTerritory team={team} accent={accent} />
       </div>
 
       {/* 케미스트리 · 파트너십 (KG) */}
       <div className="card" style={{ marginTop: 16 }}>
-        <h3>케미스트리 <span className="rating-note">· 함께 뛴 시간 기준 최고의 파트너십</span></h3>
+        <SectionHead title="CHEMISTRY" kr="케미스트리" meta="함께 뛴 시간 기준 최고의 파트너십" />
         <Chemistry team={team} accent={accent} />
       </div>
 
       {/* 상대·환경별 성과 */}
       <div className="card" style={{ marginTop: 16 }}>
-        <h3>상대·환경별 성과 (PPG)</h3>
+        <SectionHead title="CONTEXT" kr="상대·환경별 성과" meta="리그 경기당 승점(PPG)" />
         <div className="ctx-grid">
           <div className="ctx-item"><span>홈</span><b style={{ color: accent }}>{data.context.home_ppg}</b></div>
           <div className="ctx-item"><span>원정</span><b style={{ color: accent }}>{data.context.away_ppg}</b></div>
@@ -89,7 +94,7 @@ export default function AnalyticsTab({ team, accent }: { team: string; accent: s
       {/* 부상 + 라인 공백 */}
       <div className="grid" style={{ marginTop: 16 }}>
         <div className="card">
-          <h3>부상 임팩트 · 결장 경기 상위</h3>
+          <SectionHead title="INJURY IMPACT" kr="부상 결장" meta="결장 경기 상위" />
           <div className="inj-list">
             {data.injuries.map((x, i) => (
               <div className="inj-row peekable" key={i}
@@ -107,7 +112,7 @@ export default function AnalyticsTab({ team, accent }: { team: string; accent: s
           </div>
         </div>
         <div className="card">
-          <h3>라인별 부상 공백 비중</h3>
+          <SectionHead title="ABSENCE BY LINE" kr="라인별 부상 공백" />
           <div className="ls-list">
             {["ATT", "MID", "DEF", "GK"].map((k) => (
               <div className="ls-row" key={k}>
@@ -128,7 +133,7 @@ export default function AnalyticsTab({ team, accent }: { team: string; accent: s
       {/* 여름 영입 감사 */}
       {data.audit.length > 0 && (
         <div className="card" style={{ marginTop: 16 }}>
-          <h3>여름 영입 감사 · 소화도 평가</h3>
+          <SectionHead title="SIGNINGS AUDIT" kr="영입 감사" meta="출전 소화도 평가" />
           <div className="audit-grid">
             {data.audit.map((a, i) => (
               <div className={`audit-card ${a.tone} peekable`} key={i}
@@ -149,7 +154,7 @@ export default function AnalyticsTab({ team, accent }: { team: string; accent: s
       {/* 감독 전술 진화 */}
       {data.manager_evo && (
         <div className="card" style={{ marginTop: 16 }}>
-          <h3>감독 전술</h3>
+          <SectionHead title="MANAGER TACTICS" kr="감독 전술" />
           <div className="evo">
             <div className="evo-col current" style={{ borderColor: hexA(accent, 0.4) }}>
               <div className="evo-tag" style={{ color: accent }}>현재</div>
