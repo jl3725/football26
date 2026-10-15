@@ -15,7 +15,7 @@ import math
 
 import pandas as pd
 
-from league_level import rating_offset
+from league_level import level as league_level_of, rating_offset
 
 
 def _num(v, d: float = 0.0) -> float:
@@ -32,6 +32,10 @@ def _clamp(x: float, lo: float, hi: float) -> float:
 
 def line_of(pos) -> str:
     p = str(pos or "").upper()
+    # line_of_row 결과(GK·DEF·MID·ATT)를 다시 넣는 호출부가 많다 — 예전엔 "DEF"·"ATT" 를 못 알아봐
+    # 수비수·공격수가 전부 MID 기준(평점 중앙값 7.05·보정 +2)으로 계산됐다(2026-10-15 발견).
+    if p in ("GK", "DEF", "MID", "ATT"):
+        return p
     if p in ("GK",) or "KEEPER" in p:
         return "GK"
     if p in ("CB", "FB", "RB", "LB", "DF") or "BACK" in p or "DEFEN" in p:
@@ -111,52 +115,94 @@ def blended_ss(ss_rating, minutes, prev_ss_rating=None, prev_minutes=None) -> fl
 
 _CLASS_PRIOR_MIN = 600.0   # 클래스 평점을 포지션 평균 쪽으로 당기는 가상 출전(분)
 _YOUTH_PREMIUM = 0.12      # 24세 미만 1살당 — 같은 시장가치에서 어린 선수 경기력이 낮은 만큼(25/26 1,450명 회귀)
+# 리그를 옮긴 선수의 직전 시즌 평점 가중 — 옮긴 선수는 직전 평점이 이번 평점을 훨씬 덜 설명한다
+# (26/27 270분+·직전 900분+ 회귀 기울기: 잔류 946명 0.82, 이동 106명 0.51, 4레벨+ 상위 리그행 39명 0.33).
+_MOVED_PREV_W = 0.4
+# GK 시장가치 나이 보정 — GK 기량은 30대 초반까지 유지되는데 시장가치는 해마다 ≈0.8 깎인다
+# (25/26 1,500분+ GK 26~34세 88명, 선방%·CS% 통제 회귀 −0.83/년). 27세 기준으로 되돌린다.
+# 예전엔 30세+ 일괄 +2 라 24세 €40M Verbruggen 이 31세 €30M Raya(3연속 골든글러브)보다 높았다.
+_GK_AGE_PIVOT, _GK_AGE_SLOPE, _GK_AGE_LO, _GK_AGE_HI = 27.0, 0.8, -3.2, 4.8
 
 
-def class_ss(ss_rating, minutes, prev_ss_rating, prev_minutes, ln: str, league_level=None) -> float:
+def class_ss(ss_rating, minutes, prev_ss_rating, prev_minutes, ln: str, league_level=None,
+             prev_league_level=None) -> float:
     """OVR(커리어 클래스)용 평점 — 표본 수축 + 리그 보정(EPL 기준 환산).
 
     이번 시즌·직전 시즌을 출전 시간으로 가중하고 포지션 평균을 600분어치 섞는다. 시즌 초 600분짜리
     고평점(예: 포르투갈 8.44)이 클래스를 끌어올리지 않게 하고, 리그 안 상대평가인 Sofascore 평점을
     리그 레벨만큼 낮춰 리그 간에 비교 가능하게 한다(src/league_level.py).
+    직전 시즌 평점은 그 시즌에 뛴 리그로 환산한다 — 예전엔 이번 시즌 리그로만 빼서 벨기에에서 넘어온
+    Tzolis 의 7.71 이 EPL 7.71 처럼 들어가 OVR 88 이 됐다(2026-10-15).
     """
     ss, mn, pss, pmn = _num(ss_rating), _num(minutes), _num(prev_ss_rating), _num(prev_minutes)
     if ss <= 0 and pss <= 0:
         return 0.0
     mid = _SS_MID[ln]
+    off_cur = rating_offset(league_level)
+    off_prev = rating_offset(prev_league_level) if prev_league_level is not None else off_cur
     w_cur = mn if ss > 0 else 0.0
     w_prev = pmn if pss > 0 else 0.0
-    v = (ss * w_cur + pss * w_prev + mid * _CLASS_PRIOR_MIN) / (w_cur + w_prev + _CLASS_PRIOR_MIN)
-    return v - rating_offset(league_level)
+    if prev_league_level is not None and league_level is not None and prev_league_level != league_level:
+        w_prev *= _MOVED_PREV_W
+    return ((ss - off_cur) * w_cur + (pss - off_prev) * w_prev + (mid - off_cur) * _CLASS_PRIOR_MIN) / (
+        w_cur + w_prev + _CLASS_PRIOR_MIN)
+
+
+# 골키퍼 선방률·클린시트 — 이번 시즌 + 직전 시즌 + 평균(67%·27%)을 1,200분어치 섞는다.
+# 예전엔 이번 시즌 몇 경기 값만 써서 6경기 선방률 75%·CS 67% 인 Verbruggen 이 보정 상한(+7)을 채워 90,
+# 지난 시즌 CS 51%(골든글러브)인 Raya 는 89 였다(2026-10-15 사용자 지적).
+_GK_SAVE_MID, _GK_CS_MID, _GK_PRIOR_MIN = 67.0, 27.0, 1200.0
+
+
+def _gk_blend(cur, mn, prev, pmn, mid) -> float | None:
+    c, p_ = _num(cur), _num(prev)
+    w_c = _num(mn) if c > 0 or (cur is not None and cur == cur and _num(mn) > 0) else 0.0
+    w_p = _num(pmn) if (prev is not None and prev == prev and _num(pmn) > 0) else 0.0
+    if w_c + w_p <= 0:
+        return None
+    return (c * w_c + p_ * w_p + mid * _GK_PRIOR_MIN) / (w_c + w_p + _GK_PRIOR_MIN)
+
+
+# 시장가치가 없을 때(TM 매칭 실패 — 주전급도 리그마다 1~9명) 기준점: 직전 시즌 시장가치 → 포지션 중앙값.
+# 예전엔 60 으로 시작해 Chelsea Sánchez 가 62 였다.
+_VOV_FALLBACK = {"GK": 76.0, "DEF": 77.0, "MID": 77.0, "ATT": 77.0}
 
 
 def absolute_ovr(*, value, ss_rating, minutes, age, pos_group,
                  gk_save_pct=None, gk_cs_pct=None,
                  ucl_starts=0, uel_starts=0, conf_starts=0, cup_starts=0,
-                 prev_minutes=None, prev_ss_rating=None, league_level=None) -> int:
+                 prev_minutes=None, prev_ss_rating=None, league_level=None,
+                 prev_league_level=None, prev_gk_save_pct=None, prev_gk_cs_pct=None, prev_value=None) -> int:
     ln = line_of(pos_group)
     a = _num(age)
     # '검증'(유망주 게이팅·베테랑 보정)은 직전 시즌 출전까지 합산 — 시즌 초 전원 미검증 방지.
     # 직전 시즌 컬럼이 없으면 이번 시즌 출전만(기존 동작).
     mn = _num(minutes) + _num(prev_minutes)
     vov = value_ovr(value)
-    ss = class_ss(ss_rating, minutes, prev_ss_rating, prev_minutes, ln, league_level)
-    base = vov if vov is not None else 60.0
+    if vov is None:
+        vov = value_ovr(prev_value)
+    ss = class_ss(ss_rating, minutes, prev_ss_rating, prev_minutes, ln, league_level, prev_league_level)
+    base = vov if vov is not None else _VOV_FALLBACK[ln]
     if ln == "GK":
-        # GK 는 시장가·ss 로 변별 불가(값 압축) → 선방%/CS% 를 성능축으로. flat 보정 축소(8→3).
-        save, cs = _num(gk_save_pct), _num(gk_cs_pct)
-        if save > 0:
-            perf = _clamp((save - 67.0) * 0.6, -4.0, 4.0) + _clamp((cs - 27.0) * 0.09, -1.2, 3.0)
+        # GK 는 시장가·ss 로 변별 불가(값 압축) → 선방%/CS% 를 성능축으로(직전 시즌·평균과 섞어 소표본 완화).
+        # Sofascore GK 평점은 슈팅을 많이 받는 약팀 GK 에 유리해 성능축에 넣지 않는다.
+        save = _gk_blend(gk_save_pct, minutes, prev_gk_save_pct, prev_minutes, _GK_SAVE_MID)
+        cs = _gk_blend(gk_cs_pct, minutes, prev_gk_cs_pct, prev_minutes, _GK_CS_MID)
+        if save is not None:
+            perf = _clamp((save - 67.0) * 0.6, -4.0, 4.0) + _clamp(((cs if cs is not None else 27.0) - 27.0) * 0.09, -1.2, 3.0)
         else:
             perf = _clamp((ss - _SS_MID["GK"]) * 8.0, -3.5, 3.5)
-        vet_adj = 2.0 if (a >= 30 and mn >= 1500) else 0.0
-        raw = base + 3.0 + perf + vet_adj
+        # 나이 보정: 어린 GK 의 잠재력 프리미엄은 빼고(−), 검증된(1,500분+) 30대 GK 의 할인은 되돌린다(+)
+        age_adj = _clamp(_GK_AGE_SLOPE * (a - _GK_AGE_PIVOT), _GK_AGE_LO, _GK_AGE_HI) if a > 0 else 0.0
+        if age_adj > 0 and mn < 1500:
+            age_adj = 0.0
+        raw = base + 3.0 + perf + age_adj
     else:
         perf_adj = _clamp((ss - _SS_MID[ln]) * 8.0, -3.5, 3.5) if ss > 0 else 0.0
         vet_adj = 3.0 if (a >= 30 and mn >= 1500) else 0.0   # 검증된 베테랑은 시장가 저평가 보정
         raw = base + _POS_ADJ[ln] + perf_adj + vet_adj
     raw += _big_match_bonus(ucl_starts, uel_starts, conf_starts, cup_starts)
-    if 0 < a < 24 and vov is not None:
+    if 0 < a < 24 and vov is not None and ln != "GK":     # GK 는 위 나이 보정에 포함
         raw -= _YOUTH_PREMIUM * (24 - a)        # 시장가치의 잠재력 프리미엄(20세 −0.5)
     # 어린 미검증만 게이팅(누적 커리어 부족). '검증'은 나이가 아니라 출전시간으로 본다:
     # 어릴수록 완전검증에 필요한 출전이 많지만, 풀시즌을 뛴 유망주(예: Yamal 2262분·16G11A)는
@@ -301,6 +347,11 @@ def big_match_proven(*, euro_starts=0, euro_apps=0) -> bool:
     return _num(euro_starts) >= 4 or _num(euro_apps) >= 6
 
 
+def _prev_level(row):
+    pl = row.get("prev_league")
+    return league_level_of(pl) if isinstance(pl, str) and pl else None
+
+
 def ovr_of_row(row) -> int:
     """선수 행 → 절대 OVR (API _player_ovr 와 같은 입력). player_frame 이 리그 표에 `_ovr` 로 미리 붙인다."""
     return absolute_ovr(
@@ -310,19 +361,15 @@ def ovr_of_row(row) -> int:
         ucl_starts=row.get("ucl_starts"), uel_starts=row.get("uel_starts"),
         conf_starts=row.get("conf_starts"), cup_starts=row.get("cup_starts"),
         prev_minutes=row.get("prev_minutes"), prev_ss_rating=row.get("prev_ss_rating"),
-        league_level=row.get("_league_level"))
+        league_level=row.get("_league_level"), prev_league_level=_prev_level(row),
+        prev_gk_save_pct=row.get("prev_gk_save_pct"), prev_gk_cs_pct=row.get("prev_gk_cs_pct"),
+        prev_value=row.get("prev_market_value_eur"))
 
 
 def player_line(row) -> dict:
     # 라인은 역할(tm_position) 우선 — FBref 'MF'·'FW,MF' 같은 대분류로 윙어를 미드로 보던 것 수정
     pos = line_of_row(row)
-    ab = absolute_ovr(value=row.get("market_value_eur"), ss_rating=row.get("ss_rating"),
-                      minutes=row.get("minutes"), age=row.get("age"), pos_group=pos,
-                      gk_save_pct=row.get("gk_save_pct"), gk_cs_pct=row.get("gk_cs_pct"),
-                      ucl_starts=row.get("ucl_starts"), uel_starts=row.get("uel_starts"),
-                      conf_starts=row.get("conf_starts"), cup_starts=row.get("cup_starts"),
-                      prev_minutes=row.get("prev_minutes"), prev_ss_rating=row.get("prev_ss_rating"),
-                      league_level=row.get("_league_level"))
+    ab = ovr_of_row(row)
     fm = row.get("_form")
     if fm is None or fm != fm:                     # 리그 내 순위 폼이 없으면(단독 행) 근사식
         fm = form_rating(ss_rating=row.get("ss_rating"), minutes=row.get("minutes"),

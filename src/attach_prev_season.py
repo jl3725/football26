@@ -22,7 +22,9 @@ from unidecode import unidecode
 
 from leagues import ACTIVE_LEAGUE, LEAGUES, SEASON_START, data_path
 
-PREV_COLS = ["prev_minutes", "prev_ss_rating", "prev_squad", "prev_league"]
+# 골키퍼 선방률·클린시트·시장가치도 — GK OVR 이 이번 시즌 몇 경기만 보던 것, 시장가치 누락 선수 기준점(2026-10-15)
+PREV_COLS = ["prev_minutes", "prev_ss_rating", "prev_squad", "prev_league",
+             "prev_gk_save_pct", "prev_gk_cs_pct", "prev_market_value_eur"]
 
 
 def _norm(s) -> str:
@@ -43,8 +45,11 @@ def load_prev(season_start: int) -> pd.DataFrame:
         path = data_path("players_full", lg, f"{season_start - 1}_{season_start}")
         if not path.exists():
             continue
-        df = pd.read_csv(path, usecols=lambda c: c in {"player", "squad", "minutes", "ss_rating",
-                                                       "tm_id", "norm_key"})
+        df = pd.read_csv(path, usecols=lambda c: c in {"player", "squad", "minutes", "ss_rating", "tm_id", "norm_key",
+                                                       "gk_save_pct", "gk_cs_pct", "market_value_eur"})
+        for c in ("gk_save_pct", "gk_cs_pct", "market_value_eur"):
+            if c not in df.columns:
+                df[c] = pd.NA
         df["league"] = lg
         frames.append(df)
     if not frames:
@@ -85,11 +90,12 @@ def attach(cur: pd.DataFrame, prev: pd.DataFrame) -> tuple[pd.DataFrame, dict]:
             hit, how = by_nk[nk], "name"
         stats[how] += 1
         if hit is None:
-            vals.append((pd.NA, pd.NA, pd.NA, pd.NA))
+            vals.append((pd.NA,) * len(PREV_COLS))
         else:
             g = (lambda k: hit[k]) if isinstance(hit, pd.Series) else (lambda k: getattr(hit, k))
-            vals.append((int(g("minutes")), g("ss_rating"), g("squad"), g("league")))
-    for c, col in zip(PREV_COLS, zip(*vals) if vals else [[]] * 4):
+            vals.append((int(g("minutes")), g("ss_rating"), g("squad"), g("league"),
+                         g("gk_save_pct"), g("gk_cs_pct"), g("market_value_eur")))
+    for c, col in zip(PREV_COLS, zip(*vals) if vals else [[]] * len(PREV_COLS)):
         out[c] = list(col)
     return out, stats
 
