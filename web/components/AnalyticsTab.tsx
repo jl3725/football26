@@ -1,7 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
 import { feeLabel, getAnalytics, fmtEur, type Analytics, type Factor } from "@/lib/api";
-import { tier, hexA } from "@/lib/ui";
+import { hexA } from "@/lib/ui";
+import { idxMeaning, ppgMeaning } from "@/lib/meaning";
+import { MeaningTag } from "./Meaning";
 import TeamTerritory from "./TeamTerritory";
 import { usePeek } from "./PlayerPeek";
 import { SkelTab } from "./Skeleton";
@@ -12,14 +14,15 @@ const LINE_LABEL: Record<string, string> = { GK: "골키퍼", DEF: "수비", MID
 const LINE_COLOR: Record<string, string> = { GK: "#7fb4f0", DEF: "#6aa6e0", MID: "#caa64e", ATT: "#d98169" };
 
 function FactorCard({ f, kind, accent, team }: { f: Factor; kind: "s" | "w"; accent: string; team: string }) {
-  const t = tier(f.value);
+  const mn = idxMeaning(f.value);      // 팀 지수(50 = 리그 평균) — OVR 색(tier)을 쓰면 62·38 이 둘 다 회색이었다
   const peek = usePeek();
   return (
     <div className={`fac-card ${kind}`}>
       <div className="fac-top">
         <span className="fac-tag" style={{ color: kind === "s" ? "#4fc27f" : "#e07070" }}>{kind === "s" ? "강점" : "보강"}</span>
         <span className="fac-label">{f.label}</span>
-        <span className="fac-val" style={{ color: t.light }}>{f.value}</span>
+        <span className="fac-val" style={{ color: mn.c }} title={`${f.value} — ${mn.label} (50 = 리그 평균)`}>{f.value}</span>
+        <MeaningTag m={mn} sm />
       </div>
       {f.players.length > 0 && <div className="fac-players">
         {f.players.map((p, i) => (
@@ -74,14 +77,18 @@ export default function AnalyticsTab({ team, accent }: { team: string; accent: s
 
       {/* 상대·환경별 성과 */}
       <div className="card" style={{ marginTop: 16 }}>
-        <SectionHead title="CONTEXT" kr="상대·환경별 성과" meta="리그 경기당 승점(PPG)" />
+        <SectionHead title="CONTEXT" kr="상대·환경별 성과" meta="리그 경기당 승점(PPG · 0~3)" />
         <div className="ctx-grid">
-          <div className="ctx-item"><span>홈</span><b style={{ color: accent }}>{data.context.home_ppg}</b></div>
-          <div className="ctx-item"><span>원정</span><b style={{ color: accent }}>{data.context.away_ppg}</b></div>
-          <div className="ctx-item"><span>상위권</span><b>{tp.top}</b></div>
-          <div className="ctx-item"><span>중위권</span><b>{tp.mid}</b></div>
-          <div className="ctx-item"><span>하위권</span><b>{tp.bottom}</b></div>
+          {([["홈", data.context.home_ppg], ["원정", data.context.away_ppg], ["vs 상위권", tp.top], ["vs 중위권", tp.mid], ["vs 하위권", tp.bottom]] as [string, number | null][])
+            .map(([l, v]) => {
+              const mn = ppgMeaning(v);
+              return (
+                <div className="ctx-item" key={l}><span>{l}</span><b style={{ color: v == null ? undefined : mn.c }}>{v ?? "—"}</b>
+                  {v != null && <MeaningTag m={mn} sm />}</div>
+              );
+            })}
         </div>
+        <p className="sp5-note">경기당 승점을 38경기로 늘리면 2.2 ≈ 84점(우승권) · 1.75 ≈ 67점(유럽권) · 1.0 ≈ 38점(강등권).</p>
       </div>
 
       {/* 부상 + 라인 공백 */}

@@ -2,6 +2,8 @@
 import { useEffect, useRef, useState } from "react";
 import { getScout, fmtEur, type Scout } from "@/lib/api";
 import { hexA, tier } from "@/lib/ui";
+import { scoreMeaning, TONE } from "@/lib/meaning";
+import { MeaningTag } from "./Meaning";
 import Bar from "./Bar";
 
 type Msg = { role: "user" | "assistant"; text: string; data?: Scout };
@@ -44,36 +46,48 @@ function ResultCard({ d, accent, onNavigate }: { d: Scout; accent: string; onNav
     return (
       <div style={box}>
         {r.weakest?.label && <div style={{ fontSize: 11, opacity: 0.6, marginBottom: 6 }}>약점 라인: {r.weakest.label}</div>}
-        {picks.map((p: any, i: number) => (
-          <div key={i} onClick={() => p.squad && onNavigate?.(p.squad, p.source_league)} title={p.squad ? `${p.squad} 보기` : ""}
-            style={{ display: "flex", alignItems: "center", gap: 8, padding: "5px 0", cursor: onNavigate && p.squad ? "pointer" : "default", borderBottom: i < picks.length - 1 ? `1px solid ${hexA("#fff", 0.05)}` : "none" }}>
-            {p.photo ? <img src={p.photo} alt="" style={{ width: 26, height: 26, borderRadius: "50%", objectFit: "cover" }} /> : <span style={{ width: 26 }} />}
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ fontSize: 12.5, fontWeight: 600 }}>{p.player} <span style={{ opacity: 0.5, fontWeight: 400 }}>{p.squad}</span></div>
-              <div style={{ fontSize: 10.5, opacity: 0.6 }}>{p.pos} · {fmtEur(p.value_eur)}{p.cross_league ? ` · ↗${p.source_league}` : ""}
-                {p.style_fit != null ? <span style={{ color: accent }}> · 스타일 {p.style_fit}</span> : null}</div>
+        {picks.map((p: any, i: number) => {
+          const shown: number = p.projected_ovr || p.ovr;   // 우리 리그 기준 예상 OVR — 색도 이 숫자로
+          const t = tier(shown);
+          return (
+            <div key={i} onClick={() => p.squad && onNavigate?.(p.squad, p.source_league)} title={p.squad ? `${p.squad} 보기` : ""}
+              style={{ display: "flex", alignItems: "center", gap: 8, padding: "5px 0", cursor: onNavigate && p.squad ? "pointer" : "default", borderBottom: i < picks.length - 1 ? `1px solid ${hexA("#fff", 0.05)}` : "none" }}>
+              {p.photo ? <img src={p.photo} alt="" style={{ width: 26, height: 26, borderRadius: "50%", objectFit: "cover" }} /> : <span style={{ width: 26 }} />}
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontSize: 12.5, fontWeight: 600 }}>{p.player} <span style={{ opacity: 0.5, fontWeight: 400 }}>{p.squad}</span></div>
+                <div style={{ fontSize: 10.5, opacity: 0.6 }}>{p.pos} · {fmtEur(p.value_eur)}{p.cross_league ? ` · ↗${p.source_league}` : ""}
+                  {p.style_fit != null ? <span style={{ color: scoreMeaning(p.style_fit).c }}> · 스타일 유사도 {p.style_fit}</span> : null}</div>
+              </div>
+              <div style={{ textAlign: "right", flexShrink: 0 }}
+                title={p.cross_league && p.current_ovr != null ? `현재 OVR ${p.current_ovr} → 우리 리그 기준 예상 ${shown} · ${t.ko}` : `OVR ${shown} · ${t.ko}`}>
+                <div style={{ fontSize: 15, fontWeight: 800, lineHeight: 1.1, color: t.light }}>{shown}</div>
+                <div style={{ fontSize: 9, fontWeight: 700, color: t.light, opacity: 0.85 }}>{t.ko}</div>
+              </div>
             </div>
-            <div style={{ fontSize: 15, fontWeight: 800, color: tier(p.ovr).light }}>{p.projected_ovr || p.ovr}</div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     );
   }
   if (d.intent === "fit") {
     const c = r.components; if (!c) return null;
     const af = r.affordability;
+    const fm = scoreMeaning(r.fit_score);
     return (
       <div style={box}>
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          <div style={{ fontSize: 30, fontWeight: 800, color: tier(r.fit_score).light }}>{r.fit_score}</div>
+          <div style={{ textAlign: "center", flexShrink: 0 }} title="FIT SCORE 0~100 — 종합 적합도(높을수록 잘 맞음)">
+            <div style={{ fontSize: 30, fontWeight: 800, lineHeight: 1.05, color: fm.c }}>{r.fit_score}</div>
+            <MeaningTag sm m={fm} />
+          </div>
           <div style={{ fontSize: 11.5 }}>
             <div><b>{r.candidate}</b> → {r.target_club} / {r.role}</div>
-            <div style={{ opacity: 0.6 }}>{r.signing_type} · Risk {r.risk_level} · {r.base_ovr}→{r.proj_ovr}</div>
+            <div style={{ opacity: 0.6 }}>{r.signing_type} · Risk {r.risk_level} · OVR {r.base_ovr}→{r.proj_ovr} <span style={{ opacity: 0.8 }}>(현재 → 우리 리그 예상)</span></div>
           </div>
         </div>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "3px 10px", marginTop: 8, fontSize: 11 }}>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "3px 10px", marginTop: 8, fontSize: 11 }} title="항목 점수 0~100 · 45+ 보통 · 65+ 높음 · 80+ 매우 높음">
           {[["역할", c.RoleFit], ["전술", c.TacticalFit], ["니즈", c.TeamNeed], ["성장", c.Potential], ["가격", c.PriceRealism], ["영입성향", c.RecruitFit]].map(([k, v]: any) => (
-            <span key={k} style={{ opacity: 0.8 }}>{k} <b style={{ color: tier(v).light }}>{v}</b></span>
+            <span key={k} style={{ opacity: 0.8 }}>{k} <b style={{ color: scoreMeaning(v).c }} title={scoreMeaning(v).label}>{v}</b></span>
           ))}
         </div>
         {af && <div style={{ fontSize: 11, opacity: 0.7, marginTop: 6 }}>예산: {af.likely_fee_eur ? fmtEur(af.likely_fee_eur) : "?"} / 상한 {af.ceiling_eur ? fmtEur(af.ceiling_eur) : "?"} → {VERDICT_KO[af.verdict] || af.verdict}</div>}
@@ -84,12 +98,18 @@ function ResultCard({ d, accent, onNavigate }: { d: Scout; accent: string; onNav
     const res = (r.results || []).slice(0, 6);
     return (
       <div style={box}>
-        {res.map((p: any, i: number) => (
-          <div key={i} style={{ display: "flex", justifyContent: "space-between", padding: "4px 0", fontSize: 12 }}>
-            <span>{p.player} <span style={{ opacity: 0.5 }}>{p.squad} · {p.pos}</span></span>
-            <b style={{ color: accent }}>{Math.round((p.score || 0) * 100)}</b>
-          </div>
-        ))}
+        {res.map((p: any, i: number) => {
+          const sv = Math.round((p.score || 0) * 100);
+          const sm = scoreMeaning(sv);
+          return (
+            <div key={i} style={{ display: "flex", justifyContent: "space-between", gap: 8, padding: "4px 0", fontSize: 12 }}>
+              <span>{p.player} <span style={{ opacity: 0.5 }}>{p.squad} · {p.pos}</span></span>
+              <span style={{ whiteSpace: "nowrap", color: sm.c }} title={`스타일 유사도 ${sv}% (${sm.label})`}>
+                <span style={{ fontSize: 10, opacity: 0.7, marginRight: 3 }}>유사도</span><b>{sv}%</b>
+              </span>
+            </div>
+          );
+        })}
       </div>
     );
   }
@@ -98,8 +118,10 @@ function ResultCard({ d, accent, onNavigate }: { d: Scout; accent: string; onNav
       <div style={box}>
         <div style={{ fontSize: 12, fontWeight: 600, marginBottom: 6 }}>{r.target_club} ← {r.new_manager}</div>
         {(r.vector_changes || []).slice(0, 4).map((c: any) => (
-          <div key={c.axis} style={{ fontSize: 11, opacity: 0.8 }}>{c.axis}: {c.from}→<b>{c.to}</b> {c.delta > 0 ? "▲" : "▼"}{Math.abs(c.delta)}</div>
+          <div key={c.axis} style={{ fontSize: 11, opacity: 0.8 }}>{c.axis}: {c.from}→<b>{c.to}</b>{" "}
+            {c.delta !== 0 && <span style={{ color: TONE.avg.c, fontWeight: 700 }}>{c.delta > 0 ? "▲" : "▼"}{Math.abs(c.delta)}</span>}</div>
         ))}
+        {(r.vector_changes || []).length > 0 && <div style={{ fontSize: 10, opacity: 0.5, marginTop: 2 }}>전술 지수 0~99 · 50 = 리그 평균</div>}
         {(r.priorities || []).slice(0, 2).map((p: any, i: number) => (
           <div key={i} style={{ fontSize: 11, marginTop: 5 }}><b>{p.role}</b>: {(p.candidates || []).slice(0, 3).join(", ") || "-"}</div>
         ))}

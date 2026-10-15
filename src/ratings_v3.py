@@ -168,7 +168,7 @@ def _interp(x: float, xs, ys) -> float:
 
 
 def class_ss(ss_rating, minutes, prev_ss_rating, prev_minutes, ln: str, league_level=None,
-             prev_league_level=None) -> float:
+             prev_league_level=None, hist_ss_rating=None, hist_minutes=None, hist_league_level=None) -> float:
     """OVR(커리어 클래스)용 평점 — 표본 수축 + 리그 보정(EPL 기준 환산).
 
     이번 시즌·직전 시즌을 출전 시간으로 가중하고 포지션 평균을 600분어치 섞는다. 시즌 초 600분짜리
@@ -177,14 +177,20 @@ def class_ss(ss_rating, minutes, prev_ss_rating, prev_minutes, ln: str, league_l
     직전 시즌 평점은 그 시즌에 뛴 리그로 환산한다 — 예전엔 이번 시즌 리그로만 빼서 벨기에에서 넘어온
     Tzolis 의 7.71 이 EPL 7.71 처럼 들어가 OVR 88 이 됐다(2026-10-15).
     """
-    rel, off = _class_parts(ss_rating, minutes, prev_ss_rating, prev_minutes, ln, league_level, prev_league_level)
+    rel, off = _class_parts(ss_rating, minutes, prev_ss_rating, prev_minutes, ln, league_level, prev_league_level,
+                            hist_ss_rating, hist_minutes, hist_league_level)
     return rel - off if rel > 0 else 0.0
 
 
-def _class_parts(ss_rating, minutes, prev_ss_rating, prev_minutes, ln, league_level, prev_league_level):
-    """(리그 안 상대 평점 블렌드, 같은 가중의 리그 보정량). class_ss = 앞 − 뒤."""
+def _class_parts(ss_rating, minutes, prev_ss_rating, prev_minutes, ln, league_level, prev_league_level,
+                 hist_ss_rating=None, hist_minutes=None, hist_league_level=None):
+    """(리그 안 상대 평점 블렌드, 같은 가중의 리그 보정량). class_ss = 앞 − 뒤.
+
+    hist_* = 2시즌 전 이상(attach_prev_season.attach_hist — 시즌 가중을 곱한 유효 출전). 시즌이 쌓이면 자동으로
+    들어오고, 없으면(지금) 이번 + 직전 시즌만 쓰던 것과 같다."""
     ss, mn, pss, pmn = _num(ss_rating), _num(minutes), _num(prev_ss_rating), _num(prev_minutes)
-    if ss <= 0 and pss <= 0:
+    hss, hmn = _num(hist_ss_rating), _num(hist_minutes)
+    if ss <= 0 and pss <= 0 and hss <= 0:
         return 0.0, 0.0
     mid = _SS_MID[ln]
     off_cur = rating_offset(league_level)
@@ -193,9 +199,13 @@ def _class_parts(ss_rating, minutes, prev_ss_rating, prev_minutes, ln, league_le
     w_prev = pmn if pss > 0 else 0.0
     if prev_league_level is not None and league_level is not None and prev_league_level != league_level:
         w_prev *= _MOVED_PREV_W
-    w = w_cur + w_prev + _CLASS_PRIOR_MIN
-    return ((ss * w_cur + pss * w_prev + mid * _CLASS_PRIOR_MIN) / w,
-            (off_cur * w_cur + off_prev * w_prev + off_cur * _CLASS_PRIOR_MIN) / w)
+    w_hist = hmn if hss > 0 else 0.0
+    off_hist = rating_offset(hist_league_level) if hist_league_level is not None else off_cur
+    if hist_league_level is not None and league_level is not None and hist_league_level != league_level:
+        w_hist *= _MOVED_PREV_W
+    w = w_cur + w_prev + w_hist + _CLASS_PRIOR_MIN
+    return ((ss * w_cur + pss * w_prev + hss * w_hist + mid * _CLASS_PRIOR_MIN) / w,
+            (off_cur * w_cur + off_prev * w_prev + off_hist * w_hist + off_cur * _CLASS_PRIOR_MIN) / w)
 
 
 # 골키퍼 선방률·클린시트 — 이번 시즌 + 직전 시즌 + 평균(67%·27%)을 1,200분어치 섞는다.
@@ -228,7 +238,8 @@ def absolute_ovr(*, value, ss_rating, minutes, age, pos_group,
                  gk_save_pct=None, gk_cs_pct=None,
                  ucl_starts=0, uel_starts=0, conf_starts=0, cup_starts=0,
                  prev_minutes=None, prev_ss_rating=None, league_level=None,
-                 prev_league_level=None, prev_gk_save_pct=None, prev_gk_cs_pct=None, prev_value=None) -> int:
+                 prev_league_level=None, prev_gk_save_pct=None, prev_gk_cs_pct=None, prev_value=None,
+                 hist_ss_rating=None, hist_minutes=None, hist_league_level=None) -> int:
     ln = line_of(pos_group)
     a = _num(age)
     # '검증'(유망주 게이팅·베테랑 보정)은 직전 시즌 출전까지 합산 — 시즌 초 전원 미검증 방지.
@@ -240,7 +251,8 @@ def absolute_ovr(*, value, ss_rating, minutes, age, pos_group,
         vov = pv
     elif pv is not None and vov > pv and _num(prev_value) >= _JUMP_MIN_PREV:
         vov -= min(_JUMP_MAX_CUT, (1.0 - _VALUE_JUMP_KEEP) * (vov - pv))
-    rel, off = _class_parts(ss_rating, minutes, prev_ss_rating, prev_minutes, ln, league_level, prev_league_level)
+    rel, off = _class_parts(ss_rating, minutes, prev_ss_rating, prev_minutes, ln, league_level, prev_league_level,
+                            hist_ss_rating, hist_minutes, hist_league_level)
     # GK 성능 리그 보정 — 평점 척도(×8)의 1.5배: 선방·클린시트는 팀 지배력 영향이 커 약한 리그 강팀 GK 가
     # 더 부풀려진다(포르투갈 주전 GK CS 35% vs EPL 31.5%, Porto Costa 직전 시즌 CS 63.6%)
     lg_off = rating_offset(league_level) * 12.0
@@ -415,8 +427,8 @@ def big_match_proven(*, euro_starts=0, euro_apps=0) -> bool:
     return _num(euro_starts) >= 4 or _num(euro_apps) >= 6
 
 
-def _prev_level(row):
-    pl = row.get("prev_league")
+def _prev_level(row, col: str = "prev_league"):
+    pl = row.get(col)
     return league_level_of(pl) if isinstance(pl, str) and pl else None
 
 
@@ -431,7 +443,9 @@ def ovr_of_row(row) -> int:
         prev_minutes=row.get("prev_minutes"), prev_ss_rating=row.get("prev_ss_rating"),
         league_level=row.get("_league_level"), prev_league_level=_prev_level(row),
         prev_gk_save_pct=row.get("prev_gk_save_pct"), prev_gk_cs_pct=row.get("prev_gk_cs_pct"),
-        prev_value=row.get("prev_market_value_eur"))
+        prev_value=row.get("prev_market_value_eur"),
+        hist_ss_rating=row.get("hist_ss_rating"), hist_minutes=row.get("hist_minutes"),
+        hist_league_level=_prev_level(row, "hist_league"))
 
 
 def player_line(row) -> dict:

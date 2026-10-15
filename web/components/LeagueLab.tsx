@@ -2,12 +2,21 @@
 import { useState } from "react";
 import type { LabFinish, LabCreate, LabPlaymaker, LabBallWinner, TeamStyle } from "@/lib/api";
 import { usePeek } from "./PlayerPeek";
+import { TONE } from "@/lib/meaning";
 
 // 리그 분석 랩(홈 LEAGUE FOCUS) — /api/league-lab/{league}, Sofascore 시즌 기록.
 // 분석가가 실제로 보는 형태로: 기대값 대비(골 vs xG·도움 vs xA), 팀 스타일 사분면, 90분당 수비 액션.
 type Pick = (team: string, league?: string) => void;
 
 const lastName = (n: string) => { const p = n.split(" "); return p.length > 1 ? p[p.length - 1] : n; };
+// 실제 − 기대(골 − xG · 도움 − xA)의 색·말 — ±1 이상이면 '기대보다 많이/적게', 색은 TONE good/weak
+const diffTone = (d: number) => (d >= 1 ? TONE.good : d <= -1 ? TONE.weak : TONE.avg);
+const diffWords = (d: number, fin: boolean) => {
+  const a = Math.abs(d).toFixed(1);
+  if (a === "0.0") return fin ? "기대만큼 넣음" : "기대만큼 도움";
+  if (fin) return d >= 0 ? `기대보다 ${a}골 많이 넣음` : `기대보다 ${a}골 적게 넣음`;
+  return d >= 0 ? `기대보다 도움 ${a}개 많음` : `기대보다 도움 ${a}개 적음`;
+};
 
 // ── 골 vs xG / 도움 vs xA 산점도 ──
 type Pt = { player: string; club: string; x: number; y: number; tip: string };
@@ -38,8 +47,8 @@ function Scatter({ pts, xLabel, yLabel, league }: { pts: Pt[]; xLabel: string; y
   const labeled = new Set(Object.keys(lab));
   return (
     <svg className="sc5" viewBox={`0 0 ${W} ${H}`} role="img" aria-label={`${yLabel} 대 ${xLabel}`}>
-      <polygon points={`${sx(0)},${sy(0)} ${sx(0)},${sy(max)} ${sx(max)},${sy(max)}`} className="sc5-over" />
-      <polygon points={`${sx(0)},${sy(0)} ${sx(max)},${sy(0)} ${sx(max)},${sy(max)}`} className="sc5-under" />
+      <polygon points={`${sx(0)},${sy(0)} ${sx(0)},${sy(max)} ${sx(max)},${sy(max)}`} className="sc5-over" style={{ fill: TONE.good.c, fillOpacity: 0.05 }} />
+      <polygon points={`${sx(0)},${sy(0)} ${sx(max)},${sy(0)} ${sx(max)},${sy(max)}`} className="sc5-under" style={{ fill: TONE.weak.c, fillOpacity: 0.05 }} />
       {Array.from({ length: Math.floor(max / step) + 1 }, (_, k) => k * step).map((v) => (
         <g key={v}>
           <line x1={sx(v)} x2={sx(v)} y1={T} y2={H - B} className="sc5-grid" />
@@ -49,8 +58,8 @@ function Scatter({ pts, xLabel, yLabel, league }: { pts: Pt[]; xLabel: string; y
         </g>
       ))}
       <line x1={sx(0)} y1={sy(0)} x2={sx(max)} y2={sy(max)} className="sc5-diag" />
-      <text x={sx(max) - 6} y={sy(max) + 16} className="sc5-q over">기대 이상 ↑</text>
-      <text x={sx(max) - 6} y={sy(0) - 8} className="sc5-q under">기대 이하 ↓</text>
+      <text x={sx(max) - 6} y={sy(max) + 16} className="sc5-q over" style={{ fill: TONE.good.c }}>기대 이상 ↑</text>
+      <text x={sx(max) - 6} y={sy(0) - 8} className="sc5-q under" style={{ fill: TONE.weak.c }}>기대 이하 ↓</text>
       <text x={(L + W - R) / 2} y={H - 4} className="sc5-axis">{xLabel}</text>
       <text x={12} y={(T + H - B) / 2} className="sc5-axis" transform={`rotate(-90 12 ${(T + H - B) / 2})`}>{yLabel}</text>
       {pts.map((p) => {
@@ -58,7 +67,7 @@ function Scatter({ pts, xLabel, yLabel, league }: { pts: Pt[]; xLabel: string; y
         const cls = d >= 1 ? "pos" : d <= -1 ? "neg" : "mid";
         return (
           <g key={p.player + p.club} className={`sc5-pt ${cls}`} onClick={(e) => peek(e, { name: p.player, club: p.club, league })}>
-            <circle cx={sx(p.x)} cy={sy(p.y)} r={labeled.has(p.player) ? 6 : 4.5}><title>{p.tip}</title></circle>
+            <circle cx={sx(p.x)} cy={sy(p.y)} r={labeled.has(p.player) ? 6 : 4.5} style={{ fill: diffTone(d).c }}><title>{p.tip}</title></circle>
             {lab[p.player] && <text x={lab[p.player].x} y={lab[p.player].y}>{lastName(p.player)}</text>}
           </g>
         );
@@ -70,8 +79,9 @@ function Scatter({ pts, xLabel, yLabel, league }: { pts: Pt[]; xLabel: string; y
 export function ExpectedBoard({ finishing, creating, league }: { finishing: LabFinish[]; creating: LabCreate[]; league: string }) {
   const [tab, setTab] = useState<"fin" | "cre">("fin");
   const pts: Pt[] = tab === "fin"
-    ? finishing.map((p) => ({ player: p.player, club: p.club, x: p.xg, y: p.goals, tip: `${p.player} · ${p.club} — ${p.goals}골 / xG ${p.xg} (${p.goals - p.xg >= 0 ? "+" : ""}${(p.goals - p.xg).toFixed(1)}) · 슈팅 ${p.shots}` }))
-    : creating.map((p) => ({ player: p.player, club: p.club, x: p.xa, y: p.assists, tip: `${p.player} · ${p.club} — ${p.assists}도움 / xA ${p.xa} · 키패스 ${p.kp}` }));
+    ? finishing.map((p) => ({ player: p.player, club: p.club, x: p.xg, y: p.goals, tip: `${p.player} · ${p.club} — ${p.goals}골 / xG ${p.xg} (${diffWords(p.goals - p.xg, true)}) · 슈팅 ${p.shots}` }))
+    : creating.map((p) => ({ player: p.player, club: p.club, x: p.xa, y: p.assists, tip: `${p.player} · ${p.club} — ${p.assists}도움 / xA ${p.xa} (${diffWords(p.assists - p.xa, false)}) · 키패스 ${p.kp}` }));
+  const fin = tab === "fin";
   const top = [...pts].sort((a, b) => (b.y - b.x) - (a.y - a.x));
   return (
     <>
@@ -82,8 +92,18 @@ export function ExpectedBoard({ finishing, creating, league }: { finishing: LabF
       {pts.length >= 3 ? <Scatter pts={pts} league={league} xLabel={tab === "fin" ? "기대 득점 xG" : "기대 도움 xA"} yLabel={tab === "fin" ? "실제 득점" : "실제 도움"} /> : <p className="empty5">표본 부족</p>}
       {pts.length >= 3 && (
         <div className="sc5-notes">
-          <span><i className="pos" />가장 효율적 <b>{top[0].player}</b> +{(top[0].y - top[0].x).toFixed(1)}</span>
-          <span><i className="neg" />가장 아쉬움 <b>{top[top.length - 1].player}</b> {(top[top.length - 1].y - top[top.length - 1].x).toFixed(1)}</span>
+          {([["가장 효율적", top[0]], ["가장 아쉬움", top[top.length - 1]]] as const).map(([k, p]) => {
+            const d = p.y - p.x;
+            return (
+              <span key={k}><i style={{ background: diffTone(d).c }} />{k} <b>{p.player}</b>{" "}
+                <span style={{ color: diffTone(d).c }}>{diffWords(d, fin)}</span></span>
+            );
+          })}
+          <span style={{ fontSize: 11, color: "var(--muted-2)" }}>
+            <i style={{ background: TONE.good.c }} />{fin ? "기대보다 많이 넣음" : "기대보다 도움 많음"}(+1 이상)
+            {" · "}<i style={{ background: TONE.avg.c, marginLeft: 2 }} />비슷
+            {" · "}<i style={{ background: TONE.weak.c, marginLeft: 2 }} />{fin ? "기대보다 적게 넣음" : "기대보다 도움 적음"}(−1 이하)
+          </span>
         </div>
       )}
     </>

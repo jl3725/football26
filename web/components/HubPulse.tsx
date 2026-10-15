@@ -7,6 +7,8 @@ import { colorsClose, compLabel, compTone, ddayLabel, lgEn, liftHex, splitKst } 
 import { useMatchPreview } from "@/lib/matchPreview";
 import { Crest, PredictBar } from "./MatchCard";
 import { useLiveAll, liveLabel, fixtureFromLive, type LiveEvent } from "@/lib/live";
+import { SS_NOTE, TONE, ssMeaning } from "@/lib/meaning";
+import { MeaningTag } from "./Meaning";
 
 // 홈 '지금' 섹션들 — /api/hub/pulse(요청 시 계산·30분 캐시, 일정·결과는 daily_data 가 매일 갱신)
 type Pick = (team: string, league?: string) => void;
@@ -217,7 +219,20 @@ export function GoldenBoot({ rows, onPick }: { rows: HubBoot[]; onPick: Pick }) 
             <span className="gb5-bar"><i style={{ width: `${(r.goals / lead) * 100}%` }} /></span>
             <em>{r.club_logo && <img src={r.club_logo} alt="" />}{r.club}{r.xg != null ? ` · xG ${r.xg.toFixed(1)}` : ""}{r.mpg ? ` · ${r.mpg}분당 1골` : ""}</em>
           </button>
-          <span className="gb5-n"><b>{r.goals}</b><small className={r.xg != null && r.goals - r.xg >= 1 ? "hot" : ""}>{r.xg != null ? `${r.goals - r.xg >= 0 ? "+" : ""}${(r.goals - r.xg).toFixed(1)} xG` : `${r.assists}A`}</small></span>
+          <span className="gb5-n">
+            <b>{r.goals}</b>
+            {r.xg != null ? (() => {
+              // 골 − xG: +면 기대 득점(슈팅 위치·상황으로 본 평균 선수의 골)보다 많이 넣음 — 'xG' 약어만으로는 뜻이 안 읽혔다
+              const d = Math.round((r.goals - r.xg) * 10) / 10;
+              const c = d >= 1 ? TONE.good.c : d <= -1 ? TONE.weak.c : undefined;
+              return (
+                <small style={{ fontFamily: "var(--font-ui)", letterSpacing: 0, whiteSpace: "nowrap", ...(c ? { color: c } : {}) }}
+                  title={`기대 득점(xG) ${r.xg.toFixed(1)}골 — ${d === 0 ? "기대만큼" : d > 0 ? `${d.toFixed(1)}골 많이` : `${Math.abs(d).toFixed(1)}골 적게`} 넣음 · xG 는 슈팅 위치·상황으로 본 '평균적인 선수라면 넣었을 골'`}>
+                  {d === 0 ? "기대만큼" : <>기대보다 {d > 0 ? "+" : "−"}{Math.abs(d).toFixed(1)}골</>}
+                </small>
+              );
+            })() : <small>{r.assists}A</small>}
+          </span>
         </div>
       ))}
     </div>
@@ -248,7 +263,8 @@ export function TeamOfSeason({ players, league }: { players: TotsPlayer[]; leagu
                 <b>{p.player}</b>
                 <em>{p.minutes}분{p.goals || p.assists ? ` · ${p.goals ?? 0}골 ${p.assists ?? 0}도움` : ""}{showAlts ? ` · 다음 ${p.alts!.map((a) => `${a.player.split(" ").slice(-1)[0]} ${a.rating.toFixed(2)}`).join(", ")}` : ""}</em>
               </span>
-              <span className="tots5-r">{p.rating.toFixed(2)}</span>
+              <span className="tots5-r" title={SS_NOTE}>{p.rating.toFixed(2)}</span>
+              <MeaningTag sm m={ssMeaning(p.rating)} title={SS_NOTE} />
             </button>
           );
         })}
@@ -271,7 +287,9 @@ export function InjuryImpact({ rows, onPick }: { rows: InjuryImpactRow[]; onPick
             <span>결장 {r.n}명{r.key.length ? ` · ${r.key.join(", ")}` : ""}</span>
           </span>
           <span className="ii5-bar"><i style={{ width: `${(r.loss / max) * 100}%` }} /></span>
-          <span className="td down">−{r.loss.toFixed(1)}</span>
+          <span className="td down" title={`부상·결장으로 베스트 XI 평균 OVR 이 ${r.loss.toFixed(1)} 내려감`}>
+            <small style={{ font: "600 10px/1 var(--font-ui)", color: "var(--muted-2)", marginRight: 4 }}>팀 OVR</small>−{r.loss.toFixed(1)}
+          </span>
         </button>
       ))}
     </div>

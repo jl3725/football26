@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { feeLabel, getTransfers, getRecommend, getNeeds, fmtEur, type Transfers, type TransferItem, type Recommend, type Needs } from "@/lib/api";
 import { tier, roleClass, hexA } from "@/lib/ui";
+import { TONE } from "@/lib/meaning";
 import FitEvaluator from "./FitEvaluator";
 import ManagerSimPanel from "./ManagerSimPanel";
 import RecruitPool from "./RecruitPool";
@@ -109,23 +110,27 @@ export default function TransferTab({ team, accent }: { team: string; accent: st
           ? <><b style={{ color: accent }}>{win.label} {win.kr} 이적시장 OPEN</b>{!data.window_has_data && " · 이번 창 이적 없음 (전체 표시)"}</>
           : <><b>{data.data_season} 시즌</b> · 현재 이적시장 마감</>}
       </div>
+      {/* 순수지 = 지출 − 수입. 부호(+/−)만으로는 헷갈려서 '순지출'·'순수익' 단어로 쓴다 */}
       <div className="stat-strip" style={{ marginTop: 0 }}>
-        <div className="stat"><div className="v" style={{ color: "#e07070" }}>{fmtEur(s.spend)}</div><div className="l">지출</div></div>
-        <div className="stat"><div className="v" style={{ color: "#4fc27f" }}>{fmtEur(s.income)}</div><div className="l">수입</div></div>
-        <div className="stat"><div className="v" style={{ color: net > 0 ? "#e07070" : "#4fc27f" }}>{net > 0 ? "-" : "+"}{fmtEur(Math.abs(net))}</div><div className="l">순수지</div></div>
-        <div className="stat"><div className="v" style={{ color: accent }}>{s.in_count}/{s.out_count}</div><div className="l">IN / OUT</div></div>
+        <div className="stat"><div className="v" style={{ color: TONE.bad.c }}>{fmtEur(s.spend)}</div><div className="l">지출 (영입료)</div></div>
+        <div className="stat"><div className="v" style={{ color: TONE.best.c }}>{fmtEur(s.income)}</div><div className="l">수입 (판매료)</div></div>
+        <div className="stat" title={`지출 ${fmtEur(s.spend)} − 수입 ${fmtEur(s.income)} → ${net > 0 ? "쓴 돈이 번 돈보다 많음" : net < 0 ? "번 돈이 쓴 돈보다 많음" : "같음"}`}>
+          <div className="v" style={{ color: net > 0 ? TONE.bad.c : net < 0 ? TONE.best.c : TONE.avg.c }}>{fmtEur(Math.abs(net))}</div>
+          <div className="l">{net > 0 ? "순지출 · 지출 > 수입" : net < 0 ? "순수익 · 수입 > 지출" : "수지 균형"}</div>
+        </div>
+        <div className="stat"><div className="v" style={{ color: accent }}>{s.in_count}/{s.out_count}</div><div className="l">영입 / 방출 (명)</div></div>
       </div>
 
       <div className="grid" style={{ marginTop: 16 }}>
         <div className="card">
-          <h3 style={{ color: "#4fc27f" }}>▲ 영입 · IN ({data.in.length})</h3>
+          <h3 style={{ color: TONE.best.c }}>▲ 영입 · IN ({data.in.length})</h3>
           <div className="tf2-list">
             {data.in.map((x, i) => <Row key={i} x={x} dir="in" team={team} />)}
             {data.in.length === 0 && <div className="mgr-meta">영입 없음</div>}
           </div>
         </div>
         <div className="card">
-          <h3 style={{ color: "#e07070" }}>▼ 방출 · OUT ({data.out.length})</h3>
+          <h3 style={{ color: TONE.bad.c }}>▼ 방출 · OUT ({data.out.length})</h3>
           <div className="tf2-list">
             {data.out.map((x, i) => <Row key={i} x={x} dir="out" team={team} />)}
             {data.out.length === 0 && <div className="mgr-meta">방출 없음</div>}
@@ -150,10 +155,12 @@ export default function TransferTab({ team, accent }: { team: string; accent: st
                 <div className="rec-card longshot hoverable" key={i} style={{ cursor: "pointer" }}
                   onClick={(e) => peek(e, { name: l.player, club: l.squad, hint: { photo: l.photo, ovr: l.ovr, pos: l.pos, role: l.role } })}>
                   {l.photo ? <img className="rec-photo" src={l.photo} alt="" /> : <span className="rec-photo ph" />}
-                  <div className="rec-ovr" style={{ color: t.light }}>{l.ovr}</div>
+                  <div className="rec-ovr" style={{ color: t.light }}
+                    title={l.cross_league ? `현재 OVR ${l.current_ovr} (${l.source_league} 기준) → 우리 리그 기준 예상 ${l.ovr} · ${t.ko}` : `OVR ${l.ovr} · ${t.ko}`}>{l.ovr}</div>
                   <div className="rec-name">{l.player}</div>
                   <div className="rec-club">{l.logo && <img src={l.logo} alt="" />}{l.squad}</div>
-                  {l.cross_league && <div className="rec-cross">↗ {l.source_league} · 현재 {l.current_ovr}</div>}
+                  <div style={{ fontSize: 9.5, fontWeight: 700, color: t.light }}>{t.ko}</div>
+                  {l.cross_league && <div className="rec-cross" title="다른 리그 선수 — 우리 리그 수준으로 보정한 예상 OVR">{l.source_league} 현재 {l.current_ovr} → 우리 리그 예상 {l.ovr}</div>}
                   {l.bucket_label && <div className="rec-target" style={{ color: accent }}>◎ {l.bucket_label}</div>}
                   {l.role && <div className="rec-role"><span className={"role-tag " + roleClass(l.role)}>{l.role}</span></div>}
                   <div className="rec-why"><span className="why risk">✕ {l.reason}</span></div>
@@ -174,7 +181,7 @@ export default function TransferTab({ team, accent }: { team: string; accent: st
                 onClick={(e) => peek(e, { name: l.player, club: l.to, hint: { photo: l.photo, ovr: l.ovr, pos: l.pos, role: l.role } })}>
                 {l.photo ? <img className="tf2-photo" src={l.photo} alt="" /> : <span className="tf2-photo ph" />}
                 <div className="tf2-info">
-                  <div className="tf2-name">{l.top_loss && <span title="가장 아까운 이탈">⭐ </span>}{l.player} <span className="lt-ovr">OVR {l.ovr}</span>
+                  <div className="tf2-name">{l.top_loss && <span title="가장 아까운 이탈">⭐ </span>}{l.player} <span className="lt-ovr" title={`OVR ${l.ovr} · ${tier(l.ovr).ko}`}>OVR <b style={{ color: tier(l.ovr).light }}>{l.ovr}</b> · {tier(l.ovr).ko}</span>
                     {l.role && <span className={"role-tag sm " + roleClass(l.role)}>{l.role}</span>}</div>
                   <div className="tf2-meta">{l.pos} · {l.from} → <b style={{ color: "#e07070" }}>{l.to}</b></div>
                 </div>

@@ -3,6 +3,7 @@ import type { Fixture, FixtureSide } from "@/lib/api";
 import { BIG, colorsClose, compLabel, compTone, ddayLabel, liftHex, powerShare, rankLabel, splitKst, whyBig } from "@/lib/match";
 import { useMatchPreview } from "@/lib/matchPreview";
 import { hexA } from "@/lib/ui";
+import { TONE } from "@/lib/meaning";
 import { Chevron } from "./SectionHead";
 import { useLive, liveLabel, type LiveEvent } from "@/lib/live";
 
@@ -59,9 +60,19 @@ export function PowerBar({ m }: { m: Fixture }) {
   if (share === null) return null;
   const hc = liftHex(m.home.color), ac0 = liftHex(m.away.color);
   const ac = colorsClose(hc, ac0) ? "#8a94a8" : ac0;
+  // 팀 전력 OVR(선수 OVR 을 출전 비중으로 묶은 값) — 막대는 차이를 눈에 보이게 4제곱 비율. 차이를 말로도 보여 준다.
+  const diff = (m.home.ovr ?? 0) - (m.away.ovr ?? 0);
+  const edge = diff === 0 ? "비슷" : `${diff > 0 ? "홈" : "원정"} +${Math.abs(diff)} 우위`;
   return (
-    <div className="mc5-power" title={`팀 OVR ${m.home.ovr} : ${m.away.ovr}`}>
-      <div className="mc5-power-l"><b>{m.home.ovr}</b><span>TEAM OVR</span><b>{m.away.ovr}</b></div>
+    <div className="mc5-power" title={`팀 전력 OVR — ${m.home.team} ${m.home.ovr} : ${m.away.team} ${m.away.ovr} (차이 ${Math.abs(diff)}) · 막대는 차이를 강조한 비율`}>
+      <div className="mc5-power-l">
+        <b>{m.home.ovr}</b>
+        <span style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 3 }}>
+          TEAM OVR
+          <small style={{ font: "600 10.5px/1.2 var(--font-ui)", letterSpacing: 0, color: diff === 0 ? TONE.avg.c : TONE.good.c }}>팀 전력 · {edge}</small>
+        </span>
+        <b>{m.away.ovr}</b>
+      </div>
       <div className="mc5-bar"><span style={{ flexBasis: `${share}%`, background: hc }} /><span style={{ flexBasis: `${100 - share}%`, background: ac }} /></div>
     </div>
   );
@@ -139,7 +150,12 @@ export default function MatchCard({ m, onPick, compact = false }: { m: Fixture; 
       </span>
       <span className="mc5-right">
         <span className={`bdg ${tone}`}>{compLabel(m)}</span>
-        {m.home.ovr && m.away.ovr ? <span className="mc5-pair">{m.home.ovr} : {m.away.ovr}</span> : null}
+        {m.home.ovr && m.away.ovr
+          ? <span className="mc5-pair" title={`팀 전력 OVR — ${m.home.team} ${m.home.ovr} : ${m.away.team} ${m.away.ovr}`}>
+              <small style={{ font: "600 9.5px/1 var(--font-num)", letterSpacing: "0.1em", color: "var(--muted-2)", marginRight: 4 }}>OVR</small>
+              {m.home.ovr} : {m.away.ovr}
+            </span>
+          : null}
       </span>
     </button>
   );
@@ -191,7 +207,10 @@ export function MatchHero({ m, onPick }: { m: Fixture; onPick?: Pick_ }) {
         <span className={`bdg ${tone}`}>{compLabel(m)}</span>
         <StateBadge m={m} lv={lv} />
         <span className="mh5-kicker">MATCH OF THE WEEK{lv?.state === "post" ? " · FULL TIME" : lv?.state === "in" ? " · LIVE" : ""}</span>
-        <span className="mh5-score">BIG SCORE {m.big}</span>
+        <span className="mh5-score" title={`빅매치 지수 ${m.big} — 대회 비중(챔스 등)·순위 맞대결·양 팀 전력을 합친 점수, ${BIG} 이상이면 빅매치`}>
+          BIG SCORE {m.big}
+          <small style={{ font: "500 11px/1 var(--font-ui)", letterSpacing: 0, marginLeft: 6 }}>빅매치 지수 · {BIG}+ 빅매치</small>
+        </span>
       </div>
       <div className="mh5-teams">
         {side(m.home, m.away, false)}

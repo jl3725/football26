@@ -2,6 +2,8 @@
 import { useEffect, useState } from "react";
 import { getTeamSeason, type GoalMix, type GoalMixPart, type PointsPath, type ProfileAxis, type ResultMatch, type TeamSeason } from "@/lib/api";
 import { compLabel, compTone, lgEn, liftHex, splitKst } from "@/lib/match";
+import { idxMeaning, rankMeaning } from "@/lib/meaning";
+import { MeaningTag, ScaleLegend } from "./Meaning";
 import { useMatchPreview } from "@/lib/matchPreview";
 import { Crest } from "./MatchCard";
 import SectionHead from "./SectionHead";
@@ -105,13 +107,17 @@ export function SeasonSnapshot({ d, team, league, color }: { d: TeamSeason | nul
       <div className="ts5-grid">
         <div className="ts5-main">
           <div className="ts5-kpis">
-            <div><em>POSITION</em><b>{s.rank}<small>/{d.n}</small></b><span>{s.rank === 1 ? "선두" : `1위와 ${gap}점 차`}</span></div>
+            <div><em>POSITION</em><b style={{ color: rankMeaning(s.rank, d.n).c }}>{s.rank}<small>/{d.n}</small></b><span>{s.rank === 1 ? "선두" : `1위와 ${gap}점 차`}</span></div>
             <div><em>POINTS</em><b>{s.points}</b><span>{s.won}승 {s.drawn}무 {s.lost}패</span></div>
-            <div><em>GOALS</em><b>{s.gf}<small>:{s.ga}</small></b><span>득실 {s.gd > 0 ? `+${s.gd}` : s.gd}</span></div>
-            <div><em>xG / GAME</em><b>{d.xg_pg != null ? d.xg_pg.toFixed(2) : "—"}</b><span>{d.str_rank ? `전력 ${d.str_rank}위` : "경기당 기대 득점"}</span></div>
+            <div><em>GOALS</em><b>{s.gf}<small>:{s.ga}</small></b><span>득점:실점 · 득실 {s.gd > 0 ? `+${s.gd}` : s.gd}</span></div>
+            <div title="xG = 슈팅 위치·상황으로 본 '기대 득점'. 높을수록 좋은 찬스를 많이 만든다">
+              <em>xG / GAME</em>
+              <b style={d.xg_rank ? { color: rankMeaning(d.xg_rank, d.n).c } : undefined}>{d.xg_pg != null ? d.xg_pg.toFixed(2) : "—"}</b>
+              <span>{d.xg_rank ? `리그 ${d.xg_rank}위${d.xg_avg != null ? ` · 평균 ${d.xg_avg.toFixed(2)}` : ""}` : "경기당 기대 득점"}</span>
+            </div>
           </div>
           <PointsChart me={d.path} refs={d.refs} color={c} />
-          <p className="ts5-note">누적 승점 흐름 · 점선 = 1위·4위(챔피언스리그권) 팀</p>
+          <p className="ts5-note">누적 승점 흐름 · 점선 = 1위·4위(챔피언스리그권) 팀{d.str_rank ? ` · 선수 평점(OVR)으로 본 전력은 리그 ${d.str_rank}위` : ""}</p>
         </div>
         <div className="ts5-recent">
           <div className="ts5-sub">LAST 5 <span>최근 5경기 · 전 대회 · 누르면 경기 리뷰</span></div>
@@ -123,21 +129,25 @@ export function SeasonSnapshot({ d, team, league, color }: { d: TeamSeason | nul
   );
 }
 
+// 색·단어는 '값'으로 — 예전엔 리그 순위 3분위로 칠해 '52'(평균 근처)가 초록(상위)으로 보였다(2026-10-15 사용자 지적).
 export function SeasonProfile({ axes }: { axes: ProfileAxis[] }) {
   if (!axes.length) return <p className="pv-empty">시즌 경기 기록이 아직 부족합니다</p>;
   return (
     <div className="sp5">
       {axes.map((a) => {
-        const third = a.rank <= Math.ceil(a.n / 3) ? "top" : a.rank > a.n - Math.ceil(a.n / 3) ? "low" : "mid";
+        const mn = idxMeaning(a.value);
         return (
-          <div className={`sp5-row ${third}`} key={a.key}>
+          <div className={`sp5-row t-${mn.tone}`} key={a.key}>
             <div className="sp5-l"><b>{a.en}</b><span>{a.kr}{a.hint ? ` · ${a.hint}` : ""}</span></div>
-            <div className="sp5-bar" title="50 = 리그 평균"><i /><span style={{ width: `${Math.max(3, a.value)}%` }} /></div>
-            <div className="sp5-v"><b>{a.value}</b><em>{a.rank}위<small>/{a.n}</small></em>
+            <div className="sp5-bar" title={`${a.value} — ${mn.label} (50 = 리그 평균)`}><i /><span style={{ width: `${Math.max(3, a.value)}%`, background: mn.bar }} /></div>
+            <div className="sp5-v">
+              <b style={{ color: mn.c }}>{a.value}</b>
+              <MeaningTag m={mn} sm />
+              <em>{a.rank}위<small>/{a.n}</small></em>
               {a.prev_rank != null && (() => {
                 // 지난 시즌 대비는 순위로 — 지수는 시즌 초 표본 보정으로 50 쪽에 몰려 값 차이가 전부 '하락'으로 보였다
                 const dr = a.prev_rank - a.rank;
-                const tip = `지난 시즌 ${a.prev_rank}위(지수 ${a.prev})${a.prev_hint ? ` · ${a.prev_hint}` : ""}`;
+                const tip = `지난 시즌 ${a.prev_rank}위 → 이번 ${a.rank}위${a.prev_hint ? ` · 지난 시즌 ${a.prev_hint}` : ""}`;
                 return Math.abs(dr) >= 3
                   ? <span className={`sp5-d ${dr > 0 ? "up" : "down"}`} title={tip}>{dr > 0 ? "▲" : "▼"}{Math.abs(dr)}</span>
                   : <span className="sp5-d same" title={tip}>–</span>;
@@ -146,8 +156,9 @@ export function SeasonProfile({ axes }: { axes: ProfileAxis[] }) {
           </div>
         );
       })}
-      <p className="sp5-note">리그 안 상대 지수(50 = 리그 평균, 가운데 선) · ▲▼ = 지난 시즌 같은 지표의 리그 순위 대비(3계단 이상) ·
-        시즌 초에는 표본이 적어 지수가 50 쪽으로 보정됩니다.</p>
+      <ScaleLegend kind="idx" lead="색·단어" />
+      <p className="sp5-note">지수 = 리그 안 상대값(50 = 리그 평균, 막대 가운데 선) · N위 = 리그 순위 ·
+        ▲▼ = 지난 시즌 같은 지표의 순위 대비(3계단 이상) · 시즌 초에는 표본이 적어 지수가 50 쪽으로 보정됩니다.</p>
     </div>
   );
 }

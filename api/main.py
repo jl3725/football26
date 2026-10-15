@@ -171,22 +171,20 @@ def _with_roster(full_df, team: str, league: str):
     return pd.concat([sq, ex_df], ignore_index=True)
 
 
-def _league_z(league: str, season: str | None, team: str) -> dict:
-    """{attack, defense} — 경기당 득점·실점의 리그 안 z(실점은 부호 반대: 적게 내줄수록 +)."""
-    st = ds.read_table("standings", league=league, season=season) if season else ds.read_table("standings", league=league)
-    if st is None or "squad" not in st.columns or team not in set(st["squad"]):
-        return {}
-    pl = pd.to_numeric(st["played"], errors="coerce")
-    st = st[pl > 0].copy()
-    if len(st) < 4 or team not in set(st["squad"]):
-        return {}
-    out = {}
-    for unit, col, sign in (("attack", "gf", 1.0), ("defense", "ga", -1.0)):
-        v = pd.to_numeric(st[col], errors="coerce") / pd.to_numeric(st["played"], errors="coerce")
-        sd = float(v.std())
-        if sd > 0:
-            out[unit] = sign * (float(v[st["squad"] == team].iloc[0]) - float(v.mean())) / sd
-    return out
+def _sh_reader(league: str, season: str):
+    return ds.read_table("standings", league=league, season=season)
+
+
+@_memo(ttl=21600)
+def _team_record(team: str, league: str) -> dict:
+    """{current, past[]} — 이번 시즌과 지난 여러 시즌의 경기당 득점·실점·리그 안 z·순위(src/season_history.py).
+    시즌 목록은 SEASON_START 기준으로 자동 — 시즌이 넘어가면 직전 시즌이 '과거'로 들어오고 오래된 시즌은 가중이 줄어든다."""
+    import season_history as sh  # noqa: PLC0415
+    cur_t = ds.read_table("standings", league=league)
+    cur = sh.table_stats(cur_t, team) if cur_t is not None and "squad" in cur_t.columns else None
+    tag = sh.season_tag(SEASON_START)
+    return {"current": {"season": tag, "label": sh.short(tag), **cur} if cur else None,
+            "past": sh.team_record(league, team, _sh_reader)}
 
 
 @_memo(ttl=21600)
@@ -194,29 +192,56 @@ def _team_perf(team: str, league: str) -> dict:
     """팀 실적 0~99(50 = 리그 평균, 1 표준편차 = 20) — rv3.team_ratings 의 라인 실적 보정(±2.5).
 
     공격 = 경기당 득점, 수비 = 경기당 실점의 리그 안 z. 백분위 지수(defense_output_index)는 상위권이 눌려
-    아스날 25/26 최소 실점(0.71)과 맨시티(0.92)가 97·95 로 거의 같았다. 미드필드는 midfield_index.
-    이번 시즌(경기 수 g, 비중 g/(g+10)) + 직전 시즌(같은 리그였을 때, 없으면 50)."""
-    prev_season = f"{SEASON_START - 1}_{SEASON_START}"
-    st = ds.read_table("standings", league=league)
-    g = 0
-    if st is not None and team in set(st["squad"]):
-        g = int(_num(st[st["squad"] == team].iloc[0].get("played")))
+    아스날 25/26 최소 실점(0.71)과 맨시티(0.92)가 97·95 로 거의 같았다. 미드필드는 midfield_index(직전 시즌까지).
+    이번 시즌(경기 수 g, 비중 g/(g+10)) + 지난 시즌들(직전 1 · 그 전 0.5 · 0.25 …, 그 리그에 있던 시즌만 —
+    2026-10-15 사용자: '두 시즌만이 아니라 쌓이는 시즌을 자동으로', '맨시티는 작년에도 실점이 더 많았다')."""
+    import season_history as sh  # noqa: PLC0415
+    rec = _team_record(team, league)
+    cur, past = rec["current"], rec["past"]
+    g = cur["played"] if cur else 0
     w = g / (g + 10.0)
-    zc, zp = _league_z(league, None, team), _league_z(league, prev_season, team)
     out = {}
-    for unit in ("attack", "defense"):
-        c = 50.0 + 20.0 * zc[unit] if unit in zc else None
-        p = 50.0 + 20.0 * zp[unit] if unit in zp else None
+    for unit, key in (("attack", "gf_z"), ("defense", "ga_z")):
+        c = 50.0 + 20.0 * cur[key] if cur else None
+        hz = sh.blended(past, key)
+        p = 50.0 + 20.0 * hz if hz is not None else None
         if c is None and p is None:
             continue
         out[unit] = round(w * (c if c is not None else 50.0) + (1 - w) * (p if p is not None else 50.0), 1)
-    cur = ds.read_table("team_unit_metrics", league=league)
-    prev = ds.read_table("team_unit_metrics", league=league, season=prev_season)
+    prev_season = f"{SEASON_START - 1}_{SEASON_START}"
+    cur_m = ds.read_table("team_unit_metrics", league=league)
+    prev_m = ds.read_table("team_unit_metrics", league=league, season=prev_season)
     col = "midfield_index"
-    c = _num(cur[cur["squad"] == team].iloc[0].get(col), None) if cur is not None and team in set(cur["squad"]) and col in cur.columns else None
-    p = _num(prev[prev["squad"] == team].iloc[0].get(col), None) if prev is not None and team in set(prev["squad"]) and col in prev.columns else None
+    c = _num(cur_m[cur_m["squad"] == team].iloc[0].get(col), None) if cur_m is not None and team in set(cur_m["squad"]) and col in cur_m.columns else None
+    p = _num(prev_m[prev_m["squad"] == team].iloc[0].get(col), None) if prev_m is not None and team in set(prev_m["squad"]) and col in prev_m.columns else None
     if c is not None or p is not None:
         out["midfield"] = round(w * (c if c is not None else 50.0) + (1 - w) * (p if p is not None else 50.0), 1)
+    return out
+
+
+@_memo(ttl=21600)
+def _league_units(league: str) -> dict:
+    """{클럽: {overall, attack, midfield, defense}} — 같은 리그 안 라인별 순위('리그 몇 위인가')용."""
+    full = _pf(league)
+    out: dict = {}
+    if full is None or "squad" not in full.columns:
+        return out
+    for c in full["squad"].dropna().astype(str).unique():
+        tr = rv3.team_ratings(_with_roster(full, c, league), c, perf=_team_perf(c, league))
+        if tr:
+            out[c] = {k: tr[k] for k in ("overall", "attack", "midfield", "defense")}
+    return out
+
+
+def _unit_ranks(team: str, league: str, ovr: dict) -> dict:
+    """{라인: {rank, n}} — 표시 값(ovr) 기준, 같은 값은 같은 순위."""
+    lu = _league_units(league)
+    out = {}
+    for k in ("overall", "attack", "midfield", "defense"):
+        others = [v[k] for c, v in lu.items() if c != team]
+        if ovr.get(k) is None or not others:
+            continue
+        out[k] = {"rank": 1 + sum(1 for x in others if x > ovr[k]), "n": len(others) + 1}
     return out
 
 
@@ -331,6 +356,8 @@ def overview(team: str, league: str = ACTIVE_LEAGUE):
             ovr_delta[k] = adj[k] - base[k]
         ovr["top_xi"] = adj.get("top_xi", adj["overall"])
         ovr["perf_adj"] = adj.get("perf_adj") or {}
+        ovr["record"] = _team_record(team, league)     # 시즌별 득점·실점(화면: 라인 아래 기록 줄)
+        ovr["unit_rank"] = _unit_ranks(team, league, ovr)
         import positions as _ps  # noqa: PLC0415
         _inj = _active_injuries(team, league)
         ovr["units"] = {k: [{**x, "injured": _ps.norm_name(x["player"]) in _inj,
@@ -4663,11 +4690,16 @@ def team_season(team: str, league: str = ACTIVE_LEAGUE):
     goal_mix = {"cur": _mix(sb), "prev": _mix(sb_p)} if sb is not None else None
 
     # 리그 표의 경기당 xG·전력 순위(리그 랩 6시간 캐시 재사용)
-    xg_pg = str_rank = None
+    xg_pg = str_rank = xg_rank = xg_avg = None
     try:
-        lab_row = next((r for r in (league_lab(league).get("table") or []) if r.get("team") == team), None)
+        tbl = league_lab(league).get("table") or []
+        lab_row = next((r for r in tbl if r.get("team") == team), None)
         if lab_row:
             xg_pg, str_rank = lab_row.get("xg_pg"), lab_row.get("str_rank")
+            xs = [r.get("xg_pg") for r in tbl if r.get("xg_pg") is not None]
+            if xg_pg is not None and xs:                 # 경기당 xG 리그 순위·평균 — 숫자만으론 좋은지 몰랐다
+                xg_rank = 1 + sum(1 for x in xs if x > xg_pg)
+                xg_avg = round(sum(xs) / len(xs), 2)
     except Exception:  # noqa: BLE001
         pass
 
@@ -4675,7 +4707,7 @@ def team_season(team: str, league: str = ACTIVE_LEAGUE):
         "team": team, "league": league, "n": n,
         "standing": None if stand is None else {k: int(_num(stand[k])) for k in
                                                  ("rank", "played", "won", "drawn", "lost", "gf", "ga", "gd", "points")},
-        "xg_pg": xg_pg, "str_rank": str_rank,
+        "xg_pg": xg_pg, "str_rank": str_rank, "xg_rank": xg_rank, "xg_avg": xg_avg,
         "path": path, "refs": refs, "recent": recent, "profile": profile, "goal_mix": goal_mix,
     }
 

@@ -7,6 +7,8 @@ import {
   type DbPlayer, type PlayerDetail,
 } from "@/lib/api";
 import { tier, roleClass } from "@/lib/ui";
+import { ssMeaning, SS_NOTE } from "@/lib/meaning";
+import { MeaningTag } from "./Meaning";
 import { Skel } from "./Skeleton";
 
 export type PeekHint = Partial<Pick<DbPlayer,
@@ -150,11 +152,12 @@ export function PeekProvider({ children, onOpenPlayer, onOpenTeam }: {
                   {detail?.contract_until && <span>· 계약 ~{detail.contract_until}</span>}
                 </div>
               </div>
-              <div className="peek-ovr">
+              <div className="peek-ovr" title={ovr != null ? `OVR ${ovr} · ${tc.ko}` : undefined}>
                 {ovr != null
                   ? <b style={{ color: tc.light }}>{ovr}</b>
                   : <Skel w={34} h={30} style={{ margin: "0 auto" }} />}
-                <span>{tc.name}</span>
+                <span style={{ letterSpacing: 0.2, display: "block", lineHeight: 1.25 }}>OVR</span>
+                {ovr != null && <span style={{ letterSpacing: 0, display: "block", color: tc.light, fontSize: 10.5, whiteSpace: "nowrap" }}>{tc.ko}</span>}
               </div>
             </div>
 
@@ -179,9 +182,12 @@ export function PeekProvider({ children, onOpenPlayer, onOpenTeam }: {
                   {detail ? <b>{detail.assists}</b> : detailLoading ? <Skel w={20} h={18} style={{ margin: "0 auto 2px" }} /> : <b>—</b>}
                   <span>도움</span>
                 </div>
-                <div className="peek-stat">
-                  {detail ? <b>{detail.ss_rating ? detail.ss_rating.toFixed(2) : "—"}</b> : detailLoading ? <Skel w={30} h={18} style={{ margin: "0 auto 2px" }} /> : <b>—</b>}
+                <div className="peek-stat" title={SS_NOTE}>
+                  {detail
+                    ? <b style={detail.ss_rating ? { color: ssMeaning(detail.ss_rating).c } : undefined}>{detail.ss_rating ? detail.ss_rating.toFixed(2) : "—"}</b>
+                    : detailLoading ? <Skel w={30} h={18} style={{ margin: "0 auto 2px" }} /> : <b>—</b>}
                   <span>평점</span>
+                  {detail?.ss_rating ? <div style={{ marginTop: 3 }}><MeaningTag sm m={ssMeaning(detail.ss_rating)} /></div> : null}
                 </div>
               </div>
             ) : detailLoading ? (

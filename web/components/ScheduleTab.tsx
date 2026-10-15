@@ -1,4 +1,6 @@
 "use client";
+import { ppgMeaning } from "@/lib/meaning";
+import { MeaningTag } from "./Meaning";
 import { useEffect, useMemo, useState } from "react";
 import { getSchedule, getMatch, type Schedule, type MatchDetail, type Match, type Fixture } from "@/lib/api";
 import { ReviewSections } from "./MatchReview";
@@ -145,7 +147,10 @@ export default function ScheduleTab({ team, accent }: { team: string; accent: st
             <div className="stat"><div className="v" style={{ color: "#4fc27f" }}>{w}</div><div className="l">Won</div></div>
             <div className="stat"><div className="v" style={{ color: "#9aa4b4" }}>{dd}</div><div className="l">Drawn</div></div>
             <div className="stat"><div className="v" style={{ color: "#e07070" }}>{l}</div><div className="l">Lost</div></div>
-            <div className="stat"><div className="v" style={{ color: accent }}>{ppg}</div><div className="l">PPG</div></div>
+            <div className="stat" title="경기당 승점(이 목록의 끝난 경기, 0~3) — 38경기 환산 2.2 ≈ 우승권 · 1.75 ≈ 유럽권 · 1.0 ≈ 강등권">
+              <div className="v" style={{ color: ppg === "-" ? accent : ppgMeaning(Number(ppg)).c }}>{ppg}</div>
+              <div className="l">PPG · 경기당 승점{ppg !== "-" && <> <MeaningTag m={ppgMeaning(Number(ppg))} sm /></>}</div>
+            </div>
           </>
         ) : (
           <>

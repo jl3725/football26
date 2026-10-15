@@ -1,4 +1,6 @@
 "use client";
+import { rankMeaning } from "@/lib/meaning";
+import { MeaningTag } from "./Meaning";
 import { useEffect, useRef, useState } from "react";
 import { getTeamTrends, type TeamTrends, type TrendMatch, type TrendPct } from "@/lib/api";
 import { liftHex } from "@/lib/match";
@@ -82,12 +84,13 @@ function Percentiles({ ps }: { ps: TrendPct[] }) {
   return (
     <div className="lp5">
       {ps.map((p) => {
-        const tone = p.pct >= 67 ? "top" : p.pct <= 33 ? "low" : "mid";
+        const mn = rankMeaning(p.rank, p.n);   // 20팀 리그에서 '상위 1%' 보다 '리그 최상위'가 자연스럽다
+        const avg = p.fmt === "pct" ? `${p.league_avg.toFixed(1)}%` : String(p.league_avg);
         return (
-          <div className={`lp5-row ${tone}`} key={p.key} title={`리그 평균 ${p.fmt === "pct" ? p.league_avg.toFixed(1) + "%" : p.league_avg}`}>
-            <div className="lp5-l"><b>{p.en}</b><span>{p.kr}</span></div>
-            <div className="lp5-bar"><i /><span style={{ width: `${Math.max(3, p.pct)}%` }} /></div>
-            <div className="lp5-v"><b>{fmtV(p)}</b><em>{p.rank}위<small>/{p.n}</small></em></div>
+          <div className={`lp5-row t-${mn.tone}`} key={p.key} title={`리그 평균 ${avg} · 리그 ${p.rank}위/${p.n}`}>
+            <div className="lp5-l"><b>{p.en}</b><span>{p.kr} · 리그 평균 {avg}</span></div>
+            <div className="lp5-bar"><i /><span style={{ width: `${Math.max(3, p.pct)}%`, background: mn.bar }} /></div>
+            <div className="lp5-v"><b style={{ color: mn.c }}>{fmtV(p)}</b><MeaningTag m={mn} sm /><em>{p.rank}위<small>/{p.n}</small></em></div>
           </div>
         );
       })}

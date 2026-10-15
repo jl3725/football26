@@ -1,12 +1,22 @@
 "use client";
 import { useState } from "react";
 import { getManagerSim, type ManagerSim } from "@/lib/api";
-import { hexA, tier } from "@/lib/ui";
+import { hexA } from "@/lib/ui";
+import { idxMeaning, scoreMeaning, TONE, type Meaning } from "@/lib/meaning";
+import { MeaningTag } from "./Meaning";
 import Bar from "./Bar";
+
+// 영입 우선순위의 depth 는 0~100 뎁스 점수가 아니라 '그 역할 선수 수'(백엔드가 2명 이하만 보냄) — 인원 기준 단어.
+function headcountMeaning(n: number): Meaning {
+  if (n <= 0) return { label: "자원 없음", tone: "bad", ...TONE.bad };
+  if (n === 1) return { label: "매우 얇음", tone: "bad", ...TONE.bad };
+  if (n === 2) return { label: "얇음", tone: "weak", ...TONE.weak };
+  return { label: "보통", tone: "avg", ...TONE.avg };
+}
 
 const AXIS_KO: Record<string, string> = {
   pressing: "압박", control: "점유·제어", creativity: "창의성", attack_output: "공격생산",
-  aerial: "공중", disruption: "수비방해",
+  aerial: "공중", disruption: "수비방해", ball_winning: "볼 탈취", attack_creation: "공격 전개",
 };
 const TAG_KO: Record<string, string> = {
   "high-press": "고압박", "possession": "점유", "chance-creation": "찬스메이킹", "attacking": "공격적",
@@ -111,19 +121,23 @@ function SimResult({ r, accent }: { r: ManagerSim; accent: string }) {
         </div>
         {/* 전술벡터 변화 */}
         <div style={{ marginTop: 16 }}>
-          <div style={{ fontSize: 11, fontWeight: 700, opacity: 0.55, textTransform: "uppercase", marginBottom: 8 }}>전술 변화</div>
+          <div style={{ fontSize: 11, fontWeight: 700, opacity: 0.55, textTransform: "uppercase", marginBottom: 3 }}>전술 변화</div>
+          <div style={{ fontSize: 10.5, opacity: 0.5, marginBottom: 8 }}>지수 0~99 · 50 = 리그 평균 · 회색 = 현재, 색 = 새 감독 · ▲▼ = 그 성향이 늘거나 줄어듦</div>
           {r.vector_changes!.map((c) => {
             const up = c.delta > 0;
+            const tm = idxMeaning(c.to);
             return (
               <div key={c.axis} style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 6, fontSize: 12 }}>
                 <span style={{ width: 68, opacity: 0.75 }}>{AXIS_KO[c.axis] || c.axis}</span>
                 <div style={{ flex: 1, position: "relative", height: 6, borderRadius: 3, background: hexA("#ffffff", 0.08) }}>
                   <span style={{ position: "absolute", left: 0, height: "100%", borderRadius: 3, width: `${c.from}%`, background: hexA("#ffffff", 0.22) }} />
                   <span style={{ position: "absolute", left: 0, height: "100%", borderRadius: 3, width: `${c.to}%`, background: hexA(accent, 0.7) }} />
+                  <span style={{ position: "absolute", left: "50%", top: -2, bottom: -2, width: 1, background: hexA("#ffffff", 0.35) }} title="50 = 리그 평균" />
                 </div>
-                <span style={{ width: 88, textAlign: "right", opacity: 0.85 }}>
-                  {c.from}→<b>{c.to}</b>
-                  {c.delta !== 0 && <span style={{ marginLeft: 5, color: up ? "#5db4e0" : "#e0a05a", fontWeight: 700 }}>{up ? "▲" : "▼"}{Math.abs(c.delta)}</span>}
+                <span style={{ width: 88, textAlign: "right", opacity: 0.85 }}
+                  title={`${AXIS_KO[c.axis] || c.axis}: 현재 ${c.from} (${idxMeaning(c.from).label}) → 새 감독 ${c.to} (${tm.label})`}>
+                  {c.from}→<b style={{ color: tm.c }}>{c.to}</b>
+                  {c.delta !== 0 && <span style={{ marginLeft: 5, color: TONE.avg.c, fontWeight: 700 }}>{up ? "▲" : "▼"}{Math.abs(c.delta)}</span>}
                 </span>
               </div>
             );
@@ -137,19 +151,23 @@ function SimResult({ r, accent }: { r: ManagerSim; accent: string }) {
           <h3 style={{ color: "#e0857a" }}>새 시스템 부적합 <span className="rating-note">· 교체 검토</span></h3>
           <div className="tf2-list">
             {(r.squad_misfit || []).map((m, i) => {
-              const c = m.sys_fit < 30 ? "#e0556b" : m.sys_fit < 50 ? "#f4cf5e" : "#4fc27f";
+              const fm = scoreMeaning(m.sys_fit);
               return (
                 <div className="tf2-row" key={i}>
                   <div className="tf2-info">
                     <div className="tf2-name">{m.player}</div>
                     <div className="tf2-meta">{m.role}</div>
                   </div>
-                  <span className="tf2-fee" style={{ color: c }}>적합 {m.sys_fit}</span>
+                  <MeaningTag sm m={fm} />
+                  <span className="tf2-fee" style={{ color: fm.c }} title={`새 감독이 이 자리에 쓰는 스타일과의 유사도 ${m.sys_fit} / 100 (${fm.label})`}>적합 {m.sys_fit}</span>
                 </div>
               );
             })}
             {(r.squad_misfit || []).length === 0 && <div className="mgr-meta">두드러진 부적합 없음</div>}
           </div>
+          {(r.squad_misfit || []).length > 0 && (
+            <div style={{ fontSize: 10.5, opacity: 0.5, marginTop: 6 }}>적합 0~100 = 새 감독 시스템의 같은 역할 스타일과 닮은 정도 (45+ 보통 · 65+ 높음)</div>
+          )}
         </div>
         <div className="card">
           <h3 style={{ color: accent }}>새 시스템 영입 우선순위 <span className="rating-note">· 강조 역할 · 스쿼드 얇음</span></h3>
@@ -158,7 +176,11 @@ function SimResult({ r, accent }: { r: ManagerSim; accent: string }) {
               <div key={i} style={{ padding: "8px 0", borderBottom: `1px solid ${hexA("#ffffff", 0.06)}` }}>
                 <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12.5 }}>
                   <b>{p.role}</b>
-                  <span style={{ opacity: 0.55 }}>기용 {Math.round(p.share * 100)}% · 현뎁스 {p.depth}</span>
+                  <span style={{ display: "inline-flex", alignItems: "center", gap: 5, flexWrap: "wrap", justifyContent: "flex-end" }}
+                    title={`새 감독이 이 역할에 주는 출전 비중 ${Math.round(p.share * 100)}% · 우리 스쿼드의 이 역할 선수 ${p.depth}명`}>
+                    <span style={{ opacity: 0.55 }}>기용 비중 {Math.round(p.share * 100)}% · 현재 {p.depth}명</span>
+                    <MeaningTag sm m={headcountMeaning(p.depth)} />
+                  </span>
                 </div>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 4, marginTop: 5 }}>
                   {p.candidates.length > 0 ? p.candidates.map((c, k) => (

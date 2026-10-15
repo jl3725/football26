@@ -2,6 +2,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { getDatabase, fmtEur, type DbPlayer } from "@/lib/api";
 import { tier, roleClass } from "@/lib/ui";
+import { ScaleLegend } from "./Meaning";
 import { usePeek } from "./PlayerPeek";
 import { SkelCards } from "./Skeleton";
 
@@ -84,6 +85,7 @@ export default function DatabaseTab({ accent }: { team: string; accent: string }
           <label className="db-range">가치 ≤ <b>€{maxVal}M</b><input type="range" min={0} max={200} step={5} value={maxVal} onChange={(e) => setMaxVal(+e.target.value)} /></label>
         </div>
         <div className="db-count">{filtered.length}명 매칭 · OVR 높은 순</div>
+        <ScaleLegend kind="ovr" lead="OVR 색" />
       </div>
 
       <div className="db-grid">
@@ -92,7 +94,7 @@ export default function DatabaseTab({ accent }: { team: string; accent: string }
           return (
             <div className="db-card hoverable" key={i} style={{ cursor: "pointer" }}
               onClick={(e) => peek(e, { name: p.player, club: p.squad, league: p.league, hint: p })}>
-              <div className="db-ovr" style={{ color: t.light }}>{p.ovr}</div>
+              <div className="db-ovr" style={{ color: t.light }} title={`OVR ${p.ovr} · ${t.ko}`}>{p.ovr}</div>
               {p.big_match && <span className="db-bm" title="UCL/UEL 급 무대 검증">⚡</span>}
               {p.photo ? <img className="db-photo" src={p.photo} alt="" /> : <span className="db-photo ph" />}
               <div className="db-name">{p.player}</div>

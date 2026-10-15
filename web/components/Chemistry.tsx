@@ -8,6 +8,10 @@ import EmptyState from "./EmptyState";
 
 const LINE_COLOR: Record<string, string> = { GK: "#f4cf5e", DEF: "#6aa6e0", MID: "#4fc27f", ATT: "#e0707a" };
 const last = (n: string) => n.split(" ").slice(-1)[0];
+// 케미 숫자의 뜻(api/main.py chemistry) — 분 기준: 팀 시즌 전체 시간(경기 수 × 90분) 중 둘이 함께 뛴 비율(%)
+// 경기 기준(관계 그래프): 함께 뛴 경기 수를 팀 안 최다 듀오 = 100 으로 둔 상대값
+const CHEM_MIN_NOTE = "팀 시즌 전체 시간(경기 수 × 90분) 중 둘이 함께 그라운드에 있던 비율";
+const CHEM_MATCH_NOTE = "CHEM 0~100 = 함께 뛴 경기 수, 팀 안에서 가장 많이 함께 뛴 듀오 = 100 인 상대값";
 
 function Face({ c, size = 42, team }: { c: ChemCard; size?: number; team?: string }) {
   const b = LINE_COLOR[c.line] || "#8a94a8";
@@ -36,7 +40,9 @@ export default function Chemistry({ team, accent }: { team: string; accent: stri
   return (
     <div>
       <div style={{ fontSize: 11, opacity: 0.5, marginBottom: 9 }}>
-        {byMin ? `실제로 함께 그라운드에 있던 시간 — 시즌 ${d.games}경기 라인업·교체 기록 기준` : "함께 뛴 경기(관계 그래프) 기준"}
+        {byMin
+          ? `실제로 함께 그라운드에 있던 시간 — 시즌 ${d.games}경기 라인업·교체 기록 기준 · % 와 막대 = ${CHEM_MIN_NOTE}`
+          : `함께 뛴 경기(관계 그래프) 기준 · ${CHEM_MATCH_NOTE}`}
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(230px, 1fr))", gap: 10 }}>
         {d.duos.map((duo, i) => (
@@ -45,16 +51,18 @@ export default function Chemistry({ team, accent }: { team: string; accent: stri
               <Face c={duo.a} team={team} />
               <span style={{ opacity: 0.4, fontSize: 14 }}>⟷</span>
               <Face c={duo.b} team={team} />
-              <div style={{ marginLeft: "auto", textAlign: "right" }}>
+              <div style={{ marginLeft: "auto", textAlign: "right" }} title={byMin ? `함께 뛴 시간 ${duo.minutes}분 · ${CHEM_MIN_NOTE} ${duo.chem}%` : `CHEM ${duo.chem} — ${CHEM_MATCH_NOTE}`}>
                 <div className="num" style={{ fontSize: 21, fontWeight: 800, color: accent, lineHeight: 1 }}>
                   {byMin ? <>{duo.minutes}<span style={{ fontSize: 12, opacity: 0.7 }}>′</span></> : duo.chem}
                 </div>
-                <div style={{ fontSize: 9, opacity: 0.5, letterSpacing: 1 }}>{byMin ? "함께 뛴 시간" : "CHEM"}</div>
+                <div style={{ fontSize: 9, opacity: 0.5, letterSpacing: 1 }}>{byMin ? "함께 뛴 시간" : "CHEM · 최다 듀오 100"}</div>
               </div>
             </div>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: 12, fontWeight: 600, marginTop: 8 }}>
               <span>{last(duo.a.name)}</span>
-              <span style={{ opacity: 0.45, fontWeight: 400, fontSize: 10.5 }}>{duo.matches}경기{byMin ? ` · ${duo.chem}%` : ""}</span>
+              <span style={{ opacity: 0.45, fontWeight: 400, fontSize: 10.5 }} title={byMin ? `${CHEM_MIN_NOTE} ${duo.chem}%` : undefined}>
+                {duo.matches}경기{byMin ? ` · 시즌의 ${duo.chem}%` : ""}
+              </span>
               <span>{last(duo.b.name)}</span>
             </div>
             <div style={{ height: 4, borderRadius: 2, background: hexA("#ffffff", 0.08), marginTop: 6 }}>

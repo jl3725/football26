@@ -2,6 +2,8 @@
 import { useEffect, useState } from "react";
 import { getSquad, fmtEur, type Squad, type SquadPlayer, type DepthOption } from "@/lib/api";
 import { tier, hexA } from "@/lib/ui";
+import { depthMeaning } from "@/lib/meaning";
+import { MeaningTag } from "./Meaning";
 import SquadBuilder from "./SquadBuilder";
 import SectionHead from "./SectionHead";
 import { usePeek } from "./PlayerPeek";
@@ -75,11 +77,17 @@ export default function SquadTab({ team, accent }: { team: string; accent: strin
       {/* 포지션별 뎁스 차트 — 역할마다 1st·2nd·3rd 옵션, 멀티 포지션(2·3포지션) 선수 포함 */}
       <div className="card">
         <SectionHead title="DEPTH CHART" kr="포지션별 뎁스" meta="실제로 선 자리 기준 · 멀티 = 2·3포지션 · ✚ = 부상" />
+        <div className="mn-legend" style={{ marginTop: 0, marginBottom: 10 }}>
+          <b>뎁스 = 2·3번째 옵션의 OVR + 인원</b>
+          {([[75, "탄탄 75+"], [65, "양호 65+"], [55, "보통 55+"], [45, "얇음 45+"], [0, "매우 얇음 45↓"]] as const).map(([v, l]) => (
+            <span key={l}><i style={{ background: depthMeaning(v).c }} />{l}</span>
+          ))}
+        </div>
         <div className="depth-head dp5">
           <span>POS</span><span>1ST</span><span>2ND · 3RD · 그 외</span><span>뎁스</span>
         </div>
         {data.buckets.map((b) => {
-          const dc = b.depth >= 70 ? "#4fc27f" : b.depth >= 55 ? "#caa64e" : "#e07070";
+          const dm = depthMeaning(b.depth);
           const chip = (o: DepthOption, rank: number) => (
             <span key={o.player} className={`dp5-chip peekable${o.kind === "secondary" ? " multi" : ""}${o.injured ? " inj" : ""}${rank === 1 ? " r2" : rank === 2 ? " r3" : ""}`}
               onClick={(e) => peek(e, { name: o.player, club: team, hint: { photo: o.photo, ovr: o.ovr, age: o.age } })}
@@ -102,9 +110,12 @@ export default function SquadTab({ team, accent }: { team: string; accent: strin
               <span className="depth-rot">
                 {b.rotation.length === 0 ? <em>백업 없음</em> : b.rotation.map((r, i) => chip(r, i + 1))}
               </span>
-              <span className="depth-score">
-                <div className="depth-bar"><span style={{ width: `${b.depth}%`, background: dc }} /></div>
-                <b style={{ color: dc }}>{b.depth}</b>
+              <span className="depth-score" title={`뎁스 ${b.depth} · ${dm.label} — 2·3번째 옵션의 OVR + 인원`}>
+                <span style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: 4 }}>
+                  <div className="depth-bar" style={{ flex: "none" }}><span style={{ width: `${b.depth}%`, background: dm.bar }} /></div>
+                  <span style={{ alignSelf: "flex-start" }}><MeaningTag sm m={dm} /></span>
+                </span>
+                <b style={{ color: dm.c }}>{b.depth}</b>
               </span>
             </div>
           );

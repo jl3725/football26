@@ -39,7 +39,9 @@ export type Overview = {
   };
   ovr: { overall: number; attack: number; midfield: number; defense: number; top_xi?: number;
     perf_adj?: Partial<Record<"attack" | "midfield" | "defense", number>>;
-    units?: Partial<Record<"attack" | "midfield" | "defense", { player: string; strength: number; injured?: boolean; until?: string }[]>> };
+    units?: Partial<Record<"attack" | "midfield" | "defense", { player: string; strength: number; injured?: boolean; until?: string }[]>>;
+    unit_rank?: Partial<Record<"overall" | "attack" | "midfield" | "defense", { rank: number; n: number }>>;
+    record?: { current: TeamRecordRow | null; past: TeamRecordRow[] } };
   ovr_delta?: { overall: number; attack: number; midfield: number; defense: number };
   radar: { axis: string; value: number }[];
   form: string[];
@@ -565,7 +567,7 @@ export type PointsPath = { team: string; path: number[]; logo: string; color: st
 export type ProfileAxis = { key: string; en: string; kr: string; value: number; rank: number; n: number; hint: string ; prev?: number | null; prev_rank?: number | null; prev_hint?: string };
 export type TeamSeason = { team: string; league: string; n: number;
   standing: { rank: number; played: number; won: number; drawn: number; lost: number; gf: number; ga: number; gd: number; points: number } | null;
-  xg_pg: number | null; str_rank: number | null; path: PointsPath; refs: PointsPath[]; recent: ResultMatch[]; profile: ProfileAxis[]; goal_mix?: GoalMix | null };
+  xg_pg: number | null; str_rank: number | null; xg_rank?: number | null; xg_avg?: number | null; path: PointsPath; refs: PointsPath[]; recent: ResultMatch[]; profile: ProfileAxis[]; goal_mix?: GoalMix | null };
 // 분석 탭 — 경기별 흐름·득실 시간대·리그 백분위(/api/team-trends, 원천 match_stats: ESPN 경기 기록 + 5대 리그 Understat xG)
 export type TrendMatch = { event_id: string; date: string; comp_code: string; opponent: string; opp_logo: string; home_away: string;
   gf: number; ga: number; result: string; xg: number | null; xga: number | null; shots: number | null; opp_shots: number | null;
@@ -613,3 +615,7 @@ export function fmtEur(v: number): string {
 // 득점 구성(StatBunker) — 오픈플레이·세트피스·PK, 이번 시즌 vs 지난 시즌
 export type GoalMixPart = { total: number; open: number; set_piece: number; pen: number; corner: number; games: number };
 export type GoalMix = { cur: GoalMixPart | null; prev: GoalMixPart | null };
+
+// 팀 시즌 기록(경기당 득점·실점·리그 순위) — /api/overview ovr.record (src/season_history.py)
+export type TeamRecordRow = { season: string; label: string; w?: number; played: number; gf_pg: number; ga_pg: number;
+  gf_z: number; ga_z: number; gf_rank: number; ga_rank: number; n: number };

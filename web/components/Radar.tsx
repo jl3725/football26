@@ -1,7 +1,10 @@
 "use client";
 import { hexA } from "@/lib/ui";
+import { idxMeaning, pctMeaning } from "@/lib/meaning";
 
-export default function Radar({ data, color }: { data: { axis: string; value: number }[]; color: string }) {
+// scale: idx = 리그 안 지수(50 = 리그 평균) · pct = 백분위(50 = 중간). 가운데 점선 링 = 50.
+export default function Radar({ data, color, scale = "idx" }: { data: { axis: string; value: number }[]; color: string; scale?: "idx" | "pct" }) {
+  const mean = scale === "pct" ? pctMeaning : idxMeaning;
   const cx = 150, cy = 150, R = 100, N = data.length || 1;
   const pt = (i: number, r: number): [number, number] => {
     const ang = -Math.PI / 2 + (i * 2 * Math.PI) / N;
@@ -20,8 +23,10 @@ export default function Radar({ data, color }: { data: { axis: string; value: nu
       </defs>
       {rings.map((rr, k) => (
         <polygon key={k} points={data.map((_, i) => pt(i, rr * R).join(",")).join(" ")}
-          fill="none" stroke="rgba(255,255,255,0.07)" strokeWidth={1} />
+          fill="none" stroke={rr === 0.5 ? "rgba(255,255,255,0.28)" : "rgba(255,255,255,0.07)"} strokeWidth={1}
+          strokeDasharray={rr === 0.5 ? "3 3" : undefined} />
       ))}
+      <text x={cx + 3} y={cy - R * 0.5 - 3} fontSize={9.5} fill="rgba(255,255,255,0.5)">{scale === "pct" ? "50 = 중간" : "50 = 리그 평균"}</text>
       {data.map((_, i) => {
         const [x, y] = pt(i, R);
         return <line key={i} x1={cx} y1={cy} x2={x} y2={y} stroke="rgba(255,255,255,0.05)" />;
@@ -37,7 +42,8 @@ export default function Radar({ data, color }: { data: { axis: string; value: nu
             {/* 축소 표시돼도 읽히게 — viewBox 300 기준 12.5/15 (예전 10/11 은 실제 8px 대) */}
             <text x={lx} y={ly - 2} fontSize={12.5} fill="#9aa4b8" textAnchor="middle" dominantBaseline="middle"
               style={{ fontFamily: "var(--font-label)", fontWeight: 600 }} letterSpacing={0.3}>{d.axis}</text>
-            <text x={lx} y={ly + 13} fontSize={15} fill="#e8edf6" textAnchor="middle" style={{ fontFamily: "var(--font-num)", fontWeight: 700 }}>{d.value}</text>
+            <text x={lx} y={ly + 13} fontSize={15} fill={mean(d.value).c} textAnchor="middle" style={{ fontFamily: "var(--font-num)", fontWeight: 700 }}>
+              {d.value}<title>{`${d.axis} ${d.value} — ${mean(d.value).label}`}</title></text>
           </g>
         );
       })}

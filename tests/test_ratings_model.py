@@ -134,3 +134,31 @@ def test_team_ratings_one_gk_and_record_adjustment() -> None:
     top = rv3.team_ratings(df, "X", perf={"attack": 50, "midfield": 50, "defense": 200})
     assert same["defense"] == base["defense"] and good["perf_adj"]["defense"] == 1.0
     assert top["perf_adj"]["defense"] == rv3.TEAM_PERF_MAX
+
+
+def test_older_seasons_join_class_rating_automatically() -> None:
+    base = rv3.class_ss(7.0, 900, 7.0, 3000, "MID", league_level=100)
+    same = rv3.class_ss(7.0, 900, 7.0, 3000, "MID", league_level=100, hist_ss_rating=None, hist_minutes=None)
+    assert base == same                                   # 2시즌 전 기록이 없으면(지금) 예전과 같다
+    up = rv3.class_ss(7.0, 900, 7.0, 3000, "MID", league_level=100, hist_ss_rating=7.6, hist_minutes=1500)
+    assert base < up < 7.6                                # 들어오면 가중만큼만 끌어당긴다
+    moved = rv3.class_ss(7.0, 900, 7.0, 3000, "MID", league_level=100, hist_ss_rating=7.6, hist_minutes=1500,
+                         hist_league_level=88.5)
+    assert moved < up                                     # 약한 리그 시절 기록은 덜, 리그 보정까지
+
+
+def test_attach_hist_decays_by_season() -> None:
+    import attach_prev_season as ap
+    cur = pd.DataFrame([{"player": "A B", "squad": "X", "tm_id": 1, "norm_key": "a b"}])
+
+    def loader(s):            # s-1_s 시즌: 2시즌 전 7.5·3000분, 3시즌 전 6.5·3000분
+        r = {2026: (7.5, 3000), 2025: (6.5, 3000)}.get(s)   # load_prev(2026) = 25/26 = 27/28 기준 2시즌 전
+        if r is None:
+            return pd.DataFrame()
+        return pd.DataFrame([{"player": "A B", "squad": "X", "minutes": r[1], "ss_rating": r[0], "tm_id": 1,
+                              "norm_key": "a b", "league": "EPL", "nk": "a b", "tid": "1",
+                              "gk_save_pct": None, "gk_cs_pct": None, "market_value_eur": None, "nationality": None}])
+    out = ap.attach_hist(cur, 2027, loader=loader)
+    assert out["hist_minutes"].iloc[0] == round(0.5 * 3000 + 0.25 * 3000)
+    assert abs(out["hist_ss_rating"].iloc[0] - (7.5 * 2 + 6.5) / 3) < 0.01   # 가까운 시즌이 두 배
+    assert out["hist_league"].iloc[0] == "EPL"

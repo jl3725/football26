@@ -2,6 +2,8 @@
 import { useState } from "react";
 import { getFit, fmtEur, type Fit } from "@/lib/api";
 import { hexA, tier } from "@/lib/ui";
+import { scoreMeaning, ovrMeaning } from "@/lib/meaning";
+import { MeaningTag } from "./Meaning";
 import Bar from "./Bar";
 import { usePeek } from "./PlayerPeek";
 import { SkelCards } from "./Skeleton";
@@ -23,17 +25,20 @@ const RISK_KO: Record<string, string> = { High: "높음", Medium: "중간", Low:
 const VERDICT_KO: Record<string, string> = { within: "적정", stretch: "무리", "over-budget": "예산초과", unknown: "?" };
 const VERDICT_COLOR: Record<string, string> = { within: "#4fc27f", stretch: "#f4cf5e", "over-budget": "#e0556b" };
 
-function CompBar({ label, value, accent, danger }: { label: string; value: number; accent: string; danger?: boolean }) {
-  const col = danger ? "#e0707a" : accent;
+// 0~100 점수(높을수록 좋음) — 색·단어는 scoreMeaning. 리스크(danger)는 높을수록 나쁨이라 뒤집어 색을 고른다.
+function CompBar({ label, value, danger }: { label: string; value: number; danger?: boolean }) {
+  const m = danger ? scoreMeaning(100 - value) : scoreMeaning(value);
   return (
-    <div style={{ marginBottom: 7 }}>
-      <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11.5, marginBottom: 3 }}>
+    <div style={{ marginBottom: 7 }} title={danger ? `리스크 ${value} / 100 — 높을수록 감점` : `${label} ${value} / 100 (${m.label})`}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 6, fontSize: 11.5, marginBottom: 3 }}>
         <span style={{ opacity: 0.75 }}>{label}</span>
-        <b style={{ color: danger ? col : tier(value).light }}>{value}{danger ? " (감점)" : ""}</b>
+        <span style={{ display: "inline-flex", alignItems: "center", gap: 5 }}>
+          {!danger && <MeaningTag sm m={m} />}
+          <b style={{ color: m.c }}>{value}{danger ? " (감점)" : ""}</b>
+        </span>
       </div>
       <div style={{ height: 6, borderRadius: 3, background: hexA("#ffffff", 0.08) }}>
-        <span style={{ display: "block", height: "100%", borderRadius: 3, width: `${value}%`,
-          background: danger ? `linear-gradient(90deg, ${hexA(col, 0.5)}, ${col})` : `linear-gradient(90deg, ${hexA(accent, 0.5)}, ${accent})` }} />
+        <span style={{ display: "block", height: "100%", borderRadius: 3, width: `${value}%`, background: m.bar }} />
       </div>
     </div>
   );
@@ -113,7 +118,7 @@ export default function FitEvaluator({ team, accent, suggestions }:
 
 function FitCard({ r, accent }: { r: Fit; accent: string }) {
   const c = r.components!;
-  const t = tier(r.fit_score || 0);
+  const fm = scoreMeaning(r.fit_score ?? null);
   const td = r.tactical_detail;
   const af = r.affordability;
   const peek = usePeek();
@@ -124,14 +129,17 @@ function FitCard({ r, accent }: { r: Fit; accent: string }) {
         <div style={{ flex: "1 1 220px", minWidth: 0 }}>
           <div style={{ fontSize: 17, fontWeight: 800 }}>{r.candidate}</div>
           <div style={{ fontSize: 12, opacity: 0.6 }}>{r.source_league} → {r.target_club} · {r.role}</div>
-          <div style={{ fontSize: 12, marginTop: 4 }}>
-            base OVR <b>{r.base_ovr}</b> → proj OVR <b style={{ color: accent }}>{r.proj_ovr}</b>
-            <span style={{ opacity: 0.55 }}> ({r.target_league})</span>
+          <div style={{ fontSize: 12, marginTop: 4, display: "flex", flexWrap: "wrap", alignItems: "center", gap: "3px 5px" }}
+            title="현재 OVR = 지금 뛰는 리그 기준 · 예상 OVR = 우리 리그 수준으로 보정한 값">
+            <span>현재 OVR <b>{r.base_ovr}</b> → 우리 리그 예상 <b style={{ color: r.proj_ovr != null ? tier(r.proj_ovr).light : accent }}>{r.proj_ovr}</b></span>
+            {r.proj_ovr != null && <MeaningTag sm m={ovrMeaning(r.proj_ovr)} />}
+            <span style={{ opacity: 0.55 }}>({r.target_league})</span>
           </div>
         </div>
-        <div style={{ textAlign: "center" }}>
-          <div style={{ fontSize: 40, fontWeight: 800, lineHeight: 1, color: t.light }}>{r.fit_score}</div>
-          <div style={{ fontSize: 10, opacity: 0.55 }}>FIT SCORE</div>
+        <div style={{ textAlign: "center" }} title="FIT SCORE 0~100 — 역할·전술·니즈·리그 적응·성장성·가치 등을 합친 종합 적합도(높을수록 잘 맞음)">
+          <div style={{ fontSize: 40, fontWeight: 800, lineHeight: 1, color: fm.c }}>{r.fit_score}</div>
+          <div style={{ fontSize: 10, opacity: 0.55, margin: "2px 0 3px" }}>FIT SCORE <span style={{ opacity: 0.8 }}>/ 100</span></div>
+          <MeaningTag sm m={fm} />
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
           <span style={{ fontSize: 12, fontWeight: 700, padding: "3px 10px", borderRadius: 8, textAlign: "center",
@@ -146,17 +154,21 @@ function FitCard({ r, accent }: { r: Fit; accent: string }) {
       {/* 컴포넌트 바 2열 */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "0 24px", marginTop: 16 }}>
         {(["RoleFit", "TacticalFit", "TeamNeed", "Translation", "Potential", "Value", "RecruitFit", "PriceRealism"] as const)
-          .map((k) => <CompBar key={k} label={COMP_KO[k]} value={c[k]} accent={accent} />)}
-        <CompBar label="리스크" value={c.Risk} accent={accent} danger />
+          .map((k) => <CompBar key={k} label={COMP_KO[k]} value={c[k]} />)}
+        <CompBar label="리스크" value={c.Risk} danger />
       </div>
+      <div style={{ fontSize: 10.5, opacity: 0.5, marginTop: 2 }}>항목 점수 0~100 · 45+ 보통 · 65+ 높음 · 80+ 매우 높음 (리스크는 높을수록 감점)</div>
 
       {/* 전술 블렌드 설명 */}
       {td && (
         <div style={{ marginTop: 12, padding: "10px 12px", borderRadius: 8, background: hexA(accent, 0.06),
           borderLeft: `3px solid ${hexA(accent, 0.5)}`, fontSize: 12 }}>
-          <b>전술 적합</b> · 현재 전술 {td.current_fit} · 감독 성향 {td.tendency_fit} → 블렌드 <b style={{ color: accent }}>{td.blended}</b>
+          <b>전술 적합</b> · 현재 전술 <b style={{ color: scoreMeaning(td.current_fit).c }}>{td.current_fit}</b>
+          {" "}· 감독 성향 <b style={{ color: scoreMeaning(td.tendency_fit).c }}>{td.tendency_fit}</b>
+          {" "}→ 블렌드 <b style={{ color: scoreMeaning(td.blended).c }}>{td.blended}</b> <MeaningTag sm m={scoreMeaning(td.blended)} />
           <span style={{ opacity: 0.6 }}> ({td.is_new_manager ? "새 부임" : "안정"}
             {td.appointed ? ` · ${td.appointed}` : ""}: 현재 {Math.round(td.w_current * 100)}% / 성향 {Math.round(td.w_tendency * 100)}%)</span>
+          <div style={{ opacity: 0.5, marginTop: 3, fontSize: 10.5 }}>0~100 = 이 선수 스타일이 현재 팀 전술·감독 성향과 얼마나 닮았나(100 = 완전 일치, 리그 평균 기준 아님)</div>
           {td.is_new_manager && td.descriptor_tags.length === 0 &&
             <div style={{ opacity: 0.5, marginTop: 3 }}>감독 성향 데이터 없음</div>}
         </div>

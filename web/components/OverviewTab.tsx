@@ -1,5 +1,7 @@
 "use client";
-import type { Overview } from "@/lib/api";
+import type { Overview, TeamRecordRow } from "@/lib/api";
+import { formMeaning, ovrMeaning, rankMeaning, FORM_NOTE } from "@/lib/meaning";
+import { MeaningTag } from "./Meaning";
 import { feeLabel, fmtEur } from "@/lib/api";
 import { tier, hexA, roleClass, futTier } from "@/lib/ui";
 import Radar from "./Radar";
@@ -37,29 +39,64 @@ function Delta({ d }: { d?: number }) {
 }
 
 type UnitWho = { player: string; strength: number; injured?: boolean; until?: string }[];
+type RecRow = TeamRecordRow;
 const shortName = (n: string) => { const p = n.split(" "); return p.length > 1 ? p.slice(1).join(" ") : n; };
 
-function Unit({ label, value, color, delta, perf, who }: { label: string; value: number; color: string; delta?: number; perf?: number; who?: UnitWho }) {
+// 라인 OVR — 숫자 + 등급 단어(OVR 띠) + 리그 순위 + (공격·수비) 시즌별 득점·실점 기록.
+// 막대는 팀 라인 OVR 이 실제로 퍼진 65~95 구간 — 0~100 으로 그리면 모든 팀이 80% 근처라 차이가 안 보였다.
+function Unit({ label, ko, value, delta, perf, who, rank, rec, recKind }: {
+  label: string; ko: string; value: number; delta?: number; perf?: number; who?: UnitWho;
+  rank?: { rank: number; n: number }; rec?: { current: RecRow | null; past: RecRow[] }; recKind?: "gf" | "ga";
+}) {
   const t = tier(value);
+  const rm = rank ? rankMeaning(rank.rank, rank.n) : null;
+  const w = Math.max(4, Math.min(100, ((value - 65) / 30) * 100));
+  const rows = rec && recKind ? [...rec.past].reverse().concat(rec.current ? [rec.current] : []) : [];
+  const perfTag = perf != null && Math.abs(perf) >= 0.3 && (
+    <span className={`unit-perf ${perf > 0 ? "up" : "down"}`}
+      title="기록 보정 — 시즌별 리그 안 상대값을 최근일수록 크게(이번 시즌은 경기 수만큼) 섞어 OVR 에 ±2.5 이내로 더한다">
+      기록 보정 {perf > 0 ? "+" : ""}{perf.toFixed(1)}
+    </span>
+  );
   return (
     <div className="unit">
-      <div className="unit-top"><b>{label}</b><span><Delta d={delta} />
-        {perf != null && Math.abs(perf) >= 0.5 && (
-          <em className={`unit-perf ${perf > 0 ? "up" : "down"}`} title="실적 보정 — 경기당 득점·실점(리그 안 상대값), 이번 시즌과 지난 시즌을 경기 수로 섞음">
-            기록 {perf > 0 ? "+" : ""}{perf.toFixed(1)}
-          </em>
-        )}
-        <span style={{ color: t.light }}>{value}</span></span></div>
-      <div className="bar"><span style={{ width: `${value}%`, background: `linear-gradient(90deg, ${t.deep}, ${t.light})` }} /></div>
+      <div className="unit-top">
+        <b>{label}<em className="unit-ko">{ko}</em></b>
+        <span>
+          <Delta d={delta} />
+          {rank && rm && <em className="unit-rank" style={{ color: rm.c }} title={`${rank.n}팀 중 ${rank.rank}위 — ${rm.label}`}>리그 {rank.rank}위</em>}
+          <MeaningTag m={ovrMeaning(value)} sm title="OVR 등급(OVR GUIDE 와 같은 기준)" />
+          <span style={{ color: t.light }}>{value}</span>
+        </span>
+      </div>
+      <div className="bar"><span style={{ width: `${w}%`, background: `linear-gradient(90deg, ${t.deep}, ${t.light})` }} /></div>
       {who && who.length > 0 && (
         <div className="unit-who">
-          {who.map((w) => (
-            <span key={w.player} className={w.injured ? "inj" : ""} title={`${w.player} ${w.strength}${w.injured ? ` · 부상${w.until ? `(${w.until} 복귀 예정)` : ""}` : ""}`}>
-              {shortName(w.player)}{w.injured ? " ✚" : ""}
+          {who.map((x) => (
+            <span key={x.player} className={x.injured ? "inj" : ""} title={`${x.player} ${x.strength}${x.injured ? ` · 부상${x.until ? `(${x.until} 복귀 예정)` : ""}` : ""}`}>
+              {shortName(x.player)}{x.injured ? " ✚" : ""}
             </span>
           ))}
         </div>
       )}
+      {rows.length > 0 ? (
+        <div className="unit-rec" title={recKind === "ga" ? "경기당 실점 — 적을수록 좋음 · 색 = 그 시즌 리그 순위" : "경기당 득점 — 많을수록 좋음 · 색 = 그 시즌 리그 순위"}>
+          <span className="lbl">{recKind === "ga" ? "실점/경기" : "득점/경기"}</span>
+          {rows.map((r) => {
+            const rk = recKind === "ga" ? r.ga_rank : r.gf_rank;
+            const mm = rankMeaning(rk, r.n);
+            const cur = !!rec?.current && r.season === rec.current.season;
+            const v = (recKind === "ga" ? r.ga_pg : r.gf_pg).toFixed(2);
+            return (
+              <span key={r.season} className={`chip${cur ? " cur" : ""}`} style={{ color: mm.c, background: mm.bg }}
+                title={`${r.label}${cur ? `(진행 중 ${r.played}경기)` : ""} · ${v} · 리그 ${rk}위/${r.n} · ${mm.label}`}>
+                <i>{r.label}</i>{v}<em>{rk}위</em>
+              </span>
+            );
+          })}
+          {perfTag}
+        </div>
+      ) : perfTag ? <div className="unit-rec">{perfTag}</div> : null}
     </div>
   );
 }
@@ -108,7 +145,8 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
         <div className="ovr-badge" style={{ borderColor: hexA(t.light, 0.5) }}>
           <div className="teko ovr-n" style={{ color: t.light }}>{ov.ovr.overall}</div>
           <div className="ovr-cap" style={{ color: t.light }}>{t.name}</div>
-          <div className="ovr-sub">OVERALL{ov.ovr_delta?.overall ? <Delta d={ov.ovr_delta.overall} /> : null}</div>
+          <div className="ovr-sub" title={`OVR 등급: ${t.ko}`}>OVERALL{ov.ovr_delta?.overall ? <Delta d={ov.ovr_delta.overall} /> : null}
+            {ov.ovr.unit_rank?.overall && <em className="ovr-rank"> · 리그 {ov.ovr.unit_rank.overall.rank}위</em>}</div>
         </div>
       </div>
 
@@ -128,12 +166,16 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
             meta={(ov.ovr_delta && (ov.ovr_delta.attack || ov.ovr_delta.midfield || ov.ovr_delta.defense || ov.ovr_delta.overall))
               ? <>{ov.window?.label ?? ""} 이적 반영 <b style={{ color: "#4fc27f" }}>▲</b>/<b style={{ color: "#e07070" }}>▼</b></> : "라인별 주전 OVR"} />
           <div className="unit-list">
-            <Unit label="ATTACK" value={ov.ovr.attack} color={accent} delta={ov.ovr_delta?.attack} perf={ov.ovr.perf_adj?.attack} who={ov.ovr.units?.attack} />
-            <Unit label="MIDFIELD" value={ov.ovr.midfield} color={accent} delta={ov.ovr_delta?.midfield} perf={ov.ovr.perf_adj?.midfield} who={ov.ovr.units?.midfield} />
-            <Unit label="DEFENSE" value={ov.ovr.defense} color={accent} delta={ov.ovr_delta?.defense} perf={ov.ovr.perf_adj?.defense} who={ov.ovr.units?.defense} />
+            <Unit label="ATTACK" ko="공격" value={ov.ovr.attack} delta={ov.ovr_delta?.attack} perf={ov.ovr.perf_adj?.attack}
+              who={ov.ovr.units?.attack} rank={ov.ovr.unit_rank?.attack} rec={ov.ovr.record} recKind="gf" />
+            <Unit label="MIDFIELD" ko="중원" value={ov.ovr.midfield} delta={ov.ovr_delta?.midfield} perf={ov.ovr.perf_adj?.midfield}
+              who={ov.ovr.units?.midfield} rank={ov.ovr.unit_rank?.midfield} />
+            <Unit label="DEFENSE" ko="수비" value={ov.ovr.defense} delta={ov.ovr_delta?.defense} perf={ov.ovr.perf_adj?.defense}
+              who={ov.ovr.units?.defense} rank={ov.ovr.unit_rank?.defense} rec={ov.ovr.record} recKind="ga" />
           </div>
-          <p className="sp5-note">라인별 상위 선수 평점(OVR + 출전 비례 이번 시즌 폼) + 기록 보정(경기당 득점·실점의 리그 안 상대값,
-            이번 시즌과 지난 시즌을 경기 수로 섞어 ±2.5). 부상자(✚)도 &apos;가진 전력&apos;이라 포함합니다.</p>
+          <p className="sp5-note">숫자 = 라인 상위 선수 OVR(+ 이번 시즌 폼) + 최근 시즌 득점·실점 기록 보정(±2.5) · 단어 = OVR 등급 ·
+            &apos;리그 N위&apos; = 같은 리그 팀들 중 이 라인 순위 · 기록 칸 색 = 그 시즌 리그 순위(초록 상위 · 회색 중위 · 주황·빨강 하위) ·
+            부상자(✚)도 &apos;가진 전력&apos;이라 포함.</p>
         </div>
 
         <div className="card">
@@ -221,11 +263,11 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
                   onClick={(e) => peek(e, { name: st.player, club: ov.team, hint: { photo: st.photo, ovr: st.ovr, pos: st.pos, role: st.role, big_match: st.big_match } })}>
                   {st.big_match && <span className="star-bm" title="UCL/UEL 급 무대 검증">⚡</span>}
                   {st.photo ? <img src={st.photo} alt="" /> : <span className="star-ph" />}
-                  <div className="star-ovr" style={{ color: tt.light }}>
+                  <div className="star-ovr" style={{ color: tt.light }} title={`OVR ${st.ovr} · ${tt.ko}`}>
                     {st.ovr}<TrendArrow t={st.trend} ovr={st.ovr} />{st.pot && st.pot > st.ovr ? <span className="star-pot">↗{st.pot}</span> : null}
                   </div>
                   <div className="star-name">{st.player}</div>
-                  <div className="star-meta">{st.pos}{st.form ? <> · 폼 <b style={{ color: st.form >= 85 ? "#4fc27f" : st.form >= 75 ? "#f4cf5e" : "#e0707a" }}>{st.form}</b></> : ""}</div>
+                  <div className="star-meta" title={FORM_NOTE}>{st.pos}{st.form ? <> · 폼 <b style={{ color: formMeaning(st.form).c }}>{st.form}</b> <MeaningTag m={formMeaning(st.form)} sm /></> : ""}</div>
                   <div className="star-ga">{st.goals}G {st.assists}A</div>
                   {st.role && <span className={"role-tag sm " + roleClass(st.role)}>{st.role}</span>}
                 </div>

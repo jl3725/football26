@@ -114,7 +114,7 @@ export default function GlobalSearch({ accent, onPickPlayer, onPickTeam }: {
           </div>
         </div>
         {p.role && <span style={{ fontSize: 10, padding: "2px 7px", borderRadius: 6, background: hexA("#fff", 0.07), opacity: 0.75, whiteSpace: "nowrap" }}>{p.role}</span>}
-        <span style={{ minWidth: 34, textAlign: "center", fontSize: 15, fontWeight: 800, color: t.light,
+        <span title={`OVR ${p.ovr} · ${t.ko}`} style={{ minWidth: 34, textAlign: "center", fontSize: 15, fontWeight: 800, color: t.light,
           padding: "4px 7px", borderRadius: 8, background: hexA(t.deep, 0.3), border: `1px solid ${hexA(t.light, 0.4)}` }}>{p.ovr}</span>
       </button>
     );
@@ -188,7 +188,7 @@ export default function GlobalSearch({ accent, onPickPlayer, onPickTeam }: {
                 </div>
               )}
               {short && (
-                <div style={{ fontSize: 9.5, opacity: 0.4, padding: "6px 12px 4px", textTransform: "uppercase", letterSpacing: 0.7, fontWeight: 700 }}>추천 · 최고 평점</div>
+                <div style={{ fontSize: 9.5, opacity: 0.4, padding: "6px 12px 4px", textTransform: "uppercase", letterSpacing: 0.7, fontWeight: 700 }}>추천 · OVR 높은 순</div>
               )}
               {short && items.map((it) => { idx++; return it.kind === "player" ? PlayerRow(it.p, idx) : null; })}
 

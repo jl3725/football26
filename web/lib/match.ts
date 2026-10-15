@@ -52,7 +52,7 @@ export function whyBig(m: Fixture, short = false): string {
   if (h.rank && a.rank && !short) parts.push(`${rankLabel(h, a)} vs ${rankLabel(a, h)}`);
   if (h.ovr && a.ovr) {
     const lo = Math.min(h.ovr, a.ovr);
-    parts.push(lo >= 84 ? `두 팀 모두 OVR ${lo}+` : `전력 차 ${Math.abs(h.ovr - a.ovr)}`);
+    parts.push(lo >= 84 ? `두 팀 모두 OVR ${lo}+` : `전력 차 OVR ${Math.abs(h.ovr - a.ovr)}`);
   }
   for (const t of m.tags) if (t !== "강팀 대결" && !parts.includes(t)) parts.push(t);
   return parts.join(" · ");

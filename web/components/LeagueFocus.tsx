@@ -8,6 +8,7 @@ import { ExpectedBoard, Playmakers, BallWinners, TeamStyleMap } from "./LeagueLa
 import { lgEn } from "@/lib/match";
 import { liveLabel, useLiveAll } from "@/lib/live";
 import { liveTable, type LiveTableRow } from "@/lib/liveTable";
+import { TONE, ovrMeaning } from "@/lib/meaning";
 
 // 리그 집중 묶음 — 글로벌 대시보드(리그 선택)와 각 리그 탭(full: 전체 순위표·전력 대비·부상 타격 추가)이 함께 쓴다.
 // 데이터는 /api/league-lab/{league} 하나(6시간 캐시).
@@ -53,6 +54,11 @@ function StandingsFull({ lab, league, onPick }: { lab: LeagueLab; league: string
   const lt = liveTable(lab.table, lab.pending, useLiveAll(), liveLabel);
   const rows = lt.rows;
   const n = rows.length;
+  // 경기당 xG 리그 평균 — 숫자만으로는 1.42 가 많은지 적은지 안 읽혀 평균 대비 색(±10%)으로 보인다
+  const xgs = rows.map((t) => t.xg_pg).filter((v): v is number => v != null);
+  const xgAvg = xgs.length ? xgs.reduce((a, b) => a + b, 0) / xgs.length : null;
+  const xgColor = (v: number | null | undefined) =>
+    v == null || !xgAvg ? undefined : v >= xgAvg * 1.1 ? TONE.good.c : v <= xgAvg * 0.9 ? TONE.weak.c : undefined;
   return (
     <div className="tb5-wrap">
       {lt.on && <LiveNote inPlay={lt.inPlay} />}
@@ -60,7 +66,7 @@ function StandingsFull({ lab, league, onPick }: { lab: LeagueLab; league: string
         <thead>
           <tr>
             <th>#</th><th className="l">TEAM</th><th>P</th><th className="s">W</th><th className="s">D</th><th className="s">L</th><th className="m">GF</th><th className="m">GA</th>
-            <th>GD</th><th>PTS</th><th className="m">FORM</th><th className="m" title="경기당 기대 득점">xG/G</th><th className="m" title="팀 전력(OVR) 순위">OVR</th>
+            <th>GD</th><th>PTS</th><th className="m">FORM</th><th className="m" title={`경기당 기대 득점${xgAvg ? ` · 리그 평균 ${xgAvg.toFixed(2)}` : ""}`}>xG/G</th><th className="m" title="팀 전력(OVR) 순위">OVR</th>
           </tr>
         </thead>
         <tbody>
@@ -75,8 +81,11 @@ function StandingsFull({ lab, league, onPick }: { lab: LeagueLab; league: string
                 <td className={t.gd > 0 ? "up" : t.gd < 0 ? "down" : ""}>{t.gd > 0 ? `+${t.gd}` : t.gd}</td>
                 <td className="pts">{t.points}</td>
                 <td className="m"><FormBoxes form={t.form} /></td>
-                <td className="m">{t.xg_pg != null ? t.xg_pg.toFixed(2) : "—"}</td>
-                <td className="m" title={t.str_rank ? `전력 ${t.str_rank}위 · 순위 ${t.rank}위` : ""}>
+                <td className="m" style={{ color: xgColor(t.xg_pg) }}
+                  title={t.xg_pg != null && xgAvg ? `경기당 기대 득점 ${t.xg_pg.toFixed(2)} · 리그 평균 ${xgAvg.toFixed(2)}` : undefined}>
+                  {t.xg_pg != null ? t.xg_pg.toFixed(2) : "—"}
+                </td>
+                <td className="m" title={[t.ovr != null ? `팀 OVR ${t.ovr} · ${ovrMeaning(t.ovr).label}` : "", t.str_rank ? `전력 ${t.str_rank}위 · 순위 ${t.rank}위` : ""].filter(Boolean).join(" · ")}>
                   {t.ovr ?? "—"}{gap ? <span className={`tb5-gap ${gap > 0 ? "up" : "down"}`}>{gap > 0 ? "▲" : "▼"}{Math.abs(gap)}</span> : null}
                 </td>
               </tr>
@@ -84,7 +93,10 @@ function StandingsFull({ lab, league, onPick }: { lab: LeagueLab; league: string
           })}
         </tbody>
       </table>
-      <p className="tb5-note">OVR 옆 ▲▼ = 팀 전력 순위보다 실제 순위가 높음/낮음 · 아래 3팀 = 강등권 표시</p>
+      <p className="tb5-note">
+        OVR 옆 ▲▼ = 팀 전력 순위보다 실제 순위가 높음/낮음 · 아래 3팀 = 강등권 표시
+        {xgAvg ? <> · xG/G 리그 평균 {xgAvg.toFixed(2)} — <span style={{ color: TONE.good.c }}>평균보다 높음</span> / <span style={{ color: TONE.weak.c }}>낮음</span>(±10%)</> : null}
+      </p>
     </div>
   );
 }
@@ -152,7 +164,7 @@ export default function LeagueFocus({ league, lab, onPick, full = false }: { lea
       </div>
       {full && (L?.injury_impact ?? []).length > 0 && (
         <section className="card h5-card">
-          <SectionHead title="INJURY IMPACT" kr="부상 타격" meta="부상자 때문에 줄어든 베스트 XI 평균 전력" />
+          <SectionHead title="INJURY IMPACT" kr="부상 타격" meta="부상자 때문에 줄어든 베스트 XI 평균 전력(팀 OVR)" />
           <InjuryImpact rows={L!.injury_impact!} onPick={onPick} />
         </section>
       )}

@@ -5,6 +5,8 @@ import { usePeek } from "./PlayerPeek";
 import { LINE_COLOR, SvgAvatar, lastName } from "./NetShared";
 
 // LEADERSHIP — 주장단(위키 스쿼드 표: 주장·부주장·3·4번째) + 영향력 지도(출전 비중·연결 중심성·근속·경험·대표팀·완장).
+// 영향력 0~100 = 6요소(각 0~1) 가중합 × 100 — 출전·연결은 팀 안 최고 대비라 다른 팀과 비교하는 값이 아니다(src/team_network.leadership)
+const INF_NOTE = "영향력 0~100 · 팀 안 상대값 — 출전·연결 중심성(팀 최고 대비)·근속·완장·경험·대표팀을 가중합, 100 = 모든 요소 만점";
 const COMP: [string, string][] = [["minutes", "출전"], ["hub", "연결"], ["tenure", "근속"], ["experience", "경험"],
   ["international", "대표팀"], ["armband", "완장"]];
 
@@ -28,7 +30,7 @@ function CaptainHero({ c, team, accent, armband }: { c: NetCaptain; team: string
           {c.injured && <i className="bad">결장 · {c.injury || "부상"}</i>}
         </div>
       </div>
-      <span className="net-cap-inf" title="영향력 지수">{c.influence}</span>
+      <span className="net-cap-inf" title={`영향력 지수 ${c.influence} — ${INF_NOTE}`}>{c.influence}</span>
     </button>
   );
 }
@@ -121,6 +123,9 @@ export default function NetLeadership({ d, accent }: { d: NetworkData; accent: s
       </div>
       <div className="net-core">
         <h4 className="net-h">LEADERSHIP CORE <span>출전 비중 28 · 연결 중심성 24 · 근속 16 · 완장 12 · 경험 10 · 대표팀 10</span></h4>
+        <p className="net-note" style={{ fontSize: 11, color: "var(--muted-2)", marginTop: -4 }} title={INF_NOTE}>
+          오른쪽 숫자 = 영향력 0~100 · 팀 안 상대값(위 비중으로 합산, 100 = 모든 요소 만점)
+        </p>
         {d.leadership.core.map((c, i) => (
           <button key={c.name} className="net-core-row hoverable"
             onClick={(e) => peek(e, { name: c.name, club: d.team, hint: { photo: c.photo, ovr: c.ovr ?? undefined, pos: c.pos } })}>
@@ -136,7 +141,7 @@ export default function NetLeadership({ d, accent }: { d: NetworkData; accent: s
               ))}
             </span>
             <span className="net-why">{c.why.slice(0, 3).map((w) => <i key={w}>{w}</i>)}</span>
-            <span className="net-inf"><b>{c.influence}</b><i style={{ width: `${c.influence}%`, background: accent }} /></span>
+            <span className="net-inf" title={`영향력 ${c.influence} / 100 — ${INF_NOTE}`}><b>{c.influence}</b><i style={{ width: `${c.influence}%`, background: accent }} /></span>
           </button>
         ))}
       </div>

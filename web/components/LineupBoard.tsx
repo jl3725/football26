@@ -1,4 +1,5 @@
 "use client";
+import { tier } from "@/lib/ui";
 import { useEffect, useState } from "react";
 import SectionHead from "./SectionHead";
 import { getLineup, getProjection, type Lineup, type Projection } from "@/lib/api";
@@ -44,7 +45,7 @@ export default function LineupBoard({ team, accent, departed = [] }: { team: str
           onClick={(e) => peek(e, { name: b.player, club: team, hint: { photo: b.photo, ovr: b.ovr, pos: b.pos } })}>
           {b.photo ? <img src={b.photo} alt="" /> : <span className="bench-ph" />}
           <span className="bench-name">{b.player.split(" ").slice(-1)[0]}</span>
-          <span className="bench-ovr" style={{ color: accent }}>{b.ovr}</span>
+          <span className="bench-ovr" style={{ color: tier(b.ovr).light }} title={`OVR ${b.ovr} · ${tier(b.ovr).ko}`}>{b.ovr}</span>
         </div>
       ))}
     </div>

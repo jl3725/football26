@@ -1,8 +1,10 @@
 "use client";
 import { useEffect, useState } from "react";
 import { getIdentity, fmtEur, type Identity } from "@/lib/api";
-import { hexA, tier } from "@/lib/ui";
+import { hexA } from "@/lib/ui";
+import { IDX_NOTE, idxMeaning } from "@/lib/meaning";
 import HBar from "./Bar";
+import { MeaningTag } from "./Meaning";
 
 // 전술 태그 → 한국어. current(팀 벡터 유래) + tendency(descriptor) 두 어휘 모두 커버.
 const TAG_KO: Record<string, string> = {
@@ -34,16 +36,21 @@ function Chip({ text, accent, outline }: { text: string; accent: string; outline
   );
 }
 
-function Bar({ label, value, accent }: { label: string; value: number; accent: string }) {
-  const t = tier(value);
+// 전술 성향 지수(리그 안 상대값 0~99, 50 = 리그 평균) — OVR 색(tier)이 아니라 '평균 대비' 뜻·색으로
+function Bar({ label, value }: { label: string; value: number }) {
+  const mn = idxMeaning(value);
   return (
     <div style={{ marginBottom: 5 }}>
-      <div style={{ display: "flex", justifyContent: "space-between", fontSize: 10.5, opacity: 0.8, marginBottom: 2 }}>
-        <span>{label}</span><span style={{ color: t.light }}>{Math.round(value)}</span>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 6, fontSize: 10.5, marginBottom: 2 }}>
+        <span style={{ opacity: 0.8 }}>{label}</span>
+        <span style={{ display: "inline-flex", alignItems: "center", gap: 5 }}>
+          <MeaningTag sm m={mn} title={IDX_NOTE} />
+          <b style={{ color: mn.c, fontWeight: 700 }}>{Math.round(value)}</b>
+        </span>
       </div>
-      <div style={{ height: 4, borderRadius: 3, background: hexA("#ffffff", 0.08) }}>
-        <span style={{ display: "block", height: "100%", borderRadius: 3, width: `${value}%`,
-          background: `linear-gradient(90deg, ${hexA(accent, 0.5)}, ${accent})` }} />
+      <div style={{ position: "relative", height: 4, borderRadius: 3, background: hexA("#ffffff", 0.08) }}>
+        <span style={{ display: "block", height: "100%", borderRadius: 3, width: `${value}%`, background: mn.bar }} />
+        <i aria-hidden="true" title="50 = 리그 평균" style={{ position: "absolute", left: "50%", top: -2, bottom: -2, width: 1, background: hexA("#ffffff", 0.35) }} />
       </div>
     </div>
   );
@@ -103,8 +110,11 @@ export default function IdentityCard({ team, league, accent }: { team: string; l
                 : <span style={{ fontSize: 10.5, opacity: 0.4 }}>데이터 없음</span>}
             </div>
             {Object.entries(tc.vector).slice(0, 4).map(([k, v]) => (
-              <Bar key={k} label={AXIS_KO[k] || k} value={v} accent={accent} />
+              <Bar key={k} label={AXIS_KO[k] || k} value={v} />
             ))}
+            {Object.keys(tc.vector).length > 0 && (
+              <div style={{ fontSize: 9.5, opacity: 0.55, marginTop: 4 }} title={IDX_NOTE}>리그 안 상대 지수 · 50 = 리그 평균(가운데 눈금)</div>
+            )}
           </Panel>
         )}
 
@@ -145,8 +155,13 @@ export default function IdentityCard({ team, league, accent }: { team: string; l
               background: hexA(accent, 0.18), color: accent }}>{TIER_KO[bg.spend_tier] || bg.spend_tier} tier</span>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px 12px", margin: "12px 0 8px" }}>
               <div><div style={{ fontSize: 15, fontWeight: 700 }}>{fmtEur(bg.squad_value_eur)}</div><div style={{ fontSize: 10, opacity: 0.55 }}>스쿼드 가치</div></div>
-              <div><div style={{ fontSize: 15, fontWeight: 700, color: bg.net_spend_eur > 0 ? "#e0857a" : "#4fc27f" }}>
-                {bg.net_spend_eur > 0 ? "+" : ""}{fmtEur(Math.abs(bg.net_spend_eur))}</div><div style={{ fontSize: 10, opacity: 0.55 }}>순지출</div></div>
+              {/* 순지출(영입 > 판매)·순수익(판매 > 영입) — 부호·빨강만으로는 좋은지 나쁜지 헷갈려 말로 쓴다(색은 중립) */}
+              <div title={`영입 이적료 합 − 판매 이적료 합 = ${bg.net_spend_eur >= 0 ? "" : "−"}${fmtEur(Math.abs(bg.net_spend_eur))}`}>
+                <div style={{ fontSize: 15, fontWeight: 700 }}>{fmtEur(Math.abs(bg.net_spend_eur))}</div>
+                <div style={{ fontSize: 10, opacity: 0.55 }}>
+                  {bg.net_spend_eur > 0 ? "순지출 · 판매보다 더 씀" : bg.net_spend_eur < 0 ? "순수익 · 쓴 것보다 더 팖" : "순지출 0 · 수지 균형"}
+                </div>
+              </div>
               <div><div style={{ fontSize: 15, fontWeight: 700 }}>{fmtEur(bg.max_fee_paid_eur)}</div><div style={{ fontSize: 10, opacity: 0.55 }}>최고 이적료</div></div>
               <div><div style={{ fontSize: 15, fontWeight: 700, color: accent }}>{fmtEur(bg.price_ceiling_eur)}</div><div style={{ fontSize: 10, opacity: 0.55 }}>가격 상한(추정)</div></div>
             </div>

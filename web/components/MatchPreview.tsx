@@ -5,6 +5,8 @@ import { liveLabel, useLive } from "@/lib/live";
 import { colorsClose, compLabel, compTone, ddayLabel, lgKo, liftHex, rankLabel, streak } from "@/lib/match";
 import { MatchPreviewCtx } from "@/lib/matchPreview";
 import { futTier, hexA } from "@/lib/ui";
+import { FORM_NOTE, TONE, formMeaning, ovrMeaning, type Meaning } from "@/lib/meaning";
+import { MeaningTag } from "./Meaning";
 import { Crest, FormBoxes, PredictBar } from "./MatchCard";
 import { usePeek, useOpenTeam } from "./PlayerPeek";
 import { Skel } from "./Skeleton";
@@ -16,6 +18,7 @@ import { ReviewSections } from "./MatchReview";
 
 const UNITS: [string, "overall" | "attack" | "midfield" | "defense"][] = [["OVERALL", "overall"], ["ATTACK", "attack"], ["MIDFIELD", "midfield"], ["DEFENSE", "defense"]];
 const KO_UNIT: Record<string, string> = { ATTACK: "공격", MIDFIELD: "중원", DEFENSE: "수비" };
+const adv = (d: number): Meaning => ({ label: `+${d} 우위`, tone: "good", ...TONE.good });
 
 function keyPoints(m: Fixture, H: Overview | null, A: Overview | null): string[] {
   const out: string[] = [];
@@ -31,12 +34,12 @@ function keyPoints(m: Fixture, H: Overview | null, A: Overview | null): string[]
   if (H && A) {
     const diffs = UNITS.slice(1).map(([k, u]) => [k, H.ovr[u] - A.ovr[u]] as const);
     const [k, d] = diffs.reduce((x, y) => (Math.abs(y[1]) > Math.abs(x[1]) ? y : x));
-    if (Math.abs(d) >= 2) out.push(`${KO_UNIT[k]} 전력 ${d > 0 ? h.team : a.team} 우세 (+${Math.abs(d)})`);
+    if (Math.abs(d) >= 2) out.push(`${KO_UNIT[k]} 전력 ${d > 0 ? h.team : a.team} 우세 (OVR ${Math.abs(d)} 차)`);
     const hEdge = H.ovr.attack - A.ovr.defense, aEdge = A.ovr.attack - H.ovr.defense;
     if (Math.abs(hEdge - aEdge) >= 3) {
       out.push(hEdge > aEdge
-        ? `${h.team} 공격(${H.ovr.attack}) vs ${a.team} 수비(${A.ovr.defense}) 싸움이 열쇠`
-        : `${a.team} 공격(${A.ovr.attack}) vs ${h.team} 수비(${H.ovr.defense}) 싸움이 열쇠`);
+        ? `${h.team} 공격(OVR ${H.ovr.attack}) vs ${a.team} 수비(OVR ${A.ovr.defense}) 싸움이 열쇠`
+        : `${a.team} 공격(OVR ${A.ovr.attack}) vs ${h.team} 수비(OVR ${H.ovr.defense}) 싸움이 열쇠`);
     }
     const starOut = (o: Overview) => o.stars.filter((s) => o.injuries.some((i) => i.player === s.player)).map((s) => s.player);
     const so = [...starOut(H), ...starOut(A)];
@@ -77,7 +80,10 @@ function Drawer({ m, onClose }: { m: Fixture; onClose: () => void }) {
     <div className="pv-side">
       <Crest s={s} size={64} />
       <b>{s.team}</b>
-      <span>{[rankLabel(s, o) || lgKo(s.league), s.ovr ? `OVR ${s.ovr}` : ""].filter(Boolean).join(" · ")}</span>
+      <span>
+        {[rankLabel(s, o) || lgKo(s.league), s.ovr ? `OVR ${s.ovr}` : ""].filter(Boolean).join(" · ")}
+        {s.ovr ? <> <MeaningTag sm m={ovrMeaning(s.ovr)} title={`팀 전력 OVR ${s.ovr} — ${ovrMeaning(s.ovr).label} 수준`} /></> : null}
+      </span>
     </div>
   );
 
@@ -160,10 +166,17 @@ function Drawer({ m, onClose }: { m: Fixture; onClose: () => void }) {
               const av = u === "overall" ? (A?.ovr.overall ?? m.away.ovr) : A?.ovr[u];
               if (hv == null || av == null) return null;
               const share = Math.round((hv ** 4 / (hv ** 4 + av ** 4)) * 100);
+              // 더 강한 쪽 위에 'OVR +N 우위' — 흰 글씨만으로는 차이가 얼마인지 안 읽혔다
+              const edge = (d: number) => d > 0 ? <MeaningTag sm m={adv(d)} title={`팀 OVR ${d} 높음`} /> : <span />;
               return (
                 <div className="pv-cmp" key={k}>
                   <b className={hv > av ? "up" : ""}>{hv}</b>
-                  <div className="pv-cmp-mid"><span>{k}</span>
+                  <div className="pv-cmp-mid">
+                    <span style={{ display: "grid", gridTemplateColumns: "1fr auto 1fr", alignItems: "center", gap: 6 }}>
+                      <span style={{ justifySelf: "start" }}>{edge(hv - av)}</span>
+                      {k}
+                      <span style={{ justifySelf: "end" }}>{edge(av - hv)}</span>
+                    </span>
                     <div className="mc5-bar"><span style={{ flexBasis: `${share}%`, background: hc }} /><span style={{ flexBasis: `${100 - share}%`, background: ac }} /></div>
                   </div>
                   <b className={av > hv ? "up" : ""}>{av}</b>
@@ -190,8 +203,9 @@ function Drawer({ m, onClose }: { m: Fixture; onClose: () => void }) {
                       <button className={`pv-star fut ${futTier(p.ovr)}`} key={p.player}
                         onClick={(e) => peek(e, { name: p.player, club: side.team, league: side.league ?? undefined })}>
                         {p.photo ? <img src={p.photo} alt="" /> : <span className="pv-ph" />}
-                        <span className="pv-star-t"><b>{p.player}</b><em>{p.pos}{p.form ? ` · 폼 ${p.form}` : ""}</em></span>
-                        <span className="pv-star-o">{p.ovr}</span>
+                        <span className="pv-star-t"><b>{p.player}</b>
+                          <em>{p.pos}{p.form ? <> · 폼 {p.form} <MeaningTag sm m={formMeaning(p.form)} title={FORM_NOTE} /></> : null}</em></span>
+                        <span className="pv-star-o" title={`OVR ${p.ovr} · ${ovrMeaning(p.ovr).label}`}>{p.ovr}</span>
                       </button>
                     ))}
                   </div>

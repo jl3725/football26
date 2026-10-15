@@ -2,6 +2,8 @@
 import { useEffect, useState } from "react";
 import { getPlayers, getPlayerDetail, getSimilar, getHeatmaps, fmtEur, type Players, type PlayerDetail, type SimilarResult, type HeatmapData } from "@/lib/api";
 import { tier, hexA, roleClass, futTier } from "@/lib/ui";
+import { pctMeaning, scoreMeaning, ovrBand, signTone } from "@/lib/meaning";
+import { MeaningTag } from "./Meaning";
 import Radar from "./Radar";
 import HeatmapPitch from "./HeatmapPitch";
 import ComparePanel from "./ComparePanel";
@@ -10,12 +12,25 @@ import { Skel, SkelCards } from "./Skeleton";
 import { TrendArrow, TrendLine } from "./Trend";
 import SeasonLog from "./SeasonLog";
 
-function Bar({ label, pct, raw, accent }: { label: string; pct: number; raw: number; accent: string }) {
-  const c = pct >= 80 ? "#5ec98a" : pct >= 60 ? "#6aa6e0" : pct >= 40 ? "#caa64e" : "#d98169";
+// 실제 기록 값 — 라벨에 '%' 가 있으면 비율(0~100), 그 외(/90·xA)는 90분당.
+function fmtRaw(label: string, raw: number): string {
+  if (raw == null || Number.isNaN(raw)) return "";
+  return label.includes("%") ? `${(Math.round(raw * 10) / 10).toFixed(1)}%` : `${raw.toFixed(2)} /90`;
+}
+
+function Bar({ label, pct, raw }: { label: string; pct: number; raw: number }) {
+  const m = pctMeaning(pct);
+  const rv = fmtRaw(label, raw);
   return (
-    <div className="pm">
-      <div className="pm-top"><span>{label}</span><b style={{ color: c }}>{pct}</b></div>
-      <div className="pm-bar"><span style={{ width: `${pct}%`, background: c }} /></div>
+    <div className="pm" title={`${label} ${rv} — 같은 포지션 중 백분위 ${pct} (${m.label})`}>
+      <div className="pm-top" style={{ alignItems: "center", gap: 6 }}>
+        <span style={{ minWidth: 0 }}>{label}{rv && <em style={{ fontStyle: "normal", color: "var(--muted)", fontSize: 11, marginLeft: 5 }}>{rv}</em>}</span>
+        <span style={{ display: "inline-flex", alignItems: "center", gap: 5, flexShrink: 0 }}>
+          <MeaningTag sm m={m} />
+          <b style={{ color: m.c }}>{pct}</b>
+        </span>
+      </div>
+      <div className="pm-bar"><span style={{ width: `${pct}%`, background: m.bar }} /></div>
     </div>
   );
 }
@@ -57,9 +72,11 @@ function Detail({ team, player, accent, heatmap }: { team: string; player: strin
             {" · "}{fmtEur(d.value_eur)}
           </div>
         </div>
-        <div className="pd-ovr" style={{ color: t.light, borderColor: hexA(t.light, 0.5) }}>
+        <div className="pd-ovr" style={{ color: t.light, borderColor: hexA(t.light, 0.5) }}
+          title={`OVR ${d.ovr} · ${t.ko} (${ovrBand(d.ovr).range}) — ${ovrBand(d.ovr).desc}`}>
           <div className="teko" style={{ fontSize: 46, lineHeight: .8 }}>{d.ovr}</div>
           <div style={{ fontSize: 9, letterSpacing: 1, color: "var(--muted)" }}>OVR</div>
+          <div style={{ fontSize: 9.5, fontWeight: 700, marginTop: 3, whiteSpace: "nowrap", fontFamily: "var(--font-ui)", letterSpacing: 0 }}>{t.ko}</div>
         </div>
       </div>
       <TrendLine t={d.trend} ovr={d.ovr} />
@@ -110,7 +127,7 @@ function Detail({ team, player, accent, heatmap }: { team: string; player: strin
             <div>
               <div style={{ fontSize: 10, opacity: 0.5, letterSpacing: 0.3 }}>시장가치 추이</div>
               <div style={{ fontSize: 13.5, fontWeight: 700 }}>{fmtEur(last)}
-                {pct !== 0 && <span style={{ color: pct > 0 ? "#4fc27f" : "#e07070", fontSize: 11, marginLeft: 5 }}>{pct > 0 ? "▲" : "▼"}{Math.abs(pct)}%</span>}</div>
+                {pct !== 0 && <span style={{ color: signTone(pct).c, fontSize: 11, marginLeft: 5 }} title={`첫 기록 대비 ${pct > 0 ? "상승" : "하락"}`}>{pct > 0 ? "▲" : "▼"}{Math.abs(pct)}%</span>}</div>
             </div>
             <svg viewBox={`0 0 ${w} ${h}`} width={w} height={h} style={{ overflow: "visible" }}>
               <polyline points={pts} fill="none" stroke={accent} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -125,17 +142,25 @@ function Detail({ team, player, accent, heatmap }: { team: string; player: strin
       )}
       <div className="pd-body">
         <div className="pd-cats">
-          {d.categories.map((c, i) => (
-            <div className="pd-cat" key={i}>
-              <div className="pd-cat-head">
-                <span>{c.name}</span>
-                <b style={{ color: tier(c.avg).light }}>{c.avg}</b>
+          {d.categories.map((c, i) => {
+            const cm = pctMeaning(c.avg);
+            return (
+              <div className="pd-cat" key={i}>
+                {/* .pd-cat-head span 규칙(라벨 폰트·자간)이 뜻 꼬리표까지 덮지 않게 인라인으로 */}
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8, marginBottom: 7 }}
+                  title={`${c.name} — 세부 지표 백분위 평균 ${c.avg} (${cm.label})`}>
+                  <span style={{ fontFamily: "var(--font-label)", fontSize: 12, letterSpacing: 1, textTransform: "uppercase", color: "var(--muted)" }}>{c.name}</span>
+                  <div style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+                    <MeaningTag sm m={cm} />
+                    <b style={{ color: cm.c, fontFamily: "var(--font-num)", fontSize: 20, lineHeight: 1, fontWeight: 700 }}>{c.avg}</b>
+                  </div>
+                </div>
+                {c.metrics.map((m, j) => <Bar key={j} label={m.label} pct={m.pct} raw={m.raw} />)}
               </div>
-              {c.metrics.map((m, j) => <Bar key={j} label={m.label} pct={m.pct} raw={m.raw} accent={accent} />)}
-            </div>
-          ))}
+            );
+          })}
         </div>
-        <div className="pd-radar"><Radar data={d.radar} color={accent} /></div>
+        <div className="pd-radar"><Radar data={d.radar} color={accent} scale="pct" /></div>
       </div>
       {hm && heatmap && (
         <div className="pd-heatmap" style={{ marginTop: 4 }}>
@@ -145,17 +170,23 @@ function Detail({ team, player, accent, heatmap }: { team: string; player: strin
       )}
       {sim.length > 0 && (
         <div className="pd-similar">
-          <div className="pd-sim-title">스타일 유사 선수</div>
+          <div className="pd-sim-title">스타일 유사 선수 <span style={{ opacity: 0.6, fontWeight: 400, fontSize: 11, letterSpacing: 0 }}>· % = 유사도(스타일 + 기록, 100 = 판박이)</span></div>
           <div className="pd-sim-list">
-            {sim.map((s, i) => (
-              <div className="pd-sim-row peekable" key={i}
-                onClick={(e) => peek(e, { name: s.player, club: s.squad, hint: { pos: s.pos, age: s.age, value_eur: s.value_eur, logo: s.logo } })}>
-                {s.logo ? <img src={s.logo} alt="" /> : <span className="pd-sim-logo" />}
-                <span className="pd-sim-name">{s.player}</span>
-                <span className="pd-sim-squad">{s.squad}</span>
-                <span className="pd-sim-score" style={{ color: accent }}>{s.score}%</span>
-              </div>
-            ))}
+            {sim.map((s, i) => {
+              const sm = scoreMeaning(s.score);
+              return (
+                <div className="pd-sim-row peekable" key={i}
+                  onClick={(e) => peek(e, { name: s.player, club: s.squad, hint: { pos: s.pos, age: s.age, value_eur: s.value_eur, logo: s.logo } })}>
+                  {s.logo ? <img src={s.logo} alt="" /> : <span className="pd-sim-logo" />}
+                  <span className="pd-sim-name">{s.player}</span>
+                  <span className="pd-sim-squad">{s.squad}</span>
+                  <span className="pd-sim-score" style={{ color: sm.c, whiteSpace: "nowrap", flexShrink: 0 }}
+                    title={`스타일 유사도 ${s.score}% (${sm.label}) — 플레이 스타일 ${s.style} · 기록 ${s.perf}`}>
+                    <span style={{ fontSize: 10, opacity: 0.7, fontWeight: 500, marginRight: 4 }}>유사도</span>{s.score}%
+                  </span>
+                </div>
+              );
+            })}
           </div>
         </div>
       )}
@@ -219,11 +250,11 @@ export default function PlayerTab({ team, accent, initialPlayer }: { team: strin
                 onClick={() => onCard(p.player)}
                 style={{ position: "relative", ...(isA ? { borderColor: accent } : isB ? { borderColor: CB } : {}) }}>
                 {cmpMode && (isA || isB) && <span style={{ position: "absolute", top: 4, left: 5, fontSize: 10, fontWeight: 800, color: isA ? accent : CB }}>{isA ? "A" : "B"}</span>}
-                <span className="pl-ovr" style={{ color: t.light }}>{p.ovr}<TrendArrow t={p.trend} ovr={p.ovr} /></span>
+                <span className="pl-ovr" style={{ color: t.light }} title={`OVR ${p.ovr} · ${t.ko}`}>{p.ovr}<TrendArrow t={p.trend} ovr={p.ovr} /></span>
                 {p.big_match && <span className="pl-bm" title="UCL/UEL 급 무대 검증">⚡</span>}
                 {p.photo ? <img className="pl-photo" src={p.photo} alt="" /> : <span className="pl-photo ph" />}
                 <div className="pl-name">{p.player}</div>
-                <div className="pl-pos">{p.pos} · {p.age}</div>
+                <div className="pl-pos">{p.pos} · {p.age} · <span style={{ color: t.light, fontWeight: 600 }}>{t.ko}</span></div>
                 {p.role && <span className={"pl-role role-tag sm " + roleClass(p.role)}>{p.role}</span>}
               </button>
             );

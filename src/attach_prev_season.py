@@ -128,6 +128,37 @@ def attach(cur: pd.DataFrame, prev: pd.DataFrame) -> tuple[pd.DataFrame, dict]:
     return out, stats
 
 
+# 2시즌 전 이상 기록 — 시즌이 쌓이면 자동으로 들어온다(지금은 25/26 이전 선수 데이터가 없어 비어 있음).
+# 시즌 하나 멀어질 때마다 가중 ×0.5, '유효 출전'(hist_minutes)에 가중을 이미 곱해 둔다(ratings_v3._class_parts).
+HIST_COLS = ["hist_minutes", "hist_ss_rating", "hist_league"]
+HIST_BACK, HIST_DECAY = 3, 0.5
+
+
+def attach_hist(cur: pd.DataFrame, season_start: int, back: int = HIST_BACK, loader=None) -> pd.DataFrame:
+    """hist_minutes(가중 유효 출전) · hist_ss_rating(가중 평균 평점) · hist_league(출전 가장 많던 시즌의 리그)."""
+    loader = loader or load_prev
+    out = cur.drop(columns=[c for c in HIST_COLS if c in cur.columns]).copy()
+    n = len(out)
+    acc_w, acc_r, best = [0.0] * n, [0.0] * n, [(0.0, None)] * n
+    for k in range(2, back + 1):
+        p = loader(season_start - k + 1)            # load_prev(s) = (s-1)_(s) 시즌 → k 시즌 전
+        if p is None or p.empty:
+            continue
+        a, _ = attach(out, p)
+        w = HIST_DECAY ** (k - 1)
+        for i, (mn, ss, lg) in enumerate(zip(a["prev_minutes"], a["prev_ss_rating"], a["prev_league"])):
+            if pd.isna(mn) or pd.isna(ss) or float(ss) <= 0 or float(mn) <= 0:
+                continue
+            acc_w[i] += w * float(mn)
+            acc_r[i] += w * float(mn) * float(ss)
+            if float(mn) > best[i][0]:
+                best[i] = (float(mn), lg)
+    out["hist_minutes"] = [round(x) if x > 0 else pd.NA for x in acc_w]
+    out["hist_ss_rating"] = [round(r / x, 3) if x > 0 else pd.NA for r, x in zip(acc_r, acc_w)]
+    out["hist_league"] = [b[1] if b[1] is not None else pd.NA for b in best]
+    return out
+
+
 def main() -> int:
     path = data_path("players_full")
     if not path.exists():
@@ -136,10 +167,12 @@ def main() -> int:
     cur = pd.read_csv(path)
     prev = load_prev(SEASON_START)
     out, stats = attach(cur, prev)
+    out = attach_hist(out, SEASON_START)
     out.to_csv(path, index=False, encoding="utf-8")
     hit = len(out) - stats["none"]
     print(f"[prev] {ACTIVE_LEAGUE} {SEASON_START}: {hit}/{len(out)} 매칭 "
-          f"(tm_id {stats['tm_id']} · 이름+팀 {stats['name+squad']} · 이름 {stats['name']} · 표기변형 {stats['name~squad']}) -> {path.name}")
+          f"(tm_id {stats['tm_id']} · 이름+팀 {stats['name+squad']} · 이름 {stats['name']} · 표기변형 {stats['name~squad']}) · "
+          f"2시즌+ 전 기록 {int(out['hist_minutes'].notna().sum())}명 -> {path.name}")
     return 0
 
 

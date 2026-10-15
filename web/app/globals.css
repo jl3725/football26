@@ -3856,3 +3856,37 @@ LIGA’처럼 글자가 접히던 것) — 넘치면 가로로 넘긴다 */
 @media (max-width: 560px) { .agep-kpi { grid-template-columns: 1fr; gap: 10px; } }
 .loan-more { margin-top: 10px; border: 1px solid var(--line); background: var(--overlay); color: var(--muted); border-radius: 8px; padding: 6px 12px; font-size: 12px; cursor: pointer; }
 .loan-more:hover { color: var(--txt); }
+
+/* MEANING(v6.8) — 숫자 옆 '뜻' 꼬리표·색 범례(lib/meaning · components/Meaning). 색은 TONE 다섯 단계만 */
+.mn-tag { display: inline-flex; align-items: center; padding: 2px 7px; border-radius: 999px; font: 700 10.5px/1.3 var(--font-ui);
+  white-space: nowrap; letter-spacing: 0; vertical-align: middle; }
+.mn-tag.sm { font-size: 9.5px; padding: 1px 6px; }
+.mn-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 11px; font-size: 10.5px; color: var(--muted-2); margin-top: 8px; line-height: 1.4; }
+.mn-legend b { color: var(--muted); font-weight: 700; margin-right: 2px; }
+.mn-legend span { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
+.mn-legend i { width: 8px; height: 8px; border-radius: 2px; display: inline-block; }
+
+/* SQUAD STRENGTH v6.8 — 등급 단어·리그 순위·시즌별 기록 칸 */
+.unit-top b .unit-ko { font-style: normal; font-weight: 500; font-size: 10.5px; color: var(--muted-2); margin-left: 6px; letter-spacing: 0; }
+.unit-top > span { display: inline-flex; align-items: center; gap: 6px; }
+.unit-rank { font: 700 11px/1 var(--font-ui); font-style: normal; }
+.unit-rec { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; margin-top: 6px; }
+.unit-rec .lbl { font-size: 10.5px; color: var(--muted-2); margin-right: 2px; }
+.unit-rec .chip { display: inline-flex; align-items: baseline; gap: 4px; padding: 2px 7px; border-radius: 6px; font: 700 11px/1.3 var(--font-num); }
+.unit-rec .chip i { font-style: normal; font-weight: 500; font-size: 9.5px; opacity: .8; font-family: var(--font-ui); }
+.unit-rec .chip em { font-style: normal; font-weight: 600; font-size: 9.5px; opacity: .85; font-family: var(--font-ui); }
+.unit-rec .chip.cur { box-shadow: inset 0 0 0 1px currentColor; }
+.unit-rec .unit-perf { margin-left: 4px; }
+.ovr-rank { font-style: normal; opacity: .85; }
+
+/* SEASON PROFILE v6.8 — 값 기준 색(lib/meaning idxMeaning) + 단어 꼬리표 */
+.sp5-row .sp5-v { display: flex; align-items: center; justify-content: flex-end; gap: 6px; flex-wrap: nowrap; }
+.sp5-row .sp5-v em { color: var(--muted) !important; }
+.sp5-row { grid-template-columns: minmax(0, 1fr) minmax(80px, 1fr) 178px; }
+@media (max-width: 640px) { .sp5-row { grid-template-columns: minmax(0, 1fr) 160px; } .sp5-row .sp5-bar { grid-column: 1 / -1; } }
+
+/* CONTEXT 승점 페이스 · LEAGUE PERCENTILE 단어 */
+.ctx-item { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.lp5-v { display: flex; align-items: center; justify-content: flex-end; gap: 6px; }
+.lp5-row { grid-template-columns: minmax(0, 1fr) minmax(80px, 1fr) 170px; }
+@media (max-width: 640px) { .lp5-row { grid-template-columns: minmax(0, 1fr) 150px; } .lp5-row .lp5-bar { grid-column: 1 / -1; } }

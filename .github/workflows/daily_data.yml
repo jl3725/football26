@@ -88,6 +88,11 @@ jobs:
       - name: Manager careers (감독 커리어)
         run: bash scripts/ci_try.sh "manager_careers" python src/fetch_manager_careers.py
 
+      # 과거 시즌 최종 순위(ESPN) — 팀 실적(득점·실점)을 여러 시즌 반영(src/season_history.py). 시즌이 넘어가면
+      # 새로 '과거'가 된 시즌 중 우리 파일이 없는 것만 받는다(이미 받은 시즌은 건너뜀)
+      - name: Standings history (과거 시즌 순위)
+        run: bash scripts/ci_try.sh "standings_history" python src/fetch_standings_history.py
+
       - name: UEFA 계수 (협회·클럽, 리그강도 근거화)
         run: bash scripts/ci_try.sh "uefa_coefficients" python src/fetch_uefa_coefficients.py
 

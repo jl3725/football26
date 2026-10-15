@@ -2,6 +2,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { getDiscover, fmtEur, type Discover, type DiscoverPick } from "@/lib/api";
 import { hexA, tier } from "@/lib/ui";
+import { scoreMeaning, ssMeaning, SS_NOTE } from "@/lib/meaning";
+import { MeaningTag } from "./Meaning";
 import { usePeek } from "./PlayerPeek";
 import { SkelCards } from "./Skeleton";
 import EmptyState from "./EmptyState";
@@ -30,8 +32,13 @@ function Kpi({ label, value, sub, accent }: { label: string; value: string; sub?
 
 function Card({ p, accent }: { p: DiscoverPick; accent: string }) {
   const t = tier(p.ovr);
+  const sf = scoreMeaning(p.style_fit);
   const rising = (p.age ?? 30) <= 21;
   const peek = usePeek();
+  // ovr = 우리 리그 기준 예상 OVR(다른 리그 선수는 리그 수준 차이 보정) · current_ovr = 지금 뛰는 리그 기준
+  const ovrTitle = p.cross_league
+    ? `현재 OVR ${p.current_ovr} (${p.source_league} 기준) → 우리 리그 기준 예상 ${p.ovr} · ${t.ko}`
+    : `OVR ${p.ovr} · ${t.ko}`;
   return (
     <div className="card hoverable" style={{ padding: 13, cursor: "pointer" }}
       onClick={(e) => peek(e, { name: p.player, club: p.squad, league: p.source_league, hint: { photo: p.photo, ovr: p.current_ovr ?? p.ovr, pos: p.pos, age: p.age ?? undefined, value_eur: p.value_eur ?? undefined } })}>
@@ -47,25 +54,33 @@ function Card({ p, accent }: { p: DiscoverPick; accent: string }) {
           <div style={{ fontSize: 10.5, opacity: 0.6, marginTop: 1 }}>{p.squad} · {p.source_league}</div>
           <span style={{ fontSize: 9.5, padding: "1px 6px", borderRadius: 6, background: hexA(accent, 0.14), color: accent, marginTop: 4, display: "inline-block" }}>{p.pos}</span>
         </div>
-        <div style={{ textAlign: "right" }}>
+        <div style={{ textAlign: "right", flexShrink: 0 }} title={ovrTitle}>
           <div style={{ fontSize: 22, fontWeight: 800, lineHeight: 1, color: t.light }}>{p.ovr}</div>
-          <div style={{ fontSize: 9, opacity: 0.5 }}>{p.cross_league ? `↗ ${p.current_ovr}` : "OVR"}</div>
+          <div style={{ fontSize: 9, opacity: 0.6, marginTop: 2 }}>{p.cross_league ? "우리 리그 예상 OVR" : "OVR"}</div>
+          <div style={{ fontSize: 9.5, fontWeight: 700, color: t.light }}>{t.ko}</div>
+          {p.cross_league && <div style={{ fontSize: 9, opacity: 0.5 }}>현재 {p.current_ovr}</div>}
         </div>
       </div>
       {/* 스탯 */}
-      <div style={{ display: "flex", gap: 14, marginTop: 10, fontSize: 11 }}>
+      <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "4px 14px", marginTop: 10, fontSize: 11 }}>
         <span><b>{p.goals ?? 0}</b><span style={{ opacity: 0.5 }}> G</span></span>
         <span><b>{p.assists ?? 0}</b><span style={{ opacity: 0.5 }}> A</span></span>
-        <span><b>{p.rating ?? "-"}</b><span style={{ opacity: 0.5 }}> 평점</span></span>
+        <span style={{ display: "inline-flex", alignItems: "center", gap: 4 }} title={SS_NOTE}>
+          <b style={p.rating ? { color: ssMeaning(p.rating).c } : undefined}>{p.rating || "-"}</b><span style={{ opacity: 0.5 }}>평점</span>
+          {p.rating ? <MeaningTag sm m={ssMeaning(p.rating)} /> : null}
+        </span>
         <span style={{ marginLeft: "auto", opacity: 0.7 }}>{p.age ?? "?"}세 · {fmtEur(p.value_eur || 0)}</span>
       </div>
       {/* 유사도 바 */}
-      <div style={{ marginTop: 8 }}>
-        <div style={{ display: "flex", justifyContent: "space-between", fontSize: 9.5, opacity: 0.6, marginBottom: 2 }}>
-          <span>스타일 유사도</span><span style={{ color: accent }}>{p.style_fit}</span>
+      <div style={{ marginTop: 8 }} title={`우리 팀이 이 자리에 쓰는 플레이 스타일과의 유사도 ${p.style_fit} / 100 (${sf.label})`}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: 9.5, marginBottom: 2 }}>
+          <span style={{ opacity: 0.6 }}>스타일 유사도</span>
+          <span style={{ display: "inline-flex", alignItems: "center", gap: 5 }}>
+            <MeaningTag sm m={sf} /><b style={{ color: sf.c }}>{p.style_fit}</b>
+          </span>
         </div>
         <div style={{ height: 4, borderRadius: 3, background: hexA("#fff", 0.08) }}>
-          <span style={{ display: "block", height: "100%", borderRadius: 3, width: `${p.style_fit}%`, background: accent }} />
+          <span style={{ display: "block", height: "100%", borderRadius: 3, width: `${p.style_fit}%`, background: sf.bar }} />
         </div>
       </div>
       <div style={{ display: "flex", gap: 5, marginTop: 8, flexWrap: "wrap" }}>

@@ -15,6 +15,8 @@ import { usePins } from "@/lib/pins";
 import { lgEn } from "@/lib/match";
 import { seasonLongLabel, seasonStatusText } from "@/lib/season";
 import SeasonOpener from "./SeasonOpener";
+import { MeaningTag } from "./Meaning";
+import { SS_NOTE, ovrMeaning, ssMeaning } from "@/lib/meaning";
 
 // 전 리그 홈(디자인 v5) — '오늘 무엇을 봐야 하나' 순서로:
 //   이번 주 최대 빅매치(크게) + 요약 숫자 → 빅매치 3 → 무엇이 바뀌었나 · 리그 순위 → 빅딜 · 주의 보드 → 이적 소식 · 감독 교체.
@@ -23,7 +25,7 @@ import SeasonOpener from "./SeasonOpener";
 type Pick = (team: string, league?: string) => void;
 type Row = {
   key: string; player: string; club: string; club_logo: string; league: string; photo: string;
-  sub: string; why: string; ovr?: number; trend?: Trend; right?: ReactNode;
+  sub: string; why: ReactNode; ovr?: number; trend?: Trend; right?: ReactNode;
 };
 
 const TODAY_EN = () => {
@@ -44,10 +46,24 @@ function PlayerRow({ r, rank, onPick }: { r: Row; rank?: number; onPick: Pick })
         <span>{r.club_logo && <img src={r.club_logo} alt="" />}{r.sub}</span>
       </button>
       <span className="pr5-why">{r.why}</span>
-      {r.right ?? (r.ovr != null && <span className="pr5-ovr">{r.ovr}{r.trend && <TrendArrow t={r.trend} ovr={r.ovr} />}</span>)}
+      {r.right ?? (r.ovr != null && <OvrCell ovr={r.ovr} trend={r.trend} />)}
     </div>
   );
 }
+
+// OVR 숫자 + 등급 단어(OVR GUIDE 와 같은 띠·색) — 숫자만으로는 82 가 어느 정도인지 안 읽혔다
+function OvrCell({ ovr, trend }: { ovr: number; trend?: Trend }) {
+  const mn = ovrMeaning(ovr);
+  return (
+    <span style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 3, flexShrink: 0 }} title={`OVR ${ovr} · ${mn.label}`}>
+      <span className="pr5-ovr" style={{ color: mn.c }}>{ovr}{trend && <TrendArrow t={trend} ovr={ovr} />}</span>
+      <span style={{ font: "600 9.5px/1 var(--font-ui)", color: mn.c, whiteSpace: "nowrap" }}>{mn.label}</span>
+    </span>
+  );
+}
+
+// 평점 + 뜻(Sofascore 평균 6.8~6.9 기준)
+const rt = (r: number) => <>평점 {r.toFixed(2)} <MeaningTag sm m={ssMeaning(r)} title={SS_NOTE} /></>;
 
 function Tabs<T extends string>({ items, cur, onChange }: { items: { k: T; label: string; n?: number }[]; cur: T; onChange: (k: T) => void }) {
   return (
@@ -120,15 +136,15 @@ export default function AllDashboard({ onPick, switcher }: { accent?: string; on
   const basisTxt = d.movers_basis === "2w" ? "2주 전" : "지난 시즌";
   const moverRow = (p: HubMover): Row => ({
     key: p.player + p.club, player: p.player, club: p.club, club_logo: p.club_logo, league: p.league, photo: p.photo,
-    sub: sub(p.club, p.pos), why: `${basisTxt} ${p.ovr_prev} → ${p.ovr}${p.rating ? ` · 평점 ${p.rating.toFixed(2)}` : ""}`,
+    sub: sub(p.club, p.pos), why: <>{`${basisTxt} ${p.ovr_prev} → ${p.ovr}`}{p.rating ? <> · {rt(p.rating)}</> : null}</>,
     ovr: p.ovr, trend: p.basis === "2w" ? { ovr_d: p.delta, form_d: null, ovr_prev: null } : { ovr_d: null, form_d: null, ovr_prev: p.ovr_prev },
   });
   const MV: { k: string; label: string; rows: Row[] }[] = [
     { k: "up", label: "RISERS", rows: (d.movers_up ?? []).map(moverRow) },
     { k: "down", label: "FALLERS", rows: (d.movers_down ?? []).map(moverRow) },
-    { k: "form", label: "HOT FORM", rows: d.hot_form.map((p) => ({ key: p.player + p.club, player: p.player, club: p.club, club_logo: p.club_logo, league: p.league, photo: p.photo, sub: sub(p.club, p.pos), why: `평균 평점 ${p.rating.toFixed(2)}`, ovr: p.ovr })) },
-    { k: "prospect", label: "PROSPECTS", rows: d.prospects.map((p) => ({ key: p.player + p.club, player: p.player, club: p.club, club_logo: p.club_logo, league: p.league, photo: p.photo, sub: sub(p.club, p.pos), why: `${p.age}세 · 평점 ${p.rating.toFixed(2)}`, ovr: p.ovr })) },
-    { k: "value", label: "VALUE PICKS", rows: d.value_picks.map((p) => ({ key: p.player + p.club, player: p.player, club: p.club, club_logo: p.club_logo, league: p.league, photo: p.photo, sub: sub(p.club, p.pos), why: `시장가치 ${fmtEur(p.value_eur)} · 평점 ${p.rating.toFixed(2)}`, ovr: p.ovr })) },
+    { k: "form", label: "HOT FORM", rows: d.hot_form.map((p) => ({ key: p.player + p.club, player: p.player, club: p.club, club_logo: p.club_logo, league: p.league, photo: p.photo, sub: sub(p.club, p.pos), why: <>평균 {rt(p.rating)}</>, ovr: p.ovr })) },
+    { k: "prospect", label: "PROSPECTS", rows: d.prospects.map((p) => ({ key: p.player + p.club, player: p.player, club: p.club, club_logo: p.club_logo, league: p.league, photo: p.photo, sub: sub(p.club, p.pos), why: <>{p.age}세 · {rt(p.rating)}</>, ovr: p.ovr })) },
+    { k: "value", label: "VALUE PICKS", rows: d.value_picks.map((p) => ({ key: p.player + p.club, player: p.player, club: p.club, club_logo: p.club_logo, league: p.league, photo: p.photo, sub: sub(p.club, p.pos), why: <>시장가치 {fmtEur(p.value_eur)} · {rt(p.rating)}</>, ovr: p.ovr })) },
     { k: "riser", label: "MARKET ▲", rows: d.risers.map((p) => ({ key: p.player + p.club, player: p.player, club: p.club, club_logo: p.club_logo, league: p.league, photo: p.photo, sub: sub(p.club), why: `${fmtEur(p.value_eur)}`, right: <span className="td up">▲{p.pct}%</span> })) },
   ].filter((t) => t.rows.length > 0);
   const curMv = MV.find((t) => t.k === mv) ?? MV[0];
@@ -241,7 +257,7 @@ export default function AllDashboard({ onPick, switcher }: { accent?: string; on
 
       <div className="h5-row">
         <section className="card h5-card">
-          <SectionHead title="INJURY IMPACT" kr="부상 타격" meta="부상자 때문에 줄어든 베스트 XI 평균 전력" />
+          <SectionHead title="INJURY IMPACT" kr="부상 타격" meta="부상자 때문에 줄어든 베스트 XI 평균 전력(팀 OVR)" />
           <InjuryImpact rows={d.injury_impact ?? []} onPick={onPick} />
         </section>
         <section className="card h5-card h5-side">

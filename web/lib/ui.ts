@@ -1,17 +1,18 @@
 // 공용 UI 헬퍼 — OVR 티어 색·색 유틸.
+import { ovrBand } from "./meaning";
 
-export type Tier = { light: string; deep: string; name: string };
+export type Tier = { light: string; deep: string; name: string; ko: string };
 
+// OVR 전용 색·등급 — OVR GUIDE(lib/meaning OVR_BANDS)와 같은 경계. 예전엔 85 가 여기선 ELITE(금색),
+// 기준표에선 TOP STARTER 였다. '50 = 평균' 지수·점수에는 쓰지 말고 lib/meaning 의 idxMeaning·scoreMeaning 을 쓴다.
 export function tier(v: number): Tier {
-  if (v >= 85) return { light: "#f9dd7e", deep: "#c2902a", name: "ELITE" };
-  if (v >= 80) return { light: "#7fe3b0", deep: "#1f8a4c", name: "STRONG" };
-  if (v >= 75) return { light: "#7fb4f0", deep: "#2b62b0", name: "SOLID" };
-  return { light: "#aeb7c7", deep: "#5b6576", name: "DEVELOPING" };
+  const b = ovrBand(v);
+  return { light: b.c, deep: b.deep, name: b.en, ko: b.ko };
 }
 
-// 선수 카드 등급(FUT 카드 느낌) — 엘리트 89+ · 골드 84+ · 실버 76+ · 브론즈
+// 선수 카드 등급(FUT 카드 느낌) — OVR 띠와 맞춤: 월드클래스 90+ · 엘리트 86+ · 주전급 77+ · 그 외
 export function futTier(ovr: number): "elite" | "gold" | "silver" | "bronze" {
-  return ovr >= 89 ? "elite" : ovr >= 84 ? "gold" : ovr >= 76 ? "silver" : "bronze";
+  return ovr >= 90 ? "elite" : ovr >= 86 ? "gold" : ovr >= 77 ? "silver" : "bronze";
 }
 
 export function hexA(hex: string, a: number): string {

@@ -2,6 +2,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { getBuilder, type BuilderPlayer } from "@/lib/api";
 import { tier } from "@/lib/ui";
+import { ovrMeaning, scoreMeaning } from "@/lib/meaning";
+import { MeaningTag } from "./Meaning";
 import { usePeek } from "./PlayerPeek";
 
 // Best XI 빌더 — 포메이션 칸마다 역할(GK·LB·CB·RB·DM·CM·AM·LW·RW·ST)이 있고, '선수 OVR × 그 역할 적합도'의 합이
@@ -118,7 +120,14 @@ export default function SquadBuilder({ team, accent }: { team: string; accent: s
           ))}
         </div>
         <label className="sb5-tg"><input type="checkbox" checked={availOnly} onChange={(e) => { setAvailOnly(e.target.checked); setOverrides({}); }} />부상 선수 제외</label>
-        <div className="sb5-ovr"><em>XI OVR</em><b style={{ color: tier(teamOvr).light }}>{teamOvr}</b><span>포지션 적합도 {fitAvg}%</span></div>
+        <div className="sb5-ovr" style={{ flexWrap: "wrap", rowGap: 4 }}>
+          <em>XI OVR</em>
+          <b style={{ color: tier(teamOvr).light }} title={`베스트 XI 평균 OVR(자리 적합도 반영) ${teamOvr} · ${ovrMeaning(teamOvr).label}`}>{teamOvr}</b>
+          <MeaningTag sm m={ovrMeaning(teamOvr)} title="OVR 등급(OVR GUIDE 와 같은 띠)" />
+          <span title="선수들이 본래 자리에 얼마나 맞게 섰는지 — 주 포지션 100% · 멀티 95% · 비슷한 자리 85% · 같은 라인 75%">
+            포지션 적합도 <b style={{ font: "inherit", fontWeight: 700, color: scoreMeaning(fitAvg).c }}>{fitAvg}%</b>
+          </span>
+        </div>
         {Object.keys(overrides).length > 0 && <button className="sb5-reset" onClick={() => { setOverrides({}); setPick(null); }}>자동 배치로</button>}
       </div>
       <div className="sb5-grid">
