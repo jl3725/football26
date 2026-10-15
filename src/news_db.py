@@ -6,6 +6,7 @@
 """
 from __future__ import annotations
 
+import re
 import sqlite3
 from datetime import date
 from pathlib import Path
@@ -13,10 +14,14 @@ from pathlib import Path
 DB_PATH = Path(__file__).resolve().parent.parent / "data" / "news.db"
 
 
+_HANGUL = re.compile(r"[가-힣]")
+
+
 def _conn() -> sqlite3.Connection:
     DB_PATH.parent.mkdir(parents=True, exist_ok=True)
     c = sqlite3.connect(DB_PATH)
     c.row_factory = sqlite3.Row
+    c.create_function("HAS_KO", 1, lambda t: 1 if t and _HANGUL.search(str(t)) else 0, deterministic=True)
     return c
 
 
@@ -41,7 +46,9 @@ def init_db() -> None:
         c.execute("CREATE INDEX IF NOT EXISTS idx_team_pub ON articles(team, published)")
 
 
-_UNTRANSLATED = "(headline_ko IS NULL OR headline_ko='' OR headline_ko=headline)"
+# 한글이 한 글자도 없는 번역문(철자만 바뀐 원문 등 — 2026-10-14 Marca)도 미번역으로 본다. HAS_KO 는 _conn() 이 등록
+_UNTRANSLATED = ("(headline_ko IS NULL OR headline_ko='' OR headline_ko=headline OR NOT HAS_KO(headline_ko)"
+                 " OR (descr IS NOT NULL AND descr<>'' AND NOT HAS_KO(descr_ko)))")
 
 
 def upsert_articles(articles: list[dict], team: str) -> int:

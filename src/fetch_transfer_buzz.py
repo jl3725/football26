@@ -72,13 +72,16 @@ def _classify(title: str) -> str:
     return "agreed" if _AGREED.search(title) else "rumor"
 
 
+_HANGUL = re.compile(r"[가-힣]")   # 한글 없는 '번역'(원문 그대로 등)은 다시 번역
+
+
 def _known_ko(path: Path) -> dict[str, str]:
     """기존 파일에서 이미 번역된 제목(title_en → title_ko). 같은 제목은 다시 번역하지 않는다."""
     if not path.exists():
         return {}
     with path.open(encoding="utf-8") as fh:
         return {r["title_en"]: r["title_ko"] for r in csv.DictReader(fh)
-                if r.get("title_ko") and r["title_ko"] != r.get("title_en")}
+                if r.get("title_ko") and r["title_ko"] != r.get("title_en") and _HANGUL.search(r["title_ko"])}
 
 
 # 종합 스포츠 피드(Record 등)의 축구 외 기사 — 기사 주소의 섹션 경로로 거른다(F1·하키·사진첩이 '이적 소식'에 섞였음)

@@ -4,8 +4,12 @@
 공급자 순서(TRANSLATE_PROVIDER=auto, 기본)
   1. Gemini 무료 등급 — GEMINI_API_KEY 가 있을 때. 50건씩 JSON 으로 묶어 1회 요청.
      모델마다 무료 한도가 따로라, 일 한도 소진(429)·미지원(404)이면 다음 모델로 넘어간다.
-  2. 구글 무료 번역(translate.googleapis.com gtx) — 여러 줄을 한 요청(~3,500자)에 묶는다.
-     429 를 받으면 10분간 쓰지 않는다.
+  2. 구글 무료 번역 clients5(dict-chrome-ex) — 문장마다 q 로 따로 보내 언어를 문장별로 감지한다.
+     (2026-10-15: gtx 가 429 로 막혀 있을 때도 열려 있었고, 섞인 언어 묶음도 정확)
+  3. 구글 무료 번역(translate.googleapis.com gtx) — 여러 줄을 한 요청(~3,500자)에 묶는다.
+     429 를 받으면 10분간 쓰지 않는다. 언어가 섞인 묶음은 한 언어로 감지돼 일부 줄이 번역되지 않는다.
+  4. MyMemory 무료 — 하루 5,000자 남짓, 위가 모두 실패한 소수 항목만 한 줄씩.
+  모든 결과는 검증한다: 한글이 한 글자도 없으면(철자만 바뀐 원문 등) 실패로 보고 다음 공급자로 넘긴다.
   OpenAI 는 유료라 기본 경로에 없다. TRANSLATE_PROVIDER=openai 로 명시했을 때만 쓴다.
   그 밖의 값: gemini · google(해당 공급자만), none(번역 안 함).
 
@@ -133,7 +137,88 @@ def _gemini_batch(texts: list[str]) -> list[str | None] | None:
     return None
 
 
-# ── 2. 구글 무료 번역(gtx) ──────────────────────────────────────────────────────
+_HANGUL = re.compile(r"[가-힣]")
+_LATIN_WORD = re.compile(r"[A-Za-zÀ-ÿ]{3,}")
+
+
+def _valid(src: str, out: str | None) -> bool:
+    """번역 결과로 인정할지 — 한글이 있어야 한다. 원문에 라틴 단어가 없으면(숫자·기호뿐) 그대로도 인정.
+    2026-10-14 Marca 기사들이 'reclutar→relutar' 처럼 철자만 바뀐 원문으로 '번역 성공' 저장됐다."""
+    if not out or not out.strip():
+        return False
+    return bool(_HANGUL.search(out)) or not _LATIN_WORD.search(src)
+
+
+def has_korean(text: str | None) -> bool:
+    return bool(text and _HANGUL.search(text))
+
+
+# ── 2. 구글 무료 번역 clients5(dict-chrome-ex) — 문장별 언어 감지 ─────────────────────
+_GT = "https://clients5.google.com/translate_a/t"
+GT_ITEMS, GT_CHARS = 40, 4500
+_gt_dead_until = 0.0
+
+
+def _gt_batch(texts: list[str]) -> list[str | None]:
+    global _gt_dead_until
+    out: list[str | None] = [None] * len(texts)
+    groups, cur, size = [], [], 0
+    for i, t in enumerate(texts):
+        if cur and (len(cur) >= GT_ITEMS or size + len(t) > GT_CHARS):
+            groups.append(cur)
+            cur, size = [], 0
+        cur.append(i)
+        size += len(t)
+    if cur:
+        groups.append(cur)
+    for g in groups:
+        if time.monotonic() < _gt_dead_until:
+            break
+        try:
+            r = requests.post(_GT, params={"client": "dict-chrome-ex", "sl": "auto", "tl": "ko"},
+                              data=[("q", texts[i]) for i in g], headers=_UA, timeout=30)
+            if r.status_code == 429 or r.status_code >= 500:
+                raise RuntimeError(f"HTTP {r.status_code}")
+            r.raise_for_status()
+            js = r.json()
+            # 응답은 보통 [["번역", "언어"], …] — 형식이 한 겹(["번역", "언어"])이어도 같은 모양으로 맞춘다
+            items = [js] if js and isinstance(js[0], str) else js
+            for i, it in zip(g, items):
+                t = it
+                while isinstance(t, list):          # [["번역","en"]] 처럼 겹쳐 와도 문자열까지 내려간다
+                    t = t[0] if t else None
+                out[i] = str(t).strip() if t else None
+            time.sleep(0.6)
+        except Exception as e:  # noqa: BLE001
+            print(f"  [translate] Google(clients5) 실패 — 10분간 중단: {type(e).__name__}: {str(e)[:80]}")
+            _gt_dead_until = time.monotonic() + 600
+            break
+    return out
+
+
+# ── 4. MyMemory 무료(소수 항목 예비) ──────────────────────────────────────────────
+_MM = "https://api.mymemory.translated.net/get"
+MM_MAX_ITEMS = 25
+
+
+def _mymemory(texts: list[str]) -> list[str | None]:
+    out: list[str | None] = [None] * len(texts)
+    for i, t in enumerate(texts[:MM_MAX_ITEMS]):
+        try:
+            r = requests.get(_MM, params={"q": t[:480], "langpair": "Autodetect|ko"}, headers=_UA, timeout=20)
+            js = r.json()
+            if js.get("quotaFinished"):
+                print("  [translate] MyMemory 일일 한도 소진")
+                break
+            out[i] = (js.get("responseData") or {}).get("translatedText")
+            time.sleep(0.4)
+        except Exception as e:  # noqa: BLE001
+            print(f"  [translate] MyMemory 실패: {type(e).__name__}")
+            break
+    return out
+
+
+# ── 3. 구글 무료 번역(gtx) ──────────────────────────────────────────────────────
 GOOGLE_CHARS = 3500                  # 한 요청에 묶는 글자 수(URL 길이 여유)
 _GTX = "https://translate.googleapis.com/translate_a/single"
 _google_dead_until = 0.0
@@ -237,14 +322,17 @@ def translate_many(texts: list[str], max_chars: int = MAX_CHARS) -> list[str | N
                 if res is None:
                     break                           # 키 없음·한도 소진 → 남은 건 구글로
                 for i, s in zip(chunk, res):
-                    out[i] = s
-                STATS["gemini"] += sum(1 for s in res if s)
-        rest = [i for i in todo if out[i] is None]
-        if rest and provider in ("auto", "google"):
-            res = _google_batch([clean[i] for i in rest])
+                    out[i] = s if _valid(clean[i], s) else None
+                STATS["gemini"] += sum(1 for i in chunk if out[i])
+        for name, fn in (("google", _gt_batch), ("google_gtx", _google_batch), ("mymemory", _mymemory)):
+            rest = [i for i in todo if out[i] is None]
+            if not rest or provider not in ("auto", "google"):
+                break
+            res = fn([clean[i] for i in rest])
             for i, s in zip(rest, res):
-                out[i] = s
-            STATS["google"] += sum(1 for s in res if s)
+                if _valid(clean[i], s):
+                    out[i] = s
+            STATS[name] += sum(1 for i in rest if out[i])
     STATS["failed"] += sum(1 for i in todo if out[i] is None)
     return out
 
