@@ -1,0 +1,90 @@
+"""경기 전 예측 기록 — 팬 투표 · 우리 모델 · ClubElo 를 경기 전에 저장하고, 끝나면 결과를 붙인다(2026-10-15).
+
+'팬 vs 모델 누가 더 잘 맞히나' 성적표(/api/prediction-league)의 원천: data/predictions_log.csv
+  · 다가오는 경기(킥오프 전): 최신 예측으로 덮어쓴다 — 마지막 기록 = 경기 직전에 가장 가까운 예측
+  · 이미 끝났는데 기록이 없는 경기(최근 7일): 팬·ClubElo 는 보관분(7일), 모델은 '그 경기 전 데이터만으로' 다시 계산
+  · 결과가 나온 경기: 스코어·결과(H/D/A)를 채운다
+match_refresh(08:15)·daily_data(13:30)가 돌린다. 팬 투표는 로컬 PC 가 10:30·18:30 에 갱신.
+"""
+from __future__ import annotations
+
+import datetime as dt
+import sys
+from pathlib import Path
+
+import pandas as pd
+
+ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT / "src"))
+sys.path.insert(0, str(ROOT))
+
+import api.main as api  # noqa: E402
+import match_center as mc  # noqa: E402
+
+OUT = ROOT / "data" / "predictions_log.csv"
+COLS = ["event_id", "date", "kickoff", "comp_code", "home", "away", "home_league", "away_league", "home_logo", "away_logo",
+        "model_h", "model_d", "model_a", "model_score", "fans_h", "fans_d", "fans_a", "fans_n",
+        "elo_h", "elo_d", "elo_a", "logged_at", "hg", "ag", "result"]
+
+
+def _row(m: dict, now: str) -> dict:
+    mo, fa, el = m.get("model") or {}, m.get("fans") or {}, m.get("elo") or {}
+    return {"event_id": str(m["event_id"]), "date": m["date"], "kickoff": m.get("kickoff", ""), "comp_code": m["comp_code"],
+            "home": m["home"]["team"], "away": m["away"]["team"],
+            "home_league": m["home"].get("league") or "", "away_league": m["away"].get("league") or "",
+            "home_logo": m["home"].get("logo") or "", "away_logo": m["away"].get("logo") or "",   # 우리 리그 밖 팀은 ESPN 로고
+            "model_h": mo.get("h"), "model_d": mo.get("d"), "model_a": mo.get("a"), "model_score": mo.get("score"),
+            "fans_h": fa.get("h"), "fans_d": fa.get("d"), "fans_a": fa.get("a"), "fans_n": fa.get("n"),
+            "elo_h": el.get("h"), "elo_d": el.get("d"), "elo_a": el.get("a"), "logged_at": now}
+
+
+def main() -> int:
+    src = api._fx_sources()
+    today = api._today_kst()
+    now_utc = dt.datetime.now(dt.timezone.utc)
+    now = now_utc.isoformat(timespec="minutes")
+    log = pd.read_csv(OUT, dtype={"event_id": str}) if OUT.exists() else pd.DataFrame(columns=COLS)
+    rows = {r["event_id"]: r for r in log.to_dict("records")}
+
+    # 1) 다가오는 경기 — 킥오프 전이면 최신 예측으로 덮어쓴다
+    up = 0
+    for m in mc.matches_from(src["rows"], today, 3):
+        if not m.get("event_id"):
+            continue
+        ko = pd.to_datetime(m.get("kickoff") or None, utc=True, errors="coerce")
+        if ko is not pd.NaT and ko == ko and ko <= now_utc:
+            continue                                   # 이미 시작 — 경기 전 기록을 덮지 않는다
+        m = api._fx_enrich(m, src)
+        if not (m.get("model") or m.get("fans") or m.get("elo")):
+            continue
+        rows[str(m["event_id"])] = {**rows.get(str(m["event_id"]), {}), **_row(m, now)}
+        up += 1
+
+    # 2) 최근 7일 끝난 경기 — 기록이 없으면 보관된 팬·Elo + 경기 전 데이터로 다시 계산한 모델로 추가, 결과 채우기
+    back = res = 0
+    for m in mc.results_from(src["rows"], today, 7):
+        eid = str(m.get("event_id") or "")
+        if not eid:
+            continue
+        hg, ag = m["home"]["goals"], m["away"]["goals"]
+        if eid not in rows:
+            m = api._fx_enrich(m, src)
+            m.pop("model", None)
+            api._attach_model(m, before=m["date"])     # 결과 누설 없이
+            if not (m.get("fans") or m.get("elo")):
+                continue                               # 비교할 외부 예측이 없으면 성적표에 넣지 않는다
+            rows[eid] = _row(m, now)
+            back += 1
+        r = rows[eid]
+        if r.get("result") not in ("H", "D", "A"):
+            r["hg"], r["ag"] = hg, ag
+            r["result"] = "H" if hg > ag else "A" if hg < ag else "D"
+            res += 1
+    out = pd.DataFrame(list(rows.values()), columns=COLS).sort_values(["date", "kickoff"])
+    out.to_csv(OUT, index=False)
+    print(f"[predictions-log] 예정 갱신 {up} · 지난 경기 추가 {back} · 결과 채움 {res} · 전체 {len(out)}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

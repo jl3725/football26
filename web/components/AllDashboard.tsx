@@ -4,6 +4,7 @@ import { getHomeAll, getFixtures, getHubPulse, getLeagueLab, fmtEur, feeLabel, t
 import { ResultsTicker, WatchGrid, OverUnder, InjuryImpact } from "./HubPulse";
 import LeagueFocus from "./LeagueFocus";
 import { MatchRecap } from "./MatchReview";
+import PredictionLeague from "./PredictionLeague";
 import { Skel, SkelCards } from "./Skeleton";
 import CountUp from "./CountUp";
 import MatchCard, { MatchHero } from "./MatchCard";
@@ -202,6 +203,9 @@ export default function AllDashboard({ onPick, switcher }: { accent?: string; on
       {pulse && pulse.results.length + fxToday.length > 0 && (
         <MatchRecapSec results={pulse.results} extra={fxToday} />
       )}
+
+      {/* 팬 투표 vs 우리 모델 — 누가 더 잘 맞히나 */}
+      <PredictionLeague />
 
       {pulse && pulse.watch.length > 0 && (
         <section className="h5-sec">

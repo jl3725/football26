@@ -53,6 +53,10 @@ jobs:
           python scripts/build_db.py > /dev/null
           bash scripts/ci_try.sh "precompute_hub" python scripts/precompute_hub.py
 
+      # 경기 전 예측 기록(팬 투표·우리 모델·ClubElo) → 결과 대조 — 홈 PREDICTION LEAGUE 원천(scripts/log_predictions.py)
+      - name: Log predictions (팬 vs 모델 성적표)
+        run: bash scripts/ci_try.sh "log_predictions" python scripts/log_predictions.py
+
       - name: Validate core data contracts
         run: python scripts/validate_data.py --no-optional
 

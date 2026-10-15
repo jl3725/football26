@@ -19,7 +19,8 @@ import pandas as pd
 
 # 2026-10-15 백테스트(scripts/backtest_model.py, 리그 435경기) — 지난 시즌 OVR 로그손실 0.968 · 현재 OVR 0.926
 # (옛 v1 0.980 · 0.939, 기준선 1.110). 시즌 초라 실제 골이 xG 보다 잘 맞아 w_goal 0.75 — 표본이 쌓이면 다시 탐색
-PARAMS = {"k": 10.0, "b_ovr": 0.50, "w_goal": 0.75, "rho": -0.08, "b_cross": 0.50, "w_cross_form": 0.5, "adjust": True}
+PARAMS = {"k": 10.0, "b_ovr": 0.50, "w_goal": 0.75, "rho": -0.08, "b_cross": 0.60, "w_cross_form": 0.25, "adjust": True}
+# 다른 리그끼리(유럽대회): 2026-10 리그 간 17경기로는 표본이 작아 방향만 반영(OVR 차이↑·리그 안 폼↓) — 예측 기록이 쌓이면 재조정
 MU_FALLBACK = (1.45, 1.15)   # 리그 표본이 적을 때 홈·원정 기본 기대 득점
 
 

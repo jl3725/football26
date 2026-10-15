@@ -114,6 +114,10 @@ jobs:
           python scripts/build_db.py > /dev/null
           bash scripts/ci_try.sh "precompute_hub" python scripts/precompute_hub.py
 
+      # 경기 전 예측 기록(팬 투표·우리 모델·ClubElo) → 결과 대조 — 홈 PREDICTION LEAGUE 원천(scripts/log_predictions.py)
+      - name: Log predictions (팬 vs 모델 성적표)
+        run: bash scripts/ci_try.sh "log_predictions" python scripts/log_predictions.py
+
       # 선수 평점 일일 기록(변경분만) — 화면의 'OVR ▲▼ 2주 전 대비' 원천(src/rating_history.py).
       # 위 단계에서 만든 football.db 를 써서 운영 API 와 같은 값이 남는다.
       - name: Record player ratings (평점 추이)

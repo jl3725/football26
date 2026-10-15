@@ -3698,6 +3698,67 @@ def team_season(team: str, league: str = ACTIVE_LEAGUE):
     }
 
 
+@app.get("/api/prediction-league")
+@_memo(ttl=1800)
+def prediction_league():
+    """예측 성적표 — 팬 투표 vs 우리 모델 vs ClubElo(data/predictions_log.csv, scripts/log_predictions.py).
+    sources: 출처별 적중률·브라이어(낮을수록 좋음)·로그손실, h2h: 팬·모델이 둘 다 있던 경기만 맞대결,
+    recent: 최근 끝난 경기 12개(각 출처의 픽·결과), split: 다가오는 경기 중 팬과 모델의 픽이 갈린 경기."""
+    import math as _m
+    p = data_path("predictions_log", season="x").parent / "predictions_log.csv"
+    if not p.exists():
+        return {"available": False, "sources": [], "h2h": None, "recent": [], "split": []}
+    df = pd.read_csv(p, dtype={"event_id": str})
+    keys = (("fans", "FANS", "팬 투표"), ("model", "MODEL", "우리 모델"), ("elo", "CLUBELO", "ClubElo"))
+
+    def probs(r, k):
+        v = [r.get(f"{k}_{x}") for x in ("h", "d", "a")]
+        return None if any(x is None or x != x for x in v) else {"H": float(v[0]), "D": float(v[1]), "A": float(v[2])}
+
+    done = df[df["result"].isin(["H", "D", "A"])].to_dict("records")
+
+    def score(rows, k):
+        n = hit = br = ll = 0
+        for r in rows:
+            pr = probs(r, k)
+            if not pr:
+                continue
+            n += 1
+            hit += max(pr, key=pr.get) == r["result"]
+            br += sum((pr[o] - (o == r["result"])) ** 2 for o in pr)
+            ll += -_m.log(max(1e-6, pr[r["result"]]))
+        return {"n": n, "acc": round(hit / n, 3) if n else None, "brier": round(br / n, 3) if n else None,
+                "logloss": round(ll / n, 3) if n else None, "hits": hit}
+
+    def _logo_of(r, side):   # 사전 → 기록 시 저장한 로고(ESPN, 우리 리그 밖 팀)
+        v = r.get(f"{side}_logo")
+        return tm.team_logo(r[side]) or (v if isinstance(v, str) else "") or ""
+
+    sources = [{"key": k, "en": en, "kr": kr, **score(done, k)} for k, en, kr in keys]
+    both = [r for r in done if probs(r, "fans") and probs(r, "model")]
+    h2h = {"n": len(both), "fans": score(both, "fans"), "model": score(both, "model")} if both else None
+
+    def pick(r, k):
+        pr = probs(r, k)
+        return None if not pr else {"pick": max(pr, key=pr.get), "p": round(max(pr.values()), 3)}
+    recent = [{"event_id": r["event_id"], "date": r["date"], "home": r["home"], "away": r["away"],
+               "home_logo": _logo_of(r, "home"), "away_logo": _logo_of(r, "away"),
+               "hg": int(r["hg"]), "ag": int(r["ag"]), "result": r["result"],
+               **{k: pick(r, k) for k, *_ in keys}} for r in sorted(done, key=lambda r: (r["date"], str(r.get("kickoff"))), reverse=True)[:12]]
+    today = _today_kst().isoformat()
+    split = []
+    for r in df[(df["result"].isna()) & (df["date"].astype(str) >= today)].to_dict("records"):
+        f, mo = probs(r, "fans"), probs(r, "model")
+        if f and mo and max(f, key=f.get) != max(mo, key=mo.get):
+            gap = abs(f[max(f, key=f.get)] - mo[max(f, key=f.get)])
+            split.append({"event_id": r["event_id"], "date": r["date"], "home": r["home"], "away": r["away"],
+                          "home_logo": _logo_of(r, "home"), "away_logo": _logo_of(r, "away"),
+                          "fans": pick(r, "fans"), "model": pick(r, "model"), "gap": round(gap, 3)})
+    split.sort(key=lambda x: -x["gap"])
+    return {"available": True, "since": str(df["date"].min()), "sources": sources, "h2h": h2h, "recent": recent,
+            "split": split[:6]}
+
+
 # 분석 탭 '리그 백분위' 지표 — (컬럼 또는 계산 키, 영어, 한글, 높을수록 좋은가, 표시 형식)
 _TREND_METRICS = [
     ("gf", "GOALS", "경기당 득점", True, "f2"), ("ga", "CONCEDED", "경기당 실점", False, "f2"),

@@ -102,35 +102,46 @@ function Drawer({ m, onClose }: { m: Fixture; onClose: () => void }) {
 
         <div className="pv-body">
           {state !== "pre" && m.event_id && <ReviewSections m={m} inPlay={state === "in"} hc={hc} ac={ac} />}
-          {state !== "post" && (m.fans || m.elo) && (
+          {state !== "post" && (m.fans || m.elo || m.model) && (
             <section>
-              <h3>PREDICTIONS<span>팬 투표 · 예측 모델</span></h3>
-              {m.fans && (
-                <>
-                  <div className="pv-src">FAN VOTE <em>Sofascore 사용자 {m.fans.n.toLocaleString()}표</em></div>
-                  <div className="pv-prob">
-                    <div><b>{Math.round(m.fans.h * 100)}%</b><span>{m.home.team} 승</span></div>
-                    <div><b>{Math.round(m.fans.d * 100)}%</b><span>무승부</span></div>
-                    <div><b>{Math.round(m.fans.a * 100)}%</b><span>{m.away.team} 승</span></div>
-                  </div>
-                  <PredictBar m={{ ...m, elo: undefined }} slim />
-                  {(m.fans.btts != null || m.fans.first_h != null) && (
-                    <div className="pv-side-votes">
-                      {m.fans.btts != null && <span>양 팀 모두 득점 <b>{Math.round(m.fans.btts * 100)}%</b></span>}
-                      {m.fans.first_h != null && m.fans.first_a != null && (
-                        <span>선제골 <b>{m.home.team} {Math.round(m.fans.first_h * 100)}%</b> · <b>{m.away.team} {Math.round(m.fans.first_a * 100)}%</b></span>
-                      )}
-                    </div>
-                  )}
-                </>
+              <h3>PREDICTIONS<span>팬 투표 vs 우리 모델</span></h3>
+              <PredictBar m={m} detail />
+              {(m.fans || m.model) && (
+                <div className="pv-vs-grid">
+                  <div className="pv-vs-h"><span /><b>FANS</b><b>MODEL</b></div>
+                  {([["홈 승", m.fans?.h, m.model?.h], ["무승부", m.fans?.d, m.model?.d], ["원정 승", m.fans?.a, m.model?.a],
+                    ["양 팀 득점", m.fans?.btts, m.model?.btts], ["2.5골 이상", null, m.model?.o25]] as [string, number | null | undefined, number | undefined][])
+                    .filter(([, f, mo]) => f != null || mo != null)
+                    .map(([k, f, mo]) => (
+                      <div className="pv-vs-r" key={k}>
+                        <span>{k === "홈 승" ? `${m.home.team} 승` : k === "원정 승" ? `${m.away.team} 승` : k}</span>
+                        <b className={f != null && mo != null && f > mo + 0.1 ? "hi" : ""}>{f != null ? `${Math.round(f * 100)}%` : "—"}</b>
+                        <b className={f != null && mo != null && mo > f + 0.1 ? "hi" : ""}>{mo != null ? `${Math.round(mo * 100)}%` : "—"}</b>
+                      </div>
+                    ))}
+                </div>
+              )}
+              {m.model && (
+                <div className="pv-model">
+                  <div className="pv-src">MODEL <em>예상 득점 {m.model.xg_h.toFixed(2)} : {m.model.xg_a.toFixed(2)} · 가장 유력한 스코어 {m.model.score}</em></div>
+                  <p className="pv-note" style={{ marginTop: 6 }}>
+                    이번 시즌 경기 내용(xG·득실, 상대 강도 보정)과 선수 평점(OVR)으로 만든 통계 모델입니다.
+                    {m.model.n_h + m.model.n_a < 10 ? " 아직 리그 경기가 적어 선수 평점 비중이 큽니다." : ""}
+                  </p>
+                </div>
+              )}
+              {m.fans?.first_h != null && m.fans.first_a != null && (
+                <div className="pv-side-votes">
+                  <span>팬 투표 선제골 <b>{m.home.team} {Math.round(m.fans.first_h * 100)}%</b> · <b>{m.away.team} {Math.round(m.fans.first_a * 100)}%</b></span>
+                </div>
               )}
               {m.elo && (
                 <div className="pv-elo">
-                  <div className="pv-src">CLUBELO <em>유럽 클럽 Elo 레이팅 기반 독립 예측 모델</em></div>
-                  <PredictBar m={{ ...m, fans: undefined }} slim />
+                  <div className="pv-src">CLUBELO <em>유럽 클럽 Elo 레이팅 기반 독립 예측(참고)</em></div>
+                  <PredictBar m={m} only="elo" slim />
                 </div>
               )}
-              <p className="pv-note">팬 투표는 Sofascore 앱 사용자 투표(재미용), ClubElo 는 clubelo.com 의 공개 예측입니다. 베팅 정보가 아닙니다.</p>
+              <p className="pv-note">팬 투표는 Sofascore 앱 사용자 투표, MODEL 은 이 사이트의 데이터 모델, ClubElo 는 clubelo.com 의 공개 예측입니다. 재미로 보는 정보이며 베팅 정보가 아닙니다.</p>
             </section>
           )}
 
