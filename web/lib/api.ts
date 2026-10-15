@@ -320,9 +320,40 @@ export type Projection = {
   diagnosis: Diag[];
 };
 export const getProjection = (t: string, l = _league) => j<Projection>(`/api/projection/${q(t, l)}`);
-export type Captain = { name: string; photo: string; ovr: number | null; pos: string; role: string; is_main: boolean };
+export type Captain = { name: string; photo: string; ovr: number | null; pos: string; role: string; is_main: boolean;
+  no?: number | null; rank?: number; injured?: boolean };
 export const getCaptains = (t: string, l = _league) =>
-  j<{ team: string; color: string; captains: Captain[] }>(`/api/captains/${q(t, l)}`);
+  j<{ team: string; color: string; captains: Captain[]; source?: string }>(`/api/captains/${q(t, l)}`);
+
+// ── 팀 지식그래프(NETWORK 탭) — /api/network: 주장단·관계망·스쿼드 구성·국적·클럽 연결 + 근거 인사이트 ──
+export type NetNation = { name: string; code: string; flag: string; rank: number | null };
+export type NetOrigin = { acq: string; from_club: string | null; fee_text: string | null; fee_eur: number | null; year: number | null };
+export type NetPlayer = {
+  name: string; photo: string; line: string; pos: string; ovr: number | null; age: number | null; minutes: number;
+  joined: string | null; prev_squad: string | null; no: number | null; captain_rank: number | null;
+  injured: boolean; injury?: string | null; wc: boolean; nation: NetNation | null; origin: NetOrigin;
+  tenure: number | null; unplayed?: boolean;
+};
+export type NetCore = NetPlayer & { influence: number; components: Record<string, number>; why: string[] };
+export type NetCaptain = NetCore & { label: string; role_ko: string };
+export type NetMove = { player: string; fee_text?: string | null; photo?: string; window?: string; ovr?: number | null; prob?: number | null };
+export type NetLink = { club: string; logo: string; league: string | null; in: NetMove[]; out: NetMove[]; alumni: NetMove[];
+  rumor_in: NetMove[]; rumor_out: NetMove[]; weight: number };
+export type NetInsight = { lens: string; icon: string; tone: string; title: string; text: string; evidence: string[] };
+export type NetworkData = {
+  available: boolean; reason?: string; team: string; league: string; color: string; logo: string; games: number;
+  players: NetPlayer[];
+  leadership: { captains: NetCaptain[]; armband: string | null; core: NetCore[]; influence: Record<string, number> };
+  chemistry: { nodes: { name: string; minutes: number; degree: number; hub_rank: number }[];
+    edges: { a: string; b: string; minutes: number; matches: number }[]; duos: ChemDuo[]; trios: ChemTrio[] };
+  origins: { timeline: { year: number; players: string[] }[]; acq: Record<string, number>;
+    sources: { league: string; n: number; fee_eur: number; players: string[] }[] };
+  nations: { countries: (NetNation & { players: string[]; wc: number })[]; n: number; wc_total: number };
+  links: { clubs: NetLink[]; n_clubs: number };
+  insights: NetInsight[];
+  sources: { captains: string | null };
+};
+export const getNetwork = (t: string, l = _league) => j<NetworkData>(`/api/network/${q(t, l)}`);
 export const getSimilar = (p: string, l = _league) =>
   j<{ player: string; results: SimilarResult[] }>(`/api/similar/${encodeURIComponent(p)}?league=${encodeURIComponent(l)}`);
 export const getRecommend = (t: string, l = _league) => j<Recommend>(`/api/recommend/${q(t, l)}`);

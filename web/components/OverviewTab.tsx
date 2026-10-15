@@ -214,17 +214,18 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
         </div>
       )}
 
-      {/* 더 보기 — 정체성 · 주장단 · 스쿼드 평가 · 리더 · 부상/이적. 첫 화면은 '지금 이 팀이 어떤가'에 집중하고
+      {/* 주장단 — 더 보기 밖으로(사용자 요청: 강조). 영향력 지도·리더십 코어는 NETWORK 탭 */}
+      <CaptainBoard team={ov.team} accent={accent} />
+
+      {/* 더 보기 — 정체성 · 스쿼드 평가 · 리더 · 부상/이적. 첫 화면은 '지금 이 팀이 어떤가'에 집중하고
           나머지는 요청 시 펼친다(선택은 이 브라우저에 기억). */}
       <button type="button" className="more-btn" aria-expanded={more} onClick={() => toggleMore(!more)}>
-        {more ? "간단히 보기 ↑" : "더 보기 · 정체성 · 주장단 · 스쿼드 평가 · 리더 · 부상/이적 ↓"}
+        {more ? "간단히 보기 ↑" : "더 보기 · 정체성 · 연령 구조 · 리더 · 부상/이적 ↓"}
       </button>
       {more && (
         <>
       {/* 팀 정체성 — 감독 전술 블렌드 · 영입 성향 · 예산 */}
       <IdentityCard team={ov.team} league={ov.league} accent={accent} />
-      {/* 주장단 */}
-      <CaptainBoard team={ov.team} accent={accent} />
       {/* 스쿼드 절대 평가 — OVR/POT 산점도 */}
       <RatingsBoard ov={ov} accent={accent} />
       {/* 팀 리더 */}

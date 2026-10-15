@@ -2518,16 +2518,226 @@ def database(league: str = ACTIVE_LEAGUE):
     return Response(content=body, media_type="application/json")
 
 
+def _wiki_squad(team: str, league: str) -> list[dict]:
+    """위키백과 스쿼드 표 — 주장단(1~4)·등번호·국적 코드(src/fetch_wiki_squads.py, 8개 리그)."""
+    w = ds.read_table("wiki_squads", league=league)
+    if w is None or "squad" not in w.columns:
+        return []
+    out = []
+    for _, r in w[w["squad"].astype(str) == team].iterrows():
+        rk = pd.to_numeric(r.get("role_rank"), errors="coerce")
+        no = pd.to_numeric(r.get("no"), errors="coerce")
+        out.append({"player": str(r.get("player")), "section": str(r.get("section") or "first"),
+                    "no": None if pd.isna(no) else int(no), "nat": str(r.get("nat") or "").strip(),
+                    "pos": str(r.get("pos") or "").strip(), "rank": None if pd.isna(rk) else int(rk)})
+    return out
+
+
+_GLOBAL_CSV: dict = {}
+
+
+def _global_csv(name: str) -> pd.DataFrame | None:
+    """시즌·리그 구분 없는 원천(data/wc_squads.csv · fifa_ranking.csv) — 수정 시각 기준 캐시."""
+    p = ROOT / "data" / f"{name}.csv"
+    if not p.exists():
+        return None
+    key = (name, p.stat().st_mtime)
+    if key not in _GLOBAL_CSV:
+        _GLOBAL_CSV.clear() if len(_GLOBAL_CSV) > 8 else None
+        _GLOBAL_CSV[key] = pd.read_csv(p)
+    return _GLOBAL_CSV[key]
+
+
+_NAT_ALIAS = {"korea, south": "korea republic", "south korea": "korea republic", "usa": "usa",
+              "united states": "usa", "turkey": "turkiye", "iran": "ir iran", "ivory coast": "cote d'ivoire",
+              "czech republic": "czechia", "cape verde": "cabo verde", "dr congo": "congo dr",
+              "congo, dem. rep.": "congo dr", "china": "china pr", "north macedonia": "north macedonia",
+              "bosnia-herzegovina": "bosnia and herzegovina", "curacao": "curacao", "the gambia": "gambia"}
+
+
+@app.get("/api/network/{team}")
+@_memo(ttl=21600)
+def network(team: str, league: str = ACTIVE_LEAGUE):
+    """팀 지식그래프 — LEADERSHIP · CHEMISTRY · ORIGINS · NATIONS · LINKS 렌즈 + 근거 인사이트.
+
+    그래프 DB 없이 원천 CSV 로 같은 관계(PLAYS_FOR·TEAMMATE_OF·REPRESENTS·TransferEvent·RUMORED_WITH)를 엮는다
+    — 운영 Neo4j(AuraDB 무료)가 잠들어도 항상 동작(src/team_network.py).
+    """
+    import team_names as tnm  # noqa: PLC0415
+    import team_network as tn  # noqa: PLC0415
+    from leagues import LEAGUES  # noqa: PLC0415
+    from unidecode import unidecode  # noqa: PLC0415
+
+    today = datetime.date.today()
+    pf = _pf(league)
+    if pf is None or "squad" not in pf.columns:
+        return {"available": False, "reason": "선수 데이터 없음"}
+    gone = _gone_keys(team, league)
+    rows = pf[pf["squad"] == team]
+    rows = rows[[_person_key(p) not in gone for p in rows["player"]]]
+    if rows.empty:
+        return {"available": False, "reason": "선수 데이터 없음"}
+    inj = _active_injuries(team, league)
+    wiki = [w for w in _wiki_squad(team, league) if w["section"] == "first"]
+    wiki_idx = tn.NameIndex([w["player"] for w in wiki])
+    wiki_by = {w["player"]: w for w in wiki}
+
+    # 국가(FIFA 랭킹·국기) · 월드컵 명단
+    fifa = _global_csv("fifa_ranking")
+    f_name, f_code = {}, {}
+    if fifa is not None:
+        for _, r in fifa.iterrows():
+            rec = {"name": str(r["team"]), "code": str(r.get("code") or ""), "flag": str(r.get("flag") or ""),
+                   "rank": int(r["rank"]) if pd.notna(r.get("rank")) else None}
+            f_name[unidecode(str(r["team"])).lower()] = rec
+            f_code[str(r.get("code") or "").upper()] = rec
+
+    def nation_of(nat_name, code) -> dict | None:
+        k = unidecode(str(nat_name or "")).lower().strip()
+        rec = f_name.get(_NAT_ALIAS.get(k, k)) or (f_code.get(str(code or "").upper()) if code else None)
+        if rec:
+            return rec
+        return {"name": str(nat_name), "code": str(code or ""), "flag": "", "rank": None} if nat_name else None
+
+    wc = _global_csv("wc_squads")
+    wc_idx = tn.NameIndex(wc["player"].astype(str).tolist()) if wc is not None else None
+
+    # 최근 두 시즌 이적 기록(이 팀)
+    trs = []
+    for season in (f"{SEASON_START - 1}_{SEASON_START}", None):
+        t = ds.read_table("transfers", league=league, season=season)
+        if t is not None and "squad" in t.columns:
+            trs.append(t[t["squad"] == team])
+    tr = pd.concat(trs, ignore_index=True) if trs else pd.DataFrame()
+    if not tr.empty:                                     # 리그에 따라 두 시즌 파일이 같은 내용(복사본)이다
+        tr = tr.drop_duplicates(subset=[c for c in ("player", "direction", "club", "season_id", "window") if c in tr.columns])
+    tin: dict = {}
+    if not tr.empty:
+        for _, r in tr[tr["direction"] == "in"].sort_values("season_id").iterrows():
+            tin[_person_key(r["player"])] = r.to_dict()          # 가장 최근 영입 기록이 남게
+
+    games, n_games = _on_pitch(team, league)
+    chem = tn.chemistry_graph(games, rows["player"].astype(str).tolist())
+
+    def pos_label(r) -> str:
+        p = _pos_profile(r)
+        return str(p.get("primary") or r.get("pos") or "")
+
+    players, seen_wiki = [], set()
+    for _, r in rows.iterrows():
+        nm = str(r["player"])
+        wname = wiki_idx.find(nm)
+        w = wiki_by.get(wname) if wname else None
+        if w:
+            seen_wiki.add(w["player"])
+        injury = inj.get(" ".join(unidecode(nm).lower().replace("-", " ").split()))
+        age = pd.to_numeric(r.get("age"), errors="coerce")
+        mn = pd.to_numeric(r.get("minutes"), errors="coerce")
+        p = {"name": nm, "photo": _photo(r), "line": rv3.line_of_row(r), "pos": pos_label(r),
+             "ovr": _player_ovr(r), "age": None if pd.isna(age) else int(age),
+             "minutes": 0 if pd.isna(mn) else int(mn), "joined": str(r.get("tm_joined_date") or "")[:10] or None,
+             "prev_squad": r.get("prev_squad") if isinstance(r.get("prev_squad"), str) else None,
+             "no": w["no"] if w else None, "captain_rank": w["rank"] if w else None,
+             "injured": bool(injury), "injury": (injury or {}).get("injury"),
+             "wc": bool(wc_idx and wc_idx.find(nm)),
+             "nation": nation_of(r.get("nationality"), w["nat"] if w else None)}
+        p["origin"] = tn.acquisition(p, tin.get(_person_key(nm)), team, today)
+        players.append(p)
+    _LINE = {"GK": "GK", "DF": "DEF", "MF": "MID", "FW": "ATT"}
+    for w in wiki:                                       # 아직 출전 기록 없는 1군(부상·백업 GK 등)
+        if w["player"] in seen_wiki:
+            continue
+        injury = inj.get(" ".join(unidecode(w["player"]).lower().replace("-", " ").split()))
+        p = {"name": w["player"], "photo": _resolve_photo(w["player"], lambda _n: None, league),
+             "line": _LINE.get(w["pos"], "MID"), "pos": w["pos"], "ovr": None, "age": None, "minutes": 0,
+             "joined": None, "prev_squad": None, "no": w["no"], "captain_rank": w["rank"],
+             "injured": bool(injury), "injury": (injury or {}).get("injury"),
+             "wc": bool(wc_idx and wc_idx.find(w["player"])), "nation": nation_of(None, w["nat"]), "unplayed": True}
+        p["origin"] = tn.acquisition(p, tin.get(_person_key(w["player"])), team, today)
+        players.append(p)
+    for p in players:
+        p["tenure"] = tn._years_since(p.get("joined"), today)
+        if p["tenure"] is not None:
+            p["tenure"] = round(p["tenure"], 1)
+
+    lead = tn.leadership(players, chem, today)
+
+    # 클럽 관계망 — 우리 8개 리그 클럽 이름으로 맞추고, 그 밖은 원래 표기
+    club_league: dict[str, str] = {}
+    alumni = []
+    for lg in LEAGUES:
+        f = _pf(lg)
+        if f is None or "squad" not in f.columns:
+            continue
+        for sq in f["squad"].dropna().astype(str).unique():
+            club_league[sq] = lg
+        if "prev_squad" in f.columns and "tm_id" in f.columns:
+            a = f[(f["prev_squad"] == team) & (f["squad"] != team) & f["tm_id"].notna()]
+            for _, r in a.iterrows():
+                alumni.append({"player": str(r["player"]), "club": str(r["squad"]), "photo": _photo(r),
+                               "ovr": _player_ovr(r)})
+    all_clubs = list(club_league)
+    _canon_cache: dict = {}
+
+    def canon(name: str):
+        if name not in _canon_cache:
+            _canon_cache[name] = name if name in club_league else tnm.best(name, all_clubs)
+        return _canon_cache[name]
+
+    rumors = []
+    ru = ds.read_table("transfer_rumors", league=league)
+    if ru is not None and "target_club" in ru.columns:
+        for _, r in ru.iterrows():
+            tgt, cur = str(r.get("target_club") or ""), str(r.get("current_club") or "")
+            prob = pd.to_numeric(r.get("probability"), errors="coerce")
+            rec = {"player": str(r.get("player")), "prob": None if pd.isna(prob) else float(prob)}
+            if canon(tgt) == team and cur:
+                rumors.append({**rec, "club": cur, "direction": "in"})
+            elif canon(cur) == team and tgt:
+                rumors.append({**rec, "club": tgt, "direction": "out"})
+    tr_rows = [{"player": str(r["player"]), "club": str(r.get("club") or ""), "direction": r.get("direction"),
+                "fee_text": r.get("fee_text") if isinstance(r.get("fee_text"), str) else None,
+                "photo": r.get("photo") if isinstance(r.get("photo"), str) and "default" not in str(r.get("photo")) else "",
+                "window": f"{r.get('season_id')} {r.get('window')}"} for _, r in tr.iterrows()] if not tr.empty else []
+    lk = tn.links(team, tr_rows, alumni, rumors, canon, tm.team_logo, lambda c: club_league.get(c))
+    orig = tn.origins(players, lambda c: club_league.get(canon(c) or ""))
+    nat = tn.nations(players)
+    chm = chemistry_ep(team, league)
+    ins = tn.insights(team, lead, chem, chm.get("duos", []), orig, nat, lk, players)
+    return {"available": True, "team": team, "league": league, "color": tm.team_color(team), "logo": tm.team_logo(team),
+            "games": n_games, "players": players, "leadership": lead,
+            "chemistry": {"nodes": chem["nodes"], "edges": chem["edges"], "duos": chm.get("duos", []),
+                          "trios": chm.get("trios", [])},
+            "origins": orig, "nations": nat, "links": lk, "insights": ins,
+            "sources": {"captains": "wikipedia" if any(w["rank"] for w in wiki) else None}}
+
+
 @app.get("/api/captains/{team}")
 @_memo(ttl=21600)
 def captains(team: str, league: str = ACTIVE_LEAGUE):
-    """주장단 — 공식 주장(TEAM_CAPTAINS) + football-lineups (c) 기록 부주장."""
+    """주장단 — 위키백과 스쿼드 표(8개 리그, 주장·부주장·3·4번째) 우선, 없으면 EPL 공식 주장 + (c) 기록 부주장."""
     from unidecode import unidecode
     def _key(nm):
         t = unidecode(str(nm)).lower().split()
         return t[-1] if t else str(nm).lower()
 
     resolve = _players_lookup(league)
+    wiki = sorted([w for w in _wiki_squad(team, league) if w["rank"]], key=lambda w: w["rank"])
+    if wiki:
+        inj = _active_injuries(team, league)
+        out = []
+        for w in wiki[:4]:
+            r = resolve(w["player"])
+            if r is not None and str(r.get("squad")) != team:
+                r = None
+            nm = str(r["player"]) if r is not None else w["player"]
+            out.append({"name": nm, "photo": _photo(r) if r is not None else _resolve_photo(nm, lambda _n: None, league),
+                        "ovr": _player_ovr(r) if r is not None else None,
+                        "pos": str(w["pos"] or (r.get("pos") if r is not None else "")), "no": w["no"],
+                        "role": {1: "주장", 2: "부주장", 3: "3번째 주장", 4: "4번째 주장"}[w["rank"]],
+                        "rank": w["rank"], "is_main": w["rank"] == 1,
+                        "injured": " ".join(unidecode(nm).lower().replace("-", " ").split()) in inj})
+        return {"team": team, "color": tm.team_color(team), "captains": out, "source": "wikipedia"}
     out, seen = [], set()
 
     official = tm.team_captain(team)
@@ -2763,6 +2973,18 @@ def inbox(team: str, league: str = ACTIVE_LEAGUE):
             ovr_of[ps.norm_name(r["player"])] = _player_ovr(r)
     top_ovr = sorted(ovr_of.values(), reverse=True)
     key_cut = top_ovr[10] if len(top_ovr) > 10 else 0          # 상위 11명 = 핵심
+
+    # 주장단 — 주장이 결장하면 완장을 누가 차는지(위키 스쿼드 표 주장 순위 + 현재 부상)
+    try:
+        caps = captains(team, league).get("captains", [])
+        if caps and caps[0].get("is_main") and caps[0].get("injured"):
+            nxt = next((c for c in caps[1:] if not c.get("injured")), None)
+            add("squad", "armband", "warn", "©", "완장 이동",
+                f"주장 {caps[0]['name']} 결장 — " + (f"완장은 {nxt['role']} {nxt['name']}" if nxt else "다음 주장단도 결장"),
+                78, player=caps[0]["name"], photo=caps[0].get("photo", ""),
+                action={"kind": "player", "name": (nxt or caps[0])["name"]})
+    except Exception:  # noqa: BLE001 — 주장 정보는 보조
+        pass
     for s in base["signals"]:
         cat, pr = _INBOX_CAT.get(s["type"], ("squad", 25))
         key = ovr_of.get(ps.norm_name(s.get("player"))) or 0

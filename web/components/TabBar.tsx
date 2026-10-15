@@ -7,6 +7,7 @@ export const TABS = [
   { key: "signals", label: "Inbox", icon: "inbox", ready: true },
   { key: "analytics", label: "Analytics", icon: "bars", ready: true },
   { key: "squad", label: "Squad", icon: "users", ready: true },
+  { key: "network", label: "Network", icon: "share", ready: true },
   { key: "schedule", label: "Schedule", icon: "calendar", ready: true },
   { key: "player", label: "Player", icon: "user", ready: true },
   { key: "transfer", label: "Recruit", icon: "target", ready: true },

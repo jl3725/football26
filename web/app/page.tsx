@@ -12,6 +12,7 @@ import OverviewTab from "@/components/OverviewTab";
 import SignalsTab from "@/components/SignalsTab";
 import AnalyticsTab from "@/components/AnalyticsTab";
 import SquadTab from "@/components/SquadTab";
+import NetworkTab from "@/components/NetworkTab";
 import ScheduleTab from "@/components/ScheduleTab";
 import PlayerTab from "@/components/PlayerTab";
 import GlobalSearch from "@/components/GlobalSearch";
@@ -155,6 +156,7 @@ export default function Page() {
       case "signals": return <SignalsTab key={sel} {...props} />;
       case "analytics": return <AnalyticsTab key={sel} {...props} />;
       case "squad": return <SquadTab key={sel} {...props} />;
+      case "network": return <NetworkTab key={sel} {...props} />;
       case "schedule": return <ScheduleTab key={sel} {...props} />;
       case "player": return <PlayerTab key={sel} team={sel} accent={accent} initialPlayer={pendingPlayer} />;
       case "transfer": return <TransferTab key={sel} {...props} />;

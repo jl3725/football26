@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { feeLabel, getAnalytics, fmtEur, type Analytics, type Factor } from "@/lib/api";
 import { tier, hexA } from "@/lib/ui";
 import TeamTerritory from "./TeamTerritory";
-import Chemistry from "./Chemistry";
 import { usePeek } from "./PlayerPeek";
 import { SkelTab } from "./Skeleton";
 import SectionHead from "./SectionHead";
@@ -71,12 +70,6 @@ export default function AnalyticsTab({ team, accent }: { team: string; accent: s
       <div className="card" style={{ marginTop: 16 }}>
         <SectionHead title="TERRITORY" kr="팀 포지셔널 맵" meta="점유 구역 · 평균 대형 · Sofascore" />
         <TeamTerritory team={team} accent={accent} />
-      </div>
-
-      {/* 케미스트리 · 파트너십 (KG) */}
-      <div className="card" style={{ marginTop: 16 }}>
-        <SectionHead title="CHEMISTRY" kr="케미스트리" meta="함께 뛴 시간 기준 최고의 파트너십" />
-        <Chemistry team={team} accent={accent} />
       </div>
 
       {/* 상대·환경별 성과 */}
