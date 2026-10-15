@@ -93,7 +93,7 @@ def matches_from(rows_by_league: dict, today: dt.date, days: int, team: str | No
             if t is None or not (today <= t.date() <= end):
                 continue
             me = {"team": r.squad, "league": lg}
-            opp = {"team": r.opponent, "league": None}
+            opp = {"team": r.opponent, "league": None, "logo_alt": _opp_logo(r)}
             home, away = (me, opp) if r.home_away == "H" else (opp, me)
             key = eid or f"{t.date()}|{home['team']}|{away['team']}"
             if key in seen:
@@ -120,6 +120,12 @@ def _int(v) -> int | None:
     return None if f != f else int(f)
 
 
+def _opp_logo(r) -> str:
+    """일정 행의 ESPN 상대 로고(우리 로고 사전에 없는 팀용 대체). 예전 파일엔 컬럼이 없다."""
+    v = getattr(r, "opponent_logo", "") if hasattr(r, "opponent_logo") else ""
+    return v if isinstance(v, str) and v.startswith("http") else ""
+
+
 def results_from(rows_by_league: dict, today: dt.date, days: int = 3) -> list[dict]:
     """최근 끝난 경기(스코어 포함, 최신순) — matches_from 과 같은 방식으로 경기 단위 중복 제거."""
     start = today - dt.timedelta(days=days)
@@ -138,7 +144,7 @@ def results_from(rows_by_league: dict, today: dt.date, days: int = 3) -> list[di
                 continue
             eid = str(getattr(r, "event_id", "") or "")
             me = {"team": r.squad, "league": lg, "goals": gf}
-            opp = {"team": r.opponent, "league": None, "goals": ga}
+            opp = {"team": r.opponent, "league": None, "goals": ga, "logo_alt": _opp_logo(r)}
             home, away = (me, opp) if r.home_away == "H" else (opp, me)
             key = eid or f"{t.date()}|{home['team']}|{away['team']}"
             if key in seen:

@@ -1224,7 +1224,7 @@ def players(team: str, league: str = ACTIVE_LEAGUE):
 
 # 선수 상세 지표 — FM 스타일 카테고리 그룹 (아웃필더/골키퍼)
 _PL_CATS = [
-    ("공격", [("결정력", "npxg_p90"), ("슈팅/90", "shots_p90"), ("유효슈팅/90", "sot_per90")]),
+    ("공격", [("npxG/90", "npxg_p90"), ("슈팅/90", "shots_p90"), ("유효슈팅/90", "sot_per90")]),   # npxG = 기회의 양(결정력 아님)
     ("창조", [("기대도움 xA", "xa_p90"), ("키패스/90", "key_passes_per90"), ("빅찬스/90", "big_chances_created_per90")]),
     ("배급", [("패스성공%", "pass_pct"), ("롱패스%", "long_ball_pct"), ("전진패스/90", "final_third_passes_per90")]),
     ("볼 운반", [("드리블/90", "successful_dribbles_per90"), ("드리블성공%", "dribble_success_pct"), ("크로스%", "cross_acc_pct")]),
@@ -1699,7 +1699,23 @@ def _players_lookup(league):
     return resolve
 
 
-def _placements(team: str, league: str, last_n: int | None = None):
+def _person_key(n) -> tuple[str, str]:
+    """(성, 이름 첫 글자) — 악센트·대소문자 무시. 성만 쓰면 Wesley Fofana·David Datro Fofana 를 한 사람으로 봤다."""
+    from unidecode import unidecode  # noqa: PLC0415
+    t = unidecode(str(n or "")).lower().replace("-", " ").split()
+    return (t[-1], t[0][:1]) if t else ("", "")
+
+
+def _gone_keys(team: str, league: str) -> set[tuple[str, str]]:
+    """이번(최근) 이적창에 팀을 떠난 선수 — 시즌 초 몇 경기 뛰고 이적한 선수(Everton Ndiaye 등)를
+    현재 베스트 XI·벤치에서 뺄 때 쓴다(2026-10 전 팀 점검: scripts/audit_team_pages.py)."""
+    try:
+        return {_person_key(v["player"]) for v in _departures(team, league, _current_window()).values()}
+    except Exception:  # noqa: BLE001
+        return set()
+
+
+def _placements(team: str, league: str, last_n: int | None = None, exclude: set | None = None):
     el = ds.read_table("espn_lineups", league=league)
     if el is None:
         return None
@@ -1732,7 +1748,7 @@ def _placements(team: str, league: str, last_n: int | None = None):
     resolve = _players_lookup(league)
     placements = []
     for slot in formation_slots(formation):
-        cand = slot_counts.get(slot)
+        cand = {k: v for k, v in (slot_counts.get(slot) or {}).items() if not exclude or _person_key(k) not in exclude}
         player = max(cand, key=cand.get) if cand else None
         x, y = slot_xy(slot, formation)
         row = resolve(player) if player else None
@@ -1750,17 +1766,18 @@ def _placements(team: str, league: str, last_n: int | None = None):
 @app.get("/api/lineup/{team}")
 @_memo(ttl=21600)
 def lineup(team: str, league: str = ACTIVE_LEAGUE):
-    season = _placements(team, league)
+    gone = _gone_keys(team, league)   # 떠난 선수는 현재 XI·벤치에서 제외
+    season = _placements(team, league, exclude=gone)
     if season is None:
         raise HTTPException(404, "lineup data not found")
-    recent = _placements(team, league, last_n=5)
+    recent = _placements(team, league, last_n=5, exclude=gone)
 
     # 벤치 — 시즌 XI 에 없는 스쿼드 선수(OVR 순 상위 8)
     xi_names = {p["player"] for p in season["placements"]}
     bench = []
     df = _squad_df(team, league)
     if df is not None:
-        df = df.copy()
+        df = df[~df["player"].map(lambda n: _person_key(n) in gone)].copy()
         df["_ovr"] = df.apply(_player_ovr, axis=1)
         for _, r in df[~df["player"].isin(xi_names)].sort_values("_ovr", ascending=False).head(8).iterrows():
             bench.append({"player": r["player"], "pos": str(r.get("fl_group") or r.get("pos") or ""),
@@ -3192,7 +3209,8 @@ def _fx_enrich(m: dict, src: dict) -> dict:
         lg = t.get("league") or (rk[2] if rk else None)
         t["league"] = lg
         t["rank"], t["points"] = (rk[0], rk[1]) if rk else (None, None)
-        t["logo"] = tm.team_logo(t["team"])
+        t["logo"] = tm.team_logo(t["team"]) or t.pop("logo_alt", "") or ""   # 사전에 없으면 ESPN 일정의 상대 로고
+        t.pop("logo_alt", None)
         t["color"] = tm.team_color(t["team"])
         t["ovr"] = _club_strength(lg).get(t["team"]) if lg else None
         t["form"] = mc.recent_form(src["rows"].get(lg), t["team"]) if lg else []
@@ -3554,6 +3572,94 @@ def team_fixtures(team: str, league: str = ACTIVE_LEAGUE, n: int = 3):
     return {"team": team, "next": [_fx_enrich(m, src) for m in ms]}
 
 
+# 팀 시즌 프로필 축 — (지수 컬럼, 영어, 한글, 근거 숫자 종류). 값은 리그 안 상대 지수(50=리그 평균, 시즌 초 표본 보정)
+_PROFILE_AXES = [
+    ("attack_output_index", "ATTACK OUTPUT", "공격 출력", "gf"),
+    ("attack_creation_index", "CHANCE CREATION", "찬스 창출", ""),
+    ("midfield_control_index", "CONTROL", "중원 장악", ""),
+    ("pressing_index", "PRESSING", "전방 압박", ""),
+    ("defense_output_index", "DEFENSIVE OUTPUT", "실점 억제", "ga"),
+    ("set_piece_attack_index", "SET PIECES", "세트피스", "sp"),
+]
+
+
+@app.get("/api/team-season/{team}")
+@_memo(ttl=1800)
+def team_season(team: str, league: str = ACTIVE_LEAGUE):
+    """팀 화면 'SEASON SNAPSHOT' — 순위·승점 흐름(1위·4위 비교)·최근 5경기(전 대회, 리뷰 연결)·
+    시즌 프로필(지표별 리그 순위 + 근거 숫자). 레이더 숫자만으론 '2위 팀 공격 43?' 같은 오해가 생겨 순위·근거를 함께 준다."""
+    import match_center as mc  # noqa: PLC0415
+    src = _fx_sources()
+    rows = src["rows"].get(league)
+    st = ds.read_table("standings", league=league)
+    n = 0 if st is None else len(st)
+    me = None if st is None else st[st["squad"] == team]
+    stand = None if me is None or me.empty else me.iloc[0]
+
+    def _path_of(t):
+        return {"team": t, "path": mc.points_path(rows, t), "logo": tm.team_logo(t), "color": tm.team_color(t)}
+    path = _path_of(team)
+    refs = []
+    if st is not None and not st.empty:
+        srt = st.sort_values("rank")
+        for rk, label in ((1, "1위"), (4, "4위")):
+            r = srt[srt["rank"] == rk]
+            if not r.empty and str(r.iloc[0]["squad"]) != team:
+                refs.append({**_path_of(str(r.iloc[0]["squad"])), "label": label})
+
+    # 최근 5경기(전 대회) — 상대 리그 파일로 묶어야 상대도 우리 표기
+    today = _today_kst()
+    recent = []
+    for m in mc.results_from(src["rows"], today, 75):
+        if team not in (m["home"]["team"], m["away"]["team"]):
+            continue
+        m = _fx_enrich(m, src)
+        m["upset"] = mc.upset_note(m)
+        recent.append(m)
+        if len(recent) >= 5:
+            break
+
+    # 시즌 프로필 — 리그 안 순위와 근거 숫자
+    profile = []
+    um = ds.read_table("team_unit_metrics", league=league)
+    sb = _team_row("statbunker_team_stats", team, league)
+    if um is not None and team in set(um["squad"]):
+        row = um[um["squad"] == team].iloc[0]
+        g = int(_num(stand["played"])) if stand is not None else 0
+        for col, en, kr, hint_kind in _PROFILE_AXES:
+            if col not in um.columns or pd.isna(row.get(col)) or _num(row.get(col)) <= 0:
+                continue
+            vals = pd.to_numeric(um[col], errors="coerce")
+            val = int(_num(row[col]))
+            rank = int((vals > val).sum()) + 1
+            hint = ""
+            if hint_kind == "gf" and stand is not None and g:
+                hint = f"경기당 득점 {int(stand['gf']) / g:.2f}"
+            elif hint_kind == "ga" and stand is not None and g:
+                hint = f"경기당 실점 {int(stand['ga']) / g:.2f}"
+            elif hint_kind == "sp" and sb is not None and pd.notna(sb.get("non_penalty_set_piece_goals")):
+                hint = f"세트피스 득점 {int(_num(sb.get('non_penalty_set_piece_goals')))}골"
+            profile.append({"key": col, "en": en, "kr": kr, "value": val, "rank": rank,
+                            "n": int(vals.notna().sum()), "hint": hint})
+
+    # 리그 표의 경기당 xG·전력 순위(리그 랩 6시간 캐시 재사용)
+    xg_pg = str_rank = None
+    try:
+        lab_row = next((r for r in (league_lab(league).get("table") or []) if r.get("team") == team), None)
+        if lab_row:
+            xg_pg, str_rank = lab_row.get("xg_pg"), lab_row.get("str_rank")
+    except Exception:  # noqa: BLE001
+        pass
+
+    return {
+        "team": team, "league": league, "n": n,
+        "standing": None if stand is None else {k: int(_num(stand[k])) for k in
+                                                 ("rank", "played", "won", "drawn", "lost", "gf", "ga", "gd", "points")},
+        "xg_pg": xg_pg, "str_rank": str_rank,
+        "path": path, "refs": refs, "recent": recent, "profile": profile,
+    }
+
+
 @app.on_event("startup")
 def _warm_up() -> None:
     """서버가 뜨자마자 백그라운드에서 공용 계산을 미리 데운다.
@@ -3652,8 +3758,15 @@ def _departures(team: str, league: str, win: dict) -> dict:
     dep: dict[str, dict] = {}
     tr = ds.read_table("transfers", league=league)
     if tr is not None and "squad" in tr.columns:
-        tt, _wf = _window_filter(tr[tr["squad"] == team].copy(), win)
-        tt = tt[(tt["direction"] == "out") & ~tt["fee_text"].map(_is_loan_move)]
+        tw, _wf = _window_filter(tr[tr["squad"] == team].copy(), win)
+        # 같은 창에서 다시 영입된 선수는 이탈이 아니다 — 임대 종료(out) 후 완전 영입(in)이 함께 기록된다
+        # (예: Hincapié 'End of loan → Leverkusen' + '€40m ← Leverkusen' 이 '떠난 선수'와 벤치에 동시에 나왔다)
+        # 단, 임대 복귀(in, End of loan) 뒤 완전 이적(out)한 선수(Kiwior → Porto)는 실제로 떠난 것이라 남긴다.
+        eol = lambda f: str(f or "").lower().startswith("end of loan")  # noqa: E731
+        ins = tw[tw["direction"] == "in"]
+        signed = {_dep_last(p) for p, f in zip(ins["player"], ins["fee_text"]) if not eol(f)}
+        tt = tw[(tw["direction"] == "out") & ~tw["fee_text"].map(_is_loan_move)]
+        tt = tt[~(tt["fee_text"].map(eol) & tt["player"].map(_dep_last).isin(signed))]
         for _, r in tt.iterrows():
             dep[_dep_last(r.get("player"))] = {"player": str(r.get("player") or ""),
                 "club": str(r.get("club") or ""), "pos": str(r.get("pos") or "")}

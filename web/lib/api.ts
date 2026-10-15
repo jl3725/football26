@@ -472,6 +472,14 @@ export type MatchReview = { event_id: string; comp: string; date: string; state:
   ht: { home: number; away: number } | null; home: ReviewTeam; away: ReviewTeam };
 export const getReview = (eventId: string, comp = "") =>
   j<MatchReview>(`/api/review/${encodeURIComponent(eventId)}${comp ? `?comp=${encodeURIComponent(comp)}` : ""}`);
+// 팀 시즌 현황(/api/team-season) — 순위·승점 흐름(1위·4위 비교)·최근 5경기(전 대회)·시즌 프로필(지표별 리그 순위·근거)
+export type PointsPath = { team: string; path: number[]; logo: string; color: string; label?: string };
+export type ProfileAxis = { key: string; en: string; kr: string; value: number; rank: number; n: number; hint: string };
+export type TeamSeason = { team: string; league: string; n: number;
+  standing: { rank: number; played: number; won: number; drawn: number; lost: number; gf: number; ga: number; gd: number; points: number } | null;
+  xg_pg: number | null; str_rank: number | null; path: PointsPath; refs: PointsPath[]; recent: ResultMatch[]; profile: ProfileAxis[] };
+export const getTeamSeason = (team: string, l = _league) =>
+  j<TeamSeason>(`/api/team-season/${encodeURIComponent(team)}?league=${encodeURIComponent(l)}`);
 export const getTeamFixtures = (team: string, l = _league) =>
   j<{ team: string; next: Fixture[] }>(`/api/fixtures/${encodeURIComponent(team)}?league=${encodeURIComponent(l)}`);
 // 선수 시즌 히트맵(Sofascore) — analytics 포지셔널 히트맵

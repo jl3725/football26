@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import SectionHead from "./SectionHead";
 import { getCaptains, type Captain } from "@/lib/api";
 import { tier, hexA } from "@/lib/ui";
 
@@ -10,7 +11,7 @@ export default function CaptainBoard({ team, accent }: { team: string; accent: s
 
   return (
     <div className="card" style={{ marginTop: 16 }}>
-      <h3>주장단 · Captaincy</h3>
+      <SectionHead title="CAPTAINCY" kr="주장단" />
       <div className="cap-board">
         {caps.map((c, i) => {
           const t = c.ovr ? tier(c.ovr) : null;

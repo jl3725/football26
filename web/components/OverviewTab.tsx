@@ -10,11 +10,14 @@ import CaptainBoard from "./CaptainBoard";
 import OverviewSignals from "./OverviewSignals";
 import IdentityCard from "./IdentityCard";
 import { usePeek } from "./PlayerPeek";
+import { Skel } from "./Skeleton";
 import { phaseOf } from "@/lib/season";
 import { useEffect, useState } from "react";
 import { TrendArrow } from "./Trend";
 import NextMatch from "./NextMatch";
 import { usePins } from "@/lib/pins";
+import SectionHead from "./SectionHead";
+import { SeasonProfile, SeasonSnapshot, useTeamSeason } from "./TeamSeason";
 
 function repStars(rank?: number | null): string {
   if (!rank) return "★★★☆☆";
@@ -51,6 +54,7 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
   const [more, setMore] = useState(false);
   useEffect(() => { try { setMore(localStorage.getItem("ov_more") === "1"); } catch { /* 저장소 차단 */ } }, []);
   const toggleMore = (v: boolean) => { setMore(v); try { localStorage.setItem("ov_more", v ? "1" : "0"); } catch { /* 무시 */ } };
+  const season = useTeamSeason(ov.team, ov.league);   // 시즌 현황·프로필(순위·근거 포함)
   const leagueCap = (ov.league || "EPL").replace(/([a-z])([A-Z])/g, "$1 $2").replace(/([a-zA-Z])(\d)/g, "$1 $2").toUpperCase();
 
   return (
@@ -89,47 +93,38 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
         </div>
       </div>
 
-      {/* 구단 정보 배너 */}
-      <div className="info-strip">
-        <div className="info-item"><span className="l">평판</span><span className="v" style={{ color: "#f9dd7e", letterSpacing: 1 }}>{repStars(info.value_rank)}</span></div>
-        <div className="info-item"><span className="l">연고지</span><span className="v">{info.city || "-"}</span></div>
-        <div className="info-item"><span className="l">창단</span><span className="v">{info.founded || "-"}</span></div>
-        <div className="info-item"><span className="l">스쿼드 가치</span><span className="v">{info.squad_value ? fmtEur(info.squad_value) : "-"}<em> ({info.value_rank ? info.value_rank + "위" : "-"})</em></span></div>
-      </div>
-      {info.desc && <div className="info-desc" style={{ borderColor: hexA(accent, 0.3) }}>{info.desc}</div>}
-
-      {/* 최근 감지 변화 */}
-      <OverviewSignals team={ov.team} accent={accent} />
+      {/* 지금 이 팀이 어떤가 — 순위·승점 흐름·최근 5경기(리뷰). 바뀌지 않는 구단 정보는 아래 CLUB 카드로 */}
+      <div className="ov5-top"><SeasonSnapshot d={season} team={ov.team} league={ov.league} color={ov.color} /></div>
 
       {/* 다음 경기(전 대회) — 상대 순위·최근 폼·전력 비교 */}
       <NextMatch team={ov.team} />
 
+      {/* 최근 감지 변화(시장가치 급등·급락 등) */}
+      <OverviewSignals team={ov.team} accent={accent} />
+
       {/* GRID */}
       <div className="grid">
         <div className="card">
-          <h3>Unit Ratings{(ov.ovr_delta && (ov.ovr_delta.attack || ov.ovr_delta.midfield || ov.ovr_delta.defense || ov.ovr_delta.overall))
-            ? <span className="rating-note">· {ov.window?.label ?? ""} 이적 반영 <b style={{ color: "#4fc27f" }}>▲</b>/<b style={{ color: "#e07070" }}>▼</b></span> : null}</h3>
+          <SectionHead title="SQUAD STRENGTH" kr="선수 평점 기반 전력"
+            meta={(ov.ovr_delta && (ov.ovr_delta.attack || ov.ovr_delta.midfield || ov.ovr_delta.defense || ov.ovr_delta.overall))
+              ? <>{ov.window?.label ?? ""} 이적 반영 <b style={{ color: "#4fc27f" }}>▲</b>/<b style={{ color: "#e07070" }}>▼</b></> : "라인별 주전 OVR"} />
           <div className="unit-list">
             <Unit label="ATTACK" value={ov.ovr.attack} color={accent} delta={ov.ovr_delta?.attack} />
             <Unit label="MIDFIELD" value={ov.ovr.midfield} color={accent} delta={ov.ovr_delta?.midfield} />
             <Unit label="DEFENSE" value={ov.ovr.defense} color={accent} delta={ov.ovr_delta?.defense} />
           </div>
-          <div className="stat-strip">
-            <div className="stat"><div className="v">{s.points}</div><div className="l">Points</div></div>
-            <div className="stat"><div className="v">{s.gf}</div><div className="l">Goals</div></div>
-            <div className="stat"><div className="v">{s.gd > 0 ? "+" : ""}{s.gd}</div><div className="l">Diff</div></div>
-            <div className="stat"><div className="v">{s.ga}</div><div className="l">Conceded</div></div>
-          </div>
+          <p className="sp5-note">선수 개인 평점(OVR)으로 본 &apos;가진 전력&apos;. 옆의 SEASON PROFILE 은 이번 시즌 &apos;경기 내용&apos;입니다.</p>
         </div>
 
         <div className="card">
-          <h3>Team Profile</h3>
-          <Radar data={ov.radar} color={accent} />
+          <SectionHead title="SEASON PROFILE" kr="경기 내용 · 리그 순위" />
+          {season === undefined ? <Skel h={220} r={10} /> : season?.profile.length ? <SeasonProfile axes={season.profile} />
+            : <Radar data={ov.radar} color={accent} />}
         </div>
 
         {snap && (
           <div className="card">
-            <h3>득점 유형 · 규율</h3>
+            <SectionHead title="SCORING · DISCIPLINE" kr="득점 유형 · 규율" meta="리그 · Statbunker" />
             <div className="stat-strip" style={{ marginTop: 0 }}>
               <div className="stat"><div className="v" style={{ color: accent }}>{snap.open_play}</div><div className="l">오픈플레이</div></div>
               <div className="stat"><div className="v" style={{ color: accent }}>{snap.set_piece}</div><div className="l">세트피스</div></div>
@@ -145,7 +140,7 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
 
         {/* 득점 유형 카드가 없으면(시즌 초) 감독 카드가 홀로 반 칸만 차지해 오른쪽이 비었다 → 전체 폭 */}
         <div className={`card${snap ? "" : " span-all mgr-wide"}`}>
-          <h3>Manager</h3>
+          <SectionHead title="MANAGER" kr="감독" />
           {ov.manager ? (
             <>
               <div className="mgr">
@@ -175,6 +170,17 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
             </>
           ) : <div className="mgr-meta">감독 정보 없음</div>}
         </div>
+
+        <div className="card span-all">
+          <SectionHead title="CLUB" kr="구단 정보" />
+          <div className="info-strip">
+            <div className="info-item"><span className="l">평판</span><span className="v" style={{ color: "#f9dd7e", letterSpacing: 1 }}>{repStars(info.value_rank)}</span></div>
+            <div className="info-item"><span className="l">연고지</span><span className="v">{info.city || "-"}</span></div>
+            <div className="info-item"><span className="l">창단</span><span className="v">{info.founded || "-"}</span></div>
+            <div className="info-item"><span className="l">스쿼드 가치</span><span className="v">{info.squad_value ? fmtEur(info.squad_value) : "-"}<em> ({info.value_rank ? info.value_rank + "위" : "-"})</em></span></div>
+          </div>
+          {info.desc && <div className="info-desc" style={{ borderColor: hexA(accent, 0.3) }}>{info.desc}</div>}
+        </div>
       </div>
 
 
@@ -185,7 +191,7 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
       {/* 핵심 선수 */}
       {ov.stars.length > 0 && (
         <div className="card" style={{ marginTop: 16 }}>
-          <h3>핵심 선수 · Top 5 (평점 기준)</h3>
+          <SectionHead title="KEY PLAYERS" kr="핵심 선수" meta="평점(OVR) TOP 5" />
           <div className="stars-row">
             {ov.stars.map((st, i) => {
               const tt = tier(st.ovr);
@@ -224,7 +230,7 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
       {/* 팀 리더 */}
       {ov.leaders.length > 0 && (
         <div className="card" style={{ marginTop: 16 }}>
-          <h3>팀 리더 · 부문별 1위</h3>
+          <SectionHead title="TEAM LEADERS" kr="부문별 1위" />
           <div className="leaders-row">
             {ov.leaders.map((ld, i) => (
               <div className="leader peekable" key={i}
@@ -241,7 +247,7 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
       {/* 부상 + 이적 2열 */}
       <div className="grid" style={{ marginTop: 16 }}>
         <div className="card">
-          <h3>현재 부상자 · {ov.injuries.length}명</h3>
+          <SectionHead title="INJURIES" kr="현재 부상자" meta={`${ov.injuries.length}명`} />
           <div className="tf2-list">
             {ov.injuries.map((x, i) => (
               <div className="tf2-row peekable" key={i}
@@ -259,7 +265,7 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
         </div>
 
         <div className="card">
-          <h3>이적 · In / Out</h3>
+          <SectionHead title="TRANSFERS" kr="이적 In / Out" />
           <div className="tf-list">
             {ov.transfers.in.slice(0, 4).map((x, i) => (
               <div key={"i" + i} className="tf-row tf-in peekable"

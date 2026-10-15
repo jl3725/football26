@@ -31,6 +31,18 @@ OUT = data_path("team_unit_metrics")
 HIGH_GOOD = True
 LOW_GOOD = False
 
+# 여러 항목을 묶는 원자료: (선수 풀, 항목). 항목별 팀 평균 → 리그 z 점수 → 평균(단위가 달라도 같은 무게).
+MULTI = {
+    "attack_creation_raw": ("am", ["xa_p90", "kp_p90", "key_passes_per90", "big_chances_created_per90", "xg_chain_p90"]),
+    "attack_threat_raw": ("a", ["npxg_p90", "shots_p90", "xg_chain_p90", "successful_dribbles_per90"]),
+    "midfield_control_raw": ("m", ["pass_pct", "final_third_passes_per90", "xg_chain_p90", "long_ball_pct"]),
+    "midfield_creativity_raw": ("m", ["xa_p90", "kp_p90", "key_passes_per90", "big_chances_created_per90",
+                                      "final_third_passes_per90"]),
+    "def_blocks_raw": ("dm", ["blocked_shots_per90", "outfielder_blocks_per90"]),
+    "defense_box_aerial_raw": ("d", ["clearances_per90", "aerial_won_per90", "aerial_won_pct",
+                                     "gk_saves_per90", "gk_high_claims_per90"]),
+}
+
 
 
 def comp_context_from_schedule() -> dict[str, dict]:
@@ -81,17 +93,11 @@ def player_ovr(row: dict) -> float | None:
 
 
 def norm_role(row: dict) -> str:
-    pos = (row.get("pos") or "").upper()
-    fl = (row.get("fl_group") or "").upper()
-    if "GK" in pos or fl == "GK":
-        return "gk"
-    if fl in {"CB", "FB", "RB", "LB"} or "DF" in pos:
-        return "defense"
-    if fl in {"DM", "CM", "AM"} or "MF" in pos:
-        return "midfield"
-    if fl in {"ST", "W", "RW", "LW"} or "FW" in pos:
-        return "attack"
-    return "other"
+    """선수 라인 — 평점 모델(ratings_v3.line_of_row)과 같은 규칙: tm_position(트페 역할) 우선.
+    26/27 선수 파일엔 fl_group 이 없고 pos 가 GK/DF/MF/FW 뿐이라, 예전 규칙은 윙어(Saka·Tzolis, pos=MF)를
+    미드필더로, 'FW,MF' 를 미드필더로 보냈다 → Arsenal '공격수 풀' = Havertz 한 명 → 공격 출력 43(2026-10)."""
+    import ratings_v3 as rv3  # noqa: PLC0415
+    return {"GK": "gk", "DEF": "defense", "MID": "midfield", "ATT": "attack"}.get(rv3.line_of_row(row), "other")
 
 
 def weighted_mean(rows: list[dict], cols: list[str]) -> float | None:
@@ -253,20 +259,6 @@ def main() -> int:
             "attack_quality_raw": role_quality(rows, "attack", 6),
             "midfield_quality_raw": role_quality(rows, "midfield", 7),
             "defense_quality_raw": role_quality(rows, "defense", 7),
-            "attack_creation_raw": weighted_mean(atts + mids, [
-                "xa_p90", "kp_p90", "key_passes_per90",
-                "big_chances_created_per90", "xg_chain_p90",
-            ]),
-            "attack_threat_raw": weighted_mean(atts, [
-                "npxg_p90", "shots_p90", "xg_chain_p90", "successful_dribbles_per90",
-            ]),
-            "midfield_control_raw": weighted_mean(mids, [
-                "pass_pct", "final_third_passes_per90", "xg_chain_p90", "long_ball_pct",
-            ]),
-            "midfield_creativity_raw": weighted_mean(mids, [
-                "xa_p90", "kp_p90", "key_passes_per90",
-                "big_chances_created_per90", "final_third_passes_per90",
-            ]),
             "mid_recoveries_raw": weighted_mean(mids, ["recoveries_per90"]),
             "mid_att3rd_won_raw": weighted_mean(mids, ["possession_won_att_per90"]),
             "mid_ground_duels_raw": weighted_mean(mids, ["ground_duels_won_per90"]),
@@ -275,12 +267,14 @@ def main() -> int:
             "def_tackles_raw": weighted_mean(defs + mids, ["tackles_won_per90_ss"]),
             "def_interceptions_raw": weighted_mean(defs + mids, ["interceptions_per90_ss"]),
             "def_recoveries_raw": weighted_mean(defs + mids, ["recoveries_per90"]),
-            "def_blocks_raw": weighted_mean(defs + mids, ["blocked_shots_per90", "outfielder_blocks_per90"]),
-            "defense_box_aerial_raw": weighted_mean(defs, [
-                "clearances_per90", "aerial_won_per90", "aerial_won_pct",
-                "gk_saves_per90", "gk_high_claims_per90",
-            ]),
         }
+        # 여러 지표를 묶는 원자료 — 항목별 팀 평균만 담고, 아래에서 항목마다 z 점수로 바꿔 평균한다.
+        # (예전엔 슈팅/90(2~3)·npxG/90(0.3)·드리블/90(1)을 한 평균에 섞어 큰 단위 항목이 지표를 좌우했고,
+        #  어떤 선수에게 항목이 비면 섞이는 비율까지 달라졌다 — 2026-10 Arsenal 공격 출력 43 vs 맨유 63)
+        pools = {"am": atts + mids, "a": atts, "m": mids, "dm": defs + mids, "d": defs}
+        for key, (pool, cols) in MULTI.items():
+            for col in cols:
+                raw[team][f"{key}|{col}"] = weighted_mean(pools[pool], [col])
 
         # Attach competition context (non-league games)
         ctx = comp_context.get(team, {})
@@ -288,6 +282,23 @@ def main() -> int:
         raw[team]["domestic_cup_games"] = ctx.get("domestic_cup_games", 0)
         raw[team]["extra_games"] = ctx.get("extra_games", 0)
         raw[team]["total_games_approx"] = ctx.get("total_games_approx", 0)
+
+    for key, (_pool, cols) in MULTI.items():
+        zs: dict[str, list[float]] = {t: [] for t in teams}
+        for col in cols:
+            vals = {t: raw[t].get(f"{key}|{col}") for t in teams}
+            got = [v for v in vals.values() if v is not None]
+            if len(got) < 3:
+                continue
+            mu = sum(got) / len(got)
+            sd = (sum((v - mu) ** 2 for v in got) / (len(got) - 1)) ** 0.5
+            if sd == 0:
+                continue
+            for t, v in vals.items():
+                if v is not None:
+                    zs[t].append((v - mu) / sd)
+        for t in teams:
+            raw[t][key] = sum(zs[t]) / len(zs[t]) if zs[t] else None
 
     directions = {
         "points": HIGH_GOOD, "gd": HIGH_GOOD, "gf": HIGH_GOOD, "ga": LOW_GOOD,

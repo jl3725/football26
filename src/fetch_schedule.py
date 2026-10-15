@@ -87,6 +87,9 @@ def collect_comp(code: str, label: str, start_year: int, league: str, ours) -> l
                 "result": result,
                 "status": "completed" if completed else "scheduled",
                 "event_id": eid,
+                # 우리 리그 밖 상대(컵 하부 리그·유럽대회 상대)는 로고 사전에 없다 → ESPN 로고를 함께 저장
+                "opponent_logo": (opp.get("team", {}) or {}).get("logo")
+                or next((l.get("href") for l in ((opp.get("team", {}) or {}).get("logos") or []) if l.get("href")), ""),
             })
     return rows
 

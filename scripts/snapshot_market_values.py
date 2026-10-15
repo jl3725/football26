@@ -35,6 +35,7 @@ HISTORY = DATA_DIR / "market_value_history.csv"
 CHANGES = DATA_DIR / f"market_value_changes_{SEASON}.csv"
 MIN_DELTA_EUR = 1_000_000     # 100만 유로 미만 변동은 노이즈로 무시
 MIN_DELTA_PCT = 8.0           # 또는 8% 이상
+KEEP_DAYS = 14                # 변동 기록 보관 기간(팀 화면 신호가 하루 만에 사라지지 않게)
 
 
 def _today() -> str:
@@ -84,9 +85,19 @@ def snapshot() -> None:
     m["pct"] = (m["delta"] / m["old_value"].replace(0, pd.NA) * 100).round(1)
     changed = m[(m["delta"].abs() >= MIN_DELTA_EUR) | (m["pct"].abs() >= MIN_DELTA_PCT)].copy()
     changed.insert(0, "run_date", cur)
-    changed = changed.sort_values("delta", key=lambda s: s.abs(), ascending=False)
+    # 최근 14일 변동은 누적 보관 — 예전엔 매 실행이 '직전 대비'로 덮어써, 값이 안 바뀐 날(대부분)엔
+    # 파일이 비고 팀 화면 SIGNALS 의 '시장가치 급등·급락'이 사라졌다(2026-10-15 클라우드 첫 실행에서 드러남).
+    if CHANGES.exists():
+        try:
+            old = pd.read_csv(CHANGES)
+            cut = (pd.Timestamp(cur) - pd.Timedelta(days=KEEP_DAYS)).date().isoformat()
+            old = old[old["run_date"].astype(str) >= cut]
+            changed = pd.concat([changed, old], ignore_index=True).drop_duplicates(["squad", "player"], keep="first")
+        except (OSError, ValueError, KeyError):
+            pass
+    changed = changed.sort_values(["run_date", "delta"], key=lambda s: s.abs() if s.name == "delta" else s, ascending=False)
     changed.to_csv(CHANGES, index=False)
-    print(f"✓ 변동 {len(changed)}건 기록 ({prev} → {cur})")
+    print(f"✓ 변동 기록 ({prev} → {cur}) · 최근 {KEEP_DAYS}일 누적 {len(changed)}건")
 
 
 if __name__ == "__main__":

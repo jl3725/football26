@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import SectionHead from "./SectionHead";
 import { getLineup, getProjection, type Lineup, type Projection } from "@/lib/api";
 import Pitch from "./Pitch";
 import { usePeek } from "./PlayerPeek";
@@ -35,9 +36,36 @@ export default function LineupBoard({ team, accent, departed = [] }: { team: str
     b ? `${b.formation}|${b.placements.map((x) => `${x.slot}:${x.player}`).sort().join(",")}` : "";
   const sameXI = view === "cur" && !!lu?.recent && sig(lu.season) === sig(lu.recent);
 
+  const bench = lu?.bench && lu.bench.length > 0 ? (
+    <div className="bench-strip">
+      <div className="bench-title">벤치 뎁스</div>
+      {lu.bench.map((b, i) => (
+        <div className="bench-chip peekable" key={i}
+          onClick={(e) => peek(e, { name: b.player, club: team, hint: { photo: b.photo, ovr: b.ovr, pos: b.pos } })}>
+          {b.photo ? <img src={b.photo} alt="" /> : <span className="bench-ph" />}
+          <span className="bench-name">{b.player.split(" ").slice(-1)[0]}</span>
+          <span className="bench-ovr" style={{ color: accent }}>{b.ovr}</span>
+        </div>
+      ))}
+    </div>
+  ) : null;
+  const gone = departed.length > 0 ? (
+    <div className="bench-strip departed">
+      <div className="bench-title">↪ 떠난 선수</div>
+      {departed.map((d, i) => (
+        <div className="bench-chip peekable" key={i}
+          onClick={(e) => peek(e, { name: d.player, hint: { photo: d.photo, pos: d.pos } })}>
+          {d.photo ? <img src={d.photo} alt="" /> : <span className="bench-ph" />}
+          <span className="bench-name">{d.player.split(" ").slice(-1)[0]}</span>
+          <span className="bench-to">→ {d.left_for}</span>
+        </div>
+      ))}
+    </div>
+  ) : null;
+
   return (
     <div className="card" style={{ marginTop: 16 }}>
-      <h3>포메이션 & 전술 구조</h3>
+      <SectionHead title="FORMATION" kr="포메이션 · 베스트 XI" meta="시즌 평점 기준 XI · 최근 5경기 XI" />
       <div className={`pitch-grid${sameXI ? " single" : ""}`}>
         {/* LEFT — 시즌 베스트 XI + 시즌 토글 */}
         <div>
@@ -56,7 +84,14 @@ export default function LineupBoard({ team, accent, departed = [] }: { team: str
           </div>
         </div>
 
-        {/* RIGHT — 최근 5경기 XI (시즌 BEST XI 와 같으면 생략) */}
+        {/* RIGHT — 시즌 BEST XI 와 같으면 피치 대신 XI 요약·벤치·떠난 선수(예전엔 피치 하나가 가운데 떠 양옆이 비었다) */}
+        {sameXI && leftBoard && (
+          <div className="xi-side">
+            <XiSummary placements={leftBoard.placements} formation={leftFormation || ""} accent={accent} />
+            {bench}
+            {gone}
+          </div>
+        )}
         {!sameXI && <div>
           <div className="proj-toggle" style={{ marginBottom: 10, visibility: "hidden" }}>
             <button>_</button>
@@ -90,33 +125,33 @@ export default function LineupBoard({ team, accent, departed = [] }: { team: str
         </div>
       )}
 
-      {/* 벤치 + 이적 이탈 */}
-      {lu?.bench && lu.bench.length > 0 && (
-        <div className="bench-strip">
-          <div className="bench-title">벤치 뎁스</div>
-          {lu.bench.map((b, i) => (
-            <div className="bench-chip peekable" key={i}
-              onClick={(e) => peek(e, { name: b.player, club: team, hint: { photo: b.photo, ovr: b.ovr, pos: b.pos } })}>
-              {b.photo ? <img src={b.photo} alt="" /> : <span className="bench-ph" />}
-              <span className="bench-name">{b.player.split(" ").slice(-1)[0]}</span>
-              <span className="bench-ovr" style={{ color: accent }}>{b.ovr}</span>
-            </div>
-          ))}
+      {/* 벤치 + 이적 이탈 — 같은 XI(피치 하나)면 이미 오른쪽 칸에 있다 */}
+      {!sameXI && bench}
+      {!sameXI && gone}
+    </div>
+  );
+}
+
+// XI 요약 — 포메이션 · XI 평균 OVR · 라인별 평균(수비·중원·공격)
+function XiSummary({ placements, formation, accent }: { placements: { kind: string; ovr: number | null }[]; formation: string; accent: string }) {
+  const avg = (ks: string[]) => {
+    const v = placements.filter((p) => ks.includes(p.kind) && p.ovr != null).map((p) => p.ovr as number);
+    return v.length ? Math.round(v.reduce((a, b) => a + b, 0) / v.length) : null;
+  };
+  const rows: [string, string, number | null][] = [
+    ["XI 평균", "XI", avg(["GK", "DEF", "MID", "FWD"])], ["수비", "DEF", avg(["GK", "DEF"])],
+    ["중원", "MID", avg(["MID"])], ["공격", "ATT", avg(["FWD"])],
+  ];
+  return (
+    <div className="xi-sum">
+      <div className="xi-sum-f"><em>FORMATION</em><b>{formation || "—"}</b></div>
+      {rows.map(([kr, en, v]) => (
+        <div className="xi-sum-r" key={en}>
+          <span>{en}<em>{kr}</em></span>
+          <i><span style={{ width: `${v ?? 0}%`, background: accent }} /></i>
+          <b>{v ?? "—"}</b>
         </div>
-      )}
-      {departed.length > 0 && (
-        <div className="bench-strip departed">
-          <div className="bench-title">↪ 떠난 선수</div>
-          {departed.map((d, i) => (
-            <div className="bench-chip peekable" key={i}
-              onClick={(e) => peek(e, { name: d.player, hint: { photo: d.photo, pos: d.pos } })}>
-              {d.photo ? <img src={d.photo} alt="" /> : <span className="bench-ph" />}
-              <span className="bench-name">{d.player.split(" ").slice(-1)[0]}</span>
-              <span className="bench-to">→ {d.left_for}</span>
-            </div>
-          ))}
-        </div>
-      )}
+      ))}
     </div>
   );
 }
