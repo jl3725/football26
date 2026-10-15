@@ -66,3 +66,5 @@ logs/
 # 평점 평가 스냅샷(scripts/eval_ratings.py) — 기준 선수(golden.csv)만 커밋
 data/eval/ratings_*.csv
 .cache/
+# 배포 빌드에서 만드는 팀 라인 전력 스냅샷(scripts/precompute_team_units.py) — 커밋하지 않음
+data/team_units.json

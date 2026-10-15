@@ -236,7 +236,36 @@ def _team_perf(team: str, league: str) -> dict:
 
 @_memo(ttl=21600)
 def _league_units(league: str) -> dict:
-    """{클럽: {overall, attack, midfield, defense}} — 같은 리그 안 라인별 순위('리그 몇 위인가')용."""
+    """{클럽: {overall, attack, midfield, defense}} — 같은 리그 안 라인별 순위·클럽 티어·빅매치 전력.
+
+    배포 빌드에서 미리 계산한 data/team_units.json(scripts/precompute_team_units.py)이 지금 DB 와 같으면 그걸 쓴다.
+    Render 무료(0.1 CPU)에서 시작할 때마다 8개 리그 전 팀(부상자 포함·임대 판정·여러 시즌 기록)을 계산하느라
+    홈(빅매치·결과 띠)과 Overview 가 70초 제한을 넘겼다(2026-10-15). 파일이 없거나 DB 가 바뀌었으면 즉석 계산."""
+    snap = _units_snapshot()
+    if snap.get("stamp") == _units_stamp() and league in snap.get("leagues", {}):
+        return snap["leagues"][league]
+    return _compute_league_units(league)
+
+
+_UNITS_FILE = ds.DB_PATH.parent / "team_units.json"
+_UNITS_SNAP: dict = {}
+
+
+def _units_stamp() -> str:
+    """스냅샷이 지금 데이터와 같은지 — 시즌 + DB 파일 시각(빌드에서 만든 DB 를 그대로 쓰면 같다)."""
+    return f"{SEASON_START}|{_db_stamp()}"
+
+
+def _units_snapshot() -> dict:
+    if "data" not in _UNITS_SNAP:
+        try:
+            _UNITS_SNAP["data"] = json.loads(_UNITS_FILE.read_text(encoding="utf-8")) if _UNITS_FILE.exists() else {}
+        except (OSError, ValueError):
+            _UNITS_SNAP["data"] = {}
+    return _UNITS_SNAP["data"]
+
+
+def _compute_league_units(league: str) -> dict:
     full = _pf(league)
     out: dict = {}
     if full is None or "squad" not in full.columns:

@@ -18,6 +18,11 @@ import SeasonOpener from "./SeasonOpener";
 import { MeaningTag } from "./Meaning";
 import { SS_NOTE, ovrMeaning, ssMeaning } from "@/lib/meaning";
 
+// 무료 서버(Render)가 잠들었다 깨는 중이면 첫 요청이 시간 초과될 수 있어 15초 뒤 한 번만 더 시도한다.
+function retryOnce<T>(f: () => Promise<T>, waitMs = 15000): Promise<T> {
+  return f().catch(() => new Promise<T>((res, rej) => setTimeout(() => f().then(res, rej), waitMs)));
+}
+
 // 전 리그 홈(디자인 v5) — '오늘 무엇을 봐야 하나' 순서로:
 //   이번 주 최대 빅매치(크게) + 요약 숫자 → 빅매치 3 → 무엇이 바뀌었나 · 리그 순위 → 빅딜 · 주의 보드 → 이적 소식 · 감독 교체.
 // 데이터: /api/home/all(배포 시 미리 계산) + /api/fixtures(매일 갱신 일정).
@@ -100,7 +105,7 @@ export default function AllDashboard({ onPick, switcher }: { accent?: string; on
   const { pins } = usePins();
   const [opener, setOpener] = useState(false);
   const t0 = useRef(Date.now());
-  useEffect(() => { let a = true; getHomeAll().then((x) => a && setD(x)).catch(() => {}); return () => { a = false; }; }, []);
+  useEffect(() => { let a = true; retryOnce(getHomeAll).then((x) => a && setD(x)).catch(() => {}); return () => { a = false; }; }, []);
   // 시즌 오프닝 — 브라우저 세션당 한 번. 데이터가 2.5초 넘게 늦으면(콜드스타트) 이미 기다린 사람에게 또 보여 주지 않는다.
   useEffect(() => {
     if (!d) return;
@@ -116,11 +121,20 @@ export default function AllDashboard({ onPick, switcher }: { accent?: string; on
   useEffect(() => {
     if (!focusLg) return;
     let a = true; setLab(null);
-    getLeagueLab(focusLg).then((x) => a && setLab(x)).catch(() => {});
+    retryOnce(() => getLeagueLab(focusLg)).then((x) => a && setLab(x)).catch(() => {});
     return () => { a = false; };
   }, [focusLg]);
-  useEffect(() => { let a = true; getFixtures(7).then((x) => { if (a) { setFx(x.big); setFxToday([...x.big, ...x.today]); } }).catch(() => a && setFx([])); return () => { a = false; }; }, []);
-  useEffect(() => { let a = true; getHubPulse().then((x) => a && setPulse(x)).catch(() => {}); return () => { a = false; }; }, []);
+  // 빅매치 — 실패를 '빅매치 없음'으로 보이지 않게 따로 표시(서버가 깨어나는 중이면 시간 초과가 난다)
+  const [fxErr, setFxErr] = useState(false);
+  const [fxTry, setFxTry] = useState(0);
+  useEffect(() => {
+    let a = true; setFxErr(false);
+    retryOnce(() => getFixtures(7))
+      .then((x) => { if (a) { setFx(x.big); setFxToday([...x.big, ...x.today]); } })
+      .catch(() => { if (a) { setFx([]); setFxErr(true); } });
+    return () => { a = false; };
+  }, [fxTry]);
+  useEffect(() => { let a = true; retryOnce(getHubPulse).then((x) => a && setPulse(x)).catch(() => {}); return () => { a = false; }; }, []);
 
   const pinned = useMemo(() => new Set(pins.map((p) => p.team)), [pins]);
 
@@ -194,7 +208,14 @@ export default function AllDashboard({ onPick, switcher }: { accent?: string; on
 
       <div className="h5-hero-row">
         {hero ? <MatchHero m={hero} onPick={(t, l) => l && onPick(t, l)} />
-          : fx === null ? <Skel h={300} r={18} /> : <div className="card h5-hero-empty">이번 주에는 빅매치 기준(지수 35+)을 넘는 경기가 없습니다.</div>}
+          : fx === null ? <Skel h={300} r={18} />
+          : fxErr ? (
+            <div className="card h5-hero-empty">
+              경기 정보를 불러오지 못했습니다 — 서버가 깨어나는 중일 수 있어요(무료 서버는 15분 쉬면 잠들고, 깨는 데 1~2분).
+              <button className="loan-more" style={{ marginLeft: 10 }} onClick={() => { setFx(null); setFxTry((n) => n + 1); }}>다시 시도</button>
+            </div>
+          )
+          : <div className="card h5-hero-empty">이번 주에는 빅매치 기준(지수 35+)을 넘는 경기가 없습니다.</div>}
         {s && (
           <div className="h5-kpis">
             {([
