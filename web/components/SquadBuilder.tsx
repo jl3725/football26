@@ -1,153 +1,175 @@
 "use client";
-import { useMemo, useState } from "react";
-import { type PlayerCard } from "@/lib/api";
-import { tier, hexA } from "@/lib/ui";
+import { useEffect, useMemo, useState } from "react";
+import { getBuilder, type BuilderPlayer } from "@/lib/api";
+import { tier } from "@/lib/ui";
+import { usePeek } from "./PlayerPeek";
 
-type Slot = { line: string; x: number; y: number };
-const LINE_COLOR: Record<string, string> = { GK: "#f4cf5e", DEF: "#6aa6e0", MID: "#4fc27f", ATT: "#e0707a" };
+// Best XI 빌더 — 포메이션 칸마다 역할(GK·LB·CB·RB·DM·CM·AM·LW·RW·ST)이 있고, '선수 OVR × 그 역할 적합도'의 합이
+// 가장 큰 배치를 고른다(헝가리안 알고리즘). 적합도: 주포지션 1.0 · 2/3포지션 0.95 · 비슷한 자리 0.85 · 같은 라인 0.75.
+// 주·2·3포지션 = 실제로 선 자리(ESPN 라인업, src/positions.py). 예전엔 라인만 봐서 Calafiori(LB)가 RB 에 들어갔고,
+// 이번 시즌 출전이 없는 Saliba(부상)·Guimarães 는 후보에서 빠졌다 → 전체 스쿼드 + '부상 제외' 토글.
+
+type Role = "GK" | "LB" | "CB" | "RB" | "DM" | "CM" | "AM" | "LW" | "RW" | "ST";
+type Slot = { role: Role; x: number; y: number };
+const LINE: Record<Role, string> = { GK: "GK", LB: "DEF", CB: "DEF", RB: "DEF", DM: "MID", CM: "MID", AM: "MID", LW: "ATT", RW: "ATT", ST: "ATT" };
+const COLOR: Record<string, string> = { GK: "#f4cf5e", DEF: "#6aa6e0", MID: "#4fc27f", ATT: "#e0707a" };
+const NEAR: Record<Role, Role[]> = { LB: ["CB", "LW"], RB: ["CB", "RW"], CB: ["LB", "RB", "DM"], DM: ["CM", "CB"], CM: ["DM", "AM"],
+  AM: ["CM", "LW", "RW", "ST"], LW: ["RW", "AM", "ST", "LB"], RW: ["LW", "AM", "ST", "RB"], ST: ["AM", "LW", "RW"], GK: [] };
 const last = (n: string) => n.split(" ").slice(-1)[0];
 
-// 포메이션 = 슬롯(라인·좌표). y: 0=공격(위) … 100=GK(아래), x=폭.
+// y: 0 = 상대 골문(위) … 100 = 우리 골문, x: 왼쪽 → 오른쪽
 const FORMATIONS: Record<string, Slot[]> = {
-  "4-3-3": [{ line: "GK", x: 50, y: 92 },
-    { line: "DEF", x: 16, y: 72 }, { line: "DEF", x: 39, y: 76 }, { line: "DEF", x: 61, y: 76 }, { line: "DEF", x: 84, y: 72 },
-    { line: "MID", x: 28, y: 50 }, { line: "MID", x: 50, y: 54 }, { line: "MID", x: 72, y: 50 },
-    { line: "ATT", x: 20, y: 24 }, { line: "ATT", x: 50, y: 16 }, { line: "ATT", x: 80, y: 24 }],
-  "4-4-2": [{ line: "GK", x: 50, y: 92 },
-    { line: "DEF", x: 16, y: 73 }, { line: "DEF", x: 39, y: 76 }, { line: "DEF", x: 61, y: 76 }, { line: "DEF", x: 84, y: 73 },
-    { line: "MID", x: 16, y: 48 }, { line: "MID", x: 39, y: 50 }, { line: "MID", x: 61, y: 50 }, { line: "MID", x: 84, y: 48 },
-    { line: "ATT", x: 38, y: 18 }, { line: "ATT", x: 62, y: 18 }],
-  "4-2-3-1": [{ line: "GK", x: 50, y: 92 },
-    { line: "DEF", x: 16, y: 73 }, { line: "DEF", x: 39, y: 76 }, { line: "DEF", x: 61, y: 76 }, { line: "DEF", x: 84, y: 73 },
-    { line: "MID", x: 35, y: 58 }, { line: "MID", x: 65, y: 58 },
-    { line: "MID", x: 24, y: 34 }, { line: "MID", x: 50, y: 32 }, { line: "MID", x: 76, y: 34 },
-    { line: "ATT", x: 50, y: 14 }],
-  "3-5-2": [{ line: "GK", x: 50, y: 92 },
-    { line: "DEF", x: 28, y: 75 }, { line: "DEF", x: 50, y: 77 }, { line: "DEF", x: 72, y: 75 },
-    { line: "MID", x: 10, y: 52 }, { line: "MID", x: 34, y: 50 }, { line: "MID", x: 50, y: 54 }, { line: "MID", x: 66, y: 50 }, { line: "MID", x: 90, y: 52 },
-    { line: "ATT", x: 40, y: 18 }, { line: "ATT", x: 60, y: 18 }],
-  "3-4-3": [{ line: "GK", x: 50, y: 92 },
-    { line: "DEF", x: 28, y: 75 }, { line: "DEF", x: 50, y: 77 }, { line: "DEF", x: 72, y: 75 },
-    { line: "MID", x: 18, y: 50 }, { line: "MID", x: 40, y: 52 }, { line: "MID", x: 60, y: 52 }, { line: "MID", x: 82, y: 50 },
-    { line: "ATT", x: 20, y: 20 }, { line: "ATT", x: 50, y: 16 }, { line: "ATT", x: 80, y: 20 }],
+  "4-3-3": [{ role: "GK", x: 50, y: 92 }, { role: "LB", x: 14, y: 72 }, { role: "CB", x: 38, y: 77 }, { role: "CB", x: 62, y: 77 }, { role: "RB", x: 86, y: 72 },
+    { role: "CM", x: 27, y: 50 }, { role: "DM", x: 50, y: 57 }, { role: "CM", x: 73, y: 50 }, { role: "LW", x: 18, y: 24 }, { role: "ST", x: 50, y: 16 }, { role: "RW", x: 82, y: 24 }],
+  "4-2-3-1": [{ role: "GK", x: 50, y: 92 }, { role: "LB", x: 14, y: 72 }, { role: "CB", x: 38, y: 77 }, { role: "CB", x: 62, y: 77 }, { role: "RB", x: 86, y: 72 },
+    { role: "DM", x: 36, y: 57 }, { role: "DM", x: 64, y: 57 }, { role: "LW", x: 18, y: 33 }, { role: "AM", x: 50, y: 34 }, { role: "RW", x: 82, y: 33 }, { role: "ST", x: 50, y: 14 }],
+  "4-4-2": [{ role: "GK", x: 50, y: 92 }, { role: "LB", x: 14, y: 72 }, { role: "CB", x: 38, y: 77 }, { role: "CB", x: 62, y: 77 }, { role: "RB", x: 86, y: 72 },
+    { role: "LW", x: 14, y: 46 }, { role: "CM", x: 38, y: 51 }, { role: "CM", x: 62, y: 51 }, { role: "RW", x: 86, y: 46 }, { role: "ST", x: 38, y: 18 }, { role: "ST", x: 62, y: 18 }],
+  "4-1-4-1": [{ role: "GK", x: 50, y: 92 }, { role: "LB", x: 14, y: 72 }, { role: "CB", x: 38, y: 77 }, { role: "CB", x: 62, y: 77 }, { role: "RB", x: 86, y: 72 },
+    { role: "DM", x: 50, y: 60 }, { role: "LW", x: 14, y: 40 }, { role: "CM", x: 38, y: 44 }, { role: "CM", x: 62, y: 44 }, { role: "RW", x: 86, y: 40 }, { role: "ST", x: 50, y: 15 }],
+  "3-4-3": [{ role: "GK", x: 50, y: 92 }, { role: "CB", x: 28, y: 76 }, { role: "CB", x: 50, y: 78 }, { role: "CB", x: 72, y: 76 },
+    { role: "LB", x: 12, y: 50 }, { role: "CM", x: 39, y: 53 }, { role: "CM", x: 61, y: 53 }, { role: "RB", x: 88, y: 50 }, { role: "LW", x: 20, y: 22 }, { role: "ST", x: 50, y: 15 }, { role: "RW", x: 80, y: 22 }],
+  "3-5-2": [{ role: "GK", x: 50, y: 92 }, { role: "CB", x: 28, y: 76 }, { role: "CB", x: 50, y: 78 }, { role: "CB", x: 72, y: 76 },
+    { role: "LB", x: 10, y: 50 }, { role: "CM", x: 33, y: 47 }, { role: "DM", x: 50, y: 56 }, { role: "CM", x: 67, y: 47 }, { role: "RB", x: 90, y: 50 }, { role: "ST", x: 39, y: 18 }, { role: "ST", x: 61, y: 18 }],
 };
 
-export default function SquadBuilder({ players, accent }: { players: PlayerCard[]; accent: string }) {
+function fit(p: BuilderPlayer, role: Role): number {
+  if (p.primary === role) return 1;
+  if (p.secondary.includes(role)) return 0.95;
+  if (role === "GK" || p.primary === "GK") return 0.2;
+  if (NEAR[p.primary as Role]?.includes(role)) return 0.85;
+  return LINE[p.primary as Role] === LINE[role] ? 0.75 : 0.55;
+}
+const score = (p: BuilderPlayer, role: Role) => p.ovr * fit(p, role);
+
+// 헝가리안(최소 비용) — 칸 n ≤ 선수 m. 비용 = -점수. 반환: 칸마다 선수 인덱스(-1 = 없음)
+function assign(cost: number[][]): number[] {
+  const n = cost.length, m = cost[0]?.length ?? 0;
+  if (!n || !m) return Array(n).fill(-1);
+  const INF = 1e18, u = Array(n + 1).fill(0), v = Array(m + 1).fill(0), p = Array(m + 1).fill(0), way = Array(m + 1).fill(0);
+  for (let i = 1; i <= n; i++) {
+    p[0] = i;
+    let j0 = 0;
+    const minv = Array(m + 1).fill(INF), used = Array(m + 1).fill(false);
+    do {
+      used[j0] = true;
+      const i0 = p[j0];
+      let delta = INF, j1 = 0;
+      for (let j = 1; j <= m; j++) {
+        if (used[j]) continue;
+        const cur = cost[i0 - 1][j - 1] - u[i0] - v[j];
+        if (cur < minv[j]) { minv[j] = cur; way[j] = j0; }
+        if (minv[j] < delta) { delta = minv[j]; j1 = j; }
+      }
+      for (let j = 0; j <= m; j++) {
+        if (used[j]) { u[p[j]] += delta; v[j] -= delta; } else minv[j] -= delta;
+      }
+      j0 = j1;
+    } while (p[j0] !== 0);
+    do { const j1 = way[j0]; p[j0] = p[j1]; j0 = j1; } while (j0);
+  }
+  const res = Array(n).fill(-1);
+  for (let j = 1; j <= m; j++) if (p[j]) res[p[j] - 1] = j - 1;
+  return res;
+}
+
+export default function SquadBuilder({ team, accent }: { team: string; accent: string }) {
+  const [players, setPlayers] = useState<BuilderPlayer[] | null>(null);
   const [formation, setFormation] = useState("4-3-3");
   const [overrides, setOverrides] = useState<Record<number, string>>({});
-  const [pick, setPick] = useState<number | null>(null);   // 교체 대상 슬롯
+  const [pick, setPick] = useState<number | null>(null);
+  const [availOnly, setAvailOnly] = useState(false);   // 부상 제외
+  const peek = usePeek();
+  useEffect(() => {
+    let a = true; setPlayers(null); setOverrides({});
+    getBuilder(team).then((d) => a && setPlayers(d.players)).catch(() => a && setPlayers([]));
+    return () => { a = false; };
+  }, [team]);
 
   const slots = FORMATIONS[formation];
-  const { xi, bench, teamOvr } = useMemo(() => {
-    const byLine: Record<string, PlayerCard[]> = {};
-    for (const p of players) (byLine[p.line] ||= []).push(p);
-    for (const k in byLine) byLine[k].sort((a, b) => b.ovr - a.ovr);
-    const used = new Set(Object.values(overrides));
-    const cur: Record<string, number> = { GK: 0, DEF: 0, MID: 0, ATT: 0 };
-    const xi = slots.map((s, i) => {
-      if (overrides[i]) return players.find((p) => p.player === overrides[i]) || null;
-      const pool = byLine[s.line] || [];
-      while (cur[s.line] < pool.length && used.has(pool[cur[s.line]].player)) cur[s.line]++;
-      const p = pool[cur[s.line]];
-      if (p) { cur[s.line]++; used.add(p.player); return p; }
-      return null;
-    });
+  const pool = useMemo(() => (players ?? []).filter((p) => !availOnly || !p.injured), [players, availOnly]);
+  const { xi, bench, teamOvr, fitAvg } = useMemo(() => {
+    const fixed = new Set(Object.values(overrides));
+    const free = pool.filter((p) => !fixed.has(p.player));
+    const openIdx = slots.map((_, i) => i).filter((i) => !overrides[i]);
+    const pickIdx = assign(openIdx.map((i) => free.map((p) => -score(p, slots[i].role))));
+    const xi: (BuilderPlayer | null)[] = slots.map((_, i) => (overrides[i] ? pool.find((p) => p.player === overrides[i]) ?? null : null));
+    openIdx.forEach((si, k) => { xi[si] = pickIdx[k] >= 0 ? free[pickIdx[k]] : null; });
     const inXI = new Set(xi.filter(Boolean).map((p) => p!.player));
-    const bench = players.filter((p) => !inXI.has(p.player)).sort((a, b) => b.ovr - a.ovr);
-    const rated = xi.filter(Boolean) as PlayerCard[];
-    const teamOvr = rated.length ? Math.round(rated.reduce((s, p) => s + p.ovr, 0) / rated.length) : 0;
-    return { xi, bench, teamOvr };
-  }, [players, slots, overrides]);
+    const bench = pool.filter((p) => !inXI.has(p.player));
+    const rated = xi.map((p, i) => (p ? { p, f: fit(p, slots[i].role) } : null)).filter(Boolean) as { p: BuilderPlayer; f: number }[];
+    const teamOvr = rated.length ? Math.round(rated.reduce((s, r) => s + r.p.ovr * r.f, 0) / rated.length) : 0;
+    const fitAvg = rated.length ? Math.round((rated.reduce((s, r) => s + r.f, 0) / rated.length) * 100) : 0;
+    return { xi, bench, teamOvr, fitAvg };
+  }, [pool, slots, overrides]);
 
-  const pickList = pick != null
-    ? [...players].filter((p) => !xi.some((x, i) => i !== pick && x?.player === p.player))
-        .sort((a, b) => (a.line === slots[pick].line ? -1 : 1) - (b.line === slots[pick].line ? -1 : 1) || b.ovr - a.ovr)
-    : [];
+  if (players === null) return <div className="skel-wrap"><span className="skel" style={{ display: "block", height: 430, borderRadius: 16 }} /></div>;
+  const cands = pick == null ? [] : [...pool].filter((p) => !xi.some((x, i) => i !== pick && x?.player === p.player))
+    .sort((a, b) => score(b, slots[pick].role) - score(a, slots[pick].role));
+  const tagOf = (p: BuilderPlayer, role: Role) =>
+    p.primary === role ? "주" : p.secondary.includes(role) ? "멀티" : `${p.primary}`;
 
   return (
-    <div>
-      <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12, flexWrap: "wrap" }}>
-        <div style={{ display: "inline-flex", gap: 3, padding: 3, borderRadius: 9, background: hexA("#ffffff", 0.05) }}>
+    <div className="sb5">
+      <div className="sb5-top">
+        <div className="seg5">
           {Object.keys(FORMATIONS).map((f) => (
-            <button key={f} onClick={() => { setFormation(f); setOverrides({}); setPick(null); }}
-              style={{ padding: "5px 11px", borderRadius: 6, fontSize: 12, fontWeight: 700, cursor: "pointer", border: "none",
-                background: formation === f ? accent : "transparent", color: formation === f ? "#0a0a0a" : "inherit", opacity: formation === f ? 1 : 0.6 }}>{f}</button>
+            <button key={f} className={f === formation ? "on" : ""} onClick={() => { setFormation(f); setOverrides({}); setPick(null); }}>{f}</button>
           ))}
         </div>
-        <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 8 }}>
-          {Object.keys(overrides).length > 0 && (
-            <button onClick={() => setOverrides({})} style={{ fontSize: 11, padding: "4px 9px", borderRadius: 6, border: "none", background: hexA("#fff", 0.08), color: "inherit", cursor: "pointer", opacity: 0.7 }}>자동 XI 복원</button>
-          )}
-          <span style={{ fontSize: 11, opacity: 0.55 }}>팀 XI</span>
-          <span style={{ fontSize: 24, fontWeight: 800, color: tier(teamOvr).light, lineHeight: 1 }}>{teamOvr}</span>
-        </div>
+        <label className="sb5-tg"><input type="checkbox" checked={availOnly} onChange={(e) => { setAvailOnly(e.target.checked); setOverrides({}); }} />부상 선수 제외</label>
+        <div className="sb5-ovr"><em>XI OVR</em><b style={{ color: tier(teamOvr).light }}>{teamOvr}</b><span>포지션 적합도 {fitAvg}%</span></div>
+        {Object.keys(overrides).length > 0 && <button className="sb5-reset" onClick={() => { setOverrides({}); setPick(null); }}>자동 배치로</button>}
       </div>
-
-      <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
-        {/* 피치 */}
-        <div style={{ position: "relative", flex: "1 1 320px", maxWidth: 440, aspectRatio: "68 / 92",
-          background: "linear-gradient(180deg, #0f2a1c, #0c1f16)", borderRadius: 12, border: `1px solid ${hexA("#fff", 0.08)}` }}>
-          <svg viewBox="0 0 100 100" preserveAspectRatio="none" style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}>
-            <g stroke="rgba(255,255,255,0.13)" strokeWidth="0.4" fill="none">
-              <line x1="0" y1="50" x2="100" y2="50" /><circle cx="50" cy="50" r="11" />
-              <rect x="26" y="0.5" width="48" height="16" /><rect x="26" y="83.5" width="48" height="16" />
-            </g>
-          </svg>
+      <div className="sb5-grid">
+        <div className="sb5-pitch">
           {slots.map((s, i) => {
-            const p = xi[i]; const col = LINE_COLOR[s.line] || "#8a94a8";
+            const p = xi[i];
+            const f = p ? fit(p, s.role) : 0;
             return (
-              <button key={i} onClick={() => setPick(pick === i ? null : i)}
-                style={{ position: "absolute", left: `${s.x}%`, top: `${s.y}%`, transform: "translate(-50%,-50%)",
-                  display: "flex", flexDirection: "column", alignItems: "center", gap: 2, border: "none", background: "transparent", cursor: "pointer", width: 62 }}>
-                <div style={{ position: "relative" }}>
-                  {p?.photo
-                    ? <img src={p.photo} alt="" style={{ width: 40, height: 40, borderRadius: "50%", objectFit: "cover", border: `2px solid ${pick === i ? accent : hexA(col, 0.85)}` }} />
-                    : <span style={{ width: 40, height: 40, borderRadius: "50%", background: hexA(col, 0.25), display: "grid", placeItems: "center", fontSize: 10, border: `2px solid ${hexA(col, 0.5)}` }}>{s.line}</span>}
-                  {p && <span style={{ position: "absolute", bottom: -3, right: -5, fontSize: 10, fontWeight: 800, color: "#0a0a0a", background: tier(p.ovr).light, borderRadius: 5, padding: "0 3px" }}>{p.ovr}</span>}
-                </div>
-                <span style={{ fontSize: 9.5, fontWeight: 600, color: "#fff", textShadow: "0 1px 2px #000", whiteSpace: "nowrap", maxWidth: 62, overflow: "hidden", textOverflow: "ellipsis" }}>
-                  {p ? last(p.player) : "―"}
+              <button key={i} className={`sb5-slot${pick === i ? " on" : ""}${p?.injured ? " inj" : ""}`} style={{ left: `${s.x}%`, top: `${s.y}%` }}
+                onClick={() => setPick(pick === i ? null : i)} title={p ? `${p.player} · ${s.role} 적합도 ${Math.round(f * 100)}%` : s.role}>
+                <span className="sb5-ph" style={{ borderColor: COLOR[LINE[s.role]] }}>
+                  {p?.photo ? <img src={p.photo} alt="" /> : <i>{s.role}</i>}
+                  {p && <b className="sb5-o" style={{ background: tier(p.ovr).deep }}>{p.ovr}</b>}
+                  {p?.injured && <em className="sb5-inj">+</em>}
                 </span>
+                <span className="sb5-nm">{p ? last(p.player) : "—"}</span>
+                <span className={`sb5-rl${p && f < 0.95 ? " off" : ""}`}>{s.role}{p && f < 0.95 ? ` · ${p.primary}` : ""}</span>
               </button>
             );
           })}
         </div>
-
-        {/* 교체 피커 or 벤치 */}
-        <div style={{ flex: "1 1 220px", minWidth: 200 }}>
+        <div className="sb5-side">
           {pick != null ? (
             <>
-              <div style={{ fontSize: 12, fontWeight: 700, marginBottom: 8 }}>{slots[pick].line} 슬롯 · 교체 선수 선택
-                <button onClick={() => setPick(null)} style={{ marginLeft: 8, fontSize: 10.5, padding: "2px 8px", borderRadius: 6, border: "none", background: hexA("#fff", 0.08), color: "inherit", cursor: "pointer", opacity: 0.7 }}>취소</button></div>
-              <div style={{ maxHeight: 380, overflowY: "auto", display: "flex", flexDirection: "column", gap: 3 }}>
-                {pickList.map((p) => (
-                  <button key={p.player} onClick={() => { setOverrides((o) => ({ ...o, [pick]: p.player })); setPick(null); }}
-                    style={{ display: "flex", alignItems: "center", gap: 9, padding: "6px 9px", borderRadius: 8, border: "none", background: hexA("#fff", 0.03), color: "inherit", cursor: "pointer", textAlign: "left" }}>
-                    <span style={{ width: 8, height: 8, borderRadius: "50%", background: LINE_COLOR[p.line] || "#888" }} />
-                    {p.photo ? <img src={p.photo} alt="" style={{ width: 26, height: 26, borderRadius: "50%", objectFit: "cover" }} /> : <span style={{ width: 26 }} />}
-                    <span style={{ flex: 1, fontSize: 12, minWidth: 0, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{p.player}</span>
-                    <span style={{ fontSize: 10.5, opacity: 0.5 }}>{p.pos}</span>
-                    <span style={{ fontSize: 13, fontWeight: 800, color: tier(p.ovr).light }}>{p.ovr}</span>
+              <div className="sb5-st">{slots[pick].role} 자리 · 교체 선수 <span>적합도 × OVR 순</span></div>
+              <div className="sb5-list">
+                {cands.map((p) => (
+                  <button key={p.player} className="sb5-row" onClick={() => { setOverrides((o) => ({ ...o, [pick]: p.player })); setPick(null); }}>
+                    {p.photo ? <img src={p.photo} alt="" /> : <span className="ph" />}
+                    <span className="sb5-who"><b>{p.player}</b><em>{[p.primary, ...p.secondary].join(" · ")}{p.minutes === 0 ? " · 출전 없음" : ""}{p.injured ? ` · 부상 ${p.injured.until ? `~${p.injured.until.slice(0, 5)}` : ""}` : ""}</em></span>
+                    <span className={`sb5-tag ${tagOf(p, slots[pick].role) === "주" ? "p" : tagOf(p, slots[pick].role) === "멀티" ? "s" : "x"}`}>{tagOf(p, slots[pick].role)}</span>
+                    <b className="sb5-ov" style={{ color: tier(p.ovr).light }}>{p.ovr}</b>
                   </button>
                 ))}
               </div>
             </>
           ) : (
             <>
-              <div style={{ fontSize: 12, fontWeight: 700, marginBottom: 8, opacity: 0.8 }}>벤치 · {bench.length}명 <span style={{ fontWeight: 400, opacity: 0.55, fontSize: 10.5 }}>(피치 슬롯 클릭 → 교체)</span></div>
-              <div style={{ maxHeight: 380, overflowY: "auto", display: "flex", flexDirection: "column", gap: 3 }}>
+              <div className="sb5-st">벤치 · {bench.length} <span>칸을 누르면 그 자리에 맞는 순으로 교체 후보</span></div>
+              <div className="sb5-list">
                 {bench.map((p) => (
-                  <div key={p.player} style={{ display: "flex", alignItems: "center", gap: 9, padding: "5px 9px", borderRadius: 8, background: hexA("#fff", 0.02) }}>
-                    <span style={{ width: 8, height: 8, borderRadius: "50%", background: LINE_COLOR[p.line] || "#888" }} />
-                    {p.photo ? <img src={p.photo} alt="" style={{ width: 24, height: 24, borderRadius: "50%", objectFit: "cover" }} /> : <span style={{ width: 24 }} />}
-                    <span style={{ flex: 1, fontSize: 11.5, minWidth: 0, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{p.player}</span>
-                    <span style={{ fontSize: 10, opacity: 0.5 }}>{p.pos}</span>
-                    <span style={{ fontSize: 12.5, fontWeight: 700, color: tier(p.ovr).light }}>{p.ovr}</span>
-                  </div>
+                  <button key={p.player} className="sb5-row" onClick={(e) => peek(e, { name: p.player, club: team, hint: { photo: p.photo, ovr: p.ovr } })}>
+                    {p.photo ? <img src={p.photo} alt="" /> : <span className="ph" />}
+                    <span className="sb5-who"><b>{p.player}</b><em>{[p.primary, ...p.secondary].join(" · ")}{p.minutes === 0 ? " · 출전 없음" : ""}{p.injured ? ` · 부상` : ""}</em></span>
+                    <b className="sb5-ov" style={{ color: tier(p.ovr).light }}>{p.ovr}</b>
+                  </button>
                 ))}
               </div>
             </>
           )}
+          <p className="sb5-note">포지션 = 실제로 선 자리(이번 시즌 + 지난 시즌 선발, 부족하면 Transfermarkt). 적합도: 주 100% · 멀티 95% · 비슷한 자리 85% · 같은 라인 75%</p>
         </div>
       </div>
     </div>

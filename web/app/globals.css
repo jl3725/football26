@@ -3439,3 +3439,97 @@ LIGA’처럼 글자가 접히던 것) — 넘치면 가로로 넘긴다 */
 .pl5-note { margin-top: 10px; font-size: 11px; color: var(--muted-2); word-break: keep-all; }
 @media (max-width: 1100px) { .pl5 { grid-template-columns: minmax(0, 1fr); } }
 @media (max-width: 480px) { .pl5-src b { font-size: 24px; } .pl5-src { padding: 10px; } }
+
+/* ── v6.3 스쿼드 — 뎁스 차트 1st/2nd/3rd·멀티 포지션 · Best XI 빌더(역할 적합도 최적 배치) (2026-10-15) ── */
+.depth-head.dp5, .depth-row.dp5 { grid-template-columns: 92px minmax(120px, 0.9fr) minmax(0, 2.4fr) 120px; }
+.dp5-chip { display: inline-flex; align-items: center; gap: 5px; padding: 3px 8px; margin: 2px 6px 2px 0; border-radius: 7px; background: var(--overlay);
+  font-size: 12.5px; white-space: nowrap; }
+.dp5-chip.r2 { background: rgba(255, 255, 255, 0.07); }
+.dp5-chip.multi { border: 1px dashed rgba(111, 211, 255, 0.45); }
+.dp5-n { font: 700 9.5px/1 var(--font-num); letter-spacing: 0.08em; color: var(--muted-2); font-style: normal; }
+.dp5-m { font: 600 10px/1 var(--font-num); color: #6fd3ff; font-style: normal; margin-left: 4px; }
+.dp5-inj { font-style: normal; color: #ff6b7d; font-weight: 800; margin-left: 4px; }
+.depth-starter.inj, .dp5-chip.inj { opacity: 0.6; }
+@media (max-width: 760px) { .depth-head.dp5 { display: none; } .depth-row.dp5 { grid-template-columns: 70px minmax(0, 1fr); row-gap: 6px; }
+  .depth-row.dp5 .depth-rot { grid-column: 1 / -1; } .depth-row.dp5 .depth-score { grid-column: 1 / -1; } }
+
+.sb5-top { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin-bottom: 14px; }
+.sb5-tg { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--muted); cursor: pointer; }
+.sb5-ovr { margin-left: auto; display: flex; align-items: baseline; gap: 8px; }
+.sb5-ovr em { font: 700 10.5px/1 var(--font-num); letter-spacing: 0.14em; color: var(--muted-2); font-style: normal; }
+.sb5-ovr b { font: 800 30px/1 var(--font-display); }
+.sb5-ovr span { font-size: 11.5px; color: var(--muted); }
+.sb5-reset { padding: 6px 12px; border-radius: 8px; border: 1px solid var(--line); background: none; color: var(--muted); font-size: 12px; cursor: pointer; }
+.sb5-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 18px; align-items: start; }
+.sb5-pitch { position: relative; aspect-ratio: 68 / 88; border-radius: 14px; border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(180deg, #11301f, #0b2216); overflow: hidden; }
+.sb5-pitch::before { content: ""; position: absolute; left: 6%; right: 6%; top: 50%; border-top: 1px solid rgba(255, 255, 255, 0.12); }
+.sb5-slot { position: absolute; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; gap: 2px;
+  background: none; border: 0; color: inherit; cursor: pointer; padding: 0; width: 76px; }
+.sb5-ph { position: relative; width: 44px; height: 44px; border-radius: 50%; border: 2px solid; background: #1a2230; display: grid; place-items: center; }
+.sb5-ph img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; object-position: 50% 25%; }
+.sb5-ph i { font: 700 11px/1 var(--font-num); font-style: normal; color: var(--muted); }
+.sb5-o { position: absolute; right: -8px; top: -6px; padding: 2px 4px; border-radius: 5px; font: 800 10.5px/1 var(--font-num); color: #fff; }
+.sb5-inj { position: absolute; left: -6px; top: -6px; width: 16px; height: 16px; border-radius: 50%; background: #ff3b4f; color: #fff;
+  display: grid; place-items: center; font: 800 12px/1 var(--font-num); font-style: normal; }
+.sb5-slot.inj .sb5-ph { opacity: 0.7; }
+.sb5-slot.on .sb5-ph { box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.85); }
+.sb5-nm { font-size: 11.5px; font-weight: 700; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8); white-space: nowrap; max-width: 76px; overflow: hidden; text-overflow: ellipsis; }
+.sb5-rl { font: 700 9.5px/1 var(--font-num); letter-spacing: 0.06em; color: rgba(255, 255, 255, 0.6); }
+.sb5-rl.off { color: #f4cf5e; }
+.sb5-st { font: 800 14px/1 var(--font-display); letter-spacing: 0.06em; margin-bottom: 8px; }
+.sb5-st span { font: 500 11px var(--font-ui); letter-spacing: 0; color: var(--muted-2); margin-left: 6px; }
+.sb5-list { max-height: 520px; overflow-y: auto; display: flex; flex-direction: column; gap: 2px; }
+.sb5-row { display: grid; grid-template-columns: 30px minmax(0, 1fr) auto 32px; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px;
+  border: 0; background: none; color: inherit; text-align: left; cursor: pointer; }
+.sb5-row:hover { background: rgba(255, 255, 255, 0.05); }
+.sb5-row img, .sb5-row .ph { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; background: #1a2230; }
+.sb5-who { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.sb5-who b { font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sb5-who em { font-size: 11px; color: var(--muted-2); font-style: normal; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sb5-tag { font: 700 10px/1 var(--font-num); padding: 3px 6px; border-radius: 5px; }
+.sb5-tag.p { background: rgba(62, 207, 142, 0.16); color: #3ecf8e; } .sb5-tag.s { background: rgba(111, 211, 255, 0.14); color: #6fd3ff; }
+.sb5-tag.x { background: rgba(244, 207, 94, 0.12); color: #f4cf5e; }
+.sb5-ov { font: 800 15px/1 var(--font-num); text-align: right; }
+.sb5-note { margin-top: 10px; font-size: 11px; color: var(--muted-2); word-break: keep-all; }
+@media (max-width: 900px) { .sb5-grid { grid-template-columns: minmax(0, 1fr); } .sb5-pitch { max-width: 460px; width: 100%; margin: 0 auto; } }
+@media (max-width: 420px) { .sb5-slot { width: 62px; } .sb5-ph { width: 36px; height: 36px; } .sb5-nm { font-size: 10.5px; max-width: 62px; } }
+
+/* ── v6.4 팀 인박스 — BRIEFING · 분류 필터 · 새 소식 · 리그 소식 (2026-10-15) ── */
+.ib5-all { padding: 6px 12px; border-radius: 8px; border: 1px solid var(--line); background: none; color: var(--muted); font-size: 12px; cursor: pointer; }
+.ib5-brief { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-bottom: 16px; }
+.ib5-grid { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+.ib5-main, .ib5-side { padding: 16px; min-width: 0; }
+.ib5-chips { margin-bottom: 10px; }
+.ib5-chips button em { font: 700 10.5px/1 var(--font-num); font-style: normal; margin-left: 5px; opacity: 0.7; }
+.ib5-list { display: flex; flex-direction: column; gap: 2px; }
+.ib5-msg { display: grid; grid-template-columns: 36px minmax(0, 1fr); gap: 12px; align-items: start; width: 100%; padding: 10px 10px 10px 12px;
+  border: 0; border-left: 3px solid var(--tc); border-radius: 10px; background: none; color: inherit; text-align: left; cursor: pointer; transition: background .12s; }
+.ib5-msg:hover { background: rgba(255, 255, 255, 0.04); }
+.ib5-msg.unread { background: rgba(255, 255, 255, 0.035); }
+.ib5-msg.big { background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--tc); padding: 14px; min-height: 104px; }
+.ib5-ic { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; font-size: 18px; background: var(--overlay); overflow: hidden; }
+.ib5-ic img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 25%; }
+.ib5-body { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.ib5-top { display: flex; align-items: center; gap: 7px; }
+.ib5-top em { font: 700 10px/1 var(--font-num); letter-spacing: 0.14em; color: var(--tc); font-style: normal; }
+.ib5-top small { margin-left: auto; font: 600 11px/1 var(--font-num); color: var(--muted-2); }
+.ib5-new { padding: 2px 5px; border-radius: 4px; background: #ff3b4f; color: #fff; font: 800 9px/1 var(--font-num); font-style: normal; letter-spacing: 0.06em; }
+.ib5-body b { font-size: 14px; font-weight: 700; color: var(--txt); word-break: keep-all; }
+.ib5-body b span { font-weight: 500; color: var(--muted); }
+.ib5-msg.big .ib5-body b { font-size: 15px; }
+.ib5-d { font-size: 12px; color: var(--muted); line-height: 1.45; word-break: keep-all; }
+.ib5-lglist { display: flex; flex-direction: column; max-height: 640px; overflow-y: auto; }
+.ib5-lg { display: grid; grid-template-columns: 20px 18px minmax(0, 1fr) auto; align-items: center; gap: 8px; padding: 8px 4px; border: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04); background: none; color: inherit; text-align: left; cursor: pointer; }
+.ib5-lg-i { font-size: 13px; text-align: center; } .ib5-lg img { width: 18px; height: 18px; object-fit: contain; }
+.ib5-lg-t { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.ib5-lg-t b { font-size: 12.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ib5-lg-t em { font-size: 11px; color: var(--muted-2); font-style: normal; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ib5-lg small { font: 600 10.5px/1 var(--font-num); color: var(--muted-2); }
+@media (max-width: 1100px) { .ib5-grid { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 760px) { .ib5-brief { grid-template-columns: minmax(0, 1fr); } }
+.sb5-pitch { max-width: 520px; width: 100%; justify-self: center; }
+.sb5-nm { margin-top: 3px; padding: 1px 6px; border-radius: 5px; background: rgba(6, 12, 9, 0.62); }
+.sb5-grid { grid-template-columns: minmax(0, 520px) minmax(0, 1fr); }
+@media (max-width: 900px) { .sb5-grid { grid-template-columns: minmax(0, 1fr); } }

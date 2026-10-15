@@ -194,9 +194,16 @@ export type SquadPlayer = {
   player: string; pos: string; age: number; minutes: number;
   value_eur: number; ovr: number; photo: string; goals: number; assists: number; trend?: Trend;
   roster_only?: boolean;   // 이번 시즌 출전 없음(TM 스쿼드 명단에서 보강 — 지난 시즌 기록 기준)
+  roles?: string[];          // [주포지션, 2포지션, 3포지션] — 실제로 선 자리(src/positions.py)
 };
 export type DepthPlayer = { player: string; ovr: number; minutes: number; age: number; photo: string };
-export type Bucket = { pos: string; count: number; depth: number; starter: DepthPlayer; rotation: DepthPlayer[] };
+// 포지션 뎁스 옵션 — kind: primary(주포지션) · secondary(2·3포지션 = 멀티), injured: 현재 부상
+export type DepthOption = DepthPlayer & { kind?: "primary" | "secondary"; primary?: string; secondary?: string[]; injured?: boolean };
+export type Bucket = { pos: string; count: number; multi?: number; depth: number; starter: DepthOption; rotation: DepthOption[] };
+// Best XI 빌더(/api/builder) — 전체 스쿼드 + 주·2·3포지션(실제로 선 자리, src/positions.py) + 부상
+export type BuilderPlayer = { player: string; ovr: number; photo: string; age: number; minutes: number; primary: string; secondary: string[];
+  line: string; starts: number; injured: { injury: string; until: string } | null; roster_only: boolean };
+export const getBuilder = (t: string, l = _league) => j<{ team: string; color: string; players: BuilderPlayer[] }>(`/api/builder/${q(t, l)}`);
 export type Squad = { team: string; color: string; lines: Record<string, SquadPlayer[]>; buckets: Bucket[] };
 
 export type Match = {
@@ -358,6 +365,11 @@ export const getDatabase = () => (_dbCache ??= j<DbResp>(`/api/database`).catch(
 
 export type Signal = { date: string; team: string; logo: string; type: string; tone: string; icon: string; player: string; photo: string; title: string; detail: string };
 export type Signals = { team: string; window: Window; counts: Record<string, number>; signals: Signal[] };
+// 팀 인박스(/api/inbox) — 자동 감지 + 경기 브리핑 + 팀·선수 폼 + 선발 제외. prio 상위 3 = briefing
+export type InboxMsg = { id: string; cat: string; type: string; tone: string; icon: string; title: string; detail: string; prio: number;
+  date: string; player: string; photo: string; action: { kind: "match"; fixture: unknown } | { kind: "player"; name: string } | null };
+export type Inbox = { team: string; briefing: InboxMsg[]; messages: InboxMsg[]; counts: Record<string, number>; league_events: Signal[]; generated: string };
+export const getInbox = (team: string, l = _league) => j<Inbox>(`/api/inbox/${encodeURIComponent(team)}?league=${encodeURIComponent(l)}`);
 export const getSignals = (team = "", l = _league, limit = 60) =>
   j<Signals>(`/api/signals?team=${encodeURIComponent(team)}&league=${encodeURIComponent(l)}&limit=${limit}`);
 

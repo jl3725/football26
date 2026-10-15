@@ -1,8 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
-import { getSquad, getPlayers, fmtEur, type Squad, type SquadPlayer, type PlayerCard } from "@/lib/api";
+import { getSquad, fmtEur, type Squad, type SquadPlayer, type DepthOption } from "@/lib/api";
 import { tier, hexA } from "@/lib/ui";
 import SquadBuilder from "./SquadBuilder";
+import SectionHead from "./SectionHead";
 import { usePeek } from "./PlayerPeek";
 import { SkelCards } from "./Skeleton";
 import { TrendArrow } from "./Trend";
@@ -38,10 +39,8 @@ function Row({ p, team }: { p: SquadPlayer; team: string }) {
 
 export default function SquadTab({ team, accent }: { team: string; accent: string }) {
   const [data, setData] = useState<Squad | null>(null);
-  const [pl, setPl] = useState<PlayerCard[]>([]);
   const [view, setView] = useState<"squad" | "builder">("squad");
   useEffect(() => { let a = true; getSquad(team).then((d) => a && setData(d)).catch(() => {}); return () => { a = false; }; }, [team]);
-  useEffect(() => { let a = true; getPlayers(team).then((d) => a && setPl(d.players)).catch(() => {}); return () => { a = false; }; }, [team]);
   const peek = usePeek();
   if (!data) return <div className="skel-wrap"><SkelCards n={8} cols="repeat(auto-fill, minmax(280px, 1fr))" /></div>;
 
@@ -62,8 +61,8 @@ export default function SquadTab({ team, accent }: { team: string; accent: strin
       <div className="fade">
         {toggle}
         <div className="card">
-          <h3>Best XI 빌더 <span className="rating-note">· 포메이션 선택 · 슬롯 클릭으로 교체</span></h3>
-          {pl.length ? <SquadBuilder players={pl} accent={accent} /> : <div className="skel-wrap"><span className="skel" style={{ display: "block", height: 430, borderRadius: 16 }} /></div>}
+          <SectionHead title="BEST XI BUILDER" kr="베스트 XI 빌더" meta="포지션 적합도 × OVR 최적 배치 · 칸을 눌러 교체" />
+          <SquadBuilder team={team} accent={accent} />
         </div>
       </div>
     );
@@ -72,26 +71,35 @@ export default function SquadTab({ team, accent }: { team: string; accent: strin
   return (
     <div className="fade">
       {toggle}
-      {/* 포지션별 뎁스 차트 */}
+      {/* 포지션별 뎁스 차트 — 역할마다 1st·2nd·3rd 옵션, 멀티 포지션(2·3포지션) 선수 포함 */}
       <div className="card">
-        <h3>포지션별 뎁스 차트</h3>
-        <div className="depth-head">
-          <span>POS</span><span>주전</span><span>로테이션 / 백업</span><span>뎁스</span>
+        <SectionHead title="DEPTH CHART" kr="포지션별 뎁스" meta="실제로 선 자리 기준 · 멀티 = 2·3포지션 · ✚ = 부상" />
+        <div className="depth-head dp5">
+          <span>POS</span><span>1ST</span><span>2ND · 3RD · 그 외</span><span>뎁스</span>
         </div>
         {data.buckets.map((b) => {
           const dc = b.depth >= 70 ? "#4fc27f" : b.depth >= 55 ? "#caa64e" : "#e07070";
-          const st = tier(b.starter.ovr);
+          const chip = (o: DepthOption, rank: number) => (
+            <span key={o.player} className={`dp5-chip peekable${o.kind === "secondary" ? " multi" : ""}${o.injured ? " inj" : ""}${rank === 1 ? " r2" : rank === 2 ? " r3" : ""}`}
+              onClick={(e) => peek(e, { name: o.player, club: team, hint: { photo: o.photo, ovr: o.ovr, age: o.age } })}
+              title={o.kind === "secondary" ? `${o.player} — 주포지션 ${o.primary}, ${b.pos} 멀티` : o.player}>
+              {rank <= 2 && <i className="dp5-n">{rank === 1 ? "2nd" : "3rd"}</i>}
+              <b style={{ color: tier(o.ovr).light }}>{o.ovr}</b> {o.player.split(" ").slice(-1)[0]}
+              {o.kind === "secondary" && <em className="dp5-m">멀티·{o.primary}</em>}
+              {o.injured && <em className="dp5-inj">✚</em>}
+            </span>
+          );
           return (
-            <div className="depth-row" key={b.pos}>
+            <div className="depth-row dp5" key={b.pos}>
               <span className="depth-pos">{POS_LABEL[b.pos] || b.pos}</span>
-              <span className="depth-starter peekable"
+              <span className={`depth-starter peekable${b.starter.injured ? " inj" : ""}`}
                 onClick={(e) => peek(e, { name: b.starter.player, club: team, hint: { photo: b.starter.photo, ovr: b.starter.ovr, age: b.starter.age } })}>
-                <b style={{ color: st.light }}>{b.starter.ovr}</b> {b.starter.player.split(" ").slice(-1)[0]}
+                <b style={{ color: tier(b.starter.ovr).light }}>{b.starter.ovr}</b> {b.starter.player.split(" ").slice(-1)[0]}
+                {b.starter.kind === "secondary" && <em className="dp5-m">멀티·{b.starter.primary}</em>}
+                {b.starter.injured && <em className="dp5-inj">✚</em>}
               </span>
               <span className="depth-rot">
-                {b.rotation.length === 0 ? <em>백업 없음</em> :
-                  b.rotation.map((r, i) => <span key={i} className="depth-rp peekable"
-                    onClick={(e) => peek(e, { name: r.player, club: team, hint: { photo: r.photo, ovr: r.ovr, age: r.age } })}><b style={{ color: tier(r.ovr).light }}>{r.ovr}</b> {r.player.split(" ").slice(-1)[0]}</span>)}
+                {b.rotation.length === 0 ? <em>백업 없음</em> : b.rotation.map((r, i) => chip(r, i + 1))}
               </span>
               <span className="depth-score">
                 <div className="depth-bar"><span style={{ width: `${b.depth}%`, background: dc }} /></div>
