@@ -66,6 +66,52 @@ def resolve_photo(name, resolve, league: str) -> str:
 
 _FRAME_CACHE: dict = {}
 
+# 배포 빌드에서 미리 만든 선수 표·출전 포지션 집계(scripts/precompute_team_units.py → data/runtime_cache/).
+# Render 무료(0.1 CPU)는 깰 때마다 8개 리그 × 두 시즌 표를 다시 만드느라(로컬 20~40초 → 운영 수 분)
+# 홈 빅매치·Overview 가 70초 제한을 넘겼다(2026-10-15). DB 파일 시각(스탬프)이 같을 때만 쓴다.
+RUNTIME_CACHE = ds.DB_PATH.parent / "runtime_cache"
+
+
+def _db_size() -> int:
+    try:
+        return ds.DB_PATH.stat().st_size
+    except OSError:
+        return -1
+
+
+def same_build(stamp, size) -> bool:
+    """캐시가 지금 DB 로 만든 것인가 — DB 파일 시각이 같으면 그렇다. Render 는 빌드한 DB 를 그대로 싣고
+    가는데 옮기면서 파일 시각이 바뀔 수 있어, Render(환경변수 RENDER)에서는 파일 크기가 같으면 같은 배포본으로 본다."""
+    import os  # noqa: PLC0415
+    if stamp == ds._db_mtime():
+        return True
+    return bool(os.environ.get("RENDER")) and size is not None and size == _db_size()
+
+
+def _disk_get(name: str):
+    import pickle  # noqa: PLC0415
+    path = RUNTIME_CACHE / name
+    try:
+        if path.exists():
+            with path.open("rb") as f:
+                obj = pickle.load(f)
+            if same_build(obj.get("stamp"), obj.get("size")):
+                return obj["data"]
+    except Exception:  # noqa: BLE001 — 깨진·옛 캐시는 무시하고 다시 만든다
+        return None
+    return None
+
+
+def disk_put(name: str, data) -> None:
+    import pickle  # noqa: PLC0415
+    RUNTIME_CACHE.mkdir(parents=True, exist_ok=True)
+    with (RUNTIME_CACHE / name).open("wb") as f:
+        pickle.dump({"stamp": ds._db_mtime(), "size": _db_size(), "data": data}, f, protocol=pickle.HIGHEST_PROTOCOL)
+
+
+def frame_cache_name(league: str, season: str | None) -> str:
+    return f"frame_{league}_{season or 'cur'}.pkl"
+
 
 def player_frame(league: str, season: str | None = None):
     """players_full과 대회별 선발 수를 합친 선수 데이터 단일 진입점.
@@ -78,7 +124,9 @@ def player_frame(league: str, season: str | None = None):
     hit = _FRAME_CACHE.get(key)
     if hit is not None:
         return hit.copy()
-    frame = _build_frame(league, season)
+    frame = _disk_get(frame_cache_name(league, season))
+    if frame is None:
+        frame = _build_frame(league, season)
     if frame is not None:
         if len(_FRAME_CACHE) > 24:      # 8개 리그 × 이번·지난 시즌(16) + 여유 — 넘치면 전부 비워 다시 계산하므로 넉넉히
             _FRAME_CACHE.clear()
@@ -100,6 +148,10 @@ def role_counts(season: str | None = None) -> dict:
     key = (start, ds._db_mtime())
     if key in _ROLE_CACHE:
         return _ROLE_CACHE[key]
+    disk = _disk_get(f"roles_{start}.pkl")
+    if disk is not None:
+        _ROLE_CACHE[key] = disk
+        return disk
     frames, weights = [], []
     for tag, w in ((f"{start}_{start + 1}", 1.0), (f"{start - 1}_{start}", 0.5)):
         for path in sorted(DATA_DIR.glob(f"espn_lineups*_{tag}.csv")):
@@ -109,7 +161,8 @@ def role_counts(season: str | None = None) -> dict:
                 weights.append(w)
             except (ValueError, OSError):
                 continue
-    _ROLE_CACHE.clear()
+    if len(_ROLE_CACHE) > 4:          # 이번·지난 시즌 둘을 번갈아 부르므로 하나만 남기면 매번 다시 계산했다
+        _ROLE_CACHE.clear()
     _ROLE_CACHE[key] = ps.role_counts(frames, weights)
     return _ROLE_CACHE[key]
 

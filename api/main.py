@@ -241,19 +241,16 @@ def _league_units(league: str) -> dict:
     배포 빌드에서 미리 계산한 data/team_units.json(scripts/precompute_team_units.py)이 지금 DB 와 같으면 그걸 쓴다.
     Render 무료(0.1 CPU)에서 시작할 때마다 8개 리그 전 팀(부상자 포함·임대 판정·여러 시즌 기록)을 계산하느라
     홈(빅매치·결과 띠)과 Overview 가 70초 제한을 넘겼다(2026-10-15). 파일이 없거나 DB 가 바뀌었으면 즉석 계산."""
+    from api.services.player_data import same_build  # noqa: PLC0415
     snap = _units_snapshot()
-    if snap.get("stamp") == _units_stamp() and league in snap.get("leagues", {}):
+    if (snap.get("season") == SEASON_START and same_build(snap.get("db_mtime"), snap.get("db_size"))
+            and league in snap.get("leagues", {})):
         return snap["leagues"][league]
     return _compute_league_units(league)
 
 
 _UNITS_FILE = ds.DB_PATH.parent / "team_units.json"
 _UNITS_SNAP: dict = {}
-
-
-def _units_stamp() -> str:
-    """스냅샷이 지금 데이터와 같은지 — 시즌 + DB 파일 시각(빌드에서 만든 DB 를 그대로 쓰면 같다)."""
-    return f"{SEASON_START}|{_db_stamp()}"
 
 
 def _units_snapshot() -> dict:
@@ -1349,18 +1346,9 @@ def _roster_extras(team: str, league: str, df) -> list[dict]:
 def _role_counts_all() -> dict:
     """전 리그 ESPN 선발 라인업(이번 시즌 1.0 + 지난 시즌 0.5) → {이름: Counter(역할)} — src/positions.py.
     이적생은 전 소속 리그 파일에서 이름으로 찾는다. 6시간 캐시(서버 시작 때 미리 계산)."""
-    import positions as ps  # noqa: PLC0415
-    from leagues import DATA_DIR  # noqa: PLC0415
-    frames, weights = [], []
-    for tag, w in ((f"{SEASON_START}_{SEASON_START + 1}", 1.0), (f"{SEASON_START - 1}_{SEASON_START}", 0.5)):
-        for path in sorted(DATA_DIR.glob(f"espn_lineups*_{tag}.csv")):
-            try:
-                frames.append(read_lineup_csv(path, ["squad", "event_id", "formation", "starter", "player",
-                                                     "espn_pos", "formation_place"]))   # 이름 정규화
-                weights.append(w)
-            except (ValueError, OSError):
-                continue
-    return ps.role_counts(frames, weights)
+    # player_data.role_counts(이번 시즌)와 같은 계산 — 하나로 써서 두 번 읽지 않고, 빌드 캐시도 같이 쓴다
+    from api.services.player_data import role_counts  # noqa: PLC0415
+    return role_counts(None)
 
 
 def _pos_profile(r) -> dict:
