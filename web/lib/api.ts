@@ -37,7 +37,9 @@ export type Overview = {
     rank: number; played: number; won: number; drawn: number; lost: number;
     gf: number; ga: number; gd: number; points: number;
   };
-  ovr: { overall: number; attack: number; midfield: number; defense: number; top_xi?: number };
+  ovr: { overall: number; attack: number; midfield: number; defense: number; top_xi?: number;
+    perf_adj?: Partial<Record<"attack" | "midfield" | "defense", number>>;
+    units?: Partial<Record<"attack" | "midfield" | "defense", { player: string; strength: number; injured?: boolean; until?: string }[]>> };
   ovr_delta?: { overall: number; attack: number; midfield: number; defense: number };
   radar: { axis: string; value: number }[];
   form: string[];
@@ -50,7 +52,8 @@ export type Overview = {
   edge: { strengths: { label: string; value: number }[]; weaknesses: { label: string; value: number }[] };
   snapshot: { open_play: number; set_piece: number; penalty: number; yellows: number; reds: number; yellow_per_match: number } | null;
   stars: Star[];
-  squad_ratings: { player: string; ovr: number; pot: number; form: number | null; age: number; minutes: number; line: string }[];
+  squad_ratings: { player: string; ovr: number; pot: number; form: number | null; age: number; minutes: number; line: string; photo?: string }[];
+  age_summary?: { wavg: number; rank_young: number; n: number; league_wavg: number; u23: number; prime: number; vet: number } | null;
   leaders: { label: string; player: string; photo: string; value: number }[];
   departed: { player: string; left_for: string; pos: string; photo: string }[];
   injuries: Injury[];
@@ -204,7 +207,8 @@ export type Bucket = { pos: string; count: number; multi?: number; depth: number
 export type BuilderPlayer = { player: string; ovr: number; photo: string; age: number; minutes: number; primary: string; secondary: string[];
   line: string; starts: number; injured: { injury: string; until: string } | null; roster_only: boolean };
 export const getBuilder = (t: string, l = _league) => j<{ team: string; color: string; players: BuilderPlayer[] }>(`/api/builder/${q(t, l)}`);
-export type Squad = { team: string; color: string; lines: Record<string, SquadPlayer[]>; buckets: Bucket[] };
+export type LoanOut = { player: string; club: string; pos: string; nat: string; photo: string; source: string; minutes: number | null; ovr: number | null };
+export type Squad = { team: string; color: string; lines: Record<string, SquadPlayer[]>; buckets: Bucket[]; loans?: LoanOut[] };
 
 export type Match = {
   gw?: number; comp: string; date: string; home_away: string; opponent: string; opp_logo: string;
@@ -348,7 +352,8 @@ export type NetCaptain = NetCore & { label: string; role_ko: string };
 export type NetMove = { player: string; fee_text?: string | null; photo?: string; window?: string; ovr?: number | null; prob?: number | null };
 export type NetLink = { club: string; logo: string; league: string | null; in: NetMove[]; out: NetMove[]; alumni: NetMove[];
   rumor_in: NetMove[]; rumor_out: NetMove[]; weight: number };
-export type NetInsight = { lens: string; icon: string; tone: string; title: string; text: string; evidence: string[] };
+export type NetInsight = { lens: string; icon: string; tone: string; title: string; text: string; evidence: string[];
+  big?: string; unit?: string; line?: string; who?: string[]; club?: string; flag?: string };
 export type NetworkData = {
   available: boolean; reason?: string; team: string; league: string; color: string; logo: string; games: number;
   players: NetPlayer[];
@@ -557,10 +562,10 @@ export const getReview = (eventId: string, comp = "") =>
   j<MatchReview>(`/api/review/${encodeURIComponent(eventId)}${comp ? `?comp=${encodeURIComponent(comp)}` : ""}`);
 // 팀 시즌 현황(/api/team-season) — 순위·승점 흐름(1위·4위 비교)·최근 5경기(전 대회)·시즌 프로필(지표별 리그 순위·근거)
 export type PointsPath = { team: string; path: number[]; logo: string; color: string; label?: string };
-export type ProfileAxis = { key: string; en: string; kr: string; value: number; rank: number; n: number; hint: string };
+export type ProfileAxis = { key: string; en: string; kr: string; value: number; rank: number; n: number; hint: string ; prev?: number | null; prev_rank?: number | null; prev_hint?: string };
 export type TeamSeason = { team: string; league: string; n: number;
   standing: { rank: number; played: number; won: number; drawn: number; lost: number; gf: number; ga: number; gd: number; points: number } | null;
-  xg_pg: number | null; str_rank: number | null; path: PointsPath; refs: PointsPath[]; recent: ResultMatch[]; profile: ProfileAxis[] };
+  xg_pg: number | null; str_rank: number | null; path: PointsPath; refs: PointsPath[]; recent: ResultMatch[]; profile: ProfileAxis[]; goal_mix?: GoalMix | null };
 // 분석 탭 — 경기별 흐름·득실 시간대·리그 백분위(/api/team-trends, 원천 match_stats: ESPN 경기 기록 + 5대 리그 Understat xG)
 export type TrendMatch = { event_id: string; date: string; comp_code: string; opponent: string; opp_logo: string; home_away: string;
   gf: number; ga: number; result: string; xg: number | null; xga: number | null; shots: number | null; opp_shots: number | null;
@@ -604,3 +609,7 @@ export function fmtEur(v: number): string {
   if (v >= 1e3) return `€${Math.round(v / 1e3)}K`;
   return `€${Math.round(v)}`;
 }
+
+// 득점 구성(StatBunker) — 오픈플레이·세트피스·PK, 이번 시즌 vs 지난 시즌
+export type GoalMixPart = { total: number; open: number; set_piece: number; pen: number; corner: number; games: number };
+export type GoalMix = { cur: GoalMixPart | null; prev: GoalMixPart | null };

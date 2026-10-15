@@ -150,6 +150,97 @@ def _window_filter(tt, win):
     return f, True
 
 
+
+
+def _with_roster(full_df, team: str, league: str):
+    """팀 OVR 입력 — 이번 시즌 출전자 + 출전 없는 등록 선수(장기 부상 살리바 등, 지난 시즌 기록으로).
+    '가진 전력'이라 부상자도 넣는다(출전 기록이 있는 부상자는 원래 들어가 있었다 — 0분 부상자만 빠졌던 것)."""
+    if full_df is None or "squad" not in full_df.columns:
+        return full_df
+    sq = full_df[full_df["squad"] == team]
+    lo = _loans_out(team, league)
+    if lo and not sq.empty:
+        sq = sq[~sq["player"].map(lambda n: _is_loaned(n, lo))]   # 임대 보낸 선수(Grealish)
+    try:
+        ex = _roster_extras(team, league, full_df)
+    except Exception:  # noqa: BLE001 — 계약 명단이 없는 리그
+        ex = []
+    if not ex:
+        return sq
+    ex_df = pd.DataFrame(ex).dropna(axis=1, how="all")   # 빈 열은 concat 이 NaN 으로 채운다(FutureWarning 회피)
+    return pd.concat([sq, ex_df], ignore_index=True)
+
+
+def _league_z(league: str, season: str | None, team: str) -> dict:
+    """{attack, defense} — 경기당 득점·실점의 리그 안 z(실점은 부호 반대: 적게 내줄수록 +)."""
+    st = ds.read_table("standings", league=league, season=season) if season else ds.read_table("standings", league=league)
+    if st is None or "squad" not in st.columns or team not in set(st["squad"]):
+        return {}
+    pl = pd.to_numeric(st["played"], errors="coerce")
+    st = st[pl > 0].copy()
+    if len(st) < 4 or team not in set(st["squad"]):
+        return {}
+    out = {}
+    for unit, col, sign in (("attack", "gf", 1.0), ("defense", "ga", -1.0)):
+        v = pd.to_numeric(st[col], errors="coerce") / pd.to_numeric(st["played"], errors="coerce")
+        sd = float(v.std())
+        if sd > 0:
+            out[unit] = sign * (float(v[st["squad"] == team].iloc[0]) - float(v.mean())) / sd
+    return out
+
+
+@_memo(ttl=21600)
+def _team_perf(team: str, league: str) -> dict:
+    """팀 실적 0~99(50 = 리그 평균, 1 표준편차 = 20) — rv3.team_ratings 의 라인 실적 보정(±2.5).
+
+    공격 = 경기당 득점, 수비 = 경기당 실점의 리그 안 z. 백분위 지수(defense_output_index)는 상위권이 눌려
+    아스날 25/26 최소 실점(0.71)과 맨시티(0.92)가 97·95 로 거의 같았다. 미드필드는 midfield_index.
+    이번 시즌(경기 수 g, 비중 g/(g+10)) + 직전 시즌(같은 리그였을 때, 없으면 50)."""
+    prev_season = f"{SEASON_START - 1}_{SEASON_START}"
+    st = ds.read_table("standings", league=league)
+    g = 0
+    if st is not None and team in set(st["squad"]):
+        g = int(_num(st[st["squad"] == team].iloc[0].get("played")))
+    w = g / (g + 10.0)
+    zc, zp = _league_z(league, None, team), _league_z(league, prev_season, team)
+    out = {}
+    for unit in ("attack", "defense"):
+        c = 50.0 + 20.0 * zc[unit] if unit in zc else None
+        p = 50.0 + 20.0 * zp[unit] if unit in zp else None
+        if c is None and p is None:
+            continue
+        out[unit] = round(w * (c if c is not None else 50.0) + (1 - w) * (p if p is not None else 50.0), 1)
+    cur = ds.read_table("team_unit_metrics", league=league)
+    prev = ds.read_table("team_unit_metrics", league=league, season=prev_season)
+    col = "midfield_index"
+    c = _num(cur[cur["squad"] == team].iloc[0].get(col), None) if cur is not None and team in set(cur["squad"]) and col in cur.columns else None
+    p = _num(prev[prev["squad"] == team].iloc[0].get(col), None) if prev is not None and team in set(prev["squad"]) and col in prev.columns else None
+    if c is not None or p is not None:
+        out["midfield"] = round(w * (c if c is not None else 50.0) + (1 - w) * (p if p is not None else 50.0), 1)
+    return out
+
+
+def _age_summary(team: str, league: str, full_df) -> dict | None:
+    """출전 가중 평균 나이(실제로 뛰는 선수 기준)와 리그 안 순위(1 = 가장 젊다) + 연령대별 출전 비중.
+    머릿수 평균은 안 뛰는 유스·백업 GK 에 흔들려 '얼마나 젊은 팀인가'를 잘 못 보여 준다."""
+    if full_df is None or "age" not in full_df.columns:
+        return None
+    f = full_df[["squad", "age", "minutes"]].copy()
+    f["age"] = pd.to_numeric(f["age"], errors="coerce")
+    f["minutes"] = pd.to_numeric(f["minutes"], errors="coerce").fillna(0)
+    f = f[(f["age"] > 0) & (f["minutes"] > 0)]
+    if f.empty or team not in set(f["squad"]):
+        return None
+    w = f.assign(am=f["age"] * f["minutes"]).groupby("squad")[["am", "minutes"]].sum()
+    wavg = (w["am"] / w["minutes"]).sort_values()
+    t = f[f["squad"] == team]
+    tot = float(t["minutes"].sum())
+    share = lambda m: round(100.0 * float(t.loc[m, "minutes"].sum()) / tot) if tot else 0  # noqa: E731
+    return {"wavg": round(float(wavg[team]), 1), "rank_young": int(list(wavg.index).index(team)) + 1, "n": int(len(wavg)),
+            "league_wavg": round(float((w["am"].sum()) / w["minutes"].sum()), 1),
+            "u23": share(t["age"] <= 23), "prime": share((t["age"] >= 24) & (t["age"] <= 29)), "vet": share(t["age"] >= 30)}
+
+
 @app.get("/api/overview/{team}")
 @_memo(ttl=21600)
 def overview(team: str, league: str = ACTIVE_LEAGUE):
@@ -229,16 +320,22 @@ def overview(team: str, league: str = ACTIVE_LEAGUE):
     }
     ovr_delta = {"overall": 0, "attack": 0, "midfield": 0, "defense": 0}
     full_df = _pf(league)
-    base = rv3.team_ratings(full_df, team)                       # 이적 전(현재 스쿼드)
+    base = rv3.team_ratings(_with_roster(full_df, team, league), team, perf=_team_perf(team, league))                       # 이적 전(현재 스쿼드)
     # 이적 보정은 아직 실제 스쿼드·스탯에 반영되지 않은 창일 때만 — 시즌 중 닫힌 창(여름 이적이 이미
     # 데이터에 들어감)에 또 적용하면 영입 선수를 이중 계산한다.
     adjust = win.get("phase") != "in_season" or win.get("is_open")
     if base:
-        adj = (rv3.team_ratings(ta.build_adjusted_full(full_df, tr, win), team) or base) if adjust else base
+        adj = (rv3.team_ratings(ta.build_adjusted_full(_with_roster(full_df, team, league), tr, win), team, perf=_team_perf(team, league)) or base) if adjust else base
         for k in ("overall", "attack", "midfield", "defense"):
             ovr[k] = adj[k]
             ovr_delta[k] = adj[k] - base[k]
         ovr["top_xi"] = adj.get("top_xi", adj["overall"])
+        ovr["perf_adj"] = adj.get("perf_adj") or {}
+        import positions as _ps  # noqa: PLC0415
+        _inj = _active_injuries(team, league)
+        ovr["units"] = {k: [{**x, "injured": _ps.norm_name(x["player"]) in _inj,
+                             "until": (_inj.get(_ps.norm_name(x["player"])) or {}).get("until", "")} for x in v]
+                        for k, v in (adj.get("units") or {}).items()}
 
     # 구단 정보 + 스쿼드 가치 순위
     info = dict(tm.team_info(team))
@@ -269,6 +366,9 @@ def overview(team: str, league: str = ACTIVE_LEAGUE):
             sq = sq[sq["left_for"].isna() | (sq["left_for"].astype(str).str.strip() == "")]
         if deps:
             sq = sq[~sq["player"].map(_dep_last).isin(deps.keys())]
+        _lo = _loans_out(team, league)
+        if _lo:
+            sq = sq[~sq["player"].map(lambda n: _is_loaned(n, _lo))]     # 임대 보낸 선수
         sq["_r"] = pd.to_numeric(sq.get("ss_rating"), errors="coerce").fillna(0)
         sq["_ovr"] = sq.apply(_player_ovr, axis=1)
         # 소표본 유스 인플레 방지 — 출전시간 확보 선수만(부족하면 완화)
@@ -294,9 +394,10 @@ def overview(team: str, league: str = ACTIVE_LEAGUE):
             squad_ratings.append({
                 "player": r["player"], "ovr": p_ovr, "pot": _player_pot(r), "form": _player_form(r),
                 "age": int(_num(r.get("age"))), "minutes": mn,
-                "line": rv3.line_of_row(r),
+                "line": rv3.line_of_row(r), "photo": _photo(r),
             })
         squad_ratings.sort(key=lambda x: -x["ovr"])
+    age_summary = _age_summary(team, league, full_df)
 
     # 득점 유형 + 규율(statbunker)
     sb = _team_row("statbunker_team_stats", team, league)
@@ -397,7 +498,7 @@ def overview(team: str, league: str = ACTIVE_LEAGUE):
         "snapshot": snapshot,
         "edge": edge,
         "stars": stars,
-        "squad_ratings": squad_ratings,
+        "squad_ratings": squad_ratings, "age_summary": age_summary,
         "leaders": leaders,
         "departed": departed,
         "injuries": injuries,
@@ -972,7 +1073,135 @@ def _squad_df(team: str, league: str):
     df = full[full["squad"] == team].copy()
     if "left_for" in df.columns:
         df = df[df["left_for"].isna() | (df["left_for"].astype(str).str.strip() == "")]
+    # 임대 보낸 선수는 지금 우리 스쿼드가 아니다 — 시즌 초 몇 분 뛰고 떠난 Grealish(City 9분, 사진·나이 없는 행)가
+    # 벤치·스쿼드에 남았다(2026-10-15). 'ON LOAN' 목록(_loans_out)으로 따로 보여 준다.
+    lo = _loans_out(team, league)
+    if lo and not df.empty:
+        df = df[~df["player"].map(lambda n: _is_loaned(n, lo))]
     return df
+
+
+def _is_loaned(name, lo: dict) -> bool:
+    """임대 목록에 있는가 — 이적 기록 출처는 (성, 이름 첫 글자), 위키 출처는 전체 이름까지 같아야(동명이인 방지)."""
+    v = lo.get(_person_key(name))
+    if v is None:
+        return False
+    if v.get("source") == "transfer":
+        return True
+    from unidecode import unidecode  # noqa: PLC0415
+    nn = lambda s: unidecode(str(s or "")).lower().replace("-", " ").strip()  # noqa: E731
+    return nn(name) == nn(v.get("player"))
+
+
+@_memo(ttl=21600)
+def _contracts_all() -> dict:
+    """{_person_key: TM 계약 행(dict, league 포함)} — 전 리그 TM 스쿼드 명단. 임대 간 선수의 현재 팀·사진·입단일 찾기용.
+    같은 키가 여러 팀이면(동명이인) 모호해서 뺀다."""
+    from leagues import LEAGUES  # noqa: PLC0415
+    out: dict = {}
+    dup: set = set()
+    for lg in LEAGUES:
+        try:
+            ct = ds.read_table("transfermarkt_contracts", league=lg)
+        except Exception:  # noqa: BLE001
+            ct = None
+        if ct is None or "player" not in ct.columns:
+            continue
+        for r in ct.to_dict("records"):
+            k = _person_key(r.get("player"))
+            if k in out and out[k].get("squad") != r.get("squad"):
+                dup.add(k)
+            out[k] = {**r, "league": lg}
+    for k in dup:
+        out.pop(k, None)
+    return out
+
+
+def _win_order(year, window) -> int:
+    return int(_num(year)) * 2 + (1 if str(window).lower().startswith("summer") else 0)
+
+
+@_memo(ttl=21600)
+def _loans_out(team: str, league: str) -> dict:
+    """{_person_key: {player, club, photo, pos, nat, source}} — 임대 보낸 선수(계약은 우리, 지금은 다른 팀에서 뛴다).
+
+    1) 이번 시즌 이적 기록 OUT 중 임대(같은 선수의 더 늦은 '임대 종료' IN 이 있으면 복귀한 것)
+    2) 위키 스쿼드 'Out on loan' 섹션 — TM 계약 명단에서 다른 팀 소속이면 그 팀이 행선지,
+       우리 팀 소속으로 나오면 이미 복귀한 것이라 뺀다. 우리 리그 밖으로 간 선수는 행선지 미상.
+    """
+    out: dict = {}
+    ca = _contracts_all()
+    tr = ds.read_table("transfers", league=league)
+    if tr is not None and "squad" in tr.columns:
+        t = tr[tr["squad"] == team]
+        eol = lambda f: str(f or "").lower().startswith("end of loan")  # noqa: E731
+        back = {}
+        for r in t[(t["direction"] == "in") & t["fee_text"].map(eol)].to_dict("records"):
+            back[_person_key(r["player"])] = max(back.get(_person_key(r["player"]), -1), _win_order(r.get("season_id"), r.get("window")))
+        for r in t[(t["direction"] == "out") & t["fee_text"].map(_is_loan_move)].to_dict("records"):
+            k = _person_key(r["player"])
+            if back.get(k, -1) > _win_order(r.get("season_id"), r.get("window")):
+                continue
+            ph = str(r.get("photo") or "")
+            out[k] = {"player": str(r["player"]), "club": str(r.get("club") or ""), "pos": str(r.get("pos") or ""),
+                      "nat": str(r.get("nat") or ""), "photo": ph if ph.startswith("http") else "", "source": "transfer"}
+    import difflib  # noqa: PLC0415
+    from unidecode import unidecode  # noqa: PLC0415
+    _nn = lambda s: unidecode(str(s or "")).lower().replace("-", " ").strip()  # noqa: E731
+
+    def _dup(name) -> bool:   # 표기만 다른 같은 선수('Dastan Satpaev' ↔ 'Satpayev')
+        n = _nn(name)
+        return any(difflib.SequenceMatcher(None, n, _nn(v["player"])).ratio() >= 0.85 for v in out.values())
+    for r in _wiki_squad(team, league):
+        if r.get("section") == "loan":
+            k = _person_key(r.get("player"))
+            if k in out or _dup(r.get("player")):
+                continue
+            c = ca.get(k)
+            if c is not None and str(c.get("squad")) == team:
+                continue          # TM 은 우리 팀 소속 — 복귀했거나 위키가 늦음
+            ph = str((c or {}).get("tm_photo") or "")
+            out[k] = {"player": str(r.get("player") or ""), "club": str((c or {}).get("squad") or ""),
+                      "pos": str(r.get("pos") or ""), "nat": str(r.get("nat") or ""),
+                      "photo": ph if ph.startswith("http") else "", "source": "wiki"}
+    # 위키 1군 표에 있는데 TM 계약 명단상 다른 팀 소속 — 임대 섹션을 따로 두지 않는 위키 표(Man City 등).
+    # 팔린 선수(이번 창 이탈)는 위키가 늦게 고친 것이라 뺀다.
+    try:
+        deps = _departures(team, league, _current_window())
+    except Exception:  # noqa: BLE001
+        deps = {}
+    for r in _wiki_squad(team, league):
+        if r.get("section") != "first":
+            continue
+        k = _person_key(r.get("player"))
+        c = ca.get(k)
+        if k in out or c is None or str(c.get("squad")) == team or _dep_last(r.get("player")) in deps                 or _dup(r.get("player")):
+            continue
+        ph = str(c.get("tm_photo") or "")
+        out[k] = {"player": str(r.get("player") or ""), "club": str(c.get("squad") or ""),
+                  "pos": str(r.get("pos") or ""), "nat": str(r.get("nat") or ""),
+                  "photo": ph if ph.startswith("http") else "", "source": "wiki"}
+    # 행선지 리그의 이번 시즌 기록(우리 데이터 안이면) — 임대 가서 얼마나 뛰는지
+    for k, v in out.items():
+        c = ca.get(k)
+        if c is not None and not v["photo"]:
+            ph = str(c.get("tm_photo") or "")
+            v["photo"] = ph if ph.startswith("http") else ""
+        v["minutes"] = None
+        v["ovr"] = None
+        if c is not None and str(c.get("squad")) != team:
+            try:
+                f2 = _pf(c["league"])
+                hit = f2[(f2["squad"] == c["squad"]) & (f2["player"].map(_person_key) == k)] if f2 is not None else None
+                if hit is not None and not hit.empty:
+                    h = hit.iloc[0]
+                    v["minutes"] = int(_num(h.get("minutes")))
+                    v["ovr"] = _player_ovr(h)
+                    v["club"] = v["club"] or str(c["squad"])
+                    v["photo"] = v["photo"] or _photo(h)
+            except Exception:  # noqa: BLE001
+                pass
+    return out
 
 
 @_memo(ttl=21600)
@@ -1126,7 +1355,9 @@ def squad(team: str, league: str = ACTIVE_LEAGUE):
         depth = round(0.55 * o2 + 0.25 * o3 + 0.2 * min(100, len(opts) * 25))
         buckets.append({"pos": b, "count": len(main), "multi": len(alt), "depth": depth,
                         "starter": opts[0], "rotation": opts[1:6]})
-    return {"team": team, "color": tm.team_color(team), "lines": lines, "buckets": buckets}
+    loans = sorted(_loans_out(team, league).values(),
+                   key=lambda x: (x["club"] == "", -(x["ovr"] or 0), -(x["minutes"] or 0), x["player"]))
+    return {"team": team, "color": tm.team_color(team), "lines": lines, "buckets": buckets, "loans": loans}
 
 
 @app.get("/api/builder/{team}")
@@ -1653,7 +1884,7 @@ def analytics(team: str, league: str = ACTIVE_LEAGUE):
                 except (TypeError, ValueError):
                     return dflt
             # 코어 OVR은 v2 절대모델로 통일(Overview 와 일치). form 은 v1(성적 기반), set_piece 는 지수.
-            _t2 = rv3.team_ratings(full, team) or {}
+            _t2 = rv3.team_ratings(_with_roster(full, team, league), team, perf=_team_perf(team, league)) or {}
             ovr = {"overall": _t2.get("overall", v.get("종합 지수", 60)), "form": v.get("시즌 폼", 60),
                    "attack": _t2.get("attack", v.get("공격 지수", 60)), "midfield": _t2.get("midfield", v.get("미드필드 지수", 60)),
                    "defense": _t2.get("defense", v.get("수비 지수", 60)), "set_piece": _u("set_piece_attack_index")}
@@ -1908,10 +2139,35 @@ def _placements(team: str, league: str, last_n: int | None = None, exclude: set 
             slot_counts[slot][row["player"]] = slot_counts[slot].get(row["player"], 0) + 1
 
     resolve = _players_lookup(league)
+    # 칸마다 '그 칸 최다 출전'을 따로 고르면 두 칸을 번갈아 선 선수(Man City Anderson RDM·LDM)가 두 번 들어가고
+    # 다른 주전(Enzo)이 벤치로 밀렸다 → (칸, 선수, 횟수)를 많은 순으로 한 사람 한 칸씩 배정(2026-10-15).
+    # 4-1-2-1-2 처럼 같은 이름의 칸(CM 두 개)이 있으면 그 수만큼 서로 다른 선수.
+    from collections import Counter  # noqa: PLC0415
+    need = Counter(formation_slots(formation))
+    pick: dict[str, list[str]] = {}
+    used: set[str] = set()
+    trip = sorted(((v, s, p) for s, c in slot_counts.items() for p, v in c.items()
+                   if not exclude or _person_key(p) not in exclude), key=lambda t: (-t[0], t[1], t[2]))
+    for _v, s, p in trip:
+        if p in used or len(pick.get(s, [])) >= need.get(s, 0):
+            continue
+        pick.setdefault(s, []).append(p)
+        used.add(p)
+    # 그래도 빈 칸은 이 포메이션에서 선발이 가장 많은 남은 선수로(Elche·Cercle 처럼 후보가 다른 칸에 다 배정된 경우)
+    tot: dict[str, int] = {}
+    for c in slot_counts.values():
+        for p, v in c.items():
+            tot[p] = tot.get(p, 0) + v
+    spare = [p for p, _ in sorted(tot.items(), key=lambda x: -x[1])
+             if p not in used and (not exclude or _person_key(p) not in exclude)]
+    for s, n in need.items():
+        while len(pick.get(s, [])) < n and spare:
+            p = spare.pop(0)
+            pick.setdefault(s, []).append(p)
+            used.add(p)
     placements = []
     for slot in formation_slots(formation):
-        cand = {k: v for k, v in (slot_counts.get(slot) or {}).items() if not exclude or _person_key(k) not in exclude}
-        player = max(cand, key=cand.get) if cand else None
+        player = pick[slot].pop(0) if pick.get(slot) else None
         x, y = slot_xy(slot, formation)
         row = resolve(player) if player else None
         placements.append({
@@ -1928,7 +2184,7 @@ def _placements(team: str, league: str, last_n: int | None = None, exclude: set 
 @app.get("/api/lineup/{team}")
 @_memo(ttl=21600)
 def lineup(team: str, league: str = ACTIVE_LEAGUE):
-    gone = _gone_keys(team, league)   # 떠난 선수는 현재 XI·벤치에서 제외
+    gone = _gone_keys(team, league) | {k for k, v in _loans_out(team, league).items() if v.get("source") == "transfer"}   # 떠난·임대 간 선수는 현재 XI·벤치에서 제외
     season = _placements(team, league, exclude=gone)
     if season is None:
         raise HTTPException(404, "lineup data not found")
@@ -2084,7 +2340,7 @@ def _club_strength(league: str) -> dict:
     m: dict[str, float] = {}
     if full is not None:
         for c in full["squad"].dropna().unique():
-            tr = rv3.team_ratings(full, str(c))
+            tr = rv3.team_ratings(_with_roster(full, str(c), league), str(c), perf=_team_perf(str(c), league))
             m[str(c)] = tr["overall"] if tr else 75
     _CLUB_STR_CACHE[league] = m
     return m
@@ -2255,7 +2511,7 @@ def recommend(team: str, league: str = ACTIVE_LEAGUE):
         return {"team": team, "weakest": None, "recommendations": [], "lost_targets": [], "addressed": False}
 
     nd = _compute_needs(team, league)
-    trr = rv3.team_ratings(full, team) or {}
+    trr = rv3.team_ratings(_with_roster(full, team, league), team, perf=_team_perf(team, league)) or {}
     team_ovr = trr.get("overall", 78)
     signed_lines = {s["line"] for s in nd["window"]["signings"]}
 
@@ -2693,12 +2949,39 @@ def network(team: str, league: str = ACTIVE_LEAGUE):
     if pf is None or "squad" not in pf.columns:
         return {"available": False, "reason": "선수 데이터 없음"}
     gone = _gone_keys(team, league)
+    loans = _loans_out(team, league)
     rows = pf[pf["squad"] == team]
-    rows = rows[[_person_key(p) not in gone for p in rows["player"]]]
+    rows = rows[[_person_key(p) not in gone and not _is_loaned(p, loans) for p in rows["player"]]]
     if rows.empty:
         return {"available": False, "reason": "선수 데이터 없음"}
     inj = _active_injuries(team, league)
-    wiki = [w for w in _wiki_squad(team, league) if w["section"] == "first"]
+    wiki = [w for w in _wiki_squad(team, league) if w["section"] == "first" and not _is_loaned(w["player"], loans)
+            and _person_key(w["player"]) not in gone]
+    # 입단일·사진 — TM 계약 명단(이 팀). players_full 에 tm_joined_date 가 없는 선수(출전 없는 1군·이름 표기 차이)가
+    # '입단일 미상'(이니셜 아바타)으로 몰렸다(2026-10-15 사용자 지적, Man City JG·KP).
+    _ct = ds.read_table("transfermarkt_contracts", league=league)
+    _ct_rows = _ct[_ct["squad"] == team].to_dict("records") if _ct is not None and "squad" in _ct.columns else []
+
+    def _tok(n) -> frozenset:   # 어순 무관('Kim Min-jae' ↔ 'Min-jae Kim')
+        return frozenset(unidecode(str(n or "")).lower().replace("-", " ").split())
+    ct_by: dict = {}
+    for c in _ct_rows:
+        if pd.notna(c.get("tm_id")):
+            ct_by[("tm", str(int(_num(c["tm_id"]))))] = c
+        ct_by.setdefault(_tok(c["player"]), c)
+        ct_by.setdefault(_person_key(c["player"]), c)
+        try:                                              # 레지스트리 기준 표기('Alfon González' → 'Alfon')
+            import player_names as _pn  # noqa: PLC0415
+            ct_by.setdefault(_tok(_pn.canon(c["player"], team, league)), c)
+        except Exception:  # noqa: BLE001
+            pass
+
+    def ct_of(name, tm_id=None):
+        if tm_id is not None and pd.notna(tm_id) and _num(tm_id) > 0:
+            hit = ct_by.get(("tm", str(int(_num(tm_id)))))
+            if hit is not None:
+                return hit
+        return ct_by.get(_tok(name)) or ct_by.get(_person_key(name))
     wiki_idx = tn.NameIndex([w["player"] for w in wiki])
     wiki_by = {w["player"]: w for w in wiki}
 
@@ -2761,11 +3044,20 @@ def network(team: str, league: str = ACTIVE_LEAGUE):
              "injured": bool(injury), "injury": (injury or {}).get("injury"),
              "wc": bool(wc_idx and wc_idx.find(nm)),
              "nation": nation_of(r.get("nationality"), w["nat"] if w else None)}
+        c = ct_of(nm, r.get("tm_id"))
+        if c is not None:
+            p["joined"] = p["joined"] or (str(c.get("joined_date") or "")[:10] or None)
+            if not p["photo"] and str(c.get("tm_photo") or "").startswith("http"):
+                p["photo"] = str(c["tm_photo"])
         p["origin"] = tn.acquisition(p, tin.get(_person_key(nm)), team, today)
         players.append(p)
     _LINE = {"GK": "GK", "DF": "DEF", "MF": "MID", "FW": "ATT"}
     for w in wiki:                                       # 아직 출전 기록 없는 1군(부상·백업 GK 등)
         if w["player"] in seen_wiki:
+            continue
+        # TM 스쿼드 명단에도 없는 위키 1군(유스 등록·늦은 위키)은 뺀다 — 입단일·사진·나이 모두 미상이라
+        # '입단일 미상'만 늘렸다(Genk 30명). 주장단은 남긴다.
+        if _ct_rows and ct_of(w["player"]) is None and not w["rank"]:
             continue
         injury = inj.get(" ".join(unidecode(w["player"]).lower().replace("-", " ").split()))
         p = {"name": w["player"], "photo": _resolve_photo(w["player"], lambda _n: None, league),
@@ -2773,6 +3065,11 @@ def network(team: str, league: str = ACTIVE_LEAGUE):
              "joined": None, "prev_squad": None, "no": w["no"], "captain_rank": w["rank"],
              "injured": bool(injury), "injury": (injury or {}).get("injury"),
              "wc": bool(wc_idx and wc_idx.find(w["player"])), "nation": nation_of(None, w["nat"]), "unplayed": True}
+        c = ct_of(w["player"])
+        if c is not None:
+            p["joined"] = str(c.get("joined_date") or "")[:10] or None
+            if not p["photo"] and str(c.get("tm_photo") or "").startswith("http"):
+                p["photo"] = str(c["tm_photo"])
         p["origin"] = tn.acquisition(p, tin.get(_person_key(w["player"])), team, today)
         players.append(p)
     for p in players:
@@ -4307,10 +4604,21 @@ def team_season(team: str, league: str = ACTIVE_LEAGUE):
         if len(recent) >= 5:
             break
 
-    # 시즌 프로필 — 리그 안 순위와 근거 숫자
+    # 시즌 프로필 — 리그 안 순위와 근거 숫자 + 지난 시즌 같은 지표(같은 리그였을 때) 대비 ▲▼
     profile = []
     um = ds.read_table("team_unit_metrics", league=league)
     sb = _team_row("statbunker_team_stats", team, league)
+    prev_season = f"{SEASON_START - 1}_{SEASON_START}"
+    um_p = ds.read_table("team_unit_metrics", league=league, season=prev_season)
+    row_p = um_p[um_p["squad"] == team].iloc[0] if um_p is not None and team in set(um_p["squad"]) else None
+    st_p = ds.read_table("standings", league=league, season=prev_season)
+    stand_p = st_p[st_p["squad"] == team].iloc[0] if st_p is not None and team in set(st_p["squad"]) else None
+    sb_p = None
+    try:
+        _sbp = ds.read_table("statbunker_team_stats", league=league, season=prev_season)
+        sb_p = _sbp[_sbp["squad"] == team].iloc[0] if _sbp is not None and team in set(_sbp["squad"]) else None
+    except Exception:  # noqa: BLE001
+        sb_p = None
     if um is not None and team in set(um["squad"]):
         row = um[um["squad"] == team].iloc[0]
         g = int(_num(stand["played"])) if stand is not None else 0
@@ -4327,8 +4635,32 @@ def team_season(team: str, league: str = ACTIVE_LEAGUE):
                 hint = f"경기당 실점 {int(stand['ga']) / g:.2f}"
             elif hint_kind == "sp" and sb is not None and pd.notna(sb.get("non_penalty_set_piece_goals")):
                 hint = f"세트피스 득점 {int(_num(sb.get('non_penalty_set_piece_goals')))}골"
+            prev = prev_rank = None
+            prev_hint = ""
+            if row_p is not None and col in um_p.columns and pd.notna(row_p.get(col)) and _num(row_p.get(col)) > 0:
+                prev = int(_num(row_p[col]))
+                prev_rank = int((pd.to_numeric(um_p[col], errors="coerce") > prev).sum()) + 1
+                gp = int(_num(stand_p["played"])) if stand_p is not None else 0
+                if hint_kind == "gf" and gp:
+                    prev_hint = f"경기당 득점 {int(_num(stand_p['gf'])) / gp:.2f}"
+                elif hint_kind == "ga" and gp:
+                    prev_hint = f"경기당 실점 {int(_num(stand_p['ga'])) / gp:.2f}"
+                elif hint_kind == "sp" and sb_p is not None and pd.notna(sb_p.get("non_penalty_set_piece_goals")):
+                    prev_hint = f"세트피스 득점 {int(_num(sb_p.get('non_penalty_set_piece_goals')))}골"
             profile.append({"key": col, "en": en, "kr": kr, "value": val, "rank": rank,
-                            "n": int(vals.notna().sum()), "hint": hint})
+                            "n": int(vals.notna().sum()), "hint": hint,
+                            "prev": prev, "prev_rank": prev_rank, "prev_hint": prev_hint})
+
+    # 득점 구성 — 오픈플레이·세트피스·PK(StatBunker, EPL·라리가·세리에A) 이번 시즌 vs 지난 시즌
+    def _mix(r):
+        if r is None or pd.isna(r.get("goals_statbunker")):
+            return None
+        sp = sum(_num(r.get(c)) for c in ("corner_goals", "free_kick_goals", "direct_free_kick_goals", "throw_in_goals"))
+        pen = _num(r.get("penalty_goals_type"))
+        op = _num(r.get("open_play_goals")) + _num(r.get("cross_goals")) + _num(r.get("other_goals"))
+        return {"total": int(op + sp + pen), "open": int(op), "set_piece": int(sp), "pen": int(pen),
+                "corner": int(_num(r.get("corner_goals"))), "games": int(_num(r.get("matches_statbunker")))}
+    goal_mix = {"cur": _mix(sb), "prev": _mix(sb_p)} if sb is not None else None
 
     # 리그 표의 경기당 xG·전력 순위(리그 랩 6시간 캐시 재사용)
     xg_pg = str_rank = None
@@ -4344,7 +4676,7 @@ def team_season(team: str, league: str = ACTIVE_LEAGUE):
         "standing": None if stand is None else {k: int(_num(stand[k])) for k in
                                                  ("rank", "played", "won", "drawn", "lost", "gf", "ga", "gd", "points")},
         "xg_pg": xg_pg, "str_rank": str_rank,
-        "path": path, "refs": refs, "recent": recent, "profile": profile,
+        "path": path, "refs": refs, "recent": recent, "profile": profile, "goal_mix": goal_mix,
     }
 
 

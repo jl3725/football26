@@ -40,6 +40,7 @@ function Row({ p, team }: { p: SquadPlayer; team: string }) {
 export default function SquadTab({ team, accent }: { team: string; accent: string }) {
   const [data, setData] = useState<Squad | null>(null);
   const [view, setView] = useState<"squad" | "builder">("squad");
+  const [allLoans, setAllLoans] = useState(false);
   useEffect(() => { let a = true; getSquad(team).then((d) => a && setData(d)).catch(() => {}); return () => { a = false; }; }, [team]);
   const peek = usePeek();
   if (!data) return <div className="skel-wrap"><SkelCards n={8} cols="repeat(auto-fill, minmax(280px, 1fr))" /></div>;
@@ -125,6 +126,36 @@ export default function SquadTab({ team, accent }: { team: string; accent: strin
           );
         })}
       </div>
+
+      {/* 임대 보낸 선수 — 계약은 우리, 지금은 다른 팀(스쿼드·XI·팀 OVR 에서 뺀다) */}
+      {(data.loans?.length ?? 0) > 0 && (
+        <div className="card" style={{ marginTop: 16 }}>
+          <SectionHead title="OUT ON LOAN" kr="임대 보낸 선수" meta={`${data.loans!.length}명 · 행선지 기록은 우리 데이터 안 리그만`} />
+          <div className="loan-grid">
+            {data.loans!.slice(0, allLoans ? undefined : 8).map((l) => (
+              <div key={l.player} className="loan-card peekable"
+                onClick={(e) => peek(e, { name: l.player, club: l.club || team, hint: { photo: l.photo, ovr: l.ovr ?? undefined, pos: l.pos } })}>
+                {l.photo ? <img className="sq-photo" src={l.photo} alt="" />
+                  : <span className="sq-photo ph loan-ini">{l.player.split(" ").map((w) => w[0]).slice(0, 2).join("")}</span>}
+                <div className="sq-info">
+                  <div className="sq-name">{l.player}</div>
+                  <div className="sq-meta">
+                    <span className="loan-badge">임대중</span>
+                    {l.club ? <> → <b>{l.club}</b></> : <em> 행선지 미상</em>}
+                    {l.minutes != null && <> · {l.minutes.toLocaleString()}′</>}
+                  </div>
+                </div>
+                {l.ovr != null && <span className="sq-ovr" style={{ color: tier(l.ovr).light, borderColor: tier(l.ovr).deep }}>{l.ovr}</span>}
+              </div>
+            ))}
+          </div>
+          {data.loans!.length > 8 && (
+            <button className="loan-more" onClick={() => setAllLoans((x) => !x)}>
+              {allLoans ? "접기" : `+${data.loans!.length - 8}명 더 보기`}
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 }

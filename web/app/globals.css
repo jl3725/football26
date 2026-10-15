@@ -3770,3 +3770,89 @@ LIGA’처럼 글자가 접히던 것) — 넘치면 가로로 넘긴다 */
   .slog-row { grid-template-columns: minmax(84px, 1.3fr) 1fr 0.9fr 0.45fr 0.45fr; font-size: 12px; padding: 7px 9px; }
   .slog-row span:nth-child(6) { display: none; }
 }
+
+/* SEASON PROFILE 지난 시즌 눈금·▲▼ + 득점 구성 비교(GoalMixCompare) */
+.sp5-d { font: 700 11px/1 var(--font-num); padding: 2px 5px; border-radius: 5px; }
+.sp5-d.up { color: #3ecf8e; background: rgba(62,207,142,0.12); } .sp5-d.down { color: #ff6b7d; background: rgba(255,107,125,0.12); }
+.sp5-d.same { color: var(--muted-2); }
+.sp5-row { grid-template-columns: minmax(0, 1fr) minmax(90px, 1.1fr) 112px; }
+.gmx { margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 7px; }
+.gmx-row { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 10px; align-items: center; }
+.gmx-l { display: flex; flex-direction: column; gap: 2px; font-size: 12px; font-weight: 700; }
+.gmx-l em { font-style: normal; font-weight: 500; font-size: 10.5px; color: var(--muted-2); }
+.gmx-bar { display: flex; height: 18px; border-radius: 5px; overflow: hidden; background: var(--overlay); }
+.gmx-bar i { display: grid; place-items: center; font: 700 10.5px/1 var(--font-num); font-style: normal; color: #0b0f17; }
+.gmx-leg { display: flex; gap: 12px; font-size: 10.5px; color: var(--muted); }
+.gmx-leg span { display: inline-flex; align-items: center; gap: 4px; } .gmx-leg i { width: 8px; height: 8px; border-radius: 2px; }
+.gmx-note { margin: 0; font-size: 12px; color: var(--txt); }
+
+/* SQUAD STRENGTH 라인 구성·기록 보정 */
+.unit-perf { font: 700 10.5px/1 var(--font-num); font-style: normal; padding: 2px 5px; border-radius: 5px; margin-right: 6px; }
+.unit-perf.up { color: #3ecf8e; background: rgba(62,207,142,0.12); } .unit-perf.down { color: #ff6b7d; background: rgba(255,107,125,0.12); }
+.unit-who { display: flex; flex-wrap: wrap; gap: 4px 8px; margin-top: 5px; font-size: 11px; color: var(--muted); }
+.unit-who .inj { color: #ff9f6b; }
+
+/* OUT ON LOAN */
+.loan-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 8px; }
+.loan-card { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 10px; background: var(--overlay); border: 1px solid var(--line); }
+.loan-card .sq-info { flex: 1; min-width: 0; }
+.loan-card .sq-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.loan-badge { display: inline-block; font-size: 10px; font-weight: 800; padding: 1px 6px; border-radius: 4px; background: rgba(244,207,94,0.16); color: #f4cf5e; margin-right: 2px; }
+.loan-ini { display: grid; place-items: center; font-size: 11px; font-weight: 800; color: var(--muted); }
+
+/* GRAPH INSIGHTS 타일(v6.7) — 큰 숫자 + 얼굴·로고·국기 + 한 줄 */
+.net-ins { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+.net-in.nt { gap: 8px; padding: 11px 12px 10px; }
+.net-in.nt .net-in-top b { font-size: 12.5px; color: var(--txt); margin-left: auto; font-weight: 700; }
+.nt-main { display: flex; align-items: center; gap: 10px; min-height: 44px; }
+.nt-vis { display: inline-flex; align-items: center; flex-shrink: 0; }
+.nt-face { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; object-position: top; background: #18202c;
+  border: 2px solid var(--surface); margin-left: -9px; }
+.nt-vis > .nt-face:first-child, .nt-vis > .nt-flag + .nt-face { margin-left: 0; }
+.nt-flag + .nt-face { margin-left: 6px; }
+.nt-ini { display: grid; place-items: center; font: 700 11px/1 var(--font-num); color: #c9d1dd; }
+.nt-flag { width: 34px; height: 24px; border-radius: 4px; object-fit: cover; box-shadow: 0 0 0 1px rgba(255,255,255,.12); }
+.nt-logo { width: 32px; height: 32px; object-fit: contain; margin-left: 6px; }
+.nt-num { display: flex; flex-direction: column; min-width: 0; }
+.nt-num strong { font: 800 26px/1 var(--font-num); color: var(--tc); letter-spacing: -0.01em; }
+.nt-num em { font-style: normal; font-size: 11px; color: var(--muted); margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.nt-line { margin: 0; font-size: 12px; color: var(--txt); opacity: .85; line-height: 1.35; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.nt-ev-t { align-self: flex-start; border: none; background: none; padding: 0; font-size: 10.5px; color: var(--muted-2); cursor: pointer; }
+.nt-ev-t:hover { color: var(--txt); }
+.net-in.nt { min-width: 0; }
+.net-in.nt .net-in-top { min-width: 0; } .net-in.nt .net-in-top b { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+@media (max-width: 560px) {
+  .net-ins { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .net-in.nt { padding: 10px; }
+  .net-in.nt .net-in-top em { display: none; }
+  .net-in.nt .net-in-top b { margin-left: 0; font-size: 12px; }
+  .nt-main { gap: 7px; }
+  .nt-num strong { font-size: 22px; }
+  .nt-face { width: 28px; height: 28px; margin-left: -10px; }
+  .nt-vis .nt-face:nth-of-type(n+3) { display: none; }
+  .nt-flag { width: 28px; height: 20px; } .nt-logo { width: 26px; height: 26px; margin-left: 4px; }
+}
+
+.net-undated { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 8px 0 4px; }
+.net-undated .lbl { font-size: 11px; color: var(--muted-2); margin-right: 2px; }
+.net-undated .chip { display: inline-flex; align-items: center; gap: 5px; padding: 2px 8px 2px 2px; border-radius: 999px; border: 1px solid var(--line);
+  background: var(--overlay); color: var(--txt); font-size: 11.5px; cursor: pointer; }
+.net-undated .chip img, .net-undated .chip i { width: 20px; height: 20px; border-radius: 50%; object-fit: cover; object-position: top; background: #18202c; }
+.net-undated .chip i { display: grid; place-items: center; font: 700 8.5px/1 var(--font-num); font-style: normal; color: #c9d1dd; }
+.net-undated em { font-style: normal; font-size: 11px; color: var(--muted-2); }
+
+/* AGE PROFILE v6.7 — 사진 비스웜 + 출전 가중 평균 */
+.agep-kpi { display: grid; grid-template-columns: minmax(0, auto) minmax(0, 1fr); gap: 18px; align-items: center; margin: 2px 0 10px; }
+.agep-big { display: flex; flex-direction: column; gap: 3px; }
+.agep-big strong { font: 800 30px/1 var(--font-num); letter-spacing: -0.02em; }
+.agep-big span { font-size: 11px; color: var(--muted); }
+.agep-big em { font-style: normal; font-size: 11px; font-weight: 700; color: var(--muted); }
+.agep-big em.y { color: #4fc27f; } .agep-big em.o { color: #e0a05e; }
+.agep-share .bar { display: flex; height: 20px; border-radius: 6px; overflow: hidden; background: var(--overlay); }
+.agep-share .bar i { display: grid; place-items: center; font: 700 10.5px/1 var(--font-num); font-style: normal; color: #0b0f17; }
+.agep-share .leg { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 6px; font-size: 11px; color: var(--muted); }
+.agep-share .leg span { display: inline-flex; align-items: center; gap: 4px; } .agep-share .leg i { width: 8px; height: 8px; border-radius: 2px; }
+.agep-svg { width: 100%; height: auto; display: block; }
+@media (max-width: 560px) { .agep-kpi { grid-template-columns: 1fr; gap: 10px; } }
+.loan-more { margin-top: 10px; border: 1px solid var(--line); background: var(--overlay); color: var(--muted); border-radius: 8px; padding: 6px 12px; font-size: 12px; cursor: pointer; }
+.loan-more:hover { color: var(--txt); }

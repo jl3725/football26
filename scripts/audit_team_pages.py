@@ -59,6 +59,20 @@ def audit_league(c: TestClient, league: str) -> list[dict]:
             both = [d["player"] for d in ov.get("departed", []) if _last(d["player"]) in names]
             if both:
                 out.append({"league": league, "team": team, "check": "departed_in_squad", "detail": ", ".join(both)})
+            # 1-b) XI 에 같은 선수 두 번·빈 자리(Man City 'Anderson Anderson', 2026-10-15)
+            for blk in ("season", "recent"):
+                pl = (lj.get(blk) or {}).get("placements", [])
+                seen = [p["player"] for p in pl if p.get("player")]
+                dup = sorted({n for n in seen if seen.count(n) > 1})
+                if dup or len(seen) < len(pl):
+                    out.append({"league": league, "team": team, "check": "xi_slots",
+                                "detail": f"{blk}: 중복 {dup} · 빈 자리 {len(pl) - len(seen)}"})
+            # 1-c) 임대 보낸 선수가 XI·벤치에
+            sq = c.get(f"/api/squad/{team}", params={"league": league})
+            if sq.status_code == 200:
+                lo = [x["player"] for x in sq.json().get("loans", []) if x.get("source") == "transfer" and _last(x["player"]) in names]
+                if lo:
+                    out.append({"league": league, "team": team, "check": "loaned_in_squad", "detail": ", ".join(lo)})
         # 2) 프로필 순위 ↔ 실제 득실 순위
         prof = {p["key"]: p for p in ts.get("profile", [])}
         for key, ref, label in (("attack_output_index", gf_rank, "공격 출력↔득점"), ("defense_output_index", ga_rank, "실점 억제↔실점")):
@@ -96,7 +110,7 @@ def main() -> int:
             print(f"  {x['league']:16} {x['team']:22} {x['check']:18} {x['detail']}")
     if a.json:
         Path(a.json).write_text(json.dumps(rows, ensure_ascii=False, indent=1), encoding="utf-8")
-    serious = [x for x in rows if x["check"] in ("departed_in_squad", "api_error")]
+    serious = [x for x in rows if x["check"] in ("departed_in_squad", "api_error", "xi_slots", "loaned_in_squad")]
     return 1 if serious else 0
 
 

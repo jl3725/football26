@@ -275,6 +275,11 @@ def _fee(v) -> str:
     return f"€{v / 1e6:.0f}M" if v >= 1e6 else f"€{v / 1e3:.0f}K"
 
 
+def _last(n) -> str:
+    t = str(n or "").split()
+    return t[-1] if t else str(n or "")
+
+
 def insights(team: str, lead: dict, chem: dict, duos: list, orig: dict, nat: dict, lk: dict,
              players: list[dict]) -> list[dict]:
     out = []
@@ -285,7 +290,8 @@ def insights(team: str, lead: dict, chem: dict, duos: list, orig: dict, nat: dic
         if c.get("injured") and lead.get("armband") and lead["armband"] != c["name"]:
             out.append({"lens": "leadership", "icon": "©", "tone": "warn", "title": "완장 이동",
                         "text": f"주장 {c['name']} 결장({c.get('injury') or '부상'}) — 지금 완장은 {lead['armband']}",
-                        "evidence": ev})
+                        "evidence": ev, "big": "C", "unit": "완장 이동", "who": [lead["armband"], c["name"]],
+                        "line": f"{_last(c['name'])} 결장 → {_last(lead['armband'])}"})
         else:
             extra = []
             if c.get("tenure") is not None:
@@ -296,7 +302,10 @@ def insights(team: str, lead: dict, chem: dict, duos: list, orig: dict, nat: dic
             out.append({"lens": "leadership", "icon": "©", "tone": "info", "title": "주장단",
                         "text": f"주장 {c['name']}" + (f" · {', '.join(extra)}" if extra else "")
                                 + (f" — 부주장 {caps[1]['name']}" if len(caps) > 1 else ""),
-                        "evidence": ev})
+                        "evidence": ev, "who": [x["name"] for x in caps[:3]],
+                        "big": str(int(c["tenure"])) if c.get("tenure") is not None else "C",
+                        "unit": "년차 주장" if c.get("tenure") is not None else "주장",
+                        "line": _last(c["name"]) + (f" · 부주장 {_last(caps[1]['name'])}" if len(caps) > 1 else "")})
     nodes = chem.get("nodes", [])
     if nodes:
         hub = max(nodes, key=lambda n: n["degree"])
@@ -305,12 +314,15 @@ def insights(team: str, lead: dict, chem: dict, duos: list, orig: dict, nat: dic
         out.append({"lens": "chemistry", "icon": "◎", "tone": "good", "title": "연결 허브",
                     "text": f"{hub['name']} — {len(strong)}명과 300분 넘게 함께 뛰었다(팀에서 가장 많이 연결된 선수)",
                     "evidence": [f"{hub['name']} ─ {e['minutes']}분 ─ {e['b'] if e['a'] == hub['name'] else e['a']}"
-                                 for e in partners[:3]]})
+                                 for e in partners[:3]],
+                    "big": str(len(strong)), "unit": "명과 300분+", "who": [hub["name"]], "line": hub["name"]})
     if duos:
         d = duos[0]
         out.append({"lens": "chemistry", "icon": "⇄", "tone": "good", "title": "최고의 듀오",
                     "text": f"{d['a']['name']} · {d['b']['name']} — {d.get('minutes', 0)}분 함께({d.get('matches', 0)}경기)",
-                    "evidence": [f"{d['a']['name']} ─ TEAMMATE ─ {d['b']['name']}"]})
+                    "evidence": [f"{d['a']['name']} ─ TEAMMATE ─ {d['b']['name']}"],
+                    "big": f"{d.get('minutes', 0):,}", "unit": "분 함께", "who": [d["a"]["name"], d["b"]["name"]],
+                    "line": f"{_last(d['a']['name'])} · {_last(d['b']['name'])} · {d.get('matches', 0)}경기"})
     acq = orig.get("acq", {})
     srcs = [s for s in orig.get("sources", []) if s["league"] not in ("ACADEMY", "OTHER")]
     recent = [p for p in players if (p.get("origin") or {}).get("year") and p["origin"]["year"] >= dt.date.today().year - 1
@@ -319,20 +331,26 @@ def insights(team: str, lead: dict, chem: dict, duos: list, orig: dict, nat: dic
     txt = f"유스 출신 {acq.get('academy', 0)}명 · 최근 1년 영입 {len(recent)}명" + (f"({_fee(fee)})" if fee else "")
     if srcs:
         txt += f" · 최다 공급 리그 {srcs[0]['league']} {srcs[0]['n']}명"
+    line = f"유스 {acq.get('academy', 0)}명" + (f" · {_fee(fee)}" if fee else "") + (f" · 최다 {srcs[0]['league']}" if srcs else "")
     out.append({"lens": "origins", "icon": "⌂", "tone": "info", "title": "스쿼드 구성", "text": txt,
-                "evidence": [f"{p['name']} ← {p['origin'].get('from_club') or '?'}" for p in recent[:3]]})
+                "evidence": [f"{p['name']} ← {p['origin'].get('from_club') or '?'}" for p in recent[:3]],
+                "big": str(len(recent)), "unit": "명 영입(1년)", "who": [p["name"] for p in recent[:4]], "line": line})
     tenured = sorted([p for p in players if p.get("tenure")], key=lambda p: -p["tenure"])
     if tenured:
         t0 = tenured[0]
         out.append({"lens": "origins", "icon": "⏳", "tone": "info", "title": "최장기 근속",
                     "text": f"{t0['name']} — {t0['tenure']:.0f}년째" + (f", {tenured[1]['name']} {tenured[1]['tenure']:.0f}년" if len(tenured) > 1 else ""),
-                    "evidence": [f"{t0['name']} ─ JOINED {str(t0.get('joined'))[:4]} ─ {team}"]})
+                    "evidence": [f"{t0['name']} ─ JOINED {str(t0.get('joined'))[:4]} ─ {team}"],
+                    "big": f"{t0['tenure']:.0f}", "unit": "년째", "who": [t0["name"]],
+                    "line": f"{t0['name']} · {str(t0.get('joined'))[:4]} 입단"})
     cs = nat.get("countries", [])
     if cs:
         top = cs[0]
         out.append({"lens": "nations", "icon": "⚑", "tone": "info", "title": "국적 구성",
                     "text": f"{nat['n']}개국 · 최다 {top['name']} {len(top['players'])}명 · 2026 월드컵 명단 {nat['wc_total']}명",
-                    "evidence": [f"{p} ─ REPRESENTS ─ {top['name']}" for p in top["players"][:3]]})
+                    "evidence": [f"{p} ─ REPRESENTS ─ {top['name']}" for p in top["players"][:3]],
+                    "big": str(nat["n"]), "unit": "개국", "flag": top["name"],
+                    "line": f"최다 {top['name']} {len(top['players'])} · 월드컵 {nat['wc_total']}명"})
     cl = lk.get("clubs", [])
     if cl:
         c = cl[0]
@@ -345,8 +363,10 @@ def insights(team: str, lead: dict, chem: dict, duos: list, orig: dict, nat: dic
             parts.append(f"출신 선수 {len(c['alumni'])}")
         if c["rumor_in"] or c["rumor_out"]:
             parts.append(f"이적설 {len(c['rumor_in']) + len(c['rumor_out'])}")
+        n_link = len(c["in"]) + len(c["out"]) + len(c["alumni"]) + len(c["rumor_in"]) + len(c["rumor_out"])
         out.append({"lens": "links", "icon": "⛓", "tone": "info", "title": "가장 가까운 클럽",
                     "text": f"{c['club']} — {' · '.join(parts)}",
+                    "big": str(n_link), "unit": "건 연결", "club": c["club"], "line": f"{c['club']} · {' · '.join(parts)}",
                     "evidence": list(dict.fromkeys(f"{team} ─ {x['player']} ─ {c['club']}"
                                                    for x in (c['in'] + c['out'] + c['alumni'])))[:3]})
     return out
@@ -502,7 +522,9 @@ def insights_extra(team: str, nat_web: dict, ti: dict, mg: dict) -> list[dict]:
             out.append({"lens": "nations", "icon": "⚑", "tone": "info", "title": "대표팀 동료",
                         "text": f"{nat} 대표팀(월드컵 명단 {len(w['players'])}명) 중 우리 {w['n_ours']}명 — "
                                 f"나머지는 {len(others)}개 클럽, 최다 {top['club']} {top['n']}명",
-                        "evidence": [f"{p} ─ {nat} ─ {top['club']}" for p in top["players"][:3]]})
+                        "evidence": [f"{p} ─ {nat} ─ {top['club']}" for p in top["players"][:3]],
+                        "big": str(w["n_ours"]), "unit": f"명 {nat} 대표", "flag": nat, "club": top["club"],
+                        "line": f"대표팀 동료 최다 {top['club']} {top['n']}명"})
     if ti and ti.get("clubs"):
         c = ti["clubs"][0]
         txt = f"지난 시즌 동료 {ti['n_ties']}명이 {ti['n_clubs']}개 클럽에 — 가장 많은 곳 {c['club']} {len(c['ties'])}명"
@@ -510,6 +532,8 @@ def insights_extra(team: str, nat_web: dict, ti: dict, mg: dict) -> list[dict]:
             r = ti["reunions"][0]
             txt += f" · 재회: {r['ours']}·{r['mate']}({r['from_club']})"
         out.append({"lens": "ties", "icon": "↺", "tone": "info", "title": "전 소속 동료", "text": txt,
+                    "big": str(ti["n_ties"]), "unit": "명 옛 동료", "club": c["club"],
+                    "line": f"{ti['n_clubs']}개 클럽 · 최다 {c['club']} {len(c['ties'])}명",
                     "evidence": [f"{t['ours']} ─ {t['starts']}경기 함께({t['from_club']}) ─ {t['mate']} @ {t['now_club']}"
                                  for t in c["ties"][:3]]})
     if mg and mg.get("available"):
@@ -520,5 +544,7 @@ def insights_extra(team: str, nat_web: dict, ti: dict, mg: dict) -> list[dict]:
         if mg.get("brought"):
             txt += f" · 전 팀에서 함께 온 선수 {len(mg['brought'])}명"
         ev = [f"{mg['name']} ─ MANAGED ─ {c}" for c in clubs[-3:]]
-        out.append({"lens": "manager", "icon": "♟", "tone": "info", "title": "감독 커리어", "text": txt, "evidence": ev})
+        out.append({"lens": "manager", "icon": "♟", "tone": "info", "title": "감독 커리어", "text": txt, "evidence": ev,
+                    "big": str(len(clubs)), "unit": "개 클럽 지휘",
+                    "line": mg["name"] + (f" · 연결 감독 {mg['n_network']}명" if mg.get("n_network") else "")})
     return out

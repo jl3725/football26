@@ -124,3 +124,24 @@ def test_prev_season_name_variant_same_club() -> None:
     assert aps._variant("frank anguissa", "andre frank zambo anguissa")
     assert aps._variant("jair", "jair cunha")
     assert not aps._variant("marcos fernandez", "roberto fernandez")     # 성만 같은 다른 사람
+
+
+def test_wiki_name_templates_keep_the_name() -> None:
+    # 안쪽 틀({{ill|…}})에서 끊겨 이름이 '{{ill|Pascal Kuiper|nl' 로 남던 것(Eredivisie 61명)
+    t = ("{{Fs player|no=1|nat=NED|pos=GK|name={{ill|Pascal Kuiper|nl}}|other=captain}}\n"
+         "{{Fs player|no=3|nat=KOR|pos=DF|name={{sortname|Min-jae|Kim}}}}")
+    names = [r["player"] for r in ws.parse_squad(t)]
+    assert names == ["Pascal Kuiper", "Min-jae Kim"]
+    assert ws.clean_name("{{ill|Nick Verschuren|de|Nick Verschuren (Fußballspieler)|es||fr") == "Nick Verschuren"
+    assert ws.clean_name("Thijs Verbaan") == "Thijs Verbaan"
+
+
+def test_insights_carry_tile_fields() -> None:
+    lead = {"captains": [{"name": "Martin Ødegaard", "label": "C", "tenure": 5.2},
+                         {"name": "Bukayo Saka", "label": "VC"}], "armband": "Martin Ødegaard"}
+    chem = {"nodes": [{"name": "A B", "degree": 3}], "edges": [{"a": "A B", "b": "C D", "minutes": 400}], "hub_rank": {}}
+    ins = tn.insights("Arsenal", lead, chem, [], {"acq": {}, "sources": []}, {"countries": []}, {"clubs": []}, [])
+    cap = next(i for i in ins if i["title"] == "주장단")
+    assert cap["big"] == "5" and cap["who"][0] == "Martin Ødegaard" and "Saka" in cap["line"]
+    hub = next(i for i in ins if i["title"] == "연결 허브")
+    assert hub["big"] == "1" and hub["who"] == ["A B"]

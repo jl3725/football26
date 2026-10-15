@@ -18,7 +18,7 @@ import { TrendArrow } from "./Trend";
 import NextMatch from "./NextMatch";
 import { usePins } from "@/lib/pins";
 import SectionHead from "./SectionHead";
-import { SeasonProfile, SeasonSnapshot, useTeamSeason } from "./TeamSeason";
+import { GoalMixCompare, SeasonProfile, SeasonSnapshot, useTeamSeason } from "./TeamSeason";
 
 function repStars(rank?: number | null): string {
   if (!rank) return "★★★☆☆";
@@ -36,12 +36,30 @@ function Delta({ d }: { d?: number }) {
   );
 }
 
-function Unit({ label, value, color, delta }: { label: string; value: number; color: string; delta?: number }) {
+type UnitWho = { player: string; strength: number; injured?: boolean; until?: string }[];
+const shortName = (n: string) => { const p = n.split(" "); return p.length > 1 ? p.slice(1).join(" ") : n; };
+
+function Unit({ label, value, color, delta, perf, who }: { label: string; value: number; color: string; delta?: number; perf?: number; who?: UnitWho }) {
   const t = tier(value);
   return (
     <div className="unit">
-      <div className="unit-top"><b>{label}</b><span><Delta d={delta} /><span style={{ color: t.light }}>{value}</span></span></div>
+      <div className="unit-top"><b>{label}</b><span><Delta d={delta} />
+        {perf != null && Math.abs(perf) >= 0.5 && (
+          <em className={`unit-perf ${perf > 0 ? "up" : "down"}`} title="실적 보정 — 경기당 득점·실점(리그 안 상대값), 이번 시즌과 지난 시즌을 경기 수로 섞음">
+            기록 {perf > 0 ? "+" : ""}{perf.toFixed(1)}
+          </em>
+        )}
+        <span style={{ color: t.light }}>{value}</span></span></div>
       <div className="bar"><span style={{ width: `${value}%`, background: `linear-gradient(90deg, ${t.deep}, ${t.light})` }} /></div>
+      {who && who.length > 0 && (
+        <div className="unit-who">
+          {who.map((w) => (
+            <span key={w.player} className={w.injured ? "inj" : ""} title={`${w.player} ${w.strength}${w.injured ? ` · 부상${w.until ? `(${w.until} 복귀 예정)` : ""}` : ""}`}>
+              {shortName(w.player)}{w.injured ? " ✚" : ""}
+            </span>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
@@ -110,11 +128,12 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
             meta={(ov.ovr_delta && (ov.ovr_delta.attack || ov.ovr_delta.midfield || ov.ovr_delta.defense || ov.ovr_delta.overall))
               ? <>{ov.window?.label ?? ""} 이적 반영 <b style={{ color: "#4fc27f" }}>▲</b>/<b style={{ color: "#e07070" }}>▼</b></> : "라인별 주전 OVR"} />
           <div className="unit-list">
-            <Unit label="ATTACK" value={ov.ovr.attack} color={accent} delta={ov.ovr_delta?.attack} />
-            <Unit label="MIDFIELD" value={ov.ovr.midfield} color={accent} delta={ov.ovr_delta?.midfield} />
-            <Unit label="DEFENSE" value={ov.ovr.defense} color={accent} delta={ov.ovr_delta?.defense} />
+            <Unit label="ATTACK" value={ov.ovr.attack} color={accent} delta={ov.ovr_delta?.attack} perf={ov.ovr.perf_adj?.attack} who={ov.ovr.units?.attack} />
+            <Unit label="MIDFIELD" value={ov.ovr.midfield} color={accent} delta={ov.ovr_delta?.midfield} perf={ov.ovr.perf_adj?.midfield} who={ov.ovr.units?.midfield} />
+            <Unit label="DEFENSE" value={ov.ovr.defense} color={accent} delta={ov.ovr_delta?.defense} perf={ov.ovr.perf_adj?.defense} who={ov.ovr.units?.defense} />
           </div>
-          <p className="sp5-note">선수 개인 평점(OVR)으로 본 &apos;가진 전력&apos;. 옆의 SEASON PROFILE 은 이번 시즌 &apos;경기 내용&apos;입니다.</p>
+          <p className="sp5-note">라인별 상위 선수 평점(OVR + 출전 비례 이번 시즌 폼) + 기록 보정(경기당 득점·실점의 리그 안 상대값,
+            이번 시즌과 지난 시즌을 경기 수로 섞어 ±2.5). 부상자(✚)도 &apos;가진 전력&apos;이라 포함합니다.</p>
         </div>
 
         <div className="card">
@@ -136,6 +155,7 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
               <span className="disc yellow">🟨 {snap.yellows}</span>
               <span className="disc red">🟥 {snap.reds}</span>
             </div>
+            {season?.goal_mix && <GoalMixCompare mix={season.goal_mix} />}
           </div>
         )}
 

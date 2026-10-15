@@ -8,7 +8,7 @@ export default function RatingsBoard({ ov, accent }: { ov: Overview; accent: str
   if ((ov.squad_ratings || []).length === 0) return null;
   return (
     <div className="card" style={{ marginTop: 16 }}>
-      <SectionHead title="AGE PROFILE" kr="연령 구조" meta="라인별 나이 분포" />
+      <SectionHead title="AGE PROFILE" kr="연령 구조" meta="출전 가중 · 라인별 분포" />
       <AgeStructure ov={ov} accent={accent} />
     </div>
   );

@@ -108,3 +108,29 @@ def test_form_percentile_scale() -> None:
     gk = out[out.pos == "GK"]["_form"]
     assert att.max() == 99 and (att >= 99).sum() == 1        # 99 는 포지션 최상위만
     assert 70 <= att.median() <= 74 and 68 <= gk.median() <= 76   # GK 도 같은 척도(예전 중앙값 96)
+
+
+def _squad_row(name, line, value, ss, minutes, form, age=27):
+    return {"player": name, "squad": "X", "_line": line, "market_value_eur": value, "ss_rating": ss,
+            "minutes": minutes, "prev_minutes": 2500, "prev_ss_rating": ss, "age": age, "_form": form,
+            "_league_level": 100}
+
+
+def test_team_ratings_one_gk_and_record_adjustment() -> None:
+    rows = [_squad_row("GK1", "GK", 30e6, 7.0, 540, 98), _squad_row("GK2", "GK", 28e6, 7.0, 0, None)]
+    rows += [_squad_row(f"D{i}", "DEF", 40e6, 7.0, 540, 70) for i in range(4)]
+    rows += [_squad_row(f"M{i}", "MID", 40e6, 7.0, 540, 70) for i in range(4)]
+    rows += [_squad_row(f"A{i}", "ATT", 40e6, 7.0, 540, 70) for i in range(3)]
+    df = pd.DataFrame(rows)
+    base = rv3.team_ratings(df, "X")
+    # 수비 라인은 GK 1명까지 — 예전엔 상위 4명에 GK 둘(Alisson·Mamardashvili)이 들어갔다
+    assert sum(1 for x in base["units"]["defense"] if x["player"].startswith("GK")) == 1
+    # GK 는 폼(Sofascore)을 섞지 않는다 — 폼 98 이어도 OVR 그대로
+    gk = next(x for x in base["units"]["defense"] if x["player"] == "GK1")
+    assert gk["strength"] == rv3.ovr_of_row(pd.Series(rows[0]))
+    # 실적 보정: 리그 평균(50) 은 0, 1 표준편차(70) 는 +1, 상한 ±2.5
+    same = rv3.team_ratings(df, "X", perf={"attack": 50, "midfield": 50, "defense": 50})
+    good = rv3.team_ratings(df, "X", perf={"attack": 50, "midfield": 50, "defense": 70})
+    top = rv3.team_ratings(df, "X", perf={"attack": 50, "midfield": 50, "defense": 200})
+    assert same["defense"] == base["defense"] and good["perf_adj"]["defense"] == 1.0
+    assert top["perf_adj"]["defense"] == rv3.TEAM_PERF_MAX

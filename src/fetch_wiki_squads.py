@@ -30,14 +30,34 @@ from leagues import LEAGUES, data_path  # noqa: E402
 API = "https://en.wikipedia.org/w/api.php"
 HEADERS = {"User-Agent": "football26/1.0 (squad captains; github.com/jl3725/football26)"}
 FIELDS = ["squad", "section", "no", "nat", "pos", "player", "role", "role_rank", "wiki_title", "fetched"]
-_TPL = re.compile(r"\{\{\s*(?:fs player|football squad player)\s*\|(.*?)\}\}", re.I | re.S)
+# 안쪽 틀 한 겹({{ill|이름|nl}} 등)까지 — 예전 (.*?) 는 안쪽 '}}' 에서 끊겨 이름이 '{{ill|Pascal Kuiper|nl' 로 남았다
+_TPL = re.compile(r"\{\{\s*(?:fs player|football squad player)\s*\|((?:[^{}]|\{\{[^{}]*\}\})*)\}\}", re.I | re.S)
 _HEAD = re.compile(r"^(=+)\s*(.*?)\s*\1\s*$", re.M)
 
 
+def _tpl_text(m) -> str:
+    """이름을 담은 틀만 글자로 — {{ill|이름|nl|…}}(다른 언어 위키 링크) → 이름, {{sortname|이름|성}} → '이름 성'. 나머지 틀은 지운다."""
+    parts = m.group(1).split("|")
+    kind = parts[0].strip().lower()
+    args = [a.strip() for a in parts[1:] if "=" not in a]
+    if kind in ("ill", "interlanguage link", "interlanguage link multi") and args:
+        return args[0]
+    if kind == "sortname" and len(args) >= 2:
+        return f"{args[0]} {args[1]}"
+    return ""
+
+
+def clean_name(v: str) -> str:
+    """수집된 이름 정리 — 닫히지 않은 '{{ill|이름|nl' (예전 파서가 남긴 값)도 이름만."""
+    v = str(v or "")
+    m = re.match(r"^\{\{\s*(?:ill|interlanguage link(?: multi)?)\s*\|([^|{}]+)", v, re.I)
+    return m.group(1).strip() if m else v
+
+
 def _link_text(v: str) -> str:
-    """'[[A (footballer)|A]]' → 'A', '[[B]]' → 'B', 꾸밈 틀·참조 제거."""
+    """'[[A (footballer)|A]]' → 'A', '[[B]]' → 'B', 꾸밈 틀·참조 제거(이름을 담은 틀은 이름으로)."""
     v = re.sub(r"<ref[^>]*?/>|<ref.*?</ref>", "", v, flags=re.S)
-    v = re.sub(r"\{\{[^{}]*\}\}", "", v)
+    v = re.sub(r"\{\{([^{}]*)\}\}", _tpl_text, v)
     m = re.search(r"\[\[([^\]]+)\]\]", v)
     if m:
         v = m.group(1).split("|")[-1]

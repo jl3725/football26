@@ -455,7 +455,13 @@ _MID = {"MID"}
 _DEF = {"DEF", "GK"}
 
 
-def team_ratings(full_df, squad) -> dict | None:
+# 팀 라인 OVR 의 실적 보정 — 선수 평점 평균만으론 '수비 조직'이 안 보인다(아스날 25/26 최소 실점인데 26/27 초반
+# 맨시티 수비 OVR 이 더 높았다, 2026-10-15). 실적(0~99, 50 = 리그 평균, 1 표준편차 = 20 — api _team_perf)을
+# ±2.5 로: 리그 평균보다 1 표준편차 좋으면 +1.
+TEAM_PERF_MAX = 2.5
+
+
+def team_ratings(full_df, squad, perf: dict | None = None) -> dict | None:
     if full_df is None or "squad" not in full_df.columns:
         return None
     sq = full_df[full_df["squad"] == squad].copy()
@@ -466,23 +472,51 @@ def team_ratings(full_df, squad) -> dict | None:
     rows = []
     for _, r in sq.iterrows():
         pl = player_line(r)
-        # 팀 강함 = 클래스(절대) 와 이번폼 블렌드. 폼 없으면 절대만.
-        strength = pl["ovr"] if pl["form"] is None else round(0.55 * pl["ovr"] + 0.45 * pl["form"])
+        # 팀 강함 = 클래스(절대) 와 이번폼 블렌드. 폼 없으면 절대만. 폼 비중은 출전 시간에 비례(1,350분에 최대 45%) —
+        # 시즌 초 5~6경기 폼이 45% 를 차지해 맨시티 수비(폼 93~98)가 실제 기록보다 크게 앞섰다(2026-10-15).
+        wf = 0.45 * min(1.0, _num(r.get("minutes")) / 1350.0)
+        # GK 폼은 빼고 OVR 만 — 폼은 Sofascore 평점인데 GK 평점은 슈팅을 많이 받는 팀 GK 에 유리해 OVR 성능축에서도
+        # 쓰지 않는다(absolute_ovr). 넣었을 땐 6경기 폼 Donnarumma 98 · Raya 77 이 수비 라인을 1점 가까이 갈랐다.
+        ln = line_of_row(r)
+        strength = pl["ovr"] if pl["form"] is None or ln == "GK" else (1 - wf) * pl["ovr"] + wf * pl["form"]
         rows.append({"ovr": pl["ovr"], "strength": strength, "min": _num(r.get("minutes")),
-                     "line": line_of_row(r)})
+                     "line": ln, "player": str(r.get("player") or "")})
 
     def _avg_best(items, n):
         top = sorted(items, key=lambda x: -x["strength"])[:n]
-        return round(sum(x["strength"] for x in top) / len(top)) if top else None
+        return sum(x["strength"] for x in top) / len(top) if top else None   # 반올림은 실적 보정 뒤 한 번만
+
+    def _pool(codes):
+        # 수비 라인 = GK 는 1명까지(주전 GK) + 수비수 — 예전엔 상위 4명에 GK 둘(Alisson·Mamardashvili)이 들어갔다
+        gks = sorted([x for x in rows if x["line"] == "GK" and "GK" in codes], key=lambda x: -x["strength"])[:1]
+        return [x for x in rows if x["line"] in codes and x["line"] != "GK"] + gks
 
     def _unit(codes, n):
-        return _avg_best([x for x in rows if x["line"] in codes], n)
+        return _avg_best(_pool(codes), n)
 
-    overall = _avg_best(rows, 11)   # 베스트 XI
+    def _who(codes, n):
+        top = sorted(_pool(codes), key=lambda x: -x["strength"])[:n]
+        return [{"player": x["player"], "strength": int(round(x["strength"]))} for x in top]
+
+    # 베스트 XI = 주전 GK 1 + 필드 10 (예전 상위 11명은 GK 둘이 들어가기도 했다)
+    _gk1 = sorted([x for x in rows if x["line"] == "GK"], key=lambda x: -x["strength"])[:1]
+    _out = sorted([x for x in rows if x["line"] != "GK"], key=lambda x: -x["strength"])[:10]
+    overall = _avg_best(_gk1 + _out, 11)
     att, mid, dfn = _unit(_ATT, 3), _unit(_MID, 4), _unit(_DEF, 4)
+    adj = {}
+    if perf:
+        for k, v in (("attack", att), ("midfield", mid), ("defense", dfn)):
+            p = perf.get(k)
+            adj[k] = _clamp((p - 50.0) / 50.0 * TEAM_PERF_MAX, -TEAM_PERF_MAX, TEAM_PERF_MAX) if p is not None and v is not None else 0.0
+        att = None if att is None else att + adj["attack"]
+        mid = None if mid is None else mid + adj["midfield"]
+        dfn = None if dfn is None else dfn + adj["defense"]
+        if overall is not None:
+            overall = overall + sum(adj.values()) / 3
 
     def _i(v, fb=75):
-        return int(v) if v is not None else fb
+        return int(round(v)) if v is not None else fb
     return {"overall": _i(overall), "attack": _i(att, _i(overall)),
             "midfield": _i(mid, _i(overall)), "defense": _i(dfn, _i(overall)),
-            "squad_size": len(rows)}
+            "squad_size": len(rows), "perf_adj": {k: round(v, 1) for k, v in adj.items()},
+            "units": {"attack": _who(_ATT, 3), "midfield": _who(_MID, 4), "defense": _who(_DEF, 4)}}

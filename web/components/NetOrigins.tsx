@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import type { NetworkData, NetPlayer } from "@/lib/api";
 import { hexA } from "@/lib/ui";
 import { usePeek } from "./PlayerPeek";
-import { ACQ, SvgAvatar, lastName } from "./NetShared";
+import { ACQ, SvgAvatar, initials, lastName } from "./NetShared";
 
 // ORIGINS — 스쿼드가 어떻게 만들어졌나. 입단 연도별로 쌓은 타임라인(테두리 색 = 영입 방식) + 출신 리그.
 const LG_LABEL: Record<string, string> = { EPL: "Premier League", LaLiga: "La Liga", SerieA: "Serie A", Bundesliga: "Bundesliga",
@@ -71,7 +71,17 @@ export default function NetOrigins({ d, accent }: { d: NetworkData; accent: stri
           })}
         </svg>
       </div>
-      {undated.length > 0 && <p className="net-note">입단일 미상 {undated.length}명: {undated.slice(0, 8).map((p) => lastName(p.name)).join(", ")}{undated.length > 8 ? " …" : ""}</p>}
+      {undated.length > 0 && (
+        <div className="net-undated" title="TM 스쿼드 명단에서 입단일을 찾지 못한 선수 — 최근 등록·유스 승격 등">
+          <span className="lbl">입단일 확인 중 {undated.length}</span>
+          {undated.slice(0, 10).map((p) => (
+            <button key={p.name} className="chip hoverable" onClick={(e) => peek(e, { name: p.name, club: d.team, hint: { photo: p.photo, ovr: p.ovr ?? undefined, pos: p.pos } })}>
+              {p.photo ? <img src={p.photo} alt="" /> : <i>{initials(p.name)}</i>}{lastName(p.name)}
+            </button>
+          ))}
+          {undated.length > 10 && <em>+{undated.length - 10}</em>}
+        </div>
+      )}
 
       <div className="net-orig-grid">
         <div>

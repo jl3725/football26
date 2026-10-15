@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { getTeamSeason, type PointsPath, type ProfileAxis, type ResultMatch, type TeamSeason } from "@/lib/api";
+import { getTeamSeason, type GoalMix, type GoalMixPart, type PointsPath, type ProfileAxis, type ResultMatch, type TeamSeason } from "@/lib/api";
 import { compLabel, compTone, lgEn, liftHex, splitKst } from "@/lib/match";
 import { useMatchPreview } from "@/lib/matchPreview";
 import { Crest } from "./MatchCard";
@@ -133,11 +133,55 @@ export function SeasonProfile({ axes }: { axes: ProfileAxis[] }) {
           <div className={`sp5-row ${third}`} key={a.key}>
             <div className="sp5-l"><b>{a.en}</b><span>{a.kr}{a.hint ? ` · ${a.hint}` : ""}</span></div>
             <div className="sp5-bar" title="50 = 리그 평균"><i /><span style={{ width: `${Math.max(3, a.value)}%` }} /></div>
-            <div className="sp5-v"><b>{a.value}</b><em>{a.rank}위<small>/{a.n}</small></em></div>
+            <div className="sp5-v"><b>{a.value}</b><em>{a.rank}위<small>/{a.n}</small></em>
+              {a.prev_rank != null && (() => {
+                // 지난 시즌 대비는 순위로 — 지수는 시즌 초 표본 보정으로 50 쪽에 몰려 값 차이가 전부 '하락'으로 보였다
+                const dr = a.prev_rank - a.rank;
+                const tip = `지난 시즌 ${a.prev_rank}위(지수 ${a.prev})${a.prev_hint ? ` · ${a.prev_hint}` : ""}`;
+                return Math.abs(dr) >= 3
+                  ? <span className={`sp5-d ${dr > 0 ? "up" : "down"}`} title={tip}>{dr > 0 ? "▲" : "▼"}{Math.abs(dr)}</span>
+                  : <span className="sp5-d same" title={tip}>–</span>;
+              })()}
+            </div>
           </div>
         );
       })}
-      <p className="sp5-note">리그 안 상대 지수(50 = 리그 평균, 가운데 선) · 시즌 초에는 표본이 적어 50 쪽으로 보정됩니다.</p>
+      <p className="sp5-note">리그 안 상대 지수(50 = 리그 평균, 가운데 선) · ▲▼ = 지난 시즌 같은 지표의 리그 순위 대비(3계단 이상) ·
+        시즌 초에는 표본이 적어 지수가 50 쪽으로 보정됩니다.</p>
+    </div>
+  );
+}
+
+
+// 득점 구성 — 오픈플레이·세트피스·PK 비중을 지난 시즌과 나란히(StatBunker). '세트피스 강점이 이번 시즌엔 아직' 같은 변화를 한눈에.
+const MIX: [keyof GoalMixPart, string, string][] = [["open", "오픈플레이·크로스", "#6aa6e0"], ["set_piece", "세트피스", "#f4cf5e"], ["pen", "PK", "#c792ea"]];
+export function GoalMixCompare({ mix }: { mix: GoalMix }) {
+  const rows = ([["지난 시즌", mix.prev], ["이번 시즌", mix.cur]] as [string, GoalMixPart | null][]).filter(([, v]) => v && v.total > 0);
+  if (!rows.length) return null;
+  const share = (v: GoalMixPart, k: keyof GoalMixPart) => (v.total ? Math.round(((v[k] as number) / v.total) * 100) : 0);
+  const notes: string[] = [];
+  if (mix.prev && mix.cur && mix.prev.total && mix.cur.total) {
+    for (const [k, l] of MIX) {
+      const a = share(mix.prev, k), b = share(mix.cur, k);
+      if (Math.abs(b - a) >= 10) notes.push(`${l} ${a}% → ${b}% ${b > a ? "▲" : "▼"}`);
+    }
+  }
+  return (
+    <div className="gmx">
+      {rows.map(([label, v]) => (
+        <div className="gmx-row" key={label}>
+          <span className="gmx-l">{label}<em>{v!.total}골 · {v!.games}경기</em></span>
+          <span className="gmx-bar">
+            {MIX.map(([k, l, c]) => (v![k] as number) > 0 && (
+              <i key={k} style={{ width: `${share(v!, k)}%`, background: c }} title={`${l} ${v![k]}골 (${share(v!, k)}%)`}>
+                {share(v!, k) >= 12 ? `${v![k]}` : ""}
+              </i>
+            ))}
+          </span>
+        </div>
+      ))}
+      <div className="gmx-leg">{MIX.map(([, l, c]) => <span key={l}><i style={{ background: c }} />{l}</span>)}</div>
+      {notes.length > 0 && <p className="gmx-note">{notes.join(" · ")}</p>}
     </div>
   );
 }

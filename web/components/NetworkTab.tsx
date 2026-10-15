@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
-import { getNetwork, type NetworkData } from "@/lib/api";
+import { getNetwork, type NetInsight, type NetworkData } from "@/lib/api";
+import { initials } from "./NetShared";
 import SectionHead from "./SectionHead";
 import EmptyState from "./EmptyState";
 import { Skel } from "./Skeleton";
@@ -27,6 +28,43 @@ const LENSES = [
 type Lens = (typeof LENSES)[number]["k"];
 const LENS_EN: Record<string, string> = Object.fromEntries(LENSES.map((l) => [l.k, l.en]));
 
+// 인사이트 타일 — 큰 숫자 + 얼굴(선수 사진)·로고·국기 + 한 줄. 근거 경로는 접어 둔다.
+// 예전엔 문장·근거 코드가 카드마다 4~6줄이라 한눈에 안 들어왔다(2026-10-15 사용자 지적).
+function InsightTile({ i, d, on, onPick }: { i: NetInsight; d: NetworkData; on: boolean; onPick: () => void }) {
+  const [ev, setEv] = useState(false);
+  const photo = (n: string) => d.players.find((p) => p.name === n)?.photo || "";
+  const logo = (c?: string) => !c ? "" : c === d.team ? d.logo
+    : d.links.clubs.find((x) => x.club === c)?.logo || d.ties.clubs.find((x) => x.club === c)?.logo || "";
+  const flag = (n?: string) => (n ? d.nations.countries.find((x) => x.name === n)?.flag || "" : "");
+  const who = (i.who ?? []).slice(0, 4);
+  const lg = logo(i.club), fl = flag(i.flag);
+  return (
+    <div role="button" tabIndex={0} className={`net-in nt tone-${i.tone}${on ? " on" : ""}`} onClick={onPick}
+      onKeyDown={(e) => { if (e.key === "Enter") onPick(); }} title={i.text}>
+      <span className="net-in-top"><span className="net-in-ic">{i.icon}</span><em>{LENS_EN[i.lens] ?? i.lens.toUpperCase()}</em><b>{i.title}</b></span>
+      <div className="nt-main">
+        {(who.length > 0 || fl || lg) && (
+          <span className="nt-vis">
+            {fl && <img className="nt-flag" src={fl} alt="" />}
+            {who.map((n) => (photo(n)
+              ? <img key={n} className="nt-face" src={photo(n)} alt="" title={n} />
+              : <span key={n} className="nt-face nt-ini" title={n}>{initials(n)}</span>))}
+            {lg && <img className="nt-logo" src={lg} alt="" title={i.club} />}
+          </span>
+        )}
+        {i.big != null && <span className="nt-num"><strong>{i.big}</strong><em>{i.unit}</em></span>}
+      </div>
+      <p className="nt-line">{i.line ?? i.text}</p>
+      {i.evidence.length > 0 && (
+        <button type="button" className="nt-ev-t" onClick={(e) => { e.stopPropagation(); setEv((v) => !v); }} aria-expanded={ev}>
+          근거 경로 {i.evidence.length} {ev ? "▴" : "▾"}
+        </button>
+      )}
+      {ev && <span className="net-ev">{i.evidence.slice(0, 3).map((e, j) => <code key={j}>{e}</code>)}</span>}
+    </div>
+  );
+}
+
 export default function NetworkTab({ team, accent }: { team: string; accent: string }) {
   const [d, setD] = useState<NetworkData | null>(null);
   const [err, setErr] = useState(false);
@@ -50,15 +88,10 @@ export default function NetworkTab({ team, accent }: { team: string; accent: str
       <div className="card net-hero">
         <SectionHead title="NETWORK" kr="팀 지식그래프"
           meta={`선수 ${d.players.length} · 관계 ${nRel} · 클럽 ${d.links.n_clubs} · ${d.nations.n}개국 · ${d.games}경기`} />
-        <h4 className="net-h">GRAPH INSIGHTS <span>관계 경로를 근거로 한 자동 요약 · 누르면 해당 렌즈로</span></h4>
+        <h4 className="net-h">GRAPH INSIGHTS <span>그래프 자동 요약 · 누르면 해당 렌즈로</span></h4>
         <div className="net-ins">
           {d.insights.map((i, k) => (
-            <button key={k} className={`net-in tone-${i.tone}${lens === i.lens ? " on" : ""}`} onClick={() => setLens(i.lens as Lens)}>
-              <span className="net-in-top"><span className="net-in-ic">{i.icon}</span><em>{LENS_EN[i.lens] ?? i.lens.toUpperCase()}</em></span>
-              <b>{i.title}</b>
-              <p>{i.text}</p>
-              {i.evidence.length > 0 && <span className="net-ev">{i.evidence.slice(0, 3).map((e, j) => <code key={j}>{e}</code>)}</span>}
-            </button>
+            <InsightTile key={k} i={i} d={d} on={lens === i.lens} onPick={() => setLens(i.lens as Lens)} />
           ))}
         </div>
       </div>
