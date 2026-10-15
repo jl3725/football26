@@ -1,0 +1,30 @@
+name: Diag Sources
+
+# 진단 전용 — 로컬 예약 작업(TM·Sofascore·FBref)을 클라우드로 옮길 수 있는지 소스별로 확인한다.
+# 진단 브랜치(diag/**)에 push 할 때만 돈다(운영 main·Render 재배포에 영향 없음). 데이터는 저장·커밋하지 않는다.
+on:
+  push:
+    branches: ["diag/**"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  diag:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install
+        run: pip install -q requests seleniumbase
+      - name: Diagnose
+        run: python scripts/diag_sources.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: diag-sources
+          path: diag_sources.json
