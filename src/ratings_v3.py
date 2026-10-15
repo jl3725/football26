@@ -118,10 +118,31 @@ _YOUTH_PREMIUM = 0.12      # 24세 미만 1살당 — 같은 시장가치에서 
 # 리그를 옮긴 선수의 직전 시즌 평점 가중 — 옮긴 선수는 직전 평점이 이번 평점을 훨씬 덜 설명한다
 # (26/27 270분+·직전 900분+ 회귀 기울기: 잔류 946명 0.82, 이동 106명 0.51, 4레벨+ 상위 리그행 39명 0.33).
 _MOVED_PREV_W = 0.4
-# GK 시장가치 나이 보정 — GK 기량은 30대 초반까지 유지되는데 시장가치는 해마다 ≈0.8 깎인다
-# (25/26 1,500분+ GK 26~34세 88명, 선방%·CS% 통제 회귀 −0.83/년). 27세 기준으로 되돌린다.
+# 베테랑 나이 보정 — 시장가치는 나이로 깎이지만 꾸준히 뛰는 베테랑의 기량은 유지된다.
+# 25/26 1,500분+ 1,444명(리그·평점 통제) 시장가치 기준점의 27세 대비 차: 30세 −5.0, 32세 −8.3, 34세 −11.6,
+# 35세+ −12~−14. 반면 평점(리그 보정)은 24~36세 내내 평균 −0.19~−0.25 로 같다 → 할인 대부분은
+# 리세일·잔여 커리어 몫. 측정 할인의 60~75% 를 되돌린다(실제 노쇠분 여유). 출전 1,500분(이번+직전)에 비례.
+# 예전엔 30세+ 일괄 +3 이라 Modrić(41, 직전 시즌 평점 7.53·2,811분) 76, Neuer 77 이었다(2026-10-15 사용자 지적).
+_VET_AGES, _VET_ADJ = (28.0, 30.0, 32.0, 34.0, 36.0, 38.0), (0.0, 3.0, 5.4, 7.8, 9.5, 11.0)
+# GK: 같은 회귀(148명)에서 32세 −4.7, 34세 −11.7, 35세+ −9~−14. GK 전성기는 더 늦게까지 가므로 35세+ 는 80% 가까이.
+# 어린 GK 는 잠재력 프리미엄 −0.8/년(하한 −3.2).
 # 예전엔 30세+ 일괄 +2 라 24세 €40M Verbruggen 이 31세 €30M Raya(3연속 골든글러브)보다 높았다.
-_GK_AGE_PIVOT, _GK_AGE_SLOPE, _GK_AGE_LO, _GK_AGE_HI = 27.0, 0.8, -3.2, 4.8
+_GK_VET_AGES, _GK_VET_ADJ = (27.0, 30.0, 33.0, 35.0, 37.0, 39.0), (0.0, 2.4, 4.8, 7.5, 10.0, 11.0)
+_GK_AGE_PIVOT, _GK_AGE_SLOPE, _GK_AGE_LO = 27.0, 0.8, -3.2
+# 리그 가중 — 평점 리그 보정(0.02/레벨 × 8 = 레벨당 0.16)은 성능 보정 상한(±3.5) 밖에서도 적용하고,
+# 최종 OVR 에서 레벨당 0.1 을 더 뺀다(포르투갈 −0.9 · 네덜란드 −1.0 · 벨기에 −1.2 · 프랑스 −0.7 ·
+# 독일 −0.5 · 스페인 −0.45 · 이탈리아 −0.4). 예전엔 약한 리그 최상위가 상한에 걸려 리그 보정이 사라져
+# Diogo Costa 90 · Godts 88 이었다(2026-10-15 사용자 지적, '너무 심하지 않게').
+_LEAGUE_OVR_PER_LEVEL = 0.1
+
+
+def _interp(x: float, xs, ys) -> float:
+    if x <= xs[0]:
+        return ys[0]
+    for i in range(1, len(xs)):
+        if x <= xs[i]:
+            return ys[i - 1] + (ys[i] - ys[i - 1]) * (x - xs[i - 1]) / (xs[i] - xs[i - 1])
+    return ys[-1]
 
 
 def class_ss(ss_rating, minutes, prev_ss_rating, prev_minutes, ln: str, league_level=None,
@@ -134,9 +155,15 @@ def class_ss(ss_rating, minutes, prev_ss_rating, prev_minutes, ln: str, league_l
     직전 시즌 평점은 그 시즌에 뛴 리그로 환산한다 — 예전엔 이번 시즌 리그로만 빼서 벨기에에서 넘어온
     Tzolis 의 7.71 이 EPL 7.71 처럼 들어가 OVR 88 이 됐다(2026-10-15).
     """
+    rel, off = _class_parts(ss_rating, minutes, prev_ss_rating, prev_minutes, ln, league_level, prev_league_level)
+    return rel - off if rel > 0 else 0.0
+
+
+def _class_parts(ss_rating, minutes, prev_ss_rating, prev_minutes, ln, league_level, prev_league_level):
+    """(리그 안 상대 평점 블렌드, 같은 가중의 리그 보정량). class_ss = 앞 − 뒤."""
     ss, mn, pss, pmn = _num(ss_rating), _num(minutes), _num(prev_ss_rating), _num(prev_minutes)
     if ss <= 0 and pss <= 0:
-        return 0.0
+        return 0.0, 0.0
     mid = _SS_MID[ln]
     off_cur = rating_offset(league_level)
     off_prev = rating_offset(prev_league_level) if prev_league_level is not None else off_cur
@@ -144,8 +171,9 @@ def class_ss(ss_rating, minutes, prev_ss_rating, prev_minutes, ln: str, league_l
     w_prev = pmn if pss > 0 else 0.0
     if prev_league_level is not None and league_level is not None and prev_league_level != league_level:
         w_prev *= _MOVED_PREV_W
-    return ((ss - off_cur) * w_cur + (pss - off_prev) * w_prev + (mid - off_cur) * _CLASS_PRIOR_MIN) / (
-        w_cur + w_prev + _CLASS_PRIOR_MIN)
+    w = w_cur + w_prev + _CLASS_PRIOR_MIN
+    return ((ss * w_cur + pss * w_prev + mid * _CLASS_PRIOR_MIN) / w,
+            (off_cur * w_cur + off_prev * w_prev + off_cur * _CLASS_PRIOR_MIN) / w)
 
 
 # 골키퍼 선방률·클린시트 — 이번 시즌 + 직전 시즌 + 평균(67%·27%)을 1,200분어치 섞는다.
@@ -163,9 +191,15 @@ def _gk_blend(cur, mn, prev, pmn, mid) -> float | None:
     return (c * w_c + p_ * w_p + mid * _GK_PRIOR_MIN) / (w_c + w_p + _GK_PRIOR_MIN)
 
 
-# 시장가치가 없을 때(TM 매칭 실패 — 주전급도 리그마다 1~9명) 기준점: 직전 시즌 시장가치 → 포지션 중앙값.
-# 예전엔 60 으로 시작해 Chelsea Sánchez 가 62 였다.
-_VOV_FALLBACK = {"GK": 76.0, "DEF": 77.0, "MID": 77.0, "ATT": 77.0}
+# 시장가치가 없을 때(TM 매칭 실패 — 리그마다 3~17명) 기준점: 직전 시즌 시장가치 → 같은 출전 시간대 중앙값
+# (26/27 시장가치 있는 선수, 이번+직전 출전 150분 64 · 600분 67 · 1,200분 72.5 · 2,000분 74.5 · 3,000분 75.7, GK 는 3~4 낮음).
+# 예전엔 60 으로 시작해 Chelsea Sánchez 가 62, 일괄 77 로 바꾸자 1분 뛴 유망주가 79 였다.
+_FB_MIN = (150.0, 600.0, 1200.0, 2000.0, 3000.0)
+_FB_VOV = {"GK": (60.7, 64.3, 66.6, 68.2, 72.1), "OUT": (64.0, 67.0, 72.5, 74.5, 75.7)}
+
+
+def _vov_fallback(ln: str, mn: float) -> float:
+    return _interp(mn, _FB_MIN, _FB_VOV["GK" if ln == "GK" else "OUT"])
 
 
 def absolute_ovr(*, value, ss_rating, minutes, age, pos_group,
@@ -181,25 +215,32 @@ def absolute_ovr(*, value, ss_rating, minutes, age, pos_group,
     vov = value_ovr(value)
     if vov is None:
         vov = value_ovr(prev_value)
-    ss = class_ss(ss_rating, minutes, prev_ss_rating, prev_minutes, ln, league_level, prev_league_level)
-    base = vov if vov is not None else _VOV_FALLBACK[ln]
+    rel, off = _class_parts(ss_rating, minutes, prev_ss_rating, prev_minutes, ln, league_level, prev_league_level)
+    lg_off = rating_offset(league_level) * 8.0     # GK 성능 리그 보정(평점과 같은 척도)
+    base = vov if vov is not None else _vov_fallback(ln, mn)
+    proven = _clamp(mn / 1500.0, 0.0, 1.0)
     if ln == "GK":
         # GK 는 시장가·ss 로 변별 불가(값 압축) → 선방%/CS% 를 성능축으로(직전 시즌·평균과 섞어 소표본 완화).
         # Sofascore GK 평점은 슈팅을 많이 받는 약팀 GK 에 유리해 성능축에 넣지 않는다.
         save = _gk_blend(gk_save_pct, minutes, prev_gk_save_pct, prev_minutes, _GK_SAVE_MID)
         cs = _gk_blend(gk_cs_pct, minutes, prev_gk_cs_pct, prev_minutes, _GK_CS_MID)
         if save is not None:
-            perf = _clamp((save - 67.0) * 0.6, -4.0, 4.0) + _clamp(((cs if cs is not None else 27.0) - 27.0) * 0.09, -1.2, 3.0)
+            perf = (_clamp((save - 67.0) * 0.6, -4.0, 4.0)
+                    + _clamp(((cs if cs is not None else 27.0) - 27.0) * 0.09, -1.2, 3.0) - lg_off)
         else:
-            perf = _clamp((ss - _SS_MID["GK"]) * 8.0, -3.5, 3.5)
-        # 나이 보정: 어린 GK 의 잠재력 프리미엄은 빼고(−), 검증된(1,500분+) 30대 GK 의 할인은 되돌린다(+)
-        age_adj = _clamp(_GK_AGE_SLOPE * (a - _GK_AGE_PIVOT), _GK_AGE_LO, _GK_AGE_HI) if a > 0 else 0.0
-        if age_adj > 0 and mn < 1500:
+            perf = _clamp((rel - _SS_MID["GK"]) * 8.0, -3.5, 3.5) - off * 8.0 if rel > 0 else 0.0
+        # 나이 보정: 어린 GK 의 잠재력 프리미엄은 빼고(−), 30대 GK 의 시장가 할인은 출전 검증만큼 되돌린다(+)
+        if a <= 0:
             age_adj = 0.0
+        elif a < _GK_AGE_PIVOT:
+            age_adj = max(_GK_AGE_LO, _GK_AGE_SLOPE * (a - _GK_AGE_PIVOT))
+        else:
+            age_adj = _interp(a, _GK_VET_AGES, _GK_VET_ADJ) * proven
         raw = base + 3.0 + perf + age_adj
     else:
-        perf_adj = _clamp((ss - _SS_MID[ln]) * 8.0, -3.5, 3.5) if ss > 0 else 0.0
-        vet_adj = 3.0 if (a >= 30 and mn >= 1500) else 0.0   # 검증된 베테랑은 시장가 저평가 보정
+        # 리그 보정은 상한 밖에서 — 약한 리그 최상위가 상한(+3.5)에 걸려 보정이 사라지지 않게
+        perf_adj = _clamp((rel - _SS_MID[ln]) * 8.0, -3.5, 3.5) - off * 8.0 if rel > 0 else 0.0
+        vet_adj = _interp(a, _VET_AGES, _VET_ADJ) * proven if a > 0 else 0.0
         raw = base + _POS_ADJ[ln] + perf_adj + vet_adj
     raw += _big_match_bonus(ucl_starts, uel_starts, conf_starts, cup_starts)
     if 0 < a < 24 and vov is not None and ln != "GK":     # GK 는 위 나이 보정에 포함
@@ -211,7 +252,7 @@ def absolute_ovr(*, value, ss_rating, minutes, age, pos_group,
         proven_min = 900.0 + (21 - a) * 120.0     # 21세=900분, 18세=1260, 15세=1620 필요
         proven = _clamp(mn / proven_min, 0.1, 1.0)
         raw = proven * raw + (1 - proven) * 60.0
-    ovr = _soft_cap(raw)
+    ovr = _soft_cap(raw) - _LEAGUE_OVR_PER_LEVEL * max(0.0, 100.0 - _num(league_level, 100.0))
     # 유망주 상한 — 아무리 잘해도 established 슈퍼스타(92+)를 넘지 않게 나이별 천장.
     # 18세 91 · 19세 92 · 20세 93 · 21세 94(사실상 무제한). 진짜 최상위는 성숙이 필요.
     if 0 < a <= 21:

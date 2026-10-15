@@ -55,9 +55,32 @@ def test_gk_small_sample_and_age_premium() -> None:
 
 
 def test_missing_market_value_uses_fallback() -> None:
-    no_val = rv3.absolute_ovr(value=None, ss_rating=6.9, minutes=900, age=28, pos_group="GK")
-    prev_val = rv3.absolute_ovr(value=None, ss_rating=6.9, minutes=900, age=28, pos_group="GK", prev_value=22e6)
-    assert no_val >= 70 and prev_val > no_val           # 예전엔 60 에서 시작해 62
+    one_min = rv3.absolute_ovr(value=None, ss_rating=0, minutes=1, age=None, pos_group="MID")
+    regular = rv3.absolute_ovr(value=None, ss_rating=6.95, minutes=900, age=28, pos_group="DEF", prev_minutes=2400,
+                               prev_ss_rating=6.95)
+    prev_val = rv3.absolute_ovr(value=None, ss_rating=6.95, minutes=900, age=28, pos_group="DEF", prev_minutes=2400,
+                                prev_ss_rating=6.95, prev_value=40e6)
+    assert one_min <= 68 and regular >= 74 and prev_val > regular   # 1분 유망주 79·주전 62 같은 역전 없음
+
+
+def test_proven_veteran_keeps_level() -> None:
+    # 같은 평점·같은 시장가치 기준점이면 41세 주전(Modrić)이 시장가 나이 할인만큼 깎이지 않는다
+    kw = dict(value=3.5e6, ss_rating=7.07, minutes=354, pos_group="MID", prev_minutes=2811, prev_ss_rating=7.53,
+              league_level=96.1)
+    old, young = rv3.absolute_ovr(age=41, **kw), rv3.absolute_ovr(age=27, **kw)
+    assert old - young >= 8
+    bench = rv3.absolute_ovr(age=41, value=3.5e6, ss_rating=7.07, minutes=200, pos_group="MID", league_level=96.1)
+    assert bench < old                                   # 출전 검증이 없으면 나이 보정도 적다
+
+
+def test_league_weight_applies_beyond_perf_cap() -> None:
+    # 성능 보정 상한(+3.5)에 걸린 최상위도 약한 리그면 낮게 — 예전엔 상한에 리그 보정이 묻혔다
+    kw = dict(value=40e6, ss_rating=7.9, minutes=720, age=26, pos_group="DEF", prev_minutes=2900, prev_ss_rating=7.8)
+    epl, por = rv3.absolute_ovr(league_level=100, **kw), rv3.absolute_ovr(league_level=90.7, **kw)
+    assert epl - por >= 2
+    gk = dict(value=40e6, ss_rating=7.06, minutes=720, age=27, pos_group="GK", gk_save_pct=81, gk_cs_pct=50,
+              prev_minutes=2906, prev_gk_save_pct=79.7, prev_gk_cs_pct=63.6)
+    assert rv3.absolute_ovr(league_level=90.7, **gk) <= 88       # Diogo Costa 90 → 88
 
 
 def test_form_percentile_scale() -> None:
