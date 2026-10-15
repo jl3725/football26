@@ -9,6 +9,8 @@ import NetChemistry from "./NetChemistry";
 import NetOrigins from "./NetOrigins";
 import NetNations from "./NetNations";
 import NetLinks from "./NetLinks";
+import NetTies from "./NetTies";
+import NetManager from "./NetManager";
 
 // NETWORK 탭 — 팀 지식그래프(/api/network). 선수·클럽·국가·이적·출전 관계를 다섯 렌즈로 보고,
 // 맨 위 GRAPH INSIGHTS 는 그래프 경로를 근거로 붙인 자동 요약(카드를 누르면 그 렌즈로).
@@ -17,8 +19,10 @@ const LENSES = [
   { k: "leadership", en: "LEADERSHIP", ko: "주장단·영향력" },
   { k: "chemistry", en: "CHEMISTRY", ko: "함께 뛴 관계망" },
   { k: "origins", en: "ORIGINS", ko: "스쿼드 구성" },
-  { k: "nations", en: "NATIONS", ko: "국적·대표팀" },
+  { k: "nations", en: "NATIONS", ko: "국적·대표팀 동료" },
+  { k: "ties", en: "TIES", ko: "전 소속 동료" },
   { k: "links", en: "LINKS", ko: "클럽 관계망" },
+  { k: "manager", en: "MANAGER", ko: "감독 커리어" },
 ] as const;
 type Lens = (typeof LENSES)[number]["k"];
 const LENS_EN: Record<string, string> = Object.fromEntries(LENSES.map((l) => [l.k, l.en]));
@@ -72,11 +76,14 @@ export default function NetworkTab({ team, accent }: { team: string; accent: str
         {lens === "chemistry" && <NetChemistry d={d} accent={accent} />}
         {lens === "origins" && <NetOrigins d={d} accent={accent} />}
         {lens === "nations" && <NetNations d={d} accent={accent} />}
+        {lens === "ties" && <NetTies d={d} accent={accent} />}
         {lens === "links" && <NetLinks d={d} accent={accent} />}
+        {lens === "manager" && <NetManager d={d} accent={accent} />}
       </div>
       <p className="net-src">
-        관계 원천 — 함께 뛴 시간: ESPN 라인업·교체 · 주장단·등번호: Wikipedia 스쿼드 표 · 입단·이적: Transfermarkt ·
-        국적·순위: FIFA 랭킹 · 2026 월드컵 명단 · 이적설: Transfermarkt 루머. 같은 관계를 지식그래프(Neo4j)로도 적재한다.
+        관계 원천 — 함께 뛴 시간: ESPN 라인업·교체(이번·지난 시즌) · 주장단·등번호·감독 경력: Wikipedia ·
+        입단·이적: Transfermarkt · 국적·순위: FIFA 랭킹 · 대표팀: 2026 월드컵 명단 · 이적설: Transfermarkt 루머.
+        같은 관계를 지식그래프(Neo4j)로도 적재한다.
       </p>
     </div>
   );

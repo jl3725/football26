@@ -3703,3 +3703,31 @@ LIGA’처럼 글자가 접히던 것) — 넘치면 가로로 넘긴다 */
 .ovrg-row span { color: var(--muted); }
 .ovrg-p { margin: 6px 0 0; font-size: 11.5px; line-height: 1.5; color: var(--muted); word-break: keep-all; }
 .ovrg-p b { color: var(--txt); margin-right: 4px; }
+
+/* v6.6 NETWORK — 대표팀 동료 · 전 소속 동료(TIES) · 감독(MANAGER) */
+.net-natweb { margin-top: 16px; padding-top: 12px; border-top: 1px dashed var(--line); }
+.net-natweb-sel { margin-top: 8px; }
+.net-arr-row.ours { border-color: var(--ac); }
+.net-more { margin-top: 8px; height: 28px; padding: 0 12px; border-radius: 999px; border: 1px solid var(--line); background: none; color: var(--muted); font-size: 11.5px; cursor: pointer; }
+.net-reunion { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; padding: 9px 12px; margin-bottom: 8px; border-radius: 10px;
+  background: rgba(246,201,69,0.08); border: 1px solid rgba(246,201,69,0.3); font-size: 12.5px; }
+.net-reunion b { font: 700 11.5px/1 var(--font-display); letter-spacing: 0.1em; color: #f6c945; }
+.net-reunion b span { font: 500 10.5px/1 var(--font-ui); letter-spacing: 0; color: var(--muted); margin-left: 4px; }
+.net-reunion em { font-style: normal; color: var(--muted); font-size: 11.5px; margin-left: 4px; }
+.net-tie-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 6px; }
+.net-tie { display: grid; grid-template-columns: 32px 96px 32px minmax(0, 1fr); gap: 8px; align-items: center; padding: 6px 8px; border-radius: 10px;
+  border: 1px solid var(--line); background: var(--surface); color: inherit; text-align: left; cursor: pointer; }
+.net-tie img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; object-position: 50% 15%; background: #18202c; }
+.net-tie .net-cap-ph.sm { width: 32px; height: 32px; }
+.net-tie-mid { display: flex; flex-direction: column; align-items: center; gap: 2px; text-align: center; }
+.net-tie-mid i { font: 700 11px/1 var(--font-num); font-style: normal; }
+.net-tie-mid em { font-size: 9.5px; color: var(--muted-2); font-style: normal; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 96px; }
+.net-tie-n { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.net-tie-n b { font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.net-tie-n em { font-size: 10.5px; color: var(--muted-2); font-style: normal; }
+.net-mgr-head { display: grid; grid-template-columns: 84px minmax(0, 1fr); gap: 14px; align-items: center; margin-bottom: 14px; }
+.net-mgr-head img, .net-mgr-head .net-cap-ph { width: 84px; height: 84px; border-radius: 50%; object-fit: cover; object-position: 50% 20%; border: 3px solid var(--ac); }
+.net-mgr-head em { font: 700 10.5px/1 var(--font-num); letter-spacing: 0.16em; color: var(--ac); font-style: normal; }
+.net-mgr-head b { display: block; font: 700 24px/1.1 var(--font-display); margin: 4px 0; }
+.net-mgr-head span { font-size: 12.5px; color: var(--muted); }
+@media (max-width: 560px) { .net-tie-list { grid-template-columns: minmax(0, 1fr); } }

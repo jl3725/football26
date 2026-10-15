@@ -62,3 +62,58 @@ def test_links_dedupes_alumni_already_sold() -> None:
     c = lk["clubs"][0]
     assert c["club"] == "Porto" and len(c["in"]) == 1 and len(c["out"]) == 1
     assert [a["player"] for a in c["alumni"]] == ["Z"]
+
+
+INFOBOX = """{{Infobox football biography
+| name = Vincent Kompany
+| years1 = 2003–2006 | clubs1 = [[R.S.C. Anderlecht|Anderlecht]] | caps1 = 73
+| years2 = 2006–2008 | clubs2 = [[Hamburger SV]]
+| manageryears1 = 2020–2022 | managerclubs1 = [[R.S.C. Anderlecht|Anderlecht]]
+| manageryears2 = 2022–2024 | managerclubs2 = [[Burnley F.C.|Burnley]]
+| manageryears3 = 2024– | managerclubs3 = [[FC Bayern Munich|Bayern Munich]]
+}}
+Kompany is ..."""
+
+
+def test_manager_infobox_career() -> None:
+    import fetch_manager_careers as fm
+    managed, played = fm.career(fm.infobox(INFOBOX))
+    assert [(s["club"], s["start"], s["end"]) for s in managed] == [
+        ("Anderlecht", 2020, 2022), ("Burnley", 2022, 2024), ("Bayern Munich", 2024, None)]
+    assert [s["club"] for s in played] == ["Anderlecht", "Hamburger SV"]
+
+
+def test_ties_dedupe_teammate_and_reunion() -> None:
+    pairs, names = tn.lineup_pairs([__import__("pandas").DataFrame({
+        "squad": ["Villa"] * 3 * 6 + ["Ars"] * 3 * 6,
+        "event_id": [e for e in range(6) for _ in range(3)] + [e for e in range(10, 16) for _ in range(3)],
+        "starter": [True] * 36,
+        "player": ["Emi", "Rogers", "Watkins"] * 6 + ["Rice", "Saka", "Jackson"] * 6})])
+    loc = {"Rogers": {"name": "Rogers", "club": "Chelsea"}, "Watkins": {"name": "Watkins", "club": "Spurs"},
+           "Jackson": {"name": "Jackson", "club": "Villa"}, "Saka": {"name": "Saka", "club": "Ars"}, "Rice": {"name": "Rice", "club": "Ars"}}
+    players = [{"name": "Emi", "prev_squad": "Villa"}, {"name": "Rogers", "prev_squad": "Villa"},
+               {"name": "Rice", "prev_squad": "Ars"}, {"name": "Saka", "prev_squad": "Ars"}]
+    ti = tn.ties("Chelsea", players, pairs, names, loc.get)
+    assert [(r["ours"], r["mate"]) for r in ti["reunions"]] == [("Emi", "Rogers")]
+    ti2 = tn.ties("Ars", players[2:], pairs, names, loc.get)
+    villa = [c for c in ti2["clubs"] if c["club"] == "Villa"][0]
+    assert len(villa["ties"]) == 1 and villa["ties"][0]["links"] == 2      # Jackson 한 명(우리 선수 2명과)
+
+
+def test_national_web_groups_by_club() -> None:
+    wc = [{"nation": "England", "player": p} for p in ("Saka", "Rice", "Kane", "Bellingham", "Nobody")]
+    clubs = {"Saka": "Ars", "Rice": "Ars", "Kane": "Bayern", "Bellingham": "Real"}
+    w = tn.national_web("Ars", {"England": ["Saka", "Rice"]}, wc,
+                        lambda n: {"name": n, "club": clubs[n]} if n in clubs else None)["England"]
+    assert w["n_ours"] == 2 and w["clubs"][0] == {"club": "Ars", "n": 2, "players": ["Saka", "Rice"]}
+    assert w["clubs"][-1]["club"] == "OTHER"
+
+
+def test_manager_graph_network_and_brought() -> None:
+    careers = {"A": {"managed": [{"club": "X", "start": 2022, "end": 2026}, {"club": "Ars", "start": 2026, "end": None}],
+                     "played": [{"club": "Y", "start": 2000, "end": 2005}]},
+               "B": {"managed": [{"club": "Y", "start": 2020, "end": None}], "played": []}}
+    mg = tn.manager_graph("Ars", {"name": "A"}, careers, {"A": {}, "B": {"team": "Y"}}, lambda c: c, lambda c: "",
+                          [{"name": "P", "prev_squad": "X"}, {"name": "Q", "prev_squad": "Z"}], 2026)
+    assert mg["network"][0]["manager"] == "B" and mg["network"][0]["shared"][0]["club"] == "Y"
+    assert mg["brought"] == ["P"]

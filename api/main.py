@@ -2555,6 +2555,32 @@ _NAT_ALIAS = {"korea, south": "korea republic", "south korea": "korea republic",
               "bosnia-herzegovina": "bosnia and herzegovina", "curacao": "curacao", "the gambia": "gambia"}
 
 
+_PREV_PAIRS: dict = {}
+
+
+def _prev_lineup_pairs() -> tuple[dict, dict]:
+    """지난 시즌 8개 리그(+컵) ESPN 선발 → 클럽별 함께 선발 수(전 소속 동료 그래프). DB 수정 시각 기준 캐시."""
+    import team_network as tn  # noqa: PLC0415
+    from leagues import DATA_DIR  # noqa: PLC0415
+    key = (SEASON_START, ds._db_mtime())
+    if key not in _PREV_PAIRS:
+        frames = []
+        for path in sorted(DATA_DIR.glob(f"espn_lineups*_{SEASON_START - 1}_{SEASON_START}.csv")):
+            try:
+                frames.append(pd.read_csv(path, usecols=["squad", "event_id", "starter", "player"]))
+            except (ValueError, OSError):
+                continue
+        _PREV_PAIRS.clear()
+        _PREV_PAIRS[key] = tn.lineup_pairs(frames)
+    return _PREV_PAIRS[key]
+
+
+def _manager_careers() -> dict:
+    """data/manager_careers.json(src/fetch_manager_careers.py)."""
+    p = ROOT / "data" / "manager_careers.json"
+    return json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
+
+
 @app.get("/api/network/{team}")
 @_memo(ttl=21600)
 def network(team: str, league: str = ACTIVE_LEAGUE):
@@ -2665,12 +2691,16 @@ def network(team: str, league: str = ACTIVE_LEAGUE):
     # 클럽 관계망 — 우리 8개 리그 클럽 이름으로 맞추고, 그 밖은 원래 표기
     club_league: dict[str, str] = {}
     alumni = []
+    loc_rows: dict[str, dict] = {}
     for lg in LEAGUES:
         f = _pf(lg)
         if f is None or "squad" not in f.columns:
             continue
         for sq in f["squad"].dropna().astype(str).unique():
             club_league[sq] = lg
+        for _, r in f.sort_values("minutes", ascending=False).iterrows():   # 같은 이름은 출전 많은 쪽
+            loc_rows.setdefault(str(r["player"]), {"name": str(r["player"]), "club": str(r["squad"]), "league": lg,
+                                                    "photo": _photo(r), "ovr": _player_ovr(r)})
         if "prev_squad" in f.columns and "tm_id" in f.columns:
             a = f[(f["prev_squad"] == team) & (f["squad"] != team) & f["tm_id"].notna()]
             for _, r in a.iterrows():
@@ -2704,11 +2734,67 @@ def network(team: str, league: str = ACTIVE_LEAGUE):
     nat = tn.nations(players)
     chm = chemistry_ep(team, league)
     ins = tn.insights(team, lead, chem, chm.get("duos", []), orig, nat, lk, players)
+
+    loc_idx = tn.NameIndex(list(loc_rows))
+
+    def locate(name):
+        k = loc_idx.find(name)
+        return loc_rows.get(k) if k else None
+
+    # 대표팀 동료 — 우리 선수가 든 2026 월드컵 명단의 나머지가 어느 클럽에
+    our_nat: dict[str, list[str]] = {}
+    wc_rows = []
+    if wc is not None:
+        wc_nat = {str(r["player"]): str(r["nation"]) for _, r in wc.iterrows()}
+        wc_rows = [{"nation": str(r["nation"]), "player": str(r["player"]), "pos": str(r.get("pos") or "")}
+                   for _, r in wc.iterrows()]
+        for p in players:
+            k = wc_idx.find(p["name"]) if wc_idx else None
+            if k and k in wc_nat:
+                our_nat.setdefault(wc_nat[k], []).append(p["name"])
+    nat_web = tn.national_web(team, our_nat, wc_rows, locate)
+    for nname, w in nat_web.items():
+        rec = nation_of(nname, None) or {}
+        w["flag"], w["rank"], w["fifa_name"] = rec.get("flag", ""), rec.get("rank"), rec.get("name", nname)
+        for c in w["clubs"]:
+            c["logo"] = tm.team_logo(c["club"]) if c["club"] != "OTHER" else ""
+
+    # 전 소속 동료 — 지난 시즌 8개 리그 라인업(함께 선발 5경기+)
+    pairs, pnames = _prev_lineup_pairs()
+    ti = tn.ties(team, players, pairs, pnames, locate)
+    for c in ti["clubs"]:
+        c["logo"] = tm.team_logo(c["club"])
+
+    # 감독 커리어 그래프
+    mg = {"available": False}
+    try:
+        careers = _manager_careers()
+        current: dict = {}
+        mine_prof = None
+        for lg2 in LEAGUES:
+            mp = data_path("manager_profiles", lg2, ext="json")
+            if not mp.exists():
+                continue
+            for t2, m in json.loads(mp.read_text(encoding="utf-8")).items():
+                if isinstance(m, dict) and m.get("name"):
+                    current[m["name"]] = {"team": t2, "league": lg2, "photo": m.get("photo_url") or "",
+                                          "logo": tm.team_logo(t2)}
+                    if t2 == team and lg2 == league:
+                        mine_prof = m
+        if mine_prof:
+            mg = tn.manager_graph(team, {"name": mine_prof["name"], "photo": mine_prof.get("photo_url") or "",
+                                         "nationality": mine_prof.get("nationality"),
+                                         "appointed": mine_prof.get("appointed")},
+                                  careers, current, canon, tm.team_logo, players, SEASON_START)
+    except (OSError, ValueError):
+        pass
+    ins += tn.insights_extra(team, nat_web, ti, mg)
     return {"available": True, "team": team, "league": league, "color": tm.team_color(team), "logo": tm.team_logo(team),
             "games": n_games, "players": players, "leadership": lead,
             "chemistry": {"nodes": chem["nodes"], "edges": chem["edges"], "duos": chm.get("duos", []),
                           "trios": chm.get("trios", [])},
             "origins": orig, "nations": nat, "links": lk, "insights": ins,
+            "national": nat_web, "ties": ti, "manager": mg,
             "sources": {"captains": "wikipedia" if any(w["rank"] for w in wiki) else None}}
 
 

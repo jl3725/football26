@@ -4,6 +4,7 @@ import type { NetworkData } from "@/lib/api";
 import { hexA } from "@/lib/ui";
 import { usePeek } from "./PlayerPeek";
 import { SvgAvatar } from "./NetShared";
+import NetNational from "./NetNational";
 
 // NATIONS — 국적(REPRESENTS) 버블: 크기 = 선수 수, 국기·FIFA 랭킹, 금색 점 = 2026 월드컵 명단 인원.
 const W = 680, H = 380;
@@ -26,11 +27,14 @@ function pack(sizes: number[]) {
 export default function NetNations({ d, accent }: { d: NetworkData; accent: string }) {
   const peek = usePeek();
   const cs = d.nations.countries;
-  const [sel, setSel] = useState<string | null>(cs[0]?.name ?? null);
+  const firstNat = cs.find((c) => d.national?.[c.name] || Object.values(d.national ?? {}).some((x) => x.fifa_name === c.name));
+  const [sel, setSel] = useState<string | null>((firstNat ?? cs[0])?.name ?? null);
   const byName = useMemo(() => Object.fromEntries(d.players.map((p) => [p.name, p])), [d]);
   const sizes = cs.map((c) => 18 + 13 * Math.sqrt(c.players.length));
   const pos = useMemo(() => pack(sizes), [d]); // eslint-disable-line react-hooks/exhaustive-deps
   const cur = cs.find((c) => c.name === sel);
+  // 대표팀 동료 데이터(월드컵 명단 기준)는 월드컵 표기·FIFA 표기 어느 쪽으로든 찾는다
+  const natOf = (n: string) => d.national?.[n] ?? Object.values(d.national ?? {}).find((x) => x.fifa_name === n);
   if (!cs.length) return <p className="net-empty">국적 정보가 없습니다</p>;
   return (
     <div className="net-nat">
@@ -78,6 +82,7 @@ export default function NetNations({ d, accent }: { d: NetworkData; accent: stri
               );
             })}
           </div>
+          {natOf(cur.name) && <NetNational nat={natOf(cur.name)!} name={cur.name} team={d.team} accent={accent} />}
         </div>
       )}
     </div>

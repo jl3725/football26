@@ -350,3 +350,175 @@ def insights(team: str, lead: dict, chem: dict, duos: list, orig: dict, nat: dic
                     "evidence": list(dict.fromkeys(f"{team} ─ {x['player']} ─ {c['club']}"
                                                    for x in (c['in'] + c['out'] + c['alumni'])))[:3]})
     return out
+
+
+# ── NATIONAL TEAM — 대표팀(2026 월드컵 명단) 동료가 어느 클럽에 흩어져 있나 ──────────────────────
+def national_web(team: str, our_nations: dict[str, list[str]], wc_rows: list[dict], locate) -> dict:
+    """our_nations: {나라: [우리 선수]}. locate(name) → {club, league, photo, ovr} | None.
+    → {나라: {players: [{player, club, league, photo, ovr, ours}], clubs: [{club, n, players}], n_ours}}."""
+    out = {}
+    by_nat: dict[str, list[dict]] = defaultdict(list)
+    for r in wc_rows:
+        by_nat[r["nation"]].append(r)
+    for nat, ours in our_nations.items():
+        rows = by_nat.get(nat, [])
+        if not rows:
+            continue
+        ps, clubs = [], defaultdict(list)
+        for r in rows:
+            loc = locate(r["player"]) or {}
+            club = loc.get("club")
+            is_ours = club == team
+            ps.append({"player": loc.get("name") or r["player"], "pos": r.get("pos"), "club": club,
+                       "league": loc.get("league"), "photo": loc.get("photo", ""), "ovr": loc.get("ovr"), "ours": is_ours})
+            clubs[club or "OTHER"].append(loc.get("name") or r["player"])
+        cl = sorted(({"club": c, "n": len(v), "players": v} for c, v in clubs.items()), key=lambda c: (c["club"] == "OTHER", -c["n"]))
+        out[nat] = {"players": ps, "clubs": cl, "n_ours": sum(p["ours"] for p in ps)}
+    return out
+
+
+# ── TIES — 지난 시즌 라인업으로 본 '전 소속 동료' ──────────────────────────────────────────────
+def lineup_pairs(lineups) -> tuple[dict, dict]:
+    """ESPN 선발 라인업들 → ({클럽: Counter((a, b) → 함께 선발)}, {클럽: 선수 이름 목록})."""
+    from collections import Counter
+    pairs: dict[str, Counter] = defaultdict(Counter)
+    names: dict[str, set] = defaultdict(set)
+    for df in lineups:
+        if df is None or df.empty:
+            continue
+        st = df[df["starter"].astype(str).str.lower().isin(["true", "1", "1.0"])]
+        for (club, _eid), g in st.groupby(["squad", "event_id"]):
+            ps = sorted(set(g["player"].astype(str)))
+            names[club].update(ps)
+            for i, a in enumerate(ps):
+                for b in ps[i + 1:]:
+                    pairs[club][(a, b)] += 1
+    return pairs, {k: sorted(v) for k, v in names.items()}
+
+
+def ties(team: str, players: list[dict], pairs: dict, names: dict, locate, min_starts: int = 5, per_player: int = 4) -> dict:
+    """우리 선수의 지난 시즌 동료(함께 선발 min_starts 회+)가 지금 어디 있나.
+    kind: former(영입생의 전 소속 동료) · alumni(작년 우리 팀 동료가 떠남) · reunion(다른 팀에서 함께 뛰다 지금 우리 팀에서 재회)."""
+    out, reunions = [], []
+    for p in players:
+        s = p.get("prev_squad")
+        if not s or s not in pairs:
+            continue
+        me = NameIndex(names.get(s, [])).find(p["name"])
+        if not me:
+            continue
+        mates = sorted(((b if a == me else a, n) for (a, b), n in pairs[s].items() if me in (a, b) and n >= min_starts),
+                       key=lambda x: -x[1])
+        k = 0
+        for mate, n in mates:
+            loc = locate(mate)
+            if not loc or norm(loc.get("name") or mate) == norm(p["name"]):
+                continue
+            now = loc.get("club")
+            if s == team and now == team:
+                continue
+            kind = "reunion" if now == team else ("alumni" if s == team else "former")
+            rec = {"ours": p["name"], "ours_photo": p.get("photo", ""), "mate": loc.get("name") or mate,
+                   "mate_photo": loc.get("photo", ""), "mate_ovr": loc.get("ovr"), "from_club": s, "starts": n,
+                   "now_club": now, "now_league": loc.get("league"), "kind": kind}
+            if kind == "reunion":
+                if not any({x["ours"], x["mate"]} == {rec["ours"], rec["mate"]} for x in reunions):
+                    reunions.append(rec)
+                continue
+            out.append(rec)
+            k += 1
+            if k >= per_player:
+                break
+    # 같은 동료가 우리 선수 여럿과 묶이면(작년 우리 팀 동료가 떠난 경우) 사람 단위로 하나 — 가장 오래 함께 뛴 우리 선수 + 연결 수
+    by_mate: dict[tuple[str, str], dict] = {}
+    for t in out:
+        k = (norm(t["mate"]), t["now_club"])
+        cur = by_mate.get(k)
+        if cur is None:
+            by_mate[k] = {**t, "links": 1}
+        else:
+            cur["links"] += 1
+            if t["starts"] > cur["starts"]:
+                by_mate[k] = {**t, "links": cur["links"]}
+    uniq = sorted(by_mate.values(), key=lambda t: -t["starts"])
+    clubs: dict[str, dict] = {}
+    for t in uniq:
+        c = clubs.setdefault(t["now_club"], {"club": t["now_club"], "league": t["now_league"], "ties": [], "weight": 0})
+        c["ties"].append(t)
+        c["weight"] += t["starts"]
+    cl = sorted(clubs.values(), key=lambda c: -c["weight"])
+    return {"clubs": cl[:14], "n_ties": len(uniq), "n_clubs": len(cl), "reunions": reunions,
+            "players": sorted({t["ours"] for t in uniq})}
+
+
+# ── MANAGER — 커리어 · 같은 클럽을 거친 현직 감독 · 감독과 함께 온 선수 ─────────────────────────
+def manager_graph(team: str, mgr: dict, careers: dict, current: dict, canon, logo, players: list[dict], season_start: int) -> dict:
+    """mgr: {name, photo, nationality, appointed}. current: {감독: {team, league, photo}} (8개 리그 현직)."""
+    name = mgr.get("name")
+    car = careers.get(name or "", {})
+    if not car:
+        return {"available": False, "name": name}
+
+    def key(c):
+        return norm(canon(c) or c)
+
+    def deco(spells):
+        return [{**s, "canon": canon(s["club"]), "logo": logo(canon(s["club"]) or "")} for s in spells]
+    managed, played = deco(car.get("managed", [])), deco(car.get("played", []))
+    mine = {}
+    for s in managed:
+        mine.setdefault(key(s["club"]), ("managed", s["club"]))
+    for s in played:
+        mine.setdefault(key(s["club"]), ("played", s["club"]))
+    net = []
+    for other, info in current.items():
+        if other == name:
+            continue
+        oc = careers.get(other, {})
+        shared = []
+        for kind, spells in (("managed", oc.get("managed", [])), ("played", oc.get("played", []))):
+            for s in spells:
+                k = key(s["club"])
+                if k in mine and not any(x["club"] == mine[k][1] for x in shared):
+                    shared.append({"club": mine[k][1], "mine": mine[k][0], "theirs": kind})
+        if shared:
+            net.append({"manager": other, **info, "shared": shared})
+    net.sort(key=lambda x: (-len(x["shared"]), x["manager"]))
+    # 직전 감독 클럽(지난 시즌에 맡던 곳)에서 지금 우리 팀으로 온 선수
+    prev_clubs = {key(s["club"]) for s in managed
+                  if (s.get("end") or season_start + 1) >= season_start and norm(canon(s["club"]) or s["club"]) != norm(team)}
+    brought = [p["name"] for p in players if p.get("prev_squad") and key(p["prev_squad"]) in prev_clubs]
+    return {"available": True, **mgr, "managed": managed, "played": played, "network": net[:16],
+            "n_network": len(net), "brought": brought}
+
+
+def insights_extra(team: str, nat_web: dict, ti: dict, mg: dict) -> list[dict]:
+    out = []
+    if nat_web:
+        nat, w = max(nat_web.items(), key=lambda kv: (kv[1]["n_ours"], len(kv[1]["players"])))
+        others = [c for c in w["clubs"] if c["club"] not in (team, "OTHER")]
+        if others:
+            top = others[0]
+            out.append({"lens": "nations", "icon": "⚑", "tone": "info", "title": "대표팀 동료",
+                        "text": f"{nat} 대표팀(월드컵 명단 {len(w['players'])}명) 중 우리 {w['n_ours']}명 — "
+                                f"나머지는 {len(others)}개 클럽, 최다 {top['club']} {top['n']}명",
+                        "evidence": [f"{p} ─ {nat} ─ {top['club']}" for p in top["players"][:3]]})
+    if ti and ti.get("clubs"):
+        c = ti["clubs"][0]
+        txt = f"지난 시즌 동료 {ti['n_ties']}명이 {ti['n_clubs']}개 클럽에 — 가장 많은 곳 {c['club']} {len(c['ties'])}명"
+        if ti.get("reunions"):
+            r = ti["reunions"][0]
+            txt += f" · 재회: {r['ours']}·{r['mate']}({r['from_club']})"
+        out.append({"lens": "ties", "icon": "↺", "tone": "info", "title": "전 소속 동료", "text": txt,
+                    "evidence": [f"{t['ours']} ─ {t['starts']}경기 함께({t['from_club']}) ─ {t['mate']} @ {t['now_club']}"
+                                 for t in c["ties"][:3]]})
+    if mg and mg.get("available"):
+        clubs = list(dict.fromkeys(s["club"] for s in mg["managed"]))
+        txt = f"{mg['name']} — 감독 {len(clubs)}개 클럽"
+        if mg.get("n_network"):
+            txt += f" · 같은 클럽을 거친 현직 감독 {mg['n_network']}명"
+        if mg.get("brought"):
+            txt += f" · 전 팀에서 함께 온 선수 {len(mg['brought'])}명"
+        ev = [f"{mg['name']} ─ MANAGED ─ {c}" for c in clubs[-3:]]
+        out.append({"lens": "manager", "icon": "♟", "tone": "info", "title": "감독 커리어", "text": txt, "evidence": ev})
+    return out

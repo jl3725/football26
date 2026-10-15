@@ -352,6 +352,26 @@ export type NetworkData = {
   links: { clubs: NetLink[]; n_clubs: number };
   insights: NetInsight[];
   sources: { captains: string | null };
+  national: Record<string, NetNational>;
+  ties: NetTies;
+  manager: NetManager;
+};
+// 대표팀 동료(2026 월드컵 명단) — 같은 대표팀 선수가 어느 클럽에
+export type NetNational = {
+  players: { player: string; pos: string; club: string | null; league: string | null; photo: string; ovr: number | null; ours: boolean }[];
+  clubs: { club: string; n: number; players: string[]; logo: string }[]; n_ours: number; flag: string; rank: number | null; fifa_name: string;
+};
+// 전 소속 동료(지난 시즌 라인업) — former: 영입생의 전 소속 동료 · alumni: 작년 우리 팀 동료가 떠남 · reunion: 다른 팀에서 함께 뛰다 재회
+export type NetTie = { ours: string; ours_photo: string; mate: string; mate_photo: string; mate_ovr: number | null; from_club: string;
+  starts: number; now_club: string; now_league: string | null; kind: "former" | "alumni" | "reunion"; links?: number };
+export type NetTies = { clubs: { club: string; league: string | null; logo: string; ties: NetTie[]; weight: number }[];
+  n_ties: number; n_clubs: number; reunions: NetTie[]; players: string[] };
+// 감독 커리어 그래프
+export type NetSpell = { club: string; start: number | null; end: number | null; role?: string; loan?: boolean; canon: string | null; logo: string };
+export type NetManager = {
+  available: boolean; name?: string; photo?: string; nationality?: string; appointed?: string;
+  managed?: NetSpell[]; played?: NetSpell[]; n_network?: number; brought?: string[];
+  network?: { manager: string; team: string; league: string; photo: string; logo: string; shared: { club: string; mine: string; theirs: string }[] }[];
 };
 export const getNetwork = (t: string, l = _league) => j<NetworkData>(`/api/network/${q(t, l)}`);
 export const getSimilar = (p: string, l = _league) =>
