@@ -202,12 +202,24 @@ def main() -> int:
         if k % 25 == 0:
             print(f"  … {k}/{len(todo)}", flush=True)
         time.sleep(0.25)
-    if evs:
-        ev = pd.concat([old_ev, pd.DataFrame(evs, columns=EVENT_COLS)], ignore_index=True)
-        ev = ev.drop_duplicates().sort_values(["date", "event_id"])
+    # 일정에 없는 (경기, 팀) 행은 지운다 — 팀 이름 오매칭(Union SG → Union Berlin)이 고쳐지면 스스로 정리
+    valid = set(zip(sch["event_id"].astype(str), sch["squad"].astype(str)))
+
+    def _keep(frame: pd.DataFrame) -> pd.DataFrame:
+        if frame.empty:
+            return frame
+        k = [(str(e), str(q)) in valid for e, q in zip(frame["event_id"].astype(str), frame["squad"].astype(str))]
+        dropped = len(frame) - sum(k)
+        if dropped:
+            print(f"  · 일정에 없는 행 {dropped}개 제거", flush=True)
+        return frame[k]
+    if evs or not old_ev.empty:
+        ev = pd.concat([old_ev, pd.DataFrame(evs, columns=EVENT_COLS)], ignore_index=True) if evs else old_ev
+        ev = _keep(ev.drop_duplicates()).sort_values(["date", "event_id"])
         ev.to_csv(ev_p, index=False)
         print(f"[OK] {ev_p.name} · {len(ev)}행(새 {len(evs)})", flush=True)
     df = pd.concat([old, pd.DataFrame(rows)], ignore_index=True) if rows else old
+    df = _keep(df) if not df.empty else df
     if df.empty:
         print("! 기록 없음 — 저장 안 함")
         return 1 if fail else 0

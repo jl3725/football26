@@ -15,6 +15,7 @@
   rating_history  선수 평점 일일 기록(▲▼ 추이 원천)이 3일 안에 갱신됐는가
   ratings   평점 자체 검증(data/eval/rating_audit.json, daily_data 가 매일 생성) — 사용자 기준(golden) 위반,
             스카우트 기준표 3 이상 이탈, 자동 점검(한 시즌 급등·급락·고평점 이상치) 한도 초과
+  names     선수 이름 레지스트리(data/eval/name_audit.json) 3일 내 갱신, 기준 명단 밖 선발 3경기+ 이름 30개 이하
 
 사용:
   python scripts/watchdog.py            # 결과 출력, 실패가 있으면 종료코드 1
@@ -232,9 +233,31 @@ def check_ratings() -> list[str]:
     return out
 
 
+def check_names() -> list[str]:
+    """선수 이름 레지스트리 — 기준 명단(players_full·TM 명단·위키) 밖에서 3경기+ 선발로 뛴 '고아' 이름이 많으면
+    표기 규칙이 못 잡는 새 변형이 생긴 것(data/name_aliases.csv 에 수동 지정)."""
+    p = ROOT / "data" / "eval" / "name_audit.json"
+    if not p.exists():
+        return [f"{p.name} 없음 — match_refresh·daily_data 'Player registry' 단계 확인"]
+    a = json.loads(p.read_text(encoding="utf-8"))
+    meta = a.get("_meta", {})
+    out = []
+    if meta.get("date", "") < (NOW.date() - dt.timedelta(days=3)).isoformat():
+        out.append(f"이름 레지스트리 마지막 갱신 {meta.get('date')} — 'Player registry' 단계 확인")
+    season = meta.get("season", "")
+    orph = [(o["name"], o["squad"], o["starts"]) for k, v in a.items() if k != "_meta" and k.endswith(season)
+            for s in v.values() for o in s.get("orphans", []) if o.get("starts", 0) >= 3]
+    if len(orph) > 30:
+        top = sorted(orph, key=lambda x: -x[2])[:6]
+        out.append(f"기준 명단 밖 선발 3경기+ 이름 {len(orph)}개(>30) — 표기 변형 확인: "
+                   + ", ".join(f"{n}({q} {s})" for n, q, s in top))
+    return out
+
+
 CHECKS = {"season": check_season, "hub": check_hub, "frontend": check_frontend,
           "workflows": check_workflows, "news": check_news, "tm_agent": check_tm_agent,
-          "coverage": check_coverage, "rating_history": check_rating_history, "ratings": check_ratings}
+          "coverage": check_coverage, "rating_history": check_rating_history, "ratings": check_ratings,
+          "names": check_names}
 
 
 def run() -> dict[str, list[str]]:

@@ -87,6 +87,7 @@ from api.services.player_data import number as _num  # noqa: E402
 from api.services.player_data import photo_url as _photo  # noqa: E402
 from api.services.player_data import player_frame as _pf  # noqa: E402
 from api.services.player_data import resolve_photo as _resolve_photo  # noqa: E402
+from player_names import read_lineup_csv  # noqa: E402
 
 app = FastAPI(title="Football Scout API", version="0.2.0")
 app.include_router(meta_router)
@@ -771,8 +772,8 @@ def heatmaps(team: str, league: str = ACTIVE_LEAGUE):
     for _, r in tp.iterrows():
         k = str(r.get("norm_key") or "")
         if k:
-            meta[k] = {"player": str(r.get("player") or ""), "pos": str(r.get("pos") or ""),
-                       "line": str(r.get("fl_group") or r.get("line") or ""),
+            meta[k] = {"player": str(r.get("player") or ""), "pos": str(_pos_profile(r).get("primary") or r.get("pos") or ""),
+                       "line": rv3.line_of_row(r),
                        "minutes": int(r["_mn"]), "ovr": _player_ovr(r), "photo": _photo(r)}
     gw = gh = None
     players = []
@@ -788,18 +789,31 @@ def heatmaps(team: str, league: str = ACTIVE_LEAGUE):
             continue
         gw = int(_num(r.get("gw"))) or 12
         gh = int(_num(r.get("gh"))) or 8
+        # Sofascore 세로축은 화면과 반대 — 그대로 그리면 '공격 →' 피치에서 오른쪽 윙(Saka·Yamal)이 위(왼쪽)로 갔다.
+        # 공격 방향을 오른쪽으로 둘 때 오른쪽 측면이 아래가 되도록 행을 뒤집는다(2026-10-15 사용자 지적).
+        if len(grid) == gw * gh:
+            grid = [v for row in reversed([grid[i * gw:(i + 1) * gw] for i in range(gh)]) for v in row]
         players.append({**meta[k], "n_points": int(_num(r.get("n_points"))), "grid": grid})
     players.sort(key=lambda p: -p["minutes"])
-    return {"available": len(players) > 0, "team": team, "gw": gw or 12, "gh": gh or 8, "players": players[:26]}
+    players = players[:26]
+    # 연결선 — 함께 그라운드에 있던 시간(라인업·교체). 패스 데이터가 아니라 '같이 뛴 시간' 관계.
+    links = []
+    try:
+        import team_network as tn  # noqa: PLC0415
+        games, _ = _on_pitch(team, league)
+        g = tn.chemistry_graph(games, [p["player"] for p in players], min_edge=90, max_edges=120)
+        names = {p["player"] for p in players}
+        links = [e for e in g["edges"] if e["a"] in names and e["b"] in names]
+    except Exception:  # noqa: BLE001
+        links = []
+    return {"available": len(players) > 0, "team": team, "gw": gw or 12, "gh": gh or 8, "players": players,
+            "links": links, "orientation": "attack-right"}
 
 
 def _lineups(league: str):
     """espn_lineups(리그) + 컵·유럽 라인업 concat — 스케줄/경기상세용. 리그별 파일."""
     base = ds.read_table("espn_lineups", league=league)
-    try:
-        cup = pd.read_csv(data_path("espn_lineups_cups", league))
-    except (OSError, ValueError):
-        cup = None
+    cup = ds.read_table("espn_lineups_cups", league=league)          # 이름 정규화(player_names) 거침
     if base is None:
         return cup
     if cup is None:
@@ -810,10 +824,7 @@ def _lineups(league: str):
 def _subs(league: str):
     """espn_subs(리그) + 컵·유럽 교체 concat."""
     base = ds.read_table("espn_subs", league=league)
-    try:
-        cup = pd.read_csv(data_path("espn_subs_cups", league))
-    except (OSError, ValueError):
-        cup = None
+    cup = ds.read_table("espn_subs_cups", league=league)          # 이름 정규화(player_names) 거침
     if base is None:
         return cup
     if cup is None:
@@ -1029,8 +1040,8 @@ def _role_counts_all() -> dict:
     for tag, w in ((f"{SEASON_START}_{SEASON_START + 1}", 1.0), (f"{SEASON_START - 1}_{SEASON_START}", 0.5)):
         for path in sorted(DATA_DIR.glob(f"espn_lineups*_{tag}.csv")):
             try:
-                frames.append(pd.read_csv(path, usecols=["squad", "event_id", "formation", "starter", "player",
-                                                         "espn_pos", "formation_place"]))
+                frames.append(read_lineup_csv(path, ["squad", "event_id", "formation", "starter", "player",
+                                                     "espn_pos", "formation_place"]))   # 이름 정규화
                 weights.append(w)
             except (ValueError, OSError):
                 continue
@@ -2650,7 +2661,7 @@ def _prev_lineup_pairs() -> tuple[dict, dict]:
         frames = []
         for path in sorted(DATA_DIR.glob(f"espn_lineups*_{SEASON_START - 1}_{SEASON_START}.csv")):
             try:
-                frames.append(pd.read_csv(path, usecols=["squad", "event_id", "starter", "player"]))
+                frames.append(read_lineup_csv(path, ["squad", "event_id", "starter", "player"]))   # 이름 정규화
             except (ValueError, OSError):
                 continue
         _PREV_PAIRS.clear()

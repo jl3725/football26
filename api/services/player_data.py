@@ -95,6 +95,7 @@ def role_counts(season: str | None = None) -> dict:
     """전 리그 ESPN 선발(그 시즌 1.0 + 직전 시즌 0.5) → {정규화 이름: Counter(역할)} — src/positions.py."""
     import positions as ps  # noqa: PLC0415
     from leagues import DATA_DIR, SEASON_START  # noqa: PLC0415
+    from player_names import read_lineup_csv  # noqa: PLC0415
     start = int(season[:4]) if season else SEASON_START
     key = (start, ds._db_mtime())
     if key in _ROLE_CACHE:
@@ -103,8 +104,8 @@ def role_counts(season: str | None = None) -> dict:
     for tag, w in ((f"{start}_{start + 1}", 1.0), (f"{start - 1}_{start}", 0.5)):
         for path in sorted(DATA_DIR.glob(f"espn_lineups*_{tag}.csv")):
             try:
-                frames.append(pd.read_csv(path, usecols=["squad", "event_id", "formation", "starter", "player",
-                                                         "espn_pos", "formation_place"]))
+                frames.append(read_lineup_csv(path, ["squad", "event_id", "formation", "starter", "player",
+                                                     "espn_pos", "formation_place"]))   # 이름 정규화
                 weights.append(w)
             except (ValueError, OSError):
                 continue

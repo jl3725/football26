@@ -577,7 +577,8 @@ export const getTeamFixtures = (team: string, l = _league) =>
   j<{ team: string; next: Fixture[] }>(`/api/fixtures/${encodeURIComponent(team)}?league=${encodeURIComponent(l)}`);
 // 선수 시즌 히트맵(Sofascore) — analytics 포지셔널 히트맵
 export type HeatmapPlayer = { player: string; pos: string; line: string; minutes: number; ovr: number; photo: string; n_points: number; grid: number[] };
-export type HeatmapData = { available: boolean; team: string; gw: number; gh: number; players: HeatmapPlayer[] };
+export type HeatmapData = { available: boolean; team: string; gw: number; gh: number; players: HeatmapPlayer[];
+  links?: { a: string; b: string; minutes: number; matches: number }[]; orientation?: string };
 export const getHeatmaps = (team: string, league = _league) =>
   j<HeatmapData>(`/api/heatmaps/${encodeURIComponent(team)}?league=${encodeURIComponent(league)}`);
 export type WCSquadPlayer = { player: string; pos: string; jersey: string; age: string; club: string; league: string; club_logo: string; photo: string };

@@ -68,7 +68,7 @@ export default function AnalyticsTab({ team, accent }: { team: string; accent: s
 
       {/* 팀 포지셔널 맵 (스쿼드 히트맵 집계) */}
       <div className="card" style={{ marginTop: 16 }}>
-        <SectionHead title="TERRITORY" kr="팀 포지셔널 맵" meta="점유 구역 · 평균 대형 · Sofascore" />
+        <SectionHead title="TERRITORY" kr="팀 포지셔널 맵" meta="평균 위치 · 함께 뛴 연결 · 점유 구역 · Sofascore" />
         <TeamTerritory team={team} accent={accent} />
       </div>
 

@@ -68,12 +68,34 @@ def read_table(
         return hit.copy()
     df = _read_from_db(table, league, season)
     if df is not None:
+        df = _cleanse_names(table, df, league, season)
         with _CACHE_LOCK:
             _CACHE[key] = df
             while len(_CACHE) > _CACHE_MAX:
                 _CACHE.popitem(last=False)
         return df.copy()
-    return _read_from_csv(table, league, season)          # CSV 폴백은 파일이 수시로 바뀌므로 캐시 안 함
+    return _cleanse_names(table, _read_from_csv(table, league, season), league, season)   # CSV 폴백은 캐시 안 함
+
+
+def _cleanse_names(table: str, df: pd.DataFrame | None, league: str, season: str) -> pd.DataFrame | None:
+    """선수 이름 원천(ESPN·위키·TM 부상)은 레지스트리 기준 표기로 — src/player_names.py."""
+    if df is None:
+        return df
+    try:
+        import player_names as pn  # noqa: PLC0415
+    except ImportError:
+        return df
+    cols = pn.TABLE_COLS.get(table)
+    if not cols:
+        return df
+    try:
+        if table.startswith("espn_subs") and "squad" not in df.columns:
+            lu = read_table(table.replace("espn_subs", "espn_lineups"), league=league, season=season)
+            out = pn.cleanse(pn.with_squad(df, lu), cols, league, season)
+            return out.drop(columns=["squad"]) if "squad" in out.columns else out
+        return pn.cleanse(df, cols, league, season)
+    except Exception:  # noqa: BLE001 — 정규화 실패가 화면을 깨지 않게
+        return df
 
 
 def _read_from_db(table: str, league: str, season: str) -> pd.DataFrame | None:

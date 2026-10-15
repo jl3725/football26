@@ -13,6 +13,7 @@ from __future__ import annotations
 import time
 from functools import lru_cache
 
+import re
 import requests
 
 BASE = "https://site.api.espn.com/apis/site/v2/sports/soccer"
@@ -48,7 +49,7 @@ LEAGUE_DISPLAY: dict[str, dict[str, str]] = {
     },
     "SerieA": {
         # 'inter' 를 'milan' 보다 먼저 — 'Inter Milan' 이 'milan' 에 먼저 걸리지 않게
-        "inter": "Inter", "internazionale": "Inter", "milan": "Milan",
+        "inter": "Inter", "internazionale": "Inter", "ac milan": "Milan",
         "juventus": "Juventus", "napoli": "Napoli", "roma": "Roma", "lazio": "Lazio",
         "atalanta": "Atalanta", "fiorentina": "Fiorentina", "bologna": "Bologna",
         "torino": "Torino", "udinese": "Udinese", "genoa": "Genoa", "cagliari": "Cagliari",
@@ -62,7 +63,7 @@ LEAGUE_DISPLAY: dict[str, dict[str, str]] = {
         "leipzig": "RB Leipzig", "stuttgart": "Stuttgart", "frankfurt": "Frankfurt",
         "freiburg": "Freiburg", "gladbach": "Gladbach", "mönchengladbach": "Gladbach",
         "monchengladbach": "Gladbach", "wolfsburg": "Wolfsburg", "mainz": "Mainz 05",
-        "augsburg": "Augsburg", "hoffenheim": "Hoffenheim", "union": "Union Berlin",
+        "augsburg": "Augsburg", "hoffenheim": "Hoffenheim", "union berlin": "Union Berlin",
         "werder": "Werder Bremen", "bremen": "Werder Bremen", "köln": "Köln",
         "koln": "Köln", "cologne": "Köln", "pauli": "St Pauli", "hamburg": "Hamburger SV",
         "heidenheim": "Heidenheim",
@@ -86,7 +87,7 @@ LEAGUE_DISPLAY: dict[str, dict[str, str]] = {
         "braga": "Braga", "casa pia": "Casa Pia", "estoril": "Estoril",
         "estrela": "Estrela", "famalic": "Famalicão", "gil vicente": "Gil Vicente FC",
         "moreirense": "Moreirense", "nacional": "Nacional", "porto": "Porto",
-        "rio ave": "Rio Ave", "santa clara": "Santa Clara", "sporting": "Sporting CP",
+        "rio ave": "Rio Ave", "santa clara": "Santa Clara", "sporting cp": "Sporting CP", "sporting lisbon": "Sporting CP",
         "tondela": "Tondela", "vitoria": "Vit. Guimarães", "vitória": "Vit. Guimarães",
         "alverca": "Alverca",
         # 26/27 승격
@@ -99,7 +100,7 @@ LEAGUE_DISPLAY: dict[str, dict[str, str]] = {
         "groningen": "Groningen", "heerenveen": "Heerenveen",
         "heracles": "Heracles Almelo", "nac breda": "NAC Breda",
         "nec nijmegen": "NEC Nijmegen", "nijmegen": "NEC Nijmegen", "psv": "PSV",
-        "sparta": "Sparta R.", "telstar": "Telstar", "twente": "Twente",
+        "sparta rotterdam": "Sparta R.", "telstar": "Telstar", "twente": "Twente",
         "utrecht": "Utrecht", "volendam": "Volendam", "zwolle": "Zwolle",
         # 26/27 승격
         "den haag": "ADO Den Haag", "cambuur": "Cambuur", "willem ii": "Willem II",
@@ -149,12 +150,18 @@ DOMESTIC_CUPS = {
 
 
 def squad_of(team: dict | None, league: str) -> str | None:
-    """ESPN team dict → 우리 squad 표기(해당 리그 소속 아니면 None)."""
+    """ESPN team dict → 우리 squad 표기(해당 리그 소속 아니면 None).
+
+    키 앞쪽 단어 경계(접두 키 famalic·sint-truid 는 허용), 여러 키가 걸리면 가장 긴(구체적인) 키 — 예전엔 부분 문자열이라 유럽대항전에서
+    벨기에 'Union St.-Gilloise' 가 분데스리가 'union' → Union Berlin 으로 들어갔다('angers'↔'Rangers',
+    'sparta'↔'Sparta Prague', 'sporting'↔'Sporting Braga' 도 같은 위험, 2026-10-15).
+    """
     raw = ((team or {}).get("displayName") or (team or {}).get("name") or "").lower()
+    best = None
     for k, v in LEAGUE_DISPLAY.get(league, {}).items():
-        if k in raw:
-            return v
-    return None
+        if re.search(r"(?<![a-z])" + re.escape(k), raw) and (best is None or len(k) > len(best[0])):
+            best = (k, v)
+    return best[1] if best else None
 
 
 def get_json(url: str, tries: int = 3, pause: float = 0.6) -> dict | None:

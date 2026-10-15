@@ -6,7 +6,7 @@ const W = 380, H = 246;
 // 값(0-100) → 한 계열 열기 색(보라 → 코랄 → 호박 → 흰빛, magma 계열) + 알파(밀도).
 // 예전 초록→빨강 무지개는 색이 많아 싸 보였고, 색각 이상이면 초록·빨강 구분도 어렵다(디자인 v5).
 const STOPS: [number, number[]][] = [[0, [72, 26, 120]], [0.35, [168, 50, 120]], [0.6, [255, 92, 94]], [0.82, [255, 170, 90]], [1, [255, 240, 200]]];
-function heat(v: number): string {
+export function heat(v: number): string {
   const t = Math.max(0, Math.min(1, v / 100));
   let i = 0;
   while (i < STOPS.length - 2 && t > STOPS[i + 1][0]) i++;
