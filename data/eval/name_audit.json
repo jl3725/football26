@@ -143,15 +143,20 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 502,
-   "exact": 473,
+   "total": 511,
+   "exact": 479,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 29,
+   "orphan": 32,
    "orphans": [
     {
      "squad": "Arsenal",
      "name": "Marli Salmon",
+     "starts": 1
+    },
+    {
+     "squad": "Sunderland",
+     "name": "Tymur Tutierov",
      "starts": 1
     },
     {
@@ -200,11 +205,6 @@
      "starts": 0
     },
     {
-     "squad": "Sunderland",
-     "name": "Tymur Tutierov",
-     "starts": 0
-    },
-    {
      "squad": "Crystal Palace",
      "name": "Lucca Benetton",
      "starts": 0
@@ -217,6 +217,26 @@
     {
      "squad": "Bournemouth",
      "name": "Mack Allan",
+     "starts": 0
+    },
+    {
+     "squad": "Crystal Palace",
+     "name": "Dean Benamar",
+     "starts": 0
+    },
+    {
+     "squad": "Sunderland",
+     "name": "Jack Whittaker",
+     "starts": 0
+    },
+    {
+     "squad": "Sunderland",
+     "name": "Trey Ogunsuyi",
+     "starts": 0
+    },
+    {
+     "squad": "Brighton",
+     "name": "Shane Nti",
      "starts": 0
     },
     {
@@ -253,26 +273,6 @@
      "squad": "Everton",
      "name": "Harvey Foster",
      "starts": 0
-    },
-    {
-     "squad": "Everton",
-     "name": "Adam Aznou",
-     "starts": 0
-    },
-    {
-     "squad": "Fulham",
-     "name": "Bradley Slade",
-     "starts": 0
-    },
-    {
-     "squad": "Fulham",
-     "name": "Chibuzo Nwoko",
-     "starts": 0
-    },
-    {
-     "squad": "Sunderland",
-     "name": "Jack Whittaker",
-     "starts": 0
     }
    ]
   },
@@ -285,8 +285,8 @@
    "orphans": []
   },
   "espn_subs_cups": {
-   "total": 297,
-   "exact": 294,
+   "total": 310,
+   "exact": 307,
    "rule": 1,
    "ambiguous": 0,
    "orphan": 2,
@@ -304,8 +304,8 @@
    ]
   },
   "match_events": {
-   "total": 320,
-   "exact": 320,
+   "total": 327,
+   "exact": 327,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -456,12 +456,23 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 171,
-   "exact": 171,
+   "total": 195,
+   "exact": 193,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 0,
-   "orphans": []
+   "orphan": 2,
+   "orphans": [
+    {
+     "squad": "Celta Vigo",
+     "name": "Ángel Arcos",
+     "starts": 0
+    },
+    {
+     "squad": "Celta Vigo",
+     "name": "Frank Germain Jonathan Miller",
+     "starts": 0
+    }
+   ]
   },
   "espn_subs": {
    "total": 422,
@@ -483,16 +494,16 @@
    ]
   },
   "espn_subs_cups": {
-   "total": 88,
-   "exact": 88,
+   "total": 101,
+   "exact": 101,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
    "orphans": []
   },
   "match_events": {
-   "total": 318,
-   "exact": 318,
+   "total": 319,
+   "exact": 319,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -593,11 +604,11 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 435,
-   "exact": 381,
+   "total": 441,
+   "exact": 386,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 54,
+   "orphan": 55,
    "orphans": [
     {
      "squad": "Augsburg",
@@ -735,16 +746,16 @@
    "orphans": []
   },
   "espn_subs_cups": {
-   "total": 73,
-   "exact": 73,
+   "total": 93,
+   "exact": 93,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
    "orphans": []
   },
   "match_events": {
-   "total": 259,
-   "exact": 259,
+   "total": 260,
+   "exact": 260,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -754,7 +765,7 @@
  "SerieA 2026_2027": {
   "wiki_squads": {
    "total": 867,
-   "exact": 594,
+   "exact": 592,
    "rule": 4,
    "ambiguous": 2,
    "orphan": 0,
@@ -895,12 +906,67 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 487,
-   "exact": 473,
+   "total": 533,
+   "exact": 499,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 14,
+   "orphan": 34,
    "orphans": [
+    {
+     "squad": "Inter",
+     "name": "Javier Díaz",
+     "starts": 1
+    },
+    {
+     "squad": "Inter",
+     "name": "Anwar Hernández",
+     "starts": 1
+    },
+    {
+     "squad": "Inter",
+     "name": "Álex Sánchez",
+     "starts": 1
+    },
+    {
+     "squad": "Inter",
+     "name": "Victor Alonso",
+     "starts": 1
+    },
+    {
+     "squad": "Inter",
+     "name": "Jilmar Torres",
+     "starts": 1
+    },
+    {
+     "squad": "Inter",
+     "name": "Maurizio Pochettino",
+     "starts": 1
+    },
+    {
+     "squad": "Inter",
+     "name": "David López",
+     "starts": 1
+    },
+    {
+     "squad": "Inter",
+     "name": "Pablo Molina",
+     "starts": 1
+    },
+    {
+     "squad": "Inter",
+     "name": "Soule",
+     "starts": 1
+    },
+    {
+     "squad": "Inter",
+     "name": "Domi Berlanga",
+     "starts": 1
+    },
+    {
+     "squad": "Inter",
+     "name": "Faysal Choaib",
+     "starts": 1
+    },
     {
      "squad": "Parma",
      "name": "Alessandro Circati",
@@ -917,6 +983,51 @@
      "starts": 0
     },
     {
+     "squad": "Inter",
+     "name": "Mamadou Diaby",
+     "starts": 0
+    },
+    {
+     "squad": "Inter",
+     "name": "Adri da Cunha",
+     "starts": 0
+    },
+    {
+     "squad": "Inter",
+     "name": "Borja Arellano Monedero",
+     "starts": 0
+    },
+    {
+     "squad": "Inter",
+     "name": "Alex Prelado Leitao",
+     "starts": 0
+    },
+    {
+     "squad": "Inter",
+     "name": "Marc Rodríguez",
+     "starts": 0
+    },
+    {
+     "squad": "Inter",
+     "name": "Juan Cámara",
+     "starts": 0
+    },
+    {
+     "squad": "Inter",
+     "name": "Robin Lafarge",
+     "starts": 0
+    },
+    {
+     "squad": "Inter",
+     "name": "Pol",
+     "starts": 0
+    },
+    {
+     "squad": "Inter",
+     "name": "Rafinha",
+     "starts": 0
+    },
+    {
      "squad": "Parma",
      "name": "Aymen Zouin",
      "starts": 0
@@ -924,51 +1035,6 @@
     {
      "squad": "Monza",
      "name": "Andrea Petagna",
-     "starts": 0
-    },
-    {
-     "squad": "Monza",
-     "name": "Arvid Brorsson",
-     "starts": 0
-    },
-    {
-     "squad": "Fiorentina",
-     "name": "Niccolò Fortini",
-     "starts": 0
-    },
-    {
-     "squad": "Udinese",
-     "name": "Adam Buksa",
-     "starts": 0
-    },
-    {
-     "squad": "Udinese",
-     "name": "Abdoulaye Camara",
-     "starts": 0
-    },
-    {
-     "squad": "Genoa",
-     "name": "Chec Bebel Doumbia",
-     "starts": 0
-    },
-    {
-     "squad": "Sassuolo",
-     "name": "Luca Moro",
-     "starts": 0
-    },
-    {
-     "squad": "Lecce",
-     "name": "Christian Lupo",
-     "starts": 0
-    },
-    {
-     "squad": "Parma",
-     "name": "Karlo Pajsar",
-     "starts": 0
-    },
-    {
-     "squad": "Torino",
-     "name": "Zalán Kugyela",
      "starts": 0
     }
    ]
@@ -1003,22 +1069,32 @@
    ]
   },
   "espn_subs_cups": {
-   "total": 258,
-   "exact": 256,
-   "rule": 1,
+   "total": 285,
+   "exact": 280,
+   "rule": 2,
    "ambiguous": 0,
-   "orphan": 1,
+   "orphan": 3,
    "orphans": [
+    {
+     "squad": "Inter",
+     "name": "Dacu",
+     "starts": 0
+    },
     {
      "squad": "Torino",
      "name": "Tino Anjorin",
+     "starts": 0
+    },
+    {
+     "squad": "Inter",
+     "name": "Souleymane Sidibé",
      "starts": 0
     }
    ]
   },
   "match_events": {
-   "total": 295,
-   "exact": 295,
+   "total": 300,
+   "exact": 300,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1169,21 +1245,56 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 165,
-   "exact": 140,
+   "total": 196,
+   "exact": 170,
    "rule": 1,
    "ambiguous": 0,
-   "orphan": 24,
+   "orphan": 25,
    "orphans": [
     {
      "squad": "Lille",
      "name": "Pontus Dahlberg",
-     "starts": 1
+     "starts": 2
     },
     {
      "squad": "Lille",
      "name": "Ruben Gabrielsen",
-     "starts": 1
+     "starts": 2
+    },
+    {
+     "squad": "Lille",
+     "name": "Lars Ranger",
+     "starts": 2
+    },
+    {
+     "squad": "Lille",
+     "name": "Filip Ottosson",
+     "starts": 2
+    },
+    {
+     "squad": "Lille",
+     "name": "Gustav Nyheim",
+     "starts": 2
+    },
+    {
+     "squad": "Lille",
+     "name": "Ylldren Ibrahimaj",
+     "starts": 2
+    },
+    {
+     "squad": "Lille",
+     "name": "Fredrik Gulbrandsen",
+     "starts": 2
+    },
+    {
+     "squad": "Lille",
+     "name": "Vá",
+     "starts": 2
+    },
+    {
+     "squad": "Lille",
+     "name": "Yaw Paintsil",
+     "starts": 2
     },
     {
      "squad": "Lille",
@@ -1197,37 +1308,12 @@
     },
     {
      "squad": "Lille",
-     "name": "Lars Ranger",
+     "name": "Daniel Bassi",
      "starts": 1
     },
     {
      "squad": "Lille",
-     "name": "Filip Ottosson",
-     "starts": 1
-    },
-    {
-     "squad": "Lille",
-     "name": "Gustav Nyheim",
-     "starts": 1
-    },
-    {
-     "squad": "Lille",
-     "name": "Ylldren Ibrahimaj",
-     "starts": 1
-    },
-    {
-     "squad": "Lille",
-     "name": "Fredrik Gulbrandsen",
-     "starts": 1
-    },
-    {
-     "squad": "Lille",
-     "name": "Vá",
-     "starts": 1
-    },
-    {
-     "squad": "Lille",
-     "name": "Yaw Paintsil",
+     "name": "Stian Kristiansen",
      "starts": 1
     },
     {
@@ -1277,11 +1363,6 @@
     },
     {
      "squad": "Lille",
-     "name": "Daniel Bassi",
-     "starts": 0
-    },
-    {
-     "squad": "Lille",
      "name": "Stefan Hagerup",
      "starts": 0
     },
@@ -1292,7 +1373,7 @@
     },
     {
      "squad": "Lille",
-     "name": "Stian Kristiansen",
+     "name": "Linus Alperud",
      "starts": 0
     }
    ]
@@ -1312,16 +1393,16 @@
    ]
   },
   "espn_subs_cups": {
-   "total": 82,
-   "exact": 81,
+   "total": 106,
+   "exact": 105,
    "rule": 1,
    "ambiguous": 0,
    "orphan": 0,
    "orphans": []
   },
   "match_events": {
-   "total": 234,
-   "exact": 234,
+   "total": 241,
+   "exact": 241,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1472,8 +1553,8 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 76,
-   "exact": 75,
+   "total": 102,
+   "exact": 101,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 1,
@@ -1510,8 +1591,8 @@
    ]
   },
   "espn_subs_cups": {
-   "total": 40,
-   "exact": 40,
+   "total": 54,
+   "exact": 54,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1670,12 +1751,23 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 93,
-   "exact": 93,
+   "total": 144,
+   "exact": 142,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 0,
-   "orphans": []
+   "orphan": 2,
+   "orphans": [
+    {
+     "squad": "Ajax",
+     "name": "Aymean El Hani",
+     "starts": 0
+    },
+    {
+     "squad": "Twente",
+     "name": "Jip Meilink",
+     "starts": 0
+    }
+   ]
   },
   "espn_subs": {
    "total": 388,
@@ -1686,16 +1778,16 @@
    "orphans": []
   },
   "espn_subs_cups": {
-   "total": 43,
-   "exact": 43,
+   "total": 70,
+   "exact": 70,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
    "orphans": []
   },
   "match_events": {
-   "total": 261,
-   "exact": 261,
+   "total": 264,
+   "exact": 264,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1846,8 +1938,8 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 69,
-   "exact": 67,
+   "total": 118,
+   "exact": 116,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 2,
@@ -1873,16 +1965,16 @@
    "orphans": []
   },
   "espn_subs_cups": {
-   "total": 33,
-   "exact": 33,
+   "total": 50,
+   "exact": 50,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
    "orphans": []
   },
   "match_events": {
-   "total": 239,
-   "exact": 239,
+   "total": 243,
+   "exact": 243,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -4214,7 +4306,7 @@
   }
  },
  "_meta": {
-  "date": "2026-10-15",
+  "date": "2026-10-16",
   "season": "2026_2027"
  }
 }
