@@ -322,11 +322,11 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 585,
-   "exact": 484,
+   "total": 587,
+   "exact": 485,
    "rule": 23,
    "ambiguous": 1,
-   "orphan": 78,
+   "orphan": 79,
    "orphans": [
     {
      "squad": "Celta Vigo",
@@ -475,8 +475,8 @@
    ]
   },
   "espn_subs": {
-   "total": 422,
-   "exact": 418,
+   "total": 423,
+   "exact": 419,
    "rule": 2,
    "ambiguous": 1,
    "orphan": 2,
@@ -520,11 +520,11 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 445,
+   "total": 446,
    "exact": 417,
    "rule": 13,
    "ambiguous": 0,
-   "orphan": 15,
+   "orphan": 16,
    "orphans": [
     {
      "squad": "Bayern Munich",
@@ -599,6 +599,11 @@
     {
      "squad": "Gladbach",
      "name": "Yukhym Konoplia",
+     "starts": 0
+    },
+    {
+     "squad": "Köln",
+     "name": "Assad Kotya-Fofana",
      "starts": 0
     }
    ]
@@ -772,8 +777,8 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 624,
-   "exact": 549,
+   "total": 625,
+   "exact": 550,
    "rule": 10,
    "ambiguous": 1,
    "orphan": 65,
@@ -1040,8 +1045,8 @@
    ]
   },
   "espn_subs": {
-   "total": 417,
-   "exact": 412,
+   "total": 419,
+   "exact": 414,
    "rule": 1,
    "ambiguous": 1,
    "orphan": 4,
@@ -1111,8 +1116,8 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 477,
-   "exact": 437,
+   "total": 478,
+   "exact": 438,
    "rule": 10,
    "ambiguous": 0,
    "orphan": 30,
@@ -1379,8 +1384,8 @@
    ]
   },
   "espn_subs": {
-   "total": 344,
-   "exact": 340,
+   "total": 348,
+   "exact": 344,
    "rule": 3,
    "ambiguous": 0,
    "orphan": 1,
@@ -1770,8 +1775,8 @@
    ]
   },
   "espn_subs": {
-   "total": 388,
-   "exact": 378,
+   "total": 390,
+   "exact": 380,
    "rule": 10,
    "ambiguous": 0,
    "orphan": 0,
