@@ -304,8 +304,8 @@
    ]
   },
   "match_events": {
-   "total": 327,
-   "exact": 327,
+   "total": 333,
+   "exact": 333,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -502,8 +502,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 320,
-   "exact": 320,
+   "total": 328,
+   "exact": 328,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -759,8 +759,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 263,
-   "exact": 263,
+   "total": 270,
+   "exact": 270,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1098,8 +1098,8 @@
    ]
   },
   "match_events": {
-   "total": 300,
-   "exact": 300,
+   "total": 305,
+   "exact": 305,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1406,8 +1406,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 243,
-   "exact": 243,
+   "total": 250,
+   "exact": 250,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1558,8 +1558,8 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 102,
-   "exact": 101,
+   "total": 122,
+   "exact": 121,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 1,
@@ -1604,12 +1604,18 @@
    "orphans": []
   },
   "match_events": {
-   "total": 272,
-   "exact": 272,
+   "total": 275,
+   "exact": 274,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 0,
-   "orphans": []
+   "orphan": 1,
+   "orphans": [
+    {
+     "squad": "Braga",
+     "name": "Filipe Reynal Marques",
+     "starts": 0
+    }
+   ]
   }
  },
  "Eredivisie 2026_2027": {
@@ -1791,8 +1797,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 264,
-   "exact": 264,
+   "total": 269,
+   "exact": 269,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -4311,7 +4317,7 @@
   }
  },
  "_meta": {
-  "date": "2026-10-17",
+  "date": "2026-10-18",
   "season": "2026_2027"
  }
 }
