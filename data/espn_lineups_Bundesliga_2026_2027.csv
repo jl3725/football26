@@ -1799,43 +1799,283 @@ Schalke 04,2026-10-11,Freiburg,away,3-4-2-1,False,22,Kevin Müller,SUB,0.0,40188
 Schalke 04,2026-10-11,Freiburg,away,3-4-2-1,False,10,Edin Dzeko,SUB,0.0,401884778
 Schalke 04,2026-10-11,Freiburg,away,3-4-2-1,False,24,Adil Aouchiche,SUB,0.0,401884778
 Schalke 04,2026-10-11,Freiburg,away,3-4-2-1,False,29,Junior Dina Ebimbe,SUB,0.0,401884778
-Frankfurt,2026-10-16,Köln,home,4-4-2,True,1,Noah Atubolu,G,1,401884770
-Frankfurt,2026-10-16,Köln,home,4-4-2,True,3,Lilian Brassier,CD-L,6,401884770
-Frankfurt,2026-10-16,Köln,home,4-4-2,True,4,Robin Koch,CD-R,5,401884770
-Frankfurt,2026-10-16,Köln,home,4-4-2,True,26,Keita Kosugi,LB,3,401884770
-Frankfurt,2026-10-16,Köln,home,4-4-2,True,34,Nnamdi Collins,RB,2,401884770
-Frankfurt,2026-10-16,Köln,home,4-4-2,True,27,Mario Götze,CM-L,8,401884770
-Frankfurt,2026-10-16,Köln,home,4-4-2,True,25,Raphael Onyedika,CM-R,4,401884770
-Frankfurt,2026-10-16,Köln,home,4-4-2,True,8,Farès Chaïbi,LM,11,401884770
-Frankfurt,2026-10-16,Köln,home,4-4-2,True,20,Ritsu Doan,RM,7,401884770
-Frankfurt,2026-10-16,Köln,home,4-4-2,True,11,Younes Ebnoutalib,CF-L,9,401884770
-Frankfurt,2026-10-16,Köln,home,4-4-2,True,9,Jonathan Burkardt,CF-R,10,401884770
-Frankfurt,2026-10-16,Köln,home,4-4-2,False,31,Love Arrhov,SUB,0,401884770
-Frankfurt,2026-10-16,Köln,home,4-4-2,False,22,Timothy Chandler,SUB,0,401884770
-Frankfurt,2026-10-16,Köln,home,4-4-2,False,40,Kauã Santos,SUB,0,401884770
-Frankfurt,2026-10-16,Köln,home,4-4-2,False,15,Noël Aséko,SUB,0,401884770
-Frankfurt,2026-10-16,Köln,home,4-4-2,False,7,Ansgar Knauff,SUB,0,401884770
-Frankfurt,2026-10-16,Köln,home,4-4-2,False,2,Elias Baum,SUB,0,401884770
-Frankfurt,2026-10-16,Köln,home,4-4-2,False,42,Can Uzun,SUB,0,401884770
-Frankfurt,2026-10-16,Köln,home,4-4-2,False,29,Ayoube Amaimouni,SUB,0,401884770
-Frankfurt,2026-10-16,Köln,home,4-4-2,False,37,Jeremiaha Maluze,SUB,0,401884770
-Köln,2026-10-16,Frankfurt,away,5-3-2,True,1,Marvin Schwäbe,G,1,401884770
-Köln,2026-10-16,Frankfurt,away,5-3-2,True,22,Jahmai Simpson-Pusey,CD,5,401884770
-Köln,2026-10-16,Frankfurt,away,5-3-2,True,24,Luka Lochoshvili,CD-L,4,401884770
-Köln,2026-10-16,Frankfurt,away,5-3-2,True,2,Joel Schmied,CD-R,6,401884770
-Köln,2026-10-16,Frankfurt,away,5-3-2,True,3,Borna Sosa,LB,3,401884770
-Köln,2026-10-16,Frankfurt,away,5-3-2,True,28,Sebastian Sebulonsen,RB,2,401884770
-Köln,2026-10-16,Frankfurt,away,5-3-2,True,5,Tom Krauss,CM,8,401884770
-Köln,2026-10-16,Frankfurt,away,5-3-2,True,37,Linton Maina,CM-L,11,401884770
-Köln,2026-10-16,Frankfurt,away,5-3-2,True,8,Ísak Jóhannesson,CM-R,7,401884770
-Köln,2026-10-16,Frankfurt,away,5-3-2,True,10,Said El Mala,CF-L,9,401884770
-Köln,2026-10-16,Frankfurt,away,5-3-2,True,30,Marius Bulter,CF-R,10,401884770
-Köln,2026-10-16,Frankfurt,away,5-3-2,False,11,Reigan Heskey,SUB,0,401884770
-Köln,2026-10-16,Frankfurt,away,5-3-2,False,46,Assad Kotya-Fofana,SUB,0,401884770
-Köln,2026-10-16,Frankfurt,away,5-3-2,False,29,Jan Thielmann,SUB,0,401884770
-Köln,2026-10-16,Frankfurt,away,5-3-2,False,14,Gideon Mensah,SUB,0,401884770
-Köln,2026-10-16,Frankfurt,away,5-3-2,False,23,Paul Okon-Engstler,SUB,0,401884770
-Köln,2026-10-16,Frankfurt,away,5-3-2,False,20,Ron-Robert Zieler,SUB,0,401884770
-Köln,2026-10-16,Frankfurt,away,5-3-2,False,47,Mikey Moore,SUB,0,401884770
-Köln,2026-10-16,Frankfurt,away,5-3-2,False,17,Alessio Castro-Montes,SUB,0,401884770
-Köln,2026-10-16,Frankfurt,away,5-3-2,False,7,Luca Waldschmidt,SUB,0,401884770
+Frankfurt,2026-10-16,Köln,home,4-4-2,True,1,Noah Atubolu,G,1.0,401884770
+Frankfurt,2026-10-16,Köln,home,4-4-2,True,3,Lilian Brassier,CD-L,6.0,401884770
+Frankfurt,2026-10-16,Köln,home,4-4-2,True,4,Robin Koch,CD-R,5.0,401884770
+Frankfurt,2026-10-16,Köln,home,4-4-2,True,26,Keita Kosugi,LB,3.0,401884770
+Frankfurt,2026-10-16,Köln,home,4-4-2,True,34,Nnamdi Collins,RB,2.0,401884770
+Frankfurt,2026-10-16,Köln,home,4-4-2,True,27,Mario Götze,CM-L,8.0,401884770
+Frankfurt,2026-10-16,Köln,home,4-4-2,True,25,Raphael Onyedika,CM-R,4.0,401884770
+Frankfurt,2026-10-16,Köln,home,4-4-2,True,8,Farès Chaïbi,LM,11.0,401884770
+Frankfurt,2026-10-16,Köln,home,4-4-2,True,20,Ritsu Doan,RM,7.0,401884770
+Frankfurt,2026-10-16,Köln,home,4-4-2,True,11,Younes Ebnoutalib,CF-L,9.0,401884770
+Frankfurt,2026-10-16,Köln,home,4-4-2,True,9,Jonathan Burkardt,CF-R,10.0,401884770
+Frankfurt,2026-10-16,Köln,home,4-4-2,False,31,Love Arrhov,SUB,0.0,401884770
+Frankfurt,2026-10-16,Köln,home,4-4-2,False,22,Timothy Chandler,SUB,0.0,401884770
+Frankfurt,2026-10-16,Köln,home,4-4-2,False,40,Kauã Santos,SUB,0.0,401884770
+Frankfurt,2026-10-16,Köln,home,4-4-2,False,15,Noël Aséko,SUB,0.0,401884770
+Frankfurt,2026-10-16,Köln,home,4-4-2,False,7,Ansgar Knauff,SUB,0.0,401884770
+Frankfurt,2026-10-16,Köln,home,4-4-2,False,2,Elias Baum,SUB,0.0,401884770
+Frankfurt,2026-10-16,Köln,home,4-4-2,False,42,Can Uzun,SUB,0.0,401884770
+Frankfurt,2026-10-16,Köln,home,4-4-2,False,29,Ayoube Amaimouni,SUB,0.0,401884770
+Frankfurt,2026-10-16,Köln,home,4-4-2,False,37,Jeremiaha Maluze,SUB,0.0,401884770
+Köln,2026-10-16,Frankfurt,away,5-3-2,True,1,Marvin Schwäbe,G,1.0,401884770
+Köln,2026-10-16,Frankfurt,away,5-3-2,True,22,Jahmai Simpson-Pusey,CD,5.0,401884770
+Köln,2026-10-16,Frankfurt,away,5-3-2,True,24,Luka Lochoshvili,CD-L,4.0,401884770
+Köln,2026-10-16,Frankfurt,away,5-3-2,True,2,Joel Schmied,CD-R,6.0,401884770
+Köln,2026-10-16,Frankfurt,away,5-3-2,True,3,Borna Sosa,LB,3.0,401884770
+Köln,2026-10-16,Frankfurt,away,5-3-2,True,28,Sebastian Sebulonsen,RB,2.0,401884770
+Köln,2026-10-16,Frankfurt,away,5-3-2,True,5,Tom Krauss,CM,8.0,401884770
+Köln,2026-10-16,Frankfurt,away,5-3-2,True,37,Linton Maina,CM-L,11.0,401884770
+Köln,2026-10-16,Frankfurt,away,5-3-2,True,8,Ísak Jóhannesson,CM-R,7.0,401884770
+Köln,2026-10-16,Frankfurt,away,5-3-2,True,10,Said El Mala,CF-L,9.0,401884770
+Köln,2026-10-16,Frankfurt,away,5-3-2,True,30,Marius Bulter,CF-R,10.0,401884770
+Köln,2026-10-16,Frankfurt,away,5-3-2,False,11,Reigan Heskey,SUB,0.0,401884770
+Köln,2026-10-16,Frankfurt,away,5-3-2,False,46,Assad Kotya-Fofana,SUB,0.0,401884770
+Köln,2026-10-16,Frankfurt,away,5-3-2,False,29,Jan Thielmann,SUB,0.0,401884770
+Köln,2026-10-16,Frankfurt,away,5-3-2,False,14,Gideon Mensah,SUB,0.0,401884770
+Köln,2026-10-16,Frankfurt,away,5-3-2,False,23,Paul Okon-Engstler,SUB,0.0,401884770
+Köln,2026-10-16,Frankfurt,away,5-3-2,False,20,Ron-Robert Zieler,SUB,0.0,401884770
+Köln,2026-10-16,Frankfurt,away,5-3-2,False,47,Mikey Moore,SUB,0.0,401884770
+Köln,2026-10-16,Frankfurt,away,5-3-2,False,17,Alessio Castro-Montes,SUB,0.0,401884770
+Köln,2026-10-16,Frankfurt,away,5-3-2,False,7,Luca Waldschmidt,SUB,0.0,401884770
+Union Berlin,2026-10-17,Dortmund,home,4-2-3-1,True,1,Frederik Ronnow,G,1,401884769
+Union Berlin,2026-10-17,Dortmund,home,4-2-3-1,True,2,Felix Uduokhai,CD-L,6,401884769
+Union Berlin,2026-10-17,Dortmund,home,4-2-3-1,True,4,Zeno Van Den Bosch,CD-R,5,401884769
+Union Berlin,2026-10-17,Dortmund,home,4-2-3-1,True,15,Tom Rothe,LB,3,401884769
+Union Berlin,2026-10-17,Dortmund,home,4-2-3-1,True,19,Janik Haberer,RB,2,401884769
+Union Berlin,2026-10-17,Dortmund,home,4-2-3-1,True,20,Michel Aebischer,AM,10,401884769
+Union Berlin,2026-10-17,Dortmund,home,4-2-3-1,True,8,Rani Khedira,LM,4,401884769
+Union Berlin,2026-10-17,Dortmund,home,4-2-3-1,True,13,András Schäfer,RM,8,401884769
+Union Berlin,2026-10-17,Dortmund,home,4-2-3-1,True,21,Tim Skarke,F,9,401884769
+Union Berlin,2026-10-17,Dortmund,home,4-2-3-1,True,30,Kastriot Imeri,AM-L,11,401884769
+Union Berlin,2026-10-17,Dortmund,home,4-2-3-1,True,11,Jeong Woo-Yeong,AM-R,7,401884769
+Union Berlin,2026-10-17,Dortmund,home,4-2-3-1,False,6,Aljoscha Kemlein,SUB,0,401884769
+Union Berlin,2026-10-17,Dortmund,home,4-2-3-1,False,49,Linus Güther,SUB,0,401884769
+Union Berlin,2026-10-17,Dortmund,home,4-2-3-1,False,28,Christopher Trimmel,SUB,0,401884769
+Union Berlin,2026-10-17,Dortmund,home,4-2-3-1,False,32,Mekhi Anthony Gray,SUB,0,401884769
+Union Berlin,2026-10-17,Dortmund,home,4-2-3-1,False,14,Leopold Querfeld,SUB,0,401884769
+Union Berlin,2026-10-17,Dortmund,home,4-2-3-1,False,27,Marin Ljubicic,SUB,0,401884769
+Union Berlin,2026-10-17,Dortmund,home,4-2-3-1,False,17,Derrick Köhn,SUB,0,401884769
+Union Berlin,2026-10-17,Dortmund,home,4-2-3-1,False,29,Emmanuel Latte Lath,SUB,0,401884769
+Union Berlin,2026-10-17,Dortmund,home,4-2-3-1,False,31,Matheo Raab,SUB,0,401884769
+Dortmund,2026-10-17,Union Berlin,away,3-4-2-1,True,1,Gregor Kobel,G,1,401884769
+Dortmund,2026-10-17,Union Berlin,away,3-4-2-1,True,3,Waldemar Anton,CD,5,401884769
+Dortmund,2026-10-17,Union Berlin,away,3-4-2-1,True,4,Nico Schlotterbeck,CD-L,4,401884769
+Dortmund,2026-10-17,Union Berlin,away,3-4-2-1,True,22,Kouakou Gadou,CD-R,6,401884769
+Dortmund,2026-10-17,Union Berlin,away,3-4-2-1,True,8,Felix Nmecha,CM-L,8,401884769
+Dortmund,2026-10-17,Union Berlin,away,3-4-2-1,True,7,Jobe Bellingham,CM-R,7,401884769
+Dortmund,2026-10-17,Union Berlin,away,3-4-2-1,True,24,Daniel Svensson,LM,3,401884769
+Dortmund,2026-10-17,Union Berlin,away,3-4-2-1,True,26,Julian Ryerson,RM,2,401884769
+Dortmund,2026-10-17,Union Berlin,away,3-4-2-1,True,9,Serhou Guirassy,F,9,401884769
+Dortmund,2026-10-17,Union Berlin,away,3-4-2-1,True,14,Maximilian Beier,CF-L,11,401884769
+Dortmund,2026-10-17,Union Berlin,away,3-4-2-1,True,18,Ethan Nwaneri,CF-R,10,401884769
+Dortmund,2026-10-17,Union Berlin,away,3-4-2-1,False,36,Kauã Prates,SUB,0,401884769
+Dortmund,2026-10-17,Union Berlin,away,3-4-2-1,False,19,Konstantinos Karetsas,SUB,0,401884769
+Dortmund,2026-10-17,Union Berlin,away,3-4-2-1,False,21,Fábio Silva,SUB,0,401884769
+Dortmund,2026-10-17,Union Berlin,away,3-4-2-1,False,17,Carney Chukwuemeka,SUB,0,401884769
+Dortmund,2026-10-17,Union Berlin,away,3-4-2-1,False,5,Ramy Bensebaini,SUB,0,401884769
+Dortmund,2026-10-17,Union Berlin,away,3-4-2-1,False,25,Joey Veerman,SUB,0,401884769
+Dortmund,2026-10-17,Union Berlin,away,3-4-2-1,False,20,Marcel Sabitzer,SUB,0,401884769
+Dortmund,2026-10-17,Union Berlin,away,3-4-2-1,False,41,Mathis Albert,SUB,0,401884769
+Dortmund,2026-10-17,Union Berlin,away,3-4-2-1,False,33,Alexander Meyer,SUB,0,401884769
+Hamburger SV,2026-10-17,Stuttgart,home,3-5-2,True,1,Daniel Heuer Fernandes,G,1,401884767
+Hamburger SV,2026-10-17,Stuttgart,home,3-5-2,True,33,Sebastiaan Bornauw,CD,5,401884767
+Hamburger SV,2026-10-17,Stuttgart,home,3-5-2,True,17,Warmed Omari,CD-L,4,401884767
+Hamburger SV,2026-10-17,Stuttgart,home,3-5-2,True,24,Nicolás Capaldo,CD-R,6,401884767
+Hamburger SV,2026-10-17,Stuttgart,home,3-5-2,True,28,Miro Muheim,CM-L,8,401884767
+Hamburger SV,2026-10-17,Stuttgart,home,3-5-2,True,5,Martin Adeline,CM-R,7,401884767
+Hamburger SV,2026-10-17,Stuttgart,home,3-5-2,True,4,Bilal Nadir,AM,11,401884767
+Hamburger SV,2026-10-17,Stuttgart,home,3-5-2,True,37,Louis Lemke,LM,3,401884767
+Hamburger SV,2026-10-17,Stuttgart,home,3-5-2,True,3,David Møller Wolfe,RM,2,401884767
+Hamburger SV,2026-10-17,Stuttgart,home,3-5-2,True,15,Yussuf Poulsen,CF-L,9,401884767
+Hamburger SV,2026-10-17,Stuttgart,home,3-5-2,True,20,Fabio Vieira,CF-R,10,401884767
+Hamburger SV,2026-10-17,Stuttgart,home,3-5-2,False,9,Terem Moffi,SUB,0,401884767
+Hamburger SV,2026-10-17,Stuttgart,home,3-5-2,False,12,Sander Tangvik,SUB,0,401884767
+Hamburger SV,2026-10-17,Stuttgart,home,3-5-2,False,38,Alexander Røssing-Lelesiit,SUB,0,401884767
+Hamburger SV,2026-10-17,Stuttgart,home,3-5-2,False,22,Kofi Amoako,SUB,0,401884767
+Hamburger SV,2026-10-17,Stuttgart,home,3-5-2,False,23,Jordan Torunarigha,SUB,0,401884767
+Hamburger SV,2026-10-17,Stuttgart,home,3-5-2,False,19,Otto Stange,SUB,0,401884767
+Hamburger SV,2026-10-17,Stuttgart,home,3-5-2,False,11,Albert Grønbaek,SUB,0,401884767
+Hamburger SV,2026-10-17,Stuttgart,home,3-5-2,False,7,Zakaria El Ouahdi,SUB,0,401884767
+Hamburger SV,2026-10-17,Stuttgart,home,3-5-2,False,43,Shafiq Nandja,SUB,0,401884767
+Stuttgart,2026-10-17,Hamburger SV,away,4-2-3-1,True,41,Dennis Seimen,G,1,401884767
+Stuttgart,2026-10-17,Hamburger SV,away,4-2-3-1,True,24,Jeff Chabot,CD-L,6,401884767
+Stuttgart,2026-10-17,Hamburger SV,away,4-2-3-1,True,29,Finn Jeltsch,CD-R,5,401884767
+Stuttgart,2026-10-17,Hamburger SV,away,4-2-3-1,True,3,Ramon Hendriks,LB,3,401884767
+Stuttgart,2026-10-17,Hamburger SV,away,4-2-3-1,True,4,Josha Vagnoman,RB,2,401884767
+Stuttgart,2026-10-17,Hamburger SV,away,4-2-3-1,True,26,Deniz Undav,AM,10,401884767
+Stuttgart,2026-10-17,Hamburger SV,away,4-2-3-1,True,6,Angelo Stiller,LM,4,401884767
+Stuttgart,2026-10-17,Hamburger SV,away,4-2-3-1,True,16,Atakan Karazor,RM,8,401884767
+Stuttgart,2026-10-17,Hamburger SV,away,4-2-3-1,True,9,Ermedin Demirovic,F,9,401884767
+Stuttgart,2026-10-17,Hamburger SV,away,4-2-3-1,True,18,Jamie Leweling,AM-L,11,401884767
+Stuttgart,2026-10-17,Hamburger SV,away,4-2-3-1,True,11,Bilal El Khannouss,AM-R,7,401884767
+Stuttgart,2026-10-17,Hamburger SV,away,4-2-3-1,False,1,Fabian Bredlow,SUB,0,401884767
+Stuttgart,2026-10-17,Hamburger SV,away,4-2-3-1,False,47,Yanik Spalt,SUB,0,401884767
+Stuttgart,2026-10-17,Hamburger SV,away,4-2-3-1,False,22,Lorenz Assignon,SUB,0,401884767
+Stuttgart,2026-10-17,Hamburger SV,away,4-2-3-1,False,17,Dzenan Pejcinovic,SUB,0,401884767
+Stuttgart,2026-10-17,Hamburger SV,away,4-2-3-1,False,10,Chris Führich,SUB,0,401884767
+Stuttgart,2026-10-17,Hamburger SV,away,4-2-3-1,False,14,Luca Jaquez,SUB,0,401884767
+Stuttgart,2026-10-17,Hamburger SV,away,4-2-3-1,False,44,Leo Sauer,SUB,0,401884767
+Stuttgart,2026-10-17,Hamburger SV,away,4-2-3-1,False,20,Leonidas Stergiou,SUB,0,401884767
+Stuttgart,2026-10-17,Hamburger SV,away,4-2-3-1,False,21,Grischa Prömel,SUB,0,401884767
+Schalke 04,2026-10-17,Mainz 05,home,3-4-2-1,True,1,Loris Karius,G,1,401884765
+Schalke 04,2026-10-17,Mainz 05,home,3-4-2-1,True,25,Nikola Katic,CD,5,401884765
+Schalke 04,2026-10-17,Mainz 05,home,3-4-2-1,True,4,Hasan Kurucay,CD-L,4,401884765
+Schalke 04,2026-10-17,Mainz 05,home,3-4-2-1,True,5,Timo Becker,CD-R,6,401884765
+Schalke 04,2026-10-17,Mainz 05,home,3-4-2-1,True,13,Satoshi Tanaka,CM-L,8,401884765
+Schalke 04,2026-10-17,Mainz 05,home,3-4-2-1,True,23,Soufian El-Faouzi,CM-R,7,401884765
+Schalke 04,2026-10-17,Mainz 05,home,3-4-2-1,True,8,Robin Gosens,LM,3,401884765
+Schalke 04,2026-10-17,Mainz 05,home,3-4-2-1,True,17,Adrian Gantenbein,RM,2,401884765
+Schalke 04,2026-10-17,Mainz 05,home,3-4-2-1,True,10,Edin Dzeko,F,9,401884765
+Schalke 04,2026-10-17,Mainz 05,home,3-4-2-1,True,24,Adil Aouchiche,CF-L,11,401884765
+Schalke 04,2026-10-17,Mainz 05,home,3-4-2-1,True,19,Kenan Karaman,CF-R,10,401884765
+Schalke 04,2026-10-17,Mainz 05,home,3-4-2-1,False,22,Kevin Müller,SUB,0,401884765
+Schalke 04,2026-10-17,Mainz 05,home,3-4-2-1,False,43,Mert Can Ayhan,SUB,0,401884765
+Schalke 04,2026-10-17,Mainz 05,home,3-4-2-1,False,29,Junior Dina Ebimbe,SUB,0,401884765
+Schalke 04,2026-10-17,Mainz 05,home,3-4-2-1,False,38,Luca Vozar,SUB,0,401884765
+Schalke 04,2026-10-17,Mainz 05,home,3-4-2-1,False,33,Vitalie Becker,SUB,0,401884765
+Schalke 04,2026-10-17,Mainz 05,home,3-4-2-1,False,6,Ron Schallenberg,SUB,0,401884765
+Schalke 04,2026-10-17,Mainz 05,home,3-4-2-1,False,20,Junior Adamu,SUB,0,401884765
+Schalke 04,2026-10-17,Mainz 05,home,3-4-2-1,False,39,Maximilian Wöber,SUB,0,401884765
+Schalke 04,2026-10-17,Mainz 05,home,3-4-2-1,False,7,Hwang Hee-Chan,SUB,0,401884765
+Mainz 05,2026-10-17,Schalke 04,away,3-5-2,True,1,Alexander Schwolow,G,1,401884765
+Mainz 05,2026-10-17,Schalke 04,away,3-5-2,True,4,Stefan Posch,CD,5,401884765
+Mainz 05,2026-10-17,Schalke 04,away,3-5-2,True,48,Kacper Potulski,CD-L,4,401884765
+Mainz 05,2026-10-17,Schalke 04,away,3-5-2,True,21,Danny da Costa,CD-R,6,401884765
+Mainz 05,2026-10-17,Schalke 04,away,3-5-2,True,7,Lee Jae-Sung,CM-L,8,401884765
+Mainz 05,2026-10-17,Schalke 04,away,3-5-2,True,10,Nadiem Amiri,CM-R,7,401884765
+Mainz 05,2026-10-17,Schalke 04,away,3-5-2,True,6,Kaishu Sano,AM,11,401884765
+Mainz 05,2026-10-17,Schalke 04,away,3-5-2,True,2,Phillipp Mwene,LM,3,401884765
+Mainz 05,2026-10-17,Schalke 04,away,3-5-2,True,19,Anthony Caci,RM,2,401884765
+Mainz 05,2026-10-17,Schalke 04,away,3-5-2,True,9,Phillip Tietz,CF-L,9,401884765
+Mainz 05,2026-10-17,Schalke 04,away,3-5-2,True,23,Sheraldo Becker,CF-R,10,401884765
+Mainz 05,2026-10-17,Schalke 04,away,3-5-2,False,5,Eric Martel,SUB,0,401884765
+Mainz 05,2026-10-17,Schalke 04,away,3-5-2,False,47,Rael-Tshimbela Nakuzola,SUB,0,401884765
+Mainz 05,2026-10-17,Schalke 04,away,3-5-2,False,30,Silvan Widmer,SUB,0,401884765
+Mainz 05,2026-10-17,Schalke 04,away,3-5-2,False,3,Fabio Gruber,SUB,0,401884765
+Mainz 05,2026-10-17,Schalke 04,away,3-5-2,False,40,Maximilian Kinzig,SUB,0,401884765
+Mainz 05,2026-10-17,Schalke 04,away,3-5-2,False,11,Ransford-Yeboah Königsdörffer,SUB,0,401884765
+Mainz 05,2026-10-17,Schalke 04,away,3-5-2,False,17,Benedict Hollerbach,SUB,0,401884765
+Mainz 05,2026-10-17,Schalke 04,away,3-5-2,False,15,Lennard Maloney,SUB,0,401884765
+Mainz 05,2026-10-17,Schalke 04,away,3-5-2,False,8,Paul Nebel,SUB,0,401884765
+SV Elversberg,2026-10-17,Augsburg,home,4-2-3-1,True,20,Nicolas Kristof,G,1,401884764
+SV Elversberg,2026-10-17,Augsburg,home,4-2-3-1,True,31,Maximilian Rohr,CD-L,6,401884764
+SV Elversberg,2026-10-17,Augsburg,home,4-2-3-1,True,19,Lukas Finn Pinckert,CD-R,5,401884764
+SV Elversberg,2026-10-17,Augsburg,home,4-2-3-1,True,21,Lasse Günther,LB,3,401884764
+SV Elversberg,2026-10-17,Augsburg,home,4-2-3-1,True,30,Jan Gyamerah,RB,2,401884764
+SV Elversberg,2026-10-17,Augsburg,home,4-2-3-1,True,10,Noah Darvich,AM,10,401884764
+SV Elversberg,2026-10-17,Augsburg,home,4-2-3-1,True,8,Lukasz Poreba,LM,4,401884764
+SV Elversberg,2026-10-17,Augsburg,home,4-2-3-1,True,43,Felix Keidel,RM,8,401884764
+SV Elversberg,2026-10-17,Augsburg,home,4-2-3-1,True,42,David Mokwa,F,9,401884764
+SV Elversberg,2026-10-17,Augsburg,home,4-2-3-1,True,7,Maurice Krattenmacher,AM-L,11,401884764
+SV Elversberg,2026-10-17,Augsburg,home,4-2-3-1,True,25,Lukas Petkov,AM-R,7,401884764
+SV Elversberg,2026-10-17,Augsburg,home,4-2-3-1,False,26,Luca Sirch,SUB,0,401884764
+SV Elversberg,2026-10-17,Augsburg,home,4-2-3-1,False,28,Tim Boss,SUB,0,401884764
+SV Elversberg,2026-10-17,Augsburg,home,4-2-3-1,False,9,Noel Futkeu,SUB,0,401884764
+SV Elversberg,2026-10-17,Augsburg,home,4-2-3-1,False,2,Nicholas Mickelson,SUB,0,401884764
+SV Elversberg,2026-10-17,Augsburg,home,4-2-3-1,False,6,Amara Conde,SUB,0,401884764
+SV Elversberg,2026-10-17,Augsburg,home,4-2-3-1,False,3,Florian Le Joncour,SUB,0,401884764
+SV Elversberg,2026-10-17,Augsburg,home,4-2-3-1,False,24,Luca Schnellbacher,SUB,0,401884764
+SV Elversberg,2026-10-17,Augsburg,home,4-2-3-1,False,15,Raif Adam,SUB,0,401884764
+SV Elversberg,2026-10-17,Augsburg,home,4-2-3-1,False,17,Frederik Schmahl,SUB,0,401884764
+Augsburg,2026-10-17,SV Elversberg,away,3-4-2-1,True,1,Finn Dahmen,G,1,401884764
+Augsburg,2026-10-17,SV Elversberg,away,3-4-2-1,True,5,Chrislain Matsima,CD,5,401884764
+Augsburg,2026-10-17,SV Elversberg,away,3-4-2-1,True,2,Calvin Brackelmann,CD-L,4,401884764
+Augsburg,2026-10-17,SV Elversberg,away,3-4-2-1,True,35,Juma Bah,CD-R,6,401884764
+Augsburg,2026-10-17,SV Elversberg,away,3-4-2-1,True,32,Fabian Rieder,CM-L,8,401884764
+Augsburg,2026-10-17,SV Elversberg,away,3-4-2-1,True,4,Han-Noah Massengo,CM-R,7,401884764
+Augsburg,2026-10-17,SV Elversberg,away,3-4-2-1,True,16,Hennes Behrens,LM,3,401884764
+Augsburg,2026-10-17,SV Elversberg,away,3-4-2-1,True,27,Marius Wolf,RM,2,401884764
+Augsburg,2026-10-17,SV Elversberg,away,3-4-2-1,True,9,Rodrigo Ribeiro,F,9,401884764
+Augsburg,2026-10-17,SV Elversberg,away,3-4-2-1,True,21,Arijon Ibrahimovic,CF-L,11,401884764
+Augsburg,2026-10-17,SV Elversberg,away,3-4-2-1,True,19,Robin Fellhauer,CF-R,10,401884764
+Augsburg,2026-10-17,SV Elversberg,away,3-4-2-1,False,14,Yannik Keitel,SUB,0,401884764
+Augsburg,2026-10-17,SV Elversberg,away,3-4-2-1,False,37,Tim Schnitzer,SUB,0,401884764
+Augsburg,2026-10-17,SV Elversberg,away,3-4-2-1,False,11,Michael Gregoritsch,SUB,0,401884764
+Augsburg,2026-10-17,SV Elversberg,away,3-4-2-1,False,6,Jeffrey Gouweleeuw,SUB,0,401884764
+Augsburg,2026-10-17,SV Elversberg,away,3-4-2-1,False,39,Uchenna Ogundu,SUB,0,401884764
+Augsburg,2026-10-17,SV Elversberg,away,3-4-2-1,False,10,Mert Kömür,SUB,0,401884764
+Augsburg,2026-10-17,SV Elversberg,away,3-4-2-1,False,22,Nediljko Labrovic,SUB,0,401884764
+Augsburg,2026-10-17,SV Elversberg,away,3-4-2-1,False,30,Anton Kade,SUB,0,401884764
+Augsburg,2026-10-17,SV Elversberg,away,3-4-2-1,False,7,Seol Young-Woo,SUB,0,401884764
+Werder Bremen,2026-10-17,SC Paderborn,home,4-2-3-1,True,1,Karl Hein,G,1,401884766
+Werder Bremen,2026-10-17,SC Paderborn,home,4-2-3-1,True,32,Marco Friedl,CD-L,6,401884766
+Werder Bremen,2026-10-17,SC Paderborn,home,4-2-3-1,True,5,Amos Pieper,CD-R,5,401884766
+Werder Bremen,2026-10-17,SC Paderborn,home,4-2-3-1,True,2,Olivier Deman,LB,3,401884766
+Werder Bremen,2026-10-17,SC Paderborn,home,4-2-3-1,True,13,Arthur,RB,2,401884766
+Werder Bremen,2026-10-17,SC Paderborn,home,4-2-3-1,True,20,Chuki,AM,10,401884766
+Werder Bremen,2026-10-17,SC Paderborn,home,4-2-3-1,True,44,Youri Regeer,LM,4,401884766
+Werder Bremen,2026-10-17,SC Paderborn,home,4-2-3-1,True,15,Ludovit Reis,RM,8,401884766
+Werder Bremen,2026-10-17,SC Paderborn,home,4-2-3-1,True,10,Niclas Füllkrug,F,9,401884766
+Werder Bremen,2026-10-17,SC Paderborn,home,4-2-3-1,True,17,Marco Grüll,AM-L,11,401884766
+Werder Bremen,2026-10-17,SC Paderborn,home,4-2-3-1,True,18,Eren Dinkci,AM-R,7,401884766
+Werder Bremen,2026-10-17,SC Paderborn,home,4-2-3-1,False,8,Mitchell Weiser,SUB,0,401884766
+Werder Bremen,2026-10-17,SC Paderborn,home,4-2-3-1,False,3,Oskar Wójcik,SUB,0,401884766
+Werder Bremen,2026-10-17,SC Paderborn,home,4-2-3-1,False,4,Niklas Stark,SUB,0,401884766
+Werder Bremen,2026-10-17,SC Paderborn,home,4-2-3-1,False,33,Mick Schmetgens,SUB,0,401884766
+Werder Bremen,2026-10-17,SC Paderborn,home,4-2-3-1,False,38,Paul Bright Max Erevbenagie,SUB,0,401884766
+Werder Bremen,2026-10-17,SC Paderborn,home,4-2-3-1,False,23,Dariusz Stalmach,SUB,0,401884766
+Werder Bremen,2026-10-17,SC Paderborn,home,4-2-3-1,False,34,Darwin Kaan Soylu,SUB,0,401884766
+Werder Bremen,2026-10-17,SC Paderborn,home,4-2-3-1,False,30,Alexander Schlager,SUB,0,401884766
+Werder Bremen,2026-10-17,SC Paderborn,home,4-2-3-1,False,26,Cedric Itten,SUB,0,401884766
+SC Paderborn,2026-10-17,Werder Bremen,away,3-1-4-2,False,18,Marvin Pieringer,,0,401884766
+SC Paderborn,2026-10-17,Werder Bremen,away,3-1-4-2,False,1,Markus Schubert,,0,401884766
+SC Paderborn,2026-10-17,Werder Bremen,away,3-1-4-2,False,2,Ruben Müller,,0,401884766
+SC Paderborn,2026-10-17,Werder Bremen,away,3-1-4-2,False,29,Clemens Lippmann,,0,401884766
+SC Paderborn,2026-10-17,Werder Bremen,away,3-1-4-2,False,38,Deniz Zeitler,,0,401884766
+SC Paderborn,2026-10-17,Werder Bremen,away,3-1-4-2,False,9,Rayan Philippe,,0,401884766
+SC Paderborn,2026-10-17,Werder Bremen,away,3-1-4-2,False,6,Tom Baack,,0,401884766
+SC Paderborn,2026-10-17,Werder Bremen,away,3-1-4-2,False,11,Sven Michel,,0,401884766
+SC Paderborn,2026-10-17,Werder Bremen,away,3-1-4-2,False,3,Jonah Sticker,,0,401884766
+SC Paderborn,2026-10-17,Werder Bremen,away,3-1-4-2,True,15,Nahuel Nicolas Noll,G,1,401884766
+SC Paderborn,2026-10-17,Werder Bremen,away,3-1-4-2,True,25,Tjark Scheller,CD,4,401884766
+SC Paderborn,2026-10-17,Werder Bremen,away,3-1-4-2,True,22,Mattes Hansen,CD-L,6,401884766
+SC Paderborn,2026-10-17,Werder Bremen,away,3-1-4-2,True,21,Jano Horst,CD-R,5,401884766
+SC Paderborn,2026-10-17,Werder Bremen,away,3-1-4-2,True,5,Santiago Castaneda,SW,8,401884766
+SC Paderborn,2026-10-17,Werder Bremen,away,3-1-4-2,True,40,Gabriel Vidovic,CM-L,11,401884766
+SC Paderborn,2026-10-17,Werder Bremen,away,3-1-4-2,True,28,Laurin Ulrich,CM-R,7,401884766
+SC Paderborn,2026-10-17,Werder Bremen,away,3-1-4-2,True,23,Raphael Obermair,LM,3,401884766
+SC Paderborn,2026-10-17,Werder Bremen,away,3-1-4-2,True,17,Laurin Curda,RM,2,401884766
+SC Paderborn,2026-10-17,Werder Bremen,away,3-1-4-2,True,27,Steffen Tigges,CF-L,10,401884766
+SC Paderborn,2026-10-17,Werder Bremen,away,3-1-4-2,True,30,Stefano Marino,CF-R,9,401884766
+Bayern Munich,2026-10-17,RB Leipzig,home,4-2-3-1,True,40,Jonas Urbig,G,1,401884772
+Bayern Munich,2026-10-17,RB Leipzig,home,4-2-3-1,True,3,Kim Min-Jae,CD-L,6,401884772
+Bayern Munich,2026-10-17,RB Leipzig,home,4-2-3-1,True,2,Dayot Upamecano,CD-R,5,401884772
+Bayern Munich,2026-10-17,RB Leipzig,home,4-2-3-1,True,11,Nathaniel Brown,LB,3,401884772
+Bayern Munich,2026-10-17,RB Leipzig,home,4-2-3-1,True,27,Konrad Laimer,RB,2,401884772
+Bayern Munich,2026-10-17,RB Leipzig,home,4-2-3-1,True,34,Ismael Saibari,AM,10,401884772
+Bayern Munich,2026-10-17,RB Leipzig,home,4-2-3-1,True,45,Aleksandar Pavlovic,LM,4,401884772
+Bayern Munich,2026-10-17,RB Leipzig,home,4-2-3-1,True,6,Joshua Kimmich,RM,8,401884772
+Bayern Munich,2026-10-17,RB Leipzig,home,4-2-3-1,True,9,Harry Kane,F,9,401884772
+Bayern Munich,2026-10-17,RB Leipzig,home,4-2-3-1,True,14,Luis Díaz,AM-L,11,401884772
+Bayern Munich,2026-10-17,RB Leipzig,home,4-2-3-1,True,17,Michael Olise,AM-R,7,401884772
+Bayern Munich,2026-10-17,RB Leipzig,home,4-2-3-1,False,42,Lennart Karl,SUB,0,401884772
+Bayern Munich,2026-10-17,RB Leipzig,home,4-2-3-1,False,4,Jonathan Tah,SUB,0,401884772
+Bayern Munich,2026-10-17,RB Leipzig,home,4-2-3-1,False,23,Sacha Boey,SUB,0,401884772
+Bayern Munich,2026-10-17,RB Leipzig,home,4-2-3-1,False,21,Hiroki Ito,SUB,0,401884772
+Bayern Munich,2026-10-17,RB Leipzig,home,4-2-3-1,False,7,Serge Gnabry,SUB,0,401884772
+Bayern Munich,2026-10-17,RB Leipzig,home,4-2-3-1,False,8,Tom Bischof,SUB,0,401884772
+Bayern Munich,2026-10-17,RB Leipzig,home,4-2-3-1,False,19,Alphonso Davies,SUB,0,401884772
+Bayern Munich,2026-10-17,RB Leipzig,home,4-2-3-1,False,26,Sven Ulreich,SUB,0,401884772
+Bayern Munich,2026-10-17,RB Leipzig,home,4-2-3-1,False,44,Josip Stanisic,SUB,0,401884772
+RB Leipzig,2026-10-17,Bayern Munich,away,4-5-1,True,26,Maarten Vandevoordt,G,1,401884772
+RB Leipzig,2026-10-17,Bayern Munich,away,4-5-1,True,23,Castello Lukeba,CD-L,6,401884772
+RB Leipzig,2026-10-17,Bayern Munich,away,4-5-1,True,4,Willi Orbán,CD-R,5,401884772
+RB Leipzig,2026-10-17,Bayern Munich,away,4-5-1,True,22,David Raum,LB,3,401884772
+RB Leipzig,2026-10-17,Bayern Munich,away,4-5-1,True,16,Lukas Klostermann,RB,2,401884772
+RB Leipzig,2026-10-17,Bayern Munich,away,4-5-1,True,6,Ezechiel Banzuzi,CM-L,8,401884772
+RB Leipzig,2026-10-17,Bayern Munich,away,4-5-1,True,20,Rocco Reitz,CM-R,4,401884772
+RB Leipzig,2026-10-17,Bayern Munich,away,4-5-1,True,21,Neil El Aynaoui,AM,10,401884772
+RB Leipzig,2026-10-17,Bayern Munich,away,4-5-1,True,7,Antonio Nusa,LM,11,401884772
+RB Leipzig,2026-10-17,Bayern Munich,away,4-5-1,True,10,Brajan Gruda,RM,7,401884772
+RB Leipzig,2026-10-17,Bayern Munich,away,4-5-1,True,28,Christopher Nkunku,F,9,401884772
+RB Leipzig,2026-10-17,Bayern Munich,away,4-5-1,False,30,Andrija Maksimovic,SUB,0,401884772
+RB Leipzig,2026-10-17,Bayern Munich,away,4-5-1,False,35,Max Finkgrafe,SUB,0,401884772
+RB Leipzig,2026-10-17,Bayern Munich,away,4-5-1,False,3,Maxime Estève,SUB,0,401884772
+RB Leipzig,2026-10-17,Bayern Munich,away,4-5-1,False,39,Benjamin Henrichs,SUB,0,401884772
+RB Leipzig,2026-10-17,Bayern Munich,away,4-5-1,False,1,Ørjan Nyland,SUB,0,401884772
+RB Leipzig,2026-10-17,Bayern Munich,away,4-5-1,False,13,Nicolas Seiwald,SUB,0,401884772
+RB Leipzig,2026-10-17,Bayern Munich,away,4-5-1,False,17,Ridle Baku,SUB,0,401884772
+RB Leipzig,2026-10-17,Bayern Munich,away,4-5-1,False,27,Tidiam Gomis,SUB,0,401884772
+RB Leipzig,2026-10-17,Bayern Munich,away,4-5-1,False,40,Rômulo,SUB,0,401884772
