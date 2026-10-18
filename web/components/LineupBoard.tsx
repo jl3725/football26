@@ -66,7 +66,10 @@ export default function LineupBoard({ team, accent, departed = [] }: { team: str
 
   return (
     <div className="card" style={{ marginTop: 16 }}>
-      <SectionHead title="FORMATION" kr="포메이션 · 베스트 XI" meta="시즌 평점 기준 XI · 최근 5경기 XI" />
+      <SectionHead title="FORMATION" kr="포메이션 · 베스트 XI"
+        meta={lu?.last_match
+          ? `가장 많이 선 자리 기준 · 마지막 반영 ${lu.last_match.date.slice(5).replace("-", "/")} ${lu.last_match.opponent} (라인업은 경기 다음 날 아침 갱신)`
+          : "시즌 평점 기준 XI · 최근 5경기 XI"} />
       <div className={`pitch-grid${sameXI ? " single" : ""}`}>
         {/* LEFT — 시즌 베스트 XI + 시즌 토글 */}
         <div>

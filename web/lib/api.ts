@@ -72,6 +72,7 @@ export type Lineup = {
   season: { formation: string; placements: Placement[] };
   recent: { formation: string; placements: Placement[] } | null;
   bench: { player: string; pos: string; ovr: number; photo: string }[];
+  last_match?: { date: string; opponent: string; home_away: string } | null;   // 마지막으로 반영된 리그 경기
 };
 
 // 응답 상한 — 넘기면 실패로 처리해 화면이 스켈레톤에 영원히 머물지 않게 한다(Render 콜드스타트 ~60s 감안).
@@ -498,13 +499,16 @@ export type TableRow = { rank: number; team: string; logo: string; played: numbe
   points: number; form: string[]; xg_pg: number | null; ovr: number | null; str_rank: number | null; manager: string };
 export type LeagueLab = { league: string; playmakers: LabPlaymaker[]; finishing: LabFinish[]; creating: LabCreate[]; ball_winners: LabBallWinner[]; team_style: TeamStyle[];
   table?: TableRow[]; race?: RaceTeam[]; over?: TableGap[]; under?: TableGap[]; results?: ResultMatch[]; watch?: WatchMatch[];
-  tots?: TotsPlayer[]; golden_boot?: HubBoot[]; injury_impact?: InjuryImpactRow[];
+  tots?: TotsPlayer[]; tots_formation?: string | null; tots_subs?: TotsSub[]; golden_boot?: HubBoot[]; injury_impact?: InjuryImpactRow[];
   // 아직 결과가 반영되지 않은 최근·오늘 리그 경기(event_id → 우리 표기 팀) — 라이브 스코어로 잠정 순위를 만든다
   pending?: Record<string, { home: string; away: string }> };
 export const getLeagueLab = (league: string) => j<LeagueLab>(`/api/league-lab/${encodeURIComponent(league)}`);
 export type TotsAlt = { player: string; club: string; rating: number; minutes: number; goals: number; assists: number };
+// 시즌 베스트 XI 교체 명단(SUBS) — role = 실제로 선 주포지션(GK·CB·LB·DM·CM·AM·LW·RW·ST)
+export type TotsSub = { player: string; club: string; club_logo: string; rating: number; ovr: number; photo: string; minutes: number;
+  goals: number; assists: number; pos?: string; role: string };
 export type TotsPlayer = { slot: string; kind: string; x: number; y: number; player: string; club: string; club_logo: string; rating: number; ovr: number; photo: string; minutes: number;
-  goals?: number; assists?: number; pos?: string; alts?: TotsAlt[] };
+  goals?: number; assists?: number; pos?: string; alts?: TotsAlt[]; role?: string };
 export type InjuryImpactRow = { team: string; logo: string; league: string; n: number; loss: number; key: string[]; ovr: number };
 // 선수 동향 — OVR 변화. basis 2w = 2주 전 대비(기록 2주+ 쌓인 뒤), season = 지난 시즌 대비
 export type HubMover = HubForm & { delta: number; ovr_prev: number; basis: "2w" | "season"; minutes: number };

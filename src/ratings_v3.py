@@ -304,7 +304,7 @@ def absolute_ovr(*, value, ss_rating, minutes, age, pos_group,
 # 예전 공식은 구간 상한(GK 7.00)을 넘으면 계속 올라 GK 정규 주전 중앙값이 96, 99 가 157명이었다.
 _F_MEAN = {"GK": 7.02, "DEF": 6.81, "MID": 6.87, "ATT": 6.81}
 _F_SD = {"GK": 0.19, "DEF": 0.195, "MID": 0.21, "ATT": 0.23}
-_F_PRIOR_MIN = 900.0       # 이번 시즌 평점을 직전 시즌(없으면 포지션 평균) 쪽으로 당기는 가상 출전
+_F_PRIOR_MIN = 900.0       # 이번 시즌 평점을 포지션 평균 쪽으로 당기는 가상 출전(표본 적은 선수는 중간 쪽으로)
 
 
 def _output_bonus(ln: str, minutes, goals, assists) -> float:
@@ -322,13 +322,16 @@ def _output_bonus(ln: str, minutes, goals, assists) -> float:
 
 def form_score(*, ss_rating, minutes, goals=0, assists=0, pos_group="",
                prev_ss_rating=None, prev_minutes=None) -> float | None:
-    """폼 원점수(z) — 평점을 직전 시즌(없으면 포지션 평균) 쪽으로 900분어치 수축 + 공격포인트 가산."""
+    """폼 원점수(z) — 이번 시즌 평점을 포지션 평균 쪽으로 900분어치 수축 + 공격포인트 가산.
+
+    예전엔 직전 시즌 평점 쪽으로 당겨서, 이번 시즌 6.90(362분)인 Tzolis 가 지난 시즌(벨기에) 7.71 덕에
+    폼 98(절정)이었다(2026-10-19 사용자 지적 '6점대인데 절정?'). 폼은 '이번 시즌' 지표라 지난 시즌은 OVR(클래스)
+    에만 쓰고, 여기선 표본이 적으면 중간(평균) 쪽으로만 당긴다. prev_* 인자는 호환용으로 남겨 둔다."""
     ss, mn = _num(ss_rating), _num(minutes)
     if ss <= 0 or mn < 200:
         return None   # 표본 부족 → 폼 미산정
     ln = line_of(pos_group)
-    pss, pmn = _num(prev_ss_rating), _num(prev_minutes)
-    prior = pss if (pss > 0 and pmn >= 450) else _F_MEAN[ln]
+    prior = _F_MEAN[ln]
     shrunk = (ss * mn + prior * _F_PRIOR_MIN) / (mn + _F_PRIOR_MIN)
     return (shrunk - _F_MEAN[ln]) / _F_SD[ln] + _output_bonus(ln, minutes, goals, assists)
 
@@ -369,6 +372,14 @@ def add_form_column(df: pd.DataFrame) -> pd.DataFrame:
     out = df.copy()
     out["_form"] = [(_form_scale(v) if v == v else None) for v in p]
     return out
+
+
+def youth_gated(age, minutes) -> bool:
+    """유망주 검증 보정(출전이 적으면 60 쪽으로)이 걸리는가 — absolute_ovr 와 같은 규칙.
+    지난 시즌 OVR 이 이 보정에 걸렸으면 지금과 비교한 ▲▼ 는 성장보다 '계산 조건 차이'라 보여 주지 않는다
+    (Lewis-Skelly 지난 시즌 709분 → 71, 지금 이번+지난 1,042분 → 81 이 '▲10' 으로 보였다, 2026-10-19)."""
+    a, mn = _num(age), _num(minutes)
+    return 0 < a <= 21 and mn < 900.0 + (21 - a) * 120.0
 
 
 # ── 잠재력 ────────────────────────────────────────────────────────

@@ -134,8 +134,10 @@ export default function LeagueFocus({ league, lab, onPick, full = false }: { lea
       </div>
       <div className="h5-row">
         <section className="card h5-card">
-          <SectionHead title="TEAM OF THE SEASON" kr={`${lgEn(league)} 시즌 베스트 XI`} meta="자리별 시즌 평균 평점 1위 · 팀 경기 절반 이상 출전" />
-          {!L ? wait(380) : (L.tots ?? []).length ? <TeamOfSeason players={L.tots!} league={league} /> : <p className="empty5">출전 기록이 아직 부족합니다</p>}
+          <SectionHead title="TEAM OF THE SEASON" kr={`${lgEn(league)} 시즌 베스트 XI`} meta="시즌 평균 평점(포지션 평균 대비) · 포메이션 자동 · 팀 경기 절반 이상 출전" />
+          {!L ? wait(380) : (L.tots ?? []).length
+            ? <TeamOfSeason players={L.tots!} league={league} formation={L.tots_formation} subs={L.tots_subs ?? []} />
+            : <p className="empty5">출전 기록이 아직 부족합니다</p>}
         </section>
         <section className="card h5-card h5-side">
           <SectionHead title="GOLDEN BOOT" kr="득점왕 레이스" meta="골 · xG · 골당 출전 시간" />

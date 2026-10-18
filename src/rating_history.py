@@ -160,7 +160,9 @@ def prev_season_ovr() -> dict[str, dict]:
         for _, r in df.iterrows():
             mn = pd.to_numeric(r.get("minutes"), errors="coerce")
             mn = 0.0 if pd.isna(mn) else float(mn)
-            rec = {"ovr": rv3.player_line(r)["ovr"], "league": lg, "squad": r.get("squad"), "minutes": int(mn)}
+            pmn = pd.to_numeric(r.get("prev_minutes"), errors="coerce")
+            rec = {"ovr": rv3.player_line(r)["ovr"], "league": lg, "squad": r.get("squad"), "minutes": int(mn),
+                   "gated": rv3.youth_gated(r.get("age"), mn + (0.0 if pd.isna(pmn) else float(pmn)))}
             k = pid(r)
             if k not in best or best[k][0] < mn:
                 best[k] = (mn, rec)

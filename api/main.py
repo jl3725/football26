@@ -1053,7 +1053,8 @@ def _trend(row, league: str, ovr: int | None = None, form: int | None = None) ->
         if form is not None and base["form"] is not None:
             out["form_d"] = form - base["form"]
     prev = rh.lookup_prev(_prev_season(), row)
-    if prev and prev.get("minutes", 0) >= 300:
+    # 지난 시즌 값이 유망주 검증 보정에 걸렸으면(출전 부족으로 60 쪽으로 깎인 값) 비교하지 않는다
+    if prev and prev.get("minutes", 0) >= 300 and not prev.get("gated"):
         out["ovr_prev"] = prev["ovr"]
     return out
 
@@ -2274,7 +2275,19 @@ def lineup(team: str, league: str = ACTIVE_LEAGUE):
         for _, r in df[~df["player"].isin(xi_names)].sort_values("_ovr", ascending=False).head(8).iterrows():
             bench.append({"player": r["player"], "pos": str(r.get("fl_group") or r.get("pos") or ""),
                           "ovr": int(r["_ovr"]), "photo": _photo(r)})
-    return {"team": team, "color": tm.team_color(team), "season": season, "recent": recent, "bench": bench}
+    # 마지막으로 반영된 리그 경기 — 라인업은 경기 다음 날 아침 수집이라 '어느 경기까지인지'를 화면에 밝힌다
+    last = None
+    el = ds.read_table("espn_lineups", league=league)
+    if el is not None and not el.empty:
+        mine = el[el["squad"] == team]
+        if not mine.empty:
+            row = mine.assign(_d=mine["date"].astype(str)).sort_values("_d").iloc[-1]
+            eid = str(row["event_id"]).replace(".0", "")
+            opp = el[(el["event_id"].astype(str).str.replace(".0", "", regex=False) == eid) & (el["squad"] != team)]
+            last = {"date": str(row["date"])[:10], "opponent": str(opp["squad"].iloc[0]) if not opp.empty else "",
+                    "home_away": str(row.get("home_away") or "")}
+    return {"team": team, "color": tm.team_color(team), "season": season, "recent": recent, "bench": bench,
+            "last_match": last}
 
 
 # 유사 선수 엔진 — 임베딩은 최초 1회 빌드 후 캐시(요청마다 재계산 방지)
@@ -3843,69 +3856,121 @@ def _golden_boot(p, lg: str, n: int = 6) -> list[dict]:
     return out
 
 
-# 4-3-3 자리(세로 경기장, x·y 는 0~100 — components/Pitch.tsx 좌표)
-_TOTS_SLOTS = [("ST", "FWD", 50, 10), ("LW", "FWD", 17, 18), ("RW", "FWD", 83, 18),
-               ("LCM", "MID", 27, 44), ("CM", "MID", 50, 50), ("RCM", "MID", 73, 44),
-               ("LB", "DEF", 11, 71), ("LCB", "DEF", 37, 77), ("RCB", "DEF", 63, 77), ("RB", "DEF", 89, 71),
-               ("GK", "GK", 50, 93)]
+# 시즌 베스트 XI 포메이션 후보 — (자리, 라인, x, y, {역할: 적합도}). 세로 경기장, x·y 0~100(components/Pitch.tsx).
+# 예전엔 4-3-3 고정이라 홀란·주앙 페드로처럼 스트라이커 둘이 다 잘해도 한 명만 들어갔다(2026-10-19 사용자 요청).
+_BACK4 = [("LB", "DEF", 11, 71, {"LB": 1.0, "RB": 0.85, "CB": 0.7, "LW": 0.75}),
+          ("LCB", "DEF", 37, 77, {"CB": 1.0, "DM": 0.8, "LB": 0.8, "RB": 0.8}),
+          ("RCB", "DEF", 63, 77, {"CB": 1.0, "DM": 0.8, "LB": 0.8, "RB": 0.8}),
+          ("RB", "DEF", 89, 71, {"RB": 1.0, "LB": 0.85, "CB": 0.7, "RW": 0.75})]
+# 스리백 가운데는 골키퍼와 겹치지 않게 조금 위로(79 면 이름이 GK 사진에 가렸다)
+_BACK3 = [("LCB", "DEF", 26, 72, {"CB": 1.0, "LB": 0.82, "DM": 0.8}), ("CB", "DEF", 50, 74, {"CB": 1.0, "DM": 0.8}),
+          ("RCB", "DEF", 74, 72, {"CB": 1.0, "RB": 0.82, "DM": 0.8})]
+_GK1 = [("GK", "GK", 50, 93, {"GK": 1.0})]
+_CM = {"CM": 1.0, "DM": 0.93, "AM": 0.92}
+_DM = {"DM": 1.0, "CM": 0.93, "CB": 0.78, "AM": 0.8}
+_ST = {"ST": 1.0, "LW": 0.8, "RW": 0.8, "AM": 0.8}
+_LW = {"LW": 1.0, "RW": 0.88, "AM": 0.85, "ST": 0.82}
+_RW = {"RW": 1.0, "LW": 0.88, "AM": 0.85, "ST": 0.82}
+_TOTS_FORMS: dict[str, tuple[float, list]] = {   # 포메이션: (익숙함 가점, 자리들) — 비슷하면 흔한 형태
+    "4-3-3": (0.0, [("ST", "FWD", 50, 10, _ST), ("LW", "FWD", 17, 18, _LW), ("RW", "FWD", 83, 18, _RW),
+                    ("LCM", "MID", 27, 44, _CM), ("CM", "MID", 50, 50, _DM), ("RCM", "MID", 73, 44, _CM)] + _BACK4 + _GK1),
+    "4-2-3-1": (0.0, [("ST", "FWD", 50, 10, _ST), ("LAM", "MID", 18, 27, _LW),
+                      ("CAM", "MID", 50, 30, {"AM": 1.0, "CM": 0.9, "LW": 0.85, "RW": 0.85, "ST": 0.82}),
+                      ("RAM", "MID", 82, 27, _RW), ("LDM", "MID", 36, 52, _DM), ("RDM", "MID", 64, 52, _DM)] + _BACK4 + _GK1),
+    "4-4-2": (-0.3, [("LST", "FWD", 38, 12, _ST), ("RST", "FWD", 62, 12, _ST),
+                     ("LM", "MID", 12, 38, {"LW": 1.0, "CM": 0.85, "AM": 0.85, "LB": 0.75}),
+                     ("LCM", "MID", 37, 48, _CM), ("RCM", "MID", 63, 48, _CM),
+                     ("RM", "MID", 88, 38, {"RW": 1.0, "CM": 0.85, "AM": 0.85, "RB": 0.75})] + _BACK4 + _GK1),
+    "3-5-2": (-0.4, [("LST", "FWD", 38, 12, _ST), ("RST", "FWD", 62, 12, _ST),
+                     ("LWB", "MID", 10, 44, {"LB": 1.0, "LW": 0.85, "RB": 0.8}), ("LCM", "MID", 32, 47, _CM),
+                     ("CM", "MID", 50, 55, _DM), ("RCM", "MID", 68, 47, _CM),
+                     ("RWB", "MID", 90, 44, {"RB": 1.0, "RW": 0.85, "LB": 0.8})] + _BACK3 + _GK1),
+    "3-4-3": (-0.4, [("ST", "FWD", 50, 10, _ST), ("LW", "FWD", 18, 18, _LW), ("RW", "FWD", 82, 18, _RW),
+                     ("LWB", "MID", 10, 46, {"LB": 1.0, "LW": 0.85, "RB": 0.8}), ("LCM", "MID", 37, 51, _CM),
+                     ("RCM", "MID", 63, 51, _CM), ("RWB", "MID", 90, 46, {"RB": 1.0, "RW": 0.85, "LB": 0.8})] + _BACK3 + _GK1),
+}
+_OFF_POS_PENALTY = 6.0   # 적합도 1 → 0.8 이면 평점 z −1.2 — 3.0 이면 풀백 자리에 센터백 넷이 들어갔다
+# 평점 비교 기준 그룹 — 공격형 미드·윙어는 공격수 평균(6.81±0.23)으로. 미드 평균(6.87±0.21)으로 보면 z 가 부풀어
+# 4-2-3-1 의 공격형 미드 셋이 스트라이커(홀란)를 밀어냈다
+_ROLE_GROUP = {"GK": "GK", "CB": "DEF", "LB": "DEF", "RB": "DEF", "DM": "MID", "CM": "MID",
+               "AM": "ATT", "LW": "ATT", "RW": "ATT", "ST": "ATT"}
 
 
-def _team_of_season(p, lg: str) -> list[dict]:
-    """시즌 지금까지 베스트 XI — 평점(Sofascore 시즌 평균) 순, 리그 진행률만큼 줄인 최소 출전시간.
-    자리는 TM 세부 포지션(왼/오른쪽 구분)으로 채우고, 비면 같은 라인의 다음 선수로."""
+def _team_of_season(p, lg: str) -> dict:
+    """시즌 지금까지 베스트 XI — {formation, xi[], subs[]}.
+
+    평점(Sofascore 시즌 평균)을 포지션 평균 대비 z 로 바꿔(공격수 평점이 원래 높은 것 보정) 포메이션 후보마다
+    자리 적합도(실제로 선 자리 우선, 아니면 TM)를 곱한 점수로 채우고, 합이 가장 큰 포메이션을 고른다.
+    남은 상위 선수(GK 1 + 필드 6, 라인 골고루)는 교체 명단. 최소 출전 = 팀 경기의 절반."""
     st = ds.read_table("standings", league=lg)
     games = int(pd.to_numeric(st["played"], errors="coerce").max()) if st is not None and "played" in st.columns and len(st) else 0
-    min_mn = max(270.0, 0.5 * games * 90)     # 팀 경기의 절반 이상 — 예전 _mm(600) 은 시즌 후반 600분(약 7경기)까지 내려갔다
+    min_mn = max(270.0, 0.5 * games * 90)
     q = p[(p["_mn"] >= min_mn) & (p["_ss"] > 0)].copy()
     if q.empty:
-        return []
-    q["_pos"] = q.get("tm_position", pd.Series("", index=q.index)).astype(str)
-    q["_b"] = q["_pos"].map(_fine_bucket)
-    q = q.sort_values("_ss", ascending=False)
-    used: set = set()
+        return {"formation": None, "xi": [], "subs": []}
+    cands = []
+    for idx, r in q.iterrows():
+        prof = _pos_profile(r)
+        ln = _ROLE_GROUP.get(prof.get("primary") or "", rv3.line_of_row(r))
+        z = (float(r["_ss"]) - rv3._F_MEAN.get(ln, 6.85)) / rv3._F_SD.get(ln, 0.21)
+        roles = {}
+        if prof.get("primary"):
+            roles[prof["primary"]] = 1.0
+        for s_ in prof.get("secondary") or []:
+            roles.setdefault(s_, 0.93)
+        if not roles:
+            roles = {{"GK": "GK", "DEF": "CB", "MID": "CM", "ATT": "ST"}[ln]: 0.9}
+        cands.append({"i": idx, "r": r, "z": z, "roles": roles, "line": ln})
 
-    def take(pred):
-        for idx, r in q.iterrows():
-            if idx in used:
+    def fit(c, accept: dict) -> float:
+        return max((accept.get(role, 0.0) * w for role, w in c["roles"].items()), default=0.0)
+
+    def assign(slots):
+        pairs = []
+        for si, (_s, _k, _x, _y, acc) in enumerate(slots):
+            for ci, c in enumerate(cands):
+                f = fit(c, acc)
+                if f >= 0.7:
+                    pairs.append((c["z"] - (1.0 - f) * _OFF_POS_PENALTY, si, ci))
+        pairs.sort(key=lambda t: -t[0])
+        took_s, took_c, pick = set(), set(), {}
+        for sc, si, ci in pairs:
+            if si in took_s or ci in took_c:
                 continue
-            if pred(r):
-                used.add(idx)
-                return r
-        return None
+            took_s.add(si); took_c.add(ci); pick[si] = (ci, sc)
+        return pick
 
-    side = lambda r, w: w in r["_pos"].lower()  # noqa: E731
-    picks = {
-        "GK": take(lambda r: r["_b"] == "GK"),
-        "LB": take(lambda r: r["_b"] == "LB"), "RB": take(lambda r: r["_b"] == "RB"),
-        "LCB": take(lambda r: r["_b"] == "CB"), "RCB": take(lambda r: r["_b"] == "CB"),
-        "LCM": take(lambda r: r["_b"] == "CM"), "CM": take(lambda r: r["_b"] == "CM"), "RCM": take(lambda r: r["_b"] == "CM"),
-        "ST": take(lambda r: r["_b"] == "ST"),
-        "LW": take(lambda r: r["_b"] == "W" and side(r, "left")), "RW": take(lambda r: r["_b"] == "W" and side(r, "right")),
-    }
-    fallback = {"LB": ("CB", "LB", "RB"), "RB": ("CB", "RB", "LB"), "LCB": ("CB", "LB", "RB"), "RCB": ("CB", "LB", "RB"),
-                "LW": ("W", "ST"), "RW": ("W", "ST"), "ST": ("ST", "W"), "LCM": ("CM",), "CM": ("CM",), "RCM": ("CM",)}
-    for k, bs in fallback.items():
-        if picks.get(k) is None:
-            picks[k] = take(lambda r, bs=bs: r["_b"] in bs)
-    # 자리별 다음 후보 — 같은 세부 포지션(윙·풀백은 같은 쪽)에서 뽑히지 않은 상위 2명
-    prim = {"GK": lambda r: r["_b"] == "GK", "LB": lambda r: r["_b"] == "LB", "RB": lambda r: r["_b"] == "RB",
-            "LCB": lambda r: r["_b"] == "CB", "RCB": lambda r: r["_b"] == "CB", "LCM": lambda r: r["_b"] == "CM",
-            "CM": lambda r: r["_b"] == "CM", "RCM": lambda r: r["_b"] == "CM", "ST": lambda r: r["_b"] == "ST",
-            "LW": lambda r: r["_b"] == "W" and side(r, "left"), "RW": lambda r: r["_b"] == "W" and side(r, "right")}
-    out = []
-    for slot, kind, x, y in _TOTS_SLOTS:
-        r = picks.get(slot)
-        if r is None:
+    best = None
+    for name, (bonus, slots) in _TOTS_FORMS.items():
+        pick = assign(slots)
+        if len(pick) < len(slots):
             continue
+        total = sum(sc for _ci, sc in pick.values()) + bonus
+        if best is None or total > best[0]:
+            best = (total, name, slots, pick)
+    if best is None:
+        return {"formation": None, "xi": [], "subs": []}
+    _total, formation, slots, pick = best
+
+    def row_out(c) -> dict:
+        r = c["r"]
         sq = str(r.get("squad") or "")
-        alts = [{"player": str(a["player"]), "club": str(a.get("squad") or ""), "rating": round(float(a["_ss"]), 2),
-                 "minutes": int(a["_mn"]), "goals": int(_num(a.get("goals"))), "assists": int(_num(a.get("assists")))}
-                for i, a in q.iterrows() if i not in used and prim[slot](a)][:2]
-        out.append({"slot": slot, "kind": kind, "x": x, "y": y, "player": str(r["player"]), "club": sq,
-                    "club_logo": tm.team_logo(sq), "rating": round(float(r["_ss"]), 2), "ovr": _player_ovr(r),
-                    "photo": _photo(r), "minutes": int(r["_mn"]), "goals": int(_num(r.get("goals"))),
-                    "assists": int(_num(r.get("assists"))), "pos": str(r.get("tm_position") or ""), "alts": alts})
-    return out
+        prim = max(c["roles"], key=c["roles"].get)
+        return {"player": str(r["player"]), "club": sq, "club_logo": tm.team_logo(sq), "rating": round(float(r["_ss"]), 2),
+                "ovr": _player_ovr(r), "photo": _photo(r), "minutes": int(r["_mn"]), "goals": int(_num(r.get("goals"))),
+                "assists": int(_num(r.get("assists"))), "pos": str(r.get("tm_position") or ""), "role": prim}
+    xi = []
+    for si, (slot, kind, x, y, _acc) in enumerate(slots):
+        ci, _sc = pick[si]
+        xi.append({"slot": slot, "kind": kind, "x": x, "y": y, **row_out(cands[ci])})
+    used = {ci for ci, _ in pick.values()}
+    rest = sorted((c for ci, c in enumerate(cands) if ci not in used), key=lambda c: -c["z"])
+    subs, need = [], {"GK": 1, "DEF": 2, "MID": 2, "ATT": 2}
+    for c in rest:                                   # 라인별 최소 인원 먼저(GK 1 · 수비 2 · 미드 2 · 공격 2)
+        if need.get(c["line"], 0) > 0:
+            subs.append(c); need[c["line"]] -= 1
+    subs = sorted(subs, key=lambda c: ({"GK": 0, "DEF": 1, "MID": 2, "ATT": 3}[c["line"]], -c["z"]))[:7]
+    return {"formation": formation, "xi": xi, "subs": [row_out(c) for c in subs]}
 
 
 def _injury_impact(p, cur_inj, lg: str) -> list[dict]:
@@ -3967,6 +4032,7 @@ def _compute_hub_body() -> bytes:
     prospect_c, veteran_c, value_c = [], [], []      # 유망주 U21 · 베테랑 32+ · 저평가 가성비
     mover_c = []                                     # 선수 동향 — OVR 변화(2주 전 또는 지난 시즌 대비)
     golden_boot, tots, injury_impact = {}, {}, []    # 리그별 득점왕 레이스 · 시즌 베스트 XI · 부상으로 잃은 전력
+    tots_meta: dict = {}                             # 리그별 베스트 XI 포메이션 · 교체 명단
     squad2league: dict[str, str] = {}                # 시장가치 급등의 리그 매핑용
     for lg in leagues:
         lname = _lname(lg)
@@ -4065,7 +4131,9 @@ def _compute_hub_body() -> bytes:
         summary["injured"] += 0 if cur_inj is None else int(len(cur_inj))
         if pf is not None and "player" in pf.columns:
             golden_boot[lg] = _golden_boot(p, lg)
-            tots[lg] = _team_of_season(p, lg)
+            _t = _team_of_season(p, lg)
+            tots[lg] = _t["xi"]
+            tots_meta[lg] = {"formation": _t["formation"], "subs": _t["subs"]}
             injury_impact += _injury_impact(p, cur_inj, lg)
         # 부상 속보 (신규/복귀)
         ic = ds.read_table("transfermarkt_injury_changes", league=lg)
@@ -4174,7 +4242,7 @@ def _compute_hub_body() -> bytes:
               "goal_leaders": goal_leaders, "prospects": prospects, "veterans": veterans,
               "value_picks": value_picks, "risers": risers, "contracts": contracts_out, "summary": summary,
               "movers_up": movers_up, "movers_down": movers_down, "movers_basis": basis,
-              "golden_boot": golden_boot, "tots": tots,
+              "golden_boot": golden_boot, "tots": tots, "tots_meta": tots_meta,
               "injury_impact": sorted(injury_impact, key=lambda x: (-x["loss"], -x["n"]))[:10],
               # 스냅샷 생성 시각 — scripts/watchdog.py 가 운영 홈이 멈췄는지 본다
               "generated_at": datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds")}
@@ -4485,7 +4553,8 @@ def league_lab(league: str):
     return {"league": league, "pending": pending, "playmakers": playmakers, "finishing": finishing, "creating": creating,
             "ball_winners": ball_winners, "team_style": team_style,
             "table": table, "race": race, "over": over, "under": under, "results": results[:20], "watch": watch[:3],
-            "tots": _team_of_season(pp, league) if pp is not None else [],
+            **(lambda t: {"tots": t["xi"], "tots_formation": t["formation"], "tots_subs": t["subs"]})(
+                _team_of_season(pp, league) if pp is not None else {"formation": None, "xi": [], "subs": []}),
             "golden_boot": _golden_boot(pp, league) if pp is not None else [],
             "injury_impact": sorted(_injury_impact(pp, cur_inj, league), key=lambda x: (-x["loss"], -x["n"]))[:8] if pp is not None else []}
 

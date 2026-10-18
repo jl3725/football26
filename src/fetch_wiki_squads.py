@@ -35,15 +35,41 @@ _TPL = re.compile(r"\{\{\s*(?:fs player|football squad player)\s*\|((?:[^{}]|\{\
 _HEAD = re.compile(r"^(=+)\s*(.*?)\s*\1\s*$", re.M)
 
 
+# 글자를 감싸기만 하는 틀 — 안쪽 글자를 남긴다. {{small|[[Captain (association football)|captain]]}} 를 통째로 지워
+# 분데스리가 주장 18→10팀, 에레디비시 11→6팀으로 줄었다(2026-10-18 daily_data 실패).
+_WRAP = {"small", "smaller", "nowrap", "big", "center", "sup", "sub", "nobold", "resize", "em", "strong", "lang",
+         "tooltip", "abbr", "small caps", "smallcaps", "noitalic", "bold", "b", "i"}
+
+
+def _split_args(body: str) -> list[str]:
+    """틀 본문을 | 로 나누되 [[a|b]] 안의 | 는 그대로."""
+    parts, cur, depth = [], "", 0
+    for i, ch in enumerate(body):
+        if body.startswith("[[", i):
+            depth += 1
+        elif body.startswith("]]", i) and depth:
+            depth -= 1
+        if ch == "|" and depth == 0:
+            parts.append(cur)
+            cur = ""
+        else:
+            cur += ch
+    parts.append(cur)
+    return parts
+
+
 def _tpl_text(m) -> str:
-    """이름을 담은 틀만 글자로 — {{ill|이름|nl|…}}(다른 언어 위키 링크) → 이름, {{sortname|이름|성}} → '이름 성'. 나머지 틀은 지운다."""
-    parts = m.group(1).split("|")
+    """이름을 담은 틀만 글자로 — {{ill|이름|nl|…}}(다른 언어 위키 링크) → 이름, {{sortname|이름|성}} → '이름 성',
+    감싸는 틀({{small|…}}·{{nowrap|…}}) → 안쪽 글자. 나머지 틀(국기·각주 등)은 지운다."""
+    parts = _split_args(m.group(1))
     kind = parts[0].strip().lower()
-    args = [a.strip() for a in parts[1:] if "=" not in a]
+    args = [a.strip() for a in parts[1:] if "=" not in a.split("[[")[0]]
     if kind in ("ill", "interlanguage link", "interlanguage link multi") and args:
         return args[0]
     if kind == "sortname" and len(args) >= 2:
         return f"{args[0]} {args[1]}"
+    if kind in _WRAP and args:
+        return args[-1] if kind in ("abbr", "tooltip") else args[0]
     return ""
 
 
@@ -87,7 +113,11 @@ def _fields(body: str) -> dict:
 
 
 def role_of(other: str) -> tuple[str, int | None]:
+    # 보이는 글자 우선(링크 대상 'Vice-captain (…)|3rd captain' 은 3번째), 거기에 없으면 원문으로 —
+    # 처음 보는 감싸는 틀이 생겨도 'captain' 글자는 원문에 남아 있다
     t = _link_text(other).lower()
+    if "captain" not in t:
+        t = str(other or "").lower()
     if "captain" not in t:
         return "", None
     if "vice" in t or "2nd" in t or "second" in t:

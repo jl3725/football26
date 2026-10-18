@@ -145,3 +145,13 @@ def test_insights_carry_tile_fields() -> None:
     assert cap["big"] == "5" and cap["who"][0] == "Martin Ødegaard" and "Saka" in cap["line"]
     hub = next(i for i in ins if i["title"] == "연결 허브")
     assert hub["big"] == "1" and hub["who"] == ["A B"]
+
+
+def test_wrapped_captain_markup_is_kept() -> None:
+    # 2026-10-18 회귀: {{small|…}} 로 감싼 주장 표기를 통째로 지워 분데스리가 주장 18→10팀
+    t = ("{{Fs player|no=4|nat=GER|pos=DF|name=[[Robin Koch]]|other={{small|[[Captain (association football)|captain]]}}}}\n"
+         "{{Fs player|no=27|nat=GER|pos=MF|name=[[Mario Götze]]|other={{small|[[Captain (association football)#Vice-captain|vice-captain]]}}}}\n"
+         "{{Fs player|no=9|nat=GER|pos=FW|name={{nowrap|[[Jonathan Burkardt]]}}|other={{abbr|C|Captain}}}}")
+    rows = {r["player"]: r for r in ws.parse_squad(t)}
+    assert rows["Robin Koch"]["role_rank"] == 1 and rows["Mario Götze"]["role_rank"] == 2
+    assert "Jonathan Burkardt" in rows and rows["Jonathan Burkardt"]["role_rank"] == 1

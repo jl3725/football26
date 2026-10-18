@@ -76,18 +76,18 @@ export function formMeaning(f: number | null | undefined): Meaning {
   if (f >= 55) return m("주춤", "weak");
   return m("부진", "bad");
 }
-export const FORM_NOTE = "폼 = 이번 시즌 같은 리그·포지션 선수 중 위치(72 = 중간, 90+ 상위 10%)";
+export const FORM_NOTE = "폼 = 이번 시즌 평점·공격포인트로 본 같은 리그·포지션 안 위치(72 = 중간, 90+ 상위 10%) · 출전이 적으면 중간 쪽으로";
 
-/** Sofascore 평점(6.0~10, 리그 평균 6.8~6.9). */
+/** Sofascore 평점(리그 평균 6.8~6.9) — Sofascore 앱과 같은 감각: 7.0 부터 '좋음'(초록). */
 export function ssMeaning(r: number | null | undefined): Meaning {
   if (r == null || !r) return m("기록 부족", "avg");
   if (r >= 7.5) return m("최상급", "best");
-  if (r >= 7.1) return m("좋음", "good");
-  if (r >= 6.75) return m("보통", "avg");
-  if (r >= 6.5) return m("아쉬움", "weak");
+  if (r >= 7.0) return m("좋음", "good");
+  if (r >= 6.6) return m("보통", "avg");
+  if (r >= 6.3) return m("아쉬움", "weak");
   return m("부진", "bad");
 }
-export const SS_NOTE = "평점 = Sofascore 경기 평점 평균(리그 평균 6.8~6.9 · 7.1+ 좋음 · 7.5+ 최상급)";
+export const SS_NOTE = "평점 = Sofascore 경기 평점 평균(리그 평균 6.8~6.9 · 7.0+ 좋음 · 7.5+ 최상급)";
 
 /** 0~100 적합도·유사도·점수(높을수록 좋음, 50 = 보통). */
 export function scoreMeaning(v: number | null | undefined): Meaning {

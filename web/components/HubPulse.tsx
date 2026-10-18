@@ -1,6 +1,6 @@
 "use client";
 import { useMemo, useState } from "react";
-import type { HubBoot, InjuryImpactRow, RaceTeam, ResultMatch, TableGap, TotsPlayer, WatchMatch } from "@/lib/api";
+import type { HubBoot, InjuryImpactRow, RaceTeam, ResultMatch, TableGap, TotsPlayer, TotsSub, WatchMatch } from "@/lib/api";
 import Pitch from "./Pitch";
 import { usePeek } from "./PlayerPeek";
 import { colorsClose, compLabel, compTone, ddayLabel, lgEn, liftHex, splitKst } from "@/lib/match";
@@ -239,35 +239,52 @@ export function GoldenBoot({ rows, onPick }: { rows: HubBoot[]; onPick: Pick }) 
   );
 }
 
-// ── TEAM OF THE SEASON: 4-3-3 경기장 + 명단 ──
-export function TeamOfSeason({ players, league }: { players: TotsPlayer[]; league: string }) {
+// ── TEAM OF THE SEASON: 데이터로 고른 포메이션 경기장 + 명단 + 교체 명단(SUBS) ──
+// 포메이션은 4-3-3 고정이 아니라 잘하는 선수가 가장 많이 들어가는 형태(api _team_of_season). 예전의 자리별
+// '다음 후보' 대신 남은 상위 선수를 벤치(SUBS)로 — 2026-10-19 사용자 요청.
+const ROLE_KO: Record<string, string> = { GK: "GK", CB: "CB", LB: "LB", RB: "RB", DM: "DM", CM: "CM", AM: "AM", LW: "LW", RW: "RW", ST: "ST" };
+export function TeamOfSeason({ players, league, formation, subs = [] }: { players: TotsPlayer[]; league: string; formation?: string | null; subs?: TotsSub[] }) {
   const peek = usePeek();
   const placements = players.map((p) => ({ slot: p.slot, player: p.player, x: p.x, y: p.y, kind: p.kind, ovr: Math.round(p.rating * 10) / 10, photo: p.photo, club: p.club }));
-  const order = ["GK", "RB", "RCB", "LCB", "LB", "RCM", "CM", "LCM", "RW", "ST", "LW"];
-  const list = [...players].sort((a, b) => order.indexOf(a.slot) - order.indexOf(b.slot));
-  const seen = new Set<string>();
+  // 골키퍼부터 수비·미드·공격 순(경기장 아래 → 위), 같은 줄은 왼쪽부터
+  const list = [...players].sort((a, b) => (b.y - a.y) || (a.x - b.x));
+  const label = (s: string) => s.replace(/^[LR](CB|CM|ST|DM|AM)$/, "$1").replace(/^C(AM)$/, "$1");
   return (
     <div className="tots5">
-      <div className="tots5-pitch"><Pitch placements={placements} metric="평점" /></div>
+      <div className="tots5-pitch">
+        {formation && <div className="tots5-form"><b>{formation}</b><span>시즌 평점으로 고른 포메이션</span></div>}
+        <Pitch placements={placements} metric="평점" />
+      </div>
       <div className="tots5-list">
-        {list.map((p) => {
-          // 같은 자리(CB 2·CM 3)는 다음 후보가 같아서 첫 줄에만
-          const ak = (p.alts ?? []).map((a) => a.player).join("|");
-          const showAlts = ak && !seen.has(ak);
-          if (ak) seen.add(ak);
-          return (
-            <button key={p.slot} className="tots5-row" onClick={(e) => peek(e, { name: p.player, club: p.club, league })}>
-              <span className="tots5-slot">{p.slot.replace(/^[LR](CB|CM)$/, "$1")}</span>
-              {p.club_logo ? <img src={p.club_logo} alt="" /> : <span className="tots5-ph" />}
-              <span className="tots5-who">
-                <b>{p.player}</b>
-                <em>{p.minutes}분{p.goals || p.assists ? ` · ${p.goals ?? 0}골 ${p.assists ?? 0}도움` : ""}{showAlts ? ` · 다음 ${p.alts!.map((a) => `${a.player.split(" ").slice(-1)[0]} ${a.rating.toFixed(2)}`).join(", ")}` : ""}</em>
-              </span>
-              <span className="tots5-r" title={SS_NOTE}>{p.rating.toFixed(2)}</span>
-              <MeaningTag sm m={ssMeaning(p.rating)} title={SS_NOTE} />
-            </button>
-          );
-        })}
+        {list.map((p) => (
+          <button key={p.slot} className="tots5-row" onClick={(e) => peek(e, { name: p.player, club: p.club, league })}>
+            <span className="tots5-slot">{label(p.slot)}</span>
+            {p.club_logo ? <img src={p.club_logo} alt="" /> : <span className="tots5-ph" />}
+            <span className="tots5-who">
+              <b>{p.player}</b>
+              <em>{p.minutes}분{p.goals || p.assists ? ` · ${p.goals ?? 0}골 ${p.assists ?? 0}도움` : ""}
+                {p.role && label(p.slot) !== p.role && !(p.slot.endsWith("WB") || p.slot.endsWith("M")) ? ` · 원래 ${ROLE_KO[p.role] ?? p.role}` : ""}</em>
+            </span>
+            <span className="tots5-r" title={SS_NOTE}>{p.rating.toFixed(2)}</span>
+            <MeaningTag sm m={ssMeaning(p.rating)} title={SS_NOTE} />
+          </button>
+        ))}
+        {subs.length > 0 && (
+          <div className="tots5-subs">
+            <div className="tots5-subs-h">SUBS <span>교체 명단 · 베스트 XI 다음으로 평점 높은 선수</span></div>
+            <div className="tots5-subs-grid">
+              {subs.map((s) => (
+                <button key={s.player} className="tots5-sub" onClick={(e) => peek(e, { name: s.player, club: s.club, league })}
+                  title={`${s.player} · ${s.club} · ${s.minutes}분${s.goals || s.assists ? ` · ${s.goals}골 ${s.assists}도움` : ""}`}>
+                  <span className="tots5-sub-role">{ROLE_KO[s.role] ?? s.role}</span>
+                  {s.club_logo ? <img src={s.club_logo} alt="" /> : <span className="tots5-ph" />}
+                  <b>{s.player.split(" ").slice(-1)[0]}</b>
+                  <em style={{ color: ssMeaning(s.rating).c }}>{s.rating.toFixed(2)}</em>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

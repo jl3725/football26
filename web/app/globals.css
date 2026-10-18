@@ -3890,3 +3890,19 @@ LIGA’처럼 글자가 접히던 것) — 넘치면 가로로 넘긴다 */
 .lp5-v { display: flex; align-items: center; justify-content: flex-end; gap: 6px; }
 .lp5-row { grid-template-columns: minmax(0, 1fr) minmax(80px, 1fr) 170px; }
 @media (max-width: 640px) { .lp5-row { grid-template-columns: minmax(0, 1fr) 150px; } .lp5-row .lp5-bar { grid-column: 1 / -1; } }
+
+/* TEAM OF THE SEASON v6.9 — 포메이션 표시 · 교체 명단(SUBS) */
+.tots5-form { display: flex; align-items: baseline; gap: 8px; margin-bottom: 6px; }
+.tots5-form b { font: 800 18px/1 var(--font-num); color: var(--txt); letter-spacing: 0.04em; }
+.tots5-form span { font-size: 11px; color: var(--muted-2); }
+.tots5-subs { margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--line); }
+.tots5-subs-h { font: 700 11.5px/1 var(--font-num); letter-spacing: 0.12em; color: var(--muted); margin-bottom: 8px; }
+.tots5-subs-h span { font: 500 10.5px/1 var(--font-ui); letter-spacing: 0; color: var(--muted-2); margin-left: 6px; }
+.tots5-subs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 6px; }
+.tots5-sub { display: flex; align-items: center; gap: 6px; padding: 5px 8px; border-radius: 8px; border: 1px solid var(--line);
+  background: var(--overlay); color: inherit; cursor: pointer; min-width: 0; text-align: left; }
+.tots5-sub:hover { border-color: var(--muted-2); }
+.tots5-sub img, .tots5-sub .tots5-ph { width: 16px; height: 16px; object-fit: contain; flex-shrink: 0; }
+.tots5-sub-role { font: 700 10px/1 var(--font-num); color: var(--muted-2); width: 22px; flex-shrink: 0; }
+.tots5-sub b { flex: 1; min-width: 0; font-size: 12px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tots5-sub em { font: 700 12px/1 var(--font-num); font-style: normal; }
