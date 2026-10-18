@@ -244,6 +244,12 @@ def _build_frame(league: str, season: str | None = None):
         frame = frame.merge(usage, on=["squad", "norm_key"], how="left")
     except (OSError, KeyError, ValueError):
         pass
+    # 평점 = Sofascore + FotMob 두 출처 평균(src/rating_blend.py) — 직전·2시즌 전 기록도 FotMob 으로 보강
+    try:
+        import rating_blend as rb  # noqa: PLC0415
+        frame = rb.blend(rb.attach(frame, league, season, lambda lg, s: ds.read_table("fotmob_ratings", league=lg, season=s)))
+    except Exception as e:  # noqa: BLE001 — FotMob 표가 없으면 Sofascore 만
+        print(f"[rating_blend] {league} {season}: 건너뜀 {type(e).__name__}: {e}")
     import ratings_v3 as rv3  # noqa: PLC0415
     try:
         frame["_line"] = _played_line(frame, season)

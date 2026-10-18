@@ -3753,7 +3753,7 @@ LIGA’처럼 글자가 접히던 것) — 넘치면 가로로 넘긴다 */
 .slog { margin-top: 10px; }
 .slog-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
 .slog-table { display: flex; flex-direction: column; margin: 4px 0 8px; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
-.slog-row { display: grid; grid-template-columns: minmax(110px, 1.4fr) 1.1fr 0.9fr 0.5fr 0.5fr 0.8fr; gap: 8px; align-items: center; padding: 8px 12px;
+.slog-row { display: grid; grid-template-columns: minmax(110px, 1.4fr) 1.1fr 0.9fr 0.5fr 0.5fr 0.9fr 0.8fr; gap: 8px; align-items: center; padding: 8px 12px;
   border: 0; border-bottom: 1px solid rgba(255,255,255,0.05); background: none; color: inherit; text-align: left; font-size: 12.5px; cursor: pointer; }
 .slog-row.h { cursor: default; font: 600 10.5px/1 var(--font-ui); color: var(--muted-2); letter-spacing: 0.04em; background: rgba(255,255,255,0.02); }
 .slog-row:not(.h):not(.tot):hover, .slog-row.on { background: rgba(255,255,255,0.04); }
@@ -3767,8 +3767,8 @@ LIGA’처럼 글자가 접히던 것) — 넘치면 가로로 넘긴다 */
 .slog-foot { min-height: 30px; padding: 6px 2px 0; font-size: 11.5px; color: var(--muted); }
 .slog-foot b { margin-right: 4px; }
 @media (max-width: 560px) {
-  .slog-row { grid-template-columns: minmax(84px, 1.3fr) 1fr 0.9fr 0.45fr 0.45fr; font-size: 12px; padding: 7px 9px; }
-  .slog-row span:nth-child(6) { display: none; }
+  .slog-row { grid-template-columns: minmax(76px, 1.3fr) 1fr 0.9fr 0.4fr 0.4fr 0.8fr; font-size: 12px; padding: 7px 9px; gap: 6px; }
+  .slog-row span:nth-child(7) { display: none; }   /* 폰: 카드 칸 숨기고 슈팅(유효)·선방은 보인다 */
 }
 
 /* SEASON PROFILE 지난 시즌 눈금·▲▼ + 득점 구성 비교(GoalMixCompare) */
@@ -3906,3 +3906,28 @@ LIGA’처럼 글자가 접히던 것) — 넘치면 가로로 넘긴다 */
 .tots5-sub-role { font: 700 10px/1 var(--font-num); color: var(--muted-2); width: 22px; flex-shrink: 0; }
 .tots5-sub b { flex: 1; min-width: 0; font-size: 12px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .tots5-sub em { font: 700 12px/1 var(--font-num); font-style: normal; }
+
+/* OVR 구성 · 평점 출처(v6.9) */
+.ob5 { margin: 8px 16px 4px; border: 1px solid var(--line); border-radius: 10px; background: var(--overlay); }
+.ob5-toggle { width: 100%; display: flex; align-items: center; gap: 10px; padding: 8px 12px; border: 0; background: none; color: inherit; cursor: pointer; text-align: left; }
+.ob5-toggle b { font: 700 11.5px/1 var(--font-num); letter-spacing: 0.1em; flex-shrink: 0; }
+.ob5-toggle span { flex: 1; min-width: 0; font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ob5-toggle i { font-style: normal; color: var(--muted-2); }
+.ob5-body { padding: 4px 12px 10px; border-top: 1px solid var(--line); }
+.ob5-row { display: grid; grid-template-columns: 104px minmax(0, 1fr) 52px; gap: 8px; align-items: center; padding: 5px 0; border-bottom: 1px dashed var(--line); font-size: 12px; }
+.ob5-row em { font: 700 10px/1 var(--font-num); letter-spacing: 0.08em; color: var(--muted-2); font-style: normal; }
+.ob5-row span { color: var(--muted); }
+.ob5-row b { text-align: right; font: 700 13px/1 var(--font-num); }
+.ob5-row.base b, .ob5-row.total b { color: var(--txt); }
+.ob5-row.total { border-bottom: 0; }
+.ob5-row.total b { font-size: 16px; }
+.ob5-rate { display: flex; flex-direction: column; gap: 4px; margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--line); font-size: 12px; color: var(--muted); }
+.ob5-rate b { color: var(--txt); font-size: 11.5px; }
+.ob5-rate strong { color: var(--txt); }
+.ob5-note { margin: 8px 0 0; font-size: 11px; color: var(--muted-2); line-height: 1.5; word-break: keep-all; }
+@media (max-width: 560px) { .ob5 { margin: 8px 10px 4px; } .ob5-row { grid-template-columns: 84px minmax(0, 1fr) 44px; } }
+
+/* PlayerPeek 대회별 줄 */
+.peek-comps { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 10px 0 2px; padding: 0 16px; font-size: 11.5px; color: var(--muted); }
+.peek-comps b { color: var(--txt); font-weight: 700; margin-right: 2px; }
+.peek-comps em { width: 100%; font-style: normal; font-size: 10.5px; color: var(--muted-2); }

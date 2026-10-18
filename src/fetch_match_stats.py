@@ -162,6 +162,37 @@ def _events_for(sched_rows: pd.DataFrame, p: dict) -> list[dict]:
     return out
 
 
+# 선수 경기 기록(전 대회) — ESPN summary 의 rosters[].roster[].stats. 컵·유럽대항전은 리그 스탯 원천(FBref·Sofascore)이
+# 없어 Player 탭이 리그 스탯만 보였다(2026-10-19 사용자 지적). 이 표로 대회별·합계 슈팅·선방 등을 낸다.
+PMS_COLS = ["event_id", "date", "comp_code", "squad", "player", "starter", "shots", "sot", "saves", "conceded",
+            "shots_faced", "fouls", "fouled", "offsides", "own_goals"]
+_PMS_MAP = {"totalShots": "shots", "shotsOnTarget": "sot", "saves": "saves", "goalsConceded": "conceded",
+            "shotsFaced": "shots_faced", "foulsCommitted": "fouls", "foulsSuffered": "fouled", "offsides": "offsides",
+            "ownGoals": "own_goals"}
+
+
+def _players_for(sched_rows: pd.DataFrame, js: dict) -> list[dict]:
+    out = []
+    side = {str(ro.get("homeAway") or ""): ro for ro in (js or {}).get("rosters") or []}
+    for r in sched_rows.itertuples(index=False):
+        ro = side.get("home" if r.home_away == "H" else "away")
+        if not ro:
+            continue
+        base = {"event_id": str(r.event_id), "date": str(r.date)[:10], "comp_code": r.comp_code, "squad": r.squad}
+        for pl in ro.get("roster") or []:
+            st = {x.get("name"): x.get("value") for x in pl.get("stats") or []}
+            if not st or not _num(st.get("appearances")):
+                continue                                     # 벤치에만 있던 선수
+            row = {**base, "player": (pl.get("athlete") or {}).get("displayName", ""),
+                   "starter": int(bool(pl.get("starter")))}
+            for k, col in _PMS_MAP.items():
+                row[col] = int(_num(st.get(k)) or 0)
+            out.append(row)
+        if not out or out[-1]["event_id"] != base["event_id"]:
+            out.append({**base, "player": "", "starter": 0, **{c: 0 for c in _PMS_MAP.values()}})   # 다시 받지 않게
+    return out
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--max", type=int, default=400, help="한 번에 새로 받을 경기 수 상한")
@@ -180,12 +211,16 @@ def main() -> int:
     ev_p = data_path("match_events", league)
     old_ev = pd.read_csv(ev_p, dtype={"event_id": str}) if ev_p.exists() else pd.DataFrame(columns=EVENT_COLS)
     have_ev = set(old_ev["event_id"].astype(str)) if not old_ev.empty else set()
+    pm_p = data_path("player_match_stats", league)
+    old_pm = pd.read_csv(pm_p, dtype={"event_id": str}) if pm_p.exists() else pd.DataFrame(columns=PMS_COLS)
+    have_pm = set(old_pm["event_id"].astype(str)) if not old_pm.empty else set()
     todo_st = [e for e in sch["event_id"].unique() if e not in have]
     todo_ev = [e for e in sch["event_id"].unique() if e not in have_ev]       # 예전 경기도 이벤트가 없으면 소급
-    todo = list(dict.fromkeys(todo_st + todo_ev))[: a.max]
+    todo_pm = [e for e in sch["event_id"].unique() if e not in have_pm]       # 선수 경기 기록도 소급
+    todo = list(dict.fromkeys(todo_st + todo_ev + todo_pm))[: a.max]
     print(f"[match-stats] {league}: 끝난 경기 {sch['event_id'].nunique()} · 새로 받을 {len(todo)}"
           f"(기록 {len(todo_st)} · 선수 이벤트 {len(todo_ev)})", flush=True)
-    rows, evs, fail = [], [], 0
+    rows, evs, pms, fail = [], [], [], 0
     for k, eid in enumerate(todo, 1):
         srows = sch[sch["event_id"] == eid]
         js = _summary(str(srows.iloc[0]["comp_code"]), eid)
@@ -199,6 +234,8 @@ def main() -> int:
             rows += _rows_for(srows, p)
         if eid not in have_ev:
             evs += _events_for(srows, p)
+        if eid not in have_pm:
+            pms += _players_for(srows, js)
         if k % 25 == 0:
             print(f"  … {k}/{len(todo)}", flush=True)
         time.sleep(0.25)
@@ -213,6 +250,11 @@ def main() -> int:
         if dropped:
             print(f"  · 일정에 없는 행 {dropped}개 제거", flush=True)
         return frame[k]
+    if pms or not old_pm.empty:
+        pm = pd.concat([old_pm, pd.DataFrame(pms, columns=PMS_COLS)], ignore_index=True) if pms else old_pm
+        pm = _keep(pm.drop_duplicates(["event_id", "squad", "player"], keep="last")).sort_values(["date", "event_id"])
+        pm.to_csv(pm_p, index=False)
+        print(f"[OK] {pm_p.name} · {len(pm)}행(새 {len(pms)})", flush=True)
     if evs or not old_ev.empty:
         ev = pd.concat([old_ev, pd.DataFrame(evs, columns=EVENT_COLS)], ignore_index=True) if evs else old_ev
         ev = _keep(ev.drop_duplicates()).sort_values(["date", "event_id"])

@@ -173,7 +173,7 @@ def build(lg: str, season: str) -> tuple[pd.DataFrame, dict]:
     audit = defaultdict(lambda: {"total": 0, "exact": 0, "rule": 0, "ambiguous": 0, "orphan": 0, "orphans": []})
     srcs = [("wiki_squads", ["player"]), ("espn_lineups", ["player"]), ("espn_lineups_cups", ["player"]),
             ("espn_subs", ["player_in", "player_out"]), ("espn_subs_cups", ["player_in", "player_out"]),
-            ("match_events", ["player"])]
+            ("match_events", ["player"]), ("fotmob_ratings", ["player"])]   # FotMob 평점(두 출처 평균 평점)
     played = {"espn_lineups", "espn_lineups_cups", "espn_subs", "espn_subs_cups", "match_events"}
     for stem, cols in srcs:
         d = _read(stem, lg, season)

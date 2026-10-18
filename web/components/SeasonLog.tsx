@@ -22,6 +22,13 @@ export default function SeasonLog({ log, accent }: { log: Log; accent: string })
   const x = (i: number) => PADL + 8 + i * ((W - PADL - 16) / Math.max(1, ms.length)) + bw / 2;
   const y = (min: number) => base - (Math.min(min, 120) / 90) * (base - top);
   const hm = hover != null ? ms[hover] : null;
+  const gk = !!log.is_gk;
+  const hasStats = (log.stats_coverage ?? 0) > 0;
+  const statCell = (c: { shots?: number; sot?: number; saves?: number; conceded?: number; shots90?: number | null }) => (
+    <span title={!gk && c.shots90 != null ? `90분당 슈팅 ${c.shots90}` : undefined}>
+      {!hasStats ? "—" : gk ? `${c.saves ?? 0} · ${c.conceded ?? 0}` : <>{c.shots ?? 0}<em>({c.sot ?? 0})</em></>}
+    </span>
+  );
   return (
     <div className="slog">
       <div className="slog-head">
@@ -34,18 +41,21 @@ export default function SeasonLog({ log, accent }: { log: Log; accent: string })
         </div>
       </div>
       <div className="slog-table" role="table">
-        <div className="slog-row h" role="row"><span>대회</span><span>출전(선발)</span><span>분</span><span>골</span><span>도움</span><span>카드</span></div>
+        <div className="slog-row h" role="row"><span>대회</span><span>출전(선발)</span><span>분</span><span>골</span><span>도움</span>
+          <span title={gk ? "선방 · 실점" : "슈팅(유효슈팅) — 전 대회 ESPN 경기 기록"}>{gk ? "선방·실점" : "슈팅(유효)"}</span><span>카드</span></div>
         {log.by_comp.map((c) => (
           <button key={c.comp} className={`slog-row${comp === c.comp ? " on" : ""}`} onClick={() => setComp(comp === c.comp ? "all" : c.comp)}>
             <span><i style={{ background: cc(c.comp) }} />{c.comp}</span>
             <span>{c.apps}<em>({c.starts})</em> <small>/ {c.matches}</small></span>
             <span>{c.minutes.toLocaleString()}′</span><span>{c.goals}</span><span>{c.assists}</span>
+            {statCell(c)}
             <span>{c.yellow ? `🟨${c.yellow}` : ""}{c.red ? ` 🟥${c.red}` : ""}</span>
           </button>
         ))}
         <div className="slog-row tot" role="row">
           <span>합계</span><span>{log.total.apps}<em>({log.total.starts})</em> <small>/ {log.total.matches}</small></span>
           <span>{log.total.minutes.toLocaleString()}′</span><span>{log.total.goals}</span><span>{log.total.assists}</span>
+          {statCell(log.total)}
           <span>{log.total.yellow ? `🟨${log.total.yellow}` : ""}{log.total.red ? ` 🟥${log.total.red}` : ""}</span>
         </div>
       </div>
@@ -80,7 +90,8 @@ export default function SeasonLog({ log, accent }: { log: Log; accent: string })
       <div className="slog-foot">
         {hm ? (
           <span><b style={{ color: cc(hm.comp) }}>{hm.comp}</b> {hm.date} · {hm.home_away === "H" ? "홈" : "원정"} vs {hm.opponent} {hm.score}
-            {" · "}{ST[hm.status]}{hm.minutes ? ` ${hm.minutes}′` : ""}{hm.goals ? ` · ${hm.goals}골${hm.pens ? `(PK ${hm.pens})` : ""}` : ""}{hm.assists ? ` · ${hm.assists}도움` : ""}</span>
+            {" · "}{ST[hm.status]}{hm.minutes ? ` ${hm.minutes}′` : ""}{hm.goals ? ` · ${hm.goals}골${hm.pens ? `(PK ${hm.pens})` : ""}` : ""}{hm.assists ? ` · ${hm.assists}도움` : ""}
+            {hm.has_stats && hm.minutes ? (gk ? ` · 선방 ${hm.saves ?? 0} · 실점 ${hm.conceded ?? 0}` : ` · 슈팅 ${hm.shots ?? 0}(유효 ${hm.sot ?? 0})`) : ""}</span>
         ) : (
           <span>막대 = 출전 시간(진할수록 선발, 색 = 대회) · ● 골 · ▲ 도움 · 막대에 마우스를 올리면 경기 정보
             {log.events_coverage < 1 ? ` · 득점 기록 수집 ${Math.round(log.events_coverage * 100)}%` : ""}</span>

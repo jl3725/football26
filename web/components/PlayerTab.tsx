@@ -1,4 +1,5 @@
 "use client";
+import OvrBreakdown from "./OvrBreakdown";
 import { useEffect, useState } from "react";
 import { getPlayers, getPlayerDetail, getSimilar, getHeatmaps, fmtEur, type Players, type PlayerDetail, type SimilarResult, type HeatmapData } from "@/lib/api";
 import { tier, hexA, roleClass, futTier } from "@/lib/ui";
@@ -80,6 +81,7 @@ function Detail({ team, player, accent, heatmap }: { team: string; player: strin
         </div>
       </div>
       <TrendLine t={d.trend} ovr={d.ovr} />
+      <OvrBreakdown ovr={d.ovr} parts={d.ovr_parts} ratings={d.ratings} />
       {d.badges.length > 0 && (
         <div className="pd-badges">
           {d.badges.map((b, i) => (

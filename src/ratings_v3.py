@@ -123,8 +123,21 @@ def blended_ss(ss_rating, minutes, prev_ss_rating=None, prev_minutes=None) -> fl
 
 
 _CLASS_PRIOR_MIN = 600.0   # 클래스 평점을 포지션 평균 쪽으로 당기는 가상 출전(분)
+# 경기력 보정 — (클래스 평점 − 포지션 평균) × PERF_SLOPE, ±PERF_CAP. 시장가치 기준점 위에 얹는 폭.
+# v3.6(2026-10-19): 8 → 10 — 두 출처 평균 평점이 한 사이트 버릇을 줄여 경기력을 더 믿을 수 있게 됐고, 평점은 좋은데
+# 몸값이 비슷한 선수(Vušković 7.5 vs Konsa 6.8)가 같은 OVR 이던 것(사용자 지적)
+PERF_SLOPE, PERF_CAP = 10.0, 3.5
+# 유망주 검증 전 기준점 — 출전이 적은 21세 이하를 이 값 쪽으로 당긴다(+ 시장가치 몫 YOUTH_ANCHOR_VALUE)
+# v3.6: 시장가치 몫 0 → 0.5 — €50M 16세 Dowman(167분)이 62 로 1분 뛴 €1M 유스와 비슷했다(사용자 지적)
+_YOUTH_ANCHOR, YOUTH_ANCHOR_VALUE = 60.0, 0.5
+YOUTH_ADJ_SCALE = 0.85     # v3.6: 잠재력 차감 0.85배 — 경기력 가중을 올린 만큼(Lewis-Skelly 기준 81~84 유지)
+# 평점이 말하는 수준(PE) — 26/27 전성기(24~29세)·2,500분+ 주전 362명 OVR ≈ 79.85 + 37.8 × (클래스 − 포지션 평균),
+# 상관 0.83. 30세+ 는 나이만큼(_VET_PE_W) 이 값 쪽으로 섞는다(시장가치의 나이 할인 대신).
+PE_A, PE_B = 79.85, 37.8
+# v3.6 탐색(golden 위반 0 · 스카우트 3+ 이탈 0 · Groß 78 · Dowman 70 · Vušković>Konsa): 36세 45%
+_VET_PE_AGES, _VET_PE_W = (30.0, 32.0, 34.0, 36.0), (0.0, 0.18, 0.34, 0.45)
 # 모델 버전 — 바뀌면 rating_history 가 과거 기록을 평행이동해 모델 변경이 선수 추이(▲▼)로 보이지 않게 한다
-MODEL_VERSION = "v3.5"
+MODEL_VERSION = "v3.6"
 # 잠재력 프리미엄 — 같은 시장가치·리그에서 어린 선수의 실제 경기력(리그 보정 평점)이 낮은 만큼(vov 환산).
 # 25/26 1,500분+ 1,450명 회귀(27~29세 기준): 17~20세 −6.8 · 21세 −4.9 · 22세 −5.1 · 23세 −4.4 · 24세 −3.9 ·
 # 25세 −3.8 · 26세 −2.4 (같은 회귀에서 30~32세 +5.3 · 33세+ +9.4 — 베테랑 보정과 같은 근거).
@@ -239,9 +252,14 @@ def absolute_ovr(*, value, ss_rating, minutes, age, pos_group,
                  ucl_starts=0, uel_starts=0, conf_starts=0, cup_starts=0,
                  prev_minutes=None, prev_ss_rating=None, league_level=None,
                  prev_league_level=None, prev_gk_save_pct=None, prev_gk_cs_pct=None, prev_value=None,
-                 hist_ss_rating=None, hist_minutes=None, hist_league_level=None) -> int:
+                 hist_ss_rating=None, hist_minutes=None, hist_league_level=None, _parts: list | None = None) -> int:
+    """_parts 에 리스트를 주면 단계별 기여(키, 값)를 채운다 — 화면 'OVR 구성'(ovr_parts_of_row)."""
     ln = line_of(pos_group)
     a = _num(age)
+
+    def rec(key: str, delta: float) -> None:
+        if _parts is not None and abs(delta) >= 0.05:
+            _parts.append((key, round(float(delta), 1)))
     # '검증'(유망주 게이팅·베테랑 보정)은 직전 시즌 출전까지 합산 — 시즌 초 전원 미검증 방지.
     # 직전 시즌 컬럼이 없으면 이번 시즌 출전만(기존 동작).
     mn = _num(minutes) + _num(prev_minutes)
@@ -250,13 +268,17 @@ def absolute_ovr(*, value, ss_rating, minutes, age, pos_group,
     if vov is None:
         vov = pv
     elif pv is not None and vov > pv and _num(prev_value) >= _JUMP_MIN_PREV:
-        vov -= min(_JUMP_MAX_CUT, (1.0 - _VALUE_JUMP_KEEP) * (vov - pv))
+        cut = min(_JUMP_MAX_CUT, (1.0 - _VALUE_JUMP_KEEP) * (vov - pv))
+        vov -= cut
+        rec("jump", -cut)
     rel, off = _class_parts(ss_rating, minutes, prev_ss_rating, prev_minutes, ln, league_level, prev_league_level,
                             hist_ss_rating, hist_minutes, hist_league_level)
     # GK 성능 리그 보정 — 평점 척도(×8)의 1.5배: 선방·클린시트는 팀 지배력 영향이 커 약한 리그 강팀 GK 가
     # 더 부풀려진다(포르투갈 주전 GK CS 35% vs EPL 31.5%, Porto Costa 직전 시즌 CS 63.6%)
     lg_off = rating_offset(league_level) * 12.0
     base = vov if vov is not None else _vov_fallback(ln, mn)
+    if _parts is not None:
+        _parts.insert(0, ("base" if vov is not None else "base_fallback", round(float(base + (-dict(_parts).get("jump", 0.0))), 1)))
     proven = _clamp(mn / 1500.0, 0.0, 1.0)
     if ln == "GK":
         # GK 는 시장가·ss 로 변별 불가(값 압축) → 선방%/CS% 를 성능축으로(직전 시즌·평균과 섞어 소표본 완화).
@@ -276,26 +298,55 @@ def absolute_ovr(*, value, ss_rating, minutes, age, pos_group,
         else:
             age_adj = _interp(a, _GK_VET_AGES, _GK_VET_ADJ) * proven
         raw = base + _GK_BASE + perf + age_adj
+        rec("gk_base", _GK_BASE)
+        rec("gk_perf", perf)
+        rec("age", age_adj)
     else:
         # 리그 보정은 상한 밖에서 — 약한 리그 최상위가 상한(+3.5)에 걸려 보정이 사라지지 않게
-        perf_adj = _clamp((rel - _SS_MID[ln]) * 8.0, -3.5, 3.5) - off * 8.0 if rel > 0 else 0.0
+        perf_adj = _clamp((rel - _SS_MID[ln]) * PERF_SLOPE, -PERF_CAP, PERF_CAP) - off * 8.0 if rel > 0 else 0.0
         vet_adj = _interp(a, _VET_AGES, _VET_ADJ) * proven if a > 0 else 0.0
         raw = base + _POS_ADJ[ln] + perf_adj + vet_adj
-    raw += _big_match_bonus(ucl_starts, uel_starts, conf_starts, cup_starts)
+        rec("pos", _POS_ADJ[ln])
+        rec("perf", perf_adj)
+        rec("vet", vet_adj)
+        # 베테랑: 시장가치는 나이로 깎여 실력을 덜 말해 준다 → 나이만큼 '평점이 말하는 수준'(전성기 주전 회귀
+        # PE_A + PE_B × (클래스 평점 − 포지션 평균))을 섞는다. 35세 그로스(€2.5M → 기준점 67)가 이번 시즌
+        # 평점 7.5(FotMob 7.8)에도 76 이었다(2026-10-19 사용자 지적).
+        w_pe = _interp(a, _VET_PE_AGES, _VET_PE_W) * proven if a > 0 and rel > 0 else 0.0
+        if w_pe > 0:
+            pe = PE_A + PE_B * (rel - off - _SS_MID[ln]) + _POS_ADJ[ln]
+            new = (1 - w_pe) * raw + w_pe * pe
+            rec("vet_pe", new - raw)
+            raw = new
+    bm = _big_match_bonus(ucl_starts, uel_starts, conf_starts, cup_starts)
+    raw += bm
+    rec("big", bm)
     if 0 < a < _YOUTH_AGES[-1] and vov is not None and ln != "GK":     # GK 는 위 나이 보정에 포함
-        raw += _interp(a, _YOUTH_AGES, _YOUTH_ADJ)       # 시장가치의 잠재력 프리미엄
+        ya = _interp(a, _YOUTH_AGES, _YOUTH_ADJ) * YOUTH_ADJ_SCALE    # 시장가치의 잠재력 프리미엄
+        raw += ya
+        rec("youth", ya)
     # 어린 미검증만 게이팅(누적 커리어 부족). '검증'은 나이가 아니라 출전시간으로 본다:
     # 어릴수록 완전검증에 필요한 출전이 많지만, 풀시즌을 뛴 유망주(예: Yamal 2262분·16G11A)는
     # 나이로 깎지 않는다. 저출전 유망주만 60 쪽으로 보수화(과대평가 방지).
     if 0 < a <= 21:
         proven_min = 900.0 + (21 - a) * 120.0     # 21세=900분, 18세=1260, 15세=1620 필요
         proven = _clamp(mn / proven_min, 0.1, 1.0)
-        raw = proven * raw + (1 - proven) * 60.0
-    ovr = _soft_cap(raw) - _LEAGUE_OVR_PER_LEVEL * max(0.0, 100.0 - _num(league_level, 100.0))
+        # 검증 전 기준점 — 60 고정이 아니라 시장가치를 일부(YOUTH_ANCHOR_VALUE) 반영: 1분 뛴 €1M 유스는 60 근처,
+        # €50M 16세(Dowman)는 그보다 위. 몸값 전부를 믿지는 않는다(예전 1분 유망주 79 사고)
+        anchor = _YOUTH_ANCHOR + YOUTH_ANCHOR_VALUE * max(0.0, raw - _YOUTH_ANCHOR)
+        new = proven * raw + (1 - proven) * anchor
+        rec("gate", new - raw)
+        raw = new
+    capped = _soft_cap(raw)
+    rec("cap", capped - raw)
+    lg_w = _LEAGUE_OVR_PER_LEVEL * max(0.0, 100.0 - _num(league_level, 100.0))
+    rec("league", -lg_w)
+    ovr = capped - lg_w
     # 유망주 상한 — 아무리 잘해도 established 슈퍼스타(92+)를 넘지 않게 나이별 천장.
     # 18세 91 · 19세 92 · 20세 93 · 21세 94(사실상 무제한). 진짜 최상위는 성숙이 필요.
-    if 0 < a <= 21:
-        ovr = min(ovr, 88.0 + (a - 15) * 1.0)
+    if 0 < a <= 21 and ovr > 88.0 + (a - 15) * 1.0:
+        rec("youth_cap", 88.0 + (a - 15) * 1.0 - ovr)
+        ovr = 88.0 + (a - 15) * 1.0
     return int(_clamp(round(ovr), 45, 99))
 
 
@@ -457,6 +508,38 @@ def ovr_of_row(row) -> int:
         prev_value=row.get("prev_market_value_eur"),
         hist_ss_rating=row.get("hist_ss_rating"), hist_minutes=row.get("hist_minutes"),
         hist_league_level=_prev_level(row, "hist_league"))
+
+
+# 'OVR 구성' 화면 이름 — 키: (영문, 한글 설명)
+PART_LABELS = {
+    "base": ("VALUE", "시장가치 기준점"), "base_fallback": ("VALUE", "시장가치 없음 → 출전 시간대 기준점"),
+    "jump": ("VALUE JUMP", "몸값 급등 감쇠(새 몸값의 절반만)"), "pos": ("POSITION", "포지션 보정"),
+    "perf": ("PERFORMANCE", "경기력 — 평점(Sofascore·FotMob 평균, 이번·지난 시즌, 리그 보정)"),
+    "gk_base": ("GK", "골키퍼 기준"), "gk_perf": ("PERFORMANCE", "선방률·클린시트(리그 보정)"),
+    "vet": ("VETERAN", "베테랑 — 나이로 깎인 몸값 일부 되돌림"), "age": ("AGE", "나이 보정"),
+    "vet_pe": ("VETERAN FORM", "베테랑 — '평점이 말하는 수준' 쪽으로"), "big": ("BIG MATCH", "유럽대항전·컵 선발"),
+    "youth": ("POTENTIAL", "어린 선수 몸값의 잠재력 몫 빼기"), "gate": ("UNPROVEN", "출전 부족 — 검증 전 기준점 쪽으로"),
+    "cap": ("TOP CAP", "88 초과분 압축"), "league": ("LEAGUE", "리그 수준 보정"), "youth_cap": ("AGE CAP", "나이별 천장"),
+}
+
+
+def ovr_parts_of_row(row) -> dict:
+    """OVR 이 어떻게 나왔나 — ovr_of_row 와 같은 입력으로 단계별 기여. 화면 'OVR 구성'."""
+    parts: list = []
+    ovr = absolute_ovr(
+        value=row.get("market_value_eur"), ss_rating=row.get("ss_rating"),
+        minutes=row.get("minutes"), age=row.get("age"), pos_group=line_of_row(row),
+        gk_save_pct=row.get("gk_save_pct"), gk_cs_pct=row.get("gk_cs_pct"),
+        ucl_starts=row.get("ucl_starts"), uel_starts=row.get("uel_starts"),
+        conf_starts=row.get("conf_starts"), cup_starts=row.get("cup_starts"),
+        prev_minutes=row.get("prev_minutes"), prev_ss_rating=row.get("prev_ss_rating"),
+        league_level=row.get("_league_level"), prev_league_level=_prev_level(row),
+        prev_gk_save_pct=row.get("prev_gk_save_pct"), prev_gk_cs_pct=row.get("prev_gk_cs_pct"),
+        prev_value=row.get("prev_market_value_eur"),
+        hist_ss_rating=row.get("hist_ss_rating"), hist_minutes=row.get("hist_minutes"),
+        hist_league_level=_prev_level(row, "hist_league"), _parts=parts)
+    return {"ovr": ovr, "parts": [{"key": k, "en": PART_LABELS.get(k, (k, ""))[0], "ko": PART_LABELS.get(k, ("", k))[1],
+                                   "value": v} for k, v in parts]}
 
 
 def player_line(row) -> dict:

@@ -241,6 +241,7 @@ export type PlayerDetail = {
   age: number; nationality: string; value_eur: number; photo: string;
   ovr: number; ss_rating: number; minutes: number; goals: number; assists: number;
   contract_until: string; is_gk: boolean; trend?: Trend;
+  ovr_parts?: OvrPart[]; ratings?: RatingSources; form?: number | null;
   categories: MetricCat[];
   radar: { axis: string; value: number }[];
   badges: Badge[];
@@ -252,11 +253,11 @@ export type PlayerDetail = {
 // 선수 시즌 기록 — 경기별(대회·출전 분·골·도움) + 대회별 합계 + 전체 합산(리그·컵·유럽 분리)
 export type SeasonLogMatch = { date: string; comp: string; comp_code: string; opponent: string; home_away: string; score: string;
   result: string; status: "start" | "sub" | "bench" | "out"; minutes: number; goals: number; pens: number; assists: number;
-  yellow: number; red: number; has_events: boolean };
+  yellow: number; red: number; has_events: boolean ; shots?: number; sot?: number; saves?: number; conceded?: number; has_stats?: boolean };
 export type SeasonLogComp = { comp: string; matches: number; apps: number; starts: number; minutes: number; goals: number;
-  assists: number; yellow: number; red: number };
+  assists: number; yellow: number; red: number ; shots?: number; sot?: number; saves?: number; conceded?: number; g90?: number | null; shots90?: number | null };
 export type SeasonLog = { available: boolean; espn_name?: string | null; matches: SeasonLogMatch[]; by_comp: SeasonLogComp[];
-  total: SeasonLogComp; events_coverage: number };
+  total: SeasonLogComp; events_coverage: number; is_gk?: boolean; stats_coverage?: number };
 
 export type TransferItem = {
   player: string; club: string; pos: string; age: number; nat: string;
@@ -623,3 +624,8 @@ export type GoalMix = { cur: GoalMixPart | null; prev: GoalMixPart | null };
 // 팀 시즌 기록(경기당 득점·실점·리그 순위) — /api/overview ovr.record (src/season_history.py)
 export type TeamRecordRow = { season: string; label: string; w?: number; played: number; gf_pg: number; ga_pg: number;
   gf_z: number; ga_z: number; gf_rank: number; ga_rank: number; n: number };
+
+// OVR 구성(단계별 기여)·평점 출처 — /api/player ovr_parts · ratings (src/ratings_v3.ovr_parts_of_row, rating_blend)
+export type OvrPart = { key: string; en: string; ko: string; value: number };
+export type RatingSources = { blend: number | null; sofascore: number | null; fotmob: number | null; fotmob_scaled: number | null;
+  prev_blend: number | null; prev_sofascore: number | null; prev_fotmob: number | null; hist: number | null; prev_minutes: number | null };

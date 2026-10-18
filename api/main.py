@@ -1654,7 +1654,7 @@ def _espn_name(ours: str, names) -> str | None:
     return hits[0] if len(hits) == 1 else None
 
 
-def _season_log(team: str, player: str, league: str) -> dict:
+def _season_log(team: str, player: str, league: str, is_gk: bool = False) -> dict:
     """선수 시즌 기록 — 경기별(대회·상대·결과·출전 분·선발·골·도움·카드) + 대회별 합계 + 전체 합산.
     리그·국내컵·유럽대항전 라인업/교체(ESPN) + 선수 이벤트(data/match_events, src/fetch_match_stats.py).
     예전 Player 탭은 리그 스탯과 컵·유럽 선발 수만 있어 '챔스+리그 합산·분리'가 안 보였다(2026-10-15)."""
@@ -1685,6 +1685,15 @@ def _season_log(team: str, player: str, league: str) -> dict:
             evs.setdefault(str(int(float(r.event_id))), []).append(r.type)
     else:
         ev = None
+    # 선수 경기 기록(전 대회 슈팅·유효슈팅·선방·실점 — ESPN, src/fetch_match_stats.py)
+    pm: dict[str, dict] = {}
+    pmt = ds.read_table("player_match_stats", league=league)
+    if pmt is not None and not pmt.empty and me:
+        mine = pmt[(pmt["squad"] == team)]
+        me_pm = _espn_name(player, set(mine["player"].dropna().astype(str)) | {me})
+        for r in mine[mine["player"].astype(str) == (me_pm or "")].to_dict("records"):
+            pm[str(r["event_id"]).replace(".0", "")] = r
+    pm_events = set(pmt["event_id"].astype(str).str.replace(r"\.0$", "", regex=True)) if pmt is not None and not pmt.empty else set()
     rows = []
     for r in sch.sort_values("date").itertuples():
         e = r.eid
@@ -1696,20 +1705,27 @@ def _season_log(team: str, player: str, league: str) -> dict:
                      "opponent": str(r.opponent), "home_away": r.home_away, "score": str(r.score or ""), "result": str(r.result or ""),
                      "status": status, "minutes": mins, "goals": t.count("goal") + t.count("pen"), "pens": t.count("pen"),
                      "assists": t.count("assist"), "yellow": t.count("yellow"), "red": t.count("red"),
-                     "has_events": ev is not None and e in set(ev["event_id"].astype(str).str.replace(r"\.0$", "", regex=True))})
+                     "has_events": ev is not None and e in set(ev["event_id"].astype(str).str.replace(r"\.0$", "", regex=True)),
+                     **{k: int(_num((pm.get(e) or {}).get(k))) for k in ("shots", "sot", "saves", "conceded")},
+                     "has_stats": e in pm_events})
     by: dict[str, dict] = {}
     for x in rows:
         b = by.setdefault(x["comp"], {"comp": x["comp"], "matches": 0, "apps": 0, "starts": 0, "minutes": 0, "goals": 0,
-                                      "assists": 0, "yellow": 0, "red": 0})
+                                      "assists": 0, "yellow": 0, "red": 0, "shots": 0, "sot": 0, "saves": 0, "conceded": 0})
         b["matches"] += 1
         b["apps"] += 1 if x["minutes"] > 0 else 0
         b["starts"] += 1 if x["status"] == "start" else 0
-        for k in ("minutes", "goals", "assists", "yellow", "red"):
+        for k in ("minutes", "goals", "assists", "yellow", "red", "shots", "sot", "saves", "conceded"):
             b[k] += x[k]
     comps = sorted(by.values(), key=lambda b: (b["comp"] != "리그", -b["matches"]))
-    tot = {"comp": "합계", **{k: sum(b[k] for b in comps) for k in ("matches", "apps", "starts", "minutes", "goals", "assists", "yellow", "red")}}
-    return {"available": bool(me), "espn_name": me, "matches": rows, "by_comp": comps, "total": tot,
-            "events_coverage": round(sum(1 for x in rows if x["has_events"]) / max(1, len(rows)), 2)}
+    keys = ("matches", "apps", "starts", "minutes", "goals", "assists", "yellow", "red", "shots", "sot", "saves", "conceded")
+    tot = {"comp": "합계", **{k: sum(b[k] for b in comps) for k in keys}}
+    for b in comps + [tot]:                             # 90분당 — 대회 비교용(출전 270분 미만은 표본 부족)
+        b["g90"] = round(b["goals"] * 90 / b["minutes"], 2) if b["minutes"] >= 270 else None
+        b["shots90"] = round(b["shots"] * 90 / b["minutes"], 1) if b["minutes"] >= 270 else None
+    return {"available": bool(me), "espn_name": me, "matches": rows, "by_comp": comps, "total": tot, "is_gk": bool(is_gk),
+            "events_coverage": round(sum(1 for x in rows if x["has_events"]) / max(1, len(rows)), 2),
+            "stats_coverage": round(sum(1 for x in rows if x["has_stats"]) / max(1, len(rows)), 2)}
 
 
 @app.get("/api/player/{team}/{player}")
@@ -1810,8 +1826,26 @@ def player_detail(team: str, player: str, league: str = ACTIVE_LEAGUE):
         "contract_until": str(row.get("tm_contract_until") or ""),
         "is_gk": is_gk, "categories": categories, "radar": radar, "badges": badges,
         "comp_usage": _comp_profile(row, _comp_usage(league)),
-        "season_log": _season_log(str(row.get("squad") or team), str(row["player"]), league),
+        "season_log": _season_log(str(row.get("squad") or team), str(row["player"]), league, is_gk=is_gk),
+        # 'OVR 이 어떻게 나왔나' — 단계별 기여(rv3.ovr_parts_of_row)와 평점 출처(Sofascore·FotMob 평균)
+        "ovr_parts": rv3.ovr_parts_of_row(row)["parts"],
+        "ratings": _rating_sources(row),
+        "form": _player_form(row),
     }
+
+
+def _rating_sources(row) -> dict:
+    """평점 출처 — 두 출처 평균(모델 입력)과 원래 값(src/rating_blend.py). 없으면 None."""
+    import rating_blend as rb  # noqa: PLC0415
+
+    def f(k):
+        v = pd.to_numeric(row.get(k), errors="coerce")
+        return None if pd.isna(v) or v <= 0 else round(float(v), 2)
+    fm = f("fm_rating")
+    return {"blend": f("ss_rating"), "sofascore": f("ss_rating_sofa"), "fotmob": fm,
+            "fotmob_scaled": round(float(rb.fm_to_ss(fm)), 2) if fm else None,
+            "prev_blend": f("prev_ss_rating"), "prev_sofascore": f("prev_ss_rating_sofa"), "prev_fotmob": f("prev_fm_rating"),
+            "hist": f("hist_ss_rating"), "prev_minutes": int(_num(row.get("prev_minutes"))) or None}
 
 
 def _tf_list(tt, direction):

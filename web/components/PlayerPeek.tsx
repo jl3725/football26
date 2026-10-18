@@ -124,6 +124,8 @@ export function PeekProvider({ children, onOpenPlayer, onOpenTeam }: {
   const vh = detail?.value_history ?? [];
   const spark = vh.length >= 2 ? vh : null;
 
+  const log = detail?.season_log?.available ? detail.season_log : null;   // 전 대회(SEASON LOG)
+  const tot = log ? log.total : null;
   return (
     <Ctx.Provider value={open}>
       <TeamCtx.Provider value={onOpenTeam}>
@@ -169,17 +171,19 @@ export function PeekProvider({ children, onOpenPlayer, onOpenTeam }: {
             )}
 
             {base || detail ? (
+              <>
               <div className="peek-stats">
-                <div className="peek-stat">
-                  {detail ? <b>{detail.minutes.toLocaleString()}</b> : detailLoading ? <Skel w={30} h={18} style={{ margin: "0 auto 2px" }} /> : <b>—</b>}
-                  <span>출전(분)</span>
+                {/* 전 대회 합계(리그·컵·유럽 — SEASON LOG). 예전엔 리그 기록만 보였다(2026-10-19 사용자 지적) */}
+                <div className="peek-stat" title="리그·국내컵·유럽대항전 합계">
+                  {detail ? <b>{(tot ? tot.minutes : detail.minutes).toLocaleString()}</b> : detailLoading ? <Skel w={30} h={18} style={{ margin: "0 auto 2px" }} /> : <b>—</b>}
+                  <span>{tot ? "출전(분)·전체" : "출전(분)"}</span>
                 </div>
                 <div className="peek-stat">
-                  {detail ? <b>{detail.goals}</b> : detailLoading ? <Skel w={20} h={18} style={{ margin: "0 auto 2px" }} /> : <b>—</b>}
+                  {detail ? <b>{tot ? tot.goals : detail.goals}</b> : detailLoading ? <Skel w={20} h={18} style={{ margin: "0 auto 2px" }} /> : <b>—</b>}
                   <span>득점</span>
                 </div>
                 <div className="peek-stat">
-                  {detail ? <b>{detail.assists}</b> : detailLoading ? <Skel w={20} h={18} style={{ margin: "0 auto 2px" }} /> : <b>—</b>}
+                  {detail ? <b>{tot ? tot.assists : detail.assists}</b> : detailLoading ? <Skel w={20} h={18} style={{ margin: "0 auto 2px" }} /> : <b>—</b>}
                   <span>도움</span>
                 </div>
                 <div className="peek-stat" title={SS_NOTE}>
@@ -190,6 +194,15 @@ export function PeekProvider({ children, onOpenPlayer, onOpenTeam }: {
                   {detail?.ss_rating ? <div style={{ marginTop: 3 }}><MeaningTag sm m={ssMeaning(detail.ss_rating)} /></div> : null}
                 </div>
               </div>
+              {log && log.by_comp.filter((c) => c.matches).length > 1 && (
+                <div className="peek-comps">
+                  {log.by_comp.filter((c) => c.matches).map((c) => (
+                    <span key={c.comp}><b>{c.comp}</b> {c.apps}경기 {c.minutes.toLocaleString()}′{c.goals || c.assists ? ` · ${c.goals}G ${c.assists}A` : ""}</span>
+                  ))}
+                  <em>평점은 리그 경기(Sofascore·FotMob 평균)</em>
+                </div>
+              )}
+              </>
             ) : detailLoading ? (
               <div className="peek-loadrow"><Skel h={44} r={10} /></div>
             ) : (
