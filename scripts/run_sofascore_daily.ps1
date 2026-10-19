@@ -39,6 +39,17 @@ Write-Host "[sofascore-daily] 시즌 $Season Sofascore 평점 갱신 시작"
 & $Python scripts\build_season.py --only sofascore,merge_sofascore
 $BuildCode = $LASTEXITCODE
 
+# 실패한 리그만 2분 뒤 한 번 더 — Sofascore 가 브라우저 세션을 끊는 일이 있다(첫 실행 2026-10-19 리그 1 연결 끊김)
+if ($BuildCode -ne 0) {
+    $Failed = (& $Python -c "import glob,os,re; f=max(glob.glob('logs/season-*.log'), key=os.path.getmtime); t=open(f,encoding='utf-8',errors='ignore').read().rsplit('=== ',1)[-1]; print(' '.join(sorted({m.group(1) for m in re.finditer(r'\] (\S+)\s+FAIL', t)})))").Trim()
+    if ($Failed) {
+        Write-Host "[sofascore-daily] 실패 리그 재시도(2분 뒤): $Failed"
+        Start-Sleep -Seconds 120
+        & $Python scripts\build_season.py --only sofascore,merge_sofascore $Failed.Split(" ")
+        $BuildCode = $LASTEXITCODE
+    }
+}
+
 & $Python scripts\build_db.py | Out-Null
 & $Python scripts\validate_data.py --no-optional
 if ($LASTEXITCODE -ne 0) {
