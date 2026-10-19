@@ -625,70 +625,15 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 441,
+   "total": 401,
    "exact": 386,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 55,
+   "orphan": 15,
    "orphans": [
     {
      "squad": "Augsburg",
      "name": "Keven Schlotterbeck",
-     "starts": 1
-    },
-    {
-     "squad": "Köln",
-     "name": "Arne Schultz",
-     "starts": 1
-    },
-    {
-     "squad": "Köln",
-     "name": "Tim Kloss",
-     "starts": 1
-    },
-    {
-     "squad": "Köln",
-     "name": "Tobias Eisenhuth",
-     "starts": 1
-    },
-    {
-     "squad": "Köln",
-     "name": "Killian Jakob",
-     "starts": 1
-    },
-    {
-     "squad": "Köln",
-     "name": "Meiko Sponsel",
-     "starts": 1
-    },
-    {
-     "squad": "Köln",
-     "name": "Niklas Swider",
-     "starts": 1
-    },
-    {
-     "squad": "Köln",
-     "name": "Taylan Duman",
-     "starts": 1
-    },
-    {
-     "squad": "Köln",
-     "name": "Lucas Mika Wolf",
-     "starts": 1
-    },
-    {
-     "squad": "Köln",
-     "name": "Yannick Tonye",
-     "starts": 1
-    },
-    {
-     "squad": "Köln",
-     "name": "Niklas Castelle",
-     "starts": 1
-    },
-    {
-     "squad": "Köln",
-     "name": "David Otto",
      "starts": 1
     },
     {
@@ -697,63 +642,68 @@
      "starts": 1
     },
     {
-     "squad": "Hamburger SV",
-     "name": "Jannik Schoon",
-     "starts": 1
-    },
-    {
-     "squad": "Hamburger SV",
-     "name": "Janek Wrede",
-     "starts": 1
-    },
-    {
-     "squad": "Hamburger SV",
-     "name": "Jorma Rudolf Gerhard Eggers",
-     "starts": 1
-    },
-    {
-     "squad": "Hamburger SV",
-     "name": "Julius Emil Stegemann",
-     "starts": 1
-    },
-    {
-     "squad": "Hamburger SV",
-     "name": "Lionel Aloilela Coelestin Edward Von Zitzewitz",
-     "starts": 1
-    },
-    {
-     "squad": "Hamburger SV",
-     "name": "Christopher Grünewald",
-     "starts": 1
-    },
-    {
-     "squad": "Hamburger SV",
-     "name": "Hammed Umer Nawaz",
-     "starts": 1
-    },
-    {
-     "squad": "Hamburger SV",
-     "name": "Piet Ole Oldag",
-     "starts": 1
-    },
-    {
-     "squad": "Hamburger SV",
-     "name": "Fabian Lemke",
-     "starts": 1
-    },
-    {
-     "squad": "Hamburger SV",
-     "name": "Robert Schick",
-     "starts": 1
-    },
-    {
-     "squad": "Hamburger SV",
-     "name": "Tjorven Bastian Dan Köhler",
-     "starts": 1
-    },
-    {
      "squad": "Bayern Munich",
      "name": "David Podar-Stiube",
+     "starts": 0
+    },
+    {
+     "squad": "Freiburg",
+     "name": "Mateo Zelic",
+     "starts": 0
+    },
+    {
+     "squad": "Frankfurt",
+     "name": "Michael Zetterer",
+     "starts": 0
+    },
+    {
+     "squad": "Frankfurt",
+     "name": "Julian Etse",
+     "starts": 0
+    },
+    {
+     "squad": "Stuttgart",
+     "name": "Lazar Jovanovic",
+     "starts": 0
+    },
+    {
+     "squad": "Augsburg",
+     "name": "Kristijan Jakic",
+     "starts": 0
+    },
+    {
+     "squad": "Leverkusen",
+     "name": "Exequiel Palacios",
+     "starts": 0
+    },
+    {
+     "squad": "Hoffenheim",
+     "name": "Tristan Spranger",
+     "starts": 0
+    },
+    {
+     "squad": "RB Leipzig",
+     "name": "El Chadaille Bitshiabu",
+     "starts": 0
+    },
+    {
+     "squad": "Union Berlin",
+     "name": "Oluwaseun Ogbemudia",
+     "starts": 0
+    },
+    {
+     "squad": "Mainz 05",
+     "name": "William Bøving",
+     "starts": 0
+    },
+    {
+     "squad": "Hamburger SV",
+     "name": "Jason-Dean Bissi Mouelle",
+     "starts": 0
+    },
+    {
+     "squad": "Hamburger SV",
+     "name": "Kelvin Ojo",
      "starts": 0
     }
    ]
@@ -776,11 +726,37 @@
   },
   "match_events": {
    "total": 273,
-   "exact": 273,
+   "exact": 268,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 0,
-   "orphans": []
+   "orphan": 5,
+   "orphans": [
+    {
+     "squad": "Köln",
+     "name": "Meiko Sponsel",
+     "starts": 0
+    },
+    {
+     "squad": "Köln",
+     "name": "Lucas Mika Wolf",
+     "starts": 0
+    },
+    {
+     "squad": "Köln",
+     "name": "Jakob Sachse",
+     "starts": 0
+    },
+    {
+     "squad": "Köln",
+     "name": "Niklas Jahn",
+     "starts": 0
+    },
+    {
+     "squad": "Hamburger SV",
+     "name": "Hammed Umer Nawaz",
+     "starts": 0
+    }
+   ]
   },
   "fotmob_ratings": {
    "total": 287,
@@ -935,67 +911,12 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 533,
+   "total": 513,
    "exact": 499,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 34,
+   "orphan": 14,
    "orphans": [
-    {
-     "squad": "Inter",
-     "name": "Javier Díaz",
-     "starts": 1
-    },
-    {
-     "squad": "Inter",
-     "name": "Anwar Hernández",
-     "starts": 1
-    },
-    {
-     "squad": "Inter",
-     "name": "Álex Sánchez",
-     "starts": 1
-    },
-    {
-     "squad": "Inter",
-     "name": "Victor Alonso",
-     "starts": 1
-    },
-    {
-     "squad": "Inter",
-     "name": "Jilmar Torres",
-     "starts": 1
-    },
-    {
-     "squad": "Inter",
-     "name": "Maurizio Pochettino",
-     "starts": 1
-    },
-    {
-     "squad": "Inter",
-     "name": "David López",
-     "starts": 1
-    },
-    {
-     "squad": "Inter",
-     "name": "Pablo Molina",
-     "starts": 1
-    },
-    {
-     "squad": "Inter",
-     "name": "Soule",
-     "starts": 1
-    },
-    {
-     "squad": "Inter",
-     "name": "Domi Berlanga",
-     "starts": 1
-    },
-    {
-     "squad": "Inter",
-     "name": "Faysal Choaib",
-     "starts": 1
-    },
     {
      "squad": "Parma",
      "name": "Alessandro Circati",
@@ -1012,51 +933,6 @@
      "starts": 0
     },
     {
-     "squad": "Inter",
-     "name": "Mamadou Diaby",
-     "starts": 0
-    },
-    {
-     "squad": "Inter",
-     "name": "Adri da Cunha",
-     "starts": 0
-    },
-    {
-     "squad": "Inter",
-     "name": "Borja Arellano Monedero",
-     "starts": 0
-    },
-    {
-     "squad": "Inter",
-     "name": "Alex Prelado Leitao",
-     "starts": 0
-    },
-    {
-     "squad": "Inter",
-     "name": "Marc Rodríguez",
-     "starts": 0
-    },
-    {
-     "squad": "Inter",
-     "name": "Juan Cámara",
-     "starts": 0
-    },
-    {
-     "squad": "Inter",
-     "name": "Robin Lafarge",
-     "starts": 0
-    },
-    {
-     "squad": "Inter",
-     "name": "Pol",
-     "starts": 0
-    },
-    {
-     "squad": "Inter",
-     "name": "Rafinha",
-     "starts": 0
-    },
-    {
      "squad": "Parma",
      "name": "Aymen Zouin",
      "starts": 0
@@ -1064,6 +940,51 @@
     {
      "squad": "Monza",
      "name": "Andrea Petagna",
+     "starts": 0
+    },
+    {
+     "squad": "Monza",
+     "name": "Arvid Brorsson",
+     "starts": 0
+    },
+    {
+     "squad": "Fiorentina",
+     "name": "Niccolò Fortini",
+     "starts": 0
+    },
+    {
+     "squad": "Udinese",
+     "name": "Adam Buksa",
+     "starts": 0
+    },
+    {
+     "squad": "Udinese",
+     "name": "Abdoulaye Camara",
+     "starts": 0
+    },
+    {
+     "squad": "Genoa",
+     "name": "Chec Bebel Doumbia",
+     "starts": 0
+    },
+    {
+     "squad": "Sassuolo",
+     "name": "Luca Moro",
+     "starts": 0
+    },
+    {
+     "squad": "Lecce",
+     "name": "Christian Lupo",
+     "starts": 0
+    },
+    {
+     "squad": "Parma",
+     "name": "Karlo Pajsar",
+     "starts": 0
+    },
+    {
+     "squad": "Torino",
+     "name": "Zalán Kugyela",
      "starts": 0
     }
    ]
@@ -1098,36 +1019,32 @@
    ]
   },
   "espn_subs_cups": {
-   "total": 285,
-   "exact": 280,
-   "rule": 2,
+   "total": 275,
+   "exact": 273,
+   "rule": 1,
    "ambiguous": 0,
-   "orphan": 3,
+   "orphan": 1,
    "orphans": [
-    {
-     "squad": "Inter",
-     "name": "Dacu",
-     "starts": 0
-    },
     {
      "squad": "Torino",
      "name": "Tino Anjorin",
-     "starts": 0
-    },
-    {
-     "squad": "Inter",
-     "name": "Souleymane Sidibé",
      "starts": 0
     }
    ]
   },
   "match_events": {
    "total": 310,
-   "exact": 310,
+   "exact": 309,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 0,
-   "orphans": []
+   "orphan": 1,
+   "orphans": [
+    {
+     "squad": "Inter",
+     "name": "Jilmar Torres",
+     "starts": 0
+    }
+   ]
   },
   "fotmob_ratings": {
    "total": 353,
@@ -1282,77 +1199,12 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 196,
+   "total": 174,
    "exact": 170,
    "rule": 1,
    "ambiguous": 0,
-   "orphan": 25,
+   "orphan": 3,
    "orphans": [
-    {
-     "squad": "Lille",
-     "name": "Pontus Dahlberg",
-     "starts": 2
-    },
-    {
-     "squad": "Lille",
-     "name": "Ruben Gabrielsen",
-     "starts": 2
-    },
-    {
-     "squad": "Lille",
-     "name": "Lars Ranger",
-     "starts": 2
-    },
-    {
-     "squad": "Lille",
-     "name": "Filip Ottosson",
-     "starts": 2
-    },
-    {
-     "squad": "Lille",
-     "name": "Gustav Nyheim",
-     "starts": 2
-    },
-    {
-     "squad": "Lille",
-     "name": "Ylldren Ibrahimaj",
-     "starts": 2
-    },
-    {
-     "squad": "Lille",
-     "name": "Fredrik Gulbrandsen",
-     "starts": 2
-    },
-    {
-     "squad": "Lille",
-     "name": "Vá",
-     "starts": 2
-    },
-    {
-     "squad": "Lille",
-     "name": "Yaw Paintsil",
-     "starts": 2
-    },
-    {
-     "squad": "Lille",
-     "name": "Sander Moen Foss",
-     "starts": 1
-    },
-    {
-     "squad": "Lille",
-     "name": "Frederik Elkaer",
-     "starts": 1
-    },
-    {
-     "squad": "Lille",
-     "name": "Daniel Bassi",
-     "starts": 1
-    },
-    {
-     "squad": "Lille",
-     "name": "Stian Kristiansen",
-     "starts": 1
-    },
     {
      "squad": "Lille",
      "name": "Thomas Sajous",
@@ -1366,51 +1218,6 @@
     {
      "squad": "Rennes",
      "name": "Alidu Seidu",
-     "starts": 0
-    },
-    {
-     "squad": "Lille",
-     "name": "Sturla Ottesen",
-     "starts": 0
-    },
-    {
-     "squad": "Lille",
-     "name": "Gustav Nordh",
-     "starts": 0
-    },
-    {
-     "squad": "Lille",
-     "name": "Kevin Martin Krygard",
-     "starts": 0
-    },
-    {
-     "squad": "Lille",
-     "name": "Eric Kitolano",
-     "starts": 0
-    },
-    {
-     "squad": "Lille",
-     "name": "Seun Akanji",
-     "starts": 0
-    },
-    {
-     "squad": "Lille",
-     "name": "Henrik Melland",
-     "starts": 0
-    },
-    {
-     "squad": "Lille",
-     "name": "Stefan Hagerup",
-     "starts": 0
-    },
-    {
-     "squad": "Lille",
-     "name": "Thomas Lehne Olsen",
-     "starts": 0
-    },
-    {
-     "squad": "Lille",
-     "name": "Linus Alperud",
      "starts": 0
     }
    ]
@@ -1435,20 +1242,51 @@
    ]
   },
   "espn_subs_cups": {
-   "total": 106,
-   "exact": 105,
-   "rule": 1,
+   "total": 93,
+   "exact": 93,
+   "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
    "orphans": []
   },
   "match_events": {
    "total": 261,
-   "exact": 261,
+   "exact": 255,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 0,
-   "orphans": []
+   "orphan": 6,
+   "orphans": [
+    {
+     "squad": "Lille",
+     "name": "Thomas Lehne Olsen",
+     "starts": 0
+    },
+    {
+     "squad": "Lille",
+     "name": "Vá",
+     "starts": 0
+    },
+    {
+     "squad": "Lille",
+     "name": "Fredrik Gulbrandsen",
+     "starts": 0
+    },
+    {
+     "squad": "Lille",
+     "name": "Gustav Nordh",
+     "starts": 0
+    },
+    {
+     "squad": "Lille",
+     "name": "Gustav Nyheim",
+     "starts": 0
+    },
+    {
+     "squad": "Lille",
+     "name": "Henrik Melland",
+     "starts": 0
+    }
+   ]
   },
   "fotmob_ratings": {
    "total": 298,
