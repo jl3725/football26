@@ -884,7 +884,6 @@ event_id,date,comp_code,squad,player,starter,shots,sot,saves,conceded,shots_face
 401885465,2026-08-29,por.1,Porto,Hwang In-Beom,0,0,0,0,0,0,2,0,0,0
 401885465,2026-08-29,por.1,Porto,Nehuén Pérez,0,0,0,0,0,0,1,0,0,0
 401885465,2026-08-29,por.1,Porto,Borja Sainz,0,2,1,0,0,0,1,1,0,0
-401906015,2026-08-29,por.taca.portugal,Benfica,,0,0,0,0,0,0,0,0,0,0
 401885459,2026-08-30,por.1,Estrela,Leo Linck,1,0,0,3,2,0,0,0,0,0
 401885459,2026-08-30,por.1,Estrela,Stefan Lekovic,1,1,0,0,2,0,1,0,0,0
 401885459,2026-08-30,por.1,Estrela,Luan Patrick,1,1,0,0,2,0,0,2,0,0
@@ -979,9 +978,6 @@ event_id,date,comp_code,squad,player,starter,shots,sot,saves,conceded,shots_face
 401885461,2026-08-30,por.1,Moreirense,Kevyn,0,0,0,0,0,0,0,0,0,0
 401885461,2026-08-30,por.1,Moreirense,Rodri Alonso,0,0,0,0,0,0,2,0,0,0
 401885461,2026-08-30,por.1,Moreirense,Leandro Santos,0,0,0,0,0,0,0,1,0,0
-401906009,2026-08-30,por.taca.portugal,Braga,,0,0,0,0,0,0,0,0,0,0
-401909251,2026-08-30,por.taca.portugal,Vit. Guimarães,,0,0,0,0,0,0,0,0,0,0
-401909608,2026-08-30,por.taca.portugal,Benfica,,0,0,0,0,0,0,0,0,0,0
 401885457,2026-08-31,por.1,Benfica,Samuel Soares,1,0,0,1,1,0,0,0,0,0
 401885457,2026-08-31,por.1,Benfica,Clément Lenglet,1,1,1,0,1,0,0,0,0,0
 401885457,2026-08-31,por.1,Benfica,Tomás Araújo,1,1,0,0,1,0,0,0,1,0
@@ -1857,7 +1853,6 @@ event_id,date,comp_code,squad,player,starter,shots,sot,saves,conceded,shots_face
 401885438,2026-09-19,por.1,Rio Ave,Malik Sellouki,0,0,0,0,0,0,0,1,0,0
 401885438,2026-09-19,por.1,Rio Ave,Sebastian Clemmensen,0,0,0,0,0,0,0,0,0,0
 401885438,2026-09-19,por.1,Rio Ave,Marios Vrousai,0,1,1,0,0,0,0,1,0,0
-401915579,2026-09-19,por.taca.portugal,Vit. Guimarães,,0,0,0,0,0,0,0,0,0,0
 401885430,2026-09-20,por.1,Moreirense,André Ferreira,1,0,0,2,1,0,0,0,0,0
 401885430,2026-09-20,por.1,Moreirense,Gilberto Batista,1,1,0,0,1,0,0,1,0,0
 401885430,2026-09-20,por.1,Moreirense,Kiko,1,0,0,0,1,0,1,1,0,0
@@ -2017,9 +2012,6 @@ event_id,date,comp_code,squad,player,starter,shots,sot,saves,conceded,shots_face
 401885437,2026-09-20,por.1,Estrela,Bénito,0,0,0,0,0,0,0,2,0,0
 401885437,2026-09-20,por.1,Estrela,Robinho,0,0,0,0,0,0,0,0,0,0
 401885437,2026-09-20,por.1,Estrela,Kevin Höög Jansson,0,1,1,0,0,0,1,0,0,0
-401913983,2026-09-20,por.taca.portugal,Vit. Guimarães,,0,0,0,0,0,0,0,0,0,0
-401915758,2026-09-20,por.taca.portugal,Braga,,0,0,0,0,0,0,0,0,0,0
-401915762,2026-09-20,por.taca.portugal,Benfica,,0,0,0,0,0,0,0,0,0,0
 401885423,2026-10-09,por.1,Gil Vicente FC,Lucão,1,0,0,2,0,0,0,0,0,0
 401885423,2026-10-09,por.1,Gil Vicente FC,Buatu,1,0,0,0,0,0,1,0,0,0
 401885423,2026-10-09,por.1,Gil Vicente FC,Marvin Elimbi,1,0,0,0,0,0,1,2,1,0
@@ -2373,7 +2365,6 @@ event_id,date,comp_code,squad,player,starter,shots,sot,saves,conceded,shots_face
 401915852,2026-10-15,uefa.europa.conf,Braga,Pau Víctor,0,0,0,0,2,0,2,2,0,0
 401924380,2026-10-17,por.taca.portugal,Rio Ave,,0,0,0,0,0,0,0,0,0,0
 401924382,2026-10-17,por.taca.portugal,Nacional,,0,0,0,0,0,0,0,0,0,0
-401924405,2026-10-17,por.taca.portugal,Braga,,0,0,0,0,0,0,0,0,0,0
 401924408,2026-10-17,por.taca.portugal,Vit. Guimarães,,0,0,0,0,0,0,0,0,0,0
 401924409,2026-10-17,por.taca.portugal,Moreirense,,0,0,0,0,0,0,0,0,0,0
 401924411,2026-10-17,por.taca.portugal,Estrela,,0,0,0,0,0,0,0,0,0,0
@@ -2385,5 +2376,35 @@ event_id,date,comp_code,squad,player,starter,shots,sot,saves,conceded,shots_face
 401924424,2026-10-18,por.taca.portugal,Arouca,,0,0,0,0,0,0,0,0,0,0
 401924425,2026-10-18,por.taca.portugal,Famalicão,,0,0,0,0,0,0,0,0,0,0
 401924426,2026-10-18,por.taca.portugal,Alverca,,0,0,0,0,0,0,0,0,0,0
-401924427,2026-10-18,por.taca.portugal,Vit. Guimarães,,0,0,0,0,0,0,0,0,0,0
-401924428,2026-10-18,por.taca.portugal,Vit. Guimarães,,0,0,0,0,0,0,0,0,0,0
+401885480,2026-10-19,por.1,Braga,Bernardo,1,0,0,3,2,0,0,0,0,0
+401885480,2026-10-19,por.1,Braga,Vítor Carvalho,1,1,0,0,2,0,1,2,0,0
+401885480,2026-10-19,por.1,Braga,Adrian Bajrami,1,0,0,0,2,0,0,0,0,0
+401885480,2026-10-19,por.1,Braga,Gustaf Lagerbielke,1,2,1,0,2,0,1,0,0,0
+401885480,2026-10-19,por.1,Braga,Gorby,1,1,1,0,2,0,1,0,0,0
+401885480,2026-10-19,por.1,Braga,João Moutinho,1,0,0,0,1,0,0,0,0,0
+401885480,2026-10-19,por.1,Braga,Pau Víctor,1,3,1,0,2,0,5,1,1,0
+401885480,2026-10-19,por.1,Braga,Diogo Travassos,1,0,0,0,2,0,1,0,1,1
+401885480,2026-10-19,por.1,Braga,Jonas Wind,1,0,0,0,0,0,0,2,0,0
+401885480,2026-10-19,por.1,Braga,Diego Rodrigues,1,3,1,0,2,0,0,3,0,0
+401885480,2026-10-19,por.1,Braga,Ricardo Horta,1,2,0,0,2,0,1,0,0,0
+401885480,2026-10-19,por.1,Braga,Demir Ege Tiknaz,0,0,0,0,1,0,1,0,0,0
+401885480,2026-10-19,por.1,Braga,Fran Navarro,0,0,0,0,0,0,0,0,0,0
+401885480,2026-10-19,por.1,Braga,Víctor Gómez,0,3,0,0,2,0,1,0,0,0
+401885480,2026-10-19,por.1,Braga,Denis Huseinbasic,0,1,1,0,0,0,1,0,0,0
+401885480,2026-10-19,por.1,Braga,Gabriel Silva,0,2,1,0,0,0,0,1,0,0
+401885480,2026-10-19,por.1,Gil Vicente FC,Lucão,1,0,0,5,1,0,0,0,0,0
+401885480,2026-10-19,por.1,Gil Vicente FC,Buatu,1,0,0,0,1,0,1,0,0,0
+401885480,2026-10-19,por.1,Gil Vicente FC,Marvin Elimbi,1,0,0,0,1,0,1,1,0,0
+401885480,2026-10-19,por.1,Gil Vicente FC,David Moreira,1,1,1,0,1,0,0,2,0,0
+401885480,2026-10-19,por.1,Gil Vicente FC,Ricardo Esgaio,1,1,1,0,1,0,2,1,0,0
+401885480,2026-10-19,por.1,Gil Vicente FC,Santi García,1,0,0,0,1,0,1,1,0,0
+401885480,2026-10-19,por.1,Gil Vicente FC,Diogo Prioste,1,0,0,0,1,0,1,1,0,0
+401885480,2026-10-19,por.1,Gil Vicente FC,Andreas Lausen,1,0,0,0,1,0,0,1,0,0
+401885480,2026-10-19,por.1,Gil Vicente FC,Mohamed Kaba,1,2,0,0,1,0,2,1,0,0
+401885480,2026-10-19,por.1,Gil Vicente FC,Gil Martins,1,1,1,0,1,0,0,0,0,0
+401885480,2026-10-19,por.1,Gil Vicente FC,Murilo,1,2,0,0,1,0,0,1,1,0
+401885480,2026-10-19,por.1,Gil Vicente FC,Walace França,0,1,1,0,0,0,0,1,0,0
+401885480,2026-10-19,por.1,Gil Vicente FC,Zé Carlos,0,0,0,0,0,0,1,0,0,0
+401885480,2026-10-19,por.1,Gil Vicente FC,Gonçalo Maia,0,0,0,0,0,0,0,0,0,0
+401885480,2026-10-19,por.1,Gil Vicente FC,Joelson Mendes,0,1,0,0,0,0,0,1,0,0
+401885480,2026-10-19,por.1,Gil Vicente FC,Tidjany Touré,0,1,0,0,0,0,0,1,0,0

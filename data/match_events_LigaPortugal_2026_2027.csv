@@ -248,7 +248,6 @@ event_id,date,comp_code,squad,minute,type,player
 401885465,2026-08-29,por.1,Porto,20,assist,Pepê
 401885465,2026-08-29,por.1,Porto,38,goal,William Gomes
 401885465,2026-08-29,por.1,Porto,38,assist,Gabri Veiga
-401906015,2026-08-29,por.taca.portugal,Benfica,,none,
 401885459,2026-08-30,por.1,Estrela,45+1,pen,Ianis Stoica
 401885459,2026-08-30,por.1,Estrela,62,goal,Abraham Marcus
 401885459,2026-08-30,por.1,Estrela,62,assist,Eddy Doué
@@ -273,9 +272,6 @@ event_id,date,comp_code,squad,minute,type,player
 401885461,2026-08-30,por.1,Moreirense,62,yellow,Kiko
 401885461,2026-08-30,por.1,Moreirense,71,yellow,Rodri Alonso
 401885461,2026-08-30,por.1,Moreirense,75,yellow,Aranha
-401906009,2026-08-30,por.taca.portugal,Braga,,none,
-401909251,2026-08-30,por.taca.portugal,Vit. Guimarães,,none,
-401909608,2026-08-30,por.taca.portugal,Benfica,,none,
 401885457,2026-08-31,por.1,Benfica,40,goal,Vangelis Pavlidis
 401885457,2026-08-31,por.1,Benfica,51,goal,Clément Lenglet
 401885457,2026-08-31,por.1,Benfica,51,assist,Tomás Araújo
@@ -533,7 +529,6 @@ event_id,date,comp_code,squad,minute,type,player
 401885438,2026-09-19,por.1,Alverca,90+3,yellow,André Vidigal
 401885438,2026-09-19,por.1,Rio Ave,87,yellow,Simon Garcia
 401885438,2026-09-19,por.1,Rio Ave,90+5,yellow,Francisco Petrasso
-401915579,2026-09-19,por.taca.portugal,Vit. Guimarães,,none,
 401885430,2026-09-20,por.1,Moreirense,52,goal,Tiago Andrade
 401885430,2026-09-20,por.1,Moreirense,52,assist,Leonardo Vonic
 401885430,2026-09-20,por.1,Vit. Guimarães,90+6,goal,Toni Borevkovic
@@ -581,9 +576,6 @@ event_id,date,comp_code,squad,minute,type,player
 401885437,2026-09-20,por.1,Académico de Viseu,73,yellow,Soufiane Messeguem
 401885437,2026-09-20,por.1,Estrela,30,yellow,Eddy Doué
 401885437,2026-09-20,por.1,Estrela,68,yellow,Joan Jordán
-401913983,2026-09-20,por.taca.portugal,Vit. Guimarães,,none,
-401915758,2026-09-20,por.taca.portugal,Braga,,none,
-401915762,2026-09-20,por.taca.portugal,Benfica,,none,
 401885423,2026-10-09,por.1,Gil Vicente FC,90,pen,Walace França
 401885423,2026-10-09,por.1,Gil Vicente FC,17,yellow,Ricardo Esgaio
 401885423,2026-10-09,por.1,Gil Vicente FC,56,yellow,Andreas Lausen
@@ -699,7 +691,6 @@ event_id,date,comp_code,squad,minute,type,player
 401915852,2026-10-15,uefa.europa.conf,Braga,,none,
 401924380,2026-10-17,por.taca.portugal,Rio Ave,90+4,goal,Jalen Blesa
 401924382,2026-10-17,por.taca.portugal,Nacional,,none,
-401924405,2026-10-17,por.taca.portugal,Braga,25,goal,Filipe Reynal Marques
 401924408,2026-10-17,por.taca.portugal,Vit. Guimarães,78,goal,Miguel Maga
 401924409,2026-10-17,por.taca.portugal,Moreirense,,none,
 401924411,2026-10-17,por.taca.portugal,Estrela,65,goal,Tom Moustier
@@ -717,5 +708,13 @@ event_id,date,comp_code,squad,minute,type,player
 401924424,2026-10-18,por.taca.portugal,Arouca,105,goal,Fally Mayulu
 401924425,2026-10-18,por.taca.portugal,Famalicão,,none,
 401924426,2026-10-18,por.taca.portugal,Alverca,,none,
-401924427,2026-10-18,por.taca.portugal,Vit. Guimarães,73,goal,Lucas Daniel
-401924428,2026-10-18,por.taca.portugal,Vit. Guimarães,62,goal,Zé Mário
+401885480,2026-10-19,por.1,Braga,33,goal,Pau Víctor
+401885480,2026-10-19,por.1,Braga,41,yellow,Gorby
+401885480,2026-10-19,por.1,Braga,83,yellow,Víctor Gómez
+401885480,2026-10-19,por.1,Braga,90+6,yellow,Ricardo Horta
+401885480,2026-10-19,por.1,Gil Vicente FC,49,goal,Walace França
+401885480,2026-10-19,por.1,Gil Vicente FC,49,assist,Murilo
+401885480,2026-10-19,por.1,Gil Vicente FC,72,og,Diogo Travassos
+401885480,2026-10-19,por.1,Gil Vicente FC,25,yellow,Mohamed Kaba
+401885480,2026-10-19,por.1,Gil Vicente FC,57,yellow,Marvin Elimbi
+401885480,2026-10-19,por.1,Gil Vicente FC,89,yellow,Zé Carlos
