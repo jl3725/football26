@@ -45,7 +45,8 @@ from leagues import LEAGUES, data_path  # noqa: E402
 
 REPO = os.getenv("GITHUB_REPOSITORY", "jl3725/football26")
 BACKEND = os.getenv("BACKEND_URL", "https://football26-api.onrender.com").rstrip("/")
-WORKFLOWS = ["daily_data.yml", "daily_news.yml", "match_refresh.yml", "tm_data.yml", "keep_alive.yml", "ci.yml"]
+WORKFLOWS = ["daily_data.yml", "daily_news.yml", "match_refresh.yml", "match_watch.yml", "tm_data.yml", "keep_alive.yml",
+             "ci.yml"]
 NOW = dt.datetime.now(dt.timezone.utc)
 LABEL = "watchdog"
 

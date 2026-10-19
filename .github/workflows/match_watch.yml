@@ -1,0 +1,39 @@
+name: Match Watch
+
+# 경기 종료 감시 — 경기일에 ESPN 을 5분마다 보고, 우리 팀 경기가 끝나면 20분 뒤 match_refresh 를 바로 실행한다
+# (라인업·교체·경기 기록·FotMob 평점·결장·성적표·홈 스냅샷). 판단 규칙은 scripts/match_watch.py.
+# GitHub 예약 실행은 1~8시간 늦게 돌아(2026-10-20 측정) match_refresh 하루 1번으로는 낮 경기가 다음 날 아침에야 반영됐다.
+# 한 번 시작하면 최대 5.5시간 감시하고, 남은 경기가 있으면 자기 자신을 다시 실행해 이어 간다(예약 지연과 무관).
+# 아래 예약은 '시동'만 — 여러 개 둔 건 하나가 늦거나 건너뛰어도 다른 것이 시동을 걸게. 이미 감시 중이면 대기열 1개.
+on:
+  schedule:
+    - cron: "0 10,13,16,19 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: match-watch
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  actions: write   # match_refresh · 자기 자신 workflow_dispatch
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install
+        run: pip install -q requests pandas
+
+      - name: Watch finished matches
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          BACKEND_URL: ${{ vars.BACKEND_URL }}
+        run: python scripts/match_watch.py --max-minutes 330

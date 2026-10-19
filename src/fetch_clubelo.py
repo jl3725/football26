@@ -1,9 +1,9 @@
 """
 ClubElo 예측 — 유럽 클럽 Elo 레이팅으로 만든 독립 예측 모델(clubelo.com)의 다가오는 경기 승·무·패 확률.
 
-1순위 api.clubelo.com/Fixtures(CSV: 골득실 분포 GD<-5 … GD>5 → 홈 승 = GD>0 합 · 무 = GD=0 · 원정 승 = GD<0 합).
-2026-10 현재 API 호스트가 응답하지 않아(회사 회선·GH 러너 모두 시간 초과) 웹 페이지 clubelo.com/Fixtures 의
-표(경기마다 두 줄: 윗줄 홈팀·'1'·'X', 아랫줄 원정팀·'2')를 읽는 길을 함께 둔다. 하루 한 번 페이지 1회 요청.
+원천은 웹 페이지 clubelo.com/Fixtures 의 표(경기마다 두 줄: 윗줄 홈팀·'1'·'X', 아랫줄 원정팀·'2'). 한 번에 페이지 1회 요청.
+예전 1순위였던 api.clubelo.com/Fixtures(CSV 골득실 분포)는 2026-10-20 확인 결과 'Fixtures API deactivated' 를 돌려줘
+부르지 않는다(from_api 는 API 가 돌아오면 쓰려고 남김 — CLUBELO_API=1).
 팀 표기는 우리 standings 표기로 맞춰 저장(team_names.best) — 챔스 등 리그 밖 상대는 원래 이름 그대로.
 출력: data/clubelo_fixtures.csv (시즌 무관 · 매번 새로 씀)
 
@@ -12,6 +12,7 @@ ClubElo 예측 — 유럽 클럽 Elo 레이팅으로 만든 독립 예측 모델
 from __future__ import annotations
 
 import io
+import os
 import re
 import sys
 from pathlib import Path
@@ -92,12 +93,12 @@ def from_page() -> list[dict]:
 
 def main() -> int:
     raw, src = [], "api"
-    try:
-        raw = from_api()
-    except Exception as e:  # noqa: BLE001
-        print(f"[clubelo] API 실패({type(e).__name__})", flush=True)
-    if not raw:                       # API 가 응답은 해도 빈 표를 줄 때가 있다(2026-10-15 아침) → 웹 표로
-        print("[clubelo] API 결과 없음 — 웹 표로", flush=True)
+    if os.getenv("CLUBELO_API") == "1":
+        try:
+            raw = from_api()
+        except Exception as e:  # noqa: BLE001
+            print(f"[clubelo] API 실패({type(e).__name__})", flush=True)
+    if not raw:
         import time as _time
         for attempt in (1, 2):        # 웹 표도 가끔 시간 초과 — 30초 뒤 한 번 더(2026-10-19 점검: 주 2회꼴 실패)
             try:
