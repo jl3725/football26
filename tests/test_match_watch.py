@@ -43,15 +43,15 @@ def test_batches_during_wave_with_min_gap() -> None:
     # 30분 뒤 b 도 끝났지만 c 진행 중 + 지난 갱신 90분 안 → 묶어서 나중에
     t1 = T0 + dt.timedelta(minutes=30)
     d = w.decide(f, {"a": "post", "b": "post", "c": "in"}, t1)
-    assert d["refresh"] == [] and "b" not in w.handled
+    assert d["refresh"] == [] and d["held"] == ["b"] and w.busy(d)
     # c 까지 끝나고 d 는 3시간 밖 → 물결 끝, 90분 안이어도 바로
     t2 = T0 + dt.timedelta(hours=2, minutes=20)
     d = w.decide(f, {"a": "post", "b": "post", "c": "post", "d": "pre"}, t2)
-    assert sorted(d["refresh"]) == ["b", "c"] and d["later_today"] == [] and d["soon"] == ["d"]
+    assert sorted(d["refresh"]) == ["b", "c"] and d["soon"] == ["d"] and d["next_kick"] == pd.Timestamp("2026-10-24T16:30Z")
 
 
 def test_already_done_in_data_and_postponed_ignored() -> None:
     w = mw.Watch(T0)
     f = fx([("a", "2026-10-24T10:00Z", True), ("p", "2026-10-24T10:00Z", False)])
     d = w.decide(f, {"a": "post", "p": "postponed"}, T0)
-    assert d["refresh"] == [] and not (d["live"] or d["soon"] or d["pending"] or d["later_today"])
+    assert d["refresh"] == [] and not w.busy(d) and d["next_kick"] is None

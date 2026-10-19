@@ -11,7 +11,8 @@
   3. ESPN 에서 끝났는데 우리 데이터엔 아직 안 끝난 경기가 GRACE(20분 — FotMob 평점·ESPN 기록 확정) 지나면
      match_refresh 를 workflow_dispatch 로 실행. 재배포가 너무 잦지 않게 MIN_GAP(90분)에 한 번,
      단 남은 경기(진행 중·LOOKAHEAD 안 킥오프)가 없으면 마지막 물결이라 바로.
-  4. 오늘 남은 경기가 없으면 끝. 시간 예산을 다 쓰면 남은 경기가 있을 때만 자기 자신을 다시 실행(이어 달리기).
+  4. 진행·임박·대기 경기가 없고 다음 킥오프가 시간 예산 밖이면 끝(예약 시동이 다시 시작 — 하루 종일 빈 감시 안 함).
+     시간 예산을 다 썼는데 경기가 남았으면(또는 6시간 안 킥오프) 자기 자신을 다시 실행(이어 달리기).
   5. 감시하는 동안 5분마다 백엔드 /api/health 를 깨운다(BACKEND_URL) — keep_alive 예약 실행이 3~7시간 간격이라
      경기일 저녁에도 Render 무료 서버가 잠들어 첫 화면이 30초씩 걸렸다.
 
@@ -52,7 +53,7 @@ def _now() -> dt.datetime:
 
 
 def load_fixtures(now: dt.datetime) -> pd.DataFrame:
-    """우리 팀 경기(전 대회) 중 [지금-30시간, 오늘 끝+6시간] — event_id 단위 1행, done = 데이터에 이미 결과 있음."""
+    """우리 팀 경기(전 대회) 중 [지금-30시간, 지금+30시간] — event_id 단위 1행, done = 데이터에 이미 결과 있음."""
     frames = []
     for lg in LEAGUES:
         p = data_path("schedule_full", lg)
@@ -63,8 +64,7 @@ def load_fixtures(now: dt.datetime) -> pd.DataFrame:
     d = pd.concat(frames).dropna(subset=["event_id", "kickoff"])
     d["event_id"] = d["event_id"].astype("int64").astype(str)
     d["kickoff"] = pd.to_datetime(d["kickoff"], utc=True, errors="coerce")
-    end_of_day = pd.Timestamp(now.date(), tz="UTC") + pd.Timedelta(days=1, hours=6)
-    d = d[(d["kickoff"] >= pd.Timestamp(now) - pd.Timedelta(hours=30)) & (d["kickoff"] <= end_of_day)]
+    d = d[(d["kickoff"] >= pd.Timestamp(now) - pd.Timedelta(hours=30)) & (d["kickoff"] <= pd.Timestamp(now) + pd.Timedelta(hours=30))]
     g = d.groupby("event_id").agg(comp_code=("comp_code", "first"), kickoff=("kickoff", "first"),
                                   done=("status", lambda s: (s == "completed").all()))
     return g.reset_index()
@@ -92,7 +92,8 @@ class Watch:
         self.started = now
 
     def decide(self, fx: pd.DataFrame, states: dict[str, str], now: dt.datetime) -> dict:
-        """이번 회차 판단 — {'refresh': [id…], 'live', 'soon', 'pending', 'later_today'}."""
+        """이번 회차 판단 — refresh(지금 갱신할 경기), live·soon(진행·임박), pending(GRACE 대기),
+        held(준비됐지만 물결 중이라 묶어 둔 경기), next_kick(아직 안 한 가장 이른 킥오프)."""
         finished_new = [r.event_id for r in fx.itertuples()
                         if states.get(r.event_id) == "post" and not r.done and r.event_id not in self.handled]
         for i in finished_new:
@@ -104,14 +105,16 @@ class Watch:
         live = [r.event_id for r in fx.itertuples() if states.get(r.event_id) == "in"]
         soon = [r.event_id for r in fx.itertuples()
                 if states.get(r.event_id, "pre") == "pre" and now - MATCH_LEN < r.kickoff <= now + LOOKAHEAD]
-        later = [r.event_id for r in fx.itertuples()
-                 if states.get(r.event_id, "pre") == "pre" and r.kickoff > now + LOOKAHEAD
-                 and r.kickoff.date() <= (now + dt.timedelta(hours=6)).date()]
+        later = [r.kickoff for r in fx.itertuples() if states.get(r.event_id, "pre") == "pre" and r.kickoff > now]
         wave_over = not live and not soon
         gap_ok = self.last_refresh is None or now - self.last_refresh >= MIN_GAP
         refresh = ready if ready and (gap_ok or wave_over) else []
         return {"refresh": refresh, "live": live, "soon": soon, "pending": [i for i in finished_new if i not in ready],
-                "later_today": later}
+                "held": [i for i in ready if i not in refresh], "next_kick": min(later) if later else None}
+
+    @staticmethod
+    def busy(d: dict) -> bool:
+        return bool(d["live"] or d["soon"] or d["pending"] or d["held"])
 
 
 def dispatch(workflow: str, dry: bool) -> bool:
@@ -156,19 +159,28 @@ def main(argv: list[str] | None = None) -> int:
             return 0
         states = espn_states(fx)
         d = w.decide(fx, states, now)
+        nk = d["next_kick"]
         print(f"[watch] {now:%H:%M}Z 경기 {len(fx)} · 진행 {len(d['live'])} · 곧 {len(d['soon'])} · "
-              f"끝남(대기) {len(d['pending'])} · 갱신 대상 {len(d['refresh'])} · 오늘 늦게 {len(d['later_today'])}")
+              f"끝남(대기) {len(d['pending']) + len(d['held'])} · 갱신 대상 {len(d['refresh'])} · "
+              f"다음 킥오프 {nk:%m-%d %H:%M}Z" if nk is not None else
+              f"[watch] {now:%H:%M}Z 경기 {len(fx)} · 진행 {len(d['live'])} · 곧 {len(d['soon'])} · "
+              f"끝남(대기) {len(d['pending']) + len(d['held'])} · 갱신 대상 {len(d['refresh'])} · 남은 킥오프 없음")
         if d["refresh"] and dispatch("match_refresh.yml", a.dry_run):
             w.handled.update(d["refresh"])
             w.last_refresh = now
         if a.once:
             return 0
-        if not (d["live"] or d["soon"] or d["pending"] or d["later_today"]):
-            print("[watch] 오늘 남은 경기 없음 — 종료")
-            return 0
+        if not w.busy(d):
+            if nk is None:
+                print("[watch] 남은 경기 없음 — 종료")
+                return 0
+            if nk - LOOKAHEAD > deadline:
+                print(f"[watch] 다음 킥오프 {nk:%m-%d %H:%M}Z 가 감시 시간 밖 — 종료(예약 시동이 다시 시작)")
+                return 0
         if now + dt.timedelta(seconds=POLL_S) >= deadline:
-            print("[watch] 시간 예산 끝 — 남은 경기가 있어 다음 감시를 이어서 실행")
-            dispatch("match_watch.yml", a.dry_run)
+            if w.busy(d) or (nk is not None and nk - now <= dt.timedelta(hours=6)):
+                print("[watch] 시간 예산 끝 — 남은 경기가 있어 다음 감시를 이어서 실행")
+                dispatch("match_watch.yml", a.dry_run)
             return 0
         ping_backend()
         time.sleep(POLL_S)
