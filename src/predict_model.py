@@ -19,7 +19,13 @@ import pandas as pd
 
 # 2026-10-15 백테스트(scripts/backtest_model.py, 리그 435경기) — 지난 시즌 OVR 로그손실 0.968 · 현재 OVR 0.926
 # (옛 v1 0.980 · 0.939, 기준선 1.110). 시즌 초라 실제 골이 xG 보다 잘 맞아 w_goal 0.75 — 표본이 쌓이면 다시 탐색
-PARAMS = {"k": 10.0, "b_ovr": 0.50, "w_goal": 0.75, "rho": -0.08, "b_cross": 0.60, "w_cross_form": 0.25, "adjust": True}
+# v3(2026-10-19, --v3, 리그 488경기·지난 시즌 OVR): v2 0.970 / 적중 51.6% → 최근 40일 가중 + 자체 Elo(25/26~ 전 대회 결과)
+# + OVR 사전값 0.35 = 0.958 / 53.9%, + 결장 손실 = 0.954. 결장 손실은 과거 부상 명단이 없어 '실제 선발 XI 손실'로 잰 대리값이라
+# 최적(0.6)의 절반만 쓴다(운영 입력은 부상·출장정지 명단 — src/fetch_fotmob_injuries.py + TM).
+PARAMS = {"k": 10.0, "b_ovr": 0.35, "w_goal": 0.75, "rho": -0.08, "b_cross": 0.60, "w_cross_form": 0.25, "adjust": True,
+          # v3(2026-10-19) — 백테스트로 정함(scripts/backtest_model.py --v3): Elo 차(400 = 로그 배수 1) · 결장 전력 손실(OVR 10 = 1) ·
+          # 최근 경기 가중(tau 일 반감 아님, exp(−경과일/tau)). 0 이면 끔.
+          "b_elo": 0.45, "b_av": 0.3, "tau": 40.0}
 # 다른 리그끼리(유럽대회): 2026-10 리그 간 17경기로는 표본이 작아 방향만 반영(OVR 차이↑·리그 안 폼↓) — 예측 기록이 쌓이면 재조정
 MU_FALLBACK = (1.45, 1.15)   # 리그 표본이 적을 때 홈·원정 기본 기대 득점
 
@@ -46,8 +52,9 @@ def league_matches(ms: pd.DataFrame) -> pd.DataFrame:
     return out.dropna(subset=["hg", "ag"]).sort_values("date").reset_index(drop=True)
 
 
-def build_state(mt: pd.DataFrame, ovr: dict, p: dict = PARAMS) -> LeagueState:
-    """경기 표(그 시점까지) + 팀 OVR → 팀별 공격·수비 로그 배수."""
+def build_state(mt: pd.DataFrame, ovr: dict, p: dict = PARAMS, asof: str | None = None) -> LeagueState:
+    """경기 표(그 시점까지) + 팀 OVR → 팀별 공격·수비 로그 배수.
+    p['tau'] > 0 이면 최근 경기에 무게(exp(−경과일/tau), asof 기준 — 없으면 마지막 경기일)."""
     n = len(mt)
     w_lg = n / (n + 20.0)
     mu_h = w_lg * (mt["hg"].mean() if n else 0) + (1 - w_lg) * MU_FALLBACK[0]
@@ -64,6 +71,7 @@ def build_state(mt: pd.DataFrame, ovr: dict, p: dict = PARAMS) -> LeagueState:
     ovr_mean = sum(ovr_vals) / len(ovr_vals) if ovr_vals else 75.0
 
     # 경기별 관측 '기회'(xG·환산 슈팅)와 실제 골을 섞은 값 — 홈·원정 각각
+    last_date = str(mt["date"].max()) if n else ""
     obs = []
     for r in mt.itertuples(index=False):
         def chance(x, s, g):
@@ -75,28 +83,31 @@ def build_state(mt: pd.DataFrame, ovr: dict, p: dict = PARAMS) -> LeagueState:
         ch, ca = chance(r.hxg, r.hsh, r.hg), chance(r.axg, r.ash, r.ag)
         oh = (1 - p["w_goal"]) * ch / x_avg * g_avg + p["w_goal"] * r.hg   # 골 척도로 맞춘 관측 득점
         oa = (1 - p["w_goal"]) * ca / x_avg * g_avg + p["w_goal"] * r.ag
-        obs.append((r.home, r.away, oh, oa))
+        obs.append((r.home, r.away, oh, oa, _recency(r.date, asof or last_date, p.get("tau") or 0.0)))
     teams_all = set(ovr) | {t for o in obs for t in o[:2]}
     prior = {}
     for t in teams_all:
         z = ((ovr.get(t) or ovr_mean) - ovr_mean) / 10.0
         prior[t] = (p["b_ovr"] * z, -p["b_ovr"] * z)
-    n_of = {t: 0 for t in teams_all}
-    for h, a, *_ in obs:
-        n_of[h] += 1
-        n_of[a] += 1
+    n_of = {t: 0.0 for t in teams_all}             # 최근 가중 경기 수(수축 강도)
+    cnt = {t: 0 for t in teams_all}                 # 실제 경기 수(화면 '표본 적음' 안내)
+    for h, a, _oh, _oa, wt in obs:
+        n_of[h] += wt
+        n_of[a] += wt
+        cnt[h] += 1
+        cnt[a] += 1
     att = {t: prior[t][0] for t in teams_all}
     dfn = {t: prior[t][1] for t in teams_all}
     # 상대 강도 보정 — 공격 = 관측 득점 / (리그 평균 × 상대 수비 배수) 의 비율을 반복 추정(약팀 상대 xG 를 덜 쳐준다)
     for _ in range(8 if p.get("adjust", True) else 1):
         o_a = {t: 0.0 for t in teams_all}; e_a = {t: 0.0 for t in teams_all}
         o_d = {t: 0.0 for t in teams_all}; e_d = {t: 0.0 for t in teams_all}
-        for h, a, oh, oa in obs:
+        for h, a, oh, oa, wt in obs:
             adj = p.get("adjust", True)
-            o_a[h] += oh; e_a[h] += mu_h * (math.exp(dfn[a]) if adj else 1.0)
-            o_a[a] += oa; e_a[a] += mu_a * (math.exp(dfn[h]) if adj else 1.0)
-            o_d[h] += oa; e_d[h] += mu_a * (math.exp(att[a]) if adj else 1.0)
-            o_d[a] += oh; e_d[a] += mu_h * (math.exp(att[h]) if adj else 1.0)
+            o_a[h] += wt * oh; e_a[h] += wt * mu_h * (math.exp(dfn[a]) if adj else 1.0)
+            o_a[a] += wt * oa; e_a[a] += wt * mu_a * (math.exp(dfn[h]) if adj else 1.0)
+            o_d[h] += wt * oa; e_d[h] += wt * mu_a * (math.exp(att[a]) if adj else 1.0)
+            o_d[a] += wt * oh; e_d[a] += wt * mu_h * (math.exp(att[h]) if adj else 1.0)
         for t in teams_all:
             k = n_of[t]
             w = k / (k + p["k"])
@@ -104,8 +115,19 @@ def build_state(mt: pd.DataFrame, ovr: dict, p: dict = PARAMS) -> LeagueState:
             rd = math.log(max(0.15, o_d[t] / e_d[t])) if e_d[t] else 0.0
             att[t] = w * ra + (1 - w) * prior[t][0]
             dfn[t] = w * rd + (1 - w) * prior[t][1]
-    teams = {t: {"n": n_of[t], "att": att[t], "def": dfn[t], "ovr": ovr.get(t) or ovr_mean} for t in teams_all}
+    teams = {t: {"n": cnt[t], "n_eff": round(n_of[t], 1), "att": att[t], "def": dfn[t], "ovr": ovr.get(t) or ovr_mean}
+             for t in teams_all}
     return LeagueState(mu_h, mu_a, g_avg, x_avg, teams, ovr_mean)
+
+
+def _recency(date, asof: str, tau: float) -> float:
+    if not tau or not asof:
+        return 1.0
+    try:
+        d = (pd.Timestamp(asof[:10]) - pd.Timestamp(str(date)[:10])).days
+    except (ValueError, TypeError):
+        return 1.0
+    return math.exp(-max(0, d) / tau)
 
 
 def _pois(lam: float, k: int) -> float:
@@ -136,8 +158,11 @@ def summarize(lh: float, la: float, rho: float) -> dict:
             "score": f"{i}-{j}", "btts": round(btts, 3), "o25": round(o25, 3)}
 
 
-def predict(st_h: LeagueState, home: str, st_a: LeagueState | None, away: str, p: dict = PARAMS) -> dict | None:
-    """같은 리그면 st_a=None. 다른 리그(유럽대회)면 각자 리그 상태로."""
+def predict(st_h: LeagueState, home: str, st_a: LeagueState | None, away: str, p: dict = PARAMS,
+            extra: dict | None = None) -> dict | None:
+    """같은 리그면 st_a=None. 다른 리그(유럽대회)면 각자 리그 상태로.
+    extra(v3): elo_d = 홈 Elo − 원정 Elo(홈 어드밴티지 제외 — 리그 홈·원정 평균이 이미 담는다),
+    miss_h·miss_a = 결장(부상·출장정지)으로 빠진 베스트 XI 전력(OVR 점수, 0 이상)."""
     th = st_h.teams.get(home)
     ta = (st_a or st_h).teams.get(away)
     if not th or not ta:
@@ -150,7 +175,16 @@ def predict(st_h: LeagueState, home: str, st_a: LeagueState | None, away: str, p
         f, d = p["w_cross_form"], (th["ovr"] - ta["ovr"]) / 10.0
         lh = MU_FALLBACK[0] * math.exp(f * (th["att"] + ta["def"]) + p["b_cross"] * d)
         la = MU_FALLBACK[1] * math.exp(f * (ta["att"] + th["def"]) - p["b_cross"] * d)
+    x = extra or {}
+    s = 0.0
+    if p.get("b_elo") and x.get("elo_d") is not None:
+        s += p["b_elo"] * x["elo_d"] / 400.0
+    if p.get("b_av"):
+        s -= p["b_av"] * ((x.get("miss_h") or 0.0) - (x.get("miss_a") or 0.0)) / 10.0
+    lh, la = lh * math.exp(s), la * math.exp(-s)
     lh, la = min(max(lh, 0.15), 4.5), min(max(la, 0.15), 4.5)
     out = summarize(lh, la, p["rho"])
     out["n_h"], out["n_a"] = th["n"], ta["n"]
+    if x:
+        out["inputs"] = {k: (round(v, 1) if isinstance(v, float) else v) for k, v in x.items() if v is not None}
     return out

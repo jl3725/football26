@@ -133,8 +133,24 @@ function Drawer({ m: m0, onClose }: { m: Fixture; onClose: () => void }) {
               {m.model && (
                 <div className="pv-model">
                   <div className="pv-src">MODEL <em>예상 득점 {m.model.xg_h.toFixed(2)} : {m.model.xg_a.toFixed(2)} · 가장 유력한 스코어 {m.model.score}</em></div>
+                  {m.model.inputs && (
+                    <div className="pv-inputs">
+                      <span title="최근 40일 경기에 더 무게 — 시즌 초 경기보다 지금 흐름">최근 흐름 가중</span>
+                      {m.model.inputs.elo_d != null && (
+                        <span title={`팀 Elo(지난 시즌부터 리그·컵·유럽 결과로 계산) ${m.home.team} ${m.model.inputs.elo_h ?? "?"} · ${m.away.team} ${m.model.inputs.elo_a ?? "?"}`}>
+                          Elo 차 <b className={m.model.inputs.elo_d >= 0 ? "up" : "dn"}>{m.model.inputs.elo_d >= 0 ? "+" : ""}{Math.round(m.model.inputs.elo_d)}</b>
+                        </span>
+                      )}
+                      {(m.model.inputs.miss_h != null || m.model.inputs.miss_a != null) && (
+                        <span title="부상·출장정지로 빠진 선수 때문에 줄어든 베스트 11 평균 OVR(Transfermarkt + FotMob 결장 명단)">
+                          결장 손실 {m.home.team} <b>−{(m.model.inputs.miss_h ?? 0).toFixed(1)}</b> · {m.away.team} <b>−{(m.model.inputs.miss_a ?? 0).toFixed(1)}</b>
+                        </span>
+                      )}
+                    </div>
+                  )}
                   <p className="pv-note" style={{ marginTop: 6 }}>
-                    이번 시즌 경기 내용(xG·득실, 상대 강도 보정)과 선수 평점(OVR)으로 만든 통계 모델입니다.
+                    이번 시즌 경기 내용(xG·득실, 상대 강도 보정 · 최근 경기일수록 무게)과 선수 평점(OVR), 지난 시즌부터의 팀 Elo,
+                    부상·출장정지 결장 전력을 합친 통계 모델입니다.
                     {m.model.n_h + m.model.n_a < 10 ? " 아직 리그 경기가 적어 선수 평점 비중이 큽니다." : ""}
                   </p>
                 </div>

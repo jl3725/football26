@@ -254,7 +254,24 @@ def check_names() -> list[str]:
     return out
 
 
-CHECKS = {"season": check_season, "hub": check_hub, "frontend": check_frontend,
+def check_ovr() -> list[str]:
+    """OVR 검증 에이전트(scripts/check_ovr_consistency.py, daily_data) — 같은 선수 OVR 이 화면마다 다르면 알린다.
+    2026-10-19 사용자: 하베르츠 포메이션 83 · 프로필 84."""
+    p = ROOT / "data" / "eval" / "ovr_audit.json"
+    if not p.exists():
+        return [f"{p.name} 없음 — daily_data 'OVR consistency' 단계 확인"]
+    a = json.loads(p.read_text(encoding="utf-8"))
+    out = []
+    if a.get("date", "") < (NOW.date() - dt.timedelta(days=3)).isoformat():
+        out.append(f"OVR 검증 마지막 실행 {a.get('date')} — daily_data 'OVR consistency' 단계 확인")
+    mism = a.get("mismatches") or []
+    if mism:
+        out.append(f"화면별 OVR 불일치 {len(mism)}건: " + ", ".join(
+            f"{x['team']} {x['player']} {x['source']} {x['shown']}≠{x['final']}" for x in mism[:5]))
+    return out
+
+
+CHECKS = {"ovr": check_ovr, "season": check_season, "hub": check_hub, "frontend": check_frontend,
           "workflows": check_workflows, "news": check_news, "tm_agent": check_tm_agent,
           "coverage": check_coverage, "rating_history": check_rating_history, "ratings": check_ratings,
           "names": check_names}

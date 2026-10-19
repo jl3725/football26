@@ -325,9 +325,10 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
                 {x.photo ? <img className="tf2-photo" src={x.photo} alt="" /> : <span className="tf2-photo ph" />}
                 <div className="tf2-info">
                   <div className="tf2-name">{x.player}</div>
-                  <div className="tf2-meta">{x.pos} · {x.injury || "부상"}</div>
+                  <div className="tf2-meta">{x.pos ? `${x.pos} · ` : ""}{x.injury || "부상"}
+                    {x.source === "fotmob" && <span className="inj-src" title="FotMob 다음 경기 결장 명단·경기 중 부상 교체 — Transfermarkt 보다 빨리 반영">FotMob</span>}</div>
                 </div>
-                <span className="inj-until">~{x.until?.slice(0, 5) || "?"}</span>
+                <span className="inj-until">{/^\d{2}\/\d{2}\/\d{4}$/.test(x.until || "") ? `~${x.until.slice(0, 5)}` : (x.until || "?")}</span>
               </div>
             ))}
             {ov.injuries.length === 0 && <div className="mgr-meta">부상자 없음 ✓</div>}

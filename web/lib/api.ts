@@ -23,7 +23,8 @@ export type RecentMatch = { date: string; comp_code: string; opponent: string; h
 export type RecentForm = { score: number | null; n: number; avg5: number; avg3: number; matches: RecentMatch[] };
 export type Star = { trend?: Trend; player: string; pos: string; ovr: number; pot?: number; form?: number | null;
   form_recent?: number | null; recent_avg?: number | null; recent_n?: number | null; rating: number; goals: number; assists: number; photo: string; role?: string; big_match?: boolean };
-export type Injury = { player: string; injury: string; until: string; pos: string; photo: string };
+// source: transfermarkt | fotmob(다음 경기 결장 명단·경기 중 부상 교체 — TM 보다 빠름)
+export type Injury = { player: string; injury: string; until: string; pos: string; photo: string; source?: string };
 export type Window = {
   season_id: number; window: string; label: string; state: string; is_open: boolean; kr: string | null;
   phase?: "in_season" | "offseason" | "stale"; data_season_id?: number;
@@ -88,12 +89,22 @@ export type Lineup = {
 // 응답 상한 — 넘기면 실패로 처리해 화면이 스켈레톤에 영원히 머물지 않게 한다(Render 콜드스타트 ~60s 감안).
 const FETCH_TIMEOUT_MS = 70_000;
 
+// 서버 데이터 버전(모델 버전 + DB 빌드 시각) — 바뀌면(배포·데이터 갱신) 오래 들고 있던 캐시를 버린다.
+// 예전엔 열어 둔 화면의 선수 DB(선수 카드 OVR)가 배포 뒤에도 옛 값이었다(하베르츠 84 vs 포메이션 83).
+let _dataVer = "";
+function noteDataVersion(v: string | null) {
+  if (!v) return;
+  if (_dataVer && v !== _dataVer) _dbCache = null;
+  _dataVer = v;
+}
+
 async function j<T>(url: string): Promise<T> {
   const ctl = new AbortController();
   const timer = setTimeout(() => ctl.abort(), FETCH_TIMEOUT_MS);
   try {
     const res = await fetch(url, { cache: "no-store", signal: ctl.signal });
     if (!res.ok) throw new Error(`${res.status} ${url}`);
+    noteDataVersion(res.headers.get("x-data-version"));
     return res.json();
   } finally {
     clearTimeout(timer);
@@ -541,7 +552,9 @@ export type WinProb = { h: number; d: number; a: number; xg_h: number; xg_a: num
 export type FanVote = { h: number; d: number; a: number; n: number; btts: number | null; first_h: number | null; first_a: number | null };
 export type EloProb = { h: number; d: number; a: number };
 // 우리 예측 모델 v2(src/predict_model.py) — xG·골 공격/수비 강도 + 선수 평점(OVR) 사전값 + Dixon-Coles. 백테스트 scripts/backtest_model.py
-export type ModelProb = { h: number; d: number; a: number; xg_h: number; xg_a: number; score: string; btts: number; o25: number; n_h: number; n_a: number };
+// inputs(v3) — elo_d: 홈 Elo − 원정 Elo · miss_h/miss_a: 부상·출장정지로 빠진 베스트 11 평균 OVR 손실
+export type ModelProb = { h: number; d: number; a: number; xg_h: number; xg_a: number; score: string; btts: number; o25: number; n_h: number; n_a: number;
+  inputs?: { elo_d?: number; elo_h?: number; elo_a?: number; miss_h?: number; miss_a?: number } };
 export type Fixture = { event_id: string | null; comp_code: string; comp: string; kickoff: string; kst: string;
   date: string; d_day: number; home: FixtureSide; away: FixtureSide; big: number; tags: string[]; prob?: WinProb | null;
   fans?: FanVote; elo?: EloProb; model?: ModelProb };

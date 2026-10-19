@@ -92,6 +92,10 @@ jobs:
       - name: FotMob ratings (두 출처 평균 평점)
         run: bash scripts/ci_try.sh "fotmob_ratings" python src/fetch_fotmob_ratings.py
 
+      # FotMob 결장 명단(다음 경기 unavailable + 최근 경기 부상 교체) — TM 부상 목록보다 빠르다(src/fetch_fotmob_injuries.py)
+      - name: FotMob injuries (결장 명단)
+        run: bash scripts/ci_try.sh "fotmob_injuries" python src/fetch_fotmob_injuries.py
+
       # 과거 시즌 최종 순위(ESPN) — 팀 실적(득점·실점)을 여러 시즌 반영(src/season_history.py). 시즌이 넘어가면
       # 새로 '과거'가 된 시즌 중 우리 파일이 없는 것만 받는다(이미 받은 시즌은 건너뜀)
       - name: Standings history (과거 시즌 순위)
@@ -146,6 +150,11 @@ jobs:
 
       - name: Rating audit (평점 자체 검증)
         run: bash scripts/ci_try.sh "rating_audit" python scripts/eval_ratings.py --audit-json data/eval/rating_audit.json --no-snapshot
+
+      # OVR 검증 에이전트 — 같은 선수 OVR 이 화면(API)마다 같은지 · 지난 기록 대비 변동(scripts/check_ovr_consistency.py)
+      # → data/eval/ovr_audit.json, watchdog 'ovr' 점검이 읽어 불일치면 이슈를 연다
+      - name: OVR consistency (화면별 OVR 일치 검증)
+        run: bash scripts/ci_try.sh "ovr_consistency" python scripts/check_ovr_consistency.py --detail 3
 
       - name: Validate core data contracts
         run: python scripts/validate_data.py --no-optional   # 품질 게이트 — 실패 시 커밋 차단

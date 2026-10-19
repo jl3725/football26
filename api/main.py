@@ -119,6 +119,18 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+
+@app.middleware("http")
+async def _data_version(request, call_next):
+    """X-Data-Version = 모델 버전 + DB 빌드 시각 — 브라우저가 오래 들고 있던 캐시(선수 DB)를 배포 뒤 버리게 한다.
+    예전엔 배포 전에 연 화면에서 선수 카드만 옛 OVR(하베르츠 84)이고 새로 받은 포메이션은 83이었다(2026-10-19)."""
+    resp = await call_next(request)
+    if request.url.path.startswith("/api/"):
+        resp.headers["X-Data-Version"] = f"{rv3.MODEL_VERSION}.{int(ds._db_mtime())}"
+    return resp
+
+
 MANAGER_JSON = data_path("manager_profiles", "EPL", ext="json")
 TEAM_PROFILES_JSON = ROOT / "data" / "team_profiles.json"
 
@@ -491,8 +503,9 @@ def overview(team: str, league: str = ACTIVE_LEAGUE):
         for _, r in ti.iterrows():
             injuries.append({
                 "player": str(r.get("player") or ""), "injury": str(r.get("injury") or ""),
-                "until": str(r.get("until") or ""), "pos": str(r.get("position") or ""),
+                "until": str(r.get("until") or "") if pd.notna(r.get("until")) else "", "pos": str(r.get("position") or ""),
                 "photo": str(r.get("tm_photo") or "") if str(r.get("tm_photo") or "").startswith("http") else "",
+                "source": str(r.get("source") or "transfermarkt"),
             })
 
     # 팀 리더 (지표별 1위)
@@ -1443,17 +1456,106 @@ def _injury_returns(league: str) -> dict:
     return out
 
 
+_FM_KIND = {"injury": "부상", "suspension": "출장 정지", "in_match": "경기 중 부상 교체"}
+_MONTH = {m: i for i, m in enumerate(["january", "february", "march", "april", "may", "june", "july", "august",
+                                       "september", "october", "november", "december"], 1)}
+
+
+def _fm_return_kr(s: str) -> str:
+    """FotMob 복귀 예상 → 한국어. 'Early December 2026' → '12월 초 복귀 예상', 'Doubtful' → '출전 불투명'."""
+    t = str(s or "").strip()
+    low = t.lower()
+    if not t:
+        return ""
+    if low == "doubtful":
+        return "출전 불투명"
+    if low.replace("-", " ") == "day to day":
+        return "단기(경기마다 점검)"
+    fixed = {"a few days": "며칠", "a few weeks": "몇 주", "out for season": "시즌 아웃", "unknown": "복귀 시점 미정"}
+    if low in fixed:
+        return fixed[low]
+    import re  # noqa: PLC0415
+    g = re.match(r"about (\d+)(?:-(\d+))? (day|week|month)s?$", low)
+    if g:
+        unit = {"day": "일", "week": "주", "month": "개월"}[g.group(3)]
+        return f"약 {g.group(1)}{'~' + g.group(2) if g.group(2) else ''}{unit}"
+    if "training" in low:
+        return "훈련 복귀"
+    w = low.split()
+    if len(w) == 3 and w[1] in _MONTH:
+        part = {"early": "초", "mid": "중순", "late": "말"}.get(w[0], "")
+        return f"{_MONTH[w[1]]}월 {part} 복귀 예상".replace("  ", " ")
+    return t
+
+
+@_memo(ttl=1800)
 def _injuries_table(league: str):
-    """현재 부상(TM) — 부상 시작 뒤에 실제로 뛴 선수(_injury_returns)는 뺀 표. 원래 표는 그대로 두고 사본."""
+    """현재 결장 — Transfermarkt 부상(부상 시작 뒤 실제로 뛴 선수 _injury_returns 는 뺌) + FotMob 결장자.
+
+    TM 은 며칠 늦다 — 에밀리아노 마르티네스(턱 골절로 실려 나감)가 다음 날에도 목록에 없었다(2026-10-19 사용자).
+    FotMob 다음 경기 결장 명단·경기 중 부상 교체(src/fetch_fotmob_injuries.py)에서 TM 에 없는 선수를 더한다
+    (injury = '부상'·'출장 정지'·'경기 중 부상 교체', until = 복귀 예상, source = fotmob). 원래 표는 그대로 두고 사본."""
     import positions as ps  # noqa: PLC0415
     inj = ds.read_table("transfermarkt_injuries", league=league)
-    if inj is None or inj.empty or "squad" not in inj.columns:
+    if inj is not None and not inj.empty and "squad" in inj.columns:
+        back = _injury_returns(league)
+        if back:
+            inj = inj[[(str(s), ps.norm_name(p)) not in back for s, p in zip(inj["squad"], inj["player"])]]
+        inj = inj.copy()
+        inj["source"] = "transfermarkt"
+    fm = ds.read_table("fotmob_injuries", league=league)
+    if fm is None or fm.empty or "squad" not in fm.columns:
         return inj
-    back = _injury_returns(league)
-    if not back:
+    have = set() if inj is None or inj.empty else {(str(s), ps.norm_name(p)) for s, p in zip(inj["squad"], inj["player"])}
+    # TM 행 찾기(복귀일이 빈 TM 행은 FotMob 복귀 예상으로 채운다 — 'Reece James ?' → '1월 중순 복귀 예상')
+    tm_row: dict = {}
+    if inj is not None and not inj.empty:
+        inj = inj.reset_index(drop=True)
+        for i, (s_, p_) in enumerate(zip(inj["squad"], inj["player"])):
+            w_ = ps.norm_name(p_).split()
+            tm_row[(str(s_), ps.norm_name(p_))] = i
+            if w_ and len(w_[-1]) >= 4:
+                tm_row.setdefault((str(s_), "#" + w_[-1]), i)
+    tm_ids = set() if inj is None or inj.empty or "tm_player_id" not in inj.columns else         {(str(s), str(t).split(".")[0]) for s, t in zip(inj["squad"], inj["tm_player_id"]) if pd.notna(t)}
+    def sig(p):                                           # 같은 팀 성 — 'Emmanuel'·'Emanuel' Emegha, 'Tino'·'Valentino' Livramento
+        w = ps.norm_name(p).split()
+        return w[-1] if w and len(w[-1]) >= 4 else ps.norm_name(p)
+    sigs = set() if inj is None or inj.empty else {(str(s), sig(p)) for s, p in zip(inj["squad"], inj["player"])}
+    pf = _pf(league)
+    recs = [] if pf is None else pf.to_dict("records")
+    rows_of = {(str(x.get("squad")), str(x.get("player"))): x for x in recs}
+    by_fm = {}
+    for x in recs:                                        # FotMob id → 선수 표 행(이름 표기가 달라도 같은 사람)
+        try:
+            if x.get("fm_id") is not None and x.get("fm_id") == x.get("fm_id"):
+                by_fm[str(int(x["fm_id"]))] = x
+        except (TypeError, ValueError):
+            pass
+    add = []
+    for r in fm.to_dict("records"):
+        pr = by_fm.get(str(r.get("fotmob_id") or "").split(".")[0]) or rows_of.get((str(r["squad"]), str(r["player"]))) or {}
+        name = str(pr.get("player") or r["player"])
+        tid = str(pr.get("tm_id")).split(".")[0] if pr.get("tm_id") is not None and pr.get("tm_id") == pr.get("tm_id") else ""
+        key = (str(r["squad"]), ps.norm_name(name))
+        if key in have or (str(r["squad"]), ps.norm_name(r["player"])) in have or (tid and (str(r["squad"]), tid) in tm_ids)                 or (str(r["squad"]), sig(name)) in sigs:
+            w_ = ps.norm_name(name).split()
+            i = tm_row.get(key, tm_row.get((str(r["squad"]), "#" + (w_[-1] if w_ else ""))))
+            if i is not None and str(r.get("kind")) != "in_match":
+                cur_until = inj.at[i, "until"] if "until" in inj.columns else None
+                if cur_until is None or (isinstance(cur_until, float) and cur_until != cur_until) or not str(cur_until).strip():
+                    inj.at[i, "until"] = _fm_return_kr(r.get("expected_return"))
+            continue
+        have.add(key)
+        kind = str(r.get("kind") or "injury")
+        until = _fm_return_kr(r.get("expected_return")) if kind != "in_match" else             f"{str(r.get('match_date') or '')[5:].replace('-', '/')} {r.get('expected_return') or ''}".strip()
+        add.append({"squad": r["squad"], "player": name, "position": pr.get("tm_position") or pr.get("pos") or "",
+                    "injury": _FM_KIND.get(kind, kind), "until": until, "market_value_eur": pr.get("market_value_eur"),
+                    "tm_player_id": pr.get("tm_id"), "tm_photo": _photo(pr) if pr else "", "last_checked": r.get("fetched"),
+                    "active": "true", "source": "fotmob"})
+    if not add:
         return inj
-    keep = [(str(s), ps.norm_name(p)) not in back for s, p in zip(inj["squad"], inj["player"])]
-    return inj[keep].copy()
+    extra = pd.DataFrame(add)
+    return extra if inj is None or inj.empty else pd.concat([inj, extra], ignore_index=True)
 
 
 def _active_injuries(team: str, league: str) -> dict:
@@ -4631,13 +4733,49 @@ def _model_state(league: str, before: str | None = None):
     mt = pm.league_matches(ds.read_table("match_stats", league=league))
     if before:
         mt = mt[mt["date"] < before]
-    st = pm.build_state(mt, _club_strength(league))
+    st = pm.build_state(mt, _club_strength(league), asof=before or _today_kst().isoformat())   # 최근 경기에 무게(tau)
     _MODEL_CACHE[key] = (_t.time() + 1800, st)
     return st
 
 
+@_memo(ttl=3600)
+def _team_elo(before: str | None = None) -> dict:
+    """{팀: Elo} — 지난 시즌부터 전 리그·컵·유럽 결과로 직접 계산(src/team_elo.py). before 면 그날 아침 값."""
+    import league_level  # noqa: PLC0415
+    import team_elo as te  # noqa: PLC0415
+    frames = []
+    for se in (f"{SEASON_START - 1}_{SEASON_START}", f"{SEASON_START}_{SEASON_START + 1}"):
+        fr = {lg: ds.read_table("schedule_full", league=lg, season=se) for lg in ds.available_leagues()}
+        frames.append(te.matches_from({k: v for k, v in fr.items() if v is not None}))
+    ms = pd.concat(frames, ignore_index=True).drop_duplicates("event_id").sort_values(["date", "event_id"])
+    if before:
+        ms = ms[ms["date"] < before]
+    elo, _ = te.run(ms, {lg: te.league_base(league_level.level(lg)) for lg in ds.available_leagues()})
+    return elo
+
+
+@_memo(ttl=1800)
+def _absence_loss(league: str) -> dict:
+    """{팀: 결장 전력 손실} — 베스트 11 평균 OVR − 결장자(부상·출장정지, _injuries_table) 뺀 베스트 11 평균.
+    예측 모델 v3 입력(src/predict_model.py b_av). 백테스트와 같은 '전 포지션 상위 11명' 기준."""
+    import positions as ps  # noqa: PLC0415
+    pf, inj = _pf(league), _injuries_table(league)
+    out: dict = {}
+    if pf is None or pf.empty or inj is None or inj.empty:
+        return out
+    hurt = {(str(s), ps.norm_name(p)) for s, p in zip(inj["squad"], inj["player"])}
+    for sq, g in pf.groupby("squad"):
+        vals = [(float(o), (str(sq), ps.norm_name(p)) in hurt) for p, o in zip(g["player"], g["_ovr"]) if o == o]
+        top = sorted((v for v, _ in vals), reverse=True)[:11]
+        rest = sorted((v for v, h in vals if not h), reverse=True)[:11]
+        if top and rest:
+            out[str(sq)] = round(max(0.0, sum(top) / len(top) - sum(rest) / len(rest)), 2)
+    return out
+
+
 def _attach_model(m: dict, before: str | None = None) -> None:
-    """경기에 우리 모델 예측(model: 승무패·예상 득점·예상 스코어·BTTS·2.5골+). 우리 리그 밖 팀이 끼면 생략."""
+    """경기에 우리 모델 예측(model: 승무패·예상 득점·예상 스코어·BTTS·2.5골+). 우리 리그 밖 팀이 끼면 생략.
+    v3 입력: 최근 경기 가중(상태) · 팀 Elo 차 · 결장 전력 손실(부상·출장정지 — 지난 경기 리뷰(before)엔 그때 명단이 없어 뺌)."""
     import predict_model as pm  # noqa: PLC0415
     hl, al = m["home"].get("league"), m["away"].get("league")
     if not hl or not al:
@@ -4645,7 +4783,22 @@ def _attach_model(m: dict, before: str | None = None) -> None:
     try:
         sh = _model_state(hl, before)
         sa = sh if al == hl else _model_state(al, before)
-        r = pm.predict(sh, m["home"]["team"], None if sa is sh else sa, m["away"]["team"])
+        h, a = m["home"]["team"], m["away"]["team"]
+        extra: dict = {}
+        try:
+            elo = _team_elo(before)
+            if h in elo and a in elo:
+                extra["elo_d"] = round(elo[h] - elo[a], 1)
+                extra["elo_h"], extra["elo_a"] = round(elo[h]), round(elo[a])
+        except Exception:  # noqa: BLE001
+            pass
+        if not before:
+            try:
+                extra["miss_h"] = _absence_loss(hl).get(h, 0.0)
+                extra["miss_a"] = _absence_loss(al).get(a, 0.0)
+            except Exception:  # noqa: BLE001
+                pass
+        r = pm.predict(sh, h, None if sa is sh else sa, a, extra=extra)
         if r:
             m["model"] = r
     except Exception:  # noqa: BLE001

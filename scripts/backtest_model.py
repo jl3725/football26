@@ -94,9 +94,88 @@ def run(data: dict, params: dict, min_round: int = 2, which=("base", "v1", "v2")
     return {k: _metrics(v) for k, v in res.items()}
 
 
+def v3_inputs(data: dict) -> dict:
+    """v3 입력 — 경기 날짜 아침의 팀 Elo(src/team_elo.py, 25/26 부터 전 대회 결과) · 선발 XI 전력 손실.
+
+    결장 손실은 과거 부상자 명단이 없어서 '실제 선발 XI 평균 OVR 이 그 팀 베스트 11 평균보다 낮은 만큼'으로 대신 잰다
+    (로테이션도 섞이고 선발은 경기 직전에야 알려져 계수가 실제보다 클 수 있다 → 운영에선 부상·출장정지 명단으로만 쓴다)."""
+    import league_level  # noqa: PLC0415
+    import team_elo as te  # noqa: PLC0415
+    from leagues import SEASON_START  # noqa: PLC0415
+    seasons = [f"{y}_{y + 1}" for y in (SEASON_START - 1, SEASON_START)]
+    frames = []
+    for se in seasons:
+        fr = {}
+        for lg in LEAGUES:
+            fp = data_path("schedule_full", lg, season=se)
+            if fp.exists():
+                fr[lg] = pd.read_csv(fp, dtype={"event_id": str})
+        frames.append(te.matches_from(fr))
+    ms = pd.concat(frames, ignore_index=True).drop_duplicates("event_id").sort_values(["date", "event_id"])
+    dates = {str(r["date"]) for mt, _ in data.values() for _, r in mt.iterrows()}
+    _, snaps = te.run(ms, {lg: te.league_base(league_level.level(lg)) for lg in LEAGUES}, dates)
+    # 선발 XI 손실
+    sys.path.insert(0, str(ROOT))
+    from api.services.player_data import player_frame  # noqa: PLC0415
+    miss: dict = {}
+    for lg in data:
+        pf = player_frame(lg)
+        lu_p = data_path("espn_lineups", lg)
+        if pf is None or not lu_p.exists():
+            continue
+        import player_names as pn  # noqa: PLC0415
+        lu = pn.read_lineup_csv(lu_p, ["squad", "event_id", "starter", "player"])
+        lu = lu[pd.to_numeric(lu["starter"].astype(str).str.lower().map({"true": 1, "false": 0, "1": 1, "0": 0}), errors="coerce") == 1]
+        ovr = {(str(s_), str(p_)): float(o) for s_, p_, o in zip(pf["squad"], pf["player"], pf["_ovr"]) if o == o}
+        best = {}
+        for t, g in pf.groupby("squad"):
+            v = sorted(pd.to_numeric(g["_ovr"], errors="coerce").dropna(), reverse=True)[:11]
+            best[str(t)] = sum(v) / len(v) if v else None
+        for (eid, sq), g in lu.groupby(["event_id", "squad"]):
+            vals = [ovr[(str(sq), str(p_))] for p_ in g["player"] if (str(sq), str(p_)) in ovr]
+            if len(vals) >= 8 and best.get(str(sq)):
+                miss[(str(eid).replace(".0", ""), str(sq))] = max(0.0, best[str(sq)] - sum(vals) / len(vals))
+    return {"elo": snaps, "miss": miss}
+
+
+def run_v3(data: dict, inp: dict, params: dict, grid_post: list[dict], min_round: int = 2) -> list[tuple[dict, dict]]:
+    """tau 는 상태 계산에, b_elo·b_av 는 예측 뒤 보정에 들어간다 → 상태는 한 번만 계산하고 보정 조합만 바꿔 본다."""
+    rows = []      # (경기 기본 λ, 입력, 결과)
+    for lg, (mt, ovr) in data.items():
+        for i, r in mt.iterrows():
+            before = mt[mt["date"] < r["date"]]
+            games = pd.concat([before["home"], before["away"]]).value_counts()
+            if min(games.get(r["home"], 0), games.get(r["away"], 0)) < min_round - 1:
+                continue
+            st = pm.build_state(before, ovr, params, asof=str(r["date"]))
+            base = pm.predict(st, r["home"], None, r["away"], {**params, "b_elo": 0, "b_av": 0})
+            if not base:
+                continue
+            snap = inp["elo"].get(str(r["date"]), {})
+            ed = (snap[r["home"]] - snap[r["away"]]) if r["home"] in snap and r["away"] in snap else None
+            eid = str(r["event_id"])
+            x = {"elo_d": ed, "miss_h": inp["miss"].get((eid, r["home"]), 0.0), "miss_a": inp["miss"].get((eid, r["away"]), 0.0)}
+            out = "H" if r["hg"] > r["ag"] else "A" if r["hg"] < r["ag"] else "D"
+            rows.append((base["xg_h"], base["xg_a"], x, out))
+    res = []
+    for g in grid_post:
+        p = {**params, **g}
+        preds = []
+        for lh, la, x, out in rows:
+            s_ = 0.0
+            if p.get("b_elo") and x["elo_d"] is not None:
+                s_ += p["b_elo"] * x["elo_d"] / 400.0
+            if p.get("b_av"):
+                s_ -= p["b_av"] * (x["miss_h"] - x["miss_a"]) / 10.0
+            preds.append((pm.summarize(min(max(lh * math.exp(s_), 0.15), 4.5), min(max(la * math.exp(-s_), 0.15), 4.5), p["rho"]), out))
+        res.append((g, _metrics(preds)))
+    return res
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--grid", action="store_true")
+    ap.add_argument("--v3", action="store_true", help="v3 입력(Elo·선발 XI 손실·최근 가중) 격자 탐색")
     ap.add_argument("--min-round", type=int, default=2)
     ap.add_argument("--ovr", choices=["current", "prev"], default="prev",
                     help="prev = 지난 시즌 팀 OVR(누설 없음, 기본) · current = 현재 OVR(시즌 결과가 섞여 OVR 모델에 유리)")
@@ -107,6 +186,23 @@ def main() -> int:
     print("현재 PARAMS:", pm.PARAMS)
     for k, v in run(data, pm.PARAMS, a.min_round).items():
         print(f"  {k:5} {v}")
+    if a.v3:
+        inp = v3_inputs(data)
+        print(f"v3 입력 — Elo 스냅숏 {len(inp['elo'])}일 · 선발 XI 손실 {len(inp['miss'])}팀-경기")
+        post = [{"b_elo": be, "b_av": ba} for be in (0.0, 0.15, 0.3, 0.45, 0.6) for ba in (0.0, 0.3, 0.6, 1.0)]
+        allr = []
+        for tau in (0.0, 90.0, 60.0, 40.0):
+            for b_ovr in (0.5, 0.35, 0.2):
+                for g, mres in run_v3(data, inp, {**pm.PARAMS, "tau": tau, "b_ovr": b_ovr}, post, a.min_round):
+                    allr.append(({"tau": tau, "b_ovr": b_ovr, **g}, mres))
+        allr.sort(key=lambda x: x[1]["logloss"])
+        print("로그손실 상위:")
+        for tag, mres in allr[:8]:
+            print("   ", tag, mres)
+        print("결장 손실 없이(b_av=0) 상위:")
+        for tag, mres in [x for x in allr if x[0]["b_av"] == 0][:4]:
+            print("   ", tag, mres)
+        return 0
     if a.grid:
         best = None
         grid = {"k": [3, 6, 10], "b_ovr": [0.12, 0.2, 0.3], "w_goal": [0.0, 0.25, 0.5], "rho": [-0.15, -0.08, 0.0]}

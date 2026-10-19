@@ -113,7 +113,8 @@ export function PeekProvider({ children, onOpenPlayer, onOpenTeam }: {
   const h = req?.hint;
   const name = base?.player ?? req?.name ?? "";
   const photo = base?.photo || h?.photo || "";
-  const ovr = base?.ovr ?? h?.ovr ?? detail?.ovr ?? null;
+  // 최종 OVR 은 방금 받은 선수 프로필(player_detail) 값이 우선 — 화면 어디서 열어도 프로필과 같은 숫자
+  const ovr = detail?.ovr ?? base?.ovr ?? h?.ovr ?? null;
   const posTxt = base?.pos || h?.pos || detail?.pos || "";
   const age = base?.age ?? h?.age ?? detail?.age ?? null;
   const nat = base?.nationality || h?.nationality || detail?.nationality || "";

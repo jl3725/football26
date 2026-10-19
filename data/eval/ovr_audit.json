@@ -1,0 +1,1160 @@
+{
+ "date": "2026-10-19",
+ "model": "v3.8",
+ "checked": 25690,
+ "mismatches": [],
+ "leagues": {
+  "EPL": {
+   "teams": 20,
+   "checked": 3310,
+   "mismatches": 0,
+   "changed": 233,
+   "model_changed": 233,
+   "changes_top": [
+    {
+     "team": "Brighton",
+     "player": "Chema",
+     "from": 64,
+     "to": 73,
+     "d": 9,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Arsenal",
+     "player": "Max Dowman",
+     "from": 62,
+     "to": 70,
+     "d": 8,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Brighton",
+     "player": "Zadok Yohanna",
+     "from": 62,
+     "to": 69,
+     "d": 7,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Coventry City",
+     "player": "Sidiki Cherif",
+     "from": 62,
+     "to": 69,
+     "d": 7,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Brentford",
+     "player": "Jannik Schuster",
+     "from": 65,
+     "to": 71,
+     "d": 6,
+     "since": "2026-10-15",
+     "model_change": true
+    },
+    {
+     "team": "Brighton",
+     "player": "Malick Yalcouye",
+     "from": 64,
+     "to": 70,
+     "d": 6,
+     "since": "2026-10-15",
+     "model_change": true
+    },
+    {
+     "team": "Hull City",
+     "player": "Lucas Herrington",
+     "from": 62,
+     "to": 68,
+     "d": 6,
+     "since": "2026-10-15",
+     "model_change": true
+    },
+    {
+     "team": "Ipswich Town",
+     "player": "Sindre Egeli",
+     "from": 61,
+     "to": 67,
+     "d": 6,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Liverpool",
+     "player": "Trey Nyoni",
+     "from": 61,
+     "to": 67,
+     "d": 6,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Aston Villa",
+     "player": "Alysson",
+     "from": 62,
+     "to": 67,
+     "d": 5,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Bournemouth",
+     "player": "Alex Tóth",
+     "from": 62,
+     "to": 67,
+     "d": 5,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Bournemouth",
+     "player": "Ben Gannon-Doak",
+     "from": 62,
+     "to": 67,
+     "d": 5,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Bournemouth",
+     "player": "Julio Soler",
+     "from": 61,
+     "to": 66,
+     "d": 5,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Crystal Palace",
+     "player": "Jørgen Strand Larsen",
+     "from": 83,
+     "to": 78,
+     "d": -5,
+     "since": "2026-10-15",
+     "model_change": true
+    },
+    {
+     "team": "Crystal Palace",
+     "player": "Zavier Gozo",
+     "from": 61,
+     "to": 66,
+     "d": 5,
+     "since": "2026-10-14",
+     "model_change": true
+    }
+   ]
+  },
+  "BelgianProLeague": {
+   "teams": 18,
+   "checked": 3116,
+   "mismatches": 0,
+   "changed": 191,
+   "model_changed": 191,
+   "changes_top": [
+    {
+     "team": "Beveren",
+     "player": "Lennart Mertens",
+     "from": 56,
+     "to": 51,
+     "d": -5,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Kortrijk",
+     "player": "Boris lambert",
+     "from": 59,
+     "to": 54,
+     "d": -5,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Kortrijk",
+     "player": "Thierry Ambrose",
+     "from": 65,
+     "to": 60,
+     "d": -5,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Lommel",
+     "player": "Sverre Nypan",
+     "from": 60,
+     "to": 65,
+     "d": 5,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Beveren",
+     "player": "Kurt Abrahams",
+     "from": 57,
+     "to": 53,
+     "d": -4,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Kortrijk",
+     "player": "Jellert Van Landschoot",
+     "from": 60,
+     "to": 56,
+     "d": -4,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Kortrijk",
+     "player": "Ken Masui",
+     "from": 60,
+     "to": 56,
+     "d": -4,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Kortrijk",
+     "player": "Rudy Kohon",
+     "from": 61,
+     "to": 57,
+     "d": -4,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Kortrijk",
+     "player": "Sixtus Ogbuehi",
+     "from": 51,
+     "to": 47,
+     "d": -4,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Kortrijk",
+     "player": "Suf Podgoreanu",
+     "from": 58,
+     "to": 54,
+     "d": -4,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Lommel",
+     "player": "Tom Reyners",
+     "from": 60,
+     "to": 56,
+     "d": -4,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Beveren",
+     "player": "Jearl Margaritha",
+     "from": 64,
+     "to": 61,
+     "d": -3,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Beveren",
+     "player": "Laurent Jans",
+     "from": 57,
+     "to": 54,
+     "d": -3,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Beveren",
+     "player": "Sieben Dewaele",
+     "from": 59,
+     "to": 56,
+     "d": -3,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Club Brugge",
+     "player": "Andrej Vasovic",
+     "from": 59,
+     "to": 62,
+     "d": 3,
+     "since": "2026-10-14",
+     "model_change": true
+    }
+   ]
+  },
+  "Bundesliga": {
+   "teams": 18,
+   "checked": 2935,
+   "mismatches": 0,
+   "changed": 212,
+   "model_changed": 212,
+   "changes_top": [
+    {
+     "team": "Dortmund",
+     "player": "Kos Karetsas",
+     "from": 62,
+     "to": 69,
+     "d": 7,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Dortmund",
+     "player": "Ethan Nwaneri",
+     "from": 65,
+     "to": 71,
+     "d": 6,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Dortmund",
+     "player": "Kouakou Gadou",
+     "from": 66,
+     "to": 72,
+     "d": 6,
+     "since": "2026-10-15",
+     "model_change": true
+    },
+    {
+     "team": "Stuttgart",
+     "player": "Dennis Seimen",
+     "from": 61,
+     "to": 67,
+     "d": 6,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Dortmund",
+     "player": "Kauã Prates",
+     "from": 61,
+     "to": 66,
+     "d": 5,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Dortmund",
+     "player": "Samuele Inácio",
+     "from": 63,
+     "to": 68,
+     "d": 5,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "SV Elversberg",
+     "player": "Francis Onyeka",
+     "from": 61,
+     "to": 66,
+     "d": 5,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Freiburg",
+     "player": "Berkay Yılmaz",
+     "from": 60,
+     "to": 65,
+     "d": 5,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Köln",
+     "player": "Mikey Moore",
+     "from": 63,
+     "to": 68,
+     "d": 5,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Schalke 04",
+     "player": "Mertcan Ayhan",
+     "from": 61,
+     "to": 66,
+     "d": 5,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "RB Leipzig",
+     "player": "Andrija Maksimović",
+     "from": 61,
+     "to": 65,
+     "d": 4,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "RB Leipzig",
+     "player": "Marc Guiu",
+     "from": 62,
+     "to": 66,
+     "d": 4,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Schalke 04",
+     "player": "Moussa Sylla",
+     "from": 71,
+     "to": 67,
+     "d": -4,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Schalke 04",
+     "player": "Timo Becker",
+     "from": 65,
+     "to": 61,
+     "d": -4,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Union Berlin",
+     "player": "Jeong Woo-yeong",
+     "from": 68,
+     "to": 64,
+     "d": -4,
+     "since": "2026-10-14",
+     "model_change": true
+    }
+   ]
+  },
+  "Eredivisie": {
+   "teams": 18,
+   "checked": 3139,
+   "mismatches": 0,
+   "changed": 188,
+   "model_changed": 188,
+   "changes_top": [
+    {
+     "team": "Willem II",
+     "player": "Finn Stam",
+     "from": 59,
+     "to": 54,
+     "d": -5,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Cambuur",
+     "player": "Jamal Amofa",
+     "from": 59,
+     "to": 55,
+     "d": -4,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Willem II",
+     "player": "Alessandro Ciranni",
+     "from": 55,
+     "to": 51,
+     "d": -4,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Willem II",
+     "player": "Calvin Twigt",
+     "from": 61,
+     "to": 57,
+     "d": -4,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Willem II",
+     "player": "Hidde ter Avest",
+     "from": 61,
+     "to": 57,
+     "d": -4,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Willem II",
+     "player": "Jaden Slory",
+     "from": 57,
+     "to": 53,
+     "d": -4,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "ADO Den Haag",
+     "player": "Jonas Abbew",
+     "from": 64,
+     "to": 61,
+     "d": -3,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "AZ Alkmaar",
+     "player": "Jordy Clasie",
+     "from": 63,
+     "to": 66,
+     "d": 3,
+     "since": "2026-10-18",
+     "model_change": true
+    },
+    {
+     "team": "Ajax",
+     "player": "Abdellah Ouazane",
+     "from": 61,
+     "to": 64,
+     "d": 3,
+     "since": "2026-10-18",
+     "model_change": true
+    },
+    {
+     "team": "Cambuur",
+     "player": "Nicky Souren",
+     "from": 57,
+     "to": 54,
+     "d": -3,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Cambuur",
+     "player": "Nicolas Binder",
+     "from": 54,
+     "to": 51,
+     "d": -3,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Cambuur",
+     "player": "Rik Mulders",
+     "from": 59,
+     "to": 56,
+     "d": -3,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "PSV",
+     "player": "Ivan Perišić",
+     "from": 73,
+     "to": 76,
+     "d": 3,
+     "since": "2026-10-15",
+     "model_change": true
+    },
+    {
+     "team": "Sparta R.",
+     "player": "Bruno Martins Indi",
+     "from": 60,
+     "to": 63,
+     "d": 3,
+     "since": "2026-10-15",
+     "model_change": true
+    },
+    {
+     "team": "Telstar",
+     "player": "Marvin Peersman",
+     "from": 60,
+     "to": 63,
+     "d": 3,
+     "since": "2026-10-15",
+     "model_change": true
+    }
+   ]
+  },
+  "LaLiga": {
+   "teams": 20,
+   "checked": 3526,
+   "mismatches": 0,
+   "changed": 271,
+   "model_changed": 271,
+   "changes_top": [
+    {
+     "team": "Real Madrid",
+     "player": "Endrick",
+     "from": 61,
+     "to": 70,
+     "d": 9,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Elche",
+     "player": "Pedro Bigas",
+     "from": 63,
+     "to": 68,
+     "d": 5,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Málaga",
+     "player": "Adam Aznou",
+     "from": 60,
+     "to": 65,
+     "d": 5,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Real Sociedad",
+     "player": "Mamadou Sarr",
+     "from": 66,
+     "to": 71,
+     "d": 5,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Sevilla",
+     "player": "Lucas Stassin",
+     "from": 63,
+     "to": 68,
+     "d": 5,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Villarreal",
+     "player": "Carlos Macià",
+     "from": 61,
+     "to": 66,
+     "d": 5,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Athletic Club",
+     "player": "Peio Canales",
+     "from": 62,
+     "to": 66,
+     "d": 4,
+     "since": "2026-10-15",
+     "model_change": true
+    },
+    {
+     "team": "Atlético Madrid",
+     "player": "Jorge Domínguez",
+     "from": 61,
+     "to": 65,
+     "d": 4,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Barcelona",
+     "player": "Hamza Abdelkarim",
+     "from": 60,
+     "to": 64,
+     "d": 4,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Barcelona",
+     "player": "Xavi Espart",
+     "from": 68,
+     "to": 72,
+     "d": 4,
+     "since": "2026-10-15",
+     "model_change": true
+    },
+    {
+     "team": "Elche",
+     "player": "Facundo Buonanotte",
+     "from": 63,
+     "to": 67,
+     "d": 4,
+     "since": "2026-10-15",
+     "model_change": true
+    },
+    {
+     "team": "Racing Santander",
+     "player": "Asier Villalibre",
+     "from": 64,
+     "to": 60,
+     "d": -4,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Real Sociedad",
+     "player": "Héctor Fort",
+     "from": 65,
+     "to": 69,
+     "d": 4,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Valencia",
+     "player": "Aaron Mayol",
+     "from": 60,
+     "to": 64,
+     "d": 4,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Athletic Club",
+     "player": "Yuri Berchiche",
+     "from": 71,
+     "to": 74,
+     "d": 3,
+     "since": "2026-10-15",
+     "model_change": true
+    }
+   ]
+  },
+  "LigaPortugal": {
+   "teams": 18,
+   "checked": 3180,
+   "mismatches": 0,
+   "changed": 222,
+   "model_changed": 222,
+   "changes_top": [
+    {
+     "team": "Académico de Viseu",
+     "player": "Álvaro Zamora",
+     "from": 63,
+     "to": 59,
+     "d": -4,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Benfica",
+     "player": "Daniel Banjaqui",
+     "from": 61,
+     "to": 65,
+     "d": 4,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Braga",
+     "player": "Tomas Marques",
+     "from": 60,
+     "to": 64,
+     "d": 4,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Marítimo",
+     "player": "Adrián Butzke",
+     "from": 60,
+     "to": 56,
+     "d": -4,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Marítimo",
+     "player": "Rodri Andrade",
+     "from": 56,
+     "to": 52,
+     "d": -4,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Sporting CP",
+     "player": "Flávio Gonçalves",
+     "from": 64,
+     "to": 68,
+     "d": 4,
+     "since": "2026-10-15",
+     "model_change": true
+    },
+    {
+     "team": "Sporting CP",
+     "player": "Nestory Irankunda",
+     "from": 62,
+     "to": 66,
+     "d": 4,
+     "since": "2026-10-15",
+     "model_change": true
+    },
+    {
+     "team": "Académico de Viseu",
+     "player": "André Clóvis",
+     "from": 68,
+     "to": 65,
+     "d": -3,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Académico de Viseu",
+     "player": "Anthony Correia",
+     "from": 64,
+     "to": 61,
+     "d": -3,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Académico de Viseu",
+     "player": "João Guilherme",
+     "from": 59,
+     "to": 56,
+     "d": -3,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Académico de Viseu",
+     "player": "Nils Mortimer",
+     "from": 53,
+     "to": 50,
+     "d": -3,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Académico de Viseu",
+     "player": "Soufiane Messeguem",
+     "from": 63,
+     "to": 60,
+     "d": -3,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Braga",
+     "player": "João Moutinho",
+     "from": 63,
+     "to": 66,
+     "d": 3,
+     "since": "2026-10-15",
+     "model_change": true
+    },
+    {
+     "team": "Casa Pia",
+     "player": "André Geraldes",
+     "from": 52,
+     "to": 55,
+     "d": 3,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Estoril",
+     "player": "Ismael Sierra",
+     "from": 61,
+     "to": 58,
+     "d": -3,
+     "since": "2026-10-14",
+     "model_change": true
+    }
+   ]
+  },
+  "Ligue1": {
+   "teams": 18,
+   "checked": 3032,
+   "mismatches": 0,
+   "changed": 206,
+   "model_changed": 206,
+   "changes_top": [
+    {
+     "team": "Monaco",
+     "player": "Mathys Detourbet",
+     "from": 61,
+     "to": 67,
+     "d": 6,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Paris FC",
+     "player": "Patrick Zabi",
+     "from": 61,
+     "to": 67,
+     "d": 6,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Strasbourg",
+     "player": "Dario Essugo",
+     "from": 62,
+     "to": 67,
+     "d": 5,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Lorient",
+     "player": "Tosin Aiyegun",
+     "from": 64,
+     "to": 60,
+     "d": -4,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Brest",
+     "player": "Noah Edjouma",
+     "from": 60,
+     "to": 63,
+     "d": 3,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Lens",
+     "player": "Kyllian Antonio",
+     "from": 64,
+     "to": 67,
+     "d": 3,
+     "since": "2026-10-15",
+     "model_change": true
+    },
+    {
+     "team": "Lille",
+     "player": "Olivier Giroud",
+     "from": 69,
+     "to": 66,
+     "d": -3,
+     "since": "2026-10-15",
+     "model_change": true
+    },
+    {
+     "team": "Lyon",
+     "player": "Julien Duranville",
+     "from": 60,
+     "to": 63,
+     "d": 3,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Lyon",
+     "player": "Rémi Himbert",
+     "from": 61,
+     "to": 64,
+     "d": 3,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Monaco",
+     "player": "Matthis Abline",
+     "from": 77,
+     "to": 74,
+     "d": -3,
+     "since": "2026-10-15",
+     "model_change": true
+    },
+    {
+     "team": "Monaco",
+     "player": "Pape Cabral",
+     "from": 60,
+     "to": 63,
+     "d": 3,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Monaco",
+     "player": "Paris Brunner",
+     "from": 66,
+     "to": 69,
+     "d": 3,
+     "since": "2026-10-15",
+     "model_change": true
+    },
+    {
+     "team": "Nice",
+     "player": "Xavier Mandza Tsiendi",
+     "from": 62,
+     "to": 65,
+     "d": 3,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "PSG",
+     "player": "Achraf Hakimi",
+     "from": 84,
+     "to": 87,
+     "d": 3,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Toulouse",
+     "player": "Jacen Russell-Rowe",
+     "from": 67,
+     "to": 64,
+     "d": -3,
+     "since": "2026-10-14",
+     "model_change": true
+    }
+   ]
+  },
+  "SerieA": {
+   "teams": 20,
+   "checked": 3452,
+   "mismatches": 0,
+   "changed": 243,
+   "model_changed": 243,
+   "changes_top": [
+    {
+     "team": "Fiorentina",
+     "player": "Christ Inao Oulaï",
+     "from": 62,
+     "to": 69,
+     "d": 7,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Juventus",
+     "player": "Kerim Alajbegović",
+     "from": 64,
+     "to": 70,
+     "d": 6,
+     "since": "2026-10-16",
+     "model_change": true
+    },
+    {
+     "team": "Cagliari",
+     "player": "Kevin Carlos",
+     "from": 69,
+     "to": 64,
+     "d": -5,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Como",
+     "player": "Mattia Liberali",
+     "from": 61,
+     "to": 66,
+     "d": 5,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Milan",
+     "player": "Alphadjo Cissè",
+     "from": 63,
+     "to": 68,
+     "d": 5,
+     "since": "2026-10-15",
+     "model_change": true
+    },
+    {
+     "team": "Napoli",
+     "player": "Rasmus Højlund",
+     "from": 81,
+     "to": 76,
+     "d": -5,
+     "since": "2026-10-15",
+     "model_change": true
+    },
+    {
+     "team": "Roma",
+     "player": "Emanuele Lulli",
+     "from": 62,
+     "to": 67,
+     "d": 5,
+     "since": "2026-10-15",
+     "model_change": true
+    },
+    {
+     "team": "Bologna",
+     "player": "Massimo Pessina",
+     "from": 64,
+     "to": 68,
+     "d": 4,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Bologna",
+     "player": "Mikel Amondarain",
+     "from": 61,
+     "to": 65,
+     "d": 4,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Cagliari",
+     "player": "Alessandro Romano",
+     "from": 66,
+     "to": 70,
+     "d": 4,
+     "since": "2026-10-16",
+     "model_change": true
+    },
+    {
+     "team": "Cagliari",
+     "player": "Raphael Kofler",
+     "from": 61,
+     "to": 65,
+     "d": 4,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Fiorentina",
+     "player": "Viery",
+     "from": 64,
+     "to": 68,
+     "d": 4,
+     "since": "2026-10-15",
+     "model_change": true
+    },
+    {
+     "team": "Genoa",
+     "player": "Franz-Ethan Meichtry",
+     "from": 60,
+     "to": 64,
+     "d": 4,
+     "since": "2026-10-14",
+     "model_change": true
+    },
+    {
+     "team": "Monza",
+     "player": "Jay Robinson",
+     "from": 61,
+     "to": 65,
+     "d": 4,
+     "since": "2026-10-15",
+     "model_change": true
+    },
+    {
+     "team": "Sassuolo",
+     "player": "Darryl Bakola",
+     "from": 64,
+     "to": 68,
+     "d": 4,
+     "since": "2026-10-16",
+     "model_change": true
+    }
+   ]
+  }
+ }
+}

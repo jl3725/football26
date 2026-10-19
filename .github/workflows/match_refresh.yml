@@ -66,6 +66,10 @@ jobs:
       - name: FotMob match ratings (최근 폼)
         run: bash scripts/ci_try.sh "fotmob_matches" python src/fetch_fotmob_matches.py
 
+      # 결장 명단(FotMob 다음 경기 unavailable · 경기 중 부상 교체) — 경기 다음 날 아침에 바로(TM 은 며칠 늦다)
+      - name: FotMob injuries (결장 명단)
+        run: bash scripts/ci_try.sh "fotmob_injuries" python src/fetch_fotmob_injuries.py
+
       - name: Predictions (ClubElo)
         run: bash scripts/ci_try.sh "clubelo" python src/fetch_clubelo.py
 
