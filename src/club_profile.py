@@ -91,6 +91,7 @@ def _tier(pct: float) -> str:
     return "modest"
 
 
+@lru_cache(maxsize=512)   # 후보마다 다시 계산하던 것(리크루트 풀 1회에 470번) — 구단당 한 번
 def recruitment_dna(club: str) -> dict | None:
     """구단 영입 성향(최근 창) — 나이 패턴 + 이적료 패턴 + 라벨."""
     t = _transfers()
@@ -148,6 +149,7 @@ def recruitment_dna(club: str) -> dict | None:
     }
 
 
+@lru_cache(maxsize=512)   # 후보마다 다시 계산하던 것(리크루트 풀 1회에 470번) — 구단당 한 번
 def affordability(club: str) -> dict | None:
     """지출 여력 '프록시'(실제 예산/급여 아님) — 스쿼드가치 + 드러난 지출 + 가격상한 추정."""
     sv = _squad_value()

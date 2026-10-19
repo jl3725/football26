@@ -84,7 +84,7 @@ def simulate(target_club: str, new_manager: str) -> dict:
             cvec = _role_centroid(qc, nm_club, role)
             cands = []
             if cvec is not None:
-                hits = qc.search(tf.QCOLLECTION, query_vector=cvec.tolist(), limit=40)
+                hits = tf._qsearch(qc, cvec.tolist(), 40)
                 for h in hits:
                     if h.payload.get("club") == target_club or h.payload.get("pos_detail") != role:
                         continue

@@ -5,7 +5,8 @@ OVR 검증 에이전트 — ① 같은 선수의 OVR 이 화면(API)마다 같�
 기준값(최종 OVR) = player_frame 의 `_ovr`(rv3.ovr_of_row — 모델 하나). API 함수를 프로세스 안에서 불러
 팀마다 선수 OVR 을 모아 기준값과 비교한다(운영 서버에 요청하지 않음).
 - 출처: database(선수 카드·DB) · squad(스쿼드·뎁스) · players(선수 목록) · overview(KEY PLAYERS·분포) ·
-  lineup(FORMATION 시즌·최근·벤치) · player_detail(선수 프로필, 팀당 상위 N명) · rating_history 기록 경로(player_line)
+  lineup(FORMATION 시즌·최근·벤치) · player_detail(선수 프로필, 팀당 상위 N명) · rating_history 기록 경로(player_line) ·
+  리크루트 풀(전 리그 후보 현재 OVR, 리그마다 한 팀)
 - 변동: data/rating_history_* 의 마지막 기록 대비 ±. 모델 버전이 바뀐 날의 변화는 '모델 변경'으로 따로 센다.
 - 결과: --json 경로(기본 data/eval/ovr_audit.json). 불일치가 하나라도 있으면 종료 코드 1(daily_data → watchdog 이슈).
 
@@ -132,8 +133,32 @@ def main() -> int:
     leagues = [a.league] if a.league else list(ds.available_leagues())
     res = [audit_league(m, lg, a.detail) for lg in leagues]
     mism = [x for r in res for x in r["mismatches"]]
+    # 리크루트 풀(전 리그 후보)의 현재 OVR — 후보가 뛰는 리그 표의 최종 OVR 과 같은가(리그마다 한 팀)
+    truth_all = {}
+    for lg in ds.available_leagues():
+        pf = m._pf(lg)
+        if pf is not None:
+            truth_all.update({(lg, str(s_), str(p_)): int(o) for s_, p_, o in zip(pf["squad"], pf["player"], pf["_ovr"]) if o == o})
+    n_disc = 0
+    for lg in leagues:
+        pf = m._pf(lg)
+        if pf is None or pf.empty:
+            continue
+        team = str(pf.sort_values("_ovr", ascending=False)["squad"].iloc[0])
+        try:
+            recs = m.discover(team, league=lg, top=40).get("recommendations") or []
+        except Exception:  # noqa: BLE001
+            recs = []
+        for r in recs:
+            t = truth_all.get((r["source_league"], r["squad"], r["player"]))
+            if t is None:
+                continue
+            n_disc += 1
+            if r["current_ovr"] != t:
+                mism.append({"league": r["source_league"], "team": r["squad"], "player": r["player"],
+                             "source": f"recruit_pool({team})", "shown": r["current_ovr"], "final": t})
     out = {"date": (dt.datetime.now(dt.timezone.utc) + dt.timedelta(hours=9)).date().isoformat(), "model": rv3.MODEL_VERSION,
-           "checked": sum(r["checked"] for r in res), "mismatches": mism,
+           "checked": sum(r["checked"] for r in res) + n_disc, "mismatches": mism,
            "leagues": {r["league"]: {"teams": r["teams"], "checked": r["checked"], "mismatches": len(r["mismatches"]),
                                      "changed": len(r["changes"]), "model_changed": sum(c["model_change"] for c in r["changes"]),
                                      "changes_top": r["changes"][:15]} for r in res}}

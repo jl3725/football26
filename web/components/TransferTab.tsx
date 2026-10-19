@@ -6,6 +6,7 @@ import { TONE } from "@/lib/meaning";
 import FitEvaluator from "./FitEvaluator";
 import ManagerSimPanel from "./ManagerSimPanel";
 import RecruitPool from "./RecruitPool";
+import ScoutNeeds from "./ScoutNeeds";
 import Bar from "./Bar";
 import { usePeek } from "./PlayerPeek";
 import { SkelTab } from "./Skeleton";
@@ -77,8 +78,9 @@ export default function TransferTab({ team, accent }: { team: string; accent: st
       ) : view === "sim" ? (
         <ManagerSimPanel team={team} accent={accent} />
       ) : (<>
-      {/* ── SCOUT DESK ── */}
-      {needs && (
+      {/* ── SCOUT DESK ── 포지션 니즈 v2(있으면) · 없으면 예전 라인 단위 */}
+      {needs && (needs.positions?.length ?? 0) > 0 && <ScoutNeeds needs={needs} team={team} accent={accent} />}
+      {needs && !(needs.positions?.length) && (
         <div className="scout-desk">
           <div className="scout-hd">
             <span className="scout-tag" style={{ color: accent }}>SCOUT DESK</span>

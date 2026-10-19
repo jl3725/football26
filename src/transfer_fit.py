@@ -61,15 +61,28 @@ def _api():
     return api
 
 
-@lru_cache(maxsize=1)
+_POOL: dict = {}
+
+
 def _pool() -> pd.DataFrame:
-    """전 리그 players_full 통합(+ _league, _pos_detail, euro, career_gm)."""
+    """전 리그 선수 표 통합(+ _league, _pos_detail, euro, career_gm).
+
+    API 와 같은 선수 표(player_frame — 이름 정규화·두 출처 평점·`_ovr`)를 쓴다. 예전엔 players_full CSV 를 따로 읽어
+    OVR 을 다시 계산해서 리크루트 카드 OVR 이 사이트 다른 화면과 어긋날 수 있었다(2026-10-19 OVR 검증). DB 가 바뀌면 다시 만든다."""
+    import datastore as ds  # noqa: PLC0415
+    key = ds._db_mtime()
+    if _POOL.get("key") == key:
+        return _POOL["pool"]
+    api = _api()
     frames = []
     for lg in LEAGUES:
         try:
-            df = pd.read_csv(data_path("players_full", lg))
-        except (OSError, ValueError):
+            df = api._pf(lg)
+        except Exception:  # noqa: BLE001
+            df = None
+        if df is None or df.empty:
             continue
+        df = df.copy()
         df["_league"] = lg
         frames.append(df)
     pool = pd.concat(frames, ignore_index=True)
@@ -95,7 +108,77 @@ def _pool() -> pd.DataFrame:
     pool["_euro"] = [euro.get((lg, str(nk).lower()), 0.0)
                      for lg, nk in zip(pool["_league"], pool.get("norm_key", ""))]
     pool["_career_gm"] = [gm.get(float(t)) if pd.notna(t) else None for t in pool.get("tm_id", pd.Series())]
+    pool = pool.reset_index(drop=True)
+    _POOL.update(key=key, pool=pool, index=None)
     return pool
+
+
+# ── 스타일 벡터(서버 메모리) — scripts/build_vectors.py 와 같은 피처·정규화(per90 z-score, 270분+)·코사인.
+# Qdrant 는 같은 벡터를 담은 저장소일 뿐이라 3,500명 × 23차원은 numpy 로 바로 계산한다(외부 의존 없음, 후보 풀 제한 없음).
+VEC_FEATURES = [
+    "npg_per90", "ast_per90", "xg_p90", "npxg_p90", "xa_p90", "kp_p90", "shots_p90",
+    "sot_per90", "xg_chain_p90", "big_chances_created_per90", "successful_dribbles_per90",
+    "crosses_per90", "final_third_passes_per90", "tackles_won_per90", "interceptions_per90",
+    "recoveries_per90", "clearances_per90", "blocked_shots_per90", "aerial_won_per90",
+    "ground_duels_won_per90", "possession_won_att_per90", "fouled_per90", "offsides_per90",
+]
+
+
+def _vec_index():
+    """(풀 행 번호 배열, z-score 행렬) — 270분+ 선수만."""
+    pool = _pool()
+    if _POOL.get("index") is not None:
+        return _POOL["index"]
+    feats = [c for c in VEC_FEATURES if c in pool.columns]
+    sub = pool[pool["_min"] >= 270]
+    X = sub[feats].apply(pd.to_numeric, errors="coerce").fillna(0.0).to_numpy(dtype=float)
+    mu, sd = X.mean(axis=0), X.std(axis=0)
+    sd[sd == 0] = 1.0
+    idx = (sub.index.to_numpy(), (X - mu) / sd)
+    _POOL["index"] = idx
+    return idx
+
+
+def _local_centroid(role: str, clubs) -> np.ndarray | None:
+    pool = _pool()
+    rows, Z = _vec_index()
+    pos = pool.loc[rows, "_pos_detail"].to_numpy()
+    club = pool.loc[rows, "squad"].astype(str).to_numpy()
+    mask = (pos == role) & np.isin(club, list(clubs or []))
+    return Z[mask].mean(axis=0) if mask.any() else None
+
+
+def _local_elite(role: str) -> np.ndarray | None:
+    """리그 엘리트(해당 포지션, 평점 7.0+·900분+) 스타일 원형."""
+    pool = _pool()
+    rows, Z = _vec_index()
+    sub = pool.loc[rows]
+    pos = sub["_pos_detail"].to_numpy() == role
+    elite = pos & (pd.to_numeric(sub["ss_rating"], errors="coerce").fillna(0).to_numpy() >= 7.0) & \
+        (sub["_min"].to_numpy() >= 900)
+    m = elite if elite.any() else pos
+    return Z[m].mean(axis=0) if m.any() else None
+
+
+def _local_search(vec: np.ndarray, role: str, limit: int = 300) -> list[tuple[int, float]]:
+    """(풀 행 번호, 코사인) — 해당 포지션 선수만, 높은 순."""
+    pool = _pool()
+    rows, Z = _vec_index()
+    m = pool.loc[rows, "_pos_detail"].to_numpy() == role
+    if not m.any():
+        return []
+    Zr, rr = Z[m], rows[m]
+    v = np.asarray(vec, float)
+    sims = Zr @ v / (np.linalg.norm(Zr, axis=1) * (np.linalg.norm(v) or 1.0) + 1e-9)
+    order = np.argsort(-sims)[:limit]
+    return [(int(rr[i]), float(sims[i])) for i in order]
+
+
+def _qsearch(qc, vector, limit: int):
+    """qdrant-client 버전 차이 — 1.12 는 search, 1.16+ 는 query_points(search 제거)."""
+    if hasattr(qc, "search"):
+        return qc.search(QCOLLECTION, query_vector=list(vector), limit=limit)
+    return qc.query_points(QCOLLECTION, query=list(vector), limit=limit).points
 
 
 def _pct(series: pd.Series, val) -> float:
@@ -249,7 +332,8 @@ def _departed_keys() -> set:
 
 def discover_fits(team: str, role: str | None = None, top: int = 24,
                   leagues: list | None = None, min_age: int | None = None,
-                  max_age: int | None = None, max_value: float | None = None) -> dict:
+                  max_age: int | None = None, max_value: float | None = None,
+                  roles: list | None = None) -> dict:
     """Qdrant 기반 교차리그 스타일-핏 발굴(리그 중립) — 스카우트 추천의 핵심.
 
     팀의 해당 역할 사용 스타일 centroid(없으면 리그 엘리트 원형)로 전 리그 벡터 검색 →
@@ -261,33 +345,27 @@ def discover_fits(team: str, role: str | None = None, top: int = 24,
     if tgt.empty:
         return {"available": True, "error": f"클럽 '{team}' 없음", "recommendations": []}
     tgt_league = tgt.iloc[0]["_league"]
-    try:
-        qc = _qdrant()                              # 연결 확인은 _qdrant 가 한다(중복 왕복 제거)
-    except Exception as e:  # noqa: BLE001
-        return {"available": False, "reason": f"Qdrant 미가동: {str(e)[:60]}", "recommendations": []}
 
     lgset = set(leagues) if leagues else None
     departed = _departed_keys()                    # 이번 창 이적 완료 선수 제외
-    roles = [(_pos_detail(role) or role)] if role else _weak_roles(team, pool)
+    # 역할: 직접 고른 포지션 > 니즈(api._position_needs — 부상·폼·이적 공백) > 예전 '얇은 역할'(300분+ 2명 이하)
+    roles = [(_pos_detail(role) or role)] if role else ([_pos_detail(x) or x for x in roles] if roles else _weak_roles(team, pool))
     recs, seen = [], set()
+    # 니즈 순서(시급한 포지션 먼저)대로 가산 — 한 포지션 후보만 위에 몰리지 않게 작게
+    role_bonus = {rl: (len(roles) - i - 1) * 4.0 for i, rl in enumerate(roles)} if not role else {}
     for rl in roles:
-        target = _role_centroid_for(qc, rl, [team])
+        target = _local_centroid(rl, [team])
         if target is None:
-            target = _elite_archetype(qc, rl)
+            target = _local_elite(rl)
         if target is None:
             continue
-        hits = qc.search(QCOLLECTION, query_vector=target.tolist(), limit=120)
-        for h in hits:
-            pay = h.payload or {}
-            nm, clb, lg = pay.get("name"), pay.get("club"), pay.get("league")
-            if not nm or clb == team or pay.get("pos_detail") != rl or nm in seen:
+        for ri, sim in _local_search(target, rl, limit=max(300, top * 4)):
+            r = pool.loc[ri]
+            nm, clb, lg = str(r["player"]), str(r.get("squad") or ""), str(r["_league"])
+            if clb == team or nm in seen:
                 continue
             if lgset and lg not in lgset:
                 continue
-            prow = pool[(pool["player"].astype(str) == nm) & (pool["_league"] == lg)]
-            if prow.empty:
-                continue
-            r = prow.iloc[0]
             if str(r.get("norm_key") or "").lower() in departed:   # 이번 창 이적 완료 → 제외
                 continue
             base = int(api._player_ovr(r))
@@ -302,14 +380,14 @@ def discover_fits(team: str, role: str | None = None, top: int = 24,
             euro = bool((r.get("_euro") or 0) > 0)
             bucket = api._pos_bucket(r)
             proj = base if lg == tgt_league else int(api._project_ovr(base, lg, tgt_league, euro, age, bucket)[0])
-            style_fit = int(round(max(0.0, h.score) * 100))
+            style_fit = int(round(max(0.0, sim) * 100))
             proj_norm = _clamp((proj - 55) / 37 * 100)
             likely_fee = float(mv) * 1.2 if mv else None      # 시장가 대비 이적료 근사
             pr = price_realism(team, likely_fee)              # 가격 현실성(구단 상한 대비)
             rf = recruit_fit(team, age)                       # 영입 나이기조 부합
-            contract = str(r.get("contract_until") or "")
+            contract = str(r.get("contract_until") or r.get("tm_contract_until") or "")
             score = (0.42 * style_fit + 0.22 * proj_norm + 0.14 * pr["score"]
-                     + 0.10 * float(rf["score"]) + (6 if euro else 0))
+                     + 0.10 * float(rf["score"]) + (6 if euro else 0) + role_bonus.get(rl, 0.0))
             cross = bool(lg != tgt_league)
             why = [f"스타일 적합 {style_fit}"]
             if cross:
@@ -333,8 +411,8 @@ def discover_fits(team: str, role: str | None = None, top: int = 24,
                 "rating": round(float(_num0(r.get("ss_rating"))), 2),
                 "style_fit": style_fit, "euro": euro, "age": age,
                 "price_verdict": pr["verdict"], "likely_fee_eur": pr.get("likely_fee_eur"),
-                "recruit_fit": int(rf["score"]), "contract_until": contract,
-                "photo": str(r.get("photo") or ""), "why_fit": why, "_score": round(score, 1),
+                "recruit_fit": int(rf["score"]), "contract_until": contract, "minutes": int(_num0(r.get("_min"))),
+                "photo": api._photo(r), "why_fit": why, "_score": round(score, 1),
             })
     recs.sort(key=lambda x: -x["_score"])
     recs = _kg_enrich(team, recs[:max(top * 2, 24)], tgt_league)[:top]   # KG 신호 보강·재정렬
@@ -374,7 +452,7 @@ def _style_fits(qc, cand_name, role, target_club, tendency_cl):
     # TendencyFit — 감독 성향과 스타일 겹치는 클럽 표본의 해당 역할
     tvec = _role_centroid_for(qc, role, tendency_cl)
     tendency_fit = _clamp(max(0.0, _cos(cand_vec, tvec)) * 100) if tvec is not None else None
-    sim = qc.search(QCOLLECTION, query_vector=cand_vec, limit=6)
+    sim = _qsearch(qc, cand_vec, 6)
     similar = [f"{h.payload['name']} ({h.payload['league']})" for h in sim[1:]]
     return rolefit, current_fit, tendency_fit, similar
 

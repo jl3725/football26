@@ -428,12 +428,17 @@ export type DiscoverPick = {
   goals?: number; assists?: number; rating?: number;
   price_verdict?: string; likely_fee_eur?: number | null; recruit_fit?: number; contract_until?: string;
   kg_rumored?: boolean; kg_rumor_prob?: number | null; kg_precedent?: number;
+  policy_ok?: boolean | null; policy_notes?: string[];   // 구단 이적 정책(나이·이적료) 대조
+  realistic?: boolean;   // 경쟁 팀·강팀 핵심 주전이면 false(영입 가능성 낮음)
+  minutes?: number;
 };
 export type Discover = {
   available: boolean; reason?: string; error?: string;
   team?: string; target_league?: string; target_roles?: string[];
   kpi?: { count: number; avg_age: number | null; avg_value: number | null; leagues: string[] };
   recommendations: DiscoverPick[];
+  policy?: TransferPolicy | null;
+  needs?: { role: string; label: string; urgency: number; level: string }[];   // 자동 대상 포지션(니즈 v2 상위)
 };
 export type DiscoverOpts = { role?: string; top?: number };
 export const getDiscover = (t: string, opts: DiscoverOpts = {}, l = _league) => {
@@ -446,7 +451,21 @@ export const getDiscover = (t: string, opts: DiscoverOpts = {}, l = _league) => 
 // ── 스카우트 데스크 (Needs Board) ──
 export type NeedItem = { line: string; line_label: string; kind: string; title: string; severity: string; reason: string; status: string; player: string | null };
 export type NeedsWindow = { is_open: boolean; label: string; kr: string | null; signings: { player: string; line: string; pos: string; fee: string }[]; departures: { player: string; line: string; pos: string }[] };
-export type Needs = { team: string; color: string; mode: string; window: NeedsWindow; needs: NeedItem[] };
+// 포지션 니즈 v2(api _position_needs) — 뎁스·지금 가용(부상)·이번 창 순증감·주전 폼·나이·계약
+export type PositionNeed = {
+  role: string; label: string; demand: number; urgency: number; level: "urgent" | "need" | "watch" | "ok"; when: string;
+  reasons: string[]; options: number; need_n: number;
+  depth: { player: string; ovr: number; kind: "primary" | "secondary"; injured: boolean; until: string; recent: number | null; age: number; photo: string }[];
+  window: { out: { player: string; ovr: number | null; fee: string; age: number | null }[]; in: { player: string; ovr: number | null; fee: string; age: number | null }[]; verdict: string };
+};
+// 구단 이적 정책(최근 두 시즌 영입) — 나이·이적료·국내 비율·출신 리그
+export type TransferPolicy = {
+  team: string; n: number; age_med: number | null; age_lo: number | null; age_hi: number | null; u23_share: number | null;
+  fee_med: number | null; fee_max: number | null; paid_share: number; domestic_share: number;
+  sources: { league: string; n: number }[]; big: { player: string; fee: number; age: number | null; from: string }[];
+};
+export type Needs = { team: string; color: string; mode: string; window: NeedsWindow; needs: NeedItem[];
+  positions?: PositionNeed[]; team_ovr?: number | null; policy?: TransferPolicy | null };
 export const getNeeds = (t: string, l = _league) => j<Needs>(`/api/needs/${q(t, l)}`);
 export const getContext = () => j<Context>(`/api/context`);
 

@@ -4005,3 +4005,42 @@ LIGA’처럼 글자가 접히던 것) — 넘치면 가로로 넘긴다 */
 .pv-inputs b { color: var(--txt); font-family: var(--font-num); margin-left: 2px; }
 .pv-inputs b.up { color: #4fc27f; } .pv-inputs b.dn { color: #e07070; }
 .inj-src { margin-left: 6px; font: 700 9px/1 var(--font-label); letter-spacing: .06em; color: #9fb4ff; padding: 2px 5px; border-radius: 5px; background: rgba(110,140,255,.12); vertical-align: 1px; }
+
+/* 스카우트 데스크 — 포지션 니즈 v2(components/ScoutNeeds.tsx) */
+.pn-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; }
+.pn-card { border: 1px solid var(--line); border-left: 3px solid var(--muted); border-radius: 11px; padding: 11px 12px; background: var(--panel); display: flex; flex-direction: column; gap: 7px; }
+.pn-top { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
+.pn-role { font: 800 15px/1 var(--font-display); letter-spacing: .06em; }
+.pn-label { font-size: 12px; color: var(--muted); }
+.pn-lv { font-size: 10.5px; font-weight: 700; padding: 2px 7px; border-radius: 6px; margin-left: auto; }
+.pn-when { font-size: 10.5px; color: var(--muted); padding: 2px 6px; border-radius: 6px; border: 1px solid var(--line); }
+.pn-bar { position: relative; height: 6px; border-radius: 4px; background: rgba(255,255,255,0.07); margin-right: 26px; }
+.pn-bar i { position: absolute; inset: 0 auto 0 0; border-radius: 4px; }
+.pn-bar b { position: absolute; right: -26px; top: -5px; font: 700 11.5px/1 var(--font-num); }
+.pn-why { margin: 0; padding-left: 16px; font-size: 12px; color: var(--txt); display: flex; flex-direction: column; gap: 2px; }
+.pn-why li::marker { color: var(--muted-2); }
+.pn-win { display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: center; font-size: 11.5px; }
+.pn-win-k { font: 700 9.5px/1 var(--font-label); letter-spacing: .08em; color: var(--muted-2); }
+.pn-win .out { color: #e07070; } .pn-win .in { color: #4fc27f; }
+.pn-win em { font-style: normal; font-weight: 700; font-size: 10.5px; padding: 1px 6px; border-radius: 5px; }
+.pn-win em.bad { color: #e07070; background: rgba(224,112,112,.12); } .pn-win em.ok { color: #4fc27f; background: rgba(79,194,127,.12); }
+.pn-depth { display: flex; flex-wrap: wrap; gap: 4px; }
+.pn-chip { font-size: 11px; padding: 2px 7px; border-radius: 7px; border: 1px solid var(--line); background: rgba(255,255,255,0.03); color: var(--txt); cursor: pointer; }
+.pn-chip b { font-family: var(--font-num); margin-left: 2px; }
+.pn-chip.sec { opacity: .7; border-style: dashed; }
+.pn-chip.hurt { border-color: rgba(224,112,112,.5); }
+.pn-chip i { font-style: normal; color: #e07070; font-size: 9.5px; margin-left: 3px; }
+.pn-none { font-size: 11.5px; color: var(--muted-2); }
+.pn-fine { display: flex; flex-wrap: wrap; align-items: center; gap: 5px; margin-top: 10px; font-size: 11.5px; color: var(--muted); }
+.pn-fine em { font-style: normal; font-weight: 700; font-size: 10.5px; padding: 1px 6px; border-radius: 5px; color: #4fc27f; background: rgba(79,194,127,.1); }
+.pn-policy { margin-top: 12px; padding: 10px 12px; border-radius: 11px; border: 1px solid var(--line); background: rgba(255,255,255,0.02); }
+.pn-policy-h { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+.pn-policy-h b { font: 700 12px/1 var(--font-display); letter-spacing: .12em; }
+.pn-policy-h span { font-size: 11px; color: var(--muted); }
+.pn-policy-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; }
+.pn-policy-row span { display: flex; flex-direction: column; gap: 2px; }
+.pn-policy-row em { font: 700 9.5px/1 var(--font-label); letter-spacing: .08em; color: var(--muted-2); font-style: normal; }
+.pn-policy-row b { font: 700 16px/1.1 var(--font-num); }
+.pn-policy-row small { font-size: 10.5px; color: var(--muted); }
+.pn-policy-big { margin-top: 8px; font-size: 11.5px; color: var(--muted); }
+.pn-foot { margin: 10px 0 0; font-size: 11px; color: var(--muted-2); padding-top: 8px; border-top: 1px dashed; }

@@ -738,11 +738,41 @@ def discover(team: str, role: str = "", leagues: str = "", min_age: int = 0,
     필터: role(포지션)·leagues(쉼표구분 소스리그)·min_age/max_age·max_value(EUR 상한).
     로컬/호스팅 Qdrant 필요. 미가동 시 available=False degrade. role 없으면 얇은 역할 자동.
     """
-    import transfer_fit as tf  # noqa: PLC0415 (지연 import — Qdrant 의존)
+    import transfer_fit as tf  # noqa: PLC0415
     lgs = [s for s in leagues.split(",") if s] or None
-    return tf.discover_fits(team, role or None, top=top or 24, leagues=lgs,
-                            min_age=min_age or None, max_age=max_age or None,
-                            max_value=max_value or None)
+    # 포지션을 고르지 않으면 니즈 v2(부상·폼·이적 공백) 상위 포지션 — 예전엔 '300분+ 2명 이하' 역할만 봤다
+    need_roles, needs_meta = None, []
+    if not role:
+        try:
+            pn = _position_needs(team, league)
+            top_n = [x for x in pn["roles"] if x["urgency"] >= 15][:3]
+            need_roles = [_ROLE_TM[x["role"]] for x in top_n] or None
+            needs_meta = [{"role": x["role"], "label": x["label"], "urgency": x["urgency"], "level": x["level"]} for x in top_n]
+        except Exception:  # noqa: BLE001
+            need_roles = None
+    out = tf.discover_fits(team, role or None, top=top or 24, leagues=lgs,
+                           min_age=min_age or None, max_age=max_age or None,
+                           max_value=max_value or None, roles=need_roles)
+    # 구단 이적 정책(최근 두 시즌 영입 나이·이적료)과 대조
+    try:
+        pol = _transfer_policy(team)
+    except Exception:  # noqa: BLE001
+        pol = None
+    try:
+        team_ovr = _position_needs(team, league)["team_ovr"] or 80.0
+    except Exception:  # noqa: BLE001
+        team_ovr = 80.0
+    for r in out.get("recommendations") or []:
+        pf_ = _policy_fit(pol, r.get("age"), r.get("value_eur"))
+        r["policy_ok"], r["policy_notes"] = pf_["ok"], pf_["notes"]
+        # 영입 가능성 — 경쟁 팀(같은 리그 전력 6 이내·위) · 강팀(3 이내·위) 핵심 주전(출전 60%+)은 낮음(recommend 와 같은 기준)
+        src = str(r.get("source_league") or league)
+        cstr = _club_strength(src).get(str(r.get("squad") or ""), 78)
+        key = (r.get("minutes") or 0) >= _mm(2000, src)
+        r["realistic"] = not (key and ((src == league and cstr >= team_ovr - 6) or cstr >= team_ovr - 3))
+    out["policy"] = pol
+    out["needs"] = needs_meta
+    return out
 
 
 @app.get("/api/squad-graph/{team}")
@@ -2962,6 +2992,14 @@ def recommend(team: str, league: str = ACTIVE_LEAGUE):
     # 얇은 정도 = 스쿼드급옵션 − (필요+1). 낮을수록(음수) 시급. 라인 무관 최대 5곳.
     ranked = sorted(used, key=lambda b: depth.get(b, 0) - (need_cnt.get(b, 0) + 1))
     weak_buckets = [b for b in ranked if depth.get(b, 0) < need_cnt.get(b, 0) + 1][:5] or ranked[:2]
+    # 니즈 v2(부상·폼·이적 공백·나이) 상위 포지션이 있으면 그걸 쓴다 — 아스날 좌윙 공백을 '수비'로 보던 문제
+    try:
+        pn_roles = [x["role"] for x in _position_needs(team, league)["roles"] if x["urgency"] >= 15][:4]
+        if pn_roles:
+            weak_buckets = pn_roles
+    except Exception:  # noqa: BLE001
+        pass
+    policy = _transfer_policy(team)
     addressed = bool({_LINE_OF_BUCKET[b] for b in weak_buckets} & signed_lines)
 
     tout = _transferred_out(league)
@@ -3022,6 +3060,11 @@ def recommend(team: str, league: str = ACTIVE_LEAGUE):
             proj, proof, risk = _project_ovr(base, src, league, role["big_match"], r.get("age"), bk)
         cstr = src_meta[src]["club"].get(str(r.get("squad") or ""), 78)
         ok, why = _attainable(proj, cstr, team_ovr, role["role"], r.get("minutes"))
+        # 핵심 주전(출전 60%+)은 경쟁 팀끼리 팔지 않는다 — 아스날에 홀란·반다이크·팔머 추천 방지(2026-10-19 사용자)
+        #   같은 리그: 우리보다 전력 6 이내·위 팀 · 다른 리그: 우리와 비슷하거나 강한 팀(3 이내)
+        key = _num(r.get("minutes")) >= _mm(2000, src)
+        if ok and key and ((src == league and cstr >= team_ovr - 6) or cstr >= team_ovr - 3):
+            ok, why = False, "경쟁 팀 핵심 주전" if src == league else "강팀 핵심 주전"
         return role, base, proj, proof, risk, ok, why
 
     # 3) 얇은 포지션마다 전 리그 후보 스코어 → 현실적(picked) + 롱샷
@@ -3079,6 +3122,10 @@ def recommend(team: str, league: str = ACTIVE_LEAGUE):
             why_risk.append(f"출전 {mn}′ 표본 부족")
         if role["role"] in ("컵 전용", "백업", "주변 자원"):
             why_risk.append(f"역할: {role['role']}")
+        pfit = _policy_fit(policy, age, val)
+        if pfit["ok"]:
+            why_fit.append("구단 이적 정책(나이·이적료)에 맞음")
+        why_risk += pfit["notes"]
         conf = "high" if mn >= 1500 else ("med" if mn >= 700 else "low")
         recs.append({
             "player": r["player"], "squad": str(r.get("squad") or ""),
@@ -3091,7 +3138,7 @@ def recommend(team: str, league: str = ACTIVE_LEAGUE):
             "bucket": bk, "bucket_label": _BUCKET_LABEL.get(bk, bk),
             "role": role["role"], "role_evidence": role["role_evidence"],
             "big_match": role["big_match"],
-            "why_fit": why_fit, "why_risk": why_risk, "confidence": conf,
+            "why_fit": why_fit, "why_risk": why_risk, "confidence": conf, "policy_ok": pfit["ok"],
         })
 
     longshots_out = []
@@ -3240,9 +3287,263 @@ def _compute_needs(team: str, league: str) -> dict:
             "needs": out_needs}
 
 
+
+# ── 포지션 니즈 v2(스카우트 데스크·리크루트 풀·드림 타깃 공용) ──────────────────────────────
+# 2026-10-19 사용자: "아스날은 마르티넬리·트로사르가 나가고 촐리스 한 명만 사서 좌윙이 얇은데 '수비가 약하다'고 한다.
+# 부상·폼·이적 평가·이적 정책까지 시즌 중에 유기적으로 바뀌어야 한다". 예전 니즈는 GK·수비·미드·공격 4줄 단위라
+# 좌윙 3명 이탈이 '공격'(사카·하베르츠…) 안에 묻혔고, 같은 줄에 영입이 하나라도 있으면 '해결'로 봤다.
+_ROLE_EN = {"GK": "GK", "LB": "LB", "CB": "CB", "RB": "RB", "DM": "DM", "CM": "CM", "AM": "AM",
+            "LW": "LW", "RW": "RW", "ST": "ST"}
+_ROLE_TM = {"GK": "Goalkeeper", "LB": "Left-Back", "CB": "Centre-Back", "RB": "Right-Back", "DM": "Defensive Midfield",
+            "CM": "Central Midfield", "AM": "Attacking Midfield", "LW": "Left Winger", "RW": "Right Winger",
+            "ST": "Centre-Forward"}
+_MK_DAY = {"초": 5, "중순": 15, "말": 25}
+
+
+def _weeks_out(until, today=None) -> float:
+    """부상 복귀까지 남은 주 — TM 'dd/mm/yyyy' · FotMob 한국어('12월 초 복귀 예상'·'약 1~2주'·'출전 불투명'). 모르면 4주."""
+    import re  # noqa: PLC0415
+    today = today or _today_kst()
+    t = str(until or "").strip()
+    if not t or t.lower() == "nan":
+        return 4.0
+    g = re.match(r"(\d{2})/(\d{2})/(\d{4})$", t)
+    if g:
+        return max(0.0, (datetime.date(int(g.group(3)), int(g.group(2)), int(g.group(1))) - today).days / 7)
+    g = re.match(r"(\d{1,2})월 (초|중순|말)", t)
+    if g:
+        mo = int(g.group(1))
+        y = today.year + (1 if mo < today.month - 1 else 0)
+        return max(0.0, (datetime.date(y, mo, _MK_DAY[g.group(2)]) - today).days / 7)
+    g = re.match(r"약 (\d+)(?:~(\d+))?(일|주|개월)", t)
+    if g:
+        a = (int(g.group(1)) + int(g.group(2) or g.group(1))) / 2
+        return a / 7 if g.group(3) == "일" else a * 4.3 if g.group(3) == "개월" else a
+    if "시즌 아웃" in t:
+        return 30.0
+    if any(k in t for k in ("불투명", "며칠", "단기", "훈련 복귀")):
+        return 0.5
+    return 3.0 if "몇 주" in t else 4.0
+
+
+@_memo(ttl=21600)
+def _prev_frame(league: str):
+    """지난 시즌 선수 표 — 떠난 선수(우리 리그 밖으로 간 마르티넬리 등)의 OVR 을 그 팀 시절 값으로."""
+    try:
+        return _pf(league, f"{SEASON_START - 1}_{SEASON_START}")
+    except Exception:  # noqa: BLE001
+        return None
+
+
+@_memo(ttl=1800)
+def _position_needs(team: str, league: str) -> dict:
+    """포지션(GK·LB·CB·RB·DM·CM·AM·LW·RW·ST)마다 시급도 0~100 — 다섯 요소를 점수로 더한다.
+
+    ① 뎁스: 포메이션 수요(베스트 XI) + 백업(수요의 절반, 최소 1)만큼 '팀 수준 옵션'(OVR ≥ 팀 OVR − 7, 2·3포지션은 0.5명)이 있나
+    ② 지금 가용: 부상 때문에 이 자리 최선 조합(수요 인원) 평균 OVR 이 얼마나 떨어졌나(6주+ 장기 부상은 가산)
+    ③ 이번 창 순증감: 나간 주요 선수(OVR ≥ 팀 OVR − 9, 지난 시즌 값) − 들어온 주요 선수 = 대체 안 된 자리
+    ④ 주전 폼: 주전의 LAST 5 폼(src/recent_form.py)이 60 미만
+    ⑤ 나이·계약: 31세+ 주전에 젊은 후계 없음 · 주전 계약 내년까지
+    시급 50+ · 보강 필요 30+ · 관찰 15+ · 충분. ①②③(장기 부상·대체 안 됨)은 '1월 창', ④⑤만이면 '여름 창'."""
+    import math  # noqa: PLC0415
+    import positions as ps  # noqa: PLC0415
+    full = _pf(league)
+    df = _squad_df(team, league)
+    if full is None or df is None or df.empty:
+        return {"team": team, "team_ovr": None, "roles": []}
+    ex = _roster_extras(team, league, df)
+    if ex:
+        df = pd.concat([df, pd.DataFrame(ex).dropna(axis=1, how="all")], ignore_index=True)
+    tr_ = rv3.team_ratings(_with_roster(full, team, league), team, perf=_team_perf(team, league)) or {}
+    team_ovr = float(tr_.get("overall", 78))
+    inj = _active_injuries(team, league)
+    today = _today_kst()
+    cards = []
+    for _, r in df.iterrows():
+        pr = _pos_profile(r)
+        if not pr.get("primary"):
+            continue
+        nk = ps.norm_name(r["player"])
+        rec, frm = r.get("_recent"), r.get("_form")
+        cards.append({"player": str(r["player"]), "ovr": int(_player_ovr(r)), "age": int(_num(r.get("age"))),
+                      "primary": pr["primary"], "secondary": list(pr["secondary"]), "photo": _photo(r),
+                      "injured": nk in inj, "until": (inj.get(nk) or {}).get("until", ""),
+                      "out_w": round(_weeks_out((inj.get(nk) or {}).get("until"), today), 1) if nk in inj else 0.0,
+                      "recent": int(rec) if rec is not None and rec == rec else None,
+                      "form": int(frm) if frm is not None and frm == frm else None,
+                      "contract": str(r.get("tm_contract_until") or "")[:4]})
+    demand = _formation_bucket_needs(team, league) or {}
+    # 이번 창 이동(임대 제외) — 떠난 선수 OVR 은 지난 시즌 이 팀 시절 값(없으면 이적료 기준점)
+    moves: dict = {}
+    trt = ds.read_table("transfers", league=league)
+    prev = _prev_frame(league)
+    if trt is not None and "squad" in trt.columns:
+        tt, _wf = _window_filter(trt[trt["squad"] == team].copy(), _current_window())
+        tt = tt[~tt["fee_text"].astype(str).str.lower().str.contains("loan", na=False)]
+        for _, r in tt.iterrows():
+            b = _pos_bucket({"tm_position": r.get("pos")})
+            name, d_ = str(r.get("player") or ""), str(r.get("direction"))
+            ovr = None
+            src = full if d_ == "in" else prev
+            if src is not None:
+                hit = src[(src["squad"] == team) & (src["player"] == name)] if d_ == "in" else src[src["player"] == name]
+                if not hit.empty:
+                    ovr = int(_player_ovr(hit.iloc[0]))
+            if ovr is None and _num(r.get("fee_eur")):
+                ovr = int(round(rv3.value_ovr(_num(r.get("fee_eur"))) or 0)) or None
+            moves.setdefault(b, {"in": [], "out": []}).setdefault(d_, []).append(
+                {"player": name, "ovr": ovr, "fee": str(r.get("fee_text") or ""), "age": int(_num(r.get("age"))) or None})
+    lvl_opt = team_ovr - 7
+    roles = []
+    for b in ps.ROLES:
+        d = int(demand.get(b, 0))
+        prim = [c for c in cards if c["primary"] == b]
+        sec = [c for c in cards if b in c["secondary"]]
+        need_n = d + max(1, math.ceil(d * 0.5)) if d else 1
+        # GK 백업은 거의 뛰지 않아 기준을 낮추고(팀 OVR − 15), 노쇠는 34세부터(골키퍼 전성기가 늦다)
+        opt_cut = lvl_opt - 8 if b == "GK" else lvl_opt
+        old_age = 34 if b == "GK" else 31
+        options = sum(1 for c in prim if c["ovr"] >= opt_cut) + 0.5 * sum(1 for c in sec if c["ovr"] >= opt_cut)
+        reasons, pts, jan = [], 0.0, False
+        short = max(0.0, need_n - options)
+        if short > 0 and d:
+            pts += min(50, 35 * short)
+            reasons.append(f"뎁스 {options:g}/{need_n}명 — 팀 수준(OVR {opt_cut:.0f}+) 옵션 부족")
+            jan = True
+        if d:
+            fill = lvl_opt - 8
+            best = (sorted([c["ovr"] for c in prim] + [c["ovr"] - 2 for c in sec], reverse=True) + [fill] * d)[:d]
+            now = (sorted([c["ovr"] for c in prim if c["out_w"] < 1] + [c["ovr"] - 2 for c in sec if c["out_w"] < 1],
+                          reverse=True) + [fill] * d)[:d]
+            drop = sum(best) / d - sum(now) / d
+            long_out = [c for c in prim + sec if c["out_w"] >= 6]
+            if drop >= 2:
+                pts += min(40, 5 * drop + (10 if long_out else 0))
+                hurt = [f"{c['player'].split()[-1]} {c['out_w']:.0f}주" for c in prim + sec if c["injured"]]
+                reasons.append(f"부상으로 이 자리 전력 −{drop:.0f}" + (f" ({', '.join(hurt)})" if hurt else ""))
+                jan = jan or bool(long_out)
+        mv = moves.get(b, {"in": [], "out": []})
+        mv.setdefault("in", [])
+        mv.setdefault("out", [])
+        q_out = [x for x in mv["out"] if (x["ovr"] or 0) >= team_ovr - 9]
+        q_in = [x for x in mv["in"] if (x["ovr"] or 0) >= team_ovr - 9]
+        unrep = len(q_out) - len(q_in)
+        if unrep > 0:
+            pts += min(40, 20 * unrep)
+            jan = True
+            reasons.append(f"이번 창 주요 선수 {len(q_out)}명 나감 · {len(q_in)}명 영입 — 대체 안 된 자리 {unrep}")
+        starters = sorted([c for c in prim if c["out_w"] < 1], key=lambda c: -c["ovr"])[:max(1, d)]
+        cold = [c for c in starters if c["recent"] is not None and c["recent"] < 60]
+        if cold and d:
+            pts += min(24, 12 * len(cold))
+            reasons.append("주전 최근 폼 저조: " + ", ".join(f"{c['player'].split()[-1]} LAST 5 {c['recent']}" for c in cold))
+        old = [c for c in starters if c["age"] >= old_age]
+        young = [c for c in prim if c["age"] and c["age"] <= 23 and c["ovr"] >= lvl_opt]
+        if old and not young and d:
+            pts += 10
+            reasons.append("주전 " + ", ".join(f"{c['player'].split()[-1]} {c['age']}세" for c in old) + " · 젊은 후계 없음")
+        exp = [c for c in starters if c["contract"] and c["contract"] <= str(today.year + 1)]
+        if exp and d:
+            pts += 8
+            reasons.append("주전 계약 " + ", ".join(f"{c['player'].split()[-1]} ~{c['contract']}" for c in exp))
+        pts = min(100.0, pts)
+        level = "urgent" if pts >= 50 else "need" if pts >= 30 else "watch" if pts >= 15 else "ok"
+        verdict = ""
+        if q_out or q_in:
+            verdict = "대체 안 됨" if unrep > 0 else ("업그레이드" if q_in and q_out and
+                                                    max(x["ovr"] or 0 for x in q_in) > max(x["ovr"] or 0 for x in q_out)
+                                                    else "보강" if q_in else "")
+        depth = sorted(prim, key=lambda c: (c["injured"], -c["ovr"])) + sorted(sec, key=lambda c: (c["injured"], -c["ovr"]))
+        roles.append({"role": b, "label": _BUCKET_LABEL.get(b, b), "demand": d, "urgency": int(round(pts)),
+                      "level": level, "when": "1월 창" if jan else "여름 창", "reasons": reasons,
+                      "options": round(options, 1), "need_n": need_n,
+                      "depth": [{"player": c["player"], "ovr": c["ovr"], "kind": "primary" if c in prim else "secondary",
+                                 "injured": c["injured"], "until": c["until"], "recent": c["recent"], "age": c["age"],
+                                 "photo": c["photo"]} for c in depth[:6]],
+                      "window": {"out": mv["out"], "in": mv["in"], "verdict": verdict}})
+    roles.sort(key=lambda x: (-x["urgency"], x["role"]))
+    return {"team": team, "team_ovr": round(team_ovr, 1), "roles": roles}
+
+
+@_memo(ttl=21600)
+def _transfer_policy(team: str) -> dict | None:
+    """구단 이적 정책(최근 두 시즌 영입, 임대 제외) — 나이·이적료·출신 리그. 추천 후보를 이 기준과 대조한다."""
+    import team_names as tn_  # noqa: PLC0415
+    rows = []
+    leagues = list(ds.available_leagues())
+    clubs_of: dict = {}
+    for se in (f"{SEASON_START - 1}_{SEASON_START}", f"{SEASON_START}_{SEASON_START + 1}"):
+        for lg in leagues:
+            st = ds.read_table("standings", league=lg, season=se)
+            if st is not None and "squad" in st.columns:
+                for t in st["squad"].astype(str):
+                    clubs_of.setdefault(t, lg)
+            t_ = ds.read_table("transfers", league=lg, season=se)
+            if t_ is not None and "squad" in t_.columns:
+                rows.append(t_[(t_["squad"] == team) & (t_["direction"] == "in")].assign(_lg=lg, _season=se))
+    if not rows:
+        return None
+    # 같은 이적이 두 시즌 파일에 모두 실릴 때가 있다(창 기준 season_id·window 로 한 번만)
+    t = pd.concat(rows, ignore_index=True)
+    t = t.drop_duplicates(subset=[c for c in ("player", "season_id", "window") if c in t.columns])
+    t = t[~t["fee_text"].astype(str).str.lower().str.contains("loan", na=False)]
+    if t.empty:
+        return None
+    home = t["_lg"].iloc[0]
+    names = list(clubs_of)
+
+    def src_league(club):
+        c = str(club or "")
+        hit = clubs_of.get(c) or clubs_of.get(tn_.best(c, names) or "")
+        return hit or "기타"
+    t = t.assign(_src=t["club"].map(src_league), _age=pd.to_numeric(t["age"], errors="coerce"),
+                 _fee=pd.to_numeric(t["fee_eur"], errors="coerce"))
+    paid = t[t["_fee"] > 0]
+    ages = t["_age"].dropna()
+    src = t["_src"].value_counts()
+    return {"team": team, "n": int(len(t)), "seasons": 2,
+            "age_med": round(float(ages.median()), 1) if len(ages) else None,
+            "age_lo": int(ages.quantile(0.25)) if len(ages) else None, "age_hi": int(ages.quantile(0.75)) if len(ages) else None,
+            "u23_share": round(float((ages <= 23).mean()), 2) if len(ages) else None,
+            "fee_med": float(paid["_fee"].median()) if len(paid) else None,
+            "fee_max": float(paid["_fee"].max()) if len(paid) else None,
+            "paid_share": round(len(paid) / len(t), 2),
+            "domestic_share": round(float((t["_src"] == home).mean()), 2),
+            "sources": [{"league": k, "n": int(v)} for k, v in src.head(4).items()],
+            "big": [{"player": r["player"], "fee": float(r["_fee"]), "age": None if r["_age"] != r["_age"] else int(r["_age"]),
+                     "from": str(r.get("club") or "")} for _, r in paid.sort_values("_fee", ascending=False).head(3).iterrows()]}
+
+
+def _policy_fit(policy: dict | None, age, value_eur) -> dict:
+    """후보 ↔ 구단 정책: 나이(최근 영입 25~75% 구간 ±1세) · 이적료(시장가 × 1.2 ≤ 최고 이적료 × 1.15)."""
+    if not policy:
+        return {"ok": None, "notes": []}
+    notes, ok = [], True
+    if age and policy.get("age_lo") is not None:
+        if age < policy["age_lo"] - 1 or age > policy["age_hi"] + 1:
+            ok = False
+            notes.append(f"나이 {age}세 — 최근 영입 {policy['age_lo']}~{policy['age_hi']}세 밖")
+    if value_eur and policy.get("fee_max"):
+        if value_eur * 1.2 > policy["fee_max"] * 1.15:
+            ok = False
+            notes.append(f"예상 이적료 €{value_eur * 1.2 / 1e6:.0f}M — 최고 지출 €{policy['fee_max'] / 1e6:.0f}M 초과")
+    return {"ok": ok, "notes": notes}
+
+
 @app.get("/api/needs/{team}")
 def needs(team: str, league: str = ACTIVE_LEAGUE):
-    return _compute_needs(team, league)
+    """스카우트 데스크 — 예전 라인 단위 니즈(needs) + 포지션 니즈 v2(positions) + 이적 정책(policy)."""
+    out = _compute_needs(team, league)
+    try:
+        pn = _position_needs(team, league)
+        out["positions"], out["team_ovr"] = pn["roles"], pn["team_ovr"]
+    except Exception as e:  # noqa: BLE001
+        out["positions"], out["positions_error"] = [], f"{type(e).__name__}: {str(e)[:120]}"
+    try:
+        out["policy"] = _transfer_policy(team)
+    except Exception:  # noqa: BLE001
+        out["policy"] = None
+    return out
 
 
 _DB_CACHE: dict = {"key": None, "body": None}

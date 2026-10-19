@@ -18,7 +18,7 @@ const LEAGUES: [string, string][] = [
   ["Ligue1", "Ligue 1"], ["LigaPortugal", "Liga Portugal"], ["Eredivisie", "Eredivisie"],
   ["BelgianProLeague", "Belgian Pro League"],
 ];
-const SORTS: [string, string][] = [["style", "유사도"], ["ovr", "예상 OVR"], ["value", "시장가"], ["age", "나이"]];
+const SORTS: [string, string][] = [["fit", "추천순(니즈·정책)"], ["style", "유사도"], ["ovr", "예상 OVR"], ["value", "시장가"], ["age", "나이"]];
 
 function Kpi({ label, value, sub, accent }: { label: string; value: string; sub?: string; accent: string }) {
   return (
@@ -89,6 +89,9 @@ function Card({ p, accent }: { p: DiscoverPick; accent: string }) {
         {p.price_verdict === "over-budget" && <span style={{ fontSize: 9.5, padding: "1px 7px", borderRadius: 8, background: hexA("#e0556b", 0.15), color: "#e0707a" }}>예산 초과</span>}
         {p.price_verdict === "stretch" && <span style={{ fontSize: 9.5, padding: "1px 7px", borderRadius: 8, background: hexA("#e0a53a", 0.15), color: "#e0a53a" }}>가격 무리</span>}
         {p.kg_precedent ? <span style={{ fontSize: 9.5, padding: "1px 7px", borderRadius: 8, background: hexA(accent, 0.12), color: accent }}>선례 {p.kg_precedent}</span> : null}
+        {p.policy_ok === true && <span title="구단 이적 정책(최근 두 시즌 영입 나이·이적료)에 맞음" style={{ fontSize: 9.5, padding: "1px 7px", borderRadius: 8, background: hexA("#4fc27f", 0.13), color: "#4fc27f" }}>정책 부합</span>}
+        {p.policy_ok === false && <span title={(p.policy_notes || []).join(" · ")} style={{ fontSize: 9.5, padding: "1px 7px", borderRadius: 8, background: hexA("#e0a53a", 0.13), color: "#e0a53a" }}>정책 밖</span>}
+        {p.realistic === false && <span title="경쟁 팀(같은 리그)·강팀의 핵심 주전 — 시즌 중·1월에 데려오기 어려움" style={{ fontSize: 9.5, padding: "1px 7px", borderRadius: 8, background: hexA("#e0556b", 0.13), color: "#e0707a" }}>가능성 낮음</span>}
       </div>
     </div>
   );
@@ -104,12 +107,13 @@ export default function RecruitPool({ team, accent }: { team: string; accent: st
   const [ageMin, setAgeMin] = useState(16);
   const [ageMax, setAgeMax] = useState(34);
   const [valMax, setValMax] = useState(200);         // M€
-  const [sortBy, setSortBy] = useState("style");
+  const [sortBy, setSortBy] = useState("fit");
   const [shown, setShown] = useState(PAGE);          // 한 번에 다 그리면 카드 35장·페이지 4,400px — 12장씩
 
   useEffect(() => {
     let a = true; setLoading(true); setDisc(null);
-    getDiscover(team, { role, top: 40 }).then((d) => a && setDisc(d)).catch(() => a && setDisc(null)).finally(() => a && setLoading(false));
+    // 예전엔 40명만 받아 필터 뒤 35명 남짓이었다(2026-10-19 사용자) — 포지션당 넉넉히 받아 화면에서 12장씩
+    getDiscover(team, { role, top: 150 }).then((d) => a && setDisc(d)).catch(() => a && setDisc(null)).finally(() => a && setLoading(false));
     return () => { a = false; };
   }, [team, role]);
 
@@ -121,6 +125,9 @@ export default function RecruitPool({ team, accent }: { team: string; accent: st
       && (p.age == null || (p.age >= ageMin && p.age <= ageMax))
       && (!p.value_eur || p.value_eur <= valMax * 1e6));
     const key = (p: DiscoverPick) => sortBy === "ovr" ? p.ovr : sortBy === "value" ? (p.value_eur || 0) : sortBy === "age" ? -(p.age || 99) : p.style_fit;
+    // 추천순 = 서버 순서(니즈 시급도·스타일·전력·가격) 그대로, 영입 가능성 낮음·구단 정책 밖 후보는 뒤로
+    const ok = (p: DiscoverPick) => (p.realistic === false ? 0 : 2) + (p.policy_ok === false ? 0 : 1);
+    if (sortBy === "fit") return [...f].sort((a, b) => ok(b) - ok(a));
     return [...f].sort((a, b) => key(b) - key(a));
   }, [disc, lgs, ageMin, ageMax, valMax, sortBy]);
   useEffect(() => { setShown(PAGE); }, [team, role, lgs, ageMin, ageMax, valMax, sortBy]);
@@ -178,7 +185,8 @@ export default function RecruitPool({ team, accent }: { team: string; accent: st
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
             <span style={{ fontSize: 12, opacity: 0.7 }}>
               {loading ? "—" : `${picks.length}명`}
-              {disc?.target_roles && !role ? <span style={{ opacity: 0.6 }}> · 약점 {disc.target_roles.join("·")}</span> : null}
+              {!role && disc?.needs?.length ? <span style={{ opacity: 0.6 }} title="스카우트 데스크 포지션 니즈 상위(부상·폼·이적 공백)"> · 니즈 {disc.needs.map((n) => `${n.label}(${n.urgency})`).join(" · ")}</span>
+                : disc?.target_roles && !role ? <span style={{ opacity: 0.6 }}> · 대상 {disc.target_roles.join("·")}</span> : null}
             </span>
             <label style={{ fontSize: 12, opacity: 0.7 }}>정렬{" "}
               <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} style={{ background: hexA("#fff", 0.06), border: `1px solid ${hexA(accent, 0.3)}`, color: "inherit", borderRadius: 6, padding: "3px 8px", fontSize: 12 }}>
