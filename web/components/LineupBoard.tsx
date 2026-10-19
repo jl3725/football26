@@ -2,7 +2,8 @@
 import { tier } from "@/lib/ui";
 import { useEffect, useState } from "react";
 import SectionHead from "./SectionHead";
-import { getLineup, getProjection, type Lineup, type LineupComp, type Projection } from "@/lib/api";
+import { activeLeague, getLineup, getProjection, type Lineup, type LineupComp, type Projection } from "@/lib/api";
+import { compEn, lgEn } from "@/lib/match";
 import Pitch from "./Pitch";
 import { usePeek } from "./PlayerPeek";
 import { SkelPitch } from "./Skeleton";
@@ -11,12 +12,9 @@ import { showNextSeason } from "@/lib/season";
 
 type Departed = { player: string; left_for: string; pos: string; photo: string };
 
-// 대회 토글 — 예전 FORMATION 은 리그 전용이었다(2026-10-19 사용자: 챔스·컵 스쿼드도 보고 싶다)
-const COMPS: { k: LineupComp; en: string; kr: string }[] = [
-  { k: "league", en: "LEAGUE", kr: "리그" }, { k: "euro", en: "EUROPE", kr: "유럽 대항전" },
-  { k: "cup", en: "CUPS", kr: "국내 컵" }, { k: "all", en: "ALL", kr: "전 대회" }, { k: "last", en: "LAST MATCH", kr: "최근 한 경기" },
-];
-const KIND_KR: Record<string, string> = { league: "리그", euro: "유럽", cup: "컵" };
+// 대회 토글 — 리그 · 챔스 · 컵을 대회 하나하나 따로(2026-10-19 사용자: '리그·챔스·컵 각각 따로'), + 전 대회 · 최근 한 경기.
+// 예전 FORMATION 은 리그 전용이었다. 목록은 서버 comp_list(선발 기록 있는 대회만, 리그 → 유럽 → 컵).
+type CompBtn = { k: LineupComp; en: string; kr: string; n: number | null };
 
 export default function LineupBoard({ team, accent, departed = [] }: { team: string; accent: string; departed?: Departed[] }) {
   const [lu, setLu] = useState<Lineup | null>(null);
@@ -24,17 +22,17 @@ export default function LineupBoard({ team, accent, departed = [] }: { team: str
   const [leftView, setLeftView] = useState<"cur" | "next">("next");
   const [err, setErr] = useState(false);
   const [comp, setComp] = useState<LineupComp>("league");
-  const [counts, setCounts] = useState<Lineup["comps"]>({});
+  const [list, setList] = useState<NonNullable<Lineup["comp_list"]>>([]);
   const peek = usePeek();
 
   useEffect(() => {
-    let a = true; setPj(null); setErr(false); setLeftView("next"); setComp("league"); setCounts({});
+    let a = true; setPj(null); setErr(false); setLeftView("next"); setComp("league"); setList([]);
     getProjection(team).then((d) => a && setPj(d)).catch(() => a && setErr(true));
     return () => { a = false; };
   }, [team]);
   useEffect(() => {
     let a = true; setLu(null);
-    getLineup(team, undefined, comp).then((d) => { if (!a) return; setLu(d); if (d.comps) setCounts(d.comps); })
+    getLineup(team, undefined, comp).then((d) => { if (!a) return; setLu(d); if (d.comp_list) setList(d.comp_list); })
       .catch(() => a && setErr(true));
     return () => { a = false; };
   }, [team, comp]);
@@ -50,14 +48,17 @@ export default function LineupBoard({ team, accent, departed = [] }: { team: str
   const sig = (b?: { formation: string; placements: { slot: string; player: string }[] } | null) =>
     b ? `${b.formation}|${b.placements.map((x) => `${x.slot}:${x.player}`).sort().join(",")}` : "";
   const sameXI = view === "cur" && ((!!lu?.recent && sig(lu.season) === sig(lu.recent)) || (comp === "last" && !!lu));
-  const n = (k: "league" | "euro" | "cup") => counts?.[k] ?? 0;
-  const cnt = (k: LineupComp) => k === "all" ? n("league") + n("euro") + n("cup") : k === "last" ? null : n(k);
-  // 기록 있는 대회만(리그 하나뿐이면 '전체'도 같은 그림이라 숨김)
-  const kinds = (["league", "euro", "cup"] as const).filter((k) => n(k) > 0).length;
-  const shown = COMPS.filter((c) => c.k === "league" || c.k === "last" ? true : c.k === "all" ? kinds > 1 : n(c.k as "euro" | "cup") > 0);
-  const compKr = COMPS.find((c) => c.k === comp)?.kr ?? "";
+  const lg = activeLeague();
+  const shown: CompBtn[] = [
+    ...list.map((c) => ({ k: c.key, en: c.key === "league" ? (lgEn(lg) || "LEAGUE") : (compEn(c.key) || c.name), kr: c.key === "league" ? "리그" : c.name, n: c.n })),
+    ...(list.length > 1 ? [{ k: "all", en: "ALL", kr: "전 대회", n: list.reduce((s, c) => s + c.n, 0) }] : []),
+    { k: "last", en: "LAST MATCH", kr: "최근 한 경기", n: null },
+  ];
+  if (!list.length) shown.unshift({ k: "league", en: lgEn(lg) || "LEAGUE", kr: "리그", n: null });
+  const compKr = shown.find((c) => c.k === comp)?.kr ?? "";
   const lm = lu?.last_match;
-  const lmTxt = lm ? `${lm.date.slice(5).replace("-", "/")} ${lm.home_away === "away" ? "@ " : "vs "}${lm.opponent}${lm.kind && comp !== lm.kind ? ` (${KIND_KR[lm.kind] ?? lm.kind})` : ""}` : "";
+  const lmComp = lm && lm.code && lm.code !== comp ? (lm.code === "league" ? (lgEn(lg) || "리그") : (compEn(lm.code) || lm.comp || "")) : "";
+  const lmTxt = lm ? `${lm.date.slice(5).replace("-", "/")} ${lm.home_away === "away" ? "@ " : "vs "}${lm.opponent}${lmComp ? ` (${lmComp})` : ""}` : "";
   const emptyComp = !!lu && lu.season.placements.length === 0;
 
   const bench = lu?.bench && lu.bench.length > 0 ? (
@@ -94,12 +95,11 @@ export default function LineupBoard({ team, accent, departed = [] }: { team: str
           ? `${comp === "last" ? "그 경기 선발 그대로" : `${compKr} · 가장 많이 선 자리 기준`} · 마지막 반영 ${lmTxt} (라인업은 경기 다음 날 아침 갱신)`
           : "시즌 평점 기준 XI · 최근 5경기 XI"}
         right={shown.length > 1 ? <div className="seg5 seg5-head" role="tablist" aria-label="대회">
-          {shown.map((c) => {
-            const v = cnt(c.k);
-            return <button key={c.k} role="tab" aria-selected={comp === c.k} className={comp === c.k ? "on" : ""} title={c.kr}
+          {shown.map((c) => (
+            <button key={c.k} role="tab" aria-selected={comp === c.k} className={comp === c.k ? "on" : ""} title={`${c.kr}${c.n ? ` · 선발 기록 ${c.n}경기` : ""}`}
               onClick={() => { setComp(c.k); if (c.k !== "league") setLeftView("cur"); }}>
-              {c.en}{v ? <em className="seg5-n">{v}</em> : null}</button>;
-          })}
+              {c.en}{c.n ? <em className="seg5-n">{c.n}</em> : null}</button>
+          ))}
         </div> : undefined} />
       <div className={`pitch-grid${sameXI ? " single" : ""}`}>
         {/* LEFT — 시즌 베스트 XI + 시즌 토글 */}

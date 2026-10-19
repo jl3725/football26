@@ -6,6 +6,7 @@ import { hexA } from "@/lib/ui";
 import { TONE } from "@/lib/meaning";
 import { Chevron } from "./SectionHead";
 import { useLive, liveLabel, type LiveEvent } from "@/lib/live";
+import { useLiveFixture } from "@/lib/standings";
 
 // 라이브 상태 배지·가운데 스코어 — 진행 중이면 빨간 LIVE·경기 시간, 끝났으면 FT(일정은 하루 갱신이라 화면이 먼저 안다)
 function StateBadge({ m, lv }: { m: Fixture; lv?: LiveEvent }) {
@@ -129,7 +130,8 @@ export function PredictBar({ m, detail = false, slim = false, only }: { m: Fixtu
   );
 }
 
-export default function MatchCard({ m, onPick, compact = false }: { m: Fixture; onPick?: Pick_; compact?: boolean }) {
+export default function MatchCard({ m: m0, onPick, compact = false }: { m: Fixture; onPick?: Pick_; compact?: boolean }) {
+  const m = useLiveFixture(m0);   // 순위·승점 = 잠정 순위(lib/standings)
   const preview = useMatchPreview();
   const { date, time } = splitKst(m.kst);
   const tone = compTone(m.comp_code);
@@ -183,7 +185,8 @@ export default function MatchCard({ m, onPick, compact = false }: { m: Fixture; 
 }
 
 // 홈 맨 위 — 이번 주 최대 빅매치 하나를 크게(양 팀 색 그라데이션)
-export function MatchHero({ m, onPick }: { m: Fixture; onPick?: Pick_ }) {
+export function MatchHero({ m: m0, onPick }: { m: Fixture; onPick?: Pick_ }) {
+  const m = useLiveFixture(m0);
   const preview = useMatchPreview();
   const { date, time } = splitKst(m.kst);
   const tone = compTone(m.comp_code);

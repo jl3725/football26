@@ -34,6 +34,7 @@ const COMP_EN: Record<string, string> = {
   "eng.fa": "FA CUP", "eng.league_cup": "EFL CUP", "esp.copa_del_rey": "COPA DEL REY", "ita.coppa_italia": "COPPA ITALIA",
   "ger.dfb_pokal": "DFB-POKAL", "fra.coupe_de_france": "COUPE DE FRANCE", "por.taca.portugal": "TAÇA", "ned.cup": "KNVB BEKER",
 };
+export const compEn = (code?: string | null) => (code && COMP_EN[code]) || "";
 export function compLabel(m: Fixture): string {
   if (m.comp_code.endsWith(".1")) return lgEn(m.home.league) || lgEn(m.away.league) || m.comp;
   return COMP_EN[m.comp_code] ?? m.comp;

@@ -61,6 +61,11 @@ jobs:
             FB_LEAGUE=$LG bash scripts/ci_try.sh "match_stats $LG" python src/fetch_match_stats.py
           done
 
+      # 경기별 선수 평점(FotMob, 리그·유럽·컵) — 선수 '최근 폼'(LAST 5)과 SEASON LOG 경기별 평점 원천(src/recent_form.py).
+      # 새로 끝난 경기만 받는다. 시즌 폼만으로는 한두 경기 부진이 안 보였다(2026-10-19 사용자: 사카 노팅엄전).
+      - name: FotMob match ratings (최근 폼)
+        run: bash scripts/ci_try.sh "fotmob_matches" python src/fetch_fotmob_matches.py
+
       - name: Predictions (ClubElo)
         run: bash scripts/ci_try.sh "clubelo" python src/fetch_clubelo.py
 

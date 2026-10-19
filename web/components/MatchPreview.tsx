@@ -1,11 +1,13 @@
 "use client";
+import { useLiveFixture } from "@/lib/standings";
+import FormPair from "./FormPair";
 import { useCallback, useEffect, useState } from "react";
 import { getOverview, type Fixture, type FixtureSide, type Overview, type ResultMatch } from "@/lib/api";
 import { liveLabel, useLive } from "@/lib/live";
 import { colorsClose, compLabel, compTone, ddayLabel, lgKo, liftHex, rankLabel, streak } from "@/lib/match";
 import { MatchPreviewCtx } from "@/lib/matchPreview";
 import { futTier, hexA } from "@/lib/ui";
-import { FORM_NOTE, TONE, formMeaning, ovrMeaning, type Meaning } from "@/lib/meaning";
+import { TONE, ovrMeaning, type Meaning } from "@/lib/meaning";
 import { MeaningTag } from "./Meaning";
 import { Crest, FormBoxes, PredictBar } from "./MatchCard";
 import { usePeek, useOpenTeam } from "./PlayerPeek";
@@ -49,7 +51,8 @@ function keyPoints(m: Fixture, H: Overview | null, A: Overview | null): string[]
   return out.slice(0, 5);
 }
 
-function Drawer({ m, onClose }: { m: Fixture; onClose: () => void }) {
+function Drawer({ m: m0, onClose }: { m: Fixture; onClose: () => void }) {
+  const m = useLiveFixture(m0);   // 순위·승점 차 = 잠정 순위
   const [H, setH] = useState<Overview | null | undefined>(undefined);
   const [A, setA] = useState<Overview | null | undefined>(undefined);
   const peek = usePeek();
@@ -58,11 +61,11 @@ function Drawer({ m, onClose }: { m: Fixture; onClose: () => void }) {
     let alive = true;
     const load = (s: FixtureSide, set: (o: Overview | null) => void) =>
       s.league ? getOverview(s.team, s.league).then((o) => alive && set(o)).catch(() => alive && set(null)) : set(null);
-    load(m.home, setH); load(m.away, setA);
+    load(m0.home, setH); load(m0.away, setA);   // 원래 경기 기준 — 잠정 순위가 30초마다 바뀌어도 다시 받지 않게
     const esc = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
     window.addEventListener("keydown", esc);
     return () => { alive = false; window.removeEventListener("keydown", esc); };
-  }, [m, onClose]);
+  }, [m0, onClose]);
 
   const lv = useLive(m.event_id);
   const res = (m as ResultMatch).home && "goals" in m.home ? (m as ResultMatch) : null;   // 결과 띠에서 연 경기
@@ -204,7 +207,7 @@ function Drawer({ m, onClose }: { m: Fixture; onClose: () => void }) {
                         onClick={(e) => peek(e, { name: p.player, club: side.team, league: side.league ?? undefined })}>
                         {p.photo ? <img src={p.photo} alt="" /> : <span className="pv-ph" />}
                         <span className="pv-star-t"><b>{p.player}</b>
-                          <em>{p.pos}{p.form ? <> · 폼 {p.form} <MeaningTag sm m={formMeaning(p.form)} title={FORM_NOTE} /></> : null}</em></span>
+                          <em>{p.pos}</em><FormPair season={p.form} recent={p.form_recent} n={p.recent_n} sm /></span>
                         <span className="pv-star-o" title={`OVR ${p.ovr} · ${ovrMeaning(p.ovr).label}`}>{p.ovr}</span>
                       </button>
                     ))}

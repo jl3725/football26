@@ -1,4 +1,5 @@
 "use client";
+import { useLiveSides } from "@/lib/standings";
 import { useMemo, useState } from "react";
 import type { HubBoot, InjuryImpactRow, RaceTeam, ResultMatch, TableGap, TotsPlayer, TotsSub, WatchMatch } from "@/lib/api";
 import Pitch from "./Pitch";
@@ -75,6 +76,7 @@ export function ResultsTicker({ results, onPick, comps }: { results: ResultMatch
 export function WatchGrid({ items, onPick }: { items: WatchMatch[]; onPick: Pick }) {
   const preview = useMatchPreview();
   const live = useLiveAll();
+  const sideOf = useLiveSides();   // 순위·승점 = 잠정 순위
   if (!items.length) return null;
   return (
     <div className="wt5-grid">
@@ -92,7 +94,7 @@ export function WatchGrid({ items, onPick }: { items: WatchMatch[]; onPick: Pick
                 : lv?.state === "post" ? <span className="bdg ft">{liveLabel(lv)}</span>
                 : <span className={`bdg ${m.d_day <= 1 ? "hot" : "neutral"}`}>{ddayLabel(m.d_day)}</span>}
             </div>
-            {[m.home, m.away].map((s, i) => (
+            {[sideOf(m.home), sideOf(m.away)].map((s, i) => (
               <button className="wt5-team" key={s.team} onClick={(e) => { e.stopPropagation(); if (s.league) onPick(s.team, s.league); }}>
                 <Crest s={s} size={26} />
                 <b>{s.team}</b>

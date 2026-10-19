@@ -18,7 +18,11 @@ export type Transfer = {
 
 // 평점 추이 — ovr_d·form_d: 2주 전 대비(기록 2주치 쌓인 뒤), ovr_prev: 지난 시즌 OVR(300분+)
 export type Trend = { ovr_d: number | null; form_d: number | null; ovr_prev: number | null };
-export type Star = { trend?: Trend; player: string; pos: string; ovr: number; pot?: number; form?: number | null; rating: number; goals: number; assists: number; photo: string; role?: string; big_match?: boolean };
+// 최근 경기 평점(FotMob, 전 대회) — 선수 화면 LAST 5 막대
+export type RecentMatch = { date: string; comp_code: string; opponent: string; home_away: string; minutes: number; rating: number; goals: number; assists: number };
+export type RecentForm = { score: number | null; n: number; avg5: number; avg3: number; matches: RecentMatch[] };
+export type Star = { trend?: Trend; player: string; pos: string; ovr: number; pot?: number; form?: number | null;
+  form_recent?: number | null; recent_avg?: number | null; recent_n?: number | null; rating: number; goals: number; assists: number; photo: string; role?: string; big_match?: boolean };
 export type Injury = { player: string; injury: string; until: string; pos: string; photo: string };
 export type Window = {
   season_id: number; window: string; label: string; state: string; is_open: boolean; kr: string | null;
@@ -68,16 +72,17 @@ export type Overview = {
 export type CalEvent = { name: string; start: string; end: string; icon: string; kind: string };
 
 export type Placement = { slot: string; player: string; x: number; y: number; kind: string; ovr: number | null; photo: string; changed?: boolean; in?: boolean; out?: string; club?: string };
-// FORMATION 대회 — league · euro(유럽대항전) · cup(국내컵) · all(전 대회) · last(가장 최근 한 경기)
-export type LineupComp = "league" | "euro" | "cup" | "all" | "last";
+// FORMATION 대회 — league · 대회 코드 하나(uefa.champions·eng.league_cup …) · euro·cup(묶음) · all(전 대회) · last(가장 최근 한 경기)
+export type LineupComp = "league" | "euro" | "cup" | "all" | "last" | (string & {});
 export type Lineup = {
   team: string; color: string;
   season: { formation: string; placements: Placement[]; matches?: number };
   recent: { formation: string; placements: Placement[]; matches?: number } | null;
   bench: { player: string; pos: string; ovr: number; photo: string }[];
-  last_match?: { date: string; opponent: string; home_away: string; kind?: string } | null;   // 마지막으로 반영된 경기(고른 대회)
+  last_match?: { date: string; opponent: string; home_away: string; kind?: string; code?: string; comp?: string } | null;   // 마지막으로 반영된 경기(고른 대회)
   comp?: LineupComp;
-  comps?: Partial<Record<"league" | "euro" | "cup", number>>;   // 대회별 선발 기록 경기 수
+  comps?: Partial<Record<"league" | "euro" | "cup", number>>;   // 묶음별 선발 기록 경기 수
+  comp_list?: { key: string; kind: "league" | "euro" | "cup"; name: string; n: number }[];   // 대회 하나하나(리그 → 유럽 → 컵)
 };
 
 // 응답 상한 — 넘기면 실패로 처리해 화면이 스켈레톤에 영원히 머물지 않게 한다(Render 콜드스타트 ~60s 감안).
@@ -246,7 +251,7 @@ export type PlayerDetail = {
   age: number; nationality: string; value_eur: number; photo: string;
   ovr: number; ss_rating: number; minutes: number; goals: number; assists: number;
   contract_until: string; is_gk: boolean; trend?: Trend;
-  ovr_parts?: OvrPart[]; ratings?: RatingSources; form?: number | null;
+  ovr_parts?: OvrPart[]; ratings?: RatingSources; form?: number | null; recent?: RecentForm | null;
   categories: MetricCat[];
   radar: { axis: string; value: number }[];
   badges: Badge[];
@@ -258,9 +263,11 @@ export type PlayerDetail = {
 // 선수 시즌 기록 — 경기별(대회·출전 분·골·도움) + 대회별 합계 + 전체 합산(리그·컵·유럽 분리)
 export type SeasonLogMatch = { date: string; comp: string; comp_code: string; opponent: string; home_away: string; score: string;
   result: string; status: "start" | "sub" | "bench" | "out"; minutes: number; goals: number; pens: number; assists: number;
-  yellow: number; red: number; has_events: boolean ; shots?: number; sot?: number; saves?: number; conceded?: number; has_stats?: boolean };
+  yellow: number; red: number; has_events: boolean ; shots?: number; sot?: number; saves?: number; conceded?: number; has_stats?: boolean;
+  rating?: number | null };   // FotMob 경기 평점
 export type SeasonLogComp = { comp: string; matches: number; apps: number; starts: number; minutes: number; goals: number;
-  assists: number; yellow: number; red: number ; shots?: number; sot?: number; saves?: number; conceded?: number; g90?: number | null; shots90?: number | null };
+  assists: number; yellow: number; red: number ; shots?: number; sot?: number; saves?: number; conceded?: number; g90?: number | null; shots90?: number | null;
+  rating?: number | null; code?: string };   // rating = FotMob 경기 평점 평균 · code = 대회 코드
 export type SeasonLog = { available: boolean; espn_name?: string | null; matches: SeasonLogMatch[]; by_comp: SeasonLogComp[];
   total: SeasonLogComp; events_coverage: number; is_gk?: boolean; stats_coverage?: number };
 
@@ -334,7 +341,7 @@ export const getNews = (t: string, l = _league) => j<News>(`/api/news/${q(t, l)}
 export const getAnalytics = (t: string, l = _league) => j<Analytics>(`/api/analytics/${q(t, l)}`);
 export const getCalendar = (league: string = _league) => j<{ events: CalEvent[] }>(`/api/calendar?league=${encodeURIComponent(league)}`);
 export const getLineup = (t: string, l = _league, comp: LineupComp = "league") =>
-  j<Lineup>(`/api/lineup/${q(t, l)}${comp === "league" ? "" : `&comp=${comp}`}`);
+  j<Lineup>(`/api/lineup/${q(t, l)}${comp === "league" ? "" : `&comp=${encodeURIComponent(comp)}`}`);
 export type Diag = { kind: string; severity: string; player: string; slot: string; line: string; to?: string; fee?: string; replacement: string; note: string; photo: string };
 export type Projection = {
   team: string; color: string; current_label: string; next_label: string; phase?: "in_season" | "offseason" | "stale";

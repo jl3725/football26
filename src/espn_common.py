@@ -236,13 +236,35 @@ def league_members(league: str, start_year: int) -> set[str]:
 
 
 @lru_cache(maxsize=None)
+def league_team_ids(league: str, start_year: int) -> dict[str, set[str]]:
+    """{우리 squad: ESPN 팀 id 집합} — 그 시즌 리그 경기에 나온 팀의 실제 ESPN id."""
+    code = LEAGUE_CODE[league][0]
+    ids: dict[str, set[str]] = {}
+    for e in scoreboard_events(code, *season_bounds(start_year)) or []:
+        for c in (e.get("competitions") or [{}])[0].get("competitors", []):
+            t = c.get("team") or {}
+            sq = squad_of(t, league)
+            if sq and t.get("id"):
+                ids.setdefault(sq, set()).add(str(t["id"]))
+    return ids
+
+
+@lru_cache(maxsize=None)
 def season_squad_of(league: str, start_year: int):
-    """시즌 소속 팀만 인정하는 squad_of — `fn(team) -> squad | None`."""
+    """시즌 소속 팀만 인정하는 squad_of — `fn(team) -> squad | None`.
+
+    이름 키만으로는 컵·유럽 상대 팀이 우리 팀으로 잡힌다 — 안도라 'Inter Club d'Escaldes' 가 'inter' 키로
+    인테르가 되어 컨퍼런스리그 일정·라인업이 인테르 것으로 들어갔다(2026-10-19). 리그 경기에서 본 ESPN 팀 id 와
+    같을 때만 인정한다(리그 일정이 아직 없으면 예전처럼 이름 + 리그 출전 팀)."""
     members = league_members(league, start_year)
+    ids = league_team_ids(league, start_year)
 
     def _fn(team: dict | None) -> str | None:
         sq = squad_of(team, league)
         if sq and members and sq not in members:
+            return None
+        tid = str((team or {}).get("id") or "")
+        if sq and ids.get(sq) and tid and tid not in ids[sq]:
             return None
         return sq
 

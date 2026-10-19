@@ -76,7 +76,8 @@ export function formMeaning(f: number | null | undefined): Meaning {
   if (f >= 55) return m("주춤", "weak");
   return m("부진", "bad");
 }
-export const FORM_NOTE = "폼 = 이번 시즌 평점·공격포인트로 본 같은 리그·포지션 안 위치(72 = 중간, 90+ 상위 10%) · 출전이 적으면 중간 쪽으로";
+export const FORM_NOTE = "SEASON 폼 = 이번 시즌 평점·공격포인트로 본 같은 리그·포지션 안 위치(72 = 중간, 90+ ≈ 상위 17%, 94+ 상위 10%) · 출전이 적으면 중간 쪽으로";
+export const RECENT_NOTE = "LAST 5 폼 = 최근 5경기(전 대회 · 최근 60일) FotMob 경기 평점(출전 시간 가중 — 짧은 교체는 덜)의 같은 리그·포지션 안 위치(72 = 중간) — 시즌 폼과 따로 본다. 2경기 미만이면 없음";
 
 /** Sofascore 평점(리그 평균 6.8~6.9) — Sofascore 앱과 같은 감각: 7.0 부터 '좋음'(초록). */
 export function ssMeaning(r: number | null | undefined): Meaning {

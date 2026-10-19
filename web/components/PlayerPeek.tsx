@@ -2,6 +2,9 @@
 // 전역 PlayerPeek — 화면 어디서든 선수 이름/토큰/칩 클릭 → 미니 프로필 팝오버.
 // 데이터: getDatabase() 세션 캐시로 즉시 표시 → getPlayerDetail 로 G/A·계약·시장가 추이 보강.
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
+import FormPair, { RecentStrip, fmToSs } from "./FormPair";
+import { compEn, lgEn } from "@/lib/match";
+import { COMP_COLOR } from "./SeasonLog";
 import {
   getDatabase, getPlayerDetail, fmtEur, activeLeague,
   type DbPlayer, type PlayerDetail,
@@ -176,7 +179,7 @@ export function PeekProvider({ children, onOpenPlayer, onOpenTeam }: {
                 {/* 전 대회 합계(리그·컵·유럽 — SEASON LOG). 예전엔 리그 기록만 보였다(2026-10-19 사용자 지적) */}
                 <div className="peek-stat" title="리그·국내컵·유럽대항전 합계">
                   {detail ? <b>{(tot ? tot.minutes : detail.minutes).toLocaleString()}</b> : detailLoading ? <Skel w={30} h={18} style={{ margin: "0 auto 2px" }} /> : <b>—</b>}
-                  <span>{tot ? "출전(분)·전체" : "출전(분)"}</span>
+                  <span>{tot ? "출전(분)" : "출전(분)·리그"}</span>
                 </div>
                 <div className="peek-stat">
                   {detail ? <b>{tot ? tot.goals : detail.goals}</b> : detailLoading ? <Skel w={20} h={18} style={{ margin: "0 auto 2px" }} /> : <b>—</b>}
@@ -194,12 +197,27 @@ export function PeekProvider({ children, onOpenPlayer, onOpenTeam }: {
                   {detail?.ss_rating ? <div style={{ marginTop: 3 }}><MeaningTag sm m={ssMeaning(detail.ss_rating)} /></div> : null}
                 </div>
               </div>
-              {log && log.by_comp.filter((c) => c.matches).length > 1 && (
-                <div className="peek-comps">
-                  {log.by_comp.filter((c) => c.matches).map((c) => (
-                    <span key={c.comp}><b>{c.comp}</b> {c.apps}경기 {c.minutes.toLocaleString()}′{c.goals || c.assists ? ` · ${c.goals}G ${c.assists}A` : ""}</span>
-                  ))}
-                  <em>평점은 리그 경기(Sofascore·FotMob 평균)</em>
+              {log && log.by_comp.filter((c) => c.apps).length > 1 && (
+                <div className="peek-ct" role="table" aria-label="대회별 기록">
+                  <div className="peek-ct-r h" role="row"><span>COMPETITION</span><span>APPS</span><span>MIN</span><span>G</span><span>A</span><span title="FotMob 경기 평점 평균">RTG</span></div>
+                  {log.by_comp.filter((c) => c.apps).map((c) => {
+                    const lab = !c.code || c.code.endsWith(".1") ? (lgEn(league) || "LEAGUE") : (compEn(c.code) || c.comp);
+                    const mn = c.rating ? ssMeaning(fmToSs(c.rating)) : null;
+                    return (
+                      <div className="peek-ct-r" role="row" key={c.comp}>
+                        <span><i style={{ background: COMP_COLOR[c.comp] || "#a58bd6" }} />{lab}</span>
+                        <span>{c.apps}<small>{c.starts < c.apps ? `(${c.starts})` : ""}</small></span>
+                        <span>{c.minutes.toLocaleString()}′</span><span>{c.goals}</span><span>{c.assists}</span>
+                        <span style={mn ? { color: mn.c } : undefined}>{c.rating ? c.rating.toFixed(1) : "—"}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+              {(detail?.form != null || detail?.recent) && (
+                <div className="peek-form">
+                  <FormPair season={detail?.form} recent={detail?.recent?.score} n={detail?.recent?.n} sm />
+                  {detail?.recent && <RecentStrip matches={detail.recent.matches} />}
                 </div>
               )}
               </>

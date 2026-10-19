@@ -1,6 +1,8 @@
 "use client";
+import { useLiveRow } from "@/lib/standings";
+import FormPair from "./FormPair";
 import type { Overview, TeamRecordRow } from "@/lib/api";
-import { formMeaning, ovrMeaning, rankMeaning, FORM_NOTE } from "@/lib/meaning";
+import { ovrMeaning, rankMeaning } from "@/lib/meaning";
 import { MeaningTag } from "./Meaning";
 import { feeLabel, fmtEur } from "@/lib/api";
 import { tier, hexA, roleClass, futTier } from "@/lib/ui";
@@ -105,6 +107,8 @@ function Unit({ label, ko, value, delta, perf, who, rank, rec, recKind }: {
 export default function OverviewTab({ ov, accent }: { ov: Overview; accent: string }) {
   const t = tier(ov.ovr.overall);
   const s = ov.standing;
+  const lr = useLiveRow(ov.team, ov.league);   // 리그 경기 중·직후 잠정 순위(lib/standings)
+  const heroForm = lr?.live?.state === "post" ? lr.form : ov.form;
   const info = ov.info || {};
   const snap = ov.snapshot;
   const peek = usePeek();
@@ -134,12 +138,12 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
         {ov.logo && <img className="hero-mark" src={ov.logo} alt="" aria-hidden="true" />}
         {ov.logo && <img className="hero-logo" src={ov.logo} alt="" />}
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div className="hero-rank">#{s.rank} · {leagueCap} · {info.nick || ""}</div>
+          <div className="hero-rank">#{lr?.rank ?? s.rank}{lr?.live && <span className="hero-live" title="공식 순위(매일 아침 갱신) 전 — 라이브 스코어를 더한 잠정 순위">{lr.live.state === "in" && <i className="live-dot" />}{lr.live.label} 잠정</span>} · {leagueCap} · {info.nick || ""}</div>
           <h1>{ov.team}</h1>
           <div className="full">{ov.fullName} · {info.stadium || ""} · {ov.capacity.toLocaleString()}석</div>
           <div className="form-row">
-            {ov.form.length === 0 && <span className="full">최근 경기 없음</span>}
-            {ov.form.map((f, i) => <div key={i} className={`dot ${f}`}>{f}</div>)}
+            {heroForm.length === 0 && <span className="full">최근 경기 없음</span>}
+            {heroForm.map((f, i) => <div key={i} className={`dot ${f}`}>{f}</div>)}
             <PinButton team={ov.team} league={ov.league} logo={ov.logo} />
           </div>
         </div>
@@ -268,7 +272,8 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
                     {st.ovr}<TrendArrow t={st.trend} ovr={st.ovr} />{st.pot && st.pot > st.ovr ? <span className="star-pot">↗{st.pot}</span> : null}
                   </div>
                   <div className="star-name">{st.player}</div>
-                  <div className="star-meta" title={FORM_NOTE}>{st.pos}{st.form ? <> · 폼 <b style={{ color: formMeaning(st.form).c }}>{st.form}</b> <MeaningTag m={formMeaning(st.form)} sm /></> : ""}</div>
+                  <div className="star-meta">{st.pos}</div>
+                  <FormPair season={st.form} recent={st.form_recent} n={st.recent_n} sm />
                   <div className="star-ga">{st.goals}G {st.assists}A</div>
                   {st.role && <span className={"role-tag sm " + roleClass(st.role)}>{st.role}</span>}
                 </div>

@@ -1,4 +1,5 @@
 "use client";
+import { useStandings } from "@/lib/standings";
 import { useState } from "react";
 import type { Team, NextSeason } from "@/lib/api";
 import { showNextSeason, type Phase } from "@/lib/season";
@@ -61,8 +62,12 @@ export default function Sidebar({
   const total = teams.length;
   const leagueTitle = league === "LaLiga" ? "La Liga" : league === "SerieA" ? "Serie A" : league === "Bundesliga" ? "Bundesliga" : league === "Ligue1" ? "Ligue 1" : league === "LigaPortugal" ? "Liga Portugal" : league === "Eredivisie" ? "Eredivisie" : league === "BelgianProLeague" ? "Belgian Pro League" : "Premier League";
 
-  // 현재 데이터 시즌: 순위순
-  const curShown = [...teams].sort((a, b) => a.rank - b.rank);
+  // 현재 데이터 시즌: 순위순 — 리그 경기 중·직후엔 잠정 순위(lib/standings: 공식 순위 + 라이브 스코어)
+  const ls = useStandings(league);
+  const curShown = teams.map((t) => {
+    const r = ls.on ? ls.byTeam.get(t.name) : undefined;
+    return r ? { ...t, rank: r.rank, points: r.points, live: r.live, move: r.move } : { ...t, live: undefined, move: 0 };
+  }).sort((a, b) => a.rank - b.rank);
   // 다음 시즌: 감지된 실제 로스터(승격/강등 반영), 알파벳순. 없으면 현재 팀 폴백.
   const nextShown = (next?.teams?.length
     ? next.teams
@@ -128,6 +133,7 @@ export default function Sidebar({
       )}
       <div className="side-label">
         {leagueTitle} · {seasonTab === "next" ? `${nextLabel} (개막 전)` : seasonLabel}
+        {seasonTab === "cur" && ls.on && <span className={`side-live${ls.inPlay ? " in" : ""}`} title="공식 순위(매일 아침 갱신) 전 — 진행 중·끝난 경기 스코어를 더한 잠정 순위">{ls.inPlay && <i className="live-dot" />}LIVE 잠정</span>}
       </div>
 
       <div className="team-scroll">
@@ -143,7 +149,9 @@ export default function Sidebar({
                   <span className="rankchip">{t.rank}</span>
                   {t.logo ? <img src={t.logo} alt="" /> : <span style={{ width: 22 }} />}
                   <span className="tn">{t.name}</span>
-                  <span className="pts">{t.points}</span>
+                  {t.move ? <span className={`side-mv ${t.move > 0 ? "up" : "dn"}`} title={`잠정 순위 ${Math.abs(t.move)}계단 ${t.move > 0 ? "상승" : "하락"}`}>{t.move > 0 ? "▲" : "▼"}{Math.abs(t.move)}</span> : null}
+                  <span className={`pts${t.live ? " lv" : ""}`} title={t.live ? `${t.live.label} ${t.live.gf}-${t.live.ga} 반영(잠정)` : undefined}>
+                    {t.live?.state === "in" && <i className="live-dot" />}{t.points}</span>
                 </button>
               );
             })

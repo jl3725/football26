@@ -1,4 +1,5 @@
 "use client";
+import { useLiveFixture } from "@/lib/standings";
 import { useEffect, useState } from "react";
 import { getFixtures, type Fixture } from "@/lib/api";
 import MatchCard from "./MatchCard";
@@ -9,7 +10,8 @@ import { useLive, liveLabel } from "@/lib/live";
 // 리그 탭 '이번 주 경기' — 위: 그 리그 빅매치 강조 카드, 아래: 날짜별 전 경기(소속 팀의 유럽대회 포함).
 // 일정은 클라우드 daily_data 가 매일 갱신, 순위·폼·D-day 는 열 때 계산(src/match_center.py).
 
-function Row({ m, league, onPick }: { m: Fixture; league: string; onPick: (t: string, lg?: string) => void }) {
+function Row({ m: m0, league, onPick }: { m: Fixture; league: string; onPick: (t: string, lg?: string) => void }) {
+  const m = useLiveFixture(m0);
   const big = m.big >= BIG;
   const preview = useMatchPreview();
   const lv = useLive(m.event_id);

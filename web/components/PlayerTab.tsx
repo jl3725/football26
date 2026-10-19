@@ -1,5 +1,6 @@
 "use client";
 import OvrBreakdown from "./OvrBreakdown";
+import FormPair, { RecentStrip } from "./FormPair";
 import { useEffect, useState } from "react";
 import { getPlayers, getPlayerDetail, getSimilar, getHeatmaps, fmtEur, type Players, type PlayerDetail, type SimilarResult, type HeatmapData } from "@/lib/api";
 import { tier, hexA, roleClass, futTier } from "@/lib/ui";
@@ -81,6 +82,18 @@ function Detail({ team, player, accent, heatmap }: { team: string; player: strin
         </div>
       </div>
       <TrendLine t={d.trend} ovr={d.ovr} />
+      {(d.form != null || d.recent) && (
+        <div className="pd-form">
+          <div className="pd-form-h"><b>FORM</b><span>폼 — 시즌 전체와 최근 5경기(전 대회)를 따로</span></div>
+          <FormPair season={d.form} recent={d.recent?.score} n={d.recent?.n} />
+          {d.recent && d.recent.matches.length > 0 && (
+            <>
+              <RecentStrip matches={d.recent.matches} />
+              <div className="pd-form-cap">최근 {Math.min(d.recent.n, 3)}경기 평균 <b>{d.recent.avg3.toFixed(2)}</b> · {d.recent.n}경기 평균 <b>{d.recent.avg5.toFixed(2)}</b> <em>(FotMob 경기 평점 · 출전 시간 가중 · 시즌 평점은 Sofascore·FotMob 평균)</em></div>
+            </>
+          )}
+        </div>
+      )}
       <OvrBreakdown ovr={d.ovr} parts={d.ovr_parts} ratings={d.ratings} />
       {d.badges.length > 0 && (
         <div className="pd-badges">

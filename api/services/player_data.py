@@ -263,6 +263,13 @@ def _build_frame(league: str, season: str | None = None):
     except Exception:  # noqa: BLE001 — 라인업이 없으면 TM 역할로
         frame["_line"] = None
     frame = rv3.add_form_column(frame)
+    # 최근 폼(최근 3·5경기, 전 대회) — FotMob 경기별 평점(src/recent_form.py). 지난 시즌 표엔 붙이지 않는다
+    if season is None:
+        try:
+            import recent_form as rf  # noqa: PLC0415
+            frame = rf.add_recent_form(frame, ds.read_table("fotmob_match_ratings", league=league))
+        except Exception as e:  # noqa: BLE001 — 경기별 평점 표가 없으면 시즌 폼만
+            print(f"[recent_form] {league}: 건너뜀 {type(e).__name__}: {e}")
     # OVR 은 행 데이터만으로 정해지므로 표를 만들 때 한 번만 — 추천 1회에 3,500번 다시 계산하던 것
     frame["_ovr"] = [rv3.ovr_of_row(r) for _, r in frame.iterrows()]
     return frame

@@ -448,6 +448,7 @@ def overview(team: str, league: str = ACTIVE_LEAGUE):
             stars.append({
                 "player": r["player"], "pos": _pos_label(r),
                 "ovr": _player_ovr(r), "pot": _player_pot(r), "form": _player_form(r),
+                "form_recent": _recent_score(r), "recent_avg": _num_or_none(r.get("_recent_avg5")), "recent_n": _num_or_none(r.get("_recent_n")),
                 "trend": _trend(r, league),
                 "rating": round(_num(r.get("_r")), 2),
                 "goals": int(_num(r.get("goals"))), "assists": int(_num(r.get("assists"))),
@@ -1012,6 +1013,17 @@ def _player_ovr(row) -> int:
     if v is not None and v == v:
         return int(v)
     return rv3.ovr_of_row(row)
+
+
+def _recent_score(row):
+    """최근 폼 점수(최근 5경기, 45~99) — player_frame 의 `_recent`(src/recent_form.py). 2경기 미만이면 None."""
+    v = row.get("_recent")
+    return int(v) if v is not None and v == v else None
+
+
+def _num_or_none(v):
+    v = pd.to_numeric(v, errors="coerce")
+    return None if v is None or pd.isna(v) else (int(v) if float(v).is_integer() else round(float(v), 2))
 
 
 def _player_form(row):
@@ -1739,7 +1751,22 @@ def _espn_name(ours: str, names) -> str | None:
     return hits[0] if len(hits) == 1 else None
 
 
-def _season_log(team: str, player: str, league: str, is_gk: bool = False) -> dict:
+@_memo(ttl=21600)
+def _fm_match_dates(league: str) -> dict:
+    """{('id', fotmob_id) | ('nm', 'squad|player'): {날짜: FotMob 경기 평점}} — SEASON LOG 경기별·대회별 평점."""
+    t = ds.read_table("fotmob_match_ratings", league=league)
+    out: dict = {}
+    if t is None or t.empty:
+        return out
+    t = t.assign(rating=pd.to_numeric(t["rating"], errors="coerce")).dropna(subset=["rating"])
+    for fid, sq, pl, d, r in zip(t["fotmob_id"].astype(str).str.replace(r"\.0$", "", regex=True), t["squad"].astype(str),
+                                 t["player"].astype(str), t["date"].astype(str), t["rating"]):
+        out.setdefault(("id", fid), {})[d[:10]] = round(float(r), 2)
+        out.setdefault(("nm", f"{sq}|{pl}"), {})[d[:10]] = round(float(r), 2)
+    return out
+
+
+def _season_log(team: str, player: str, league: str, is_gk: bool = False, fm_id=None) -> dict:
     """선수 시즌 기록 — 경기별(대회·상대·결과·출전 분·선발·골·도움·카드) + 대회별 합계 + 전체 합산.
     리그·국내컵·유럽대항전 라인업/교체(ESPN) + 선수 이벤트(data/match_events, src/fetch_match_stats.py).
     예전 Player 탭은 리그 스탯과 컵·유럽 선발 수만 있어 '챔스+리그 합산·분리'가 안 보였다(2026-10-15)."""
@@ -1779,6 +1806,13 @@ def _season_log(team: str, player: str, league: str, is_gk: bool = False) -> dic
         for r in mine[mine["player"].astype(str) == (me_pm or "")].to_dict("records"):
             pm[str(r["event_id"]).replace(".0", "")] = r
     pm_events = set(pmt["event_id"].astype(str).str.replace(r"\.0$", "", regex=True)) if pmt is not None and not pmt.empty else set()
+    # 경기별 평점(FotMob, 전 대회) — 같은 날짜로 붙인다(ESPN·FotMob 경기 id 가 달라서)
+    fmd = _fm_match_dates(league)
+    try:
+        rt = fmd.get(("id", str(int(fm_id)))) if fm_id is not None and fm_id == fm_id else None
+    except (TypeError, ValueError):
+        rt = None
+    rt = rt or fmd.get(("nm", f"{team}|{player}")) or {}
     rows = []
     for r in sch.sort_values("date").itertuples():
         e = r.eid
@@ -1792,7 +1826,7 @@ def _season_log(team: str, player: str, league: str, is_gk: bool = False) -> dic
                      "assists": t.count("assist"), "yellow": t.count("yellow"), "red": t.count("red"),
                      "has_events": ev is not None and e in set(ev["event_id"].astype(str).str.replace(r"\.0$", "", regex=True)),
                      **{k: int(_num((pm.get(e) or {}).get(k))) for k in ("shots", "sot", "saves", "conceded")},
-                     "has_stats": e in pm_events})
+                     "has_stats": e in pm_events, "rating": rt.get(str(r.date)[:10]) if mins > 0 else None})
     by: dict[str, dict] = {}
     for x in rows:
         b = by.setdefault(x["comp"], {"comp": x["comp"], "matches": 0, "apps": 0, "starts": 0, "minutes": 0, "goals": 0,
@@ -1806,6 +1840,9 @@ def _season_log(team: str, player: str, league: str, is_gk: bool = False) -> dic
     keys = ("matches", "apps", "starts", "minutes", "goals", "assists", "yellow", "red", "shots", "sot", "saves", "conceded")
     tot = {"comp": "합계", **{k: sum(b[k] for b in comps) for k in keys}}
     for b in comps + [tot]:                             # 90분당 — 대회 비교용(출전 270분 미만은 표본 부족)
+        rs = [x["rating"] for x in rows if x.get("rating") and (b is tot or x["comp"] == b["comp"])]
+        b["rating"] = round(sum(rs) / len(rs), 2) if rs else None   # FotMob 경기 평점 평균(평점 있는 경기)
+        b["code"] = next((x["comp_code"] for x in rows if x["comp"] == b["comp"]), "")
         b["g90"] = round(b["goals"] * 90 / b["minutes"], 2) if b["minutes"] >= 270 else None
         b["shots90"] = round(b["shots"] * 90 / b["minutes"], 1) if b["minutes"] >= 270 else None
     return {"available": bool(me), "espn_name": me, "matches": rows, "by_comp": comps, "total": tot, "is_gk": bool(is_gk),
@@ -1911,12 +1948,36 @@ def player_detail(team: str, player: str, league: str = ACTIVE_LEAGUE):
         "contract_until": str(row.get("tm_contract_until") or ""),
         "is_gk": is_gk, "categories": categories, "radar": radar, "badges": badges,
         "comp_usage": _comp_profile(row, _comp_usage(league)),
-        "season_log": _season_log(str(row.get("squad") or team), str(row["player"]), league, is_gk=is_gk),
+        "season_log": _season_log(str(row.get("squad") or team), str(row["player"]), league, is_gk=is_gk, fm_id=row.get("fm_id")),
         # 'OVR 이 어떻게 나왔나' — 단계별 기여(rv3.ovr_parts_of_row)와 평점 출처(Sofascore·FotMob 평균)
         "ovr_parts": rv3.ovr_parts_of_row(row)["parts"],
         "ratings": _rating_sources(row),
         "form": _player_form(row),
+        "recent": _recent_of(row, league),
     }
+
+
+@_memo(ttl=21600)
+def _recent_index(league: str) -> dict:
+    """선수별 최근 5경기(FotMob 경기별 평점, 전 대회) 색인 — src/recent_form.py."""
+    import recent_form as rf  # noqa: PLC0415
+    return rf.by_player(rf.recent_rows(ds.read_table("fotmob_match_ratings", league=league)))
+
+
+def _recent_of(row, league: str) -> dict | None:
+    """최근 폼 — 시즌 폼(_form)과 따로 최근 3·5경기(전 대회). score 는 같은 리그·포지션 안 순위 45~99.
+    2026-10-19 사용자: '노팅엄전 사카가 못했는데 폼 절정 — 전체 폼과 최근 3·5경기 폼을 나누자'."""
+    import recent_form as rf  # noqa: PLC0415
+    try:
+        g = rf.lookup(_recent_index(league), row.get("fm_id"), row.get("squad"), row.get("player"))
+        s, ms = rf.summary(g), rf.match_list(g)
+    except Exception:  # noqa: BLE001
+        return None
+    if not ms or not s:
+        return None
+    v = row.get("_recent")
+    return {"score": int(v) if v is not None and v == v else None, "n": s["n"],
+            "avg5": s["avg5"], "avg3": s["avg3"], "matches": ms}   # 평균 = 출전 시간 가중(recent_form.summary)
 
 
 def _rating_sources(row) -> dict:
@@ -2308,20 +2369,30 @@ def _comp_kind(code) -> str:
 
 
 def _team_lineups(team: str, league: str, comp: str = "league"):
-    """팀 선발 라인업 — comp: league · euro(유럽대항전) · cup(국내컵) · all. 컵·유럽은 espn_lineups_cups 를 일정의
-    대회 코드로 나눈다. 예전 FORMATION 은 리그 전용이었다(2026-10-19 사용자: '챔스·컵 스쿼드도 보고 싶다')."""
+    """팀 선발 라인업 — comp: league · euro(유럽대항전) · cup(국내컵) · all · 대회 코드 하나(uefa.champions 등).
+    컵·유럽은 espn_lineups_cups 를 일정의 대회 코드로 나눈다(_code). 예전 FORMATION 은 리그 전용이었다
+    (2026-10-19 사용자: '챔스·컵 스쿼드도 보고 싶다' → 같은 날 '리그·챔스·컵 각각 따로').
+    _code: 리그 경기는 'league', 그 밖은 ESPN 대회 코드. _comp: 일정의 대회 이름(한글)."""
     frames = []
     if comp in ("league", "all"):
         el = ds.read_table("espn_lineups", league=league)
         if el is not None and not el.empty:
-            frames.append(el.assign(_kind="league"))
-    if comp in ("euro", "cup", "all"):
+            frames.append(el.assign(_kind="league", _code="league", _comp="리그"))
+    if comp != "league":
         cl = ds.read_table("espn_lineups_cups", league=league)
         sch = ds.read_table("schedule_full", league=league)
         if cl is not None and not cl.empty and sch is not None and "comp_code" in sch.columns:
-            kind = {str(e).replace(".0", ""): _comp_kind(c) for e, c in zip(sch["event_id"], sch["comp_code"]) if pd.notna(e)}
-            cl = cl.assign(_kind=cl["event_id"].astype(str).str.replace(r"\.0$", "", regex=True).map(kind).fillna("cup"))
-            frames.append(cl if comp == "all" else cl[cl["_kind"] == comp])
+            code = {str(e).replace(".0", ""): str(c) for e, c in zip(sch["event_id"], sch["comp_code"]) if pd.notna(e)}
+            name = {str(c): str(n) for c, n in zip(sch["comp_code"], sch.get("comp", sch["comp_code"]))}
+            eid = cl["event_id"].astype(str).str.replace(r"\.0$", "", regex=True)
+            cl = cl.assign(_code=eid.map(code).fillna("cup"))
+            cl = cl.assign(_kind=cl["_code"].map(_comp_kind), _comp=cl["_code"].map(name).fillna(""))
+            cl = cl[cl["_kind"] != "league"]
+            if comp in ("euro", "cup"):
+                cl = cl[cl["_kind"] == comp]
+            elif comp != "all":
+                cl = cl[cl["_code"] == comp]
+            frames.append(cl)
     if not frames:
         return None
     df = pd.concat(frames, ignore_index=True)
@@ -2414,7 +2485,9 @@ def _placements(team: str, league: str, last_n: int | None = None, exclude: set 
 def lineup(team: str, league: str = ACTIVE_LEAGUE, comp: str = "league"):
     """FORMATION — comp: league(기본) · euro · cup · all · last(가장 최근 한 경기, 전 대회)."""
     gone = _gone_keys(team, league) | {k for k, v in _loans_out(team, league).items() if v.get("source") == "transfer"}   # 떠난·임대 간 선수는 현재 XI·벤치에서 제외
-    comp = comp if comp in ("league", "euro", "cup", "all", "last") else "league"
+    allt = _team_lineups(team, league, "all")
+    codes = set(allt["_code"].astype(str)) if allt is not None and not allt.empty else set()
+    comp = comp if comp in ("league", "euro", "cup", "all", "last") or comp in codes else "league"
     src_comp = "all" if comp == "last" else comp
     if comp == "last":
         season = _placements(team, league, last_n=1, comp="all")            # 그 경기 그대로(떠난 선수 제외 안 함)
@@ -2424,11 +2497,15 @@ def lineup(team: str, league: str = ACTIVE_LEAGUE, comp: str = "league"):
         recent = _placements(team, league, last_n=5, exclude=gone, comp=src_comp)
     if season is None and comp == "league":
         raise HTTPException(404, "lineup data not found")
-    # 대회별로 선발 기록이 있는 경기 수(화면 토글은 있는 것만)
-    allt = _team_lineups(team, league, "all")
-    comps = {}
+    # 대회별로 선발 기록이 있는 경기 수(화면 토글은 있는 것만) — comps: 묶음(리그·유럽·컵), comp_list: 대회 하나하나
+    comps, comp_list = {}, []
     if allt is not None and not allt.empty:
         comps = {k: int(v) for k, v in allt.groupby("_kind")["event_id"].nunique().items()}
+        order = {"league": 0, "euro": 1, "cup": 2}
+        g = allt.groupby(["_code", "_kind", "_comp"])["event_id"].nunique().reset_index()
+        g = g.assign(_o=g["_kind"].map(order)).sort_values(["_o", "event_id"], ascending=[True, False])
+        comp_list = [{"key": str(r["_code"]), "kind": str(r["_kind"]), "name": str(r["_comp"]), "n": int(r["event_id"])}
+                     for _, r in g.iterrows()]
     if season is None:
         season = {"formation": None, "placements": [], "matches": 0}
 
@@ -2454,9 +2531,10 @@ def lineup(team: str, league: str = ACTIVE_LEAGUE, comp: str = "league"):
             opp = full_el[(full_el["event_id"].astype(str).str.replace(".0", "", regex=False) == eid) & (full_el["squad"] != team)]
             last = {"date": str(row["date"])[:10],
                     "opponent": str(opp["squad"].iloc[0]) if not opp.empty else str(row.get("opponent") or ""),
-                    "home_away": str(row.get("home_away") or ""), "kind": str(row.get("_kind") or "league")}
+                    "home_away": str(row.get("home_away") or ""), "kind": str(row.get("_kind") or "league"),
+                    "code": str(row.get("_code") or "league"), "comp": str(row.get("_comp") or "")}
     return {"team": team, "color": tm.team_color(team), "season": season, "recent": recent, "bench": bench,
-            "last_match": last, "comp": comp, "comps": comps}
+            "last_match": last, "comp": comp, "comps": comps, "comp_list": comp_list}
 
 
 # 유사 선수 엔진 — 임베딩은 최초 1회 빌드 후 캐시(요청마다 재계산 방지)
@@ -4598,6 +4676,41 @@ def fixtures(days: int = 7, limit: int = 6, league: str = ""):
     return out
 
 
+def _league_pending(rows, today) -> dict:
+    """{event_id: {home, away}} — 결과 파일에 아직 없는 최근 3일~내일 리그 경기(잠정 순위 계산 재료)."""
+    pending: dict = {}
+    if rows is not None and not rows.empty and "event_id" in rows.columns:
+        lo, hi = (today - datetime.timedelta(days=3)).isoformat(), (today + datetime.timedelta(days=1)).isoformat()
+        pr = rows[(rows["status"] != "completed") & rows["comp_code"].astype(str).str.endswith(".1")
+                  & (rows["date"].astype(str).str[:10] >= lo) & (rows["date"].astype(str).str[:10] <= hi)]
+        for r in pr.itertuples(index=False):
+            e = pending.setdefault(str(r.event_id), {})
+            e["home" if r.home_away == "H" else "away"] = str(r.squad)
+    return {k: v for k, v in pending.items() if "home" in v and "away" in v}
+
+
+@app.get("/api/standings-live")
+@_memo(ttl=900)
+def standings_live(league: str = ACTIVE_LEAGUE):
+    """잠정 순위 재료(가벼움) — 공식 순위표 + 아직 결과가 없는 최근·오늘 리그 경기.
+
+    화면의 모든 순위 표시(왼쪽 사이드바 · 팀 헤더 · 경기 카드)가 web/lib/standings.tsx 한 곳에서 라이브 스코어를
+    더해 같은 잠정 순위를 본다. 예전엔 몇몇 카드만 라이브였고 사이드바는 다음 날 아침까지 그대로였다(2026-10-19 사용자)."""
+    import match_center as mc  # noqa: PLC0415
+    st = ds.read_table("standings", league=league)
+    if st is None or st.empty:
+        return {"league": league, "table": [], "pending": {}}
+    rows = _fx_sources()["rows"].get(league)
+    table = []
+    for _, r in st.sort_values("rank").iterrows():
+        sq = str(r["squad"])
+        table.append({"rank": int(_num(r.get("rank"))), "team": sq, "logo": tm.team_logo(sq), "played": int(_num(r.get("played"))),
+                      "won": int(_num(r.get("won"))), "drawn": int(_num(r.get("drawn"))), "lost": int(_num(r.get("lost"))),
+                      "gf": int(_num(r.get("gf"))), "ga": int(_num(r.get("ga"))), "gd": int(_num(r.get("gd"))),
+                      "points": int(_num(r.get("points"))), "form": mc.recent_form(rows, sq)})
+    return {"league": league, "table": table, "pending": _league_pending(rows, _today_kst())}
+
+
 @app.get("/api/league-lab/{league}")
 @_memo(ttl=21600)
 def league_lab(league: str):
@@ -4709,15 +4822,7 @@ def league_lab(league: str):
         if sc >= 15:
             watch.append({**m, "watch": round(sc), "why": why, "league": league})
     watch.sort(key=lambda m: -m["watch"])
-    pending: dict = {}
-    if rows is not None and not rows.empty and "event_id" in rows.columns:
-        lo, hi = (today - datetime.timedelta(days=3)).isoformat(), (today + datetime.timedelta(days=1)).isoformat()
-        pr = rows[(rows["status"] != "completed") & rows["comp_code"].astype(str).str.endswith(".1")
-                  & (rows["date"].astype(str).str[:10] >= lo) & (rows["date"].astype(str).str[:10] <= hi)]
-        for r in pr.itertuples(index=False):
-            e = pending.setdefault(str(r.event_id), {})
-            e["home" if r.home_away == "H" else "away"] = str(r.squad)
-        pending = {k: v for k, v in pending.items() if "home" in v and "away" in v}
+    pending = _league_pending(rows, today)
     cur_inj = _injuries_table(league)
     return {"league": league, "pending": pending, "playmakers": playmakers, "finishing": finishing, "creating": creating,
             "ball_winners": ball_winners, "team_style": team_style,
