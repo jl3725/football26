@@ -56,8 +56,11 @@ export default function TransferTab({ team, accent }: { team: string; accent: st
     DM: "Defensive Midfield", CM: "Central Midfield", AM: "Attacking Midfield", RM: "Right Midfield",
     LM: "Left Midfield", RW: "Right Winger", LW: "Left Winger", CF: "Centre-Forward", SS: "Second Striker", GK: "Goalkeeper",
   };
+  // 추천 후보의 평가 포지션 = 그 선수가 추천된 니즈 포지션(bucket). 예전엔 r.pos(대분류 'MF' 등)에서 뽑아 엇나갔다
+  const BUCKET_TM: Record<string, string> = { GK: "Goalkeeper", LB: "Left-Back", CB: "Centre-Back", RB: "Right-Back",
+    DM: "Defensive Midfield", CM: "Central Midfield", AM: "Attacking Midfield", LW: "Left Winger", RW: "Right Winger", ST: "Centre-Forward" };
   const suggestions = (rec?.recommendations || []).map((r) => ({
-    player: r.player, role: POSD[(r.pos || "").split(/[ ,/]/)[0]] || "",
+    player: r.player, role: BUCKET_TM[r.bucket || ""] || POSD[(r.pos || "").split(/[ ,/]/)[0]] || "",
   }));
   return (
     <div className="fade">

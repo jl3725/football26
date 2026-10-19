@@ -648,7 +648,7 @@ def identity(team: str, league: str = ACTIVE_LEAGUE):
 
 
 @app.get("/api/fit")
-def fit(candidate: str, club: str, role: str, source_league: str = "",
+def fit(candidate: str, club: str, role: str = "", source_league: str = "",
         league: str = ACTIVE_LEAGUE):
     """Transfer Fit Evaluator — (후보, 대상클럽, 역할) → Fit Score + 전 컴포넌트 분해.
 

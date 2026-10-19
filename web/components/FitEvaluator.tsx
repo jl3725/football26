@@ -8,12 +8,14 @@ import Bar from "./Bar";
 import { usePeek } from "./PlayerPeek";
 import { SkelCards } from "./Skeleton";
 
+// 첫 칸 '자동' = 후보의 본 포지션(TM). 예전 기본값이 '중앙 MF'라 이름을 직접 넣으면 크바라츠헬리아도 CM 으로 평가됐다(2026-10-19)
 const ROLES = [
-  ["Centre-Back", "센터백"], ["Right-Back", "라이트백"], ["Left-Back", "레프트백"],
+  ["", "자동 · 본 포지션"], ["Centre-Back", "센터백"], ["Right-Back", "라이트백"], ["Left-Back", "레프트백"],
   ["Defensive Midfield", "수비형 MF"], ["Central Midfield", "중앙 MF"], ["Attacking Midfield", "공격형 MF"],
   ["Right Winger", "우측 윙"], ["Left Winger", "좌측 윙"], ["Centre-Forward", "센터포워드"],
   ["Second Striker", "세컨 스트라이커"], ["Goalkeeper", "골키퍼"],
 ];
+const ROLE_KO: Record<string, string> = Object.fromEntries(ROLES.filter(([v]) => v));
 const COMP_KO: Record<string, string> = {
   RoleFit: "역할 적합", TacticalFit: "전술 적합", TeamNeed: "팀 니즈", Translation: "리그 적응",
   Potential: "성장성", Value: "가치", RecruitFit: "영입 성향", PriceRealism: "가격 현실성",
@@ -47,7 +49,7 @@ function CompBar({ label, value, danger }: { label: string; value: number; dange
 export default function FitEvaluator({ team, accent, suggestions }:
   { team: string; accent: string; suggestions: { player: string; role: string }[] }) {
   const [cand, setCand] = useState("");
-  const [role, setRole] = useState(ROLES[4][0]);
+  const [role, setRole] = useState("");
   const [res, setRes] = useState<Fit | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -128,7 +130,9 @@ function FitCard({ r, accent }: { r: Fit; accent: string }) {
       <div style={{ display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
         <div style={{ flex: "1 1 220px", minWidth: 0 }}>
           <div style={{ fontSize: 17, fontWeight: 800 }}>{r.candidate}</div>
-          <div style={{ fontSize: 12, opacity: 0.6 }}>{r.source_league} → {r.target_club} · {r.role}</div>
+          <div style={{ fontSize: 12, opacity: 0.6 }}>{r.source_league} → {r.target_club} · {ROLE_KO[r.role] || r.role}
+            {r.natural_role && r.natural_role !== r.role ? "" : " (본 포지션)"}</div>
+          {r.role_note && <div style={{ fontSize: 11.5, color: "#e0a53a", marginTop: 3 }}>⚠ 본 포지션 {ROLE_KO[r.natural_role || ""] || r.natural_role} — {ROLE_KO[r.role] || r.role} 로 평가 중</div>}
           <div style={{ fontSize: 12, marginTop: 4, display: "flex", flexWrap: "wrap", alignItems: "center", gap: "3px 5px" }}
             title="현재 OVR = 지금 뛰는 리그 기준 · 예상 OVR = 우리 리그 수준으로 보정한 값">
             <span>현재 OVR <b>{r.base_ovr}</b> → 우리 리그 예상 <b style={{ color: r.proj_ovr != null ? tier(r.proj_ovr).light : accent }}>{r.proj_ovr}</b></span>

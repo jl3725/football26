@@ -89,3 +89,17 @@ def test_similar_players_same_position() -> None:
         return
     res = m.similar(str(wing.iloc[0]["player"]))["results"]
     assert res and all(x["pos"] in ("RW", "LW") for x in res), res
+
+
+def test_fit_defaults_to_natural_position() -> None:
+    """적합도 평가 — 역할을 비우면 후보의 본 포지션(크바라츠헬리아 LW 를 CM 으로 평가하던 문제, 2026-10-19)."""
+    import transfer_fit as tf
+    from api import main as m
+    pool = tf._pool()
+    lw = pool[(pool["_pos_detail"] == "Left Winger") & (pool["_min"] >= 300)].sort_values("_ovr", ascending=False)
+    cand = str(lw.iloc[0]["player"])
+    club = str(pool[pool["_league"] == "EPL"]["squad"].iloc[0])
+    r = m.fit(cand, club)
+    assert r["role"] == "Left Winger" and r["natural_role"] == "Left Winger" and not r["role_note"]
+    r2 = m.fit(cand, club, "Central Midfield")
+    assert r2["role"] == "Central Midfield" and r2["role_note"]

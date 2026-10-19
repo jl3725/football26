@@ -512,14 +512,26 @@ def _precedent(source_league, target_league):
 def evaluate_fit(candidate: str, target_club: str, target_role: str,
                  source_league: str | None = None) -> dict:
     api, pool = _api(), _pool()
-    role = _pos_detail(target_role) or target_role
 
     cand = pool[pool["player"].astype(str) == candidate]
+    if cand.empty:                                   # 악센트·대소문자 무시 → 그래도 없으면 한 명뿐인 부분 일치(성만 입력 등)
+        from unidecode import unidecode  # noqa: PLC0415
+        key = unidecode(str(candidate)).lower().strip()
+        norm = pool["player"].astype(str).map(lambda x: unidecode(x).lower())
+        cand = pool[norm == key]
+        if cand.empty and len(key) >= 4:
+            hit = pool[norm.str.contains(key, regex=False)]
+            if hit["player"].nunique() == 1:
+                cand = hit
     if source_league:
-        cand = cand[cand["_league"] == source_league]
+        cand = cand[cand["_league"] == source_league] if not cand[cand["_league"] == source_league].empty else cand
     if cand.empty:
         return {"error": f"후보 '{candidate}' 를 찾을 수 없음"}
-    row = cand.iloc[0]
+    row = cand.sort_values("_min", ascending=False).iloc[0]
+    candidate = str(row["player"])
+    # 역할 — 비어 있으면 후보의 본 포지션(TM). 예전엔 화면 기본값이 '중앙 MF'라 크바라츠헬리아(LW)를 CM 으로 평가했다(2026-10-19)
+    natural = row.get("_pos_detail") if isinstance(row.get("_pos_detail"), str) else None
+    role = (_pos_detail(target_role) or target_role) if target_role else (natural or "Central Midfield")
     src = row["_league"]
     tgt_rows = pool[pool["squad"].astype(str) == target_club]
     if tgt_rows.empty:
@@ -607,7 +619,8 @@ def evaluate_fit(candidate: str, target_club: str, target_role: str,
 
     return {
         "candidate": candidate, "source_league": src, "target_club": target_club,
-        "target_league": tgt, "role": role, "base_ovr": base, "proj_ovr": proj,
+        "target_league": tgt, "role": role, "natural_role": natural, "base_ovr": base, "proj_ovr": proj,
+        "role_note": (f"본 포지션 {natural} — {role} 로 평가" if natural and role != natural else ""),
         "components": {"RoleFit": round(rolefit), "TacticalFit": round(tacticalfit),
                        "TeamNeed": round(team_need), "Translation": round(translation),
                        "Potential": round(potential), "Value": round(value),

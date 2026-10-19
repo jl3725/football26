@@ -161,7 +161,7 @@ export type FitComponents = {
 };
 export type Fit = {
   available: boolean; reason?: string; error?: string;
-  candidate: string; club?: string; role: string;
+  candidate: string; club?: string; role: string; natural_role?: string | null; role_note?: string;
   source_league?: string; target_club?: string; target_league?: string;
   base_ovr?: number; proj_ovr?: number;
   components?: FitComponents;
