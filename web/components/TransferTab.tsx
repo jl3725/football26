@@ -164,6 +164,7 @@ export default function TransferTab({ team, accent }: { team: string; accent: st
                   <div style={{ fontSize: 9.5, fontWeight: 700, color: t.light }}>{t.ko}</div>
                   {l.cross_league && <div className="rec-cross" title="다른 리그 선수 — 우리 리그 수준으로 보정한 예상 OVR">{l.source_league} 현재 {l.current_ovr} → 우리 리그 예상 {l.ovr}</div>}
                   {l.bucket_label && <div className="rec-target" style={{ color: accent }}>◎ {l.bucket_label}</div>}
+                  {l.style_fit != null && <div className="rec-style" title="이 팀이 그 자리에 쓰는 플레이 스타일(현재 선수들 평균)과의 유사도 0~100">스타일 적합 <b>{l.style_fit}</b></div>}
                   {l.role && <div className="rec-role"><span className={"role-tag " + roleClass(l.role)}>{l.role}</span></div>}
                   <div className="rec-why"><span className="why risk">✕ {l.reason}</span></div>
                 </div>

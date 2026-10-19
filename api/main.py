@@ -731,6 +731,10 @@ def discover(team: str, role: str = "", leagues: str = "", min_age: int = 0,
     lgs = [s for s in leagues.split(",") if s] or None
     # 포지션을 고르지 않으면 니즈 v2(부상·폼·이적 공백) 상위 포지션 — 예전엔 '300분+ 2명 이하' 역할만 봤다
     need_roles, needs_meta = None, []
+    try:
+        team_ovr_ = _position_needs(team, league)["team_ovr"]
+    except Exception:  # noqa: BLE001
+        team_ovr_ = None
     if not role:
         try:
             pn = _position_needs(team, league)
@@ -741,16 +745,14 @@ def discover(team: str, role: str = "", leagues: str = "", min_age: int = 0,
             need_roles = None
     out = tf.discover_fits(team, role or None, top=top or 24, leagues=lgs,
                            min_age=min_age or None, max_age=max_age or None,
-                           max_value=max_value or None, roles=need_roles)
+                           max_value=max_value or None, roles=need_roles, team_ovr=team_ovr_)
     # 구단 이적 정책(최근 두 시즌 영입 나이·이적료)과 대조
     try:
         pol = _transfer_policy(team)
     except Exception:  # noqa: BLE001
         pol = None
-    try:
-        team_ovr = _position_needs(team, league)["team_ovr"] or 80.0
-    except Exception:  # noqa: BLE001
-        team_ovr = 80.0
+    team_ovr = team_ovr_ or 80.0
+    out["team_ovr"] = team_ovr_
     for r in out.get("recommendations") or []:
         pf_ = _policy_fit(pol, r.get("age"), r.get("value_eur"))
         r["policy_ok"], r["policy_notes"] = pf_["ok"], pf_["notes"]
@@ -2700,14 +2702,31 @@ def similar(player: str, same_position: bool = True, alpha: float = 0.6, league:
     from similar_players import find_similar
     try:
         df, emb = _sim_engine()
-        res = find_similar(df, emb, player, top=6, same_position=same_position, alpha=alpha)
+        res = find_similar(df, emb, player, top=60, same_position=same_position, alpha=alpha)
     except Exception:  # noqa: BLE001
         return {"player": player, "results": []}
+    # 실제 포지션(RW·LW·AM…)으로 거른다 — 엔진의 'WING_AM' 그룹은 윙어와 공격형 미드를 한데 묶어, 사카(RW) 유사 1위가
+    # 만잠비(AM)였다(2026-10-19 사용자). 같은 포지션 먼저, 모자라면 인접 포지션(점수 ×0.9)
+    _ADJ = {"RW": ("LW",), "LW": ("RW",), "AM": ("CM", "RW", "LW"), "CM": ("DM", "AM"), "DM": ("CM",),
+            "LB": ("RB",), "RB": ("LB",), "CB": (), "ST": (), "GK": ()}
+    me = df[df["player"] == player]
+    if not me.empty and not res.empty:
+        tb = _pos_bucket(me.iloc[0])
+        # find_similar 결과엔 tm_position 이 없어(fl_group 만) 엔진 원본 표에서 선수별 포지션을 가져온다
+        bk_of = {(str(p), str(s)): _pos_bucket(r) for p, s, r in zip(df["player"], df["squad"], df.to_dict("records"))}
+        res = res.assign(_bk=[bk_of.get((str(p), str(s)), "") for p, s in zip(res["player"], res["squad"])])
+        same = res[res["_bk"] == tb]
+        if len(same) < 6:
+            adj = res[res["_bk"].isin(_ADJ.get(tb, ()))].assign(score=lambda x: pd.to_numeric(x["score"], errors="coerce") * 0.9)
+            same = pd.concat([same, adj]).sort_values("score", ascending=False)
+        res = same.head(6)
+    else:
+        res = res.head(6)
     out = []
     for _, r in res.iterrows():
         out.append({
             "player": str(r.get("player") or ""), "squad": str(r.get("squad") or ""),
-            "pos": str(r.get("fl_group") or r.get("pos") or ""), "age": int(_num(r.get("age"))),
+            "pos": str(r.get("_bk") or r.get("fl_group") or r.get("pos") or ""), "age": int(_num(r.get("age"))),
             "value_eur": _num(r.get("market_value_eur")),
             "logo": tm.team_logo(str(r.get("squad") or "")),
             "score": round(_num(r.get("score")) * 100), "style": round(_num(r.get("style_sim")) * 100),
@@ -2839,17 +2858,18 @@ def _project_ovr(base: int, source: str, target: str, big_match: bool, age, buck
     """
     if source == target:
         return base, "", ""
+    # OVR 은 이미 리그 수준을 담은 절대 척도(평점 리그 보정·최종 레벨 보정·시장가치)라 리그 비율만큼 다시 깎으면 이중 할인이다.
+    # 2026-10-19 검증: 이번 시즌 리그를 옮긴 41명 — 실제 OVR 변화 평균 +1.4 인데 예전 환산(OVR × 레벨 비율, 공격수 −1,
+    # 유럽 +1.5)은 −2.2 로 예측(오차 4.3 vs 환산 안 함 2.0). 크바라츠헬리아 87 → 80. 사용자 지적('우리 리그 적용해서 너무 낮아짐').
+    # → 더 센 리그로 갈 때만 레벨 차 × 0.1 의 작은 적응 할인 + 30세 이상 −1. 적응 위험은 글로만(점수 아님).
     lvl_s, lvl_t = _LEAGUE_LEVEL.get(source, 96.0), _LEAGUE_LEVEL.get(target, 100.0)
-    adj = base * (min(1.0, lvl_s / lvl_t) - 1.0)      # ≤0
-    euro = 1.5 if big_match else 0.0
+    adj = (min(lvl_s, lvl_t) - lvl_t) * 0.1           # ≤0 · 벨기에 → EPL −1.2, 라리가 → EPL −0.5
     risk, notes = 0.0, []
     if _num(age) >= 30:
         risk += 1.0; notes.append("노쇠 적응")
-    if bucket in ("LW", "RW", "ST", "AM"):
-        risk += 1.0; notes.append("템포·피지컬 적응")
-    elif bucket in ("CB", "DM", "GK"):
-        risk -= 0.5                                    # 수비·전술은 이식 잘 됨
-    proj = int(round(base + adj + euro - risk))
+    if bucket in ("LW", "RW", "ST", "AM") and lvl_s < lvl_t - 3:
+        notes.append("템포·피지컬 적응")
+    proj = int(round(base + adj - risk))
     proof = "빅매치(유럽) 검증" if big_match else ""
     return proj, proof, (" · ".join(notes))
 
@@ -3080,10 +3100,20 @@ def recommend(team: str, league: str = ACTIVE_LEAGUE):
             r, src, proj, ok, pl_name = t[0], t[1], t[4], t[7], t[0]["player"]
             if ok and n < per:
                 picked.append(t); n += 1
-            elif (not ok) and proj >= team_ovr and pl_name not in seen_long and len(longshots) < 4:
+            elif (not ok) and proj >= team_ovr - 2 and pl_name not in seen_long and len(longshots) < 12:
                 seen_long.add(pl_name); longshots.append(t)
     picked.sort(key=lambda x: -x[4])
-    longshots.sort(key=lambda x: -x[4])
+    # 드림 타깃 = 수준(예상 OVR) + 이 팀이 그 자리에 쓰는 스타일과의 유사도(transfer_fit 서버 메모리 벡터).
+    # 예전엔 OVR 순으로만 골라 '브루노가 아스날 스타일에 맞나?'에 답하지 못했다(2026-10-19 사용자)
+    import transfer_fit as tf  # noqa: PLC0415
+    _style: dict = {}
+    for t in longshots:
+        try:
+            _style[t[0]["player"]] = tf.team_style_fit(t[0]["player"], t[1], _ROLE_TM.get(t[12], ""), team)
+        except Exception:  # noqa: BLE001
+            _style[t[0]["player"]] = None
+    longshots = [t for t in longshots if (_style.get(t[0]["player"]) or 0) >= 45] or longshots
+    longshots.sort(key=lambda x: -(0.6 * x[4] + 0.4 * (_style.get(x[0]["player"]) or 0)))
 
     recs = []
     for t in picked[:9]:
@@ -3140,7 +3170,7 @@ def recommend(team: str, league: str = ACTIVE_LEAGUE):
             "photo": _rphoto(r, src),
             "role": role["role"], "bucket_label": _BUCKET_LABEL.get(bk, bk),
             "cross_league": src != league, "source_league": _SRC_LABEL.get(src, src),
-            "current_ovr": base, "reason": t[8],
+            "current_ovr": base, "reason": t[8], "style_fit": _style.get(r["player"]),
         })
 
     # Lost Target Review — 약점 포지션 선수 중 이번 창 이적(완료). 최고가치 1명 별표.
@@ -3380,8 +3410,10 @@ def _position_needs(team: str, league: str) -> dict:
                     ovr = int(_player_ovr(hit.iloc[0]))
             if ovr is None and _num(r.get("fee_eur")):
                 ovr = int(round(rv3.value_ovr(_num(r.get("fee_eur"))) or 0)) or None
+            ph = str(r.get("photo") or "")
             moves.setdefault(b, {"in": [], "out": []}).setdefault(d_, []).append(
-                {"player": name, "ovr": ovr, "fee": str(r.get("fee_text") or ""), "age": int(_num(r.get("age"))) or None})
+                {"player": name, "ovr": ovr, "fee": str(r.get("fee_text") or ""), "age": int(_num(r.get("age"))) or None,
+                 "photo": ph if ph.startswith("http") and "default" not in ph else ""})
     lvl_opt = team_ovr - 7
     roles = []
     for b in ps.ROLES:
@@ -3393,7 +3425,12 @@ def _position_needs(team: str, league: str) -> dict:
         opt_cut = lvl_opt - 8 if b == "GK" else lvl_opt
         old_age = 34 if b == "GK" else 31
         options = sum(1 for c in prim if c["ovr"] >= opt_cut) + 0.5 * sum(1 for c in sec if c["ovr"] >= opt_cut)
+        # 중앙 미드필더는 DM·CM·AM 을 서로 오간다 — 같은 계열 주포지션 선수도 0.5명(AM 은 CM 만). 예전엔 아스날 AM 이
+        # '뎁스 1.5/2'로 니즈에 올라 드림 타깃에 브루노가 나왔다(2026-10-19 사용자: 라이스·기마랑이스·외데고르·수비멘디로 충분)
+        fam = {"DM": ("CM",), "CM": ("DM", "AM"), "AM": ("CM",)}.get(b, ())
+        options += 0.5 * sum(1 for c in cards if c["primary"] in fam and b not in c["secondary"] and c["ovr"] >= opt_cut)
         reasons, pts, jan = [], 0.0, False
+        sig: dict = {"depth": {"have": round(options, 1), "need": need_n}}
         short = max(0.0, need_n - options)
         if short > 0 and d:
             pts += min(50, 35 * short)
@@ -3407,6 +3444,8 @@ def _position_needs(team: str, league: str) -> dict:
             drop = sum(best) / d - sum(now) / d
             long_out = [c for c in prim + sec if c["out_w"] >= 6]
             if drop >= 2:
+                sig["injury"] = {"drop": round(drop, 1), "players": [{"player": c["player"], "weeks": c["out_w"], "photo": c["photo"]}
+                                                                    for c in prim + sec if c["injured"]]}
                 pts += min(40, 5 * drop + (10 if long_out else 0))
                 hurt = [f"{c['player'].split()[-1]} {c['out_w']:.0f}주" for c in prim + sec if c["injured"]]
                 reasons.append(f"부상으로 이 자리 전력 −{drop:.0f}" + (f" ({', '.join(hurt)})" if hurt else ""))
@@ -3418,21 +3457,25 @@ def _position_needs(team: str, league: str) -> dict:
         q_in = [x for x in mv["in"] if (x["ovr"] or 0) >= team_ovr - 9]
         unrep = len(q_out) - len(q_in)
         if unrep > 0:
+            sig["unreplaced"] = unrep
             pts += min(40, 20 * unrep)
             jan = True
             reasons.append(f"이번 창 주요 선수 {len(q_out)}명 나감 · {len(q_in)}명 영입 — 대체 안 된 자리 {unrep}")
         starters = sorted([c for c in prim if c["out_w"] < 1], key=lambda c: -c["ovr"])[:max(1, d)]
         cold = [c for c in starters if c["recent"] is not None and c["recent"] < 60]
         if cold and d:
+            sig["cold"] = [{"player": c["player"], "recent": c["recent"], "photo": c["photo"]} for c in cold]
             pts += min(24, 12 * len(cold))
             reasons.append("주전 최근 폼 저조: " + ", ".join(f"{c['player'].split()[-1]} LAST 5 {c['recent']}" for c in cold))
         old = [c for c in starters if c["age"] >= old_age]
         young = [c for c in prim if c["age"] and c["age"] <= 23 and c["ovr"] >= lvl_opt]
         if old and not young and d:
+            sig["aging"] = [{"player": c["player"], "age": c["age"]} for c in old]
             pts += 10
             reasons.append("주전 " + ", ".join(f"{c['player'].split()[-1]} {c['age']}세" for c in old) + " · 젊은 후계 없음")
         exp = [c for c in starters if c["contract"] and c["contract"] <= str(today.year + 1)]
         if exp and d:
+            sig["contract"] = [{"player": c["player"], "until": c["contract"]} for c in exp]
             pts += 8
             reasons.append("주전 계약 " + ", ".join(f"{c['player'].split()[-1]} ~{c['contract']}" for c in exp))
         pts = min(100.0, pts)
@@ -3444,7 +3487,7 @@ def _position_needs(team: str, league: str) -> dict:
                                                     else "보강" if q_in else "")
         depth = sorted(prim, key=lambda c: (c["injured"], -c["ovr"])) + sorted(sec, key=lambda c: (c["injured"], -c["ovr"]))
         roles.append({"role": b, "label": _BUCKET_LABEL.get(b, b), "demand": d, "urgency": int(round(pts)),
-                      "level": level, "when": "1월 창" if jan else "여름 창", "reasons": reasons,
+                      "level": level, "when": "1월 창" if jan else "여름 창", "reasons": reasons, "signals": sig,
                       "options": round(options, 1), "need_n": need_n,
                       "depth": [{"player": c["player"], "ovr": c["ovr"], "kind": "primary" if c in prim else "secondary",
                                  "injured": c["injured"], "until": c["until"], "recent": c["recent"], "age": c["age"],

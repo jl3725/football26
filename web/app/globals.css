@@ -4062,3 +4062,70 @@ LIGA’처럼 글자가 접히던 것) — 넘치면 가로로 넘긴다 */
   .ctx-item b { font-size: 24px; }
   .rec-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
+
+/* 스카우트 데스크 v3 — 피치 시급도 지도 + 근거 아이콘 칩(components/ScoutNeeds.tsx) */
+.sn-grid { display: grid; grid-template-columns: minmax(240px, 300px) minmax(0, 1fr); gap: 14px; align-items: start; }
+.sn-pitch { position: relative; aspect-ratio: 3 / 4; border-radius: 12px; background: linear-gradient(180deg, #0f3020, #0c2619); overflow: hidden; }
+.sn-lines { position: absolute; inset: 0; width: 100%; height: 100%; }
+.sn-lines * { fill: none; stroke: rgba(255,255,255,0.14); stroke-width: 0.5; vector-effect: non-scaling-stroke; }
+.sn-dot { position: absolute; transform: translate(-50%, -50%); border-radius: 50%; border: 2px solid; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; color: #0b0f17; transition: transform .15s, box-shadow .15s; padding: 0; }
+.sn-dot b { font: 800 10.5px/1 var(--font-display); letter-spacing: .04em; }
+.sn-dot em { font: 700 9.5px/1 var(--font-num); font-style: normal; margin-top: 1px; }
+.sn-dot.quiet { color: #8fdcb0; }
+.sn-dot.on { box-shadow: 0 0 0 3px rgba(255,255,255,0.85); transform: translate(-50%, -50%) scale(1.08); z-index: 2; }
+.sn-dot:hover { transform: translate(-50%, -50%) scale(1.06); }
+.sn-side { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.sn-rank { display: flex; flex-wrap: wrap; gap: 6px; }
+.sn-rank button { display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; border-radius: 9px; border: 1px solid var(--line); background: rgba(255,255,255,0.03); color: var(--txt); cursor: pointer; font: 700 12px/1 var(--font-display); letter-spacing: .04em; }
+.sn-rank button i { width: 8px; height: 8px; border-radius: 50%; }
+.sn-rank button em { font: 600 10.5px/1 var(--font-ui); font-style: normal; color: var(--muted); letter-spacing: 0; }
+.sn-rank button b { font-family: var(--font-num); }
+.sn-rank button.on { background: rgba(255,255,255,0.07); }
+.sn-detail { border: 1px solid var(--line); border-left-width: 3px; border-radius: 12px; padding: 12px; background: var(--panel); display: flex; flex-direction: column; gap: 10px; }
+.sn-d-top { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.sn-d-role { font: 800 18px/1 var(--font-display); letter-spacing: .05em; }
+.sn-d-label { font-size: 12px; color: var(--muted); }
+.sn-lv { margin-left: auto; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 6px; }
+.sn-when { font-size: 10.5px; color: var(--muted); padding: 2px 7px; border-radius: 6px; border: 1px solid var(--line); }
+.sn-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.sn-k { width: 62px; flex-shrink: 0; font: 700 9.5px/1 var(--font-label); letter-spacing: .1em; color: var(--muted-2); }
+.sn-cells { display: inline-flex; gap: 4px; }
+.sn-cells i { position: relative; width: 26px; height: 12px; border-radius: 3px; background: rgba(255,255,255,0.08); overflow: hidden; }
+.sn-cells i.extra { opacity: .55; }
+.sn-cells i b { position: absolute; inset: 0 auto 0 0; }
+.sn-v { font: 700 13px/1 var(--font-num); }
+.sn-moves { display: inline-flex; align-items: flex-start; gap: 8px; flex-wrap: wrap; }
+.sn-arrow { align-self: center; color: var(--muted); font-size: 14px; }
+.sn-face { display: inline-flex; flex-direction: column; align-items: center; gap: 2px; width: 50px; }
+.sn-face-img { position: relative; width: 34px; height: 34px; border-radius: 50%; border: 2px solid var(--line); background: #1a2232; }
+.sn-face-img img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; object-position: 50% 25%; }
+.sn-face-img i { position: absolute; inset: 0; display: grid; place-items: center; font: 700 10px/1 var(--font-label); font-style: normal; color: var(--muted); }
+.sn-face-img em { position: absolute; right: -5px; bottom: -3px; font-style: normal; font: 800 9px/1 var(--font-ui); color: #0b0f17; padding: 2px 3px; border-radius: 5px; }
+.sn-face-n { font-size: 10.5px; font-weight: 600; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sn-face-s { font: 600 9.5px/1 var(--font-num); color: var(--muted); }
+.sn-chip { font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 7px; background: rgba(255,255,255,0.05); border: 1px solid var(--line); color: var(--txt); }
+.sn-chip.bad { color: #e07070; background: rgba(224,112,112,.12); border-color: rgba(224,112,112,.3); }
+.sn-chip.ok { color: #4fc27f; background: rgba(79,194,127,.12); border-color: rgba(79,194,127,.3); }
+.sn-tags { display: inline-flex; flex-wrap: wrap; gap: 5px; min-width: 0; flex: 1; }
+.sn-p { font-size: 11px; padding: 3px 8px; border-radius: 7px; border: 1px solid var(--line); background: rgba(255,255,255,0.03); color: var(--txt); cursor: pointer; }
+.sn-p b { font-family: var(--font-num); margin-left: 2px; }
+.sn-p.sec { opacity: .7; border-style: dashed; }
+.sn-p.hurt { border-color: rgba(224,112,112,.55); }
+.sn-p i { font-style: normal; color: #e07070; margin-left: 3px; font-size: 10px; }
+.sn-none { font-size: 11.5px; color: var(--muted-2); }
+.sn-depth { align-items: flex-start; }
+.rec-style { font-size: 10.5px; color: var(--muted); margin-top: 2px; }
+.rec-style b { color: var(--txt); font-family: var(--font-num); }
+/* 리크루트 풀 필터 — 데스크톱은 옆에 고정(sticky), 폰은 접는 패널(예전엔 sticky 필터가 카드 위에 겹쳤다) */
+.rp-rail { position: sticky; top: 8px; }
+.rp-rail-toggle { display: none; }
+@media (max-width: 760px) {
+  .sn-grid { grid-template-columns: minmax(0, 1fr); }
+  .sn-pitch { max-width: 230px; width: 100%; margin: 0 auto; }
+  .sn-dot b { font-size: 9.5px; } .sn-dot em { font-size: 8.5px; }
+  .sn-k { width: 100%; }
+  .rp-rail { position: static; padding: 10px 12px !important; }
+  .rp-rail-toggle { display: block; width: 100%; text-align: left; background: none; border: none; color: var(--txt); font-size: 12.5px; font-weight: 600; cursor: pointer; padding: 2px 0; }
+  .rp-rail:not(.open) .rp-rail-body { display: none; }
+  .rp-rail.open .rp-rail-body { margin-top: 8px; }
+}

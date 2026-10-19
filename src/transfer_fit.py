@@ -174,6 +174,20 @@ def _local_search(vec: np.ndarray, role: str, limit: int = 300) -> list[tuple[in
     return [(int(rr[i]), float(sims[i])) for i in order]
 
 
+def team_style_fit(player: str, league: str, role: str, team: str) -> int | None:
+    """후보 ↔ 이 팀이 그 역할에 쓰는 스타일(팀 선수 평균, 없으면 리그 엘리트 원형) 코사인 × 100. 표본 없으면 None."""
+    pool = _pool()
+    rows, Z = _vec_index()
+    sub = pool.loc[rows]
+    m = np.flatnonzero((sub["player"].astype(str).to_numpy() == str(player)) & (sub["_league"].to_numpy() == league))
+    if not len(m):
+        return None
+    tgt = _local_centroid(role, [team])
+    if tgt is None:
+        tgt = _local_elite(role)
+    return None if tgt is None else int(round(max(0.0, _cos(Z[m[0]], tgt)) * 100))
+
+
 def _qsearch(qc, vector, limit: int):
     """qdrant-client 버전 차이 — 1.12 는 search, 1.16+ 는 query_points(search 제거)."""
     if hasattr(qc, "search"):
@@ -333,7 +347,7 @@ def _departed_keys() -> set:
 def discover_fits(team: str, role: str | None = None, top: int = 24,
                   leagues: list | None = None, min_age: int | None = None,
                   max_age: int | None = None, max_value: float | None = None,
-                  roles: list | None = None) -> dict:
+                  roles: list | None = None, team_ovr: float | None = None) -> dict:
     """Qdrant 기반 교차리그 스타일-핏 발굴(리그 중립) — 스카우트 추천의 핵심.
 
     팀의 해당 역할 사용 스타일 centroid(없으면 리그 엘리트 원형)로 전 리그 벡터 검색 →
@@ -386,8 +400,19 @@ def discover_fits(team: str, role: str | None = None, top: int = 24,
             pr = price_realism(team, likely_fee)              # 가격 현실성(구단 상한 대비)
             rf = recruit_fit(team, age)                       # 영입 나이기조 부합
             contract = str(r.get("contract_until") or r.get("tm_contract_until") or "")
-            score = (0.42 * style_fit + 0.22 * proj_norm + 0.14 * pr["score"]
-                     + 0.10 * float(rf["score"]) + (6 if euro else 0) + role_bonus.get(rl, 0.0))
+            # 팀 수준 대비 — 강팀은 스타일만 비슷한 60~70대가 앞에 오면 안 된다(2026-10-19 사용자: 아스날 LW 후보가 60~70대).
+            #   주전급 = 팀 OVR −4 이상 · 로테이션 = −9 이상 · 그 아래는 21세 이하면 유망주, 아니면 수준 아래
+            if team_ovr:
+                gap = proj - (team_ovr - 4)
+                quality = 100.0 if gap >= 0 else max(0.0, 100.0 + gap * 12.0)
+                level = ("starter" if proj >= team_ovr - 4 else "rotation" if proj >= team_ovr - 9
+                         else "prospect" if (age or 99) <= 21 else "below")
+                score = (0.30 * style_fit + 0.38 * quality + 0.12 * pr["score"] + 0.08 * float(rf["score"])
+                         + (4 if euro else 0) + role_bonus.get(rl, 0.0) + (6 if level == "prospect" else 0))
+            else:
+                level = None
+                score = (0.42 * style_fit + 0.22 * proj_norm + 0.14 * pr["score"]
+                         + 0.10 * float(rf["score"]) + (6 if euro else 0) + role_bonus.get(rl, 0.0))
             cross = bool(lg != tgt_league)
             why = [f"스타일 적합 {style_fit}"]
             if cross:
@@ -412,10 +437,21 @@ def discover_fits(team: str, role: str | None = None, top: int = 24,
                 "style_fit": style_fit, "euro": euro, "age": age,
                 "price_verdict": pr["verdict"], "likely_fee_eur": pr.get("likely_fee_eur"),
                 "recruit_fit": int(rf["score"]), "contract_until": contract, "minutes": int(_num0(r.get("_min"))),
+                "level": level,
                 "photo": api._photo(r), "why_fit": why, "_score": round(score, 1),
             })
     recs.sort(key=lambda x: -x["_score"])
-    recs = _kg_enrich(team, recs[:max(top * 2, 24)], tgt_league)[:top]   # KG 신호 보강·재정렬
+    recs = _kg_enrich(team, recs[:max(top * 2, 24)], tgt_league)   # KG 신호 보강·재정렬
+    # 니즈 포지션이 여럿이면 번갈아(시급한 포지션 먼저) — 한 포지션 후보만 위에 몰려 가장 시급한 좌윙이 7번째였다(2026-10-19)
+    if not role and len(roles) > 1:
+        groups = {rl: [x for x in recs if x["pos"] == rl] for rl in roles}
+        mixed = []
+        while any(groups.values()):
+            for rl in roles:
+                if groups[rl]:
+                    mixed.append(groups[rl].pop(0))
+        recs = mixed
+    recs = recs[:top]
     ages = [x["age"] for x in recs if x["age"] is not None]
     vals = [x["value_eur"] for x in recs if x["value_eur"]]
     kpi = {"count": len(recs),

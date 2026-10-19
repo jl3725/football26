@@ -84,6 +84,10 @@ function Card({ p, accent }: { p: DiscoverPick; accent: string }) {
         </div>
       </div>
       <div style={{ display: "flex", gap: 5, marginTop: 8, flexWrap: "wrap" }}>
+        {p.level && <span title="팀 OVR 대비 수준" style={{ fontSize: 9.5, padding: "1px 7px", borderRadius: 8, fontWeight: 700,
+          background: hexA(p.level === "starter" ? "#4fc27f" : p.level === "rotation" ? "#5b8def" : p.level === "prospect" ? "#b98cd8" : "#8a94a8", 0.16),
+          color: p.level === "starter" ? "#4fc27f" : p.level === "rotation" ? "#8fb0f5" : p.level === "prospect" ? "#c9a6e6" : "#9aa3b5" }}>
+          {p.level === "starter" ? "주전급" : p.level === "rotation" ? "로테이션" : p.level === "prospect" ? "유망주" : "수준 아래"}</span>}
         <span style={{ fontSize: 9.5, padding: "1px 7px", borderRadius: 8, background: hexA(rising ? "#4fc27f" : "#8aa", 0.15), color: rising ? "#4fc27f" : "#9ab" }}>{rising ? "성장형" : "안정"}</span>
         {p.euro && <span style={{ fontSize: 9.5, padding: "1px 7px", borderRadius: 8, background: hexA("#f4cf5e", 0.15), color: "#f4cf5e" }}>유럽 검증</span>}
         {p.price_verdict === "over-budget" && <span style={{ fontSize: 9.5, padding: "1px 7px", borderRadius: 8, background: hexA("#e0556b", 0.15), color: "#e0707a" }}>예산 초과</span>}
@@ -108,6 +112,9 @@ export default function RecruitPool({ team, accent }: { team: string; accent: st
   const [ageMax, setAgeMax] = useState(34);
   const [valMax, setValMax] = useState(200);         // M€
   const [sortBy, setSortBy] = useState("fit");
+  // 수준 — 팀 OVR 대비(서버 level). 기본은 '수준 아래' 제외(강팀에 60~70대가 깔리던 문제, 2026-10-19)
+  const [lvl, setLvl] = useState<"squad" | "starter" | "prospect" | "all">("squad");
+  const [railOpen, setRailOpen] = useState(false);   // 폰: 필터 접기(예전엔 sticky 필터가 카드 위에 겹쳤다)
   const [shown, setShown] = useState(PAGE);          // 한 번에 다 그리면 카드 35장·페이지 4,400px — 12장씩
 
   useEffect(() => {
@@ -121,7 +128,10 @@ export default function RecruitPool({ team, accent }: { team: string; accent: st
 
   const picks = useMemo(() => {
     const all = disc?.recommendations || [];
-    const f = all.filter((p) => (lgs.length === 0 || lgs.includes(p.source_league))
+    const lvOk = (p: DiscoverPick) => !p.level || lvl === "all" ? true
+      : lvl === "starter" ? p.level === "starter" || p.level === "rotation"
+      : lvl === "prospect" ? p.level === "prospect" : p.level !== "below";
+    const f = all.filter((p) => lvOk(p) && (lgs.length === 0 || lgs.includes(p.source_league))
       && (p.age == null || (p.age >= ageMin && p.age <= ageMax))
       && (!p.value_eur || p.value_eur <= valMax * 1e6));
     const key = (p: DiscoverPick) => sortBy === "ovr" ? p.ovr : sortBy === "value" ? (p.value_eur || 0) : sortBy === "age" ? -(p.age || 99) : p.style_fit;
@@ -129,8 +139,8 @@ export default function RecruitPool({ team, accent }: { team: string; accent: st
     const ok = (p: DiscoverPick) => (p.realistic === false ? 0 : 2) + (p.policy_ok === false ? 0 : 1);
     if (sortBy === "fit") return [...f].sort((a, b) => ok(b) - ok(a));
     return [...f].sort((a, b) => key(b) - key(a));
-  }, [disc, lgs, ageMin, ageMax, valMax, sortBy]);
-  useEffect(() => { setShown(PAGE); }, [team, role, lgs, ageMin, ageMax, valMax, sortBy]);
+  }, [disc, lgs, ageMin, ageMax, valMax, sortBy, lvl]);
+  useEffect(() => { setShown(PAGE); }, [team, role, lgs, ageMin, ageMax, valMax, sortBy, lvl]);
 
   const kAge = picks.filter((p) => p.age).map((p) => p.age as number);
   const kVal = picks.filter((p) => p.value_eur).map((p) => p.value_eur as number);
@@ -155,8 +165,22 @@ export default function RecruitPool({ team, accent }: { team: string; accent: st
 
       <div className="rp-layout">
         {/* 필터 레일 */}
-        <div className="card" style={{ position: "sticky", top: 8 }}>
-          <div style={{ ...railLabel, marginTop: 0 }}>리그</div>
+        <div className={`card rp-rail${railOpen ? " open" : ""}`}>
+          <button className="rp-rail-toggle" onClick={() => setRailOpen((v) => !v)} aria-expanded={railOpen}>
+            필터 · {lvl === "squad" ? "주전급·로테이션·유망주" : lvl === "starter" ? "주전급·로테이션" : lvl === "prospect" ? "유망주" : "전체"}{role ? ` · ${role}` : ""} {railOpen ? "▴" : "▾"}
+          </button>
+          <div className="rp-rail-body">
+          <div style={{ ...railLabel, marginTop: 0 }}>수준 <span style={{ textTransform: "none", fontWeight: 400 }}>· 팀 OVR {disc?.team_ovr ?? "?"} 대비</span></div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 5 }}>
+            {([["squad", "쓸 만한 후보"], ["starter", "주전급·로테이션"], ["prospect", "유망주"], ["all", "전체"]] as const).map(([v, lbl]) => (
+              <button key={v} onClick={() => setLvl(v)} title={v === "squad" ? "팀 OVR −9 이상 + 21세 이하 유망주" : v === "starter" ? "팀 OVR −9 이상" : v === "prospect" ? "21세 이하 · 팀 수준 아래" : "수준 무관"} style={{
+                fontSize: 11, padding: "5px 0", borderRadius: 7, cursor: "pointer",
+                border: `1px solid ${lvl === v ? accent : hexA(accent, 0.2)}`,
+                background: lvl === v ? hexA(accent, 0.2) : "transparent", color: lvl === v ? accent : "inherit",
+              }}>{lbl}</button>
+            ))}
+          </div>
+          <div style={railLabel}>리그</div>
           {LEAGUES.map(([k, name]) => (
             <label key={k} style={{ display: "flex", alignItems: "center", gap: 7, fontSize: 12, padding: "3px 0", cursor: "pointer", opacity: (lgs.length === 0 || lgs.includes(k)) ? 1 : 0.5 }}>
               <input type="checkbox" checked={lgs.length === 0 || lgs.includes(k)} onChange={() => toggleLg(k)} />
@@ -178,6 +202,7 @@ export default function RecruitPool({ team, accent }: { team: string; accent: st
           <input type="range" min={16} max={40} value={ageMax} onChange={(e) => setAgeMax(Math.max(+e.target.value, ageMin))} style={{ width: "100%" }} />
           <div style={railLabel}>시장가 ≤ €{valMax}M</div>
           <input type="range" min={5} max={200} step={5} value={valMax} onChange={(e) => setValMax(+e.target.value)} style={{ width: "100%" }} />
+          </div>
         </div>
 
         {/* 그리드 */}

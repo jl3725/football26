@@ -321,7 +321,7 @@ export type Analytics = {
 export type SimilarResult = { player: string; squad: string; pos: string; age: number; value_eur: number; logo: string; score: number; style: number; perf: number };
 export type Recommendation = { player: string; squad: string; logo: string; pos: string; age: number; ovr: number; value_eur: number; photo: string; rating: number; tactical_fit: number; squad_match: number; why_fit: string[]; why_risk: string[]; confidence: string; role: string; role_evidence: string; big_match: boolean; bucket?: string; bucket_label?: string; cross_league?: boolean; source_league?: string; current_ovr?: number; projected_ovr?: number };
 export type LostTarget = { player: string; from: string; to: string; ovr: number; pos: string; photo: string; role: string; top_loss?: boolean };
-export type Longshot = { player: string; squad: string; logo: string; ovr: number; pos: string; photo: string; role: string; bucket_label: string; reason: string; cross_league?: boolean; source_league?: string; current_ovr?: number };
+export type Longshot = { player: string; squad: string; logo: string; ovr: number; pos: string; photo: string; role: string; bucket_label: string; reason: string; cross_league?: boolean; source_league?: string; current_ovr?: number ; style_fit?: number | null };
 export type Recommend = { team: string; color: string; weakest: { line: string; label: string; fit_label: string; bucket?: string; bucket_label?: string } | null; addressed: boolean; recommendations: Recommendation[]; longshots?: Longshot[]; lost_targets: LostTarget[] };
 
 const q = (team: string, league: string) =>
@@ -430,6 +430,7 @@ export type DiscoverPick = {
   kg_rumored?: boolean; kg_rumor_prob?: number | null; kg_precedent?: number;
   policy_ok?: boolean | null; policy_notes?: string[];   // 구단 이적 정책(나이·이적료) 대조
   realistic?: boolean;   // 경쟁 팀·강팀 핵심 주전이면 false(영입 가능성 낮음)
+  level?: "starter" | "rotation" | "prospect" | "below" | null;   // 팀 OVR 대비 수준(주전급 −4 · 로테이션 −9 · 21세 이하 유망주)
   minutes?: number;
 };
 export type Discover = {
@@ -439,6 +440,7 @@ export type Discover = {
   recommendations: DiscoverPick[];
   policy?: TransferPolicy | null;
   needs?: { role: string; label: string; urgency: number; level: string }[];   // 자동 대상 포지션(니즈 v2 상위)
+  team_ovr?: number | null;
 };
 export type DiscoverOpts = { role?: string; top?: number };
 export const getDiscover = (t: string, opts: DiscoverOpts = {}, l = _league) => {
@@ -456,7 +458,15 @@ export type PositionNeed = {
   role: string; label: string; demand: number; urgency: number; level: "urgent" | "need" | "watch" | "ok"; when: string;
   reasons: string[]; options: number; need_n: number;
   depth: { player: string; ovr: number; kind: "primary" | "secondary"; injured: boolean; until: string; recent: number | null; age: number; photo: string }[];
-  window: { out: { player: string; ovr: number | null; fee: string; age: number | null }[]; in: { player: string; ovr: number | null; fee: string; age: number | null }[]; verdict: string };
+  window: { out: NeedMove[]; in: NeedMove[]; verdict: string };
+  signals?: NeedSignals;   // 근거 구조화(화면 아이콘 칩) — reasons 는 같은 내용의 문장
+};
+export type NeedMove = { player: string; ovr: number | null; fee: string; age: number | null; photo?: string };
+export type NeedSignals = {
+  depth: { have: number; need: number }; unreplaced?: number;
+  injury?: { drop: number; players: { player: string; weeks: number; photo: string }[] };
+  cold?: { player: string; recent: number; photo: string }[];
+  aging?: { player: string; age: number }[]; contract?: { player: string; until: string }[];
 };
 // 구단 이적 정책(최근 두 시즌 영입) — 나이·이적료·국내 비율·출신 리그
 export type TransferPolicy = {

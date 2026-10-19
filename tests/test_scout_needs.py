@@ -68,3 +68,24 @@ def test_fit_and_manager_sim_work_without_qdrant(monkeypatch) -> None:
     assert r["available"] is True and not r.get("error"), r
     s = m.managersim(club, club)
     assert s["available"] is True and not s.get("error"), s
+
+
+def test_cross_league_projection_no_double_discount() -> None:
+    """OVR 은 이미 리그 수준을 담은 절대 척도 — 리그 이동 환산은 작은 적응 할인만(크바라 87 → 80 같은 이중 할인 금지).
+    2026-10-19 검증: 리그를 옮긴 41명 실제 변화 +1.4 vs 예전 환산 −2.2."""
+    from api.main import _project_ovr
+    assert _project_ovr(87, "Ligue1", "EPL", True, 25, "LW")[0] >= 86
+    assert _project_ovr(80, "BelgianProLeague", "EPL", False, 24, "LW")[0] >= 78
+    assert _project_ovr(85, "EPL", "LaLiga", False, 26, "CB")[0] == 85          # 약한 리그로 가도 부풀리지 않음
+    assert _project_ovr(85, "LaLiga", "EPL", False, 31, "CM")[0] == 84          # 30세+ 적응 −1
+
+
+def test_similar_players_same_position() -> None:
+    """유사 선수는 실제 포지션 기준 — 사카(RW) 유사 1위가 만잠비(AM)였다(2026-10-19 사용자)."""
+    from api import main as m
+    df, _ = m._sim_engine()
+    wing = df[df["tm_position"].astype(str).str.contains("Right Winger")]
+    if wing.empty:
+        return
+    res = m.similar(str(wing.iloc[0]["player"]))["results"]
+    assert res and all(x["pos"] in ("RW", "LW") for x in res), res
