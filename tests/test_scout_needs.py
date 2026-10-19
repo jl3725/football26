@@ -50,3 +50,21 @@ def test_local_style_search_same_position_sorted() -> None:
     assert all(pool.loc[i, "_pos_detail"] == "Left Winger" for i, _ in hits)
     sims = [s for _, s in hits]
     assert sims == sorted(sims, reverse=True)
+
+
+def test_fit_and_manager_sim_work_without_qdrant(monkeypatch) -> None:
+    """적합도 평가·감독 시뮬레이션 — Qdrant 없이(서버 메모리 벡터). 예전엔 운영 서버에서 available=False 였다."""
+    import transfer_fit as tf
+    from api import main as m
+
+    def no_qdrant():
+        raise RuntimeError("Qdrant 없음")
+    monkeypatch.setattr(tf, "_qdrant", no_qdrant)
+    pool = tf._pool()
+    lw = pool[(pool["_pos_detail"] == "Left Winger") & (pool["_min"] >= 300)].sort_values("_ovr", ascending=False)
+    cand = str(lw.iloc[0]["player"])
+    club = str(pool[pool["_league"] == "EPL"]["squad"].iloc[0])
+    r = m.fit(cand, club, "Left Winger", str(lw.iloc[0]["_league"]))
+    assert r["available"] is True and not r.get("error"), r
+    s = m.managersim(club, club)
+    assert s["available"] is True and not s.get("error"), s

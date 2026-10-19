@@ -98,7 +98,16 @@ def main() -> int:
         print(f"[clubelo] API 실패({type(e).__name__})", flush=True)
     if not raw:                       # API 가 응답은 해도 빈 표를 줄 때가 있다(2026-10-15 아침) → 웹 표로
         print("[clubelo] API 결과 없음 — 웹 표로", flush=True)
-        raw, src = from_page(), "page"
+        import time as _time
+        for attempt in (1, 2):        # 웹 표도 가끔 시간 초과 — 30초 뒤 한 번 더(2026-10-19 점검: 주 2회꼴 실패)
+            try:
+                raw, src = from_page(), "page"
+            except Exception as e:  # noqa: BLE001
+                print(f"[clubelo] 웹 표 실패({type(e).__name__}) {attempt}/2", flush=True)
+                raw = []
+            if raw or attempt == 2:
+                break
+            _time.sleep(30)
     ours = _our_teams()
     names = list(ours)
     rows = []

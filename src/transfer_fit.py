@@ -427,34 +427,34 @@ def discover_fits(team: str, role: str | None = None, top: int = 24,
             "kpi": kpi, "recommendations": recs}
 
 
-def _style_fits(qc, cand_name, role, target_club, tendency_cl):
+def _style_fits(cand_name, role, target_club, tendency_cl):
     """RoleFit(리그 엘리트 원형) + CurrentFit(대상 클럽 현재 스냅샷) + TendencyFit(감독 성향 표본) + 유사선수.
 
     CurrentFit = 지금 그 팀이 그 역할을 쓰는 방식(빠르게 변함).
     TendencyFit = 감독 장기성향과 스타일 겹치는 클럽들의 그 역할(느리게 변함, 새 감독 대비).
+    벡터는 서버 메모리(_vec_index — build_vectors 와 같은 피처·정규화). 예전엔 Qdrant 가 꺼져 있으면 이 평가가 비었다.
     """
-    from qdrant_client import models
-    f_name = models.Filter(must=[models.FieldCondition(key="name", match=models.MatchValue(value=cand_name))])
-    got = qc.scroll(QCOLLECTION, scroll_filter=f_name, with_vectors=True, limit=1)[0]
-    if not got:
+    pool = _pool()
+    rows, Z = _vec_index()
+    names = pool.loc[rows, "player"].astype(str).to_numpy()
+    hit = np.flatnonzero(names == str(cand_name))
+    if not len(hit):
         return None, None, None, []
-    cand_vec = got[0].vector
-    # RoleFit — 리그 엘리트(해당 pos_detail) 원형
-    f_role = models.Filter(must=[models.FieldCondition(key="pos_detail", match=models.MatchValue(value=role))])
-    pts = qc.scroll(QCOLLECTION, scroll_filter=f_role, with_vectors=True, with_payload=True, limit=2000)[0]
-    elite = [p for p in pts if (p.payload.get("ss_rating") or 0) >= 7.0 and (p.payload.get("minutes") or 0) >= 900]
-    ref = elite or pts
-    role_vec = np.mean([p.vector for p in ref], axis=0) if ref else None
+    cand_vec = Z[hit[0]]
+    role_vec = _local_elite(role)
     rolefit = _clamp(max(0.0, _cos(cand_vec, role_vec)) * 100) if role_vec is not None else None
-    # CurrentFit — 대상 클럽의 해당 역할 선수 스타일 centroid(현재 시즌 스냅샷)
-    cvec = _role_centroid_for(qc, role, [target_club])
+    cvec = _local_centroid(role, [target_club])
     current_fit = _clamp(max(0.0, _cos(cand_vec, cvec)) * 100) if cvec is not None else None
-    # TendencyFit — 감독 성향과 스타일 겹치는 클럽 표본의 해당 역할
-    tvec = _role_centroid_for(qc, role, tendency_cl)
+    tvec = _local_centroid(role, tendency_cl)
     tendency_fit = _clamp(max(0.0, _cos(cand_vec, tvec)) * 100) if tvec is not None else None
-    sim = _qsearch(qc, cand_vec, 6)
-    similar = [f"{h.payload['name']} ({h.payload['league']})" for h in sim[1:]]
-    return rolefit, current_fit, tendency_fit, similar
+    sims = Z @ cand_vec / (np.linalg.norm(Z, axis=1) * (np.linalg.norm(cand_vec) or 1.0) + 1e-9)
+    similar = []
+    for i in np.argsort(-sims)[:7]:
+        if i == hit[0]:
+            continue
+        r = pool.loc[rows[i]]
+        similar.append(f"{r['player']} ({r['_league']})")
+    return rolefit, current_fit, tendency_fit, similar[:5]
 
 
 # ── KG(Neo4j): 선례(유사 리그점프) — best-effort ────────────────────────────
@@ -501,10 +501,10 @@ def evaluate_fit(candidate: str, target_club: str, target_role: str,
     ten = mp.get("tenure") or {"w_current": 0.65, "w_tendency": 0.35, "is_new": False}
     try:
         rolefit, current_fit, tendency_fit, similar = _style_fits(
-            _qdrant(), candidate, role, target_club, tendency_clubs(target_club))
+            candidate, role, target_club, tendency_clubs(target_club))
     except Exception as e:  # noqa: BLE001
         rolefit, current_fit, tendency_fit, similar = None, None, None, []
-        proof = (proof + f" [qdrant 오류: {str(e)[:40]}]").strip()
+        proof = (proof + f" [스타일 계산 오류: {str(e)[:40]}]").strip()
     rolefit = 60.0 if rolefit is None else rolefit
     current_fit = rolefit if current_fit is None else current_fit    # 클럽 역할표본 없으면 RoleFit 대체
     tendency_fit = current_fit if tendency_fit is None else tendency_fit

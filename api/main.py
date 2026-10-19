@@ -652,15 +652,10 @@ def fit(candidate: str, club: str, role: str, source_league: str = "",
         league: str = ACTIVE_LEAGUE):
     """Transfer Fit Evaluator — (후보, 대상클럽, 역할) → Fit Score + 전 컴포넌트 분해.
 
-    로컬 전용: Qdrant(스타일 벡터)·Neo4j(선례) 필요. 스택 미가동 시 available=False 로
-    우아하게 degrade(프론트가 안내 표시). 온디맨드(버튼)로만 호출되는 무거운 계산.
+    스타일 벡터는 서버 메모리(transfer_fit._vec_index)라 어디서나 동작한다 — 예전엔 Qdrant 가 없는 운영 서버에서
+    available=False(꺼짐)였다(2026-10-19). Neo4j 선례는 있으면 보탠다(best-effort). 온디맨드(버튼)로만 호출.
     """
-    try:
-        import transfer_fit as tf  # noqa: PLC0415 (지연 import — 이 엔드포인트만 벡터스택 사용)
-        tf._qdrant().get_collections()  # 가용성 프로브
-    except Exception as e:  # noqa: BLE001
-        return {"available": False, "candidate": candidate, "club": club, "role": role,
-                "reason": f"로컬 벡터/그래프 스택 미가동 (Qdrant): {str(e)[:80]}"}
+    import transfer_fit as tf  # noqa: PLC0415
     try:
         r = tf.evaluate_fit(candidate, club, role, source_league or None)
     except Exception as e:  # noqa: BLE001
@@ -674,14 +669,8 @@ def fit(candidate: str, club: str, role: str, source_league: str = "",
 def managersim(club: str, manager: str, league: str = ACTIVE_LEAGUE):
     """Manager Change Simulator — 새 감독 부임 시 전술변화·스쿼드 미스핏·영입 우선순위.
 
-    manager 는 감독명(현 클럽 전술로 대체) 또는 클럽명. 로컬 전용(Qdrant/Neo4j).
+    manager 는 감독명(현 클럽 전술로 대체) 또는 클럽명. 스타일 벡터는 서버 메모리(Qdrant 불필요, 2026-10-19).
     """
-    try:
-        import transfer_fit as tf  # noqa: PLC0415
-        tf._qdrant().get_collections()
-    except Exception as e:  # noqa: BLE001
-        return {"available": False, "club": club, "manager": manager,
-                "reason": f"로컬 벡터/그래프 스택 미가동 (Qdrant): {str(e)[:80]}"}
     try:
         import manager_sim as ms  # noqa: PLC0415
         r = ms.simulate(club, manager)

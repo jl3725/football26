@@ -36,41 +36,40 @@ def _mgr_to_club() -> dict:
     return out
 
 
-def _role_centroid(qc, club, role):
-    from qdrant_client import models
-    f = models.Filter(must=[models.FieldCondition(key="club", match=models.MatchValue(value=club)),
-                            models.FieldCondition(key="pos_detail", match=models.MatchValue(value=role))])
-    pts = qc.scroll(tf.QCOLLECTION, scroll_filter=f, with_vectors=True, limit=50)[0]
-    return np.mean([p.vector for p in pts], axis=0) if pts else None
+def _role_centroid(club, role):
+    """클럽의 해당 역할 선수 스타일 평균(서버 메모리 벡터 — transfer_fit._vec_index)."""
+    return tf._local_centroid(role, [club])
 
 
-def _club_players(qc, club):
-    from qdrant_client import models
-    f = models.Filter(must=[models.FieldCondition(key="club", match=models.MatchValue(value=club))])
-    return qc.scroll(tf.QCOLLECTION, scroll_filter=f, with_vectors=True, with_payload=True, limit=60)[0]
+def _club_players(club):
+    """(이름, 역할, 벡터) — 그 클럽 270분+ 선수."""
+    pool = tf._pool()
+    rows, Z = tf._vec_index()
+    sub = pool.loc[rows]
+    m = (sub["squad"].astype(str) == club).to_numpy()
+    return [(str(n), r, Z[i]) for i, (n, r) in zip(np.flatnonzero(m), zip(sub.loc[m, "player"], sub.loc[m, "_pos_detail"]))]
 
 
 def simulate(target_club: str, new_manager: str) -> dict:
+    """새 감독 부임 가정 — 현 스쿼드의 새 시스템 적합도 · 영입 우선순위. 예전엔 Qdrant 가 필요했다(2026-10-19 서버 메모리로)."""
     nm_club = _mgr_to_club().get(new_manager.lower(), new_manager)   # 이름→클럽, 없으면 클럽명으로
     cur, new = tactical_profile(target_club), tactical_profile(nm_club)
     if not cur or not new:
         return {"error": f"프로필 없음 (target={target_club}, new={nm_club})"}
-    qc = tf._qdrant()
 
     # 2) 현 스쿼드 적합도: 각 선수 스타일 vs '새 감독의 같은 역할' centroid
     cent_cache: dict = {}
     misfit = []
-    for p in _club_players(qc, target_club):
-        role = p.payload.get("pos_detail")
-        if not role:
+    for name, role, vec in _club_players(target_club):
+        if not role or role != role:
             continue
         if role not in cent_cache:
-            cent_cache[role] = _role_centroid(qc, nm_club, role)
+            cent_cache[role] = _role_centroid(nm_club, role)
         cvec = cent_cache[role]
         if cvec is None:
             continue
-        fit = max(0.0, tf._cos(p.vector, cvec)) * 100
-        misfit.append({"player": p.payload["name"], "role": role, "sys_fit": round(fit)})
+        fit = max(0.0, tf._cos(vec, cvec)) * 100
+        misfit.append({"player": name, "role": role, "sys_fit": round(fit)})
     misfit.sort(key=lambda x: x["sys_fit"])
 
     # 3) 새 시스템 영입 우선순위: 새 감독 강조 역할 중 타깃 스쿼드 얇은 곳
@@ -81,14 +80,14 @@ def simulate(target_club: str, new_manager: str) -> dict:
         role = ru["role"]
         depth = int((tgt_sq["_pos_detail"] == role).sum())
         if depth <= 2 and role not in ("Goalkeeper",):
-            cvec = _role_centroid(qc, nm_club, role)
+            cvec = _role_centroid(nm_club, role)
             cands = []
             if cvec is not None:
-                hits = tf._qsearch(qc, cvec.tolist(), 40)
-                for h in hits:
-                    if h.payload.get("club") == target_club or h.payload.get("pos_detail") != role:
+                for ri, _sim in tf._local_search(cvec, role, limit=40):
+                    r = pool.loc[ri]
+                    if str(r.get("squad")) == target_club:
                         continue
-                    cands.append(f"{h.payload['name']}({h.payload['league']})")
+                    cands.append(f"{r['player']}({r['_league']})")
                     if len(cands) >= 4:
                         break
             priorities.append({"role": role, "share": ru["minutes_share"], "depth": depth, "candidates": cands})

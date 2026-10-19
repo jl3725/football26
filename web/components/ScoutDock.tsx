@@ -19,6 +19,21 @@ export default function ScoutDock({ team, league, accent, onNavigate }:
     return () => window.removeEventListener("keydown", h);
   }, []);
   const nav = (t: string, l?: string) => { onNavigate?.(t, l); setOpen(false); };
+  // 폰: 아래로 스크롤하는 동안 버블을 숨긴다 — 우하단 숫자·칩을 가렸다(2026-10-19 점검). 위로 올리거나 멈추면 다시
+  const [hide, setHide] = useState(false);
+  useEffect(() => {
+    let last = window.scrollY, timer: ReturnType<typeof setTimeout> | undefined;
+    const onScroll = () => {
+      if (window.innerWidth > 760) { setHide(false); return; }
+      const y = window.scrollY;
+      if (Math.abs(y - last) > 6) setHide(y > last && y > 120);
+      last = y;
+      clearTimeout(timer);
+      timer = setTimeout(() => setHide(false), 1200);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => { window.removeEventListener("scroll", onScroll); clearTimeout(timer); };
+  }, []);
 
   return (
     <>
@@ -49,12 +64,13 @@ export default function ScoutDock({ team, league, accent, onNavigate }:
       </aside>
 
       {/* 플로팅 버블 (FAB) */}
-      <button onClick={() => setOpen((o) => !o)} title="Ask Scout (⌘K)" style={{
+      <button className="dock-fab" onClick={() => setOpen((o) => !o)} title="Ask Scout (⌘K)" aria-label="Ask Scout" style={{
         position: "fixed", right: 22, bottom: 22, zIndex: 60,
         width: 56, height: 56, borderRadius: "50%", border: "none", cursor: "pointer",
         background: `linear-gradient(135deg, ${accent}, ${hexA(accent, 0.75)})`, color: "#0a0a0a",
         fontSize: 22, fontWeight: 800, boxShadow: `0 6px 22px ${hexA(accent, 0.55)}`,
-        transition: "transform .15s", transform: open ? "scale(0.9)" : "scale(1)",
+        transition: "transform .2s, opacity .2s", transform: open ? "scale(0.9)" : hide ? "translateY(140%)" : "scale(1)",
+        opacity: hide && !open ? 0 : 1, pointerEvents: hide && !open ? "none" : "auto",
         display: "flex", alignItems: "center", justifyContent: "center",
       }}>{open ? "✕" : (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

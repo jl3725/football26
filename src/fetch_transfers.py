@@ -126,34 +126,49 @@ def main(argv=None) -> int:
     ok_teams: list[str] = []
     failed: list[str] = []
     first = True
-    for team in teams:
-        if team not in clubs:
-            print(f"  [건너뜀] {team} — {SEASON} 시즌 소속 아님")
-            continue
+    def scrape_team(team: str):
+        """(행, 창별 IN/OUT 수) — 한 창이라도 실패하면 None."""
+        nonlocal first
         slug, vid = clubs[team]
-        counts = {}
-        team_rows: list[dict] = []
-        complete = True
+        counts, team_rows = {}, []
         for wk, wname in WINDOWS.items():
             if not first:
                 time.sleep(3)
             first = False
             rows = scrape_transfers(team, slug, vid, wk)
             if rows is None:
-                complete = False
-                break
+                return None
             for r in rows:
                 r["window"] = wname
             counts[wname] = (sum(1 for r in rows if r["direction"] == "in"),
                              sum(1 for r in rows if r["direction"] == "out"))
             team_rows += rows
-        if not complete:
-            failed.append(team)
-            continue
-        ok_teams.append(team)
-        all_rows += team_rows
-        print(f"  [{team}] 여름 IN{counts['summer'][0]}/OUT{counts['summer'][1]} · "
-              f"겨울 IN{counts['winter'][0]}/OUT{counts['winter'][1]}")
+        return team_rows, counts
+
+    targets = []
+    for team in teams:
+        if team not in clubs:
+            print(f"  [건너뜀] {team} — {SEASON} 시즌 소속 아님")
+        else:
+            targets.append(team)
+    # 1차 + 실패 팀만 20초 뒤 한 번 더 — TM 차단은 순간적인 경우가 많다(2026-10-19 점검: 벨기에 5팀이 하루 한 번씩 실패)
+    for attempt in (1, 2):
+        if attempt == 2:
+            if not failed:
+                break
+            print(f"  [재시도] {len(failed)}팀 20초 뒤 다시: {', '.join(failed)}")
+            time.sleep(20)
+            targets, failed = failed, []
+        for team in targets:
+            got = scrape_team(team)
+            if got is None:
+                failed.append(team)
+                continue
+            team_rows, counts = got
+            ok_teams.append(team)
+            all_rows += team_rows
+            print(f"  [{team}] 여름 IN{counts['summer'][0]}/OUT{counts['summer'][1]} · "
+                  f"겨울 IN{counts['winter'][0]}/OUT{counts['winter'][1]}")
 
     if failed:
         print(f"  [실패] {len(failed)}팀 — 기존 행 유지: {', '.join(failed)}")

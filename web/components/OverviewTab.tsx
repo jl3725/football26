@@ -144,6 +144,8 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
           <div className="full">{[ov.fullName, info.stadium, ov.capacity ? `${ov.capacity.toLocaleString()}석` : ""].filter(Boolean).join(" · ")}</div>
           <div className="form-row">
             {heroForm.length === 0 && <span className="full">최근 경기 없음</span>}
+            {/* 헤더 점 = 리그 최근 5경기(오래된 → 최근). 아래 SEASON SNAPSHOT 의 LAST 5 는 전 대회라 표기로 구분(2026-10-19 점검) */}
+            {heroForm.length > 0 && <span className="hero-form-k" title="리그 최근 5경기(왼쪽 → 오른쪽 = 오래된 → 최근) · 아래 LAST 5 는 컵·유럽 포함 전 대회">LEAGUE</span>}
             {heroForm.map((f, i) => <div key={i} className={`dot ${f}`}>{f}</div>)}
             <PinButton team={ov.team} league={ov.league} logo={ov.logo} />
           </div>

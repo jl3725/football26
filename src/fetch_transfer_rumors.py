@@ -89,12 +89,15 @@ def main() -> int:
     allrows: list[dict] = []
     failed: list[str] = []
     teams = sorted(season_clubs(league).items())
+    def fetch(team, slug, vid):
+        r = tm_http.get(URL.format(slug=slug, vid=vid), headers=H, timeout=20)
+        if r.status_code != 200:   # 202 = WAF 챌린지
+            raise requests.RequestException(f"HTTP {r.status_code}")
+        return _parse(r.text, team)
+
     for i, (team, (slug, vid)) in enumerate(teams, 1):
         try:
-            r = tm_http.get(URL.format(slug=slug, vid=vid), headers=H, timeout=20)
-            if r.status_code != 200:   # 202 = WAF 챌린지
-                raise requests.RequestException(f"HTTP {r.status_code}")
-            rows = _parse(r.text, team)
+            rows = fetch(team, slug, vid)
         except requests.RequestException as exc:
             print(f"  [{team}] 실패: {str(exc)[:50]}", file=sys.stderr)
             failed.append(team)
@@ -102,6 +105,21 @@ def main() -> int:
         allrows.extend(rows)
         print(f"  [{i:2}/{len(teams)}] {team:18} 루머 {len(rows)}")
         time.sleep(1.5)
+    # 실패 팀만 잠시 뒤 한 번 더 — TM 차단(202·끊김)은 순간적인 경우가 많아 하루 두 번 중 한 번씩 실패로 끝났다(2026-10-19 점검)
+    if failed:
+        time.sleep(20)
+        retry, failed = failed, []
+        for team in retry:
+            slug, vid = dict(teams)[team]
+            try:
+                rows = fetch(team, slug, vid)
+            except requests.RequestException as exc:
+                print(f"  [{team}] 재시도 실패: {str(exc)[:50]}", file=sys.stderr)
+                failed.append(team)
+                continue
+            allrows.extend(rows)
+            print(f"  [재시도] {team:18} 루머 {len(rows)}")
+            time.sleep(3)
 
     if not allrows:
         print("[rumors] 수집 0 — 기존 파일 유지", file=sys.stderr)
