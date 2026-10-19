@@ -1,0 +1,18 @@
+{"t": "2026-10-19T04:28:49+00:00", "runner": "local-sofascore-daily", "step": "sofascore", "league": "EPL", "ok": true, "code": 0, "sec": 30.0}
+{"t": "2026-10-19T04:28:51+00:00", "runner": "local-sofascore-daily", "step": "merge_sofascore", "league": "EPL", "ok": true, "code": 0, "sec": 2.0}
+{"t": "2026-10-19T04:29:57+00:00", "runner": "local-sofascore-daily", "step": "sofascore", "league": "LaLiga", "ok": true, "code": 0, "sec": 66.0}
+{"t": "2026-10-19T04:29:58+00:00", "runner": "local-sofascore-daily", "step": "merge_sofascore", "league": "LaLiga", "ok": true, "code": 0, "sec": 2.0}
+{"t": "2026-10-19T04:30:58+00:00", "runner": "local-sofascore-daily", "step": "sofascore", "league": "Bundesliga", "ok": true, "code": 0, "sec": 60.0}
+{"t": "2026-10-19T04:31:00+00:00", "runner": "local-sofascore-daily", "step": "merge_sofascore", "league": "Bundesliga", "ok": true, "code": 0, "sec": 2.0}
+{"t": "2026-10-19T04:32:56+00:00", "runner": "local-sofascore-daily", "step": "sofascore", "league": "SerieA", "ok": true, "code": 0, "sec": 116.0}
+{"t": "2026-10-19T04:32:58+00:00", "runner": "local-sofascore-daily", "step": "merge_sofascore", "league": "SerieA", "ok": true, "code": 0, "sec": 2.0}
+{"t": "2026-10-19T04:36:08+00:00", "runner": "local-sofascore-daily", "step": "sofascore", "league": "Ligue1", "ok": false, "code": 1, "sec": 190.0, "note": "Ligue 1 26/27 시즌 id 조회 실패"}
+{"t": "2026-10-19T04:36:10+00:00", "runner": "local-sofascore-daily", "step": "merge_sofascore", "league": "Ligue1", "ok": true, "code": 0, "sec": 2.0}
+{"t": "2026-10-19T04:36:43+00:00", "runner": "local-sofascore-daily", "step": "sofascore", "league": "LigaPortugal", "ok": true, "code": 0, "sec": 33.0}
+{"t": "2026-10-19T04:36:45+00:00", "runner": "local-sofascore-daily", "step": "merge_sofascore", "league": "LigaPortugal", "ok": true, "code": 0, "sec": 2.0}
+{"t": "2026-10-19T04:38:43+00:00", "runner": "local-sofascore-daily", "step": "sofascore", "league": "Eredivisie", "ok": true, "code": 0, "sec": 118.0}
+{"t": "2026-10-19T04:38:44+00:00", "runner": "local-sofascore-daily", "step": "merge_sofascore", "league": "Eredivisie", "ok": true, "code": 0, "sec": 2.0}
+{"t": "2026-10-19T04:41:21+00:00", "runner": "local-sofascore-daily", "step": "sofascore", "league": "BelgianProLeague", "ok": true, "code": 0, "sec": 157.0}
+{"t": "2026-10-19T04:41:23+00:00", "runner": "local-sofascore-daily", "step": "merge_sofascore", "league": "BelgianProLeague", "ok": true, "code": 0, "sec": 2.0}
+{"t": "2026-10-19T04:45:09+00:00", "runner": "local-sofascore-daily", "step": "sofascore", "league": "Ligue1", "ok": true, "code": 0, "sec": 84.0}
+{"t": "2026-10-19T04:45:10+00:00", "runner": "local-sofascore-daily", "step": "merge_sofascore", "league": "Ligue1", "ok": true, "code": 0, "sec": 2.0}

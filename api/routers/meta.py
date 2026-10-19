@@ -45,3 +45,11 @@ def health():
         "leagues": ds.available_leagues(),
         "infra": infra_health.status(),   # 차단 중인 선택 인프라(neo4j·qdrant)
     }
+
+
+@router.get("/ops/status")
+def ops_status():
+    """DATA STATUS — 에이전트 레지스트리 × 실행 원장(data/ops/runs) × watchdog 결과.
+    에이전트·feed 별 마지막 성공, 허용 지연 초과(지연), 최근 실패 단계. 화면: /status."""
+    import ops_status as ops   # noqa: PLC0415 — 요청 때만(원장은 데이터 커밋마다 새 배포로 갱신)
+    return ops.build_status()

@@ -13,7 +13,7 @@ concurrency:
   cancel-in-progress: true
 
 permissions:
-  contents: read
+  contents: write   # 점검 결과(data/ops/watchdog.json)를 커밋 — DATA STATUS 화면이 읽는다
   issues: write
   actions: read
   deployments: read
@@ -36,3 +36,17 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
           BACKEND_URL: ${{ vars.BACKEND_URL }}
         run: python scripts/watchdog.py --issue
+
+      - name: Commit watchdog result
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/ops/watchdog.json
+          if git diff --staged --quiet; then
+            echo "변경 없음 — 커밋 생략"
+          else
+            git commit -m "chore(ops): watchdog 점검 결과 [skip ci]"
+            for i in 1 2 3; do
+              git pull --rebase --autostash origin main && git push && break || sleep 5
+            done
+          fi

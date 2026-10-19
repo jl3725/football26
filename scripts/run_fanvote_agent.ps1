@@ -18,10 +18,15 @@ function Finish([int]$code) { Stop-Transcript | Out-Null; exit $code }
 git pull --rebase --autostash origin main
 if ($LASTEXITCODE -ne 0) { git rebase --abort 2>$null; Write-Host "[fanvote] pull 실패 — 중단"; Finish 1 }
 
+$t0 = Get-Date
 & $Python src\fetch_fan_votes.py
-$failed = ($LASTEXITCODE -ne 0)
+$code = $LASTEXITCODE
+$failed = ($code -ne 0)
+# 실행 원장(DATA STATUS 화면·watchdog) — 이 PC 가 꺼져 있으면 기록이 끊겨 '지연'으로 보인다
+& $Python src\run_ledger.py add local-fanvote "fanvote" $code ([int]((Get-Date) - $t0).TotalSeconds)
 
-$Paths = @("data/fan_votes.csv")
+$Paths = @("data/fan_votes.csv", "data/ops/runs/local-fanvote.jsonl")
+$Paths = @($Paths | Where-Object { Test-Path $_ })   # 없는 경로가 섞이면 git add 가 통째로 실패한다
 git add -- $Paths
 git diff --cached --quiet -- $Paths
 if ($LASTEXITCODE -ne 0) {

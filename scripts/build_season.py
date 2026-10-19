@@ -46,6 +46,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 from leagues import LEAGUES, SEASON_START  # noqa: E402
+import run_ledger  # noqa: E402
 
 STATBUNKER_LEAGUES = {"EPL", "LaLiga", "SerieA"}
 
@@ -168,6 +169,12 @@ def main(argv: list[str] | None = None) -> int:
             status = "ok" if code == 0 else ("TIMEOUT" if code is None else f"FAIL({code})")
             tail = (out.strip().splitlines() or [""])[-1][:110]
             emit(f"   {status} {time.time() - t0:5.0f}s  {tail}")
+            # 실행 원장(DATA STATUS) — 로컬 agent 는 LEDGER_RUNNER 로 자기 이름(local-sofascore-daily 등)을 넘긴다
+            try:
+                run_ledger.record(run_ledger.runner_name("local-build"), f"{name} {lg}", code,
+                                  time.time() - t0, note="" if code == 0 else tail)
+            except OSError as e:
+                emit(f"   (실행 원장 기록 실패: {e})")
             return status
 
         emit(f"=== 시즌 {season} 빌드 · 리그 {leagues} · 단계 {steps}")

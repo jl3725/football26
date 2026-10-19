@@ -18,6 +18,8 @@
   names     선수 이름 레지스트리(data/eval/name_audit.json) 3일 내 갱신, 기준 명단 밖 선발 3경기+ 이름 30개 이하
   ovr       OVR 검증(data/eval/ovr_audit.json) — 같은 선수 OVR 이 화면마다 같은가
   xg        Understat 리그에서 출전은 있는데 xG 합이 0 인 팀(팀 이름 매칭 실패)
+  agents    실행 원장(data/ops/runs) — 에이전트 feed 의 마지막 성공이 허용 지연(agent_registry max_age_h)을 넘었는가
+            (로컬 PC 작업이 꺼져 있거나 워크플로가 통째로 안 돈 경우). --issue 때 결과를 data/ops/watchdog.json 에 남긴다
 
 사용:
   python scripts/watchdog.py            # 결과 출력, 실패가 있으면 종료코드 1
@@ -43,7 +45,7 @@ from leagues import LEAGUES, data_path  # noqa: E402
 
 REPO = os.getenv("GITHUB_REPOSITORY", "jl3725/football26")
 BACKEND = os.getenv("BACKEND_URL", "https://football26-api.onrender.com").rstrip("/")
-WORKFLOWS = ["daily_data.yml", "daily_news.yml", "keep_alive.yml", "ci.yml"]
+WORKFLOWS = ["daily_data.yml", "daily_news.yml", "match_refresh.yml", "tm_data.yml", "keep_alive.yml", "ci.yml"]
 NOW = dt.datetime.now(dt.timezone.utc)
 LABEL = "watchdog"
 
@@ -285,10 +287,16 @@ def check_xg() -> list[str]:
     return out
 
 
+def check_agents() -> list[str]:
+    """에이전트 레지스트리 × 실행 원장 — 허용 지연을 넘긴 feed(DATA STATUS 화면과 같은 계산)."""
+    import ops_status
+    return ops_status.late_feeds(ops_status.build_status(now=NOW))
+
+
 CHECKS = {"ovr": check_ovr, "season": check_season, "hub": check_hub, "frontend": check_frontend,
           "workflows": check_workflows, "news": check_news, "tm_agent": check_tm_agent,
           "coverage": check_coverage, "rating_history": check_rating_history, "ratings": check_ratings,
-          "names": check_names, "xg": check_xg}
+          "names": check_names, "xg": check_xg, "agents": check_agents}
 
 
 def run() -> dict[str, list[str]]:
@@ -310,6 +318,14 @@ def _body(res: dict[str, list[str]], failing: list[str]) -> str:
         lines += [f"  - {p}" for p in probs]
     lines += ["", "scripts/watchdog.py 가 매일 갱신합니다. 전부 정상이 되면 자동으로 닫힙니다."]
     return "\n".join(lines)
+
+
+def write_result(res: dict[str, list[str]]) -> None:
+    """DATA STATUS 화면용 — 점검별 결과를 data/ops/watchdog.json 에(워크플로가 커밋)."""
+    out = ROOT / "data" / "ops" / "watchdog.json"
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(json.dumps({"checked": NOW.isoformat(timespec="seconds"), "results": res},
+                              ensure_ascii=False, indent=1), encoding="utf-8")
 
 
 def file_issue(res: dict[str, list[str]]) -> None:
@@ -350,6 +366,7 @@ def main(argv: list[str] | None = None) -> int:
         for p in probs:
             print(f"        {p}")
     if "--issue" in args:
+        write_result(res)
         file_issue(res)
         return 0                                          # 알림은 이슈로 — 실행까지 빨갛게 해 이중 알림 내지 않음
     return 1 if any(res.values()) else 0

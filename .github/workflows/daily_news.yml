@@ -32,7 +32,8 @@ jobs:
       - name: Fetch & store news
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: python scripts/fetch_news_daily.py --all   # 지원 8개 리그
+        # ci_try — 실패도 실행 원장(data/ops/runs/daily_news.jsonl)에 남기고, 끝의 ci_report 가 빨간불로 알린다
+        run: bash scripts/ci_try.sh "news" python scripts/fetch_news_daily.py --all   # 지원 8개 리그
 
       - name: Publish collection summary
         if: always()
@@ -46,7 +47,7 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/news.db
+          git add data/news.db data/ops/runs/
           if git diff --staged --quiet; then
             echo "변경 없음 — 커밋 생략"
           else
@@ -60,3 +61,7 @@ jobs:
       # 커밋 뒤에 검사 — 번역이 막혀도 수집분은 저장하고, 실패는 빨간 실행으로 드러낸다
       - name: Check translation rate
         run: python scripts/fetch_news_daily.py --check
+
+      - name: Report collector failures
+        if: always()
+        run: bash scripts/ci_report.sh

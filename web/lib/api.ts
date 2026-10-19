@@ -690,3 +690,19 @@ export type TeamRecordRow = { season: string; label: string; w?: number; played:
 export type OvrPart = { key: string; en: string; ko: string; value: number };
 export type RatingSources = { blend: number | null; sofascore: number | null; fotmob: number | null; fotmob_scaled: number | null;
   prev_blend: number | null; prev_sofascore: number | null; prev_fotmob: number | null; hist: number | null; prev_minutes: number | null };
+
+// ── DATA STATUS (/status) — 에이전트 레지스트리 × 실행 원장 × watchdog ──
+export type OpsState = "ok" | "warn" | "late" | "nodata";
+export type OpsFeed = {
+  key: string; label: string; state: OpsState; cadence: string; max_age_h: number; runners: string[]; outputs: string[];
+  last_ok: string | null; last_run: string | null; age_h: number | null; failing: string[]; n_failing: number;
+  runs_24h: number; fails_24h: number;
+};
+export type OpsAgent = { key: string; en: string; ko: string; does: string; sources: string[]; checks: string[]; extras: string[]; state: OpsState; feeds: OpsFeed[] };
+export type OpsFailure = { t: string; runner: string; step: string; league: string | null; code: number | null; sec: number; note?: string; agent: string | null };
+export type OpsStatus = {
+  generated: string; counts: Record<OpsState, number>; first_entry: string | null; agents: OpsAgent[];
+  recent_failures: OpsFailure[]; unregistered_steps: string[];
+  watchdog: { checked: string; results: Record<string, string[]> } | null;
+};
+export const getOpsStatus = () => j<OpsStatus>("/api/ops/status");

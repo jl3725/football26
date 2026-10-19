@@ -76,6 +76,8 @@ def test_build_season_retries_failed_step_and_followers(monkeypatch, tmp_path) -
     monkeypatch.setattr(bs, "RETRY_WAIT", 0)
     monkeypatch.setattr(bs, "ROOT", tmp_path)
     monkeypatch.setattr(bs, "_run_step", fake_run)
+    monkeypatch.setattr(bs.run_ledger, "LEDGER_DIR", tmp_path / "runs")
+    monkeypatch.setenv("LEDGER_RUNNER", "local-test")
     assert bs.main(["EPL"]) == 1                                  # 히트맵은 재시도에도 실패 → 종료코드 1
     assert tries[("EPL", "sofascore")] == 2 and tries[("EPL", "merge_sofascore")] == 2
     assert tries[("EPL", "heatmaps")] == 2 and tries[("EPL", "comp_usage")] == 1

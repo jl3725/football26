@@ -33,6 +33,8 @@ if ($LASTEXITCODE -ne 0) {
 $Season = (& $Python -c "import sys; sys.path.insert(0, 'src'); from leagues import SEASON; print(SEASON)").Trim()
 Write-Host "[season-agent] 시즌 $Season 빌드 시작"
 # 실패한 리그×단계는 build_season 이 끝에 2분 뒤 한 번 더 돈다(2026-10-14 히트맵 2개 리그 연결 끊김 — 손으로 재수집했었다)
+# 단계마다 실행 원장 data/ops/runs/local-season-weekly.jsonl 에 남는다(DATA STATUS 화면)
+$env:LEDGER_RUNNER = "local-season-weekly"
 & $Python scripts\build_season.py
 $BuildCode = $LASTEXITCODE
 
@@ -45,7 +47,8 @@ if ($LASTEXITCODE -ne 0) {
 }
 & $Python scripts\precompute_hub.py
 
-$Paths = @("data/*_$Season.csv", "data/home_all.json")
+$Paths = @("data/*_$Season.csv", "data/home_all.json", "data/ops/runs/local-season-weekly.jsonl")
+$Paths = @($Paths | Where-Object { Test-Path $_ })   # 없는 경로가 섞이면 git add 가 통째로 실패한다
 git add -- $Paths
 git diff --cached --quiet -- $Paths
 if ($LASTEXITCODE -eq 0) {
