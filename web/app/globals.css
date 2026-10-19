@@ -3931,3 +3931,13 @@ LIGA’처럼 글자가 접히던 것) — 넘치면 가로로 넘긴다 */
 .peek-comps { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 10px 0 2px; padding: 0 16px; font-size: 11.5px; color: var(--muted); }
 .peek-comps b { color: var(--txt); font-weight: 700; margin-right: 2px; }
 .peek-comps em { width: 100%; font-style: normal; font-size: 10.5px; color: var(--muted-2); }
+
+/* LIVE 반영(v6.9) — 공식 결과 전 라이브 스코어로 순위·승점·LAST 5·우승 경쟁 덮어쓰기 */
+.lv5-meta { display: inline-flex; align-items: center; gap: 6px; color: #ff6b7d; font-weight: 700; }
+.ts5-res.is-live { box-shadow: inset 3px 0 0 #ff6b7d; background: rgba(255,107,125,0.06); }
+.ts5-res.is-live.post { box-shadow: inset 3px 0 0 #f4cf5e; background: rgba(244,207,94,0.05); }
+.ts5-wdl.live.in { background: #ff6b7d; color: #0b0f17; font-size: 9.5px; width: auto; min-width: 22px; padding: 0 4px; animation: lv5-pulse 1.6s ease-in-out infinite; }
+.ts5-prov.live circle, .tr5-prov.live line { animation: lv5-pulse 1.6s ease-in-out infinite; }
+.tr5-prov-t { font: 700 9.5px/1 var(--font-num); letter-spacing: 0.04em; }
+.ts5-kpis .lv5-mv { font-style: normal; font-size: 12px; margin-left: 6px; }
+@keyframes lv5-pulse { 0%, 100% { opacity: 1; } 50% { opacity: .45; } }

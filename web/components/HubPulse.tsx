@@ -7,6 +7,7 @@ import { colorsClose, compLabel, compTone, ddayLabel, lgEn, liftHex, splitKst } 
 import { useMatchPreview } from "@/lib/matchPreview";
 import { Crest, PredictBar } from "./MatchCard";
 import { useLiveAll, liveLabel, fixtureFromLive, type LiveEvent } from "@/lib/live";
+import type { LiveMark } from "@/lib/liveTable";
 import { SS_NOTE, TONE, ssMeaning } from "@/lib/meaning";
 import { MeaningTag } from "./Meaning";
 
@@ -114,7 +115,14 @@ export function WatchGrid({ items, onPick }: { items: WatchMatch[]; onPick: Pick
 
 // ── TITLE RACE: 상위 4팀 누적 승점 선 그래프 ──
 const PALETTE = ["#ff4d5e", "#5b7cff", "#f4cf5e", "#68e0a5"];
-export function TitleRace({ teams, onPick, league }: { teams: RaceTeam[]; onPick: Pick; league: string }) {
+// marks: 아직 공식 반영 전인 경기의 라이브·종료 스코어(lib/liveTable) — 점선으로 한 칸 더 그린다
+export function TitleRace({ teams: base, onPick, league, marks }: { teams: RaceTeam[]; onPick: Pick; league: string; marks?: Record<string, LiveMark> }) {
+  const teams = useMemo(() => base.map((t) => {
+    const mk = marks?.[t.team];
+    if (!mk) return { ...t, prov: null as LiveMark | null };
+    const last = t.points[t.points.length - 1] ?? 0;
+    return { ...t, points: [...t.points, last + (mk.res === "W" ? 3 : mk.res === "D" ? 1 : 0)], prov: mk };
+  }).sort((a, b) => (b.points[b.points.length - 1] ?? 0) - (a.points[a.points.length - 1] ?? 0)), [base, marks]);
   const W = 640, H = 250, L = 30, R = 96, T = 14, B = 26;
   const games = Math.max(1, ...teams.map((t) => t.points.length));
   const maxP = Math.max(3, ...teams.map((t) => t.points[t.points.length - 1] ?? 0));
@@ -146,12 +154,19 @@ export function TitleRace({ teams, onPick, league }: { teams: RaceTeam[]; onPick
         ))}
         {teams.map((t, i) => {
           const pts = [0, ...t.points];
-          const d = pts.map((p, k) => `${k ? "L" : "M"}${x(k).toFixed(1)},${y(p).toFixed(1)}`).join(" ");
+          const off = t.prov ? pts.slice(0, -1) : pts;                 // 공식(실선) · 잠정(점선) 나눠 그림
+          const d = off.map((p, k) => `${k ? "L" : "M"}${x(k).toFixed(1)},${y(p).toFixed(1)}`).join(" ");
           const lx = x(pts.length - 1), ly = y(pts[pts.length - 1]);
           return (
             <g key={t.team} className="tr5-line" style={{ ["--d" as any]: `${i * 0.12}s` }}>
               <path d={d} stroke={colors[i]} pathLength={1} />
-              <circle cx={lx} cy={ly} r={4} fill={colors[i]} />
+              {t.prov && (
+                <g className={`tr5-prov${t.prov.state === "in" ? " live" : ""}`}>
+                  <line x1={x(off.length - 1)} y1={y(off[off.length - 1])} x2={lx} y2={ly} stroke={colors[i]} strokeDasharray="4 3" strokeWidth={2} />
+                  <text x={lx} y={ly - 9} textAnchor="middle" className="tr5-prov-t" fill={colors[i]}>{t.prov.state === "in" ? `LIVE ${t.prov.label}` : "잠정"}</text>
+                </g>
+              )}
+              <circle cx={lx} cy={ly} r={4} fill={t.prov ? "none" : colors[i]} stroke={colors[i]} strokeWidth={t.prov ? 2 : 0} />
               <line x1={lx + 6} x2={W - R + 6} y1={ly} y2={endY[i]} stroke={colors[i]} className="tr5-lead" />
               <image href={t.logo} x={W - R + 10} y={endY[i] - 9} width={18} height={18} />
               <text x={W - R + 34} y={endY[i] + 5} className="tr5-pts" fill={colors[i]}>{pts[pts.length - 1]}</text>

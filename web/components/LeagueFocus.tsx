@@ -105,6 +105,10 @@ export default function LeagueFocus({ league, lab, onPick, full = false }: { lea
   const L = lab;
   const wait = (h: number) => <Skel h={h} r={12} />;
   const race = L?.race ?? [];
+  // 공식 결과 전 라이브·방금 끝난 경기 — 우승 경쟁 그래프에 점선으로(순위표와 같은 계산)
+  const live = useLiveAll();
+  const lt = liveTable(L?.table, L?.pending, live, liveLabel);
+  const marks = Object.fromEntries(lt.rows.filter((r) => r.live).map((r) => [r.team, r.live!]));
   return (
     <div className="h5-stack">
       {full && (
@@ -115,8 +119,9 @@ export default function LeagueFocus({ league, lab, onPick, full = false }: { lea
       )}
       <div className="h5-row">
         <section className="card h5-card">
-          <SectionHead title="TITLE RACE" kr="우승 경쟁" meta="상위 4팀 누적 승점" />
-          {!L ? wait(220) : race.length ? <TitleRace teams={race} league={league} onPick={onPick} /> : <p className="empty5">경기 기록 없음</p>}
+          <SectionHead title="TITLE RACE" kr="우승 경쟁"
+            meta={lt.on ? <span className="lv5-meta"><i className="live-dot" />{lt.inPlay ? "LIVE 반영 중" : "방금 끝난 경기 잠정 반영"}</span> : "상위 4팀 누적 승점"} />
+          {!L ? wait(220) : race.length ? <TitleRace teams={race} league={league} onPick={onPick} marks={marks} /> : <p className="empty5">경기 기록 없음</p>}
         </section>
         <section className="card h5-card h5-side">
           {full ? (

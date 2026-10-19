@@ -59,6 +59,7 @@ export type Overview = {
   leaders: { label: string; player: string; photo: string; value: number }[];
   departed: { player: string; left_for: string; pos: string; photo: string }[];
   injuries: Injury[];
+  injury_returns?: { player: string; date: string; since: string | null }[];   // TM 미갱신 · 부상 뒤 출전 → 복귀로 봄
   transfers: { in: Transfer[]; out: Transfer[] };
   window: Window;
   data_season: string;
@@ -572,7 +573,9 @@ export type PointsPath = { team: string; path: number[]; logo: string; color: st
 export type ProfileAxis = { key: string; en: string; kr: string; value: number; rank: number; n: number; hint: string ; prev?: number | null; prev_rank?: number | null; prev_hint?: string };
 export type TeamSeason = { team: string; league: string; n: number;
   standing: { rank: number; played: number; won: number; drawn: number; lost: number; gf: number; ga: number; gd: number; points: number } | null;
-  xg_pg: number | null; str_rank: number | null; xg_rank?: number | null; xg_avg?: number | null; path: PointsPath; refs: PointsPath[]; recent: ResultMatch[]; profile: ProfileAxis[]; goal_mix?: GoalMix | null };
+  xg_pg: number | null; str_rank: number | null; xg_rank?: number | null; xg_avg?: number | null; path: PointsPath; refs: PointsPath[]; recent: ResultMatch[]; profile: ProfileAxis[]; goal_mix?: GoalMix | null;
+  // 실시간 반영 재료 — 공식 결과 전 라이브 스코어로 덮어쓴다(lib/liveTable · SeasonSnapshot)
+  table?: TableRow[]; pending?: Record<string, { home: string; away: string }>; team_pending?: Fixture[] };
 // 분석 탭 — 경기별 흐름·득실 시간대·리그 백분위(/api/team-trends, 원천 match_stats: ESPN 경기 기록 + 5대 리그 Understat xG)
 export type TrendMatch = { event_id: string; date: string; comp_code: string; opponent: string; opp_logo: string; home_away: string;
   gf: number; ga: number; result: string; xg: number | null; xga: number | null; shots: number | null; opp_shots: number | null;

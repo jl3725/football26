@@ -70,18 +70,27 @@ def line_of_row(row) -> str:
     return line_of(_s(row.get("fl_group")) or _s(row.get("pos")))
 
 
+# 몸값 → 기준점: 13.04·log10(몸값) − 16.24. VALUE_KNEE 위로는 기울기 VALUE_TOP_SLOPE — 26/27 몸값 인플레로
+# €75~120M 공격 자원이 일괄 86.5~89 에 몰렸다(Cherki·Semenyo·Cunha·Mbeumo 88, 2026-10-19 사용자 지적).
+VALUE_KNEE, VALUE_TOP_SLOPE = 40e6, 13.04
+
+
 def value_ovr(v) -> float | None:
     val = _num(v)
     if val <= 0:
         return None
-    return 13.04 * math.log10(val) - 16.24
+    if val <= VALUE_KNEE:
+        return 13.04 * math.log10(val) - 16.24
+    return 13.04 * math.log10(VALUE_KNEE) - 16.24 + VALUE_TOP_SLOPE * math.log10(val / VALUE_KNEE)
 
 
 # ── 절대 OVR (커리어 클래스) ──────────────────────────────────────
 # 포지션 보정 — 시장은 수비수를 덜, 공격형·창의형 미드를 더 쳐준다. v3.4 까지 DEF·MID +2 · ATT +1 이라
 # 몸값 €60~70M 중간대가 일괄로 떠 Zubimendi 88 · Eze 87 · White 85(사용자 기준 85 · 83~84 · 83, 2026-10-15).
 # golden(사용자 기준)·스카우트 기준표 조합 탐색으로 정함(GK 는 별도 분기의 _GK_BASE).
-_POS_ADJ = {"DEF": 0.5, "MID": -0.5, "ATT": 0.0}
+# v3.7(2026-10-19): ATT 0 → −1 — 시장은 같은 경기력이면 공격수에 돈을 더 쳐준다. €75~80M 공격수(Cunha·Mbeumo·Semenyo)
+# 가 일괄 88 이던 것(사용자 지적 '그 정도까진 아니다'), 탐색: golden 위반 0 · 스카우트 평균 이탈 0.168→0.137
+_POS_ADJ = {"DEF": 0.5, "MID": -0.5, "ATT": -1.0}
 _GK_BASE = 2.0
 _SS_MID = {"GK": 6.85, "DEF": 6.95, "MID": 7.05, "ATT": 6.95}  # 포지션별 '평범한 주전' 평점
 
@@ -137,7 +146,7 @@ PE_A, PE_B = 79.85, 37.8
 # v3.6 탐색(golden 위반 0 · 스카우트 3+ 이탈 0 · Groß 78 · Dowman 70 · Vušković>Konsa): 36세 45%
 _VET_PE_AGES, _VET_PE_W = (30.0, 32.0, 34.0, 36.0), (0.0, 0.18, 0.34, 0.45)
 # 모델 버전 — 바뀌면 rating_history 가 과거 기록을 평행이동해 모델 변경이 선수 추이(▲▼)로 보이지 않게 한다
-MODEL_VERSION = "v3.6"
+MODEL_VERSION = "v3.7"
 # 잠재력 프리미엄 — 같은 시장가치·리그에서 어린 선수의 실제 경기력(리그 보정 평점)이 낮은 만큼(vov 환산).
 # 25/26 1,500분+ 1,450명 회귀(27~29세 기준): 17~20세 −6.8 · 21세 −4.9 · 22세 −5.1 · 23세 −4.4 · 24세 −3.9 ·
 # 25세 −3.8 · 26세 −2.4 (같은 회귀에서 30~32세 +5.3 · 33세+ +9.4 — 베테랑 보정과 같은 근거).

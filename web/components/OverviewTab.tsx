@@ -38,6 +38,7 @@ function Delta({ d }: { d?: number }) {
   );
 }
 
+const titleCase = (s: string) => s.split(" ").map((w) => (w ? w[0].toUpperCase() + w.slice(1) : w)).join(" ");
 type UnitWho = { player: string; strength: number; injured?: boolean; until?: string }[];
 type RecRow = TeamRecordRow;
 const shortName = (n: string) => { const p = n.split(" "); return p.length > 1 ? p.slice(1).join(" ") : n; };
@@ -326,6 +327,11 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
             ))}
             {ov.injuries.length === 0 && <div className="mgr-meta">부상자 없음 ✓</div>}
           </div>
+          {(ov.injury_returns ?? []).length > 0 && (
+            <p className="sp5-note" title="Transfermarkt 부상 목록은 갱신이 늦어, 부상 시작 뒤 실제로 선발·교체 출전한 선수는 복귀로 본다">
+              복귀로 봄(TM 미갱신): {ov.injury_returns!.map((r) => `${titleCase(r.player)} ${r.date.slice(5).replace("-", "/")} 출전`).join(" · ")}
+            </p>
+          )}
         </div>
 
         <div className="card">

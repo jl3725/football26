@@ -481,7 +481,7 @@ def overview(team: str, league: str = ACTIVE_LEAGUE):
         }
 
     # 현재 부상자
-    inj_tbl = ds.read_table("transfermarkt_injuries", league=league)
+    inj_tbl = _injuries_table(league)          # 부상 뒤 실제로 뛴 선수 제외(TM 갱신 지연)
     injuries = []
     if inj_tbl is not None and "squad" in inj_tbl.columns:
         ti = inj_tbl[inj_tbl["squad"].astype(str) == team]
@@ -570,6 +570,9 @@ def overview(team: str, league: str = ACTIVE_LEAGUE):
         "leaders": leaders,
         "departed": departed,
         "injuries": injuries,
+        # TM 은 아직 '부상'이지만 부상 뒤에 실제로 뛰어 복귀로 본 선수(_injury_returns)
+        "injury_returns": [{"player": k[1], "date": v["date"], "since": v.get("since")}
+                           for k, v in _injury_returns(league).items() if k[0] == team],
         "transfers": {"in": tin, "out": tout},
         "window": win,
         "data_season": _data_season_label(),
@@ -1359,10 +1362,92 @@ def _pos_profile(r) -> dict:
     return ps.profile(ps.lookup(_role_counts_all(), r.get("player")), tmp if isinstance(tmp, str) else None)
 
 
-def _active_injuries(team: str, league: str) -> dict:
-    """{정규화 이름: {injury, until}} — 현재 부상(TM)."""
+def _parse_dmy(s) -> str | None:
+    """'24/09/2026' → '2026-09-24'."""
+    t = str(s or "").strip()
+    if len(t) == 10 and t[2] == "/" and t[5] == "/":
+        return f"{t[6:]}-{t[3:5]}-{t[:2]}"
+    return None
+
+
+@_memo(ttl=1800)
+def _injury_returns(league: str) -> dict:
+    """{(팀, 정규화 이름): {date, since}} — TM 은 '부상'인데 부상 시작일 뒤에 실제로 뛴(선발·교체) 선수.
+
+    Transfermarkt 부상 목록은 갱신이 늦다 — Havertz(9/24 허벅지)가 10/10 선발·10/18 출전 뒤에도 '부상'으로 남아
+    신뢰도가 떨어져 보였다(2026-10-19 사용자 지적). 시작일은 TM 부상 이력(spells)의 열린 구간 → 없으면 부상 변경
+    감지일. 둘 다 없으면 최근 14일 안 출전만 본다."""
     import positions as ps  # noqa: PLC0415
     inj = ds.read_table("transfermarkt_injuries", league=league)
+    if inj is None or inj.empty or "squad" not in inj.columns:
+        return {}
+    if "active" in inj.columns:
+        inj = inj[inj["active"].astype(str).str.lower().isin({"true", "1", "yes", "y"})]
+    since: dict = {}
+    hist = ds.read_table("tm_injury_history", league=league)
+    if hist is not None and not hist.empty and "spells_json" in hist.columns:
+        for sq, pl, sj in zip(hist["squad"].astype(str), hist["player"].astype(str), hist["spells_json"]):
+            try:
+                spells = json.loads(sj) if isinstance(sj, str) and sj.strip() else []
+            except ValueError:
+                spells = []
+            opens = [_parse_dmy(s.get("from")) for s in spells if not str(s.get("until") or "").strip()]
+            opens = [d for d in opens if d]
+            if opens:
+                since[(sq, ps.norm_name(pl))] = max(opens)
+    ch = ds.read_table("transfermarkt_injury_changes", league=league)
+    if ch is not None and not ch.empty and {"event_type", "run_date"} <= set(ch.columns):
+        for sq, pl, ev, d in zip(ch["squad"].astype(str), ch["player"].astype(str), ch["event_type"].astype(str), ch["run_date"].astype(str)):
+            if ev.lower().startswith("new"):
+                since.setdefault((sq, ps.norm_name(pl)), d[:10])
+    seen: dict = {}                                       # (팀, 이름) → 마지막 출전일
+    for stem in ("espn_lineups", "espn_lineups_cups"):
+        el = ds.read_table(stem, league=league)
+        if el is None or el.empty:
+            continue
+        st = el[pd.to_numeric(el["starter"], errors="coerce") == 1]
+        for sq, pl, d in zip(st["squad"].astype(str), st["player"].astype(str), st["date"].astype(str)):
+            k = (sq, ps.norm_name(pl))
+            seen[k] = max(seen.get(k, ""), d[:10])
+    for stem in ("espn_subs", "espn_subs_cups"):
+        sb = ds.read_table(stem, league=league)
+        if sb is None or sb.empty or "player_in" not in sb.columns or "squad" not in sb.columns:
+            continue
+        el = ds.read_table(stem.replace("subs", "lineups"), league=league)
+        dates = dict(zip(el["event_id"].astype(str), el["date"].astype(str))) if el is not None and not el.empty else {}
+        for sq, pl, e in zip(sb["squad"].astype(str), sb["player_in"].astype(str), sb["event_id"].astype(str)):
+            d = dates.get(e, "")[:10]
+            if d:
+                k = (sq, ps.norm_name(pl))
+                seen[k] = max(seen.get(k, ""), d)
+    recent = (datetime.date.today() - datetime.timedelta(days=14)).isoformat()
+    out = {}
+    for sq, pl in zip(inj["squad"].astype(str), inj["player"].astype(str)):
+        k = (sq, ps.norm_name(pl))
+        last = seen.get(k)
+        s0 = since.get(k)
+        if last and ((s0 and last > s0) or (not s0 and last >= recent)):
+            out[k] = {"date": last, "since": s0}
+    return out
+
+
+def _injuries_table(league: str):
+    """현재 부상(TM) — 부상 시작 뒤에 실제로 뛴 선수(_injury_returns)는 뺀 표. 원래 표는 그대로 두고 사본."""
+    import positions as ps  # noqa: PLC0415
+    inj = ds.read_table("transfermarkt_injuries", league=league)
+    if inj is None or inj.empty or "squad" not in inj.columns:
+        return inj
+    back = _injury_returns(league)
+    if not back:
+        return inj
+    keep = [(str(s), ps.norm_name(p)) not in back for s, p in zip(inj["squad"], inj["player"])]
+    return inj[keep].copy()
+
+
+def _active_injuries(team: str, league: str) -> dict:
+    """{정규화 이름: {injury, until}} — 현재 부상(TM, 부상 뒤 실제로 뛴 선수 제외)."""
+    import positions as ps  # noqa: PLC0415
+    inj = _injuries_table(league)
     out = {}
     if inj is None or "squad" not in inj.columns:
         return out
@@ -2872,7 +2957,7 @@ def _compute_needs(team: str, league: str) -> dict:
                 outs_line.setdefault(ln, []).append(nm)
                 departures.append({"player": nm, "line": ln, "pos": str(r.get("pos") or "")})
 
-    inj = ds.read_table("transfermarkt_injuries", league=league)
+    inj = _injuries_table(league)
     inj_line: dict = {}
     if inj is not None and "squad" in inj.columns:
         ti = inj[inj["squad"].astype(str) == team]
@@ -4161,7 +4246,7 @@ def _compute_hub_body() -> bytes:
                 elif t_["ovr_prev"] is not None and o != t_["ovr_prev"]:
                     mover_c.append((r, lg, "season", o - int(t_["ovr_prev"]), o, int(t_["ovr_prev"])))
 
-        cur_inj = ds.read_table("transfermarkt_injuries", league=lg)
+        cur_inj = _injuries_table(lg)
         summary["injured"] += 0 if cur_inj is None else int(len(cur_inj))
         if pf is not None and "player" in pf.columns:
             golden_boot[lg] = _golden_boot(p, lg)
@@ -4583,7 +4668,7 @@ def league_lab(league: str):
             e = pending.setdefault(str(r.event_id), {})
             e["home" if r.home_away == "H" else "away"] = str(r.squad)
         pending = {k: v for k, v in pending.items() if "home" in v and "away" in v}
-    cur_inj = ds.read_table("transfermarkt_injuries", league=league)
+    cur_inj = _injuries_table(league)
     return {"league": league, "pending": pending, "playmakers": playmakers, "finishing": finishing, "creating": creating,
             "ball_winners": ball_winners, "team_style": team_style,
             "table": table, "race": race, "over": over, "under": under, "results": results[:20], "watch": watch[:3],
@@ -4743,6 +4828,25 @@ _PROFILE_AXES = [
 ]
 
 
+def _live_inputs(team: str, league: str, src: dict, today) -> dict:
+    """화면 실시간 반영 재료 — 공식 결과(매일 아침) 전에 라이브 스코어(/live-scores, ESPN 30초)로 덮어쓸 경기.
+
+    table·pending: 리그 순위표와 아직 결과가 없는 최근·오늘 리그 경기(league_lab 과 같은 값, 잠정 순위 계산용).
+    team_pending: 이 팀의 미반영 경기(전 대회, 3일 전~내일) — LAST 5·승점 흐름 맨 앞에 'LIVE 67'·FT(잠정)'.
+    예전엔 팀 화면 순위·승점·LAST 5 가 다음 날 아침 갱신까지 그대로였다(2026-10-19 사용자 지적)."""
+    import match_center as mc  # noqa: PLC0415
+    try:
+        lab = league_lab(league)
+    except Exception:  # noqa: BLE001
+        lab = {}
+    pend = []
+    for x in mc.matches_from(src["rows"], today - datetime.timedelta(days=3), 4, team=team):
+        x = _fx_enrich(x, src)
+        x.pop("_t", None)
+        pend.append(x)
+    return {"table": lab.get("table") or [], "pending": lab.get("pending") or {}, "team_pending": pend}
+
+
 @app.get("/api/team-season/{team}")
 @_memo(ttl=1800)
 def team_season(team: str, league: str = ACTIVE_LEAGUE):
@@ -4857,6 +4961,7 @@ def team_season(team: str, league: str = ACTIVE_LEAGUE):
                                                  ("rank", "played", "won", "drawn", "lost", "gf", "ga", "gd", "points")},
         "xg_pg": xg_pg, "str_rank": str_rank, "xg_rank": xg_rank, "xg_avg": xg_avg,
         "path": path, "refs": refs, "recent": recent, "profile": profile, "goal_mix": goal_mix,
+        **_live_inputs(team, league, src, today),
     }
 
 
