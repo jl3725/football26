@@ -29,7 +29,7 @@ jobs:
           python-version: "3.12"
 
       - name: Install
-        run: pip install requests
+        run: pip install requests pandas unidecode   # xg 점검이 선수 표(datastore)를 읽는다
 
       - name: Check production
         env:

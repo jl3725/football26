@@ -16,6 +16,8 @@
   ratings   평점 자체 검증(data/eval/rating_audit.json, daily_data 가 매일 생성) — 사용자 기준(golden) 위반,
             스카우트 기준표 3 이상 이탈, 자동 점검(한 시즌 급등·급락·고평점 이상치) 한도 초과
   names     선수 이름 레지스트리(data/eval/name_audit.json) 3일 내 갱신, 기준 명단 밖 선발 3경기+ 이름 30개 이하
+  ovr       OVR 검증(data/eval/ovr_audit.json) — 같은 선수 OVR 이 화면마다 같은가
+  xg        Understat 리그에서 출전은 있는데 xG 합이 0 인 팀(팀 이름 매칭 실패)
 
 사용:
   python scripts/watchdog.py            # 결과 출력, 실패가 있으면 종료코드 1
@@ -271,10 +273,22 @@ def check_ovr() -> list[str]:
     return out
 
 
+def check_xg() -> list[str]:
+    """출전은 있는데 xG 가 하나도 안 붙은 팀 — Understat 팀 이름 매칭이 어긋난 것(25/26 내내 19개 팀이 0 이었다).
+    리그 30% 이상이면 validate_data 가 저장을 막고, 그 아래(한두 팀)는 여기서 팀 이름으로 알린다."""
+    from validate_data import XG_LEAGUES, xg_zero_teams
+    out = []
+    for lg in XG_LEAGUES:
+        zero, n = xg_zero_teams(lg)
+        if zero:
+            out.append(f"{lg} xG 0 팀 {len(zero)}/{n}: {', '.join(zero[:6])} — src/fetch_understat.py 팀 이름 매칭 확인")
+    return out
+
+
 CHECKS = {"ovr": check_ovr, "season": check_season, "hub": check_hub, "frontend": check_frontend,
           "workflows": check_workflows, "news": check_news, "tm_agent": check_tm_agent,
           "coverage": check_coverage, "rating_history": check_rating_history, "ratings": check_ratings,
-          "names": check_names}
+          "names": check_names, "xg": check_xg}
 
 
 def run() -> dict[str, list[str]]:

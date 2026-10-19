@@ -28,6 +28,10 @@
     FB_SEASON_START=2026 python scripts/build_season.py --from understat EPL  # 특정 단계부터
     FB_SEASON_START=2026 python scripts/build_season.py --only espn_lineups,espn_subs
     FB_SEASON_START=2026 python scripts/build_season.py --skip heatmaps          # 특정 단계 제외
+    ... --no-retry                                                                # 실패 재시도 끔
+
+실패한 리그×단계는 끝에 2분 쉬고 한 번 더 돈다(그 단계 산출물을 읽는 뒤 단계도 함께 — RETRY_FOLLOW).
+Sofascore 가 브라우저 세션을 끊는 일이 잦다(2026-10-14 주간 빌드 히트맵 2개 리그, 10-19 일일 평점 리그 1).
 """
 from __future__ import annotations
 
@@ -65,14 +69,26 @@ STEPS: list[tuple[str, list[str]]] = [
     ("heatmaps", ["src/fetch_sofascore_heatmaps.py"]),
 ]
 STEP_NAMES = [n for n, _ in STEPS]
+# 재시도 때 함께 다시 돌릴 뒤 단계 — 실패한 단계의 산출물을 읽어 '옛 값으로 ok' 났을 수 있는 것들
+RETRY_FOLLOW: dict[str, list[str]] = {
+    "schedule": ["standings", "team_defense"],
+    "fbref": ["understat", "merge_sofascore"],
+    "sofascore": ["merge_sofascore"],
+    "understat": ["merge_sofascore"],
+    "transfermarkt": ["contracts"],
+}
+RETRY_WAIT = 120   # 초
 
 
-def _parse(argv: list[str]) -> tuple[list[str], list[str]]:
-    leagues, steps = [], list(STEP_NAMES)
+def _parse(argv: list[str]) -> tuple[list[str], list[str], bool]:
+    leagues, steps, retry = [], list(STEP_NAMES), True
     i = 0
     while i < len(argv):
         a = argv[i]
-        if a == "--from":
+        if a == "--no-retry":
+            retry = False
+            i += 1
+        elif a == "--from":
             steps = STEP_NAMES[STEP_NAMES.index(argv[i + 1]):]
             i += 2
         elif a == "--skip":
@@ -90,7 +106,7 @@ def _parse(argv: list[str]) -> tuple[list[str], list[str]]:
             i += 1
         else:
             raise SystemExit(f"알 수 없는 인자: {a}")
-    return leagues or list(LEAGUES), steps
+    return leagues or list(LEAGUES), steps, retry
 
 
 STEP_TIMEOUT = 45 * 60   # 한 단계 상한(초) — Sofascore 선수별 수집이 가장 김(리그당 ~5분)
@@ -126,7 +142,7 @@ def _run_step(args: list[str], env: dict) -> tuple[int | None, str]:
 
 
 def main(argv: list[str] | None = None) -> int:
-    leagues, steps = _parse(list(argv if argv is not None else sys.argv[1:]))
+    leagues, steps, retry = _parse(list(argv if argv is not None else sys.argv[1:]))
     season = f"{SEASON_START}_{SEASON_START + 1}"
     log_dir = ROOT / "logs"
     log_dir.mkdir(exist_ok=True)
@@ -141,27 +157,44 @@ def main(argv: list[str] | None = None) -> int:
             log.write(line + "\n")
             log.flush()
 
-        emit(f"=== 시즌 {season} 빌드 · 리그 {leagues} · 단계 {steps}")
-        for lg in leagues:
+        def run(lg: str, name: str, cmd: list[str]) -> str:
             env = {**os.environ, "FB_LEAGUE": lg, "FB_SEASON_START": str(SEASON_START),
                    "PYTHONIOENCODING": "utf-8", "PYTHONUNBUFFERED": "1"}
+            args = [python] + [c.replace("{league}", lg).replace("{season}", season) for c in cmd]
+            emit(f"── {lg} · {name}")
+            t0 = time.time()
+            code, out = _run_step(args, env)
+            log.write(out[-8000:] + "\n")
+            status = "ok" if code == 0 else ("TIMEOUT" if code is None else f"FAIL({code})")
+            tail = (out.strip().splitlines() or [""])[-1][:110]
+            emit(f"   {status} {time.time() - t0:5.0f}s  {tail}")
+            return status
+
+        emit(f"=== 시즌 {season} 빌드 · 리그 {leagues} · 단계 {steps}")
+        for lg in leagues:
             for name, cmd in STEPS:
                 if name not in steps:
                     continue
                 if name == "statbunker" and lg not in STATBUNKER_LEAGUES:
                     results[(lg, name)] = "-"
                     continue
-                args = [python] + [c.replace("{league}", lg).replace("{season}", season) for c in cmd]
-                emit(f"── {lg} · {name}")
-                t0 = time.time()
-                code, out = _run_step(args, env)
-                log.write(out[-8000:] + "\n")
-                status = "ok" if code == 0 else ("TIMEOUT" if code is None else f"FAIL({code})")
-                results[(lg, name)] = status
-                tail = (out.strip().splitlines() or [""])[-1][:110]
-                emit(f"   {status} {time.time() - t0:5.0f}s  {tail}")
+                results[(lg, name)] = run(lg, name, cmd)
 
-        emit("=== 결과")
+        # 실패분 한 번 더 — 실패 단계 + 그 산출물을 읽는 뒤 단계(STEPS 순서대로)
+        failed = [k for k, v in results.items() if v.startswith(("FAIL", "TIMEOUT"))]
+        if retry and failed:
+            redo: dict[str, set[str]] = {}
+            for lg, name in failed:
+                redo.setdefault(lg, set()).update([name, *(f for f in RETRY_FOLLOW.get(name, []) if f in steps)])
+            emit(f"=== 실패 {len(failed)}건 — {RETRY_WAIT}초 뒤 재시도: " + ", ".join(f"{lg}·{n}" for lg, n in failed))
+            time.sleep(RETRY_WAIT)
+            for lg in leagues:
+                for name, cmd in STEPS:
+                    if name in redo.get(lg, ()):
+                        st = run(lg, name, cmd)
+                        results[(lg, name)] = st + "*" if st == "ok" else st
+
+        emit("=== 결과" + ("  (ok* = 재시도로 성공)" if any(v == "ok*" for v in results.values()) else ""))
         emit("league".ljust(18) + " ".join(s[:8].ljust(8) for s in steps))
         for lg in leagues:
             emit(lg.ljust(18) + " ".join(results.get((lg, s), "").ljust(8)[:8] for s in steps))

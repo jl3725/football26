@@ -32,6 +32,7 @@ if ($LASTEXITCODE -ne 0) {
 
 $Season = (& $Python -c "import sys; sys.path.insert(0, 'src'); from leagues import SEASON; print(SEASON)").Trim()
 Write-Host "[season-agent] 시즌 $Season 빌드 시작"
+# 실패한 리그×단계는 build_season 이 끝에 2분 뒤 한 번 더 돈다(2026-10-14 히트맵 2개 리그 연결 끊김 — 손으로 재수집했었다)
 & $Python scripts\build_season.py
 $BuildCode = $LASTEXITCODE
 

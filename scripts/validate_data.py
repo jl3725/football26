@@ -94,6 +94,34 @@ def validate_table(table: str, league: str, contract: Contract) -> list[str]:
     return errors
 
 
+# Understat xG 가 붙는 리그 — 팀 이름이 어긋나면 그 팀 선수 xG 가 통째로 0 으로 병합된다
+# (25/26 시즌 내내 맨유·토트넘·도르트문트·밀란·PSG 등 19개 팀, 행 수·컬럼 검사는 통과했다)
+XG_LEAGUES = ("EPL", "LaLiga", "SerieA", "Bundesliga", "Ligue1")
+XG_ZERO_BLOCK = 0.3      # 리그 팀 중 이 비율 이상이 xG 0 이면 저장 차단(이하는 경고 — watchdog 이 팀 이름을 알린다)
+XG_MIN_TEAM_MINUTES = 900  # 팀 선수 출전 분 합이 이보다 적으면(시즌 첫 경기 전) 판단하지 않는다
+
+
+def xg_zero_teams(league: str) -> tuple[list[str], int]:
+    """(xG 합이 0·빈 팀, 판단한 팀 수) — 출전은 있는데 xG 가 하나도 안 붙은 팀."""
+    if league not in XG_LEAGUES:
+        return [], 0
+    frame = ds.read_table("players_full", league=league)
+    if frame is None or not {"squad", "minutes", "xg_p90"}.issubset(frame.columns):
+        return [], 0
+    played = frame[frame["minutes"].fillna(0) > 0]
+    by_team = played.groupby("squad").agg(minutes=("minutes", "sum"), xg=("xg_p90", "sum"))
+    by_team = by_team[by_team["minutes"] >= XG_MIN_TEAM_MINUTES]
+    return sorted(by_team.index[by_team["xg"].fillna(0) <= 0].astype(str)), len(by_team)
+
+
+def validate_xg(league: str) -> tuple[list[str], list[str]]:
+    zero, n = xg_zero_teams(league)
+    if not zero:
+        return [], []
+    msg = f"{league}/players_full: xG 0 팀 {len(zero)}/{n} ({', '.join(zero[:6])}) — Understat 팀 이름 매칭 확인"
+    return ([msg], []) if len(zero) >= XG_ZERO_BLOCK * n else ([], [msg])
+
+
 def validate(
     tables: list[str] | None = None,
     leagues: list[str] | None = None,
@@ -116,6 +144,10 @@ def validate(
         for table in selected_tables:
             contract = CORE_CONTRACTS.get(table) or OPTIONAL_CONTRACTS[table]
             errors.extend(validate_table(table, league, contract))
+        if "players_full" in selected_tables:
+            xe, xw = validate_xg(league)
+            errors.extend(xe)
+            warnings.extend(xw)
 
         if include_optional and tables is None:
             for table, contract in OPTIONAL_CONTRACTS.items():
