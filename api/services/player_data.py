@@ -1,6 +1,8 @@
 """선수 데이터 로딩과 API 표시용 공통 변환."""
 from __future__ import annotations
 
+import re
+
 import pandas as pd
 from unidecode import unidecode
 
@@ -22,9 +24,12 @@ def number(value, default=0.0):
 def photo_url(row) -> str:
     """TM 사진 → 없으면 FotMob 사진(fm_id, src/rating_blend.attach) — TM 매칭이 안 된 주전급 70여 명이 이니셜로 나왔다."""
     photo = row.get("tm_photo")
-    if photo is not None and not pd.isna(photo) and str(photo).startswith("http"):
-        return str(photo)
     fid = row.get("fm_id")
+    if photo is not None and not pd.isna(photo) and str(photo).startswith("http"):
+        # TM id 로 짐작해 만든 주소('…/portrait/medium/708086.png')는 실제 파일명(…-1780663789.jpg)이 아니라 404 가 난다
+        # (2026-10-19 점검: 15명) — FotMob 사진이 있으면 그쪽
+        if not (re.search(r"/portrait/medium/\d+\.png$", str(photo)) and fid is not None and not pd.isna(fid)):
+            return str(photo)
     try:
         if fid is not None and not pd.isna(fid) and int(fid) > 0:
             return f"https://images.fotmob.com/image_resources/playerimages/{int(fid)}.png"

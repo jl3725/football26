@@ -39,6 +39,12 @@ function MatchTrendChart({ ms, useXg, color }: { ms: TrendMatch[]; useXg: boolea
   const W = narrow ? Math.max(340, rows.length * 56) : Math.max(960, rows.length * 44), H = 272, L = 44, R = 10, mid = 122, half = 92;
   const max = Math.max(useXg ? 2 : 15, ...rows.flatMap((m) => [val(m, true)!, val(m, false)!, useXg ? m.gf : 0, useXg ? m.ga : 0]));
   const bw = (W - L - R) / rows.length;
+  // 상대 이름 — 칸이 넉넉하면(경기 8개 이하) 8자까지, 많으면 5자. 예전엔 6자에서 잘라 'Covent'·'Nottin'(2026-10-19 점검)
+  const oppShort = (s: string, n: number) => {
+    const w = s.split(" ").find((x) => x.length > 2 && !/^(FC|AFC|CF|SC|AC|AS|RC|CD|SS|US)$/i.test(x)) || s;
+    const k = n <= 8 ? 8 : 5;
+    return w.length > k ? `${w.slice(0, k - 1)}.` : w;
+  };
   const h = (v: number) => (v / max) * half;
   const roll = (mine: boolean) => rows.map((_, i) => {
     const w = rows.slice(Math.max(0, i - 4), i + 1).map((m) => val(m, mine)!);
@@ -65,7 +71,7 @@ function MatchTrendChart({ ms, useXg, color }: { ms: TrendMatch[]; useXg: boolea
               {useXg && <circle cx={x + bw / 2} cy={mid - h(m.gf)} r={3.6} className="tt5-goal" />}
               {useXg && <circle cx={x + bw / 2} cy={mid + h(m.ga)} r={3.6} className="tt5-goal ag" />}
               <text x={x + bw / 2} y={H - 24} textAnchor="middle" className={`tt5-res ${m.result}`}>{m.gf}-{m.ga}</text>
-              <text x={x + bw / 2} y={H - 8} textAnchor="middle" className="tt5-op">{compShort(m.comp_code) || m.opponent.split(" ")[0].slice(0, 6)}</text>
+              <text x={x + bw / 2} y={H - 8} textAnchor="middle" className="tt5-op">{compShort(m.comp_code) || oppShort(m.opponent, rows.length)}</text>
             </g>
           );
         })}

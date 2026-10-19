@@ -138,9 +138,10 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
         {ov.logo && <img className="hero-mark" src={ov.logo} alt="" aria-hidden="true" />}
         {ov.logo && <img className="hero-logo" src={ov.logo} alt="" />}
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div className="hero-rank">#{lr?.rank ?? s.rank}{lr?.live && <span className="hero-live" title="공식 순위(매일 아침 갱신) 전 — 라이브 스코어를 더한 잠정 순위">{lr.live.state === "in" && <i className="live-dot" />}{lr.live.label} 잠정</span>} · {leagueCap} · {info.nick || ""}</div>
+          <div className="hero-rank">#{lr?.rank ?? s.rank}{lr?.live && <span className="hero-live" title="공식 순위(매일 아침 갱신) 전 — 라이브 스코어를 더한 잠정 순위">{lr.live.state === "in" && <i className="live-dot" />}{lr.live.label} 잠정</span>} · {leagueCap}{info.nick ? ` · ${info.nick}` : ""}</div>
           <h1>{ov.team}</h1>
-          <div className="full">{ov.fullName} · {info.stadium || ""} · {ov.capacity.toLocaleString()}석</div>
+          {/* 빈 칸은 빼고 잇는다 — 경기장 정보가 없는 팀(Gent)에서 'KAA Gent · · 20,000석'이 됐다(2026-10-19 점검) */}
+          <div className="full">{[ov.fullName, info.stadium, ov.capacity ? `${ov.capacity.toLocaleString()}석` : ""].filter(Boolean).join(" · ")}</div>
           <div className="form-row">
             {heroForm.length === 0 && <span className="full">최근 경기 없음</span>}
             {heroForm.map((f, i) => <div key={i} className={`dot ${f}`}>{f}</div>)}

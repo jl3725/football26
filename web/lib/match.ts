@@ -35,6 +35,14 @@ const COMP_EN: Record<string, string> = {
   "ger.dfb_pokal": "DFB-POKAL", "fra.coupe_de_france": "COUPE DE FRANCE", "por.taca.portugal": "TAÇA", "ned.cup": "KNVB BEKER",
 };
 export const compEn = (code?: string | null) => (code && COMP_EN[code]) || "";
+// 일정 표의 한글 대회명 → 영어 약칭(화면 라벨은 영어 위주 — 'EPL · UCL · EFL CUP'). 리그는 그 리그 약칭
+const COMP_EN_BY_KO: Record<string, string> = {
+  "챔피언스리그": "UCL", "유로파리그": "UEL", "컨퍼런스리그": "UECL", "FA컵": "FA CUP", "EFL컵": "EFL CUP",
+  "코파델레이": "COPA DEL REY", "코파 이탈리아": "COPPA ITALIA", "DFB-포칼": "DFB-POKAL", "쿠프 드 프랑스": "COUPE DE FRANCE",
+  "Taça de Portugal": "TAÇA", "KNVB Beker": "KNVB BEKER",
+};
+export const compEnKo = (ko: string, league?: string | null) =>
+  ko === "리그" ? (lgEn(league) || "LEAGUE") : (COMP_EN_BY_KO[ko] || ko);
 export function compLabel(m: Fixture): string {
   if (m.comp_code.endsWith(".1")) return lgEn(m.home.league) || lgEn(m.away.league) || m.comp;
   return COMP_EN[m.comp_code] ?? m.comp;

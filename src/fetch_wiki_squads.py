@@ -260,13 +260,20 @@ def run(league: str, profiles: dict, cache: dict) -> tuple[int, int, list[str]]:
         for r in rows:
             out.append({"squad": team, **r, "wiki_title": title, "fetched": today})
     path = data_path("wiki_squads", league)
+    prev_cap = 0                                          # 지난 수집의 주장 확인 팀 수(회귀 판단 기준)
+    if path.exists():
+        try:
+            with path.open(encoding="utf-8") as fh:
+                prev_cap = len({r["squad"] for r in csv.DictReader(fh) if str(r.get("role_rank")) == "1"})
+        except (OSError, csv.Error, KeyError):
+            prev_cap = 0
     if out:
         with path.open("w", encoding="utf-8", newline="") as fh:
             w = csv.DictWriter(fh, fieldnames=FIELDS)
             w.writeheader()
             w.writerows(out)
     n_cap = len({r["squad"] for r in out if r["role_rank"] == 1})
-    return len(teams), n_cap, miss
+    return len(teams), n_cap, miss, prev_cap
 
 
 def main() -> int:
@@ -277,10 +284,14 @@ def main() -> int:
     cache = json.loads(TITLE_CACHE.read_text(encoding="utf-8")) if TITLE_CACHE.exists() else {}
     bad = 0
     for lg in leagues:
-        n, n_cap, miss = run(lg, profiles, cache)
+        res = run(lg, profiles, cache)
+        n, n_cap, miss = res[:3]
+        prev_cap = res[3] if len(res) > 3 else 0
         TITLE_CACHE.write_text(json.dumps(cache, ensure_ascii=False, indent=1, sort_keys=True), encoding="utf-8")
-        print(f"[wiki_squads] {lg}: 주장 확인 {n_cap}/{n}팀" + (f" · 누락 {miss}" if miss else ""))
-        bad += n and n_cap < n * 0.6                      # 대부분 비면 실패로 알림(문서 구조 변경 등)
+        print(f"[wiki_squads] {lg}: 주장 확인 {n_cap}/{n}팀 (지난 수집 {prev_cap})" + (f" · 누락 {miss}" if miss else ""))
+        # 실패 = 0팀이거나 지난 수집보다 크게 줄었을 때(문서 구조 변경 의심). 분데스·에레디비시 영문 위키는 원래 주장 표시가
+        # 드물어(10/18·6/18) 예전 '60% 미만' 기준이면 매일 실패 → 워크플로가 늘 빨간불이라 진짜 고장이 묻혔다(2026-10-19 점검)
+        bad += bool(n) and (n_cap == 0 or (prev_cap >= 3 and n_cap < prev_cap * 0.6))
     return 1 if bad else 0
 
 

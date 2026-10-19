@@ -2,7 +2,8 @@
 import { ppgMeaning } from "@/lib/meaning";
 import { MeaningTag } from "./Meaning";
 import { useEffect, useMemo, useState } from "react";
-import { getSchedule, getMatch, type Schedule, type MatchDetail, type Match, type Fixture } from "@/lib/api";
+import { activeLeague, getSchedule, getMatch, type Schedule, type MatchDetail, type Match, type Fixture } from "@/lib/api";
+import { compEnKo } from "@/lib/match";
 import { ReviewSections } from "./MatchReview";
 import Pitch from "./Pitch";
 import { usePeek } from "./PlayerPeek";
@@ -31,7 +32,7 @@ function MatchDetailView({ team, match, accent }: { team: string; match: Match; 
       <div className="scd-head" style={{ background: `linear-gradient(120deg, ${accent}33, transparent)` }}>
         <div>
           <div className="scd-gw">
-            <span className="comp-badge" style={{ color: compColor(match.comp), borderColor: compColor(match.comp) + "66" }}>{match.comp}</span>
+            <span className="comp-badge" title={match.comp} style={{ color: compColor(match.comp), borderColor: compColor(match.comp) + "66" }}>{compEnKo(match.comp, activeLeague())}</span>
             {match.date} · {match.home_away === "H" ? "홈" : "원정"}
           </div>
           <div className="scd-opp">vs {match.opponent}</div>
@@ -158,7 +159,7 @@ export default function ScheduleTab({ team, accent }: { team: string; accent: st
             <div className="stat" style={{ gridColumn: "span 4", textAlign: "left", paddingLeft: 14 }}>
               <div className="l" style={{ marginBottom: 4 }}>{seasonLabel(data.season)} 시즌 · 대회별</div>
               <div className="v" style={{ fontSize: 15 }}>
-                {comps.map((c) => <span key={c} className="comp-badge" style={{ color: compColor(c), borderColor: compColor(c) + "66", marginRight: 6 }}>{c} {data.matches.filter((m) => m.comp === c).length}</span>)}
+                {comps.map((c) => <span key={c} className="comp-badge" title={c} style={{ color: compColor(c), borderColor: compColor(c) + "66", marginRight: 6 }}>{compEnKo(c, activeLeague())} {data.matches.filter((m) => m.comp === c).length}</span>)}
               </div>
             </div>
           </>
@@ -170,14 +171,14 @@ export default function ScheduleTab({ team, accent }: { team: string; accent: st
         {["전체", ...comps].map((c) => (
           <button key={c} className={`comp-pill${comp === c ? " active" : ""}`} onClick={() => { setComp(c); setSel(-1); }}
             style={comp === c ? { background: accent, color: "#0b0f17", borderColor: accent } : { borderColor: c === "전체" ? "var(--line)" : compColor(c) + "55" }}>
-            {c}{c !== "전체" ? ` ${data.matches.filter((m) => m.comp === c).length}` : ""}
+            {c === "전체" ? "ALL" : compEnKo(c, activeLeague())}{c !== "전체" ? ` ${data.matches.filter((m) => m.comp === c).length}` : ""}
           </button>
         ))}
       </div>
 
       <div className="sched-layout">
         <div className="card sched-list-card">
-          <h3>{shown.length} Matches{comp !== "전체" ? ` · ${comp}` : ""}</h3>
+          <h3>{shown.length} Matches{comp !== "전체" ? ` · ${compEnKo(comp, activeLeague())}` : ""}</h3>
           <div className="sched-list">
             {shown.map(({ m, i }) => (
               <button className={`sched-row${sel === i ? " active" : ""}${i === nextIdx ? " next" : ""}`} key={i} onClick={() => setSel(i)}
