@@ -605,8 +605,12 @@ export type PredPick = { pick: "H" | "D" | "A"; p: number } | null;
 export type PredRecent = { event_id: string; date: string; home: string; away: string; home_logo: string; away_logo: string; hg: number; ag: number;
   result: "H" | "D" | "A"; fans: PredPick; model: PredPick; elo: PredPick };
 export type PredSplit = { event_id: string; date: string; home: string; away: string; home_logo: string; away_logo: string; fans: PredPick; model: PredPick; gap: number };
+type PredStat = Omit<PredScore, "key" | "en" | "kr">;
+// common: 세 출처가 모두 예측한 같은 경기 맞대결(rank = 적중률 → 브라이어) · v3: 같은 경기를 모델 v3 로(이전 경기는 재계산, 참고)
 export type PredictionLeague = { available: boolean; since?: string; sources: PredScore[];
-  h2h: { n: number; fans: Omit<PredScore, "key" | "en" | "kr">; model: Omit<PredScore, "key" | "en" | "kr"> } | null; recent: PredRecent[]; split: PredSplit[] };
+  h2h: { n: number; fans: PredStat; model: PredStat } | null; recent: PredRecent[]; split: PredSplit[];
+  common?: { n: number; scores: Record<string, PredStat>; rank: string[]; v3: PredStat | null; v3_live: number } | null;
+  model_versions?: Record<string, number>; v3_since?: string | null };
 export const getPredictionLeague = () => j<PredictionLeague>(`/api/prediction-league`);
 // 경기 리뷰 — ESPN 경기 상세로 만든 규칙 기반 리포트(src/match_review.py). 종료 하루·진행 중 1분 캐시
 export type ReviewSide = "home" | "away";

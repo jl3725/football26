@@ -20,11 +20,14 @@ sys.path.insert(0, str(ROOT))
 
 import api.main as api  # noqa: E402
 import match_center as mc  # noqa: E402
+import predict_model as pm  # noqa: E402
 
 OUT = ROOT / "data" / "predictions_log.csv"
 COLS = ["event_id", "date", "kickoff", "comp_code", "home", "away", "home_league", "away_league", "home_logo", "away_logo",
         "model_h", "model_d", "model_a", "model_score", "fans_h", "fans_d", "fans_a", "fans_n",
-        "elo_h", "elo_d", "elo_a", "logged_at", "hg", "ag", "result"]
+        "elo_h", "elo_d", "elo_a", "logged_at", "hg", "ag", "result",
+        # model_ver: 기록 당시 모델 버전(비어 있으면 v2 시절) · v3r_*: v3 를 '그 경기 전 데이터만으로' 다시 계산한 값(참고, v3 이전 경기)
+        "model_ver", "v3r_h", "v3r_d", "v3r_a"]
 
 
 def _row(m: dict, now: str) -> dict:
@@ -35,7 +38,8 @@ def _row(m: dict, now: str) -> dict:
             "home_logo": m["home"].get("logo") or "", "away_logo": m["away"].get("logo") or "",   # 우리 리그 밖 팀은 ESPN 로고
             "model_h": mo.get("h"), "model_d": mo.get("d"), "model_a": mo.get("a"), "model_score": mo.get("score"),
             "fans_h": fa.get("h"), "fans_d": fa.get("d"), "fans_a": fa.get("a"), "fans_n": fa.get("n"),
-            "elo_h": el.get("h"), "elo_d": el.get("d"), "elo_a": el.get("a"), "logged_at": now}
+            "elo_h": el.get("h"), "elo_d": el.get("d"), "elo_a": el.get("a"), "logged_at": now,
+            "model_ver": pm.MODEL_VERSION if mo else None}
 
 
 def main() -> int:
@@ -80,9 +84,26 @@ def main() -> int:
             r["hg"], r["ag"] = hg, ag
             r["result"] = "H" if hg > ag else "A" if hg < ag else "D"
             res += 1
+    # 3) v3 이전에 기록된 끝난 경기 — v3 를 그 경기 전 데이터만으로 다시 계산해 따로(v3r_*) 남긴다(성적표 '참고' 줄).
+    #    부상 결장 명단은 과거분이 없어 빠지고, 팀 OVR 은 지금 값이라 조금 유리할 수 있다(화면에 밝힘)
+    rep_n = 0
+    for r in rows.values():
+        if r.get("result") not in ("H", "D", "A") or str(r.get("model_ver") or "") == pm.MODEL_VERSION:
+            continue
+        if r.get("v3r_h") == r.get("v3r_h") and r.get("v3r_h") is not None:
+            continue
+        hl, al = r.get("home_league"), r.get("away_league")
+        if not (isinstance(hl, str) and hl and isinstance(al, str) and al):
+            continue
+        fx = {"home": {"team": r["home"], "league": hl}, "away": {"team": r["away"], "league": al}}
+        api._attach_model(fx, before=str(r["date"])[:10])
+        mo = fx.get("model")
+        if mo:
+            r["v3r_h"], r["v3r_d"], r["v3r_a"] = mo["h"], mo["d"], mo["a"]
+            rep_n += 1
     out = pd.DataFrame(list(rows.values()), columns=COLS).sort_values(["date", "kickoff"])
     out.to_csv(OUT, index=False)
-    print(f"[predictions-log] 예정 갱신 {up} · 지난 경기 추가 {back} · 결과 채움 {res} · 전체 {len(out)}")
+    print(f"[predictions-log] 예정 갱신 {up} · 지난 경기 추가 {back} · 결과 채움 {res} · v3 재계산 {rep_n} · 전체 {len(out)}")
     return 0
 
 

@@ -5645,6 +5645,24 @@ def prediction_league():
     sources = [{"key": k, "en": en, "kr": kr, **score(done, k)} for k, en, kr in keys]
     both = [r for r in done if probs(r, "fans") and probs(r, "model")]
     h2h = {"n": len(both), "fans": score(both, "fans"), "model": score(both, "model")} if both else None
+    # 세 출처 맞대결 — 셋 다 예측한 같은 경기만(출처마다 경기 수가 달라 전체 적중률은 공정 비교가 아니다, 2026-10-19 사용자).
+    # 순위는 적중률 → 브라이어. v3: 모델 v3 로 본 같은 경기(v3 이전 경기는 '그 경기 전 데이터로 다시 계산'한 v3r_*, 참고)
+    common_rows = [r for r in done if all(probs(r, k) for k, *_ in keys)]
+    common = None
+    if common_rows:
+        sc = {k: score(common_rows, k) for k, *_ in keys}
+        v3rows = []
+        for r in common_rows:
+            if str(r.get("model_ver") or "") == "v3":
+                v3rows.append(r)
+            elif probs(r, "v3r"):
+                v3rows.append({**r, "model_h": r["v3r_h"], "model_d": r["v3r_d"], "model_a": r["v3r_a"]})
+        v3 = score(v3rows, "model") if v3rows else None
+        rank = sorted(sc, key=lambda k: (-(sc[k]["acc"] or 0), sc[k]["brier"] or 9))
+        common = {"n": len(common_rows), "scores": sc, "rank": rank, "v3": v3,
+                  "v3_live": sum(1 for r in common_rows if str(r.get("model_ver") or "") == "v3")}
+    vers = df["model_ver"].fillna("v2").value_counts().to_dict() if "model_ver" in df.columns else {"v2": len(df)}
+    v3_since = (str(df[df["model_ver"] == "v3"]["date"].min()) if "model_ver" in df.columns and (df["model_ver"] == "v3").any() else None)
 
     def pick(r, k):
         pr = probs(r, k)
@@ -5664,7 +5682,7 @@ def prediction_league():
                           "fans": pick(r, "fans"), "model": pick(r, "model"), "gap": round(gap, 3)})
     split.sort(key=lambda x: -x["gap"])
     return {"available": True, "since": str(df["date"].min()), "sources": sources, "h2h": h2h, "recent": recent,
-            "split": split[:6]}
+            "split": split[:6], "common": common, "model_versions": {k: int(v) for k, v in vers.items()}, "v3_since": v3_since}
 
 
 # 분석 탭 '리그 백분위' 지표 — (컬럼 또는 계산 키, 영어, 한글, 높을수록 좋은가, 표시 형식)

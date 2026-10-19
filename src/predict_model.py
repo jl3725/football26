@@ -28,6 +28,7 @@ PARAMS = {"k": 10.0, "b_ovr": 0.35, "w_goal": 0.75, "rho": -0.08, "b_cross": 0.6
           "b_elo": 0.45, "b_av": 0.3, "tau": 40.0}
 # 다른 리그끼리(유럽대회): 2026-10 리그 간 17경기로는 표본이 작아 방향만 반영(OVR 차이↑·리그 안 폼↓) — 예측 기록이 쌓이면 재조정
 MU_FALLBACK = (1.45, 1.15)   # 리그 표본이 적을 때 홈·원정 기본 기대 득점
+MODEL_VERSION = "v3"          # 예측 기록(scripts/log_predictions.py model_ver) — 성적표가 버전별로 나눠 본다
 
 
 @dataclass
