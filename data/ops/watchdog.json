@@ -1,0 +1,25 @@
+{
+ "checked": "2026-10-19T23:38:08+00:00",
+ "results": {
+  "ovr": [],
+  "season": [],
+  "hub": [],
+  "frontend": [],
+  "workflows": [
+   "daily_data.yml 최근 실행 failure (2026-10-19T10:11) https://github.com/jl3725/football26/actions/runs/39235636813"
+  ],
+  "news": [],
+  "tm_agent": [],
+  "coverage": [],
+  "rating_history": [],
+  "ratings": [],
+  "names": [],
+  "xg": [],
+  "agents": [
+   "MATCH · 일정·결과 — 마지막 성공 138시간 전(허용 30시간, match_refresh, daily_data, local-season-weekly)",
+   "MATCH · 라인업·교체 — 마지막 성공 138시간 전(허용 30시간, match_refresh, daily_data, local-season-weekly)",
+   "TEAM · 순위 — 마지막 성공 138시간 전(허용 30시간, match_refresh, daily_data)",
+   "VALUE · 계약·시장가치 — 마지막 성공 138시간 전(허용 24시간, tm_data)"
+  ]
+ }
+}
