@@ -2,7 +2,7 @@
 import { tier } from "@/lib/ui";
 import { useEffect, useState } from "react";
 import SectionHead from "./SectionHead";
-import { getLineup, getProjection, type Lineup, type Projection } from "@/lib/api";
+import { getLineup, getProjection, type Lineup, type LineupComp, type Projection } from "@/lib/api";
 import Pitch from "./Pitch";
 import { usePeek } from "./PlayerPeek";
 import { SkelPitch } from "./Skeleton";
@@ -11,31 +11,54 @@ import { showNextSeason } from "@/lib/season";
 
 type Departed = { player: string; left_for: string; pos: string; photo: string };
 
+// 대회 토글 — 예전 FORMATION 은 리그 전용이었다(2026-10-19 사용자: 챔스·컵 스쿼드도 보고 싶다)
+const COMPS: { k: LineupComp; en: string; kr: string }[] = [
+  { k: "league", en: "LEAGUE", kr: "리그" }, { k: "euro", en: "EUROPE", kr: "유럽 대항전" },
+  { k: "cup", en: "CUPS", kr: "국내 컵" }, { k: "all", en: "ALL", kr: "전 대회" }, { k: "last", en: "LAST MATCH", kr: "최근 한 경기" },
+];
+const KIND_KR: Record<string, string> = { league: "리그", euro: "유럽", cup: "컵" };
+
 export default function LineupBoard({ team, accent, departed = [] }: { team: string; accent: string; departed?: Departed[] }) {
   const [lu, setLu] = useState<Lineup | null>(null);
   const [pj, setPj] = useState<Projection | null>(null);
   const [leftView, setLeftView] = useState<"cur" | "next">("next");
   const [err, setErr] = useState(false);
+  const [comp, setComp] = useState<LineupComp>("league");
+  const [counts, setCounts] = useState<Lineup["comps"]>({});
   const peek = usePeek();
 
   useEffect(() => {
-    let a = true; setLu(null); setPj(null); setErr(false); setLeftView("next");
-    getLineup(team).then((d) => a && setLu(d)).catch(() => a && setErr(true));
+    let a = true; setPj(null); setErr(false); setLeftView("next"); setComp("league"); setCounts({});
     getProjection(team).then((d) => a && setPj(d)).catch(() => a && setErr(true));
     return () => { a = false; };
   }, [team]);
+  useEffect(() => {
+    let a = true; setLu(null);
+    getLineup(team, undefined, comp).then((d) => { if (!a) return; setLu(d); if (d.comps) setCounts(d.comps); })
+      .catch(() => a && setErr(true));
+    return () => { a = false; };
+  }, [team, comp]);
 
   const curLabel = pj?.current_label ?? "";
   const nextLabel = pj?.next_label ?? "";
-  // 시즌 중에는 '다음 시즌 예상'이 의미 없음(같은 시즌) → 현재 시즌 BEST XI 만
-  const hasNext = !!pj && showNextSeason(pj);
+  // 시즌 중에는 '다음 시즌 예상'이 의미 없음(같은 시즌) → 현재 시즌 BEST XI 만. 예상은 리그 기준이라 다른 대회에선 숨김
+  const hasNext = !!pj && showNextSeason(pj) && comp === "league";
   const view = hasNext ? leftView : "cur";
   const leftBoard = view === "cur" ? lu?.season : pj?.projected;
   const leftFormation = view === "cur" ? lu?.season.formation : pj?.projected.formation;
   // 시즌 초엔 시즌 BEST XI 와 최근 5경기 XI 가 같은 경우가 많다 — 같은 그림을 두 번 그리지 않는다
   const sig = (b?: { formation: string; placements: { slot: string; player: string }[] } | null) =>
     b ? `${b.formation}|${b.placements.map((x) => `${x.slot}:${x.player}`).sort().join(",")}` : "";
-  const sameXI = view === "cur" && !!lu?.recent && sig(lu.season) === sig(lu.recent);
+  const sameXI = view === "cur" && ((!!lu?.recent && sig(lu.season) === sig(lu.recent)) || (comp === "last" && !!lu));
+  const n = (k: "league" | "euro" | "cup") => counts?.[k] ?? 0;
+  const cnt = (k: LineupComp) => k === "all" ? n("league") + n("euro") + n("cup") : k === "last" ? null : n(k);
+  // 기록 있는 대회만(리그 하나뿐이면 '전체'도 같은 그림이라 숨김)
+  const kinds = (["league", "euro", "cup"] as const).filter((k) => n(k) > 0).length;
+  const shown = COMPS.filter((c) => c.k === "league" || c.k === "last" ? true : c.k === "all" ? kinds > 1 : n(c.k as "euro" | "cup") > 0);
+  const compKr = COMPS.find((c) => c.k === comp)?.kr ?? "";
+  const lm = lu?.last_match;
+  const lmTxt = lm ? `${lm.date.slice(5).replace("-", "/")} ${lm.home_away === "away" ? "@ " : "vs "}${lm.opponent}${lm.kind && comp !== lm.kind ? ` (${KIND_KR[lm.kind] ?? lm.kind})` : ""}` : "";
+  const emptyComp = !!lu && lu.season.placements.length === 0;
 
   const bench = lu?.bench && lu.bench.length > 0 ? (
     <div className="bench-strip">
@@ -67,9 +90,17 @@ export default function LineupBoard({ team, accent, departed = [] }: { team: str
   return (
     <div className="card" style={{ marginTop: 16 }}>
       <SectionHead title="FORMATION" kr="포메이션 · 베스트 XI"
-        meta={lu?.last_match
-          ? `가장 많이 선 자리 기준 · 마지막 반영 ${lu.last_match.date.slice(5).replace("-", "/")} ${lu.last_match.opponent} (라인업은 경기 다음 날 아침 갱신)`
-          : "시즌 평점 기준 XI · 최근 5경기 XI"} />
+        meta={lm
+          ? `${comp === "last" ? "그 경기 선발 그대로" : `${compKr} · 가장 많이 선 자리 기준`} · 마지막 반영 ${lmTxt} (라인업은 경기 다음 날 아침 갱신)`
+          : "시즌 평점 기준 XI · 최근 5경기 XI"}
+        right={shown.length > 1 ? <div className="seg5 seg5-head" role="tablist" aria-label="대회">
+          {shown.map((c) => {
+            const v = cnt(c.k);
+            return <button key={c.k} role="tab" aria-selected={comp === c.k} className={comp === c.k ? "on" : ""} title={c.kr}
+              onClick={() => { setComp(c.k); if (c.k !== "league") setLeftView("cur"); }}>
+              {c.en}{v ? <em className="seg5-n">{v}</em> : null}</button>;
+          })}
+        </div> : undefined} />
       <div className={`pitch-grid${sameXI ? " single" : ""}`}>
         {/* LEFT — 시즌 베스트 XI + 시즌 토글 */}
         <div>
@@ -77,33 +108,37 @@ export default function LineupBoard({ team, accent, departed = [] }: { team: str
             {hasNext && <button className={view === "next" ? "active" : ""} onClick={() => setLeftView("next")}
               style={view === "next" ? { background: accent, color: "#0b0f17" } : undefined}>🔮 {nextLabel} 예상</button>}
             <button className={view === "cur" ? "active" : ""} onClick={() => setLeftView("cur")}
-              style={view === "cur" ? { background: accent, color: "#0b0f17" } : undefined}>{curLabel} BEST XI</button>
+              style={view === "cur" ? { background: accent, color: "#0b0f17" } : undefined}>
+              {comp === "last" ? `LAST MATCH · ${lmTxt}` : `${curLabel} ${comp === "league" ? "" : `${compKr} `}BEST XI`}</button>
           </div>
-          {leftBoard
+          {emptyComp
+            ? <EmptyState title={`${compKr} 선발 기록이 없습니다`} note="이번 시즌 이 대회 경기가 아직 없거나 라인업이 수집되지 않았습니다" />
+            : leftBoard
             ? <Pitch placements={leftBoard.placements} accent={accent} team={team} />
             : err ? <EmptyState title="라인업을 불러오지 못했습니다" note="잠시 후 다시 열어 주세요" />
             : <SkelPitch />}
           <div className="pitch-cap">
-            {sameXI ? <>최근 5경기와 같은 XI · </> : null}<span>{leftFormation || ""}</span>
+            {sameXI && comp !== "last" && (lu?.season.matches ?? 6) > 5 ? <>최근 5경기와 같은 XI · </> : null}
+            {view === "cur" && lu?.season.matches && comp !== "last" ? <>{lu.season.matches}경기 · </> : null}<span>{leftFormation || ""}</span>
           </div>
         </div>
 
         {/* RIGHT — 시즌 BEST XI 와 같으면 피치 대신 XI 요약·벤치·떠난 선수(예전엔 피치 하나가 가운데 떠 양옆이 비었다) */}
-        {sameXI && leftBoard && (
+        {sameXI && leftBoard && !emptyComp && (
           <div className="xi-side">
             <XiSummary placements={leftBoard.placements} formation={leftFormation || ""} accent={accent} />
             {bench}
             {gone}
           </div>
         )}
-        {!sameXI && <div>
+        {!sameXI && !emptyComp && <div>
           <div className="proj-toggle" style={{ marginBottom: 10, visibility: "hidden" }}>
             <button>_</button>
           </div>
           {lu?.recent
             ? <Pitch placements={lu.recent.placements} accent={accent} team={team} />
             : lu ? <div className="loading" style={{ padding: 30 }}>최근 경기 데이터 부족</div> : <SkelPitch />}
-          <div className="pitch-cap">최근 5경기 <span>{lu?.recent?.formation || ""}</span></div>
+          <div className="pitch-cap">{comp === "league" ? "" : `${compKr} `}최근 {lu?.recent?.matches ?? 5}경기 <span>{lu?.recent?.formation || ""}</span></div>
         </div>}
       </div>
 

@@ -3941,3 +3941,14 @@ LIGA’처럼 글자가 접히던 것) — 넘치면 가로로 넘긴다 */
 .tr5-prov-t { font: 700 9.5px/1 var(--font-num); letter-spacing: 0.04em; }
 .ts5-kpis .lv5-mv { font-style: normal; font-size: 12px; margin-left: 6px; }
 @keyframes lv5-pulse { 0%, 100% { opacity: 1; } 50% { opacity: .45; } }
+/* 포메이션 이름 겹침 방지 — 폭은 같은 줄 옆 선수 간격(cqw), 촘촘한 줄은 위·아래 번갈아 */
+.pitch2 { container-type: inline-size; }
+/* 얼굴이 칸 좌표에 오게 — 이름은 얼굴 아래(.up 은 위)에 매단다. 예전엔 이름까지 한 덩어리로 가운데 맞춰
+   이름을 위로 올린 선수만 얼굴이 아래로 밀려 같은 줄에서 어긋났고(스리백 가운데), 폰에선 GK 와 겹쳤다 */
+.pitch2 .ptok-name { position: absolute; top: 100%; left: 50%; transform: translateX(-50%); margin-top: 3px; }
+.pitch2 .ptok.up .ptok-name { top: auto; bottom: 100%; margin: 0 0 6px; }
+.pitch2 .ptok-face { width: clamp(28px, 10cqw, 38px); height: clamp(28px, 10cqw, 38px); }
+
+/* FORMATION 대회 토글 — 경기 수 작은 숫자 */
+.seg5 button .seg5-n { font-style: normal; font-size: 10.5px; margin-left: 5px; color: var(--muted-2); font-weight: 500; }
+.seg5 button.on .seg5-n { color: var(--muted); }

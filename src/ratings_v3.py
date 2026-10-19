@@ -143,10 +143,12 @@ YOUTH_ADJ_SCALE = 0.85     # v3.6: 잠재력 차감 0.85배 — 경기력 가중
 # 평점이 말하는 수준(PE) — 26/27 전성기(24~29세)·2,500분+ 주전 362명 OVR ≈ 79.85 + 37.8 × (클래스 − 포지션 평균),
 # 상관 0.83. 30세+ 는 나이만큼(_VET_PE_W) 이 값 쪽으로 섞는다(시장가치의 나이 할인 대신).
 PE_A, PE_B = 79.85, 37.8
+# v3.8 탐색(golden 위반 0 · 스카우트 3+ 이탈 0): 6점 넘는 몫의 50% — Šeško 83→82 · Højlund 80→76 · Kvaratskhelia 88→87
+UNDERPERF_GAP, UNDERPERF_K, UNDERPERF_MIN_AGE = 6.0, 0.5, 22.0
 # v3.6 탐색(golden 위반 0 · 스카우트 3+ 이탈 0 · Groß 78 · Dowman 70 · Vušković>Konsa): 36세 45%
 _VET_PE_AGES, _VET_PE_W = (30.0, 32.0, 34.0, 36.0), (0.0, 0.18, 0.34, 0.45)
 # 모델 버전 — 바뀌면 rating_history 가 과거 기록을 평행이동해 모델 변경이 선수 추이(▲▼)로 보이지 않게 한다
-MODEL_VERSION = "v3.7"
+MODEL_VERSION = "v3.8"
 # 잠재력 프리미엄 — 같은 시장가치·리그에서 어린 선수의 실제 경기력(리그 보정 평점)이 낮은 만큼(vov 환산).
 # 25/26 1,500분+ 1,450명 회귀(27~29세 기준): 17~20세 −6.8 · 21세 −4.9 · 22세 −5.1 · 23세 −4.4 · 24세 −3.9 ·
 # 25세 −3.8 · 26세 −2.4 (같은 회귀에서 30~32세 +5.3 · 33세+ +9.4 — 베테랑 보정과 같은 근거).
@@ -327,6 +329,16 @@ def absolute_ovr(*, value, ss_rating, minutes, age, pos_group,
             new = (1 - w_pe) * raw + w_pe * pe
             rec("vet_pe", new - raw)
             raw = new
+        # 몸값 대비 경기력 저조 — 몸값 기준이 '평점이 말하는 수준'(PE)보다 UNDERPERF_GAP 넘게 높으면 그 초과분의
+        # UNDERPERF_K 만큼(두 시즌 2,500분 기준 표본 비례) 뺀다. 부풀려 거래된 몸값(Šeško €75M · 평점 6.5/6.8 → 84,
+        # 2026-10-19 사용자 지적). 한쪽 방향만 — 평점보다 실제가 낫다고 평가받는 선수(Kvaratskhelia)는 몸값이 이미 말해 준다
+        if rel > 0 and UNDERPERF_K > 0 and a >= UNDERPERF_MIN_AGE:   # 21세 이하는 유망주 보정(차감·검증)이 따로 맡는다
+            pe = PE_A + PE_B * (rel - off - _SS_MID[ln]) + _POS_ADJ[ln]
+            over = raw - pe - UNDERPERF_GAP
+            if over > 0:
+                cut = UNDERPERF_K * over * _clamp(mn / 2500.0, 0.0, 1.0)
+                rec("underperf", -cut)
+                raw -= cut
     bm = _big_match_bonus(ucl_starts, uel_starts, conf_starts, cup_starts)
     raw += bm
     rec("big", bm)
@@ -528,6 +540,7 @@ PART_LABELS = {
     "vet": ("VETERAN", "베테랑 — 나이로 깎인 몸값 일부 되돌림"), "age": ("AGE", "나이 보정"),
     "vet_pe": ("VETERAN FORM", "베테랑 — '평점이 말하는 수준' 쪽으로"), "big": ("BIG MATCH", "유럽대항전·컵 선발"),
     "youth": ("POTENTIAL", "어린 선수 몸값의 잠재력 몫 빼기"), "gate": ("UNPROVEN", "출전 부족 — 검증 전 기준점 쪽으로"),
+    "underperf": ("UNDERPERFORM", "몸값 대비 경기력 저조 — 평점 수준보다 크게 높은 몫 일부 빼기"),
     "cap": ("TOP CAP", "88 초과분 압축"), "league": ("LEAGUE", "리그 수준 보정"), "youth_cap": ("AGE CAP", "나이별 천장"),
 }
 

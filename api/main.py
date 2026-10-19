@@ -2302,11 +2302,36 @@ def _gone_keys(team: str, league: str) -> set[tuple[str, str]]:
         return set()
 
 
-def _placements(team: str, league: str, last_n: int | None = None, exclude: set | None = None):
-    el = ds.read_table("espn_lineups", league=league)
-    if el is None:
+def _comp_kind(code) -> str:
+    c = str(code or "")
+    return "euro" if c.startswith("uefa.") else "league" if c.endswith(".1") else "cup"
+
+
+def _team_lineups(team: str, league: str, comp: str = "league"):
+    """팀 선발 라인업 — comp: league · euro(유럽대항전) · cup(국내컵) · all. 컵·유럽은 espn_lineups_cups 를 일정의
+    대회 코드로 나눈다. 예전 FORMATION 은 리그 전용이었다(2026-10-19 사용자: '챔스·컵 스쿼드도 보고 싶다')."""
+    frames = []
+    if comp in ("league", "all"):
+        el = ds.read_table("espn_lineups", league=league)
+        if el is not None and not el.empty:
+            frames.append(el.assign(_kind="league"))
+    if comp in ("euro", "cup", "all"):
+        cl = ds.read_table("espn_lineups_cups", league=league)
+        sch = ds.read_table("schedule_full", league=league)
+        if cl is not None and not cl.empty and sch is not None and "comp_code" in sch.columns:
+            kind = {str(e).replace(".0", ""): _comp_kind(c) for e, c in zip(sch["event_id"], sch["comp_code"]) if pd.notna(e)}
+            cl = cl.assign(_kind=cl["event_id"].astype(str).str.replace(r"\.0$", "", regex=True).map(kind).fillna("cup"))
+            frames.append(cl if comp == "all" else cl[cl["_kind"] == comp])
+    if not frames:
         return None
-    df = el[(el["squad"] == team) & (pd.to_numeric(el["starter"], errors="coerce") == 1)].copy()
+    df = pd.concat(frames, ignore_index=True)
+    return df[(df["squad"] == team) & (pd.to_numeric(df["starter"], errors="coerce") == 1)].copy()
+
+
+def _placements(team: str, league: str, last_n: int | None = None, exclude: set | None = None, comp: str = "league"):
+    df = _team_lineups(team, league, comp)
+    if df is None:
+        return None
     if df.empty:
         return None
     df["date"] = df["date"].astype(str)
@@ -2360,29 +2385,52 @@ def _placements(team: str, league: str, last_n: int | None = None, exclude: set 
             pick.setdefault(s, []).append(p)
             used.add(p)
     placements = []
+    extras = None
     for slot in formation_slots(formation):
         player = pick[slot].pop(0) if pick.get(slot) else None
         x, y = slot_xy(slot, formation)
         row = resolve(player) if player else None
+        if player and row is None:
+            # 이번 시즌 리그 출전이 없는 컵·유럽 선발(백업 GK 케파 등) — 계약 명단 + 지난 시즌 기록으로 OVR·사진
+            if extras is None:
+                try:
+                    extras = {_person_key(r["player"]): r for r in _roster_extras(team, league, _pf(league))}
+                except Exception:  # noqa: BLE001
+                    extras = {}
+            row = extras.get(_person_key(player))
         placements.append({
             "slot": display_slot(slot, formation),
             "player": player or "—",
             "x": round(float(x), 1), "y": round(float(y), 1),
             "kind": slot_kind(slot),
             "ovr": _player_ovr(row) if row is not None else None,
-            "photo": _photo(row) if row is not None else "",
+            "photo": (_photo(row) if row is not None else "") or (_resolve_photo(player, resolve, league) if player else ""),
         })
-    return {"formation": formation, "placements": placements}
+    return {"formation": formation, "placements": placements, "matches": len(matches)}
 
 
 @app.get("/api/lineup/{team}")
 @_memo(ttl=21600)
-def lineup(team: str, league: str = ACTIVE_LEAGUE):
+def lineup(team: str, league: str = ACTIVE_LEAGUE, comp: str = "league"):
+    """FORMATION — comp: league(기본) · euro · cup · all · last(가장 최근 한 경기, 전 대회)."""
     gone = _gone_keys(team, league) | {k for k, v in _loans_out(team, league).items() if v.get("source") == "transfer"}   # 떠난·임대 간 선수는 현재 XI·벤치에서 제외
-    season = _placements(team, league, exclude=gone)
-    if season is None:
+    comp = comp if comp in ("league", "euro", "cup", "all", "last") else "league"
+    src_comp = "all" if comp == "last" else comp
+    if comp == "last":
+        season = _placements(team, league, last_n=1, comp="all")            # 그 경기 그대로(떠난 선수 제외 안 함)
+        recent = None
+    else:
+        season = _placements(team, league, exclude=gone, comp=src_comp)
+        recent = _placements(team, league, last_n=5, exclude=gone, comp=src_comp)
+    if season is None and comp == "league":
         raise HTTPException(404, "lineup data not found")
-    recent = _placements(team, league, last_n=5, exclude=gone)
+    # 대회별로 선발 기록이 있는 경기 수(화면 토글은 있는 것만)
+    allt = _team_lineups(team, league, "all")
+    comps = {}
+    if allt is not None and not allt.empty:
+        comps = {k: int(v) for k, v in allt.groupby("_kind")["event_id"].nunique().items()}
+    if season is None:
+        season = {"formation": None, "placements": [], "matches": 0}
 
     # 벤치 — 시즌 XI 에 없는 스쿼드 선수(OVR 순 상위 8)
     xi_names = {p["player"] for p in season["placements"]}
@@ -2394,19 +2442,21 @@ def lineup(team: str, league: str = ACTIVE_LEAGUE):
         for _, r in df[~df["player"].isin(xi_names)].sort_values("_ovr", ascending=False).head(8).iterrows():
             bench.append({"player": r["player"], "pos": str(r.get("fl_group") or r.get("pos") or ""),
                           "ovr": int(r["_ovr"]), "photo": _photo(r)})
-    # 마지막으로 반영된 리그 경기 — 라인업은 경기 다음 날 아침 수집이라 '어느 경기까지인지'를 화면에 밝힌다
+    # 마지막으로 반영된 경기(고른 대회) — 라인업은 경기 다음 날 아침 수집이라 '어느 경기까지인지'를 화면에 밝힌다
     last = None
-    el = ds.read_table("espn_lineups", league=league)
+    el = _team_lineups(team, league, src_comp)
     if el is not None and not el.empty:
-        mine = el[el["squad"] == team]
+        full_el = pd.concat([x for x in (ds.read_table("espn_lineups", league=league), ds.read_table("espn_lineups_cups", league=league)) if x is not None], ignore_index=True)
+        mine = el
         if not mine.empty:
             row = mine.assign(_d=mine["date"].astype(str)).sort_values("_d").iloc[-1]
             eid = str(row["event_id"]).replace(".0", "")
-            opp = el[(el["event_id"].astype(str).str.replace(".0", "", regex=False) == eid) & (el["squad"] != team)]
-            last = {"date": str(row["date"])[:10], "opponent": str(opp["squad"].iloc[0]) if not opp.empty else "",
-                    "home_away": str(row.get("home_away") or "")}
+            opp = full_el[(full_el["event_id"].astype(str).str.replace(".0", "", regex=False) == eid) & (full_el["squad"] != team)]
+            last = {"date": str(row["date"])[:10],
+                    "opponent": str(opp["squad"].iloc[0]) if not opp.empty else str(row.get("opponent") or ""),
+                    "home_away": str(row.get("home_away") or ""), "kind": str(row.get("_kind") or "league")}
     return {"team": team, "color": tm.team_color(team), "season": season, "recent": recent, "bench": bench,
-            "last_match": last}
+            "last_match": last, "comp": comp, "comps": comps}
 
 
 # 유사 선수 엔진 — 임베딩은 최초 1회 빌드 후 캐시(요청마다 재계산 방지)

@@ -35,3 +35,13 @@ def test_subs_get_squad_from_lineups() -> None:
     subs = pd.DataFrame({"event_id": [1, 1], "home_away": ["home", "away"], "player_in": ["A", "B"]})
     lu = pd.DataFrame({"event_id": [1, 1], "home_away": ["home", "away"], "squad": ["X", "Y"]})
     assert list(pn.with_squad(subs, lu)["squad"]) == ["X", "Y"]
+
+
+def test_middle_name_variants_merge_into_one_identity() -> None:
+    import player_registry as pr
+    ents = {"pf:Inter:francesco esposito": {"squad": "Inter", "canonical": "Francesco Esposito", "tm_id": "", "src": "players_full"},
+            "tm930781": {"squad": "Inter", "canonical": "Pio Esposito", "tm_id": "930781", "src": "transfermarkt_contracts"},
+            "esp:Inter:francesco pio esposito": {"squad": "Inter", "canonical": "Francesco Pio Esposito", "tm_id": "", "src": "espn_subs"},
+            "tm1": {"squad": "Sassuolo", "canonical": "Sebastiano Esposito", "tm_id": "1", "src": "players_full"}}
+    root = pr.merge_middle_names(ents)
+    assert root == {"tm930781": "pf:Inter:francesco esposito", "esp:Inter:francesco pio esposito": "pf:Inter:francesco esposito"}

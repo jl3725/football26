@@ -127,6 +127,38 @@ def _manual() -> dict[tuple[str, str], str]:
     return {(str(r.squad), norm(r.alias)): str(r.canonical) for r in d.itertuples()}
 
 
+_SRC_RANK = {"players_full": 0, "transfermarkt_contracts": 1, "transfermarkt_injuries": 2}
+
+
+def merge_middle_names(ents: dict) -> dict:
+    """{entity: 대표 entity} — 같은 팀에서 세 단어 이상 이름(가운데 이름 포함)이 다른 신원 이름들의 단어를 모두 품고
+    성이 같으면 한 사람으로 묶는다. 짧은 이름이 두 개 이상의 긴 이름에 들어가면(모호) 묶지 않는다.
+    대표는 players_full → TM 계약 → TM 부상 → 그 밖 순."""
+    by_sq: dict = defaultdict(list)
+    for e, v in ents.items():
+        toks = norm(v["canonical"]).replace("-", " ").split()
+        if len(toks) >= 2:
+            by_sq[v["squad"]].append((e, toks))
+    root: dict = {}
+    for sq, items in by_sq.items():
+        longs = [(e, t) for e, t in items if len(t) >= 3]
+        host: dict = defaultdict(list)                    # 짧은 신원 → 그를 품는 긴 신원들
+        for le, lt in longs:
+            for se, st in items:
+                if se != le and len(st) < len(lt) and st[-1] == lt[-1] and set(st) <= set(lt):
+                    host[se].append(le)
+        groups: dict = defaultdict(set)
+        for se, ls in host.items():
+            if len(ls) == 1:
+                groups[ls[0]].update({ls[0], se})
+        for members in groups.values():
+            rep_e = min(members, key=lambda e: (_SRC_RANK.get(ents[e].get("src"), 9), e))
+            for e in members:
+                if e != rep_e:
+                    root[e] = rep_e
+    return root
+
+
 def build(lg: str, season: str) -> tuple[pd.DataFrame, dict]:
     ents: dict[str, dict] = {}                                  # entity → {squad, canonical, tm_id}
     names: dict[str, dict[str, str]] = defaultdict(dict)        # squad → {이름: entity}
@@ -134,7 +166,7 @@ def build(lg: str, season: str) -> tuple[pd.DataFrame, dict]:
     manual = _manual()
 
     def add_entity(eid, squad, canonical, tm_id, source):
-        ents.setdefault(eid, {"squad": squad, "canonical": canonical, "tm_id": tm_id})
+        ents.setdefault(eid, {"squad": squad, "canonical": canonical, "tm_id": tm_id, "src": source})
         names[squad].setdefault(canonical, eid)
         rows.append({"squad": squad, "entity": eid, "alias": canonical, "source": source, "score": 100})
 
@@ -219,6 +251,15 @@ def build(lg: str, season: str) -> tuple[pd.DataFrame, dict]:
                     n_st = int(starts.get((sq, nm), 0))
                     a["orphans"].append({"squad": sq, "name": nm, "starts": n_st})
                     add_entity(f"esp:{sq}:{norm(nm)}", sq, nm, "", stem)
+    # 4) 가운데 이름 생략으로 갈라진 신원 합치기 — 'Francesco Esposito'(FBref) · 'Pio Esposito'(TM·ESPN 선발) ·
+    #    'Francesco Pio Esposito'(ESPN 교체)가 셋으로 따로 잡혀 포메이션에서 사진·OVR 이 비었다(2026-10-19 사용자 지적)
+    root = merge_middle_names(ents)
+    if root:
+        for r in rows:
+            r["entity"] = root.get(r["entity"], r["entity"])
+        for e, rt in root.items():
+            if not ents[rt].get("tm_id") and ents[e].get("tm_id"):
+                ents[rt]["tm_id"] = ents[e]["tm_id"]
     out = pd.DataFrame(rows)
     if not out.empty:
         meta = pd.DataFrame([{"entity": e, "canonical": v["canonical"], "tm_id": v["tm_id"]} for e, v in ents.items()])

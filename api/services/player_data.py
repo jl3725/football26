@@ -20,9 +20,16 @@ def number(value, default=0.0):
 
 
 def photo_url(row) -> str:
+    """TM 사진 → 없으면 FotMob 사진(fm_id, src/rating_blend.attach) — TM 매칭이 안 된 주전급 70여 명이 이니셜로 나왔다."""
     photo = row.get("tm_photo")
     if photo is not None and not pd.isna(photo) and str(photo).startswith("http"):
         return str(photo)
+    fid = row.get("fm_id")
+    try:
+        if fid is not None and not pd.isna(fid) and int(fid) > 0:
+            return f"https://images.fotmob.com/image_resources/playerimages/{int(fid)}.png"
+    except (TypeError, ValueError):
+        pass
     return ""
 
 

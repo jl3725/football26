@@ -68,12 +68,16 @@ export type Overview = {
 export type CalEvent = { name: string; start: string; end: string; icon: string; kind: string };
 
 export type Placement = { slot: string; player: string; x: number; y: number; kind: string; ovr: number | null; photo: string; changed?: boolean; in?: boolean; out?: string; club?: string };
+// FORMATION 대회 — league · euro(유럽대항전) · cup(국내컵) · all(전 대회) · last(가장 최근 한 경기)
+export type LineupComp = "league" | "euro" | "cup" | "all" | "last";
 export type Lineup = {
   team: string; color: string;
-  season: { formation: string; placements: Placement[] };
-  recent: { formation: string; placements: Placement[] } | null;
+  season: { formation: string; placements: Placement[]; matches?: number };
+  recent: { formation: string; placements: Placement[]; matches?: number } | null;
   bench: { player: string; pos: string; ovr: number; photo: string }[];
-  last_match?: { date: string; opponent: string; home_away: string } | null;   // 마지막으로 반영된 리그 경기
+  last_match?: { date: string; opponent: string; home_away: string; kind?: string } | null;   // 마지막으로 반영된 경기(고른 대회)
+  comp?: LineupComp;
+  comps?: Partial<Record<"league" | "euro" | "cup", number>>;   // 대회별 선발 기록 경기 수
 };
 
 // 응답 상한 — 넘기면 실패로 처리해 화면이 스켈레톤에 영원히 머물지 않게 한다(Render 콜드스타트 ~60s 감안).
@@ -329,7 +333,8 @@ export const getTransfers = (t: string, l = _league) => j<Transfers>(`/api/trans
 export const getNews = (t: string, l = _league) => j<News>(`/api/news/${q(t, l)}`);
 export const getAnalytics = (t: string, l = _league) => j<Analytics>(`/api/analytics/${q(t, l)}`);
 export const getCalendar = (league: string = _league) => j<{ events: CalEvent[] }>(`/api/calendar?league=${encodeURIComponent(league)}`);
-export const getLineup = (t: string, l = _league) => j<Lineup>(`/api/lineup/${q(t, l)}`);
+export const getLineup = (t: string, l = _league, comp: LineupComp = "league") =>
+  j<Lineup>(`/api/lineup/${q(t, l)}${comp === "league" ? "" : `&comp=${comp}`}`);
 export type Diag = { kind: string; severity: string; player: string; slot: string; line: string; to?: string; fee?: string; replacement: string; note: string; photo: string };
 export type Projection = {
   team: string; color: string; current_label: string; next_label: string; phase?: "in_season" | "offseason" | "stale";
