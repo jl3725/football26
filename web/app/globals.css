@@ -814,11 +814,11 @@ html, body {
 @media (max-width: 1100px) { .proj-grid { grid-template-columns: 1fr; } }
 
 /* 팀 리더 */
-.leaders-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
-.leader { display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 14px 8px; border: 1px solid var(--line); border-radius: 14px; background: rgba(255, 255, 255, 0.02); }
+.leaders-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(96px, 1fr)); gap: 10px; }   /* 폭에 맞춰 칸 수 — 예전 5칸 고정이라 폰에서 다섯 번째 카드가 잘렸다(2026-10-19) */
+.leader { display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 14px 8px; border: 1px solid var(--line); border-radius: 14px; background: rgba(255, 255, 255, 0.02); min-width: 0; }
 .leader-lbl { font-family: var(--font-label); font-size: 11px; letter-spacing: 1px; text-transform: uppercase; }
 .leader img, .leader-ph { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; background: linear-gradient(135deg, #232c3d, #161c28); }
-.leader-name { font-weight: 600; font-size: 12.5px; }
+.leader-name { font-weight: 600; font-size: 12.5px; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .leader-val { font-size: 26px; line-height: 1; }
 
 /* ── Player badges + similar ─────────────────────────────── */
@@ -900,8 +900,8 @@ html, body {
 .fac-chip img, .fac-ph { width: 18px; height: 18px; border-radius: 50%; object-fit: cover; background: #232c3d; }
 .fac-none { color: var(--muted); font-size: 12px; }
 
-.ctx-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
-.ctx-item { display: flex; flex-direction: column; gap: 4px; align-items: center; padding: 14px 8px; border: 1px solid var(--line); border-radius: 12px; background: rgba(255, 255, 255, 0.02); }
+.ctx-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 10px; }   /* 5칸 고정이라 폰에서 잘렸다(2026-10-19) */
+.ctx-item { display: flex; flex-direction: column; gap: 4px; align-items: center; padding: 14px 8px; border: 1px solid var(--line); border-radius: 12px; background: rgba(255, 255, 255, 0.02); min-width: 0; text-align: center; }
 .ctx-item span { color: var(--muted); font-size: 11.5px; }
 .ctx-item b { font-family: var(--font-num); font-size: 30px; line-height: 1; }
 
@@ -4048,3 +4048,17 @@ LIGA’처럼 글자가 접히던 것) — 넘치면 가로로 넘긴다 */
 /* 폰: 채팅 버블을 조금 작게·가장자리로(스크롤 중엔 숨김 — ScoutDock) */
 @media (max-width: 760px) { .dock-fab { width: 46px !important; height: 46px !important; right: 12px !important; bottom: 14px !important; } }
 .hero-form-k { font: 700 9.5px/1 var(--font-label); letter-spacing: .1em; color: var(--muted); margin-right: 2px; align-self: center; }
+
+/* 폰: 팀 리더 3 + 2 배치 · 사진·숫자 조금 작게 */
+@media (max-width: 760px) {
+  .leaders-row { gap: 8px; }
+  .leader { padding: 10px 6px; }
+  .leader img, .leader-ph { width: 42px; height: 42px; }
+  .leader-val { font-size: 22px; }
+}
+
+/* 폰: CONTEXT 숫자 조금 작게 · 드림 타깃 2칸(3칸 고정이라 몇 px 잘렸다) */
+@media (max-width: 760px) {
+  .ctx-item b { font-size: 24px; }
+  .rec-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
