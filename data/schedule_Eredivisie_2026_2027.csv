@@ -16,6 +16,7 @@ AZ Alkmaar,5,2026-09-06,A,Heerenveen,3,2,3:2,W
 AZ Alkmaar,6,2026-09-11,H,Willem II,1,1,1:1,D
 AZ Alkmaar,7,2026-09-20,H,Telstar,1,0,1:0,W
 AZ Alkmaar,8,2026-10-10,A,Feyenoord,0,2,0:2,L
+AZ Alkmaar,9,2026-10-18,A,Cambuur,2,2,2:2,D
 Ajax,1,2026-08-09,A,Zwolle,2,0,2:0,W
 Ajax,2,2026-08-16,H,Heerenveen,2,2,2:2,D
 Ajax,3,2026-08-30,A,Telstar,4,0,4:0,W
@@ -24,6 +25,7 @@ Ajax,5,2026-09-12,A,Fortuna Sittard,5,1,5:1,W
 Ajax,6,2026-09-15,H,Willem II,5,1,5:1,W
 Ajax,7,2026-09-19,H,Excelsior,2,2,2:2,D
 Ajax,8,2026-10-10,H,NEC Nijmegen,1,1,1:1,D
+Ajax,9,2026-10-18,A,Groningen,5,2,5:2,W
 Cambuur,1,2026-08-07,H,Excelsior,0,4,0:4,L
 Cambuur,2,2026-08-15,A,Fortuna Sittard,1,3,1:3,L
 Cambuur,3,2026-08-23,H,Feyenoord,2,5,2:5,L
@@ -32,6 +34,7 @@ Cambuur,5,2026-09-06,A,Telstar,2,2,2:2,D
 Cambuur,6,2026-09-12,H,NEC Nijmegen,3,0,3:0,W
 Cambuur,7,2026-09-19,A,ADO Den Haag,1,1,1:1,D
 Cambuur,8,2026-10-11,A,Zwolle,1,0,1:0,W
+Cambuur,9,2026-10-18,H,AZ Alkmaar,2,2,2:2,D
 Excelsior,1,2026-08-07,A,Cambuur,4,0,4:0,W
 Excelsior,2,2026-08-15,H,PSV,1,2,1:2,L
 Excelsior,3,2026-08-29,H,Sparta R.,2,1,2:1,W
@@ -58,6 +61,7 @@ Fortuna Sittard,5,2026-09-06,A,ADO Den Haag,3,2,3:2,W
 Fortuna Sittard,6,2026-09-12,H,Ajax,1,5,1:5,L
 Fortuna Sittard,7,2026-09-19,A,Willem II,1,0,1:0,W
 Fortuna Sittard,8,2026-10-10,H,Twente,1,1,1:1,D
+Fortuna Sittard,9,2026-10-18,A,NEC Nijmegen,2,2,2:2,D
 Go Ahead Eagles,1,2026-08-08,H,Willem II,4,1,4:1,W
 Go Ahead Eagles,2,2026-08-16,A,Feyenoord,2,2,2:2,D
 Go Ahead Eagles,3,2026-08-23,H,ADO Den Haag,3,1,3:1,W
@@ -66,6 +70,7 @@ Go Ahead Eagles,5,2026-09-08,A,Utrecht,3,3,3:3,D
 Go Ahead Eagles,6,2026-09-12,H,Groningen,1,1,1:1,D
 Go Ahead Eagles,7,2026-09-20,A,NEC Nijmegen,1,1,1:1,D
 Go Ahead Eagles,8,2026-10-10,H,Sparta R.,3,3,3:3,D
+Go Ahead Eagles,9,2026-10-18,A,Zwolle,1,4,1:4,L
 Groningen,1,2026-08-09,H,Utrecht,2,1,2:1,W
 Groningen,2,2026-08-16,A,ADO Den Haag,4,1,4:1,W
 Groningen,3,2026-08-23,A,PSV,1,5,1:5,L
@@ -74,6 +79,7 @@ Groningen,5,2026-09-06,H,Twente,2,2,2:2,D
 Groningen,6,2026-09-12,A,Go Ahead Eagles,1,1,1:1,D
 Groningen,7,2026-09-18,H,Zwolle,3,0,3:0,W
 Groningen,8,2026-10-11,A,Excelsior,5,1,5:1,W
+Groningen,9,2026-10-18,H,Ajax,2,5,2:5,L
 Heerenveen,1,2026-08-09,H,Twente,1,0,1:0,W
 Heerenveen,2,2026-08-16,A,Ajax,2,2,2:2,D
 Heerenveen,3,2026-08-22,H,Zwolle,0,2,0:2,L
@@ -91,6 +97,7 @@ NEC Nijmegen,5,2026-09-08,H,Excelsior,2,2,2:2,D
 NEC Nijmegen,6,2026-09-12,A,Cambuur,0,3,0:3,L
 NEC Nijmegen,7,2026-09-20,H,Go Ahead Eagles,1,1,1:1,D
 NEC Nijmegen,8,2026-10-10,A,Ajax,1,1,1:1,D
+NEC Nijmegen,9,2026-10-18,H,Fortuna Sittard,2,2,2:2,D
 PSV,1,2026-08-08,H,Fortuna Sittard,2,2,2:2,D
 PSV,2,2026-08-15,A,Excelsior,2,1,2:1,W
 PSV,3,2026-08-23,H,Groningen,5,1,5:1,W
@@ -126,6 +133,7 @@ Twente,5,2026-09-09,H,Telstar,1,0,1:0,W
 Twente,6,2026-09-12,H,ADO Den Haag,2,0,2:0,W
 Twente,7,2026-09-20,H,PSV,3,2,3:2,W
 Twente,8,2026-10-10,A,Fortuna Sittard,1,1,1:1,D
+Twente,9,2026-10-18,H,Utrecht,1,2,1:2,L
 Utrecht,1,2026-08-09,A,Groningen,1,2,1:2,L
 Utrecht,2,2026-08-15,H,AZ Alkmaar,1,4,1:4,L
 Utrecht,3,2026-08-22,A,Sparta R.,3,3,3:3,D
@@ -134,6 +142,7 @@ Utrecht,5,2026-09-08,H,Go Ahead Eagles,3,3,3:3,D
 Utrecht,6,2026-09-13,A,Excelsior,2,1,2:1,W
 Utrecht,7,2026-09-20,A,Feyenoord,0,5,0:5,L
 Utrecht,8,2026-10-11,H,Willem II,3,1,3:1,W
+Utrecht,9,2026-10-18,A,Twente,2,1,2:1,W
 Willem II,1,2026-08-08,A,Go Ahead Eagles,1,4,1:4,L
 Willem II,2,2026-08-15,H,NEC Nijmegen,1,4,1:4,L
 Willem II,3,2026-08-30,H,Heerenveen,2,2,2:2,D
@@ -151,3 +160,4 @@ Zwolle,5,2026-09-04,A,Sparta R.,2,2,2:2,D
 Zwolle,6,2026-09-13,H,Feyenoord,0,7,0:7,L
 Zwolle,7,2026-09-18,A,Groningen,0,3,0:3,L
 Zwolle,8,2026-10-11,H,Cambuur,0,1,0:1,L
+Zwolle,9,2026-10-18,H,Go Ahead Eagles,4,1,4:1,W

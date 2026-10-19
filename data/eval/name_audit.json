@@ -9,12 +9,17 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 523,
-   "exact": 483,
+   "total": 528,
+   "exact": 487,
    "rule": 8,
    "ambiguous": 0,
-   "orphan": 32,
+   "orphan": 33,
    "orphans": [
+    {
+     "squad": "Sunderland",
+     "name": "Tymur Tutierov",
+     "starts": 1
+    },
     {
      "squad": "Arsenal",
      "name": "Ethan Nwaneri",
@@ -134,29 +139,19 @@
      "squad": "Leeds United",
      "name": "Wilfried Gnonto",
      "starts": 0
-    },
-    {
-     "squad": "Fulham",
-     "name": "Macauley Zepa",
-     "starts": 0
     }
    ]
   },
   "espn_lineups_cups": {
    "total": 511,
-   "exact": 479,
+   "exact": 480,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 32,
+   "orphan": 31,
    "orphans": [
     {
      "squad": "Arsenal",
      "name": "Marli Salmon",
-     "starts": 1
-    },
-    {
-     "squad": "Sunderland",
-     "name": "Tymur Tutierov",
      "starts": 1
     },
     {
@@ -273,12 +268,17 @@
      "squad": "Everton",
      "name": "Harvey Foster",
      "starts": 0
+    },
+    {
+     "squad": "Everton",
+     "name": "Adam Aznou",
+     "starts": 0
     }
    ]
   },
   "espn_subs": {
-   "total": 381,
-   "exact": 381,
+   "total": 388,
+   "exact": 388,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -304,8 +304,8 @@
    ]
   },
   "match_events": {
-   "total": 333,
-   "exact": 333,
+   "total": 337,
+   "exact": 337,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -330,21 +330,21 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 591,
-   "exact": 488,
+   "total": 594,
+   "exact": 489,
    "rule": 23,
    "ambiguous": 1,
-   "orphan": 80,
+   "orphan": 82,
    "orphans": [
     {
      "squad": "Celta Vigo",
      "name": "Andrei Radu",
-     "starts": 8
+     "starts": 9
     },
     {
      "squad": "Alavés",
      "name": "Jonny",
-     "starts": 7
+     "starts": 8
     },
     {
      "squad": "Espanyol",
@@ -465,16 +465,11 @@
   },
   "espn_lineups_cups": {
    "total": 195,
-   "exact": 193,
+   "exact": 194,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 2,
+   "orphan": 1,
    "orphans": [
-    {
-     "squad": "Celta Vigo",
-     "name": "Ángel Arcos",
-     "starts": 0
-    },
     {
      "squad": "Celta Vigo",
      "name": "Frank Germain Jonathan Miller",
@@ -483,8 +478,8 @@
    ]
   },
   "espn_subs": {
-   "total": 426,
-   "exact": 422,
+   "total": 432,
+   "exact": 428,
    "rule": 2,
    "ambiguous": 1,
    "orphan": 2,
@@ -510,8 +505,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 328,
-   "exact": 328,
+   "total": 336,
+   "exact": 336,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -536,11 +531,11 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 450,
-   "exact": 421,
+   "total": 453,
+   "exact": 423,
    "rule": 13,
    "ambiguous": 0,
-   "orphan": 16,
+   "orphan": 17,
    "orphans": [
     {
      "squad": "Bayern Munich",
@@ -620,6 +615,11 @@
     {
      "squad": "Köln",
      "name": "Assad Kotya-Fofana",
+     "starts": 0
+    },
+    {
+     "squad": "Hoffenheim",
+     "name": "Valentin Lässig",
      "starts": 0
     }
    ]
@@ -759,9 +759,9 @@
    ]
   },
   "espn_subs": {
-   "total": 341,
-   "exact": 340,
-   "rule": 1,
+   "total": 343,
+   "exact": 341,
+   "rule": 2,
    "ambiguous": 0,
    "orphan": 0,
    "orphans": []
@@ -775,8 +775,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 270,
-   "exact": 270,
+   "total": 273,
+   "exact": 273,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -801,16 +801,16 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 628,
-   "exact": 550,
+   "total": 635,
+   "exact": 554,
    "rule": 10,
    "ambiguous": 1,
-   "orphan": 68,
+   "orphan": 71,
    "orphans": [
     {
      "squad": "Lecce",
      "name": "Kialonda Gaspar",
-     "starts": 4
+     "starts": 5
     },
     {
      "squad": "Fiorentina",
@@ -1069,8 +1069,8 @@
    ]
   },
   "espn_subs": {
-   "total": 425,
-   "exact": 420,
+   "total": 431,
+   "exact": 426,
    "rule": 1,
    "ambiguous": 1,
    "orphan": 4,
@@ -1122,8 +1122,8 @@
    ]
   },
   "match_events": {
-   "total": 305,
-   "exact": 305,
+   "total": 310,
+   "exact": 310,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1148,11 +1148,11 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 480,
-   "exact": 438,
+   "total": 482,
+   "exact": 439,
    "rule": 10,
    "ambiguous": 0,
-   "orphan": 32,
+   "orphan": 33,
    "orphans": [
     {
      "squad": "Troyes",
@@ -1160,13 +1160,13 @@
      "starts": 7
     },
     {
-     "squad": "Lens",
-     "name": "Pierre Ganiou",
-     "starts": 5
-    },
-    {
      "squad": "Nice",
      "name": "Mohamed Abdelmoneim",
+     "starts": 6
+    },
+    {
+     "squad": "Lens",
+     "name": "Pierre Ganiou",
      "starts": 5
     },
     {
@@ -1416,15 +1416,20 @@
    ]
   },
   "espn_subs": {
-   "total": 352,
-   "exact": 348,
+   "total": 358,
+   "exact": 353,
    "rule": 3,
    "ambiguous": 0,
-   "orphan": 1,
+   "orphan": 2,
    "orphans": [
     {
      "squad": "Rennes",
      "name": "Aboubakar Nagida",
+     "starts": 0
+    },
+    {
+     "squad": "Le Havre",
+     "name": "Lamine N'Diaye",
      "starts": 0
     }
    ]
@@ -1438,8 +1443,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 250,
-   "exact": 250,
+   "total": 261,
+   "exact": 261,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1644,15 +1649,25 @@
    "orphans": []
   },
   "match_events": {
-   "total": 275,
-   "exact": 274,
+   "total": 278,
+   "exact": 275,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 1,
+   "orphan": 3,
    "orphans": [
     {
      "squad": "Braga",
      "name": "Filipe Reynal Marques",
+     "starts": 0
+    },
+    {
+     "squad": "Vit. Guimarães",
+     "name": "Lucas Daniel",
+     "starts": 0
+    },
+    {
+     "squad": "Vit. Guimarães",
+     "name": "Zé Mário",
      "starts": 0
     }
    ]
@@ -1676,11 +1691,11 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 540,
+   "total": 541,
    "exact": 487,
    "rule": 12,
    "ambiguous": 0,
-   "orphan": 41,
+   "orphan": 42,
    "orphans": [
     {
      "squad": "Feyenoord",
@@ -1811,26 +1826,21 @@
   },
   "espn_lineups_cups": {
    "total": 144,
-   "exact": 142,
+   "exact": 143,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 2,
+   "orphan": 1,
    "orphans": [
     {
      "squad": "Ajax",
      "name": "Aymean El Hani",
      "starts": 0
-    },
-    {
-     "squad": "Twente",
-     "name": "Jip Meilink",
-     "starts": 0
     }
    ]
   },
   "espn_subs": {
-   "total": 392,
-   "exact": 382,
+   "total": 399,
+   "exact": 389,
    "rule": 10,
    "ambiguous": 0,
    "orphan": 0,
@@ -1845,8 +1855,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 269,
-   "exact": 269,
+   "total": 276,
+   "exact": 276,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
