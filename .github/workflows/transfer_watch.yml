@@ -1,0 +1,40 @@
+name: Transfer Watch
+
+# 이적시장 감시 — 창(여름 6/14~9/1 · 겨울 1/1~2/3)이 열려 있는 동안 리그 이적 페이지(리그당 1 요청)를 보고,
+# 새 이적이 생긴 클럽만 다시 받아 바로 커밋한다. 마감 7일 전부터 60분, 그 전엔 180분 간격. scripts/transfer_watch.py.
+# 창이 닫혀 있으면 바로 끝난다(아래 예약은 시동 — 하나가 늦어도 다른 것이 건다). 한 번에 최대 5.5시간, 열려 있으면 이어 달리기.
+on:
+  schedule:
+    - cron: "20 2,8,14,20 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: transfer-watch
+  cancel-in-progress: false
+
+permissions:
+  contents: write   # 이적 데이터 커밋
+  actions: write    # 이어 달리기(workflow_dispatch)
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install
+        # 수집기 의존성 + Transfermarkt WAF 토큰용 seleniumbase(러너에 Chrome 기본 설치) — tm_data 와 같음
+        run: pip install -q requests beautifulsoup4 lxml pandas unidecode seleniumbase
+
+      - name: Watch transfer window
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          python scripts/transfer_watch.py --max-minutes 330
