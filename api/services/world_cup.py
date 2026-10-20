@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import math
 
+import pandas as pd
 from unidecode import unidecode
 
 import api.bootstrap  # noqa: F401
@@ -121,6 +122,11 @@ def _live_fifa_ranking():
         ].copy()
         if "date" in completed.columns:
             completed = completed.sort_values("date")
+            # 공식 랭킹 발표일 이후 경기만 더한다 — 10/7 공식 랭킹엔 이미 월드컵이 반영돼 Spain +98.4 처럼
+            # 두 번 더해졌다(2026-10-20 점검). 발표일을 모르면 더하지 않는다(공식 값 그대로)
+            asof = pd.to_datetime(updated[:10], errors="coerce") if updated else pd.NaT
+            gd = pd.to_datetime(completed["date"].astype(str).str[:10], errors="coerce")
+            completed = completed[gd > asof] if pd.notna(asof) else completed.iloc[0:0]
         for _, game in completed.iterrows():
             home = str(game.get("home_abbr") or "").strip()
             away = str(game.get("away_abbr") or "").strip()

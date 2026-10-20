@@ -49,6 +49,13 @@ export default function WorldCup({ accent, onPickTeam }: { accent: string; onPic
     </div>
   );
   const knockout = d.matches.filter((r) => r.round !== "group-stage");
+  // 대회 상태는 경기 결과에서 — '녹아웃 진행 중' 고정 문구가 결승 3개월 뒤에도 남았다(2026-10-20 점검)
+  const final = d.matches.find((r) => r.round === "final")?.matches[0];
+  const champion = final?.completed && final.home_score != null && final.away_score != null && final.home_score !== final.away_score
+    ? (final.home_score > final.away_score ? final.home : final.away) : null;
+  const live = d.matches.some((r) => r.matches.some((m) => !m.completed));
+  const stage = champion ? `대회 종료 · 우승 ${champion} (${final!.date.slice(5).replace("-", "/")} 결승 ${final!.home} ${final!.home_score}-${final!.away_score} ${final!.away})`
+    : live ? (knockout.some((r) => r.matches.some((m) => m.completed)) ? "녹아웃 스테이지 진행 중" : "조별리그 진행 중") : "대회 종료";
   const clubLeagues = Array.from(new Set(d.club_callups.map((c) => c.league).filter(Boolean)));
   // 전체: 알파벳순 / 특정 리그: 차출 수 순(백엔드 정렬 유지)
   const clubsF = clubLeague ? d.club_callups.filter((c) => c.league === clubLeague)
@@ -65,7 +72,7 @@ export default function WorldCup({ accent, onPickTeam }: { accent: string; onPic
         <div className="hx-glow" style={{ background: "radial-gradient(60% 120% at 85% 0%, #d4af3755, transparent 70%)" }} />
         <div className="hx-kicker" style={{ color: "#e8c86a" }}>FIFA WORLD CUP · 2026</div>
         <h1 className="hx-title">WORLD CUP 2026</h1>
-        <div className="hx-meta">북중미 공동 개최 · 48개국 · <span style={{ color: "#e8c86a" }}>녹아웃 스테이지 진행 중</span></div>
+        <div className="hx-meta">북중미 공동 개최 · 48개국 · <span style={{ color: "#e8c86a" }}>{stage}</span></div>
       </div>
 
       {/* FIFA 랭킹 TOP 30 — 월드컵 결과 실시간 반영 */}

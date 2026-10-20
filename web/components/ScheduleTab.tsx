@@ -34,7 +34,7 @@ function MatchDetailView({ team, match, accent }: { team: string; match: Match; 
         <div>
           <div className="scd-gw">
             <span className="comp-badge" title={match.comp} style={{ color: compColor(match.comp), borderColor: compColor(match.comp) + "66" }}>{compEnKo(match.comp, activeLeague())}</span>
-            {match.date} · {match.home_away === "H" ? "홈" : "원정"}
+            {match.kst ?? match.date} · {match.home_away === "H" ? "홈" : "원정"}
           </div>
           <div className="scd-opp">vs {match.opponent}</div>
         </div>
@@ -77,7 +77,9 @@ function MatchDetailView({ team, match, accent }: { team: string; match: Match; 
       {/* 경기 리뷰(헤드라인·요약·타임라인·기록 비교) — 홈·매치 서랍과 같은 /api/review */}
       {match.status === "completed" && match.event_id && (
         <div className="pv-body scd-review">
-          <ReviewSections m={asFixture(team, match, accent)} inPlay={false} hc={accent} ac="#8a94a8" />
+          {/* hc/ac = 홈/원정 색 — 원정 경기면 우리 색이 원정 쪽이어야 한다(예전엔 늘 홈에 칠해 상대 팀이 우리 색이었다) */}
+          <ReviewSections m={asFixture(team, match, accent)} inPlay={false}
+            hc={match.home_away === "H" ? accent : "#8a94a8"} ac={match.home_away === "H" ? "#8a94a8" : accent} />
         </div>
       )}
     </div>
@@ -122,12 +124,14 @@ export default function ScheduleTab({ team, accent }: { team: string; accent: st
   const comps = Array.from(new Set(data.matches.map((m) => m.comp)));
   const shown = data.matches.map((m, i) => ({ m, i })).filter((x) => comp === "전체" || x.m.comp === comp);
   const nextIdx = data.matches.findIndex((m) => m.status !== "completed");
-  const played = data.matches.filter((m) => m.status === "completed");
+  // 요약·PPG 는 대회 필터를 따른다 — 전 대회를 섞은 PPG 에 리그 기준 이름표(우승권·강등권)가 붙던 것(2026-10-20 점검)
+  const played = shown.map((x) => x.m).filter((m) => m.status === "completed");
+  const leagueOnly = comp === "리그";
   const w = played.filter((m) => m.result === "W").length;
   const dd = played.filter((m) => m.result === "D").length;
   const l = played.filter((m) => m.result === "L").length;
   const ppg = played.length ? ((w * 3 + dd) / played.length).toFixed(2) : "-";
-  const upcoming = data.matches.length - played.length;
+  const upcoming = shown.length - played.length;
 
   return (
     <div className="fade">
@@ -150,8 +154,8 @@ export default function ScheduleTab({ team, accent }: { team: string; accent: st
             <div className="stat"><div className="v" style={{ color: "#9aa4b4" }}>{dd}</div><div className="l">Drawn</div></div>
             <div className="stat"><div className="v" style={{ color: "#e07070" }}>{l}</div><div className="l">Lost</div></div>
             <div className="stat" title="경기당 승점(이 목록의 끝난 경기, 0~3) — 38경기 환산 2.2 ≈ 우승권 · 1.75 ≈ 유럽권 · 1.0 ≈ 강등권">
-              <div className="v" style={{ color: ppg === "-" ? accent : ppgMeaning(Number(ppg)).c }}>{ppg}</div>
-              <div className="l">PPG · 경기당 승점{ppg !== "-" && <> <MeaningTag m={ppgMeaning(Number(ppg))} sm /></>}</div>
+              <div className="v" style={{ color: ppg === "-" || !leagueOnly ? accent : ppgMeaning(Number(ppg)).c }}>{ppg}</div>
+              <div className="l">PPG · 경기당 승점{comp === "전체" ? " · 전 대회" : ""}{ppg !== "-" && leagueOnly && <> <MeaningTag m={ppgMeaning(Number(ppg))} sm /></>}</div>
             </div>
           </>
         ) : (
@@ -185,7 +189,7 @@ export default function ScheduleTab({ team, accent }: { team: string; accent: st
               <button className={`sched-row${sel === i ? " active" : ""}${i === nextIdx ? " next" : ""}`} key={i} onClick={() => setSel(i)}
                 style={sel === i ? { background: `${accent}22` } : undefined}>
                 <span className="sc-comp" style={{ background: compColor(m.comp) }} title={m.comp} />
-                <span className="sc-date">{m.date.slice(5)}</span>
+                <span className="sc-date">{m.kst ?? m.date.slice(5)}</span>
                 <span className={`sc-ha ${m.home_away === "H" ? "h" : "a"}`}>{m.home_away}</span>
                 {m.opp_logo ? <img className="sc-logo" src={m.opp_logo} alt="" /> : <span className="sc-logo" />}
                 <span className="sc-opp">{m.opponent}{i === nextIdx && <em className="sc-next">다음 경기</em>}</span>

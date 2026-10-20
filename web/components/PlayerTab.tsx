@@ -100,7 +100,7 @@ function Detail({ team, player, accent, heatmap }: { team: string; player: strin
         <div className="pd-badges">
           {d.badges.map((b, i) => (
             <span className="pd-badge" key={i} style={{ borderColor: hexA(accent, 0.5) }}>
-              {b.medal} {b.label} <em style={{ color: accent }}>리그 #{b.rank}</em>
+              {b.medal} {b.label} <em style={{ color: accent }}>{b.scope ?? "리그"} {b.tie ? "공동 " : ""}#{b.rank}</em>
             </span>
           ))}
         </div>

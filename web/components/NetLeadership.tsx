@@ -4,11 +4,14 @@ import { hexA } from "@/lib/ui";
 import { usePeek } from "./PlayerPeek";
 import { LINE_COLOR, SvgAvatar, lastName } from "./NetShared";
 
-// LEADERSHIP — 주장단(위키 스쿼드 표: 주장·부주장·3·4번째) + 영향력 지도(출전 비중·연결 중심성·근속·경험·대표팀·완장).
-// 영향력 0~100 = 6요소(각 0~1) 가중합 × 100 — 출전·연결은 팀 안 최고 대비라 다른 팀과 비교하는 값이 아니다(src/team_network.leadership)
+// LEADERSHIP — 주장단(위키 스쿼드 표: 주장·부주장·3·4번째) + 영향력 지도.
+// 영향력 0~100 = 9요소(각 0~1) × 가중치 합 — 가중치는 API(leadership.weights, src/team_network.INF_W)에서 받아 표시한다
 const INF_NOTE = "영향력 0~100 · 팀 안 상대값 — 실력(팀 최고 OVR 대비)·출전·완장·볼 관여(파이널 서드 패스·키패스)·연결·시즌 폼·근속·경험·대표팀 가중합, 100 = 모든 요소 만점";
 const COMP: [string, string][] = [["quality", "실력"], ["minutes", "출전"], ["armband", "완장"], ["play", "볼 관여"],
   ["hub", "연결"], ["form", "폼"], ["tenure", "근속"], ["experience", "경험"], ["international", "대표팀"]];
+// 요소별 색(누적 막대) — 완장은 노랑(주장 띠), 나머지는 차분한 계열
+const COMP_COLOR: Record<string, string> = { quality: "#6aa8ff", minutes: "#5fd39a", armband: "#f6c945", play: "#ff8a5c",
+  hub: "#b48cff", form: "#ff6b9a", tenure: "#7fd1d9", experience: "#c9a97a", international: "#9aa4b5" };
 
 function CaptainHero({ c, team, accent, armband }: { c: NetCaptain; team: string; accent: string; armband: string | null }) {
   const peek = usePeek();
@@ -106,6 +109,7 @@ export default function NetLeadership({ d, accent }: { d: NetworkData; accent: s
   const caps = d.leadership.captains;
   const main = caps[0];
   const arm = d.leadership.armband;
+  const w = d.leadership.weights ?? {};                 // 요소 가중치(%) — 서버 계산식 그대로
   return (
     <div className="net-lead">
       <div className="net-lead-l">
@@ -122,25 +126,24 @@ export default function NetLeadership({ d, accent }: { d: NetworkData; accent: s
         <InfluenceMap d={d} accent={accent} />
       </div>
       <div className="net-core">
-        <h4 className="net-h">LEADERSHIP CORE <span>출전 비중 28 · 연결 중심성 24 · 근속 16 · 완장 12 · 경험 10 · 대표팀 10</span></h4>
+        <h4 className="net-h">LEADERSHIP CORE <span>{COMP.filter(([k]) => w[k]).sort((a, b) => (w[b[0]] ?? 0) - (w[a[0]] ?? 0))
+          .map(([k, l]) => `${l} ${w[k]}`).join(" · ")}</span></h4>
         <p className="net-note" style={{ fontSize: 11, color: "var(--muted-2)", marginTop: -4 }} title={INF_NOTE}>
-          오른쪽 숫자 = 영향력 0~100 · 팀 안 상대값(위 비중으로 합산, 100 = 모든 요소 만점)
+          막대 = 요소별 기여(값 × 가중치, 색은 아래 범례) · 오른쪽 숫자 = 영향력 0~100(팀 안 상대값, 100 = 모든 요소 만점)
         </p>
+        <div className="net-comp-legend">{COMP.filter(([k]) => w[k]).map(([k, l]) => <span key={k}><i style={{ background: COMP_COLOR[k] }} />{l}</span>)}</div>
         {d.leadership.core.map((c, i) => (
           <button key={c.name} className="net-core-row hoverable"
             onClick={(e) => peek(e, { name: c.name, club: d.team, hint: { photo: c.photo, ovr: c.ovr ?? undefined, pos: c.pos } })}>
             <span className="net-rank">{i + 1}</span>
             {c.photo ? <img src={c.photo} alt="" /> : <span className="net-cap-ph sm" />}
             <span className="net-core-name"><b>{c.name}</b><em>{c.pos}{c.captain_rank ? ` · ${c.captain_rank === 1 ? "주장" : c.captain_rank === 2 ? "부주장" : `${c.captain_rank}번째 주장`}` : ""}</em></span>
-            <span className="net-comp">
-              {COMP.map(([k, l]) => (
-                <span key={k} title={`${l} ${Math.round((c.components[k] ?? 0) * 100)}`}>
-                  <i style={{ height: `${Math.max(6, (c.components[k] ?? 0) * 100)}%`, background: k === "armband" ? "#f6c945" : accent }} />
-                  <em>{l}</em>
-                </span>
+            <span className="net-comp" title={COMP.filter(([k]) => w[k]).map(([k, l]) => `${l} ${Math.round((c.components[k] ?? 0) * 100)} × ${w[k]}% = ${((c.components[k] ?? 0) * (w[k] ?? 0)).toFixed(1)}`).join(" · ")}>
+              {COMP.filter(([k]) => w[k]).map(([k]) => (
+                <i key={k} style={{ width: `${(c.components[k] ?? 0) * (w[k] ?? 0)}%`, background: COMP_COLOR[k] }} />
               ))}
             </span>
-            <span className="net-why">{c.why.slice(0, 3).map((w) => <i key={w}>{w}</i>)}</span>
+            <span className="net-why">{c.why.slice(0, 3).map((x) => <i key={x}>{x}</i>)}</span>
             <span className="net-inf" title={`영향력 ${c.influence} / 100 — ${INF_NOTE}`}><b>{c.influence}</b><i style={{ width: `${c.influence}%`, background: accent }} /></span>
           </button>
         ))}

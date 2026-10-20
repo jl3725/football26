@@ -127,6 +127,8 @@ export function ReviewSections({ m, inPlay, hc, ac }: { m: Fixture; inPlay: bool
       {rv.stats.length > 0 && (
         <section>
           <h3>MATCH STATS<span>경기 기록{rv.state === "in" ? " · 현재까지" : ""}</span></h3>
+          {/* 어느 쪽이 어느 팀인지 — 막대 색만으로는 원정 경기에서 헷갈렸다(2026-10-20 점검) */}
+          <div className="rv5-sides"><b style={{ color: hc }}>{name.home}</b><span>HOME · AWAY</span><b style={{ color: ac }}>{name.away}</b></div>
           <StatBars rv={rv} hc={hc} ac={ac} />
         </section>
       )}

@@ -34,7 +34,10 @@ export default function StatusBar({ accent, ctx, league = "EPL" }: { accent: str
 
   const today = now ?? new Date();
   const chips = events.map((e) => {
-    const s = new Date(e.start), en = new Date(e.end);
+    // 날짜는 KST 하루로 — 'YYYY-MM-DD' 를 UTC 자정으로 읽어 오늘 밤 챔스 매치데이가 오전 9시에 사라졌다(2026-10-20 점검).
+    // 유럽 저녁 경기는 한국 다음 날 아침에 끝나므로 끝 날짜 + 8시간까지 '진행 중'으로 둔다
+    const s = new Date(`${e.start.slice(0, 10)}T00:00:00+09:00`);
+    const en = new Date(new Date(`${e.end.slice(0, 10)}T23:59:59+09:00`).getTime() + 8 * 3600e3);
     const total = Math.max(1, daysBetween(s, en));
     if (today >= s && today <= en) {
       const pct = Math.round((daysBetween(s, today) / total) * 100);

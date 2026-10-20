@@ -346,7 +346,10 @@ def overview(team: str, league: str = ACTIVE_LEAGUE):
             "name": mgr.get("name", ""),
             "nationality": mgr.get("nationality", ""),
             "style": mgr.get("style", ""),
-            "formation": mgr.get("formation", ""),
+            # 실제 최빈 포메이션(리그 라인업) 우선, 위키 값은 '선호'로
+            "formation": (_used_formation(team, league) or {}).get("formation") or mgr.get("formation", ""),
+            "formation_used": _used_formation(team, league),
+            "formation_pref": mgr.get("formation", ""),
             "appointed": mgr.get("appointed", ""),
             "focus": mgr.get("focus", ""),
             "photo": mgr.get("photo_url", "") if str(mgr.get("photo_url") or "").startswith("http") else "",
@@ -514,12 +517,16 @@ def overview(team: str, league: str = ACTIVE_LEAGUE):
     leaders = []
     if full_df is not None:
         sq_all = full_df[full_df["squad"] == team]
+        # 90분당 지표는 최소 출전(풀시즌 1200′를 진행률만큼 줄인 값, 최소 180′) — 키패스 1위가 10분 뛴 Dowman 이었다(2026-10-20 점검)
+        min_p90 = max(180, _mm(1200, league))           # 시즌 7경기면 약 220′(2.5경기)
         for label, col, kind in [("득점", "goals", "tot"), ("도움", "assists", "tot"),
-                                 ("xG", "xg_p90", "p90"), ("키패스", "key_passes_per90", "p90"),
-                                 ("태클", "tackles_won_per90_ss", "p90")]:
+                                 ("xG/90", "xg_p90", "p90"), ("키패스/90", "key_passes_per90", "p90"),
+                                 ("태클/90", "tackles_won_per90_ss", "p90")]:
             if col in sq_all.columns and not sq_all.empty:
                 ss = sq_all.copy()
                 ss["_v"] = pd.to_numeric(ss[col], errors="coerce").fillna(0)
+                if kind == "p90":
+                    ss = ss[pd.to_numeric(ss["minutes"], errors="coerce").fillna(0) >= min_p90]
                 ss = ss[ss["_v"] > 0].sort_values("_v", ascending=False)
                 if not ss.empty:
                     r = ss.iloc[0]
@@ -616,7 +623,8 @@ def identity(team: str, league: str = ACTIVE_LEAGUE):
         ten = p.get("tenure") or {}
         v = p.get("tactical_vector") or {}
         tactics = {
-            "manager": p.get("manager"), "formation": p.get("formation"),
+            "manager": p.get("manager"),
+            "formation": (_used_formation(team, league) or {}).get("formation") or p.get("formation"),   # 실제 최빈값 우선
             "current_tags": p.get("style_tags") or [],
             "tendency_tags": p.get("descriptor_tags") or [],
             "vector": {k: v.get(k) for k in
@@ -1790,9 +1798,12 @@ def schedule(team: str, league: str = ACTIVE_LEAGUE, season: str = ""):
         done = _txt(r.get("status")) == "completed" or bool(_txt(r.get("result")))
         espn_logo = _txt(r.get("opponent_logo"))
         opp, _ = mc.our_opponent(str(r.get("opponent") or ""), espn_logo, ids)
+        ko = _txt(r.get("kickoff"))
+        t_kst = mc.kst_of(ko, str(r.get("date") or ""))
         out.append({
             "comp": str(r.get("comp") or ""),
             "date": str(r.get("date") or ""),
+            "kst": mc.kst_label(t_kst, bool(ko)) if t_kst else None,   # 한국 시각 — 다른 화면(홈·Overview)과 같은 날짜
             "home_away": str(r.get("home_away") or ""),
             "opponent": opp,
             "opp_logo": tm.team_logo(opp) or (espn_logo if espn_logo.startswith("http") else ""),
@@ -1901,7 +1912,7 @@ _GK_CATS = [
 ]
 # 리그 랭크 배지 후보 — (라벨, 컬럼)
 _BADGE_METRICS = [
-    ("득점왕", "goals"), ("도움왕", "assists"), ("결정력", "npxg_p90"), ("키패스", "key_passes_per90"),
+    ("득점왕", "goals"), ("도움왕", "assists"), ("결정력(골−xG)", "_g_minus_xg"), ("키패스/90", "key_passes_per90"),
     ("드리블", "successful_dribbles_per90"), ("태클", "tackles_won_per90_ss"), ("인터셉트", "interceptions_per90_ss"),
     ("공중볼", "aerial_won_pct"), ("평점", "ss_rating"),
 ]
@@ -2094,19 +2105,35 @@ def player_detail(team: str, player: str, league: str = ACTIVE_LEAGUE):
     # 리그 랭크 배지
     badge_cfg = [("선방율", "gk_save_pct"), ("클린시트", "gk_cs_pct")] if is_gk else _BADGE_METRICS
     badges = []
+    # 순위 범위를 밝힌다 — '평점 리그 #3' 이 실제론 '미드필더 450′+ 중 3위'(리그 전체 11위)였다(2026-10-20 점검).
+    # 누적(득점·도움)은 리그 전체, 90분당·비율은 같은 라인 + 최소 출전. 동률이면 '공동'
+    line_ko = {"ATT": "공격수", "MID": "미드필더", "DEF": "수비수", "GK": "골키퍼"}.get(my_line, "같은 라인")
+
+    def _gxg(df):
+        m = pd.to_numeric(df["minutes"], errors="coerce").fillna(0)
+        return pd.to_numeric(df["goals"], errors="coerce").fillna(0) - pd.to_numeric(df["xg_p90"], errors="coerce") * m / 90
     for label, col in badge_cfg:
-        if col not in pool.columns:
-            continue
-        s = pd.to_numeric(pool[col], errors="coerce").dropna()
-        try:
-            v = float(row.get(col))
-        except (TypeError, ValueError):
-            continue
+        total = col in ("goals", "assists")
+        base = full if total else pool
+        if col == "_g_minus_xg":
+            if not {"goals", "xg_p90", "minutes"} <= set(pool.columns):
+                continue
+            s, v = _gxg(base).dropna(), float(_gxg(row.to_frame().T).iloc[0]) if pd.notna(row.get("xg_p90")) else float("nan")
+        else:
+            if col not in base.columns:
+                continue
+            s = pd.to_numeric(base[col], errors="coerce").dropna()
+            try:
+                v = float(row.get(col))
+            except (TypeError, ValueError):
+                continue
         if pd.isna(v) or v <= 0 or s.empty:
             continue
-        rank = int((s > v).sum()) + 1
+        rank = int((s > v + 1e-9).sum()) + 1
+        tie = int((abs(s - v) <= 1e-9).sum()) > 1
         if rank <= 3:
-            badges.append({"label": label, "rank": rank,
+            badges.append({"label": label, "rank": rank, "tie": tie,
+                           "scope": "리그" if total else f"{line_ko} {int(min_min)}′+",
                            "medal": "🥇" if rank == 1 else ("🥈" if rank == 2 else "🥉")})
     badges.sort(key=lambda b: b["rank"])
 
@@ -2530,6 +2557,22 @@ def _signing_audit(team: str, league: str, full):
     return out[:8]
 
 
+@_memo(ttl=3600)
+def _used_formation(team: str, league: str) -> dict | None:
+    """이번 시즌 리그 경기에서 실제로 가장 많이 쓴 포메이션(ESPN 라인업) — {'formation','n','total'}.
+    위키의 감독 '선호' 포메이션(아스날 4-3-3)과 실제(7경기 모두 4-2-3-1)가 달랐다(2026-10-20 점검)."""
+    el = ds.read_table("espn_lineups", league=league)
+    if el is None or el.empty or "formation" not in el.columns:
+        return None
+    g = el[el["squad"] == team].drop_duplicates("event_id")
+    f = g["formation"].dropna().astype(str)
+    f = f[f.str.match(r"^\d(-\d)+$")]
+    if f.empty:
+        return None
+    top = f.value_counts()
+    return {"formation": str(top.index[0]), "n": int(top.iloc[0]), "total": int(len(f))}
+
+
 def _manager_evo(team: str, league: str = "EPL"):
     """감독 전술 진화 — 현재 vs 이전(감독 교체 시)."""
     mp = _managers(league).get(team)
@@ -2545,7 +2588,8 @@ def _manager_evo(team: str, league: str = "EPL"):
 
     evo = {
         "name": mp.get("name", ""), "style": _ko(mp.get("style")),
-        "formation": mp.get("formation", ""), "focus": _ko(mp.get("focus")),
+        "formation": (_used_formation(team, league) or {}).get("formation") or mp.get("formation", ""),
+        "formation_pref": mp.get("formation", ""), "focus": _ko(mp.get("focus")),
         "tactics": _ko(mp.get("tactics_ko")),
         "appointed": mp.get("appointed", ""),
     }
@@ -4921,16 +4965,29 @@ def _compute_hub_body() -> bytes:
         mc = ds.read_table("manager_changes", league=lg)
         mgrs = _managers(lg)
         if mc is not None and "team" in mc.columns:
+            # 승인된 교체만(감지만 된 'Fulham → TBD' 같은 행 제외), 날짜는 실제 부임일 — 감지일(10.19)이 부임일처럼 보였다
+            if "accepted" in mc.columns:
+                mc = mc[mc["accepted"].astype(str).str.lower().isin(("true", "1", "1.0"))]
             summary["manager_changes"] += int(len(mc))
+            summary["manager_changes_inseason"] = summary.get("manager_changes_inseason", 0) + int(
+                (mc["change_type"].astype(str) != "season").sum() if "change_type" in mc.columns else 0)
             for _, r in mc.iterrows():
                 t = str(r.get("team") or "")
                 prof = mgrs.get(t, {})
                 ph = str(prof.get("photo_url") or "")
+                when = ""
+                for c in ("official_change_date", "new_appointed"):
+                    d = pd.to_datetime(str(r.get(c) or ""), errors="coerce", dayfirst=True)
+                    if pd.notna(d):
+                        when = d.date().isoformat()
+                        break
+                summer = str(r.get("change_type") or "") == "season"
                 changes.append({"team": t, "logo": tm.team_logo(t),
                                 "previous": str(r.get("previous_manager") or ""),
                                 "current": str(r.get("detected_manager") or ""),
                                 "photo": ph if ph.startswith("http") else "",
-                                "changed_at": str(r.get("detected_at") or "")[:10],
+                                "changed_at": when, "when_label": when or ("여름" if summer else ""),
+                                "in_season": not summer,
                                 "league": lg, "league_name": lname})
         st = ds.read_table("standings", league=lg)
         table = []
@@ -5096,7 +5153,9 @@ def _compute_hub_body() -> bytes:
 
     result = {"window": win, "leagues": [{"key": lg, "name": _lname(lg)} for lg in leagues],
               "top_deals": deals[:12], "buzz": _interleave(buzz, 18),
-              "manager_changes": _interleave(changes, 12), "snapshots": snaps,
+              "manager_changes": _interleave(sorted(changes, key=lambda c: (0 if c.get("in_season") else 1,           # 시즌 중 교체 먼저, 최근 순
+                                                            -int((c.get("changed_at") or "0").replace("-", "") or 0))), 12),
+              "snapshots": snaps,
               "injuries": _interleave(injuries, 12), "hot_form": hot_form,
               "goal_leaders": goal_leaders, "prospects": prospects, "veterans": veterans,
               "value_picks": value_picks, "risers": risers, "contracts": contracts_out, "summary": summary,

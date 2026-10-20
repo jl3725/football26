@@ -226,7 +226,9 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
                 <div style={{ minWidth: 0 }}>
                   <div className="mgr-name">{ov.manager.name}</div>
                   <div className="mgr-meta">
-                    {[ov.manager.nationality, ov.manager.formation, ov.manager.appointed ? "부임 " + ov.manager.appointed : ""].filter(Boolean).join(" · ")}
+                    {[ov.manager.nationality,
+                      ov.manager.formation_used ? `${ov.manager.formation_used.formation} (${ov.manager.formation_used.n}/${ov.manager.formation_used.total}경기)` : ov.manager.formation,
+                      ov.manager.appointed ? "부임 " + ov.manager.appointed : ""].filter(Boolean).join(" · ")}
                   </div>
                   {ov.manager.previous && (
                     <div className="mgr-change" style={{ color: accent }}>

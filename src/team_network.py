@@ -169,13 +169,14 @@ def leadership(players: list[dict], chem: dict, today: dt.date) -> dict:
             why.append("베테랑")
         scored.append({**p, "influence": round(score * 100), "components": {k: round(v, 2) for k, v in comp.items()},
                        "tenure": None if tenure is None else round(tenure, 1), "why": why})
-    scored.sort(key=lambda x: -x["influence"])
+    scored.sort(key=lambda x: (-x["influence"], x.get("captain_rank") or 99))   # 동점이면 완장 순서(주장 먼저)
     caps = sorted([p for p in scored if p.get("captain_rank")], key=lambda p: p["captain_rank"])
     armband = next((p for p in caps if not p.get("injured") and p.get("in_squad", True)), None)
     return {"captains": [{**p, "label": ROLE_LABEL[p["captain_rank"]], "role_ko": ROLE_KO[p["captain_rank"]]}
                          for p in caps],
             "armband": armband["name"] if armband else None,
-            "core": scored[:7], "influence": {p["name"]: p["influence"] for p in scored}}
+            "core": scored[:7], "influence": {p["name"]: p["influence"] for p in scored},
+            "weights": {k: round(w * 100) for k, w in INF_W.items()}}   # 화면 설명은 이 값에서(옛 공식이 남지 않게)
 
 
 # ── ORIGINS ───────────────────────────────────────────────────────────
@@ -335,7 +336,7 @@ def insights(team: str, lead: dict, chem: dict, duos: list, orig: dict, nat: dic
                                 + (f" — 부주장 {caps[1]['name']}" if len(caps) > 1 else ""),
                         "evidence": ev, "who": [x["name"] for x in caps[:3]],
                         "big": str(int(c["tenure"])) if c.get("tenure") is not None else "C",
-                        "unit": "년차 주장" if c.get("tenure") is not None else "주장",
+                        "unit": "년차(입단) 주장" if c.get("tenure") is not None else "주장",   # 숫자는 입단 연차(주장 연차 아님)
                         "line": _last(c["name"]) + (f" · 부주장 {_last(caps[1]['name'])}" if len(caps) > 1 else "")})
     nodes = chem.get("nodes", [])
     if nodes:
@@ -359,9 +360,10 @@ def insights(team: str, lead: dict, chem: dict, duos: list, orig: dict, nat: dic
     recent = [p for p in players if (p.get("origin") or {}).get("year") and p["origin"]["year"] >= dt.date.today().year - 1
               and (p.get("origin") or {}).get("acq") in ("transfer", "loan", "free")]
     fee = sum((p["origin"].get("fee_eur") or 0) for p in recent)
-    txt = f"유스 출신 {acq.get('academy', 0)}명 · 최근 1년 영입 {len(recent)}명" + (f"({_fee(fee)})" if fee else "")
+    txt = f"유스 출신 {acq.get('academy', 0)}명 · 최근 두 이적창 영입 {len(recent)}명" + (f"({_fee(fee)})" if fee else "")
     if srcs:
-        txt += f" · 최다 공급 리그 {srcs[0]['league']} {srcs[0]['n']}명"
+        n_other = sum(s["n"] for s in orig.get("sources", []) if s["league"] == "OTHER")
+        txt += f" · 우리 8개 리그 중 최다 {srcs[0]['league']} {srcs[0]['n']}명" + (f"(그 밖 리그 {n_other}명)" if n_other else "")
     line = f"유스 {acq.get('academy', 0)}명" + (f" · {_fee(fee)}" if fee else "") + (f" · 최다 {srcs[0]['league']}" if srcs else "")
     out.append({"lens": "origins", "icon": "⌂", "tone": "info", "title": "스쿼드 구성", "text": txt,
                 "evidence": [f"{p['name']} ← {p['origin'].get('from_club') or '?'}" for p in recent[:3]],
@@ -558,7 +560,7 @@ def insights_extra(team: str, nat_web: dict, ti: dict, mg: dict) -> list[dict]:
                         "line": f"대표팀 동료 최다 {top['club']} {top['n']}명"})
     if ti and ti.get("clubs"):
         c = ti["clubs"][0]
-        txt = f"지난 시즌 동료 {ti['n_ties']}명이 {ti['n_clubs']}개 클럽에 — 가장 많은 곳 {c['club']} {len(c['ties'])}명"
+        txt = f"우리 선수들의 지난 시즌 동료 {ti['n_ties']}명이 {ti['n_clubs']}개 클럽에 — 가장 많은 곳 {c['club']} {len(c['ties'])}명"
         if ti.get("reunions"):
             r = ti["reunions"][0]
             txt += f" · 재회: {r['ours']}·{r['mate']}({r['from_club']})"

@@ -52,6 +52,7 @@ export type Overview = {
   form: string[];
   manager: {
     name: string; nationality: string; style: string; formation: string; appointed: string; focus: string;
+    formation_used?: { formation: string; n: number; total: number } | null; formation_pref?: string;   // 실제 최빈 · 위키 선호
     photo?: string; bio?: string; tactics?: string;
     previous?: { name: string; left_date: string };
     changed_at?: string;
@@ -236,7 +237,7 @@ export type LoanOut = { player: string; club: string; pos: string; nat: string; 
 export type Squad = { team: string; color: string; lines: Record<string, SquadPlayer[]>; buckets: Bucket[]; loans?: LoanOut[] };
 
 export type Match = {
-  gw?: number; comp: string; date: string; home_away: string; opponent: string; opp_logo: string;
+  gw?: number; comp: string; date: string; kst?: string | null; home_away: string; opponent: string; opp_logo: string;
   gf: number | null; ga: number | null; score: string; result: string; status: string;
   event_id: string | null; formation: string | null; has_lineup: boolean;
 };
@@ -257,7 +258,7 @@ export type Players = { team: string; color: string; players: PlayerCard[] };
 
 export type MetricBar = { label: string; pct: number; raw: number };
 export type MetricCat = { name: string; avg: number; metrics: MetricBar[] };
-export type Badge = { label: string; rank: number; medal: string };
+export type Badge = { label: string; rank: number; medal: string; scope?: string; tie?: boolean };   // scope: 리그 · 미드필더 450′+
 export type PlayerDetail = {
   player: string; team: string; color: string; pos: string; line: string;
   age: number; nationality: string; value_eur: number; photo: string;
@@ -388,7 +389,7 @@ export type NetInsight = { lens: string; icon: string; tone: string; title: stri
 export type NetworkData = {
   available: boolean; reason?: string; team: string; league: string; color: string; logo: string; games: number;
   players: NetPlayer[];
-  leadership: { captains: NetCaptain[]; armband: string | null; core: NetCore[]; influence: Record<string, number> };
+  leadership: { captains: NetCaptain[]; armband: string | null; core: NetCore[]; influence: Record<string, number>; weights?: Record<string, number> };
   chemistry: { nodes: { name: string; minutes: number; degree: number; hub_rank: number }[];
     edges: { a: string; b: string; minutes: number; matches: number }[]; duos: ChemDuo[]; trios: ChemTrio[] };
   origins: { timeline: { year: number; players: string[] }[]; acq: Record<string, number>;
@@ -542,7 +543,7 @@ export const getWC = () => j<WorldCupData>(`/api/wc`);
 // ── 전 리그 통합 대시보드 ──
 export type HubDeal = { player: string; to: string; to_logo: string; from: string; pos: string; fee_eur: number; fee_text: string; photo: string; league: string; league_name: string };
 export type HubBuzz = { title: string; source: string; tier: string; link: string; published: string; league: string; league_name: string };
-export type HubChange = { team: string; logo: string; previous: string; current: string; photo: string; changed_at: string; league: string; league_name: string };
+export type HubChange = { team: string; logo: string; previous: string; current: string; photo: string; changed_at: string; when_label?: string; in_season?: boolean; league: string; league_name: string };
 export type HubSnapRow = { rank: number; team: string; logo: string; points: number };
 export type HubSnapshot = { league: string; league_name: string; color: string; table: HubSnapRow[] };
 export type HubForm = { player: string; club: string; club_logo: string; rating: number; ovr: number; pos: string; age: number; photo: string; league: string; league_name: string };
@@ -580,7 +581,7 @@ export type HomeAll = { window: Context["window"]; leagues: { key: string; name:
   movers_up?: HubMover[]; movers_down?: HubMover[]; movers_basis?: "2w" | "season";
   golden_boot?: Record<string, HubBoot[]>; tots?: Record<string, TotsPlayer[]>; injury_impact?: InjuryImpactRow[];
   // 리그 전체 집계(목록은 리그별 상위 몇 건뿐) — 예전 스냅샷엔 없을 수 있음
-  summary?: { spend_eur: number; signings: number; manager_changes: number; injured: number }; generated_at?: string };
+  summary?: { spend_eur: number; signings: number; manager_changes: number; manager_changes_inseason?: number; injured: number }; generated_at?: string };
 export const getHomeAll = () => j<HomeAll>(`/api/home/all`);
 // 매치 센터 — 다가오는 경기·빅매치(src/match_center.py). kst 는 한국 시간 표기, d_day 는 오늘 기준.
 export type FixtureSide = { team: string; league: string | null; rank: number | null; points: number | null;

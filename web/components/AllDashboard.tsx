@@ -221,7 +221,7 @@ export default function AllDashboard({ onPick, switcher }: { accent?: string; on
             {([
               ["SUMMER SPEND", s.spend_eur, (v: number) => (v < 1e6 ? "€0" : fmtEur(v)), `여름 이적료 · ${d.leagues.length}개 리그`],
               ["SIGNINGS", s.signings, undefined, "영입 · 임대 제외"],
-              ["MANAGER CHANGES", s.manager_changes, undefined, "감독 교체 · 시즌 시작 후"],
+              ["MANAGER CHANGES", s.manager_changes, undefined, `이번 시즌 감독 교체 · 시즌 중 ${s.manager_changes_inseason ?? 0}`],
               ["INJURED", s.injured, undefined, `현재 부상 결장 · ${d.leagues.length}개 리그`],
             ] as [string, number, ((v: number) => string) | undefined, string][]).map(([l, v, f, m]) => (
               <div className="kpi5" key={l}><span className="kpi5-l">{l}</span><b className="kpi5-v"><CountUp value={v} format={f} /></b><span className="kpi5-m">{m}</span></div>
@@ -316,13 +316,13 @@ export default function AllDashboard({ onPick, switcher }: { accent?: string; on
           {d.top_deals.length > 6 && <button className="more5" onClick={() => setDealsMore((v) => !v)}>{dealsMore ? "SHOW LESS" : `SHOW ${d.top_deals.length - 6} MORE`}</button>}
         </section>
         <section className="card h5-card h5-side">
-          <SectionHead title="MANAGER MOVES" kr="감독 교체" meta={`${d.manager_changes.length}건`} />
+          <SectionHead title="MANAGER MOVES" kr="감독 교체" meta={`시즌 중 ${d.manager_changes.filter((c) => c.in_season).length}건 · 최근 순`} />
           <div className="pr5-list">
             {d.manager_changes.slice(0, 7).map((c, i) => (
               <button className="mg5" key={i} onClick={() => onPick(c.team, c.league)}>
                 {c.photo ? <img className="mg5-ph" src={c.photo} alt="" /> : c.logo ? <img className="mg5-ph logo" src={c.logo} alt="" /> : <span className="mg5-ph" />}
                 <span className="mg5-who"><b>{c.current}</b><span>{c.logo && <img src={c.logo} alt="" />}{c.team} · {c.previous} 후임</span></span>
-                <span className="mg5-date">{c.changed_at.slice(5).replace("-", ".")}</span>
+                <span className="mg5-date">{c.changed_at ? c.changed_at.slice(5).replace("-", ".") : (c.when_label ?? "")}</span>
               </button>
             ))}
             {d.manager_changes.length === 0 && <p className="empty5">감독 교체 없음</p>}

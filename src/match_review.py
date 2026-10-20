@@ -127,7 +127,11 @@ def build(p: dict, home: str, away: str, fans: dict | None = None, elo: dict | N
             if deficit[s] >= 2:
                 lines.append(f"{name[s]}, {deficit[s]}골 차를 따라잡아 승점 1을 챙겼다.")
     if decisive and margin <= 2:   # 대승이면 결승골이 의미 없다
-        lines.append(f"결승골은 {decisive['minute']} {decisive['scorer']}" + (f"(도움 {decisive['assist']})" if decisive["assist"] else "") + ".")
+        if decisive["kind"] == "og":   # 자책골이면 득점자는 상대 선수 — '결승골은 72' Travassos'로 보이면 안 된다(2026-10-20 점검)
+            lines.append(f"결승골은 {decisive['minute']} {name[other[decisive['side']]]} {decisive['scorer']}의 자책골.")
+        else:
+            lines.append(f"결승골은 {decisive['minute']} {decisive['scorer']}" + (f"(도움 {decisive['assist']})" if decisive["assist"] else "")
+                         + (" 페널티킥" if decisive["kind"] == "pen" else "") + ".")
     # 득점자 묶기(멀티골 강조)
     by: dict[tuple, list] = {}
     for g in p["goals"]:
