@@ -327,6 +327,62 @@
    "away": "Estoril",
    "at": "2026-10-20T19:06:57+00:00",
    "model": "gemini-3.5-flash"
+  },
+  "401915397": {
+   "text": "Liverpool가 Villarreal을 상대로 4-3 승리를 거뒀다. 전반 4' Georges Mikautadze와 29' Sergi Cardona의 득점으로 Villarreal이 앞서갔으나, 36'와 65' Alexis Mac Allister, 45'+2' Ronald Araújo, 68' Florian Wirtz가 득점하며 Liverpool가 경기를 뒤집었고 87' Tani Oluwaseyi가 한 골을 만회했다. 슈팅 22-14, 유효 슈팅 7-5로 기록된 경기 지표에서 Liverpool가 우세했다. 팬 투표와 모델 및 ClubElo의 Liverpool 승리 예측이 적중했다.",
+   "date": "2026-10-20",
+   "home": "Liverpool",
+   "away": "Villarreal",
+   "at": "2026-10-20T21:16:57+00:00",
+   "model": "gemini-flash-lite-latest"
+  },
+  "401915401": {
+   "text": "Manchester City가 AEK Athens를 상대로 5-1 대승을 거뒀다. 전반 12' Elliot Anderson의 선제골로 앞선 Manchester City는 Phil Foden이 34', 65', 76'에 득점하며 해트트릭을 기록했고, 52' Stavros Pilios가 득점한 AEK Athens를 따돌리며 57' Rayan Cherki의 추가골을 더해 승리를 확정했다. 점유율 63.6대 36.4, 슈팅 17-11, 유효 슈팅 7-3 등 경기 기록 전반에서 Manchester City가 상대를 압도했다. 팬 투표 88%와 ClubElo 86% 확률로 Manchester City의 승리를 점쳤던 사전 예측 역시 적중했다.",
+   "date": "2026-10-20",
+   "home": "Manchester City",
+   "away": "AEK Athens",
+   "at": "2026-10-20T21:17:09+00:00",
+   "model": "gemini-flash-lite-latest"
+  },
+  "401915392": {
+   "text": "Stuttgart와 Atlético Madrid의 챔피언스리그 경기는 1-1 무승부로 종료되었다. 36' Jamie Leweling의 선제골로 Stuttgart가 앞서 나갔으나, 47' Ademola Lookman의 도움을 받은 Julián Álvarez가 동점골을 기록했고 64'에는 Atlético Madrid의 Morten Hjulmand가 퇴장당했다. Stuttgart는 점유율 54.1%와 슈팅 18개를 기록하며 Atlético Madrid보다 공격적인 경기를 펼쳤다. 경기 전 팬 투표와 모델이 Atlético Madrid의 승리를 예상했으나 결과는 적중하지 않았다.",
+   "date": "2026-10-20",
+   "home": "Stuttgart",
+   "away": "Atlético Madrid",
+   "at": "2026-10-20T21:17:17+00:00",
+   "model": "gemini-3.1-flash-lite"
+  },
+  "401915398": {
+   "text": "PSV가 Porto를 상대로 1-0 승리를 거두며 경기를 마무리했다. 57분에 Sven Mijnans의 도움을 받은 Guus Til이 결승골을 터뜨렸다. 경기 기록 비교에서는 점유율 40.4% 대 59.6%, 슈팅 14회 대 18회로 PSV가 앞섰고 패스 성공률에서도 80% 대 90으로 우위를 보였다. 팬 투표, 모델, ClubElo 모두 Porto의 승리를 예측했으나 빗나갔다.",
+   "date": "2026-10-20",
+   "home": "Porto",
+   "away": "PSV",
+   "at": "2026-10-20T21:17:35+00:00",
+   "model": "gemini-flash-lite-latest"
+  },
+  "401915399": {
+   "text": "PSG가 Barcelona를 상대로 4-2 승리를 거두었다. 전반 38' Désiré Doué의 득점으로 앞서간 PSG는 후반전에 터진 Lucas Hernández, Vitinha, Fabián Ruiz의 골을 더해 Xavi Espart와 Lamine Yamal이 골을 넣은 Barcelona를 제쳤다. 점유율은 Barcelona가 52.8%로 우세했으나, 슈팅 수에서 22대 18, 유효 슈팅 수에서 15대 5로 앞선 PSG가 공세에서 우위를 보였다. 팬 투표와 모델은 Barcelona의 승리를 예측했으나 ClubElo의 PSG 승리 예측이 적중했다.",
+   "date": "2026-10-20",
+   "home": "PSG",
+   "away": "Barcelona",
+   "at": "2026-10-20T21:17:43+00:00",
+   "model": "gemini-flash-lite-latest"
+  },
+  "401915400": {
+   "text": "Napoli가 Bodo/Glimt를 상대로 4-3 승리를 거뒀다. 전반 1' Matteo Politano의 선제골로 시작해 27' Bodo/Glimt의 Jens Petter Hauge가 동점골을 넣었으며, 이후 Scott McTominay의 멀티골과 88' Odin Bjørtuft의 자책골 등이 터지며 난타전 끝에 승부가 갈렸다. 점유율에서는 Bodo/Glimt가 56.8% 대 43.2%로 우세했으나 슈팅 수에서는 Napoli가 17개로 Bodo/Glimt의 15개보다 앞섰다. 팬 투표와 ClubElo가 Napoli의 승리를 예상한 사전 예측은 그대로 적중했다.",
+   "date": "2026-10-20",
+   "home": "Napoli",
+   "away": "Bodo/Glimt",
+   "at": "2026-10-20T21:17:54+00:00",
+   "model": "gemini-flash-lite-latest"
+  },
+  "401915402": {
+   "text": "Roma가 Slovan Bratislava를 상대로 4-0 완승을 거두었다. 전반 21' Mario Hermoso의 헤더 득점으로 앞서간 Roma는 39' Nahuel Molina, 52' Niccolò Pisilli, 58' Donyell Malen의 페널티킥 득점을 더해 점수 차를 벌렸다. 경기에서 Roma는 점유율 72.7%대 27.3%, 슈팅 수 26대 1로 경기를 압도했다. 팬 투표와 ClubElo가 예상했던 Roma의 승리가 그대로 적중했다.",
+   "date": "2026-10-20",
+   "home": "Roma",
+   "away": "Slovan Bratislava",
+   "at": "2026-10-20T21:18:02+00:00",
+   "model": "gemini-flash-lite-latest"
   }
  },
  "fails": {}
