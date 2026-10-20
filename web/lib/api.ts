@@ -583,7 +583,9 @@ export type EloProb = { h: number; d: number; a: number };
 // 우리 예측 모델 v2(src/predict_model.py) — xG·골 공격/수비 강도 + 선수 평점(OVR) 사전값 + Dixon-Coles. 백테스트 scripts/backtest_model.py
 // inputs(v3) — elo_d: 홈 Elo − 원정 Elo · miss_h/miss_a: 부상·출장정지로 빠진 베스트 11 평균 OVR 손실
 export type ModelProb = { h: number; d: number; a: number; xg_h: number; xg_a: number; score: string; btts: number; o25: number; n_h: number; n_a: number;
-  inputs?: { elo_d?: number; elo_h?: number; elo_a?: number; miss_h?: number; miss_a?: number } };
+  // intl_*: A매치 휴식기 직후 첫 경기 — 돌아오는 대표 선수 수 · intl_far_*: 그중 유럽 밖 대표팀(참고 표시, 확률엔 안 넣음)
+  inputs?: { elo_d?: number; elo_h?: number; elo_a?: number; miss_h?: number; miss_a?: number;
+    intl_h?: number; intl_a?: number; intl_far_h?: number; intl_far_a?: number } };
 export type Fixture = { event_id: string | null; comp_code: string; comp: string; kickoff: string; kst: string;
   date: string; d_day: number; home: FixtureSide; away: FixtureSide; big: number; tags: string[]; prob?: WinProb | null;
   fans?: FanVote; elo?: EloProb; model?: ModelProb };
@@ -706,3 +708,17 @@ export type OpsStatus = {
   watchdog: { checked: string; results: Record<string, string[]> } | null;
 };
 export const getOpsStatus = () => j<OpsStatus>("/api/ops/status");
+
+// ── 국가대표(INTERNATIONAL) — A매치 기간·소집 명단(/api/intl/team) ──
+export type IntlWindow = { start: string; first_match: string; end: string; matches: number; club_matches: number; kind: "break" | "tournament"; comps: string[]; label: string };
+export type IntlFixture = { date: string; opp: string; home: boolean; comp: string; score: string | null };
+export type IntlPlayer = {
+  player: string; nation: string; conf: string; flag: string; fifa_rank: number | null; caps: number | null; goals: number | null;
+  pos: string; squad_for: string | null; far: boolean; fixtures: IntlFixture[]; last_results: IntlFixture[];
+};
+export type IntlTeam = {
+  window: IntlWindow | null; state: "now" | "upcoming" | "none"; days_to: number | null; last_window: IntlWindow | null;
+  squad_state: "announced" | "previous" | "none"; players: IntlPlayer[]; summary: { n: number; far: number; nations: number };
+};
+export const getIntlTeam = (team: string, league: string = _league) =>
+  j<IntlTeam>(`/api/intl/team/${encodeURIComponent(team)}?league=${encodeURIComponent(league)}`);

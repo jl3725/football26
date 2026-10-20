@@ -96,6 +96,7 @@ from api.routers.meta import router as meta_router  # noqa: E402
 from api.routers.teams import router as teams_router  # noqa: E402
 from api.routers.teams import teams, teams_next  # noqa: E402
 from api.routers.world_cup import router as world_cup_router  # noqa: E402
+from api.routers.intl import router as intl_router  # noqa: E402
 from api.services.player_data import extra_photo_map as _xtra_photo  # noqa: E402
 from api.services.player_data import number as _num  # noqa: E402
 from api.services.player_data import photo_url as _photo  # noqa: E402
@@ -107,6 +108,7 @@ app = FastAPI(title="Football Scout API", version="0.2.0")
 app.include_router(meta_router)
 app.include_router(teams_router)
 app.include_router(world_cup_router)
+app.include_router(intl_router)
 # gzip — 큰 응답(예: database 전리그 766KB) 전송량을 ~5분의 1로 줄여 로딩 단축.
 app.add_middleware(GZipMiddleware, minimum_size=1024)
 # CORS — 브라우저에서 API에 직접 접근할 origin만 명시한다.
@@ -5088,15 +5090,23 @@ def _team_elo(before: str | None = None) -> dict:
 
 
 @_memo(ttl=1800)
-def _absence_loss(league: str) -> dict:
+def _absence_loss(league: str, on: str | None = None) -> dict:
     """{팀: 결장 전력 손실} — 베스트 11 평균 OVR − 결장자(부상·출장정지, _injuries_table) 뺀 베스트 11 평균.
-    예측 모델 v3 입력(src/predict_model.py b_av). 백테스트와 같은 '전 포지션 상위 11명' 기준."""
+    예측 모델 v3 입력(src/predict_model.py b_av). 백테스트와 같은 '전 포지션 상위 11명' 기준.
+    on(경기 날짜)이 리그가 계속되는 국가대표 대회(아시안컵 등) 기간이면 그 대회 소집 선수도 결장(api/services/intl)."""
     import positions as ps  # noqa: PLC0415
+    from api.services import intl as _intl  # noqa: PLC0415
     pf, inj = _pf(league), _injuries_table(league)
     out: dict = {}
-    if pf is None or pf.empty or inj is None or inj.empty:
+    if pf is None or pf.empty:
         return out
-    hurt = {(str(s), ps.norm_name(p)) for s, p in zip(inj["squad"], inj["player"])}
+    hurt = set() if inj is None or inj.empty else {(str(s), ps.norm_name(p)) for s, p in zip(inj["squad"], inj["player"])}
+    try:
+        hurt |= _intl.tournament_absent(league, on)
+    except Exception:  # noqa: BLE001
+        pass
+    if not hurt:
+        return out
     for sq, g in pf.groupby("squad"):
         vals = [(float(o), (str(sq), ps.norm_name(p)) in hurt) for p, o in zip(g["player"], g["_ovr"]) if o == o]
         top = sorted((v for v, _ in vals), reverse=True)[:11]
@@ -5126,9 +5136,20 @@ def _attach_model(m: dict, before: str | None = None) -> None:
         except Exception:  # noqa: BLE001
             pass
         if not before:
+            on = str(m.get("date") or "")[:10] or None
             try:
-                extra["miss_h"] = _absence_loss(hl).get(h, 0.0)
-                extra["miss_a"] = _absence_loss(al).get(a, 0.0)
+                from api.services import intl as _intl  # noqa: PLC0415
+                t_on = on if _intl.in_tournament(on) else None   # 날짜는 대표팀 대회 기간만 — 나머지는 리그 캐시 하나
+                extra["miss_h"] = _absence_loss(hl, t_on).get(h, 0.0)
+                extra["miss_a"] = _absence_loss(al, t_on).get(a, 0.0)
+            except Exception:  # noqa: BLE001
+                pass
+            try:   # A매치 휴식기 직후 첫 경기 — 돌아오는 대표 선수(유럽 밖 장거리 포함). 참고 표시만, 확률엔 안 넣음
+                from api.services import intl as _intl  # noqa: PLC0415
+                for side, team, lg in (("h", h, hl), ("a", a, al)):
+                    rt = _intl.returnees(team, lg, on)
+                    if rt:
+                        extra[f"intl_{side}"], extra[f"intl_far_{side}"] = rt["n"], rt["far"]
             except Exception:  # noqa: BLE001
                 pass
         r = pm.predict(sh, h, None if sa is sh else sa, a, extra=extra)

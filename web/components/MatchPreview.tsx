@@ -146,6 +146,12 @@ function Drawer({ m: m0, onClose }: { m: Fixture; onClose: () => void }) {
                           결장 손실 {m.home.team} <b>−{(m.model.inputs.miss_h ?? 0).toFixed(1)}</b> · {m.away.team} <b>−{(m.model.inputs.miss_a ?? 0).toFixed(1)}</b>
                         </span>
                       )}
+                      {(m.model.inputs.intl_h != null || m.model.inputs.intl_a != null) && (
+                        <span title="A매치 기간 직후 첫 경기 — 대표팀에 다녀온 선수(유럽 밖 = 장거리 이동). 참고용이며 확률 계산에는 넣지 않았습니다(효과를 검증할 과거 소집 기록이 없음)">
+                          A매치 복귀 {m.home.team} <b>{m.model.inputs.intl_h ?? 0}</b>{m.model.inputs.intl_far_h ? `(유럽 밖 ${m.model.inputs.intl_far_h})` : ""}
+                          {" · "}{m.away.team} <b>{m.model.inputs.intl_a ?? 0}</b>{m.model.inputs.intl_far_a ? `(유럽 밖 ${m.model.inputs.intl_far_a})` : ""}
+                        </span>
+                      )}
                     </div>
                   )}
                   <p className="pv-note" style={{ marginTop: 6 }}>

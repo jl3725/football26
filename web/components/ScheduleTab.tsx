@@ -6,6 +6,7 @@ import { activeLeague, getSchedule, getMatch, type Schedule, type MatchDetail, t
 import { compEnKo } from "@/lib/match";
 import { ReviewSections } from "./MatchReview";
 import Pitch from "./Pitch";
+import IntlBreak from "./IntlBreak";
 import { usePeek } from "./PlayerPeek";
 import { Skel, SkelPitch, SkelRows } from "./Skeleton";
 
@@ -199,6 +200,8 @@ export default function ScheduleTab({ team, accent }: { team: string; accent: st
         </div>
         {sel >= 0 && data.matches[sel] && <MatchDetailView team={team} match={data.matches[sel]} accent={accent} />}
       </div>
+      {/* 다음 A매치 기간·소집 선수 — 현재 시즌을 볼 때만 */}
+      {(!data.seasons.length || data.season === data.seasons[0]) && <IntlBreak team={team} />}
     </div>
   );
 }
