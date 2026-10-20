@@ -1,6 +1,8 @@
 name: Daily News Fetch
 
-# 2시간마다 ESPN+RSS+Google News(팀별 현지어·영어 이적) 뉴스를 수집해 data/news.db 에 누적하고, 분류(종류·이적 단계·기자)·번역 뒤 커밋.
+# 2시간마다 ESPN+RSS+Google News(팀별 현지어·영어 이적) 뉴스를 수집해 data/news.db 에 누적하고, 분류(종류·이적 단계·기자)·번역 뒤
+# news.db 는 main 이 아닌 data-news 브랜치(압축본 한 개, 강제 푸시)에 두고 main 에는 포인터 data/news_db.ref.json 만 커밋
+# (src/news_store.py — news.db 가 저장소 이력의 99%였다, 2026-10-21). Render 는 그 main 커밋으로 다시 배포하며 포인터의 sha 를 받는다.
 # 번역은 무료 공급자만(src/translate.py): GEMINI_API_KEY 시크릿이 있으면 Gemini 무료 등급, 없거나
 # 한도 소진이면 구글 무료 번역. 실패한 건 비워 두고 다음 실행이 채운다. 수동 실행도 가능(workflow_dispatch).
 on:
@@ -33,6 +35,10 @@ jobs:
         # 뉴스 수집 체인 실제 의존성만(ui.common 이 unidecode 사용, streamlit 은 이제 지연 import 라 불필요)
         run: pip install requests feedparser pandas unidecode
 
+      # 지난 실행의 news.db — 못 받으면 멈춘다(빈 DB 로 시작해 보관소를 덮어쓰지 않게)
+      - name: Restore news.db (data-news)
+        run: python src/news_store.py pull --strict
+
       - name: Fetch & store news
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
@@ -50,14 +56,17 @@ jobs:
         run: |
           echo "### News data changes" >> "$GITHUB_STEP_SUMMARY"
           echo '```text' >> "$GITHUB_STEP_SUMMARY"
-          git status --short data/news.db >> "$GITHUB_STEP_SUMMARY"
+          ls -la data/news.db >> "$GITHUB_STEP_SUMMARY" 2>&1 || true
+          cat data/news_db.ref.json >> "$GITHUB_STEP_SUMMARY" 2>&1 || true
           echo '```' >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Commit updated news.db
+      - name: Store news.db + commit pointer
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/news.db data/ops/runs/ data/ai/
+          # 먼저 data-news 에 올리고(기사 수가 직전의 80% 미만이면 거부) 그 sha 를 포인터로 — Render 가 main 커밋으로 배포하며 받는다
+          python src/news_store.py push
+          git add data/news_db.ref.json data/ops/runs/ data/ai/
           # Google News 검색용 현지 클럽 표기(위키 언어 간 링크, 7일 캐시) · AI 가 찾은 기자 목록(src/news_classify.py)
           # 매체·기자 적중률(src/news_reliability.py — 루머 vs 실제 이적)
           for f in data/club_local_names.json data/news_journalists.csv data/news_reliability.csv data/news_claims.csv; do [ -f "$f" ] && git add "$f"; done

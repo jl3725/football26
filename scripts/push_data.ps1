@@ -7,7 +7,8 @@ if (-not $Root) { $Root = Resolve-Path (Join-Path $PSScriptRoot "..") }
 Set-Location $Root
 
 # 데이터 산출물만 스테이징 (코드 변경은 건드리지 않음)
-git add -- "data/*.csv" "data/*.json" "data/news.db" "data/*.md" 2>$null
+# news.db 는 main 에 커밋하지 않는다 — data-news 보관소(src/news_store.py push, 클라우드 daily_news 가 올림)
+git add -- "data/*.csv" "data/*.json" "data/*.md" 2>$null
 
 git diff --cached --quiet
 if ($LASTEXITCODE -eq 0) {

@@ -69,3 +69,5 @@ data/eval/ratings_*.csv
 # 배포 빌드에서 만드는 팀 라인 전력 스냅샷(scripts/precompute_team_units.py) — 커밋하지 않음
 data/team_units.json
 data/runtime_cache/
+# 뉴스 sqlite 는 main 이력 밖 data-news 브랜치에(src/news_store.py) — main 에는 포인터 data/news_db.ref.json 만
+data/news.db

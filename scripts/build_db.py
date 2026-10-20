@@ -96,7 +96,13 @@ def build() -> None:
         total_rows += len(combined)
         print(f"  · {stem:38s} {len(combined):6d} rows  ({len(items)} file)")
 
-    # 2) news.db articles 병합
+    # 2) news.db articles 병합 — main 에 없으면 data-news 보관소에서 받는다(src/news_store.py, Render 빌드도 여기서)
+    if not NEWS_DB.exists():
+        try:
+            import news_store  # noqa: PLC0415
+            news_store.ensure()
+        except Exception as e:  # noqa: BLE001 — 받지 못해도 나머지 표는 만든다
+            print(f"  ! news.db 받기 실패: {e}")
     if NEWS_DB.exists():
         try:
             ndf = pd.read_sql("SELECT * FROM articles", sqlite3.connect(NEWS_DB))

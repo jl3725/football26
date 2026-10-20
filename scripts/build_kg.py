@@ -334,8 +334,9 @@ def _load_captains(league: str, n2p: dict) -> list[dict]:
 
 def _load_news_pairs(n2p_by_league: dict, days: int = 60) -> tuple[list[dict], dict[str, int]]:
     """news.db 기사 선수 태그 → (같은 기사 선수 쌍 [{a,b,n,last}], pid → 기사 수). 최근 days 일(처음 수집일 기준)."""
+    import news_store  # noqa: PLC0415 — main 이력 밖 data-news 보관소
     db = ROOT / "data" / "news.db"
-    if not db.exists():
+    if not db.exists() and (db != news_store.DB or news_store.ensure() is None):   # 시험용 ROOT 면 받지 않는다
         return [], {}
     since = (dt.date.today() - dt.timedelta(days=days)).isoformat()
     try:

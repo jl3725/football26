@@ -187,9 +187,10 @@ def check_workflows() -> list[str]:
 
 
 def check_news() -> list[str]:
-    db = ROOT / "data" / "news.db"
-    if not db.exists():
-        return ["data/news.db 없음"]
+    import news_store  # noqa: PLC0415 — main 이력 밖 data-news 보관소에서 받아 본다
+    db = news_store.ensure()
+    if db is None:
+        return ["data/news.db 없음 — data-news 보관소에서도 받지 못함"]
     c = sqlite3.connect(db)
     last = c.execute("SELECT max(first_seen) FROM articles").fetchone()[0] or ""
     since = (NOW.date() - dt.timedelta(days=2)).isoformat()
