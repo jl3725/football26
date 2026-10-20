@@ -115,12 +115,15 @@ function Detail({ n, team }: { n: PositionNeed; team: string }) {
   );
 }
 
-export default function ScoutNeeds({ needs, team, accent }: { needs: Needs; team: string; accent: string }) {
+export default function ScoutNeeds({ needs, team, accent, onRole }: {
+  needs: Needs; team: string; accent: string; onRole?: (role: string) => void;   // 고른 포지션 → 아래 스카우팅 풀 필터
+}) {
   const roles = needs.positions ?? [];
   const byRole = Object.fromEntries(roles.map((r) => [r.role, r]));
   const top = roles[0]?.role ?? "";
-  const [sel, setSel] = useState(top);
-  useEffect(() => { setSel(top); }, [team, top]);
+  const [sel, setSelRaw] = useState(top);
+  useEffect(() => { setSelRaw(top); }, [team, top]);
+  const setSel = (r: string) => { setSelRaw(r); onRole?.(r); };
   const cur = byRole[sel] ?? roles[0];
   const hot = roles.filter((r) => r.urgency >= 15);
   const p = needs.policy;

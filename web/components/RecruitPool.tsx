@@ -103,10 +103,12 @@ function Card({ p, accent }: { p: DiscoverPick; accent: string }) {
 
 const PAGE = 12;
 
-export default function RecruitPool({ team, accent }: { team: string; accent: string }) {
+export default function RecruitPool({ team, accent, focusRole }: { team: string; accent: string; focusRole?: string }) {
   const [disc, setDisc] = useState<Discover | null>(null);
   const [loading, setLoading] = useState(true);
   const [role, setRole] = useState("");
+  // 니즈 피치에서 포지션을 누르면 풀이 그 포지션으로(예전엔 피치와 풀이 따로 놀았다, 2026-10-20 점검)
+  useEffect(() => { if (focusRole !== undefined) setRole(focusRole); }, [focusRole]);
   const [lgs, setLgs] = useState<string[]>([]);     // 빈=전체
   const [ageMin, setAgeMin] = useState(16);
   const [ageMax, setAgeMax] = useState(34);

@@ -37,6 +37,7 @@ export default function TransferTab({ team, accent }: { team: string; accent: st
   const [rec, setRec] = useState<Recommend | null>(null);
   const [needs, setNeeds] = useState<Needs | null>(null);
   const [view, setView] = useState<"scout" | "fit" | "sim">("scout");
+  const [focusRole, setFocusRole] = useState<string | undefined>(undefined);   // 니즈 피치에서 고른 포지션(TM 표기)
   useEffect(() => {
     let a = true; setData(null); setRec(null); setNeeds(null);
     getTransfers(team).then((d) => a && setData(d)).catch(() => {});
@@ -82,7 +83,8 @@ export default function TransferTab({ team, accent }: { team: string; accent: st
         <ManagerSimPanel team={team} accent={accent} />
       ) : (<>
       {/* ── SCOUT DESK ── 포지션 니즈 v2(있으면) · 없으면 예전 라인 단위 */}
-      {needs && (needs.positions?.length ?? 0) > 0 && <ScoutNeeds needs={needs} team={team} accent={accent} />}
+      {needs && (needs.positions?.length ?? 0) > 0 && <ScoutNeeds needs={needs} team={team} accent={accent}
+        onRole={(r) => setFocusRole(BUCKET_TM[r] ?? "")} />}
       {needs && !(needs.positions?.length) && (
         <div className="scout-desk">
           <div className="scout-hd">
@@ -144,9 +146,9 @@ export default function TransferTab({ team, accent }: { team: string; accent: st
       </div>
 
       {/* 포지션별 보강 후보 — 벡터 스타일-핏 + 필터/KPI/정렬 (RecruitPool) */}
-      <div className="card" style={{ marginTop: 16 }}>
-        <h3><Bar c={accent} />스카우팅 풀 <span className="rating-note">· 전 리그</span></h3>
-        <RecruitPool team={team} accent={accent} />
+      <div className="card" style={{ marginTop: 16, scrollMarginTop: 12 }} id="recruit-pool">
+        <h3><Bar c={accent} />SCOUTING POOL <span className="rating-note">· 스카우팅 풀 · 전 리그{focusRole ? ` · ${focusRole}` : ""}</span></h3>
+        <RecruitPool team={team} accent={accent} focusRole={focusRole} />
       </div>
 
       {/* 드림 타깃 — 최상위급이나 티어·라이벌상 비현실 */}

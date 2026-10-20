@@ -3605,7 +3605,8 @@ def _position_needs(team: str, league: str) -> dict:
                       "out_w": round(_weeks_out((inj.get(nk) or {}).get("until"), today), 1) if nk in inj else 0.0,
                       "recent": int(rec) if rec is not None and rec == rec else None,
                       "form": int(frm) if frm is not None and frm == frm else None,
-                      "contract": str(r.get("tm_contract_until") or "")[:4]})
+                      "contract": str(r.get("tm_contract_until") or "")[:4],
+                      "joined": str(r.get("tm_joined_date") or "")[:10]})
     demand = _formation_bucket_needs(team, league) or {}
     # 이번 창 이동(임대 제외) — 떠난 선수 OVR 은 지난 시즌 이 팀 시절 값(없으면 이적료 기준점)
     moves: dict = {}
@@ -3688,7 +3689,11 @@ def _position_needs(team: str, league: str) -> dict:
             sig["aging"] = [{"player": c["player"], "age": c["age"]} for c in old]
             pts += 10
             reasons.append("주전 " + ", ".join(f"{c['player'].split()[-1]} {c['age']}세" for c in old) + " · 젊은 후계 없음")
-        exp = [c for c in starters if c["contract"] and c["contract"] <= str(today.year + 1)]
+        # 올해 이후 만료만, 이번 여름 새로 온 선수는 제외 — TM 계약일이 전 소속 값으로 남아 'Torp ~2024'·
+        # 'Rushworth ~2026'(€25.7M 영입)이 근거로 나왔다(2026-10-20 점검)
+        season_start = f"{SEASON_START}-07-01"
+        exp = [c for c in starters if c["contract"] and str(today.year) <= c["contract"] <= str(today.year + 1)
+               and not (c.get("joined") and c["joined"] >= season_start)]
         if exp and d:
             sig["contract"] = [{"player": c["player"], "until": c["contract"]} for c in exp]
             pts += 8
