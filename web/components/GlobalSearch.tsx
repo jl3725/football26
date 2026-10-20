@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { getDatabase, fmtEur, type DbPlayer } from "@/lib/api";
+import { getDatabase, getNamesKo, foldName, fmtEur, type DbPlayer } from "@/lib/api";
 import { hexA, tier } from "@/lib/ui";
 import Icon from "./Icon";
 
@@ -30,7 +30,11 @@ export default function GlobalSearch({ accent, onPickPlayer, onPickTeam }: {
   const inputRef = useRef<HTMLInputElement>(null);
   const rowRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
+  const [ko, setKo] = useState<{ players: Record<string, string>; clubs: Record<string, string> }>({ players: {}, clubs: {} });
   useEffect(() => { getDatabase().then((d) => setPlayers(d.players)).catch(() => {}); }, []);
+  useEffect(() => { if (open) getNamesKo().then(setKo).catch(() => {}); }, [open]);
+  // 검색 키 = 영문 이름(악센트 무시) + 한글 이름 — 'mbappe'·'odegaard'·'라이스' 모두 찾음
+  const keys = useMemo(() => players.map((p) => `${foldName(p.player)} ${ko.players[`${p.player}|${p.squad}`] ?? ""}`), [players, ko]);
 
   useEffect(() => {
     if (open) {
@@ -51,24 +55,24 @@ export default function GlobalSearch({ accent, onPickPlayer, onPickTeam }: {
 
   const close = () => { setOpen(false); setQ(""); };
 
-  const s = q.trim().toLowerCase();
+  const s = foldName(q.trim());
   const short = s.length < 2;
 
   const suggestions = useMemo(() => [...players].sort((a, b) => b.ovr - a.ovr).slice(0, 7), [players]);
 
   const { pRes, cRes } = useMemo(() => {
     if (short) return { pRes: [] as DbPlayer[], cRes: [] as Club[] };
-    const pRes = players.filter((p) => p.player.toLowerCase().includes(s)).sort((a, b) => b.ovr - a.ovr).slice(0, 8);
+    const pRes = players.filter((_, i) => keys[i].includes(s)).sort((a, b) => b.ovr - a.ovr).slice(0, 8);
     const seen = new Set<string>();
     const cRes: Club[] = [];
     for (const p of players) {
-      if (p.squad && p.squad.toLowerCase().includes(s) && !seen.has(p.squad)) {
+      if (p.squad && `${foldName(p.squad)} ${ko.clubs[p.squad] ?? ""}`.includes(s) && !seen.has(p.squad)) {
         seen.add(p.squad); cRes.push({ club: p.squad, league: p.league, logo: p.logo });
         if (cRes.length >= 5) break;
       }
     }
     return { pRes, cRes };
-  }, [s, short, players]);
+  }, [s, short, players, keys, ko]);
 
   const items: Item[] = useMemo(() => (
     short

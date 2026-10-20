@@ -13,6 +13,7 @@
 from __future__ import annotations
 
 import datetime as dt
+import re
 
 KST = dt.timezone(dt.timedelta(hours=9))
 _WD = "월화수목금토일"
@@ -79,12 +80,23 @@ def matches_from(rows_by_league: dict, today: dt.date, days: int, team: str | No
     """예정 경기 → 경기 단위(중복 제거: 리그 경기는 양 팀 행, 유럽대회는 두 리그 파일에 같은 경기)."""
     end = today + dt.timedelta(days=days)
     seen: dict[str, dict] = {}
+    # 팀 지정이면 그 팀 경기(event_id)를 모든 리그 파일에서 — 상대가 다른 리그면 그쪽 파일 행이 우리 표기·리그로
+    # 바꿔 끼운다(바르사 일정의 'Paris Saint-Germain' → PSG·리그1: 순위·OVR·모델 예측이 살아남, 2026-10-20 점검)
+    ids = espn_id_names(rows_by_league)
+    team_eids: set[str] = set()
+    if team:
+        for df in rows_by_league.values():
+            if df is not None and not df.empty and "event_id" in df.columns:
+                team_eids |= {str(e) for e in df.loc[df["squad"] == team, "event_id"].dropna()}
     for lg, df in rows_by_league.items():
         if df is None or df.empty:
             continue
         sub = df[df["status"] != "completed"]
         if team:
-            sub = sub[sub["squad"] == team]
+            hit = sub["squad"] == team
+            if team_eids and "event_id" in sub.columns:
+                hit = hit | sub["event_id"].astype(str).isin(team_eids)
+            sub = sub[hit]
         for r in sub.itertuples(index=False):
             eid = str(getattr(r, "event_id", "") or "")
             kickoff = getattr(r, "kickoff", "") if hasattr(r, "kickoff") else ""
@@ -93,7 +105,8 @@ def matches_from(rows_by_league: dict, today: dt.date, days: int, team: str | No
             if t is None or not (today <= t.date() <= end):
                 continue
             me = {"team": r.squad, "league": lg}
-            opp = {"team": r.opponent, "league": None, "logo_alt": _opp_logo(r)}
+            on, ol = our_opponent(r.opponent, _opp_logo(r), ids)
+            opp = {"team": on, "league": ol, "logo_alt": _opp_logo(r)}
             home, away = (me, opp) if r.home_away == "H" else (opp, me)
             key = eid or f"{t.date()}|{home['team']}|{away['team']}"
             if key in seen:
@@ -126,10 +139,37 @@ def _opp_logo(r) -> str:
     return v if isinstance(v, str) and v.startswith("http") else ""
 
 
+_ESPN_ID = re.compile(r"/(\d+)\.png")
+
+
+def espn_id_names(rows_by_league: dict) -> dict[str, tuple[str, str]]:
+    """ESPN 팀 id → (우리 표기, 리그). 리그 경기 행의 상대는 우리 표기이고 로고 URL 에 ESPN id 가 있다 —
+    컵·유럽 경기의 ESPN 이름('Paris Saint-Germain'·'Internazionale'·'KAA Gent')을 손 별칭 없이 우리 클럽에 잇는다."""
+    out: dict[str, tuple[str, str]] = {}
+    for lg, df in rows_by_league.items():
+        if df is None or df.empty or "opponent_logo" not in df.columns:
+            continue
+        lgr = df[df["comp_code"].astype(str).str.endswith(".1")]
+        squads = set(df["squad"].astype(str))
+        for opp, logo in zip(lgr["opponent"].astype(str), lgr["opponent_logo"].astype(str)):
+            m = _ESPN_ID.search(logo)
+            if m and opp in squads:
+                out.setdefault(m.group(1), (opp, lg))
+    return out
+
+
+def our_opponent(name: str, logo: str, ids: dict[str, tuple[str, str]]) -> tuple[str, str | None]:
+    """일정 행 상대 → (우리 표기 또는 원래 이름, 우리 리그 또는 None)."""
+    m = _ESPN_ID.search(str(logo or ""))
+    hit = ids.get(m.group(1)) if m else None
+    return hit if hit else (name, None)
+
+
 def results_from(rows_by_league: dict, today: dt.date, days: int = 3) -> list[dict]:
     """최근 끝난 경기(스코어 포함, 최신순) — matches_from 과 같은 방식으로 경기 단위 중복 제거."""
     start = today - dt.timedelta(days=days)
     seen: dict[str, dict] = {}
+    ids = espn_id_names(rows_by_league)
     for lg, df in rows_by_league.items():
         if df is None or df.empty:
             continue
@@ -144,7 +184,8 @@ def results_from(rows_by_league: dict, today: dt.date, days: int = 3) -> list[di
                 continue
             eid = str(getattr(r, "event_id", "") or "")
             me = {"team": r.squad, "league": lg, "goals": gf}
-            opp = {"team": r.opponent, "league": None, "goals": ga, "logo_alt": _opp_logo(r)}
+            on, ol = our_opponent(r.opponent, _opp_logo(r), ids)
+            opp = {"team": on, "league": ol, "goals": ga, "logo_alt": _opp_logo(r)}
             home, away = (me, opp) if r.home_away == "H" else (opp, me)
             key = eid or f"{t.date()}|{home['team']}|{away['team']}"
             if key in seen:

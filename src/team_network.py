@@ -182,6 +182,11 @@ def leadership(players: list[dict], chem: dict, today: dt.date) -> dict:
 _YOUTH = re.compile(r"\b(u1[5-9]|u2[0-3]|ii|b|youth|academy|reserves|jong|castilla|primavera|sub-?\d+)\b", re.I)
 
 
+def _own_reserve(club: str, team: str) -> bool:
+    import squads as sq
+    return sq.is_own_reserve(club, team)
+
+
 def acquisition(p: dict, tin: dict | None, team: str, today: dt.date) -> dict:
     """{acq, from_club, fee_text, fee_eur, year} — 최근 두 이적창 기록 우선, 없으면 입단일·나이로 추정."""
     joined = p.get("joined")
@@ -203,8 +208,8 @@ def acquisition(p: dict, tin: dict | None, team: str, today: dt.date) -> dict:
             acq = "free"
         elif fee and fee > 0:
             acq = "transfer"
-        elif _YOUTH.search(club) or club.lower().startswith(team.lower()):
-            acq = "academy"
+        elif _YOUTH.search(club) or club.lower().startswith(team.lower()) or _own_reserve(club, team):
+            acq = "academy"                                  # Club NXT·Barça Atlètic 승격 = 유스(외부 클럽 아님)
         else:
             acq = "transfer"
         yr = year or (int(tin["season_id"]) if str(tin.get("season_id") or "").isdigit() else None)
@@ -268,9 +273,9 @@ def links(team: str, transfers: list[dict], alumni: list[dict], rumors: list[dic
     for t in transfers:
         if not t.get("club") or norm(t["club"]) in ("without club", "retired", "unknown", "career break"):
             continue
+        if canon(str(t["club"])) == team or _own_reserve(str(t["club"]), team):
+            continue                                         # 자기 2군과 오간 것은 '가까운 클럽'이 아님(바르사 → Barça Atlètic)
         c = club(str(t["club"]))
-        if canon(str(t["club"])) == team:
-            continue
         item = {"player": t["player"], "fee_text": t.get("fee_text"), "photo": t.get("photo"), "window": t.get("window")}
         (c["in"] if t.get("direction") == "in" else c["out"]).append(item)
     for a in alumni:

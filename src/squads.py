@@ -18,6 +18,7 @@ watchdog 이 '확인 필요'로 알리고, 사람이 확인한 것은 아래 ALI
 """
 from __future__ import annotations
 
+import re
 from functools import lru_cache
 
 # 리그 → {소스 표기(FBref·Understat): 표준 표기}
@@ -80,6 +81,46 @@ ALIASES: dict[str, dict[str, str]] = {
 def _fold(s: str) -> str:
     from unidecode import unidecode
     return unidecode(s).lower().strip()
+
+
+# 2군·유스 표시(TM 클럽 표기 끝·앞) — 'Arsenal U21', 'B. Dortmund II', 'Benfica B', 'Jong Ajax', 'Juve Next Gen'
+_RESERVE = re.compile(r"(\s+(u1[5-9]|u2[0-3]|ii|b|youth|academy|reserves|primavera|next gen|juvenil|sub-?\d+)$)|(^jong\s+)", re.I)
+
+
+@lru_cache(maxsize=1)
+def _reserve_table() -> dict[str, str]:
+    """이름만으로 모구단을 알 수 없는 2군(Club NXT·Barça Atlètic·RM Castilla) — data/club_reserves.csv."""
+    import csv
+    from pathlib import Path
+    p = Path(__file__).resolve().parent.parent / "data" / "club_reserves.csv"
+    if not p.exists():
+        return {}
+    with p.open(encoding="utf-8") as f:
+        return {_fold(r["reserve"]): r["parent"] for r in csv.DictReader(f)}
+
+
+def reserve_parent(club, candidates) -> str | None:
+    """2군·유스 팀이면 모구단(우리 표기, candidates 중) — 아니면 None. 'Willem II' 같은 실제 클럽 이름은
+    표시를 떼면 모구단이 안 맞아(후보 중 'Willem' 이 없음) None 이 아니라 자기 자신이 될 수 있어 호출부가 팀과 대조한다."""
+    c = str(club or "").strip()
+    hit = _reserve_table().get(_fold(c))
+    if hit:
+        return hit
+    if not _RESERVE.search(c):
+        return None
+    import team_names as tn
+    base = _RESERVE.sub("", c).strip()
+    if not base:
+        return None
+    # 'B. Dortmund' 처럼 머리글자 줄임은 떼고 한 번 더
+    return tn.best(base, list(candidates)) or tn.best(re.sub(r"\b[A-Z]\.\s*", "", base).strip(), list(candidates))
+
+
+def is_own_reserve(club, team: str, candidates=None) -> bool:
+    """이 팀의 2군·유스에서 올라온 것(내부 승격)인가 — 이적 정책·IN 목록·출신 렌즈에서 '영입'으로 세지 않는다."""
+    if not club or str(club).strip() == team:
+        return False
+    return reserve_parent(club, candidates or [team]) == team
 
 
 @lru_cache(maxsize=None)

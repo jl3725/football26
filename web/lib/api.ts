@@ -486,6 +486,13 @@ export type DbPlayer = { player: string; squad: string; league: string; logo: st
 type DbResp = { league: string; players: DbPlayer[]; nationalities: string[]; leagues: string[] };
 // 세션 내 캐시 — DB 는 세션 중 불변. 탭 재방문 시 재요청 없이 즉시(대용량 전리그 목록).
 let _dbCache: Promise<DbResp> | null = null;
+// 한글 이름 사전(전역 검색 한글 검색) — 선수 키 'Declan Rice|Arsenal'
+let _koCache: Promise<{ players: Record<string, string>; clubs: Record<string, string> }> | null = null;
+export const getNamesKo = () => (_koCache ??= j<{ players: Record<string, string>; clubs: Record<string, string> }>(`/api/names-ko`)
+  .catch((e) => { _koCache = null; throw e; }));
+// 검색용 접기 — 악센트·대소문자 무시(Mbappé = mbappe, Ødegaard = odegaard). 한글은 그대로
+export const foldName = (s: string) => s.toLowerCase().replace(/ø/g, "o").replace(/æ/g, "ae").replace(/ß/g, "ss")
+  .replace(/[łđ]/g, (c) => (c === "ł" ? "l" : "d")).normalize("NFD").replace(/[̀-ͯ]/g, "").normalize("NFC");
 export const getDatabase = () => (_dbCache ??= j<DbResp>(`/api/database`).catch((e) => { _dbCache = null; throw e; }));
 
 export type Signal = { date: string; team: string; logo: string; type: string; tone: string; icon: string; player: string; photo: string; title: string; detail: string };

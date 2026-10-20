@@ -66,6 +66,8 @@ export default function Page() {
       if (t) {
         setSel(t); setHome(false);
         setTab(TABS.some((x) => x.key === tb) ? (tb as TabKey) : "overview");
+        const pl = p.get("player");                       // ?tab=player&player=Bukayo Saka — 선수 바로 열기(공유 링크·QA)
+        if (pl) setPendingPlayer(pl);
       } else {
         setSel(DEFAULT_TEAM[l] ?? ""); setHome(true);
       }

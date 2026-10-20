@@ -1731,17 +1731,21 @@ def schedule(team: str, league: str = ACTIVE_LEAGUE, season: str = ""):
         """NaN 은 빈 문자열 — str(NaN) 이 화면에 'nan' 으로 찍히던 것."""
         return "" if v is None or (isinstance(v, float) and v != v) else str(v)
 
+    import match_center as mc  # noqa: PLC0415
+    ids = mc.espn_id_names(_fx_sources()["rows"])   # 컵·유럽 상대 ESPN 이름 → 우리 표기(PSG·Inter·Gent…)
     out = []
     for _, r in ts.iterrows():
         eid = str(r.get("event_id") or "")
         formation = ev_formation.get(eid)
         done = _txt(r.get("status")) == "completed" or bool(_txt(r.get("result")))
+        espn_logo = _txt(r.get("opponent_logo"))
+        opp, _ = mc.our_opponent(str(r.get("opponent") or ""), espn_logo, ids)
         out.append({
             "comp": str(r.get("comp") or ""),
             "date": str(r.get("date") or ""),
             "home_away": str(r.get("home_away") or ""),
-            "opponent": str(r.get("opponent") or ""),
-            "opp_logo": tm.team_logo(str(r.get("opponent") or "")),
+            "opponent": opp,
+            "opp_logo": tm.team_logo(opp) or (espn_logo if espn_logo.startswith("http") else ""),
             # 예정 경기는 원천이 0-0·0·0 으로 채워 둔다 → 결과 칸은 비운다
             "gf": None if (not done or pd.isna(r.get("gf"))) else int(_num(r.get("gf"))),
             "ga": None if (not done or pd.isna(r.get("ga"))) else int(_num(r.get("ga"))),
@@ -2120,10 +2124,30 @@ def _rating_sources(row) -> dict:
             "hist": f("hist_ss_rating"), "prev_minutes": int(_num(row.get("prev_minutes"))) or None}
 
 
-def _tf_list(tt, direction):
+@_memo(ttl=3600)
+def _club_names() -> list[str]:
+    """우리 8개 리그 클럽(표준 표기) — 2군 모구단 찾기 후보."""
+    out: set[str] = set()
+    for lg in ds.available_leagues():
+        st = ds.read_table("standings", league=lg)
+        if st is not None and "squad" in st.columns:
+            out |= set(st["squad"].astype(str))
+    return sorted(out)
+
+
+def _own_reserve_mask(tt, team: str):
+    """자기 2군·유스(Club NXT·Barça Atlètic·Arsenal U21)와 오간 행 — 이적이 아니라 내부 승격·강등."""
+    import squads as sq  # noqa: PLC0415
+    names = _club_names()
+    return tt["club"].map(lambda c: sq.is_own_reserve(c, team, names)) if "club" in tt.columns else pd.Series(False, index=tt.index)
+
+
+def _tf_list(tt, direction, team: str | None = None):
     sub = tt[tt["direction"] == direction].copy()
     if "fee_text" in sub.columns:  # 임대복귀 제외 (원본과 동일)
         sub = sub[~sub["fee_text"].astype(str).str.lower().str.contains("loan", na=False)]
+    if team and len(sub):          # 2군 승격은 영입이 아니다(바르사 IN 16명 중 8명이 Barça Atlètic, 2026-10-20 점검)
+        sub = sub[~_own_reserve_mask(sub, team)]
     sub["_fee"] = sub["fee_eur"].map(lambda v: _num(v))
     sub = sub.sort_values("_fee", ascending=False)
     out = []
@@ -2149,12 +2173,14 @@ def transfers(team: str, league: str = ACTIVE_LEAGUE, window: str = "current"):
     filtered = False
     if window == "current":
         tt, filtered = _window_filter(tt, win)
-    tin, tout = _tf_list(tt, "in"), _tf_list(tt, "out")
+    tin, tout = _tf_list(tt, "in", team), _tf_list(tt, "out", team)
     spend = sum(x["fee_eur"] for x in tin)
     income = sum(x["fee_eur"] for x in tout)
+    ins = tt[tt["direction"] == "in"]
+    promoted = sorted(set(ins.loc[_own_reserve_mask(ins, team), "player"].astype(str))) if len(ins) else []
     return {
         "team": team, "color": tm.team_color(team),
-        "in": tin, "out": tout,
+        "in": tin, "out": tout, "promoted": promoted,
         "window": win, "data_season": _data_season_label(),
         "window_has_data": filtered,
         "summary": {"spend": spend, "income": income, "net": spend - income,
@@ -2314,6 +2340,8 @@ def analytics(team: str, league: str = ACTIVE_LEAGUE):
     tf_summary = {"spend": 0.0, "income": 0.0, "in_count": 0, "out_count": 0}
     if tr is not None:
         tt = tr[tr["squad"] == team]
+        if len(tt):
+            tt = tt[~_own_reserve_mask(tt, team)]          # 2군 승격·강등은 이적이 아님
         ins = tt[tt["direction"] == "in"]
         outs = tt[tt["direction"] == "out"]
         tf_summary = {
@@ -2391,12 +2419,26 @@ def _signing_audit(team: str, league: str, full):
         ins = ins[ins["window"].astype(str).str.lower().str.contains("summer") | (ins["window"].astype(str) == "")]
     # 임대 복귀(End of loan)는 영입이 아니다 — 감사 카드에서 제외
     ins = ins[~ins["fee_text"].astype(str).str.lower().str.startswith("end of loan")]
+    # 2군 승격·임대 보낸 선수는 '영입 소화도'가 아니다(Arsenal U21 → Stevenage 임대 Setford 가 빨간 평가로 남았다)
+    if len(ins):
+        ins = ins[~_own_reserve_mask(ins, team)]
+    gone = set(_loans_out(team, league))
+    ins = ins[~ins["player"].map(lambda n: _person_key(n) in gone)]
     core, rot = _mm(1500, league), _mm(600, league)       # 시즌 진행률만큼 축소한 기준
-    fmap = {str(r["player"]): r for _, r in full[full["squad"] == team].iterrows()}
+    import positions as ps  # noqa: PLC0415
+
+    def _keys(n) -> list:
+        """출처마다 이름 순서·악센트가 달라('Han-beom Lee' vs 'Lee Han-beom', 'Chérif' vs 'Cherif') 여러 키로 맞춘다."""
+        t = ps.norm_name(n).split()
+        return [" ".join(t), " ".join(sorted(t)), _person_key(n)]
+    fmap: dict = {}
+    for _, r in full[full["squad"] == team].iterrows():
+        for k in _keys(r["player"]):
+            fmap.setdefault(k, r)
     out = []
     for _, r in ins.iterrows():
         name = str(r.get("player") or "")
-        pf = fmap.get(name)
+        pf = next((fmap[k] for k in _keys(name) if k in fmap), None)
         mins = int(_num(pf.get("minutes"))) if pf is not None else 0
         goals = int(_num(pf.get("goals"))) if pf is not None else 0
         assists = int(_num(pf.get("assists"))) if pf is not None else 0
@@ -2406,6 +2448,8 @@ def _signing_audit(team: str, league: str, full):
             verdict, tone = "로테이션 정착", "ok"
         elif mins > 0:
             verdict, tone = "적응 중", "low"
+        elif "keeper" in str(r.get("pos") or "").lower() or str(r.get("pos") or "").upper() == "GK":
+            verdict, tone = "백업 골키퍼", "low"              # 주전 GK 가 있으면 0분이 정상
         else:
             verdict, tone = "출전 기회 부족", "bad"
         ph = str(r.get("photo") or "")
@@ -3553,6 +3597,9 @@ def _transfer_policy(team: str) -> dict | None:
     t = pd.concat(rows, ignore_index=True)
     t = t.drop_duplicates(subset=[c for c in ("player", "season_id", "window") if c in t.columns])
     t = t[~t["fee_text"].astype(str).str.lower().str.contains("loan", na=False)]
+    if len(t):
+        # 2군 승격은 영입 정책이 아니다 — 브뤼헤 Club NXT 승격이 섞여 정책이 '17~22세 U23 83%'로 왜곡됐다(2026-10-20 점검)
+        t = t[~_own_reserve_mask(t, team)]
     if t.empty:
         return None
     home = t["_lg"].iloc[0]
@@ -3621,6 +3668,22 @@ def _db_mtime() -> float:
         return os.path.getmtime(ds.DB_PATH)
     except OSError:
         return 0.0
+
+
+@app.get("/api/names-ko")
+@_memo(ttl=21600)
+def names_ko():
+    """한글 이름 사전(data/names_ko.csv — 위키 언어 링크, src/names_ko.py 주간 갱신) → 전역 검색의 한글 검색.
+    {'players': {'Declan Rice|Arsenal': '데클런 라이스'}, 'clubs': {'Arsenal': '아스널 FC'}}. 같은 한글 제목이 여러 선수면 뺀다."""
+    p = ds.DB_PATH.parent / "names_ko.csv"
+    if not p.exists():
+        return {"players": {}, "clubs": {}}
+    kd = pd.read_csv(p, dtype=str).fillna("")
+    pl = kd[kd["kind"] == "player"]
+    dup = pl.groupby("ko")["name"].transform("nunique") > 1          # Mo Salah 두 명 → '모하메드 살라' 같은 잘못된 링크
+    players = {f"{r.name}|{r.squad}": r.ko for r in pl[~dup].itertuples()}
+    clubs = {r.name: r.ko for r in kd[kd["kind"] == "club"].itertuples()}
+    return {"players": players, "clubs": clubs}
 
 
 @app.get("/api/database")
@@ -5630,7 +5693,7 @@ def team_fixtures(team: str, league: str = ACTIVE_LEAGUE, n: int = 3):
     """팀의 다음 경기들(전 대회) — Overview '다음 경기' 카드."""
     import match_center as mc  # noqa: PLC0415
     src = _fx_sources()
-    ms = mc.matches_from({league: src["rows"].get(league)}, _today_kst(), 75, team=team)[:n]
+    ms = mc.matches_from(src["rows"], _today_kst(), 75, team=team)[:n]   # 전 리그 — 다른 리그 상대도 우리 표기로
     return {"team": team, "next": [_fx_enrich(m, src) for m in ms]}
 
 

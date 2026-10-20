@@ -6,6 +6,8 @@ const API_BASE = process.env.API_BASE || "http://127.0.0.1:8000";
 
 const nextConfig = {
   reactStrictMode: true,
+  // QA 용 두 번째 개발 서버가 기본 서버(.next)와 빌드 폴더를 나눠 쓰게(NEXT_DIST_DIR=.next-qa)
+  distDir: process.env.NEXT_DIST_DIR || ".next",
   async rewrites() {
     return [
       { source: "/api/:path*", destination: `${API_BASE}/api/:path*` },
