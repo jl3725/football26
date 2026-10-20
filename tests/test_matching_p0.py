@@ -83,3 +83,18 @@ def test_news_relevance_filters_foreign_and_old() -> None:
     assert not nr.relevant({"headline": "Club Brugge declared Belgian champions", "descr": "", "published": "2024-05-26"}, terms, False)
     assert nr.relevant({"headline": "Vanaken shines", "descr": "", "published": today}, terms, tagged=True)   # 선수 태그
     assert not nr.mentions("Inter-city rivalry", nr.team_terms("Manchester City"))   # 'city' 같은 흔한 낱말만으론 아님
+
+
+def test_reserves_are_learned_not_handwritten() -> None:
+    """2군 → 모구단은 이적 기록에서 자동 학습(src/identity.learn_reserves) — 손으로 쓴 표가 다시 생기지 않게."""
+    import identity
+    assert not (ROOT / "data" / "club_reserves.csv").exists()
+    learned = {r["reserve"]: r["parent"] for r in identity.learn_reserves()}
+    assert learned.get("Barça Atlètic") == "Barcelona"
+    assert learned.get("Club NXT") == "Club Brugge"
+
+
+def test_scout_router_has_no_handwritten_club_aliases() -> None:
+    """Ask Scout 클럽 별칭은 위키 넘겨주기·Gemini 팬 애칭(names_ko.csv)에서만 — 코드 속 애칭 사전 금지."""
+    src = (ROOT / "src" / "scout_router.py").read_text(encoding="utf-8")
+    assert "NICK = {" not in src

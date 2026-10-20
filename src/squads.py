@@ -89,10 +89,11 @@ _RESERVE = re.compile(r"(\s+(u1[5-9]|u2[0-3]|ii|b|youth|academy|reserves|primave
 
 @lru_cache(maxsize=1)
 def _reserve_table() -> dict[str, str]:
-    """이름만으로 모구단을 알 수 없는 2군(Club NXT·Barça Atlètic·RM Castilla) — data/club_reserves.csv."""
+    """2군 → 모구단 — IDENTITY 에이전트가 이적 기록에서 매일 자동 학습한 표(src/identity.learn_reserves,
+    data/club_reserves_auto.csv). 손으로 쓴 표는 없다(Club NXT·Barça Atlètic·RM Castilla·RSCA Futures 모두 학습)."""
     import csv
     from pathlib import Path
-    p = Path(__file__).resolve().parent.parent / "data" / "club_reserves.csv"
+    p = Path(__file__).resolve().parent.parent / "data" / "club_reserves_auto.csv"
     if not p.exists():
         return {}
     with p.open(encoding="utf-8") as f:
@@ -113,7 +114,13 @@ def reserve_parent(club, candidates) -> str | None:
     if not base:
         return None
     # 'B. Dortmund' 처럼 머리글자 줄임은 떼고 한 번 더
-    return tn.best(base, list(candidates)) or tn.best(re.sub(r"\b[A-Z]\.\s*", "", base).strip(), list(candidates))
+    hit = tn.best(base, list(candidates)) or tn.best(re.sub(r"\b[A-Z]\.\s*", "", base).strip(), list(candidates))
+    if hit:
+        return hit
+    # 'Juve Next Gen' 처럼 줄인 이름 — 후보 이름의 낱말이 그 줄임으로 시작하는 클럽이 하나뿐이면
+    short = [w for w in _fold(base).split() if len(w) >= 4]
+    pre = [c for c in candidates if any(t.startswith(w) for w in short for t in _fold(c).split())]
+    return pre[0] if len(pre) == 1 else None
 
 
 def is_own_reserve(club, team: str, candidates=None) -> bool:

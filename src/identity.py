@@ -161,10 +161,52 @@ def scan(today: str | None = None) -> dict:
     return {"date": today, "added": added, "review": review, "auto_total": len(auto_rows)}
 
 
+RESERVES = ROOT / "data" / "club_reserves_auto.csv"
+_MARK = re.compile(r"(\bu1[5-9]\b|\bu2[0-3]\b|\bii\b|\bb\b|youth|academy|reserves|primavera|next gen|"
+                   r"juvenil|futures|\bjong\b|castilla|atl[eè]tic|athletic|[ée]lites?|young)", re.I)
+
+
+def learn_reserves() -> list[dict]:
+    """2군·유스 → 모구단 자동 학습(손으로 쓴 표 없이). 우리 이적 기록(최근 세 시즌)에서
+    이적료 없는('-') 이동이 한 팀으로만 가는 클럽 = 그 팀의 2군 — 2군도 다른 팀엔 이적료를 받고 팔므로 '-' 이동만 본다.
+      · '-' 이동 2건+ 이고 그중 80%+ 가 한 팀(Barça Atlètic 8/8, Club NXT 3/3, RM Castilla 2/2)
+      · 1건뿐이면 이름에 2군 표시(B·II·U21·Jong·Futures·Castilla …)가 있고 100% 한 팀일 때만
+    우리 8개 리그 1부 클럽은 2군이 될 수 없다."""
+    from leagues import LEAGUES, SEASON_START, data_path  # noqa: PLC0415
+    rows, ours = [], set()
+    for lg in LEAGUES:
+        st = data_path("standings", lg)
+        if st.exists():
+            ours |= set(pd.read_csv(st)["squad"].astype(str))
+        for y in (SEASON_START - 2, SEASON_START - 1, SEASON_START):
+            tp = data_path("transfers", lg, f"{y}_{y + 1}")
+            if tp.exists():
+                t = pd.read_csv(tp)
+                if {"direction", "club", "squad", "fee_text", "player"} <= set(t.columns):
+                    rows.append(t[t["direction"] == "in"][["squad", "club", "fee_text", "player"]])
+    if not rows:
+        return []
+    t = pd.concat(rows, ignore_index=True).drop_duplicates(["squad", "club", "player"])
+    t = t[t["fee_text"].astype(str).str.strip() == "-"]
+    out = []
+    for club, d in t.groupby(t["club"].astype(str)):
+        if club in ours or club.lower() in ("without club", "retired", "unknown", "career break"):
+            continue
+        by = d.groupby("squad")["player"].nunique().sort_values(ascending=False)
+        top, n, total = str(by.index[0]), int(by.iloc[0]), int(by.sum())
+        if (n >= 2 and n / total >= 0.8) or (n == 1 and total == 1 and _MARK.search(club)):
+            out.append({"reserve": club, "parent": top, "promotions": n, "evidence": f"이적료 없는 이동 {n}/{total}"})
+    return sorted(out, key=lambda r: (r["parent"], r["reserve"]))
+
+
 def main() -> int:
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     res = scan()
+    reserves = learn_reserves()
+    if reserves:                                  # 0건이면(원천 실패) 기존 파일 유지
+        pd.DataFrame(reserves).to_csv(RESERVES, index=False, encoding="utf-8")
+    print(f"[identity] 2군 자동 학습 {len(reserves)}개(예: " + ", ".join(f"{r['reserve']}→{r['parent']}" for r in reserves[:4]) + ")")
     AUDIT.parent.mkdir(parents=True, exist_ok=True)
     AUDIT.write_text(json.dumps(res, ensure_ascii=False, indent=1), encoding="utf-8")
     for x in res["added"]:

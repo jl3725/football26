@@ -166,6 +166,11 @@ jobs:
       - name: Expert expectations (데이터가 바뀌어 사용자 기대치가 깨지면 watchdog 이 알림)
         run: bash scripts/ci_try.sh "expectations" python scripts/eval_expectations.py --out data/eval/expectations_audit.json
 
+      # 화면 간 일치 점검 — 선수 헤더 = SEASON LOG, Overview xG = Analytics, 다른 리그 상대 연결, 리더 최소 출전 …
+      # 2026-10-20 사람이 찾은 화면 오류를 규칙으로(scripts/check_screen_consistency.py) → watchdog 'screen'
+      - name: Screen consistency (화면 간 일치)
+        run: bash scripts/ci_try.sh "screen_audit" python scripts/check_screen_consistency.py
+
       # WEEKLY DIGEST 서술 한 문단(리그별) — 위 평점 추이·부상·뉴스·루머로 만든 /api/digest 를 Gemini 무료 등급이 요약,
       # 숫자·이름은 원자료 대조(src/ai_notes.py). 키가 없거나 한도면 건너뛰고 화면은 규칙 기반 카드만
       - name: AI weekly digest text (주간 요약 서술)

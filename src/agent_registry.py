@@ -117,12 +117,12 @@ AGENTS: tuple[Agent, ...] = (
     Agent("identity", "IDENTITY", "기준 정보", "리그 소속팀(승격·강등), 클럽 표기 자동 별칭, 선수 이름 레지스트리, 위키 스쿼드",
           ("Transfermarkt", "ESPN", "Wikipedia"), (
               Feed("season_teams", "리그 소속팀", ("season_teams",), ("daily_data",), "매일 13:30 KST", 36),
-              Feed("club_alias", "클럽 표기 자동 별칭", ("identity",), ("daily_data",), "매일 13:30 KST", 36,
-                   ("club_aliases_auto.csv", "eval/identity_audit.json")),
+              Feed("club_alias", "클럽 표기 자동 별칭 · 2군 자동 학습", ("identity",), ("daily_data",), "매일 13:30 KST", 36,
+                   ("club_aliases_auto.csv", "club_reserves_auto.csv", "eval/identity_audit.json")),
               Feed("names", "선수 이름 레지스트리", ("player_registry",), ("match_refresh", "daily_data"), "매일 2회", 30,
                    ("player_registry_*",)),
               Feed("wiki_squads", "위키 스쿼드", ("wiki_squads",), ("daily_data",), "매일 13:30 KST", 36),
-              Feed("names_ko", "한글 이름 사전(Ask Scout)", ("names_ko",), ("kg_reload",), "주 1회 · 화 12:00 KST", WEEK_H,
+              Feed("names_ko", "한글 이름·별칭·팬 애칭(Ask Scout·검색)", ("names_ko",), ("kg_reload",), "주 1회 · 화 12:00 KST", WEEK_H,
                    ("names_ko.csv",)),
           ), checks=("watchdog: names(기준 명단 밖 이름)", "watchdog: identity(애매한 클럽 표기 확인 필요)")),
     Agent("analyst", "ANALYST", "예측·해석", "경기 예측(모델·ClubElo·팬 투표)과 성적표, AI 해석(경기 리포트·뉴스 요약·주간 서술)",
@@ -141,8 +141,9 @@ AGENTS: tuple[Agent, ...] = (
           extras=("경기 리뷰 — /api/review, ESPN 경기 상세로 규칙 기반 생성(요청 시)",)),
     Agent("watchdog", "WATCHDOG", "감시·검증", "OVR·평점 자체 검증, 운영 점검(문제 시 GitHub 이슈)",
           ("모든 에이전트 결과",), (
-              Feed("audits", "OVR·평점·전문가 기대치 검증", ("ovr_consistency", "rating_audit", "expectations"), ("daily_data",),
-                   "매일 13:30 KST", 36, ("eval/ovr_audit.json", "eval/rating_audit.json", "eval/expectations_audit.json")),
+              Feed("audits", "OVR·평점·전문가 기대치·화면 일치 검증", ("ovr_consistency", "rating_audit", "expectations", "screen_audit"),
+                   ("daily_data",), "매일 13:30 KST", 36,
+                   ("eval/ovr_audit.json", "eval/rating_audit.json", "eval/expectations_audit.json", "eval/screen_audit.json")),
           ), extras=("운영 점검 — watchdog.yml 매일 17:00 KST, 결과는 data/ops/watchdog.json",)),
     Agent("serving", "SERVING", "서빙", "홈 스냅샷, 외부 저장소 깨우기, 그래프·벡터 주간 재적재",
           ("통합 DB",), (

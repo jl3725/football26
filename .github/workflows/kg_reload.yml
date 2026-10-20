@@ -42,6 +42,8 @@ jobs:
         run: python scripts/build_db.py > /dev/null
 
       - name: Reload graph · vectors
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}   # 한국 팬 애칭(names_ko, 무료 등급 · 다른 클럽과 겹치지 않는 것만)
         run: |
           # 한글 이름 사전(Ask Scout 무료 라우터) — 한국어 위키 언어 링크, 그래프와 무관하게 갱신
           bash scripts/ci_try.sh "names_ko" python src/names_ko.py
@@ -55,7 +57,7 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/ops/runs/ data/names_ko.csv || true
+          git add data/ops/runs/ data/names_ko.csv data/ai/ || true
           if git diff --staged --quiet; then
             echo "변경 없음"
           else

@@ -309,6 +309,19 @@ def check_ovr() -> list[str]:
     return out
 
 
+def check_screen() -> list[str]:
+    """화면 간 일치 점검(scripts/check_screen_consistency.py, daily_data) — 같은 숫자가 화면마다 다르면 알린다."""
+    p = ROOT / "data" / "eval" / "screen_audit.json"
+    if not p.exists():
+        return [f"{p.name} 없음 — daily_data 'Screen consistency' 단계 확인"]
+    a = json.loads(p.read_text(encoding="utf-8"))
+    out = []
+    if a.get("date", "") < (NOW.date() - dt.timedelta(days=3)).isoformat():
+        out.append(f"화면 일치 점검 마지막 실행 {a.get('date')} — daily_data 확인")
+    out += [f"{x['kind']} {x['team']}: {x['detail']}" for x in (a.get("issues") or [])[:8]]
+    return out
+
+
 def check_identity() -> list[str]:
     """IDENTITY 에이전트(src/identity.py, daily_data) — 자동 등록 못 한 애매한 클럽 표기만 '확인 필요'로 알린다.
     확인되면 src/squads.py ALIASES 에 한 줄 추가."""
@@ -359,7 +372,7 @@ def check_agents() -> list[str]:
 CHECKS = {"ovr": check_ovr, "season": check_season, "hub": check_hub, "frontend": check_frontend, "backend": check_backend,
           "workflows": check_workflows, "news": check_news, "tm_agent": check_tm_agent,
           "coverage": check_coverage, "rating_history": check_rating_history, "ratings": check_ratings,
-          "names": check_names, "xg": check_xg, "agents": check_agents, "expectations": check_expectations,
+          "names": check_names, "xg": check_xg, "agents": check_agents, "expectations": check_expectations, "screen": check_screen,
           "identity": check_identity}
 
 

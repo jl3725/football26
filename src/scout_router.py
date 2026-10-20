@@ -4,7 +4,7 @@ Ask Scout 무료 모드 — LLM 없이 질문에서 팀·선수·의도를 찾�
 GEMINI_API_KEY(무료 등급)가 있으면 scout_agent 가 Gemini 로 라우팅·요약하고, 없으면 이 규칙 라우터가 맡는다.
 유료 OpenAI 는 SCOUT_ALLOW_PAID=1 일 때만(사용자 개인 유료 키 — 기본 경로 금지).
 
-- 이름: 우리 클럽·선수 영문 표기, 한국어 위키 제목(data/names_ko.csv, src/names_ko.py), 클럽 애칭(NICK).
+- 이름: 우리 클럽·선수 영문 표기, 한국어 위키 제목·넘겨주기 별칭·팬 애칭(data/names_ko.csv, src/names_ko.py — 모두 자동 수집).
 - 의도: 키워드(다음 경기·부상·차출·뉴스·이번 주·비슷한·추천·적합·주장·성향). 팀만 있으면 '지금 상태'.
 - 답은 도구 결과 값만 인용한다(지어내지 않음).
 """
@@ -19,19 +19,6 @@ from unidecode import unidecode
 
 ROOT = Path(__file__).resolve().parent.parent
 
-# 흔한 클럽 애칭·표기 변형(한국어 위키 제목과 다르게 부르는 것) — 클럽 기준 정보라 손으로 둔다
-NICK = {
-    "아스날": "Arsenal", "맨시티": "Manchester City", "맨유": "Manchester Utd", "토트넘": "Tottenham Hotspur",
-    "스퍼스": "Tottenham Hotspur", "뉴캐슬": "Newcastle United", "빌라": "Aston Villa", "팰리스": "Crystal Palace",
-    "레알": "Real Madrid", "레알 마드리드": "Real Madrid", "바르사": "Barcelona", "바르셀로나": "Barcelona",
-    "아틀레티코": "Atlético Madrid", "아틀레티코 마드리드": "Atlético Madrid", "빌바오": "Athletic Club",
-    "뮌헨": "Bayern Munich", "바이에른": "Bayern Munich", "도르트문트": "Dortmund", "레버쿠젠": "Leverkusen",
-    "라이프치히": "RB Leipzig", "인테르": "Inter", "인터밀란": "Inter", "인터 밀란": "Inter", "밀란": "Milan",
-    "AC밀란": "Milan", "유벤투스": "Juventus", "유베": "Juventus", "나폴리": "Napoli", "로마": "Roma",
-    "PSG": "PSG", "파리": "PSG", "파리 생제르맹": "PSG", "마르세유": "Marseille", "리옹": "Lyon", "모나코": "Monaco",
-    "벤피카": "Benfica", "포르투": "Porto", "스포르팅": "Sporting CP", "아약스": "Ajax", "페예노르트": "Feyenoord",
-    "클뤼프 브뤼허": "Club Brugge", "브뤼허": "Club Brugge", "클럽 브뤼헤": "Club Brugge", "브뤼헤": "Club Brugge",
-}
 POS = {"6번": "Defensive Midfield", "수미": "Defensive Midfield", "수비형": "Defensive Midfield", "8번": "Central Midfield",
        "중미": "Central Midfield", "10번": "Attacking Midfield", "공미": "Attacking Midfield", "왼쪽 윙": "Left Winger",
        "왼윙": "Left Winger", "좌윙": "Left Winger", "오른쪽 윙": "Right Winger", "오른윙": "Right Winger", "우윙": "Right Winger",
@@ -87,9 +74,6 @@ def _index() -> dict:
             for s in pd.read_csv(st)["squad"].astype(str):
                 club_league[s] = lg
                 clubs.append((s.lower(), s, lg))
-    for k, v in NICK.items():
-        if v in club_league:
-            clubs.append((k.lower(), v, club_league[v]))
     # 영문 첫 낱말(Bayern·Juventus 처럼 클럽 사이에서 유일할 때만 — Real·Manchester·Borussia 는 여럿이라 제외)
     first: dict[str, list[str]] = {}
     for s in club_league:
@@ -101,11 +85,37 @@ def _index() -> dict:
             clubs.append((w, ss[0], club_league[ss[0]]))
     ko = ROOT / "data" / "names_ko.csv"
     kd = pd.read_csv(ko) if ko.exists() else pd.DataFrame(columns=["kind", "league", "name", "squad", "ko"])
-    for r in kd[kd["kind"] == "club"].itertuples():
-        full = re.sub(r"\b(FC|AFC|CF|SC|KV|KSV|RSC|SK|AC|SSC|AS|OGC|RC|FK|CD|UD|SD|VfB|VfL|TSG)\b", "", str(r.ko)).strip()
-        for alias in {full, full.split(" ")[0] if len(full.split(" ")[0]) >= 2 else full}:
-            if alias and r.name in club_league:
-                clubs.append((alias.lower(), r.name, club_league[r.name]))
+    # 한국어 클럽 이름 = 위키 언어 링크 제목 + 그 문서로 넘겨주는 표기 전부(club_alias — '아스날 FC'·'맨시티'·'클럽 브뤼헤',
+    # src/names_ko.py 주간 수집). 손으로 쓴 애칭 사전 없이. 첫 낱말 줄임('토트넘')은 클럽 사이에서 겹치지 않을 때만
+    full_of: dict[str, set] = {}
+    for r in kd[kd["kind"].isin(["club", "club_alias"])].itertuples():
+        if r.name not in club_league:
+            continue
+        full = re.sub(r"\b(FC|F\.C\.?|AFC|CF|SC|KV|KSV|RSC|SK|AC|SSC|AS|OGC|RC|FK|CD|UD|SD|VfB|VfL|TSG)(?=\s|$)", "", str(r.ko)).strip()
+        if full:
+            full_of.setdefault(full.lower(), set()).add(r.name)
+    part_of: dict[str, set] = {}                          # 첫·마지막 낱말 줄임('토트넘'·'뮌헨'·'마르세유')
+    for f, names in full_of.items():
+        ws = f.split(" ")
+        for w in {ws[0], ws[-1]}:
+            if len(w) >= 2 and w != f:
+                part_of.setdefault(w, set()).update(names)
+    # 두 클럽에 걸리는 말은 팀 전력(상위 11명 OVR 평균)이 5 이상 높은 쪽 — '레알'=Real Madrid, '브뤼헤'=Club Brugge,
+    # 비슷하면('맨체스터' City·United) 쓰지 않는다. 손으로 정한 애칭 없이 데이터로
+    from api.services.player_data import player_frame as _pf_  # noqa: PLC0415
+    strength: dict[str, float] = {}
+    for lg in LEAGUES:
+        f_ = _pf_(lg)
+        if f_ is not None and not f_.empty:
+            for sq, g in f_.groupby("squad"):
+                strength[str(sq)] = float(pd.to_numeric(g["_ovr"], errors="coerce").nlargest(11).mean())
+    for alias, names in list(full_of.items()) + [(w, n) for w, n in part_of.items() if w not in full_of]:
+        ranked = sorted(names, key=lambda n: -strength.get(n, 0))
+        if len(ranked) == 1 or strength.get(ranked[0], 0) >= strength.get(ranked[1], 0) + 5:
+            clubs.append((alias, ranked[0], club_league[ranked[0]]))
+    for r in kd[kd["kind"] == "club_nick"].itertuples():  # 한국 팬 애칭(Gemini 수집, 다른 클럽과 겹치지 않는 것만)
+        if r.name in club_league:
+            clubs.append((str(r.ko).lower(), r.name, club_league[r.name]))
     # 선수 — 영문 전체·성(리그 안 유일), 한국어 전체·마지막 낱말(유일)
     from api.services.player_data import player_frame  # noqa: PLC0415
     rows = []
