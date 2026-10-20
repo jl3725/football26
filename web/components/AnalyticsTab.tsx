@@ -44,6 +44,9 @@ export default function AnalyticsTab({ team, accent }: { team: string; accent: s
   if (!data) return <SkelTab />;
 
   const worst = Object.entries(data.line_share).sort((a, b) => b[1] - a[1])[0];
+  // 결장 합계가 적으면 비율이 크게 흔들린다 — 5경기 미만이면 진단을 내지 않는다(브뤼헤 3경기로 '수비 67%')
+  const missedTotal = Object.values(data.line_missed ?? {}).reduce((a, b) => a + b, 0);
+  const weakFactor = data.factors.weaknesses[0];
   const s = data.transfer_summary;
   const tp = data.context.tier_ppg;
 
@@ -122,9 +125,9 @@ export default function AnalyticsTab({ team, accent }: { team: string; accent: s
               </div>
             ))}
           </div>
-          {worst && worst[1] > 0 && (
+          {worst && worst[1] > 0 && missedTotal >= 5 && (
             <div className="diag" style={{ borderColor: hexA(accent, 0.4) }}>
-              <b style={{ color: accent }}>진단</b> · 부상 공백이 <b>{LINE_LABEL[worst[0]]}</b>에 {worst[1]}% 집중 — 해당 라인 뎁스 보강이 우선순위입니다.
+              <b style={{ color: accent }}>진단</b> · 부상 결장 {missedTotal}경기 중 <b>{LINE_LABEL[worst[0]]}</b>이 {worst[1]}% — 그 라인 뎁스를 점검하세요(전력 자체가 약하다는 뜻은 아님).
             </div>
           )}
         </div>
@@ -151,8 +154,8 @@ export default function AnalyticsTab({ team, accent }: { team: string; accent: s
         </div>
       )}
 
-      {/* 감독 전술 진화 */}
-      {data.manager_evo && (
+      {/* 감독 전술 진화 — 감독이 바뀐 팀만(현재 감독 소개·포메이션은 Overview MANAGER 한 곳, 탭 중복 금지 원칙) */}
+      {data.manager_evo?.previous && (
         <div className="card" style={{ marginTop: 16 }}>
           <SectionHead title="MANAGER TACTICS" kr="감독 전술" />
           <div className="evo">
@@ -180,7 +183,8 @@ export default function AnalyticsTab({ team, accent }: { team: string; accent: s
       {/* 핸드오프 */}
       <div className="handoff" style={{ borderColor: hexA(accent, 0.4) }}>
         <span className="ho-tag" style={{ background: accent }}>TRANSFER AGENT 입력 신호</span>
-        <span>약점 보강: <b>{worst ? LINE_LABEL[worst[0]] : "-"}</b></span>
+        <span>약점 보강: <b>{weakFactor ? `${weakFactor.label}(지수 ${weakFactor.value})` : "-"}</b></span>
+        {worst && missedTotal >= 5 && <span>부상 공백: <b>{LINE_LABEL[worst[0]]}</b></span>}
         <span>이적 지출: <b>{fmtEur(s.spend)}</b></span>
         <span>영입/방출: <b>{s.in_count}/{s.out_count}</b></span>
       </div>

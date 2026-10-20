@@ -1,24 +1,29 @@
 "use client";
 import { useEffect, useState } from "react";
 import SectionHead from "./SectionHead";
-import { getSignals, type Signal } from "@/lib/api";
-import Bar from "./Bar";
+import { getInbox, type InboxMsg } from "@/lib/api";
+import { usePeek } from "./PlayerPeek";
 
+// BRIEFING — Inbox 의 중요도 상위 3건(다음 경기·결장·일정 과밀·핵심 부상…)을 Overview 에도 그대로.
+// 예전 SIGNALS 칩은 같은 원천(/api/signals)을 리그 EPL 로 고정해 읽어 다른 리그 팀은 비었고, 시장가치 칩이
+// 대부분이라 '지금 무엇이 중요한지'가 안 보였다(2026-10-20 점검). 자세한 목록은 Inbox 탭.
 const TONE: Record<string, string> = { good: "#4fc27f", bad: "#e07070", warn: "#e0a53a", info: "#6aa6e0" };
 
 export default function OverviewSignals({ team, accent = "#ff4d5e" }: { team: string; accent?: string }) {
-  const [sigs, setSigs] = useState<Signal[]>([]);
-  useEffect(() => { let a = true; getSignals(team, undefined, 20).then((d) => a && setSigs(d.signals.filter((s) => s.type !== "contract" && s.type !== "resign"))).catch(() => {}); return () => { a = false; }; }, [team]);
-  if (sigs.length === 0) return null;
+  const [msgs, setMsgs] = useState<InboxMsg[] | null>(null);
+  const peek = usePeek();
+  useEffect(() => { let a = true; setMsgs(null); getInbox(team).then((d) => a && setMsgs(d.briefing)).catch(() => a && setMsgs([])); return () => { a = false; }; }, [team]);
+  if (!msgs || msgs.length === 0) return null;
   return (
     <div className="card" style={{ marginTop: 16 }}>
-      <SectionHead title="SIGNALS" kr="최근 감지된 변화" meta="시장가치 급등·급락 · 부상 · 이적" />
-      <div className="ov-sig">
-        {sigs.slice(0, 6).map((s, i) => (
-          <span className="ov-sig-chip" key={i} style={{ borderLeftColor: TONE[s.tone] || "#888" }}>
-            {s.icon} {s.player && <span className="p">{s.player.split(" ").slice(-1)[0]}</span>}
-            <span className="d">{s.title}</span>
-          </span>
+      <SectionHead title="BRIEFING" kr="지금 중요한 3가지" meta="Inbox 중요도 상위 · 자세히는 Inbox 탭" />
+      <div className="ov-brief">
+        {msgs.slice(0, 3).map((m) => (
+          <div key={m.id} className={`ov-brief-i${m.action?.kind === "player" ? " peekable" : ""}`} style={{ borderLeftColor: TONE[m.tone] || accent }}
+            onClick={m.action?.kind === "player" ? (e) => peek(e, { name: (m.action as { name: string }).name, club: team }) : undefined}>
+            <b>{m.icon} {m.title}{m.player ? ` · ${m.player}` : ""}</b>
+            <span>{m.detail}</span>
+          </div>
         ))}
       </div>
     </div>

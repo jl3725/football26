@@ -4278,3 +4278,9 @@ LIGA’처럼 글자가 접히던 것) — 넘치면 가로로 넘긴다 */
 @media (max-width: 900px) { .pd-visual { grid-template-columns: minmax(0, 1fr); } }
 .pd-sample { margin: 6px 22px 14px; padding: 12px 14px; border: 1px dashed var(--line); border-radius: 10px; font-size: 13px; color: var(--muted); }
 .ptok-inj { color: #ff6b7d; font-weight: 800; margin-left: 3px; font-size: 0.95em; }   /* 경기장 그림 부상 표시 */
+/* Overview BRIEFING(Inbox 상위 3건) */
+.ov-brief { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+@media (max-width: 900px) { .ov-brief { grid-template-columns: minmax(0, 1fr); } }
+.ov-brief-i { display: flex; flex-direction: column; gap: 4px; padding: 10px 12px; border: 1px solid var(--line); border-left: 3px solid; border-radius: 10px; background: var(--overlay); min-width: 0; }
+.ov-brief-i b { font-size: 13.5px; color: var(--txt); }
+.ov-brief-i span { font-size: 12.5px; color: var(--muted); line-height: 1.5; overflow-wrap: anywhere; }
