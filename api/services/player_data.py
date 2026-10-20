@@ -267,6 +267,8 @@ def _build_frame(league: str, season: str | None = None):
     if season is None:
         try:
             import season_totals as st  # noqa: PLC0415
+            # xG 계열 먼저(FBref 분과 비교해야 하므로 FotMob 이 분을 바꾸기 전에) — Understat 매일, 5대 리그
+            frame = st.apply_understat_live(frame, ds.read_table("understat_players", league=league))
             frame = st.apply_live_totals(frame, ds.read_table("fotmob_match_ratings", league=league), league)
         except Exception as e:  # noqa: BLE001 — 경기별 기록이 없으면 FBref 그대로
             print(f"[season_totals] {league}: 건너뜀 {type(e).__name__}: {e}")

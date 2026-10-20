@@ -33,6 +33,28 @@ _SS_COLS = ["ss_rating", "pass_pct", "long_ball_pct", "cross_acc_pct", "dribble_
             "ss_appearances", "ss_minutes"]
 
 
+# FBref(이 PC 주간 빌드)에서 오던 횟수 지표 — 같은 뜻의 Sofascore 원본 합계(매일)로 다시 계산한다.
+# 2026-10-20 사용자: "세부 스탯도 매일". Sofascore 출전 분이 FBref 분 이상(= 더 최신)일 때만 바꾸고 fb_counts_src 에 표시.
+# (xG 계열은 모델이 달라 Understat 을 매일 따로 받는다 — src/refresh_understat.py)
+_FB_FROM_SS = {"sh_per90": "totalShots", "sot_per90": "shotsOnTarget", "crosses_per90": "totalCross",
+               "fouls_per90": "fouls", "fouled_per90": "wasFouled", "tackles_won_per90": "tacklesWon",
+               "interceptions_per90": "interceptions", "ast_per90": "assists"}
+
+
+def fresh_fb_counts(r, s) -> dict | None:
+    """선수 행 r(FBref 값) + Sofascore 원본 s → 새 FBref 횟수 per90(더 최신일 때만, 아니면 None).
+    npg_per90 = (Sofascore 골 − 지난 FBref 기준 페널티 골) / 90분 — 페널티 골은 주간 값(골 − npg×분)으로 추정."""
+    ss_min, fb_min = _num(s.get("minutesPlayed")), _num(r.get("minutes"))
+    if ss_min <= 0 or ss_min < fb_min:
+        return None
+    n90 = ss_min / 90.0
+    out = {c: round(_num(s.get(k)) / n90, 3) for c, k in _FB_FROM_SS.items() if s.get(k) is not None and s.get(k) == s.get(k)}
+    pens = max(0.0, round(_num(r.get("goals")) - _num(r.get("npg_per90")) * fb_min / 90.0))
+    if s.get("goals") is not None and s.get("goals") == s.get("goals"):
+        out["npg_per90"] = round(max(0.0, _num(s.get("goals")) - pens) / n90, 3)
+    return out
+
+
 def _nf(team, player):
     return f"{unidecode(str(team)).lower().strip()}|{unidecode(str(player)).lower().strip()}"
 
@@ -96,7 +118,7 @@ def main() -> int:
 
     full_map, last_map, last_dup = {}, {}, set()
     for _, s in ss.iterrows():
-        vals = _vals(s)
+        vals = {**_vals(s), "_raw": s}
         full_map[_nf(s["squad"], s["player"])] = vals
         lk = _lk(s["squad"], s["player"])
         if lk in last_map:
@@ -106,8 +128,9 @@ def main() -> int:
     for k in last_dup:                       # 같은 팀 동성이인 → 폴백서 제외
         last_map.pop(k, None)
 
-    rows, byfull, bylast = [], 0, 0
-    for _, r in df.iterrows():
+    rows, byfull, bylast, fresh = [], 0, 0, 0
+    df["fb_counts_src"] = df.get("fb_counts_src", pd.Series("fbref", index=df.index)).fillna("fbref")
+    for i, r in df.iterrows():
         fk = _nf(r["squad"], r["player"])
         v = full_map.get(fk)
         if v is not None:
@@ -117,6 +140,13 @@ def main() -> int:
             if v is not None:
                 bylast += 1
         rows.append(v or {})
+        fc = fresh_fb_counts(r, v["_raw"]) if v is not None else None
+        if fc:
+            for c, val in fc.items():
+                if c in df.columns:
+                    df.at[i, c] = val
+            df.at[i, "fb_counts_src"] = "sofascore"
+            fresh += 1
     add_df = pd.DataFrame(rows, index=df.index, columns=_SS_COLS)
 
     df = df.drop(columns=[c for c in _SS_COLS if c in df.columns])
@@ -124,7 +154,7 @@ def main() -> int:
     rate = out["ss_rating"].notna().mean() * 100
     out.to_csv(pf_path, index=False, encoding="utf-8")
     print(f"[merge-ss] {ACTIVE_LEAGUE}: {pf_path.name} · 매칭 {rate:.0f}% "
-          f"(정확 {byfull} + 성폴백 {bylast}) · {len(out.columns)}컬럼")
+          f"(정확 {byfull} + 성폴백 {bylast}) · FBref 횟수 지표 Sofascore 최신화 {fresh}명 · {len(out.columns)}컬럼")
     return 0
 
 

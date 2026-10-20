@@ -67,6 +67,10 @@ jobs:
       - name: FotMob match ratings (최근 폼)
         run: bash scripts/ci_try.sh "fotmob_matches" python src/fetch_fotmob_matches.py
 
+      # 선수 xG 계열(xg·npxg·xa·키패스·슈팅·xG chain) — 5대 리그 Understat 리그당 1요청, 화면 선수 표가 덮어씀(주간 빌드 대신 매일)
+      - name: Understat player xG (매일)
+        run: bash scripts/ci_try.sh "understat_live" python src/fetch_understat_live.py
+
       # 결장 명단(FotMob 다음 경기 unavailable · 경기 중 부상 교체) — 경기 다음 날 아침에 바로(TM 은 며칠 늦다)
       - name: FotMob injuries (결장 명단)
         run: bash scripts/ci_try.sh "fotmob_injuries" python src/fetch_fotmob_injuries.py

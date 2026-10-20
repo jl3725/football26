@@ -1,5 +1,6 @@
 """
 리그 시즌 누적(골·도움·출전 분·경기 수)을 경기 직후 값으로 — FotMob 경기별 기록(data/fotmob_match_ratings_*)의 리그 경기 합.
+xG 계열 per90 은 Understat 매일 수집(data/understat_players_*)으로 — apply_understat_live.
 
 2026-10-20 사용자: "홀란 8골인데 리그 기준 아직 6골". 화면의 골·도움은 FBref 시즌 표(이 PC 주간 빌드, 수요일)라
 최대 7일 늦었다. FotMob 경기별 기록은 경기 종료 20분 뒤(match_watch → match_refresh) 들어오고 골·도움·출전 분이 있다.
@@ -67,4 +68,47 @@ def apply_live_totals(frame: pd.DataFrame, mr: pd.DataFrame | None, league: str)
             continue                                   # FotMob 쪽이 경기를 빠뜨림 — FBref 유지
         out.at[i, "goals"], out.at[i, "assists"], out.at[i, "minutes"] = t["goals"], t["assists"], t["minutes"]
         out.at[i, "_stats_src"], out.at[i, "_stats_asof"], out.at[i, "_apps_live"] = "fotmob", t["asof"], t["apps"]
+    return out
+
+
+# ── xG 계열(Understat 매일 — src/fetch_understat_live.py) ─────────────────────
+_US_P90 = {"xg_p90": "xg", "npxg_p90": "np_xg", "xa_p90": "xa", "kp_p90": "key_passes", "shots_p90": "shots",
+           "xg_chain_p90": "xg_chain"}
+
+
+def _norm(s) -> str:
+    from unidecode import unidecode
+    return " ".join(unidecode(str(s or "")).lower().replace("-", " ").split())
+
+
+def apply_understat_live(frame: pd.DataFrame, us: pd.DataFrame | None) -> pd.DataFrame:
+    """xG 계열 per90 을 Understat 최신 합계로 — Understat 출전 분이 선수 표(FBref) 분 이상일 때만. `_xg_src` 열.
+    매칭: (팀, 이름) 정확 → 같은 팀에서 성이 하나뿐일 때 (팀, 성)."""
+    out = frame.copy()
+    out["_xg_src"] = "weekly"
+    if us is None or us.empty:
+        return out
+    full, last, dup = {}, {}, set()
+    for r in us.to_dict("records"):
+        full[(_norm(r["squad"]), _norm(r["player"]))] = r
+        lk = (_norm(r["squad"]), (_norm(r["player"]).split() or [""])[-1])
+        if lk in last:
+            dup.add(lk)
+        last[lk] = r
+    for k in dup:
+        last.pop(k, None)
+    for i, r in out.iterrows():
+        sq, pl = _norm(r.get("squad")), _norm(r.get("player"))
+        u = full.get((sq, pl)) or last.get((sq, (pl.split() or [""])[-1]))
+        if u is None:
+            continue
+        um, fm = pd.to_numeric(u.get("minutes"), errors="coerce"), pd.to_numeric(r.get("minutes"), errors="coerce")
+        if not (um == um and um > 0) or (fm == fm and um < fm):
+            continue
+        n90 = um / 90.0
+        for col, src in _US_P90.items():
+            v = pd.to_numeric(u.get(src), errors="coerce")
+            if v == v:
+                out.at[i, col] = round(float(v) / n90, 3)
+        out.at[i, "_xg_src"] = "understat_live"
     return out
