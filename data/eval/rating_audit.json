@@ -1,9 +1,17 @@
 {
- "date": "2026-10-19",
+ "date": "2026-10-20",
  "model": "v3.8",
  "players": 3423,
  "golden": [],
  "scout": [
+  {
+   "player": "Jeremy Doku",
+   "league": "EPL",
+   "ovr": 88,
+   "lo": 82,
+   "hi": 86,
+   "off": 2
+  },
   {
    "player": "Alexis Mac Allister",
    "league": "EPL",
@@ -45,11 +53,11 @@
    "off": 1
   },
   {
-   "player": "Jeremy Doku",
+   "player": "Luka Vušković",
    "league": "EPL",
-   "ovr": 87,
-   "lo": 82,
-   "hi": 86,
+   "ovr": 85,
+   "lo": 77,
+   "hi": 84,
    "off": 1
   },
   {
@@ -93,6 +101,14 @@
    "off": -1
   },
   {
+   "player": "Enzo Fernández",
+   "league": "EPL",
+   "ovr": 89,
+   "lo": 85,
+   "hi": 88,
+   "off": 1
+  },
+  {
    "player": "Nico Williams",
    "league": "LaLiga",
    "ovr": 80,
@@ -127,9 +143,9 @@
     "Luis Milla(Como, 32) 78 ← 71",
     "Nobel Mendy(Hull City, 22) 74 ← 68",
     "Tiago Araújo(Gent, 25) 69 ← 63",
+    "Thom van Bergen(Groningen, 22) 68 ← 61",
     "Tibe De Vlieger(Gent, 20) 68 ← 62",
     "Adnane Abid(Standard Liège, 23) 68 ← 61",
-    "Thom van Bergen(Groningen, 22) 67 ← 61",
     "David van der Werff(Groningen, 22) 66 ← 59",
     "Abraham Marcus(Estrela, 26) 66 ← 59"
    ]
