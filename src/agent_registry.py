@@ -120,6 +120,8 @@ AGENTS: tuple[Agent, ...] = (
               Feed("names", "선수 이름 레지스트리", ("player_registry",), ("match_refresh", "daily_data"), "매일 2회", 30,
                    ("player_registry_*",)),
               Feed("wiki_squads", "위키 스쿼드", ("wiki_squads",), ("daily_data",), "매일 13:30 KST", 36),
+              Feed("names_ko", "한글 이름 사전(Ask Scout)", ("names_ko",), ("kg_reload",), "주 1회 · 화 12:00 KST", WEEK_H,
+                   ("names_ko.csv",)),
           ), checks=("watchdog: names(기준 명단 밖 이름)", "watchdog: identity(애매한 클럽 표기 확인 필요)")),
     Agent("analyst", "ANALYST", "예측·해석", "경기 예측(모델·ClubElo·팬 투표)과 성적표",
           ("ClubElo", "Sofascore 팬 투표"), (

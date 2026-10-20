@@ -20,6 +20,83 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from leagues import LEAGUES, SEASON_START  # noqa: E402  (계약 임박 연도 = 이번 시즌 종료 해)
 
 MODEL = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
+_GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
+
+
+def provider() -> str:
+    """답을 만드는 쪽 — gemini(무료 키) > openai(유료, SCOUT_ALLOW_PAID=1 일 때만) > rules(키 없이 규칙 라우터).
+    OPENAI_API_KEY 는 사용자 개인 유료 키라 기본 경로로 쓰지 않는다(2026-10-20)."""
+    _load_dotenv()
+    if os.getenv("GEMINI_API_KEY"):
+        return "gemini"
+    if os.getenv("OPENAI_API_KEY") and os.getenv("SCOUT_ALLOW_PAID", "").lower() in {"1", "true", "yes"}:
+        return "openai"
+    return "rules"
+
+
+def _gemini_schema(s):
+    """OpenAI JSON schema → Gemini Schema(type 대문자, 모르는 키 제거)."""
+    if isinstance(s, dict):
+        out = {}
+        for k, v in s.items():
+            if k == "type" and isinstance(v, str):
+                out[k] = v.upper()
+            elif k in ("properties",):
+                out[k] = {pk: _gemini_schema(pv) for pk, pv in v.items()}
+            elif k in ("items",):
+                out[k] = _gemini_schema(v)
+            elif k in ("description", "required", "enum"):
+                out[k] = v
+        return out
+    return s
+
+
+def _gemini_call(body: dict) -> dict:
+    import requests  # noqa: PLC0415
+    key = os.getenv("GEMINI_API_KEY")
+    last = None
+    for model in [m for m in (os.getenv("GEMINI_MODEL"), "gemini-2.5-flash", "gemini-flash-latest") if m]:
+        r = requests.post(_GEMINI_URL.format(model=model), params={"key": key}, json=body, timeout=40)
+        if r.status_code == 200:
+            return r.json()
+        last = f"{r.status_code} {r.text[:120]}"
+        if r.status_code not in (404, 429, 503):
+            break
+    raise RuntimeError(f"Gemini 오류: {last}")
+
+
+def _answer_gemini(message: str, team: str | None, league: str, history: list | None) -> dict:
+    """Gemini 무료 등급 함수 호출 — 1차: 도구 고르기, 2차: 도구 결과로 한국어 브리핑(숫자는 결과 값만)."""
+    sys_prompt = _SYSTEM + f"\n가능한 클럽: {', '.join(_clubs())}"
+    if team:
+        sys_prompt += f"\n현재 팀 컨텍스트: {team} (리그 {league})"
+    contents = []
+    for h in (history or [])[-6:]:
+        text = str(h.get("content") or h.get("text") or "")[:1500]
+        if text:
+            contents.append({"role": "model" if h.get("role") == "assistant" else "user", "parts": [{"text": text}]})
+    contents.append({"role": "user", "parts": [{"text": message}]})
+    decl = [{"name": t["function"]["name"], "description": t["function"]["description"],
+             "parameters": _gemini_schema(t["function"]["parameters"])} for t in TOOLS]
+    base = {"systemInstruction": {"parts": [{"text": sys_prompt}]}, "tools": [{"functionDeclarations": decl}],
+            "generationConfig": {"temperature": 0}}
+    r1 = _gemini_call({**base, "contents": contents})
+    parts = ((r1.get("candidates") or [{}])[0].get("content") or {}).get("parts") or []
+    call = next((p["functionCall"] for p in parts if "functionCall" in p), None)
+    if not call:
+        return {"available": True, "engine": "gemini", "intent": None,
+                "answer": "".join(p.get("text", "") for p in parts), "result": None}
+    args = call.get("args") or {}
+    intent, result = _execute(call["name"], args, league)
+    contents += [{"role": "model", "parts": [{"functionCall": call}]},
+                 {"role": "user", "parts": [{"functionResponse": {"name": call["name"],
+                                                                  "response": {"content": _slim(intent, result)}}}]}]
+    try:
+        r2 = _gemini_call({**base, "contents": contents, "generationConfig": {"temperature": 0.3}})
+        ans = "".join(p.get("text", "") for p in ((r2.get("candidates") or [{}])[0].get("content") or {}).get("parts") or [])
+    except Exception:  # noqa: BLE001
+        ans = ""
+    return {"available": True, "engine": "gemini", "intent": intent, "args": args, "answer": ans, "result": result}
 NEO4J_URI = os.getenv("NEO4J_URI", "bolt://localhost:7687")
 NEO4J_AUTH = (os.getenv("NEO4J_USER") or os.getenv("NEO4J_USERNAME") or "neo4j", os.getenv("NEO4J_PASSWORD", "football26"))
 
@@ -369,6 +446,24 @@ def _slim(intent: str, r: dict) -> dict:
 
 def answer(message: str, team: str | None = None, league: str = "EPL",
            history: list | None = None) -> dict:
+    """공급자별 — gemini(무료) · openai(유료 허용 시) · rules(규칙 라우터, src/scout_router.py). LLM 이 실패하면 규칙으로."""
+    prov = provider()
+    if prov == "rules":
+        import scout_router  # noqa: PLC0415
+        return scout_router.answer(message, team, league)
+    if prov == "gemini":
+        try:
+            return _answer_gemini(message, team, league, history)
+        except Exception as e:  # noqa: BLE001 — 한도·장애면 규칙 라우터로
+            import scout_router  # noqa: PLC0415
+            out = scout_router.answer(message, team, league)
+            out["note"] = f"Gemini 실패({str(e)[:60]}) — 규칙 기반 답"
+            return out
+    return _answer_openai(message, team, league, history)
+
+
+def _answer_openai(message: str, team: str | None = None, league: str = "EPL",
+                   history: list | None = None) -> dict:
     _load_dotenv()
     key = os.getenv("OPENAI_API_KEY")
     if not key:

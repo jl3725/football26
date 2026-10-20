@@ -200,12 +200,12 @@ export type ManagerSim = {
 export const getManagerSim = (club: string, manager: string, l = _league) =>
   j<ManagerSim>(`/api/managersim?club=${encodeURIComponent(club)}&manager=${encodeURIComponent(manager)}&league=${encodeURIComponent(l)}`);
 
-// ── Ask Scout (자연어 라우팅 · 로컬 전용 · OpenAI) ──
+// ── Ask Scout — 무료: 규칙 라우터(키 없음) 또는 Gemini 무료 등급 · 유료 OpenAI 는 서버가 허용할 때만 ──
 // result 는 intent 에 따라 Recommend|Fit|ManagerSim|{results}|Identity 중 하나(느슨하게).
 export type Scout = {
   available: boolean; reason?: string; error?: string; auth_required?: boolean;
   intent?: string | null; args?: Record<string, unknown>;
-  answer?: string;
+  answer?: string; engine?: "rules" | "gemini" | "openai"; note?: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   result?: any;
 };

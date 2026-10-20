@@ -705,18 +705,17 @@ def scout(body: dict, x_scout_token: str = Header(default="")):
     body: {q, team?, league?, history?}. LLM은 라우팅·요약만, 판단은 엔진/그래프.
     OPENAI_API_KEY 없으면 available=False. SCOUT_TOKEN 설정 시 X-Scout-Token 헤더 필요.
     """
-    need = os.getenv("SCOUT_TOKEN")
-    allow_public = os.getenv("SCOUT_ALLOW_PUBLIC", "").lower() in {"1", "true", "yes"}
-    if os.getenv("OPENAI_API_KEY") and not need and not allow_public:
-        return {
-            "available": False,
-            "auth_required": True,
-            "reason": "서버에 SCOUT_TOKEN을 설정해야 Ask Scout를 사용할 수 있습니다",
-        }
-    if need and x_scout_token != need:
-        return {"available": False, "auth_required": True,
-                "reason": "Ask Scout 접근 토큰이 필요합니다 (비밀번호 입력)"}
     import scout_agent as sa  # noqa: PLC0415 (지연 import — OpenAI 의존)
+    # 토큰은 유료(OpenAI) 경로일 때만 — 무료(규칙 라우터·Gemini 무료 등급)는 누구나(2026-10-20)
+    if sa.provider() == "openai":
+        need = os.getenv("SCOUT_TOKEN")
+        allow_public = os.getenv("SCOUT_ALLOW_PUBLIC", "").lower() in {"1", "true", "yes"}
+        if not need and not allow_public:
+            return {"available": False, "auth_required": True,
+                    "reason": "서버에 SCOUT_TOKEN을 설정해야 Ask Scout(유료 모델)를 사용할 수 있습니다"}
+        if need and x_scout_token != need:
+            return {"available": False, "auth_required": True,
+                    "reason": "Ask Scout 접근 토큰이 필요합니다 (비밀번호 입력)"}
     return sa.answer(str(body.get("q") or ""), body.get("team") or None,
                      body.get("league") or ACTIVE_LEAGUE, body.get("history"))
 

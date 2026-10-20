@@ -261,6 +261,11 @@ export default function ScoutChat({ team, league, accent, onNavigate, embedded }
               background: m.role === "user" ? hexA(accent, 0.18) : hexA("#ffffff", 0.05),
               border: m.role === "user" ? `1px solid ${hexA(accent, 0.3)}` : `1px solid ${hexA("#ffffff", 0.07)}` }}>
               {m.role === "assistant" && <span style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: 0.3, opacity: 0.5, marginRight: 6, color: accent }}>CHIEF SCOUT</span>}
+              {m.role === "assistant" && m.data?.engine === "rules" && (
+                <span style={{ fontSize: 10, opacity: 0.5, marginRight: 6 }} title="LLM 없이 질문에서 팀·선수·의도를 찾아 데이터 값으로 답합니다(무료). 서버에 GEMINI_API_KEY 를 넣으면 자연어 답변">
+                  규칙 기반
+                </span>
+              )}
               <span style={{ whiteSpace: "pre-wrap" }}>{m.text}</span>
               {m.data && <ResultCard d={m.data} accent={accent} onNavigate={onNavigate} />}
             </div>

@@ -43,6 +43,8 @@ jobs:
 
       - name: Reload graph · vectors
         run: |
+          # 한글 이름 사전(Ask Scout 무료 라우터) — 한국어 위키 언어 링크, 그래프와 무관하게 갱신
+          bash scripts/ci_try.sh "names_ko" python src/names_ko.py
           if [ -z "$NEO4J_URI" ]; then echo "NEO4J_URI 시크릿 없음 — 건너뜀"; exit 0; fi
           bash scripts/ci_try.sh "kg_reload" python scripts/build_kg.py
           bash scripts/ci_try.sh "kg_extras" python scripts/kg_sync_extras.py
@@ -53,11 +55,11 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/ops/runs/ || true
+          git add data/ops/runs/ data/names_ko.csv || true
           if git diff --staged --quiet; then
             echo "변경 없음"
           else
-            git commit -m "chore(ops): 그래프·벡터 재적재 기록 [skip ci]"
+            git commit -m "chore(ops): 그래프·벡터 재적재 · 한글 이름 사전 [skip ci]"
             for i in 1 2 3; do
               git pull --rebase --autostash origin main && git push && break || sleep 5
             done
