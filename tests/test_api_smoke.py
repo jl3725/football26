@@ -101,13 +101,22 @@ def test_openapi_contains_split_router_paths() -> None:
 def test_scout_requires_explicit_public_opt_in(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
+    # 유료(OpenAI) 경로는 SCOUT_ALLOW_PAID 로 켰을 때만 — 그때는 토큰(또는 공개 허용) 없이는 막는다
     monkeypatch.setenv("OPENAI_API_KEY", "test-key")
+    monkeypatch.setenv("SCOUT_ALLOW_PAID", "1")
+    monkeypatch.delenv("GEMINI_API_KEY", raising=False)
     monkeypatch.delenv("SCOUT_TOKEN", raising=False)
     monkeypatch.delenv("SCOUT_ALLOW_PUBLIC", raising=False)
 
     response = scout({"q": "test"})
     assert response["available"] is False
     assert response["auth_required"] is True
+
+    # 유료 키만 있고 허용하지 않았으면 무료 규칙 엔진 — 토큰 없이 누구나, 유료 호출 없음(2026-10-20)
+    monkeypatch.delenv("SCOUT_ALLOW_PAID", raising=False)
+    response = scout({"q": "test"})
+    assert response["available"] is True and response.get("engine") == "rules"
+    assert not response.get("auth_required")
 
 
 def test_ops_intl_digest_endpoints() -> None:
