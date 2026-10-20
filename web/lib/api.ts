@@ -735,6 +735,26 @@ export type IntlTeam = {
 export const getIntlTeam = (team: string, league: string = _league) =>
   j<IntlTeam>(`/api/intl/team/${encodeURIComponent(team)}?league=${encodeURIComponent(league)}`);
 
+// ── INTERNATIONAL 허브(국가대표 탭) — 대회 자동 발견(src/intl_comps.py) · 대륙별 ──
+export type IntlEdition = { season: string; start: string; end: string; matches: number; played: number;
+  status: "upcoming" | "live" | "finished"; champion: string | null; runner_up: string | null };
+export type IntlCompCard = { code: string; name: string; name_ko: string; conf: string;
+  kind: "tournament" | "nations_league" | "qualifier" | "friendly"; kind_ko: string; edition: IntlEdition; editions: number };
+export type IntlHub = { status: "live" | "soon" | "none"; today: string; window: IntlWindow | null; window_state: "now" | "upcoming" | "none";
+  last_window: IntlWindow | null; live: IntlCompCard[]; next_tournament: IntlCompCard | null; today_matches: number;
+  by_conf: { conf: string; en: string; ko: string; comps: IntlCompCard[] }[]; callups: number };
+export type IntlMatch = { event_id: string; date: string; kickoff: string; comp_code: string; comp: string; conf: string; kind: string;
+  stage: string; home: string; away: string; home_logo: string; away_logo: string; state: string; hg: number | null; ag: number | null;
+  winner?: "home" | "away" | null };
+export type IntlCompDetail = { available: boolean; code: string; name: string; name_ko: string; conf: string; kind: string; kind_ko: string;
+  edition: IntlEdition; editions: { season: string; status: string; champion: string | null }[]; matches: IntlMatch[] };
+let _intlHub: Promise<IntlHub> | null = null;
+export const getIntlHub = () => (_intlHub ??= j<IntlHub>(`/api/intl/hub`).catch((e) => { _intlHub = null; throw e; }));
+export const getIntlMatches = (o: { scope?: "key" | "all"; when?: "upcoming" | "recent"; conf?: string; kind?: string; code?: string; limit?: number } = {}) =>
+  j<{ matches: IntlMatch[] }>(`/api/intl/matches?${new URLSearchParams(Object.entries(o).filter(([, v]) => v !== undefined && v !== "").map(([k, v]) => [k, String(v)])).toString()}`);
+export const getIntlComp = (code: string, season = "") =>
+  j<IntlCompDetail>(`/api/intl/comp/${encodeURIComponent(code)}${season ? `?season=${encodeURIComponent(season)}` : ""}`);
+
 // ── 선수 뉴스(기사 선수 태그 — src/news_tags.py) ──
 export type PlayerNewsItem = { headline: string; headline_en: string; source: string; published: string; link: string; image: string; how: string };
 export const getPlayerNews = (player: string, club: string, league: string = _league) =>

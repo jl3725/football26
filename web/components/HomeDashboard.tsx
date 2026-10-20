@@ -1,10 +1,10 @@
 "use client";
 import { useEffect, useState, type ReactNode } from "react";
-import { feeLabel, getHome, getLeagueLab, type Fixture, type Home, type LeagueLab } from "@/lib/api";
+import { feeLabel, getHome, getIntlHub, getLeagueLab, type Fixture, type Home, type LeagueLab } from "@/lib/api";
 import LeagueFocus from "./LeagueFocus";
 import { ResultsTicker, WatchGrid } from "./HubPulse";
 import { MatchRecap } from "./MatchReview";
-import WorldCup from "./WorldCup";
+import International from "./International";
 import AllDashboard from "./AllDashboard";
 import { Skel, SkelCards } from "./Skeleton";
 import { phaseOf, seasonStatusText } from "@/lib/season";
@@ -37,15 +37,19 @@ function pendingFixtures(lab: LeagueLab, league: string): Fixture[] {
 }
 
 export default function HomeDashboard({ accent, onPickTeam, onPickLeagueTeam, leagueLabel = "EPL",
-  league = "EPL", leagues = [], onLeague, view, onView }: {
+  league = "EPL", leagues = [], onLeague, view, onView, initialIntlComp }: {
   accent: string; onPickTeam: (t: string) => void; onPickLeagueTeam?: (t: string, league?: string) => void;
   leagueLabel?: string; league?: string; leagues?: LeagueOpt[]; onLeague?: (l: string) => void;
-  view?: "all" | "league" | "WC"; onView?: (v: "all" | "league" | "WC") => void;   // 페이지가 주소와 함께 관리
+  view?: "all" | "league" | "INTL"; onView?: (v: "all" | "league" | "INTL") => void;   // 페이지가 주소와 함께 관리
+  initialIntlComp?: string;
 }) {
   const [h, setH] = useState<Home | null>(null);
-  const [own, setOwn] = useState<"all" | "league" | "WC">("all");   // 전체 · 리그 홈 · 월드컵(페이지가 안 넘기면 자체 상태)
+  const [own, setOwn] = useState<"all" | "league" | "INTL">("all");   // 전체 · 리그 홈 · 국가대표(페이지가 안 넘기면 자체 상태)
   const comp = view ?? own;
-  const setComp = (v: "all" | "league" | "WC") => { setOwn(v); onView?.(v); };
+  const setComp = (v: "all" | "league" | "INTL") => { setOwn(v); onView?.(v); };
+  // 국가대표 불빛 — 대회 진행·A매치 기간 중이면 초록(깜빡임), 14일 안이면 노랑, 아니면 끔(끝난 월드컵에 초록이 켜져 있던 것)
+  const [intlState, setIntlState] = useState<"live" | "soon" | "none">("none");
+  useEffect(() => { let a = true; getIntlHub().then((h) => a && setIntlState(h.status)).catch(() => {}); return () => { a = false; }; }, []);
   const [lab, setLab] = useState<LeagueLab | null>(null);              // 리그 분석 랩(결과·주목할 매치·순위표·베스트 XI …)
   // leagueLabel 변경(리그 전환) 시 재조회 — getHome 은 모듈 활성리그(_league) 사용
   useEffect(() => { let a = true; setH(null); getHome().then((d) => a && setH(d)).catch(() => {}); return () => { a = false; }; }, [leagueLabel]);
@@ -69,15 +73,17 @@ export default function HomeDashboard({ accent, onPickTeam, onPickLeagueTeam, le
             onClick={() => { setComp("league"); onLeague?.(l.key); }}>{l.label}</button>
         );
       })}
-      <button className={`wc${comp === "WC" ? " active" : ""}`} onClick={() => setComp("WC")} title="2026 월드컵"><span className="wc-dot" />WC 26</button>
+      <button className={`wc intl-${intlState}${comp === "INTL" ? " active" : ""}`} onClick={() => setComp("INTL")}
+        title={intlState === "live" ? "국가대표 — 대회·A매치 진행 중" : intlState === "soon" ? "국가대표 — 14일 안에 시작" : "국가대표 — 대륙별 대회·A매치"}>
+        {intlState !== "none" && <span className="wc-dot" />}INTERNATIONAL</button>
     </div>
   );
 
   if (comp === "all") return (
     <div className="fade home"><AllDashboard accent={accent} onPick={pickTL} switcher={switcher} /></div>
   );
-  if (comp === "WC") return (
-    <div className="fade home"><div className="wc-topbar">{switcher}</div><WorldCup accent={accent} onPickTeam={pickTL} /></div>
+  if (comp === "INTL") return (
+    <div className="fade home"><div className="wc-topbar">{switcher}</div><International accent={accent} onPickTeam={pickTL} initialComp={initialIntlComp} /></div>
   );
   if (!h) return (
     <div className="fade home skel-wrap">

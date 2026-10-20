@@ -82,10 +82,23 @@ def fifa_info() -> dict[str, dict]:
 
 
 # ── 1·2. 경기·기간 ──────────────────────────────────────────────────────────
+def intl_codes() -> tuple[str, ...]:
+    """국가대표 대회 코드 — ESPN 리그 목록에서 자동 발견한 것(src/intl_comps.discover, 7일 캐시).
+    발견이 한 번도 안 됐으면(첫 실행·ESPN 장애) 아래 기본 목록으로 시작한다."""
+    try:
+        import intl_comps  # noqa: PLC0415
+        found = tuple(c["code"] for c in intl_comps.discover())
+        if found:
+            return found
+    except Exception as e:  # noqa: BLE001
+        print(f"[intl] 대회 자동 발견 실패 — 기본 목록 사용 ({type(e).__name__})")
+    return INTL_CODES
+
+
 def fetch_matches(today: dt.date) -> pd.DataFrame:
     start, end = (today - dt.timedelta(days=120)).isoformat(), (today + dt.timedelta(days=240)).isoformat()
     rows = []
-    for code in INTL_CODES:
+    for code in intl_codes():
         evs = scoreboard_events(code, start, end)
         if evs is None:
             print(f"[intl] {code} 조회 실패 — 건너뜀")
@@ -95,8 +108,10 @@ def fetch_matches(today: dt.date) -> pd.DataFrame:
             side = {t.get("homeAway"): t for t in c.get("competitors", [])}
             h, a = side.get("home", {}), side.get("away", {})
             st = (e.get("status") or {}).get("type") or {}
+            notes = " · ".join(n.get("headline", "") for n in c.get("notes", []) if isinstance(n, dict) and n.get("headline"))
             rows.append({"event_id": str(e.get("id")), "kickoff": e.get("date"), "date": (e.get("date") or "")[:10],
-                         "comp_code": code,
+                         "comp_code": code, "season": (e.get("season") or {}).get("year"), "stage": notes,
+                         "home_logo": (h.get("team") or {}).get("logo", ""), "away_logo": (a.get("team") or {}).get("logo", ""),
                          "home": (h.get("team") or {}).get("displayName", ""), "away": (a.get("team") or {}).get("displayName", ""),
                          "hg": h.get("score") if st.get("state") != "pre" else None,
                          "ag": a.get("score") if st.get("state") != "pre" else None, "state": st.get("state", "pre")})

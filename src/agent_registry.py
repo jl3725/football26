@@ -107,12 +107,14 @@ AGENTS: tuple[Agent, ...] = (
           ("ESPN", "뉴스 RSS"), (
               Feed("news", "뉴스 수집·번역", ("news",), ("daily_news",), "2시간마다", 6, ("news.db",)),
           ), checks=("watchdog: news(수집 1일·번역률 50%)",)),
-    Agent("intl", "INTERNATIONAL", "국가대표", "FIFA 랭킹, A매치 일정·기간, 대표팀 소집 명단 → 팀 일정 탭·예측",
+    Agent("intl", "INTERNATIONAL", "국가대표", "FIFA 랭킹, 대륙별 대회(자동 발견·상태), A매치 일정·기간, 소집 명단 → 국가대표 탭·팀 일정·예측",
           ("FIFA", "ESPN", "Wikipedia"), (
               Feed("fifa_ranking", "FIFA 랭킹", ("fifa_ranking",), ("daily_data",), "매일 13:30 KST", 36,
                    ("fifa_ranking.csv",)),
               Feed("callups", "A매치 기간·소집 명단", ("intl",), ("daily_data",), "매일 13:30 KST", 36,
                    ("intl_matches.csv", "intl_windows.json", "intl_callups.csv")),
+              Feed("competitions", "대륙별 대회·상태(자동 발견)", ("intl_comps",), ("daily_data",), "매일 13:30 KST", 36,
+                   ("intl_competitions.json", "intl_registry.json")),
           ), checks=("수집기: 국가대표 경기 0건·매칭 소집 0명이면 기존 파일 유지",)),
     Agent("identity", "IDENTITY", "기준 정보", "리그 소속팀(승격·강등), 클럽 표기 자동 별칭, 선수 이름 레지스트리, 위키 스쿼드",
           ("Transfermarkt", "ESPN", "Wikipedia"), (

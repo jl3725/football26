@@ -41,7 +41,8 @@ export default function Page() {
   const [ovErr, setOvErr] = useState(false);
   const [pendingPlayer, setPendingPlayer] = useState("");   // 전역 검색 딥링크용
   const [urlPlayer, setUrlPlayer] = useState("");           // Player 탭에서 고른 선수 — 주소에 남겨 공유·새로고침 유지
-  const [homeView, setHomeView] = useState<"all" | "league" | "WC">("all");   // 전체 홈 · 리그 홈 · 월드컵
+  const [homeView, setHomeView] = useState<"all" | "league" | "INTL">("all");   // 전체 홈 · 리그 홈 · 국가대표
+  const [intlComp, setIntlComp] = useState<string | undefined>(undefined);       // ?wc=1(예전 링크) → 월드컵 기록
   const [navOpen, setNavOpen] = useState(false);
   const [urlReady, setUrlReady] = useState(false);
 
@@ -74,7 +75,8 @@ export default function Page() {
         setPendingPlayer(pl ?? ""); setUrlPlayer(pl ?? "");
       } else {
         setSel(DEFAULT_TEAM[l] ?? ""); setHome(true);
-        setHomeView(p.get("wc") ? "WC" : p.has("league") ? "league" : "all");
+        setHomeView(p.get("intl") || p.get("wc") ? "INTL" : p.has("league") ? "league" : "all");
+        setIntlComp(p.get("wc") ? "fifa.world" : p.get("comp") ?? undefined);
       }
     };
     apply();
@@ -87,7 +89,7 @@ export default function Page() {
     const p = new URLSearchParams();
     if (home) {
       if (homeView === "league") p.set("league", league);        // 리그 홈은 EPL 도 주소에 남긴다
-      else if (homeView === "WC") p.set("wc", "1");
+      else if (homeView === "INTL") p.set("intl", "1");
     } else {
       if (league !== "EPL") p.set("league", league);
       if (sel) {
@@ -159,7 +161,7 @@ export default function Page() {
     if (!urlReady) return <SkelTab />;
     if (home) return <HomeDashboard accent={accent} onPickTeam={pickTeam} onPickLeagueTeam={pickLeagueTeam}
       leagueLabel={leagueLabel} league={league} leagues={LEAGUE_TABS} onLeague={switchLeague}
-      view={homeView} onView={setHomeView} />;
+      view={homeView} onView={setHomeView} initialIntlComp={intlComp} />;
     if (ovErr) return (
       <div className="nodata-card">
         <div className="nodata-emoji">{isPromoted ? "🆙" : "📭"}</div>

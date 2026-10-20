@@ -4289,3 +4289,50 @@ LIGA’처럼 글자가 접히던 것) — 넘치면 가로로 넘긴다 */
 .h5-fold b { font: 700 14px/1 var(--font-num); letter-spacing: 0.12em; }
 .h5-fold span { font-size: 12.5px; color: var(--muted); }
 .h5-fold:hover { border-color: var(--muted-2); }
+
+/* INTERNATIONAL(국가대표) 칩 불빛 — 진행 중 초록 깜빡임, 곧 노랑 고정, 없음은 불 없음 */
+.comp-seg button.wc.intl-soon .wc-dot { background: #e0a53a; box-shadow: 0 0 6px #e0a53a; animation: none; }
+/* INTERNATIONAL 허브(components/International.tsx) */
+.it { display: flex; flex-direction: column; gap: 14px; }
+.it-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+.it-tabs button { display: flex; align-items: baseline; gap: 6px; padding: 8px 14px; border-radius: 10px; border: 1px solid var(--line); background: var(--overlay); color: var(--muted); cursor: pointer; font: 700 13px/1 var(--font-num); letter-spacing: 0.1em; }
+.it-tabs button em { font: 500 11px/1 var(--font-ui); letter-spacing: 0; font-style: normal; opacity: 0.8; }
+.it-tabs button.on { color: var(--txt); border-color: var(--brand); background: rgba(255, 77, 94, 0.1); }
+.it-now { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+.it-now-c { display: flex; flex-direction: column; gap: 6px; padding: 14px 16px; cursor: pointer; }
+.it-now-c b { font-size: 16px; }
+.it-now-c span:last-child { font-size: 12.5px; color: var(--muted); line-height: 1.5; }
+.it-st { align-self: flex-start; font: 700 10.5px/1 var(--font-num); letter-spacing: 0.12em; padding: 4px 7px; border: 1px solid; border-radius: 6px; }
+.it-sec { padding: 16px 18px; }
+.it-list { display: flex; flex-direction: column; }
+.it-m { display: grid; grid-template-columns: 96px minmax(0, 1.1fr) minmax(0, 1fr) 46px minmax(0, 1fr); align-items: center; gap: 10px; padding: 8px 2px; border-top: 1px solid var(--line); font-size: 13px; }
+.it-m:first-child { border-top: none; }
+.it-m-when { color: var(--muted); font-variant-numeric: tabular-nums; font-size: 12px; }
+.it-m-comp { color: var(--muted-2); font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.it-m-h { text-align: right; display: flex; justify-content: flex-end; align-items: center; gap: 6px; overflow-wrap: anywhere; }
+.it-m-a { display: flex; align-items: center; gap: 6px; overflow-wrap: anywhere; }
+.it-m img { width: 18px; height: 18px; object-fit: contain; flex: none; }
+.it-m-s { text-align: center; font-variant-numeric: tabular-nums; }
+@media (max-width: 700px) { .it-m { grid-template-columns: 70px minmax(0, 1fr) 40px minmax(0, 1fr); } .it-m-comp { display: none; } }
+.it-filters { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
+.it-chips { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.it-chips button { padding: 5px 10px; border-radius: 999px; border: 1px solid var(--line); background: transparent; color: var(--muted); font-size: 12px; cursor: pointer; }
+.it-chips button.on { color: var(--txt); border-color: var(--brand); background: rgba(255, 77, 94, 0.1); }
+.it-sep { width: 1px; height: 16px; background: var(--line); margin: 0 4px; }
+.it-more, .it-back { align-self: flex-start; margin-top: 10px; background: none; border: 1px solid var(--line); color: var(--muted); border-radius: 8px; padding: 6px 12px; font-size: 12.5px; cursor: pointer; }
+.it-back { margin: 0 0 12px; }
+.it-conf { display: flex; flex-direction: column; gap: 10px; }
+.it-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 10px; }
+.it-comp { display: flex; flex-direction: column; gap: 6px; text-align: left; padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--overlay); color: var(--txt); cursor: pointer; }
+.it-comp:hover { border-color: var(--line-strong); }
+.it-comp-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.it-kind { font: 600 10.5px/1 var(--font-num); letter-spacing: 0.12em; color: var(--muted-2); }
+.it-comp-name { font-size: 15px; }
+.it-comp-sub { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.it-champ { font-size: 12.5px; color: #e8c86a; }
+.it-champ em { color: var(--muted); font-style: normal; }
+.it-champ.big { font-size: 14px; }
+.it-hero { padding: 16px 18px; display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
+.it-hero h2 { margin: 0; font: 800 26px/1.1 var(--font-display); }
+.it-hero p { margin: 0; color: var(--muted); font-size: 13px; }
+.it-detail .it-sec { margin-bottom: 12px; }

@@ -1,0 +1,396 @@
+{
+ "generated": "2026-10-20T07:22:44+00:00",
+ "competitions": [
+  {
+   "code": "fifa.world",
+   "name": "FIFA World Cup",
+   "conf": "GLOBAL",
+   "kind": "tournament",
+   "name_ko": "FIFA 월드컵",
+   "editions": [
+    {
+     "season": "2026",
+     "start": "2026-06-11",
+     "end": "2026-07-19",
+     "matches": 104,
+     "played": 104,
+     "status": "finished",
+     "champion": "Spain",
+     "runner_up": "Argentina"
+    }
+   ]
+  },
+  {
+   "code": "fifa.worldq.afc",
+   "name": "FIFA World Cup Qualifying - AFC",
+   "conf": "GLOBAL",
+   "kind": "qualifier",
+   "name_ko": "FIFA 월드컵 아시아 예선",
+   "editions": [
+    {
+     "season": "2023",
+     "start": "2025-10-08",
+     "end": "2025-11-18",
+     "matches": 8,
+     "played": 8,
+     "status": "finished",
+     "champion": null,
+     "runner_up": null
+    }
+   ]
+  },
+  {
+   "code": "fifa.worldq.caf",
+   "name": "FIFA World Cup Qualifying - CAF",
+   "conf": "GLOBAL",
+   "kind": "qualifier",
+   "name_ko": "FIFA 월드컵 아프리카 예선",
+   "editions": [
+    {
+     "season": "2023",
+     "start": "2025-09-01",
+     "end": "2025-11-16",
+     "matches": 111,
+     "played": 111,
+     "status": "finished",
+     "champion": null,
+     "runner_up": null
+    }
+   ]
+  },
+  {
+   "code": "fifa.worldq.conmebol",
+   "name": "FIFA World Cup Qualifying - CONMEBOL",
+   "conf": "GLOBAL",
+   "kind": "qualifier",
+   "name_ko": "FIFA 월드컵 남미 예선",
+   "editions": [
+    {
+     "season": "2023",
+     "start": "2025-09-04",
+     "end": "2025-09-09",
+     "matches": 10,
+     "played": 10,
+     "status": "finished",
+     "champion": null,
+     "runner_up": null
+    }
+   ]
+  },
+  {
+   "code": "fifa.worldq.concacaf",
+   "name": "FIFA World Cup Qualifying - Concacaf",
+   "conf": "GLOBAL",
+   "kind": "qualifier",
+   "name_ko": "FIFA 월드컵 북중미 예선",
+   "editions": [
+    {
+     "season": "2024",
+     "start": "2025-09-04",
+     "end": "2025-11-19",
+     "matches": 36,
+     "played": 36,
+     "status": "finished",
+     "champion": null,
+     "runner_up": null
+    }
+   ]
+  },
+  {
+   "code": "fifa.wcq.ply",
+   "name": "FIFA World Cup Qualifying - Playoff Tournament",
+   "conf": "GLOBAL",
+   "kind": "qualifier",
+   "name_ko": "FIFA 월드컵 예선 플레이오프",
+   "editions": [
+    {
+     "season": "2026",
+     "start": "2026-03-26",
+     "end": "2026-04-01",
+     "matches": 4,
+     "played": 4,
+     "status": "finished",
+     "champion": null,
+     "runner_up": null
+    }
+   ]
+  },
+  {
+   "code": "fifa.worldq.uefa",
+   "name": "FIFA World Cup Qualifying - UEFA",
+   "conf": "GLOBAL",
+   "kind": "qualifier",
+   "name_ko": "FIFA 월드컵 유럽 예선",
+   "editions": [
+    {
+     "season": "2025",
+     "start": "2025-09-04",
+     "end": "2026-03-31",
+     "matches": 156,
+     "played": 156,
+     "status": "finished",
+     "champion": null,
+     "runner_up": null
+    }
+   ]
+  },
+  {
+   "code": "fifa.friendly",
+   "name": "International Friendly",
+   "conf": "GLOBAL",
+   "kind": "friendly",
+   "name_ko": "국제 친선경기",
+   "editions": [
+    {
+     "season": "2025",
+     "start": "2025-09-02",
+     "end": "2025-12-21",
+     "matches": 161,
+     "played": 161,
+     "status": "finished",
+     "champion": null,
+     "runner_up": null
+    },
+    {
+     "season": "2026",
+     "start": "2026-01-18",
+     "end": "2026-12-05",
+     "matches": 386,
+     "played": 361,
+     "status": "live",
+     "champion": null,
+     "runner_up": null
+    }
+   ]
+  },
+  {
+   "code": "uefa.euro",
+   "name": "UEFA European Championship",
+   "conf": "UEFA",
+   "kind": "tournament",
+   "name_ko": "UEFA 유럽 축구 선수권 대회",
+   "editions": [
+    {
+     "season": "2024",
+     "start": "2024-06-14",
+     "end": "2024-07-14",
+     "matches": 51,
+     "played": 51,
+     "status": "finished",
+     "champion": "Spain",
+     "runner_up": "England"
+    }
+   ]
+  },
+  {
+   "code": "uefa.nations",
+   "name": "UEFA Nations League",
+   "conf": "UEFA",
+   "kind": "nations_league",
+   "name_ko": "UEFA 네이션스리그",
+   "editions": [
+    {
+     "season": "2024",
+     "start": "2026-03-26",
+     "end": "2026-03-31",
+     "matches": 4,
+     "played": 4,
+     "status": "finished",
+     "champion": null,
+     "runner_up": null
+    },
+    {
+     "season": "2026",
+     "start": "2026-09-24",
+     "end": "2026-11-17",
+     "matches": 156,
+     "played": 104,
+     "status": "live",
+     "champion": null,
+     "runner_up": null
+    }
+   ]
+  },
+  {
+   "code": "afc.asian.cup",
+   "name": "AFC Asian Cup",
+   "conf": "AFC",
+   "kind": "tournament",
+   "name_ko": "AFC 아시안컵",
+   "editions": [
+    {
+     "season": "2027",
+     "start": "2027-01-07",
+     "end": "2027-02-05",
+     "matches": 51,
+     "played": 0,
+     "status": "upcoming",
+     "champion": null,
+     "runner_up": null
+    }
+   ]
+  },
+  {
+   "code": "afc.cupq",
+   "name": "AFC Asian Cup Qualifiers",
+   "conf": "AFC",
+   "kind": "qualifier",
+   "name_ko": "AFC 아시안컵 예선",
+   "editions": [
+    {
+     "season": "2024",
+     "start": "2025-10-09",
+     "end": "2026-06-04",
+     "matches": 48,
+     "played": 48,
+     "status": "finished",
+     "champion": null,
+     "runner_up": null
+    }
+   ]
+  },
+  {
+   "code": "caf.nations",
+   "name": "Africa Cup of Nations",
+   "conf": "CAF",
+   "kind": "tournament",
+   "name_ko": "아프리카 네이션스컵",
+   "editions": [
+    {
+     "season": "2025",
+     "start": "2025-12-21",
+     "end": "2026-01-18",
+     "matches": 52,
+     "played": 52,
+     "status": "finished",
+     "champion": "Senegal",
+     "runner_up": "Morocco"
+    }
+   ]
+  },
+  {
+   "code": "caf.championship",
+   "name": "African Nations Championship",
+   "conf": "CAF",
+   "kind": "tournament",
+   "name_ko": "아프리카 네이션스 챔피언십",
+   "editions": [
+    {
+     "season": "2024",
+     "start": "2025-08-02",
+     "end": "2025-08-30",
+     "matches": 44,
+     "played": 44,
+     "status": "finished",
+     "champion": "Morocco",
+     "runner_up": "Madagascar"
+    }
+   ]
+  },
+  {
+   "code": "caf.cosafa",
+   "name": "COSAFA Cup",
+   "conf": "CAF",
+   "kind": "tournament",
+   "name_ko": "COSAFA 컵",
+   "editions": [
+    {
+     "season": "2024",
+     "start": "2024-06-26",
+     "end": "2024-07-07",
+     "matches": 22,
+     "played": 22,
+     "status": "finished",
+     "champion": "Angola",
+     "runner_up": "Namibia"
+    },
+    {
+     "season": "2025",
+     "start": "2025-06-04",
+     "end": "2025-06-15",
+     "matches": 22,
+     "played": 22,
+     "status": "finished",
+     "champion": "Angola",
+     "runner_up": "South Africa"
+    }
+   ]
+  },
+  {
+   "code": "caf.nations_qual",
+   "name": "Africa Cup of Nations Qualifying",
+   "conf": "CAF",
+   "kind": "qualifier",
+   "name_ko": "아프리카 네이션스컵 예선",
+   "editions": [
+    {
+     "season": "2026",
+     "start": "2026-03-25",
+     "end": "2026-10-06",
+     "matches": 60,
+     "played": 60,
+     "status": "finished",
+     "champion": null,
+     "runner_up": null
+    }
+   ]
+  },
+  {
+   "code": "conmebol.america",
+   "name": "Copa América",
+   "conf": "CONMEBOL",
+   "kind": "tournament",
+   "name_ko": "코파 아메리카",
+   "editions": [
+    {
+     "season": "2024",
+     "start": "2024-06-21",
+     "end": "2024-07-15",
+     "matches": 32,
+     "played": 32,
+     "status": "finished",
+     "champion": "Argentina",
+     "runner_up": "Colombia"
+    }
+   ]
+  },
+  {
+   "code": "concacaf.gold",
+   "name": "Concacaf Gold Cup",
+   "conf": "CONCACAF",
+   "kind": "tournament",
+   "name_ko": "CONCACAF 골드컵",
+   "editions": [
+    {
+     "season": "2025",
+     "start": "2025-06-15",
+     "end": "2025-07-06",
+     "matches": 31,
+     "played": 31,
+     "status": "finished",
+     "champion": "Mexico",
+     "runner_up": "United States"
+    }
+   ]
+  },
+  {
+   "code": "concacaf.nations.league",
+   "name": "Concacaf Nations League",
+   "conf": "CONCACAF",
+   "kind": "nations_league",
+   "name_ko": "CONCACAF 네이션스리그",
+   "editions": [
+    {
+     "season": "2026",
+     "start": "2026-09-23",
+     "end": "2026-11-18",
+     "matches": 106,
+     "played": 74,
+     "status": "live",
+     "champion": null,
+     "runner_up": null
+    }
+   ]
+  }
+ ]
+}
