@@ -528,6 +528,15 @@ export type Signals = { team: string; window: Window; counts: Record<string, num
 export type InboxMsg = { id: string; cat: string; type: string; tone: string; icon: string; title: string; detail: string; prio: number;
   date: string; player: string; photo: string; action: { kind: "match"; fixture: unknown } | { kind: "player"; name: string } | null };
 export type Inbox = { team: string; briefing: InboxMsg[]; messages: InboxMsg[]; counts: Record<string, number>; league_events: Signal[]; opponents?: string[]; generated: string };   // opponents 있으면 OPPONENT WATCH
+// THIS WEEK(감독용, Overview 맨 위 — /api/this-week, src/this_week.py)
+export type WeekAbsence = { player: string; injury: string; until: string; ovr: number | null; photo: string; starter: boolean };
+export type ThisWeek = { team: string; today: string; week: Fixture[]; congestion: number; absences: WeekAbsence[];
+  opponent: { team: string; league: string | null; logo: string; rank: number | null; absences: WeekAbsence[]; covered: boolean } | null;
+  xi: { formation: string | null; placements: Placement[]; basis: string;
+    changes: { slot: string; out: string; in: string | null; reason: string; until?: string; ovr_out?: number | null; ovr_in?: number | null }[] };
+  rotation: { player: string; minutes14: number; full_streak: number; level: "high" | "mid"; ovr: number | null }[]; games14: number;
+  intl: { label: string; days_to: number; kind?: string; n: number; squad_state?: string; players: string[] } | null };
+export const getThisWeek = (team: string, l = _league) => j<ThisWeek>(`/api/this-week/${encodeURIComponent(team)}?league=${encodeURIComponent(l)}`);
 export const getInbox = (team: string, l = _league) => j<Inbox>(`/api/inbox/${encodeURIComponent(team)}?league=${encodeURIComponent(l)}`);
 export const getSignals = (team = "", l = _league, limit = 60) =>
   j<Signals>(`/api/signals?team=${encodeURIComponent(team)}&league=${encodeURIComponent(l)}&limit=${limit}`);

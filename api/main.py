@@ -4636,6 +4636,112 @@ def _recent_load(team: str, league: str, today, days: int = 14) -> list[tuple[st
     return [(str(n), int(v)) for n, v in tot.items() if v >= 270]
 
 
+@app.get("/api/this-week/{team}")
+@_memo(ttl=900)
+def this_week(team: str, league: str = ACTIVE_LEAGUE):
+    """THIS WEEK(감독용, Overview 맨 위) — 7일 안 경기(전 대회) · 우리·다음 상대 결장 · 결장 반영 예상 XI(최근 3경기 최빈 XI 에서
+    빠진 자리를 같은 세부 포지션 최고 OVR 로) · 로테이션 부담(14일 출전 분·연속 풀타임, FotMob 경기별) · 다가오는 A매치 차출.
+    계산은 src/this_week.py."""
+    import positions as ps  # noqa: PLC0415
+    import this_week as tw  # noqa: PLC0415
+    from api.services import intl as _intl  # noqa: PLC0415
+    today = _today_kst()
+    try:
+        nxt = team_fixtures(team, league, 6).get("next", [])
+    except Exception:  # noqa: BLE001
+        nxt = []
+    week = [m for m in nxt if (m.get("d_day") if m.get("d_day") is not None else 99) <= 7] or nxt[:1]
+
+    sq = _squad_df(team, league)
+    ovr_of, photo_of, own_bucket, pool = {}, {}, {}, []
+    gone = _gone_keys(team, league) | {k for k, v in _loans_out(team, league).items() if v.get("source") == "transfer"}
+    if sq is not None:
+        for _, r in sq.iterrows():
+            k = ps.norm_name(r["player"])
+            if _person_key(r["player"]) in gone:                  # 이번 창에 떠난·임대 간 선수(_placements 와 같은 키)
+                continue
+            o = _player_ovr(r)
+            ovr_of[k], photo_of[k] = o, _photo(r)
+            b = _fine_bucket(r.get("tm_position") or "") or _fine_bucket(r.get("pos") or "")
+            own_bucket[k] = b
+            pool.append({"player": str(r["player"]), "ovr": o, "bucket": b, "line": _canon_line(rv3.line_of_row(r)),
+                         "photo": _photo(r)})
+    absent = dict(_active_injuries(team, league))
+    first = week[0] if week else None
+    if first:   # 리그가 계속되는 대표팀 대회(아시안컵 등) 기간이면 소집 선수도 결장
+        for club, k in _intl.tournament_absent(league, first.get("date")):
+            if club == team:
+                absent.setdefault(k, {"injury": "대표팀 차출", "until": ""})
+
+    # 최근 3경기 최빈 선발(전 대회) — 5경기면 '최근 2경기 선발 제외'(Inbox) 선수가 남아 어긋났다(2026-10-21 브뤼헤 이한범)
+    base = (_placements(team, league, last_n=3, exclude=gone, comp="all") or _placements(team, league, last_n=5, exclude=gone, comp="all")
+            or _placements(team, league, exclude=gone))
+    xi, changes = ([], [])
+    if base and base.get("placements"):
+        xi, changes = tw.pick_xi(base["placements"], absent, pool, ps.norm_name, own_bucket, _fine_bucket)
+    starters = {ps.norm_name(p["player"]) for p in (base or {}).get("placements", [])}
+
+    def _abs_list(tbl: dict, ovr_map: dict, photo_map: dict, xi_keys: set) -> list[dict]:
+        out = []
+        for k, v in tbl.items():
+            out.append({"player": k.title(), "injury": v.get("injury") or "결장", "until": _ddmmyyyy(v.get("until")) if "/" in str(v.get("until") or "") else str(v.get("until") or ""),
+                        "ovr": ovr_map.get(k), "photo": photo_map.get(k, ""), "starter": k in xi_keys})
+        return sorted(out, key=lambda x: (not x["starter"], -(x["ovr"] or 0)))
+
+    # 이름 원래 표기(정규화 키 → 스쿼드 표기)
+    real = {ps.norm_name(p["player"]): p["player"] for p in pool}
+    ours = [{**a, "player": real.get(ps.norm_name(a["player"]), a["player"])} for a in _abs_list(absent, ovr_of, photo_of, starters)]
+
+    opp = None
+    if first:
+        me_home = first["home"]["team"] == team
+        side = first["away"] if me_home else first["home"]
+        opp = {"team": side["team"], "league": side.get("league"), "logo": side.get("logo", ""), "rank": side.get("rank"),
+               "absences": [], "covered": bool(side.get("league"))}
+        if side.get("league"):
+            try:
+                osq = _squad_df(side["team"], side["league"])
+                o_ovr, o_photo, o_real = {}, {}, {}
+                if osq is not None:
+                    for _, r in osq.iterrows():
+                        k = ps.norm_name(r["player"])
+                        o_ovr[k], o_photo[k], o_real[k] = _player_ovr(r), _photo(r), str(r["player"])
+                obase = _placements(side["team"], side["league"], last_n=5, comp="all")
+                o_start = {ps.norm_name(p["player"]) for p in (obase or {}).get("placements", [])}
+                opp["absences"] = [{**a, "player": o_real.get(ps.norm_name(a["player"]), a["player"])}
+                                   for a in _abs_list(_active_injuries(side["team"], side["league"]), o_ovr, o_photo, o_start)]
+            except Exception:  # noqa: BLE001 — 상대 정보는 보조
+                pass
+
+    # 로테이션 부담 — 14일 출전 분(270′+) · 최근부터 연속 풀타임
+    load = _recent_load(team, league, today, 14)
+    fm = ds.read_table("fotmob_match_ratings", league=league)
+    streaks, games14 = {}, 0
+    if fm is not None and not fm.empty:
+        mine = fm[fm["squad"].astype(str) == team]
+        since = (today - datetime.timedelta(days=14)).isoformat()
+        games14 = int(mine.loc[mine["date"].astype(str).str[:10] >= since, "date"].astype(str).str[:10].nunique())
+        for name, g in mine.groupby(mine["player"].astype(str)):
+            streaks[name] = tw.full_streak(g[["date", "minutes"]].to_dict("records"))
+    rot = tw.rotation(load, streaks, ovr_of, ps.norm_name)
+
+    # 다가오는 A매치(14일 안) — 우리 소집 선수 수
+    intl_info = None
+    try:
+        ip = _intl.team_payload(team, league, today)
+        if ip.get("window") and ip.get("days_to") is not None and ip["days_to"] <= 14 and ip["players"]:
+            intl_info = {"label": ip["window"]["label"], "days_to": ip["days_to"], "kind": ip["window"].get("kind"),
+                         "n": len(ip["players"]), "squad_state": ip.get("squad_state"),
+                         "players": [p["player"] for p in ip["players"]][:6]}
+    except Exception:  # noqa: BLE001
+        pass
+    return {"team": team, "today": today.isoformat(), "week": week, "congestion": len([m for m in week if m.get("d_day", 99) <= 7]),
+            "absences": ours, "opponent": opp,
+            "xi": {"formation": (base or {}).get("formation"), "placements": xi, "changes": changes,
+                   "basis": "최근 3경기 최빈 선발(전 대회)"},
+            "rotation": rot[:6], "games14": games14, "intl": intl_info}
+
+
 # 인박스 분류 — 기존 신호 type → (분류, 기본 중요도)
 _INBOX_CAT = {"injury_new": ("injury", 70), "injury_return": ("injury", 45), "manager": ("manager", 60),
               "value": ("value", 40), "risk": ("squad", 45), "youth": ("squad", 28), "veteran": ("squad", 25),

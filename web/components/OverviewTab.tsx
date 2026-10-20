@@ -19,7 +19,7 @@ import { Skel } from "./Skeleton";
 import { phaseOf } from "@/lib/season";
 import { useEffect, useState } from "react";
 import { TrendArrow } from "./Trend";
-import NextMatch from "./NextMatch";
+import ThisWeek from "./ThisWeek";
 import { usePins } from "@/lib/pins";
 import SectionHead from "./SectionHead";
 import { GoalMixCompare, SeasonProfile, SeasonSnapshot, useTeamSeason } from "./TeamSeason";
@@ -161,8 +161,8 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
       {/* 지금 이 팀이 어떤가 — 순위·승점 흐름·최근 5경기(리뷰). 바뀌지 않는 구단 정보는 아래 CLUB 카드로 */}
       <div className="ov5-top"><SeasonSnapshot d={season} team={ov.team} league={ov.league} color={ov.color} /></div>
 
-      {/* 다음 경기(전 대회) — 상대 순위·최근 폼·전력 비교 */}
-      <NextMatch team={ov.team} />
+      {/* THIS WEEK(감독용) — 7일 안 경기 · 양 팀 결장 · 결장 반영 예상 XI · 로테이션 부담. 예전 '다음 경기' 카드 자리 */}
+      <ThisWeek team={ov.team} accent={accent} />
 
       {/* 최근 감지 변화(시장가치 급등·급락 등) */}
       <OverviewSignals team={ov.team} accent={accent} />
