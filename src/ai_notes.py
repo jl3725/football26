@@ -13,6 +13,7 @@ from __future__ import annotations
 import datetime as dt
 import hashlib
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -62,8 +63,14 @@ def load(kind: str) -> dict:
     return _CACHE[kind][1]
 
 
+_FILLER = re.compile(r"(제공되지 않|존재하지 않|확인되지 않|데이터가 없|기록이 없|정보가 없|알 수 없)")
+
+
 def _clean(text: str) -> str:
-    return " ".join(str(text or "").replace("**", "").replace("\n", " ").split()).strip(' "')
+    """공백 정리 + '기록은 제공되지 않았다'처럼 빠진 자료를 말하는 문장은 뺀다(빈 칸은 그냥 안 쓰면 됨)."""
+    t = " ".join(str(text or "").replace("**", "").replace("\n", " ").split()).strip(' "')
+    sents = re.split(r"(?<=[.!?])\s+", t)
+    return " ".join(s for s in sents if not _FILLER.search(s)).strip()
 
 
 def write_checked(prompt: str, facts) -> str | None:
@@ -109,6 +116,7 @@ def match_facts(rv: dict, comp_name: str = "") -> dict:
     return {
         "competition": comp_name, "date": rv.get("date"), "home": h, "away": a,
         "final_score": f"{h} {sc['home']}-{sc['away']} {a}",
+        "status": rv.get("detail") or None,      # FT · AET(연장) · FT-Pens(승부차기) — 연장·승부차기는 이 표기가 있을 때만
         "half_time": f"{ht['home']}-{ht['away']}" if isinstance(ht, dict) else None,
         "goals": [{"minute": g["minute"], "team": side[g["side"]], "scorer": g["scorer"], "assist": g["assist"] or None,
                    "type": _KIND.get(g["kind"])} for g in rv.get("goals", [])],
@@ -132,6 +140,7 @@ MATCH_PROMPT = """아래 경기 데이터로 한국어 경기 리포트를 3~4�
 - 순서: 결과와 의미 → 결정적 장면(득점·퇴장·페널티) → 경기 내용(기록 비교) → 경기 전 예측과의 대조. 날짜로 시작하지 마라.
 - 득점 시간은 데이터의 minute 표기 그대로(예: 80'). 전반·후반 몇 분으로 바꾸지 마라.
 - 순위·연승·시즌 기록·부상처럼 데이터에 없는 것은 쓰지 마라. notes 는 참고만 하고 그대로 베끼지 마라.
+- 비어 있는 항목(기록·예측이 없음)은 언급하지 마라 — '제공되지 않았다' 같은 문장 금지. 쓸 게 적으면 2문장도 된다.
 - 마크다운·목록·따옴표 없이 문장만, '~했다' 체.
 데이터:
 {facts}"""

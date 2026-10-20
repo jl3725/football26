@@ -94,7 +94,7 @@ def finish() -> dict:
 
 
 def generate(prompt: str, system: str | None = None, temperature: float = 0.3, json_out: bool = False,
-             timeout: float = 25) -> str | None:
+             timeout: float = 15) -> str | None:   # 보통 1~3초 — 가끔 응답 없이 매달려(2026-10-20 실측 5/60회) 짧게
     """텍스트 한 번 생성. 키 없음·하루 상한·모든 모델 실패면 None."""
     key = _key()
     if not key or remaining() <= 0:
@@ -134,7 +134,7 @@ def generate(prompt: str, system: str | None = None, temperature: float = 0.3, j
 
 
 def generate_json(prompt: str, system: str | None = None, temperature: float = 0.2):
-    t = generate(prompt, system, temperature, json_out=True)
+    t = generate(prompt, system, temperature, json_out=True, timeout=30)   # 여러 팀 묶음이라 길다
     if not t:
         return None
     try:
