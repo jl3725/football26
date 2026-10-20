@@ -18,7 +18,9 @@ export default function PlayerNews({ player, club }: { player: string; club: str
       <ul>
         {items.map((n) => (
           <li key={n.link}>
-            <a href={n.link} target="_blank" rel="noreferrer">{n.headline}</a>
+            <a href={n.link} target="_blank" rel="noreferrer" title={n.headline_en || undefined}>{n.headline}</a>
+            {/* 원제 — 기계 번역이 승패·주어를 뒤집을 때가 있어(아스날 승리 → '선더랜드에게 승리') 바로 대조하게 */}
+            {n.headline_en && n.headline_en !== n.headline && <em className="pd-news-en">{n.headline_en}</em>}
             <span>{n.source}{n.published ? ` · ${n.published.slice(5, 10).replace("-", "/")}` : ""}</span>
           </li>
         ))}

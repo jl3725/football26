@@ -712,7 +712,7 @@ export type OpsFeed = {
   last_ok: string | null; last_run: string | null; age_h: number | null; failing: string[]; n_failing: number;
   runs_24h: number; fails_24h: number;
 };
-export type OpsAgent = { key: string; en: string; ko: string; does: string; sources: string[]; checks: string[]; extras: string[]; state: OpsState; feeds: OpsFeed[] };
+export type OpsAgent = { key: string; en: string; ko: string; does: string; sources: string[]; checks: string[]; extras: string[]; state: OpsState; feeds: OpsFeed[]; n_ok?: number; n_feeds?: number };
 export type OpsFailure = { t: string; runner: string; step: string; league: string | null; code: number | null; sec: number; note?: string; agent: string | null };
 export type OpsStatus = {
   generated: string; counts: Record<OpsState, number>; first_entry: string | null; agents: OpsAgent[];

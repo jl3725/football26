@@ -69,3 +69,17 @@ def test_season_log_league_row_matches_header() -> None:
         if lig and d.get("minutes"):
             assert (lig[0]["goals"], lig[0]["assists"]) == (d["goals"], d["assists"])
             assert abs(lig[0]["minutes"] - d["minutes"]) <= 2
+
+
+def test_news_relevance_filters_foreign_and_old() -> None:
+    """팀 피드에 섞인 남의 기사·오래된 기사를 거른다(브뤼헤 18건 중 17건이 무관·옛 기사였다)."""
+    import datetime as dt
+    import news_relevance as nr
+    today = dt.date.today().isoformat()
+    terms = nr.team_terms("Club Brugge", ("Club Brugge KV",))
+    ok = {"headline": "Man United eye move for Brugge defender Seys", "descr": "", "published": today}
+    assert nr.relevant(ok, terms, tagged=False)
+    assert not nr.relevant({"headline": "LSU vs. Texas: Game Highlights", "descr": "", "published": today}, terms, False)
+    assert not nr.relevant({"headline": "Club Brugge declared Belgian champions", "descr": "", "published": "2024-05-26"}, terms, False)
+    assert nr.relevant({"headline": "Vanaken shines", "descr": "", "published": today}, terms, tagged=True)   # 선수 태그
+    assert not nr.mentions("Inter-city rivalry", nr.team_terms("Manchester City"))   # 'city' 같은 흔한 낱말만으론 아님

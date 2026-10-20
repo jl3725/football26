@@ -67,6 +67,7 @@ function AgentCard({ a }: { a: OpsAgent }) {
           <p>{a.does}</p>
         </div>
         <Chip s={a.state} />
+        {a.n_feeds ? <span className="ds-nok">정상 {a.n_ok ?? 0}/{a.n_feeds}</span> : null}
       </header>
       <ul>{a.feeds.map((f) => <FeedRow key={f.key} f={f} />)}</ul>
       <footer>

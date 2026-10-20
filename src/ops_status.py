@@ -34,7 +34,7 @@ def _age_h(iso: str | None, now: dt.datetime) -> float | None:
     return round((now - t).total_seconds() / 3600, 1)
 
 
-def feed_status(feed: reg.Feed, entries: list[dict], now: dt.datetime) -> dict:
+def feed_status(feed: reg.Feed, entries: list[dict], now: dt.datetime, ledger_start: str | None = None) -> dict:
     mine = [e for e in entries if e.get("step") in feed.steps]
     latest: dict[tuple[str, str | None], dict] = {}
     for e in mine:                                       # entries 는 시간순 — 마지막 것이 최신
@@ -45,7 +45,10 @@ def feed_status(feed: reg.Feed, entries: list[dict], now: dt.datetime) -> dict:
     failing = sorted(f"{s}{' ' + lg if lg else ''}" for (s, lg), e in latest.items() if not e.get("ok"))
     age = _age_h(last_ok, now)
     if not mine:
-        state = "nodata"
+        # 원장이 시작된 지 허용 시간(+하루)이 지났는데도 기록이 0이면 '첫 기록 대기'가 아니라 지연 — daily_data 가
+        # 실패 중인데 그 피드들이 WAITING 17개로만 보였다(2026-10-20 점검)
+        since = _age_h(ledger_start, now)
+        state = "late" if since is not None and since > feed.max_age_h + 24 else "nodata"
     elif age is None or age > feed.max_age_h:
         state = "late"
     elif failing:
@@ -65,11 +68,18 @@ def build_status(now: dt.datetime | None = None, entries: list[dict] | None = No
     now = now or dt.datetime.now(dt.timezone.utc)
     entries = run_ledger.read_all() if entries is None else entries
     agents = []
+    # 원장 시작 시각은 CI·로컬을 나눠 본다 — 로컬 주간 빌드는 10/14 부터, GH 워크플로는 10/20 부터 기록했다
+    ci_start = next((e["t"] for e in entries if not str(e.get("runner", "")).startswith(("local-", "manual"))), None)
+    local_start = next((e["t"] for e in entries if str(e.get("runner", "")).startswith("local-")), None)
     for a in reg.AGENTS:
-        feeds = [feed_status(f, entries, now) for f in a.feeds]
-        state = max((f["state"] for f in feeds), key=lambda s: RANK[s]) if feeds else "nodata"
+        feeds = [feed_status(f, entries, now, local_start if all(r.startswith("local-") for r in f.runners) else ci_start)
+                 for f in a.feeds]
+        # 에이전트 상태 = 기록 있는 피드 중 가장 나쁜 것(대기 피드 하나 때문에 정상 에이전트가 WAITING 으로 보이지 않게)
+        seen = [f["state"] for f in feeds if f["state"] != "nodata"]
+        state = max(seen, key=lambda s: RANK[s]) if seen else "nodata"
         agents.append({"key": a.key, "en": a.en, "ko": a.ko, "does": a.does, "sources": list(a.sources),
-                       "checks": list(a.checks), "extras": list(a.extras), "state": state, "feeds": feeds})
+                       "checks": list(a.checks), "extras": list(a.extras), "state": state, "feeds": feeds,
+                       "n_ok": sum(1 for f in feeds if f["state"] == "ok"), "n_feeds": len(feeds)})
     known = reg.step_index()
     fails = [e for e in reversed(entries) if not e.get("ok")][:20]
     unknown = sorted({e.get("step", "") for e in entries} - set(known) - {""})

@@ -2295,8 +2295,13 @@ def news(team: str, league: str = ACTIVE_LEAGUE):
     if tags is not None and not tags.empty:
         for ln, pl in zip(tags.loc[tags["squad"] == team, "link"], tags.loc[tags["squad"] == team, "player"]):
             tagmap.setdefault(str(ln), []).append(str(pl))
+    # 관련성·기간 — 팀 이름(정식 이름·구별 낱말)이 원문에 나오거나 이 팀 선수 태그가 있고, 최근 60일(src/news_relevance.py)
+    import news_relevance as nr  # noqa: PLC0415
+    terms = nr.team_terms(team, (tm.team_fullname(team),))
+    rows = [r for _, r in ta.iterrows()
+            if nr.relevant(r.to_dict(), terms, bool(tagmap.get(str(r.get("link") or ""))))]
     out = []
-    for _, r in ta.head(24).iterrows():
+    for r in rows[:24]:
         fs = str(r.get("first_seen") or "")[:10]
         out.append({
             "players": tagmap.get(str(r.get("link") or ""), []),

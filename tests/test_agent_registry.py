@@ -76,6 +76,11 @@ def test_feed_states() -> None:
     now = dt.datetime(2026, 10, 20, 12, tzinfo=dt.timezone.utc)
     feed = reg.Feed("schedule", "일정", ("schedule",), ("match_refresh",), "매일", 30)
     assert ops_status.feed_status(feed, [], now)["state"] == "nodata"
+    # 원장이 시작된 지 오래(허용 시간 + 하루 초과)인데 기록이 0이면 지연(2026-10-20 — daily_data 실패가 WAITING 으로 숨었다)
+    old_start = (now - dt.timedelta(hours=feed.max_age_h + 48)).isoformat()
+    assert ops_status.feed_status(feed, [], now, old_start)["state"] == "late"
+    new_start = (now - dt.timedelta(hours=2)).isoformat()
+    assert ops_status.feed_status(feed, [], now, new_start)["state"] == "nodata"
     ok = [_e(5, "schedule", "EPL", True, now), _e(5, "schedule", "LaLiga", True, now)]
     assert ops_status.feed_status(feed, ok, now)["state"] == "ok"
     # LaLiga 만 이번에 실패 — 다른 리그는 갱신 중이라 '실패 있음'

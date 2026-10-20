@@ -200,16 +200,47 @@ def _news_window(hours: int = 48, per_team: int = 8) -> dict[str, list[dict]]:
     try:
         df = pd.read_sql("select link, team, source, headline, headline_ko, descr, published, first_seen from articles "
                          "where first_seen >= ?", con, params=[since])
+        try:
+            tags = pd.read_sql("select link, squad from article_players", con)
+        except Exception:  # noqa: BLE001 — 태깅 전 news.db
+            tags = pd.DataFrame(columns=["link", "squad"])
     finally:
         con.close()
     pub = df["published"].astype(str).str[:10]
     df = df[(pub >= old) | ~pub.str.match(r"\d{4}-\d{2}-\d{2}")]       # 오래된 기사가 새로 잡힌 경우 제외
+    # 화면(/api/news)과 같은 관련성 기준 — 팀 이름이 원문에 있거나 이 팀 선수 태그가 있는 기사만(src/news_relevance.py)
+    import news_relevance as nr  # noqa: PLC0415
+    tagged = set(zip(tags["link"].astype(str), tags["squad"].astype(str)))
+    ours = _our_clubs()
+    keep = [bool(str(r.team) in ours and nr.relevant({"headline": r.headline, "descr": r.descr, "published": r.published,
+                                                     "first_seen": r.first_seen}, nr.team_terms(str(r.team)),
+                                                    (str(r.link), str(r.team)) in tagged))
+            for r in df.itertuples(index=False)]
+    df = df[keep]
     out: dict[str, list[dict]] = {}
     for team, g in df.sort_values("published", ascending=False).groupby("team"):
         out[str(team)] = [{"link": str(r.link), "source": str(r.source or ""), "title": str(r.headline or ""),
                            "title_ko": str(r.headline_ko or ""), "summary": str(r.descr or "")[:240]}
                           for r in g.drop_duplicates("headline").head(per_team).itertuples()]
     return out
+
+
+def _our_clubs() -> set[str]:
+    """지금 8개 리그 소속 클럽 — 강등팀(Burnley·Wolves) 뉴스 요약에 할당량을 쓰지 않게."""
+    import pandas as pd  # noqa: PLC0415
+    from leagues import LEAGUES, data_path  # noqa: PLC0415
+    out: set[str] = set()
+    for lg in LEAGUES:
+        p = data_path("standings", lg)
+        if p.exists():
+            out |= set(pd.read_csv(p)["squad"].astype(str))
+    return out
+
+
+def _brief_lines(got, team: str, facts_team) -> tuple[list[str], int]:
+    lines = [_clean(x) for x in (got.get(team) or []) if isinstance(x, str) and _clean(x)] if isinstance(got, dict) else []
+    ok = [x for x in lines if not llm.problems(x, {"team": team, "articles": facts_team})][:3]
+    return ok, len(lines) - len(ok)
 
 
 def run_news(min_articles: int = 2, regen_h: float = 6, chunk: int = 10) -> int:
@@ -236,10 +267,14 @@ def run_news(min_articles: int = 2, regen_h: float = 6, chunk: int = 10) -> int:
         if not isinstance(got, dict):
             continue
         for team, sig, arts in part:
-            lines = [_clean(x) for x in (got.get(team) or []) if isinstance(x, str) and _clean(x)]
-            ok = [x for x in lines if not llm.problems(x, {"team": team, "articles": facts[team]})][:3]
+            ok, dropped = _brief_lines(got, team, facts[team])
+            if team not in got and llm.remaining() > 0:      # 묶음 응답에서 빠진 팀 — 혼자 한 번 더(47팀 중 16팀이 빠졌다)
+                one = llm.generate_json(NEWS_PROMPT.format(facts=json.dumps({team: facts[team]}, ensure_ascii=False)), SYSTEM)
+                ok, dropped = _brief_lines(one, team, facts[team])
+            if not ok:
+                continue                                       # 빈 결과는 저장하지 않는다 — 다음 실행이 다시 시도
             teams[team] = {"lines": ok, "n": len(arts), "sig": sig, "at": now.isoformat(timespec="seconds"),
-                           "dropped": len(lines) - len(ok)}
+                           "dropped": dropped}
             made += 1
     keep = (now - dt.timedelta(days=3)).isoformat()
     teams = {t: v for t, v in teams.items() if v.get("at", "") >= keep}
