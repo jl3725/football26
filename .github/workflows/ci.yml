@@ -12,6 +12,20 @@ permissions:
   contents: read
 
 jobs:
+  prod-deps:
+    # 운영(Render)과 똑같이 requirements.txt 만 설치하고 API 를 import — 개발용 requirements-dev 에만 있는 패키지를
+    # 운영 코드가 쓰면 여기서 실패한다(2026-10-20 requests 누락으로 운영 배포가 4시간 넘게 실패했다)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install production requirements only
+        run: pip install -q -r requirements.txt
+      - name: Import API like production
+        run: python -c "import sys; sys.path[:0]=['.','src']; import api.main; print('api.main import OK')"
+
   backend:
     runs-on: ubuntu-latest
     env:

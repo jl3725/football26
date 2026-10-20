@@ -8,6 +8,7 @@ pandas==2.2.3
 numpy==2.2.5
 scikit-learn==1.6.1
 Unidecode==1.4.0
+requests>=2.31,<3   # API 가 읽는 수집 공용 모듈(espn_common·fetch_wiki_squads — A매치 서비스·시즌 누적) — 없으면 운영 시작 실패(2026-10-20 a7cdee9~)
 # 벡터/그래프 스카우팅 운영 배포용: Fit·추천·시뮬(Qdrant) · Ask Scout(OpenAI) · graph_query·KG(Neo4j AuraDB)
 qdrant-client==1.12.1
 openai>=1.40,<2

@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import datetime as dt
+import os
 
 from fastapi import APIRouter
 
@@ -44,6 +45,8 @@ def health():
         "active_league": ACTIVE_LEAGUE,
         "leagues": ds.available_leagues(),
         "infra": infra_health.status(),   # 차단 중인 선택 인프라(neo4j·qdrant)
+        # 운영이 어느 커밋으로 떠 있나 — watchdog 이 최신 코드 커밋과 비교(배포 실패로 옛 버전에 머무는 걸 잡는다)
+        "commit": os.getenv("RENDER_GIT_COMMIT", "")[:12],
     }
 
 

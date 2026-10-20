@@ -8,6 +8,7 @@
   season    운영 /api/context — 데이터 시즌이 달력 시즌보다 뒤처졌는가(phase=stale)
   hub       운영 /api/home/all — 시즌 라벨이 context 와 같은가, 스냅샷 생성 36시간 이내인가
   frontend  web/ 를 바꾼 최신 커밋이 Vercel Production 에 배포됐는가
+  backend   api·src·requirements 최신 커밋이 Render 운영에 떠 있는가(/api/health commit)
   workflows daily_data·daily_news·keep_alive·CI 최근 실행이 성공인가
   news      news.db 마지막 수집 1일 이내, 최근 2일 번역률 50% 이상
   tm_agent  로컬 TM agent(이 PC 작업 스케줄러) 산출물이 최근에 커밋됐는가
@@ -139,6 +140,36 @@ def check_frontend() -> list[str]:
         return []                                         # 방금 커밋 — 빌드 중일 수 있음
     return [f"web/ 변경 {web_sha[:7]}({web_at[:16]}) 이 운영에 없음 — 마지막 성공 배포 {latest_ok['sha'][:7]}"
             f"({latest_ok['created_at'][:16]}). Vercel 빌드 로그 확인"]
+
+
+BACKEND_PATHS = ("api", "src", "requirements.txt", "render.yaml")
+
+
+def check_backend() -> list[str]:
+    """운영 백엔드(Render)가 최신 코드 커밋을 담고 있나 — /api/health 의 commit 과 api·src·requirements 최신 커밋 비교.
+    2026-10-20: requirements 에 requests 가 빠져 a7cdee9 부터 새 배포가 시작 단계에서 실패, 운영이 4시간 넘게 옛 버전에 머묾."""
+    try:
+        h = requests.get(f"{BACKEND}/api/health", timeout=90).json()
+    except (requests.RequestException, ValueError) as e:
+        return [f"/api/health 실패 — {type(e).__name__}"]
+    prod = str(h.get("commit") or "")
+    if not prod:
+        return []                                         # commit 을 싣기 전 버전(첫 배포 전) — 판단 보류
+    latest = None
+    for path in BACKEND_PATHS:
+        c = gh("commits", params={"sha": "main", "path": path, "per_page": 1})
+        if c and (latest is None or c[0]["commit"]["committer"]["date"] > latest["commit"]["committer"]["date"]):
+            latest = c[0]
+    if latest is None or latest["sha"].startswith(prod):
+        return []
+    cmp = gh(f"compare/{latest['sha']}...{prod}")
+    if cmp.get("status") in ("identical", "ahead"):
+        return []
+    at = latest["commit"]["committer"]["date"]
+    if _age_h(at) < 1:
+        return []                                         # 방금 커밋 — 빌드 중일 수 있음
+    return [f"운영 백엔드가 옛 버전({prod[:7]}) — 최신 코드 {latest['sha'][:7]}({at[:16]}) 미반영. "
+            "Render 배포 로그 확인(시작 실패면 requirements 누락 의심)"]
 
 
 def check_workflows() -> list[str]:
@@ -309,7 +340,7 @@ def check_agents() -> list[str]:
     return ops_status.late_feeds(ops_status.build_status(now=NOW))
 
 
-CHECKS = {"ovr": check_ovr, "season": check_season, "hub": check_hub, "frontend": check_frontend,
+CHECKS = {"ovr": check_ovr, "season": check_season, "hub": check_hub, "frontend": check_frontend, "backend": check_backend,
           "workflows": check_workflows, "news": check_news, "tm_agent": check_tm_agent,
           "coverage": check_coverage, "rating_history": check_rating_history, "ratings": check_ratings,
           "names": check_names, "xg": check_xg, "agents": check_agents, "expectations": check_expectations}
