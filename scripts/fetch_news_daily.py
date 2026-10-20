@@ -76,17 +76,28 @@ def _days_ago(n: int) -> str:
     return (date.today() - timedelta(days=n)).isoformat()
 
 
-def backfill(limit: int) -> int:
-    """번역이 비었거나 원문이 들어간 기사를 최신순으로 번역해 채운다."""
+TRANSLATE_BUDGET_S = 480   # 번역은 이 시간 안에서만(묶음 100건씩) — Google 원천 첫 실행에 밀린 600건이 40분 넘게 걸렸다(2026-10-20)
+TRANSLATE_CHUNK = 100
+
+
+def backfill(limit: int, budget_s: float = TRANSLATE_BUDGET_S) -> int:
+    """번역이 비었거나 원문이 들어간 기사를 최신순으로 번역해 채운다. 시간 예산을 넘기면 멈추고 다음 실행이 잇는다."""
     rows = untranslated(limit)
     if not rows:
         return 0
-    texts = []
-    for r in rows:
-        texts += [r["headline"] or "", r["descr"] or ""]
-    kos = translate_many(texts)
-    done = sum(1 for i, r in enumerate(rows) if set_translation(r["link"], kos[2 * i], kos[2 * i + 1]))
-    print(f"[translate] {done}/{len(rows)}건 번역 · 공급자별 {dict(STATS)}")
+    t0, done, seen = time.monotonic(), 0, 0
+    for k in range(0, len(rows), TRANSLATE_CHUNK):
+        if time.monotonic() - t0 > budget_s:
+            print(f"[translate] 시간 예산 {budget_s:.0f}초 초과 — 남은 {len(rows) - seen}건은 다음 실행")
+            break
+        part = rows[k:k + TRANSLATE_CHUNK]
+        texts = []
+        for r in part:
+            texts += [r["headline"] or "", r["descr"] or ""]
+        kos = translate_many(texts)
+        done += sum(1 for i, r in enumerate(part) if set_translation(r["link"], kos[2 * i], kos[2 * i + 1]))
+        seen += len(part)
+    print(f"[translate] {done}/{seen}건 번역({time.monotonic() - t0:.0f}초) · 공급자별 {dict(STATS)}")
     return done
 
 
@@ -108,7 +119,7 @@ def main(argv=None) -> int:
     if "--backfill" in args:                     # 수집 없이 밀린 번역만: --backfill [건수]
         i = args.index("--backfill")
         n = int(args[i + 1]) if len(args) > i + 1 and args[i + 1].isdigit() else 2000
-        backfill(n)
+        backfill(n, budget_s=3600)          # 손으로 돌릴 땐 넉넉히
         print("번역률(30일):", translation_stats(_days_ago(30)))
         return 0
     if "--all" in args:
@@ -131,7 +142,8 @@ def main(argv=None) -> int:
     n_art, n_tag = news_tags.run()
     print(f"[news-tags] 기사 {n_art}건 · 선수 태그 {n_tag}개")
     import news_classify   # 종류(이적·부상·경기·인터뷰·구단 발표)·이적 단계·기자 — 규칙(전부) + AI(최근 이적 기사 일부)
-    print("[news-classify]", news_classify.run())
+    t0 = time.monotonic()
+    print("[news-classify]", news_classify.run(), f"({time.monotonic() - t0:.0f}초)")
     backfill(BACKFILL_PER_RUN)
     print("번역률(2일):", translation_stats(_days_ago(2)))
     return 0

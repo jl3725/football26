@@ -18,6 +18,10 @@ permissions:
 jobs:
   fetch:
     runs-on: ubuntu-latest
+    # 평소 2~5분 — 번역·AI 가 매달려도 6시간 묵지 않게(2026-10-20 첫 Google 실행이 40분 넘게 걸림)
+    timeout-minutes: 30
+    env:
+      PYTHONUNBUFFERED: "1"   # 로그가 버퍼에 묶여 어디서 멈췄는지 안 보이던 것
     steps:
       - uses: actions/checkout@v4
 
