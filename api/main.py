@@ -2167,6 +2167,7 @@ def player_detail(team: str, player: str, league: str = ACTIVE_LEAGUE):
         "minutes": int(_num(row.get("minutes"))), "goals": int(_num(row.get("goals"))),
         "assists": int(_num(row.get("assists"))),
         "contract_until": str(row.get("tm_contract_until") or ""),
+        "joined": str(row.get("tm_joined_date") or "")[:10] or None,     # 입단일 — 헤더 '입단 2023-07 · 계약 ~2028-06'
         "is_gk": is_gk, "categories": categories, "radar": radar, "badges": badges,
         "comp_usage": _comp_profile(row, _comp_usage(league)),
         "season_log": _season_log(str(row.get("squad") or team), str(row["player"]), league, is_gk=is_gk, fm_id=row.get("fm_id")),

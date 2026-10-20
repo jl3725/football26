@@ -263,7 +263,7 @@ export type PlayerDetail = {
   player: string; team: string; color: string; pos: string; line: string;
   age: number; nationality: string; value_eur: number; photo: string;
   ovr: number; ss_rating: number; minutes: number; goals: number; assists: number;
-  contract_until: string; is_gk: boolean; trend?: Trend;
+  contract_until: string; joined?: string | null; is_gk: boolean; trend?: Trend;
   ovr_parts?: OvrPart[]; ratings?: RatingSources; form?: number | null; recent?: RecentForm | null;
   categories: MetricCat[];
   radar: { axis: string; value: number }[];

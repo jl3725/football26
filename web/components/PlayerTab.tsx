@@ -16,6 +16,15 @@ import SeasonLog from "./SeasonLog";
 import PlayerNews from "./PlayerNews";
 
 // 실제 기록 값 — 라벨에 '%' 가 있으면 비율(0~100), 그 외(/90·xA)는 90분당.
+// 계약 남은 기간 — ' (1년 8개월 남음)'
+function contractLeft(until: string): string {
+  const d = new Date(until.slice(0, 10));
+  if (Number.isNaN(d.getTime())) return "";
+  const m = Math.round((d.getTime() - Date.now()) / (30.44 * 864e5));
+  if (m < 0) return " (만료)";
+  return m >= 12 ? ` (${Math.floor(m / 12)}년${m % 12 ? ` ${m % 12}개월` : ""} 남음)` : ` (${m}개월 남음)`;
+}
+
 function fmtRaw(label: string, raw: number): string {
   if (raw == null || Number.isNaN(raw)) return "";
   return label.includes("%") ? `${(Math.round(raw * 10) / 10).toFixed(1)}%` : `${raw.toFixed(2)} /90`;
@@ -60,19 +69,25 @@ function Detail({ team, player, accent, heatmap }: { team: string; player: strin
     </div>
   );
   const t = tier(d.ovr);
+  const enough = d.minutes >= (d.is_gk ? 300 : 450);    // 백분위 지표를 보여 줄 만큼 뛰었나(2분 뛴 선수 레이더 0 문제)
   return (
     <div className="card pd-card">
       <div className="pd-head" style={{ background: `linear-gradient(120deg, ${hexA(d.color, 0.28)}, transparent)` }}>
         {d.photo ? <img className="pd-photo" src={d.photo} alt="" /> : <span className="pd-photo ph" />}
         <div style={{ flex: 1 }}>
           <div className="pd-name">{d.player}</div>
-          <div className="pd-meta">{d.pos} · {d.age}세 · {d.nationality}</div>
+          {/* 빈 정보는 숨긴다 — 나이 0·국적 없음이 'DF · 0세 · '로 찍히던 194명(2026-10-20 점검) */}
+          <div className="pd-meta">{[d.pos, d.age > 0 ? `${d.age}세` : "", d.nationality].filter(Boolean).join(" · ")}</div>
+          {(d.joined || d.contract_until) && (
+            <div className="pd-meta">{[d.joined ? `입단 ${d.joined.slice(0, 7).replace("-", ".")}` : "",
+              d.contract_until ? `계약 ~${d.contract_until.slice(0, 7).replace("-", ".")}${contractLeft(d.contract_until)}` : ""].filter(Boolean).join(" · ")}</div>
+          )}
           <div className="pd-meta">
             리그 {d.minutes.toLocaleString()}′ · {d.goals}G {d.assists}A
             {d.season_log?.available && d.season_log.by_comp.length > 1 && (
               <> · <b>전체 {d.season_log.total.minutes.toLocaleString()}′ · {d.season_log.total.goals}G {d.season_log.total.assists}A</b></>
             )}
-            {" · "}{fmtEur(d.value_eur)}
+            {d.value_eur > 0 && <>{" · "}{fmtEur(d.value_eur)}</>}
           </div>
         </div>
         <div className="pd-ovr" style={{ color: t.light, borderColor: hexA(t.light, 0.5) }}
@@ -157,7 +172,22 @@ function Detail({ team, player, accent, heatmap }: { team: string; player: strin
           아래 지표 = <b>리그 경기 기준</b> · {({ GK: "골키퍼", DEF: "수비수", MID: "미드필더", ATT: "공격수" } as Record<string, string>)[d.peers.line] || "포지션"} 대비 백분위 · {d.peers.n}명 기준(컵·유럽 제외)
         </div>
       )}
-      <div className="pd-body">
+      {/* 요약 그림 두 장을 나란히(레이더 = 능력 모양, 히트맵 = 뛰는 자리) — 예전엔 각각 한 줄을 다 차지해 양옆이 비었다 */}
+      {(enough || (hm && heatmap)) && (
+        <div className="pd-visual">
+          {enough && <div className="pd-radar"><Radar data={d.radar} color={accent} scale="pct" /></div>}
+          {hm && heatmap && (
+            <div className="pd-heatmap">
+              <div className="pd-sim-title">시즌 활동 구역 <span style={{ opacity: 0.5, fontWeight: 400, fontSize: 11 }}>· {hm.n_points.toLocaleString()} 위치 표본 · Sofascore</span></div>
+              <HeatmapPitch grid={hm.grid} gw={heatmap.gw} gh={heatmap.gh} id={`pd-${player.replace(/\s+/g, "")}`} />
+            </div>
+          )}
+        </div>
+      )}
+      {!enough && (
+        <div className="pd-sample">표본 부족 — 리그 {d.minutes.toLocaleString()}′ 출전({d.is_gk ? 300 : 450}′ 미만)이라 백분위 지표를 접었습니다. 출전이 쌓이면 자동으로 나옵니다.</div>
+      )}
+      {enough && <div className="pd-body">
         <div className="pd-cats">
           {d.categories.map((c, i) => {
             const cm = pctMeaning(c.avg);
@@ -177,14 +207,7 @@ function Detail({ team, player, accent, heatmap }: { team: string; player: strin
             );
           })}
         </div>
-        <div className="pd-radar"><Radar data={d.radar} color={accent} scale="pct" /></div>
-      </div>
-      {hm && heatmap && (
-        <div className="pd-heatmap" style={{ marginTop: 4 }}>
-          <div className="pd-sim-title">시즌 활동 구역 <span style={{ opacity: 0.5, fontWeight: 400, fontSize: 11 }}>· {hm.n_points.toLocaleString()} 위치 표본 · Sofascore</span></div>
-          <div style={{ maxWidth: 470 }}><HeatmapPitch grid={hm.grid} gw={heatmap.gw} gh={heatmap.gh} id={`pd-${player.replace(/\s+/g, "")}`} /></div>
-        </div>
-      )}
+      </div>}
       {sim.length > 0 && (
         <div className="pd-similar">
           <div className="pd-sim-title">스타일 유사 선수 <span style={{ opacity: 0.6, fontWeight: 400, fontSize: 11, letterSpacing: 0 }}>· % = 유사도(스타일 + 기록, 100 = 판박이)</span></div>
