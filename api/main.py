@@ -1696,16 +1696,32 @@ def squad(team: str, league: str = ACTIVE_LEAGUE):
             continue
         cards.append({"player": r["player"], "ovr": _player_ovr(r), "minutes": int(_num(r.get("minutes"))),
                       "age": int(_num(r.get("age"))), "photo": _photo(r), "primary": pr["primary"],
-                      "secondary": pr["secondary"], "injured": ps.norm_name(r["player"]) in inj})
+                      "secondary": pr["secondary"], "injured": ps.norm_name(r["player"]) in inj,
+                      "role_starts": pr.get("roles") or {}})
     buckets = []
+    first_of: dict[str, str] = {}                         # 선수 → 이미 1st 인 자리(한 선수는 한 자리에서만 1st)
+    # 1st 판단은 이번 시즌 리그 선발만(지난 시즌 0.5 가중이 섞인 역할 집계로는 Ødegaard·Eze AM 이 동점이었다) —
+    # Overview FORMATION(이번 시즌 리그 XI)과 같은 기준
+    try:
+        _tl = _team_lineups(team, league, "league")
+        cur_roles = ps.role_counts([_tl], [1.0]) if _tl is not None and not _tl.empty else {}
+    except Exception:  # noqa: BLE001
+        cur_roles = {}
+    if cur_roles:                                         # 이번 시즌 선발이 없는 선수는 0(지난 시즌 기록으로 1st 가 되지 않게)
+        for c in cards:
+            c["role_starts"] = dict(ps.lookup(cur_roles, c["player"]) or {})
     for b in ps.ROLES:
         main = sorted([c for c in cards if c["primary"] == b], key=lambda x: (-x["ovr"], -x["minutes"]))
         alt = sorted([c for c in cards if b in c["secondary"]], key=lambda x: (-x["ovr"], -x["minutes"]))
         opts = [{**c, "kind": "primary"} for c in main] + [{**c, "kind": "secondary"} for c in alt]
         if not opts:
             continue
-        # 1st = 쓸 수 있는 주포지션 최고 선수(부상자는 뒤, 멀티 포지션은 주포지션 다음), 뎁스 = 2·3번째 옵션 질 + 인원
-        opts.sort(key=lambda x: (x["injured"], x["kind"] != "primary", -x["ovr"]))
+        # 1st = 쓸 수 있는(부상 아님) 선수 중 그 자리 실제 선발이 많은 순 → 주포지션 → OVR. 다른 자리 1st 는 뒤로
+        # (예전엔 OVR 순이라 130분 뛴 Eze 가 AM·LW 두 자리 1st, 2026-10-20 점검). 뎁스 = 2·3번째 옵션 질 + 인원
+        opts.sort(key=lambda x: (x["injured"], x["player"] in first_of, -(x["role_starts"].get(b) or 0),
+                                 x["kind"] != "primary", -x["ovr"]))
+        if not opts[0]["injured"]:
+            first_of[opts[0]["player"]] = b
         o2 = opts[1]["ovr"] if len(opts) > 1 else 38
         o3 = opts[2]["ovr"] if len(opts) > 2 else 38
         depth = round(0.55 * o2 + 0.25 * o3 + 0.2 * min(100, len(opts) * 25))
@@ -1739,7 +1755,9 @@ def builder(team: str, league: str = ACTIVE_LEAGUE):
                     "line": ps.LINE_OF[pr["primary"]], "starts": pr["starts"],
                     "injured": inj.get(ps.norm_name(r["player"])), "roster_only": bool(r.get("_roster_only") is True)})
     out.sort(key=lambda x: -x["ovr"])
-    return {"team": team, "color": tm.team_color(team), "players": out}
+    # 시작 포메이션 = 실제 리그 최빈값(빌더가 4-3-3 고정으로 시작해 Overview·뎁스와 XI 가 달랐다, 2026-10-20 점검)
+    return {"team": team, "color": tm.team_color(team), "players": out,
+            "formation": (_used_formation(team, league) or {}).get("formation")}
 
 
 def _avail_schedule_seasons(league: str) -> list[str]:
@@ -2727,6 +2745,9 @@ def _placements(team: str, league: str, last_n: int | None = None, exclude: set 
     sub = df[df["event_id"].isin(matches)]
     fm = sub.groupby("event_id")["formation"].first().mode()
     formation = str(fm.iloc[0]) if not fm.empty else "4-3-3"
+    import positions as _ps_  # noqa: PLC0415
+    _norm_inj = _ps_.norm_name
+    _inj_now = set(_active_injuries(team, league) or {})          # 지금 결장(부상) — 배치 선수에 ✚
 
     slot_counts: dict[str, dict[str, int]] = {}
     for eid in matches:
@@ -2791,6 +2812,8 @@ def _placements(team: str, league: str, last_n: int | None = None, exclude: set 
             "kind": slot_kind(slot),
             "ovr": _player_ovr(row) if row is not None else None,
             "photo": (_photo(row) if row is not None else "") or (_resolve_photo(player, resolve, league) if player else ""),
+            # 지금 부상 중이면 표시 — 시즌 XI 의 Tzolis(~10/30)가 표시 없이 선발로 보여 다음 경기 XI 로 오해됐다
+            "injured": bool(player) and _norm_inj(player) in _inj_now,
         })
     return {"formation": formation, "placements": placements, "matches": len(matches)}
 

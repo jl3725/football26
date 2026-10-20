@@ -80,11 +80,16 @@ export default function SquadBuilder({ team, accent }: { team: string; accent: s
   const [formation, setFormation] = useState("4-3-3");
   const [overrides, setOverrides] = useState<Record<number, string>>({});
   const [pick, setPick] = useState<number | null>(null);
-  const [availOnly, setAvailOnly] = useState(false);   // 부상 제외
+  const [availOnly, setAvailOnly] = useState(true);    // 부상 제외 — 기본 켬(다음 경기에 뛸 수 있는 XI)
   const peek = usePeek();
   useEffect(() => {
     let a = true; setPlayers(null); setOverrides({});
-    getBuilder(team).then((d) => a && setPlayers(d.players)).catch(() => a && setPlayers([]));
+    getBuilder(team).then((d) => {
+      if (!a) return;
+      setPlayers(d.players);
+      // 시작 포메이션 = 실제로 가장 많이 쓴 것(Overview FORMATION 과 같은 기준)
+      if (d.formation && FORMATIONS[d.formation]) setFormation(d.formation);
+    }).catch(() => a && setPlayers([]));
     return () => { a = false; };
   }, [team]);
 

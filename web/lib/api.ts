@@ -74,7 +74,7 @@ export type Overview = {
 
 export type CalEvent = { name: string; start: string; end: string; icon: string; kind: string };
 
-export type Placement = { slot: string; player: string; x: number; y: number; kind: string; ovr: number | null; photo: string; changed?: boolean; in?: boolean; out?: string; club?: string };
+export type Placement = { slot: string; player: string; x: number; y: number; kind: string; ovr: number | null; photo: string; changed?: boolean; in?: boolean; out?: string; club?: string; injured?: boolean };
 // FORMATION 대회 — league · 대회 코드 하나(uefa.champions·eng.league_cup …) · euro·cup(묶음) · all(전 대회) · last(가장 최근 한 경기)
 export type LineupComp = "league" | "euro" | "cup" | "all" | "last" | (string & {});
 export type Lineup = {
@@ -232,7 +232,7 @@ export type Bucket = { pos: string; count: number; multi?: number; depth: number
 // Best XI 빌더(/api/builder) — 전체 스쿼드 + 주·2·3포지션(실제로 선 자리, src/positions.py) + 부상
 export type BuilderPlayer = { player: string; ovr: number; photo: string; age: number; minutes: number; primary: string; secondary: string[];
   line: string; starts: number; injured: { injury: string; until: string } | null; roster_only: boolean };
-export const getBuilder = (t: string, l = _league) => j<{ team: string; color: string; players: BuilderPlayer[] }>(`/api/builder/${q(t, l)}`);
+export const getBuilder = (t: string, l = _league) => j<{ team: string; color: string; players: BuilderPlayer[]; formation?: string | null }>(`/api/builder/${q(t, l)}`);
 export type LoanOut = { player: string; club: string; pos: string; nat: string; photo: string; source: string; minutes: number | null; ovr: number | null };
 export type Squad = { team: string; color: string; lines: Record<string, SquadPlayer[]>; buckets: Bucket[]; loans?: LoanOut[] };
 
