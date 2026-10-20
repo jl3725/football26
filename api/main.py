@@ -6125,14 +6125,21 @@ def prediction_league():
                **{k: pick(r, k) for k, *_ in keys}} for r in sorted(done, key=lambda r: (r["date"], str(r.get("kickoff"))), reverse=True)[:12]]
     today = _today_kst().isoformat()
     split = []
+    # 승자 예상이 다른 경기 + 같더라도 팬이 고른 결과의 확률이 20%p 이상 다른 경기(Betis–Feyenoord 팬 81% vs 모델 41%).
+    # 예전엔 픽이 다를 때만 담아 이번 주 칸이 비었다(2026-10-20 점검)
     for r in df[(df["result"].isna()) & (df["date"].astype(str) >= today)].to_dict("records"):
         f, mo = probs(r, "fans"), probs(r, "model")
-        if f and mo and max(f, key=f.get) != max(mo, key=mo.get):
-            gap = abs(f[max(f, key=f.get)] - mo[max(f, key=f.get)])
+        if not (f and mo):
+            continue
+        fk = max(f, key=f.get)
+        differ = fk != max(mo, key=mo.get)
+        gap = abs(f[fk] - mo[fk])
+        if differ or gap >= 0.20:
             split.append({"event_id": r["event_id"], "date": r["date"], "home": r["home"], "away": r["away"],
                           "home_logo": _logo_of(r, "home"), "away_logo": _logo_of(r, "away"),
-                          "fans": pick(r, "fans"), "model": pick(r, "model"), "gap": round(gap, 3)})
-    split.sort(key=lambda x: -x["gap"])
+                          "fans": pick(r, "fans"), "model": pick(r, "model"), "gap": round(gap, 3),
+                          "kind": "pick" if differ else "confidence", "model_on_fan_pick": round(mo[fk], 3)})
+    split.sort(key=lambda x: (x["kind"] != "pick", -x["gap"]))
     return {"available": True, "since": str(df["date"].min()), "sources": sources, "h2h": h2h, "recent": recent,
             "split": split[:6], "common": common, "model_versions": {k: int(v) for k, v in vers.items()}, "v3_since": v3_since}
 

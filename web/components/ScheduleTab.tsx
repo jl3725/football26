@@ -2,7 +2,8 @@
 import { ppgMeaning } from "@/lib/meaning";
 import { MeaningTag } from "./Meaning";
 import { useEffect, useMemo, useState } from "react";
-import { activeLeague, getSchedule, getMatch, type Schedule, type MatchDetail, type Match, type Fixture } from "@/lib/api";
+import { activeLeague, getSchedule, getMatch, getTeamFixtures, type Schedule, type MatchDetail, type Match, type Fixture } from "@/lib/api";
+import { useMatchPreview } from "@/lib/matchPreview";
 import { compEnKo } from "@/lib/match";
 import { ReviewSections } from "./MatchReview";
 import Pitch from "./Pitch";
@@ -17,6 +18,39 @@ const COMP_STYLE: Record<string, string> = {
   "컨퍼런스리그": "#4fc27f", "FA컵": "#b98cd8", "EFL컵": "#c98a8a", "코파델레이": "#d8b34e",
 };
 const compColor = (c: string) => COMP_STYLE[c] || "#8aa0b8";
+
+// 예정 경기 — 예측 3출처(팬·모델·Elo) 한눈에 + 프리뷰 서랍 열기. 예전엔 '라인업은 경기 후 제공' 한 줄뿐이었다
+function UpcomingPreview({ team, match, accent }: { team: string; match: Match; accent: string }) {
+  const [fx, setFx] = useState<Fixture | null | undefined>(undefined);
+  const preview = useMatchPreview();
+  useEffect(() => {
+    let a = true; setFx(undefined);
+    getTeamFixtures(team, undefined, 8).then((d) => a && setFx(d.next.find((f) => f.event_id === match.event_id) ?? null)).catch(() => a && setFx(null));
+    return () => { a = false; };
+  }, [team, match.event_id]);
+  if (fx === undefined) return <div style={{ padding: 20 }}><Skel h={16} w="60%" /></div>;
+  if (!fx) return <div className="mgr-meta" style={{ padding: 20 }}>예정 경기 — 예측·프리뷰는 경기 1~2주 전부터 나옵니다.</div>;
+  const home = fx.home.team === team;
+  const rows: [string, { h: number; d: number; a: number } | undefined | null][] = [["FANS", fx.fans], ["MODEL", fx.model], ["CLUBELO", fx.elo]];
+  const pct = (v: number) => `${Math.round(v * 100)}%`;
+  return (
+    <div className="scd-prev">
+      <div className="scd-prev-h"><b>PREVIEW</b><span>{fx.kst} · {home ? "홈" : "원정"} · 승 / 무 / 패(우리 팀 기준)</span></div>
+      {rows.filter(([, p]) => p).map(([k, p]) => {
+        const w = home ? p!.h : p!.a, l = home ? p!.a : p!.h;
+        return (
+          <div className="scd-prev-r" key={k}>
+            <em>{k}</em>
+            <span className="scd-prev-bar"><i style={{ width: pct(w), background: accent }} /><i style={{ width: pct(p!.d), background: "var(--line-strong)" }} /><i style={{ width: pct(l), background: "#8a94a8" }} /></span>
+            <span className="scd-prev-v">{pct(w)} · {pct(p!.d)} · {pct(l)}</span>
+          </div>
+        );
+      })}
+      {fx.model?.score && <p className="scd-prev-note">모델 예상 스코어 {fx.model.score}</p>}
+      {preview && <button className="scd-prev-open" onClick={() => preview(fx)}>프리뷰 열기 — 폼 · 결장 · 맞대결 →</button>}
+    </div>
+  );
+}
 
 function MatchDetailView({ team, match, accent }: { team: string; match: Match; accent: string }) {
   const [d, setD] = useState<MatchDetail | null>(null);
@@ -45,7 +79,7 @@ function MatchDetailView({ team, match, accent }: { team: string; match: Match; 
         {match.formation && <div className="scd-form">{match.formation}</div>}
       </div>
       {match.status !== "completed" ? (
-        <div className="mgr-meta" style={{ padding: 20 }}>예정 경기 — 라인업은 경기 후 제공됩니다.</div>
+        <UpcomingPreview team={team} match={match} accent={accent} />
       ) : !match.has_lineup ? (
         <div className="mgr-meta" style={{ padding: 20 }}>이 경기의 라인업 데이터가 아직 없습니다{match.comp !== "리그" ? " (컵·유럽 라인업 수집 예정)" : ""}.</div>
       ) : !d ? (

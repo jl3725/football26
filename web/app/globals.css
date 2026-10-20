@@ -4254,3 +4254,18 @@ LIGA’처럼 글자가 접히던 것) — 넘치면 가로로 넘긴다 */
 
 .pd-news-en { display: block; font-size: 11.5px; color: var(--muted-2); font-style: normal; line-height: 1.4; margin-top: 2px; }   /* 선수 뉴스 원제 */
 .ds-nok { font-size: 11px; color: var(--muted); margin-left: 6px; }   /* DATA STATUS 에이전트 정상 피드 수 */
+
+/* 일정 탭 예정 경기 미리보기(UpcomingPreview) */
+.scd-prev { padding: 16px 18px; display: flex; flex-direction: column; gap: 10px; }
+.scd-prev-h { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.scd-prev-h b { font: 700 13px/1 var(--font-num); letter-spacing: 0.14em; }
+.scd-prev-h span { font-size: 12px; color: var(--muted); }
+.scd-prev-r { display: grid; grid-template-columns: 64px minmax(0, 1fr) auto; gap: 10px; align-items: center; }
+.scd-prev-r em { font: 600 10.5px/1 var(--font-num); letter-spacing: 0.12em; color: var(--muted-2); font-style: normal; }
+.scd-prev-bar { display: flex; height: 8px; border-radius: 4px; overflow: hidden; gap: 1px; }
+.scd-prev-bar i { display: block; height: 100%; }
+.scd-prev-v { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.scd-prev-note { margin: 0; font-size: 12px; color: var(--muted); }
+.scd-prev-open { align-self: flex-start; background: var(--overlay); border: 1px solid var(--line); color: var(--txt); border-radius: 8px; padding: 7px 12px; font-size: 13px; cursor: pointer; }
+.scd-prev-open:hover { border-color: var(--line-strong); }
+.pl5-gap { font-style: normal; font-size: 11px; color: var(--warning, #f4cf5e); margin-left: 4px; }   /* 의견 갈린 경기 확신도 차이 */

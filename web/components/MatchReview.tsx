@@ -153,9 +153,20 @@ function pickRecap(results: ResultMatch[], extra: Fixture[], live: Record<string
   }
   for (const r of results) {
     if (!r.event_id) continue;
-    items.push({ m: r, h: r.home.goals, a: r.away.goals, score: r.big + (r.upset ? 25 : 0) + 12 * Math.min(0, r.d_day ?? 0) });
+    // 빅매치 점수 + 이변(줄임 15) + 골 많은 경기 + 큰 클럽(OVR) − 지난 날짜 — 작은 리그 이변 3장만 뽑혀
+    // Betis 2-5 Barça·Bayern 6-1 Leipzig 가 빠졌다(2026-10-20 점검)
+    const goals = r.home.goals + r.away.goals;
+    const topOvr = Math.max(r.home.ovr ?? 0, r.away.ovr ?? 0);
+    items.push({ m: r, h: r.home.goals, a: r.away.goals,
+      score: r.big + (r.upset ? 15 : 0) + 3 * Math.min(goals, 7) + Math.max(0, topOvr - 80) * 1.5 + 12 * Math.min(0, r.d_day ?? 0) });
   }
-  return items.sort((x, y) => y.score - x.score).slice(0, n);
+  // 리그 다양성 — 한 리그(대회)에서 1경기씩 먼저, 모자라면 나머지에서
+  const sorted = items.sort((x, y) => y.score - x.score);
+  const out: typeof sorted = [], seen = new Set<string>();
+  const keyOf = (it: RecapItem) => it.m.comp_code || it.m.home.league || "";
+  for (const it of sorted) if (out.length < n && !seen.has(keyOf(it))) { out.push(it); seen.add(keyOf(it)); }
+  for (const it of sorted) if (out.length < n && !out.includes(it)) out.push(it);
+  return out;
 }
 
 function RecapCard({ it }: { it: RecapItem }) {

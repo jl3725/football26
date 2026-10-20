@@ -617,7 +617,7 @@ export type PredScore = { key: "fans" | "model" | "elo"; en: string; kr: string;
 export type PredPick = { pick: "H" | "D" | "A"; p: number } | null;
 export type PredRecent = { event_id: string; date: string; home: string; away: string; home_logo: string; away_logo: string; hg: number; ag: number;
   result: "H" | "D" | "A"; fans: PredPick; model: PredPick; elo: PredPick };
-export type PredSplit = { event_id: string; date: string; home: string; away: string; home_logo: string; away_logo: string; fans: PredPick; model: PredPick; gap: number };
+export type PredSplit = { event_id: string; date: string; home: string; away: string; home_logo: string; away_logo: string; fans: PredPick; model: PredPick; gap: number ; kind?: "pick" | "confidence"; model_on_fan_pick?: number };
 type PredStat = Omit<PredScore, "key" | "en" | "kr">;
 // common: 세 출처가 모두 예측한 같은 경기 맞대결(rank = 적중률 → 브라이어) · v3: 같은 경기를 모델 v3 로(이전 경기는 재계산, 참고)
 export type PredictionLeague = { available: boolean; since?: string; sources: PredScore[];
@@ -660,8 +660,8 @@ export const getTeamTrends = (team: string, l = _league) =>
   j<TeamTrends>(`/api/team-trends/${encodeURIComponent(team)}?league=${encodeURIComponent(l)}`);
 export const getTeamSeason = (team: string, l = _league) =>
   j<TeamSeason>(`/api/team-season/${encodeURIComponent(team)}?league=${encodeURIComponent(l)}`);
-export const getTeamFixtures = (team: string, l = _league) =>
-  j<{ team: string; next: Fixture[] }>(`/api/fixtures/${encodeURIComponent(team)}?league=${encodeURIComponent(l)}`);
+export const getTeamFixtures = (team: string, l = _league, n = 3) =>
+  j<{ team: string; next: Fixture[] }>(`/api/fixtures/${encodeURIComponent(team)}?league=${encodeURIComponent(l)}&n=${n}`);
 // 선수 시즌 히트맵(Sofascore) — analytics 포지셔널 히트맵
 export type HeatmapPlayer = { player: string; pos: string; line: string; minutes: number; ovr: number; photo: string; n_points: number; grid: number[] };
 export type HeatmapData = { available: boolean; team: string; gw: number; gh: number; players: HeatmapPlayer[];

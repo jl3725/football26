@@ -180,8 +180,17 @@ export default function AllDashboard({ onPick, switcher }: { accent?: string; on
   const wList = W_ALL.filter((w) => watch === "all" || w.kind === watch)
     .sort((a, b) => Number(pinned.has(b.club)) - Number(pinned.has(a.club)));
 
-  const hero = fx && fx.length ? fx[0] : null;
-  const rest = fx ? fx.slice(1, 4) : [];
+  // 같은 경기를 여러 섹션에 반복하지 않는다 — BIG MATCHES 의 PSG–Lyon·바르사–레알이 바로 아래 MATCHES TO WATCH 에
+  // 또 나왔다(2026-10-20 점검). 빅매치에 오른 경기는 WATCH 에서 빼고, WATCH 의 이유(순위 승부처)는 빅매치 카드 태그로 합친다
+  const watchById = new Map((pulse?.watch ?? []).filter((w) => w.event_id).map((w) => [w.event_id as string, w]));
+  const withWhy = (m: Fixture): Fixture => {
+    const w = m.event_id ? watchById.get(m.event_id) : undefined;
+    return w ? { ...m, tags: Array.from(new Set([...(m.tags ?? []), ...w.why])) } : m;
+  };
+  const hero = fx && fx.length ? withWhy(fx[0]) : null;
+  const rest = fx ? fx.slice(1, 4).map(withWhy) : [];
+  const shownIds = new Set([hero, ...rest].map((m) => m?.event_id).filter(Boolean) as string[]);
+  const watchRest = (pulse?.watch ?? []).filter((w) => !w.event_id || !shownIds.has(w.event_id));
   const s = d.summary;
   const mvRows = curMv ? curMv.rows.slice(0, mvMore ? 12 : 6) : [];
 
@@ -244,10 +253,10 @@ export default function AllDashboard({ onPick, switcher }: { accent?: string; on
       {/* 팬 투표 vs 우리 모델 — 누가 더 잘 맞히나 */}
       <PredictionLeague />
 
-      {pulse && pulse.watch.length > 0 && (
+      {watchRest.length > 0 && (
         <section className="h5-sec">
-          <SectionHead title="MATCHES TO WATCH" kr="주목할 매치" meta="리그별 순위 승부처 · 7일 이내" />
-          <WatchGrid items={pulse.watch} onPick={onPick} />
+          <SectionHead title="MATCHES TO WATCH" kr="주목할 매치" meta="리그별 순위 승부처 · 7일 이내 · 빅매치 제외" />
+          <WatchGrid items={watchRest} onPick={onPick} />
         </section>
       )}
 

@@ -87,7 +87,7 @@ export default function PredictionLeague() {
           </div>
         </div>
         <div className="card pl5-split">
-          <div className="pl5-st">의견 갈린 경기<span>다가오는 경기 · 팬과 모델의 예상 결과가 다름</span></div>
+          <div className="pl5-st">의견 갈린 경기<span>다가오는 경기 · 예상 결과가 다르거나 확률이 20%p 이상 차이</span></div>
           {d.split.length ? d.split.map((x) => (
             <div className="pl5-sr" key={x.event_id}>
               <div className="pl5-sm">
@@ -97,10 +97,12 @@ export default function PredictionLeague() {
               </div>
               <div className="pl5-sp">
                 <span className="fans">FANS <b>{PICK_KO(x.fans, short(x.home), short(x.away))}</b> {x.fans ? `${Math.round(x.fans.p * 100)}%` : ""}</span>
-                <span className="model">MODEL <b>{PICK_KO(x.model, short(x.home), short(x.away))}</b> {x.model ? `${Math.round(x.model.p * 100)}%` : ""}</span>
+                {x.kind === "confidence" && x.model_on_fan_pick != null
+                  ? <span className="model">MODEL <b>같은 예상</b> {Math.round(x.model_on_fan_pick * 100)}% <em className="pl5-gap">차이 {Math.round(x.gap * 100)}%p</em></span>
+                  : <span className="model">MODEL <b>{PICK_KO(x.model, short(x.home), short(x.away))}</b> {x.model ? `${Math.round(x.model.p * 100)}%` : ""}</span>}
               </div>
             </div>
-          )) : <p className="pv-empty">이번 주는 팬과 모델의 예상이 대부분 같습니다</p>}
+          )) : <p className="pv-empty">이번 주는 팬과 모델의 예상과 확률이 비슷합니다</p>}
           <p className="pl5-note">MODEL = 이 사이트의 데이터 통계 모델(xG·득실·선수 평점) · FANS = Sofascore 팬 투표 · 재미용, 베팅 정보 아님</p>
         </div>
       </div>
