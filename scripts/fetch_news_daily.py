@@ -104,6 +104,9 @@ def main(argv=None) -> int:
         tn += n; tt += t
     s = stats()
     print(f"\n완료 — 신규 {tn} / 처리 {tt} · DB 누적 {s['articles']}건 ({s['teams']}팀)")
+    import news_tags   # 새 기사 선수 태깅(이름 전체 · 성+클럽) — 무료·결정적. 처음 실행 때 지난 기사 전부
+    n_art, n_tag = news_tags.run()
+    print(f"[news-tags] 기사 {n_art}건 · 선수 태그 {n_tag}개")
     backfill(BACKFILL_PER_RUN)
     print("번역률(2일):", translation_stats(_days_ago(2)))
     return 0

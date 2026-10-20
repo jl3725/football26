@@ -27,6 +27,11 @@ export default function NewsTab({ team, accent }: { team: string; accent: string
               <div className="news-head">{a.headline}</div>
               {a.headline_en && a.headline_en !== a.headline && <div className="news-head-en">{a.headline_en}</div>}
               {a.descr && <div className="news-desc">{a.descr}</div>}
+              {a.players && a.players.length > 0 && (
+                <div className="news-tags" title="기사에 나온 이 팀 선수(이름 전체, 또는 성 + 클럽 이름)">
+                  {a.players.slice(0, 4).map((p) => <span key={p}>{p}</span>)}
+                </div>
+              )}
             </div>
           </a>
         ))}

@@ -4208,3 +4208,13 @@ LIGA’처럼 글자가 접히던 것) — 넘치면 가로로 넘긴다 */
 .ib-last .ib-fx { opacity: .65; }
 .ib-k { font-size: 10.5px; color: var(--muted); align-self: center; margin-right: 2px; }
 @media (max-width: 720px) { .ib-list { grid-template-columns: 1fr; } .ib-when { font-size: 16px; } }
+
+/* ── IN THE NEWS (선수 상세) ── */
+.pd-news { margin-top: 16px; }
+.pd-news ul { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; gap: 7px; }
+.pd-news li { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.pd-news a { color: var(--txt); text-decoration: none; font-size: 13px; line-height: 1.45; overflow-wrap: anywhere; }
+.pd-news a:hover { text-decoration: underline; }
+.pd-news li span { font-size: 11px; color: var(--muted); }
+.news-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
+.news-tags span { font-size: 10.5px; padding: 1px 7px; border-radius: 6px; background: var(--panel-2); color: var(--txt); }

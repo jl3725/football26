@@ -99,7 +99,7 @@ AGENTS: tuple[Agent, ...] = (
               Feed("history", "통산 부상 이력", ("injury_history",), ("tm_data",), "주 1회 · 월 12:30 KST", WEEK_H,
                    ("tm_injury_history_*",)),
           ), checks=("수집기 가드: 부상자 0명·이력 급감 저장 차단",)),
-    Agent("news", "NEWS", "뉴스", "뉴스 수집·번역(팀 태그)",
+    Agent("news", "NEWS", "뉴스", "뉴스 수집·번역(팀 태그) · 선수 태깅(이름 전체·성+클럽, news_tags)",
           ("ESPN", "뉴스 RSS"), (
               Feed("news", "뉴스 수집·번역", ("news",), ("daily_news",), "2시간마다", 6, ("news.db",)),
           ), checks=("watchdog: news(수집 1일·번역률 50%)",)),

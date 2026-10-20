@@ -2171,10 +2171,17 @@ def news(team: str, league: str = ACTIVE_LEAGUE):
     if "published" in ta.columns:
         ta = ta.sort_values("published", ascending=False)
     today = str(datetime.date.today())
+    # 기사에 나온 이 팀 선수(src/news_tags.py — 이름 전체 · 성+클럽)
+    tags = ds.read_table("news_players", league=league)
+    tagmap: dict = {}
+    if tags is not None and not tags.empty:
+        for ln, pl in zip(tags.loc[tags["squad"] == team, "link"], tags.loc[tags["squad"] == team, "player"]):
+            tagmap.setdefault(str(ln), []).append(str(pl))
     out = []
     for _, r in ta.head(24).iterrows():
         fs = str(r.get("first_seen") or "")[:10]
         out.append({
+            "players": tagmap.get(str(r.get("link") or ""), []),
             "headline": str(r.get("headline_ko") or r.get("headline") or ""),
             "headline_en": str(r.get("headline") or ""),
             "descr": str(r.get("descr_ko") or r.get("descr") or ""),
@@ -2185,6 +2192,26 @@ def news(team: str, league: str = ACTIVE_LEAGUE):
             "is_new": bool(fs and fs >= today),
         })
     return {"team": team, "color": tm.team_color(team), "articles": out, "sparse": len(out) < 3}
+
+
+@app.get("/api/news-player/{player}")
+@_memo(ttl=3600)
+def news_player(player: str, club: str = "", league: str = ACTIVE_LEAGUE, limit: int = 8):
+    """선수가 나온 최근 기사(news.db 선수 태그 — 이름 전체, 또는 성 + 같은 기사 속 클럽 이름)."""
+    tags, na = ds.read_table("news_players", league=league), ds.read_table("news_articles", league=league)
+    if tags is None or na is None or tags.empty:
+        return {"player": player, "articles": []}
+    t = tags[(tags["player"] == player) & ((tags["squad"] == club) if club else True)]
+    if t.empty:
+        return {"player": player, "articles": []}
+    how = dict(zip(t["link"].astype(str), t["how"].astype(str)))
+    a = na[na["link"].astype(str).isin(how)].sort_values(["published", "first_seen"], ascending=False)
+    a = a.drop_duplicates("link").head(max(1, min(limit, 20)))
+    out = [{"headline": str(r.get("headline_ko") or r.get("headline") or ""), "headline_en": str(r.get("headline") or ""),
+            "source": str(r.get("source") or ""), "published": str(r.get("published") or ""), "link": str(r.get("link") or ""),
+            "image": str(r.get("image") or "") if str(r.get("image") or "").startswith("http") else "",
+            "how": how.get(str(r.get("link") or ""), "")} for _, r in a.iterrows()]
+    return {"player": player, "articles": out, "total": int(len(how))}
 
 
 @app.get("/api/analytics/{team}")

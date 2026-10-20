@@ -103,6 +103,12 @@ def build() -> None:
             ndf.to_sql("news_articles", conn, if_exists="replace", index=False)
             total_rows += len(ndf)
             print(f"  · {'news_articles':38s} {len(ndf):6d} rows  (news.db)")
+            try:   # 기사 선수 태그(src/news_tags.py) — 선수 화면 IN THE NEWS · Ask Scout
+                tdf = pd.read_sql("SELECT link, player, squad, league, how FROM article_players", sqlite3.connect(NEWS_DB))
+                tdf.to_sql("news_players", conn, if_exists="replace", index=False)
+                print(f"  · {'news_players':38s} {len(tdf):6d} rows  (news.db)")
+            except Exception:  # noqa: BLE001 — 태깅 전 news.db
+                pass
         except Exception as e:  # noqa: BLE001
             print(f"  ! news.db 병합 실패: {e}")
 

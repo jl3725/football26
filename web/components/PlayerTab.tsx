@@ -13,6 +13,7 @@ import { usePeek } from "./PlayerPeek";
 import { Skel, SkelCards } from "./Skeleton";
 import { TrendArrow, TrendLine } from "./Trend";
 import SeasonLog from "./SeasonLog";
+import PlayerNews from "./PlayerNews";
 
 // 실제 기록 값 — 라벨에 '%' 가 있으면 비율(0~100), 그 외(/90·xA)는 90분당.
 function fmtRaw(label: string, raw: number): string {
@@ -205,6 +206,7 @@ function Detail({ team, player, accent, heatmap }: { team: string; player: strin
           </div>
         </div>
       )}
+      <PlayerNews player={player} club={team} />
     </div>
   );
 }

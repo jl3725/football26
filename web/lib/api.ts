@@ -297,6 +297,7 @@ export type Context = { today: string; data_season: string; window: Window };
 export type Article = {
   headline: string; headline_en: string; descr: string;
   source: string; published: string; image: string; link: string; is_new: boolean;
+  players?: string[];   // 기사에 나온 이 팀 선수(뉴스 선수 태그)
 };
 export type News = { team: string; color: string; articles: Article[]; sparse: boolean };
 
@@ -722,3 +723,9 @@ export type IntlTeam = {
 };
 export const getIntlTeam = (team: string, league: string = _league) =>
   j<IntlTeam>(`/api/intl/team/${encodeURIComponent(team)}?league=${encodeURIComponent(league)}`);
+
+// ── 선수 뉴스(기사 선수 태그 — src/news_tags.py) ──
+export type PlayerNewsItem = { headline: string; headline_en: string; source: string; published: string; link: string; image: string; how: string };
+export const getPlayerNews = (player: string, club: string, league: string = _league) =>
+  j<{ player: string; articles: PlayerNewsItem[]; total?: number }>(
+    `/api/news-player/${encodeURIComponent(player)}?club=${encodeURIComponent(club)}&league=${encodeURIComponent(league)}&limit=5`);
