@@ -751,9 +751,28 @@ export type IntlHub = { status: "live" | "soon" | "none"; today: string; window:
   by_conf: { conf: string; en: string; ko: string; comps: IntlCompCard[] }[]; callups: number };
 export type IntlMatch = { event_id: string; date: string; kickoff: string; comp_code: string; comp: string; conf: string; kind: string;
   stage: string; home: string; away: string; home_logo: string; away_logo: string; state: string; hg: number | null; ag: number | null;
-  winner?: "home" | "away" | null };
+  winner?: "home" | "away" | null; round?: string; group?: string; venue?: string; home_ko?: string; away_ko?: string };
+export type IntlGroupRow = { team: string; team_ko?: string; logo: string; rank: number; p: number; w: number; d: number; l: number; gf: number; ga: number; gd: number; pts: number };
+export type IntlGroup = { name: string; rows: IntlGroupRow[] };
+// 대회 출전국의 우리 리그 선수(가장 최근 소집 명단) · 클럽 영향(대회 중 클럽 경기 수)
+export type IntlNationPlayers = { nation: string; nation_ko: string; flag: string; fifa_rank: number | null; announced: boolean; squad_for: string;
+  players: { player: string; club: string; league: string; pos: string; caps: number | null }[] };
+export type IntlClubImpact = { club: string; league: string; logo: string; club_matches: number | null;
+  players: { player: string; nation: string; nation_ko: string }[] };
 export type IntlCompDetail = { available: boolean; code: string; name: string; name_ko: string; conf: string; kind: string; kind_ko: string;
-  edition: IntlEdition; editions: { season: string; status: string; champion: string | null }[]; matches: IntlMatch[] };
+  edition: IntlEdition; editions: { season: string; status: string; champion: string | null }[]; matches: IntlMatch[];
+  groups?: IntlGroup[]; rounds?: { slug: string; en: string; ko: string; n: number }[];
+  players?: IntlNationPlayers[]; club_impact?: IntlClubImpact[] };
+// MY NATION — 한 나라 대표팀
+export type IntlNationItem = { nation: string; nation_ko: string; flag: string; conf: string; fifa_rank: number | null; ours: number };
+export type IntlNationMatch = { event_id: string; date: string; kickoff: string; comp_code: string; comp: string; kind: string; season: string;
+  home: boolean; opp: string; opp_ko?: string; opp_logo: string; logo: string; score: string | null; state: string; result: "W" | "D" | "L" | null };
+export type IntlNation = { nation: string; display: string; nation_ko: string; flag: string; conf: string; fifa_rank: number | null; squad_for: string;
+  form: ("W" | "D" | "L" | null)[]; upcoming: IntlNationMatch[]; recent: IntlNationMatch[];
+  tournaments: { code: string; name_ko: string; kind: string; kind_ko: string; edition: IntlEdition | null; group: IntlGroup | null; matches: number }[];
+  squad: { player: string; club: string; league: string; ours: boolean; pos: string; caps: number | null; goals: number | null }[]; ours: number };
+export const getIntlNations = () => j<{ nations: IntlNationItem[] }>(`/api/intl/nations`);
+export const getIntlNation = (nation: string) => j<IntlNation>(`/api/intl/nation/${encodeURIComponent(nation)}`);
 let _intlHub: Promise<IntlHub> | null = null;
 export const getIntlHub = () => (_intlHub ??= j<IntlHub>(`/api/intl/hub`).catch((e) => { _intlHub = null; throw e; }));
 export const getIntlMatches = (o: { scope?: "key" | "all"; when?: "upcoming" | "recent"; conf?: string; kind?: string; code?: string; limit?: number } = {}) =>

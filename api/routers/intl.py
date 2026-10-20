@@ -34,6 +34,18 @@ def intl_comp(code: str, season: str = ""):
     return intl_hub_svc.comp_detail(code, season)
 
 
+@router.get("/intl/nations")
+def intl_nations():
+    """MY NATION 고르기 목록 — 소집 명단이 있는 나라."""
+    return {"nations": intl_hub_svc.nations()}
+
+
+@router.get("/intl/nation/{nation}")
+def intl_nation(nation: str):
+    """한 나라 대표팀 — 다음 경기·최근 결과·나가는 대회(조)·최근 소집 명단(우리 리그 선수 표시)."""
+    return intl_hub_svc.nation_payload(nation)
+
+
 @router.get("/intl/team/{team}")
 def intl_team(team: str, league: str = ACTIVE_LEAGUE):
     """다음(진행 중) A매치 기간 + 그 기간 소집 선수(명단 발표 전이면 지난 기간 명단, squad_state=previous)와 대표팀 경기."""

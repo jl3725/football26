@@ -50,10 +50,11 @@ def matches() -> pd.DataFrame:
     return m if m is not None else pd.DataFrame(columns=["date", "home", "away", "comp_code", "state", "hg", "ag"])
 
 
-def _target(today: dt.date) -> tuple[dict | None, dict | None, str]:
-    """(대상 기간: 진행 중 > 다음, 지난 기간, 상태 now·upcoming·none)."""
+def _target(today: dt.date, kinds: tuple[str, ...] | None = None, skip=None) -> tuple[dict | None, dict | None, str]:
+    """(대상 기간: 진행 중 > 다음, 지난 기간, 상태 now·upcoming·none). kinds 로 기간 종류(break·tournament)를 고르고,
+    skip(w) 이 참인 기간은 건너뛴다."""
     t = today.isoformat()
-    ws = windows()
+    ws = [w for w in windows() if (kinds is None or w.get("kind", "break") in kinds) and not (skip and skip(w))]
     cur = next((w for w in ws if w["start"] <= t <= w["end"]), None)
     nxt = next((w for w in ws if w["start"] > t), None)
     last = next((w for w in reversed(ws) if w["end"] < t), None)
@@ -85,11 +86,27 @@ def _in(squad_for, lo: str, hi: str) -> bool:
     return isinstance(squad_for, str) and lo <= squad_for <= hi
 
 
+def tournament_nations(w: dict) -> set[str]:
+    """대회 기간(kind=tournament)에 경기가 잡힌 나라(정규화 이름)."""
+    m = matches()
+    m = m[(m["date"] >= w["first_match"]) & (m["date"] <= w["end"]) & m["comp_code"].isin(w.get("comps") or [])]
+    return {preg.norm(x) for x in pd.concat([m["home"], m["away"]]).dropna().astype(str)}
+
+
 def team_payload(team: str, league: str, today: dt.date | None = None) -> dict:
     today = today or dt.date.today()
-    w, last, state = _target(today)
     c = callups()
     c = c[(c["our_squad"] == team) & (c["our_league"] == league)]
+    nations = c["nation"].dropna().astype(str).unique() if "nation" in c.columns else []
+
+    def plays(w: dict) -> set[str]:
+        nk = tournament_nations(w)
+        return {n for n in nations if fi.nation_keys(n) & nk}
+
+    # 대회 기간(아시안컵 등)은 이 클럽에 그 대회 나라 선수가 있을 때만 — 유럽 클럽 카드에 아시안컵이 뜨지 않게
+    w, last, state = _target(today, skip=lambda x: x.get("kind") == "tournament" and not plays(x))
+    if w is not None and w.get("kind") == "tournament":
+        c = c[c["nation"].astype(str).isin(plays(w))]
     squad_state, rows = "none", c.iloc[0:0]
     if w is not None:
         now_rows = c[c["squad_for"].astype(str) >= w["first_match"]]

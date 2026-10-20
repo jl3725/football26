@@ -160,6 +160,30 @@ def windows(matches: pd.DataFrame, club_days: dict[str, int], min_day: int = 6, 
     return out
 
 
+def tournament_windows(wins: list[dict], club_days: dict[str, int], today: dt.date, back_days: int = 60) -> list[dict]:
+    """대회 레지스트리(data/intl_competitions.json, src/intl_comps.py)의 본선 회차를 기간으로 — 아시안컵처럼 하루 3경기라
+    '하루 6경기' 묶음에 안 잡히던 대회(리그가 계속돼 소집 선수가 클럽 경기를 빠진다 → 예측 결장). 이미 겹치는 기간이 있으면 건너뜀.
+    소집은 첫 경기 일주일 전부터로 본다."""
+    p = DATA / "intl_competitions.json"
+    if not p.exists():
+        return []
+    lo = (today - dt.timedelta(days=back_days)).isoformat()
+    out = []
+    for c in json.loads(p.read_text(encoding="utf-8")).get("competitions", []):
+        if c.get("kind") != "tournament":
+            continue
+        for e in c.get("editions") or []:
+            if e["end"] < lo or any(w["first_match"] <= e["end"] and e["start"] <= w["end"] for w in wins):
+                continue
+            first, last = dt.date.fromisoformat(e["start"]), dt.date.fromisoformat(e["end"])
+            span = [(first + dt.timedelta(days=i)).isoformat() for i in range((last - first).days + 1)]
+            out.append({"start": (first - dt.timedelta(days=7)).isoformat(), "first_match": e["start"], "end": e["end"],
+                        "matches": int(e.get("matches") or 0), "club_matches": sum(club_days.get(x, 0) for x in span),
+                        "kind": "tournament", "comps": [c["code"]],
+                        "label": f"{c.get('name_ko') or c['name']} {e['season']}"})
+    return out
+
+
 # ── 3. 소집 명단 ────────────────────────────────────────────────────────────
 _SEC = re.compile(r"===\s*(?:Current|Latest) squad\s*===(.*?)(?=\n===?\s*[^=\n]|\Z)", re.S | re.I)
 _PLAYER = re.compile(r"\{\{\s*nat fs (?:g )?player\s*\|(.*?)\}\}\s*(?=\n|\{\{|$)", re.S | re.I)
@@ -248,7 +272,9 @@ def main() -> int:
         print("[intl] 국가대표 경기 0건 — ESPN 응답 확인(기존 파일 유지)")
         return 1
     m.sort_values(["date", "kickoff"]).to_csv(OUT_MATCHES, index=False)
-    wins = windows(m, club_match_days())
+    club_days = club_match_days()
+    wins = windows(m, club_days)
+    wins = sorted(wins + tournament_windows(wins, club_days, today), key=lambda w: w["start"])
     OUT_WINDOWS.write_text(json.dumps({"generated": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"),
                                        "windows": wins}, ensure_ascii=False, indent=1), encoding="utf-8")
     nxt = next((w for w in wins if w["end"] >= today.isoformat()), None)

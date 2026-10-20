@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-20T07:23:52+00:00",
+ "generated": "2026-10-20T08:05:16+00:00",
  "windows": [
   {
    "start": "2026-09-21",
@@ -29,6 +29,18 @@
     "uefa.nations"
    ],
    "label": "11월 A매치 기간"
+  },
+  {
+   "start": "2026-12-31",
+   "first_match": "2027-01-07",
+   "end": "2027-02-05",
+   "matches": 51,
+   "club_matches": 287,
+   "kind": "tournament",
+   "comps": [
+    "afc.asian.cup"
+   ],
+   "label": "AFC 아시안컵 2027"
   }
  ]
 }

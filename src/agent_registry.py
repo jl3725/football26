@@ -116,7 +116,7 @@ AGENTS: tuple[Agent, ...] = (
               Feed("callups", "A매치 기간·소집 명단", ("intl",), ("daily_data",), "매일 13:30 KST", 36,
                    ("intl_matches.csv", "intl_windows.json", "intl_callups.csv")),
               Feed("competitions", "대륙별 대회·상태(자동 발견)", ("intl_comps",), ("daily_data",), "매일 13:30 KST", 36,
-                   ("intl_competitions.json", "intl_registry.json")),
+                   ("intl_competitions.json", "intl_registry.json", "intl_nations_ko.json")),
           ), checks=("수집기: 국가대표 경기 0건·매칭 소집 0명이면 기존 파일 유지",)),
     Agent("identity", "IDENTITY", "기준 정보", "리그 소속팀(승격·강등), 클럽 표기 자동 별칭, 선수 이름 레지스트리, 위키 스쿼드",
           ("Transfermarkt", "ESPN", "Wikipedia"), (

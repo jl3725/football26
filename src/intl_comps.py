@@ -182,9 +182,45 @@ def build() -> dict:
     return {"generated": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"), "competitions": res}
 
 
+NATIONS_KO = ROOT / "data" / "intl_nations_ko.json"
+_KO_SUFFIX = re.compile(r"\s*(남자\s*)?(축구|풋볼)\s*국가\s*대표\s*팀$")
+
+
+def nation_names_ko() -> dict[str, str]:
+    """{소집 명단 나라 표기('Korea, South'): 한글('대한민국')} — 대표팀 영어 위키 문서의 한국어 언어 간 링크에서
+    '… 축구 국가대표팀' 을 떼어 쓴다(손으로 적은 표 없음). 이미 있는 나라는 다시 묻지 않는다."""
+    import pandas as pd  # noqa: PLC0415
+
+    import fetch_intl as fi  # noqa: PLC0415
+    import names_ko  # noqa: PLC0415
+    known = json.loads(NATIONS_KO.read_text(encoding="utf-8")) if NATIONS_KO.exists() else {}
+    p = ROOT / "data" / "intl_callups.csv"
+    nations = set(pd.read_csv(p, usecols=["nation"])["nation"].dropna().astype(str)) if p.exists() else set()
+    m = ROOT / "data" / "intl_matches.csv"          # ESPN 표기('South Korea'·'Yemen') — 조별 순위·경기 화면용
+    if m.exists():
+        mm = pd.read_csv(m, usecols=["home", "away"])
+        nations |= {x for x in pd.concat([mm["home"], mm["away"]]).dropna().astype(str) if not PLACEHOLDER.search(x.lower())}
+    need = [n for n in sorted(nations) if n not in known]
+    if need:
+        titles = {fi.nation_title(n): n for n in need}
+        try:
+            got = names_ko.langlinks_ko(list(titles))
+        except Exception as e:  # noqa: BLE001 — 위키가 막히면 다음 실행
+            print(f"[intl-comps] 나라 한글 이름(위키) 실패: {type(e).__name__}")
+            got = {}
+        for t, ko in got.items():
+            name = _KO_SUFFIX.sub("", ko).strip()
+            if name:
+                known[titles[t]] = name
+        NATIONS_KO.write_text(json.dumps(known, ensure_ascii=False, indent=1, sort_keys=True), encoding="utf-8")
+    return known
+
+
 def main() -> int:
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    ko = nation_names_ko()
+    print(f"[intl-comps] 나라 한글 이름 {len(ko)}개")
     data = build()
     if not data["competitions"]:
         print("[intl-comps] 대회 0개 — ESPN 응답 확인(기존 파일 유지)")
