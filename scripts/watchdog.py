@@ -20,6 +20,7 @@
   ovr       OVR 검증(data/eval/ovr_audit.json) — 같은 선수 OVR 이 화면마다 같은가
   xg        Understat 리그에서 출전은 있는데 xG 합이 0 인 팀(팀 이름 매칭 실패)
   expectations  전문가 기대치(영향력·주장·포지션·유사 선수·누적 스탯) — data/eval/expectations_audit.json
+  identity  클럽 표기 대조에서 자동 등록 못 한 애매한 이름(data/eval/identity_audit.json review)
   agents    실행 원장(data/ops/runs) — 에이전트 feed 의 마지막 성공이 허용 지연(agent_registry max_age_h)을 넘었는가
             (로컬 PC 작업이 꺼져 있거나 워크플로가 통째로 안 돈 경우). --issue 때 결과를 data/ops/watchdog.json 에 남긴다
 
@@ -308,6 +309,21 @@ def check_ovr() -> list[str]:
     return out
 
 
+def check_identity() -> list[str]:
+    """IDENTITY 에이전트(src/identity.py, daily_data) — 자동 등록 못 한 애매한 클럽 표기만 '확인 필요'로 알린다.
+    확인되면 src/squads.py ALIASES 에 한 줄 추가."""
+    p = ROOT / "data" / "eval" / "identity_audit.json"
+    if not p.exists():
+        return [f"{p.name} 없음 — daily_data 'Club identity' 단계 확인"]
+    a = json.loads(p.read_text(encoding="utf-8"))
+    out = []
+    if a.get("date", "") < (NOW.date() - dt.timedelta(days=3)).isoformat():
+        out.append(f"클럽 표기 대조 마지막 실행 {a.get('date')} — daily_data 확인")
+    out += [f"{x['league']} '{x['source_name']}' ≈ '{x['canonical']}'?({x['score']:.2f}·{', '.join(x['sources'][:3])}) — "
+            "맞으면 src/squads.py ALIASES 에 추가" for x in a.get("review", [])]
+    return out
+
+
 def check_expectations() -> list[str]:
     """전문가 기대치(data/eval/golden_expectations.csv) — daily_data 가 매일 data/eval/expectations_audit.json 을 만든다.
     데이터(위키 주장단·선수 표)가 바뀌어 사용자 지적이 다시 생기면 알린다. 코드 변경은 CI 가 막는다."""
@@ -343,7 +359,8 @@ def check_agents() -> list[str]:
 CHECKS = {"ovr": check_ovr, "season": check_season, "hub": check_hub, "frontend": check_frontend, "backend": check_backend,
           "workflows": check_workflows, "news": check_news, "tm_agent": check_tm_agent,
           "coverage": check_coverage, "rating_history": check_rating_history, "ratings": check_ratings,
-          "names": check_names, "xg": check_xg, "agents": check_agents, "expectations": check_expectations}
+          "names": check_names, "xg": check_xg, "agents": check_agents, "expectations": check_expectations,
+          "identity": check_identity}
 
 
 def run() -> dict[str, list[str]]:

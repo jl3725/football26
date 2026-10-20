@@ -115,6 +115,9 @@ def main() -> int:
 
     df = pd.read_csv(pf_path)
     ss = pd.read_csv(ss_path)
+    # Sofascore 클럽 표기('Málaga CF'·'SC Cambuur')를 표준으로 — 아니면 그 클럽 선수가 통째로 안 붙는다(IDENTITY 자동 별칭)
+    from squads import canonical_squad  # noqa: PLC0415
+    ss["squad"] = [canonical_squad(s, ACTIVE_LEAGUE) for s in ss["squad"]]
 
     full_map, last_map, last_dup = {}, {}, set()
     for _, s in ss.iterrows():

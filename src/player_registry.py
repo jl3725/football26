@@ -107,9 +107,14 @@ def _read(stem: str, lg: str, season: str, cols=None) -> pd.DataFrame | None:
     if not p.exists():
         return None
     try:
-        return pd.read_csv(p, usecols=lambda c: cols is None or c in cols, low_memory=False)
+        d = pd.read_csv(p, usecols=lambda c: cols is None or c in cols, low_memory=False)
     except (ValueError, OSError):
         return None
+    if "squad" in d.columns:                       # 출처별 클럽 표기('Málaga CF')를 표준으로 — 같은 선수가 두 클럽으로 갈리지 않게
+        from squads import canonical_squad  # noqa: PLC0415
+        m = {s: canonical_squad(s, lg) for s in d["squad"].dropna().astype(str).unique()}
+        d["squad"] = d["squad"].map(lambda s: m.get(str(s), s) if s == s else s)
+    return d
 
 
 def _tmid(v) -> str:

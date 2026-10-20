@@ -11,6 +11,10 @@ Understat 은 원래부터 표기가 달라(예 "Manchester United", "Borussia D
 
 새 시즌에 표기가 또 바뀌면 `python src/squads.py` 로 순위표와 ESPN 소속팀을 대조해
 빠진 별칭을 확인하고 ALIASES 에 추가한다.
+
+2026-10-20부터 IDENTITY 에이전트(src/identity.py, daily_data)가 모든 출처 파일의 클럽 표기를 매일 대조해
+확신이 높은 별칭은 data/club_aliases_auto.csv 에 자동 등록한다(여기 ALIASES 다음으로 읽음). 애매한 것만
+watchdog 이 '확인 필요'로 알리고, 사람이 확인한 것은 아래 ALIASES 에 적는다.
 """
 from __future__ import annotations
 
@@ -37,6 +41,7 @@ ALIASES: dict[str, dict[str, str]] = {
         "Dep. A Coruña": "Deportivo A Coruña",
         "Deportivo La Coruña": "Deportivo A Coruña",
         "Racing Sant": "Racing Santander",
+        "Real Racing Club": "Racing Santander",          # Sofascore — 자동 대조가 애매(Real Sociedad 와 동점)해 사람이 확인
         "Deportivo La Coruna": "Deportivo A Coruña",
         "Real Oviedo": "Oviedo",
     },
@@ -84,11 +89,28 @@ def _canon_by_fold(league: str) -> dict[str, str]:
     return {_fold(v): v for v in LEAGUE_DISPLAY.get(league, {}).values()}
 
 
+@lru_cache(maxsize=1)
+def _auto_aliases() -> dict[str, dict[str, str]]:
+    """IDENTITY 에이전트가 자동 등록한 별칭(data/club_aliases_auto.csv)."""
+    import csv
+    from pathlib import Path
+    p = Path(__file__).resolve().parent.parent / "data" / "club_aliases_auto.csv"
+    out: dict[str, dict[str, str]] = {}
+    if p.exists():
+        with p.open(encoding="utf-8") as fh:
+            for r in csv.DictReader(fh):
+                out.setdefault(r["league"], {})[r["source_name"]] = r["canonical"]
+    return out
+
+
 def canonical_squad(name, league: str) -> str:
-    """소스 표기 → 표준 표기(모르는 이름은 그대로)."""
+    """소스 표기 → 표준 표기(모르는 이름은 그대로). 수동 ALIASES → 자동 별칭 → 악센트 무시 비교."""
     s = str(name or "").strip()
     if s in ALIASES.get(league, {}):
         return ALIASES[league][s]
+    auto = _auto_aliases().get(league, {})
+    if s in auto:
+        return auto[s]
     return _canon_by_fold(league).get(_fold(s), s)
 
 

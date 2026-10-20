@@ -112,13 +112,15 @@ AGENTS: tuple[Agent, ...] = (
               Feed("callups", "A매치 기간·소집 명단", ("intl",), ("daily_data",), "매일 13:30 KST", 36,
                    ("intl_matches.csv", "intl_windows.json", "intl_callups.csv")),
           ), checks=("수집기: 국가대표 경기 0건·매칭 소집 0명이면 기존 파일 유지",)),
-    Agent("identity", "IDENTITY", "기준 정보", "리그 소속팀(승격·강등), 선수 이름 레지스트리, 위키 스쿼드",
+    Agent("identity", "IDENTITY", "기준 정보", "리그 소속팀(승격·강등), 클럽 표기 자동 별칭, 선수 이름 레지스트리, 위키 스쿼드",
           ("Transfermarkt", "ESPN", "Wikipedia"), (
               Feed("season_teams", "리그 소속팀", ("season_teams",), ("daily_data",), "매일 13:30 KST", 36),
+              Feed("club_alias", "클럽 표기 자동 별칭", ("identity",), ("daily_data",), "매일 13:30 KST", 36,
+                   ("club_aliases_auto.csv", "eval/identity_audit.json")),
               Feed("names", "선수 이름 레지스트리", ("player_registry",), ("match_refresh", "daily_data"), "매일 2회", 30,
                    ("player_registry_*",)),
               Feed("wiki_squads", "위키 스쿼드", ("wiki_squads",), ("daily_data",), "매일 13:30 KST", 36),
-          ), checks=("watchdog: names(기준 명단 밖 이름)",)),
+          ), checks=("watchdog: names(기준 명단 밖 이름)", "watchdog: identity(애매한 클럽 표기 확인 필요)")),
     Agent("analyst", "ANALYST", "예측·해석", "경기 예측(모델·ClubElo·팬 투표)과 성적표",
           ("ClubElo", "Sofascore 팬 투표"), (
               Feed("predictions", "예측·성적표", ("clubelo", "log_predictions"), ("match_refresh", "daily_data"),

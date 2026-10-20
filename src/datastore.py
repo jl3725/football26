@@ -77,10 +77,29 @@ def read_table(
     return _cleanse_names(table, _read_from_csv(table, league, season), league, season)   # CSV 폴백은 캐시 안 함
 
 
+def _canon_squads(df: pd.DataFrame, league: str) -> pd.DataFrame:
+    """squad 열을 표준 클럽 표기로(src/squads.canonical_squad — 수동·IDENTITY 자동 별칭). 출처마다 'Sparta Rotterdam'·
+    'Sparta R.' 처럼 달라 FotMob 평점·결장이 그 클럽 선수에 안 붙던 것(2026-10-20)."""
+    if "squad" not in df.columns or df.empty:
+        return df
+    try:
+        import squads  # noqa: PLC0415
+    except ImportError:
+        return df
+    uniq = df["squad"].dropna().astype(str).unique()
+    m = {s: squads.canonical_squad(s, league) for s in uniq}
+    if all(k == v for k, v in m.items()):
+        return df
+    out = df.copy()
+    out["squad"] = out["squad"].map(lambda s: m.get(str(s), s) if s == s else s)
+    return out
+
+
 def _cleanse_names(table: str, df: pd.DataFrame | None, league: str, season: str) -> pd.DataFrame | None:
-    """선수 이름 원천(ESPN·위키·TM 부상)은 레지스트리 기준 표기로 — src/player_names.py."""
+    """선수 이름 원천(ESPN·위키·TM 부상)은 레지스트리 기준 표기로 — src/player_names.py. 클럽 표기도 표준으로."""
     if df is None:
         return df
+    df = _canon_squads(df, league)
     try:
         import player_names as pn  # noqa: PLC0415
     except ImportError:
