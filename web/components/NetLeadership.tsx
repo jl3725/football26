@@ -6,9 +6,9 @@ import { LINE_COLOR, SvgAvatar, lastName } from "./NetShared";
 
 // LEADERSHIP — 주장단(위키 스쿼드 표: 주장·부주장·3·4번째) + 영향력 지도(출전 비중·연결 중심성·근속·경험·대표팀·완장).
 // 영향력 0~100 = 6요소(각 0~1) 가중합 × 100 — 출전·연결은 팀 안 최고 대비라 다른 팀과 비교하는 값이 아니다(src/team_network.leadership)
-const INF_NOTE = "영향력 0~100 · 팀 안 상대값 — 출전·연결 중심성(팀 최고 대비)·근속·완장·경험·대표팀을 가중합, 100 = 모든 요소 만점";
-const COMP: [string, string][] = [["minutes", "출전"], ["hub", "연결"], ["tenure", "근속"], ["experience", "경험"],
-  ["international", "대표팀"], ["armband", "완장"]];
+const INF_NOTE = "영향력 0~100 · 팀 안 상대값 — 실력(팀 최고 OVR 대비)·출전·완장·볼 관여(파이널 서드 패스·키패스)·연결·시즌 폼·근속·경험·대표팀 가중합, 100 = 모든 요소 만점";
+const COMP: [string, string][] = [["quality", "실력"], ["minutes", "출전"], ["armband", "완장"], ["play", "볼 관여"],
+  ["hub", "연결"], ["form", "폼"], ["tenure", "근속"], ["experience", "경험"], ["international", "대표팀"]];
 
 function CaptainHero({ c, team, accent, armband }: { c: NetCaptain; team: string; accent: string; armband: string | null }) {
   const peek = usePeek();
@@ -131,7 +131,7 @@ export default function NetLeadership({ d, accent }: { d: NetworkData; accent: s
             onClick={(e) => peek(e, { name: c.name, club: d.team, hint: { photo: c.photo, ovr: c.ovr ?? undefined, pos: c.pos } })}>
             <span className="net-rank">{i + 1}</span>
             {c.photo ? <img src={c.photo} alt="" /> : <span className="net-cap-ph sm" />}
-            <span className="net-core-name"><b>{c.name}</b><em>{c.pos}{c.captain_rank ? ` · ${["", "주장", "부주장", "3번째 주장", "4번째 주장"][c.captain_rank]}` : ""}</em></span>
+            <span className="net-core-name"><b>{c.name}</b><em>{c.pos}{c.captain_rank ? ` · ${c.captain_rank === 1 ? "주장" : c.captain_rank === 2 ? "부주장" : `${c.captain_rank}번째 주장`}` : ""}</em></span>
             <span className="net-comp">
               {COMP.map(([k, l]) => (
                 <span key={k} title={`${l} ${Math.round((c.components[k] ?? 0) * 100)}`}>

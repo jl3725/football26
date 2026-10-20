@@ -6,7 +6,7 @@ import { usePeek } from "./PlayerPeek";
 
 // Overview LEADERSHIP — 주장단(위키백과 스쿼드 표: 주장·부주장·3·4번째, 8개 리그). 주장이 결장하면 완장을 찬 선수를 표시.
 // 깊은 내용(영향력 지도·리더십 코어)은 NETWORK 탭. 예전엔 EPL 만, '더 보기' 안에 숨어 있었다(2026-10-15).
-const LABEL: Record<number, string> = { 1: "C", 2: "VC", 3: "3C", 4: "4C" };
+const LABEL: Record<number, string> = { 1: "C", 2: "VC", 3: "3C", 4: "4C", 5: "5C", 6: "6C" };
 
 export default function CaptainBoard({ team, accent }: { team: string; accent: string }) {
   const peek = usePeek();

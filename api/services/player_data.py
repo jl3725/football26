@@ -262,6 +262,14 @@ def _build_frame(league: str, season: str | None = None):
         frame = rb.blend(rb.attach(frame, league, season, lambda lg, s: ds.read_table("fotmob_ratings", league=lg, season=s)))
     except Exception as e:  # noqa: BLE001 — FotMob 표가 없으면 Sofascore 만
         print(f"[rating_blend] {league} {season}: 건너뜀 {type(e).__name__}: {e}")
+    # 골·도움·출전 분을 경기 직후 값으로 — FotMob 리그 경기 합이 FBref(주간)보다 최신일 때(src/season_totals.py).
+    # 2026-10-20 사용자: 홀란 리그 8골인데 6골. OVR·리더·득점왕이 모두 이 표를 읽으므로 여기 한 곳에서.
+    if season is None:
+        try:
+            import season_totals as st  # noqa: PLC0415
+            frame = st.apply_live_totals(frame, ds.read_table("fotmob_match_ratings", league=league), league)
+        except Exception as e:  # noqa: BLE001 — 경기별 기록이 없으면 FBref 그대로
+            print(f"[season_totals] {league}: 건너뜀 {type(e).__name__}: {e}")
     import ratings_v3 as rv3  # noqa: PLC0415
     try:
         frame["_line"] = _played_line(frame, season)

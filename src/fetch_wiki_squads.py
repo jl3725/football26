@@ -120,13 +120,17 @@ def role_of(other: str) -> tuple[str, int | None]:
         t = str(other or "").lower()
     if "captain" not in t:
         return "", None
-    if "vice" in t or "2nd" in t or "second" in t:
+    # 서수는 숫자로 — 예전엔 2nd·3rd·4th 만 알아 '5th captain'(바르사 야말)이 그냥 'captain'(1순위)으로 읽혔다(2026-10-20)
+    m = re.search(r"\b(\d+)(?:st|nd|rd|th)\b", t)
+    words = {"second": 2, "third": 3, "fourth": 4, "fifth": 5, "sixth": 6, "seventh": 7}
+    n = int(m.group(1)) if m else next((v for k, v in words.items() if k in t), None)
+    if n is None and "vice" in t:
+        n = 2
+    if n is None or n <= 1:
+        return "captain", 1
+    if n == 2:
         return "vice-captain", 2
-    if "3rd" in t or "third" in t:
-        return "3rd captain", 3
-    if "4th" in t or "fourth" in t:
-        return "4th captain", 4
-    return "captain", 1
+    return f"{n}{'rd' if n == 3 else 'th'} captain", n
 
 
 def parse_squad(wikitext: str) -> list[dict]:

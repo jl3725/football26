@@ -303,7 +303,8 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
       {/* 팀 리더 */}
       {ov.leaders.length > 0 && (
         <div className="card" style={{ marginTop: 16 }}>
-          <SectionHead title="TEAM LEADERS" kr="부문별 1위" />
+          <SectionHead title="TEAM LEADERS"
+            kr={`부문별 1위${ov.leaders_asof ? ` · 골·도움 ${Number(ov.leaders_asof.slice(5, 7))}/${Number(ov.leaders_asof.slice(8, 10))} 경기까지` : ""}`} />
           <div className="leaders-row">
             {ov.leaders.map((ld, i) => (
               <div className="leader peekable" key={i}

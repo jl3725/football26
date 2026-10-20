@@ -62,6 +62,7 @@ export type Overview = {
   squad_ratings: { player: string; ovr: number; pot: number; form: number | null; age: number; minutes: number; line: string; photo?: string }[];
   age_summary?: { wavg: number; rank_young: number; n: number; league_wavg: number; u23: number; prime: number; vet: number } | null;
   leaders: { label: string; player: string; photo: string; value: number }[];
+  leaders_asof?: string | null;   // 골·도움 기준일(FotMob 리그 경기 합 — 경기 20분 뒤 갱신)
   departed: { player: string; left_for: string; pos: string; photo: string }[];
   injuries: Injury[];
   injury_returns?: { player: string; date: string; since: string | null }[];   // TM 미갱신 · 부상 뒤 출전 → 복귀로 봄

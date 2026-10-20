@@ -19,8 +19,8 @@ from collections import defaultdict
 
 from unidecode import unidecode
 
-ROLE_LABEL = {1: "C", 2: "VC", 3: "3C", 4: "4C"}
-ROLE_KO = {1: "주장", 2: "부주장", 3: "3번째 주장", 4: "4번째 주장"}
+ROLE_LABEL = {1: "C", 2: "VC", **{n: f"{n}C" for n in range(3, 10)}}
+ROLE_KO = {1: "주장", 2: "부주장", **{n: f"{n}번째 주장" for n in range(3, 10)}}
 ACQ_KO = {"academy": "유스", "transfer": "이적", "loan": "임대", "free": "자유계약", "return": "임대 복귀",
           "signed": "영입(이전)", "unknown": "미상"}
 
@@ -111,26 +111,52 @@ def chemistry_graph(games: dict, roster_names: list[str], min_edge: float = 90.0
 
 
 # ── LEADERSHIP ────────────────────────────────────────────────────────
+ARMBAND = {1: 1.0, 2: 0.75, 3: 0.55, 4: 0.45}
+# 영향력 가중치 — 2026-10-20 사용자: "외데고르·라이스 영향력이 높은데 입단 기준으로만 판단" — 예전엔 실력이 없고
+# 근속 16%·연결(같이 뛴 시간) 24% 라 근속 6년·풀타임 센터백(마갈량이스)이 1위였다. 실력(팀 안 OVR)·볼 관여
+# (파이널 서드 패스 + 키패스, 팀 최고 대비)·시즌 폼을 넣고 근속은 낮췄다.
+INF_W = {"quality": 0.22, "minutes": 0.16, "armband": 0.18, "play": 0.14, "hub": 0.10, "form": 0.06,
+         "tenure": 0.05, "experience": 0.04, "international": 0.05}
+
+
+def _play_raw(p: dict) -> float | None:
+    """볼 관여 — 90분당 파이널 서드 패스 + 키패스×8(키패스 1개 ≈ 전진 패스 8개). 270분 미만은 판단 안 함."""
+    ft, kp = p.get("ft90"), p.get("kp90")
+    if (p.get("minutes") or 0) < 270 or (ft is None and kp is None):
+        return None
+    return float(ft or 0) + 8.0 * float(kp or 0)
+
+
 def leadership(players: list[dict], chem: dict, today: dt.date) -> dict:
-    """주장단 + 영향력 코어. players 항목: name, captain_rank, minutes, age, joined, wc, injured, ..."""
+    """주장단 + 영향력 코어. players 항목: name, captain_rank, minutes, age, joined, wc, injured, ovr, form, ft90, kp90 …"""
     mins = chem.get("minutes", {})
     max_min = max([p.get("minutes") or 0 for p in players] + [1])
+    top_ovr = max([p.get("ovr") or 0 for p in players] + [1])
+    plays = {p["name"]: _play_raw(p) for p in players}
+    max_play = max([v for v in plays.values() if v is not None] + [1.0])
     scored = []
     for p in players:
         tenure = _years_since(p.get("joined"), today)
+        form = p.get("form")
         comp = {
+            "quality": _clamp(((p.get("ovr") or 0) - (top_ovr - 12)) / 12.0),     # 팀 최고 OVR = 1, 12 낮으면 0
             "minutes": _clamp((p.get("minutes") or mins.get(p["name"], 0)) / max_min),
+            "armband": ARMBAND.get(p.get("captain_rank") or 0, 0.35 if p.get("captain_rank") else 0.0),
+            "play": _clamp((plays[p["name"]] or 0) / max_play),
             "hub": chem.get("strength", {}).get(p["name"], 0.0),
+            "form": _clamp(((form if form == form and form is not None else 72) - 60) / 35.0),
             "tenure": _clamp((tenure or 0) / 6.0),
             "experience": _clamp(((p.get("age") or 0) - 21) / 10.0),
             "international": 1.0 if p.get("wc") else 0.0,
-            "armband": {1: 1.0, 2: 0.75, 3: 0.5, 4: 0.4}.get(p.get("captain_rank") or 0, 0.0),
         }
-        w = {"minutes": 0.28, "hub": 0.24, "tenure": 0.16, "experience": 0.10, "international": 0.10, "armband": 0.12}
-        score = sum(comp[k] * w[k] for k in w)
+        score = sum(comp[k] * w for k, w in INF_W.items())
         why = []
         if p.get("captain_rank"):
-            why.append(ROLE_KO[p["captain_rank"]])
+            why.append(ROLE_KO.get(p["captain_rank"], "주장단"))
+        if comp["play"] >= 0.8:
+            why.append("볼 관여 최상위")
+        if comp["quality"] >= 0.9:
+            why.append("팀 최고 수준")
         if comp["hub"] >= 0.8:
             why.append("연결 허브")
         if comp["minutes"] >= 0.85:

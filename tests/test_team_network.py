@@ -155,3 +155,37 @@ def test_wrapped_captain_markup_is_kept() -> None:
     rows = {r["player"]: r for r in ws.parse_squad(t)}
     assert rows["Robin Koch"]["role_rank"] == 1 and rows["Mario Götze"]["role_rank"] == 2
     assert "Jonathan Burkardt" in rows and rows["Jonathan Burkardt"]["role_rank"] == 1
+
+
+def test_captain_ordinals_parsed_as_rank() -> None:
+    """'5th captain' 을 주장(1순위)으로 읽던 버그 — 바르사 야말이 메인 주장으로 보였다(2026-10-20)."""
+    import fetch_wiki_squads as w
+
+    link = "[[Captain (association football)#Vice-captain|{}]]"
+    assert w.role_of(link.format("5th captain")) == ("5th captain", 5)
+    assert w.role_of(link.format("vice-captain")) == ("vice-captain", 2)
+    assert w.role_of("[[Captain (association football)|captain]]") == ("captain", 1)
+    assert w.role_of("{{small|third captain}}") == ("3rd captain", 3)
+
+
+def test_influence_weighs_quality_and_play_over_tenure() -> None:
+    """근속 6년·풀타임 센터백보다 실력·볼 관여가 큰 미드필더(주장 포함)가 위 — 아스날 사례(사용자 지적)."""
+    import datetime as dt
+
+    import team_network as tn
+
+    base = {"wc": True, "injured": False}
+    players = [
+        {**base, "name": "CB", "ovr": 89, "form": 90, "minutes": 630, "age": 28, "joined": "2020-09-01", "ft90": 8.7, "kp90": 0.29},
+        {**base, "name": "Captain10", "ovr": 86, "form": 93, "minutes": 561, "age": 27, "joined": "2021-08-20",
+         "ft90": 23.9, "kp90": 2.09, "captain_rank": 1},
+        {**base, "name": "DM", "ovr": 90, "form": 97, "minutes": 594, "age": 27, "joined": "2023-07-15", "ft90": 21.8, "kp90": 1.67},
+        {**base, "name": "Sub", "ovr": 80, "form": 70, "minutes": 120, "age": 23, "joined": "2025-07-01", "ft90": 30.0, "kp90": 3.0},
+    ]
+    chem = {"strength": {"CB": 1.0, "Captain10": 0.72, "DM": 0.84}, "minutes": {}}
+    out = tn.leadership(players, chem, dt.date(2026, 10, 20))
+    order = [p["name"] for p in out["core"]]
+    assert order.index("Captain10") < order.index("CB") and order.index("DM") < order.index("CB")
+    sub = next(p for p in out["core"] if p["name"] == "Sub")
+    assert sub["components"]["play"] == 0.0               # 270분 미만은 볼 관여 판단 안 함(짧은 출전 per90 부풀림)
+    assert out["captains"][0]["name"] == "Captain10"

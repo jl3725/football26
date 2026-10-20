@@ -584,6 +584,8 @@ def overview(team: str, league: str = ACTIVE_LEAGUE):
         "stars": stars,
         "squad_ratings": squad_ratings, "age_summary": age_summary,
         "leaders": leaders,
+        # 골·도움·출전이 언제 경기까지 반영됐나 — FotMob 리그 경기 합(경기 20분 뒤) 기준일, 없으면 None(FBref 주간)
+        "leaders_asof": _stats_asof(full_df, team),
         "departed": departed,
         "injuries": injuries,
         # TM 은 아직 '부상'이지만 부상 뒤에 실제로 뛰어 복귀로 본 선수(_injury_returns)
@@ -3839,7 +3841,10 @@ def network(team: str, league: str = ACTIVE_LEAGUE):
              "no": w["no"] if w else None, "captain_rank": w["rank"] if w else None,
              "injured": bool(injury), "injury": (injury or {}).get("injury"),
              "wc": bool(wc_idx and wc_idx.find(nm)),
-             "nation": nation_of(r.get("nationality"), w["nat"] if w else None)}
+             "nation": nation_of(r.get("nationality"), w["nat"] if w else None),
+             # 영향력 재료(src/team_network.leadership) — 시즌 폼, 볼 관여(90분당 파이널 서드 패스·키패스)
+             "form": _num(r.get("_form"), None), "ft90": _num(r.get("final_third_passes_per90"), None),
+             "kp90": _num(r.get("key_passes_per90"), None)}
         c = ct_of(nm, r.get("tm_id"))
         if c is not None:
             p["joined"] = p["joined"] or (str(c.get("joined_date") or "")[:10] or None)
@@ -3985,6 +3990,19 @@ def network(team: str, league: str = ACTIVE_LEAGUE):
             "sources": {"captains": "wikipedia" if any(w["rank"] for w in wiki) else None}}
 
 
+def _stats_asof(pf, team: str | None = None) -> str | None:
+    """선수 표의 골·도움 기준일(src/season_totals.py `_stats_asof` 의 최댓값)."""
+    if pf is None or "_stats_asof" not in pf.columns:
+        return None
+    s = pf if team is None else pf[pf["squad"] == team]
+    v = s["_stats_asof"].dropna().astype(str)
+    return v.max() if len(v) else None
+
+
+def tn_role_ko(rank: int) -> str:
+    return {1: "주장", 2: "부주장"}.get(rank, f"{rank}번째 주장")
+
+
 @app.get("/api/captains/{team}")
 @_memo(ttl=21600)
 def captains(team: str, league: str = ACTIVE_LEAGUE):
@@ -3999,7 +4017,7 @@ def captains(team: str, league: str = ACTIVE_LEAGUE):
     if wiki:
         inj = _active_injuries(team, league)
         out = []
-        for w in wiki[:4]:
+        for w in wiki[:5]:
             r = resolve(w["player"])
             if r is not None and str(r.get("squad")) != team:
                 r = None
@@ -4007,7 +4025,7 @@ def captains(team: str, league: str = ACTIVE_LEAGUE):
             out.append({"name": nm, "photo": _photo(r) if r is not None else _resolve_photo(nm, lambda _n: None, league),
                         "ovr": _player_ovr(r) if r is not None else None,
                         "pos": str(w["pos"] or (r.get("pos") if r is not None else "")), "no": w["no"],
-                        "role": {1: "주장", 2: "부주장", 3: "3번째 주장", 4: "4번째 주장"}[w["rank"]],
+                        "role": tn_role_ko(w["rank"]),
                         "rank": w["rank"], "is_main": w["rank"] == 1,
                         "injured": " ".join(unidecode(nm).lower().replace("-", " ").split()) in inj})
         return {"team": team, "color": tm.team_color(team), "captains": out, "source": "wikipedia"}
