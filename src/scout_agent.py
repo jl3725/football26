@@ -55,12 +55,19 @@ def _gemini_call(body: dict) -> dict:
     import requests  # noqa: PLC0415
     key = os.getenv("GEMINI_API_KEY")
     last = None
-    for model in [m for m in (os.getenv("GEMINI_MODEL"), "gemini-2.5-flash", "gemini-flash-latest") if m]:
-        r = requests.post(_GEMINI_URL.format(model=model), params={"key": key}, json=body, timeout=40)
+    # 2026-10-20 신규 키 확인: gemini-2.5-flash 는 404(신규 사용자 막힘), gemini-flash-latest 는 도구 호출에서 60초+ 무응답,
+    # gemini-3.1-flash-lite 는 1~2초에 도구를 정확히 고름 → 경량 우선, 모델당 25초 넘으면 다음 모델
+    for model in [m for m in (os.getenv("GEMINI_MODEL"), "gemini-3.1-flash-lite", "gemini-flash-lite-latest",
+                              "gemini-3.5-flash") if m]:
+        try:
+            r = requests.post(_GEMINI_URL.format(model=model), params={"key": key}, json=body, timeout=25)
+        except requests.RequestException as e:
+            last = f"{model} {type(e).__name__}"
+            continue
         if r.status_code == 200:
             return r.json()
-        last = f"{r.status_code} {r.text[:120]}"
-        if r.status_code not in (404, 429, 503):
+        last = f"{model} {r.status_code} {r.text[:120]}"
+        if r.status_code not in (404, 429, 500, 503):
             break
     raise RuntimeError(f"Gemini 오류: {last}")
 
@@ -82,21 +89,28 @@ def _answer_gemini(message: str, team: str | None, league: str, history: list | 
             "generationConfig": {"temperature": 0}}
     r1 = _gemini_call({**base, "contents": contents})
     parts = ((r1.get("candidates") or [{}])[0].get("content") or {}).get("parts") or []
-    call = next((p["functionCall"] for p in parts if "functionCall" in p), None)
+    call_part = next((p for p in parts if "functionCall" in p), None)     # thoughtSignature 까지 그대로 돌려줘야 함(Gemini 3)
+    call = call_part["functionCall"] if call_part else None
     if not call:
         return {"available": True, "engine": "gemini", "intent": None,
                 "answer": "".join(p.get("text", "") for p in parts), "result": None}
     args = call.get("args") or {}
     intent, result = _execute(call["name"], args, league)
-    contents += [{"role": "model", "parts": [{"functionCall": call}]},
-                 {"role": "user", "parts": [{"functionResponse": {"name": call["name"],
-                                                                  "response": {"content": _slim(intent, result)}}}]}]
+    resp = {"name": call["name"], "response": {"content": _slim(intent, result)}}
+    if call.get("id"):
+        resp["id"] = call["id"]
+    contents += [{"role": "model", "parts": [call_part]}, {"role": "user", "parts": [{"functionResponse": resp}]}]
     try:
-        r2 = _gemini_call({**base, "contents": contents, "generationConfig": {"temperature": 0.3}})
+        r2 = _gemini_call({**base, "contents": contents, "generationConfig": {"temperature": 0.2}})
         ans = "".join(p.get("text", "") for p in ((r2.get("candidates") or [{}])[0].get("content") or {}).get("parts") or [])
     except Exception:  # noqa: BLE001
         ans = ""
-    return {"available": True, "engine": "gemini", "intent": intent, "args": args, "answer": ans, "result": result}
+    out = {"available": True, "engine": "gemini", "intent": intent, "args": args, "answer": ans, "result": result}
+    if not ans.strip():                      # 요약이 비면(도구 오류·한도) 규칙 엔진 문장으로
+        import scout_router  # noqa: PLC0415
+        rb = scout_router.answer(message, team, league)
+        out.update({"answer": rb.get("answer", ""), "note": "Gemini 요약이 비어 규칙 기반 문장"})
+    return out
 NEO4J_URI = os.getenv("NEO4J_URI", "bolt://localhost:7687")
 NEO4J_AUTH = (os.getenv("NEO4J_USER") or os.getenv("NEO4J_USERNAME") or "neo4j", os.getenv("NEO4J_PASSWORD", "football26"))
 
@@ -227,6 +241,12 @@ TOOLS = [
         "parameters": {"type": "object", "properties": {
             "team": {"type": "string", "description": "팀명"}}, "required": ["team"]}}},
     {"type": "function", "function": {
+        "name": "team_leadership",
+        "description": "팀 주장단(주장·부주장·N번째 주장)과 팀 안 영향력 상위 선수(실력·출전·완장·볼 관여·폼 가중합 0~100). "
+                       "'바르사 주장 누구?', '아스날에서 영향력 큰 선수', '리더가 누구야' 같은 질문.",
+        "parameters": {"type": "object", "properties": {
+            "team": {"type": "string", "description": "팀명"}}, "required": ["team"]}}},
+    {"type": "function", "function": {
         "name": "player_news",
         "description": "선수가 나온 최근 뉴스 기사(제목·출처·날짜). '사카 최근 뉴스', 'X 요즘 기사 뭐 나와?' 같은 질문.",
         "parameters": {"type": "object", "properties": {
@@ -261,6 +281,8 @@ _SYSTEM = (
     "- '우리 팀'/'이 팀'은 현재 보고 있는 팀 컨텍스트를 쓴다.\n"
     "- **'링크/루머/관심/영입설'은 추천이 아니라 RUMORED_WITH 조회다 → graph_query 사용.**\n"
     "- 관계·다중필터·집계·이적경로 질문도 graph_query(read-only Cypher). 구조화 툴이 맞으면 그걸 우선.\n"
+    "- **주장·부주장·팀 안 영향력**은 team_leadership(그래프 쿼리보다 우선).\n"
+    "- 답에는 툴 결과에 있는 사실·숫자만 쓴다. 결과에 없는 플레이 스타일 설명·평가·추측은 덧붙이지 않는다.\n"
     "- **지금·다음 경기·부상자·A매치 차출**은 team_now, **선수 최근 기사**는 player_news, "
     "**리그 이번 주 변화(폼·부상·루머)**는 league_week. 예측 확률은 그대로 인용하고 출처(모델·팬 투표·ClubElo)를 밝혀라.\n"
     "- **'왜/이유/근거/설명해줘' 같은 메타 질문은 툴을 절대 호출하지 말고, 직전 답변을 근거로 텍스트로만 설명하라.**\n"
@@ -271,9 +293,8 @@ _SYSTEM = (
 
 
 def _load_dotenv():
-    """OPENAI_API_KEY 가 env 에 없으면 프로젝트 루트 .env 에서 로드(의존성 없이)."""
-    if os.getenv("OPENAI_API_KEY"):
-        return
+    """프로젝트 루트 .env 에서 env 에 없는 키만 로드(의존성 없이) — 예전엔 OPENAI_API_KEY 가 있으면 통째로 건너뛰어
+    GEMINI_API_KEY 를 못 읽었다."""
     from pathlib import Path
     env = Path(__file__).resolve().parent.parent / ".env"
     if not env.exists():
@@ -351,6 +372,12 @@ def _execute(name: str, args: dict, league: str):
         return "graph", _run_cypher(args.get("cypher", ""))
     if name == "team_now":
         return "team_now", team_now(_resolve_club(args.get("team", "")), league)
+    if name == "team_leadership":
+        lead = api.network(_resolve_club(args.get("team", "")), league).get("leadership") or {}
+        top = sorted((lead.get("influence") or {}).items(), key=lambda x: -x[1])[:6]
+        return "lead", {"team": args.get("team"), "captains": [{"name": c["name"], "role": c.get("role_ko"), "rank": c.get("captain_rank")}
+                                                              for c in lead.get("captains") or []],
+                        "influence_top": [{"name": n, "influence": v} for n, v in top]}
     if name == "player_news":
         return "news", api.news_player(args.get("player", ""), _resolve_club(args.get("club", "")) if args.get("club") else "",
                                        league, 6)

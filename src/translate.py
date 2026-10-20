@@ -76,7 +76,9 @@ _gemini_last = 0.0
 def _gemini_models() -> list[str]:
     pref = os.getenv("GEMINI_MODEL", "")
     models = [pref] if pref else []
-    models += ["gemini-2.5-flash", "gemini-flash-latest", "gemini-2.5-flash-lite", "gemini-flash-lite-latest"]
+    # gemini-2.5-flash 는 신규 키에 막힘(2026-10-20 확인 — 404 'no longer available to new users')
+    # gemini-flash-latest 는 이 키에서 60초+ 무응답이 있었다 — 경량 모델 우선
+    models += ["gemini-3.1-flash-lite", "gemini-flash-lite-latest", "gemini-3.5-flash", "gemini-flash-latest"]
     return [m for i, m in enumerate(models) if m and m not in models[:i] and m not in _gemini_dead]
 
 

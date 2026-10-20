@@ -102,6 +102,8 @@ def test_scout_requires_explicit_public_opt_in(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     # 유료(OpenAI) 경로는 SCOUT_ALLOW_PAID 로 켰을 때만 — 그때는 토큰(또는 공개 허용) 없이는 막는다
+    import scout_agent
+    monkeypatch.setattr(scout_agent, "_load_dotenv", lambda: None)   # 로컬 .env 의 키가 섞이지 않게
     monkeypatch.setenv("OPENAI_API_KEY", "test-key")
     monkeypatch.setenv("SCOUT_ALLOW_PAID", "1")
     monkeypatch.delenv("GEMINI_API_KEY", raising=False)
