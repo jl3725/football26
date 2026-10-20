@@ -4310,6 +4310,13 @@ def signals(team: str = "", league: str = ACTIVE_LEAGUE, limit: int = 60):
             return f"{y}년" + (f" {mm}개월" if mm else "") + " 남음"
         return f"{m}개월 남음"
 
+    # 재계약(1~2년 남음)은 주전(팀별 출전 상위 11명)만 — '2028-06-30 · 1년 8개월 남음'이 팀마다 6~8개 반복됐다(2026-10-20 점검)
+    _pf_k = _pf(league)
+    key11: set = set()
+    if _pf_k is not None and not _pf_k.empty:
+        _m = _pf_k.assign(_mn=pd.to_numeric(_pf_k["minutes"], errors="coerce").fillna(0))
+        for _sq, g in _m.groupby("squad"):
+            key11 |= {(str(_sq), _nk(n)) for n in g.sort_values("_mn", ascending=False)["player"].head(11)}
     ct = ds.read_table("transfermarkt_contracts", league=league)
     if ct is not None:
         today = datetime.date.today()
@@ -4324,27 +4331,36 @@ def signals(team: str = "", league: str = ACTIVE_LEAGUE, limit: int = 60):
                 continue
             days = (du - today).days
             _cph = str(r.get("tm_photo") or "")   # 계약 레코드 본인 사진(가장 정확)
+            # 날짜 칸은 비운다 — 만료일이 '사건 날짜'처럼 보였다. 만료일은 설명에 '만료 2028-06-30'으로
             if 0 <= days <= 365:
-                add(cu[:10], sq, "contract", "bad", "📄", str(r.get("player") or ""),
-                    "계약 만료 임박", f"{cu[:10]} · {_fmt_remaining(days)}", photo=_cph)
-            elif 365 < days <= 730:
-                add(cu[:10], sq, "resign", "warn", "✍️", str(r.get("player") or ""),
-                    "재계약 대상", f"{cu[:10]} · {_fmt_remaining(days)}", photo=_cph)
+                add("", sq, "contract", "bad", "📄", str(r.get("player") or ""),
+                    "계약 만료 임박", f"만료 {cu[:10]} · {_fmt_remaining(days)}", photo=_cph)
+            elif 365 < days <= 730 and (sq, _nk(r.get("player"))) in key11:
+                add("", sq, "resign", "warn", "✍️", str(r.get("player") or ""),
+                    "재계약 대상(주전)", f"만료 {cu[:10]} · {_fmt_remaining(days)}", photo=_cph)
 
     # 5. 시장가치 급등/급락 (market-value agent 델타)
     mv = ds.read_table("market_value_changes", league=league)
     if mv is not None and not mv.empty:
-        for _, r in mv.iterrows():
-            sq = str(r.get("squad") or "")
-            if not tfilter(sq):
+        # 같은 날 같은 팀 갱신이 3명 이상이면 한 장으로 묶는다(TM 정기 갱신 하루에 10건이 목록을 덮었다)
+        mvt = mv[mv["squad"].astype(str).map(tfilter)].copy()
+        mvt["_d"] = pd.to_numeric(mvt["delta"], errors="coerce").fillna(0)
+        for (sq, rd), g in mvt.groupby([mvt["squad"].astype(str), mvt["run_date"].astype(str)]):
+            if len(g) >= 3:
+                ups, downs = int((g["_d"] >= 0).sum()), int((g["_d"] < 0).sum())
+                top = g.reindex(g["_d"].abs().sort_values(ascending=False).index).head(3)
+                add(rd, sq, "value", "info", "💹", "", f"시장가치 갱신 {len(g)}명",
+                    f"상승 {ups} · 하락 {downs} — " + ", ".join(
+                        f"{str(r['player']).split()[-1]} {'+' if r['_d'] >= 0 else '-'}€{abs(r['_d']) / 1e6:.1f}M" for _, r in top.iterrows()))
                 continue
-            delta = _num(r.get("delta"))
-            pct = _num(r.get("pct"))
-            up = delta >= 0
-            add(str(r.get("run_date") or ""), sq, "value", "good" if up else "bad",
-                "📈" if up else "📉", str(r.get("player") or ""),
-                "시장가치 " + ("급등" if up else "급락"),
-                f"{'+' if up else '-'}€{abs(delta) / 1e6:.1f}M ({pct:+.0f}%)")
+            for _, r in g.iterrows():
+                delta = _num(r.get("delta"))
+                pct = _num(r.get("pct"))
+                up = delta >= 0
+                add(rd, sq, "value", "good" if up else "bad",
+                    "📈" if up else "📉", str(r.get("player") or ""),
+                    "시장가치 " + ("급등" if up else "급락"),
+                    f"{'+' if up else '-'}€{abs(delta) / 1e6:.1f}M ({pct:+.0f}%)")
 
     # 6. 프로스펙트 레이더 (나이·시장가치·출전 기반 다층 감지)
     pf = _pf(league)
@@ -4411,6 +4427,19 @@ def signals(team: str = "", league: str = ACTIVE_LEAGUE, limit: int = 60):
         else:
             counts[s["type"]] = counts.get(s["type"], 0) + 1
     return {"team": team, "window": win, "counts": counts, "signals": out[:limit]}
+
+
+def _recent_load(team: str, league: str, today, days: int = 14) -> list[tuple[str, int]]:
+    """최근 days 일 출전 분 합(FotMob 경기별 기록, 전 대회) 상위 — 270′ 이상만. [(선수, 분)]"""
+    t = ds.read_table("fotmob_match_ratings", league=league)
+    if t is None or t.empty:
+        return []
+    since = (today - datetime.timedelta(days=days)).isoformat()
+    m = t[(t["squad"].astype(str) == team) & (t["date"].astype(str).str[:10] >= since)]
+    if m.empty:
+        return []
+    tot = pd.to_numeric(m["minutes"], errors="coerce").fillna(0).groupby(m["player"].astype(str)).sum().sort_values(ascending=False)
+    return [(str(n), int(v)) for n, v in tot.items() if v >= 270]
 
 
 # 인박스 분류 — 기존 신호 type → (분류, 기본 중요도)
@@ -4505,9 +4534,12 @@ def inbox(team: str, league: str = ACTIVE_LEAGUE):
             span = nxt[i + 2]["d_day"] - nxt[i]["d_day"]
             if span <= 7 and nxt[i]["d_day"] <= 10:
                 trio = nxt[i:i + 3]
-                add("match", "congestion", "warn", "🗓️", f"{span + 1}일 동안 3경기 — 로테이션 필요",
-                    " · ".join(f"{x['date'][5:].replace('-', '/')} {x['away']['team'] if x['home']['team'] == team else x['home']['team']}" for x in trio),
-                    62, trio[0]["date"])
+                detail = " · ".join(f"{x['date'][5:].replace('-', '/')} {x['away']['team'] if x['home']['team'] == team else x['home']['team']}" for x in trio)
+                # 누가 부담이 큰지 — 최근 14일 출전 분(FotMob 경기별, 전 대회) 상위 3명
+                load = _recent_load(team, league, today, 14)
+                if load:
+                    detail += " — 부담 큰 선수(14일): " + " · ".join(f"{n.split()[-1]} {m}′" for n, m in load[:3])
+                add("match", "congestion", "warn", "🗓️", f"{span + 1}일 동안 3경기 — 로테이션 필요", detail, 62, trio[0]["date"])
                 break
     try:
         ts = team_season(team, league)
@@ -4599,10 +4631,27 @@ def inbox(team: str, league: str = ACTIVE_LEAGUE):
     counts: dict[str, int] = {}
     for x in msgs:
         counts[x["cat"]] = counts.get(x["cat"], 0) + 1
-    lg_events = [s for s in signals(team="", league=league, limit=60)["signals"]
-                 if s["type"] in ("injury_new", "injury_return", "manager", "value", "risk")][:24]
+    # OPPONENT WATCH — 다음 3경기 상대의 부상·감독 소식(최근 30일). 예전 LEAGUE WIRE 는 우리 팀 소식을 반복하고
+    # 석 달 전 항목이 섞였다(2026-10-20 점검). 상대 소식이 없으면 리그 소식(우리 팀 제외, 30일)으로 대신한다
+    cutoff = (today - datetime.timedelta(days=30)).isoformat()
+    fresh = lambda s: (not s.get("date")) or str(s["date"])[:10] >= cutoff  # noqa: E731
+    opp_events, opponents = [], []
+    for m in nxt[:3]:
+        op = m["away"] if m["home"]["team"] == team else m["home"]
+        if not op.get("league") or op["team"] in opponents:
+            continue
+        opponents.append(op["team"])
+        try:
+            for s in signals(team=op["team"], league=op["league"], limit=40)["signals"]:
+                if s["type"] in ("injury_new", "injury_return", "manager") and fresh(s):
+                    opp_events.append({**s, "vs": f"{m['date'][5:].replace('-', '/')} 상대"})
+        except Exception:  # noqa: BLE001 — 상대 리그 데이터가 없으면 건너뜀
+            continue
+    lg_events = opp_events[:24] or [s for s in signals(team="", league=league, limit=80)["signals"]
+                                     if s["type"] in ("injury_new", "injury_return", "manager", "value", "risk")
+                                     and s.get("team") != team and fresh(s)][:24]
     return {"team": team, "briefing": msgs[:3], "messages": msgs, "counts": counts, "league_events": lg_events,
-            "generated": today.isoformat()}
+            "opponents": opponents if opp_events else [], "generated": today.isoformat()}
 
 
 @app.get("/api/home")

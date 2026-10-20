@@ -106,7 +106,9 @@ export default function SignalsTab({ team }: { team: string; accent?: string }) 
           {!more && list.length > 14 && <button className="sig-more" onClick={() => setMore(true)}>{list.length - 14}건 더 보기</button>}
         </section>
         <section className="card ib5-side">
-          <SectionHead title="LEAGUE WIRE" kr="리그 소식" meta="부상 · 감독 · 시장가치" />
+          {d.opponents && d.opponents.length > 0
+            ? <SectionHead title="OPPONENT WATCH" kr="다음 상대 소식" meta={`${d.opponents.join(" · ")} · 부상·감독 · 30일`} />
+            : <SectionHead title="LEAGUE WIRE" kr="리그 소식" meta="우리 팀 제외 · 30일" />}
           <div className="ib5-lglist">
             {d.league_events.map((s, i) => <LeagueRow key={i} s={s} />)}
             {d.league_events.length === 0 && <p className="pv-empty">최근 리그 소식 없음</p>}

@@ -40,6 +40,8 @@ export default function Page() {
   const [loading, setLoading] = useState(false);
   const [ovErr, setOvErr] = useState(false);
   const [pendingPlayer, setPendingPlayer] = useState("");   // 전역 검색 딥링크용
+  const [urlPlayer, setUrlPlayer] = useState("");           // Player 탭에서 고른 선수 — 주소에 남겨 공유·새로고침 유지
+  const [homeView, setHomeView] = useState<"all" | "league" | "WC">("all");   // 전체 홈 · 리그 홈 · 월드컵
   const [navOpen, setNavOpen] = useState(false);
   const [urlReady, setUrlReady] = useState(false);
 
@@ -53,8 +55,10 @@ export default function Page() {
     } catch { document.documentElement.dataset.font = "sport"; }
   }, []);
 
-  // 화면 상태 ↔ 주소(?league=LaLiga&team=Barcelona&tab=squad) — 새로고침·링크 공유·뒤로가기 유지.
-  // 서버 렌더와 어긋나지 않게 첫 렌더 뒤에 주소를 읽고, 그 전에는 데이터를 부르지 않는다.
+  // 화면 상태 ↔ 주소 — 새로고침·링크 공유·뒤로가기 유지. 서버 렌더와 어긋나지 않게 첫 렌더 뒤에 주소를 읽는다.
+  //   /                       전체 홈            /?league=LaLiga        라리가 리그 홈        /?wc=1  월드컵
+  //   /?league=LaLiga&team=Barcelona&tab=squad   팀 화면 · &tab=player&player=Lamine%20Yamal 선수
+  // 예전엔 리그 홈이 주소에 없어 새로고침·뒤로 가기·사이드바 '리그 홈'이 모두 전체 홈으로 갔다(2026-10-20 점검).
   useEffect(() => {
     const apply = () => {
       const p = new URLSearchParams(window.location.search);
@@ -67,9 +71,10 @@ export default function Page() {
         setSel(t); setHome(false);
         setTab(TABS.some((x) => x.key === tb) ? (tb as TabKey) : "overview");
         const pl = p.get("player");                       // ?tab=player&player=Bukayo Saka — 선수 바로 열기(공유 링크·QA)
-        if (pl) setPendingPlayer(pl);
+        setPendingPlayer(pl ?? ""); setUrlPlayer(pl ?? "");
       } else {
         setSel(DEFAULT_TEAM[l] ?? ""); setHome(true);
+        setHomeView(p.get("wc") ? "WC" : p.has("league") ? "league" : "all");
       }
     };
     apply();
@@ -80,11 +85,20 @@ export default function Page() {
   useEffect(() => {
     if (!urlReady) return;
     const p = new URLSearchParams();
-    if (league !== "EPL") p.set("league", league);
-    if (!home && sel) { p.set("team", sel); if (tab !== "overview") p.set("tab", tab); }
+    if (home) {
+      if (homeView === "league") p.set("league", league);        // 리그 홈은 EPL 도 주소에 남긴다
+      else if (homeView === "WC") p.set("wc", "1");
+    } else {
+      if (league !== "EPL") p.set("league", league);
+      if (sel) {
+        p.set("team", sel);
+        if (tab !== "overview") p.set("tab", tab);
+        if (tab === "player" && urlPlayer) p.set("player", urlPlayer);
+      }
+    }
     const qs = p.toString() ? `?${p.toString()}` : "";
     if (window.location.search !== qs) window.history.pushState(null, "", qs || window.location.pathname);
-  }, [urlReady, league, home, sel, tab]);
+  }, [urlReady, league, home, homeView, sel, tab, urlPlayer]);
 
   useEffect(() => {
     if (!urlReady) return;
@@ -127,23 +141,25 @@ export default function Page() {
   // 전역 검색: 선수 클릭 → 소속팀으로 이동 + Player 탭에 그 선수 카드 표시
   const pickPlayer = (club: string, lg: string, player: string) => {
     if (lg && lg !== league) { setActiveLeague(lg); setLeagueSel(lg); }
-    setHome(false); setSel(club); setPendingPlayer(player); setTab("player"); setNavOpen(false);
+    setHome(false); setSel(club); setPendingPlayer(player); setUrlPlayer(player); setTab("player"); setNavOpen(false);
   };
   const leagueName = league === "LaLiga" ? "La Liga" : league === "SerieA" ? "Serie A" : league === "Bundesliga" ? "Bundesliga" : league === "Ligue1" ? "Ligue 1" : league === "LigaPortugal" ? "Liga Portugal" : league === "Eredivisie" ? "Eredivisie" : league === "BelgianProLeague" ? "Belgian Pro League" : "Premier League";
   const leagueLabel = league === "LaLiga" ? "LA LIGA" : league === "SerieA" ? "SERIE A" : league === "Bundesliga" ? "BUNDESLIGA" : league === "Ligue1" ? "LIGUE 1" : league === "LigaPortugal" ? "LIGA PORTUGAL" : league === "Eredivisie" ? "EREDIVISIE" : league === "BelgianProLeague" ? "BELGIUM" : "EPL";
   const switchLeague = (l: string) => {
-    if (l === league) return;
+    if (l === league) { setHome(true); setHomeView("league"); setNavOpen(false); return; }
     setActiveLeague(l);
     setLeagueSel(l);
     setSel(DEFAULT_TEAM[l] ?? "");
     setHome(true);
+    setHomeView("league");                                 // 리그를 고르면 그 리그 홈으로(전체 홈이 아니라)
     setNavOpen(false);
   };
 
   function renderTab() {
     if (!urlReady) return <SkelTab />;
     if (home) return <HomeDashboard accent={accent} onPickTeam={pickTeam} onPickLeagueTeam={pickLeagueTeam}
-      leagueLabel={leagueLabel} league={league} leagues={LEAGUE_TABS} onLeague={switchLeague} />;
+      leagueLabel={leagueLabel} league={league} leagues={LEAGUE_TABS} onLeague={switchLeague}
+      view={homeView} onView={setHomeView} />;
     if (ovErr) return (
       <div className="nodata-card">
         <div className="nodata-emoji">{isPromoted ? "🆙" : "📭"}</div>
@@ -161,7 +177,7 @@ export default function Page() {
       case "squad": return <SquadTab key={sel} {...props} />;
       case "network": return <NetworkTab key={sel} {...props} />;
       case "schedule": return <ScheduleTab key={sel} {...props} />;
-      case "player": return <PlayerTab key={sel} team={sel} accent={accent} initialPlayer={pendingPlayer} />;
+      case "player": return <PlayerTab key={sel} team={sel} accent={accent} initialPlayer={pendingPlayer} onPlayer={setUrlPlayer} />;
       case "transfer": return <TransferTab key={sel} {...props} />;
       case "news": return <NewsTab key={sel} {...props} />;
       default: return null;
@@ -181,8 +197,9 @@ export default function Page() {
       <button className="nav-scrim" aria-label="메뉴 닫기" onClick={() => setNavOpen(false)} />
       <Sidebar teams={teams} sel={sel}
         onSelect={(t) => { setSel(t); setNavOpen(false); if (home) { setHome(false); setTab("overview"); } }}
-        seasonLabel={seasonLabel} next={nextS} phase={ctx?.window?.phase} atHome={home} onHome={() => {
+        seasonLabel={seasonLabel} next={nextS} phase={ctx?.window?.phase} atHome={home && homeView === "league"} onHome={() => {
           setHome(true);
+          setHomeView("league");                             // 사이드바 '리그 홈' = 지금 리그의 홈(전체 홈 아님)
           setNavOpen(false);
         }}
         league={league} onLeague={switchLeague} onPickTeam={pickLeagueTeam} />

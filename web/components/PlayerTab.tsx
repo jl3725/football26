@@ -2,7 +2,7 @@
 import OvrBreakdown from "./OvrBreakdown";
 import FormPair, { RecentStrip } from "./FormPair";
 import { useEffect, useState } from "react";
-import { getPlayers, getPlayerDetail, getSimilar, getHeatmaps, fmtEur, type Players, type PlayerDetail, type SimilarResult, type HeatmapData } from "@/lib/api";
+import { getPlayers, getPlayerDetail, getSimilar, getHeatmaps, fmtEur, foldName, type Players, type PlayerDetail, type SimilarResult, type HeatmapData } from "@/lib/api";
 import { tier, hexA, roleClass, futTier } from "@/lib/ui";
 import { pctMeaning, scoreMeaning, ovrBand, signTone } from "@/lib/meaning";
 import { MeaningTag } from "./Meaning";
@@ -212,7 +212,9 @@ function Detail({ team, player, accent, heatmap }: { team: string; player: strin
   );
 }
 
-export default function PlayerTab({ team, accent, initialPlayer }: { team: string; accent: string; initialPlayer?: string }) {
+export default function PlayerTab({ team, accent, initialPlayer, onPlayer }: {
+  team: string; accent: string; initialPlayer?: string; onPlayer?: (p: string) => void;   // 고른 선수 → 주소(공유 링크)
+}) {
   const [data, setData] = useState<Players | null>(null);
   const [sel, setSel] = useState<string | null>(null);
   const [cmpMode, setCmpMode] = useState(false);   // 비교 모드
@@ -226,11 +228,13 @@ export default function PlayerTab({ team, accent, initialPlayer }: { team: strin
       if (!a) return;
       setData(d);
       // 딥링크(전역 검색)로 지정된 선수가 스쿼드에 있으면 그걸 선택, 없으면 첫 선수
-      const hit = initialPlayer && d.players.find((p) => p.player === initialPlayer);
+      // 악센트·대소문자 무시(주소의 'Odegaard' = 'Ødegaard')
+      const hit = initialPlayer && d.players.find((p) => foldName(p.player) === foldName(initialPlayer));
       setSel((hit ? hit.player : d.players[0]?.player) ?? null);
     }).catch(() => {});
     return () => { a = false; };
   }, [team, initialPlayer]);
+  useEffect(() => { if (sel) onPlayer?.(sel); }, [sel, onPlayer]);   // 고른 선수를 주소에(공유·새로고침)
   if (!data) return (
     <div className="player-layout skel-wrap">
       <SkelCards n={8} cols="repeat(2, 1fr)" />

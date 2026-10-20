@@ -37,12 +37,15 @@ function pendingFixtures(lab: LeagueLab, league: string): Fixture[] {
 }
 
 export default function HomeDashboard({ accent, onPickTeam, onPickLeagueTeam, leagueLabel = "EPL",
-  league = "EPL", leagues = [], onLeague }: {
+  league = "EPL", leagues = [], onLeague, view, onView }: {
   accent: string; onPickTeam: (t: string) => void; onPickLeagueTeam?: (t: string, league?: string) => void;
   leagueLabel?: string; league?: string; leagues?: LeagueOpt[]; onLeague?: (l: string) => void;
+  view?: "all" | "league" | "WC"; onView?: (v: "all" | "league" | "WC") => void;   // 페이지가 주소와 함께 관리
 }) {
   const [h, setH] = useState<Home | null>(null);
-  const [comp, setComp] = useState<"all" | "league" | "WC">("all");   // 전체 · 리그 홈 · 월드컵
+  const [own, setOwn] = useState<"all" | "league" | "WC">("all");   // 전체 · 리그 홈 · 월드컵(페이지가 안 넘기면 자체 상태)
+  const comp = view ?? own;
+  const setComp = (v: "all" | "league" | "WC") => { setOwn(v); onView?.(v); };
   const [lab, setLab] = useState<LeagueLab | null>(null);              // 리그 분석 랩(결과·주목할 매치·순위표·베스트 XI …)
   // leagueLabel 변경(리그 전환) 시 재조회 — getHome 은 모듈 활성리그(_league) 사용
   useEffect(() => { let a = true; setH(null); getHome().then((d) => a && setH(d)).catch(() => {}); return () => { a = false; }; }, [leagueLabel]);

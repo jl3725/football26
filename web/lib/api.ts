@@ -501,7 +501,7 @@ export type Signals = { team: string; window: Window; counts: Record<string, num
 // 팀 인박스(/api/inbox) — 자동 감지 + 경기 브리핑 + 팀·선수 폼 + 선발 제외. prio 상위 3 = briefing
 export type InboxMsg = { id: string; cat: string; type: string; tone: string; icon: string; title: string; detail: string; prio: number;
   date: string; player: string; photo: string; action: { kind: "match"; fixture: unknown } | { kind: "player"; name: string } | null };
-export type Inbox = { team: string; briefing: InboxMsg[]; messages: InboxMsg[]; counts: Record<string, number>; league_events: Signal[]; generated: string };
+export type Inbox = { team: string; briefing: InboxMsg[]; messages: InboxMsg[]; counts: Record<string, number>; league_events: Signal[]; opponents?: string[]; generated: string };   // opponents 있으면 OPPONENT WATCH
 export const getInbox = (team: string, l = _league) => j<Inbox>(`/api/inbox/${encodeURIComponent(team)}?league=${encodeURIComponent(l)}`);
 export const getSignals = (team = "", l = _league, limit = 60) =>
   j<Signals>(`/api/signals?team=${encodeURIComponent(team)}&league=${encodeURIComponent(l)}&limit=${limit}`);
