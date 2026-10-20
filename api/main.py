@@ -5429,6 +5429,100 @@ def match_review_api(event_id: str, comp: str = ""):
     return rv
 
 
+@app.get("/api/digest")
+@_memo(ttl=1800)
+def digest(league: str = ACTIVE_LEAGUE, days: int = 7):
+    """WEEKLY DIGEST — 지난 days 일 리그 변화 요약(설계도 3단계 '주간 스카우팅 다이제스트'). 규칙 기반·무료, 숫자는 데이터 값만.
+    리그 홈의 결과·일정·리뷰·이적 속보와 겹치지 않게 '이번 주에 바뀐 것'만: OVR ▲▼ · 부상 변동 · 뉴스 언급 · 루머 · A매치 기간."""
+    import positions as ps  # noqa: PLC0415
+    import rating_history as rh  # noqa: PLC0415
+    today = _today_kst()
+    since = (today - datetime.timedelta(days=days)).isoformat()
+    pf = _pf(league)
+    ovr = {} if pf is None else {(str(s_), ps.norm_name(p_)): (None if o != o else int(round(o)))
+                                 for s_, p_, o in zip(pf["squad"], pf["player"], pf["_ovr"])}
+    # 폼 변화는 주전급만(시즌 270분+) — 몇 분 뛴 선수의 폼 지수는 한 경기로 크게 흔들린다
+    regular = set() if pf is None else {(str(s_), ps.norm_name(p_)) for s_, p_, mi in zip(pf["squad"], pf["player"], pf["minutes"])
+                                        if mi == mi and mi >= 270}
+    out: dict = {"league": league, "since": since, "until": today.isoformat()}
+
+    # 1) 폼 ▲▼ — 평점 추이 기록(변경분 저장: 날짜 D 값 = D 이전 마지막 기록)의 폼 지수 변화. OVR 은 시즌 단위라 한 주엔
+    #    거의 안 움직여(10/14~19 EPL 0명) 폼으로 본다 — OVR 이 바뀐 선수는 그 변화도 함께. 기록이 days 보다 짧으면 첫 기록부터
+    hist = rh.load(league)
+    movers: list = []
+    if not hist.empty:
+        first = str(hist["date"].min())
+        base_day = max(since, first)
+        nxt_day = (datetime.date.fromisoformat(base_day) + datetime.timedelta(days=1)).isoformat()   # state_at(D) = D 전날까지
+        now_s, then_s = rh.state_at(hist, (today + datetime.timedelta(days=1)).isoformat()), rh.state_at(hist, nxt_day)
+        then = {str(r.pid): (int(r.ovr), None if r.form != r.form else int(r.form)) for r in then_s.itertuples()}
+        for r in now_s.itertuples():
+            b = then.get(str(r.pid))
+            if b is None or r.form != r.form or b[1] is None or (str(r.squad), ps.norm_name(r.player)) not in regular:
+                continue
+            df, do = int(r.form) - b[1], int(r.ovr) - b[0]
+            if abs(df) >= 5 or do:
+                movers.append({"player": r.player, "squad": r.squad, "ovr": int(r.ovr), "ovr_delta": do,
+                               "form": int(r.form), "delta": df})
+        out["form_since"] = base_day
+    movers.sort(key=lambda x: (-x["delta"], -x["ovr"]))
+    out["risers"] = [m for m in movers if m["delta"] > 0][:5]
+    out["fallers"] = sorted([m for m in movers if m["delta"] < 0], key=lambda x: (x["delta"], -x["ovr"]))[:5]
+
+    # 2) 부상 변동 — 새 부상(OVR 높은 순) · 복귀
+    ic = ds.read_table("transfermarkt_injury_changes", league=league)
+    new_inj, back = [], []
+    if ic is not None and not ic.empty:
+        w = ic[ic["run_date"].astype(str) >= since]
+        for r in w.itertuples():
+            item = {"player": r.player, "squad": r.squad, "date": str(r.run_date),
+                    "ovr": ovr.get((str(r.squad), ps.norm_name(r.player))),
+                    "injury": (r.new_injury if isinstance(r.new_injury, str) else r.old_injury) or "",
+                    "until": r.new_until if isinstance(r.new_until, str) else None}
+            if r.event_type == "new_injury":
+                new_inj.append(item)
+            elif r.event_type == "recovered_or_removed":
+                back.append(item)
+    key = lambda x: -(x["ovr"] or 0)  # noqa: E731
+    out["injuries"] = {"new": sorted(new_inj, key=key)[:6], "back": sorted(back, key=key)[:6],
+                       "n_new": len(new_inj), "n_back": len(back)}
+
+    # 3) 뉴스 언급 — 이번 주 기사(처음 수집일 기준)에 가장 많이 나온 선수(뉴스 선수 태그)
+    tags, na = ds.read_table("news_players", league=league), ds.read_table("news_articles", league=league)
+    buzz = []
+    if tags is not None and na is not None and not tags.empty:
+        recent = set(na.loc[na["first_seen"].astype(str) >= since, "link"].astype(str))
+        t = tags[tags["link"].astype(str).isin(recent)].drop_duplicates(["link", "player", "squad"])
+        for (pl, sq), n in t.groupby(["player", "squad"]).size().sort_values(ascending=False).head(6).items():
+            buzz.append({"player": pl, "squad": sq, "articles": int(n), "ovr": ovr.get((str(sq), ps.norm_name(pl)))})
+    out["news"] = buzz
+
+    # 4) 루머 — 이번 주 새로 잡힌 이적 루머(TM). 많이 엮인 클럽 · 몸값 큰 대상
+    ru = ds.read_table("transfer_rumors", league=league)
+    rum = {"n": 0, "clubs": [], "top": []}
+    if ru is not None and not ru.empty and "date" in ru.columns:
+        d = pd.to_datetime(ru["date"].astype(str), format="%d/%m/%Y", errors="coerce")
+        w = ru[d >= pd.Timestamp(since)].copy()
+        if len(w):
+            w["mv"] = pd.to_numeric(w["market_value_eur"], errors="coerce")
+            rum = {"n": int(len(w)),
+                   "clubs": [{"club": c, "n": int(n)} for c, n in w.groupby("target_club").size().sort_values(ascending=False).head(4).items()],
+                   "top": [{"player": r.player, "from": r.current_club, "to": r.target_club,
+                            "value_eur": None if r.mv != r.mv else float(r.mv)}
+                           for r in w.sort_values("mv", ascending=False).head(4).itertuples()]}
+    out["rumors"] = rum
+
+    # 5) 다가오는 A매치 기간(3주 안)
+    try:
+        from api.services import intl as _intl  # noqa: PLC0415
+        nxt = next((w for w in _intl.windows() if w["start"] >= today.isoformat()), None)
+        if nxt and (datetime.date.fromisoformat(nxt["start"]) - today).days <= 21:
+            out["intl"] = {**nxt, "days_to": (datetime.date.fromisoformat(nxt["start"]) - today).days}
+    except Exception:  # noqa: BLE001
+        pass
+    return out
+
+
 @app.get("/api/hub/pulse")
 @_memo(ttl=1800)
 def hub_pulse(days_back: int = 3, days: int = 7):

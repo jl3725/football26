@@ -17,7 +17,7 @@ import sys
 from functools import lru_cache
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from leagues import SEASON_START  # noqa: E402  (계약 임박 연도 = 이번 시즌 종료 해)
+from leagues import LEAGUES, SEASON_START  # noqa: E402  (계약 임박 연도 = 이번 시즌 종료 해)
 
 MODEL = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
 NEO4J_URI = os.getenv("NEO4J_URI", "bolt://localhost:7687")
@@ -132,9 +132,30 @@ TOOLS = [
                        "'아스날은 어떤 팀?', 'X팀 영입 성향' 같은 질문.",
         "parameters": {"type": "object", "properties": {
             "team": {"type": "string", "description": "팀명"}}, "required": ["team"]}}},
+    # ── 실시간 도구(설계도 3단계) — 경기·부상·뉴스·이번 주. 숫자는 전부 데이터 값(API 함수 그대로) ──
+    {"type": "function", "function": {
+        "name": "team_now",
+        "description": "팀의 '지금' 상태: 다음 경기와 승부 예측(모델·팬 투표·ClubElo), 최근 결과, 현재 부상·결장자와 결장 전력 손실, "
+                       "다가오는 A매치 기간 소집 선수. '아스날 다음 경기 어때?', '지금 부상자 누구야?', '이번 주말 이길까?', "
+                       "'A매치 차출 누구?' 같은 질문.",
+        "parameters": {"type": "object", "properties": {
+            "team": {"type": "string", "description": "팀명"}}, "required": ["team"]}}},
+    {"type": "function", "function": {
+        "name": "player_news",
+        "description": "선수가 나온 최근 뉴스 기사(제목·출처·날짜). '사카 최근 뉴스', 'X 요즘 기사 뭐 나와?' 같은 질문.",
+        "parameters": {"type": "object", "properties": {
+            "player": {"type": "string", "description": "선수명(데이터 표기)"},
+            "club": {"type": "string", "description": "소속 클럽(선택 — 동명이인 구분)"}}, "required": ["player"]}}},
+    {"type": "function", "function": {
+        "name": "league_week",
+        "description": "리그의 지난 7일 변화 요약: 폼 지수 급등·급락 선수, 새 부상·복귀, 기사에 많이 나온 선수, 새 이적 루머, "
+                       "다가오는 A매치 기간. '이번 주 EPL 어땠어?', '요즘 폼 오른 선수', '이번 주 부상 소식' 같은 질문.",
+        "parameters": {"type": "object", "properties": {
+            "league": {"type": "string", "description": "리그 키(EPL·LaLiga·SerieA·Bundesliga·Ligue1·LigaPortugal·Eredivisie·"
+                       "BelgianProLeague). 없으면 현재 리그"}}, "required": []}}},
     {"type": "function", "function": {
         "name": "graph_query",
-        "description": "위 5개 툴로 안 되는 열린 그래프 질문에 read-only Cypher를 직접 작성해 실행. "
+        "description": "위 툴로 안 되는 열린 그래프 질문에 read-only Cypher를 직접 작성해 실행. "
                        "특히 **이적 루머/링크**('아스날에 링크나는 선수'=RUMORED_WITH), 관계 traversal"
                        "('국대 동료','팀 동료'), 다중 조건 필터('챔스 뛴 U23 풀백'), 이적 경로"
                        "('PSG→EPL 이적'), 집계('유럽 출전 최다 MF'). 반드시 스키마의 라벨/관계/속성만 사용.",
@@ -153,7 +174,9 @@ _SYSTEM = (
     "- 답변은 한국어로, 스카우트 브리핑처럼 간결하게. 툴 결과의 근거(팀니즈·유럽검증·시장가·전술적합)를 짚어라.\n"
     "- '우리 팀'/'이 팀'은 현재 보고 있는 팀 컨텍스트를 쓴다.\n"
     "- **'링크/루머/관심/영입설'은 추천이 아니라 RUMORED_WITH 조회다 → graph_query 사용.**\n"
-    "- 관계·다중필터·집계·이적경로 질문도 graph_query(read-only Cypher). 5개 구조화 툴이 맞으면 그걸 우선.\n"
+    "- 관계·다중필터·집계·이적경로 질문도 graph_query(read-only Cypher). 구조화 툴이 맞으면 그걸 우선.\n"
+    "- **지금·다음 경기·부상자·A매치 차출**은 team_now, **선수 최근 기사**는 player_news, "
+    "**리그 이번 주 변화(폼·부상·루머)**는 league_week. 예측 확률은 그대로 인용하고 출처(모델·팬 투표·ClubElo)를 밝혀라.\n"
     "- **'왜/이유/근거/설명해줘' 같은 메타 질문은 툴을 절대 호출하지 말고, 직전 답변을 근거로 텍스트로만 설명하라.**\n"
     "- 후속 질문('더 싸게','좁혀줘','~빼고')은 조건을 바꿔 새로 조회. 그 외 후속은 맥락 참고.\n"
     "\nKG 스키마(graph_query용, 이 라벨/관계/속성만 사용):\n" + _KG_SCHEMA + "\n\n"
@@ -240,7 +263,59 @@ def _execute(name: str, args: dict, league: str):
         return "identity", api.identity(_resolve_club(args.get("team", "")), league)
     if name == "graph_query":
         return "graph", _run_cypher(args.get("cypher", ""))
+    if name == "team_now":
+        return "team_now", team_now(_resolve_club(args.get("team", "")), league)
+    if name == "player_news":
+        return "news", api.news_player(args.get("player", ""), _resolve_club(args.get("club", "")) if args.get("club") else "",
+                                       league, 6)
+    if name == "league_week":
+        lg = args.get("league") or league
+        return "week", api.digest(lg if lg in LEAGUES else league)
     return None, {"error": f"알 수 없는 툴: {name}"}
+
+
+def team_now(team: str, league: str) -> dict:
+    """팀의 지금 — 다음 경기·예측, 최근 결과, 부상·결장, A매치 소집. 모두 API 함수 값 그대로(지어내지 않게)."""
+    api = _api()
+    out: dict = {"team": team, "league": league}
+    try:
+        nxt = (api.team_fixtures(team, league).get("next") or [])[:2]
+        out["next"] = [{"date": m.get("date"), "kickoff": m.get("kickoff"), "comp": m.get("comp"),
+                        "home": m["home"]["team"], "away": m["away"]["team"],
+                        "model": {k: (m.get("model") or {}).get(k) for k in ("h", "d", "a", "score", "xg_h", "xg_a")} if m.get("model") else None,
+                        "fans": {k: (m.get("fans") or {}).get(k) for k in ("h", "d", "a")} if m.get("fans") else None,
+                        "elo": {k: (m.get("elo") or {}).get(k) for k in ("h", "d", "a")} if m.get("elo") else None,
+                        "inputs": (m.get("model") or {}).get("inputs")} for m in nxt]
+    except Exception as e:  # noqa: BLE001
+        out["next_error"] = str(e)[:120]
+    try:
+        sch = api.schedule(team, league)
+        done = [m for m in sch.get("matches", []) if m.get("status") == "completed"][-3:]
+        out["recent"] = [{"date": m.get("date"), "opp": m.get("opponent"), "ha": m.get("home_away"), "score": m.get("score"),
+                          "result": m.get("result"), "comp": m.get("comp")} for m in done]
+    except Exception as e:  # noqa: BLE001
+        out["recent_error"] = str(e)[:120]
+    try:
+        inj = api._injuries_table(league)
+        if inj is not None and not inj.empty:
+            t = inj[inj["squad"] == team]
+            out["injuries"] = [{"player": r.player, "injury": r.injury, "until": r.until, "source": r.source}
+                               for r in t.itertuples()][:12]
+        out["absence_loss"] = api._absence_loss(league).get(team)
+    except Exception as e:  # noqa: BLE001
+        out["injury_error"] = str(e)[:120]
+    try:
+        from api.services import intl as _intl  # noqa: PLC0415
+        it = _intl.team_payload(team, league)
+        if it.get("window"):
+            out["intl"] = {"window": {k: it["window"][k] for k in ("start", "end", "label", "kind")}, "days_to": it["days_to"],
+                           "squad_state": it["squad_state"], "summary": it["summary"],
+                           "players": [{"player": p["player"], "nation": p["nation"], "far": p["far"],
+                                        "fixtures": [f"{f['date']} {'vs' if f['home'] else '@'} {f['opp']}" for f in p["fixtures"]]}
+                                       for p in it["players"]][:14]}
+    except Exception as e:  # noqa: BLE001
+        out["intl_error"] = str(e)[:120]
+    return out
 
 
 def _slim(intent: str, r: dict) -> dict:
@@ -273,6 +348,13 @@ def _slim(intent: str, r: dict) -> dict:
     if intent == "graph":
         return {"cypher": r.get("cypher"), "count": r.get("count"),
                 "rows": (r.get("rows") or [])[:15], "error": r.get("error")}
+    if intent == "news":
+        return {"player": r.get("player"), "total": r.get("total"),
+                "articles": [{k: a.get(k) for k in ("headline", "source", "published")} for a in (r.get("articles") or [])[:6]]}
+    if intent == "week":
+        return {k: r.get(k) for k in ("league", "since", "risers", "fallers", "news", "intl")} | {
+            "injuries": {k: (r.get("injuries") or {}).get(k) for k in ("n_new", "n_back", "new", "back")},
+            "rumors": r.get("rumors")}
     return r
 
 

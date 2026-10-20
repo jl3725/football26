@@ -10,6 +10,7 @@ import { Skel, SkelCards } from "./Skeleton";
 import { phaseOf, seasonStatusText } from "@/lib/season";
 import LeagueFixtures from "./LeagueFixtures";
 import SectionHead from "./SectionHead";
+import WeeklyDigest from "./WeeklyDigest";
 
 const ESPN_CODE: Record<string, string> = { EPL: "eng.1", LaLiga: "esp.1", SerieA: "ita.1", Bundesliga: "ger.1", Ligue1: "fra.1",
   LigaPortugal: "por.1", Eredivisie: "ned.1", BelgianProLeague: "bel.1" };
@@ -133,6 +134,10 @@ export default function HomeDashboard({ accent, onPickTeam, onPickLeagueTeam, le
           <WatchGrid items={lab.watch!} onPick={(t, lg) => pickTL(t, lg)} />
         </>
       )}
+
+      {/* ── 이번 주에 바뀐 것: 폼 ▲▼ · 부상 변동 · 뉴스 언급 · 루머 · A매치 (규칙 기반 주간 요약) ── */}
+      <Sec en="WEEKLY DIGEST" kr="이번 주 요약" />
+      <WeeklyDigest league={league} />
 
       {/* ── 리그 집중: 전체 순위표 · 우승 경쟁 · 전력 대비 · 베스트 XI · 득점왕 · 기대값 · 도움왕 · 팀 스타일 · 볼 위닝 · 부상 타격 ── */}
       <Sec en="LEAGUE FOCUS" kr="리그 집중" />

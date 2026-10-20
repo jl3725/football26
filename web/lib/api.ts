@@ -729,3 +729,16 @@ export type PlayerNewsItem = { headline: string; headline_en: string; source: st
 export const getPlayerNews = (player: string, club: string, league: string = _league) =>
   j<{ player: string; articles: PlayerNewsItem[]; total?: number }>(
     `/api/news-player/${encodeURIComponent(player)}?club=${encodeURIComponent(club)}&league=${encodeURIComponent(league)}&limit=5`);
+
+// ── WEEKLY DIGEST(/api/digest) — 지난 7일 리그 변화(규칙 기반) ──
+export type DigestMover = { player: string; squad: string; ovr: number; ovr_delta: number; form: number; delta: number };
+export type DigestInj = { player: string; squad: string; date: string; ovr: number | null; injury: string; until: string | null };
+export type Digest = {
+  league: string; since: string; until: string; form_since?: string;
+  risers: DigestMover[]; fallers: DigestMover[];
+  injuries: { new: DigestInj[]; back: DigestInj[]; n_new: number; n_back: number };
+  news: { player: string; squad: string; articles: number; ovr: number | null }[];
+  rumors: { n: number; clubs: { club: string; n: number }[]; top: { player: string; from: string; to: string; value_eur: number | null }[] };
+  intl?: IntlWindow & { days_to: number };
+};
+export const getDigest = (league: string = _league) => j<Digest>(`/api/digest?league=${encodeURIComponent(league)}`);

@@ -108,3 +108,29 @@ def test_scout_requires_explicit_public_opt_in(
     response = scout({"q": "test"})
     assert response["available"] is False
     assert response["auth_required"] is True
+
+
+def test_ops_intl_digest_endpoints() -> None:
+    """설계도 1~3단계 새 엔드포인트 — DATA STATUS · A매치 · 주간 요약 · 선수 뉴스가 깨지지 않고 모양이 맞는지."""
+    ops = get("/api/ops/status").json()
+    assert {"counts", "agents", "recent_failures"} <= set(ops) and len(ops["agents"]) >= 10
+    intl = get("/api/intl/team/Arsenal", params={"league": "EPL"}).json()
+    assert {"window", "state", "squad_state", "players", "summary"} <= set(intl)
+    dg = get("/api/digest", params={"league": "EPL"}).json()
+    assert {"risers", "fallers", "injuries", "news", "rumors"} <= set(dg)
+    assert all(m["delta"] > 0 for m in dg["risers"]) and all(m["delta"] < 0 for m in dg["fallers"])
+    nw = get("/api/news-player/Bukayo Saka", params={"club": "Arsenal", "league": "EPL"}).json()
+    assert isinstance(nw["articles"], list)
+
+
+def test_scout_realtime_tools_without_llm() -> None:
+    """Ask Scout 실시간 도구 — LLM(유료 키) 없이 실행기만: 결과는 API 함수 값 그대로."""
+    import scout_agent as sa
+
+    names = {t["function"]["name"] for t in sa.TOOLS}
+    assert {"team_now", "player_news", "league_week"} <= names
+    intent, r = sa._execute("team_now", {"team": "Arsenal"}, "EPL")
+    assert intent == "team_now" and r["team"] == "Arsenal" and "next" in r and "injuries" in r
+    intent, r = sa._execute("league_week", {"league": "Nowhere"}, "EPL")   # 모르는 리그면 현재 리그
+    assert intent == "week" and r["league"] == "EPL"
+    assert set(sa._slim("week", r)) >= {"risers", "injuries", "rumors"}

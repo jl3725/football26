@@ -4218,3 +4218,22 @@ LIGA’처럼 글자가 접히던 것) — 넘치면 가로로 넘긴다 */
 .pd-news li span { font-size: 11px; color: var(--muted); }
 .news-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
 .news-tags span { font-size: 10.5px; padding: 1px 7px; border-radius: 6px; background: var(--panel-2); color: var(--txt); }
+
+/* ── WEEKLY DIGEST (리그 홈) ── */
+.wd-wrap { display: flex; flex-direction: column; gap: 10px; }
+.wd-intl { font-size: 12.5px; color: var(--muted); padding: 8px 12px; border: 1px dashed var(--line); border-radius: 12px; }
+.wd-intl b { color: var(--txt); }
+.wd-intl em { font-style: normal; color: var(--accent); font-weight: 600; margin-left: 4px; }
+.wd-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 12px; }
+.wd-card { padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.wd-card h3 { margin-bottom: 4px; }
+.wd-card h3 small { font-family: var(--font-ui); font-size: 11px; letter-spacing: 0; text-transform: none; margin-left: 6px; color: var(--muted); font-weight: 500; }
+.wd-row { display: flex; align-items: baseline; gap: 6px; font-size: 12.5px; min-width: 0; }
+.wd-name { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 55%; }
+.wd-sub { color: var(--muted); font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1; min-width: 0; }
+.wd-row b { font-family: var(--font-num); font-weight: 500; font-size: 14px; white-space: nowrap; }
+.wd-row b small { font-size: 10.5px; margin-left: 2px; }
+.wd-tag { font-size: 10px; padding: 1px 6px; border-radius: 5px; font-weight: 600; flex: none; }
+.wd-clubs { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 2px; }
+.wd-clubs span { font-size: 10.5px; padding: 1px 7px; border-radius: 6px; background: var(--panel-2); }
+.wd-empty { font-size: 12px; color: var(--muted); margin: 0; }

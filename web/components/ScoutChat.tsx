@@ -160,6 +160,51 @@ function ResultCard({ d, accent, onNavigate }: { d: Scout; accent: string; onNav
       </div>
     );
   }
+  // 실시간 도구 — 팀의 지금(다음 경기 예측·부상) · 선수 뉴스 · 리그 이번 주
+  const pc = (v?: number | null) => (v == null ? "—" : `${Math.round(v * 100)}%`);
+  if (d.intent === "team_now") {
+    return (
+      <div style={box}>
+        {(r.next || []).slice(0, 1).map((m: any, i: number) => (
+          <div key={i} style={{ fontSize: 11.5, marginBottom: 6 }}>
+            <b>{m.home} vs {m.away}</b> <span style={{ opacity: 0.6 }}>{m.date} · {m.comp}</span>
+            <div style={{ opacity: 0.85 }}>
+              {m.model && <>MODEL {pc(m.model.h)}·{pc(m.model.d)}·{pc(m.model.a)} </>}
+              {m.fans && <>· 팬 {pc(m.fans.h)}·{pc(m.fans.d)}·{pc(m.fans.a)} </>}
+              {m.elo && <>· Elo {pc(m.elo.h)}·{pc(m.elo.d)}·{pc(m.elo.a)}</>}
+            </div>
+          </div>
+        ))}
+        {(r.injuries || []).length > 0 && (
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
+            <span style={{ fontSize: 11, opacity: 0.6, alignSelf: "center" }}>결장 ·</span>
+            {r.injuries.slice(0, 6).map((x: any, i: number) => <Chip key={i} t={x.player} accent={accent} />)}
+          </div>
+        )}
+      </div>
+    );
+  }
+  if (d.intent === "news") {
+    return (
+      <div style={box}>
+        {(r.articles || []).slice(0, 4).map((a: any, i: number) => (
+          <a key={i} href={a.link} target="_blank" rel="noreferrer" style={{ display: "block", fontSize: 11.5, color: "inherit", marginBottom: 4 }}>
+            {a.headline} <span style={{ opacity: 0.55 }}>· {a.source}</span>
+          </a>
+        ))}
+        {(r.articles || []).length === 0 && <div style={{ fontSize: 11.5, opacity: 0.6 }}>최근 기사 없음</div>}
+      </div>
+    );
+  }
+  if (d.intent === "week") {
+    return (
+      <div style={box}>
+        <div style={{ fontSize: 11.5 }}>폼 ▲ {(r.risers || []).slice(0, 3).map((x: any) => `${x.player} +${x.delta}`).join(" · ") || "—"}</div>
+        <div style={{ fontSize: 11.5 }}>폼 ▼ {(r.fallers || []).slice(0, 3).map((x: any) => `${x.player} ${x.delta}`).join(" · ") || "—"}</div>
+        <div style={{ fontSize: 11.5, opacity: 0.8 }}>부상 {r.injuries?.n_new ?? 0} · 복귀 {r.injuries?.n_back ?? 0} · 루머 {r.rumors?.n ?? 0}건</div>
+      </div>
+    );
+  }
   return null;
 }
 
