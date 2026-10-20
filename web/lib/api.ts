@@ -300,9 +300,15 @@ export type Article = {
   headline: string; headline_en: string; descr: string;
   source: string; published: string; image: string; link: string; is_new: boolean;
   players?: string[];   // 기사에 나온 이 팀 선수(뉴스 선수 태그)
+  // 분류(src/news_classify.py) — 종류·이적 단계·인용된 기자, 수집 경로(gnews = Google News 검색)
+  kind?: string; stage?: string; journalists?: string[]; via?: string; first_seen?: string;
 };
+// 여러 매체가 다룬 같은 이야기(src/news_stories.py)
+export type NewsStory = { id: string; kind: string; stage: string; title: string; title_en: string; players: string[];
+  sources: string[]; journalists: string[]; first: string; last: string; links: string[] };
 export type News = { team: string; color: string; articles: Article[]; sparse: boolean;
-  ai?: { lines: string[]; at: string; n?: number } | null };   // 최근 48시간 AI 요약 1~3줄
+  ai?: { lines: string[]; at: string; n?: number } | null;   // 최근 48시간 AI 요약 1~3줄
+  stories?: NewsStory[]; kinds?: Record<string, number>; sources?: { name: string; n: number }[] };
 
 export type AuditItem = { player: string; fee_text: string; fee_eur: number; pos: string; minutes: number; goals: number; assists: number; verdict: string; tone: string; photo: string };
 export type ManagerEvo = { name: string; style: string; formation: string; focus: string; tactics?: string; appointed: string; previous?: { name: string; style: string; formation: string } };

@@ -210,10 +210,12 @@ def _news_window(hours: int = 48, per_team: int = 8) -> dict[str, list[dict]]:
     df = df[(pub >= old) | ~pub.str.match(r"\d{4}-\d{2}-\d{2}")]       # 오래된 기사가 새로 잡힌 경우 제외
     # 화면(/api/news)과 같은 관련성 기준 — 팀 이름이 원문에 있거나 이 팀 선수 태그가 있는 기사만(src/news_relevance.py)
     import news_relevance as nr  # noqa: PLC0415
+    import news_sources  # noqa: PLC0415 — 현지 클럽 표기('Standard Luik')도 그 팀 이름으로
     tagged = set(zip(tags["link"].astype(str), tags["squad"].astype(str)))
     ours = _our_clubs()
     keep = [bool(str(r.team) in ours and nr.relevant({"headline": r.headline, "descr": r.descr, "published": r.published,
-                                                     "first_seen": r.first_seen}, nr.team_terms(str(r.team)),
+                                                     "first_seen": r.first_seen},
+                                                    nr.team_terms(str(r.team), tuple(news_sources.cached_local_names(str(r.team)))),
                                                     (str(r.link), str(r.team)) in tagged))
             for r in df.itertuples(index=False)]
     df = df[keep]

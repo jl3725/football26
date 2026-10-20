@@ -44,6 +44,20 @@ def init_db() -> None:
             )
         """)
         c.execute("CREATE INDEX IF NOT EXISTS idx_team_pub ON articles(team, published)")
+        # 수집 경로(via) — 'gnews' = Google News 검색(src/news_sources.py). 매체 이름(source)과 따로 둔다
+        if "via" not in {r[1] for r in c.execute("PRAGMA table_info(articles)")}:
+            c.execute("ALTER TABLE articles ADD COLUMN via TEXT DEFAULT ''")
+        # 기사 분류(src/news_classify.py) — 종류·이적 단계·기자. by = rule | ai
+        c.execute("""
+            CREATE TABLE IF NOT EXISTS article_meta (
+                link        TEXT PRIMARY KEY,
+                kind        TEXT,
+                stage       TEXT,
+                journalists TEXT,
+                by          TEXT,
+                at          TEXT
+            )
+        """)
 
 
 # 한글이 한 글자도 없는 번역문(철자만 바뀐 원문 등 — 2026-10-14 Marca)도 미번역으로 본다. HAS_KO 는 _conn() 이 등록
@@ -77,11 +91,11 @@ def upsert_articles(articles: list[dict], team: str) -> int:
                 c.execute(
                     """INSERT INTO articles
                        (link, team, source, headline, headline_ko, descr, descr_ko,
-                        published, image, first_seen, fetched_at)
-                       VALUES (?,?,?,?,?,?,?,?,?,?,?)""",
+                        published, image, first_seen, fetched_at, via)
+                       VALUES (?,?,?,?,?,?,?,?,?,?,?,?)""",
                     (link, team, a.get("source", ""), a.get("headline", ""),
                      hk, a.get("desc", ""), dk,
-                     a.get("published", ""), a.get("image", ""), today, today))
+                     a.get("published", ""), a.get("image", ""), today, today, a.get("via", "")))
                 new += 1
     return new
 
@@ -137,6 +151,67 @@ def read_team_news(team: str, limit: int = 16) -> list[dict]:
         d["is_new"] = (d.get("first_seen") == today)
         out.append(d)
     return out
+
+
+def head_key(headline: str) -> str:
+    """같은 기사 판정용 제목 열쇠 — merge_news 와 같은 규칙(영숫자만, 앞 55자)."""
+    return re.sub(r"[^a-z0-9]", "", str(headline or "").lower())[:55]
+
+
+def recent_heads(team: str, since: str) -> set[str]:
+    """이 팀에 since 이후 들어온 기사의 제목 열쇠 — 다른 경로(ESPN·RSS)로 이미 받은 기사를 Google 에서 또 받지 않게."""
+    with _conn() as c:
+        rows = c.execute("SELECT headline FROM articles WHERE team=? AND first_seen>=?", (team, since)).fetchall()
+    return {head_key(r[0]) for r in rows if r[0]}
+
+
+def via_count(team: str, via: str, day: str) -> int:
+    """이 팀에 그날 via 경로로 새로 들어온 기사 수(하루 상한 계산용)."""
+    with _conn() as c:
+        return int(c.execute("SELECT count(*) FROM articles WHERE team=? AND via=? AND first_seen=?",
+                             (team, via, day)).fetchone()[0])
+
+
+def prune(via: str, before: str) -> int:
+    """via 경로 기사 중 처음 본 날이 before 보다 이른 것을 지운다(화면은 최근 60일만 쓰고 news.db 는 저장소에 커밋된다)."""
+    with _conn() as c:
+        cur = c.execute("DELETE FROM articles WHERE via=? AND first_seen<?", (via, before))
+        c.execute("DELETE FROM article_meta WHERE link NOT IN (SELECT link FROM articles)")
+        return cur.rowcount
+
+
+def unclassified(limit: int = 5000) -> list[dict]:
+    """분류가 아직 없는 기사(링크 하나에 한 줄, 최신순)."""
+    with _conn() as c:
+        rows = c.execute(
+            """SELECT a.link, max(a.headline) AS headline, max(a.descr) AS descr, max(a.source) AS source,
+                      group_concat(DISTINCT a.team) AS teams, max(a.first_seen) AS first_seen
+               FROM articles a LEFT JOIN article_meta m ON m.link=a.link
+               WHERE m.link IS NULL GROUP BY a.link ORDER BY max(a.first_seen) DESC LIMIT ?""", (limit,)).fetchall()
+    return [dict(r) for r in rows]
+
+
+def for_ai(since: str, kinds: tuple[str, ...], limit: int) -> list[dict]:
+    """AI 로 다시 볼 기사 — since 이후, 규칙 분류(by=rule)이고 종류가 kinds 인 것(최신순)."""
+    q = ",".join("?" * len(kinds))
+    with _conn() as c:
+        rows = c.execute(
+            f"""SELECT a.link, max(a.headline) AS headline, max(a.descr) AS descr, max(a.source) AS source,
+                       m.kind, m.stage, m.journalists
+                FROM articles a JOIN article_meta m ON m.link=a.link
+                WHERE m.by='rule' AND m.kind IN ({q}) AND a.first_seen>=?
+                GROUP BY a.link ORDER BY max(a.first_seen) DESC, max(a.published) DESC LIMIT ?""",
+            (*kinds, since, limit)).fetchall()
+    return [dict(r) for r in rows]
+
+
+def set_meta(rows: list[dict]) -> int:
+    with _conn() as c:
+        c.executemany(
+            "INSERT OR REPLACE INTO article_meta (link, kind, stage, journalists, by, at) VALUES (?,?,?,?,?,?)",
+            [(r["link"], r.get("kind", ""), r.get("stage", ""), r.get("journalists", ""), r.get("by", "rule"),
+              r.get("at", date.today().isoformat())) for r in rows])
+    return len(rows)
 
 
 def stats() -> dict:

@@ -103,9 +103,11 @@ AGENTS: tuple[Agent, ...] = (
               Feed("history", "통산 부상 이력", ("injury_history",), ("tm_data",), "주 1회 · 월 12:30 KST", WEEK_H,
                    ("tm_injury_history_*",)),
           ), checks=("수집기 가드: 부상자 0명·이력 급감 저장 차단",)),
-    Agent("news", "NEWS", "뉴스", "뉴스 수집·번역(팀 태그) · 선수 태깅(이름 전체·성+클럽, news_tags)",
-          ("ESPN", "뉴스 RSS"), (
-              Feed("news", "뉴스 수집·번역", ("news",), ("daily_news",), "2시간마다", 6, ("news.db",)),
+    Agent("news", "NEWS", "뉴스", "뉴스 수집·번역(팀 태그) · Google News 팀별 현지어·영어 이적 · 선수 태깅(news_tags) · "
+          "분류(종류·이적 단계·기자, news_classify) · STORY 묶음(news_stories)",
+          ("ESPN", "뉴스 RSS", "Google News", "Wikipedia", "Gemini"), (
+              Feed("news", "뉴스 수집·분류·번역", ("news",), ("daily_news",), "2시간마다", 6,
+                   ("news.db", "club_local_names.json", "news_journalists.csv")),
           ), checks=("watchdog: news(수집 1일·번역률 50%)",)),
     Agent("intl", "INTERNATIONAL", "국가대표", "FIFA 랭킹, 대륙별 대회(자동 발견·상태), A매치 일정·기간, 소집 명단 → 국가대표 탭·팀 일정·예측",
           ("FIFA", "ESPN", "Wikipedia"), (

@@ -1,5 +1,5 @@
 """
-일일 뉴스 수집 배치 — ESPN + Guardian/BBC RSS → sqlite 누적 → 번역 백필.
+일일 뉴스 수집 배치 — ESPN + Guardian/BBC RSS + Google News(팀별 현지어·영어 이적) → sqlite 누적 → 분류 → 번역 백필.
 
 GitHub Actions cron이 2시간마다 실행하고 data/news.db를 repo에 커밋한다.
 (link, team) 복합키로 중복 없이 누적되며, 새 기사만 first_seen=오늘으로 들어간다.
@@ -25,31 +25,50 @@ from ui.news import (  # noqa: E402
     fetch_espn_news, fetch_rss_news, team_articles, merge_news, newstags,
     fetch_es_wire, es_wire_for_team,
 )
-from news_db import init_db, upsert_articles, stats, untranslated, set_translation, translation_stats  # noqa: E402
+from news_db import (  # noqa: E402
+    init_db, upsert_articles, stats, untranslated, set_translation, translation_stats, recent_heads, via_count, prune, head_key,
+)
+import news_sources as gn  # noqa: E402
 from translate import translate_many, STATS  # noqa: E402
 
 LEAGUES = ["EPL", "LaLiga", "SerieA", "Bundesliga", "Ligue1", "LigaPortugal", "Eredivisie", "BelgianProLeague"]
 
 
-def run_league(league: str) -> tuple[int, int]:
+GN_PER_RUN = 6        # Google News — 팀당 한 번에 새 기사 이만큼(하루 상한 gn.DAILY_CAP)
+
+
+def google_new(team: str, arts: list[dict], taken: set[str]) -> list[dict]:
+    """Google 기사 중 이번 실행에 넣을 것 — 최근 7일 안에 다른 경로로 받은 제목·이번에 받은 제목 제외, 회당·하루 상한."""
+    today = _days_ago(0)
+    room = min(GN_PER_RUN, gn.DAILY_CAP - via_count(team, gn.VIA, today))
+    if room <= 0:
+        return []
+    known = recent_heads(team, _days_ago(7)) | taken
+    out = [a for a in arts if head_key(a["headline"]) not in known]
+    return out[:room]
+
+
+def run_league(league: str, br: gn.Breaker | None = None) -> tuple[int, int]:
     tags = newstags(league)
     espn = fetch_espn_news(league)
     wire = fetch_es_wire() if league == "LaLiga" else []   # AS·MD·Sport 리그 와이어 1회
-    print(f"[{league}] ESPN {len(espn)}건 · ES와이어 {len(wire)}건 · {len(tags)}팀 처리…")
+    google = gn.fetch_league(league, tags, br) if br is not None and not br.open else {}
+    print(f"[{league}] ESPN {len(espn)}건 · ES와이어 {len(wire)}건 · Google {sum(map(len, google.values()))}건 · {len(tags)}팀 처리…")
     new = tot = 0
     for i, team in enumerate(tags, 1):
         e = team_articles(espn, team, 12)
         r = fetch_rss_news(team)                    # EPL: Guardian/BBC · LaLiga: Marca 팀별
         w = es_wire_for_team(wire, team)            # LaLiga: AS/MD/Sport 팀명 매칭
         merged = merge_news(e, r + w, 20)
-        n = upsert_articles(merged, team)          # 번역은 끝난 뒤 backfill 이 묶어서
-        new += n; tot += len(merged)
-        print(f"  [{i:2}/{len(tags)}] {team:18} {len(merged):2}건 (신규 {n})")
+        g = google_new(team, google.get(team, []), {head_key(a["headline"]) for a in merged})
+        n = upsert_articles(merged + g, team)       # 번역은 끝난 뒤 backfill 이 묶어서
+        new += n; tot += len(merged) + len(g)
+        print(f"  [{i:2}/{len(tags)}] {team:18} {len(merged):2}건 + Google {len(g)} (신규 {n})")
         time.sleep(0.3)
     return new, tot
 
 
-BACKFILL_PER_RUN = 300   # 실행마다 번역 안 된 기사를 최신순으로 이만큼(새 기사 포함, 2시간에 보통 ~15건)
+BACKFILL_PER_RUN = 600   # 실행마다 번역 안 된 기사를 최신순으로 이만큼(Google 제목 포함 — 요약 없이 제목만이라 가볍다)
 
 
 def _days_ago(n: int) -> str:
@@ -99,14 +118,20 @@ def main(argv=None) -> int:
     else:
         leagues = ["EPL"]
     tn = tt = 0
+    br = None if "--no-google" in args else gn.Breaker()
     for lg in leagues:
-        n, t = run_league(lg)
+        n, t = run_league(lg, br)
         tn += n; tt += t
+    if br is not None:
+        print(f"[google] 호출 {br.calls}회 · 오류 {br.errors[-5:]}" + (" · 연속 실패로 중단" if br.open else ""))
+        print(f"[google] {gn.KEEP_DAYS}일 지난 기사 정리 {prune(gn.VIA, _days_ago(gn.KEEP_DAYS))}건")
     s = stats()
     print(f"\n완료 — 신규 {tn} / 처리 {tt} · DB 누적 {s['articles']}건 ({s['teams']}팀)")
     import news_tags   # 새 기사 선수 태깅(이름 전체 · 성+클럽) — 무료·결정적. 처음 실행 때 지난 기사 전부
     n_art, n_tag = news_tags.run()
     print(f"[news-tags] 기사 {n_art}건 · 선수 태그 {n_tag}개")
+    import news_classify   # 종류(이적·부상·경기·인터뷰·구단 발표)·이적 단계·기자 — 규칙(전부) + AI(최근 이적 기사 일부)
+    print("[news-classify]", news_classify.run())
     backfill(BACKFILL_PER_RUN)
     print("번역률(2일):", translation_stats(_days_ago(2)))
     return 0

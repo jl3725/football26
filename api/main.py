@@ -2316,28 +2316,82 @@ def news(team: str, league: str = ACTIVE_LEAGUE):
             tagmap.setdefault(str(ln), []).append(str(pl))
     # 관련성·기간 — 팀 이름(정식 이름·구별 낱말)이 원문에 나오거나 이 팀 선수 태그가 있고, 최근 60일(src/news_relevance.py)
     import news_relevance as nr  # noqa: PLC0415
-    terms = nr.team_terms(team, (tm.team_fullname(team),))
+    import news_sources  # noqa: PLC0415
+    import news_stories  # noqa: PLC0415
+    terms = nr.team_terms(team, (tm.team_fullname(team), *news_sources.cached_local_names(team)))   # 'Standard Luik' 같은 현지 표기
     rows = [r for _, r in ta.iterrows()
             if nr.relevant(r.to_dict(), terms, bool(tagmap.get(str(r.get("link") or ""))))]
+    rows = rows[:NEWS_MAX]
+    links = [str(r.get("link") or "") for r in rows]
+    meta = _news_meta(links)               # 종류·이적 단계·기자(src/news_classify.py)
+    every = _news_tags_any_league(links)   # STORY 묶음용 — 다른 리그 선수 태그까지(이적설 대상은 남의 리그 선수가 많다)
     out = []
-    for r in rows[:24]:
+    for r in rows:
         fs = str(r.get("first_seen") or "")[:10]
+        ln = str(r.get("link") or "")
+        m = meta.get(ln, {})
         out.append({
-            "players": tagmap.get(str(r.get("link") or ""), []),
+            "players": tagmap.get(ln, []),
             "headline": str(r.get("headline_ko") or r.get("headline") or ""),
             "headline_en": str(r.get("headline") or ""),
             "descr": str(r.get("descr_ko") or r.get("descr") or ""),
             "source": str(r.get("source") or ""),
+            "via": str(r.get("via") or "") if "via" in r.index and r.get("via") == r.get("via") else "",
             "published": str(r.get("published") or ""),
+            "first_seen": fs,
             "image": str(r.get("image") or "") if str(r.get("image") or "").startswith("http") else "",
-            "link": str(r.get("link") or ""),
+            "link": ln,
             "is_new": bool(fs and fs >= today),
+            "kind": m.get("kind") or "other", "stage": m.get("stage") or "",
+            "journalists": [j for j in str(m.get("journalists") or "").split("|") if j],
         })
+    recent = (datetime.date.today() - datetime.timedelta(days=14)).isoformat()
+    stories = news_stories.cluster(
+        [{**a, "all_players": every.get(a["link"], a["players"])} for a in out
+         if (a["published"] or a["first_seen"])[:10] >= recent],
+        team_words=set(terms))[:6]
+    kinds: dict = {}
+    srcs: dict = {}
+    for a in out:
+        kinds[a["kind"]] = kinds.get(a["kind"], 0) + 1
+        srcs[a["source"]] = srcs.get(a["source"], 0) + 1
     # 오늘의 요약(AI) — 최근 48시간 기사 1~3줄(src/ai_notes.py news, 2시간마다·검증 통과 줄만). 3일 지나면 내림
     import ai_notes  # noqa: PLC0415
     ai = ai_notes.load("news").get("teams", {}).get(team)
     ai = {"lines": ai["lines"], "at": ai["at"], "n": ai.get("n")} if ai and ai.get("lines") else None
-    return {"team": team, "color": tm.team_color(team), "articles": out, "sparse": len(out) < 3, "ai": ai}
+    return {"team": team, "color": tm.team_color(team), "articles": out, "sparse": len(out) < 3, "ai": ai,
+            "stories": stories, "kinds": kinds,
+            "sources": [{"name": k, "n": v} for k, v in sorted(srcs.items(), key=lambda x: -x[1]) if k]}
+
+
+NEWS_MAX = 48
+
+
+def _news_side_table(sql: str, links: list[str]) -> list[tuple]:
+    """news_* 보조 테이블을 리그 필터 없이 링크로 읽는다(datastore.read_table 은 league 열로 거른다)."""
+    if not links or not ds.DB_PATH.exists():
+        return []
+    import sqlite3  # noqa: PLC0415
+    try:
+        c = sqlite3.connect(f"file:{ds.DB_PATH}?mode=ro", uri=True)
+        try:
+            return c.execute(sql.format(q=",".join("?" * len(links))), links).fetchall()
+        finally:
+            c.close()
+    except sqlite3.Error:   # 분류 전 DB(테이블 없음)
+        return []
+
+
+def _news_meta(links: list[str]) -> dict:
+    return {ln: {"kind": k, "stage": s, "journalists": j}
+            for ln, k, s, j in _news_side_table("SELECT link, kind, stage, journalists FROM news_meta WHERE link IN ({q})", links)}
+
+
+def _news_tags_any_league(links: list[str]) -> dict:
+    out: dict = {}
+    for ln, pl in _news_side_table("SELECT link, player FROM news_players WHERE link IN ({q})", links):
+        out.setdefault(str(ln), []).append(str(pl))
+    return out
 
 
 @app.get("/api/news-player/{player}")

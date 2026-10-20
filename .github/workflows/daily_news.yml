@@ -1,6 +1,6 @@
 name: Daily News Fetch
 
-# 2시간마다 ESPN+RSS 뉴스를 수집해 data/news.db 에 누적하고, 번역 안 된 기사를 묶어 번역한 뒤 커밋.
+# 2시간마다 ESPN+RSS+Google News(팀별 현지어·영어 이적) 뉴스를 수집해 data/news.db 에 누적하고, 분류(종류·이적 단계·기자)·번역 뒤 커밋.
 # 번역은 무료 공급자만(src/translate.py): GEMINI_API_KEY 시크릿이 있으면 Gemini 무료 등급, 없거나
 # 한도 소진이면 구글 무료 번역. 실패한 건 비워 두고 다음 실행이 채운다. 수동 실행도 가능(workflow_dispatch).
 on:
@@ -54,6 +54,8 @@ jobs:
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/news.db data/ops/runs/ data/ai/
+          # Google News 검색용 현지 클럽 표기(위키 언어 간 링크, 7일 캐시) · AI 가 찾은 기자 목록(src/news_classify.py)
+          for f in data/club_local_names.json data/news_journalists.csv; do [ -f "$f" ] && git add "$f"; done
           if git diff --staged --quiet; then
             echo "변경 없음 — 커밋 생략"
           else

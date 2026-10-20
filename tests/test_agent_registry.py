@@ -101,4 +101,4 @@ def test_build_status_shape_and_late_text() -> None:
     by = {a["key"]: a for a in s["agents"]}
     assert by["news"]["state"] == "late" and by["match"]["feeds"][0]["state"] == "ok"
     assert s["unregistered_steps"] == ["mystery"]
-    assert any("NEWS · 뉴스 수집·번역" in x for x in ops_status.late_feeds(s))
+    assert any("NEWS · 뉴스 수집·분류·번역" in x for x in ops_status.late_feeds(s))
