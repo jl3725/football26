@@ -1,0 +1,68 @@
+name: KG Reload
+
+# 그래프(Neo4j AuraDB)·유사 선수 벡터(Qdrant) 주간 재적재 — 예전엔 손으로만 돌려 10/13 적재 뒤 이적·부상이 그래프에 없었다.
+# build_kg: 화면과 같은 최신 선수 표(골·도움·OVR·폼) + 주장단·영향력·현재 부상·기사 동시 언급·대표팀 소집,
+#           이번에 다시 확인 안 된 소속·감독·주장·소집 관계는 지움(떠난 선수가 옛 팀 소속으로 남던 문제).
+# kg_sync_extras: 이적 루머(지금 목록으로 다시)·클럽 영입 성향·감독 전술. build_vectors: per90 스타일 벡터(유료 임베딩 없음).
+on:
+  schedule:
+    - cron: "0 3 * * 2"   # 매주 화 03:00 UTC(12:00 KST) — 월요일 이적·부상 이력, 주말 경기 반영 뒤
+  workflow_dispatch:
+
+concurrency:
+  group: kg-reload
+  cancel-in-progress: false
+
+permissions:
+  contents: write   # 실행 원장(data/ops/runs/kg_reload.jsonl)
+
+jobs:
+  reload:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      NEO4J_URI: ${{ secrets.NEO4J_URI }}
+      NEO4J_USERNAME: ${{ secrets.NEO4J_USERNAME }}
+      NEO4J_USER: ${{ secrets.NEO4J_USERNAME }}
+      NEO4J_PASSWORD: ${{ secrets.NEO4J_PASSWORD }}
+      QDRANT_URL: ${{ secrets.QDRANT_URL }}
+      QDRANT_API_KEY: ${{ secrets.QDRANT_API_KEY }}
+      COLLECT_FAILURES: /tmp/collect_failures.txt
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install
+        run: pip install -q -r requirements.txt && pip install -q neo4j==5.28.1 qdrant-client==1.12.1
+
+      - name: Build DB (화면과 같은 선수 표를 만들려면 필요)
+        run: python scripts/build_db.py > /dev/null
+
+      - name: Reload graph · vectors
+        run: |
+          if [ -z "$NEO4J_URI" ]; then echo "NEO4J_URI 시크릿 없음 — 건너뜀"; exit 0; fi
+          bash scripts/ci_try.sh "kg_reload" python scripts/build_kg.py
+          bash scripts/ci_try.sh "kg_extras" python scripts/kg_sync_extras.py
+          if [ -n "$QDRANT_URL" ]; then bash scripts/ci_try.sh "vectors_reload" python scripts/build_vectors.py; fi
+
+      - name: Commit run ledger
+        if: always()
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/ops/runs/ || true
+          if git diff --staged --quiet; then
+            echo "변경 없음"
+          else
+            git commit -m "chore(ops): 그래프·벡터 재적재 기록 [skip ci]"
+            for i in 1 2 3; do
+              git pull --rebase --autostash origin main && git push && break || sleep 5
+            done
+          fi
+
+      - name: Report failures
+        if: always()
+        run: bash scripts/ci_report.sh

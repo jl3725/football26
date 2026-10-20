@@ -131,11 +131,13 @@ AGENTS: tuple[Agent, ...] = (
               Feed("audits", "OVR·평점 검증", ("ovr_consistency", "rating_audit"), ("daily_data",), "매일 13:30 KST", 36,
                    ("eval/ovr_audit.json", "eval/rating_audit.json")),
           ), extras=("운영 점검 — watchdog.yml 매일 17:00 KST, 결과는 data/ops/watchdog.json",)),
-    Agent("serving", "SERVING", "서빙", "홈 스냅샷, 외부 저장소 깨우기",
+    Agent("serving", "SERVING", "서빙", "홈 스냅샷, 외부 저장소 깨우기, 그래프·벡터 주간 재적재",
           ("통합 DB",), (
               Feed("hub", "홈 스냅샷", ("precompute_hub",), ("match_refresh", "daily_data"), "매일 2회", 30,
                    ("home_all.json",)),
               Feed("infra", "벡터·그래프 핑", ("infra_ping",), ("daily_data",), "매일 13:30 KST", 36),
+              Feed("graph", "그래프·벡터 재적재", ("kg_reload", "kg_extras", "vectors_reload"), ("kg_reload",),
+                   "주 1회 · 화 12:00 KST", WEEK_H),
           ), checks=("watchdog: hub(스냅샷 36시간)",)),
 )
 

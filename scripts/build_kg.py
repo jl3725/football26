@@ -9,16 +9,27 @@
        (Player)-[:PLAYED_IN {starts,apps}]->(Competition)  # UCL/UEL/ECL 유럽 경험
        (Manager)-[:MANAGES]->(Club)
        (TransferEvent)-[:OF]->(Player) / -[:FROM]->(Club) / -[:TO]->(Club)
-속성 보강: Player(contract_until·career_games_missed·career_spells),
-          Club(europe_coefficient), Country(fifa_rank·fifa_points)
+       (Player)-[:CAPTAIN_OF {rank, role}]->(Club)      # 주장단(위키 스쿼드 표)
+       (Player)-[:MENTIONED_WITH {articles, last}]-(Player)  # 최근 60일 같은 기사에 함께 나옴(뉴스 선수 태그)
+       (Player)-[:CALLED_UP {squad_for, caps, goals}]->(Country)  # 대표팀 소집(위키 Current squad)
+속성 보강: Player(contract_until·career_games_missed·career_spells·ovr·form·recent·xg_p90·influence·
+          captain_rank·injured_now·news_60d·active), Club(europe_coefficient), Country(fifa_rank·fifa_points)
+골·도움·출전 분·OVR 은 화면과 같은 선수 표(api/services/player_data.player_frame — FotMob·Understat 매일 반영)에서.
+
+정리(2026-10-20): MERGE 만 하던 때는 팀을 떠난 선수의 PLAYS_FOR·바뀐 감독의 MANAGES 가 남았다. 이번 실행에서
+다시 확인된 관계에 seen=실행 시각을 달고, 못 본 PLAYS_FOR·MANAGES·CAPTAIN_OF·MENTIONED_WITH·CALLED_UP 은 지운다.
+이번에 안 보인 선수 노드는 지우지 않고 active=false(이적 기록이 가리키므로).
+주간 자동 재적재: .github/workflows/kg_reload.yml
 
 접속(기본 로컬 docker): NEO4J_URI / NEO4J_USER / NEO4J_PASSWORD.
 사용:  pip install -r requirements-kg.txt && python scripts/build_kg.py
 """
 from __future__ import annotations
 
+import datetime as dt
 import json
 import os
+import sqlite3
 import sys
 from itertools import combinations
 from pathlib import Path
@@ -27,7 +38,7 @@ import pandas as pd
 from unidecode import unidecode
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "src"))
+sys.path[:0] = [str(ROOT / "src"), str(ROOT)]
 from leagues import data_path  # noqa: E402
 
 try:
@@ -238,6 +249,135 @@ def _load_reps(players: list[dict]) -> list[dict]:
     return [{"pid": p["id"], "country": p["nat"]} for p in players if p.get("nat")]
 
 
+RUN = dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")
+_API = {}
+
+
+def _live(league: str) -> dict[str, dict]:
+    """pid → 화면 선수 표 값(OVR·폼·최근 폼·골·도움·분·xG/90). 표를 못 만들면 빈 dict(CSV 값 유지)."""
+    try:
+        from api.services.player_data import player_frame  # noqa: PLC0415
+        f = player_frame(league)
+    except Exception as e:  # noqa: BLE001
+        print(f"  ! {league} 선수 표 실패({type(e).__name__}) — CSV 값으로")
+        return {}
+    out = {}
+    if f is None:
+        return out
+    for r in f.to_dict("records"):
+        pid = _pid(r.get("tm_id"), r.get("norm_key"), league)
+        if pid:
+            out[pid] = {"ovr": _num(r.get("_ovr")), "form": _num(r.get("_form")), "recent": _num(r.get("_recent")),
+                        "goals": _num(r.get("goals")), "assists": _num(r.get("assists")),
+                        "minutes": _num(r.get("minutes")), "xg": _num(r.get("xg_p90"))}
+    return out
+
+
+def _api():
+    if "m" not in _API:
+        try:
+            import api.main as m  # noqa: PLC0415
+            _API["m"] = m
+        except Exception as e:  # noqa: BLE001
+            print(f"  ! api.main 로드 실패({type(e).__name__}) — 영향력·부상 생략")
+            _API["m"] = None
+    return _API["m"]
+
+
+def _load_influence(league: str, clubs: list[str], n2p: dict) -> dict[str, float]:
+    """pid → 팀 안 영향력(0~100, NETWORK 탭 LEADERSHIP 과 같은 계산)."""
+    m = _api()
+    out: dict[str, float] = {}
+    if m is None:
+        return out
+    for club in clubs:
+        try:
+            inf = (m.network(club, league).get("leadership") or {}).get("influence") or {}
+        except Exception:  # noqa: BLE001
+            continue
+        for name, v in inf.items():
+            pid = n2p.get(_norm(name))
+            if pid:
+                out[pid] = float(v)
+    return out
+
+
+def _load_injured(league: str, n2p: dict) -> set[str]:
+    m = _api()
+    if m is None:
+        return set()
+    try:
+        t = m._injuries_table(league)
+    except Exception:  # noqa: BLE001
+        return set()
+    names = [] if t is None else t["player"].astype(str).tolist()
+    return {n2p[_norm(x)] for x in names if _norm(x) in n2p}
+
+
+def _load_captains(league: str, n2p: dict) -> list[dict]:
+    """wiki_squads → 주장단(1군만)."""
+    try:
+        df = pd.read_csv(data_path("wiki_squads", league))
+    except (OSError, ValueError):
+        return []
+    df = df[df["role_rank"].notna()]
+    if "section" in df.columns:
+        df = df[df["section"].astype(str) != "loan"]
+    rows = []
+    for r in df.to_dict("records"):
+        pid = n2p.get(_norm(r.get("player")))
+        if pid:
+            rows.append({"pid": pid, "club": str(r["squad"]), "rank": int(r["role_rank"]),
+                         "role": str(r.get("role") or "")})
+    return rows
+
+
+def _load_news_pairs(n2p_by_league: dict, days: int = 60) -> tuple[list[dict], dict[str, int]]:
+    """news.db 기사 선수 태그 → (같은 기사 선수 쌍 [{a,b,n,last}], pid → 기사 수). 최근 days 일(처음 수집일 기준)."""
+    db = ROOT / "data" / "news.db"
+    if not db.exists():
+        return [], {}
+    since = (dt.date.today() - dt.timedelta(days=days)).isoformat()
+    try:
+        con = sqlite3.connect(db)
+        rows = con.execute(
+            "SELECT ap.link, ap.player, ap.league, MAX(a.first_seen) FROM article_players ap "
+            "JOIN articles a ON a.link = ap.link WHERE a.first_seen >= ? GROUP BY ap.link, ap.player, ap.league",
+            (since,)).fetchall()
+        con.close()
+    except sqlite3.Error:
+        return [], {}
+    by_link: dict[str, set] = {}
+    last: dict[str, str] = {}
+    for link, player, league, seen in rows:
+        pid = n2p_by_league.get(league, {}).get(_norm(player))
+        if pid:
+            by_link.setdefault(link, set()).add(pid)
+            last[link] = str(seen or "")[:10]
+    pair: dict = {}
+    count: dict[str, int] = {}
+    for link, pids in by_link.items():
+        for x in pids:
+            count[x] = count.get(x, 0) + 1
+        for a, b in combinations(sorted(pids), 2):
+            n, lt = pair.get((a, b), (0, ""))
+            pair[(a, b)] = (n + 1, max(lt, last.get(link, "")))
+    return [{"a": a, "b": b, "n": n, "last": lt} for (a, b), (n, lt) in pair.items()], count
+
+
+def _load_callups(n2p_by_league: dict) -> list[dict]:
+    path = ROOT / "data" / "intl_callups.csv"
+    if not path.exists():
+        return []
+    rows = []
+    for r in pd.read_csv(path).to_dict("records"):
+        pid = n2p_by_league.get(str(r.get("our_league")), {}).get(_norm(r.get("our_player")))
+        if pid:
+            rows.append({"pid": pid, "nation": str(r["nation"]), "sf": _clean(r.get("squad_for")),
+                         "caps": _num(r.get("caps")), "goals": _num(r.get("goals"))})
+    return rows
+
+
 def _batched(session, cypher, rows, batch=500, **params):
     for i in range(0, len(rows), batch):
         session.run(cypher, rows=rows[i:i + batch], **params)
@@ -255,13 +395,29 @@ def main() -> int:
         for _, comp in EURO_COMPS:
             s.run("MERGE (:Competition {name:$n})", n=comp)
 
-        tot = {"tm": 0, "rep": 0, "comp": 0, "inj": 0}
+        tot = {"tm": 0, "rep": 0, "comp": 0, "inj": 0, "cap": 0}
+        n2p_by_league: dict[str, dict] = {}
         for lg, (name, country, level) in LEAGUE_META.items():
             s.run("MERGE (l:League {key:$k}) SET l.name=$n, l.level=$lv "
                   "MERGE (co:Country {name:$c}) MERGE (l)-[:IN_COUNTRY]->(co)",
                   k=lg, n=name, c=country, lv=level)
 
             players, n2p = _players_and_map(lg)
+            n2p_by_league[lg] = n2p
+            live = _live(lg)
+            clubs = sorted({x["club"] for x in players if x["club"]})
+            infl = _load_influence(lg, clubs, n2p)
+            hurt = _load_injured(lg, n2p)
+            caps = _load_captains(lg, n2p)
+            cap_rank = {c["pid"]: c["rank"] for c in caps}
+            for x in players:                              # 화면과 같은 최신 값(FotMob·Understat 매일)
+                lv = live.get(x["id"], {})
+                for k in ("goals", "assists", "minutes"):
+                    if lv.get(k) is not None:
+                        x[k] = lv[k]
+                x.update({"ovr": lv.get("ovr"), "form": lv.get("form"), "recent": lv.get("recent"),
+                          "xg": lv.get("xg"), "inf": infl.get(x["id"]), "inj": x["id"] in hurt,
+                          "cap": cap_rank.get(x["id"])})
             _batched(s,
                      "UNWIND $rows AS r MERGE (c:Club {name:r.club}) "
                      "MERGE (l:League {key:$key}) MERGE (c)-[:COMPETES_IN]->(l) "
@@ -269,12 +425,18 @@ def main() -> int:
                      "  SET p.name=r.name, p.pos=r.pos, p.pos_detail=r.pos_detail, p.age=r.age, p.nationality=r.nat, "
                      "      p.market_value_eur=r.mv, p.ss_rating=r.ss, p.goals=r.goals, "
                      "      p.assists=r.assists, p.minutes=r.minutes, p.contract_until=r.contract_until, "
-                     "      p.league=$key "
-                     "MERGE (p)-[:PLAYS_FOR]->(c)", players, key=lg)
+                     "      p.league=$key, p.ovr=r.ovr, p.form=r.form, p.recent=r.recent, p.xg_p90=r.xg, "
+                     "      p.influence=r.inf, p.injured_now=r.inj, p.captain_rank=r.cap, p.active=true, p.seen=$run "
+                     "MERGE (p)-[pf:PLAYS_FOR]->(c) SET pf.seen=$run", players, key=lg, run=RUN)
 
             _batched(s, "UNWIND $rows AS r MERGE (m:Manager {name:r.name}) "
                         "SET m.nationality=r.nationality, m.formation=r.formation "
-                        "MERGE (c:Club {name:r.club}) MERGE (m)-[:MANAGES]->(c)", _load_managers(lg))
+                        "MERGE (c:Club {name:r.club}) MERGE (m)-[mg:MANAGES]->(c) SET mg.seen=$run",
+                     _load_managers(lg), run=RUN)
+
+            _batched(s, "UNWIND $rows AS r MATCH (p:Player {id:r.pid}) MATCH (c:Club {name:r.club}) "
+                        "MERGE (p)-[k:CAPTAIN_OF]->(c) SET k.rank=r.rank, k.role=r.role, k.seen=$run", caps, run=RUN)
+            tot["cap"] += len(caps)
 
             _batched(s, "UNWIND $rows AS r MERGE (t:TransferEvent {id:r.id}) "
                         "  SET t.player=r.player, t.fee_eur=r.fee_eur, t.fee_text=r.fee_text, "
@@ -306,6 +468,27 @@ def main() -> int:
             tot["comp"] += len(comp); tot["inj"] += len(inj)
             print(f"  {lg:14} players={len(players):4} teammates={len(mates):5} "
                   f"reps={len(reps):4} euro={len(comp):4} inj={len(inj):4}")
+
+        # 리그 걸친 관계: 기사 동시 언급(최근 60일), 대표팀 소집
+        pairs, ncount = _load_news_pairs(n2p_by_league)
+        _batched(s, "UNWIND $rows AS r MATCH (a:Player {id:r.a}), (b:Player {id:r.b}) "
+                    "MERGE (a)-[m:MENTIONED_WITH]-(b) SET m.articles=r.n, m.last=r.last, m.seen=$run", pairs, run=RUN)
+        _batched(s, "UNWIND $rows AS r MATCH (p:Player {id:r.pid}) SET p.news_60d=r.n",
+                 [{"pid": k, "n": v} for k, v in ncount.items()])
+        calls = _load_callups(n2p_by_league)
+        _batched(s, "UNWIND $rows AS r MATCH (p:Player {id:r.pid}) MERGE (co:Country {name:r.nation}) "
+                    "MERGE (p)-[c:CALLED_UP]->(co) SET c.squad_for=r.sf, c.caps=r.caps, c.goals=r.goals, c.seen=$run",
+                 calls, run=RUN)
+        print(f"  기사 동시 언급 {len(pairs)}쌍 · 대표팀 소집 {len(calls)}명 · 주장단 {tot['cap']}명")
+
+        # 이번 실행에서 다시 확인 안 된 관계 정리 — 떠난 선수의 소속·바뀐 감독·지난 주장·옛 소집·오래된 동시 언급
+        for rel in ("PLAYS_FOR", "MANAGES", "CAPTAIN_OF", "MENTIONED_WITH", "CALLED_UP"):
+            n = s.run(f"MATCH ()-[r:{rel}]-() WHERE coalesce(r.seen, '') <> $run "
+                      "WITH DISTINCT r DELETE r RETURN count(r) AS n", run=RUN).single()["n"]
+            print(f"  정리 {rel}: {n}")
+        gone = s.run("MATCH (p:Player) WHERE coalesce(p.seen, '') <> $run SET p.active=false RETURN count(p) AS n",
+                     run=RUN).single()["n"]
+        print(f"  이번에 안 보인 선수 active=false: {gone}")
 
         # 글로벌 보강: 클럽 UEFA 계수, 국가 FIFA 랭킹
         _enrich_club_coef(s)

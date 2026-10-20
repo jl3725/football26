@@ -25,7 +25,8 @@ NEO4J_AUTH = (os.getenv("NEO4J_USER") or os.getenv("NEO4J_USERNAME") or "neo4j",
 
 # GraphRAG용 KG 스키마(라이브 introspect 기반). LLM이 이 라벨/관계/속성만 써서 Cypher 작성.
 _KG_SCHEMA = """노드:
-  Player {name, pos, pos_detail, age, nationality, league, market_value_eur, minutes, goals, assists, ss_rating, contract_until, career_games_missed}
+  Player {name, pos, pos_detail, age, nationality, league, market_value_eur, minutes, goals, assists, ss_rating, contract_until, career_games_missed,
+          ovr, form, recent, xg_p90, influence(팀 안 영향력 0~100), captain_rank, injured_now, news_60d(최근 60일 기사 수), active(현재 우리 리그 소속)}
   Club {name, spend_tier, squad_value_eur, net_spend_eur, max_fee_paid_eur, price_ceiling_eur, recruit_profile, recruit_avg_age, europe_coefficient}
   League {key, name, level}  (key: EPL/LaLiga/SerieA/Bundesliga/Ligue1/LigaPortugal/Eredivisie/BelgianProLeague)
   Country {name, fifa_rank, fifa_points}
@@ -43,7 +44,10 @@ _KG_SCHEMA = """노드:
   (Manager)-[:MANAGES]->(Club)
   (Manager)-[:EMPHASIZES]->(Role)
   (TransferEvent)-[:OF]->(Player), (TransferEvent)-[:FROM]->(Club), (TransferEvent)-[:TO]->(Club)
-  (League)-[:IN_COUNTRY]->(Country)"""
+  (League)-[:IN_COUNTRY]->(Country)
+  (Player)-[:CAPTAIN_OF {rank, role}]->(Club)          // 주장단(1=주장, 2=부주장 …)
+  (Player)-[:MENTIONED_WITH {articles, last}]-(Player) // 최근 60일 같은 기사에 함께 나옴
+  (Player)-[:CALLED_UP {squad_for, caps, goals}]->(Country)  // 대표팀 소집(가장 최근 명단)"""
 
 # graph_query Cypher 작성 가이드 + few-shot(정확도↑). 라이브 값 기반.
 _CYPHER_TIPS = """graph_query Cypher 팁:
@@ -51,9 +55,14 @@ _CYPHER_TIPS = """graph_query Cypher 팁:
 - Competition.name = 'UEFA Champions League'/'UEFA Europa League'/'UEFA Conference League' → 부분일치 CONTAINS 'Champions'.
 - League.key = EPL/LaLiga/SerieA/Bundesliga/Ligue1/LigaPortugal/Eredivisie/BelgianProLeague. contract_until 형식 'YYYY-MM-DD'(계약임박=CONTAINS '{EXPIRY_YEAR}').
 - 이름 애매하면 WHERE x.name CONTAINS '...'. ORDER BY 속성엔 WHERE 속성 IS NOT NULL(NULL이 DESC 최상단 오는 것 방지). 반드시 LIMIT.
+- 지금 소속 선수만: WHERE p.active = true (떠난 선수 노드는 active=false 로 남음). 골·도움·OVR 은 매주 화요일 기준.
 예시:
   [루머] MATCH (p:Player)-[r:RUMORED_WITH]->(c:Club {name:'Arsenal'}) WHERE r.probability IS NOT NULL RETURN p.name, p.pos_detail, r.probability ORDER BY r.probability DESC LIMIT 15
   [챔스 U23 풀백] MATCH (p:Player)-[:PLAYED_IN]->(comp:Competition) WHERE comp.name CONTAINS 'Champions' AND p.age<=23 AND p.pos_detail IN ['Right-Back','Left-Back'] RETURN DISTINCT p.name,p.age,p.pos_detail,p.league,p.ss_rating ORDER BY p.ss_rating DESC LIMIT 15
+  [주장단] MATCH (p:Player)-[k:CAPTAIN_OF]->(:Club {name:'Arsenal'}) RETURN p.name, k.role ORDER BY k.rank LIMIT 6
+  [영향력] MATCH (p:Player)-[:PLAYS_FOR]->(:Club {name:'Arsenal'}) WHERE p.influence IS NOT NULL RETURN p.name, p.influence ORDER BY p.influence DESC LIMIT 5
+  [같이 기사에] MATCH (:Player {name:'Declan Rice'})-[m:MENTIONED_WITH]-(q:Player) RETURN q.name, m.articles ORDER BY m.articles DESC LIMIT 10
+  [대표팀 차출] MATCH (p:Player)-[c:CALLED_UP]->(co:Country) MATCH (p)-[:PLAYS_FOR]->(:Club {name:'Arsenal'}) RETURN p.name, co.name, c.caps LIMIT 20
   [이적경로 Ligue1→EPL] MATCH (fr:Club)-[:COMPETES_IN]->(:League {key:'Ligue1'}) MATCH (fr)<-[:FROM]-(t:TransferEvent)-[:TO]->(to:Club)-[:COMPETES_IN]->(:League {key:'EPL'}) MATCH (t)-[:OF]->(p:Player) RETURN p.name,fr.name,to.name,t.fee_text LIMIT 15
   [국대 동료] MATCH (a:Player {name:'Bukayo Saka'})-[:REPRESENTS]->(ctry)<-[:REPRESENTS]-(b:Player) WHERE a<>b RETURN b.name,b.pos_detail,b.league LIMIT 15
   [팀동료 중 루머] MATCH (a:Player {name:'Vitinha'})-[:TEAMMATE_OF]-(b:Player)-[:RUMORED_WITH]->(c:Club) RETURN DISTINCT b.name,c.name LIMIT 15
