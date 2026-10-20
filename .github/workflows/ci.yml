@@ -47,6 +47,10 @@ jobs:
         # 평점 공식을 바꿔 사용자가 정한 기대치(Raya ≥ Verbruggen, Costa ≤ 88 등)를 깨면 실패
         run: python scripts/eval_ratings.py --tag ci --check --no-snapshot
 
+      - name: Expert expectations (영향력·주장·포지션·유사 선수 — golden_expectations.csv)
+        # 2026-10-19~20 사용자 지적(야말 메인 주장, 마갈량이스 영향력 1위, 흐비차 CM, 사카~만잠비, 홀란 6골)이 다시 생기면 실패
+        run: python scripts/eval_expectations.py --check
+
   frontend:
     runs-on: ubuntu-latest
     defaults:

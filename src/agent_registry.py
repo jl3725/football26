@@ -128,8 +128,8 @@ AGENTS: tuple[Agent, ...] = (
           ), extras=("경기 리뷰 — /api/review, ESPN 경기 상세로 규칙 기반 생성(요청 시)",)),
     Agent("watchdog", "WATCHDOG", "감시·검증", "OVR·평점 자체 검증, 운영 점검(문제 시 GitHub 이슈)",
           ("모든 에이전트 결과",), (
-              Feed("audits", "OVR·평점 검증", ("ovr_consistency", "rating_audit"), ("daily_data",), "매일 13:30 KST", 36,
-                   ("eval/ovr_audit.json", "eval/rating_audit.json")),
+              Feed("audits", "OVR·평점·전문가 기대치 검증", ("ovr_consistency", "rating_audit", "expectations"), ("daily_data",),
+                   "매일 13:30 KST", 36, ("eval/ovr_audit.json", "eval/rating_audit.json", "eval/expectations_audit.json")),
           ), extras=("운영 점검 — watchdog.yml 매일 17:00 KST, 결과는 data/ops/watchdog.json",)),
     Agent("serving", "SERVING", "서빙", "홈 스냅샷, 외부 저장소 깨우기, 그래프·벡터 주간 재적재",
           ("통합 DB",), (

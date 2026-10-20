@@ -159,6 +159,9 @@ jobs:
       - name: OVR consistency (화면별 OVR 일치 검증)
         run: bash scripts/ci_try.sh "ovr_consistency" python scripts/check_ovr_consistency.py --detail 3
 
+      - name: Expert expectations (데이터가 바뀌어 사용자 기대치가 깨지면 watchdog 이 알림)
+        run: bash scripts/ci_try.sh "expectations" python scripts/eval_expectations.py --out data/eval/expectations_audit.json
+
       - name: Validate core data contracts
         run: python scripts/validate_data.py --no-optional   # 품질 게이트 — 실패 시 커밋 차단
 
