@@ -144,6 +144,8 @@ def main(argv=None) -> int:
     import news_classify   # 종류(이적·부상·경기·인터뷰·구단 발표)·이적 단계·기자 — 규칙(전부) + AI(최근 이적 기사 일부)
     t0 = time.monotonic()
     print("[news-classify]", news_classify.run(), f"({time.monotonic() - t0:.0f}초)")
+    import news_reliability   # 매체·기자 적중률 — 이적 루머(이적 기사 단계) vs 실제 이적(TM), 닫힌 시장만 판정
+    news_reliability.main()
     backfill(BACKFILL_PER_RUN)
     print("번역률(2일):", translation_stats(_days_ago(2)))
     return 0

@@ -308,7 +308,12 @@ export type NewsStory = { id: string; kind: string; stage: string; title: string
   sources: string[]; journalists: string[]; first: string; last: string; links: string[] };
 export type News = { team: string; color: string; articles: Article[]; sparse: boolean;
   ai?: { lines: string[]; at: string; n?: number } | null;   // 최근 48시간 AI 요약 1~3줄
-  stories?: NewsStory[]; kinds?: Record<string, number>; sources?: { name: string; n: number }[] };
+  stories?: NewsStory[]; kinds?: Record<string, number>; sources?: { name: string; n: number }[];
+  track?: NewsTrack | null };
+// 매체·기자 적중률(src/news_reliability.py) — 이적 루머 vs 실제 이적(닫힌 시장), 단계별 실제 성사율
+export type NewsTrackRow = { n: number; hits: number; rate: number; score: number; few: boolean };
+export type NewsTrack = { outlets: Record<string, NewsTrackRow>; journalists: Record<string, NewsTrackRow>;
+  stages: Record<string, { hits: number; n: number; rate: number }>; all: { n: number; hits: number } | null };
 
 export type AuditItem = { player: string; fee_text: string; fee_eur: number; pos: string; minutes: number; goals: number; assists: number; verdict: string; tone: string; photo: string };
 export type ManagerEvo = { name: string; style: string; formation: string; focus: string; tactics?: string; appointed: string; previous?: { name: string; style: string; formation: string } };

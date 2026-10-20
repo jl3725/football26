@@ -59,7 +59,8 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/news.db data/ops/runs/ data/ai/
           # Google News 검색용 현지 클럽 표기(위키 언어 간 링크, 7일 캐시) · AI 가 찾은 기자 목록(src/news_classify.py)
-          for f in data/club_local_names.json data/news_journalists.csv; do [ -f "$f" ] && git add "$f"; done
+          # 매체·기자 적중률(src/news_reliability.py — 루머 vs 실제 이적)
+          for f in data/club_local_names.json data/news_journalists.csv data/news_reliability.csv data/news_claims.csv; do [ -f "$f" ] && git add "$f"; done
           if git diff --staged --quiet; then
             echo "변경 없음 — 커밋 생략"
           else

@@ -2361,10 +2361,39 @@ def news(team: str, league: str = ACTIVE_LEAGUE):
     ai = {"lines": ai["lines"], "at": ai["at"], "n": ai.get("n")} if ai and ai.get("lines") else None
     return {"team": team, "color": tm.team_color(team), "articles": out, "sparse": len(out) < 3, "ai": ai,
             "stories": stories, "kinds": kinds,
-            "sources": [{"name": k, "n": v} for k, v in sorted(srcs.items(), key=lambda x: -x[1]) if k]}
+            "sources": [{"name": k, "n": v} for k, v in sorted(srcs.items(), key=lambda x: -x[1]) if k],
+            "track": _news_track() or None}
 
 
 NEWS_MAX = 48
+_TRACK: dict = {}
+
+
+def _news_track() -> dict:
+    """매체·기자 적중률(src/news_reliability.py → data/news_reliability.csv) — {outlets, journalists, stages, all}.
+    stages = 단계별 실제 성사율(지난 닫힌 이적시장), 표본 MIN_N 미만은 few."""
+    from leagues import DATA_DIR  # noqa: PLC0415
+    p = DATA_DIR / "news_reliability.csv"
+    if not p.exists():
+        return {}
+    key = p.stat().st_mtime
+    if _TRACK.get("key") == key:
+        return _TRACK["val"]
+    r = pd.read_csv(p)
+    pick = lambda k: {str(x.name): {"n": int(x.n), "hits": int(x.hits), "rate": float(x.rate), "score": float(x.score),  # noqa: E731
+                                    "few": bool(x.few)} for x in r[r["kind"] == k].itertuples()}
+    stages: dict = {}
+    allr = r[r["kind"] == "all"]
+    if len(allr):
+        for part in str(allr["by_stage"].iloc[0]).split():
+            st, _, frac = part.partition(":")
+            h, _, n = frac.partition("/")
+            if n.isdigit() and int(n):
+                stages[st] = {"hits": int(h), "n": int(n), "rate": round(int(h) / int(n), 3)}
+    val = {"outlets": pick("outlet"), "journalists": pick("journalist"), "stages": stages,
+           "all": {"n": int(allr["n"].iloc[0]), "hits": int(allr["hits"].iloc[0])} if len(allr) else None}
+    _TRACK.update(key=key, val=val)
+    return val
 
 
 def _news_side_table(sql: str, links: list[str]) -> list[tuple]:
