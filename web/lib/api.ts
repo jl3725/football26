@@ -300,7 +300,8 @@ export type Article = {
   source: string; published: string; image: string; link: string; is_new: boolean;
   players?: string[];   // 기사에 나온 이 팀 선수(뉴스 선수 태그)
 };
-export type News = { team: string; color: string; articles: Article[]; sparse: boolean };
+export type News = { team: string; color: string; articles: Article[]; sparse: boolean;
+  ai?: { lines: string[]; at: string; n?: number } | null };   // 최근 48시간 AI 요약 1~3줄
 
 export type AuditItem = { player: string; fee_text: string; fee_eur: number; pos: string; minutes: number; goals: number; assists: number; verdict: string; tone: string; photo: string };
 export type ManagerEvo = { name: string; style: string; formation: string; focus: string; tactics?: string; appointed: string; previous?: { name: string; style: string; formation: string } };
@@ -627,7 +628,8 @@ export type MatchReview = { event_id: string; comp: string; date: string; state:
   score: { home: number; away: number }; headline: string; lines: string[]; goals: ReviewGoal[]; cards: ReviewCard[]; pens: ReviewPen[];
   stats: ReviewStat[]; star: { player: string; side: ReviewSide; goals: number; assists: number } | null;
   predictions: { source: string; pick: string; p: number; hit: boolean }[]; venue: string; attendance: number | null;
-  ht: { home: number; away: number } | null; home: ReviewTeam; away: ReviewTeam };
+  ht: { home: number; away: number } | null; home: ReviewTeam; away: ReviewTeam;
+  ai?: { text: string; at: string } | null };   // AI 경기 리포트(배치 생성·검증 통과분, 종료 경기만)
 export const getReview = (eventId: string, comp = "") =>
   j<MatchReview>(`/api/review/${encodeURIComponent(eventId)}${comp ? `?comp=${encodeURIComponent(comp)}` : ""}`);
 // 팀 시즌 현황(/api/team-season) — 순위·승점 흐름(1위·4위 비교)·최근 5경기(전 대회)·시즌 프로필(지표별 리그 순위·근거)
@@ -707,7 +709,7 @@ export type OpsFailure = { t: string; runner: string; step: string; league: stri
 export type OpsStatus = {
   generated: string; counts: Record<OpsState, number>; first_entry: string | null; agents: OpsAgent[];
   recent_failures: OpsFailure[]; unregistered_steps: string[];
-  watchdog: { checked: string; results: Record<string, string[]> } | null;
+  watchdog: { checked: string; results: Record<string, string[]>; ai_cause?: string } | null;
 };
 export const getOpsStatus = () => j<OpsStatus>("/api/ops/status");
 
@@ -741,5 +743,6 @@ export type Digest = {
   news: { player: string; squad: string; articles: number; ovr: number | null }[];
   rumors: { n: number; clubs: { club: string; n: number }[]; top: { player: string; from: string; to: string; value_eur: number | null }[] };
   intl?: IntlWindow & { days_to: number };
+  summary?: { text: string; at: string; until: string } | null;   // AI 서술 한 문단(daily_data)
 };
 export const getDigest = (league: string = _league) => j<Digest>(`/api/digest?league=${encodeURIComponent(league)}`);

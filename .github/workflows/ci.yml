@@ -65,6 +65,10 @@ jobs:
         # 2026-10-19~20 사용자 지적(야말 메인 주장, 마갈량이스 영향력 1위, 흐비차 CM, 사카~만잠비, 홀란 6골)이 다시 생기면 실패
         run: python scripts/eval_expectations.py --check
 
+      - name: Ask Scout questions (무료 규칙 라우터 — scout_questions.csv)
+        # 한글·영문 질문 40개의 의도·팀·리그·포지션·선수. 라우터·한글 이름 사전·선수 표가 바뀌어 질문을 잘못 읽으면 실패
+        run: python scripts/eval_scout.py --check
+
   frontend:
     runs-on: ubuntu-latest
     defaults:

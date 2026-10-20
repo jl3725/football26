@@ -384,15 +384,65 @@ def _body(res: dict[str, list[str]], failing: list[str]) -> str:
     return "\n".join(lines)
 
 
-def write_result(res: dict[str, list[str]]) -> None:
+CAUSE_PROMPT = """운영 점검에서 실패한 항목별로, 문제 문구(problems)와 관련된 최근 48시간 실패 단계 기록(related_failed_steps)이다.
+가장 그럴듯한 원인과 먼저 확인할 것을 한국어 2~3줄, 각 줄 '- '로 시작하는 목록으로 써라.
+- 각 점검은 그 점검의 related_failed_steps 만 근거로 써라. 다른 점검의 기록을 엮지 마라.
+- related_failed_steps 가 비어 있으면 '원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인)'처럼 써라.
+- 줄마다 근거가 된 점검·단계 이름을 괄호로 붙여라. 확실하지 않으면 '추정'이라고 써라.
+- 숫자는 데이터에 있는 것만. 데이터에 없는 원인을 단정하지 마라.
+데이터:
+{facts}"""
+
+
+def ai_cause(res: dict[str, list[str]]) -> str:
+    """실패가 있으면 Gemini 무료 등급으로 원인 추정 2~3줄(참고용, src/llm.py — 하루 4회 한도·숫자 대조).
+    키가 없거나 숫자가 원자료와 안 맞으면 빈 문자열 — 이슈는 규칙 기반 본문 그대로."""
+    failing = [k for k, v in res.items() if v]
+    try:
+        import llm  # noqa: PLC0415
+        import run_ledger  # noqa: PLC0415
+    except ImportError:
+        return ""
+    if not failing or not llm.available():
+        return ""
+    since = (NOW - dt.timedelta(hours=48)).isoformat()
+    fails = [e for e in run_ledger.read_all() if not e.get("ok") and str(e.get("t", "")) >= since]
+    try:
+        import agent_registry as ar  # noqa: PLC0415
+        agents = ar.AGENTS
+    except ImportError:
+        agents = ()
+    facts = {}
+    for k in failing:
+        # 관련 기록은 코드가 고른다 — 점검 문구에 나온 워크플로·단계 이름, 에이전트면 그 피드의 단계·워크플로
+        text = " ".join([k, *res[k]]).lower()
+        names = set(text.replace(":", " ").replace(",", " ").split())
+        for a in agents:
+            if a.en.lower() in text or f"{a.key} " in text:
+                names |= {s.lower() for f in a.feeds for s in (*f.steps, *f.runners)}
+        rel = [e for e in fails if str(e.get("runner", "")).lower() in names or str(e.get("step", "")).lower() in names]
+        facts[k] = {"problems": res[k][:6],
+                    "related_failed_steps": [{x: e.get(x) for x in ("t", "runner", "step", "league", "code", "note") if e.get(x)}
+                                             for e in rel[-8:]]}
+    llm.start("watchdog", 4)
+    try:
+        text = (llm.generate(CAUSE_PROMPT.format(facts=json.dumps(facts, ensure_ascii=False)), temperature=0.2) or "").strip()
+    finally:
+        llm.finish()
+    if not text or llm.unverified_numbers(text, facts):      # 이름은 일반 용어(cron 등)가 섞여 숫자만 대조
+        return ""
+    return "\n".join(ln for ln in text.splitlines() if ln.strip())[:1200]
+
+
+def write_result(res: dict[str, list[str]], cause: str = "") -> None:
     """DATA STATUS 화면용 — 점검별 결과를 data/ops/watchdog.json 에(워크플로가 커밋)."""
     out = ROOT / "data" / "ops" / "watchdog.json"
     out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(json.dumps({"checked": NOW.isoformat(timespec="seconds"), "results": res},
-                              ensure_ascii=False, indent=1), encoding="utf-8")
+    out.write_text(json.dumps({"checked": NOW.isoformat(timespec="seconds"), "results": res,
+                               **({"ai_cause": cause} if cause else {})}, ensure_ascii=False, indent=1), encoding="utf-8")
 
 
-def file_issue(res: dict[str, list[str]]) -> None:
+def file_issue(res: dict[str, list[str]], cause: str = "") -> None:
     failing = [k for k, v in res.items() if v]
     open_ = gh("issues", params={"labels": LABEL, "state": "open", "per_page": 5})
     issue = open_[0] if open_ else None
@@ -403,6 +453,8 @@ def file_issue(res: dict[str, list[str]]) -> None:
             print(f"이슈 #{issue['number']} 닫음 — 전부 정상")
         return
     body = _body(res, failing)
+    if cause:
+        body += "\n\n### AI 추정 원인 (참고용)\n" + cause
     if issue is None:
         try:
             gh("labels", "POST", json={"name": LABEL, "color": "d93f0b", "description": "운영 감시 자동 이슈"})
@@ -430,8 +482,11 @@ def main(argv: list[str] | None = None) -> int:
         for p in probs:
             print(f"        {p}")
     if "--issue" in args:
-        write_result(res)
-        file_issue(res)
+        cause = ai_cause(res)
+        if cause:
+            print("AI 추정 원인:\n" + cause)
+        write_result(res, cause)
+        file_issue(res, cause)
         return 0                                          # 알림은 이슈로 — 실행까지 빨갛게 해 이중 알림 내지 않음
     return 1 if any(res.values()) else 0
 

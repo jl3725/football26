@@ -35,6 +35,12 @@ jobs:
         # ci_try — 실패도 실행 원장(data/ops/runs/daily_news.jsonl)에 남기고, 끝의 ci_report 가 빨간불로 알린다
         run: bash scripts/ci_try.sh "news" python scripts/fetch_news_daily.py --all   # 지원 8개 리그
 
+      # 팀 뉴스 탭 맨 위 TODAY'S BRIEF — 최근 48시간 기사 1~3줄(새 기사가 생긴 팀만, 팀당 6시간에 한 번, 10팀씩 묶어 요청)
+      - name: AI team news brief (팀 뉴스 요약)
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: bash scripts/ci_try.sh "news_digest" python src/ai_notes.py news
+
       - name: Publish collection summary
         if: always()
         run: |
@@ -47,7 +53,7 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/news.db data/ops/runs/
+          git add data/news.db data/ops/runs/ data/ai/
           if git diff --staged --quiet; then
             echo "변경 없음 — 커밋 생략"
           else

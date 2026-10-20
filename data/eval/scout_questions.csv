@@ -1,0 +1,41 @@
+q,team_ctx,league_ctx,intent,team,league,role,player,note
+사카 최근 뉴스,,EPL,news,,,,Bukayo Saka,한글 성
+Saka news,,EPL,news,,,,Bukayo Saka,영문 성
+외데고르 뉴스,,EPL,news,,,,Martin Ødegaard,한글 성(ø)
+케인 소식,,EPL,news,,,,Harry Kane,리그 밖 질문(Bundesliga)
+살라 기사,,EPL,news,,,,-,우리 리그에 없는 선수 — 동명이인(Mo Salah)으로 잘못 잇지 않기
+마르세유 소식,,EPL,news,Marseille,Ligue1,,,클럽 뉴스
+아스날 다음 경기 어때?,,EPL,team_now,Arsenal,EPL,,,
+Arsenal next match,,EPL,team_now,Arsenal,EPL,,,영문
+맨시티 부상자 누구야,,EPL,team_now,Manchester City,EPL,,,애칭
+맨유 다음경기,,EPL,team_now,Manchester Utd,EPL,,,붙여 쓰기
+레알 마드리드 A매치 차출,,EPL,team_now,Real Madrid,LaLiga,,,
+바르셀로나 결장 선수,,EPL,team_now,Barcelona,LaLiga,,,
+뮌헨 다음 경기 예측,,EPL,team_now,Bayern Munich,Bundesliga,,,
+Bayern injuries,,EPL,team_now,Bayern Munich,Bundesliga,,,영문 첫 낱말
+PSG 최근 결과,,EPL,team_now,PSG,Ligue1,,,
+나폴리 다음 경기,,EPL,team_now,Napoli,SerieA,,,
+벤피카 다음 경기,,EPL,team_now,Benfica,LigaPortugal,,,
+아약스 부상,,EPL,team_now,Ajax,Eredivisie,,,
+리버풀 주장 누구,,EPL,lead,Liverpool,EPL,,,
+아스날 영향력 높은 선수,,EPL,lead,Arsenal,EPL,,,
+Who is Liverpool's captain?,,EPL,lead,Liverpool,EPL,,,소유격·물음표
+Who leads Real Madrid?,,EPL,lead,Real Madrid,LaLiga,,,
+인테르 주장단,,EPL,lead,Inter,SerieA,,,
+포르투 주장,,EPL,lead,Porto,LigaPortugal,,,
+토트넘 왼쪽 윙 추천,,EPL,recommend,Tottenham Hotspur,EPL,Left Winger,,
+첼시 6번 영입 추천해줘,,EPL,recommend,Chelsea,EPL,Defensive Midfield,,
+도르트문트 수미 보강 추천,,EPL,recommend,Dortmund,Bundesliga,Defensive Midfield,,
+Chelsea recommend left winger,,EPL,recommend,Chelsea,EPL,Left Winger,,영문 포지션
+홀란드랑 비슷한 선수,,EPL,similar,,,,Erling Haaland,표기 변형(홀란)
+야말 같은 스타일 선수 찾아줘,,EPL,similar,,,,Lamine Yamal,
+음바페랑 비슷한 선수,,EPL,similar,,,,Kylian Mbappé,같은 성 둘(OVR 큰 쪽)
+라이스 아스날에 맞아?,,EPL,fit,Arsenal,EPL,,Declan Rice,'맞아'를 영문 이름(Maja)으로 잡지 않기
+아스날 어떤 팀이야 성향,,EPL,identity,Arsenal,EPL,,,
+라리가 이번 주 요약,Arsenal,EPL,week,-,LaLiga,,,리그 질문이면 보던 팀 무시
+분데스리가 요즘 폼 오른 선수,,EPL,week,,Bundesliga,,,
+세리에 이번주 어땠어,,EPL,week,,SerieA,,,
+프리미어리그 이번 주 급등,,LaLiga,week,,EPL,,,
+에레디비시 요즘,,EPL,week,,Eredivisie,,,
+리그앙 이번 주,,EPL,week,,Ligue1,,,
+클럽 브뤼헤 이번 주,,EPL,week,Club Brugge,BelgianProLeague,,,표기 변형(브뤼허)

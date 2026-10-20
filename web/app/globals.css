@@ -4237,3 +4237,13 @@ LIGA’처럼 글자가 접히던 것) — 넘치면 가로로 넘긴다 */
 .wd-clubs { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 2px; }
 .wd-clubs span { font-size: 10.5px; padding: 1px 7px; border-radius: 6px; background: var(--panel-2); }
 .wd-empty { font-size: 12px; color: var(--muted); margin: 0; }
+
+/* AI 요약(경기 리뷰·팀 뉴스·WEEKLY DIGEST 공용, components/AiNote.tsx) */
+.ai-note { border: 1px solid var(--line); border-left: 3px solid var(--brand); border-radius: 10px; background: var(--overlay); padding: 12px 14px; margin: 0 0 14px; }
+.ai-note-h { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
+.ai-note-h b { font: 700 11px/1 var(--font-num); letter-spacing: 0.14em; color: var(--brand); }
+.ai-note-h span { font-size: 11px; color: var(--muted-2); }
+.ai-note p { font-size: 14px; line-height: 1.6; color: var(--txt); margin: 0; word-break: keep-all; overflow-wrap: anywhere; }
+.ai-note ul { list-style: none; display: flex; flex-direction: column; gap: 6px; margin: 0; padding: 0; }
+.ai-note li { position: relative; padding-left: 14px; font-size: 14px; line-height: 1.5; color: var(--txt); word-break: keep-all; overflow-wrap: anywhere; }
+.ai-note li::before { content: ""; position: absolute; left: 1px; top: 0.6em; width: 5px; height: 5px; border-radius: 50%; background: var(--muted); }

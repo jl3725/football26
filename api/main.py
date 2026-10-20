@@ -2192,7 +2192,11 @@ def news(team: str, league: str = ACTIVE_LEAGUE):
             "link": str(r.get("link") or ""),
             "is_new": bool(fs and fs >= today),
         })
-    return {"team": team, "color": tm.team_color(team), "articles": out, "sparse": len(out) < 3}
+    # 오늘의 요약(AI) — 최근 48시간 기사 1~3줄(src/ai_notes.py news, 2시간마다·검증 통과 줄만). 3일 지나면 내림
+    import ai_notes  # noqa: PLC0415
+    ai = ai_notes.load("news").get("teams", {}).get(team)
+    ai = {"lines": ai["lines"], "at": ai["at"], "n": ai.get("n")} if ai and ai.get("lines") else None
+    return {"team": team, "color": tm.team_color(team), "articles": out, "sparse": len(out) < 3, "ai": ai}
 
 
 @app.get("/api/news-player/{player}")
@@ -5398,7 +5402,7 @@ def match_review_api(event_id: str, comp: str = ""):
     import match_review as mrv  # noqa: PLC0415
     hit = _REVIEW_CACHE.get(event_id)
     if hit and _t.time() < hit[0]:
-        return hit[1]
+        return _with_ai_report(hit[1])
     src = _fx_sources()
     home = away = lg_h = lg_a = date = None
     for lg, df in src["rows"].items():
@@ -5443,7 +5447,14 @@ def match_review_api(event_id: str, comp: str = ""):
                "home": {"team": home, "league": lg_h, "logo": logo(home, "home"), "color": tm.team_color(home)},
                "away": {"team": away, "league": lg_a, "logo": logo(away, "away"), "color": tm.team_color(away)}})
     _REVIEW_CACHE[event_id] = (_t.time() + (86400 if p["state"] == "post" else 60), rv)
-    return rv
+    return _with_ai_report(rv)
+
+
+def _with_ai_report(rv: dict) -> dict:
+    """종료 경기면 AI 경기 리포트(src/ai_notes.py match — 배치에서 만들고 숫자·이름 검증을 통과한 것만)를 붙인다."""
+    import ai_notes  # noqa: PLC0415
+    rep = ai_notes.load("match").get("reports", {}).get(str(rv.get("event_id"))) if rv.get("state") == "post" else None
+    return {**rv, "ai": {"text": rep["text"], "at": rep.get("at")} if rep else None}
 
 
 @app.get("/api/digest")
@@ -5537,6 +5548,12 @@ def digest(league: str = ACTIVE_LEAGUE, days: int = 7):
             out["intl"] = {**nxt, "days_to": (datetime.date.fromisoformat(nxt["start"]) - today).days}
     except Exception:  # noqa: BLE001
         pass
+
+    # 6) 서술 한 문단(AI) — 위 데이터로 daily_data 가 만든 것(src/ai_notes.py digest, 검증 통과분). 이틀 넘은 건 내림
+    import ai_notes  # noqa: PLC0415
+    s = ai_notes.load("digest").get(league)
+    out["summary"] = ({"text": s["text"], "at": s["at"], "until": s["until"]}
+                      if s and s.get("until", "") >= (today - datetime.timedelta(days=2)).isoformat() else None)
     return out
 
 

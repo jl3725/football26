@@ -30,20 +30,26 @@ NICK = {
     "AC밀란": "Milan", "유벤투스": "Juventus", "유베": "Juventus", "나폴리": "Napoli", "로마": "Roma",
     "PSG": "PSG", "파리": "PSG", "파리 생제르맹": "PSG", "마르세유": "Marseille", "리옹": "Lyon", "모나코": "Monaco",
     "벤피카": "Benfica", "포르투": "Porto", "스포르팅": "Sporting CP", "아약스": "Ajax", "페예노르트": "Feyenoord",
-    "클뤼프 브뤼허": "Club Brugge", "브뤼허": "Club Brugge",
+    "클뤼프 브뤼허": "Club Brugge", "브뤼허": "Club Brugge", "클럽 브뤼헤": "Club Brugge", "브뤼헤": "Club Brugge",
 }
 POS = {"6번": "Defensive Midfield", "수미": "Defensive Midfield", "수비형": "Defensive Midfield", "8번": "Central Midfield",
        "중미": "Central Midfield", "10번": "Attacking Midfield", "공미": "Attacking Midfield", "왼쪽 윙": "Left Winger",
        "왼윙": "Left Winger", "좌윙": "Left Winger", "오른쪽 윙": "Right Winger", "오른윙": "Right Winger", "우윙": "Right Winger",
        "윙어": "Left Winger", "센터백": "Centre-Back", "중앙 수비": "Centre-Back", "왼쪽 풀백": "Left-Back",
        "레프트백": "Left-Back", "오른쪽 풀백": "Right-Back", "라이트백": "Right-Back", "스트라이커": "Centre-Forward",
-       "9번": "Centre-Forward", "공격수": "Centre-Forward", "골키퍼": "Goalkeeper", "키퍼": "Goalkeeper"}
+       "9번": "Centre-Forward", "공격수": "Centre-Forward", "골키퍼": "Goalkeeper", "키퍼": "Goalkeeper",
+       # 영어 질문(소문자로 대조)
+       "defensive mid": "Defensive Midfield", "holding mid": "Defensive Midfield", "central mid": "Central Midfield",
+       "attacking mid": "Attacking Midfield", "left wing": "Left Winger", "right wing": "Right Winger",
+       "winger": "Left Winger", "centre-back": "Centre-Back", "centre back": "Centre-Back", "center back": "Centre-Back",
+       "left-back": "Left-Back", "left back": "Left-Back", "right-back": "Right-Back", "right back": "Right-Back",
+       "striker": "Centre-Forward", "centre-forward": "Centre-Forward", "goalkeeper": "Goalkeeper", "keeper": "Goalkeeper"}
 INTENTS = [  # (의도, 키워드) — 위에서부터 먼저
     ("news", ("뉴스", "기사", "소식", "news")),
     ("similar", ("비슷한", "유사", "닮은", "같은 스타일", "similar")),
     ("fit", ("맞아", "적합", "어울", "핏", " fit")),
     ("recommend", ("추천", "영입", "보강", "필요한 선수", "살만", "recommend", "sign ")),
-    ("lead", ("주장", "영향력", "리더", "캡틴", "captain", "leader")),
+    ("lead", ("주장", "영향력", "리더", "캡틴", "captain", "leader", "who leads", "influential")),
     ("week", ("이번 주", "이번주", "요즘", "주간", "폼 오른", "폼 떨어", "급등", "급락", "this week")),
     ("identity", ("어떤 팀", "성향", "영입 스타일", "예산")),
     ("team_now", ("다음 경기", "다음경기", "이길", "승부", "예측", "경기 어때", "부상", "결장", "다친", "a매치", "대표팀",
@@ -56,7 +62,18 @@ LEAGUE_WORDS = {"EPL": ("epl", "프리미어", "premier"), "LaLiga": ("라리가
 
 
 def _norm(s) -> str:
-    return " ".join(re.sub(r"[.\-']", " ", unidecode(str(s or "")).lower()).split())
+    return " ".join(re.sub(r"[^\w\s]", " ", unidecode(str(s or "")).lower()).split())   # ?·!·'s 등 문장부호는 띄어쓰기로
+
+
+def _dominant(cands: dict[str, list[tuple]], margin: float = 8.0) -> dict[str, tuple]:
+    """짧은 별칭(성 하나 등) → 선수 하나. 유일하면 그 선수, 여럿이면 OVR 이 둘째보다 margin 이상 높은 한 명만
+    (음바페 → Kylian, 동명이인끼리 비슷하면 별칭을 주지 않음)."""
+    out = {}
+    for alias, rows in cands.items():
+        rows = sorted(set(rows), key=lambda r: -r[3])
+        if len(rows) == 1 or rows[0][3] >= rows[1][3] + margin:
+            out[alias] = rows[0]
+    return out
 
 
 @lru_cache(maxsize=1)
@@ -73,6 +90,15 @@ def _index() -> dict:
     for k, v in NICK.items():
         if v in club_league:
             clubs.append((k.lower(), v, club_league[v]))
+    # 영문 첫 낱말(Bayern·Juventus 처럼 클럽 사이에서 유일할 때만 — Real·Manchester·Borussia 는 여럿이라 제외)
+    first: dict[str, list[str]] = {}
+    for s in club_league:
+        w = _norm(s).split()
+        if len(w) > 1 and len(w[0]) >= 4:
+            first.setdefault(w[0], []).append(s)
+    for w, ss in first.items():
+        if len(ss) == 1 and w not in {"club", "real", "sporting", "athletic", "union", "royal"}:
+            clubs.append((w, ss[0], club_league[ss[0]]))
     ko = ROOT / "data" / "names_ko.csv"
     kd = pd.read_csv(ko) if ko.exists() else pd.DataFrame(columns=["kind", "league", "name", "squad", "ko"])
     for r in kd[kd["kind"] == "club"].itertuples():
@@ -82,7 +108,6 @@ def _index() -> dict:
                 clubs.append((alias.lower(), r.name, club_league[r.name]))
     # 선수 — 영문 전체·성(리그 안 유일), 한국어 전체·마지막 낱말(유일)
     from api.services.player_data import player_frame  # noqa: PLC0415
-    last_cnt: dict[str, int] = {}
     rows = []
     for lg in LEAGUES:
         f = player_frame(lg)
@@ -90,26 +115,29 @@ def _index() -> dict:
             continue
         for p, sq, o in zip(f["player"].astype(str), f["squad"].astype(str), f["_ovr"]):
             rows.append((p, sq, lg, float(o) if o == o else 0.0))
-            last = _norm(p).split()[-1] if _norm(p) else ""
-            last_cnt[last] = last_cnt.get(last, 0) + 1
+    last: dict[str, list[tuple]] = {}
     for p, sq, lg, o in rows:
         n = _norm(p)
         players.append((n, p, sq, lg, o))
-        last = n.split()[-1] if n else ""
-        if len(last) >= 4 and last_cnt.get(last) == 1:
-            players.append((last, p, sq, lg, o))
+        if n and len(n.split()[-1]) >= 4:
+            last.setdefault(n.split()[-1], []).append((p, sq, lg, o))
+    for alias, (p, sq, lg, o) in _dominant(last).items():
+        players.append((alias, p, sq, lg, o))
     ovr = {(p, sq): o for p, sq, _, o in rows}
-    ko_last: dict[str, int] = {}
+    # 한국어 — 위키 언어 링크가 동명이인 문서로 이어진 경우(Mo Salah 두 명 → '모하메드 살라')는 전체 이름도 주지 않는다
     kp = kd[kd["kind"] == "player"]
-    for k in kp["ko"].astype(str):
-        t = k.split()[-1]
-        ko_last[t] = ko_last.get(t, 0) + 1
+    who = kp.groupby("ko")[["name", "squad"]].apply(lambda g: len(set(zip(g["name"], g["squad"]))))
+    ko_last: dict[str, list[tuple]] = {}
     for r in kp.itertuples():
+        if who.get(r.ko, 0) > 1:
+            continue
         o = ovr.get((r.name, r.squad), 0.0)
         players.append((str(r.ko).lower(), r.name, r.squad, r.league, o))
         t = str(r.ko).split()[-1]
-        if len(t) >= 2 and ko_last.get(t) == 1:
-            players.append((t.lower(), r.name, r.squad, r.league, o))
+        if len(t) >= 2:
+            ko_last.setdefault(t.lower(), []).append((r.name, r.squad, r.league, o))
+    for alias, (p, sq, lg, o) in _dominant(ko_last).items():
+        players.append((alias, p, sq, lg, o))
     clubs.sort(key=lambda x: -len(x[0]))
     players.sort(key=lambda x: (-len(x[0]), -x[4]))
     return {"clubs": clubs, "players": players}
@@ -118,7 +146,8 @@ def _index() -> dict:
 def _find(text: str, entries: list, latin: bool) -> list:
     """질문 안에 나온 별칭 — 영문은 단어 경계, 한글은 부분 문자열. 겹치는 자리는 긴 것 하나만."""
     found, used = [], []
-    t_lat, t_raw = f" {_norm(text)} ", text.lower()
+    # 영문 대조엔 한글을 빼고 — unidecode 가 한글을 로마자로 바꿔 '맞아'가 'maja'(Josh Maja)로 잡혔다
+    t_lat, t_raw = f" {_norm(re.sub(r'[ㄱ-ㅎㅏ-ㅣ가-힣]+', ' ', text))} ", text.lower()
     for e in entries:
         alias = e[0]
         if not alias:
@@ -147,7 +176,7 @@ def parse(q: str, team: str | None, league: str) -> dict:
             uniq.append(p)
     ql = q.lower()
     intent = next((k for k, kws in INTENTS if any(w in ql for w in kws)), None)
-    role = next((v for k, v in POS.items() if k in q), None)
+    role = next((v for k, v in POS.items() if k in ql), None)
     team_hit = clubs[0] if clubs else None
     lg_word = next((k for k, ws in LEAGUE_WORDS.items() if any(w in ql for w in ws)), None)
     return {"intent": intent, "role": role,

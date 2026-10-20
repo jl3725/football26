@@ -4,6 +4,7 @@ import { getReview, type Fixture, type MatchReview, type ResultMatch, type Revie
 import { compLabel, compTone, splitKst } from "@/lib/match";
 import { liveLabel, useLiveAll, type LiveEvent } from "@/lib/live";
 import { useMatchPreview } from "@/lib/matchPreview";
+import AiNote from "./AiNote";
 import { Crest } from "./MatchCard";
 import { Skel } from "./Skeleton";
 
@@ -101,6 +102,7 @@ export function ReviewSections({ m, inPlay, hc, ac }: { m: Fixture; inPlay: bool
       <section className="rv5">
         <h3>{rv.state === "in" ? "LIVE REPORT" : "MATCH REVIEW"}<span>{rv.state === "in" ? "실시간 리포트 · 1분마다 갱신" : "경기 리뷰 · ESPN 기록 기반"}</span></h3>
         <p className="rv5-head">{rv.headline}</p>
+        {rv.ai && <AiNote text={rv.ai.text} at={rv.ai.at} label="AI MATCH REPORT" sub="AI 경기 리포트" />}
         {rv.lines.length > 0 && <ul className="pv-points">{rv.lines.map((l) => <li key={l}>{l}</li>)}</ul>}
         {(rv.star || rv.predictions.length > 0) && (
           <div className="rv5-chips">

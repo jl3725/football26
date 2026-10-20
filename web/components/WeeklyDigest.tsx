@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { fmtEur, getDigest, type Digest } from "@/lib/api";
 import { TONE } from "@/lib/meaning";
+import AiNote from "./AiNote";
 import { usePeek } from "./PlayerPeek";
 
 // WEEKLY DIGEST — 지난 7일 이 리그에서 '바뀐 것'만(설계도 3단계 주간 스카우팅 다이제스트). 규칙 기반·숫자는 데이터 값.
@@ -18,6 +19,7 @@ export default function WeeklyDigest({ league }: { league: string }) {
   );
   return (
     <div className="wd-wrap">
+      {d.summary && <AiNote text={d.summary.text} at={d.summary.at} label="THIS WEEK" sub="AI 주간 서술" />}
       {d.intl && (
         <div className="wd-intl">
           <b>{d.intl.label}</b> {md(d.intl.start)}–{md(d.intl.end)} <em>D-{d.intl.days_to}</em>

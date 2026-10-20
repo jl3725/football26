@@ -123,13 +123,20 @@ AGENTS: tuple[Agent, ...] = (
               Feed("names_ko", "한글 이름 사전(Ask Scout)", ("names_ko",), ("kg_reload",), "주 1회 · 화 12:00 KST", WEEK_H,
                    ("names_ko.csv",)),
           ), checks=("watchdog: names(기준 명단 밖 이름)", "watchdog: identity(애매한 클럽 표기 확인 필요)")),
-    Agent("analyst", "ANALYST", "예측·해석", "경기 예측(모델·ClubElo·팬 투표)과 성적표",
-          ("ClubElo", "Sofascore 팬 투표"), (
+    Agent("analyst", "ANALYST", "예측·해석", "경기 예측(모델·ClubElo·팬 투표)과 성적표, AI 해석(경기 리포트·뉴스 요약·주간 서술)",
+          ("ClubElo", "Sofascore 팬 투표", "Gemini 무료 등급"), (
               Feed("predictions", "예측·성적표", ("clubelo", "log_predictions"), ("match_refresh", "daily_data"),
                    "매일 2회", 30, ("predictions_log.csv",)),
               Feed("fanvote", "팬 투표", ("fanvote",), ("local-fanvote",), "매일 10:30·18:30 KST(이 PC)", 24,
                    ("fan_votes.csv",)),
-          ), extras=("경기 리뷰 — /api/review, ESPN 경기 상세로 규칙 기반 생성(요청 시)",)),
+              Feed("ai_match", "AI 경기 리포트", ("ai_match",), ("match_refresh",), "경기 종료 후 · 매일", 30,
+                   ("ai/match_reports.json",)),
+              Feed("ai_news", "AI 팀 뉴스 요약", ("news_digest",), ("daily_news",), "2시간마다", 8,
+                   ("ai/news_digest.json",)),
+              Feed("ai_digest", "AI 주간 서술", ("digest_text",), ("daily_data",), "매일 13:30 KST", 36,
+                   ("ai/digest_text.json",)),
+          ), checks=("숫자·영문 이름 원자료 대조(src/llm.py) — 안 맞으면 저장 안 함", "용도별 하루 호출 상한(data/ai/usage_*.json)"),
+          extras=("경기 리뷰 — /api/review, ESPN 경기 상세로 규칙 기반 생성(요청 시)",)),
     Agent("watchdog", "WATCHDOG", "감시·검증", "OVR·평점 자체 검증, 운영 점검(문제 시 GitHub 이슈)",
           ("모든 에이전트 결과",), (
               Feed("audits", "OVR·평점·전문가 기대치 검증", ("ovr_consistency", "rating_audit", "expectations"), ("daily_data",),

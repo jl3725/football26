@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { getOpsStatus, type OpsAgent, type OpsFeed, type OpsState, type OpsStatus } from "@/lib/api";
 import { TONE } from "@/lib/meaning";
+import AiNote from "./AiNote";
 
 // DATA STATUS — 수집 에이전트마다 '마지막 성공이 언제였고, 허용 지연을 넘었는지'(설계도 1단계).
 // 원천: /api/ops/status = src/agent_registry.py(소스·주기·허용 지연) × data/ops/runs(실행 원장) × watchdog 결과.
@@ -121,6 +122,10 @@ export default function DataStatus() {
               <ul className="ds-wd">
                 {wdFail.map(([k, v]) => <li key={k}><b>{k}</b>{v.map((x, i) => <span key={i}>{x}</span>)}</li>)}
               </ul>
+              {d.watchdog.ai_cause && (
+                <AiNote lines={d.watchdog.ai_cause.split("\n").map((l) => l.replace(/^-\s*/, "")).filter(Boolean)}
+                  at={d.watchdog.checked} label="LIKELY CAUSE" sub="AI 추정 원인 · 참고용" check="숫자 원자료 대조" />
+              )}
             </>
           )}
       </section>

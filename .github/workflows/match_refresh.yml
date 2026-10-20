@@ -87,6 +87,13 @@ jobs:
       - name: Log predictions (팬 vs 모델 성적표)
         run: bash scripts/ci_try.sh "log_predictions" python scripts/log_predictions.py
 
+      # AI 경기 리포트 — 최근 3일 끝난 경기의 MATCH REVIEW 데이터로 3~4문장(Gemini 무료 등급, 숫자·이름 원자료 대조).
+      # 이미 만든 경기는 건너뛰고, 검증에 두 번 떨어진 경기는 포기(src/ai_notes.py). 키가 없으면 건너뜀
+      - name: AI match reports (경기 리포트)
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: bash scripts/ci_try.sh "ai_match" python src/ai_notes.py match
+
       # 선수 이름 레지스트리 — 원천마다 다른 표기를 기준 표기로 묶는다(src/player_registry.py, API 가 읽을 때 정규화)
       - name: Player registry (이름 정규화)
         run: bash scripts/ci_try.sh "player_registry" python src/player_registry.py

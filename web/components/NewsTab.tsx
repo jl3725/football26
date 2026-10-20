@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { getNews, type News } from "@/lib/api";
+import AiNote from "./AiNote";
 import { SkelCards } from "./Skeleton";
 
 export default function NewsTab({ team, accent }: { team: string; accent: string }) {
@@ -12,6 +13,7 @@ export default function NewsTab({ team, accent }: { team: string; accent: string
 
   return (
     <div className="fade">
+      {data.ai && <AiNote lines={data.ai.lines} at={data.ai.at} label="TODAY'S BRIEF" sub={`최근 48시간 기사 ${data.ai.n ?? ""}건 AI 요약`} />}
       {data.sparse && <div className="season-note" style={{ marginTop: 0, marginBottom: 14 }}>이 팀 전용 기사가 적어 표시가 제한적일 수 있습니다.</div>}
       <div className="news-grid">
         {data.articles.map((a, i) => (
