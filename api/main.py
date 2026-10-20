@@ -2443,6 +2443,88 @@ def news_player(player: str, club: str = "", league: str = ACTIVE_LEAGUE, limit:
     return {"player": player, "articles": out, "total": int(len(how))}
 
 
+def _ddmmyyyy(s) -> str:
+    """TM 날짜 '19/10/2026' → '2026-10-19'(이미 ISO 면 그대로)."""
+    s = str(s or "")
+    m = re.match(r"(\d{1,2})/(\d{1,2})/(\d{4})", s)
+    return f"{m.group(3)}-{int(m.group(2)):02d}-{int(m.group(1)):02d}" if m else s[:10]
+
+
+@app.get("/api/scout-report/{team}/{player}")
+@_memo(ttl=21600)
+def scout_report(team: str, player: str, league: str = ACTIVE_LEAGUE):
+    """스카우팅 리포트 한 장 — 선수 상세 + 강약점(백분위) + 가용성(부상 두 시즌·지금 결장) + 계약·가치 + 이적설(TM 루머·뉴스 단계·
+    매체 적중률) + 유사 선수(더 싼 대안 표시) + 판단 문장(src/scout_report.py, 규칙). 숫자는 원자료 그대로."""
+    import positions as ps  # noqa: PLC0415
+    import scout_report as sr  # noqa: PLC0415
+    from leagues import LEAGUES  # noqa: PLC0415
+    d = player_detail(team, player, league)
+    me = ps.norm_name(d["player"])
+    enough = d["minutes"] >= (300 if d.get("is_gk") else 450)
+    strong, weak = sr.strengths(d.get("categories") or []) if enough else ([], [])
+    # 부상 — 이번 시즌(이 클럽) + 지난 시즌(어느 리그든)
+    seasons = []
+    for sea, label in ((f"{SEASON_START}_{SEASON_START + 1}", f"{SEASON_START % 100:02d}/{(SEASON_START + 1) % 100:02d}"),
+                       (f"{SEASON_START - 1}_{SEASON_START}", f"{(SEASON_START - 1) % 100:02d}/{SEASON_START % 100:02d}")):
+        hit = None
+        for lg in ([league] + [x for x in LEAGUES if x != league]):
+            t = ds.read_table("tm_injury_history", league=lg, season=sea)
+            if t is None or t.empty:
+                continue
+            rows = t[t["player"].astype(str).map(ps.norm_name) == me]
+            if len(rows):
+                hit = rows.sort_values("games_missed", ascending=False).iloc[0]
+                break
+        if hit is not None:
+            spells = sr.parse_spells(hit.get("spells_json"))
+            seasons.append({"season": label, "games_missed": int(_num(hit.get("games_missed"))),
+                            "days_out": int(_num(hit.get("days_out"))), "spells": int(_num(hit.get("spells"))),
+                            "injuries": [str(s.get("injury") or s.get("type") or "") for s in spells][:4]})
+    cur = None
+    inj = _injuries_table(league)
+    if inj is not None and not inj.empty:
+        mine = inj[(inj["squad"] == team) & (inj["player"].astype(str).map(ps.norm_name) == me)]
+        if len(mine):
+            r = mine.iloc[0]
+            cur = {"injury": str(r.get("injury") or ""), "until": _ddmmyyyy(r.get("until")), "source": str(r.get("source") or "")}
+    avail = sr.availability(seasons, cur)
+    con = sr.contract(d.get("contract_until"))
+    mk = sr.market(d.get("value_eur"), d.get("value_history") or [])
+    # 이적설 — TM 루머(전 리그 표에서 이 선수) + 뉴스 루머 판정표(src/news_reliability.py, 최근 120일)
+    tm_rows = []
+    for lg in LEAGUES:
+        t = ds.read_table("transfer_rumors", league=lg)
+        if t is not None and not t.empty and "player" in t.columns:
+            for r in t[t["player"].astype(str).map(ps.norm_name) == me].to_dict("records"):
+                tm_rows.append({**r, "date": _ddmmyyyy(r.get("date"))})
+    news_rows = []
+    from leagues import DATA_DIR  # noqa: PLC0415
+    cp = DATA_DIR / "news_claims.csv"
+    if cp.exists():
+        cl = pd.read_csv(cp)
+        since = (datetime.date.today() - datetime.timedelta(days=120)).isoformat()
+        cl = cl[(cl["player"].astype(str).map(ps.norm_name) == me) & (cl["date"].astype(str) >= since)]
+        news_rows = [{"to_club": r["dest"], "date": r["date"], "source": r["source"], "stage": r["stage"] if r["stage"] == r["stage"] else "",
+                      "headline": r["headline"]} for r in cl.sort_values("date").to_dict("records")]
+    track = _news_track()
+    talk = sr.talk_items(tm_rows, news_rows, track)[:6]
+    try:
+        sim = similar(d["player"], league=league).get("results", [])[:6]
+    except Exception:  # noqa: BLE001 — 유사 선수 없이도 리포트는 낸다
+        sim = []
+    for s in sim:
+        s["cheaper"] = bool(d.get("value_eur") and s.get("value_eur") and s["value_eur"] < d["value_eur"] * 0.7)
+    try:
+        news = news_player(d["player"], club=team, league=league, limit=4).get("articles", [])
+    except Exception:  # noqa: BLE001
+        news = []
+    return {"player": d, "strengths": strong, "weaknesses": weak, "enough": enough, "availability": avail,
+            "contract": con, "market": mk, "talk": talk, "similar": sim, "news": news,
+            "stage_rates": (track or {}).get("stages") or {},
+            "verdict": sr.verdict(d, strong, weak, avail, con, mk, talk),
+            "generated": datetime.date.today().isoformat()}
+
+
 @app.get("/api/analytics/{team}")
 @_memo(ttl=21600)
 def analytics(team: str, league: str = ACTIVE_LEAGUE):

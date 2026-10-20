@@ -14,6 +14,7 @@ import { Skel, SkelCards } from "./Skeleton";
 import { TrendArrow, TrendLine } from "./Trend";
 import SeasonLog from "./SeasonLog";
 import PlayerNews from "./PlayerNews";
+import ScoutReport from "./ScoutReport";
 
 // 실제 기록 값 — 라벨에 '%' 가 있으면 비율(0~100), 그 외(/90·xA)는 90분당.
 // 계약 남은 기간 — ' (1년 8개월 남음)'
@@ -243,6 +244,19 @@ export default function PlayerTab({ team, accent, initialPlayer, onPlayer }: {
   const [cmpMode, setCmpMode] = useState(false);   // 비교 모드
   const [cmp, setCmp] = useState<string | null>(null);   // 2번째(B) 선수
   const [hm, setHm] = useState<HeatmapData | null>(null);
+  // SCOUT REPORT 한 장 — 주소 &report=1 로 바로 열기(공유 링크), 열고 닫을 때 주소에 반영
+  const [report, setReport] = useState(false);
+  useEffect(() => {
+    if (typeof window !== "undefined" && new URLSearchParams(window.location.search).get("report") === "1") setReport(true);
+  }, []);
+  const toggleReport = (on: boolean) => {
+    setReport(on);
+    try {
+      const u = new URL(window.location.href);
+      if (on) u.searchParams.set("report", "1"); else u.searchParams.delete("report");
+      window.history.replaceState(null, "", u.toString());
+    } catch { /* 주소 반영은 편의 기능 */ }
+  };
   useEffect(() => { let a = true; setHm(null); getHeatmaps(team).then((x) => a && setHm(x)).catch(() => a && setHm(null)); return () => { a = false; }; }, [team]);
   useEffect(() => {
     let a = true;
@@ -278,7 +292,11 @@ export default function PlayerTab({ team, accent, initialPlayer, onPlayer }: {
   };
   return (
     <div className="fade">
-      <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 8 }}>
+      <div style={{ display: "flex", justifyContent: "flex-end", gap: 8, marginBottom: 8 }}>
+        <button className="sr-open" onClick={() => sel && toggleReport(true)} disabled={!sel} style={{ borderColor: hexA(accent, 0.5) }}
+          title="고른 선수를 한 장으로 — 판단 요약·강약점·폼·가용성·계약·이적설·대안, 인쇄해 PDF 로">
+          SCOUT REPORT <em>리포트</em>
+        </button>
         <button onClick={() => { setCmpMode((m) => !m); setCmp(null); }}
           style={{ padding: "6px 14px", borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: "pointer",
             border: `1px solid ${hexA(accent, 0.3)}`, background: cmpMode ? accent : "transparent", color: cmpMode ? "#0a0a0a" : "inherit" }}>
@@ -313,6 +331,7 @@ export default function PlayerTab({ team, accent, initialPlayer, onPlayer }: {
             : (sel && <Detail team={team} player={sel} accent={accent} heatmap={hm} />)}
         </div>
       </div>
+      {report && sel && <ScoutReport team={team} player={sel} accent={accent} onClose={() => toggleReport(false)} />}
     </div>
   );
 }

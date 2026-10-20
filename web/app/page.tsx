@@ -96,6 +96,8 @@ export default function Page() {
         p.set("team", sel);
         if (tab !== "overview") p.set("tab", tab);
         if (tab === "player" && urlPlayer) p.set("player", urlPlayer);
+        // 스카우팅 리포트가 열려 있으면 공유 링크에 남긴다(PlayerTab 이 열고 닫을 때 report=1 을 넣고 뺀다)
+        if (tab === "player" && new URLSearchParams(window.location.search).get("report") === "1") p.set("report", "1");
       }
     }
     const qs = p.toString() ? `?${p.toString()}` : "";

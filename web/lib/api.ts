@@ -333,7 +333,22 @@ export type Analytics = {
   manager_evo: ManagerEvo | null;
 };
 
-export type SimilarResult = { player: string; squad: string; pos: string; age: number; value_eur: number; logo: string; score: number; style: number; perf: number };
+export type SimilarResult = { player: string; squad: string; pos: string; age: number; value_eur: number; logo: string; score: number; style: number; perf: number;
+  cheaper?: boolean };   // 스카우팅 리포트 — 이 선수 가치의 70% 미만이면 '더 싼 대안'
+// 스카우팅 리포트 한 장(/api/scout-report, src/scout_report.py) — 판단 문장은 규칙, 숫자는 원자료 그대로
+export type ScoutMetric = { cat: string; label: string; pct: number; raw: number | null };
+export type ScoutReport = {
+  player: PlayerDetail; strengths: ScoutMetric[]; weaknesses: ScoutMetric[]; enough: boolean;
+  availability: { risk: "low" | "mid" | "high"; current: { injury: string; until: string; source: string } | null;
+    seasons: { season: string; games_missed: number; days_out: number; spells: number; injuries: string[] }[] };
+  contract: { until: string | null; months_left: number | null; status: "expiring" | "short" | "long" | "unknown" };
+  market: { value_eur: number; change_12m_pct: number | null; peak_eur: number; points: number };
+  talk: { to_club: string; date: string; source: string; stage: string; probability: number | null; headline: string; outlet_rate?: number | null }[];
+  similar: SimilarResult[]; news: PlayerNewsItem[]; stage_rates: Record<string, { hits: number; n: number; rate: number }>;
+  verdict: string[]; generated: string;
+};
+export const getScoutReport = (team: string, player: string, l = _league) =>
+  j<ScoutReport>(`/api/scout-report/${encodeURIComponent(team)}/${encodeURIComponent(player)}?league=${encodeURIComponent(l)}`);
 export type Recommendation = { player: string; squad: string; logo: string; pos: string; age: number; ovr: number; value_eur: number; photo: string; rating: number; tactical_fit: number; squad_match: number; why_fit: string[]; why_risk: string[]; confidence: string; role: string; role_evidence: string; big_match: boolean; bucket?: string; bucket_label?: string; cross_league?: boolean; source_league?: string; current_ovr?: number; projected_ovr?: number };
 export type LostTarget = { player: string; from: string; to: string; ovr: number; pos: string; photo: string; role: string; top_loss?: boolean };
 export type Longshot = { player: string; squad: string; logo: string; ovr: number; pos: string; photo: string; role: string; bucket_label: string; reason: string; cross_league?: boolean; source_league?: string; current_ovr?: number ; style_fit?: number | null };
