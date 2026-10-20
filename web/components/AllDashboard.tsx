@@ -102,6 +102,7 @@ export default function AllDashboard({ onPick, switcher }: { accent?: string; on
   const [lg, setLg] = useState<string>("");
   const [watch, setWatch] = useState<"all" | "inj" | "con">("all");
   const [dealsMore, setDealsMore] = useState(false);
+  const [xferOpen, setXferOpen] = useState(false);   // 이적시장 마감 중엔 이적·감독 섹션을 접어 둔다(홈이 13,000px 이던 것)
   const { pins } = usePins();
   const [opener, setOpener] = useState(false);
   const t0 = useRef(Date.now());
@@ -228,8 +229,15 @@ export default function AllDashboard({ onPick, switcher }: { accent?: string; on
         {s && (
           <div className="h5-kpis">
             {([
-              ["SUMMER SPEND", s.spend_eur, (v: number) => (v < 1e6 ? "€0" : fmtEur(v)), `여름 이적료 · ${d.leagues.length}개 리그`],
-              ["SIGNINGS", s.signings, undefined, "영입 · 임대 제외"],
+              ...(!d.window?.is_open && pulse && pulse.results.length > 0 ? [
+                // 시즌 중엔 여름 이적 숫자 대신 이번 주 경기 — 최근 3일 결과 수·골/경기, 이변 수(2026-10-20 점검)
+                ["RESULTS · 3D", pulse.results.length, undefined,
+                  `최근 3일 경기 · 경기당 ${(pulse.results.reduce((a, r) => a + r.home.goals + r.away.goals, 0) / pulse.results.length).toFixed(2)}골`],
+                ["UPSETS", pulse.results.filter((r) => r.upset).length, undefined, "순위·전력 열세 팀의 승리 · 최근 3일"],
+              ] : [
+                ["SUMMER SPEND", s.spend_eur, (v: number) => (v < 1e6 ? "€0" : fmtEur(v)), `여름 이적료 · ${d.leagues.length}개 리그`],
+                ["SIGNINGS", s.signings, undefined, "영입 · 임대 제외"],
+              ]),
               ["MANAGER CHANGES", s.manager_changes, undefined, `이번 시즌 감독 교체 · 시즌 중 ${s.manager_changes_inseason ?? 0}`],
               ["INJURED", s.injured, undefined, `현재 부상 결장 · ${d.leagues.length}개 리그`],
             ] as [string, number, ((v: number) => string) | undefined, string][]).map(([l, v, f, m]) => (
@@ -304,6 +312,12 @@ export default function AllDashboard({ onPick, switcher }: { accent?: string; on
         </section>
       </div>
 
+      {!d.window?.is_open && !xferOpen && (
+        <button className="h5-fold" onClick={() => setXferOpen(true)}>
+          <b>TRANSFERS &amp; MANAGERS</b><span>여름 빅딜 · 감독 교체 · 이적 소식 — 이적시장 마감 중이라 접어 둠 · 펼치기 ▾</span>
+        </button>
+      )}
+      {(d.window?.is_open || xferOpen) && <>
       <div className="h5-row">
         <section className="card h5-card">
           <SectionHead title="TOP TRANSFERS" kr="여름 빅딜" meta="이적료 순" />
@@ -352,6 +366,7 @@ export default function AllDashboard({ onPick, switcher }: { accent?: string; on
           {d.buzz.length === 0 && <p className="empty5">새 이적 소식 없음</p>}
         </div>
       </section>
+      </>}
     </div>
   );
 }

@@ -272,13 +272,32 @@ export default function HomeDashboard({ accent, onPickTeam, onPickLeagueTeam, le
           </div>
         </div>
 
-        <div className="card">
-          <div className="card-h">승격 · 강등</div>
-          <div className="stx-foot" style={{ marginTop: 0 }}>
-            {nextLabel} 승격 <b style={{ color: "#4fc27f" }}>{h.roster_next?.promoted?.join(", ") || "-"}</b>
-            <br />강등 <b style={{ color: "#e0556b" }}>{h.roster_next?.relegated?.join(", ") || "-"}</b>
+        {/* 시즌 중엔 다음 시즌 승격·강등이 비어 있다 — 지금 강등권 3팀과 잔류선까지 승점 차로(2026-10-20 점검) */}
+        {(h.roster_next?.promoted?.length || h.roster_next?.relegated?.length) ? (
+          <div className="card">
+            <div className="card-h">승격 · 강등</div>
+            <div className="stx-foot" style={{ marginTop: 0 }}>
+              {nextLabel} 승격 <b style={{ color: "#4fc27f" }}>{h.roster_next?.promoted?.join(", ") || "-"}</b>
+              <br />강등 <b style={{ color: "#e0556b" }}>{h.roster_next?.relegated?.join(", ") || "-"}</b>
+            </div>
           </div>
-        </div>
+        ) : lab?.table && lab.table.length > 4 ? (() => {
+          const tb = [...lab.table].sort((a, b) => a.rank - b.rank);
+          const safe = tb[tb.length - 4];               // 잔류 마지노선(아래에서 4번째)
+          return (
+            <div className="card">
+              <div className="card-h">강등권 · 지금</div>
+              <div className="rows">
+                {tb.slice(-3).map((t) => (
+                  <div className="stx-foot" key={t.team} style={{ marginTop: 0, display: "flex", justifyContent: "space-between", gap: 8 }}>
+                    <span>{t.rank}위 <b style={{ color: "#e0556b" }}>{t.team}</b> {t.points}점</span>
+                    <span>잔류선({safe.team} {safe.points}점)까지 {Math.max(0, safe.points - t.points)}점</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        })() : null}
       </div>
     </div>
   );

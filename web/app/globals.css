@@ -4284,3 +4284,8 @@ LIGA’처럼 글자가 접히던 것) — 넘치면 가로로 넘긴다 */
 .ov-brief-i { display: flex; flex-direction: column; gap: 4px; padding: 10px 12px; border: 1px solid var(--line); border-left: 3px solid; border-radius: 10px; background: var(--overlay); min-width: 0; }
 .ov-brief-i b { font-size: 13.5px; color: var(--txt); }
 .ov-brief-i span { font-size: 12.5px; color: var(--muted); line-height: 1.5; overflow-wrap: anywhere; }
+/* 홈 접힌 섹션 바(이적시장 마감 중 TRANSFERS & MANAGERS) */
+.h5-fold { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; width: 100%; text-align: left; padding: 14px 18px; border: 1px dashed var(--line-strong); border-radius: 12px; background: var(--overlay); color: var(--txt); cursor: pointer; }
+.h5-fold b { font: 700 14px/1 var(--font-num); letter-spacing: 0.12em; }
+.h5-fold span { font-size: 12.5px; color: var(--muted); }
+.h5-fold:hover { border-color: var(--muted-2); }
