@@ -75,6 +75,8 @@ AGENTS: tuple[Agent, ...] = (
               Feed("understat", "xG 계열(Understat)", ("understat_live",), ("match_refresh",), "매일 · 경기 20분 뒤", 36,
                    ("understat_players_*",)),
               Feed("rating_history", "평점 일일 기록", ("rating_history",), ("daily_data",), "매일 13:30 KST", 36),
+              Feed("roles", "역할 근거(대회별 선발·출전)", ("comp_usage_live",), ("match_refresh",), "매일 · 경기 뒤", 36,
+                   ("player_comp_usage_*",)),
               Feed("season_build", "FBref·Understat·히트맵", ("fbref", "understat", "prev_season", "comp_usage",
                                                             "heatmaps"),
                    ("local-season-weekly",), "주 1회 · 수 12:30 KST(이 PC)", WEEK_H,

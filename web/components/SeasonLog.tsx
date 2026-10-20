@@ -53,7 +53,7 @@ export default function SeasonLog({ log, accent }: { log: Log; accent: string })
       </div>
       <div className="slog-table" role="table">
         <div className="slog-row h" role="row"><span>대회</span><span>출전<small className="hide-m">(선발)</small></span><span>분</span><span>골</span><span>도움</span>
-          <span title="FotMob 경기 평점 평균(평점 있는 경기)">평점</span>
+          <span title="FotMob 경기별 평점 평균(원래 값, 평점 있는 경기) — 선수 시즌 평점은 Sofascore·FotMob 두 출처 평균">평점·FM</span>
           <span title={gk ? "선방 · 실점" : "슈팅(유효슈팅) — 전 대회 ESPN 경기 기록"}>{gk ? "선방·실점" : <>슈팅<small className="hide-m">(유효)</small></>}</span><span>카드</span></div>
         {log.by_comp.map((c) => (
           <button key={c.comp} className={`slog-row${comp === c.comp ? " on" : ""}`} onClick={() => setComp(comp === c.comp ? "all" : c.comp)}>

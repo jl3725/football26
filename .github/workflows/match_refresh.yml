@@ -55,6 +55,11 @@ jobs:
             FB_LEAGUE=$LG bash scripts/ci_try.sh "cup_lineups $LG" python src/fetch_cup_lineups.py --league $LG
           done
 
+      # 역할 축(대회별 선발·출전) — 위 컵·유럽 라인업에서 매일 다시 센다. 예전엔 로컬 주간 빌드에서만 만들어져
+      # UCL 2경기 모두 선발인 Haaland 가 '유럽 로테이션'으로 남았다(2026-10-20 점검, src/comp_usage_live.py)
+      - name: Competition usage (역할 근거)
+        run: bash scripts/ci_try.sh "comp_usage_live" python src/comp_usage_live.py
+
       - name: Match stats (ESPN 경기 기록 + 5대 리그 Understat xG — 분석 탭 경기별 흐름·시간대·백분위)
         # 새로 끝난 경기만 받는다(src/fetch_match_stats.py, 증분). Understat 실패 시 ESPN 기록만 저장.
         run: |

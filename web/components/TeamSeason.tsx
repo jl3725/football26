@@ -191,7 +191,7 @@ export function SeasonProfile({ axes }: { axes: ProfileAxis[] }) {
         );
       })}
       <ScaleLegend kind="idx" lead="색·단어" />
-      <p className="sp5-note">지수 = 리그 안 상대값(50 = 리그 평균, 막대 가운데 선) · N위 = 리그 순위 ·
+      <p className="sp5-note">지수 = 리그 안 상대값(50 = 리그 평균, 막대 가운데 선) · N위 = 지수의 리그 순위 · (기록 N위) = 경기당 득점·실점 자체의 순위 ·
         ▲▼ = 지난 시즌 같은 지표의 순위 대비(3계단 이상) · 시즌 초에는 표본이 적어 지수가 50 쪽으로 보정됩니다.</p>
     </div>
   );

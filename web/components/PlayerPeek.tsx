@@ -200,7 +200,7 @@ export function PeekProvider({ children, onOpenPlayer, onOpenTeam }: {
               </div>
               {log && log.by_comp.filter((c) => c.apps).length > 1 && (
                 <div className="peek-ct" role="table" aria-label="대회별 기록">
-                  <div className="peek-ct-r h" role="row"><span>COMPETITION</span><span>APPS</span><span>MIN</span><span>G</span><span>A</span><span title="FotMob 경기 평점 평균">RTG</span></div>
+                  <div className="peek-ct-r h" role="row"><span>COMPETITION</span><span>APPS</span><span>MIN</span><span>G</span><span>A</span><span title="FotMob 경기별 평점 평균(원래 값 — 위 시즌 평점은 두 출처 평균)">RTG·FM</span></div>
                   {log.by_comp.filter((c) => c.apps).map((c) => {
                     const lab = !c.code || c.code.endsWith(".1") ? (lgEn(league) || "LEAGUE") : (compEn(c.code) || c.comp);
                     const mn = c.rating ? ssMeaning(fmToSs(c.rating)) : null;

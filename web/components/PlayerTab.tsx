@@ -109,7 +109,8 @@ function Detail({ team, player, accent, heatmap }: { team: string; player: strin
         <div className="pd-comp">
           <div className="pd-comp-head">
             <span className="pd-comp-title">이번 시즌 역할</span>
-            <span className={"role-tag " + roleClass(d.comp_usage.role)}>{d.comp_usage.role}</span>
+            <span className={"role-tag " + roleClass(d.comp_usage.role)} title={d.comp_usage.role_evidence}>{d.comp_usage.role}</span>
+            {d.comp_usage.role_evidence && <span className="pd-comp-ev">{d.comp_usage.role_evidence}</span>}
             {d.comp_usage.big_match && <span className="role-bm" title="UCL/UEL 급 무대 검증">⚡ 빅매치 검증</span>}
           </div>
           {d.season_log?.available ? <SeasonLog log={d.season_log} accent={accent} /> : (

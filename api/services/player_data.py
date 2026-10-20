@@ -270,6 +270,7 @@ def _build_frame(league: str, season: str | None = None):
             # xG 계열 먼저(FBref 분과 비교해야 하므로 FotMob 이 분을 바꾸기 전에) — Understat 매일, 5대 리그
             frame = st.apply_understat_live(frame, ds.read_table("understat_players", league=league))
             frame = st.apply_live_totals(frame, ds.read_table("fotmob_match_ratings", league=league), league)
+            frame = st.apply_gk_live(frame, ds.read_table("players_sofascore_stats", league=league))   # GK 클린시트% 최신
         except Exception as e:  # noqa: BLE001 — 경기별 기록이 없으면 FBref 그대로
             print(f"[season_totals] {league}: 건너뜀 {type(e).__name__}: {e}")
     import ratings_v3 as rv3  # noqa: PLC0415

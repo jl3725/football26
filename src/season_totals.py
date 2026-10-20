@@ -112,3 +112,28 @@ def apply_understat_live(frame: pd.DataFrame, us: pd.DataFrame | None) -> pd.Dat
                 out.at[i, col] = round(float(v) / n90, 3)
         out.at[i, "_xg_src"] = "understat_live"
     return out
+
+
+def apply_gk_live(frame: pd.DataFrame, ss: pd.DataFrame | None) -> pd.DataFrame:
+    """GK 클린시트% 를 Sofascore 시즌 기록(cleanSheet ÷ appearances, 매일)으로 — FBref(주간)는 한 라운드 늦어
+    Raya 가 50%(3/6)로 나왔다(실제 4/7, 2026-10-20 점검). Sofascore 는 매일 갱신이라 GK 행은 이 값으로 덮는다."""
+    if ss is None or ss.empty or not {"cleanSheet", "appearances", "player", "squad"} <= set(ss.columns):
+        return frame
+    out = frame.copy()
+    if "gk_cs_pct" not in out.columns:
+        return out
+    key = lambda sq, pl: f"{sq}|{pl}"  # noqa: E731
+    live = {}
+    for sq, pl, cs, ap in zip(ss["squad"].astype(str), ss["player"].astype(str),
+                              pd.to_numeric(ss["cleanSheet"], errors="coerce"), pd.to_numeric(ss["appearances"], errors="coerce")):
+        if ap == ap and ap and cs == cs:
+            live[key(sq, pl)] = (float(cs), float(ap))
+    for i, r in out.iterrows():
+        hit = live.get(key(r.get("squad"), r.get("player")))
+        if not hit or r.get("gk_cs_pct") is None:
+            continue
+        cs, ap = hit
+        old = r.get("gk_cs_pct")
+        if old == old:                               # GK 행(FBref 값이 있는 선수)만 — 필드 선수 cleanSheet 는 의미 없음
+            out.at[i, "gk_cs_pct"] = round(cs / ap * 100, 1)
+    return out

@@ -1154,6 +1154,47 @@ _COMP_LABELS = [("ucl", "챔피언스리그"), ("uel", "유로파리그"), ("con
                 ("facup", "FA컵"), ("lcup", "리그컵"), ("copa", "코파델레이")]
 
 
+@_memo(ttl=3600)
+def _inj_missed_league(league: str) -> dict:
+    """{(squad, norm_key): 이번 시즌 부상으로 빠진 리그 경기 수, '_played': {squad: 리그 경기 수}} — 역할 판정 분모 보정.
+    TM 부상 이력 spells(from~until, 진행 중이면 오늘까지) 안에 열린 팀 리그 경기를 센다."""
+    import json as _json  # noqa: PLC0415
+    from unidecode import unidecode  # noqa: PLC0415
+    out: dict = {"_played": {}}
+    sch = ds.read_table("schedule_full", league=league)
+    hist = ds.read_table("tm_injury_history", league=league)
+    if sch is None or sch.empty:
+        return out
+    lg = sch[(sch["comp_code"].astype(str).str.endswith(".1")) & (sch["status"].astype(str) == "completed")]
+    dates = {sq: sorted(pd.to_datetime(g["date"], errors="coerce").dropna().dt.date) for sq, g in lg.groupby("squad")}
+    out["_played"] = {str(sq): len(ds_) for sq, ds_ in dates.items()}
+    if hist is None or hist.empty or "spells_json" not in hist.columns:
+        return out
+    label = f"{SEASON_START % 100:02d}/{(SEASON_START + 1) % 100:02d}"
+    today = _today_kst()
+    cur = hist[hist["season"].astype(str) == label] if "season" in hist.columns else hist   # 통합 DB 표는 이번 시즌만
+    for r in cur.itertuples(index=False):
+        try:
+            spells = _json.loads(r.spells_json) if isinstance(r.spells_json, str) else []
+        except ValueError:
+            continue
+        md = dates.get(str(r.squad), [])
+        n = 0
+        for s in spells:
+            try:
+                a = datetime.datetime.strptime(str(s.get("from")), "%d/%m/%Y").date()
+            except ValueError:
+                continue
+            try:
+                b = datetime.datetime.strptime(str(s.get("until")), "%d/%m/%Y").date()
+            except ValueError:
+                b = today                                # 진행 중
+            n += sum(1 for d in md if a <= d <= b)
+        if n:
+            out[(str(r.squad), unidecode(str(r.player)).lower().strip())] = n
+    return out
+
+
 def _comp_profile(row, usage_idx) -> dict:
     """players_full 행 + comp usage → 역할 + 대회별 상세(선발/출전).
 
@@ -1168,6 +1209,14 @@ def _comp_profile(row, usage_idx) -> dict:
     # 리그 진행률로 풀시즌 환산해 판정한다(끝난 시즌은 진행률 1.0 → 그대로).
     lg = (usage_idx or {}).get("league")
     scale = 1.0 / _progress(lg) if lg else 1.0
+    # 부상으로 빠진 리그 경기는 분모에서 뺀다 — 종아리 부상 6경기 결장한 Doku 가 '백업'으로 나왔다(2026-10-20 점검)
+    missed = 0
+    if lg:
+        inj = _inj_missed_league(lg)
+        missed = inj.get((str(row.get("squad")), str(row.get("norm_key") or "")), 0)
+        played = inj["_played"].get(str(row.get("squad")), 0)
+        if missed and played > missed:
+            scale *= played / max(played - missed, min(played, 3))   # 뛸 수 있던 경기가 너무 적으면 과대평가 — 최소 3경기
     role = rv3.role_tag(league_min=min(lm * scale, 3420.0), euro_starts=es * scale, euro_apps=ea * scale,
                         cup_starts=cs * scale, cup_apps=ca * scale, age=row.get("age"))
     comps = []
@@ -1175,7 +1224,8 @@ def _comp_profile(row, usage_idx) -> dict:
         st, ap = int(_num(u.get(f"{key}_starts"))), int(_num(u.get(f"{key}_apps")))
         if ap > 0:
             comps.append({"key": key, "label": label, "starts": st, "apps": ap})
-    parts = [f"리그 {int(lm)}′"] + [f"{c['label']} {c['starts']}선발" for c in comps if c["starts"]]
+    parts = [f"리그 {int(lm)}′"] + [f"{c['label']} {c['starts']}선발" for c in comps if c["starts"]] \
+        + ([f"부상 결장 {missed}경기 제외"] if missed else [])
     return {"role": role, "role_evidence": " · ".join(parts),
             "big_match": rv3.big_match_proven(euro_starts=es, euro_apps=ea),
             "league_min": int(lm), "comps": comps}
@@ -1883,16 +1933,21 @@ def _espn_name(ours: str, names) -> str | None:
 
 @_memo(ttl=21600)
 def _fm_match_dates(league: str) -> dict:
-    """{('id', fotmob_id) | ('nm', 'squad|player'): {날짜: FotMob 경기 평점}} — SEASON LOG 경기별·대회별 평점."""
+    """{('id', fotmob_id) | ('nm', 'squad|player'): {날짜: {r 평점, m 분, g 골, a 도움}}} — SEASON LOG 경기별 기록.
+    FotMob 경기별 기록은 선수 헤더의 리그 골·도움·분(season_totals.apply_live_totals)과 같은 원천이라, 두 숫자를
+    맞추려고 경기별 분·골·도움도 이걸 우선한다(ESPN 이벤트엔 벨기에 리그·DFB-Pokal 도움이 0건, 2026-10-20 점검)."""
     t = ds.read_table("fotmob_match_ratings", league=league)
     out: dict = {}
     if t is None or t.empty:
         return out
-    t = t.assign(rating=pd.to_numeric(t["rating"], errors="coerce")).dropna(subset=["rating"])
-    for fid, sq, pl, d, r in zip(t["fotmob_id"].astype(str).str.replace(r"\.0$", "", regex=True), t["squad"].astype(str),
-                                 t["player"].astype(str), t["date"].astype(str), t["rating"]):
-        out.setdefault(("id", fid), {})[d[:10]] = round(float(r), 2)
-        out.setdefault(("nm", f"{sq}|{pl}"), {})[d[:10]] = round(float(r), 2)
+    num = lambda c: pd.to_numeric(t[c], errors="coerce") if c in t.columns else pd.Series(float("nan"), index=t.index)  # noqa: E731
+    for fid, sq, pl, d, r, m, g, a in zip(t["fotmob_id"].astype(str).str.replace(r"\.0$", "", regex=True), t["squad"].astype(str),
+                                          t["player"].astype(str), t["date"].astype(str), num("rating"), num("minutes"),
+                                          num("goals"), num("assists")):
+        v = {"r": None if r != r else round(float(r), 2), "m": None if m != m else int(m),
+             "g": None if g != g else int(g), "a": None if a != a else int(a)}
+        out.setdefault(("id", fid), {})[d[:10]] = v
+        out.setdefault(("nm", f"{sq}|{pl}"), {})[d[:10]] = v
     return out
 
 
@@ -1944,19 +1999,28 @@ def _season_log(team: str, player: str, league: str, is_gk: bool = False, fm_id=
         rt = None
     rt = rt or fmd.get(("nm", f"{team}|{player}")) or {}
     rows = []
+    ev_ids = set(ev["event_id"].astype(str).str.replace(r"\.0$", "", regex=True)) if ev is not None else set()
     for r in sch.sort_values("date").itertuples():
         e = r.eid
         on = games.get(e, {}).get(me) if me else None
         mins = round(on[1] - on[0]) if on else 0
         t = evs.get(e, [])
         status = "start" if on and on[0] == 0 else "sub" if on else ("bench" if me and me in listed.get(e, set()) else "out")
+        goals, assists = t.count("goal") + t.count("pen"), t.count("assist")
+        fm = rt.get(str(r.date)[:10]) or {}
+        if fm.get("m"):                                  # FotMob 경기별 기록 우선(헤더와 같은 원천)
+            mins = fm["m"]
+            goals = fm["g"] if fm.get("g") is not None else goals
+            assists = fm["a"] if fm.get("a") is not None else assists
+            if status in ("bench", "out"):              # ESPN 라인업에서 이름을 못 찾은 경기
+                status = "start" if mins >= 60 else "sub"
         rows.append({"date": str(r.date)[:10], "comp": str(r.comp), "comp_code": str(getattr(r, "comp_code", "") or ""),
                      "opponent": str(r.opponent), "home_away": r.home_away, "score": str(r.score or ""), "result": str(r.result or ""),
-                     "status": status, "minutes": mins, "goals": t.count("goal") + t.count("pen"), "pens": t.count("pen"),
-                     "assists": t.count("assist"), "yellow": t.count("yellow"), "red": t.count("red"),
-                     "has_events": ev is not None and e in set(ev["event_id"].astype(str).str.replace(r"\.0$", "", regex=True)),
+                     "status": status, "minutes": mins, "goals": goals, "pens": t.count("pen"),
+                     "assists": assists, "yellow": t.count("yellow"), "red": t.count("red"),
+                     "has_events": e in ev_ids or bool(fm.get("m")),
                      **{k: int(_num((pm.get(e) or {}).get(k))) for k in ("shots", "sot", "saves", "conceded")},
-                     "has_stats": e in pm_events, "rating": rt.get(str(r.date)[:10]) if mins > 0 else None})
+                     "has_stats": e in pm_events, "rating": fm.get("r") if mins > 0 else None})
     by: dict[str, dict] = {}
     for x in rows:
         b = by.setdefault(x["comp"], {"comp": x["comp"], "matches": 0, "apps": 0, "starts": 0, "minutes": 0, "goals": 0,
@@ -5329,6 +5393,30 @@ def standings_live(league: str = ACTIVE_LEAGUE):
     return {"league": league, "table": table, "pending": _league_pending(rows, _today_kst())}
 
 
+@_memo(ttl=3600)
+def _team_xg_pg(league: str) -> dict[str, float]:
+    """팀 경기당 xG 한 곳 — 리그 경기 Understat 경기별 xG(5대 리그, match_stats) 평균, 없으면 Sofascore 선수 xG 합 ÷ 경기 수.
+    예전엔 Overview(Sofascore 1.71)와 Analytics(Understat 1.81)가 다른 값을 보였다(2026-10-20 점검)."""
+    out: dict[str, float] = {}
+    st = ds.read_table("standings", league=league)
+    played = {} if st is None else {str(s): _num(p) for s, p in zip(st["squad"], st["played"])}
+    ms = ds.read_table("match_stats", league=league)
+    if ms is not None and not ms.empty and "xg" in ms.columns:
+        lg = ms[ms["comp_code"].astype(str).str.endswith(".1")].copy()
+        lg["xg"] = pd.to_numeric(lg["xg"], errors="coerce")
+        for sq, g in lg.groupby("squad"):
+            x = g["xg"].dropna()
+            if len(x) and len(x) >= max(1, played.get(str(sq), 0) - 1):   # 리그 경기 거의 전부에 xG 가 있을 때만
+                out[str(sq)] = round(float(x.mean()), 2)
+    t = ds.read_table("players_sofascore_stats", league=league)
+    if t is not None and not t.empty and "expectedGoals" in t.columns:
+        sums = pd.to_numeric(t["expectedGoals"], errors="coerce").groupby(t["squad"]).sum()
+        for sq, v in sums.items():
+            if str(sq) not in out and played.get(str(sq)):
+                out[str(sq)] = round(float(v) / played[str(sq)], 2)
+    return out
+
+
 @app.get("/api/league-lab/{league}")
 @_memo(ttl=21600)
 def league_lab(league: str):
@@ -5336,6 +5424,7 @@ def league_lab(league: str):
     playmakers(도움·xA·빅찬스·키패스) · finishing(골 vs xG) · creating(도움 vs xA) ·
     ball_winners(태클·인터셉트·볼 회수 /90) · team_style(경기당 xG vs 경기당 실점)."""
     t = ds.read_table("players_sofascore_stats", league=league)
+    xg_one = _team_xg_pg(league)                          # 팀 경기당 xG 한 곳(Understat 우선)
     st = ds.read_table("standings", league=league)
     if t is None or t.empty:
         return {"league": league, "playmakers": [], "finishing": [], "creating": [], "ball_winners": [], "team_style": []}
@@ -5378,7 +5467,7 @@ def league_lab(league: str):
             if not pl:
                 continue
             team_style.append({"team": sq, "logo": tm.team_logo(sq), "rank": int(_num(r.get("rank"))),
-                               "xg_pg": round(float(xg_by.get(sq, 0.0)) / pl, 2),
+                               "xg_pg": xg_one.get(sq, round(float(xg_by.get(sq, 0.0)) / pl, 2)),
                                "gf_pg": round(_num(r.get("gf")) / pl, 2), "ga_pg": round(_num(r.get("ga")) / pl, 2)})
     # ── 리그 홈·LEAGUE FOCUS 공용: 전체 순위표 · 우승 경쟁 · 베스트 XI · 득점왕 · 부상 타격 · 전력 대비 · 결과 · 주목할 매치 ──
     import match_center as mc  # noqa: PLC0415
@@ -5407,7 +5496,7 @@ def league_lab(league: str):
                    "won": int(_num(r.get("won"))), "drawn": int(_num(r.get("drawn"))), "lost": int(_num(r.get("lost"))),
                    "gf": int(_num(r.get("gf"))), "ga": int(_num(r.get("ga"))), "gd": int(_num(r.get("gd"))),
                    "points": int(_num(r.get("points"))), "form": mc.recent_form(rows, sq),
-                   "xg_pg": round(float(xg_by.get(sq, 0.0)) / pl, 2) if pl else None,
+                   "xg_pg": xg_one.get(sq, round(float(xg_by.get(sq, 0.0)) / pl, 2)) if pl else None,
                    "ovr": round(float(strength[sq])) if sq in strength else None, "str_rank": str_rank.get(sq),
                    "manager": str((mgrs.get(sq) or {}).get("name") or "")}
             table.append(row)
@@ -5778,6 +5867,17 @@ def team_season(team: str, league: str = ACTIVE_LEAGUE):
         sb_p = _sbp[_sbp["squad"] == team].iloc[0] if _sbp is not None and team in set(_sbp["squad"]) else None
     except Exception:  # noqa: BLE001
         sb_p = None
+    # 근거 숫자(경기당 득점·실점)에는 그 숫자 자체의 리그 순위를 — 지수 순위(옆 칸)와 섞여 '1.57 = 5위 / 7위'로
+    # 둘로 보였다(2026-10-20 점검). 순위는 SQUAD STRENGTH 의 '26/27 1.57 5위'와 같은 계산(경기당 값, 동률은 같은 순위)
+    raw_rank: dict[str, int] = {}
+    st_all = ds.read_table("standings", league=league)
+    if st_all is not None and stand is not None and not st_all.empty:
+        pl_ = pd.to_numeric(st_all["played"], errors="coerce").replace(0, pd.NA)
+        gfp = pd.to_numeric(st_all["gf"], errors="coerce") / pl_
+        gap = pd.to_numeric(st_all["ga"], errors="coerce") / pl_
+        me_gf = float(_num(stand["gf"])) / max(1, int(_num(stand["played"])))
+        me_ga = float(_num(stand["ga"])) / max(1, int(_num(stand["played"])))
+        raw_rank = {"gf": int((gfp.round(4) > round(me_gf, 4)).sum()) + 1, "ga": int((gap.round(4) < round(me_ga, 4)).sum()) + 1}
     if um is not None and team in set(um["squad"]):
         row = um[um["squad"] == team].iloc[0]
         g = int(_num(stand["played"])) if stand is not None else 0
@@ -5789,9 +5889,9 @@ def team_season(team: str, league: str = ACTIVE_LEAGUE):
             rank = int((vals > val).sum()) + 1
             hint = ""
             if hint_kind == "gf" and stand is not None and g:
-                hint = f"경기당 득점 {int(stand['gf']) / g:.2f}"
+                hint = f"경기당 득점 {int(stand['gf']) / g:.2f}" + (f"(기록 {raw_rank['gf']}위)" if raw_rank else "")
             elif hint_kind == "ga" and stand is not None and g:
-                hint = f"경기당 실점 {int(stand['ga']) / g:.2f}"
+                hint = f"경기당 실점 {int(stand['ga']) / g:.2f}" + (f"(기록 {raw_rank['ga']}위)" if raw_rank else "")
             elif hint_kind == "sp" and sb is not None and pd.notna(sb.get("non_penalty_set_piece_goals")):
                 hint = f"세트피스 득점 {int(_num(sb.get('non_penalty_set_piece_goals')))}골"
             prev = prev_rank = None

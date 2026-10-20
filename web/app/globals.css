@@ -1171,6 +1171,7 @@ html, body {
 .pd-comp { padding: 6px 22px 4px; }
 .pd-comp-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 9px; }
 .pd-comp-title { font-size: 12px; font-weight: 700; color: var(--muted); letter-spacing: -0.2px; }
+.pd-comp-ev { font-size: 11.5px; color: var(--muted); }   /* 역할 근거(리그 분 · 유럽 선발 · 부상 결장 제외) */
 .pd-comp-chips { display: flex; flex-wrap: wrap; gap: 7px; }
 .cchip { display: flex; flex-direction: column; gap: 1px; padding: 6px 11px; border: 1px solid var(--line); border-radius: 10px; background: rgba(255,255,255,0.02); }
 .cchip.lg { border-color: rgba(255,255,255,0.14); }

@@ -47,3 +47,25 @@ def test_signing_audit_matches_reordered_names() -> None:
     a = {x["player"]: x for x in _signing_audit("Club Brugge", "BelgianProLeague", player_frame("BelgianProLeague"))}
     if "Han-beom Lee" in a:                                           # 스쿼드 표기 'Lee Han-beom'
         assert a["Han-beom Lee"]["minutes"] > 0
+
+
+def test_no_double_memo_decorator() -> None:
+    """@_memo 를 두 번 겹치면 같은 키 잠금을 두 번 잡아 요청이 영원히 멈춘다(2026-10-20 실수) — 코드에서 막는다."""
+    import re
+    for p in (ROOT / "api").rglob("*.py"):
+        src = p.read_text(encoding="utf-8")
+        assert not re.search(r"@_memo\([^)]*\)\s*\n\s*@_memo\(", src), f"{p}: @_memo 중복"
+
+
+def test_season_log_league_row_matches_header() -> None:
+    """선수 헤더(리그 분·골·도움, FotMob)와 SEASON LOG 리그 줄이 같은 원천 — 벨기에 리그 도움 0건 문제 재발 방지."""
+    from api.main import player_detail
+    for lg, team, player in (("EPL", "Arsenal", "Declan Rice"), ("BelgianProLeague", "Club Brugge", "Hans Vanaken")):
+        try:
+            d = player_detail(team, player, lg)
+        except Exception:  # noqa: BLE001 — 이적 등으로 선수가 없으면 건너뜀
+            continue
+        lig = [b for b in (d.get("season_log") or {}).get("by_comp", []) if b["comp"] == "리그"]
+        if lig and d.get("minutes"):
+            assert (lig[0]["goals"], lig[0]["assists"]) == (d["goals"], d["assists"])
+            assert abs(lig[0]["minutes"] - d["minutes"]) <= 2

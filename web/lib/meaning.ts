@@ -88,7 +88,8 @@ export function ssMeaning(r: number | null | undefined): Meaning {
   if (r >= 6.3) return m("아쉬움", "weak");
   return m("부진", "bad");
 }
-export const SS_NOTE = "평점 = Sofascore 경기 평점 평균(리그 평균 6.8~6.9 · 7.0+ 좋음 · 7.5+ 최상급)";
+export const SS_NOTE = "평점 = 시즌 평점, Sofascore·FotMob 두 출처 평균(같은 척도로 맞춤 · 리그 평균 6.8~6.9 · 7.0+ 좋음 · 7.5+ 최상급). "
+  + "경기별 평점(최근 폼·SEASON LOG RTG)은 FotMob 원래 값이라 조금 높게 나온다";
 
 /** 0~100 적합도·유사도·점수(높을수록 좋음, 50 = 보통). */
 export function scoreMeaning(v: number | null | undefined): Meaning {
