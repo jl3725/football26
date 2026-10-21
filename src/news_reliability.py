@@ -36,6 +36,9 @@ GRACE_DAYS = 7
 PRIOR = 4.0          # 베타 사전분포 세기(가상 표본 수) — 판정 4건짜리 매체가 100% 로 1등이 되지 않게
 MIN_N = 3            # 이보다 적게 판정된 매체·기자는 표에 'few' 로
 STAGES = {"interest", "talks", "agreed", "done", "denied"}
+# 경기 리포트·평점 기사 — 분류기가 이적 기사로 잘못 본 것(ESPN /report/_/gameId · Guardian /match-report).
+# 예: "Madueke sinks Nottingham Forest with Arsenal's only shot" 이 Madueke → Forest 관심으로 잡혔다(2026-10-21)
+MATCH_REPORT = re.compile(r"match-?report|/report/|player-ratings|/live/|/match/", re.I)
 ROUNDUP = re.compile(r"round-?up|gossip|rumou?rs?\s*[:,]|transfer news|live\b|latest\b|\bas it happened|recap", re.I)
 
 
@@ -166,6 +169,8 @@ def claims(today: dt.date | None = None) -> pd.DataFrame:
     for a in arts.itertuples(index=False):
         g = by_link.get(a.link)
         if g is None or a.stage not in STAGES:                     # 단계 낱말이 없는 이적 기사는 루머로 안 본다
+            continue
+        if MATCH_REPORT.search(str(a.link)):
             continue
         try:
             day = dt.date.fromisoformat(str(a.published or a.first_seen)[:10])

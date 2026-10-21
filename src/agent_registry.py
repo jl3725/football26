@@ -70,7 +70,7 @@ AGENTS: tuple[Agent, ...] = (
               Feed("sofascore", "Sofascore 평점", ("sofascore", "merge_sofascore"),
                    ("local-sofascore-daily", "local-season-weekly"), "매일 11:40 KST(이 PC)", 48,
                    ("players_sofascore_stats_*",)),
-              Feed("fotmob", "FotMob 평점·최근 폼·골·도움", ("fotmob_ratings", "fotmob_matches"), ("daily_data", "match_refresh"),
+              Feed("fotmob", "FotMob 평점·최근 폼·골·도움·경기별 세부 기록(전 대회)", ("fotmob_ratings", "fotmob_matches"), ("daily_data", "match_refresh"),
                    "매일 2회 · 경기 20분 뒤", 30, ("fotmob_*",)),
               Feed("understat", "xG 계열(Understat)", ("understat_live",), ("match_refresh",), "매일 · 경기 20분 뒤", 36,
                    ("understat_players_*",)),

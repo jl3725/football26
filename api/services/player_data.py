@@ -273,6 +273,15 @@ def _build_frame(league: str, season: str | None = None):
             frame = st.apply_gk_live(frame, ds.read_table("players_sofascore_stats", league=league))   # GK 클린시트% 최신
         except Exception as e:  # noqa: BLE001 — 경기별 기록이 없으면 FBref 그대로
             print(f"[season_totals] {league}: 건너뜀 {type(e).__name__}: {e}")
+        # 유럽·컵 평점(이번·지난 시즌) — OVR 경기력이 리그 평점만 보던 것(src/allcomp_stats.py, 2026-10-21 PSG)
+        try:
+            import allcomp_stats as acs  # noqa: PLC0415
+            from leagues import SEASON_START as _S0  # noqa: PLC0415
+            rd = lambda t, lg, s: ds.read_table(t, league=lg, season=s)   # noqa: E731
+            ver = ds._db_mtime()
+            frame = acs.attach_x(frame, acs.x_tables(rd, f"{_S0}_{_S0 + 1}", ver), acs.x_tables(rd, f"{_S0 - 1}_{_S0}", ver))
+        except Exception as e:  # noqa: BLE001 — 경기별 기록이 없으면 리그 평점만
+            print(f"[allcomp] {league}: 건너뜀 {type(e).__name__}: {e}")
     import ratings_v3 as rv3  # noqa: PLC0415
     try:
         frame["_line"] = _played_line(frame, season)

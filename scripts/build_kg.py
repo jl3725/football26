@@ -12,12 +12,13 @@
        (Player)-[:CAPTAIN_OF {rank, role}]->(Club)      # 주장단(위키 스쿼드 표)
        (Player)-[:MENTIONED_WITH {articles, last}]-(Player)  # 최근 60일 같은 기사에 함께 나옴(뉴스 선수 태그)
        (Player)-[:CALLED_UP {squad_for, caps, goals}]->(Country)  # 대표팀 소집(위키 Current squad)
+       (Player)-[:LINKED_TO {heat, stage, tm_prob, news, outlets, last}]->(Club)  # 이적설(TM 루머 + 뉴스, src/rumor_map.py)
 속성 보강: Player(contract_until·career_games_missed·career_spells·ovr·form·recent·xg_p90·influence·
           captain_rank·injured_now·news_60d·active), Club(europe_coefficient), Country(fifa_rank·fifa_points)
 골·도움·출전 분·OVR 은 화면과 같은 선수 표(api/services/player_data.player_frame — FotMob·Understat 매일 반영)에서.
 
 정리(2026-10-20): MERGE 만 하던 때는 팀을 떠난 선수의 PLAYS_FOR·바뀐 감독의 MANAGES 가 남았다. 이번 실행에서
-다시 확인된 관계에 seen=실행 시각을 달고, 못 본 PLAYS_FOR·MANAGES·CAPTAIN_OF·MENTIONED_WITH·CALLED_UP 은 지운다.
+다시 확인된 관계에 seen=실행 시각을 달고, 못 본 PLAYS_FOR·MANAGES·CAPTAIN_OF·MENTIONED_WITH·CALLED_UP·LINKED_TO 는 지운다.
 이번에 안 보인 선수 노드는 지우지 않고 active=false(이적 기록이 가리키므로).
 주간 자동 재적재: .github/workflows/kg_reload.yml
 
@@ -379,6 +380,55 @@ def _load_callups(n2p_by_league: dict) -> list[dict]:
     return rows
 
 
+def _load_rumor_links(n2p_by_league: dict) -> list[dict]:
+    """이적설 연결(src/rumor_map.collect — TM 루머 + 열린 시장 뉴스 루머, 매체 적중률 가중) → LINKED_TO 행.
+    우리 데이터에 없는 선수(8개 리그 밖)는 'rumor:이름' 외부 노드로 — 같은 표적을 쫓는 클럽끼리 그래프로 이어지게."""
+    import datetime as dt  # noqa: PLC0415
+
+    import rumor_map as rm  # noqa: PLC0415
+    import team_names as tnm  # noqa: PLC0415
+    clubs: list[str] = []
+    for lg in LEAGUE_META:
+        try:
+            clubs += list(pd.read_csv(data_path("players_full", lg))["squad"].dropna().astype(str).unique())
+        except (OSError, ValueError, KeyError):
+            pass
+    known = set(clubs)
+    cache: dict = {}
+
+    def canon(n: str):
+        if n not in cache:
+            cache[n] = n if n in known else tnm.best(n, clubs)
+        return cache[n]
+    tm_rows = []
+    for lg in LEAGUE_META:
+        try:
+            t = pd.read_csv(data_path("transfer_rumors", lg))
+        except (OSError, ValueError):
+            continue
+        tm_rows += [{"player": r.get("player"), "target_club": r.get("target_club"), "current_club": r.get("current_club"),
+                     "probability": r.get("probability"), "date": r.get("date")} for r in t.to_dict("records")]
+    claims, scores = [], {}
+    cp, rp = ROOT / "data" / "news_claims.csv", ROOT / "data" / "news_reliability.csv"
+    if cp.exists():
+        c = pd.read_csv(cp)
+        claims = c[c["status"].astype(str) == "pending"].to_dict("records")
+    if rp.exists():
+        r = pd.read_csv(rp)
+        scores = {str(x.name): float(x.score) for x in r[(r["kind"] == "outlet") & (~r["few"].astype(bool))].itertuples()}
+    links = rm.collect(tm_rows, claims, canon, rm.outlet_factor(scores), dt.date.today())
+    rows = []
+    for lk in links.values():
+        if lk["heat"] <= 0:
+            continue
+        k = _norm(lk["player"])
+        pid = next((m[k] for m in n2p_by_league.values() if k in m), None)
+        rows.append({"pid": pid or f"rumor:{k}", "name": lk["player"], "to": lk["to"], "heat": lk["heat"],
+                     "stage": lk["stage"], "prob": (lk["tm"] or {}).get("prob"), "news": len(lk["news"]),
+                     "outlets": lk["outlets"], "last": lk["last"]})
+    return rows
+
+
 def _batched(session, cypher, rows, batch=500, **params):
     for i in range(0, len(rows), batch):
         session.run(cypher, rows=rows[i:i + batch], **params)
@@ -480,13 +530,20 @@ def main() -> int:
         _batched(s, "UNWIND $rows AS r MATCH (p:Player {id:r.pid}) MERGE (co:Country {name:r.nation}) "
                     "MERGE (p)-[c:CALLED_UP]->(co) SET c.squad_for=r.sf, c.caps=r.caps, c.goals=r.goals, c.seen=$run",
                  calls, run=RUN)
-        print(f"  기사 동시 언급 {len(pairs)}쌍 · 대표팀 소집 {len(calls)}명 · 주장단 {tot['cap']}명")
+        rumors = _load_rumor_links(n2p_by_league)
+        _batched(s, "UNWIND $rows AS r MERGE (p:Player {id:r.pid}) "
+                    "  ON CREATE SET p.name=r.name, p.external=true, p.active=false "
+                    "MERGE (c:Club {name:r.to}) MERGE (p)-[l:LINKED_TO]->(c) "
+                    "SET l.heat=r.heat, l.stage=r.stage, l.tm_prob=r.prob, l.news=r.news, l.outlets=r.outlets, "
+                    "    l.last=r.last, l.seen=$run", rumors, run=RUN)
+        print(f"  기사 동시 언급 {len(pairs)}쌍 · 대표팀 소집 {len(calls)}명 · 주장단 {tot['cap']}명 · 이적설 {len(rumors)}건")
 
         # 이번 실행에서 다시 확인 안 된 관계 정리 — 떠난 선수의 소속·바뀐 감독·지난 주장·옛 소집·오래된 동시 언급
-        for rel in ("PLAYS_FOR", "MANAGES", "CAPTAIN_OF", "MENTIONED_WITH", "CALLED_UP"):
+        for rel in ("PLAYS_FOR", "MANAGES", "CAPTAIN_OF", "MENTIONED_WITH", "CALLED_UP", "LINKED_TO"):
             n = s.run(f"MATCH ()-[r:{rel}]-() WHERE coalesce(r.seen, '') <> $run "
                       "WITH DISTINCT r DELETE r RETURN count(r) AS n", run=RUN).single()["n"]
             print(f"  정리 {rel}: {n}")
+        s.run("MATCH (p:Player {external:true}) WHERE NOT (p)--() DETACH DELETE p")   # 이적설이 식은 외부 선수
         gone = s.run("MATCH (p:Player) WHERE coalesce(p.seen, '') <> $run SET p.active=false RETURN count(p) AS n",
                      run=RUN).single()["n"]
         print(f"  이번에 안 보인 선수 active=false: {gone}")

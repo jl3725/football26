@@ -12,6 +12,7 @@ import NetNations from "./NetNations";
 import NetLinks from "./NetLinks";
 import NetTies from "./NetTies";
 import NetManager from "./NetManager";
+import NetRumors from "./NetRumors";
 
 // NETWORK 탭 — 팀 지식그래프(/api/network). 선수·클럽·국가·이적·출전 관계를 다섯 렌즈로 보고,
 // 맨 위 GRAPH INSIGHTS 는 그래프 경로를 근거로 붙인 자동 요약(카드를 누르면 그 렌즈로).
@@ -23,6 +24,7 @@ const LENSES = [
   { k: "nations", en: "NATIONS", ko: "국적·대표팀 동료" },
   { k: "ties", en: "TIES", ko: "전 소속 동료" },
   { k: "links", en: "LINKS", ko: "클럽 관계망" },
+  { k: "rumors", en: "RUMOURS", ko: "이적설 지도" },
   { k: "manager", en: "MANAGER", ko: "감독 커리어" },
 ] as const;
 type Lens = (typeof LENSES)[number]["k"];
@@ -112,10 +114,11 @@ export default function NetworkTab({ team, accent }: { team: string; accent: str
         {lens === "ties" && <NetTies d={d} accent={accent} />}
         {lens === "links" && <NetLinks d={d} accent={accent} />}
         {lens === "manager" && <NetManager d={d} accent={accent} />}
+        {lens === "rumors" && <NetRumors team={team} accent={accent} logo={d.logo} />}
       </div>
       <p className="net-src">
         관계 원천 — 함께 뛴 시간: ESPN 라인업·교체(이번·지난 시즌) · 주장단·등번호·감독 경력: Wikipedia ·
-        입단·이적: Transfermarkt · 국적·순위: FIFA 랭킹 · 대표팀: 2026 월드컵 명단 · 이적설: Transfermarkt 루머.
+        입단·이적: Transfermarkt · 국적·순위: FIFA 랭킹 · 대표팀: 2026 월드컵 명단 · 이적설: Transfermarkt 루머 + 뉴스 루머(매체 적중률 가중).
         같은 관계를 지식그래프(Neo4j)로도 적재한다.
       </p>
     </div>

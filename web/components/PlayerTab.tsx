@@ -10,6 +10,7 @@ import { MeaningTag } from "./Meaning";
 import Radar from "./Radar";
 import HeatmapPitch from "./HeatmapPitch";
 import ComparePanel from "./ComparePanel";
+import ComparePicker, { type CmpRef } from "./ComparePicker";
 import { usePeek } from "./PlayerPeek";
 import { Skel, SkelCards } from "./Skeleton";
 import { TrendArrow, TrendLine } from "./Trend";
@@ -64,13 +65,14 @@ function Detail({ team, player, accent, heatmap }: { team: string; player: strin
   const [sim, setSim] = useState<SimilarResult[]>([]);
   const [simScope, setSimScope] = useState<"all" | "league">("all");   // 유사 선수 — 8개 리그 | 같은 리그
   const [basis, setBasis] = useState<"blend" | "season">("blend");     // 세부 지표 — 시즌 초 안정화 | 이번 시즌만
+  const [comps, setComps] = useState<"all" | "league">("all");          // 세부 지표 — 전 대회(리그 + 유럽·컵) | 리그만
   const peek = usePeek();
   const hm = heatmap?.players?.find((p) => p.player === player);
   useEffect(() => {
     let a = true; setD(null); setSim([]);
-    getPlayerDetail(team, player, undefined, basis).then((x) => a && setD(x)).catch(() => {});
+    getPlayerDetail(team, player, undefined, basis, comps).then((x) => a && setD(x)).catch(() => {});
     return () => { a = false; };
-  }, [team, player, basis]);
+  }, [team, player, basis, comps]);
   useEffect(() => {
     let a = true; setSim([]);
     getSimilar(player, undefined, simScope).then((x) => a && setSim(x.results)).catch(() => {});
@@ -87,7 +89,9 @@ function Detail({ team, player, accent, heatmap }: { team: string; player: strin
     </div>
   );
   const t = tier(d.ovr);
-  const enough = d.minutes >= (d.is_gk ? 300 : 450);    // 백분위 지표를 보여 줄 만큼 뛰었나(2분 뛴 선수 레이더 0 문제)
+  // 백분위 지표를 보여 줄 만큼 뛰었나(2분 뛴 선수 레이더 0 문제) — 전 대회면 리그 + 유럽·컵(가중) 분, 비교 대상과 같은 기준
+  const sampleMin = d.template?.comps === "all" ? (d.template.league_minutes ?? d.minutes) + (d.template.x_minutes ?? 0) : d.minutes;
+  const enough = sampleMin >= (d.is_gk ? 300 : 450);
   return (
     <div className="card pd-card">
       <div className="pd-head" style={{ background: `linear-gradient(120deg, ${hexA(d.color, 0.28)}, transparent)` }}>
@@ -188,15 +192,22 @@ function Detail({ team, player, accent, heatmap }: { team: string; player: strin
       {d.template ? (
         <div className="pd-tpl">
           <span className="pd-tpl-k">{d.template.en}</span>
-          <span>{d.template.ko} 템플릿 · 리그 경기 기준 · <b>{d.template.scope === "리그" ? "같은 리그" : "8개 리그"} {d.template.ko} {d.template.n}명</b> 대비 백분위(컵·유럽 제외) · 회색 = 시도 10회 미만</span>
-          <span className="it-chips pd-basis">{([["blend", "안정화"], ["season", "이번 시즌만"]] as const).map(([v, l]) => (
-            <button key={v} className={basis === v ? "on" : ""} onClick={() => setBasis(v)}>{l}</button>))}</span>
+          <span>{d.template.ko} 템플릿 · {d.template.comps === "league" ? "리그 경기만" : "전 대회(리그 + 유럽·컵)"} · <b>{d.template.scope === "리그" ? "같은 리그" : "8개 리그"} {d.template.ko} {d.template.n}명</b> 대비 백분위 · 회색 = 시도 10회 미만</span>
+          <span className="pd-basis">
+            <span className="it-chips">{([["all", "전 대회"], ["league", "리그만"]] as const).map(([v, l]) => (
+              <button key={v} className={comps === v ? "on" : ""} onClick={() => setComps(v)}>{l}</button>))}</span>
+            <span className="it-chips">{([["blend", "안정화"], ["season", "이번 시즌만"]] as const).map(([v, l]) => (
+              <button key={v} className={basis === v ? "on" : ""} onClick={() => setBasis(v)}>{l}</button>))}</span>
+          </span>
           <span className="pd-basis-note">
             {d.template.basis === "blend" && (d.template.prior_minutes ?? 0) > 0
               ? <>이번 시즌 {(d.template.cur_minutes ?? 0).toLocaleString()}′ + 지난 시즌 {(d.template.prior_minutes ?? 0).toLocaleString()}′치를 섞음(지난 시즌 비중 {Math.round((d.template.prior_share ?? 0) * 100)}% — 출전이 쌓일수록 줄어듦)</>
               : d.template.basis === "blend" ? <>지난 시즌 기록이 없어 이번 시즌 {(d.template.cur_minutes ?? 0).toLocaleString()}′만</>
               : <>이번 시즌 {(d.template.cur_minutes ?? 0).toLocaleString()}′만 — 시즌 초엔 몇 경기로 크게 흔들림</>}
             {d.template.possession != null && <> · 수비 횟수는 팀 점유율 {d.template.possession}% 보정(×{d.template.padj}, 50% 기준)</>}
+            {d.template.comps === "all" && (d.template.x_comps?.length
+              ? <> · 리그 {(d.template.league_minutes ?? 0).toLocaleString()}′ + {d.template.x_comps.map((c) => `${c.name} ${c.minutes}′${c.weight < 1 ? `(×${c.weight})` : ""}`).join(" · ")} — 유럽·컵은 FotMob 경기별 기록을 리그 표 척도로 맞춰 섞음</>
+              : <> · 이번 시즌 유럽·컵 출전 없음 — 리그 기록만</>)}
           </span>
         </div>
       ) : d.peers?.n > 0 && (
@@ -217,7 +228,7 @@ function Detail({ team, player, accent, heatmap }: { team: string; player: strin
         </div>
       )}
       {!enough && (
-        <div className="pd-sample">표본 부족 — 리그 {d.minutes.toLocaleString()}′ 출전({d.is_gk ? 300 : 450}′ 미만)이라 백분위 지표를 접었습니다. 출전이 쌓이면 자동으로 나옵니다.</div>
+        <div className="pd-sample">표본 부족 — {d.template?.comps === "all" ? "전 대회" : "리그"} {Math.round(sampleMin).toLocaleString()}′ 출전({d.is_gk ? 300 : 450}′ 미만)이라 백분위 지표를 접었습니다. 출전이 쌓이면 자동으로 나옵니다.</div>
       )}
       {enough && <div className="pd-body">
         <div className="pd-cats">
@@ -277,6 +288,7 @@ export default function PlayerTab({ team, accent, initialPlayer, onPlayer }: {
   const [sel, setSel] = useState<string | null>(null);
   const [cmpMode, setCmpMode] = useState(false);   // 비교 모드
   const [cmp, setCmp] = useState<string | null>(null);   // 2번째(B) 선수
+  const [cmpExt, setCmpExt] = useState<CmpRef | null>(null);   // B — 다른 클럽·리그 선수(P2 ⑥)
   const [hm, setHm] = useState<HeatmapData | null>(null);
   // SCOUT REPORT 한 장 — 주소 &report=1 로 바로 열기(공유 링크), 열고 닫을 때 주소에 반영
   const [report, setReport] = useState(false);
@@ -294,7 +306,7 @@ export default function PlayerTab({ team, accent, initialPlayer, onPlayer }: {
   useEffect(() => { let a = true; setHm(null); getHeatmaps(team).then((x) => a && setHm(x)).catch(() => a && setHm(null)); return () => { a = false; }; }, [team]);
   useEffect(() => {
     let a = true;
-    setData(null); setSel(null); setCmp(null);
+    setData(null); setSel(null); setCmp(null); setCmpExt(null);
     getPlayers(team).then((d) => {
       if (!a) return;
       setData(d);
@@ -315,7 +327,7 @@ export default function PlayerTab({ team, accent, initialPlayer, onPlayer }: {
 
   const CB = "#e0a05e";
   const onCard = (name: string) => {
-    if (cmpMode) { if (name !== sel) setCmp(name === cmp ? null : name); }
+    if (cmpMode) { if (name !== sel) { setCmp(name === cmp ? null : name); setCmpExt(null); } }
     else {
       setSel(name);
       // 모바일(가로 띠 목록)에선 상세가 아래에 있으므로 고른 선수 상세로 내려 준다
@@ -331,7 +343,7 @@ export default function PlayerTab({ team, accent, initialPlayer, onPlayer }: {
           title="고른 선수를 한 장으로 — 판단 요약·강약점·폼·가용성·계약·이적설·대안, 인쇄해 PDF 로">
           SCOUT REPORT <em>리포트</em>
         </button>
-        <button onClick={() => { setCmpMode((m) => !m); setCmp(null); }}
+        <button onClick={() => { setCmpMode((m) => !m); setCmp(null); setCmpExt(null); }}
           style={{ padding: "6px 14px", borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: "pointer",
             border: `1px solid ${hexA(accent, 0.3)}`, background: cmpMode ? accent : "transparent", color: cmpMode ? "#0a0a0a" : "inherit" }}>
           ⚖ 선수 비교{cmpMode ? " ON" : ""}
@@ -359,9 +371,13 @@ export default function PlayerTab({ team, accent, initialPlayer, onPlayer }: {
         </div>
         <div className="pl-detail">
           {cmpMode
-            ? (sel && cmp
-                ? <ComparePanel team={team} a={sel} b={cmp} accent={accent} onClear={() => setCmp(null)} />
-                : <div className="card"><div className="mgr-meta" style={{ padding: 20 }}>비교할 <b>2번째 선수(B)</b>를 왼쪽에서 선택하세요. (현재 A: {sel})</div></div>)
+            ? (<>
+                <ComparePicker exclude={sel ?? undefined} onPick={(r) => { setCmpExt(r); setCmp(null); }} />
+                {sel && (cmpExt || cmp)
+                  ? <ComparePanel team={team} a={sel} b={cmpExt?.player ?? cmp!} bTeam={cmpExt?.team} bLeague={cmpExt?.league}
+                      accent={accent} onClear={() => { setCmp(null); setCmpExt(null); }} />
+                  : <div className="card"><div className="mgr-meta" style={{ padding: 20 }}>비교할 <b>2번째 선수(B)</b>를 왼쪽 카드에서 고르거나, 위에서 <b>다른 클럽·리그 선수</b>를 검색하세요. (현재 A: {sel})</div></div>}
+              </>)
             : (sel && <Detail team={team} player={sel} accent={accent} heatmap={hm} />)}
         </div>
       </div>

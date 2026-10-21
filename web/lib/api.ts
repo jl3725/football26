@@ -270,7 +270,9 @@ export type PlayerDetail = {
   radar: { axis: string; value: number; low?: boolean; full?: string }[];
   // 포지션 템플릿(src/position_templates.py) — GK·CB·FB·DM·CM·AM·W·ST, 같은 템플릿 비교 대상 수·범위(리그 | 8개 리그)
   template?: { key: string; en: string; ko: string; n: number; scope: string;
-    basis?: "blend" | "season"; cur_minutes?: number; prior_minutes?: number; prior_share?: number; possession?: number | null; padj?: number };
+    basis?: "blend" | "season"; cur_minutes?: number; prior_minutes?: number; prior_share?: number; possession?: number | null; padj?: number;
+    comps?: "all" | "league"; league_minutes?: number; x_minutes?: number; x_comps?: { code: string; name: string; minutes: number; weight: number }[] };
+  league?: string; league_level?: number; rating_epl?: number | null; proj?: Record<string, number>;
   categories_line?: MetricCat[]; radar_line?: { axis: string; value: number }[];   // 라인 공통 축(포지션 다른 선수 비교용)
   badges: Badge[];
   comp_usage: CompProfile;
@@ -382,8 +384,10 @@ export const getMatch = (t: string, eid: string, l = _league) =>
   j<MatchDetail>(`/api/match/${encodeURIComponent(t)}/${encodeURIComponent(eid)}?league=${encodeURIComponent(l)}`);
 export const getPlayers = (t: string, l = _league) => j<Players>(`/api/players/${q(t, l)}`);
 // basis — blend(기본: 시즌 초 안정화 + 점유율 보정) | season(이번 시즌만, 점유율 보정은 유지)
-export const getPlayerDetail = (t: string, p: string, l = _league, basis: "blend" | "season" = "blend") =>
-  j<PlayerDetail>(`/api/player/${encodeURIComponent(t)}/${encodeURIComponent(p)}?league=${encodeURIComponent(l)}${basis === "season" ? "&basis=season" : ""}`);
+// comps — all(기본: 리그 + 유럽·컵) | league(리그만) · peers=all — 8개 리그 같은 템플릿과 비교(리그 간 비교)
+export const getPlayerDetail = (t: string, p: string, l = _league, basis: "blend" | "season" = "blend",
+  comps: "all" | "league" = "all", peers: "auto" | "all" = "auto") =>
+  j<PlayerDetail>(`/api/player/${encodeURIComponent(t)}/${encodeURIComponent(p)}?league=${encodeURIComponent(l)}${basis === "season" ? "&basis=season" : ""}${comps === "league" ? "&comps=league" : ""}${peers === "all" ? "&peers=all" : ""}`);
 export const getTransfers = (t: string, l = _league) => j<Transfers>(`/api/transfers/${q(t, l)}`);
 export const getNews = (t: string, l = _league) => j<News>(`/api/news/${q(t, l)}`);
 export const getAnalytics = (t: string, l = _league) => j<Analytics>(`/api/analytics/${q(t, l)}`);
@@ -453,6 +457,23 @@ export type NetManager = {
   network?: { manager: string; team: string; league: string; photo: string; logo: string; shared: { club: string; mine: string; theirs: string }[] }[];
 };
 export const getNetwork = (t: string, l = _league) => j<NetworkData>(`/api/network/${q(t, l)}`);
+// 이적설 지도(NETWORK RUMOURS 렌즈) — TM 루머 + 열린 시장 뉴스 루머(매체 적중률 가중), src/rumor_map.py
+export type RumorStage = "denied" | "rumour" | "interest" | "talks" | "agreed" | "done";
+export type RumorNews = { outlet: string; journalists: string; stage: RumorStage; date: string; link?: string; headline?: string; trust: number };
+export type RumorClub = { club: string; logo: string; league: string | null };
+export type RumorWhere = { name: string; club: string; league: string; photo: string; ovr: number; age: number | null; minutes: number };
+export type RumorLink = { player: string; from: string; to: string; heat: number; stage: RumorStage;
+  tm: { prob: number | null; date: string } | null; news: RumorNews[]; n_news: number; outlets: string[]; last: string | null;
+  info: { age?: number; pos?: string; value?: number } };
+export type RumorIn = RumorLink & { where: RumorWhere | null; from_meta: RumorClub | null;
+  rivals: (RumorClub & { heat: number; stage: RumorStage })[] };
+export type RumorOut = { player: string; key: string; heat: number; where: RumorWhere | null; suitors: (RumorLink & { to_meta: RumorClub })[] };
+export type RumorMap = { available: boolean; reason?: string | null; team: string; logo: string; color: string;
+  in: RumorIn[]; out: RumorOut[]; n_in: number; n_out: number;
+  competition: (RumorClub & { players: string[]; score: number })[];
+  outlets: { outlet: string; n: number; trust: number }[];
+  stages: Record<string, { hits: number; n: number; rate: number }>; sources: { links: number; with_news: number } };
+export const getRumorMap = (t: string, l = _league) => j<RumorMap>(`/api/rumor-map/${q(t, l)}`);
 export const getSimilar = (p: string, l = _league, scope: "all" | "league" = "all") =>
   j<{ player: string; results: SimilarResult[]; league?: string; scope?: string }>(`/api/similar/${encodeURIComponent(p)}?league=${encodeURIComponent(l)}&scope=${scope}`);
 export const getRecommend = (t: string, l = _league) => j<Recommend>(`/api/recommend/${q(t, l)}`);

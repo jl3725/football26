@@ -1,0 +1,326 @@
+"""
+전 대회(리그 + 유럽 + 국내 컵) 선수 기록 — FotMob 경기별 기록(src/fetch_fotmob_matches.py → fotmob_match_ratings_*).
+
+2026-10-21 사용자: "리그 기준으로만 선수 스탯 계산하나요? 챔스·컵도 포함해야 데이터가 늘고 신빙성이 늘지 않을까요",
+"PSG 가 지난 시즌 챔스 우승했는데 바르샤보다 많이 낮다". 리그 표(FBref·Sofascore)는 리그 경기만이라 유럽·컵 활약이
+OVR 경기력·세부 지표에 들어가지 않았다(유럽은 선발 수 기반 BIG MATCH +0.7 상한뿐). 두 가지를 더한다.
+
+1) 전 대회 평점(OVR 경기력 입력) — attach_x
+   리그 밖 경기의 FotMob 평점을 같은 위치의 Sofascore 척도(rating_blend.fm_to_ss)로 바꿔, 경기마다 '상대 수준'과
+   '가중'을 붙인다. ratings_v3._class_parts 가 리그 평점과 나란한 표본으로 섞는다(리그 보정과 같은 방식).
+     상대 수준(EPL 평균 상대 = 100, 평점 보정 0.02/레벨): 그 경기 날 아침 상대 팀 Elo(src/team_elo.py — 일정 파일로
+       직접 계산, 리그 평균 = 1500 + (레벨 − 80) × 10 이라 같은 눈금) → 80 + (Elo − 1500)/10, LVL_MIN~LVL_MAX 로 자름.
+       리그 평점은 '그 리그 평균 상대'를 만난 값이고, 유럽·컵은 상대가 들쭉날쭉하다(맨시티 123 · 슬로반 79).
+       Elo 를 못 찾으면 대회 기준 — UCL 100/90 · UEL 94/86 · UECL 90/82(우리 8개 리그 상대면 그 리그 수준과 하한 중 큰 값),
+       국내 컵은 상대 리그 수준(하부 리그 팀이면 자기 리그 −12)
+     가중(출전 분 ×): 유럽 1.0, 국내 컵 0.5(로테이션·하부 리그 상대)
+   지난 시즌 유럽·컵(--season prev 수집)도 같은 방식으로 prev_x_* 에 — 지난 시즌 챔스 우승 활약이 들어간다.
+
+2) 전 대회 세부 지표(선수 화면 템플릿 레이더, comps=all) — combine
+   리그 값은 우리 표 그대로 두고, 리그 밖 경기의 FotMob 세부 기록을 per90·비율로 만들어 출전 분(×가중)으로 섞는다.
+   제공처가 달라(리그 표 = FBref·Sofascore, 리그 밖 = FotMob) 같은 선수들의 '리그 경기' 값으로 지표마다 척도를 맞춘다
+   (calibrate — 횟수는 비율, 성공률은 차이. 25/26·26/27 리그 경기 450′+ 선수 전원, 시즌마다 자동으로 다시 잰다).
+"""
+from __future__ import annotations
+
+import pandas as pd
+
+LEAGUE_CODES = {"eng.1", "esp.1", "ita.1", "ger.1", "fra.1", "por.1", "ned.1", "bel.1"}
+EURO = {"uefa.champions": (100.0, 90.0), "uefa.europa": (94.0, 86.0), "uefa.europa.conf": (90.0, 82.0)}
+CUP_DROP = 12.0                 # 국내 컵 하부 리그 상대 — 자기 리그 수준에서 뺀다
+LVL_MIN, LVL_MAX = 75.0, 115.0  # 상대 Elo 수준 범위 — 평점 보정 +0.5 ~ −0.3(한 경기 상대가 OVR 을 크게 흔들지 않게)
+W_EURO, W_CUP = 1.0, 0.5
+
+# 우리 지표 열 ← FotMob 세부 기록: ('n', 분자) = per90, ('p', 성공, 시도) = %, ('p2', 승, 패) = 승/(승+패) %
+MAP = {
+    "npxg_p90": ("n", "npxg"), "shots_p90": ("n", "shots"), "sot_per90": ("n", "sot"), "xa_p90": ("n", "xa"),
+    "key_passes_per90": ("n", "chances"), "big_chances_created_per90": ("n", "bigc"),
+    "final_third_passes_per90": ("n", "f3"), "pass_pct": ("p", "pass_acc", "pass_tot"),
+    "long_ball_pct": ("p", "long_acc", "long_tot"), "successful_dribbles_per90": ("n", "drib_won"),
+    "dribble_success_pct": ("p", "drib_won", "drib_tot"), "crosses_per90": ("n", "cross_tot"),
+    "cross_acc_pct": ("p", "cross_acc", "cross_tot"), "tackles_won_per90_ss": ("n", "tackles"),
+    "interceptions_per90_ss": ("n", "ints"), "recoveries_per90": ("n", "recov"), "clearances_per90": ("n", "clear"),
+    "blocked_shots_per90": ("n", "blocks"), "aerial_won_per90": ("n", "aer_won"),
+    "aerial_won_pct": ("p", "aer_won", "aer_tot"), "ground_duels_won_per90": ("n", "grd_won"),
+    "ground_duels_won_pct": ("p", "grd_won", "grd_tot"), "total_duels_won_pct": ("p2", "duel_won", "duel_lost"),
+    "fouls_per90": ("n", "fouls"), "gk_saves_per90": ("n", "saves"), "gk_save_pct": ("p2", "saves", "conceded"),
+    "gk_high_claims_per90": ("n", "high_claim"), "gk_runs_out_per90": ("n", "sweeper"), "gk_punches_per90": ("n", "punches"),
+}
+CAL_MIN = 450                   # 척도 맞추기 표본 — 리그 경기 450′+
+CAL_N = 30
+
+
+def _num(s) -> pd.Series:
+    return pd.to_numeric(s, errors="coerce")
+
+
+def fid_of(v) -> str | None:
+    try:
+        return str(int(float(v))) if v is not None and v == v and float(v) > 0 else None
+    except (TypeError, ValueError):
+        return None
+
+
+def kind(code) -> str:
+    c = str(code or "")
+    return "league" if c in LEAGUE_CODES else "euro" if c in EURO else "cup"
+
+
+def match_level(code, own_level: float, opp_level: float | None) -> float:
+    """리그 밖 경기 하나의 대회 수준(EPL=100)."""
+    c = str(code or "")
+    if c in EURO:
+        top, floor = EURO[c]
+        return min(top, max(floor, opp_level)) if opp_level is not None else floor
+    return opp_level if opp_level is not None else own_level - CUP_DROP
+
+
+def elo_level(elo: float) -> float:
+    """팀 Elo → 같은 눈금의 수준(리그 평균 Elo = 1500 + (레벨 − 80) × 10 의 역)."""
+    return min(LVL_MAX, max(LVL_MIN, 80.0 + (float(elo) - 1500.0) / 10.0))
+
+
+def prep(mr: pd.DataFrame | None, levels: dict, team_league: dict, opp_elo=None) -> pd.DataFrame:
+    """경기별 기록 → 리그 밖 행만 + _w(가중)·_lvl(상대 수준)·_fid. levels = {리그: 수준}, team_league = {팀: 리그},
+    opp_elo(상대 이름, 날짜) → 그날 아침 Elo | None."""
+    if mr is None or mr.empty:
+        return pd.DataFrame()
+    d = mr[mr["comp_code"].map(kind) != "league"].copy()
+    if d.empty:
+        return d
+    d["minutes"] = _num(d["minutes"]).fillna(0)
+    d = d[d["minutes"] > 0]
+    own = d["squad"].astype(str).map(team_league).map(levels)
+    opp = d["opponent"].astype(str).map(team_league).map(levels)
+    lv = []
+    for c, o, p, nm, dt_ in zip(d["comp_code"], own, opp, d["opponent"].astype(str), d["date"].astype(str)):
+        e = opp_elo(nm, dt_) if opp_elo else None
+        lv.append(elo_level(e) if e is not None else match_level(c, float(o) if o == o else 100.0, float(p) if p == p else None))
+    d["_lvl"] = lv
+    d["_w"] = d["comp_code"].map(lambda c: W_EURO if kind(c) == "euro" else W_CUP)
+    d["_fid"] = d["fotmob_id"].map(fid_of)
+    return d
+
+
+def rating_table(x: pd.DataFrame) -> tuple[dict, dict]:
+    """({fotmob_id: 요약}, {'squad|player': 요약}) — 요약 = {fm_rating, minutes(가중), raw_minutes, level, comps}."""
+    if x is None or x.empty:
+        return {}, {}
+    d = x[_num(x["rating"]).notna()].copy()
+    d["rating"] = _num(d["rating"])
+    d["_wm"] = d["minutes"] * d["_w"]
+
+    def summ(g: pd.DataFrame) -> dict:
+        wm = float(g["_wm"].sum())
+        comps = g.groupby("comp_code")["minutes"].sum().astype(int).to_dict()
+        return {"fm_rating": float((g["rating"] * g["_wm"]).sum() / wm) if wm else None, "minutes": wm,
+                "raw_minutes": int(g["minutes"].sum()), "apps": int(len(g)),
+                "level": float((g["_lvl"] * g["_wm"]).sum() / wm) if wm else None, "comps": comps}
+    by_id = {f: summ(g) for f, g in d[d["_fid"].notna()].groupby("_fid")}
+    by_name = {f"{sq}|{pl}": summ(g) for (sq, pl), g in d.groupby(["squad", "player"])}
+    return by_id, by_name
+
+
+def attach_x(frame: pd.DataFrame, cur: tuple[dict, dict], prev: tuple[dict, dict] | None = None) -> pd.DataFrame:
+    """선수 표에 x_ss_rating · x_minutes(가중) · x_level · x_raw_minutes · x_comps(+ prev_x_*). fm_id 우선, 없으면 팀|이름."""
+    from rating_blend import fm_to_ss  # noqa: PLC0415
+    out = frame.copy()
+    for pre, (by_id, by_name) in (("x", cur), ("prev_x", prev or ({}, {}))):
+        vals = []
+        for _, r in out.iterrows():
+            f = fid_of(r.get("fm_id"))
+            t = by_id.get(f) if f else None
+            if t is None and pre == "x":
+                t = by_name.get(f"{r.get('squad')}|{r.get('player')}")
+            vals.append(t)
+        out[f"{pre}_ss_rating"] = [fm_to_ss(t["fm_rating"]) if t and t["fm_rating"] is not None else pd.NA for t in vals]
+        out[f"{pre}_minutes"] = [t["minutes"] if t else pd.NA for t in vals]
+        out[f"{pre}_level"] = [t["level"] if t else pd.NA for t in vals]
+        out[f"{pre}_raw_minutes"] = [t["raw_minutes"] if t else pd.NA for t in vals]
+        if pre == "x":
+            out["x_comps"] = [t["comps"] if t else None for t in vals]
+    return out
+
+
+# ── 세부 지표 ───────────────────────────────────────────────────────────────
+def per90(rows: pd.DataFrame, weight: str | None = None) -> pd.DataFrame:
+    """경기별 행 → 선수별(_key) 우리 지표 열. weight 열이 있으면 분·횟수에 곱한다(대회 가중)."""
+    if rows is None or rows.empty:
+        return pd.DataFrame()
+    d = rows.copy()
+    w = d[weight] if weight else 1.0
+    cols = {c for spec in MAP.values() for c in spec[1:]}
+    for c in cols:
+        d[c] = _num(d.get(c, pd.Series(0, index=d.index))).fillna(0) * w
+    d["_m"] = _num(d["minutes"]).fillna(0) * w
+    g = d.groupby("_key")[[*cols, "_m"]].sum()
+    out = pd.DataFrame(index=g.index)
+    m = g["_m"].where(g["_m"] > 0)
+    for col, spec in MAP.items():
+        if spec[0] == "n":
+            out[col] = g[spec[1]] / m * 90
+        elif spec[0] == "p":
+            out[col] = (g[spec[1]] / g[spec[2]].where(g[spec[2]] > 0)) * 100
+        else:
+            tot = g[spec[1]] + g[spec[2]]
+            out[col] = (g[spec[1]] / tot.where(tot > 0)) * 100
+    out["_m"] = g["_m"]
+    return out
+
+
+def calibrate(ours: pd.DataFrame, fm_league: pd.DataFrame) -> dict:
+    """{열: ('ratio', k) | ('diff', d)} — 같은 선수들의 리그 경기 값으로 FotMob → 우리 표 척도.
+    ours: _key·minutes·지표 열, fm_league: per90(리그 경기) 결과."""
+    j = ours.set_index("_key").join(fm_league, how="inner", rsuffix="_fm")
+    j = j[(_num(j["minutes"]) >= CAL_MIN) & (_num(j["_m"]) >= CAL_MIN)]
+    cal = {}
+    for col, spec in MAP.items():
+        if col not in j.columns or f"{col}_fm" not in j.columns:
+            continue
+        a, b = _num(j[col]), _num(j[f"{col}_fm"])
+        ok = a.notna() & b.notna()
+        if ok.sum() < CAL_N:
+            continue
+        w = _num(j["minutes"])[ok]
+        if spec[0] == "n":
+            den = float((b[ok] * w).sum())
+            if den > 0:
+                k = float((a[ok] * w).sum()) / den
+                cal[col] = ("ratio", round(min(2.5, max(0.4, k)), 3))
+        else:
+            dd = float(((a[ok] - b[ok]) * w).sum() / w.sum())
+            cal[col] = ("diff", round(min(20.0, max(-20.0, dd)), 2))
+    return cal
+
+
+def apply_cal(x: pd.DataFrame, cal: dict) -> pd.DataFrame:
+    out = x.copy()
+    for col, (how, k) in cal.items():
+        if col in out.columns:
+            out[col] = out[col] * k if how == "ratio" else (out[col] + k).clip(0, 100)
+    return out
+
+
+def combine(frame: pd.DataFrame, x90: pd.DataFrame, cal: dict) -> pd.DataFrame:
+    """선수 표(리그) + 리그 밖 per90(가중 분 _m) → 같은 인덱스의 전 대회 표.
+    지표 = (리그 값 × 리그 분 + 척도 맞춘 리그 밖 값 × 가중 분) / (리그 분 + 가중 분). minutes = 리그 분 + 가중 분."""
+    out = frame.copy()
+    out["_league_minutes"] = _num(out["minutes"]).fillna(0)
+    out["_x_minutes"] = 0.0
+    if x90 is None or x90.empty:
+        return out
+    xc = apply_cal(x90, cal)
+    keys = out["_key"]
+    xm = _num(keys.map(xc["_m"])).fillna(0)
+    lm = out["_league_minutes"]
+    for col in MAP:
+        if col not in out.columns or col not in cal:
+            continue                                     # 척도를 못 맞춘 지표는 리그 값 그대로
+        lv, xv = _num(out[col]), _num(keys.map(xc[col]))
+        both = lv.notna() & xv.notna() & (xm > 0)
+        only_x = lv.isna() & xv.notna() & (xm > 0)
+        res = lv.copy()
+        res[both] = (lv[both] * lm[both] + xv[both] * xm[both]) / (lm[both] + xm[both])
+        res[only_x] = xv[only_x]
+        out[col] = res
+    out["_x_minutes"] = xm
+    out["minutes"] = lm + xm
+    return out
+
+
+# ── 불러오기(시즌 전체 8개 리그) ────────────────────────────────────────────────
+_CACHE: dict = {}
+
+
+def season_rows(read, season: str, version=None) -> pd.DataFrame:
+    """read(table, league, season) → 8개 리그 경기별 기록을 합친 리그 밖 행(prep). version 이 같으면 캐시."""
+    key = ("rows", season, version)
+    if version is not None and key in _CACHE:
+        return _CACHE[key]
+    import league_level  # noqa: PLC0415
+    from leagues import LEAGUES  # noqa: PLC0415
+    frames, team_league = [], {}
+    for lg in LEAGUES:
+        st = read("standings", lg, season)
+        if st is not None and not st.empty and "squad" in st.columns:
+            team_league.update({str(s): lg for s in st["squad"]})
+        t = read("fotmob_match_ratings", lg, season)
+        if t is not None and not t.empty:
+            frames.append(t)
+    mr = pd.concat(frames, ignore_index=True) if frames else pd.DataFrame()
+    try:
+        x = mr[mr["comp_code"].map(kind) != "league"] if not mr.empty else mr
+        opp = opp_elo_fn(read, set(x["date"].astype(str)) if not x.empty else set())
+    except Exception as e:  # noqa: BLE001 — 일정 파일이 없으면 대회 기준 수준
+        print(f"[allcomp] Elo 건너뜀 {type(e).__name__}: {e}")
+        opp = None
+    out = prep(mr, league_level.levels(), team_league, opp)
+    if version is not None:
+        _CACHE[key] = out
+    return out
+
+
+def opp_elo_fn(read, dates: set[str]):
+    """(상대 이름, 날짜) → 그날 아침 Elo. 일정 파일(schedule_full, 지난 시즌부터 8개 리그 + 컵·유럽)로 src/team_elo 를 돌린다.
+    FotMob 상대 표기 ↔ 일정 표기(우리 리그 팀은 같은 표준 표기, 밖의 팀은 ESPN 표기)는 team_names.best 로."""
+    import league_level  # noqa: PLC0415
+    import team_elo as te  # noqa: PLC0415
+    import team_names as tnm  # noqa: PLC0415
+    from leagues import LEAGUES, SEASON_START  # noqa: PLC0415
+    frames = []
+    for se in (f"{SEASON_START - 1}_{SEASON_START}", f"{SEASON_START}_{SEASON_START + 1}"):
+        fr = {lg: read("schedule_full", lg, se) for lg in LEAGUES}
+        frames.append(te.matches_from({k: v for k, v in fr.items() if v is not None and not v.empty}))
+    ms = pd.concat(frames, ignore_index=True).drop_duplicates("event_id").sort_values(["date", "event_id"])
+    if ms.empty:
+        return None
+    final, snaps = te.run(ms, {lg: te.league_base(league_level.level(lg)) for lg in LEAGUES}, snap_dates=dates)
+    names = list(final)
+    alias: dict = {}
+
+    def f(name: str, date: str):
+        if name not in alias:
+            alias[name] = name if name in final else tnm.best(name, names)
+        k = alias[name]
+        if not k:
+            return None
+        snap = snaps.get(date) or {}
+        return snap.get(k, final.get(k)) if snap else final.get(k)
+    return f
+
+
+def x_tables(read, season: str, version=None) -> tuple[dict, dict]:
+    key = ("tbl", season, version)
+    if version is not None and key in _CACHE:
+        return _CACHE[key]
+    out = rating_table(season_rows(read, season, version))
+    if version is not None:
+        _CACHE[key] = out
+    return out
+
+
+def league_rows(read, season: str, version=None) -> pd.DataFrame:
+    """8개 리그 경기별 기록 중 리그 경기만(척도 맞추기용) — _key 포함."""
+    key = ("league", season, version)
+    if version is not None and key in _CACHE:
+        return _CACHE[key]
+    from leagues import LEAGUES  # noqa: PLC0415
+    frames = [t for t in (read("fotmob_match_ratings", lg, season) for lg in LEAGUES) if t is not None and not t.empty]
+    mr = pd.concat(frames, ignore_index=True) if frames else pd.DataFrame()
+    if not mr.empty:
+        mr = mr[(mr["comp_code"].map(kind) == "league") & (_num(mr["minutes"]).fillna(0) > 0)].copy()
+        mr["_key"] = row_keys(mr)
+    if version is not None:
+        _CACHE[key] = mr
+    return mr
+
+
+def row_keys(rows: pd.DataFrame) -> list[str]:
+    """경기별 행 → 선수 키(FotMob id, 없으면 '팀|이름')."""
+    return [fid_of(f) or f"{s}|{p}" for f, s, p in zip(rows["fotmob_id"], rows["squad"], rows["player"])]
+
+
+def frame_keys(frame: pd.DataFrame) -> list[str]:
+    """선수 표 → 같은 키(fm_id — rating_blend.attach 가 붙임)."""
+    ids = frame["fm_id"] if "fm_id" in frame.columns else [None] * len(frame)
+    return [fid_of(f) or f"{s}|{p}" for f, s, p in zip(ids, frame["squad"], frame["player"])]

@@ -15,7 +15,7 @@ import math
 
 import pandas as pd
 
-from league_level import level as league_level_of, rating_offset
+from league_level import RATING_PER_LEVEL, level as league_level_of, rating_offset
 
 
 def _num(v, d: float = 0.0) -> float:
@@ -148,7 +148,7 @@ UNDERPERF_GAP, UNDERPERF_K, UNDERPERF_MIN_AGE = 6.0, 0.5, 22.0
 # v3.6 탐색(golden 위반 0 · 스카우트 3+ 이탈 0 · Groß 78 · Dowman 70 · Vušković>Konsa): 36세 45%
 _VET_PE_AGES, _VET_PE_W = (30.0, 32.0, 34.0, 36.0), (0.0, 0.18, 0.34, 0.45)
 # 모델 버전 — 바뀌면 rating_history 가 과거 기록을 평행이동해 모델 변경이 선수 추이(▲▼)로 보이지 않게 한다
-MODEL_VERSION = "v3.8"
+MODEL_VERSION = "v3.9"
 # 잠재력 프리미엄 — 같은 시장가치·리그에서 어린 선수의 실제 경기력(리그 보정 평점)이 낮은 만큼(vov 환산).
 # 25/26 1,500분+ 1,450명 회귀(27~29세 기준): 17~20세 −6.8 · 21세 −4.9 · 22세 −5.1 · 23세 −4.4 · 24세 −3.9 ·
 # 25세 −3.8 · 26세 −2.4 (같은 회귀에서 30~32세 +5.3 · 33세+ +9.4 — 베테랑 보정과 같은 근거).
@@ -207,11 +207,13 @@ def class_ss(ss_rating, minutes, prev_ss_rating, prev_minutes, ln: str, league_l
 
 
 def _class_parts(ss_rating, minutes, prev_ss_rating, prev_minutes, ln, league_level, prev_league_level,
-                 hist_ss_rating=None, hist_minutes=None, hist_league_level=None):
+                 hist_ss_rating=None, hist_minutes=None, hist_league_level=None, extra=()):
     """(리그 안 상대 평점 블렌드, 같은 가중의 리그 보정량). class_ss = 앞 − 뒤.
 
     hist_* = 2시즌 전 이상(attach_prev_season.attach_hist — 시즌 가중을 곱한 유효 출전). 시즌이 쌓이면 자동으로
-    들어오고, 없으면(지금) 이번 + 직전 시즌만 쓰던 것과 같다."""
+    들어오고, 없으면(지금) 이번 + 직전 시즌만 쓰던 것과 같다.
+    extra = [(평점, 가중 출전 분, 대회 수준, 지난 시즌?)] — 유럽·컵 경기(src/allcomp_stats.py). 리그 평점과 나란한 표본으로
+    섞고 수준만큼 보정한다(UCL 상위 상대 = EPL 수준 → 보정 0). 2026-10-21 사용자: 챔스 우승 PSG 가 리그 평점만으로 낮았다."""
     ss, mn, pss, pmn = _num(ss_rating), _num(minutes), _num(prev_ss_rating), _num(prev_minutes)
     hss, hmn = _num(hist_ss_rating), _num(hist_minutes)
     if ss <= 0 and pss <= 0 and hss <= 0:
@@ -227,9 +229,20 @@ def _class_parts(ss_rating, minutes, prev_ss_rating, prev_minutes, ln, league_le
     off_hist = rating_offset(hist_league_level) if hist_league_level is not None else off_cur
     if hist_league_level is not None and league_level is not None and hist_league_level != league_level:
         w_hist *= _MOVED_PREV_W
-    w = w_cur + w_prev + w_hist + _CLASS_PRIOR_MIN
-    return ((ss * w_cur + pss * w_prev + hss * w_hist + mid * _CLASS_PRIOR_MIN) / w,
-            (off_cur * w_cur + off_prev * w_prev + off_hist * w_hist + off_cur * _CLASS_PRIOR_MIN) / w)
+    xs = xw = xo = 0.0
+    for x_ss, x_mn, x_lvl, is_prev in extra or ():
+        r_, m_ = _num(x_ss), _num(x_mn)
+        if r_ <= 0 or m_ <= 0:
+            continue
+        if is_prev and prev_league_level is not None and league_level is not None and prev_league_level != league_level:
+            m_ *= _MOVED_PREV_W
+        # 상대 수준은 100(EPL 평균 상대)을 넘을 수 있다 — 리그 보정과 달리 자르지 않는다(맨시티 상대 고평점은 가산)
+        lv_ = _num(x_lvl)
+        x_off = RATING_PER_LEVEL * (100.0 - lv_) if lv_ > 0 else 0.0
+        xs, xw, xo = xs + r_ * m_, xw + m_, xo + x_off * m_
+    w = w_cur + w_prev + w_hist + xw + _CLASS_PRIOR_MIN
+    return ((ss * w_cur + pss * w_prev + hss * w_hist + xs + mid * _CLASS_PRIOR_MIN) / w,
+            (off_cur * w_cur + off_prev * w_prev + off_hist * w_hist + xo + off_cur * _CLASS_PRIOR_MIN) / w)
 
 
 # 골키퍼 선방률·클린시트 — 이번 시즌 + 직전 시즌 + 평균(67%·27%)을 1,200분어치 섞는다.
@@ -263,7 +276,9 @@ def absolute_ovr(*, value, ss_rating, minutes, age, pos_group,
                  ucl_starts=0, uel_starts=0, conf_starts=0, cup_starts=0,
                  prev_minutes=None, prev_ss_rating=None, league_level=None,
                  prev_league_level=None, prev_gk_save_pct=None, prev_gk_cs_pct=None, prev_value=None,
-                 hist_ss_rating=None, hist_minutes=None, hist_league_level=None, _parts: list | None = None) -> int:
+                 hist_ss_rating=None, hist_minutes=None, hist_league_level=None,
+                 x_ss_rating=None, x_minutes=None, x_level=None,
+                 prev_x_ss_rating=None, prev_x_minutes=None, prev_x_level=None, _parts: list | None = None) -> int:
     """_parts 에 리스트를 주면 단계별 기여(키, 값)를 채운다 — 화면 'OVR 구성'(ovr_parts_of_row)."""
     ln = line_of(pos_group)
     a = _num(age)
@@ -283,7 +298,8 @@ def absolute_ovr(*, value, ss_rating, minutes, age, pos_group,
         vov -= cut
         rec("jump", -cut)
     rel, off = _class_parts(ss_rating, minutes, prev_ss_rating, prev_minutes, ln, league_level, prev_league_level,
-                            hist_ss_rating, hist_minutes, hist_league_level)
+                            hist_ss_rating, hist_minutes, hist_league_level,
+                            extra=[(x_ss_rating, x_minutes, x_level, False), (prev_x_ss_rating, prev_x_minutes, prev_x_level, True)])
     # GK 성능 리그 보정 — 평점 척도(×8)의 1.5배: 선방·클린시트는 팀 지배력 영향이 커 약한 리그 강팀 GK 가
     # 더 부풀려진다(포르투갈 주전 GK CS 35% vs EPL 31.5%, Porto Costa 직전 시즌 CS 63.6%)
     lg_off = rating_offset(league_level) * 12.0
@@ -423,6 +439,20 @@ def form_rating(*, ss_rating, minutes, goals=0, assists=0, pos_group="",
     return _form_scale(0.5 * (1.0 + math.erf(z / math.sqrt(2.0))))
 
 
+def ss_all_comps(row):
+    """이번 시즌 폼용 평점 — 리그 평점에 유럽·컵 평점(src/allcomp_stats.attach_x)을 그 리그 척도로 바꿔 출전 분(가중)으로 섞는다.
+    유럽·컵 평점의 EPL 환산(평점 − 0.02×(100 − 상대 수준)) + 그 리그 보정 = 그 리그 평점과 같은 눈금.
+    2026-10-21: 폼이 리그 평점만이라 챔스에서 펄펄 난 PSG 선수의 '이번 시즌 폼'·팀 강도에 안 들어갔다."""
+    ss, mn = _num(row.get("ss_rating")), _num(row.get("minutes"))
+    xs, xm, xl = _num(row.get("x_ss_rating")), _num(row.get("x_minutes")), _num(row.get("x_level"))
+    if xs <= 0 or xm <= 0 or xl <= 0:
+        return row.get("ss_rating")
+    x_lg = xs - RATING_PER_LEVEL * (100.0 - xl) + rating_offset(row.get("_league_level"))
+    if ss <= 0 or mn <= 0:
+        return x_lg
+    return (ss * mn + x_lg * xm) / (mn + xm)
+
+
 def add_form_column(df: pd.DataFrame) -> pd.DataFrame:
     """리그 선수 표에 `_form` 열 — 이번 시즌 같은 리그·같은 포지션 안 순위(백분위)를 45~99 로.
 
@@ -432,7 +462,7 @@ def add_form_column(df: pd.DataFrame) -> pd.DataFrame:
     if df is None or df.empty:
         return df
     lines = df.apply(line_of_row, axis=1)
-    z = [form_score(ss_rating=r.get("ss_rating"), minutes=r.get("minutes"), goals=r.get("goals"),
+    z = [form_score(ss_rating=ss_all_comps(r), minutes=r.get("minutes"), goals=r.get("goals"),
                     assists=r.get("assists"), pos_group=ln, prev_ss_rating=r.get("prev_ss_rating"),
                     prev_minutes=r.get("prev_minutes"))
          for (_, r), ln in zip(df.iterrows(), lines)]
@@ -515,6 +545,11 @@ def _prev_level(row, col: str = "prev_league"):
     return league_level_of(pl) if isinstance(pl, str) and pl else None
 
 
+def _x_args(row) -> dict:
+    """유럽·컵 평점 표본(src/allcomp_stats.attach_x) — 열이 없으면 빈 값(리그 평점만, 예전 동작)."""
+    return {k: row.get(k) for k in ("x_ss_rating", "x_minutes", "x_level", "prev_x_ss_rating", "prev_x_minutes", "prev_x_level")}
+
+
 def ovr_of_row(row) -> int:
     """선수 행 → 절대 OVR (API _player_ovr 와 같은 입력). player_frame 이 리그 표에 `_ovr` 로 미리 붙인다."""
     return absolute_ovr(
@@ -528,14 +563,14 @@ def ovr_of_row(row) -> int:
         prev_gk_save_pct=row.get("prev_gk_save_pct"), prev_gk_cs_pct=row.get("prev_gk_cs_pct"),
         prev_value=row.get("prev_market_value_eur"),
         hist_ss_rating=row.get("hist_ss_rating"), hist_minutes=row.get("hist_minutes"),
-        hist_league_level=_prev_level(row, "hist_league"))
+        hist_league_level=_prev_level(row, "hist_league"), **_x_args(row))
 
 
 # 'OVR 구성' 화면 이름 — 키: (영문, 한글 설명)
 PART_LABELS = {
     "base": ("VALUE", "시장가치 기준점"), "base_fallback": ("VALUE", "시장가치 없음 → 출전 시간대 기준점"),
     "jump": ("VALUE JUMP", "몸값 급등 감쇠(새 몸값의 절반만)"), "pos": ("POSITION", "포지션 보정"),
-    "perf": ("PERFORMANCE", "경기력 — 평점(Sofascore·FotMob 평균, 이번·지난 시즌, 리그 보정)"),
+    "perf": ("PERFORMANCE", "경기력 — 평점(Sofascore·FotMob 평균, 이번·지난 시즌, 리그+유럽·컵, 대회 수준 보정)"),
     "gk_base": ("GK", "골키퍼 기준"), "gk_perf": ("PERFORMANCE", "선방률·클린시트(리그 보정)"),
     "vet": ("VETERAN", "베테랑 — 나이로 깎인 몸값 일부 되돌림"), "age": ("AGE", "나이 보정"),
     "vet_pe": ("VETERAN FORM", "베테랑 — '평점이 말하는 수준' 쪽으로"), "big": ("BIG MATCH", "유럽대항전·컵 선발"),
@@ -559,7 +594,7 @@ def ovr_parts_of_row(row) -> dict:
         prev_gk_save_pct=row.get("prev_gk_save_pct"), prev_gk_cs_pct=row.get("prev_gk_cs_pct"),
         prev_value=row.get("prev_market_value_eur"),
         hist_ss_rating=row.get("hist_ss_rating"), hist_minutes=row.get("hist_minutes"),
-        hist_league_level=_prev_level(row, "hist_league"), _parts=parts)
+        hist_league_level=_prev_level(row, "hist_league"), **_x_args(row), _parts=parts)
     return {"ovr": ovr, "parts": [{"key": k, "en": PART_LABELS.get(k, (k, ""))[0], "ko": PART_LABELS.get(k, ("", k))[1],
                                    "value": v} for k, v in parts]}
 

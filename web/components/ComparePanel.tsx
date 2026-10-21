@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState, type ReactNode } from "react";
-import { getPlayerDetail, fmtEur, type PlayerDetail } from "@/lib/api";
+import { activeLeague, getPlayerDetail, fmtEur, type PlayerDetail } from "@/lib/api";
 import { tier, hexA } from "@/lib/ui";
 import { ssMeaning, TONE, SS_NOTE } from "@/lib/meaning";
 import { MeaningTag } from "./Meaning";
@@ -50,17 +50,22 @@ function StatRow({ label, a, b, fmt, better = "high", tag, note }: {
   );
 }
 
-export default function ComparePanel({ team, a, b, accent, onClear }: {
-  team: string; a: string; b: string; accent: string; onClear: () => void;
+// B 는 같은 스쿼드(bTeam·bLeague 없음) 또는 8개 리그 누구든(P2 ⑥). 리그가 다르면 두 선수 모두 8개 리그 같은 템플릿
+// 기준 백분위(peers=all)로 받아 같은 잣대로 놓고, 평점은 EPL 척도로 환산, 서로의 리그로 옮겼을 때 예상 OVR 을 보탠다.
+export default function ComparePanel({ team, a, b, bTeam, bLeague, accent, onClear }: {
+  team: string; a: string; b: string; bTeam?: string; bLeague?: string; accent: string; onClear: () => void;
 }) {
   const [da, setDa] = useState<PlayerDetail | null>(null);
   const [db, setDb] = useState<PlayerDetail | null>(null);
+  const aLeague = activeLeague();
+  const cross = !!bLeague && bLeague !== aLeague;
   useEffect(() => {
     let ok = true; setDa(null); setDb(null);
-    getPlayerDetail(team, a).then((x) => ok && setDa(x)).catch(() => {});
-    getPlayerDetail(team, b).then((x) => ok && setDb(x)).catch(() => {});
+    const peers = cross ? "all" : "auto";
+    getPlayerDetail(team, a, aLeague, "blend", "all", peers).then((x) => ok && setDa(x)).catch(() => {});
+    getPlayerDetail(bTeam ?? team, b, bLeague ?? aLeague, "blend", "all", peers).then((x) => ok && setDb(x)).catch(() => {});
     return () => { ok = false; };
-  }, [team, a, b]);
+  }, [team, a, b, bTeam, bLeague, aLeague, cross]);
   if (!da || !db) return (
     <div className="card skel-wrap">
       <div className="skel-row" style={{ justifyContent: "space-between" }}>
@@ -82,7 +87,8 @@ export default function ComparePanel({ team, a, b, accent, onClear }: {
         {d.photo ? <img src={d.photo} alt="" style={{ width: 46, height: 46, borderRadius: "50%", objectFit: "cover", border: `2px solid ${hexA(color, 0.6)}` }} /> : <span style={{ width: 46 }} />}
         <div>
           <div style={{ fontSize: 14.5, fontWeight: 700 }}>{d.player}</div>
-          <div style={{ fontSize: 11, opacity: 0.6 }}>{d.pos} · {d.age}세</div>
+          <div style={{ fontSize: 11, opacity: 0.6 }}>{d.pos} · {d.age}세{(cross || d.team !== team) ? ` · ${d.team}` : ""}</div>
+          {cross && d.league && <div className="cmp-lg">{d.league} <em>수준 {d.league_level ?? "?"}</em></div>}
           <div style={{ fontSize: 16, fontWeight: 800, color: t.light }} title={`OVR ${d.ovr} · ${t.ko}`}>
             {d.ovr} <span style={{ fontSize: 10.5, fontWeight: 700 }}>{t.ko}</span>
           </div>
@@ -113,18 +119,31 @@ export default function ComparePanel({ team, a, b, accent, onClear }: {
         <CompareRadar a={sameTpl ? da.radar : (da.radar_line ?? da.radar)} b={sameTpl ? db.radar : (db.radar_line ?? db.radar)} ca={accent} />
       </div>
       <div style={{ textAlign: "center", fontSize: 10.5, opacity: 0.55, marginTop: -2 }}>
-        {sameTpl ? `레이더 = ${da.template?.ko ?? "같은 포지션"} 템플릿 백분위` : `포지션이 달라(${da.template?.ko ?? "?"} · ${db.template?.ko ?? "?"}) 라인 공통 축으로 비교`} · 점선 = 50(중간) · 바깥일수록 상위
+        {sameTpl ? `레이더 = ${da.template?.ko ?? "같은 포지션"} 템플릿 백분위` : `포지션이 달라(${da.template?.ko ?? "?"} · ${db.template?.ko ?? "?"}) 라인 공통 축으로 비교`}
+        {cross ? " · 리그가 달라 두 선수 모두 8개 리그 같은 템플릿과 비교(같은 잣대)" : ""} · 전 대회 기록 · 점선 = 50(중간) · 바깥일수록 상위
       </div>
 
       <div style={{ maxWidth: 420, margin: "10px auto 0" }}>
         <StatRow label="OVR" a={da.ovr} b={db.ovr} />
         <StatRow label="평점" a={da.ss_rating} b={db.ss_rating} fmt={(v) => (v ? v.toFixed(2) : "—")} tag={ssTag} note={SS_NOTE} />
+        {cross && da.rating_epl != null && db.rating_epl != null && (
+          <StatRow label="평점(EPL 환산)" a={da.rating_epl} b={db.rating_epl} fmt={(v) => v.toFixed(2)}
+            note="리그 안 상대평가인 평점을 리그 수준만큼 EPL 척도로(레벨 1점당 0.02) — OVR 경기력 계산과 같은 보정" />
+        )}
+        {cross && da.league && db.proj?.[da.league] != null && (
+          <StatRow label={`${da.league} 기준 OVR`} a={da.ovr} b={db.proj[da.league]}
+            note={`${db.player} 가 ${da.league} 로 오면 예상 OVR — 더 센 리그로 갈 때만 레벨 차 × 0.1 적응 할인, 30세 이상 −1`} />
+        )}
+        {cross && db.league && da.proj?.[db.league] != null && (
+          <StatRow label={`${db.league} 기준 OVR`} a={da.proj[db.league]} b={db.ovr}
+            note={`${da.player} 가 ${db.league} 로 가면 예상 OVR`} />
+        )}
         <StatRow label="나이" a={da.age} b={db.age} fmt={(v) => `${v}세`} better="none" />
         <StatRow label="시장가치" a={da.value_eur} b={db.value_eur} fmt={fmtEur} />
         <StatRow label="출전(분)" a={da.minutes} b={db.minutes} fmt={(v) => v.toLocaleString()} />
         <StatRow label="득점" a={da.goals} b={db.goals} />
         <StatRow label="도움" a={da.assists} b={db.assists} />
-        <div style={{ fontSize: 10.5, opacity: 0.5, textAlign: "center", marginTop: 6 }}>더 나은 쪽 = 초록 · 나이는 좋고 나쁨 없이 표시</div>
+        <div style={{ fontSize: 10.5, opacity: 0.5, textAlign: "center", marginTop: 6 }}>더 나은 쪽 = 초록 · 나이는 좋고 나쁨 없이 표시{cross ? " · OVR 은 리그 수준이 들어간 절대 척도라 리그가 달라도 바로 비교" : ""}</div>
       </div>
     </div>
   );

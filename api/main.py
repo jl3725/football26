@@ -2035,20 +2035,59 @@ def _possession(season: str) -> dict:
     return out
 
 
-def _stat_frame(league: str, basis: str = "blend"):
-    """세부 지표용 선수 표 — 점유율 보정(수비 횟수) + basis=blend 면 시즌 초 안정화(지난 시즌 최대 15경기치 섞기).
+_ACS_CAL: dict = {}
+
+
+def _acs_read(t: str, lg: str, s: str):
+    return ds.read_table(t, league=lg, season=s)
+
+
+def _allcomp_cal() -> dict:
+    """FotMob 리그 경기 ↔ 우리 리그 표 척도(src/allcomp_stats.calibrate) — 8개 리그 리그 경기 450′+ 전원. 6시간 캐시."""
+    import time as _t  # noqa: PLC0415
+
+    import allcomp_stats as acs  # noqa: PLC0415
+    hit = _ACS_CAL.get("cal")
+    if hit and hit[0] > _t.time():
+        return hit[1]
+    fm = acs.per90(acs.league_rows(_acs_read, f"{SEASON_START}_{SEASON_START + 1}", ds._db_mtime()))
+    ours = []
+    for lg in _LEAGUE_LEVEL:
+        d = _pf(lg)
+        if d is not None and not d.empty:
+            ours.append(pd.DataFrame({"_key": acs.frame_keys(d), "minutes": d["minutes"],
+                                      **{c: d[c] for c in acs.MAP if c in d.columns}}))
+    cal = acs.calibrate(pd.concat(ours, ignore_index=True), fm) if ours and not fm.empty else {}
+    _ACS_CAL["cal"] = (_t.time() + 21600, cal)
+    return cal
+
+
+def _stat_frame(league: str, basis: str = "blend", comps: str = "all"):
+    """세부 지표용 선수 표 — 점유율 보정(수비 횟수) + basis=blend 면 시즌 초 안정화(지난 시즌 최대 15경기치 섞기)
+    + comps=all 이면 유럽·컵 경기 세부 기록을 출전 분(×대회 가중)으로 섞는다(src/allcomp_stats.combine).
     인덱스는 _pf(league) 그대로. 6시간 캐시(src/position_templates.enrich)."""
     import time as _t  # noqa: PLC0415
 
     import position_templates as ptpl  # noqa: PLC0415
     import positions as ps  # noqa: PLC0415
-    key = (league, basis)
+    key = (league, basis, comps)
     hit = _STAT_FRAME.get(key)
     if hit and hit[0] > _t.time():
         return hit[1]
     cur = _pf(league)
     if cur is None or cur.empty:
         return cur
+    cur = cur.copy()
+    cur["_league_minutes"], cur["_x_minutes"] = pd.to_numeric(cur["minutes"], errors="coerce").fillna(0), 0.0
+    if comps == "all":
+        try:
+            import allcomp_stats as acs  # noqa: PLC0415
+            x = acs.season_rows(_acs_read, f"{SEASON_START}_{SEASON_START + 1}", ds._db_mtime())
+            if not x.empty:
+                x = x.assign(_key=acs.row_keys(x))
+                cur = acs.combine(cur.assign(_key=acs.frame_keys(cur)), acs.per90(x, weight="_w"), _allcomp_cal())
+        except Exception as e:  # noqa: BLE001 — 경기별 세부 기록이 없으면 리그만
+            print(f"[allcomp] {league}: 리그만 {type(e).__name__}: {e}")
     prev = None
     prev_season = f"{SEASON_START - 1}_{SEASON_START}"
     if basis == "blend":
@@ -2066,21 +2105,32 @@ def _stat_frame(league: str, basis: str = "blend"):
     return out
 
 
-def _template_pool_all(tpl: str, min_min: float, basis: str = "blend"):
+def _template_pool_all(tpl: str, min_min: float, basis: str = "blend", comps: str = "all"):
     """8개 리그 같은 템플릿 선수(출전 기준 통과) — 리그 안 표본이 적을 때 백분위 비교 대상. 6시간 캐시."""
     import time as _t  # noqa: PLC0415
-    hit = _TPL_POOL.get((tpl, min_min, basis))
+    hit = _TPL_POOL.get((tpl, min_min, basis, comps))
     if hit and hit[0] > _t.time():
         return hit[1]
     frames = []
     for lg in _LEAGUE_LEVEL:
-        d = _stat_frame(lg, basis)
+        d = _stat_frame(lg, basis, comps)
         if d is None or d.empty:
             continue
         frames.append(d[(pd.to_numeric(d["minutes"], errors="coerce").fillna(0) >= min_min) & (d["_template"] == tpl)])
     out = pd.concat(frames, ignore_index=True) if frames else pd.DataFrame()
-    _TPL_POOL[(tpl, min_min, basis)] = (_t.time() + 21600, out)
+    _TPL_POOL[(tpl, min_min, basis, comps)] = (_t.time() + 21600, out)
     return out
+
+
+def _x_comp_list(xc) -> list[dict]:
+    """{'uefa.champions': 270, …} → [{code, name, minutes, weight}] — 화면 '리그 + UCL 270′ · 컵 90′(×0.5)'."""
+    import allcomp_stats as acs  # noqa: PLC0415
+    if not isinstance(xc, dict):
+        return []
+    names = {"uefa.champions": "UCL", "uefa.europa": "UEL", "uefa.europa.conf": "UECL"}
+    out = [{"code": c, "name": names.get(c, "CUP"), "minutes": int(m),
+            "weight": acs.W_EURO if acs.kind(c) == "euro" else acs.W_CUP} for c, m in xc.items() if m]
+    return sorted(out, key=lambda r: -r["minutes"])
 
 
 # 선수 상세 지표 — FM 스타일 카테고리 그룹 (아웃필더/골키퍼)
@@ -2245,7 +2295,9 @@ def _season_log(team: str, player: str, league: str, is_gk: bool = False, fm_id=
 
 @app.get("/api/player/{team}/{player}")
 @_memo(ttl=21600)
-def player_detail(team: str, player: str, league: str = ACTIVE_LEAGUE, basis: str = "blend"):
+def player_detail(team: str, player: str, league: str = ACTIVE_LEAGUE, basis: str = "blend", comps: str = "all",
+                  peers: str = "auto"):
+    """peers=all — 템플릿 백분위를 늘 8개 리그 같은 템플릿과 비교(리그가 다른 두 선수 비교 — 같은 잣대, P2 ⑥)."""
     full = _pf(league)
     if full is None:
         raise HTTPException(404, "players not found")
@@ -2297,16 +2349,20 @@ def player_detail(team: str, player: str, league: str = ACTIVE_LEAGUE, basis: st
     tpl_key = "GK" if is_gk else ptpl.template_of(row.get("tm_position"), row.get("pos"))
     # 점유율 보정 + 시즌 초 안정화(basis=blend, 기본) — 비교 대상 전원 같은 기준(_stat_frame)
     basis = "season" if basis == "season" else "blend"
-    tfull = _stat_frame(league, basis)
+    comps = "league" if comps == "league" else "all"      # 기본 = 전 대회(리그 + 유럽·컵, 2026-10-21 사용자)
+    tfull = _stat_frame(league, basis, comps)
     trow = tfull.loc[hit.index[0]] if hit.index[0] in tfull.index else ptpl.add_derived(row.to_frame().T).iloc[0]
     tpool = tfull[(pd.to_numeric(tfull["minutes"], errors="coerce").fillna(0) >= min_min) & (tfull["_template"] == tpl_key)]
     t_scope = "리그"
-    if len(tpool) < ptpl.MIN_PEERS:
-        tpool, t_scope = _template_pool_all(tpl_key, min_min, basis), "8개 리그"
+    if len(tpool) < ptpl.MIN_PEERS or peers == "all":
+        tpool, t_scope = _template_pool_all(tpl_key, min_min, basis, comps), "8개 리그"
     prof = ptpl.profile(trow, tpool, tpl_key)
     cur_m, pri_m = float(trow.get("_cur_minutes") or 0), float(trow.get("_prior_minutes") or 0)
     template = {"key": tpl_key, "en": ptpl.LABEL[tpl_key][0], "ko": ptpl.LABEL[tpl_key][1], "n": int(len(tpool)), "scope": t_scope,
                 "basis": basis, "cur_minutes": int(cur_m), "prior_minutes": int(pri_m),
+                "comps": comps, "league_minutes": int(_num(trow.get("_league_minutes"), 0)),
+                "x_minutes": int(_num(trow.get("_x_minutes"), 0)),
+                "x_comps": _x_comp_list(row.get("x_comps")) if comps == "all" else [],
                 "prior_share": round(pri_m / (cur_m + pri_m), 2) if cur_m + pri_m else 0.0,
                 "possession": None if pd.isna(trow.get("_poss")) else round(float(trow.get("_poss")), 1),
                 "padj": round(float(trow.get("_padj_f") or 1.0), 2)}
@@ -2378,6 +2434,10 @@ def player_detail(team: str, player: str, league: str = ACTIVE_LEAGUE, basis: st
         "contract_until": str(row.get("tm_contract_until") or ""),
         "joined": str(row.get("tm_joined_date") or "")[:10] or None,     # 입단일 — 헤더 '입단 2023-07 · 계약 ~2028-06'
         "is_gk": is_gk, "categories": prof["categories"], "radar": prof["radar"], "template": template,
+        # 리그 간 비교(P2 ⑥) — 리그 수준, EPL 환산 평점(리그 보정), 다른 리그로 옮기면 예상 OVR(_project_ovr)
+        "league": league, "league_level": _LEAGUE_LEVEL.get(league),
+        "rating_epl": round(_num(row.get("ss_rating")) - _ll.rating_offset(_LEAGUE_LEVEL.get(league)), 2) if _num(row.get("ss_rating")) > 0 else None,
+        "proj": {lg: _project_ovr(_player_ovr(row), league, lg, False, row.get("age"), _pos_bucket(row))[0] for lg in _LEAGUE_LEVEL},
         "categories_line": categories, "radar_line": radar, "badges": badges,
         "comp_usage": _comp_profile(row, _comp_usage(league)),
         "season_log": _season_log(str(row.get("squad") or team), str(row["player"]), league, is_gk=is_gk, fm_id=row.get("fm_id")),
@@ -4552,6 +4612,15 @@ def network(team: str, league: str = ACTIVE_LEAGUE):
     except (OSError, ValueError):
         pass
     ins += tn.insights_extra(team, nat_web, ti, mg)
+    try:   # 이적설 지도(RUMOURS 렌즈) 요약 — TM·뉴스 루머 연결(src/rumor_map.py)
+        import rumor_map as rmap  # noqa: PLC0415
+        rl, _w, _cl = _rumor_links()
+        roster = {rmap.norm(p["name"]) for p in players}
+        ri = rmap.insight(team, rmap.team_map(team, rl, roster))
+        if ri:
+            ins.append(ri)
+    except Exception as e:  # noqa: BLE001 — 루머 원천이 없어도 네트워크는 그대로
+        print(f"[network] rumors 건너뜀 {type(e).__name__}: {e}")
     return {"available": True, "team": team, "league": league, "color": tm.team_color(team), "logo": tm.team_logo(team),
             "games": n_games, "players": players, "leadership": lead,
             "chemistry": {"nodes": chem["nodes"], "edges": chem["edges"], "duos": chm.get("duos", []),
@@ -4559,6 +4628,101 @@ def network(team: str, league: str = ACTIVE_LEAGUE):
             "origins": orig, "nations": nat, "links": lk, "insights": ins,
             "national": nat_web, "ties": ti, "manager": mg,
             "sources": {"captains": "wikipedia" if any(w["rank"] for w in wiki) else None}}
+
+
+_RUMOR_LINKS: dict = {}
+
+
+def _rumor_links() -> tuple[dict, dict, dict]:
+    """8개 리그 이적설 연결(src/rumor_map.collect) + 선수 위치 색인 + 클럽→리그. 1시간 캐시(원천 파일 시각이 바뀌면 다시)."""
+    import time as _t  # noqa: PLC0415
+
+    import rumor_map as rm  # noqa: PLC0415
+    import team_names as tnm  # noqa: PLC0415
+    from leagues import DATA_DIR, LEAGUES  # noqa: PLC0415
+    cp = DATA_DIR / "news_claims.csv"
+    key = (ds._db_mtime(), cp.stat().st_mtime if cp.exists() else 0)
+    hit = _RUMOR_LINKS.get("v")
+    if hit and hit[0] == key and hit[1] > _t.time():
+        return hit[2]
+    club_league: dict[str, str] = {}
+    where: dict[str, list[dict]] = {}
+    for lg in LEAGUES:
+        f = _pf(lg)
+        if f is None or "squad" not in f.columns:
+            continue
+        for sq in f["squad"].dropna().astype(str).unique():
+            club_league[sq] = lg
+        for _, r in f.iterrows():
+            where.setdefault(rm.norm(r["player"]), []).append(
+                {"name": str(r["player"]), "club": str(r["squad"]), "league": lg, "photo": _photo(r), "ovr": _player_ovr(r),
+                 "age": None if pd.isna(_num(r.get("age"), float("nan"))) else int(_num(r.get("age"))),
+                 "minutes": int(_num(r.get("minutes")))})
+    clubs = list(club_league)
+    cache: dict = {}
+
+    def canon(n: str):
+        if n not in cache:
+            cache[n] = n if n in club_league else tnm.best(n, clubs)
+        return cache[n]
+    tm_rows = []
+    for lg in LEAGUES:
+        t = ds.read_table("transfer_rumors", league=lg)
+        if t is not None and "target_club" in t.columns:
+            tm_rows += [{"player": r.get("player"), "target_club": r.get("target_club"), "current_club": r.get("current_club"),
+                         "probability": r.get("probability"), "date": r.get("date"), "age": r.get("age"),
+                         "pos": r.get("pos_detail"), "value": r.get("market_value_eur")} for r in t.to_dict("records")]
+    claims = []
+    if cp.exists():
+        c = pd.read_csv(cp)
+        claims = c[c["status"].astype(str) == "pending"].to_dict("records")
+    trust = rm.outlet_factor({k: v["score"] for k, v in (_news_track().get("outlets") or {}).items() if not v.get("few")})
+    links = rm.collect(tm_rows, claims, canon, trust, datetime.date.today())
+    val = (links, where, club_league)
+    _RUMOR_LINKS["v"] = (key, _t.time() + 3600, val)
+    return val
+
+
+@app.get("/api/rumor-map/{team}")
+@_memo(ttl=3600)
+def rumor_map(team: str, league: str = ACTIVE_LEAGUE):
+    """이적설 지도 — 이 클럽이 쫓는 선수(+ 같은 선수를 쫓는 경쟁 구단) · 우리 선수에게 엮인 클럽 · 많이 보도한 매체.
+    원천 TM 루머(8개 리그) + 열린 이적시장 뉴스 루머(매체 적중률 가중) — src/rumor_map.py."""
+    import rumor_map as rm  # noqa: PLC0415
+    links, where, club_league = _rumor_links()
+    pf = _pf(league)
+    if pf is None or "squad" not in pf.columns:
+        return {"available": False, "reason": "선수 데이터 없음"}
+    gone, loans = _gone_keys(team, league), _loans_out(team, league)
+    rows = pf[pf["squad"] == team]
+    roster = {rm.norm(p) for p in rows["player"] if _person_key(p) not in gone and not _is_loaned(p, loans)}
+    out = rm.team_map(team, links, roster)
+
+    def locate(name: str, club: str | None) -> dict | None:
+        c = where.get(rm.norm(name)) or []
+        if not c:
+            return None
+        same = [x for x in c if club and x["club"] == club]
+        return (same or sorted(c, key=lambda x: -x["minutes"]))[0]
+
+    def club_meta(c: str) -> dict:
+        return {"club": c, "logo": tm.team_logo(c) if c in club_league else "", "league": club_league.get(c)}
+    for x in out["in"]:
+        x["where"] = locate(x["player"], x["from"])
+        x["from_meta"] = club_meta(x["from"]) if x["from"] else None
+        for r in x["rivals"]:
+            r.update(club_meta(r["club"]))
+    for o in out["out"]:
+        o["where"] = locate(o["player"], team)
+        for sct in o["suitors"]:
+            sct["to_meta"] = club_meta(sct["to"])
+    for c in out["competition"]:
+        c.update(club_meta(c["club"]))
+    n_news = sum(1 for lk in links.values() if lk["news"])
+    return {"available": bool(out["in"] or out["out"]), "team": team, "logo": tm.team_logo(team), "color": tm.team_color(team),
+            **out, "stages": (_news_track().get("stages") or {}),
+            "sources": {"links": len(links), "with_news": n_news},
+            "reason": None if (out["in"] or out["out"]) else "최근 120일 이 클럽과 엮인 이적설이 없습니다"}
 
 
 def _stats_asof(pf, team: str | None = None) -> str | None:

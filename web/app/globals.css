@@ -4666,5 +4666,66 @@ LIGA’처럼 글자가 접히던 것) — 넘치면 가로로 넘긴다 */
 .pd-sim-lg { font-style: normal; font-size: 10px; margin-left: 6px; padding: 0 5px; border-radius: 5px; border: 1px solid var(--line); color: var(--muted); }
 .pd-sim-lg.x { color: #7aa2ff; border-color: rgba(122, 162, 255, 0.45); }
 
-.pd-basis { margin-left: auto; }
+.pd-basis { margin-left: auto; display: inline-flex; gap: 8px; flex-wrap: wrap; }
 .pd-basis-note { width: 100%; font-size: 11px; color: var(--muted); }
+
+/* NETWORK · RUMOURS 이적설 지도 (NetRumors) */
+.rm-list { display: none; }
+.rm-list h5, .rm-cols h5, .rm-foot h5 { margin: 10px 0 6px; font: 700 11px/1.2 var(--font-display); letter-spacing: .06em; color: var(--muted); }
+.rm-list h5 span, .rm-cols h5 span, .rm-foot h5 span { font: 500 11px var(--font-ui); letter-spacing: 0; color: var(--muted-2); margin-left: 4px; }
+.rm-li, .rm-club, .rm-who { display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; gap: 9px; align-items: center; padding: 6px 8px;
+  border-radius: 10px; background: none; border: 1px solid transparent; color: inherit; text-align: left; width: 100%; font: inherit; }
+.rm-li { cursor: pointer; }
+.rm-li.on, .rm-li:hover { background: var(--surface-raised); border-color: var(--line); }
+.rm-li img, .rm-who img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; object-position: 50% 15%; background: #18202c; }
+.rm-club img { width: 26px; height: 26px; object-fit: contain; justify-self: center; }
+.rm-li > span, .rm-club > span, .rm-who > span { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.rm-li b, .rm-club b, .rm-who b { font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rm-li em, .rm-club em, .rm-who em { font-style: normal; font-size: 11px; color: var(--muted-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rm-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--line); justify-self: center; }
+.rm-n { font-family: var(--font-num); font-size: 13px; color: var(--txt); }
+.rm-heat { display: inline-flex; align-items: center; gap: 6px; min-width: 84px; }
+.rm-heat i { display: block; height: 6px; border-radius: 3px; max-width: 56px; flex: none; }
+.rm-heat b { font-family: var(--font-num); font-size: 12px; color: var(--txt); }
+.rm-sel { margin-top: 10px; }
+.rm-sel-head { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.rm-who { width: auto; flex: 1 1 260px; cursor: pointer; }
+.rm-chip { display: inline-flex; align-items: center; gap: 4px; height: 20px; padding: 0 8px; border-radius: 999px; font: 700 10px/1 var(--font-ui);
+  letter-spacing: .04em; color: #0a0d12; background: var(--c); flex: none; }
+.rm-chip.lg { height: 24px; font-size: 11px; }
+.rm-chip small { font-weight: 600; opacity: .75; }
+.rm-cols { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 16px; }
+.rm-src { display: flex; flex-direction: column; gap: 6px; }
+.rm-src-row { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 8px; align-items: start; font-size: 12px; }
+.rm-src-row > span { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.rm-src-who { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; color: var(--txt) !important; font-size: 12px !important; }
+.rm-src-row i { font-style: normal; color: var(--muted-2); font-family: var(--font-num); font-size: 11px; }
+.rm-src-row a, .rm-src-row > span > span { color: var(--muted); font-size: 11.5px; overflow-wrap: anywhere; }
+.rm-src-row a:hover { color: var(--txt); text-decoration: underline; }
+.rm-src-row em { font-style: normal; font-size: 11px; color: var(--muted-2); font-family: var(--font-num); white-space: nowrap; }
+.rm-rate { font-size: 12px; color: var(--muted); margin: 0 0 2px; }
+.rm-rate b { color: var(--txt); }
+.rm-suitor { padding: 8px 0; border-top: 1px solid var(--line); }
+.rm-suitor:first-of-type { border-top: 0; }
+.rm-foot { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-top: 10px; }
+@media (max-width: 640px) {
+  .rm-svg { display: none; }
+  .rm-list { display: block; }
+  .rm-cols { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* 비교 B — 8개 리그 선수 검색(ComparePicker, P2 ⑥) */
+.cmp-pick { position: relative; margin-bottom: 10px; }
+.cmp-pick input { width: 100%; height: 36px; padding: 0 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface-raised);
+  color: var(--txt); font: inherit; font-size: 13px; }
+.cmp-pick-list { position: absolute; z-index: 30; left: 0; right: 0; top: 40px; background: var(--surface); border: 1px solid var(--line);
+  border-radius: 12px; padding: 4px; box-shadow: 0 10px 30px rgba(0, 0, 0, .45); max-height: 360px; overflow-y: auto; }
+.cmp-pick-list button { display: grid; grid-template-columns: 30px minmax(0, 1fr) auto; gap: 9px; align-items: center; width: 100%; padding: 6px 8px;
+  background: none; border: 0; border-radius: 8px; color: inherit; text-align: left; cursor: pointer; font: inherit; }
+.cmp-pick-list button:hover { background: var(--surface-raised); }
+.cmp-pick-list img, .cmp-pick-ph { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; object-position: 50% 15%; background: #18202c; display: block; }
+.cmp-pick-list span { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.cmp-pick-list b { font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cmp-pick-list em { font-style: normal; font-size: 11px; color: var(--muted-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cmp-lg { font-size: 10.5px; font-weight: 700; letter-spacing: .04em; color: var(--muted); }
+.cmp-lg em { font-style: normal; font-weight: 500; color: var(--muted-2); }
