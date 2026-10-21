@@ -4,3 +4,4 @@ httpx>=0.27,<1
 requests>=2.31,<3   # 수집 모듈(src/translate.py 등) 테스트용
 beautifulsoup4>=4.12,<5   # 수집기 HTML 파싱 테스트(transfer_watch 등)
 lxml>=5,<7
+feedparser>=6.0,<7   # 뉴스 RSS 파싱 테스트(src/news_wires.py · news_sources)
