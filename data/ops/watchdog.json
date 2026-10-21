@@ -1,14 +1,12 @@
 {
- "checked": "2026-10-20T13:05:37+00:00",
+ "checked": "2026-10-21T13:16:46+00:00",
  "results": {
   "ovr": [],
   "season": [],
   "hub": [],
   "frontend": [],
   "backend": [],
-  "workflows": [
-   "daily_data.yml 최근 실행 failure (2026-10-20T09:34) https://github.com/jl3725/football26/actions/runs/39401716993"
-  ],
+  "workflows": [],
   "news": [],
   "tm_agent": [],
   "coverage": [],
@@ -20,6 +18,5 @@
   "expectations": [],
   "screen": [],
   "identity": []
- },
- "ai_cause": "- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(daily_data.yml, 추정)"
+ }
 }
