@@ -72,7 +72,7 @@ def run_league(league: str, br: gn.Breaker | None = None) -> tuple[int, int]:
     return new, tot
 
 
-BACKFILL_PER_RUN = 600   # 실행마다 번역 안 된 기사를 최신순으로 이만큼(Google 제목 포함 — 요약 없이 제목만이라 가볍다)
+BACKFILL_PER_RUN = 1500  # 실행마다 번역 안 된 기사를 최신순으로 이만큼(시간 예산이 먼저 끊는다)
 
 
 def _days_ago(n: int) -> str:
@@ -80,7 +80,8 @@ def _days_ago(n: int) -> str:
     return (date.today() - timedelta(days=n)).isoformat()
 
 
-TRANSLATE_BUDGET_S = 480   # 번역은 이 시간 안에서만(묶음 100건씩) — Google 원천 첫 실행에 밀린 600건이 40분 넘게 걸렸다(2026-10-20)
+TRANSLATE_BUDGET_S = 1080  # 번역은 이 시간 안에서만(묶음 100건씩) — Google 원천 첫 실행에 밀린 600건이 40분 넘게 걸렸다(2026-10-20)
+# 넓힌 원천(news_wires, 2026-10-21) 뒤 하루 약 3천 건 — 480초(실행당 300~500건)로는 GH cron 실제 하루 5번에 밀림이 쌓여 늘림
 TRANSLATE_CHUNK = 100
 
 
