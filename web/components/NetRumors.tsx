@@ -53,7 +53,7 @@ function Sources({ l, stages }: { l: RumorLink; stages: RumorMap["stages"] }) {
 function Heat({ v, stage }: { v: number; stage: RumorStage }) {
   return (
     <span className="rm-heat" title={HEAT_NOTE}>
-      <i style={{ width: `${v}%`, background: STAGE[stage].c }} /><b>{v}</b>
+      <i style={{ width: Math.max(4, Math.round(v * 0.56)), background: STAGE[stage].c }} /><b>{v}</b>
     </span>
   );
 }

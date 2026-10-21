@@ -4679,13 +4679,14 @@ LIGA’처럼 글자가 접히던 것) — 넘치면 가로로 넘긴다 */
 .rm-li.on, .rm-li:hover { background: var(--surface-raised); border-color: var(--line); }
 .rm-li img, .rm-who img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; object-position: 50% 15%; background: #18202c; }
 .rm-club img { width: 26px; height: 26px; object-fit: contain; justify-self: center; }
-.rm-li > span, .rm-club > span, .rm-who > span { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.rm-li > span:not(.rm-heat), .rm-club > span:not(.rm-heat), .rm-who > span { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .rm-li b, .rm-club b, .rm-who b { font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .rm-li em, .rm-club em, .rm-who em { font-style: normal; font-size: 11px; color: var(--muted-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .rm-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--line); justify-self: center; }
 .rm-n { font-family: var(--font-num); font-size: 13px; color: var(--txt); }
 .rm-heat { display: inline-flex; align-items: center; gap: 6px; min-width: 84px; }
-.rm-heat i { display: block; height: 6px; border-radius: 3px; max-width: 56px; flex: none; }
+.rm-heat i { display: block; height: 6px; border-radius: 3px; flex: none; }
+.rm-heat { justify-content: flex-end; }
 .rm-heat b { font-family: var(--font-num); font-size: 12px; color: var(--txt); }
 .rm-sel { margin-top: 10px; }
 .rm-sel-head { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
