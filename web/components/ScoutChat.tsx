@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import { getScout, fmtEur, type Scout } from "@/lib/api";
 import { hexA, tier } from "@/lib/ui";
-import { scoreMeaning, TONE } from "@/lib/meaning";
+import { formMeaning, scoreMeaning, TONE } from "@/lib/meaning";
 import { MeaningTag } from "./Meaning";
 import Bar from "./Bar";
 import Info from "./Info";
@@ -10,6 +10,7 @@ import Info from "./Info";
 type Msg = { role: "user" | "assistant"; text: string; data?: Scout };
 
 const EXAMPLES = [
+  "우리 팀 요즘 흐름 어때?",
   "여름 보강 우선순위 짜줘",
   "이 팀은 어떤 팀이야?",
   "de Jong 우리 팀 CM으로 맞아?",
@@ -199,6 +200,58 @@ function ResultCard({ d, accent, onNavigate }: { d: Scout; accent: string; onNav
           </a>
         ))}
         {(r.articles || []).length === 0 && <div style={{ fontSize: 11.5, opacity: 0.6 }}>최근 기사 없음</div>}
+      </div>
+    );
+  }
+  // 폼(P2 ⑦) — 선수: 최근 5경기 평점 막대 + 폼 지수 단어 · 팀: 최근 5경기 결과 + 폼 좋은·떨어진 선수
+  if (d.intent === "pform") {
+    const rc = r.recent || {}, se = r.season || {};
+    const ms: any[] = (rc.matches || []).slice().reverse();          // 과거 → 최근(왼쪽 → 오른쪽)
+    const rate = (v: number) => (v >= 7.5 ? TONE.best.c : v >= 7.0 ? TONE.good.c : v >= 6.5 ? TONE.avg.c : TONE.bad.c);
+    return (
+      <div style={box}>
+        <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap", fontSize: 11.5, marginBottom: 6 }}>
+          <span>최근 폼 <b>{rc.form ?? "—"}</b></span>{rc.form != null && <MeaningTag sm m={formMeaning(rc.form)} />}
+          <span style={{ opacity: 0.7 }}>· 시즌 {se.form ?? "—"}</span>
+          {rc.avg5_fotmob != null && <span style={{ opacity: 0.7 }}>· 최근 평균 {rc.avg5_fotmob}</span>}
+        </div>
+        <div style={{ display: "flex", gap: 6, alignItems: "flex-end", height: 54 }}>
+          {ms.map((m, i) => (
+            <div key={i} title={`${m.date} ${m.opponent} · ${m.minutes}′ · 평점 ${m.rating}`} style={{ flex: 1, minWidth: 0, textAlign: "center" }}>
+              <div style={{ fontSize: 10.5, fontWeight: 700, color: rate(m.rating ?? 0) }}>{m.rating ?? "—"}</div>
+              <div style={{ height: Math.max(4, ((m.rating ?? 6) - 5.5) * 12), background: rate(m.rating ?? 0), borderRadius: 3, opacity: 0.8 }} />
+              <div style={{ fontSize: 10, opacity: 0.6, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{String(m.opponent || "").split(" ")[0]}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+  if (d.intent === "tform") {
+    const rc = r.record5 || {};
+    const col = (x: string) => (x === "W" ? TONE.best : x === "D" ? TONE.avg : TONE.bad);
+    return (
+      <div style={box}>
+        <div style={{ display: "flex", gap: 4, alignItems: "center", flexWrap: "wrap", marginBottom: 6 }}>
+          {(r.last5 || []).map((m: any, i: number) => (
+            <span key={i} title={`${m.date} ${m.opp} ${m.score} · ${m.comp}`}
+              style={{ fontSize: 10.5, fontWeight: 800, padding: "2px 6px", borderRadius: 6, color: col(m.result).c, background: col(m.result).bg }}>{m.result}</span>
+          ))}
+          <span style={{ fontSize: 11.5, opacity: 0.75, marginLeft: 4 }}>{rc.W ?? 0}승 {rc.D ?? 0}무 {rc.L ?? 0}패 · 득 {rc.gf ?? 0} 실 {rc.ga ?? 0}</span>
+          {r.elo && <span style={{ fontSize: 11.5, opacity: 0.75 }}>· Elo {r.elo.now}{r.elo.change_30d != null ? ` (${r.elo.change_30d > 0 ? "+" : ""}${r.elo.change_30d})` : ""}</span>}
+        </div>
+        {(r.hot || []).length > 0 && (
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 4, marginBottom: 4 }}>
+            <span style={{ fontSize: 11, opacity: 0.6, alignSelf: "center" }}>폼 ▲</span>
+            {r.hot.map((x: any) => <Chip key={x.player} t={`${x.player} ${x.recent_form}`} accent={accent} />)}
+          </div>
+        )}
+        {(r.cold || []).length > 0 && (
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
+            <span style={{ fontSize: 11, opacity: 0.6, alignSelf: "center" }}>폼 ▼</span>
+            {r.cold.map((x: any) => <Chip key={x.player} t={`${x.player} ${x.season_form}→${x.recent_form}`} accent={TONE.weak.c} />)}
+          </div>
+        )}
       </div>
     );
   }

@@ -253,6 +253,20 @@ TOOLS = [
             "player": {"type": "string", "description": "선수명(데이터 표기)"},
             "club": {"type": "string", "description": "소속 클럽(선택 — 동명이인 구분)"}}, "required": ["player"]}}},
     {"type": "function", "function": {
+        "name": "player_form",
+        "description": "선수의 폼: 최근 5경기 평점(전 대회, FotMob, 출전 시간 가중)과 경기별 평점, 최근 폼 지수 vs 시즌 폼 지수(같은 리그·포지션 "
+                       "안 순위 45~99)와 상승·하락 판정, 시즌 출전·골·도움·평점, 유럽대회 평점, OVR 과 2주 변화. "
+                       "'사카 요즘 폼 어때?', '외데고르 최근 활약', 'X 컨디션 괜찮아?', 'X 부진해?' 같은 질문.",
+        "parameters": {"type": "object", "properties": {
+            "player": {"type": "string", "description": "선수명(데이터 표기)"},
+            "club": {"type": "string", "description": "소속 클럽(선택 — 동명이인 구분)"}}, "required": ["player"]}}},
+    {"type": "function", "function": {
+        "name": "team_form",
+        "description": "팀의 최근 흐름: 최근 5경기 결과(전 대회)와 승무패·득실, 리그 순위·승점, 팀 Elo 와 30일 변화, "
+                       "최근 폼이 좋은 선수·시즌보다 떨어진 선수. '아스날 요즘 흐름 어때?', '맨시티 최근 기세', 'X팀 폼' 같은 질문.",
+        "parameters": {"type": "object", "properties": {
+            "team": {"type": "string", "description": "팀명"}}, "required": ["team"]}}},
+    {"type": "function", "function": {
         "name": "league_week",
         "description": "리그의 지난 7일 변화 요약: 폼 지수 급등·급락 선수, 새 부상·복귀, 기사에 많이 나온 선수, 새 이적 루머, "
                        "다가오는 A매치 기간. '이번 주 EPL 어땠어?', '요즘 폼 오른 선수', '이번 주 부상 소식' 같은 질문.",
@@ -285,6 +299,8 @@ _SYSTEM = (
     "- 답에는 툴 결과에 있는 사실·숫자만 쓴다. 결과에 없는 플레이 스타일 설명·평가·추측은 덧붙이지 않는다.\n"
     "- **지금·다음 경기·부상자·A매치 차출**은 team_now, **선수 최근 기사**는 player_news, "
     "**리그 이번 주 변화(폼·부상·루머)**는 league_week. 예측 확률은 그대로 인용하고 출처(모델·팬 투표·ClubElo)를 밝혀라.\n"
+    "- **특정 선수의 폼·요즘 활약·컨디션·부진**은 player_form, **특정 팀의 최근 흐름·기세**는 team_form. "
+    "verdict(상승세·하락세·유지)와 최근 5경기 평점·폼 지수를 그대로 인용하라(지수는 같은 리그·포지션 안 순위 45~99).\n"
     "- **'왜/이유/근거/설명해줘' 같은 메타 질문은 툴을 절대 호출하지 말고, 직전 답변을 근거로 텍스트로만 설명하라.**\n"
     "- 후속 질문('더 싸게','좁혀줘','~빼고')은 조건을 바꿔 새로 조회. 그 외 후속은 맥락 참고.\n"
     "\nKG 스키마(graph_query용, 이 라벨/관계/속성만 사용):\n" + _KG_SCHEMA + "\n\n"
@@ -384,6 +400,10 @@ def _execute(name: str, args: dict, league: str):
     if name == "league_week":
         lg = args.get("league") or league
         return "week", api.digest(lg if lg in LEAGUES else league)
+    if name == "player_form":
+        return "pform", player_form(args.get("player", ""), _resolve_club(args.get("club", "")) if args.get("club") else "", league)
+    if name == "team_form":
+        return "tform", team_form(_resolve_club(args.get("team", "")), league)
     return None, {"error": f"알 수 없는 툴: {name}"}
 
 
@@ -428,6 +448,129 @@ def team_now(team: str, league: str) -> dict:
                                        for p in it["players"]][:14]}
     except Exception as e:  # noqa: BLE001
         out["intl_error"] = str(e)[:120]
+    return out
+
+
+# ── 폼(P2 ⑦) — 선수·팀 '요즘 어때'. 값은 선수 표(player_frame)·일정·Elo 그대로(지어내지 않게) ─────────────────
+FORM_UP, FORM_DOWN = 10, -10        # 최근 폼 지수 − 시즌 폼 지수(45~99 순위 척도)가 이만큼 벌어져야 상승·하락
+
+
+def form_word(f) -> str | None:
+    """폼 지수 → 화면과 같은 단어(web/lib/meaning.ts formMeaning — 72 = 중간)."""
+    if f is None:
+        return None
+    return "절정" if f >= 90 else "좋음" if f >= 80 else "보통" if f >= 64 else "주춤" if f >= 55 else "부진"
+
+
+def _form_verdict(recent, season) -> str:
+    """수준(최근 5경기 폼 단어) + 방향(시즌보다 10 이상 차이일 때만). 최근 90 · 시즌 96 은 '절정'이지 하락세가 아니다."""
+    if recent is None:
+        return f"최근 출전 적음(시즌 폼 {form_word(season)})" if season is not None else "최근 출전 적음"
+    lv = f"최근 폼 {form_word(recent)}"
+    if season is None:
+        return lv
+    d = recent - season
+    return lv + (" · 시즌보다 상승세" if d >= FORM_UP else " · 시즌보다 하락세" if d <= FORM_DOWN else " · 시즌 수준")
+
+
+def _num(v):
+    try:
+        x = float(v)
+        return None if x != x else x
+    except (TypeError, ValueError):
+        return None
+
+
+def player_form(player: str, club: str, league: str) -> dict:
+    """선수 폼 — 최근 5경기(전 대회 FotMob 평점, 출전 시간 가중) vs 시즌 폼(리그 안 순위), 시즌 누적, 유럽 평점, OVR 추이."""
+    import scout_router as sr  # noqa: PLC0415
+    api = _api()
+    hit = (sr.parse(player, club or None, league).get("players") or [None])[0]
+    if not hit:
+        return {"error": f"선수 '{player}' 를 찾지 못했습니다"}
+    lg = hit["league"]
+    f = api._pf(lg)
+    rows = f[(f["squad"] == hit["squad"]) & (f["player"] == hit["name"])]
+    if rows.empty:
+        rows = f[f["player"] == hit["name"]]
+    if rows.empty:
+        return {"error": f"선수 '{hit['name']}' 기록이 없습니다"}
+    r = rows.iloc[0]
+    rec = api._recent_of(r, lg) or {}
+    season_form = api._player_form(r)
+    recent_score = rec.get("score")
+    tr = api._trend(r, lg)
+    out = {"player": str(r["player"]), "squad": str(r["squad"]), "league": lg, "pos": api._pos_label(r),
+           "ovr": api._player_ovr(r), "ovr_change_2w": tr.get("ovr_d"), "ovr_last_season": tr.get("ovr_prev"),
+           # 평점 척도 — 최근 평균(avg5_fotmob)과 비교할 땐 같은 FotMob 척도의 rating_fotmob 를 쓴다(rating = 두 출처 평균, 척도 다름)
+           "season": {"form": season_form, "rating_fotmob": _num(r.get("fm_rating")), "rating_two_sources": _num(r.get("ss_rating")),
+                      "minutes": int(_num(r.get("minutes")) or 0), "goals": int(_num(r.get("goals")) or 0),
+                      "assists": int(_num(r.get("assists")) or 0)},
+           "recent": {"form": recent_score, "n": rec.get("n"), "avg5_fotmob": rec.get("avg5"), "avg3_fotmob": rec.get("avg3"),
+                      "matches": [{k: m.get(k) for k in ("date", "comp_code", "opponent", "home_away", "minutes", "rating", "goals", "assists")}
+                                  for m in (rec.get("matches") or [])[:5]]},
+           "verdict": _form_verdict(recent_score, season_form),
+           "note": "폼 지수 = 같은 리그·같은 포지션 안 순위(45~99). 평점 비교는 같은 척도끼리 — 최근 avg5_fotmob ↔ 시즌 rating_fotmob"
+                   "(FotMob). rating_two_sources 는 Sofascore·FotMob 평균(다른 척도)이라 최근 평균과 직접 비교하지 않는다"}
+    xs, xm = _num(r.get("x_ss_rating")), _num(r.get("x_raw_minutes"))
+    if xs and xm:
+        from rating_blend import FM_MU, FM_SD, SS_MU, SS_SD  # noqa: PLC0415 — 같은 FotMob 척도로 되돌려 최근 평균과 나란히
+        out["europe_cups"] = {"rating_fotmob": round(FM_MU + (xs - SS_MU) * FM_SD / SS_SD, 2), "minutes": int(xm),
+                              "comps": r.get("x_comps") if isinstance(r.get("x_comps"), dict) else None}
+    return out
+
+
+def team_form(team: str, league: str) -> dict:
+    """팀 흐름 — 최근 5경기(전 대회) 결과·득실, 리그 순위·승점, 팀 Elo 와 30일 변화, 폼 좋은·떨어진 선수."""
+    import datetime as dt  # noqa: PLC0415
+
+    import datastore as ds  # noqa: PLC0415
+    api = _api()
+    out: dict = {"team": team, "league": league}
+    try:
+        done = [m for m in api.schedule(team, league).get("matches", []) if m.get("status") == "completed"][-5:]
+        last = []
+        gf = ga = 0
+        for m in done:
+            try:
+                a, b = (int(x) for x in str(m.get("score") or "").split("-")[:2])
+            except ValueError:
+                a = b = None
+            if a is not None:
+                gf, ga = gf + a, ga + b          # 일정 score 는 우리 팀 기준(득-실)
+            last.append({"date": m.get("date"), "opp": m.get("opponent"), "ha": m.get("home_away"), "score": m.get("score"),
+                         "result": m.get("result"), "comp": m.get("comp")})
+        out["last5"] = last
+        out["record5"] = {"W": sum(x["result"] == "W" for x in last), "D": sum(x["result"] == "D" for x in last),
+                          "L": sum(x["result"] == "L" for x in last), "gf": gf, "ga": ga}
+    except Exception as e:  # noqa: BLE001
+        out["last5_error"] = str(e)[:120]
+    try:
+        st = ds.read_table("standings", league=league)
+        row = st[st["squad"] == team]
+        if not row.empty:
+            x = row.iloc[0]
+            out["table"] = {"rank": int(x["rank"]), "points": int(x["points"]), "played": int(x["played"]), "gd": int(x["gd"])}
+    except Exception as e:  # noqa: BLE001
+        out["table_error"] = str(e)[:120]
+    try:
+        now = api._team_elo()
+        ago = api._team_elo((dt.date.today() - dt.timedelta(days=30)).isoformat())
+        if team in now:
+            out["elo"] = {"now": round(now[team]), "change_30d": round(now[team] - ago[team]) if team in ago else None,
+                          "league_rank": 1 + sum(1 for t, v in now.items() if v > now[team] and t in set(api._pf(league)["squad"]))}
+    except Exception as e:  # noqa: BLE001
+        out["elo_error"] = str(e)[:120]
+    try:
+        f = api._pf(league)
+        t = f[(f["squad"] == team) & (f["minutes"].fillna(0) >= 270) & f["_recent"].notna()].copy()
+        t["_d"] = t["_recent"].astype(float) - t["_form"].astype(float)
+        pick = lambda d: [{"player": str(x["player"]), "recent_form": int(x["_recent"]), "season_form": int(x["_form"]),  # noqa: E731
+                           "avg5_fotmob": _num(x.get("_recent_avg5"))} for _, x in d.iterrows()]
+        out["hot"] = pick(t.sort_values("_recent", ascending=False).head(3))
+        out["cold"] = pick(t[t["_d"] <= FORM_DOWN].sort_values("_d").head(3))
+    except Exception as e:  # noqa: BLE001
+        out["players_error"] = str(e)[:120]
     return out
 
 

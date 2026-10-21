@@ -5,7 +5,9 @@ GEMINI_API_KEY(무료 등급)가 있으면 scout_agent 가 Gemini 로 라우팅�
 유료 OpenAI 는 SCOUT_ALLOW_PAID=1 일 때만(사용자 개인 유료 키 — 기본 경로 금지).
 
 - 이름: 우리 클럽·선수 영문 표기, 한국어 위키 제목·넘겨주기 별칭·팬 애칭(data/names_ko.csv, src/names_ko.py — 모두 자동 수집).
-- 의도: 키워드(다음 경기·부상·차출·뉴스·이번 주·비슷한·추천·적합·주장·성향). 팀만 있으면 '지금 상태'.
+- 의도: 키워드(다음 경기·부상·차출·뉴스·이번 주·비슷한·추천·적합·주장·성향·폼). 팀만 있으면 '지금 상태'.
+  폼 낱말(폼·컨디션·흐름·기세·부진·활약·요즘 …)과 선수·팀이 함께면 form — 선수면 최근 5경기 vs 시즌, 팀이면 최근 5경기 흐름.
+  대상 없이 '요즘 폼 오른 선수' 는 리그 주간 요약(week) 그대로.
 - 답은 도구 결과 값만 인용한다(지어내지 않음).
 """
 from __future__ import annotations
@@ -42,6 +44,9 @@ INTENTS = [  # (의도, 키워드) — 위에서부터 먼저
     ("team_now", ("다음 경기", "다음경기", "이길", "승부", "예측", "경기 어때", "부상", "결장", "다친", "a매치", "대표팀",
                   "차출", "소집", "최근 경기", "최근 결과", "지금", "next match", "injur", "predict")),
 ]
+# 폼 질문 낱말 — 선수·팀이 함께 나오면 form(뉴스·추천·적합 같은 앞선 의도는 그대로). P2 ⑦(2026-10-21)
+FORM_WORDS = ("폼", "컨디션", "흐름", "기세", "부진", "활약", "상승세", "하락세", "잘하고", "잘해", "요즘", "최근 어때",
+              "평점", "form", "in form", "how is", "how's", "playing")
 LEAGUE_WORDS = {"EPL": ("epl", "프리미어", "premier"), "LaLiga": ("라리가", "la liga", "laliga"),
                 "SerieA": ("세리에", "serie a"), "Bundesliga": ("분데스", "bundesliga"),
                 "Ligue1": ("리그1", "리그 1", "리그앙", "ligue"), "LigaPortugal": ("포르투갈", "리가 포르투갈"),
@@ -189,6 +194,10 @@ def parse(q: str, team: str | None, league: str) -> dict:
     role = next((v for k, v in POS.items() if k in ql), None)
     team_hit = clubs[0] if clubs else None
     lg_word = next((k for k, ws in LEAGUE_WORDS.items() if any(w in ql for w in ws)), None)
+    # 폼 — 선수·팀을 짚은 폼 질문만(뉴스·비슷한·추천·적합·주장·성향 의도는 그대로). '아스날 다음 경기' 같은 team_now 낱말이 있으면 team_now
+    ours = team and any(w in ql for w in ("우리 팀", "우리팀", "이 팀", "our team", "we "))   # 보고 있는 팀을 가리킴
+    if (uniq or team_hit or ours) and intent in (None, "week") and any(w in ql for w in FORM_WORDS):
+        intent = "form"
     return {"intent": intent, "role": role,
             "team": team_hit[1] if team_hit else (None if lg_word and intent == "week" else team),
             "league": team_hit[2] if team_hit else (lg_word or league),
@@ -230,6 +239,57 @@ def _say_team_now(r: dict) -> str:
     return f"{t} — " + " ".join(lines) if lines else f"{t}의 최근 정보를 찾지 못했습니다."
 
 
+def _say_player_form(r: dict) -> str:
+    if not isinstance(r, dict) or r.get("error"):
+        return (r or {}).get("error") or "폼 정보를 찾지 못했습니다."
+    s, rc = r.get("season") or {}, r.get("recent") or {}
+    head = f"{r['player']}({r['squad']}) — {r.get('verdict')}."
+    parts = []
+    if rc.get("form") is not None:
+        sf = s.get("rating_fotmob")
+        parts.append(f"최근 {rc.get('n')}경기 평점 평균 {rc.get('avg5_fotmob')}" + (f" / 시즌 {sf:.2f}" if sf else "")
+                     + f"(FotMob) · 폼 지수 최근 {rc['form']} / 시즌 {s.get('form')}")
+    elif s.get("form") is not None:
+        parts.append(f"시즌 폼 지수 {s.get('form')}(최근 출전 적음)")
+    parts.append(f"시즌 {s.get('minutes', 0):,}′ {s.get('goals', 0)}골 {s.get('assists', 0)}도움")
+    eu = r.get("europe_cups")
+    if eu:
+        parts.append(f"유럽·컵 평점 {eu['rating_fotmob']}({eu['minutes']}′, FotMob)")
+    ms = rc.get("matches") or []
+    if ms:
+        parts.append("최근 경기: " + ", ".join(
+            f"{m['opponent']} {m['rating']}" + (f"(⚽{m['goals']})" if m.get("goals") else "") + (f"(🅰{m['assists']})" if m.get("assists") else "")
+            for m in ms[:5] if m.get("rating") is not None))
+    if r.get("ovr_change_2w"):
+        parts.append(f"OVR {r['ovr']}(2주 {'+' if r['ovr_change_2w'] > 0 else ''}{r['ovr_change_2w']})")
+    return head + " " + " · ".join(parts) + "."
+
+
+def _say_team_form(r: dict) -> str:
+    if not isinstance(r, dict) or r.get("error"):
+        return (r or {}).get("error") or "팀 흐름을 찾지 못했습니다."
+    t = r.get("team")
+    parts = []
+    rec = r.get("record5")
+    if rec and r.get("last5"):
+        parts.append(f"최근 {len(r['last5'])}경기 {rec['W']}승 {rec['D']}무 {rec['L']}패(득 {rec['gf']} 실 {rec['ga']}): "
+                     + ", ".join(f"{x['opp']} {x['score']}{x['result']}" for x in r["last5"]))
+    tb = r.get("table")
+    if tb:
+        parts.append(f"리그 {tb['rank']}위 {tb['points']}점({tb['played']}경기)")
+    el = r.get("elo")
+    if el:
+        ch = el.get("change_30d")
+        parts.append(f"Elo {el['now']}" + (f"(30일 {'+' if ch and ch > 0 else ''}{ch})" if ch is not None else ""))
+    hot = r.get("hot") or []
+    if hot:
+        parts.append("폼 좋은 선수: " + ", ".join(f"{x['player']}({x['recent_form']})" for x in hot))
+    cold = r.get("cold") or []
+    if cold:
+        parts.append("시즌보다 떨어진 선수: " + ", ".join(f"{x['player']}({x['season_form']}→{x['recent_form']})" for x in cold))
+    return f"{t} — " + " · ".join(parts) + "." if parts else f"{t}의 최근 흐름을 찾지 못했습니다."
+
+
 def answer(q: str, team: str | None, league: str) -> dict:
     """규칙 라우팅 → 도구 실행 → 템플릿 답. scout_agent._execute 를 그대로 쓴다(같은 카드)."""
     import scout_agent as sa  # noqa: PLC0415
@@ -242,8 +302,8 @@ def answer(q: str, team: str | None, league: str) -> dict:
         intent = "team_now" if tm else None
     if intent is None:
         return {"available": True, "engine": "rules", "intent": None, "result": None,
-                "answer": "팀이나 선수 이름을 넣어 물어봐 주세요. 예: '아스날 다음 경기 어때?', '사카 최근 뉴스', "
-                          "'라이스랑 비슷한 선수', '아스날 왼쪽 윙어 추천', '이번 주 EPL 요약', '바르사 주장단'."}
+                "answer": "팀이나 선수 이름을 넣어 물어봐 주세요. 예: '아스날 다음 경기 어때?', '사카 요즘 폼 어때?', "
+                          "'사카 최근 뉴스', '라이스랑 비슷한 선수', '아스날 왼쪽 윙어 추천', '이번 주 EPL 요약', '바르사 주장단'."}
     if intent == "similar":
         it, res = sa._execute("find_similar", {"player": pl["name"]}, pl["league"])
         names = ", ".join(f"{x['player']}({x['squad']}, 유사도 {x['score']}%)" for x in (res.get("results") or [])[:5])
@@ -276,6 +336,12 @@ def answer(q: str, team: str | None, league: str) -> dict:
         rc, bg = (res or {}).get("recruitment") or {}, (res or {}).get("budget") or {}
         text = (f"{tm} 영입 성향: {rc.get('profile', '정보 없음')}(평균 영입 나이 {rc.get('avg_age')})"
                 + (f", 예산 {bg.get('spend_tier')} tier" if bg else "") + ".")
+    elif intent == "form" and pl:
+        it, res = sa._execute("player_form", {"player": pl["name"], "club": pl["squad"]}, pl["league"])
+        text = _say_player_form(res)
+    elif intent == "form" and tm:
+        it, res = sa._execute("team_form", {"team": tm}, lg)
+        text = _say_team_form(res)
     elif intent == "week":
         it, res = sa._execute("league_week", {"league": lg}, lg)
         up = ", ".join(f"{x['player']} +{x['delta']}" for x in (res.get("risers") or [])[:3])
