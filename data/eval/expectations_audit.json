@@ -1,5 +1,5 @@
 {
- "date": "2026-10-20",
+ "date": "2026-10-21",
  "results": [
   {
    "kind": "influence_top",
@@ -7,7 +7,7 @@
    "team": "Arsenal",
    "player": "Martin Ødegaard|Declan Rice",
    "ok": true,
-   "detail": "Arsenal 영향력 상위 3: Martin Ødegaard 85, Bukayo Saka 85, Declan Rice 74",
+   "detail": "Arsenal 영향력 상위 3: Martin Ødegaard 86, Bukayo Saka 85, Declan Rice 74",
    "note": "사용자 2026-10-20 — 외데고르·라이스 영향력이 매우 높다(입단 기준으로만 판단하지 말 것)"
   },
   {
@@ -70,7 +70,7 @@
    "team": "",
    "player": "Bukayo Saka",
    "ok": true,
-   "detail": "Bukayo Saka 유사: Mohammed Kudus, Bryan Mbeumo, Pedro Neto, Antoine Semenyo, Oscar Bobb, Jacob Murphy",
+   "detail": "Bukayo Saka 유사: Lamine Yamal, Michael Olise, Gianluca Prestianni, Franco Mastantuono, Florian Thauvin, Hugo González",
    "note": "사용자 2026-10-19 — 사카 유사 선수 1위가 만잠비(중미)"
   },
   {
@@ -90,6 +90,33 @@
    "ok": true,
    "detail": "Erling Haaland goals 8(기대 8 이상)",
    "note": "사용자 2026-10-20 — 리그 8골인데 6골로 나옴(주간 FBref). 시즌 누적이라 시즌 안에선 줄지 않음"
+  },
+  {
+   "kind": "radar_shown",
+   "league": "EPL",
+   "team": "Arsenal",
+   "player": "Jurriën Timber",
+   "ok": true,
+   "detail": "Jurriën Timber 레이더 8축 · 표본 1584′ · enough=True",
+   "note": "사용자 2026-10-21 — 팀버·기마랑이스·엔조 육각형 스탯이 안 보임(이번 시즌 리그 분만 보고 숨김)"
+  },
+  {
+   "kind": "radar_shown",
+   "league": "EPL",
+   "team": "Arsenal",
+   "player": "Bruno Guimarães",
+   "ok": true,
+   "detail": "Bruno Guimarães 레이더 8축 · 표본 1714′ · enough=True",
+   "note": "사용자 2026-10-21 — 위와 같음"
+  },
+  {
+   "kind": "radar_shown",
+   "league": "EPL",
+   "team": "Manchester City",
+   "player": "Enzo Fernández",
+   "ok": true,
+   "detail": "Enzo Fernández 레이더 8축 · 표본 1994′ · enough=True",
+   "note": "사용자 2026-10-21 — 위와 같음"
   }
  ],
  "failures": 0
