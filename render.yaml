@@ -15,6 +15,22 @@ services:
     startCommand: (test -f data/football.db || python scripts/build_db.py) && uvicorn api.main:app --host 0.0.0.0 --port $PORT
     healthCheckPath: /api/health
     autoDeploy: true
+    # 백엔드가 읽지 않는 파일만 바뀐 커밋은 재배포하지 않는다 — 재배포마다 메모리 캐시가 비어 첫 방문이 느려진다
+    # (2026-10-21 하루 28번 배포, 웹·테스트만 고친 커밋도 포함). 데이터(data/**)·api·src·scripts 는 그대로 배포.
+    buildFilter:
+      ignoredPaths:
+        - web/**
+        - tests/**
+        - .github/**
+        - README.md
+        - ARCHITECTURE.md
+        - DEPLOY.md
+        - DESIGN.md
+        - requirements-dev.txt
+        - requirements-agents.txt
+        - requirements-kg.txt
+        - pytest.ini
+        - docker-compose.yml
     envVars:
       - key: PYTHON_VERSION
         value: "3.12.7"
