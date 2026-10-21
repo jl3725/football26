@@ -143,11 +143,11 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 512,
-   "exact": 480,
+   "total": 516,
+   "exact": 481,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 32,
+   "orphan": 35,
    "orphans": [
     {
      "squad": "Arsenal",
@@ -192,6 +192,21 @@
     {
      "squad": "Liverpool",
      "name": "Michael Laffey",
+     "starts": 0
+    },
+    {
+     "squad": "Manchester Utd",
+     "name": "Tynan Thompson",
+     "starts": 0
+    },
+    {
+     "squad": "Manchester Utd",
+     "name": "Jack Fletcher",
+     "starts": 0
+    },
+    {
+     "squad": "Manchester Utd",
+     "name": "Jaydan Kamason",
      "starts": 0
     },
     {
@@ -258,21 +273,6 @@
      "squad": "Hull City",
      "name": "Tyrell Sellars-Fleming",
      "starts": 0
-    },
-    {
-     "squad": "Nottingham Forest",
-     "name": "Omari Hutchinson",
-     "starts": 0
-    },
-    {
-     "squad": "Newcastle United",
-     "name": "Sean Neave",
-     "starts": 0
-    },
-    {
-     "squad": "Everton",
-     "name": "Harvey Foster",
-     "starts": 0
     }
    ]
   },
@@ -285,8 +285,8 @@
    "orphans": []
   },
   "espn_subs_cups": {
-   "total": 313,
-   "exact": 310,
+   "total": 314,
+   "exact": 311,
    "rule": 1,
    "ambiguous": 0,
    "orphan": 2,
@@ -304,8 +304,8 @@
    ]
   },
   "match_events": {
-   "total": 340,
-   "exact": 340,
+   "total": 343,
+   "exact": 343,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -890,8 +890,8 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 515,
-   "exact": 501,
+   "total": 516,
+   "exact": 502,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 14,
@@ -998,8 +998,8 @@
    ]
   },
   "espn_subs_cups": {
-   "total": 280,
-   "exact": 278,
+   "total": 283,
+   "exact": 281,
    "rule": 1,
    "ambiguous": 0,
    "orphan": 1,
@@ -1012,8 +1012,8 @@
    ]
   },
   "match_events": {
-   "total": 317,
-   "exact": 317,
+   "total": 318,
+   "exact": 318,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1215,16 +1215,16 @@
    ]
   },
   "espn_subs_cups": {
-   "total": 95,
-   "exact": 95,
+   "total": 97,
+   "exact": 97,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
    "orphans": []
   },
   "match_events": {
-   "total": 256,
-   "exact": 256,
+   "total": 257,
+   "exact": 257,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,

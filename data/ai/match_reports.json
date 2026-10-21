@@ -383,6 +383,22 @@
    "away": "Slovan Bratislava",
    "at": "2026-10-20T21:18:02+00:00",
    "model": "gemini-flash-lite-latest"
+  },
+  "401915395": {
+   "text": "Como가 Manchester Utd를 상대로 4-1 대승을 거두며 경기를 마무리했다. 전반 2분 Nico Paz의 선제골로 앞선 Como는 49분 Anastasios Douvikas, 57분 Nico Paz, 76분 Jacobo Ramón의 릴레이 골로 달아났고, Manchester Utd는 90'+1'에 터진 Joshua Zirkzee의 골로 만회했다. 경기 기록에서는 Manchester Utd가 13개의 슈팅으로 Como(11개)보다 앞섰으나 유효 슈팅은 4-8로 밀렸으며, 점유율은 Como가 54.8%로 우세했다. 팬 투표와 ClubElo는 Como의 승리를 예측해 적중한 반면 Manchester Utd 승리를 예상했던 모델은 빗나갔다.",
+   "date": "2026-10-21",
+   "home": "Como",
+   "away": "Manchester Utd",
+   "at": "2026-10-21T19:07:24+00:00",
+   "model": "gemini-flash-lite-latest"
+  },
+  "401915396": {
+   "text": "Galatasaray가 챔피언스리그 경기에서 Lille을 상대로 4-2 역전승을 거두었다. 경기 시작 2' Yunus Akgün의 선제골로 앞서간 Galatasaray는 Soriba Diaoune에게 7'와 39'에 연속 실점했으나, 44' Alexey Batrakov의 헤더 골로 균형을 맞춘 뒤 52' Berke Özer의 자책골과 61' Victor Osimhen의 득점으로 승리를 확정했다. Lille은 점유율 56%와 슈팅 15개를 기록하며 수치상 우위를 점했으나, 4개의 선방을 기록한 Galatasaray의 효율적인 공격에 밀려 패배했다. 이번 결과는 Galatasaray 승리를 점쳤던 팬 투표 예측과 일치했다.",
+   "date": "2026-10-21",
+   "home": "Lille",
+   "away": "Galatasaray",
+   "at": "2026-10-21T19:07:36+00:00",
+   "model": "gemini-3.1-flash-lite"
   }
  },
  "fails": {}
