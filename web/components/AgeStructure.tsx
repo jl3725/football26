@@ -3,6 +3,7 @@ import { useMemo } from "react";
 import type { Overview } from "@/lib/api";
 import { hexA } from "@/lib/ui";
 import { usePeek } from "./PlayerPeek";
+import Info from "./Info";
 import { SvgAvatar, lastName } from "./NetShared";
 import { useNarrow } from "./TeamSeason";
 
@@ -119,7 +120,7 @@ export default function AgeStructure({ ov, accent }: { ov: Overview; accent: str
           ))}
         </svg>
       </div>
-      <p className="sp5-note">가로 = 나이 · 원 크기 = 이번 시즌 출전시간 · 테두리 = 연령대 · 이름이 겹치면 생략(호버) · 점선 = 출전 가중 평균 · 45분+ 출전 선수</p>
+      <p className="sp5-note">45분+ 출전 선수 <Info label="나이 분포 읽는 법"><p>가로 = 나이 · 원 크기 = 이번 시즌 출전시간 · 테두리 = 연령대 · 점선 = 출전 가중 평균.</p><p className="muted">이름이 겹치면 생략(점에 마우스를 올리면 보임).</p></Info></p>
     </div>
   );
 }

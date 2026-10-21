@@ -14,7 +14,7 @@ export default function PlayerNews({ player, club }: { player: string; club: str
   if (!items || items.length === 0) return null;
   return (
     <div className="pd-news">
-      <div className="pd-sim-title">IN THE NEWS <span style={{ opacity: 0.6, fontWeight: 400, fontSize: 11, letterSpacing: 0 }}>· 기사에 나온 이름 기준{total > items.length ? ` · 최근 ${items.length}/${total}건` : ""}</span></div>
+      <div className="pd-sim-title">IN THE NEWS <span style={{ opacity: 0.6, fontWeight: 400, fontSize: 11, letterSpacing: 0 }}>{total > items.length ? `최근 ${items.length}/${total}건` : `${items.length}건`}</span></div>
       <ul>
         {items.map((n) => (
           <li key={n.link}>

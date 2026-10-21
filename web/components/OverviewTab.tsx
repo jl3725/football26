@@ -22,6 +22,8 @@ import { TrendArrow } from "./Trend";
 import ThisWeek from "./ThisWeek";
 import { usePins } from "@/lib/pins";
 import SectionHead from "./SectionHead";
+import Info from "./Info";
+import Clamp from "./Clamp";
 import { GoalMixCompare, SeasonProfile, SeasonSnapshot, useTeamSeason } from "./TeamSeason";
 
 function repStars(rank?: number | null): string {
@@ -171,6 +173,11 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
       <div className="grid">
         <div className="card">
           <SectionHead title="SQUAD STRENGTH" kr="선수 평점 기반 전력"
+            info={<>
+              <p><b>숫자</b> = 라인 상위 선수 OVR(+ 이번 시즌 폼) + 최근 시즌 득점·실점 기록 보정(±2.5). 단어 = OVR 등급.</p>
+              <p><b>리그 N위</b> = 같은 리그 팀들 중 이 라인 순위. 기록 칸 색 = 그 시즌 리그 순위(초록 상위 · 회색 중위 · 주황·빨강 하위).</p>
+              <p className="muted">부상자(✚)도 &lsquo;가진 전력&rsquo;이라 포함합니다.</p>
+            </>}
             meta={(ov.ovr_delta && (ov.ovr_delta.attack || ov.ovr_delta.midfield || ov.ovr_delta.defense || ov.ovr_delta.overall))
               ? <>{ov.window?.label ?? ""} 이적 반영 <b style={{ color: "#4fc27f" }}>▲</b>/<b style={{ color: "#e07070" }}>▼</b></> : "라인별 주전 OVR"} />
           <div className="unit-list">
@@ -181,13 +188,15 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
             <Unit label="DEFENSE" ko="수비" value={ov.ovr.defense} delta={ov.ovr_delta?.defense} perf={ov.ovr.perf_adj?.defense}
               who={ov.ovr.units?.defense} rank={ov.ovr.unit_rank?.defense} rec={ov.ovr.record} recKind="ga" />
           </div>
-          <p className="sp5-note">숫자 = 라인 상위 선수 OVR(+ 이번 시즌 폼) + 최근 시즌 득점·실점 기록 보정(±2.5) · 단어 = OVR 등급 ·
-            &apos;리그 N위&apos; = 같은 리그 팀들 중 이 라인 순위 · 기록 칸 색 = 그 시즌 리그 순위(초록 상위 · 회색 중위 · 주황·빨강 하위) ·
-            부상자(✚)도 &apos;가진 전력&apos;이라 포함.</p>
         </div>
 
         <div className="card">
-          <SectionHead title="SEASON PROFILE" kr="경기 내용 · 리그 순위" />
+          <SectionHead title="SEASON PROFILE" kr="경기 내용 · 리그 순위"
+            info={<>
+              <p><b>지수</b> = 리그 안 상대값(50 = 리그 평균, 막대 가운데 선). <b>N위</b> = 지수의 리그 순위, (기록 N위) = 경기당 득점·실점 자체의 순위.</p>
+              <p><b>▲▼</b> = 지난 시즌 같은 지표의 순위 대비(3계단 이상).</p>
+              <p className="muted">시즌 초에는 표본이 적어 지수가 50 쪽으로 보정됩니다.</p>
+            </>} />
           {season === undefined ? <Skel h={220} r={10} /> : season?.profile.length ? <SeasonProfile axes={season.profile} />
             : <Radar data={ov.radar} color={accent} />}
         </div>
@@ -238,7 +247,7 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
                   )}
                 </div>
               </div>
-              {ov.manager.bio && <div className="mgr-bio">{ov.manager.bio}</div>}
+              {ov.manager.bio && <Clamp className="mgr-bio" text={ov.manager.bio} />}
               <div className="mgr-src">출처: Wikipedia</div>
             </>
           ) : <div className="mgr-meta">감독 정보 없음</div>}
@@ -252,7 +261,7 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
             <div className="info-item"><span className="l">창단</span><span className="v">{info.founded || "-"}</span></div>
             <div className="info-item"><span className="l">스쿼드 가치</span><span className="v">{info.squad_value ? fmtEur(info.squad_value) : "-"}<em> ({info.value_rank ? info.value_rank + "위" : "-"})</em></span></div>
           </div>
-          {info.desc && <div className="info-desc" style={{ borderColor: hexA(accent, 0.3) }}>{info.desc}</div>}
+          {info.desc && <Clamp className="info-desc" style={{ borderColor: hexA(accent, 0.3) }} text={info.desc} />}
         </div>
       </div>
 
@@ -340,8 +349,9 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
             {ov.injuries.length === 0 && <div className="mgr-meta">부상자 없음 ✓</div>}
           </div>
           {(ov.injury_returns ?? []).length > 0 && (
-            <p className="sp5-note" title="Transfermarkt 부상 목록은 갱신이 늦어, 부상 시작 뒤 실제로 선발·교체 출전한 선수는 복귀로 본다">
-              복귀로 봄(TM 미갱신): {ov.injury_returns!.map((r) => `${titleCase(r.player)} ${r.date.slice(5).replace("-", "/")} 출전`).join(" · ")}
+            <p className="sp5-note">
+              복귀: {ov.injury_returns!.map((r) => `${titleCase(r.player)} ${r.date.slice(5).replace("-", "/")}`).join(" · ")}
+              <Info label="복귀 판정"><p>Transfermarkt 부상 목록은 갱신이 늦어, 부상 시작 뒤 실제로 선발·교체 출전한 선수는 복귀로 봅니다(날짜 = 그 출전).</p></Info>
             </p>
           )}
         </div>

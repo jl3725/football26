@@ -4,6 +4,7 @@ import { feeLabel, getAnalytics, fmtEur, type Analytics, type Factor } from "@/l
 import { hexA } from "@/lib/ui";
 import { idxMeaning, ppgMeaning } from "@/lib/meaning";
 import { MeaningTag } from "./Meaning";
+import Info from "./Info";
 import TeamTerritory from "./TeamTerritory";
 import { usePeek } from "./PlayerPeek";
 import { SkelTab } from "./Skeleton";
@@ -91,7 +92,7 @@ export default function AnalyticsTab({ team, accent }: { team: string; accent: s
               );
             })}
         </div>
-        <p className="sp5-note">경기당 승점을 38경기로 늘리면 2.2 ≈ 84점(우승권) · 1.75 ≈ 67점(유럽권) · 1.0 ≈ 38점(강등권).</p>
+        <p className="sp5-note">경기당 승점 기준 <Info label="경기당 승점 기준"><p>38경기로 늘리면 2.2 ≈ 84점(우승권) · 1.75 ≈ 67점(유럽권) · 1.0 ≈ 38점(강등권).</p></Info></p>
       </div>
 
       {/* 부상 + 라인 공백 */}

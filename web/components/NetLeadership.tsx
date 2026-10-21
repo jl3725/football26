@@ -2,6 +2,7 @@
 import type { NetCaptain, NetCore, NetworkData } from "@/lib/api";
 import { hexA } from "@/lib/ui";
 import { usePeek } from "./PlayerPeek";
+import Info from "./Info";
 import { LINE_COLOR, SvgAvatar, lastName } from "./NetShared";
 
 // LEADERSHIP — 주장단(위키 스쿼드 표: 주장·부주장·3·4번째) + 영향력 지도.
@@ -122,15 +123,16 @@ export default function NetLeadership({ d, accent }: { d: NetworkData; accent: s
         )}
       </div>
       <div className="net-lead-r">
-        <h4 className="net-h">INFLUENCE MAP <span>가운데일수록 영향력 큼 · 금색 테두리 = 주장단</span></h4>
+        <h4 className="net-h">INFLUENCE MAP <span>가운데일수록 영향력 큼</span><Info label="영향력 지도"><p>가운데일수록 영향력이 큽니다. 금색 테두리 = 주장단.</p></Info></h4>
         <InfluenceMap d={d} accent={accent} />
       </div>
       <div className="net-core">
-        <h4 className="net-h">LEADERSHIP CORE <span>{COMP.filter(([k]) => w[k]).sort((a, b) => (w[b[0]] ?? 0) - (w[a[0]] ?? 0))
-          .map(([k, l]) => `${l} ${w[k]}`).join(" · ")}</span></h4>
-        <p className="net-note" style={{ fontSize: 11, color: "var(--muted-2)", marginTop: -4 }} title={INF_NOTE}>
-          막대 = 요소별 기여(값 × 가중치, 색은 아래 범례) · 오른쪽 숫자 = 영향력 0~100(팀 안 상대값, 100 = 모든 요소 만점)
-        </p>
+        <h4 className="net-h">LEADERSHIP CORE <span>영향력 0~100</span>
+          <Info wide label="영향력 계산">
+            <p>막대 = 요소별 기여(값 × 가중치) · 오른쪽 숫자 = 영향력 0~100(팀 안 상대값, 100 = 모든 요소 만점).</p>
+            <p><b>가중치</b> — {COMP.filter(([k]) => w[k]).sort((a, b) => (w[b[0]] ?? 0) - (w[a[0]] ?? 0)).map(([k, l]) => `${l} ${w[k]}`).join(" · ")}</p>
+            <p className="muted">{INF_NOTE}</p>
+          </Info></h4>
         <div className="net-comp-legend">{COMP.filter(([k]) => w[k]).map(([k, l]) => <span key={k}><i style={{ background: COMP_COLOR[k] }} />{l}</span>)}</div>
         {d.leadership.core.map((c, i) => (
           <button key={c.name} className="net-core-row hoverable"

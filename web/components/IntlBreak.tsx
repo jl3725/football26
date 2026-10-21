@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { getIntlTeam, type IntlFixture, type IntlTeam } from "@/lib/api";
 import { TONE } from "@/lib/meaning";
 import { usePeek } from "./PlayerPeek";
+import Info from "./Info";
 
 // INTERNATIONAL BREAK — 다음(진행 중) A매치 기간과 우리 팀 소집 선수·대표팀 경기(설계도 2단계).
 // 원천: src/fetch_intl.py(ESPN 국가대표 경기 → 기간, 대표팀 위키 'Current squad' → 소집 명단) → /api/intl/team.
@@ -40,10 +41,14 @@ export default function IntlBreak({ team }: { team: string }) {
       ) : (
         <>
           <p className="ib-note">
-            {d.squad_state === "announced" ? "이번 기간 소집 명단" : `새 명단 발표 전 — 지난 기간(${d.last_window ? `${md(d.last_window.first_match)}–${md(d.last_window.end)}` : ""}) 명단 기준 예상`}
+            {d.squad_state === "announced" ? "소집 명단" : "예상 명단"}
             {" · "}<b>{d.summary.n}명</b> · {d.summary.nations}개국
-            {d.summary.far > 0 && <> · <b style={{ color: TONE.weak.c }}>유럽 밖 {d.summary.far}명</b>(장거리 이동 — 복귀 후 첫 경기 체력 변수)</>}
-            {w.kind === "tournament" && <> · 대회 기간 클럽 경기는 결장으로 예측에 반영</>}
+            {d.summary.far > 0 && <> · <b style={{ color: TONE.weak.c }}>유럽 밖 {d.summary.far}명</b></>}
+            <Info label="소집 명단 기준">
+              <p>{d.squad_state === "announced" ? "이번 기간 발표된 소집 명단입니다." : `새 명단 발표 전 — 지난 기간(${d.last_window ? `${md(d.last_window.first_match)}–${md(d.last_window.end)}` : ""}) 명단으로 예상합니다.`}</p>
+              {d.summary.far > 0 && <p>유럽 밖 = 장거리 이동 — 복귀 후 첫 경기 체력 변수.</p>}
+              {w.kind === "tournament" && <p>대회 기간 클럽 경기는 결장으로 예측에 반영합니다.</p>}
+            </Info>
           </p>
           <div className="ib-list">
             {d.players.map((p) => (
