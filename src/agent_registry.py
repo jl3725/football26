@@ -136,6 +136,8 @@ AGENTS: tuple[Agent, ...] = (
           ("ClubElo", "Sofascore 팬 투표", "Gemini 무료 등급"), (
               Feed("predictions", "예측·성적표", ("clubelo", "log_predictions"), ("match_refresh", "daily_data"),
                    "매일 2회", 30, ("predictions_log.csv",)),
+              Feed("cross_cal", "리그 간 예측 보정(평균 득점·무승부 배수)", ("cross_calibration",), ("daily_data",), "매일", 36,
+                   ("model_cross.json",)),
               Feed("fanvote", "팬 투표", ("fanvote",), ("local-fanvote",), "매일 10:30·18:30 KST(이 PC)", 24,
                    ("fan_votes.csv",)),
               Feed("ai_match", "AI 경기 리포트", ("ai_match",), ("match_refresh",), "경기 종료 후 · 매일", 30,

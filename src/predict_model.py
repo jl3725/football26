@@ -22,12 +22,46 @@ import pandas as pd
 # v3(2026-10-19, --v3, 리그 488경기·지난 시즌 OVR): v2 0.970 / 적중 51.6% → 최근 40일 가중 + 자체 Elo(25/26~ 전 대회 결과)
 # + OVR 사전값 0.35 = 0.958 / 53.9%, + 결장 손실 = 0.954. 결장 손실은 과거 부상 명단이 없어 '실제 선발 XI 손실'로 잰 대리값이라
 # 최적(0.6)의 절반만 쓴다(운영 입력은 부상·출장정지 명단 — src/fetch_fotmob_injuries.py + TM).
-PARAMS = {"k": 10.0, "b_ovr": 0.35, "w_goal": 0.75, "rho": -0.08, "b_cross": 0.60, "w_cross_form": 0.25, "adjust": True,
+# 리그 간(유럽대회) 계수 — 2026-10-21 scripts/backtest_cross.py(리그 간 215경기: 25/26 184 · 26/27 31) 로 다시 정함.
+# 예전(b_cross 0.6 · w_cross_form 0.25 · 기본 득점 1.45/1.15 · rho −0.08)은 무승부를 23.5% 로 봤다(실제 14%).
+# 기본 득점 = 실제 리그 간 평균(학습, data/model_cross.json) · 무승부 배수 cross_dk(학습) · rho 0 · OVR 차 0.45 · 리그 폼 0.15 →
+# 로그 손실 두 시즌 0.912 → 0.871, 26/27(지난 시즌 OVR — 누설 없음) 0.842 → 0.782 · 적중 64.5% → 71%.
+PARAMS = {"k": 10.0, "b_ovr": 0.35, "w_goal": 0.75, "rho": -0.08, "b_cross": 0.45, "w_cross_form": 0.15, "adjust": True,
+          "cross_rho": 0.0, "cross_dk": 0.75,
           # v3(2026-10-19) — 백테스트로 정함(scripts/backtest_model.py --v3): Elo 차(400 = 로그 배수 1) · 결장 전력 손실(OVR 10 = 1) ·
           # 최근 경기 가중(tau 일 반감 아님, exp(−경과일/tau)). 0 이면 끔.
           "b_elo": 0.45, "b_av": 0.3, "tau": 40.0}
 # 다른 리그끼리(유럽대회): 2026-10 리그 간 17경기로는 표본이 작아 방향만 반영(OVR 차이↑·리그 안 폼↓) — 예측 기록이 쌓이면 재조정
 MU_FALLBACK = (1.45, 1.15)   # 리그 표본이 적을 때 홈·원정 기본 기대 득점
+MU_CROSS = (1.81, 1.31)      # 리그 간 경기 기본 득점(25/26 리그 간 184경기 평균) — data/model_cross.json 이 있으면 그 학습값
+_CROSS_CAL: dict = {}
+
+
+def cross_calibration() -> dict:
+    """리그 간 보정값 {mu_h, mu_a, dk, n, asof} — scripts/backtest_cross.py --write 가 매일 지난 리그 간 경기로 다시 잰다.
+    파일이 없거나 표본이 적으면 기본값(MU_CROSS · PARAMS['cross_dk'])."""
+    import json  # noqa: PLC0415
+    from pathlib import Path  # noqa: PLC0415
+    p = Path(__file__).resolve().parent.parent / "data" / "model_cross.json"
+    try:
+        key = p.stat().st_mtime
+    except OSError:
+        return {}
+    if _CROSS_CAL.get("key") != key:
+        try:
+            _CROSS_CAL.update(key=key, val=json.loads(p.read_text(encoding="utf-8")))
+        except (OSError, ValueError):
+            _CROSS_CAL.update(key=key, val={})
+    v = _CROSS_CAL.get("val") or {}
+    return v if (v.get("n") or 0) >= 30 else {}
+
+
+def cross_lambdas(fh: float, fa: float, d_ovr: float, p: dict = PARAMS, mu: tuple | None = None) -> tuple[float, float]:
+    """리그 간 기대 득점(Elo·결장 보정 전) — 리그 안 공격·수비(fh = 홈 공격 + 원정 수비)는 덜, OVR 차(d_ovr = (홈 − 원정)/10)는 크게.
+    운영(predict)과 백테스트(scripts/backtest_cross.py)가 같은 식을 쓴다."""
+    m = mu or MU_CROSS
+    f = p["w_cross_form"]
+    return m[0] * math.exp(f * fh + p["b_cross"] * d_ovr), m[1] * math.exp(f * fa - p["b_cross"] * d_ovr)
 MODEL_VERSION = "v3"          # 예측 기록(scripts/log_predictions.py model_ver) — 성적표가 버전별로 나눠 본다
 
 
@@ -146,8 +180,14 @@ def score_matrix(lh: float, la: float, rho: float, n: int = 10) -> list[list[flo
     return [[v / t for v in row] for row in m]
 
 
-def summarize(lh: float, la: float, rho: float) -> dict:
+def summarize(lh: float, la: float, rho: float, dk: float = 1.0) -> dict:
+    """dk = 무승부 배수(리그 간 경기 — 포아송이 무승부를 실제보다 많이 본다). 대각선(무승부 스코어)에 곱하고 다시 정규화."""
     m = score_matrix(lh, la, rho)
+    if dk != 1.0:
+        for i in range(len(m)):
+            m[i][i] *= dk
+        t = sum(map(sum, m))
+        m = [[v / t for v in row] for row in m]
     n = len(m)
     ph = sum(m[i][j] for i in range(n) for j in range(n) if i > j)
     pd_ = sum(m[i][i] for i in range(n))
@@ -168,14 +208,17 @@ def predict(st_h: LeagueState, home: str, st_a: LeagueState | None, away: str, p
     ta = (st_a or st_h).teams.get(away)
     if not th or not ta:
         return None
-    if st_a is None or st_a is st_h:
+    cross = not (st_a is None or st_a is st_h)
+    if not cross:
         lh = st_h.mu_h * math.exp(th["att"] + ta["def"])
         la = st_h.mu_a * math.exp(ta["att"] + th["def"])
+        rho, dk = p["rho"], 1.0
     else:
-        # 다른 리그 — 리그 안 상대 지표는 덜, OVR(리그 보정된 절대 척도) 차이는 크게
-        f, d = p["w_cross_form"], (th["ovr"] - ta["ovr"]) / 10.0
-        lh = MU_FALLBACK[0] * math.exp(f * (th["att"] + ta["def"]) + p["b_cross"] * d)
-        la = MU_FALLBACK[1] * math.exp(f * (ta["att"] + th["def"]) - p["b_cross"] * d)
+        # 다른 리그 — 리그 안 상대 지표는 덜, OVR(리그 보정된 절대 척도) 차이는 크게. 기본 득점·무승부 배수는 학습값
+        cal = cross_calibration()
+        mu = (cal["mu_h"], cal["mu_a"]) if cal.get("mu_h") else MU_CROSS
+        lh, la = cross_lambdas(th["att"] + ta["def"], ta["att"] + th["def"], (th["ovr"] - ta["ovr"]) / 10.0, p, mu)
+        rho, dk = p.get("cross_rho", p["rho"]), float(cal.get("dk") or p.get("cross_dk", 1.0))
     x = extra or {}
     s = 0.0
     if p.get("b_elo") and x.get("elo_d") is not None:
@@ -184,7 +227,7 @@ def predict(st_h: LeagueState, home: str, st_a: LeagueState | None, away: str, p
         s -= p["b_av"] * ((x.get("miss_h") or 0.0) - (x.get("miss_a") or 0.0)) / 10.0
     lh, la = lh * math.exp(s), la * math.exp(-s)
     lh, la = min(max(lh, 0.15), 4.5), min(max(la, 0.15), 4.5)
-    out = summarize(lh, la, p["rho"])
+    out = summarize(lh, la, rho, dk)
     out["n_h"], out["n_a"] = th["n"], ta["n"]
     if x:
         out["inputs"] = {k: (round(v, 1) if isinstance(v, float) else v) for k, v in x.items() if v is not None}

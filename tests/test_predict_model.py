@@ -49,3 +49,20 @@ def test_cross_league_uses_ovr_gap() -> None:
 def test_unknown_team_returns_none() -> None:
     st = pm.build_state(pm.league_matches(_ms([("A", "B", 1, 0, 1.0, 0.5)])), {"A": 80, "B": 78})
     assert pm.predict(st, "A", None, "Nobody") is None
+
+
+def test_draw_multiplier_and_cross_calibration(monkeypatch) -> None:
+    """리그 간 — 무승부 배수(dk)는 무승부만 줄이고 합은 1, 보정 파일 값(기본 득점·dk)을 쓴다(2026-10-21 backtest_cross)."""
+    a, b = pm.summarize(1.5, 1.2, 0.0), pm.summarize(1.5, 1.2, 0.0, dk=0.7)
+    assert b["d"] < a["d"] and abs(b["h"] + b["d"] + b["a"] - 1) < 1e-3
+    assert abs(b["h"] / b["a"] - a["h"] / a["a"]) < 0.02          # 승·패 비율은 그대로
+    s1 = pm.build_state(pm.league_matches(_ms([("X", "Y", 1, 1, 1.2, 1.2)])), {"X": 80, "Y": 80})
+    s2 = pm.build_state(pm.league_matches(_ms([("Z", "W", 1, 1, 1.2, 1.2)])), {"Z": 80, "W": 80})
+    monkeypatch.setattr(pm, "cross_calibration", lambda: {"mu_h": 1.85, "mu_a": 1.36, "dk": 0.75, "n": 215})
+    r = pm.predict(s1, "X", s2, "Z")
+    base = pm.summarize(1.85, 1.36, pm.PARAMS["cross_rho"], 0.75)
+    assert abs(r["d"] - base["d"]) < 0.02 and abs(r["xg_h"] - 1.85) < 0.1   # 같은 OVR·리그 평균 팀 = 학습 기본 득점
+    monkeypatch.setattr(pm, "cross_calibration", lambda: {})
+    r0 = pm.predict(s1, "X", s2, "Z")
+    assert abs(r0["xg_h"] - pm.MU_CROSS[0]) < 0.1                    # 파일 없으면 기본값
+    assert pm.predict(s1, "X", None, "Y")["d"] > r["d"]               # 같은 리그는 무승부 배수 없음

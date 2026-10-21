@@ -148,6 +148,11 @@ jobs:
           python scripts/build_db.py > /dev/null
           bash scripts/ci_try.sh "precompute_hub" python scripts/precompute_hub.py
 
+      # 리그 간(유럽대회) 예측 보정 — 지난 리그 간 경기의 평균 득점·무승부 배수를 다시 잰다(data/model_cross.json,
+      # src/predict_model.cross_calibration). 예측 기록보다 먼저 — 오늘 예측이 새 보정값을 쓰게
+      - name: Cross-league calibration (리그 간 예측 보정)
+        run: bash scripts/ci_try.sh "cross_calibration" python scripts/backtest_cross.py --write
+
       # 경기 전 예측 기록(팬 투표·우리 모델·ClubElo) → 결과 대조 — 홈 PREDICTION LEAGUE 원천(scripts/log_predictions.py)
       - name: Log predictions (팬 vs 모델 성적표)
         run: bash scripts/ci_try.sh "log_predictions" python scripts/log_predictions.py
