@@ -764,17 +764,121 @@ def discover(team: str, role: str = "", leagues: str = "", min_age: int = 0,
         pol = None
     team_ovr = team_ovr_ or 80.0
     out["team_ovr"] = team_ovr_
+    rivals = _club_rivals(team)                 # 위키 라이벌·더비(같은 리그) — 라이벌 구단 선수는 거래 어려움
     for r in out.get("recommendations") or []:
+        r["rival"] = str(r.get("squad") or "") in rivals
         pf_ = _policy_fit(pol, r.get("age"), r.get("value_eur"))
         r["policy_ok"], r["policy_notes"] = pf_["ok"], pf_["notes"]
         # 영입 가능성 — 경쟁 팀(같은 리그 전력 6 이내·위) · 강팀(3 이내·위) 핵심 주전(출전 60%+)은 낮음(recommend 와 같은 기준)
         src = str(r.get("source_league") or league)
         cstr = _club_strength(src).get(str(r.get("squad") or ""), 78)
         key = (r.get("minutes") or 0) >= _mm(2000, src)
-        r["realistic"] = not (key and ((src == league and cstr >= team_ovr - 6) or cstr >= team_ovr - 3))
+        r["realistic"] = not (key and ((src == league and cstr >= team_ovr - 6) or cstr >= team_ovr - 3)) and not r["rival"]
     out["policy"] = pol
     out["needs"] = needs_meta
     return out
+
+
+def _club_rivals(team: str) -> set[str]:
+    """위키 라이벌·더비 섹션에서 자동으로 모은 같은 리그 라이벌(src/club_rivals.py → data/club_rivals.json)."""
+    try:
+        import club_rivals  # noqa: PLC0415
+        return set(club_rivals.load().get(team, []))
+    except Exception:  # noqa: BLE001
+        return set()
+
+
+def _window_spend(team: str, league: str) -> list[dict]:
+    """최근 이적창별 지출·수입(이번·지난 시즌 TM 이적 기록) — 최신 순."""
+    rows = []
+    for y in (SEASON_START, SEASON_START - 1):
+        t = ds.read_table("transfers", league=league, season=f"{y}_{y + 1}")
+        if t is None or t.empty or "squad" not in t.columns:
+            continue
+        t = t[t["squad"].astype(str) == team]
+        for (sid, win), g in t.groupby([t["season_id"].astype(int), t["window"].astype(str)]):
+            fee = pd.to_numeric(g["fee_eur"], errors="coerce").fillna(0)
+            ins, outs = g["direction"] == "in", g["direction"] == "out"
+            rows.append({"season_id": int(sid), "window": win,
+                         "label": f"{sid % 100:02d}/{(sid + 1) % 100:02d} {'여름' if win == 'summer' else '겨울'}",
+                         "spend": float(fee[ins].sum()), "income": float(fee[outs].sum()),
+                         "n_in": int(ins.sum()), "n_out": int(outs.sum())})
+    rows = list({(r["season_id"], r["window"]): r for r in rows}.values())
+    rows.sort(key=lambda r: (r["season_id"], r["window"] == "winter"), reverse=True)
+    return rows
+
+
+@app.get("/api/workspace/{team}")
+def workspace(team: str, players: str = "", league: str = ACTIVE_LEAGUE):
+    """TRANSFER WORKSPACE — 예산(최근 두 창 지출·구단 가격 상한·이적 정책) + 라이벌 + 고정 후보(SHORTLIST)의 최신 사실.
+    players = JSON [{player, club, league}] — 후보마다 우리 리그 기준 예상 OVR(다른 리그면 리그 수준 보정)·나이·시장가·
+    예상 이적료(시장가 ×1.2)와 가격 현실성·계약 남은 개월·출전·골·도움·평점·정책 대조·영입 가능성·라이벌 소속 여부."""
+    import json as _json  # noqa: PLC0415
+
+    import club_profile as cp  # noqa: PLC0415
+    import positions as ps  # noqa: PLC0415
+    import scout_report as sr  # noqa: PLC0415
+    pol = None
+    try:
+        pol = _transfer_policy(team)
+    except Exception:  # noqa: BLE001
+        pass
+    try:
+        aff = cp.affordability(team) or {}
+    except Exception:  # noqa: BLE001
+        aff = {}
+    wins = _window_spend(team, league)
+    last2 = [w for w in wins if w["n_in"] or w["n_out"]][:2]
+    rivals = _club_rivals(team)
+    try:
+        team_ovr = _position_needs(team, league)["team_ovr"] or 80.0
+    except Exception:  # noqa: BLE001
+        team_ovr = 80.0
+    try:
+        want = _json.loads(players) if players else []
+    except ValueError:
+        want = []
+    out = []
+    for w in want[:12]:
+        name, club, src = str(w.get("player") or ""), str(w.get("club") or ""), str(w.get("league") or league)
+        pf = _pf(src)
+        row = None
+        if pf is not None and "player" in pf.columns:
+            cand = pf[pf["player"].astype(str).map(ps.norm_name) == ps.norm_name(name)]
+            if len(cand) > 1 and "squad" in cand.columns:
+                same = cand[cand["squad"].astype(str) == club]
+                cand = same if len(same) else cand
+            if len(cand):
+                row = cand.sort_values("minutes", ascending=False).iloc[0] if "minutes" in cand.columns else cand.iloc[0]
+        if row is None:
+            out.append({"player": name, "club": club, "league": src, "found": False})
+            continue
+        cur = _player_ovr(row)
+        proj = cur
+        if src != league and cur:
+            proj, _p, _r = _project_ovr(cur, src, league, False, row.get("age"), _pos_bucket(row))
+        value = _num(row.get("market_value_eur")) or None
+        fee = value * 1.2 if value else None
+        pr = cp.price_realism(team, fee)
+        con = sr.contract(row.get("tm_contract_until"))
+        pf_ = _policy_fit(pol, row.get("age"), value)
+        cstr = _club_strength(src).get(str(row.get("squad") or club), 78)
+        key = _num(row.get("minutes")) >= _mm(2000, src)
+        realistic = not (key and ((src == league and cstr >= team_ovr - 6) or cstr >= team_ovr - 3))
+        is_rival = str(row.get("squad") or club) in rivals
+        out.append({"player": str(row["player"]), "club": str(row.get("squad") or club), "league": src, "found": True,
+                    "pos": _pos_label(row), "tm_position": str(row.get("tm_position") or ""), "age": int(_num(row.get("age"))) or None,
+                    "photo": _photo(row), "ovr": proj, "current_ovr": cur, "cross_league": src != league,
+                    "value_eur": value, "likely_fee_eur": round(fee) if fee else None, "price_verdict": pr.get("verdict"),
+                    "contract_until": con["until"], "months_left": con["months_left"], "contract_status": con["status"],
+                    "minutes": int(_num(row.get("minutes"))), "goals": int(_num(row.get("goals"))), "assists": int(_num(row.get("assists"))),
+                    "rating": _num(row.get("ss_rating")) or None,
+                    "policy_ok": pf_["ok"], "policy_notes": pf_["notes"], "realistic": realistic and not is_rival, "rival": is_rival,
+                    "logo": tm.team_logo(str(row.get("squad") or club))})
+    avg_spend = sum(w["spend"] for w in last2) / len(last2) if last2 else None
+    return {"team": team, "team_ovr": team_ovr, "windows": last2, "avg_spend": avg_spend,
+            "ceiling_eur": aff.get("price_ceiling_eur"), "spend_tier": aff.get("spend_tier"), "policy": pol,
+            "rivals": sorted(rivals), "shortlist": out}
 
 
 @app.get("/api/squad-graph/{team}")

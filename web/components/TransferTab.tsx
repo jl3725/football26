@@ -6,6 +6,9 @@ import { TONE } from "@/lib/meaning";
 import FitEvaluator from "./FitEvaluator";
 import ManagerSimPanel from "./ManagerSimPanel";
 import RecruitPool from "./RecruitPool";
+import ScoutReport from "./ScoutReport";
+import TransferWorkspace from "./TransferWorkspace";
+import { useShortlist } from "@/lib/shortlist";
 import ScoutNeeds from "./ScoutNeeds";
 import Bar from "./Bar";
 import { usePeek } from "./PlayerPeek";
@@ -38,6 +41,9 @@ export default function TransferTab({ team, accent }: { team: string; accent: st
   const [needs, setNeeds] = useState<Needs | null>(null);
   const [view, setView] = useState<"scout" | "fit" | "sim">("scout");
   const [focusRole, setFocusRole] = useState<string | undefined>(undefined);   // 니즈 피치에서 고른 포지션(TM 표기)
+  const [fitInit, setFitInit] = useState<{ player: string; role: string } | null>(null);   // 작업대 FIT → 적합도 평가로
+  const [report, setReport] = useState<{ player: string; club: string; league: string } | null>(null);
+  const sl = useShortlist(team);
   useEffect(() => {
     let a = true; setData(null); setRec(null); setNeeds(null);
     getTransfers(team).then((d) => a && setData(d)).catch(() => {});
@@ -78,13 +84,17 @@ export default function TransferTab({ team, accent }: { team: string; accent: st
       </div>
 
       {view === "fit" ? (
-        <FitEvaluator team={team} accent={accent} suggestions={suggestions} />
+        <FitEvaluator team={team} accent={accent} suggestions={suggestions} initial={fitInit} />
       ) : view === "sim" ? (
         <ManagerSimPanel team={team} accent={accent} />
       ) : (<>
       {/* ── SCOUT DESK ── 포지션 니즈 v2(있으면) · 없으면 예전 라인 단위 */}
       {needs && (needs.positions?.length ?? 0) > 0 && <ScoutNeeds needs={needs} team={team} accent={accent}
         onRole={(r) => setFocusRole(BUCKET_TM[r] ?? "")} />}
+      {/* TRANSFER WORKSPACE — 니즈 바로 아래: 고정 후보 · 비교 · FIT · 리포트 · 예산 */}
+      <TransferWorkspace team={team} accent={accent}
+        onFit={(player, role) => { setFitInit({ player, role }); setView("fit"); }}
+        onReport={(player, club, league) => setReport({ player, club, league })} />
       {needs && !(needs.positions?.length) && (
         <div className="scout-desk">
           <div className="scout-hd">
@@ -161,6 +171,9 @@ export default function TransferTab({ team, accent }: { team: string; accent: st
               return (
                 <div className="rec-card longshot hoverable" key={i} style={{ cursor: "pointer" }}
                   onClick={(e) => peek(e, { name: l.player, club: l.squad, hint: { photo: l.photo, ovr: l.ovr, pos: l.pos, role: l.role } })}>
+                  <button className={`sl-pin abs${sl.has(l.player, l.squad) ? " on" : ""}`} aria-pressed={sl.has(l.player, l.squad)}
+                    title="이적 작업대 SHORTLIST 에 고정/빼기"
+                    onClick={(e) => { e.stopPropagation(); sl.toggle({ player: l.player, club: l.squad, league: l.source_league || "" }); }}>{sl.has(l.player, l.squad) ? "★" : "☆"}</button>
                   {l.photo ? <img className="rec-photo" src={l.photo} alt="" /> : <span className="rec-photo ph" />}
                   <div className="rec-ovr" style={{ color: t.light }}
                     title={l.cross_league ? `현재 OVR ${l.current_ovr} (${l.source_league} 기준) → 우리 리그 기준 예상 ${l.ovr} · ${t.ko}` : `OVR ${l.ovr} · ${t.ko}`}>{l.ovr}</div>
@@ -200,6 +213,7 @@ export default function TransferTab({ team, accent }: { team: string; accent: st
         </div>
       )}
       </>)}
+      {report && <ScoutReport team={report.club} player={report.player} league={report.league || undefined} accent={accent} onClose={() => setReport(null)} />}
     </div>
   );
 }

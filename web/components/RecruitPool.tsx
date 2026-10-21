@@ -7,6 +7,7 @@ import { MeaningTag } from "./Meaning";
 import { usePeek } from "./PlayerPeek";
 import { SkelCards } from "./Skeleton";
 import EmptyState from "./EmptyState";
+import { useShortlist } from "@/lib/shortlist";
 
 const POS_BTNS: [string, string][] = [
   ["", "전체"], ["Centre-Back", "CB"], ["Left-Back", "LB"], ["Right-Back", "RB"],
@@ -30,7 +31,9 @@ function Kpi({ label, value, sub, accent }: { label: string; value: string; sub?
   );
 }
 
-function Card({ p, accent }: { p: DiscoverPick; accent: string }) {
+function Card({ p, accent, team }: { p: DiscoverPick; accent: string; team: string }) {
+  const sl = useShortlist(team);
+  const pinned = sl.has(p.player, p.squad);
   const t = tier(p.ovr);
   const sf = scoreMeaning(p.style_fit);
   const rising = (p.age ?? 30) <= 21;
@@ -54,6 +57,9 @@ function Card({ p, accent }: { p: DiscoverPick; accent: string }) {
           <div style={{ fontSize: 10.5, opacity: 0.6, marginTop: 1 }}>{p.squad} · {p.source_league}</div>
           <span style={{ fontSize: 9.5, padding: "1px 6px", borderRadius: 6, background: hexA(accent, 0.14), color: accent, marginTop: 4, display: "inline-block" }}>{p.pos}</span>
         </div>
+        <button className={`sl-pin${pinned ? " on" : ""}`} aria-pressed={pinned}
+          title={pinned ? "이적 작업대 SHORTLIST 에서 빼기" : "이적 작업대 SHORTLIST 에 고정 — 비교·FIT·예산"}
+          onClick={(e) => { e.stopPropagation(); sl.toggle({ player: p.player, club: p.squad, league: p.source_league }); }}>{pinned ? "★" : "☆"}</button>
         <div style={{ textAlign: "right", flexShrink: 0 }} title={ovrTitle}>
           <div style={{ fontSize: 22, fontWeight: 800, lineHeight: 1, color: t.light }}>{p.ovr}</div>
           <div style={{ fontSize: 9, opacity: 0.6, marginTop: 2 }}>{p.cross_league ? "우리 리그 예상 OVR" : "OVR"}</div>
@@ -95,13 +101,20 @@ function Card({ p, accent }: { p: DiscoverPick; accent: string }) {
         {p.kg_precedent ? <span style={{ fontSize: 9.5, padding: "1px 7px", borderRadius: 8, background: hexA(accent, 0.12), color: accent }}>선례 {p.kg_precedent}</span> : null}
         {p.policy_ok === true && <span title="구단 이적 정책(최근 두 시즌 영입 나이·이적료)에 맞음" style={{ fontSize: 9.5, padding: "1px 7px", borderRadius: 8, background: hexA("#4fc27f", 0.13), color: "#4fc27f" }}>정책 부합</span>}
         {p.policy_ok === false && <span title={(p.policy_notes || []).join(" · ")} style={{ fontSize: 9.5, padding: "1px 7px", borderRadius: 8, background: hexA("#e0a53a", 0.13), color: "#e0a53a" }}>정책 밖</span>}
-        {p.realistic === false && <span title="경쟁 팀(같은 리그)·강팀의 핵심 주전 — 시즌 중·1월에 데려오기 어려움" style={{ fontSize: 9.5, padding: "1px 7px", borderRadius: 8, background: hexA("#e0556b", 0.13), color: "#e0707a" }}>가능성 낮음</span>}
+        {p.rival && <span title="위키 라이벌·더비 구단 소속 — 라이벌끼리는 거래가 드물다" style={{ fontSize: 9.5, padding: "1px 7px", borderRadius: 8, background: hexA("#e0556b", 0.13), color: "#e0707a" }}>라이벌</span>}
+        {p.contract_until && monthsLeft(p.contract_until) <= 12 && <span title={`계약 ${p.contract_until.slice(0, 7)}까지 — 이적료 협상력이 낮거나 자유계약 가능`} style={{ fontSize: 9.5, padding: "1px 7px", borderRadius: 8, background: hexA("#4fc27f", 0.13), color: "#4fc27f" }}>계약 {monthsLeft(p.contract_until)}개월</span>}
+        {p.realistic === false && !p.rival && <span title="경쟁 팀(같은 리그)·강팀의 핵심 주전 — 시즌 중·1월에 데려오기 어려움" style={{ fontSize: 9.5, padding: "1px 7px", borderRadius: 8, background: hexA("#e0556b", 0.13), color: "#e0707a" }}>가능성 낮음</span>}
       </div>
     </div>
   );
 }
 
 const PAGE = 12;
+// 계약 남은 개월(오늘 기준) — 날짜를 못 읽으면 큰 수
+function monthsLeft(until: string): number {
+  const d = new Date(until);
+  return Number.isNaN(d.getTime()) ? 999 : Math.round((d.getTime() - Date.now()) / (30.44 * 864e5));
+}
 
 export default function RecruitPool({ team, accent, focusRole }: { team: string; accent: string; focusRole?: string }) {
   const [disc, setDisc] = useState<Discover | null>(null);
@@ -118,6 +131,7 @@ export default function RecruitPool({ team, accent, focusRole }: { team: string;
   const [lvl, setLvl] = useState<"squad" | "starter" | "prospect" | "all">("squad");
   const [railOpen, setRailOpen] = useState(false);   // 폰: 필터 접기(예전엔 sticky 필터가 카드 위에 겹쳤다)
   const [shown, setShown] = useState(PAGE);          // 한 번에 다 그리면 카드 35장·페이지 4,400px — 12장씩
+  const [expiring, setExpiring] = useState(false);   // 계약 만료 임박(12개월 안) — 이적료가 싸거나 자유계약
 
   useEffect(() => {
     let a = true; setLoading(true); setDisc(null);
@@ -135,14 +149,15 @@ export default function RecruitPool({ team, accent, focusRole }: { team: string;
       : lvl === "prospect" ? p.level === "prospect" : p.level !== "below";
     const f = all.filter((p) => lvOk(p) && (lgs.length === 0 || lgs.includes(p.source_league))
       && (p.age == null || (p.age >= ageMin && p.age <= ageMax))
-      && (!p.value_eur || p.value_eur <= valMax * 1e6));
+      && (!p.value_eur || p.value_eur <= valMax * 1e6)
+      && (!expiring || (!!p.contract_until && monthsLeft(p.contract_until) <= 12)));
     const key = (p: DiscoverPick) => sortBy === "ovr" ? p.ovr : sortBy === "value" ? (p.value_eur || 0) : sortBy === "age" ? -(p.age || 99) : p.style_fit;
     // 추천순 = 서버 순서(니즈 시급도·스타일·전력·가격) 그대로, 영입 가능성 낮음·구단 정책 밖 후보는 뒤로
     const ok = (p: DiscoverPick) => (p.realistic === false ? 0 : 2) + (p.policy_ok === false ? 0 : 1);
     if (sortBy === "fit") return [...f].sort((a, b) => ok(b) - ok(a));
     return [...f].sort((a, b) => key(b) - key(a));
-  }, [disc, lgs, ageMin, ageMax, valMax, sortBy, lvl]);
-  useEffect(() => { setShown(PAGE); }, [team, role, lgs, ageMin, ageMax, valMax, sortBy, lvl]);
+  }, [disc, lgs, ageMin, ageMax, valMax, sortBy, lvl, expiring]);
+  useEffect(() => { setShown(PAGE); }, [team, role, lgs, ageMin, ageMax, valMax, sortBy, lvl, expiring]);
 
   const kAge = picks.filter((p) => p.age).map((p) => p.age as number);
   const kVal = picks.filter((p) => p.value_eur).map((p) => p.value_eur as number);
@@ -204,6 +219,12 @@ export default function RecruitPool({ team, accent, focusRole }: { team: string;
           <input type="range" min={16} max={40} value={ageMax} onChange={(e) => setAgeMax(Math.max(+e.target.value, ageMin))} style={{ width: "100%" }} />
           <div style={railLabel}>시장가 ≤ €{valMax}M</div>
           <input type="range" min={5} max={200} step={5} value={valMax} onChange={(e) => setValMax(+e.target.value)} style={{ width: "100%" }} />
+          <div style={railLabel}>계약</div>
+          <label style={{ display: "flex", alignItems: "center", gap: 7, fontSize: 12, cursor: "pointer" }}
+            title="계약이 12개월 안에 끝나는 후보만 — 이적료 협상력이 낮거나 다음 여름 자유계약">
+            <input type="checkbox" checked={expiring} onChange={(e) => setExpiring(e.target.checked)} />
+            만료 임박(12개월 안)
+          </label>
           </div>
         </div>
 
@@ -225,7 +246,7 @@ export default function RecruitPool({ team, accent, focusRole }: { team: string;
             : picks.length === 0 ? <div className="mgr-meta">조건에 맞는 후보 없음 — 필터를 넓혀보세요</div>
               : <>
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 12 }}>
-                  {picks.slice(0, shown).map((p, i) => <Card key={i} p={p} accent={accent} />)}
+                  {picks.slice(0, shown).map((p, i) => <Card key={i} p={p} accent={accent} team={team} />)}
                 </div>
                 {picks.length > shown && (
                   <button className="more-btn" onClick={() => setShown((v) => v + PAGE)}>

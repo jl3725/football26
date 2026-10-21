@@ -51,16 +51,17 @@ function ValueSpark({ pts, color }: { pts: { date: string; value_eur: number }[]
   );
 }
 
-export default function ScoutReport({ team, player, accent, onClose }: { team: string; player: string; accent: string; onClose: () => void }) {
+export default function ScoutReport({ team, player, accent, onClose, league }: { team: string; player: string; accent: string; onClose: () => void;
+  league?: string }) {   // league — 다른 리그 선수(이적 작업대 후보)면 그 리그
   const [r, setR] = useState<Report | null>(null);
   const [err, setErr] = useState(false);
   const [host, setHost] = useState<HTMLElement | null>(null);
   useEffect(() => { setHost(document.body); }, []);     // body 바로 아래에 — 사이드바 위로, 인쇄 때 앱 화면만 숨기기 쉽게
   useEffect(() => {
     let a = true; setR(null); setErr(false);
-    getScoutReport(team, player).then((x) => a && setR(x)).catch(() => a && setErr(true));
+    (league ? getScoutReport(team, player, league) : getScoutReport(team, player)).then((x) => a && setR(x)).catch(() => a && setErr(true));
     return () => { a = false; };
-  }, [team, player]);
+  }, [team, player, league]);
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
     window.addEventListener("keydown", onKey);

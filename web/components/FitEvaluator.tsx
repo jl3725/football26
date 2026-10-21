@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getFit, fmtEur, type Fit } from "@/lib/api";
 import { hexA, tier } from "@/lib/ui";
 import { scoreMeaning, ovrMeaning } from "@/lib/meaning";
@@ -46,8 +46,9 @@ function CompBar({ label, value, danger }: { label: string; value: number; dange
   );
 }
 
-export default function FitEvaluator({ team, accent, suggestions }:
-  { team: string; accent: string; suggestions: { player: string; role: string }[] }) {
+export default function FitEvaluator({ team, accent, suggestions, initial }:
+  { team: string; accent: string; suggestions: { player: string; role: string }[];
+    initial?: { player: string; role: string } | null }) {   // 이적 작업대 SHORTLIST 의 FIT 버튼으로 바로 평가
   const [cand, setCand] = useState("");
   const [role, setRole] = useState("");
   const [res, setRes] = useState<Fit | null>(null);
@@ -62,6 +63,7 @@ export default function FitEvaluator({ team, accent, suggestions }:
     setCand(s.player); if (s.role) setRole(s.role);
     evaluate(s.player, s.role || role);
   };
+  useEffect(() => { if (initial?.player) pick(initial); }, [initial?.player, initial?.role]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className="fade">

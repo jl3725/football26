@@ -459,7 +459,8 @@ export type DiscoverPick = {
   price_verdict?: string; likely_fee_eur?: number | null; recruit_fit?: number; contract_until?: string;
   kg_rumored?: boolean; kg_rumor_prob?: number | null; kg_precedent?: number;
   policy_ok?: boolean | null; policy_notes?: string[];   // 구단 이적 정책(나이·이적료) 대조
-  realistic?: boolean;   // 경쟁 팀·강팀 핵심 주전이면 false(영입 가능성 낮음)
+  realistic?: boolean;   // 경쟁 팀·강팀 핵심 주전·라이벌 소속이면 false(영입 가능성 낮음)
+  rival?: boolean;       // 위키 라이벌·더비(같은 리그) 구단 소속(src/club_rivals.py)
   level?: "starter" | "rotation" | "prospect" | "below" | null;   // 팀 OVR 대비 수준(주전급 −4 · 로테이션 −9 · 21세 이하 유망주)
   minutes?: number;
 };
@@ -472,6 +473,17 @@ export type Discover = {
   needs?: { role: string; label: string; urgency: number; level: string }[];   // 자동 대상 포지션(니즈 v2 상위)
   team_ovr?: number | null;
 };
+// TRANSFER WORKSPACE(/api/workspace) — 예산(최근 두 창·가격 상한·정책) + 라이벌 + 고정 후보의 최신 사실
+export type WorkspacePick = { player: string; club: string; league: string; found: boolean; pos?: string; tm_position?: string;
+  age?: number | null; photo?: string; ovr?: number; current_ovr?: number; cross_league?: boolean; value_eur?: number | null;
+  likely_fee_eur?: number | null; price_verdict?: string; contract_until?: string | null; months_left?: number | null;
+  contract_status?: "expiring" | "short" | "long" | "unknown"; minutes?: number; goals?: number; assists?: number; rating?: number | null;
+  policy_ok?: boolean | null; policy_notes?: string[]; realistic?: boolean; rival?: boolean; logo?: string };
+export type Workspace = { team: string; team_ovr: number; avg_spend: number | null; ceiling_eur: number | null; spend_tier?: string;
+  windows: { season_id: number; window: string; label: string; spend: number; income: number; n_in: number; n_out: number }[];
+  policy: TransferPolicy | null; rivals: string[]; shortlist: WorkspacePick[] };
+export const getWorkspace = (team: string, items: { player: string; club: string; league: string }[], l = _league) =>
+  j<Workspace>(`/api/workspace/${encodeURIComponent(team)}?league=${encodeURIComponent(l)}&players=${encodeURIComponent(JSON.stringify(items))}`);
 export type DiscoverOpts = { role?: string; top?: number };
 export const getDiscover = (t: string, opts: DiscoverOpts = {}, l = _league) => {
   const p = new URLSearchParams({ league: l });
