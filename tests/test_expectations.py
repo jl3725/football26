@@ -17,7 +17,8 @@ def _fake(influence: dict, captains: list, pf: pd.DataFrame, similar: list):
         network=lambda team, lg: {"leadership": {"influence": influence, "captains": captains}},
         _pf=lambda lg: pf, _pos_bucket=lambda row: row["bucket"],
         similar=lambda p, same, a, lg: {"results": similar},
-        fit=lambda p, team, role, src, lg: {"natural_role": "Central Midfield"})
+        fit=lambda p, team, role, src, lg: {"natural_role": "Central Midfield"},
+        player_detail=lambda team, p, lg: {"template": {"enough": False, "eff_minutes": 234}, "radar": []})
 
 
 def test_detects_regressions() -> None:
@@ -34,6 +35,7 @@ def test_detects_regressions() -> None:
         "similar_not": {"kind": "similar_not", "league": "EPL", "team": "", "player": "Bukayo Saka", "expect": "Johan Manzambi"},
         "similar_bucket": {"kind": "similar_bucket", "league": "EPL", "team": "", "player": "Bukayo Saka", "expect": "RW|LW"},
         "stat_ge": {"kind": "stat_ge", "league": "EPL", "team": "", "player": "Erling Haaland", "expect": "goals:8", "season": "2026_2027"},
+        "radar_shown": {"kind": "radar_shown", "league": "EPL", "team": "Arsenal", "player": "Jurriën Timber", "expect": "6"},
     }
     for k, r in rows.items():
         ok, msg = ev.check_one(m, r, "2026_2027")
@@ -44,5 +46,5 @@ def test_detects_regressions() -> None:
 
 def test_golden_file_kinds_are_known() -> None:
     g = pd.read_csv(ev.GOLDEN, dtype=str)
-    known = {"influence_top", "captain", "captain_not", "bucket_in", "fit_natural", "similar_not", "similar_bucket", "stat_ge"}
+    known = {"influence_top", "captain", "captain_not", "bucket_in", "fit_natural", "similar_not", "similar_bucket", "stat_ge", "radar_shown"}
     assert set(g["kind"]) <= known and len(g) >= 10

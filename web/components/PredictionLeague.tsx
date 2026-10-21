@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { getPredictionLeague, type PredPick, type PredictionLeague as PL, type PredRecent } from "@/lib/api";
 import SectionHead from "./SectionHead";
+import Info from "./Info";
 import { Skel } from "./Skeleton";
 import { TONE } from "@/lib/meaning";
 
@@ -16,8 +17,8 @@ const PICK_KO = (p: PredPick, home: string, away: string) =>
   !p ? "—" : p.pick === "H" ? `${home} 승` : p.pick === "A" ? `${away} 승` : "무승부";
 const short = (t: string) => (t.length > 14 ? t.split(" ").slice(-1)[0] : t);
 
-function Mark({ p, r }: { p: PredPick; r: PredRecent["result"] }) {
-  if (!p) return <i className="pl5-mk none">—</i>;
+function Mark({ p, r, why }: { p: PredPick; r: PredRecent["result"]; why?: string }) {
+  if (!p) return <i className="pl5-mk none" title={why}>—</i>;
   return <i className={`pl5-mk ${p.pick === r ? "hit" : "miss"}`}>{p.pick === r ? "✓" : "✗"}</i>;
 }
 
@@ -32,7 +33,12 @@ export default function PredictionLeague() {
   const lead = c ? c.scores[c.rank[0]] : null;
   return (
     <section className="h5-sec">
-      <SectionHead title="PREDICTION LEAGUE" kr="팬 vs 모델" meta={`누가 더 잘 맞히나 · ${d.since?.slice(5).replace("-", "/")}부터 경기 전 예측 기록`} />
+      <SectionHead title="PREDICTION LEAGUE" kr="팬 vs 모델" meta={`${d.since?.slice(5).replace("-", "/")}부터`}
+        info={<>
+          <p>경기 전에 남긴 예측을 결과와 대조해 누가 더 잘 맞히나 겨룹니다.</p>
+          <p><b>MODEL</b> 이 사이트의 통계 모델(xG·득실·선수 평점·Elo) · <b>FANS</b> Sofascore 팬 투표 · <b>ELO</b> ClubElo</p>
+          <p className="muted">재미용 — 베팅 정보가 아닙니다</p>
+        </>} />
       <div className="pl5">
         <div className="card pl5-board">
           <div className="pl5-cols">
@@ -50,7 +56,7 @@ export default function PredictionLeague() {
                   <span>{v.n ? `${v.hits}/${v.n} 적중` : "기록 없음"}</span>
                   {tone && (
                     <span className="mn-tag sm" style={{ color: tone.c, background: tone.bg, whiteSpace: "normal", alignSelf: "flex-start", borderRadius: 6 }}
-                      title={`셋 다 예측한 같은 ${c!.n}경기 기준 순위(적중률 → 브라이어)`}>
+                      title={`같은 ${c!.n}경기 기준 순위(적중률 → 브라이어)`}>
                       {rk + 1}위{gap != null ? ` · ${gap > 0 ? "+" : ""}${gap}%p` : rk === 0 ? " · 선두" : ""}
                     </span>
                   )}
@@ -61,19 +67,29 @@ export default function PredictionLeague() {
             })}
           </div>
           <p className="pl5-note" style={{ marginTop: 8 }}>
-            {c ? <>셋 다 예측한 <b>같은 {c.n}경기</b> 맞대결 — 순위는 적중률, 같으면 브라이어(확률 오차, 낮을수록 정확 · {RANDOM_BRIER} = 찍기 수준)</>
-              : <>브라이어 = 확률 오차, 낮을수록 정확(0 = 완벽, {RANDOM_BRIER} = 찍기 수준)</>}
-            {c && c.n < 30 && <> · 아직 표본이 작아 우열을 단정하기 이릅니다</>}
+            {c ? <>같은 <b>{c.n}경기</b> 맞대결{c.n < 30 ? " · 표본 적음" : ""}</> : <>출처별 전체 기록</>}
+            <Info label="순위 기준">
+              <p>{c ? <>셋 다 예측한 같은 {c.n}경기로 순위를 매깁니다 — 적중률, 같으면 브라이어.</> : <>셋이 함께 예측한 경기가 아직 없어 출처별 전체 기록입니다.</>}</p>
+              <p><b>브라이어</b> = 확률이 결과와 얼마나 가까웠나. 0 = 완벽, 낮을수록 정확, {RANDOM_BRIER} = 세 결과에 1/3씩 건 찍기 수준.</p>
+              {c && c.n < 30 && <p className="muted">아직 표본이 작아 우열을 단정하기 이릅니다.</p>}
+            </Info>
           </p>
           {c?.v3 && (
-            <p className="pl5-h2h" title="v3 = 최근 흐름 가중·자체 Elo·부상 결장 반영. v3 이전 경기는 그 경기 전 데이터만으로 다시 계산한 값(부상 명단 제외 · 팀 OVR 은 지금 값)이라 참고용">
-              <b>MODEL v3</b>{d.v3_since ? ` (${d.v3_since.slice(5).replace("-", "/")} 경기부터 실시간 기록)` : ""} · 같은 {c.v3.n}경기
-              {" "}<b>{c.v3.acc != null ? `${Math.round(c.v3.acc * 100)}%` : "—"}</b> 적중 · 브라이어 <b>{c.v3.brier?.toFixed(3)}</b>
-              {c.v3_live < c.v3.n && <span style={{ opacity: 0.7 }}> — 지난 경기는 재계산(참고)</span>}
+            <p className="pl5-h2h">
+              <b>MODEL v3</b> · {c.v3.n}경기 <b>{c.v3.acc != null ? `${Math.round(c.v3.acc * 100)}%` : "—"}</b> 적중 · 브라이어 <b>{c.v3.brier?.toFixed(3)}</b>
+              <Info label="모델 v3 설명">
+                <p>v3 = 최근 흐름 가중 · 자체 Elo · 부상 결장 반영.</p>
+                {d.v3_since && <p>{d.v3_since.slice(5).replace("-", "/")} 경기부터 실시간 기록.</p>}
+                {c.v3_live < c.v3.n && <p className="muted">그 이전 경기는 경기 전 데이터만으로 다시 계산한 값(부상 명단 제외, 팀 OVR 은 지금 값)이라 참고용.</p>}
+              </Info>
             </p>
           )}
           <div className="pl5-recent">
-            <div className="pl5-rh"><span>최근 결과</span><em>팬</em><em>모델</em><em>Elo</em></div>
+            <div className="pl5-rh"><span>최근 결과
+              <Info label="최근 결과 표 설명">
+                <p>✓ 맞힘 · ✗ 틀림 · — 예측 없음</p>
+                <p><b>모델 —</b> 우리 8개 리그 밖 팀(예: 슬로반 브라티슬라바·사바 FK)이 낀 경기는 그 팀 선수·경기 데이터가 없어 모델 예측을 하지 않습니다.</p>
+              </Info></span><em>팬</em><em>모델</em><em>Elo</em></div>
             {d.recent.slice(0, 8).map((r) => (
               <div className="pl5-rr" key={r.event_id}>
                 <span className="pl5-m">
@@ -81,13 +97,13 @@ export default function PredictionLeague() {
                   <b>{short(r.home)}</b><strong>{r.hg}-{r.ag}</strong><b>{short(r.away)}</b>
                   {r.away_logo ? <img src={r.away_logo} alt="" /> : <i className="ph" />}
                 </span>
-                <Mark p={r.fans} r={r.result} /><Mark p={r.model} r={r.result} /><Mark p={r.elo} r={r.result} />
+                <Mark p={r.fans} r={r.result} /><Mark p={r.model} r={r.result} why={r.outside ? "8개 리그 밖 팀 — 모델 예측 없음" : undefined} /><Mark p={r.elo} r={r.result} />
               </div>
             ))}
           </div>
         </div>
         <div className="card pl5-split">
-          <div className="pl5-st">의견 갈린 경기<span>다가오는 경기 · 예상 결과가 다르거나 확률이 20%p 이상 차이</span></div>
+          <div className="pl5-st">의견 갈린 경기<Info label="의견 갈린 경기 기준"><p>다가오는 경기 중 팬과 모델의 예상 결과가 다르거나, 같아도 확률이 20%p 이상 차이 나는 경기.</p></Info></div>
           {d.split.length ? d.split.map((x) => (
             <div className="pl5-sr" key={x.event_id}>
               <div className="pl5-sm">
@@ -103,7 +119,6 @@ export default function PredictionLeague() {
               </div>
             </div>
           )) : <p className="pv-empty">이번 주는 팬과 모델의 예상과 확률이 비슷합니다</p>}
-          <p className="pl5-note">MODEL = 이 사이트의 데이터 통계 모델(xG·득실·선수 평점) · FANS = Sofascore 팬 투표 · 재미용, 베팅 정보 아님</p>
         </div>
       </div>
     </section>

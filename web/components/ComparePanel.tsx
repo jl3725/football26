@@ -4,6 +4,7 @@ import { activeLeague, getPlayerDetail, fmtEur, type PlayerDetail } from "@/lib/
 import { tier, hexA } from "@/lib/ui";
 import { ssMeaning, TONE, SS_NOTE } from "@/lib/meaning";
 import { MeaningTag } from "./Meaning";
+import Info from "./Info";
 
 const CB = "#e0a05e";   // B 선수 색(대비)
 
@@ -118,9 +119,14 @@ export default function ComparePanel({ team, a, b, bTeam, bLeague, accent, onCle
       <div style={{ display: "flex", justifyContent: "center" }}>
         <CompareRadar a={sameTpl ? da.radar : (da.radar_line ?? da.radar)} b={sameTpl ? db.radar : (db.radar_line ?? db.radar)} ca={accent} />
       </div>
-      <div style={{ textAlign: "center", fontSize: 10.5, opacity: 0.55, marginTop: -2 }}>
-        {sameTpl ? `레이더 = ${da.template?.ko ?? "같은 포지션"} 템플릿 백분위` : `포지션이 달라(${da.template?.ko ?? "?"} · ${db.template?.ko ?? "?"}) 라인 공통 축으로 비교`}
-        {cross ? " · 리그가 달라 두 선수 모두 8개 리그 같은 템플릿과 비교(같은 잣대)" : ""} · 전 대회 기록 · 점선 = 50(중간) · 바깥일수록 상위
+      <div style={{ textAlign: "center", fontSize: 10.5, opacity: 0.6, marginTop: -2 }}>
+        {sameTpl ? `${da.template?.ko ?? "같은 포지션"} 백분위` : "라인 공통 축"}{cross ? " · 8개 리그 기준" : ""}
+        <Info label="비교 기준">
+          <p>{sameTpl ? `같은 ${da.template?.ko ?? "포지션"} 템플릿 백분위(전 대회 기록).` : `포지션이 달라(${da.template?.ko ?? "?"} · ${db.template?.ko ?? "?"}) 라인 공통 축으로 비교.`}</p>
+          {cross && <p>리그가 달라 두 선수 모두 8개 리그 같은 템플릿과 비교(같은 잣대).</p>}
+          <p>점선 = 50(중간) · 바깥일수록 상위 · 초록 = 더 나은 쪽(나이는 표시만).</p>
+          {cross && <p>OVR 은 리그 수준이 들어간 절대 척도라 바로 비교 가능. &lsquo;○○ 기준 OVR&rsquo; = 그 리그로 옮기면 예상(더 센 리그로 갈 때만 레벨 차 × 0.1 적응 할인, 30세 이상 −1).</p>}
+        </Info>
       </div>
 
       <div style={{ maxWidth: 420, margin: "10px auto 0" }}>
@@ -143,7 +149,6 @@ export default function ComparePanel({ team, a, b, bTeam, bLeague, accent, onCle
         <StatRow label="출전(분)" a={da.minutes} b={db.minutes} fmt={(v) => v.toLocaleString()} />
         <StatRow label="득점" a={da.goals} b={db.goals} />
         <StatRow label="도움" a={da.assists} b={db.assists} />
-        <div style={{ fontSize: 10.5, opacity: 0.5, textAlign: "center", marginTop: 6 }}>더 나은 쪽 = 초록 · 나이는 좋고 나쁨 없이 표시{cross ? " · OVR 은 리그 수준이 들어간 절대 척도라 리그가 달라도 바로 비교" : ""}</div>
       </div>
     </div>
   );

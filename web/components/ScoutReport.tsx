@@ -110,7 +110,7 @@ export default function ScoutReport({ team, player, accent, onClose, league }: {
               <section className="sr-sec"><h2>WEAKNESSES <em>약점</em></h2><MetricRows items={r.weaknesses} tone="down" /></section>
             </div>
           ) : (
-            <p className="sr-note">리그 출전 {d.minutes.toLocaleString()}′ — 백분위 강약점은 {d.is_gk ? 300 : 450}′ 넘게 뛴 뒤 나옵니다.</p>
+            <p className="sr-note">출전 {(d.template?.eff_minutes ?? d.minutes).toLocaleString()}′ — 백분위 강약점은 {d.is_gk ? 300 : 450}′ 넘게 뛴 뒤 나옵니다.</p>
           )}
 
           <div className="sr-cols three">

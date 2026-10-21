@@ -2363,6 +2363,9 @@ def player_detail(team: str, player: str, league: str = ACTIVE_LEAGUE, basis: st
                 "comps": comps, "league_minutes": int(_num(trow.get("_league_minutes"), 0)),
                 "x_minutes": int(_num(trow.get("_x_minutes"), 0)),
                 "x_comps": _x_comp_list(row.get("x_comps")) if comps == "all" else [],
+                # 백분위 지표를 보여 줄 만큼의 표본 — 실제로 섞인 분량(이번 시즌 전 대회 + 안정화로 섞은 지난 시즌).
+                # 예전엔 이번 시즌 리그 분만 봐서 부상 복귀한 Timber(156′)·Guimarães(217′)의 레이더가 숨었다(2026-10-21 사용자).
+                "eff_minutes": int(cur_m + pri_m), "enough": bool(cur_m + pri_m >= (300 if is_gk else 450)),
                 "prior_share": round(pri_m / (cur_m + pri_m), 2) if cur_m + pri_m else 0.0,
                 "possession": None if pd.isna(trow.get("_poss")) else round(float(trow.get("_poss")), 1),
                 "padj": round(float(trow.get("_padj_f") or 1.0), 2)}
@@ -2712,7 +2715,7 @@ def scout_report(team: str, player: str, league: str = ACTIVE_LEAGUE):
     from leagues import LEAGUES  # noqa: PLC0415
     d = player_detail(team, player, league)
     me = ps.norm_name(d["player"])
-    enough = d["minutes"] >= (300 if d.get("is_gk") else 450)
+    enough = bool((d.get("template") or {}).get("enough", d["minutes"] >= (300 if d.get("is_gk") else 450)))
     strong, weak = sr.strengths(d.get("categories") or []) if enough else ([], [])
     # 부상 — 이번 시즌(이 클럽) + 지난 시즌(어느 리그든)
     seasons = []
@@ -6784,6 +6787,8 @@ def prediction_league():
     recent = [{"event_id": r["event_id"], "date": r["date"], "home": r["home"], "away": r["away"],
                "home_logo": _logo_of(r, "home"), "away_logo": _logo_of(r, "away"),
                "hg": int(r["hg"]), "ag": int(r["ag"]), "result": r["result"],
+               "outside": not (str(r.get("home_league") or "").strip() and str(r.get("away_league") or "").strip()
+                               and str(r.get("home_league")) != "nan" and str(r.get("away_league")) != "nan"),
                **{k: pick(r, k) for k, *_ in keys}} for r in sorted(done, key=lambda r: (r["date"], str(r.get("kickoff"))), reverse=True)[:12]]
     today = _today_kst().isoformat()
     split = []

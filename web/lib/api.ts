@@ -271,7 +271,8 @@ export type PlayerDetail = {
   // 포지션 템플릿(src/position_templates.py) — GK·CB·FB·DM·CM·AM·W·ST, 같은 템플릿 비교 대상 수·범위(리그 | 8개 리그)
   template?: { key: string; en: string; ko: string; n: number; scope: string;
     basis?: "blend" | "season"; cur_minutes?: number; prior_minutes?: number; prior_share?: number; possession?: number | null; padj?: number;
-    comps?: "all" | "league"; league_minutes?: number; x_minutes?: number; x_comps?: { code: string; name: string; minutes: number; weight: number }[] };
+    comps?: "all" | "league"; league_minutes?: number; x_minutes?: number; x_comps?: { code: string; name: string; minutes: number; weight: number }[];
+    eff_minutes?: number; enough?: boolean };
   league?: string; league_level?: number; rating_epl?: number | null; proj?: Record<string, number>;
   categories_line?: MetricCat[]; radar_line?: { axis: string; value: number }[];   // 라인 공통 축(포지션 다른 선수 비교용)
   badges: Badge[];
@@ -691,7 +692,7 @@ export const getHubPulse = () => j<HubPulse>(`/api/hub/pulse`);
 export type PredScore = { key: "fans" | "model" | "elo"; en: string; kr: string; n: number; acc: number | null; brier: number | null; logloss: number | null; hits: number };
 export type PredPick = { pick: "H" | "D" | "A"; p: number } | null;
 export type PredRecent = { event_id: string; date: string; home: string; away: string; home_logo: string; away_logo: string; hg: number; ag: number;
-  result: "H" | "D" | "A"; fans: PredPick; model: PredPick; elo: PredPick };
+  result: "H" | "D" | "A"; fans: PredPick; model: PredPick; elo: PredPick; outside?: boolean };
 export type PredSplit = { event_id: string; date: string; home: string; away: string; home_logo: string; away_logo: string; fans: PredPick; model: PredPick; gap: number ; kind?: "pick" | "confidence"; model_on_fan_pick?: number };
 type PredStat = Omit<PredScore, "key" | "en" | "kr">;
 // common: 세 출처가 모두 예측한 같은 경기 맞대결(rank = 적중률 → 브라이어) · v3: 같은 경기를 모델 v3 로(이전 경기는 재계산, 참고)

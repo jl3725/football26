@@ -89,8 +89,14 @@ export default function NetworkTab({ team, accent }: { team: string; accent: str
     <div className="fade net" style={{ ["--ac" as string]: accent }}>
       <div className="card net-hero">
         <SectionHead title="NETWORK" kr="팀 지식그래프"
-          meta={`선수 ${d.players.length} · 관계 ${nRel} · 클럽 ${d.links.n_clubs} · ${d.nations.n}개국 · ${d.games}경기`} />
-        <h4 className="net-h">GRAPH INSIGHTS <span>그래프 자동 요약 · 누르면 해당 렌즈로</span></h4>
+          meta={`선수 ${d.players.length} · 관계 ${nRel} · 클럽 ${d.links.n_clubs}`}
+          info={<>
+            <p>선수 {d.players.length} · 관계 {nRel} · 클럽 {d.links.n_clubs} · {d.nations.n}개국 · {d.games}경기</p>
+            <p><b>원천</b> — 함께 뛴 시간: ESPN 라인업·교체(이번·지난 시즌) · 주장단·등번호·감독 경력: Wikipedia · 입단·이적: Transfermarkt ·
+              국적·순위: FIFA 랭킹 · 대표팀: 2026 월드컵 명단 · 이적설: Transfermarkt 루머 + 뉴스 루머(매체 적중률 가중)</p>
+            <p className="muted">같은 관계를 지식그래프(Neo4j)로도 적재합니다.</p>
+          </>} />
+        <h4 className="net-h">GRAPH INSIGHTS <span>누르면 해당 렌즈로</span></h4>
         <div className="net-ins">
           {d.insights.map((i, k) => (
             <InsightTile key={k} i={i} d={d} on={lens === i.lens} onPick={() => setLens(i.lens as Lens)} />
@@ -116,11 +122,6 @@ export default function NetworkTab({ team, accent }: { team: string; accent: str
         {lens === "manager" && <NetManager d={d} accent={accent} />}
         {lens === "rumors" && <NetRumors team={team} accent={accent} logo={d.logo} />}
       </div>
-      <p className="net-src">
-        관계 원천 — 함께 뛴 시간: ESPN 라인업·교체(이번·지난 시즌) · 주장단·등번호·감독 경력: Wikipedia ·
-        입단·이적: Transfermarkt · 국적·순위: FIFA 랭킹 · 대표팀: 2026 월드컵 명단 · 이적설: Transfermarkt 루머 + 뉴스 루머(매체 적중률 가중).
-        같은 관계를 지식그래프(Neo4j)로도 적재한다.
-      </p>
     </div>
   );
 }

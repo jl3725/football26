@@ -17,6 +17,7 @@ import { TrendArrow, TrendLine } from "./Trend";
 import SeasonLog from "./SeasonLog";
 import PlayerNews from "./PlayerNews";
 import ScoutReport from "./ScoutReport";
+import Info from "./Info";
 
 // 실제 기록 값 — 라벨에 '%' 가 있으면 비율(0~100), 그 외(/90·xA)는 90분당.
 // 계약 남은 기간 — ' (1년 8개월 남음)'
@@ -89,9 +90,9 @@ function Detail({ team, player, accent, heatmap }: { team: string; player: strin
     </div>
   );
   const t = tier(d.ovr);
-  // 백분위 지표를 보여 줄 만큼 뛰었나(2분 뛴 선수 레이더 0 문제) — 전 대회면 리그 + 유럽·컵(가중) 분, 비교 대상과 같은 기준
-  const sampleMin = d.template?.comps === "all" ? (d.template.league_minutes ?? d.minutes) + (d.template.x_minutes ?? 0) : d.minutes;
-  const enough = sampleMin >= (d.is_gk ? 300 : 450);
+  // 백분위 지표를 보여 줄 만큼 뛰었나(2분 뛴 선수 레이더 0 문제) — 서버 판정(template.enough: 전 대회 + 안정화로 섞은 지난 시즌 분)
+  const sampleMin = d.template?.eff_minutes ?? d.minutes;
+  const enough = d.template?.enough ?? sampleMin >= (d.is_gk ? 300 : 450);
   return (
     <div className="card pd-card">
       <div className="pd-head" style={{ background: `linear-gradient(120deg, ${hexA(d.color, 0.28)}, transparent)` }}>
@@ -192,27 +193,31 @@ function Detail({ team, player, accent, heatmap }: { team: string; player: strin
       {d.template ? (
         <div className="pd-tpl">
           <span className="pd-tpl-k">{d.template.en}</span>
-          <span>{d.template.ko} 템플릿 · {d.template.comps === "league" ? "리그 경기만" : "전 대회(리그 + 유럽·컵)"} · <b>{d.template.scope === "리그" ? "같은 리그" : "8개 리그"} {d.template.ko} {d.template.n}명</b> 대비 백분위 · 회색 = 시도 10회 미만</span>
+          <span className="pd-tpl-s">{d.template.scope === "리그" ? "리그" : "8개 리그"} {d.template.ko} {d.template.n}명 대비
+            <Info wide label="세부 지표 기준">
+              <p><b>백분위</b> — 같은 {d.template.ko} {d.template.n}명({d.template.scope === "리그" ? "같은 리그" : "8개 리그"}) 대비. 50 = 중간.</p>
+              <p><b>기록</b> — {d.template.comps === "league" ? "리그 경기만."
+                : d.template.x_comps?.length
+                  ? <>리그 {(d.template.league_minutes ?? 0).toLocaleString()}′ + {d.template.x_comps.map((c) => `${c.name} ${c.minutes}′${c.weight < 1 ? `(×${c.weight})` : ""}`).join(" · ")}. 유럽·컵은 리그 표 척도로 맞춰 섞음.</>
+                  : "전 대회(이번 시즌 유럽·컵 출전 없음)."}</p>
+              <p><b>{d.template.basis === "blend" ? "안정화" : "이번 시즌만"}</b> — {d.template.basis === "blend" && (d.template.prior_minutes ?? 0) > 0
+                ? <>이번 시즌 {(d.template.cur_minutes ?? 0).toLocaleString()}′ + 지난 시즌 {(d.template.prior_minutes ?? 0).toLocaleString()}′치(비중 {Math.round((d.template.prior_share ?? 0) * 100)}%, 출전이 쌓일수록 줄어듦).</>
+                : d.template.basis === "blend" ? <>지난 시즌 기록 없음 — 이번 시즌 {(d.template.cur_minutes ?? 0).toLocaleString()}′.</>
+                : <>{(d.template.cur_minutes ?? 0).toLocaleString()}′ — 시즌 초엔 몇 경기로 크게 흔들림.</>}</p>
+              {d.template.possession != null && <p><b>수비 횟수</b> — 팀 점유율 {d.template.possession}% 보정(×{d.template.padj}, 50% 기준).</p>}
+              <p className="muted">회색 = 시도 10회 미만(표본 부족) · 평균·레이더에서 뺌</p>
+            </Info>
+          </span>
           <span className="pd-basis">
             <span className="it-chips">{([["all", "전 대회"], ["league", "리그만"]] as const).map(([v, l]) => (
               <button key={v} className={comps === v ? "on" : ""} onClick={() => setComps(v)}>{l}</button>))}</span>
             <span className="it-chips">{([["blend", "안정화"], ["season", "이번 시즌만"]] as const).map(([v, l]) => (
               <button key={v} className={basis === v ? "on" : ""} onClick={() => setBasis(v)}>{l}</button>))}</span>
           </span>
-          <span className="pd-basis-note">
-            {d.template.basis === "blend" && (d.template.prior_minutes ?? 0) > 0
-              ? <>이번 시즌 {(d.template.cur_minutes ?? 0).toLocaleString()}′ + 지난 시즌 {(d.template.prior_minutes ?? 0).toLocaleString()}′치를 섞음(지난 시즌 비중 {Math.round((d.template.prior_share ?? 0) * 100)}% — 출전이 쌓일수록 줄어듦)</>
-              : d.template.basis === "blend" ? <>지난 시즌 기록이 없어 이번 시즌 {(d.template.cur_minutes ?? 0).toLocaleString()}′만</>
-              : <>이번 시즌 {(d.template.cur_minutes ?? 0).toLocaleString()}′만 — 시즌 초엔 몇 경기로 크게 흔들림</>}
-            {d.template.possession != null && <> · 수비 횟수는 팀 점유율 {d.template.possession}% 보정(×{d.template.padj}, 50% 기준)</>}
-            {d.template.comps === "all" && (d.template.x_comps?.length
-              ? <> · 리그 {(d.template.league_minutes ?? 0).toLocaleString()}′ + {d.template.x_comps.map((c) => `${c.name} ${c.minutes}′${c.weight < 1 ? `(×${c.weight})` : ""}`).join(" · ")} — 유럽·컵은 FotMob 경기별 기록을 리그 표 척도로 맞춰 섞음</>
-              : <> · 이번 시즌 유럽·컵 출전 없음 — 리그 기록만</>)}
-          </span>
         </div>
       ) : d.peers?.n > 0 && (
         <div style={{ fontSize: 11, opacity: 0.5, margin: "0 0 4px" }}>
-          아래 지표 = <b>리그 경기 기준</b> · {({ GK: "골키퍼", DEF: "수비수", MID: "미드필더", ATT: "공격수" } as Record<string, string>)[d.peers.line] || "포지션"} 대비 백분위 · {d.peers.n}명 기준(컵·유럽 제외)
+          {({ GK: "골키퍼", DEF: "수비수", MID: "미드필더", ATT: "공격수" } as Record<string, string>)[d.peers.line] || "포지션"} {d.peers.n}명 대비 백분위
         </div>
       )}
       {/* 요약 그림 두 장을 나란히(레이더 = 능력 모양, 히트맵 = 뛰는 자리) — 예전엔 각각 한 줄을 다 차지해 양옆이 비었다 */}
@@ -228,7 +233,7 @@ function Detail({ team, player, accent, heatmap }: { team: string; player: strin
         </div>
       )}
       {!enough && (
-        <div className="pd-sample">표본 부족 — {d.template?.comps === "all" ? "전 대회" : "리그"} {Math.round(sampleMin).toLocaleString()}′ 출전({d.is_gk ? 300 : 450}′ 미만)이라 백분위 지표를 접었습니다. 출전이 쌓이면 자동으로 나옵니다.</div>
+        <div className="pd-sample">표본 부족 — {Math.round(sampleMin).toLocaleString()}′ 출전({d.is_gk ? 300 : 450}′ 미만). 출전이 쌓이면 자동으로 나옵니다.</div>
       )}
       {enough && <div className="pd-body">
         <div className="pd-cats">

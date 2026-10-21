@@ -4,6 +4,7 @@ import type { NetLink, NetworkData } from "@/lib/api";
 import { hexA } from "@/lib/ui";
 import { usePeek } from "./PlayerPeek";
 import { SvgAvatar } from "./NetShared";
+import Info from "./Info";
 
 // LINKS — 이 팀을 가운데 둔 클럽 관계망. 선 종류 = 관계(영입·방출·떠난 선수가 지금 뛰는 클럽·이적설), 굵기 = 건수.
 const W = 700, H = 450, CX = W / 2, CY = H / 2;
@@ -33,7 +34,8 @@ export default function NetLinks({ d, accent }: { d: NetworkData; accent: string
   return (
     <div className="net-links">
       <div className="net-toolbar">
-        <h4 className="net-h">CLUB WEB <span>최근 두 이적창 · 떠난 선수가 지금 뛰는 클럽 · 이적설 — {d.links.n_clubs}개 클럽 중 상위 {clubs.length}</span></h4>
+        <h4 className="net-h">CLUB WEB <span>가까운 클럽 {clubs.length}/{d.links.n_clubs}</span>
+          <Info label="클럽 관계망 설명"><p>최근 두 이적창의 영입·방출, 떠난 선수가 지금 뛰는 클럽, 이적설로 이은 관계망입니다.</p><p>{WEIGHT_NOTE}</p></Info></h4>
         <span className="net-legend">{KINDS.map((k) => <span key={k.k}><i style={{ background: k.c }} />{k.ko}</span>)}</span>
       </div>
       <svg viewBox={`0 0 ${W} ${H}`} className="net-svg" role="img" aria-label="클럽 관계망 — 선 색은 관계 종류, 굵기는 건수">
@@ -63,7 +65,6 @@ export default function NetLinks({ d, accent }: { d: NetworkData; accent: string
             {cur.logo && <img src={cur.logo} alt="" />}
             <b>{cur.club}</b><em title={WEIGHT_NOTE}>{cur.league ?? "8개 리그 밖"} · 연결 점수 {cur.weight}</em>
           </div>
-          <p className="net-note" style={{ fontSize: 11, color: "var(--muted-2)", margin: "2px 0 8px" }}>{WEIGHT_NOTE}</p>
           <div className="net-link-cols">
             {KINDS.filter((k) => cur[k.k].length > 0).map((k) => (
               <div key={k.k} className="net-link-col">

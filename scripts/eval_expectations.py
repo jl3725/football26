@@ -77,6 +77,12 @@ def check_one(m, r: dict, season: str) -> tuple[bool | None, str]:
             return expect not in names, f"{player} 유사: {', '.join(names)}"
         bad = [f"{x['player']}({x['pos']})" for x in res if x["pos"] not in expect.split("|")]
         return not bad, f"{player} 유사 버킷: {', '.join(x['pos'] for x in res)}" + (f" — 벗어남: {', '.join(bad)}" if bad else "")
+    if kind == "radar_shown":
+        # 부상 복귀 주전처럼 이번 시즌 출전이 적어도 안정화(지난 시즌 섞기)로 표본이 차면 레이더가 보여야 한다
+        d = getattr(m.player_detail, "__wrapped__", m.player_detail)(team, player, lg)
+        t = d.get("template") or {}
+        n = len(d.get("radar") or [])
+        return bool(t.get("enough") and n >= int(expect)), f"{player} 레이더 {n}축 · 표본 {t.get('eff_minutes')}′ · enough={t.get('enough')}"
     if kind == "stat_ge":
         if r.get("season") and str(r["season"]) != season:
             return None, f"시즌 {r['season']} 기준 — 지금 {season}, 건너뜀"

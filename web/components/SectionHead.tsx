@@ -1,5 +1,6 @@
 "use client";
 import type { ReactNode } from "react";
+import Info from "./Info";
 
 // 섹션 머리 공통형 — 영어 대문자 제목(크게) + 한글 보조(작게) + 범위·개수 메타 + 오른쪽 동작.
 // 제목은 영어 위주가 사용자 선호(디자인 v5 에서 한글 제목으로 바꿨다가 되돌림).
@@ -11,14 +12,16 @@ export function Chevron() {
   );
 }
 
-export default function SectionHead({ title, kr, meta, action, onAction, right }: {
-  title: string; kr?: string; meta?: ReactNode; action?: string; onAction?: () => void; right?: ReactNode;
+// info = 공식·기준·출처 같은 부가 설명(ⓘ 호버·탭) — 화면에 늘어놓지 않는다
+export default function SectionHead({ title, kr, meta, info, action, onAction, right }: {
+  title: string; kr?: string; meta?: ReactNode; info?: ReactNode; action?: string; onAction?: () => void; right?: ReactNode;
 }) {
   return (
     <div className="sh">
       <div className="sh-l">
         <h2 className="sh-t">{title}</h2>
         {kr ? <span className="sh-kr">{kr}</span> : null}
+        {info ? <Info label={`${title} 설명`}>{info}</Info> : null}
         {meta ? <span className="sh-m">{meta}</span> : null}
       </div>
       {right ?? (action && onAction ? <button className="sh-a" onClick={onAction}>{action}<Chevron /></button> : null)}

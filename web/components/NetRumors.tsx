@@ -5,6 +5,7 @@ import { hexA } from "@/lib/ui";
 import { usePeek } from "./PlayerPeek";
 import { SvgAvatar } from "./NetShared";
 import { Skel } from "./Skeleton";
+import Info from "./Info";
 
 // RUMOURS — 이적설 지도. 경쟁 구단 → 표적 → 우리 클럽 ← 우리 선수 → 관심 구단 흐름으로, 선 굵기 = 열기(0~100), 색 = 단계.
 // 원천: Transfermarkt 루머(8개 리그) + 열린 이적시장 뉴스 루머(매체 적중률 가중) — /api/rumor-map, src/rumor_map.py.
@@ -18,7 +19,16 @@ const STAGE: Record<RumorStage, { en: string; ko: string; c: string; dash?: stri
   denied: { en: "DENIED", ko: "부인", c: "#ff6b7d", dash: "2 4" },
 };
 const W = 760, ROW = 58, TOP = 44, XR = 40, XT = 236, XC = 380, XO = 524, XS = 640, MAX_ROWS = 8;
-const HEAT_NOTE = "열기 = TM 루머(확률 반영) + 기사 단계(관심 1 · 협상 1.6 · 합의 2.4 · 확정 3 · 부인 −0.8) × 매체 적중률, 최근일수록 크게(반감기 뉴스 14일 · TM 21일)";
+const HEAT_NOTE = (
+  <>
+    <p><b>열기(0~100)</b> — 원천 점수를 합해 최근일수록 크게 칩니다(반감기 뉴스 14일 · TM 21일, 120일 넘으면 버림).</p>
+    <ul>
+      <li>TM 루머 1건 = 1 + 성사 확률</li>
+      <li>기사 1건 = 단계(관심 1 · 협상 1.6 · 합의 2.4 · 확정 3 · 부인 −0.8) × 매체 적중률</li>
+    </ul>
+    <p className="muted">원천: Transfermarkt 루머 + 열린 이적시장 뉴스(매체 적중률 = 지난 닫힌 시장 기준)</p>
+  </>
+);
 const short = (s: string, n = 15) => (s.length > n ? s.slice(0, n - 1) + "…" : s);
 const eur = (v?: number) => (v && v > 0 ? (v >= 1e6 ? `€${Math.round(v / 1e6)}M` : `€${Math.round(v / 1e3)}K`) : "");
 type Sel = { kind: "in"; x: RumorIn } | { kind: "out"; x: RumorOut } | null;
@@ -28,7 +38,8 @@ function Sources({ l, stages }: { l: RumorLink; stages: RumorMap["stages"] }) {
   return (
     <div className="rm-src">
       {sr && l.stage !== "rumour" && (
-        <p className="rm-rate">지난 닫힌 이적시장에서 <b>{STAGE[l.stage].ko}</b> 단계 보도가 실제 이적으로 이어진 비율 <b>{Math.round(sr.rate * 100)}%</b> ({sr.hits}/{sr.n})</p>
+        <p className="rm-rate">{STAGE[l.stage].ko} 단계 보도 성사율 <b>{Math.round(sr.rate * 100)}%</b>
+          <Info label="성사율 설명"><p>지난 닫힌 이적시장에서 &lsquo;{STAGE[l.stage].ko}&rsquo; 단계 보도가 실제 이적으로 이어진 비율 ({sr.hits}/{sr.n})</p></Info></p>
       )}
       {l.tm && (
         <div className="rm-src-row"><span className="rm-chip" style={{ ["--c" as string]: STAGE.rumour.c }}>TM</span>
@@ -52,7 +63,7 @@ function Sources({ l, stages }: { l: RumorLink; stages: RumorMap["stages"] }) {
 
 function Heat({ v, stage }: { v: number; stage: RumorStage }) {
   return (
-    <span className="rm-heat" title={HEAT_NOTE}>
+    <span className="rm-heat" title={`열기 ${v}`}>
       <i style={{ width: Math.max(4, Math.round(v * 0.56)), background: STAGE[stage].c }} /><b>{v}</b>
     </span>
   );
@@ -92,7 +103,7 @@ export default function NetRumors({ team, accent, logo }: { team: string; accent
   return (
     <div className="net-rumors">
       <div className="net-toolbar">
-        <h4 className="net-h">RUMOUR MAP <span>이적설 지도 — 표적 {d.n_in}명 · 우리 선수 {d.n_out}명 · 최근 120일 · 굵기 = 열기</span></h4>
+        <h4 className="net-h">RUMOUR MAP <span>이적설 지도 · 표적 {d.n_in} · 우리 선수 {d.n_out}</span><Info wide label="이적설 지도 설명">{HEAT_NOTE}<p className="muted">선 굵기 = 열기 · 색 = 단계</p></Info></h4>
         <span className="net-legend">{(Object.keys(STAGE) as RumorStage[]).map((k) => <span key={k}><i style={{ background: STAGE[k].c }} />{STAGE[k].ko}</span>)}</span>
       </div>
       <svg viewBox={`0 0 ${W} ${H}`} className="net-svg rm-svg" role="img"
@@ -199,7 +210,7 @@ export default function NetRumors({ team, accent, logo }: { team: string; accent
                   <span><b>{r.club}</b><em>{r.league ?? "8개 리그 밖"} · {STAGE[r.stage].ko}</em></span>
                   <Heat v={r.heat} stage={r.stage} />
                 </div>
-              )) : <p className="net-note">다른 클럽과 엮인 기록 없음 — 단독 관심</p>}
+              )) : <p className="net-note">경쟁 구단 없음</p>}
             </div>
           </div>
         </div>
@@ -240,7 +251,7 @@ export default function NetRumors({ team, accent, logo }: { team: string; accent
         )}
         {d.outlets.length > 0 && (
           <div>
-            <h5>WHO REPORTS <span>보도 매체 · 적중률 배수</span></h5>
+            <h5>WHO REPORTS <span>보도 매체</span><Info label="적중률 배수"><p>×1.05 = 지난 닫힌 이적시장 적중률이 평균 매체보다 5% 높음. 열기 계산에 곱합니다.</p></Info></h5>
             {d.outlets.map((o) => (
               <div key={o.outlet} className="rm-club">
                 <span className="rm-dot" />
@@ -251,7 +262,6 @@ export default function NetRumors({ team, accent, logo }: { team: string; accent
           </div>
         )}
       </div>
-      <p className="net-note" style={{ fontSize: 11, color: "var(--muted-2)" }}>{HEAT_NOTE}. 연결 {d.sources.links}건 중 기사 근거 {d.sources.with_news}건.</p>
     </div>
   );
 }
