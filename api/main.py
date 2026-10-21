@@ -2017,6 +2017,29 @@ def players(team: str, league: str = ACTIVE_LEAGUE):
     return {"team": team, "color": tm.team_color(team), "players": out}
 
 
+_TPL_POOL: dict = {}
+
+
+def _template_pool_all(tpl: str, min_min: float):
+    """8개 리그 같은 템플릿 선수(출전 기준 통과) — 리그 안 표본이 적을 때 백분위 비교 대상. 6시간 캐시."""
+    import time as _t  # noqa: PLC0415
+
+    import position_templates as ptpl  # noqa: PLC0415
+    hit = _TPL_POOL.get((tpl, min_min))
+    if hit and hit[0] > _t.time():
+        return hit[1]
+    frames = []
+    for lg in _LEAGUE_LEVEL:
+        f = _pf(lg)
+        if f is None or f.empty:
+            continue
+        d = ptpl.add_derived(f)
+        frames.append(d[(pd.to_numeric(d["minutes"], errors="coerce").fillna(0) >= min_min) & (d["_template"] == tpl)])
+    out = pd.concat(frames, ignore_index=True) if frames else pd.DataFrame()
+    _TPL_POOL[(tpl, min_min)] = (_t.time() + 21600, out)
+    return out
+
+
 # 선수 상세 지표 — FM 스타일 카테고리 그룹 (아웃필더/골키퍼)
 _PL_CATS = [
     ("공격", [("npxG/90", "npxg_p90"), ("슈팅/90", "shots_p90"), ("유효슈팅/90", "sot_per90")]),   # npxG = 기회의 양(결정력 아님)
@@ -2224,6 +2247,19 @@ def player_detail(team: str, player: str, league: str = ACTIVE_LEAGUE):
             categories.append({"name": cat_name, "avg": avg, "metrics": ms})
     radar = [{"axis": c["name"], "value": c["avg"]} for c in categories]
 
+    # 포지션 템플릿(src/position_templates.py) — DM·CM·AM·W·ST·CB·FB·GK 마다 다른 지표·레이더 축, 같은 템플릿끼리 백분위.
+    # 예전엔 모든 필드 플레이어가 같은 6축이고 비교 대상이 '같은 라인'(수비형·공격형 미드를 한 무리로) 이었다.
+    # 위 categories·radar(라인 기준)는 포지션이 다른 두 선수를 비교할 때 쓰도록 *_line 으로 남긴다.
+    import position_templates as ptpl  # noqa: PLC0415
+    tpl_key = "GK" if is_gk else ptpl.template_of(row.get("tm_position"), row.get("pos"))
+    tfull = ptpl.add_derived(full)
+    tpool = tfull[(pd.to_numeric(tfull["minutes"], errors="coerce").fillna(0) >= min_min) & (tfull["_template"] == tpl_key)]
+    t_scope = "리그"
+    if len(tpool) < ptpl.MIN_PEERS:
+        tpool, t_scope = _template_pool_all(tpl_key, min_min), "8개 리그"
+    prof = ptpl.profile(ptpl.add_derived(row.to_frame().T).iloc[0], tpool, tpl_key)
+    template = {"key": tpl_key, "en": ptpl.LABEL[tpl_key][0], "ko": ptpl.LABEL[tpl_key][1], "n": int(len(tpool)), "scope": t_scope}
+
     # 리그 랭크 배지
     badge_cfg = [("선방율", "gk_save_pct"), ("클린시트", "gk_cs_pct")] if is_gk else _BADGE_METRICS
     badges = []
@@ -2290,7 +2326,8 @@ def player_detail(team: str, player: str, league: str = ACTIVE_LEAGUE):
         "assists": int(_num(row.get("assists"))),
         "contract_until": str(row.get("tm_contract_until") or ""),
         "joined": str(row.get("tm_joined_date") or "")[:10] or None,     # 입단일 — 헤더 '입단 2023-07 · 계약 ~2028-06'
-        "is_gk": is_gk, "categories": categories, "radar": radar, "badges": badges,
+        "is_gk": is_gk, "categories": prof["categories"], "radar": prof["radar"], "template": template,
+        "categories_line": categories, "radar_line": radar, "badges": badges,
         "comp_usage": _comp_profile(row, _comp_usage(league)),
         "season_log": _season_log(str(row.get("squad") or team), str(row["player"]), league, is_gk=is_gk, fm_id=row.get("fm_id")),
         # 'OVR 이 어떻게 나왔나' — 단계별 기여(rv3.ovr_parts_of_row)와 평점 출처(Sofascore·FotMob 평균)

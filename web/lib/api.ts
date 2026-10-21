@@ -256,8 +256,9 @@ export type PlayerCard = {
 };
 export type Players = { team: string; color: string; players: PlayerCard[] };
 
-export type MetricBar = { label: string; pct: number; raw: number };
-export type MetricCat = { name: string; avg: number; metrics: MetricBar[] };
+// low = 시도 10회 미만(표본 부족, 회색·평균 제외) · att = 시도 수(성공률 지표) · inv = 낮을수록 좋음(실수·파울)
+export type MetricBar = { label: string; pct: number; raw: number; low?: boolean; att?: number | null; inv?: boolean; key?: string };
+export type MetricCat = { name: string; avg: number | null; metrics: MetricBar[] };   // avg null = 묶음 전부 표본 부족
 export type Badge = { label: string; rank: number; medal: string; scope?: string; tie?: boolean };   // scope: 리그 · 미드필더 450′+
 export type PlayerDetail = {
   player: string; team: string; color: string; pos: string; line: string;
@@ -266,7 +267,10 @@ export type PlayerDetail = {
   contract_until: string; joined?: string | null; is_gk: boolean; trend?: Trend;
   ovr_parts?: OvrPart[]; ratings?: RatingSources; form?: number | null; recent?: RecentForm | null;
   categories: MetricCat[];
-  radar: { axis: string; value: number }[];
+  radar: { axis: string; value: number; low?: boolean; full?: string }[];
+  // 포지션 템플릿(src/position_templates.py) — GK·CB·FB·DM·CM·AM·W·ST, 같은 템플릿 비교 대상 수·범위(리그 | 8개 리그)
+  template?: { key: string; en: string; ko: string; n: number; scope: string };
+  categories_line?: MetricCat[]; radar_line?: { axis: string; value: number }[];   // 라인 공통 축(포지션 다른 선수 비교용)
   badges: Badge[];
   comp_usage: CompProfile;
   value_history: { date: string; value_eur: number }[];

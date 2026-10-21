@@ -26,7 +26,7 @@ def strengths(categories: list[dict], k: int = 3) -> tuple[list[dict], list[dict
     flat = []
     for c in categories or []:
         for m in c.get("metrics") or []:
-            if m.get("pct") is None:
+            if m.get("pct") is None or m.get("low"):          # 시도 10회 미만(표본 부족)은 강약점으로 안 쓴다
                 continue
             flat.append({"cat": c.get("name", ""), "label": m.get("label", ""), "pct": float(m["pct"]), "raw": m.get("raw")})
     strong = sorted([x for x in flat if x["pct"] >= 70], key=lambda x: -x["pct"])[:k]

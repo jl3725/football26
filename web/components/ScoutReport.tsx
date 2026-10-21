@@ -115,7 +115,7 @@ export default function ScoutReport({ team, player, accent, onClose, league }: {
 
           <div className="sr-cols three">
             {r.enough && d.radar?.length > 0 && (
-              <section className="sr-sec sr-radar"><h2>PROFILE <em>능력 모양</em></h2><Radar data={d.radar} color={accent} scale="pct" /></section>
+              <section className="sr-sec sr-radar"><h2>PROFILE <em>{d.template ? `${d.template.ko} 템플릿 · ${d.template.scope === "리그" ? "같은 리그" : "8개 리그"} ${d.template.n}명` : "능력 모양"}</em></h2><Radar data={d.radar} color={accent} scale="pct" /></section>
             )}
             <section className="sr-sec">
               <h2>SEASON <em>이번 시즌</em></h2>

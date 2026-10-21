@@ -93,6 +93,7 @@ export default function ComparePanel({ team, a, b, accent, onClear }: {
 
   const ssTag = (v: number) => (v ? <MeaningTag sm m={ssMeaning(v)} /> : null);
 
+  const sameTpl = !!da?.template && !!db?.template && da.template.key === db.template.key;
   return (
     <div className="card pd-card">
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
@@ -109,10 +110,10 @@ export default function ComparePanel({ team, a, b, accent, onClear }: {
         <span style={{ color: CB }}>■ {db.player.split(" ").slice(-1)[0]}</span>
       </div>
       <div style={{ display: "flex", justifyContent: "center" }}>
-        <CompareRadar a={da.radar} b={db.radar} ca={accent} />
+        <CompareRadar a={sameTpl ? da.radar : (da.radar_line ?? da.radar)} b={sameTpl ? db.radar : (db.radar_line ?? db.radar)} ca={accent} />
       </div>
       <div style={{ textAlign: "center", fontSize: 10.5, opacity: 0.55, marginTop: -2 }}>
-        레이더 = 같은 포지션 선수 대비 백분위 · 점선 = 50(중간) · 바깥일수록 상위
+        {sameTpl ? `레이더 = ${da.template?.ko ?? "같은 포지션"} 템플릿 백분위` : `포지션이 달라(${da.template?.ko ?? "?"} · ${db.template?.ko ?? "?"}) 라인 공통 축으로 비교`} · 점선 = 50(중간) · 바깥일수록 상위
       </div>
 
       <div style={{ maxWidth: 420, margin: "10px auto 0" }}>

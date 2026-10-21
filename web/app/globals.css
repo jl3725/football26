@@ -4656,3 +4656,10 @@ LIGA’처럼 글자가 접히던 것) — 넘치면 가로로 넘긴다 */
 .tws-cmp td { padding: 6px 8px; border-top: 1px solid var(--line); }
 .tws-cmp td:first-child { color: var(--muted); white-space: nowrap; }
 .tws-cmp td.best { color: #4fc27f; font-weight: 700; }
+
+/* ── 포지션 템플릿(src/position_templates.py) — 선수 지표 머리글·표본 부족 ── */
+.pd-tpl { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; font-size: 11.5px; color: var(--muted); margin: 0 0 6px; }
+.pd-tpl b { color: var(--txt); font-weight: 600; }
+.pd-tpl-k { font: 800 11px/1 var(--font-num); letter-spacing: .14em; color: var(--txt); padding: 3px 7px; border: 1px solid var(--line); border-radius: 6px; }
+.pm.low { opacity: .7; }
+.pm-low { font-size: 10.5px; color: var(--muted); border: 1px dashed var(--line); border-radius: 6px; padding: 1px 6px; white-space: nowrap; }

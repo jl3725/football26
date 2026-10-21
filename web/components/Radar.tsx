@@ -3,7 +3,8 @@ import { hexA } from "@/lib/ui";
 import { idxMeaning, pctMeaning } from "@/lib/meaning";
 
 // scale: idx = 리그 안 지수(50 = 리그 평균) · pct = 백분위(50 = 중간). 가운데 점선 링 = 50.
-export default function Radar({ data, color, scale = "idx" }: { data: { axis: string; value: number }[]; color: string; scale?: "idx" | "pct" }) {
+// low = 표본 부족(시도 10회 미만) — 축 이름·값을 회색으로, 점은 속이 빈 원
+export default function Radar({ data, color, scale = "idx" }: { data: { axis: string; value: number; low?: boolean; full?: string }[]; color: string; scale?: "idx" | "pct" }) {
   const mean = scale === "pct" ? pctMeaning : idxMeaning;
   const cx = 150, cy = 150, R = 100, N = data.length || 1;
   const pt = (i: number, r: number): [number, number] => {
@@ -38,12 +39,12 @@ export default function Radar({ data, color, scale = "idx" }: { data: { axis: st
         const [lx, ly] = pt(i, R + 22);
         return (
           <g key={i}>
-            <circle cx={vx} cy={vy} r={3.2} fill={color} />
+            <circle cx={vx} cy={vy} r={3.2} fill={d.low ? "none" : color} stroke={d.low ? "rgba(255,255,255,0.45)" : "none"} />
             {/* 축소 표시돼도 읽히게 — viewBox 300 기준 12.5/15 (예전 10/11 은 실제 8px 대) */}
-            <text x={lx} y={ly - 2} fontSize={12.5} fill="#9aa4b8" textAnchor="middle" dominantBaseline="middle"
+            <text x={lx} y={ly - 2} fontSize={12.5} fill={d.low ? "#5d6676" : "#9aa4b8"} textAnchor="middle" dominantBaseline="middle"
               style={{ fontFamily: "var(--font-label)", fontWeight: 600 }} letterSpacing={0.3}>{d.axis}</text>
-            <text x={lx} y={ly + 13} fontSize={15} fill={mean(d.value).c} textAnchor="middle" style={{ fontFamily: "var(--font-num)", fontWeight: 700 }}>
-              {d.value}<title>{`${d.axis} ${d.value} — ${mean(d.value).label}`}</title></text>
+            <text x={lx} y={ly + 13} fontSize={15} fill={d.low ? "#5d6676" : mean(d.value).c} textAnchor="middle" style={{ fontFamily: "var(--font-num)", fontWeight: 700 }}>
+              {d.value}<title>{d.low ? `${d.full ?? d.axis} ${d.value} — 시도 10회 미만(표본 부족)` : `${d.full ?? d.axis} ${d.value} — ${mean(d.value).label}`}</title></text>
           </g>
         );
       })}

@@ -31,11 +31,21 @@ function fmtRaw(label: string, raw: number): string {
   return label.includes("%") ? `${(Math.round(raw * 10) / 10).toFixed(1)}%` : `${raw.toFixed(2)} /90`;
 }
 
-function Bar({ label, pct, raw }: { label: string; pct: number; raw: number }) {
+function Bar({ label, pct, raw, low, att }: { label: string; pct: number; raw: number; low?: boolean; att?: number | null }) {
   const m = pctMeaning(pct);
   const rv = fmtRaw(label, raw);
+  // 표본 부족(시도 10회 미만) — 회색으로, 뜻 꼬리표 대신 '표본 부족'(Gabriel 드리블 성공 100% = 시즌 1회 시도였다)
+  if (low) return (
+    <div className="pm low" title={`${label} ${rv} — 시도 ${att ?? 0}회뿐이라 백분위(${pct})를 믿기 어렵습니다(10회 미만)`}>
+      <div className="pm-top" style={{ alignItems: "center", gap: 6 }}>
+        <span style={{ minWidth: 0 }}>{label}{rv && <em style={{ fontStyle: "normal", color: "var(--muted)", fontSize: 11, marginLeft: 5 }}>{rv}</em>}</span>
+        <span className="pm-low">표본 부족 · {att ?? 0}회</span>
+      </div>
+      <div className="pm-bar"><span style={{ width: `${pct}%`, background: "rgba(255,255,255,0.18)" }} /></div>
+    </div>
+  );
   return (
-    <div className="pm" title={`${label} ${rv} — 같은 포지션 중 백분위 ${pct} (${m.label})`}>
+    <div className="pm" title={`${label} ${rv} — 같은 포지션 중 백분위 ${pct} (${m.label})${att != null ? ` · 시도 ${att}회` : ""}`}>
       <div className="pm-top" style={{ alignItems: "center", gap: 6 }}>
         <span style={{ minWidth: 0 }}>{label}{rv && <em style={{ fontStyle: "normal", color: "var(--muted)", fontSize: 11, marginLeft: 5 }}>{rv}</em>}</span>
         <span style={{ display: "inline-flex", alignItems: "center", gap: 5, flexShrink: 0 }}>
@@ -148,7 +158,7 @@ function Detail({ team, player, accent, heatmap }: { team: string; player: strin
           )}
         </div>
       )}
-      {d.value_history && d.value_history.length >= 2 && (() => {
+      {d.value_history && d.value_history.length >= 2 && new Set(d.value_history.map((x) => x.value_eur)).size > 1 && (() => {   // 값이 하나뿐이면 평평한 줄만 남는다
         const vs = d.value_history, vals = vs.map((x) => x.value_eur);
         const mn = Math.min(...vals), mx = Math.max(...vals), rng = mx - mn || 1;
         const first = vals[0], last = vals[vals.length - 1];
@@ -168,7 +178,12 @@ function Detail({ team, player, accent, heatmap }: { team: string; player: strin
           </div>
         );
       })()}
-      {d.peers?.n > 0 && (
+      {d.template ? (
+        <div className="pd-tpl">
+          <span className="pd-tpl-k">{d.template.en}</span>
+          <span>{d.template.ko} 템플릿 · 리그 경기 기준 · <b>{d.template.scope === "리그" ? "같은 리그" : "8개 리그"} {d.template.ko} {d.template.n}명</b> 대비 백분위(컵·유럽 제외) · 회색 = 시도 10회 미만</span>
+        </div>
+      ) : d.peers?.n > 0 && (
         <div style={{ fontSize: 11, opacity: 0.5, margin: "0 0 4px" }}>
           아래 지표 = <b>리그 경기 기준</b> · {({ GK: "골키퍼", DEF: "수비수", MID: "미드필더", ATT: "공격수" } as Record<string, string>)[d.peers.line] || "포지션"} 대비 백분위 · {d.peers.n}명 기준(컵·유럽 제외)
         </div>
@@ -191,19 +206,20 @@ function Detail({ team, player, accent, heatmap }: { team: string; player: strin
       {enough && <div className="pd-body">
         <div className="pd-cats">
           {d.categories.map((c, i) => {
-            const cm = pctMeaning(c.avg);
+            const cm = pctMeaning(c.avg ?? 0);
             return (
               <div className="pd-cat" key={i}>
                 {/* .pd-cat-head span 규칙(라벨 폰트·자간)이 뜻 꼬리표까지 덮지 않게 인라인으로 */}
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8, marginBottom: 7 }}
-                  title={`${c.name} — 세부 지표 백분위 평균 ${c.avg} (${cm.label})`}>
+                  title={c.avg == null ? `${c.name} — 지표가 모두 표본 부족` : `${c.name} — 세부 지표 백분위 평균 ${c.avg} (${cm.label})`}>
                   <span style={{ fontFamily: "var(--font-label)", fontSize: 12, letterSpacing: 1, textTransform: "uppercase", color: "var(--muted)" }}>{c.name}</span>
                   <div style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+                    {c.avg == null ? <span className="pm-low">표본 부족</span> : <>
                     <MeaningTag sm m={cm} />
-                    <b style={{ color: cm.c, fontFamily: "var(--font-num)", fontSize: 20, lineHeight: 1, fontWeight: 700 }}>{c.avg}</b>
+                    <b style={{ color: cm.c, fontFamily: "var(--font-num)", fontSize: 20, lineHeight: 1, fontWeight: 700 }}>{c.avg}</b></>}
                   </div>
                 </div>
-                {c.metrics.map((m, j) => <Bar key={j} label={m.label} pct={m.pct} raw={m.raw} />)}
+                {c.metrics.map((m, j) => <Bar key={j} label={m.label} pct={m.pct} raw={m.raw} low={m.low} att={m.att} />)}
               </div>
             );
           })}
