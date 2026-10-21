@@ -4383,12 +4383,21 @@ _NAT_ALIAS = {"korea, south": "korea republic", "south korea": "korea republic",
 _PREV_PAIRS: dict = {}
 
 
+_PREV_PAIRS_CACHE = "prev_lineup_pairs.pkl"
+
+
 def _prev_lineup_pairs() -> tuple[dict, dict]:
     """지난 시즌 8개 리그(+컵) ESPN 선발 → 클럽별 함께 선발 수(전 소속 동료 그래프). DB 수정 시각 기준 캐시."""
     import team_network as tn  # noqa: PLC0415
     from leagues import DATA_DIR  # noqa: PLC0415
     key = (SEASON_START, ds._db_mtime())
     if key not in _PREV_PAIRS:
+        from api.services.player_data import _disk_get  # noqa: PLC0415
+        disk = _disk_get(_PREV_PAIRS_CACHE)            # 배포 빌드에서 계산(지난 시즌 라인업 16개 파일 — 운영 첫 NETWORK 15초)
+        if disk is not None:
+            _PREV_PAIRS.clear()
+            _PREV_PAIRS[key] = disk
+            return disk
         frames = []
         for path in sorted(DATA_DIR.glob(f"espn_lineups*_{SEASON_START - 1}_{SEASON_START}.csv")):
             try:
@@ -6969,6 +6978,8 @@ def _warm_up() -> None:
                 league_lab(lg)       # 홈 LEAGUE FOCUS 분석 랩
             for lg in _LEAGUE_LEVEL:
                 _stat_frame(lg)      # 선수 화면 세부 지표(8개 리그 템플릿 백분위) — 빌드 캐시면 파일 읽기만
+            _prev_lineup_pairs()     # NETWORK 전 소속 동료(빌드 캐시) · 이적설 연결(8개 리그) — 리그 첫 NETWORK 가 15초 걸렸다
+            _rumor_links()
             print(f"[warm-up] 완료 {_t.monotonic() - t0:.1f}s", flush=True)
         except Exception as e:  # noqa: BLE001 — 데우기는 실패해도 서비스엔 영향 없음
             print(f"[warm-up] 건너뜀: {type(e).__name__}: {e}", flush=True)

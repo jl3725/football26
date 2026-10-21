@@ -44,6 +44,7 @@ def main() -> int:
             if f is not None:
                 P.disk_put(M._stat_frame_cache_name(lg, "blend", comps), f)
     P.disk_put(M._DATABASE_CACHE, M.database().body)
+    P.disk_put(M._PREV_PAIRS_CACHE, M._prev_lineup_pairs())          # NETWORK 전 소속 동료(지난 시즌 라인업 전부)
     print(f"[runtime_cache] 세부 지표 표·선수 DB 저장 ({time.time() - t0:.1f}s)")
     # 2) 리그별 팀 라인 전력
     leagues = {}
