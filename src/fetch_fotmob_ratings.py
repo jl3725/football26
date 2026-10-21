@@ -80,6 +80,40 @@ def parse(j: dict, league: str, season: str) -> pd.DataFrame:
     return df[["fotmob_id", "player", "squad", "team_fm", "rating", "minutes", "matches", "nat", "league", "season"]]
 
 
+def parse_team(j: dict, league: str, season: str, stat: str = "possession") -> pd.DataFrame:
+    """팀 통계 파일(possession_percentage_team.json 등) → [squad, team_fm, <stat>, league, season]."""
+    rows = []
+    for tl in (j or {}).get("TopLists") or []:
+        for x in tl.get("StatList") or []:
+            rows.append({"team_fm": x.get("ParticipantName"), stat: x.get("StatValue")})
+    df = pd.DataFrame(rows).drop_duplicates(subset=["team_fm"]) if rows else pd.DataFrame()
+    if df.empty:
+        return df
+    try:
+        ours = list(pd.read_csv(data_path("standings", league, season))["squad"].astype(str))
+    except (FileNotFoundError, KeyError):
+        ours = []
+    df["squad"] = df["team_fm"].map({t: (tn.best(t, ours) if ours else None) or t for t in df["team_fm"].astype(str).unique()})
+    df["league"], df["season"] = league, season
+    return df[["squad", "team_fm", stat, "league", "season"]]
+
+
+def fetch_possession(lg: str, links: dict[str, str], seasons: list[str]) -> None:
+    """팀 점유율(%) — 선수 수비 횟수 점유율 보정(src/position_templates.py PAdj)용. 끝난 시즌은 한 번만."""
+    for season in seasons:
+        out = data_path("team_possession", lg, season)
+        if season != seasons[0] and out.exists():
+            continue
+        url = links.get(season)
+        if not url:
+            continue
+        df = parse_team(_get(url.replace("rating.json", "possession_percentage_team.json")), lg, season)
+        time.sleep(1.0)
+        if not df.empty:
+            df.to_csv(out, index=False, encoding="utf-8", lineterminator="\n")
+            print(f"  {lg:16} {season}: 점유율 {len(df)}팀 · 평균 {pd.to_numeric(df['possession'], errors='coerce').mean():.1f}% -> {out.name}")
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--league")
@@ -107,6 +141,7 @@ def main() -> int:
                 continue
             df.to_csv(out, index=False, encoding="utf-8", lineterminator="\n")
             print(f"  {lg:16} {season}: {len(df)}명 · 평균 {df['rating'].mean():.2f} -> {out.name}")
+        fetch_possession(lg, links, seasons[:2])          # 이번·지난 시즌 팀 점유율(선수 수비 횟수 점유율 보정용)
         time.sleep(1.0)
     return 1 if bad else 0
 

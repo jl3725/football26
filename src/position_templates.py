@@ -53,7 +53,7 @@ M = {
     "dribp": ("드리블 성공%", "dribble_success_pct", False, "dribble"),
     "cross": ("크로스/90", "crosses_per90", False, None),
     "crossp": ("크로스 정확%", "cross_acc_pct", False, "cross"),
-    "tkl": ("태클 성공/90", "tackles_won_per90_ss", False, None),
+    "tkl": ("태클 성공/90", "tackles_won_per90_ss", False, None),   # 아래 다섯 수비 횟수는 점유율 보정(PADJ_COLS)
     "tklp": ("태클 성공%", "tackles_won_pct", False, "tackle"),
     "int": ("인터셉트/90", "interceptions_per90_ss", False, None),
     "rec": ("볼 회수/90", "recoveries_per90", False, None),
@@ -78,9 +78,10 @@ M = {
 TEMPLATES: dict[str, dict] = {
     "GK": {"radar": ["save", "saves", "cs", "claim", "sweep", "pass", "long", "err"],
            "cats": [("선방", ["save", "saves", "cs"]), ("박스 지배", ["claim", "punch", "sweep"]), ("빌드업", ["pass", "long"]), ("안정성", ["err"])]},
-    "CB": {"radar": ["aerp", "aer", "tklp", "int", "clr", "blk", "pass", "long"],
+    # 레이더는 시도가 많은 지상 경합%(태클 성공%는 표본이 작아 흔들린다) + 세트피스 득점 위협 npxG(헤더 득점형 센터백)
+    "CB": {"radar": ["aerp", "grdp", "int", "clr", "blk", "pass", "long", "npxg"],
            "cats": [("경합", ["aerp", "aer", "grdp", "tklp"]), ("수비 행동", ["int", "clr", "blk", "rec"]),
-                    ("빌드업", ["pass", "long", "f3"]), ("안정성", ["err", "foul"])]},
+                    ("빌드업", ["pass", "long", "f3"]), ("공격 기여", ["npxg", "npg"]), ("안정성", ["err", "foul"])]},
     "FB": {"radar": ["cross", "crossp", "kp", "drib", "f3", "tkl", "int", "grdp"],
            "cats": [("측면 공격", ["cross", "crossp", "kp", "xa"]), ("전진", ["drib", "dribp", "f3"]),
                     ("수비", ["tkl", "tklp", "int", "rec"]), ("경합", ["grdp", "aerp"])]},
@@ -120,8 +121,79 @@ def add_derived(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
+# ── 지표 신뢰도: 점유율 보정(PAdj) + 시즌 초 안정화(지난 시즌 섞기) ─────────────────────────────
+# 마갈량이스(아스날 점유율 61%)가 7경기 표본에서 공중볼 50%·태클 25%·인터셉트 하위로 '형편없는 수비수'처럼 보였다
+# (지난 시즌 2,751′ 은 공중볼 62%·지상 경합 70%). 두 가지를 바로잡는다(2026-10-21 사용자).
+#   PAdj  수비 횟수(태클·인터셉트·클리어링·블록·회수)를 팀 점유율 50% 기준으로 — 2/(1+e^(−0.1·(점유율−50)))
+#         (공을 오래 가진 팀 수비수는 상대에게 공이 덜 가 수비 횟수가 적다. 점유율 61% → ×1.50)
+#   안정화 이번 시즌 값에 지난 시즌 값을 최대 PRIOR_MIN(15경기)치 섞는다 — (이번×분 + 지난×K)/(분+K), K = min(지난 분, 1350).
+#         이번 시즌 출전이 쌓일수록 지난 시즌 비중이 자연히 준다(630′ → 68%, 2700′ → 33%). 비교 대상 전원에게 똑같이.
+import math  # noqa: E402
+
+PADJ_COLS = ["tackles_won_per90_ss", "interceptions_per90_ss", "clearances_per90", "blocked_shots_per90", "recoveries_per90"]
+PRIOR_MIN = 1350
+
+
+def padj_factor(poss) -> float:
+    try:
+        p = float(poss)
+    except (TypeError, ValueError):
+        return 1.0
+    return 1.0 if p != p else 2 / (1 + math.exp(-0.1 * (p - 50)))
+
+
+def stat_cols() -> list[str]:
+    return list(dict.fromkeys(col for _, col, _, _ in M.values() if not col.startswith("_")))
+
+
+def _num(df: pd.DataFrame, c: str) -> pd.Series:
+    return pd.to_numeric(df[c], errors="coerce") if c in df.columns else pd.Series(float("nan"), index=df.index)
+
+
+def enrich(cur: pd.DataFrame, prev: pd.DataFrame | None, poss_cur: dict, poss_prev: dict, norm,
+           blend: bool = True, prior_min: int = PRIOR_MIN) -> pd.DataFrame:
+    """cur = 이번 시즌 선수 표(한 리그), prev = 지난 시즌 선수 표(8개 리그, league 열), poss_cur = {클럽: 점유율},
+    poss_prev = {(리그, 클럽): 점유율}. 인덱스는 cur 그대로(선수 행을 같은 인덱스로 찾게)."""
+    df = cur.copy()
+    f = df["squad"].astype(str).map(lambda s: padj_factor(poss_cur.get(s)))
+    for c in PADJ_COLS:
+        if c in df.columns:
+            df[c] = _num(df, c) * f
+    df["_padj_f"] = f
+    df["_poss"] = df["squad"].astype(str).map(lambda s: poss_cur.get(s))
+    mc = _num(df, "minutes").fillna(0)
+    df["_cur_minutes"] = mc
+    df["_prior_minutes"] = 0.0
+    df["_eff_minutes"] = mc
+    if blend and prev is not None and not prev.empty:
+        p = prev.copy()
+        pf_ = [padj_factor(poss_prev.get((str(lg), str(sq)))) for lg, sq in zip(p.get("league", ""), p["squad"].astype(str))]
+        for c in PADJ_COLS:
+            if c in p.columns:
+                p[c] = _num(p, c) * pd.Series(pf_, index=p.index)
+        p["_k"] = p["player"].map(norm)
+        p = p.sort_values("minutes", ascending=False).drop_duplicates("_k").set_index("_k")
+        keys = df["player"].map(norm)
+        pm = pd.to_numeric(keys.map(p["minutes"]), errors="coerce").fillna(0)
+        k = pm.clip(upper=prior_min)
+        for c in stat_cols():
+            if c not in df.columns or c not in p.columns:
+                continue
+            cv = _num(df, c)
+            pv = pd.to_numeric(keys.map(p[c]), errors="coerce")
+            has = pv.notna() & (k > 0)
+            both = has & cv.notna()
+            out = cv.copy()
+            out[both] = (cv[both] * mc[both] + pv[both] * k[both]) / (mc[both] + k[both])
+            out[has & cv.isna()] = pv[has & cv.isna()]
+            df[c] = out
+        df["_prior_minutes"] = k.where(k > 0, 0.0)
+        df["_eff_minutes"] = mc + df["_prior_minutes"]
+    return add_derived(df)
+
+
 def attempts(row, rule: str | None) -> float | None:
-    """성공률 지표의 시도 수(시즌) — 성공 수/90 ÷ 성공률 × 출전 분/90. 규칙 없으면 None."""
+    """성공률 지표의 시도 수 — 성공 수/90 ÷ 성공률 × 출전 분/90(안정화했으면 섞은 분량까지). 규칙 없으면 None."""
     if not rule:
         return None
 
@@ -131,7 +203,7 @@ def attempts(row, rule: str | None) -> float | None:
             return v if v == v else 0.0
         except (TypeError, ValueError):
             return 0.0
-    mins = f("minutes") / 90
+    mins = (f("_eff_minutes") or f("minutes")) / 90
 
     def per(won, pct):
         p = f(pct)

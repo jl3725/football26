@@ -4,6 +4,7 @@ import FormPair, { RecentStrip } from "./FormPair";
 import { useEffect, useState } from "react";
 import { getPlayers, getPlayerDetail, getSimilar, getHeatmaps, fmtEur, foldName, type Players, type PlayerDetail, type SimilarResult, type HeatmapData } from "@/lib/api";
 import { tier, hexA, roleClass, futTier } from "@/lib/ui";
+import { lgEn } from "@/lib/match";
 import { pctMeaning, scoreMeaning, ovrBand, signTone } from "@/lib/meaning";
 import { MeaningTag } from "./Meaning";
 import Radar from "./Radar";
@@ -61,14 +62,20 @@ function Bar({ label, pct, raw, low, att }: { label: string; pct: number; raw: n
 function Detail({ team, player, accent, heatmap }: { team: string; player: string; accent: string; heatmap: HeatmapData | null }) {
   const [d, setD] = useState<PlayerDetail | null>(null);
   const [sim, setSim] = useState<SimilarResult[]>([]);
+  const [simScope, setSimScope] = useState<"all" | "league">("all");   // 유사 선수 — 8개 리그 | 같은 리그
+  const [basis, setBasis] = useState<"blend" | "season">("blend");     // 세부 지표 — 시즌 초 안정화 | 이번 시즌만
   const peek = usePeek();
   const hm = heatmap?.players?.find((p) => p.player === player);
   useEffect(() => {
     let a = true; setD(null); setSim([]);
-    getPlayerDetail(team, player).then((x) => a && setD(x)).catch(() => {});
-    getSimilar(player).then((x) => a && setSim(x.results)).catch(() => {});
+    getPlayerDetail(team, player, undefined, basis).then((x) => a && setD(x)).catch(() => {});
     return () => { a = false; };
-  }, [team, player]);
+  }, [team, player, basis]);
+  useEffect(() => {
+    let a = true; setSim([]);
+    getSimilar(player, undefined, simScope).then((x) => a && setSim(x.results)).catch(() => {});
+    return () => { a = false; };
+  }, [player, simScope]);
   if (!d) return (
     <div className="card">
       <div className="skel-row" style={{ padding: 8 }}>
@@ -182,6 +189,15 @@ function Detail({ team, player, accent, heatmap }: { team: string; player: strin
         <div className="pd-tpl">
           <span className="pd-tpl-k">{d.template.en}</span>
           <span>{d.template.ko} 템플릿 · 리그 경기 기준 · <b>{d.template.scope === "리그" ? "같은 리그" : "8개 리그"} {d.template.ko} {d.template.n}명</b> 대비 백분위(컵·유럽 제외) · 회색 = 시도 10회 미만</span>
+          <span className="it-chips pd-basis">{([["blend", "안정화"], ["season", "이번 시즌만"]] as const).map(([v, l]) => (
+            <button key={v} className={basis === v ? "on" : ""} onClick={() => setBasis(v)}>{l}</button>))}</span>
+          <span className="pd-basis-note">
+            {d.template.basis === "blend" && (d.template.prior_minutes ?? 0) > 0
+              ? <>이번 시즌 {(d.template.cur_minutes ?? 0).toLocaleString()}′ + 지난 시즌 {(d.template.prior_minutes ?? 0).toLocaleString()}′치를 섞음(지난 시즌 비중 {Math.round((d.template.prior_share ?? 0) * 100)}% — 출전이 쌓일수록 줄어듦)</>
+              : d.template.basis === "blend" ? <>지난 시즌 기록이 없어 이번 시즌 {(d.template.cur_minutes ?? 0).toLocaleString()}′만</>
+              : <>이번 시즌 {(d.template.cur_minutes ?? 0).toLocaleString()}′만 — 시즌 초엔 몇 경기로 크게 흔들림</>}
+            {d.template.possession != null && <> · 수비 횟수는 팀 점유율 {d.template.possession}% 보정(×{d.template.padj}, 50% 기준)</>}
+          </span>
         </div>
       ) : d.peers?.n > 0 && (
         <div style={{ fontSize: 11, opacity: 0.5, margin: "0 0 4px" }}>
@@ -225,9 +241,11 @@ function Detail({ team, player, accent, heatmap }: { team: string; player: strin
           })}
         </div>
       </div>}
-      {sim.length > 0 && (
+      {(sim.length > 0 || simScope === "league") && (
         <div className="pd-similar">
-          <div className="pd-sim-title">스타일 유사 선수 <span style={{ opacity: 0.6, fontWeight: 400, fontSize: 11, letterSpacing: 0 }}>· % = 유사도(스타일 + 기록, 100 = 판박이)</span></div>
+          <div className="pd-sim-title" style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>스타일 유사 선수 <span style={{ opacity: 0.6, fontWeight: 400, fontSize: 11, letterSpacing: 0 }}>· % = 유사도(스타일 + 기록, 100 = 판박이) · 기록은 리그 수준 보정</span>
+            <span className="it-chips" style={{ marginLeft: "auto" }}>{([["all", "8개 리그"], ["league", "같은 리그"]] as const).map(([v, l]) => (
+              <button key={v} className={simScope === v ? "on" : ""} onClick={() => setSimScope(v)}>{l}</button>))}</span></div>
           <div className="pd-sim-list">
             {sim.map((s, i) => {
               const sm = scoreMeaning(s.score);
@@ -236,7 +254,7 @@ function Detail({ team, player, accent, heatmap }: { team: string; player: strin
                   onClick={(e) => peek(e, { name: s.player, club: s.squad, hint: { pos: s.pos, age: s.age, value_eur: s.value_eur, logo: s.logo } })}>
                   {s.logo ? <img src={s.logo} alt="" /> : <span className="pd-sim-logo" />}
                   <span className="pd-sim-name">{s.player}</span>
-                  <span className="pd-sim-squad">{s.squad}</span>
+                  <span className="pd-sim-squad">{s.squad}{s.league && <em className={`pd-sim-lg${s.cross_league ? " x" : ""}`}>{lgEn(s.league) || s.league}</em>}</span>
                   <span className="pd-sim-score" style={{ color: sm.c, whiteSpace: "nowrap", flexShrink: 0 }}
                     title={`스타일 유사도 ${s.score}% (${sm.label}) — 플레이 스타일 ${s.style} · 기록 ${s.perf}`}>
                     <span style={{ fontSize: 10, opacity: 0.7, fontWeight: 500, marginRight: 4 }}>유사도</span>{s.score}%

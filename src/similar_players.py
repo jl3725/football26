@@ -199,14 +199,39 @@ def _best_pos_group(pos_series: pd.Series) -> str:
 
 def load_players(path: Path = DATA_PATH, min_minutes: int = DEFAULT_MIN_MINUTES,
                  include_gk: bool = False) -> pd.DataFrame:
-    df = pd.read_csv(path)
+    return _prepare(pd.read_csv(path), min_minutes, include_gk)
+
+
+def load_players_all(min_minutes: int = DEFAULT_MIN_MINUTES, include_gk: bool = False,
+                     levels: dict[str, float] | None = None) -> pd.DataFrame:
+    """8개 리그 전체 — 리그마다 players_full 을 읽어 league 열을 붙인다(예전엔 EPL 파일 하나뿐이라 김민재(분데스)는
+    유사 선수가 비어 있었다, 2026-10-21). levels(리그 수준, EPL 100)를 주면 _level_f = 수준/100 — 성적 점수에만 곱한다
+    (스타일 유사도는 지표 모양이라 리그와 무관하게 비교)."""
+    from leagues import LEAGUES  # noqa: PLC0415
+    frames = []
+    for lg in LEAGUES:
+        p = data_path("players_full", lg)
+        if p.exists():
+            d = pd.read_csv(p)
+            d["league"] = lg
+            frames.append(d)
+    if not frames:
+        return load_players(min_minutes=min_minutes, include_gk=include_gk)
+    df = pd.concat(frames, ignore_index=True)
+    if levels:
+        df["_level_f"] = df["league"].map(lambda x: float(levels.get(x, 90)) / 100.0)
+    return _prepare(df, min_minutes, include_gk, key=["player", "age"])
+
+
+def _prepare(df: pd.DataFrame, min_minutes: int, include_gk: bool, key: list[str] | None = None) -> pd.DataFrame:
     df = _add_computed(df)
+    key = key or ["player"]
 
     # 중복 선수 제거: 포지션 그룹은 전 행을 통합해 가장 공격적 그룹 사용,
     # 통계는 minutes가 가장 많은 행(= 가장 완전한 데이터) 유지.
     pg_map = df.groupby("player")["pos"].apply(_best_pos_group).to_dict()
     df = (df.sort_values("minutes", ascending=False)
-            .drop_duplicates(subset=["player"])
+            .drop_duplicates(subset=[k for k in key if k in df.columns])
             .reset_index(drop=True))
     df["pos_group"] = df["player"].map(pg_map)
     # fl_group이 있으면 우선 사용, 없는 선수만 fine_group으로 폴백
@@ -296,6 +321,8 @@ def _perf_score(df: pd.DataFrame, pos: str) -> np.ndarray:
 
     out_norm = (output - output.min()) / (output.max() - output.min() + 1e-9)
     perf = 0.6 * rating + 0.4 * out_norm
+    if "_level_f" in df.columns:          # 리그 수준 보정 — 벨기에 평점 7.3 이 EPL 7.3 과 같은 값이 아니다
+        perf = perf * df["_level_f"].fillna(0.9)
     return ((perf - perf.min()) / (perf.max() - perf.min() + 1e-9)).to_numpy()
 
 
@@ -365,7 +392,7 @@ def find_similar(
     if max_value is not None:
         result = result[~(result.get("market_value_eur", pd.Series(dtype=float)) > max_value)]
 
-    want = ["player", "squad", "pos", "fl_group", "age", "market_value_eur",
+    want = ["player", "squad", "league", "pos", "fl_group", "age", "market_value_eur",
             "style_sim", "perf_score", "score"]
     cols = [c for c in want if c in result.columns]
     return result.sort_values("score", ascending=False).head(top)[cols].reset_index(drop=True)

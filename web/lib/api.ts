@@ -269,7 +269,8 @@ export type PlayerDetail = {
   categories: MetricCat[];
   radar: { axis: string; value: number; low?: boolean; full?: string }[];
   // 포지션 템플릿(src/position_templates.py) — GK·CB·FB·DM·CM·AM·W·ST, 같은 템플릿 비교 대상 수·범위(리그 | 8개 리그)
-  template?: { key: string; en: string; ko: string; n: number; scope: string };
+  template?: { key: string; en: string; ko: string; n: number; scope: string;
+    basis?: "blend" | "season"; cur_minutes?: number; prior_minutes?: number; prior_share?: number; possession?: number | null; padj?: number };
   categories_line?: MetricCat[]; radar_line?: { axis: string; value: number }[];   // 라인 공통 축(포지션 다른 선수 비교용)
   badges: Badge[];
   comp_usage: CompProfile;
@@ -338,7 +339,8 @@ export type Analytics = {
 };
 
 export type SimilarResult = { player: string; squad: string; pos: string; age: number; value_eur: number; logo: string; score: number; style: number; perf: number;
-  cheaper?: boolean };   // 스카우팅 리포트 — 이 선수 가치의 70% 미만이면 '더 싼 대안'
+  cheaper?: boolean;   // 스카우팅 리포트 — 이 선수 가치의 70% 미만이면 '더 싼 대안'
+  league?: string; cross_league?: boolean };   // 유사 선수는 8개 리그 전체(성적 점수만 리그 수준 보정)
 // 스카우팅 리포트 한 장(/api/scout-report, src/scout_report.py) — 판단 문장은 규칙, 숫자는 원자료 그대로
 export type ScoutMetric = { cat: string; label: string; pct: number; raw: number | null };
 export type ScoutReport = {
@@ -379,8 +381,9 @@ export const getSchedule = (t: string, season = "", l = _league) => j<Schedule>(
 export const getMatch = (t: string, eid: string, l = _league) =>
   j<MatchDetail>(`/api/match/${encodeURIComponent(t)}/${encodeURIComponent(eid)}?league=${encodeURIComponent(l)}`);
 export const getPlayers = (t: string, l = _league) => j<Players>(`/api/players/${q(t, l)}`);
-export const getPlayerDetail = (t: string, p: string, l = _league) =>
-  j<PlayerDetail>(`/api/player/${encodeURIComponent(t)}/${encodeURIComponent(p)}?league=${encodeURIComponent(l)}`);
+// basis — blend(기본: 시즌 초 안정화 + 점유율 보정) | season(이번 시즌만, 점유율 보정은 유지)
+export const getPlayerDetail = (t: string, p: string, l = _league, basis: "blend" | "season" = "blend") =>
+  j<PlayerDetail>(`/api/player/${encodeURIComponent(t)}/${encodeURIComponent(p)}?league=${encodeURIComponent(l)}${basis === "season" ? "&basis=season" : ""}`);
 export const getTransfers = (t: string, l = _league) => j<Transfers>(`/api/transfers/${q(t, l)}`);
 export const getNews = (t: string, l = _league) => j<News>(`/api/news/${q(t, l)}`);
 export const getAnalytics = (t: string, l = _league) => j<Analytics>(`/api/analytics/${q(t, l)}`);
@@ -450,8 +453,8 @@ export type NetManager = {
   network?: { manager: string; team: string; league: string; photo: string; logo: string; shared: { club: string; mine: string; theirs: string }[] }[];
 };
 export const getNetwork = (t: string, l = _league) => j<NetworkData>(`/api/network/${q(t, l)}`);
-export const getSimilar = (p: string, l = _league) =>
-  j<{ player: string; results: SimilarResult[] }>(`/api/similar/${encodeURIComponent(p)}?league=${encodeURIComponent(l)}`);
+export const getSimilar = (p: string, l = _league, scope: "all" | "league" = "all") =>
+  j<{ player: string; results: SimilarResult[]; league?: string; scope?: string }>(`/api/similar/${encodeURIComponent(p)}?league=${encodeURIComponent(l)}&scope=${scope}`);
 export const getRecommend = (t: string, l = _league) => j<Recommend>(`/api/recommend/${q(t, l)}`);
 
 // ── 벡터(Qdrant) 스타일-핏 교차리그 발굴 + KG 신호 (로컬 전용) ──

@@ -2020,23 +2020,66 @@ def players(team: str, league: str = ACTIVE_LEAGUE):
 _TPL_POOL: dict = {}
 
 
-def _template_pool_all(tpl: str, min_min: float):
-    """8개 리그 같은 템플릿 선수(출전 기준 통과) — 리그 안 표본이 적을 때 백분위 비교 대상. 6시간 캐시."""
+_STAT_FRAME: dict = {}
+
+
+def _possession(season: str) -> dict:
+    """{(리그, 클럽): 팀 점유율 %} — FotMob(src/fetch_fotmob_ratings.py → team_possession_*)."""
+    out = {}
+    for lg in _LEAGUE_LEVEL:
+        p = data_path("team_possession", lg, season)
+        if p.exists():
+            d = pd.read_csv(p)
+            for sq, v in zip(d["squad"].astype(str), pd.to_numeric(d["possession"], errors="coerce")):
+                out[(lg, sq)] = v
+    return out
+
+
+def _stat_frame(league: str, basis: str = "blend"):
+    """세부 지표용 선수 표 — 점유율 보정(수비 횟수) + basis=blend 면 시즌 초 안정화(지난 시즌 최대 15경기치 섞기).
+    인덱스는 _pf(league) 그대로. 6시간 캐시(src/position_templates.enrich)."""
     import time as _t  # noqa: PLC0415
 
     import position_templates as ptpl  # noqa: PLC0415
-    hit = _TPL_POOL.get((tpl, min_min))
+    import positions as ps  # noqa: PLC0415
+    key = (league, basis)
+    hit = _STAT_FRAME.get(key)
+    if hit and hit[0] > _t.time():
+        return hit[1]
+    cur = _pf(league)
+    if cur is None or cur.empty:
+        return cur
+    prev = None
+    prev_season = f"{SEASON_START - 1}_{SEASON_START}"
+    if basis == "blend":
+        frames = []
+        for lg in _LEAGUE_LEVEL:
+            pth = data_path("players_full", lg, prev_season)
+            if pth.exists():
+                d = pd.read_csv(pth)
+                d["league"] = lg
+                frames.append(d)
+        prev = pd.concat(frames, ignore_index=True) if frames else None
+    pc = {sq: v for (lg, sq), v in _possession(f"{SEASON_START}_{SEASON_START + 1}").items() if lg == league}
+    out = ptpl.enrich(cur, prev, pc, _possession(prev_season), ps.norm_name, blend=basis == "blend")
+    _STAT_FRAME[key] = (_t.time() + 21600, out)
+    return out
+
+
+def _template_pool_all(tpl: str, min_min: float, basis: str = "blend"):
+    """8개 리그 같은 템플릿 선수(출전 기준 통과) — 리그 안 표본이 적을 때 백분위 비교 대상. 6시간 캐시."""
+    import time as _t  # noqa: PLC0415
+    hit = _TPL_POOL.get((tpl, min_min, basis))
     if hit and hit[0] > _t.time():
         return hit[1]
     frames = []
     for lg in _LEAGUE_LEVEL:
-        f = _pf(lg)
-        if f is None or f.empty:
+        d = _stat_frame(lg, basis)
+        if d is None or d.empty:
             continue
-        d = ptpl.add_derived(f)
         frames.append(d[(pd.to_numeric(d["minutes"], errors="coerce").fillna(0) >= min_min) & (d["_template"] == tpl)])
     out = pd.concat(frames, ignore_index=True) if frames else pd.DataFrame()
-    _TPL_POOL[(tpl, min_min)] = (_t.time() + 21600, out)
+    _TPL_POOL[(tpl, min_min, basis)] = (_t.time() + 21600, out)
     return out
 
 
@@ -2202,7 +2245,7 @@ def _season_log(team: str, player: str, league: str, is_gk: bool = False, fm_id=
 
 @app.get("/api/player/{team}/{player}")
 @_memo(ttl=21600)
-def player_detail(team: str, player: str, league: str = ACTIVE_LEAGUE):
+def player_detail(team: str, player: str, league: str = ACTIVE_LEAGUE, basis: str = "blend"):
     full = _pf(league)
     if full is None:
         raise HTTPException(404, "players not found")
@@ -2252,13 +2295,21 @@ def player_detail(team: str, player: str, league: str = ACTIVE_LEAGUE):
     # 위 categories·radar(라인 기준)는 포지션이 다른 두 선수를 비교할 때 쓰도록 *_line 으로 남긴다.
     import position_templates as ptpl  # noqa: PLC0415
     tpl_key = "GK" if is_gk else ptpl.template_of(row.get("tm_position"), row.get("pos"))
-    tfull = ptpl.add_derived(full)
+    # 점유율 보정 + 시즌 초 안정화(basis=blend, 기본) — 비교 대상 전원 같은 기준(_stat_frame)
+    basis = "season" if basis == "season" else "blend"
+    tfull = _stat_frame(league, basis)
+    trow = tfull.loc[hit.index[0]] if hit.index[0] in tfull.index else ptpl.add_derived(row.to_frame().T).iloc[0]
     tpool = tfull[(pd.to_numeric(tfull["minutes"], errors="coerce").fillna(0) >= min_min) & (tfull["_template"] == tpl_key)]
     t_scope = "리그"
     if len(tpool) < ptpl.MIN_PEERS:
-        tpool, t_scope = _template_pool_all(tpl_key, min_min), "8개 리그"
-    prof = ptpl.profile(ptpl.add_derived(row.to_frame().T).iloc[0], tpool, tpl_key)
-    template = {"key": tpl_key, "en": ptpl.LABEL[tpl_key][0], "ko": ptpl.LABEL[tpl_key][1], "n": int(len(tpool)), "scope": t_scope}
+        tpool, t_scope = _template_pool_all(tpl_key, min_min, basis), "8개 리그"
+    prof = ptpl.profile(trow, tpool, tpl_key)
+    cur_m, pri_m = float(trow.get("_cur_minutes") or 0), float(trow.get("_prior_minutes") or 0)
+    template = {"key": tpl_key, "en": ptpl.LABEL[tpl_key][0], "ko": ptpl.LABEL[tpl_key][1], "n": int(len(tpool)), "scope": t_scope,
+                "basis": basis, "cur_minutes": int(cur_m), "prior_minutes": int(pri_m),
+                "prior_share": round(pri_m / (cur_m + pri_m), 2) if cur_m + pri_m else 0.0,
+                "possession": None if pd.isna(trow.get("_poss")) else round(float(trow.get("_poss")), 1),
+                "padj": round(float(trow.get("_padj_f") or 1.0), 2)}
 
     # 리그 랭크 배지
     badge_cfg = [("선방율", "gk_save_pct"), ("클린시트", "gk_cs_pct")] if is_gk else _BADGE_METRICS
@@ -3210,22 +3261,27 @@ def _mm(full: float, league: str = ACTIVE_LEAGUE) -> float:
 
 
 def _sim_engine():
+    """유사 선수 엔진 — 8개 리그 전체(예전 EPL 만). 성적 점수는 리그 수준(_LEAGUE_LEVEL)으로 보정."""
     global _SIM
     if _SIM is None:
-        from similar_players import load_players, build_embeddings
-        df = load_players(min_minutes=int(_mm(900, "EPL")))
+        from similar_players import load_players_all, build_embeddings
+        df = load_players_all(min_minutes=int(_mm(900, "EPL")), levels=_LEAGUE_LEVEL)
         _SIM = (df, build_embeddings(df))
     return _SIM
 
 
 @app.get("/api/similar/{player}")
-def similar(player: str, same_position: bool = True, alpha: float = 0.6, league: str = ACTIVE_LEAGUE):
+def similar(player: str, same_position: bool = True, alpha: float = 0.6, league: str = ACTIVE_LEAGUE, scope: str = "all"):
+    """스타일 유사 선수 — scope=all(8개 리그, 기본) | league(그 선수 리그만). 결과에 리그·다른 리그 여부."""
     from similar_players import find_similar
     try:
         df, emb = _sim_engine()
-        res = find_similar(df, emb, player, top=60, same_position=same_position, alpha=alpha)
+        res = find_similar(df, emb, player, top=120, same_position=same_position, alpha=alpha)
     except Exception:  # noqa: BLE001
         return {"player": player, "results": []}
+    me_lg = str(df.loc[df["player"] == player, "league"].iloc[0]) if "league" in df.columns and (df["player"] == player).any() else league
+    if scope == "league" and "league" in res.columns:
+        res = res[res["league"].astype(str) == me_lg]
     # 실제 포지션(RW·LW·AM…)으로 거른다 — 엔진의 'WING_AM' 그룹은 윙어와 공격형 미드를 한데 묶어, 사카(RW) 유사 1위가
     # 만잠비(AM)였다(2026-10-19 사용자). 같은 포지션 먼저, 모자라면 인접 포지션(점수 ×0.9)
     _ADJ = {"RW": ("LW",), "LW": ("RW",), "AM": ("CM", "RW", "LW"), "CM": ("DM", "AM"), "DM": ("CM",),
@@ -3247,13 +3303,14 @@ def similar(player: str, same_position: bool = True, alpha: float = 0.6, league:
     for _, r in res.iterrows():
         out.append({
             "player": str(r.get("player") or ""), "squad": str(r.get("squad") or ""),
+            "league": str(r.get("league") or ""), "cross_league": bool(r.get("league")) and str(r.get("league")) != me_lg,
             "pos": str(r.get("_bk") or r.get("fl_group") or r.get("pos") or ""), "age": int(_num(r.get("age"))),
             "value_eur": _num(r.get("market_value_eur")),
             "logo": tm.team_logo(str(r.get("squad") or "")),
             "score": round(_num(r.get("score")) * 100), "style": round(_num(r.get("style_sim")) * 100),
             "perf": round(_num(r.get("perf_score")) * 100),
         })
-    return {"player": player, "results": out}
+    return {"player": player, "results": out, "league": me_lg, "scope": scope}
 
 
 # 세부 포지션 버킷 (좌우·라인 구분) — 포메이션 내 특정 약점 포지션 추천용

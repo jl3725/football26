@@ -57,4 +57,28 @@ def test_profile_excludes_low_from_average() -> None:
     assert tkl["low"] and tkl["att"] == 0                             # 태클 0.5회 시도 → 표본 부족
     ok = [m["pct"] for m in duel["metrics"] if not m["low"]]
     assert duel["avg"] == round(sum(ok) / len(ok))                    # 평균에서 뺀다
-    assert any(r["low"] for r in prof["radar"]) and all("axis" in r for r in prof["radar"])
+    # CB 레이더는 시도가 많은 지상 경합%를 쓴다(태클 성공%는 묶음에만) — 표본 부족 축이 레이더를 흔들지 않게
+    axes = [r["axis"] for r in prof["radar"]]
+    assert "지상 경합%" in axes and "태클 성공%" not in axes and not any(r["low"] for r in prof["radar"])
+
+
+def test_padj_and_blend() -> None:
+    assert round(pt.padj_factor(50), 2) == 1.0
+    assert round(pt.padj_factor(61.2), 2) == 1.51                    # 아스날 26/27 — 수비 횟수 ×1.51
+    assert pt.padj_factor(None) == 1.0
+    cur = pd.DataFrame([{"player": "Gabriel", "squad": "Arsenal", "minutes": 630, "tm_position": "Centre-Back",
+                         "aerial_won_pct": 50.0, "interceptions_per90_ss": 1.0},
+                        {"player": "New Guy", "squad": "Burnley", "minutes": 900, "tm_position": "Centre-Back",
+                         "aerial_won_pct": 60.0, "interceptions_per90_ss": 1.0}], index=[7, 9])
+    prev = pd.DataFrame([{"player": "Gabriel", "squad": "Arsenal", "league": "EPL", "minutes": 2751,
+                          "aerial_won_pct": 62.0, "interceptions_per90_ss": 0.75}])
+    out = pt.enrich(cur, prev, {"Arsenal": 61.2, "Burnley": 45.0}, {("EPL", "Arsenal"): 60.0}, str.lower)
+    g, n = out.loc[7], out.loc[9]
+    assert list(out.index) == [7, 9]                                   # 인덱스 그대로(선수 행 찾기)
+    assert g["_prior_minutes"] == 1350 and n["_prior_minutes"] == 0   # 지난 시즌 최대 15경기치, 기록 없으면 0
+    assert round(g["aerial_won_pct"], 1) == round((50 * 630 + 62 * 1350) / 1980, 1)
+    want = (1.0 * pt.padj_factor(61.2) * 630 + 0.75 * pt.padj_factor(60.0) * 1350) / 1980
+    assert round(g["interceptions_per90_ss"], 3) == round(want, 3)   # 시즌마다 그 시즌 점유율로 보정한 뒤 섞음
+    assert round(n["interceptions_per90_ss"], 3) == round(pt.padj_factor(45.0), 3)
+    season = pt.enrich(cur, prev, {"Arsenal": 61.2}, {}, str.lower, blend=False)
+    assert season.loc[7, "aerial_won_pct"] == 50.0 and season.loc[7, "_prior_minutes"] == 0

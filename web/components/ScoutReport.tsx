@@ -190,11 +190,11 @@ export default function ScoutReport({ team, player, accent, onClose, league }: {
             <section className="sr-sec">
               <h2>ALTERNATIVES <em>스타일 유사 선수 · 가치가 70% 미만이면 '더 쌈'</em></h2>
               <table className="sr-table">
-                <thead><tr><th className="l">선수</th><th className="l">클럽</th><th>나이</th><th>가치</th><th>유사도</th></tr></thead>
+                <thead><tr><th className="l">선수</th><th className="l">클럽</th><th>리그</th><th>나이</th><th>가치</th><th>유사도</th></tr></thead>
                 <tbody>{r.similar.map((s) => (
                   <tr key={`${s.player}-${s.squad}`}>
                     <td className="l"><b>{s.player}</b>{s.cheaper && <span className="sr-tag c-cheap">더 쌈</span>}</td>
-                    <td className="l">{s.squad}</td><td>{s.age || "-"}</td><td>{fmtEur(s.value_eur)}</td><td>{s.score}%</td>
+                    <td className="l">{s.squad}</td><td>{s.league ?? "-"}</td><td>{s.age || "-"}</td><td>{fmtEur(s.value_eur)}</td><td>{s.score}%</td>
                   </tr>
                 ))}</tbody>
               </table>
