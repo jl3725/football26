@@ -60,6 +60,10 @@ def read_table(
     season = season or SEASON
 
     key = (table, league, season, _db_mtime())
+    if _unscoped(table):
+        # 리그·시즌 열이 없는 표(뉴스 기사 등)는 리그마다 같은 표 전체가 읽혔다 — 사본을 리그마다 캐시하면
+        # 뉴스 3만 건(43MB) × 8개 리그로 무료 인스턴스(512MB)를 거의 채운다(2026-10-21). 한 벌만 둔다.
+        key = (table, "*", "*", key[3])
     with _CACHE_LOCK:
         hit = _CACHE.get(key)
         if hit is not None:
@@ -75,6 +79,35 @@ def read_table(
                 _CACHE.popitem(last=False)
         return df.copy()
     return _cleanse_names(table, _read_from_csv(table, league, season), league, season)   # CSV 폴백은 캐시 안 함
+
+
+_SCOPE: dict = {}
+
+
+def _unscoped(table: str) -> bool:
+    """리그·시즌 열도, 리그별로 달라지는 정규화 대상(squad·선수 이름)도 없는 표인가 — DB 파일 시각마다 한 번 확인."""
+    mt = _db_mtime()
+    hit = _SCOPE.get(table)
+    if hit and hit[0] == mt:
+        return hit[1]
+    out = False
+    if DB_PATH.exists():
+        try:
+            conn = sqlite3.connect(f"file:{DB_PATH}?mode=ro", uri=True)
+            try:
+                cols = {r[1] for r in conn.execute(f'PRAGMA table_info("{table}")')}
+            finally:
+                conn.close()
+            try:
+                import player_names as pn  # noqa: PLC0415
+                named = table in pn.TABLE_COLS
+            except ImportError:
+                named = False
+            out = bool(cols) and not ({"league", "season", "squad"} & cols) and not named
+        except sqlite3.Error:
+            out = False
+    _SCOPE[table] = (mt, out)
+    return out
 
 
 def _canon_squads(df: pd.DataFrame, league: str) -> pd.DataFrame:

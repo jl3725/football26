@@ -1,0 +1,275 @@
+{
+ "feeds": {
+  "https://feeds.bbci.co.uk/sport/football/rss.xml": {
+   "outlet": "BBC Sport",
+   "country": "England",
+   "via": "seed",
+   "added": "2026-10-21",
+   "fail": 0,
+   "ok": "2026-10-21",
+   "items": 76,
+   "match_rate": 0.38
+  },
+  "https://www.theguardian.com/football/rss": {
+   "outlet": "The Guardian",
+   "country": "England",
+   "via": "seed",
+   "added": "2026-10-21",
+   "fail": 0,
+   "ok": "2026-10-21",
+   "items": 58,
+   "match_rate": 0.31
+  },
+  "https://talksport.com/feed/": {
+   "outlet": "talkSPORT",
+   "country": "England",
+   "via": "seed",
+   "added": "2026-10-21",
+   "fail": 0,
+   "ok": "2026-10-21",
+   "items": 100,
+   "match_rate": 0.23
+  },
+  "https://football365.com/rss": {
+   "outlet": "Football365",
+   "country": "England",
+   "via": "seed",
+   "added": "2026-10-21",
+   "fail": 0,
+   "ok": "2026-10-21",
+   "items": 49,
+   "match_rate": 0.69
+  },
+  "https://www.90min.com/feed": {
+   "outlet": "90min",
+   "country": "England",
+   "via": "seed",
+   "added": "2026-10-21",
+   "fail": 0,
+   "ok": "2026-10-21",
+   "items": 90,
+   "match_rate": 0.0
+  },
+  "https://givemesport.com/feed": {
+   "outlet": "GiveMeSport",
+   "country": "England",
+   "via": "seed",
+   "added": "2026-10-21",
+   "fail": 0,
+   "ok": "2026-10-21",
+   "items": 10,
+   "match_rate": 1.0
+  },
+  "https://teamtalk.com/rss": {
+   "outlet": "TEAMtalk",
+   "country": "England",
+   "via": "seed",
+   "added": "2026-10-21",
+   "fail": 0,
+   "ok": "2026-10-21",
+   "items": 34,
+   "match_rate": 0.79
+  },
+  "https://www.independent.co.uk/sport/football/rss": {
+   "outlet": "The Independent",
+   "country": "England",
+   "via": "seed",
+   "added": "2026-10-21",
+   "fail": 0,
+   "ok": "2026-10-21",
+   "items": 27,
+   "match_rate": 0.89
+  },
+  "https://www.standard.co.uk/sport/football/rss": {
+   "outlet": "Evening Standard",
+   "country": "England",
+   "via": "seed",
+   "added": "2026-10-21",
+   "fail": 0,
+   "ok": "2026-10-21",
+   "items": 43,
+   "match_rate": 0.84
+  },
+  "https://www.tuttomercatoweb.com/rss/": {
+   "outlet": "TuttoMercatoWeb",
+   "country": "Italy",
+   "via": "seed",
+   "added": "2026-10-21",
+   "fail": 0,
+   "ok": "2026-10-21",
+   "items": 20,
+   "match_rate": 0.6
+  },
+  "https://feeds.footballco.com/calcio/feed/g8r5n1czq4mw7v2k": {
+   "outlet": "Calciomercato.com",
+   "country": "Italy",
+   "via": "seed",
+   "added": "2026-10-21",
+   "fail": 0,
+   "ok": "2026-10-21",
+   "items": 20,
+   "match_rate": 0.5
+  },
+  "https://corrieredellosport.it/rss/": {
+   "outlet": "Corriere dello Sport",
+   "country": "Italy",
+   "via": "seed",
+   "added": "2026-10-21",
+   "fail": 0,
+   "ok": "2026-10-21",
+   "items": 30,
+   "match_rate": 0.4
+  },
+  "https://football-italia.net/feed/": {
+   "outlet": "Football Italia",
+   "country": "Italy",
+   "via": "seed",
+   "added": "2026-10-21",
+   "fail": 0,
+   "ok": "2026-10-21",
+   "items": 20,
+   "match_rate": 0.95
+  },
+  "https://www.mundodeportivo.com/feed/rss/home/": {
+   "outlet": "Mundo Deportivo",
+   "country": "Spain",
+   "via": "seed",
+   "added": "2026-10-21",
+   "fail": 0,
+   "ok": "2026-10-21",
+   "items": 146,
+   "match_rate": 0.32
+  },
+  "https://www.estadiodeportivo.com/sitemaps/rss.xml": {
+   "outlet": "Estadio Deportivo",
+   "country": "Spain",
+   "via": "seed",
+   "added": "2026-10-21",
+   "fail": 0,
+   "ok": "2026-10-21",
+   "items": 121,
+   "match_rate": 0.79
+  },
+  "https://www.bild.de/feed/sport.xml": {
+   "outlet": "BILD",
+   "country": "Germany",
+   "via": "seed",
+   "added": "2026-10-21",
+   "fail": 0,
+   "ok": "2026-10-21",
+   "items": 100,
+   "match_rate": 0.51
+  },
+  "https://le10sport.com/fr/rss/": {
+   "outlet": "le10sport",
+   "country": "France",
+   "via": "seed",
+   "added": "2026-10-21",
+   "fail": 0,
+   "ok": "2026-10-21",
+   "items": 20,
+   "match_rate": 0.25
+  },
+  "https://www.abola.pt/rss-articles.xml": {
+   "outlet": "A Bola",
+   "country": "Portugal",
+   "via": "seed",
+   "added": "2026-10-21",
+   "fail": 0,
+   "ok": "2026-10-21",
+   "items": 326,
+   "match_rate": 0.44
+  },
+  "https://maisfutebol.iol.pt/rss.xml": {
+   "outlet": "Maisfutebol",
+   "country": "Portugal",
+   "via": "seed",
+   "added": "2026-10-21",
+   "fail": 0,
+   "ok": "2026-10-21",
+   "items": 20,
+   "match_rate": 0.65
+  },
+  "https://vi.nl/rss": {
+   "outlet": "Voetbal International",
+   "country": "Netherlands",
+   "via": "seed",
+   "added": "2026-10-21",
+   "fail": 0,
+   "ok": "2026-10-21",
+   "items": 24,
+   "match_rate": 0.88
+  },
+  "https://feeds.footballco.com/vz/feed/ce3iomiqfw9iej21": {
+   "outlet": "Voetbalzone",
+   "country": "Netherlands",
+   "via": "seed",
+   "added": "2026-10-21",
+   "fail": 0,
+   "ok": "2026-10-21",
+   "items": 20,
+   "match_rate": 0.9
+  },
+  "https://telegraaf.nl/sport/rss": {
+   "outlet": "De Telegraaf",
+   "country": "Netherlands",
+   "via": "seed",
+   "added": "2026-10-21",
+   "fail": 0,
+   "ok": "2026-10-21",
+   "items": 50,
+   "match_rate": 0.54
+  },
+  "https://ad.nl/voetbal/rss.xml": {
+   "outlet": "AD",
+   "country": "Netherlands",
+   "via": "seed",
+   "added": "2026-10-21",
+   "fail": 0,
+   "ok": "2026-10-21",
+   "items": 30,
+   "match_rate": 0.7
+  },
+  "https://hln.be/voetbal/rss.xml": {
+   "outlet": "HLN",
+   "country": "Belgium",
+   "via": "seed",
+   "added": "2026-10-21",
+   "fail": 0,
+   "ok": "2026-10-21",
+   "items": 30,
+   "match_rate": 0.83
+  },
+  "https://nieuwsblad.be/sport/rss": {
+   "outlet": "Het Nieuwsblad",
+   "country": "Belgium",
+   "via": "seed",
+   "added": "2026-10-21",
+   "fail": 0,
+   "ok": "2026-10-21",
+   "items": 50,
+   "match_rate": 0.36
+  },
+  "https://www.walfoot.be/rss": {
+   "outlet": "Walfoot",
+   "country": "Belgium",
+   "via": "seed",
+   "added": "2026-10-21",
+   "fail": 0,
+   "ok": "2026-10-21",
+   "items": 180,
+   "match_rate": 0.49
+  },
+  "https://www.dhnet.be/arc/outboundfeeds/rss/section/sports?outputType=xml": {
+   "outlet": "DH Les Sports+",
+   "country": "Belgium",
+   "via": "seed",
+   "added": "2026-10-21",
+   "fail": 0,
+   "ok": "2026-10-21",
+   "items": 100,
+   "match_rate": 0.42
+  }
+ },
+ "rejected": {}
+}

@@ -45,8 +45,12 @@ def init_db() -> None:
         """)
         c.execute("CREATE INDEX IF NOT EXISTS idx_team_pub ON articles(team, published)")
         # 수집 경로(via) — 'gnews' = Google News 검색(src/news_sources.py). 매체 이름(source)과 따로 둔다
-        if "via" not in {r[1] for r in c.execute("PRAGMA table_info(articles)")}:
+        cols = {r[1] for r in c.execute("PRAGMA table_info(articles)")}
+        if "via" not in cols:
             c.execute("ALTER TABLE articles ADD COLUMN via TEXT DEFAULT ''")
+        # 작성자(RSS 바이라인 · 블루스카이 게시자) — wire·bsky 경로(src/news_wires.py). 블루스카이는 작성자 = 기자 본인
+        if "author" not in cols:
+            c.execute("ALTER TABLE articles ADD COLUMN author TEXT DEFAULT ''")
         # 기사 분류(src/news_classify.py) — 종류·이적 단계·기자. by = rule | ai
         c.execute("""
             CREATE TABLE IF NOT EXISTS article_meta (
@@ -91,11 +95,11 @@ def upsert_articles(articles: list[dict], team: str) -> int:
                 c.execute(
                     """INSERT INTO articles
                        (link, team, source, headline, headline_ko, descr, descr_ko,
-                        published, image, first_seen, fetched_at, via)
-                       VALUES (?,?,?,?,?,?,?,?,?,?,?,?)""",
+                        published, image, first_seen, fetched_at, via, author)
+                       VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)""",
                     (link, team, a.get("source", ""), a.get("headline", ""),
                      hk, a.get("desc", ""), dk,
-                     a.get("published", ""), a.get("image", ""), today, today, a.get("via", "")))
+                     a.get("published", ""), a.get("image", ""), today, today, a.get("via", ""), a.get("author", "")))
                 new += 1
     return new
 
@@ -172,6 +176,13 @@ def via_count(team: str, via: str, day: str) -> int:
                              (team, via, day)).fetchone()[0])
 
 
+def via_counts(since: str) -> dict:
+    """since 이후 처음 본 기사 수 — 경로(via)별(링크 하나 = 한 건). 수집 로그·감시용."""
+    with _conn() as c:
+        return {str(v or "espn/rss"): int(n) for v, n in c.execute(
+            "SELECT via, count(DISTINCT link) FROM articles WHERE first_seen>=? GROUP BY via", (since,))}
+
+
 def prune(via: str, before: str) -> int:
     """via 경로 기사 중 처음 본 날이 before 보다 이른 것을 지운다(화면은 최근 60일만 쓰고 news.db 는 저장소에 커밋된다)."""
     with _conn() as c:
@@ -185,7 +196,8 @@ def unclassified(limit: int = 5000) -> list[dict]:
     with _conn() as c:
         rows = c.execute(
             """SELECT a.link, max(a.headline) AS headline, max(a.descr) AS descr, max(a.source) AS source,
-                      group_concat(DISTINCT a.team) AS teams, max(a.first_seen) AS first_seen
+                      group_concat(DISTINCT a.team) AS teams, max(a.first_seen) AS first_seen,
+                      max(a.via) AS via, max(a.author) AS author
                FROM articles a LEFT JOIN article_meta m ON m.link=a.link
                WHERE m.link IS NULL GROUP BY a.link ORDER BY max(a.first_seen) DESC LIMIT ?""", (limit,)).fetchall()
     return [dict(r) for r in rows]

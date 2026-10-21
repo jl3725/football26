@@ -131,13 +131,14 @@ def parse(content: bytes, team: str, per_query: int = PER_QUERY) -> list[dict]:
     out = []
     for e in f.entries:
         outlet = ((e.get("source") or {}).get("title") or "").strip()
+        home = ((e.get("source") or {}).get("href") or "").strip()      # 매체 홈 — 피드 자동 발견 후보(src/news_wires.py)
         head = _strip_outlet(e.get("title", ""), outlet)
         if not head or not e.get("link") or not keep(head, outlet):
             continue
         pp = e.get("published_parsed")
         out.append({"headline": head, "desc": "", "published": time.strftime("%Y-%m-%d", pp) if pp else "",
                     "_ts": time.mktime(pp) if pp else 0, "image": "", "link": e["link"], "teams": [team],
-                    "source": outlet or "Google News", "via": VIA})
+                    "source": outlet or "Google News", "via": VIA, "source_url": home})
     out.sort(key=lambda a: a["_ts"], reverse=True)          # Google 은 관련도순 — 최신순으로 잘라 쓴다
     for a in out:
         a.pop("_ts", None)

@@ -167,8 +167,11 @@ def rule_meta(row: dict, known: dict[str, dict]) -> dict:
     text = f"{head} {descr}"
     kind = rule_kind(head, descr, row.get("source") or "", row.get("teams") or "")
     stage = (rule_stage(head) or rule_stage(text)) if kind == "transfer" else ""
-    return {"link": row["link"], "kind": kind, "stage": stage, "journalists": "|".join(find_journalists(text, known)),
-            "by": "rule"}
+    js = find_journalists(text, known)
+    # 블루스카이 게시물은 글쓴이가 곧 그 정보의 기자(src/news_wires.py — 기자 계정만 받는다)
+    if str(row.get("via") or "") == "bsky" and row.get("author") and row["author"] not in js:
+        js = [row["author"], *js]
+    return {"link": row["link"], "kind": kind, "stage": stage, "journalists": "|".join(js), "by": "rule"}
 
 
 # ── AI 보정 ─────────────────────────────────────────────────────────────────────

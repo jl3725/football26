@@ -8,6 +8,8 @@ news.db 보관소 — main 이력 밖의 `data-news` 브랜치에 압축본 한 
         (브랜치 주소는 raw CDN 이 몇 분 옛것을 줄 수 있어 sha 주소가 먼저).
   pull  news.db 가 없으면 포인터의 sha → 브랜치 머리 → git fetch 순으로 받아 풀어 둔다. build_db·watchdog·build_kg 가 부른다.
 안전: push 는 기사 수가 직전(포인터)보다 20% 넘게 줄면 거부(빈 DB 로 덮어쓰기 방지). daily_news 는 시작할 때 pull --strict.
+크기: GitHub 파일 한도 100MB(50MB 부터 경고). 압축본이 SOFT_BYTES 를 넘으면 넓힌 경로(wire·fotmob·gnews·bsky) 기사 중
+TRIM_DAYS 일 지난 비이적 기사를 지우고(이적 기사는 루머 판정·적중률이 쓴다) 다시 압축, 그래도 HARD_BYTES 를 넘으면 거부.
 
     python src/news_store.py pull [--force] [--strict]
     python src/news_store.py push
@@ -32,6 +34,10 @@ REF = ROOT / "data" / "news_db.ref.json"
 BRANCH = "data-news"
 NAME = "news.db.gz"
 MIN_RATIO = 0.8
+SOFT_BYTES = 60_000_000
+HARD_BYTES = 90_000_000
+TRIM_VIAS = ("wire", "fotmob", "gnews", "bsky")
+TRIM_DAYS = 14
 
 
 def repo() -> str:
@@ -134,6 +140,32 @@ def _git(*args: str, data: bytes | None = None) -> str:
                           timeout=600).stdout.decode().strip()
 
 
+def trim(path: Path | None = None, days: int = TRIM_DAYS) -> int:
+    """넓힌 경로 기사 중 days 일 지난 비이적 기사를 지운다(선수 태그·분류도). 지운 기사 행 수."""
+    before = (dt.date.today() - dt.timedelta(days=days)).isoformat()
+    c = sqlite3.connect(path or DB)
+    try:
+        tabs = {r[0] for r in c.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+        keep = "AND link NOT IN (SELECT link FROM article_meta WHERE kind='transfer')" if "article_meta" in tabs else ""
+        q = ",".join("?" * len(TRIM_VIAS))
+        n = c.execute(f"DELETE FROM articles WHERE via IN ({q}) AND first_seen<? {keep}", (*TRIM_VIAS, before)).rowcount
+        for t in ("article_meta", "article_players"):
+            if t in tabs:
+                c.execute(f"DELETE FROM {t} WHERE link NOT IN (SELECT link FROM articles)")
+        c.commit()
+        c.execute("VACUUM")
+        return n
+    finally:
+        c.close()
+
+
+def _gzip(dst_dir: str) -> Path:
+    gz = Path(dst_dir) / NAME
+    with DB.open("rb") as src, gzip.open(gz, "wb", compresslevel=9) as dst:
+        shutil.copyfileobj(src, dst)
+    return gz
+
+
 def push(min_ratio: float = MIN_RATIO) -> dict:
     """data/news.db → data-news 브랜치(부모 없는 커밋 하나, 강제 푸시) + 포인터 갱신. 포인터는 main 커밋에 넣는다."""
     if not DB.exists():
@@ -148,10 +180,17 @@ def push(min_ratio: float = MIN_RATIO) -> dict:
     finally:
         c.close()
     with tempfile.TemporaryDirectory() as td:
-        gz = Path(td) / NAME
-        with DB.open("rb") as src, gzip.open(gz, "wb", compresslevel=9) as dst:
-            shutil.copyfileobj(src, dst)
+        gz = _gzip(td)
         size = gz.stat().st_size
+        if size > SOFT_BYTES:
+            cut = trim()
+            n = articles(DB)
+            gz = _gzip(td)
+            print(f"[news-store] 압축 {size / 1e6:.1f}MB > {SOFT_BYTES / 1e6:.0f}MB — 넓힌 경로 {TRIM_DAYS}일 지난 비이적 기사 "
+                  f"{cut}건 정리 → {gz.stat().st_size / 1e6:.1f}MB")
+            size = gz.stat().st_size
+        if size > HARD_BYTES:
+            raise SystemExit(f"[news-store] 압축 {size / 1e6:.1f}MB > {HARD_BYTES / 1e6:.0f}MB — 올리지 않음(보관 기간·수집량 확인)")
         blob = _git("hash-object", "-w", str(gz))
     tree = _git("mktree", data=f"100644 blob {blob}\t{NAME}\n".encode())
     now = dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")

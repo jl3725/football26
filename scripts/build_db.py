@@ -105,7 +105,11 @@ def build() -> None:
             print(f"  ! news.db 받기 실패: {e}")
     if NEWS_DB.exists():
         try:
-            ndf = pd.read_sql("SELECT * FROM articles", sqlite3.connect(NEWS_DB))
+            # 화면이 쓰는 최근 60일만(src/news_relevance.MAX_DAYS) — 오래된 기사가 40% 를 차지하며 무료 인스턴스(512MB)
+            # 메모리만 썼다. 루머 판정·적중률(news_reliability)은 news.db 원본을 직접 읽어 영향 없음(2026-10-21)
+            ndf = pd.read_sql("SELECT link, team, source, headline, headline_ko, descr, descr_ko, published, image, first_seen, via "
+                              "FROM articles WHERE coalesce(nullif(substr(published, 1, 10), ''), first_seen) >= date('now', '-60 day')",
+                              sqlite3.connect(NEWS_DB))
             ndf.to_sql("news_articles", conn, if_exists="replace", index=False)
             total_rows += len(ndf)
             print(f"  · {'news_articles':38s} {len(ndf):6d} rows  (news.db)")

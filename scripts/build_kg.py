@@ -13,6 +13,11 @@
        (Player)-[:MENTIONED_WITH {articles, last}]-(Player)  # 최근 60일 같은 기사에 함께 나옴(뉴스 선수 태그)
        (Player)-[:CALLED_UP {squad_for, caps, goals}]->(Country)  # 대표팀 소집(위키 Current squad)
        (Player)-[:LINKED_TO {heat, stage, tm_prob, news, outlets, last}]->(Club)  # 이적설(TM 루머 + 뉴스, src/rumor_map.py)
+       (Claim {player, dest, window, stage, first, last, n, status})-[:ABOUT]->(Player) / -[:TO_CLUB]->(Club) / -[:FROM_CLUB]->(Club)
+         (이적 기록의 TO·FROM 과 이름을 나눠 — 라벨 없이 쓴 질의가 주장과 실제 이적을 섞지 않게)
+       (Outlet|Journalist)-[:REPORTED {first, last, n, stage}]->(Claim)   # 이적 루머 주장(뉴스 → data/news_claims.csv)
+       (Journalist)-[:WRITES_FOR {n}]->(Outlet)
+         주장 = 선수·행선지·이적 시장 하나. status = hit·miss(닫힌 시장 판정)·pending. Outlet·Journalist 에 적중률(rate·score·n)
 속성 보강: Player(contract_until·career_games_missed·career_spells·ovr·form·recent·xg_p90·influence·
           captain_rank·injured_now·news_60d·active), Club(europe_coefficient), Country(fifa_rank·fifa_points)
 골·도움·출전 분·OVR 은 화면과 같은 선수 표(api/services/player_data.player_frame — FotMob·Understat 매일 반영)에서.
@@ -73,7 +78,11 @@ CONSTRAINTS = [
     "CREATE CONSTRAINT manager_name IF NOT EXISTS FOR (m:Manager) REQUIRE m.name IS UNIQUE",
     "CREATE CONSTRAINT transfer_id IF NOT EXISTS FOR (t:TransferEvent) REQUIRE t.id IS UNIQUE",
     "CREATE CONSTRAINT competition_name IF NOT EXISTS FOR (x:Competition) REQUIRE x.name IS UNIQUE",
+    "CREATE CONSTRAINT claim_id IF NOT EXISTS FOR (k:Claim) REQUIRE k.id IS UNIQUE",
+    "CREATE CONSTRAINT outlet_name IF NOT EXISTS FOR (o:Outlet) REQUIRE o.name IS UNIQUE",
+    "CREATE CONSTRAINT journalist_name IF NOT EXISTS FOR (j:Journalist) REQUIRE j.name IS UNIQUE",
 ]
+CLAIM_DAYS = 400         # 주장 보관 — 지난 시장 적중 판정까지(무료 AuraDB 20만 노드 한도 안에서 수천 개)
 
 
 def _norm(s) -> str:
@@ -380,11 +389,8 @@ def _load_callups(n2p_by_league: dict) -> list[dict]:
     return rows
 
 
-def _load_rumor_links(n2p_by_league: dict) -> list[dict]:
-    """이적설 연결(src/rumor_map.collect — TM 루머 + 열린 시장 뉴스 루머, 매체 적중률 가중) → LINKED_TO 행.
-    우리 데이터에 없는 선수(8개 리그 밖)는 'rumor:이름' 외부 노드로 — 같은 표적을 쫓는 클럽끼리 그래프로 이어지게."""
-    import datetime as dt  # noqa: PLC0415
-
+def _rumor_base() -> tuple:
+    """(canon, n2pc, tm_rows) — 클럽 표기(rumor_map.make_canon)·이름 → [(pid, 클럽)]·TM 루머 행."""
     import rumor_map as rm  # noqa: PLC0415
     club_league: dict[str, str] = {}
     player_clubs: dict[str, set[str]] = {}
@@ -421,6 +427,23 @@ def _load_rumor_links(n2p_by_league: dict) -> list[dict]:
     # 클럽 표기 — 우리 선수의 TM 현 소속 표기로 학습 + 리그 안에서만 비슷한 이름(rumor_map.make_canon, API 와 같은 규칙).
     # 'RCD Espanyol Barcelona'→Barcelona·'Manchester City U18'→Manchester City 처럼 다른 클럽·2군을 묶지 않는다
     canon = rm.make_canon(club_league, player_clubs, tm_rows)
+    return canon, n2pc, tm_rows
+
+
+def _pid_for(k: str, frm: str, n2pc: dict, n2p_by_league: dict) -> str | None:
+    """같은 이름이 여럿이면 현 소속(frm)과 같은 클럽의 선수 — 예전엔 리그 순서상 첫 번째를 골랐다."""
+    cands = n2pc.get(k) or []
+    return (next((p for p, c in cands if c == frm), None) or (cands[0][0] if cands else None)
+            or next((m[k] for m in n2p_by_league.values() if k in m), None))
+
+
+def _load_rumor_links(n2p_by_league: dict, base: tuple | None = None) -> list[dict]:
+    """이적설 연결(src/rumor_map.collect — TM 루머 + 열린 시장 뉴스 루머, 매체 적중률 가중) → LINKED_TO 행.
+    우리 데이터에 없는 선수(8개 리그 밖)는 'rumor:이름' 외부 노드로 — 같은 표적을 쫓는 클럽끼리 그래프로 이어지게."""
+    import datetime as dt  # noqa: PLC0415
+
+    import rumor_map as rm  # noqa: PLC0415
+    canon, n2pc, tm_rows = base or _rumor_base()
     claims, scores = [], {}
     cp, rp = ROOT / "data" / "news_claims.csv", ROOT / "data" / "news_reliability.csv"
     if cp.exists():
@@ -435,14 +458,87 @@ def _load_rumor_links(n2p_by_league: dict) -> list[dict]:
         if lk["heat"] <= 0:
             continue
         k = _norm(lk["player"])
-        cands = n2pc.get(k) or []
-        # 같은 이름이 여럿이면 연결의 현 소속(from)과 같은 클럽의 선수 — 예전엔 리그 순서상 첫 번째를 골랐다
-        pid = (next((p for p, c in cands if c == lk["from"]), None) or (cands[0][0] if cands else None)
-               or next((m[k] for m in n2p_by_league.values() if k in m), None))
+        pid = _pid_for(k, lk["from"], n2pc, n2p_by_league)
         rows.append({"pid": pid or f"rumor:{k}", "name": lk["player"], "to": lk["to"], "heat": lk["heat"],
                      "stage": lk["stage"], "prob": (lk["tm"] or {}).get("prob"), "news": len(lk["news"]),
                      "outlets": lk["outlets"], "last": lk["last"]})
     return rows
+
+
+def claim_graph(claims: list[dict], canon, pid_of, rel: list[dict] | None = None,
+                today: dt.date | None = None) -> dict[str, list[dict]]:
+    """뉴스 루머 주장(news_claims.csv 행) → 그래프 행. 주장 = (선수, 행선지, 시장) 하나에 기사 여러 건.
+    claims: {link, date, source, journalists('|'), stage, player, origin, dest, window, status}
+    canon(클럽) → 우리 표기(없으면 None), pid_of(선수 norm, 현 소속) → 선수 id(없으면 None → 'rumor:이름').
+    rel: news_reliability.csv 행(kind outlet·journalist) → 매체·기자 적중률 속성."""
+    import rumor_map as rm  # noqa: PLC0415
+    today = today or dt.date.today()
+    cut = (today - dt.timedelta(days=CLAIM_DAYS)).isoformat()
+
+    def club(n) -> str:
+        n = str(_clean(n) or "").strip()
+        return (canon(n) or n) if n else ""
+
+    def later(a: str, b: str) -> str:
+        """더 나아간 단계(부인은 다른 단계가 없을 때만)."""
+        if not a or a == "denied":
+            return b or a
+        if not b or b == "denied":
+            return a
+        return a if rm.STAGE_ORDER.index(a) >= rm.STAGE_ORDER.index(b) else b
+
+    cl: dict[str, dict] = {}
+    rep: dict[tuple, dict] = {}
+    wf: dict[tuple, int] = {}
+    for r in claims:
+        d, st = str(r.get("date") or "")[:10], str(_clean(r.get("stage")) or "")
+        k, to = _norm(r.get("player")), club(r.get("dest"))
+        if not d or d < cut or not k or not to or st not in rm.STAGE_ORDER:
+            continue
+        frm, win = club(r.get("origin")), str(_clean(r.get("window")) or "")
+        cid = f"{k}|{to}|{win}"
+        c = cl.setdefault(cid, {"id": cid, "player": str(r.get("player")), "key": k, "dest": to, "origin": frm,
+                                "window": win, "stage": "", "first": d, "last": d, "links": set(), "status": "pending",
+                                "pid": pid_of(k, frm) or f"rumor:{k}"})
+        c["stage"] = later(c["stage"], st)
+        c["first"], c["last"] = min(c["first"], d), max(c["last"], d)
+        c["links"].add(str(r.get("link") or ""))
+        if str(r.get("status")) in ("hit", "miss"):
+            c["status"] = str(r.get("status"))
+        src = str(_clean(r.get("source")) or "")
+        js = [j.strip() for j in str(_clean(r.get("journalists")) or "").split("|") if j.strip()]
+        for kind, name in [("Outlet", src)] * bool(src) + [("Journalist", j) for j in js]:
+            x = rep.setdefault((kind, name, cid), {"kind": kind, "name": name, "claim": cid, "first": d, "last": d,
+                                                   "n": 0, "stage": ""})
+            x["first"], x["last"], x["n"] = min(x["first"], d), max(x["last"], d), x["n"] + 1
+            x["stage"] = later(x["stage"], st)
+        for j in js:
+            if src:
+                wf[(j, src)] = wf.get((j, src), 0) + 1
+    rows = []
+    for c in cl.values():
+        c["n"] = len(c.pop("links"))
+        rows.append(c)
+    score = {(("Outlet" if x.get("kind") == "outlet" else "Journalist"), str(x.get("name"))): x
+             for x in rel or [] if x.get("kind") in ("outlet", "journalist")}
+    nodes = []
+    for kind, name in sorted({(x["kind"], x["name"]) for x in rep.values()}):
+        s = score.get((kind, name)) or {}
+        nodes.append({"kind": kind, "name": name, "n": _num(s.get("n")), "hits": _num(s.get("hits")),
+                      "rate": _num(s.get("rate")), "score": _num(s.get("score")),
+                      "few": bool(s.get("few")) if s else None})
+    return {"claims": rows, "reports": list(rep.values()), "writes": [{"j": j, "o": o, "n": n} for (j, o), n in wf.items()],
+            "nodes": nodes}
+
+
+def _load_claims(n2p_by_league: dict, base: tuple) -> dict[str, list[dict]]:
+    canon, n2pc, _ = base
+    cp, rp = ROOT / "data" / "news_claims.csv", ROOT / "data" / "news_reliability.csv"
+    if not cp.exists():
+        return {"claims": [], "reports": [], "writes": [], "nodes": []}
+    rel = pd.read_csv(rp).to_dict("records") if rp.exists() else []
+    return claim_graph(pd.read_csv(cp).to_dict("records"), canon,
+                       lambda k, frm: _pid_for(k, frm, n2pc, n2p_by_league), rel)
 
 
 def _batched(session, cypher, rows, batch=500, **params):
@@ -546,19 +642,42 @@ def main() -> int:
         _batched(s, "UNWIND $rows AS r MATCH (p:Player {id:r.pid}) MERGE (co:Country {name:r.nation}) "
                     "MERGE (p)-[c:CALLED_UP]->(co) SET c.squad_for=r.sf, c.caps=r.caps, c.goals=r.goals, c.seen=$run",
                  calls, run=RUN)
-        rumors = _load_rumor_links(n2p_by_league)
+        base = _rumor_base()
+        rumors = _load_rumor_links(n2p_by_league, base)
         _batched(s, "UNWIND $rows AS r MERGE (p:Player {id:r.pid}) "
                     "  ON CREATE SET p.name=r.name, p.external=true, p.active=false "
                     "MERGE (c:Club {name:r.to}) MERGE (p)-[l:LINKED_TO]->(c) "
                     "SET l.heat=r.heat, l.stage=r.stage, l.tm_prob=r.prob, l.news=r.news, l.outlets=r.outlets, "
                     "    l.last=r.last, l.seen=$run", rumors, run=RUN)
         print(f"  기사 동시 언급 {len(pairs)}쌍 · 대표팀 소집 {len(calls)}명 · 주장단 {tot['cap']}명 · 이적설 {len(rumors)}건")
+        # 루머 주장 그래프 — 누가(매체·기자) 무엇을(선수→행선지, 시장) 언제 보도했고 맞았는지
+        g = _load_claims(n2p_by_league, base)
+        _batched(s, "UNWIND $rows AS r MERGE (k:Claim {id:r.id}) "
+                    "SET k.player=r.player, k.dest=r.dest, k.origin=r.origin, k.window=r.window, k.stage=r.stage, "
+                    "    k.first=r.first, k.last=r.last, k.n=r.n, k.status=r.status, k.seen=$run "
+                    "MERGE (p:Player {id:r.pid}) ON CREATE SET p.name=r.player, p.external=true, p.active=false "
+                    "MERGE (k)-[:ABOUT]->(p) "
+                    "MERGE (to:Club {name:r.dest}) MERGE (k)-[:TO_CLUB]->(to) "
+                    "FOREACH (_ IN CASE WHEN r.origin<>'' THEN [1] ELSE [] END | "
+                    "  MERGE (fr:Club {name:r.origin}) MERGE (k)-[:FROM_CLUB]->(fr))", g["claims"], run=RUN)
+        for kind in ("Outlet", "Journalist"):
+            _batched(s, f"UNWIND $rows AS r MERGE (x:{kind} {{name:r.name}}) "
+                        "SET x.n=r.n, x.hits=r.hits, x.rate=r.rate, x.score=r.score, x.few=r.few, x.seen=$run",
+                     [x for x in g["nodes"] if x["kind"] == kind], run=RUN)
+            _batched(s, f"UNWIND $rows AS r MATCH (x:{kind} {{name:r.name}}) MATCH (k:Claim {{id:r.claim}}) "
+                        "MERGE (x)-[e:REPORTED]->(k) SET e.first=r.first, e.last=r.last, e.n=r.n, e.stage=r.stage, e.seen=$run",
+                     [x for x in g["reports"] if x["kind"] == kind], run=RUN)
+        _batched(s, "UNWIND $rows AS r MATCH (j:Journalist {name:r.j}) MATCH (o:Outlet {name:r.o}) "
+                    "MERGE (j)-[w:WRITES_FOR]->(o) SET w.n=r.n, w.seen=$run", g["writes"], run=RUN)
+        print(f"  루머 주장 {len(g['claims'])}건 · 보도 {len(g['reports'])}건 · 매체·기자 {len(g['nodes'])}곳")
 
         # 이번 실행에서 다시 확인 안 된 관계 정리 — 떠난 선수의 소속·바뀐 감독·지난 주장·옛 소집·오래된 동시 언급
-        for rel in ("PLAYS_FOR", "MANAGES", "CAPTAIN_OF", "MENTIONED_WITH", "CALLED_UP", "LINKED_TO"):
+        for rel in ("PLAYS_FOR", "MANAGES", "CAPTAIN_OF", "MENTIONED_WITH", "CALLED_UP", "LINKED_TO", "REPORTED", "WRITES_FOR"):
             n = s.run(f"MATCH ()-[r:{rel}]-() WHERE coalesce(r.seen, '') <> $run "
                       "WITH DISTINCT r DELETE r RETURN count(r) AS n", run=RUN).single()["n"]
             print(f"  정리 {rel}: {n}")
+        s.run("MATCH (k:Claim) WHERE coalesce(k.seen, '') <> $run DETACH DELETE k", run=RUN)   # 보관 기간 지난 주장
+        s.run("MATCH (x) WHERE (x:Outlet OR x:Journalist) AND NOT (x)--() DETACH DELETE x")
         s.run("MATCH (p:Player {external:true}) WHERE NOT (p)--() DETACH DELETE p")   # 이적설이 식은 외부 선수
         gone = s.run("MATCH (p:Player) WHERE coalesce(p.seen, '') <> $run SET p.active=false RETURN count(p) AS n",
                      run=RUN).single()["n"]

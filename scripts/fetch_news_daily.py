@@ -29,12 +29,14 @@ from news_db import (  # noqa: E402
     init_db, upsert_articles, stats, untranslated, set_translation, translation_stats, recent_heads, via_count, prune, head_key,
 )
 import news_sources as gn  # noqa: E402
+from leagues import LEAGUES as LG  # noqa: E402
 from translate import translate_many, STATS  # noqa: E402
 
 LEAGUES = ["EPL", "LaLiga", "SerieA", "Bundesliga", "Ligue1", "LigaPortugal", "Eredivisie", "BelgianProLeague"]
 
 
 GN_PER_RUN = 6        # Google News — 팀당 한 번에 새 기사 이만큼(하루 상한 gn.DAILY_CAP)
+GOOGLE_SEEN: dict[str, list[dict]] = {}   # 나라 → 이번에 본 Google 기사(매체 홈 주소 — 와이어 피드 자동 발견 후보)
 
 
 def google_new(team: str, arts: list[dict], taken: set[str]) -> list[dict]:
@@ -53,6 +55,8 @@ def run_league(league: str, br: gn.Breaker | None = None) -> tuple[int, int]:
     espn = fetch_espn_news(league)
     wire = fetch_es_wire() if league == "LaLiga" else []   # AS·MD·Sport 리그 와이어 1회
     google = gn.fetch_league(league, tags, br) if br is not None and not br.open else {}
+    country = LG[league].country if league in LG else ""
+    GOOGLE_SEEN.setdefault(country, []).extend(a for arts in google.values() for a in arts)
     print(f"[{league}] ESPN {len(espn)}건 · ES와이어 {len(wire)}건 · Google {sum(map(len, google.values()))}건 · {len(tags)}팀 처리…")
     new = tot = 0
     for i, team in enumerate(tags, 1):
@@ -136,6 +140,19 @@ def main(argv=None) -> int:
     if br is not None:
         print(f"[google] 호출 {br.calls}회 · 오류 {br.errors[-5:]}" + (" · 연속 실패로 중단" if br.open else ""))
         print(f"[google] {gn.KEEP_DAYS}일 지난 기사 정리 {prune(gn.VIA, _days_ago(gn.KEEP_DAYS))}건")
+    if "--no-wires" not in args and "--all" in args:
+        # 넓힌 무료 원천(src/news_wires.py) — 매체 RSS(요약·작성자)·FotMob 팀 뉴스·블루스카이 기자 계정. 실패해도 나머지는 계속
+        import news_wires  # noqa: PLC0415
+        t0 = time.monotonic()
+        try:
+            w = news_wires.run(google_seen=GOOGLE_SEEN)
+            print(f"[wires] 신규 {w['new']} · 피드 {w['feeds']}개 · 새로 찾은 피드 {w['discovered']} · FotMob 호출 {w['fotmob_calls']} · "
+                  f"블루스카이 {w['insiders']}계정 {w['bsky_posts']}건 · 정리 {w['pruned']} ({time.monotonic() - t0:.0f}초)")
+            print("[wires] 피드별 우리 팀 기사:", w["feed_hits"])
+        except Exception as e:  # noqa: BLE001
+            print(f"[wires] 실패 {type(e).__name__}: {e}")
+    from news_db import via_counts  # noqa: PLC0415
+    print("[sources] 오늘 처음 본 기사(경로별):", via_counts(_days_ago(0)))
     s = stats()
     print(f"\n완료 — 신규 {tn} / 처리 {tt} · DB 누적 {s['articles']}건 ({s['teams']}팀)")
     import news_tags   # 새 기사 선수 태깅(이름 전체 · 성+클럽) — 무료·결정적. 처음 실행 때 지난 기사 전부

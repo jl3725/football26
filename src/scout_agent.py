@@ -124,6 +124,8 @@ _KG_SCHEMA = """노드:
   Manager {name, formation, appointed, is_new, months_tenure, style_tags, tendency_tags, tac_pressing, tac_control, tac_creativity, tac_attack, tac_aerial, tac_disruption}
   TransferEvent {player, fee_eur, fee_text, window, season}
   Competition {name}  (UEFA Champions League / Europa League / Conference League)
+  Claim {id, player, dest, origin, window('2026 winter'), stage(interest/talks/agreed/done/denied), first, last, n(기사 수), status(hit/miss/pending)}
+  Outlet {name, n, hits, rate(적중률 0~1), score, few} · Journalist {name, n, hits, rate, score, few}   // 뉴스 이적 루머 보도자
   Role {name} · TacticalSnapshot · Scout · ScoutReport
 관계(방향 정확히):
   (Player)-[:PLAYS_FOR]->(Club)
@@ -138,7 +140,10 @@ _KG_SCHEMA = """노드:
   (League)-[:IN_COUNTRY]->(Country)
   (Player)-[:CAPTAIN_OF {rank, role}]->(Club)          // 주장단(1=주장, 2=부주장 …)
   (Player)-[:MENTIONED_WITH {articles, last}]-(Player) // 최근 60일 같은 기사에 함께 나옴
-  (Player)-[:CALLED_UP {squad_for, caps, goals}]->(Country)  // 대표팀 소집(가장 최근 명단)"""
+  (Player)-[:CALLED_UP {squad_for, caps, goals}]->(Country)  // 대표팀 소집(가장 최근 명단)
+  (Player)-[:LINKED_TO {heat, stage, tm_prob, news, outlets, last}]->(Club)   // 이적설 종합(TM 루머 + 뉴스, heat 0~100)
+  (Claim)-[:ABOUT]->(Player), (Claim)-[:TO_CLUB]->(Club), (Claim)-[:FROM_CLUB]->(Club)   // 뉴스 루머 주장(선수·행선지·시장)
+  (Outlet)-[:REPORTED {first, last, n, stage}]->(Claim), (Journalist)-[:REPORTED {...}]->(Claim), (Journalist)-[:WRITES_FOR {n}]->(Outlet)"""
 
 # graph_query Cypher 작성 가이드 + few-shot(정확도↑). 라이브 값 기반.
 _CYPHER_TIPS = """graph_query Cypher 팁:
@@ -157,6 +162,8 @@ _CYPHER_TIPS = """graph_query Cypher 팁:
   [이적경로 Ligue1→EPL] MATCH (fr:Club)-[:COMPETES_IN]->(:League {key:'Ligue1'}) MATCH (fr)<-[:FROM]-(t:TransferEvent)-[:TO]->(to:Club)-[:COMPETES_IN]->(:League {key:'EPL'}) MATCH (t)-[:OF]->(p:Player) RETURN p.name,fr.name,to.name,t.fee_text LIMIT 15
   [국대 동료] MATCH (a:Player {name:'Bukayo Saka'})-[:REPRESENTS]->(ctry)<-[:REPRESENTS]-(b:Player) WHERE a<>b RETURN b.name,b.pos_detail,b.league LIMIT 15
   [팀동료 중 루머] MATCH (a:Player {name:'Vitinha'})-[:TEAMMATE_OF]-(b:Player)-[:RUMORED_WITH]->(c:Club) RETURN DISTINCT b.name,c.name LIMIT 15
+  [기자 보도 루머] MATCH (j:Journalist)-[e:REPORTED]->(k:Claim)-[:TO_CLUB]->(:Club {name:'Arsenal'}) RETURN j.name, j.rate, k.player, k.stage, k.status, k.last ORDER BY k.last DESC LIMIT 15
+  [매체 적중률] MATCH (o:Outlet) WHERE o.rate IS NOT NULL AND o.few = false RETURN o.name, o.rate, o.n ORDER BY o.rate DESC LIMIT 10
   [계약임박 CB] MATCH (p:Player) WHERE p.contract_until CONTAINS '{EXPIRY_YEAR}' AND p.pos_detail='Centre-Back' AND p.age<=26 RETURN p.name,p.contract_until,p.league,p.market_value_eur ORDER BY p.market_value_eur DESC LIMIT 15"""
 
 _WRITE_RE = re.compile(r"(?i)(?<![a-z])(create|merge|delete|detach|set|remove|drop|foreach|load\s+csv)(?![a-z])")

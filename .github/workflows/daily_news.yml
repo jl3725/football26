@@ -1,6 +1,7 @@
 name: Daily News Fetch
 
 # 2시간마다 ESPN+RSS+Google News(팀별 현지어·영어 이적) 뉴스를 수집해 data/news.db 에 누적하고, 분류(종류·이적 단계·기자)·번역 뒤
+# 넓힌 무료 원천(src/news_wires.py, 2026-10-21): 8개 나라 매체 RSS(요약·작성자)·FotMob 팀 뉴스·블루스카이 기자 계정 — 실행마다 약 1~2분
 # news.db 는 main 이 아닌 data-news 브랜치(압축본 한 개, 강제 푸시)에 두고 main 에는 포인터 data/news_db.ref.json 만 커밋
 # (src/news_store.py — news.db 가 저장소 이력의 99%였다, 2026-10-21). Render 는 그 main 커밋으로 다시 배포하며 포인터의 sha 를 받는다.
 # 번역은 무료 공급자만(src/translate.py): GEMINI_API_KEY 시크릿이 있으면 Gemini 무료 등급, 없거나
@@ -69,7 +70,9 @@ jobs:
           git add data/news_db.ref.json data/ops/runs/ data/ai/
           # Google News 검색용 현지 클럽 표기(위키 언어 간 링크, 7일 캐시) · AI 가 찾은 기자 목록(src/news_classify.py)
           # 매체·기자 적중률(src/news_reliability.py — 루머 vs 실제 이적)
-          for f in data/club_local_names.json data/news_journalists.csv data/news_reliability.csv data/news_claims.csv; do [ -f "$f" ] && git add "$f"; done
+          # 넓힌 원천 상태(src/news_wires.py) — 매체 RSS 목록·발견 후보·실패 횟수, 블루스카이 기자 계정, FotMob 팀 id
+          for f in data/club_local_names.json data/news_journalists.csv data/news_reliability.csv data/news_claims.csv \
+                   data/news_feeds.json data/news_insiders.json data/fotmob_team_ids.json; do [ -f "$f" ] && git add "$f"; done
           if git diff --staged --quiet; then
             echo "변경 없음 — 커밋 생략"
           else

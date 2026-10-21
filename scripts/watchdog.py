@@ -10,7 +10,8 @@
   frontend  web/ 를 바꾼 최신 커밋이 Vercel Production 에 배포됐는가
   backend   api·src·requirements 최신 커밋이 Render 운영에 떠 있는가(/api/health commit)
   workflows daily_data·daily_news·keep_alive·CI 최근 실행이 성공인가
-  news      news.db 마지막 수집 1일 이내, 최근 2일 번역률 50% 이상
+  news      news.db 마지막 수집 1일 이내, 최근 2일 번역률 50% 이상, 넓힌 원천(wire·fotmob) 최근 2일 기사 있음,
+            압축본 50MB(GitHub 경고 구간) 미만
   tm_agent  로컬 TM agent(이 PC 작업 스케줄러) 산출물이 최근에 커밋됐는가
   coverage  현재 시즌 팀 전원에게 감독 프로필이 있는가(시즌 전환 뒤 승격팀 누락·강등팀 잔류 탐지)
   rating_history  선수 평점 일일 기록(▲▼ 추이 원천)이 3일 안에 갱신됐는가
@@ -203,6 +204,14 @@ def check_news() -> list[str]:
     if tot and (tot - (bad or 0)) / tot < 0.5:
         out.append(f"최근 2일 뉴스 번역률 {100 * (tot - (bad or 0)) / tot:.0f}% ({bad}/{tot}건 원문) — "
                    "GEMINI_API_KEY·구글 차단 여부 확인")
+    vias = dict(c.execute("SELECT via, count(*) FROM articles WHERE first_seen>=? GROUP BY via", (since,)).fetchall())
+    for v, what in (("wire", "매체 RSS"), ("fotmob", "FotMob 팀 뉴스")):
+        if not vias.get(v):
+            out.append(f"최근 2일 {what}({v}) 기사 0건 — src/news_wires.py·daily_news 로그의 [wires] 줄 확인")
+    size = int(news_store.read_ref().get("bytes") or 0)
+    if size > 50_000_000:
+        out.append(f"news.db 압축본 {size / 1e6:.0f}MB — GitHub 50MB 경고 구간(60MB 넘으면 넓힌 원천의 14일 지난 비이적 기사를 "
+                   "자동 정리, 90MB 넘으면 올리기 거부 — src/news_store.py)")
     return out
 
 
