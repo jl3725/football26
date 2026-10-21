@@ -1,4 +1,15 @@
 squad,player,fotmob_id,kind,expected_return,match_id,match_date,fetched
+Köln,Imad Rondić,916092,injury,Early November 2026,5881199,2026-10-24,2026-10-21
+Köln,Ellyes Skhiri,574642,injury,Early January 2027,5881199,2026-10-24,2026-10-21
+Köln,Joël Schmied,1003254,injury,Early November 2026,5881199,2026-10-24,2026-10-21
+Köln,Rav van den Berg,1199391,injury,About 1-2 weeks,5881199,2026-10-24,2026-10-21
+Köln,Timo Hübers,682385,injury,Early January 2027,5881199,2026-10-24,2026-10-21
+Köln,Ragnar Ache,772193,injury,About 1-2 weeks,5881199,2026-10-24,2026-10-21
+Köln,Thijs Dallinga,885085,injury,Late June 2027,5881199,2026-10-24,2026-10-21
+Schalke 04,Ron Schallenberg,820974,injury,About 1-2 weeks,5881199,2026-10-24,2026-10-21
+Schalke 04,Dejan Ljubičić,861668,injury,Late October 2026,5881199,2026-10-24,2026-10-21
+Schalke 04,Ayman Gülasi,1816238,injury,Late December 2026,5881199,2026-10-24,2026-10-21
+Schalke 04,Bryan Lasme,815566,injury,Mid October 2026,5881199,2026-10-24,2026-10-21
 Stuttgart,Tiago Tomás,1164506,injury,Late October 2026,5881205,2026-10-23,2026-10-21
 Stuttgart,Dan-Axel Zagadou,852347,injury,Mid October 2026,5881205,2026-10-23,2026-10-21
 Stuttgart,Josha Vagnoman,928454,injury,Doubtful,5881205,2026-10-23,2026-10-21
@@ -12,6 +23,8 @@ Gladbach,Franck Honorat,501543,injury,About 1-2 weeks,5881205,2026-10-23,2026-10
 Gladbach,Isac Lidberg,655095,injury,Doubtful,5881205,2026-10-23,2026-10-21
 Gladbach,Nicolas-Gerrit Kühn,888745,injury,Doubtful,5881205,2026-10-23,2026-10-21
 Gladbach,Tim Kleindienst,442728,injury,About 1-2 weeks,5881205,2026-10-23,2026-10-21
+Freiburg,Florent Muslija,848666,injury,Late December 2026,5881200,2026-10-25,2026-10-21
+Bayern Munich,Jamal Musiala,1156141,injury,A few weeks,5881200,2026-10-25,2026-10-21
 Mainz 05,Robin Zentner,556505,injury,A few weeks,5881202,2026-10-24,2026-10-21
 Mainz 05,Dominik Kohr,303905,injury,Early January 2027,5881202,2026-10-24,2026-10-21
 Mainz 05,Otto Ruoppi,1347994,injury,Early November 2026,5881202,2026-10-24,2026-10-21
@@ -24,15 +37,6 @@ Werder Bremen,Skelly Alvero,1393480,injury,Late October 2026,5881202,2026-10-24,
 Werder Bremen,Justin Njinmah,1137364,injury,Late October 2026,5881202,2026-10-24,2026-10-21
 Werder Bremen,Keke Topp,1319717,injury,Early January 2027,5881202,2026-10-24,2026-10-21
 Werder Bremen,Salim Musah,1646629,injury,Early January 2027,5881202,2026-10-24,2026-10-21
-Hoffenheim,Nathan De Cat,1664759,injury,Late November 2026,5881201,2026-10-25,2026-10-21
-Hoffenheim,Albian Hajdari,1186015,injury,A few weeks,5881201,2026-10-25,2026-10-21
-Hoffenheim,Patrick Wimmer,1073498,injury,Mid November 2026,5881201,2026-10-25,2026-10-21
-Leverkusen,Kennet Eichhorn,1793217,injury,Late October 2026,5881201,2026-10-25,2026-10-21
-Leverkusen,Montrell Culbreath,1793199,injury,Mid October 2026,5881201,2026-10-25,2026-10-21
-Leverkusen,Guéla Doué,1395704,injury,A few weeks,5881201,2026-10-25,2026-10-21
-Leverkusen,Eliesse Ben Seghir,1393439,injury,About 1-2 weeks,5881201,2026-10-25,2026-10-21
-Leverkusen,Martin Terrier,770136,injury,Early December 2026,5881201,2026-10-25,2026-10-21
-Leverkusen,Christian Kofane,1705081,injury,A few weeks,5881201,2026-10-25,2026-10-21
 Augsburg,Sima Suso,1561984,injury,Late October 2026,5881197,2026-10-24,2026-10-21
 Augsburg,Noahkai Banks,1641063,injury,Late October 2026,5881197,2026-10-24,2026-10-21
 Augsburg,Alexis Claude-Maurice,689065,injury,Early November 2026,5881197,2026-10-24,2026-10-21
@@ -44,11 +48,26 @@ Union Berlin,Andrej Ilić,1047670,injury,Mid October 2026,5881197,2026-10-24,202
 Union Berlin,Andrik Markgraf,1796861,injury,Early March 2027,5881197,2026-10-24,2026-10-21
 Union Berlin,Marvin Friedrich,530858,injury,Late October 2026,5881197,2026-10-24,2026-10-21
 Union Berlin,Stanley N'Soki,907495,injury,Late October 2026,5881197,2026-10-24,2026-10-21
+Dortmund,Emre Can,307021,injury,Mid November 2026,5881198,2026-10-24,2026-10-21
+Dortmund,Giannis Konstantelias,1215014,injury,Late May 2027,5881198,2026-10-24,2026-10-21
+Dortmund,Justin Lerma,1636870,injury,About 1-2 weeks,5881198,2026-10-24,2026-10-21
+Dortmund,Konstantinos Karetsas,1536436,injury,Early November 2026,5881198,2026-10-24,2026-10-21
+Frankfurt,Jessic Ngankam,1083717,injury,Mid October 2026,5881198,2026-10-24,2026-10-21
+Frankfurt,Malik Pimpong,1690128,injury,Late October 2026,5881198,2026-10-24,2026-10-21
 RB Leipzig,Assan Ouédraogo,1486541,injury,Late December 2026,5881204,2026-10-24,2026-10-21
 RB Leipzig,Marc Guiu,1412137,injury,A few weeks,5881204,2026-10-24,2026-10-21
 SV Elversberg,Francis Onyeka,1603681,injury,Doubtful,5881204,2026-10-24,2026-10-21
 SV Elversberg,Cole Campbell,1288195,injury,About 1-2 weeks,5881204,2026-10-24,2026-10-21
 SV Elversberg,Noah Darvich,1479921,injury,Doubtful,5881204,2026-10-24,2026-10-21
+Hoffenheim,Nathan De Cat,1664759,injury,Late November 2026,5881201,2026-10-25,2026-10-21
+Hoffenheim,Albian Hajdari,1186015,injury,A few weeks,5881201,2026-10-25,2026-10-21
+Hoffenheim,Patrick Wimmer,1073498,injury,Mid November 2026,5881201,2026-10-25,2026-10-21
+Leverkusen,Kennet Eichhorn,1793217,injury,Late October 2026,5881201,2026-10-25,2026-10-21
+Leverkusen,Montrell Culbreath,1793199,injury,Mid October 2026,5881201,2026-10-25,2026-10-21
+Leverkusen,Guéla Doué,1395704,injury,A few weeks,5881201,2026-10-25,2026-10-21
+Leverkusen,Eliesse Ben Seghir,1393439,injury,About 1-2 weeks,5881201,2026-10-25,2026-10-21
+Leverkusen,Martin Terrier,770136,injury,Early December 2026,5881201,2026-10-25,2026-10-21
+Leverkusen,Christian Kofane,1705081,injury,A few weeks,5881201,2026-10-25,2026-10-21
 SC Paderborn,Oliver Batista Meier,950822,injury,Mid November 2026,5881203,2026-10-24,2026-10-21
 SC Paderborn,Marcel Hoffmeier,970587,injury,A few weeks,5881203,2026-10-24,2026-10-21
 SC Paderborn,Nyamekye Awortwie-Grant,1473681,injury,Mid October 2026,5881203,2026-10-24,2026-10-21
@@ -59,22 +78,3 @@ Hamburger SV,Nicolai Remberg,1188890,injury,Late June 2027,5881203,2026-10-24,20
 Hamburger SV,Albert Sambi Lokonga,901495,injury,Doubtful,5881203,2026-10-24,2026-10-21
 Hamburger SV,Bakery Jatta,763998,injury,About 1-2 weeks,5881203,2026-10-24,2026-10-21
 Hamburger SV,Patson Daka,644459,injury,A few weeks,5881203,2026-10-24,2026-10-21
-Dortmund,Emre Can,307021,injury,Mid November 2026,5881198,2026-10-24,2026-10-21
-Dortmund,Giannis Konstantelias,1215014,injury,Late May 2027,5881198,2026-10-24,2026-10-21
-Dortmund,Justin Lerma,1636870,injury,About 1-2 weeks,5881198,2026-10-24,2026-10-21
-Dortmund,Konstantinos Karetsas,1536436,injury,Early November 2026,5881198,2026-10-24,2026-10-21
-Frankfurt,Jessic Ngankam,1083717,injury,Mid October 2026,5881198,2026-10-24,2026-10-21
-Frankfurt,Malik Pimpong,1690128,injury,Late October 2026,5881198,2026-10-24,2026-10-21
-Köln,Imad Rondić,916092,injury,Early November 2026,5881199,2026-10-24,2026-10-21
-Köln,Ellyes Skhiri,574642,injury,Early January 2027,5881199,2026-10-24,2026-10-21
-Köln,Joël Schmied,1003254,injury,Early November 2026,5881199,2026-10-24,2026-10-21
-Köln,Rav van den Berg,1199391,injury,About 1-2 weeks,5881199,2026-10-24,2026-10-21
-Köln,Timo Hübers,682385,injury,Early January 2027,5881199,2026-10-24,2026-10-21
-Köln,Ragnar Ache,772193,injury,About 1-2 weeks,5881199,2026-10-24,2026-10-21
-Köln,Thijs Dallinga,885085,injury,Late June 2027,5881199,2026-10-24,2026-10-21
-Schalke 04,Ron Schallenberg,820974,injury,About 1-2 weeks,5881199,2026-10-24,2026-10-21
-Schalke 04,Dejan Ljubičić,861668,injury,Late October 2026,5881199,2026-10-24,2026-10-21
-Schalke 04,Ayman Gülasi,1816238,injury,Late December 2026,5881199,2026-10-24,2026-10-21
-Schalke 04,Bryan Lasme,815566,injury,Mid October 2026,5881199,2026-10-24,2026-10-21
-Freiburg,Florent Muslija,848666,injury,Late December 2026,5881200,2026-10-25,2026-10-21
-Bayern Munich,Jamal Musiala,1156141,injury,A few weeks,5881200,2026-10-25,2026-10-21

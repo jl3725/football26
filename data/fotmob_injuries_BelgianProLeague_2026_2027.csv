@@ -1,14 +1,19 @@
 squad,player,fotmob_id,kind,expected_return,match_id,match_date,fetched
-OH Leuven,Thibault Vlietinck,659998,injury,Day to day,5811787,2026-10-24,2026-10-21
-OH Leuven,Manuel Osifo,1257873,injury,Day to day,5811787,2026-10-24,2026-10-21
-OH Leuven,Thibaud Verlinden,789532,injury,Day to day,5811787,2026-10-24,2026-10-21
-Lommel,Sam De Grand,1562171,injury,Day to day,5811787,2026-10-24,2026-10-21
-Lommel,Dries Wouters,638099,injury,Day to day,5811787,2026-10-24,2026-10-21
-Lommel,Ralf Seuntjens,160903,injury,Day to day,5811787,2026-10-24,2026-10-21
-Lommel,Sverre Halseth Nypan,1355509,injury,Day to day,5811787,2026-10-24,2026-10-21
-Lommel,Henry Oware,1364498,injury,Day to day,5811787,2026-10-24,2026-10-21
-Lommel,Jesper Tolinsson,1104714,injury,Day to day,5811787,2026-10-24,2026-10-21
-Lommel,Jhon Banguera,1433138,injury,Day to day,5811787,2026-10-24,2026-10-21
+Genk,Yaimar Medina,1391753,injury,Day to day,5811784,2026-10-25,2026-10-21
+Genk,Christian Akpan,1624055,injury,Day to day,5811784,2026-10-25,2026-10-21
+Genk,Kenan Haroun,1638934,injury,Day to day,5811784,2026-10-25,2026-10-21
+Genk,Adrián Palacios,1413371,injury,Day to day,5811784,2026-10-25,2026-10-21
+Genk,Ken Nkuba,974314,injury,Day to day,5811784,2026-10-25,2026-10-21
+Standard Liège,Mohamed El Hankouri,775357,injury,Day to day,5811784,2026-10-25,2026-10-21
+Standard Liège,Josué Homawoo,1022929,injury,Early January 2027,5811784,2026-10-25,2026-10-21
+Standard Liège,Dimitri Lavalée,800587,injury,Day to day,5811784,2026-10-25,2026-10-21
+Gent,Josué Vergara,1676100,injury,About a week,5811785,2026-10-25,2026-10-21
+Gent,Mouhamed Ngom,1363733,injury,Early June 2027,5811785,2026-10-25,2026-10-21
+Anderlecht,Giulian Biancone,990989,injury,Day to day,5811785,2026-10-25,2026-10-21
+Anderlecht,Killian Sardella,1076975,injury,Day to day,5811785,2026-10-25,2026-10-21
+Anderlecht,Ilay Camara,1473998,injury,Day to day,5811785,2026-10-25,2026-10-21
+Antwerp,Youssef Hamdaoui,1709474,injury,Day to day,5811782,2026-10-24,2026-10-21
+Charleroi,Antoine Bernier,945883,injury,Day to day,5811782,2026-10-24,2026-10-21
 Union St.Gilloise,Louis Patris,1178319,suspension,Late October 2026,5811789,2026-10-25,2026-10-21
 Union St.Gilloise,Ilan Hurtevent,1869291,injury,Early November 2026,5811789,2026-10-25,2026-10-21
 Union St.Gilloise,Adem Zorgane,972406,injury,Early November 2026,5811789,2026-10-25,2026-10-21
@@ -19,13 +24,8 @@ Union St.Gilloise,Kevin Mac Allister,728290,injury,Early June 2027,5811789,2026-
 Union St.Gilloise,Ross Sykes,768266,injury,Day to day,5811789,2026-10-25,2026-10-21
 Cercle Brugge,Omotayo Adaramola,1197626,injury,Day to day,5811789,2026-10-25,2026-10-21
 Cercle Brugge,Joel Ndala,1288332,injury,Day to day,5811789,2026-10-25,2026-10-21
-Antwerp,Youssef Hamdaoui,1709474,injury,Day to day,5811782,2026-10-24,2026-10-21
-Charleroi,Antoine Bernier,945883,injury,Day to day,5811782,2026-10-24,2026-10-21
-La Louvière,Bryan Soumaré,1011149,injury,Day to day,5811788,2026-10-24,2026-10-21
-La Louvière,Mouhamed Belkheir,957710,injury,Day to day,5811788,2026-10-24,2026-10-21
-Zulte Waregem,Malick Mbaye,1473606,suspension,Late October 2026,5811788,2026-10-24,2026-10-21
-Zulte Waregem,Dirk Asare,1319969,injury,Day to day,5811788,2026-10-24,2026-10-21
-Zulte Waregem,Wilguens Paugain,1394254,injury,Day to day,5811788,2026-10-24,2026-10-21
+Club Brugge,Joel Ordóñez,1354085,injury,Day to day,5811783,2026-10-25,2026-10-21
+St.Truiden,Arbnor Muja,857141,injury,Day to day,5811783,2026-10-25,2026-10-21
 Kortrijk,Shandre Campbell,1599319,suspension,Late October 2026,5811786,2026-10-23,2026-10-21
 Kortrijk,Matthew Anderson,1536055,injury,Day to day,5811786,2026-10-23,2026-10-21
 Mechelen,Keano Vanrafelghem,1180808,injury,Day to day,5811786,2026-10-23,2026-10-21
@@ -35,21 +35,21 @@ Mechelen,Adeshina Ayodele,2130623,injury,Late May 2027,5811786,2026-10-23,2026-1
 Mechelen,Leo Hjelde,1222770,injury,Day to day,5811786,2026-10-23,2026-10-21
 Mechelen,Tijn Van Ingelgom,1785904,injury,Day to day,5811786,2026-10-23,2026-10-21
 Mechelen,Tommy St. Jago,895268,injury,Day to day,5811786,2026-10-23,2026-10-21
-Gent,Josué Vergara,1676100,injury,About a week,5811785,2026-10-25,2026-10-21
-Gent,Mouhamed Ngom,1363733,injury,Early June 2027,5811785,2026-10-25,2026-10-21
-Anderlecht,Giulian Biancone,990989,injury,Day to day,5811785,2026-10-25,2026-10-21
-Anderlecht,Killian Sardella,1076975,injury,Day to day,5811785,2026-10-25,2026-10-21
-Anderlecht,Ilay Camara,1473998,injury,Day to day,5811785,2026-10-25,2026-10-21
-Club Brugge,Joel Ordóñez,1354085,injury,Day to day,5811783,2026-10-25,2026-10-21
-St.Truiden,Arbnor Muja,857141,injury,Day to day,5811783,2026-10-25,2026-10-21
-Genk,Yaimar Medina,1391753,injury,Day to day,5811784,2026-10-25,2026-10-21
-Genk,Christian Akpan,1624055,injury,Day to day,5811784,2026-10-25,2026-10-21
-Genk,Kenan Haroun,1638934,injury,Day to day,5811784,2026-10-25,2026-10-21
-Genk,Adrián Palacios,1413371,injury,Day to day,5811784,2026-10-25,2026-10-21
-Genk,Ken Nkuba,974314,injury,Day to day,5811784,2026-10-25,2026-10-21
-Standard Liège,Mohamed El Hankouri,775357,injury,Day to day,5811784,2026-10-25,2026-10-21
-Standard Liège,Josué Homawoo,1022929,injury,Early January 2027,5811784,2026-10-25,2026-10-21
-Standard Liège,Dimitri Lavalée,800587,injury,Day to day,5811784,2026-10-25,2026-10-21
+La Louvière,Bryan Soumaré,1011149,injury,Day to day,5811788,2026-10-24,2026-10-21
+La Louvière,Mouhamed Belkheir,957710,injury,Day to day,5811788,2026-10-24,2026-10-21
+Zulte Waregem,Malick Mbaye,1473606,suspension,Late October 2026,5811788,2026-10-24,2026-10-21
+Zulte Waregem,Dirk Asare,1319969,injury,Day to day,5811788,2026-10-24,2026-10-21
+Zulte Waregem,Wilguens Paugain,1394254,injury,Day to day,5811788,2026-10-24,2026-10-21
+OH Leuven,Thibault Vlietinck,659998,injury,Day to day,5811787,2026-10-24,2026-10-21
+OH Leuven,Manuel Osifo,1257873,injury,Day to day,5811787,2026-10-24,2026-10-21
+OH Leuven,Thibaud Verlinden,789532,injury,Day to day,5811787,2026-10-24,2026-10-21
+Lommel,Sam De Grand,1562171,injury,Day to day,5811787,2026-10-24,2026-10-21
+Lommel,Dries Wouters,638099,injury,Day to day,5811787,2026-10-24,2026-10-21
+Lommel,Ralf Seuntjens,160903,injury,Day to day,5811787,2026-10-24,2026-10-21
+Lommel,Sverre Halseth Nypan,1355509,injury,Day to day,5811787,2026-10-24,2026-10-21
+Lommel,Henry Oware,1364498,injury,Day to day,5811787,2026-10-24,2026-10-21
+Lommel,Jesper Tolinsson,1104714,injury,Day to day,5811787,2026-10-24,2026-10-21
+Lommel,Jhon Banguera,1433138,injury,Day to day,5811787,2026-10-24,2026-10-21
 Westerlo,Doğucan Haspolat,776258,injury,Day to day,5811790,2026-10-24,2026-10-21
 Beveren,Laurent Jans,291929,injury,Late October 2026,5811790,2026-10-24,2026-10-21
 Beveren,Léandre Kuavita,1396064,injury,Day to day,5811790,2026-10-24,2026-10-21
