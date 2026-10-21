@@ -82,7 +82,7 @@ def elo_level(elo: float) -> float:
 
 def prep(mr: pd.DataFrame | None, levels: dict, team_league: dict, opp_elo=None) -> pd.DataFrame:
     """경기별 기록 → 리그 밖 행만 + _w(가중)·_lvl(상대 수준)·_fid. levels = {리그: 수준}, team_league = {팀: 리그},
-    opp_elo(상대 이름, 날짜) → 그날 아침 Elo | None."""
+    opp_elo(상대 이름, 날짜, 우리 팀) → 그날 아침 Elo | None."""
     if mr is None or mr.empty:
         return pd.DataFrame()
     d = mr[mr["comp_code"].map(kind) != "league"].copy()
@@ -93,8 +93,9 @@ def prep(mr: pd.DataFrame | None, levels: dict, team_league: dict, opp_elo=None)
     own = d["squad"].astype(str).map(team_league).map(levels)
     opp = d["opponent"].astype(str).map(team_league).map(levels)
     lv = []
-    for c, o, p, nm, dt_ in zip(d["comp_code"], own, opp, d["opponent"].astype(str), d["date"].astype(str)):
-        e = opp_elo(nm, dt_) if opp_elo else None
+    for c, o, p, nm, dt_, sq in zip(d["comp_code"], own, opp, d["opponent"].astype(str), d["date"].astype(str),
+                                    d["squad"].astype(str)):
+        e = opp_elo(nm, dt_, sq) if opp_elo else None
         lv.append(elo_level(e) if e is not None else match_level(c, float(o) if o == o else 100.0, float(p) if p == p else None))
     d["_lvl"] = lv
     d["_w"] = d["comp_code"].map(lambda c: W_EURO if kind(c) == "euro" else W_CUP)
@@ -213,6 +214,8 @@ def combine(frame: pd.DataFrame, x90: pd.DataFrame, cal: dict) -> pd.DataFrame:
     keys = out["_key"]
     xm = _num(keys.map(xc["_m"])).fillna(0)
     lm = out["_league_minutes"]
+    if "npxg_p90" in out.columns:
+        out["_npxg_lg"] = _num(out["npxg_p90"])   # 결정력(비PK골 − npxG)은 리그 범위로 — 유럽 비PK골은 알 수 없다(PK 골 미구분)
     for col in MAP:
         if col not in out.columns or col not in cal:
             continue                                     # 척도를 못 맞춘 지표는 리그 값 그대로
@@ -230,6 +233,14 @@ def combine(frame: pd.DataFrame, x90: pd.DataFrame, cal: dict) -> pd.DataFrame:
 
 # ── 불러오기(시즌 전체 8개 리그) ────────────────────────────────────────────────
 _CACHE: dict = {}
+
+
+def _put(key: tuple, val):
+    """캐시에 넣으며 같은 (종류, 시즌)의 옛 판(이전 DB 시각)을 지운다 — 오래 도는 서버에서 DB 가 갱신될 때마다 쌓이지 않게."""
+    for k in [k for k in _CACHE if k[:2] == key[:2] and k != key]:
+        _CACHE.pop(k, None)
+    _CACHE[key] = val
+    return val
 
 
 def season_rows(read, season: str, version=None) -> pd.DataFrame:
@@ -256,13 +267,15 @@ def season_rows(read, season: str, version=None) -> pd.DataFrame:
         opp = None
     out = prep(mr, league_level.levels(), team_league, opp)
     if version is not None:
-        _CACHE[key] = out
+        _put(key, out)
     return out
 
 
 def opp_elo_fn(read, dates: set[str]):
-    """(상대 이름, 날짜) → 그날 아침 Elo. 일정 파일(schedule_full, 지난 시즌부터 8개 리그 + 컵·유럽)로 src/team_elo 를 돌린다.
-    FotMob 상대 표기 ↔ 일정 표기(우리 리그 팀은 같은 표준 표기, 밖의 팀은 ESPN 표기)는 team_names.best 로."""
+    """(상대 이름, 날짜, 우리 팀) → 그날 아침 Elo. 일정 파일(schedule_full, 지난 시즌부터 8개 리그 + 컵·유럽)로 src/team_elo 를 돌린다.
+    상대는 먼저 일정에서 (우리 팀, 날짜 ±1일)로 정확히 찾고 — FotMob·ESPN 표기 차이로 이름 유사 매칭이 'Atlético'(포르투갈 3부)를
+    아틀레티코 마드리드로, 'Rangers' 를 QPR 로 잇던 것(2026-10-21 검수) — 없을 때만 team_names.best.
+    그날 아침 스냅숏에 아직 없는 팀(첫 경기 전)은 시작값(우리 리그 = 리그 기본값, 밖 = 1500) — 최종 Elo(그 경기·뒤 경기 결과 포함)는 미래 정보."""
     import league_level  # noqa: PLC0415
     import team_elo as te  # noqa: PLC0415
     import team_names as tnm  # noqa: PLC0415
@@ -274,18 +287,37 @@ def opp_elo_fn(read, dates: set[str]):
     ms = pd.concat(frames, ignore_index=True).drop_duplicates("event_id").sort_values(["date", "event_id"])
     if ms.empty:
         return None
-    final, snaps = te.run(ms, {lg: te.league_base(league_level.level(lg)) for lg in LEAGUES}, snap_dates=dates)
+    bases = {lg: te.league_base(league_level.level(lg)) for lg in LEAGUES}
+    final, snaps = te.run(ms, bases, snap_dates=dates)
     names = list(final)
+    team_lg: dict = {}
+    by_day: dict = {}
+    for r in ms.itertuples(index=False):
+        for me, opp, lg in ((r.home, r.away, r.lg_h), (r.away, r.home, r.lg_a)):
+            by_day[(str(me), str(r.date)[:10])] = str(opp)
+            if lg:
+                team_lg[str(me)] = lg
     alias: dict = {}
 
-    def f(name: str, date: str):
+    def resolve(name: str, date: str, squad: str | None):
+        if squad:
+            d0 = pd.Timestamp(date[:10])
+            for k in (0, -1, 1):
+                hit = by_day.get((squad, (d0 + pd.Timedelta(days=k)).date().isoformat()))
+                if hit:
+                    return hit
         if name not in alias:
             alias[name] = name if name in final else tnm.best(name, names)
-        k = alias[name]
+        return alias[name]
+
+    def f(name: str, date: str, squad: str | None = None):
+        k = resolve(name, date, squad)
         if not k:
             return None
         snap = snaps.get(date) or {}
-        return snap.get(k, final.get(k)) if snap else final.get(k)
+        if k in snap:
+            return snap[k]
+        return bases.get(team_lg.get(k), te.START_BASE)    # 첫 경기 전 — 시작값(미래 값 쓰지 않음)
     return f
 
 
@@ -295,7 +327,7 @@ def x_tables(read, season: str, version=None) -> tuple[dict, dict]:
         return _CACHE[key]
     out = rating_table(season_rows(read, season, version))
     if version is not None:
-        _CACHE[key] = out
+        _put(key, out)
     return out
 
 
@@ -311,7 +343,7 @@ def league_rows(read, season: str, version=None) -> pd.DataFrame:
         mr = mr[(mr["comp_code"].map(kind) == "league") & (_num(mr["minutes"]).fillna(0) > 0)].copy()
         mr["_key"] = row_keys(mr)
     if version is not None:
-        _CACHE[key] = mr
+        _put(key, mr)
     return mr
 
 
@@ -320,7 +352,18 @@ def row_keys(rows: pd.DataFrame) -> list[str]:
     return [fid_of(f) or f"{s}|{p}" for f, s, p in zip(rows["fotmob_id"], rows["squad"], rows["player"])]
 
 
-def frame_keys(frame: pd.DataFrame) -> list[str]:
-    """선수 표 → 같은 키(fm_id — rating_blend.attach 가 붙임)."""
+def frame_keys(frame: pd.DataFrame, rows: pd.DataFrame | None = None) -> list[str]:
+    """선수 표 → 같은 키(fm_id — rating_blend.attach 가 붙임). fm_id 가 없는 선수(시즌 평점 표에 없는 765명)는 경기별 행의
+    '팀|이름' → FotMob id 로 이어 준다 — 경기별 행은 언제나 id 키라 이름 키로는 못 만났다(Dowman 의 리그컵 기록이 빠짐, 2026-10-21 검수)."""
     ids = frame["fm_id"] if "fm_id" in frame.columns else [None] * len(frame)
-    return [fid_of(f) or f"{s}|{p}" for f, s, p in zip(ids, frame["squad"], frame["player"])]
+    nm: dict = {}
+    if rows is not None and not rows.empty and "fotmob_id" in rows.columns:
+        for f_, s_, p_ in zip(rows["fotmob_id"], rows["squad"], rows["player"]):
+            fid = fid_of(f_)
+            if fid:
+                nm.setdefault(f"{s_}|{p_}", fid)
+    out = []
+    for f, s, p in zip(ids, frame["squad"], frame["player"]):
+        k = f"{s}|{p}"
+        out.append(fid_of(f) or nm.get(k) or k)
+    return out

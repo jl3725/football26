@@ -230,6 +230,7 @@ function Detail({ team, player, accent, heatmap }: { team: string; player: strin
       ) : d.peers?.n > 0 && (
         <div style={{ fontSize: 11, opacity: 0.5, margin: "0 0 4px" }}>
           {({ GK: "골키퍼", DEF: "수비수", MID: "미드필더", ATT: "공격수" } as Record<string, string>)[d.peers.line] || "포지션"} {d.peers.n}명 대비 백분위
+          <Info label="백분위 기준"><p>리그 경기 기준 · 컵·유럽 제외</p></Info>
         </div>
       )}
       {/* 요약 그림 두 장을 나란히(레이더 = 능력 모양, 히트맵 = 뛰는 자리) — 예전엔 각각 한 줄을 다 차지해 양옆이 비었다 */}

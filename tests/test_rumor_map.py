@@ -58,3 +58,66 @@ def test_team_map_in_out_competition() -> None:
 
     ins = rm.insight("Arsenal", m)
     assert ins["lens"] == "rumors" and ins["who"] == ["Target One"] and "경쟁 1개 클럽" in ins["text"]
+
+
+# ── 클럽 표기 맞추기(make_canon) — 다른 클럽·2군을 우리 클럽으로 묶지 않기 ─────────────────────────────────
+CLUB_LEAGUE = {"Barcelona": "LaLiga", "Espanyol": "LaLiga", "Sevilla": "LaLiga", "Real Madrid": "LaLiga", "Real Betis": "LaLiga",
+               "Racing Santander": "LaLiga", "Porto": "LigaPortugal", "Nacional": "LigaPortugal", "Arsenal": "EPL",
+               "Liverpool": "EPL", "Manchester City": "EPL", "Tottenham Hotspur": "EPL", "Ipswich Town": "EPL",
+               "Inter": "SerieA", "Lens": "Ligue1"}
+
+
+def test_make_canon_does_not_merge_different_clubs() -> None:
+    canon = rm.make_canon(CLUB_LEAGUE, {}, [])
+    for raw in ("RCD Espanyol Barcelona", "Grêmio Foot-Ball Porto Alegrense", "Atlético Nacional", "Club Nacional Asunción",
+                "Inter Miami", "Barcelona SC", "Liverpool Montevideo", "Racing Club"):
+        assert canon(raw) is None, raw                                  # 8개 리그 밖 → 호출부가 원래 이름 유지
+    assert canon("Barcelona") == "Barcelona"                            # 우리 표기 그대로
+    # 같은 표기를 쓰는 우리 선수가 있으면 그 선수의 클럽으로 — Espanyol 선수 → Espanyol(Barcelona 아님)
+    canon = rm.make_canon(CLUB_LEAGUE, {"roberto fernandez": {"Espanyol"}},
+                          [{"player": "Roberto Fernández", "current_club": "RCD Espanyol Barcelona"}])
+    assert canon("RCD Espanyol Barcelona") == "Espanyol"
+
+
+def test_make_canon_never_maps_reserve_to_first_team() -> None:
+    pc = {"youth guy": {"Manchester City"}, "espoir guy": {"Lens"}, "b team guy": {"Sevilla"}}
+    tm = [{"player": "Youth Guy", "current_club": "Manchester City U18"}, {"player": "Espoir Guy", "current_club": "RC Lens Espoir"},
+          {"player": "B Team Guy", "current_club": "Sevilla Atlético"}]
+    canon = rm.make_canon(CLUB_LEAGUE, pc, tm)                          # 학습 행이 있어도 2군 표기는 1군으로 안 감
+    for raw, lg in (("Manchester City U18", "EPL"), ("RC Lens Espoir", "Ligue1"), ("Sevilla Atlético", "LaLiga"),
+                    ("Jong Ajax", None), ("Real Madrid Castilla", "LaLiga"), ("Inter Primavera", "SerieA")):
+        assert canon(raw) is None and canon(raw, lg) is None, raw
+    assert rm.reserve_marks("Willem II Tilburg") == frozenset() and rm.reserve_marks("Willem II") == {"ii"}
+    assert rm.reserve_marks("Atlético Nacional") == frozenset() and rm.reserve_marks("Sevilla Atlético") == {"atletico"}
+    # 자기 2군·유스 → 1군은 내부 승격(연결 아님), 다른 클럽 유스 → 표적(현 소속은 원래 이름)
+    tm = [{"player": "Kid One", "target_club": "Manchester City", "current_club": "Manchester City U18", "league": "EPL",
+           "date": "20/10/2026"},
+          {"player": "Kid Two", "target_club": "Lens", "current_club": "RC Lens Espoir", "league": "Ligue1", "date": "20/10/2026"},
+          {"player": "Kid Three", "target_club": "Arsenal", "current_club": "Borussia Dortmund Youth", "league": "EPL",
+           "date": "20/10/2026"}]
+    links = rm.collect(tm, [], canon, rm.outlet_factor({}), TODAY)
+    assert set(links) == {("kid three", "Arsenal")} and links[("kid three", "Arsenal")]["from"] == "Borussia Dortmund Youth"
+
+
+def test_make_canon_learned_mapping_and_ambiguity() -> None:
+    pc = {"pedri": {"Barcelona"}, "kai": {"Arsenal"}, "real one": {"Real Madrid"}, "real two": {"Real Betis"}}
+    tm = [{"player": "Pedri", "current_club": "FC Barcelona"}, {"player": "Kai", "current_club": "Arsenal FC"},
+          {"player": "Real One", "current_club": "Real"}, {"player": "Real Two", "current_club": "Real"},   # 두 클럽 → 애매
+          {"player": "Nobody", "current_club": "Barcelona SC"}]                                            # 우리 선수 아님
+    canon = rm.make_canon(CLUB_LEAGUE, pc, tm)
+    assert canon("FC Barcelona") == "Barcelona" and canon("Arsenal FC") == "Arsenal"
+    assert canon("Real") is None and canon("Barcelona SC") is None
+
+
+def test_make_canon_league_hint() -> None:
+    canon = rm.make_canon(CLUB_LEAGUE, {}, [])
+    assert canon("Arsenal FC") is None                                  # 리그를 모르면 비슷한 이름으로 고르지 않음
+    assert canon("Arsenal FC", "EPL") == "Arsenal"                      # TM target_club — 리그별 파일이라 그 리그 안에서만
+    assert canon("Tottenham", "EPL") == "Tottenham Hotspur"             # squads.canonical_squad 별칭
+    assert canon("Inter Miami", "EPL") is None                          # 다른 리그 클럽(Inter)으로 새지 않음
+    assert canon("Ipswich") == "Ipswich Town"                           # 리그 모름 — 사람이 확인한 별칭표에서 한 클럽뿐일 때
+    tm = [{"player": "Some One", "target_club": "Arsenal FC", "current_club": "RCD Espanyol Barcelona", "league": "EPL",
+           "date": "20/10/2026"}]
+    links = rm.collect(tm, [], canon, rm.outlet_factor({}), TODAY)
+    lk = links[("some one", "Arsenal")]
+    assert lk["from"] == "RCD Espanyol Barcelona"                       # 8개 리그 밖 표기는 원래 이름

@@ -38,7 +38,7 @@ def test_levels_and_weights() -> None:
     elo = {("Barcelona", "2026-10-01"): 1934.0, ("Rouen", "2026-10-01"): 1450.0}
     y = acs.prep(_rows(rows=[{"comp_code": "uefa.champions"}, {"comp_code": "fra.coupe_de_france", "match_id": "3", "opponent": "Rouen"},
                              {"comp_code": "uefa.europa", "match_id": "4", "opponent": "Nobody"}]), LV, TL,
-                 lambda n, d: elo.get((n, d)))
+                 lambda n, d, sq=None: elo.get((n, d)))
     assert list(y["_lvl"]) == [115.0, 75.0, 86.0] and acs.elo_level(1700) == 100.0
 
 
@@ -97,3 +97,22 @@ def test_form_rating_blends_euro_on_league_scale() -> None:
     x_lg = 7.6 - 0.0 + 0.02 * 7                                        # UCL(EPL 평균 상대) 7.6 → 리그1 척도 7.74
     assert abs(rv3.ss_all_comps(row) - (7.0 * 600 + x_lg * 300) / 900) < 1e-9
     assert rv3.ss_all_comps({"ss_rating": 7.0, "minutes": 600}) == 7.0   # 유럽·컵 없으면 리그 평점 그대로
+
+
+
+def test_frame_keys_use_match_row_ids_for_players_without_fm_id() -> None:
+    """선수 표에 fm_id 가 없어도 경기별 행의 '팀|이름' → id 로 같은 키(Dowman 리그컵 기록이 빠지던 것)."""
+    frame = pd.DataFrame([{"player": "Max Dowman", "squad": "Arsenal", "fm_id": None},
+                          {"player": "Bukayo Saka", "squad": "Arsenal", "fm_id": 961995.0}])
+    rows = pd.DataFrame([{"fotmob_id": "1500001", "squad": "Arsenal", "player": "Max Dowman"},
+                         {"fotmob_id": "961995", "squad": "Arsenal", "player": "Bukayo Saka"}])
+    assert acs.frame_keys(frame, rows) == ["1500001", "961995"]
+    assert acs.frame_keys(frame) == ["Arsenal|Max Dowman", "961995"]
+
+
+def test_finish_uses_league_npxg_when_combined() -> None:
+    import position_templates as pt
+    df = pd.DataFrame([{"npg_per90": 0.5, "npxg_p90": 0.8, "_npxg_lg": 0.5, "minutes": 900}])
+    assert float(pt.add_derived(df)["_finish"].iloc[0]) == 0.0          # 유럽 xG 가 섞인 npxG(0.8) 대신 리그 npxG(0.5)
+    df2 = pd.DataFrame([{"npg_per90": 0.5, "npxg_p90": 0.8, "minutes": 900}])
+    assert round(float(pt.add_derived(df2)["_finish"].iloc[0]), 3) == -0.3

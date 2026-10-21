@@ -48,3 +48,13 @@ Saka form,,EPL,form,,,,Bukayo Saka,영문 폼 질문
 맨시티 요즘 기세,,EPL,form,Manchester City,,,-,팀 흐름(애칭)
 우리 팀 요즘 흐름은?,Arsenal,EPL,form,Arsenal,,,-,보고 있는 팀의 흐름
 요즘 폼 오른 선수,Arsenal,EPL,week,,,,-,대상 없으면 리그 주간 요약
+What formation does Arsenal play?,,EPL,-,Arsenal,EPL,,,'formation' 의 form 은 폼 아님(폼 오분류 회귀)
+아스날 formation,,EPL,-,Arsenal,EPL,,,영문 formation
+Arsenal transfer information,,EPL,-,Arsenal,EPL,,,'information' 의 form 은 폼 아님
+Is Saka playing on Saturday?,,EPL,-,,,,Bukayo Saka,'playing' 만으로는 폼 아님
+아스날 평점 높은 선수,,EPL,-,Arsenal,EPL,,,평점은 어때·요즘·최근과 함께일 때만 폼
+아스날 요즘 부상자 누구야,,EPL,week,Arsenal,EPL,,,부상 낱말 → 폼으로 바꾸지 않음(앞선 의도)
+우리 팀 요즘 부상,Arsenal,EPL,week,Arsenal,,,,보던 팀 + 부상 → 폼 아님
+아스날 요즘 이적 루머,,EPL,week,Arsenal,EPL,,,이적·루머 → 폼 아님
+How is Saka doing?,,EPL,form,,,,Bukayo Saka,영문 how is … doing
+사카 평점 어때,,EPL,form,,,,Bukayo Saka,평점 + 어때 = 폼

@@ -45,8 +45,22 @@ INTENTS = [  # (의도, 키워드) — 위에서부터 먼저
                   "차출", "소집", "최근 경기", "최근 결과", "지금", "next match", "injur", "predict")),
 ]
 # 폼 질문 낱말 — 선수·팀이 함께 나오면 form(뉴스·추천·적합 같은 앞선 의도는 그대로). P2 ⑦(2026-10-21)
-FORM_WORDS = ("폼", "컨디션", "흐름", "기세", "부진", "활약", "상승세", "하락세", "잘하고", "잘해", "요즘", "최근 어때",
-              "평점", "form", "in form", "how is", "how's", "playing")
+# 한글은 부분 문자열, 영어는 단어 경계 — 'formation'·'information' 의 form, 'Is Saka playing on Saturday?' 의 playing 은 폼이 아니다
+FORM_WORDS = ("폼", "컨디션", "흐름", "기세", "부진", "활약", "상승세", "하락세", "잘하고", "잘해", "요즘", "최근 어때")
+FORM_RE = re.compile(r"\bform\b|\bhow(?:['’]s| is)(?: [\w'’.-]+){1,3} (?:doing|playing)\b")
+# '평점' 은 '어때·요즘·최근' 과 함께일 때만 폼('아스날 평점 높은 선수' 는 폼 질문이 아님)
+RATING_WORD, RATING_WITH = "평점", ("어때", "요즘", "최근")
+# 부상·이적·다음 경기·포메이션·라인업 낱말이 있으면 폼으로 바꾸지 않고 앞선 의도 그대로('아스날 요즘 부상자' = week)
+FORM_BLOCK = ("부상", "결장", "다친", "루머", "이적", "영입", "다음 경기", "다음경기", "포메이션", "라인업", "주말", "예측")
+FORM_BLOCK_RE = re.compile(r"\b(?:next|injur|transfer|rumou?r|formation|line-?up|saturday|sunday|predict)")
+
+
+def _is_form_q(ql: str) -> bool:
+    """폼을 묻는 질문인가(소문자 질문). 막는 낱말이 있으면 아니다."""
+    if any(w in ql for w in FORM_BLOCK) or FORM_BLOCK_RE.search(ql):
+        return False
+    return (any(w in ql for w in FORM_WORDS) or bool(FORM_RE.search(ql))
+            or (RATING_WORD in ql and any(w in ql for w in RATING_WITH)))
 LEAGUE_WORDS = {"EPL": ("epl", "프리미어", "premier"), "LaLiga": ("라리가", "la liga", "laliga"),
                 "SerieA": ("세리에", "serie a"), "Bundesliga": ("분데스", "bundesliga"),
                 "Ligue1": ("리그1", "리그 1", "리그앙", "ligue"), "LigaPortugal": ("포르투갈", "리가 포르투갈"),
@@ -196,7 +210,7 @@ def parse(q: str, team: str | None, league: str) -> dict:
     lg_word = next((k for k, ws in LEAGUE_WORDS.items() if any(w in ql for w in ws)), None)
     # 폼 — 선수·팀을 짚은 폼 질문만(뉴스·비슷한·추천·적합·주장·성향 의도는 그대로). '아스날 다음 경기' 같은 team_now 낱말이 있으면 team_now
     ours = team and any(w in ql for w in ("우리 팀", "우리팀", "이 팀", "our team", "we "))   # 보고 있는 팀을 가리킴
-    if (uniq or team_hit or ours) and intent in (None, "week") and any(w in ql for w in FORM_WORDS):
+    if (uniq or team_hit or ours) and intent in (None, "week") and _is_form_q(ql):
         intent = "form"
     return {"intent": intent, "role": role,
             "team": team_hit[1] if team_hit else (None if lg_word and intent == "week" else team),

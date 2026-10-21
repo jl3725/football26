@@ -39,7 +39,8 @@ def test_stronger_team_by_results_and_ovr_is_favoured() -> None:
     assert ab["xg_h"] > ab["xg_a"]
 
 
-def test_cross_league_uses_ovr_gap() -> None:
+def test_cross_league_uses_ovr_gap(monkeypatch) -> None:
+    monkeypatch.setattr(pm, "cross_calibration", lambda: {})     # 봇이 매일 다시 쓰는 data/model_cross.json 에 기대지 않게
     s1 = pm.build_state(pm.league_matches(_ms([("X", "Y", 1, 1, 1.2, 1.2)])), {"X": 90, "Y": 75})
     s2 = pm.build_state(pm.league_matches(_ms([("Z", "W", 1, 1, 1.2, 1.2)])), {"Z": 74, "W": 80})
     r = pm.predict(s1, "X", s2, "Z")

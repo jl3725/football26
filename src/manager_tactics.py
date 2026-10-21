@@ -71,10 +71,19 @@ def _posd(v):
     return TM_POS_NORM.get(s, s) or None
 
 
-@lru_cache(maxsize=1)
 def _load():
-    """리그별 team_unit_metrics·manager_profiles·players_full 로드."""
+    """리그별 team_unit_metrics·manager_profiles·players_full 로드(캐시). 주간 시즌 빌드 중이라 TM 포지션이 빠진 표를 읽었으면
+    캐시하지 않는다 — 불완전한 표가 프로세스 내내 남지 않게(2026-10-21 검수)."""
+    out = _load_cached()
+    if not out[3]:
+        _load_cached.cache_clear()
+    return out[:3]
+
+
+@lru_cache(maxsize=1)
+def _load_cached():
     tum, mgr, squad = {}, {}, {}
+    complete = True
     for lg in LEAGUES:
         try:
             tum[lg] = pd.read_csv(data_path("team_unit_metrics", lg)).set_index("squad")
@@ -87,12 +96,14 @@ def _load():
         try:
             pf = pd.read_csv(data_path("players_full", lg))
             # 주간 시즌 빌드 중엔 TM 포지션이 아직 안 붙은 표일 수 있다 — 열이 없으면 빈 값(적합도 평가 전체가 죽지 않게)
+            if "tm_position" not in pf.columns:
+                complete = False
             pf["_posd"] = (pf["tm_position"] if "tm_position" in pf.columns else pd.Series(None, index=pf.index, dtype=object)).map(_posd)
             pf["_min"] = pd.to_numeric(pf.get("minutes"), errors="coerce").fillna(0)
             squad[lg] = pf
         except (OSError, ValueError):
             pass
-    return tum, mgr, squad
+    return tum, mgr, squad, complete
 
 
 def _league_of(club: str) -> str | None:

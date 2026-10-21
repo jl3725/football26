@@ -103,7 +103,7 @@ export default function NetRumors({ team, accent, logo }: { team: string; accent
   return (
     <div className="net-rumors">
       <div className="net-toolbar">
-        <h4 className="net-h">RUMOUR MAP <span>이적설 지도 · 표적 {d.n_in} · 우리 선수 {d.n_out}</span><Info wide label="이적설 지도 설명">{HEAT_NOTE}<p className="muted">선 굵기 = 열기 · 색 = 단계</p></Info></h4>
+        <h4 className="net-h">RUMOUR MAP <span>이적설 지도 · 표적 {d.n_in} · 우리 선수 {d.n_out}</span><Info wide label="이적설 지도 설명">{HEAT_NOTE}<p className="muted">선 굵기 = 열기 · 색 = 단계</p><p className="muted">연결 {d.sources.links}건 중 기사 근거 {d.sources.with_news}건</p></Info></h4>
         <span className="net-legend">{(Object.keys(STAGE) as RumorStage[]).map((k) => <span key={k}><i style={{ background: STAGE[k].c }} />{STAGE[k].ko}</span>)}</span>
       </div>
       <svg viewBox={`0 0 ${W} ${H}`} className="net-svg rm-svg" role="img"

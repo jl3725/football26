@@ -1129,7 +1129,7 @@ html, body {
 .news-new { font-family: var(--font-label); font-size: 9px; font-weight: 700; letter-spacing: .5px; color: #0b0f17; padding: 2px 6px; border-radius: 5px; margin-right: 6px; }
 .news-head { font-weight: 700; font-size: 14px; line-height: 1.35; margin: 6px 0 3px; }
 .news-head-en { font-size: 11.5px; color: var(--muted); line-height: 1.35; margin-bottom: 5px; }
-.news-desc { color: var(--muted); font-size: 12px; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.news-desc { color: var(--muted); font-size: 12px; line-height: 1.5; }
 
 /* ── Analytics ─────────────────────────────── */
 .inj-list { display: flex; flex-direction: column; gap: 4px; }
@@ -4737,7 +4737,8 @@ LIGA’처럼 글자가 접히던 것) — 넘치면 가로로 넘긴다 */
 .info-i:focus-visible { outline: 2px solid rgba(255, 255, 255, 0.5); outline-offset: 2px; }
 .info-tip { position: fixed; z-index: 2000; width: max-content; max-width: min(300px, calc(100vw - 32px)); padding: 10px 12px; border-radius: 10px;
   background: #19212c; border: 1px solid rgba(255, 255, 255, 0.14); box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
-  color: var(--txt); font: 400 12px/1.55 var(--font-ui); letter-spacing: 0; text-align: left; text-transform: none; white-space: normal; }
+  color: var(--txt); font: 400 12px/1.55 var(--font-ui); letter-spacing: 0; text-align: left; text-transform: none; white-space: normal;
+  max-height: calc(100vh - 32px); overflow-y: auto; }
 .info-tip.wide { max-width: min(380px, calc(100vw - 32px)); }
 .info-tip p { margin: 0 0 6px; }
 .info-tip p:last-child { margin-bottom: 0; }
@@ -4757,12 +4758,13 @@ LIGA’처럼 글자가 접히던 것) — 넘치면 가로로 넘긴다 */
 @media (max-width: 640px) { .news-head-en, .nw-story-en, .pd-news-en { display: none; } }
 
 /* 모바일 최소 글자 크기(2026-10-21 가독성 정리) — 9~10.5px 이 출처·포지션·태그에 많았다(측정: 홈·이적·뉴스).
-   읽는 글 11px, 짧은 태그(대문자 칩) 10px 아래로 내려가지 않게. 인라인 style 로 준 작은 글자도 함께 올린다. */
+   읽는 글 11px, 짧은 태그(대문자 칩) 10px 아래로 내려가지 않게. 인라인 style 로 준 작은 글자도 함께 올린다.
+   올리기만 한다 — 원래 크기(모바일 media 포함)가 11px·10px 미만인 클래스만 넣는다(그 이상을 넣으면 오히려 작아짐). */
 .news-src, .nw-src-rate, .ptok-name, .mgx-meta, .mgx-prev, .pl-pos, .workspace-kicker, .pb5-who, .sc-ha, .pd-sim-lg,
-.dp5-m, .lf-vs, .sb-season-closed, .sb-data, .tb-tab, .sp5-note, .pl5-note { font-size: 11px; }
-.mn-tag, .nw-kind, .nw-stage, .pl-role, .role-tag, .dp5-n, .ptok-ovr { font-size: 10px; }
+.dp5-m, .lf-vs, .sb-season-closed, .sb-data, .tb-tab { font-size: 11px; }
+.nw-kind, .nw-stage, .pl-role, .dp5-n { font-size: 10px; }
+.mn-tag.sm, .role-tag.sm { font-size: 10px; }   /* 기본은 10.5px, sm 만 9.5px — 더 구체적이라 따로 */
 @media (max-width: 640px) {
-  .news-desc, .sh-m, .net-h span { font-size: 11px; }
   main [style*="font-size:9px"], main [style*="font-size: 9px"], main [style*="font-size:9.5px"], main [style*="font-size: 9.5px"],
   main [style*="font-size:10px"], main [style*="font-size: 10px"], main [style*="font-size:10.5px"], main [style*="font-size: 10.5px"] {
     font-size: 11px !important; }

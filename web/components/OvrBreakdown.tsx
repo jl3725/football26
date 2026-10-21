@@ -7,7 +7,7 @@ import Info from "./Info";
 
 // OVR 이 어떻게 나왔나 — 시장가치 기준점에서 경기력·나이·포지션 등이 몇 점씩 더해졌는지(src/ratings_v3.ovr_parts_of_row).
 // 2026-10-19 사용자: '기준이 어떤 건지 애매할 때가 있다'(Groß 76 · Vušković 84 = Konsa 84). 평점은 Sofascore·FotMob 평균.
-// 공식·이전 시즌 평점은 ⓘ 로(2026-10-21 '글이 너무 많다') — 화면엔 숫자만.
+// 공식은 ⓘ 로(2026-10-21 '글이 너무 많다') — 화면엔 숫자만(출처별·이전 시즌 평점 포함, 한 줄).
 // 접힌 줄 요약은 짧게 — 한글 이름이 길면(예: '어린 선수 몸값의 잠재력 몫 빼기') 영어 약칭으로
 const shortName = (p: OvrPart) => {
   const k = p.ko.split(" — ")[0].split("(")[0].trim();
@@ -51,19 +51,21 @@ export default function OvrBreakdown({ ovr, parts, ratings }: { ovr: number; par
             <div className="ob5-rate">
               <b>평점(경기력 입력)
                 <Info wide label="평점 출처">
-                  <p><b>이번 시즌</b> = Sofascore {r.sofascore?.toFixed(2) ?? "없음"} · FotMob {r.fotmob != null ? `${r.fotmob.toFixed(2)}(같은 척도 ${r.fotmob_scaled?.toFixed(2)})` : "없음"} 평균</p>
-                  {(r.prev_blend || r.hist) ? (
-                    <p>
-                      {r.prev_blend ? <><b>지난 시즌</b> {r.prev_blend.toFixed(2)}{r.prev_minutes ? ` (${r.prev_minutes.toLocaleString()}분)` : ""}</> : null}
-                      {r.prev_blend && r.hist ? " · " : null}
-                      {r.hist ? <><b>2시즌 전</b> {r.hist.toFixed(2)}</> : null}
-                    </p>
-                  ) : null}
+                  <p><b>이번 시즌</b> = Sofascore · FotMob 평균{r.fotmob != null && r.fotmob_scaled != null ? ` · FotMob ${r.fotmob.toFixed(2)} → 같은 척도 ${r.fotmob_scaled.toFixed(2)}` : ""}</p>
                   <p className="muted">OVR 경기력은 이번·지난·2시즌 전을 출전 시간으로 섞고(오래될수록 덜), 폼은 이번 시즌만</p>
                 </Info>
               </b>
               <span>
                 이번 시즌 <strong>{r.blend?.toFixed(2) ?? "—"}</strong>{r.blend ? <> <MeaningTag sm m={ssMeaning(r.blend)} /></> : null}
+              </span>
+              {/* 출처별·이전 시즌 평점은 이 패널을 연 이유라 화면에 그대로(공식만 ⓘ) */}
+              <span>
+                {[
+                  r.sofascore != null ? `Sofascore ${r.sofascore.toFixed(2)}` : null,
+                  r.fotmob != null ? `FotMob ${r.fotmob.toFixed(2)}` : null,
+                  r.prev_blend ? `지난 시즌 ${r.prev_blend.toFixed(2)}${r.prev_minutes ? ` (${r.prev_minutes.toLocaleString()}분)` : ""}` : null,
+                  r.hist ? `2시즌 전 ${r.hist.toFixed(2)}` : null,
+                ].filter(Boolean).join(" · ")}
               </span>
             </div>
           )}

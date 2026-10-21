@@ -21,8 +21,9 @@ export default function SectionHead({ title, kr, meta, info, action, onAction, r
       <div className="sh-l">
         <h2 className="sh-t">{title}</h2>
         {kr ? <span className="sh-kr">{kr}</span> : null}
-        {info ? <Info label={`${title} 설명`}>{info}</Info> : null}
         {meta ? <span className="sh-m">{meta}</span> : null}
+        {/* ⓘ 는 메타 뒤 — kr 과 meta 사이에 끼면 '.sh-kr + .sh-m' 구분점(·)이 사라진다 */}
+        {info ? <Info label={`${title} 설명`}>{info}</Info> : null}
       </div>
       {right ?? (action && onAction ? <button className="sh-a" onClick={onAction}>{action}<Chevron /></button> : null)}
     </div>

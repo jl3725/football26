@@ -115,7 +115,9 @@ def add_derived(df: pd.DataFrame) -> pd.DataFrame:
     """계산 지표 — 결정력 = 비PK골/90 − npxG/90. 템플릿 열도 붙인다."""
     df = df.copy()
     num = lambda c: pd.to_numeric(df[c], errors="coerce") if c in df.columns else pd.Series(float("nan"), index=df.index)  # noqa: E731
-    df["_finish"] = num("npg_per90") - num("npxg_p90")
+    # 결정력은 리그 범위 npxG 와 짝 — 전 대회 표(allcomp_stats.combine)는 npxG 에 유럽을 섞지만 비PK골은 리그만이라(_npxg_lg)
+    npx = num("_npxg_lg").where(num("_npxg_lg").notna(), num("npxg_p90")) if "_npxg_lg" in df.columns else num("npxg_p90")
+    df["_finish"] = num("npg_per90") - npx
     df["_template"] = [template_of(t, p) for t, p in zip(df.get("tm_position", pd.Series(index=df.index)),
                                                          df.get("pos", pd.Series(index=df.index)))]
     return df
@@ -176,11 +178,12 @@ def enrich(cur: pd.DataFrame, prev: pd.DataFrame | None, poss_cur: dict, poss_pr
         keys = df["player"].map(norm)
         pm = pd.to_numeric(keys.map(p["minutes"]), errors="coerce").fillna(0)
         k = pm.clip(upper=prior_min)
-        for c in stat_cols():
-            if c not in df.columns or c not in p.columns:
+        pairs = [(c, c) for c in stat_cols()] + [("_npxg_lg", "npxg_p90")]   # 결정력용 리그 npxG 도 지난 시즌과 같이 섞는다
+        for c, pc in pairs:
+            if c not in df.columns or pc not in p.columns:
                 continue
             cv = _num(df, c)
-            pv = pd.to_numeric(keys.map(p[c]), errors="coerce")
+            pv = pd.to_numeric(keys.map(p[pc]), errors="coerce")
             has = pv.notna() & (k > 0)
             both = has & cv.notna()
             out = cv.copy()

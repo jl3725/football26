@@ -386,20 +386,30 @@ def _load_rumor_links(n2p_by_league: dict) -> list[dict]:
     import datetime as dt  # noqa: PLC0415
 
     import rumor_map as rm  # noqa: PLC0415
-    import team_names as tnm  # noqa: PLC0415
-    clubs: list[str] = []
+    club_league: dict[str, str] = {}
+    player_clubs: dict[str, set[str]] = {}
+    n2pc: dict[str, list[tuple[str, str]]] = {}      # 이름 → [(pid, 클럽)] — 동명이인은 연결의 '현 소속'과 같은 클럽 쪽
     for lg in LEAGUE_META:
         try:
-            clubs += list(pd.read_csv(data_path("players_full", lg))["squad"].dropna().astype(str).unique())
-        except (OSError, ValueError, KeyError):
-            pass
-    known = set(clubs)
-    cache: dict = {}
-
-    def canon(n: str):
-        if n not in cache:
-            cache[n] = n if n in known else tnm.best(n, clubs)
-        return cache[n]
+            df = pd.read_csv(data_path("players_full", lg))
+        except (OSError, ValueError):
+            continue
+        if "squad" not in df.columns:
+            continue
+        for r in df.to_dict("records"):
+            club, nm = _clean(r.get("squad")), _clean(r.get("player"))
+            if not club:
+                continue
+            club = str(club)
+            club_league[club] = lg
+            pid = _pid(r.get("tm_id"), r.get("norm_key"), lg)
+            if not nm:
+                continue
+            player_clubs.setdefault(_norm(nm), set()).add(club)
+            if pid:
+                for k in {_norm(r.get("norm_key") or nm), _norm(nm)}:
+                    if (pid, club) not in n2pc.setdefault(k, []):
+                        n2pc[k].append((pid, club))
     tm_rows = []
     for lg in LEAGUE_META:
         try:
@@ -407,7 +417,10 @@ def _load_rumor_links(n2p_by_league: dict) -> list[dict]:
         except (OSError, ValueError):
             continue
         tm_rows += [{"player": r.get("player"), "target_club": r.get("target_club"), "current_club": r.get("current_club"),
-                     "probability": r.get("probability"), "date": r.get("date")} for r in t.to_dict("records")]
+                     "probability": r.get("probability"), "date": r.get("date"), "league": lg} for r in t.to_dict("records")]
+    # 클럽 표기 — 우리 선수의 TM 현 소속 표기로 학습 + 리그 안에서만 비슷한 이름(rumor_map.make_canon, API 와 같은 규칙).
+    # 'RCD Espanyol Barcelona'→Barcelona·'Manchester City U18'→Manchester City 처럼 다른 클럽·2군을 묶지 않는다
+    canon = rm.make_canon(club_league, player_clubs, tm_rows)
     claims, scores = [], {}
     cp, rp = ROOT / "data" / "news_claims.csv", ROOT / "data" / "news_reliability.csv"
     if cp.exists():
@@ -422,7 +435,10 @@ def _load_rumor_links(n2p_by_league: dict) -> list[dict]:
         if lk["heat"] <= 0:
             continue
         k = _norm(lk["player"])
-        pid = next((m[k] for m in n2p_by_league.values() if k in m), None)
+        cands = n2pc.get(k) or []
+        # 같은 이름이 여럿이면 연결의 현 소속(from)과 같은 클럽의 선수 — 예전엔 리그 순서상 첫 번째를 골랐다
+        pid = (next((p for p, c in cands if c == lk["from"]), None) or (cands[0][0] if cands else None)
+               or next((m[k] for m in n2p_by_league.values() if k in m), None))
         rows.append({"pid": pid or f"rumor:{k}", "name": lk["player"], "to": lk["to"], "heat": lk["heat"],
                      "stage": lk["stage"], "prob": (lk["tm"] or {}).get("prob"), "news": len(lk["news"]),
                      "outlets": lk["outlets"], "last": lk["last"]})

@@ -626,7 +626,9 @@ _DEF = {"DEF", "GK"}
 TEAM_PERF_MAX = 2.5
 
 
-def team_ratings(full_df, squad, perf: dict | None = None) -> dict | None:
+def team_ratings(full_df, squad, perf: dict | None = None, form_w: float = 0.45) -> dict | None:
+    """팀 라인 전력. form_w = 이번 시즌 폼 비중 상한(1,350분에 최대). 0 이면 선수 OVR 만 — 리그 간 비교용 '절대 전력'
+    (폼은 리그 안 순위라 시즌이 진행될수록 리그 간 격차를 줄인다 — 2026-10-21 검수: 시즌 초 EPL−벨기에 15점, 시즌 말 7점)."""
     if full_df is None or "squad" not in full_df.columns:
         return None
     sq = full_df[full_df["squad"] == squad].copy()
@@ -639,7 +641,7 @@ def team_ratings(full_df, squad, perf: dict | None = None) -> dict | None:
         pl = player_line(r)
         # 팀 강함 = 클래스(절대) 와 이번폼 블렌드. 폼 없으면 절대만. 폼 비중은 출전 시간에 비례(1,350분에 최대 45%) —
         # 시즌 초 5~6경기 폼이 45% 를 차지해 맨시티 수비(폼 93~98)가 실제 기록보다 크게 앞섰다(2026-10-15).
-        wf = 0.45 * min(1.0, _num(r.get("minutes")) / 1350.0)
+        wf = form_w * min(1.0, _num(r.get("minutes")) / 1350.0)
         # GK 폼은 빼고 OVR 만 — 폼은 Sofascore 평점인데 GK 평점은 슈팅을 많이 받는 팀 GK 에 유리해 OVR 성능축에서도
         # 쓰지 않는다(absolute_ovr). 넣었을 땐 6경기 폼 Donnarumma 98 · Raya 77 이 수비 라인을 1점 가까이 갈랐다.
         ln = line_of_row(r)

@@ -125,7 +125,7 @@ export function PredictBar({ m, detail = false, slim = false, only }: { m: Fixtu
         // 아래 줄은 숫자만(무승부 % · 예상 스코어) — 출처·표 수·두 줄 비교 뜻은 ⓘ 로(2026-10-21 '글이 너무 많다')
         <div className="pb5-foot">
           {split && <span className="pb5-split">의견 갈림</span>}
-          <span>무 {rows.map((r) => Math.round(r.v.d * 100)).join("·")}%
+          <span>무 {rows.map((r) => `${who(r)} ${Math.round(r.v.d * 100)}`).join(" · ")}%
             {score && <> · 예상 <b>{score}</b></>}
             <Info label="승부 예측 설명" wide={detail}>
               <p>무승부 확률 — {rows.map((r) => `${who(r)} ${pc(r.v.d)}`).join(" · ")}</p>

@@ -364,6 +364,31 @@ def _resolve_club(name: str) -> str:
     return best if bs else name
 
 
+_CLUB_LEAGUE: dict = {}
+
+
+def _league_of(team: str, default: str) -> str:
+    """팀이 뛰는 리그 — 선수 표(api._pf) squad 로 만든 클럽→리그(1시간 캐시). 모르면 default(대화 리그).
+    대화 리그를 그대로 쓰면 'EPL 보다가 바르사 흐름' 이 EPL 일정·순위에서 찾아 비었다."""
+    import time  # noqa: PLC0415
+    api = _api()
+    hit = _CLUB_LEAGUE.get("v")
+    if not hit or hit[0] < time.time():
+        m: dict[str, str] = {}
+        for lg in dict.fromkeys([*LEAGUES, *(getattr(api, "_LEAGUE_LEVEL", None) or {})]):
+            try:
+                f = api._pf(lg)
+            except Exception:  # noqa: BLE001
+                continue
+            if f is not None and "squad" in f.columns:
+                for sq in f["squad"].dropna().astype(str).unique():
+                    m.setdefault(sq, lg)
+        hit = (time.time() + 3600, m)
+        if m:
+            _CLUB_LEAGUE["v"] = hit
+    return hit[1].get(team) or default
+
+
 def _execute(name: str, args: dict, league: str):
     """LLM이 고른 툴 → 결정적 엔진 함수 실행. (intent, 결과dict) 반환."""
     api = _api()
@@ -386,10 +411,13 @@ def _execute(name: str, args: dict, league: str):
         return "identity", api.identity(_resolve_club(args.get("team", "")), league)
     if name == "graph_query":
         return "graph", _run_cypher(args.get("cypher", ""))
+    if name in ("team_now", "team_form", "team_leadership"):     # 대화 리그가 아니라 그 팀의 리그로
+        team = _resolve_club(args.get("team", ""))
+        tlg = _league_of(team, league)
     if name == "team_now":
-        return "team_now", team_now(_resolve_club(args.get("team", "")), league)
+        return "team_now", team_now(team, tlg)
     if name == "team_leadership":
-        lead = api.network(_resolve_club(args.get("team", "")), league).get("leadership") or {}
+        lead = api.network(team, tlg).get("leadership") or {}
         top = sorted((lead.get("influence") or {}).items(), key=lambda x: -x[1])[:6]
         return "lead", {"team": args.get("team"), "captains": [{"name": c["name"], "role": c.get("role_ko"), "rank": c.get("captain_rank")}
                                                               for c in lead.get("captains") or []],
@@ -403,7 +431,7 @@ def _execute(name: str, args: dict, league: str):
     if name == "player_form":
         return "pform", player_form(args.get("player", ""), _resolve_club(args.get("club", "")) if args.get("club") else "", league)
     if name == "team_form":
-        return "tform", team_form(_resolve_club(args.get("team", "")), league)
+        return "tform", team_form(team, tlg)
     return None, {"error": f"알 수 없는 툴: {name}"}
 
 
@@ -485,7 +513,18 @@ def player_form(player: str, club: str, league: str) -> dict:
     """선수 폼 — 최근 5경기(전 대회 FotMob 평점, 출전 시간 가중) vs 시즌 폼(리그 안 순위), 시즌 누적, 유럽 평점, OVR 추이."""
     import scout_router as sr  # noqa: PLC0415
     api = _api()
-    hit = (sr.parse(player, club or None, league).get("players") or [None])[0]
+    hit = None
+    if club:   # 동명이인 — 클럽을 주면 그 클럽 선수부터(parse 는 OVR 높은 쪽을 골라 Vitinha·Genoa → PSG 였다)
+        key = sr._norm(player)
+        for lg in (x for x in dict.fromkeys([league, *LEAGUES]) if x in LEAGUES):
+            f = api._pf(lg)
+            if f is None or "squad" not in f.columns:
+                continue
+            same = f[(f["squad"].astype(str) == club) & (f["player"].astype(str).map(sr._norm) == key)]
+            if not same.empty:
+                hit = {"name": str(same.iloc[0]["player"]), "squad": club, "league": lg}
+                break
+    hit = hit or (sr.parse(player, club or None, league).get("players") or [None])[0]
     if not hit:
         return {"error": f"선수 '{player}' 를 찾지 못했습니다"}
     lg = hit["league"]
@@ -557,13 +596,15 @@ def team_form(team: str, league: str) -> dict:
         now = api._team_elo()
         ago = api._team_elo((dt.date.today() - dt.timedelta(days=30)).isoformat())
         if team in now:
+            peers = set(api._pf(league)["squad"])          # 한 번만(예전엔 팀마다 다시 만들었다)
             out["elo"] = {"now": round(now[team]), "change_30d": round(now[team] - ago[team]) if team in ago else None,
-                          "league_rank": 1 + sum(1 for t, v in now.items() if v > now[team] and t in set(api._pf(league)["squad"]))}
+                          "league_rank": 1 + sum(1 for t, v in now.items() if v > now[team] and t in peers)}
     except Exception as e:  # noqa: BLE001
         out["elo_error"] = str(e)[:120]
     try:
         f = api._pf(league)
-        t = f[(f["squad"] == team) & (f["minutes"].fillna(0) >= 270) & f["_recent"].notna()].copy()
+        # 시즌 폼(_form)이 비면 int 변환에서 깨져 hot·cold 가 통째로 사라졌다 → 둘 다 있는 선수만
+        t = f[(f["squad"] == team) & (f["minutes"].fillna(0) >= 270) & f["_recent"].notna() & f["_form"].notna()].copy()
         t["_d"] = t["_recent"].astype(float) - t["_form"].astype(float)
         pick = lambda d: [{"player": str(x["player"]), "recent_form": int(x["_recent"]), "season_form": int(x["_form"]),  # noqa: E731
                            "avg5_fotmob": _num(x.get("_recent_avg5"))} for _, x in d.iterrows()]

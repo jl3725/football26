@@ -282,10 +282,35 @@ def _compute_league_units(league: str) -> dict:
     if full is None or "squad" not in full.columns:
         return out
     for c in full["squad"].dropna().astype(str).unique():
-        tr = rv3.team_ratings(_with_roster(full, c, league), c, perf=_team_perf(c, league))
+        roster = _with_roster(full, c, league)
+        tr = rv3.team_ratings(roster, c, perf=_team_perf(c, league))
         if tr:
             out[c] = {k: tr[k] for k in ("overall", "attack", "midfield", "defense")}
+            ab = rv3.team_ratings(roster, c, perf=None, form_w=0.0)   # 리그 간 예측용 절대 전력(폼·팀 실적 보정 제외)
+            out[c]["abs"] = ab["overall"] if ab else None
     return out
+
+
+_CLUB_ABS_CACHE: dict = {}
+
+
+def _club_abs(league: str) -> dict:
+    """{클럽: 절대 전력} — 베스트 XI 선수 OVR 만(리그 안 순위인 폼·팀 실적 보정 제외). 리그 간(유럽대회) 예측의 OVR 차.
+    배포 때 미리 계산한 team_units.json 에 있으면 그 값, 없으면(옛 스냅숏) 이 리그만 즉석 계산."""
+    if league in _CLUB_ABS_CACHE:
+        return _CLUB_ABS_CACHE[league]
+    lu = _league_units(league)
+    m = {c: v.get("abs") for c, v in lu.items() if v.get("abs") is not None}
+    if len(m) < len(lu) or not m:
+        full = _pf(league)
+        m = {}
+        if full is not None and "squad" in full.columns:
+            for c in full["squad"].dropna().astype(str).unique():
+                ab = rv3.team_ratings(_with_roster(full, c, league), c, perf=None, form_w=0.0)
+                if ab:
+                    m[c] = ab["overall"]
+    _CLUB_ABS_CACHE[league] = m
+    return m
 
 
 def _unit_ranks(team: str, league: str, ovr: dict) -> dict:
@@ -2055,7 +2080,8 @@ def _allcomp_cal() -> dict:
     for lg in _LEAGUE_LEVEL:
         d = _pf(lg)
         if d is not None and not d.empty:
-            ours.append(pd.DataFrame({"_key": acs.frame_keys(d), "minutes": d["minutes"],
+            lr = acs.league_rows(_acs_read, f"{SEASON_START}_{SEASON_START + 1}", ds._db_mtime())
+            ours.append(pd.DataFrame({"_key": acs.frame_keys(d, lr), "minutes": d["minutes"],
                                       **{c: d[c] for c in acs.MAP if c in d.columns}}))
     cal = acs.calibrate(pd.concat(ours, ignore_index=True), fm) if ours and not fm.empty else {}
     _ACS_CAL["cal"] = (_t.time() + 21600, cal)
@@ -2085,7 +2111,7 @@ def _stat_frame(league: str, basis: str = "blend", comps: str = "all"):
             x = acs.season_rows(_acs_read, f"{SEASON_START}_{SEASON_START + 1}", ds._db_mtime())
             if not x.empty:
                 x = x.assign(_key=acs.row_keys(x))
-                cur = acs.combine(cur.assign(_key=acs.frame_keys(cur)), acs.per90(x, weight="_w"), _allcomp_cal())
+                cur = acs.combine(cur.assign(_key=acs.frame_keys(cur, x)), acs.per90(x, weight="_w"), _allcomp_cal())
         except Exception as e:  # noqa: BLE001 — 경기별 세부 기록이 없으면 리그만
             print(f"[allcomp] {league}: 리그만 {type(e).__name__}: {e}")
     prev = None
@@ -2309,7 +2335,9 @@ def player_detail(team: str, player: str, league: str = ACTIVE_LEAGUE, basis: st
     row = hit.iloc[0]
     is_gk = rv3.line_of_row(row) == "GK"
 
-    pool = full.copy()
+    # 라인 공통 축(포지션이 다른 두 선수 비교용) — peers=all(리그 간 비교)이면 이것도 8개 리그 같은 라인과 비교(같은 잣대)
+    pool = (pd.concat([f for f in (_pf(lg) for lg in _LEAGUE_LEVEL) if f is not None], ignore_index=True)
+            if peers == "all" else full.copy())
     min_min = 300 if is_gk else 450
     pool = pool[pd.to_numeric(pool["minutes"], errors="coerce").fillna(0) >= min_min]
     my_line = rv3.line_of_row(row)
@@ -4641,7 +4669,6 @@ def _rumor_links() -> tuple[dict, dict, dict]:
     import time as _t  # noqa: PLC0415
 
     import rumor_map as rm  # noqa: PLC0415
-    import team_names as tnm  # noqa: PLC0415
     from leagues import DATA_DIR, LEAGUES  # noqa: PLC0415
     cp = DATA_DIR / "news_claims.csv"
     key = (ds._db_mtime(), cp.stat().st_mtime if cp.exists() else 0)
@@ -4661,20 +4688,18 @@ def _rumor_links() -> tuple[dict, dict, dict]:
                 {"name": str(r["player"]), "club": str(r["squad"]), "league": lg, "photo": _photo(r), "ovr": _player_ovr(r),
                  "age": None if pd.isna(_num(r.get("age"), float("nan"))) else int(_num(r.get("age"))),
                  "minutes": int(_num(r.get("minutes")))})
-    clubs = list(club_league)
-    cache: dict = {}
-
-    def canon(n: str):
-        if n not in cache:
-            cache[n] = n if n in club_league else tnm.best(n, clubs)
-        return cache[n]
     tm_rows = []
     for lg in LEAGUES:
         t = ds.read_table("transfer_rumors", league=lg)
-        if t is not None and "target_club" in t.columns:
+        if t is not None and "target_club" in t.columns:      # league = target_club 의 리그(리그별 파일)
             tm_rows += [{"player": r.get("player"), "target_club": r.get("target_club"), "current_club": r.get("current_club"),
                          "probability": r.get("probability"), "date": r.get("date"), "age": r.get("age"),
-                         "pos": r.get("pos_detail"), "value": r.get("market_value_eur")} for r in t.to_dict("records")]
+                         "pos": r.get("pos_detail"), "value": r.get("market_value_eur"), "league": lg}
+                        for r in t.to_dict("records")]
+    # 클럽 표기 맞추기 — 우리 선수의 TM 현 소속 표기로 학습 + 리그 안에서만 비슷한 이름(src/rumor_map.make_canon).
+    # 우리 클럽 전체에서 비슷한 이름을 고르던 때는 'RCD Espanyol Barcelona'→Barcelona 처럼 다른 클럽이 묶였다
+    player_clubs = {k: {x["club"] for x in v} for k, v in where.items()}
+    canon = rm.make_canon(club_league, player_clubs, tm_rows)
     claims = []
     if cp.exists():
         c = pd.read_csv(cp)
@@ -6103,6 +6128,13 @@ def _attach_model(m: dict, before: str | None = None) -> None:
                     rt = _intl.returnees(team, lg, on)
                     if rt:
                         extra[f"intl_{side}"], extra[f"intl_far_{side}"] = rt["n"], rt["far"]
+            except Exception:  # noqa: BLE001
+                pass
+        if hl != al:   # 리그 간 — OVR 차는 절대 전력으로(운영·백테스트 같은 척도, scripts/backtest_cross.py)
+            try:
+                ah, aa = _club_abs(hl).get(h), _club_abs(al).get(a)
+                if ah is not None and aa is not None:
+                    extra["ovr_d"] = round((ah - aa) / 10.0, 2)
             except Exception:  # noqa: BLE001
                 pass
         r = pm.predict(sh, h, None if sa is sh else sa, a, extra=extra)
