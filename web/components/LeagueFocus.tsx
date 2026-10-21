@@ -3,12 +3,13 @@ import type { LeagueLab } from "@/lib/api";
 import SectionHead from "./SectionHead";
 import { Skel } from "./Skeleton";
 import { FormBoxes } from "./MatchCard";
-import { TitleRace, GoldenBoot, TeamOfSeason, OverUnder, InjuryImpact } from "./HubPulse";
+import { TitleRace, GoldenBoot, TeamOfSeason, OverUnder, InjuryImpact, OVER_UNDER_INFO, INJURY_IMPACT_INFO } from "./HubPulse";
 import { ExpectedBoard, Playmakers, BallWinners, TeamStyleMap } from "./LeagueLab";
 import { lgEn } from "@/lib/match";
 import { liveLabel, useLiveAll } from "@/lib/live";
 import { liveTable, type LiveTableRow } from "@/lib/liveTable";
 import { TONE, ovrMeaning } from "@/lib/meaning";
+import Info from "./Info";
 
 // 리그 집중 묶음 — 글로벌 대시보드(리그 선택)와 각 리그 탭(full: 전체 순위표·전력 대비·부상 타격 추가)이 함께 쓴다.
 // 데이터는 /api/league-lab/{league} 하나(6시간 캐시).
@@ -25,7 +26,14 @@ function Move({ t }: { t: LiveTableRow }) {
   return <span className={`lv5-mv ${t.move > 0 ? "up" : "down"}`}>{t.move > 0 ? "▲" : "▼"}{Math.abs(t.move)}</span>;
 }
 function LiveNote({ inPlay }: { inPlay: boolean }) {
-  return <p className="lv5-note"><i className="live-dot" />{inPlay ? "LIVE 순위 — 진행 중 경기를 지금 스코어로 반영" : "잠정 순위 — 방금 끝난 경기 반영"} · 공식 순위는 매일 08:15 갱신</p>;
+  return (
+    <p className="lv5-note"><i className="live-dot" />{inPlay ? "LIVE 순위" : "잠정 순위"}
+      <Info label="잠정 순위 설명">
+        <p>{inPlay ? "진행 중 경기를 지금 스코어로 반영한 순위입니다." : "방금 끝난 경기를 반영한 순위입니다."}</p>
+        <p className="muted">공식 순위는 매일 08:15 갱신.</p>
+      </Info>
+    </p>
+  );
 }
 
 function StandingsMini({ lab, league, onPick }: { lab: LeagueLab; league: string; onPick: Pick }) {
@@ -49,14 +57,30 @@ function StandingsMini({ lab, league, onPick }: { lab: LeagueLab; league: string
   );
 }
 
+// 경기당 xG 리그 평균 — 숫자만으로는 1.42 가 많은지 적은지 안 읽혀 평균 대비 색(±10%)으로 보인다
+function xgAvgOf(rows: LiveTableRow[]): number | null {
+  const xgs = rows.map((t) => t.xg_pg).filter((v): v is number => v != null);
+  return xgs.length ? xgs.reduce((a, b) => a + b, 0) / xgs.length : null;
+}
+
+// 전체 순위표 읽는 법(STANDINGS ⓘ) — 예전엔 표 아래 한 줄(tb5-note)로 늘 보였다
+function standingsInfo(xgAvg: number | null) {
+  return (
+    <>
+      <p><b>OVR ▲▼</b> = 팀 전력 순위보다 실제 순위가 높음 / 낮음.</p>
+      <p>아래 3팀 = 강등권 표시.</p>
+      {xgAvg ? <p><b>xG/G</b> 리그 평균 {xgAvg.toFixed(2)} — <span style={{ color: TONE.good.c }}>평균보다 높음</span> / <span style={{ color: TONE.weak.c }}>낮음</span>(±10%)</p> : null}
+      <p className="muted">득실 · 최근 5경기(FORM) · 경기당 xG · 전력 순위(OVR) — 좁은 화면에선 일부 열을 숨깁니다.</p>
+    </>
+  );
+}
+
 // 전체 순위표 — 경기·승무패·득실·승점·최근 5경기·경기당 xG·전력 순위(OVR)·감독
 function StandingsFull({ lab, league, onPick }: { lab: LeagueLab; league: string; onPick: Pick }) {
   const lt = liveTable(lab.table, lab.pending, useLiveAll(), liveLabel);
   const rows = lt.rows;
   const n = rows.length;
-  // 경기당 xG 리그 평균 — 숫자만으로는 1.42 가 많은지 적은지 안 읽혀 평균 대비 색(±10%)으로 보인다
-  const xgs = rows.map((t) => t.xg_pg).filter((v): v is number => v != null);
-  const xgAvg = xgs.length ? xgs.reduce((a, b) => a + b, 0) / xgs.length : null;
+  const xgAvg = xgAvgOf(rows);
   const xgColor = (v: number | null | undefined) =>
     v == null || !xgAvg ? undefined : v >= xgAvg * 1.1 ? TONE.good.c : v <= xgAvg * 0.9 ? TONE.weak.c : undefined;
   return (
@@ -93,10 +117,6 @@ function StandingsFull({ lab, league, onPick }: { lab: LeagueLab; league: string
           })}
         </tbody>
       </table>
-      <p className="tb5-note">
-        OVR 옆 ▲▼ = 팀 전력 순위보다 실제 순위가 높음/낮음 · 아래 3팀 = 강등권 표시
-        {xgAvg ? <> · xG/G 리그 평균 {xgAvg.toFixed(2)} — <span style={{ color: TONE.good.c }}>평균보다 높음</span> / <span style={{ color: TONE.weak.c }}>낮음</span>(±10%)</> : null}
-      </p>
     </div>
   );
 }
@@ -113,7 +133,7 @@ export default function LeagueFocus({ league, lab, onPick, full = false }: { lea
     <div className="h5-stack">
       {full && (
         <section className="card h5-card">
-          <SectionHead title="STANDINGS" kr="전체 순위표" meta={`${lgEn(league)} · 득실 · 최근 5경기 · 경기당 xG · 전력 순위`} />
+          <SectionHead title="STANDINGS" kr="전체 순위표" meta={lgEn(league)} info={standingsInfo(xgAvgOf(lt.rows))} />
           {L ? <StandingsFull lab={L} league={league} onPick={onPick} /> : wait(420)}
         </section>
       )}
@@ -126,7 +146,7 @@ export default function LeagueFocus({ league, lab, onPick, full = false }: { lea
         <section className="card h5-card h5-side">
           {full ? (
             <>
-              <SectionHead title="OVER / UNDER" kr="전력 대비 성적" meta="팀 OVR 순위 vs 실제 순위" />
+              <SectionHead title="OVER / UNDER" kr="전력 대비 성적" info={OVER_UNDER_INFO} />
               {L ? <OverUnder over={L.over ?? []} under={L.under ?? []} onPick={onPick} /> : wait(260)}
             </>
           ) : (
@@ -139,7 +159,8 @@ export default function LeagueFocus({ league, lab, onPick, full = false }: { lea
       </div>
       <div className="h5-row">
         <section className="card h5-card">
-          <SectionHead title="TEAM OF THE SEASON" kr={`${lgEn(league)} 시즌 베스트 XI`} meta="시즌 평균 평점(포지션 평균 대비) · 포메이션 자동 · 팀 경기 절반 이상 출전" />
+          <SectionHead title="TEAM OF THE SEASON" kr={`${lgEn(league)} 시즌 베스트 XI`}
+            info={<><p>시즌 평균 평점(포지션 평균 대비)으로 고른 베스트 XI입니다.</p><p className="muted">팀 경기 절반 이상 출전한 선수만 · 포메이션은 자동으로 고릅니다.</p></>} />
           {!L ? wait(380) : (L.tots ?? []).length
             ? <TeamOfSeason players={L.tots!} league={league} formation={L.tots_formation} subs={L.tots_subs ?? []} />
             : <p className="empty5">출전 기록이 아직 부족합니다</p>}
@@ -151,7 +172,8 @@ export default function LeagueFocus({ league, lab, onPick, full = false }: { lea
       </div>
       <div className="h5-row">
         <section className="card h5-card">
-          <SectionHead title="EXPECTED vs ACTUAL" kr="기대값 대비 결과" meta="골 vs xG · 도움 vs xA · 점을 누르면 선수" />
+          <SectionHead title="EXPECTED vs ACTUAL" kr="기대값 대비 결과" meta="점을 누르면 선수"
+            info={<><p><b>FINISHING</b> = 골 vs 기대 득점(xG) · <b>CREATING</b> = 도움 vs 기대 도움(xA).</p><p className="muted">대각선 위 = 기대보다 많이, 아래 = 기대보다 적게.</p></>} />
           {L ? <ExpectedBoard finishing={L.finishing} creating={L.creating} league={league} /> : wait(280)}
         </section>
         <section className="card h5-card h5-side">
@@ -161,17 +183,19 @@ export default function LeagueFocus({ league, lab, onPick, full = false }: { lea
       </div>
       <div className="h5-row">
         <section className="card h5-card">
-          <SectionHead title="TEAM STYLE MAP" kr="팀 스타일 지도" meta="경기당 xG vs 경기당 실점 · 점선 = 리그 평균" />
+          <SectionHead title="TEAM STYLE MAP" kr="팀 스타일 지도"
+            info={<><p>가로 = 경기당 xG(만든 기회의 질) · 세로 = 경기당 실점(위로 갈수록 적음).</p><p className="muted">점선 = 리그 평균 · 로고를 누르면 팀 화면.</p></>} />
           {L ? <TeamStyleMap teams={L.team_style} onPick={onPick} league={league} /> : wait(300)}
         </section>
         <section className="card h5-card h5-side">
-          <SectionHead title="BALL WINNERS" kr="볼 위닝" meta="90분당 수비 액션" />
+          <SectionHead title="BALL WINNERS" kr="볼 위닝" meta="90분당 수비 액션"
+            info={<><p>90분당 태클 성공 + 인터셉트 + 볼 회수(절반 가중) 순.</p><p className="muted">TKL = 태클 성공 · INT = 인터셉트 · REC = 볼 회수.</p></>} />
           {L ? <BallWinners rows={L.ball_winners} league={league} /> : wait(280)}
         </section>
       </div>
       {full && (L?.injury_impact ?? []).length > 0 && (
         <section className="card h5-card">
-          <SectionHead title="INJURY IMPACT" kr="부상 타격" meta="부상자 때문에 줄어든 베스트 XI 평균 전력(팀 OVR)" />
+          <SectionHead title="INJURY IMPACT" kr="부상 타격" meta="팀 OVR 손실" info={INJURY_IMPACT_INFO} />
           <InjuryImpact rows={L!.injury_impact!} onPick={onPick} />
         </section>
       )}

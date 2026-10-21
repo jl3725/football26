@@ -4,6 +4,7 @@ import { getIdentity, fmtEur, type Identity } from "@/lib/api";
 import { hexA } from "@/lib/ui";
 import { IDX_NOTE, idxMeaning } from "@/lib/meaning";
 import HBar from "./Bar";
+import Info from "./Info";
 import { MeaningTag } from "./Meaning";
 
 // 전술 태그 → 한국어. current(팀 벡터 유래) + tendency(descriptor) 두 어휘 모두 커버.
@@ -56,10 +57,14 @@ function Bar({ label, value }: { label: string; value: number }) {
   );
 }
 
-function Panel({ title, children }: { title: string; children: React.ReactNode }) {
+// info = 공식·기준(ⓘ) — 패널 안에 설명 문장을 늘어놓지 않는다
+function Panel({ title, info, children }: { title: string; info?: React.ReactNode; children: React.ReactNode }) {
   return (
     <div style={{ minWidth: 0 }}>
-      <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: 0.5, opacity: 0.55, marginBottom: 8, textTransform: "uppercase" }}>{title}</div>
+      <div style={{ display: "flex", alignItems: "center", marginBottom: 8 }}>
+        <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: 0.5, opacity: 0.55, textTransform: "uppercase" }}>{title}</span>
+        {info ? <Info label={`${title} 설명`}>{info}</Info> : null}
+      </div>
       {children}
     </div>
   );
@@ -78,23 +83,27 @@ export default function IdentityCard({ team, league, accent }: { team: string; l
 
   return (
     <div className="card" style={{ marginTop: 16 }}>
-      <h3><HBar c={accent} />팀 정체성 <span style={{ fontSize: 11, fontWeight: 400, opacity: 0.5 }}>· 감독 전술 · 영입 성향 · 예산</span></h3>
+      <h3><HBar c={accent} />팀 정체성</h3>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(230px, 1fr))", gap: 18, marginTop: 6 }}>
 
         {/* 감독 전술 (현재 스냅샷 + 장기성향 블렌드) */}
         {tc && (
-          <Panel title="감독 전술">
+          <Panel title="감독 전술" info={<>
+            <p><b>막대</b> = 이번 시즌 팀 경기 지표(현재) {Math.round(tc.tenure.w_current * 100)}% + 감독 장기 성향 {Math.round(tc.tenure.w_tendency * 100)}% 를 섞은 비율.</p>
+            <p>재임이 짧을수록(새 부임) 감독 성향 비중이 커집니다(현재 30~75%).</p>
+            <p><b>현재</b> 태그 = 이번 시즌 팀 경기 지표, <b>성향</b> 태그 = 감독 커리어 성향.</p>
+            {Object.keys(tc.vector).length > 0 && <p><b>지수</b> = 리그 안 상대값(가운데 눈금 = 50) · {IDX_NOTE}</p>}
+          </>}>
             <div style={{ fontSize: 13, fontWeight: 600 }}>{tc.manager || "?"}
               {tc.formation && <span style={{ opacity: 0.55, fontWeight: 400 }}> · {tc.formation}</span>}</div>
-            {/* 재임 기반 블렌드 */}
+            {/* 재임 기반 블렌드 — 비율 숫자는 ⓘ */}
             <div style={{ margin: "8px 0 6px" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", fontSize: 10.5, opacity: 0.7, marginBottom: 3 }}>
-                <span>{tc.tenure.is_new ? "새 부임" : "안정"}{tc.tenure.appointed ? ` · ${tc.tenure.appointed}` : ""}</span>
-                <span>현재 {Math.round(tc.tenure.w_current * 100)}% / 성향 {Math.round(tc.tenure.w_tendency * 100)}%</span>
+              <div style={{ fontSize: 10.5, opacity: 0.7, marginBottom: 3 }}>
+                {tc.tenure.is_new ? "새 부임" : "안정"}{tc.tenure.appointed ? ` · ${tc.tenure.appointed}` : ""}
               </div>
               <div style={{ display: "flex", height: 5, borderRadius: 3, overflow: "hidden" }}>
-                <span style={{ width: `${tc.tenure.w_current * 100}%`, background: accent }} />
-                <span style={{ width: `${tc.tenure.w_tendency * 100}%`, background: hexA(accent, 0.28) }} />
+                <span title={`현재 ${Math.round(tc.tenure.w_current * 100)}%`} style={{ width: `${tc.tenure.w_current * 100}%`, background: accent }} />
+                <span title={`성향 ${Math.round(tc.tenure.w_tendency * 100)}%`} style={{ width: `${tc.tenure.w_tendency * 100}%`, background: hexA(accent, 0.28) }} />
               </div>
             </div>
             {/* 현재 스냅샷 태그 */}
@@ -112,9 +121,6 @@ export default function IdentityCard({ team, league, accent }: { team: string; l
             {Object.entries(tc.vector).slice(0, 4).map(([k, v]) => (
               <Bar key={k} label={AXIS_KO[k] || k} value={v} />
             ))}
-            {Object.keys(tc.vector).length > 0 && (
-              <div style={{ fontSize: 9.5, opacity: 0.55, marginTop: 4 }} title={IDX_NOTE}>리그 안 상대 지수 · 50 = 리그 평균(가운데 눈금)</div>
-            )}
           </Panel>
         )}
 
@@ -150,7 +156,12 @@ export default function IdentityCard({ team, league, accent }: { team: string; l
 
         {/* 예산 (프록시) */}
         {bg && (
-          <Panel title="예산 (추정)">
+          <Panel title="예산 (추정)" info={<>
+            <p>실제 예산·급여가 아니라 스쿼드 시장가치와 드러난 이적료로 본 추정치입니다.</p>
+            <p><b>tier</b> = 스쿼드 가치의 전 리그 통합 백분위(엘리트 상위 20% · 상위 · 중위 · 하위).</p>
+            <p><b>순지출·순수익</b> = 영입 이적료 합 − 판매 이적료 합. 판매보다 더 썼으면 순지출, 더 팔았으면 순수익.</p>
+            <p><b>가격 상한</b> = 최고 이적료와 스쿼드 가치의 12% 중 큰 값.</p>
+          </>}>
             <span style={{ display: "inline-block", fontSize: 12, fontWeight: 700, padding: "3px 10px", borderRadius: 8,
               background: hexA(accent, 0.18), color: accent }}>{TIER_KO[bg.spend_tier] || bg.spend_tier} tier</span>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px 12px", margin: "12px 0 8px" }}>
@@ -159,13 +170,12 @@ export default function IdentityCard({ team, league, accent }: { team: string; l
               <div title={`영입 이적료 합 − 판매 이적료 합 = ${bg.net_spend_eur >= 0 ? "" : "−"}${fmtEur(Math.abs(bg.net_spend_eur))}`}>
                 <div style={{ fontSize: 15, fontWeight: 700 }}>{fmtEur(Math.abs(bg.net_spend_eur))}</div>
                 <div style={{ fontSize: 10, opacity: 0.55 }}>
-                  {bg.net_spend_eur > 0 ? "순지출 · 판매보다 더 씀" : bg.net_spend_eur < 0 ? "순수익 · 쓴 것보다 더 팖" : "순지출 0 · 수지 균형"}
+                  {bg.net_spend_eur > 0 ? "순지출" : bg.net_spend_eur < 0 ? "순수익" : "수지 균형"}
                 </div>
               </div>
               <div><div style={{ fontSize: 15, fontWeight: 700 }}>{fmtEur(bg.max_fee_paid_eur)}</div><div style={{ fontSize: 10, opacity: 0.55 }}>최고 이적료</div></div>
-              <div><div style={{ fontSize: 15, fontWeight: 700, color: accent }}>{fmtEur(bg.price_ceiling_eur)}</div><div style={{ fontSize: 10, opacity: 0.55 }}>가격 상한(추정)</div></div>
+              <div><div style={{ fontSize: 15, fontWeight: 700, color: accent }}>{fmtEur(bg.price_ceiling_eur)}</div><div style={{ fontSize: 10, opacity: 0.55 }}>가격 상한</div></div>
             </div>
-            <div style={{ fontSize: 9.5, opacity: 0.4 }}>추정치</div>
           </Panel>
         )}
       </div>

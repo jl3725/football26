@@ -11,6 +11,7 @@ import { useLiveAll, liveLabel, fixtureFromLive, type LiveEvent } from "@/lib/li
 import type { LiveMark } from "@/lib/liveTable";
 import { SS_NOTE, TONE, ssMeaning } from "@/lib/meaning";
 import { MeaningTag } from "./Meaning";
+import Info from "./Info";
 
 // 홈 '지금' 섹션들 — /api/hub/pulse(요청 시 계산·30분 캐시, 일정·결과는 daily_data 가 매일 갱신)
 type Pick = (team: string, league?: string) => void;
@@ -191,6 +192,11 @@ export function TitleRace({ teams: base, onPick, league, marks }: { teams: RaceT
 }
 
 // ── OVER / UNDER: 팀 전력 순위 대비 실제 순위 ──
+// 섹션 ⓘ 설명(홈 OVER / UNDER · 리그 탭 공용) — HOT SEAT 기준은 api _hub_pulse/_league_lab 의 hot_seat 와 같다
+export const OVER_UNDER_INFO = (
+  <><p>팀 OVR(전력) 순위 vs 실제 리그 순위.</p>
+    <p className="muted">▲ = 전력보다 순위가 높음 · ▼ = 낮음 · HOT SEAT = 전력보다 6계단 이상 낮고 하위권인 팀(감독 압박).</p></>
+);
 export function OverUnder({ over, under, onPick }: { over: TableGap[]; under: TableGap[]; onPick: Pick }) {
   const [tab, setTab] = useState<"over" | "under">("over");
   const rows = (tab === "over" ? over : under).slice(0, 7);
@@ -269,7 +275,11 @@ export function TeamOfSeason({ players, league, formation, subs = [] }: { player
   return (
     <div className="tots5">
       <div className="tots5-pitch">
-        {formation && <div className="tots5-form"><b>{formation}</b><span>시즌 평점으로 고른 포메이션</span></div>}
+        {formation && (
+          <div className="tots5-form"><b>{formation}</b>
+            <Info label="포메이션 고르는 법"><p>4-3-3 고정이 아니라, 시즌 평점이 좋은 선수가 가장 많이 들어가는 형태를 자동으로 고릅니다.</p></Info>
+          </div>
+        )}
         <Pitch placements={placements} metric="평점" />
       </div>
       <div className="tots5-list">
@@ -288,7 +298,9 @@ export function TeamOfSeason({ players, league, formation, subs = [] }: { player
         ))}
         {subs.length > 0 && (
           <div className="tots5-subs">
-            <div className="tots5-subs-h">SUBS <span>교체 명단 · 베스트 XI 다음으로 평점 높은 선수</span></div>
+            <div className="tots5-subs-h">SUBS <span>교체</span>
+              <Info label="교체 명단 기준"><p>베스트 XI 다음으로 시즌 평점이 높은 선수입니다.</p></Info>
+            </div>
             <div className="tots5-subs-grid">
               {subs.map((s) => (
                 <button key={s.player} className="tots5-sub" onClick={(e) => peek(e, { name: s.player, club: s.club, league })}
@@ -308,6 +320,7 @@ export function TeamOfSeason({ players, league, formation, subs = [] }: { player
 }
 
 // ── INJURY IMPACT: 부상으로 줄어든 베스트 XI 평균 전력 ──
+export const INJURY_IMPACT_INFO = <p>부상·결장자 때문에 줄어든 베스트 XI 평균 전력(팀 OVR)입니다.</p>;
 export function InjuryImpact({ rows, onPick }: { rows: InjuryImpactRow[]; onPick: Pick }) {
   if (!rows.length) return <p className="empty5">눈에 띄는 부상 타격 없음</p>;
   const max = Math.max(...rows.map((r) => r.loss), 0.1);

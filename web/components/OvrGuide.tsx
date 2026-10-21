@@ -22,14 +22,21 @@ export default function OvrGuide() {
           {OVR_BANDS.map((b) => (
             <div key={b.range} className="ovrg-row"><i style={{ background: b.c }} /><em>{b.range}</em><strong>{b.en}</strong><span>{b.ko} · {b.desc}</span></div>
           ))}
-          <p className="ovrg-p">
-            <b>계산</b> 시장가치 기준점 + 포지션(수비 +0.5 · 미드 −0.5) + 경기력(이번·지난 시즌 평점 — 시즌이 쌓이면 2시즌 전 이상도 작은 가중으로, 리그 보정, ±3.5 상한)
-            + 나이(유망주 잠재력 몫 −, 30대 검증 베테랑 +) + 유럽대항전(최대 +0.7).
-          </p>
-          <p className="ovrg-p">
-            <b>상한</b> 88을 넘는 부분은 0.6배로 눌러(90 = 원래 91.3) 계속 잘해도 100을 넘지 않고, 최고 99에서 멈춘다.
-            21세 이하는 나이별 천장(19세 92 · 20세 93)이 있다. 폼(FORM)은 이번 시즌 리그 내 순위로 OVR 과 따로 본다.
-          </p>
+          {/* 긴 문단 대신 항목별 한 줄 — 폰에서도 훑어 읽기 쉽게 */}
+          <p className="ovrg-p"><b>계산</b>아래 항목의 합</p>
+          <ul className="ovrg-p" style={{ paddingLeft: 16, marginTop: 2 }}>
+            <li>시장가치 기준점</li>
+            <li>포지션 — 수비 +0.5 · 미드 −0.5</li>
+            <li>경기력 — 이번·지난 시즌 평점(시즌이 쌓이면 2시즌 전 이상도 작은 가중) · 리그 보정 · ±3.5 상한</li>
+            <li>나이 — 유망주 잠재력 몫 −, 30대 검증 베테랑 +</li>
+            <li>유럽대항전 — 최대 +0.7</li>
+          </ul>
+          <p className="ovrg-p"><b>상한</b>최고 99</p>
+          <ul className="ovrg-p" style={{ paddingLeft: 16, marginTop: 2 }}>
+            <li>88을 넘는 부분은 0.6배로 눌러(90 = 원래 91.3) 계속 잘해도 100을 넘지 않음</li>
+            <li>21세 이하 나이별 천장 — 19세 92 · 20세 93</li>
+          </ul>
+          <p className="ovrg-p">폼(FORM)은 이번 시즌 리그 내 순위로 OVR 과 따로 봅니다.</p>
         </div>
       )}
     </div>

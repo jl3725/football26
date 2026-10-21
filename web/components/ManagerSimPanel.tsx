@@ -5,6 +5,7 @@ import { hexA } from "@/lib/ui";
 import { idxMeaning, scoreMeaning, TONE, type Meaning } from "@/lib/meaning";
 import { MeaningTag } from "./Meaning";
 import Bar from "./Bar";
+import Info from "./Info";
 
 // 영입 우선순위의 depth 는 0~100 뎁스 점수가 아니라 '그 역할 선수 수'(백엔드가 2명 이하만 보냄) — 인원 기준 단어.
 function headcountMeaning(n: number): Meaning {
@@ -82,14 +83,14 @@ export default function ManagerSimPanel({ team, accent }: { team: string; accent
       )}
       {res && !res.available && (
         <div className="nodata-card" style={{ marginTop: 16 }}>
-          <b>로컬 스택 미가동</b>
-          <div className="mgr-meta" style={{ marginTop: 6 }}>{res.reason}</div>
+          <b>시뮬레이션 서버 준비 중</b>
+          <div className="mgr-meta" style={{ marginTop: 6 }}>잠시 후 다시 시도하세요</div>
         </div>
       )}
       {res && res.available && res.error && (
         <div className="nodata-card" style={{ marginTop: 16 }}>
           <b>{res.error}</b>
-          <div className="mgr-meta" style={{ marginTop: 6 }}>감독명 또는 클럽명을 확인해주세요 (7대 리그 기준)</div>
+          <div className="mgr-meta" style={{ marginTop: 6 }}>감독명 또는 클럽명을 확인해주세요 (8개 리그)</div>
         </div>
       )}
       {res && res.available && res.vector_changes && <SimResult r={res} accent={accent} />}
@@ -121,8 +122,14 @@ function SimResult({ r, accent }: { r: ManagerSim; accent: string }) {
         </div>
         {/* 전술벡터 변화 */}
         <div style={{ marginTop: 16 }}>
-          <div style={{ fontSize: 11, fontWeight: 700, opacity: 0.55, textTransform: "uppercase", marginBottom: 3 }}>전술 변화</div>
-          <div style={{ fontSize: 10.5, opacity: 0.5, marginBottom: 8 }}>지수 0~99 · 50 = 리그 평균 · 회색 = 현재, 색 = 새 감독 · ▲▼ = 그 성향이 늘거나 줄어듦</div>
+          <div style={{ fontSize: 11, fontWeight: 700, marginBottom: 8, display: "flex", alignItems: "center", gap: 6 }}>
+            <span style={{ opacity: 0.55, textTransform: "uppercase" }}>전술 변화</span>
+            <Info label="전술 변화 설명">
+              <p>지수 0~99 · 50 = 리그 평균(가운데 세로선).</p>
+              <p>회색 막대 = 현재 감독, 색 막대 = 새 감독. ▲▼ = 그 성향이 늘거나 줄어든 정도.</p>
+              <p className="muted">숫자를 누르거나 마우스를 올리면 단계(낮음·보통·높음)도 볼 수 있습니다.</p>
+            </Info>
+          </div>
           {r.vector_changes!.map((c) => {
             const up = c.delta > 0;
             const tm = idxMeaning(c.to);
@@ -148,7 +155,11 @@ function SimResult({ r, accent }: { r: ManagerSim; accent: string }) {
       {/* 스쿼드 미스핏 + 영입 우선순위 2열 */}
       <div className="grid" style={{ marginTop: 16 }}>
         <div className="card">
-          <h3 style={{ color: "#e0857a" }}>새 시스템 부적합 <span className="rating-note">· 교체 검토</span></h3>
+          <h3 style={{ color: "#e0857a" }}>새 시스템 부적합 <span className="rating-note">· 교체 검토</span>{" "}
+            <Info label="새 시스템 부적합 설명">
+              <p>적합 0~100 = 새 감독 시스템의 같은 역할 스타일과 닮은 정도.</p>
+              <p className="muted">45+ 보통 · 65+ 높음 — 낮을수록 새 시스템에서 쓰임이 줄 수 있습니다.</p>
+            </Info></h3>
           <div className="tf2-list">
             {(r.squad_misfit || []).map((m, i) => {
               const fm = scoreMeaning(m.sys_fit);
@@ -165,12 +176,16 @@ function SimResult({ r, accent }: { r: ManagerSim; accent: string }) {
             })}
             {(r.squad_misfit || []).length === 0 && <div className="mgr-meta">두드러진 부적합 없음</div>}
           </div>
-          {(r.squad_misfit || []).length > 0 && (
-            <div style={{ fontSize: 10.5, opacity: 0.5, marginTop: 6 }}>적합 0~100 = 새 감독 시스템의 같은 역할 스타일과 닮은 정도 (45+ 보통 · 65+ 높음)</div>
-          )}
         </div>
         <div className="card">
-          <h3 style={{ color: accent }}>새 시스템 영입 우선순위 <span className="rating-note">· 강조 역할 · 스쿼드 얇음</span></h3>
+          <h3 style={{ color: accent }}>새 시스템 영입 우선순위 <span className="rating-note">· 강조 역할 · 스쿼드 얇음</span>{" "}
+            <Info label="영입 우선순위 설명">
+              <p>새 감독이 많이 쓰는 역할 중 우리 스쿼드에 선수가 적은 자리입니다.</p>
+              <ul>
+                <li><b>기용 비중</b> — 새 감독이 이 역할에 주는 출전 비중</li>
+                <li><b>현재 N명</b> — 우리 스쿼드의 이 역할 선수 수</li>
+              </ul>
+            </Info></h3>
           <div className="tf2-list">
             {(r.priorities || []).map((p, i) => (
               <div key={i} style={{ padding: "8px 0", borderBottom: `1px solid ${hexA("#ffffff", 0.06)}` }}>

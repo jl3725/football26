@@ -7,6 +7,7 @@ import { MeaningTag } from "./Meaning";
 import Bar from "./Bar";
 import { usePeek } from "./PlayerPeek";
 import { SkelCards } from "./Skeleton";
+import Info from "./Info";
 
 // 첫 칸 '자동' = 후보의 본 포지션(TM). 예전 기본값이 '중앙 MF'라 이름을 직접 넣으면 크바라츠헬리아도 CM 으로 평가됐다(2026-10-19)
 const ROLES = [
@@ -104,15 +105,14 @@ export default function FitEvaluator({ team, accent, suggestions, initial }:
       {loading && <div style={{ marginTop: 16 }}><SkelCards n={2} cols="1fr" face={false} /></div>}
       {res && !res.available && (
         <div className="nodata-card" style={{ marginTop: 16 }}>
-          <b>로컬 스택 미가동</b>
-          <div className="mgr-meta" style={{ marginTop: 6 }}>{res.reason}</div>
-          <div className="mgr-meta" style={{ marginTop: 6, opacity: 0.7 }}>docker compose up -d 후 QDRANT_URL=http://localhost:6335 로 API 재시작</div>
+          <b>평가 서버 준비 중</b>
+          <div className="mgr-meta" style={{ marginTop: 6 }}>잠시 후 다시 시도하세요</div>
         </div>
       )}
       {res && res.available && res.error && (
         <div className="nodata-card" style={{ marginTop: 16 }}>
           <b>{res.error}</b>
-          <div className="mgr-meta" style={{ marginTop: 6 }}>선수명·역할을 확인해주세요 (전 리그 players_full 기준)</div>
+          <div className="mgr-meta" style={{ marginTop: 6 }}>선수명·역할을 확인해주세요</div>
         </div>
       )}
       {res && res.available && res.components && <FitCard r={res} accent={accent} />}
@@ -135,16 +135,22 @@ function FitCard({ r, accent }: { r: Fit; accent: string }) {
           <div style={{ fontSize: 12, opacity: 0.6 }}>{r.source_league} → {r.target_club} · {ROLE_KO[r.role] || r.role}
             {r.natural_role && r.natural_role !== r.role ? "" : " (본 포지션)"}</div>
           {r.role_note && <div style={{ fontSize: 11.5, color: "#e0a53a", marginTop: 3 }}>⚠ 본 포지션 {ROLE_KO[r.natural_role || ""] || r.natural_role} — {ROLE_KO[r.role] || r.role} 로 평가 중</div>}
-          <div style={{ fontSize: 12, marginTop: 4, display: "flex", flexWrap: "wrap", alignItems: "center", gap: "3px 5px" }}
-            title="현재 OVR = 지금 뛰는 리그 기준 · 예상 OVR = 우리 리그 수준으로 보정한 값">
+          <div style={{ fontSize: 12, marginTop: 4, display: "flex", flexWrap: "wrap", alignItems: "center", gap: "3px 5px" }}>
             <span>현재 OVR <b>{r.base_ovr}</b> → 우리 리그 예상 <b style={{ color: r.proj_ovr != null ? tier(r.proj_ovr).light : accent }}>{r.proj_ovr}</b></span>
             {r.proj_ovr != null && <MeaningTag sm m={ovrMeaning(r.proj_ovr)} />}
             <span style={{ opacity: 0.55 }}>({r.target_league})</span>
           </div>
         </div>
-        <div style={{ textAlign: "center" }} title="FIT SCORE 0~100 — 역할·전술·니즈·리그 적응·성장성·가치 등을 합친 종합 적합도(높을수록 잘 맞음)">
+        <div style={{ textAlign: "center" }}>
           <div style={{ fontSize: 40, fontWeight: 800, lineHeight: 1, color: fm.c }}>{r.fit_score}</div>
-          <div style={{ fontSize: 10, opacity: 0.55, margin: "2px 0 3px" }}>FIT SCORE <span style={{ opacity: 0.8 }}>/ 100</span></div>
+          <div style={{ fontSize: 10, margin: "2px 0 3px", display: "inline-flex", alignItems: "center", gap: 4 }}>
+            <span style={{ opacity: 0.55 }}>FIT SCORE <span style={{ opacity: 0.8 }}>/ 100</span></span>
+            <Info label="FIT SCORE 설명">
+              <p><b>FIT SCORE</b> 0~100 — 역할·전술·니즈·리그 적응·성장성·가치 등을 합친 종합 적합도(높을수록 잘 맞음).</p>
+              <p>항목 점수 0~100 · 45+ 보통 · 65+ 높음 · 80+ 매우 높음. 리스크는 높을수록 감점.</p>
+              <p className="muted">현재 OVR = 지금 뛰는 리그 기준 · 예상 OVR = 우리 리그 수준으로 보정한 값.</p>
+            </Info>
+          </div>
           <MeaningTag sm m={fm} />
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
@@ -163,7 +169,6 @@ function FitCard({ r, accent }: { r: Fit; accent: string }) {
           .map((k) => <CompBar key={k} label={COMP_KO[k]} value={c[k]} />)}
         <CompBar label="리스크" value={c.Risk} danger />
       </div>
-      <div style={{ fontSize: 10.5, opacity: 0.5, marginTop: 2 }}>항목 점수 0~100 · 45+ 보통 · 65+ 높음 · 80+ 매우 높음 (리스크는 높을수록 감점)</div>
 
       {/* 전술 블렌드 설명 */}
       {td && (
@@ -171,10 +176,12 @@ function FitCard({ r, accent }: { r: Fit; accent: string }) {
           borderLeft: `3px solid ${hexA(accent, 0.5)}`, fontSize: 12 }}>
           <b>전술 적합</b> · 현재 전술 <b style={{ color: scoreMeaning(td.current_fit).c }}>{td.current_fit}</b>
           {" "}· 감독 성향 <b style={{ color: scoreMeaning(td.tendency_fit).c }}>{td.tendency_fit}</b>
-          {" "}→ 블렌드 <b style={{ color: scoreMeaning(td.blended).c }}>{td.blended}</b> <MeaningTag sm m={scoreMeaning(td.blended)} />
-          <span style={{ opacity: 0.6 }}> ({td.is_new_manager ? "새 부임" : "안정"}
-            {td.appointed ? ` · ${td.appointed}` : ""}: 현재 {Math.round(td.w_current * 100)}% / 성향 {Math.round(td.w_tendency * 100)}%)</span>
-          <div style={{ opacity: 0.5, marginTop: 3, fontSize: 10.5 }}>0~100 = 이 선수 스타일이 현재 팀 전술·감독 성향과 얼마나 닮았나(100 = 완전 일치, 리그 평균 기준 아님)</div>
+          {" "}→ 블렌드 <b style={{ color: scoreMeaning(td.blended).c }}>{td.blended}</b> <MeaningTag sm m={scoreMeaning(td.blended)} />{" "}
+          <Info label="전술 적합 설명">
+            <p>0~100 = 이 선수 스타일이 현재 팀 전술·감독 성향과 얼마나 닮았나(100 = 완전 일치, 리그 평균 기준 아님).</p>
+            <p>블렌드 비중: 현재 전술 <b>{Math.round(td.w_current * 100)}%</b> / 감독 성향 <b>{Math.round(td.w_tendency * 100)}%</b></p>
+            <p className="muted">감독 {td.is_new_manager ? "새 부임" : "안정"}{td.appointed ? ` · ${td.appointed} 부임` : ""} — 새 감독일수록 감독 성향 비중이 커집니다.</p>
+          </Info>
           {td.is_new_manager && td.descriptor_tags.length === 0 &&
             <div style={{ opacity: 0.5, marginTop: 3 }}>감독 성향 데이터 없음</div>}
         </div>
@@ -201,7 +208,7 @@ function FitCard({ r, accent }: { r: Fit; accent: string }) {
         </div>
       )}
       <div style={{ marginTop: 8, fontSize: 11, opacity: 0.55 }}>
-        선례(같은 리그점프 이적) {r.precedent_transfers ?? 0}건 · 유럽경험 {r.euro_experience ? "O" : "X"}
+        <span title="같은 리그 경로(출신 리그 → 우리 리그) 이적 사례 수">선례 {r.precedent_transfers ?? 0}</span> · 유럽경험 {r.euro_experience ? "O" : "X"}
         {r.notes ? ` · ${r.notes}` : ""}
       </div>
     </div>

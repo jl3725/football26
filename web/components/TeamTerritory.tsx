@@ -6,6 +6,7 @@ import HeatmapPitch, { heat } from "./HeatmapPitch";
 import { usePeek } from "./PlayerPeek";
 import { Skel } from "./Skeleton";
 import EmptyState from "./EmptyState";
+import Info from "./Info";
 import { LINE_COLOR, SvgAvatar, lastName } from "./NetShared";
 
 // 팀 포지셔널 맵 — SHAPE · LINKS: 시즌 히트맵 평균 위치(사진) + 함께 그라운드에 있던 시간 연결선(패스 데이터 아님).
@@ -108,12 +109,28 @@ export default function TeamTerritory({ team, accent }: { team: string; accent: 
           <button className={view === "shape" ? "active" : ""} onClick={() => setView("shape")}>SHAPE · LINKS</button>
           <button className={view === "territory" ? "active" : ""} onClick={() => setView("territory")}>TERRITORY</button>
         </div>
-        {view === "shape" && (
-          <div className="comp-seg chips5">
-            <button className={!allLinks ? "active" : ""} onClick={() => setAllLinks(false)}>핵심 연결</button>
-            <button className={allLinks ? "active" : ""} onClick={() => setAllLinks(true)}>전체(180분+)</button>
-          </div>
-        )}
+        <div style={{ display: "inline-flex", alignItems: "center", gap: 6, marginLeft: "auto" }}>
+          {view === "shape" && (
+            <div className="comp-seg chips5">
+              <button className={!allLinks ? "active" : ""} onClick={() => setAllLinks(false)}>핵심 연결</button>
+              <button className={allLinks ? "active" : ""} onClick={() => setAllLinks(true)}>전체(180분+)</button>
+            </div>
+          )}
+          <Info wide label="포지셔널 맵 보는 법">
+            {view === "territory" ? (
+              <p><b>TERRITORY</b> — 주전 14인 히트맵 합산. 팀이 실제로 점유하는 구역 · 공격 방향 →</p>
+            ) : <>
+              <p><b>SHAPE · LINKS</b> — 주전 11명의 시즌 평균 위치와 함께 뛴 연결.</p>
+              <ul>
+                <li>위치 = 시즌 히트맵 평균 · 원 크기 = 출전 시간 · 테두리 색 = 라인</li>
+                <li>선 = 선수별 가장 오래 함께 뛴 3명 · 굵기 = 함께 그라운드에 있던 시간(패스 데이터 아님)</li>
+                <li>전체 = 180분 이상 함께 뛴 모든 연결</li>
+                <li>선수를 누르거나 마우스를 올리면 그 선수 히트맵과 파트너 연결만 표시</li>
+              </ul>
+            </>}
+            <p className="muted">출처 Sofascore 시즌 히트맵</p>
+          </Info>
+        </div>
       </div>
       {view === "territory" ? (
         <div style={{ maxWidth: 560, margin: "0 auto" }}>
@@ -160,13 +177,13 @@ export default function TeamTerritory({ team, accent }: { team: string; accent: 
         </svg>
       )}
       <div className="net-hover terr-foot">
-        {view === "territory" ? <em>주전 14인 히트맵 합산 — 팀이 실제로 점유하는 구역 · 공격 → · Sofascore</em>
+        {view === "territory" ? <em>주전 {Math.min(14, d.players.length)}명 히트맵 합산</em>
           : hover ? (
             <>
               <b>{hover}</b> <em>히트맵 표시 중 · 함께 오래 뛴 파트너</em>
               {partners.map((e) => <span key={e.a + e.b}>{e.a === hover ? e.b : e.a} <i>{e.minutes}분</i></span>)}
             </>
-          ) : <em>위치 = 시즌 히트맵 평균 · 선 = 선수별 가장 오래 함께 뛴 3명(굵기 = 함께 그라운드에 있던 시간, 패스 데이터 아님) · 선수에 마우스를 올리면 그 선수 히트맵</em>}
+          ) : <em>주전 {agg.xi.length}명 · 연결 {shown.length}개</em>}
       </div>
     </div>
   );

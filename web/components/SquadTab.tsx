@@ -64,7 +64,11 @@ export default function SquadTab({ team, accent }: { team: string; accent: strin
       <div className="fade">
         {toggle}
         <div className="card">
-          <SectionHead title="BEST XI BUILDER" kr="베스트 XI 빌더" meta="포지션 적합도 × OVR 최적 배치 · 칸을 눌러 교체" />
+          <SectionHead title="BEST XI BUILDER" kr="베스트 XI 빌더" meta="칸을 눌러 교체"
+            info={<>
+              <p>칸마다 &lsquo;선수 OVR × 그 자리 포지션 적합도&rsquo;의 합이 가장 큰 배치를 자동으로 고릅니다.</p>
+              <p>칸을 누르면 그 자리에 맞는 순으로 교체 후보가 나옵니다.</p>
+            </>} />
           <SquadBuilder team={team} accent={accent} />
         </div>
       </div>
@@ -76,9 +80,13 @@ export default function SquadTab({ team, accent }: { team: string; accent: strin
       {toggle}
       {/* 포지션별 뎁스 차트 — 역할마다 1st·2nd·3rd 옵션, 멀티 포지션(2·3포지션) 선수 포함 */}
       <div className="card">
-        <SectionHead title="DEPTH CHART" kr="포지션별 뎁스" meta="실제로 선 자리 기준 · 멀티 = 2·3포지션 · ✚ = 부상" />
+        <SectionHead title="DEPTH CHART" kr="포지션별 뎁스"
+          info={<>
+            <p><b>뎁스</b> = 2·3번째 옵션의 OVR + 인원으로 매긴 점수(색 = 아래 범례).</p>
+            <p>포지션 = 실제로 선 자리 기준. <b>멀티</b> = 그 선수의 2·3번째 포지션. <b>✚</b> = 부상.</p>
+          </>} />
         <div className="mn-legend" style={{ marginTop: 0, marginBottom: 10 }}>
-          <b>뎁스 = 2·3번째 옵션의 OVR + 인원</b>
+          <b>뎁스</b>
           {([[75, "탄탄 75+"], [65, "양호 65+"], [55, "보통 55+"], [45, "얇음 45+"], [0, "매우 얇음 45↓"]] as const).map(([v, l]) => (
             <span key={l}><i style={{ background: depthMeaning(v).c }} />{l}</span>
           ))}
@@ -141,7 +149,11 @@ export default function SquadTab({ team, accent }: { team: string; accent: strin
       {/* 임대 보낸 선수 — 계약은 우리, 지금은 다른 팀(스쿼드·XI·팀 OVR 에서 뺀다) */}
       {(data.loans?.length ?? 0) > 0 && (
         <div className="card" style={{ marginTop: 16 }}>
-          <SectionHead title="OUT ON LOAN" kr="임대 보낸 선수" meta={`${data.loans!.length}명 · 행선지 기록은 우리 데이터 안 리그만`} />
+          <SectionHead title="OUT ON LOAN" kr="임대 보낸 선수" meta={`${data.loans!.length}명`}
+            info={<>
+              <p>계약은 우리 팀, 지금은 다른 팀에서 뛰는 선수 — 스쿼드·XI·팀 OVR 에서 뺍니다.</p>
+              <p className="muted">행선지 기록(출전 분·OVR)은 우리가 다루는 리그 안에서만 보입니다.</p>
+            </>} />
           <div className="loan-grid">
             {data.loans!.slice(0, allLoans ? undefined : 8).map((l) => (
               <div key={l.player} className="loan-card peekable"

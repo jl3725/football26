@@ -5,6 +5,7 @@ import { hexA, tier } from "@/lib/ui";
 import { scoreMeaning, TONE } from "@/lib/meaning";
 import { MeaningTag } from "./Meaning";
 import Bar from "./Bar";
+import Info from "./Info";
 
 type Msg = { role: "user" | "assistant"; text: string; data?: Scout };
 
@@ -37,7 +38,7 @@ function fmtCell(v: unknown): string {
 function ResultCard({ d, accent, onNavigate }: { d: Scout; accent: string; onNavigate?: (t: string, l?: string) => void }) {
   const r = d.result;
   if (!r) return null;
-  if (r.available === false) return <div style={{ fontSize: 12, opacity: 0.6 }}>{r.reason}</div>;
+  if (r.available === false) return <div style={{ fontSize: 12, opacity: 0.6 }}>데이터 준비 중 · 잠시 후 다시 시도하세요</div>;
   if (r.error) return <div style={{ fontSize: 12, opacity: 0.6 }}>{r.error}</div>;
   const box: React.CSSProperties = { marginTop: 8, padding: "10px 12px", borderRadius: 10, background: hexA("#ffffff", 0.04), border: `1px solid ${hexA(accent, 0.15)}` };
 
@@ -82,13 +83,18 @@ function ResultCard({ d, accent, onNavigate }: { d: Scout; accent: string; onNav
           </div>
           <div style={{ fontSize: 11.5 }}>
             <div><b>{r.candidate}</b> → {r.target_club} / {r.role}</div>
-            <div style={{ opacity: 0.6 }}>{r.signing_type} · Risk {r.risk_level} · OVR {r.base_ovr}→{r.proj_ovr} <span style={{ opacity: 0.8 }}>(현재 → 우리 리그 예상)</span></div>
+            <div style={{ opacity: 0.6 }}>{r.signing_type} · Risk {r.risk_level} · OVR {r.base_ovr}→{r.proj_ovr}</div>
           </div>
         </div>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "3px 10px", marginTop: 8, fontSize: 11 }} title="항목 점수 0~100 · 45+ 보통 · 65+ 높음 · 80+ 매우 높음">
+        <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "3px 10px", marginTop: 8, fontSize: 11 }}>
           {[["역할", c.RoleFit], ["전술", c.TacticalFit], ["니즈", c.TeamNeed], ["성장", c.Potential], ["가격", c.PriceRealism], ["영입성향", c.RecruitFit]].map(([k, v]: any) => (
             <span key={k} style={{ opacity: 0.8 }}>{k} <b style={{ color: scoreMeaning(v).c }} title={scoreMeaning(v).label}>{v}</b></span>
           ))}
+          <Info label="FIT 점수 설명">
+            <p><b>FIT SCORE</b> 0~100 — 종합 적합도(높을수록 잘 맞음).</p>
+            <p>항목 점수 0~100 · 45+ 보통 · 65+ 높음 · 80+ 매우 높음.</p>
+            <p className="muted">OVR 현재 → 우리 리그 수준으로 보정한 예상값.</p>
+          </Info>
         </div>
         {af && <div style={{ fontSize: 11, opacity: 0.7, marginTop: 6 }}>예산: {af.likely_fee_eur ? fmtEur(af.likely_fee_eur) : "?"} / 상한 {af.ceiling_eur ? fmtEur(af.ceiling_eur) : "?"} → {VERDICT_KO[af.verdict] || af.verdict}</div>}
       </div>
@@ -116,12 +122,13 @@ function ResultCard({ d, accent, onNavigate }: { d: Scout; accent: string; onNav
   if (d.intent === "managersim") {
     return (
       <div style={box}>
-        <div style={{ fontSize: 12, fontWeight: 600, marginBottom: 6 }}>{r.target_club} ← {r.new_manager}</div>
+        <div style={{ fontSize: 12, fontWeight: 600, marginBottom: 6 }}>{r.target_club} ← {r.new_manager}
+          {(r.vector_changes || []).length > 0 && <Info label="전술 지수 설명"><p>전술 지수 0~99 · 50 = 리그 평균. ▲▼ = 새 감독에서 늘거나 줄어든 정도.</p></Info>}
+        </div>
         {(r.vector_changes || []).slice(0, 4).map((c: any) => (
           <div key={c.axis} style={{ fontSize: 11, opacity: 0.8 }}>{c.axis}: {c.from}→<b>{c.to}</b>{" "}
             {c.delta !== 0 && <span style={{ color: TONE.avg.c, fontWeight: 700 }}>{c.delta > 0 ? "▲" : "▼"}{Math.abs(c.delta)}</span>}</div>
         ))}
-        {(r.vector_changes || []).length > 0 && <div style={{ fontSize: 10, opacity: 0.5, marginTop: 2 }}>전술 지수 0~99 · 50 = 리그 평균</div>}
         {(r.priorities || []).slice(0, 2).map((p: any, i: number) => (
           <div key={i} style={{ fontSize: 11, marginTop: 5 }}><b>{p.role}</b>: {(p.candidates || []).slice(0, 3).join(", ") || "-"}</div>
         ))}
@@ -131,7 +138,7 @@ function ResultCard({ d, accent, onNavigate }: { d: Scout; accent: string; onNav
   if (d.intent === "graph") {
     const rows: Record<string, unknown>[] = r.rows || [];
     if (r.error) return <div style={{ fontSize: 12, opacity: 0.6 }}>{r.error}</div>;
-    if (rows.length === 0) return <div style={{ fontSize: 12, opacity: 0.6, ...box }}>결과 없음{r.cypher ? <div style={{ opacity: 0.4, marginTop: 4, fontFamily: "monospace", fontSize: 10 }}>{r.cypher}</div> : null}</div>;
+    if (rows.length === 0) return <div style={{ fontSize: 12, opacity: 0.6, ...box }}>결과 없음</div>;
     const cols = Object.keys(rows[0]);
     return (
       <div style={box}>
@@ -144,7 +151,6 @@ function ResultCard({ d, accent, onNavigate }: { d: Scout; accent: string; onNav
           </table>
         </div>
         {r.count > 15 ? <div style={{ fontSize: 10, opacity: 0.5, marginTop: 4 }}>+{r.count - 15}건 더</div> : null}
-        {r.cypher ? <div style={{ opacity: 0.35, marginTop: 6, fontFamily: "monospace", fontSize: 9.5, whiteSpace: "pre-wrap" }}>◆ {r.cypher}</div> : null}
       </div>
     );
   }
@@ -228,10 +234,11 @@ export default function ScoutChat({ team, league, accent, onNavigate, embedded }
     setInput(""); setLoading(true);
     getScout(text, team, league, tok, hist)
       .then((d) => {
-        if (d.auth_required) { setNeedAuth(true); setMsgs((m) => [...m, { role: "assistant", text: d.reason || "접근 비밀번호가 필요합니다" }]); return; }
-        setMsgs((m) => [...m, { role: "assistant", text: d.answer || d.reason || d.error || "응답 없음", data: d }]);
+        if (d.auth_required) { setNeedAuth(true); setMsgs((m) => [...m, { role: "assistant", text: "접근 비밀번호가 필요합니다" }]); return; }
+        // 서버 내부 사유(키·환경 설정 등)는 그대로 보여 주지 않는다
+        setMsgs((m) => [...m, { role: "assistant", text: d.answer || (d.available === false ? "지금은 답할 수 없어요 · 잠시 후 다시 시도하세요" : d.error) || "응답 없음", data: d }]);
       })
-      .catch(() => setMsgs((m) => [...m, { role: "assistant", text: "요청 실패 — API/키 확인" }]))
+      .catch(() => setMsgs((m) => [...m, { role: "assistant", text: "요청 실패 · 잠시 후 다시 시도하세요" }]))
       .finally(() => setLoading(false));
   };
   const saveToken = () => {
@@ -243,10 +250,10 @@ export default function ScoutChat({ team, league, accent, onNavigate, embedded }
     <div className="fade" style={{ display: "flex", flexDirection: "column", height: embedded ? "100%" : "calc(100vh - 190px)" }}>
       {!embedded && (
         <div className="card" style={{ marginBottom: 10 }}>
-          <h3><Bar c={accent} />Ask Scout <span style={{ fontSize: 11, fontWeight: 400, opacity: 0.5 }}>· Chief Scout에게 물어보세요 (현재 팀: {team})</span></h3>
+          <h3><Bar c={accent} />Ask Scout <span style={{ fontSize: 11, fontWeight: 400, opacity: 0.5 }}>· {team}</span></h3>
         </div>
       )}
-      {embedded && <div style={{ fontSize: 10.5, opacity: 0.5, padding: "8px 2px" }}>현재 팀: <b>{team || "-"}</b></div>}
+      {embedded && team && <div style={{ fontSize: 10.5, opacity: 0.5, padding: "8px 2px" }}>현재 팀 <b>{team}</b></div>}
 
       {/* 메시지 */}
       <div style={{ flex: 1, overflowY: "auto", paddingRight: 4 }}>
@@ -262,7 +269,7 @@ export default function ScoutChat({ team, league, accent, onNavigate, embedded }
               border: m.role === "user" ? `1px solid ${hexA(accent, 0.3)}` : `1px solid ${hexA("#ffffff", 0.07)}` }}>
               {m.role === "assistant" && <span style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: 0.3, opacity: 0.5, marginRight: 6, color: accent }}>CHIEF SCOUT</span>}
               {m.role === "assistant" && m.data?.engine === "rules" && (
-                <span style={{ fontSize: 10, opacity: 0.5, marginRight: 6 }} title="LLM 없이 질문에서 팀·선수·의도를 찾아 데이터 값으로 답합니다(무료). 서버에 GEMINI_API_KEY 를 넣으면 자연어 답변">
+                <span style={{ fontSize: 10, opacity: 0.5, marginRight: 6 }} title="AI 없이 질문에서 팀·선수·의도를 찾아 데이터 값으로 답합니다">
                   규칙 기반
                 </span>
               )}
@@ -290,7 +297,7 @@ export default function ScoutChat({ team, league, accent, onNavigate, embedded }
         <div style={{ display: "flex", gap: 8, marginTop: 8, alignItems: "center", padding: "8px 10px", borderRadius: 10, background: hexA("#e0a53a", 0.1), border: `1px solid ${hexA("#e0a53a", 0.4)}` }}>
           <span style={{ fontSize: 12 }}>접근 비밀번호</span>
           <input type="password" value={pw} onChange={(e) => setPw(e.target.value)} onKeyDown={(e) => e.key === "Enter" && saveToken()}
-            placeholder="SCOUT_TOKEN" style={{ flex: 1, padding: "6px 10px", borderRadius: 8, fontSize: 12, background: hexA("#ffffff", 0.06), border: `1px solid ${hexA(accent, 0.3)}`, color: "inherit" }} />
+            placeholder="비밀번호" style={{ flex: 1, padding: "6px 10px", borderRadius: 8, fontSize: 12, background: hexA("#ffffff", 0.06), border: `1px solid ${hexA(accent, 0.3)}`, color: "inherit" }} />
           <button onClick={saveToken} style={{ padding: "6px 14px", borderRadius: 8, fontSize: 12, fontWeight: 700, cursor: "pointer", border: "none", background: accent, color: "#0a0a0a" }}>저장</button>
         </div>
       )}

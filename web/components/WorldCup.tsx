@@ -2,6 +2,7 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { getWC, getWCSquad, type WorldCupData, type WCSquad } from "@/lib/api";
 import { usePeek } from "./PlayerPeek";
+import Info from "./Info";
 import { Skel, SkelCards, SkelRows } from "./Skeleton";
 
 function WSec({ en, kr, accent, right }: { en: string; kr: string; accent: string; right?: ReactNode }) {
@@ -78,10 +79,15 @@ export default function WorldCup({ accent, onPickTeam }: { accent: string; onPic
       {/* FIFA 랭킹 TOP 30 — 월드컵 결과 실시간 반영 */}
       {d.fifa_ranking && d.fifa_ranking.length > 0 && (
         <>
-          <WSec en="FIFA WORLD RANKING" kr={d.fifa_live ? "FIFA 랭킹 TOP 30 · 월드컵 실시간 반영" : "FIFA 랭킹 TOP 30"} accent={accent}
-            right={<span className="wc-fifa-upd">{d.fifa_live ? "🔴 예상 " : ""}{d.fifa_updated ? `공식 ${d.fifa_updated} 기준` : ""}</span>} />
+          <WSec en="FIFA WORLD RANKING" kr={d.fifa_live ? "TOP 30 · 실시간" : "TOP 30"} accent={accent}
+            right={<span className="wc-fifa-upd">{d.fifa_live ? "🔴 예상 " : ""}{d.fifa_updated ? `공식 ${d.fifa_updated} 기준` : ""}
+              {d.fifa_live && (
+                <Info label="예상 순위 설명">
+                  <p>공식 점수({d.fifa_updated})에 월드컵 경기 결과를 FIFA 공식 산식으로 반영한 <b>예상 순위</b>입니다.</p>
+                  <p className="muted">변동(▲▼)은 공식 순위 대비.</p>
+                </Info>
+              )}</span>} />
           <div className="card">
-            {d.fifa_live && <div className="wc-fifa-note">공식 점수({d.fifa_updated})에 월드컵 경기 결과를 FIFA 공식 산식으로 반영한 <b>예상 순위</b>입니다. 변동(▲▼)은 공식 순위 대비.</div>}
             <div className="wc-fifa">
               {d.fifa_ranking.map((f) => {
                 const tone = f.rank_change > 0 ? "up" : f.rank_change < 0 ? "down" : "same";

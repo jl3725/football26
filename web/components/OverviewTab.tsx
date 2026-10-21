@@ -124,13 +124,14 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
     <div className="fade">
       <TransferTicker tin={ov.transfers.in} tout={ov.transfers.out} accent={accent}
         label={ov.window?.is_open ? `${ov.window.label} ${ov.window.kr ?? ""} 이적` : `${ov.data_season} 이적`} />
-      {/* 이적시장이 열렸을 때만 — 닫혀 있으면 상단 상태 줄과 같은 말의 반복이었다 */}
+      {/* 이적시장이 열렸을 때만 한 줄 — 시즌 진행 상태는 상단 상태 줄(StatusBar)에 이미 있다 */}
       {ov.window?.is_open && (
         <div className="season-note">
-          <b>{ov.data_season} 시즌 {phaseOf(ov.window) === "in_season" ? "진행 중" : "종료"}</b>
-          {ov.window.is_open
-            ? <> · <span style={{ color: accent }}>{ov.window.label} {ov.window.kr} 이적시장 진행 중</span> — 아래 이적 정보는 이번 창(window) 기준</>
-            : <> · 현재 이적시장 마감</>}
+          <b style={{ color: accent }}>{ov.window.label} {ov.window.kr ?? ""} 이적시장 진행 중</b>
+          <Info label="이적 정보 기준">
+            <p>아래 이적 정보(티커·TRANSFERS·전력의 이적 반영 ▲▼)는 이번 이적 창(window) 기준입니다.</p>
+            <p className="muted">{ov.data_season} 시즌 {phaseOf(ov.window) === "in_season" ? "진행 중" : "종료"}</p>
+          </Info>
         </div>
       )}
 
@@ -203,7 +204,11 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
 
         {snap && (
           <div className="card">
-            <SectionHead title="SCORING · DISCIPLINE" kr="득점 유형 · 규율" meta="리그 · Statbunker" />
+            <SectionHead title="SCORING · DISCIPLINE" kr="득점 유형 · 규율" meta="리그"
+              info={<>
+                <p>리그 경기 기준 득점 유형(오픈플레이·세트피스·페널티)과 경고·퇴장.</p>
+                <p className="muted">출처: Statbunker</p>
+              </>} />
             <div className="stat-strip" style={{ marginTop: 0 }}>
               <div className="stat"><div className="v" style={{ color: accent }}>{snap.open_play}</div><div className="l">오픈플레이</div></div>
               <div className="stat"><div className="v" style={{ color: accent }}>{snap.set_piece}</div><div className="l">세트피스</div></div>
@@ -220,7 +225,8 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
 
         {/* 득점 유형 카드가 없으면(시즌 초) 감독 카드가 홀로 반 칸만 차지해 오른쪽이 비었다 → 전체 폭 */}
         <div className={`card${snap ? "" : " span-all mgr-wide"}`}>
-          <SectionHead title="MANAGER" kr="감독" />
+          <SectionHead title="MANAGER" kr="감독"
+            info={ov.manager ? <p>감독 소개 출처: Wikipedia</p> : undefined} />
           {ov.manager ? (
             <>
               <div className="mgr">
@@ -248,7 +254,6 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
                 </div>
               </div>
               {ov.manager.bio && <Clamp className="mgr-bio" text={ov.manager.bio} />}
-              <div className="mgr-src">출처: Wikipedia</div>
             </>
           ) : <div className="mgr-meta">감독 정보 없음</div>}
         </div>
@@ -303,7 +308,7 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
       {/* 더 보기 — 정체성 · 스쿼드 평가 · 리더 · 부상/이적. 첫 화면은 '지금 이 팀이 어떤가'에 집중하고
           나머지는 요청 시 펼친다(선택은 이 브라우저에 기억). */}
       <button type="button" className="more-btn" aria-expanded={more} onClick={() => toggleMore(!more)}>
-        {more ? "간단히 보기 ↑" : "더 보기 · 정체성 · 연령 구조 · 리더 · 부상/이적 ↓"}
+        {more ? "간단히 보기 ↑" : "더 보기 ↓"}
       </button>
       {more && (
         <>
@@ -315,7 +320,8 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
       {ov.leaders.length > 0 && (
         <div className="card" style={{ marginTop: 16 }}>
           <SectionHead title="TEAM LEADERS"
-            kr={`부문별 1위${ov.leaders_asof ? ` · 골·도움 ${Number(ov.leaders_asof.slice(5, 7))}/${Number(ov.leaders_asof.slice(8, 10))} 경기까지` : ""}`} />
+            kr={`부문별 1위${ov.leaders_asof ? ` · ${Number(ov.leaders_asof.slice(5, 7))}/${Number(ov.leaders_asof.slice(8, 10))} 기준` : ""}`}
+            info={ov.leaders_asof ? <p>골·도움은 {Number(ov.leaders_asof.slice(5, 7))}/{Number(ov.leaders_asof.slice(8, 10))} 경기까지 반영됩니다.</p> : undefined} />
           <div className="leaders-row">
             {ov.leaders.map((ld, i) => (
               <div className="leader peekable" key={i}

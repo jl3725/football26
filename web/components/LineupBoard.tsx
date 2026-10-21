@@ -91,9 +91,14 @@ export default function LineupBoard({ team, accent, departed = [] }: { team: str
   return (
     <div className="card" style={{ marginTop: 16 }}>
       <SectionHead title="FORMATION" kr="포메이션 · 베스트 XI"
-        meta={lm
-          ? `${comp === "last" ? "그 경기 선발 그대로" : `${compKr} · 가장 많이 선 자리 기준`} · 마지막 반영 ${lmTxt} (라인업은 경기 다음 날 아침 갱신)`
-          : "시즌 평점 기준 XI · 최근 5경기 XI"}
+        meta={lm ? `${Number(lm.date.slice(5, 7))}/${Number(lm.date.slice(8, 10))} 반영` : undefined}
+        info={<>
+          {lm
+            ? <p><b>기준</b> = {comp === "last" ? "그 경기 선발 그대로" : `${compKr} — 선수마다 가장 많이 선 자리`}.</p>
+            : <p><b>기준</b> = 시즌 평점 기준 XI · 최근 5경기 XI.</p>}
+          {lm && <p><b>마지막 반영</b> = {lmTxt}</p>}
+          <p className="muted">라인업은 경기 다음 날 아침 갱신됩니다.</p>
+        </>}
         right={shown.length > 1 ? <div className="seg5 seg5-head" role="tablist" aria-label="대회">
           {shown.map((c) => (
             <button key={c.k} role="tab" aria-selected={comp === c.k} className={comp === c.k ? "on" : ""} title={`${c.kr}${c.n ? ` · 선발 기록 ${c.n}경기` : ""}`}
@@ -112,7 +117,7 @@ export default function LineupBoard({ team, accent, departed = [] }: { team: str
               {comp === "last" ? `LAST MATCH · ${lmTxt}` : `${curLabel} ${comp === "league" ? "" : `${compKr} `}BEST XI`}</button>
           </div>
           {emptyComp
-            ? <EmptyState title={`${compKr} 선발 기록이 없습니다`} note="이번 시즌 이 대회 경기가 아직 없거나 라인업이 수집되지 않았습니다" />
+            ? <EmptyState title="이 대회 라인업 없음" note="경기가 아직 없거나 미수집" />
             : leftBoard
             ? <Pitch placements={leftBoard.placements} accent={accent} team={team} />
             : err ? <EmptyState title="라인업을 불러오지 못했습니다" note="잠시 후 다시 열어 주세요" />

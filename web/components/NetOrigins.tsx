@@ -4,6 +4,7 @@ import type { NetworkData, NetPlayer } from "@/lib/api";
 import { hexA } from "@/lib/ui";
 import { usePeek } from "./PlayerPeek";
 import { ACQ, SvgAvatar, initials, lastName } from "./NetShared";
+import Info from "./Info";
 
 // ORIGINS — 스쿼드가 어떻게 만들어졌나. 입단 연도별로 쌓은 타임라인(테두리 색 = 영입 방식) + 출신 리그.
 const LG_LABEL: Record<string, string> = { EPL: "Premier League", LaLiga: "La Liga", SerieA: "Serie A", Bundesliga: "Bundesliga",
@@ -41,7 +42,15 @@ export default function NetOrigins({ d, accent }: { d: NetworkData; accent: stri
 
   return (
     <div className="net-orig">
-      <h4 className="net-h">SQUAD BUILD <span>입단 연도별 · 테두리 색 = 영입 방식</span></h4>
+      <h4 className="net-h">SQUAD BUILD <span>입단 연도별</span>
+        <Info label="스쿼드 구성 보는 법">
+          <ul>
+            <li>열 = 입단 연도 · 오래된 입단은 첫 칸에 묶음</li>
+            <li>테두리 색 = 영입 방식 · 금색 점 = 주장단</li>
+            <li>선수를 누르면 상세</li>
+          </ul>
+        </Info>
+      </h4>
       <div className="net-legend wrap">
         {acqKeys.map((k) => <span key={k}><i style={{ background: ACQ[k].c }} />{ACQ[k].ko} <b>{d.origins.acq[k]}</b></span>)}
       </div>
@@ -73,7 +82,7 @@ export default function NetOrigins({ d, accent }: { d: NetworkData; accent: stri
       </div>
       {undated.length > 0 && (
         <div className="net-undated" title="TM 스쿼드 명단에서 입단일을 찾지 못한 선수 — 최근 등록·유스 승격 등">
-          <span className="lbl">입단일 확인 중 {undated.length}</span>
+          <span className="lbl">입단일 확인 중 {undated.length}<Info label="입단일 확인 중"><p>TM 스쿼드 명단에서 입단일을 찾지 못한 선수 — 최근 등록·유스 승격 등.</p></Info></span>
           {undated.slice(0, 10).map((p) => (
             <button key={p.name} className="chip hoverable" onClick={(e) => peek(e, { name: p.name, club: d.team, hint: { photo: p.photo, ovr: p.ovr ?? undefined, pos: p.pos } })}>
               {p.photo ? <img src={p.photo} alt="" /> : <i>{initials(p.name)}</i>}{lastName(p.name)}

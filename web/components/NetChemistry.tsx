@@ -4,6 +4,7 @@ import type { NetworkData } from "@/lib/api";
 import { hexA } from "@/lib/ui";
 import { usePeek } from "./PlayerPeek";
 import Chemistry from "./Chemistry";
+import Info from "./Info";
 import { LINE_COLOR, LINE_KO, SvgAvatar, lastName } from "./NetShared";
 
 // CHEMISTRY — 실제로 함께 그라운드에 있던 시간(라인업·교체)으로 만든 관계망. 선 굵기 = 함께 뛴 분,
@@ -62,7 +63,7 @@ export default function NetChemistry({ d, accent }: { d: NetworkData; accent: st
     return s;
   }, [hover, edges]);
   const partners = hover ? edges.filter((e) => e.a === hover || e.b === hover).sort((a, b) => b.minutes - a.minutes).slice(0, 5) : [];
-  if (!nodes.length) return <p className="net-empty">함께 뛴 기록이 아직 부족합니다 — 경기가 쌓이면 채워집니다.</p>;
+  if (!nodes.length) return <p className="net-empty">함께 뛴 기록이 아직 부족합니다</p>;
 
   return (
     <div className="net-chem">
@@ -75,6 +76,14 @@ export default function NetChemistry({ d, accent }: { d: NetworkData; accent: st
           <span className="net-legend">
             {Object.entries(LINE_KO).map(([k, v]) => <span key={k}><i style={{ background: LINE_COLOR[k] }} />{v}</span>)}
             <span><i className="cap" />주장단</span>
+            <Info label="관계망 보는 법">
+              <p>실제로 함께 그라운드에 있던 시간(라인업·교체)으로 만든 관계망.</p>
+              <ul>
+                <li>선 굵기 = 함께 뛴 시간 · 원 크기 = 출전 시간</li>
+                <li>가운데일수록 많이 연결된 허브</li>
+                <li>선수를 누르거나 마우스를 올리면 함께 오래 뛴 파트너만 남습니다</li>
+              </ul>
+            </Info>
           </span>
         </div>
         <svg viewBox={`0 0 ${W} ${H}`} className="net-svg" role="img" aria-label="함께 뛴 시간 관계망 — 선이 굵을수록 오래 함께 뛰었고, 가운데일수록 많이 연결된 선수">
@@ -102,18 +111,18 @@ export default function NetChemistry({ d, accent }: { d: NetworkData; accent: st
             );
           })}
         </svg>
-        {loose.length > 0 && <p className="net-note">이 기준에서 연결이 약한 선수: {loose.map((n) => lastName(n.name)).join(", ")}</p>}
+        {loose.length > 0 && <p className="net-note">연결 약함 · {loose.map((n) => lastName(n.name)).join(", ")}</p>}
         <div className="net-hover">
           {hover ? (
             <>
               <b>{hover}</b> <em>허브 {d.chemistry.nodes.find((n) => n.name === hover)?.hub_rank}위 · 파트너</em>
               {partners.map((e) => <span key={e.a + e.b}>{e.a === hover ? e.b : e.a} <i>{e.minutes}분</i></span>)}
             </>
-          ) : <em>선수에 마우스를 올리면 함께 오래 뛴 파트너만 남습니다 · 원 크기 = 출전 시간</em>}
+          ) : <em>{nodes.length}명 · 연결 {edges.length}개</em>}
         </div>
       </div>
       <div className="net-chem-side">
-        <h4 className="net-h">PARTNERSHIPS <span>최고의 듀오·삼각편대 — 함께 그라운드에 있던 시간</span></h4>
+        <h4 className="net-h">PARTNERSHIPS <span>함께 뛴 시간 순</span></h4>
         <Chemistry team={d.team} accent={accent} />
       </div>
     </div>

@@ -25,8 +25,12 @@ export default function CaptainBoard({ team, accent }: { team: string; accent: s
 
   return (
     <div className="card" style={{ marginTop: 16, ["--ac" as string]: accent }}>
-      <SectionHead title="LEADERSHIP" kr="주장단"
-        meta={src === "wikipedia" ? "Wikipedia 스쿼드 표 · 영향력 지도는 NETWORK 탭" : "공식 주장 · 경기 기록"} />
+      <SectionHead title="LEADERSHIP" kr="주장단" meta="영향력 → NETWORK"
+        info={<>
+          <p>출처: {src === "wikipedia" ? "Wikipedia 스쿼드 표(주장·부주장·3·4번째 주장)" : "공식 주장 · 경기 기록"}.</p>
+          <p>주장이 결장하면 완장을 찰 선수를 표시합니다.</p>
+          <p className="muted">영향력 지도·리더십 코어는 NETWORK 탭.</p>
+        </>} />
       <div className="lead-strip">
         <button className={`net-cap-hero hoverable${main.injured ? " off" : ""}`}
           onClick={(e) => peek(e, { name: main.name, club: team, hint: { photo: main.photo, ovr: main.ovr ?? undefined, pos: main.pos } })}>

@@ -8,6 +8,7 @@ import { usePeek } from "./PlayerPeek";
 import { SkelCards } from "./Skeleton";
 import EmptyState from "./EmptyState";
 import { useShortlist } from "@/lib/shortlist";
+import Info from "./Info";
 
 const POS_BTNS: [string, string][] = [
   ["", "전체"], ["Centre-Back", "CB"], ["Left-Back", "LB"], ["Right-Back", "RB"],
@@ -62,7 +63,7 @@ function Card({ p, accent, team }: { p: DiscoverPick; accent: string; team: stri
           onClick={(e) => { e.stopPropagation(); sl.toggle({ player: p.player, club: p.squad, league: p.source_league }); }}>{pinned ? "★" : "☆"}</button>
         <div style={{ textAlign: "right", flexShrink: 0 }} title={ovrTitle}>
           <div style={{ fontSize: 22, fontWeight: 800, lineHeight: 1, color: t.light }}>{p.ovr}</div>
-          <div style={{ fontSize: 9, opacity: 0.6, marginTop: 2 }}>{p.cross_league ? "우리 리그 예상 OVR" : "OVR"}</div>
+          <div style={{ fontSize: 9, opacity: 0.6, marginTop: 2 }}>{p.cross_league ? "예상 OVR" : "OVR"}</div>
           <div style={{ fontSize: 9.5, fontWeight: 700, color: t.light }}>{t.ko}</div>
           {p.cross_league && <div style={{ fontSize: 9, opacity: 0.5 }}>현재 {p.current_ovr}</div>}
         </div>
@@ -94,7 +95,7 @@ function Card({ p, accent, team }: { p: DiscoverPick; accent: string; team: stri
           background: hexA(p.level === "starter" ? "#4fc27f" : p.level === "rotation" ? "#5b8def" : p.level === "prospect" ? "#b98cd8" : "#8a94a8", 0.16),
           color: p.level === "starter" ? "#4fc27f" : p.level === "rotation" ? "#8fb0f5" : p.level === "prospect" ? "#c9a6e6" : "#9aa3b5" }}>
           {p.level === "starter" ? "주전급" : p.level === "rotation" ? "로테이션" : p.level === "prospect" ? "유망주" : "수준 아래"}</span>}
-        <span style={{ fontSize: 9.5, padding: "1px 7px", borderRadius: 8, background: hexA(rising ? "#4fc27f" : "#8aa", 0.15), color: rising ? "#4fc27f" : "#9ab" }}>{rising ? "성장형" : "안정"}</span>
+        {rising && <span title="21세 이하" style={{ fontSize: 9.5, padding: "1px 7px", borderRadius: 8, background: hexA("#4fc27f", 0.15), color: "#4fc27f" }}>성장형</span>}
         {p.euro && <span style={{ fontSize: 9.5, padding: "1px 7px", borderRadius: 8, background: hexA("#f4cf5e", 0.15), color: "#f4cf5e" }}>유럽 검증</span>}
         {p.price_verdict === "over-budget" && <span style={{ fontSize: 9.5, padding: "1px 7px", borderRadius: 8, background: hexA("#e0556b", 0.15), color: "#e0707a" }}>예산 초과</span>}
         {p.price_verdict === "stretch" && <span style={{ fontSize: 9.5, padding: "1px 7px", borderRadius: 8, background: hexA("#e0a53a", 0.15), color: "#e0a53a" }}>가격 무리</span>}
@@ -165,7 +166,7 @@ export default function RecruitPool({ team, accent, focusRole }: { team: string;
   const avgVal = kVal.length ? kVal.reduce((s, x) => s + x, 0) / kVal.length : 0;
 
   if (disc && !disc.available) return (
-    <EmptyState title="스타일 유사 선수 추천 준비 중" note="벡터 검색 저장소가 연결되면 전 리그 후보를 추천합니다" />
+    <EmptyState title="스타일 유사 선수 추천 준비 중" note="잠시 후 다시 확인하세요" />
   );
 
   const railLabel: React.CSSProperties = { fontSize: 10, fontWeight: 700, opacity: 0.5, textTransform: "uppercase", letterSpacing: 0.5, margin: "14px 0 7px" };
@@ -174,7 +175,7 @@ export default function RecruitPool({ team, accent, focusRole }: { team: string;
     <div style={{ marginTop: 16 }}>
       {/* KPI */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))", gap: 10, marginBottom: 14 }}>
-        <Kpi label="후보" value={String(picks.length)} sub="필터 적용" accent={accent} />
+        <Kpi label="후보" value={String(picks.length)} accent={accent} />
         <Kpi label="평균 나이" value={`${avgAge}세`} accent={accent} />
         <Kpi label="평균 시장가" value={fmtEur(avgVal)} accent={accent} />
         <Kpi label="커버 리그" value={String(new Set(picks.map((p) => p.source_league)).size)} accent={accent} />
@@ -187,7 +188,15 @@ export default function RecruitPool({ team, accent, focusRole }: { team: string;
             필터 · {lvl === "squad" ? "주전급·로테이션·유망주" : lvl === "starter" ? "주전급·로테이션" : lvl === "prospect" ? "유망주" : "전체"}{role ? ` · ${role}` : ""} {railOpen ? "▴" : "▾"}
           </button>
           <div className="rp-rail-body">
-          <div style={{ ...railLabel, marginTop: 0 }}>수준 <span style={{ textTransform: "none", fontWeight: 400 }}>· 팀 OVR {disc?.team_ovr ?? "?"} 대비</span></div>
+          <div style={{ ...railLabel, marginTop: 0 }}>수준 <span style={{ textTransform: "none", fontWeight: 400 }}>· 팀 OVR {disc?.team_ovr ?? "?"} 대비</span>{" "}
+            <Info label="수준 필터 설명">
+              <ul>
+                <li><b>쓸 만한 후보</b> — 팀 OVR −9 이상 + 21세 이하 유망주</li>
+                <li><b>주전급·로테이션</b> — 팀 OVR −9 이상</li>
+                <li><b>유망주</b> — 21세 이하 · 팀 수준 아래</li>
+                <li><b>전체</b> — 수준 무관</li>
+              </ul>
+            </Info></div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 5 }}>
             {([["squad", "쓸 만한 후보"], ["starter", "주전급·로테이션"], ["prospect", "유망주"], ["all", "전체"]] as const).map(([v, lbl]) => (
               <button key={v} onClick={() => setLvl(v)} title={v === "squad" ? "팀 OVR −9 이상 + 21세 이하 유망주" : v === "starter" ? "팀 OVR −9 이상" : v === "prospect" ? "21세 이하 · 팀 수준 아래" : "수준 무관"} style={{
@@ -219,7 +228,7 @@ export default function RecruitPool({ team, accent, focusRole }: { team: string;
           <input type="range" min={16} max={40} value={ageMax} onChange={(e) => setAgeMax(Math.max(+e.target.value, ageMin))} style={{ width: "100%" }} />
           <div style={railLabel}>시장가 ≤ €{valMax}M</div>
           <input type="range" min={5} max={200} step={5} value={valMax} onChange={(e) => setValMax(+e.target.value)} style={{ width: "100%" }} />
-          <div style={railLabel}>계약</div>
+          <div style={railLabel}>계약 <Info label="계약 필터 설명"><p>계약이 12개월 안에 끝나는 후보만 — 이적료 협상력이 낮거나 다음 여름 자유계약.</p></Info></div>
           <label style={{ display: "flex", alignItems: "center", gap: 7, fontSize: 12, cursor: "pointer" }}
             title="계약이 12개월 안에 끝나는 후보만 — 이적료 협상력이 낮거나 다음 여름 자유계약">
             <input type="checkbox" checked={expiring} onChange={(e) => setExpiring(e.target.checked)} />
@@ -233,7 +242,7 @@ export default function RecruitPool({ team, accent, focusRole }: { team: string;
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
             <span style={{ fontSize: 12, opacity: 0.7 }}>
               {loading ? "—" : `${picks.length}명`}
-              {!role && disc?.needs?.length ? <span style={{ opacity: 0.6 }} title="스카우트 데스크 포지션 니즈 상위(부상·폼·이적 공백)"> · 니즈 {disc.needs.map((n) => `${n.label}(${n.urgency})`).join(" · ")}</span>
+              {!role && disc?.needs?.length ? <span style={{ opacity: 0.6 }} title={`포지션 니즈 상위(부상·폼·이적 공백): ${disc.needs.map((n) => `${n.label}(${n.urgency})`).join(" · ")}`}> · 니즈 {disc.needs.slice(0, 3).map((n) => n.label).join("·")}</span>
                 : disc?.target_roles && !role ? <span style={{ opacity: 0.6 }}> · 대상 {disc.target_roles.join("·")}</span> : null}
             </span>
             <label style={{ fontSize: 12, opacity: 0.7 }}>정렬{" "}
@@ -243,14 +252,14 @@ export default function RecruitPool({ team, accent, focusRole }: { team: string;
             </label>
           </div>
           {loading ? <SkelCards n={6} cols="repeat(auto-fill, minmax(280px, 1fr))" />
-            : picks.length === 0 ? <div className="mgr-meta">조건에 맞는 후보 없음 — 필터를 넓혀보세요</div>
+            : picks.length === 0 ? <div className="mgr-meta">조건에 맞는 후보 없음 · 필터를 넓혀보세요</div>
               : <>
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 12 }}>
                   {picks.slice(0, shown).map((p, i) => <Card key={i} p={p} accent={accent} team={team} />)}
                 </div>
                 {picks.length > shown && (
                   <button className="more-btn" onClick={() => setShown((v) => v + PAGE)}>
-                    더 보기 · {Math.min(PAGE, picks.length - shown)}명 더 ({shown}/{picks.length})
+                    더 보기 ({shown}/{picks.length})
                   </button>
                 )}
               </>}

@@ -6,6 +6,7 @@ import { compEn, lgEn } from "@/lib/match";
 import { LEAGUE_OF_CODE } from "@/lib/standings";
 import type { SeasonLog as Log } from "@/lib/api";
 import { hexA } from "@/lib/ui";
+import Info from "./Info";
 
 // SEASON LOG — 리그·국내컵·유럽대항전을 경기별로 쌓고(출전 분·골·도움·카드) 대회별로 나눠 합산한다.
 // 원천: ESPN 라인업·교체(대회별) + 선수 이벤트(data/match_events). 예전 Player 탭은 리그 스탯 + 컵·유럽 선발 수뿐이었다.
@@ -43,7 +44,18 @@ export default function SeasonLog({ log, accent }: { log: Log; accent: string })
   return (
     <div className="slog">
       <div className="slog-head">
-        <h4 className="net-h">SEASON LOG <span>대회별 분리 · 합산 — 리그·컵·유럽 라인업과 득점 기록</span></h4>
+        <h4 className="net-h">SEASON LOG <span>대회별 · 합계</span>
+          <Info wide label="시즌 기록 보는 법">
+            <p>리그·컵·유럽 경기별 라인업과 득점 기록을 대회별로 나눠 합산합니다.</p>
+            <ul>
+              <li>막대 = 출전 시간 · 진할수록 선발 · 색 = 대회</li>
+              <li>● 골 · ▲ 도움 · 빨간 칸 = 퇴장</li>
+              <li>막대를 누르거나 마우스를 올리면 경기 정보</li>
+            </ul>
+            <p className="muted">평점·FM = FotMob 경기별 평점 평균(평점 있는 경기) · 선수 시즌 평점은 Sofascore·FotMob 두 출처 평균
+              · {gk ? "선방·실점" : "슈팅(유효)"} = ESPN 경기 기록</p>
+          </Info>
+        </h4>
         <div className="comp-seg chips5">
           <button className={comp === "all" ? "active" : ""} onClick={() => setComp("all")}>ALL</button>
           {log.by_comp.filter((c) => c.matches).map((c) => (
@@ -83,7 +95,7 @@ export default function SeasonLog({ log, accent }: { log: Log; accent: string })
           {ms.map((m, i) => {
             const on = hover === i;
             return (
-              <g key={i} onMouseEnter={() => setHover(i)} onMouseLeave={() => setHover(null)} style={{ cursor: "default" }}>
+              <g key={i} onMouseEnter={() => setHover(i)} onMouseLeave={() => setHover(null)} onClick={() => setHover(i)} style={{ cursor: "default" }}>
                 <rect x={x(i) - bw / 2 - 3} y={top - 22} width={bw + 6} height={H - top + 10} fill={on ? hexA("#ffffff", 0.05) : "transparent"} />
                 {m.minutes > 0
                   ? <rect x={x(i) - bw / 2} y={y(m.minutes)} width={bw} height={base - y(m.minutes)} rx={3} fill={cc(m.comp)} fillOpacity={m.status === "start" ? 0.95 : 0.55} />
@@ -107,10 +119,9 @@ export default function SeasonLog({ log, accent }: { log: Log; accent: string })
             {" · "}{ST[hm.status]}{hm.minutes ? ` ${hm.minutes}′` : ""}{hm.goals ? ` · ${hm.goals}골${hm.pens ? `(PK ${hm.pens})` : ""}` : ""}{hm.assists ? ` · ${hm.assists}도움` : ""}
             {hm.has_stats && hm.minutes ? (gk ? ` · 선방 ${hm.saves ?? 0} · 실점 ${hm.conceded ?? 0}` : ` · 슈팅 ${hm.shots ?? 0}(유효 ${hm.sot ?? 0})`) : ""}
             {hm.rating ? ` · 평점 ${hm.rating.toFixed(1)}` : ""}</span>
-        ) : (
-          <span>막대 = 출전 시간(진할수록 선발, 색 = 대회) · ● 골 · ▲ 도움 · 막대에 마우스를 올리면 경기 정보
-            {log.events_coverage < 1 ? ` · 득점 기록 수집 ${Math.round(log.events_coverage * 100)}%` : ""}</span>
-        )}
+        ) : log.events_coverage < 1 ? (
+          <span>득점 기록 수집 {Math.round(log.events_coverage * 100)}%</span>
+        ) : null}
       </div>
     </div>
   );

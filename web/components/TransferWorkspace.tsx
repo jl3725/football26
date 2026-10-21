@@ -4,6 +4,7 @@ import { fmtEur, getWorkspace, type Workspace, type WorkspacePick } from "@/lib/
 import { tier } from "@/lib/ui";
 import { useShortlist } from "@/lib/shortlist";
 import SectionHead from "./SectionHead";
+import Info from "./Info";
 import { usePeek } from "./PlayerPeek";
 import { Skel } from "./Skeleton";
 
@@ -73,7 +74,15 @@ export default function TransferWorkspace({ team, accent, onFit, onReport }: {
   return (
     <div className="card tws">
       <SectionHead title="TRANSFER WORKSPACE" kr="이적 작업대"
-        meta="니즈 → 아래 스카우팅 풀에서 ☆ 고정 → 2~3명 비교·FIT·리포트 → 예산" />
+        info={<>
+          <p><b>쓰는 순서</b></p>
+          <ul>
+            <li>니즈 확인 → 아래 스카우팅 풀에서 ☆로 후보 고정</li>
+            <li>2~3명을 '비교'로 골라 나란히 보기 · FIT 평가 · 리포트</li>
+            <li>예상 이적료 합을 창 평균 지출과 비교(예산 시나리오)</li>
+          </ul>
+          <p className="muted">고정 목록은 이 브라우저에 팀별로 저장되고, 숫자는 열 때마다 새로 계산합니다.</p>
+        </>} />
       {/* 예산 시나리오 */}
       {w ? (
         <div className="tws-budget">
@@ -87,7 +96,7 @@ export default function TransferWorkspace({ team, accent, onFit, onReport }: {
         </div>
       ) : <Skel h={30} r={8} />}
       {sl.items.length === 0 ? (
-        <p className="tws-empty">아직 고정한 후보가 없습니다 — 아래 SCOUTING POOL 카드의 <b>☆</b>를 누르면 여기로 모입니다(이 브라우저에 저장).</p>
+        <p className="tws-empty">아래 후보의 <b>☆</b>로 고정하세요</p>
       ) : (
         <>
           {pool.length > 0 && w?.avg_spend ? (
@@ -102,7 +111,7 @@ export default function TransferWorkspace({ team, accent, onFit, onReport }: {
               if (!p) return <div key={k} className="tws-card"><Skel h={70} r={10} /></div>;
               if (!p.found) return (
                 <div key={k} className="tws-card miss">
-                  <b>{it.player}</b><span>{it.club} · 지금 데이터에서 찾지 못함(리그 밖 이적·이름 변경)</span>
+                  <b>{it.player}</b><span title="리그 밖 이적·이름 변경 등으로 지금 데이터에서 찾지 못함">{it.club} · 데이터 없음</span>
                   <button className="tws-x" onClick={() => sl.remove(it.player, it.club)} aria-label="빼기">✕</button>
                 </div>
               );
@@ -153,8 +162,11 @@ export default function TransferWorkspace({ team, accent, onFit, onReport }: {
               </table>
             </div>
           )}
-          {chosen.length >= 2 && <p className="tws-note">초록 = 그 줄에서 가장 좋은 값(이적료·나이·계약은 낮을수록 — 계약이 짧으면 살 때 협상이 유리).</p>}
-          {chosen.length < 2 && sl.items.length >= 2 && <p className="tws-note">두세 명을 '비교'로 고르면 나란히 봅니다(좋은 값은 초록).</p>}
+          {chosen.length >= 2 && <p className="tws-note">초록 = 가장 좋은 값 <Info label="비교표 색 설명">
+            <p>초록은 그 줄에서 가장 좋은 값입니다.</p>
+            <p className="muted">이적료·나이·계약은 낮을수록 좋게 봅니다 — 계약이 짧으면 살 때 협상이 유리합니다.</p>
+          </Info></p>}
+          {chosen.length < 2 && sl.items.length >= 2 && <p className="tws-note">2~3명 '비교' 선택</p>}
         </>
       )}
     </div>

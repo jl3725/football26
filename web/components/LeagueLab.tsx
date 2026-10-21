@@ -3,6 +3,7 @@ import { useState } from "react";
 import type { LabFinish, LabCreate, LabPlaymaker, LabBallWinner, TeamStyle } from "@/lib/api";
 import { usePeek } from "./PlayerPeek";
 import { TONE } from "@/lib/meaning";
+import Info from "./Info";
 
 // 리그 분석 랩(홈 LEAGUE FOCUS) — /api/league-lab/{league}, Sofascore 시즌 기록.
 // 분석가가 실제로 보는 형태로: 기대값 대비(골 vs xG·도움 vs xA), 팀 스타일 사분면, 90분당 수비 액션.
@@ -100,9 +101,18 @@ export function ExpectedBoard({ finishing, creating, league }: { finishing: LabF
             );
           })}
           <span style={{ fontSize: 11, color: "var(--muted-2)" }}>
-            <i style={{ background: TONE.good.c }} />{fin ? "기대보다 많이 넣음" : "기대보다 도움 많음"}(+1 이상)
+            <i style={{ background: TONE.good.c }} />+1↑
             {" · "}<i style={{ background: TONE.avg.c, marginLeft: 2 }} />비슷
-            {" · "}<i style={{ background: TONE.weak.c, marginLeft: 2 }} />{fin ? "기대보다 적게 넣음" : "기대보다 도움 적음"}(−1 이하)
+            {" · "}<i style={{ background: TONE.weak.c, marginLeft: 2 }} />−1↓
+            <Info label="점 색 설명">
+              <p>점 색 = 실제 − 기대({fin ? "골 − xG" : "도움 − xA"})</p>
+              <ul>
+                <li><span style={{ color: TONE.good.c }}>●</span> {fin ? "기대보다 많이 넣음" : "기대보다 도움 많음"}(+1 이상)</li>
+                <li><span style={{ color: TONE.avg.c }}>●</span> 비슷(±1 안)</li>
+                <li><span style={{ color: TONE.weak.c }}>●</span> {fin ? "기대보다 적게 넣음" : "기대보다 도움 적음"}(−1 이하)</li>
+              </ul>
+              <p className="muted">점을 누르면 선수 미리보기.</p>
+            </Info>
           </span>
         </div>
       )}
@@ -155,7 +165,6 @@ export function BallWinners({ rows, league }: { rows: LabBallWinner[]; league: s
           </span>
         </button>
       ))}
-      <p className="bw5-note">90분당 · 태클 성공 + 인터셉트 + 볼 회수(절반 가중) 순</p>
     </div>
   );
 }
@@ -181,8 +190,8 @@ export function TeamStyleMap({ teams, onPick, league }: { teams: TeamStyle[]; on
       <text x={L + 6} y={T + 14} className="tm5-q l">수비 단단 · 기회 적음</text>
       <text x={W - R - 6} y={H - B - 8} className="tm5-q">화끈 · 수비 불안</text>
       <text x={L + 6} y={H - B - 8} className="tm5-q l bad">고전</text>
-      <text x={(L + W - R) / 2} y={H - 4} className="sc5-axis">경기당 xG (만든 기회의 질) →</text>
-      <text x={12} y={(T + H - B) / 2} className="sc5-axis" transform={`rotate(-90 12 ${(T + H - B) / 2})`}>← 경기당 실점 (위가 적음)</text>
+      <text x={(L + W - R) / 2} y={H - 4} className="sc5-axis">xG/경기 →</text>
+      <text x={12} y={(T + H - B) / 2} className="sc5-axis" transform={`rotate(-90 12 ${(T + H - B) / 2})`}>실점/경기 (위=적음)</text>
       {teams.map((t) => (
         <g key={t.team} className="tm5-team" onClick={() => onPick(t.team, league)}>
           <title>{`${t.team} · ${t.rank}위 — 경기당 xG ${t.xg_pg} · 득점 ${t.gf_pg} · 실점 ${t.ga_pg}`}</title>

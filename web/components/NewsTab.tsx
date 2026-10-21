@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { getNews, type Article, type News, type NewsStory, type NewsTrack } from "@/lib/api";
 import AiNote from "./AiNote";
 import SectionHead from "./SectionHead";
+import Info from "./Info";
 import { SkelCards } from "./Skeleton";
 
 // 종류·이적 단계 이름 — 영어 위주 + 작은 한글(src/news_classify.py 의 kind·stage)
@@ -64,8 +65,12 @@ function StoryCard({ s, byLink, track }: { s: NewsStory; byLink: Map<string, Art
         {s.first === s.last ? md(s.last) : `${md(s.first)}–${md(s.last)}`} · {s.sources.slice(0, 4).join(" · ")}{more > 0 ? ` 외 ${more}` : ""}
       </div>
       {s.kind === "transfer" && s.stage && track?.stages?.[s.stage] && (
-        <div className="nw-story-rate" title={stageNote(s.stage, track)}>
-          TRACK RECORD <b>{pct(track.stages[s.stage].rate)}</b> <span>{s.stage === "denied" ? "지난 시장에서 '부인' 보도가 맞은 비율" : "지난 시장에서 이 단계 보도가 실제로 성사된 비율"} · {track.stages[s.stage].hits}/{track.stages[s.stage].n}</span>
+        <div className="nw-story-rate">
+          {s.stage === "denied" ? "적중률" : "성사율"} <b>{pct(track.stages[s.stage].rate)}</b>{" "}
+          <Info label="성사율 설명">
+            <p>{s.stage === "denied" ? "지난 시장에서 '부인' 보도가 맞은 비율" : "지난 시장에서 이 단계 보도가 실제로 성사된 비율"} ({track.stages[s.stage].hits}/{track.stages[s.stage].n}).</p>
+            <p className="muted">{stageNote(s.stage, track)}</p>
+          </Info>
         </div>
       )}
       {(s.journalists.length > 0 || s.players.length > 0) && (
@@ -127,7 +132,15 @@ function TrackRecord({ track, names }: { track: NewsTrack; names: string[] }) {
   return (
     <>
       <SectionHead title="SOURCE TRACK RECORD" kr="매체 적중률"
-        meta={`닫힌 이적시장 루머 ${track.all?.n ?? 0}건을 실제 이적(Transfermarkt)과 대조 · 표본 적은 매체는 전체 평균 쪽으로 보정`} />
+        meta={`루머 ${track.all?.n ?? 0}건 검증`}
+        info={<>
+          <p>지난 닫힌 이적시장의 루머 {track.all?.n ?? 0}건을 실제 이적(Transfermarkt)과 대조했습니다.</p>
+          <ul>
+            <li><b>단계별</b> — 관심·협상·합의·확정 보도가 실제로 성사된 비율, 부인은 보도가 맞은 비율</li>
+            <li><b>매체별</b> — 이적 루머 적중률(적중/전체). 막대는 보정 점수</li>
+          </ul>
+          <p className="muted">표본이 적은 매체는 전체 평균 쪽으로 보정하고, 너무 적으면 빼고 보여 줍니다.</p>
+        </>} />
       <div className="nw-track">
         {st.length > 0 && (
           <div className="nw-track-st">
@@ -175,10 +188,14 @@ export default function NewsTab({ team, accent }: { team: string; accent: string
 
   return (
     <div className="fade">
-      {data.ai && <AiNote lines={data.ai.lines} at={data.ai.at} label="TODAY'S BRIEF" sub={`최근 48시간 기사 ${data.ai.n ?? ""}건 AI 요약`} />}
+      {data.ai && <AiNote lines={data.ai.lines} at={data.ai.at} label="TODAY'S BRIEF" sub={`AI · 48시간 · ${data.ai.n ?? ""}건`} />}
       {stories.length > 0 && (
         <>
-          <SectionHead title="STORIES" kr="여러 매체가 다룬 이야기" meta={`최근 14일 · ${stories.length}건 · 같은 선수·같은 제목으로 묶음`} />
+          <SectionHead title="STORIES" kr="여러 매체가 다룬 이야기" meta={`최근 14일 · ${stories.length}건`}
+            info={<>
+              <p>최근 14일 기사 중 같은 선수·같은 제목을 다룬 기사를 한 이야기로 묶었습니다.</p>
+              <p className="muted">이적 이야기는 단계(관심 → 협상 → 합의 → 확정)와 지난 시장의 그 단계 성사율을 함께 보여 줍니다.</p>
+            </>} />
           <div className="nw-stories">{stories.map((s) => <StoryCard key={s.id} s={s} byLink={byLink} track={data.track} />)}</div>
         </>
       )}
@@ -202,7 +219,7 @@ export default function NewsTab({ team, accent }: { team: string; accent: string
           ))}
         </div>
       )}
-      {data.sparse && <div className="season-note" style={{ marginTop: 0, marginBottom: 14 }}>이 팀 전용 기사가 적어 표시가 제한적일 수 있습니다.</div>}
+      {data.sparse && <div className="season-note" style={{ marginTop: 0, marginBottom: 14 }}>관련 기사 적음</div>}
       {shown.length === 0
         ? <div className="season-note">이 조건의 기사가 없습니다.</div>
         : <div className="news-grid">{shown.map((a) => <ArticleCard key={a.link} a={a} accent={accent} track={data.track} />)}</div>}

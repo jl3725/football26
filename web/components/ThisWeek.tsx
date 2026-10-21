@@ -4,6 +4,7 @@ import { getThisWeek, type ThisWeek as TW, type WeekAbsence } from "@/lib/api";
 import MatchCard from "./MatchCard";
 import Pitch from "./Pitch";
 import SectionHead from "./SectionHead";
+import Info from "./Info";
 import { useOpenTeam, usePeek } from "./PlayerPeek";
 import { Skel } from "./Skeleton";
 
@@ -41,7 +42,11 @@ export default function ThisWeek({ team, accent }: { team: string; accent: strin
   const opp = d.opponent;
   return (
     <div className="card tw" style={{ marginTop: 16 }}>
-      <SectionHead title="THIS WEEK" kr="이번 주" meta={n7 ? `7일 안 ${n7}경기 · 전 대회 · 누르면 프리뷰` : "다음 경기 · 전 대회"} />
+      <SectionHead title="THIS WEEK" kr="이번 주" meta={n7 ? `7일 ${n7}경기` : "다음 경기"}
+        info={<>
+          <p>7일 안 경기(리그·컵·유럽 전 대회). 경기를 누르면 프리뷰가 열립니다.</p>
+          <p>7일 동안 3경기 이상이면 로테이션 경고를 띄웁니다.</p>
+        </>} />
       {d.week.length > 0 && (
         <div className="next-match">
           <MatchCard m={d.week[0]} onPick={go} />
@@ -68,14 +73,19 @@ export default function ThisWeek({ team, accent }: { team: string; accent: strin
               <div>
                 <h4>{opp.team} <span>{opp.covered ? `${opp.absences.length}명` : ""}</span></h4>
                 {opp.covered ? <AbsList items={opp.absences} team={opp.team} empty="결장 없음" />
-                  : <p className="tw-empty">우리가 다루는 8개 리그 밖 팀 — 결장 정보 없음</p>}
+                  : <p className="tw-empty">결장 정보 없음
+                    <Info label="결장 정보 없음 이유"><p>우리가 다루는 8개 리그 밖 팀이라 결장 정보를 모으지 않습니다.</p></Info></p>}
               </div>
             )}
           </div>
         </section>
         {d.xi.placements.length > 0 && (
           <section className="tw-sec tw-xi">
-            <h3>PROJECTED XI <em>결장 반영 예상 · {d.xi.formation ?? ""}</em></h3>
+            <h3>PROJECTED XI <em>결장 반영 예상{d.xi.formation ? ` · ${d.xi.formation}` : ""}</em>
+              <Info label="예상 XI 기준">
+                <p><b>기준</b> = {d.xi.basis}.</p>
+                <p>결장으로 빈 자리는 빠진 선수와 같은 세부 포지션 후보 중 OVR 이 가장 높은 선수로 채웁니다(없으면 같은 라인).</p>
+              </Info></h3>
             <Pitch placements={d.xi.placements} accent={accent} team={team} />
             {d.xi.changes.length > 0 ? (
               <ul className="tw-changes">
@@ -83,11 +93,15 @@ export default function ThisWeek({ team, accent }: { team: string; accent: strin
                   <li key={c.slot}><b>{c.slot}</b> {c.out} → {c.in ? <strong>{c.in}</strong> : <span className="tw-gap">대체 없음</span>}<em>{c.reason}</em></li>
                 ))}
               </ul>
-            ) : <p className="tw-note">{d.xi.basis} — 결장으로 바뀌는 자리 없음</p>}
+            ) : <p className="tw-note">결장 영향 없음</p>}
           </section>
         )}
         <section className="tw-sec">
-          <h3>ROTATION LOAD <em>최근 14일 · {d.games14}경기</em></h3>
+          <h3>ROTATION LOAD <em>최근 14일 · {d.games14}경기</em>
+            <Info label="로테이션 부담 기준">
+              <p>최근 14일 출전 분(FotMob 경기별, 전 대회) 270′ 넘게 뛴 선수.</p>
+              <p><b>빨강</b> = 360′ 초과 또는 4경기 연속 풀타임(85′+).</p>
+            </Info></h3>
           {d.rotation.length ? (
             <ul className="tw-rot">
               {d.rotation.map((r) => (
@@ -99,8 +113,7 @@ export default function ThisWeek({ team, accent }: { team: string; accent: strin
                 </li>
               ))}
             </ul>
-          ) : <p className="tw-empty">14일 동안 270′ 넘게 뛴 선수가 없습니다.</p>}
-          <p className="tw-note">FotMob 경기별 출전 분(전 대회) · 360′ 넘거나 4연속 풀타임이면 빨강</p>
+          ) : <p className="tw-empty">270′ 넘게 뛴 선수 없음</p>}
         </section>
       </div>
     </div>

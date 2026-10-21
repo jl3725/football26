@@ -23,7 +23,11 @@ export default function OverviewSignals({ team, accent = "#ff4d5e" }: { team: st
   if (!msgs || msgs.length === 0) return null;
   return (
     <div className="card" style={{ marginTop: 16 }}>
-      <SectionHead title="BRIEFING" kr="지금 중요한 3가지" meta="Inbox 중요도 상위(경기 일정은 위 THIS WEEK) · 자세히는 Inbox 탭" />
+      <SectionHead title="BRIEFING" kr="지금 중요한 3가지" meta="자세히는 Inbox"
+        info={<>
+          <p>Inbox 메시지 중 중요도 상위 3건(결장·핵심 부상 등).</p>
+          <p className="muted">다음 경기·일정 과밀은 위 THIS WEEK 에 있어 뺐습니다. 전체 목록은 Inbox 탭.</p>
+        </>} />
       <div className="ov-brief">
         {msgs.slice(0, 3).map((m) => (
           <div key={m.id} className={`ov-brief-i${m.action?.kind === "player" ? " peekable" : ""}`} style={{ borderLeftColor: TONE[m.tone] || accent }}

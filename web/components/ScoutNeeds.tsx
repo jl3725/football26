@@ -4,6 +4,7 @@ import { fmtEur, type Needs, type PositionNeed } from "@/lib/api";
 import { tier } from "@/lib/ui";
 import { TONE } from "@/lib/meaning";
 import { usePeek } from "./PlayerPeek";
+import Info from "./Info";
 
 // 스카우트 데스크 — 포지션 니즈 v2(api _position_needs)를 그림으로: 피치 위 포지션마다 시급도 점(색·크기),
 // 누르면 그 포지션 근거를 아이콘 칩으로(뎁스 칸 · 이번 창 나감→영입 사진 · 부상 주 수 · 폼 · 나이·계약).
@@ -132,7 +133,16 @@ export default function ScoutNeeds({ needs, team, accent, onRole }: {
       <div className="scout-hd">
         <span className="scout-tag" style={{ color: accent }}>SCOUT DESK</span>
         <b>POSITION NEEDS</b>
-        <span className="scout-d">부상·폼·이번 창 이탈·나이를 매일 다시 계산 · 점을 누르면 근거</span>
+        <span className="scout-d">점을 누르면 근거 <Info label="POSITION NEEDS 설명">
+          <p>포지션마다 시급도를 <b>매일 다시 계산</b>합니다.</p>
+          <ul>
+            <li>뎁스 — 이 자리에 쓸 수 있는 선수 수</li>
+            <li>부상 — 결장 주 수와 이 자리 전력 하락</li>
+            <li>이번 창 — 나간 선수가 영입으로 대체됐는지</li>
+            <li>폼(LAST 5) · 나이 · 계약 만료</li>
+          </ul>
+          <p className="muted">1월 창 = 지금 공백(장기 부상·대체 안 된 이탈·뎁스 부족) · 여름 창 = 노쇠·계약 같은 승계 과제.</p>
+        </Info></span>
         {needs.team_ovr != null && <span className="scout-cnt">팀 OVR {needs.team_ovr} · 영입 {needs.window.signings.length} · 방출 {needs.window.departures.length}</span>}
       </div>
       <div className="sn-grid">
@@ -173,7 +183,7 @@ export default function ScoutNeeds({ needs, team, accent, onRole }: {
       </div>
       {p && (
         <div className="pn-policy">
-          <div className="pn-policy-h"><b>TRANSFER POLICY</b><span>최근 두 시즌 영입 {p.n}명 — 추천 후보를 이 기준과 대조</span></div>
+          <div className="pn-policy-h"><b>TRANSFER POLICY</b><span>최근 2시즌 영입 {p.n}명 <Info label="TRANSFER POLICY 설명"><p>이 구단이 최근 두 시즌에 영입한 선수들의 나이·이적료·출신 리그입니다.</p><p className="muted">추천 후보를 이 기준과 대조해 '정책 부합/밖'을 표시합니다.</p></Info></span></div>
           <div className="pn-policy-row">
             {p.age_lo != null && <span><em>나이</em><b>{p.age_lo}~{p.age_hi}세</b><small>U23 {Math.round((p.u23_share ?? 0) * 100)}%</small></span>}
             {p.fee_med != null && <span><em>이적료</em><b>{fmtEur(p.fee_med)}</b><small>최고 {fmtEur(p.fee_max ?? 0)}</small></span>}

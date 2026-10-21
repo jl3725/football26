@@ -5,6 +5,7 @@ import { useMatchPreview } from "@/lib/matchPreview";
 import { hexA } from "@/lib/ui";
 import { TONE } from "@/lib/meaning";
 import { Chevron } from "./SectionHead";
+import Info from "./Info";
 import { useLive, liveLabel, type LiveEvent } from "@/lib/live";
 import { useLiveFixture } from "@/lib/standings";
 
@@ -100,6 +101,8 @@ export function PredictBar({ m, detail = false, slim = false, only }: { m: Fixtu
   if (!rows.length && m.elo && (!only || only === "elo")) rows = [{ key: "elo", label: "CLUBELO", v: m.elo, tip: "ClubElo — 유럽 클럽 Elo 레이팅 기반 독립 예측" }];
   if (!rows.length) return slim || only ? null : <PowerBar m={m} />;
   const split = rows.length === 2 && favOf(rows[0].v) !== favOf(rows[1].v);
+  const score = m.model && rows.some((r) => r.key === "model") ? m.model.score : null;
+  const who = (r: Row) => (r.key === "fans" ? "팬" : r.key === "model" ? "모델" : "Elo");
   return (
     <div className={`pb5 duo${slim ? " slim" : ""}`}>
       {rows.map((r) => {
@@ -119,11 +122,18 @@ export function PredictBar({ m, detail = false, slim = false, only }: { m: Fixtu
         );
       })}
       {!slim && (
+        // 아래 줄은 숫자만(무승부 % · 예상 스코어) — 출처·표 수·두 줄 비교 뜻은 ⓘ 로(2026-10-21 '글이 너무 많다')
         <div className="pb5-foot">
           {split && <span className="pb5-split">의견 갈림</span>}
-          <span>무승부 {rows.map((r) => `${r.label === "FANS" ? "팬" : r.label === "MODEL" ? "모델" : "Elo"} ${pc(r.v.d)}`).join(" · ")}</span>
-          {m.model && rows.some((r) => r.key === "model") && <span>모델 예상 스코어 <b>{m.model.score}</b></span>}
-          {detail && m.fans && <span className="pb5-n">팬 {m.fans.n.toLocaleString()}표</span>}
+          <span>무 {rows.map((r) => Math.round(r.v.d * 100)).join("·")}%
+            {score && <> · 예상 <b>{score}</b></>}
+            <Info label="승부 예측 설명" wide={detail}>
+              <p>무승부 확률 — {rows.map((r) => `${who(r)} ${pc(r.v.d)}`).join(" · ")}</p>
+              {score && <p>모델 예상 스코어 <b>{score}</b></p>}
+              <ul>{rows.map((r) => <li key={r.key}><b>{r.label}</b> — {r.tip}</li>)}</ul>
+              {split && <p className="muted">의견 갈림 = 팬과 모델이 가장 높게 본 결과가 다른 경기.</p>}
+            </Info>
+          </span>
         </div>
       )}
     </div>
@@ -210,9 +220,9 @@ export function MatchHero({ m: m0, onPick }: { m: Fixture; onPick?: Pick_ }) {
         <span className={`bdg ${tone}`}>{compLabel(m)}</span>
         <StateBadge m={m} lv={lv} />
         <span className="mh5-kicker">MATCH OF THE WEEK{lv?.state === "post" ? " · FULL TIME" : lv?.state === "in" ? " · LIVE" : ""}</span>
-        <span className="mh5-score" title={`빅매치 지수 ${m.big} — 대회 비중(챔스 등)·순위 맞대결·양 팀 전력을 합친 점수, ${BIG} 이상이면 빅매치`}>
+        <span className="mh5-score">
           BIG SCORE {m.big}
-          <small style={{ font: "500 11px/1 var(--font-ui)", letterSpacing: 0, marginLeft: 6 }}>빅매치 지수 · {BIG}+ 빅매치</small>
+          <Info label="빅매치 지수"><p>빅매치 지수 <b>{m.big}</b> — 대회 비중(챔스 등)·순위 맞대결·양 팀 전력을 합친 점수.</p><p className="muted">{BIG} 이상이면 빅매치.</p></Info>
         </span>
       </div>
       <div className="mh5-teams">

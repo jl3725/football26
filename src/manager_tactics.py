@@ -86,7 +86,8 @@ def _load():
             mgr[lg] = {}
         try:
             pf = pd.read_csv(data_path("players_full", lg))
-            pf["_posd"] = pf.get("tm_position").map(_posd)
+            # 주간 시즌 빌드 중엔 TM 포지션이 아직 안 붙은 표일 수 있다 — 열이 없으면 빈 값(적합도 평가 전체가 죽지 않게)
+            pf["_posd"] = (pf["tm_position"] if "tm_position" in pf.columns else pd.Series(None, index=pf.index, dtype=object)).map(_posd)
             pf["_min"] = pd.to_numeric(pf.get("minutes"), errors="coerce").fillna(0)
             squad[lg] = pf
         except (OSError, ValueError):

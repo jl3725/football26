@@ -4,6 +4,7 @@ import { getBuilder, type BuilderPlayer } from "@/lib/api";
 import { tier } from "@/lib/ui";
 import { ovrMeaning, scoreMeaning } from "@/lib/meaning";
 import { MeaningTag } from "./Meaning";
+import Info from "./Info";
 import { usePeek } from "./PlayerPeek";
 
 // Best XI 빌더 — 포메이션 칸마다 역할(GK·LB·CB·RB·DM·CM·AM·LW·RW·ST)이 있고, '선수 OVR × 그 역할 적합도'의 합이
@@ -129,8 +130,13 @@ export default function SquadBuilder({ team, accent }: { team: string; accent: s
           <em>XI OVR</em>
           <b style={{ color: tier(teamOvr).light }} title={`베스트 XI 평균 OVR(자리 적합도 반영) ${teamOvr} · ${ovrMeaning(teamOvr).label}`}>{teamOvr}</b>
           <MeaningTag sm m={ovrMeaning(teamOvr)} title="OVR 등급(OVR GUIDE 와 같은 띠)" />
-          <span title="선수들이 본래 자리에 얼마나 맞게 섰는지 — 주 포지션 100% · 멀티 95% · 비슷한 자리 85% · 같은 라인 75%">
+          <span>
             포지션 적합도 <b style={{ font: "inherit", fontWeight: 700, color: scoreMeaning(fitAvg).c }}>{fitAvg}%</b>
+            <Info label="포지션 적합도 기준">
+              <p><b>포지션 적합도</b> = 선수들이 본래 자리에 얼마나 맞게 섰는지(XI 평균).</p>
+              <p>주 포지션 100% · 멀티 95% · 비슷한 자리 85% · 같은 라인 75%</p>
+              <p className="muted">포지션 = 실제로 선 자리(이번 시즌 + 지난 시즌 선발, 부족하면 Transfermarkt).</p>
+            </Info>
           </span>
         </div>
         {Object.keys(overrides).length > 0 && <button className="sb5-reset" onClick={() => { setOverrides({}); setPick(null); }}>자동 배치로</button>}
@@ -171,7 +177,7 @@ export default function SquadBuilder({ team, accent }: { team: string; accent: s
             </>
           ) : (
             <>
-              <div className="sb5-st">벤치 · {bench.length} <span>칸을 누르면 그 자리에 맞는 순으로 교체 후보</span></div>
+              <div className="sb5-st">벤치 · {bench.length}</div>
               <div className="sb5-list">
                 {bench.map((p) => (
                   <button key={p.player} className="sb5-row" onClick={(e) => peek(e, { name: p.player, club: team, hint: { photo: p.photo, ovr: p.ovr } })}>
@@ -183,7 +189,6 @@ export default function SquadBuilder({ team, accent }: { team: string; accent: s
               </div>
             </>
           )}
-          <p className="sb5-note">포지션 = 실제로 선 자리(이번 시즌 + 지난 시즌 선발, 부족하면 Transfermarkt). 적합도: 주 100% · 멀티 95% · 비슷한 자리 85% · 같은 라인 75%</p>
         </div>
       </div>
     </div>

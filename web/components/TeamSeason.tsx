@@ -9,6 +9,7 @@ import { MeaningTag, ScaleLegend } from "./Meaning";
 import { useMatchPreview } from "@/lib/matchPreview";
 import { Crest } from "./MatchCard";
 import SectionHead from "./SectionHead";
+import Info from "./Info";
 import { Skel } from "./Skeleton";
 
 // 팀 Overview 상단 — '지금 이 팀이 어떤가'. /api/team-season(30분 캐시)
@@ -131,8 +132,15 @@ export function SeasonSnapshot({ d, team, league, color }: { d: TeamSeason | nul
   return (
     <section className="card h5-card ts5">
       <SectionHead title="SEASON SNAPSHOT" kr="이번 시즌 현황"
-        meta={mine?.live ? <span className="lv5-meta"><i className="live-dot" />{mine.live.state === "in" ? `LIVE ${mine.live.label} · 지금 스코어로 순위 반영` : "방금 끝난 경기 잠정 반영"} · {lgEn(league)} {s.played}경기</span>
-          : `${lgEn(league)} · 리그 ${s.played}경기`} />
+        meta={mine?.live ? <span className="lv5-meta"><i className="live-dot" />{mine.live.state === "in" ? `LIVE ${mine.live.label}` : "종료"} · 잠정</span>
+          : `${lgEn(league)} · 리그 ${s.played}경기`}
+        info={<>
+          <p><b>그래프</b> = 리그 누적 승점 흐름. 점선 = 1위·4위(챔피언스리그권) 팀.</p>
+          {d.str_rank ? <p>선수 평점(OVR)으로 본 전력은 리그 {d.str_rank}위.</p> : null}
+          {mine?.live
+            ? <p><b>잠정</b> = 공식 순위(매일 아침 갱신) 전, {mine.live.state === "in" ? "지금 스코어" : "방금 끝난 경기 결과"}로 순위·승점을 반영한 값 · {lgEn(league)} {s.played}경기.</p>
+            : <p className="muted">경기 중·직후엔 라이브 스코어로 순위·승점을 잠정 반영합니다.</p>}
+        </>} />
       <div className="ts5-grid">
         <div className="ts5-main">
           <div className="ts5-kpis">
@@ -149,10 +157,10 @@ export function SeasonSnapshot({ d, team, league, color }: { d: TeamSeason | nul
           </div>
           <PointsChart me={d.path} refs={d.refs} color={c}
             prov={mine?.live ? { pts: mine.points, live: mine.live.state === "in" } : null} />
-          <p className="ts5-note">누적 승점 흐름 · 점선 = 1위·4위(챔피언스리그권) 팀{d.str_rank ? ` · 선수 평점(OVR)으로 본 전력은 리그 ${d.str_rank}위` : ""}</p>
         </div>
         <div className="ts5-recent">
-          <div className="ts5-sub">LAST 5 <span>최근 5경기 · 전 대회 · 누르면 경기 리뷰</span></div>
+          <div className="ts5-sub">LAST 5 <span>전 대회</span>
+            <Info label="LAST 5 설명"><p>최근 5경기(리그·컵·유럽 전 대회). 경기를 누르면 경기 리뷰가 열립니다.</p></Info></div>
           {liveRecent.map(({ m, e }) => <RecentRow key={"lv" + m.event_id} m={m} team={team} live={e} />)}
           {d.recent.length ? d.recent.filter((m) => !liveRecent.some((x) => x.m.event_id === m.event_id))
             .slice(0, Math.max(0, 5 - liveRecent.length)).map((m, i) => <RecentRow key={m.event_id ?? i} m={m} team={team} />)

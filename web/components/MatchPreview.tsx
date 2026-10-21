@@ -13,6 +13,7 @@ import { Crest, FormBoxes, PredictBar } from "./MatchCard";
 import { usePeek, useOpenTeam } from "./PlayerPeek";
 import { Skel } from "./Skeleton";
 import { ReviewSections } from "./MatchReview";
+import Info from "./Info";
 
 // 매치 서랍 — 경기 카드를 누르면 열린다. 두 팀 Overview(전력·폼·핵심 선수·결장)를 불러
 // 규칙으로 '관전 포인트'를 만든다(유료 AI 없음). 데이터는 매일 자동 갱신분 그대로.
@@ -113,7 +114,15 @@ function Drawer({ m: m0, onClose }: { m: Fixture; onClose: () => void }) {
           {state !== "pre" && m.event_id && <ReviewSections m={m} inPlay={state === "in"} hc={hc} ac={ac} />}
           {state !== "post" && (m.fans || m.elo || m.model) && (
             <section>
-              <h3>PREDICTIONS<span>팬 투표 vs 우리 모델</span></h3>
+              <h3>PREDICTIONS<span>팬 투표 vs 우리 모델</span>
+                <Info label="PREDICTIONS 설명">
+                  <ul>
+                    <li><b>FANS</b> — Sofascore 앱 사용자 투표</li>
+                    <li><b>MODEL</b> — 이 사이트의 데이터 모델</li>
+                    <li><b>CLUBELO</b> — clubelo.com 의 공개 예측(유럽 클럽 Elo 레이팅 기반 독립 예측)</li>
+                  </ul>
+                  <p className="muted">한쪽이 10%p 넘게 높으면 그 칸을 강조합니다. 재미로 보는 정보이며 베팅 정보가 아닙니다.</p>
+                </Info></h3>
               <PredictBar m={m} detail />
               {(m.fans || m.model) && (
                 <div className="pv-vs-grid">
@@ -132,7 +141,21 @@ function Drawer({ m: m0, onClose }: { m: Fixture; onClose: () => void }) {
               )}
               {m.model && (
                 <div className="pv-model">
-                  <div className="pv-src">MODEL <em>예상 득점 {m.model.xg_h.toFixed(2)} : {m.model.xg_a.toFixed(2)} · 가장 유력한 스코어 {m.model.score}</em></div>
+                  <div className="pv-src">MODEL <em>예상 득점 {m.model.xg_h.toFixed(2)} : {m.model.xg_a.toFixed(2)} · 유력 스코어 {m.model.score}</em>
+                    <Info label="MODEL 설명" wide>
+                      <p>이번 시즌 경기 내용(xG·득실, 상대 강도 보정 · 최근 경기일수록 무게)과 선수 평점(OVR), 지난 시즌부터의 팀 Elo,
+                        부상·출장정지 결장 전력을 합친 통계 모델입니다.
+                        {m.model.n_h + m.model.n_a < 10 ? " 아직 리그 경기가 적어 선수 평점 비중이 큽니다." : ""}</p>
+                      {m.model.inputs && (
+                        <ul>
+                          <li><b>최근 흐름 가중</b> — 최근 40일 경기에 더 무게(시즌 초 경기보다 지금 흐름)</li>
+                          {m.model.inputs.elo_d != null && <li><b>Elo 차</b> — 팀 Elo(지난 시즌부터 리그·컵·유럽 결과로 계산) {m.home.team} {m.model.inputs.elo_h ?? "?"} · {m.away.team} {m.model.inputs.elo_a ?? "?"}</li>}
+                          {(m.model.inputs.miss_h != null || m.model.inputs.miss_a != null) && <li><b>결장 손실</b> — 부상·출장정지로 빠진 선수 때문에 줄어든 베스트 11 평균 OVR(Transfermarkt + FotMob 결장 명단)</li>}
+                          {(m.model.inputs.intl_h != null || m.model.inputs.intl_a != null) && <li><b>A매치 복귀</b> — A매치 기간 직후 첫 경기에 대표팀에 다녀온 선수 수(유럽 밖 = 장거리 이동). 효과를 검증할 과거 소집 기록이 없어 확률 계산에는 넣지 않은 참고값</li>}
+                        </ul>
+                      )}
+                    </Info>
+                  </div>
                   {m.model.inputs && (
                     <div className="pv-inputs">
                       <span title="최근 40일 경기에 더 무게 — 시즌 초 경기보다 지금 흐름">최근 흐름 가중</span>
@@ -154,11 +177,6 @@ function Drawer({ m: m0, onClose }: { m: Fixture; onClose: () => void }) {
                       )}
                     </div>
                   )}
-                  <p className="pv-note" style={{ marginTop: 6 }}>
-                    이번 시즌 경기 내용(xG·득실, 상대 강도 보정 · 최근 경기일수록 무게)과 선수 평점(OVR), 지난 시즌부터의 팀 Elo,
-                    부상·출장정지 결장 전력을 합친 통계 모델입니다.
-                    {m.model.n_h + m.model.n_a < 10 ? " 아직 리그 경기가 적어 선수 평점 비중이 큽니다." : ""}
-                  </p>
                 </div>
               )}
               {m.fans?.first_h != null && m.fans.first_a != null && (
@@ -168,11 +186,13 @@ function Drawer({ m: m0, onClose }: { m: Fixture; onClose: () => void }) {
               )}
               {m.elo && (
                 <div className="pv-elo">
-                  <div className="pv-src">CLUBELO <em>유럽 클럽 Elo 레이팅 기반 독립 예측(참고)</em></div>
+                  <div className="pv-src">CLUBELO <em>참고</em>
+                    <Info label="CLUBELO 설명"><p>clubelo.com 의 유럽 클럽 Elo 레이팅으로 낸 독립 예측입니다(참고용).</p></Info>
+                  </div>
                   <PredictBar m={m} only="elo" slim />
                 </div>
               )}
-              <p className="pv-note">팬 투표는 Sofascore 앱 사용자 투표, MODEL 은 이 사이트의 데이터 모델, ClubElo 는 clubelo.com 의 공개 예측입니다. 재미로 보는 정보이며 베팅 정보가 아닙니다.</p>
+              <p className="pv-note">재미로 보는 정보 · 베팅 정보 아님</p>
             </section>
           )}
 
@@ -180,7 +200,7 @@ function Drawer({ m: m0, onClose }: { m: Fixture; onClose: () => void }) {
             <h3>KEY POINTS<span>관전 포인트</span></h3>
             {loading ? <><Skel h={14} style={{ marginBottom: 8 }} /><Skel h={14} w="80%" /></>
               : pts.length ? <ul className="pv-points">{pts.map((p) => <li key={p}>{p}</li>)}</ul>
-              : <p className="pv-empty">두 팀 데이터가 부족해 요약을 만들지 못했습니다.</p>}
+              : <p className="pv-empty">데이터 부족 · 요약 없음</p>}
           </section>}
 
           {ours && <>
@@ -240,7 +260,8 @@ function Drawer({ m: m0, onClose }: { m: Fixture; onClose: () => void }) {
           </section>
 
           <section>
-            <h3>ABSENCES<span>결장</span></h3>
+            <h3>ABSENCES<span>결장</span>
+              <Info label="데이터 설명"><p>전력(팀 OVR)·최근 결과·결장은 매일 자동으로 갱신되는 데이터로 계산한 규칙 기반 요약입니다.</p></Info></h3>
             <div className="pv-two">
               {[[m.home, H], [m.away, A]].map(([s, o], i) => {
                 const ov = o as Overview | null | undefined;
@@ -260,7 +281,6 @@ function Drawer({ m: m0, onClose }: { m: Fixture; onClose: () => void }) {
           <div className="pv-actions">
             {[m.home, m.away].map((s) => <button key={s.team} disabled={!s.league || !openTeam} onClick={() => go(s)}>{s.team} →</button>)}
           </div>
-          <p className="pv-note">전력(팀 OVR)·최근 결과·결장은 매일 자동으로 갱신되는 데이터로 계산한 규칙 기반 요약입니다.</p>
           </>}
         </div>
       </aside>

@@ -75,7 +75,7 @@ export default function AnalyticsTab({ team, accent }: { team: string; accent: s
 
       {/* 팀 포지셔널 맵 (스쿼드 히트맵 집계) */}
       <div className="card" style={{ marginTop: 16 }}>
-        <SectionHead title="TERRITORY" kr="팀 포지셔널 맵" meta="평균 위치 · 함께 뛴 연결 · 점유 구역 · Sofascore" />
+        <SectionHead title="TERRITORY" kr="팀 포지셔널 맵" meta="평균 위치 · 연결 · 점유 구역" />
         <TeamTerritory team={team} accent={accent} />
       </div>
 
@@ -128,7 +128,11 @@ export default function AnalyticsTab({ team, accent }: { team: string; accent: s
           </div>
           {worst && worst[1] > 0 && missedTotal >= 5 && (
             <div className="diag" style={{ borderColor: hexA(accent, 0.4) }}>
-              <b style={{ color: accent }}>진단</b> · 부상 결장 {missedTotal}경기 중 <b>{LINE_LABEL[worst[0]]}</b>이 {worst[1]}% — 그 라인 뎁스를 점검하세요(전력 자체가 약하다는 뜻은 아님).
+              <b style={{ color: accent }}>진단</b> · 부상 공백 최다: <b>{LINE_LABEL[worst[0]]}</b> {worst[1]}%
+              <Info label="부상 공백 진단">
+                <p>부상 결장 {missedTotal}경기 중 {LINE_LABEL[worst[0]]} 라인이 {worst[1]}% — 그 라인 뎁스를 점검하세요.</p>
+                <p className="muted">전력 자체가 약하다는 뜻은 아님 · 결장 합계 5경기 미만이면 진단하지 않음</p>
+              </Info>
             </div>
           )}
         </div>
@@ -168,7 +172,8 @@ export default function AnalyticsTab({ team, accent }: { team: string; accent: s
               {data.manager_evo.focus && <div className="evo-focus">{data.manager_evo.focus}</div>}
               {data.manager_evo.tactics
                 ? <div className="evo-focus">{data.manager_evo.tactics}</div>
-                : !data.manager_evo.style && <div className="evo-focus">전술 요약은 위키 문서에서 수집되는 대로 표시됩니다</div>}
+                : !data.manager_evo.style && <div className="evo-focus">전술 요약 준비 중
+                  <Info label="전술 요약 출처"><p>전술 요약은 위키 문서에서 수집되는 대로 표시됩니다.</p></Info></div>}
             </div>
             {data.manager_evo.previous && (
               <div className="evo-col prev">
@@ -183,7 +188,7 @@ export default function AnalyticsTab({ team, accent }: { team: string; accent: s
 
       {/* 핸드오프 */}
       <div className="handoff" style={{ borderColor: hexA(accent, 0.4) }}>
-        <span className="ho-tag" style={{ background: accent }}>TRANSFER AGENT 입력 신호</span>
+        <span className="ho-tag" style={{ background: accent }}>이적 시사점</span>
         <span>약점 보강: <b>{weakFactor ? `${weakFactor.label}(지수 ${weakFactor.value})` : "-"}</b></span>
         {worst && missedTotal >= 5 && <span>부상 공백: <b>{LINE_LABEL[worst[0]]}</b></span>}
         <span>이적 지출: <b>{fmtEur(s.spend)}</b></span>

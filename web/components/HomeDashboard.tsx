@@ -10,6 +10,7 @@ import { Skel, SkelCards } from "./Skeleton";
 import { phaseOf, seasonStatusText } from "@/lib/season";
 import LeagueFixtures from "./LeagueFixtures";
 import SectionHead from "./SectionHead";
+import Info from "./Info";
 import WeeklyDigest from "./WeeklyDigest";
 
 const ESPN_CODE: Record<string, string> = { EPL: "eng.1", LaLiga: "esp.1", SerieA: "ita.1", Bundesliga: "ger.1", Ligue1: "fra.1",
@@ -104,17 +105,21 @@ export default function HomeDashboard({ accent, onPickTeam, onPickLeagueTeam, le
       {/* ── HERO ── */}
       <div className="hx" style={{ ["--tc" as any]: accent }}>
         <div className="hx-glow" style={{ background: `radial-gradient(60% 120% at 85% 0%, ${accent}44, transparent 70%)` }} />
+        {/* 시즌·이적창 상태가 칩·키커·메타 세 번 반복되던 것 → 키커 한 줄(+ⓘ 상세), 칩은 이적시장이 열렸을 때만 */}
         <div className="hx-top">
           {switcher}
-          <div className="hx-live">
-            <span className="livedot" />
-            {h.window.is_open ? `${h.window.label} ${h.window.kr ?? ""} 이적시장 OPEN` : `${h.season} 시즌`}
-          </div>
+          {h.window.is_open && (
+            <div className="hx-live">
+              <span className="livedot" />
+              {`${h.window.label} ${h.window.kr ?? ""} 이적시장 OPEN`}
+            </div>
+          )}
         </div>
 
-        <div className="hx-kicker">{inSeason ? `${h.season} SEASON${h.window.is_open ? " · TRANSFER WINDOW" : ""}` : `${nextLabel} SEASON · TRANSFER WINDOW`}</div>
+        <div className="hx-kicker">{inSeason ? h.season : nextLabel} SEASON
+          <Info label="시즌 상태"><p>{seasonStatusText(h.window, h.season, nextLabel)}</p></Info>
+        </div>
         <h1 className="hx-title">{leagueLabel === "EPL" ? "PREMIER LEAGUE" : leagueLabel}</h1>
-        <div className="hx-meta">{seasonStatusText(h.window, h.season, nextLabel)}</div>
 
         <div className="kpis">
           <div className="kpi"><div className="kpi-n teko" style={{ color: accent }}>{eurM(h.kpi.spend)}</div><div className="kpi-l">이적 총지출</div></div>

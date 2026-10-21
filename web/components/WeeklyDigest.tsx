@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { fmtEur, getDigest, type Digest } from "@/lib/api";
 import { TONE } from "@/lib/meaning";
 import AiNote from "./AiNote";
+import Info from "./Info";
 import { usePeek } from "./PlayerPeek";
 
 // WEEKLY DIGEST — 지난 7일 이 리그에서 '바뀐 것'만(설계도 3단계 주간 스카우팅 다이제스트). 규칙 기반·숫자는 데이터 값.
@@ -19,16 +20,19 @@ export default function WeeklyDigest({ league }: { league: string }) {
   );
   return (
     <div className="wd-wrap">
-      {d.summary && <AiNote text={d.summary.text} at={d.summary.at} label="THIS WEEK" sub="AI 주간 서술" />}
+      {d.summary && <AiNote text={d.summary.text} at={d.summary.at} label="THIS WEEK" sub="AI 주간 서술" clamp={3} />}
       {d.intl && (
         <div className="wd-intl">
           <b>{d.intl.label}</b> {md(d.intl.start)}–{md(d.intl.end)} <em>D-{d.intl.days_to}</em>
-          <span> · 리그 휴식 — 팀 일정 탭에서 소집 선수·대표팀 경기</span>
+          <span> · 리그 휴식</span>
+          <Info label="A매치 기간"><p>팀 화면 일정 탭에서 소집 선수·대표팀 경기를 볼 수 있어요.</p></Info>
         </div>
       )}
       <div className="wd-grid">
         <div className="card wd-card">
-          <h3>FORM ▲<small>폼 지수 상승 · {md(d.form_since ?? d.since)} 이후 · 270분+</small></h3>
+          <h3>FORM ▲<small>{md(d.form_since ?? d.since)} 이후
+            <Info label="폼 지수 기준"><p>그 날 이후 폼 지수가 오르거나(▲) 내린(▼) 선수입니다.</p><p className="muted">시즌 270분 이상 출전한 선수만(조금 뛴 선수는 한 경기로 크게 흔들려서).</p></Info>
+          </small></h3>
           {d.risers.length ? d.risers.map((m) => (
             <div className="wd-row" key={m.squad + m.player}>
               <P name={m.player} club={m.squad} /><span className="wd-sub">{m.squad}</span>

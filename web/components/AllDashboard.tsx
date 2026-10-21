@@ -1,7 +1,7 @@
 "use client";
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { getHomeAll, getFixtures, getHubPulse, getLeagueLab, fmtEur, feeLabel, type HomeAll, type Fixture, type HubMover, type HubPulse, type LeagueLab, type Trend } from "@/lib/api";
-import { ResultsTicker, WatchGrid, OverUnder, InjuryImpact } from "./HubPulse";
+import { ResultsTicker, WatchGrid, OverUnder, InjuryImpact, OVER_UNDER_INFO, INJURY_IMPACT_INFO } from "./HubPulse";
 import LeagueFocus from "./LeagueFocus";
 import { MatchRecap } from "./MatchReview";
 import PredictionLeague from "./PredictionLeague";
@@ -9,6 +9,7 @@ import { Skel, SkelCards } from "./Skeleton";
 import CountUp from "./CountUp";
 import MatchCard, { MatchHero } from "./MatchCard";
 import SectionHead from "./SectionHead";
+import Info from "./Info";
 import { TrendArrow } from "./Trend";
 import { usePeek } from "./PlayerPeek";
 import { usePins } from "@/lib/pins";
@@ -221,11 +222,15 @@ export default function AllDashboard({ onPick, switcher }: { accent?: string; on
           : fx === null ? <Skel h={300} r={18} />
           : fxErr ? (
             <div className="card h5-hero-empty">
-              경기 정보를 불러오지 못했습니다 — 서버가 깨어나는 중일 수 있어요(무료 서버는 15분 쉬면 잠들고, 깨는 데 1~2분).
+              <span>경기 정보를 못 불러왔어요
+                <Info label="불러오기 실패 이유"><p>서버가 깨어나는 중일 수 있어요.</p><p className="muted">무료 서버는 15분 쉬면 잠들고, 깨는 데 1~2분 걸립니다. 잠시 뒤 다시 시도해 주세요.</p></Info>
+              </span>
               <button className="loan-more" style={{ marginLeft: 10 }} onClick={() => { setFx(null); setFxTry((n) => n + 1); }}>다시 시도</button>
             </div>
           )
-          : <div className="card h5-hero-empty">이번 주에는 빅매치 기준(지수 35+)을 넘는 경기가 없습니다.</div>}
+          : <div className="card h5-hero-empty"><span>이번 주 빅매치 없음
+              <Info label="빅매치 기준"><p>빅매치 지수 35 이상인 경기가 7일 안에 없습니다.</p><p className="muted">지수 = 대회 비중(챔스 등)·순위 맞대결·양 팀 전력을 합친 점수.</p></Info>
+            </span></div>}
         {s && (
           <div className="h5-kpis">
             {([
@@ -233,15 +238,17 @@ export default function AllDashboard({ onPick, switcher }: { accent?: string; on
                 // 시즌 중엔 여름 이적 숫자 대신 이번 주 경기 — 최근 3일 결과 수·골/경기, 이변 수(2026-10-20 점검)
                 ["RESULTS · 3D", pulse.results.length, undefined,
                   `최근 3일 경기 · 경기당 ${(pulse.results.reduce((a, r) => a + r.home.goals + r.away.goals, 0) / pulse.results.length).toFixed(2)}골`],
-                ["UPSETS", pulse.results.filter((r) => r.upset).length, undefined, "순위·전력 열세 팀의 승리 · 최근 3일"],
+                ["UPSETS", pulse.results.filter((r) => r.upset).length, undefined, "최근 3일",
+                  <p key="u">순위·전력이 열세인 팀이 이긴 경기 수(최근 3일).</p>],
               ] : [
                 ["SUMMER SPEND", s.spend_eur, (v: number) => (v < 1e6 ? "€0" : fmtEur(v)), `여름 이적료 · ${d.leagues.length}개 리그`],
                 ["SIGNINGS", s.signings, undefined, "영입 · 임대 제외"],
               ]),
               ["MANAGER CHANGES", s.manager_changes, undefined, `이번 시즌 감독 교체 · 시즌 중 ${s.manager_changes_inseason ?? 0}`],
               ["INJURED", s.injured, undefined, `현재 부상 결장 · ${d.leagues.length}개 리그`],
-            ] as [string, number, ((v: number) => string) | undefined, string][]).map(([l, v, f, m]) => (
-              <div className="kpi5" key={l}><span className="kpi5-l">{l}</span><b className="kpi5-v"><CountUp value={v} format={f} /></b><span className="kpi5-m">{m}</span></div>
+            ] as [string, number, ((v: number) => string) | undefined, string, ReactNode?][]).map(([l, v, f, m, info]) => (
+              <div className="kpi5" key={l}><span className="kpi5-l">{l}</span><b className="kpi5-v"><CountUp value={v} format={f} /></b>
+                <span className="kpi5-m">{m}{info ? <Info label={`${l} 기준`}>{info}</Info> : null}</span></div>
             ))}
           </div>
         )}
@@ -263,14 +270,15 @@ export default function AllDashboard({ onPick, switcher }: { accent?: string; on
 
       {watchRest.length > 0 && (
         <section className="h5-sec">
-          <SectionHead title="MATCHES TO WATCH" kr="주목할 매치" meta="리그별 순위 승부처 · 7일 이내 · 빅매치 제외" />
+          <SectionHead title="MATCHES TO WATCH" kr="주목할 매치" meta="7일 이내"
+            info={<><p>리그별 순위 승부처 — 순위표에서 맞붙는 의미가 큰 경기입니다.</p><p className="muted">위 BIG MATCHES 에 오른 경기는 빼고, 그 이유는 빅매치 카드 태그로 합칩니다.</p></>} />
           <WatchGrid items={watchRest} onPick={onPick} />
         </section>
       )}
 
       {snap && (
         <section className="h5-sec">
-          <SectionHead title="LEAGUE FOCUS" kr="리그 집중" meta="우승 경쟁 · 순위 · 베스트 XI · 득점왕"
+          <SectionHead title="LEAGUE FOCUS" kr="리그 집중"
             right={<div className="seg5 seg5-head">
               {snaps.map((x) => <button key={x.league} className={x.league === snap.league ? "on" : ""} onClick={() => setLg(x.league)}>{lgEn(x.league) || x.league_name}</button>)}
             </div>} />
@@ -288,14 +296,14 @@ export default function AllDashboard({ onPick, switcher }: { accent?: string; on
           </section>
         )}
         <section className="card h5-card h5-side">
-          <SectionHead title="OVER / UNDER" kr="전력 대비 성적" meta="팀 OVR 순위 vs 실제 순위" />
+          <SectionHead title="OVER / UNDER" kr="전력 대비 성적" info={OVER_UNDER_INFO} />
           {pulse ? <OverUnder over={pulse.over} under={pulse.under} onPick={onPick} /> : <Skel h={260} r={12} />}
         </section>
       </div>
 
       <div className="h5-row">
         <section className="card h5-card">
-          <SectionHead title="INJURY IMPACT" kr="부상 타격" meta="부상자 때문에 줄어든 베스트 XI 평균 전력(팀 OVR)" />
+          <SectionHead title="INJURY IMPACT" kr="부상 타격" meta="팀 OVR 손실" info={INJURY_IMPACT_INFO} />
           <InjuryImpact rows={d.injury_impact ?? []} onPick={onPick} />
         </section>
         <section className="card h5-card h5-side">
@@ -313,8 +321,8 @@ export default function AllDashboard({ onPick, switcher }: { accent?: string; on
       </div>
 
       {!d.window?.is_open && !xferOpen && (
-        <button className="h5-fold" onClick={() => setXferOpen(true)}>
-          <b>TRANSFERS &amp; MANAGERS</b><span>여름 빅딜 · 감독 교체 · 이적 소식 — 이적시장 마감 중이라 접어 둠 · 펼치기 ▾</span>
+        <button className="h5-fold" onClick={() => setXferOpen(true)} title="이적시장 마감 중이라 접어 둠">
+          <b>TRANSFERS &amp; MANAGERS</b><span>빅딜·감독·이적 소식 펼치기 ▾</span>
         </button>
       )}
       {(d.window?.is_open || xferOpen) && <>
@@ -375,7 +383,8 @@ export default function AllDashboard({ onPick, switcher }: { accent?: string; on
 function MatchRecapSec({ results, extra }: { results: HubPulse["results"]; extra: Fixture[] }) {
   return (
     <section className="h5-sec rc5-sec">
-      <SectionHead title="MATCH RECAP" kr="경기 리뷰" meta="최근 주요 결과 · ESPN 기록 기반 자동 리포트" />
+      <SectionHead title="MATCH RECAP" kr="경기 리뷰" meta="최근 주요 결과"
+        info={<><p>ESPN 경기 기록(득점·카드·팀 기록)으로 자동으로 만든 리포트입니다.</p><p className="muted">카드를 누르면 경기 리뷰 전체를 봅니다.</p></>} />
       <MatchRecap results={results} extra={extra} />
     </section>
   );

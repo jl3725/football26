@@ -83,7 +83,11 @@ export default function SignalsTab({ team }: { team: string; accent?: string }) 
 
   return (
     <div className="fade">
-      <SectionHead title="INBOX" kr="팀 소식함" meta={`자동 감지 · ${d.messages.length}건${nNew ? ` · 새 소식 ${nNew}` : ""}`}
+      <SectionHead title="INBOX" kr="팀 소식함" meta={`${d.messages.length}건${nNew ? ` · 새 소식 ${nNew}` : ""}`}
+        info={<>
+          <p>경기 일정·팀 폼·선수 폼(OVR 2주 변화)·부상·선발 제외·계약·시장가치·감독 소식을 자동으로 감지합니다.</p>
+          <p className="muted">맨 위 카드 = 중요도 상위 3건. NEW = 최근 4일 안의 읽지 않은 소식(이 브라우저 기준).</p>
+        </>}
         right={nNew ? <button className="ib5-all" onClick={() => markAll(d.messages.map((m) => m.id))}>모두 읽음</button> : null} />
       {d.briefing.length > 0 && (
         <div className="ib5-brief">
@@ -101,7 +105,7 @@ export default function SignalsTab({ team }: { team: string; accent?: string }) 
           </div>
           <div className="ib5-list">
             {shown.map((m) => <Msg key={m.id} m={m} team={team} unread={unread(m)} onOpen={() => mark(m.id)} />)}
-            {list.length === 0 && <p className="pv-empty">이 분류의 소식이 없습니다</p>}
+            {list.length === 0 && <p className="pv-empty">소식 없음</p>}
           </div>
           {!more && list.length > 14 && <button className="sig-more" onClick={() => setMore(true)}>{list.length - 14}건 더 보기</button>}
         </section>

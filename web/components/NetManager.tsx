@@ -4,6 +4,7 @@ import type { NetSpell, NetworkData } from "@/lib/api";
 import { hexA } from "@/lib/ui";
 import { usePeek } from "./PlayerPeek";
 import { SvgAvatar, lastName } from "./NetShared";
+import Info from "./Info";
 
 // MANAGER — 감독 커리어(위키 인포박스: 감독·선수 경력) 타임라인 + 같은 클럽을 거친 현직 감독 네트워크 + 전 팀에서 함께 온 선수.
 export default function NetManager({ d, accent }: { d: NetworkData; accent: string }) {
@@ -16,7 +17,11 @@ export default function NetManager({ d, accent }: { d: NetworkData; accent: stri
     [...(m.managed ?? []), ...(m.played ?? [])].forEach((s) => { if (s.logo) o[s.club] = s.logo; });
     return o;
   }, [m]);
-  if (!m.available) return <p className="net-empty">감독 경력 정보를 찾지 못했습니다(위키백과 인포박스 없음){m.name ? ` — ${m.name}` : ""}</p>;
+  if (!m.available) return (
+    <p className="net-empty">감독 경력 정보 없음{m.name ? ` · ${m.name}` : ""}
+      <Info label="감독 경력 출처"><p>위키백과 인포박스에서 감독·선수 경력을 찾지 못했습니다.</p></Info>
+    </p>
+  );
 
   const spells = [...(m.managed ?? []), ...(m.played ?? [])].filter((s) => s.start);
   const y0 = Math.min(...spells.map((s) => s.start as number), now - 6), y1 = now + 1;
@@ -85,7 +90,15 @@ export default function NetManager({ d, accent }: { d: NetworkData; accent: stri
         </div>
       </div>
 
-      <h4 className="net-h">CAREER <span>위쪽 = 감독 · 아래쪽 = 선수 경력 · 흰 테두리 = 현재</span></h4>
+      <h4 className="net-h">CAREER <span>감독 · 선수 경력</span>
+        <Info label="경력 타임라인 보는 법">
+          <ul>
+            <li>MANAGER 줄 = 감독 경력 · PLAYER 줄 = 선수 경력</li>
+            <li>흰 테두리 = 현재 · 옅은 막대 = 대행·코치 등 또는 임대</li>
+          </ul>
+          <p className="muted">출처 위키백과 인포박스</p>
+        </Info>
+      </h4>
       <div className="net-scroll">
         <svg viewBox={`0 0 ${W} ${H}`} className="net-svg" style={{ minWidth: 640 }} role="img" aria-label={`${m.name} 감독·선수 경력 타임라인`}>
           {ticks.map((t) => <g key={t}><line x1={X(t)} y1={18} x2={X(t)} y2={H - 18} stroke={hexA("#ffffff", 0.06)} />
@@ -99,7 +112,15 @@ export default function NetManager({ d, accent }: { d: NetworkData; accent: stri
 
       {net.length > 0 && (
         <>
-          <h4 className="net-h">COACHING NETWORK <span>같은 클럽을 감독·선수로 거친 현직 감독(8개 리그) {m.n_network}명 중 연결 많은 {net.length}명 — 가운데 = {short(m.name || "")}</span></h4>
+          <h4 className="net-h">COACHING NETWORK <span>현직 감독 {m.n_network}명</span>
+            <Info wide label="코칭 네트워크 보는 법">
+              <p>같은 클럽을 감독·선수로 거친 현직 감독(8개 리그) {m.n_network}명 중 연결 많은 {net.length}명.</p>
+              <ul>
+                <li>가운데 = {m.name} · 둘레 원 = 함께 거친 클럽</li>
+                <li>감독을 누르면 공유 클럽 상세</li>
+              </ul>
+            </Info>
+          </h4>
           <svg viewBox={`0 0 ${RW} ${RH}`} className="net-svg" role="img" aria-label="같은 클럽을 거친 현직 감독 관계망">
             {shared.map((c) => <line key={c} x1={cx} y1={cy} x2={cpos[c].x} y2={cpos[c].y} stroke={hexA("#ffffff", 0.4)} strokeWidth={1.6} />)}
             {mpos.map(({ n, x, y }) => n.shared.filter((s) => cpos[s.club]).map((s) => (
@@ -123,7 +144,7 @@ export default function NetManager({ d, accent }: { d: NetworkData; accent: stri
             ))}
           </svg>
           <div className="net-legend" style={{ marginTop: 4 }}>
-            <span><i style={{ background: "#f6c945" }} />그 클럽 감독 경력</span><span><i style={{ background: "#7f8a9c" }} />그 클럽 선수 경력(점선)</span>
+            <span><i style={{ background: "#f6c945" }} />그 클럽 감독</span><span><i style={{ background: "#7f8a9c" }} />그 클럽 선수(점선)</span>
           </div>
           {cur && (
             <div className="net-link-sel">

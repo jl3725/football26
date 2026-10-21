@@ -13,11 +13,12 @@ import ScoutNeeds from "./ScoutNeeds";
 import Bar from "./Bar";
 import { usePeek } from "./PlayerPeek";
 import { SkelTab } from "./Skeleton";
+import Info from "./Info";
 
 const MODE: Record<string, { t: string; d: string }> = {
-  evaluate: { t: "영입 평가 모드", d: "이번 창 영입이 각 니즈를 얼마나 해소했는지 점검" },
-  gap: { t: "공백 분석 모드", d: "방출로 생긴 공백·대체 필요 포지션 점검" },
-  recruit: { t: "보강 후보 모드", d: "이번 창 영입 없음 · 니즈 기반 보강 방향" },
+  evaluate: { t: "영입 평가 모드", d: "영입이 니즈를 메웠나" },
+  gap: { t: "공백 분석 모드", d: "방출 공백 점검" },
+  recruit: { t: "보강 후보 모드", d: "영입 없음 · 보강 방향" },
 };
 
 function Row({ x, dir, team }: { x: TransferItem; dir: "in" | "out"; team: string }) {
@@ -66,6 +67,7 @@ export default function TransferTab({ team, accent }: { team: string; accent: st
   // 추천 후보의 평가 포지션 = 그 선수가 추천된 니즈 포지션(bucket). 예전엔 r.pos(대분류 'MF' 등)에서 뽑아 엇나갔다
   const BUCKET_TM: Record<string, string> = { GK: "Goalkeeper", LB: "Left-Back", CB: "Centre-Back", RB: "Right-Back",
     DM: "Defensive Midfield", CM: "Central Midfield", AM: "Attacking Midfield", LW: "Left Winger", RW: "Right Winger", ST: "Centre-Forward" };
+  const TM_BUCKET: Record<string, string> = Object.fromEntries(Object.entries(BUCKET_TM).map(([k, v]) => [v, k]));
   const suggestions = (rec?.recommendations || []).map((r) => ({
     player: r.player, role: BUCKET_TM[r.bucket || ""] || POSD[(r.pos || "").split(/[ ,/]/)[0]] || "",
   }));
@@ -122,10 +124,11 @@ export default function TransferTab({ team, accent }: { team: string; accent: st
         </div>
       )}
 
+      {/* 시즌·창 열림 여부는 상단 StatusBar 칩에 있다 — 여기는 아래 숫자의 범위만 짧게 */}
       <div className="season-note" style={{ marginTop: 0, marginBottom: 14 }}>
-        {win?.is_open
-          ? <><b style={{ color: accent }}>{win.label} {win.kr} 이적시장 OPEN</b>{!data.window_has_data && " · 이번 창 이적 없음 (전체 표시)"}</>
-          : <><b>{data.data_season} 시즌</b> · 현재 이적시장 마감</>}
+        {win?.is_open && data.window_has_data
+          ? <b style={{ color: accent }}>{win.label} 창</b>
+          : <><b>{data.data_season} 시즌</b>{win?.is_open ? " · 이번 창 이적 없음" : ""}</>}
       </div>
       {/* 순수지 = 지출 − 수입. 부호(+/−)만으로는 헷갈려서 '순지출'·'순수익' 단어로 쓴다 */}
       <div className="stat-strip" style={{ marginTop: 0 }}>
@@ -133,7 +136,10 @@ export default function TransferTab({ team, accent }: { team: string; accent: st
         <div className="stat"><div className="v" style={{ color: TONE.best.c }}>{fmtEur(s.income)}</div><div className="l">수입 (판매료)</div></div>
         <div className="stat" title={`지출 ${fmtEur(s.spend)} − 수입 ${fmtEur(s.income)} → ${net > 0 ? "쓴 돈이 번 돈보다 많음" : net < 0 ? "번 돈이 쓴 돈보다 많음" : "같음"}`}>
           <div className="v" style={{ color: net > 0 ? TONE.bad.c : net < 0 ? TONE.best.c : TONE.avg.c }}>{fmtEur(Math.abs(net))}</div>
-          <div className="l">{net > 0 ? "순지출 · 지출 > 수입" : net < 0 ? "순수익 · 수입 > 지출" : "수지 균형"}</div>
+          <div className="l">{net > 0 ? "순지출" : net < 0 ? "순수익" : "수지 균형"} <Info label="순지출 설명">
+            <p><b>지출 − 수입</b> = {fmtEur(s.spend)} − {fmtEur(s.income)}</p>
+            <p className="muted">순지출 = 쓴 돈이 번 돈보다 많음 · 순수익 = 번 돈이 쓴 돈보다 많음</p>
+          </Info></div>
         </div>
         <div className="stat"><div className="v" style={{ color: accent }}>{s.in_count}/{s.out_count}</div><div className="l">영입 / 방출 (명)</div></div>
       </div>
@@ -157,14 +163,31 @@ export default function TransferTab({ team, accent }: { team: string; accent: st
 
       {/* 포지션별 보강 후보 — 벡터 스타일-핏 + 필터/KPI/정렬 (RecruitPool) */}
       <div className="card" style={{ marginTop: 16, scrollMarginTop: 12 }} id="recruit-pool">
-        <h3><Bar c={accent} />SCOUTING POOL <span className="rating-note">· 스카우팅 풀 · 전 리그{focusRole ? ` · ${focusRole}` : ""}</span></h3>
+        <h3><Bar c={accent} />SCOUTING POOL <span className="rating-note">· 전 리그{focusRole ? ` · ${TM_BUCKET[focusRole] ?? focusRole}` : ""}</span>{" "}
+          <Info label="SCOUTING POOL 설명" wide>
+            <p>8개 리그에서 우리 팀 니즈 포지션에 맞는 후보를 찾습니다. 카드를 누르면 선수 요약, <b>☆</b>를 누르면 위 작업대에 고정됩니다.</p>
+            <ul>
+              <li><b>OVR</b> — 다른 리그 선수는 우리 리그 수준으로 보정한 예상값(아래 작은 숫자 = 현재 리그 OVR)</li>
+              <li><b>스타일 유사도</b> — 우리 팀이 그 자리에 쓰는 플레이 스타일(현재 선수들 평균)과 닮은 정도 0~100</li>
+              <li><b>정책 부합/밖</b> — 최근 두 시즌 영입 나이·이적료 기준과 대조</li>
+              <li><b>라이벌</b> — 위키 라이벌·더비 구단 소속, 거래가 드뭅니다</li>
+              <li><b>가능성 낮음</b> — 경쟁 팀·강팀의 핵심 주전</li>
+              <li><b>계약 N개월</b> — 12개월 안 만료, 이적료가 싸거나 자유계약 가능</li>
+              <li><b>링크</b> — 이 팀과 루머 연결 · <b>선례</b> — 그 리그에서 우리 리그로 온 이적 사례 수</li>
+            </ul>
+            <p className="muted">추천순 = 니즈 시급도·스타일·전력·가격 순, 가능성 낮음·정책 밖 후보는 뒤로.</p>
+          </Info></h3>
         <RecruitPool team={team} accent={accent} focusRole={focusRole} />
       </div>
 
       {/* 드림 타깃 — 최상위급이나 티어·라이벌상 비현실 */}
       {rec && rec.longshots && rec.longshots.length > 0 && (
         <div className="card" style={{ marginTop: 16 }}>
-          <h3><Bar c={accent} />드림 타깃 <span className="rating-note">· 영입 가능성 낮음</span></h3>
+          <h3><Bar c={accent} />드림 타깃 <span className="rating-note">· 영입 가능성 낮음</span>{" "}
+            <Info label="드림 타깃 설명">
+              <p>최상위급이지만 구단 티어·라이벌 관계상 데려오기 어려운 후보입니다.</p>
+              <p className="muted">현재 → 예상 = 다른 리그 선수의 지금 OVR을 우리 리그 수준으로 보정한 값. 스타일 적합 = 이 팀이 그 자리에 쓰는 스타일과의 유사도 0~100.</p>
+            </Info></h3>
           <div className="rec-grid">
             {rec.longshots.map((l, i) => {
               const t = tier(l.ovr);
@@ -180,7 +203,7 @@ export default function TransferTab({ team, accent }: { team: string; accent: st
                   <div className="rec-name">{l.player}</div>
                   <div className="rec-club">{l.logo && <img src={l.logo} alt="" />}{l.squad}</div>
                   <div style={{ fontSize: 9.5, fontWeight: 700, color: t.light }}>{t.ko}</div>
-                  {l.cross_league && <div className="rec-cross" title="다른 리그 선수 — 우리 리그 수준으로 보정한 예상 OVR">{l.source_league} 현재 {l.current_ovr} → 우리 리그 예상 {l.ovr}</div>}
+                  {l.cross_league && <div className="rec-cross" title={`${l.source_league} 현재 ${l.current_ovr} → 우리 리그 예상 ${l.ovr}`}>현재 {l.current_ovr} → {l.ovr}</div>}
                   {l.bucket_label && <div className="rec-target" style={{ color: accent }}>◎ {l.bucket_label}</div>}
                   {l.style_fit != null && <div className="rec-style" title="이 팀이 그 자리에 쓰는 플레이 스타일(현재 선수들 평균)과의 유사도 0~100">스타일 적합 <b>{l.style_fit}</b></div>}
                   {l.role && <div className="rec-role"><span className={"role-tag " + roleClass(l.role)}>{l.role}</span></div>}

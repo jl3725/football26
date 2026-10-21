@@ -169,7 +169,7 @@ export default function Page() {
         <div className="nodata-emoji">{isPromoted ? "🆙" : "📭"}</div>
         <h3>{sel}</h3>
         <p>{isPromoted
-          ? `${nextS?.season_label ?? ""} 승격팀입니다. 프리미어리그 스탯·라인업은 시즌 시작 후 수집됩니다.`
+          ? `${leagueName} 승격팀 · 개막 후 수집`
           : "이 구단의 데이터가 아직 없습니다."}</p>
       </div>
     );

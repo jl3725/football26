@@ -4,6 +4,7 @@ import type { NetNational } from "@/lib/api";
 import { hexA } from "@/lib/ui";
 import { usePeek } from "./PlayerPeek";
 import { SvgAvatar } from "./NetShared";
+import Info from "./Info";
 
 // 대표팀 동료 — 우리 선수가 든 2026 월드컵 명단의 나머지가 어느 클럽에 흩어져 있나.
 // 가운데 국기, 둘레 = 클럽(원 크기 = 그 클럽의 대표팀 선수 수), 우리 클럽은 강조.
@@ -22,7 +23,16 @@ export default function NetNational({ nat, name, team, accent }: { nat: NetNatio
   const cur = nat.clubs.find((c) => c.club === sel) ?? clubs[0];
   return (
     <div className="net-natweb">
-      <h4 className="net-h">NATIONAL TEAM WEB <span>{name} 2026 월드컵 명단 {nat.players.length}명 — 우리 {nat.n_ours}명 · {clubs.length}개 클럽{other ? ` · 8개 리그 밖 ${other.n}명` : ""}</span></h4>
+      <h4 className="net-h">NATIONAL TEAM WEB <span>WC 명단 {nat.players.length}명 · 우리 {nat.n_ours}명</span>
+        <Info wide label="대표팀 동료 보는 법">
+          <p>{name} 2026 월드컵 명단 {nat.players.length}명 — 우리 {nat.n_ours}명 · {clubs.length}개 클럽{other ? ` · 8개 리그 밖 ${other.n}명` : ""}.</p>
+          <ul>
+            <li>가운데 = 국기 · 둘레 = 대표 선수의 소속 클럽</li>
+            <li>원 크기·숫자 = 그 클럽의 대표 선수 수 · 우리 클럽 강조</li>
+            <li>클럽을 누르면 명단</li>
+          </ul>
+        </Info>
+      </h4>
       <svg viewBox={`0 0 ${W} ${H}`} className="net-svg" role="img" aria-label={`${name} 대표팀 선수의 소속 클럽 분포`}>
         {pts.map(({ c, x, y }) => (
           <line key={c.club} x1={CX} y1={CY} x2={x} y2={y} stroke={c.club === team ? accent : hexA("#ffffff", 0.12)}

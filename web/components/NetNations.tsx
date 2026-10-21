@@ -5,6 +5,7 @@ import { hexA } from "@/lib/ui";
 import { usePeek } from "./PlayerPeek";
 import { SvgAvatar } from "./NetShared";
 import NetNational from "./NetNational";
+import Info from "./Info";
 
 // NATIONS — 국적(REPRESENTS) 버블: 크기 = 선수 수, 국기·FIFA 랭킹, 금색 점 = 2026 월드컵 명단 인원.
 const W = 680, H = 380;
@@ -39,8 +40,15 @@ export default function NetNations({ d, accent }: { d: NetworkData; accent: stri
   return (
     <div className="net-nat">
       <div className="net-toolbar">
-        <h4 className="net-h">NATIONAL WEB <span>{d.nations.n}개국 · 2026 월드컵 명단 {d.nations.wc_total}명 · 원 크기 = 선수 수</span></h4>
-        <span className="net-legend"><span><i className="cap" />월드컵 명단</span></span>
+        <h4 className="net-h">NATIONAL WEB <span>{d.nations.n}개국 · WC {d.nations.wc_total}명</span>
+          <Info label="국적 버블 보는 법">
+            <ul>
+              <li>원 크기 = 선수 수 · 국기 = 국적</li>
+              <li>금색 숫자 = 2026 월드컵 명단 인원</li>
+              <li>국기를 누르면 선수 목록 · FIFA 랭킹 · 대표팀 동료</li>
+            </ul>
+          </Info>
+        </h4>
       </div>
       <svg viewBox={`0 0 ${W} ${H}`} className="net-svg" role="img" aria-label="국적별 선수 수 버블 — 국기와 FIFA 랭킹">
         {cs.map((c, i) => {

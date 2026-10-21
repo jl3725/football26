@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { getTeamTrends, type TeamTrends, type TrendMatch, type TrendPct } from "@/lib/api";
 import { liftHex } from "@/lib/match";
 import SectionHead from "./SectionHead";
+import Info from "./Info";
 import { Skel } from "./Skeleton";
 import { useNarrow } from "./TeamSeason";
 
@@ -117,7 +118,7 @@ function GoalTiming({ t, color }: { t: NonNullable<TeamTrends["timing"]>; color:
           <div className="gt5-dn"><span style={{ height: `${(t.conceded[i] / max) * 100}%` }} /><b>{t.conceded[i] || ""}</b></div>
         </div>
       ))}
-      <p className="gt5-note">위 = 득점 {tot(t.scored)} · 아래 = 실점 {tot(t.conceded)} · 전 대회 {t.games}경기{late ? ` · ${late}` : ""}</p>
+      <p className="gt5-note">득점 {tot(t.scored)} · 실점 {tot(t.conceded)} · {t.games}경기{late ? ` · ${late}` : ""}</p>
     </div>
   );
 }
@@ -137,7 +138,14 @@ export default function TeamTrendsBoard({ team, color }: { team: string; color: 
     <>
       <section className="card h5-card" style={{ marginTop: 16 }}>
         <SectionHead title="MATCH TRENDS" kr="경기별 흐름"
-          meta={useXg ? "막대 = xG(리그 경기·Understat) · 점 = 실제 골 · 선 = 최근 5경기 평균" : "막대 = 슈팅(ESPN) · 선 = 최근 5경기 평균"}
+          meta={useXg ? `리그 ${xgMs.length}경기 · xG` : `${d.matches.filter((m) => m.shots != null && m.opp_shots != null).length}경기 · 슈팅`}
+          info={useXg ? <>
+            <p>막대 = xG(리그 경기 · Understat) · 점 = 실제 골 · 선 = 최근 5경기 평균</p>
+            <p className="muted">위 = 우리 팀 · 아래 = 상대</p>
+          </> : <>
+            <p>막대 = 슈팅(ESPN) · 선 = 최근 5경기 평균</p>
+            <p className="muted">위 = 우리 팀 · 아래 = 상대</p>
+          </>}
           right={d.has_xg ? (
             <div className="seg5 seg5-head">
               <button className={mode === "xg" ? "on" : ""} onClick={() => setMode("xg")}>xG</button>
@@ -146,18 +154,34 @@ export default function TeamTrendsBoard({ team, color }: { team: string; color: 
         <MatchTrendChart ms={useXg ? xgMs : d.matches} useXg={useXg} color={c} />
         {useXg && xgDiff != null && (
           <p className="tt5-note">
-            리그 {xgMs.length}경기 실제 득점 − xG = <b className={xgDiff >= 0 ? "up" : "down"}>{xgDiff >= 0 ? "+" : ""}{xgDiff.toFixed(1)}</b>
-            {Math.abs(xgDiff) >= 2 ? (xgDiff > 0 ? " — 기대보다 많이 넣는 중(결정력·운이 좋음)" : " — 기회 대비 득점이 적음(결정력 부진·운)") : " — 기대치와 비슷"}
+            득점−xG <b className={xgDiff >= 0 ? "up" : "down"}>{xgDiff >= 0 ? "+" : ""}{xgDiff.toFixed(1)}</b>
+            {Math.abs(xgDiff) >= 2 ? (xgDiff > 0 ? " · 결정력 ↑" : " · 결정력 ↓") : " · 기대치 수준"}
+            <Info label="득점−xG 기준">
+              <p>리그 {xgMs.length}경기 실제 득점 합 − xG 합.</p>
+              <ul>
+                <li>+2 이상 = 기대보다 많이 넣는 중(결정력·운이 좋음)</li>
+                <li>−2 이하 = 기회 대비 득점이 적음(결정력 부진·운)</li>
+                <li>그 사이 = 기대치와 비슷</li>
+              </ul>
+            </Info>
           </p>
         )}
       </section>
       <div className="grid" style={{ marginTop: 16 }}>
         <section className="card">
-          <SectionHead title="LEAGUE PERCENTILE" kr="리그 백분위" meta={`리그 ${lgOnly.length}경기 · 경기당 평균 · 막대 = 리그 안 위치`} />
+          <SectionHead title="LEAGUE PERCENTILE" kr="리그 백분위" meta={`리그 ${lgOnly.length}경기`}
+            info={<>
+              <p>리그 경기 기준 경기당 평균을 리그 팀들과 비교합니다.</p>
+              <p>막대 = 리그 안 위치(길수록 좋은 쪽) · 순위 = 리그 안 순위</p>
+            </>} />
           {d.percentiles.length ? <Percentiles ps={d.percentiles} /> : <p className="pv-empty">리그 경기 기록이 아직 부족합니다</p>}
         </section>
         <section className="card">
-          <SectionHead title="GOAL TIMING" kr="득실 시간대" meta="15분 단위" />
+          <SectionHead title="GOAL TIMING" kr="득실 시간대" meta="15분 단위 · 전 대회"
+            info={<>
+              <p>위 막대 = 득점 · 아래 막대 = 실점 · 15분 단위</p>
+              <p className="muted">전 대회{d.timing ? ` ${d.timing.games}경기` : ""} · 45+·90+ = 추가시간 포함</p>
+            </>} />
           {d.timing ? <GoalTiming t={d.timing} color={c} /> : null}
         </section>
       </div>

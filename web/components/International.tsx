@@ -6,6 +6,7 @@ import {
   type IntlNation, type IntlNationItem, type IntlNationMatch, type IntlNationPlayers,
 } from "@/lib/api";
 import SectionHead from "./SectionHead";
+import Info from "./Info";
 import { Skel, SkelRows } from "./Skeleton";
 import WorldCup from "./WorldCup";
 
@@ -216,13 +217,14 @@ function CompDetail({ code, season, accent, me, onBack, onPickTeam }: {
         <div className="it-groups">{groups.map((g) => <GroupCard key={g.name} g={g} ms={gm(g.name)} me={me} />)}</div>
         {rounds.some((r) => r.slug !== "group-stage") && (
           <>
-            <SectionHead title="KNOCKOUT" kr="토너먼트" meta="단계별 · 빈자리는 조 순위로 정해짐" />
+            <SectionHead title="KNOCKOUT" kr="토너먼트" meta="단계별" info={<p>아직 정해지지 않은 자리는 조 순위로 정해집니다(예: F조 2위).</p>} />
             <Knockout rounds={rounds} matches={d.matches} />
           </>
         )}
         {ps.length > 0 && (
           <>
-            <SectionHead title="OUR LEAGUE PLAYERS" kr="출전국의 우리 리그 선수" meta={`${ps.length}개국 · ${nPlayers}명 · 가장 최근 소집 명단 기준`} />
+            <SectionHead title="OUR LEAGUE PLAYERS" kr="출전국의 우리 리그 선수" meta={`${ps.length}개국 · ${nPlayers}명`}
+              info={<><p>가장 최근 소집 명단 기준입니다.</p><p className="muted">&lsquo;대회 명단&rsquo; = 대회 명단 발표 뒤 · &lsquo;지난 소집 기준&rsquo; = 발표 전. 이름을 누르면 클럽 화면.</p></>} />
             <NationPlayers ps={ps} onPickTeam={onPickTeam} />
           </>
         )}
@@ -302,7 +304,8 @@ function NationView({ nation, onNation, onOpen, onPickTeam }: {
               {d.flag ? <img src={d.flag} alt="" /> : null}
               <div>
                 <h2>{d.nation_ko} <small>{d.display}</small></h2>
-                <p>{d.conf}{d.fifa_rank ? ` · FIFA ${d.fifa_rank}위` : ""}{d.ours ? ` · 최근 소집 중 우리 리그 선수 ${d.ours}명` : ""}</p>
+                <p>{d.conf}{d.fifa_rank ? ` · FIFA ${d.fifa_rank}위` : ""}{d.ours ? <> · 우리 리그 {d.ours}명
+                  <Info label="우리 리그 선수 기준"><p>최근 소집 명단 중 이 사이트가 다루는 리그에서 뛰는 선수 수입니다.</p></Info></> : null}</p>
               </div>
               {d.form.length > 0 && (
                 <div className="it-form" title="최근 5경기(왼쪽이 오래된 경기)">
@@ -344,7 +347,8 @@ function NationView({ nation, onNation, onOpen, onPickTeam }: {
           </section>
           {d.squad.length > 0 && (
             <section className="card it-sec">
-              <SectionHead title="LATEST SQUAD" kr="최근 소집 중 우리 리그 선수" meta={`${d.squad_for} 명단 기준 · 누르면 클럽 화면`} />
+              <SectionHead title="LATEST SQUAD" kr="최근 소집 중 우리 리그 선수" meta={`${d.squad_for} 명단`}
+                info={<p>{d.squad_for} 소집 명단 기준입니다. 우리 리그 선수 이름을 누르면 클럽 화면으로 갑니다.</p>} />
               {["GK", "DF", "MF", "FW", "-"].filter((p) => byPos[p]?.length).map((p) => (
                 <div className="it-sq" key={p}>
                   <span className="it-sq-pos">{p}</span>
@@ -431,19 +435,24 @@ export default function International({ accent, onPickTeam, initialComp }: {
                   {hub.window_state === "now" ? "NOW" : `D-${dday(w.start, today)}`}
                 </span>
                 <b>{w.label}</b>
-                <span>{md(w.start)}~{md(w.end)} · {w.matches}경기 · 지난 소집 기준 우리 리그 선수 {hub.callups}명(명단 발표 뒤 갱신) · 팀 화면 일정 탭에서 클럽별 소집 선수</span>
+                <span>{md(w.start)}~{md(w.end)} · {w.matches}경기 · 우리 리그 {hub.callups}명
+                  <Info label="소집 선수 기준"><p>지난 소집 기준 우리 리그 선수 수입니다(명단 발표 뒤 갱신).</p><p className="muted">팀 화면 일정 탭에서 클럽별 소집 선수를 볼 수 있어요.</p></Info>
+                </span>
               </div>
             )}
             {hub.next_tournament && (
               <div className="card it-now-c" onClick={() => setOpen({ code: hub.next_tournament!.code, season: hub.next_tournament!.edition.season })}>
                 <span className="it-st" style={{ color: STATUS.upcoming.c, borderColor: STATUS.upcoming.c }}>D-{dday(hub.next_tournament.edition.start, today)}</span>
                 <b>{hub.next_tournament.name_ko} {hub.next_tournament.edition.season}</b>
-                <span>{md(hub.next_tournament.edition.start)}~{md(hub.next_tournament.edition.end)} · {hub.next_tournament.edition.matches}경기 · 리그가 계속돼 소집 선수는 클럽 경기를 빠짐 · 조 편성·차출 클럽 보기 →</span>
+                <span>{md(hub.next_tournament.edition.start)}~{md(hub.next_tournament.edition.end)} · {hub.next_tournament.edition.matches}경기 · 조 편성 보기 →
+                  <Info label="대회 중 클럽 경기"><p>대회 중에도 리그가 계속돼, 소집 선수는 클럽 경기를 빠집니다.</p><p className="muted">카드를 누르면 조 편성·차출 클럽을 봅니다.</p></Info>
+                </span>
               </div>
             )}
           </div>
           <section className="card it-sec">
-            <SectionHead title="NEXT KEY MATCHES" kr="다가오는 주요 A매치" meta="FIFA 30위 안 · 우리 리그 선수 4명+ 소집국" />
+            <SectionHead title="NEXT KEY MATCHES" kr="다가오는 주요 A매치"
+              info={<p>주요 경기 = FIFA 30위 안 나라, 또는 우리 리그 선수 4명 이상을 소집한 나라의 경기.</p>} />
             {ms === null ? <SkelRows n={6} /> : ms.length ? <div className="it-list">{ms.map((m) => <MatchRow key={m.event_id} m={m} />)}</div>
               : <p className="pv-empty">예정된 주요 A매치가 없습니다.</p>}
             <button className="it-more" onClick={() => setTab("matches")}>전체 A매치 보기 →</button>

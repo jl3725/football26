@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { getPlayers, getPlayerDetail, getSimilar, getHeatmaps, fmtEur, foldName, type Players, type PlayerDetail, type SimilarResult, type HeatmapData } from "@/lib/api";
 import { tier, hexA, roleClass, futTier } from "@/lib/ui";
 import { lgEn } from "@/lib/match";
-import { pctMeaning, scoreMeaning, ovrBand, signTone } from "@/lib/meaning";
+import { pctMeaning, scoreMeaning, ovrBand, signTone, FORM_NOTE, RECENT_NOTE } from "@/lib/meaning";
 import { MeaningTag } from "./Meaning";
 import Radar from "./Radar";
 import HeatmapPitch from "./HeatmapPitch";
@@ -123,12 +123,18 @@ function Detail({ team, player, accent, heatmap }: { team: string; player: strin
       <TrendLine t={d.trend} ovr={d.ovr} />
       {(d.form != null || d.recent) && (
         <div className="pd-form">
-          <div className="pd-form-h"><b>FORM</b><span>폼 — 시즌 전체와 최근 5경기(전 대회)를 따로</span></div>
+          <div className="pd-form-h"><b>FORM</b><span>시즌 vs 최근 5경기</span>
+            <Info wide label="폼 기준">
+              <p>{FORM_NOTE}</p>
+              <p>{RECENT_NOTE}</p>
+              <p className="muted">경기 평점 = FotMob(출전 시간 가중) · 시즌 평점은 Sofascore·FotMob 평균</p>
+            </Info>
+          </div>
           <FormPair season={d.form} recent={d.recent?.score} n={d.recent?.n} />
           {d.recent && d.recent.matches.length > 0 && (
             <>
               <RecentStrip matches={d.recent.matches} />
-              <div className="pd-form-cap">최근 {Math.min(d.recent.n, 3)}경기 평균 <b>{d.recent.avg3.toFixed(2)}</b> · {d.recent.n}경기 평균 <b>{d.recent.avg5.toFixed(2)}</b> <em>(FotMob 경기 평점 · 출전 시간 가중 · 시즌 평점은 Sofascore·FotMob 평균)</em></div>
+              <div className="pd-form-cap">최근 {Math.min(d.recent.n, 3)}경기 평균 <b>{d.recent.avg3.toFixed(2)}</b> · {d.recent.n}경기 평균 <b>{d.recent.avg5.toFixed(2)}</b></div>
             </>
           )}
         </div>
@@ -148,7 +154,13 @@ function Detail({ team, player, accent, heatmap }: { team: string; player: strin
           <div className="pd-comp-head">
             <span className="pd-comp-title">이번 시즌 역할</span>
             <span className={"role-tag " + roleClass(d.comp_usage.role)} title={d.comp_usage.role_evidence}>{d.comp_usage.role}</span>
-            {d.comp_usage.role_evidence && <span className="pd-comp-ev">{d.comp_usage.role_evidence}</span>}
+            {d.comp_usage.role_evidence && (
+              <Info label="역할 근거">
+                <p><b>근거</b> — {d.comp_usage.role_evidence}</p>
+                <p className="muted">리그 출전 시간·유럽·컵 선발을 풀시즌으로 환산해 판정 · 부상 결장 경기는 뺌</p>
+                {d.comp_usage.big_match && <p className="muted">⚡ 빅매치 검증 = UCL/UEL 급 무대 출전 기록</p>}
+              </Info>
+            )}
             {d.comp_usage.big_match && <span className="role-bm" title="UCL/UEL 급 무대 검증">⚡ 빅매치 검증</span>}
           </div>
           {d.season_log?.available ? <SeasonLog log={d.season_log} accent={accent} /> : (
@@ -226,14 +238,24 @@ function Detail({ team, player, accent, heatmap }: { team: string; player: strin
           {enough && <div className="pd-radar"><Radar data={d.radar} color={accent} scale="pct" /></div>}
           {hm && heatmap && (
             <div className="pd-heatmap">
-              <div className="pd-sim-title">시즌 활동 구역 <span style={{ opacity: 0.5, fontWeight: 400, fontSize: 11 }}>· {hm.n_points.toLocaleString()} 위치 표본 · Sofascore</span></div>
+              <div className="pd-sim-title">시즌 활동 구역
+                <Info label="활동 구역 기준">
+                  <p>이번 시즌 경기에서 머문 위치를 모은 히트맵 · 밝을수록 자주 머문 곳 · 공격 방향 →</p>
+                  <p className="muted">위치 표본 {hm.n_points.toLocaleString()}개 · 출처 Sofascore</p>
+                </Info>
+              </div>
               <HeatmapPitch grid={hm.grid} gw={heatmap.gw} gh={heatmap.gh} id={`pd-${player.replace(/\s+/g, "")}`} />
             </div>
           )}
         </div>
       )}
       {!enough && (
-        <div className="pd-sample">표본 부족 — {Math.round(sampleMin).toLocaleString()}′ 출전({d.is_gk ? 300 : 450}′ 미만). 출전이 쌓이면 자동으로 나옵니다.</div>
+        <div className="pd-sample">표본 부족 · {d.is_gk ? 300 : 450}′ 이상부터 표시
+          <Info label="표본 기준">
+            <p>지금 {Math.round(sampleMin).toLocaleString()}′ 출전 — 레이더·세부 지표는 {d.is_gk ? 300 : 450}′ 이상부터 보여 줍니다.</p>
+            <p className="muted">출전이 쌓이면 자동으로 나옵니다.</p>
+          </Info>
+        </div>
       )}
       {enough && <div className="pd-body">
         <div className="pd-cats">
@@ -259,7 +281,11 @@ function Detail({ team, player, accent, heatmap }: { team: string; player: strin
       </div>}
       {(sim.length > 0 || simScope === "league") && (
         <div className="pd-similar">
-          <div className="pd-sim-title" style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>스타일 유사 선수 <span style={{ opacity: 0.6, fontWeight: 400, fontSize: 11, letterSpacing: 0 }}>· % = 유사도(스타일 + 기록, 100 = 판박이) · 기록은 리그 수준 보정</span>
+          <div className="pd-sim-title" style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}><span>스타일 유사 선수
+              <Info label="유사도 기준">
+                <p><b>% = 유사도</b> — 플레이 스타일 + 기록, 100 = 판박이</p>
+                <p className="muted">기록은 리그 수준 보정</p>
+              </Info></span>
             <span className="it-chips" style={{ marginLeft: "auto" }}>{([["all", "8개 리그"], ["league", "같은 리그"]] as const).map(([v, l]) => (
               <button key={v} className={simScope === v ? "on" : ""} onClick={() => setSimScope(v)}>{l}</button>))}</span></div>
           <div className="pd-sim-list">
@@ -381,7 +407,7 @@ export default function PlayerTab({ team, accent, initialPlayer, onPlayer }: {
                 {sel && (cmpExt || cmp)
                   ? <ComparePanel team={team} a={sel} b={cmpExt?.player ?? cmp!} bTeam={cmpExt?.team} bLeague={cmpExt?.league}
                       accent={accent} onClear={() => { setCmp(null); setCmpExt(null); }} />
-                  : <div className="card"><div className="mgr-meta" style={{ padding: 20 }}>비교할 <b>2번째 선수(B)</b>를 왼쪽 카드에서 고르거나, 위에서 <b>다른 클럽·리그 선수</b>를 검색하세요. (현재 A: {sel})</div></div>}
+                  : <div className="card"><div className="mgr-meta" style={{ padding: 20 }}><b>B 선수</b>를 카드에서 고르거나 <b>다른 클럽·리그</b>에서 검색 · A: {sel}</div></div>}
               </>)
             : (sel && <Detail team={team} player={sel} accent={accent} heatmap={hm} />)}
         </div>

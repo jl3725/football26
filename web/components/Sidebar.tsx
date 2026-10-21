@@ -183,7 +183,7 @@ export default function Sidebar({
         <div className="side-note">
           {next?.promoted?.length
             ? <>개막 전 · 알파벳순 · <b style={{ color: "#4fc27f" }}>승격</b> {next.promoted.join(", ")} / <b style={{ color: "#e07070" }}>강등</b> {next.relegated.join(", ")}</>
-            : "개막 전 · 알파벳순. 승격/강등 반영은 시즌 감지 후 갱신됩니다."}
+            : "개막 전 · 알파벳순"}
         </div>
       )}
     </aside>

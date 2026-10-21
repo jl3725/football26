@@ -114,9 +114,14 @@ export default function NetLeadership({ d, accent }: { d: NetworkData; accent: s
   return (
     <div className="net-lead">
       <div className="net-lead-l">
-        <h4 className="net-h">ARMBAND <span>주장단 · Wikipedia 스쿼드 표</span></h4>
+        <h4 className="net-h">ARMBAND <span>주장단</span>
+          <Info label="주장단 출처">
+            <p>주장·부주장·3·4번째 주장 — Wikipedia 스쿼드 표 기준.</p>
+            <p className="muted">주장이 결장해 다른 선수가 완장을 차면 &apos;오늘 완장&apos;으로 표시 · 큰 숫자 = 영향력 0~100</p>
+          </Info>
+        </h4>
         {main ? <CaptainHero c={main} team={d.team} accent={accent} armband={arm} />
-          : <p className="net-empty">위키 스쿼드 표에 주장 표시가 없는 팀입니다 — 오른쪽 영향력 지도로 리더 그룹을 봅니다.</p>}
+          : <p className="net-empty">주장 정보 없음 · 영향력 지도 참고</p>}
         {caps.length > 1 && <div className="net-cap-row">{caps.slice(1).map((c) => <CapMini key={c.name} c={c} team={d.team} armband={arm} />)}</div>}
         {main && arm && arm !== main.name && (
           <div className="net-alert">© 지금 완장은 <b>{arm}</b> — 주장 {main.name} 결장</div>

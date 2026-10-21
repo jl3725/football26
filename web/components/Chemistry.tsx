@@ -5,6 +5,7 @@ import { hexA } from "@/lib/ui";
 import { usePeek } from "./PlayerPeek";
 import { SkelCards } from "./Skeleton";
 import EmptyState from "./EmptyState";
+import Info from "./Info";
 
 const LINE_COLOR: Record<string, string> = { GK: "#f4cf5e", DEF: "#6aa6e0", MID: "#4fc27f", ATT: "#e0707a" };
 const last = (n: string) => n.split(" ").slice(-1)[0];
@@ -39,10 +40,17 @@ export default function Chemistry({ team, accent }: { team: string; accent: stri
   const byMin = d.basis === "minutes";
   return (
     <div>
-      <div style={{ fontSize: 11, opacity: 0.5, marginBottom: 9 }}>
-        {byMin
-          ? `실제로 함께 그라운드에 있던 시간 — 시즌 ${d.games}경기 라인업·교체 기록 기준 · % 와 막대 = ${CHEM_MIN_NOTE}`
-          : `함께 뛴 경기(관계 그래프) 기준 · ${CHEM_MATCH_NOTE}`}
+      <div style={{ fontSize: 11, color: "var(--muted)", marginBottom: 9 }}>
+        {byMin ? `시즌 ${d.games}경기 라인업 기준` : "함께 뛴 경기 기준"}
+        <Info label="케미 기준">
+          {byMin ? <>
+            <p>실제로 함께 그라운드에 있던 시간 — 시즌 {d.games}경기 라인업·교체 기록 기준.</p>
+            <p><b>% · 막대</b> = {CHEM_MIN_NOTE}</p>
+          </> : <>
+            <p>함께 뛴 경기(관계 그래프) 기준.</p>
+            <p><b>CHEM</b> = {CHEM_MATCH_NOTE}</p>
+          </>}
+        </Info>
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(230px, 1fr))", gap: 10 }}>
         {d.duos.map((duo, i) => (
@@ -55,7 +63,7 @@ export default function Chemistry({ team, accent }: { team: string; accent: stri
                 <div className="num" style={{ fontSize: 21, fontWeight: 800, color: accent, lineHeight: 1 }}>
                   {byMin ? <>{duo.minutes}<span style={{ fontSize: 12, opacity: 0.7 }}>′</span></> : duo.chem}
                 </div>
-                <div style={{ fontSize: 9, opacity: 0.5, letterSpacing: 1 }}>{byMin ? "함께 뛴 시간" : "CHEM · 최다 듀오 100"}</div>
+                <div style={{ fontSize: 9, opacity: 0.5, letterSpacing: 1 }}>{byMin ? "함께 뛴 시간" : "CHEM"}</div>
               </div>
             </div>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: 12, fontWeight: 600, marginTop: 8 }}>

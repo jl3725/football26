@@ -10,6 +10,7 @@ import Pitch from "./Pitch";
 import IntlBreak from "./IntlBreak";
 import { usePeek } from "./PlayerPeek";
 import { Skel, SkelPitch, SkelRows } from "./Skeleton";
+import Info from "./Info";
 
 const seasonLabel = (s: string) => (s ? s.slice(2, 4) + "/" + s.slice(7, 9) : "");
 // 대회 배지 색
@@ -29,13 +30,13 @@ function UpcomingPreview({ team, match, accent }: { team: string; match: Match; 
     return () => { a = false; };
   }, [team, match.event_id]);
   if (fx === undefined) return <div style={{ padding: 20 }}><Skel h={16} w="60%" /></div>;
-  if (!fx) return <div className="mgr-meta" style={{ padding: 20 }}>예정 경기 — 예측·프리뷰는 경기 1~2주 전부터 나옵니다.</div>;
+  if (!fx) return <div className="mgr-meta" style={{ padding: 20 }}>프리뷰는 1~2주 전 공개</div>;
   const home = fx.home.team === team;
   const rows: [string, { h: number; d: number; a: number } | undefined | null][] = [["FANS", fx.fans], ["MODEL", fx.model], ["CLUBELO", fx.elo]];
   const pct = (v: number) => `${Math.round(v * 100)}%`;
   return (
     <div className="scd-prev">
-      <div className="scd-prev-h"><b>PREVIEW</b><span>{fx.kst} · {home ? "홈" : "원정"} · 승 / 무 / 패(우리 팀 기준)</span></div>
+      <div className="scd-prev-h"><b>PREVIEW</b><span>{fx.kst} · {home ? "홈" : "원정"} · 승/무/패</span></div>
       {rows.filter(([, p]) => p).map(([k, p]) => {
         const w = home ? p!.h : p!.a, l = home ? p!.a : p!.h;
         return (
@@ -47,7 +48,7 @@ function UpcomingPreview({ team, match, accent }: { team: string; match: Match; 
         );
       })}
       {fx.model?.score && <p className="scd-prev-note">모델 예상 스코어 {fx.model.score}</p>}
-      {preview && <button className="scd-prev-open" onClick={() => preview(fx)}>프리뷰 열기 — 폼 · 결장 · 맞대결 →</button>}
+      {preview && <button className="scd-prev-open" onClick={() => preview(fx)}>프리뷰 열기 →</button>}
     </div>
   );
 }
@@ -81,7 +82,7 @@ function MatchDetailView({ team, match, accent }: { team: string; match: Match; 
       {match.status !== "completed" ? (
         <UpcomingPreview team={team} match={match} accent={accent} />
       ) : !match.has_lineup ? (
-        <div className="mgr-meta" style={{ padding: 20 }}>이 경기의 라인업 데이터가 아직 없습니다{match.comp !== "리그" ? " (컵·유럽 라인업 수집 예정)" : ""}.</div>
+        <div className="mgr-meta" style={{ padding: 20 }}>라인업 없음</div>
       ) : !d ? (
         <SkelPitch />
       ) : (
@@ -187,9 +188,10 @@ export default function ScheduleTab({ team, accent }: { team: string; accent: st
             <div className="stat"><div className="v" style={{ color: "#4fc27f" }}>{w}</div><div className="l">Won</div></div>
             <div className="stat"><div className="v" style={{ color: "#9aa4b4" }}>{dd}</div><div className="l">Drawn</div></div>
             <div className="stat"><div className="v" style={{ color: "#e07070" }}>{l}</div><div className="l">Lost</div></div>
-            <div className="stat" title="경기당 승점(이 목록의 끝난 경기, 0~3) — 38경기 환산 2.2 ≈ 우승권 · 1.75 ≈ 유럽권 · 1.0 ≈ 강등권">
+            <div className="stat">
               <div className="v" style={{ color: ppg === "-" || !leagueOnly ? accent : ppgMeaning(Number(ppg)).c }}>{ppg}</div>
-              <div className="l">PPG · 경기당 승점{comp === "전체" ? " · 전 대회" : ""}{ppg !== "-" && leagueOnly && <> <MeaningTag m={ppgMeaning(Number(ppg))} sm /></>}</div>
+              <div className="l">PPG{comp === "전체" ? " · 전 대회" : ""}{ppg !== "-" && leagueOnly && <> <MeaningTag m={ppgMeaning(Number(ppg))} sm /></>}
+                <Info label="PPG 설명"><p><b>PPG</b> = 경기당 승점(이 목록의 끝난 경기, 0~3).</p><p className="muted">38경기 환산 2.2 ≈ 우승권 · 1.75 ≈ 유럽권 · 1.0 ≈ 강등권. 등급 표시는 리그 경기만 골랐을 때 붙습니다.</p></Info></div>
             </div>
           </>
         ) : (

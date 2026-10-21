@@ -4,6 +4,7 @@ import type { NetworkData } from "@/lib/api";
 import { hexA } from "@/lib/ui";
 import { usePeek } from "./PlayerPeek";
 import { SvgAvatar, lastName } from "./NetShared";
+import Info from "./Info";
 
 // TIES — 지난 시즌 라인업(함께 선발 5경기+)으로 본 '전 소속 동료'. 왼쪽 = 우리 선수, 오른쪽 = 그 동료가 지금 뛰는 클럽.
 // 주황 = 영입생이 전 소속에서 함께 뛴 동료, 파랑 = 작년 우리 팀 동료가 떠나 지금 뛰는 곳. 재회 = 다른 팀에서 함께 뛰다 지금 우리 팀.
@@ -32,7 +33,16 @@ export default function NetTies({ d, accent }: { d: NetworkData; accent: string 
   return (
     <div className="net-ties">
       <div className="net-toolbar">
-        <h4 className="net-h">EX-TEAMMATES <span>지난 시즌 함께 선발 5경기+ · 동료 {ti.n_ties}명 · {ti.n_clubs}개 클럽</span></h4>
+        <h4 className="net-h">EX-TEAMMATES <span>동료 {ti.n_ties}명 · {ti.n_clubs}개 클럽</span>
+          <Info wide label="전 소속 동료 기준">
+            <p>지난 시즌 라인업에서 <b>함께 선발 5경기 이상</b> 뛴 동료가 지금 뛰는 클럽.</p>
+            <ul>
+              <li>선 굵기 = 함께 선발로 뛴 경기 수</li>
+              <li>재회 = 다른 팀에서 함께 뛰다 지금 우리 팀</li>
+              <li>클럽을 누르면 동료 목록</li>
+            </ul>
+          </Info>
+        </h4>
         <span className="net-legend">{Object.values(KIND).map((k) => <span key={k.ko}><i style={{ background: k.c }} />{k.ko}</span>)}</span>
       </div>
       {ti.reunions.length > 0 && (
@@ -68,7 +78,7 @@ export default function NetTies({ d, accent }: { d: NetworkData; accent: string 
       )}
       {cur && (
         <div className="net-link-sel">
-          <div className="net-nat-head">{cur.logo && <img src={cur.logo} alt="" />}<b>{cur.club}</b><em>{cur.league ?? ""} · 우리 선수와 함께 뛴 동료 {cur.ties.length}명</em></div>
+          <div className="net-nat-head">{cur.logo && <img src={cur.logo} alt="" />}<b>{cur.club}</b><em>{cur.league ? `${cur.league} · ` : ""}동료 {cur.ties.length}명</em></div>
           <div className="net-tie-list">
             {cur.ties.map((t) => (
               <button key={t.ours + t.mate} className="net-tie hoverable" onClick={(e) => peek(e, { name: t.mate, club: cur.club, hint: { photo: t.mate_photo || undefined, ovr: t.mate_ovr ?? undefined } })}>
