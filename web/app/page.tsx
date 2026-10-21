@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { flushSync } from "react-dom";
 import dynamic from "next/dynamic";
 import { getTeams, getNextTeams, getOverview, getContext, getRecommend, getDiscover, setActiveLeague, type Team, type NextSeason, type Overview, type Context } from "@/lib/api";
@@ -130,16 +130,16 @@ export default function Page() {
     getNextTeams().then(setNextS).catch(() => {});
     getContext().then(setCtx).catch(() => {});
   }, [league, urlReady]);
-  // Recruit 탭의 무거운 계산(추천·탐색)을 Overview 를 보는 사이 미리 요청 — 서버 캐시가 채워져 탭을 열면
-  // 바로 뜬다(무료 서버 첫 계산 수 초). 팀을 빠르게 넘길 때 낭비하지 않게 2.5초 머문 경우만.
-  useEffect(() => {
-    if (!urlReady || !sel || home) return;
-    const t = setTimeout(() => {
-      getRecommend(sel).catch(() => {});
-      getDiscover(sel, { top: 40 }).catch(() => {});
-    }, 2500);
-    return () => clearTimeout(t);
-  }, [sel, home, urlReady]);
+  // Recruit 탭의 무거운 계산(추천·탐색)은 그 탭에 마우스를 올리거나 포커스·터치할 때 미리 요청 — 누르는 사이 서버가 계산.
+  // 예전엔 팀 화면마다 2.5초 뒤 무조건 보내서, 배포 직후 빈 캐시에서 Overview 요청들과 0.1 CPU 를 다퉈
+  // 개요가 17~28초 걸렸고(2026-10-22 측정), 탐색은 top=40 이라 탭이 쓰는 top=150 캐시도 못 데웠다.
+  const warmed = useRef<Set<string>>(new Set());
+  const onTabIntent = (k: TabKey) => {
+    if (k !== "transfer" || !sel || warmed.current.has(`${league}|${sel}`)) return;
+    warmed.current.add(`${league}|${sel}`);
+    getRecommend(sel).catch(() => {});
+    getDiscover(sel, { top: 150 }).catch(() => {});                // RecruitPool 첫 요청과 같은 주소
+  };
   useEffect(() => {
     if (!urlReady || !sel) return;
     let alive = true;
@@ -272,7 +272,7 @@ export default function Page() {
             </div>
           </header>
 
-          {!home && <TabBar active={tab} accent={accent} onChange={(k) => {
+          {!home && <TabBar active={tab} accent={accent} onIntent={onTabIntent} onChange={(k) => {
             // 탭 전환을 부드럽게 — View Transitions API(크롬·엣지·사파리 18+), 미지원·움직임 줄이기 설정이면 즉시
             type VT = { ready?: Promise<void>; finished?: Promise<void>; updateCallbackDone?: Promise<void> };
             const d = document as Document & { startViewTransition?: (cb: () => void) => VT };

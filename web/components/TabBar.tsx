@@ -17,8 +17,8 @@ export const TABS = [
 export type TabKey = (typeof TABS)[number]["key"];
 
 export default function TabBar({
-  active, onChange, accent,
-}: { active: TabKey; onChange: (k: TabKey) => void; accent: string }) {
+  active, onChange, accent, onIntent,
+}: { active: TabKey; onChange: (k: TabKey) => void; accent: string; onIntent?: (k: TabKey) => void }) {
   // 모바일에선 탭 줄이 가로 스크롤 — 주소로 바로 연 탭(?tab=news 등)이 화면 밖에 있지 않게 보이는 곳으로
   const bar = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -31,6 +31,7 @@ export default function TabBar({
         <button key={t.key}
           className={`tab${active === t.key ? " active" : ""}`}
           onClick={() => onChange(t.key)}
+          onPointerEnter={() => onIntent?.(t.key)} onFocus={() => onIntent?.(t.key)} onTouchStart={() => onIntent?.(t.key)}
           role="tab"
           aria-selected={active === t.key}
           style={active === t.key ? { ["--tc" as any]: accent } : undefined}>
