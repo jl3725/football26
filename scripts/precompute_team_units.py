@@ -1,5 +1,6 @@
 """
-배포 빌드 단계에서 런타임 계산을 미리 해 둔다(render.yaml) — 선수 표·출전 포지션 집계(data/runtime_cache/*.pkl)와
+배포 빌드 단계에서 런타임 계산을 미리 해 둔다(render.yaml) — 선수 표·출전 포지션 집계·세부 지표 표·선수 DB 응답
+(data/runtime_cache/*.pkl)과
 리그별 팀 라인 전력(_league_units → data/team_units.json).
 
 Render 무료(0.1 CPU · 512MB)에서는 서버가 깰 때마다 8개 리그 전 팀을 계산하느라 홈·Overview 첫 요청이
@@ -35,6 +36,15 @@ def main() -> int:
     for start in (M.SEASON_START, M.SEASON_START - 1):
         P.disk_put(f"roles_{start}.pkl", P.role_counts(None if start == M.SEASON_START else f"{start}_{start + 1}"))
     print(f"[runtime_cache] 선수 표·포지션 집계 저장 ({time.time() - t0:.1f}s)")
+    # 1-2) 선수 화면 세부 지표 표(점유율·유럽·컵·시즌 초 안정화 — 리그당 0.5초, 운영 0.1 CPU 에선 선수 첫 화면 15초)
+    #      · 선수 DB 응답(/api/database — 3천여 명 프로필, 전역 검색·선수 미리보기)
+    for lg in M.ds.available_leagues():
+        for comps in ("all", "league"):
+            f = M._stat_frame(lg, "blend", comps)
+            if f is not None:
+                P.disk_put(M._stat_frame_cache_name(lg, "blend", comps), f)
+    P.disk_put(M._DATABASE_CACHE, M.database().body)
+    print(f"[runtime_cache] 세부 지표 표·선수 DB 저장 ({time.time() - t0:.1f}s)")
     # 2) 리그별 팀 라인 전력
     leagues = {}
     for lg in M.ds.available_leagues():

@@ -14,6 +14,7 @@
 from __future__ import annotations
 
 from collections import Counter, defaultdict
+from functools import lru_cache
 
 import pandas as pd
 from unidecode import unidecode
@@ -33,7 +34,12 @@ _TM_ROLE = {"goalkeeper": "GK", "centre-back": "CB", "left-back": "LB", "right-b
 
 
 def norm_name(n) -> str:
-    return " ".join(unidecode(str(n or "")).lower().replace("-", " ").split())
+    return _norm_name(str(n or ""))
+
+
+@lru_cache(maxsize=131072)        # 순수 함수
+def _norm_name(n: str) -> str:
+    return " ".join(unidecode(n).lower().replace("-", " ").split())
 
 
 def tm_role(tm_position) -> str | None:

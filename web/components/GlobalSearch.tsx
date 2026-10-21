@@ -31,7 +31,11 @@ export default function GlobalSearch({ accent, onPickPlayer, onPickTeam }: {
   const rowRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   const [ko, setKo] = useState<{ players: Record<string, string>; clubs: Record<string, string> }>({ players: {}, clubs: {} });
-  useEffect(() => { getDatabase().then((d) => setPlayers(d.players)).catch(() => {}); }, []);
+  // 전 리그 선수 DB(원본 1.3MB)는 검색하려 할 때만 — 예전엔 모든 화면이 열릴 때마다 받았다(2026-10-22 성능 점검).
+  // 트리거에 마우스를 올리거나 포커스·터치하면 미리 받기 시작해 팔레트가 열릴 땐 대개 이미 와 있다.
+  const [want, setWant] = useState(false);
+  const loading = (open || want) && players.length === 0;
+  useEffect(() => { if (open || want) getDatabase().then((d) => setPlayers(d.players)).catch(() => {}); }, [open, want]);
   useEffect(() => { if (open) getNamesKo().then(setKo).catch(() => {}); }, [open]);
   // 검색 키 = 영문 이름(악센트 무시) + 한글 이름 — 'mbappe'·'odegaard'·'라이스' 모두 찾음
   const keys = useMemo(() => players.map((p) => `${foldName(p.player)} ${ko.players[`${p.player}|${p.squad}`] ?? ""}`), [players, ko]);
@@ -145,6 +149,7 @@ export default function GlobalSearch({ accent, onPickPlayer, onPickTeam }: {
     <>
       {/* 트리거 (상단바 자리) */}
       <button className="global-search-trigger" onClick={() => setOpen(true)}
+        onFocus={() => setWant(true)} onTouchStart={() => setWant(true)} onPointerEnter={() => setWant(true)}
         style={{ display: "flex", alignItems: "center", gap: 9, width: "100%", margin: "0 0 4px",
           padding: "9px 14px", borderRadius: 12, cursor: "text", textAlign: "left",
           background: hexA("#ffffff", 0.05), border: `1px solid ${hexA("#ffffff", 0.1)}`, color: "inherit",
@@ -185,7 +190,10 @@ export default function GlobalSearch({ accent, onPickPlayer, onPickTeam }: {
 
             {/* 결과 */}
             <div style={{ maxHeight: "52vh", overflowY: "auto", padding: 8 }}>
-              {!short && items.length === 0 && (
+              {loading && (
+                <div style={{ padding: "26px 12px", fontSize: 12.5, opacity: 0.5, textAlign: "center" }}>전 리그 선수 불러오는 중…</div>
+              )}
+              {!loading && !short && items.length === 0 && (
                 <div style={{ padding: "34px 12px", fontSize: 13, opacity: 0.5, textAlign: "center" }}>
                   <div style={{ fontSize: 26, opacity: 0.35, marginBottom: 8 }}>⌕</div>
                   "{q}" 검색 결과가 없습니다

@@ -2,28 +2,46 @@
 
 import { useEffect, useState } from "react";
 import { flushSync } from "react-dom";
+import dynamic from "next/dynamic";
 import { getTeams, getNextTeams, getOverview, getContext, getRecommend, getDiscover, setActiveLeague, type Team, type NextSeason, type Overview, type Context } from "@/lib/api";
 import { accent as toAccent } from "@/lib/ui";
 import Sidebar from "@/components/Sidebar";
 import StatusBar from "@/components/StatusBar";
 import TabBar, { TABS, type TabKey } from "@/components/TabBar";
-import HomeDashboard from "@/components/HomeDashboard";
-import OverviewTab from "@/components/OverviewTab";
-import SignalsTab from "@/components/SignalsTab";
-import AnalyticsTab from "@/components/AnalyticsTab";
-import SquadTab from "@/components/SquadTab";
-import NetworkTab from "@/components/NetworkTab";
-import ScheduleTab from "@/components/ScheduleTab";
-import PlayerTab from "@/components/PlayerTab";
 import GlobalSearch from "@/components/GlobalSearch";
-import TransferTab from "@/components/TransferTab";
 import ScoutDock from "@/components/ScoutDock";
-import NewsTab from "@/components/NewsTab";
 import { PeekProvider } from "@/components/PlayerPeek";
 import { MatchPreviewProvider } from "@/components/MatchPreview";
 import { LiveProvider } from "@/lib/live";
 import { StandingsProvider } from "@/lib/standings";
 import { SkelTab } from "@/components/Skeleton";
+
+// 화면별 코드 나누기 — 홈·팀 탭은 열 때 받는다(첫 화면 JS 를 줄여 모바일에서 덜 무겁게, 2026-10-22).
+// 첫 화면이 뜬 뒤 쉬는 시간에 나머지도 미리 받아 탭을 눌렀을 때 기다리지 않게 한다(prefetchViews — 같은 import 라 덩어리 하나).
+const skel = () => <SkelTab />;
+const HomeDashboard = dynamic(() => import("@/components/HomeDashboard"), { loading: skel });
+const OverviewTab = dynamic(() => import("@/components/OverviewTab"), { loading: skel });
+const SignalsTab = dynamic(() => import("@/components/SignalsTab"), { loading: skel });
+const AnalyticsTab = dynamic(() => import("@/components/AnalyticsTab"), { loading: skel });
+const SquadTab = dynamic(() => import("@/components/SquadTab"), { loading: skel });
+const NetworkTab = dynamic(() => import("@/components/NetworkTab"), { loading: skel });
+const ScheduleTab = dynamic(() => import("@/components/ScheduleTab"), { loading: skel });
+const PlayerTab = dynamic(() => import("@/components/PlayerTab"), { loading: skel });
+const TransferTab = dynamic(() => import("@/components/TransferTab"), { loading: skel });
+const NewsTab = dynamic(() => import("@/components/NewsTab"), { loading: skel });
+const VIEWS = [
+  () => import("@/components/HomeDashboard"), () => import("@/components/OverviewTab"), () => import("@/components/SignalsTab"),
+  () => import("@/components/AnalyticsTab"), () => import("@/components/SquadTab"), () => import("@/components/NetworkTab"),
+  () => import("@/components/ScheduleTab"), () => import("@/components/PlayerTab"), () => import("@/components/TransferTab"),
+  () => import("@/components/NewsTab"),
+];
+
+function prefetchViews() {
+  const run = () => { for (const load of VIEWS) load().catch(() => {}); };
+  const w = window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number };
+  if (w.requestIdleCallback) w.requestIdleCallback(run, { timeout: 6000 });
+  else setTimeout(run, 3000);
+}
 
 const DEFAULT_TEAM: Record<string, string> = { EPL: "Arsenal", LaLiga: "Barcelona", SerieA: "Inter", Bundesliga: "Bayern Munich", Ligue1: "PSG", LigaPortugal: "Sporting CP", Eredivisie: "PSV", BelgianProLeague: "Club Brugge" };
 const LEAGUE_TABS = [{ key: "EPL", label: "EPL" }, { key: "LaLiga", label: "LA LIGA" }, { key: "SerieA", label: "SERIE A" }, { key: "Bundesliga", label: "BUNDESLIGA" }, { key: "Ligue1", label: "LIGUE 1" }, { key: "LigaPortugal", label: "LIGA PORTUGAL" }, { key: "Eredivisie", label: "EREDIVISIE" }, { key: "BelgianProLeague", label: "BELGIUM" }];
@@ -81,6 +99,7 @@ export default function Page() {
     };
     apply();
     setUrlReady(true);
+    prefetchViews();
     window.addEventListener("popstate", apply);
     return () => window.removeEventListener("popstate", apply);
   }, []);
@@ -255,10 +274,14 @@ export default function Page() {
 
           {!home && <TabBar active={tab} accent={accent} onChange={(k) => {
             // 탭 전환을 부드럽게 — View Transitions API(크롬·엣지·사파리 18+), 미지원·움직임 줄이기 설정이면 즉시
-            const d = document as Document & { startViewTransition?: (cb: () => void) => unknown };
+            type VT = { ready?: Promise<void>; finished?: Promise<void>; updateCallbackDone?: Promise<void> };
+            const d = document as Document & { startViewTransition?: (cb: () => void) => VT };
             const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-            if (d.startViewTransition && !reduce) d.startViewTransition(() => flushSync(() => setTab(k)));
-            else setTab(k);
+            if (d.startViewTransition && !reduce) {
+              // 탭을 빠르게 연달아 누르면 앞 전환이 '건너뜀'으로 끝난다 — 정상 동작이라 조용히 넘긴다(콘솔 오류 방지)
+              const vt = d.startViewTransition(() => flushSync(() => setTab(k)));
+              for (const pr of [vt?.ready, vt?.finished, vt?.updateCallbackDone]) pr?.catch(() => {});
+            } else setTab(k);
           }} />}
 
           <div className="content" key={home ? "home" : tab}>

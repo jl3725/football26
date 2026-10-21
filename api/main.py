@@ -2100,6 +2100,11 @@ def _stat_frame(league: str, basis: str = "blend", comps: str = "all"):
     hit = _STAT_FRAME.get(key)
     if hit and hit[0] > _t.time():
         return hit[1]
+    from api.services.player_data import _disk_get as disk_get  # noqa: PLC0415
+    disk = disk_get(_stat_frame_cache_name(league, basis, comps))     # 배포 빌드에서 계산(scripts/precompute_team_units.py)
+    if disk is not None:
+        _STAT_FRAME[key] = (_t.time() + 21600, disk)
+        return disk
     cur = _pf(league)
     if cur is None or cur.empty:
         return cur
@@ -2129,6 +2134,10 @@ def _stat_frame(league: str, basis: str = "blend", comps: str = "all"):
     out = ptpl.enrich(cur, prev, pc, _possession(prev_season), ps.norm_name, blend=basis == "blend")
     _STAT_FRAME[key] = (_t.time() + 21600, out)
     return out
+
+
+def _stat_frame_cache_name(league: str, basis: str, comps: str) -> str:
+    return f"statframe_{league}_{basis}_{comps}.pkl"
 
 
 def _template_pool_all(tpl: str, min_min: float, basis: str = "blend", comps: str = "all"):
@@ -4256,6 +4265,7 @@ def needs(team: str, league: str = ACTIVE_LEAGUE):
 
 
 _DB_CACHE: dict = {"key": None, "body": None}
+_DATABASE_CACHE = "database_body.pkl"
 
 
 def _db_mtime() -> float:
@@ -4291,6 +4301,11 @@ def database(league: str = ACTIVE_LEAGUE):
     key = _db_mtime()
     if _DB_CACHE["body"] is not None and _DB_CACHE["key"] == key:
         return Response(content=_DB_CACHE["body"], media_type="application/json")
+    from api.services.player_data import _disk_get as disk_get  # noqa: PLC0415
+    body = disk_get(_DATABASE_CACHE)                   # 배포 빌드에서 만든 응답(3천여 명 프로필 계산 1.4초 → 운영 0.1 CPU 10초+)
+    if body is not None:
+        _DB_CACHE.update(key=key, body=body)
+        return Response(content=body, media_type="application/json")
     out, nats, leagues = [], set(), []
     for lg in ds.available_leagues():
         full = _pf(lg)
@@ -6952,6 +6967,8 @@ def _warm_up() -> None:
             hub_pulse()              # 홈 결과 띠·주목할 매치·우승 경쟁(로컬 0.9초 → 운영 수 초라 미리)
             for lg in _HUB_LEAGUES:
                 league_lab(lg)       # 홈 LEAGUE FOCUS 분석 랩
+            for lg in _LEAGUE_LEVEL:
+                _stat_frame(lg)      # 선수 화면 세부 지표(8개 리그 템플릿 백분위) — 빌드 캐시면 파일 읽기만
             print(f"[warm-up] 완료 {_t.monotonic() - t0:.1f}s", flush=True)
         except Exception as e:  # noqa: BLE001 — 데우기는 실패해도 서비스엔 영향 없음
             print(f"[warm-up] 건너뜀: {type(e).__name__}: {e}", flush=True)

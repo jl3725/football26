@@ -18,6 +18,8 @@
 """
 from __future__ import annotations
 
+from functools import lru_cache
+
 import difflib
 import json
 import re
@@ -44,7 +46,12 @@ PARTICLES = {"van", "de", "der", "den", "da", "dos", "das", "do", "di", "del", "
 
 
 def norm(s) -> str:
-    return " ".join(unidecode(str(s or "")).lower().replace("-", " ").replace(".", " ").replace("'", "").split())
+    return _norm(str(s or ""))
+
+
+@lru_cache(maxsize=131072)        # 순수 함수 — 라인업 읽을 때 수십만 번
+def _norm(s: str) -> str:
+    return " ".join(unidecode(s).lower().replace("-", " ").replace(".", " ").replace("'", "").split())
 
 
 def _core(tokens: list[str]) -> list[str]:

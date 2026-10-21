@@ -7,6 +7,7 @@
 from __future__ import annotations
 
 import re
+from functools import lru_cache
 
 from unidecode import unidecode
 
@@ -34,7 +35,12 @@ _ALIAS = {
 
 
 def norm(name: str) -> str:
-    s = unidecode(str(name or "")).lower().strip()
+    return _norm(str(name or ""))
+
+
+@lru_cache(maxsize=65536)          # 순수 함수 — NETWORK 한 번에 21만 번 불렸다(2026-10-22 성능 점검)
+def _norm(name: str) -> str:
+    s = unidecode(name).lower().strip()
     s = _ALIAS.get(s, s)
     s = s.replace("&", " and ").replace("utd", "united")
     toks = [t for t in re.split(r"[^a-z0-9]+", s) if t and t not in _DROP]
@@ -43,13 +49,18 @@ def norm(name: str) -> str:
     return _ALIAS.get(j, j) if j in _ALIAS else j
 
 
+@lru_cache(maxsize=65536)
+def _toks(n: str) -> frozenset:
+    return frozenset(n.split())
+
+
 def score(a: str, b: str) -> float:
     na, nb = norm(a), norm(b)
     if not na or not nb:
         return 0.0
     if na == nb:
         return 1.0
-    ta, tb = set(na.split()), set(nb.split())
+    ta, tb = _toks(na), _toks(nb)
     # 2군·유스('Jong AZ', 'Real Madrid B', 'Barcelona II')는 1군과 다른 팀
     reserve = {"jong", "ii", "b", "u19", "u21", "u23", "reserves", "youth", "castilla", "atletic"}
     if bool(ta & reserve) != bool(tb & reserve):
@@ -61,7 +72,16 @@ def score(a: str, b: str) -> float:
 
 
 def best(name: str, candidates) -> str | None:
-    """후보(우리 표기) 중 가장 비슷한 것 — 0.5 미만이면 None."""
+    """후보(우리 표기) 중 가장 비슷한 것 — 0.5 미만이면 None. 같은 (이름, 후보 목록)은 기억한 답(순수 함수)."""
+    cands = tuple(candidates)
+    try:
+        return _best(name, cands)
+    except TypeError:                  # 해시 안 되는 이름·후보
+        return _best.__wrapped__(name, cands)
+
+
+@lru_cache(maxsize=16384)
+def _best(name, candidates: tuple) -> str | None:
     top, top_s = None, 0.0
     for c in candidates:
         s = score(name, c)
