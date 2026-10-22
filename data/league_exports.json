@@ -1,0 +1,511 @@
+{
+ "at": "2026-10-22",
+ "leagues": {
+  "LigaPortugal": {
+   "n": 38,
+   "fee_eur": 643750000,
+   "avg_age": 23.5,
+   "seasons": [
+    2025,
+    2026
+   ],
+   "top": [
+    {
+     "player": "Viktor Gyökeres",
+     "from": "Sporting CP",
+     "to": "Arsenal",
+     "age": 27,
+     "fee_eur": 69870000
+    },
+    {
+     "player": "Geovany Quenda",
+     "from": "Sporting CP",
+     "to": "Chelsea",
+     "age": 19,
+     "fee_eur": 50780000
+    },
+    {
+     "player": "Álvaro Carreras",
+     "from": "SL Benfica",
+     "to": "Real Madrid",
+     "age": 22,
+     "fee_eur": 50000000
+    },
+    {
+     "player": "Ousmane Diomande",
+     "from": "Sporting CP",
+     "to": "Nott'm Forest",
+     "age": 22,
+     "fee_eur": 40000000
+    },
+    {
+     "player": "Morten Hjulmand",
+     "from": "Sporting CP",
+     "to": "Atlético",
+     "age": 27,
+     "fee_eur": 40000000
+    }
+   ]
+  },
+  "Eredivisie": {
+   "n": 45,
+   "fee_eur": 575230000,
+   "avg_age": 24.8,
+   "seasons": [
+    2025,
+    2026
+   ],
+   "top": [
+    {
+     "player": "Ismael Saibari",
+     "from": "PSV Eindhoven",
+     "to": "Bayern Munich",
+     "age": 25,
+     "fee_eur": 50000000
+    },
+    {
+     "player": "Mika Godts",
+     "from": "Ajax Amsterdam",
+     "to": "PSG",
+     "age": 21,
+     "fee_eur": 45000000
+    },
+    {
+     "player": "Jorrel Hato",
+     "from": "Ajax Amsterdam",
+     "to": "Chelsea",
+     "age": 19,
+     "fee_eur": 44180000
+    },
+    {
+     "player": "Malik Tillman",
+     "from": "PSV Eindhoven",
+     "to": "Leverkusen",
+     "age": 23,
+     "fee_eur": 35000000
+    },
+    {
+     "player": "Igor Paixão",
+     "from": "Feyenoord Rotterdam",
+     "to": "Marseille",
+     "age": 25,
+     "fee_eur": 30000000
+    }
+   ]
+  },
+  "BelgianProLeague": {
+   "n": 49,
+   "fee_eur": 538740000,
+   "avg_age": 23.4,
+   "seasons": [
+    2025,
+    2026
+   ],
+   "top": [
+    {
+     "player": "Christos Tzolis",
+     "from": "Club Brugge KV",
+     "to": "Arsenal",
+     "age": 24,
+     "fee_eur": 40000000
+    },
+    {
+     "player": "Ardon Jashari",
+     "from": "Club Brugge KV",
+     "to": "AC Milan",
+     "age": 23,
+     "fee_eur": 35700000
+    },
+    {
+     "player": "Lucca Brughmans",
+     "from": "KRC Genk",
+     "to": "Liverpool",
+     "age": 18,
+     "fee_eur": 33000000
+    },
+    {
+     "player": "Konstantinos Karetsas",
+     "from": "KRC Genk",
+     "to": "Dortmund",
+     "age": 18,
+     "fee_eur": 30000000
+    },
+    {
+     "player": "Tolu Arokodare",
+     "from": "KRC Genk",
+     "to": "Wolves",
+     "age": 24,
+     "fee_eur": 26000000
+    }
+   ]
+  },
+  "Championship": {
+   "n": 57,
+   "fee_eur": 748300000,
+   "avg_age": 25.8,
+   "seasons": [
+    2025,
+    2026
+   ],
+   "top": [
+    {
+     "player": "Mateus Fernandes",
+     "from": "West Ham United",
+     "to": "Tottenham",
+     "age": 21,
+     "fee_eur": 99000000
+    },
+    {
+     "player": "Mateus Fernandes",
+     "from": "Southampton FC",
+     "to": "West Ham",
+     "age": 21,
+     "fee_eur": 52250000
+    },
+    {
+     "player": "Omari Hutchinson",
+     "from": "Ipswich Town",
+     "to": "Nott'm Forest",
+     "age": 21,
+     "fee_eur": 43400000
+    },
+    {
+     "player": "El Hadji Malick Diouf",
+     "from": "West Ham United",
+     "to": "Brentford",
+     "age": 21,
+     "fee_eur": 40800000
+    },
+    {
+     "player": "Tyler Dibling",
+     "from": "Southampton FC",
+     "to": "Everton",
+     "age": 19,
+     "fee_eur": 40500000
+    }
+   ]
+  },
+  "SuperLig": {
+   "n": 19,
+   "fee_eur": 130000000,
+   "avg_age": 25.7,
+   "seasons": [
+    2025,
+    2026
+   ],
+   "top": [
+    {
+     "player": "Christ Inao Oulaï",
+     "from": "Trabzonspor",
+     "to": "Fiorentina",
+     "age": 20,
+     "fee_eur": 26000000
+    },
+    {
+     "player": "Sidiki Chérif",
+     "from": "Fenerbahce",
+     "to": "Coventry",
+     "age": 19,
+     "fee_eur": 24500000
+    },
+    {
+     "player": "Tammy Abraham",
+     "from": "Beşiktaş JK",
+     "to": "Aston Villa",
+     "age": 28,
+     "fee_eur": 22000000
+    },
+    {
+     "player": "Rômulo",
+     "from": "Göztepe",
+     "to": "Leipzig",
+     "age": 23,
+     "fee_eur": 20500000
+    },
+    {
+     "player": "Sebastian Szymański",
+     "from": "Fenerbahce",
+     "to": "Rennes",
+     "age": 26,
+     "fee_eur": 9500000
+    }
+   ]
+  },
+  "AustrianBundesliga": {
+   "n": 23,
+   "fee_eur": 156250000,
+   "avg_age": 22.2,
+   "seasons": [
+    2025,
+    2026
+   ],
+   "top": [
+    {
+     "player": "Joane Gadou",
+     "from": "Red Bull Salzburg",
+     "to": "Dortmund",
+     "age": 19,
+     "fee_eur": 19500000
+    },
+    {
+     "player": "Jannik Schuster",
+     "from": "Red Bull Salzburg",
+     "to": "Brentford",
+     "age": 20,
+     "fee_eur": 18000000
+    },
+    {
+     "player": "Petar Ratkov",
+     "from": "Red Bull Salzburg",
+     "to": "Lazio",
+     "age": 22,
+     "fee_eur": 13600000
+    },
+    {
+     "player": "Mamadou Sangaré",
+     "from": "Rapid Vienna",
+     "to": "Lens",
+     "age": 23,
+     "fee_eur": 13000000
+    },
+    {
+     "player": "Adam Daghim",
+     "from": "Red Bull Salzburg",
+     "to": "Hoffenheim",
+     "age": 20,
+     "fee_eur": 13000000
+    }
+   ]
+  },
+  "DanishSuperliga": {
+   "n": 17,
+   "fee_eur": 124800000,
+   "avg_age": 23.1,
+   "seasons": [
+    2025,
+    2026
+   ],
+   "top": [
+    {
+     "player": "Caleb Yirenkyi",
+     "from": "FC Nordsjælland",
+     "to": "Coventry",
+     "age": 20,
+     "fee_eur": 27000000
+    },
+    {
+     "player": "Sindre Walle Egeli",
+     "from": "FC Nordsjælland",
+     "to": "Ipswich",
+     "age": 19,
+     "fee_eur": 20000000
+    },
+    {
+     "player": "Lucas Høgsberg",
+     "from": "FC Nordsjælland",
+     "to": "R. Strasbourg",
+     "age": 19,
+     "fee_eur": 15000000
+    },
+    {
+     "player": "Yuito Suzuki",
+     "from": "Bröndby IF",
+     "to": "Freiburg",
+     "age": 23,
+     "fee_eur": 10000000
+    },
+    {
+     "player": "Oliver Sørensen",
+     "from": "FC Midtjylland",
+     "to": "Parma",
+     "age": 23,
+     "fee_eur": 8100000
+    }
+   ]
+  },
+  "SwissSuperLeague": {
+   "n": 25,
+   "fee_eur": 102890000,
+   "avg_age": 23.1,
+   "seasons": [
+    2025,
+    2026
+   ],
+   "top": [
+    {
+     "player": "Jaouen Hadjam",
+     "from": "BSC Young Boys",
+     "to": "Brighton",
+     "age": 23,
+     "fee_eur": 13000000
+    },
+    {
+     "player": "Zachary Athekame",
+     "from": "BSC Young Boys",
+     "to": "AC Milan",
+     "age": 20,
+     "fee_eur": 10900000
+    },
+    {
+     "player": "Jonas Adjetey",
+     "from": "FC Basel 1893",
+     "to": "Wolfsburg",
+     "age": 22,
+     "fee_eur": 9500000
+    },
+    {
+     "player": "Willem Geubbels",
+     "from": "FC St. Gallen 1879",
+     "to": "Paris FC",
+     "age": 24,
+     "fee_eur": 9000000
+    },
+    {
+     "player": "Leon Avdullahu",
+     "from": "FC Basel 1893",
+     "to": "Hoffenheim",
+     "age": 21,
+     "fee_eur": 8000000
+    }
+   ]
+  },
+  "Brazil": {
+   "n": 19,
+   "fee_eur": 291500000,
+   "avg_age": 21.6,
+   "seasons": [
+    2025,
+    2026
+   ],
+   "top": [
+    {
+     "player": "Estêvão",
+     "from": "Sociedade Esportiva Palmeiras",
+     "to": "Chelsea",
+     "age": 18,
+     "fee_eur": 45000000
+    },
+    {
+     "player": "Allan",
+     "from": "Sociedade Esportiva Palmeiras",
+     "to": "Man City",
+     "age": 22,
+     "fee_eur": 37500000
+    },
+    {
+     "player": "Rayan",
+     "from": "Clube de Regatas Vasco da Gama",
+     "to": "Bournemouth",
+     "age": 19,
+     "fee_eur": 28500000
+    },
+    {
+     "player": "Wesley",
+     "from": "CR Flamengo",
+     "to": "Roma",
+     "age": 21,
+     "fee_eur": 25000000
+    },
+    {
+     "player": "Thiago Almada",
+     "from": "Botafogo de Futebol e Regatas",
+     "to": "Atlético",
+     "age": 24,
+     "fee_eur": 21000000
+    }
+   ]
+  },
+  "Argentina": {
+   "n": 16,
+   "fee_eur": 105300000,
+   "avg_age": 21.9,
+   "seasons": [
+    2025,
+    2026
+   ],
+   "top": [
+    {
+     "player": "Franco Mastantuono",
+     "from": "CA River Plate",
+     "to": "Real Madrid",
+     "age": 18,
+     "fee_eur": 45000000
+    },
+    {
+     "player": "Mikel Amondarain",
+     "from": "Club Estudiantes de La Plata",
+     "to": "Bologna",
+     "age": 21,
+     "fee_eur": 10000000
+    },
+    {
+     "player": "Christian Ordóñez",
+     "from": "CA Vélez Sarsfield",
+     "to": "Parma",
+     "age": 20,
+     "fee_eur": 9750000
+    },
+    {
+     "player": "Mariano Troilo",
+     "from": "Club Atlético Belgrano",
+     "to": "Parma",
+     "age": 22,
+     "fee_eur": 7980000
+    },
+    {
+     "player": "David Romero",
+     "from": "Club Atlético Tigre",
+     "to": "Parma",
+     "age": 23,
+     "fee_eur": 7000000
+    }
+   ]
+  },
+  "MLS": {
+   "n": 14,
+   "fee_eur": 51400000,
+   "avg_age": 24.6,
+   "seasons": [
+    2025,
+    2026
+   ],
+   "top": [
+    {
+     "player": "Lucas Herrington",
+     "from": "Colorado Rapids",
+     "to": "Hull City",
+     "age": 18,
+     "fee_eur": 14800000
+    },
+    {
+     "player": "Zavier Gozo",
+     "from": "Real Salt Lake City",
+     "to": "Crystal Palace",
+     "age": 19,
+     "fee_eur": 13000000
+    },
+    {
+     "player": "Tani Oluwaseyi",
+     "from": "Minnesota United FC",
+     "to": "Villarreal",
+     "age": 25,
+     "fee_eur": 8000000
+    },
+    {
+     "player": "Benja Cremaschi",
+     "from": "Inter Miami CF",
+     "to": "Parma",
+     "age": 21,
+     "fee_eur": 4000000
+    },
+    {
+     "player": "Alex Freeman",
+     "from": "Orlando City SC",
+     "to": "Villarreal",
+     "age": 21,
+     "fee_eur": 3500000
+    }
+   ]
+  }
+ }
+}

@@ -87,3 +87,29 @@ def test_same_match_two_id_systems_is_one_match() -> None:
     out = mc.results_from(rows, dt.date(2026, 10, 22), 3)
     assert len(out) == 1 and out[0]["event_id"] == "401915396"
     assert {out[0]["home"]["team"], out[0]["away"]["team"]} == {"Lille", "Galatasaray"}
+
+
+def test_league_tiers_and_parent() -> None:
+    """홈 리그 지도 티어 — 리그 수준 92·86 에서 자르고, 2부 리그는 같은 나라 1부 아래."""
+    assert ll.parent_league("Championship") == "EPL" and ll.tier("Championship") is None
+    assert ll.parent_league("EPL") is None and ll.tier("EPL") == 1
+    for lg in LEAGUES:
+        t = ll.tier(lg)
+        if t:
+            lv = ll.level(lg)
+            assert t == (1 if lv >= ll.TIER_CUTS[0] else 2 if lv >= ll.TIER_CUTS[1] else 3), lg
+
+
+def test_parse_exports_counts_big5_permanent_only() -> None:
+    import fetch_league_exports as fx
+    html = """<div class="box"><h2>FC Basel 1893</h2><table><thead><tr><th>Out</th><th>Age</th></tr></thead><tbody>
+      <tr><td class="hauptlink"><a href="/x/profil/spieler/1">A Player</a></td><td>20</td><td></td><td></td><td></td><td></td><td></td>
+          <td><a href="/fc-arsenal/startseite/verein/11">Arsenal FC</a></td><td>€12.00m</td></tr>
+      <tr><td class="hauptlink"><a href="/x/profil/spieler/2">B Player</a></td><td>22</td><td></td><td></td><td></td><td></td><td></td>
+          <td><a href="/fc-arsenal/startseite/verein/11">Arsenal FC</a></td><td>loan transfer</td></tr>
+      <tr><td class="hauptlink"><a href="/x/profil/spieler/3">C Player</a></td><td>24</td><td></td><td></td><td></td><td></td><td></td>
+          <td><a href="/fc-sion/startseite/verein/321">FC Sion</a></td><td>€1.00m</td></tr>
+    </tbody></table></div>"""
+    tables, rows = fx.parse_outs(html, {11})
+    assert tables == 1 and len(rows) == 1
+    assert rows[0]["player"] == "A Player" and rows[0]["fee_eur"] == 12_000_000 and rows[0]["age"] == 20

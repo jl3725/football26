@@ -659,6 +659,19 @@ export type HomeAll = { window: Context["window"]; leagues: { key: string; name:
   // 리그 전체 집계(목록은 리그별 상위 몇 건뿐) — 예전 스냅샷엔 없을 수 있음
   summary?: { spend_eur: number; signings: number; manager_changes: number; manager_changes_inseason?: number; injured: number }; generated_at?: string };
 export const getHomeAll = () => j<HomeAll>(`/api/home/all`);
+
+// ── 홈 리그 지도(/api/league-map) — 티어(리그 수준 92·86)·2부 리그 부모·순위 1~3위·빅5로 보낸 이적료 ──
+export type LeagueMapTop = { team: string; pts: number | null; logo: string };
+export type LeagueMapExports = { n: number; fee_eur: number; avg_age: number | null };
+export type LeagueMapItem = {
+  key: string; name: string; tier: 1 | 2 | 3 | null; parent: string | null; level: number;
+  top: LeagueMapTop[]; exports: LeagueMapExports | null;
+};
+export type LeagueMapData = {
+  leagues: LeagueMapItem[]; cuts: number[];
+  soon: { key: string; name: string; tier: 3; exports: LeagueMapExports | null }[];
+};
+export const getLeagueMap = () => j<LeagueMapData>(`/api/league-map`);
 // 매치 센터 — 다가오는 경기·빅매치(src/match_center.py). kst 는 한국 시간 표기, d_day 는 오늘 기준.
 export type FixtureSide = { team: string; league: string | null; rank: number | null; points: number | null;
   logo: string; color: string; ovr: number | null; form: string[] };

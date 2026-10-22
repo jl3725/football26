@@ -13,6 +13,8 @@ import SectionHead from "./SectionHead";
 import Info from "./Info";
 import WeeklyDigest from "./WeeklyDigest";
 import { LEAGUES_ACTIVE } from "@/lib/leagues";
+import LeagueMap from "./LeagueMap";
+import LeagueLauncher from "./LeagueLauncher";
 
 const ESPN_CODE: Record<string, string> = Object.fromEntries(LEAGUES_ACTIVE.map((l) => [l.key, l.espn]));
 const eurM = (v: number) => (v >= 1e6 ? `€${Math.round(v / 1e6)}M` : v > 0 ? `€${Math.round(v / 1e3)}K` : "€0");
@@ -38,7 +40,7 @@ function pendingFixtures(lab: LeagueLab, league: string): Fixture[] {
 }
 
 export default function HomeDashboard({ accent, onPickTeam, onPickLeagueTeam, leagueLabel = "EPL",
-  league = "EPL", leagues = [], onLeague, view, onView, initialIntlComp }: {
+  league = "EPL", onLeague, view, onView, initialIntlComp }: {
   accent: string; onPickTeam: (t: string) => void; onPickLeagueTeam?: (t: string, league?: string) => void;
   leagueLabel?: string; league?: string; leagues?: LeagueOpt[]; onLeague?: (l: string) => void;
   view?: "all" | "league" | "INTL"; onView?: (v: "all" | "league" | "INTL") => void;   // 페이지가 주소와 함께 관리
@@ -61,27 +63,29 @@ export default function HomeDashboard({ accent, onPickTeam, onPickLeagueTeam, le
     return () => { a = false; };
   }, [league, comp]);
 
-  // 전체(통합) + 모든 리그 + WC 를 홈에서 바로 전환하는 탭(리그 홈은 다리그 허브)
-  const opts: LeagueOpt[] = leagues.length ? leagues : [{ key: league, label: leagueLabel }];
+  // 리그 고르기 — 전체 홈은 리그 지도(LeagueMap), 리그 홈·국가대표는 접는 런처(LeagueLauncher). 예전엔 리그 탭 15개가
+  // 한 줄이라 잘리고 위계가 안 보였다(2026-10-22 사용자와 기획).
   const pickTL = onPickLeagueTeam ?? ((t: string) => onPickTeam(t));
-  const switcher = (
-    <div className="comp-seg chips5">
+  const goLeague = (k: string) => { setComp("league"); onLeague?.(k); };
+  const intlBtn = (
+    <button className={`wc intl-${intlState}${comp === "INTL" ? " active" : ""}`} onClick={() => setComp("INTL")}
+      title={intlState === "live" ? "국가대표 — 대회·A매치 진행 중" : intlState === "soon" ? "국가대표 — 14일 안에 시작" : "국가대표 — 대륙별 대회·A매치"}>
+      {intlState !== "none" && <span className="wc-dot" />}INTERNATIONAL</button>
+  );
+  const seg = (
+    <div className="comp-seg">
       <button className={comp === "all" ? "active" : ""} onClick={() => setComp("all")}>전체</button>
-      {opts.map((l) => {
-        const on = comp === "league" && league === l.key;
-        return (
-          <button key={l.key} className={on ? "active" : ""}
-            onClick={() => { setComp("league"); onLeague?.(l.key); }}>{l.label}</button>
-        );
-      })}
-      <button className={`wc intl-${intlState}${comp === "INTL" ? " active" : ""}`} onClick={() => setComp("INTL")}
-        title={intlState === "live" ? "국가대표 — 대회·A매치 진행 중" : intlState === "soon" ? "국가대표 — 14일 안에 시작" : "국가대표 — 대륙별 대회·A매치"}>
-        {intlState !== "none" && <span className="wc-dot" />}INTERNATIONAL</button>
+      {intlBtn}
     </div>
+  );
+  const switcher = (
+    <LeagueLauncher current={league} view={comp === "INTL" ? "INTL" : "league"} onAll={() => setComp("all")} onPick={goLeague}
+      right={<div className="comp-seg">{intlBtn}</div>} />
   );
 
   if (comp === "all") return (
-    <div className="fade home"><AllDashboard accent={accent} onPick={pickTL} switcher={switcher} /></div>
+    <div className="fade home"><AllDashboard accent={accent} onPick={pickTL} switcher={seg}
+      leagueMap={<LeagueMap onPick={goLeague} />} /></div>
   );
   if (comp === "INTL") return (
     <div className="fade home"><div className="wc-topbar">{switcher}</div><International accent={accent} onPickTeam={pickTL} initialComp={initialIntlComp} /></div>

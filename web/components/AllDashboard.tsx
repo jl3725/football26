@@ -93,7 +93,9 @@ const POS_SHORT: Record<string, string> = {
 const posShort = (p: string) => POS_SHORT[p] ?? p;
 const ddays = (until: string) => Math.round((new Date(until).getTime() - Date.now()) / 86400000);
 
-export default function AllDashboard({ onPick, switcher }: { accent?: string; onPick: Pick; switcher?: ReactNode }) {
+export default function AllDashboard({ onPick, switcher, leagueMap }: {
+  accent?: string; onPick: Pick; switcher?: ReactNode; leagueMap?: ReactNode;
+}) {
   const [d, setD] = useState<HomeAll | null>(null);
   const [fx, setFx] = useState<Fixture[] | null>(null);
   const [fxToday, setFxToday] = useState<Fixture[]>([]);   // 오늘 경기 — 방금 끝난(FT) 경기를 MATCH RECAP 에 바로 올린다
@@ -215,6 +217,8 @@ export default function AllDashboard({ onPick, switcher }: { accent?: string; on
         </div>
         {switcher}
       </header>
+
+      {leagueMap}
 
       {pulse && <ResultsTicker results={pulse.results} onPick={onPick} />}
 

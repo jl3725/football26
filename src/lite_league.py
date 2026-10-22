@@ -182,6 +182,27 @@ def espn_squad(team: dict | None, league: str) -> str | None:
     return (m.get("espn_names") or {}).get(name)
 
 
+def espn_event_for(league: str, date: str, home: str, away: str) -> str | None:
+    """라이트 리그 경기(일정은 FotMob 경기 id) → 같은 경기의 ESPN 경기 id — 같은 날(±1일) 두 팀의 ESPN 팀 id 가 모두 맞는 것.
+    경기 리뷰가 ESPN 경기 상세를 쓰기 때문(2026-10-22 홈 결과 띠에서 덴마크 경기 리뷰가 502). ESPN 이 없는 리그(스위스)는 None."""
+    from espn_common import scoreboard_events  # noqa: PLC0415
+    code = LEAGUES[league].espn if league in LEAGUES else ""
+    if not code or not date:
+        return None
+    ids: dict[str, set[str]] = {}
+    for eid, sq in (team_map(league).get("espn") or {}).items():
+        ids.setdefault(sq, set()).add(str(eid))
+    if not ids.get(home) or not ids.get(away):
+        return None
+    d = dt.date.fromisoformat(date[:10])
+    events = scoreboard_events(code, (d - dt.timedelta(days=1)).isoformat(), (d + dt.timedelta(days=1)).isoformat()) or []
+    for e in events:
+        teams = {str((c.get("team") or {}).get("id")) for c in ((e.get("competitions") or [{}])[0].get("competitors") or [])}
+        if ids[home] & teams and ids[away] & teams:
+            return str(e.get("id"))
+    return None
+
+
 def remember_tm(league: str, squad: str, slug: str, vid: int, tm_name: str) -> None:
     """Transfermarkt 클럽(verein id)을 우리 표기에 적어 둔다 — 다음 수집부터 season_clubs 가 이 표기로 돌려준다."""
     p = teams_path(league)

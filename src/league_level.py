@@ -63,6 +63,32 @@ def levels() -> dict[str, float]:
     return out
 
 
+# 홈 리그 지도 티어(2026-10-22 사용자와 정함) — 리그 수준 하나로 자른다: TIER 1 ≥ 92 · TIER 2 ≥ 86 · 나머지 TIER 3.
+# 경계는 지금 리그 수준에서 2점 넘게 벌어진 자리(리그1 92.8 | 포르투갈 90.7, 쉬페르리그 86.5 | 덴마크 84.5) — 계수가 바뀌면
+# 티어도 따라 바뀐다. 2부 리그(division ≥ 2)는 티어 칸 대신 같은 나라 1부 리그 카드 아래에 붙는다(parent_league).
+TIER_CUTS = (92.0, 86.0)
+
+
+def parent_league(league: str | None) -> str | None:
+    """2부 리그면 같은 나라 1부 리그 키(챔피언십 → EPL), 아니면 None."""
+    try:
+        from leagues import LEAGUES  # noqa: PLC0415
+    except ImportError:
+        return None
+    c = LEAGUES.get(str(league or ""))
+    if c is None or c.division < 2:
+        return None
+    return next((k for k, o in LEAGUES.items() if o.country == c.country and o.division == 1), None)
+
+
+def tier(league: str | None) -> int | None:
+    """1·2·3 — 2부 리그는 None(1부 카드 아래)."""
+    if parent_league(league):
+        return None
+    lv = level(league)
+    return 1 if lv >= TIER_CUTS[0] else 2 if lv >= TIER_CUTS[1] else 3
+
+
 def fit_second_tier(club_mv: dict[str, float], known: dict[str, float]) -> tuple[dict[str, float], dict]:
     """1부 리그들의 (log 클럽 평균 시장가치, 레벨) 직선 → 2부 리그 레벨. club_mv: {리그: 클럽 평균 스쿼드 가치(€)}."""
     import math  # noqa: PLC0415

@@ -58,6 +58,10 @@ jobs:
               FB_LEAGUE=$LG bash scripts/ci_try.sh "$NAME $LG" python $SCRIPT $ARGS
             done
           done
+          # 홈 리그 지도 TIER 3 원 — 빅5 구단이 최근 두 시즌 각 리그에서 사 간 이적료(리그·시즌당 1요청, 후보 리그 포함)
+          if [ "$MODE" != "weekly" ]; then
+            bash scripts/ci_try.sh "league_exports" python src/fetch_league_exports.py
+          fi
 
       - name: Validate core data contracts
         run: |
@@ -74,7 +78,7 @@ jobs:
           if [ "$MODE" = "weekly" ]; then
             PATHS="data/tm_injury_history_*.csv data/ops/runs/"; SUBJECT="통산 부상 이력"
           else
-            PATHS="data/transfers_*.csv data/transfermarkt_*.csv data/transfer_rumors_*.csv data/players_*.csv data/market_value_*.csv data/lite_teams_*.json data/ops/runs/"
+            PATHS="data/transfers_*.csv data/transfermarkt_*.csv data/transfer_rumors_*.csv data/players_*.csv data/market_value_*.csv data/lite_teams_*.json data/league_exports.json data/ops/runs/"
             SUBJECT="이적·부상·계약·루머·시장가치"
           fi
           git add -- $PATHS

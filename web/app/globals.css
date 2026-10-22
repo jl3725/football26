@@ -4773,3 +4773,86 @@ LIGA’처럼 글자가 접히던 것) — 넘치면 가로로 넘긴다 */
 
 /* 기사 요약은 두 줄까지(누르면 원문) — 뉴스 탭 글이 기사마다 200자 넘게 펼쳐졌다(2026-10-21) */
 .news-desc { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+
+/* ── 홈 리그 지도(LeagueMap)·리그 런처(LeagueLauncher) — 2026-10-22 사용자와 기획 ──
+   TIER 1 카드(순위 1~3위 로고, 2부 리그 띠) · TIER 2 타일 · TIER 3 원(빅5로 보낸 이적료). 글은 리그 이름·숫자만. */
+.lmap { display: grid; gap: 16px; margin: 18px 0 22px; }
+.lm-tier { display: grid; gap: 8px; }
+.lm-lab { display: flex; align-items: center; gap: 6px; font: 700 11px/1 var(--font-display); letter-spacing: .16em; }
+.lm-tier.t1 .lm-lab { color: var(--warning); }
+.lm-tier.t2 .lm-lab { color: var(--comp-ucl); }
+.lm-tier.t3 .lm-lab { color: var(--positive); }
+.lm-cards { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
+.lm-cg { display: flex; flex-direction: column; min-width: 0; }
+.lm-card, .lm-tile, .lm-sub, .lm-orb { font: inherit; color: inherit; cursor: pointer; }
+.lm-card { flex: 1; text-align: left; display: grid; align-content: start; gap: 12px; padding: 14px; border-radius: 14px;
+  background: var(--surface-raised); border: 1px solid var(--line-strong); transition: border-color .15s ease, transform .15s ease; }
+.lm-card:hover { border-color: rgba(244, 207, 94, .55); transform: translateY(-1px); }
+.lm-card.has-sub { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+.lm-name { font: 800 22px/1 var(--font-display); letter-spacing: .03em; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.lm-crests { display: flex; gap: 12px; align-items: flex-end; flex: none; }
+.lm-crest { display: grid; justify-items: center; gap: 4px; }
+.lm-crest img { width: 32px; height: 32px; object-fit: contain; padding: 4px; border-radius: 50%; background: rgba(255, 255, 255, .07); box-sizing: content-box; }
+.lm-crest:first-child img { width: 38px; height: 38px; }
+.lm-crest i { font: 600 12px/1 var(--font-num); font-style: normal; color: var(--muted); font-variant-numeric: tabular-nums; }
+.lm-crest:first-child i { color: var(--txt); }
+.lm-crests.sm { gap: 4px; }
+.lm-crests.sm .lm-crest img, .lm-crests.sm .lm-crest:first-child img { width: 18px; height: 18px; padding: 2px; }
+.lm-sub { display: flex; align-items: center; justify-content: space-between; gap: 8px; text-align: left; padding: 8px 12px;
+  background: var(--surface); border: 1px solid var(--line-strong); border-top: 1px dashed var(--line-strong); border-radius: 0 0 14px 14px; }
+.lm-sub:hover { border-color: rgba(244, 207, 94, .55); }
+.lm-sname { font: 700 13px/1 var(--font-display); letter-spacing: .06em; text-transform: uppercase; color: #c9ced6; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.lm-tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.lm-tile { display: flex; align-items: center; justify-content: space-between; gap: 10px; text-align: left; padding: 10px 14px;
+  border-radius: 12px; background: transparent; border: 1px solid var(--line-strong); }
+.lm-tile:hover { border-color: rgba(91, 124, 255, .6); }
+.lm-tile .lm-name { font-size: 16px; font-weight: 700; letter-spacing: .04em; }
+.lm-orbs { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 16px 24px; }
+.lm-orb-item { display: grid; justify-items: center; gap: 8px; }
+.lm-orb { width: var(--d); height: var(--d); max-width: 100%; border-radius: 50%; display: grid; place-items: center; padding: 0;
+  background: radial-gradient(circle at 35% 30%, rgba(104, 224, 165, .28), rgba(104, 224, 165, .06) 62%), var(--surface-raised);
+  border: 1px solid rgba(104, 224, 165, .45); transition: transform .15s ease, box-shadow .15s ease; }
+.lm-orb:hover { transform: scale(1.04); box-shadow: 0 0 0 4px rgba(104, 224, 165, .12); }
+.lm-orb.soon { background: transparent; border: 1px dashed rgba(137, 146, 159, .55); cursor: default; }
+.lm-orb.soon:hover { transform: none; box-shadow: none; }
+.lm-orb-in { display: grid; justify-items: center; gap: 4px; }
+.lm-orb-in b { font: 800 20px/1 var(--font-num); color: var(--positive); font-variant-numeric: tabular-nums; }
+.lm-orb.soon .lm-orb-in b { font-size: 16px; color: var(--muted); }
+.lm-orb-in em { font: 700 10px/1 var(--font-display); font-style: normal; letter-spacing: .14em; color: var(--muted); }
+.lm-orb-name { font: 700 13px/1.2 var(--font-ui); }
+.lm-card.on, .lm-tile.on, .lm-sub.on { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent) inset; }
+.lm-orb.on { box-shadow: 0 0 0 3px var(--accent); }
+.lm-card:focus-visible, .lm-tile:focus-visible, .lm-sub:focus-visible, .lm-orb:focus-visible, .ll button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+@media (max-width: 900px) {
+  .lm-cards { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: minmax(170px, 42%); overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 4px; scrollbar-width: none; }
+  .lm-cg { scroll-snap-align: start; }
+  .lm-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 460px) {
+  .lm-tiles { grid-template-columns: minmax(0, 1fr); }
+  .lm-sub .lm-crests { display: none; }   /* 좁은 카드에선 2부 리그 이름이 먼저 */
+  .lm-orb { width: calc(var(--d) * .8); height: calc(var(--d) * .8); }
+  .lm-orb-in b { font-size: 17px; }
+}
+@media (prefers-reduced-motion: reduce) { .lm-card, .lm-orb { transition: none; } }
+
+/* 리그 런처 — '← 전체 · 지금 리그 ▾ · INTERNATIONAL' + 펼침 */
+.ll { position: relative; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.ll-crumb { font: 700 12.5px/1 var(--font-display); letter-spacing: .08em; color: var(--muted); padding: 9px 12px; border-radius: 999px;
+  border: 1px solid var(--line-strong); background: rgba(0, 0, 0, .28); cursor: pointer; }
+.ll-crumb:hover { color: var(--txt); }
+.ll-current { font: 800 14px/1 var(--font-display); letter-spacing: .08em; padding: 10px 14px; border-radius: 999px; cursor: pointer;
+  border: 1px solid var(--line-strong); background: rgba(0, 0, 0, .28); color: var(--txt); }
+.ll-current.on { background: var(--txt); color: #080b12; border-color: var(--txt); }
+.ll-pop { position: absolute; top: calc(100% + 8px); left: 0; z-index: 40; width: min(560px, calc(100vw - 32px)); display: grid; gap: 10px;
+  padding: 12px; border-radius: 14px; background: var(--overlay, #171e29); border: 1px solid var(--line-strong); box-shadow: 0 14px 34px rgba(0, 0, 0, .5); }
+.ll-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.ll-lab { width: 54px; font: 700 10px/1 var(--font-display); letter-spacing: .16em; }
+.ll-row.t1 .ll-lab { color: var(--warning); }
+.ll-row.t2 .ll-lab { color: var(--comp-ucl); }
+.ll-row.t3 .ll-lab { color: var(--positive); }
+.ll-mini { font: 700 12px/1 var(--font-display); letter-spacing: .06em; padding: 7px 10px; border-radius: 999px; cursor: pointer;
+  border: 1px solid var(--line-strong); background: transparent; color: #c9ced6; }
+.ll-mini:hover { color: var(--txt); border-color: var(--muted); }
+.ll-mini.o { border-color: rgba(104, 224, 165, .5); color: var(--positive); }
+.ll-mini.on { background: var(--txt); color: #080b12; border-color: var(--txt); }

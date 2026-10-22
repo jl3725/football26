@@ -6454,6 +6454,41 @@ def _team_xg_pg(league: str) -> dict[str, float]:
     return out
 
 
+@app.get("/api/league-map")
+@_memo(ttl=21600)
+def league_map():
+    """홈 리그 지도 — 리그마다 티어(리그 수준 92·86 에서 자름, 2부는 같은 나라 1부 아래) · 순위 1~3위(로고·승점) ·
+    빅5로 보낸 이적료(최근 두 시즌, TIER 3 원 크기). 아직 수집하지 않은 후보 리그(브라질·아르헨티나·MLS)는 soon 으로."""
+    import json as _json  # noqa: PLC0415
+
+    import league_level as _lv  # noqa: PLC0415
+    from leagues import CANDIDATE_LEAGUES  # noqa: PLC0415
+    try:
+        exports = _json.loads((ds.DB_PATH.parent / "league_exports.json").read_text(encoding="utf-8")).get("leagues") or {}
+    except (OSError, ValueError):
+        exports = {}
+
+    def _ex(k):
+        e = exports.get(k)
+        return {"n": e.get("n"), "fee_eur": e.get("fee_eur"), "avg_age": e.get("avg_age")} if e else None
+
+    avail = set(ds.available_leagues())
+    leagues = []
+    for lg, c in _LEAGUES_CFG.items():
+        if lg not in avail:
+            continue
+        st = ds.read_table("standings", league=lg)
+        top = []
+        if st is not None and not st.empty:
+            for r in st.sort_values("rank").head(3).itertuples(index=False):
+                top.append({"team": r.squad, "pts": int(r.points) if r.points == r.points else None,
+                            "logo": tm.team_logo(r.squad)})
+        leagues.append({"key": lg, "name": c.name, "tier": _lv.tier(lg), "parent": _lv.parent_league(lg),
+                        "level": _lv.level(lg), "top": top, "exports": _ex(lg)})
+    soon = [{"key": k, "name": c.name, "tier": 3, "exports": _ex(k)} for k, c in CANDIDATE_LEAGUES.items()]
+    return {"leagues": leagues, "soon": soon, "cuts": list(_lv.TIER_CUTS)}
+
+
 @app.get("/api/league-lab/{league}")
 @_memo(ttl=21600)
 def league_lab(league: str):
@@ -6609,7 +6644,16 @@ def match_review_api(event_id: str, comp: str = ""):
                 home = home or str(r.opponent)
     if not comp:
         raise HTTPException(status_code=404, detail="unknown event")
-    url = f"https://site.api.espn.com/apis/site/v2/sports/soccer/{comp}/summary?event={event_id}"
+    espn_id = event_id
+    lite_lg = next((x for x in (lg_h, lg_a) if x and _LEAGUES_CFG.get(x) and _LEAGUES_CFG[x].lite), None)
+    if lite_lg:
+        # 라이트 리그 일정의 경기 id 는 FotMob — 같은 날 같은 두 팀의 ESPN 경기로 바꿔 상세를 받는다(없으면 리뷰 없음)
+        import lite_league  # noqa: PLC0415
+        espn_id = (lite_league.espn_event_for(lite_lg, date or "", home or "", away or "")
+                   if comp == _LEAGUES_CFG[lite_lg].espn else None)
+        if not espn_id:
+            raise HTTPException(status_code=404, detail="no review for this match")
+    url = f"https://site.api.espn.com/apis/site/v2/sports/soccer/{comp}/summary?event={espn_id}"
     try:
         req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (football26)"})
         with urllib.request.urlopen(req, timeout=15) as resp:

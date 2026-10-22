@@ -92,6 +92,8 @@ AGENTS: tuple[Agent, ...] = (
               Feed("transfers", "이적·루머", ("transfers", "rumors"), ("tm_data", "transfer_watch"),
                    "매일 10:30·18:30 KST · 창 열리면 1~3시간", 24, ("transfers_*", "transfer_rumors_*")),
               Feed("buzz", "이적 소문(뉴스)", ("buzz",), ("daily_data",), "매일 13:30 KST", 36),
+              Feed("exports", "빅5로 보낸 선수(리그 지도 TIER 3)", ("league_exports",), ("tm_data",), "매일 10:30·18:30 KST", 36,
+                   ("league_exports.json",)),
           ), checks=("validate: transfers 계약", "watchdog: tm_agent"),
           extras=("이적시장 감시 — transfer_watch.yml: 창이 열려 있을 때 리그 이적 페이지로 새 이적 클럽만 다시 받기(마감 7일 전부터 60분)",)),
     Agent("value", "VALUE", "가치·계약", "시장가치 스냅샷, 계약 만료, TM 선수 정보(국적·포지션·사진)",

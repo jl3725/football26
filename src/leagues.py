@@ -148,6 +148,23 @@ LEAGUES: dict[str, LeagueConfig] = {
     ),
 }
 
+@dataclass(frozen=True)
+class CandidateLeague:
+    """아직 수집하지 않은 후보 리그 — 홈 리그 지도에 '준비 중'으로 보이고, 빅5 이적 실적(src/fetch_league_exports.py)만 미리 센다.
+    브라질·아르헨티나·MLS 는 달력 연도 시즌이라 시즌 처리를 바꾼 뒤에 LEAGUES 로 옮긴다."""
+    key: str
+    name: str
+    country: str
+    tm_id: str
+    tm_slug: str
+
+
+CANDIDATE_LEAGUES: dict[str, CandidateLeague] = {
+    "Brazil": CandidateLeague("Brazil", "Brasileirão", "Brazil", "BRA1", "campeonato-brasileiro-serie-a"),
+    "Argentina": CandidateLeague("Argentina", "Liga Profesional", "Argentina", "ARG1", "torneo-apertura"),
+    "MLS": CandidateLeague("MLS", "MLS", "United States", "MLS1", "major-league-soccer"),
+}
+
 # 풀 리그(로컬 주간 빌드·FBref·Understat·Sofascore 가 있는 리그)와 라이트 리그.
 FULL_LEAGUES: list[str] = [k for k, c in LEAGUES.items() if not c.lite]
 LITE_LEAGUES: list[str] = [k for k, c in LEAGUES.items() if c.lite]

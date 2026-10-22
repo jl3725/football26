@@ -4,10 +4,8 @@ import { useState } from "react";
 import type { Team, NextSeason } from "@/lib/api";
 import { showNextSeason, type Phase } from "@/lib/season";
 import { usePins } from "@/lib/pins";
-import { LEAGUES_ACTIVE, TIER_LABEL, leagueLabel, leagueName, type LeagueInfo } from "@/lib/leagues";
-
-// 리그 목록은 lib/leagues.ts 한 곳 — 티어(S 빅5 · A 유럽 강호 · TALENT 원석 발굴)별로 묶어 보여 준다
-const TIERS = (["S", "A", "TALENT"] as LeagueInfo["tier"][]).map((t) => ({ t, items: LEAGUES_ACTIVE.filter((l) => l.tier === t) }));
+import { TIER_LABEL, leagueInfo, leagueLabel, leagueName } from "@/lib/leagues";
+import { useLeagueGroups } from "@/lib/leagueMap";
 
 // 다음 시즌 라벨 (현재 "YY/YY" → 한 해 뒤). 시즌 문구는 박아 두지 않는다 — scripts/check_season_literals.py
 function nextSeasonLabel(cur: string): string {
@@ -39,6 +37,7 @@ export default function Sidebar({
   onPickTeam?: (team: string, league: string) => void;
 }) {
   const { pins } = usePins();
+  const groups = useLeagueGroups();
   const [pickedTab, setSeasonTab] = useState<"next" | "cur">("next"); // 오프시즌엔 새 시즌 먼저
   // 시즌 중에는 '다음 시즌' 탭이 현재 시즌과 같아 숨기고 현재 순위만(단계 로딩 전에도 깜빡임 없이 현재 순위)
   const hasNext = !!phase && showNextSeason({ phase });
@@ -80,9 +79,12 @@ export default function Sidebar({
             onChange={(event) => onLeague?.(event.target.value)}
             aria-label="리그 선택"
           >
-            {TIERS.map(({ t, items }) => (
+            {/* 홈 리그 지도와 같은 묶음 — 티어는 서버가 리그 수준으로 매김, 2부 리그는 1부 바로 뒤 ↳ */}
+            {([1, 2, 3] as const).map((t) => (
               <optgroup key={t} label={TIER_LABEL[t]}>
-                {items.map((item) => <option key={item.key} value={item.key}>{item.flag} {item.short}</option>)}
+                {groups[t].filter((l) => !l.soon).flatMap((l) => [l, ...l.subs.map((s) => ({ ...s, sub: true }))]).map((l) => (
+                  <option key={l.key} value={l.key}>{"sub" in l ? "↳ " : `${leagueInfo(l.key)?.flag ?? ""} `}{l.short}</option>
+                ))}
               </optgroup>
             ))}
           </select>
