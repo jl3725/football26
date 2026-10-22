@@ -45,3 +45,7 @@ export function accent(hex: string): string {
   }
   return `rgb(${r},${g},${b})`;
 }
+
+
+/** 나이 표기 — 0·빈값이면 '나이 —'(출처마다 나이가 빈 선수가 '0세'로 보였다, 2026-10-22). */
+export const ageText = (a: number | null | undefined): string => (a && a > 0 ? `${Math.floor(a)}세` : "나이 —");

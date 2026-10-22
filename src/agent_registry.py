@@ -98,8 +98,8 @@ AGENTS: tuple[Agent, ...] = (
           )),
     Agent("injury", "INJURY", "부상", "현재 부상자·결장 명단, 통산 부상 이력",
           ("Transfermarkt", "FotMob"), (
-              Feed("current", "현재 부상·결장", ("injuries", "fotmob_injuries"), ("tm_data", "match_refresh", "daily_data"),
-                   "하루 3~4회", 24, ("transfermarkt_injuries_*", "fotmob_injuries*")),
+              Feed("current", "현재 부상·결장", ("injuries", "fotmob_injuries", "fotmob_squads"), ("tm_data", "match_refresh", "daily_data"),
+                   "하루 3~4회", 24, ("transfermarkt_injuries_*", "fotmob_injuries*", "fotmob_squads*")),
               Feed("history", "통산 부상 이력", ("injury_history",), ("tm_data",), "주 1회 · 월 12:30 KST", WEEK_H,
                    ("tm_injury_history_*",)),
           ), checks=("수집기 가드: 부상자 0명·이력 급감 저장 차단",)),

@@ -18,6 +18,7 @@ import { seasonLongLabel, seasonStatusText } from "@/lib/season";
 import SeasonOpener from "./SeasonOpener";
 import { MeaningTag } from "./Meaning";
 import { SS_NOTE, ovrMeaning, ssMeaning } from "@/lib/meaning";
+import { ageText } from "@/lib/ui";
 
 // 무료 서버(Render)가 잠들었다 깨는 중이면 첫 요청이 시간 초과될 수 있어 15초 뒤 한 번만 더 시도한다.
 function retryOnce<T>(f: () => Promise<T>, waitMs = 15000): Promise<T> {
@@ -159,7 +160,7 @@ export default function AllDashboard({ onPick, switcher }: { accent?: string; on
     { k: "up", label: "RISERS", rows: (d.movers_up ?? []).map(moverRow) },
     { k: "down", label: "FALLERS", rows: (d.movers_down ?? []).map(moverRow) },
     { k: "form", label: "HOT FORM", rows: d.hot_form.map((p) => ({ key: p.player + p.club, player: p.player, club: p.club, club_logo: p.club_logo, league: p.league, photo: p.photo, sub: sub(p.club, p.pos), why: <>평균 {rt(p.rating)}</>, ovr: p.ovr })) },
-    { k: "prospect", label: "PROSPECTS", rows: d.prospects.map((p) => ({ key: p.player + p.club, player: p.player, club: p.club, club_logo: p.club_logo, league: p.league, photo: p.photo, sub: sub(p.club, p.pos), why: <>{p.age}세 · {rt(p.rating)}</>, ovr: p.ovr })) },
+    { k: "prospect", label: "PROSPECTS", rows: d.prospects.map((p) => ({ key: p.player + p.club, player: p.player, club: p.club, club_logo: p.club_logo, league: p.league, photo: p.photo, sub: sub(p.club, p.pos), why: <>{ageText(p.age)} · {rt(p.rating)}</>, ovr: p.ovr })) },
     { k: "value", label: "VALUE PICKS", rows: d.value_picks.map((p) => ({ key: p.player + p.club, player: p.player, club: p.club, club_logo: p.club_logo, league: p.league, photo: p.photo, sub: sub(p.club, p.pos), why: <>시장가치 {fmtEur(p.value_eur)} · {rt(p.rating)}</>, ovr: p.ovr })) },
     { k: "riser", label: "MARKET ▲", rows: d.risers.map((p) => ({ key: p.player + p.club, player: p.player, club: p.club, club_logo: p.club_logo, league: p.league, photo: p.photo, sub: sub(p.club), why: `${fmtEur(p.value_eur)}`, right: <span className="td up">▲{p.pct}%</span> })) },
   ].filter((t) => t.rows.length > 0);

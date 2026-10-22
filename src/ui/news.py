@@ -110,8 +110,34 @@ _ALL_NEWSTAG = {**SQUAD_TO_NEWSTAG, **LALIGA_NEWSTAG, **SERIEA_NEWSTAG,
                 **EREDIVISIE_NEWSTAG, **BELGIANPROLEAGUE_NEWSTAG}
 
 
+_SEASON_TEAMS: dict = {}
+
+
+def _season_teams(league: str) -> list[str]:
+    """이번 시즌 순위표 팀(파일 시각 기준 캐시). 없으면 빈 목록."""
+    try:
+        import csv  # noqa: PLC0415
+
+        from leagues import data_path  # noqa: PLC0415
+        p = data_path("standings", league)
+        key = (str(p), p.stat().st_mtime)
+        if _SEASON_TEAMS.get(league, (None,))[0] != key:
+            with p.open(encoding="utf-8") as fh:
+                _SEASON_TEAMS[league] = (key, [r["squad"] for r in csv.DictReader(fh) if r.get("squad")])
+        return list(_SEASON_TEAMS[league][1])
+    except (OSError, KeyError, ImportError):
+        return []
+
+
 def newstags(league: str = "EPL") -> dict:
-    return NEWSTAG_BY_LEAGUE.get(league, SQUAD_TO_NEWSTAG)
+    """{우리 클럽: 뉴스 태그(ESPN 표기)} — 이번 시즌 순위표 팀(승격팀 포함, 강등팀 제외). 고정 표는 태그만 빌려 쓰고
+    표에 없는 클럽은 클럽 이름 그대로. 예전엔 지난 시즌 팀으로 고정돼 8개 리그 승격팀 22곳의 뉴스가 0건이었고
+    (FotMob 팀 id·와이어 팀 판정도 이 목록을 써서 함께 빠졌다), 강등팀 뉴스를 계속 받았다(2026-10-22 검수)."""
+    base = NEWSTAG_BY_LEAGUE.get(league, SQUAD_TO_NEWSTAG)
+    teams = _season_teams(league)
+    if not teams:
+        return base
+    return {t: base.get(t, t) for t in teams}
 
 
 # 스페인 리그 전체 와이어(팀별 RSS 없음 → 헤드라인 팀명 매칭). AS·Mundo Deportivo·Sport.

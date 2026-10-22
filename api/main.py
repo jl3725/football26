@@ -1555,6 +1555,31 @@ def _prev_rows() -> pd.DataFrame:
     return allp.drop(columns=["_mn"]).set_index("_pid")
 
 
+@_memo(ttl=21600)
+def _prev_by_name() -> dict:
+    """{정규화 이름: 지난 시즌 행} — tm id 가 없는 행도(지난 시즌 4,470행 중 1,342행). 펜더르스(스트라스부르 2,970분)가
+    tm id 가 없어 첼시 스쿼드에서 빠지고 '대체 GK 없음'이 됐다(2026-10-22). 이름이 겹치면(동명이인) 그 이름은 쓰지 않는다."""
+    import player_registry as preg  # noqa: PLC0415
+    from leagues import LEAGUES  # noqa: PLC0415
+    season = f"{SEASON_START - 1}_{SEASON_START}"
+    seen: dict = {}
+    dup: set = set()
+    for lg in LEAGUES:
+        df = _pf(lg, season)
+        if df is None:
+            continue
+        for r in df.to_dict("records"):
+            k = preg.norm(r.get("player"))
+            if not k:
+                continue
+            if k in seen and str(seen[k].get("squad")) != str(r.get("squad")):
+                if _num(r.get("minutes")) > _num(seen[k].get("minutes")):
+                    seen[k] = r                      # 같은 사람이 시즌 중 이적 — 출전 많은 쪽
+                continue
+            seen.setdefault(k, r)
+    return {k: v for k, v in seen.items() if k not in dup}
+
+
 def _roster_extras(team: str, league: str, df) -> list[dict]:
     """이번 시즌 출전이 없어 players_full 에 없는 스쿼드 선수(TM 스쿼드 명단 = 계약 데이터).
 
@@ -1562,28 +1587,52 @@ def _roster_extras(team: str, league: str, df) -> list[dict]:
     'GK 백업 없음'이라고 했다. 포지션·시장가치·직전 평점은 지난 시즌 기록(tm id)에서 가져오고,
     지난 시즌 기록도 없는 선수(유스 등)는 포지션을 몰라 넣지 않는다.
     """
+    import fotmob_squads as fsq  # noqa: PLC0415
     import league_level  # noqa: PLC0415
+    import player_registry as preg  # noqa: PLC0415
     ct = ds.read_table("transfermarkt_contracts", league=league)
-    if ct is None or "squad" not in ct.columns:
+    fm = ds.read_table("fotmob_squads", league=league)
+    if (ct is None or "squad" not in ct.columns) and (fm is None or fm.empty):
         return []
     have_tm = {str(int(_num(t))) for t in df.get("tm_id", pd.Series(dtype=float)).dropna()} if df is not None else set()
     have_nk = set(df["norm_key"].astype(str)) if df is not None and "norm_key" in df.columns else set()
+    mine = {str(n): str(n) for n in df.loc[df["squad"] == team, "player"].dropna()} if df is not None and "squad" in df.columns else {}
     prev = _prev_rows()
+    by_name = _prev_by_name()
+    fidx = fsq.index(fm)
+    lo = _loans_out(team, league)
+    cands = [] if ct is None or "squad" not in ct.columns else list(ct[ct["squad"] == team].to_dict("records"))
+    known = {preg.norm(c.get("player")) for c in cands}
+    for r in (fidx.get(team) or {}).values():           # FotMob 명단에만 있는 선수(TM 계약 명단 갱신 전 새 등록·유스)
+        if preg.norm(r.get("player")) not in known and not preg.best_match(str(r.get("player")), {c.get("player"): c.get("player") for c in cands})[0]:
+            cands.append({"player": r.get("player"), "norm_key": None, "tm_id": None, "tm_photo": None})
     out = []
-    for _, r in ct[ct["squad"] == team].iterrows():
-        tid = str(int(_num(r.get("tm_id")))) if pd.notna(r.get("tm_id")) else ""
-        if (tid and tid in have_tm) or str(r.get("norm_key")) in have_nk:
+    for r in cands:
+        name = str(r.get("player") or "")
+        tid = str(int(_num(r.get("tm_id")))) if pd.notna(r.get("tm_id")) and r.get("tm_id") is not None else ""
+        if (tid and tid in have_tm) or str(r.get("norm_key")) in have_nk or preg.best_match(name, mine)[0]:
+            continue                                      # 이미 출전자로 있음('Mahdi Nicoll-Jazuli' = 'Mahdi Jazuli')
+        if lo and _is_loaned(name, lo):
             continue
         pid = f"tm{tid}" if tid else None
-        if pid is None or prev.empty or pid not in prev.index:
+        pr = prev.loc[pid].to_dict() if pid and not prev.empty and pid in prev.index else by_name.get(preg.norm(name))
+        if pr is None:
+            f = fsq.find(fidx, team, name)               # 지난 시즌 기록도 없으면 FotMob 명단의 포지션·나이(유스·하부 리그 출신)
+            if f is None:
+                continue
+            out.append({"player": name, "squad": team, "norm_key": r.get("norm_key"), "tm_id": r.get("tm_id"),
+                        "pos": f.get("pos"), "fl_group": f.get("pos"), "tm_position": f.get("tm_position"),
+                        "age": fsq.age_of(f), "minutes": 0, "goals": 0, "assists": 0, "ss_rating": None,
+                        "tm_photo": r.get("tm_photo"), "_ovr": None, "_form": None,
+                        "_league_level": league_level.level(league), "left_for": None, "_roster_only": True, "_no_record": True})
             continue
-        pr = prev.loc[pid].to_dict()
+        pr = dict(pr)
         row = dict(pr)
         row.update({
             "player": r.get("player"), "squad": team, "norm_key": r.get("norm_key"), "tm_id": r.get("tm_id"),
             "minutes": 0, "goals": 0, "assists": 0, "ss_rating": None,
             "prev_minutes": pr.get("minutes"), "prev_ss_rating": pr.get("ss_rating"),
-            "age": (_num(pr.get("age")) + 1) if pr.get("age") is not None else None,
+            "age": (_num(pr.get("age")) + 1) if pr.get("age") is not None and pr.get("age") == pr.get("age") else None,
             "tm_photo": r.get("tm_photo") or pr.get("tm_photo"),
             "_ovr": None, "_form": None, "_league_level": league_level.level(league),
             "left_for": None, "_roster_only": True,
@@ -1677,9 +1726,77 @@ def _injury_returns(league: str) -> dict:
     return out
 
 
-_FM_KIND = {"injury": "부상", "suspension": "출장 정지", "in_match": "경기 중 부상 교체"}
+_FM_KIND = {"injury": "부상", "suspension": "출장 정지", "in_match": "경기 중 부상 교체", "reported": "부상 보도(확인 전)"}
 _MONTH = {m: i for i, m in enumerate(["january", "february", "march", "april", "may", "june", "july", "august",
                                        "september", "october", "november", "december"], 1)}
+
+
+# 부상 낱말 — 낱말 단위(이탈리아어 'TORNA'(돌아온다)가 'torn' 으로 잡혀 데 브라위너가 '부상 보도'가 됐다, 2026-10-22)
+_INJ_BAD = re.compile(r"\b(injur\w*|forced off|limps? off|ruled out|sidelined|out for|blow|scans?|surgery|hamstring|knee|ankle|"
+                      r"thigh|quad\w*|calf|groin|fractur\w*|torn|ruptur\w*|concern|lesi[oó]n\w*|lesionad\w*|infortun\w*|"
+                      r"verletz\w*|\w*blessure\w*|bless[ée]\w*|geblesseerd|les[ãa]o|onzeker|incertain|twijfel\w*|doubtful)\b", re.I)
+_INJ_GOOD = re.compile(r"\b(return\w*|back in training|back from|fit again|recover\w*|available|boost|comeback|cleared|vuelve|"
+                       r"recupera\w*|rientr\w*|torna\w*|zur[üu]ck|retour\w*|terug\w*|regress\w*|trainiert wieder|"
+                       r"wieder (im|fit|dabei|einsatzbereit)|trains? again|hersteld|r[ée]tabli\w*)\b", re.I)
+
+
+@_memo(ttl=1800)
+def _news_injury_rows(league: str, days: int = 3, min_sources: int = 2) -> list[dict]:
+    """뉴스 '부상 보도' — 최근 days 일 '부상' 기사(분류 kind=injury)에 이름 전체로 태그된 선수 중, 서로 다른 매체 min_sources 곳
+    이상이 다친 쪽으로 쓴 경우(제목에 부상 낱말, '복귀·훈련 복귀·회복' 낱말 없음). 보도 뒤에 실제로 뛰었으면 뺀다.
+    공식 목록(TM 하루 2번·FotMob 경기 직전 결장 명단)보다 몇 시간~하루 빠르다 — 챔스 바이에른전 10분 만에 실려 나간
+    사카가 다음 날까지 부상 목록에 없었다(2026-10-22 사용자). 확인 전이라 '부상 보도(확인 전)'로 따로 보인다."""
+    import sqlite3  # noqa: PLC0415
+    if not ds.DB_PATH.exists():
+        return []
+    since = (datetime.date.today() - datetime.timedelta(days=days)).isoformat()
+    try:
+        c = sqlite3.connect(f"file:{ds.DB_PATH}?mode=ro", uri=True)
+        try:
+            rows = c.execute(
+                """SELECT p.player, p.squad, a.source, a.headline, coalesce(nullif(substr(a.published,1,10),''), a.first_seen)
+                   FROM news_players p JOIN news_meta m ON m.link = p.link JOIN news_articles a ON a.link = p.link
+                   WHERE p.league = ? AND p.how IN ('full', 'surname') AND m.kind IN ('injury', 'match', 'interview', 'other')
+                     AND a.first_seen >= ?""", (league, since)).fetchall()
+        finally:
+            c.close()
+    except sqlite3.Error:
+        return []
+    agg: dict = {}
+    good: dict = {}
+    for player, squad, src, head, day in rows:
+        h = str(head or "")
+        last = str(player).split()[-1].lower() if player else ""
+        if not last or last not in h.lower():
+            continue                                      # 제목이 그 선수 얘기일 때만
+        k = (str(squad), str(player))
+        if _INJ_GOOD.search(h):                           # '복귀·출전 가능·청신호' — 이 뒤로는 부상 보도를 접는다
+            good[k] = max(good.get(k, ""), str(day or ""))
+            continue
+        if not _INJ_BAD.search(h):
+            continue
+        a = agg.setdefault(k, {"sources": set(), "first": day, "last": day, "head": h})
+        a["sources"].add(str(src or ""))
+        if day and day < a["first"]:
+            a["first"], a["head"] = day, h
+        a["last"] = max(str(a["last"] or ""), str(day or ""))
+    played = ds.read_table("fotmob_match_ratings", league=league)
+    after: dict = {}
+    if played is not None and not played.empty:
+        for sq, pl, d, mn in zip(played["squad"].astype(str), played["player"].astype(str), played["date"].astype(str),
+                                 pd.to_numeric(played["minutes"], errors="coerce").fillna(0)):
+            if mn > 0:
+                k = (sq, pl)
+                after[k] = max(after.get(k, ""), d)
+    out = []
+    for (sq, pl), a in agg.items():
+        if len(a["sources"]) < min_sources or after.get((sq, pl), "") > str(a["first"]) or good.get((sq, pl), "") >= str(a["last"]):
+            continue                                      # 매체가 적거나, 보도 뒤 뛰었거나, 그 뒤 복귀 보도(홀란 10/19 → 10/21 'returns')
+        srcs = sorted(a["sources"])
+        out.append({"squad": sq, "player": pl, "fotmob_id": "", "kind": "reported",
+                    "expected_return": f"보도 {srcs[0]}" + (f" 외 {len(srcs) - 1}곳" if len(srcs) > 1 else ""),
+                    "match_id": "", "match_date": str(a["first"]), "fetched": str(a["first"])})
+    return out
 
 
 def _fm_return_kr(s: str) -> str:
@@ -1725,6 +1842,17 @@ def _injuries_table(league: str):
         inj = inj.copy()
         inj["source"] = "transfermarkt"
     fm = ds.read_table("fotmob_injuries", league=league)
+    try:                                                  # FotMob 팀 명단의 부상 표시(복귀 예상) — 매일, 다음 경기와 무관
+        import fotmob_squads as fsq  # noqa: PLC0415
+        extra_fm = fsq.injured_rows(ds.read_table("fotmob_squads", league=league))
+    except Exception:  # noqa: BLE001
+        extra_fm = []
+    nr_rows = _news_injury_rows(league)                   # 뉴스 '부상 보도'(공식 목록 전, 여러 매체)
+    if extra_fm or nr_rows:
+        fm = pd.concat([x for x in (fm, pd.DataFrame(extra_fm), pd.DataFrame(nr_rows)) if x is not None and not x.empty],
+                       ignore_index=True) if any(x is not None and not x.empty for x in (fm, pd.DataFrame(extra_fm), pd.DataFrame(nr_rows))) else fm
+        if fm is not None and not fm.empty:
+            fm = fm.drop_duplicates(subset=["squad", "player"], keep="first")
     if fm is None or fm.empty or "squad" not in fm.columns:
         return inj
     have = set() if inj is None or inj.empty else {(str(s), ps.norm_name(p)) for s, p in zip(inj["squad"], inj["player"])}
@@ -1768,7 +1896,8 @@ def _injuries_table(league: str):
             continue
         have.add(key)
         kind = str(r.get("kind") or "injury")
-        until = _fm_return_kr(r.get("expected_return")) if kind != "in_match" else             f"{str(r.get('match_date') or '')[5:].replace('-', '/')} {r.get('expected_return') or ''}".strip()
+        until = (_fm_return_kr(r.get("expected_return")) if kind not in ("in_match", "reported") else
+                 f"{str(r.get('match_date') or '')[5:].replace('-', '/')} {r.get('expected_return') or ''}".strip())
         add.append({"squad": r["squad"], "player": name, "position": pr.get("tm_position") or pr.get("pos") or "",
                     "injury": _FM_KIND.get(kind, kind), "until": until, "market_value_eur": pr.get("market_value_eur"),
                     "tm_player_id": pr.get("tm_id"), "tm_photo": _photo(pr) if pr else "", "last_checked": r.get("fetched"),
@@ -3216,8 +3345,14 @@ def _placements(team: str, league: str, last_n: int | None = None, exclude: set 
     _norm_inj = _ps_.norm_name
     _inj_now = set(_active_injuries(team, league) or {})          # 지금 결장(부상) — 배치 선수에 ✚
 
-    slot_counts: dict[str, dict[str, int]] = {}
-    for eid in matches:
+    # 최근 창(last_n)이면 최근 경기일수록 무겁게(0.6 → 1.0) — 예전엔 같은 무게라 아스날 최근 3경기에서
+    # 칼라피오리(리즈 CB·포레스트 LB)와 루이스스켈리(리즈 MF·릴 LB)가 동점이 되고 이름순으로 스켈리가 들어갔다(2026-10-22 사용자)
+    n_m = len(matches)
+    wts = {eid: (0.6 + 0.4 * i / (n_m - 1) if (last_n and n_m > 1) else 1.0) for i, eid in enumerate(matches)}
+    slot_counts: dict[str, dict[str, float]] = {}
+    starts: dict[str, float] = {}
+    last_start: dict[str, int] = {}
+    for i, eid in enumerate(matches):
         m = sub[(sub["event_id"] == eid) & (sub["formation"] == formation)].sort_values("formation_place")
         if len(m) < 11:
             continue
@@ -3228,30 +3363,34 @@ def _placements(team: str, league: str, last_n: int | None = None, exclude: set 
         for (_, row), slot in zip(m.iterrows(), slots):
             if not slot:
                 continue
+            p_ = row["player"]
             slot_counts.setdefault(slot, {})
-            slot_counts[slot][row["player"]] = slot_counts[slot].get(row["player"], 0) + 1
+            slot_counts[slot][p_] = slot_counts[slot].get(p_, 0) + wts[eid]
+            starts[p_] = starts.get(p_, 0) + wts[eid]
+            last_start[p_] = i
 
     resolve = _players_lookup(league)
     # 칸마다 '그 칸 최다 출전'을 따로 고르면 두 칸을 번갈아 선 선수(Man City Anderson RDM·LDM)가 두 번 들어가고
     # 다른 주전(Enzo)이 벤치로 밀렸다 → (칸, 선수, 횟수)를 많은 순으로 한 사람 한 칸씩 배정(2026-10-15).
     # 4-1-2-1-2 처럼 같은 이름의 칸(CM 두 개)이 있으면 그 수만큼 서로 다른 선수.
+    # 11명을 먼저 고른다(칸과 무관하게 선발 무게 합, 동점은 가장 최근 선발) — 칸마다 따로 고르면 여러 칸에 나눠 선
+    # 주전(칼라피오리 CB·LB)이 어느 칸에서도 1등을 못 해 통째로 빠졌다. 그다음 그 11명을 많이 선 칸에 배정.
     from collections import Counter  # noqa: PLC0415
     need = Counter(formation_slots(formation))
+    n_need = sum(need.values())
+    chosen = {p for p, _ in sorted(((p, v) for p, v in starts.items() if not exclude or _person_key(p) not in exclude),
+                                   key=lambda t: (-round(t[1], 6), -last_start.get(t[0], -1), t[0]))[:n_need]}
     pick: dict[str, list[str]] = {}
     used: set[str] = set()
-    trip = sorted(((v, s, p) for s, c in slot_counts.items() for p, v in c.items()
-                   if not exclude or _person_key(p) not in exclude), key=lambda t: (-t[0], t[1], t[2]))
+    trip = sorted(((v, s, p) for s, c in slot_counts.items() for p, v in c.items() if p in chosen),
+                  key=lambda t: (-t[0], -last_start.get(t[2], -1), t[1], t[2]))
     for _v, s, p in trip:
         if p in used or len(pick.get(s, [])) >= need.get(s, 0):
             continue
         pick.setdefault(s, []).append(p)
         used.add(p)
-    # 그래도 빈 칸은 이 포메이션에서 선발이 가장 많은 남은 선수로(Elche·Cercle 처럼 후보가 다른 칸에 다 배정된 경우)
-    tot: dict[str, int] = {}
-    for c in slot_counts.values():
-        for p, v in c.items():
-            tot[p] = tot.get(p, 0) + v
-    spare = [p for p, _ in sorted(tot.items(), key=lambda x: -x[1])
+    # 그래도 빈 칸은 고른 11명 중 남은 선수(다른 칸에 다 배정된 경우), 그다음 선발 무게가 큰 남은 선수
+    spare = [p for p, _ in sorted(starts.items(), key=lambda x: (-(x[0] in chosen), -x[1], -last_start.get(x[0], -1)))
              if p not in used and (not exclude or _person_key(p) not in exclude)]
     for s, n in need.items():
         while len(pick.get(s, [])) < n and spare:

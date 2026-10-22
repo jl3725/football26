@@ -5,7 +5,8 @@ FotMob 결장자(부상·출장정지) → data/fotmob_injuries_{리그}_{시즌
 FotMob 은 ① 다음 경기 상세(matchDetails)의 lineup.unavailable 에 결장자·복귀 예상('Early December 2026'·'Doubtful')을,
 ② 끝난 경기 이벤트에 '부상 교체'(Substitution · injuredPlayerOut)를 바로 올린다.
 - ① 팀마다 가장 가까운 다가오는 리그 경기(10일 안) 하나 — 리그당 10경기 안팎 요청.
-- ② 최근 4일 안 끝난 리그 경기의 부상 교체 — ①에 아직 없으면 '경기 중 부상 교체'로 남긴다.
+- ② 최근 4일 안 끝난 경기(리그 + 유럽·국내 컵 — 우리 팀이 낀 것)의 부상 교체 — ①에 아직 없으면 '경기 중 부상 교체'로.
+  리그만 보던 때 사카(챔스 바이에른전 10분 부상 교체)가 빠졌다(2026-10-22).
 - 매 실행 전체 새로 씀(지금 결장자 스냅숏). 팀 표기는 리그 일정의 FotMob 팀 id → 우리 표기.
 
 사용: python src/fetch_fotmob_injuries.py [--league EPL]
@@ -30,6 +31,21 @@ AHEAD_DAYS, BACK_DAYS = 10, 4
 
 def _now() -> dt.datetime:
     return dt.datetime.now(dt.timezone.utc)
+
+
+_CUP_CACHE: dict = {}
+
+
+def _cup_finished(since: str) -> list[dict]:
+    """유럽·국내 컵 최근 끝난 경기 — 실행 한 번에 한 번만(리그마다 다시 받지 않게)."""
+    if since not in _CUP_CACHE:
+        from fetch_fotmob_matches import CUPS, finished  # noqa: PLC0415
+        got = []
+        for fid in CUPS:
+            got += finished(fid, None, since)
+            time.sleep(0.3)
+        _CUP_CACHE[since] = got
+    return _CUP_CACHE[since]
 
 
 def league_rows(lg: str) -> list[dict]:
@@ -73,8 +89,15 @@ def league_rows(lg: str) -> list[dict]:
                              "match_id": mid, "match_date": date, "fetched": fetched})
                 have.add((squad, str(u.get("id"))))
         time.sleep(0.35)
-    # ② 최근 끝난 경기의 부상 교체(다음 경기 명단에 아직 없는 선수만)
-    for m in ms:
+    # ② 최근 끝난 경기의 부상 교체(다음 경기 명단에 아직 없는 선수만) — 리그 + 유럽·컵(우리 팀이 낀 경기)
+    recent = list(ms)
+    try:
+        for m in _cup_finished(lo[:10]):
+            if str((m.get("home") or {}).get("id")) in sq or str((m.get("away") or {}).get("id")) in sq:
+                recent.append(m)
+    except Exception as e:  # noqa: BLE001 — 컵 일정 실패는 리그만으로
+        print(f"  [cups] 건너뜀 {type(e).__name__}")
+    for m in recent:
         st = m.get("status") or {}
         t = str(st.get("utcTime") or "")[:19]
         if not st.get("finished") or not t or t < lo:

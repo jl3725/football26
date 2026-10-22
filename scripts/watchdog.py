@@ -319,6 +319,26 @@ def check_ovr() -> list[str]:
     return out
 
 
+def check_squads() -> list[str]:
+    """스쿼드 빈칸 — FotMob 1군 명단 중 화면 스쿼드에 없는 선수·나이 없음(scripts/audit_squads.py). 2026-10-22 첼시 펜더르스·'0세'."""
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import audit_squads  # noqa: PLC0415
+    try:
+        res = audit_squads.audit()
+    except Exception as e:  # noqa: BLE001
+        return [f"스쿼드 점검 실패 — {type(e).__name__}: {e}"]
+    miss = sum(s["missing"] for s in res["leagues"].values())
+    no_age = sum(s["no_age"] for s in res["leagues"].values())
+    reg = sum(s["registered"] for s in res["leagues"].values()) or 1
+    out = []
+    if miss > max(30, reg * 0.01):
+        ex = ", ".join(f"{x['squad']}·{x['player']}" for x in res["missing"][:6])
+        out.append(f"FotMob 1군 명단 중 화면 스쿼드에 없는 선수 {miss}명(등록 {reg}) — 예: {ex}")
+    if no_age > 80:
+        out.append(f"나이 없는 선수 {no_age}명 — src/fotmob_squads.py(생년월일 보강) 확인")
+    return out
+
+
 def check_screen() -> list[str]:
     """화면 간 일치 점검(scripts/check_screen_consistency.py, daily_data) — 같은 숫자가 화면마다 다르면 알린다."""
     p = ROOT / "data" / "eval" / "screen_audit.json"
@@ -382,7 +402,7 @@ def check_agents() -> list[str]:
 CHECKS = {"ovr": check_ovr, "season": check_season, "hub": check_hub, "frontend": check_frontend, "backend": check_backend,
           "workflows": check_workflows, "news": check_news, "tm_agent": check_tm_agent,
           "coverage": check_coverage, "rating_history": check_rating_history, "ratings": check_ratings,
-          "names": check_names, "xg": check_xg, "agents": check_agents, "expectations": check_expectations, "screen": check_screen,
+          "names": check_names, "xg": check_xg, "agents": check_agents, "expectations": check_expectations, "screen": check_screen, "squads": check_squads,
           "identity": check_identity}
 
 

@@ -1,7 +1,7 @@
 "use client";
 import { useMemo } from "react";
 import type { Overview } from "@/lib/api";
-import { hexA } from "@/lib/ui";
+import { hexA, ageText } from "@/lib/ui";
 import { usePeek } from "./PlayerPeek";
 import Info from "./Info";
 import { SvgAvatar, lastName } from "./NetShared";
@@ -105,7 +105,7 @@ export default function AgeStructure({ ov, accent }: { ov: Overview; accent: str
                 <text x={PADL - 10} y={mid + 4} textAnchor="end" fontSize="10.5" fontWeight={700} fill={hexA("#ffffff", 0.7)}>{r.ko}</text>
                 {r.dots.map((d) => (
                   <SvgAvatar key={d.p.player} x={d.cx} y={mid + d.dy} r={d.r} photo={d.p.photo} ring={bucketColor(d.p.age)} ringW={2}
-                    name={`${d.p.player} · ${d.p.age}세 · ${d.p.minutes.toLocaleString()}′ · OVR ${d.p.ovr}`}
+                    name={`${d.p.player} · ${ageText(d.p.age)} · ${d.p.minutes.toLocaleString()}′ · OVR ${d.p.ovr}`}
                     onClick={(e) => peek(e, { name: d.p.player, club: ov.team, hint: { photo: d.p.photo, ovr: d.p.ovr, age: d.p.age } })} />
                 ))}
                 {labels(r.dots, mid).map((l) => (

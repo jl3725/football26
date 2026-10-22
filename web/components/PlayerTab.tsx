@@ -395,7 +395,7 @@ export default function PlayerTab({ team, accent, initialPlayer, onPlayer }: {
                 {p.big_match && <span className="pl-bm" title="UCL/UEL 급 무대 검증">⚡</span>}
                 {p.photo ? <img className="pl-photo" src={p.photo} alt="" /> : <span className="pl-photo ph" />}
                 <div className="pl-name">{p.player}</div>
-                <div className="pl-pos">{p.pos} · {p.age} · <span style={{ color: t.light, fontWeight: 600 }}>{t.ko}</span></div>
+                <div className="pl-pos">{p.pos} · {p.age > 0 ? p.age : "—"} · <span style={{ color: t.light, fontWeight: 600 }}>{t.ko}</span></div>
                 {p.role && <span className={"pl-role role-tag sm " + roleClass(p.role)}>{p.role}</span>}
               </button>
             );

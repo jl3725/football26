@@ -80,6 +80,10 @@ jobs:
       - name: FotMob injuries (결장 명단)
         run: bash scripts/ci_try.sh "fotmob_injuries" python src/fetch_fotmob_injuries.py
 
+      # FotMob 팀 명단(등록 1군 전원·세부 포지션·생년월일·부상 복귀 예상) — 출전 없는 선수(백업 GK)·빈 나이·부상 표시(src/fotmob_squads.py)
+      - name: FotMob squads (팀 명단)
+        run: bash scripts/ci_try.sh "fotmob_squads" python src/fotmob_squads.py
+
       - name: Predictions (ClubElo)
         run: bash scripts/ci_try.sh "clubelo" python src/fetch_clubelo.py
 

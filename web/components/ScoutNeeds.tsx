@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { fmtEur, type Needs, type PositionNeed } from "@/lib/api";
-import { tier } from "@/lib/ui";
+import { tier, ageText } from "@/lib/ui";
 import { TONE } from "@/lib/meaning";
 import { usePeek } from "./PlayerPeek";
 import Info from "./Info";
@@ -93,7 +93,7 @@ function Detail({ n, team }: { n: PositionNeed; team: string }) {
         <div className="sn-row">
           <span className="sn-k">FUTURE</span>
           <span className="sn-tags">
-            {s.aging?.map((x) => <span key={"a" + x.player} className="sn-chip">{last(x.player)} {x.age}세</span>)}
+            {s.aging?.map((x) => <span key={"a" + x.player} className="sn-chip">{last(x.player)} {ageText(x.age)}</span>)}
             {s.contract?.map((x) => <span key={"c" + x.player} className="sn-chip">{last(x.player)} 계약 ~{x.until}</span>)}
           </span>
         </div>

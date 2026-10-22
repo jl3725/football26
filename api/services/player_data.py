@@ -285,6 +285,15 @@ def _build_frame(league: str, season: str | None = None):
         frame = acs.attach_x(frame, acs.x_tables(rd, f"{y0}_{y0 + 1}", ver), acs.x_tables(rd, f"{y0 - 1}_{y0}", ver))
     except Exception as e:  # noqa: BLE001 — 경기별 기록이 없으면 리그 평점만
         print(f"[allcomp] {league} {season or ''}: 건너뜀 {type(e).__name__}: {e}")
+    # 나이·세부 포지션 빈칸 — FotMob 팀 명단(src/fotmob_squads.py)으로. 'Mahdi Jazuli MF 0세'(TM 은 'Mahdi Nicoll-Jazuli'라
+    # 못 붙음)처럼 8개 리그 158명이 나이 없이 '0세'로 보였다(2026-10-22 사용자). 이번 시즌 표만
+    if season is None:
+        try:
+            import fotmob_squads as fsq  # noqa: PLC0415
+            frame = fsq.fill_frame(frame, ds.read_table("fotmob_squads", league=league),
+                                   ds.read_table("fotmob_player_info", league=league))
+        except Exception as e:  # noqa: BLE001
+            print(f"[fotmob_squads] {league}: 건너뜀 {type(e).__name__}: {e}")
     import ratings_v3 as rv3  # noqa: PLC0415
     try:
         frame["_line"] = _played_line(frame, season)

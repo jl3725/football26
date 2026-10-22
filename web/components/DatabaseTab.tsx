@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
 import { getDatabase, fmtEur, type DbPlayer } from "@/lib/api";
-import { tier, roleClass } from "@/lib/ui";
+import { tier, roleClass, ageText } from "@/lib/ui";
 import { ScaleLegend } from "./Meaning";
 import { usePeek } from "./PlayerPeek";
 import { SkelCards } from "./Skeleton";
@@ -99,7 +99,7 @@ export default function DatabaseTab({ accent }: { team: string; accent: string }
               {p.photo ? <img className="db-photo" src={p.photo} alt="" /> : <span className="db-photo ph" />}
               <div className="db-name">{p.player}</div>
               <div className="db-club">{p.logo && <img src={p.logo} alt="" />}{p.squad}<span className="db-lg">{p.league}</span></div>
-              <div className="db-meta">{p.pos} · {p.age}세{p.nationality ? " · " + p.nationality : ""}</div>
+              <div className="db-meta">{p.pos} · {ageText(p.age)}{p.nationality ? " · " + p.nationality : ""}</div>
               {p.role && <span className={"role-tag sm " + roleClass(p.role)}>{p.role}</span>}
               <div className="db-val">{fmtEur(p.value_eur)}</div>
             </div>

@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState, type ReactNode } from "react";
 import { activeLeague, getPlayerDetail, fmtEur, type PlayerDetail } from "@/lib/api";
-import { tier, hexA } from "@/lib/ui";
+import { tier, hexA, ageText } from "@/lib/ui";
 import { ssMeaning, TONE, SS_NOTE } from "@/lib/meaning";
 import { MeaningTag } from "./Meaning";
 import Info from "./Info";
@@ -88,7 +88,7 @@ export default function ComparePanel({ team, a, b, bTeam, bLeague, accent, onCle
         {d.photo ? <img src={d.photo} alt="" style={{ width: 46, height: 46, borderRadius: "50%", objectFit: "cover", border: `2px solid ${hexA(color, 0.6)}` }} /> : <span style={{ width: 46 }} />}
         <div>
           <div style={{ fontSize: 14.5, fontWeight: 700 }}>{d.player}</div>
-          <div style={{ fontSize: 11, opacity: 0.6 }}>{d.pos} · {d.age}세{(cross || d.team !== team) ? ` · ${d.team}` : ""}</div>
+          <div style={{ fontSize: 11, opacity: 0.6 }}>{d.pos} · {ageText(d.age)}{(cross || d.team !== team) ? ` · ${d.team}` : ""}</div>
           {cross && d.league && <div className="cmp-lg">{d.league} <em>수준 {d.league_level ?? "?"}</em></div>}
           <div style={{ fontSize: 16, fontWeight: 800, color: t.light }} title={`OVR ${d.ovr} · ${t.ko}`}>
             {d.ovr} <span style={{ fontSize: 10.5, fontWeight: 700 }}>{t.ko}</span>

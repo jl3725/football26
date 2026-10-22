@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { getSquad, fmtEur, type Squad, type SquadPlayer, type DepthOption } from "@/lib/api";
-import { tier, hexA } from "@/lib/ui";
+import { tier, hexA, ageText } from "@/lib/ui";
 import { depthMeaning } from "@/lib/meaning";
 import { MeaningTag } from "./Meaning";
 import SquadBuilder from "./SquadBuilder";
@@ -30,7 +30,7 @@ function Row({ p, team }: { p: SquadPlayer; team: string }) {
       {p.photo ? <img className="sq-photo" src={p.photo} alt="" /> : <span className="sq-photo ph" />}
       <div className="sq-info">
         <div className="sq-name">{p.player}</div>
-        <div className="sq-meta">{p.pos} · {p.age}세 · {p.roster_only
+        <div className="sq-meta">{p.pos} · {ageText(p.age)} · {p.roster_only
           ? <span className="sq-dnp" title="이번 시즌 출전 기록 없음 — OVR·가치는 지난 시즌 기준">출전 없음</span>
           : <>{p.minutes.toLocaleString()}′</>}</div>
       </div>

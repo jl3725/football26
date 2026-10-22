@@ -1,0 +1,543 @@
+squad,player,fotmob_id,group,positions,tm_position,pos,age,birth_date,shirt,ccode,injured,expected_return,fetched
+Manchester City,Gianluigi Donnarumma,618878,keepers,GK,Goalkeeper,GK,27,1999-02-25,1.0,ITA,False,,2026-10-22
+Manchester City,Marcus Bettinelli,363357,keepers,GK,Goalkeeper,GK,34,1992-05-24,13.0,ENG,False,,2026-10-22
+Manchester City,Gerónimo Rulli,245555,keepers,GK,Goalkeeper,GK,34,1992-05-20,28.0,ARG,False,,2026-10-22
+Manchester City,Rúben Dias,614006,defenders,CB,Centre-Back,DF,29,1997-05-14,3.0,POR,False,,2026-10-22
+Manchester City,Marc Guéhi,844425,defenders,CB,Centre-Back,DF,26,2000-07-13,6.0,ENG,False,,2026-10-22
+Manchester City,Rayan Aït-Nouri,933845,defenders,"LB,LW",Left-Back,DF,25,2001-06-06,21.0,ALG,False,,2026-10-22
+Manchester City,Vitor Reis,1580952,defenders,CB,Centre-Back,DF,20,2006-01-12,22.0,BRA,False,,2026-10-22
+Manchester City,Joško Gvardiol,1070712,defenders,"CB,LB",Centre-Back,DF,24,2002-01-23,24.0,CRO,False,,2026-10-22
+Manchester City,Matheus Nunes,955529,defenders,RB,Right-Back,DF,28,1998-08-27,27.0,POR,True,Doubtful,2026-10-22
+Manchester City,Nico O'Reilly,1300526,defenders,"LB,CDM,LW,CAM",Left-Back,DF,21,2005-03-21,33.0,ENG,True,Doubtful,2026-10-22
+Manchester City,Abdukodir Khusanov,1362998,defenders,"CB,RB",Centre-Back,DF,22,2004-02-29,45.0,UZB,False,,2026-10-22
+Manchester City,Rico Lewis,1288450,defenders,"RB,CM,LB",Right-Back,DF,21,2004-11-21,82.0,ENG,False,,2026-10-22
+Manchester City,Josh Wilson-Esbrand,1187225,defenders,LB,Left-Back,DF,23,2002-12-26,97.0,ENG,False,,2026-10-22
+Manchester City,Elliot Anderson,1089691,midfielders,"CDM,CM",Defensive Midfield,MF,23,2002-11-06,5.0,ENG,False,,2026-10-22
+Manchester City,Mateo Kovačić,239219,midfielders,"CDM,CAM",Defensive Midfield,MF,32,1994-05-06,8.0,CRO,True,Doubtful,2026-10-22
+Manchester City,Rayan Cherki,1104053,midfielders,"CAM,RW,LW,CM",Attacking Midfield,MF,23,2003-08-17,10.0,FRA,False,,2026-10-22
+Manchester City,Enzo Fernández,1137705,midfielders,"CAM,CDM,CM,LW",Attacking Midfield,MF,25,2001-01-17,17.0,ARG,False,,2026-10-22
+Manchester City,Ayyoub Bouaddi,1561552,midfielders,"CDM,CM,RB",Defensive Midfield,MF,19,2007-10-02,32.0,MAR,False,,2026-10-22
+Manchester City,Phil Foden,815006,midfielders,"CAM,RW,LW,ST",Attacking Midfield,MF,26,2000-05-28,47.0,ENG,False,,2026-10-22
+Manchester City,Iliman Ndiaye,965764,attackers,"RW,LW,CAM",Right Winger,FW,26,2000-03-06,7.0,SEN,False,,2026-10-22
+Manchester City,Erling Haaland,737066,attackers,ST,Centre-Forward,FW,26,2000-07-21,9.0,NOR,False,,2026-10-22
+Manchester City,Jérémy Doku,942368,attackers,"LW,CAM,RW",Left Winger,FW,24,2002-05-27,11.0,BEL,False,,2026-10-22
+Manchester City,Allan,1721789,attackers,"RW,RM,RWB,LW",Right Winger,FW,22,2004-04-19,37.0,BRA,False,,2026-10-22
+Manchester City,Antoine Semenyo,933576,attackers,"RW,LW,ST,RM",Right Winger,FW,26,2000-01-07,42.0,GHA,True,Mid December 2026,2026-10-22
+Manchester City,Ryan McAidoo,1680328,attackers,RW,Right Winger,FW,18,2008-06-24,56.0,ENG,False,,2026-10-22
+Arsenal,David Raya,562727,keepers,GK,Goalkeeper,GK,31,1995-09-15,1.0,ESP,False,,2026-10-22
+Arsenal,Kepa Arrizabalaga,317564,keepers,GK,Goalkeeper,GK,32,1994-10-03,13.0,ESP,False,,2026-10-22
+Arsenal,Illan Meslier,952029,keepers,GK,Goalkeeper,GK,26,2000-03-02,30.0,FRA,False,,2026-10-22
+Arsenal,William Saliba,955406,defenders,CB,Centre-Back,DF,25,2001-03-24,2.0,FRA,True,Back in training,2026-10-22
+Arsenal,Cristhian Mosquera,1298907,defenders,"CB,RB",Centre-Back,DF,22,2004-06-27,3.0,ESP,False,,2026-10-22
+Arsenal,Ben White,776151,defenders,RB,Right-Back,DF,29,1997-10-08,4.0,ENG,False,,2026-10-22
+Arsenal,Piero Hincapié,1137667,defenders,"LB,CB",Left-Back,DF,24,2002-01-09,5.0,ECU,True,A few days,2026-10-22
+Arsenal,Gabriel Magalhães,795179,defenders,CB,Centre-Back,DF,28,1997-12-19,6.0,BRA,False,,2026-10-22
+Arsenal,Jurriën Timber,942381,defenders,"RB,CB,LB",Right-Back,DF,25,2001-06-17,12.0,NED,False,,2026-10-22
+Arsenal,Ezri Konsa,710159,defenders,CB,Centre-Back,DF,28,1997-10-23,15.0,ENG,False,,2026-10-22
+Arsenal,Riccardo Calafiori,1105912,defenders,"LB,CB",Left-Back,DF,24,2002-05-19,33.0,ITA,False,,2026-10-22
+Arsenal,Martin Ødegaard,534670,midfielders,"CM,CAM",Central Midfield,MF,27,1998-12-17,8.0,NOR,False,,2026-10-22
+Arsenal,Eberechi Eze,818975,midfielders,"CAM,LW,CM,CDM",Attacking Midfield,MF,28,1998-06-29,10.0,ENG,False,,2026-10-22
+Arsenal,Mikel Merino,574645,midfielders,"CM,ST,CDM",Central Midfield,MF,30,1996-06-22,23.0,ESP,False,,2026-10-22
+Arsenal,Martín Zubimendi,1031325,midfielders,"CDM,CM,RB",Defensive Midfield,MF,27,1999-02-02,36.0,ESP,False,,2026-10-22
+Arsenal,Bruno Guimarães,850354,midfielders,"CM,CDM",Central Midfield,MF,28,1997-11-16,39.0,BRA,False,,2026-10-22
+Arsenal,Declan Rice,654096,midfielders,"CDM,CM",Defensive Midfield,MF,27,1999-01-14,41.0,ENG,False,,2026-10-22
+Arsenal,Myles Lewis-Skelly,1406436,midfielders,"LB,CDM,CM",Left-Back,MF,20,2006-09-26,49.0,ENG,False,,2026-10-22
+Arsenal,Max Dowman,1635773,midfielders,"RW,CAM,CM",Right Winger,MF,16,2009-12-31,56.0,ENG,False,,2026-10-22
+Arsenal,Bukayo Saka,961995,attackers,"RW,CAM",Right Winger,FW,25,2001-09-05,7.0,ENG,False,,2026-10-22
+Arsenal,Viktor Gyökeres,664500,attackers,ST,Centre-Forward,FW,28,1998-06-04,14.0,SWE,False,,2026-10-22
+Arsenal,Christos Tzolis,1157237,attackers,"LW,CAM,LM,RW",Left Winger,FW,24,2002-01-30,17.0,GRE,True,Late October 2026,2026-10-22
+Arsenal,Noni Madueke,1084981,attackers,"RW,LW",Right Winger,FW,24,2002-03-10,20.0,ENG,False,,2026-10-22
+Arsenal,Kai Havertz,749736,attackers,"ST,CAM,CM",Centre-Forward,FW,27,1999-06-11,29.0,GER,False,,2026-10-22
+Brighton,Bart Verbruggen,1131987,keepers,GK,Goalkeeper,GK,24,2002-08-18,1.0,NED,False,,2026-10-22
+Brighton,Jason Steele,107917,keepers,GK,Goalkeeper,GK,36,1990-08-18,23.0,ENG,False,,2026-10-22
+Brighton,Jaouen Hadjam,1178324,defenders,"LB,CB",Left-Back,DF,23,2003-03-26,3.0,ALG,False,,2026-10-22
+Brighton,Pascal Struijk,796974,defenders,CB,Centre-Back,DF,27,1999-08-11,4.0,NED,False,,2026-10-22
+Brighton,Lewis Dunk,201690,defenders,CB,Centre-Back,DF,34,1991-11-21,5.0,ENG,False,,2026-10-22
+Brighton,Costinha,1079456,defenders,RB,Right-Back,DF,26,2000-03-26,20.0,POR,False,,2026-10-22
+Brighton,Olivier Boscagli,613715,defenders,"CB,LB",Centre-Back,DF,28,1997-11-18,21.0,FRA,False,,2026-10-22
+Brighton,Ferdi Kadıoğlu,774448,defenders,"LB,RB,RW,RWB,LWB",Left-Back,DF,27,1999-10-07,24.0,TUR,False,,2026-10-22
+Brighton,Mats Wieffer,970243,defenders,RB,Right-Back,DF,26,1999-11-16,27.0,NED,True,Late October 2026,2026-10-22
+Brighton,Maxim De Cuyper,1134871,defenders,"LB,LW,LWB",Left-Back,DF,25,2000-12-22,29.0,BEL,False,,2026-10-22
+Brighton,Michael Svoboda,951921,defenders,CB,Centre-Back,DF,28,1998-10-15,30.0,AUT,False,,2026-10-22
+Brighton,Luka Vušković,1413996,defenders,CB,Centre-Back,DF,19,2007-02-24,44.0,CRO,False,,2026-10-22
+Brighton,Jack Hinshelwood,1251334,midfielders,"CAM,CDM,CM",Attacking Midfield,MF,21,2005-04-11,8.0,ENG,False,,2026-10-22
+Brighton,Pascal Groß,167008,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,35,1991-06-15,13.0,GER,False,,2026-10-22
+Brighton,Chema Andrés,1586552,midfielders,"CDM,CM",Defensive Midfield,MF,21,2005-04-25,14.0,ESP,False,,2026-10-22
+Brighton,Yasin Ayari,1168311,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,23,2003-10-06,26.0,SWE,False,,2026-10-22
+Brighton,Matthew O'Riley,866686,midfielders,"CM,CAM,CDM,RW",Central Midfield,MF,25,2000-11-21,33.0,DEN,False,,2026-10-22
+Brighton,Malick Junior Yalcouyé,1602352,midfielders,"CAM,CDM",Attacking Midfield,MF,20,2005-11-18,35.0,CIV,False,,2026-10-22
+Brighton,Stefanos Tzimas,1423616,attackers,ST,Centre-Forward,FW,20,2006-01-06,9.0,GRE,True,Late October 2026,2026-10-22
+Brighton,Georginio Rutter,956925,attackers,"ST,CAM",Centre-Forward,FW,24,2002-04-20,10.0,FRA,False,,2026-10-22
+Brighton,Yankuba Minteh,1400227,attackers,"RW,LW",Right Winger,FW,22,2004-07-22,11.0,GAM,True,Mid November 2026,2026-10-22
+Brighton,Promise David,1252132,attackers,ST,Centre-Forward,FW,25,2001-07-03,12.0,CAN,False,,2026-10-22
+Brighton,Ibrahim Osman,1215410,attackers,"LW,LM",Left Winger,FW,21,2004-11-29,15.0,GHA,False,,2026-10-22
+Brighton,Charalampos Kostoulas,1561249,attackers,"ST,LW",Centre-Forward,FW,19,2007-05-30,19.0,GRE,False,,2026-10-22
+Brighton,Kaoru Mitoma,862608,attackers,LW,Left Winger,FW,29,1997-05-20,22.0,JPN,True,Late October 2026,2026-10-22
+Brighton,Diego Gómez,1354561,attackers,"RW,CM,LW,CAM,CDM,RM",Right Winger,FW,23,2003-03-27,25.0,PAR,False,,2026-10-22
+Brighton,Evan Ferguson,1068482,attackers,ST,Centre-Forward,FW,22,2004-10-19,28.0,IRL,True,Mid October 2026,2026-10-22
+Brighton,Zadok Yohanna,1782648,attackers,RW,Right Winger,FW,19,2007-06-29,36.0,NGA,True,Late October 2026,2026-10-22
+Brighton,Femi Azeez,1083185,attackers,"RW,ST,RM",Right Winger,FW,25,2001-06-05,39.0,NGA,True,Late October 2026,2026-10-22
+Chelsea,Emiliano Martínez,268375,keepers,GK,Goalkeeper,GK,34,1992-09-02,1.0,ARG,True,Early November 2026,2026-10-22
+Chelsea,Teddy Sharman-Lowe,1117871,keepers,GK,Goalkeeper,GK,23,2003-03-30,28.0,ENG,False,,2026-10-22
+Chelsea,Mike Penders,1319972,keepers,GK,Goalkeeper,GK,21,2005-07-31,39.0,BEL,False,,2026-10-22
+Chelsea,Gabriel Słonina,1031220,keepers,GK,Goalkeeper,GK,22,2004-05-15,44.0,USA,False,,2026-10-22
+Chelsea,Wesley Fofana,917802,defenders,CB,Centre-Back,DF,25,2000-12-17,3.0,FRA,False,,2026-10-22
+Chelsea,Maxence Lacroix,950485,defenders,CB,Centre-Back,DF,26,2000-04-06,5.0,FRA,False,,2026-10-22
+Chelsea,Levi Colwill,1096400,defenders,CB,Centre-Back,DF,23,2003-02-26,6.0,ENG,False,,2026-10-22
+Chelsea,Jorrel Hato,1413846,defenders,"LB,CB,LWB",Left-Back,DF,20,2006-03-07,21.0,NED,False,,2026-10-22
+Chelsea,Malo Gusto,1197250,defenders,"RB,RWB,LB",Right-Back,DF,23,2003-05-19,27.0,FRA,True,Doubtful,2026-10-22
+Chelsea,Pep Chavarría,988805,defenders,"LB,LWB",Left-Back,DF,28,1998-04-10,29.0,ESP,True,Doubtful,2026-10-22
+Chelsea,Aaron Anselmino,1494947,defenders,CB,Centre-Back,DF,21,2005-04-29,30.0,ARG,False,,2026-10-22
+Chelsea,Josh Acheampong,1400216,defenders,"CB,RB",Centre-Back,DF,20,2006-05-05,34.0,ENG,False,,2026-10-22
+Chelsea,Marco Palestra,1473806,midfielders,"RM,RB,LM",Right Midfield,MF,21,2005-03-03,2.0,ITA,False,,2026-10-22
+Chelsea,Valentín Barco,1272440,midfielders,"CDM,CM",Defensive Midfield,MF,22,2004-07-23,4.0,ARG,False,,2026-10-22
+Chelsea,Cole Palmer,1096353,midfielders,"CAM,RW",Attacking Midfield,MF,24,2002-05-06,10.0,ENG,False,,2026-10-22
+Chelsea,Jordan Henderson,156008,midfielders,"CDM,CM",Defensive Midfield,MF,36,1990-06-17,14.0,ENG,False,,2026-10-22
+Chelsea,Morgan Rogers,883080,midfielders,"CAM,LW,RW",Attacking Midfield,MF,24,2002-07-26,17.0,ENG,False,,2026-10-22
+Chelsea,Reece James,807729,midfielders,"CDM,RB",Defensive Midfield,MF,26,1999-12-08,24.0,ENG,True,Mid January 2027,2026-10-22
+Chelsea,Moisés Caicedo,1137668,midfielders,"CDM,CM",Defensive Midfield,MF,24,2001-11-02,25.0,ECU,False,,2026-10-22
+Chelsea,Roméo Lavia,1190867,midfielders,"CDM,CM",Defensive Midfield,MF,22,2004-01-06,45.0,BEL,False,,2026-10-22
+Chelsea,Pedro Neto,843040,attackers,"RW,LW,RWB,CAM,RM",Right Winger,FW,26,2000-03-09,7.0,POR,False,,2026-10-22
+Chelsea,João Pedro,1021382,attackers,"ST,CAM",Centre-Forward,FW,25,2001-09-26,9.0,BRA,False,,2026-10-22
+Chelsea,Jamie Gittens,1113692,attackers,"LW,LM,RW",Left Winger,FW,22,2004-08-08,11.0,ENG,True,About a week,2026-10-22
+Chelsea,Danny Welbeck,113836,attackers,ST,Centre-Forward,FW,35,1990-11-26,18.0,ENG,False,,2026-10-22
+Chelsea,Emanuel Emegha,1183148,attackers,ST,Centre-Forward,FW,23,2003-02-03,22.0,NED,True,Doubtful,2026-10-22
+Chelsea,Geovany Quenda,1530314,attackers,"LW,RW,RM",Left Winger,FW,19,2007-04-30,23.0,POR,False,,2026-10-22
+Chelsea,Estêvão,1580774,attackers,RW,Right Winger,FW,19,2007-04-24,41.0,BRA,False,,2026-10-22
+Liverpool,Alisson Becker,319784,keepers,GK,Goalkeeper,GK,34,1992-10-02,1.0,BRA,False,,2026-10-22
+Liverpool,Giorgi Mamardashvili,948800,keepers,GK,Goalkeeper,GK,26,2000-09-29,25.0,GEO,False,,2026-10-22
+Liverpool,Freddie Woodman,582276,keepers,GK,Goalkeeper,GK,29,1997-03-04,28.0,ENG,False,,2026-10-22
+Liverpool,Vítezslav Jaroš,1068920,keepers,GK,Goalkeeper,GK,25,2001-07-23,56.0,CZE,False,,2026-10-22
+Liverpool,Harvey Davies,1236818,keepers,GK,Goalkeeper,GK,23,2003-09-03,95.0,ENG,False,,2026-10-22
+Liverpool,Joseph Gomez,568571,defenders,"CB,RB",Centre-Back,DF,29,1997-05-23,2.0,ENG,False,,2026-10-22
+Liverpool,Wataru Endo,202643,defenders,"CDM,CB",Defensive Midfield,DF,33,1993-02-09,3.0,JPN,False,,2026-10-22
+Liverpool,Virgil van Dijk,209405,defenders,CB,Centre-Back,DF,35,1991-07-08,4.0,NED,False,,2026-10-22
+Liverpool,Jérémy Jacquet,1473534,defenders,CB,Centre-Back,DF,21,2005-07-13,5.0,FRA,False,,2026-10-22
+Liverpool,Miloš Kerkez,1195281,defenders,LB,Left-Back,DF,22,2003-11-07,6.0,HUN,False,,2026-10-22
+Liverpool,Conor Bradley,1113690,defenders,RB,Right-Back,DF,23,2003-07-09,12.0,NIR,True,Early January 2027,2026-10-22
+Liverpool,Giovanni Leoni,1609209,defenders,CB,Centre-Back,DF,19,2006-12-21,15.0,ITA,True,Late November 2026,2026-10-22
+Liverpool,Konstantinos Tsimikas,671529,defenders,"LB,LWB,LM",Left-Back,DF,30,1996-05-12,21.0,GRE,False,,2026-10-22
+Liverpool,Jeremie Frimpong,966018,defenders,"RB,RW",Right-Back,DF,25,2000-12-10,30.0,NED,True,Mid November 2026,2026-10-22
+Liverpool,Ronald Araujo,921253,defenders,"CB,RB",Centre-Back,DF,27,1999-03-07,33.0,URU,False,,2026-10-22
+Liverpool,Dominik Szoboszlai,846005,midfielders,"CDM,CAM,RW,RB,LW,CM",Defensive Midfield,MF,25,2000-10-25,8.0,HUN,True,Mid November 2026,2026-10-22
+Liverpool,Alexis Mac Allister,831489,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,27,1998-12-24,10.0,ARG,False,,2026-10-22
+Liverpool,Ryan Gravenberch,956683,midfielders,"CDM,CM",Defensive Midfield,MF,24,2002-05-16,38.0,NED,False,,2026-10-22
+Liverpool,Trey Nyoni,1436258,midfielders,"CDM,CM",Defensive Midfield,MF,19,2007-06-30,42.0,ENG,False,,2026-10-22
+Liverpool,Florian Wirtz,1152455,attackers,"CAM,LW,ST",Attacking Midfield,FW,23,2003-05-03,7.0,GER,False,,2026-10-22
+Liverpool,Alexander Isak,690107,attackers,ST,Centre-Forward,FW,27,1999-09-21,9.0,SWE,False,,2026-10-22
+Liverpool,Federico Chiesa,784510,attackers,"ST,RW",Centre-Forward,FW,28,1997-10-25,14.0,ITA,False,,2026-10-22
+Liverpool,Cody Gakpo,806552,attackers,"LW,ST,LM,RW",Left Winger,FW,27,1999-05-07,18.0,NED,False,,2026-10-22
+Liverpool,Hugo Ekitiké,1197030,attackers,"ST,LW",Centre-Forward,FW,24,2002-06-20,22.0,FRA,True,Early January 2027,2026-10-22
+Liverpool,Víctor Muñoz,1553105,attackers,"LW,RW,LM",Left Winger,FW,23,2003-07-13,23.0,ESP,True,Doubtful,2026-10-22
+Liverpool,Bradley Barcola,1297165,attackers,"LW,RW,ST",Left Winger,FW,24,2002-09-02,29.0,FRA,False,,2026-10-22
+Liverpool,Lewis Koumas,1364042,attackers,"ST,LW,RW,CAM",Centre-Forward,FW,21,2005-09-19,67.0,WAL,False,,2026-10-22
+Liverpool,Rio Ngumoha,1597668,attackers,"LW,RW",Left Winger,FW,18,2008-08-29,73.0,ENG,False,,2026-10-22
+Brentford,Caoimhín Kelleher,776689,keepers,GK,Goalkeeper,GK,27,1998-11-23,1.0,IRL,False,,2026-10-22
+Brentford,Hákon Rafn Valdimarsson,850962,keepers,GK,Goalkeeper,GK,25,2001-10-13,12.0,ISL,False,,2026-10-22
+Brentford,Ellery Balcombe,806579,keepers,GK,Goalkeeper,GK,27,1999-10-15,31.0,ENG,False,,2026-10-22
+Brentford,Aaron Hickey,1002039,defenders,"RB,LB",Right-Back,DF,24,2002-06-10,2.0,SCO,False,,2026-10-22
+Brentford,Rico Henry,562892,defenders,LB,Left-Back,DF,29,1997-07-08,3.0,JAM,False,,2026-10-22
+Brentford,Sepp van den Berg,919435,defenders,CB,Centre-Back,DF,24,2001-12-20,4.0,NED,False,,2026-10-22
+Brentford,Kristoffer Ajer,552718,defenders,"CB,LB",Centre-Back,DF,28,1998-04-17,20.0,NOR,False,,2026-10-22
+Brentford,Nathan Collins,961306,defenders,CB,Centre-Back,DF,25,2001-04-30,22.0,IRL,False,,2026-10-22
+Brentford,Keane Lewis-Potter,1010426,defenders,"LB,RW,LW,CAM",Left-Back,DF,25,2001-02-22,23.0,ENG,False,,2026-10-22
+Brentford,Malick Diouf,1451265,defenders,"LB,LM,LWB",Left-Back,DF,21,2004-12-28,25.0,SEN,False,,2026-10-22
+Brentford,Michael Kayode,1429912,defenders,"RB,RWB",Right-Back,DF,22,2004-07-10,33.0,ITA,False,,2026-10-22
+Brentford,Ji-Soo Kim,1341538,defenders,CB,Centre-Back,DF,21,2004-12-24,36.0,KOR,False,,2026-10-22
+Brentford,Jannik Schuster,1572340,defenders,CB,Centre-Back,DF,20,2006-05-16,44.0,AUT,False,,2026-10-22
+Brentford,Benjamin Fredrick,1478706,defenders,"CB,RB",Centre-Back,DF,21,2005-05-28,48.0,NGA,False,,2026-10-22
+Brentford,Yehor Yarmoliuk,1157236,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,22,2004-03-01,6.0,UKR,False,,2026-10-22
+Brentford,Mathias Jensen,650616,midfielders,"CAM,CDM,CM,RW",Attacking Midfield,MF,30,1996-01-01,8.0,DEN,False,,2026-10-22
+Brentford,Joshua Dasilva,759566,midfielders,RW,Right Winger,MF,27,1998-10-23,10.0,ENG,True,Late October 2026,2026-10-22
+Brentford,Fábio Carvalho,963965,midfielders,CAM,Attacking Midfield,MF,24,2002-08-30,14.0,POR,False,,2026-10-22
+Brentford,Antoni Milambo,1276312,midfielders,CAM,Attacking Midfield,MF,21,2005-04-03,17.0,NED,True,Late October 2026,2026-10-22
+Brentford,Mamadou Sangaré,1185211,midfielders,"CDM,CM,RW",Defensive Midfield,MF,24,2002-06-26,18.0,MLI,False,,2026-10-22
+Brentford,Mikkel Damsgaard,888912,midfielders,"CAM,LW,LM",Attacking Midfield,MF,26,2000-07-03,24.0,DEN,False,,2026-10-22
+Brentford,Vitaly Janelt,688273,midfielders,"CDM,CM",Defensive Midfield,MF,28,1998-05-10,27.0,GER,False,,2026-10-22
+Brentford,Kevin Schade,1083796,attackers,"LW,ST",Left Winger,FW,24,2001-11-27,7.0,GER,False,,2026-10-22
+Brentford,Igor Thiago,1302005,attackers,ST,Centre-Forward,FW,25,2001-06-26,9.0,BRA,False,,2026-10-22
+Brentford,Dango Ouattara,1250253,attackers,"RW,LW,ST",Right Winger,FW,24,2002-02-11,11.0,BFA,False,,2026-10-22
+Brentford,Callum Wilson,184321,attackers,ST,Centre-Forward,FW,34,1992-02-27,13.0,ENG,False,,2026-10-22
+Brentford,Jaidon Anthony,1171140,attackers,"LW,RW,CAM,LM",Left Winger,FW,26,1999-12-01,19.0,ENG,False,,2026-10-22
+Brentford,Gustavo Nunes,1516030,attackers,LW,Left Winger,FW,20,2005-11-20,39.0,BRA,False,,2026-10-22
+Leeds United,James Trafford,1187213,keepers,GK,Goalkeeper,GK,24,2002-10-10,1.0,ENG,False,,2026-10-22
+Leeds United,Michael Zetterer,432435,keepers,GK,Goalkeeper,GK,31,1995-07-12,16.0,GER,False,,2026-10-22
+Leeds United,Alex Cairns,279481,keepers,GK,Goalkeeper,GK,33,1993-01-04,21.0,ENG,False,,2026-10-22
+Leeds United,Tarik Muharemović,1250485,defenders,CB,Centre-Back,DF,23,2003-02-28,5.0,BIH,False,,2026-10-22
+Leeds United,Joe Rodon,717174,defenders,CB,Centre-Back,DF,28,1997-10-22,6.0,WAL,True,Early November 2026,2026-10-22
+Leeds United,Jaka Bijol,861805,defenders,CB,Centre-Back,DF,27,1999-02-05,15.0,SVN,False,,2026-10-22
+Leeds United,James Justin,710158,defenders,"CB,LWB,RWB,LM,RM",Centre-Back,DF,28,1998-02-23,24.0,ENG,False,,2026-10-22
+Leeds United,Melvin Bard,1092403,defenders,"LWB,LB,CB,LM",Left-Back,DF,25,2000-11-06,26.0,FRA,False,,2026-10-22
+Leeds United,Nico Elvedi,517346,defenders,CB,Centre-Back,DF,30,1996-09-30,30.0,SUI,False,,2026-10-22
+Leeds United,Jayden Bogle,789646,midfielders,"RWB,RM,RB",Right-Back,MF,26,2000-07-27,2.0,ENG,False,,2026-10-22
+Leeds United,Gabriel Gudmundsson,744494,midfielders,"LWB,LM,LB",Left-Back,MF,27,1999-04-29,3.0,SWE,False,,2026-10-22
+Leeds United,Ethan Ampadu,780432,midfielders,"CM,CDM,CB",Central Midfield,MF,26,2000-09-14,4.0,WAL,False,,2026-10-22
+Leeds United,Sean Longstaff,820024,midfielders,"CM,CAM,CDM",Central Midfield,MF,28,1997-10-30,8.0,ENG,False,,2026-10-22
+Leeds United,Brenden Aaronson,952322,midfielders,"CAM,RW,CM,LM,ST,LW",Attacking Midfield,MF,25,2000-10-22,11.0,USA,False,,2026-10-22
+Leeds United,Anton Stach,881735,midfielders,"CM,CAM,CDM,RM",Central Midfield,MF,27,1998-11-15,18.0,GER,False,,2026-10-22
+Leeds United,Ao Tanaka,935728,midfielders,"CDM,CM",Defensive Midfield,MF,28,1998-09-10,22.0,JPN,False,,2026-10-22
+Leeds United,Ilia Gruev,1080983,midfielders,"CM,CDM",Central Midfield,MF,26,2000-05-06,44.0,BUL,False,,2026-10-22
+Leeds United,Mateo Joseph,1344677,attackers,"RW,ST",Right Winger,FW,23,2003-10-19,,ESP,True,Early January 2027,2026-10-22
+Leeds United,Daniel James,717176,attackers,"RW,RWB,CAM",Right Winger,FW,28,1997-11-10,7.0,WAL,True,Doubtful,2026-10-22
+Leeds United,Dominic Calvert-Lewin,612150,attackers,ST,Centre-Forward,FW,29,1997-03-16,9.0,ENG,False,,2026-10-22
+Leeds United,Harry Wilson,494417,attackers,"RW,CAM",Right Winger,FW,29,1997-03-22,10.0,WAL,False,,2026-10-22
+Leeds United,Lukas Nmecha,861197,attackers,ST,Centre-Forward,FW,27,1998-12-14,14.0,GER,False,,2026-10-22
+Leeds United,Noah Okafor,915797,attackers,"CAM,ST,LW",Attacking Midfield,FW,26,2000-05-24,19.0,SUI,False,,2026-10-22
+Leeds United,Jean-Mattéo Bahoya,1393672,attackers,"LW,CAM",Left Winger,FW,21,2005-05-07,23.0,FRA,False,,2026-10-22
+Everton,Jordan Pickford,303919,keepers,GK,Goalkeeper,GK,32,1994-03-07,1.0,ENG,False,,2026-10-22
+Everton,Mark Travers,731855,keepers,GK,Goalkeeper,GK,27,1999-05-18,12.0,IRL,False,,2026-10-22
+Everton,Tom King,581530,keepers,GK,Goalkeeper,GK,31,1995-03-09,31.0,WAL,False,,2026-10-22
+Everton,Ainsley Maitland-Niles,604089,defenders,"RB,RWB,RM",Right-Back,DF,29,1997-08-29,2.0,ENG,False,,2026-10-22
+Everton,Jarrad Branthwaite,1030829,defenders,"CB,LB",Centre-Back,DF,24,2002-06-27,4.0,ENG,False,,2026-10-22
+Everton,Michael Keane,290410,defenders,CB,Centre-Back,DF,33,1993-01-11,5.0,ENG,False,,2026-10-22
+Everton,James Tarkowski,243138,defenders,CB,Centre-Back,DF,33,1992-11-19,6.0,ENG,False,,2026-10-22
+Everton,Jake O'Brien,1098607,defenders,"RB,CB",Right-Back,DF,25,2001-05-15,15.0,IRL,False,,2026-10-22
+Everton,Vitaliy Mykolenko,874025,defenders,LB,Left-Back,DF,27,1999-05-29,16.0,UKR,False,,2026-10-22
+Everton,Merlin Röhl,1210384,defenders,"RB,RW,CDM",Right-Back,DF,24,2002-07-05,34.0,GER,False,,2026-10-22
+Everton,Kiernan Dewsbury-Hall,886016,midfielders,"CAM,CDM",Attacking Midfield,MF,28,1998-09-06,8.0,ENG,False,,2026-10-22
+Everton,Christian Nørgaard,266520,midfielders,"CDM,CM,CB",Defensive Midfield,MF,32,1994-03-10,23.0,DEN,False,,2026-10-22
+Everton,Charly Alcaraz,1128965,midfielders,CAM,Attacking Midfield,MF,23,2002-11-30,24.0,ARG,False,,2026-10-22
+Everton,Hayden Hackney,982394,midfielders,"CDM,CM,CAM,LW",Defensive Midfield,MF,24,2002-06-26,30.0,ENG,False,,2026-10-22
+Everton,James Garner,950474,midfielders,"CDM,RB",Defensive Midfield,MF,25,2001-03-13,37.0,ENG,False,,2026-10-22
+Everton,Harrison Armstrong,1559637,midfielders,"CDM,CAM,CM,RW",Defensive Midfield,MF,19,2007-01-19,45.0,ENG,False,,2026-10-22
+Everton,Jack Grealish,312765,attackers,LW,Left Winger,FW,31,1995-09-10,10.0,ENG,False,,2026-10-22
+Everton,Thierno Barry,1398392,attackers,ST,Centre-Forward,FW,24,2002-10-21,11.0,FRA,False,,2026-10-22
+Everton,Tyrique George,1424875,attackers,"LW,ST",Left Winger,FW,20,2006-02-04,19.0,ENG,False,,2026-10-22
+Everton,Tyler Dibling,1292833,attackers,RW,Right Winger,FW,20,2006-02-17,20.0,ENG,False,,2026-10-22
+Everton,Brennan Johnson,1076756,attackers,"RW,CAM,LW,RWB",Right Winger,FW,25,2001-05-23,22.0,WAL,False,,2026-10-22
+Hull City,Jack Butland,288880,keepers,GK,Goalkeeper,GK,33,1993-03-10,1.0,ENG,True,Early December 2026,2026-10-22
+Hull City,Dillon Phillips,518500,keepers,GK,Goalkeeper,GK,31,1995-06-11,12.0,ENG,False,,2026-10-22
+Hull City,Konstantinos Tzolakis,1072068,keepers,GK,Goalkeeper,GK,23,2002-11-08,19.0,GRE,False,,2026-10-22
+Hull City,Lewie Coyle,709148,defenders,"RB,RWB,LB,RM",Right-Back,DF,31,1995-10-15,2.0,ENG,False,,2026-10-22
+Hull City,Ryan Giles,933635,defenders,"LB,LWB,LM",Left-Back,DF,26,2000-01-26,3.0,ENG,False,,2026-10-22
+Hull City,Charlie Hughes,1331703,defenders,CB,Centre-Back,DF,23,2003-10-16,4.0,ENG,True,Late October 2026,2026-10-22
+Hull City,Semi Ajayi,410836,defenders,CB,Centre-Back,DF,32,1993-11-09,6.0,NGA,False,,2026-10-22
+Hull City,John Egan,295062,defenders,CB,Centre-Back,DF,34,1992-10-20,15.0,IRL,False,,2026-10-22
+Hull City,Paddy McNair,575780,defenders,"CB,LB",Centre-Back,DF,31,1995-04-27,17.0,NIR,False,,2026-10-22
+Hull City,Lucas Herrington,1686118,defenders,CB,Centre-Back,DF,19,2007-09-05,22.0,AUS,False,,2026-10-22
+Hull City,Matt Targett,538112,defenders,"LB,LWB,CB",Left-Back,DF,31,1995-09-18,23.0,ENG,True,Late October 2026,2026-10-22
+Hull City,Nobel Mendy,1428427,defenders,CB,Centre-Back,DF,22,2004-08-16,32.0,SEN,True,Late October 2026,2026-10-22
+Hull City,Hidemasa Morita,915102,midfielders,CDM,Defensive Midfield,MF,31,1995-05-10,5.0,JPN,False,,2026-10-22
+Hull City,Eliot Matazo,1178514,midfielders,CDM,Defensive Midfield,MF,24,2002-02-15,8.0,BEL,True,Early January 2027,2026-10-22
+Hull City,Joe Gelhardt,956161,midfielders,"CAM,RW,ST,RM",Attacking Midfield,MF,24,2002-05-04,11.0,ENG,False,,2026-10-22
+Hull City,Jens Hjertø-Dahl,1377949,midfielders,"CM,CAM,CDM",Central Midfield,MF,20,2005-10-31,14.0,NOR,False,,2026-10-22
+Hull City,Brooke Norton-Cuffy,1214915,midfielders,"RM,RWB,LWB,RB",Right Midfield,MF,22,2004-01-12,18.0,ENG,False,,2026-10-22
+Hull City,Óscar Zambrano,1356264,midfielders,CDM,Defensive Midfield,MF,22,2004-04-20,20.0,ECU,False,,2026-10-22
+Hull City,Elliot Stroud,1272349,midfielders,"LM,LW,LWB",Left Midfield,MF,24,2002-06-22,21.0,SWE,False,,2026-10-22
+Hull City,Darko Gyabi,1125874,midfielders,"CAM,CM,CDM",Attacking Midfield,MF,22,2004-02-18,24.0,ENG,True,Late November 2026,2026-10-22
+Hull City,Matt Crooks,280507,midfielders,"CDM,CAM,CM,ST",Defensive Midfield,MF,32,1994-01-20,25.0,ENG,False,,2026-10-22
+Hull City,Kieran Dowell,605262,midfielders,CAM,Attacking Midfield,MF,29,1997-10-10,26.0,ENG,False,,2026-10-22
+Hull City,Regan Slater,807930,midfielders,"CDM,CM",Defensive Midfield,MF,27,1999-09-11,27.0,ENG,False,,2026-10-22
+Hull City,Lucas Gourna-Douath,1137106,midfielders,"CDM,CM",Defensive Midfield,MF,23,2003-08-05,29.0,FRA,True,Late October 2026,2026-10-22
+Hull City,Christos Mouzakitis,1574198,midfielders,CDM,Defensive Midfield,MF,19,2006-12-25,36.0,GRE,False,,2026-10-22
+Hull City,Tim Iroegbunam,1203512,midfielders,"CDM,CM",Defensive Midfield,MF,23,2003-06-30,42.0,ENG,False,,2026-10-22
+Hull City,Sorba Thomas,812982,attackers,"LW,RB,LM,RW,RWB",Left Winger,FW,27,1999-01-25,7.0,WAL,False,,2026-10-22
+Hull City,Oli McBurnie,509151,attackers,ST,Centre-Forward,FW,30,1996-06-04,9.0,SCO,False,,2026-10-22
+Hull City,Mohamed Belloumi,1231090,attackers,"RW,RM,CAM",Right Winger,FW,24,2002-06-01,10.0,ALG,False,,2026-10-22
+Hull City,Ilyas Ansah,1515977,attackers,"CAM,ST,LW",Attacking Midfield,FW,21,2004-11-08,28.0,GER,True,Mid October 2026,2026-10-22
+Hull City,Abdülkadir Ömür,704138,attackers,"RW,CAM,CM",Right Winger,FW,27,1999-06-25,33.0,TUR,False,,2026-10-22
+Hull City,Robinio Vaz,1705134,attackers,ST,Centre-Forward,FW,19,2007-02-17,47.0,FRA,False,,2026-10-22
+Hull City,Mohamed-Ali Cho,1180718,attackers,"RW,ST,CAM,RM",Right Winger,FW,22,2004-01-19,50.0,FRA,True,Late October 2026,2026-10-22
+Ipswich Town,Alex Palmer,643228,keepers,GK,Goalkeeper,GK,30,1996-08-10,1.0,ENG,False,,2026-10-22
+Ipswich Town,David Button,111027,keepers,GK,Goalkeeper,GK,37,1989-02-27,27.0,ENG,False,,2026-10-22
+Ipswich Town,Christian Walton,512013,keepers,GK,Goalkeeper,GK,30,1995-11-09,28.0,ENG,False,,2026-10-22
+Ipswich Town,Kjell Scherpen,796398,keepers,GK,Goalkeeper,GK,26,2000-01-23,37.0,NED,False,,2026-10-22
+Ipswich Town,Darnell Furlong,609733,defenders,RB,Right-Back,DF,30,1995-10-31,2.0,ENG,False,,2026-10-22
+Ipswich Town,Leif Davis,980381,defenders,LB,Left-Back,DF,26,1999-12-31,3.0,ENG,False,,2026-10-22
+Ipswich Town,Cédric Kipré,760398,defenders,CB,Centre-Back,DF,29,1996-12-09,4.0,CIV,False,,2026-10-22
+Ipswich Town,Issa Diop,696443,defenders,CB,Centre-Back,DF,29,1997-01-09,6.0,MAR,False,,2026-10-22
+Ipswich Town,Jacob Greaves,1079103,defenders,"CB,LB",Centre-Back,DF,26,2000-09-12,24.0,ENG,False,,2026-10-22
+Ipswich Town,Dara O'Shea,789578,defenders,"CB,RB",Centre-Back,DF,27,1999-03-04,26.0,IRL,False,,2026-10-22
+Ipswich Town,Abdoul Ouattara,1343053,defenders,"RB,LB,CDM,RWB",Right-Back,DF,20,2005-10-22,42.0,CIV,False,,2026-10-22
+Ipswich Town,Azor Matusiwa,797594,midfielders,CDM,Defensive Midfield,MF,28,1998-04-28,5.0,NED,False,,2026-10-22
+Ipswich Town,Julio Enciso,1073742,midfielders,"CAM,ST",Attacking Midfield,MF,22,2004-01-23,10.0,PAR,False,,2026-10-22
+Ipswich Town,Florentino,793255,midfielders,"CDM,CM",Defensive Midfield,MF,27,1999-08-19,12.0,POR,False,,2026-10-22
+Ipswich Town,Jack Taylor,789507,midfielders,CDM,Defensive Midfield,MF,28,1998-06-23,14.0,IRL,True,Doubtful,2026-10-22
+Ipswich Town,Saša Lukić,556972,midfielders,"CDM,CM",Defensive Midfield,MF,30,1996-08-13,23.0,SRB,False,,2026-10-22
+Ipswich Town,Exequiel Palacios,693599,midfielders,"CDM,CM",Defensive Midfield,MF,28,1998-10-05,25.0,ARG,False,,2026-10-22
+Ipswich Town,Chuba Akpom,413158,midfielders,"CAM,ST",Attacking Midfield,MF,31,1995-10-09,29.0,ENG,False,,2026-10-22
+Ipswich Town,Marcelino Núñez,1129081,midfielders,"CAM,CDM",Attacking Midfield,MF,26,2000-03-01,32.0,CHI,False,,2026-10-22
+Ipswich Town,Anis Mehmeti,1198007,midfielders,"CAM,CM,LW",Attacking Midfield,MF,25,2001-01-09,33.0,ALB,False,,2026-10-22
+Ipswich Town,Abdul Fatawu,1265626,attackers,"RW,RM",Right Winger,FW,22,2004-03-08,7.0,GHA,False,,2026-10-22
+Ipswich Town,Sindre Walle Egeli,1307961,attackers,"RW,ST",Right Winger,FW,20,2006-06-21,8.0,NOR,False,,2026-10-22
+Ipswich Town,Zian Flemming,873559,attackers,ST,Centre-Forward,FW,28,1998-08-01,9.0,NED,False,,2026-10-22
+Ipswich Town,Jaden Philogene-Bidace,1089645,attackers,LW,Left Winger,FW,24,2002-02-08,11.0,ENG,False,,2026-10-22
+Ipswich Town,Emersonn,1320949,attackers,ST,Centre-Forward,FW,22,2004-07-16,19.0,BRA,False,,2026-10-22
+Ipswich Town,Kasey McAteer,1113915,attackers,RW,Right Winger,FW,24,2001-11-22,20.0,IRL,False,,2026-10-22
+Ipswich Town,Daizen Maeda,728765,attackers,"ST,LW,RW,CAM",Centre-Forward,FW,29,1997-10-20,38.0,JPN,False,,2026-10-22
+Ipswich Town,Jack Clarke,914402,attackers,"LW,CAM",Left Winger,FW,25,2000-11-23,47.0,ENG,False,,2026-10-22
+Newcastle United,Nick Pope,280484,keepers,GK,Goalkeeper,GK,34,1992-04-19,1.0,ENG,False,,2026-10-22
+Newcastle United,Lukás Hornícek,1186978,keepers,GK,Goalkeeper,GK,24,2002-07-13,21.0,CZE,False,,2026-10-22
+Newcastle United,Ewen Jaouen,1438570,keepers,GK,Goalkeeper,GK,20,2005-12-29,24.0,FRA,True,Early December 2026,2026-10-22
+Newcastle United,Mark Gillespie,195668,keepers,GK,Goalkeeper,GK,34,1992-03-27,29.0,ENG,False,,2026-10-22
+Newcastle United,Valentino Livramento,1107910,defenders,"RB,LB",Right-Back,DF,23,2002-11-12,2.0,ENG,True,Early November 2026,2026-10-22
+Newcastle United,Lewis Hall,1197655,defenders,"LB,LM",Left-Back,DF,22,2004-09-08,3.0,ENG,False,,2026-10-22
+Newcastle United,Sven Botman,956682,defenders,CB,Centre-Back,DF,26,2000-01-12,4.0,NED,False,,2026-10-22
+Newcastle United,Fabian Schär,189982,defenders,CB,Centre-Back,DF,34,1991-12-20,5.0,SUI,False,,2026-10-22
+Newcastle United,Malick Thiaw,1137407,defenders,CB,Centre-Back,DF,25,2001-08-08,12.0,GER,False,,2026-10-22
+Newcastle United,Daniel Burn,188058,defenders,"CB,LB",Centre-Back,DF,34,1992-05-09,33.0,ENG,False,,2026-10-22
+Newcastle United,Amar Dedić,958010,defenders,RB,Right-Back,DF,24,2002-08-18,37.0,BIH,False,,2026-10-22
+Newcastle United,Nico González,1280132,midfielders,"CDM,CM",Defensive Midfield,MF,24,2002-01-03,6.0,ESP,False,,2026-10-22
+Newcastle United,Joelinton,535936,midfielders,"CM,LW,CDM",Central Midfield,MF,30,1996-08-14,7.0,BRA,False,,2026-10-22
+Newcastle United,Aladji Bamba,1695681,midfielders,"CDM,CM",Defensive Midfield,MF,20,2006-07-14,8.0,FRA,False,,2026-10-22
+Newcastle United,Sean Steur,1643770,midfielders,"CM,CDM",Central Midfield,MF,18,2008-01-11,14.0,NED,False,,2026-10-22
+Newcastle United,Joseph Willock,860975,midfielders,"CAM,CM,CDM,LW",Attacking Midfield,MF,27,1999-08-20,28.0,ENG,False,,2026-10-22
+Newcastle United,Jacob Ramsey,1021929,midfielders,"CM,CDM,LW",Central Midfield,MF,25,2001-05-28,41.0,ENG,True,Late October 2026,2026-10-22
+Newcastle United,Lewis Miley,1296763,midfielders,"RB,CM,CDM",Right-Back,MF,20,2006-05-01,67.0,ENG,False,,2026-10-22
+Newcastle United,Yoane Wissa,666857,attackers,"ST,CAM",Centre-Forward,FW,30,1996-09-03,9.0,COD,False,,2026-10-22
+Newcastle United,William Osula,1258092,attackers,ST,Centre-Forward,FW,23,2003-08-04,10.0,DEN,False,,2026-10-22
+Newcastle United,Harvey Barnes,760359,attackers,"LW,RW",Left Winger,FW,28,1997-12-09,11.0,ENG,False,,2026-10-22
+Newcastle United,Bazoumana Touré,1624586,attackers,"LW,LM,ST",Left Winger,FW,20,2006-03-02,17.0,CIV,False,,2026-10-22
+Newcastle United,Anthony Elanga,1050166,attackers,"RW,CAM",Right Winger,FW,24,2002-04-27,19.0,SWE,True,Mid October 2026,2026-10-22
+Newcastle United,Matias Fernandez-Pardo,1444231,attackers,"ST,LW,RW",Centre-Forward,FW,21,2005-02-03,20.0,BEL,False,,2026-10-22
+Newcastle United,Jacob Murphy,521148,attackers,"RW,RM",Right Winger,FW,31,1995-02-24,23.0,ENG,False,,2026-10-22
+Aston Villa,Zion Suzuki,1053679,keepers,GK,Goalkeeper,GK,24,2002-08-21,1.0,JPN,False,,2026-10-22
+Aston Villa,Marco Bizot,195782,keepers,GK,Goalkeeper,GK,35,1991-03-10,40.0,NED,False,,2026-10-22
+Aston Villa,Matty Cash,729731,defenders,"RB,RWB,RM",Right-Back,DF,29,1997-08-07,2.0,POL,False,,2026-10-22
+Aston Villa,Victor Lindelöf,258269,defenders,"CB,CDM,RB",Centre-Back,DF,32,1994-07-17,3.0,SWE,False,,2026-10-22
+Aston Villa,Taylor Harwood-Bellis,966021,defenders,CB,Centre-Back,DF,24,2002-01-30,4.0,ENG,False,,2026-10-22
+Aston Villa,Tyrone Mings,419664,defenders,CB,Centre-Back,DF,33,1993-03-13,5.0,ENG,False,,2026-10-22
+Aston Villa,Matteo Ruggeri,1051097,defenders,LB,Left-Back,DF,24,2002-07-11,13.0,ITA,True,Late October 2026,2026-10-22
+Aston Villa,Pau Torres,792645,defenders,CB,Centre-Back,DF,29,1997-01-16,14.0,ESP,False,,2026-10-22
+Aston Villa,Ian Maatsen,966026,defenders,LB,Left-Back,DF,24,2002-03-10,22.0,NED,True,Doubtful,2026-10-22
+Aston Villa,Aaron Wan-Bissaka,760320,defenders,"RB,RWB,RM,LB",Right-Back,DF,28,1997-11-26,29.0,COD,True,Mid November 2026,2026-10-22
+Aston Villa,Modou Kéba Cissé,1714552,defenders,CB,Centre-Back,DF,21,2005-08-04,48.0,SEN,True,Back in training,2026-10-22
+Aston Villa,Ross Barkley,215384,midfielders,"CDM,CAM",Defensive Midfield,MF,32,1993-12-05,6.0,ENG,False,,2026-10-22
+Aston Villa,Boubacar Kamara,816325,midfielders,"CDM,CM",Defensive Midfield,MF,26,1999-11-23,8.0,FRA,False,,2026-10-22
+Aston Villa,Amadou Onana,1185748,midfielders,CDM,Defensive Midfield,MF,25,2001-08-16,24.0,BEL,True,Mid April 2027,2026-10-22
+Aston Villa,Lamare Bogarde,1190033,midfielders,"CDM,RB",Defensive Midfield,MF,22,2004-01-05,26.0,NED,False,,2026-10-22
+Aston Villa,Leon Goretzka,343748,midfielders,"CDM,CAM",Defensive Midfield,MF,31,1995-02-06,27.0,GER,False,,2026-10-22
+Aston Villa,João Gomes,1174672,midfielders,"CDM,CM",Defensive Midfield,MF,25,2001-02-12,35.0,BRA,False,,2026-10-22
+Aston Villa,Johan Manzambi,1520063,midfielders,"CDM,CAM,LW",Defensive Midfield,MF,21,2005-10-14,44.0,SUI,True,Late October 2026,2026-10-22
+Aston Villa,George Hemmings,1607333,midfielders,"CDM,LW,CM,CAM",Defensive Midfield,MF,19,2007-03-04,53.0,ENG,True,Doubtful,2026-10-22
+Aston Villa,John McGinn,356406,attackers,"RW,CAM,LW,CM",Right Winger,FW,32,1994-10-18,7.0,SCO,False,,2026-10-22
+Aston Villa,Emiliano Buendía,610184,attackers,"LW,CAM,LM",Left Winger,FW,29,1996-12-25,10.0,ARG,False,,2026-10-22
+Aston Villa,Nicolas Jackson,1197347,attackers,"ST,LW",Centre-Forward,FW,25,2001-06-20,11.0,SEN,False,,2026-10-22
+Aston Villa,Alejandro Garnacho,1203665,attackers,LW,Left Winger,FW,22,2004-07-01,17.0,ARG,False,,2026-10-22
+Aston Villa,Tammy Abraham,749661,attackers,ST,Centre-Forward,FW,29,1997-10-02,18.0,ENG,False,,2026-10-22
+Aston Villa,Ibrahim Mbaye,1593857,attackers,"RW,LW",Right Winger,FW,18,2008-01-24,19.0,SEN,False,,2026-10-22
+Aston Villa,Brian Madjo,1729841,attackers,ST,Centre-Forward,FW,17,2009-01-12,39.0,ENG,False,,2026-10-22
+Aston Villa,Alysson,1656860,attackers,RW,Right Winger,FW,20,2006-05-05,47.0,BRA,False,,2026-10-22
+Manchester Utd,Senne Lammens,1178602,keepers,GK,Goalkeeper,GK,24,2002-07-07,1.0,BEL,False,,2026-10-22
+Manchester Utd,Karl Darlow,163604,keepers,GK,Goalkeeper,GK,36,1990-10-08,12.0,WAL,False,,2026-10-22
+Manchester Utd,Tom Heaton,24155,keepers,GK,Goalkeeper,GK,40,1986-04-15,22.0,ENG,True,Late October 2026,2026-10-22
+Manchester Utd,Dermot Mee,1367699,keepers,GK,Goalkeeper,GK,23,2002-11-20,45.0,NIR,False,,2026-10-22
+Manchester Utd,Diogo Dalot,751550,defenders,"RB,LWB,LB,RWB",Right-Back,DF,27,1999-03-18,2.0,POR,False,,2026-10-22
+Manchester Utd,Noussair Mazraoui,775539,defenders,"LB,RB,CB,RWB",Left-Back,DF,28,1997-11-14,3.0,MAR,False,,2026-10-22
+Manchester Utd,Matthijs de Ligt,769895,defenders,CB,Centre-Back,DF,27,1999-08-12,4.0,NED,False,,2026-10-22
+Manchester Utd,Harry Maguire,255610,defenders,CB,Centre-Back,DF,33,1993-03-05,5.0,ENG,False,,2026-10-22
+Manchester Utd,Lisandro Martínez,847983,defenders,CB,Centre-Back,DF,28,1998-01-18,6.0,ARG,True,About a week,2026-10-22
+Manchester Utd,Leny Yoro,1358581,defenders,"CB,RB",Centre-Back,DF,20,2005-11-13,15.0,FRA,False,,2026-10-22
+Manchester Utd,Luke Shaw,362694,defenders,"LB,CB",Left-Back,DF,31,1995-07-12,23.0,ENG,True,A few days,2026-10-22
+Manchester Utd,Ayden Heaven,1559639,defenders,CB,Centre-Back,DF,20,2006-09-22,26.0,ENG,True,Early November 2026,2026-10-22
+Manchester Utd,Mason Mount,750032,midfielders,"CAM,CDM",Attacking Midfield,MF,27,1999-01-10,7.0,ENG,False,,2026-10-22
+Manchester Utd,Bruno Fernandes,422685,midfielders,"CAM,CDM,LW,RW",Attacking Midfield,MF,32,1994-09-08,8.0,POR,False,,2026-10-22
+Manchester Utd,Andrey Santos,1372921,midfielders,"CDM,CM",Defensive Midfield,MF,22,2004-05-03,17.0,BRA,False,,2026-10-22
+Manchester Utd,Youri Tielemans,465960,midfielders,"CDM,CAM,CM",Defensive Midfield,MF,29,1997-05-07,18.0,BEL,False,,2026-10-22
+Manchester Utd,Carlos Baleba,1352713,midfielders,"CDM,CM",Defensive Midfield,MF,22,2004-01-03,20.0,CMR,False,,2026-10-22
+Manchester Utd,Manuel Ugarte,1035614,midfielders,"CDM,CM",Defensive Midfield,MF,25,2001-04-11,25.0,URU,True,Early April 2027,2026-10-22
+Manchester Utd,Kobbie Mainoo,1292810,midfielders,CDM,Defensive Midfield,MF,21,2005-04-19,37.0,ENG,True,About a week,2026-10-22
+Manchester Utd,Jack Fletcher,1575707,midfielders,"CAM,CDM,CM,ST",Attacking Midfield,MF,19,2007-03-19,38.0,ENG,False,,2026-10-22
+Manchester Utd,Tyler Fletcher,1676985,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,19,2007-03-19,39.0,SCO,False,,2026-10-22
+Manchester Utd,Harry Amass,1430832,midfielders,"LWB,LM,LB",Left-Back,MF,19,2007-03-16,41.0,ENG,False,,2026-10-22
+Manchester Utd,Marcus Rashford,696365,attackers,"LW,ST",Left Winger,FW,28,1997-10-31,9.0,ENG,True,Mid November 2026,2026-10-22
+Manchester Utd,Matheus Cunha,863098,attackers,"ST,LW,CAM",Centre-Forward,FW,27,1999-05-27,10.0,BRA,False,,2026-10-22
+Manchester Utd,Joshua Zirkzee,950830,attackers,ST,Centre-Forward,FW,25,2001-05-22,11.0,NED,False,,2026-10-22
+Manchester Utd,Patrick Dorgu,1526560,attackers,"LW,LB,LWB,RW",Left Winger,FW,21,2004-10-26,13.0,DEN,True,Late October 2026,2026-10-22
+Manchester Utd,Amad Diallo,1070052,attackers,"RW,RWB,CAM",Right Winger,FW,24,2002-07-11,16.0,CIV,False,,2026-10-22
+Manchester Utd,Bryan Mbeumo,923312,attackers,"ST,RW,CAM",Centre-Forward,FW,27,1999-08-07,19.0,CMR,False,,2026-10-22
+Manchester Utd,Benjamin Šeško,1073977,attackers,ST,Centre-Forward,FW,23,2003-05-31,30.0,SVN,True,Late October 2026,2026-10-22
+Manchester Utd,Shea Lacey,1436260,attackers,"RW,CAM",Right Winger,FW,19,2007-04-14,31.0,ENG,False,,2026-10-22
+Crystal Palace,Dean Henderson,719330,keepers,GK,Goalkeeper,GK,29,1997-03-12,1.0,ENG,True,Doubtful,2026-10-22
+Crystal Palace,Remi Matthews,562726,keepers,GK,Goalkeeper,GK,32,1994-02-10,31.0,ENG,False,,2026-10-22
+Crystal Palace,Walter Benítez,448897,keepers,GK,Goalkeeper,GK,33,1993-01-19,44.0,ARG,False,,2026-10-22
+Crystal Palace,Chadi Riad,1187506,defenders,CB,Centre-Back,DF,23,2003-06-17,4.0,MAR,True,Late June 2027,2026-10-22
+Crystal Palace,Axel Disasi,696646,defenders,CB,Centre-Back,DF,28,1998-03-11,5.0,FRA,False,,2026-10-22
+Crystal Palace,Jaydee Canvot,1664722,defenders,"CB,RB",Centre-Back,DF,20,2006-07-29,6.0,FRA,False,,2026-10-22
+Crystal Palace,Takehiro Tomiyasu,664444,defenders,"CB,LB",Centre-Back,DF,27,1998-11-05,17.0,JPN,True,Doubtful,2026-10-22
+Crystal Palace,Honest Ahanor,1669629,defenders,CB,Centre-Back,DF,18,2008-02-23,21.0,ITA,False,,2026-10-22
+Crystal Palace,Chris Richards,950829,defenders,CB,Centre-Back,DF,26,2000-03-28,26.0,USA,False,,2026-10-22
+Crystal Palace,Ben Chilwell,672469,defenders,"LB,CB,LWB",Left-Back,DF,29,1996-12-21,33.0,ENG,True,Doubtful,2026-10-22
+Crystal Palace,Tyrick Mitchell,1120224,midfielders,"LWB,LM",Left-Back,MF,27,1999-09-01,3.0,ENG,False,,2026-10-22
+Crystal Palace,Ismaïla Sarr,771294,midfielders,"CAM,RW,LW,ST",Attacking Midfield,MF,28,1998-02-25,7.0,SEN,False,,2026-10-22
+Crystal Palace,Jefferson Lerma,466672,midfielders,"CDM,CB,CM",Defensive Midfield,MF,31,1994-10-25,8.0,COL,False,,2026-10-22
+Crystal Palace,Edward Nketiah,860920,midfielders,"CAM,ST",Attacking Midfield,MF,27,1999-05-30,9.0,ENG,False,,2026-10-22
+Crystal Palace,Yéremi Pino,1047676,midfielders,"CAM,LW,RW",Attacking Midfield,MF,24,2002-10-20,10.0,ESP,False,,2026-10-22
+Crystal Palace,Zavier Gozo,1455818,midfielders,"RWB,RM,RW",Right-Back,MF,19,2007-03-22,12.0,USA,False,,2026-10-22
+Crystal Palace,Daichi Kamada,621515,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,30,1996-08-05,18.0,JPN,False,,2026-10-22
+Crystal Palace,Will Hughes,295067,midfielders,"CDM,CM",Defensive Midfield,MF,31,1995-04-17,19.0,ENG,False,,2026-10-22
+Crystal Palace,Adam Wharton,1296650,midfielders,"CDM,CM",Defensive Midfield,MF,22,2004-02-06,20.0,ENG,False,,2026-10-22
+Crystal Palace,Quinten Timber,970563,midfielders,"CDM,CAM,CM",Defensive Midfield,MF,25,2001-06-17,23.0,NED,False,,2026-10-22
+Crystal Palace,Darío Osorio,1329007,midfielders,"RWB,RM,RW,CAM,LW",Right-Back,MF,22,2004-01-24,24.0,CHI,False,,2026-10-22
+Crystal Palace,Anan Khalaili,1477878,midfielders,"RWB,RM,RB,RW",Right-Back,MF,22,2004-09-03,25.0,ISR,False,,2026-10-22
+Crystal Palace,Cheick Oumar Doucouré,951954,midfielders,CDM,Defensive Midfield,MF,26,2000-01-08,28.0,MLI,False,,2026-10-22
+Crystal Palace,Óscar Mingueza,952095,midfielders,"RM,LM,LWB,LB,RWB",Right Midfield,MF,27,1999-05-13,30.0,ESP,False,,2026-10-22
+Crystal Palace,Dwight McNeil,939542,attackers,"RW,LW,CAM",Right Winger,FW,26,1999-11-22,11.0,ENG,False,,2026-10-22
+Crystal Palace,Jean-Philippe Mateta,706297,attackers,ST,Centre-Forward,FW,29,1997-06-28,14.0,FRA,False,,2026-10-22
+Crystal Palace,Jørgen Strand Larsen,821100,attackers,ST,Centre-Forward,FW,26,2000-02-06,22.0,NOR,False,,2026-10-22
+Crystal Palace,Evann Guessand,1087966,attackers,"RW,ST,LW,CAM",Right Winger,FW,25,2001-07-01,29.0,CIV,False,,2026-10-22
+Bournemouth,Djordje Petrović,1067256,keepers,GK,Goalkeeper,GK,27,1999-10-08,1.0,SRB,False,,2026-10-22
+Bournemouth,Fraser Forster,95336,keepers,GK,Goalkeeper,GK,38,1988-03-17,17.0,ENG,False,,2026-10-22
+Bournemouth,Michele Di Gregorio,766062,keepers,GK,Goalkeeper,GK,29,1997-07-27,20.0,ITA,False,,2026-10-22
+Bournemouth,Mack Allan,2251528,keepers,GK,Goalkeeper,GK,20,2006-02-19,55.0,ENG,False,,2026-10-22
+Bournemouth,Julián Araujo,1027447,defenders,RB,Right-Back,DF,25,2001-08-13,2.0,MEX,True,Late November 2026,2026-10-22
+Bournemouth,Adrien Truffert,1177358,defenders,LB,Left-Back,DF,24,2001-11-20,3.0,FRA,False,,2026-10-22
+Bournemouth,James Hill,959407,defenders,CB,Centre-Back,DF,24,2002-01-10,5.0,ENG,False,,2026-10-22
+Bournemouth,Julio Soler,1358655,defenders,LB,Left-Back,DF,21,2005-02-16,6.0,ARG,False,,2026-10-22
+Bournemouth,António Silva,1292092,defenders,CB,Centre-Back,DF,22,2003-10-30,14.0,POR,False,,2026-10-22
+Bournemouth,Adam Smith,160447,defenders,RB,Right-Back,DF,35,1991-04-29,15.0,ENG,False,,2026-10-22
+Bournemouth,Bafodé Diakité,979752,defenders,CB,Centre-Back,DF,25,2001-01-06,18.0,FRA,False,,2026-10-22
+Bournemouth,Juanlu Sánchez,1158512,defenders,"RWB,RB,RW,RM,CM",Right-Back,DF,23,2003-08-15,24.0,ESP,False,,2026-10-22
+Bournemouth,Veljko Milosavljević,1666977,defenders,CB,Centre-Back,DF,19,2007-06-28,44.0,SRB,True,Doubtful,2026-10-22
+Bournemouth,Lewis Cook,562724,midfielders,CDM,Defensive Midfield,MF,29,1997-02-03,4.0,ENG,False,,2026-10-22
+Bournemouth,Alex Scott,1233655,midfielders,CDM,Defensive Midfield,MF,23,2003-08-21,8.0,ENG,True,Late October 2026,2026-10-22
+Bournemouth,Ryan Christie,439369,midfielders,"CDM,CAM,LM",Defensive Midfield,MF,31,1995-02-22,10.0,SCO,False,,2026-10-22
+Bournemouth,Ben Gannon-Doak,1324871,midfielders,"RM,LW",Right Midfield,MF,20,2005-11-11,11.0,SCO,False,,2026-10-22
+Bournemouth,Tyler Adams,729769,midfielders,"CDM,CM",Defensive Midfield,MF,27,1999-02-14,12.0,USA,False,,2026-10-22
+Bournemouth,Justin Kluivert,794253,midfielders,CAM,Attacking Midfield,MF,27,1999-05-05,19.0,NED,False,,2026-10-22
+Bournemouth,Junior Kroupi,1460534,midfielders,"CAM,ST",Attacking Midfield,MF,20,2006-06-23,22.0,FRA,True,Late October 2026,2026-10-22
+Bournemouth,Alex Tóth,1449690,midfielders,"CM,CAM,CDM,LW",Central Midfield,MF,20,2005-10-23,27.0,HUN,False,,2026-10-22
+Bournemouth,Max Aarons,956621,midfielders,"RM,RB,LB",Right Midfield,MF,26,2000-01-04,28.0,JAM,False,,2026-10-22
+Bournemouth,Ben Winterburn,1697214,midfielders,"CM,CDM",Central Midfield,MF,22,2004-09-04,47.0,ENG,False,,2026-10-22
+Bournemouth,David Brooks,674014,attackers,"RW,CAM",Right Winger,FW,29,1997-07-08,7.0,WAL,False,,2026-10-22
+Bournemouth,Evanilson,1098096,attackers,ST,Centre-Forward,FW,27,1999-10-06,9.0,BRA,False,,2026-10-22
+Bournemouth,Marcus Tavernier,789630,attackers,"LW,CAM,RW,CDM,LM",Left Winger,FW,27,1999-03-22,16.0,ENG,False,,2026-10-22
+Bournemouth,Amine Adli,1079557,attackers,"LW,RW",Left Winger,FW,26,2000-05-10,21.0,MAR,False,,2026-10-22
+Bournemouth,Daniel Jebbison,1253827,attackers,ST,Centre-Forward,FW,23,2003-08-13,29.0,CAN,False,,2026-10-22
+Bournemouth,Álvaro Rodriguez,1327406,attackers,ST,Centre-Forward,FW,22,2004-07-14,30.0,URU,False,,2026-10-22
+Bournemouth,Rayan,1478295,attackers,"RW,ST,LW",Right Winger,FW,20,2006-08-03,37.0,BRA,False,,2026-10-22
+Tottenham Hotspur,Antonín Kinský,1341475,keepers,GK,Goalkeeper,GK,23,2003-03-13,31.0,CZE,False,,2026-10-22
+Tottenham Hotspur,Martin Dúbravka,72241,keepers,GK,Goalkeeper,GK,37,1989-01-15,39.0,SVK,False,,2026-10-22
+Tottenham Hotspur,Brandon Austin,862993,keepers,GK,Goalkeeper,GK,27,1999-01-08,40.0,ENG,False,,2026-10-22
+Tottenham Hotspur,Andrew Robertson,357880,defenders,"LB,LWB,LM",Left-Back,DF,32,1994-03-11,3.0,SCO,False,,2026-10-22
+Tottenham Hotspur,Tosin Adarabioyo,683402,defenders,CB,Centre-Back,DF,29,1997-09-24,4.0,ENG,False,,2026-10-22
+Tottenham Hotspur,Marcos Senesi,785411,defenders,CB,Centre-Back,DF,29,1997-05-10,5.0,ARG,False,,2026-10-22
+Tottenham Hotspur,Jan Paul van Hecke,974618,defenders,CB,Centre-Back,DF,26,2000-06-08,6.0,NED,False,,2026-10-22
+Tottenham Hotspur,Destiny Udogie,1052898,defenders,"LB,LWB",Left-Back,DF,23,2002-11-28,13.0,ITA,True,Doubtful,2026-10-22
+Tottenham Hotspur,Pedro Porro,941573,defenders,"RB,RM",Right-Back,DF,27,1999-09-13,23.0,ESP,True,Late October 2026,2026-10-22
+Tottenham Hotspur,Ben Davies,276121,defenders,"CB,LB",Centre-Back,DF,33,1993-04-24,33.0,WAL,False,,2026-10-22
+Tottenham Hotspur,Micky van de Ven,1097466,defenders,"CB,LB",Centre-Back,DF,25,2001-04-19,37.0,NED,False,,2026-10-22
+Tottenham Hotspur,Xavi Simons,1173787,midfielders,"CAM,LW,RW",Attacking Midfield,MF,23,2003-04-21,7.0,NED,True,Early February 2027,2026-10-22
+Tottenham Hotspur,Conor Gallagher,966027,midfielders,"CAM,CM,CDM",Attacking Midfield,MF,26,2000-02-06,8.0,ENG,False,,2026-10-22
+Tottenham Hotspur,James Maddison,493165,midfielders,CAM,Attacking Midfield,MF,29,1996-11-23,10.0,ENG,False,,2026-10-22
+Tottenham Hotspur,Archie Gray,1323305,midfielders,"CDM,RB,CM,RWB,LB",Defensive Midfield,MF,20,2006-03-12,14.0,ENG,False,,2026-10-22
+Tottenham Hotspur,Lucas Bergvall,1386775,midfielders,"CM,CDM,CAM,LM,LW",Central Midfield,MF,20,2006-02-02,15.0,SWE,True,Late October 2026,2026-10-22
+Tottenham Hotspur,Sandro Tonali,867414,midfielders,"CM,CDM",Central Midfield,MF,26,2000-05-08,16.0,ITA,False,,2026-10-22
+Tottenham Hotspur,Mateus Fernandes,1356312,midfielders,"CM,CDM,CAM,LW",Central Midfield,MF,22,2004-07-10,18.0,POR,False,,2026-10-22
+Tottenham Hotspur,Dejan Kulusevski,935379,midfielders,ST,Centre-Forward,MF,26,2000-04-25,21.0,SWE,False,,2026-10-22
+Tottenham Hotspur,Rodrigo Bentancur,620618,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,29,1997-06-25,30.0,URU,False,,2026-10-22
+Tottenham Hotspur,Richarlison,654908,attackers,"ST,LW",Centre-Forward,FW,29,1997-05-10,9.0,BRA,False,,2026-10-22
+Tottenham Hotspur,Mathys Tel,1288111,attackers,"LW,ST,LM",Left Winger,FW,21,2005-04-27,11.0,FRA,False,,2026-10-22
+Tottenham Hotspur,Sávio,1174337,attackers,"RW,LW",Right Winger,FW,22,2004-04-10,17.0,BRA,True,Early November 2026,2026-10-22
+Tottenham Hotspur,Dominic Solanke,591734,attackers,ST,Centre-Forward,FW,29,1997-09-14,19.0,ENG,False,,2026-10-22
+Tottenham Hotspur,Mohammed Kudus,891743,attackers,"RW,CAM,RM",Right Winger,FW,26,2000-08-02,20.0,GHA,False,,2026-10-22
+Tottenham Hotspur,Omar Marmoush,839204,attackers,"ST,LW",Centre-Forward,FW,27,1999-02-07,22.0,EGY,False,,2026-10-22
+Tottenham Hotspur,Mykhaylo Mudryk,976506,attackers,LW,Left Winger,FW,25,2001-01-05,27.0,UKR,True,Late October 2026,2026-10-22
+Tottenham Hotspur,Wilson Odobert,1341387,attackers,"RW,LW,CAM",Right Winger,FW,21,2004-11-28,28.0,FRA,True,Early November 2026,2026-10-22
+Coventry City,Ben Wilson,302783,keepers,GK,Goalkeeper,GK,34,1992-08-09,13.0,ENG,False,,2026-10-22
+Coventry City,Carl Rushworth,1187236,keepers,GK,Goalkeeper,GK,25,2001-07-02,19.0,ENG,False,,2026-10-22
+Coventry City,Daniel Bentley,189103,keepers,GK,Goalkeeper,GK,33,1993-07-13,25.0,ENG,False,,2026-10-22
+Coventry City,Ethan Pinnock,711357,defenders,CB,Centre-Back,DF,33,1993-05-29,2.0,JAM,False,,2026-10-22
+Coventry City,Jay Dasilva,759814,defenders,"LB,LM",Left-Back,DF,28,1998-04-22,3.0,WAL,False,,2026-10-22
+Coventry City,Bobby Thomas,1161885,defenders,CB,Centre-Back,DF,25,2001-01-30,4.0,ENG,False,,2026-10-22
+Coventry City,Stephen Mfuni,1613300,defenders,"CB,LB",Centre-Back,DF,18,2008-02-12,12.0,ENG,False,,2026-10-22
+Coventry City,Kaine Kesler-Hayden,1089686,defenders,RB,Right-Back,DF,23,2002-10-23,20.0,ENG,False,,2026-10-22
+Coventry City,Jake Bidwell,191174,defenders,LB,Left-Back,DF,33,1993-03-21,21.0,ENG,False,,2026-10-22
+Coventry City,Joel Latibeaudiere,863822,defenders,"CB,RB",Centre-Back,DF,26,2000-01-06,22.0,JAM,False,,2026-10-22
+Coventry City,Aurèle Amenda,1257648,defenders,"CB,RB",Centre-Back,DF,23,2003-07-31,24.0,SUI,True,Late October 2026,2026-10-22
+Coventry City,Luke Woolfenden,866688,defenders,CB,Centre-Back,DF,28,1998-10-21,26.0,ENG,True,Mid October 2026,2026-10-22
+Coventry City,Milan van Ewijk,1074750,defenders,"RB,RM,RW",Right-Back,DF,26,2000-09-08,27.0,NED,False,,2026-10-22
+Coventry City,Jack Rudoni,1030830,midfielders,"CAM,RW,CDM",Attacking Midfield,MF,25,2001-06-14,5.0,ENG,False,,2026-10-22
+Coventry City,Matt Grimes,478357,midfielders,"CDM,CM",Defensive Midfield,MF,31,1995-07-15,6.0,ENG,False,,2026-10-22
+Coventry City,Caleb Yirenkyi,1615927,midfielders,"CM,CB,CDM,RWB,CAM",Central Midfield,MF,20,2006-01-15,8.0,GHA,False,,2026-10-22
+Coventry City,Frank Onyeka,856685,midfielders,"CDM,CM",Defensive Midfield,MF,28,1998-01-01,16.0,NGA,False,,2026-10-22
+Coventry City,Josh Eccles,962000,midfielders,"CAM,CDM,CM",Attacking Midfield,MF,26,2000-04-06,28.0,ENG,True,Late October 2026,2026-10-22
+Coventry City,Victor Torp,845985,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,27,1999-07-30,29.0,DEN,False,,2026-10-22
+Coventry City,Yann Gboho,955411,midfielders,"CAM,LW",Attacking Midfield,MF,25,2001-01-14,34.0,CIV,False,,2026-10-22
+Coventry City,Tatsuhiro Sakamoto,1025603,attackers,"RW,RM",Right Winger,FW,29,1996-10-22,7.0,JPN,False,,2026-10-22
+Coventry City,Ellis Simms,982284,attackers,ST,Centre-Forward,FW,25,2001-01-05,9.0,ENG,False,,2026-10-22
+Coventry City,Ephron Mason-Clark,798654,attackers,"LW,LM",Left Winger,FW,27,1999-08-25,10.0,JAM,False,,2026-10-22
+Coventry City,Haji Wright,848268,attackers,ST,Centre-Forward,FW,28,1998-03-27,11.0,USA,True,Early November 2026,2026-10-22
+Coventry City,Taiwo Awoniyi,643717,attackers,ST,Centre-Forward,FW,29,1997-08-12,14.0,NGA,False,,2026-10-22
+Coventry City,Loum Tchaouna,1283034,attackers,"RW,LW,RM",Right Winger,FW,23,2003-09-08,17.0,FRA,False,,2026-10-22
+Coventry City,Brandon Thomas-Asante,776184,attackers,"LW,RW,ST,CAM",Left Winger,FW,27,1998-12-29,23.0,GHA,False,,2026-10-22
+Coventry City,Gustavo Hamer,775355,attackers,"LW,LM,CAM",Left Winger,FW,29,1997-06-24,38.0,NED,False,,2026-10-22
+Coventry City,Sidiki Cherif,1524069,attackers,ST,Centre-Forward,FW,19,2006-12-15,49.0,FRA,False,,2026-10-22
+Fulham,Bernd Leno,215168,keepers,GK,Goalkeeper,GK,34,1992-03-04,1.0,GER,False,,2026-10-22
+Fulham,Benjamin Lecomte,210114,keepers,GK,Goalkeeper,GK,35,1991-04-26,23.0,FRA,False,,2026-10-22
+Fulham,Kenny Tete,469804,defenders,RB,Right-Back,DF,31,1995-10-09,2.0,NED,False,,2026-10-22
+Fulham,Calvin Bassey,877401,defenders,CB,Centre-Back,DF,26,1999-12-31,3.0,NGA,False,,2026-10-22
+Fulham,Jorge Cuenca,821728,defenders,CB,Centre-Back,DF,26,1999-11-17,4.0,ESP,False,,2026-10-22
+Fulham,Joachim Andersen,503659,defenders,CB,Centre-Back,DF,30,1996-05-31,5.0,DEN,False,,2026-10-22
+Fulham,Timothy Castagne,465750,defenders,"RB,LB,RWB",Right-Back,DF,30,1995-12-05,21.0,BEL,False,,2026-10-22
+Fulham,David Affengruber,1073980,defenders,CB,Centre-Back,DF,25,2001-03-19,22.0,AUT,False,,2026-10-22
+Fulham,Ryan Sessegnon,773991,defenders,LB,Left-Back,DF,26,2000-05-18,30.0,ENG,False,,2026-10-22
+Fulham,Antonee Robinson,662428,defenders,"LB,LWB,LM",Left-Back,DF,29,1997-08-08,33.0,USA,False,,2026-10-22
+Fulham,Harrison Reed,502420,midfielders,CDM,Defensive Midfield,MF,31,1995-01-27,6.0,ENG,False,,2026-10-22
+Fulham,Tom Cairney,182962,midfielders,CDM,Defensive Midfield,MF,35,1991-01-20,10.0,SCO,False,,2026-10-22
+Fulham,Hugo Larsson,1339269,midfielders,"CDM,CM",Defensive Midfield,MF,22,2004-06-27,15.0,SWE,True,Doubtful,2026-10-22
+Fulham,Sander Berge,540963,midfielders,"CDM,CM",Defensive Midfield,MF,28,1998-02-14,16.0,NOR,False,,2026-10-22
+Fulham,Alex Iwobi,604785,midfielders,"CDM,LW,CAM",Defensive Midfield,MF,30,1996-05-03,17.0,NGA,False,,2026-10-22
+Fulham,Shea Charles,1281452,midfielders,"CDM,CM",Defensive Midfield,MF,22,2003-11-05,19.0,NIR,False,,2026-10-22
+Fulham,Manuel Ángel,1508427,midfielders,RM,Right Midfield,MF,22,2004-03-15,20.0,ESP,False,,2026-10-22
+Fulham,Joshua King,1422593,midfielders,"CAM,CM",Attacking Midfield,MF,19,2007-01-03,24.0,ENG,False,,2026-10-22
+Fulham,Emile Smith Rowe,889534,midfielders,CAM,Attacking Midfield,MF,26,2000-07-28,32.0,ENG,False,,2026-10-22
+Fulham,Gonzalo García,1413847,attackers,ST,Centre-Forward,FW,22,2004-03-24,7.0,ESP,False,,2026-10-22
+Fulham,César Palacios,1403691,attackers,LW,Left Winger,FW,21,2004-11-11,8.0,ESP,False,,2026-10-22
+Fulham,Rodrigo Muniz,1128945,attackers,ST,Centre-Forward,FW,25,2001-05-04,9.0,BRA,False,,2026-10-22
+Fulham,Kevin,1318400,attackers,LW,Left Winger,FW,23,2003-01-04,11.0,BRA,False,,2026-10-22
+Fulham,Oscar Bobb,1113790,attackers,"RW,LW,RM",Right Winger,FW,23,2003-07-12,14.0,NOR,False,,2026-10-22
+Fulham,Jonah Kusi-Asare,1532672,attackers,ST,Centre-Forward,FW,19,2007-07-04,18.0,SWE,False,,2026-10-22
+Nottingham Forest,Steven Benda,887969,keepers,GK,Goalkeeper,GK,28,1998-10-01,1.0,GER,False,,2026-10-22
+Nottingham Forest,John Victor,749834,keepers,GK,Goalkeeper,GK,30,1996-02-13,12.0,BRA,False,,2026-10-22
+Nottingham Forest,Matz Sels,181069,keepers,GK,Goalkeeper,GK,34,1992-02-26,26.0,BEL,False,,2026-10-22
+Nottingham Forest,Ousmane Diomande,1425182,defenders,CB,Centre-Back,DF,22,2003-12-04,2.0,CIV,False,,2026-10-22
+Nottingham Forest,Neco Williams,1078788,defenders,"LB,RB,LWB,LM",Left-Back,DF,25,2001-04-13,3.0,WAL,False,,2026-10-22
+Nottingham Forest,Murillo,1458711,defenders,"CB,LB",Centre-Back,DF,24,2002-07-04,5.0,BRA,False,,2026-10-22
+Nottingham Forest,Jair Cunha,1391209,defenders,"CB,RB",Centre-Back,DF,21,2005-03-07,23.0,BRA,False,,2026-10-22
+Nottingham Forest,Nikola Milenković,766611,defenders,CB,Centre-Back,DF,29,1997-10-12,31.0,SRB,False,,2026-10-22
+Nottingham Forest,Ola Aina,682548,defenders,"RB,RWB,RM,LB,CB",Right-Back,DF,30,1996-10-08,34.0,NGA,False,,2026-10-22
+Nottingham Forest,Nicolò Savona,1622290,defenders,RB,Right-Back,DF,23,2003-03-19,37.0,ITA,True,Late October 2026,2026-10-22
+Nottingham Forest,Ibrahim Sangaré,795371,midfielders,"CDM,CM",Defensive Midfield,MF,28,1997-12-02,6.0,CIV,False,,2026-10-22
+Nottingham Forest,Nicolás Dominguez,827315,midfielders,"LW,CDM,CM,CAM",Left Winger,MF,28,1998-06-28,8.0,ARG,False,,2026-10-22
+Nottingham Forest,Morgan Gibbs-White,789502,midfielders,"CAM,LM,CM,ST,LW",Attacking Midfield,MF,26,2000-01-27,10.0,ENG,True,Doubtful,2026-10-22
+Nottingham Forest,Xaver Schlager,620027,midfielders,"CDM,CM",Defensive Midfield,MF,29,1997-09-28,21.0,AUT,False,,2026-10-22
+Nottingham Forest,Ryan Yates,775614,midfielders,"CDM,CM",Defensive Midfield,MF,28,1997-11-21,22.0,ENG,False,,2026-10-22
+Nottingham Forest,James McAtee,1107648,midfielders,"CDM,CM,RW,LW,CAM",Defensive Midfield,MF,24,2002-10-18,24.0,ENG,False,,2026-10-22
+Nottingham Forest,Luca Netz,1155130,midfielders,"LWB,LB,LM",Left-Back,MF,23,2003-05-15,25.0,GER,False,,2026-10-22
+Nottingham Forest,Daniel Muñoz,859282,midfielders,"RWB,RM,RB",Right-Back,MF,30,1996-05-26,27.0,COL,False,,2026-10-22
+Nottingham Forest,Callum Hudson-Odoi,846383,attackers,"LW,RW",Left Winger,FW,25,2000-11-07,7.0,ENG,False,,2026-10-22
+Nottingham Forest,Chris Wood,169719,attackers,ST,Centre-Forward,FW,34,1991-12-07,9.0,NZL,False,,2026-10-22
+Nottingham Forest,Igor Jesus,1082102,attackers,"ST,CAM",Centre-Forward,FW,25,2001-02-25,11.0,BRA,True,Late October 2026,2026-10-22
+Nottingham Forest,Dan Ndoye,1022649,attackers,"RW,LW,CAM,ST",Right Winger,FW,25,2000-10-25,14.0,SUI,False,,2026-10-22
+Nottingham Forest,Arnaud Kalimuendo-Muinga,1095445,attackers,"ST,RW,LW,CAM",Centre-Forward,FW,24,2002-01-20,15.0,FRA,False,,2026-10-22
+Nottingham Forest,Liam Delap,1113903,attackers,ST,Centre-Forward,FW,23,2003-02-08,19.0,ENG,False,,2026-10-22
+Sunderland,Simon Moore,180646,keepers,GK,Goalkeeper,GK,36,1990-05-19,21.0,ENG,False,,2026-10-22
+Sunderland,Robin Roefs,1125720,keepers,GK,Goalkeeper,GK,23,2003-01-17,22.0,NED,False,,2026-10-22
+Sunderland,Melker Ellborg,1186615,keepers,GK,Goalkeeper,GK,23,2003-05-22,31.0,SWE,False,,2026-10-22
+Sunderland,Kevin Danso,754126,defenders,CB,Centre-Back,DF,28,1998-09-19,4.0,AUT,False,,2026-10-22
+Sunderland,Daniel Ballard,974268,defenders,CB,Centre-Back,DF,27,1999-09-22,5.0,NIR,True,Late October 2026,2026-10-22
+Sunderland,Thomas Meunier,277771,defenders,"RB,RW",Right-Back,DF,35,1991-09-12,12.0,BEL,True,Late October 2026,2026-10-22
+Sunderland,Luke O'Nien,480253,defenders,CB,Centre-Back,DF,31,1994-11-21,13.0,ENG,False,,2026-10-22
+Sunderland,Omar Alderete,751998,defenders,CB,Centre-Back,DF,29,1996-12-26,15.0,PAR,False,,2026-10-22
+Sunderland,Reinildo,600524,defenders,"LB,LWB,CB",Left-Back,DF,32,1994-01-21,17.0,MOZ,False,,2026-10-22
+Sunderland,Nordi Mukiele,602304,defenders,"RB,CB",Right-Back,DF,28,1997-11-01,20.0,FRA,False,,2026-10-22
+Sunderland,Trai Hume,1067763,defenders,"RW,RWB,RB,LB,RM,CB",Right Winger,DF,24,2002-03-18,32.0,NIR,False,,2026-10-22
+Sunderland,Ajibola Alese,963940,defenders,CB,Centre-Back,DF,25,2001-01-17,42.0,ENG,False,,2026-10-22
+Sunderland,Dayann Méthalie,1664716,midfielders,"LWB,LB",Left-Back,MF,20,2006-02-15,6.0,FRA,False,,2026-10-22
+Sunderland,Alan Browne,434498,midfielders,"CDM,CAM,RB,CM,RM",Defensive Midfield,MF,31,1995-04-15,8.0,IRL,False,,2026-10-22
+Sunderland,Habib Diarra,1285866,midfielders,"CAM,CM",Attacking Midfield,MF,22,2004-01-03,19.0,SEN,False,,2026-10-22
+Sunderland,Noah Sadiki,1359649,midfielders,"CDM,CM,CAM,ST",Defensive Midfield,MF,21,2004-12-17,27.0,COD,False,,2026-10-22
+Sunderland,Enzo Le Fée,1049999,midfielders,"CAM,LW,LM,CM",Attacking Midfield,MF,26,2000-02-03,28.0,FRA,False,,2026-10-22
+Sunderland,Jules Ahoka,1811265,midfielders,CDM,Defensive Midfield,MF,20,2006-05-08,29.0,COD,False,,2026-10-22
+Sunderland,Granit Xhaka,207236,midfielders,"CDM,CM",Defensive Midfield,MF,34,1992-09-27,34.0,SUI,False,,2026-10-22
+Sunderland,Chemsdine Talbi,1368654,attackers,"LW,LM,RW",Left Winger,FW,21,2005-05-09,7.0,MAR,False,,2026-10-22
+Sunderland,Brian Brobbey,940446,attackers,ST,Centre-Forward,FW,24,2002-02-01,9.0,NED,False,,2026-10-22
+Sunderland,Nilson Angulo,1287010,attackers,"LW,LM,RW,LWB",Left Winger,FW,23,2003-06-19,10.0,ECU,False,,2026-10-22
+Sunderland,Chris Rigg,1327319,attackers,"RW,CDM,CAM",Right Winger,FW,19,2007-06-18,11.0,ENG,False,,2026-10-22
+Sunderland,Romaine Mundle,1123947,attackers,LW,Left Winger,FW,23,2003-04-24,14.0,ENG,True,Early January 2027,2026-10-22
+Sunderland,Wilson Isidor,887703,attackers,ST,Centre-Forward,FW,26,2000-08-27,18.0,HAI,True,Doubtful,2026-10-22
+Sunderland,Jocelin Ta Bi,1690655,attackers,RW,Right Winger,FW,21,2005-02-09,37.0,CIV,False,,2026-10-22
+Sunderland,Malick Fofana,1364069,attackers,LW,Left Winger,FW,21,2005-03-31,39.0,BEL,False,,2026-10-22
+Sunderland,Abdoullah Ba,1239583,attackers,RW,Right Winger,FW,23,2003-07-31,46.0,MTN,False,,2026-10-22
+Sunderland,Juan Riquelme Angulo,1829355,attackers,"ST,RW",Centre-Forward,FW,18,2008-01-12,50.0,ECU,False,,2026-10-22
