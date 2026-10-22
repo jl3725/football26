@@ -123,21 +123,25 @@ function ArticleCard({ a, accent, track }: { a: Article; accent: string; track?:
   );
 }
 
-// SOURCE TRACK RECORD — 이 팀 뉴스에 나온 매체의 이적 루머 적중률 + 단계별 실제 성사율
-function TrackRecord({ track, names }: { track: NewsTrack; names: string[] }) {
+// SOURCE TRACK RECORD — 이 팀 뉴스에 나온 매체·기자의 이적 루머 적중률 + 단계별 실제 성사율.
+// 기자 = 기사에 출처로 인용된 기자·블루스카이 기자 본인 글(src/news_classify·news_wires). 판정은 닫힌 이적시장만이라
+// 기자 표본이 쌓이면(첫 판정 2027-02) 저절로 나타난다.
+function TrackRecord({ track, names, jnames }: { track: NewsTrack; names: string[]; jnames: string[] }) {
   const rows = names.map((n) => [n, track.outlets[n]] as const).filter(([, o]) => o && !o.few)
     .sort((a, b) => b[1]!.score - a[1]!.score);
+  const jrows = jnames.map((n) => [n, track.journalists?.[n]] as const).filter(([, o]) => o && !o.few)
+    .sort((a, b) => b[1]!.score - a[1]!.score).slice(0, 8);
   const st = ["interest", "talks", "agreed", "done", "denied"].filter((k) => track.stages[k]);
-  if (!rows.length && !st.length) return null;
+  if (!rows.length && !st.length && !jrows.length) return null;
   return (
     <>
-      <SectionHead title="SOURCE TRACK RECORD" kr="매체 적중률"
+      <SectionHead title="SOURCE TRACK RECORD" kr={jrows.length ? "매체·기자 적중률" : "매체 적중률"}
         meta={`루머 ${track.all?.n ?? 0}건 검증`}
         info={<>
           <p>지난 닫힌 이적시장의 루머 {track.all?.n ?? 0}건을 실제 이적(Transfermarkt)과 대조했습니다.</p>
           <ul>
             <li><b>단계별</b> — 관심·협상·합의·확정 보도가 실제로 성사된 비율, 부인은 보도가 맞은 비율</li>
-            <li><b>매체별</b> — 이적 루머 적중률(적중/전체). 막대는 보정 점수</li>
+            <li><b>매체별·기자별</b> — 이적 루머 적중률(적중/전체). 막대는 보정 점수</li>
           </ul>
           <p className="muted">표본이 적은 매체는 전체 평균 쪽으로 보정하고, 너무 적으면 빼고 보여 줍니다.</p>
         </>} />
@@ -156,6 +160,16 @@ function TrackRecord({ track, names }: { track: NewsTrack; names: string[] }) {
         {rows.length > 0 && (
           <div className="nw-track-o">
             {rows.map(([n, o]) => (
+              <div key={n} title={`적중 ${o!.hits}/${o!.n} · 보정 점수 ${pct(o!.score)}`}>
+                <span>{n}</span><i style={{ width: pct(o!.score) }} /><b>{pct(o!.rate)}</b><em>{o!.hits}/{o!.n}</em>
+              </div>
+            ))}
+          </div>
+        )}
+        {jrows.length > 0 && (
+          <div className="nw-track-o" aria-label="기자 적중률">
+            <div className="nw-track-cap"><span>JOURNALISTS <em>기자</em></span></div>
+            {jrows.map(([n, o]) => (
               <div key={n} title={`적중 ${o!.hits}/${o!.n} · 보정 점수 ${pct(o!.score)}`}>
                 <span>{n}</span><i style={{ width: pct(o!.score) }} /><b>{pct(o!.rate)}</b><em>{o!.hits}/{o!.n}</em>
               </div>
@@ -223,7 +237,8 @@ export default function NewsTab({ team, accent }: { team: string; accent: string
       {shown.length === 0
         ? <div className="season-note">이 조건의 기사가 없습니다.</div>
         : <div className="news-grid">{shown.map((a) => <ArticleCard key={a.link} a={a} accent={accent} track={data.track} />)}</div>}
-      {data.track && <TrackRecord track={data.track} names={sources.map((x) => x.name)} />}
+      {data.track && <TrackRecord track={data.track} names={sources.map((x) => x.name)}
+        jnames={[...new Set(data.articles.flatMap((a) => a.journalists ?? []))]} />}
     </div>
   );
 }
