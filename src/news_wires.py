@@ -418,12 +418,40 @@ def _person(display: str) -> str:
     return " ".join(t.split())[:60]
 
 
-def refresh_insiders(names: list[str], max_new: int = 10) -> dict:
+SPORTY = re.compile(r"sport|football|soccer|f[uú]tbol|calcio|fu(?:ß|ss)ball|voetbal|futebol", re.I)
+
+
+def outlet_seeds(outlets: list[str], reg: dict, max_new: int = 40) -> list[str]:
+    """받는 매체(news_feeds.json)의 블루스카이 계정 — 기자를 넓히는 출발점으로만 쓴다(기자 목록엔 안 넣음).
+    표시 이름이 매체 이름으로 시작(낱말 단위 — 'AD' 가 'Adam …' 에 붙던 것)하고, 이름·소개글에 스포츠 낱말이 있거나
+    매체 이름 자체가 스포츠 매체이고, 팔로워 5천+ 인 계정 중 가장 큰 것. 30일마다 다시 확인."""
+    seeds = reg.setdefault("outlets", {})
+    stale = (dt.date.today() - dt.timedelta(days=30)).isoformat()
+    for o in [o for o in outlets if seeds.get(o, {}).get("checked", "") < stale][:max_new]:
+        fo = _fold(o)
+        res = _bsky("app.bsky.actor.searchActors", q=o, limit=10) or {}
+        hs = [x["handle"] for x in res.get("actors") or [] if f"{_fold(x.get('displayName'))} ".startswith(f"{fo} ")]
+        best = None
+        for pr in _profiles(hs):
+            f = int(pr.get("followersCount") or 0)
+            text = f"{pr.get('displayName', '')} {pr.get('description') or ''} {o}"
+            exact = _fold(pr.get("displayName")) == fo        # 이름이 똑같으면 그 매체(소개글 낱말과 무관) — 먼저('The Guardian Climate' 말고)
+            if f >= 5000 and (exact or SPORTY.search(text) or "news" in text.lower()):
+                cand = (exact, f, pr["handle"])
+                best = max(best, cand) if best else cand
+        seeds[o] = {"handle": best[2] if best else None, "checked": _today()}
+        time.sleep(0.3)
+    return [v["handle"] for v in seeds.values() if v.get("handle")]
+
+
+def refresh_insiders(names: list[str], max_new: int = 10, outlets: list[str] | None = None) -> dict:
     """기자 계정 목록(data/news_insiders.json) 갱신 — {accounts: {handle: {...}}, names: {이름: {handle, checked}}}.
     ① 학습한 기자 이름(news_journalists.csv — AI 가 '출처로 인용된 기자'만 뽑는다) → 표시 이름이 맞고 팔로워 2천+ 계정
        (공식 계정을 먼저, 'mirror' 표시 계정은 비공식). 이름마다 14일에 한 번.
-    ② 주 1회 — 그 계정들이 팔로우하는 사람 중 팔로워 3천+, 소개글에 축구 낱말·기자 낱말이 둘 다 있는 계정.
-    합쳐 INSIDER_CAP 개(팔로워순)."""
+    ② 주 1회 — 그 계정들과 우리가 받는 매체의 블루스카이 계정(outlet_seeds)이 팔로우하는 사람 중 팔로워 3천+,
+       소개글에 축구 낱말·기자 낱말이 둘 다 있는 계정. 합쳐 INSIDER_CAP 개(팔로워순).
+    매체 계정을 출발점에 넣은 까닭(2026-10-22): 무료 기사 제목·요약에 기자 이름이 거의 안 나와(3일 4,678건 중 로마노 4건)
+    이름 학습이 로마노 한 명에서 멈췄고, 로마노 계정은 팔로우가 2명뿐이라 넓혀지지 않았다."""
     reg = _load(INSIDERS, {})
     if "accounts" not in reg:                       # 옛 형식(이름 → 계정) 버림
         reg = {"accounts": {}, "names": {}}
@@ -444,8 +472,9 @@ def refresh_insiders(names: list[str], max_new: int = 10) -> dict:
         if best:
             acc[best[2]] = {"name": name, "followers": best[1], "official": best[0], "via": "name", "checked": today}
         time.sleep(0.3)
-    if reg.get("expanded_at", "") < (dt.date.today() - dt.timedelta(days=EXPAND_EVERY_DAYS)).isoformat() and acc:
-        seeds = sorted(acc, key=lambda h: (acc[h].get("via") != "name", -int(acc[h].get("followers") or 0)))[:5]
+    oseeds = outlet_seeds(outlets or [], reg)
+    if reg.get("expanded_at", "") < (dt.date.today() - dt.timedelta(days=EXPAND_EVERY_DAYS)).isoformat() and (acc or oseeds):
+        seeds = sorted(acc, key=lambda h: (acc[h].get("via") != "name", -int(acc[h].get("followers") or 0)))[:5] + oseeds[:10]
         for seed in seeds:
             cur, hs = None, []
             for _ in range(3):                      # 300명까지
@@ -454,7 +483,7 @@ def refresh_insiders(names: list[str], max_new: int = 10) -> dict:
                 cur = d.get("cursor")
                 if not cur:
                     break
-            for pr in _profiles([h for h in hs if h not in acc]):
+            for pr in _profiles([h for h in hs if h not in acc and h not in oseeds]):
                 bio = f"{pr.get('displayName', '')} {pr.get('description') or ''}"
                 f = int(pr.get("followersCount") or 0)
                 nmx = _person(pr.get("displayName"))
@@ -531,7 +560,8 @@ def run(fotmob: bool = True, bsky: bool = True, google_seen: dict | None = None)
     wire, wstats = wire_articles(idx, feeds)
     _save(FEEDS, feeds)
     fm, fm_calls = fotmob_articles(idx) if fotmob else ({}, 0)
-    reg = refresh_insiders(_learned_journalists()) if bsky else {}
+    outlets = sorted({f.get("outlet") for f in feeds.get("feeds", {}).values() if f.get("outlet") and not f.get("off")})
+    reg = refresh_insiders(_learned_journalists(), outlets=outlets) if bsky else {}
     bs, bs_n = bsky_articles(idx, reg) if bsky else ({}, 0)
     today = _today()
     new = {"wire": 0, "fotmob": 0, "bsky": 0}

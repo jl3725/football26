@@ -181,3 +181,24 @@ def test_bsky_author_becomes_journalist() -> None:
            "teams": "Arsenal", "via": "bsky", "author": "Ann Reporter"}
     assert nc.rule_meta(row, {})["journalists"].split("|")[0] == "Ann Reporter"
     assert nc.rule_meta({**row, "via": "wire"}, {})["journalists"] == ""     # 매체 바이라인은 '출처 기자'가 아니다
+
+
+def test_outlet_seeds_exact_name_first(monkeypatch) -> None:
+    prof = {"guardian-climate.bsky.social": {"handle": "guardian-climate.bsky.social", "displayName": "The Guardian Climate",
+                                             "followersCount": 90000, "description": "climate news"},
+            "theguardian.com": {"handle": "theguardian.com", "displayName": "The Guardian", "followersCount": 800000,
+                                "description": "Independent journalism"},
+            "adam.bsky.social": {"handle": "adam.bsky.social", "displayName": "Adam Kinzinger", "followersCount": 900000,
+                                 "description": "politics"}}
+
+    def fake(method, **p):
+        if method == "app.bsky.actor.searchActors":
+            return {"actors": [{"handle": h, "displayName": v["displayName"]} for h, v in prof.items()]}
+        return None
+
+    monkeypatch.setattr(nw, "_bsky", fake)
+    monkeypatch.setattr(nw, "_profiles", lambda hs: [prof[h] for h in hs if h in prof])
+    monkeypatch.setattr(nw.time, "sleep", lambda s: None)
+    reg: dict = {}
+    assert nw.outlet_seeds(["The Guardian", "AD"], reg) == ["theguardian.com"]      # 'AD' 가 'Adam …' 에 붙지 않음
+    assert reg["outlets"]["AD"]["handle"] is None
