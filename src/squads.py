@@ -151,6 +151,18 @@ def _auto_aliases() -> dict[str, dict[str, str]]:
     return out
 
 
+def to_ours(name, league: str, ours) -> str | None:
+    """원천(FotMob 등) 클럽 표기 → 우리 표기(ours 중 하나, 없으면 None). canonical_squad(수동·자동 별칭·악센트) 먼저,
+    안 되면 team_names.best(낱말 유사도). best 만 쓰던 FotMob 수집기들이 'Vitória de Guimarães'·'Sparta Rotterdam'·
+    'St.Truiden'·'Union St.Gilloise' 를 못 맞춰(유사도 0.25~0.33) 그 팀 경기별 평점·골 상황이 FotMob 표기로 쌓였다(2026-10-22)."""
+    ours = [str(x) for x in ours]
+    c = canonical_squad(name, league)
+    if c in ours:
+        return c
+    import team_names as tn  # noqa: PLC0415
+    return tn.best(str(name or ""), ours) if ours else None
+
+
 def canonical_squad(name, league: str) -> str:
     """소스 표기 → 표준 표기(모르는 이름은 그대로). 수동 ALIASES → 자동 별칭 → 악센트 무시 비교."""
     s = str(name or "").strip()

@@ -22,7 +22,8 @@ import pandas as pd
 import requests
 
 from leagues import LEAGUES, SEASON_START, data_path
-import team_names as tn
+import team_names as tn  # noqa: F401
+from squads import to_ours
 
 FOTMOB_ID = {"EPL": 47, "LaLiga": 87, "SerieA": 55, "Bundesliga": 54, "Ligue1": 53,
              "LigaPortugal": 61, "Eredivisie": 57, "BelgianProLeague": 40}
@@ -73,7 +74,7 @@ def parse(j: dict, league: str, season: str) -> pd.DataFrame:
         ours = list(st["squad"].astype(str))
     except (FileNotFoundError, KeyError):
         ours = []
-    m = {t: (tn.best(t, ours) if ours else None) or t for t in df["team_fm"].astype(str).unique()}
+    m = {t: to_ours(t, league, ours) or t for t in df["team_fm"].astype(str).unique()}
     df["squad"] = df["team_fm"].map(m)
     df["league"] = league
     df["season"] = season
@@ -93,7 +94,7 @@ def parse_team(j: dict, league: str, season: str, stat: str = "possession") -> p
         ours = list(pd.read_csv(data_path("standings", league, season))["squad"].astype(str))
     except (FileNotFoundError, KeyError):
         ours = []
-    df["squad"] = df["team_fm"].map({t: (tn.best(t, ours) if ours else None) or t for t in df["team_fm"].astype(str).unique()})
+    df["squad"] = df["team_fm"].map({t: to_ours(t, league, ours) or t for t in df["team_fm"].astype(str).unique()})
     df["league"], df["season"] = league, season
     return df[["squad", "team_fm", stat, "league", "season"]]
 

@@ -318,8 +318,8 @@ def fotmob_team_ids(refresh_days: int = 7) -> dict[str, int]:
     cache = _load(FM_IDS, {})
     if cache.get("at", "") >= (dt.date.today() - dt.timedelta(days=refresh_days)).isoformat() and cache.get("ids"):
         return cache["ids"]
-    import team_names as tn  # noqa: PLC0415
     from fetch_fotmob_ratings import FOTMOB_ID, _get  # noqa: PLC0415
+    from squads import to_ours  # noqa: PLC0415
     from ui.news import newstags  # noqa: PLC0415
     ids = dict(cache.get("ids") or {})
     for lg in LEAGUES:
@@ -331,7 +331,7 @@ def fotmob_team_ids(refresh_days: int = 7) -> dict[str, int]:
         for m in ((d.get("fixtures") or {}).get("allMatches") or []):
             for side in ("home", "away"):
                 t = m.get(side) or {}
-                name = tn.best(str(t.get("name") or ""), ours)
+                name = to_ours(t.get("name"), lg, ours)
                 if name and t.get("id"):
                     ids[name] = int(t["id"])
         time.sleep(0.5)

@@ -31,7 +31,8 @@ import pandas as pd
 
 from fetch_fotmob_ratings import FOTMOB_ID, _get
 from leagues import LEAGUES, SEASON_START, data_path
-import team_names as tn
+import team_names as tn  # noqa: F401 — 예전 호출부 호환
+from squads import to_ours
 
 # FotMob 대회 id → 우리 대회 코드(ESPN 표기 — schedule_full comp_code 와 같은 축)
 CUPS = {42: "uefa.champions", 73: "uefa.europa", 10216: "uefa.europa.conf",
@@ -173,7 +174,7 @@ def _sides(leagues: list[str], season: str, fm_season: str | None, since: str) -
             for side in ("home", "away"):
                 t = m.get(side) or {}
                 if str(t.get("id")) not in sides:
-                    sides[str(t.get("id"))] = (lg, (tn.best(str(t.get("name")), ours) if ours else None) or str(t.get("name")))
+                    sides[str(t.get("id"))] = (lg, to_ours(t.get("name"), lg, ours) or str(t.get("name")))
             jobs.append((m, LEAGUE_CODE[lg]))
         time.sleep(0.5)
     return sides, jobs

@@ -21,7 +21,8 @@ import pandas as pd
 
 from fetch_fotmob_ratings import FOTMOB_ID, _get
 from leagues import LEAGUES, SEASON, data_path
-import team_names as tn
+import team_names as tn  # noqa: F401
+from squads import to_ours
 
 COLS = ["squad", "player", "fotmob_id", "kind", "expected_return", "match_id", "match_date", "fetched"]
 AHEAD_DAYS, BACK_DAYS = 10, 4
@@ -43,7 +44,7 @@ def league_rows(lg: str) -> list[dict]:
         for side in ("home", "away"):
             t = m.get(side) or {}
             if str(t.get("id")) not in sq:
-                sq[str(t.get("id"))] = (tn.best(str(t.get("name")), ours) if ours else None) or str(t.get("name"))
+                sq[str(t.get("id"))] = to_ours(t.get("name"), lg, ours) or str(t.get("name"))
     now = _now()
     hi, lo = (now + dt.timedelta(days=AHEAD_DAYS)).isoformat()[:19], (now - dt.timedelta(days=BACK_DAYS)).isoformat()[:19]
     # ① 팀마다 가장 가까운 다가오는 경기
