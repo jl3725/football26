@@ -1,4 +1,46 @@
 {
+ "AustrianBundesliga": {
+  "langs": [
+   "de"
+  ],
+  "teams": {
+   "Altach": [
+    "Altach"
+   ],
+   "Austria Lustenau": [
+    "SC Austria Lustenau"
+   ],
+   "Austria Wien": [
+    "FK Austria Wien"
+   ],
+   "Grazer AK": [
+    "Grazer AK"
+   ],
+   "Hartberg": [
+    "Hartberg"
+   ],
+   "LASK": [
+    "LASK"
+   ],
+   "Rapid Wien": [
+    "SK Rapid Wien"
+   ],
+   "Ried": [],
+   "Salzburg": [
+    "Salzburg"
+   ],
+   "Sturm Graz": [
+    "SK Sturm Graz"
+   ],
+   "WSG Tirol": [
+    "WSG Tirol"
+   ],
+   "Wolfsberger AC": [
+    "Wolfsberger AC"
+   ]
+  },
+  "updated": "2026-10-22"
+ },
  "BelgianProLeague": {
   "langs": [
    "nl",
@@ -13,6 +55,10 @@
     "Royal Antwerp FC",
     "Royal Antwerp Football Club"
    ],
+   "Beveren": [
+    "Beveren (Oost-Vlaanderen)",
+    "Beveren (Flandre-Orientale)"
+   ],
    "Cercle Brugge": [
     "Cercle Brugge",
     "Cercle Bruges KSV"
@@ -24,9 +70,6 @@
     "Club Brugge",
     "Club Bruges KV"
    ],
-   "Dender": [
-    "FCV Dender EH"
-   ],
    "Genk": [
     "KRC Genk"
    ],
@@ -34,9 +77,16 @@
     "KAA Gent (voetbalclub)",
     "KAA La Gantoise"
    ],
+   "Kortrijk": [
+    "Kortrijk",
+    "Courtrai"
+   ],
    "La Louvière": [
     "RAAL La Louvière",
     "RAAL La Louvière (94)"
+   ],
+   "Lommel": [
+    "Lommel"
    ],
    "Mechelen": [
     "KV Mechelen",
@@ -65,7 +115,7 @@
     "SV Zulte Waregem"
    ]
   },
-  "updated": "2026-10-20"
+  "updated": "2026-10-22"
  },
  "Bundesliga": {
   "langs": [
@@ -93,9 +143,6 @@
    "Hamburger SV": [
     "Hamburger SV"
    ],
-   "Heidenheim": [
-    "1. FC Heidenheim"
-   ],
    "Hoffenheim": [
     "TSG 1899 Hoffenheim"
    ],
@@ -111,8 +158,14 @@
    "RB Leipzig": [
     "RB Leipzig"
    ],
-   "St Pauli": [
-    "FC St. Pauli"
+   "SC Paderborn": [
+    "SC Paderborn 07"
+   ],
+   "SV Elversberg": [
+    "SV Elversberg"
+   ],
+   "Schalke 04": [
+    "FC Schalke 04"
    ],
    "Stuttgart": [
     "VfB Stuttgart"
@@ -122,23 +175,64 @@
    ],
    "Werder Bremen": [
     "Werder Bremen"
-   ],
-   "Wolfsburg": [
-    "VfL Wolfsburg"
    ]
   },
-  "updated": "2026-10-20"
+  "updated": "2026-10-22"
+ },
+ "DanishSuperliga": {
+  "langs": [
+   "da"
+  ],
+  "teams": {
+   "AC Horsens": [
+    "AC Horsens"
+   ],
+   "AGF": [],
+   "Brøndby IF": [
+    "Brøndby IF"
+   ],
+   "FC København": [
+    "F.C. København"
+   ],
+   "FC Midtjylland": [
+    "FC Midtjylland"
+   ],
+   "Lyngby": [
+    "Kongens Lyngby"
+   ],
+   "Nordsjælland": [
+    "Nordsjælland"
+   ],
+   "OB": [],
+   "Randers FC": [
+    "Randers FC"
+   ],
+   "Silkeborg": [
+    "Silkeborg"
+   ],
+   "Sønderjyske": [
+    "Sønderjysk Elitesport"
+   ],
+   "Viborg": []
+  },
+  "updated": "2026-10-22"
  },
  "Eredivisie": {
   "langs": [
    "nl"
   ],
   "teams": {
+   "ADO Den Haag": [
+    "ADO Den Haag"
+   ],
    "AZ Alkmaar": [
     "AZ (voetbalclub)"
    ],
    "Ajax": [
     "AFC Ajax"
+   ],
+   "Cambuur": [
+    "SC Cambuur"
    ],
    "Excelsior": [
     "Excelsior Rotterdam"
@@ -158,12 +252,6 @@
    "Heerenveen": [
     "Sc Heerenveen"
    ],
-   "Heracles Almelo": [
-    "Heracles Almelo"
-   ],
-   "NAC Breda": [
-    "NAC Breda"
-   ],
    "NEC Nijmegen": [
     "N.E.C."
    ],
@@ -182,14 +270,12 @@
    "Utrecht": [
     "FC Utrecht"
    ],
-   "Volendam": [
-    "FC Volendam"
-   ],
+   "Willem II": [],
    "Zwolle": [
     "PEC Zwolle"
    ]
   },
-  "updated": "2026-10-20"
+  "updated": "2026-10-22"
  },
  "LaLiga": {
   "langs": [
@@ -211,6 +297,9 @@
    "Celta Vigo": [
     "Real Club Celta de Vigo"
    ],
+   "Deportivo A Coruña": [
+    "Real Club Deportivo de La Coruña"
+   ],
    "Elche": [
     "Elche Club de Fútbol"
    ],
@@ -220,20 +309,17 @@
    "Getafe": [
     "Getafe Club de Fútbol"
    ],
-   "Girona": [
-    "Girona Fútbol Club"
-   ],
    "Levante": [
     "Levante Unión Deportiva"
    ],
-   "Mallorca": [
-    "Real Club Deportivo Mallorca"
+   "Málaga": [
+    "Málaga Club de Fútbol"
    ],
    "Osasuna": [
     "Club Atlético Osasuna"
    ],
-   "Oviedo": [
-    "Real Oviedo"
+   "Racing Santander": [
+    "Real Racing Club de Santander"
    ],
    "Rayo Vallecano": [
     "Rayo Vallecano de Madrid"
@@ -257,14 +343,16 @@
     "Villarreal Club de Fútbol"
    ]
   },
-  "updated": "2026-10-20"
+  "updated": "2026-10-22"
  },
  "LigaPortugal": {
   "langs": [
    "pt"
   ],
   "teams": {
-   "AVS Futebol": [],
+   "Académico de Viseu": [
+    "Académico de Viseu Futebol Clube"
+   ],
    "Alverca": [
     "Futebol Clube de Alverca"
    ],
@@ -292,6 +380,9 @@
    "Gil Vicente FC": [
     "Gil Vicente Futebol Clube"
    ],
+   "Marítimo": [
+    "Club Sport Marítimo"
+   ],
    "Moreirense": [
     "Moreirense Futebol Clube"
    ],
@@ -310,14 +401,11 @@
    "Sporting CP": [
     "Sporting Clube de Portugal"
    ],
-   "Tondela": [
-    "Clube Desportivo de Tondela"
-   ],
    "Vit. Guimarães": [
     "Vitória Sport Clube"
    ]
   },
-  "updated": "2026-10-20"
+  "updated": "2026-10-22"
  },
  "Ligue1": {
   "langs": [
@@ -336,6 +424,9 @@
    "Le Havre": [
     "Le Havre Athletic Club (football)"
    ],
+   "Le Mans": [
+    "Le Mans Football Club"
+   ],
    "Lens": [
     "Racing Club de Lens"
    ],
@@ -351,14 +442,8 @@
    "Marseille": [
     "Olympique de Marseille"
    ],
-   "Metz": [
-    "Football Club de Metz"
-   ],
    "Monaco": [
     "Association sportive de Monaco Football Club"
-   ],
-   "Nantes": [
-    "Football Club de Nantes"
    ],
    "Nice": [
     "Olympique Gymnaste Club de Nice"
@@ -377,9 +462,12 @@
    ],
    "Toulouse": [
     "Toulouse Football Club"
+   ],
+   "Troyes": [
+    "Espérance sportive Troyes Aube Champagne"
    ]
   },
-  "updated": "2026-10-20"
+  "updated": "2026-10-22"
  },
  "SerieA": {
   "langs": [
@@ -398,17 +486,14 @@
    "Como": [
     "Como 1907"
    ],
-   "Cremonese": [
-    "Unione Sportiva Cremonese"
-   ],
    "Fiorentina": [
     "ACF Fiorentina"
    ],
+   "Frosinone": [
+    "Frosinone Calcio"
+   ],
    "Genoa": [
     "Genoa Cricket and Football Club"
-   ],
-   "Hellas Verona": [
-    "Hellas Verona Football Club"
    ],
    "Inter": [
     "Football Club Internazionale Milano"
@@ -425,14 +510,14 @@
    "Milan": [
     "Associazione Calcio Milan"
    ],
+   "Monza": [
+    "Associazione Calcio Monza"
+   ],
    "Napoli": [
     "Società Sportiva Calcio Napoli"
    ],
    "Parma": [
     "Parma Calcio 1913"
-   ],
-   "Pisa": [
-    "Pisa Sporting Club"
    ],
    "Roma": [
     "Associazione Sportiva Roma"
@@ -445,8 +530,115 @@
    ],
    "Udinese": [
     "Udinese Calcio"
+   ],
+   "Venezia": [
+    "Venezia Football Club"
    ]
   },
-  "updated": "2026-10-20"
+  "updated": "2026-10-22"
+ },
+ "SuperLig": {
+  "langs": [
+   "tr"
+  ],
+  "teams": {
+   "Alanyaspor": [
+    "Alanyaspor"
+   ],
+   "Amed Sportif": [
+    "Amed SFK"
+   ],
+   "Başakşehir": [
+    "Başakşehir"
+   ],
+   "Beşiktaş": [
+    "Beşiktaş"
+   ],
+   "Erzurumspor FK": [
+    "Erzurumspor FK"
+   ],
+   "Eyüpspor": [
+    "Eyüpspor"
+   ],
+   "Fenerbahçe": [
+    "Fenerbahçe SK"
+   ],
+   "Galatasaray": [
+    "Galatasaray SK"
+   ],
+   "Gaziantep FK": [
+    "Gaziantep FK"
+   ],
+   "Gençlerbirliği": [
+    "Gençlerbirliği SK"
+   ],
+   "Göztepe": [],
+   "Kasımpaşa": [],
+   "Kocaelispor": [
+    "Kocaelispor"
+   ],
+   "Konyaspor": [
+    "Konyaspor"
+   ],
+   "Rizespor": [
+    "Çaykur Rizespor"
+   ],
+   "Samsunspor": [
+    "Samsunspor (futbol takımı)"
+   ],
+   "Trabzonspor": [
+    "Trabzonspor (futbol takımı)"
+   ],
+   "Çorum FK": [
+    "Çorum FK"
+   ]
+  },
+  "updated": "2026-10-22"
+ },
+ "SwissSuperLeague": {
+  "langs": [
+   "de",
+   "fr"
+  ],
+  "teams": {
+   "Basel": [
+    "Basel",
+    "Bâle"
+   ],
+   "FC Vaduz": [
+    "FC Vaduz"
+   ],
+   "FC Zürich": [
+    "FC Zürich",
+    "Football Club Zurich"
+   ],
+   "Grasshopper": [
+    "Sauteriau"
+   ],
+   "Lausanne": [
+    "Lausanne"
+   ],
+   "Lugano": [
+    "Lugano"
+   ],
+   "Luzern": [
+    "Luzern",
+    "Lucerne"
+   ],
+   "Servette": [
+    "La Servette"
+   ],
+   "Sion": [],
+   "St. Gallen": [
+    "St. Gallen",
+    "Saint-Gall"
+   ],
+   "Thun": [
+    "Thun",
+    "Thoune"
+   ],
+   "Young Boys": []
+  },
+  "updated": "2026-10-22"
  }
 }
