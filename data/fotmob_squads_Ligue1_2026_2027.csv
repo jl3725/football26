@@ -11,6 +11,7 @@ Lyon,Felix Bacher,951498,defenders,CB,Centre-Back,DF,25,2000-10-25,20.0,AUT,Fals
 Lyon,Ruben Kluivert,1125076,defenders,"CB,LB,RB",Centre-Back,DF,25,2001-05-21,21.0,NED,False,,2026-10-22
 Lyon,Clinton Mata,266105,defenders,"CB,RB",Centre-Back,DF,33,1992-11-07,22.0,ANG,False,,2026-10-22
 Lyon,Steeve Kango,1922172,defenders,RB,Right-Back,DF,19,2006-12-09,37.0,FRA,False,,2026-10-22
+Lyon,Angel Garcia,2402214,defenders,,Centre-Back,DF,18,2008-02-03,38.0,FRA,False,,2026-10-22
 Lyon,Noham Kamara,1744188,defenders,CB,Centre-Back,DF,19,2007-01-22,85.0,FRA,False,,2026-10-22
 Lyon,Paul Akouokou,797132,midfielders,CDM,Defensive Midfield,MF,28,1997-12-20,,CIV,False,,2026-10-22
 Lyon,Mads Bidstrup,1081025,midfielders,"CDM,CM",Defensive Midfield,MF,25,2001-02-25,2.0,DEN,False,,2026-10-22
@@ -91,9 +92,9 @@ Lille,Calvin Verdonk,622137,defenders,"LB,CM",Left-Back,DF,29,1997-04-26,24.0,ID
 Lille,Isaac Cossier,1680590,defenders,CB,Centre-Back,DF,19,2006-11-30,26.0,FRA,False,,2026-10-22
 Lille,Maxima Goffi,1793784,defenders,"RB,CB",Right-Back,DF,18,2008-01-23,38.0,FRA,False,,2026-10-22
 Lille,Nabil Bentaleb,500520,midfielders,"CDM,CM,CB",Defensive Midfield,MF,31,1994-11-24,6.0,ALG,False,,2026-10-22
-Lille,Hákon Arnar Haraldsson,1044470,midfielders,"CAM,CM,LW,CDM,ST,RW",Attacking Midfield,MF,23,2003-04-10,10.0,ISL,False,,2026-10-22
+Lille,Hákon Arnar Haraldsson,1044470,midfielders,"CAM,CDM,ST,CM,LW",Attacking Midfield,MF,23,2003-04-10,10.0,ISL,False,,2026-10-22
 Lille,Maurits Kjærgaard,1070404,midfielders,"CM,CDM",Central Midfield,MF,23,2003-06-26,14.0,DEN,False,,2026-10-22
-Lille,Ngal Ayel Mukau,1428153,midfielders,"RW,CAM,CM,CDM",Right Winger,MF,21,2004-11-03,17.0,COD,False,,2026-10-22
+Lille,Ngal Ayel Mukau,1428153,midfielders,"RW,CM,CAM,CDM",Right Winger,MF,21,2004-11-03,17.0,COD,False,,2026-10-22
 Lille,Başar Önal,1347229,midfielders,"LWB,LW",Left-Back,MF,22,2004-07-06,19.0,TUR,False,,2026-10-22
 Lille,Benjamin André,148830,midfielders,"CDM,CM",Defensive Midfield,MF,36,1990-08-03,21.0,FRA,False,,2026-10-22
 Lille,Tiago Morais,1187392,attackers,"RW,LW",Right Winger,FW,23,2003-09-03,,POR,False,,2026-10-22
@@ -104,10 +105,11 @@ Lille,Osame Sahraoui,988160,attackers,LW,Left Winger,FW,25,2001-06-11,11.0,MAR,T
 Lille,Ayase Ueda,942393,attackers,ST,Centre-Forward,FW,28,1998-08-28,18.0,JPN,True,A few weeks,2026-10-22
 Lille,Gaëtan Perrin,708435,attackers,"LW,RW,ST",Left Winger,FW,30,1996-06-07,28.0,FRA,False,,2026-10-22
 Lille,Hamza Igamane,1421275,attackers,ST,Centre-Forward,FW,23,2002-11-02,29.0,MAR,True,Late October 2026,2026-10-22
-Lille,Soriba Diaoune,1684579,attackers,ST,Centre-Forward,FW,19,2007-08-14,35.0,GUI,False,,2026-10-22
+Lille,Soriba Diaoune,1684579,attackers,LW,Left Winger,FW,19,2007-08-14,35.0,GUI,False,,2026-10-22
 Lille,Angel Yondjo,1882264,attackers,CAM,Attacking Midfield,FW,19,2007-02-10,41.0,CMR,False,,2026-10-22
 Monaco,Lukás Hrádecky,66757,keepers,GK,Goalkeeper,GK,36,1989-11-24,1.0,FIN,False,,2026-10-22
 Monaco,Philipp Köhn,872934,keepers,GK,Goalkeeper,GK,28,1998-04-02,16.0,SUI,False,,2026-10-22
+Monaco,Jules Stawiecki,1668517,keepers,GK,Goalkeeper,GK,19,2007-04-10,40.0,FRA,False,,2026-10-22
 Monaco,Vanderson,1207992,defenders,"RB,RWB",Right-Back,DF,25,2001-06-21,2.0,BRA,False,,2026-10-22
 Monaco,Christian Mawissa,1406428,defenders,"CB,LB,RB,LWB",Centre-Back,DF,21,2005-04-18,13.0,FRA,False,,2026-10-22
 Monaco,Eric Dier,361315,defenders,CB,Centre-Back,DF,32,1994-01-15,15.0,ENG,True,Late October 2026,2026-10-22
@@ -124,16 +126,16 @@ Monaco,Aleksandr Golovin,586388,midfielders,"CAM,LW,LM,CDM",Attacking Midfield,M
 Monaco,Takumi Minamino,408943,midfielders,"CAM,RW",Attacking Midfield,MF,31,1995-01-16,18.0,JPN,False,,2026-10-22
 Monaco,Pape Cabral,1791739,midfielders,CM,Central Midfield,MF,19,2007-01-20,19.0,FRA,False,,2026-10-22
 Monaco,Mamadou Coulibaly,1524548,midfielders,"CDM,RW,CM,CAM",Defensive Midfield,MF,22,2004-04-21,28.0,FRA,False,,2026-10-22
+Monaco,Ansu Fati,1086012,midfielders,CAM,Attacking Midfield,MF,23,2002-10-31,31.0,ESP,False,,2026-10-22
 Monaco,Edan Diop,1385897,midfielders,"LW,LM,CM,CAM,RW",Left Winger,MF,22,2004-08-28,37.0,FRA,False,,2026-10-22
 Monaco,Aymen Assab,1830663,midfielders,CM,Central Midfield,MF,18,2008-07-18,41.0,MAR,False,,2026-10-22
 Monaco,Anis Soubeir,2130847,midfielders,CDM,Defensive Midfield,MF,19,2007-05-30,46.0,MAR,False,,2026-10-22
 Monaco,Mathys Detourbet,1709473,attackers,"LW,RW,RM,LM",Left Winger,FW,19,2007-04-29,7.0,FRA,False,,2026-10-22
 Monaco,Folarin Balogun,982677,attackers,ST,Centre-Forward,FW,25,2001-07-03,9.0,USA,False,,2026-10-22
-Monaco,Matthis Abline,1250492,attackers,"LW,ST,RW",Left Winger,FW,23,2003-03-28,11.0,FRA,False,,2026-10-22
+Monaco,Matthis Abline,1250492,attackers,"LW,ST,RW,CAM",Left Winger,FW,23,2003-03-28,11.0,FRA,False,,2026-10-22
 Monaco,Mika Biereth,1113809,attackers,ST,Centre-Forward,FW,23,2003-02-08,14.0,DEN,False,,2026-10-22
 Monaco,Stanis Idumbo,1366936,attackers,"LW,LM",Left Winger,FW,21,2005-06-29,17.0,COD,True,About 1-2 weeks,2026-10-22
 Monaco,Paris Brunner,1412956,attackers,"ST,LW",Centre-Forward,FW,20,2006-02-15,29.0,GER,False,,2026-10-22
-Monaco,Ansu Fati,1086012,attackers,"CAM,ST,LW,RW",Attacking Midfield,FW,23,2002-10-31,31.0,ESP,False,,2026-10-22
 Monaco,Safouane Benzahra,1845327,attackers,,Centre-Forward,FW,18,2008-08-18,47.0,MAR,False,,2026-10-22
 Rennes,Nicolas Lemaître,625422,keepers,GK,Goalkeeper,GK,29,1997-01-12,16.0,FRA,False,,2026-10-22
 Rennes,Brice Samba,279714,keepers,GK,Goalkeeper,GK,32,1994-04-25,30.0,FRA,False,,2026-10-22
@@ -217,8 +219,9 @@ Lens,Thorgan Hazard,264190,attackers,"CAM,ST,RW",Attacking Midfield,FW,33,1993-0
 Lens,Odsonne Édouard,637746,attackers,ST,Centre-Forward,FW,28,1998-01-16,11.0,FRA,False,,2026-10-22
 Lens,Junior Kadile,1334534,attackers,"LW,LM,CAM",Left Winger,FW,23,2002-12-16,28.0,COD,False,,2026-10-22
 Lens,Franjo Ivanović,1406419,attackers,"ST,CAM,RW",Centre-Forward,FW,23,2003-10-01,29.0,CRO,False,,2026-10-22
-Marseille,Jeffrey De Lange,687868,keepers,GK,Goalkeeper,GK,28,1998-04-01,1.0,NED,False,,2026-10-22
+Marseille,Jeffrey De Lange,687868,keepers,GK,Goalkeeper,GK,28,1998-04-01,12.0,NED,False,,2026-10-22
 Marseille,Jelle Van Neck,1347785,keepers,,Goalkeeper,GK,22,2004-03-07,40.0,BEL,False,,2026-10-22
+Marseille,Ibrahim Gomis,1816796,keepers,GK,Goalkeeper,GK,21,2005-03-20,41.0,MAR,False,,2026-10-22
 Marseille,Théo Vermot,1078904,keepers,,Goalkeeper,GK,29,1997-01-27,92.0,FRA,False,,2026-10-22
 Marseille,CJ Egan-Riley,1187227,defenders,CB,Centre-Back,DF,23,2003-01-02,4.0,ENG,False,,2026-10-22
 Marseille,Derek Cornelius,847629,defenders,CB,Centre-Back,DF,28,1997-11-25,13.0,CAN,True,Early January 2027,2026-10-22
@@ -239,6 +242,7 @@ Marseille,Neal Maupay,391064,attackers,ST,Centre-Forward,FW,30,1996-08-14,11.0,F
 Marseille,Igor Paixão,1265963,attackers,"LW,LWB,CAM,LM",Left Winger,FW,26,2000-06-28,14.0,BRA,False,,2026-10-22
 Marseille,Faris Moumbagna,952325,attackers,ST,Centre-Forward,FW,26,2000-07-01,29.0,CMR,False,,2026-10-22
 Marseille,Tadjidine Mmadi,1814264,attackers,LW,Left Winger,FW,19,2007-03-03,43.0,FRA,False,,2026-10-22
+Marseille,Antoine Valero,1843842,attackers,ST,Centre-Forward,FW,18,2008-07-08,44.0,FRA,False,,2026-10-22
 Marseille,Keyliane Abdallah,1638922,attackers,RW,Right Winger,FW,20,2006-04-05,48.0,FRA,False,,2026-10-22
 Marseille,Amine Harit,780815,attackers,"LW,RW,LM",Left Winger,FW,29,1997-06-18,77.0,MAR,False,,2026-10-22
 Brest,Egil Selvik,631757,keepers,GK,Goalkeeper,GK,29,1997-07-30,1.0,NOR,False,,2026-10-22

@@ -143,11 +143,11 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 516,
-   "exact": 481,
+   "total": 519,
+   "exact": 482,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 35,
+   "orphan": 37,
    "orphans": [
     {
      "squad": "Arsenal",
@@ -250,8 +250,18 @@
      "starts": 0
     },
     {
+     "squad": "Sunderland",
+     "name": "Felix Scott",
+     "starts": 0
+    },
+    {
      "squad": "Brighton",
      "name": "Shane Nti",
+     "starts": 0
+    },
+    {
+     "squad": "Brighton",
+     "name": "Steven Hall",
      "starts": 0
     },
     {
@@ -262,16 +272,6 @@
     {
      "squad": "Ipswich Town",
      "name": "Chiedozie Ogbene",
-     "starts": 0
-    },
-    {
-     "squad": "Ipswich Town",
-     "name": "Matthew Charles Compton",
-     "starts": 0
-    },
-    {
-     "squad": "Hull City",
-     "name": "Tyrell Sellars-Fleming",
      "starts": 0
     }
    ]
@@ -285,8 +285,8 @@
    "orphans": []
   },
   "espn_subs_cups": {
-   "total": 316,
-   "exact": 313,
+   "total": 319,
+   "exact": 316,
    "rule": 1,
    "ambiguous": 0,
    "orphan": 2,
@@ -304,8 +304,8 @@
    ]
   },
   "match_events": {
-   "total": 345,
-   "exact": 345,
+   "total": 346,
+   "exact": 346,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -464,8 +464,8 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 199,
-   "exact": 197,
+   "total": 201,
+   "exact": 199,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 2,
@@ -502,16 +502,16 @@
    ]
   },
   "espn_subs_cups": {
-   "total": 110,
-   "exact": 110,
+   "total": 115,
+   "exact": 115,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
    "orphans": []
   },
   "match_events": {
-   "total": 338,
-   "exact": 338,
+   "total": 339,
+   "exact": 339,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -630,11 +630,11 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 405,
+   "total": 407,
    "exact": 388,
    "rule": 1,
    "ambiguous": 0,
-   "orphan": 16,
+   "orphan": 18,
    "orphans": [
     {
      "squad": "Augsburg",
@@ -654,6 +654,16 @@
     {
      "squad": "Bayern Munich",
      "name": "Tim Binder",
+     "starts": 0
+    },
+    {
+     "squad": "Leverkusen",
+     "name": "Gabriel Minutillo",
+     "starts": 0
+    },
+    {
+     "squad": "Leverkusen",
+     "name": "Ben Hawighorst",
      "starts": 0
     },
     {
@@ -727,16 +737,16 @@
    "orphans": []
   },
   "espn_subs_cups": {
-   "total": 105,
-   "exact": 105,
+   "total": 108,
+   "exact": 108,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
    "orphans": []
   },
   "match_events": {
-   "total": 270,
-   "exact": 270,
+   "total": 271,
+   "exact": 271,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -895,11 +905,11 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 518,
-   "exact": 503,
+   "total": 520,
+   "exact": 504,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 15,
+   "orphan": 16,
    "orphans": [
     {
      "squad": "Parma",
@@ -919,6 +929,11 @@
     {
      "squad": "Juventus",
      "name": "Destiny Elimoghale",
+     "starts": 0
+    },
+    {
+     "squad": "Juventus",
+     "name": "Antonio Stefano Merola",
      "starts": 0
     },
     {
@@ -1008,8 +1023,8 @@
    ]
   },
   "espn_subs_cups": {
-   "total": 286,
-   "exact": 284,
+   "total": 290,
+   "exact": 288,
    "rule": 1,
    "ambiguous": 0,
    "orphan": 1,
@@ -1041,7 +1056,7 @@
  "Ligue1 2026_2027": {
   "wiki_squads": {
    "total": 565,
-   "exact": 472,
+   "exact": 473,
    "rule": 5,
    "ambiguous": 0,
    "orphan": 0,
@@ -1049,10 +1064,10 @@
   },
   "espn_lineups": {
    "total": 482,
-   "exact": 439,
+   "exact": 441,
    "rule": 10,
    "ambiguous": 0,
-   "orphan": 33,
+   "orphan": 31,
    "orphans": [
     {
      "squad": "Troyes",
@@ -1150,11 +1165,6 @@
      "starts": 0
     },
     {
-     "squad": "Strasbourg",
-     "name": "Tyrese Noubissie",
-     "starts": 0
-    },
-    {
      "squad": "Angers",
      "name": "Jules Bouffandeau",
      "starts": 0
@@ -1178,15 +1188,20 @@
      "squad": "Le Havre",
      "name": "Alex Teixeira",
      "starts": 0
+    },
+    {
+     "squad": "Toulouse",
+     "name": "Théo Collin",
+     "starts": 0
     }
    ]
   },
   "espn_lineups_cups": {
-   "total": 174,
+   "total": 176,
    "exact": 170,
    "rule": 1,
    "ambiguous": 0,
-   "orphan": 3,
+   "orphan": 5,
    "orphans": [
     {
      "squad": "Lille",
@@ -1202,31 +1217,36 @@
      "squad": "Rennes",
      "name": "Alidu Seidu",
      "starts": 0
+    },
+    {
+     "squad": "Marseille",
+     "name": "Antoine Dominique Henri Valero",
+     "starts": 0
+    },
+    {
+     "squad": "Marseille",
+     "name": "Ibrahim Gomis",
+     "starts": 0
     }
    ]
   },
   "espn_subs": {
    "total": 358,
-   "exact": 353,
+   "exact": 354,
    "rule": 3,
    "ambiguous": 0,
-   "orphan": 2,
+   "orphan": 1,
    "orphans": [
     {
      "squad": "Rennes",
      "name": "Aboubakar Nagida",
      "starts": 0
-    },
-    {
-     "squad": "Le Havre",
-     "name": "Lamine N'Diaye",
-     "starts": 0
     }
    ]
   },
   "espn_subs_cups": {
-   "total": 101,
-   "exact": 101,
+   "total": 107,
+   "exact": 107,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1599,8 +1619,8 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 144,
-   "exact": 143,
+   "total": 146,
+   "exact": 145,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 1,
@@ -1621,8 +1641,8 @@
    "orphans": []
   },
   "espn_subs_cups": {
-   "total": 77,
-   "exact": 77,
+   "total": 83,
+   "exact": 83,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1789,8 +1809,8 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 119,
-   "exact": 117,
+   "total": 121,
+   "exact": 119,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 2,
@@ -1816,16 +1836,16 @@
    "orphans": []
   },
   "espn_subs_cups": {
-   "total": 52,
-   "exact": 52,
+   "total": 55,
+   "exact": 55,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
    "orphans": []
   },
   "match_events": {
-   "total": 243,
-   "exact": 243,
+   "total": 244,
+   "exact": 244,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -2196,15 +2216,15 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 94,
-   "exact": 93,
+   "total": 97,
+   "exact": 96,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 1,
    "orphans": [
     {
      "squad": "Trabzonspor",
-     "name": "Oğuzhan Ertem",
+     "name": "Hakan Yılmaz",
      "starts": 0
     }
    ]
@@ -2218,8 +2238,8 @@
    "orphans": []
   },
   "espn_subs_cups": {
-   "total": 52,
-   "exact": 52,
+   "total": 55,
+   "exact": 55,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -2303,8 +2323,8 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 74,
-   "exact": 71,
+   "total": 76,
+   "exact": 73,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 3,
@@ -2495,8 +2515,8 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 90,
-   "exact": 89,
+   "total": 93,
+   "exact": 92,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 1,
@@ -2517,8 +2537,8 @@
    "orphans": []
   },
   "espn_subs_cups": {
-   "total": 38,
-   "exact": 38,
+   "total": 48,
+   "exact": 48,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -2587,8 +2607,8 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 43,
-   "exact": 42,
+   "total": 44,
+   "exact": 43,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 1,
@@ -2609,8 +2629,8 @@
    "orphans": []
   },
   "espn_subs_cups": {
-   "total": 20,
-   "exact": 20,
+   "total": 23,
+   "exact": 23,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,

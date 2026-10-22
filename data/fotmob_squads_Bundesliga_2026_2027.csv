@@ -5,7 +5,7 @@ Bayern Munich,Jonas Urbig,1285872,keepers,GK,Goalkeeper,GK,23,2003-08-08,40.0,GE
 Bayern Munich,Leon Klanac,1664982,keepers,GK,Goalkeeper,GK,19,2007-03-01,48.0,GER,False,,2026-10-22
 Bayern Munich,Tarek Buchmann,1432341,defenders,CB,Centre-Back,DF,21,2005-02-28,,GER,False,,2026-10-22
 Bayern Munich,Dayot Upamecano,658554,defenders,CB,Centre-Back,DF,27,1998-10-27,2.0,FRA,False,,2026-10-22
-Bayern Munich,Min-Jae Kim,828159,defenders,CB,Centre-Back,DF,29,1996-11-15,3.0,KOR,False,,2026-10-22
+Bayern Munich,Min-Jae Kim,828159,defenders,CB,Centre-Back,DF,29,1996-11-15,3.0,KOR,True,Doubtful,2026-10-22
 Bayern Munich,Jonathan Tah,469700,defenders,CB,Centre-Back,DF,30,1996-02-11,4.0,GER,False,,2026-10-22
 Bayern Munich,Tom Bischof,1286183,defenders,"LB,CDM,CM,RB",Left-Back,DF,21,2005-06-28,8.0,GER,False,,2026-10-22
 Bayern Munich,Nathaniel Brown,1395447,defenders,"LB,LWB,LM,CAM,RB,LW",Left-Back,DF,23,2003-06-16,11.0,GER,False,,2026-10-22
@@ -14,18 +14,18 @@ Bayern Munich,Hiroki Ito,851626,defenders,"CB,LB",Centre-Back,DF,27,1999-05-12,2
 Bayern Munich,Sacha Boey,1034808,defenders,RB,Right-Back,DF,26,2000-09-13,23.0,FRA,False,,2026-10-22
 Bayern Munich,Konrad Laimer,526827,defenders,"RB,LB,RW",Right-Back,DF,29,1997-05-27,27.0,AUT,False,,2026-10-22
 Bayern Munich,Josip Stanišić,950824,defenders,"RB,LB,RWB",Right-Back,DF,26,2000-04-02,44.0,CRO,False,,2026-10-22
-Bayern Munich,Joshua Kimmich,460632,midfielders,"CDM,RB,CM",Defensive Midfield,MF,31,1995-02-08,6.0,GER,False,,2026-10-22
+Bayern Munich,Joshua Kimmich,460632,midfielders,"CDM,RB",Defensive Midfield,MF,31,1995-02-08,6.0,GER,False,,2026-10-22
 Bayern Munich,Serge Gnabry,385437,midfielders,"CAM,LW",Attacking Midfield,MF,31,1995-07-14,7.0,GER,False,,2026-10-22
 Bayern Munich,Jamal Musiala,1156141,midfielders,"CAM,LW",Attacking Midfield,MF,23,2003-02-26,10.0,GER,True,A few weeks,2026-10-22
 Bayern Munich,Ismael Saibari,1180288,midfielders,"CAM,ST,LW,CM",Attacking Midfield,MF,25,2001-01-28,34.0,MAR,False,,2026-10-22
 Bayern Munich,Erblin Osmani,1904968,midfielders,CDM,Defensive Midfield,MF,17,2009-05-19,38.0,KVX,False,,2026-10-22
 Bayern Munich,Bara Ndiaye,1798782,midfielders,CDM,Defensive Midfield,MF,18,2007-12-31,39.0,SEN,False,,2026-10-22
+Bayern Munich,Lennart Karl,1737700,midfielders,"RW,CAM",Right Winger,MF,18,2008-02-22,42.0,GER,False,,2026-10-22
 Bayern Munich,Aleksandar Pavlović,1473580,midfielders,"CDM,CM",Defensive Midfield,MF,22,2004-05-03,45.0,GER,False,,2026-10-22
 Bayern Munich,David Santos Daiber,1771197,midfielders,"CM,CDM",Central Midfield,MF,19,2007-01-10,47.0,POR,False,,2026-10-22
 Bayern Munich,Harry Kane,194165,attackers,ST,Centre-Forward,FW,33,1993-07-28,9.0,ENG,False,,2026-10-22
-Bayern Munich,Luis Díaz,860914,attackers,LW,Left Winger,FW,29,1997-01-13,14.0,COL,False,,2026-10-22
+Bayern Munich,Luis Díaz,860914,attackers,LW,Left Winger,FW,29,1997-01-13,14.0,COL,True,A few weeks,2026-10-22
 Bayern Munich,Michael Olise,1029063,attackers,"RW,CAM",Right Winger,FW,24,2001-12-12,17.0,FRA,False,,2026-10-22
-Bayern Munich,Lennart Karl,1737700,attackers,"RW,CAM",Right Winger,FW,18,2008-02-22,42.0,GER,False,,2026-10-22
 Dortmund,Gregor Kobel,764018,keepers,GK,Goalkeeper,GK,28,1997-12-06,1.0,SUI,False,,2026-10-22
 Dortmund,Patrick Drewes,359203,keepers,GK,Goalkeeper,GK,33,1993-02-04,30.0,GER,False,,2026-10-22
 Dortmund,Silas Ostrzinski,1316269,keepers,GK,Goalkeeper,GK,22,2003-11-19,31.0,GER,False,,2026-10-22
@@ -109,6 +109,7 @@ Leverkusen,Nathan Tella,877700,midfielders,CAM,Attacking Midfield,MF,27,1999-07-
 Leverkusen,Aleix García,642551,midfielders,"CDM,CM",Defensive Midfield,MF,29,1997-06-28,24.0,ESP,False,,2026-10-22
 Leverkusen,Ibrahim Maza,1457626,midfielders,"CAM,CDM,CM,RW,ST,LW",Attacking Midfield,MF,20,2005-11-24,30.0,ALG,False,,2026-10-22
 Leverkusen,Montrell Culbreath,1793199,midfielders,"RWB,RW",Right-Back,MF,19,2007-08-29,42.0,GER,True,Late October 2026,2026-10-22
+Leverkusen,Gabriel Minutillo,1844660,midfielders,,Central Midfield,MF,16,2010-01-13,45.0,GER,False,,2026-10-22
 Leverkusen,Aleksa Damjanović,1649343,attackers,ST,Centre-Forward,FW,17,2008-12-04,,SRB,False,,2026-10-22
 Leverkusen,Ndjicoura Bomba,1843414,attackers,,Centre-Forward,FW,18,2008-03-12,,MLI,False,,2026-10-22
 Leverkusen,Afonso Moreira,1367047,attackers,"LW,ST,LM",Left Winger,FW,21,2005-03-19,9.0,POR,False,,2026-10-22
@@ -360,9 +361,9 @@ Stuttgart,Dennis Seimen,1478098,keepers,GK,Goalkeeper,GK,20,2005-12-01,41.0,GER,
 Stuttgart,Stefan Drljača,1175706,keepers,GK,Goalkeeper,GK,27,1999-04-20,46.0,GER,False,,2026-10-22
 Stuttgart,Ameen Al Dakhil,1279764,defenders,CB,Centre-Back,DF,24,2002-03-06,2.0,BEL,False,,2026-10-22
 Stuttgart,Ramon Hendriks,1125187,defenders,"CB,LB",Centre-Back,DF,25,2001-07-18,3.0,NED,False,,2026-10-22
-Stuttgart,Josha Vagnoman,928454,defenders,"RB,RWB,LWB",Right-Back,DF,25,2000-12-11,4.0,GER,True,Doubtful,2026-10-22
+Stuttgart,Josha Vagnoman,928454,defenders,"RB,RWB,LWB",Right-Back,DF,25,2000-12-11,4.0,GER,True,A few weeks,2026-10-22
 Stuttgart,Maximilian Mittelstädt,614384,defenders,"LB,LWB,CB",Left-Back,DF,29,1997-03-18,7.0,GER,False,,2026-10-22
-Stuttgart,Luca Jaquez,1270002,defenders,CB,Centre-Back,DF,23,2003-06-02,14.0,SUI,False,,2026-10-22
+Stuttgart,Luca Jaquez,1270002,defenders,"CB,RB",Centre-Back,DF,23,2003-06-02,14.0,SUI,False,,2026-10-22
 Stuttgart,Lorenz Assignon,1192406,defenders,"RB,RWB",Right-Back,DF,26,2000-06-22,22.0,FRA,False,,2026-10-22
 Stuttgart,Dan-Axel Zagadou,852347,defenders,CB,Centre-Back,DF,27,1999-06-03,23.0,FRA,True,Late October 2026,2026-10-22
 Stuttgart,Jeff Chabot,867080,defenders,CB,Centre-Back,DF,28,1998-02-12,24.0,GER,False,,2026-10-22
