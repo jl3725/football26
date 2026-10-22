@@ -62,7 +62,7 @@ MATCH = _rx("preview", "prediction", "team news", "lineup", "line up", "line-up"
             "probabili formazioni", "pagelle", "dove vedere", "pronostic", "compos", "ou regarder", "horario", "donde ver",
             "alineacion", "cronica", "aufstellung", "vorbericht", "noten", "spielbericht", "samenvatting", "opstelling",
             "onde ver", "escalac", "antevisao", "uitslag", "voorbeschouwing", "win against", "win over", r"beats?\b",
-            "beaten", "draw with", "held to", "defeat", "victory", "victoria", "derrota", "empate", "vittoria", "sconfitta",
+            "beaten", "draw with", "draw against", "held to", "defeat", "victory", "victoria", "derrota", "empate", "vittoria", "sconfitta",
             "pareggio", "sieg", "niederlage", "remis", "victoire", "defaite", "vitoria", "zege", "nederlaag", "gelijkspel")
 VS = re.compile(r"\b(vs?|v|contre|contra|gegen|tegen)\b|\d+\s*[-–]\s*\d+")
 INTERVIEW = _rx("says", "said", "insists", "admits", "reveals", "explains", "claims", "warns", "responds", "praises",
@@ -108,11 +108,17 @@ def _is_official(source: str, teams: str) -> bool:
     return False
 
 
+# 'joins the drama·party·list …' 는 이적이 아니다 — 'Mateo Chávez Joins the Drama: AZ Snatches Last-Minute Draw Against
+# SC Cambuur' 가 이적 '확정'으로 루머 판정·KG 주장에 들어갔다(2026-10-22 검수)
+JOIN_IDIOM = re.compile(r"\bjoin(s|ed|ing)? (in )?(the )?(drama|party|list|club of|race to|fun|chorus|conversation|fight|"
+                        r"celebrations?|exodus|ranks of|elite|history books)\b")
+
+
 def _kind_of(text: str) -> str:
     f = _fold(text)
     if INJURY.search(f):
         return "injury"
-    if TRANSFER.search(f):
+    if TRANSFER.search(JOIN_IDIOM.sub(" ", f)):
         return "transfer"
     if MATCH.search(f) or VS.search(str(text or "").lower()):
         return "match"
@@ -227,10 +233,23 @@ def ai_labels(rows: list[dict]) -> list[dict]:
     return res
 
 
+RULE_VER = "2026-10-22"   # 분류 규칙을 바꾸면 날짜를 올린다 — 다음 실행이 규칙 분류(by=rule)를 한 번 다시(AI 결과는 그대로)
+
+
+def _rule_ver_changed() -> bool:
+    with news_db._conn() as c:   # noqa: SLF001
+        c.execute("CREATE TABLE IF NOT EXISTS meta_kv (k TEXT PRIMARY KEY, v TEXT)")
+        row = c.execute("SELECT v FROM meta_kv WHERE k='rule_ver'").fetchone()
+        if row and row[0] == RULE_VER:
+            return False
+        c.execute("INSERT OR REPLACE INTO meta_kv VALUES ('rule_ver', ?)", (RULE_VER,))
+        return True
+
+
 def run(ai: bool = True, redo: bool = False) -> dict:
     news_db.init_db()
     known = load_journalists()
-    if redo:
+    if redo or _rule_ver_changed():
         with news_db._conn() as c:   # noqa: SLF001 — AI 결과는 남기고 규칙 분류만 다시
             c.execute("DELETE FROM article_meta WHERE by='rule'")
     todo = news_db.unclassified(limit=200000)

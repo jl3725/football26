@@ -90,3 +90,12 @@ def test_betting_filtered() -> None:
     assert not gn.keep("Pronostic Bruges – RC Lens (21/10) : prono, cotes et compos", "But! Football Club")
     assert not gn.keep("KRC Genk - Standard Luik voorspelling - Odds & statistieken", "Wincomparator")
     assert not gn.keep("Club Brugge vs Lens prediction", "BetMines")
+
+
+def test_join_idioms_and_draw_against_are_not_transfers() -> None:
+    """'joins the drama·elite company' 는 이적이 아니고, 'draw against' 는 경기(2026-10-22 검수 — 경기 기사가 루머 '확정'으로)."""
+    import news_classify as nc  # noqa: PLC0415
+    assert nc.rule_kind("Mateo Chávez Joins the Drama: AZ Alkmaar Snatches Last-Minute Draw Against SC Cambuur") == "match"
+    assert nc.rule_kind("Jurrien Timber joins elite company at Arsenal") == "other"
+    assert nc.rule_kind("Wirtz joins Liverpool in £116m deal") == "transfer"
+    assert nc.rule_kind("Leeds join the race for Bayern defender") == "transfer"
