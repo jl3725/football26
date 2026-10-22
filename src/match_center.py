@@ -38,13 +38,29 @@ def kst_label(t: dt.datetime | None, has_time: bool = True) -> str:
     return f"{base} {t:%H:%M}" if has_time else base
 
 
+_FORM_IDX: dict = {}      # id(rows) → (rows, {팀: [W/D/L …]}) — rows 를 붙잡아 두어 id 가 다른 표에 재사용되지 않게
+
+
+def _form_index(rows) -> dict:
+    """같은 경기 표의 팀별 리그 결과(날짜순) — 한 번 만들어 둔다. 일정 화면이 경기마다 recent_form 을 불러
+    표 전체를 수백 번 거르던 것(리그 홈 일정 234번, 2026-10-22 성능 점검). 표는 읽기 전용으로 쓴다."""
+    hit = _FORM_IDX.get(id(rows))
+    if hit is not None and hit[0] is rows:
+        return hit[1]
+    t = rows[(rows["status"] == "completed") & rows["comp_code"].astype(str).str.endswith(".1")]
+    idx = {sq: [r for r in g["result"].astype(str).tolist() if r in ("W", "D", "L")]
+           for sq, g in t.sort_values("date", kind="stable").groupby("squad", sort=False)}
+    if len(_FORM_IDX) >= 32:
+        _FORM_IDX.clear()
+    _FORM_IDX[id(rows)] = (rows, idx)
+    return idx
+
+
 def recent_form(rows, team: str, n: int = 5) -> list[str]:
     """리그 경기 최근 n 결과(W/D/L, 오래된 → 최근)."""
     if rows is None or rows.empty:
         return []
-    t = rows[(rows["squad"] == team) & (rows["status"] == "completed")
-             & rows["comp_code"].astype(str).str.endswith(".1")]
-    return [r for r in t.sort_values("date")["result"].astype(str).tolist() if r in ("W", "D", "L")][-n:]
+    return _form_index(rows).get(team, [])[-n:]
 
 
 def big_score(m: dict) -> tuple[int, list[str]]:

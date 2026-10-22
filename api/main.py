@@ -4855,12 +4855,10 @@ def captains(team: str, league: str = ACTIVE_LEAGUE):
 @_memo(ttl=900)
 def signals(team: str = "", league: str = ACTIVE_LEAGUE, limit: int = 60):
     """agent 자동감지 통합 피드 — 부상·감독·이적·계약 변화를 한 곳에.
-    team 지정 시 해당 팀만, 없으면 리그 전체."""
-    resolve = _players_lookup(league)
+    team 지정 시 해당 팀만, 없으면 리그 전체(순위표에 있는 팀만 — 다른 리그 팀 데이터 혼입 방지).
+    리그 전체 신호(_signals_league)를 한 번 계산해 거르기만 한다 — 예전엔 팀마다 리그 표 6개를 처음부터 훑어
+    Inbox 한 번(우리 팀·상대·리그 둘)에 4번 계산했다(운영 첫 Inbox 8초, 2026-10-22). 정렬은 안정 정렬이라 결과 같음."""
     win = _current_window()
-    out = []
-
-    # 리그 소속 팀만 (비-EPL 팀 데이터 혼입 방지)
     st = ds.read_table("standings", league=league)
     valid = set(st["squad"].tolist()) if st is not None else set()
 
@@ -4868,6 +4866,25 @@ def signals(team: str = "", league: str = ACTIVE_LEAGUE, limit: int = 60):
         if team:
             return sq == team
         return (not valid) or (sq in valid)
+
+    out = [s for s in _signals_league(league) if tfilter(s["team"])]
+    counts = {"injury": 0, "manager": 0, "value": 0, "youth": 0, "contract": 0, "resign": 0}
+    for s in out:
+        if s["type"].startswith("injury"):
+            counts["injury"] += 1
+        else:
+            counts[s["type"]] = counts.get(s["type"], 0) + 1
+    return {"team": team, "window": win, "counts": counts, "signals": out[:limit]}
+
+
+@_memo(ttl=900)
+def _signals_league(league: str) -> list[dict]:
+    """리그 전체 신호(팀 거르기 전, 중요도 순) — signals 가 팀·리그로 거른다. 항목 dict 는 공유되니 고쳐 쓰지 말 것."""
+    resolve = _players_lookup(league)
+    out = []
+
+    def tfilter(sq):
+        return True
 
     # 사진: 소스 사진(명시) → TM 소스맵(정확 이름 키·부상/계약/이적) → players_full resolve.
     # resolve 는 성(last-name) 폴백이 있어 동명이인 오매칭 위험 → TM 소스맵을 먼저 써 오류 방지.
@@ -5027,14 +5044,7 @@ def signals(team: str = "", league: str = ACTIVE_LEAGUE, limit: int = 60):
     def _key(s):
         return (rank.get(s["type"], 0), s["date"] if rank.get(s["type"]) == 3 else "")
     out.sort(key=_key, reverse=True)
-
-    counts = {"injury": 0, "manager": 0, "value": 0, "youth": 0, "contract": 0, "resign": 0}
-    for s in out:
-        if s["type"].startswith("injury"):
-            counts["injury"] += 1
-        else:
-            counts[s["type"]] = counts.get(s["type"], 0) + 1
-    return {"team": team, "window": win, "counts": counts, "signals": out[:limit]}
+    return out
 
 
 def _recent_load(team: str, league: str, today, days: int = 14) -> list[tuple[str, int]]:
@@ -6980,6 +6990,14 @@ def _warm_up() -> None:
                 _stat_frame(lg)      # 선수 화면 세부 지표(8개 리그 템플릿 백분위) — 빌드 캐시면 파일 읽기만
             _prev_lineup_pairs()     # NETWORK 전 소속 동료(빌드 캐시) · 이적설 연결(8개 리그) — 리그 첫 NETWORK 가 15초 걸렸다
             _rumor_links()
+            # 팀 화면 첫 방문의 리그 단위 몫 — Inbox 신호(리그 전체 한 번), Recruit 후보 풀·리그별 부상 결장·대회 사용량
+            # (운영 측정: 아무도 안 연 팀의 개요 11초·Recruit 16초 중 상당 부분이 이 공용 계산이었다, 2026-10-22)
+            import transfer_fit as _tf  # noqa: PLC0415
+            _tf._pool()
+            for lg in _LEAGUE_LEVEL:
+                _signals_league(lg)
+                _inj_missed_league(lg)
+                _comp_usage(lg)
             print(f"[warm-up] 완료 {_t.monotonic() - t0:.1f}s", flush=True)
         except Exception as e:  # noqa: BLE001 — 데우기는 실패해도 서비스엔 영향 없음
             print(f"[warm-up] 건너뜀: {type(e).__name__}: {e}", flush=True)
