@@ -7049,6 +7049,10 @@ def _warm_up() -> None:
                 _signals_league(lg)
                 _inj_missed_league(lg)
                 _comp_usage(lg)
+                for _s in (None, f"{SEASON_START - 1}_{SEASON_START}"):   # 리그 간 표(작다) — Recruit 첫 호출이 37번 읽었다
+                    ds.read_table("standings", league=lg, season=_s)
+                    ds.read_table("transfers", league=lg, season=_s)
+            _sim_engine()            # 유사 선수 엔진(8개 리그 전원 준비 0.4초 — 선수 화면 첫 호출 몫)
             print(f"[warm-up] 완료 {_t.monotonic() - t0:.1f}s", flush=True)
         except Exception as e:  # noqa: BLE001 — 데우기는 실패해도 서비스엔 영향 없음
             print(f"[warm-up] 건너뜀: {type(e).__name__}: {e}", flush=True)
