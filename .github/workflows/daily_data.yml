@@ -57,6 +57,8 @@ jobs:
           bash scripts/ci_try.sh "erediv_managers" python src/fetch_eredivisie_managers.py
           bash scripts/ci_try.sh "season_teams Eredivisie" python src/detect_season_teams.py --league Eredivisie --write
           bash scripts/ci_try.sh "mgr_changes Eredivisie" python src/detect_manager_changes.py --league Eredivisie --write
+          # 벨기에 — 시즌 문서에 감독표가 없어 클럽 문서 인포박스에서(바뀐 감독은 수집기가 직접 manager_changes 에)
+          bash scripts/ci_try.sh "belgian_managers" python src/fetch_belgian_managers.py
       - name: Transfer buzz · schedule (전 리그)
         run: |
           bash scripts/ci_try.sh "buzz EPL" python src/fetch_transfer_buzz.py
