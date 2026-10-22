@@ -244,7 +244,7 @@ def run(league: str, profiles: dict, cache: dict) -> tuple[int, int, list[str]]:
         t = cache.get(team) or (profiles.get(team) or {}).get("wiki_title")
         if not t:
             try:
-                t = search_title(team, _COUNTRY.get(league, ""))
+                t = search_title(team, _COUNTRY.get(league) or LEAGUES[league].country)   # 라이트 리그는 리그 설정의 나라
             except requests.RequestException:
                 t = None
             if t:
@@ -295,7 +295,9 @@ def main() -> int:
         print(f"[wiki_squads] {lg}: 주장 확인 {n_cap}/{n}팀 (지난 수집 {prev_cap})" + (f" · 누락 {miss}" if miss else ""))
         # 실패 = 0팀이거나 지난 수집보다 크게 줄었을 때(문서 구조 변경 의심). 분데스·에레디비시 영문 위키는 원래 주장 표시가
         # 드물어(10/18·6/18) 예전 '60% 미만' 기준이면 매일 실패 → 워크플로가 늘 빨간불이라 진짜 고장이 묻혔다(2026-10-19 점검)
-        bad += bool(n) and (n_cap == 0 or (prev_cap >= 3 and n_cap < prev_cap * 0.6))
+        # 라이트 리그(첫 수집·주장 표시가 드문 위키)는 0팀이어도 지난 수집에 있었을 때만 실패
+        first_lite = LEAGUES[lg].lite and prev_cap == 0
+        bad += bool(n) and ((n_cap == 0 and not first_lite) or (prev_cap >= 3 and n_cap < prev_cap * 0.6))
     return 1 if bad else 0
 
 
