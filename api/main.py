@@ -510,8 +510,12 @@ def overview(team: str, league: str = ACTIVE_LEAGUE):
         squad_ratings.sort(key=lambda x: -x["ovr"])
     age_summary = _age_summary(team, league, full_df)
 
-    # 득점 유형 + 규율(statbunker)
+    # 득점 유형 + 규율 — FotMob 골 상황 + ESPN 카드(매 경기 뒤 갱신)가 StatBunker(EPL·라리가·세리에A, 주 1회라
+    # 1~2경기 늦다 — 2026-10-22 아스날 10골 vs 실제 11골)보다 경기를 더 담고 있으면 그쪽을 쓴다
     sb = _team_row("statbunker_team_stats", team, league)
+    fm = _fotmob_goal_mix(team, league)
+    if sb is not None and fm and fm["games"] > _num(sb.get("matches_statbunker")):
+        sb = None
     snapshot = None
     if sb is not None:
         snapshot = {
@@ -521,7 +525,13 @@ def overview(team: str, league: str = ACTIVE_LEAGUE):
             "yellows": int(_num(sb.get("yellow_cards"))),
             "reds": int(_num(sb.get("red_cards")) + _num(sb.get("second_yellow_reds"))),
             "yellow_per_match": round(_num(sb.get("yellow_cards_per_match")), 2),
+            "source": "Statbunker",
         }
+    elif fm:
+        y, r_, g_ = _league_cards(team, league)
+        snapshot = {"open_play": fm["open"], "set_piece": fm["set_piece"], "penalty": fm["pen"], "yellows": y,
+                    "reds": r_, "yellow_per_match": round(y / g_, 2) if g_ else 0.0,
+                    "source": "FotMob 슈팅맵(골 상황) · ESPN(카드)"}
 
     # 현재 부상자
     inj_tbl = _injuries_table(league)          # 부상 뒤 실제로 뛴 선수 제외(TM 갱신 지연)
@@ -4343,6 +4353,41 @@ def database(league: str = ACTIVE_LEAGUE):
     return Response(content=body, media_type="application/json")
 
 
+_FM_LEAGUE_CODE = {"EPL": "eng.1", "LaLiga": "esp.1", "SerieA": "ita.1", "Bundesliga": "ger.1", "Ligue1": "fra.1",
+                   "LigaPortugal": "por.1", "Eredivisie": "ned.1", "BelgianProLeague": "bel.1"}
+_FM_SET_PIECE = {"FromCorner", "SetPiece", "FreeKick", "ThrowInSetPiece", "IndirectFreeKick"}
+
+
+def _fotmob_goal_mix(team: str, league: str, season: str | None = None) -> dict | None:
+    """득점 구성 — FotMob 슈팅맵 골 상황(리그 경기, src/fetch_fotmob_matches → fotmob_goals_*). StatBunker 가
+    EPL·라리가·세리에A 만이라 분데스리가·리그1·포르투갈·네덜란드·벨기에는 득점 구성 카드가 비었다(2026-10-22).
+    오픈플레이 = 일반·역습·자책골(상대), 세트피스 = 코너·세트피스·프리킥·스로인, PK 따로."""
+    g = ds.read_table("fotmob_goals", league=league, season=season)
+    if g is None or g.empty or "situation" not in g.columns:
+        return None
+    t = g[(g["squad"].astype(str) == team) & (g["comp_code"].astype(str) == _FM_LEAGUE_CODE.get(league, ""))]
+    if t.empty:
+        return None
+    sit = t.loc[t["situation"].astype(str) != "none", "situation"].astype(str)
+    sp, pen = int(sit.isin(_FM_SET_PIECE).sum()), int((sit == "Penalty").sum())
+    return {"total": len(sit), "open": len(sit) - sp - pen, "set_piece": sp, "pen": pen,
+            "corner": int((sit == "FromCorner").sum()), "games": int(t["match_id"].nunique())}
+
+
+def _league_cards(team: str, league: str) -> tuple[int, int, int]:
+    """(경고, 퇴장, 리그 경기 수) — ESPN 경기 이벤트(리그 경기만). 경기 수는 순위표."""
+    ev = ds.read_table("match_events", league=league)
+    y = r = 0
+    if ev is not None and "type" in ev.columns:
+        e = ev[(ev["squad"].astype(str) == team) & (ev["comp_code"].astype(str) == _FM_LEAGUE_CODE.get(league, ""))]
+        y, r = int((e["type"] == "yellow").sum()), int((e["type"] == "red").sum())
+    st = ds.read_table("standings", league=league)
+    g = 0
+    if st is not None and team in set(st["squad"].astype(str)):
+        g = int(_num(st[st["squad"].astype(str) == team].iloc[0].get("played")))
+    return y, r, g
+
+
 def _wiki_squad(team: str, league: str) -> list[dict]:
     """위키백과 스쿼드 표 — 주장단(1~4)·등번호·국적 코드(src/fetch_wiki_squads.py, 8개 리그)."""
     w = ds.read_table("wiki_squads", league=league)
@@ -6738,6 +6783,8 @@ def team_season(team: str, league: str = ACTIVE_LEAGUE):
                 hint = f"경기당 실점 {int(stand['ga']) / g:.2f}" + (f"(기록 {raw_rank['ga']}위)" if raw_rank else "")
             elif hint_kind == "sp" and sb is not None and pd.notna(sb.get("non_penalty_set_piece_goals")):
                 hint = f"세트피스 득점 {int(_num(sb.get('non_penalty_set_piece_goals')))}골"
+            elif hint_kind == "sp" and sb is None and (_fm := _fotmob_goal_mix(team, league)):
+                hint = f"세트피스 득점 {_fm['set_piece']}골"
             prev = prev_rank = None
             prev_hint = ""
             if row_p is not None and col in um_p.columns and pd.notna(row_p.get(col)) and _num(row_p.get(col)) > 0:
@@ -6763,7 +6810,11 @@ def team_season(team: str, league: str = ACTIVE_LEAGUE):
         op = _num(r.get("open_play_goals")) + _num(r.get("cross_goals")) + _num(r.get("other_goals"))
         return {"total": int(op + sp + pen), "open": int(op), "set_piece": int(sp), "pen": int(pen),
                 "corner": int(_num(r.get("corner_goals"))), "games": int(_num(r.get("matches_statbunker")))}
-    goal_mix = {"cur": _mix(sb), "prev": _mix(sb_p)} if sb is not None else None
+    # 이번 시즌은 FotMob 골 상황이 StatBunker 보다 경기를 더 담고 있으면 그쪽(매 경기 뒤 갱신), 지난 시즌은 StatBunker(끝난 시즌)
+    _cur_fm = _fotmob_goal_mix(team, league)
+    _cur_sb = _mix(sb)
+    cur = _cur_fm if _cur_fm and (_cur_sb is None or _cur_fm["games"] > _cur_sb["games"]) else _cur_sb
+    goal_mix = {"cur": cur, "prev": _mix(sb_p) or _fotmob_goal_mix(team, league, prev_season)} if cur else None
 
     # 리그 표의 경기당 xG·전력 순위(리그 랩 6시간 캐시 재사용)
     xg_pg = str_rank = xg_rank = xg_avg = None

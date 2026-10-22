@@ -14,6 +14,10 @@ FotMob 경기별 선수 기록 → data/fotmob_match_ratings_{리그}_{시즌}.c
 - --season prev: 지난 시즌 유럽·컵 경기만(리그는 시즌 평점·FBref 표가 이미 있음) — 지난 시즌 전 대회 평점용. 끝난 시즌이라 한 번만.
 - 행: match_id, date, comp_code, squad(우리 표기), opponent, home_away, fotmob_id, player, minutes, rating(FotMob 척도),
   goals, assists, det(세부 기록 있음=1), DETAIL 열들.
+- 같은 matchDetails 의 슈팅맵에서 골 상황(오픈플레이·역습·코너·세트피스·프리킥·스로인·PK·자책골)도 함께
+  data/fotmob_goals_{리그}_{시즌}.csv 로 — 팀 득점 구성(StatBunker 는 EPL·라리가·세리에A 만이라 나머지 5개 리그가 비었다,
+  2026-10-22). 행: match_id, date, comp_code, squad(득점한 우리 팀), opponent, minute, player, situation, own_goal, xg.
+  골 없는 경기는 situation=none 한 줄(받았다는 표시). 이미 받은 경기 중 골 파일에 없는 것은 --goals-max 만큼 다시 받아 채운다.
 
 사용: python src/fetch_fotmob_matches.py [--league EPL] [--max 400] [--season prev]
 """
@@ -84,9 +88,49 @@ def _stats(block: dict) -> dict:
     return out
 
 
-def player_rows(match: dict, comp: str, sides: dict) -> list[dict]:
+GOAL_COLS = ["match_id", "date", "comp_code", "squad", "opponent", "minute", "player", "situation", "own_goal", "xg"]
+
+
+def _details(match: dict) -> dict:
+    return _get(f"https://www.fotmob.com/api/data/matchDetails?matchId={match['id']}") or {}
+
+
+def goal_rows(j: dict, match: dict, comp: str, sides: dict) -> list[dict]:
+    """슈팅맵의 골 → 득점한 우리 팀 기준 행. 자책골은 상대 팀 득점(situation=OwnGoal). 우리 팀이 골이 없으면 none 한 줄."""
+    shots = (((j.get("content") or {}).get("shotmap")) or {}).get("shots") or []
+    home, away = match.get("home") or {}, match.get("away") or {}
+    hid, aid = str(home.get("id")), str(away.get("id"))
+    date = str((match.get("status") or {}).get("utcTime") or "")[:10]
+    name_of = {hid: home.get("name"), aid: away.get("name")}
+    rows = []
+    for s in shots:
+        if s.get("eventType") != "Goal":
+            continue
+        tid = str(s.get("teamId") or "")
+        og = bool(s.get("isOwnGoal"))
+        for_id = (aid if tid == hid else hid) if og else tid
+        if for_id not in sides:
+            continue
+        opp_id = aid if for_id == hid else hid
+        rows.append({"league": sides[for_id][0], "match_id": str(match["id"]), "date": date, "comp_code": comp,
+                     "squad": sides[for_id][1], "opponent": sides.get(opp_id, (None, name_of.get(opp_id) or ""))[1],
+                     "minute": s.get("min"), "player": s.get("playerName") or "",
+                     "situation": "OwnGoal" if og else str(s.get("situation") or ""), "own_goal": int(og),
+                     "xg": s.get("expectedGoals")})
+    if not shots:
+        return []                                        # 슈팅맵 없는 경기(하부 컵 등) — 받았다는 표시도 안 남겨 다음에 다시
+    for tid in (hid, aid):
+        if tid in sides and not any(r["squad"] == sides[tid][1] for r in rows):
+            opp_id = aid if tid == hid else hid
+            rows.append({"league": sides[tid][0], "match_id": str(match["id"]), "date": date, "comp_code": comp,
+                         "squad": sides[tid][1], "opponent": sides.get(opp_id, (None, name_of.get(opp_id) or ""))[1],
+                         "minute": None, "player": "", "situation": "none", "own_goal": 0, "xg": None})
+    return rows
+
+
+def player_rows(match: dict, comp: str, sides: dict, j: dict | None = None) -> list[dict]:
     """sides: {fotmob 팀 id: (리그, 우리 팀 표기)} — 이 경기에서 우리 리그 팀만."""
-    j = _get(f"https://www.fotmob.com/api/data/matchDetails?matchId={match['id']}") or {}
+    j = _details(match) if j is None else j
     ps = ((j.get("content") or {}).get("playerStats")) or {}
     home, away = match.get("home") or {}, match.get("away") or {}
     date = str((match.get("status") or {}).get("utcTime") or "")[:10]
@@ -140,6 +184,7 @@ def main() -> int:
     ap.add_argument("--league")
     ap.add_argument("--max", type=int, default=600, help="한 번에 새로 받을 경기 수 상한(첫 실행 백필 분할용)")
     ap.add_argument("--season", choices=["cur", "prev"], default="cur")
+    ap.add_argument("--goals-max", type=int, default=250, help="골 상황 백필 — 받은 경기 중 골 파일에 없는 것, 한 번에 이만큼")
     a = ap.parse_args()
     leagues = [a.league] if a.league else [lg for lg in LEAGUES if lg in FOTMOB_ID]
     prev = a.season == "prev"
@@ -176,11 +221,25 @@ def main() -> int:
     refill = sorted([(m, c) for m, c in jobs if str(m["id"]) in stale], key=when, reverse=True)
     todo = (fresh + refill)[: a.max]
     print(f"[{season}] 경기 {len(jobs)}개 중 새 경기 {len(fresh)}개 · 세부 기록 백필 대기 {len(refill)}개 (상한 {a.max})")
+    goals_have: dict[str, pd.DataFrame] = {}
+    goals_seen: set[str] = set()
+    for lg in leagues:
+        gp = data_path("fotmob_goals", lg, season)
+        if gp.exists():
+            goals_have[lg] = pd.read_csv(gp, dtype={"match_id": str})
+            goals_seen |= set(goals_have[lg]["match_id"].astype(str))
+    todo_ids = {str(m["id"]) for m, _ in todo}
+    goal_only = sorted([(m, c) for m, c in jobs if str(m["id"]) in seen and str(m["id"]) not in goals_seen
+                        and str(m["id"]) not in todo_ids], key=when, reverse=True)[: a.goals_max]
+    print(f"    골 상황 백필 {len(goal_only)}경기(남은 {sum(1 for m, _ in jobs if str(m['id']) not in goals_seen)})")
     new: list[dict] = []
+    new_goals: list[dict] = []
     bad = 0
     for i, (m, code) in enumerate(todo):
         try:
-            rows = player_rows(m, code, sides)
+            j = _details(m)
+            rows = player_rows(m, code, sides, j)
+            new_goals.extend(goal_rows(j, m, code, sides))
         except Exception as e:  # noqa: BLE001 — 한 경기 실패가 전체를 멈추지 않게
             print(f"    [실패] {m.get('id')}: {e}")
             rows, bad = [], bad + 1
@@ -188,6 +247,25 @@ def main() -> int:
         if (i + 1) % 50 == 0:
             print(f"    {i + 1}/{len(todo)} …")
         time.sleep(0.35)
+    for m, code in goal_only:
+        try:
+            new_goals.extend(goal_rows(_details(m), m, code, sides))
+        except Exception as e:  # noqa: BLE001
+            print(f"    [골 실패] {m.get('id')}: {e}")
+        time.sleep(0.35)
+    if new_goals:
+        gd = pd.DataFrame(new_goals)
+        for lg, g in gd.groupby("league"):
+            out = data_path("fotmob_goals", lg, season)
+            old = goals_have.get(lg)
+            if old is not None:
+                old = old[~old["match_id"].astype(str).isin(set(g["match_id"].astype(str)))]
+                df = pd.concat([old, g[GOAL_COLS]], ignore_index=True)
+            else:
+                df = g[GOAL_COLS].copy()
+            df = df.reindex(columns=GOAL_COLS).sort_values(["date", "match_id", "minute"], na_position="last")
+            df.to_csv(out, index=False, encoding="utf-8", lineterminator="\n")
+            print(f"  {lg:16} 골 상황 +{len(g)}행 → {len(df)}행 ({df['match_id'].nunique()}경기) -> {out.name}")
     if not new:
         print("새 경기 없음")
         return 0

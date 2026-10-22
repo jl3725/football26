@@ -207,7 +207,7 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
             <SectionHead title="SCORING · DISCIPLINE" kr="득점 유형 · 규율" meta="리그"
               info={<>
                 <p>리그 경기 기준 득점 유형(오픈플레이·세트피스·페널티)과 경고·퇴장.</p>
-                <p className="muted">출처: Statbunker</p>
+                <p className="muted">출처: {snap.source ?? "Statbunker"}</p>
               </>} />
             <div className="stat-strip" style={{ marginTop: 0 }}>
               <div className="stat"><div className="v" style={{ color: accent }}>{snap.open_play}</div><div className="l">오픈플레이</div></div>

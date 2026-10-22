@@ -58,7 +58,7 @@ export type Overview = {
     changed_at?: string;
   } | null;
   edge: { strengths: { label: string; value: number }[]; weaknesses: { label: string; value: number }[] };
-  snapshot: { open_play: number; set_piece: number; penalty: number; yellows: number; reds: number; yellow_per_match: number } | null;
+  snapshot: { open_play: number; set_piece: number; penalty: number; yellows: number; reds: number; yellow_per_match: number; source?: string } | null;
   stars: Star[];
   squad_ratings: { player: string; ovr: number; pot: number; form: number | null; age: number; minutes: number; line: string; photo?: string }[];
   age_summary?: { wavg: number; rank_young: number; n: number; league_wavg: number; u23: number; prime: number; vet: number } | null;

@@ -57,7 +57,7 @@ AGENTS: tuple[Agent, ...] = (
               Feed("standings", "순위", ("standings", "standings_history"), ("match_refresh", "daily_data"),
                    "매일 2회", 30, ("standings_*",)),
               Feed("managers", "감독·교체", ("laliga_managers", "serie_managers", "bundes_managers", "ligue_managers",
-                                          "ligapt_managers", "erediv_managers", "mgr_changes", "manager_careers",
+                                          "ligapt_managers", "erediv_managers", "belgian_managers", "mgr_changes", "manager_careers",
                                           "sync_manager_profiles", "enrich_manager"),
                    ("daily_data",), "매일 13:30 KST", 36, ("manager_profiles_*", "manager_changes_*")),
               Feed("team_info", "팀 정보·계수", ("enrich_team", "team_colors", "uefa_coefficients"), ("daily_data",),

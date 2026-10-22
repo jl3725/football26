@@ -204,7 +204,8 @@ export function SeasonProfile({ axes }: { axes: ProfileAxis[] }) {
 }
 
 
-// 득점 구성 — 오픈플레이·세트피스·PK 비중을 지난 시즌과 나란히(StatBunker). '세트피스 강점이 이번 시즌엔 아직' 같은 변화를 한눈에.
+// 득점 구성 — 오픈플레이·세트피스·PK 비중을 지난 시즌과 나란히(StatBunker — EPL·라리가·세리에A, 나머지 리그는 FotMob 골 상황).
+// '세트피스 강점이 이번 시즌엔 아직' 같은 변화를 한눈에.
 const MIX: [keyof GoalMixPart, string, string][] = [["open", "오픈플레이·크로스", "#6aa6e0"], ["set_piece", "세트피스", "#f4cf5e"], ["pen", "PK", "#c792ea"]];
 export function GoalMixCompare({ mix }: { mix: GoalMix }) {
   const rows = ([["지난 시즌", mix.prev], ["이번 시즌", mix.cur]] as [string, GoalMixPart | null][]).filter(([, v]) => v && v.total > 0);
