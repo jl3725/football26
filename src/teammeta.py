@@ -446,8 +446,17 @@ def _espn_colors() -> dict:
     return _ESPN_COLORS
 
 
+def _lite(team: str) -> dict:
+    """라이트 리그 팀(챔피언십·쉬페르리그 …) — 팀 대조표(src/lite_league.py)의 FotMob 색·로고·TM verein."""
+    try:
+        import lite_league  # noqa: PLC0415
+        return lite_league.all_teams().get(team) or {}
+    except Exception:  # noqa: BLE001
+        return {}
+
+
 def team_color(team: str) -> str:
-    return TEAM_COLOR.get(team) or _espn_colors().get(team) or "#444a55"
+    return TEAM_COLOR.get(team) or _espn_colors().get(team) or _lite(team).get("color") or "#444a55"
 
 
 # ESPN 로고 override — Transfermarkt verein id 가 불확실/충돌하는 팀(승격팀 등).
@@ -463,7 +472,12 @@ def team_logo(team: str) -> str:
     if team in TEAM_LOGO_URL:
         return TEAM_LOGO_URL[team]
     vid = TEAM_VEREIN.get(team)
-    return f"https://tmssl.akamaized.net/images/wappen/head/{vid}.png" if vid else ""
+    if vid:
+        return f"https://tmssl.akamaized.net/images/wappen/head/{vid}.png"
+    lite = _lite(team)
+    if lite.get("tm_vid"):
+        return f"https://tmssl.akamaized.net/images/wappen/head/{lite['tm_vid']}.png"
+    return lite.get("logo") or ""
 
 
 def team_fullname(team: str) -> str:

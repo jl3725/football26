@@ -82,7 +82,8 @@ def league_matches(ms: pd.DataFrame) -> pd.DataFrame:
     """match_stats(팀 기준 행) → 리그 경기 한 경기 한 줄(홈 기준)."""
     if ms is None or ms.empty:
         return pd.DataFrame(columns=["event_id", "date", "home", "away", "hg", "ag", "hxg", "axg", "hsh", "ash"])
-    lg = ms[ms["comp_code"].astype(str).str.endswith(".1") & (ms["home_away"] == "H")].copy()
+    from leagues import LEAGUE_CODES  # noqa: PLC0415  (eng.2 같은 2부 리그도 리그 경기)
+    lg = ms[ms["comp_code"].astype(str).isin(LEAGUE_CODES) & (ms["home_away"] == "H")].copy()
     col = lambda c: pd.to_numeric(lg[c], errors="coerce") if c in lg.columns else pd.Series([float("nan")] * len(lg), index=lg.index)  # noqa: E731
     out = pd.DataFrame({"event_id": lg["event_id"].astype(str), "date": lg["date"].astype(str).str[:10],
                         "home": lg["squad"], "away": lg["opponent"], "hg": col("gf"), "ag": col("ga"),

@@ -168,6 +168,14 @@ def canonical_squad(name, league: str) -> str:
     s = str(name or "").strip()
     if s in ALIASES.get(league, {}):
         return ALIASES[league][s]
+    if league not in ALIASES:                      # 라이트 리그 — 팀 대조표(src/lite_league.py)의 원천 표기
+        try:
+            import lite_league  # noqa: PLC0415
+            hit = (lite_league.team_map(league).get("aliases") or {}).get(s)
+            if hit:
+                return hit
+        except Exception:  # noqa: BLE001
+            pass
     auto = _auto_aliases().get(league, {})
     if s in auto:
         return auto[s]

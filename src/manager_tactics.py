@@ -24,7 +24,7 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
-from leagues import SEASON as _ACTIVE_SEASON, data_path  # noqa: E402
+from leagues import LEAGUES as _LEAGUES_CFG, SEASON as _ACTIVE_SEASON, data_path  # noqa: E402
 
 try:
     sys.stdout.reconfigure(encoding="utf-8")
@@ -33,7 +33,7 @@ except Exception:  # noqa: BLE001
 
 NEO4J_URI = os.getenv("NEO4J_URI", "bolt://localhost:7687")
 NEO4J_AUTH = (os.getenv("NEO4J_USER") or os.getenv("NEO4J_USERNAME") or "neo4j", os.getenv("NEO4J_PASSWORD", "football26"))
-LEAGUES = ["EPL", "LaLiga", "SerieA", "Bundesliga", "Ligue1", "LigaPortugal", "Eredivisie", "BelgianProLeague"]
+LEAGUES = list(_LEAGUES_CFG)   # 라이트 리그 포함 — 리그 설정 한 곳(src/leagues.py)
 
 # 전술 축 → team_unit_metrics 컬럼 (0-100)
 AXES = {"pressing": "pressing_index", "ball_winning": "midfield_ball_winning_index",

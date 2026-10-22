@@ -3,15 +3,13 @@ import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import type { Fixture, FixtureSide, TableRow } from "./api";
 import { liveLabel, useLiveAll } from "./live";
 import { liveTable, type LiveTableRow } from "./liveTable";
+import { LEAGUES_ACTIVE } from "./leagues";
 
 // 잠정 순위 한 곳 — 화면의 모든 순위·승점 표시(왼쪽 사이드바 · 팀 헤더 · 경기 카드 · 매치 프리뷰)가 이 공급자를 쓴다.
 // 공식 순위표(매일 아침 match_refresh) + 아직 결과 파일에 없는 리그 경기(/api/standings-live)에 라이브 스코어(ESPN)를 더한다.
 // 예전엔 몇몇 카드만 라이브였고 사이드바 순위는 다음 날 아침까지 그대로였다(2026-10-19 사용자: '적용할 때 영향 있는 곳은 일괄로').
 // 새 화면에서 순위·승점을 보여 줄 때도 서버 값을 그대로 쓰지 말고 useStandings(league)·useLiveFixture(m) 를 거칠 것.
-export const LEAGUE_OF_CODE: Record<string, string> = {
-  "eng.1": "EPL", "esp.1": "LaLiga", "ita.1": "SerieA", "ger.1": "Bundesliga", "fra.1": "Ligue1",
-  "por.1": "LigaPortugal", "ned.1": "Eredivisie", "bel.1": "BelgianProLeague",
-};
+export const LEAGUE_OF_CODE: Record<string, string> = Object.fromEntries(LEAGUES_ACTIVE.map((l) => [l.espn, l.key]));
 type Inputs = { table: TableRow[]; pending: Record<string, { home: string; away: string }> };
 export type Standings = { rows: LiveTableRow[]; on: boolean; inPlay: boolean; byTeam: Map<string, LiveTableRow> };
 const EMPTY: Standings = { rows: [], on: false, inPlay: false, byTeam: new Map() };

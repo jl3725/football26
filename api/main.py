@@ -87,6 +87,7 @@ def _memo(ttl: float = 3600.0):
         return wrapped
     return deco
 from leagues import ACTIVE_LEAGUE, SEASON_START, league_config, data_path  # noqa: E402
+from leagues import LEAGUES as _LEAGUES_CFG, LEAGUE_CODES as _LEAGUE_CODES  # noqa: E402
 from season_context import current_window as _current_window  # noqa: E402
 from season_context import season_label as _data_season_label  # noqa: E402
 from team_analysis import (  # noqa: E402  (streamlit 비의존)
@@ -362,6 +363,12 @@ def overview(team: str, league: str = ACTIVE_LEAGUE):
         if "gw" in ts.columns:
             ts = ts.sort_values("gw")
         form = [str(x) for x in ts["result"].dropna().tolist()[-5:]]
+    if not form:          # 라운드 일정 표가 없는 리그(라이트 리그) — 전 대회 일정의 리그 경기
+        sf = ds.read_table("schedule_full", league=league)
+        if sf is not None and {"squad", "comp_code", "status", "result"}.issubset(sf.columns):
+            ts = sf[(sf["squad"] == team) & sf["comp_code"].astype(str).isin(_LEAGUE_CODES)
+                    & (sf["status"].astype(str) == "completed")].sort_values("date")
+            form = [str(x) for x in ts["result"].dropna().tolist()[-5:]]
 
     # 감독
     mgr = _managers(league).get(team)
@@ -1080,7 +1087,7 @@ def calendar(league: str = ACTIVE_LEAGUE):
     if sf is not None and "date" in sf.columns:
         sf = sf[sf["date"].astype(str) >= iso]
         code = sf["comp_code"].astype(str)
-        nxt_league = sf[code.str.endswith(".1")]["date"].min()
+        nxt_league = sf[code.isin(_LEAGUE_CODES)]["date"].min()
         if isinstance(nxt_league, str):
             events.append({"name": f"{lname} 다음 라운드", "start": nxt_league, "end": nxt_league, "icon": "⚽", "kind": "kickoff"})
         euro = sf[code.str.startswith("uefa.")]
@@ -1088,7 +1095,7 @@ def calendar(league: str = ACTIVE_LEAGUE):
             d0 = euro["date"].min()
             comp = str(euro[euro["date"] == d0]["comp"].iloc[0])
             events.append({"name": f"{comp} 매치데이", "start": d0, "end": d0, "icon": "⭐", "kind": "kickoff"})
-        last = sf[code.str.endswith(".1")]["date"].max()
+        last = sf[code.isin(_LEAGUE_CODES)]["date"].max()
         if isinstance(last, str) and last != nxt_league:
             events.append({"name": f"{lname} 최종전", "start": last, "end": last, "icon": "🏁", "kind": "kickoff"})
 
@@ -1312,7 +1319,7 @@ def _inj_missed_league(league: str) -> dict:
     hist = ds.read_table("tm_injury_history", league=league)
     if sch is None or sch.empty:
         return out
-    lg = sch[(sch["comp_code"].astype(str).str.endswith(".1")) & (sch["status"].astype(str) == "completed")]
+    lg = sch[(sch["comp_code"].astype(str).isin(_LEAGUE_CODES)) & (sch["status"].astype(str) == "completed")]
     dates = {sq: sorted(pd.to_datetime(g["date"], errors="coerce").dropna().dt.date) for sq, g in lg.groupby("squad")}
     out["_played"] = {str(sq): len(ds_) for sq, ds_ in dates.items()}
     if hist is None or hist.empty or "spells_json" not in hist.columns:
@@ -3294,7 +3301,7 @@ def _gone_keys(team: str, league: str) -> set[tuple[str, str]]:
 
 def _comp_kind(code) -> str:
     c = str(code or "")
-    return "euro" if c.startswith("uefa.") else "league" if c.endswith(".1") else "cup"
+    return "euro" if c.startswith("uefa.") else "league" if c in _LEAGUE_CODES else "cup"
 
 
 def _team_lineups(team: str, league: str, comp: str = "league"):
@@ -3764,7 +3771,8 @@ _FIT_BY_LINE = {"ATT": ("npxg_p90", "득점 위협"), "MID": ("key_passes_per90"
 _SRC_LABEL = {"EPL": "EPL", "LaLiga": "라리가", "SerieA": "세리에A",
               "Bundesliga": "분데스리가", "Ligue1": "리그1",
               "LigaPortugal": "포르투갈 리그", "Eredivisie": "에레디비시",
-              "BelgianProLeague": "벨기에 리그"}
+              "BelgianProLeague": "벨기에 리그", "Championship": "챔피언십", "SuperLig": "쉬페르리그",
+              "AustrianBundesliga": "오스트리아 리그", "DanishSuperliga": "덴마크 리그", "SwissSuperLeague": "스위스 리그"}
 
 
 def _formation_bucket_needs(team: str, league: str) -> dict:
@@ -4494,6 +4502,7 @@ def database(league: str = ACTIVE_LEAGUE):
 
 _FM_LEAGUE_CODE = {"EPL": "eng.1", "LaLiga": "esp.1", "SerieA": "ita.1", "Bundesliga": "ger.1", "Ligue1": "fra.1",
                    "LigaPortugal": "por.1", "Eredivisie": "ned.1", "BelgianProLeague": "bel.1"}
+_FM_LEAGUE_CODE.update({k: c.espn for k, c in _LEAGUES_CFG.items() if c.espn and k not in _FM_LEAGUE_CODE})   # 라이트 리그
 _FM_SET_PIECE = {"FromCorner", "SetPiece", "FreeKick", "ThrowInSetPiece", "IndirectFreeKick"}
 
 
@@ -6391,7 +6400,7 @@ def _league_pending(rows, today) -> dict:
     pending: dict = {}
     if rows is not None and not rows.empty and "event_id" in rows.columns:
         lo, hi = (today - datetime.timedelta(days=3)).isoformat(), (today + datetime.timedelta(days=1)).isoformat()
-        pr = rows[(rows["status"] != "completed") & rows["comp_code"].astype(str).str.endswith(".1")
+        pr = rows[(rows["status"] != "completed") & rows["comp_code"].astype(str).isin(_LEAGUE_CODES)
                   & (rows["date"].astype(str).str[:10] >= lo) & (rows["date"].astype(str).str[:10] <= hi)]
         for r in pr.itertuples(index=False):
             e = pending.setdefault(str(r.event_id), {})
@@ -6430,7 +6439,7 @@ def _team_xg_pg(league: str) -> dict[str, float]:
     played = {} if st is None else {str(s): _num(p) for s, p in zip(st["squad"], st["played"])}
     ms = ds.read_table("match_stats", league=league)
     if ms is not None and not ms.empty and "xg" in ms.columns:
-        lg = ms[ms["comp_code"].astype(str).str.endswith(".1")].copy()
+        lg = ms[ms["comp_code"].astype(str).isin(_LEAGUE_CODES)].copy()
         lg["xg"] = pd.to_numeric(lg["xg"], errors="coerce")
         for sq, g in lg.groupby("squad"):
             x = g["xg"].dropna()
@@ -6550,7 +6559,7 @@ def league_lab(league: str):
     watch = []
     n_teams = 0 if st is None else len(st)
     for m in mc.matches_from({league: rows}, today, 7):
-        if not str(m["comp_code"]).endswith(".1"):
+        if str(m["comp_code"]) not in _LEAGUE_CODES:
             continue
         m = _fx_enrich(m, src)
         sc, why = mc.watch_score(m, n_teams)
@@ -6762,7 +6771,7 @@ def hub_pulse(days_back: int = 3, days: int = 7):
         n_teams = 0 if st is None else int(len(st))
         best = None
         for m in upcoming:
-            if not str(m["comp_code"]).endswith(".1") or m["home"].get("league") != lg:
+            if str(m["comp_code"]) not in _LEAGUE_CODES or m["home"].get("league") != lg:
                 continue
             sc, why = mc.watch_score(m, n_teams)
             if sc >= 20 and (best is None or sc > best[0]):
@@ -7127,7 +7136,7 @@ def team_trends(team: str, league: str = ACTIVE_LEAGUE):
               "games": int(len(mine))}
 
     # 리그 백분위 — 리그 경기만, 팀별 경기당 평균
-    lg = ms[ms["comp_code"].astype(str).str.endswith(".1")]
+    lg = ms[ms["comp_code"].astype(str).isin(_LEAGUE_CODES)]
     pcts = []
     if not lg.empty and team in set(lg["squad"]):
         agg = lg.groupby("squad").agg({c: "mean" for c, *_ in _TREND_METRICS if c in lg.columns})

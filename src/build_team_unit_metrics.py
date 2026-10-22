@@ -17,7 +17,7 @@ import math
 from collections import defaultdict
 from pathlib import Path
 
-from leagues import data_path
+from leagues import data_path, is_league_code
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
@@ -55,7 +55,7 @@ def comp_context_from_schedule() -> dict[str, dict]:
             if r.get("status") != "completed":
                 continue
             code = r.get("comp_code") or ""
-            kind = "euro" if code.startswith("uefa.") else ("league" if code.endswith(".1") else "cup")
+            kind = "euro" if code.startswith("uefa.") else ("league" if is_league_code(code) else "cup")
             games[r["squad"]][kind] += 1
     return {
         sq: {"european_games": g["euro"], "domestic_cup_games": g["cup"],

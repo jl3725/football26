@@ -240,7 +240,19 @@ TEAM_TM_BY_LEAGUE: dict[str, dict[str, tuple[str, int]]] = {
 
 # 리그별 정적 맵은 여러 시즌 클럽의 합집합(강등팀 포함) — verein id → squad 역매핑용.
 # 실제 순회 대상은 season_clubs() 로 시즌 소속 클럽만 고른다.
-TEAM_TM: dict[str, tuple[str, int]] = TEAM_TM_BY_LEAGUE.get(ACTIVE_LEAGUE, EPL_TEAM_TM)
+def _lite_tm(league: str) -> dict[str, tuple[str, int]]:
+    """라이트 리그 — 팀 대조표(src/lite_league.py)에 적힌 verein id(계약 수집이 선수 명단 겹침으로 정해 적는다)."""
+    try:
+        import lite_league  # noqa: PLC0415
+    except ImportError:
+        return {}
+    return {sq: (str(t.get("tm_slug") or ""), int(t["tm_vid"]))
+            for sq, t in (lite_league.team_map(league).get("teams") or {}).items() if t.get("tm_vid")}
+
+
+# 정적 맵이 없는 리그(라이트 리그)는 EPL 맵으로 폴백하면 안 된다 — 그 리그 파일에 EPL 팀을 긁어 넣는다(2026-10-22)
+TEAM_TM: dict[str, tuple[str, int]] = (TEAM_TM_BY_LEAGUE.get(ACTIVE_LEAGUE)
+                                       or (_lite_tm(ACTIVE_LEAGUE) if LEAGUES[ACTIVE_LEAGUE].lite else EPL_TEAM_TM))
 
 
 def season_clubs(league: str = ACTIVE_LEAGUE, season: int | None = None) -> dict[str, tuple[str, int]]:
@@ -255,8 +267,8 @@ def season_clubs(league: str = ACTIVE_LEAGUE, season: int | None = None) -> dict
     from teammeta import TEAM_VEREIN
 
     season = current_window()["season_id"] if season is None else season
-    static = TEAM_TM_BY_LEAGUE.get(league, EPL_TEAM_TM)
     cfg = LEAGUES[league]
+    static = TEAM_TM_BY_LEAGUE.get(league) or (_lite_tm(league) if cfg.lite else EPL_TEAM_TM)
     url = f"https://www.transfermarkt.com/{cfg.tm_slug}/startseite/wettbewerb/{cfg.tm_id}/saison_id/{season}"
     try:
         r = tm_http.get(url, headers=H, timeout=30)
@@ -276,7 +288,11 @@ def season_clubs(league: str = ACTIVE_LEAGUE, season: int | None = None) -> dict
     out: dict[str, tuple[str, int]] = {}
     for vid, (slug, tm_name) in clubs.items():
         squad = by_vid.get(vid)
-        if not squad:
+        if not squad and cfg.lite:
+            # 라이트 리그 — 아직 대조 안 된 클럽은 TM 표기 그대로 둔다(계약 수집이 선수 명단 겹침으로 우리 표기를 정해 적는다).
+            # 이름 유사도로 미리 붙이면 'Grasshopper Club Zürich' 가 'FC Zürich' 자리를 덮어 한 클럽이 빠진다.
+            squad = tm_name
+        elif not squad:
             print(f"  [season_clubs] {league} 미등록 클럽 {tm_name}(verein {vid}) — teammeta/TEAM_TM 에 추가 필요")
             squad = tm_name
         out[squad] = (slug, vid)

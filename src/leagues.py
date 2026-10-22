@@ -63,6 +63,12 @@ class LeagueConfig:
     default_team: str        # UI 기본 선택 팀
     teams: int = 20
     games_per_team: int = 38
+    # 라이트 리그(2026-10-22 1단계 확장) — FBref·Understat·Sofascore·로컬 주간 빌드 없이 클라우드 수집(FotMob·ESPN·TM)만으로
+    # 같은 모양의 표를 만든다(src/build_lite_players.py). 풀 리그 전용 수집기(FBref·Understat·Sofascore)는 lite 를 건너뛴다.
+    lite: bool = False
+    fotmob_id: int = 0       # FotMob 리그 id(시즌 통계·경기 상세·명단)
+    espn: str = ""           # ESPN 리그 코드(eng.2 …) — 일정·라인업·교체
+    division: int = 1        # 그 나라 몇 부 리그 — 2부는 UEFA 협회 계수를 1부와 나눠 쓸 수 없어 리그 수준을 따로 낸다(league_level)
 
 
 # 지원 리그의 소스 식별자와 기본 UI 메타.
@@ -70,45 +76,95 @@ LEAGUES: dict[str, LeagueConfig] = {
     "EPL": LeagueConfig(
         key="EPL", name="Premier League", country="England",
         fbref_id="ENG-Premier League", tm_id="GB1", tm_slug="premier-league",
-        api_football_id=39, default_team="Arsenal",
+        api_football_id=39, default_team="Arsenal", espn="eng.1",
     ),
     "LaLiga": LeagueConfig(
         key="LaLiga", name="La Liga", country="Spain",
         fbref_id="ESP-La Liga", tm_id="ES1", tm_slug="laliga",
-        api_football_id=140, default_team="Real Madrid",
+        api_football_id=140, default_team="Real Madrid", espn="esp.1",
     ),
     "Bundesliga": LeagueConfig(
         key="Bundesliga", name="Bundesliga", country="Germany",
         fbref_id="GER-Bundesliga", tm_id="L1", tm_slug="bundesliga",
-        api_football_id=78, default_team="Bayern Munich", teams=18, games_per_team=34,
+        api_football_id=78, default_team="Bayern Munich", teams=18, games_per_team=34, espn="ger.1",
     ),
     "SerieA": LeagueConfig(
         key="SerieA", name="Serie A", country="Italy",
         fbref_id="ITA-Serie A", tm_id="IT1", tm_slug="serie-a",
-        api_football_id=135, default_team="Inter",
+        api_football_id=135, default_team="Inter", espn="ita.1",
     ),
     "Ligue1": LeagueConfig(
         key="Ligue1", name="Ligue 1", country="France",
         fbref_id="FRA-Ligue 1", tm_id="FR1", tm_slug="ligue-1",
-        api_football_id=61, default_team="Paris Saint-Germain",
+        api_football_id=61, default_team="Paris Saint-Germain", espn="fra.1",
     ),
     "LigaPortugal": LeagueConfig(
         key="LigaPortugal", name="Liga Portugal", country="Portugal",
         fbref_id="POR-Primeira Liga", tm_id="PO1", tm_slug="liga-portugal-betclic",
-        api_football_id=94, default_team="Sporting CP", teams=18, games_per_team=34,
+        api_football_id=94, default_team="Sporting CP", teams=18, games_per_team=34, espn="por.1",
     ),
     "Eredivisie": LeagueConfig(
         key="Eredivisie", name="Eredivisie", country="Netherlands",
         fbref_id="NED-Eredivisie", tm_id="NL1", tm_slug="eredivisie",
-        api_football_id=88, default_team="PSV", teams=18, games_per_team=34,
+        api_football_id=88, default_team="PSV", teams=18, games_per_team=34, espn="ned.1",
     ),
     "BelgianProLeague": LeagueConfig(
         key="BelgianProLeague", name="Belgian Pro League", country="Belgium",
         fbref_id="BEL-Belgian Pro League", tm_id="BE1", tm_slug="jupiler-pro-league",
         # 26/27 부터 18팀(ESPN·TM 리그 페이지 기준) — 정규 34라운드 + 플레이오프
-        api_football_id=144, default_team="Club Brugge", teams=18, games_per_team=34,
+        api_football_id=144, default_team="Club Brugge", teams=18, games_per_team=34, espn="bel.1",
+    ),
+    # ── 라이트 리그(클라우드 수집만) — 팀 표기는 FotMob 리그 표 기준(src/lite_league.py) ──
+    "Championship": LeagueConfig(
+        key="Championship", name="EFL Championship", country="England",
+        fbref_id="", tm_id="GB2", tm_slug="championship", api_football_id=40,
+        default_team="West Ham United", teams=24, games_per_team=46,
+        lite=True, fotmob_id=48, espn="eng.2", division=2,
+    ),
+    "SuperLig": LeagueConfig(
+        key="SuperLig", name="Süper Lig", country="Türkiye",
+        fbref_id="", tm_id="TR1", tm_slug="super-lig", api_football_id=203,
+        default_team="Galatasaray", teams=18, games_per_team=34,
+        lite=True, fotmob_id=71, espn="tur.1",
+    ),
+    # 오스트리아·덴마크·스위스는 정규 라운드 뒤 상·하위 그룹 라운드(스플릿) — 경기 수는 스플릿 포함
+    "AustrianBundesliga": LeagueConfig(
+        key="AustrianBundesliga", name="Austrian Bundesliga", country="Austria",
+        fbref_id="", tm_id="A1", tm_slug="bundesliga", api_football_id=218,
+        default_team="Salzburg", teams=12, games_per_team=32,
+        lite=True, fotmob_id=38, espn="aut.1",
+    ),
+    "DanishSuperliga": LeagueConfig(
+        key="DanishSuperliga", name="Danish Superliga", country="Denmark",
+        fbref_id="", tm_id="DK1", tm_slug="superligaen", api_football_id=119,
+        default_team="FC København", teams=12, games_per_team=32,
+        lite=True, fotmob_id=46, espn="den.1",
+    ),
+    "SwissSuperLeague": LeagueConfig(
+        key="SwissSuperLeague", name="Swiss Super League", country="Switzerland",
+        fbref_id="", tm_id="C1", tm_slug="super-league", api_football_id=207,
+        default_team="Young Boys", teams=12, games_per_team=38,
+        lite=True, fotmob_id=69, espn="sui.1",
     ),
 }
+
+# 풀 리그(로컬 주간 빌드·FBref·Understat·Sofascore 가 있는 리그)와 라이트 리그.
+FULL_LEAGUES: list[str] = [k for k, c in LEAGUES.items() if not c.lite]
+LITE_LEAGUES: list[str] = [k for k, c in LEAGUES.items() if c.lite]
+
+
+# 리그 경기 대회 코드(ESPN 표기 — schedule_full·경기별 기록의 comp_code). 예전엔 곳곳에서 `endswith(".1")` 로 리그 경기를
+# 골랐는데, 2부 리그(eng.2 챔피언십)를 컵으로 셌다(2026-10-22 1단계 확장).
+LEAGUE_CODES: frozenset[str] = frozenset(c.espn for c in LEAGUES.values() if c.espn)
+
+
+def is_league_code(code) -> bool:
+    return str(code or "") in LEAGUE_CODES
+
+
+def is_lite(league: str | None) -> bool:
+    c = LEAGUES.get(str(league or ""))
+    return bool(c and c.lite)
 
 # 레거시 파일명(`*_2025_2026.csv`, 리그 토큰 없음)을 쓰는 리그.
 PRIMARY_LEAGUE = "EPL"
@@ -116,6 +172,10 @@ PRIMARY_LEAGUE = "EPL"
 # 활성 리그 — 환경변수로 전환(미설정 시 EPL).
 ACTIVE_LEAGUE = os.getenv("FB_LEAGUE", PRIMARY_LEAGUE)
 if ACTIVE_LEAGUE not in LEAGUES:
+    # 모르는 리그를 조용히 EPL 로 바꾸면 'FB_LEAGUE=<리그> 수집기'가 EPL 파일을 덮어쓴다(2026-10-22 리그 확장 점검).
+    # 'ALL'(전 리그 — 수집기가 스스로 해석)·빈 값만 EPL 기본값으로 두고, 나머지 모르는 값은 멈춘다.
+    if ACTIVE_LEAGUE.strip() not in ("", "ALL", "all"):
+        raise RuntimeError(f"FB_LEAGUE={ACTIVE_LEAGUE!r} 는 src/leagues.py LEAGUES 에 없는 리그")
     ACTIVE_LEAGUE = PRIMARY_LEAGUE
 
 
@@ -201,7 +261,7 @@ def parse_data_filename(name: str) -> tuple[str, str, str] | None:
     season = m.group(1)
     head = stem_full[: m.start()]
     # 뒤쪽에 리그키가 붙어있는지 검사
-    for lk in LEAGUES:
+    for lk in sorted(LEAGUES, key=len, reverse=True):      # 긴 키 먼저(겹치는 접미사 방지)
         if lk != PRIMARY_LEAGUE and head.endswith("_" + lk):
             return (head[: -(len(lk) + 1)], lk, season)
     return (head, PRIMARY_LEAGUE, season)

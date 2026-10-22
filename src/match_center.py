@@ -15,6 +15,8 @@ from __future__ import annotations
 import datetime as dt
 import re
 
+from leagues import LEAGUE_CODES
+
 KST = dt.timezone(dt.timedelta(hours=9))
 _WD = "월화수목금토일"
 COMP_LABEL = {"uefa.champions": "챔피언스리그", "uefa.europa": "유로파리그", "uefa.europa.conf": "컨퍼런스리그"}
@@ -47,7 +49,7 @@ def _form_index(rows) -> dict:
     hit = _FORM_IDX.get(id(rows))
     if hit is not None and hit[0] is rows:
         return hit[1]
-    t = rows[(rows["status"] == "completed") & rows["comp_code"].astype(str).str.endswith(".1")]
+    t = rows[(rows["status"] == "completed") & rows["comp_code"].astype(str).isin(LEAGUE_CODES)]
     idx = {sq: [r for r in g["result"].astype(str).tolist() if r in ("W", "D", "L")]
            for sq, g in t.sort_values("date", kind="stable").groupby("squad", sort=False)}
     if len(_FORM_IDX) >= 32:
@@ -73,7 +75,7 @@ def big_score(m: dict) -> tuple[int, list[str]]:
         score += 15
     elif code == "uefa.europa.conf":
         score += 6
-    elif not code.endswith(".1"):
+    elif code not in LEAGUE_CODES:
         score -= 10
     hr, ar = h.get("rank"), a.get("rank")
     if hr and ar and h.get("league") == a.get("league"):
@@ -92,10 +94,44 @@ def big_score(m: dict) -> tuple[int, list[str]]:
     return int(round(score)), tags
 
 
+def _fold_team(name) -> str:
+    """경기 짝 맞추기용 팀 이름 — 라이트 리그 별칭(Rapid Vienna → Rapid Wien)을 우리 표기로, 악센트·기호 무시."""
+    from unidecode import unidecode  # noqa: PLC0415
+    n = str(name or "")
+    try:
+        import lite_league  # noqa: PLC0415
+        n = lite_league.all_aliases().get(n, n)
+    except Exception:  # noqa: BLE001
+        pass
+    return re.sub(r"[^a-z0-9]", "", unidecode(n).lower())
+
+
+def _pair_key(t: dt.datetime, comp_code, home: dict, away: dict) -> str:
+    """경기 id 와 무관한 두 번째 키 — 라이트 리그 일정은 FotMob 경기 id, 풀 리그는 ESPN id 라 같은 유럽·컵 경기
+    (갈라타사라이–릴)가 두 리그 파일에 다른 id 로 있다(2026-10-22). 날짜·대회·두 팀으로 한 경기로 묶는다."""
+    a, b = sorted((_fold_team(home.get("team")), _fold_team(away.get("team"))))
+    return f"{t.date()}|{comp_code}|{a}|{b}"
+
+
+def _merge_dup(seen: dict, pair: dict, key: str, pk: str, lg: str, eid: str, side: str, me: dict) -> bool:
+    """이미 본 경기면 우리 쪽 행으로 그 편을 바꿔 끼우고 True. 풀 리그(ESPN id) 행을 만나면 경기 id 를 ESPN 것으로
+    — 화면의 라이브 스코어가 ESPN id 로 붙는다."""
+    from leagues import is_lite  # noqa: PLC0415
+    hit = key if key in seen else pair.get(pk)
+    if hit is None:
+        return False
+    seen[hit][side] = me
+    if eid and not is_lite(lg) and seen[hit].get("_lite_id"):
+        seen[hit]["event_id"], seen[hit]["_lite_id"] = eid, False
+    return True
+
+
 def matches_from(rows_by_league: dict, today: dt.date, days: int, team: str | None = None) -> list[dict]:
     """예정 경기 → 경기 단위(중복 제거: 리그 경기는 양 팀 행, 유럽대회는 두 리그 파일에 같은 경기)."""
     end = today + dt.timedelta(days=days)
     seen: dict[str, dict] = {}
+    pair: dict[str, str] = {}
+    from leagues import is_lite  # noqa: PLC0415
     # 팀 지정이면 그 팀 경기(event_id)를 모든 리그 파일에서 — 상대가 다른 리그면 그쪽 파일 행이 우리 표기·리그로
     # 바꿔 끼운다(바르사 일정의 'Paris Saint-Germain' → PSG·리그1: 순위·OVR·모델 예측이 살아남, 2026-10-20 점검)
     ids = espn_id_names(rows_by_league)
@@ -125,19 +161,21 @@ def matches_from(rows_by_league: dict, today: dt.date, days: int, team: str | No
             opp = {"team": on, "league": ol, "logo_alt": _opp_logo(r)}
             home, away = (me, opp) if r.home_away == "H" else (opp, me)
             key = eid or f"{t.date()}|{home['team']}|{away['team']}"
-            if key in seen:
-                # 같은 경기를 상대 쪽 리그 파일에서 또 만나면 그쪽을 우리 표기·리그로 바꿔 끼운다
-                # (EPL 파일의 상대는 ESPN 이름 'Paris Saint-Germain', 리그1 파일에선 우리 표기 'PSG')
-                side = "home" if r.home_away == "H" else "away"
-                seen[key][side] = {"team": r.squad, "league": lg}
+            pk = _pair_key(t, r.comp_code, home, away)
+            # 같은 경기를 상대 쪽 리그 파일에서 또 만나면 그쪽을 우리 표기·리그로 바꿔 끼운다
+            # (EPL 파일의 상대는 ESPN 이름 'Paris Saint-Germain', 리그1 파일에선 우리 표기 'PSG')
+            if _merge_dup(seen, pair, key, pk, lg, eid, "home" if r.home_away == "H" else "away",
+                          {"team": r.squad, "league": lg}):
                 continue
             seen[key] = {"event_id": eid or None, "comp_code": r.comp_code,
                          "comp": COMP_LABEL.get(r.comp_code, r.comp), "kickoff": kickoff,
                          "kst": kst_label(t, bool(kickoff)), "date": t.date().isoformat(),
-                         "d_day": (t.date() - today).days, "_t": t, "home": home, "away": away}
+                         "d_day": (t.date() - today).days, "_t": t, "home": home, "away": away, "_lite_id": is_lite(lg)}
+            pair[pk] = key
     out = sorted(seen.values(), key=lambda m: m["_t"])
     for m in out:
         m.pop("_t", None)
+        m.pop("_lite_id", None)
     return out
 
 
@@ -165,7 +203,7 @@ def espn_id_names(rows_by_league: dict) -> dict[str, tuple[str, str]]:
     for lg, df in rows_by_league.items():
         if df is None or df.empty or "opponent_logo" not in df.columns:
             continue
-        lgr = df[df["comp_code"].astype(str).str.endswith(".1")]
+        lgr = df[df["comp_code"].astype(str).isin(LEAGUE_CODES)]
         squads = set(df["squad"].astype(str))
         for opp, logo in zip(lgr["opponent"].astype(str), lgr["opponent_logo"].astype(str)):
             m = _ESPN_ID.search(logo)
@@ -185,6 +223,8 @@ def results_from(rows_by_league: dict, today: dt.date, days: int = 3) -> list[di
     """최근 끝난 경기(스코어 포함, 최신순) — matches_from 과 같은 방식으로 경기 단위 중복 제거."""
     start = today - dt.timedelta(days=days)
     seen: dict[str, dict] = {}
+    pair: dict[str, str] = {}
+    from leagues import is_lite  # noqa: PLC0415
     ids = espn_id_names(rows_by_league)
     for lg, df in rows_by_league.items():
         if df is None or df.empty:
@@ -204,17 +244,18 @@ def results_from(rows_by_league: dict, today: dt.date, days: int = 3) -> list[di
             opp = {"team": on, "league": ol, "goals": ga, "logo_alt": _opp_logo(r)}
             home, away = (me, opp) if r.home_away == "H" else (opp, me)
             key = eid or f"{t.date()}|{home['team']}|{away['team']}"
-            if key in seen:
-                side = "home" if r.home_away == "H" else "away"
-                seen[key][side] = me
+            pk = _pair_key(t, r.comp_code, home, away)
+            if _merge_dup(seen, pair, key, pk, lg, eid, "home" if r.home_away == "H" else "away", me):
                 continue
             seen[key] = {"event_id": eid or None, "comp_code": r.comp_code,
                          "comp": COMP_LABEL.get(r.comp_code, r.comp), "kickoff": kickoff,
                          "kst": kst_label(t, bool(kickoff)), "date": t.date().isoformat(),
-                         "d_day": (t.date() - today).days, "_t": t, "home": home, "away": away}
+                         "d_day": (t.date() - today).days, "_t": t, "home": home, "away": away, "_lite_id": is_lite(lg)}
+            pair[pk] = key
     out = sorted(seen.values(), key=lambda m: m["_t"], reverse=True)
     for m in out:
         m.pop("_t", None)
+        m.pop("_lite_id", None)
     return out
 
 
@@ -283,7 +324,7 @@ def points_path(rows, team: str) -> list[int]:
     if rows is None or rows.empty:
         return []
     t = rows[(rows["squad"] == team) & (rows["status"] == "completed")
-             & rows["comp_code"].astype(str).str.endswith(".1")].sort_values("date")
+             & rows["comp_code"].astype(str).isin(LEAGUE_CODES)].sort_values("date")
     out, acc = [], 0
     for r in t["result"].astype(str):
         acc += 3 if r == "W" else 1 if r == "D" else 0

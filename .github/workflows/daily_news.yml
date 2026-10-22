@@ -44,7 +44,7 @@ jobs:
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         # ci_try — 실패도 실행 원장(data/ops/runs/daily_news.jsonl)에 남기고, 끝의 ci_report 가 빨간불로 알린다
-        run: bash scripts/ci_try.sh "news" python scripts/fetch_news_daily.py --all   # 지원 8개 리그
+        run: bash scripts/ci_try.sh "news" python scripts/fetch_news_daily.py --all   # 전 리그(라이트 리그 포함, src/leagues.py)
 
       # 팀 뉴스 탭 맨 위 TODAY'S BRIEF — 최근 48시간 기사 1~3줄(새 기사가 생긴 팀만, 팀당 6시간에 한 번, 10팀씩 묶어 요청)
       - name: AI team news brief (팀 뉴스 요약)

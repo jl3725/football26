@@ -119,7 +119,7 @@ _KG_SCHEMA = """노드:
   Player {name, pos, pos_detail, age, nationality, league, market_value_eur, minutes, goals, assists, ss_rating, contract_until, career_games_missed,
           ovr, form, recent, xg_p90, influence(팀 안 영향력 0~100), captain_rank, injured_now, news_60d(최근 60일 기사 수), active(현재 우리 리그 소속)}
   Club {name, spend_tier, squad_value_eur, net_spend_eur, max_fee_paid_eur, price_ceiling_eur, recruit_profile, recruit_avg_age, europe_coefficient}
-  League {key, name, level}  (key: EPL/LaLiga/SerieA/Bundesliga/Ligue1/LigaPortugal/Eredivisie/BelgianProLeague)
+  League {key, name, level}  (key: EPL/LaLiga/SerieA/Bundesliga/Ligue1/LigaPortugal/Eredivisie/BelgianProLeague/Championship/SuperLig/AustrianBundesliga/DanishSuperliga/SwissSuperLeague)
   Country {name, fifa_rank, fifa_points}
   Manager {name, formation, appointed, is_new, months_tenure, style_tags, tendency_tags, tac_pressing, tac_control, tac_creativity, tac_attack, tac_aerial, tac_disruption}
   TransferEvent {player, fee_eur, fee_text, window, season}
@@ -149,7 +149,7 @@ _KG_SCHEMA = """노드:
 _CYPHER_TIPS = """graph_query Cypher 팁:
 - pos_detail 값: Centre-Back, Right-Back, Left-Back, Defensive Midfield, Central Midfield, Attacking Midfield, Right Winger, Left Winger, Centre-Forward, Second Striker, Goalkeeper.
 - Competition.name = 'UEFA Champions League'/'UEFA Europa League'/'UEFA Conference League' → 부분일치 CONTAINS 'Champions'.
-- League.key = EPL/LaLiga/SerieA/Bundesliga/Ligue1/LigaPortugal/Eredivisie/BelgianProLeague. contract_until 형식 'YYYY-MM-DD'(계약임박=CONTAINS '{EXPIRY_YEAR}').
+- League.key = EPL/LaLiga/SerieA/Bundesliga/Ligue1/LigaPortugal/Eredivisie/BelgianProLeague/Championship/SuperLig/AustrianBundesliga/DanishSuperliga/SwissSuperLeague. contract_until 형식 'YYYY-MM-DD'(계약임박=CONTAINS '{EXPIRY_YEAR}').
 - 이름 애매하면 WHERE x.name CONTAINS '...'. ORDER BY 속성엔 WHERE 속성 IS NOT NULL(NULL이 DESC 최상단 오는 것 방지). 반드시 LIMIT.
 - 지금 소속 선수만: WHERE p.active = true (떠난 선수 노드는 active=false 로 남음). 골·도움·OVR 은 매주 화요일 기준.
 예시:
@@ -204,9 +204,12 @@ TOOLS = [
                      "'6번'=Defensive Midfield, '8번'=Central Midfield, '10번'=Attacking Midfield"},
             "leagues": {"type": "array", "items": {"type": "string"},
                         "description": "후보를 특정 소스 리그로 제한(선택). 키: EPL·LaLiga·SerieA·Bundesliga·"
-                        "Ligue1·LigaPortugal·Eredivisie·BelgianProLeague. '프랑스 리그'=[\"Ligue1\"], '분데스'=[\"Bundesliga\"], "
+                        "Ligue1·LigaPortugal·Eredivisie·BelgianProLeague·Championship·SuperLig·AustrianBundesliga·DanishSuperliga·"
+                        "SwissSuperLeague. '프랑스 리그'=[\"Ligue1\"], '분데스'=[\"Bundesliga\"], "
                         "'스페인'=[\"LaLiga\"], '이탈리아'=[\"SerieA\"], '포르투갈'=[\"LigaPortugal\"], "
-                        "'네덜란드'=[\"Eredivisie\"], '벨기에'=[\"BelgianProLeague\"]"},
+                        "'네덜란드'=[\"Eredivisie\"], '벨기에'=[\"BelgianProLeague\"], '챔피언십'=[\"Championship\"], "
+                        "'터키·튀르키예'=[\"SuperLig\"], '오스트리아'=[\"AustrianBundesliga\"], '덴마크'=[\"DanishSuperliga\"], "
+                        "'스위스'=[\"SwissSuperLeague\"]"},
             "max_age": {"type": "integer", "description": "최대 나이(선택, '더 젊은' 등)"},
             "max_value": {"type": "integer", "description": "최대 시장가 EUR(선택, '더 싼' 등, 예: 50000000)"}},
             "required": ["team"]}}},
@@ -279,7 +282,8 @@ TOOLS = [
                        "다가오는 A매치 기간. '이번 주 EPL 어땠어?', '요즘 폼 오른 선수', '이번 주 부상 소식' 같은 질문.",
         "parameters": {"type": "object", "properties": {
             "league": {"type": "string", "description": "리그 키(EPL·LaLiga·SerieA·Bundesliga·Ligue1·LigaPortugal·Eredivisie·"
-                       "BelgianProLeague). 없으면 현재 리그"}}, "required": []}}},
+                       "BelgianProLeague·Championship·SuperLig·AustrianBundesliga·DanishSuperliga·SwissSuperLeague). 없으면 현재 리그"}},
+            "required": []}}},
     {"type": "function", "function": {
         "name": "graph_query",
         "description": "위 툴로 안 되는 열린 그래프 질문에 read-only Cypher를 직접 작성해 실행. "

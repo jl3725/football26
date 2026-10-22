@@ -3,14 +3,12 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { getDatabase, getNamesKo, foldName, fmtEur, type DbPlayer } from "@/lib/api";
 import { hexA, tier } from "@/lib/ui";
 import Icon from "./Icon";
+import { LEAGUE_LIST } from "@/lib/leagues";
 
 type Club = { club: string; league: string; logo: string };
 type Item = { kind: "club"; c: Club } | { kind: "player"; p: DbPlayer };
 
-const LEAGUE_ABBR: Record<string, string> = {
-  EPL: "EPL", LaLiga: "LaLiga", SerieA: "Serie A", Bundesliga: "Bundes", Ligue1: "Ligue 1",
-  LigaPortugal: "Liga POR", Eredivisie: "Erediv.", BelgianProLeague: "Belg.",
-};
+const LEAGUE_ABBR: Record<string, string> = Object.fromEntries(LEAGUE_LIST.map((l) => [l.key, l.abbr]));
 const kbd: React.CSSProperties = {
   fontFamily: "inherit", fontSize: 9.5, border: "1px solid rgba(255,255,255,0.18)",
   borderRadius: 4, padding: "1px 5px", marginRight: 2, lineHeight: 1.5,

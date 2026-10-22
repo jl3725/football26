@@ -23,7 +23,8 @@ from leagues import data_path  # noqa: E402
 
 NEO4J_URI = os.getenv("NEO4J_URI", "bolt://localhost:7687")
 NEO4J_AUTH = (os.getenv("NEO4J_USER", "neo4j"), os.getenv("NEO4J_PASSWORD", "football26"))
-RUMOR_LEAGUES = ["EPL", "LaLiga", "SerieA", "Bundesliga", "Ligue1", "LigaPortugal", "Eredivisie", "BelgianProLeague"]
+from leagues import LEAGUES as _LEAGUES_CFG  # noqa: E402
+RUMOR_LEAGUES = list(_LEAGUES_CFG)   # 라이트 리그 포함(TM 루머도 같은 수집기)
 
 
 def load_rumors() -> pd.DataFrame:

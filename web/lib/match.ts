@@ -1,16 +1,15 @@
 // 경기 카드·매치 프리뷰 공용 계산(화면 문구) — 데이터는 /api/fixtures(src/match_center.py).
 import type { Fixture, FixtureSide } from "./api";
+import { LEAGUE_LIST, isLeagueCode } from "./leagues";
 
 export const BIG = 35;   // 빅매치 기준 점수(서버 BIG_MIN 과 같음)
 
-const LG_KO: Record<string, string> = {
-  EPL: "EPL", LaLiga: "라리가", SerieA: "세리에 A", Bundesliga: "분데스리가", Ligue1: "리그 1",
-  LigaPortugal: "포르투갈", Eredivisie: "에레디비시", BelgianProLeague: "벨기에",
-};
+// 리그 이름은 lib/leagues.ts — 경기 카드 영문은 예전 짧은 표기를 지킨다(LALIGA·PORTUGAL)
+const LG_KO: Record<string, string> = Object.fromEntries(LEAGUE_LIST.map((l) => [l.key, l.ko]));
 export const lgKo = (lg?: string | null) => (lg && LG_KO[lg]) || "";
 const LG_EN: Record<string, string> = {
-  EPL: "EPL", LaLiga: "LALIGA", SerieA: "SERIE A", Bundesliga: "BUNDESLIGA", Ligue1: "LIGUE 1",
-  LigaPortugal: "PORTUGAL", Eredivisie: "EREDIVISIE", BelgianProLeague: "BELGIUM",
+  ...Object.fromEntries(LEAGUE_LIST.map((l) => [l.key, l.label])),
+  LaLiga: "LALIGA", LigaPortugal: "PORTUGAL",
 };
 export const lgEn = (lg?: string | null) => (lg && LG_EN[lg]) || "";
 
@@ -44,7 +43,7 @@ const COMP_EN_BY_KO: Record<string, string> = {
 export const compEnKo = (ko: string, league?: string | null) =>
   ko === "리그" ? (lgEn(league) || "LEAGUE") : (COMP_EN_BY_KO[ko] || ko);
 export function compLabel(m: Fixture): string {
-  if (m.comp_code.endsWith(".1")) return lgEn(m.home.league) || lgEn(m.away.league) || m.comp;
+  if (isLeagueCode(m.comp_code)) return lgEn(m.home.league) || lgEn(m.away.league) || m.comp;
   return COMP_EN[m.comp_code] ?? m.comp;
 }
 

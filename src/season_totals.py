@@ -25,9 +25,11 @@ def _fid(v) -> str | None:
 
 def league_totals(mr: pd.DataFrame | None, league: str) -> tuple[dict, dict]:
     """({fotmob_id: 합계}, {'squad|player': 합계}) — 리그 경기만. 합계 = {minutes, goals, assists, apps, asof}."""
-    if mr is None or mr.empty or league not in LEAGUE_CODE:
+    from leagues import LEAGUES  # noqa: PLC0415
+    code = LEAGUE_CODE[league][0] if league in LEAGUE_CODE else getattr(LEAGUES.get(league), "espn", "")   # 라이트 리그(eng.2 …)
+    if mr is None or mr.empty or not code:
         return {}, {}
-    d = mr[mr["comp_code"].astype(str) == LEAGUE_CODE[league][0]].copy()
+    d = mr[mr["comp_code"].astype(str) == code].copy()
     if d.empty:
         return {}, {}
     for c in ("minutes", "goals", "assists"):

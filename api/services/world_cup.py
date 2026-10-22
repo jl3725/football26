@@ -34,16 +34,9 @@ ROUND_LABELS = {
     "3rd-place-match": "3·4위전",
     "final": "결승",
 }
-CLUB_LEAGUES = (
-    "EPL",
-    "LaLiga",
-    "SerieA",
-    "Bundesliga",
-    "Ligue1",
-    "LigaPortugal",
-    "Eredivisie",
-    "BelgianProLeague",
-)
+from leagues import LEAGUES as _LEAGUES_CFG  # noqa: E402
+
+CLUB_LEAGUES = tuple(_LEAGUES_CFG)   # 라이트 리그 포함 — 대표 선수의 소속 클럽 리그
 
 
 class WorldCupDataError(LookupError):

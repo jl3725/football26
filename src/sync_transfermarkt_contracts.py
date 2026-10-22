@@ -28,8 +28,8 @@ ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from leagues import data_path  # noqa: E402
-from fetch_transfermarkt import H, TEAM_TM, norm, season_clubs  # noqa: E402
+from leagues import ACTIVE_LEAGUE, LEAGUES, data_path  # noqa: E402
+from fetch_transfermarkt import H, TEAM_TM, norm, parse_mv, season_clubs  # noqa: E402
 
 PLAYERS_FULL = data_path("players_full")
 PLAYERS_BASE = data_path("players")
@@ -143,9 +143,34 @@ def scrape_team_contracts(team: str) -> list[dict]:
                 "contract_signal": "",
                 "tm_photo": photo,
                 "source": url,
+                **_profile_from_row(tr),
             }
         )
     return rows
+
+
+def _profile_from_row(tr) -> dict:
+    """같은 행의 포지션·생년월일·나이·국적·시장가치 — 라이트 리그(FBref·주간 빌드 없음)는 이 표가 선수 표의 TM 칸 원천이다
+    (src/build_lite_players.py). 풀 리그에도 같이 적어 두면 시장가치가 주간 빌드보다 최신이 된다."""
+    pos = ""
+    inline = tr.select_one("td.posrela table.inline-table")
+    if inline:
+        trs = inline.select("tr")
+        if len(trs) > 1:
+            pos = trs[1].get_text(strip=True)
+    age, birth = None, ""
+    for td in tr.select("td.zentriert"):
+        text = td.get_text(" ", strip=True)
+        m = re.search(r"\((\d{1,2})\)", text)
+        if m:
+            age = int(m.group(1))
+            birth = _clean_date(text)
+            break
+    flag = tr.select_one("img.flaggenrahmen")
+    mv_el = tr.select_one("td.rechts.hauptlink") or tr.select_one("td.rechts")
+    return {"tm_position": pos, "age": age, "birth_date": birth if re.match(r"\d{4}-", birth or "") else "",
+            "nationality": flag.get("title") if flag else "",
+            "market_value_eur": parse_mv(mv_el.get_text(strip=True)) if mv_el else None}
 
 
 def collect_contracts(teams: list[str], pause: float) -> pd.DataFrame:
@@ -309,6 +334,33 @@ def add_contract_signals(contracts: pd.DataFrame, previous: pd.DataFrame) -> pd.
     return contracts
 
 
+def resolve_lite(contracts: pd.DataFrame, clubs: dict[str, tuple[str, int]]) -> tuple[pd.DataFrame, list[str]]:
+    """라이트 리그 — TM 클럽 표기를 우리 표기(FotMob 리그 표)로: 선수 명단 겹침으로 정하고 verein id 를 대조표에 적는다
+    (src/lite_league.py). 'FC Copenhagen'↔'FC København', 'Rapid Vienna'↔'Rapid Wien' 처럼 이름으로는 못 맞추는 클럽."""
+    import lite_league  # noqa: PLC0415
+    rename = {}
+    for tm_team, g in contracts.groupby("squad"):
+        slug, vid = clubs.get(str(tm_team)) or TEAM_TM.get(str(tm_team)) or ("", 0)
+        ours = lite_league.tm_squad(ACTIVE_LEAGUE, str(tm_team), int(vid or 0), list(g["player"].astype(str)))
+        if ours:
+            rename[str(tm_team)] = ours
+            if vid:
+                lite_league.remember_tm(ACTIVE_LEAGUE, ours, slug, int(vid), str(tm_team))
+        else:
+            print(f"  [lite] {ACTIVE_LEAGUE} TM 클럽 {tm_team} — 우리 표기를 못 정함(그대로 둠)")
+    contracts = contracts.assign(squad=contracts["squad"].astype(str).map(lambda s: rename.get(s, s)))
+    # 예전 실행이 남긴 다른 표기 행(대조 전 TM 표기 'Wolverhampton Wanderers' 등)은 지운다 — 이번 시즌 순위표 팀만 남김
+    try:
+        ours = set(pd.read_csv(data_path("standings"))["squad"].astype(str))
+        if SNAPSHOT.exists() and ours:
+            prev = pd.read_csv(SNAPSHOT)
+            if "squad" in prev.columns:
+                prev[prev["squad"].astype(str).isin(ours)].to_csv(SNAPSHOT, index=False, encoding="utf-8")
+    except (OSError, ValueError, KeyError):
+        pass
+    return contracts, sorted(set(contracts["squad"].astype(str)))
+
+
 def write_snapshot(contracts: pd.DataFrame, fetched_teams: list[str]) -> pd.DataFrame:
     if SNAPSHOT.exists():
         try:
@@ -349,6 +401,8 @@ def main(argv: list[str] | None = None) -> int:
     if contracts.empty:
         print("[contracts] no rows collected")
         return 1
+    if LEAGUES[ACTIVE_LEAGUE].lite:
+        contracts, teams = resolve_lite(contracts, clubs)
 
     if not args.write:
         print(contracts[["squad", "player", "contract_until"]].head(20).to_string(index=False))

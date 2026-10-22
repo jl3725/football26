@@ -26,7 +26,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 LEDGER_DIR = ROOT / "data" / "ops" / "runs"
 KEEP_DAYS = 14
-LEAGUE_KEYS = {"EPL", "LaLiga", "SerieA", "Bundesliga", "Ligue1", "LigaPortugal", "Eredivisie", "BelgianProLeague"}
+from leagues import LEAGUES as _LEAGUES_CFG  # noqa: E402
+LEAGUE_KEYS = set(_LEAGUES_CFG)   # 라이트 리그 포함
 
 
 def _now() -> dt.datetime:

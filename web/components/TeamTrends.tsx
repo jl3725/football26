@@ -8,6 +8,7 @@ import SectionHead from "./SectionHead";
 import Info from "./Info";
 import { Skel } from "./Skeleton";
 import { useNarrow } from "./TeamSeason";
+import { isLeagueCode } from "@/lib/leagues";
 
 // 분석 탭 상단 — 실제 분석가가 먼저 보는 세 가지(/api/team-trends, 1시간 캐시)
 //   MATCH TRENDS     : 경기별 xG(5대 리그 리그 경기) 또는 슈팅 득·실 + 실제 득실, 최근 5경기 이동 평균
@@ -25,7 +26,7 @@ export function useTeamTrends(team: string) {
 }
 
 const COMP_SHORT: Record<string, string> = { "uefa.champions": "UCL", "uefa.europa": "UEL", "uefa.europa.conf": "UECL" };
-const compShort = (c: string) => (c.endsWith(".1") ? "" : COMP_SHORT[c] ?? "CUP");
+const compShort = (c: string) => (isLeagueCode(c) ? "" : COMP_SHORT[c] ?? "CUP");
 
 // 경기별 막대 — 위쪽 = 우리 팀(xG 또는 슈팅), 아래쪽 = 상대. 점 = 실제 득·실점. 선 = 최근 5경기 이동 평균
 function MatchTrendChart({ ms, useXg, color }: { ms: TrendMatch[]; useXg: boolean; color: string }) {
@@ -130,7 +131,7 @@ export default function TeamTrendsBoard({ team, color }: { team: string; color: 
   if (d === undefined) return <section className="card h5-card" style={{ marginTop: 16 }}><Skel h={260} r={12} /></section>;
   if (!d || !d.available) return null;
   const useXg = d.has_xg && mode === "xg";
-  const lgOnly = d.matches.filter((m) => m.comp_code.endsWith(".1"));
+  const lgOnly = d.matches.filter((m) => isLeagueCode(m.comp_code));
   const xgMs = d.matches.filter((m) => m.xg != null);
   const sum = (a: (number | null)[]) => a.reduce<number>((x, y) => x + (y ?? 0), 0);
   const xgDiff = xgMs.length ? sum(xgMs.map((m) => m.gf)) - sum(xgMs.map((m) => m.xg)) : null;

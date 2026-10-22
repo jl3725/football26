@@ -26,7 +26,7 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "api"))
 sys.path.insert(0, str(ROOT / "src"))
-from leagues import SEASON_START, data_path  # noqa: E402
+from leagues import LEAGUES as _LEAGUES_CFG, SEASON_START, data_path  # noqa: E402
 
 # 계약 임박 = 이번 시즌 종료·다음 시즌 종료 해에 만료 (25/26 → 2026·2027)
 _EXPIRING_YEARS = (str(SEASON_START + 1), str(SEASON_START + 2))
@@ -36,7 +36,7 @@ from club_profile import price_realism, recruit_fit  # noqa: E402
 QDRANT_URL = os.getenv("QDRANT_URL", "http://localhost:6335")
 NEO4J_URI = os.getenv("NEO4J_URI", "bolt://localhost:7687")
 NEO4J_AUTH = (os.getenv("NEO4J_USER") or os.getenv("NEO4J_USERNAME") or "neo4j", os.getenv("NEO4J_PASSWORD", "football26"))
-LEAGUES = ["EPL", "LaLiga", "SerieA", "Bundesliga", "Ligue1", "LigaPortugal", "Eredivisie", "BelgianProLeague"]
+LEAGUES = list(_LEAGUES_CFG)   # 라이트 리그 포함 — 영입 후보 풀이 챔피언십·쉬페르리그·오스트리아·덴마크·스위스까지(2026-10-22)
 QCOLLECTION = "players"
 TM_POS_NORM = {"CB": "Centre-Back", "RB": "Right-Back", "LB": "Left-Back", "RWB": "Right-Back",
                "LWB": "Left-Back", "DM": "Defensive Midfield", "CM": "Central Midfield",

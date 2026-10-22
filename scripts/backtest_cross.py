@@ -25,6 +25,7 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parent.parent
 sys.path[:0] = [str(ROOT / "src"), str(ROOT)]
 import league_level  # noqa: E402
+from leagues import LEAGUE_CODES  # noqa: E402
 import predict_model as pm  # noqa: E402
 import ratings_v3 as rv3  # noqa: E402
 import team_elo as te  # noqa: E402
@@ -72,7 +73,7 @@ def _league_rows(season: str) -> dict:
         if not sp.exists():
             continue
         s = pd.read_csv(sp, dtype={"event_id": str})
-        s = s[(s["status"].astype(str) == "completed") & s["comp_code"].astype(str).str.endswith(".1") & (s["home_away"] == "H")]
+        s = s[(s["status"].astype(str) == "completed") & s["comp_code"].astype(str).isin(LEAGUE_CODES) & (s["home_away"] == "H")]
         out[lg] = pd.DataFrame({"event_id": s["event_id"].astype(str), "date": s["date"].astype(str).str[:10],
                                 "home": s["squad"], "away": s["opponent"],
                                 "hg": pd.to_numeric(s["gf"], errors="coerce"), "ag": pd.to_numeric(s["ga"], errors="coerce"),

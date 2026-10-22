@@ -20,7 +20,7 @@ from unidecode import unidecode
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import datastore as ds  # noqa: E402
-from leagues import LEAGUES, data_path  # noqa: E402
+from leagues import LEAGUE_CODES, LEAGUES, data_path  # noqa: E402
 
 GROUP = {"uefa.champions": "ucl", "uefa.europa": "uel", "uefa.europa.conf": "conf",
          "eng.fa": "facup", "eng.league_cup": "lcup", "esp.copa_del_rey": "copa"}
@@ -42,7 +42,7 @@ def build(league: str) -> pd.DataFrame | None:
     comp = dict(zip(eid(sch["event_id"].dropna()), sch.loc[sch["event_id"].notna(), "comp_code"].astype(str)))
     lu = lu.assign(ev=eid(lu["event_id"]))
     lu["cc"] = lu["ev"].map(comp)
-    lu = lu[lu["cc"].notna() & ~lu["cc"].str.endswith(".1")]
+    lu = lu[lu["cc"].notna() & ~lu["cc"].isin(LEAGUE_CODES)]
     if lu.empty:
         return None
     rec: dict[tuple, dict] = {}

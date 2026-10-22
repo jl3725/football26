@@ -119,7 +119,7 @@ def run_season(season: str, league: str) -> int:
     return 0
 
 
-LEAGUES = ["EPL", "LaLiga", "SerieA", "Bundesliga", "Ligue1", "LigaPortugal", "Eredivisie", "BelgianProLeague"]  # --league 미지정 시 전 리그 자동 갱신(agent용)
+from leagues import FULL_LEAGUES as LEAGUES  # noqa: E402  --league 미지정 시 전 리그(ESPN 일정 — 라이트 리그는 FotMob, src/lite_league.py)
 
 
 def main(argv=None) -> int:

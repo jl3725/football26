@@ -5,10 +5,10 @@ import { hexA } from "@/lib/ui";
 import { usePeek } from "./PlayerPeek";
 import { ACQ, SvgAvatar, initials, lastName } from "./NetShared";
 import Info from "./Info";
+import { LEAGUE_LIST } from "@/lib/leagues";
 
 // ORIGINS — 스쿼드가 어떻게 만들어졌나. 입단 연도별로 쌓은 타임라인(테두리 색 = 영입 방식) + 출신 리그.
-const LG_LABEL: Record<string, string> = { EPL: "Premier League", LaLiga: "La Liga", SerieA: "Serie A", Bundesliga: "Bundesliga",
-  Ligue1: "Ligue 1", LigaPortugal: "Liga Portugal", Eredivisie: "Eredivisie", BelgianProLeague: "Belgian Pro League",
+const LG_LABEL: Record<string, string> = { ...Object.fromEntries(LEAGUE_LIST.map((l) => [l.key, l.name])),
   ACADEMY: "Academy · 유스", OTHER: "기타 리그" };
 const fee = (v: number) => (v >= 1e6 ? `€${Math.round(v / 1e6)}M` : v > 0 ? `€${Math.round(v / 1e3)}K` : "");
 

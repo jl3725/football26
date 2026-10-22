@@ -55,7 +55,7 @@ WIRE_DAILY_CAP = 30      # 팀당 하루 wire 기사 상한
 FOTMOB_GROUPS = 4        # FotMob 팀 뉴스 — 팀을 나눠 실행마다 한 묶음(2시간 실행 → 팀마다 8시간에 한 번)
 KEEP_DAYS = 30
 FM_LANG = {"England": "en", "Spain": "es", "Italy": "it", "Germany": "de", "France": "fr", "Portugal": "pt",
-           "Netherlands": "nl", "Belgium": "nl"}
+           "Netherlands": "nl", "Belgium": "nl", "Türkiye": "tr", "Austria": "de", "Denmark": "da", "Switzerland": "de"}
 DISCOVER_EVERY_DAYS = 7
 DISCOVER_BUDGET_S = 150
 MIN_MATCH_RATE = 0.15    # 새 피드 — 항목 중 우리 팀 기사 비율이 이보다 낮으면 버림

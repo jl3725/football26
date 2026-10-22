@@ -18,6 +18,8 @@ FotMob 경기별 선수 기록 → data/fotmob_match_ratings_{리그}_{시즌}.c
   data/fotmob_goals_{리그}_{시즌}.csv 로 — 팀 득점 구성(StatBunker 는 EPL·라리가·세리에A 만이라 나머지 5개 리그가 비었다,
   2026-10-22). 행: match_id, date, comp_code, squad(득점한 우리 팀), opponent, minute, player, situation, own_goal, xg.
   골 없는 경기는 situation=none 한 줄(받았다는 표시). 이미 받은 경기 중 골 파일에 없는 것은 --goals-max 만큼 다시 받아 채운다.
+- 라이트 리그(챔피언십 …, 2026-10-22)는 같은 matchDetails 의 라인업·교체로 espn_lineups(_cups)·espn_subs(_cups) 표를 만든다
+  (src/fotmob_lineups.py — ESPN 이 다루지 않거나 경기 id 가 FotMob 인 리그). 받은 경기 중 라인업이 없는 것은 같은 상한으로 백필.
 
 사용: python src/fetch_fotmob_matches.py [--league EPL] [--max 400] [--season prev]
 """
@@ -33,6 +35,7 @@ from fetch_fotmob_ratings import FOTMOB_ID, _get
 from leagues import LEAGUES, SEASON_START, data_path
 import team_names as tn  # noqa: F401 — 예전 호출부 호환
 from squads import to_ours
+import fotmob_lineups
 
 # FotMob 대회 id → 우리 대회 코드(ESPN 표기 — schedule_full comp_code 와 같은 축)
 CUPS = {42: "uefa.champions", 73: "uefa.europa", 10216: "uefa.europa.conf",
@@ -41,6 +44,7 @@ CUPS = {42: "uefa.champions", 73: "uefa.europa", 10216: "uefa.europa.conf",
         149: "bel.cup"}
 LEAGUE_CODE = {"EPL": "eng.1", "LaLiga": "esp.1", "SerieA": "ita.1", "Bundesliga": "ger.1", "Ligue1": "fra.1",
                "LigaPortugal": "por.1", "Eredivisie": "ned.1", "BelgianProLeague": "bel.1"}
+LEAGUE_CODE.update({k: c.espn for k, c in LEAGUES.items() if c.espn and k not in LEAGUE_CODE})   # 라이트 리그
 # 세부 기록 — 우리 열: (FotMob stat key, 'v' 값 | 't' 시도 수). 출전한 선수에게 키가 없으면 0(FotMob 은 0 인 항목을 빼기도 한다)
 DETAIL = {
     "xg": ("expected_goals", "v"), "npxg": ("expected_goals_non_penalty", "v"), "xa": ("expected_assists", "v"),
@@ -232,6 +236,35 @@ def main() -> int:
     todo_ids = {str(m["id"]) for m, _ in todo}
     goal_only = sorted([(m, c) for m, c in jobs if str(m["id"]) in seen and str(m["id"]) not in goals_seen
                         and str(m["id"]) not in todo_ids], key=when, reverse=True)[: a.goals_max]
+    # 라이트 리그 라인업·교체 — 받은 경기 중 라인업 표에 없는 것도 다시 받아 채운다
+    lite = {lg for lg in leagues if LEAGUES[lg].lite} if not prev else set()
+    lite_sides = {tid: v for tid, v in sides.items() if v[0] in lite}
+    lu_have: dict[tuple[str, str], pd.DataFrame] = {}
+    lu_seen: set[str] = set()
+    for lg in lite:
+        for stem in ("espn_lineups", "espn_lineups_cups", "espn_subs", "espn_subs_cups"):
+            p = data_path(stem, lg, season)
+            if p.exists():
+                lu_have[(lg, stem)] = pd.read_csv(p, dtype={"event_id": str})
+                if "lineups" in stem:
+                    lu_seen |= set(lu_have[(lg, stem)]["event_id"].astype(str))
+    is_lite = lambda m: any(str((m.get(s) or {}).get("id")) in lite_sides for s in ("home", "away"))   # noqa: E731
+    goal_ids = {str(m["id"]) for m, _ in goal_only}
+    lineup_only = sorted([(m, c) for m, c in jobs if is_lite(m) and str(m["id"]) in seen and str(m["id"]) not in lu_seen
+                          and str(m["id"]) not in todo_ids and str(m["id"]) not in goal_ids], key=when, reverse=True)[: a.goals_max]
+    new_lu: list[dict] = []
+    new_sub: list[dict] = []
+
+    def _lineups(j: dict, m: dict, code: str) -> None:
+        if not lite_sides or not is_lite(m):
+            return
+        for r in fotmob_lineups.lineup_rows(j, m, lite_sides):
+            lg = next(v[0] for v in lite_sides.values() if v[1] == r["squad"])
+            new_lu.append({**r, "_key": (lg, "espn_lineups" if code == LEAGUE_CODE.get(lg) else "espn_lineups_cups")})
+        for r in fotmob_lineups.sub_rows(j, m, lite_sides):
+            side = str((m.get(r["home_away"]) or {}).get("id"))
+            lg = lite_sides[side][0]
+            new_sub.append({**r, "_key": (lg, "espn_subs" if code == LEAGUE_CODE.get(lg) else "espn_subs_cups")})
     print(f"    골 상황 백필 {len(goal_only)}경기(남은 {sum(1 for m, _ in jobs if str(m['id']) not in goals_seen)})")
     new: list[dict] = []
     new_goals: list[dict] = []
@@ -241,6 +274,7 @@ def main() -> int:
             j = _details(m)
             rows = player_rows(m, code, sides, j)
             new_goals.extend(goal_rows(j, m, code, sides))
+            _lineups(j, m, code)
         except Exception as e:  # noqa: BLE001 — 한 경기 실패가 전체를 멈추지 않게
             print(f"    [실패] {m.get('id')}: {e}")
             rows, bad = [], bad + 1
@@ -250,10 +284,33 @@ def main() -> int:
         time.sleep(0.35)
     for m, code in goal_only:
         try:
-            new_goals.extend(goal_rows(_details(m), m, code, sides))
+            j = _details(m)
+            new_goals.extend(goal_rows(j, m, code, sides))
+            _lineups(j, m, code)
         except Exception as e:  # noqa: BLE001
             print(f"    [골 실패] {m.get('id')}: {e}")
         time.sleep(0.35)
+    if lineup_only:
+        print(f"    라인업 백필 {len(lineup_only)}경기")
+    for m, code in lineup_only:
+        try:
+            _lineups(_details(m), m, code)
+        except Exception as e:  # noqa: BLE001
+            print(f"    [라인업 실패] {m.get('id')}: {e}")
+        time.sleep(0.35)
+    for rows_, cols in ((new_lu, fotmob_lineups.LINEUP_COLS), (new_sub, fotmob_lineups.SUB_COLS)):
+        if not rows_:
+            continue
+        nd_ = pd.DataFrame(rows_)
+        for (lg, stem), g in nd_.groupby("_key"):
+            old = lu_have.get((lg, stem))
+            g = g.reindex(columns=cols)
+            if old is not None:
+                old = old[~old["event_id"].astype(str).isin(set(g["event_id"].astype(str)))]
+                g = pd.concat([old.reindex(columns=cols), g], ignore_index=True)
+            out = data_path(stem, lg, season)
+            g.to_csv(out, index=False, encoding="utf-8", lineterminator="\n")
+            print(f"  {lg:16} {stem} {g['event_id'].nunique()}경기 -> {out.name}")
     if new_goals:
         gd = pd.DataFrame(new_goals)
         for lg, g in gd.groupby("league"):

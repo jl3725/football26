@@ -27,6 +27,8 @@ from squads import to_ours
 
 FOTMOB_ID = {"EPL": 47, "LaLiga": 87, "SerieA": 55, "Bundesliga": 54, "Ligue1": 53,
              "LigaPortugal": 61, "Eredivisie": 57, "BelgianProLeague": 40}
+# 라이트 리그(2026-10-22~)는 리그 설정의 fotmob_id — 평점·경기 상세·부상·명단 수집기가 이 표 하나로 리그를 고른다
+FOTMOB_ID.update({k: c.fotmob_id for k, c in LEAGUES.items() if c.fotmob_id and k not in FOTMOB_ID})
 HEADERS = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) football26-research"}
 BACK = 2          # 직전 · 2시즌 전까지
 

@@ -32,7 +32,7 @@ import news_sources as gn  # noqa: E402
 from leagues import LEAGUES as LG  # noqa: E402
 from translate import translate_many, STATS  # noqa: E402
 
-LEAGUES = ["EPL", "LaLiga", "SerieA", "Bundesliga", "Ligue1", "LigaPortugal", "Eredivisie", "BelgianProLeague"]
+LEAGUES = list(LG)        # 라이트 리그 포함 — 리그 설정 한 곳(src/leagues.py)
 
 
 GN_PER_RUN = 6        # Google News — 팀당 한 번에 새 기사 이만큼(하루 상한 gn.DAILY_CAP)

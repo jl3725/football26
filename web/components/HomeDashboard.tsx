@@ -12,9 +12,9 @@ import LeagueFixtures from "./LeagueFixtures";
 import SectionHead from "./SectionHead";
 import Info from "./Info";
 import WeeklyDigest from "./WeeklyDigest";
+import { LEAGUES_ACTIVE } from "@/lib/leagues";
 
-const ESPN_CODE: Record<string, string> = { EPL: "eng.1", LaLiga: "esp.1", SerieA: "ita.1", Bundesliga: "ger.1", Ligue1: "fra.1",
-  LigaPortugal: "por.1", Eredivisie: "ned.1", BelgianProLeague: "bel.1" };
+const ESPN_CODE: Record<string, string> = Object.fromEntries(LEAGUES_ACTIVE.map((l) => [l.key, l.espn]));
 const eurM = (v: number) => (v >= 1e6 ? `€${Math.round(v / 1e6)}M` : v > 0 ? `€${Math.round(v / 1e3)}K` : "€0");
 
 // 섹션 머리 — 영어 제목 + 작은 한글 보조(디자인 v5 공통형)

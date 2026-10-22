@@ -13,6 +13,7 @@ import { tier, roleClass } from "@/lib/ui";
 import { ssMeaning, SS_NOTE } from "@/lib/meaning";
 import { MeaningTag } from "./Meaning";
 import { Skel } from "./Skeleton";
+import { isLeagueCode } from "@/lib/leagues";
 
 export type PeekHint = Partial<Pick<DbPlayer,
   "photo" | "pos" | "age" | "ovr" | "value_eur" | "nationality" | "role" | "big_match" | "squad" | "league" | "logo">>;
@@ -202,7 +203,7 @@ export function PeekProvider({ children, onOpenPlayer, onOpenTeam }: {
                 <div className="peek-ct" role="table" aria-label="대회별 기록">
                   <div className="peek-ct-r h" role="row"><span>COMPETITION</span><span>APPS</span><span>MIN</span><span>G</span><span>A</span><span title="FotMob 경기별 평점 평균(원래 값 — 위 시즌 평점은 두 출처 평균)">RTG·FM</span></div>
                   {log.by_comp.filter((c) => c.apps).map((c) => {
-                    const lab = !c.code || c.code.endsWith(".1") ? (lgEn(league) || "LEAGUE") : (compEn(c.code) || c.comp);
+                    const lab = !c.code || isLeagueCode(c.code) ? (lgEn(league) || "LEAGUE") : (compEn(c.code) || c.comp);
                     const mn = c.rating ? ssMeaning(fmToSs(c.rating)) : null;
                     return (
                       <div className="peek-ct-r" role="row" key={c.comp}>

@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { getDiscover, fmtEur, type Discover, type DiscoverPick } from "@/lib/api";
 import { hexA, tier } from "@/lib/ui";
 import { scoreMeaning, ssMeaning, SS_NOTE } from "@/lib/meaning";
+import { LEAGUES_ACTIVE } from "@/lib/leagues";
 import { MeaningTag } from "./Meaning";
 import { usePeek } from "./PlayerPeek";
 import { SkelCards } from "./Skeleton";
@@ -15,11 +16,7 @@ const POS_BTNS: [string, string][] = [
   ["Defensive Midfield", "DM"], ["Central Midfield", "CM"], ["Attacking Midfield", "AM"],
   ["Left Winger", "LW"], ["Right Winger", "RW"], ["Centre-Forward", "CF"],
 ];
-const LEAGUES: [string, string][] = [
-  ["EPL", "Premier League"], ["LaLiga", "La Liga"], ["SerieA", "Serie A"], ["Bundesliga", "Bundesliga"],
-  ["Ligue1", "Ligue 1"], ["LigaPortugal", "Liga Portugal"], ["Eredivisie", "Eredivisie"],
-  ["BelgianProLeague", "Belgian Pro League"],
-];
+const LEAGUES: [string, string][] = LEAGUES_ACTIVE.map((l) => [l.key, l.name]);
 const SORTS: [string, string][] = [["fit", "추천순(니즈·정책)"], ["style", "유사도"], ["ovr", "예상 OVR"], ["value", "시장가"], ["age", "나이"]];
 
 function Kpi({ label, value, sub, accent }: { label: string; value: string; sub?: string; accent: string }) {

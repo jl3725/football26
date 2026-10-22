@@ -18,6 +18,11 @@ from .common import team_color
 ESPN_NEWS_CODES = {"EPL": "eng.1", "LaLiga": "esp.1", "SerieA": "ita.1",
                    "Bundesliga": "ger.1", "Ligue1": "fra.1", "LigaPortugal": "por.1",
                    "Eredivisie": "ned.1", "BelgianProLeague": "bel.1"}
+try:                                    # 라이트 리그(eng.2 …) — 리그 설정의 ESPN 코드
+    from leagues import LEAGUES as _LG
+    ESPN_NEWS_CODES.update({k: c.espn for k, c in _LG.items() if c.espn and k not in ESPN_NEWS_CODES})
+except ImportError:
+    pass
 _HEADERS = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
 
 # 우리 squad 표기 → ESPN 뉴스 팀 태그(longName)
@@ -246,7 +251,9 @@ def _clean(text: str) -> str:
 
 def fetch_espn_news(league: str = "EPL") -> list[dict]:
     """ESPN 리그 뉴스 50건 → [{headline, desc, published, image, link, teams, source}]."""
-    code = ESPN_NEWS_CODES.get(league, "eng.1")
+    code = ESPN_NEWS_CODES.get(league)
+    if not code:                        # 모르는 리그에 EPL 뉴스를 붙이지 않는다
+        return []
     url = f"https://site.api.espn.com/apis/site/v2/sports/soccer/{code}/news?limit=50"
     try:
         r = requests.get(url, headers=_HEADERS, timeout=15)

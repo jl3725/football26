@@ -204,7 +204,8 @@ def main(argv=None) -> int:
     from news_wires import fotmob_team_ids  # noqa: PLC0415
     ids = fotmob_team_ids()
     bad = 0
-    for lg in [a.league] if a.league else [x for x in LEAGUES if x in FOTMOB_ID]:
+    # 라이트 리그는 src/lite_league.py 가 같은 팀 응답으로 명단까지 쓴다(요청 중복 방지)
+    for lg in [a.league] if a.league else [x for x in LEAGUES if x in FOTMOB_ID and not LEAGUES[x].lite]:
         df = collect(lg, ids, _get)
         if df.empty:
             print(f"[{lg}] 스쿼드 0명 — 건너뜀")

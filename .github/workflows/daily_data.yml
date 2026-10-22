@@ -79,6 +79,11 @@ jobs:
             FB_LEAGUE=$LG bash scripts/ci_try.sh "subs $LG" python src/fetch_espn_subs.py
           done
 
+      # 라이트 리그(챔피언십·쉬페르리그·오스트리아·덴마크·스위스 — 2026-10-22 1단계 확장): FBref·ESPN 대신 FotMob 리그·팀
+      # 응답으로 순위·일정·1군 명단·감독·팀 대조표(src/lite_league.py). 경기별 기록·라인업·교체는 FotMob match ratings 단계가 같이 쓴다
+      - name: Lite leagues (라이트 리그 순위·일정·명단·감독)
+        run: bash scripts/ci_try.sh "lite_league" python src/lite_league.py
+
       # Transfermarkt 계열(현재 부상·계약·루머·시장가치 스냅샷·이적)은 tm_data.yml 이 하루 2회 수집한다
       # (TM WAF 202 → 브라우저 토큰, src/tm_http.py). 2026-07~10 은 로컬 PC agent 가 맡았었다.
 
@@ -101,6 +106,16 @@ jobs:
       # FotMob 팀 명단(등록 1군 전원·세부 포지션·생년월일·부상 복귀 예상) — 출전 없는 선수(백업 GK)·빈 나이·부상 표시(src/fotmob_squads.py)
       - name: FotMob squads (팀 명단)
         run: bash scripts/ci_try.sh "fotmob_squads" python src/fotmob_squads.py
+
+      # 라이트 리그 선수 표(FotMob 시즌 통계 + TM 시장가치·계약) → 팀 유닛 지표·팀 득실 — 주간 빌드 없이 매일(src/build_lite_players.py)
+      - name: Lite league players (라이트 리그 선수 표·팀 지표)
+        run: |
+          bash scripts/ci_try.sh "lite_players" python src/build_lite_players.py
+          bash scripts/ci_try.sh "lite_players prev" python src/build_lite_players.py --season prev
+          for LG in $(python scripts/league_keys.py --lite); do
+            FB_LEAGUE=$LG bash scripts/ci_try.sh "unit_metrics $LG" python src/build_team_unit_metrics.py
+            FB_LEAGUE=$LG bash scripts/ci_try.sh "team_defense $LG" python src/fetch_team_defense.py
+          done
 
       # 과거 시즌 최종 순위(ESPN) — 팀 실적(득점·실점)을 여러 시즌 반영(src/season_history.py). 시즌이 넘어가면
       # 새로 '과거'가 된 시즌 중 우리 파일이 없는 것만 받는다(이미 받은 시즌은 건너뜀)

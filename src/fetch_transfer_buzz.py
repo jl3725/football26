@@ -91,7 +91,8 @@ _OFF_TOPIC_LINK = re.compile(r"/(modalidades|motores|fora-de-campo|multimedia|op
 def _fetch(league: str = "EPL") -> list[dict]:
     import feedparser
     rows, seen = [], set()
-    for src, url in FEEDS_BY_LEAGUE.get(league, FEEDS_BY_LEAGUE["EPL"]):
+    # 피드가 없는 리그(라이트 리그)에 EPL 피드를 붙이면 그 리그 팀 이름으로 EPL 기사를 잘못 잡는다 — 빈 목록
+    for src, url in FEEDS_BY_LEAGUE.get(league, []):
         try:
             feed = feedparser.parse(url)
         except Exception as exc:

@@ -36,10 +36,16 @@ LOCALE = {
     "Portugal": ("pt-PT", "PT", "PT:pt-150", "futebol"),
     "Netherlands": ("nl", "NL", "NL:nl", "voetbal"),
     "Belgium": ("nl", "BE", "BE:nl", "voetbal"),
+    # 라이트 리그(2026-10-22)
+    "Türkiye": ("tr", "TR", "TR:tr", "futbol"),
+    "Austria": ("de", "AT", "AT:de", "Fußball"),
+    "Denmark": ("da", "DK", "DK:da", "fodbold"),
+    "Switzerland": ("de", "CH", "CH:de", "Fussball"),
 }
 EN = LOCALE["England"]
 # 두 언어 언론이 나뉜 나라 — 현지 검색을 언어마다(벨기에 프랑스어권 Standard·Charleroi 는 네덜란드어 검색에 거의 안 나온다)
-EXTRA_LOCALES = {"Belgium": [("fr", "BE", "BE:fr", "football")]}
+EXTRA_LOCALES = {"Belgium": [("fr", "BE", "BE:fr", "football")],
+                 "Switzerland": [("fr", "CH", "CH:fr", "football")]}     # 서부(세르베트·로잔·시옹)는 프랑스어 언론
 TRANSFER_Q = '(transfer OR signing OR "here we go" OR bid OR loan)'
 PER_QUERY = 8                  # 검색 한 번에 최신순으로 이만큼까지
 DAILY_CAP = 12                 # 팀당 하루 새 기사 상한(news.db 는 저장소에 커밋 — 크기 관리)

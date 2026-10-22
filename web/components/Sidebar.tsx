@@ -4,25 +4,10 @@ import { useState } from "react";
 import type { Team, NextSeason } from "@/lib/api";
 import { showNextSeason, type Phase } from "@/lib/season";
 import { usePins } from "@/lib/pins";
+import { LEAGUES_ACTIVE, TIER_LABEL, leagueLabel, leagueName, type LeagueInfo } from "@/lib/leagues";
 
-// 리그 티어 — 리그 확장 시 여기 배열에만 추가.
-//   TIER S = 빅5 · TIER A = 유럽 강호 · 원석 발굴(TALENT) = 셀링/유망주 공급 리그
-type LeagueBtn = { k: string; label: string; soon?: boolean };
-const TIER_S: LeagueBtn[] = [
-  { k: "EPL", label: "🏴 EPL" }, { k: "LaLiga", label: "🇪🇸 La Liga" },
-  { k: "SerieA", label: "🇮🇹 Serie A" }, { k: "Bundesliga", label: "🇩🇪 Bundesliga" },
-  { k: "Ligue1", label: "🇫🇷 Ligue 1" },
-];
-const TIER_A: LeagueBtn[] = [
-  { k: "Eredivisie", label: "🇳🇱 Eredivisie" }, { k: "LigaPortugal", label: "🇵🇹 Liga Portugal" },
-];
-const TIER_TALENT: LeagueBtn[] = [
-  { k: "BelgianProLeague", label: "🇧🇪 Belgian Pro" },
-  { k: "Austria", label: "🇦🇹 Austria", soon: true },
-  { k: "Brazil", label: "🇧🇷 Brazil", soon: true },
-  { k: "Argentina", label: "🇦🇷 Argentina", soon: true },
-];
-const ACTIVE_LEAGUES = [...TIER_S, ...TIER_A, ...TIER_TALENT.filter((league) => !league.soon)];
+// 리그 목록은 lib/leagues.ts 한 곳 — 티어(S 빅5 · A 유럽 강호 · TALENT 원석 발굴)별로 묶어 보여 준다
+const TIERS = (["S", "A", "TALENT"] as LeagueInfo["tier"][]).map((t) => ({ t, items: LEAGUES_ACTIVE.filter((l) => l.tier === t) }));
 
 // 다음 시즌 라벨 (현재 "YY/YY" → 한 해 뒤). 시즌 문구는 박아 두지 않는다 — scripts/check_season_literals.py
 function nextSeasonLabel(cur: string): string {
@@ -60,7 +45,7 @@ export default function Sidebar({
   const seasonTab = hasNext ? pickedTab : "cur";
   const nextLabel = next?.season_label || nextSeasonLabel(seasonLabel);
   const total = teams.length;
-  const leagueTitle = league === "LaLiga" ? "La Liga" : league === "SerieA" ? "Serie A" : league === "Bundesliga" ? "Bundesliga" : league === "Ligue1" ? "Ligue 1" : league === "LigaPortugal" ? "Liga Portugal" : league === "Eredivisie" ? "Eredivisie" : league === "BelgianProLeague" ? "Belgian Pro League" : "Premier League";
+  const leagueTitle = leagueName(league);
 
   // 현재 데이터 시즌: 순위순 — 리그 경기 중·직후엔 잠정 순위(lib/standings: 공식 순위 + 라이브 스코어)
   const ls = useStandings(league);
@@ -95,7 +80,11 @@ export default function Sidebar({
             onChange={(event) => onLeague?.(event.target.value)}
             aria-label="리그 선택"
           >
-            {ACTIVE_LEAGUES.map((item) => <option key={item.k} value={item.k}>{item.label}</option>)}
+            {TIERS.map(({ t, items }) => (
+              <optgroup key={t} label={TIER_LABEL[t]}>
+                {items.map((item) => <option key={item.key} value={item.key}>{item.flag} {item.short}</option>)}
+              </optgroup>
+            ))}
           </select>
           <span className="competition-chevron" aria-hidden="true">⌄</span>
         </div>
@@ -105,7 +94,7 @@ export default function Sidebar({
         <span className="home-nav-mark" />
         <span className="home-nav-txt">
           <span className="home-nav-t">리그 홈</span>
-          <span className="home-nav-sub">{league === "LaLiga" ? "LA LIGA" : league === "SerieA" ? "SERIE A" : league === "Bundesliga" ? "BUNDESLIGA" : league === "Ligue1" ? "LIGUE 1" : league === "LigaPortugal" ? "LIGA PORTUGAL" : league === "Eredivisie" ? "EREDIVISIE" : league === "BelgianProLeague" ? "BELGIUM" : "PREMIER LEAGUE"}</span>
+          <span className="home-nav-sub">{league === "EPL" ? "PREMIER LEAGUE" : leagueLabel(league)}</span>
         </span>
         <span className="home-nav-dot" />
       </button>

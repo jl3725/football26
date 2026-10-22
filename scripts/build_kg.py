@@ -66,6 +66,12 @@ LEAGUE_META = {
     "Eredivisie": ("Eredivisie", "Netherlands", 88.5),
     "BelgianProLeague": ("Belgian Pro League", "Belgium", 87.5),
 }
+try:   # 라이트 리그(챔피언십 …, 2026-10-22) — 이름·나라는 리그 설정, 수준은 league_level(UEFA 계수·시장가치 직선)
+    from leagues import LEAGUES as _LG  # noqa: E402
+    import league_level as _ll  # noqa: E402
+    LEAGUE_META.update({k: (c.name, c.country, _ll.level(k)) for k, c in _LG.items() if k not in LEAGUE_META})
+except ImportError:
+    pass
 # comp_usage 컬럼 → Competition 노드(유럽대항전 = 스카우팅 검증 신호)
 EURO_COMPS = [("ucl", "UEFA Champions League"), ("uel", "UEFA Europa League"),
               ("conf", "UEFA Conference League")]

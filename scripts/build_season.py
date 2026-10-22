@@ -45,7 +45,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
-from leagues import LEAGUES, SEASON_START  # noqa: E402
+from leagues import FULL_LEAGUES, LEAGUES, SEASON_START  # noqa: E402
 import run_ledger  # noqa: E402
 
 STATBUNKER_LEAGUES = {"EPL", "LaLiga", "SerieA"}
@@ -107,7 +107,8 @@ def _parse(argv: list[str]) -> tuple[list[str], list[str], bool]:
             i += 1
         else:
             raise SystemExit(f"알 수 없는 인자: {a}")
-    return leagues or list(LEAGUES), steps, retry
+    # 라이트 리그(FBref·Sofascore 없음)는 주간 빌드 대상이 아니다 — 클라우드 src/build_lite_players.py 가 만든다
+    return leagues or list(FULL_LEAGUES), steps, retry
 
 
 STEP_TIMEOUT = 45 * 60   # 한 단계 상한(초) — Sofascore 선수별 수집이 가장 김(리그당 ~5분)

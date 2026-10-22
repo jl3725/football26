@@ -70,6 +70,11 @@ OPTIONAL_CONTRACTS: dict[str, Contract] = {
 }
 
 
+# 라이트 리그(클라우드 수집만 — src/leagues.py lite)는 FBref·Understat·주간 빌드 표(team_unit_metrics·team_defense)가
+# 없거나 늦게 생긴다 — 선수 표·순위표만 필수, 나머지 핵심 표는 경고. 아직 한 번도 수집되지 않은 리그(순위표 없음)는 통째로 경고.
+LITE_CORE = ("players_full", "standings")
+
+
 def validate_table(table: str, league: str, contract: Contract) -> list[str]:
     """한 테이블을 검증하고 오류 문자열 목록을 반환한다."""
     frame = ds.read_table(table, league=league)
@@ -141,9 +146,17 @@ def validate(
         if league not in LEAGUES:
             errors.append(f"unknown league: {league}")
             continue
+        lite = LEAGUES[league].lite
+        if lite and ds.read_table("standings", league=league) is None:
+            warnings.append(f"{league}: 라이트 리그 아직 수집 전(순위표 없음) — 검사 생략")
+            continue
         for table in selected_tables:
             contract = CORE_CONTRACTS.get(table) or OPTIONAL_CONTRACTS[table]
-            errors.extend(validate_table(table, league, contract))
+            found = validate_table(table, league, contract)
+            if lite and table not in LITE_CORE:
+                warnings.extend(found)
+            else:
+                errors.extend(found)
         if "players_full" in selected_tables:
             xe, xw = validate_xg(league)
             errors.extend(xe)

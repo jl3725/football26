@@ -3,6 +3,7 @@ import { FORM_NOTE, RECENT_NOTE, formMeaning, ssMeaning } from "@/lib/meaning";
 import { compEn } from "@/lib/match";
 import type { RecentMatch } from "@/lib/api";
 import { MeaningTag } from "./Meaning";
+import { isLeagueCode } from "@/lib/leagues";
 
 // 폼 두 개 — SEASON(이번 시즌 전체) · LAST 5(최근 5경기, 전 대회 FotMob 경기 평점). 같은 45~99 척도(72 = 중간).
 // 2026-10-19 사용자: '노팅엄전 사카가 엄청 못했는데 폼 절정 — 전체 폼과 최근 3·5경기 폼을 나누자'.
@@ -37,7 +38,7 @@ export function RecentStrip({ matches }: { matches: RecentMatch[] }) {
     <div className="rs5" role="list" aria-label="최근 경기 평점">
       {xs.map((m, i) => {
         const mn = ssMeaning(fmToSs(m.rating));
-        const comp = m.comp_code.endsWith(".1") ? "" : (compEn(m.comp_code) || m.comp_code);
+        const comp = isLeagueCode(m.comp_code) ? "" : (compEn(m.comp_code) || m.comp_code);
         const opp = m.opponent.length > 11 ? m.opponent.split(" ")[0] : m.opponent;
         return (
           <div className={`rs5-i${i === xs.length - 1 ? " last" : ""}`} role="listitem" key={m.date + m.opponent}

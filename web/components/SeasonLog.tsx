@@ -17,7 +17,7 @@ export const COMP_COLOR: Record<string, string> = {
 const cc = (c: string) => COMP_COLOR[c] || "#a58bd6";
 // 대회 이름은 영어 약칭(EPL · UCL · EFL CUP) — 한글 대회명은 툴팁으로
 export const compShort = (code?: string, ko?: string) =>
-  !code ? (ko ?? "") : code.endsWith(".1") ? (lgEn(LEAGUE_OF_CODE[code]) || "LEAGUE") : (compEn(code) || ko || code);
+  !code ? (ko ?? "") : LEAGUE_OF_CODE[code] ? (lgEn(LEAGUE_OF_CODE[code]) || "LEAGUE") : (compEn(code) || ko || code);
 const ST: Record<string, string> = { start: "선발", sub: "교체", bench: "벤치", out: "명단 외" };
 
 export default function SeasonLog({ log, accent }: { log: Log; accent: string }) {

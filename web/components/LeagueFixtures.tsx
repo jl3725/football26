@@ -6,6 +6,7 @@ import MatchCard from "./MatchCard";
 import { BIG, compLabel, ddayLabel } from "@/lib/match";
 import { useMatchPreview } from "@/lib/matchPreview";
 import { useLive, liveLabel } from "@/lib/live";
+import { isLeagueCode } from "@/lib/leagues";
 
 // 리그 탭 '이번 주 경기' — 위: 그 리그 빅매치 강조 카드, 아래: 날짜별 전 경기(소속 팀의 유럽대회 포함).
 // 일정은 클라우드 daily_data 가 매일 갱신, 순위·폼·D-day 는 열 때 계산(src/match_center.py).
@@ -27,7 +28,7 @@ function Row({ m: m0, league, onPick }: { m: Fixture; league: string; onPick: (t
       <span className={`lf-time${lv?.state === "in" ? " in" : ""}`}>{lv && lv.state !== "pre" ? liveLabel(lv) : (m.kst.split(" ")[1] ?? "")}</span>
       <div className="lf-match">{side(m.home)}<span className="lf-vs">{lv && lv.state !== "pre" ? `${lv.home.score ?? 0} : ${lv.away.score ?? 0}` : "vs"}</span>{side(m.away)}</div>
       <span className="lf-side">
-        {!m.comp_code.endsWith(".1") && <span className={`lf-comp${m.comp_code === "uefa.champions" ? " ucl" : ""}`}>{compLabel(m)}</span>}
+        {!isLeagueCode(m.comp_code) && <span className={`lf-comp${m.comp_code === "uefa.champions" ? " ucl" : ""}`}>{compLabel(m)}</span>}
         {big && <span className="lf-big" title={m.tags.join(" · ")}>BIG</span>}
       </span>
     </div>

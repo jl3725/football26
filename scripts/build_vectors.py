@@ -27,7 +27,8 @@ except Exception:  # noqa: BLE001
 
 QDRANT_URL = os.getenv("QDRANT_URL", "http://localhost:6333")
 COLLECTION = "players"
-LEAGUES = ["EPL", "LaLiga", "SerieA", "Bundesliga", "Ligue1", "LigaPortugal", "Eredivisie", "BelgianProLeague"]
+from leagues import LEAGUES as _LEAGUES_CFG  # noqa: E402
+LEAGUES = list(_LEAGUES_CFG)   # 라이트 리그 포함 — 리그 설정 한 곳
 MIN_MINUTES = 270   # per90 스탯이 의미 있으려면 최소 출전
 
 # 스타일 피처(공격 생산·창출·드리블·수비·경합) — players_full 에 존재하는 per90 컬럼

@@ -15,6 +15,7 @@ import { MatchPreviewProvider } from "@/components/MatchPreview";
 import { LiveProvider } from "@/lib/live";
 import { StandingsProvider } from "@/lib/standings";
 import { SkelTab } from "@/components/Skeleton";
+import { DEFAULT_TEAM, LEAGUE_TABS, leagueLabel as leagueLabelOf, leagueName as leagueNameOf } from "@/lib/leagues";
 
 // 화면별 코드 나누기 — 홈·팀 탭은 열 때 받는다(첫 화면 JS 를 줄여 모바일에서 덜 무겁게, 2026-10-22).
 // 첫 화면이 뜬 뒤 쉬는 시간에 나머지도 미리 받아 탭을 눌렀을 때 기다리지 않게 한다(prefetchViews — 같은 import 라 덩어리 하나).
@@ -43,8 +44,7 @@ function prefetchViews() {
   else setTimeout(run, 3000);
 }
 
-const DEFAULT_TEAM: Record<string, string> = { EPL: "Arsenal", LaLiga: "Barcelona", SerieA: "Inter", Bundesliga: "Bayern Munich", Ligue1: "PSG", LigaPortugal: "Sporting CP", Eredivisie: "PSV", BelgianProLeague: "Club Brugge" };
-const LEAGUE_TABS = [{ key: "EPL", label: "EPL" }, { key: "LaLiga", label: "LA LIGA" }, { key: "SerieA", label: "SERIE A" }, { key: "Bundesliga", label: "BUNDESLIGA" }, { key: "Ligue1", label: "LIGUE 1" }, { key: "LigaPortugal", label: "LIGA PORTUGAL" }, { key: "Eredivisie", label: "EREDIVISIE" }, { key: "BelgianProLeague", label: "BELGIUM" }];
+// 리그 목록·기본 팀·이름은 lib/leagues.ts 한 곳
 
 export default function Page() {
   const [teams, setTeams] = useState<Team[]>([]);
@@ -166,8 +166,8 @@ export default function Page() {
     if (lg && lg !== league) { setActiveLeague(lg); setLeagueSel(lg); }
     setHome(false); setSel(club); setPendingPlayer(player); setUrlPlayer(player); setTab("player"); setNavOpen(false);
   };
-  const leagueName = league === "LaLiga" ? "La Liga" : league === "SerieA" ? "Serie A" : league === "Bundesliga" ? "Bundesliga" : league === "Ligue1" ? "Ligue 1" : league === "LigaPortugal" ? "Liga Portugal" : league === "Eredivisie" ? "Eredivisie" : league === "BelgianProLeague" ? "Belgian Pro League" : "Premier League";
-  const leagueLabel = league === "LaLiga" ? "LA LIGA" : league === "SerieA" ? "SERIE A" : league === "Bundesliga" ? "BUNDESLIGA" : league === "Ligue1" ? "LIGUE 1" : league === "LigaPortugal" ? "LIGA PORTUGAL" : league === "Eredivisie" ? "EREDIVISIE" : league === "BelgianProLeague" ? "BELGIUM" : "EPL";
+  const leagueName = leagueNameOf(league);
+  const leagueLabel = leagueLabelOf(league);
   const switchLeague = (l: string) => {
     if (l === league) { setHome(true); setHomeView("league"); setNavOpen(false); return; }
     setActiveLeague(l);
