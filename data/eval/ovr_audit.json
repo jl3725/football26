@@ -1,12 +1,20 @@
 {
- "date": "2026-10-21",
+ "date": "2026-10-22",
  "model": "v3.9",
- "checked": 25768,
+ "checked": 41984,
  "mismatches": [],
  "leagues": {
   "EPL": {
    "teams": 20,
-   "checked": 3281,
+   "checked": 3290,
+   "mismatches": 0,
+   "changed": 0,
+   "model_changed": 0,
+   "changes_top": []
+  },
+  "AustrianBundesliga": {
+   "teams": 12,
+   "checked": 2401,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -14,7 +22,7 @@
   },
   "BelgianProLeague": {
    "teams": 18,
-   "checked": 3080,
+   "checked": 3084,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -22,7 +30,23 @@
   },
   "Bundesliga": {
    "teams": 18,
-   "checked": 2909,
+   "checked": 2907,
+   "mismatches": 0,
+   "changed": 0,
+   "model_changed": 0,
+   "changes_top": []
+  },
+  "Championship": {
+   "teams": 24,
+   "checked": 4754,
+   "mismatches": 0,
+   "changed": 0,
+   "model_changed": 0,
+   "changes_top": []
+  },
+  "DanishSuperliga": {
+   "teams": 12,
+   "checked": 2443,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -30,7 +54,7 @@
   },
   "Eredivisie": {
    "teams": 18,
-   "checked": 3109,
+   "checked": 3114,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -38,7 +62,7 @@
   },
   "LaLiga": {
    "teams": 20,
-   "checked": 3492,
+   "checked": 3483,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -46,7 +70,7 @@
   },
   "LigaPortugal": {
    "teams": 18,
-   "checked": 3144,
+   "checked": 3134,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -54,7 +78,7 @@
   },
   "Ligue1": {
    "teams": 18,
-   "checked": 3004,
+   "checked": 3011,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -62,7 +86,23 @@
   },
   "SerieA": {
    "teams": 20,
-   "checked": 3429,
+   "checked": 3427,
+   "mismatches": 0,
+   "changed": 0,
+   "model_changed": 0,
+   "changes_top": []
+  },
+  "SuperLig": {
+   "teams": 18,
+   "checked": 3785,
+   "mismatches": 0,
+   "changed": 0,
+   "model_changed": 0,
+   "changes_top": []
+  },
+  "SwissSuperLeague": {
+   "teams": 12,
+   "checked": 2631,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,

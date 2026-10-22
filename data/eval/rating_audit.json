@@ -1,7 +1,7 @@
 {
- "date": "2026-10-21",
+ "date": "2026-10-22",
  "model": "v3.9",
- "players": 3423,
+ "players": 5755,
  "golden": [],
  "scout": [
   {
@@ -117,14 +117,6 @@
    "off": -1
   },
   {
-   "player": "Nicolò Barella",
-   "league": "SerieA",
-   "ovr": 85,
-   "lo": 86,
-   "hi": 89,
-   "off": -1
-  },
-  {
    "player": "Kevin De Bruyne",
    "league": "SerieA",
    "ovr": 81,
@@ -136,34 +128,37 @@
  "scout_far": [],
  "audit": {
   "rise": {
-   "n": 13,
+   "n": 16,
    "limit": 25,
    "desc": "지난 시즌(1,500분+) 대비 +6 이상 — 한 시즌 급등",
    "examples": [
-    "Luis Milla(Como, 32) 77 ← 71",
+    "Diego Moreira(Milan, 22) 81 ← 75",
+    "Luis Milla(Como, 32) 78 ← 71",
     "Nobel Mendy(Hull City, 22) 74 ← 68",
+    "Nathan Saliba(Villarreal, 22) 73 ← 66",
+    "Adama Camara(Paris FC, 30) 71 ← 64",
     "Tiago Araújo(Gent, 25) 69 ← 63",
     "Thom van Bergen(Groningen, 22) 68 ← 61",
-    "Tibe De Vlieger(Gent, 20) 68 ← 62",
-    "Adnane Abid(Standard Liège, 23) 68 ← 61",
-    "David van der Werff(Groningen, 22) 66 ← 59",
-    "Abraham Marcus(Estrela, 26) 66 ← 59"
+    "Tibe De Vlieger(Gent, 20) 68 ← 62"
    ]
   },
   "fall": {
-   "n": 0,
+   "n": 1,
    "limit": 25,
    "desc": "지난 시즌(1,500분+) 대비 −8 이하 — 급락(부상·이적·데이터 오류?)",
-   "examples": []
+   "examples": [
+    "André(Göztepe, 24) 63 ← 78"
+   ]
   },
   "underperf_high": {
-   "n": 3,
+   "n": 4,
    "limit": 10,
    "desc": "OVR 86+ 인데 리그 보정 평점이 포지션 평균보다 0.1 넘게 낮음(900분+)",
    "examples": [
     "Achraf Hakimi(PSG, 27) 88 ← 89",
     "João Neves(PSG, 22) 88 ← 88",
-    "Trent Alexander-Arnold(Real Madrid, 28) 86 ← 85"
+    "Trent Alexander-Arnold(Real Madrid, 28) 86 ← 85",
+    "Willian Pacho(PSG, 25) 86 ← 86"
    ]
   },
   "young_elite": {
@@ -176,10 +171,14 @@
    ]
   },
   "no_value_high": {
-   "n": 1,
+   "n": 5,
    "limit": 10,
    "desc": "시장가치 없이 OVR 80+ (TM 매칭 실패·이적 잔류 행)",
    "examples": [
+    "Jack Grealish(Manchester City, 31) 84",
+    "Robert Sánchez(Chelsea, 28) 82",
+    "Nick Woltemade(Newcastle United, 24) 81",
+    "Joey Veerman(PSV, 27) 81",
     "Samu Omorodion(Porto, ) 80"
    ]
   }

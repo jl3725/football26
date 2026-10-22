@@ -518,8 +518,8 @@
    "orphans": []
   },
   "fotmob_ratings": {
-   "total": 348,
-   "exact": 337,
+   "total": 351,
+   "exact": 340,
    "rule": 8,
    "ambiguous": 0,
    "orphan": 0,
@@ -1835,6 +1835,791 @@
    "total": 280,
    "exact": 277,
    "rule": 2,
+   "ambiguous": 0,
+   "orphan": 0,
+   "orphans": []
+  }
+ },
+ "Championship 2026_2027": {
+  "wiki_squads": {
+   "total": 858,
+   "exact": 612,
+   "rule": 3,
+   "ambiguous": 0,
+   "orphan": 0,
+   "orphans": []
+  },
+  "espn_lineups": {
+   "total": 687,
+   "exact": 628,
+   "rule": 6,
+   "ambiguous": 0,
+   "orphan": 53,
+   "orphans": [
+    {
+     "squad": "Sheffield United",
+     "name": "Callum O'Hare",
+     "starts": 3
+    },
+    {
+     "squad": "Derby County",
+     "name": "Raymond Offor",
+     "starts": 0
+    },
+    {
+     "squad": "Derby County",
+     "name": "Isaac Gordon",
+     "starts": 0
+    },
+    {
+     "squad": "Norwich City",
+     "name": "Caleb Ansen",
+     "starts": 0
+    },
+    {
+     "squad": "Swansea City",
+     "name": "Carter Heywood",
+     "starts": 0
+    },
+    {
+     "squad": "Swansea City",
+     "name": "Thomas Woodward",
+     "starts": 0
+    },
+    {
+     "squad": "Preston North End",
+     "name": "Isaac Irwin",
+     "starts": 0
+    },
+    {
+     "squad": "Cardiff City",
+     "name": "Troy Perrett",
+     "starts": 0
+    },
+    {
+     "squad": "Cardiff City",
+     "name": "Paul Moreno",
+     "starts": 0
+    },
+    {
+     "squad": "Bolton Wanderers",
+     "name": "Max Matthew Lott",
+     "starts": 0
+    },
+    {
+     "squad": "Wrexham",
+     "name": "Samuel Chesworth",
+     "starts": 0
+    },
+    {
+     "squad": "West Bromwich Albion",
+     "name": "Matthew Crowther",
+     "starts": 0
+    },
+    {
+     "squad": "Birmingham City",
+     "name": "Menzi Mazwi",
+     "starts": 0
+    },
+    {
+     "squad": "Blackburn Rovers",
+     "name": "Harry Lister",
+     "starts": 0
+    },
+    {
+     "squad": "Millwall",
+     "name": "Tristan Parkes",
+     "starts": 0
+    },
+    {
+     "squad": "Stoke City",
+     "name": "Freddie Anderson",
+     "starts": 0
+    },
+    {
+     "squad": "Birmingham City",
+     "name": "Kanya Fujimoto",
+     "starts": 0
+    },
+    {
+     "squad": "West Bromwich Albion",
+     "name": "Alfie Maughan",
+     "starts": 0
+    },
+    {
+     "squad": "West Bromwich Albion",
+     "name": "Ben Cisse",
+     "starts": 0
+    },
+    {
+     "squad": "Cardiff City",
+     "name": "Noah Anyadike",
+     "starts": 0
+    },
+    {
+     "squad": "Burnley",
+     "name": "Ellis Clark",
+     "starts": 0
+    },
+    {
+     "squad": "Millwall",
+     "name": "Sacha Tsugita Vieira",
+     "starts": 0
+    },
+    {
+     "squad": "Blackburn Rovers",
+     "name": "Felix Goddard",
+     "starts": 0
+    },
+    {
+     "squad": "Blackburn Rovers",
+     "name": "Michael Decandia",
+     "starts": 0
+    },
+    {
+     "squad": "Middlesbrough",
+     "name": "Cruz Ibeh",
+     "starts": 0
+    }
+   ]
+  },
+  "espn_lineups_cups": {
+   "total": 595,
+   "exact": 555,
+   "rule": 5,
+   "ambiguous": 0,
+   "orphan": 35,
+   "orphans": [
+    {
+     "squad": "Charlton Athletic",
+     "name": "Greg Docherty",
+     "starts": 1
+    },
+    {
+     "squad": "Lincoln City",
+     "name": "Adam Jackson",
+     "starts": 1
+    },
+    {
+     "squad": "Wolves",
+     "name": "Saheed Olagunju",
+     "starts": 1
+    },
+    {
+     "squad": "Watford",
+     "name": "Raphael London",
+     "starts": 1
+    },
+    {
+     "squad": "Watford",
+     "name": "Tomiwa Akinyimika",
+     "starts": 1
+    },
+    {
+     "squad": "Norwich City",
+     "name": "Liam Gibbs",
+     "starts": 1
+    },
+    {
+     "squad": "West Bromwich Albion",
+     "name": "Alex Mowatt",
+     "starts": 1
+    },
+    {
+     "squad": "Bristol City",
+     "name": "Max Bird",
+     "starts": 1
+    },
+    {
+     "squad": "Millwall",
+     "name": "Regan Anderson",
+     "starts": 0
+    },
+    {
+     "squad": "Millwall",
+     "name": "George Beaumont",
+     "starts": 0
+    },
+    {
+     "squad": "Charlton Athletic",
+     "name": "Bradley Tagoe",
+     "starts": 0
+    },
+    {
+     "squad": "Sheffield United",
+     "name": "Nils Zätterström",
+     "starts": 0
+    },
+    {
+     "squad": "Millwall",
+     "name": "Ajay Matthews",
+     "starts": 0
+    },
+    {
+     "squad": "Millwall",
+     "name": "Archie Kirby",
+     "starts": 0
+    },
+    {
+     "squad": "Wolves",
+     "name": "Josh Gracey",
+     "starts": 0
+    },
+    {
+     "squad": "Cardiff City",
+     "name": "Luey Giles",
+     "starts": 0
+    },
+    {
+     "squad": "Southampton",
+     "name": "Shea Charles",
+     "starts": 0
+    },
+    {
+     "squad": "Blackburn Rovers",
+     "name": "George Pratt",
+     "starts": 0
+    },
+    {
+     "squad": "Cardiff City",
+     "name": "Eli King",
+     "starts": 0
+    },
+    {
+     "squad": "Derby County",
+     "name": "Charlie Smith",
+     "starts": 0
+    },
+    {
+     "squad": "Derby County",
+     "name": "Cruz Allen",
+     "starts": 0
+    },
+    {
+     "squad": "Norwich City",
+     "name": "Matěj Jurásek",
+     "starts": 0
+    },
+    {
+     "squad": "Norwich City",
+     "name": "Vatan Özcan",
+     "starts": 0
+    },
+    {
+     "squad": "Preston North End",
+     "name": "Max Wilson",
+     "starts": 0
+    },
+    {
+     "squad": "Bolton Wanderers",
+     "name": "Charlie Warren",
+     "starts": 0
+    }
+   ]
+  },
+  "espn_subs": {
+   "total": 510,
+   "exact": 510,
+   "rule": 0,
+   "ambiguous": 0,
+   "orphan": 0,
+   "orphans": []
+  },
+  "espn_subs_cups": {
+   "total": 346,
+   "exact": 346,
+   "rule": 0,
+   "ambiguous": 0,
+   "orphan": 0,
+   "orphans": []
+  },
+  "fotmob_ratings": {
+   "total": 400,
+   "exact": 400,
+   "rule": 0,
+   "ambiguous": 0,
+   "orphan": 0,
+   "orphans": []
+  }
+ },
+ "SuperLig 2026_2027": {
+  "wiki_squads": {
+   "total": 525,
+   "exact": 421,
+   "rule": 13,
+   "ambiguous": 1,
+   "orphan": 0,
+   "orphans": []
+  },
+  "espn_lineups": {
+   "total": 569,
+   "exact": 562,
+   "rule": 0,
+   "ambiguous": 0,
+   "orphan": 7,
+   "orphans": [
+    {
+     "squad": "Trabzonspor",
+     "name": "René Mitongo",
+     "starts": 0
+    },
+    {
+     "squad": "Çorum FK",
+     "name": "Hasan Abdulkareem",
+     "starts": 0
+    },
+    {
+     "squad": "Göztepe",
+     "name": "Guilherme Luiz",
+     "starts": 0
+    },
+    {
+     "squad": "Erzurumspor FK",
+     "name": "Mert Onal",
+     "starts": 0
+    },
+    {
+     "squad": "Beşiktaş",
+     "name": "Amir Hadziahmetovic",
+     "starts": 0
+    },
+    {
+     "squad": "Alanyaspor",
+     "name": "Eymen Karatas",
+     "starts": 0
+    },
+    {
+     "squad": "Konyaspor",
+     "name": "Eren Yagmur",
+     "starts": 0
+    }
+   ]
+  },
+  "espn_lineups_cups": {
+   "total": 94,
+   "exact": 93,
+   "rule": 0,
+   "ambiguous": 0,
+   "orphan": 1,
+   "orphans": [
+    {
+     "squad": "Trabzonspor",
+     "name": "Oğuzhan Ertem",
+     "starts": 0
+    }
+   ]
+  },
+  "espn_subs": {
+   "total": 410,
+   "exact": 410,
+   "rule": 0,
+   "ambiguous": 0,
+   "orphan": 0,
+   "orphans": []
+  },
+  "espn_subs_cups": {
+   "total": 52,
+   "exact": 52,
+   "rule": 0,
+   "ambiguous": 0,
+   "orphan": 0,
+   "orphans": []
+  },
+  "fotmob_ratings": {
+   "total": 272,
+   "exact": 256,
+   "rule": 0,
+   "ambiguous": 0,
+   "orphan": 0,
+   "orphans": []
+  }
+ },
+ "AustrianBundesliga 2026_2027": {
+  "wiki_squads": {
+   "total": 398,
+   "exact": 296,
+   "rule": 4,
+   "ambiguous": 1,
+   "orphan": 0,
+   "orphans": []
+  },
+  "espn_lineups": {
+   "total": 356,
+   "exact": 346,
+   "rule": 0,
+   "ambiguous": 0,
+   "orphan": 10,
+   "orphans": [
+    {
+     "squad": "Austria Wien",
+     "name": "Moritz Wels",
+     "starts": 1
+    },
+    {
+     "squad": "Austria Wien",
+     "name": "David Ewemade",
+     "starts": 0
+    },
+    {
+     "squad": "Sturm Graz",
+     "name": "Gabriel Haider",
+     "starts": 0
+    },
+    {
+     "squad": "Salzburg",
+     "name": "Teo Hupfauf",
+     "starts": 0
+    },
+    {
+     "squad": "Sturm Graz",
+     "name": "Christoph Wiener-Pucher",
+     "starts": 0
+    },
+    {
+     "squad": "Rapid Wien",
+     "name": "Tobias Gulliksen",
+     "starts": 0
+    },
+    {
+     "squad": "Grazer AK",
+     "name": "Nicky Brown Ugo",
+     "starts": 0
+    },
+    {
+     "squad": "Ried",
+     "name": "Dominik Kirnbauer",
+     "starts": 0
+    },
+    {
+     "squad": "Salzburg",
+     "name": "Yerwin Sulbarán",
+     "starts": 0
+    },
+    {
+     "squad": "Grazer AK",
+     "name": "Felix Baumgartner",
+     "starts": 0
+    }
+   ]
+  },
+  "espn_lineups_cups": {
+   "total": 74,
+   "exact": 71,
+   "rule": 0,
+   "ambiguous": 0,
+   "orphan": 3,
+   "orphans": [
+    {
+     "squad": "Sturm Graz",
+     "name": "Jonas Petritsch",
+     "starts": 0
+    },
+    {
+     "squad": "Sturm Graz",
+     "name": "Jonas Peinhart",
+     "starts": 0
+    },
+    {
+     "squad": "Sturm Graz",
+     "name": "Mate Grgic",
+     "starts": 0
+    }
+   ]
+  },
+  "espn_subs": {
+   "total": 257,
+   "exact": 257,
+   "rule": 0,
+   "ambiguous": 0,
+   "orphan": 0,
+   "orphans": []
+  },
+  "espn_subs_cups": {
+   "total": 41,
+   "exact": 41,
+   "rule": 0,
+   "ambiguous": 0,
+   "orphan": 0,
+   "orphans": []
+  },
+  "fotmob_ratings": {
+   "total": 202,
+   "exact": 182,
+   "rule": 0,
+   "ambiguous": 0,
+   "orphan": 0,
+   "orphans": []
+  }
+ },
+ "DanishSuperliga 2026_2027": {
+  "wiki_squads": {
+   "total": 277,
+   "exact": 219,
+   "rule": 4,
+   "ambiguous": 1,
+   "orphan": 0,
+   "orphans": []
+  },
+  "espn_lineups": {
+   "total": 364,
+   "exact": 336,
+   "rule": 1,
+   "ambiguous": 0,
+   "orphan": 27,
+   "orphans": [
+    {
+     "squad": "Lyngby",
+     "name": "Casper Winther",
+     "starts": 6
+    },
+    {
+     "squad": "AC Horsens",
+     "name": "Kristian Kirkegaard",
+     "starts": 5
+    },
+    {
+     "squad": "Silkeborg",
+     "name": "Callum McCowatt",
+     "starts": 5
+    },
+    {
+     "squad": "Sønderjyske",
+     "name": "Daníel Grétarsson",
+     "starts": 4
+    },
+    {
+     "squad": "OB",
+     "name": "Jakob Bonde",
+     "starts": 4
+    },
+    {
+     "squad": "Sønderjyske",
+     "name": "Magnus Jensen",
+     "starts": 2
+    },
+    {
+     "squad": "Sønderjyske",
+     "name": "Olti Hyseni",
+     "starts": 1
+    },
+    {
+     "squad": "Viborg",
+     "name": "Andreas Soendergaard",
+     "starts": 0
+    },
+    {
+     "squad": "Sønderjyske",
+     "name": "Elias Hjort-Pedersen",
+     "starts": 0
+    },
+    {
+     "squad": "FC Midtjylland",
+     "name": "Joseph Okuaghare",
+     "starts": 0
+    },
+    {
+     "squad": "Randers FC",
+     "name": "Gustav Boegild",
+     "starts": 0
+    },
+    {
+     "squad": "FC Midtjylland",
+     "name": "Frederik Vestergaard",
+     "starts": 0
+    },
+    {
+     "squad": "OB",
+     "name": "Noah Manata",
+     "starts": 0
+    },
+    {
+     "squad": "FC København",
+     "name": "Henrik Haraldsen",
+     "starts": 0
+    },
+    {
+     "squad": "FC København",
+     "name": "Gunnar Olsen",
+     "starts": 0
+    },
+    {
+     "squad": "Randers FC",
+     "name": "Mads Soendergaard Nielsen",
+     "starts": 0
+    },
+    {
+     "squad": "AGF",
+     "name": "Zander Grantzau",
+     "starts": 0
+    },
+    {
+     "squad": "Lyngby",
+     "name": "Mathias Kaarsbo",
+     "starts": 0
+    },
+    {
+     "squad": "OB",
+     "name": "Noah Lassen",
+     "starts": 0
+    },
+    {
+     "squad": "Viborg",
+     "name": "Osman Addo",
+     "starts": 0
+    },
+    {
+     "squad": "Randers FC",
+     "name": "Max Albæk",
+     "starts": 0
+    },
+    {
+     "squad": "Silkeborg",
+     "name": "Simon Stüker",
+     "starts": 0
+    },
+    {
+     "squad": "FC København",
+     "name": "Munashe Garananga",
+     "starts": 0
+    },
+    {
+     "squad": "AGF",
+     "name": "Hamuza Sengooba",
+     "starts": 0
+    },
+    {
+     "squad": "AC Horsens",
+     "name": "Muhamet Hyseni",
+     "starts": 0
+    }
+   ]
+  },
+  "espn_lineups_cups": {
+   "total": 90,
+   "exact": 89,
+   "rule": 0,
+   "ambiguous": 0,
+   "orphan": 1,
+   "orphans": [
+    {
+     "squad": "AGF",
+     "name": "Marius van der Raad",
+     "starts": 0
+    }
+   ]
+  },
+  "espn_subs": {
+   "total": 279,
+   "exact": 279,
+   "rule": 0,
+   "ambiguous": 0,
+   "orphan": 0,
+   "orphans": []
+  },
+  "espn_subs_cups": {
+   "total": 38,
+   "exact": 38,
+   "rule": 0,
+   "ambiguous": 0,
+   "orphan": 0,
+   "orphans": []
+  },
+  "fotmob_ratings": {
+   "total": 195,
+   "exact": 195,
+   "rule": 0,
+   "ambiguous": 0,
+   "orphan": 0,
+   "orphans": []
+  }
+ },
+ "SwissSuperLeague 2026_2027": {
+  "wiki_squads": {
+   "total": 467,
+   "exact": 348,
+   "rule": 3,
+   "ambiguous": 0,
+   "orphan": 0,
+   "orphans": []
+  },
+  "espn_lineups": {
+   "total": 345,
+   "exact": 337,
+   "rule": 1,
+   "ambiguous": 0,
+   "orphan": 7,
+   "orphans": [
+    {
+     "squad": "Young Boys",
+     "name": "Silas Ubaka",
+     "starts": 0
+    },
+    {
+     "squad": "Young Boys",
+     "name": "Rhodri Smith",
+     "starts": 0
+    },
+    {
+     "squad": "Basel",
+     "name": "Albian Ajeti",
+     "starts": 0
+    },
+    {
+     "squad": "Young Boys",
+     "name": "Felix Emmanuel Tsimba",
+     "starts": 0
+    },
+    {
+     "squad": "Luzern",
+     "name": "Ronaldo Dantas Fernandes",
+     "starts": 0
+    },
+    {
+     "squad": "Young Boys",
+     "name": "Darian Males",
+     "starts": 0
+    },
+    {
+     "squad": "Basel",
+     "name": "Ibrahim Salah",
+     "starts": 0
+    }
+   ]
+  },
+  "espn_lineups_cups": {
+   "total": 43,
+   "exact": 42,
+   "rule": 0,
+   "ambiguous": 0,
+   "orphan": 1,
+   "orphans": [
+    {
+     "squad": "Thun",
+     "name": "Dario Waelti",
+     "starts": 0
+    }
+   ]
+  },
+  "espn_subs": {
+   "total": 270,
+   "exact": 270,
+   "rule": 0,
+   "ambiguous": 0,
+   "orphan": 0,
+   "orphans": []
+  },
+  "espn_subs_cups": {
+   "total": 20,
+   "exact": 20,
+   "rule": 0,
+   "ambiguous": 0,
+   "orphan": 0,
+   "orphans": []
+  },
+  "fotmob_ratings": {
+   "total": 183,
+   "exact": 167,
+   "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
    "orphans": []
@@ -4223,6 +5008,56 @@
    "total": 226,
    "exact": 222,
    "rule": 3,
+   "ambiguous": 0,
+   "orphan": 0,
+   "orphans": []
+  }
+ },
+ "Championship 2025_2026": {
+  "fotmob_ratings": {
+   "total": 342,
+   "exact": 342,
+   "rule": 0,
+   "ambiguous": 0,
+   "orphan": 0,
+   "orphans": []
+  }
+ },
+ "SuperLig 2025_2026": {
+  "fotmob_ratings": {
+   "total": 254,
+   "exact": 238,
+   "rule": 0,
+   "ambiguous": 0,
+   "orphan": 0,
+   "orphans": []
+  }
+ },
+ "AustrianBundesliga 2025_2026": {
+  "fotmob_ratings": {
+   "total": 166,
+   "exact": 42,
+   "rule": 0,
+   "ambiguous": 0,
+   "orphan": 0,
+   "orphans": []
+  }
+ },
+ "DanishSuperliga 2025_2026": {
+  "fotmob_ratings": {
+   "total": 178,
+   "exact": 164,
+   "rule": 0,
+   "ambiguous": 0,
+   "orphan": 0,
+   "orphans": []
+  }
+ },
+ "SwissSuperLeague 2025_2026": {
+  "fotmob_ratings": {
+   "total": 171,
+   "exact": 145,
+   "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
    "orphans": []
