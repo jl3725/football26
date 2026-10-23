@@ -23,7 +23,11 @@ from leagues import data_path  # noqa: E402
 
 OUT_PATH = ROOT / "data" / "transfer_buzz.csv"
 
-# 리그별 이적 속보 피드 — EPL: Guardian/BBC, LaLiga: Marca 이적(mercado-fichajes, 스페인어)
+# 리그별 이적 속보 피드 — EPL: Guardian/BBC, LaLiga: Marca 이적(mercado-fichajes, 스페인어).
+# 이적 전용 피드(DEDICATED)는 그대로, 나머지(축구 전체 기사 피드)는 뉴스 분류 규칙이 '이적'이라 한 기사만 남긴다 —
+# 예전엔 전체 기사를 다 넣어 kicker·L'Équipe·Record·NOS 의 '이적 속보'가 경기 예고·인터뷰였다
+# (2026-10-23 표본: Football Italia 0/20 · kicker 3/20 · L'Équipe 1/25 · Record 0/12 · NOS 0/16 이 이적 기사)
+DEDICATED = {"Guardian", "BBC", "Marca"}
 FEEDS_BY_LEAGUE = {
     "EPL": [
         ("Guardian", "https://www.theguardian.com/football/transfer-window/rss"),
@@ -88,9 +92,11 @@ def _known_ko(path: Path) -> dict[str, str]:
 _OFF_TOPIC_LINK = re.compile(r"/(modalidades|motores|fora-de-campo|multimedia|opiniao)/", re.I)
 
 
-def _fetch(league: str = "EPL") -> list[dict]:
+def _fetch(league: str = "EPL") -> tuple[list[dict], int]:
+    """(이적 항목, 읽은 기사 수) — 읽은 기사가 있는데 이적 항목이 0이면 피드 고장이 아니라 이적 소식이 없는 것."""
     import feedparser
-    rows, seen = [], set()
+    import news_classify as nc  # noqa: PLC0415
+    rows, seen, n_read = [], set(), 0
     # 피드가 없는 리그(라이트 리그)에 EPL 피드를 붙이면 그 리그 팀 이름으로 EPL 기사를 잘못 잡는다 — 빈 목록
     for src, url in FEEDS_BY_LEAGUE.get(league, []):
         try:
@@ -98,11 +104,15 @@ def _fetch(league: str = "EPL") -> list[dict]:
         except Exception as exc:
             print(f"[buzz] {src} 실패: {exc}", file=sys.stderr)
             continue
-        for e in feed.entries[:25]:
+        dedicated = src in DEDICATED
+        for e in feed.entries[:25 if dedicated else 80]:
+            n_read += 1
             title = re.sub(r"\s+", " ", (e.get("title") or "")).strip()
             title = re.sub(r"^<!\[CDATA\[\s*|\s*\]\]>$", "", title)   # 일부 피드(Record)의 CDATA 래퍼
             title = re.sub(r"\s*[-–]\s*\w+'s gossip$", "", title, flags=re.I)  # BBC 꼬리표 제거
             if not title or title.lower() in seen or _OFF_TOPIC_LINK.search(e.get("link") or ""):
+                continue
+            if not dedicated and nc.rule_kind(title, re.sub(r"<[^>]+>", " ", e.get("summary") or "")[:300]) != "transfer":
                 continue
             seen.add(title.lower())
             pub = ""
@@ -115,7 +125,7 @@ def _fetch(league: str = "EPL") -> list[dict]:
                 "source": src, "title_en": title, "tier": _classify(title),
                 "link": e.get("link") or "", "published": pub,
             })
-    return rows
+    return rows, n_read
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -130,8 +140,8 @@ def main(argv: list[str] | None = None) -> int:
     if args.out is None:
         args.out = OUT_PATH if args.league == "EPL" else data_path("transfer_buzz", args.league)
 
-    rows = _fetch(args.league)
-    if not rows:
+    rows, n_read = _fetch(args.league)
+    if not n_read:
         print("[buzz] 항목 없음 — 기존 파일 유지", file=sys.stderr)
         return 1
 

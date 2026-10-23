@@ -48,26 +48,59 @@ def _rx(*words: str) -> re.Pattern:
 # 종류 — 위에서부터 먼저 맞는 것(부상 > 이적 > 경기 > 인터뷰)
 INJURY = _rx("injur", "ruled out", "sidelined", "hamstring", "knee", "ankle", "muscle", "fitness", "out for", "return date",
              "knock", "surgery", "lesion", "lesio", "baja", "infortun", "stop per", "verletz", "ausfall", "faellt aus", "fallt aus",
-             "blessure", "blesse", "forfait", "lesao", "lesionad", "geblesseerd", "breuk", "neusbreuk", "uitgevallen", "kruisband")
-TRANSFER = _rx("transfer", "signing", "sign ", "signs", "signed", "bid", "loan", "swoop", "move for", "move to", "target",
-               "release clause", "contract", r"deal\b", r"fee (for|of|agreed)\b", r"(agree|agreed|record|undisclosed|transfer) fee\b", "race for", "race to", "chase", "pursuit", "scout", "here we go",
-               "joins", "join ", "joining", "departure", r"exit\b", "cedid", "cedut", "llegada", "salida", "fichado",
-               "acuerdo", "accordo", "akkoord", "acordo", "vertrek", "komst", "verlenging",
-               "fichaj", "fichar", "mercado", "traspaso", "clausula", "renov", "calciomercato", "mercato", "trasferiment",
-               "acquist", "offerta", "cession", "prestito", "rinnov", "wechsel", "ablose", "vertrag", "leihe", "transfert",
-               "recrue", "prolong", "pret ", "contrato", "reforco", "transferencia", "emprestimo", "overgang", "huur",
-               "transfervrij", "contractverlenging", "scouts")
+             "blessure", "blesse", "forfait", "lesao", "lesionad", "geblesseerd", "breuk", "neusbreuk", "uitgevallen", "kruisband",
+             "sakatl", "yaralan", "ameliyat", "skade", "skadet", "korsband", "wieder fit", "fit again", "back in training",
+             "returns from", "de retour", "absent", "verzicht", "lange aus", "ligament", "dechir", "fare a meno", "selection boost",
+             "terug voor", "ritrova")
+# 이적 — 확실한 낱말(제목·요약 어디서든) / 애매한 낱말(제목에서만, 다른 뜻 표현을 지운 뒤).
+# 예전엔 낱말 하나라도 있으면 이적이라 요약문의 'llegada'·'contrato'·'pursuit'·'departure' 로 경기·인터뷰 기사가 이적이 됐고
+# (정밀도 0.78), 튀르키예어·덴마크어 낱말이 없어 쉬페르리그 기사 대부분이 '기타'였다(2026-10-23 평가 표본).
+TRANSFER_STRONG = _rx("transfer", "signing", "signs for", "signed for", "swoop", "release clause", "here we go", "loan move", "loan deal",
+                      "on loan", "permanent deal", "permanent move", r"fee (for|of|agreed)\b",
+                      r"(agree|agreed|record|undisclosed|transfer|club-record|initial) fee\b", "fichaj", "fichar", "traspaso", "calciomercato", "mercato",
+                      "trasferiment", "acquist", "cession", "prestito", "wechsel", "ablose", "leihe", "verleih", "neuzugang", "verpflicht",
+                      "transfert", "recrue", "overgang", "transferencia", "emprestimo", "reforco", "contratac", "kiralik", "bonservis",
+                      "imzala", "imza att", "takas", "lejeaftale", "udlej", "klubskifte", "skifter til", "contract extension", "new contract",
+                      "new deal", "verlenging", "contractverlenging", "renova", "renueva", "renovac", "renovo", "rinnovo", "rinnova il",
+                      "prolonge", "verlangert", "verlaengert", "forlaenger", "transfervrij", "free agent", "vrije transfer",
+                      "kaufentscheidung", "kaufoption", "kaufpflicht", "assina pelo", "assina por", "assinou")
+TRANSFER_WEAK = _rx("target", r"deal\b", "contract", r"exit\b", "departure", "salida", "llegada", "chegada", "saida", "joins",
+                    "join ", "joining", "move to", "move for", "chase", "pursuit", "race for", "race to", "scout", "acuerdo", "accordo",
+                    "akkoord", "acordo", "komst", "vertrek", "vertrag", "contrato", "kontrakt", "sozlesme", "bid", "loan", "sign ",
+                    "signs", "signed", "linked", r"link\b", "na mira", "nel mirino", "im visier", "radarina", "gundeminde", "arrivee",
+                    r"depart\b", "vise ", "teklif", "anlasma", "yollar ayrild", "ayrilik", "henter", "kober", "saelger",
+                    "skifte", "abschied", "verbleib", "klopft", "an der angel", "interesse an", "blinda", "novo treinador",
+                    "new manager", "new head coach", "yeni teknik direktor", "ny cheftraener", "huur", "pret ", "cedid", "cedut",
+                    "departs", "release")
+# 이적 낱말의 다른 뜻 — 지우고 본다: 'bid to follow up'(시도) · 'deal with'(대처) · 연장전(prolongamento·prolongation) ·
+# 'fiducia rinnovata'(신뢰) · 'joins the cast·stars'(출연) · 대출·주식 · 'loan star'(임대 가서 활약하는 선수 기사)
+NOT_TRANSFER = re.compile(r"\b(bid to (?!sign|land|bring|buy|secure|lure|keep|tie|re-sign)[a-z]+|deals? with|dealt with|loanee|"
+                          r"prolongament\w*|prolongacion\w*|prolongation\w*|fiducia \w+|joins? (the )?(stars|cast|crew|board|"
+                          r"band|show|line up of|celebrations)|housing loan|loan from|stock|shares|investing|loan star|"
+                          r"city of culture)\b")
+# 구단 사업 계약(용품·후원·중계·명명권) — 'verlängert'·'deal' 이 있어도 선수 이적이 아니다
+# ('SV Ried verlängert mit hummel bis 2032 – Ausrüstervertrag', 2026-10-23)
+BUSINESS_DEAL = re.compile(r"\b(ausruster\w*|sponsor\w*|kit (deal|supplier|partner)\w*|partnership|naming rights|"
+                           r"broadcast\w* (deal|rights)|tv (deal|rights)|equipementier|patrocin\w*)\b")
 MATCH = _rx("preview", "prediction", "team news", "lineup", "line up", "line-up", "player ratings", "ratings", "highlights",
             "where to watch", "how to watch", "live updates", "match report", "kick off", "kick-off", "result",
             "probabili formazioni", "pagelle", "dove vedere", "pronostic", "compos", "ou regarder", "horario", "donde ver",
             "alineacion", "cronica", "aufstellung", "vorbericht", "noten", "spielbericht", "samenvatting", "opstelling",
             "onde ver", "escalac", "antevisao", "uitslag", "voorbeschouwing", "win against", "win over", r"beats?\b",
             "beaten", "draw with", "draw against", "held to", "defeat", "victory", "victoria", "derrota", "empate", "vittoria", "sconfitta",
-            "pareggio", "sieg", "niederlage", "remis", "victoire", "defaite", "vitoria", "zege", "nederlaag", "gelijkspel")
-VS = re.compile(r"\b(vs?|v|contre|contra|gegen|tegen)\b|\d+\s*[-–]\s*\d+")
+            "pareggio", "sieg", "niederlage", "remis", "victoire", "defaite", "vitoria", "zege", "nederlaag", "gelijkspel",
+            "mac ", "maci", "macin", "galibiyet", "maglubiyet", "berabere", "karsilasma", "canli", "ilk 11", "skor",
+            "kamp", "sejr", "nederlag", "uafgjort", "startopstilling", "holdopstilling", "liveticker", "live ticker", "live-ticker",
+            "spieltag", "unentschieden", r"wins?\b", "thrilling", "comeback", "hat-trick", "hat trick", "brace", "rout", "thrash",
+            "edge past", "cruise", "stun", "goleada", "golazo", "elimina", "eliminat", "knock out", "knocked out", "into the last",
+            "clash", "scores", r"goal\b", "goals", "team selection", "vorm spiel", "spiel in", "live score", "match summary",
+            "formazione", "giornata", "classifica", "biglietti", "torneo", "trionfo", "disfatta", "vittorios", "empata", "golo",
+            "em direto", "ao vivo", "diffuse", "s incline", r"loss\b", "loses", "lost to", "onze", "op rapport")
+VS = re.compile(r"\b(vs?|v|contre|contra|gegen|tegen)\b|\d+\s*[-–:]\s*\d+|(?<=[a-z]) x (?=[a-z])")
 INTERVIEW = _rx("says", "said", "insists", "admits", "reveals", "explains", "claims", "warns", "responds", "praises",
                 "slams", "hails", "press conference", "interview", "declar", "dice ", "afferma", "ammette", "sagt", "erklart",
-                "declare", "affirme", "explique", "diz ", "afirma", "admite", "zegt", "vertelt", "persconferentie")
+                "declare", "affirme", "explique", "diz ", "afirma", "admite", "zegt", "vertelt", "persconferentie",
+                "acikladi", "konustu", "dedi", "sozleri", "roportaj", "siger", "fortaeller", "meint", "betont")
 QUOTE = re.compile(r"^[\"'“‘«„]|:\s*[\"'“‘«„]")
 
 # 이적 단계 — 부인 > 확정(강) > 합의 > 확정(약) > 협상 > 관심
@@ -82,7 +115,8 @@ AGREED = _rx("agree", "agreement", "personal terms", "medical", "verbal", "close
 DONE_WEAK = _rx("signs", "signed", "joins", "joined", "seals", "sealed", "firma con", "ficha por", "tekent", "getekend",
                 "assina", "assinou", "rejoint", "unterschreibt", "wechselt zu")
 TALKS = _rx("talks", "negotiat", "bid", "offer", "approach", "opening", "proposal", "trattativ", "negociac", "oferta",
-            "offerta", "angebot", "verhandl", "offre", "proposta", "bod ", "onderhandel", "gesprek", "contatti", "contact")
+            "offerta", "angebot", "verhandl", "offre", "proposta", "bod ", "onderhandel", "gesprek", "contatti", "contact",
+            "gorusme", "teklif", "forhandl", "tilbud")
 INTEREST = _rx("interest", "target", r"eyes?\b", r"eyeing", "monitor", "track", "chase", r"race\b", "keen", "consider", "scout", "linked",
                "want", r"plans?\b", "shortlist", "pursuit", "admire", "interes", "seguito", "obiettivo", "osserv", "beobacht",
                "piste", "cible", "alvo", "volgt", "op het oog", "in beeld", "sondeo", "sondaggio", "radar")
@@ -114,11 +148,20 @@ JOIN_IDIOM = re.compile(r"\bjoin(s|ed|ing)? (in )?(the )?(drama|party|list|club 
                         r"celebrations?|exodus|ranks of|elite|history books)\b")
 
 
-def _kind_of(text: str) -> str:
+def _transfer_hit(f: str, strong_only: bool = False) -> bool:
+    g = NOT_TRANSFER.sub(" ", JOIN_IDIOM.sub(" ", f))
+    if BUSINESS_DEAL.search(g):
+        return False
+    if TRANSFER_STRONG.search(g):
+        return True
+    return not strong_only and bool(TRANSFER_WEAK.search(g))
+
+
+def _kind_of(text: str, strong_only: bool = False) -> str:
     f = _fold(text)
     if INJURY.search(f):
         return "injury"
-    if TRANSFER.search(JOIN_IDIOM.sub(" ", f)):
+    if _transfer_hit(f, strong_only):
         return "transfer"
     if MATCH.search(f) or VS.search(str(text or "").lower()):
         return "match"
@@ -132,7 +175,8 @@ def rule_kind(headline: str, descr: str = "", source: str = "", teams: str = "")
     if _is_official(source, teams):
         return "official"
     k = _kind_of(headline)
-    return k if k != "other" or not descr else _kind_of(f"{headline} {descr}")
+    # 요약까지 볼 땐 이적은 확실한 낱말만 — 요약의 'llegada'·'contrato'·'pursuit' 로 경기 기사가 이적이 됐다
+    return k if k != "other" or not descr else _kind_of(f"{headline} {descr}", strong_only=True)
 
 
 def rule_stage(text: str) -> str:
@@ -233,7 +277,7 @@ def ai_labels(rows: list[dict]) -> list[dict]:
     return res
 
 
-RULE_VER = "2026-10-22"   # 분류 규칙을 바꾸면 날짜를 올린다 — 다음 실행이 규칙 분류(by=rule)를 한 번 다시(AI 결과는 그대로)
+RULE_VER = "2026-10-23"   # 분류 규칙을 바꾸면 날짜를 올린다 — 다음 실행이 규칙 분류(by=rule)를 한 번 다시(AI 결과는 그대로)
 
 
 def _rule_ver_changed() -> bool:
