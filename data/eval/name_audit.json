@@ -1835,8 +1835,8 @@
   },
   "espn_lineups_cups": {
    "total": 125,
-   "exact": 123,
-   "rule": 0,
+   "exact": 122,
+   "rule": 1,
    "ambiguous": 0,
    "orphan": 2,
    "orphans": [
@@ -2356,17 +2356,17 @@
    "orphans": [
     {
      "squad": "Sturm Graz",
+     "name": "Mate Grgić",
+     "starts": 0
+    },
+    {
+     "squad": "Sturm Graz",
      "name": "Jonas Petritsch",
      "starts": 0
     },
     {
      "squad": "Sturm Graz",
      "name": "Jonas Peinhart",
-     "starts": 0
-    },
-    {
-     "squad": "Sturm Graz",
-     "name": "Mate Grgic",
      "starts": 0
     }
    ]
@@ -5109,7 +5109,7 @@
   }
  },
  "_meta": {
-  "date": "2026-10-22",
+  "date": "2026-10-23",
   "season": "2026_2027"
  }
 }
