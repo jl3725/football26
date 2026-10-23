@@ -106,6 +106,7 @@ from api.services.player_data import resolve_photo as _resolve_photo  # noqa: E4
 from player_names import read_lineup_csv  # noqa: E402
 from wiki_text import tidy_intro as _tidy_intro  # noqa: E402  (위키 소개 첫 괄호 — 원어·생년월일)
 from injury_names import ko as _inj_ko  # noqa: E402  (TM 부상명 한글 — data/injury_names_ko.json)
+import fee_comps as _fee  # noqa: E402  (적정 이적료 — 시장가치 × 사는 리그·나이 배수 + 비슷한 이적)
 
 app = FastAPI(title="Football Scout API", version="0.2.0")
 app.include_router(meta_router)
@@ -811,7 +812,7 @@ def discover(team: str, role: str = "", leagues: str = "", min_age: int = 0,
     rivals = _club_rivals(team)                 # 위키 라이벌·더비(같은 리그) — 라이벌 구단 선수는 거래 어려움
     for r in out.get("recommendations") or []:
         r["rival"] = str(r.get("squad") or "") in rivals
-        pf_ = _policy_fit(pol, r.get("age"), r.get("value_eur"))
+        pf_ = _policy_fit(pol, r.get("age"), r.get("likely_fee_eur"))
         r["policy_ok"], r["policy_notes"] = pf_["ok"], pf_["notes"]
         # 영입 가능성 — 경쟁 팀(같은 리그 전력 6 이내·위) · 강팀(3 이내·위) 핵심 주전(출전 60%+)은 낮음(recommend 와 같은 기준)
         src = str(r.get("source_league") or league)
@@ -902,10 +903,11 @@ def workspace(team: str, players: str = "", league: str = ACTIVE_LEAGUE):
         if src != league and cur:
             proj, _p, _r = _project_ovr(cur, src, league, False, row.get("age"), _pos_bucket(row))
         value = _num(row.get("market_value_eur")) or None
-        fee = value * 1.2 if value else None
+        fair = _fee.price(value, row.get("age"), league, ovr=cur, pg=_fee.pos_group(row.get("tm_position")), seller_lg=src)
+        fee = fair["mid"] if fair else None     # 적정가 가운데(예전 '시장가 × 1.2')
         pr = cp.price_realism(team, fee)
         con = sr.contract(row.get("tm_contract_until"))
-        pf_ = _policy_fit(pol, row.get("age"), value)
+        pf_ = _policy_fit(pol, row.get("age"), fee)
         cstr = _club_strength(src).get(str(row.get("squad") or club), 78)
         key = _num(row.get("minutes")) >= _mm(2000, src)
         realistic = not (key and ((src == league and cstr >= team_ovr - 6) or cstr >= team_ovr - 3))
@@ -914,6 +916,7 @@ def workspace(team: str, players: str = "", league: str = ACTIVE_LEAGUE):
                     "pos": _pos_label(row), "tm_position": str(row.get("tm_position") or ""), "age": int(_num(row.get("age"))) or None,
                     "photo": _photo(row), "ovr": proj, "current_ovr": cur, "cross_league": src != league,
                     "value_eur": value, "likely_fee_eur": round(fee) if fee else None, "price_verdict": pr.get("verdict"),
+                    "fair": ({k: fair[k] for k in ("lo", "mid", "hi", "basis")} if fair else None),
                     "contract_until": con["until"], "months_left": con["months_left"], "contract_status": con["status"],
                     "minutes": int(_num(row.get("minutes"))), "goals": int(_num(row.get("goals"))), "assists": int(_num(row.get("assists"))),
                     "rating": _num(row.get("ss_rating")) or None,
@@ -3041,9 +3044,25 @@ def _ddmmyyyy(s) -> str:
     return f"{m.group(3)}-{int(m.group(2)):02d}-{int(m.group(1)):02d}" if m else s[:10]
 
 
+def _fair_price(d: dict, league: str, buyer: str = "", buyer_league: str = "") -> dict | None:
+    """스카우트 리포트 FAIR PRICE — 적정가(src/fee_comps.price) + 비슷한 이적 5건(comparables).
+    사는 구단 = 지금 보는 팀(buyer, 그 리그 buyer_league). 자기 팀 선수면 사는 구단을 모름 → 리그 평균 배수."""
+    import positions as ps  # noqa: PLC0415
+    if buyer and buyer == d.get("team"):
+        buyer, buyer_league = "", ""
+    tm_pos = d.get("pos") or ""                # 화면 버킷(CB·LW·ST…) — fee_comps.pos_group 이 읽는다
+    ovr = d.get("ovr")
+    fair = _fee.price(d.get("value_eur"), d.get("age"), buyer_league or None, ovr=ovr, pg=_fee.pos_group(tm_pos),
+                      seller_lg=league)
+    if not fair:
+        return None
+    comps = _fee.comparables(ps.norm_name(d.get("player") or ""), d.get("age"), ovr, tm_pos, league, buyer_league or None)
+    return {**fair, "buyer": buyer or None, "buyer_league": buyer_league or None, "comps": comps}
+
+
 @app.get("/api/scout-report/{team}/{player}")
 @_memo(ttl=21600)
-def scout_report(team: str, player: str, league: str = ACTIVE_LEAGUE):
+def scout_report(team: str, player: str, league: str = ACTIVE_LEAGUE, buyer: str = "", buyer_league: str = ""):
     """스카우팅 리포트 한 장 — 선수 상세 + 강약점(백분위) + 가용성(부상 두 시즌·지금 결장) + 계약·가치 + 이적설(TM 루머·뉴스 단계·
     매체 적중률) + 유사 선수(더 싼 대안 표시) + 판단 문장(src/scout_report.py, 규칙). 숫자는 원자료 그대로."""
     import positions as ps  # noqa: PLC0415
@@ -3070,7 +3089,7 @@ def scout_report(team: str, player: str, league: str = ACTIVE_LEAGUE):
             spells = sr.parse_spells(hit.get("spells_json"))
             seasons.append({"season": label, "games_missed": int(_num(hit.get("games_missed"))),
                             "days_out": int(_num(hit.get("days_out"))), "spells": int(_num(hit.get("spells"))),
-                            "injuries": [str(s.get("injury") or s.get("type") or "") for s in spells][:4]})
+                            "injuries": [_inj_ko(str(s.get("injury") or s.get("type") or "")) for s in spells][:4]})
     cur = None
     inj = _injuries_table(league)
     if inj is not None and not inj.empty:
@@ -3105,12 +3124,13 @@ def scout_report(team: str, player: str, league: str = ACTIVE_LEAGUE):
         sim = []
     for s in sim:
         s["cheaper"] = bool(d.get("value_eur") and s.get("value_eur") and s["value_eur"] < d["value_eur"] * 0.7)
+    fair = _fair_price(d, league, buyer, buyer_league)
     try:
         news = news_player(d["player"], club=team, league=league, limit=4).get("articles", [])
     except Exception:  # noqa: BLE001
         news = []
     return {"player": d, "strengths": strong, "weaknesses": weak, "enough": enough, "availability": avail,
-            "contract": con, "market": mk, "talk": talk, "similar": sim, "news": news,
+            "contract": con, "market": mk, "talk": talk, "similar": sim, "news": news, "fair": fair,
             "stage_rates": (track or {}).get("stages") or {},
             "verdict": sr.verdict(d, strong, weak, avail, con, mk, talk),
             "generated": datetime.date.today().isoformat()}
@@ -4108,6 +4128,7 @@ def recommend(team: str, league: str = ACTIVE_LEAGUE):
         r, src, role, base, proj, proof, risk_note, ok, attain_why, fit, match, fit_label, bk = t
         age, mn = int(_num(r.get("age"))), int(_num(r.get("minutes")))
         val = _num(r.get("market_value_eur")); rating = round(_num(r.get("ss_rating")), 2)
+        fair = _fee.price(val or None, age, league, ovr=base, pg=_fee.pos_group(r.get("tm_position")), seller_lg=src)
         cross_lg = src != league
         srclabel = _SRC_LABEL.get(src, src)
         why_fit, why_risk = [f"영입 현실성: {attain_why}"], []
@@ -4129,7 +4150,7 @@ def recommend(team: str, league: str = ACTIVE_LEAGUE):
             why_risk.append(f"출전 {mn}′ 표본 부족")
         if role["role"] in ("컵 전용", "백업", "주변 자원"):
             why_risk.append(f"역할: {role['role']}")
-        pfit = _policy_fit(policy, age, val)
+        pfit = _policy_fit(policy, age, fair["mid"] if fair else None)
         if pfit["ok"]:
             why_fit.append("구단 이적 정책(나이·이적료)에 맞음")
         why_risk += pfit["notes"]
@@ -4542,8 +4563,9 @@ def _transfer_policy(team: str) -> dict | None:
                      "from": str(r.get("club") or "")} for _, r in paid.sort_values("_fee", ascending=False).head(3).iterrows()]}
 
 
-def _policy_fit(policy: dict | None, age, value_eur) -> dict:
-    """후보 ↔ 구단 정책: 나이(최근 영입 25~75% 구간 ±1세) · 이적료(시장가 × 1.2 ≤ 최고 이적료 × 1.15)."""
+def _policy_fit(policy: dict | None, age, fee_eur) -> dict:
+    """후보 ↔ 구단 정책: 나이(최근 영입 25~75% 구간 ±1세) · 이적료(적정가 가운데 ≤ 최고 이적료 × 1.15).
+    예전엔 '시장가 × 1.2' 고정값 — 이제 호출부가 src/fee_comps.price() 가운데 값을 넘긴다(2026-10-23)."""
     if not policy:
         return {"ok": None, "notes": []}
     notes, ok = [], True
@@ -4551,10 +4573,10 @@ def _policy_fit(policy: dict | None, age, value_eur) -> dict:
         if age < policy["age_lo"] - 1 or age > policy["age_hi"] + 1:
             ok = False
             notes.append(f"나이 {age}세 — 최근 영입 {policy['age_lo']}~{policy['age_hi']}세 밖")
-    if value_eur and policy.get("fee_max"):
-        if value_eur * 1.2 > policy["fee_max"] * 1.15:
+    if fee_eur and policy.get("fee_max"):
+        if fee_eur > policy["fee_max"] * 1.15:
             ok = False
-            notes.append(f"예상 이적료 €{value_eur * 1.2 / 1e6:.0f}M — 최고 지출 €{policy['fee_max'] / 1e6:.0f}M 초과")
+            notes.append(f"적정 이적료 €{fee_eur / 1e6:.0f}M — 최고 지출 €{policy['fee_max'] / 1e6:.0f}M 초과")
     return {"ok": ok, "notes": notes}
 
 

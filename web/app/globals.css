@@ -4869,3 +4869,34 @@ LIGA’처럼 글자가 접히던 것) — 넘치면 가로로 넘긴다 */
 .wire-mid span, .sigx-mid span, .newx-mid span, .lf-team em, .lf-comp, .pl5-src small, .sb-chip-name,
 .rec-club, .rec-style, .rec-target, .rec-why .why { font-size: 11px; }
 .bw5-m small, .wire-tag { font-size: 10px; }
+/* RECRUIT 카드 · SCOUT REPORT 적정 이적료(2026-10-23, src/fee_comps.py) */
+.rp-fair { display: flex; align-items: baseline; gap: 8px; margin-top: 8px; padding: 6px 9px; border-radius: 9px;
+  background: rgba(104, 224, 165, 0.07); border: 1px solid rgba(104, 224, 165, 0.22); }
+.rp-fair em { font: 700 11px/1 var(--font-num); letter-spacing: .12em; color: var(--positive, #68e0a5); font-style: normal; }
+.rp-fair b { font: 700 15px/1 var(--font-num); font-variant-numeric: tabular-nums; }
+.rp-fair small { font-size: 11px; color: var(--muted); }
+.rp-fair.est { background: transparent; border-style: dashed; }
+.sr-fair .fp-top { display: flex; align-items: flex-end; justify-content: space-between; gap: 10px 18px; flex-wrap: wrap; }
+.fp-range b { display: block; font: 800 34px/1 var(--font-display); font-variant-numeric: tabular-nums; }
+.fp-range span { display: block; margin-top: 5px; font-size: 12.5px; color: var(--muted); }
+.fp-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.fp-chips span { font: 600 11.5px/1 var(--font-num); padding: 5px 8px; border-radius: 7px; background: var(--overlay); border: 1px solid var(--line); }
+.fp-chips span.warn { color: #e0a53a; border-color: rgba(224, 165, 58, 0.45); }
+.fp-scale { display: block; width: 100%; height: auto; max-width: 100%; margin-top: 12px; }
+.fp-track { fill: var(--overlay); }
+.fp-b80 { fill: var(--positive, #68e0a5); opacity: .22; }
+.fp-b50 { fill: var(--positive, #68e0a5); opacity: .85; }
+.fp-mv { stroke: var(--txt); stroke-width: 2; }
+.fp-dot { fill: var(--panel); stroke: #7f9cff; stroke-width: 2.5; }
+.fp-ticks { position: relative; height: 16px; margin-top: 2px; }
+.fp-ticks span { position: absolute; top: 0; font: 11px/1 var(--font-num); color: var(--muted); white-space: nowrap; }
+.fp-legend { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 11px; color: var(--muted); margin-top: 2px; }
+.fp-legend span { display: inline-flex; align-items: center; gap: 5px; }
+.fp-legend i { display: inline-block; }
+.fp-legend .k50 { width: 14px; height: 7px; border-radius: 3px; background: var(--positive, #68e0a5); opacity: .85; }
+.fp-legend .k80 { width: 14px; height: 7px; border-radius: 3px; background: var(--positive, #68e0a5); opacity: .25; }
+.fp-legend .kmv { width: 2px; height: 11px; background: var(--txt); }
+.fp-legend .kdot { width: 9px; height: 9px; border-radius: 50%; border: 2px solid #7f9cff; }
+.fp-comps { overflow-x: auto; margin-top: 10px; }
+.fp-comps table { min-width: 520px; }
+.fp-comps small { color: var(--muted); font-size: 11px; }

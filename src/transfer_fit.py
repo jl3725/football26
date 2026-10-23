@@ -31,6 +31,7 @@ from leagues import LEAGUES as _LEAGUES_CFG, SEASON_START, data_path  # noqa: E4
 # 계약 임박 = 이번 시즌 종료·다음 시즌 종료 해에 만료 (25/26 → 2026·2027)
 _EXPIRING_YEARS = (str(SEASON_START + 1), str(SEASON_START + 2))
 from manager_tactics import tactical_profile, tendency_clubs  # noqa: E402
+import fee_comps  # noqa: E402  (적정 이적료 — 시장가치 × 사는 리그·나이 배수, 이적 기록에서 학습)
 from club_profile import price_realism, recruit_fit  # noqa: E402
 
 QDRANT_URL = os.getenv("QDRANT_URL", "http://localhost:6335")
@@ -396,7 +397,9 @@ def discover_fits(team: str, role: str | None = None, top: int = 24,
             proj = base if lg == tgt_league else int(api._project_ovr(base, lg, tgt_league, euro, age, bucket)[0])
             style_fit = int(round(max(0.0, sim) * 100))
             proj_norm = _clamp((proj - 55) / 37 * 100)
-            likely_fee = float(mv) * 1.2 if mv else None      # 시장가 대비 이적료 근사
+            # 적정 이적료 — 예전엔 '시장가 × 1.2' 고정값. 이적 기록으로 배운 배수(사는 리그·나이)로(2026-10-23)
+            fair = fee_comps.price(mv, age, tgt_league, ovr=base, pg=fee_comps.pos_group(rl), seller_lg=lg)
+            likely_fee = float(fair["mid"]) if fair else None
             pr = price_realism(team, likely_fee)              # 가격 현실성(구단 상한 대비)
             rf = recruit_fit(team, age)                       # 영입 나이기조 부합
             contract = str(r.get("contract_until") or r.get("tm_contract_until") or "")
@@ -436,6 +439,7 @@ def discover_fits(team: str, role: str | None = None, top: int = 24,
                 "rating": round(float(_num0(r.get("ss_rating"))), 2),
                 "style_fit": style_fit, "euro": euro, "age": age,
                 "price_verdict": pr["verdict"], "likely_fee_eur": pr.get("likely_fee_eur"),
+                "fair": ({k: fair[k] for k in ("lo", "mid", "hi", "basis", "mv_eur")} if fair else None),
                 "recruit_fit": int(rf["score"]), "contract_until": contract, "minutes": int(_num0(r.get("_min"))),
                 "level": level,
                 "photo": api._photo(r), "why_fit": why, "_score": round(score, 1),
@@ -598,7 +602,8 @@ def evaluate_fit(candidate: str, target_club: str, target_role: str,
     # RecruitFit(구단 영입 나이성향 매칭) + PriceRealism(예상이적료 vs 구단 가격상한)
     rf = recruit_fit(target_club, age)
     mv = row.get("_mv")
-    likely_fee = float(mv) * 1.2 if pd.notna(mv) else None   # 시장가치 대비 이적료 프리미엄 근사
+    fair = fee_comps.price(mv if pd.notna(mv) else None, age, tgt, ovr=base, seller_lg=src)   # 적정 이적료(학습 배수)
+    likely_fee = float(fair["mid"]) if fair else None
     pr = price_realism(target_club, likely_fee)
     recruitfit, pricerealism = float(rf["score"]), float(pr["score"])
 

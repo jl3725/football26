@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
-import { fmtEur, getWorkspace, type Workspace, type WorkspacePick } from "@/lib/api";
+import { fmtEur, fmtEurRange, getWorkspace, type Workspace, type WorkspacePick } from "@/lib/api";
 import { tier } from "@/lib/ui";
 import { useShortlist } from "@/lib/shortlist";
 import SectionHead from "./SectionHead";
@@ -22,7 +22,7 @@ const ROWS: Row[] = [
   { label: "나이", get: (p) => (p.age ? `${p.age}세` : "-"), num: (p) => p.age ?? null, best: "min" },
   { label: "포지션", get: (p) => p.tm_position || p.pos || "-" },
   { label: "시장가", get: (p) => (p.value_eur ? fmtEur(p.value_eur) : "-") },
-  { label: "예상 이적료", get: (p) => (p.likely_fee_eur ? fmtEur(p.likely_fee_eur) : "-"), num: (p) => p.likely_fee_eur ?? null, best: "min" },
+  { label: "적정 이적료", get: (p) => (p.fair ? fmtEurRange(p.fair.lo, p.fair.hi) : p.likely_fee_eur ? fmtEur(p.likely_fee_eur) : "-"), num: (p) => p.likely_fee_eur ?? null, best: "min" },
   { label: "가격", get: (p) => PRICE[p.price_verdict ?? "unknown"]?.[0] ?? "-" },
   { label: "계약", get: (p) => (p.contract_until ? `${p.contract_until.slice(0, 7)} · ${p.months_left}개월` : "-"), num: (p) => p.months_left ?? null, best: "min" },
   { label: "리그 출전", get: (p) => `${(p.minutes ?? 0).toLocaleString()}′`, num: (p) => p.minutes ?? null, best: "max" },
@@ -79,7 +79,7 @@ export default function TransferWorkspace({ team, accent, onFit, onReport }: {
           <ul>
             <li>니즈 확인 → 아래 스카우팅 풀에서 ☆로 후보 고정</li>
             <li>2~3명을 '비교'로 골라 나란히 보기 · FIT 평가 · 리포트</li>
-            <li>예상 이적료 합을 창 평균 지출과 비교(예산 시나리오)</li>
+            <li>적정 이적료(가운데) 합을 창 평균 지출과 비교(예산 시나리오) — 적정 이적료 = 시장가치 × 사는 리그·나이 배수(지난 이적에서 배움)</li>
           </ul>
           <p className="muted">고정 목록은 이 브라우저에 팀별로 저장되고, 숫자는 열 때마다 새로 계산합니다.</p>
         </>} />
@@ -101,7 +101,7 @@ export default function TransferWorkspace({ team, accent, onFit, onReport }: {
         <>
           {pool.length > 0 && w?.avg_spend ? (
             <div className="tws-sum">
-              <span>{chosen.length ? `비교 중 ${chosen.length}명` : `고정 ${pool.length}명`} 예상 이적료 합 <b>{fmtEur(fees)}</b> · 창 평균 지출의 <b style={{ color: ratio! > 1.2 ? "#ff6b6b" : ratio! > 0.8 ? "#e0a53a" : "#4fc27f" }}>{Math.round(ratio! * 100)}%</b></span>
+              <span>{chosen.length ? `비교 중 ${chosen.length}명` : `고정 ${pool.length}명`} 적정 이적료 합 <b>{fmtEur(fees)}</b> · 창 평균 지출의 <b style={{ color: ratio! > 1.2 ? "#ff6b6b" : ratio! > 0.8 ? "#e0a53a" : "#4fc27f" }}>{Math.round(ratio! * 100)}%</b></span>
               <span className="tws-bar"><i style={{ width: `${Math.min(100, (ratio ?? 0) * 100)}%`, background: ratio! > 1.2 ? "#ff6b6b" : ratio! > 0.8 ? "#e0a53a" : "#4fc27f" }} /></span>
             </div>
           ) : null}
@@ -128,7 +128,7 @@ export default function TransferWorkspace({ team, accent, onFit, onReport }: {
                     <div className="tws-ovr" style={{ color: t.light }} title={p.cross_league ? `현재 ${p.current_ovr} → 우리 리그 예상 ${p.ovr}` : `OVR ${p.ovr}`}>{p.ovr}</div>
                   </div>
                   <div className="tws-facts">
-                    <span>이적료 <b>{p.likely_fee_eur ? fmtEur(p.likely_fee_eur) : "-"}</b> <em style={{ color: PRICE[p.price_verdict ?? "unknown"]?.[1] }}>{PRICE[p.price_verdict ?? "unknown"]?.[0]}</em></span>
+                    <span title={p.fair ? `적정 이적료 가운데 ${fmtEur(p.fair.mid)} — 시장가치 × 사는 리그·나이 배수` : undefined}>적정 <b>{p.fair ? fmtEurRange(p.fair.lo, p.fair.hi) : p.likely_fee_eur ? fmtEur(p.likely_fee_eur) : "-"}</b> <em style={{ color: PRICE[p.price_verdict ?? "unknown"]?.[1] }}>{PRICE[p.price_verdict ?? "unknown"]?.[0]}</em></span>
                     <span>계약 <b className={p.contract_status === "expiring" ? "good" : ""}>{p.months_left != null ? `${p.months_left}개월` : "-"}</b> <em>{CONTRACT[p.contract_status ?? "unknown"]}</em></span>
                   </div>
                   <div className="tws-tags">

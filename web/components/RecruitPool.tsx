@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
-import { getDiscover, fmtEur, type Discover, type DiscoverPick } from "@/lib/api";
+import { getDiscover, fmtEur, fmtEurRange, type Discover, type DiscoverPick } from "@/lib/api";
 import { hexA, tier } from "@/lib/ui";
 import { scoreMeaning, ssMeaning, SS_NOTE } from "@/lib/meaning";
 import { LEAGUES_ACTIVE } from "@/lib/leagues";
@@ -94,6 +94,15 @@ function Card({ p, accent, team }: { p: DiscoverPick; accent: string; team: stri
           <span style={{ display: "block", height: "100%", borderRadius: 3, width: `${p.style_fit}%`, background: sf.bar }} />
         </div>
       </div>
+      {/* 적정 이적료(이 팀이 살 때) — 시장가치 × 사는 리그·나이 배수, 범위 = 실제 이적료 가운데 50%(src/fee_comps.py) */}
+      {p.fair && (
+        <div className={`rp-fair${p.fair.basis === "ovr" ? " est" : ""}`}
+          title={p.fair.basis === "mv"
+            ? `적정 이적료 — 시장가치 ${fmtEur(p.fair.mv_eur || 0)} × 사는 리그·나이 배수 · 가운데 ${fmtEur(p.fair.mid)}`
+            : `적정 이적료(추정) — 시장가치가 없어 OVR·나이·리그로 · 가운데 ${fmtEur(p.fair.mid)}`}>
+          <em>FAIR</em><b>{fmtEurRange(p.fair.lo, p.fair.hi)}</b>{p.fair.basis === "ovr" && <small>추정</small>}
+        </div>
+      )}
       {/* 배지는 결정에 걸리는 것부터 2개, 나머지는 +N(호버하면 전부) — 예전엔 카드마다 9.5px 배지가 최대 9개(2026-10-23 글 줄이기) */}
       {badges.length > 0 && (
         <div style={{ display: "flex", gap: 5, marginTop: 8, flexWrap: "wrap" }}>

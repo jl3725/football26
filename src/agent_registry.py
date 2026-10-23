@@ -94,6 +94,9 @@ AGENTS: tuple[Agent, ...] = (
               Feed("buzz", "이적 소문(뉴스)", ("buzz",), ("daily_data",), "매일 13:30 KST", 36),
               Feed("exports", "빅5로 보낸 선수(리그 지도 TIER 3)", ("league_exports",), ("tm_data",), "매일 10:30·18:30 KST", 36,
                    ("league_exports.json",)),
+              # 적정 이적료 — 이적 기록에서 사는 리그·나이 배수와 범위를 매일 다시 배움(src/fee_comps.py)
+              Feed("fair_price", "적정 이적료(배수·사례)", ("fee_comps",), ("daily_data",), "매일 13:30 KST", 36,
+                   ("fee_model.json",)),
           ), checks=("validate: transfers 계약", "watchdog: tm_agent"),
           extras=("이적시장 감시 — transfer_watch.yml: 창이 열려 있을 때 리그 이적 페이지로 새 이적 클럽만 다시 받기(마감 7일 전부터 60분)",)),
     Agent("value", "VALUE", "가치·계약", "시장가치 스냅샷, 계약 만료, TM 선수 정보(국적·포지션·사진)",

@@ -191,7 +191,7 @@ function FitCard({ r, accent }: { r: Fit; accent: string }) {
       {af && (
         <div style={{ marginTop: 10, display: "flex", flexWrap: "wrap", gap: 14, alignItems: "center", fontSize: 12 }}>
           <span style={{ fontWeight: 700 }}>예산</span>
-          <span>예상 이적료 <b>{af.likely_fee_eur ? fmtEur(af.likely_fee_eur) : "?"}</b> / 상한 <b>{af.ceiling_eur ? fmtEur(af.ceiling_eur) : "?"}</b></span>
+          <span>적정 이적료 <b>{af.likely_fee_eur ? fmtEur(af.likely_fee_eur) : "?"}</b> / 상한 <b>{af.ceiling_eur ? fmtEur(af.ceiling_eur) : "?"}</b></span>
           <span style={{ fontWeight: 700, color: VERDICT_COLOR[af.verdict] || "inherit" }}>→ {VERDICT_KO[af.verdict] || af.verdict}</span>
           {af.club_recruit_profile && <span style={{ opacity: 0.6 }}>· 구단성향 {af.club_recruit_profile} (평균영입 {af.club_avg_signing_age ?? "?"}세)</span>}
         </div>

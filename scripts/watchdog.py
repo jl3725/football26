@@ -393,6 +393,28 @@ def check_xg() -> list[str]:
     return out
 
 
+def check_fair_price() -> list[str]:
+    """적정 이적료(src/fee_comps.py) — 배수·범위가 지난 이적에 얼마나 맞는지. 하나 빼고 맞힌 오차 중앙값이 시장가치 하나만
+    쓸 때보다 나빠지거나 45%를 넘으면, 또는 범위(가운데 50%) 적중이 35% 밑이면 알린다(2026-10-23 첫 측정 31%·50%)."""
+    p = ROOT / "data" / "fee_model.json"
+    if not p.exists():
+        return ["data/fee_model.json 없음 — daily_data 'fee_comps' 단계 확인"]
+    m = json.loads(p.read_text(encoding="utf-8"))
+    a = m.get("acc") or {}
+    out = []
+    if not a:
+        out.append(f"적정 이적료 배수 학습 안 됨(이적 직전 시장가치 사례 {m.get('n_mv', 0)}건 — 40건 필요)")
+    else:
+        if a.get("med_err", 0) > 0.45 or a.get("med_err", 0) > (a.get("mv_only_err") or 1) + 0.02:
+            out.append(f"적정 이적료 오차 중앙값 {a['med_err']:.0%} (시장가치만 {a.get('mv_only_err', 0):.0%}) — 배수가 오히려 나빠짐")
+        if a.get("in50", 1) < 0.35:
+            out.append(f"적정 이적료 범위 적중 {a['in50']:.0%} — 가운데 50% 범위가 실제 이적료를 잘 못 담음")
+    built = str(m.get("built") or "")
+    if built and (NOW.date() - dt.date.fromisoformat(built)).days > 3:
+        out.append(f"적정 이적료 배수가 {built} 이후 다시 안 배워짐")
+    return out
+
+
 def check_agents() -> list[str]:
     """에이전트 레지스트리 × 실행 원장 — 허용 지연을 넘긴 feed(DATA STATUS 화면과 같은 계산)."""
     import ops_status
@@ -403,7 +425,7 @@ CHECKS = {"ovr": check_ovr, "season": check_season, "hub": check_hub, "frontend"
           "workflows": check_workflows, "news": check_news, "tm_agent": check_tm_agent,
           "coverage": check_coverage, "rating_history": check_rating_history, "ratings": check_ratings,
           "names": check_names, "xg": check_xg, "agents": check_agents, "expectations": check_expectations, "screen": check_screen, "squads": check_squads,
-          "identity": check_identity}
+          "identity": check_identity, "fair_price": check_fair_price}
 
 
 def run() -> dict[str, list[str]]:

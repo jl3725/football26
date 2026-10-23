@@ -236,7 +236,7 @@ export default function TransferTab({ team, accent }: { team: string; accent: st
         </div>
       )}
       </>)}
-      {report && <ScoutReport team={report.club} player={report.player} league={report.league || undefined} accent={accent} onClose={() => setReport(null)} />}
+      {report && <ScoutReport team={report.club} player={report.player} league={report.league || undefined} buyer={team} accent={accent} onClose={() => setReport(null)} />}
     </div>
   );
 }

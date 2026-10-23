@@ -354,10 +354,13 @@ export type ScoutReport = {
   market: { value_eur: number; change_12m_pct: number | null; peak_eur: number; points: number };
   talk: { to_club: string; date: string; source: string; stage: string; probability: number | null; headline: string; outlet_rate?: number | null }[];
   similar: SimilarResult[]; news: PlayerNewsItem[]; stage_rates: Record<string, { hits: number; n: number; rate: number }>;
+  fair?: FairPrice | null;   // FAIR PRICE — 사는 구단(지금 보는 팀) 기준 적정 이적료 + 비슷한 이적 5건
   verdict: string[]; generated: string;
 };
-export const getScoutReport = (team: string, player: string, l = _league) =>
-  j<ScoutReport>(`/api/scout-report/${encodeURIComponent(team)}/${encodeURIComponent(player)}?league=${encodeURIComponent(l)}`);
+// buyer = 사는 구단(지금 보는 팀) — 적정 이적료의 사는 리그 배수. 자기 팀 선수면 비워 둔다(리그 평균)
+export const getScoutReport = (team: string, player: string, l = _league, buyer = "") =>
+  j<ScoutReport>(`/api/scout-report/${encodeURIComponent(team)}/${encodeURIComponent(player)}?league=${encodeURIComponent(l)}`
+    + (buyer ? `&buyer=${encodeURIComponent(buyer)}&buyer_league=${encodeURIComponent(_league)}` : ""));
 export type Recommendation = { player: string; squad: string; logo: string; pos: string; age: number; ovr: number; value_eur: number; photo: string; rating: number; tactical_fit: number; squad_match: number; why_fit: string[]; why_risk: string[]; confidence: string; role: string; role_evidence: string; big_match: boolean; bucket?: string; bucket_label?: string; cross_league?: boolean; source_league?: string; current_ovr?: number; projected_ovr?: number };
 export type LostTarget = { player: string; from: string; to: string; ovr: number; pos: string; photo: string; role: string; top_loss?: boolean };
 export type Longshot = { player: string; squad: string; logo: string; ovr: number; pos: string; photo: string; role: string; bucket_label: string; reason: string; cross_league?: boolean; source_league?: string; current_ovr?: number ; style_fit?: number | null };
@@ -486,6 +489,7 @@ export type DiscoverPick = {
   euro: boolean; age: number | null; photo: string; why_fit: string[];
   goals?: number; assists?: number; rating?: number;
   price_verdict?: string; likely_fee_eur?: number | null; recruit_fit?: number; contract_until?: string;
+  fair?: FairBrief | null;   // 적정 이적료(사는 구단 = 이 팀)
   kg_rumored?: boolean; kg_rumor_prob?: number | null; kg_precedent?: number;
   policy_ok?: boolean | null; policy_notes?: string[];   // 구단 이적 정책(나이·이적료) 대조
   realistic?: boolean;   // 경쟁 팀·강팀 핵심 주전·라이벌 소속이면 false(영입 가능성 낮음)
@@ -505,7 +509,7 @@ export type Discover = {
 // TRANSFER WORKSPACE(/api/workspace) — 예산(최근 두 창·가격 상한·정책) + 라이벌 + 고정 후보의 최신 사실
 export type WorkspacePick = { player: string; club: string; league: string; found: boolean; pos?: string; tm_position?: string;
   age?: number | null; photo?: string; ovr?: number; current_ovr?: number; cross_league?: boolean; value_eur?: number | null;
-  likely_fee_eur?: number | null; price_verdict?: string; contract_until?: string | null; months_left?: number | null;
+  likely_fee_eur?: number | null; price_verdict?: string; contract_until?: string | null; months_left?: number | null; fair?: FairBrief | null;
   contract_status?: "expiring" | "short" | "long" | "unknown"; minutes?: number; goals?: number; assists?: number; rating?: number | null;
   policy_ok?: boolean | null; policy_notes?: string[]; realistic?: boolean; rival?: boolean; logo?: string };
 export type Workspace = { team: string; team_ovr: number; avg_spend: number | null; ceiling_eur: number | null; spend_tier?: string;
@@ -771,6 +775,26 @@ export function feeLabel(feeEur: number | null | undefined, feeText?: string | n
   if (feeEur && feeEur > 0) return fmtEur(feeEur);
   if (!t || t === "-" || t === "?") return "비공개";
   return String(feeText);
+}
+
+// 적정 이적료(src/fee_comps.py) — 가운데 = 이적 직전 시장가치 × 사는 리그·나이 배수(이적 기록에서 학습), 범위 = 실제 이적료의
+// 가운데 50%(lo~hi)·80%(lo80~hi80). basis 'ovr' = 시장가치가 없어 OVR·나이·리그로 추정(범위가 넓다).
+export type FairBrief = { lo: number; mid: number; hi: number; basis: "mv" | "ovr"; mv_eur?: number | null };
+export type FairComp = { player: string; age: number; ovr: number; pos: string; from: string; to: string; from_lg: string; to_lg: string;
+  fee_eur: number; ratio: number | null; when: string; photo: string; dist: number };
+export type FairPrice = FairBrief & { lo80: number; hi80: number; buyer: string | null; buyer_league: string | null; buyer_known: boolean;
+  factors: { k: string; label: string; x: number; n: number }[];
+  acc?: { med_err: number; within30?: number; in50?: number; in80?: number; mv_only_err?: number; n?: number } | null;
+  comps: FairComp[] };
+
+// '€25~47M' — 범위 한 덩어리(단위는 큰 쪽 기준, €10M 아래는 소수 한 자리)
+export function fmtEurRange(lo: number, hi: number): string {
+  if (!lo || !hi) return "-";
+  if (hi >= 1e6) {
+    const d = hi >= 1e7 ? 0 : 1;
+    return `€${(lo / 1e6).toFixed(d)}~${(hi / 1e6).toFixed(d)}M`;
+  }
+  return `€${Math.round(lo / 1e3)}~${Math.round(hi / 1e3)}K`;
 }
 
 export function fmtEur(v: number): string {
