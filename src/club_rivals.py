@@ -33,6 +33,8 @@ STOP = {"fc", "f", "c", "cf", "afc", "ac", "ssc", "sc", "ss", "us", "as", "rc", 
 SECTION = re.compile(r"^(={2,4})\s*([^=\n]*?(?:rival|derby|derbi|derbies)[^=\n]*?)\s*\1\s*$", re.I | re.M)
 DERBY_TITLE = re.compile(r"derby|derbi|rivalry|cl[aá]sic|classico|klassiker|big three|big four", re.I)
 LINK = re.compile(r"\[\[([^\]|#]+)(?:\|[^\]]*)?\]\]")
+# 머리 안내문({{Redirect|…|the football team|X (football)}} · {{For|…}} · {{About|…}})의 축구팀 문서 제목
+FOOTBALL_ARTICLE = re.compile(r"[|\[]\s*([^|{}\[\]\n]+?\((?:men's )?(?:association )?football(?: club| team)?\))\s*[|\]}]", re.I)
 
 
 def _fold(s) -> str:
@@ -99,6 +101,16 @@ def build() -> dict:
         for c, t in ask.items():
             w = got.get(t) or ""
             if len(w) > 3000 and "football" in w.lower():
+                texts[c] = w
+    # 종합 스포츠 클럽 문서면 머리 안내문의 축구팀 문서로 — 'Galatasaray' 는 종합 클럽이고 축구는 'Galatasaray S.K. (football)'
+    # 이라 라이벌 섹션이 없어 갈라타사라이–페네르바체 더비가 빠졌다(2026-10-23)
+    hop = {c: m.group(1).strip() for c, w in texts.items()
+           if (m := FOOTBALL_ARTICLE.search(w[:2500])) and m.group(1).strip().lower() not in {n.lower() for n in clubs[c]}}
+    if hop:
+        got = wiki.wikitexts(list(dict.fromkeys(hop.values())))
+        for c, t in hop.items():
+            w = got.get(t) or ""
+            if len(w) > 3000:
                 texts[c] = w
     rivals: dict[str, set[str]] = {c: set() for c in clubs}
     derby_pages: dict[str, set[str]] = {}

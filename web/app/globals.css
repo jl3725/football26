@@ -4900,3 +4900,12 @@ LIGA’처럼 글자가 접히던 것) — 넘치면 가로로 넘긴다 */
 .fp-comps { overflow-x: auto; margin-top: 10px; }
 .fp-comps table { min-width: 520px; }
 .fp-comps small { color: var(--muted); font-size: 11px; }
+/* LEAGUE FOCUS 탭 '+N' 메뉴(2부·TIER 3, 2026-10-23) */
+.ft5 { flex-wrap: wrap; }
+.ft5-more { position: relative; display: inline-flex; z-index: 40; }   /* 아래 카드보다 위 — 순위표 카드에 가려 흐리게 보였다 */
+.ft5-more-btn { border: 1px dashed var(--line-strong, var(--line)) !important; }
+.ft5-menu { position: absolute; right: 0; top: calc(100% + 6px); z-index: 30; display: flex; flex-direction: column; gap: 2px; min-width: 170px;
+  padding: 6px; border-radius: 10px; background: #121821; border: 1px solid var(--line-strong, #232c39); box-shadow: 0 12px 28px rgba(0, 0, 0, .55); }
+.ft5-menu button { text-align: left; white-space: nowrap; color: var(--txt) !important; opacity: 1 !important; }
+.ft5-menu button:hover, .ft5-menu button.on { background: var(--overlay); }
+@media (max-width: 760px) { .ft5-menu { left: 0; right: auto; } }   /* 폰에선 '+N' 이 줄 왼쪽에 와서 오른쪽 기준이면 화면 밖으로 열렸다 */

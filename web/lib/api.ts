@@ -625,9 +625,12 @@ export type HubDeal = { player: string; to: string; to_logo: string; from: strin
 export type HubBuzz = { title: string; source: string; tier: string; link: string; published: string; league: string; league_name: string };
 export type HubChange = { team: string; logo: string; previous: string; current: string; photo: string; changed_at: string; when_label?: string; in_season?: boolean; league: string; league_name: string };
 export type HubSnapRow = { rank: number; team: string; logo: string; points: number };
-export type HubSnapshot = { league: string; league_name: string; color: string; table: HubSnapRow[] };
-export type HubForm = { player: string; club: string; club_logo: string; rating: number; ovr: number; pos: string; age: number; photo: string; league: string; league_name: string };
-export type HubValue = HubForm & { value_eur: number };
+export type HubSnapshot = { league: string; league_name: string; color: string; table: HubSnapRow[];
+  rank_group?: number };   // 0 = TIER 1 · 1 = TIER 2 · 2 = 2부·TIER 3(리그 집중 탭의 '+N' 메뉴)
+export type HubForm = { player: string; club: string; club_logo: string; rating: number; ovr: number; pos: string; age: number; photo: string; league: string; league_name: string;
+  rating_adj?: number };   // 리그 수준만큼 뺀 평점(리그를 넘나드는 순위 기준)
+// VALUE PICKS — 나이·포지션·시장가치로 기대되는 OVR 보다 얼마나 높은가(ovr_gap)
+export type HubValue = HubForm & { value_eur: number; ovr_expected?: number; ovr_gap?: number };
 export type HubRiser = { player: string; club: string; club_logo: string; value_eur: number; delta_eur: number; pct: number; photo: string; league: string; league_name: string };
 export type HubGoal = { player: string; club: string; club_logo: string; goals: number; assists: number; ovr: number; age: number; photo: string; league: string; league_name: string };
 export type HubContract = { player: string; club: string; club_logo: string; until: string; value_eur: number; ovr: number; age: number; photo: string; league: string; league_name: string };

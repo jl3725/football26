@@ -65,10 +65,31 @@ def recent_form(rows, team: str, n: int = 5) -> list[str]:
     return _form_index(rows).get(team, [])[-n:]
 
 
-def big_score(m: dict) -> tuple[int, list[str]]:
+DERBY_BONUS = 20   # 위키 라이벌·더비(같은 리그) — 등급 가중 밖. TIER 2 상위권 더비(갈라타사라이–페네르바체)가 빅매치에 남게
+
+
+_RIVALS: dict = {"mtime": None, "data": {}}
+
+
+def _rivals() -> dict[str, list[str]]:
+    """data/club_rivals.json — 경기마다 부르므로 파일이 바뀔 때만 다시 읽는다."""
+    try:
+        import club_rivals  # noqa: PLC0415
+        mt = club_rivals.OUT.stat().st_mtime if club_rivals.OUT.exists() else 0
+        if _RIVALS["mtime"] != mt:
+            _RIVALS.update(mtime=mt, data=club_rivals.load())
+        return _RIVALS["data"]
+    except Exception:  # noqa: BLE001
+        return {}
+
+
+def big_score(m: dict, rivals: dict[str, list[str]] | None = None) -> tuple[int, list[str]]:
+    """빅매치 점수 — 대회 가산 + (순위 맞대결 + 두 팀 전력) × 리그 등급 가중 + 더비 가점.
+    리그 등급 가중(league_level.hub_weight): 13개 리그로 늘리자 챔피언십 1·2위전이 EPL 경기보다 위로 올라왔다(2026-10-23)."""
     code = str(m.get("comp_code") or "")
     h, a = m["home"], m["away"]
     score, tags = 0, []
+    league_part = 0.0
     if code == "uefa.champions":          # 대회명은 카드 머리에 있으므로 태그로 반복하지 않는다
         score += 30
     elif code == "uefa.europa":
@@ -78,19 +99,30 @@ def big_score(m: dict) -> tuple[int, list[str]]:
     elif code not in LEAGUE_CODES:
         score -= 10
     hr, ar = h.get("rank"), a.get("rank")
-    if hr and ar and h.get("league") == a.get("league"):
+    same = bool(h.get("league")) and h.get("league") == a.get("league")
+    if hr and ar and same:
         if hr <= 2 and ar <= 2:
-            score += 40; tags.append("1위 경쟁")
+            league_part += 40; tags.append("1위 경쟁")
         elif hr <= 4 and ar <= 4:
-            score += 25; tags.append("상위권 맞대결")
+            league_part += 25; tags.append("상위권 맞대결")
         elif hr <= 6 and ar <= 6:
-            score += 12; tags.append("상위권 맞대결")
+            league_part += 12; tags.append("상위권 맞대결")
     ho, ao = h.get("ovr"), a.get("ovr")
     if ho and ao:
         s = (ho + ao) / 2
-        score += max(0.0, s - 78) * 2
+        league_part += max(0.0, s - 78) * 2
         if min(ho, ao) >= 84:                # 평균이 아니라 둘 다 — 15위 대 2위가 '강팀 대결'로 뜨지 않게
             tags.append("강팀 대결")
+    w = 1.0
+    if code in LEAGUE_CODES and same:
+        import league_level as ll  # noqa: PLC0415
+        w = ll.hub_weight(h.get("league"))
+    score += league_part * w
+    if same:
+        riv = rivals if rivals is not None else _rivals()
+        if a.get("team") in (riv.get(h.get("team")) or []) or h.get("team") in (riv.get(a.get("team")) or []):
+            score += DERBY_BONUS
+            tags.insert(0, "라이벌전")   # 위키 라이벌·더비 — 같은 도시만이 아니라 PSG–리옹 같은 라이벌도 있어 라이벌전
     return int(round(score)), tags
 
 

@@ -5864,7 +5864,72 @@ def home(league: str = ACTIVE_LEAGUE):
     }
 
 
-_HUB_LEAGUES = ("EPL", "LaLiga", "SerieA", "Bundesliga", "Ligue1", "LigaPortugal", "Eredivisie", "BelgianProLeague")   # 통합 대시보드 대상 — UI 지원 리그
+def _hub_rank(lg: str) -> int:
+    """전체 홈 우선순위 묶음 — 0 = TIER 1 · 1 = TIER 2 · 2 = 2부·TIER 3(리그 지도와 같은 등급, league_level)."""
+    return _ll.hub_rank(lg)
+
+
+def _hub_leagues() -> list[str]:
+    """전체 홈 대상 리그 — 리그 설정의 전 리그(라이트 리그 포함), 등급 → 리그 수준 순.
+    예전엔 8개 리그를 손으로 적은 표라 라이트 리그 5개가 지도에만 있고 홈 섹션엔 없었다(2026-10-23)."""
+    avail = set(ds.available_leagues())
+    order = list(_LEAGUES_CFG)                  # 같은 등급 안에선 리그 설정 순서(EPL · LaLiga · Serie A …) — 탭 순서가 익숙하게
+    return sorted((lg for lg in order if lg in avail), key=lambda lg: (_hub_rank(lg), order.index(lg)))
+
+
+def _tier_interleave(items: list[dict], limit: int) -> list[dict]:
+    """리그 등급 순 가중 라운드로빈 — 한 바퀴에 TIER 1 리그는 2건씩, 그 아래는 1건씩(등급·수준 순서로).
+    예전엔 리그마다 똑같이 한 건씩이라 13개 리그면 작은 리그가 자리를 절반 가까이 가져갔다(2026-10-23)."""
+    groups: dict[str, list] = {}
+    for it in items:
+        groups.setdefault(it["league"], []).append(it)
+    cfg = list(_LEAGUES_CFG)
+    order = sorted(groups, key=lambda lg: (_hub_rank(lg), cfg.index(lg) if lg in cfg else 99))
+    pos = dict.fromkeys(order, 0)
+    out: list[dict] = []
+    while len(out) < limit and any(pos[g] < len(groups[g]) for g in order):
+        for g in order:
+            n = 2 if _hub_rank(g) == 0 else 1
+            out += groups[g][pos[g]:pos[g] + n][:limit - len(out)]
+            pos[g] += n
+            if len(out) >= limit:
+                break
+    return out
+
+
+def _merit(items: list[dict], key, limit: int = 12, cap: int = 3) -> list[dict]:
+    """리그를 넘나드는 순위 — key 순(실력 순) + 리그당 최대 cap. 라이트 리그 선수는 리그 수준 보정 뒤에도 높을 때만."""
+    seen: dict[str, int] = {}
+    out: list[dict] = []
+    for it in sorted(items, key=key):
+        lg = it["league"]
+        if seen.get(lg, 0) >= cap:
+            continue
+        seen[lg] = seen.get(lg, 0) + 1
+        out.append(it)
+        if len(out) >= limit:
+            break
+    return out
+
+
+def _value_picks(rows: list[tuple], limit: int = 12) -> list[dict]:
+    """VALUE PICKS — 나이·포지션(라인)·시장가치로 기대되는 OVR 보다 얼마나 높은가(28세 이하 · OVR 70+ · 리그당 3명).
+    rows = [(카드 dict, 시장가치, 나이, 라인, OVR)] — 기대 OVR 회귀는 900분+ · €1M+ 전원(나이 무관)으로 맞춘다.
+    예전 '평점 ÷ (시장가치 + 3)'은 13개 리그로 늘리자 €0.1~0.5M 노장으로 채워졌고, 시장가치만 보면 노장·골키퍼가 위로 왔다."""
+    import numpy as np  # noqa: PLC0415
+    if len(rows) < 30:
+        return []
+    lines = sorted({r[3] for r in rows})
+    X = np.column_stack([np.ones(len(rows)), np.log([r[1] for r in rows]), [r[2] for r in rows],
+                         [(r[2] - 26) ** 2 for r in rows]] + [[1.0 if r[3] == ln else 0.0 for r in rows] for ln in lines[1:]])
+    y = np.array([r[4] for r in rows], dtype=float)
+    beta, *_ = np.linalg.lstsq(X, y, rcond=None)
+    exp = X @ beta
+    cards = []
+    for (card, mv, age, _ln, ovr), e in zip(rows, exp):
+        if age <= 28 and ovr >= 70:
+            cards.append({**card, "value_eur": mv, "ovr_expected": int(round(e)), "ovr_gap": int(round(ovr - e))})
+    return _merit(cards, key=lambda c: (-(c["ovr"] - c["ovr_expected"]), -c["ovr"]), limit=limit, cap=3)
 _HUB_CACHE: dict = {"key": None, "body": None}
 
 
@@ -6088,7 +6153,7 @@ def _compute_hub_body() -> bytes:
     win = _current_window()
     today = datetime.date.today()
     avail = set(ds.available_leagues())
-    leagues = [lg for lg in _HUB_LEAGUES if lg in avail]
+    leagues = _hub_leagues()
 
     def _lname(lg):
         try:
@@ -6166,7 +6231,7 @@ def _compute_hub_body() -> bytes:
                 sq = str(r.get("squad") or "")
                 table.append({"rank": int(_num(r.get("rank"))), "team": sq,
                               "logo": tm.team_logo(sq), "points": int(_num(r.get("points")))})
-        snaps.append({"league": lg, "league_name": lname,
+        snaps.append({"league": lg, "league_name": lname, "rank_group": _hub_rank(lg),
                       "color": tm.team_color(table[0]["team"]) if table else "#888", "table": table})
 
         # players_full → 최고 폼 · 득점 리더 · 곧 FA (정렬은 벡터화, OVR 은 최종 노출분만)
@@ -6178,6 +6243,8 @@ def _compute_hub_body() -> bytes:
             p["_mn"] = pd.to_numeric(p.get("minutes"), errors="coerce").fillna(0)
             p["_ss"] = pd.to_numeric(p.get("ss_rating"), errors="coerce").fillna(0)
             p["_g"] = pd.to_numeric(p.get("goals"), errors="coerce").fillna(0)
+            # 리그를 넘나드는 평점 비교는 리그 수준만큼 뺀 값으로(스위스 7.91 이 홀란 7.82 위에 오지 않게)
+            p["_adj"] = p["_ss"] - _ll.rating_offset(_ll.level(lg))
             for _, r in p[p["_mn"] >= _mm(900, lg)].sort_values("_ss", ascending=False).head(6).iterrows():
                 form_c.append((r, lg))
             for _, r in p.sort_values("_g", ascending=False).head(6).iterrows():
@@ -6188,10 +6255,8 @@ def _compute_hub_body() -> bytes:
                 prospect_c.append((r, lg))          # 유망주 원석
             for _, r in p[(p["_age"] >= 32) & (p["_mn"] >= _mm(900, lg))].sort_values("_ss", ascending=False).head(6).iterrows():
                 veteran_c.append((r, lg))           # 베테랑 32+
-            vp = p[(p["_ss"] >= 6.9) & (p["_mn"] >= _mm(900, lg)) & (p["_mv"] > 0)].copy()
-            vp["_ratio"] = vp["_ss"] / (vp["_mv"] / 1e6 + 3.0)   # 평점 대비 저가일수록↑
-            for _, r in vp.sort_values("_ratio", ascending=False).head(6).iterrows():
-                value_c.append((r, lg))             # 저평가 가성비
+            for _, r in p[(p["_mn"] >= _mm(900, lg)) & (p["_mv"] >= 1e6) & (p["_age"] > 0)].iterrows():
+                value_c.append((r, lg))             # 가성비 — 기대 OVR 회귀 표본(아래 _value_picks)
             if "tm_contract_until" in p.columns:
                 cu = pd.to_datetime(p["tm_contract_until"], errors="coerce")
                 dd = (cu - pd.Timestamp(today)).dt.days
@@ -6229,20 +6294,7 @@ def _compute_hub_body() -> bytes:
                              "photo": ph if ph.startswith("http") else "", "league": lg, "league_name": lname,
                              "source": e["source"]})
 
-    def _interleave(items, limit):
-        """리그별 라운드로빈 — 한 리그가 최신순 정렬에 밀려 빠지지 않게 고루 노출."""
-        groups: dict[str, list] = {}
-        for it in items:
-            groups.setdefault(it["league"], []).append(it)
-        out, i = [], 0
-        while len(out) < limit and any(i < len(g) for g in groups.values()):
-            for g in groups.values():
-                if i < len(g):
-                    out.append(g[i])
-                if len(out) >= limit:
-                    break
-            i += 1
-        return out
+    _interleave = _tier_interleave      # 부상·계약·이적 속보·감독 교체·시장가치 급등 — 등급 순 가중 라운드로빈
 
     deals.sort(key=lambda d: -d["fee_eur"])       # 빅딜은 이적료 순(리그 무관 최대)
     buzz.sort(key=lambda b: b["published"], reverse=True)   # 리그별 최신순 → 인터리브
@@ -6256,17 +6308,17 @@ def _compute_hub_body() -> bytes:
         d.update(extra)
         return d
 
-    # 선수 스포트라이트 — 전부 리그별 인터리브(빅리그 독식 방지, 전 리그 노출)
-    form_c.sort(key=lambda t: -t[0]["_ss"])
-    hot_form = _interleave([_pcard(r, lg, rating=round(_num(r.get("ss_rating")), 2)) for r, lg in form_c], 12)
-    goal_c.sort(key=lambda t: (-_num(t[0].get("goals")), -_num(t[0].get("assists"))))
-    goal_leaders = _interleave([_pcard(r, lg, goals=int(_num(r.get("goals"))), assists=int(_num(r.get("assists")))) for r, lg in goal_c], 12)
-    prospect_c.sort(key=lambda t: -t[0]["_ss"])
-    prospects = _interleave([_pcard(r, lg, rating=round(_num(r.get("ss_rating")), 2)) for r, lg in prospect_c], 12)
-    veteran_c.sort(key=lambda t: -t[0]["_ss"])
-    veterans = _interleave([_pcard(r, lg, rating=round(_num(r.get("ss_rating")), 2)) for r, lg in veteran_c], 12)
-    value_c.sort(key=lambda t: -t[0]["_ratio"])
-    value_picks = _interleave([_pcard(r, lg, rating=round(_num(r.get("ss_rating")), 2), value_eur=_num(r.get("market_value_eur"))) for r, lg in value_c], 12)
+    # 선수 스포트라이트 — 실력 순(평점은 리그 수준 보정) + 리그당 최대 3명(2026-10-23, 13개 리그)
+    def _rcard(r, lg):
+        return _pcard(r, lg, rating=round(_num(r.get("ss_rating")), 2), rating_adj=round(float(r["_adj"]), 2))
+    by_adj = lambda c: (-c["rating_adj"], -c["ovr"])   # noqa: E731
+    hot_form = _merit([_rcard(r, lg) for r, lg in form_c], by_adj)
+    goal_leaders = _merit([_pcard(r, lg, goals=int(_num(r.get("goals"))), assists=int(_num(r.get("assists")))) for r, lg in goal_c],
+                          lambda c: (-c["goals"], -c["assists"]))
+    prospects = _merit([_rcard(r, lg) for r, lg in prospect_c], by_adj)
+    veterans = _merit([_rcard(r, lg) for r, lg in veteran_c], by_adj)
+    value_picks = _value_picks([(_pcard(r, lg, rating=round(_num(r.get("ss_rating")), 2)), float(r["_mv"]), int(r["_age"]),
+                                 rv3.line_of_row(r), _player_ovr(r)) for r, lg in value_c])
     contract_c.sort(key=lambda t: -_num(t[0].get("market_value_eur")))
     contracts_out = _interleave([_pcard(r, lg, until=str(r.get("tm_contract_until") or "")[:10], value_eur=_num(r.get("market_value_eur"))) for r, lg in contract_c], 12)
 
@@ -6278,8 +6330,9 @@ def _compute_hub_body() -> bytes:
         r, lg, b, d, o, prev = t
         return _pcard(r, lg, delta=d, ovr_prev=prev, basis=b, rating=round(_num(r.get("ss_rating")), 2),
                       minutes=int(_num(r.get("minutes"))))
-    movers_up = _interleave([_mcard(t) for t in sorted((t for t in mv if t[3] > 0), key=lambda t: (-t[3], -t[4]))], 12)
-    movers_down = _interleave([_mcard(t) for t in sorted((t for t in mv if t[3] < 0), key=lambda t: (t[3], -t[4]))], 12)
+    # OVR 변화는 이미 리그 수준이 반영된 값 — 변화 폭 순 + 리그당 3명
+    movers_up = _merit([_mcard(t) for t in mv if t[3] > 0], lambda c: (-c["delta"], -c["ovr"]))
+    movers_down = _merit([_mcard(t) for t in mv if t[3] < 0], lambda c: (c["delta"], -c["ovr"]))
 
     # 시장가치 급등 — market_value_history 델타(최초 vs 최신 스냅샷). 스냅샷 누적될수록 정확.
     risers = []
@@ -6984,7 +7037,7 @@ def hub_pulse(days_back: int = 3, days: int = 7):
     import match_center as mc  # noqa: PLC0415
     src = _fx_sources()
     today = _today_kst()
-    leagues = [lg for lg in _HUB_LEAGUES if lg in set(ds.available_leagues())]
+    leagues = _hub_leagues()
 
     results = []
     for m in mc.results_from(src["rows"], today, days_back):
@@ -6993,21 +7046,25 @@ def hub_pulse(days_back: int = 3, days: int = 7):
         results.append(m)
     results.sort(key=lambda m: (m["date"], bool(m["upset"]), m["big"]), reverse=True)
 
+    # 주목할 매치 — TIER 1 은 리그당 2경기, 그 아래는 1경기 후보, 점수 × 리그 등급 가중(league_level.HUB_WEIGHT) → 상위 8.
+    # 사용자 2026-10-23: '2티어 팀부터는 우선순위가 낮아지거나 거의 안 나와도 된다'(큰 더비는 빅매치 쪽 더비 가점으로)
     watch = []
     upcoming = [_fx_enrich(m, src) for m in mc.matches_from(src["rows"], today, days)]
     for lg in leagues:
         st = ds.read_table("standings", league=lg)
         n_teams = 0 if st is None else int(len(st))
-        best = None
+        cands = []
         for m in upcoming:
             if str(m["comp_code"]) not in _LEAGUE_CODES or m["home"].get("league") != lg:
                 continue
             sc, why = mc.watch_score(m, n_teams)
-            if sc >= 20 and (best is None or sc > best[0]):
-                best = (sc, why, m)
-        if best:
-            watch.append({**best[2], "watch": round(best[0]), "why": best[1], "league": lg})
+            if sc >= 20:
+                cands.append((sc, why, m))
+        w = _ll.hub_weight(lg)
+        for sc, why, m in sorted(cands, key=lambda x: -x[0])[:2 if _hub_rank(lg) == 0 else 1]:
+            watch.append({**m, "watch": round(sc * w), "why": why, "league": lg})
     watch.sort(key=lambda m: -m["watch"])
+    watch = watch[:8]
 
     race, gaps = [], []
     for lg in leagues:
@@ -7037,8 +7094,9 @@ def hub_pulse(days_back: int = 3, days: int = 7):
                          "gap": srk - rk, "ovr": round(float(strength[t])), "points": int(_num(r.get("points"))),
                          "n": n, "manager": str(mg.get("name") or ""),
                          "hot_seat": (rk - srk) >= 6 and rk > n / 2})
-    over = sorted([g for g in gaps if g["gap"] >= 3], key=lambda g: (-g["gap"], g["rank"]))[:10]
-    under = sorted([g for g in gaps if g["gap"] <= -3], key=lambda g: (g["gap"], -g["rank"]))[:10]
+    # 리그당 최대 2팀 — 13개 리그로 늘리자 한 리그(작은 리그) 팀이 몰렸다
+    over = _merit([g for g in gaps if g["gap"] >= 3], lambda g: (-g["gap"], _hub_rank(g["league"]), g["rank"]), limit=10, cap=2)
+    under = _merit([g for g in gaps if g["gap"] <= -3], lambda g: (g["gap"], _hub_rank(g["league"]), -g["rank"]), limit=10, cap=2)
     return {"results": results[:30], "watch": watch, "race": race, "over": over, "under": under}
 
 
@@ -7412,8 +7470,8 @@ def _warm_up() -> None:
             _prev_season()
             _hub_body()
             hub_pulse()              # 홈 결과 띠·주목할 매치·우승 경쟁(로컬 0.9초 → 운영 수 초라 미리)
-            for lg in _HUB_LEAGUES:
-                league_lab(lg)       # 홈 LEAGUE FOCUS 분석 랩
+            for lg in _hub_leagues():
+                league_lab(lg)       # 홈 LEAGUE FOCUS 분석 랩(13개 리그)
             for lg in _LEAGUE_LEVEL:
                 _stat_frame(lg)      # 선수 화면 세부 지표(8개 리그 템플릿 백분위) — 빌드 캐시면 파일 읽기만
             _prev_lineup_pairs()     # NETWORK 전 소속 동료(빌드 캐시) · 이적설 연결(8개 리그) — 리그 첫 NETWORK 가 15초 걸렸다

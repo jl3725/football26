@@ -1,6 +1,6 @@
 "use client";
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { getHomeAll, getFixtures, getHubPulse, getLeagueLab, fmtEur, feeLabel, type HomeAll, type Fixture, type HubMover, type HubPulse, type LeagueLab, type Trend } from "@/lib/api";
+import { getHomeAll, getFixtures, getHubPulse, getLeagueLab, fmtEur, feeLabel, type HomeAll, type Fixture, type HubMover, type HubPulse, type LeagueLab, type Trend, type HubSnapshot } from "@/lib/api";
 import { ResultsTicker, WatchGrid, OverUnder, InjuryImpact, OVER_UNDER_INFO, INJURY_IMPACT_INFO } from "./HubPulse";
 import LeagueFocus from "./LeagueFocus";
 import { MatchRecap } from "./MatchReview";
@@ -54,6 +54,34 @@ function PlayerRow({ r, rank, onPick }: { r: Row; rank?: number; onPick: Pick })
       </button>
       <span className="pr5-why">{r.why}</span>
       {r.right ?? (r.ovr != null && <OvrCell ovr={r.ovr} trend={r.trend} bare={r.bare} />)}
+    </div>
+  );
+}
+
+// LEAGUE FOCUS 탭 — TIER 1·2 는 탭, 2부·TIER 3 는 '+N' 메뉴(13개 리그를 한 줄에 놓으면 폰에서 세 줄, 2026-10-23)
+function FocusTabs({ snaps, cur, onPick }: { snaps: HubSnapshot[]; cur: string; onPick: (lg: string) => void }) {
+  const [open, setOpen] = useState(false);
+  const main = snaps.filter((x) => (x.rank_group ?? 0) < 2);
+  const more = snaps.filter((x) => (x.rank_group ?? 0) >= 2);
+  const inMore = more.some((x) => x.league === cur);
+  return (
+    <div className="seg5 seg5-head ft5">
+      {main.map((x) => <button key={x.league} className={x.league === cur ? "on" : ""} onClick={() => onPick(x.league)}>{lgEn(x.league) || x.league_name}</button>)}
+      {more.length > 0 && (
+        <span className="ft5-more">
+          <button className={inMore ? "on" : "ft5-more-btn"} aria-expanded={open} onClick={() => setOpen((v) => !v)}>
+            {inMore ? lgEn(cur) : `+${more.length}`} ▾
+          </button>
+          {open && (
+            <span className="ft5-menu" role="menu">
+              {more.map((x) => (
+                <button key={x.league} role="menuitem" className={x.league === cur ? "on" : ""}
+                  onClick={() => { onPick(x.league); setOpen(false); }}>{lgEn(x.league) || x.league_name}</button>
+              ))}
+            </span>
+          )}
+        </span>
+      )}
     </div>
   );
 }
@@ -167,7 +195,7 @@ export default function AllDashboard({ onPick, switcher, leagueMap }: {
     { k: "down", label: "FALLERS", rows: (d.movers_down ?? []).map(moverRow) },
     { k: "form", label: "HOT FORM", rows: d.hot_form.map((p) => ({ key: p.player + p.club, player: p.player, club: p.club, club_logo: p.club_logo, league: p.league, photo: p.photo, sub: sub(p.club, p.pos), why: rt(p.rating), ovr: p.ovr, bare: true })) },
     { k: "prospect", label: "PROSPECTS", rows: d.prospects.map((p) => ({ key: p.player + p.club, player: p.player, club: p.club, club_logo: p.club_logo, league: p.league, photo: p.photo, sub: sub(p.club, p.pos), why: <>{ageText(p.age)} · {rtn(p.rating)}</>, ovr: p.ovr, bare: true })) },
-    { k: "value", label: "VALUE PICKS", rows: d.value_picks.map((p) => ({ key: p.player + p.club, player: p.player, club: p.club, club_logo: p.club_logo, league: p.league, photo: p.photo, sub: sub(p.club, p.pos), why: fmtEur(p.value_eur), ovr: p.ovr, bare: true })) },
+    { k: "value", label: "VALUE PICKS", rows: d.value_picks.map((p) => ({ key: p.player + p.club, player: p.player, club: p.club, club_logo: p.club_logo, league: p.league, photo: p.photo, sub: sub(p.club, p.pos), why: <span title={p.ovr_expected != null ? `같은 나이·포지션·시장가치 선수들의 평균 OVR ${p.ovr_expected}보다 ${p.ovr_gap} 높음` : undefined}>{fmtEur(p.value_eur)}{p.ovr_gap ? <b style={{ color: "var(--positive)", marginLeft: 6 }}>+{p.ovr_gap}</b> : null}</span>, ovr: p.ovr, bare: true })) },
     { k: "riser", label: "MARKET ▲", rows: d.risers.map((p) => ({ key: p.player + p.club, player: p.player, club: p.club, club_logo: p.club_logo, league: p.league, photo: p.photo, sub: sub(p.club), why: `${fmtEur(p.value_eur)}`, right: <span className="td up">▲{p.pct}%</span> })) },
   ].filter((t) => t.rows.length > 0);
   const curMv = MV.find((t) => t.k === mv) ?? MV[0];
@@ -288,9 +316,7 @@ export default function AllDashboard({ onPick, switcher, leagueMap }: {
       {snap && (
         <section className="h5-sec">
           <SectionHead title="LEAGUE FOCUS" kr="리그 집중"
-            right={<div className="seg5 seg5-head">
-              {snaps.map((x) => <button key={x.league} className={x.league === snap.league ? "on" : ""} onClick={() => setLg(x.league)}>{lgEn(x.league) || x.league_name}</button>)}
-            </div>} />
+            right={<FocusTabs snaps={snaps} cur={snap.league} onPick={setLg} />} />
           <LeagueFocus league={snap.league} lab={lab} onPick={onPick} />
         </section>
       )}
@@ -298,7 +324,7 @@ export default function AllDashboard({ onPick, switcher, leagueMap }: {
       <div className="h5-row">
         {curMv && (
           <section className="card h5-card">
-            <SectionHead title="MOVERS" kr="선수 동향" meta={curMv.k === "up" || curMv.k === "down" ? `OVR · ${basisTxt} 대비` : "8개 리그"} />
+            <SectionHead title="MOVERS" kr="선수 동향" meta={curMv.k === "up" || curMv.k === "down" ? `OVR · ${basisTxt} 대비` : `${d.leagues.length}개 리그`} />
             <Tabs items={MV.map((t) => ({ k: t.k, label: t.label }))} cur={curMv.k} onChange={(k) => { setMv(k); setMvMore(false); }} />
             <div className="pr5-list">{mvRows.map((r, i) => <PlayerRow key={r.key} r={r} rank={i + 1} onPick={onPick} />)}</div>
             {curMv.rows.length > 6 && <button className="more5" onClick={() => setMvMore((v) => !v)}>{mvMore ? "SHOW LESS" : `SHOW ${curMv.rows.length - 6} MORE`}</button>}

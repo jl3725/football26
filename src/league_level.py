@@ -89,6 +89,21 @@ def tier(league: str | None) -> int | None:
     return 1 if lv >= TIER_CUTS[0] else 2 if lv >= TIER_CUTS[1] else 3
 
 
+# 전체 홈 우선순위(2026-10-23 사용자: "주목할 매치에서 2티어 팀부터는 우선순위가 낮아지거나 거의 안 나와도 된다,
+# 페네르바체–갈라타사라이 같은 건 빅매치로는 괜찮다") — 0 = TIER 1, 1 = TIER 2, 2 = 2부·TIER 3.
+# HUB_WEIGHT 는 주목할 매치·빅매치 점수에 곱한다(더비 가점은 곱하지 않음 — match_center.big_score).
+HUB_WEIGHT = {0: 1.0, 1: 0.55, 2: 0.4}
+
+
+def hub_rank(league: str | None) -> int:
+    t = tier(league)
+    return 0 if t == 1 else 1 if t == 2 else 2
+
+
+def hub_weight(league: str | None) -> float:
+    return HUB_WEIGHT[hub_rank(league)]
+
+
 def fit_second_tier(club_mv: dict[str, float], known: dict[str, float]) -> tuple[dict[str, float], dict]:
     """1부 리그들의 (log 클럽 평균 시장가치, 레벨) 직선 → 2부 리그 레벨. club_mv: {리그: 클럽 평균 스쿼드 가치(€)}."""
     import math  # noqa: PLC0415
