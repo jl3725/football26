@@ -203,17 +203,98 @@ def wikitexts(titles: list[str]) -> dict[str, str]:
     return out
 
 
-def search_title(team: str, country: str) -> str | None:
-    """문서 제목이 없는 팀(벨기에 등) — 위키 검색 첫 결과 중 '축구 클럽' 문서."""
-    j = _get({"action": "query", "list": "search", "srsearch": f"{team} {country} football club", "srlimit": 3})
+# 클럽 문서가 아닌 검색 결과 — 시즌·목록·여자팀·유스·리저브 문서, '도시, 나라' 꼴의 지명 문서
+_NOT_CLUB_TITLE = re.compile(r"\bseason\b|\blist of\b|\bwomen\b|w\.f\.c\.|\bladies\b|\bfemin|\bkvinder\b|\bfrauen\b|\bkadin\b|"
+                             r"\breserves?\b|\bacademy\b|\bu-?\d{2}\b|,\s", re.I)
+# 클럽 인포박스('Infobox football club season' 은 시즌 문서라 아님)
+_CLUB_BOX = re.compile(r"\{\{\s*(?:infobox (?:football|soccer) club|football club infobox)\s*[|\n}]", re.I)  # 같은 틀의 다른 이름
+# 위키 스쿼드 표 ↔ 우리 명단 성(姓) 겹침이 이보다 낮으면 다른 구단 문서. 2026-10-23 표본: 맞는 구단 0.68 이상,
+# 잘못 잡은 문서(여자팀·다른 구단) 0.13 이하
+MIN_OVERLAP = 0.35
+
+
+_SEASON_TITLE = re.compile(r"^\d{4}[–-]\d{2,4} (.+?) season$")
+
+
+def candidates(team: str, country: str, limit: int = 8) -> list[tuple[str, bool]]:
+    """위키 검색 결과 중 클럽 문서 후보 [(제목, 이름 낱말이 제목에 있나)] — 나라를 붙인 검색 + 안 붙인 검색.
+    시즌 문서('2024–25 Gaziantep F.K. season')는 클럽 문서 제목으로 바꿔 넣는다. 'Türkiye' 를 붙이면 선수·리그 문서만
+    나오던 쉬페르리그 클럽이 있었다(2026-10-23)."""
+    seen: list[str] = []
+    for q in (f"{team} {country} football club", f"{team} football club"):
+        j = _get({"action": "query", "list": "search", "srsearch": q, "srlimit": limit})
+        for hit in j.get("query", {}).get("search", []):
+            t = hit.get("title", "")
+            m = _SEASON_TITLE.match(t)
+            t = m.group(1) if m else t
+            if t and t not in seen and not _NOT_CLUB_TITLE.search(_fold(t)):
+                seen.append(t)
     toks = [w for w in re.findall(r"[a-z]{3,}", _fold(team))]
-    for hit in j.get("query", {}).get("search", []):
-        t = hit.get("title", "")
-        if "season" in t.lower() or "list of" in t.lower():
+    return [(t, any(w in _fold(t) for w in toks)) for t in seen]
+
+
+def search_title(team: str, country: str) -> str | None:
+    """문서 제목이 없는 팀(벨기에 등) — 이름 낱말이 제목에 있는 첫 후보('Union SG' 가 선수 문서,
+    'Charleroi' 가 다른 클럽 문서를 물던 것 방지). 수집 때 resolve() 가 문서 내용으로 다시 검증한다."""
+    return next((t for t, hit in candidates(team, country, limit=3) if hit), None)
+
+
+def _surname(name: str) -> str:
+    w = re.sub(r"[^a-z ]", " ", _fold(str(name or "")).replace("-", " ")).split()
+    return w[-1] if w else ""
+
+
+def rosters(league: str) -> dict[str, set[str]]:
+    """{우리 클럽: 선수 성 집합} — 위키 문서가 맞는 구단인지 대조용(선수 표 → FotMob 명단 순)."""
+    import pandas as pd  # noqa: PLC0415
+    for name in ("players_full", "players", "fotmob_squads"):
+        p = data_path(name, league)
+        if not p.exists():
             continue
-        if any(w in _fold(t) for w in toks):          # 'Union SG' → 선수 문서, 'Charleroi' → 다른 클럽 문서를 물던 것 방지
-            return t
-    return None
+        try:
+            df = pd.read_csv(p, usecols=lambda c: c in ("squad", "player"))
+        except (OSError, ValueError):
+            continue
+        if {"squad", "player"} <= set(df.columns):
+            return {str(sq): {s for s in g["player"].map(_surname) if s} for sq, g in df.groupby("squad")}
+    return {}
+
+
+def overlap(rows: list[dict], roster: set[str] | None) -> float | None:
+    """위키 스쿼드 표 선수와 우리 명단의 성 겹침(작은 쪽 기준). 어느 쪽이든 8명 미만이면 판단 안 함(None)."""
+    wiki = {s for r in rows if (s := _surname(r.get("player", "")))}
+    if not roster or len(wiki) < 8 or len(roster) < 8:
+        return None
+    return len(wiki & roster) / min(len(wiki), len(roster))
+
+
+def is_club_page(text: str, rows: list[dict], roster: set[str] | None) -> bool:
+    """클럽 인포박스가 있고, 스쿼드 표가 있으면 우리 명단과 겹쳐야 한다."""
+    if not _CLUB_BOX.search(text[:30000]):
+        return False
+    ov = overlap(rows, roster)
+    return ov is None or ov >= MIN_OVERLAP
+
+
+def resolve(team: str, country: str, roster: set[str] | None, exclude: set[str]) -> tuple[str, str] | None:
+    """검색 후보를 하나씩 검증해 첫 '맞는 클럽 문서' (제목, 위키텍스트). 이름 낱말이 제목에 없는 후보
+    ('AGF' → 'Aarhus Gymnastikforening')는 스쿼드 겹침이 실제로 확인될 때만."""
+    cands = [(t, hit) for t, hit in candidates(team, country) if t not in exclude]
+    texts = wikitexts([t for t, _ in cands]) if cands else {}
+    ok = []
+    for i, (t, hit) in enumerate(cands):
+        text = texts.get(t, "")
+        if not _CLUB_BOX.search(text[:30000]):
+            continue
+        ov = overlap(parse_squad(text), roster)
+        if ov is not None and ov >= MIN_OVERLAP:
+            ok.append((0, i, t))                     # 스쿼드가 우리 명단과 겹친다 — 가장 확실
+        elif ov is None and hit:
+            ok.append((1, i, t))                     # 스쿼드 표 없음 · 이름 맞음 — 'Çorumspor'(아마추어)를 잡던 약한 증거라 뒤로
+    if not ok:
+        return None
+    t = min(ok)[2]
+    return t, texts[t]
 
 
 def _fold(s: str) -> str:
@@ -239,14 +320,17 @@ def run(league: str, profiles: dict, cache: dict) -> tuple[int, int, list[str]]:
     out, miss = [], []
     teams = teams_of(league)
     titles: dict[str, str] = {}
+    ros = rosters(league)
+    country = _COUNTRY.get(league) or LEAGUES[league].country           # 라이트 리그는 리그 설정의 나라
     for team in teams:
         # data/wiki_titles.json(검색 결과·수동 지정)이 우선 — team_profiles 의 제목 중 동음이의·다른 문서가 있다
         t = cache.get(team) or (profiles.get(team) or {}).get("wiki_title")
         if not t:
             try:
-                t = search_title(team, _COUNTRY.get(league) or LEAGUES[league].country)   # 라이트 리그는 리그 설정의 나라
+                r = resolve(team, country, ros.get(team), set())                # 검색 후보를 문서 내용으로 검증
             except requests.RequestException:
-                t = None
+                r = None
+            t = r[0] if r else None
             if t:
                 cache[team] = t
         if t:
@@ -257,6 +341,25 @@ def run(league: str, profiles: dict, cache: dict) -> tuple[int, int, list[str]]:
         texts = wikitexts(sorted(set(titles.values())))
     except requests.RequestException as e:
         return len(teams), 0, [f"전체({type(e).__name__})"]
+    # 저장해 둔 제목이 다른 문서면(여자팀·도시·시즌·다른 구단) 다시 찾는다 — 검색 첫 결과를 이름 낱말 하나로 받던 때
+    # 'Birmingham City W.F.C.'·'Viborg, Denmark'·'SV Austria Salzburg'·Gaziantep→'Erzurumspor F.K.' 가 저장돼 있었다(2026-10-23)
+    for team, title in list(titles.items()):
+        text = texts.get(title, "")
+        if not text or is_club_page(text, parse_squad(text), ros.get(team)):
+            continue
+        try:
+            alt = resolve(team, country, ros.get(team), {title})
+        except requests.RequestException:
+            alt = None
+        if alt:
+            print(f"[wiki_squads] {team}: 문서 제목 고침 '{title}' → '{alt[0]}'")
+            titles[team] = cache[team] = alt[0]
+            texts[alt[0]] = alt[1]
+        else:
+            print(f"[wiki_squads] {team}: '{title}' 는 클럽 문서가 아님 — 맞는 문서를 못 찾음")
+            titles.pop(team)
+            cache.pop(team, None)
+            miss.append(f"{team}(문서 확인 실패)")
     for team, title in titles.items():
         rows = parse_squad(texts.get(title, ""))
         if not rows:
