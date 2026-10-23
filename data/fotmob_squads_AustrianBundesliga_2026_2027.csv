@@ -47,7 +47,7 @@ Salzburg,Jesper Lindstrøm,958335,midfielders,"CAM,RW",Attacking Midfield,MF,26,
 Salzburg,Justin Omoregie,1230285,midfielders,CB,Centre-Back,MF,23,2003-09-21,36,AUT,True,Out for season,2026-10-23
 Salzburg,Haris Tabaković,388903,attackers,ST,Centre-Forward,FW,32,1994-06-20,9,BIH,False,,2026-10-23
 Salzburg,Yorbe Vertessen,940453,attackers,"ST,LW,CAM,RW",Centre-Forward,FW,25,2001-01-08,11,BEL,False,,2026-10-23
-Salzburg,Karim Konaté,1293688,attackers,"ST,CAM",Centre-Forward,FW,22,2004-03-21,19,CIV,True,Doubtful,2026-10-23
+Salzburg,Karim Konaté,1293688,attackers,"ST,CAM",Centre-Forward,FW,22,2004-03-21,19,CIV,False,,2026-10-23
 Salzburg,Edmund Baidoo,1632055,attackers,"RW,ST,LW",Right Winger,FW,20,2006-01-30,20,GHA,False,,2026-10-23
 Salzburg,Damir Redzic,1188420,attackers,"RW,LW",Right Winger,FW,23,2003-03-23,23,HUN,False,,2026-10-23
 Salzburg,Gaoussou Diakite,1607324,attackers,"ST,CAM",Centre-Forward,FW,21,2005-09-26,30,MLI,False,,2026-10-23
@@ -55,8 +55,8 @@ Salzburg,Aboubacar Camara,1583511,attackers,ST,Centre-Forward,FW,20,2006-09-30,3
 Salzburg,Enrique Aguilar,1667685,attackers,"LW,RW",Left Winger,FW,19,2007-01-27,43,SUI,True,A few weeks,2026-10-23
 LASK,Lukas Jungwirth,1156883,keepers,GK,Goalkeeper,GK,22,2004-04-30,1,AUT,False,,2026-10-23
 LASK,Tobias Schützenauer,557349,keepers,GK,Goalkeeper,GK,29,1997-05-19,33,AUT,False,,2026-10-23
-LASK,Christof Katzmayr,2397894,keepers,,Goalkeeper,GK,18,2008-05-10,39,AUT,False,,2026-10-23
-LASK,Fabian Schillinger,1671273,keepers,,Goalkeeper,GK,19,2007-05-24,50,AUT,False,,2026-10-23
+LASK,Christof Katzmayr,2397894,keepers,GK,Goalkeeper,GK,18,2008-05-10,39,AUT,False,,2026-10-23
+LASK,Fabian Schillinger,1671273,keepers,GK,Goalkeeper,GK,19,2007-05-24,50,AUT,False,,2026-10-23
 LASK,Miguel Freckleton,1420822,defenders,CB,Centre-Back,DF,23,2003-08-06,3,ENG,False,,2026-10-23
 LASK,Xavier Mbuyamba,979963,defenders,CB,Centre-Back,DF,24,2001-12-31,4,NED,False,,2026-10-23
 LASK,Andrés Andrade,688449,defenders,CB,Centre-Back,DF,28,1998-10-16,16,PAN,False,,2026-10-23
@@ -64,22 +64,22 @@ LASK,Manoël Verhaeghe,1863042,defenders,"CB,CDM",Centre-Back,DF,18,2008-03-25,2
 LASK,Daniel Elfadli,1383070,defenders,CB,Centre-Back,DF,29,1997-04-06,23,GER,False,,2026-10-23
 LASK,Yvan Dibango,1254266,defenders,"LB,LWB",Left-Back,DF,24,2002-03-10,25,CMR,False,,2026-10-23
 LASK,Alemão,1437941,defenders,CB,Centre-Back,DF,23,2002-11-06,43,BRA,False,,2026-10-23
-LASK,Jonas Ilk,2023415,defenders,CDM,Defensive Midfield,DF,19,2007-04-06,47,AUT,False,,2026-10-23
 LASK,Cheikne Kébé,1833178,defenders,,Centre-Back,DF,20,2005-11-26,52,MLI,False,,2026-10-23
 LASK,George Bello,953995,midfielders,"LWB,LM",Left-Back,MF,24,2002-01-22,2,USA,True,About 1-2 weeks,2026-10-23
 LASK,Art Smakaj,1510970,midfielders,CDM,Defensive Midfield,MF,23,2003-02-04,5,KVX,False,,2026-10-23
 LASK,Melayro Bogarde,1108604,midfielders,"CDM,CM,LWB",Defensive Midfield,MF,24,2002-05-28,6,SUR,False,,2026-10-23
 LASK,Kryštof Daněk,1118147,midfielders,"CAM,CM,ST",Attacking Midfield,MF,23,2003-01-05,9,CZE,False,,2026-10-23
-LASK,Robert Ljubičić,939430,midfielders,"CM,RM,RW,CAM",Central Midfield,MF,27,1999-07-14,10,AUT,False,,2026-10-23
+LASK,Robert Ljubičić,939430,midfielders,"CM,RM,RW,CAM,CDM",Central Midfield,MF,27,1999-07-14,10,AUT,False,,2026-10-23
 LASK,Alessandro Schöpf,461357,midfielders,"CDM,CM",Defensive Midfield,MF,32,1994-02-07,18,AUT,False,,2026-10-23
 LASK,Kasper Jørgensen,1029360,midfielders,"RWB,RM,RW",Right-Back,MF,26,1999-11-07,20,DEN,False,,2026-10-23
-LASK,Christoph Lang,1232205,midfielders,"ST,CAM",Centre-Forward,MF,24,2002-01-07,27,AUT,False,,2026-10-23
 LASK,Florian Flecker,619687,midfielders,RWB,Right-Back,MF,30,1995-10-29,29,AUT,False,,2026-10-23
 LASK,Sascha Horvath,426726,midfielders,"CDM,CM",Defensive Midfield,MF,30,1996-08-22,30,AUT,False,,2026-10-23
+LASK,Jonas Ilk,2023415,midfielders,CDM,Defensive Midfield,MF,19,2007-04-06,47,AUT,False,,2026-10-23
 LASK,Samuel Adeniran,1188855,attackers,"ST,LW",Centre-Forward,FW,28,1998-09-30,7,USA,False,,2026-10-23
 LASK,Moses Usor,1366348,attackers,ST,Centre-Forward,FW,24,2002-02-05,8,NGA,False,,2026-10-23
 LASK,Saša Kalajdžić,858198,attackers,"ST,CAM",Centre-Forward,FW,29,1997-07-07,11,AUT,False,,2026-10-23
 LASK,Ramiz Harakaté,1667728,attackers,ST,Centre-Forward,FW,24,2002-07-13,22,FRA,True,Mid October 2026,2026-10-23
+LASK,Christoph Lang,1232205,attackers,"ST,CAM",Centre-Forward,FW,24,2002-01-07,27,AUT,False,,2026-10-23
 LASK,Naël Kane,1756283,attackers,RW,Right Winger,FW,20,2006-04-12,45,CAN,False,,2026-10-23
 Sturm Graz,Ammar Helac,861728,keepers,GK,Goalkeeper,GK,28,1998-06-13,22,AUT,False,,2026-10-23
 Sturm Graz,Elias Lorenz,1363143,keepers,GK,Goalkeeper,GK,20,2006-03-27,41,AUT,False,,2026-10-23
@@ -211,7 +211,7 @@ Grazer AK,Liam Hermesh,1612420,midfielders,CDM,Defensive Midfield,MF,22,2004-03-
 Grazer AK,Tobias Koch,941702,midfielders,"CAM,CDM",Attacking Midfield,MF,25,2001-04-06,8,AUT,False,,2026-10-23
 Grazer AK,Christian Lichtenberger,951310,midfielders,CAM,Attacking Midfield,MF,30,1995-12-12,10,AUT,False,,2026-10-23
 Grazer AK,Jacob Italiano,889093,midfielders,"CAM,RWB,RM",Attacking Midfield,MF,25,2001-07-30,14,AUS,False,,2026-10-23
-Grazer AK,Souleyman Mandey,1562715,midfielders,"CAM,CDM,RW,CM",Attacking Midfield,MF,20,2006-02-06,17,AUT,False,,2026-10-23
+Grazer AK,Souleyman Mandey,1562715,midfielders,"CAM,CDM,RW",Attacking Midfield,MF,20,2006-02-06,17,AUT,False,,2026-10-23
 Grazer AK,Christopher Cvetko,768312,midfielders,"CDM,CM",Defensive Midfield,MF,29,1997-04-02,24,AUT,False,,2026-10-23
 Grazer AK,Anderson,1024295,midfielders,"RWB,RW",Right-Back,MF,28,1998-01-03,28,BRA,False,,2026-10-23
 Grazer AK,Peter Michorl,488194,midfielders,"CAM,CDM,CM,ST",Attacking Midfield,MF,31,1995-05-09,34,AUT,False,,2026-10-23
