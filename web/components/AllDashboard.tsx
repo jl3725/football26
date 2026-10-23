@@ -371,7 +371,7 @@ export default function AllDashboard({ onPick, switcher, leagueMap }: {
         <div className="bz5-list">
           {d.buzz.slice(0, 10).map((b, i) => (
             <a className="bz5" key={i} href={b.link || undefined} target="_blank" rel="noopener noreferrer">
-              <span className={`bdg ${b.tier === "agreed" ? "up" : "neutral"}`}>{b.tier === "agreed" ? "DONE" : "RUMOUR"}</span>
+              <span className={`bdg ${b.tier === "agreed" || b.tier === "done" ? "up" : "neutral"}`}>{{ done: "DONE", agreed: "AGREED", talks: "TALKS" }[b.tier as string] ?? "RUMOUR"}</span>
               <span className="bz5-t">{b.title}</span>
               <span className="bz5-src">{lgEn(b.league) || b.league_name} · {b.source}</span>
             </a>

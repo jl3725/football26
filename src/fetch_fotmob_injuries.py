@@ -123,6 +123,43 @@ def league_rows(lg: str) -> list[dict]:
     return rows
 
 
+KIND_KO = {"injury": "부상", "in_match": "경기 중 부상 교체"}
+CHANGE_COLS = ["run_date", "event_type", "squad", "player", "old_injury", "new_injury", "old_until", "new_until", "source"]
+
+
+def injury_changes(prev: pd.DataFrame | None, cur: pd.DataFrame, today: str) -> list[dict]:
+    """FotMob 결장 명단에 새로 오른 부상(출장 정지 제외) — TM 부상 변화와 같은 열(source=fotmob).
+    부상 신호(홈·Inbox)가 TM 목록 변화만 봐서, TM 이 며칠 늦게 올리는 동안 FotMob 이 이미 '부상·11월 초 복귀'로 표시한 사카가
+    안 보였다(2026-10-23 사용자). 복귀는 TM 것만 쓴다 — FotMob '다음 경기 결장'은 경기 사이에 비었다 다시 차서 복귀로 잘못 잡힌다.
+    지난 명단이 없으면 아무것도 새로 치지 않는다(기준선)."""
+    if prev is None or prev.empty:
+        return []
+    cur = cur[cur["kind"].isin(list(KIND_KO))]
+    seen = {(str(s), str(f).split(".")[0]) for s, f in zip(prev["squad"], prev["fotmob_id"])}
+    new = cur[[(str(s), str(f).split(".")[0]) not in seen for s, f in zip(cur["squad"], cur["fotmob_id"])]]
+    return [{"run_date": (str(r["match_date"])[:10] if r["kind"] == "in_match" and str(r.get("match_date") or "") else today),
+             "event_type": "new_injury", "squad": r["squad"], "player": r["player"], "old_injury": "",
+             "new_injury": KIND_KO[r["kind"]], "old_until": "", "new_until": str(r.get("expected_return") or ""),
+             "source": "fotmob"} for r in new.to_dict("records")]
+
+
+def write_changes(lg: str, prev: pd.DataFrame | None, cur: pd.DataFrame) -> int:
+    path = data_path("fotmob_injury_changes", lg, SEASON)
+    have = pd.read_csv(path) if path.exists() else None
+    if have is None:
+        # 처음 — 지금 명단은 기준선으로만(언제 다쳤는지 몰라 '오늘 새 부상'으로 찍으면 1월까지 빠지는 오래된 부상도 새것이 된다).
+        # 이미 다친 선수는 여러 매체 '부상 보도'가 신호로 잡는다(api _injury_events)
+        pd.DataFrame(columns=CHANGE_COLS).to_csv(path, index=False, encoding="utf-8", lineterminator="\n")
+        return 0
+    rows = injury_changes(prev, cur, dt.date.today().isoformat())
+    if not rows and have is not None:
+        return 0
+    out = pd.concat([x for x in (have, pd.DataFrame(rows, columns=CHANGE_COLS)) if x is not None], ignore_index=True)
+    out = out.drop_duplicates(subset=["event_type", "squad", "player", "new_injury"], keep="first")
+    out.to_csv(path, index=False, encoding="utf-8", lineterminator="\n")
+    return len(rows)
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--league")
@@ -137,7 +174,14 @@ def main() -> int:
             continue
         df = pd.DataFrame(rows, columns=COLS).drop_duplicates(subset=["squad", "fotmob_id"])
         out = data_path("fotmob_injuries", lg, SEASON)
+        prev = pd.read_csv(out, dtype={"fotmob_id": str}) if out.exists() else None
         df.to_csv(out, index=False, encoding="utf-8", lineterminator="\n")
+        try:
+            n_new = write_changes(lg, prev, df)
+            if n_new:
+                print(f"  {lg:16} 새 부상 {n_new}명 -> fotmob_injury_changes")
+        except Exception as e:  # noqa: BLE001
+            print(f"  {lg:16} 부상 변화 기록 실패 {type(e).__name__}: {e}")
         print(f"  {lg:16} 결장 {len(df)}명(부상 {int((df['kind'] == 'injury').sum())} · 경기 중 부상 교체 "
               f"{int((df['kind'] == 'in_match').sum())} · 그 밖 {int((~df['kind'].isin(['injury', 'in_match'])).sum())}) -> {out.name}")
         time.sleep(0.5)

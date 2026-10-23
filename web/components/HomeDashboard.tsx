@@ -25,6 +25,8 @@ function Sec({ en, kr, right }: { en: string; kr: string; accent?: string; right
 }
 
 type LeagueOpt = { key: string; label: string };
+// 이적 속보 단계(뉴스 이적 분류 — 관심 · 협상 · 합의 · 완료)
+const WIRE_KO: Record<string, string> = { done: "완료", agreed: "합의", talks: "협상", rumor: "루머" };
 
 // 결과 파일에 아직 없는 최근·오늘 리그 경기(lab.pending) → 방금 끝난(FT) 경기를 MATCH RECAP 에 바로 올리기 위한 Fixture
 function pendingFixtures(lab: LeagueLab, league: string): Fixture[] {
@@ -170,7 +172,7 @@ export default function HomeDashboard({ accent, onPickTeam, onPickLeagueTeam, le
             <div className="wire">
               {h.buzz.slice(0, 12).map((b, i) => (
                 <a className="wire-row" key={i} href={b.link || undefined} target="_blank" rel="noreferrer">
-                  <span className={`wire-tag ${b.tier}`}>{b.tier === "agreed" ? "합의" : "루머"}</span>
+                  <span className={`wire-tag ${b.tier === "done" || b.tier === "agreed" ? "agreed" : "rumor"}`}>{WIRE_KO[b.tier] ?? "루머"}</span>
                   <div className="wire-mid">
                     <b>{b.title}</b>
                     <span>{[b.source, b.published ? b.published.slice(5) : ""].filter(Boolean).join(" · ")}</span>

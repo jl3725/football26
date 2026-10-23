@@ -122,3 +122,28 @@ def test_manager_bio_filter() -> None:
     assert not lite._football_bio("크리스토퍼 또는 크리스 데이비스는 다음을 지칭할 수 있다: 크리스 데이비스(영국 정치인)")
     assert not lite._football_bio("Chris Davies may refer to: Chris Davies (politician)")
     assert lite._football_bio("크리스토퍼 폴 데이비스는 현재 EFL 챔피언십 버밍엄 시티의 감독을 맡고 있는 프로 축구 지도자이다.")
+
+
+def test_fotmob_injury_changes_new_only() -> None:
+    """FotMob 결장 명단 변화 — 새로 오른 부상만(복귀는 TM), 처음엔 기준선만, 경기 중 부상은 그 경기 날짜."""
+    import pandas as pd
+
+    import fetch_fotmob_injuries as fi
+    row = lambda p, fid, kind="injury", md="": {"squad": "Arsenal", "player": p, "fotmob_id": fid, "kind": kind,   # noqa: E731
+                                              "expected_return": "Early November 2026", "match_id": "", "match_date": md,
+                                              "fetched": "2026-10-23"}
+    prev = pd.DataFrame([row("Kai Havertz", "1")])
+    cur = pd.DataFrame([row("Kai Havertz", "1"), row("Bukayo Saka", "2", "in_match", "2026-10-21"),
+                        row("Someone", "3", "suspension")])
+    ev = fi.injury_changes(prev, cur, "2026-10-23")
+    assert [(e["player"], e["run_date"], e["new_injury"]) for e in ev] == [("Bukayo Saka", "2026-10-21", "경기 중 부상 교체")]
+    assert fi.injury_changes(None, cur, "2026-10-23") == []
+
+
+def test_merge_wire_dedupes_and_sorts() -> None:
+    import api.main as M
+    news = [{"title": "첼시, 토모리 영입 추진", "published": "2026-10-21", "source": "Football Insider 외 2곳"}]
+    rss = [{"title": "첼시, 토모리 영입 추진", "published": "2026-10-20", "source": "BBC"},
+           {"title": "본머스 이적 루머", "published": "2026-10-22", "source": "BBC"}]
+    out = M._merge_wire(news, rss, 10)
+    assert [b["title"] for b in out] == ["본머스 이적 루머", "첼시, 토모리 영입 추진"] and out[1]["source"].startswith("Football Insider")

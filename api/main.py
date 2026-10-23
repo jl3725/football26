@@ -1806,6 +1806,123 @@ def _news_injury_rows(league: str, days: int = 3, min_sources: int = 2) -> list[
     return out
 
 
+def _injury_events(league: str, days: int = 60) -> list[dict]:
+    """부상 신호 한 곳(홈 부상 속보·Signals·Inbox) — TM 부상 목록 변화 + FotMob 결장 명단에 새로 오른 부상 +
+    여러 매체 '부상 보도'. 같은 선수의 새 부상은 3주 안이면 한 번만(가장 이른 날짜, 설명은 TM 이 있으면 TM).
+    예전엔 TM 변화만 봐서 TM 이 며칠 늦는 동안 빠졌다(사카 10/21 바이에른전 부상, 2026-10-23 사용자).
+    → [{date, event('new'|'return'), squad, player, injury, until, source}] 최신순."""
+    import positions as ps  # noqa: PLC0415
+    since = (datetime.date.today() - datetime.timedelta(days=days)).isoformat()
+    ev: list[dict] = []
+    for table, src in (("transfermarkt_injury_changes", "Transfermarkt"), ("fotmob_injury_changes", "FotMob")):
+        t = ds.read_table(table, league=league)
+        if t is None or t.empty or "player" not in t.columns:
+            continue
+        for r in t.to_dict("records"):
+            d = str(r.get("run_date") or "")[:10]
+            if d < since:
+                continue
+            new = str(r.get("event_type")) == "new_injury"
+            if not new and src != "Transfermarkt":
+                continue
+            until = str(r.get("new_until") or "") if new else ""
+            ev.append({"date": d, "event": "new" if new else "return", "squad": str(r.get("squad") or ""),
+                       "player": str(r.get("player") or ""), "source": src,
+                       "injury": str((r.get("new_injury") if new else r.get("old_injury")) or "부상"),
+                       "until": _fm_return_kr(until) if src == "FotMob" and until else until})
+    for r in _news_injury_rows(league, days=7):            # '보도 BBC Sport 외 3곳' → 'BBC Sport 외 3곳'
+        ev.append({"date": str(r.get("match_date") or "")[:10], "event": "new", "squad": r["squad"], "player": r["player"],
+                   "source": "뉴스", "injury": "부상 보도(확인 전)",
+                   "until": str(r.get("expected_return") or "").removeprefix("보도 ")})
+
+    def sig(p):
+        w = ps.norm_name(p).split()
+        return w[-1] if w else ""
+    ev.sort(key=lambda e: (e["date"], e["source"] != "Transfermarkt"))
+    out: list[dict] = []
+    first: dict = {}
+    for e in ev:
+        if e["event"] != "new":
+            out.append(e)
+            continue
+        k = (e["squad"], sig(e["player"]))
+        j = first.get(k)
+        if j is not None:
+            d0 = datetime.date.fromisoformat(out[j]["date"]) if out[j]["date"] else None
+            d1 = datetime.date.fromisoformat(e["date"]) if e["date"] else None
+            if d0 and d1 and (d1 - d0).days <= 21:
+                if e["source"] == "Transfermarkt":       # 날짜는 먼저 안 쪽, 설명은 TM(부위·병명이 구체적)
+                    out[j].update({"injury": e["injury"], "until": e["until"] or out[j]["until"],
+                                   "player": e["player"], "source": out[j]["source"] + "·TM"})
+                continue
+        first[k] = len(out)
+        out.append(e)
+    out.sort(key=lambda e: e["date"], reverse=True)
+    return out
+
+
+_WIRE_TIER = {"done": "done", "agreed": "agreed", "talks": "talks", "interest": "rumor"}
+_WIRE_RANK = {"done": 4, "agreed": 3, "talks": 2, "interest": 1}
+
+
+def _transfer_wire(league: str, days: int = 10, limit: int = 18) -> list[dict]:
+    """이적 속보 — 뉴스 수집(Google News 팀별·매체 RSS·블루스카이 기자, 매일 2시간마다)에서 '이적'으로 분류되고 단계가 있는
+    기사(관심·협상·합의·완료). 같은 선수 이야기는 한 줄(가장 앞선 단계·최신, 매체 수). 예전엔 리그마다 RSS 1~2개만 읽어
+    EPL 은 이적시장이 닫히면 BBC 가십만 남았다(2026-10-23 사용자: 'BBC 만 나오는데 원천이 더 없나')."""
+    import re as _re  # noqa: PLC0415
+    import sqlite3  # noqa: PLC0415
+    st = ds.read_table("standings", league=league)
+    teams = [] if st is None or st.empty else sorted(set(st["squad"].astype(str)))
+    if not teams or not ds.DB_PATH.exists():
+        return []
+    since = (datetime.date.today() - datetime.timedelta(days=days)).isoformat()
+    try:
+        c = sqlite3.connect(f"file:{ds.DB_PATH}?mode=ro", uri=True)
+        try:
+            rows = c.execute(
+                f"""SELECT a.link, a.team, a.source, coalesce(nullif(a.headline_ko, ''), a.headline), a.headline,
+                           coalesce(nullif(substr(a.published, 1, 16), ''), a.first_seen), m.stage,
+                           (SELECT group_concat(p.player, '|') FROM news_players p WHERE p.link = a.link AND p.how = 'full')
+                    FROM news_articles a JOIN news_meta m ON m.link = a.link
+                    WHERE m.kind = 'transfer' AND m.stage IN ('interest', 'talks', 'agreed', 'done') AND a.first_seen >= ?
+                      AND a.team IN ({','.join('?' * len(teams))})
+                      AND EXISTS (SELECT 1 FROM news_players p WHERE p.link = a.link AND p.how = 'full')""", (since, *teams)).fetchall()
+        finally:
+            c.close()
+    except sqlite3.Error:
+        return []
+    groups: dict = {}
+    for link, team, src, title, title_en, pub, stage, players in rows:
+        key = (str(players).split("|")[0] if players else "") or _re.sub(r"\W+", "", str(title).lower())[:40]
+        g = groups.get(key)
+        if g is None:
+            groups[key] = {"link": link, "team": team, "src": src, "title": title, "title_en": title_en, "pub": str(pub or ""),
+                           "stage": stage, "sources": {src}}
+            continue
+        g["sources"].add(src)
+        if (_WIRE_RANK[stage], str(pub or "")) > (_WIRE_RANK[g["stage"]], g["pub"]):
+            g.update({"link": link, "team": team, "src": src, "title": title, "title_en": title_en, "pub": str(pub or ""),
+                      "stage": stage})
+    out = []
+    for g in sorted(groups.values(), key=lambda g: (g["pub"][:10], _WIRE_RANK[g["stage"]], len(g["sources"])), reverse=True)[:limit]:
+        n = len(g["sources"])
+        out.append({"title": _clean_title(g["title"]), "title_en": _clean_title(g["title_en"]),
+                    "source": g["src"] + (f" 외 {n - 1}곳" if n > 1 else ""), "tier": _WIRE_TIER[g["stage"]],
+                    "link": g["link"], "published": g["pub"].replace("T", " "), "team": g["team"]})
+    return out
+
+
+def _merge_wire(news: list[dict], rss: list[dict], limit: int) -> list[dict]:
+    """뉴스 이적 속보 + 리그 RSS(BBC 가십 등) — 최신순, 같은 제목 한 번."""
+    seen, out = set(), []
+    for b in sorted(news + rss, key=lambda b: str(b.get("published") or "")[:10], reverse=True):
+        k = str(b.get("title") or "")[:40]
+        if k and k not in seen:
+            seen.add(k)
+            out.append(b)
+    return out[:limit]
+
+
 def _fm_return_kr(s: str) -> str:
     """FotMob 복귀 예상 → 한국어. 'Early December 2026' → '12월 초 복귀 예상', 'Doubtful' → '출전 불투명'."""
     t = str(s or "").strip()
@@ -5094,19 +5211,16 @@ def _signals_league(league: str) -> list[dict]:
                     "photo": ph if str(ph).startswith("http") else "",
                     "title": title, "detail": detail})
 
-    # 1. 부상 변화 (신규/복귀)
-    ic = ds.read_table("transfermarkt_injury_changes", league=league)
-    if ic is not None:
-        for _, r in ic.iterrows():
-            sq = str(r.get("squad") or "")
-            if not tfilter(sq):
-                continue
-            if str(r.get("event_type")) == "new_injury":
-                add(str(r.get("run_date") or ""), sq, "injury_new", "bad", "🚑",
-                    str(r.get("player") or ""), "부상 발생", str(r.get("new_injury") or "부상"))
-            else:
-                add(str(r.get("run_date") or ""), sq, "injury_return", "good", "✅",
-                    str(r.get("player") or ""), "부상 복귀", f"{r.get('old_injury') or ''} 회복")
+    # 1. 부상 변화 (신규/복귀) — TM 변화 + FotMob 결장 명단 + 부상 보도(_injury_events)
+    for e in _injury_events(league, days=3650):
+        sq = e["squad"]
+        if not tfilter(sq):
+            continue
+        if e["event"] == "new":
+            add(e["date"], sq, "injury_new", "bad", "🚑", e["player"], "부상 발생",
+                " · ".join(x for x in (e["injury"], e["until"]) if x))
+        else:
+            add(e["date"], sq, "injury_return", "good", "✅", e["player"], "부상 복귀", f"{e['injury']} 회복")
 
     # 2. 감독 변화
     mc = ds.read_table("manager_changes", league=league)
@@ -5665,10 +5779,10 @@ def home(league: str = ACTIVE_LEAGUE):
 
     # 5) 이적 속보/루머 피드 (Guardian·BBC RSS → 번역·분류)
     bz = ds.read_table("transfer_buzz", league=league)
-    buzz = []
+    rss = []
     if bz is not None:
         for _, r in bz.head(18).iterrows():
-            buzz.append({
+            rss.append({
                 "title": _clean_title(r.get("title_ko") or r.get("title_en")),
                 "title_en": _clean_title(r.get("title_en")),
                 "source": str(r.get("source") or ""),
@@ -5676,6 +5790,7 @@ def home(league: str = ACTIVE_LEAGUE):
                 "link": str(r.get("link") or ""),
                 "published": str(r.get("published") or ""),
             })
+    buzz = _merge_wire(_transfer_wire(league), rss, 18)   # 뉴스 이적 분류(매체 수십 곳) + 리그 RSS
 
     return {
         "season": _data_season_label(), "window": win,
@@ -5951,12 +6066,12 @@ def _compute_hub_body() -> bytes:
                               "fee_eur": _num(r.get("fee_eur"), 0.0), "fee_text": str(r.get("fee_text") or ""),
                               "photo": ph if ph.startswith("http") else "", "league": lg, "league_name": lname})
         bz = ds.read_table("transfer_buzz", league=lg)
-        if bz is not None:
-            for _, r in bz.head(10).iterrows():
-                buzz.append({"title": _clean_title(r.get("title_ko") or r.get("title_en")),
-                             "source": str(r.get("source") or ""), "tier": str(r.get("tier") or "rumor"),
-                             "link": str(r.get("link") or ""), "published": str(r.get("published") or ""),
-                             "league": lg, "league_name": lname})
+        rss = [] if bz is None else [
+            {"title": _clean_title(r.get("title_ko") or r.get("title_en")), "source": str(r.get("source") or ""),
+             "tier": str(r.get("tier") or "rumor"), "link": str(r.get("link") or ""), "published": str(r.get("published") or "")}
+            for _, r in bz.head(10).iterrows()]
+        for b in _merge_wire(_transfer_wire(lg, limit=10), rss, 10):
+            buzz.append({**b, "league": lg, "league_name": lname})
         mc = ds.read_table("manager_changes", league=lg)
         mgrs = _managers(lg)
         if mc is not None and "team" in mc.columns:
@@ -6047,25 +6162,14 @@ def _compute_hub_body() -> bytes:
             tots_meta[lg] = {"formation": _t["formation"], "subs": _t["subs"]}
             injury_impact += _injury_impact(p, cur_inj, lg)
         # 부상 속보 (신규/복귀)
-        ic = ds.read_table("transfermarkt_injury_changes", league=lg)
-        if ic is not None and "player" in ic.columns:
-            xp = _xtra_photo(lg)
-            _sub = ic.sort_values("run_date", ascending=False) if "run_date" in ic.columns else ic
-            n = 0
-            for _, r in _sub.iterrows():
-                if n >= 6:
-                    break
-                pl = str(r.get("player") or "")
-                new = str(r.get("event_type")) == "new_injury"
-                ph = xp.get(unidecode(pl).lower().strip(), "")
-                injuries.append({"player": pl, "club": str(r.get("squad") or ""),
-                                 "club_logo": tm.team_logo(str(r.get("squad") or "")),
-                                 "event": "new" if new else "return",
-                                 "injury": str(r.get("new_injury") or r.get("old_injury") or "부상"),
-                                 "date": str(r.get("run_date") or "")[:10],
-                                 "photo": ph if ph.startswith("http") else "",
-                                 "league": lg, "league_name": lname})
-                n += 1
+        # TM 변화 + FotMob 결장 명단 + 부상 보도(_injury_events — TM 이 늦어도 바로)
+        xp = _xtra_photo(lg)
+        for e in _injury_events(lg)[:6]:
+            ph = xp.get(unidecode(e["player"]).lower().strip(), "")
+            injuries.append({"player": e["player"], "club": e["squad"], "club_logo": tm.team_logo(e["squad"]),
+                             "event": e["event"], "injury": e["injury"], "date": e["date"],
+                             "photo": ph if ph.startswith("http") else "", "league": lg, "league_name": lname,
+                             "source": e["source"]})
 
     def _interleave(items, limit):
         """리그별 라운드로빈 — 한 리그가 최신순 정렬에 밀려 빠지지 않게 고루 노출."""
