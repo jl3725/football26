@@ -66,3 +66,5 @@
 {"t": "2026-10-23T02:53:04+00:00", "runner": "local-sofascore-daily", "step": "merge_sofascore", "league": "BelgianProLeague", "ok": true, "code": 0, "sec": 1.6}
 {"t": "2026-10-23T02:59:50+00:00", "runner": "local-sofascore-daily", "step": "sofascore", "league": "LigaPortugal", "ok": false, "code": 1, "sec": 285.7, "note": "Liga Portugal 26/27 시즌 id 조회 실패"}
 {"t": "2026-10-23T02:59:51+00:00", "runner": "local-sofascore-daily", "step": "merge_sofascore", "league": "LigaPortugal", "ok": true, "code": 0, "sec": 1.7}
+{"t": "2026-10-23T04:02:57+00:00", "runner": "local-sofascore-daily", "step": "sofascore", "league": "LigaPortugal", "ok": true, "code": 0, "sec": 27.2}
+{"t": "2026-10-23T04:02:59+00:00", "runner": "local-sofascore-daily", "step": "merge_sofascore", "league": "LigaPortugal", "ok": true, "code": 0, "sec": 1.6}
