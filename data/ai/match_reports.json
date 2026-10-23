@@ -639,6 +639,38 @@
    "away": "Benfica",
    "at": "2026-10-22T21:28:16+00:00",
    "model": "gemini-3.1-flash-lite"
+  },
+  "401875574": {
+   "text": "Go Ahead Eagles가 3-2로 Telstar를 꺾으며 승리를 거뒀다. 전반 7분과 33분에 터진 Sören Tengstedt의 멀티 골로 앞서간 Go Ahead Eagles는 48분 Tyrone Owusu에게 실점했으나, 67분 Evert Linthorst의 헤더 골로 다시 달아난 뒤 90'+2' Sem Valk의 추가 실점을 막아내며 경기를 마쳤다. 점유율은 45.3% 대 54.7%로 Telstar가 앞섰으나, 슈팅 수에서 16대 12로 우위를 점한 Go Ahead Eagles가 유효 슈팅 7개를 기록하며 효율적인 공격을 펼쳤다. 이번 결과는 팬 투표와 ClubElo의 승리 예측을 적중시켰으나, Telstar의 승리를 점쳤던 모델의 예측과는 엇갈렸다.",
+   "date": "2026-10-23",
+   "home": "Go Ahead Eagles",
+   "away": "Telstar",
+   "at": "2026-10-23T20:34:19+00:00",
+   "model": "gemini-3.1-flash-lite"
+  },
+  "5846005": {
+   "text": "Altach가 Cashpoint-Arena에서 Austria Wien을 상대로 2-1 역전승을 거두었다. 전반 40' Johannes Eggestein에게 선제골을 허용했으나, 후반 70' Patrick Greil의 득점으로 동점을 만들고 80' Yann Litawumba가 결승골을 터뜨리며 경기를 뒤집었다. 경기 중 Altach는 1개, Austria Wien은 2개의 경고를 받았으며, 경기 전 Altach의 승리를 예상한 모델의 예측은 적중했다.",
+   "date": "2026-10-23",
+   "home": "Altach",
+   "away": "Austria Wien",
+   "at": "2026-10-23T20:34:29+00:00",
+   "model": "gemini-3.1-flash-lite"
+  },
+  "5739531": {
+   "text": "Brøndby IF가 Randers FC를 상대로 3-1 승리를 거두며 원정에서 귀중한 승점 3점을 획득했다. 15' Mads Frökjaer의 페널티킥 선제골 이후 45' Mike Themsen이 페널티킥으로 응수했으나, 60' Jacob Ambæk의 결승골과 64' Mads Frökjaer의 추가골이 터지며 승부가 갈렸다. Brøndby IF는 슈팅 15개와 유효 슈팅 8개를 기록하며 슈팅 10개와 유효 슈팅 5개에 그친 Randers FC보다 공격적인 경기력을 보였다. 이번 결과는 Brøndby IF의 승리를 점쳤던 모델과 ClubElo의 경기 전 예측과 일치했다.",
+   "date": "2026-10-23",
+   "home": "Randers FC",
+   "away": "Brøndby IF",
+   "at": "2026-10-23T20:34:34+00:00",
+   "model": "gemini-3.1-flash-lite"
+  },
+  "5904778": {
+   "text": "Kocaelispor가 Alanyaspor를 상대로 2-1 승리를 거두며 경기를 마무리했다. 전반 27'에 터진 Berkan Kutlu의 선제골과 42' Makana Baku의 득점으로 Kocaelispor가 전반을 리드했고, Alanyaspor는 52' Ruan의 골로 추격했으나 승부를 뒤집지 못했다. 슈팅 수 17-11, 유효 슈팅 5-4로 Kocaelispor가 공격 지표에서 우위를 보였다. Alanyaspor의 승리를 예상했던 사전 모델과 ClubElo의 예측은 빗나갔다.",
+   "date": "2026-10-23",
+   "home": "Alanyaspor",
+   "away": "Kocaelispor",
+   "at": "2026-10-23T20:34:53+00:00",
+   "model": "gemini-flash-lite-latest"
   }
  },
  "fails": {}

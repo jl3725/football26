@@ -3,6 +3,14 @@
  "league": "Championship",
  "season": "2026_2027",
  "teams": {
+  "Middlesbrough": {
+   "fotmob_id": 8549,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8549.png",
+   "color": "#D5002E",
+   "tm_vid": 641,
+   "tm_slug": "fc-middlesbrough",
+   "tm_name": "Middlesbrough"
+  },
   "Swansea City": {
    "fotmob_id": 10003,
    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/10003.png",
@@ -18,14 +26,6 @@
    "tm_vid": 379,
    "tm_slug": "west-ham-united",
    "tm_name": "West Ham United"
-  },
-  "Middlesbrough": {
-   "fotmob_id": 8549,
-   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8549.png",
-   "color": "#D5002E",
-   "tm_vid": 641,
-   "tm_slug": "fc-middlesbrough",
-   "tm_name": "Middlesbrough"
   },
   "Birmingham City": {
    "fotmob_id": 8658,
@@ -115,14 +115,6 @@
    "tm_slug": "afc-wrexham",
    "tm_name": "Wrexham"
   },
-  "Bolton Wanderers": {
-   "fotmob_id": 8559,
-   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8559.png",
-   "color": "#313453",
-   "tm_vid": 355,
-   "tm_slug": "bolton-wanderers",
-   "tm_name": "Bolton Wanderers"
-  },
   "Bristol City": {
    "fotmob_id": 8427,
    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8427.png",
@@ -130,6 +122,14 @@
    "tm_vid": 698,
    "tm_slug": "bristol-city",
    "tm_name": "Bristol City"
+  },
+  "Bolton Wanderers": {
+   "fotmob_id": 8559,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8559.png",
+   "color": "#313453",
+   "tm_vid": 355,
+   "tm_slug": "bolton-wanderers",
+   "tm_name": "Bolton Wanderers"
   },
   "Charlton Athletic": {
    "fotmob_id": 8451,
