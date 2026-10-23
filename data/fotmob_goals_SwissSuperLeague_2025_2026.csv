@@ -1,0 +1,834 @@
+match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
+4820724,2025-07-25,sui.1,FC Zürich,Sion,27.0,Steven Zuber,RegularPlay,0,0.04084610939025879
+4820724,2025-07-25,sui.1,FC Zürich,Sion,55.0,Damienus Reverson,RegularPlay,0,0.4631751775741577
+4820724,2025-07-25,sui.1,Sion,FC Zürich,81.0,Rilind Nivokazi,RegularPlay,0,0.4481961727142334
+4820724,2025-07-25,sui.1,Sion,FC Zürich,87.0,Josias Lukembila,SetPiece,0,0.32613232731819153
+4820724,2025-07-25,sui.1,Sion,FC Zürich,90.0,Winsley Boteli,RegularPlay,0,0.5863078832626343
+4820725,2025-07-26,sui.1,Basel,St. Gallen,40.0,Lukas Görtler,OwnGoal,1,
+4820725,2025-07-26,sui.1,St. Gallen,Basel,56.0,Lukas Görtler,FromCorner,0,0.32740843296051025
+4820725,2025-07-26,sui.1,St. Gallen,Basel,75.0,Willem Geubbels,FastBreak,0,0.04043344780802727
+4820726,2025-07-26,sui.1,Grasshopper,Luzern,5.0,Nikolas Muci,Penalty,0,0.7884
+4820726,2025-07-26,sui.1,Luzern,Grasshopper,16.0,Matteo Di Giusto,RegularPlay,0,0.38060787320137024
+4820726,2025-07-26,sui.1,Grasshopper,Luzern,31.0,Luke Plange,IndividualPlay,0,0.049984101206064224
+4820726,2025-07-26,sui.1,Luzern,Grasshopper,38.0,Adrian Grbic,Penalty,0,0.7884
+4820726,2025-07-26,sui.1,Luzern,Grasshopper,69.0,Lucas Ferreira,SetPiece,0,0.4461463689804077
+4820727,2025-07-26,sui.1,Young Boys,Servette,10.0,Christian Fassnacht,Penalty,0,0.7884
+4820727,2025-07-26,sui.1,Young Boys,Servette,14.0,Darian Males,RegularPlay,0,0.04520263522863388
+4820727,2025-07-26,sui.1,Servette,Young Boys,36.0,Samuel Mráz,FromCorner,0,0.21159294247627258
+4820727,2025-07-26,sui.1,Young Boys,Servette,84.0,Alan Virginius,SetPiece,0,0.0854937881231308
+4820728,2025-07-27,sui.1,Lugano,Thun,16.0,Ousmane Doumbia,FromCorner,0,0.42674151062965393
+4820728,2025-07-27,sui.1,Thun,Lugano,63.0,Leonardo Bertone,Penalty,0,0.7884
+4820728,2025-07-27,sui.1,Thun,Lugano,85.0,Leonardo Bertone,FreeKick,0,0.038946449756622314
+4820729,2025-07-27,sui.1,Winterthur,Lausanne,43.0,Brian Beyer,RegularPlay,0,0.07137735933065414
+4820729,2025-07-27,sui.1,Lausanne,Winterthur,61.0,Gaoussou Diakite,RegularPlay,0,0.5656375288963318
+4820729,2025-07-27,sui.1,Winterthur,Lausanne,64.0,Christian Gomis,FastBreak,0,0.5763731002807617
+4820729,2025-07-27,sui.1,Lausanne,Winterthur,81.0,Kaly Sene,SetPiece,0,0.8070909380912781
+4820729,2025-07-27,sui.1,Lausanne,Winterthur,90.0,Gaoussou Diakite,RegularPlay,0,0.28814277052879333
+4820730,2025-08-02,sui.1,Young Boys,Winterthur,24.0,Edimilson Fernandes,FromCorner,0,0.025407830253243446
+4820730,2025-08-02,sui.1,Winterthur,Young Boys,64.0,Remo Arnold,FromCorner,0,0.12868757545948029
+4820731,2025-08-02,sui.1,St. Gallen,Servette,11.0,Willem Geubbels,RegularPlay,0,0.9542206525802612
+4820731,2025-08-02,sui.1,St. Gallen,Servette,18.0,Willem Geubbels,ThrowInSetPiece,0,0.2857511639595032
+4820731,2025-08-02,sui.1,Servette,St. Gallen,27.0,Miroslav Stevanovic,RegularPlay,0,0.4812460243701935
+4820731,2025-08-02,sui.1,St. Gallen,Servette,30.0,Alessandro Vogt,FromCorner,0,0.11759274452924728
+4820731,2025-08-02,sui.1,St. Gallen,Servette,90.0,Aliou Baldé,Penalty,0,0.7884
+4820732,2025-08-02,sui.1,Basel,Grasshopper,44.0,Philip Otele,RegularPlay,0,0.04019341245293617
+4820732,2025-08-02,sui.1,Grasshopper,Basel,69.0,Maksim Paskotsi,FromCorner,0,0.1435009241104126
+4820732,2025-08-02,sui.1,Basel,Grasshopper,75.0,Philip Otele,SetPiece,0,0.02675764448940754
+4820733,2025-08-03,sui.1,Thun,Lausanne,10.0,Christopher Ibayi,RegularPlay,0,0.7116420865058899
+4820733,2025-08-03,sui.1,Thun,Lausanne,47.0,Genís Montolio,FromCorner,0,0.22913894057273865
+4820733,2025-08-03,sui.1,Lausanne,Thun,71.0,Kaly Sène,RegularPlay,0,0.4578273892402649
+4820734,2025-08-03,sui.1,Sion,Lugano,6.0,Josias Lukembila,RegularPlay,0,0.16920694708824158
+4820734,2025-08-03,sui.1,Sion,Lugano,42.0,Ilyas Chouaref,RegularPlay,0,0.02859143540263176
+4820734,2025-08-03,sui.1,Sion,Lugano,60.0,Benjamin Kololli,RegularPlay,0,0.15580931305885315
+4820734,2025-08-03,sui.1,Sion,Lugano,80.0,Rilind Nivokazi,RegularPlay,0,0.10622860491275787
+4820734,2025-08-03,sui.1,Lugano,Sion,,,none,0,
+4820735,2025-08-03,sui.1,Luzern,FC Zürich,72.0,Adrian Grbic,RegularPlay,0,0.1919970065355301
+4820735,2025-08-03,sui.1,FC Zürich,Luzern,78.0,Emmanuel Umeh,RegularPlay,0,0.2134980410337448
+4820736,2025-08-06,sui.1,Young Boys,Basel,17.0,Darian Males,RegularPlay,0,0.08233075588941574
+4820736,2025-08-06,sui.1,Basel,Young Boys,39.0,Xherdan Shaqiri,FromCorner,0,0.04495708644390106
+4820736,2025-08-06,sui.1,Basel,Young Boys,60.0,Xherdan Shaqiri,Penalty,0,0.7884
+4820736,2025-08-06,sui.1,Basel,Young Boys,75.0,Kevin Carlos,FastBreak,0,0.10541912913322449
+4820736,2025-08-06,sui.1,Basel,Young Boys,90.0,Metinho,RegularPlay,0,0.057431504130363464
+4820737,2025-08-09,sui.1,St. Gallen,Winterthur,7.0,Alessandro Vogt,ThrowInSetPiece,0,0.06896093487739563
+4820737,2025-08-09,sui.1,St. Gallen,Winterthur,27.0,Carlo Boukhalfa,RegularPlay,0,0.14448818564414978
+4820737,2025-08-09,sui.1,St. Gallen,Winterthur,45.0,Alessandro Vogt,RegularPlay,0,0.15400709211826324
+4820737,2025-08-09,sui.1,St. Gallen,Winterthur,68.0,Aliou Baldé,RegularPlay,0,0.04402472823858261
+4820737,2025-08-09,sui.1,St. Gallen,Winterthur,77.0,Corsin Konietzke,RegularPlay,0,0.13164089620113373
+4820737,2025-08-09,sui.1,Winterthur,St. Gallen,,,none,0,
+4820739,2025-08-09,sui.1,Luzern,Thun,13.0,Lucas Ferreira,RegularPlay,0,0.4796079695224762
+4820739,2025-08-09,sui.1,Thun,Luzern,39.0,Christopher Ibayi,RegularPlay,0,0.2031700760126114
+4820739,2025-08-09,sui.1,Thun,Luzern,46.0,Christopher Ibayi,RegularPlay,0,0.2998616099357605
+4820738,2025-08-10,sui.1,Grasshopper,Servette,33.0,Saulo Decarli,FromCorner,0,0.2146422117948532
+4820738,2025-08-10,sui.1,Servette,Grasshopper,74.0,Lamine Fomba,FromCorner,0,0.2459191530942917
+4820740,2025-08-10,sui.1,Young Boys,Sion,,,none,0,
+4820740,2025-08-10,sui.1,Sion,Young Boys,,,none,0,
+4820741,2025-08-10,sui.1,Lugano,Basel,11.0,Anto Grgic,Penalty,0,0.7884
+4820741,2025-08-10,sui.1,Lugano,Basel,31.0,Antonios Papadopoulos,SetPiece,0,0.29375123977661133
+4820741,2025-08-10,sui.1,Basel,Lugano,63.0,Albian Ajeti,FromCorner,0,0.5619408488273621
+4820741,2025-08-10,sui.1,Lugano,Basel,90.0,Georgios Koutsias,FastBreak,0,0.992274820804596
+4820742,2025-08-10,sui.1,FC Zürich,Lausanne,24.0,Bledian Krasniqi,RegularPlay,0,0.34123337268829346
+4820742,2025-08-10,sui.1,Lausanne,FC Zürich,41.0,Kaly Sène,RegularPlay,0,0.13844570517539978
+4820742,2025-08-10,sui.1,FC Zürich,Lausanne,66.0,Jorge Segura,FromCorner,0,0.11694895476102829
+4820743,2025-08-23,sui.1,Thun,FC Zürich,14.0,Elmin Rastoder,RegularPlay,0,0.15397657454013824
+4820743,2025-08-23,sui.1,Thun,FC Zürich,41.0,Franz-Ethan Meichtry,FromCorner,0,0.09452274441719055
+4820743,2025-08-23,sui.1,Thun,FC Zürich,59.0,Christopher Ibayi,FastBreak,0,0.3059389591217041
+4820743,2025-08-23,sui.1,Thun,FC Zürich,90.0,Valmir Matoshi,RegularPlay,0,0.5598609447479248
+4820743,2025-08-23,sui.1,FC Zürich,Thun,,,none,0,
+4820745,2025-08-24,sui.1,Grasshopper,Winterthur,12.0,Jonathan Asp,RegularPlay,0,0.05198480933904648
+4820745,2025-08-24,sui.1,Grasshopper,Winterthur,60.0,Lovro Zvonarek,RegularPlay,0,0.560084342956543
+4820745,2025-08-24,sui.1,Winterthur,Grasshopper,68.0,Silvan Sidler,RegularPlay,0,0.313019335269928
+4820745,2025-08-24,sui.1,Winterthur,Grasshopper,90.0,Tibault Citherlet Citherlet,FromCorner,0,0.1769135594367981
+4820746,2025-08-24,sui.1,Luzern,St. Gallen,3.0,Behar Neziri,OwnGoal,1,
+4820746,2025-08-24,sui.1,St. Gallen,Luzern,,,none,0,
+4820748,2025-08-30,sui.1,Thun,Grasshopper,50.0,Nils Reichmuth,FastBreak,0,0.3355289697647095
+4820748,2025-08-30,sui.1,Grasshopper,Thun,84.0,Pantaleo Creti,RegularPlay,0,0.930608332157135
+4820749,2025-08-30,sui.1,FC Zürich,Winterthur,72.0,Matthias Phaëton,RegularPlay,0,0.14905573427677155
+4820749,2025-08-30,sui.1,FC Zürich,Winterthur,80.0,Steven Zuber,RegularPlay,0,0.09396981447935104
+4820749,2025-08-30,sui.1,Winterthur,FC Zürich,89.0,Christian Gomis,FromCorner,0,0.1011405885219574
+4820749,2025-08-30,sui.1,FC Zürich,Winterthur,90.0,Matthias Phaëton,FastBreak,0,0.7604220509529114
+4820750,2025-08-30,sui.1,Basel,Sion,14.0,Junior Zé,RegularPlay,0,0.3423062264919281
+4820750,2025-08-30,sui.1,Sion,Basel,,,none,0,
+4820751,2025-08-31,sui.1,Lausanne,St. Gallen,46.0,Olivier Custodio,RegularPlay,0,0.13083592057228088
+4820751,2025-08-31,sui.1,St. Gallen,Lausanne,55.0,Alessandro Vogt,FromCorner,0,0.027009889483451843
+4820751,2025-08-31,sui.1,St. Gallen,Lausanne,64.0,Alessandro Vogt,RegularPlay,0,0.08876585960388184
+4820752,2025-08-31,sui.1,Young Boys,Lugano,11.0,Chris Bedia,Penalty,0,0.7884
+4820752,2025-08-31,sui.1,Lugano,Young Boys,12.0,Martim Marques,RegularPlay,0,0.10637868940830231
+4820752,2025-08-31,sui.1,Young Boys,Lugano,48.0,Christian Fassnacht,RegularPlay,0,0.429108589887619
+4820752,2025-08-31,sui.1,Young Boys,Lugano,80.0,Chris Bedia,RegularPlay,0,0.5452373027801514
+4820753,2025-08-31,sui.1,Luzern,Servette,5.0,Kevin Spadanuda,FromCorner,0,0.10479341447353363
+4820753,2025-08-31,sui.1,Servette,Luzern,58.0,Alexis Antunes,FromCorner,0,0.1309320628643036
+4820753,2025-08-31,sui.1,Luzern,Servette,75.0,Matteo Di Giusto,FastBreak,0,0.1708979457616806
+4820753,2025-08-31,sui.1,Servette,Luzern,89.0,Miroslav Stevanovic,RegularPlay,0,0.16459782421588898
+4820754,2025-09-13,sui.1,Basel,Thun,24.0,Xherdan Shaqiri,RegularPlay,0,0.9506770372390747
+4820754,2025-09-13,sui.1,Basel,Thun,41.0,Albian Ajeti,RegularPlay,0,0.05203958973288536
+4820754,2025-09-13,sui.1,Thun,Basel,51.0,Leonardo Bertone,Penalty,0,0.7884
+4820754,2025-09-13,sui.1,Basel,Thun,90.0,Xherdan Shaqiri,Penalty,0,0.7884
+4820755,2025-09-13,sui.1,FC Zürich,Servette,28.0,Cheveyo Tsawa,RegularPlay,0,0.07991847395896912
+4820755,2025-09-13,sui.1,FC Zürich,Servette,43.0,Cheveyo Tsawa,RegularPlay,0,0.2880438268184662
+4820755,2025-09-13,sui.1,Servette,FC Zürich,80.0,Yoan Severin,FromCorner,0,0.19101166725158691
+4820756,2025-09-13,sui.1,St. Gallen,Lugano,29.0,Carlo Boukhalfa,SetPiece,0,0.006613654084503651
+4820756,2025-09-13,sui.1,Lugano,St. Gallen,,,none,0,
+4820757,2025-09-14,sui.1,Sion,Winterthur,13.0,Rilind Nivokazi,RegularPlay,0,0.13773614168167114
+4820757,2025-09-14,sui.1,Winterthur,Sion,21.0,Elias Maluvunu,FromCorner,0,0.2944031059741974
+4820757,2025-09-14,sui.1,Sion,Winterthur,32.0,Noe Sow,RegularPlay,0,0.045778073370456696
+4820757,2025-09-14,sui.1,Sion,Winterthur,35.0,Josias Lukembila,RegularPlay,0,0.02624846249818802
+4820757,2025-09-14,sui.1,Winterthur,Sion,85.0,Andrin Hunziker,FastBreak,0,0.07512107491493225
+4820758,2025-09-14,sui.1,Young Boys,Luzern,54.0,Chris Bedia,FromCorner,0,0.09520096331834793
+4820758,2025-09-14,sui.1,Luzern,Young Boys,60.0,Lucas Ferreira,RegularPlay,0,0.03695341572165489
+4820758,2025-09-14,sui.1,Young Boys,Luzern,64.0,Christian Fassnacht,RegularPlay,0,0.04653078317642212
+4820759,2025-09-14,sui.1,Grasshopper,Lausanne,40.0,Luke Plange,FromCorner,0,0.021204926073551178
+4820759,2025-09-14,sui.1,Grasshopper,Lausanne,68.0,Young-Jun Lee,Penalty,0,0.7884
+4820759,2025-09-14,sui.1,Grasshopper,Lausanne,74.0,Jonathan Asp,ThrowInSetPiece,0,0.7642950415611267
+4820759,2025-09-14,sui.1,Lausanne,Grasshopper,76.0,Muhannad Al Saad,RegularPlay,0,0.4475911259651184
+4820744,2025-09-17,sui.1,Servette,Sion,59.0,Samuel Mraz,RegularPlay,0,0.21365441381931305
+4820744,2025-09-17,sui.1,Servette,Sion,67.0,Samuel Mraz,RegularPlay,0,0.08316867053508759
+4820744,2025-09-17,sui.1,Sion,Servette,,,none,0,
+4820747,2025-09-17,sui.1,Lugano,Lausanne,13.0,Kevin Behrens,RegularPlay,0,0.7868600487709045
+4820747,2025-09-17,sui.1,Lausanne,Lugano,51.0,Beyatt Lekoueiry,RegularPlay,0,0.14726020395755768
+4820760,2025-09-27,sui.1,St. Gallen,FC Zürich,22.0,Carlo Boukhalfa,Penalty,0,0.7884
+4820760,2025-09-27,sui.1,FC Zürich,St. Gallen,58.0,Steven Zuber,FromCorner,0,0.11808330565690994
+4820760,2025-09-27,sui.1,FC Zürich,St. Gallen,64.0,Philippe Keny,RegularPlay,0,0.5301961302757263
+4820760,2025-09-27,sui.1,FC Zürich,St. Gallen,73.0,Jahnoah Markelo,FastBreak,0,0.43433213233947754
+4820763,2025-09-27,sui.1,Servette,Winterthur,8.0,Florian Aye,FromCorner,0,0.0363873653113842
+4820763,2025-09-27,sui.1,Servette,Winterthur,49.0,Miroslav Stevanovic,FromCorner,0,0.1226237416267395
+4820763,2025-09-27,sui.1,Servette,Winterthur,58.0,Keyan Varela,RegularPlay,0,0.2797331213951111
+4820763,2025-09-27,sui.1,Servette,Winterthur,61.0,Florian Aye,RegularPlay,0,0.15733814239501953
+4820763,2025-09-27,sui.1,Winterthur,Servette,,,none,0,
+4820764,2025-09-27,sui.1,Lugano,Grasshopper,56.0,Anto Grgic,Penalty,0,0.7884
+4820764,2025-09-27,sui.1,Grasshopper,Lugano,70.0,Jonathan Asp,RegularPlay,0,0.019177379086613655
+4820764,2025-09-27,sui.1,Lugano,Grasshopper,74.0,Kevin Behrens,RegularPlay,0,0.958714485168457
+4820761,2025-09-28,sui.1,Thun,Young Boys,52.0,Christopher Ibayi,ThrowInSetPiece,0,0.2556389272212982
+4820761,2025-09-28,sui.1,Young Boys,Thun,64.0,Sergio Cordova,FastBreak,0,0.17861361801624298
+4820761,2025-09-28,sui.1,Young Boys,Thun,66.0,Chris Bedia,RegularPlay,0,0.5110684633255005
+4820761,2025-09-28,sui.1,Thun,Young Boys,72.0,Franz-Ethan Meichtry,RegularPlay,0,0.054252222180366516
+4820761,2025-09-28,sui.1,Young Boys,Thun,80.0,Chris Bedia,IndividualPlay,0,0.04719986394047737
+4820761,2025-09-28,sui.1,Young Boys,Thun,90.0,Christian Fassnacht,FromCorner,0,0.10055790841579437
+4820762,2025-09-28,sui.1,Sion,Lausanne,,,none,0,
+4820762,2025-09-28,sui.1,Lausanne,Sion,,,none,0,
+4820765,2025-09-28,sui.1,Luzern,Basel,15.0,Tyron Owusu,RegularPlay,0,0.048915643244981766
+4820765,2025-09-28,sui.1,Basel,Luzern,53.0,Dominik Schmid,RegularPlay,0,0.04477718099951744
+4820765,2025-09-28,sui.1,Luzern,Basel,55.0,Lucas Ferreira,FastBreak,0,0.2346058487892151
+4820766,2025-10-04,sui.1,Thun,St. Gallen,19.0,Franz-Ethan Meichtry,RegularPlay,0,0.3791678547859192
+4820766,2025-10-04,sui.1,St. Gallen,Thun,35.0,Hugo Vandermersch,SetPiece,0,0.024006864055991173
+4820766,2025-10-04,sui.1,Thun,St. Gallen,44.0,Christopher Ibayi,FastBreak,0,0.7411630749702454
+4820767,2025-10-04,sui.1,Luzern,Sion,3.0,Bung Meng Freimann,FromCorner,0,0.1858915239572525
+4820767,2025-10-04,sui.1,Luzern,Sion,23.0,Noe Sow,OwnGoal,1,
+4820767,2025-10-04,sui.1,Sion,Luzern,49.0,Benjamin Kololli,Penalty,0,0.7884
+4820767,2025-10-04,sui.1,Luzern,Sion,61.0,Adrian Grbic,RegularPlay,0,0.790913999080658
+4820767,2025-10-04,sui.1,Sion,Luzern,80.0,Winsley Boteli,FromCorner,0,0.17778436839580536
+4820767,2025-10-04,sui.1,Sion,Luzern,90.0,Liam Chipperfield,RegularPlay,0,0.021524248644709587
+4820768,2025-10-04,sui.1,Grasshopper,FC Zürich,35.0,Jonathan Asp,FastBreak,0,0.16857928037643433
+4820768,2025-10-04,sui.1,Grasshopper,FC Zürich,55.0,Samuel Marques,RegularPlay,0,0.09118982404470444
+4820768,2025-10-04,sui.1,Grasshopper,FC Zürich,82.0,Nikolas Muci,Penalty,0,0.7884
+4820768,2025-10-04,sui.1,FC Zürich,Grasshopper,,,none,0,
+4820769,2025-10-05,sui.1,Lausanne,Young Boys,6.0,Thelonius Bair,RegularPlay,0,0.9388284683227539
+4820769,2025-10-05,sui.1,Lausanne,Young Boys,12.0,Thelonius Bair,RegularPlay,0,0.13031169772148132
+4820769,2025-10-05,sui.1,Lausanne,Young Boys,47.0,Thelonius Bair,FastBreak,0,0.058258648961782455
+4820769,2025-10-05,sui.1,Lausanne,Young Boys,74.0,Gaoussou Diakite,FastBreak,0,0.5938430428504944
+4820769,2025-10-05,sui.1,Lausanne,Young Boys,78.0,Nathan Butler-Oyedeji,RegularPlay,0,0.9712929129600525
+4820769,2025-10-05,sui.1,Young Boys,Lausanne,,,none,0,
+4820770,2025-10-05,sui.1,Winterthur,Lugano,27.0,Bafode Dansoko,FromCorner,0,0.9437313675880432
+4820770,2025-10-05,sui.1,Winterthur,Lugano,46.0,Andrin Hunziker,RegularPlay,0,0.017227528616786003
+4820770,2025-10-05,sui.1,Lugano,Winterthur,57.0,Uran Bislimi,RegularPlay,0,0.04552963003516197
+4820770,2025-10-05,sui.1,Lugano,Winterthur,64.0,Daniel Dos Santos,RegularPlay,0,0.39830970764160156
+4820770,2025-10-05,sui.1,Lugano,Winterthur,68.0,Kevin Behrens,RegularPlay,0,0.06576209515333176
+4820770,2025-10-05,sui.1,Lugano,Winterthur,70.0,Yanis Cimignani,RegularPlay,0,0.044994279742240906
+4820771,2025-10-05,sui.1,Basel,Servette,5.0,Albian Ajeti,ThrowInSetPiece,0,0.09262025356292725
+4820771,2025-10-05,sui.1,Basel,Servette,41.0,Philip Otele,FromCorner,0,0.13895201683044434
+4820771,2025-10-05,sui.1,Basel,Servette,59.0,Philip Otele,RegularPlay,0,0.3158043324947357
+4820771,2025-10-05,sui.1,Servette,Basel,,,none,0,
+4820772,2025-10-18,sui.1,Servette,Thun,6.0,Miroslav Stevanovic,FromCorner,0,0.16920167207717896
+4820772,2025-10-18,sui.1,Thun,Servette,7.0,Kastriot Imeri,RegularPlay,0,0.2742099165916443
+4820772,2025-10-18,sui.1,Thun,Servette,18.0,Brighton Labeau,RegularPlay,0,0.7268829345703125
+4820772,2025-10-18,sui.1,Thun,Servette,90.0,Franz-Ethan Meichtry,RegularPlay,0,0.22409513592720032
+4820773,2025-10-18,sui.1,Basel,Winterthur,4.0,Léo Leroy,RegularPlay,0,0.030612783506512642
+4820773,2025-10-18,sui.1,Basel,Winterthur,30.0,Xherdan Shaqiri,Penalty,0,0.7884
+4820773,2025-10-18,sui.1,Basel,Winterthur,33.0,Flavius Daniliuc,FromCorner,0,0.49706780910491943
+4820773,2025-10-18,sui.1,Winterthur,Basel,,,none,0,
+4820774,2025-10-18,sui.1,Lugano,FC Zürich,25.0,Daniel Dos Santos,FastBreak,0,0.05411133915185928
+4820774,2025-10-18,sui.1,FC Zürich,Lugano,,,none,0,
+4820775,2025-10-19,sui.1,Sion,Grasshopper,61.0,Donat Rrudhani,Penalty,0,0.7884
+4820775,2025-10-19,sui.1,Grasshopper,Sion,,,none,0,
+4820776,2025-10-19,sui.1,St. Gallen,Young Boys,56.0,Tom Gaal,SetPiece,0,0.8691198825836182
+4820776,2025-10-19,sui.1,Young Boys,St. Gallen,85.0,Chris Bedia,RegularPlay,0,0.07283695787191391
+4820776,2025-10-19,sui.1,St. Gallen,Young Boys,87.0,Lukas Görtler,SetPiece,0,0.05083610117435455
+4820777,2025-10-19,sui.1,Lausanne,Luzern,53.0,Nicky Beloko,RegularPlay,0,0.04222721979022026
+4820777,2025-10-19,sui.1,Lausanne,Luzern,74.0,Pius Dorn,OwnGoal,1,
+4820777,2025-10-19,sui.1,Luzern,Lausanne,84.0,Kevin Spadanuda,RegularPlay,0,0.04055972769856453
+4820777,2025-10-19,sui.1,Luzern,Lausanne,90.0,Andrejs Ciganiks,RegularPlay,0,0.03404884412884712
+4820778,2025-10-25,sui.1,Thun,Sion,12.0,Kastriot Imeri,FreeKick,0,0.037855278700590134
+4820778,2025-10-25,sui.1,Sion,Thun,,,none,0,
+4820779,2025-10-25,sui.1,Winterthur,Luzern,13.0,Andrin Hunziker,FromCorner,0,0.07847542315721512
+4820779,2025-10-25,sui.1,Winterthur,Luzern,22.0,Nishan Burkart,RegularPlay,0,0.6999967694282532
+4820779,2025-10-25,sui.1,Luzern,Winterthur,65.0,Adrian Grbic,Penalty,0,0.7884
+4820779,2025-10-25,sui.1,Luzern,Winterthur,90.0,Souleymane Diaby,OwnGoal,1,
+4820780,2025-10-25,sui.1,St. Gallen,Grasshopper,10.0,Alessandro Vogt,FastBreak,0,0.16377569735050201
+4820780,2025-10-25,sui.1,St. Gallen,Grasshopper,15.0,Alessandro Vogt,RegularPlay,0,0.3251623213291168
+4820780,2025-10-25,sui.1,St. Gallen,Grasshopper,29.0,Jozo Stanic,FromCorner,0,0.0712142363190651
+4820780,2025-10-25,sui.1,St. Gallen,Grasshopper,72.0,Shkelqim Vladi,RegularPlay,0,0.395808607339859
+4820780,2025-10-25,sui.1,St. Gallen,Grasshopper,90.0,Carlo Boukhalfa,FastBreak,0,0.6099889874458313
+4820780,2025-10-25,sui.1,Grasshopper,St. Gallen,,,none,0,
+4820781,2025-10-26,sui.1,Young Boys,FC Zürich,14.0,Joel Monteiro,FromCorner,0,0.07839015126228333
+4820781,2025-10-26,sui.1,FC Zürich,Young Boys,38.0,Philippe Keny,RegularPlay,0,0.21893170475959778
+4820781,2025-10-26,sui.1,FC Zürich,Young Boys,42.0,Philippe Keny,RegularPlay,0,0.5776413083076477
+4820781,2025-10-26,sui.1,Young Boys,FC Zürich,48.0,Sergio Cordova,RegularPlay,0,0.5759556293487549
+4820781,2025-10-26,sui.1,Young Boys,FC Zürich,54.0,Christian Fassnacht,RegularPlay,0,0.5307100415229797
+4820782,2025-10-26,sui.1,Servette,Lugano,11.0,Florian Aye,FromCorner,0,0.14767354726791382
+4820782,2025-10-26,sui.1,Lugano,Servette,37.0,Anto Grgic,FreeKick,0,0.07240733504295349
+4820782,2025-10-26,sui.1,Servette,Lugano,82.0,Florian Aye,RegularPlay,0,0.3547903597354889
+4820783,2025-10-26,sui.1,Lausanne,Basel,6.0,Thelonius Bair,RegularPlay,0,0.10668711364269257
+4820783,2025-10-26,sui.1,Lausanne,Basel,17.0,Olivier Custodio,Penalty,0,0.7884
+4820783,2025-10-26,sui.1,Lausanne,Basel,35.0,Thelonius Bair,FromCorner,0,0.46255239844322205
+4820783,2025-10-26,sui.1,Lausanne,Basel,55.0,Gaoussou Diakite,RegularPlay,0,0.19267190992832184
+4820783,2025-10-26,sui.1,Lausanne,Basel,66.0,Alban Ajdini,FastBreak,0,0.9252264499664307
+4820783,2025-10-26,sui.1,Basel,Lausanne,85.0,Bénie Traoré,Penalty,0,0.7884
+4820784,2025-10-28,sui.1,Thun,Winterthur,20.0,Lucien Dahler,RegularPlay,0,0.5988841652870178
+4820784,2025-10-28,sui.1,Thun,Winterthur,36.0,Leonardo Bertone,RegularPlay,0,0.02582339011132717
+4820784,2025-10-28,sui.1,Thun,Winterthur,82.0,Elmin Rastoder,FastBreak,0,0.16846098005771637
+4820784,2025-10-28,sui.1,Winterthur,Thun,,,none,0,
+4820785,2025-10-28,sui.1,St. Gallen,Sion,5.0,Carlo Boukhalfa,Penalty,0,0.7884
+4820785,2025-10-28,sui.1,Sion,St. Gallen,9.0,Ali Kabacalman,Penalty,0,0.7884
+4820785,2025-10-28,sui.1,Sion,St. Gallen,42.0,Rilind Nivokazi,RegularPlay,0,0.08374128490686417
+4820785,2025-10-28,sui.1,Sion,St. Gallen,45.0,Rilind Nivokazi,RegularPlay,0,0.04659026488661766
+4820785,2025-10-28,sui.1,St. Gallen,Sion,89.0,Mihailo Stevanovic,RegularPlay,0,0.20433945953845978
+4820787,2025-10-29,sui.1,Servette,Lausanne,49.0,Florian Aye,RegularPlay,0,0.2889727056026459
+4820787,2025-10-29,sui.1,Lausanne,Servette,57.0,Beyatt Lekoueiry,RegularPlay,0,0.17078141868114471
+4820787,2025-10-29,sui.1,Servette,Lausanne,76.0,Morgan Poaty,OwnGoal,1,
+4820787,2025-10-29,sui.1,Servette,Lausanne,90.0,Samuel Mraz,RegularPlay,0,0.3215523958206177
+4820789,2025-10-29,sui.1,Basel,FC Zürich,13.0,Bénie Traoré,RegularPlay,0,0.4456237554550171
+4820789,2025-10-29,sui.1,Basel,FC Zürich,50.0,Ibrahim Salah,FromCorner,0,0.2690563499927521
+4820789,2025-10-29,sui.1,FC Zürich,Basel,,,none,0,
+4820786,2025-10-30,sui.1,Lugano,Luzern,52.0,Hicham Mahou,FastBreak,0,0.030737020075321198
+4820786,2025-10-30,sui.1,Lugano,Luzern,63.0,Yanis Cimignani,RegularPlay,0,0.027390478178858757
+4820786,2025-10-30,sui.1,Luzern,Lugano,,,none,0,
+4820788,2025-10-30,sui.1,Grasshopper,Young Boys,16.0,Simone Stroscio,RegularPlay,0,0.2151634842157364
+4820788,2025-10-30,sui.1,Grasshopper,Young Boys,25.0,Oscar Clemente,FastBreak,0,0.0646660178899765
+4820788,2025-10-30,sui.1,Young Boys,Grasshopper,27.0,Joel Monteiro,RegularPlay,0,0.8643923401832581
+4820788,2025-10-30,sui.1,Young Boys,Grasshopper,67.0,Christian Fassnacht,ThrowInSetPiece,0,0.37508952617645264
+4820788,2025-10-30,sui.1,Grasshopper,Young Boys,74.0,Jonathan Asp,RegularPlay,0,0.04572474956512451
+4820788,2025-10-30,sui.1,Young Boys,Grasshopper,89.0,Chris Bedia,Penalty,0,0.7884
+4820790,2025-11-01,sui.1,Sion,Thun,15.0,Baltazar,RegularPlay,0,0.03310715779662132
+4820790,2025-11-01,sui.1,Thun,Sion,39.0,Christopher Ibayi,RegularPlay,0,0.14061380922794342
+4820790,2025-11-01,sui.1,Thun,Sion,65.0,Elmin Rastoder,RegularPlay,0,0.11788465827703476
+4820791,2025-11-01,sui.1,Lausanne,FC Zürich,10.0,Nathan Butler-Oyedeji,RegularPlay,0,0.2555699944496155
+4820791,2025-11-01,sui.1,FC Zürich,Lausanne,32.0,Matthias Phaeton,RegularPlay,0,0.8272231221199036
+4820791,2025-11-01,sui.1,Lausanne,FC Zürich,82.0,Beyatt Lekoueiry,RegularPlay,0,0.5317795872688293
+4820793,2025-11-01,sui.1,Servette,Winterthur,40.0,Florian Aye,RegularPlay,0,0.05282628536224365
+4820793,2025-11-01,sui.1,Winterthur,Servette,52.0,Theo Golliard,RegularPlay,0,0.04935596510767937
+4820793,2025-11-01,sui.1,Winterthur,Servette,54.0,Theo Golliard,RegularPlay,0,0.2986178994178772
+4820793,2025-11-01,sui.1,Winterthur,Servette,69.0,Randy Schneider,RegularPlay,0,0.06355558335781097
+4820793,2025-11-01,sui.1,Servette,Winterthur,90.0,David Douline,RegularPlay,0,0.08324096351861954
+4820793,2025-11-01,sui.1,Winterthur,Servette,90.0,Elias Maluvunu,FastBreak,0,0.31279128789901733
+4820792,2025-11-02,sui.1,Young Boys,Basel,,,none,0,
+4820792,2025-11-02,sui.1,Basel,Young Boys,,,none,0,
+4820794,2025-11-02,sui.1,Luzern,Grasshopper,18.0,Matteo Di Giusto,Penalty,0,0.7884
+4820794,2025-11-02,sui.1,Luzern,Grasshopper,27.0,Adrian Bajrami,FromCorner,0,0.22118021547794342
+4820794,2025-11-02,sui.1,Luzern,Grasshopper,40.0,Julian von Moos,FreeKick,0,0.08253131806850433
+4820794,2025-11-02,sui.1,Luzern,Grasshopper,66.0,Matteo Di Giusto,RegularPlay,0,0.2179936170578003
+4820794,2025-11-02,sui.1,Luzern,Grasshopper,71.0,Adrian Grbic,FastBreak,0,0.6121655106544495
+4820794,2025-11-02,sui.1,Luzern,Grasshopper,73.0,Kevin Spadanuda,RegularPlay,0,0.3146955072879791
+4820794,2025-11-02,sui.1,Grasshopper,Luzern,,,none,0,
+4820796,2025-11-08,sui.1,Luzern,FC Zürich,2.0,Matteo Di Giusto,Penalty,0,0.7884
+4820796,2025-11-08,sui.1,Luzern,FC Zürich,43.0,Julian von Moos,RegularPlay,0,0.9002859592437744
+4820796,2025-11-08,sui.1,FC Zürich,Luzern,75.0,Jahnoah Markelo,Penalty,0,0.7884
+4820796,2025-11-08,sui.1,FC Zürich,Luzern,79.0,Matthias Phaeton,RegularPlay,0,0.173757866024971
+4820796,2025-11-08,sui.1,FC Zürich,Luzern,90.0,Philippe Keny,Penalty,0,0.7884
+4820797,2025-11-08,sui.1,Grasshopper,Winterthur,90.0,Nikolas Muci,RegularPlay,0,0.6616727709770203
+4820797,2025-11-08,sui.1,Winterthur,Grasshopper,,,none,0,
+4820799,2025-11-08,sui.1,Thun,Servette,90.0,Leonardo Bertone,FreeKick,0,0.06441742181777954
+4820799,2025-11-08,sui.1,Servette,Thun,,,none,0,
+4820798,2025-11-09,sui.1,Young Boys,St. Gallen,7.0,Christian Fassnacht,RegularPlay,0,0.18261738121509552
+4820798,2025-11-09,sui.1,St. Gallen,Young Boys,9.0,Alessandro Vogt,FromCorner,0,0.12848979234695435
+4820798,2025-11-09,sui.1,Young Boys,St. Gallen,32.0,Alan Virginius,RegularPlay,0,0.3253861665725708
+4820798,2025-11-09,sui.1,Young Boys,St. Gallen,51.0,Chris Bedia,FastBreak,0,0.12065435945987701
+4820798,2025-11-09,sui.1,Young Boys,St. Gallen,64.0,Darian Males,FastBreak,0,0.11677301675081253
+4820800,2025-11-09,sui.1,Sion,Lausanne,7.0,Rilind Nivokazi,RegularPlay,0,0.7460324764251709
+4820800,2025-11-09,sui.1,Sion,Lausanne,11.0,Theo Berdayes,FromCorner,0,0.1454279124736786
+4820800,2025-11-09,sui.1,Lausanne,Sion,20.0,Sekou Fofana,RegularPlay,0,0.014518874697387218
+4820800,2025-11-09,sui.1,Lausanne,Sion,33.0,Enzo Kana-Biyik,RegularPlay,0,0.4184761047363281
+4820801,2025-11-09,sui.1,Lugano,Basel,62.0,Kevin Behrens,FastBreak,0,0.6674689054489136
+4820801,2025-11-09,sui.1,Basel,Lugano,,,none,0,
+4820802,2025-11-22,sui.1,Lugano,Thun,86.0,Claudio Cassano,RegularPlay,0,0.2607089877128601
+4820802,2025-11-22,sui.1,Thun,Lugano,,,none,0,
+4820803,2025-11-22,sui.1,Young Boys,Winterthur,7.0,Jaouen Hadjam,FromCorner,0,0.045678477734327316
+4820803,2025-11-22,sui.1,Young Boys,Winterthur,21.0,Chris Bedia,RegularPlay,0,0.11673896759748459
+4820803,2025-11-22,sui.1,Young Boys,Winterthur,27.0,Alvyn Sanches,FastBreak,0,0.17846302688121796
+4820803,2025-11-22,sui.1,Young Boys,Winterthur,29.0,Christian Fassnacht,RegularPlay,0,0.11507628113031387
+4820803,2025-11-22,sui.1,Young Boys,Winterthur,75.0,Christian Fassnacht,RegularPlay,0,0.08025241643190384
+4820803,2025-11-22,sui.1,Winterthur,Young Boys,,,none,0,
+4820806,2025-11-22,sui.1,Luzern,Servette,2.0,Julian von Moos,FastBreak,0,0.3685480058193207
+4820806,2025-11-22,sui.1,Luzern,Servette,9.0,Matteo Di Giusto,RegularPlay,0,0.15461474657058716
+4820806,2025-11-22,sui.1,Servette,Luzern,57.0,Timothe Cognat,RegularPlay,0,0.08188298344612122
+4820806,2025-11-22,sui.1,Servette,Luzern,72.0,Florian Aye,RegularPlay,0,0.31969770789146423
+4820804,2025-11-23,sui.1,St. Gallen,Lausanne,89.0,Carlo Boukhalfa,Penalty,0,0.7884
+4820804,2025-11-23,sui.1,Lausanne,St. Gallen,,,none,0,
+4820805,2025-11-23,sui.1,Sion,FC Zürich,12.0,Ilyas Chouaref,RegularPlay,0,0.13472937047481537
+4820805,2025-11-23,sui.1,Sion,FC Zürich,40.0,Rilind Nivokazi,FastBreak,0,0.29384228587150574
+4820805,2025-11-23,sui.1,FC Zürich,Sion,45.0,Steven Zuber,Penalty,0,0.7884
+4820805,2025-11-23,sui.1,FC Zürich,Sion,49.0,Philippe Keny,RegularPlay,0,0.20963731408119202
+4820807,2025-11-23,sui.1,Grasshopper,Basel,13.0,Maximilian Ullmann,RegularPlay,0,0.2510952949523926
+4820807,2025-11-23,sui.1,Basel,Grasshopper,33.0,Bénie Traoré,ThrowInSetPiece,0,0.03518316522240639
+4820808,2025-11-29,sui.1,FC Zürich,Grasshopper,20.0,Lindrit Kamberi,FromCorner,0,0.05501105263829231
+4820808,2025-11-29,sui.1,Grasshopper,FC Zürich,,,none,0,
+4820810,2025-11-29,sui.1,Winterthur,Luzern,39.0,Pajtim Kasami,FreeKick,0,0.04314778372645378
+4820810,2025-11-29,sui.1,Luzern,Winterthur,45.0,Lucas Ferreira,RegularPlay,0,0.253046452999115
+4820810,2025-11-29,sui.1,Winterthur,Luzern,63.0,Andrin Hunziker,RegularPlay,0,0.5197950005531311
+4820810,2025-11-29,sui.1,Winterthur,Luzern,69.0,Elias Maluvunu,RegularPlay,0,0.08834507316350937
+4820811,2025-11-29,sui.1,Lugano,Sion,29.0,Yanis Cimignani,FreeKick,0,0.041326917707920074
+4820811,2025-11-29,sui.1,Sion,Lugano,63.0,Liam Chipperfield,RegularPlay,0,0.143571674823761
+4820809,2025-11-30,sui.1,Servette,Young Boys,12.0,Jeremy Guillemenot,SetPiece,0,0.43644431233406067
+4820809,2025-11-30,sui.1,Young Boys,Servette,26.0,Christian Fassnacht,RegularPlay,0,0.13011448085308075
+4820809,2025-11-30,sui.1,Servette,Young Boys,33.0,Florian Aye,RegularPlay,0,0.6221576929092407
+4820809,2025-11-30,sui.1,Young Boys,Servette,45.0,Alvyn Sanches,RegularPlay,0,0.0709935873746872
+4820809,2025-11-30,sui.1,Young Boys,Servette,57.0,Chris Bedia,RegularPlay,0,0.7238527536392212
+4820809,2025-11-30,sui.1,Servette,Young Boys,61.0,Jeremy Guillemenot,FromCorner,0,0.06989730149507523
+4820809,2025-11-30,sui.1,Young Boys,Servette,68.0,Jaouen Hadjam,RegularPlay,0,0.07289943844079971
+4820809,2025-11-30,sui.1,Servette,Young Boys,84.0,Samuel Mraz,RegularPlay,0,0.5275772213935852
+4820812,2025-11-30,sui.1,Lausanne,Thun,13.0,Beyatt Lekoueiry,RegularPlay,0,0.14608991146087646
+4820812,2025-11-30,sui.1,Lausanne,Thun,16.0,Thelonius Bair,Penalty,0,0.7884
+4820812,2025-11-30,sui.1,Thun,Lausanne,67.0,Leonardo Bertone,Penalty,0,0.7884
+4820813,2025-11-30,sui.1,Basel,St. Gallen,,,none,0,
+4820813,2025-11-30,sui.1,St. Gallen,Basel,,,none,0,
+4820814,2025-12-06,sui.1,Thun,Luzern,18.0,Brighton Labeau,RegularPlay,0,0.47723641991615295
+4820814,2025-12-06,sui.1,Thun,Luzern,34.0,Genis Montolio,SetPiece,0,0.19048252701759338
+4820814,2025-12-06,sui.1,Thun,Luzern,36.0,Jan Bamert,FromCorner,0,0.08728458732366562
+4820814,2025-12-06,sui.1,Thun,Luzern,58.0,Franz-Ethan Meichtry,RegularPlay,0,0.03485794737935066
+4820814,2025-12-06,sui.1,Luzern,Thun,90.0,Lars Villiger,RegularPlay,0,0.08209573477506638
+4820816,2025-12-06,sui.1,FC Zürich,St. Gallen,6.0,Matthias Phaeton,ThrowInSetPiece,0,0.6414654850959778
+4820816,2025-12-06,sui.1,St. Gallen,FC Zürich,33.0,Tom Gaal,ThrowInSetPiece,0,0.27975329756736755
+4820816,2025-12-06,sui.1,FC Zürich,St. Gallen,42.0,Philippe Keny,RegularPlay,0,0.2084423303604126
+4820819,2025-12-06,sui.1,Servette,Grasshopper,21.0,Steve Rouiller,FromCorner,0,0.10628149658441544
+4820819,2025-12-06,sui.1,Grasshopper,Servette,,,none,0,
+4820815,2025-12-07,sui.1,Basel,Winterthur,29.0,Xherdan Shaqiri,RegularPlay,0,0.1386009007692337
+4820815,2025-12-07,sui.1,Winterthur,Basel,51.0,Andrin Hunziker,RegularPlay,0,0.14339898526668549
+4820815,2025-12-07,sui.1,Basel,Winterthur,90.0,Keigo Tsunemoto,RegularPlay,0,0.9110245108604431
+4820817,2025-12-07,sui.1,Sion,Young Boys,29.0,Benjamin Kololli,Penalty,0,0.7884
+4820817,2025-12-07,sui.1,Sion,Young Boys,45.0,Rilind Nivokazi,FromCorner,0,0.2807285785675049
+4820817,2025-12-07,sui.1,Young Boys,Sion,,,none,0,
+4820818,2025-12-07,sui.1,Lausanne,Lugano,,,none,0,
+4820818,2025-12-07,sui.1,Lugano,Lausanne,,,none,0,
+4820820,2025-12-13,sui.1,St. Gallen,Thun,22.0,Aliou Baldé,RegularPlay,0,0.7077673077583313
+4820820,2025-12-13,sui.1,St. Gallen,Thun,77.0,Carlo Boukhalfa,Penalty,0,0.7884
+4820820,2025-12-13,sui.1,Thun,St. Gallen,,,none,0,
+4820821,2025-12-13,sui.1,Winterthur,FC Zürich,44.0,Souleymane Diaby,RegularPlay,0,0.012025001458823681
+4820821,2025-12-13,sui.1,FC Zürich,Winterthur,49.0,Damienus Reverson,RegularPlay,0,0.21859733760356903
+4820821,2025-12-13,sui.1,FC Zürich,Winterthur,67.0,Philippe Keny,RegularPlay,0,0.4651469886302948
+4820821,2025-12-13,sui.1,Winterthur,FC Zürich,90.0,Roman Buess,Penalty,0,0.7884
+4820823,2025-12-13,sui.1,Sion,Grasshopper,43.0,Benjamin Kololli,Penalty,0,0.7884
+4820823,2025-12-13,sui.1,Grasshopper,Sion,,,none,0,
+4820822,2025-12-14,sui.1,Young Boys,Luzern,20.0,Christian Fassnacht,RegularPlay,0,0.484803706407547
+4820822,2025-12-14,sui.1,Young Boys,Luzern,58.0,Darian Males,RegularPlay,0,0.14412371814250946
+4820822,2025-12-14,sui.1,Luzern,Young Boys,,,none,0,
+4820824,2025-12-14,sui.1,Lugano,Servette,5.0,Antonios Papadopoulos,RegularPlay,0,0.015069111250340939
+4820824,2025-12-14,sui.1,Lugano,Servette,18.0,Anto Grgic,Penalty,0,0.7884
+4820824,2025-12-14,sui.1,Lugano,Servette,24.0,Uran Bislimi,SetPiece,0,0.021393107250332832
+4820824,2025-12-14,sui.1,Servette,Lugano,40.0,David Douline,FromCorner,0,0.09129278361797333
+4820824,2025-12-14,sui.1,Lugano,Servette,52.0,Antonios Papadopoulos,FromCorner,0,0.0684691071510315
+4820824,2025-12-14,sui.1,Servette,Lugano,70.0,Samuel Mraz,RegularPlay,0,0.574950098991394
+4820825,2025-12-14,sui.1,Basel,Lausanne,,,none,0,
+4820825,2025-12-14,sui.1,Lausanne,Basel,,,none,0,
+4820828,2025-12-16,sui.1,Thun,Winterthur,20.0,Franz-Ethan Meichtry,RegularPlay,0,0.07828637212514877
+4820828,2025-12-16,sui.1,Thun,Winterthur,22.0,Remo Arnold,OwnGoal,1,0.0
+4820828,2025-12-16,sui.1,Winterthur,Thun,38.0,Andrin Hunziker,RegularPlay,0,0.3229237496852875
+4820828,2025-12-16,sui.1,Thun,Winterthur,43.0,Justin Roth,RegularPlay,0,0.06244867667555809
+4820828,2025-12-16,sui.1,Thun,Winterthur,90.0,Christopher Ibayi,RegularPlay,0,0.44241994619369507
+4820829,2025-12-16,sui.1,Sion,St. Gallen,21.0,Ilyas Chouaref,RegularPlay,0,0.04522905871272087
+4820829,2025-12-16,sui.1,St. Gallen,Sion,51.0,Aliou Baldé,RegularPlay,0,0.5325682163238525
+4820829,2025-12-16,sui.1,St. Gallen,Sion,67.0,Lukas Görtler,FromCorner,0,0.4716041684150696
+4820829,2025-12-16,sui.1,St. Gallen,Sion,90.0,Diego Besio,RegularPlay,0,0.6601520776748657
+4820826,2025-12-17,sui.1,Lugano,FC Zürich,90.0,Kevin Behrens,RegularPlay,0,0.8221238255500793
+4820826,2025-12-17,sui.1,FC Zürich,Lugano,,,none,0,
+4820827,2025-12-17,sui.1,Grasshopper,Young Boys,3.0,Jonathan Asp,RegularPlay,0,0.23630733788013458
+4820827,2025-12-17,sui.1,Grasshopper,Young Boys,14.0,Luke Plange,Penalty,0,0.7884
+4820827,2025-12-17,sui.1,Young Boys,Grasshopper,19.0,Alvyn Sanches,RegularPlay,0,0.030182885006070137
+4820827,2025-12-17,sui.1,Grasshopper,Young Boys,33.0,Oscar Clemente,ThrowInSetPiece,0,0.5412948727607727
+4820827,2025-12-17,sui.1,Young Boys,Grasshopper,60.0,Chris Bedia,FastBreak,0,0.4477123022079468
+4820827,2025-12-17,sui.1,Grasshopper,Young Boys,85.0,Luke Plange,RegularPlay,0,0.7978805303573608
+4820827,2025-12-17,sui.1,Grasshopper,Young Boys,90.0,Luke Plange,RegularPlay,0,0.4182945489883423
+4820827,2025-12-17,sui.1,Grasshopper,Young Boys,90.0,Luke Plange,FastBreak,0,0.938014030456543
+4820831,2025-12-17,sui.1,Basel,Luzern,49.0,Moritz Broschinski,RegularPlay,0,0.18021395802497864
+4820831,2025-12-17,sui.1,Luzern,Basel,54.0,Julian von Moos,RegularPlay,0,0.26180264353752136
+4820831,2025-12-17,sui.1,Basel,Luzern,75.0,Koba Koindredi,Penalty,0,0.7884
+4820832,2025-12-20,sui.1,FC Zürich,Thun,12.0,Lindrit Kamberi,FromCorner,0,0.19807064533233643
+4820832,2025-12-20,sui.1,FC Zürich,Thun,25.0,Matthias Phaeton,RegularPlay,0,0.3516899347305298
+4820832,2025-12-20,sui.1,Thun,FC Zürich,53.0,Elmin Rastoder,RegularPlay,0,0.32904934883117676
+4820832,2025-12-20,sui.1,Thun,FC Zürich,65.0,Marco Bürki,FromCorner,0,0.29030898213386536
+4820832,2025-12-20,sui.1,Thun,FC Zürich,85.0,Christopher Ibayi,SetPiece,0,0.19628486037254333
+4820832,2025-12-20,sui.1,Thun,FC Zürich,89.0,Fabio Fehr,RegularPlay,0,0.020467182621359825
+4820837,2025-12-20,sui.1,Servette,Basel,29.0,Jeremy Guillemenot,RegularPlay,0,0.934752881526947
+4820837,2025-12-20,sui.1,Basel,Servette,64.0,Bénie Traoré,RegularPlay,0,0.4637913405895233
+4820834,2025-12-21,sui.1,Lugano,Young Boys,3.0,Kevin Behrens,RegularPlay,0,0.39021819829940796
+4820834,2025-12-21,sui.1,Lugano,Young Boys,16.0,Renato Steffen,RegularPlay,0,0.5181519985198975
+4820834,2025-12-21,sui.1,Lugano,Young Boys,66.0,Georgios Koutsias,RegularPlay,0,0.5623494386672974
+4820834,2025-12-21,sui.1,Young Boys,Lugano,,,none,0,
+4820835,2025-12-21,sui.1,Luzern,Lausanne,61.0,Kevin Spadanuda,FromCorner,0,0.04858832433819771
+4820835,2025-12-21,sui.1,Luzern,Lausanne,89.0,Lucas Ferreira,RegularPlay,0,0.7006288170814514
+4820835,2025-12-21,sui.1,Luzern,Lausanne,90.0,Lars Villiger,RegularPlay,0,0.5579933524131775
+4820835,2025-12-21,sui.1,Luzern,Lausanne,90.0,Lars Villiger,RegularPlay,0,0.3671410083770752
+4820835,2025-12-21,sui.1,Lausanne,Luzern,,,none,0,
+4820836,2025-12-21,sui.1,St. Gallen,Grasshopper,28.0,Aliou Baldé,RegularPlay,0,0.09219837933778763
+4820836,2025-12-21,sui.1,Grasshopper,St. Gallen,42.0,Lovro Zvonarek,RegularPlay,0,0.10440410673618317
+4820836,2025-12-21,sui.1,St. Gallen,Grasshopper,48.0,Hugo Vandermersch,RegularPlay,0,0.687019407749176
+4820830,2026-01-14,sui.1,Lausanne,Servette,64.0,Florian Ayé,OwnGoal,1,0.0
+4820830,2026-01-14,sui.1,Servette,Lausanne,,,none,0,
+4820833,2026-01-14,sui.1,Sion,Winterthur,70.0,Winsley Boteli,RegularPlay,0,0.3344554007053375
+4820833,2026-01-14,sui.1,Sion,Winterthur,76.0,Ilyas Chouaref,FastBreak,0,0.12491390109062195
+4820833,2026-01-14,sui.1,Winterthur,Sion,,,none,0,
+4820838,2026-01-17,sui.1,Lausanne,Young Boys,13.0,Nathan Butler-Oyedeji,RegularPlay,0,0.546826958656311
+4820838,2026-01-17,sui.1,Young Boys,Lausanne,36.0,Chris Bedia,RegularPlay,0,0.6796796917915344
+4820838,2026-01-17,sui.1,Lausanne,Young Boys,45.0,Gaoussou Diakite,Penalty,0,0.7884
+4820838,2026-01-17,sui.1,Lausanne,Young Boys,88.0,Omar Janneh,RegularPlay,0,0.7119641304016113
+4820841,2026-01-17,sui.1,Luzern,Lugano,25.0,Matteo Di Giusto,RegularPlay,0,0.05851610004901886
+4820841,2026-01-17,sui.1,Lugano,Luzern,41.0,Uran Bislimi,RegularPlay,0,0.05056529864668846
+4820841,2026-01-17,sui.1,Lugano,Luzern,45.0,Uran Bislimi,RegularPlay,0,0.036675192415714264
+4820841,2026-01-17,sui.1,Lugano,Luzern,45.0,Kevin Behrens,FastBreak,0,0.05337338522076607
+4820841,2026-01-17,sui.1,Lugano,Luzern,59.0,Uran Bislimi,SetPiece,0,0.17839959263801575
+4820841,2026-01-17,sui.1,Lugano,Luzern,61.0,Kevin Behrens,FromCorner,0,0.09640468657016754
+4820841,2026-01-17,sui.1,Luzern,Lugano,71.0,Bung Meng Freimann,FromCorner,0,0.2873377799987793
+4820840,2026-01-18,sui.1,Servette,FC Zürich,20.0,Marco Burch,FromCorner,0,0.4503127932548523
+4820840,2026-01-18,sui.1,FC Zürich,Servette,28.0,Damienus Reverson,RegularPlay,0,0.4148598611354828
+4820842,2026-01-18,sui.1,Thun,Grasshopper,5.0,Elmin Rastoder,RegularPlay,0,0.1284666657447815
+4820842,2026-01-18,sui.1,Thun,Grasshopper,9.0,Kastriot Imeri,RegularPlay,0,0.21617759764194489
+4820842,2026-01-18,sui.1,Grasshopper,Thun,50.0,Niklas Steffen,OwnGoal,1,
+4820842,2026-01-18,sui.1,Thun,Grasshopper,69.0,Fabio Fehr,RegularPlay,0,0.129985973238945
+4820843,2026-01-18,sui.1,Basel,Sion,4.0,Flavius Daniliuc,SetPiece,0,0.38115745782852173
+4820843,2026-01-18,sui.1,Sion,Basel,58.0,Liam Chipperfield,RegularPlay,0,0.06091057136654854
+4820847,2026-01-24,sui.1,Luzern,Sion,19.0,Adrian Grbic,RegularPlay,0,0.5515363812446594
+4820847,2026-01-24,sui.1,Sion,Luzern,35.0,Donat Rrudhani,RegularPlay,0,0.08597173541784286
+4820848,2026-01-24,sui.1,Lugano,Winterthur,13.0,Anto Grgic,FreeKick,0,0.040329813957214355
+4820848,2026-01-24,sui.1,Lugano,Winterthur,42.0,Kevin Behrens,RegularPlay,0,0.23392535746097565
+4820848,2026-01-24,sui.1,Lugano,Winterthur,44.0,Mattia Zanotti,FastBreak,0,0.43123573064804077
+4820848,2026-01-24,sui.1,Winterthur,Lugano,67.0,Andrin Hunziker,RegularPlay,0,0.1460414081811905
+4820848,2026-01-24,sui.1,Lugano,Winterthur,79.0,Hadj Mahmoud,RegularPlay,0,0.6249915361404419
+4820849,2026-01-24,sui.1,Lausanne,Grasshopper,51.0,Gaoussou Diakite,RegularPlay,0,0.41573259234428406
+4820849,2026-01-24,sui.1,Grasshopper,Lausanne,75.0,Jonathan Asp,RegularPlay,0,0.041085075587034225
+4820844,2026-01-25,sui.1,Thun,Young Boys,46.0,Kastriot Imeri,RegularPlay,0,0.2255655974149704
+4820844,2026-01-25,sui.1,Thun,Young Boys,56.0,Mattias Käit,FromCorner,0,0.19113822281360626
+4820844,2026-01-25,sui.1,Thun,Young Boys,62.0,Elmin Rastoder,RegularPlay,0,0.48748579621315
+4820844,2026-01-25,sui.1,Young Boys,Thun,64.0,Alan Virginius,RegularPlay,0,0.032959889620542526
+4820844,2026-01-25,sui.1,Thun,Young Boys,84.0,Elmin Rastoder,RegularPlay,0,0.26435744762420654
+4820845,2026-01-25,sui.1,FC Zürich,Basel,1.0,Matthias Phaeton,RegularPlay,0,0.21925975382328033
+4820845,2026-01-25,sui.1,Basel,FC Zürich,10.0,Xherdan Shaqiri,RegularPlay,0,0.29004332423210144
+4820845,2026-01-25,sui.1,FC Zürich,Basel,43.0,Philippe Keny,Penalty,0,0.7884
+4820845,2026-01-25,sui.1,Basel,FC Zürich,45.0,Xherdan Shaqiri,FastBreak,0,0.07649602741003036
+4820845,2026-01-25,sui.1,Basel,FC Zürich,51.0,Philip Otele,SetPiece,0,0.4833807051181793
+4820845,2026-01-25,sui.1,FC Zürich,Basel,64.0,Damienus Reverson,RegularPlay,0,0.7791586518287659
+4820845,2026-01-25,sui.1,Basel,FC Zürich,90.0,Xherdan Shaqiri,RegularPlay,0,0.06316772103309631
+4820846,2026-01-25,sui.1,St. Gallen,Servette,2.0,Lukas Görtler,ThrowInSetPiece,0,0.050945084542036057
+4820846,2026-01-25,sui.1,St. Gallen,Servette,15.0,Jozo Stanic,SetPiece,0,0.017675243318080902
+4820846,2026-01-25,sui.1,Servette,St. Gallen,46.0,Jeremy Guillemenot,FastBreak,0,0.15100806951522827
+4820846,2026-01-25,sui.1,Servette,St. Gallen,80.0,Jeremy Guillemenot,Penalty,0,0.7884
+4820846,2026-01-25,sui.1,Servette,St. Gallen,83.0,Miroslav Stevanovic,RegularPlay,0,0.2791661322116852
+4820846,2026-01-25,sui.1,Servette,St. Gallen,90.0,David Douline,FromCorner,0,0.3797084093093872
+4820851,2026-01-31,sui.1,Winterthur,Lausanne,4.0,Alexandre Jankewitz,ThrowInSetPiece,0,0.29216620326042175
+4820851,2026-01-31,sui.1,Lausanne,Winterthur,55.0,Florent Mollet,SetPiece,0,0.04687727987766266
+4820851,2026-01-31,sui.1,Winterthur,Lausanne,74.0,Theo Golliard,RegularPlay,0,0.13521325588226318
+4820852,2026-01-31,sui.1,Sion,Servette,5.0,Steve Rouiller,OwnGoal,1,
+4820852,2026-01-31,sui.1,Servette,Sion,25.0,Miroslav Stevanovic,RegularPlay,0,0.1406485140323639
+4820852,2026-01-31,sui.1,Servette,Sion,35.0,Jeremy Guillemenot,RegularPlay,0,0.10263040661811829
+4820852,2026-01-31,sui.1,Sion,Servette,58.0,Numa Lavanchy,RegularPlay,0,0.07944034785032272
+4820852,2026-01-31,sui.1,Servette,Sion,86.0,Ablie Jallow,RegularPlay,0,0.2669421434402466
+4820852,2026-01-31,sui.1,Sion,Servette,90.0,Winsley Boteli,RegularPlay,0,0.32679814100265503
+4820854,2026-01-31,sui.1,Lugano,Grasshopper,62.0,Renato Steffen,SetPiece,0,0.859214186668396
+4820854,2026-01-31,sui.1,Grasshopper,Lugano,85.0,Samuel Krasniqi,RegularPlay,0,0.039958078414201736
+4820850,2026-02-01,sui.1,Young Boys,FC Zürich,4.0,Joel Monteiro,FastBreak,0,0.20660048723220825
+4820850,2026-02-01,sui.1,Young Boys,FC Zürich,80.0,Christian Fassnacht,FastBreak,0,0.15643680095672607
+4820850,2026-02-01,sui.1,Young Boys,FC Zürich,83.0,Armin Gigovic,RegularPlay,0,0.1380360871553421
+4820850,2026-02-01,sui.1,FC Zürich,Young Boys,,,none,0,
+4820853,2026-02-01,sui.1,St. Gallen,Luzern,32.0,Alessandro Vogt,RegularPlay,0,0.03286071494221687
+4820853,2026-02-01,sui.1,St. Gallen,Luzern,68.0,Alessandro Vogt,FastBreak,0,0.21271516382694244
+4820853,2026-02-01,sui.1,Luzern,St. Gallen,86.0,Oscar Kabwit,RegularPlay,0,0.2738998234272003
+4820853,2026-02-01,sui.1,Luzern,St. Gallen,90.0,Andrej Vasovic,ThrowInSetPiece,0,0.5363356471061707
+4820855,2026-02-01,sui.1,Thun,Basel,15.0,Leonardo Bertone,RegularPlay,0,0.014107921160757542
+4820855,2026-02-01,sui.1,Basel,Thun,57.0,Dominik Schmid,FromCorner,0,0.03430347144603729
+4820855,2026-02-01,sui.1,Thun,Basel,80.0,Valmir Matoshi,RegularPlay,0,0.1340211033821106
+5105982,2026-02-07,sui.1,Sion,Luzern,,,none,0,
+5105982,2026-02-07,sui.1,Luzern,Sion,,,none,0,
+5105983,2026-02-07,sui.1,Winterthur,Lugano,61.0,Andrin Hunziker,RegularPlay,0,0.250758558511734
+5105983,2026-02-07,sui.1,Lugano,Winterthur,80.0,Anto Grgic,Penalty,0,0.7884
+5105984,2026-02-07,sui.1,Young Boys,Grasshopper,31.0,Alvyn Sanches,RegularPlay,0,0.10397695004940033
+5105984,2026-02-07,sui.1,Grasshopper,Young Boys,79.0,Maximilian Ullmann,RegularPlay,0,0.03194553777575493
+5105985,2026-02-08,sui.1,Thun,Servette,40.0,Elmin Rastoder,SetPiece,0,0.0508948490023613
+5105985,2026-02-08,sui.1,Thun,Servette,47.0,Marco Bürki,SetPiece,0,0.014699585735797882
+5105985,2026-02-08,sui.1,Thun,Servette,88.0,Nils Reichmuth,RegularPlay,0,0.012224946171045303
+5105985,2026-02-08,sui.1,Servette,Thun,90.0,Jamie Atangana,Penalty,0,0.7884
+5105986,2026-02-08,sui.1,FC Zürich,Basel,16.0,Ilan Sauter,FromCorner,0,0.1329953521490097
+5105986,2026-02-08,sui.1,Basel,FC Zürich,90.0,Xherdan Shaqiri,Penalty,0,0.7884
+5105986,2026-02-08,sui.1,Basel,FC Zürich,90.0,Ibrahim Salah,RegularPlay,0,0.15495185554027557
+5105987,2026-02-08,sui.1,Lausanne,St. Gallen,2.0,Omar Janneh,RegularPlay,0,0.32498475909233093
+5105987,2026-02-08,sui.1,St. Gallen,Lausanne,9.0,Aliou Baldé,RegularPlay,0,0.3208203613758087
+5105988,2026-02-10,sui.1,Grasshopper,Luzern,9.0,Tim Meyer,RegularPlay,0,0.8977220058441162
+5105988,2026-02-10,sui.1,Luzern,Grasshopper,15.0,Oscar Kabwit,RegularPlay,0,0.46246930956840515
+5105988,2026-02-10,sui.1,Grasshopper,Luzern,35.0,Luke Plange,Penalty,0,0.7884
+5105988,2026-02-10,sui.1,Luzern,Grasshopper,37.0,Matteo Di Giusto,RegularPlay,0,0.2779713571071625
+5105988,2026-02-10,sui.1,Luzern,Grasshopper,53.0,Sven Köhler,OwnGoal,1,
+5105988,2026-02-10,sui.1,Grasshopper,Luzern,58.0,Simone Stroscio,RegularPlay,0,0.048325102776288986
+5105988,2026-02-10,sui.1,Luzern,Grasshopper,76.0,Severin Ottiger,RegularPlay,0,0.04644205421209335
+5105989,2026-02-11,sui.1,Lugano,Servette,13.0,Kevin Behrens,RegularPlay,0,0.2854270040988922
+5105989,2026-02-11,sui.1,Servette,Lugano,77.0,Samuel Mraz,RegularPlay,0,0.2141551524400711
+5105990,2026-02-11,sui.1,St. Gallen,Young Boys,5.0,Carlo Boukhalfa,RegularPlay,0,0.29677969217300415
+5105990,2026-02-11,sui.1,St. Gallen,Young Boys,11.0,Aliou Baldé,FastBreak,0,0.7344463467597961
+5105990,2026-02-11,sui.1,Young Boys,St. Gallen,90.0,Christian Fassnacht,SetPiece,0,0.12649406492710114
+5105991,2026-02-11,sui.1,FC Zürich,Winterthur,7.0,Nevio Di Giusto,RegularPlay,0,0.16280287504196167
+5105991,2026-02-11,sui.1,FC Zürich,Winterthur,29.0,Philippe Keny,RegularPlay,0,0.3312172591686249
+5105991,2026-02-11,sui.1,FC Zürich,Winterthur,90.0,Philippe Keny,FreeKick,0,0.04932931438088417
+5105991,2026-02-11,sui.1,Winterthur,FC Zürich,,,none,0,
+5105992,2026-02-12,sui.1,Sion,Basel,41.0,Ilyas Chouaref,SetPiece,0,0.09494546800851822
+5105992,2026-02-12,sui.1,Sion,Basel,54.0,Jan Kronig,FromCorner,0,0.19227226078510284
+5105992,2026-02-12,sui.1,Basel,Sion,,,none,0,
+5105993,2026-02-12,sui.1,Thun,Lausanne,20.0,Valmir Matoshi,RegularPlay,0,0.09656126797199249
+5105993,2026-02-12,sui.1,Thun,Lausanne,21.0,Valmir Matoshi,FastBreak,0,0.6338860392570496
+5105993,2026-02-12,sui.1,Lausanne,Thun,45.0,Omar Janneh,FastBreak,0,0.0290228184312582
+5105993,2026-02-12,sui.1,Thun,Lausanne,72.0,Nils Reichmuth,RegularPlay,0,0.6535320281982422
+5105993,2026-02-12,sui.1,Thun,Lausanne,86.0,Elmin Rastoder,FastBreak,0,0.1303347945213318
+5105993,2026-02-12,sui.1,Thun,Lausanne,90.0,Leonardo Bertone,Penalty,0,0.7884
+5105997,2026-02-14,sui.1,St. Gallen,Grasshopper,,,none,0,
+5105997,2026-02-14,sui.1,Grasshopper,St. Gallen,,,none,0,
+5105998,2026-02-14,sui.1,Luzern,FC Zürich,15.0,Matteo Di Giusto,RegularPlay,0,0.35061773657798767
+5105998,2026-02-14,sui.1,Luzern,FC Zürich,29.0,Oscar Kabwit,RegularPlay,0,0.0669265165925026
+5105998,2026-02-14,sui.1,Luzern,FC Zürich,64.0,Bung Meng Freimann,SetPiece,0,0.3834405839443207
+5105998,2026-02-14,sui.1,Luzern,FC Zürich,68.0,Lucas Ferreira,FastBreak,0,0.37035006284713745
+5105998,2026-02-14,sui.1,FC Zürich,Luzern,85.0,Emmanuel Umeh,FromCorner,0,0.47500160336494446
+5105999,2026-02-14,sui.1,Young Boys,Winterthur,39.0,Christian Fassnacht,RegularPlay,0,0.34186944365501404
+5105999,2026-02-14,sui.1,Young Boys,Winterthur,53.0,Alan Virginius,RegularPlay,0,0.10218165814876556
+5105999,2026-02-14,sui.1,Young Boys,Winterthur,55.0,Christian Fassnacht,RegularPlay,0,0.2256162017583847
+5105999,2026-02-14,sui.1,Winterthur,Young Boys,59.0,Roman Buess,FromCorner,0,0.36790043115615845
+5105999,2026-02-14,sui.1,Young Boys,Winterthur,65.0,Chris Bedia,RegularPlay,0,0.5559940338134766
+5105999,2026-02-14,sui.1,Young Boys,Winterthur,82.0,Darian Males,RegularPlay,0,0.05280319228768349
+5105999,2026-02-14,sui.1,Young Boys,Winterthur,85.0,Alvyn Sanches,RegularPlay,0,0.04992232471704483
+5106000,2026-02-15,sui.1,Thun,Sion,43.0,Franz-Ethan Meichtry,RegularPlay,0,0.15098579227924347
+5106000,2026-02-15,sui.1,Sion,Thun,,,none,0,
+5106001,2026-02-15,sui.1,Basel,Lugano,30.0,Bénie Traoré,Penalty,0,0.7884
+5106001,2026-02-15,sui.1,Lugano,Basel,64.0,Georgios Koutsias,RegularPlay,0,0.15073040127754211
+5106002,2026-02-15,sui.1,Servette,Lausanne,20.0,Samuel Mraz,FastBreak,0,0.5480584502220154
+5106002,2026-02-15,sui.1,Lausanne,Servette,28.0,Jamie Roche,Penalty,0,0.7884
+5106002,2026-02-15,sui.1,Lausanne,Servette,39.0,Seydou Traore,RegularPlay,0,0.10461563616991043
+5106002,2026-02-15,sui.1,Servette,Lausanne,59.0,Miroslav Stevanovic,RegularPlay,0,0.05645880848169327
+5106002,2026-02-15,sui.1,Lausanne,Servette,73.0,Omar Janneh,FastBreak,0,0.7552490234375
+5106002,2026-02-15,sui.1,Servette,Lausanne,90.0,Miroslav Stevanovic,RegularPlay,0,0.17580683529376984
+4820839,2026-02-18,sui.1,St. Gallen,Winterthur,6.0,Alessandro Vogt,RegularPlay,0,0.08737903088331223
+4820839,2026-02-18,sui.1,St. Gallen,Winterthur,21.0,Carlo Boukhalfa,RegularPlay,0,0.3345702290534973
+4820839,2026-02-18,sui.1,St. Gallen,Winterthur,65.0,Colin Kleine-Bekel,FromCorner,0,0.23721946775913239
+4820839,2026-02-18,sui.1,St. Gallen,Winterthur,67.0,Alessandro Vogt,ThrowInSetPiece,0,0.30347540974617004
+4820839,2026-02-18,sui.1,St. Gallen,Winterthur,82.0,Diego Besio,RegularPlay,0,0.07609356194734573
+4820839,2026-02-18,sui.1,Winterthur,St. Gallen,90.0,Randy Schneider,RegularPlay,0,0.4557579457759857
+5106006,2026-02-21,sui.1,St. Gallen,Servette,4.0,Christian Witzig,RegularPlay,0,0.5394412875175476
+5106006,2026-02-21,sui.1,Servette,St. Gallen,6.0,Steve Rouiller,SetPiece,0,0.11042943596839905
+5106008,2026-02-21,sui.1,FC Zürich,Grasshopper,31.0,Damienus Reverson,RegularPlay,0,0.5338664054870605
+5106008,2026-02-21,sui.1,FC Zürich,Grasshopper,51.0,Philippe Keny,RegularPlay,0,0.06920672208070755
+5106008,2026-02-21,sui.1,Grasshopper,FC Zürich,81.0,Luke Plange,RegularPlay,0,0.31580764055252075
+5106009,2026-02-22,sui.1,Sion,Young Boys,15.0,Rilind Nivokazi,RegularPlay,0,0.448905885219574
+5106009,2026-02-22,sui.1,Sion,Young Boys,42.0,Rilind Nivokazi,SetPiece,0,0.5947701930999756
+5106009,2026-02-22,sui.1,Young Boys,Sion,52.0,Joël Monteiro,RegularPlay,0,0.20902712643146515
+5106009,2026-02-22,sui.1,Sion,Young Boys,77.0,Rilind Nivokazi,RegularPlay,0,0.33538520336151123
+5106010,2026-02-22,sui.1,Lugano,Lausanne,36.0,Renato Steffen,RegularPlay,0,0.29238563776016235
+5106010,2026-02-22,sui.1,Lugano,Lausanne,61.0,Daniel Dos Santos,RegularPlay,0,0.21392162144184113
+5106010,2026-02-22,sui.1,Lausanne,Lugano,80.0,Florent Mollet,RegularPlay,0,0.054802149534225464
+5106011,2026-02-22,sui.1,Luzern,Basel,30.0,Pius Dorn,FromCorner,0,0.09339731931686401
+5106011,2026-02-22,sui.1,Basel,Luzern,45.0,Bénie Traoré,Penalty,0,0.7884
+5106011,2026-02-22,sui.1,Basel,Luzern,63.0,Julien Duranville,FromCorner,0,0.7182974219322205
+5106011,2026-02-22,sui.1,Luzern,Basel,77.0,Oscar Kabwit,FromCorner,0,0.051103681325912476
+5106011,2026-02-22,sui.1,Luzern,Basel,83.0,Lars Villiger,RegularPlay,0,0.3719322979450226
+5106011,2026-02-22,sui.1,Luzern,Basel,89.0,Oscar Kabwit,FastBreak,0,0.14665286242961884
+5106007,2026-02-25,sui.1,Thun,Winterthur,55.0,Franz-Ethan Meichtry,RegularPlay,0,0.11544298380613327
+5106007,2026-02-25,sui.1,Thun,Winterthur,59.0,Elmin Rastoder,RegularPlay,0,0.19751425087451935
+5106007,2026-02-25,sui.1,Thun,Winterthur,83.0,Kastriot Imeri,RegularPlay,0,0.04581945016980171
+5106007,2026-02-25,sui.1,Winterthur,Thun,,,none,0,
+5106014,2026-02-28,sui.1,Winterthur,St. Gallen,21.0,Pajtim Kasami,FromCorner,0,0.04252297803759575
+5106014,2026-02-28,sui.1,St. Gallen,Winterthur,76.0,Alessandro Vogt,RegularPlay,0,0.13889102637767792
+5106014,2026-02-28,sui.1,St. Gallen,Winterthur,90.0,Alessandro Vogt,Penalty,0,0.7884
+5106015,2026-02-28,sui.1,Thun,Luzern,24.0,Kastriot Imeri,RegularPlay,0,0.0779690146446228
+5106015,2026-02-28,sui.1,Thun,Luzern,29.0,Elmin Rastoder,RegularPlay,0,0.4076727628707886
+5106015,2026-02-28,sui.1,Luzern,Thun,43.0,Oscar Kabwit,ThrowInSetPiece,0,0.9681485295295715
+5106016,2026-02-28,sui.1,Servette,Sion,,,none,0,
+5106016,2026-02-28,sui.1,Sion,Servette,,,none,0,
+5106017,2026-03-01,sui.1,Basel,Lausanne,1.0,Giacomo Koloto,RegularPlay,0,0.25809934735298157
+5106017,2026-03-01,sui.1,Lausanne,Basel,55.0,Omar Janneh,RegularPlay,0,0.07788991928100586
+5106017,2026-03-01,sui.1,Basel,Lausanne,68.0,Giacomo Koloto,RegularPlay,0,0.217161163687706
+5106018,2026-03-01,sui.1,Grasshopper,Lugano,12.0,Damian Kelvin,OwnGoal,1,0.0
+5106018,2026-03-01,sui.1,Lugano,Grasshopper,,,none,0,
+5106019,2026-03-01,sui.1,Young Boys,FC Zürich,64.0,Sandro Lauper,RegularPlay,0,0.02226487547159195
+5106019,2026-03-01,sui.1,Young Boys,FC Zürich,71.0,Chris Bedia,RegularPlay,0,0.8340625762939453
+5106019,2026-03-01,sui.1,Young Boys,FC Zürich,86.0,Chris Bedia,Penalty,0,0.7884
+5106019,2026-03-01,sui.1,FC Zürich,Young Boys,,,none,0,
+5106020,2026-03-03,sui.1,Winterthur,Servette,54.0,Roman Buess,RegularPlay,0,0.17663437128067017
+5106020,2026-03-03,sui.1,Servette,Winterthur,79.0,Florian Ayé,RegularPlay,0,0.5493064522743225
+5106021,2026-03-04,sui.1,Sion,Lugano,10.0,Ali Kabacalman,Penalty,0,0.7884
+5106021,2026-03-04,sui.1,Lugano,Sion,12.0,Renato Steffen,RegularPlay,0,0.431776762008667
+5106021,2026-03-04,sui.1,Lugano,Sion,62.0,Kevin Behrens,RegularPlay,0,0.10026106983423233
+5106022,2026-03-04,sui.1,Young Boys,Luzern,56.0,Julian von Moos,OwnGoal,1,0.0
+5106022,2026-03-04,sui.1,Young Boys,Luzern,79.0,Darian Males,ThrowInSetPiece,0,0.04347313195466995
+5106022,2026-03-04,sui.1,Luzern,Young Boys,86.0,Sinan Karweina,Penalty,0,0.7884
+5106023,2026-03-04,sui.1,Lausanne,FC Zürich,35.0,Omar Janneh,FastBreak,0,0.11948870867490768
+5106023,2026-03-04,sui.1,FC Zürich,Lausanne,72.0,Ivan Cavaleiro,RegularPlay,0,0.056567102670669556
+5106023,2026-03-04,sui.1,Lausanne,FC Zürich,90.0,Karim Sow,FromCorner,0,0.2186565399169922
+5106024,2026-03-05,sui.1,Basel,Grasshopper,51.0,Bénie Traoré,RegularPlay,0,0.16743190586566925
+5106024,2026-03-05,sui.1,Grasshopper,Basel,,,none,0,
+5106025,2026-03-05,sui.1,St. Gallen,Thun,37.0,Lukas Görtler,Penalty,0,0.7884
+5106025,2026-03-05,sui.1,Thun,St. Gallen,55.0,Leonardo Bertone,Penalty,0,0.7884
+5106025,2026-03-05,sui.1,Thun,St. Gallen,62.0,Genís Montolio,FromCorner,0,0.11105652153491974
+5106025,2026-03-05,sui.1,St. Gallen,Thun,90.0,Christian Witzig,RegularPlay,0,0.14612290263175964
+5106026,2026-03-07,sui.1,Servette,FC Zürich,2.0,Junior Kadile,RegularPlay,0,0.06153876334428787
+5106026,2026-03-07,sui.1,FC Zürich,Servette,74.0,Philippe Kény,Penalty,0,0.7884
+5106026,2026-03-07,sui.1,Servette,FC Zürich,88.0,Junior Kadile,RegularPlay,0,0.04912357032299042
+5106027,2026-03-07,sui.1,Winterthur,Sion,5.0,Andrin Hunziker,FromCorner,0,0.01656755991280079
+5106027,2026-03-07,sui.1,Sion,Winterthur,66.0,Winsley Boteli,RegularPlay,0,0.2391856461763382
+5106028,2026-03-07,sui.1,Luzern,Lugano,44.0,Andrej Vasovic,RegularPlay,0,0.048174869269132614
+5106028,2026-03-07,sui.1,Lugano,Luzern,50.0,Hannes Delcroix,FromCorner,0,0.23402133584022522
+5106028,2026-03-07,sui.1,Luzern,Lugano,63.0,Oscar Kabwit,RegularPlay,0,0.13490159809589386
+5106028,2026-03-07,sui.1,Luzern,Lugano,90.0,Matteo Di Giusto,RegularPlay,0,0.25930148363113403
+5106029,2026-03-08,sui.1,St. Gallen,Basel,9.0,Chima Okoroji,FromCorner,0,0.08111045509576797
+5106029,2026-03-08,sui.1,St. Gallen,Basel,15.0,Chima Okoroji,FreeKick,0,0.04861033707857132
+5106029,2026-03-08,sui.1,St. Gallen,Basel,29.0,Carlo Boukhalfa,RegularPlay,0,0.09080415964126587
+5106029,2026-03-08,sui.1,Basel,St. Gallen,,,none,0,
+5106030,2026-03-08,sui.1,Grasshopper,Lausanne,8.0,Dirk Abels,ThrowInSetPiece,0,0.1105773076415062
+5106030,2026-03-08,sui.1,Lausanne,Grasshopper,22.0,Kevin Mouanga,FromCorner,0,0.07150299847126007
+5106030,2026-03-08,sui.1,Lausanne,Grasshopper,50.0,Olivier Custodio,FreeKick,0,0.12730589509010315
+5106030,2026-03-08,sui.1,Lausanne,Grasshopper,63.0,Seydou Traore,RegularPlay,0,0.23910759389400482
+5106030,2026-03-08,sui.1,Grasshopper,Lausanne,72.0,Luke Plange,RegularPlay,0,0.42496901750564575
+5106031,2026-03-08,sui.1,Young Boys,Thun,7.0,Alvyn Sanches,RegularPlay,0,0.5327320098876953
+5106031,2026-03-08,sui.1,Thun,Young Boys,50.0,Valmir Matoshi,RegularPlay,0,0.16574682295322418
+5106031,2026-03-08,sui.1,Thun,Young Boys,80.0,Nils Reichmuth,RegularPlay,0,0.07774828374385834
+5106032,2026-03-14,sui.1,Grasshopper,Thun,17.0,Young-Jun Lee,RegularPlay,0,0.5513429641723633
+5106032,2026-03-14,sui.1,Thun,Grasshopper,33.0,Mattias Käit,FromCorner,0,0.3025051951408386
+5106032,2026-03-14,sui.1,Thun,Grasshopper,37.0,Genís Montolio,SetPiece,0,0.06162400171160698
+5106032,2026-03-14,sui.1,Thun,Grasshopper,50.0,Brighton Labeau,RegularPlay,0,0.04722629114985466
+5106032,2026-03-14,sui.1,Thun,Grasshopper,61.0,Elmin Rastoder,RegularPlay,0,0.9923020601272583
+5106032,2026-03-14,sui.1,Thun,Grasshopper,80.0,Furkan Dursun,RegularPlay,0,0.11782016605138779
+5106033,2026-03-14,sui.1,Sion,FC Zürich,68.0,Benjamin Kololli,Penalty,0,0.7884
+5106033,2026-03-14,sui.1,FC Zürich,Sion,70.0,Juan Perea,FromCorner,0,0.36843618750572205
+5106033,2026-03-14,sui.1,Sion,FC Zürich,85.0,Kreshnik Hajrizi,FromCorner,0,0.10169684141874313
+5106035,2026-03-15,sui.1,Young Boys,Lausanne,43.0,Alvyn Sanches,RegularPlay,0,0.2827269732952118
+5106035,2026-03-15,sui.1,Young Boys,Lausanne,55.0,Alvyn Sanches,RegularPlay,0,0.15709441900253296
+5106035,2026-03-15,sui.1,Lausanne,Young Boys,,,none,0,
+5106036,2026-03-15,sui.1,Basel,Servette,45.0,Dominik Schmid,FromCorner,0,0.032661374658346176
+5106036,2026-03-15,sui.1,Basel,Servette,48.0,Joël Mall,OwnGoal,1,0.0
+5106036,2026-03-15,sui.1,Servette,Basel,88.0,Samuel Mráz,RegularPlay,0,0.2357223778963089
+5106036,2026-03-15,sui.1,Basel,Servette,90.0,Metinho,FromCorner,0,0.036657415330410004
+5106037,2026-03-15,sui.1,Luzern,Winterthur,15.0,Matteo Di Giusto,Penalty,0,0.7884
+5106037,2026-03-15,sui.1,Winterthur,Luzern,32.0,Nishan Burkart,RegularPlay,0,0.09020872414112091
+5106037,2026-03-15,sui.1,Winterthur,Luzern,45.0,Théo Golliard,RegularPlay,0,0.42122364044189453
+5106034,2026-03-17,sui.1,St. Gallen,Lugano,15.0,Christian Witzig,RegularPlay,0,0.1542338728904724
+5106034,2026-03-17,sui.1,Lugano,St. Gallen,90.0,Renato Steffen,FreeKick,0,0.035221491008996964
+5106038,2026-03-21,sui.1,Servette,Grasshopper,8.0,Junior Kadile,RegularPlay,0,0.23344695568084717
+5106038,2026-03-21,sui.1,Servette,Grasshopper,10.0,Junior Kadile,RegularPlay,0,0.19199687242507935
+5106038,2026-03-21,sui.1,Servette,Grasshopper,13.0,Miroslav Stevanovic,RegularPlay,0,0.401956170797348
+5106038,2026-03-21,sui.1,Servette,Grasshopper,18.0,Florian Ayé,RegularPlay,0,0.6465832591056824
+5106038,2026-03-21,sui.1,Servette,Grasshopper,71.0,Miroslav Stevanovic,RegularPlay,0,0.10244894027709961
+5106038,2026-03-21,sui.1,Grasshopper,Servette,,,none,0,
+5106039,2026-03-21,sui.1,FC Zürich,Thun,15.0,Damienus Reverson,FromCorner,0,0.10965722799301147
+5106039,2026-03-21,sui.1,Thun,FC Zürich,38.0,Leonardo Bertone,ThrowInSetPiece,0,0.0333930179476738
+5106039,2026-03-21,sui.1,FC Zürich,Thun,77.0,Ivan Cavaleiro,RegularPlay,0,0.062171172350645065
+5106040,2026-03-21,sui.1,St. Gallen,Sion,24.0,Lukas Görtler,RegularPlay,0,0.13427899777889252
+5106040,2026-03-21,sui.1,Sion,St. Gallen,29.0,Lukas Daschner,OwnGoal,1,
+5106041,2026-03-22,sui.1,Basel,Winterthur,15.0,Ibrahim Salah,RegularPlay,0,0.5970845222473145
+5106041,2026-03-22,sui.1,Basel,Winterthur,71.0,Bénie Traoré,SetPiece,0,0.07293882220983505
+5106041,2026-03-22,sui.1,Winterthur,Basel,,,none,0,
+5106042,2026-03-22,sui.1,Luzern,Lausanne,4.0,Pius Dorn,FromCorner,0,0.16259387135505676
+5106042,2026-03-22,sui.1,Luzern,Lausanne,23.0,Matteo Di Giusto,RegularPlay,0,0.2782402038574219
+5106042,2026-03-22,sui.1,Luzern,Lausanne,51.0,Pius Dorn,RegularPlay,0,0.30970510840415955
+5106042,2026-03-22,sui.1,Luzern,Lausanne,76.0,Andrej Vasovic,FastBreak,0,0.3484463691711426
+5106042,2026-03-22,sui.1,Lausanne,Luzern,,,none,0,
+5106043,2026-03-22,sui.1,Young Boys,Lugano,5.0,Alvyn Sanches,RegularPlay,0,0.04950064420700073
+5106043,2026-03-22,sui.1,Lugano,Young Boys,65.0,Anto Grgic,Penalty,0,0.7884
+5106044,2026-04-04,sui.1,Winterthur,Lausanne,39.0,Luca Zuffi,Penalty,0,0.7884
+5106044,2026-04-04,sui.1,Lausanne,Winterthur,45.0,Omar Janneh,IndividualPlay,0,0.20843538641929626
+5106044,2026-04-04,sui.1,Lausanne,Winterthur,67.0,Sékou Fofana,RegularPlay,0,0.03467126563191414
+5106045,2026-04-04,sui.1,Lugano,Thun,59.0,Daniel Dos Santos,FastBreak,0,0.0807032510638237
+5106045,2026-04-04,sui.1,Thun,Lugano,,,none,0,
+5106046,2026-04-04,sui.1,Young Boys,Basel,27.0,Edimilson Fernandes,RegularPlay,0,0.024907348677515984
+5106046,2026-04-04,sui.1,Basel,Young Boys,36.0,Sandro Lauper,OwnGoal,1,
+5106046,2026-04-04,sui.1,Basel,Young Boys,41.0,Xherdan Shaqiri,FastBreak,0,0.12948516011238098
+5106046,2026-04-04,sui.1,Young Boys,Basel,64.0,Flavius Daniliuc,OwnGoal,1,
+5106046,2026-04-04,sui.1,Basel,Young Boys,68.0,Bénie Traoré,RegularPlay,0,0.3740069568157196
+5106046,2026-04-04,sui.1,Young Boys,Basel,90.0,Ebrima Colley,RegularPlay,0,0.35395973920822144
+5106047,2026-04-06,sui.1,Sion,Grasshopper,3.0,Rilind Nivokazi,RegularPlay,0,0.5407719016075134
+5106047,2026-04-06,sui.1,Sion,Grasshopper,66.0,Liam Chipperfield,FastBreak,0,0.07964803278446198
+5106047,2026-04-06,sui.1,Sion,Grasshopper,75.0,Ali Kabacalman,Penalty,0,0.7884
+5106047,2026-04-06,sui.1,Sion,Grasshopper,90.0,Winsley Boteli,RegularPlay,0,0.0603552982211113
+5106047,2026-04-06,sui.1,Grasshopper,Sion,,,none,0,
+5106048,2026-04-06,sui.1,Servette,Luzern,40.0,Miroslav Stevanovic,RegularPlay,0,0.08640051633119583
+5106048,2026-04-06,sui.1,Servette,Luzern,46.0,Timothé Cognat,RegularPlay,0,0.1478305608034134
+5106048,2026-04-06,sui.1,Servette,Luzern,90.0,Junior Kadile,RegularPlay,0,0.16272108256816864
+5106048,2026-04-06,sui.1,Luzern,Servette,,,none,0,
+5106049,2026-04-06,sui.1,St. Gallen,FC Zürich,33.0,Lukas Görtler,Penalty,0,0.7884
+5106049,2026-04-06,sui.1,FC Zürich,St. Gallen,36.0,Ivan Cavaleiro,RegularPlay,0,0.32378947734832764
+5106049,2026-04-06,sui.1,St. Gallen,FC Zürich,76.0,Alessandro Vogt,RegularPlay,0,0.15448537468910217
+5106053,2026-04-11,sui.1,Grasshopper,Winterthur,18.0,Jonathan Asp,RegularPlay,0,0.03604373708367348
+5106053,2026-04-11,sui.1,Grasshopper,Winterthur,90.0,Michael Frey,FastBreak,0,0.23054097592830658
+5106053,2026-04-11,sui.1,Winterthur,Grasshopper,,,none,0,
+5106055,2026-04-11,sui.1,Lugano,FC Zürich,61.0,Renato Steffen,RegularPlay,0,0.5517405867576599
+5106055,2026-04-11,sui.1,FC Zürich,Lugano,,,none,0,
+5106050,2026-04-12,sui.1,Luzern,St. Gallen,9.0,Andrej Vasovic,RegularPlay,0,0.2904201149940491
+5106050,2026-04-12,sui.1,St. Gallen,Luzern,73.0,Aliou Baldé,Penalty,0,0.7884
+5106050,2026-04-12,sui.1,Luzern,St. Gallen,77.0,Lars Villiger,FromCorner,0,0.16062386333942413
+5106050,2026-04-12,sui.1,St. Gallen,Luzern,87.0,Aliou Baldé,FromCorner,0,0.12332527339458466
+5106051,2026-04-12,sui.1,Sion,Lausanne,57.0,Benjamin Kololli,RegularPlay,0,0.09163376688957214
+5106051,2026-04-12,sui.1,Sion,Lausanne,70.0,Ilyas Chouaref,Penalty,0,0.7884
+5106051,2026-04-12,sui.1,Sion,Lausanne,74.0,Franck Surdez,RegularPlay,0,0.20859935879707336
+5106051,2026-04-12,sui.1,Lausanne,Sion,,,none,0,
+5106054,2026-04-12,sui.1,Servette,Young Boys,59.0,Thomas Lopes,FastBreak,0,0.5905484557151794
+5106054,2026-04-12,sui.1,Young Boys,Servette,71.0,Chris Bedia,Penalty,0,0.7884
+5106052,2026-04-18,sui.1,Thun,Basel,28.0,Christopher Ibayi,FastBreak,0,0.30598023533821106
+5106052,2026-04-18,sui.1,Thun,Basel,53.0,Michael Heule,SetPiece,0,0.21945960819721222
+5106052,2026-04-18,sui.1,Basel,Thun,56.0,Julien Duranville,RegularPlay,0,0.1698015332221985
+5106052,2026-04-18,sui.1,Thun,Basel,64.0,Elmin Rastoder,FastBreak,0,0.0969562903046608
+5292700,2026-04-25,sui.1,Lugano,Thun,90.0,Ezgjan Alioski,Penalty,0,0.7884
+5292700,2026-04-25,sui.1,Thun,Lugano,,,none,0,
+5292703,2026-04-25,sui.1,Grasshopper,Luzern,37.0,Hassane Imourane,RegularPlay,0,0.25505441427230835
+5292703,2026-04-25,sui.1,Luzern,Grasshopper,57.0,Kevin Spadanuda,RegularPlay,0,0.0920218676328659
+5292703,2026-04-25,sui.1,Luzern,Grasshopper,82.0,Kevin Spadanuda,RegularPlay,0,0.6618272662162781
+5292704,2026-04-25,sui.1,Lausanne,FC Zürich,7.0,Morgan Poaty,RegularPlay,0,0.12703721225261688
+5292704,2026-04-25,sui.1,Lausanne,FC Zürich,21.0,Nathan Butler-Oyedeji,RegularPlay,0,0.5570244193077087
+5292704,2026-04-25,sui.1,Lausanne,FC Zürich,40.0,Jamie Roche,RegularPlay,0,0.04316967353224754
+5292704,2026-04-25,sui.1,FC Zürich,Lausanne,,,none,0,
+5292701,2026-04-26,sui.1,Sion,Basel,24.0,Rilind Nivokazi,RegularPlay,0,0.33689945936203003
+5292701,2026-04-26,sui.1,Sion,Basel,60.0,Josias Lukembila,RegularPlay,0,0.03276418522000313
+5292701,2026-04-26,sui.1,Basel,Sion,,,none,0,
+5292702,2026-04-26,sui.1,St. Gallen,Young Boys,64.0,Lukas Görtler,Penalty,0,0.7884
+5292702,2026-04-26,sui.1,Young Boys,St. Gallen,81.0,Ebrima Colley,FastBreak,0,0.2913835644721985
+5292702,2026-04-26,sui.1,St. Gallen,Young Boys,90.0,Chima Okoroji,FreeKick,0,0.04678911343216896
+5292705,2026-04-26,sui.1,Servette,Winterthur,21.0,Miroslav Stevanovic,RegularPlay,0,0.537214457988739
+5292705,2026-04-26,sui.1,Servette,Winterthur,25.0,Miroslav Stevanovic,RegularPlay,0,0.6979967951774597
+5292705,2026-04-26,sui.1,Servette,Winterthur,29.0,Florian Ayé,RegularPlay,0,0.5158628225326538
+5292705,2026-04-26,sui.1,Winterthur,Servette,32.0,Nishan Burkart,RegularPlay,0,0.5387682914733887
+5292705,2026-04-26,sui.1,Winterthur,Servette,39.0,Nishan Burkart,RegularPlay,0,0.03051851876080036
+5292705,2026-04-26,sui.1,Servette,Winterthur,50.0,Steve Rouiller,SetPiece,0,0.027505483478307724
+5292705,2026-04-26,sui.1,Winterthur,Servette,51.0,Alexandre Jankewitz,RegularPlay,0,0.1158304363489151
+5292705,2026-04-26,sui.1,Servette,Winterthur,62.0,Thomas Lopes,RegularPlay,0,0.21984384953975677
+5292688,2026-05-02,sui.1,Thun,Basel,41.0,Valmir Matoshi,RegularPlay,0,0.20372791588306427
+5292688,2026-05-02,sui.1,Basel,Thun,43.0,Metinho,RegularPlay,0,0.0439600944519043
+5292688,2026-05-02,sui.1,Basel,Thun,86.0,Albian Ajeti,RegularPlay,0,0.6824834942817688
+5292688,2026-05-02,sui.1,Basel,Thun,90.0,Koba Koindredi,FastBreak,0,0.13366875052452087
+5292706,2026-05-02,sui.1,Lausanne,Luzern,16.0,Jamie Roche,FromCorner,0,0.4605582654476166
+5292706,2026-05-02,sui.1,Luzern,Lausanne,53.0,Karim Sow,OwnGoal,1,
+5292706,2026-05-02,sui.1,Luzern,Lausanne,65.0,Andrej Vasovic,RegularPlay,0,0.06838275492191315
+5292706,2026-05-02,sui.1,Luzern,Lausanne,90.0,Andrej Vasovic,FastBreak,0,0.2267768532037735
+5292707,2026-05-02,sui.1,FC Zürich,Winterthur,23.0,Juan Perea,RegularPlay,0,0.1844080090522766
+5292707,2026-05-02,sui.1,Winterthur,FC Zürich,25.0,Pajtim Kasami,RegularPlay,0,0.028178362175822258
+5292707,2026-05-02,sui.1,FC Zürich,Winterthur,69.0,Philippe Kény,Penalty,0,0.7884
+5292707,2026-05-02,sui.1,Winterthur,FC Zürich,90.0,Andrin Hunziker,Penalty,0,0.7884
+5292689,2026-05-03,sui.1,Sion,St. Gallen,43.0,Benjamin Kololli,RegularPlay,0,0.8991490006446838
+5292689,2026-05-03,sui.1,Sion,St. Gallen,63.0,Ilyas Chouaref,RegularPlay,0,0.04701196774840355
+5292689,2026-05-03,sui.1,Sion,St. Gallen,76.0,Théo Berdayes,FromCorner,0,0.20940563082695007
+5292689,2026-05-03,sui.1,St. Gallen,Sion,,,none,0,
+5292690,2026-05-03,sui.1,Lugano,Young Boys,84.0,Renato Steffen,FromCorner,0,0.2363549768924713
+5292690,2026-05-03,sui.1,Young Boys,Lugano,,,none,0,
+5292708,2026-05-03,sui.1,Servette,Grasshopper,33.0,Maximilian Ullmann,OwnGoal,1,
+5292708,2026-05-03,sui.1,Servette,Grasshopper,51.0,Thomas Lopes,RegularPlay,0,0.043965715914964676
+5292708,2026-05-03,sui.1,Grasshopper,Servette,,,none,0,
+5292709,2026-05-09,sui.1,Winterthur,Lausanne,12.0,Nishan Burkart,RegularPlay,0,0.2542313039302826
+5292709,2026-05-09,sui.1,Lausanne,Winterthur,56.0,Omar Janneh,FastBreak,0,0.9360817670822144
+5292709,2026-05-09,sui.1,Winterthur,Lausanne,66.0,Andrin Hunziker,RegularPlay,0,0.05841831862926483
+5292710,2026-05-09,sui.1,Grasshopper,FC Zürich,35.0,Felix Emmanuel Tsimba,RegularPlay,0,0.04667118936777115
+5292710,2026-05-09,sui.1,FC Zürich,Grasshopper,49.0,Alexander Hack,FromCorner,0,0.2608988583087921
+5292710,2026-05-09,sui.1,FC Zürich,Grasshopper,61.0,Ilan Sauter,RegularPlay,0,0.030999934300780296
+5292711,2026-05-09,sui.1,Servette,Luzern,11.0,Miroslav Stevanovic,RegularPlay,0,0.016058143228292465
+5292711,2026-05-09,sui.1,Servette,Luzern,39.0,Thomas Lopes,RegularPlay,0,0.07742112874984741
+5292711,2026-05-09,sui.1,Luzern,Servette,67.0,Levin Winkler,RegularPlay,0,0.06105559691786766
+5292711,2026-05-09,sui.1,Luzern,Servette,73.0,Adrian Bajrami,FromCorner,0,0.09130306541919708
+5292711,2026-05-09,sui.1,Servette,Luzern,79.0,Lilian Njoh,ThrowInSetPiece,0,0.07424323260784149
+5292711,2026-05-09,sui.1,Luzern,Servette,81.0,Oscar Kabwit,RegularPlay,0,0.03285258263349533
+5292691,2026-05-10,sui.1,Lugano,St. Gallen,53.0,Hadj Mahmoud,RegularPlay,0,0.10814493894577026
+5292691,2026-05-10,sui.1,St. Gallen,Lugano,69.0,Mihailo Stevanovic,RegularPlay,0,0.7985788583755493
+5292691,2026-05-10,sui.1,St. Gallen,Lugano,74.0,Lukas Görtler,Penalty,0,0.7884
+5292692,2026-05-10,sui.1,Sion,Thun,22.0,Winsley Boteli,RegularPlay,0,0.16747799515724182
+5292692,2026-05-10,sui.1,Sion,Thun,23.0,Ilyas Chouaref,FastBreak,0,0.022326163947582245
+5292692,2026-05-10,sui.1,Thun,Sion,,,none,0,
+5292693,2026-05-10,sui.1,Young Boys,Basel,49.0,Dominik Pech,RegularPlay,0,0.0903342068195343
+5292693,2026-05-10,sui.1,Young Boys,Basel,74.0,Darian Males,RegularPlay,0,0.06543733924627304
+5292693,2026-05-10,sui.1,Young Boys,Basel,90.0,Christian Fassnacht,RegularPlay,0,0.061590250581502914
+5292693,2026-05-10,sui.1,Basel,Young Boys,,,none,0,
+5292712,2026-05-12,sui.1,Winterthur,Grasshopper,7.0,Pajtim Kasami,FromCorner,0,0.17267364263534546
+5292712,2026-05-12,sui.1,Winterthur,Grasshopper,10.0,Pajtim Kasami,FromCorner,0,0.7922046184539795
+5292712,2026-05-12,sui.1,Grasshopper,Winterthur,60.0,Dirk Abels,Penalty,0,0.7884
+5292712,2026-05-12,sui.1,Grasshopper,Winterthur,62.0,Young-Jun Lee,FastBreak,0,0.029440710321068764
+5292712,2026-05-12,sui.1,Grasshopper,Winterthur,70.0,Dirk Abels,FromCorner,0,0.07384831458330154
+5292713,2026-05-12,sui.1,Luzern,FC Zürich,70.0,Oscar Kabwit,RegularPlay,0,0.34756964445114136
+5292713,2026-05-12,sui.1,FC Zürich,Luzern,,,none,0,
+5292714,2026-05-12,sui.1,Servette,Lausanne,61.0,David Douline,FromCorner,0,0.6138763427734375
+5292714,2026-05-12,sui.1,Servette,Lausanne,65.0,Samuel Mráz,FromCorner,0,0.14918214082717896
+5292714,2026-05-12,sui.1,Lausanne,Servette,,,none,0,
+5292694,2026-05-14,sui.1,St. Gallen,Basel,51.0,Aliou Baldé,RegularPlay,0,0.11864939332008362
+5292694,2026-05-14,sui.1,St. Gallen,Basel,78.0,Carlo Boukhalfa,FastBreak,0,0.13889311254024506
+5292694,2026-05-14,sui.1,Basel,St. Gallen,88.0,Nicolas Vouilloz,SetPiece,0,0.3479864299297333
+5292694,2026-05-14,sui.1,St. Gallen,Basel,89.0,Nevio Scherrer,RegularPlay,0,0.07212541252374649
+5292695,2026-05-14,sui.1,Lugano,Sion,31.0,Georgios Koutsias,FastBreak,0,0.2901521623134613
+5292695,2026-05-14,sui.1,Sion,Lugano,55.0,Ilyas Chouaref,RegularPlay,0,0.10747257620096207
+5292695,2026-05-14,sui.1,Sion,Lugano,63.0,Baltazar,RegularPlay,0,0.06220103055238724
+5292695,2026-05-14,sui.1,Lugano,Sion,90.0,Antonios Papadopoulos,ThrowInSetPiece,0,0.7434750199317932
+5292696,2026-05-14,sui.1,Young Boys,Thun,1.0,Samuel Essende,RegularPlay,0,0.309406042098999
+5292696,2026-05-14,sui.1,Thun,Young Boys,11.0,Elmin Rastoder,RegularPlay,0,0.5472882390022278
+5292696,2026-05-14,sui.1,Thun,Young Boys,13.0,Elmin Rastoder,RegularPlay,0,0.25932684540748596
+5292696,2026-05-14,sui.1,Young Boys,Thun,26.0,Samuel Essende,Penalty,0,0.7884
+5292696,2026-05-14,sui.1,Young Boys,Thun,43.0,Alvyn Sanches,RegularPlay,0,0.7931796312332153
+5292696,2026-05-14,sui.1,Young Boys,Thun,54.0,Samuel Essende,Penalty,0,0.7884
+5292696,2026-05-14,sui.1,Young Boys,Thun,64.0,Alan Virginius,RegularPlay,0,0.05786200612783432
+5292696,2026-05-14,sui.1,Young Boys,Thun,68.0,Christian Fassnacht,RegularPlay,0,0.624685525894165
+5292696,2026-05-14,sui.1,Young Boys,Thun,77.0,Chris Bedia,Penalty,0,0.7884
+5292696,2026-05-14,sui.1,Thun,Young Boys,79.0,Leonardo Bertone,FreeKick,0,0.07182971388101578
+5292696,2026-05-14,sui.1,Young Boys,Thun,81.0,Christian Fassnacht,FromCorner,0,0.13247694075107574
+5292715,2026-05-16,sui.1,Grasshopper,Lausanne,14.0,Dominik Papic,FastBreak,0,0.0984484925866127
+5292715,2026-05-16,sui.1,Grasshopper,Lausanne,39.0,Demis Fiechter,RegularPlay,0,0.024528495967388153
+5292715,2026-05-16,sui.1,Lausanne,Grasshopper,87.0,Gaoussou Diakite,FreeKick,0,0.06441742181777954
+5292715,2026-05-16,sui.1,Grasshopper,Lausanne,90.0,Christian Kouam,FromCorner,0,0.0837969109416008
+5292716,2026-05-16,sui.1,Luzern,Winterthur,39.0,Oscar Kabwit,RegularPlay,0,0.08447486162185669
+5292716,2026-05-16,sui.1,Luzern,Winterthur,54.0,Pius Dorn,RegularPlay,0,0.3661489188671112
+5292716,2026-05-16,sui.1,Luzern,Winterthur,68.0,Oscar Kabwit,FromCorner,0,0.13355661928653717
+5292716,2026-05-16,sui.1,Winterthur,Luzern,,,none,0,
+5292717,2026-05-16,sui.1,Servette,FC Zürich,26.0,Jérémy Guillemenot,RegularPlay,0,0.8340892791748047
+5292717,2026-05-16,sui.1,Servette,FC Zürich,88.0,Junior Kadile,RegularPlay,0,0.028746826574206352
+5292717,2026-05-16,sui.1,FC Zürich,Servette,,,none,0,
+5292697,2026-05-17,sui.1,Lugano,Basel,10.0,Kevin Behrens,FromCorner,0,0.09041175991296768
+5292697,2026-05-17,sui.1,Lugano,Basel,36.0,Kevin Behrens,FromCorner,0,0.2754476070404053
+5292697,2026-05-17,sui.1,Lugano,Basel,52.0,Renato Steffen,RegularPlay,0,0.11601562052965164
+5292697,2026-05-17,sui.1,Lugano,Basel,56.0,Georgios Koutsias,FromCorner,0,0.08956512808799744
+5292697,2026-05-17,sui.1,Basel,Lugano,,,none,0,
+5292698,2026-05-17,sui.1,St. Gallen,Thun,65.0,Corsin Konietzke,RegularPlay,0,0.24471743404865265
+5292698,2026-05-17,sui.1,Thun,St. Gallen,73.0,Michael Heule,RegularPlay,0,0.08714337646961212
+5292699,2026-05-17,sui.1,Sion,Young Boys,8.0,Donat Rrudhani,Penalty,0,0.7884
+5292699,2026-05-17,sui.1,Young Boys,Sion,24.0,Dominik Pech,RegularPlay,0,0.18361946940422058
+5292699,2026-05-17,sui.1,Young Boys,Sion,49.0,Samuel Essende,RegularPlay,0,0.03282070904970169
+5292699,2026-05-17,sui.1,Sion,Young Boys,59.0,Winsley Boteli,RegularPlay,0,0.26428020000457764
+5292699,2026-05-17,sui.1,Young Boys,Sion,65.0,Alan Virginius,RegularPlay,0,0.044994279742240906
+5292699,2026-05-17,sui.1,Sion,Young Boys,90.0,Liam Chipperfield,RegularPlay,0,0.24211519956588745
