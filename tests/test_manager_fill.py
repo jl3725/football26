@@ -109,3 +109,14 @@ def test_newer_coach_ignores_stale_fotmob_slot():
             return _team(9, "Old Coach")
         return _player("Old Coach", [{"teamId": 1, "startDate": "2023-01-01T00:00:00", "active": True}])
     assert mf.newer_coach({"name": "New Coach"}, 1, get_old, today) is None
+
+
+def test_override_persists_on_own_write():
+    # 이미 덮어 쓴 프로필(수집기가 안 돈 날)에도 다시 입히고, 옛 감독 사진을 새 사진으로 덮지 않는다
+    o = {"name": "Daniel Beichler", "fotmob_id": 56932, "nationality": "Austria", "start": "2026-10-09",
+         "from": "Christophe Lepoint", "at": "2026-10-23", "bio_ko": "소개"}
+    p = {"name": "Christophe Lepoint", "photo_url": "lepoint.png"}
+    mf.apply_override(p, o)
+    assert p["previous_photo"] == "lepoint.png" and p["name_source"] == "fotmob"
+    mf.apply_override(p, o)                              # 두 번째(이미 덮인 프로필)
+    assert p["previous_photo"] == "lepoint.png" and p["bio_ko"] == "소개"

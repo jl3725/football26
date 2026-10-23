@@ -149,13 +149,42 @@ def newer_coach(prof: dict, team_id, get, today: dt.date) -> dict | None:
 
 
 def apply_override(p: dict, o: dict) -> None:
-    """FotMob 이 먼저 안 감독 교체를 프로필에 — 이전 감독은 previous_*, 이전 감독의 소개·전술은 비운다."""
-    p.update({"previous_name": o["from"], "previous_photo": p.get("photo_url", ""), "change_detected_at": o["start"],
-              "name": o["name"], "wiki_title": o["name"], "fotmob_id": o["fotmob_id"],
+    """FotMob 이 먼저 안 감독 교체를 프로필에 — 이전 감독은 previous_*, 소개·전술은 새 감독 것(없으면 빈칸)."""
+    fresh = same_person(p.get("name"), o["from"])           # 수집기가 쓴 옛 감독 프로필 위에 처음 덮는가(아니면 이미 덮인 것)
+    p.update({"previous_name": o["from"], "previous_photo": p.get("photo_url", "") if fresh else p.get("previous_photo", ""),
+              "change_detected_at": o["start"],
+              "name": o["name"], "wiki_title": o.get("wiki_title") or o["name"], "fotmob_id": o["fotmob_id"],
               "nationality": o["nationality"] or "", "photo_url": PHOTO.format(o["fotmob_id"]),
-              "bio_ko": "", "tactics_ko": "", "style": "", "focus": "", "formation": "",
+              "bio_ko": o.get("bio_ko", ""), "bio_source": o.get("bio_source", ""), "tactics_ko": o.get("tactics_ko", ""),
+              "style": "", "focus": "", "formation": "",
               "appointed": fmt(o["start"], 11), "appointed_date": o["start"], "appointed_source": "fotmob",
               "name_source": "fotmob"})
+
+
+def _due(at: str, days: int, today: dt.date) -> bool:
+    try:
+        return not at or (today - dt.date.fromisoformat(at)).days >= days
+    except ValueError:
+        return True
+
+
+def override_bio(o: dict, today: dt.date) -> None:
+    """새 감독 소개 — 라이트 리그 감독 소개와 같은 방법(이름 문서 후보 → 축구인 소개만, 한글 위키 → 영어 위키 번역).
+    결과는 교체 기록에 남겨 매일 다시 받지 않는다(못 찾으면 30일 뒤 다시)."""
+    if o.get("bio_ko") or not _due(o.get("bio_at", ""), RETRY_STYLE, today):
+        return
+    from enrich_manager_profiles import enrich_one  # noqa: PLC0415
+    from lite_league import _football_bio  # noqa: PLC0415
+    o["bio_at"] = today.isoformat()
+    for title in (f"{o['name']} (football manager)", f"{o['name']} (footballer)", o["name"]):
+        try:
+            e = enrich_one({"name": o["name"], "wiki_title": title})
+        except Exception:  # noqa: BLE001  (문서 없음·네트워크)
+            continue
+        if _football_bio(str(e.get("bio_ko") or "")):
+            o.update({k: e[k] for k in ("bio_ko", "bio_source", "tactics_ko") if e.get(k)})
+            o["wiki_title"] = title
+            return
 
 
 # ── 위키데이터 ────────────────────────────────────────────────────────────────
@@ -309,17 +338,21 @@ def fill(league: str, cache: dict, team_ids: dict, get, style: bool = True, writ
     ca, cs = cache.setdefault("appointed", {}), cache.setdefault("style", {})
     ovr, chk = cache.setdefault("override", {}), cache.setdefault("coach_check", {})
     n = {"appt": 0, "appt_miss": 0, "style": 0, "override": 0}
-    due = lambda at, days: not at or (today - dt.date.fromisoformat(at)).days >= days  # noqa: E731
+    def due(at, days):
+        return _due(at, days, today)
     # 0) 감독 교체를 우리 수집기(위키)보다 FotMob 이 먼저 안 팀 — 'Kortrijk: Christophe Lepoint' 가 FotMob 엔 10/9 부임
     #    Daniel Beichler 였다(2026-10-23). 캐시로 매일 다시 입히고, 위키가 따라오면(수집기 이름이 바뀌면) 그만둔다
     for sq, p in profiles.items():
         tid = team_ids.get(sq)
         o = ovr.get(sq)
-        if o and not same_person(p.get("name"), o["from"]):
+        # 프로필이 이미 우리가 덮어 쓴 새 감독이면(수집기가 안 돌았거나 실패한 날) 계속 덮는다
+        mine = bool(o) and p.get("name_source") == "fotmob" and same_person(p.get("name"), o["name"])
+        if o and not mine and not same_person(p.get("name"), o["from"]):
             ovr.pop(sq)                                  # 수집기가 새 감독을 따라왔거나 또 다른 사람 — 덮기 끝
         elif o and (not due(o["at"], RECHECK_COACH) or (tid and active_start(o["fotmob_id"], tid, get))):
             if due(o["at"], RECHECK_COACH):
                 o["at"] = today.isoformat()
+            override_bio(o, today)
             apply_override(p, o)
             n["override"] += 1
             continue
@@ -334,6 +367,7 @@ def fill(league: str, cache: dict, team_ids: dict, get, style: bool = True, writ
         o = newer_coach(p, tid, get, today)
         if o:
             ovr[sq] = o
+            override_bio(o, today)
             apply_override(p, o)
             n["override"] += 1
             print(f"  {league:18} {sq:24} 감독 교체(FotMob): {o['from']} → {o['name']} ({o['start']})")
