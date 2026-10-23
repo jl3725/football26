@@ -40,6 +40,9 @@ FM = "https://www.fotmob.com/api/data"
 MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 AUTO = ("fotmob", "wikidata")
 RETRY_APPT, RETRY_STYLE = 14, 30
+PHOTO = "https://images.fotmob.com/image_resources/playerimages/{}.png"
+# 감독 교체 대조 — 같은 감독은 7일마다 다시 보고, FotMob 이 120일 안에 시작한 '지금' 감독일 때만 우리 프로필을 바꾼다
+RECHECK_COACH, NEW_COACH_DAYS = 7, 120
 # 축구인 문서인지(동명이인 거르기) — 라이트 리그 감독은 위키 제목이 이름 그대로라 다른 사람 문서일 수 있다
 FOOTBALL_SECTIONS = re.compile(r"(manag|coach|playing) career|club career|international career", re.I)
 
@@ -110,6 +113,49 @@ def fotmob_start(prof: dict, team_id: int | None, get) -> dict | None:
         return None
     start = max(str(e["startDate"])[:10] for e in hit)
     return {"start": start, "precision": 11, "src": "fotmob"}
+
+
+def team_coach(team_id, get) -> dict | None:
+    d = get(f"{FM}/teams?id={team_id}") or {}
+    for g in ((d.get("squad") or {}).get("squad")) or []:
+        if str(g.get("title")) == "coach" and g.get("members"):
+            m = g["members"][0]
+            return {"id": m.get("id"), "name": str(m.get("name") or ""), "nationality": str(m.get("cname") or "")}
+    return None
+
+
+def active_start(coach_id, team_id, get) -> str | None:
+    """그 감독 경력에 이 팀이 '지금'(active)으로 있으면 시작일."""
+    d = get(f"{FM}/playerData?id={coach_id}") or {}
+    ents = ((((d.get("careerHistory") or {}).get("careerItems") or {}).get("coach") or {}).get("teamEntries")) or []
+    hit = [str(e["startDate"])[:10] for e in ents
+           if e.get("active") and str(e.get("teamId")) == str(team_id) and str(e.get("startDate") or "")[:4].isdigit()]
+    return max(hit) if hit else None
+
+
+def newer_coach(prof: dict, team_id, get, today: dt.date) -> dict | None:
+    """우리 프로필이 감독 교체를 놓쳤나 — FotMob 팀 감독이 다르고, 그 감독 경력에 이 팀이 '지금'·최근 NEW_COACH_DAYS 일 안
+    시작이면 그렇다. FotMob 팀 감독 칸만 다른 건 믿지 않는다(Estoril·Famalicão 는 FotMob 칸이 옛 감독이었다, 2026-10-23)."""
+    c = team_coach(team_id, get)
+    if not c or not c["id"] or not c["name"] or same_person(c["name"], prof.get("name")):
+        return None
+    start = active_start(c["id"], team_id, get)
+    if not start or (today - dt.date.fromisoformat(start)).days > NEW_COACH_DAYS:
+        return None
+    if str(prof.get("appointed_date") or "") >= start:                  # 우리 쪽 부임일이 더 늦다 — 우리가 최신
+        return None
+    return {"name": c["name"], "fotmob_id": c["id"], "nationality": c["nationality"], "start": start,
+            "from": str(prof.get("name") or ""), "at": today.isoformat()}
+
+
+def apply_override(p: dict, o: dict) -> None:
+    """FotMob 이 먼저 안 감독 교체를 프로필에 — 이전 감독은 previous_*, 이전 감독의 소개·전술은 비운다."""
+    p.update({"previous_name": o["from"], "previous_photo": p.get("photo_url", ""), "change_detected_at": o["start"],
+              "name": o["name"], "wiki_title": o["name"], "fotmob_id": o["fotmob_id"],
+              "nationality": o["nationality"] or "", "photo_url": PHOTO.format(o["fotmob_id"]),
+              "bio_ko": "", "tactics_ko": "", "style": "", "focus": "", "formation": "",
+              "appointed": fmt(o["start"], 11), "appointed_date": o["start"], "appointed_source": "fotmob",
+              "name_source": "fotmob"})
 
 
 # ── 위키데이터 ────────────────────────────────────────────────────────────────
@@ -257,11 +303,40 @@ def _fresh(rec: dict | None, days: int, today: dt.date) -> bool:
 def fill(league: str, cache: dict, team_ids: dict, get, style: bool = True, write: bool = False) -> dict:
     path = data_path("manager_profiles", league, ext="json")
     if not path.exists():
-        return {"appt": 0, "appt_miss": 0, "style": 0}
+        return {"appt": 0, "appt_miss": 0, "style": 0, "override": 0}
     profiles = json.loads(path.read_text(encoding="utf-8"))
     today = dt.date.today()
     ca, cs = cache.setdefault("appointed", {}), cache.setdefault("style", {})
-    n = {"appt": 0, "appt_miss": 0, "style": 0}
+    ovr, chk = cache.setdefault("override", {}), cache.setdefault("coach_check", {})
+    n = {"appt": 0, "appt_miss": 0, "style": 0, "override": 0}
+    due = lambda at, days: not at or (today - dt.date.fromisoformat(at)).days >= days  # noqa: E731
+    # 0) 감독 교체를 우리 수집기(위키)보다 FotMob 이 먼저 안 팀 — 'Kortrijk: Christophe Lepoint' 가 FotMob 엔 10/9 부임
+    #    Daniel Beichler 였다(2026-10-23). 캐시로 매일 다시 입히고, 위키가 따라오면(수집기 이름이 바뀌면) 그만둔다
+    for sq, p in profiles.items():
+        tid = team_ids.get(sq)
+        o = ovr.get(sq)
+        if o and not same_person(p.get("name"), o["from"]):
+            ovr.pop(sq)                                  # 수집기가 새 감독을 따라왔거나 또 다른 사람 — 덮기 끝
+        elif o and (not due(o["at"], RECHECK_COACH) or (tid and active_start(o["fotmob_id"], tid, get))):
+            if due(o["at"], RECHECK_COACH):
+                o["at"] = today.isoformat()
+            apply_override(p, o)
+            n["override"] += 1
+            continue
+        elif o:
+            ovr.pop(sq)                                  # FotMob 에서도 더는 지금 감독이 아니다
+        if p.get("fotmob_id") or not tid or not p.get("name"):
+            continue                                     # 라이트 리그 프로필은 원래 FotMob 감독
+        key = f"{sq}|{_fold(p['name'])}"
+        if not due(chk.get(key, ""), RECHECK_COACH):
+            continue
+        chk[key] = today.isoformat()
+        o = newer_coach(p, tid, get, today)
+        if o:
+            ovr[sq] = o
+            apply_override(p, o)
+            n["override"] += 1
+            print(f"  {league:18} {sq:24} 감독 교체(FotMob): {o['from']} → {o['name']} ({o['start']})")
     # 1) 부임일 — 캐시 → FotMob → 위키데이터(못 찾은 것만 한꺼번에)
     todo = {sq: p for sq, p in profiles.items()
             if p.get("name") and not (p.get("appointed") and p.get("appointed_source") not in AUTO)}
@@ -307,7 +382,7 @@ def fill(league: str, cache: dict, team_ids: dict, get, style: bool = True, writ
             p["style"], p["focus"], p["style_source"] = rec["style"], rec["focus"], "en-wiki"
             n["style"] += 1
             print(f"  {league:18} {sq:24} {p['name']:24} 스타일 {rec['style']}")
-    if write and (n["appt"] or n["style"]):
+    if write and (n["appt"] or n["style"] or n["override"]):
         # 원래 들여쓰기 그대로(라이트 리그 수집기는 1칸) — 다르면 매일 파일 전체가 바뀐 것처럼 커밋된다
         raw = path.read_text(encoding="utf-8")
         m = re.match(r"\{\r?\n( +)", raw)
@@ -324,7 +399,10 @@ def main() -> int:
     ap.add_argument("--write", action="store_true")
     ap.add_argument("--no-style", action="store_true")
     a = ap.parse_args()
-    from fetch_fotmob_ratings import _get as fm_get  # noqa: PLC0415
+    from functools import lru_cache  # noqa: PLC0415
+
+    from fetch_fotmob_ratings import _get  # noqa: PLC0415
+    fm_get = lru_cache(maxsize=None)(_get)              # 같은 팀·감독 응답은 한 실행에 한 번(교체 대조·부임일이 같이 씀)
     try:
         from news_wires import fotmob_team_ids  # noqa: PLC0415
         team_ids = fotmob_team_ids()
@@ -335,13 +413,14 @@ def main() -> int:
         cache = json.loads(CACHE.read_text(encoding="utf-8"))
     except (OSError, ValueError):
         cache = {}
-    tot = {"appt": 0, "appt_miss": 0, "style": 0}
+    tot = {"appt": 0, "appt_miss": 0, "style": 0, "override": 0}
     for lg in ([a.league] if a.league else list(LEAGUES)):
         r = fill(lg, cache, team_ids, fm_get, style=not a.no_style, write=a.write)
         tot = {k: tot[k] + r[k] for k in tot}
         if a.write:                                     # 리그마다 저장 — 중간에 끊겨도 받은 만큼은 남는다
             CACHE.write_text(json.dumps(cache, ensure_ascii=False, indent=1, sort_keys=True) + "\n", encoding="utf-8")
-    print(f"manager_fill: 부임일 새로 {tot['appt']} · 못 찾음 {tot['appt_miss']} · 스타일 새로 {tot['style']} ({dt.date.today()})")
+    print(f"manager_fill: 부임일 새로 {tot['appt']} · 못 찾음 {tot['appt_miss']} · 스타일 새로 {tot['style']} · "
+          f"FotMob 감독 교체 {tot['override']} ({dt.date.today()})")
     return 0
 
 

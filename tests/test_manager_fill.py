@@ -73,3 +73,39 @@ def test_fresh_cache():
     assert mf._fresh({"val": "", "at": "2026-10-20"}, 14, today)                  # 못 찾음 — 14일 안엔 다시 안 받는다
     assert not mf._fresh({"val": "", "at": "2026-10-01"}, 14, today)
     assert not mf._fresh(None, 14, today)
+
+
+def _team(cid, name):
+    return {"squad": {"squad": [{"title": "coach", "members": [{"id": cid, "name": name, "cname": "Austria"}]}]}}
+
+
+def test_newer_coach_needs_active_career():
+    today = dt.date(2026, 10, 23)
+
+    def get(url):
+        if "teams?id=8571" in url:
+            return _team(56932, "Daniel Beichler")
+        return _player("Daniel Beichler", [{"teamId": 8571, "startDate": "2026-10-09T00:00:00", "active": True}])
+    o = mf.newer_coach({"name": "Christophe Lepoint"}, 8571, get, today)
+    assert o["name"] == "Daniel Beichler" and o["start"] == "2026-10-09" and o["from"] == "Christophe Lepoint"
+    p = {"name": "Christophe Lepoint", "photo_url": "old.png", "bio_ko": "옛 감독 소개", "style": "x"}
+    mf.apply_override(p, o)
+    assert p["name"] == "Daniel Beichler" and p["previous_name"] == "Christophe Lepoint" and p["bio_ko"] == "" and p["style"] == ""
+    assert p["appointed"] == "Oct 2026" and p["change_detected_at"] == "2026-10-09" and p["previous_photo"] == "old.png"
+
+
+def test_newer_coach_ignores_stale_fotmob_slot():
+    # FotMob 팀 감독 칸만 다르고 그 감독 경력엔 이 팀이 '지금'이 아니면(Estoril·Famalicão) 우리 프로필을 믿는다
+    today = dt.date(2026, 10, 23)
+
+    def get(url):
+        if "teams?id=1634" in url:
+            return _team(24590, "Ricardo Silva")
+        return _player("Ricardo Silva", [{"teamId": 1634, "startDate": "2024-12-06T00:00:00", "endDate": "2024-12-10", "active": False}])
+    assert mf.newer_coach({"name": "Carlos Carvalhal"}, 1634, get, today) is None
+
+    def get_old(url):                                   # 오래전에 시작한 '지금' 기록 — 교체 신호로 보지 않는다
+        if "teams?id=1" in url:
+            return _team(9, "Old Coach")
+        return _player("Old Coach", [{"teamId": 1, "startDate": "2023-01-01T00:00:00", "active": True}])
+    assert mf.newer_coach({"name": "New Coach"}, 1, get_old, today) is None
