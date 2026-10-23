@@ -854,7 +854,26 @@ def _window_spend(team: str, league: str) -> list[dict]:
 
 
 _TRK_STAGE = {"interest": "관심", "talks": "협상", "agreed": "합의", "done": "완료", "denied": "부인"}
-_TRK_PRIO = {"moved": 100, "linked": 90, "injury": 85, "return": 60, "rivals": 55, "match": 50, "form": 45, "absent": 40}
+
+
+def _eur_range(lo, hi) -> str:
+    """'€25~47M' — 화면 fmtEurRange 와 같은 표기(단위는 큰 쪽 기준, €10M 아래는 소수 한 자리)."""
+    lo, hi = _num(lo), _num(hi)
+    if hi >= 1e6:
+        f = "{:.0f}" if hi >= 1e7 else "{:.1f}"
+        return f"€{f.format(lo / 1e6)}~{f.format(hi / 1e6)}M"
+    return f"€{lo / 1e3:.0f}~{hi / 1e3:.0f}K"
+
+
+def _eur_short(v) -> str:
+    """'€35M' · '€4.5M' · '€800K' — 알림 한 줄용."""
+    v = _num(v)
+    if v >= 1e7:
+        return f"€{v / 1e6:.0f}M"
+    if v >= 1e6:
+        return f"€{v / 1e6:.1f}M".replace(".0M", "M")
+    return f"€{v / 1e3:.0f}K"
+_TRK_PRIO = {"moved": 100, "linked": 90, "injury": 85, "return": 60, "rivals": 55, "value": 52, "match": 50, "form": 45, "absent": 40}
 
 
 @app.get("/api/tracking/{team}")
@@ -962,6 +981,17 @@ def tracking(team: str, players: str = "", league: str = ACTIVE_LEAGUE, days: in
             missed = sorted(str(d)[:10] for m_, d in team_games.items() if m_ not in set(me["match_id"]))
             if len(missed) >= 2 and not inj_now and not moved_to:
                 add("absent", missed[-1], f"팀 경기 {len(missed)}번 출전 없음", f"최근 {days}일 · 부상 기록 없음")
+        # 4-1) 시장가치 — 리그별 변경분 기록에서 최근 바뀐 값(같은 소속), 적정 이적료 범위도 같이(사는 구단 = 이 팀)
+        mvl = ds.read_table("market_value_log", league=cur_lg)
+        if mvl is not None and not mvl.empty and "player" in mvl.columns:
+            g = mvl[mvl["player"].astype(str).map(ps.norm_name) == key].sort_values("date")
+            g = g[g["squad"].astype(str) == cur_club]
+            if len(g) >= 2 and str(g["date"].iloc[-1]) >= since:
+                ov, nv = _num(g["market_value_eur"].iloc[-2]), _num(g["market_value_eur"].iloc[-1])
+                if ov and nv and ov != nv:
+                    fair = _fee.price(nv, (now or {}).get("age"), league)
+                    add("value", str(g["date"].iloc[-1]), f"시장가치 {_eur_short(ov)} → {_eur_short(nv)}",
+                        f"적정 {_eur_range(fair['lo'], fair['hi'])}" if fair else "Transfermarkt")
         # 5) 폼 — OVR 2주 ±3
         pf = _pf(cur_lg)
         row = None
@@ -2871,10 +2901,10 @@ def player_detail(team: str, player: str, league: str = ACTIVE_LEAGUE, basis: st
                            "medal": "🥇" if rank == 1 else ("🥈" if rank == 2 else "🥉")})
     badges.sort(key=lambda b: b["rank"])
 
-    # 시장가치 추이 (market_value_history — 이름/norm_key 매칭)
+    # 시장가치 추이 — 리그별 변경분 기록(market_value_log, 값이 바뀐 날만) + 오늘 값(scripts/snapshot_market_values.py)
     vhist = []
     try:
-        mvh = ds.read_table("market_value_history")
+        mvh = ds.read_table("market_value_log", league=league)
         if mvh is not None and not mvh.empty and "player" in mvh.columns:
             from unidecode import unidecode  # noqa: PLC0415
             sub = mvh[mvh["player"].astype(str) == str(row["player"])]
@@ -2887,6 +2917,9 @@ def player_detail(team: str, player: str, league: str = ACTIVE_LEAGUE, basis: st
                 if dt and dt not in seen_d:
                     seen_d.add(dt)
                     vhist.append({"date": dt, "value_eur": _num(r.get("market_value_eur"))})
+            cur_v = _num(row.get("market_value_eur"))
+            if vhist and cur_v and vhist[-1]["date"] < _today_kst().isoformat():
+                vhist.append({"date": _today_kst().isoformat(), "value_eur": cur_v})   # 마지막 변경 뒤 오늘까지 이어지게
     except Exception:  # noqa: BLE001
         pass
 
@@ -6473,21 +6506,24 @@ def _compute_hub_body() -> bytes:
     movers_up = _merit([_mcard(t) for t in mv if t[3] > 0], lambda c: (-c["delta"], -c["ovr"]))
     movers_down = _merit([_mcard(t) for t in mv if t[3] < 0], lambda c: (c["delta"], -c["ovr"]))
 
-    # 시장가치 급등 — market_value_history 델타(최초 vs 최신 스냅샷). 스냅샷 누적될수록 정확.
+    # 시장가치 급등 — 리그별 변경분 기록(market_value_log)의 처음 값 → 지금 값. 예전엔 EPL 한 파일(market_value_history)만
+    # 쌓여 MARKET ▲ 가 EPL 선수뿐이었다(2026-10-23, 13개 리그로)
     risers = []
     try:
-        mvh = ds.read_table("market_value_history")
-        if mvh is not None and not mvh.empty and "player" in mvh.columns:
+        rows = []
+        for lg_ in leagues:
+            mvh = ds.read_table("market_value_log", league=lg_)
+            if mvh is None or mvh.empty or "player" not in mvh.columns:
+                continue
             m = mvh.copy()
             m["_v"] = pd.to_numeric(m["market_value_eur"], errors="coerce")
             m = m.dropna(subset=["_v"]).sort_values("date")
-            rows = []
             for player, grp in m.groupby("player"):
                 if len(grp) < 2:
                     continue
                 first, last = float(grp.iloc[0]["_v"]), float(grp.iloc[-1]["_v"])
-                sq = str(grp.iloc[-1]["squad"]); lg = squad2league.get(sq)
-                if not lg or first <= 0 or last <= first:
+                sq = str(grp.iloc[-1]["squad"]); lg = squad2league.get(sq) or lg_
+                if first <= 0 or last <= first:
                     continue
                 rows.append({"player": str(player), "club": sq, "club_logo": tm.team_logo(sq),
                              "value_eur": last, "delta_eur": last - first,
@@ -6495,8 +6531,8 @@ def _compute_hub_body() -> bytes:
                              # 예전엔 비워 둬서 '시장가치 급등' 탭 사진이 전부 빠졌다(Dowman 등)
                              "photo": _resolve_photo(str(player), _players_lookup(lg), lg),
                              "league": lg, "league_name": _lname(lg)})
-            rows.sort(key=lambda x: -x["pct"])
-            risers = _interleave(rows, 12)
+        rows.sort(key=lambda x: -x["pct"])
+        risers = _interleave(rows, 12)
     except Exception:  # noqa: BLE001
         pass
 

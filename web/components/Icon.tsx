@@ -36,6 +36,7 @@ const PATHS: Record<string, React.ReactNode> = {
   eye: <><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></>,
   zap: <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />,
   clock: <><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></>,
+  tag: <><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" /><line x1="7" y1="7" x2="7.01" y2="7" /></>,
 };
 
 export default function Icon({ name, size = 16, color = "currentColor", style }: Props) {

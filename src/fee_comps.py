@@ -132,8 +132,27 @@ def _season_frames() -> dict[str, pd.DataFrame]:
     return out
 
 
+def _value_logs(data_dir: Path) -> dict[str, list[tuple[str, str, float]]]:
+    """선수 이름 → [(날짜, 소속, 시장가치)] — 리그별 변경분 기록(market_value_log_*, scripts/snapshot_market_values.py).
+    이적하면 소속이 바뀐 줄이 생기므로 '판 구단 시절 마지막 값' = 이적 직전 시장가치(2026-10-23부터 13개 리그)."""
+    import positions as ps  # noqa: PLC0415
+    out: dict[str, list[tuple[str, str, float]]] = {}
+    for f in glob.glob(str(data_dir / "market_value_log*.csv")):
+        try:
+            t = pd.read_csv(f)
+        except Exception:  # noqa: BLE001
+            continue
+        for r in t.to_dict("records"):
+            v = pd.to_numeric(r.get("market_value_eur"), errors="coerce")
+            if pd.notna(v) and v > 0:
+                out.setdefault(ps.norm_name(r.get("player")), []).append((str(r.get("date")), str(r.get("squad")), float(v)))
+    return out
+
+
 def build_table(data_dir: Path | None = None, frames: dict[str, pd.DataFrame] | None = None) -> pd.DataFrame:
-    g = _transfers(data_dir or DATA)
+    data_dir = data_dir or DATA
+    g = _transfers(data_dir)
+    vlog = _value_logs(data_dir)
     if g.empty:
         return g
     frames = frames if frames is not None else _season_frames()
@@ -156,6 +175,11 @@ def build_table(data_dir: Path | None = None, frames: dict[str, pd.DataFrame] | 
                 break
         pre = hit is not None and season == want and str(hit["squad"]) == str(r["seller"])
         mv = pd.to_numeric(hit["market_value_eur"], errors="coerce") if pre else np.nan
+        if not (pd.notna(mv) and mv > 0):            # 변경분 기록의 판 구단 시절 마지막 값
+            import positions as ps  # noqa: PLC0415
+            seen = [x for x in sorted(vlog.get(ps.norm_name(r.get("player")), [])) if x[1] == str(r["seller"])]
+            if seen:
+                mv = seen[-1][2]
         seller_lg = r.get("seller_lg") or (str(hit["league"]) if hit is not None and str(hit["squad"]) == str(r["seller"]) else None)
         pg = pos_group(r.get("pos"))
         rows.append({**r, "pg": pg, "line": LINE[pg], "seller_lg": seller_lg,

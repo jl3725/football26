@@ -32,6 +32,9 @@ def test_tracking_alerts(monkeypatch, tmp_path) -> None:
             {"match_id": 2, "date": d(6), "squad": "Liverpool", "opponent": "Everton", "player": "Rio Ngumoha", "rating": 6.5, "goals": 0, "assists": 0},
             {"match_id": 3, "date": d(2), "squad": "Roma", "opponent": "Lazio", "player": "Other", "rating": 7.0, "goals": 0, "assists": 0},
             {"match_id": 4, "date": d(5), "squad": "Roma", "opponent": "Milan", "player": "Other", "rating": 7.0, "goals": 0, "assists": 0}]),
+        "market_value_log": pd.DataFrame([
+            {"date": d(40), "squad": "Liverpool", "player": "Rio Ngumoha", "tm_id": 7, "market_value_eur": 45e6},
+            {"date": d(2), "squad": "Liverpool", "player": "Rio Ngumoha", "tm_id": 7, "market_value_eur": 50e6}]),
     }
     monkeypatch.setattr(M, "_rumor_links", lambda: ({}, where, {}))
     monkeypatch.setattr(M.ds, "read_table", lambda name, league=None, **k: tables.get(name))
@@ -51,6 +54,9 @@ def test_tracking_alerts(monkeypatch, tmp_path) -> None:
     assert ("Rio Ngumoha", "rivals", "Real Madrid 관심 40%") in got
     assert ("Rio Ngumoha", "linked", "Arsenal 합의 보도") in got          # 매체 둘은 한 줄('외 1곳')
     assert ("Rio Ngumoha", "match", "평점 8.92 · 2도움") in got
+    assert ("Rio Ngumoha", "value", "시장가치 €45M → €50M") in got           # 변경분 기록 + 적정 이적료 범위
+    val = next(a for a in out["alerts"] if a["type"] == "value")
+    assert val["detail"].startswith("적정 €") and val["detail"].endswith("M") and "M~" not in val["detail"]
     assert not any(t == "linked" and "관심" in ti for _, t, ti in got)  # 30일 전 TM 루머는 14일 밖
     linked = next(a for a in out["alerts"] if a["type"] == "linked")
     assert linked["detail"] == "Football365 외 1곳"

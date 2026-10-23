@@ -84,6 +84,13 @@ def test_build_table_dedupes_and_picks_pre_transfer_value(tmp_path) -> None:
     pd.DataFrame([rows[1]], columns=cols).to_csv(tmp_path / "transfers_SerieA_2026_2027.csv", index=False)
     frames = {"2025_2026": pd.DataFrame([{"norm_key": "a one", "squad": "Roma", "league": "SerieA", "ovr": 82, "market_value_eur": 25e6, "minutes": 2500}]),
               "2026_2027": pd.DataFrame([{"norm_key": "a one", "squad": "Arsenal", "league": "EPL", "ovr": 84, "market_value_eur": 30e6, "minutes": 600}])}
+    # 이적 직전 시장가치가 선수 표에 없을 때(소속이 이미 바뀐 시즌 표)는 변경분 기록의 판 구단 시절 마지막 값
+    pd.DataFrame([{"date": "2026-07-01", "squad": "Roma", "player": "A One", "tm_id": 1, "market_value_eur": 22e6},
+                  {"date": "2026-08-01", "squad": "Roma", "player": "A One", "tm_id": 1, "market_value_eur": 24e6},
+                  {"date": "2026-08-20", "squad": "Arsenal", "player": "A One", "tm_id": 1, "market_value_eur": 30e6}]
+                 ).to_csv(tmp_path / "market_value_log_SerieA_2026_2027.csv", index=False)
+    t2 = fc.build_table(tmp_path, {"2025_2026": frames["2026_2027"]})
+    assert t2.iloc[0]["mv_eur"] == 24e6
     t = fc.build_table(tmp_path, frames)
     assert len(t) == 1
     r = t.iloc[0]
