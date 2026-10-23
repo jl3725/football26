@@ -128,7 +128,7 @@ export default function NetLeadership({ d, accent }: { d: NetworkData; accent: s
         )}
       </div>
       <div className="net-lead-r">
-        <h4 className="net-h">INFLUENCE MAP <span>가운데일수록 영향력 큼</span><Info label="영향력 지도"><p>가운데일수록 영향력이 큽니다. 금색 테두리 = 주장단.</p></Info></h4>
+        <h4 className="net-h">INFLUENCE MAP <Info label="영향력 지도"><p>가운데일수록 영향력이 큽니다. 금색 테두리 = 주장단.</p></Info></h4>
         <InfluenceMap d={d} accent={accent} />
       </div>
       <div className="net-core">

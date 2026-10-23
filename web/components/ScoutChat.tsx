@@ -63,7 +63,7 @@ function ResultCard({ d, accent, onNavigate }: { d: Scout; accent: string; onNav
               <div style={{ textAlign: "right", flexShrink: 0 }}
                 title={p.cross_league && p.current_ovr != null ? `현재 OVR ${p.current_ovr} → 우리 리그 기준 예상 ${shown} · ${t.ko}` : `OVR ${shown} · ${t.ko}`}>
                 <div style={{ fontSize: 15, fontWeight: 800, lineHeight: 1.1, color: t.light }}>{shown}</div>
-                <div style={{ fontSize: 9, fontWeight: 700, color: t.light, opacity: 0.85 }}>{t.ko}</div>
+                <div style={{ fontSize: 11, fontWeight: 700, color: t.light, opacity: 0.85 }}>{t.ko}</div>
               </div>
             </div>
           );

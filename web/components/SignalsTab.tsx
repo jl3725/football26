@@ -48,6 +48,8 @@ function Msg({ m, team, unread, onOpen, big = false }: { m: InboxMsg; team: stri
         <b>{m.title}{m.player ? <span> · {m.player}</span> : null}</b>
         <span className="ib5-d">{m.detail}</span>
       </span>
+      {/* 경기 리뷰가 열리는 항목 — 예전엔 '— 눌러서 경기 리뷰' 문구였다 */}
+      {m.action?.kind === "match" && <span className="ib5-go" aria-hidden>›</span>}
     </button>
   );
 }

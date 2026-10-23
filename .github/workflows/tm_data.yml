@@ -30,6 +30,7 @@ jobs:
     timeout-minutes: 300   # 라이트 리그 5개 추가(2026-10-22) — 주간 부상 이력이 리그당 ~10분
     env:
       PYTHONIOENCODING: utf-8
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}   # 새 부상명 한글 표기(무료 등급, src/injury_names.py)
       MODE: ${{ github.event.schedule == '30 3 * * 1' && 'weekly' || inputs.mode || 'daily' }}
     steps:
       - uses: actions/checkout@v4
@@ -62,6 +63,8 @@ jobs:
           if [ "$MODE" != "weekly" ]; then
             bash scripts/ci_try.sh "league_exports" python src/fetch_league_exports.py
           fi
+          # 새로 나온 TM 부상명만 한글로 옮겨 data/injury_names_ko.json 에 더한다(이미 있는 이름은 요청 없음)
+          bash scripts/ci_try.sh "injury_names" python src/injury_names.py
 
       - name: Validate core data contracts
         run: |
@@ -76,9 +79,9 @@ jobs:
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           if [ "$MODE" = "weekly" ]; then
-            PATHS="data/tm_injury_history_*.csv data/ops/runs/"; SUBJECT="통산 부상 이력"
+            PATHS="data/tm_injury_history_*.csv data/injury_names_ko.json data/ai/usage_injury_names.json data/ops/runs/"; SUBJECT="통산 부상 이력"
           else
-            PATHS="data/transfers_*.csv data/transfermarkt_*.csv data/transfer_rumors_*.csv data/players_*.csv data/market_value_*.csv data/lite_teams_*.json data/league_exports.json data/ops/runs/"
+            PATHS="data/transfers_*.csv data/transfermarkt_*.csv data/transfer_rumors_*.csv data/players_*.csv data/market_value_*.csv data/lite_teams_*.json data/league_exports.json data/injury_names_ko.json data/ai/usage_injury_names.json data/ops/runs/"
             SUBJECT="이적·부상·계약·루머·시장가치"
           fi
           git add -- $PATHS

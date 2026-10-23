@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { getPlayerNews, type PlayerNewsItem } from "@/lib/api";
+import EnOriginal from "./EnOriginal";
 
 // IN THE NEWS — 이 선수가 나온 최근 기사(뉴스 선수 태그: 이름 전체, 또는 성 + 같은 기사 속 클럽 이름).
 export default function PlayerNews({ player, club }: { player: string; club: string }) {
@@ -19,8 +20,8 @@ export default function PlayerNews({ player, club }: { player: string; club: str
         {items.map((n) => (
           <li key={n.link}>
             <a href={n.link} target="_blank" rel="noreferrer" title={n.headline_en || undefined}>{n.headline}</a>
-            {/* 원제 — 기계 번역이 승패·주어를 뒤집을 때가 있어(아스날 승리 → '선더랜드에게 승리') 바로 대조하게 */}
-            {n.headline_en && n.headline_en !== n.headline && <em className="pd-news-en">{n.headline_en}</em>}
+            {/* 원제 — 기계 번역이 승패·주어를 뒤집을 때가 있어(아스날 승리 → '선더랜드에게 승리') 대조용, EN 칩을 누르면 펼침 */}
+            <EnOriginal text={n.headline_en} ko={n.headline} />
             <span>{n.source}{n.published ? ` · ${n.published.slice(5, 10).replace("-", "/")}` : ""}</span>
           </li>
         ))}

@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
 import { getNews, type Article, type News, type NewsStory, type NewsTrack } from "@/lib/api";
+import EnOriginal from "./EnOriginal";
 import AiNote from "./AiNote";
 import SectionHead from "./SectionHead";
 import Info from "./Info";
@@ -59,8 +60,7 @@ function StoryCard({ s, byLink, track }: { s: NewsStory; byLink: Map<string, Art
         <StageMeter stage={s.stage} track={track} />
         <span className="nw-story-n">매체 {s.sources.length}곳</span>
       </div>
-      <b className="nw-story-t">{s.title}</b>
-      {s.title_en && s.title_en !== s.title && <em className="nw-story-en" title={s.title_en}>{s.title_en}</em>}
+      <b className="nw-story-t">{s.title}<EnOriginal text={s.title_en} ko={s.title} /></b>
       <div className="nw-story-meta">
         {s.first === s.last ? md(s.last) : `${md(s.first)}–${md(s.last)}`} · {s.sources.slice(0, 4).join(" · ")}{more > 0 ? ` 외 ${more}` : ""}
       </div>
@@ -109,8 +109,7 @@ function ArticleCard({ a, accent, track }: { a: Article; accent: string; track?:
           <KindTag k={a.kind ?? "other"} />
           {a.kind === "transfer" && <StageMeter stage={a.stage ?? ""} track={track} />}
         </div>
-        <div className="news-head">{a.headline}</div>
-        {a.headline_en && a.headline_en !== a.headline && <div className="news-head-en" title={a.headline_en}>{a.headline_en}</div>}
+        <div className="news-head">{a.headline}<EnOriginal text={a.headline_en} ko={a.headline} /></div>
         {a.descr && <div className="news-desc">{a.descr}</div>}
         {((a.players?.length ?? 0) > 0 || (a.journalists?.length ?? 0) > 0) && (
           <div className="news-tags" title="기사에 나온 이 팀 선수(이름 전체, 또는 성 + 클럽 이름) · 인용된 기자">

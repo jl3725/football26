@@ -32,7 +32,7 @@ function retryOnce<T>(f: () => Promise<T>, waitMs = 15000): Promise<T> {
 type Pick = (team: string, league?: string) => void;
 type Row = {
   key: string; player: string; club: string; club_logo: string; league: string; photo: string;
-  sub: string; why: ReactNode; ovr?: number; trend?: Trend; right?: ReactNode;
+  sub: string; why: ReactNode; ovr?: number; trend?: Trend; right?: ReactNode; bare?: boolean;
 };
 
 const TODAY_EN = () => {
@@ -53,24 +53,27 @@ function PlayerRow({ r, rank, onPick }: { r: Row; rank?: number; onPick: Pick })
         <span>{r.club_logo && <img src={r.club_logo} alt="" />}{r.sub}</span>
       </button>
       <span className="pr5-why">{r.why}</span>
-      {r.right ?? (r.ovr != null && <OvrCell ovr={r.ovr} trend={r.trend} />)}
+      {r.right ?? (r.ovr != null && <OvrCell ovr={r.ovr} trend={r.trend} bare={r.bare} />)}
     </div>
   );
 }
 
 // OVR 숫자 + 등급 단어(OVR GUIDE 와 같은 띠·색) — 숫자만으로는 82 가 어느 정도인지 안 읽혔다
-function OvrCell({ ovr, trend }: { ovr: number; trend?: Trend }) {
+// bare = 등급 단어 없이 숫자(색)만 — MOVERS 처럼 행마다 숫자가 이미 여럿인 목록
+function OvrCell({ ovr, trend, bare = false }: { ovr: number; trend?: Trend; bare?: boolean }) {
   const mn = ovrMeaning(ovr);
   return (
     <span style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 3, flexShrink: 0 }} title={`OVR ${ovr} · ${mn.label}`}>
       <span className="pr5-ovr" style={{ color: mn.c }}>{ovr}{trend && <TrendArrow t={trend} ovr={ovr} />}</span>
-      <span style={{ font: "600 9.5px/1 var(--font-ui)", color: mn.c, whiteSpace: "nowrap" }}>{mn.label}</span>
+      {!bare && <span style={{ font: "600 11px/1 var(--font-ui)", color: mn.c, whiteSpace: "nowrap" }}>{mn.label}</span>}
     </span>
   );
 }
 
 // 평점 + 뜻(Sofascore 평균 6.8~6.9 기준)
 const rt = (r: number) => <>평점 {r.toFixed(2)} <MeaningTag sm m={ssMeaning(r)} title={SS_NOTE} /></>;
+// 평점 숫자만(뜻은 색·호버) — 한 행에 숫자가 둘 이상일 때
+const rtn = (r: number) => <b style={{ color: ssMeaning(r).c }} title={`평점 ${r.toFixed(2)} · ${ssMeaning(r).label}`}>{r.toFixed(2)}</b>;
 
 function Tabs<T extends string>({ items, cur, onChange }: { items: { k: T; label: string; n?: number }[]; cur: T; onChange: (k: T) => void }) {
   return (
@@ -152,18 +155,19 @@ export default function AllDashboard({ onPick, switcher, leagueMap }: {
   );
 
   // ── 무엇이 바뀌었나(OVR 변화 + 기존 스포트라이트 묶음) ──
+  // 행마다 그 탭의 숫자 하나만 — 예전 RISERS 는 '지난 시즌 65 → 73 · 평점 7.42 좋음 · 73 ▲8 · 로테이션'으로 같은 변화를 두 번 썼다(2026-10-23)
   const basisTxt = d.movers_basis === "2w" ? "2주 전" : "지난 시즌";
   const moverRow = (p: HubMover): Row => ({
     key: p.player + p.club, player: p.player, club: p.club, club_logo: p.club_logo, league: p.league, photo: p.photo,
-    sub: sub(p.club, p.pos), why: <>{`${basisTxt} ${p.ovr_prev} → ${p.ovr}`}{p.rating ? <> · {rt(p.rating)}</> : null}</>,
+    sub: sub(p.club, p.pos), why: "", bare: true,
     ovr: p.ovr, trend: p.basis === "2w" ? { ovr_d: p.delta, form_d: null, ovr_prev: null } : { ovr_d: null, form_d: null, ovr_prev: p.ovr_prev },
   });
   const MV: { k: string; label: string; rows: Row[] }[] = [
     { k: "up", label: "RISERS", rows: (d.movers_up ?? []).map(moverRow) },
     { k: "down", label: "FALLERS", rows: (d.movers_down ?? []).map(moverRow) },
-    { k: "form", label: "HOT FORM", rows: d.hot_form.map((p) => ({ key: p.player + p.club, player: p.player, club: p.club, club_logo: p.club_logo, league: p.league, photo: p.photo, sub: sub(p.club, p.pos), why: <>평균 {rt(p.rating)}</>, ovr: p.ovr })) },
-    { k: "prospect", label: "PROSPECTS", rows: d.prospects.map((p) => ({ key: p.player + p.club, player: p.player, club: p.club, club_logo: p.club_logo, league: p.league, photo: p.photo, sub: sub(p.club, p.pos), why: <>{ageText(p.age)} · {rt(p.rating)}</>, ovr: p.ovr })) },
-    { k: "value", label: "VALUE PICKS", rows: d.value_picks.map((p) => ({ key: p.player + p.club, player: p.player, club: p.club, club_logo: p.club_logo, league: p.league, photo: p.photo, sub: sub(p.club, p.pos), why: <>시장가치 {fmtEur(p.value_eur)} · {rt(p.rating)}</>, ovr: p.ovr })) },
+    { k: "form", label: "HOT FORM", rows: d.hot_form.map((p) => ({ key: p.player + p.club, player: p.player, club: p.club, club_logo: p.club_logo, league: p.league, photo: p.photo, sub: sub(p.club, p.pos), why: rt(p.rating), ovr: p.ovr, bare: true })) },
+    { k: "prospect", label: "PROSPECTS", rows: d.prospects.map((p) => ({ key: p.player + p.club, player: p.player, club: p.club, club_logo: p.club_logo, league: p.league, photo: p.photo, sub: sub(p.club, p.pos), why: <>{ageText(p.age)} · {rtn(p.rating)}</>, ovr: p.ovr, bare: true })) },
+    { k: "value", label: "VALUE PICKS", rows: d.value_picks.map((p) => ({ key: p.player + p.club, player: p.player, club: p.club, club_logo: p.club_logo, league: p.league, photo: p.photo, sub: sub(p.club, p.pos), why: fmtEur(p.value_eur), ovr: p.ovr, bare: true })) },
     { k: "riser", label: "MARKET ▲", rows: d.risers.map((p) => ({ key: p.player + p.club, player: p.player, club: p.club, club_logo: p.club_logo, league: p.league, photo: p.photo, sub: sub(p.club), why: `${fmtEur(p.value_eur)}`, right: <span className="td up">▲{p.pct}%</span> })) },
   ].filter((t) => t.rows.length > 0);
   const curMv = MV.find((t) => t.k === mv) ?? MV[0];

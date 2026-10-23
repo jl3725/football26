@@ -114,7 +114,8 @@ export function ReviewSections({ m, inPlay, hc, ac }: { m: Fixture; inPlay: bool
           </Info>
         </h3>
         <p className="rv5-head">{rv.headline}</p>
-        {rv.ai && <AiNote text={rv.ai.text} at={rv.ai.at} label="AI MATCH REPORT" />}
+        {/* 3줄 — 아래 TIMELINE·STATS 가 같은 골·숫자를 보여 준다(2026-10-23 글 줄이기) */}
+        {rv.ai && <AiNote text={rv.ai.text} at={rv.ai.at} label="AI MATCH REPORT" clamp={3} />}
         {rv.lines.length > 0 && <ul className="pv-points">{rv.lines.map((l) => <li key={l}>{l}</li>)}</ul>}
         {(rv.star || rv.predictions.length > 0) && (
           <div className="rv5-chips">

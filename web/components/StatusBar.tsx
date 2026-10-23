@@ -21,7 +21,7 @@ export default function StatusBar({ accent, ctx, league = "EPL" }: { accent: str
 
   useEffect(() => {
     setNow(new Date());
-    const t = setInterval(() => setNow(new Date()), 1000);
+    const t = setInterval(() => setNow(new Date()), 15000);   // 분 단위 시계
     getCalendar(league).then((d) => setEvents(d.events)).catch(() => {});
     return () => clearInterval(t);
   }, [league]);
@@ -45,10 +45,11 @@ export default function StatusBar({ accent, ctx, league = "EPL" }: { accent: str
     }
     if (today < s) return { ...e, state: "soon" as const, dday: daysBetween(today, s) };
     return { ...e, state: "past" as const };
-  }).filter((c) => c.state !== "past").slice(0, 2);
+  }).filter((c) => c.state !== "past").slice(0, 1);   // 가장 가까운 일정 하나만(2026-10-23 글 줄이기)
 
-  const timeStr = now ? now.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", second: "2-digit" }) : "--:--:--";
-  const dateStr = now ? now.toLocaleDateString("ko-KR", { year: "numeric", month: "long", day: "numeric", weekday: "short" }) : "";
+  // 시:분 · '10/23 금' — 예전엔 초 단위 시계·'2026년 10월 23일 금'까지 모든 화면 맨 위에 99자가 깔렸다
+  const timeStr = now ? now.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }) : "--:--";
+  const dateStr = now ? `${now.getMonth() + 1}/${now.getDate()} ${now.toLocaleDateString("ko-KR", { weekday: "short" })}` : "";
 
   return (
     <div className="statusbar">
@@ -59,10 +60,9 @@ export default function StatusBar({ accent, ctx, league = "EPL" }: { accent: str
       </div>
       {ctx && (
         <div className="sb-season">
-          <span className="sb-season-done">{seasonChip(ctx.window, ctx.data_season)}</span>
-          {ctx.window.is_open
-            ? <span className="sb-season-open" style={{ background: accent }}>{ctx.window.label} {ctx.window.kr} 이적시장 OPEN</span>
-            : <span className="sb-season-closed">이적시장 마감</span>}
+          <span className="sb-season-done" title={seasonChip(ctx.window, ctx.data_season)}>{seasonChip(ctx.window, ctx.data_season, true)}</span>
+          {/* 이적시장은 열렸을 때만 — '마감'은 대부분의 날에 붙는 기본 상태라 뺐다 */}
+          {ctx.window.is_open && <span className="sb-season-open" style={{ background: accent }}>{ctx.window.kr} 이적시장 OPEN</span>}
         </div>
       )}
       {data && (

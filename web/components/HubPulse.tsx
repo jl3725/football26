@@ -105,10 +105,13 @@ export function WatchGrid({ items, onPick }: { items: WatchMatch[]; onPick: Pick
                   : <span className="wt5-pts">{s.points}<em>점</em></span>}
               </button>
             ))}
-            <PredictBar m={m} slim />
-            <div className="wt5-why">
-              {m.why.map((t, i) => <span key={t} className={i === 0 ? "lead" : ""}>{t}</span>)}
-            </div>
+            {/* 예측 한 줄(모델 우선) · 이유 칩 하나 — 팬 예측·나머지 이유는 눌러서 여는 경기 미리보기에(2026-10-23 글 줄이기) */}
+            <PredictBar m={m} slim only={m.model ? "model" : m.fans ? "fans" : "elo"} />
+            {m.why.length > 0 && (
+              <div className="wt5-why" title={m.why.join(" · ")}>
+                <span className="lead">{m.why[0]}</span>
+              </div>
+            )}
           </div>
         );
       })}

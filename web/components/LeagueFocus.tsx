@@ -75,7 +75,7 @@ function standingsInfo(xgAvg: number | null) {
   );
 }
 
-// 전체 순위표 — 경기·승무패·득실·승점·최근 5경기·경기당 xG·전력 순위(OVR)·감독
+// 전체 순위표 — 경기·승무패·득실·승점·최근 5경기·경기당 xG·전력 순위(OVR). 감독 이름은 팀 화면에(20줄 × 이름이 표를 채웠다, 2026-10-23)
 function StandingsFull({ lab, league, onPick }: { lab: LeagueLab; league: string; onPick: Pick }) {
   const lt = liveTable(lab.table, lab.pending, useLiveAll(), liveLabel);
   const rows = lt.rows;
@@ -99,7 +99,7 @@ function StandingsFull({ lab, league, onPick }: { lab: LeagueLab; league: string
             return (
               <tr key={t.team} onClick={() => onPick(t.team, league)} className={[t.rank === 1 ? "lead" : t.rank > n - 3 ? "rel" : "", t.live ? "is-live" : ""].join(" ").trim()}>
                 <td className="rk">{t.rank}<Move t={t} /></td>
-                <td className="l"><span className="tb5-team">{t.logo ? <img src={t.logo} alt="" /> : <i />}<b>{t.team}</b><LiveChip t={t} />{t.manager && <em>{t.manager}</em>}</span></td>
+                <td className="l"><span className="tb5-team">{t.logo ? <img src={t.logo} alt="" /> : <i />}<b>{t.team}</b><LiveChip t={t} /></span></td>
                 <td>{t.played}</td><td className="s">{t.won}</td><td className="s">{t.drawn}</td><td className="s">{t.lost}</td>
                 <td className="m">{t.gf}</td><td className="m">{t.ga}</td>
                 <td className={t.gd > 0 ? "up" : t.gd < 0 ? "down" : ""}>{t.gd > 0 ? `+${t.gd}` : t.gd}</td>

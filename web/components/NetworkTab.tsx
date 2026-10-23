@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { getNetwork, type NetInsight, type NetworkData } from "@/lib/api";
 import { initials } from "./NetShared";
 import SectionHead from "./SectionHead";
+import Info from "./Info";
 import EmptyState from "./EmptyState";
 import { Skel } from "./Skeleton";
 import NetLeadership from "./NetLeadership";
@@ -96,7 +97,7 @@ export default function NetworkTab({ team, accent }: { team: string; accent: str
               국적·순위: FIFA 랭킹 · 대표팀: 2026 월드컵 명단 · 이적설: Transfermarkt 루머 + 뉴스 루머(매체 적중률 가중)</p>
             <p className="muted">같은 관계를 지식그래프(Neo4j)로도 적재합니다.</p>
           </>} />
-        <h4 className="net-h">GRAPH INSIGHTS <span>누르면 해당 렌즈로</span></h4>
+        <h4 className="net-h">GRAPH INSIGHTS <Info label="GRAPH INSIGHTS"><p>카드를 누르면 아래 해당 렌즈로 이동합니다.</p></Info></h4>
         <div className="net-ins">
           {d.insights.map((i, k) => (
             <InsightTile key={k} i={i} d={d} on={lens === i.lens} onPick={() => setLens(i.lens as Lens)} />

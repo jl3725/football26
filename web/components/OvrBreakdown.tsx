@@ -24,9 +24,11 @@ export default function OvrBreakdown({ ovr, parts, ratings }: { ovr: number; par
   const fmt = (v: number) => `${v > 0 ? "+" : "−"}${Math.abs(v).toFixed(1)}`;
   return (
     <div className="ob5">
-      <button type="button" className="ob5-toggle" onClick={() => setOpen((x) => !x)} aria-expanded={open}>
+      {/* 접힌 줄엔 제목만 — 계산 요약('시장가치 기준점 88.6 · 경기력 +3.0 · TOP CAP −1.1 → 90')은 호버·펼침으로(2026-10-23 글 줄이기) */}
+      <button type="button" className="ob5-toggle" onClick={() => setOpen((x) => !x)} aria-expanded={open}
+        title={`${shortName(base)} ${base.value.toFixed(1)}${top.map((p) => ` · ${shortName(p)} ${fmt(p.value)}`).join("")} → ${ovr}`}>
         <b>OVR 구성</b>
-        <span>{shortName(base)} {base.value.toFixed(1)}{top.map((p) => ` · ${shortName(p)} ${fmt(p.value)}`).join("")} → {ovr}</span>
+        <span />
         <i>{open ? "▴" : "▾"}</i>
       </button>
       {open && (

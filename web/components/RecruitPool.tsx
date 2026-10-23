@@ -19,16 +19,6 @@ const POS_BTNS: [string, string][] = [
 const LEAGUES: [string, string][] = LEAGUES_ACTIVE.map((l) => [l.key, l.name]);
 const SORTS: [string, string][] = [["fit", "추천순(니즈·정책)"], ["style", "유사도"], ["ovr", "예상 OVR"], ["value", "시장가"], ["age", "나이"]];
 
-function Kpi({ label, value, sub, accent }: { label: string; value: string; sub?: string; accent: string }) {
-  return (
-    <div className="card" style={{ padding: "12px 14px" }}>
-      <div style={{ fontSize: 10.5, opacity: 0.55, textTransform: "uppercase", letterSpacing: 0.5 }}>{label}</div>
-      <div style={{ fontSize: 21, fontWeight: 800, marginTop: 2, color: accent }}>{value}</div>
-      {sub && <div style={{ fontSize: 10, opacity: 0.5 }}>{sub}</div>}
-    </div>
-  );
-}
-
 function Card({ p, accent, team }: { p: DiscoverPick; accent: string; team: string }) {
   const sl = useShortlist(team);
   const pinned = sl.has(p.player, p.squad);
@@ -37,6 +27,22 @@ function Card({ p, accent, team }: { p: DiscoverPick; accent: string; team: stri
   const rising = (p.age ?? 30) <= 21;
   const peek = usePeek();
   // ovr = 우리 리그 기준 예상 OVR(다른 리그 선수는 리그 수준 차이 보정) · current_ovr = 지금 뛰는 리그 기준
+  const lvC = p.level === "starter" ? "#4fc27f" : p.level === "rotation" ? "#5b8def" : p.level === "prospect" ? "#b98cd8" : "#8a94a8";
+  const months = p.contract_until ? monthsLeft(p.contract_until) : 999;
+  type Badge = { t: string; c: string; fg?: string; tip?: string };
+  const badges = ([
+    p.rival ? { t: "라이벌", c: "#e0556b", fg: "#e0707a", tip: "위키 라이벌·더비 구단 소속 — 라이벌끼리는 거래가 드물다" } : null,
+    p.realistic === false && !p.rival ? { t: "가능성 낮음", c: "#e0556b", fg: "#e0707a", tip: "경쟁 팀(같은 리그)·강팀의 핵심 주전 — 시즌 중·1월에 데려오기 어려움" } : null,
+    p.price_verdict === "over-budget" ? { t: "예산 초과", c: "#e0556b", fg: "#e0707a" } : null,
+    p.price_verdict === "stretch" ? { t: "가격 무리", c: "#e0a53a" } : null,
+    months >= 0 && months <= 12 ? { t: `계약 ${months}개월`, c: "#4fc27f", tip: `계약 ${p.contract_until?.slice(0, 7)}까지 — 이적료 협상력이 낮거나 자유계약 가능` } : null,
+    p.policy_ok === false ? { t: "정책 밖", c: "#e0a53a", tip: (p.policy_notes || []).join(" · ") } : null,
+    p.level ? { t: p.level === "starter" ? "주전급" : p.level === "rotation" ? "로테이션" : p.level === "prospect" ? "유망주" : "수준 아래", c: lvC, tip: "팀 OVR 대비 수준" } : null,
+    rising ? { t: "성장형", c: "#4fc27f", tip: "21세 이하" } : null,
+    p.euro ? { t: "유럽 검증", c: "#f4cf5e" } : null,
+    p.kg_precedent ? { t: `선례 ${p.kg_precedent}`, c: accent } : null,
+    p.policy_ok === true ? { t: "정책 부합", c: "#4fc27f", tip: "구단 이적 정책(최근 두 시즌 영입 나이·이적료)에 맞음" } : null,
+  ] as (Badge | null)[]).filter((b): b is Badge => !!b);
   const ovrTitle = p.cross_league
     ? `현재 OVR ${p.current_ovr} (${p.source_league} 기준) → 우리 리그 기준 예상 ${p.ovr} · ${t.ko}`
     : `OVR ${p.ovr} · ${t.ko}`;
@@ -50,19 +56,20 @@ function Card({ p, accent, team }: { p: DiscoverPick; accent: string; team: stri
           <div style={{ fontSize: 13.5, fontWeight: 700, display: "flex", alignItems: "center", gap: 5 }}>
             {p.player}
             {p.kg_rumored && <span title={`이 팀과 루머 연결${p.kg_rumor_prob ? ` ${p.kg_rumor_prob}%` : ""}`}
-              style={{ fontSize: 9, fontWeight: 700, padding: "1px 5px", borderRadius: 5, background: hexA(accent, 0.2), color: accent }}>링크</span>}
+              style={{ fontSize: 11, fontWeight: 700, padding: "1px 5px", borderRadius: 5, background: hexA(accent, 0.2), color: accent }}>링크</span>}
           </div>
-          <div style={{ fontSize: 10.5, opacity: 0.6, marginTop: 1 }}>{p.squad} · {p.source_league}</div>
-          <span style={{ fontSize: 9.5, padding: "1px 6px", borderRadius: 6, background: hexA(accent, 0.14), color: accent, marginTop: 4, display: "inline-block" }}>{p.pos}</span>
+          <div style={{ fontSize: 11, opacity: 0.6, marginTop: 1 }}>{p.squad} · {p.source_league}</div>
+          <span style={{ fontSize: 11, padding: "1px 6px", borderRadius: 6, background: hexA(accent, 0.14), color: accent, marginTop: 4, display: "inline-block" }}>{p.pos}</span>
         </div>
         <button className={`sl-pin${pinned ? " on" : ""}`} aria-pressed={pinned}
           title={pinned ? "이적 작업대 SHORTLIST 에서 빼기" : "이적 작업대 SHORTLIST 에 고정 — 비교·FIT·예산"}
           onClick={(e) => { e.stopPropagation(); sl.toggle({ player: p.player, club: p.squad, league: p.source_league }); }}>{pinned ? "★" : "☆"}</button>
         <div style={{ textAlign: "right", flexShrink: 0 }} title={ovrTitle}>
-          <div style={{ fontSize: 22, fontWeight: 800, lineHeight: 1, color: t.light }}>{p.ovr}</div>
-          <div style={{ fontSize: 9, opacity: 0.6, marginTop: 2 }}>{p.cross_league ? "예상 OVR" : "OVR"}</div>
-          <div style={{ fontSize: 9.5, fontWeight: 700, color: t.light }}>{t.ko}</div>
-          {p.cross_league && <div style={{ fontSize: 9, opacity: 0.5 }}>현재 {p.current_ovr}</div>}
+          <div style={{ fontSize: 22, fontWeight: 800, lineHeight: 1, color: t.light }}>
+            {p.cross_league && <span style={{ fontSize: 13, fontWeight: 600, opacity: 0.7, marginRight: 1 }}>≈</span>}{p.ovr}
+          </div>
+          <div style={{ fontSize: 11, fontWeight: 700, color: t.light, marginTop: 3 }}>{t.ko}</div>
+          {p.cross_league && p.current_ovr != null && p.current_ovr !== p.ovr && <div style={{ fontSize: 11, opacity: 0.55 }}>현재 {p.current_ovr}</div>}
         </div>
       </div>
       {/* 스탯 */}
@@ -77,7 +84,7 @@ function Card({ p, accent, team }: { p: DiscoverPick; accent: string; team: stri
       </div>
       {/* 유사도 바 */}
       <div style={{ marginTop: 8 }} title={`우리 팀이 이 자리에 쓰는 플레이 스타일과의 유사도 ${p.style_fit} / 100 (${sf.label})`}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: 9.5, marginBottom: 2 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: 11, marginBottom: 2 }}>
           <span style={{ opacity: 0.6 }}>스타일 유사도</span>
           <span style={{ display: "inline-flex", alignItems: "center", gap: 5 }}>
             <MeaningTag sm m={sf} /><b style={{ color: sf.c }}>{p.style_fit}</b>
@@ -87,28 +94,24 @@ function Card({ p, accent, team }: { p: DiscoverPick; accent: string; team: stri
           <span style={{ display: "block", height: "100%", borderRadius: 3, width: `${p.style_fit}%`, background: sf.bar }} />
         </div>
       </div>
-      <div style={{ display: "flex", gap: 5, marginTop: 8, flexWrap: "wrap" }}>
-        {p.level && <span title="팀 OVR 대비 수준" style={{ fontSize: 9.5, padding: "1px 7px", borderRadius: 8, fontWeight: 700,
-          background: hexA(p.level === "starter" ? "#4fc27f" : p.level === "rotation" ? "#5b8def" : p.level === "prospect" ? "#b98cd8" : "#8a94a8", 0.16),
-          color: p.level === "starter" ? "#4fc27f" : p.level === "rotation" ? "#8fb0f5" : p.level === "prospect" ? "#c9a6e6" : "#9aa3b5" }}>
-          {p.level === "starter" ? "주전급" : p.level === "rotation" ? "로테이션" : p.level === "prospect" ? "유망주" : "수준 아래"}</span>}
-        {rising && <span title="21세 이하" style={{ fontSize: 9.5, padding: "1px 7px", borderRadius: 8, background: hexA("#4fc27f", 0.15), color: "#4fc27f" }}>성장형</span>}
-        {p.euro && <span style={{ fontSize: 9.5, padding: "1px 7px", borderRadius: 8, background: hexA("#f4cf5e", 0.15), color: "#f4cf5e" }}>유럽 검증</span>}
-        {p.price_verdict === "over-budget" && <span style={{ fontSize: 9.5, padding: "1px 7px", borderRadius: 8, background: hexA("#e0556b", 0.15), color: "#e0707a" }}>예산 초과</span>}
-        {p.price_verdict === "stretch" && <span style={{ fontSize: 9.5, padding: "1px 7px", borderRadius: 8, background: hexA("#e0a53a", 0.15), color: "#e0a53a" }}>가격 무리</span>}
-        {p.kg_precedent ? <span style={{ fontSize: 9.5, padding: "1px 7px", borderRadius: 8, background: hexA(accent, 0.12), color: accent }}>선례 {p.kg_precedent}</span> : null}
-        {p.policy_ok === true && <span title="구단 이적 정책(최근 두 시즌 영입 나이·이적료)에 맞음" style={{ fontSize: 9.5, padding: "1px 7px", borderRadius: 8, background: hexA("#4fc27f", 0.13), color: "#4fc27f" }}>정책 부합</span>}
-        {p.policy_ok === false && <span title={(p.policy_notes || []).join(" · ")} style={{ fontSize: 9.5, padding: "1px 7px", borderRadius: 8, background: hexA("#e0a53a", 0.13), color: "#e0a53a" }}>정책 밖</span>}
-        {p.rival && <span title="위키 라이벌·더비 구단 소속 — 라이벌끼리는 거래가 드물다" style={{ fontSize: 9.5, padding: "1px 7px", borderRadius: 8, background: hexA("#e0556b", 0.13), color: "#e0707a" }}>라이벌</span>}
-        {p.contract_until && monthsLeft(p.contract_until) <= 12 && <span title={`계약 ${p.contract_until.slice(0, 7)}까지 — 이적료 협상력이 낮거나 자유계약 가능`} style={{ fontSize: 9.5, padding: "1px 7px", borderRadius: 8, background: hexA("#4fc27f", 0.13), color: "#4fc27f" }}>계약 {monthsLeft(p.contract_until)}개월</span>}
-        {p.realistic === false && !p.rival && <span title="경쟁 팀(같은 리그)·강팀의 핵심 주전 — 시즌 중·1월에 데려오기 어려움" style={{ fontSize: 9.5, padding: "1px 7px", borderRadius: 8, background: hexA("#e0556b", 0.13), color: "#e0707a" }}>가능성 낮음</span>}
-      </div>
+      {/* 배지는 결정에 걸리는 것부터 2개, 나머지는 +N(호버하면 전부) — 예전엔 카드마다 9.5px 배지가 최대 9개(2026-10-23 글 줄이기) */}
+      {badges.length > 0 && (
+        <div style={{ display: "flex", gap: 5, marginTop: 8, flexWrap: "wrap" }}>
+          {badges.slice(0, 2).map((b) => (
+            <span key={b.t} title={b.tip} style={{ fontSize: 11, padding: "1px 7px", borderRadius: 8, background: hexA(b.c, 0.15), color: b.fg ?? b.c }}>{b.t}</span>
+          ))}
+          {badges.length > 2 && (
+            <span title={badges.slice(2).map((b) => b.t).join(" · ")}
+              style={{ fontSize: 11, padding: "1px 7px", borderRadius: 8, border: `1px solid ${hexA("#fff", 0.12)}`, opacity: 0.7 }}>+{badges.length - 2}</span>
+          )}
+        </div>
+      )}
     </div>
   );
 }
 
 const PAGE = 12;
-// 계약 남은 개월(오늘 기준) — 날짜를 못 읽으면 큰 수
+// 계약 남은 개월(오늘 기준) — 날짜를 못 읽으면 큰 수. 지난 날짜(TM 이 갱신 안 한 옛 계약)는 음수라 '만료 임박'에서 뺀다('계약 -39개월', 2026-10-23)
 function monthsLeft(until: string): number {
   const d = new Date(until);
   return Number.isNaN(d.getTime()) ? 999 : Math.round((d.getTime() - Date.now()) / (30.44 * 864e5));
@@ -148,7 +151,7 @@ export default function RecruitPool({ team, accent, focusRole }: { team: string;
     const f = all.filter((p) => lvOk(p) && (lgs.length === 0 || lgs.includes(p.source_league))
       && (p.age == null || (p.age >= ageMin && p.age <= ageMax))
       && (!p.value_eur || p.value_eur <= valMax * 1e6)
-      && (!expiring || (!!p.contract_until && monthsLeft(p.contract_until) <= 12)));
+      && (!expiring || (!!p.contract_until && monthsLeft(p.contract_until) >= 0 && monthsLeft(p.contract_until) <= 12)));
     const key = (p: DiscoverPick) => sortBy === "ovr" ? p.ovr : sortBy === "value" ? (p.value_eur || 0) : sortBy === "age" ? -(p.age || 99) : p.style_fit;
     // 추천순 = 서버 순서(니즈 시급도·스타일·전력·가격) 그대로, 영입 가능성 낮음·구단 정책 밖 후보는 뒤로
     const ok = (p: DiscoverPick) => (p.realistic === false ? 0 : 2) + (p.policy_ok === false ? 0 : 1);
@@ -166,18 +169,10 @@ export default function RecruitPool({ team, accent, focusRole }: { team: string;
     <EmptyState title="스타일 유사 선수 추천 준비 중" note="잠시 후 다시 확인하세요" />
   );
 
-  const railLabel: React.CSSProperties = { fontSize: 10, fontWeight: 700, opacity: 0.5, textTransform: "uppercase", letterSpacing: 0.5, margin: "14px 0 7px" };
+  const railLabel: React.CSSProperties = { fontSize: 11, fontWeight: 700, opacity: 0.5, textTransform: "uppercase", letterSpacing: 0.5, margin: "14px 0 7px" };
 
   return (
     <div style={{ marginTop: 16 }}>
-      {/* KPI */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))", gap: 10, marginBottom: 14 }}>
-        <Kpi label="후보" value={String(picks.length)} accent={accent} />
-        <Kpi label="평균 나이" value={`${avgAge}세`} accent={accent} />
-        <Kpi label="평균 시장가" value={fmtEur(avgVal)} accent={accent} />
-        <Kpi label="커버 리그" value={String(new Set(picks.map((p) => p.source_league)).size)} accent={accent} />
-      </div>
-
       <div className="rp-layout">
         {/* 필터 레일 */}
         <div className={`card rp-rail${railOpen ? " open" : ""}`}>
@@ -203,13 +198,16 @@ export default function RecruitPool({ team, accent, focusRole }: { team: string;
               }}>{lbl}</button>
             ))}
           </div>
-          <div style={railLabel}>리그</div>
+          {/* 리그 목록은 접어 둔다(PC 에서 체크박스 13줄이 늘 펼쳐져 있었다, 2026-10-23) */}
+          <details className="rp-lg">
+          <summary style={{ ...railLabel, cursor: "pointer" }}>리그 · {lgs.length ? `${lgs.length}개` : "전체"}</summary>
           {LEAGUES.map(([k, name]) => (
             <label key={k} style={{ display: "flex", alignItems: "center", gap: 7, fontSize: 12, padding: "3px 0", cursor: "pointer", opacity: (lgs.length === 0 || lgs.includes(k)) ? 1 : 0.5 }}>
               <input type="checkbox" checked={lgs.length === 0 || lgs.includes(k)} onChange={() => toggleLg(k)} />
               {name}
             </label>
           ))}
+          </details>
           <div style={railLabel}>포지션</div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 5 }}>
             {POS_BTNS.map(([v, lbl]) => (
@@ -236,13 +234,14 @@ export default function RecruitPool({ team, accent, focusRole }: { team: string;
 
         {/* 그리드 */}
         <div>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
-            <span style={{ fontSize: 12, opacity: 0.7 }}>
-              {loading ? "—" : `${picks.length}명`}
+          <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "center", gap: "6px 12px", marginBottom: 10 }}>
+            <span style={{ fontSize: 12, opacity: 0.7, flex: "1 1 240px", minWidth: 0 }}>
+              {/* 후보 수·평균 나이·평균 시장가·리그 수 — 예전엔 큰 KPI 칸 4개(2026-10-23 글 줄이기) */}
+              {loading ? "—" : <span title="후보 수 · 평균 나이 · 평균 시장가 · 리그 수" style={{ whiteSpace: "nowrap" }}>{picks.length}명 · {avgAge}세 · {fmtEur(avgVal)} · {new Set(picks.map((p) => p.source_league)).size}개 리그</span>}
               {!role && disc?.needs?.length ? <span style={{ opacity: 0.6 }} title={`포지션 니즈 상위(부상·폼·이적 공백): ${disc.needs.map((n) => `${n.label}(${n.urgency})`).join(" · ")}`}> · 니즈 {disc.needs.slice(0, 3).map((n) => n.label).join("·")}</span>
                 : disc?.target_roles && !role ? <span style={{ opacity: 0.6 }}> · 대상 {disc.target_roles.join("·")}</span> : null}
             </span>
-            <label style={{ fontSize: 12, opacity: 0.7 }}>정렬{" "}
+            <label style={{ fontSize: 12, opacity: 0.7, whiteSpace: "nowrap" }}>정렬{" "}
               <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} style={{ background: hexA("#fff", 0.06), border: `1px solid ${hexA(accent, 0.3)}`, color: "inherit", borderRadius: 6, padding: "3px 8px", fontSize: 12 }}>
                 {SORTS.map(([v, l]) => <option key={v} value={v} style={{ color: "#111" }}>{l}</option>)}
               </select>

@@ -8,6 +8,7 @@ import { usePeek } from "./PlayerPeek";
 
 // WEEKLY DIGEST — 지난 7일 이 리그에서 '바뀐 것'만(설계도 3단계 주간 스카우팅 다이제스트). 규칙 기반·숫자는 데이터 값.
 // 결과·일정·경기 리뷰·이적 속보는 위 섹션이 이미 보여 주므로 여기선 폼 ▲▼ · 부상 변동 · 뉴스 언급 · 루머 · A매치만.
+// AI 서술은 2줄(아래 FORM 카드가 같은 선수·숫자), 루머 카드의 클럽별 건수 줄은 뺐다(요약 줄 — 2026-10-23 글 줄이기).
 const md = (d: string) => `${Number(d.slice(5, 7))}/${Number(d.slice(8, 10))}`;
 
 export default function WeeklyDigest({ league }: { league: string }) {
@@ -20,7 +21,7 @@ export default function WeeklyDigest({ league }: { league: string }) {
   );
   return (
     <div className="wd-wrap">
-      {d.summary && <AiNote text={d.summary.text} at={d.summary.at} label="THIS WEEK" sub="AI 주간 서술" clamp={3} />}
+      {d.summary && <AiNote text={d.summary.text} at={d.summary.at} label="THIS WEEK" sub="AI 주간 서술" clamp={2} />}
       {d.intl && (
         <div className="wd-intl">
           <b>{d.intl.label}</b> {md(d.intl.start)}–{md(d.intl.end)} <em>D-{d.intl.days_to}</em>
@@ -70,7 +71,6 @@ export default function WeeklyDigest({ league }: { league: string }) {
         </div>
         <div className="card wd-card">
           <h3>RUMORS<small>새 이적 루머 {d.rumors.n}건</small></h3>
-          {d.rumors.clubs.length > 0 && <div className="wd-clubs">{d.rumors.clubs.map((c) => <span key={c.club}>{c.club} {c.n}</span>)}</div>}
           {d.rumors.top.map((r, i) => (
             <div className="wd-row" key={i}>
               <span className="wd-name">{r.player}</span><span className="wd-sub">{r.from} → {r.to}</span>

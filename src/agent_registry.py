@@ -109,6 +109,8 @@ AGENTS: tuple[Agent, ...] = (
                    "하루 3~4회", 24, ("transfermarkt_injuries_*", "fotmob_injuries*", "fotmob_squads*")),
               Feed("history", "통산 부상 이력", ("injury_history",), ("tm_data",), "주 1회 · 월 12:30 KST", WEEK_H,
                    ("tm_injury_history_*",)),
+              # TM 부상명 한글 표기 — 새 이름만 옮김(파일은 새 이름이 나올 때만 바뀐다, src/injury_names.py)
+              Feed("names", "부상명 한글 표기", ("injury_names",), ("tm_data",), "매일 10:30·18:30 KST", 36),
           ), checks=("수집기 가드: 부상자 0명·이력 급감 저장 차단",)),
     Agent("news", "NEWS", "뉴스", "뉴스 수집·번역(팀 태그) · Google News 팀별 현지어·영어 이적 · 선수 태깅(news_tags) · "
           "분류(종류·이적 단계·기자, news_classify) · STORY 묶음(news_stories)",

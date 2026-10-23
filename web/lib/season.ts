@@ -34,10 +34,10 @@ export function seasonStatusText(w: Window | null | undefined, dataSeason: strin
 }
 
 /** 상태바용 짧은 라벨 */
-export function seasonChip(w: Window | null | undefined, dataSeason: string): string {
+export function seasonChip(w: Window | null | undefined, dataSeason: string, short = false): string {
   switch (phaseOf(w)) {
     case "in_season":
-      return `${dataSeason} 시즌 진행 중`;
+      return short ? dataSeason : `${dataSeason} 시즌 진행 중`;
     case "stale":
       return `${dataSeason} 데이터 · 갱신 대기`;
     default:

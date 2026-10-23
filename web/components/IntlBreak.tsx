@@ -30,6 +30,15 @@ export default function IntlBreak({ team }: { team: string }) {
   if (!d || !d.window) return null;
   const w = d.window;
   const when = d.state === "now" ? "진행 중" : d.days_to != null ? `D-${d.days_to}` : "";
+  // 같은 대표팀 선수는 일정이 같다 — 나라로 묶고 소집 인원 많은 나라 먼저
+  const byNat = new Map<string, { nation: string; flag?: string; far: boolean; players: IntlTeam["players"]; fixtures: IntlFixture[]; last: IntlFixture[] }>();
+  for (const p of d.players) {
+    const g = byNat.get(p.nation) ?? { nation: p.nation, flag: p.flag, far: !!p.far, players: [], fixtures: p.fixtures, last: p.last_results };
+    g.players.push(p);
+    if (!g.fixtures.length && p.fixtures.length) g.fixtures = p.fixtures;
+    byNat.set(p.nation, g);
+  }
+  const nations = [...byNat.values()].sort((a, b) => b.players.length - a.players.length);
   return (
     <div className="card ib-card">
       <div className="ib-head">
@@ -50,19 +59,30 @@ export default function IntlBreak({ team }: { team: string }) {
               {w.kind === "tournament" && <p>대회 기간 클럽 경기는 결장으로 예측에 반영합니다.</p>}
             </Info>
           </p>
+          {/* 나라마다 한 줄 — 예전엔 선수마다 한 줄이라 같은 나라 일정·지난 결과가 선수 수만큼 반복됐다(2026-10-23 글 줄이기).
+              A매치 기록은 이름 위 호버, 지난 결과는 일정 위 호버 */}
           <div className="ib-list">
-            {d.players.map((p) => (
-              <div className="ib-row" key={p.player}>
-                {p.flag ? <img className="ib-flag" src={p.flag} alt="" /> : <span className="ib-flag" />}
+            {nations.map((g) => (
+              <div className="ib-row" key={g.nation}>
+                {g.flag ? <img className="ib-flag" src={g.flag} alt="" /> : <span className="ib-flag" />}
                 <div className="ib-main">
                   <div className="ib-top">
-                    <span className="ib-name peekable" onClick={(e) => peek(e, { name: p.player, club: team })}>{p.player}</span>
-                    <span className="ib-nat">{p.nation}{p.caps != null && <> · A매치 {p.caps}경기{p.goals ? ` ${p.goals}골` : ""}</>}</span>
-                    {p.far && <span className="ib-far" style={{ color: TONE.weak.c, background: TONE.weak.bg }}>유럽 밖</span>}
+                    <span className="ib-nat-name">{g.nation}</span>
+                    {g.far && <span className="ib-far" style={{ color: TONE.weak.c, background: TONE.weak.bg }}>유럽 밖</span>}
                   </div>
-                  {p.fixtures.length > 0 && <div className="ib-fxs">{p.fixtures.map((f, i) => <Fx key={i} f={f} />)}</div>}
-                  {p.last_results.length > 0 && (
-                    <div className="ib-fxs ib-last"><span className="ib-k">지난</span>{p.last_results.map((f, i) => <Fx key={i} f={f} />)}</div>
+                  <div className="ib-names">
+                    {g.players.map((p, i) => (
+                      <span key={p.player}>
+                        {i > 0 && " · "}
+                        <span className="ib-name peekable" onClick={(e) => peek(e, { name: p.player, club: team })}
+                          title={p.caps != null ? `A매치 ${p.caps}경기${p.goals ? ` ${p.goals}골` : ""}` : undefined}>{p.player}</span>
+                      </span>
+                    ))}
+                  </div>
+                  {g.fixtures.length > 0 && (
+                    <div className="ib-fxs" title={g.last.length ? `지난 기간 — ${g.last.map((f) => `${md(f.date)} ${f.home ? "vs" : "@"} ${f.opp}${f.score ? ` ${f.score}` : ""}`).join(" · ")}` : undefined}>
+                      {g.fixtures.map((f, i) => <Fx key={i} f={f} />)}
+                    </div>
                   )}
                 </div>
               </div>

@@ -104,6 +104,8 @@ from api.services.player_data import photo_url as _photo  # noqa: E402
 from api.services.player_data import player_frame as _pf  # noqa: E402
 from api.services.player_data import resolve_photo as _resolve_photo  # noqa: E402
 from player_names import read_lineup_csv  # noqa: E402
+from wiki_text import tidy_intro as _tidy_intro  # noqa: E402  (위키 소개 첫 괄호 — 원어·생년월일)
+from injury_names import ko as _inj_ko  # noqa: E402  (TM 부상명 한글 — data/injury_names_ko.json)
 
 app = FastAPI(title="Football Scout API", version="0.2.0")
 app.include_router(meta_router)
@@ -385,7 +387,7 @@ def overview(team: str, league: str = ACTIVE_LEAGUE):
             "appointed": mgr.get("appointed", ""),
             "focus": mgr.get("focus", ""),
             "photo": mgr.get("photo_url", "") if str(mgr.get("photo_url") or "").startswith("http") else "",
-            "bio": mgr.get("bio_ko", ""),          # 위키백과 자동 (감독 바뀌면 자동 갱신)
+            "bio": _tidy_intro(mgr.get("bio_ko", "")),   # 위키백과 자동 (감독 바뀌면 자동 갱신)
             "tactics": mgr.get("tactics_ko", ""),  # 감독 본인 위키 전술 섹션
         }
         if mgr.get("previous_name"):
@@ -459,7 +461,7 @@ def overview(team: str, league: str = ACTIVE_LEAGUE):
     # 팀 설명 — 위키백과 자동 수집분으로 덮어씀(없으면 teammeta 하드코딩 유지)
     tp = _team_profiles().get(team)
     if tp and tp.get("desc_ko"):
-        info["desc"] = tp["desc_ko"]
+        info["desc"] = _tidy_intro(tp["desc_ko"])
     value_rank = None
     if full_df is not None and "market_value_eur" in full_df.columns:
         tv = full_df.groupby("squad")["market_value_eur"].sum()
@@ -1828,8 +1830,8 @@ def _injury_events(league: str, days: int = 60) -> list[dict]:
             until = str(r.get("new_until") or "") if new else ""
             ev.append({"date": d, "event": "new" if new else "return", "squad": str(r.get("squad") or ""),
                        "player": str(r.get("player") or ""), "source": src,
-                       "injury": str((r.get("new_injury") if new else r.get("old_injury")) or "부상"),
-                       "until": _fm_return_kr(until) if src == "FotMob" and until else until})
+                       "injury": _inj_ko((r.get("new_injury") if new else r.get("old_injury")) or "부상"),
+                       "until": _fm_return_kr(until) if src == "FotMob" and until else _tm_until_kr(until)})
     for r in _news_injury_rows(league, days=7):            # '보도 BBC Sport 외 3곳' → 'BBC Sport 외 3곳'
         ev.append({"date": str(r.get("match_date") or "")[:10], "event": "new", "squad": r["squad"], "player": r["player"],
                    "source": "뉴스", "injury": "부상 보도(확인 전)",
@@ -1841,8 +1843,18 @@ def _injury_events(league: str, days: int = 60) -> list[dict]:
     ev.sort(key=lambda e: (e["date"], e["source"] != "Transfermarkt"))
     out: list[dict] = []
     first: dict = {}
+    back: dict = {}
     for e in ev:
         if e["event"] != "new":
+            # 복귀도 같은 선수 2주 안이면 한 번(가장 늦은 날짜) — TM 목록이 며칠 사이 빠졌다 다시 차면서 소보슬러이 '부상 복귀'가
+            # 10/15·10/16·10/16 세 번 찍혔다(2026-10-23 OPPONENT WATCH)
+            k = (e["squad"], sig(e["player"]))
+            j = back.get(k)
+            if j is not None and e["date"] and out[j]["date"]:
+                if (datetime.date.fromisoformat(e["date"]) - datetime.date.fromisoformat(out[j]["date"])).days <= 14:
+                    out[j] = e
+                    continue
+            back[k] = len(out)
             out.append(e)
             continue
         k = (e["squad"], sig(e["player"]))
@@ -1921,6 +1933,15 @@ def _merge_wire(news: list[dict], rss: list[dict], limit: int) -> list[dict]:
             seen.add(k)
             out.append(b)
     return out[:limit]
+
+
+def _tm_until_kr(s) -> str:
+    """TM 복귀 예상 '23/10/2026' → '10/23 복귀 예상'(올해 아니면 연도도). 화면에 일/월/년이 그대로 나왔다(2026-10-23)."""
+    m = re.match(r"(\d{1,2})/(\d{1,2})/(\d{4})", str(s or "").strip())
+    if not m:
+        return str(s or "")
+    d, mo, y = int(m.group(1)), int(m.group(2)), int(m.group(3))
+    return f"{'' if y == datetime.date.today().year else f'{y}/'}{mo}/{d} 복귀 예상"
 
 
 def _fm_return_kr(s: str) -> str:
@@ -2026,6 +2047,8 @@ def _injuries_table(league: str):
                     "injury": _FM_KIND.get(kind, kind), "until": until, "market_value_eur": pr.get("market_value_eur"),
                     "tm_player_id": pr.get("tm_id"), "tm_photo": _photo(pr) if pr else "", "last_checked": r.get("fetched"),
                     "active": "true", "source": "fotmob"})
+    if inj is not None and "injury" in inj.columns:      # TM 부상명 한글(사본 — 원본 표는 그대로)
+        inj["injury"] = inj["injury"].map(lambda x: _inj_ko(x) if isinstance(x, str) else x)
     if not add:
         return inj
     extra = pd.DataFrame(add)
@@ -2889,7 +2912,7 @@ def news(team: str, league: str = ACTIVE_LEAGUE):
             "players": tagmap.get(ln, []),
             "headline": str(r.get("headline_ko") or r.get("headline") or ""),
             "headline_en": str(r.get("headline") or ""),
-            "descr": str(r.get("descr_ko") or r.get("descr") or ""),
+            "descr": _news_desc(r.get("descr_ko"), r.get("descr")),
             "source": str(r.get("source") or ""),
             "via": str(r.get("via") or "") if "via" in r.index and r.get("via") == r.get("via") else "",
             "published": str(r.get("published") or ""),
@@ -2996,6 +3019,19 @@ def news_player(player: str, club: str = "", league: str = ACTIVE_LEAGUE, limit:
             "image": str(r.get("image") or "") if str(r.get("image") or "").startswith("http") else "",
             "how": how.get(str(r.get("link") or ""), "")} for _, r in a.iterrows()]
     return {"player": player, "articles": out, "total": int(len(how))}
+
+
+_LIVEBLOG = re.compile(r"^\s*[\u2600-\u27bf\U0001f300-\U0001faff]")   # 이모지로 시작
+
+
+def _news_desc(ko, en) -> str:
+    """기사 요약 — 라이브 블로그·메뉴 머리글('⚽ … kick-off ⚽ Live scores | Table | Mail Scott …')은 버린다.
+    번역해도 '라이브 스코어 | 순위표 | 메일 스콧'처럼 뜻 없는 줄이 카드 요약 자리를 차지했다(2026-10-23 글 줄이기).
+    규칙: 원문이나 번역에 '|' 구분자가 둘 이상, 또는 이모지로 시작."""
+    k, e = str(ko or "").strip(), str(en or "").strip()
+    if any(x.count("|") >= 2 or _LIVEBLOG.match(x) for x in (k, e) if x):
+        return ""
+    return k or e
 
 
 def _ddmmyyyy(s) -> str:
@@ -5584,7 +5620,7 @@ def inbox(team: str, league: str = ACTIVE_LEAGUE):
         res = "승" if gf > ga else "패" if gf < ga else "무"
         ago = (today - datetime.date.fromisoformat(r["date"])).days
         add("match", "match_last", "good" if res == "승" else "bad" if res == "패" else "info", "📋",
-            f"지난 경기 {gf}-{ga} {res} · vs {op}", f"{r['comp']} · {r['kst']} — 눌러서 경기 리뷰",
+            f"지난 경기 {gf}-{ga} {res} · vs {op}", f"{r['comp']} · {r['kst']}",   # 누를 수 있다는 건 화면의 › 로(2026-10-23 글 줄이기)
             58 if ago <= 2 else 35, r["date"], action={"kind": "match", "fixture": r})
         # 연승·연패(전 대회 최근 5)
         seq = []
@@ -5648,7 +5684,7 @@ def inbox(team: str, league: str = ACTIVE_LEAGUE):
             for name, n in starts.items():
                 if n / len(earlier) >= 0.6 and name not in recent and ps.norm_name(name) not in inj:
                     add("squad", "lineup_drop", "warn", "🪑", "최근 2경기 선발 제외",
-                        f"앞선 {len(earlier)}경기 중 {n}경기 선발 → 최근 2경기 벤치·명단 외 (부상 기록 없음)", 60, "", name,
+                        f"그 전 {len(earlier)}경기 {n}선발 · 부상 아님", 60, "", name,
                         "", {"kind": "player", "name": name})
     except Exception:  # noqa: BLE001
         pass
@@ -6865,7 +6901,7 @@ def digest(league: str = ACTIVE_LEAGUE, days: int = 7):
         for r in w.itertuples():
             item = {"player": r.player, "squad": r.squad, "date": str(r.run_date),
                     "ovr": ovr.get((str(r.squad), ps.norm_name(r.player))),
-                    "injury": (r.new_injury if isinstance(r.new_injury, str) else r.old_injury) or "",
+                    "injury": _inj_ko((r.new_injury if isinstance(r.new_injury, str) else r.old_injury) or ""),
                     "until": r.new_until if isinstance(r.new_until, str) else None}
             if r.event_type == "new_injury":
                 new_inj.append(item)

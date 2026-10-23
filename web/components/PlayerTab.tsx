@@ -116,8 +116,8 @@ function Detail({ team, player, accent, heatmap }: { team: string; player: strin
         <div className="pd-ovr" style={{ color: t.light, borderColor: hexA(t.light, 0.5) }}
           title={`OVR ${d.ovr} · ${t.ko} (${ovrBand(d.ovr).range}) — ${ovrBand(d.ovr).desc}`}>
           <div className="teko" style={{ fontSize: 46, lineHeight: .8 }}>{d.ovr}</div>
-          <div style={{ fontSize: 9, letterSpacing: 1, color: "var(--muted)" }}>OVR</div>
-          <div style={{ fontSize: 9.5, fontWeight: 700, marginTop: 3, whiteSpace: "nowrap", fontFamily: "var(--font-ui)", letterSpacing: 0 }}>{t.ko}</div>
+          <div style={{ fontSize: 10, letterSpacing: 1, color: "var(--muted)" }}>OVR</div>
+          <div style={{ fontSize: 11, fontWeight: 700, marginTop: 3, whiteSpace: "nowrap", fontFamily: "var(--font-ui)", letterSpacing: 0 }}>{t.ko}</div>
         </div>
       </div>
       <TrendLine t={d.trend} ovr={d.ovr} />
