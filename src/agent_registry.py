@@ -23,6 +23,9 @@ class Feed:
     cadence: str               # 사람이 읽는 주기
     max_age_h: float           # 마지막 성공 후 이 시간이 지나면 지연
     outputs: tuple[str, ...] = ()
+    # 새로 넣은 피드는 추가한 날(YYYY-MM-DD)을 적는다 — 첫 실행 전 '성공 기록 없음' 유예를 원장 시작(10/20)이 아니라 이 날부터 센다.
+    # 안 적으면 넣자마자 DATA 가 빨간불이 됐다(2026-10-23 적정 이적료·부상명 피드)
+    added: str = ""
 
 
 @dataclass(frozen=True)
@@ -96,7 +99,7 @@ AGENTS: tuple[Agent, ...] = (
                    ("league_exports.json",)),
               # 적정 이적료 — 이적 기록에서 사는 리그·나이 배수와 범위를 매일 다시 배움(src/fee_comps.py)
               Feed("fair_price", "적정 이적료(배수·사례)", ("fee_comps",), ("daily_data",), "매일 13:30 KST", 36,
-                   ("fee_model.json",)),
+                   ("fee_model.json",), added="2026-10-23"),
           ), checks=("validate: transfers 계약", "watchdog: tm_agent"),
           extras=("이적시장 감시 — transfer_watch.yml: 창이 열려 있을 때 리그 이적 페이지로 새 이적 클럽만 다시 받기(마감 7일 전부터 60분)",)),
     Agent("value", "VALUE", "가치·계약", "시장가치 스냅샷, 계약 만료, TM 선수 정보(국적·포지션·사진)",
@@ -113,7 +116,8 @@ AGENTS: tuple[Agent, ...] = (
               Feed("history", "통산 부상 이력", ("injury_history",), ("tm_data",), "주 1회 · 월 12:30 KST", WEEK_H,
                    ("tm_injury_history_*",)),
               # TM 부상명 한글 표기 — 새 이름만 옮김(파일은 새 이름이 나올 때만 바뀐다, src/injury_names.py)
-              Feed("names", "부상명 한글 표기", ("injury_names",), ("tm_data",), "매일 10:30·18:30 KST", 36),
+              Feed("names", "부상명 한글 표기", ("injury_names",), ("tm_data",), "매일 10:30·18:30 KST", 36,
+                   added="2026-10-23"),
           ), checks=("수집기 가드: 부상자 0명·이력 급감 저장 차단",)),
     Agent("news", "NEWS", "뉴스", "뉴스 수집·번역(팀 태그) · Google News 팀별 현지어·영어 이적 · 선수 태깅(news_tags) · "
           "분류(종류·이적 단계·기자, news_classify) · STORY 묶음(news_stories)",

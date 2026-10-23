@@ -46,8 +46,10 @@ def feed_status(feed: reg.Feed, entries: list[dict], now: dt.datetime, ledger_st
     age = _age_h(last_ok, now)
     if not mine:
         # 원장이 시작된 지 허용 시간(+하루)이 지났는데도 기록이 0이면 '첫 기록 대기'가 아니라 지연 — daily_data 가
-        # 실패 중인데 그 피드들이 WAITING 17개로만 보였다(2026-10-20 점검)
-        since = _age_h(ledger_start, now)
+        # 실패 중인데 그 피드들이 WAITING 17개로만 보였다(2026-10-20 점검).
+        # 새 피드는 원장 시작이 아니라 추가한 날(feed.added)부터 센다 — 넣자마자 빨간불이 됐다(2026-10-23)
+        start = max([x for x in (ledger_start, getattr(feed, "added", "") or None) if x], default=None)
+        since = _age_h(start, now)
         state = "late" if since is not None and since > feed.max_age_h + 24 else "nodata"
     elif age is None or age > feed.max_age_h:
         state = "late"

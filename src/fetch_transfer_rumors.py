@@ -55,6 +55,20 @@ def _club_name(td) -> str:
     return ""
 
 
+def confirmed_empty(html: str) -> bool:
+    """TM 이 '루머 없음'을 보여 주는 진짜 페이지인지 — 루머 표가 없고 'Rumours about signings … No information' 상자가 있다.
+    2026-10-22 Eredivisie·스위스가 18팀·12팀 전부 0건이라 '수집 0 — 실패'로 빨간불이 떴는데, 실제로 TM 에 루머가 없었다.
+    차단·챌린지 페이지(표도 상자도 없음)는 False → 예전처럼 실패로 둔다."""
+    soup = BeautifulSoup(html, "lxml")
+    if soup.select_one("table.items tbody tr"):
+        return False
+    for box in soup.select(".box"):
+        t = box.get_text(" ", strip=True)
+        if "Rumours" in t and re.search(r"No information|No entries", t):
+            return True
+    return False
+
+
 def _parse(html: str, club: str) -> list[dict]:
     soup = BeautifulSoup(html, "html.parser")
     tbl = soup.select_one("table.items") or soup.select_one("table")
@@ -89,11 +103,16 @@ def main() -> int:
     allrows: list[dict] = []
     failed: list[str] = []
     teams = sorted(season_clubs(league).items())
+    empty: set[str] = set()      # TM 이 '루머 없음'이라고 보여 준 팀
+
     def fetch(team, slug, vid):
         r = tm_http.get(URL.format(slug=slug, vid=vid), headers=H, timeout=20)
         if r.status_code != 200:   # 202 = WAF 챌린지
             raise requests.RequestException(f"HTTP {r.status_code}")
-        return _parse(r.text, team)
+        rows = _parse(r.text, team)
+        if not rows and confirmed_empty(r.text):
+            empty.add(team)
+        return rows
 
     for i, (team, (slug, vid)) in enumerate(teams, 1):
         try:
@@ -121,9 +140,12 @@ def main() -> int:
             print(f"  [재시도] {team:18} 루머 {len(rows)}")
             time.sleep(3)
 
-    if not allrows:
-        print("[rumors] 수집 0 — 기존 파일 유지", file=sys.stderr)
+    if not allrows and not (teams and not failed and len(empty) == len(teams)):
+        # 0건인데 '루머 없음' 페이지로 확인되지 않은 팀이 있으면(차단·화면 바뀜) 기존 파일을 지키고 실패로
+        print(f"[rumors] 수집 0 — 기존 파일 유지(루머 없음 확인 {len(empty)}/{len(teams)}팀)", file=sys.stderr)
         return 1
+    if not allrows:
+        print(f"[rumors] {league}: 전 팀 루머 없음(TM 'No information' {len(empty)}팀) — 빈 표로 갱신")
     out = data_path("transfer_rumors", league)
     fields = ["target_club", "player", "pos_detail", "age", "current_club",
               "market_value_eur", "probability", "date"]

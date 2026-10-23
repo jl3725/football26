@@ -102,3 +102,16 @@ def test_build_status_shape_and_late_text() -> None:
     assert by["news"]["state"] == "late" and by["match"]["feeds"][0]["state"] == "ok"
     assert s["unregistered_steps"] == ["mystery"]
     assert any("NEWS · 뉴스 수집·분류·번역" in x for x in ops_status.late_feeds(s))
+
+
+def test_new_feed_grace_counts_from_added_date() -> None:
+    """새로 넣은 피드는 원장 시작이 아니라 추가한 날부터 '첫 기록 대기' — 넣자마자 DATA 빨간불(2026-10-23)."""
+    import datetime as dt
+    now = dt.datetime(2026, 10, 23, 3, 0, tzinfo=dt.timezone.utc)
+    old_start = "2026-10-20T00:00:00+00:00"
+    new = reg.Feed("x", "새 피드", ("new_step",), ("daily_data",), "매일", 36, added="2026-10-23")
+    assert ops_status.feed_status(new, [], now, old_start)["state"] == "nodata"
+    later = now + dt.timedelta(hours=61)            # 추가한 뒤 허용(36h)+하루가 지나도 기록이 없으면 지연
+    assert ops_status.feed_status(new, [], later, old_start)["state"] == "late"
+    old = reg.Feed("y", "옛 피드", ("old_step",), ("daily_data",), "매일", 36)
+    assert ops_status.feed_status(old, [], now, old_start)["state"] == "late"
