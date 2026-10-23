@@ -853,11 +853,151 @@ def _window_spend(team: str, league: str) -> list[dict]:
     return rows
 
 
+_TRK_STAGE = {"interest": "관심", "talks": "협상", "agreed": "합의", "done": "완료", "denied": "부인"}
+_TRK_PRIO = {"moved": 100, "linked": 90, "injury": 85, "return": 60, "rivals": 55, "match": 50, "form": 45, "absent": 40}
+
+
+@app.get("/api/tracking/{team}")
+@_memo(ttl=900)
+def tracking(team: str, players: str = "", league: str = ACTIVE_LEAGUE, days: int = 14):
+    """TRACKING — SHORTLIST(영입 후보)의 최근 변화. 2026-10-23 사용자 '관심 선수 알림'.
+    내 팀 선수 소식은 INBOX 가 이미 잡으니, 여기는 다른 팀 후보만: 이적 완료 · 우리 팀 연결(TM 루머 대상 구단 · 뉴스 이적 단계) ·
+    부상·복귀 · 다른 구단 경쟁 · 경기(평점 8.0+ 또는 공격포인트 2+ · 부상 아닌 결장 2경기+) · 폼(OVR 2주 ±3) · 계약 1년 안(상태).
+    players = JSON [{player, club, league}] — 작업대(/api/workspace)와 같은 형식(SHORTLIST 는 브라우저에 저장).
+    새 수집 없음 — 이미 모으는 원천(이적 기록·TM 루머·news_claims·FotMob 경기 평점·부상 이벤트·평점 추이)."""
+    import json as _json  # noqa: PLC0415
+
+    import positions as ps  # noqa: PLC0415
+    import rumor_map as rm  # noqa: PLC0415
+    import scout_report as sr  # noqa: PLC0415
+    from leagues import DATA_DIR, LEAGUES  # noqa: PLC0415
+    try:
+        want = _json.loads(players) if players else []
+    except ValueError:
+        want = []
+    want = [w for w in want if isinstance(w, dict) and w.get("player")][:12]
+    since = (_today_kst() - datetime.timedelta(days=max(1, min(days, 60)))).isoformat()
+    where = _rumor_links()[1]                                  # 전 리그 선수 위치(이름 → 클럽·리그·사진·OVR)
+    tm_rows = []
+    for lg in LEAGUES:
+        t = ds.read_table("transfer_rumors", league=lg)
+        if t is not None and not t.empty and "player" in t.columns:
+            tm_rows += t.to_dict("records")
+    cp = DATA_DIR / "news_claims.csv"
+    claims = pd.read_csv(cp) if cp.exists() else pd.DataFrame(columns=["player", "date"])
+    claims = claims[claims["date"].astype(str) >= since]
+    alerts: list[dict] = []
+    cards: list[dict] = []
+    for w in want:
+        name, club, src = str(w["player"]), str(w.get("club") or ""), str(w.get("league") or league)
+        key = ps.norm_name(name)
+        locs = where.get(rm.norm(name)) or []
+        here = next((x for x in locs if x["club"] == club), None)
+        now = here or (max(locs, key=lambda x: x.get("minutes") or 0) if locs else None)
+        cur_club, cur_lg = (now["club"], now["league"]) if now else (club, src)
+        photo = (now or {}).get("photo") or ""
+        base = {"player": (now or {}).get("name") or name, "club": cur_club, "league": cur_lg,
+                "photo": photo, "logo": tm.team_logo(cur_club)}
+        status: list[dict] = []
+        mine: list[dict] = []
+
+        def add(typ, date, title, detail="", action=None):
+            mine.append({**base, "id": f"{typ}|{key}|{date}|{title}", "type": typ, "prio": _TRK_PRIO[typ],
+                         "date": str(date or ""), "title": title, "detail": detail, "action": action})
+
+        # 1) 이적 완료 — 이적 기록(판 구단 = 고정할 때 클럽) 또는 고정할 때의 클럽에 더는 없고 다른 클럽에 있으면.
+        #    선수 표엔 이적 뒤에도 옛 소속 줄이 남아(Martinelli → Al-Hilal) 이적 기록을 먼저 본다
+        moved_to = None
+        tr = ds.read_table("transfers", league=src)
+        if tr is not None and not tr.empty and "direction" in tr.columns:
+            out = tr[(tr["direction"].astype(str) == "out") & (tr["squad"].astype(str) == club)
+                     & (tr["player"].astype(str).map(ps.norm_name) == key)]
+            if len(out):
+                r0 = out.iloc[-1]
+                moved_to = (str(r0.get("club") or ""), str(r0.get("fee_text") or ""))
+        if moved_to is None and locs and not here and club and now and now["club"] != club:
+            moved_to = (now["club"], "")
+        if moved_to and moved_to[0]:
+            fee = moved_to[1] if moved_to[1] and moved_to[1] not in ("-", "?", "nan") else ""
+            add("moved", "", f"{moved_to[0]} 이적", " · ".join(x for x in (fee, "작업대에서 정리") if x))
+        # 2) 이적설 — TM 루머(대상 구단) · 뉴스 이적 단계(매체 여러 곳은 한 줄로)
+        for r in tm_rows:
+            if ps.norm_name(r.get("player")) != key:
+                continue
+            d = _ddmmyyyy(r.get("date"))
+            if d < since:
+                continue
+            prob = r.get("probability")
+            pr = f" {int(prob)}%" if isinstance(prob, (int, float)) and prob == prob and prob else ""
+            tgt = str(r.get("target_club") or "")
+            add("linked" if tgt == team else "rivals", d, f"{tgt} 관심{pr}", "Transfermarkt 루머")
+        if not claims.empty:
+            c = claims[claims["player"].astype(str).map(ps.norm_name) == key]
+            for (dest, stage), g in c.groupby(["dest", "stage"]):
+                g = g.sort_values("date")
+                srcs = list(dict.fromkeys(g["source"].astype(str)))
+                who = srcs[0] + (f" 외 {len(srcs) - 1}곳" if len(srcs) > 1 else "")
+                add("linked" if str(dest) == team else "rivals", str(g["date"].iloc[-1]),
+                    f"{dest} {_TRK_STAGE.get(str(stage), str(stage))} 보도", who)
+        # 3) 부상 — 새 부상·복귀(최근), 지금 결장이면 상태 칩
+        inj_now = _active_injuries(cur_club, cur_lg).get(key)
+        if inj_now:
+            status.append({"k": "out", "label": "결장", "tip": " · ".join(x for x in (inj_now.get("injury"), _tm_until_kr(inj_now.get("until"))) if x)})
+        for e in _injury_events(cur_lg):
+            if ps.norm_name(e["player"]) == key and e["date"] >= since:
+                add("injury" if e["event"] == "new" else "return", e["date"],
+                    e["injury"] if e["event"] == "new" else "부상 복귀", e["until"] if e["event"] == "new" else f"{e['injury']} 회복")
+        # 4) 경기 — 활약(평점 8.0+ 또는 공격포인트 2+) · 부상 아닌 결장 2경기+
+        mr = ds.read_table("fotmob_match_ratings", league=cur_lg)
+        if mr is not None and not mr.empty and "player" in mr.columns:
+            recent = mr[mr["date"].astype(str) >= since]
+            me = recent[recent["player"].astype(str).map(ps.norm_name) == key]
+            for r in me.sort_values("date").to_dict("records"):
+                g_, a_ = int(_num(r.get("goals"))), int(_num(r.get("assists")))
+                rt_ = _num(r.get("rating"))
+                if rt_ >= 8.0 or g_ + a_ >= 2:
+                    ga = " ".join(x for x in (f"{g_}골" if g_ else "", f"{a_}도움" if a_ else "") if x)
+                    add("match", str(r["date"])[:10], f"평점 {rt_:.2f}" + (f" · {ga}" if ga else ""), f"vs {r.get('opponent')}")
+            team_games = recent[recent["squad"] == cur_club].groupby("match_id")["date"].first()
+            missed = sorted(str(d)[:10] for m_, d in team_games.items() if m_ not in set(me["match_id"]))
+            if len(missed) >= 2 and not inj_now and not moved_to:
+                add("absent", missed[-1], f"팀 경기 {len(missed)}번 출전 없음", f"최근 {days}일 · 부상 기록 없음")
+        # 5) 폼 — OVR 2주 ±3
+        pf = _pf(cur_lg)
+        row = None
+        if pf is not None and "player" in pf.columns:
+            cand = pf[(pf["player"].astype(str).map(ps.norm_name) == key) & (pf["squad"].astype(str) == cur_club)]
+            row = cand.iloc[0] if len(cand) else None
+        if row is not None:
+            o = _player_ovr(row)
+            t_ = _trend(row, cur_lg, ovr=o)
+            if t_.get("ovr_d") and abs(t_["ovr_d"]) >= 3:
+                add("form", _today_kst().isoformat(), f"OVR {o - t_['ovr_d']} → {o}", "2주 전 대비")
+            con = sr.contract(row.get("tm_contract_until"))
+            if con.get("months_left") is not None and 0 <= con["months_left"] <= 12:
+                status.append({"k": "contract", "label": f"계약 {con['months_left']}개월", "tip": f"{con['until']}까지"})
+        # 같은 소식 한 번(같은 종류·제목), 중요도 → 최신 순
+        seen: set = set()
+        uniq = []
+        for a in sorted(mine, key=lambda a: (-a["prio"], a["date"]), reverse=False):
+            k = (a["type"], a["title"])
+            if k in seen:
+                continue
+            seen.add(k)
+            uniq.append(a)
+        alerts += uniq
+        top = max(uniq, key=lambda a: (a["prio"], a["date"]), default=None)
+        cards.append({**base, "requested": {"player": name, "club": club, "league": src}, "status": status,
+                      "n": len(uniq), "top": top["id"] if top else None})
+    alerts.sort(key=lambda a: (a["date"] or "9999", a["prio"]), reverse=True)
+    return {"team": team, "since": since, "players": cards, "alerts": alerts}
+
+
 @app.get("/api/workspace/{team}")
 def workspace(team: str, players: str = "", league: str = ACTIVE_LEAGUE):
     """TRANSFER WORKSPACE — 예산(최근 두 창 지출·구단 가격 상한·이적 정책) + 라이벌 + 고정 후보(SHORTLIST)의 최신 사실.
     players = JSON [{player, club, league}] — 후보마다 우리 리그 기준 예상 OVR(다른 리그면 리그 수준 보정)·나이·시장가·
-    예상 이적료(시장가 ×1.2)와 가격 현실성·계약 남은 개월·출전·골·도움·평점·정책 대조·영입 가능성·라이벌 소속 여부."""
+    적정 이적료(src/fee_comps)와 가격 현실성·계약 남은 개월·출전·골·도움·평점·정책 대조·영입 가능성·라이벌 소속 여부."""
     import json as _json  # noqa: PLC0415
 
     import club_profile as cp  # noqa: PLC0415
@@ -6152,7 +6292,6 @@ def _compute_hub_body() -> bytes:
     from unidecode import unidecode
     win = _current_window()
     today = datetime.date.today()
-    avail = set(ds.available_leagues())
     leagues = _hub_leagues()
 
     def _lname(lg):

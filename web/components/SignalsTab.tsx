@@ -2,6 +2,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { getInbox, type Fixture, type Inbox, type InboxMsg, type Signal } from "@/lib/api";
 import { useMatchPreview } from "@/lib/matchPreview";
+import Tracking from "./Tracking";
 import { usePeek } from "./PlayerPeek";
 import SectionHead from "./SectionHead";
 import { SkelCards } from "./Skeleton";
@@ -66,7 +67,7 @@ function LeagueRow({ s }: { s: Signal }) {
   );
 }
 
-export default function SignalsTab({ team }: { team: string; accent?: string }) {
+export default function SignalsTab({ team, accent }: { team: string; accent?: string }) {
   const [d, setD] = useState<Inbox | null>(null);
   const [cat, setCat] = useState("all");
   const [more, setMore] = useState(false);
@@ -78,13 +79,16 @@ export default function SignalsTab({ team }: { team: string; accent?: string }) 
     const top = new Set(d.briefing.map((m) => m.id));
     return d.messages.filter((m) => (cat === "all" ? !top.has(m.id) : m.cat === cat));
   }, [d, cat]);
-  if (!d) return <div className="skel-wrap"><SkelCards n={6} cols="repeat(auto-fill, minmax(300px, 1fr))" face={false} /></div>;
+  // 영입 후보 소식은 INBOX 계산(첫 방문 수십 초)을 기다리지 않고 먼저
+  if (!d) return <div className="fade"><Tracking team={team} accent={accent} /><div className="skel-wrap"><SkelCards n={6} cols="repeat(auto-fill, minmax(300px, 1fr))" face={false} /></div></div>;
   const unread = (m: InboxMsg) => !read.has(m.id) && (isRecent(m.date) || m.cat === "match");
   const nNew = d.messages.filter(unread).length;
   const shown = more ? list : list.slice(0, 14);
 
   return (
     <div className="fade">
+      {/* 영입 후보(SHORTLIST) 소식 — 후보가 없으면 안 보임 */}
+      <Tracking team={team} accent={accent} />
       <SectionHead title="INBOX" kr="팀 소식함" meta={`${d.messages.length}건${nNew ? ` · 새 소식 ${nNew}` : ""}`}
         info={<>
           <p>경기 일정·팀 폼·선수 폼(OVR 2주 변화)·부상·선발 제외·계약·시장가치·감독 소식을 자동으로 감지합니다.</p>

@@ -17,8 +17,9 @@ export const TABS = [
 export type TabKey = (typeof TABS)[number]["key"];
 
 export default function TabBar({
-  active, onChange, accent, onIntent,
-}: { active: TabKey; onChange: (k: TabKey) => void; accent: string; onIntent?: (k: TabKey) => void }) {
+  active, onChange, accent, onIntent, badges,
+}: { active: TabKey; onChange: (k: TabKey) => void; accent: string; onIntent?: (k: TabKey) => void;
+  badges?: Partial<Record<TabKey, number>> }) {   // 탭 옆 새 소식 수(Inbox = 읽지 않은 TRACKING 소식)
   // 모바일에선 탭 줄이 가로 스크롤 — 주소로 바로 연 탭(?tab=news 등)이 화면 밖에 있지 않게 보이는 곳으로
   const bar = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -39,6 +40,7 @@ export default function TabBar({
             <Icon name={t.icon} size={16} color={active === t.key ? accent : "currentColor"} />
           </span>
           <span>{t.label}</span>
+          {badges?.[t.key] ? <sup className="tab-badge" aria-label={`새 소식 ${badges[t.key]}`}>{badges[t.key]}</sup> : null}
         </button>
       ))}
     </div>

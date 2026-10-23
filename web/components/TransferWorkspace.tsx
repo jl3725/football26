@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { fmtEur, fmtEurRange, getWorkspace, type Workspace, type WorkspacePick } from "@/lib/api";
 import { tier } from "@/lib/ui";
 import { useShortlist } from "@/lib/shortlist";
+import { TrackLine } from "./Tracking";
 import SectionHead from "./SectionHead";
 import Info from "./Info";
 import { usePeek } from "./PlayerPeek";
@@ -112,6 +113,8 @@ export default function TransferWorkspace({ team, accent, onFit, onReport }: {
               if (!p.found) return (
                 <div key={k} className="tws-card miss">
                   <b>{it.player}</b><span title="리그 밖 이적·이름 변경 등으로 지금 데이터에서 찾지 못함">{it.club} · 데이터 없음</span>
+                  {/* 리그 밖으로 이적한 후보(Martinelli → Al-Hilal)는 TRACKING 이 '이적 완료'로 알려 준다 */}
+                  <TrackLine team={team} player={it.player} club={it.club} accent={accent} />
                   <button className="tws-x" onClick={() => sl.remove(it.player, it.club)} aria-label="빼기">✕</button>
                 </div>
               );
@@ -131,6 +134,7 @@ export default function TransferWorkspace({ team, accent, onFit, onReport }: {
                     <span title={p.fair ? `적정 이적료 가운데 ${fmtEur(p.fair.mid)} — 시장가치 × 사는 리그·나이 배수` : undefined}>적정 <b>{p.fair ? fmtEurRange(p.fair.lo, p.fair.hi) : p.likely_fee_eur ? fmtEur(p.likely_fee_eur) : "-"}</b> <em style={{ color: PRICE[p.price_verdict ?? "unknown"]?.[1] }}>{PRICE[p.price_verdict ?? "unknown"]?.[0]}</em></span>
                     <span>계약 <b className={p.contract_status === "expiring" ? "good" : ""}>{p.months_left != null ? `${p.months_left}개월` : "-"}</b> <em>{CONTRACT[p.contract_status ?? "unknown"]}</em></span>
                   </div>
+                  <TrackLine team={team} player={p.player} club={p.club} accent={accent} />
                   <div className="tws-tags">
                     {p.rival && <span className="bad">라이벌</span>}
                     {!p.rival && p.realistic === false && <span className="bad">가능성 낮음</span>}

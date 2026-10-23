@@ -4909,3 +4909,75 @@ LIGA’처럼 글자가 접히던 것) — 넘치면 가로로 넘긴다 */
 .ft5-menu button { text-align: left; white-space: nowrap; color: var(--txt) !important; opacity: 1 !important; }
 .ft5-menu button:hover, .ft5-menu button.on { background: var(--overlay); }
 @media (max-width: 760px) { .ft5-menu { left: 0; right: auto; } }   /* 폰에선 '+N' 이 줄 왼쪽에 와서 오른쪽 기준이면 화면 밖으로 열렸다 */
+/* ── TRACKING: 영입 후보 소식(Signals 맨 위, 2026-10-23) ─────────────────────────────
+   팀 색 은은한 머리 빛 + 위 가는 선, 후보 얼굴 줄(테 색 = 가장 중요한 새 소식), 소식 카드(종류 색 아이콘 칸 · 영문 라벨 · NEW) */
+.trk { position: relative; overflow: hidden; margin-bottom: 18px; padding: 18px 18px 16px;
+  background: radial-gradient(120% 140px at 0% 0%, color-mix(in srgb, var(--trk-ac) 11%, transparent), transparent 70%), var(--surface);
+  border: 1px solid var(--line); border-radius: var(--r-lg, 18px); }
+.trk::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 2px;
+  background: linear-gradient(90deg, var(--trk-ac), color-mix(in srgb, var(--trk-ac) 25%, transparent) 45%, transparent); }
+.trk-rail { display: flex; gap: 6px; overflow-x: auto; padding: 6px 2px 14px; margin: 4px 0 12px; border-bottom: 1px solid var(--line);
+  scrollbar-width: none; }
+.trk-rail::-webkit-scrollbar { display: none; }
+.trk-p { flex: none; width: 82px; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 8px 4px 6px;
+  border: 1px solid transparent; border-radius: 14px; background: none; color: inherit; cursor: pointer; transition: background .15s, border-color .15s; }
+.trk-p:hover { background: var(--panel-2); }
+.trk-p.on { background: color-mix(in srgb, var(--trk-ac) 10%, transparent); border-color: color-mix(in srgb, var(--trk-ac) 40%, transparent); }
+.trk-av { position: relative; width: 52px; height: 52px; border-radius: 50%; padding: 2px;
+  background: conic-gradient(from 210deg, var(--rc), color-mix(in srgb, var(--rc) 35%, transparent), var(--rc)); }
+.trk-p:not(.hot) .trk-av { background: var(--line-strong, #232c39); }
+.trk-p.hot .trk-av { box-shadow: 0 0 16px color-mix(in srgb, var(--rc) 45%, transparent); }
+.trk-av > img:first-child, .trk-ini { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; display: grid; place-items: center;
+  background: var(--surface-raised, #111720); border: 2px solid var(--surface); }
+.trk-ini { font: 700 15px/1 var(--font-num); color: var(--muted); }
+.trk-crest { position: absolute; right: -2px; bottom: -2px; width: 20px; height: 20px; object-fit: contain; padding: 2px;
+  border-radius: 50%; background: var(--surface); border: 1px solid var(--line); }
+.trk-p b { max-width: 76px; font: 700 12.5px/1.15 var(--font-ui); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.trk-p.on b { color: var(--txt); }
+.trk-st, .trk-n { font: 700 10.5px/1 var(--font-num); letter-spacing: .05em; padding: 3px 7px; border-radius: 999px; font-style: normal; white-space: nowrap; }
+.trk-st.out { color: var(--danger); background: var(--danger-tint, rgba(255, 114, 133, .14)); }
+.trk-st.contract { color: var(--warning); background: var(--warning-tint, rgba(244, 207, 94, .14)); }
+.trk-n { color: var(--muted-2, #6b7482); font-weight: 600; padding: 3px 0; }
+.trk-feed { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 8px; }
+.trk-a { position: relative; display: grid; grid-template-columns: 42px minmax(0, 1fr); gap: 12px; align-items: start; text-align: left;
+  padding: 12px 14px 12px 12px; border-radius: 13px; border: 1px solid var(--line); background: var(--panel); color: inherit; cursor: pointer;
+  transition: border-color .15s, background .15s, transform .15s; }
+.trk-a:hover { border-color: color-mix(in srgb, var(--tc) 45%, transparent); background: color-mix(in srgb, var(--tc) 6%, var(--panel)); transform: translateY(-1px); }
+.trk-a.new { border-color: color-mix(in srgb, var(--tc) 32%, transparent); }
+.trk-a.new::before { content: ""; position: absolute; left: -1px; top: 12px; bottom: 12px; width: 3px; border-radius: 0 3px 3px 0; background: var(--tc); }
+.trk-ic { width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center;
+  background: color-mix(in srgb, var(--tc) 14%, transparent); border: 1px solid color-mix(in srgb, var(--tc) 28%, transparent); }
+.trk-body { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.trk-top { display: flex; align-items: center; gap: 7px; min-width: 0; }
+.trk-top em { font: 700 11.5px/1 var(--font-num); letter-spacing: .14em; color: var(--tc); font-style: normal; }
+.trk-ko { font: 500 11px/1 var(--font-ui); color: var(--muted); white-space: nowrap; }
+.trk-new { font: 800 10px/1 var(--font-num); letter-spacing: .1em; font-style: normal; color: #fff; background: var(--accent);
+  padding: 3px 5px 2px; border-radius: 4px; box-shadow: 0 0 10px color-mix(in srgb, var(--accent) 50%, transparent); }
+.trk-date { margin-left: auto; font: 600 12.5px/1 var(--font-num); letter-spacing: .04em; color: var(--muted-2, #6b7482); white-space: nowrap; }
+.trk-main { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; font-size: 14px; line-height: 1.35; }
+.trk-main b { font-weight: 700; color: var(--txt); }
+.trk-main span { color: #d6dbe2; }
+.trk-sub { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.trk-sub img { width: 14px; height: 14px; object-fit: contain; flex: none; }
+.trk-empty { grid-column: 1 / -1; padding: 14px 4px; color: var(--muted); font-size: 13px; }
+@media (max-width: 640px) {
+  .trk { padding: 16px 14px 14px; }
+  .trk-feed { grid-template-columns: 1fr; }
+  .trk-p { width: 72px; }
+  .trk-av { width: 48px; height: 48px; }
+  .trk-av > img:first-child, .trk-ini { width: 44px; height: 44px; }
+}
+/* 팀 탭 새 소식 수 */
+.tab { position: relative; }
+.tab-badge { min-width: 17px; height: 17px; padding: 0 5px; border-radius: 9px; background: var(--accent); color: #fff;
+  font: 700 10.5px/17px var(--font-num); letter-spacing: .02em; text-align: center; vertical-align: 0; margin-left: -2px;
+  box-shadow: 0 0 0 2px rgba(8, 11, 16, .9); }
+.tab.active .tab-badge { background: #0b0f17; color: var(--tc, var(--accent)); box-shadow: none; }
+/* 작업대 카드 한 줄 */
+.trk-line { display: flex; align-items: center; gap: 6px; margin-top: 8px; padding: 6px 9px; border-radius: 9px; font-size: 12px; min-width: 0;
+  background: color-mix(in srgb, var(--tc) 9%, transparent); border: 1px solid color-mix(in srgb, var(--tc) 26%, transparent); }
+.trk-line em { font: 700 10.5px/1 var(--font-num); letter-spacing: .12em; color: var(--tc); font-style: normal; flex: none; }
+.trk-line span { color: var(--txt); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.trk-line small { margin-left: auto; font: 600 11px/1 var(--font-num); color: var(--muted); flex: none; }
+.trk-line.new { box-shadow: inset 3px 0 0 var(--tc); }
+.ib5-all { white-space: nowrap; flex: none; }   /* 폰에서 '모두 / 읽음' 두 줄로 꺾였다 */

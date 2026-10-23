@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { flushSync } from "react-dom";
 import dynamic from "next/dynamic";
+import { useTracking } from "@/lib/tracking";
 import { getTeams, getNextTeams, getOverview, getContext, getRecommend, getDiscover, setActiveLeague, type Team, type NextSeason, type Overview, type Context } from "@/lib/api";
 import { accent as toAccent } from "@/lib/ui";
 import Sidebar from "@/components/Sidebar";
@@ -152,6 +153,7 @@ export default function Page() {
 
   // 팀 색은 팀 화면에서만 — 전체·리그 홈은 브랜드 색(예전엔 홈도 마지막 팀(아스날) 빨강으로 물들었다)
   const accent = !home && ov ? toAccent(ov.color) : "#ff4d5e";
+  const tracking = useTracking(home ? "" : sel);   // Inbox 탭 숫자 = 읽지 않은 영입 후보 소식(Signals 맨 위 TRACKING 과 같은 응답)
   const meta = TABS.find((t) => t.key === tab)!;
 
   const isPromoted = !!nextS?.promoted?.includes(sel);
@@ -272,7 +274,7 @@ export default function Page() {
             </div>
           </header>
 
-          {!home && <TabBar active={tab} accent={accent} onIntent={onTabIntent} onChange={(k) => {
+          {!home && <TabBar active={tab} accent={accent} onIntent={onTabIntent} badges={{ signals: tracking.nNew }} onChange={(k) => {
             // 탭 전환을 부드럽게 — View Transitions API(크롬·엣지·사파리 18+), 미지원·움직임 줄이기 설정이면 즉시
             type VT = { ready?: Promise<void>; finished?: Promise<void>; updateCallbackDone?: Promise<void> };
             const d = document as Document & { startViewTransition?: (cb: () => void) => VT };

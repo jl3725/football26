@@ -515,6 +515,16 @@ export type WorkspacePick = { player: string; club: string; league: string; foun
 export type Workspace = { team: string; team_ovr: number; avg_spend: number | null; ceiling_eur: number | null; spend_tier?: string;
   windows: { season_id: number; window: string; label: string; spend: number; income: number; n_in: number; n_out: number }[];
   policy: TransferPolicy | null; rivals: string[]; shortlist: WorkspacePick[] };
+// TRACKING(/api/tracking) — SHORTLIST 후보의 최근 14일 변화(이적 완료·우리 팀 연결·부상·다른 구단 관심·경기·폼)
+export type TrackType = "moved" | "linked" | "injury" | "return" | "rivals" | "match" | "form" | "absent";
+export type TrackAlert = { id: string; type: TrackType; prio: number; date: string; title: string; detail: string;
+  player: string; club: string; league: string; photo: string; logo: string };
+export type TrackPlayer = { player: string; club: string; league: string; photo: string; logo: string;
+  requested: { player: string; club: string; league: string };
+  status: { k: "out" | "contract"; label: string; tip: string }[]; n: number; top: string | null };
+export type Tracking = { team: string; since: string; players: TrackPlayer[]; alerts: TrackAlert[] };
+export const getTracking = (team: string, items: { player: string; club: string; league: string }[], l = _league) =>
+  j<Tracking>(`/api/tracking/${encodeURIComponent(team)}?league=${encodeURIComponent(l)}&players=${encodeURIComponent(JSON.stringify(items))}`);
 export const getWorkspace = (team: string, items: { player: string; club: string; league: string }[], l = _league) =>
   j<Workspace>(`/api/workspace/${encodeURIComponent(team)}?league=${encodeURIComponent(l)}&players=${encodeURIComponent(JSON.stringify(items))}`);
 export type DiscoverOpts = { role?: string; top?: number };
