@@ -47,11 +47,15 @@ def _tables(d: dict) -> list[list[dict]]:
     out = []
     for t in d.get("table") or []:
         data = t.get("data") or {}
-        if (data.get("table") or {}).get("all"):
+        groups = [sub["table"]["all"] for sub in data.get("tables") or [] if (sub.get("table") or {}).get("all")]
+        # 스플릿 뒤엔 상·하위 그룹 표가 최종 순서 — 같은 목록에 정규 라운드 전체 표도 있어(오스트리아 25/26: 그룹 6+6 + 전체 12)
+        # 다른 표를 통째로 품는 큰 표는 뺀다
+        names = [{x.get("name") for x in g} for g in groups]
+        groups = [g for i, g in enumerate(groups) if not any(j != i and names[j] < names[i] for j in range(len(groups)))] or groups
+        if groups:
+            out.extend(groups)
+        elif (data.get("table") or {}).get("all"):
             out.append(data["table"]["all"])
-        for sub in data.get("tables") or []:
-            if (sub.get("table") or {}).get("all"):
-                out.append(sub["table"]["all"])
     return out
 
 
@@ -318,6 +322,22 @@ def write_managers(league: str, coaches: dict[str, dict]) -> int:
     return changed
 
 
+def prev_standings(league: str, get) -> int:
+    """지난 시즌 최종 순위표(한 번만) — 팀 화면 '지난 시즌 대비'·시즌 실적이 라이트 리그에서 비었다(2026-10-23)."""
+    prev = f"{SEASON_START - 1}_{SEASON_START}"
+    out = data_path("standings", league, prev)
+    if out.exists():
+        return 0
+    d = get(f"https://www.fotmob.com/api/data/leagues?id={LEAGUES[league].fotmob_id}&season={SEASON_START - 1}/{SEASON_START}") or {}
+    rows = standings_rows(d)
+    if len(rows) < LEAGUES[league].teams - 4:
+        return 0
+    rename = adopt_names([r["squad"] for r in rows])
+    st = pd.DataFrame([{**r, "squad": rename[r["squad"]]} for r in rows])
+    st[STAND_COLS].to_csv(out, index=False, encoding="utf-8", lineterminator="\n")
+    return len(st)
+
+
 def build(league: str, get=None) -> dict:
     import fotmob_squads as fsq  # noqa: PLC0415
     from espn_common import scoreboard_events, season_bounds  # noqa: PLC0415
@@ -386,9 +406,68 @@ def build(league: str, get=None) -> dict:
     team_map.cache_clear()
     all_teams.cache_clear()
     all_aliases.cache_clear()
+    n_prev = prev_standings(league, get)
+    if n_prev:
+        print(f"[{league}] 지난 시즌 순위표 {n_prev}팀")
     print(f"[{league}] 순위표 {len(st)}팀 · 일정 {len(sched)}행 · 명단 {len(squads)}명 · 감독 {len(coaches)}명"
           f"(교체 {changed}) · ESPN 대조 {len(out['espn'])}팀")
     return out
+
+
+def _same_person(a: str, b: str) -> bool:
+    from player_registry import norm  # noqa: PLC0415
+    na, nb = norm(a).split(), norm(b).split()
+    return bool(na and nb) and (na == nb or na[-1] == nb[-1])
+
+
+def _football_bio(bio: str) -> bool:
+    """축구 감독 소개인가 — 동음이의 문서('다음을 지칭할 수 있다', 'may refer to')·축구 밖 문서는 아니다(2026-10-23 버밍엄 크리스 데이비스)."""
+    if not bio or any(w in bio for w in ("지칭할 수 있다", "may refer to", "동음이의", "다음과 같은 뜻")):
+        return False
+    return any(w in bio for w in ("축구", "감독", "football", "coach", "manager"))
+
+
+def enrich_managers(league: str, limit: int = 40) -> int:
+    """감독 소개·전술(위키) — FotMob 명단의 감독 이름은 그대로 두고, 클럽 위키 인포박스 감독이 같은 사람이면 그 문서로,
+    아니면 이름 문서로 enrich_one(한글 위키 → 영어 위키 번역, 전술 섹션). 축구 감독 문서가 아니면(동명이인) 버린다.
+    2026-10-23 사용자: 라이트 리그 내용이 빈약 — 팀 개요·분석의 감독 소개·전술이 비었다. 소개가 없는 감독만(하루 상한)."""
+    from enrich_manager_profiles import enrich_one  # noqa: PLC0415
+    import fetch_belgian_managers as fbm  # noqa: PLC0415
+    p = data_path("manager_profiles", league, ext="json")
+    prof = _load(p)
+    todo = [sq for sq, r in prof.items() if r.get("name") and not r.get("bio_ko")][:limit]
+    if not todo:
+        return 0
+    titles = fbm.club_titles(todo, LEAGUES[league].country)
+    texts = fbm._wikitext(list(titles.values())) if titles else {}
+    done = 0
+    for sq in todo:
+        r = prof[sq]
+        mg = fbm.infobox_manager(texts.get(titles.get(sq, ""), ""))
+        # 문서 후보: 클럽 인포박스의 감독 문서(같은 사람일 때) → '이름 (football manager)' → '이름 (footballer)' → 이름
+        cands = ([mg[1]] if mg and _same_person(mg[0], r["name"]) else []) + [
+            f"{r['name']} (football manager)", f"{r['name']} (footballer)", r["name"]]
+        e, title = {}, ""
+        for title in dict.fromkeys(cands):
+            try:
+                e = enrich_one({**r, "wiki_title": title})
+            except Exception as ex:  # noqa: BLE001
+                print(f"  [감독 보강 실패] {sq}: {type(ex).__name__}")
+                e = {}
+            if _football_bio(str(e.get("bio_ko") or "")):
+                break
+            e = {}
+        bio = str(e.get("bio_ko") or "")
+        if not bio:
+            continue                                   # 동명이인·동음이의·축구 밖 문서
+        r.update({k: e[k] for k in ("bio_ko", "bio_source", "tactics_ko", "tactics_source") if e.get(k)})
+        if e.get("formation") and not r.get("formation"):
+            r["formation"] = e["formation"]
+        r["wiki_title"] = title
+        done += 1
+    p.write_text(json.dumps(prof, ensure_ascii=False, indent=1), encoding="utf-8")
+    print(f"[{league}] 감독 소개 보강 {done}/{len(todo)}")
+    return done
 
 
 def main(argv=None) -> int:
@@ -396,11 +475,15 @@ def main(argv=None) -> int:
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     ap = argparse.ArgumentParser()
     ap.add_argument("--league")
+    ap.add_argument("--managers", action="store_true", help="감독 소개·전술 보강(위키)만")
     a = ap.parse_args(argv)
     bad = 0
     for lg in [a.league] if a.league else LITE_LEAGUES:
         try:
-            build(lg)
+            if a.managers:
+                enrich_managers(lg)
+            else:
+                build(lg)
         except Exception as e:  # noqa: BLE001 — 한 리그 실패가 다른 리그를 멈추지 않게
             print(f"[{lg}] 실패 {type(e).__name__}: {e}")
             bad += 1

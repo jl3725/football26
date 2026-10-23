@@ -8,6 +8,8 @@ FotMob 경기 상세 → 라인업·교체 행(ESPN 라인업 표와 같은 열)
   (포메이션 숫자 순 — 수비·미드·공격), 줄 안에서 오른쪽부터 ESPN 토큰(RB·CD-R·CM-L·RF …)을 붙인다 —
   team_analysis.espn_assign_slots 가 ESPN 라인업과 똑같이 슬롯을 정한다.
 - 교체: matchFacts 이벤트 Substitution(swap = [들어온 선수, 나간 선수]).
+- 팀 경기 기록(team_stat_rows): content.stats 의 점유율·슈팅·xG·패스·태클 … + 골·퇴장 시간 → match_stats 표와 같은 열 —
+  분석 탭의 경기별 흐름·득실 시간대·리그 백분위(api team_trends)가 라이트 리그에서 비었다(2026-10-23 사용자: "내용이 빈약").
 """
 from __future__ import annotations
 
@@ -110,6 +112,74 @@ def lineup_rows(j: dict, match: dict, sides: dict) -> list[dict]:
                          "starter": False, "jersey": p.get("shirtNumber"), "player": p.get("name"), "espn_pos": "SUB",
                          "formation_place": None, "event_id": str(match.get("id"))})
     return rows
+
+
+STAT_COLS = ["event_id", "date", "kickoff", "comp_code", "squad", "opponent", "home_away", "gf", "ga", "result",
+             "poss", "opp_poss", "shots", "opp_shots", "sot", "opp_sot", "corners", "opp_corners", "pass_pct", "opp_pass_pct",
+             "fouls", "opp_fouls", "saves", "opp_saves", "tackles", "opp_tackles", "interceptions", "opp_interceptions",
+             "offsides", "opp_offsides", "blocked", "opp_blocked", "xg", "xga", "goal_min_for", "goal_min_against",
+             "red_for", "red_against"]
+# 우리 열 ← FotMob 팀 기록 key(첫 값 = 홈, 둘째 = 원정). '426 (85%)' 처럼 괄호 안 % 를 쓰는 것은 pct
+_TEAM_STATS = {"poss": "BallPossesion", "shots": "total_shots", "sot": "ShotsOnTarget", "corners": "corners",
+               "fouls": "fouls", "saves": "keeper_saves", "tackles": "matchstats.headers.tackles", "interceptions": "interceptions",
+               "offsides": "Offsides", "blocked": "blocked_shots", "xg": "expected_goals"}
+
+
+def _num(v, pct: bool = False):
+    import re  # noqa: PLC0415
+    s = str(v if v is not None else "")
+    m = re.search(r"\((\d+(?:\.\d+)?)%\)", s) if pct else re.match(r"\s*(-?\d+(?:\.\d+)?)", s)
+    return float(m.group(1)) if m else None
+
+
+def team_stat_rows(j: dict, match: dict, sides: dict, code: str) -> list[dict]:
+    """우리 팀(sides) 쪽 경기 기록 한 줄씩 — match_stats 와 같은 열(xg·xga 포함)."""
+    content = j.get("content") or {}
+    groups = ((((content.get("stats") or {}).get("Periods") or {}).get("All") or {}).get("stats")) or []
+    vals: dict[str, list] = {}
+    for g in groups:
+        for s in g.get("stats") or []:
+            if s.get("key") and isinstance(s.get("stats"), list) and len(s["stats"]) == 2 and s["key"] not in vals:
+                vals[s["key"]] = s["stats"]
+    if not vals:
+        return []
+    teams = (j.get("header") or {}).get("teams") or []
+    score = [t.get("score") for t in teams] if len(teams) == 2 else [None, None]
+    ev = (((content.get("matchFacts") or {}).get("events") or {}).get("events")) or []
+    mins: dict[bool, list[str]] = {True: [], False: []}
+    reds = {True: 0, False: 0}
+    for e in ev:
+        t = e.get("time")
+        tok = f"{t}+{e['overloadTime']}" if e.get("overloadTime") else str(t)
+        if e.get("type") == "Goal" and t is not None:
+            mins[bool(e.get("isHome"))].append(tok)
+        if e.get("type") == "Card" and str(e.get("card") or "") in ("Red", "YellowRed"):
+            reds[bool(e.get("isHome"))] += 1
+    st = match.get("status") or {}
+    utc = str(st.get("utcTime") or "")
+    out = []
+    for i, side in enumerate(("home", "away")):
+        tid = str((match.get(side) or {}).get("id"))
+        if tid not in sides:
+            continue
+        o = 1 - i
+        other = str((match.get("away" if side == "home" else "home") or {}).get("id"))
+        gf, ga = score[i], score[o]
+        row = {"event_id": str(match.get("id")), "date": utc[:10], "kickoff": utc[:16] + "Z" if len(utc) >= 16 else utc,
+               "comp_code": code, "squad": sides[tid][1],
+               "opponent": sides.get(other, (None, (match.get("away" if side == "home" else "home") or {}).get("name")))[1],
+               "home_away": "H" if side == "home" else "A", "gf": gf, "ga": ga,
+               "result": ("W" if gf > ga else "L" if gf < ga else "D") if gf is not None and ga is not None else "",
+               "goal_min_for": ";".join(mins[side == "home"]), "goal_min_against": ";".join(mins[side != "home"]),
+               "red_for": reds[side == "home"], "red_against": reds[side != "home"]}
+        for col, key in _TEAM_STATS.items():
+            pair = vals.get(key) or [None, None]
+            row[col if col != "xg" else "xg"] = _num(pair[i])
+            row[f"opp_{col}" if col != "xg" else "xga"] = _num(pair[o])
+        acc = vals.get("accurate_passes") or [None, None]
+        row["pass_pct"], row["opp_pass_pct"] = _num(acc[i], pct=True), _num(acc[o], pct=True)
+        out.append(row)
+    return out
 
 
 def sub_rows(j: dict, match: dict, sides: dict) -> list[dict]:

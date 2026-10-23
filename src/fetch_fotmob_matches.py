@@ -241,19 +241,24 @@ def main() -> int:
     lite_sides = {tid: v for tid, v in sides.items() if v[0] in lite}
     lu_have: dict[tuple[str, str], pd.DataFrame] = {}
     lu_seen: set[str] = set()
+    ms_seen: set[str] = set()
     for lg in lite:
-        for stem in ("espn_lineups", "espn_lineups_cups", "espn_subs", "espn_subs_cups"):
+        for stem in ("espn_lineups", "espn_lineups_cups", "espn_subs", "espn_subs_cups", "match_stats"):
             p = data_path(stem, lg, season)
             if p.exists():
                 lu_have[(lg, stem)] = pd.read_csv(p, dtype={"event_id": str})
                 if "lineups" in stem:
                     lu_seen |= set(lu_have[(lg, stem)]["event_id"].astype(str))
+                if stem == "match_stats":
+                    ms_seen |= set(lu_have[(lg, stem)]["event_id"].astype(str))
     is_lite = lambda m: any(str((m.get(s) or {}).get("id")) in lite_sides for s in ("home", "away"))   # noqa: E731
     goal_ids = {str(m["id"]) for m, _ in goal_only}
-    lineup_only = sorted([(m, c) for m, c in jobs if is_lite(m) and str(m["id"]) in seen and str(m["id"]) not in lu_seen
+    lineup_only = sorted([(m, c) for m, c in jobs if is_lite(m) and str(m["id"]) in seen
+                          and (str(m["id"]) not in lu_seen or str(m["id"]) not in ms_seen)
                           and str(m["id"]) not in todo_ids and str(m["id"]) not in goal_ids], key=when, reverse=True)[: a.goals_max]
     new_lu: list[dict] = []
     new_sub: list[dict] = []
+    new_ms: list[dict] = []
 
     def _lineups(j: dict, m: dict, code: str) -> None:
         if not lite_sides or not is_lite(m):
@@ -265,6 +270,9 @@ def main() -> int:
             side = str((m.get(r["home_away"]) or {}).get("id"))
             lg = lite_sides[side][0]
             new_sub.append({**r, "_key": (lg, "espn_subs" if code == LEAGUE_CODE.get(lg) else "espn_subs_cups")})
+        for r in fotmob_lineups.team_stat_rows(j, m, lite_sides, code):   # 팀 경기 기록(분석 탭) — 리그·컵·유럽 전부
+            lg = next(v[0] for v in lite_sides.values() if v[1] == r["squad"])
+            new_ms.append({**r, "_key": (lg, "match_stats")})
     print(f"    골 상황 백필 {len(goal_only)}경기(남은 {sum(1 for m, _ in jobs if str(m['id']) not in goals_seen)})")
     new: list[dict] = []
     new_goals: list[dict] = []
@@ -291,14 +299,15 @@ def main() -> int:
             print(f"    [골 실패] {m.get('id')}: {e}")
         time.sleep(0.35)
     if lineup_only:
-        print(f"    라인업 백필 {len(lineup_only)}경기")
+        print(f"    라인업·팀 기록 백필 {len(lineup_only)}경기")
     for m, code in lineup_only:
         try:
             _lineups(_details(m), m, code)
         except Exception as e:  # noqa: BLE001
             print(f"    [라인업 실패] {m.get('id')}: {e}")
         time.sleep(0.35)
-    for rows_, cols in ((new_lu, fotmob_lineups.LINEUP_COLS), (new_sub, fotmob_lineups.SUB_COLS)):
+    for rows_, cols in ((new_lu, fotmob_lineups.LINEUP_COLS), (new_sub, fotmob_lineups.SUB_COLS),
+                        (new_ms, fotmob_lineups.STAT_COLS)):
         if not rows_:
             continue
         nd_ = pd.DataFrame(rows_)

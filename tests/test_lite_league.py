@@ -26,8 +26,10 @@ def test_lite_leagues_configured() -> None:
 def test_standings_rows_split_tables() -> None:
     row = lambda n, i, pts: {"name": n, "id": i, "idx": i, "played": 22, "wins": 1, "draws": 1, "losses": 1,   # noqa: E731
                              "scoresStr": "30-20", "goalConDiff": 10, "pts": pts}
+    # 스플릿 뒤 응답엔 그룹 표 둘 + 정규 라운드 전체 표가 같이 온다(오스트리아 25/26) — 전체 표는 빼야 한다
     d = {"table": [{"data": {"tables": [{"table": {"all": [row("A", 1, 30), row("B", 2, 28)]}},
-                                         {"table": {"all": [row("C", 1, 20), row("D", 2, 18)]}}]}}]}
+                                         {"table": {"all": [row("C", 1, 20), row("D", 2, 18)]}},
+                                         {"table": {"all": [row("B", 1, 40), row("A", 2, 39), row("D", 3, 30), row("C", 4, 20)]}}]}}]}
     rows = lite.standings_rows(d)
     assert [(r["rank"], r["squad"]) for r in rows] == [(1, "A"), (2, "B"), (3, "C"), (4, "D")]   # 하위 그룹은 이어서
     assert rows[0]["gf"] == 30 and rows[0]["ga"] == 20
@@ -113,3 +115,10 @@ def test_parse_exports_counts_big5_permanent_only() -> None:
     tables, rows = fx.parse_outs(html, {11})
     assert tables == 1 and len(rows) == 1
     assert rows[0]["player"] == "A Player" and rows[0]["fee_eur"] == 12_000_000 and rows[0]["age"] == 20
+
+
+def test_manager_bio_filter() -> None:
+    """감독 소개 — 동음이의 문서·축구 밖 문서는 버린다(버밍엄 크리스 데이비스 → 영국 정치인 목록이 붙었던 것)."""
+    assert not lite._football_bio("크리스토퍼 또는 크리스 데이비스는 다음을 지칭할 수 있다: 크리스 데이비스(영국 정치인)")
+    assert not lite._football_bio("Chris Davies may refer to: Chris Davies (politician)")
+    assert lite._football_bio("크리스토퍼 폴 데이비스는 현재 EFL 챔피언십 버밍엄 시티의 감독을 맡고 있는 프로 축구 지도자이다.")

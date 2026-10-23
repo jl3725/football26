@@ -65,7 +65,7 @@ AGENTS: tuple[Agent, ...] = (
               Feed("units", "팀 유닛 지표", ("team_defense", "unit_metrics", "statbunker"),
                    ("local-season-weekly", "daily_data", "match_refresh"),
                    "주 1회 · 수 12:30 KST(이 PC) · 라이트 리그 매일", WEEK_H, ("team_unit_metrics_*", "team_defense_*")),
-              Feed("lite", "라이트 리그 순위·일정·명단·감독(FotMob)", ("lite_league",), ("match_refresh", "daily_data"),
+              Feed("lite", "라이트 리그 순위·일정·명단·감독(FotMob)", ("lite_league", "lite_managers"), ("match_refresh", "daily_data"),
                    "매일 2회", 30, ("standings_*", "schedule_full_*", "lite_teams_*", "manager_profiles_*")),
           ), checks=("validate: standings 계약", "watchdog: coverage(감독 프로필)")),
     Agent("stats", "STATS", "선수 스탯·평점", "선수 시즌 스탯·고급 지표·xG·히트맵, 경기별 평점·최근 폼",

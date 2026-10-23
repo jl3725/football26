@@ -5698,11 +5698,35 @@ _HUB_CACHE: dict = {"key": None, "body": None}
 _HUB_FILE = ds.DB_PATH.parent / "home_all.json"
 
 
+# 시즌 선수 기록(Sofascore 열 이름) — 라이트 리그(챔피언십 …)는 Sofascore 가 없어 리그 집중·팀 xG·득점왕 xG 가 통째로 비었다
+# (2026-10-23 사용자: "작업한 리그들 내용이 빈약, 리그 집중이 안 뜬다"). FotMob 경기별 기록(리그 경기만)을 합쳐 같은 열로 만든다.
+_FM_SEASON_COLS = {"minutes": "minutesPlayed", "goals": "goals", "assists": "assists", "xg": "expectedGoals",
+                   "xa": "expectedAssists", "shots": "totalShots", "chances": "keyPasses", "bigc": "bigChancesCreated",
+                   "tackles": "tacklesWon", "ints": "interceptions", "recov": "ballRecovery", "saves": "saves"}
+
+
+@_memo(ttl=21600)
+def _season_stats(league: str):
+    t = ds.read_table("players_sofascore_stats", league=league)
+    if t is not None and not t.empty:
+        return t
+    c = _LEAGUES_CFG.get(league)
+    mr = ds.read_table("fotmob_match_ratings", league=league)
+    if c is None or not c.espn or mr is None or mr.empty or "comp_code" not in mr.columns:
+        return None
+    d = mr[mr["comp_code"].astype(str) == c.espn].copy()
+    if d.empty:
+        return None
+    for col in _FM_SEASON_COLS:
+        d[col] = pd.to_numeric(d[col], errors="coerce").fillna(0) if col in d.columns else 0.0
+    return d.groupby(["squad", "player"], as_index=False)[list(_FM_SEASON_COLS)].sum().rename(columns=_FM_SEASON_COLS)
+
+
 # ── 홈 리그 집중 보드(득점왕 레이스 · 시즌 베스트 XI · 부상 타격) — _compute_hub_body 가 리그마다 부른다 ──
 def _ss_map(lg: str) -> dict:
-    """Sofascore 시즌 기록(xG·xA·키패스 …) — (팀, 정규화 이름) → 행."""
+    """Sofascore 시즌 기록(xG·xA·키패스 …) — (팀, 정규화 이름) → 행. 라이트 리그는 FotMob 리그 경기 합."""
     from unidecode import unidecode  # noqa: PLC0415
-    t = ds.read_table("players_sofascore_stats", league=lg)
+    t = _season_stats(lg)
     if t is None or t.empty:
         return {}
     return {(str(r.get("squad")), unidecode(str(r.get("player"))).lower().strip()): r for _, r in t.iterrows()}
@@ -6445,7 +6469,7 @@ def _team_xg_pg(league: str) -> dict[str, float]:
             x = g["xg"].dropna()
             if len(x) and len(x) >= max(1, played.get(str(sq), 0) - 1):   # 리그 경기 거의 전부에 xG 가 있을 때만
                 out[str(sq)] = round(float(x.mean()), 2)
-    t = ds.read_table("players_sofascore_stats", league=league)
+    t = _season_stats(league)
     if t is not None and not t.empty and "expectedGoals" in t.columns:
         sums = pd.to_numeric(t["expectedGoals"], errors="coerce").groupby(t["squad"]).sum()
         for sq, v in sums.items():
@@ -6495,12 +6519,11 @@ def league_lab(league: str):
     """리그 분석 랩(홈 LEAGUE FOCUS) — Sofascore 시즌 기록 기반, 분석가가 보는 지표:
     playmakers(도움·xA·빅찬스·키패스) · finishing(골 vs xG) · creating(도움 vs xA) ·
     ball_winners(태클·인터셉트·볼 회수 /90) · team_style(경기당 xG vs 경기당 실점)."""
-    t = ds.read_table("players_sofascore_stats", league=league)
+    t = _season_stats(league)                            # Sofascore, 없으면 FotMob 리그 경기 합(라이트 리그)
     xg_one = _team_xg_pg(league)                          # 팀 경기당 xG 한 곳(Understat 우선)
     st = ds.read_table("standings", league=league)
-    if t is None or t.empty:
-        return {"league": league, "playmakers": [], "finishing": [], "creating": [], "ball_winners": [], "team_style": []}
-    t = t.copy()
+    # 시즌 기록이 없어도 순위표·우승 경쟁·결과·주목할 매치·베스트 XI·득점왕은 그대로 만든다(예전엔 여기서 통째로 빈 값)
+    t = pd.DataFrame(columns=["squad", "player", *_FM_SEASON_COLS.values()]) if t is None or t.empty else t.copy()
     for c in ("goals", "expectedGoals", "assists", "expectedAssists", "bigChancesCreated", "keyPasses", "minutesPlayed",
               "tacklesWon", "interceptions", "ballRecovery", "totalShots"):
         t[c] = pd.to_numeric(t.get(c), errors="coerce").fillna(0)

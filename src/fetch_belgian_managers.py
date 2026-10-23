@@ -60,15 +60,16 @@ def infobox_manager(wikitext: str) -> tuple[str, str] | None:
     return name, title
 
 
-def club_titles(teams: list[str]) -> dict[str, str]:
-    """{클럽: 위키 문서 제목} — 캐시, 없으면 검색 첫 결과 중 축구 클럽 인포박스가 있는 문서(캐시에 더한다)."""
+def club_titles(teams: list[str], country: str = "Belgium") -> dict[str, str]:
+    """{클럽: 위키 문서 제목} — 캐시, 없으면 검색 첫 결과 중 축구 클럽 인포박스가 있는 문서(캐시에 더한다).
+    country — 검색어에 붙이는 나라(라이트 리그 감독 보강이 같이 쓴다, src/lite_league.enrich_managers)."""
     cache = json.loads(TITLES.read_text(encoding="utf-8")) if TITLES.exists() else {}
     out, added = {}, False
     for t in teams:
         if cache.get(t):
             out[t] = cache[t]
             continue
-        res = _api(action="query", list="search", srsearch=f"{t} football club Belgium", srlimit=3)
+        res = _api(action="query", list="search", srsearch=f"{t} football club {country}", srlimit=3)
         for hit in (res.get("query") or {}).get("search") or []:
             txt = _wikitext([hit["title"]]).get(hit["title"], "")
             if re.search(r"\{\{\s*Infobox football club", txt, re.I):
