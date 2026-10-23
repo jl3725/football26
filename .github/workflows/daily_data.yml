@@ -86,6 +86,11 @@ jobs:
           bash scripts/ci_try.sh "lite_league" python src/lite_league.py
           bash scripts/ci_try.sh "lite_managers" python src/lite_league.py --managers   # 감독 소개·전술(위키, 소개 없는 감독만)
 
+      # 감독 프로필 빈칸(부임일·전술 성향) — 위 감독 수집 단계들이 매일 프로필을 새로 써서 그 뒤에 돈다. 부임일 = FotMob 감독 경력
+      # → 위키데이터, 성향 = 감독 위키 전술 섹션. 받은 값은 data/manager_fill_cache.json 에 남아 새 감독만 받는다(src/manager_fill.py)
+      - name: Manager fill (감독 부임일·전술 성향, 전 리그)
+        run: bash scripts/ci_try.sh "manager_fill" python src/manager_fill.py --write
+
       # Transfermarkt 계열(현재 부상·계약·루머·시장가치 스냅샷·이적)은 tm_data.yml 이 하루 2회 수집한다
       # (TM WAF 202 → 브라우저 토큰, src/tm_http.py). 2026-07~10 은 로컬 PC agent 가 맡았었다.
 
