@@ -173,16 +173,30 @@ def _profile_from_row(tr) -> dict:
             "market_value_eur": parse_mv(mv_el.get_text(strip=True)) if mv_el else None}
 
 
-def collect_contracts(teams: list[str], pause: float) -> pd.DataFrame:
+def collect_contracts(teams: list[str], pause: float) -> tuple[pd.DataFrame, list[str]]:
+    """(계약 행, 못 받은 구단). 구단 한 곳이 TM 502 등으로 실패하면 한 번 다시, 그래도 안 되면 그 구단만 건너뛴다 —
+    예전엔 AS Roma 한 페이지 502 로 세리에A 전체가 실패했다(2026-10-23 tm_data). 건너뛴 구단은 지난 스냅샷 값이 남는다."""
     all_rows: list[dict] = []
+    failed: list[str] = []
     for i, team in enumerate(teams):
         if i:
             time.sleep(pause)
-        rows = scrape_team_contracts(team)
+        rows = None
+        for attempt in range(2):
+            try:
+                rows = scrape_team_contracts(team)
+                break
+            except (requests.RequestException, RuntimeError) as e:
+                print(f"[{team}] {'재시도' if attempt == 0 else '건너뜀'} — {type(e).__name__}: {str(e)[:120]}")
+                if attempt == 0:
+                    time.sleep(10)
+        if rows is None:
+            failed.append(team)
+            continue
         with_contract = sum(1 for row in rows if row.get("contract_until"))
         print(f"[{team}] {with_contract}/{len(rows)} contracts")
         all_rows.extend(rows)
-    return pd.DataFrame(all_rows)
+    return pd.DataFrame(all_rows), failed
 
 
 def merge_contracts(player_path: Path, contracts: pd.DataFrame) -> int:
@@ -397,10 +411,15 @@ def main(argv: list[str] | None = None) -> int:
     if unknown:
         raise SystemExit(f"Unknown team(s): {', '.join(unknown)}")
 
-    contracts = collect_contracts(teams, pause=args.pause)
+    contracts, failed = collect_contracts(teams, pause=args.pause)
     if contracts.empty:
         print("[contracts] no rows collected")
         return 1
+    teams = [t for t in teams if t not in failed]       # 못 받은 구단은 스냅샷에서 지우지 않는다(지난 값 유지)
+    # 구단 몇 곳의 일시 오류는 성공(지난 값 유지)으로 — 4분의 1 넘게 못 받으면 고장으로 본다
+    status = 1 if len(failed) * 4 > len(teams) + len(failed) else 0
+    if failed:
+        print(f"[contracts] 못 받은 구단 {len(failed)}곳(지난 값 유지): {', '.join(failed)}")
     if LEAGUES[ACTIVE_LEAGUE].lite:
         contracts, teams = resolve_lite(contracts, clubs)
 
@@ -413,12 +432,12 @@ def main(argv: list[str] | None = None) -> int:
     print(f"[OK] wrote {SNAPSHOT.relative_to(ROOT)} ({len(snapshot)} rows)")
 
     if args.snapshot_only:
-        return 0
+        return status
 
     changed_full = merge_contracts(PLAYERS_FULL, snapshot)
     changed_base = merge_contracts(PLAYERS_BASE, snapshot)
     print(f"[OK] merged contracts: players_full={changed_full}, players={changed_base}")
-    return 0
+    return status
 
 
 if __name__ == "__main__":
