@@ -43,7 +43,7 @@ function pendingFixtures(lab: LeagueLab, league: string): Fixture[] {
 
 export default function HomeDashboard({ accent, onPickTeam, onPickLeagueTeam, leagueLabel = "EPL",
   league = "EPL", onLeague, view, onView, initialIntlComp }: {
-  accent: string; onPickTeam: (t: string) => void; onPickLeagueTeam?: (t: string, league?: string) => void;
+  accent: string; onPickTeam: (t: string) => void; onPickLeagueTeam?: (t: string, league?: string, tab?: string) => void;
   leagueLabel?: string; league?: string; leagues?: LeagueOpt[]; onLeague?: (l: string) => void;
   view?: "all" | "league" | "INTL"; onView?: (v: "all" | "league" | "INTL") => void;   // 페이지가 주소와 함께 관리
   initialIntlComp?: string;

@@ -2,6 +2,8 @@
 import { useMemo, useState } from "react";
 import type { TrackAlert, TrackType } from "@/lib/api";
 import { trackKey, useTracking } from "@/lib/tracking";
+import { useShortlistCounts } from "@/lib/shortlist";
+import type { Pin } from "@/lib/pins";
 import { usePeek } from "./PlayerPeek";
 import SectionHead from "./SectionHead";
 import Icon from "./Icon";
@@ -121,6 +123,62 @@ export function TrackLine({ team, player, club, accent }: { team: string; player
     <div className={`trk-line${t.isNew(a) ? " new" : ""}`} style={{ ["--tc" as string]: c }} title={`${L.ko} · ${a.title}${a.detail ? ` · ${a.detail}` : ""}`}>
       <Icon name={L.icon} size={13} color={c} />
       <em>{L.en}</em><span>{a.title}</span><small>{md(a.date)}</small>
+    </div>
+  );
+}
+
+// 전체 홈 요약 — ★ 내 팀 중 SHORTLIST 가 있는 팀만, 팀마다 새 소식 수 + 중요한 소식 3줄. 머리를 누르면 그 팀 Inbox(2026-10-23)
+export function HomeTracking({ pins, onOpen }: { pins: Pin[]; onOpen: (team: string, league: string) => void }) {
+  const counts = useShortlistCounts(pins.map((p) => p.team));
+  const mine = pins.filter((_, i) => counts[i] > 0);
+  if (!mine.length) return null;
+  return (
+    <section className="h5-sec">
+      <SectionHead title="TRACKING" kr="내 팀 영입 후보 소식" meta={`★ 내 팀 ${mine.length}`}
+        info={<>
+          <p>팀 화면 Inbox 맨 위 TRACKING 의 요약 — ★ 고정한 팀 중 Recruit 작업대에 후보를 둔 팀만.</p>
+          <p className="muted">팀마다 읽지 않은 새 소식 먼저, 중요한 순 3건. NEW = 최근 7일 안의 읽지 않은 소식(이 브라우저 기준).</p>
+        </>} />
+      <div className="trkh-grid">{mine.map((p) => <PinTrack key={p.team} pin={p} onOpen={onOpen} />)}</div>
+    </section>
+  );
+}
+
+function PinTrack({ pin, onOpen }: { pin: Pin; onOpen: (team: string, league: string) => void }) {
+  const t = useTracking(pin.team, pin.league);
+  const peek = usePeek();
+  if (!t.items.length) return null;
+  const top = t.data
+    ? [...t.data.alerts].sort((a, b) => Number(t.isNew(b)) - Number(t.isNew(a)) || b.prio - a.prio || b.date.localeCompare(a.date)).slice(0, 3)
+    : [];
+  return (
+    <div className="trkh-card">
+      <button className="trkh-head" onClick={() => onOpen(pin.team, pin.league)} title={`${pin.team} Inbox 열기`}>
+        {pin.logo ? <img src={pin.logo} alt="" /> : null}
+        <b>{pin.team}</b>
+        <span className="trkh-n">SHORTLIST {t.items.length}</span>
+        {t.nNew > 0 && <i className="trk-new">NEW {t.nNew}</i>}
+        <span className="trkh-go">INBOX ›</span>
+      </button>
+      {!t.data
+        ? (t.loading ? <Skel h={96} r={10} /> : <p className="trkh-quiet">소식을 못 불러왔어요</p>)
+        : top.length === 0
+          ? <p className="trkh-quiet">최근 14일 조용함</p>
+          : top.map((a) => {
+            const L = LOOK[a.type];
+            const c = L.c || "var(--accent)";
+            return (
+              <button key={a.id} className={`trkh-a${t.isNew(a) ? " new" : ""}`} style={{ ["--tc" as string]: c }}
+                onClick={(e) => { t.mark(a.id); peek(e, { name: a.player, club: a.club, league: a.league, hint: { photo: a.photo } }); }}
+                title={`${L.ko} · ${a.player} · ${a.title}${a.detail ? ` · ${a.detail}` : ""}`}>
+                <Icon name={L.icon} size={14} color={c} />
+                <em>{L.en}</em>
+                <b>{lastName(a.player)}</b>
+                <span>{a.title}</span>
+                <small>{md(a.date)}</small>
+              </button>
+            );
+          })}
     </div>
   );
 }

@@ -13,6 +13,7 @@ import Info from "./Info";
 import { TrendArrow } from "./Trend";
 import { usePeek } from "./PlayerPeek";
 import { usePins } from "@/lib/pins";
+import { HomeTracking } from "./Tracking";
 import { lgEn } from "@/lib/match";
 import { seasonLongLabel, seasonStatusText } from "@/lib/season";
 import SeasonOpener from "./SeasonOpener";
@@ -29,7 +30,7 @@ function retryOnce<T>(f: () => Promise<T>, waitMs = 15000): Promise<T> {
 //   이번 주 최대 빅매치(크게) + 요약 숫자 → 빅매치 3 → 무엇이 바뀌었나 · 리그 순위 → 빅딜 · 주의 보드 → 이적 소식 · 감독 교체.
 // 데이터: /api/home/all(배포 시 미리 계산) + /api/fixtures(매일 갱신 일정).
 
-type Pick = (team: string, league?: string) => void;
+type Pick = (team: string, league?: string, tab?: string) => void;
 type Row = {
   key: string; player: string; club: string; club_logo: string; league: string; photo: string;
   sub: string; why: ReactNode; ovr?: number; trend?: Trend; right?: ReactNode; bare?: boolean;
@@ -290,6 +291,9 @@ export default function AllDashboard({ onPick, switcher, leagueMap }: {
           </div>
         )}
       </div>
+
+      {/* ★ 내 팀 영입 후보 소식 — 후보를 둔 내 팀이 없으면 아무것도 안 그린다 */}
+      <HomeTracking pins={pins} onOpen={(t, l) => onPick(t, l, "signals")} />
 
       {rest.length > 0 && (
         <section className="h5-sec">

@@ -4981,3 +4981,31 @@ LIGA’처럼 글자가 접히던 것) — 넘치면 가로로 넘긴다 */
 .trk-line small { margin-left: auto; font: 600 11px/1 var(--font-num); color: var(--muted); flex: none; }
 .trk-line.new { box-shadow: inset 3px 0 0 var(--tc); }
 .ib5-all { white-space: nowrap; flex: none; }   /* 폰에서 '모두 / 읽음' 두 줄로 꺾였다 */
+/* 전체 홈 TRACKING 요약 — ★ 내 팀 카드(머리 = 크레스트·팀·후보 수·NEW, 아래 = 소식 3줄, 2026-10-23) */
+.trkh-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; }
+.trkh-card { position: relative; display: flex; flex-direction: column; gap: 6px; padding: 12px 12px 12px; border-radius: 14px; overflow: hidden;
+  background: radial-gradient(120% 90px at 0% 0%, color-mix(in srgb, var(--accent) 8%, transparent), transparent 70%), var(--surface);
+  border: 1px solid var(--line); }
+.trkh-card::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 2px;
+  background: linear-gradient(90deg, var(--accent), color-mix(in srgb, var(--accent) 20%, transparent) 45%, transparent); }
+.trkh-head { display: flex; align-items: center; gap: 8px; min-width: 0; padding: 2px 2px 6px; background: none; border: 0;
+  color: inherit; cursor: pointer; text-align: left; }
+.trkh-head img { width: 22px; height: 22px; object-fit: contain; flex: none; }
+.trkh-head b { font: 700 14px/1.2 var(--font-ui); color: var(--txt); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.trkh-n { font: 600 11px/1 var(--font-num); letter-spacing: .08em; color: var(--muted); white-space: nowrap; flex: none; }
+.trkh-head .trk-new { flex: none; }
+.trkh-go { margin-left: auto; padding-left: 6px; font: 700 11px/1 var(--font-num); letter-spacing: .1em; color: var(--muted); white-space: nowrap; flex: none;
+  transition: color .15s; }
+.trkh-head:hover .trkh-go { color: var(--accent); }
+.trkh-a { display: flex; align-items: center; gap: 7px; min-width: 0; padding: 8px 10px; border-radius: 10px; font-size: 12.5px; text-align: left;
+  color: inherit; cursor: pointer; background: color-mix(in srgb, var(--tc) 7%, transparent);
+  border: 1px solid color-mix(in srgb, var(--tc) 18%, transparent); transition: background .15s, border-color .15s; }
+.trkh-a:hover { background: color-mix(in srgb, var(--tc) 13%, transparent); border-color: color-mix(in srgb, var(--tc) 40%, transparent); }
+.trkh-a.new { box-shadow: inset 3px 0 0 var(--tc); }
+.trkh-a svg { flex: none; }
+.trkh-a em { font: 700 10.5px/1 var(--font-num); letter-spacing: .12em; color: var(--tc); font-style: normal; flex: none; }
+.trkh-a b { font-weight: 700; color: var(--txt); flex: none; max-width: 38%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.trkh-a span { color: #d6dbe2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.trkh-a small { margin-left: auto; padding-left: 4px; font: 600 11px/1 var(--font-num); color: var(--muted); flex: none; }
+.trkh-quiet { margin: 2px 2px 0; font-size: 12.5px; color: var(--muted); }
+@media (max-width: 640px) { .trkh-grid { grid-template-columns: 1fr; } }

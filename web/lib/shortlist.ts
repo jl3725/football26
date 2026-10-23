@@ -27,6 +27,17 @@ function write(team: string, items: ShortItem[]) {
 
 export const MAX_SHORTLIST = 12;
 
+const subscribe = (cb: () => void) => {
+  window.addEventListener(EVT, cb); window.addEventListener("storage", cb);
+  return () => { window.removeEventListener(EVT, cb); window.removeEventListener("storage", cb); };
+};
+
+// 여러 팀의 후보 수 — 전체 홈 TRACKING 요약이 ★ 내 팀 중 후보가 있는 팀만 고른다
+export function useShortlistCounts(teams: string[]): number[] {
+  const snap = useSyncExternalStore(subscribe, () => teams.map((t) => read(t).length).join(","), () => "");
+  return snap ? snap.split(",").map(Number) : teams.map(() => 0);
+}
+
 export function useShortlist(team: string) {
   const items = useSyncExternalStore(
     (cb) => { window.addEventListener(EVT, cb); window.addEventListener("storage", cb); return () => { window.removeEventListener(EVT, cb); window.removeEventListener("storage", cb); }; },

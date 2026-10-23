@@ -159,9 +159,9 @@ export default function Page() {
   const isPromoted = !!nextS?.promoted?.includes(sel);
   const pickTeam = (t: string) => { setHome(false); setSel(t); setTab("overview"); setNavOpen(false); };
   // 리그를 함께 받아 필요 시 리그 전환 후 팀 선택 (월드컵 탭에서 타 리그 클럽 클릭용)
-  const pickLeagueTeam = (t: string, lg?: string) => {
+  const pickLeagueTeam = (t: string, lg?: string, tb?: string) => {
     if (lg && lg !== league) { setActiveLeague(lg); setLeagueSel(lg); }
-    setHome(false); setSel(t); setTab("overview"); setNavOpen(false);
+    setHome(false); setSel(t); setTab(TABS.some((x) => x.key === tb) ? (tb as TabKey) : "overview"); setNavOpen(false);
   };
   // 전역 검색: 선수 클릭 → 소속팀으로 이동 + Player 탭에 그 선수 카드 표시
   const pickPlayer = (club: string, lg: string, player: string) => {

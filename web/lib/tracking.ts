@@ -8,12 +8,14 @@ import { useShortlist } from "./shortlist";
 const TTL = 5 * 60 * 1000;
 const memo = new Map<string, { at: number; p: Promise<Tracking> }>();
 
-function load(team: string, items: { player: string; club: string; league: string }[]): Promise<Tracking> {
+function load(team: string, items: { player: string; club: string; league: string }[], lg?: string): Promise<Tracking> {
   const slim = items.map(({ player, club, league }) => ({ player, club, league }));
-  const k = team + "|" + JSON.stringify(slim);
+  const k = team + "|" + (lg ?? "") + "|" + JSON.stringify(slim);
   const hit = memo.get(k);
   if (hit && Date.now() - hit.at < TTL) return hit.p;
-  const p = getTracking(team, slim);
+  // 한 번 다시 — 전체 홈은 무거운 요청과 같이 나가 서버가 깨는 중이면 프록시가 끊겼다(2026-10-23 QA '소식을 못 불러왔어요')
+  const p = getTracking(team, slim, lg)
+    .catch(() => new Promise<void>((r) => setTimeout(r, 8000)).then(() => getTracking(team, slim, lg)));
   memo.set(k, { at: Date.now(), p });
   p.catch(() => memo.delete(k));
   return p;
@@ -51,7 +53,8 @@ const recent = (d: string) => {
 
 export const trackKey = (player: string, club: string) => `${player}|${club}`;
 
-export function useTracking(team: string) {
+// league — 전체 홈 TRACKING 요약처럼 지금 리그가 아닌 팀(★ 내 팀)을 볼 때. 없으면 지금 리그
+export function useTracking(team: string, league?: string) {
   const { items } = useShortlist(team);
   const [data, setData] = useState<Tracking | null>(null);
   const [loading, setLoading] = useState(false);
@@ -59,9 +62,9 @@ export function useTracking(team: string) {
     if (!team || !items.length) { setData(null); setLoading(false); return; }
     let a = true;
     setLoading(true);
-    load(team, items).then((d) => a && setData(d)).catch(() => a && setData(null)).finally(() => a && setLoading(false));
+    load(team, items, league).then((d) => a && setData(d)).catch(() => a && setData(null)).finally(() => a && setLoading(false));
     return () => { a = false; };
-  }, [team, items]);
+  }, [team, items, league]);
   const read = useSyncExternalStore(
     (cb) => { window.addEventListener(EVT, cb); window.addEventListener("storage", cb); return () => { window.removeEventListener(EVT, cb); window.removeEventListener("storage", cb); }; },
     () => readSet(team), () => EMPTY);
