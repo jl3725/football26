@@ -3,14 +3,6 @@
  "league": "SuperLig",
  "season": "2026_2027",
  "teams": {
-  "Galatasaray": {
-   "fotmob_id": 8637,
-   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8637.png",
-   "color": "#8D072A",
-   "tm_vid": 141,
-   "tm_slug": "galatasaray-istanbul",
-   "tm_name": "Galatasaray"
-  },
   "Amed Sportif": {
    "fotmob_id": 96498,
    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/96498.png",
@@ -18,6 +10,14 @@
    "tm_vid": 12382,
    "tm_slug": "amed-sk",
    "tm_name": "Amed Sportif"
+  },
+  "Galatasaray": {
+   "fotmob_id": 8637,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8637.png",
+   "color": "#8D072A",
+   "tm_vid": 141,
+   "tm_slug": "galatasaray-istanbul",
+   "tm_name": "Galatasaray"
   },
   "Fenerbahçe": {
    "fotmob_id": 8695,
@@ -123,14 +123,6 @@
    "tm_slug": "genclerbirligi-ankara",
    "tm_name": "Gençlerbirliği"
   },
-  "Samsunspor": {
-   "fotmob_id": 9750,
-   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/9750.png",
-   "color": "#DE0102",
-   "tm_vid": 152,
-   "tm_slug": "samsunspor",
-   "tm_name": "Samsunspor"
-  },
   "Konyaspor": {
    "fotmob_id": 8622,
    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8622.png",
@@ -138,6 +130,14 @@
    "tm_vid": 2293,
    "tm_slug": "konyaspor",
    "tm_name": "Konyaspor"
+  },
+  "Samsunspor": {
+   "fotmob_id": 9750,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/9750.png",
+   "color": "#DE0102",
+   "tm_vid": 152,
+   "tm_slug": "samsunspor",
+   "tm_name": "Samsunspor"
   },
   "Eyüpspor": {
    "fotmob_id": 4681,

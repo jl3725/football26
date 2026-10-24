@@ -951,6 +951,54 @@
    "away": "SV Elversberg",
    "at": "2026-10-24T17:08:58+00:00",
    "model": "gemini-flash-lite-latest"
+  },
+  "401884763": {
+   "text": "Dortmund가 Frankfurt를 상대로 1-0 승리를 거뒀다. 후반 80'에 Jobe Bellingham의 도움을 받은 Maximilian Beier가 결승골을 터뜨렸다. 슈팅 수 18-8, 유효 슈팅 5-3, 점유율 58.4% 대 41.6%로 기록에서 Dortmund가 경기를 압도했다. 팬 투표, 모델, ClubElo의 사전 예측은 모두 Dortmund의 승리를 맞혔다.",
+   "date": "2026-10-24",
+   "home": "Dortmund",
+   "away": "Frankfurt",
+   "at": "2026-10-24T18:37:31+00:00",
+   "model": "gemini-flash-lite-latest"
+  },
+  "401878969": {
+   "text": "OH Leuven과 Lommel의 경기는 2-2 무승부로 종료되었다. 전반 35' Stredair Appuah의 선제골로 Lommel이 앞서갔으나, 후반 65' Robin Mirisola와 67' Emmanuel Addai가 연속골을 터뜨리며 OH Leuven이 역전에 성공했고, 경기 종료 직전인 90'+6' Jason Van Duiven이 동점골을 기록했다. OH Leuven은 점유율에서 42.8%로 밀렸지만 슈팅 수 22개로 Lommel의 13개보다 공격적인 경기를 펼쳤다. OH Leuven의 승리를 점쳤던 모델과 ClubElo의 예측은 이번 결과로 인해 빗나갔다.",
+   "date": "2026-10-24",
+   "home": "OH Leuven",
+   "away": "Lommel",
+   "at": "2026-10-24T18:37:35+00:00",
+   "model": "gemini-3.1-flash-lite"
+  },
+  "401874948": {
+   "text": "Napoli와 Roma의 경기는 3-3 무승부로 종료되며 양 팀이 승점 1점씩을 나눠 가졌다. Napoli는 28' Frank Anguissa의 선제골과 48', 83' Scott McTominay의 멀티골로 앞서 나갔으나, Roma는 69' Matìas Soulè의 득점과 74', 89' Leonardo Balerdi의 연속 골로 추격하며 승부를 원점으로 돌렸다. 경기 기록상 Roma가 점유율 60.6%와 슈팅 24개를 기록하며 공세를 펼쳤으나, 유효 슈팅은 Napoli가 9개로 더 많았다. 이번 결과는 Roma의 승리를 점쳤던 팬 투표와 모델의 예측, 그리고 Napoli의 승리를 예상했던 ClubElo의 예측을 모두 빗나가게 했다.",
+   "date": "2026-10-24",
+   "home": "Napoli",
+   "away": "Roma",
+   "at": "2026-10-24T18:37:41+00:00",
+   "model": "gemini-3.1-flash-lite"
+  },
+  "5904784": {
+   "text": "Amed Sportif가 Samsunspor를 상대로 2-1 역전승을 거두며 승점 3점을 획득했다. Samsunspor의 Logi Tomasson이 21'에 선제골을 넣었으나, 37' Afonso Sousa의 퇴장 이후 흐름이 바뀌었고 73' Gift Orban의 페널티킥 골과 83' Dia Saba의 득점으로 경기가 뒤집혔으며 61'에는 Amed Sportif의 Mbaye Diagne도 퇴장당했다. Amed Sportif는 슈팅 22개와 유효 슈팅 5개를 기록하며 슈팅 10개와 유효 슈팅 3개에 그친 Samsunspor를 압도했다. 이번 결과는 Amed Sportif의 승리를 점쳤던 모델과 ClubElo의 경기 전 예측과 일치했다.",
+   "date": "2026-10-24",
+   "home": "Samsunspor",
+   "away": "Amed Sportif",
+   "at": "2026-10-24T18:37:44+00:00",
+   "model": "gemini-3.1-flash-lite"
+  },
+  "5846010": {
+   "text": "WSG Tirol과 Grazer AK의 리그 경기는 1-1 무승부로 종료되었다. 전반 9'에 Alexander Hofleitner가 페널티킥으로 선제골을 넣었으나, 후반 63'에 Nikolai Baden Frederiksen이 동점골을 기록하며 승부를 원점으로 돌렸다. 경기 전 WSG Tirol의 승리가 예측되었으나, 결과는 무승부로 끝나며 해당 예측은 적중하지 않았다.",
+   "date": "2026-10-24",
+   "home": "WSG Tirol",
+   "away": "Grazer AK",
+   "at": "2026-10-24T18:37:48+00:00",
+   "model": "gemini-3.1-flash-lite"
+  },
+  "5846006": {
+   "text": "Hartberg가 Profertil Arena에서 열린 리그 경기에서 Wolfsberger AC를 상대로 1-0 승리를 거두었다. 팽팽하던 경기는 85' Konstantin Schopp의 결승골로 승부가 갈렸으며, 이 득점은 경기 유일한 골로 기록되었다. 경기 전 모델이 64%의 확률로 예측했던 Hartberg 승리가 실제로 적중하며 경기가 마무리되었다.",
+   "date": "2026-10-24",
+   "home": "Hartberg",
+   "away": "Wolfsberger AC",
+   "at": "2026-10-24T18:37:52+00:00",
+   "model": "gemini-3.1-flash-lite"
   }
  },
  "fails": {}
