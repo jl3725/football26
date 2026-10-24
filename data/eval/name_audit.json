@@ -330,11 +330,11 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 597,
+   "total": 598,
    "exact": 490,
    "rule": 23,
    "ambiguous": 1,
-   "orphan": 84,
+   "orphan": 85,
    "orphans": [
     {
      "squad": "Celta Vigo",
@@ -510,8 +510,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 344,
-   "exact": 344,
+   "total": 345,
+   "exact": 345,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -786,8 +786,8 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 637,
-   "exact": 556,
+   "total": 638,
+   "exact": 557,
    "rule": 10,
    "ambiguous": 1,
    "orphan": 71,
@@ -1067,8 +1067,8 @@
    ]
   },
   "match_events": {
-   "total": 328,
-   "exact": 328,
+   "total": 330,
+   "exact": 330,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1093,11 +1093,11 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 482,
+   "total": 483,
    "exact": 441,
    "rule": 10,
    "ambiguous": 0,
-   "orphan": 31,
+   "orphan": 32,
    "orphans": [
     {
      "squad": "Nice",
@@ -1266,8 +1266,8 @@
    ]
   },
   "espn_subs": {
-   "total": 358,
-   "exact": 354,
+   "total": 359,
+   "exact": 355,
    "rule": 3,
    "ambiguous": 0,
    "orphan": 1,
@@ -1288,8 +1288,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 261,
-   "exact": 261,
+   "total": 264,
+   "exact": 264,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1673,8 +1673,8 @@
    ]
   },
   "espn_subs": {
-   "total": 402,
-   "exact": 392,
+   "total": 403,
+   "exact": 393,
    "rule": 10,
    "ambiguous": 0,
    "orphan": 0,
@@ -1727,6 +1727,16 @@
      "starts": 9
     },
     {
+     "squad": "La Louvière",
+     "name": "Mustapha Ubandoma",
+     "starts": 9
+    },
+    {
+     "squad": "Westerlo",
+     "name": "Issai Sakamoto",
+     "starts": 8
+    },
+    {
      "squad": "Genk",
      "name": "Lucca Kiaba Mounganga",
      "starts": 8
@@ -1737,24 +1747,14 @@
      "starts": 8
     },
     {
-     "squad": "La Louvière",
-     "name": "Mustapha Ubandoma",
-     "starts": 8
-    },
-    {
      "squad": "Standard Liège",
      "name": "Dennis Dargahi",
      "starts": 7
     },
     {
-     "squad": "Westerlo",
-     "name": "Issai Sakamoto",
-     "starts": 7
-    },
-    {
      "squad": "Zulte Waregem",
      "name": "István Átrok",
-     "starts": 5
+     "starts": 6
     },
     {
      "squad": "Cercle Brugge",
@@ -1868,8 +1868,8 @@
    ]
   },
   "espn_subs": {
-   "total": 272,
-   "exact": 272,
+   "total": 277,
+   "exact": 277,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1884,8 +1884,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 254,
-   "exact": 254,
+   "total": 256,
+   "exact": 256,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -2304,8 +2304,8 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 357,
-   "exact": 347,
+   "total": 358,
+   "exact": 348,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 10,
@@ -2603,8 +2603,8 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 345,
-   "exact": 337,
+   "total": 346,
+   "exact": 338,
    "rule": 1,
    "ambiguous": 0,
    "orphan": 7,
@@ -2661,8 +2661,8 @@
    ]
   },
   "espn_subs": {
-   "total": 270,
-   "exact": 270,
+   "total": 271,
+   "exact": 271,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
