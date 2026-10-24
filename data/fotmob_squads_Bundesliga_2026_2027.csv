@@ -158,7 +158,7 @@ SV Elversberg,Luis Seifert,1400774,defenders,,Centre-Back,DF,22,2004-01-26,4.0,G
 SV Elversberg,Lukas Pinckert,1280560,defenders,CB,Centre-Back,DF,26,2000-01-22,19.0,GER,False,,2026-10-24
 SV Elversberg,Lasse Günther,1245692,defenders,LB,Left-Back,DF,23,2003-03-21,21.0,GER,False,,2026-10-24
 SV Elversberg,Luca Sirch,1097361,defenders,CB,Centre-Back,DF,27,1999-06-14,26.0,GER,False,,2026-10-24
-SV Elversberg,Jan Gyamerah,458602,defenders,RB,Right-Back,DF,31,1995-06-18,30.0,GHA,True,Doubtful,2026-10-24
+SV Elversberg,Jan Gyamerah,458602,defenders,RB,Right-Back,DF,31,1995-06-18,30.0,GHA,False,,2026-10-24
 SV Elversberg,Maximilian Rohr,1077911,defenders,CB,Centre-Back,DF,31,1995-06-27,31.0,GER,False,,2026-10-24
 SV Elversberg,Felix Keidel,1366338,defenders,"CDM,RB,LB",Defensive Midfield,DF,23,2003-06-14,43.0,GER,False,,2026-10-24
 SV Elversberg,Amara Condé,763990,midfielders,CDM,Defensive Midfield,MF,29,1997-01-06,6.0,GER,False,,2026-10-24
@@ -201,7 +201,7 @@ RB Leipzig,Marc Guiu,1412137,attackers,ST,Centre-Forward,FW,20,2006-01-04,9.0,ES
 RB Leipzig,Brajan Gruda,1430151,attackers,"RW,CAM,CM",Right Winger,FW,22,2004-05-31,10.0,GER,False,,2026-10-24
 RB Leipzig,Johan Bakayoko,1203194,attackers,RW,Right Winger,FW,23,2003-04-20,11.0,BEL,False,,2026-10-24
 RB Leipzig,Tidiam Gomis,1482733,attackers,"ST,LW",Centre-Forward,FW,20,2006-08-08,27.0,FRA,False,,2026-10-24
-RB Leipzig,Christopher Nkunku,704523,attackers,"ST,CAM",Centre-Forward,FW,28,1997-11-14,28.0,FRA,False,,2026-10-24
+RB Leipzig,Christopher Nkunku,704523,attackers,"ST,CAM",Centre-Forward,FW,28,1997-11-14,28.0,FRA,True,Doubtful,2026-10-24
 RB Leipzig,Rômulo,1314412,attackers,ST,Centre-Forward,FW,24,2002-02-08,40.0,BRA,False,,2026-10-24
 RB Leipzig,Samba Konaté,1860819,attackers,ST,Centre-Forward,FW,17,2009-02-27,45.0,FRA,False,,2026-10-24
 Werder Bremen,Karl Hein,982692,keepers,GK,Goalkeeper,GK,24,2002-04-13,1.0,EST,False,,2026-10-24
@@ -244,7 +244,7 @@ Hamburger SV,David Møller Wolfe,1049679,defenders,"LB,LWB,LM,RM",Left-Back,DF,2
 Hamburger SV,Zakaria El Ouahdi,1287871,defenders,"RB,RWB,RM",Right-Back,DF,24,2001-12-31,7.0,MAR,False,,2026-10-24
 Hamburger SV,Warmed Omari,1202595,defenders,CB,Centre-Back,DF,26,2000-04-23,17.0,COM,False,,2026-10-24
 Hamburger SV,Jordan Torunarigha,700074,defenders,CB,Centre-Back,DF,29,1997-08-07,23.0,NGA,False,,2026-10-24
-Hamburger SV,Nicolás Capaldo,1018564,defenders,CB,Centre-Back,DF,28,1998-09-14,24.0,ARG,False,,2026-10-24
+Hamburger SV,Nicolás Capaldo,1018564,defenders,CB,Centre-Back,DF,28,1998-09-14,24.0,ARG,True,Doubtful,2026-10-24
 Hamburger SV,Sebastiaan Bornauw,922892,defenders,CB,Centre-Back,DF,27,1999-03-22,33.0,BEL,False,,2026-10-24
 Hamburger SV,Joel Agyekum,1685570,defenders,CB,Centre-Back,DF,21,2005-03-08,39.0,GER,False,,2026-10-24
 Hamburger SV,Shafiq Nandja,1804634,defenders,CB,Centre-Back,DF,19,2007-01-15,43.0,GER,False,,2026-10-24
@@ -364,18 +364,18 @@ Hoffenheim,Valentin Gendrey,1077653,defenders,LB,Left-Back,DF,26,2000-06-21,15.0
 Hoffenheim,Albian Hajdari,1186015,defenders,"CB,LB",Centre-Back,DF,23,2003-05-18,21.0,KVX,True,A few weeks,2026-10-24
 Hoffenheim,Vladimír Coufal,307317,defenders,"RB,RWB,RM",Right-Back,DF,34,1992-08-22,34.0,CZE,False,,2026-10-24
 Hoffenheim,Mats Rots,1445416,defenders,LB,Left-Back,DF,20,2006-03-11,39.0,NED,False,,2026-10-24
-Hoffenheim,Leon Avdullahu,1478148,midfielders,"CDM,CM,CB",Defensive Midfield,MF,22,2004-02-23,7.0,KVX,False,,2026-10-24
+Hoffenheim,Leon Avdullahu,1478148,midfielders,"CDM,CM",Defensive Midfield,MF,22,2004-02-23,7.0,KVX,False,,2026-10-24
 Hoffenheim,Nathan De Cat,1664759,midfielders,"CDM,CAM,CM,RW",Defensive Midfield,MF,18,2008-07-19,17.0,BEL,True,Late November 2026,2026-10-24
 Hoffenheim,Wouter Burger,947884,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,25,2001-02-16,18.0,NED,False,,2026-10-24
-Hoffenheim,Bambasé Conté,1338957,midfielders,"CAM,RW",Attacking Midfield,MF,23,2003-07-07,20.0,GER,False,,2026-10-24
-Hoffenheim,Andrej Kramarić,173461,midfielders,"RW,CAM,RM,CM",Right Winger,MF,35,1991-06-19,27.0,CRO,False,,2026-10-24
+Hoffenheim,Bambasé Conté,1338957,midfielders,"CAM,RW,RM",Attacking Midfield,MF,23,2003-07-07,20.0,GER,False,,2026-10-24
+Hoffenheim,Andrej Kramarić,173461,midfielders,"RW,CAM,RM,CM,ST",Right Winger,MF,35,1991-06-19,27.0,CRO,False,,2026-10-24
 Hoffenheim,Cajetan Lenz,1793498,midfielders,CDM,Defensive Midfield,MF,20,2006-06-16,32.0,GER,False,,2026-10-24
 Hoffenheim,Patrick Wimmer,1073498,attackers,"RW,LW,RM,CAM,CM",Right Winger,FW,25,2001-05-30,8.0,AUT,True,Mid November 2026,2026-10-24
 Hoffenheim,Max Moerstedt,1486537,attackers,ST,Centre-Forward,FW,20,2006-01-15,9.0,GER,False,,2026-10-24
 Hoffenheim,Adam Hložek,969870,attackers,"ST,CAM,LW",Centre-Forward,FW,24,2002-07-25,10.0,CZE,False,,2026-10-24
 Hoffenheim,Fisnik Asllani,1219540,attackers,"ST,CAM",Centre-Forward,FW,24,2002-08-08,11.0,KVX,False,,2026-10-24
 Hoffenheim,Adam Daghim,1353000,attackers,"RW,ST,LW,LM",Right Winger,FW,21,2005-09-28,14.0,DEN,False,,2026-10-24
-Hoffenheim,Tim Lemperle,1124825,attackers,ST,Centre-Forward,FW,24,2002-02-05,19.0,GER,False,,2026-10-24
+Hoffenheim,Tim Lemperle,1124825,attackers,"ST,RW",Centre-Forward,FW,24,2002-02-05,19.0,GER,False,,2026-10-24
 Stuttgart,Fabian Bredlow,522236,keepers,GK,Goalkeeper,GK,31,1995-03-02,1.0,GER,False,,2026-10-24
 Stuttgart,Marius Funk,659086,keepers,GK,Goalkeeper,GK,30,1996-01-01,33.0,GER,False,,2026-10-24
 Stuttgart,Dennis Seimen,1478098,keepers,GK,Goalkeeper,GK,20,2005-12-01,41.0,GER,False,,2026-10-24
