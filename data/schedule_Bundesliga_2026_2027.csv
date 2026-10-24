@@ -5,6 +5,7 @@ Augsburg,3,2026-09-12,H,Leverkusen,2,2,2:2,D
 Augsburg,4,2026-09-19,A,Werder Bremen,2,3,2:3,L
 Augsburg,5,2026-10-10,H,Bayern Munich,2,2,2:2,D
 Augsburg,6,2026-10-17,A,SV Elversberg,3,4,3:4,L
+Augsburg,7,2026-10-24,H,Union Berlin,1,1,1:1,D
 Bayern Munich,1,2026-08-28,H,Stuttgart,5,1,5:1,W
 Bayern Munich,2,2026-09-05,A,Schalke 04,0,0,0:0,D
 Bayern Munich,3,2026-09-13,A,SV Elversberg,2,1,2:1,W
@@ -42,6 +43,7 @@ Hamburger SV,3,2026-09-13,A,RB Leipzig,0,5,0:5,L
 Hamburger SV,4,2026-09-19,H,Köln,2,1,2:1,W
 Hamburger SV,5,2026-10-10,A,Hoffenheim,3,2,3:2,W
 Hamburger SV,6,2026-10-17,H,Stuttgart,1,0,1:0,W
+Hamburger SV,7,2026-10-24,A,SC Paderborn,0,1,0:1,L
 Hoffenheim,1,2026-08-29,A,Köln,2,3,2:3,L
 Hoffenheim,2,2026-09-05,H,Dortmund,2,3,2:3,L
 Hoffenheim,3,2026-09-12,H,Stuttgart,2,1,2:1,W
@@ -54,6 +56,7 @@ Köln,3,2026-09-12,H,Werder Bremen,1,1,1:1,D
 Köln,4,2026-09-19,A,Hamburger SV,1,2,1:2,L
 Köln,5,2026-10-11,H,Gladbach,2,1,2:1,W
 Köln,6,2026-10-16,A,Frankfurt,0,1,0:1,L
+Köln,7,2026-10-24,H,Schalke 04,0,0,0:0,D
 Leverkusen,1,2026-08-29,A,SV Elversberg,2,3,2:3,L
 Leverkusen,2,2026-09-05,H,Union Berlin,4,0,4:0,W
 Leverkusen,3,2026-09-12,A,Augsburg,2,2,2:2,D
@@ -66,30 +69,35 @@ Mainz 05,3,2026-09-12,H,Frankfurt,1,3,1:3,L
 Mainz 05,4,2026-09-19,A,Gladbach,4,3,4:3,W
 Mainz 05,5,2026-10-10,H,Leverkusen,3,4,3:4,L
 Mainz 05,6,2026-10-17,A,Schalke 04,1,0,1:0,W
+Mainz 05,7,2026-10-24,H,Werder Bremen,2,3,2:3,L
 RB Leipzig,1,2026-08-29,H,Gladbach,3,0,3:0,W
 RB Leipzig,2,2026-09-05,A,Werder Bremen,1,3,1:3,L
 RB Leipzig,3,2026-09-13,H,Hamburger SV,5,0,5:0,W
 RB Leipzig,4,2026-09-20,A,Leverkusen,0,2,0:2,L
 RB Leipzig,5,2026-10-10,H,Frankfurt,6,0,6:0,W
 RB Leipzig,6,2026-10-17,A,Bayern Munich,1,6,1:6,L
+RB Leipzig,7,2026-10-24,H,SV Elversberg,4,0,4:0,W
 SC Paderborn,1,2026-08-29,A,Mainz 05,0,0,0:0,D
 SC Paderborn,2,2026-09-05,H,Freiburg,0,1,0:1,L
 SC Paderborn,3,2026-09-12,A,Dortmund,0,3,0:3,L
 SC Paderborn,4,2026-09-20,H,Hoffenheim,3,1,3:1,W
 SC Paderborn,5,2026-10-10,H,Stuttgart,0,2,0:2,L
 SC Paderborn,6,2026-10-17,A,Werder Bremen,2,2,2:2,D
+SC Paderborn,7,2026-10-24,H,Hamburger SV,1,0,1:0,W
 SV Elversberg,1,2026-08-29,H,Leverkusen,3,2,3:2,W
 SV Elversberg,2,2026-09-05,A,Gladbach,4,3,4:3,W
 SV Elversberg,3,2026-09-13,H,Bayern Munich,1,2,1:2,L
 SV Elversberg,4,2026-09-20,A,Schalke 04,0,0,0:0,D
 SV Elversberg,5,2026-10-10,A,Union Berlin,0,1,0:1,L
 SV Elversberg,6,2026-10-17,H,Augsburg,4,3,4:3,W
+SV Elversberg,7,2026-10-24,A,RB Leipzig,0,4,0:4,L
 Schalke 04,1,2026-08-30,A,Augsburg,0,3,0:3,L
 Schalke 04,2,2026-09-05,H,Bayern Munich,0,0,0:0,D
 Schalke 04,3,2026-09-11,A,Union Berlin,3,1,3:1,W
 Schalke 04,4,2026-09-20,H,SV Elversberg,0,0,0:0,D
 Schalke 04,5,2026-10-11,A,Freiburg,1,2,1:2,L
 Schalke 04,6,2026-10-17,H,Mainz 05,0,1,0:1,L
+Schalke 04,7,2026-10-24,A,Köln,0,0,0:0,D
 Stuttgart,1,2026-08-28,A,Bayern Munich,1,5,1:5,L
 Stuttgart,2,2026-09-04,H,Köln,4,1,4:1,W
 Stuttgart,3,2026-09-12,A,Hoffenheim,1,2,1:2,L
@@ -103,9 +111,11 @@ Union Berlin,3,2026-09-11,H,Schalke 04,1,3,1:3,L
 Union Berlin,4,2026-09-18,A,Bayern Munich,0,7,0:7,L
 Union Berlin,5,2026-10-10,H,SV Elversberg,1,0,1:0,W
 Union Berlin,6,2026-10-17,H,Dortmund,0,0,0:0,D
+Union Berlin,7,2026-10-24,A,Augsburg,1,1,1:1,D
 Werder Bremen,1,2026-08-30,A,Freiburg,1,4,1:4,L
 Werder Bremen,2,2026-09-05,H,RB Leipzig,3,1,3:1,W
 Werder Bremen,3,2026-09-12,A,Köln,1,1,1:1,D
 Werder Bremen,4,2026-09-19,H,Augsburg,3,2,3:2,W
 Werder Bremen,5,2026-10-09,A,Dortmund,2,2,2:2,D
 Werder Bremen,6,2026-10-17,H,SC Paderborn,2,2,2:2,D
+Werder Bremen,7,2026-10-24,A,Mainz 05,3,2,3:2,W
