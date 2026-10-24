@@ -767,6 +767,38 @@
    "away": "Kasımpaşa",
    "at": "2026-10-24T14:05:56+00:00",
    "model": "gemini-3.1-flash-lite"
+  },
+  "401874958": {
+   "text": "Bologna가 Unipol Domus에서 Cagliari를 2-0으로 꺾으며 승리를 거뒀다. 후반 57' Nicolo Casale가 Juan Miranda의 도움을 받아 헤더로 결승골을 기록했고, 80'에는 Federico Bernardeschi가 페널티킥으로 추가골을 넣었다. Cagliari가 57.1%의 점유율을 기록했으나 슈팅 수에서 4-10, 유효 슈팅에서 1-5로 밀리며 Bologna가 경기 내용을 주도했다. 이번 결과는 Bologna의 승리를 점쳤던 모델과 ClubElo의 예측대로 적중했다.",
+   "date": "2026-10-24",
+   "home": "Cagliari",
+   "away": "Bologna",
+   "at": "2026-10-24T15:33:45+00:00",
+   "model": "gemini-3.1-flash-lite"
+  },
+  "401874961": {
+   "text": "Como가 Sassuolo를 상대로 2-0 승리를 거뒀다. 49' Anastasios Douvikas가 Maxence Caqueret의 도움으로 득점한 데 이어, 60'에는 Kaiki의 도움을 받은 Anastasios Douvikas가 추가 골을 기록했다. Como는 점유율 55.6%, 슈팅 14개, 유효 슈팅 6개를 기록하며 점유율 44.4%, 슈팅 7개, 유효 슈팅 0개에 그친 Sassuolo보다 우세한 수치를 보였다. 이번 결과는 Como의 승리를 점쳤던 팬 투표, 모델, ClubElo의 사전 예측에 부합했다.",
+   "date": "2026-10-24",
+   "home": "Como",
+   "away": "Sassuolo",
+   "at": "2026-10-24T15:34:17+00:00",
+   "model": "gemini-3.5-flash"
+  },
+  "5904776": {
+   "text": "Erzurumspor FK가 Gaziantep FK를 상대로 3-1 승리를 거두며 원정에서 귀중한 승점 3점을 챙겼다. 52' Miguel Cardoso의 선제골을 시작으로 64' Amar Gerxhaliu와 90'+4' Guram Giorbelidze가 득점했고, Gaziantep FK는 70' Orhan Ovacikli의 자책골로 한 점을 만회하는 데 그쳤다. Gaziantep FK가 점유율 61.5%와 슈팅 21개를 기록하며 경기를 주도했으나, Erzurumspor FK는 7개의 선방을 기록한 골키퍼의 활약과 높은 결정력을 앞세워 승리했다. 이번 결과는 Gaziantep FK의 승리를 점쳤던 모델의 예측을 빗나가게 했다.",
+   "date": "2026-10-24",
+   "home": "Gaziantep FK",
+   "away": "Erzurumspor FK",
+   "at": "2026-10-24T15:34:35+00:00",
+   "model": "gemini-3.1-flash-lite"
+  },
+  "401882830": {
+   "text": "Elche가 Estadio de Vallecas에서 Rayo Vallecano를 3-0으로 완파하며 승리를 거뒀다. 전반 23' Federico Redondo와 36' Fer Niño가 연달아 페널티킥을 성공시켰고, 68' Germán Valera가 Facundo Buonanotte의 도움을 받아 추가 골을 기록한 반면 Rayo Vallecano의 Pathé Ciss는 39' 페널티킥을 실축했다. Rayo Vallecano는 점유율 56.8%와 슈팅 18개를 기록하며 경기를 주도했으나 유효 슈팅에서 5-9로 밀리며 득점에 실패했다. 이번 결과는 Rayo Vallecano의 승리를 점쳤던 팬 투표와 모델, ClubElo의 예측을 모두 빗나가게 했다.",
+   "date": "2026-10-24",
+   "home": "Rayo Vallecano",
+   "away": "Elche",
+   "at": "2026-10-24T15:34:48+00:00",
+   "model": "gemini-3.1-flash-lite"
   }
  },
  "fails": {}

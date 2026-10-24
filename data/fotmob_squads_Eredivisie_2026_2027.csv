@@ -312,7 +312,7 @@ Utrecht,Jaygo van Ommeren,1708469,midfielders,"CM,CDM",Central Midfield,MF,18,20
 Utrecht,Artem Stepanov,1684420,attackers,ST,Centre-Forward,FW,19,2007-08-10,9.0,UKR,True,Mid November 2026,2026-10-24
 Utrecht,Yoann Cathline,1234634,attackers,"LW,RW,LM",Left Winger,FW,24,2002-07-22,10.0,FRA,False,,2026-10-24
 Utrecht,Ángel Alarcon,1403694,attackers,"RW,LW",Right Winger,FW,22,2004-05-15,11.0,ESP,False,,2026-10-24
-Utrecht,Adrian Blake,1365253,attackers,LW,Left Winger,FW,21,2005-07-15,15.0,ENG,False,,2026-10-24
+Utrecht,Adrian Blake,1365253,attackers,"LW,LM",Left Winger,FW,21,2005-07-15,15.0,ENG,False,,2026-10-24
 Utrecht,Sem van Duijn,1370090,attackers,"ST,RW,CAM,LW",Centre-Forward,FW,22,2004-03-18,17.0,NED,False,,2026-10-24
 Utrecht,Miliano Jonathans,1359577,attackers,RW,Right Winger,FW,22,2004-04-05,26.0,IDN,True,Day to day,2026-10-24
 Utrecht,Noah Ohio,1224719,attackers,ST,Centre-Forward,FW,23,2003-01-16,29.0,NED,True,Early January 2027,2026-10-24
@@ -429,15 +429,15 @@ Zwolle,Gabriël Reiziger,1701453,midfielders,RW,Right Winger,MF,21,2005-10-10,20
 Zwolle,Thijs Oosting,932541,midfielders,"CAM,CM,ST",Attacking Midfield,MF,26,2000-05-02,25.0,NED,False,,2026-10-24
 Zwolle,Ryan Thomas,496356,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,31,1994-12-20,30.0,NZL,False,,2026-10-24
 Zwolle,Nick Fichtinger,1529480,midfielders,"CDM,CM",Defensive Midfield,MF,22,2004-04-06,34.0,NED,False,,2026-10-24
-Zwolle,Gilles van der Wal,1946368,midfielders,RW,Right Winger,MF,18,2008-06-24,37.0,NED,False,,2026-10-24
 Zwolle,Givaro Rahajaän,1797811,midfielders,,Central Midfield,MF,18,2008-02-19,38.0,NED,False,,2026-10-24
 Zwolle,Younes Namli,320672,attackers,RW,Right Winger,FW,32,1994-06-20,7.0,DEN,True,Day to day,2026-10-24
 Zwolle,Elias Sørensen,961340,attackers,"LW,LM",Left Winger,FW,27,1999-09-18,9.0,DEN,False,,2026-10-24
 Zwolle,Koen Kostons,782561,attackers,ST,Centre-Forward,FW,27,1999-09-18,10.0,NED,False,,2026-10-24
-Zwolle,Dylan Mbayo,1022702,attackers,"RW,RM,LW,ST",Right Winger,FW,25,2001-10-11,11.0,BEL,False,,2026-10-24
+Zwolle,Dylan Mbayo,1022702,attackers,"RW,RM,CM,LM,ST,LW",Right Winger,FW,25,2001-10-11,11.0,BEL,False,,2026-10-24
 Zwolle,Sydney van Hooijdonk,949481,attackers,ST,Centre-Forward,FW,26,2000-02-06,17.0,NED,False,,2026-10-24
 Zwolle,Odysseus Velanas,775666,attackers,"LW,CAM,RW",Left Winger,FW,28,1998-06-05,18.0,GRE,False,,2026-10-24
 Zwolle,Ibrahim Cissoko,1282156,attackers,"LW,LM",Left Winger,FW,23,2003-03-26,22.0,NED,False,,2026-10-24
+Zwolle,Gilles van der Wal,1946368,attackers,RW,Right Winger,FW,18,2008-06-24,37.0,NED,False,,2026-10-24
 Telstar,Ronald Koeman,369295,keepers,GK,Goalkeeper,GK,31,1995-05-23,1.0,NED,False,,2026-10-24
 Telstar,Finn Mulder,1709754,keepers,,Goalkeeper,GK,18,2008-02-01,13.0,NED,False,,2026-10-24
 Telstar,Daan Reiziger,1012784,keepers,GK,Goalkeeper,GK,25,2001-06-18,20.0,NED,False,,2026-10-24
@@ -446,6 +446,7 @@ Telstar,Abdelnor Soualhia,1792483,defenders,CB,Centre-Back,DF,25,2001-06-27,4.0,
 Telstar,Prince Aning,1381588,defenders,LWB,Left-Back,DF,22,2004-04-23,5.0,NED,False,,2026-10-24
 Telstar,Nigel Ogidi Nwankwo,1362369,defenders,LB,Left-Back,DF,28,1998-08-04,15.0,NED,False,,2026-10-24
 Telstar,Sem Valk,1257074,defenders,CB,Centre-Back,DF,24,2002-02-16,16.0,NED,False,,2026-10-24
+Telstar,Gabi Caschili,1126874,defenders,RB,Right-Back,DF,23,2003-06-14,18.0,NED,False,,2026-10-24
 Telstar,Abdelraffie Benzzine,1667704,defenders,,Centre-Back,DF,20,2006-04-04,24.0,NED,False,,2026-10-24
 Telstar,Mano Olfers,1714781,defenders,CM,Central Midfield,DF,20,2006-08-02,25.0,SUR,False,,2026-10-24
 Telstar,Jaylan van Schooneveld,1667715,defenders,,Centre-Back,DF,21,2005-02-02,26.0,NED,False,,2026-10-24
@@ -460,7 +461,6 @@ Telstar,Rui Mendes,953929,midfielders,"CAM,RW",Attacking Midfield,MF,26,1999-11-
 Telstar,Tyrone Owusu,1290453,midfielders,"CDM,CAM,CM",Defensive Midfield,MF,27,1999-03-05,10.0,NED,False,,2026-10-24
 Telstar,Harrie Kuster,1662353,midfielders,"CM,CAM,ST",Central Midfield,MF,21,2005-09-11,14.0,NED,False,,2026-10-24
 Telstar,Nils Rossen,1329268,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,22,2004-08-01,17.0,NED,False,,2026-10-24
-Telstar,Gabi Caschili,1126874,midfielders,RB,Right-Back,MF,23,2003-06-14,18.0,NED,False,,2026-10-24
 Telstar,Noach Shenkman,1825940,midfielders,CDM,Defensive Midfield,MF,20,2006-10-02,23.0,NED,False,,2026-10-24
 Telstar,Patrick Brouwer,1294800,midfielders,"CAM,LW",Attacking Midfield,MF,25,2001-03-19,27.0,NED,False,,2026-10-24
 Telstar,Rojendro Oudsten,1797839,midfielders,CDM,Defensive Midfield,MF,18,2007-11-12,28.0,SUR,False,,2026-10-24
@@ -469,7 +469,7 @@ Telstar,Jelani Seedorf,1393996,attackers,ST,Centre-Forward,FW,21,2004-12-12,9.0,
 Telstar,Nökkvi Thorisson,1044472,attackers,ST,Centre-Forward,FW,27,1999-08-13,11.0,ISL,False,,2026-10-24
 Telstar,Fabiano Rust,1553366,attackers,,Centre-Forward,FW,21,2005-01-16,19.0,NED,False,,2026-10-24
 Telstar,Fofin Turay,1485517,attackers,RW,Right Winger,FW,22,2004-06-07,21.0,NED,False,,2026-10-24
-Telstar,Arjany Martha,1180735,attackers,"RW,ST,CAM,CM",Right Winger,FW,23,2003-09-04,42.0,CUW,False,,2026-10-24
+Telstar,Arjany Martha,1180735,attackers,"RW,CAM,CM,ST",Right Winger,FW,23,2003-09-04,42.0,CUW,False,,2026-10-24
 ADO Den Haag,Kilian Nikièma,1313190,keepers,GK,Goalkeeper,GK,23,2003-06-22,1.0,BFA,False,,2026-10-24
 ADO Den Haag,Caleb Kramer,1794163,keepers,,Goalkeeper,GK,20,2006-08-01,20.0,NED,False,,2026-10-24
 ADO Den Haag,Niclas Thiede,1074000,keepers,GK,Goalkeeper,GK,27,1999-04-14,23.0,GER,False,,2026-10-24
