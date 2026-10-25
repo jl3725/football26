@@ -184,12 +184,22 @@ export default function NewsTab({ team, accent }: { team: string; accent: string
   const [data, setData] = useState<News | null>(null);
   const [kind, setKind] = useState("all");
   const [src, setSrc] = useState("");
+  const [err, setErr] = useState(false);
+  const [tryN, setTryN] = useState(0);
   useEffect(() => {
-    let a = true; setData(null); setKind("all"); setSrc("");
-    getNews(team).then((d) => a && setData(d)).catch(() => {});
+    let a = true; setData(null); setErr(false); setKind("all"); setSrc("");
+    getNews(team).then((d) => a && setData(d)).catch(() => a && setErr(true));   // 실패를 스켈레톤으로 숨기지 않는다
     return () => { a = false; };
-  }, [team]);
+  }, [team, tryN]);
   const byLink = useMemo(() => new Map((data?.articles ?? []).map((a) => [a.link, a])), [data]);
+  if (err) return (
+    <div className="placeholder">
+      <div className="ph-icon">📰</div>
+      <div className="ph-title">뉴스를 못 불러왔어요</div>
+      <div className="ph-sub">서버가 깨어나는 중일 수 있어요(무료 서버는 쉬면 잠들고, 깨는 데 1~2분)</div>
+      <button className="loan-more" onClick={() => setTryN((n) => n + 1)}>다시 시도</button>
+    </div>
+  );
   if (!data) return <div className="skel-wrap"><SkelCards n={6} cols="repeat(auto-fill, minmax(280px, 1fr))" face={false} /></div>;
   if (data.articles.length === 0)
     return <div className="placeholder"><div className="ph-icon">📰</div><div className="ph-title">뉴스 없음</div><div className="ph-sub">이 구단의 최근 기사가 아직 없습니다</div></div>;

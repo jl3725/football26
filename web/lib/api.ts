@@ -100,16 +100,32 @@ function noteDataVersion(v: string | null) {
   _dataVer = v;
 }
 
-async function j<T>(url: string): Promise<T> {
+async function once<T>(url: string): Promise<T> {
   const ctl = new AbortController();
   const timer = setTimeout(() => ctl.abort(), FETCH_TIMEOUT_MS);
   try {
     const res = await fetch(url, { cache: "no-store", signal: ctl.signal });
-    if (!res.ok) throw new Error(`${res.status} ${url}`);
+    if (!res.ok) throw Object.assign(new Error(`${res.status} ${url}`), { status: res.status });
     noteDataVersion(res.headers.get("x-data-version"));
     return res.json();
   } finally {
     clearTimeout(timer);
+  }
+}
+
+// 서버가 깨는 중·다시 뜨는 중(Render 무료: 잠들면 30~60초, 데이터 커밋마다 재배포)엔 프록시가 502/503/504·연결 끊김·
+// 시간 초과를 준다 — 5초 뒤 한 번만 다시. 예전엔 한 번 실패하면 화면이 스켈레톤에 멈췄다(2026-10-25 뉴스 탭 '안 열림').
+const transient = (e: unknown) => {
+  const s = (e as { status?: number })?.status;
+  return s === undefined ? true : s === 502 || s === 503 || s === 504;   // status 없음 = 네트워크 오류·시간 초과
+};
+async function j<T>(url: string): Promise<T> {
+  try {
+    return await once<T>(url);
+  } catch (e) {
+    if (!transient(e)) throw e;
+    await new Promise((r) => setTimeout(r, 5000));
+    return once<T>(url);
   }
 }
 

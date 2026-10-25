@@ -57,7 +57,10 @@ export default function Page() {
   const [ov, setOv] = useState<Overview | null>(null);
   const [ctx, setCtx] = useState<Context | null>(null);
   const [loading, setLoading] = useState(false);
-  const [ovErr, setOvErr] = useState(false);
+  // 팀 화면 실패 — 404 만 '데이터 없음', 나머지(서버가 깨는 중·5xx·시간 초과)는 '서버 응답 없음'. 예전엔 서버가 안 뜬 날
+  // 모든 팀이 '이 구단의 데이터가 아직 없습니다'로 보였다(2026-10-26)
+  const [ovErr, setOvErr] = useState<false | "nodata" | "down">(false);
+  const [ovTry, setOvTry] = useState(0);
   const [pendingPlayer, setPendingPlayer] = useState("");   // 전역 검색 딥링크용
   const [urlPlayer, setUrlPlayer] = useState("");           // Player 탭에서 고른 선수 — 주소에 남겨 공유·새로고침 유지
   const [homeView, setHomeView] = useState<"all" | "league" | "INTL">("all");   // 전체 홈 · 리그 홈 · 국가대표
@@ -147,9 +150,9 @@ export default function Page() {
     setLoading(true); setOvErr(false);
     getOverview(sel)
       .then((d) => { if (alive) { setOv(d); setLoading(false); } })
-      .catch(() => { if (alive) { setOv(null); setOvErr(true); setLoading(false); } });
+      .catch((e) => { if (alive) { setOv(null); setOvErr((e as { status?: number })?.status === 404 ? "nodata" : "down"); setLoading(false); } });
     return () => { alive = false; };
-  }, [sel, urlReady]);
+  }, [sel, urlReady, ovTry]);
 
   // 팀 색은 팀 화면에서만 — 전체·리그 홈은 브랜드 색(예전엔 홈도 마지막 팀(아스날) 빨강으로 물들었다)
   const accent = !home && ov ? toAccent(ov.color) : "#ff4d5e";
@@ -185,6 +188,14 @@ export default function Page() {
     if (home) return <HomeDashboard accent={accent} onPickTeam={pickTeam} onPickLeagueTeam={pickLeagueTeam}
       leagueLabel={leagueLabel} league={league} leagues={LEAGUE_TABS} onLeague={switchLeague}
       view={homeView} onView={setHomeView} initialIntlComp={intlComp} />;
+    if (ovErr === "down") return (
+      <div className="nodata-card">
+        <div className="nodata-emoji">📡</div>
+        <h3>{sel}</h3>
+        <p>서버 응답이 없어요 — 깨어나는 중일 수 있어요(무료 서버는 쉬면 잠들고, 깨는 데 1~2분)</p>
+        <button className="loan-more" onClick={() => setOvTry((n) => n + 1)}>다시 시도</button>
+      </div>
+    );
     if (ovErr) return (
       <div className="nodata-card">
         <div className="nodata-emoji">{isPromoted ? "🆙" : "📭"}</div>
