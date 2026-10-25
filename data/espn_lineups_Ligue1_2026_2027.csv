@@ -2598,43 +2598,243 @@ Paris FC,2026-10-24,Lens,away,4-2-3-1,False,23,Rudy Matondo,SUB,0.0,401876427
 Paris FC,2026-10-24,Lens,away,4-2-3-1,False,18,Omar Sissoko,SUB,0.0,401876427
 Paris FC,2026-10-24,Lens,away,4-2-3-1,False,3,Emmanuel Mbemba,SUB,0.0,401876427
 Paris FC,2026-10-24,Lens,away,4-2-3-1,False,8,Zabi Gueu,SUB,0.0,401876427
-Monaco,2026-10-25,Lille,home,4-2-3-1,True,1,Lukas Hradecky,G,1,401876425
-Monaco,2026-10-25,Lille,home,4-2-3-1,True,4,Jordan Teze,CD-L,6,401876425
-Monaco,2026-10-25,Lille,home,4-2-3-1,True,72,Sadibou Sané,CD-R,5,401876425
-Monaco,2026-10-25,Lille,home,4-2-3-1,True,20,Názinho,LB,3,401876425
-Monaco,2026-10-25,Lille,home,4-2-3-1,True,2,Vanderson,RB,2,401876425
-Monaco,2026-10-25,Lille,home,4-2-3-1,True,10,Aleksandr Golovin,AM,10,401876425
-Monaco,2026-10-25,Lille,home,4-2-3-1,True,6,Denis Zakaria,LM,4,401876425
-Monaco,2026-10-25,Lille,home,4-2-3-1,True,8,Lamine Camara,RM,8,401876425
-Monaco,2026-10-25,Lille,home,4-2-3-1,True,29,Paris Brunner,F,9,401876425
-Monaco,2026-10-25,Lille,home,4-2-3-1,True,31,Ansu Fati,AM-L,11,401876425
-Monaco,2026-10-25,Lille,home,4-2-3-1,True,28,Mamadou Coulibaly,AM-R,7,401876425
-Monaco,2026-10-25,Lille,home,4-2-3-1,False,11,Matthis Abline,SUB,0,401876425
-Monaco,2026-10-25,Lille,home,4-2-3-1,False,18,Takumi Minamino,SUB,0,401876425
-Monaco,2026-10-25,Lille,home,4-2-3-1,False,16,Philipp Köhn,SUB,0,401876425
-Monaco,2026-10-25,Lille,home,4-2-3-1,False,22,Mohammed Salisu,SUB,0,401876425
-Monaco,2026-10-25,Lille,home,4-2-3-1,False,49,Ilane Touré,SUB,0,401876425
-Monaco,2026-10-25,Lille,home,4-2-3-1,False,7,Mathys Detourbet,SUB,0,401876425
-Monaco,2026-10-25,Lille,home,4-2-3-1,False,13,Christian Mawissa,SUB,0,401876425
-Monaco,2026-10-25,Lille,home,4-2-3-1,False,37,Edan Diop,SUB,0,401876425
-Monaco,2026-10-25,Lille,home,4-2-3-1,False,9,Folarin Balogun,SUB,0,401876425
-Lille,2026-10-25,Monaco,away,4-3-3,True,1,Berke Özer,G,1,401876425
-Lille,2026-10-25,Monaco,away,4-3-3,True,4,Alexsandro,CD-L,6,401876425
-Lille,2026-10-25,Monaco,away,4-3-3,True,23,Tanguy Nianzou,CD-R,5,401876425
-Lille,2026-10-25,Monaco,away,4-3-3,True,15,Romain Perraud,LB,3,401876425
-Lille,2026-10-25,Monaco,away,4-3-3,True,3,Nathan Ngoy,RB,2,401876425
-Lille,2026-10-25,Monaco,away,4-3-3,True,6,Nabil Bentaleb,CM,4,401876425
-Lille,2026-10-25,Monaco,away,4-3-3,True,21,Benjamin André,LM,8,401876425
-Lille,2026-10-25,Monaco,away,4-3-3,True,17,Ngal'ayel Mukau,RM,7,401876425
-Lille,2026-10-25,Monaco,away,4-3-3,True,10,Hákon Haraldsson,F,9,401876425
-Lille,2026-10-25,Monaco,away,4-3-3,True,35,Soriba Diaoune,LF,11,401876425
-Lille,2026-10-25,Monaco,away,4-3-3,True,8,Ethan Mbappé,RF,10,401876425
-Lille,2026-10-25,Monaco,away,4-3-3,False,28,Gaetan Perrin,SUB,0,401876425
-Lille,2026-10-25,Monaco,away,4-3-3,False,24,Calvin Verdonk,SUB,0,401876425
-Lille,2026-10-25,Monaco,away,4-3-3,False,9,Olivier Giroud,SUB,0,401876425
-Lille,2026-10-25,Monaco,away,4-3-3,False,26,Isaac Cossier,SUB,0,401876425
-Lille,2026-10-25,Monaco,away,4-3-3,False,12,Orlando Gill,SUB,0,401876425
-Lille,2026-10-25,Monaco,away,4-3-3,False,7,Dilane Bakwa,SUB,0,401876425
-Lille,2026-10-25,Monaco,away,4-3-3,False,14,Maurits Kjaergaard,SUB,0,401876425
-Lille,2026-10-25,Monaco,away,4-3-3,False,38,Maxima Goffi,SUB,0,401876425
-Lille,2026-10-25,Monaco,away,4-3-3,False,33,Matah Yondjio,SUB,0,401876425
+Monaco,2026-10-25,Lille,home,4-2-3-1,True,1,Lukas Hradecky,G,1.0,401876425
+Monaco,2026-10-25,Lille,home,4-2-3-1,True,4,Jordan Teze,CD-L,6.0,401876425
+Monaco,2026-10-25,Lille,home,4-2-3-1,True,72,Sadibou Sané,CD-R,5.0,401876425
+Monaco,2026-10-25,Lille,home,4-2-3-1,True,20,Názinho,LB,3.0,401876425
+Monaco,2026-10-25,Lille,home,4-2-3-1,True,2,Vanderson,RB,2.0,401876425
+Monaco,2026-10-25,Lille,home,4-2-3-1,True,10,Aleksandr Golovin,AM,10.0,401876425
+Monaco,2026-10-25,Lille,home,4-2-3-1,True,6,Denis Zakaria,LM,4.0,401876425
+Monaco,2026-10-25,Lille,home,4-2-3-1,True,8,Lamine Camara,RM,8.0,401876425
+Monaco,2026-10-25,Lille,home,4-2-3-1,True,29,Paris Brunner,F,9.0,401876425
+Monaco,2026-10-25,Lille,home,4-2-3-1,True,31,Ansu Fati,AM-L,11.0,401876425
+Monaco,2026-10-25,Lille,home,4-2-3-1,True,28,Mamadou Coulibaly,AM-R,7.0,401876425
+Monaco,2026-10-25,Lille,home,4-2-3-1,False,11,Matthis Abline,SUB,0.0,401876425
+Monaco,2026-10-25,Lille,home,4-2-3-1,False,18,Takumi Minamino,SUB,0.0,401876425
+Monaco,2026-10-25,Lille,home,4-2-3-1,False,16,Philipp Köhn,SUB,0.0,401876425
+Monaco,2026-10-25,Lille,home,4-2-3-1,False,22,Mohammed Salisu,SUB,0.0,401876425
+Monaco,2026-10-25,Lille,home,4-2-3-1,False,49,Ilane Touré,SUB,0.0,401876425
+Monaco,2026-10-25,Lille,home,4-2-3-1,False,7,Mathys Detourbet,SUB,0.0,401876425
+Monaco,2026-10-25,Lille,home,4-2-3-1,False,13,Christian Mawissa,SUB,0.0,401876425
+Monaco,2026-10-25,Lille,home,4-2-3-1,False,37,Edan Diop,SUB,0.0,401876425
+Monaco,2026-10-25,Lille,home,4-2-3-1,False,9,Folarin Balogun,SUB,0.0,401876425
+Lille,2026-10-25,Monaco,away,4-3-3,True,1,Berke Özer,G,1.0,401876425
+Lille,2026-10-25,Monaco,away,4-3-3,True,4,Alexsandro,CD-L,6.0,401876425
+Lille,2026-10-25,Monaco,away,4-3-3,True,23,Tanguy Nianzou,CD-R,5.0,401876425
+Lille,2026-10-25,Monaco,away,4-3-3,True,15,Romain Perraud,LB,3.0,401876425
+Lille,2026-10-25,Monaco,away,4-3-3,True,3,Nathan Ngoy,RB,2.0,401876425
+Lille,2026-10-25,Monaco,away,4-3-3,True,6,Nabil Bentaleb,CM,4.0,401876425
+Lille,2026-10-25,Monaco,away,4-3-3,True,21,Benjamin André,LM,8.0,401876425
+Lille,2026-10-25,Monaco,away,4-3-3,True,17,Ngal'ayel Mukau,RM,7.0,401876425
+Lille,2026-10-25,Monaco,away,4-3-3,True,10,Hákon Haraldsson,F,9.0,401876425
+Lille,2026-10-25,Monaco,away,4-3-3,True,35,Soriba Diaoune,LF,11.0,401876425
+Lille,2026-10-25,Monaco,away,4-3-3,True,8,Ethan Mbappé,RF,10.0,401876425
+Lille,2026-10-25,Monaco,away,4-3-3,False,28,Gaetan Perrin,SUB,0.0,401876425
+Lille,2026-10-25,Monaco,away,4-3-3,False,24,Calvin Verdonk,SUB,0.0,401876425
+Lille,2026-10-25,Monaco,away,4-3-3,False,9,Olivier Giroud,SUB,0.0,401876425
+Lille,2026-10-25,Monaco,away,4-3-3,False,26,Isaac Cossier,SUB,0.0,401876425
+Lille,2026-10-25,Monaco,away,4-3-3,False,12,Orlando Gill,SUB,0.0,401876425
+Lille,2026-10-25,Monaco,away,4-3-3,False,7,Dilane Bakwa,SUB,0.0,401876425
+Lille,2026-10-25,Monaco,away,4-3-3,False,14,Maurits Kjaergaard,SUB,0.0,401876425
+Lille,2026-10-25,Monaco,away,4-3-3,False,38,Maxima Goffi,SUB,0.0,401876425
+Lille,2026-10-25,Monaco,away,4-3-3,False,33,Matah Yondjio,SUB,0.0,401876425
+Auxerre,2026-10-25,Le Mans,home,3-4-2-1,True,1,Paul Nardi,G,1,401876429
+Auxerre,2026-10-25,Le Mans,home,3-4-2-1,True,4,Axel Tuanzebe,CD,5,401876429
+Auxerre,2026-10-25,Le Mans,home,3-4-2-1,True,92,Clément Akpa,CD-L,4,401876429
+Auxerre,2026-10-25,Le Mans,home,3-4-2-1,True,15,Christ Makosso,CD-R,6,401876429
+Auxerre,2026-10-25,Le Mans,home,3-4-2-1,True,5,Kévin Danois,CM-L,8,401876429
+Auxerre,2026-10-25,Le Mans,home,3-4-2-1,True,8,Naouirou Ahamada,CM-R,7,401876429
+Auxerre,2026-10-25,Le Mans,home,3-4-2-1,True,22,Fredrik Oppegard,LM,3,401876429
+Auxerre,2026-10-25,Le Mans,home,3-4-2-1,True,27,Lamine Sy,RM,2,401876429
+Auxerre,2026-10-25,Le Mans,home,3-4-2-1,True,9,Cameron Archer,F,9,401876429
+Auxerre,2026-10-25,Le Mans,home,3-4-2-1,True,10,Danny Namaso,CF-L,11,401876429
+Auxerre,2026-10-25,Le Mans,home,3-4-2-1,True,21,Romain Faivre,CF-R,10,401876429
+Auxerre,2026-10-25,Le Mans,home,3-4-2-1,False,20,Sinaly Diomande,SUB,0,401876429
+Auxerre,2026-10-25,Le Mans,home,3-4-2-1,False,34,Lamfia Dioubaté,SUB,0,401876429
+Auxerre,2026-10-25,Le Mans,home,3-4-2-1,False,77,Aristide Zossou,SUB,0,401876429
+Auxerre,2026-10-25,Le Mans,home,3-4-2-1,False,46,Arthur Piedfort,SUB,0,401876429
+Auxerre,2026-10-25,Le Mans,home,3-4-2-1,False,35,Elikya Legros,SUB,0,401876429
+Auxerre,2026-10-25,Le Mans,home,3-4-2-1,False,23,Mamadou Diop,SUB,0,401876429
+Auxerre,2026-10-25,Le Mans,home,3-4-2-1,False,17,Pierre Ekwah,SUB,0,401876429
+Auxerre,2026-10-25,Le Mans,home,3-4-2-1,False,32,Rayan Mandengue,SUB,0,401876429
+Auxerre,2026-10-25,Le Mans,home,3-4-2-1,False,47,Youssef Khoudda,SUB,0,401876429
+Le Mans,2026-10-25,Auxerre,away,3-1-4-2,False,10,Jean Vercruysse,,0,401876429
+Le Mans,2026-10-25,Auxerre,away,3-1-4-2,False,23,Daouda Traoré,,0,401876429
+Le Mans,2026-10-25,Auxerre,away,3-1-4-2,False,1,Ewan Hatfout,,0,401876429
+Le Mans,2026-10-25,Auxerre,away,3-1-4-2,False,26,Rayan Bamba,,0,401876429
+Le Mans,2026-10-25,Auxerre,away,3-1-4-2,False,36,Lenny Videira,,0,401876429
+Le Mans,2026-10-25,Auxerre,away,3-1-4-2,False,20,William Harhouz,,0,401876429
+Le Mans,2026-10-25,Auxerre,away,3-1-4-2,False,7,Bilal Brahimi,,0,401876429
+Le Mans,2026-10-25,Auxerre,away,3-1-4-2,False,25,Dame Guèye,,0,401876429
+Le Mans,2026-10-25,Auxerre,away,3-1-4-2,False,15,Noa Boissé,,0,401876429
+Le Mans,2026-10-25,Auxerre,away,3-1-4-2,True,98,Nicolas Kocik,G,1,401876429
+Le Mans,2026-10-25,Auxerre,away,3-1-4-2,True,17,Samuel Yohou,CD,4,401876429
+Le Mans,2026-10-25,Auxerre,away,3-1-4-2,True,16,Raúl Torrente,CD-L,6,401876429
+Le Mans,2026-10-25,Auxerre,away,3-1-4-2,True,19,Djibril Sidibé,CD-R,5,401876429
+Le Mans,2026-10-25,Auxerre,away,3-1-4-2,True,8,Alexandre Lauray,SW,8,401876429
+Le Mans,2026-10-25,Auxerre,away,3-1-4-2,True,29,Lucas Bretelle,CM-L,11,401876429
+Le Mans,2026-10-25,Auxerre,away,3-1-4-2,True,9,Antoine Rabillard,CM-R,7,401876429
+Le Mans,2026-10-25,Auxerre,away,3-1-4-2,True,22,Lucas Calodat,LM,3,401876429
+Le Mans,2026-10-25,Auxerre,away,3-1-4-2,True,18,Lucas Buades,RM,2,401876429
+Le Mans,2026-10-25,Auxerre,away,3-1-4-2,True,13,Habib Diallo,CF-L,10,401876429
+Le Mans,2026-10-25,Auxerre,away,3-1-4-2,True,14,Louis Mafouta,CF-R,9,401876429
+Angers,2026-10-25,Lorient,home,5-3-2,True,1,Anthony Lopes,G,1,401876430
+Angers,2026-10-25,Lorient,home,5-3-2,True,4,Ousmane Camara,CD,5,401876430
+Angers,2026-10-25,Lorient,home,5-3-2,True,21,Jordan Lefort,CD-L,4,401876430
+Angers,2026-10-25,Lorient,home,5-3-2,True,2,Carlens Arcus,CD-R,6,401876430
+Angers,2026-10-25,Lorient,home,5-3-2,True,17,Joseph Kalulu Kyatengwa,LB,3,401876430
+Angers,2026-10-25,Lorient,home,5-3-2,True,27,Lilian Raolisoa,RB,2,401876430
+Angers,2026-10-25,Lorient,home,5-3-2,True,8,Branco van den Boomen,CM,8,401876430
+Angers,2026-10-25,Lorient,home,5-3-2,True,10,Amine Sbaï,CM-L,11,401876430
+Angers,2026-10-25,Lorient,home,5-3-2,True,14,Yassin Belkhdim,CM-R,7,401876430
+Angers,2026-10-25,Lorient,home,5-3-2,True,19,Amine El Ouazzani,CF-L,9,401876430
+Angers,2026-10-25,Lorient,home,5-3-2,True,9,Prosper Peter,CF-R,10,401876430
+Angers,2026-10-25,Lorient,home,5-3-2,False,11,Harouna Djibirin,SUB,0,401876430
+Angers,2026-10-25,Lorient,home,5-3-2,False,6,Louis Mouton,SUB,0,401876430
+Angers,2026-10-25,Lorient,home,5-3-2,False,16,Melvin Zinga,SUB,0,401876430
+Angers,2026-10-25,Lorient,home,5-3-2,False,34,Maël Gernigon,SUB,0,401876430
+Angers,2026-10-25,Lorient,home,5-3-2,False,7,Mamadou Simbakoli,SUB,0,401876430
+Angers,2026-10-25,Lorient,home,5-3-2,False,26,Anthony Bermont,SUB,0,401876430
+Angers,2026-10-25,Lorient,home,5-3-2,False,93,Haris Belkebla,SUB,0,401876430
+Angers,2026-10-25,Lorient,home,5-3-2,False,20,Marius Louãr,SUB,0,401876430
+Angers,2026-10-25,Lorient,home,5-3-2,False,18,Jim Allevinah,SUB,0,401876430
+Lorient,2026-10-25,Angers,away,3-4-2-1,True,38,Yvon Mvogo,G,1,401876430
+Lorient,2026-10-25,Angers,away,3-4-2-1,True,3,Montassar Talbi,CD,5,401876430
+Lorient,2026-10-25,Angers,away,3-4-2-1,True,95,Isaak Touré,CD-L,4,401876430
+Lorient,2026-10-25,Angers,away,3-4-2-1,True,32,Nathaniel Adjei,CD-R,6,401876430
+Lorient,2026-10-25,Angers,away,3-4-2-1,True,8,Noah Cadiou,CM-L,8,401876430
+Lorient,2026-10-25,Angers,away,3-4-2-1,True,62,Arthur Avom,CM-R,7,401876430
+Lorient,2026-10-25,Angers,away,3-4-2-1,True,43,Arsène Kouassi,LM,3,401876430
+Lorient,2026-10-25,Angers,away,3-4-2-1,True,20,Dembo Sylla,RM,2,401876430
+Lorient,2026-10-25,Angers,away,3-4-2-1,True,18,Ibrahima Baldé,F,9,401876430
+Lorient,2026-10-25,Angers,away,3-4-2-1,True,19,Souleymane Faye,CF-L,11,401876430
+Lorient,2026-10-25,Angers,away,3-4-2-1,True,17,Jean-Victor Makengo,CF-R,10,401876430
+Lorient,2026-10-25,Angers,away,3-4-2-1,False,11,Théo Le Bris,SUB,0,401876430
+Lorient,2026-10-25,Angers,away,3-4-2-1,False,10,Isak Jensen,SUB,0,401876430
+Lorient,2026-10-25,Angers,away,3-4-2-1,False,21,Bingourou Kamara,SUB,0,401876430
+Lorient,2026-10-25,Angers,away,3-4-2-1,False,33,Gabin Bernardeau,SUB,0,401876430
+Lorient,2026-10-25,Angers,away,3-4-2-1,False,2,Alec Georgen,SUB,0,401876430
+Lorient,2026-10-25,Angers,away,3-4-2-1,False,55,Nosa Obaretin,SUB,0,401876430
+Lorient,2026-10-25,Angers,away,3-4-2-1,False,30,Srdjan Kuzmic,SUB,0,401876430
+Lorient,2026-10-25,Angers,away,3-4-2-1,False,15,Tosin Aiyegun,SUB,0,401876430
+Lorient,2026-10-25,Angers,away,3-4-2-1,False,42,Mamadou Koné,SUB,0,401876430
+Marseille,2026-10-25,Le Havre,home,4-2-3-1,True,1,Jeffrey de Lange,G,1,401876426
+Marseille,2026-10-25,Le Havre,home,4-2-3-1,True,21,Nayef Aguerd,CD-L,6,401876426
+Marseille,2026-10-25,Le Havre,home,4-2-3-1,True,4,CJ Egan-Riley,CD-R,5,401876426
+Marseille,2026-10-25,Le Havre,home,4-2-3-1,True,33,Emerson,LB,3,401876426
+Marseille,2026-10-25,Le Havre,home,4-2-3-1,True,22,Timothy Weah,RB,2,401876426
+Marseille,2026-10-25,Le Havre,home,4-2-3-1,True,8,Himad Abdelli,AM,10,401876426
+Marseille,2026-10-25,Le Havre,home,4-2-3-1,True,23,Pierre-Emile Højbjerg,LM,4,401876426
+Marseille,2026-10-25,Le Havre,home,4-2-3-1,True,6,Tochukwu Nnadi,RM,8,401876426
+Marseille,2026-10-25,Le Havre,home,4-2-3-1,True,9,Amine Gouiri,F,9,401876426
+Marseille,2026-10-25,Le Havre,home,4-2-3-1,True,14,Igor Paixão,AM-L,11,401876426
+Marseille,2026-10-25,Le Havre,home,4-2-3-1,True,77,Amine Harit,AM-R,7,401876426
+Marseille,2026-10-25,Le Havre,home,4-2-3-1,False,19,Geoffrey Kondogbia,SUB,0,401876426
+Marseille,2026-10-25,Le Havre,home,4-2-3-1,False,11,Neal Maupay,SUB,0,401876426
+Marseille,2026-10-25,Le Havre,home,4-2-3-1,False,48,Keyliane Abdallah,SUB,0,401876426
+Marseille,2026-10-25,Le Havre,home,4-2-3-1,False,25,Ulisses Garcia,SUB,0,401876426
+Marseille,2026-10-25,Le Havre,home,4-2-3-1,False,74,Kelyann Bezahaf,SUB,0,401876426
+Marseille,2026-10-25,Le Havre,home,4-2-3-1,False,7,Angel Gomes,SUB,0,401876426
+Marseille,2026-10-25,Le Havre,home,4-2-3-1,False,18,Bamo Meïté,SUB,0,401876426
+Marseille,2026-10-25,Le Havre,home,4-2-3-1,False,42,Nouhoum Kamissoko,SUB,0,401876426
+Marseille,2026-10-25,Le Havre,home,4-2-3-1,False,92,Théo Vermot,SUB,0,401876426
+Le Havre,2026-10-25,Marseille,away,5-3-2,True,93,Gauthier Gallon,G,1,401876426
+Le Havre,2026-10-25,Marseille,away,5-3-2,True,6,Junior Mwanga,CD,5,401876426
+Le Havre,2026-10-25,Marseille,away,5-3-2,True,5,Ahmed Touba,CD-L,4,401876426
+Le Havre,2026-10-25,Marseille,away,5-3-2,True,15,Ayumu Seko,CD-R,6,401876426
+Le Havre,2026-10-25,Marseille,away,5-3-2,True,27,Enzo Koffi,LB,3,401876426
+Le Havre,2026-10-25,Marseille,away,5-3-2,True,20,Djibril Ouziad,RB,2,401876426
+Le Havre,2026-10-25,Marseille,away,5-3-2,True,26,Simon Ebonog,CM,8,401876426
+Le Havre,2026-10-25,Marseille,away,5-3-2,True,7,Amir Richardson,CM-L,11,401876426
+Le Havre,2026-10-25,Marseille,away,5-3-2,True,14,Rassoul Ndiaye,CM-R,7,401876426
+Le Havre,2026-10-25,Marseille,away,5-3-2,True,25,Mbwana Samatta,CF-L,9,401876426
+Le Havre,2026-10-25,Marseille,away,5-3-2,True,38,Rayan Fofana,CF-R,10,401876426
+Le Havre,2026-10-25,Marseille,away,5-3-2,False,9,Josh Maja,SUB,0,401876426
+Le Havre,2026-10-25,Marseille,away,5-3-2,False,33,Hakim Dongopandji,SUB,0,401876426
+Le Havre,2026-10-25,Marseille,away,5-3-2,False,24,Guy Zohouri,SUB,0,401876426
+Le Havre,2026-10-25,Marseille,away,5-3-2,False,78,Daren Mosengo,SUB,0,401876426
+Le Havre,2026-10-25,Marseille,away,5-3-2,False,97,Mouhamed N'Diaye,SUB,0,401876426
+Le Havre,2026-10-25,Marseille,away,5-3-2,False,23,Vincent Sasso,SUB,0,401876426
+Le Havre,2026-10-25,Marseille,away,5-3-2,False,30,Sota Nakamura,SUB,0,401876426
+Le Havre,2026-10-25,Marseille,away,5-3-2,False,16,Arnaud Bodart,SUB,0,401876426
+Le Havre,2026-10-25,Marseille,away,5-3-2,False,17,Kaito Mizuta,SUB,0,401876426
+Rennes,2026-10-25,Strasbourg,home,5-3-2,True,30,Brice Samba,G,1,401876424
+Rennes,2026-10-25,Strasbourg,home,5-3-2,True,4,Charlie Cresswell,CD,5,401876424
+Rennes,2026-10-25,Strasbourg,home,5-3-2,True,24,Anthony Rouault,CD-L,4,401876424
+Rennes,2026-10-25,Strasbourg,home,5-3-2,True,48,Abdelhamid Aït Boudlal,CD-R,6,401876424
+Rennes,2026-10-25,Strasbourg,home,5-3-2,True,18,Mahamadou Nagida,LB,3,401876424
+Rennes,2026-10-25,Strasbourg,home,5-3-2,True,95,Przemyslaw Frankowski,RB,2,401876424
+Rennes,2026-10-25,Strasbourg,home,5-3-2,True,21,Valentin Rongier,CM,8,401876424
+Rennes,2026-10-25,Strasbourg,home,5-3-2,True,45,Mahdi Camara,CM-L,11,401876424
+Rennes,2026-10-25,Strasbourg,home,5-3-2,True,17,Sebastian Szymanski,CM-R,7,401876424
+Rennes,2026-10-25,Strasbourg,home,5-3-2,True,11,Mousa Al-Tamari,CF-L,9,401876424
+Rennes,2026-10-25,Strasbourg,home,5-3-2,True,22,Boulaye Dia,CF-R,10,401876424
+Rennes,2026-10-25,Strasbourg,home,5-3-2,False,12,Eliezer Mayenda,SUB,0,401876424
+Rennes,2026-10-25,Strasbourg,home,5-3-2,False,14,Bryan Reynolds,SUB,0,401876424
+Rennes,2026-10-25,Strasbourg,home,5-3-2,False,5,Gonçalo Oliveira,SUB,0,401876424
+Rennes,2026-10-25,Strasbourg,home,5-3-2,False,90,Issa Soumaré,SUB,0,401876424
+Rennes,2026-10-25,Strasbourg,home,5-3-2,False,6,Djaoui Cissé,SUB,0,401876424
+Rennes,2026-10-25,Strasbourg,home,5-3-2,False,28,Adrien Thomasson,SUB,0,401876424
+Rennes,2026-10-25,Strasbourg,home,5-3-2,False,10,Ludovic Blas,SUB,0,401876424
+Rennes,2026-10-25,Strasbourg,home,5-3-2,False,60,Kilian Belazzoug,SUB,0,401876424
+Rennes,2026-10-25,Strasbourg,home,5-3-2,False,26,Quentin Merlin,SUB,0,401876424
+Strasbourg,2026-10-25,Rennes,away,4-2-3-1,True,1,Filip Jørgensen,G,1,401876424
+Strasbourg,2026-10-25,Rennes,away,4-2-3-1,True,31,Karim Coulibaly,CD-L,6,401876424
+Strasbourg,2026-10-25,Rennes,away,4-2-3-1,True,4,Jeyland Mitchell,CD-R,5,401876424
+Strasbourg,2026-10-25,Rennes,away,4-2-3-1,True,36,Oso,LB,3,401876424
+Strasbourg,2026-10-25,Rennes,away,4-2-3-1,True,16,Genesis Antwi,RB,2,401876424
+Strasbourg,2026-10-25,Rennes,away,4-2-3-1,True,23,Diogo Sousa,AM,10,401876424
+Strasbourg,2026-10-25,Rennes,away,4-2-3-1,True,14,Dário Essugo,LM,4,401876424
+Strasbourg,2026-10-25,Rennes,away,4-2-3-1,True,21,Pape Diop,RM,8,401876424
+Strasbourg,2026-10-25,Rennes,away,4-2-3-1,True,40,Conrad Harder,F,9,401876424
+Strasbourg,2026-10-25,Rennes,away,4-2-3-1,True,10,Giovanni Reyna,AM-L,11,401876424
+Strasbourg,2026-10-25,Rennes,away,4-2-3-1,True,80,Gessime Yassine,AM-R,7,401876424
+Strasbourg,2026-10-25,Rennes,away,4-2-3-1,False,29,Samir El Mourabet,SUB,0,401876424
+Strasbourg,2026-10-25,Rennes,away,4-2-3-1,False,30,Jacobo Ortega Conde,SUB,0,401876424
+Strasbourg,2026-10-25,Rennes,away,4-2-3-1,False,12,Milosz Piekutowski,SUB,0,401876424
+Strasbourg,2026-10-25,Rennes,away,4-2-3-1,False,24,Lucas Høgsberg,SUB,0,401876424
+Strasbourg,2026-10-25,Rennes,away,4-2-3-1,False,20,Martial Godo,SUB,0,401876424
+Strasbourg,2026-10-25,Rennes,away,4-2-3-1,False,28,Tyrese Noubissie,SUB,0,401876424
+Strasbourg,2026-10-25,Rennes,away,4-2-3-1,False,35,Yaya Diémé,SUB,0,401876424
+Strasbourg,2026-10-25,Rennes,away,4-2-3-1,False,43,Yoann Becker,SUB,0,401876424
+Strasbourg,2026-10-25,Rennes,away,4-2-3-1,False,26,Omari Kellyman,SUB,0,401876424
+Toulouse,2026-10-25,Troyes,home,4-4-2,True,16,Guillaume Restes,G,1,401876423
+Toulouse,2026-10-25,Troyes,home,4-4-2,True,2,Rasmus Nicolaisen,CD-L,6,401876423
+Toulouse,2026-10-25,Troyes,home,4-4-2,True,3,Mark McKenzie,CD-R,5,401876423
+Toulouse,2026-10-25,Troyes,home,4-4-2,True,12,Christ Tapé,LB,3,401876423
+Toulouse,2026-10-25,Troyes,home,4-4-2,True,22,Rafik Messali,RB,2,401876423
+Toulouse,2026-10-25,Troyes,home,4-4-2,True,14,Niko Sigur,CM-L,8,401876423
+Toulouse,2026-10-25,Troyes,home,4-4-2,True,23,Cristian Cásseres Jr.,CM-R,4,401876423
+Toulouse,2026-10-25,Troyes,home,4-4-2,True,8,Thomas Jørgensen,LM,11,401876423
+Toulouse,2026-10-25,Troyes,home,4-4-2,True,15,Aron Donnum,RM,7,401876423
+Toulouse,2026-10-25,Troyes,home,4-4-2,True,20,Casper Tengstedt,CF-L,9,401876423
+Toulouse,2026-10-25,Troyes,home,4-4-2,True,13,Jacen Russell-Rowe,CF-R,10,401876423
+Toulouse,2026-10-25,Troyes,home,4-4-2,False,31,Niklas Schmidt,SUB,0,401876423
+Toulouse,2026-10-25,Troyes,home,4-4-2,False,7,Julián Vignolo,SUB,0,401876423
+Toulouse,2026-10-25,Troyes,home,4-4-2,False,9,Santiago Hidalgo,SUB,0,401876423
+Toulouse,2026-10-25,Troyes,home,4-4-2,False,94,Ismail Diallo,SUB,0,401876423
+Toulouse,2026-10-25,Troyes,home,4-4-2,False,5,Seny Koumbassa,SUB,0,401876423
+Toulouse,2026-10-25,Troyes,home,4-4-2,False,18,Mathis Amougou,SUB,0,401876423
+Toulouse,2026-10-25,Troyes,home,4-4-2,False,6,Alexis Vossah,SUB,0,401876423
+Toulouse,2026-10-25,Troyes,home,4-4-2,False,1,Théo Collin,SUB,0,401876423
+Toulouse,2026-10-25,Troyes,home,4-4-2,False,37,Ilyas Azizi,SUB,0,401876423
+Troyes,2026-10-25,Toulouse,away,4-3-3,True,40,Hillel Konaté,G,1,401876423
+Troyes,2026-10-25,Toulouse,away,4-3-3,True,4,Michel Diaz,CD-L,6,401876423
+Troyes,2026-10-25,Toulouse,away,4-3-3,True,6,Adrien Monfray,CD-R,5,401876423
+Troyes,2026-10-25,Toulouse,away,4-3-3,True,5,Paolo Gozzi Iweru,LB,3,401876423
+Troyes,2026-10-25,Toulouse,away,4-3-3,True,2,Lucas Maronnier,RB,2,401876423
+Troyes,2026-10-25,Toulouse,away,4-3-3,True,29,Dermane Karim,CM,4,401876423
+Troyes,2026-10-25,Toulouse,away,4-3-3,True,8,Mouhamed Diop,LM,8,401876423
+Troyes,2026-10-25,Toulouse,away,4-3-3,True,17,Antoine Mille,RM,7,401876423
+Troyes,2026-10-25,Toulouse,away,4-3-3,True,20,Renaud Ripart,F,9,401876423
+Troyes,2026-10-25,Toulouse,away,4-3-3,True,23,Timothé Nkada,LF,11,401876423
+Troyes,2026-10-25,Toulouse,away,4-3-3,True,10,Merwan Ifnaoui,RF,10,401876423
+Troyes,2026-10-25,Toulouse,away,4-3-3,False,22,Hugo Picard,SUB,0,401876423
+Troyes,2026-10-25,Toulouse,away,4-3-3,False,34,Lassana Simakha,SUB,0,401876423
+Troyes,2026-10-25,Toulouse,away,4-3-3,False,9,Jeremy Le Douaron,SUB,0,401876423
+Troyes,2026-10-25,Toulouse,away,4-3-3,False,26,Alexandre Philiponeau,SUB,0,401876423
+Troyes,2026-10-25,Toulouse,away,4-3-3,False,7,Kandet Diawara,SUB,0,401876423
+Troyes,2026-10-25,Toulouse,away,4-3-3,False,36,Idrissa Soukouna,SUB,0,401876423
+Troyes,2026-10-25,Toulouse,away,4-3-3,False,31,Noah Donkor,SUB,0,401876423
+Troyes,2026-10-25,Toulouse,away,4-3-3,False,33,Patrick Beach,SUB,0,401876423
+Troyes,2026-10-25,Toulouse,away,4-3-3,False,11,Iron Gomis,SUB,0,401876423

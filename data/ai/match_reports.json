@@ -1263,6 +1263,94 @@
    "away": "Venezia",
    "at": "2026-10-25T17:27:41+00:00",
    "model": "gemini-flash-lite-latest"
+  },
+  "401878764": {
+   "text": "Sunderland와 Leeds United의 경기는 0대0 무승부로 끝났다. 점유율은 Sunderland가 50.4퍼센트, Leeds United가 49.6퍼센트를 기록했으며, 슈팅은 Sunderland가 15개, Leeds United가 11개였다. 팬 투표와 모델, ClubElo 모두 Leeds United의 승리를 예측했으나 빗나갔다.",
+   "date": "2026-10-25",
+   "home": "Sunderland",
+   "away": "Leeds United",
+   "at": "2026-10-25T18:55:10+00:00",
+   "model": "gemini-flash-lite-latest"
+  },
+  "401884759": {
+   "text": "Bayern Munich가 Freiburg를 상대로 3-1 승리를 거두며 원정에서 승점 3점을 획득했다. 전반 16' Dayot Upamecano의 선제골과 42' Serge Gnabry의 득점으로 앞서 나간 Bayern Munich는 82' Tom Bischof의 자책골 이후 90'+5' Michael Olise가 쐐기골을 기록했다. 경기 기록상 Bayern Munich는 점유율 55.9%와 유효 슈팅 9개를 기록하며 Freiburg를 앞섰고, 경기 전 팬 투표와 모델 및 ClubElo의 Bayern Munich 승리 예측은 모두 적중했다.",
+   "date": "2026-10-25",
+   "home": "Freiburg",
+   "away": "Bayern Munich",
+   "at": "2026-10-25T18:55:16+00:00",
+   "model": "gemini-3.1-flash-lite"
+  },
+  "401876430": {
+   "text": "Angers와 Lorient의 경기는 0대0 무승부로 끝났다. 두 팀은 경고를 각각 1장씩 받았고 득점이나 퇴장, 페널티는 없었다. 점유율은 Lorient가 52.5 대 47.5로 앞섰고, 슈팅은 Lorient가 10개, Angers가 8개를 기록했다. 팬 투표와 모델이 모두 Lorient의 승리를 예측했으나 적중하지 않았다.",
+   "date": "2026-10-25",
+   "home": "Angers",
+   "away": "Lorient",
+   "at": "2026-10-25T18:55:23+00:00",
+   "model": "gemini-flash-lite-latest"
+  },
+  "401876429": {
+   "text": "Auxerre와 Le Mans의 경기는 1-1 무승부로 끝났다. 48'에 Lucas Buades가 헤더로 선제골을 넣었으나, 56'에 Cameron Archer가 헤더로 동점골을 기록했다. 경기 통계에서 Auxerre는 점유율 59.6% 대 40.4%, 슈팅 13대 11, 유효 슈팅 5대 2로 우세한 경기를 펼쳤으나 승부를 가리지 못했다. 팬 투표와 모델이 모두 Auxerre의 승리를 예상했으나 빗나갔다.",
+   "date": "2026-10-25",
+   "home": "Auxerre",
+   "away": "Le Mans",
+   "at": "2026-10-25T18:55:31+00:00",
+   "model": "gemini-flash-lite-latest"
+  },
+  "401876426": {
+   "text": "Marseille가 Le Havre를 상대로 4-3 승리를 거뒀다. 전반 5' CJ Egan-Riley의 헤더 선제골과 33' Timothy Weah의 득점으로 앞서간 Marseille는 50' Igor Paixão와 55' Himad Abdelli의 추가골로 점수 차를 벌렸고, Le Havre는 77' Josh Maja의 페널티킥 득점과 86' Mouhamed N'Diaye의 헤더, 89' Josh Maja의 헤더로 추격했으나 승부를 뒤집지 못했다. 경기 기록에서 Le Havre가 슈팅 21-11, 유효 슈팅 7-5로 우세했으나 Marseille가 효율적인 공격을 보였다. 팬 투표와 모델의 Marseille 승리 예측은 적중했다.",
+   "date": "2026-10-25",
+   "home": "Marseille",
+   "away": "Le Havre",
+   "at": "2026-10-25T18:55:40+00:00",
+   "model": "gemini-flash-lite-latest"
+  },
+  "401876424": {
+   "text": "Rennes가 Strasbourg을 상대로 3대0 승리를 거뒀다. 전반 34분 Boulaye Dia의 득점을 시작으로 Sebastian Szymanski가 41분과 61분에 연속골을 터뜨리며 승부를 결정지었다. 경기 통계에서는 Strasbourg이 점유율 53.4대 46.6으로 앞섰으나, 슈팅 수에서 15대 12로 우세했던 Rennes가 효율적인 공격을 선보였다. 사전 예측에서 모델과 ClubElo 모두 Rennes 승리를 예상해 적중했다.",
+   "date": "2026-10-25",
+   "home": "Rennes",
+   "away": "Strasbourg",
+   "at": "2026-10-25T18:55:47+00:00",
+   "model": "gemini-flash-lite-latest"
+  },
+  "401876423": {
+   "text": "Toulouse와 Troyes의 경기는 0대0 무승부로 끝났다. 경기에서 득점, 퇴장, 페널티는 발생하지 않았고 Toulouse가 6개의 경고, Troyes가 2개의 경고를 받았다. 점유율은 Toulouse가 62.8퍼센트, Troyes가 37.2퍼센트를 기록했고 슈팅은 Toulouse가 7개, Troyes가 8개였다. 팬 투표와 모델 모두 Toulouse 승리를 예측했으나 빗나갔다.",
+   "date": "2026-10-25",
+   "home": "Toulouse",
+   "away": "Troyes",
+   "at": "2026-10-25T18:55:55+00:00",
+   "model": "gemini-flash-lite-latest"
+  },
+  "5846007": {
+   "text": "Salzburg가 LASK에 3-1로 역전승을 거두며 경기를 마무리했다. 전반 13' LASK의 Samuel Adeniran이 선제골을 터뜨렸으나, Salzburg의 Haris Tabakovic가 25', 49', 74'에 연속으로 골을 몰아치며 해트트릭을 기록해 경기를 뒤집었다. LASK는 3개의 경고를 받았고 Salzburg는 2개의 경고를 기록했다. 경기 전 모델이 LASK의 승리를 예측했으나 적중하지 않았다.",
+   "date": "2026-10-25",
+   "home": "LASK",
+   "away": "Salzburg",
+   "at": "2026-10-25T18:56:03+00:00",
+   "model": "gemini-flash-lite-latest"
+  },
+  "5904780": {
+   "text": "Göztepe가 Çorum FK를 상대로 2-0 승리를 거두며 경기를 마무리했다. 전반 3'에 Alexis Antunes가 결승골을 넣었고, 38'에 Juan이 추가 골을 기록했다. Çorum FK가 63.2%의 점유율과 80%의 패스 성공률을 기록하며 경기를 주도했으나, Göztepe는 슈팅 15개와 유효 슈팅 7개를 기록하며 효율적인 경기를 펼쳤다. 사전 예측에서 모델과 ClubElo 모두 Göztepe의 승리를 예상하여 적중했다.",
+   "date": "2026-10-25",
+   "home": "Göztepe",
+   "away": "Çorum FK",
+   "at": "2026-10-25T18:56:12+00:00",
+   "model": "gemini-flash-lite-latest"
+  },
+  "401875567": {
+   "text": "Ajax가 Sparta R.을 상대로 2-1 승리를 거두며 경기를 마무리했다. 전반 22분 Abdellah Ouazane의 득점으로 Ajax가 앞서간 뒤, 43분 Sparta R.의 Jens Toornstra가 헤더로 동점골을 넣었으나, 45'+1'에 Tolu Arokodare가 결승골을 터뜨렸다. 경기 기록에서 Ajax는 점유율 59.4대 40.6, 슈팅 16대 11로 경기를 주도했다. 이번 경기는 Ajax의 승리를 점친 모델의 예측대로 적중했다.",
+   "date": "2026-10-25",
+   "home": "Sparta R.",
+   "away": "Ajax",
+   "at": "2026-10-25T18:56:20+00:00",
+   "model": "gemini-flash-lite-latest"
+  },
+  "401885418": {
+   "text": "Moreirense가 Estoril을 상대로 3-1 승리를 거두며 경기를 매듭지었다. 전반전에는 Moreirense의 Manuel Mendonça가 12', Tiago Andrade가 15', Nile John이 28'에 연속 골을 터뜨렸고, 후반 추가시간 90'+4'에 Estoril의 Peixinho가 득점했다. Estoril은 점유율 57.2% 대 42.8%, 슈팅 26대 13, 유효 슈팅 7대 4로 경기를 주도했으나 패배했다. 팬 투표, 모델, ClubElo 모두 Estoril의 승리를 예상했으나 빗나갔다.",
+   "date": "2026-10-25",
+   "home": "Estoril",
+   "away": "Moreirense",
+   "at": "2026-10-25T18:56:39+00:00",
+   "model": "gemini-flash-lite-latest"
   }
  },
  "fails": {}

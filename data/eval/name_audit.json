@@ -277,8 +277,8 @@
    ]
   },
   "espn_subs": {
-   "total": 397,
-   "exact": 397,
+   "total": 398,
+   "exact": 398,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -541,11 +541,11 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 463,
+   "total": 467,
    "exact": 428,
    "rule": 14,
    "ambiguous": 0,
-   "orphan": 21,
+   "orphan": 25,
    "orphans": [
     {
      "squad": "Bayern Munich",
@@ -651,15 +651,35 @@
      "squad": "Hamburger SV",
      "name": "Jason-Dean Bissi Mouelle",
      "starts": 0
+    },
+    {
+     "squad": "Bayern Munich",
+     "name": "David Daiber",
+     "starts": 0
+    },
+    {
+     "squad": "Bayern Munich",
+     "name": "Tim Binder",
+     "starts": 0
+    },
+    {
+     "squad": "Bayern Munich",
+     "name": "Cassiano Kiala",
+     "starts": 0
+    },
+    {
+     "squad": "Bayern Munich",
+     "name": "Jannis Bärtl",
+     "starts": 0
     }
    ]
   },
   "espn_lineups_cups": {
    "total": 408,
-   "exact": 391,
+   "exact": 392,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 17,
+   "orphan": 16,
    "orphans": [
     {
      "squad": "Augsburg",
@@ -674,11 +694,6 @@
     {
      "squad": "Bayern Munich",
      "name": "David Podar-Stiube",
-     "starts": 0
-    },
-    {
-     "squad": "Bayern Munich",
-     "name": "Tim Binder",
      "starts": 0
     },
     {
@@ -749,8 +764,8 @@
    ]
   },
   "espn_subs": {
-   "total": 353,
-   "exact": 351,
+   "total": 355,
+   "exact": 353,
    "rule": 2,
    "ambiguous": 0,
    "orphan": 0,
@@ -765,8 +780,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 283,
-   "exact": 283,
+   "total": 285,
+   "exact": 285,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1098,20 +1113,20 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 483,
-   "exact": 441,
+   "total": 485,
+   "exact": 442,
    "rule": 10,
    "ambiguous": 0,
-   "orphan": 32,
+   "orphan": 33,
    "orphans": [
-    {
-     "squad": "Nice",
-     "name": "Mohamed Abdelmoneim",
-     "starts": 7
-    },
     {
      "squad": "Troyes",
      "name": "Michel Diaz",
+     "starts": 8
+    },
+    {
+     "squad": "Nice",
+     "name": "Mohamed Abdelmoneim",
      "starts": 7
     },
     {
@@ -1271,8 +1286,8 @@
    ]
   },
   "espn_subs": {
-   "total": 360,
-   "exact": 355,
+   "total": 365,
+   "exact": 360,
    "rule": 3,
    "ambiguous": 0,
    "orphan": 2,
@@ -1298,8 +1313,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 267,
-   "exact": 267,
+   "total": 275,
+   "exact": 275,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1472,8 +1487,8 @@
    ]
   },
   "espn_subs": {
-   "total": 396,
-   "exact": 387,
+   "total": 397,
+   "exact": 388,
    "rule": 6,
    "ambiguous": 0,
    "orphan": 3,
@@ -1504,8 +1519,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 287,
-   "exact": 287,
+   "total": 290,
+   "exact": 290,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1683,8 +1698,8 @@
    ]
   },
   "espn_subs": {
-   "total": 405,
-   "exact": 395,
+   "total": 406,
+   "exact": 396,
    "rule": 10,
    "ambiguous": 0,
    "orphan": 0,
@@ -2407,8 +2422,8 @@
    ]
   },
   "espn_subs": {
-   "total": 259,
-   "exact": 259,
+   "total": 260,
+   "exact": 260,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -2623,8 +2638,8 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 346,
-   "exact": 337,
+   "total": 349,
+   "exact": 340,
    "rule": 1,
    "ambiguous": 0,
    "orphan": 8,
@@ -2686,8 +2701,8 @@
    ]
   },
   "espn_subs": {
-   "total": 271,
-   "exact": 271,
+   "total": 276,
+   "exact": 276,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,

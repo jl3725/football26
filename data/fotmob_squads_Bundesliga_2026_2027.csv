@@ -1,4 +1,31 @@
 squad,player,fotmob_id,group,positions,tm_position,pos,age,birth_date,shirt,ccode,injured,expected_return,fetched
+Bayern Munich,Manuel Neuer,27299,keepers,GK,Goalkeeper,GK,40,1986-03-27,1.0,GER,True,About 1-2 weeks,2026-10-25
+Bayern Munich,Sven Ulreich,94841,keepers,GK,Goalkeeper,GK,38,1988-08-03,26.0,GER,False,,2026-10-25
+Bayern Munich,Jonas Urbig,1285872,keepers,GK,Goalkeeper,GK,23,2003-08-08,40.0,GER,False,,2026-10-25
+Bayern Munich,Leon Klanac,1664982,keepers,GK,Goalkeeper,GK,19,2007-03-01,48.0,GER,False,,2026-10-25
+Bayern Munich,Tarek Buchmann,1432341,defenders,CB,Centre-Back,DF,21,2005-02-28,,GER,False,,2026-10-25
+Bayern Munich,Dayot Upamecano,658554,defenders,CB,Centre-Back,DF,27,1998-10-27,2.0,FRA,False,,2026-10-25
+Bayern Munich,Min-Jae Kim,828159,defenders,CB,Centre-Back,DF,29,1996-11-15,3.0,KOR,True,About a week,2026-10-25
+Bayern Munich,Jonathan Tah,469700,defenders,CB,Centre-Back,DF,30,1996-02-11,4.0,GER,False,,2026-10-25
+Bayern Munich,Tom Bischof,1286183,defenders,"LB,CDM,CM,RB",Left-Back,DF,21,2005-06-28,8.0,GER,False,,2026-10-25
+Bayern Munich,Nathaniel Brown,1395447,defenders,"LB,LWB,LM,CAM,RB",Left-Back,DF,23,2003-06-16,11.0,GER,False,,2026-10-25
+Bayern Munich,Alphonso Davies,751202,defenders,"LB,LW",Left-Back,DF,25,2000-11-02,19.0,CAN,False,,2026-10-25
+Bayern Munich,Hiroki Ito,851626,defenders,"CB,LB",Centre-Back,DF,27,1999-05-12,21.0,JPN,False,,2026-10-25
+Bayern Munich,Sacha Boey,1034808,defenders,RB,Right-Back,DF,26,2000-09-13,23.0,FRA,False,,2026-10-25
+Bayern Munich,Konrad Laimer,526827,defenders,"RB,LB,CDM,RW",Right-Back,DF,29,1997-05-27,27.0,AUT,False,,2026-10-25
+Bayern Munich,Josip Stanišić,950824,defenders,"RB,LB,RWB",Right-Back,DF,26,2000-04-02,44.0,CRO,False,,2026-10-25
+Bayern Munich,Joshua Kimmich,460632,midfielders,"CDM,RB",Defensive Midfield,MF,31,1995-02-08,6.0,GER,False,,2026-10-25
+Bayern Munich,Serge Gnabry,385437,midfielders,"CAM,LW",Attacking Midfield,MF,31,1995-07-14,7.0,GER,False,,2026-10-25
+Bayern Munich,Jamal Musiala,1156141,midfielders,"CAM,LW",Attacking Midfield,MF,23,2003-02-26,10.0,GER,True,A few weeks,2026-10-25
+Bayern Munich,Ismael Saibari,1180288,midfielders,"CAM,ST,LW,CM",Attacking Midfield,MF,25,2001-01-28,34.0,MAR,False,,2026-10-25
+Bayern Munich,Erblin Osmani,1904968,midfielders,CDM,Defensive Midfield,MF,17,2009-05-19,38.0,KVX,False,,2026-10-25
+Bayern Munich,Bara Ndiaye,1798782,midfielders,CDM,Defensive Midfield,MF,18,2007-12-31,39.0,SEN,False,,2026-10-25
+Bayern Munich,Aleksandar Pavlović,1473580,midfielders,"CDM,CM",Defensive Midfield,MF,22,2004-05-03,45.0,GER,True,About 1-2 weeks,2026-10-25
+Bayern Munich,David Santos Daiber,1771197,midfielders,"CDM,CM",Defensive Midfield,MF,19,2007-01-10,47.0,POR,False,,2026-10-25
+Bayern Munich,Harry Kane,194165,attackers,ST,Centre-Forward,FW,33,1993-07-28,9.0,ENG,False,,2026-10-25
+Bayern Munich,Luis Díaz,860914,attackers,LW,Left Winger,FW,29,1997-01-13,14.0,COL,True,Late November 2026,2026-10-25
+Bayern Munich,Michael Olise,1029063,attackers,"RW,CAM",Right Winger,FW,24,2001-12-12,17.0,FRA,False,,2026-10-25
+Bayern Munich,Lennart Karl,1737700,attackers,"RW,CAM",Right Winger,FW,18,2008-02-22,42.0,GER,False,,2026-10-25
 Dortmund,Gregor Kobel,764018,keepers,GK,Goalkeeper,GK,28,1997-12-06,1.0,SUI,False,,2026-10-25
 Dortmund,Patrick Drewes,359203,keepers,GK,Goalkeeper,GK,33,1993-02-04,30.0,GER,False,,2026-10-25
 Dortmund,Silas Ostrzinski,1316269,keepers,GK,Goalkeeper,GK,22,2003-11-19,31.0,GER,False,,2026-10-25
@@ -33,33 +60,6 @@ Dortmund,Serhou Guirassy,448540,attackers,ST,Centre-Forward,FW,30,1996-03-12,9.0
 Dortmund,Konstantinos Karetsas,1536436,attackers,"RW,CAM,RM,CM",Right Winger,FW,18,2007-11-19,19.0,GRE,True,Early November 2026,2026-10-25
 Dortmund,Fábio Silva,1050158,attackers,"ST,CAM",Centre-Forward,FW,24,2002-07-19,21.0,POR,False,,2026-10-25
 Dortmund,Mathis Albert,1692797,attackers,"LW,CAM",Left Winger,FW,17,2009-05-21,41.0,USA,False,,2026-10-25
-Bayern Munich,Manuel Neuer,27299,keepers,GK,Goalkeeper,GK,40,1986-03-27,1.0,GER,True,About 1-2 weeks,2026-10-25
-Bayern Munich,Sven Ulreich,94841,keepers,GK,Goalkeeper,GK,38,1988-08-03,26.0,GER,False,,2026-10-25
-Bayern Munich,Jonas Urbig,1285872,keepers,GK,Goalkeeper,GK,23,2003-08-08,40.0,GER,False,,2026-10-25
-Bayern Munich,Leon Klanac,1664982,keepers,GK,Goalkeeper,GK,19,2007-03-01,48.0,GER,False,,2026-10-25
-Bayern Munich,Tarek Buchmann,1432341,defenders,CB,Centre-Back,DF,21,2005-02-28,,GER,False,,2026-10-25
-Bayern Munich,Dayot Upamecano,658554,defenders,CB,Centre-Back,DF,27,1998-10-27,2.0,FRA,False,,2026-10-25
-Bayern Munich,Min-Jae Kim,828159,defenders,CB,Centre-Back,DF,29,1996-11-15,3.0,KOR,True,About a week,2026-10-25
-Bayern Munich,Jonathan Tah,469700,defenders,CB,Centre-Back,DF,30,1996-02-11,4.0,GER,False,,2026-10-25
-Bayern Munich,Tom Bischof,1286183,defenders,"LB,CDM,CM,RB",Left-Back,DF,21,2005-06-28,8.0,GER,False,,2026-10-25
-Bayern Munich,Nathaniel Brown,1395447,defenders,"LB,LWB,LM,CAM,RB",Left-Back,DF,23,2003-06-16,11.0,GER,False,,2026-10-25
-Bayern Munich,Alphonso Davies,751202,defenders,"LB,LW",Left-Back,DF,25,2000-11-02,19.0,CAN,False,,2026-10-25
-Bayern Munich,Hiroki Ito,851626,defenders,"CB,LB",Centre-Back,DF,27,1999-05-12,21.0,JPN,False,,2026-10-25
-Bayern Munich,Sacha Boey,1034808,defenders,RB,Right-Back,DF,26,2000-09-13,23.0,FRA,False,,2026-10-25
-Bayern Munich,Konrad Laimer,526827,defenders,"RB,LB,CDM,RW",Right-Back,DF,29,1997-05-27,27.0,AUT,False,,2026-10-25
-Bayern Munich,Josip Stanišić,950824,defenders,"RB,LB,RWB",Right-Back,DF,26,2000-04-02,44.0,CRO,False,,2026-10-25
-Bayern Munich,Joshua Kimmich,460632,midfielders,"CDM,RB",Defensive Midfield,MF,31,1995-02-08,6.0,GER,False,,2026-10-25
-Bayern Munich,Serge Gnabry,385437,midfielders,"CAM,LW",Attacking Midfield,MF,31,1995-07-14,7.0,GER,False,,2026-10-25
-Bayern Munich,Jamal Musiala,1156141,midfielders,"CAM,LW",Attacking Midfield,MF,23,2003-02-26,10.0,GER,True,A few weeks,2026-10-25
-Bayern Munich,Ismael Saibari,1180288,midfielders,"CAM,ST,LW,CM",Attacking Midfield,MF,25,2001-01-28,34.0,MAR,False,,2026-10-25
-Bayern Munich,Erblin Osmani,1904968,midfielders,CDM,Defensive Midfield,MF,17,2009-05-19,38.0,KVX,False,,2026-10-25
-Bayern Munich,Bara Ndiaye,1798782,midfielders,CDM,Defensive Midfield,MF,18,2007-12-31,39.0,SEN,False,,2026-10-25
-Bayern Munich,Aleksandar Pavlović,1473580,midfielders,"CDM,CM",Defensive Midfield,MF,22,2004-05-03,45.0,GER,True,About 1-2 weeks,2026-10-25
-Bayern Munich,David Santos Daiber,1771197,midfielders,"CDM,CM",Defensive Midfield,MF,19,2007-01-10,47.0,POR,False,,2026-10-25
-Bayern Munich,Harry Kane,194165,attackers,ST,Centre-Forward,FW,33,1993-07-28,9.0,ENG,False,,2026-10-25
-Bayern Munich,Luis Díaz,860914,attackers,LW,Left Winger,FW,29,1997-01-13,14.0,COL,True,Late November 2026,2026-10-25
-Bayern Munich,Michael Olise,1029063,attackers,"RW,CAM",Right Winger,FW,24,2001-12-12,17.0,FRA,False,,2026-10-25
-Bayern Munich,Lennart Karl,1737700,attackers,"RW,CAM",Right Winger,FW,18,2008-02-22,42.0,GER,False,,2026-10-25
 Freiburg,Mio Backhaus,1352996,keepers,GK,Goalkeeper,GK,22,2004-04-16,1.0,GER,False,,2026-10-25
 Freiburg,Florian Müller,737365,keepers,GK,Goalkeeper,GK,28,1997-11-13,21.0,GER,False,,2026-10-25
 Freiburg,Jannik Huth,556503,keepers,GK,Goalkeeper,GK,32,1994-04-15,24.0,GER,False,,2026-10-25
