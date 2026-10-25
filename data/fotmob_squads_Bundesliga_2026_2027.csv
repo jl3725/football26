@@ -20,7 +20,7 @@ Dortmund,Maximilian Beier,1047667,midfielders,"CAM,LWB,ST,LM",Attacking Midfield
 Dortmund,Carney Chukwuemeka,1089685,midfielders,CAM,Attacking Midfield,MF,23,2003-10-20,17.0,AUT,False,,2026-10-25
 Dortmund,Ethan Nwaneri,1254234,midfielders,"CAM,CM,RW",Attacking Midfield,MF,19,2007-03-21,18.0,ENG,False,,2026-10-25
 Dortmund,Marcel Sabitzer,215151,midfielders,"CDM,LW,CM,CAM",Defensive Midfield,MF,32,1994-03-17,20.0,AUT,False,,2026-10-25
-Dortmund,Daniel Svensson,1209228,midfielders,"LWB,LM,RWB,CB,LB,RB,RM",Left-Back,MF,24,2002-02-12,24.0,SWE,False,,2026-10-25
+Dortmund,Daniel Svensson,1209228,midfielders,"LWB,RWB,LM,LB,CB,RB",Left-Back,MF,24,2002-02-12,24.0,SWE,False,,2026-10-25
 Dortmund,Joey Veerman,792429,midfielders,"CDM,CM",Defensive Midfield,MF,27,1998-11-19,25.0,NED,False,,2026-10-25
 Dortmund,Julian Ryerson,659272,midfielders,"RWB,RB,RM,LWB",Right-Back,MF,28,1997-11-17,26.0,NOR,False,,2026-10-25
 Dortmund,Justin Lerma,1636870,midfielders,"CAM,CDM,CM",Attacking Midfield,MF,18,2008-05-05,28.0,ECU,True,About 1-2 weeks,2026-10-25
@@ -43,10 +43,10 @@ Bayern Munich,Min-Jae Kim,828159,defenders,CB,Centre-Back,DF,29,1996-11-15,3.0,K
 Bayern Munich,Jonathan Tah,469700,defenders,CB,Centre-Back,DF,30,1996-02-11,4.0,GER,False,,2026-10-25
 Bayern Munich,Tom Bischof,1286183,defenders,"LB,CDM,CM,RB",Left-Back,DF,21,2005-06-28,8.0,GER,False,,2026-10-25
 Bayern Munich,Nathaniel Brown,1395447,defenders,"LB,LWB,LM,CAM,RB",Left-Back,DF,23,2003-06-16,11.0,GER,False,,2026-10-25
-Bayern Munich,Alphonso Davies,751202,defenders,LB,Left-Back,DF,25,2000-11-02,19.0,CAN,False,,2026-10-25
+Bayern Munich,Alphonso Davies,751202,defenders,"LB,LW",Left-Back,DF,25,2000-11-02,19.0,CAN,False,,2026-10-25
 Bayern Munich,Hiroki Ito,851626,defenders,"CB,LB",Centre-Back,DF,27,1999-05-12,21.0,JPN,False,,2026-10-25
 Bayern Munich,Sacha Boey,1034808,defenders,RB,Right-Back,DF,26,2000-09-13,23.0,FRA,False,,2026-10-25
-Bayern Munich,Konrad Laimer,526827,defenders,"RB,LB,RW",Right-Back,DF,29,1997-05-27,27.0,AUT,False,,2026-10-25
+Bayern Munich,Konrad Laimer,526827,defenders,"RB,LB,CDM,RW",Right-Back,DF,29,1997-05-27,27.0,AUT,False,,2026-10-25
 Bayern Munich,Josip Stanišić,950824,defenders,"RB,LB,RWB",Right-Back,DF,26,2000-04-02,44.0,CRO,False,,2026-10-25
 Bayern Munich,Joshua Kimmich,460632,midfielders,"CDM,RB",Defensive Midfield,MF,31,1995-02-08,6.0,GER,False,,2026-10-25
 Bayern Munich,Serge Gnabry,385437,midfielders,"CAM,LW",Attacking Midfield,MF,31,1995-07-14,7.0,GER,False,,2026-10-25
@@ -75,7 +75,7 @@ Freiburg,Max Rosenfelder,1281107,defenders,CB,Centre-Back,DF,23,2003-02-10,37.0,
 Freiburg,Bruno Ogbus,1577843,defenders,CB,Centre-Back,DF,20,2005-12-17,43.0,SUI,False,,2026-10-25
 Freiburg,Patrick Osterhage,1075815,midfielders,CDM,Defensive Midfield,MF,26,2000-02-01,6.0,GER,False,,2026-10-25
 Freiburg,Maximilian Eggestein,602523,midfielders,CDM,Defensive Midfield,MF,29,1996-12-08,8.0,GER,False,,2026-10-25
-Freiburg,Yuito Suzuki,1134467,midfielders,CAM,Attacking Midfield,MF,24,2001-10-25,14.0,JPN,False,,2026-10-25
+Freiburg,Yuito Suzuki,1134467,midfielders,CAM,Attacking Midfield,MF,25,2001-10-25,14.0,JPN,False,,2026-10-25
 Freiburg,Yannik Engelhardt,1269497,midfielders,"CDM,CM",Defensive Midfield,MF,25,2001-02-07,16.0,GER,True,Doubtful,2026-10-25
 Freiburg,Rihito Yamamoto,1030836,midfielders,"CDM,CM",Defensive Midfield,MF,24,2001-12-12,20.0,JPN,False,,2026-10-25
 Freiburg,Florent Muslija,848666,midfielders,"CAM,LW,LM,CM",Attacking Midfield,MF,28,1998-07-06,23.0,KVX,True,Late December 2026,2026-10-25
@@ -150,11 +150,11 @@ RB Leipzig,Samba Konaté,1860819,attackers,ST,Centre-Forward,FW,17,2009-02-27,45
 Werder Bremen,Karl Hein,982692,keepers,GK,Goalkeeper,GK,24,2002-04-13,1.0,EST,False,,2026-10-25
 Werder Bremen,Markus Kolke,276769,keepers,GK,Goalkeeper,GK,36,1990-08-18,25.0,GER,False,,2026-10-25
 Werder Bremen,Alexander Schlager,450739,keepers,GK,Goalkeeper,GK,30,1996-02-01,30.0,AUT,False,,2026-10-25
-Werder Bremen,Olivier Deman,969856,defenders,"LB,LWB,LM,CB",Left-Back,DF,26,2000-04-06,2.0,BEL,False,,2026-10-25
+Werder Bremen,Olivier Deman,969856,defenders,"LB,LWB",Left-Back,DF,26,2000-04-06,2.0,BEL,False,,2026-10-25
 Werder Bremen,Oskar Wójcik,1283403,defenders,CB,Centre-Back,DF,23,2003-07-21,3.0,POL,False,,2026-10-25
 Werder Bremen,Niklas Stark,425962,defenders,CB,Centre-Back,DF,31,1995-04-14,4.0,GER,False,,2026-10-25
 Werder Bremen,Amos Pieper,765998,defenders,CB,Centre-Back,DF,28,1998-01-17,5.0,GER,False,,2026-10-25
-Werder Bremen,Mitchell Weiser,298823,defenders,RWB,Right-Back,DF,32,1994-04-21,8.0,GER,False,,2026-10-25
+Werder Bremen,Mitchell Weiser,298823,defenders,RW,Right Winger,DF,32,1994-04-21,8.0,GER,False,,2026-10-25
 Werder Bremen,Moussa N'Diaye,1053674,defenders,LB,Left-Back,DF,24,2002-06-18,16.0,SEN,True,Late October 2026,2026-10-25
 Werder Bremen,Marco Friedl,767789,defenders,"CB,LB",Centre-Back,DF,28,1998-03-16,32.0,AUT,False,,2026-10-25
 Werder Bremen,Mick Schmetgens,1714103,defenders,"CB,RB",Centre-Back,DF,19,2007-09-09,33.0,GER,False,,2026-10-25
@@ -204,7 +204,7 @@ Mainz 05,Sota Kawasaki,1134759,midfielders,CM,Central Midfield,MF,25,2001-07-30,
 Mainz 05,Silvan Widmer,275034,midfielders,"RM,LWB,LM,RB",Right Midfield,MF,33,1993-03-05,30.0,SUI,False,,2026-10-25
 Mainz 05,Fabio Moreno Fell,1185629,attackers,ST,Centre-Forward,FW,26,2000-06-04,,GER,False,,2026-10-25
 Mainz 05,Phillip Tietz,686315,attackers,ST,Centre-Forward,FW,29,1997-07-09,9.0,GER,False,,2026-10-25
-Mainz 05,Ransford Königsdörffer,1121170,attackers,"ST,CAM,LW,RW",Centre-Forward,FW,25,2001-09-13,11.0,GHA,False,,2026-10-25
+Mainz 05,Ransford Königsdörffer,1121170,attackers,"ST,CAM,RW",Centre-Forward,FW,25,2001-09-13,11.0,GHA,False,,2026-10-25
 Mainz 05,Benedict Hollerbach,1185568,attackers,"ST,CAM",Centre-Forward,FW,25,2001-05-17,17.0,GER,False,,2026-10-25
 Mainz 05,Sheraldo Becker,495222,attackers,ST,Centre-Forward,FW,31,1995-02-09,23.0,SUR,False,,2026-10-25
 Mainz 05,Silas Katompa Mvumpa,959404,attackers,ST,Centre-Forward,FW,28,1998-10-06,26.0,COD,True,Early January 2027,2026-10-25
@@ -226,7 +226,7 @@ SV Elversberg,Amara Condé,763990,midfielders,CDM,Defensive Midfield,MF,29,1997-
 SV Elversberg,Łukasz Poręba,962113,midfielders,CDM,Defensive Midfield,MF,26,2000-03-13,8.0,POL,False,,2026-10-25
 SV Elversberg,Raif Adam,1730149,midfielders,,Central Midfield,MF,21,2005-09-07,15.0,GER,False,,2026-10-25
 SV Elversberg,Frederik Schmahl,1281256,midfielders,"CDM,CAM",Defensive Midfield,MF,23,2002-12-21,17.0,GER,False,,2026-10-25
-SV Elversberg,Francis Onyeka,1603681,midfielders,"CAM,ST,CDM,CM",Attacking Midfield,MF,19,2007-04-29,40.0,GER,True,Doubtful,2026-10-25
+SV Elversberg,Francis Onyeka,1603681,midfielders,"CAM,ST,CDM,CM",Attacking Midfield,MF,19,2007-04-29,40.0,GER,False,,2026-10-25
 SV Elversberg,Maurice Krattenmacher,1412933,attackers,"RW,LW",Right Winger,FW,21,2005-08-11,7.0,GER,False,,2026-10-25
 SV Elversberg,Noel Futkeu,1138725,attackers,ST,Centre-Forward,FW,23,2002-12-06,9.0,GER,False,,2026-10-25
 SV Elversberg,Noah Darvich,1479921,attackers,"RW,CAM,RM,LW,RWB",Right Winger,FW,20,2006-09-25,10.0,GER,True,Doubtful,2026-10-25
@@ -234,7 +234,7 @@ SV Elversberg,Luca Pfeiffer,784735,attackers,ST,Centre-Forward,FW,30,1996-08-20,
 SV Elversberg,Luca Schnellbacher,459010,attackers,ST,Centre-Forward,FW,32,1994-05-06,24.0,GER,False,,2026-10-25
 SV Elversberg,Lukas Petkov,1093782,attackers,"RW,ST",Right Winger,FW,25,2000-11-01,25.0,BUL,False,,2026-10-25
 SV Elversberg,Tom Zimmerschied,940015,attackers,LW,Left Winger,FW,28,1998-09-22,29.0,GER,True,Mid November 2026,2026-10-25
-SV Elversberg,Cole Campbell,1288195,attackers,"LW,RW",Left Winger,FW,20,2006-02-20,39.0,USA,True,Doubtful,2026-10-25
+SV Elversberg,Cole Campbell,1288195,attackers,"LW,RW",Left Winger,FW,20,2006-02-20,39.0,USA,False,,2026-10-25
 SV Elversberg,David Mokwa,1459758,attackers,ST,Centre-Forward,FW,22,2004-05-03,42.0,FRA,False,,2026-10-25
 Augsburg,Finn Dahmen,926445,keepers,GK,Goalkeeper,GK,28,1998-03-27,1.0,GER,False,,2026-10-25
 Augsburg,Nediljko Labrović,1284464,keepers,GK,Goalkeeper,GK,27,1999-10-10,22.0,CRO,False,,2026-10-25
@@ -260,7 +260,7 @@ Augsburg,Arijon Ibrahimović,1327150,midfielders,"CAM,RW,LM,ST,RWB,LW",Attacking
 Augsburg,Faik Sakar,1679517,midfielders,,Central Midfield,MF,18,2008-01-14,23.0,GER,True,Late October 2026,2026-10-25
 Augsburg,Marius Wolf,556029,midfielders,"RWB,LWB",Right-Back,MF,31,1995-05-27,27.0,GER,False,,2026-10-25
 Augsburg,Anton Kade,1310103,midfielders,"CAM,RWB,ST,RW,RM",Attacking Midfield,MF,22,2004-01-17,30.0,GER,False,,2026-10-25
-Augsburg,Fabian Rieder,1161211,midfielders,"CAM,CDM,RW,LWB",Attacking Midfield,MF,24,2002-02-16,32.0,SUI,False,,2026-10-25
+Augsburg,Fabian Rieder,1161211,midfielders,"CAM,CDM,CM,RW",Attacking Midfield,MF,24,2002-02-16,32.0,SUI,False,,2026-10-25
 Augsburg,Rodrigo Ribeiro,1343749,attackers,"ST,CAM",Centre-Forward,FW,21,2005-04-28,9.0,POR,False,,2026-10-25
 Augsburg,Michael Gregoritsch,198316,attackers,ST,Centre-Forward,FW,32,1994-04-18,11.0,AUT,False,,2026-10-25
 Augsburg,Steve Mounié,478527,attackers,ST,Centre-Forward,FW,32,1994-09-29,15.0,BEN,True,Late October 2026,2026-10-25
@@ -273,7 +273,7 @@ Hamburger SV,David Møller Wolfe,1049679,defenders,"LB,LWB,LM,RM",Left-Back,DF,2
 Hamburger SV,Zakaria El Ouahdi,1287871,defenders,"RB,RWB,RM",Right-Back,DF,24,2001-12-31,7.0,MAR,False,,2026-10-25
 Hamburger SV,Warmed Omari,1202595,defenders,CB,Centre-Back,DF,26,2000-04-23,17.0,COM,False,,2026-10-25
 Hamburger SV,Jordan Torunarigha,700074,defenders,CB,Centre-Back,DF,29,1997-08-07,23.0,NGA,False,,2026-10-25
-Hamburger SV,Nicolás Capaldo,1018564,defenders,CB,Centre-Back,DF,28,1998-09-14,24.0,ARG,True,Doubtful,2026-10-25
+Hamburger SV,Nicolás Capaldo,1018564,defenders,CB,Centre-Back,DF,28,1998-09-14,24.0,ARG,False,,2026-10-25
 Hamburger SV,Sebastiaan Bornauw,922892,defenders,CB,Centre-Back,DF,27,1999-03-22,33.0,BEL,False,,2026-10-25
 Hamburger SV,Joel Agyekum,1685570,defenders,CB,Centre-Back,DF,21,2005-03-08,39.0,GER,False,,2026-10-25
 Hamburger SV,Shafiq Nandja,1804634,defenders,CB,Centre-Back,DF,19,2007-01-15,43.0,GER,False,,2026-10-25
@@ -285,9 +285,9 @@ Hamburger SV,Immanuël Pherai,1071178,midfielders,CAM,Attacking Midfield,MF,25,2
 Hamburger SV,Albert Grønbæk,1133381,midfielders,"CAM,CDM,LM,LWB",Attacking Midfield,MF,25,2001-05-23,11.0,DEN,False,,2026-10-25
 Hamburger SV,Bakery Jatta,763998,midfielders,"RM,RWB",Right Midfield,MF,28,1998-06-06,18.0,GAM,False,,2026-10-25
 Hamburger SV,Fábio Vieira,1025462,midfielders,"RW,CAM,CM,CDM,ST",Right Winger,MF,26,2000-05-30,20.0,POR,False,,2026-10-25
-Hamburger SV,Nicolai Remberg,1188890,midfielders,"CM,CDM",Central Midfield,MF,26,2000-06-19,21.0,GER,True,Late June 2027,2026-10-25
+Hamburger SV,Nicolai Remberg,1188890,midfielders,"CDM,CM",Defensive Midfield,MF,26,2000-06-19,21.0,GER,True,Late June 2027,2026-10-25
 Hamburger SV,Kofi Amoako,1587901,midfielders,"CDM,CM",Defensive Midfield,MF,21,2005-05-06,22.0,GER,False,,2026-10-25
-Hamburger SV,Miro Muheim,759817,midfielders,"LM,LWB,LB,CM",Left Midfield,MF,28,1998-03-24,28.0,SUI,False,,2026-10-25
+Hamburger SV,Miro Muheim,759817,midfielders,"LM,LWB,CM,LB",Left Midfield,MF,28,1998-03-24,28.0,SUI,False,,2026-10-25
 Hamburger SV,Louis Lemke,1899791,midfielders,LM,Left Midfield,MF,17,2009-10-08,37.0,GER,False,,2026-10-25
 Hamburger SV,Finn Barkowsky,2062053,attackers,,Centre-Forward,FW,18,2008-02-12,,GER,False,,2026-10-25
 Hamburger SV,Terem Moffi,885005,attackers,ST,Centre-Forward,FW,27,1999-05-25,9.0,NGA,False,,2026-10-25
@@ -303,7 +303,7 @@ Köln,Cenny Neumann,1573172,defenders,RB,Right-Back,DF,19,2007-01-12,,GER,False,
 Köln,Joël Schmied,1003254,defenders,CB,Centre-Back,DF,28,1998-09-23,2.0,SUI,False,,2026-10-25
 Köln,Timo Hübers,682385,defenders,CB,Centre-Back,DF,30,1996-07-20,4.0,GER,True,Early January 2027,2026-10-25
 Köln,Gideon Mensah,771630,defenders,"LB,LWB",Left-Back,DF,28,1998-07-18,14.0,GHA,False,,2026-10-25
-Köln,Alessio Castro-Montes,748620,defenders,"RB,LM,LWB",Right-Back,DF,29,1997-05-17,17.0,BEL,False,,2026-10-25
+Köln,Alessio Castro-Montes,748620,defenders,"RB,LM",Right-Back,DF,29,1997-05-17,17.0,BEL,False,,2026-10-25
 Köln,Jahmai Simpson-Pusey,1463271,defenders,CB,Centre-Back,DF,20,2005-11-04,22.0,ENG,False,,2026-10-25
 Köln,Luka Lochoshvili,784175,defenders,"CB,LB",Centre-Back,DF,28,1998-05-29,24.0,GEO,False,,2026-10-25
 Köln,Sebastian Sebulonsen,936140,defenders,"CB,RB,RWB",Centre-Back,DF,26,2000-01-27,28.0,NOR,False,,2026-10-25
@@ -313,7 +313,7 @@ Köln,Fayssal Harchaoui,1487890,midfielders,CM,Central Midfield,MF,20,2006-01-15
 Köln,Borna Sosa,622091,midfielders,"LWB,LB",Left-Back,MF,28,1998-01-21,3.0,CRO,False,,2026-10-25
 Köln,Tom Krauß,992060,midfielders,"CM,CDM,RB",Central Midfield,MF,25,2001-06-22,5.0,GER,False,,2026-10-25
 Köln,Ellyes Skhiri,574642,midfielders,"CDM,CM,CB",Defensive Midfield,MF,31,1995-05-10,6.0,TUN,True,Early January 2027,2026-10-25
-Köln,Ísak Jóhannesson,1000428,midfielders,"CDM,CM",Defensive Midfield,MF,23,2003-03-23,8.0,ISL,False,,2026-10-25
+Köln,Ísak Jóhannesson,1000428,midfielders,"CM,CDM",Central Midfield,MF,23,2003-03-23,8.0,ISL,False,,2026-10-25
 Köln,Paul Okon-Engstler,1527363,midfielders,"CDM,CM",Defensive Midfield,MF,21,2005-01-24,23.0,AUS,False,,2026-10-25
 Köln,Jan Thielmann,1119643,midfielders,"RM,RW,RWB",Right Midfield,MF,24,2002-05-26,29.0,GER,False,,2026-10-25
 Köln,Gil Neves,1766349,midfielders,CM,Central Midfield,MF,18,2008-02-09,31.0,POR,False,,2026-10-25
@@ -325,7 +325,7 @@ Köln,Reigan Heskey,1665352,attackers,LW,Left Winger,FW,18,2008-01-19,11.0,ENG,F
 Köln,Imad Rondić,916092,attackers,ST,Centre-Forward,FW,27,1999-02-16,15.0,BIH,True,Early November 2026,2026-10-25
 Köln,Malek El Mala,1640790,attackers,ST,Centre-Forward,FW,21,2005-04-02,19.0,GER,False,,2026-10-25
 Köln,Thijs Dallinga,885085,attackers,ST,Centre-Forward,FW,26,2000-08-03,27.0,NED,True,Late June 2027,2026-10-25
-Köln,Marius Bülter,626890,attackers,"ST,CAM,RW,LW",Centre-Forward,FW,33,1993-03-29,30.0,GER,False,,2026-10-25
+Köln,Marius Bülter,626890,attackers,"ST,LW,CAM",Centre-Forward,FW,33,1993-03-29,30.0,GER,False,,2026-10-25
 Köln,Mikey Moore,1407250,attackers,"LW,CAM,RW",Left Winger,FW,19,2007-08-11,47.0,ENG,False,,2026-10-25
 SC Paderborn,Markus Schubert,659046,keepers,GK,Goalkeeper,GK,28,1998-06-12,1.0,GER,False,,2026-10-25
 SC Paderborn,Nahuel Noll,1257826,keepers,GK,Goalkeeper,GK,23,2003-03-17,15.0,GER,False,,2026-10-25
@@ -333,31 +333,31 @@ SC Paderborn,Florian Pruhs,1515975,keepers,,Goalkeeper,GK,20,2006-02-06,31.0,GER
 SC Paderborn,Tristan Zobel,1406447,defenders,CB,Centre-Back,DF,23,2003-10-04,,GER,False,,2026-10-25
 SC Paderborn,Nyamekye Awortwie-Grant,1473681,defenders,CB,Centre-Back,DF,26,2000-08-07,4.0,GER,True,Late October 2026,2026-10-25
 SC Paderborn,Felix Götze,767790,defenders,CB,Centre-Back,DF,28,1998-02-11,20.0,GER,False,,2026-10-25
-SC Paderborn,Jano ter Horst,1520469,defenders,"RB,CB,RWB",Right-Back,DF,24,2002-06-19,21.0,GER,False,,2026-10-25
+SC Paderborn,Jano ter Horst,1520469,defenders,"RB,CB,RM",Right-Back,DF,24,2002-06-19,21.0,GER,False,,2026-10-25
 SC Paderborn,Mattes Hansen,1515976,defenders,"CB,RWB,CDM",Centre-Back,DF,22,2004-05-15,22.0,GER,False,,2026-10-25
 SC Paderborn,Niklas Mohr,1801952,defenders,LWB,Left-Back,DF,22,2004-07-23,24.0,GER,False,,2026-10-25
 SC Paderborn,Tjark Scheller,1415373,defenders,CB,Centre-Back,DF,24,2002-01-12,25.0,GER,False,,2026-10-25
 SC Paderborn,Marcel Hoffmeier,970587,defenders,CB,Centre-Back,DF,27,1999-07-15,33.0,GER,True,A few weeks,2026-10-25
 SC Paderborn,Ruben Müller,1688956,midfielders,CAM,Attacking Midfield,MF,21,2005-08-24,2.0,GER,False,,2026-10-25
 SC Paderborn,Jonah Sticker,1520593,midfielders,"LWB,CB",Left-Back,MF,22,2004-05-08,3.0,GER,False,,2026-10-25
-SC Paderborn,Santiago Castañeda,1362492,midfielders,"CDM,CM,CB",Defensive Midfield,MF,21,2004-11-13,5.0,USA,False,,2026-10-25
+SC Paderborn,Santiago Castañeda,1362492,midfielders,"CDM,CM",Defensive Midfield,MF,21,2004-11-13,5.0,USA,False,,2026-10-25
 SC Paderborn,Tom Baack,658444,midfielders,"CM,CDM,LM",Central Midfield,MF,27,1999-03-13,6.0,GER,False,,2026-10-25
 SC Paderborn,Luka Djuric,1586401,midfielders,"CDM,CAM",Defensive Midfield,MF,23,2003-06-18,8.0,BIH,False,,2026-10-25
 SC Paderborn,Sven Michel,419774,midfielders,CAM,Attacking Midfield,MF,36,1990-07-15,11.0,GER,False,,2026-10-25
-SC Paderborn,Laurin Curda,1426060,midfielders,"RWB,RM",Right-Back,MF,24,2001-10-30,17.0,GER,False,,2026-10-25
+SC Paderborn,Laurin Curda,1426060,midfielders,"RWB,RM,CAM",Right-Back,MF,24,2001-10-30,17.0,GER,False,,2026-10-25
 SC Paderborn,Albert Millgramm,1804160,midfielders,CAM,Attacking Midfield,MF,21,2004-11-12,19.0,GER,False,,2026-10-25
-SC Paderborn,Raphael Obermair,784225,midfielders,"LWB,LM",Left-Back,MF,30,1996-04-01,23.0,PHI,False,,2026-10-25
+SC Paderborn,Raphael Obermair,784225,midfielders,"LWB,LW,LM",Left-Back,MF,30,1996-04-01,23.0,PHI,False,,2026-10-25
 SC Paderborn,Sebastian Klaas,840947,midfielders,"CAM,CDM,LW,RW",Attacking Midfield,MF,28,1998-06-30,26.0,GER,True,Late October 2026,2026-10-25
-SC Paderborn,Laurin Ulrich,1367587,midfielders,CM,Central Midfield,MF,21,2005-01-31,28.0,GER,False,,2026-10-25
+SC Paderborn,Laurin Ulrich,1367587,midfielders,"CM,RW,CAM",Central Midfield,MF,21,2005-01-31,28.0,GER,False,,2026-10-25
 SC Paderborn,Clemens Lippmann,1701615,midfielders,"LWB,RWB",Left-Back,MF,20,2006-06-29,29.0,GER,False,,2026-10-25
-SC Paderborn,Gabriel Vidović,1276453,midfielders,"LW,CM,CAM",Left Winger,MF,22,2003-12-01,40.0,CRO,False,,2026-10-25
+SC Paderborn,Gabriel Vidović,1276453,midfielders,"LW,CAM,CM",Left Winger,MF,22,2003-12-01,40.0,CRO,False,,2026-10-25
 SC Paderborn,Timur Gayret,978381,midfielders,"RW,RM,LM,CDM,LW,CM",Right Winger,MF,28,1998-08-08,44.0,GER,True,Early January 2027,2026-10-25
 SC Paderborn,Noah Ringbeck,1881322,attackers,,Centre-Forward,FW,18,2008-03-25,,GER,False,,2026-10-25
 SC Paderborn,Oliver Batista Meier,950822,attackers,"ST,CAM",Centre-Forward,FW,25,2001-02-16,7.0,GER,True,Mid November 2026,2026-10-25
-SC Paderborn,Rayan Philippe,1079892,attackers,"RW,ST",Right Winger,FW,26,2000-10-23,9.0,FRA,False,,2026-10-25
+SC Paderborn,Rayan Philippe,1079892,attackers,"RW,ST,CAM",Right Winger,FW,26,2000-10-23,9.0,FRA,False,,2026-10-25
 SC Paderborn,Marvin Pieringer,956913,attackers,"ST,CAM,RW",Centre-Forward,FW,27,1999-10-04,18.0,GER,False,,2026-10-25
 SC Paderborn,Steffen Tigges,706500,attackers,ST,Centre-Forward,FW,28,1998-07-31,27.0,GER,False,,2026-10-25
-SC Paderborn,Stefano Marino,1321553,attackers,"ST,RW",Centre-Forward,FW,22,2004-03-12,30.0,GER,False,,2026-10-25
+SC Paderborn,Stefano Marino,1321553,attackers,"ST,CAM",Centre-Forward,FW,22,2004-03-12,30.0,GER,False,,2026-10-25
 SC Paderborn,Lasse Eickel,1844511,attackers,,Centre-Forward,FW,18,2008-02-28,32.0,GER,False,,2026-10-25
 SC Paderborn,Deniz Zeitler,1580112,attackers,"LW,ST,CAM",Left Winger,FW,19,2006-12-13,38.0,GER,False,,2026-10-25
 Frankfurt,Noah Atubolu,1281100,keepers,GK,Goalkeeper,GK,24,2002-05-25,1.0,GER,False,,2026-10-25
@@ -374,7 +374,7 @@ Frankfurt,Jeremiaha Maluze,1671553,defenders,CB,Centre-Back,DF,21,2004-11-11,37.
 Frankfurt,Collin Etse,2130230,midfielders,CB,Centre-Back,MF,21,2005-07-13,,GER,False,,2026-10-25
 Frankfurt,Marvin Dills,1793881,midfielders,CM,Central Midfield,MF,19,2007-04-25,,GER,False,,2026-10-25
 Frankfurt,Oscar Højlund,1336529,midfielders,"CM,CDM",Central Midfield,MF,21,2005-01-04,6.0,DEN,False,,2026-10-25
-Frankfurt,Farès Chaïbi,1345875,midfielders,"CM,CDM,LW,CAM,LM,RM",Central Midfield,MF,23,2002-11-28,8.0,ALG,False,,2026-10-25
+Frankfurt,Farès Chaïbi,1345875,midfielders,"CDM,LW,CM,CAM,LM,RW",Defensive Midfield,MF,23,2002-11-28,8.0,ALG,False,,2026-10-25
 Frankfurt,Noël Aséko,1596359,midfielders,"CAM,CM,CDM,RWB",Attacking Midfield,MF,20,2005-11-22,15.0,GER,False,,2026-10-25
 Frankfurt,Ritsu Doan,629805,midfielders,"RW,RWB,CAM,RM,CM",Right Winger,MF,28,1998-06-16,20.0,JPN,False,,2026-10-25
 Frankfurt,Timothy Chandler,158234,midfielders,LM,Left Midfield,MF,36,1990-03-29,22.0,USA,False,,2026-10-25
@@ -400,7 +400,7 @@ Hoffenheim,Mats Rots,1445416,defenders,LB,Left-Back,DF,20,2006-03-11,39.0,NED,Fa
 Hoffenheim,Leon Avdullahu,1478148,midfielders,"CDM,CM",Defensive Midfield,MF,22,2004-02-23,7.0,KVX,False,,2026-10-25
 Hoffenheim,Nathan De Cat,1664759,midfielders,"CDM,CAM,CM,RW",Defensive Midfield,MF,18,2008-07-19,17.0,BEL,True,Late November 2026,2026-10-25
 Hoffenheim,Wouter Burger,947884,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,25,2001-02-16,18.0,NED,False,,2026-10-25
-Hoffenheim,Bambasé Conté,1338957,midfielders,"CAM,RW,RM",Attacking Midfield,MF,23,2003-07-07,20.0,GER,False,,2026-10-25
+Hoffenheim,Bambasé Conté,1338957,midfielders,"CAM,RW,RM",Attacking Midfield,MF,23,2003-07-07,20.0,GER,True,Doubtful,2026-10-25
 Hoffenheim,Andrej Kramarić,173461,midfielders,"RW,CAM,RM,CM,ST",Right Winger,MF,35,1991-06-19,27.0,CRO,False,,2026-10-25
 Hoffenheim,Cajetan Lenz,1793498,midfielders,CDM,Defensive Midfield,MF,20,2006-06-16,32.0,GER,False,,2026-10-25
 Hoffenheim,Patrick Wimmer,1073498,attackers,"RW,LW,RM,CAM,CM",Right Winger,FW,25,2001-05-30,8.0,AUT,True,Mid November 2026,2026-10-25
@@ -408,7 +408,7 @@ Hoffenheim,Max Moerstedt,1486537,attackers,ST,Centre-Forward,FW,20,2006-01-15,9.
 Hoffenheim,Adam Hložek,969870,attackers,"ST,CAM,LW",Centre-Forward,FW,24,2002-07-25,10.0,CZE,False,,2026-10-25
 Hoffenheim,Fisnik Asllani,1219540,attackers,"ST,CAM",Centre-Forward,FW,24,2002-08-08,11.0,KVX,False,,2026-10-25
 Hoffenheim,Adam Daghim,1353000,attackers,"RW,ST,LW,LM",Right Winger,FW,21,2005-09-28,14.0,DEN,False,,2026-10-25
-Hoffenheim,Tim Lemperle,1124825,attackers,"ST,RW",Centre-Forward,FW,24,2002-02-05,19.0,GER,False,,2026-10-25
+Hoffenheim,Tim Lemperle,1124825,attackers,ST,Centre-Forward,FW,24,2002-02-05,19.0,GER,False,,2026-10-25
 Stuttgart,Fabian Bredlow,522236,keepers,GK,Goalkeeper,GK,31,1995-03-02,1.0,GER,False,,2026-10-25
 Stuttgart,Marius Funk,659086,keepers,GK,Goalkeeper,GK,30,1996-01-01,33.0,GER,False,,2026-10-25
 Stuttgart,Dennis Seimen,1478098,keepers,GK,Goalkeeper,GK,20,2005-12-01,41.0,GER,False,,2026-10-25
@@ -428,12 +428,12 @@ Stuttgart,Bilal El Khannouss,1340895,midfielders,"CAM,RW,LW,ST",Attacking Midfie
 Stuttgart,Atakan Karazor,684983,midfielders,"CDM,CM",Defensive Midfield,MF,30,1996-10-13,16.0,TUR,False,,2026-10-25
 Stuttgart,Grischa Prömel,625175,midfielders,"CM,CDM",Central Midfield,MF,31,1995-01-09,21.0,GER,False,,2026-10-25
 Stuttgart,Nikolas Nartey,869298,midfielders,"CAM,RB,CDM",Attacking Midfield,MF,26,2000-02-22,28.0,DEN,True,About 1-2 weeks,2026-10-25
-Stuttgart,Tiago Tomás,1164506,attackers,"ST,RW,CAM",Centre-Forward,FW,24,2002-06-16,8.0,POR,True,Late October 2026,2026-10-25
-Stuttgart,Ermedin Demirović,840241,attackers,ST,Centre-Forward,FW,28,1998-03-25,9.0,BIH,False,,2026-10-25
+Stuttgart,Tiago Tomás,1164506,attackers,"RW,CAM,ST",Right Winger,FW,24,2002-06-16,8.0,POR,True,Late October 2026,2026-10-25
+Stuttgart,Ermedin Demirović,840241,attackers,"ST,CAM",Centre-Forward,FW,28,1998-03-25,9.0,BIH,False,,2026-10-25
 Stuttgart,Dženan Pejčinović,1366602,attackers,"ST,CAM",Centre-Forward,FW,21,2005-02-15,17.0,GER,False,,2026-10-25
 Stuttgart,Jamie Leweling,1074968,attackers,"RW,LW,RWB,CAM",Right Winger,FW,25,2001-02-26,18.0,GER,False,,2026-10-25
 Stuttgart,Deniz Undav,661519,attackers,"ST,CAM",Centre-Forward,FW,30,1996-07-19,26.0,GER,False,,2026-10-25
-Stuttgart,Leo Sauer,1425998,attackers,LW,Left Winger,FW,20,2005-12-16,44.0,SVK,False,,2026-10-25
+Stuttgart,Leo Sauer,1425998,attackers,"LW,RW",Left Winger,FW,20,2005-12-16,44.0,SVK,False,,2026-10-25
 Schalke 04,Faaris Yusufu,1738299,keepers,,Goalkeeper,GK,21,2005-02-11,,GER,False,,2026-10-25
 Schalke 04,Loris Karius,287894,keepers,GK,Goalkeeper,GK,33,1993-06-22,1.0,GER,False,,2026-10-25
 Schalke 04,Kevin Müller,215159,keepers,GK,Goalkeeper,GK,35,1991-03-15,22.0,GER,False,,2026-10-25
@@ -451,7 +451,7 @@ Schalke 04,Mertcan Ayhan,1755657,defenders,"CB,RB",Centre-Back,DF,20,2006-09-08,
 Schalke 04,Yassin Ben Balla,840426,midfielders,CM,Central Midfield,MF,30,1996-02-24,,FRA,False,,2026-10-25
 Schalke 04,Ron Schallenberg,820974,midfielders,"CDM,CM",Defensive Midfield,MF,28,1998-10-06,6.0,GER,True,About 1-2 weeks,2026-10-25
 Schalke 04,Satoshi Tanaka,1155066,midfielders,"CDM,CM,CB",Defensive Midfield,MF,24,2002-08-13,13.0,JPN,False,,2026-10-25
-Schalke 04,Janik Bachmann,560976,midfielders,CAM,Attacking Midfield,MF,30,1996-05-06,14.0,GER,False,,2026-10-25
+Schalke 04,Janik Bachmann,560976,midfielders,RW,Right Winger,MF,30,1996-05-06,14.0,GER,False,,2026-10-25
 Schalke 04,Adrian Gantenbein,1179182,midfielders,RWB,Right-Back,MF,25,2001-04-18,17.0,SUI,False,,2026-10-25
 Schalke 04,Kenan Karaman,469763,midfielders,"CAM,LW",Attacking Midfield,MF,32,1994-03-05,19.0,TUR,True,About 1-2 weeks,2026-10-25
 Schalke 04,Dejan Ljubičić,861668,midfielders,"RW,CAM,CM,RM,RWB",Right Winger,MF,29,1997-10-08,21.0,AUT,True,Late October 2026,2026-10-25
@@ -465,10 +465,10 @@ Schalke 04,Zaid Amoussou-Tchibara,1717550,attackers,,Centre-Forward,FW,20,2006-0
 Schalke 04,Hee-Chan Hwang,620026,attackers,"ST,CAM,LW,LM",Centre-Forward,FW,30,1996-01-26,7.0,KOR,False,,2026-10-25
 Schalke 04,Moussa Sylla,860056,attackers,ST,Centre-Forward,FW,26,1999-11-25,9.0,MLI,True,Early November 2026,2026-10-25
 Schalke 04,Edin Džeko,15403,attackers,ST,Centre-Forward,FW,40,1986-03-17,10.0,BIH,False,,2026-10-25
-Schalke 04,Bryan Lasme,815566,attackers,ST,Centre-Forward,FW,27,1998-11-14,11.0,FRA,True,Late October 2026,2026-10-25
+Schalke 04,Bryan Lasme,815566,attackers,ST,Centre-Forward,FW,27,1998-11-14,11.0,FRA,False,,2026-10-25
 Schalke 04,Emil Højlund,1320890,attackers,ST,Centre-Forward,FW,21,2005-01-04,15.0,DEN,False,,2026-10-25
-Schalke 04,Chukwubuike Adamu,882163,attackers,"ST,CAM",Centre-Forward,FW,25,2001-06-06,20.0,AUT,False,,2026-10-25
-Schalke 04,Junior Dina Ebimbe,1040889,attackers,"LW,CAM,RWB,RM",Left Winger,FW,25,2000-11-21,29.0,CMR,False,,2026-10-25
+Schalke 04,Chukwubuike Adamu,882163,attackers,ST,Centre-Forward,FW,25,2001-06-06,20.0,AUT,False,,2026-10-25
+Schalke 04,Junior Dina Ebimbe,1040889,attackers,"LW,RWB,CAM,RM",Left Winger,FW,25,2000-11-21,29.0,CMR,False,,2026-10-25
 Union Berlin,Frederik Rønnow,186557,keepers,GK,Goalkeeper,GK,34,1992-08-04,1.0,DEN,False,,2026-10-25
 Union Berlin,Carl Klaus,451628,keepers,GK,Goalkeeper,GK,32,1994-01-16,25.0,GER,False,,2026-10-25
 Union Berlin,Matheo Raab,1156148,keepers,GK,Goalkeeper,GK,27,1998-12-18,31.0,GER,False,,2026-10-25
@@ -477,7 +477,7 @@ Union Berlin,Andrik Markgraf,1796861,defenders,,Centre-Back,DF,20,2006-03-07,3.0
 Union Berlin,Zeno Van Den Bosch,1231677,defenders,CB,Centre-Back,DF,23,2003-07-06,4.0,BEL,False,,2026-10-25
 Union Berlin,Marvin Friedrich,530858,defenders,CB,Centre-Back,DF,30,1995-12-13,5.0,GER,True,Late October 2026,2026-10-25
 Union Berlin,Leopold Querfeld,1199947,defenders,CB,Centre-Back,DF,22,2003-12-20,14.0,AUT,False,,2026-10-25
-Union Berlin,Tom Rothe,1282582,defenders,"LB,LWB,LM",Left-Back,DF,21,2004-10-29,15.0,GER,False,,2026-10-25
+Union Berlin,Tom Rothe,1282582,defenders,"LB,LM,LWB",Left-Back,DF,21,2004-10-29,15.0,GER,False,,2026-10-25
 Union Berlin,Josip Juranović,622373,defenders,"RB,LWB",Right-Back,DF,31,1995-08-16,18.0,CRO,True,About 1-2 weeks,2026-10-25
 Union Berlin,Stanley N'Soki,907495,defenders,CB,Centre-Back,DF,27,1999-04-09,34.0,FRA,True,Late October 2026,2026-10-25
 Union Berlin,Aljoscha Kemlein,1403332,midfielders,"CDM,CM,CB",Defensive Midfield,MF,22,2004-08-02,6.0,GER,False,,2026-10-25
@@ -486,10 +486,10 @@ Union Berlin,Woo-Yeong Jeong,949673,midfielders,"CAM,ST,RW",Attacking Midfield,M
 Union Berlin,András Schäfer,836726,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,27,1999-04-13,13.0,HUN,False,,2026-10-25
 Union Berlin,Derrick Köhn,860260,midfielders,"LWB,LM,LB",Left-Back,MF,27,1999-02-04,17.0,GHA,False,,2026-10-25
 Union Berlin,Janik Haberer,304354,midfielders,"RWB,RM,CDM,RB",Right-Back,MF,32,1994-04-02,19.0,GER,False,,2026-10-25
-Union Berlin,Michel Aebischer,792756,midfielders,"CM,CDM,RM,LM,RW",Central Midfield,MF,29,1997-01-06,20.0,SUI,False,,2026-10-25
+Union Berlin,Michel Aebischer,792756,midfielders,"CM,CDM,LM,RM,RW",Central Midfield,MF,29,1997-01-06,20.0,SUI,False,,2026-10-25
 Union Berlin,Robert Skov,447959,midfielders,LM,Left Midfield,MF,30,1996-05-20,24.0,DEN,False,,2026-10-25
 Union Berlin,Christopher Trimmel,166733,midfielders,"RWB,RB,RM",Right-Back,MF,39,1987-02-24,28.0,AUT,False,,2026-10-25
-Union Berlin,Kastriot Imeri,852049,midfielders,"LW,LM,RM,CAM",Left Winger,MF,26,2000-06-27,30.0,SUI,False,,2026-10-25
+Union Berlin,Kastriot Imeri,852049,midfielders,"LW,RM,LM,CAM",Left Winger,MF,26,2000-06-27,30.0,SUI,False,,2026-10-25
 Union Berlin,Julien Friedrich,1555056,midfielders,,Central Midfield,MF,19,2006-11-12,38.0,GER,False,,2026-10-25
 Union Berlin,Linus Guether,1958812,midfielders,,Central Midfield,MF,16,2010-04-08,49.0,GER,False,,2026-10-25
 Union Berlin,Oliver Burke,609504,attackers,"ST,CAM,RW",Centre-Forward,FW,29,1997-04-07,7.0,SCO,False,,2026-10-25
@@ -522,7 +522,7 @@ Gladbach,Mathieu Nguefack,1975572,midfielders,CDM,Defensive Midfield,MF,18,2008-
 Gladbach,Josiah Uwakhonye,2030060,midfielders,,Central Midfield,MF,18,2007-12-09,35.0,GER,False,,2026-10-25
 Gladbach,Wael Mohya,1793874,midfielders,"CAM,LW,LM",Attacking Midfield,MF,17,2008-12-31,36.0,GER,False,,2026-10-25
 Gladbach,Hugo Bolin,1351569,midfielders,"CAM,LW,CM",Attacking Midfield,MF,23,2003-07-24,38.0,SWE,False,,2026-10-25
-Gladbach,Zento Uno,1337143,midfielders,"CAM,CM,CDM",Attacking Midfield,MF,22,2003-11-20,47.0,JPN,False,,2026-10-25
+Gladbach,Zento Uno,1337143,midfielders,"CM,CDM",Central Midfield,MF,22,2003-11-20,47.0,JPN,False,,2026-10-25
 Gladbach,Isac Lidberg,655095,attackers,ST,Centre-Forward,FW,28,1998-09-08,3.0,SWE,True,About 1-2 weeks,2026-10-25
 Gladbach,Franck Honorat,501543,attackers,"RW,CAM,ST,RM",Right Winger,FW,30,1996-08-11,9.0,FRA,True,About 1-2 weeks,2026-10-25
 Gladbach,Tim Kleindienst,442728,attackers,ST,Centre-Forward,FW,31,1995-08-31,11.0,GER,True,About 1-2 weeks,2026-10-25

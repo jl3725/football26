@@ -1,7 +1,7 @@
 squad,player,fotmob_id,group,positions,tm_position,pos,age,birth_date,shirt,ccode,injured,expected_return,fetched
 FC København,Diant Ramaj,1042347,keepers,GK,Goalkeeper,GK,25,2001-09-19,1.0,GER,False,,2026-10-25
 FC København,Rúnar Rúnarsson,316847,keepers,GK,Goalkeeper,GK,31,1995-02-18,31.0,ISL,False,,2026-10-25
-FC København,Tobias Breum-Harild,1830731,keepers,GK,Goalkeeper,GK,18,2007-10-25,51.0,DEN,False,,2026-10-25
+FC København,Tobias Breum-Harild,1830731,keepers,GK,Goalkeeper,GK,19,2007-10-25,51.0,DEN,False,,2026-10-25
 FC København,Felix Beijmo,628816,defenders,"CB,RB",Centre-Back,DF,28,1998-01-31,2.0,SWE,False,,2026-10-25
 FC København,Asger Sørensen,509349,defenders,CB,Centre-Back,DF,30,1996-06-05,4.0,DEN,False,,2026-10-25
 FC København,Ákos Markgráf,1591669,defenders,"CB,LB",Centre-Back,DF,21,2005-06-30,6.0,HUN,False,,2026-10-25
@@ -38,8 +38,8 @@ FC Midtjylland,Abdou Aziz Ndiaye,1687775,defenders,CB,Centre-Back,DF,20,2005-11-
 FC Midtjylland,Philip Billing,532743,midfielders,"CDM,CM,RWB",Defensive Midfield,MF,30,1996-06-11,8.0,DEN,False,,2026-10-25
 FC Midtjylland,Pedro Bravo,1272272,midfielders,"CDM,CM",Defensive Midfield,MF,21,2004-11-26,19.0,COL,False,,2026-10-25
 FC Midtjylland,Hyun-Seok Hong,925345,midfielders,"CAM,ST,RW,CM",Attacking Midfield,MF,27,1999-06-16,20.0,KOR,False,,2026-10-25
-FC Midtjylland,Denil Castillo,1477417,midfielders,"CDM,CM,CAM,RW",Defensive Midfield,MF,22,2004-03-24,21.0,ECU,True,Early November 2026,2026-10-25
-FC Midtjylland,Kjell Wätjen,1482728,midfielders,"CAM,CDM,LW,LM,LWB",Attacking Midfield,MF,20,2006-02-16,29.0,GER,False,,2026-10-25
+FC Midtjylland,Denil Castillo,1477417,midfielders,"CM,CDM,CAM,RW",Central Midfield,MF,22,2004-03-24,21.0,ECU,True,Early November 2026,2026-10-25
+FC Midtjylland,Kjell Wätjen,1482728,midfielders,"CAM,LM,LW,CDM,CM,LWB",Attacking Midfield,MF,20,2006-02-16,29.0,GER,False,,2026-10-25
 FC Midtjylland,Alamari Djabi,1575131,midfielders,CM,Central Midfield,MF,20,2006-09-28,33.0,GNB,False,,2026-10-25
 FC Midtjylland,Victor Bak,1273298,midfielders,"LWB,LM,LB,CB",Left-Back,MF,23,2003-10-03,55.0,DEN,False,,2026-10-25
 FC Midtjylland,Mileta Rajović,960491,attackers,ST,Centre-Forward,FW,27,1999-07-17,9.0,DEN,False,,2026-10-25
@@ -51,18 +51,18 @@ FC Midtjylland,Julius Emefile,1692794,attackers,LW,Left Winger,FW,19,2007-04-02,
 FC Midtjylland,Mikel Gogorza,1531099,attackers,"LW,CAM",Left Winger,FW,20,2006-09-27,41.0,DEN,True,Day to day,2026-10-25
 FC Midtjylland,Júnior Brumado,861811,attackers,"ST,RW",Centre-Forward,FW,27,1999-05-15,74.0,BRA,False,,2026-10-25
 FC Midtjylland,Friday Etim,1328716,attackers,ST,Centre-Forward,FW,24,2002-05-21,90.0,NGA,False,,2026-10-25
-FC Midtjylland,David Martínez,1354997,attackers,"RW,CAM,LWB",Right Winger,FW,20,2006-02-07,98.0,VEN,False,,2026-10-25
+FC Midtjylland,David Martínez,1354997,attackers,"RW,CAM,LWB,RM",Right Winger,FW,20,2006-02-07,98.0,VEN,False,,2026-10-25
 Viborg,Lucas Lund Pedersen,952304,keepers,GK,Goalkeeper,GK,26,2000-03-19,1.0,DEN,False,,2026-10-25
 Viborg,Kasper Kiilerich,1333333,keepers,GK,Goalkeeper,GK,20,2005-11-22,20.0,DEN,False,,2026-10-25
 Viborg,Mohamed Riahi,2019796,defenders,,Centre-Back,DF,20,2005-12-21,2.0,TUN,True,Day to day,2026-10-25
-Viborg,Valgeir Lunddal,937078,defenders,RWB,Right-Back,DF,25,2001-09-24,3.0,ISL,False,,2026-10-25
+Viborg,Valgeir Lunddal,937078,defenders,"RWB,RB",Right-Back,DF,25,2001-09-24,3.0,ISL,False,,2026-10-25
 Viborg,Lukas Kirkegaard,1517340,defenders,CB,Centre-Back,DF,21,2005-08-31,4.0,DEN,False,,2026-10-25
 Viborg,Žan Zaletel,1050895,defenders,CB,Centre-Back,DF,27,1999-09-16,5.0,SVN,False,,2026-10-25
 Viborg,Oliver Bundgaard Kristensen,1034139,defenders,LB,Left-Back,DF,25,2001-06-15,23.0,DEN,False,,2026-10-25
 Viborg,Daniel Anyembe,754437,defenders,CB,Centre-Back,DF,28,1998-07-22,24.0,KEN,False,,2026-10-25
 Viborg,Hjalte Bidstrup,1593370,defenders,RB,Right-Back,DF,20,2006-02-15,26.0,DEN,False,,2026-10-25
 Viborg,Emil Monrad,1896633,defenders,,Centre-Back,DF,18,2008-04-05,38.0,DEN,False,,2026-10-25
-Viborg,Mads Søndergaard,1179673,midfielders,"CM,LM",Central Midfield,MF,23,2002-12-26,6.0,DEN,False,,2026-10-25
+Viborg,Mads Søndergaard,1179673,midfielders,CM,Central Midfield,MF,23,2002-12-26,6.0,DEN,False,,2026-10-25
 Viborg,Asker Beck,1353002,midfielders,CM,Central Midfield,MF,23,2003-07-07,8.0,DEN,False,,2026-10-25
 Viborg,Jeppe Grønning,165547,midfielders,"CM,CDM",Central Midfield,MF,35,1991-05-24,13.0,DEN,False,,2026-10-25
 Viborg,Ruben Kristensen Alte,1172556,midfielders,"LW,CAM,CM",Left Winger,MF,26,2000-02-28,18.0,NOR,False,,2026-10-25
@@ -76,7 +76,7 @@ Viborg,Charly Horneman,1382135,attackers,"LW,RW",Left Winger,FW,22,2004-03-21,11
 Viborg,Dorian Hanza,1312559,attackers,ST,Centre-Forward,FW,25,2001-05-12,19.0,EQG,False,,2026-10-25
 Viborg,Giulio,1905639,attackers,LW,Left Winger,FW,21,2005-05-10,25.0,BRA,False,,2026-10-25
 Viborg,Roald Mitchell,1251762,attackers,ST,Centre-Forward,FW,23,2003-01-13,29.0,TRI,True,Day to day,2026-10-25
-Viborg,Adam Kleis-Kristoffersen,1841026,attackers,,Centre-Forward,FW,18,2008-07-14,36.0,DEN,False,,2026-10-25
+Viborg,Adam Kleis-Kristoffersen,1841026,attackers,RW,Right Winger,FW,18,2008-07-14,36.0,DEN,False,,2026-10-25
 Nordsjælland,Andreas Hansen,350528,keepers,GK,Goalkeeper,GK,31,1995-08-11,13.0,DEN,False,,2026-10-25
 Nordsjælland,Jakob Busk,338405,keepers,GK,Goalkeeper,GK,33,1993-09-12,16.0,DEN,False,,2026-10-25
 Nordsjælland,Carljohan Eriksson,320668,keepers,GK,Goalkeeper,GK,31,1995-04-25,22.0,FIN,False,,2026-10-25
@@ -87,7 +87,7 @@ Nordsjælland,Noah Markmann,1579475,defenders,CB,Centre-Back,DF,19,2007-02-24,4.
 Nordsjælland,Stephen Acquah,1713875,defenders,CB,Centre-Back,DF,20,2006-05-01,15.0,GHA,False,,2026-10-25
 Nordsjælland,Victor Nelsson,776594,defenders,CB,Centre-Back,DF,28,1998-10-14,25.0,DEN,False,,2026-10-25
 Nordsjælland,Villads Rutkjær,1819927,defenders,CB,Centre-Back,DF,18,2008-10-04,35.0,DEN,False,,2026-10-25
-Nordsjælland,Juho Lähteenmäki,1717547,midfielders,"LM,LB,RM,RWB",Left Midfield,MF,20,2006-06-15,5.0,FIN,False,,2026-10-25
+Nordsjælland,Juho Lähteenmäki,1717547,midfielders,"LM,RM,LB,CB,RWB",Left Midfield,MF,20,2006-06-15,5.0,FIN,False,,2026-10-25
 Nordsjælland,Mark Brink,683894,midfielders,"CM,CDM",Central Midfield,MF,28,1998-03-15,6.0,DEN,False,,2026-10-25
 Nordsjælland,Nicklas Røjkjær,803342,midfielders,CM,Central Midfield,MF,28,1998-07-24,8.0,DEN,False,,2026-10-25
 Nordsjælland,Justin Janssen,1666791,midfielders,"CM,CDM",Central Midfield,MF,20,2006-07-25,18.0,DEN,False,,2026-10-25
@@ -121,12 +121,12 @@ Brøndby IF,Raphael Canut,1950851,defenders,CB,Centre-Back,DF,17,2009-03-31,37.0
 Brøndby IF,Daniel Wass,74169,midfielders,"CM,CDM",Central Midfield,MF,37,1989-05-31,10.0,DEN,False,,2026-10-25
 Brøndby IF,Casper Winther,1099641,midfielders,"CM,CDM",Central Midfield,MF,23,2003-02-11,15.0,DEN,False,,2026-10-25
 Brøndby IF,Max Ejdum,1389698,midfielders,"CDM,RM,LM",Defensive Midfield,MF,22,2004-10-15,18.0,DEN,False,,2026-10-25
-Brøndby IF,Sho Fukuda,1451137,midfielders,"RM,ST,RW",Right Midfield,MF,25,2001-03-23,19.0,JPN,False,,2026-10-25
+Brøndby IF,Sho Fukuda,1451137,midfielders,"RM,ST",Right Midfield,MF,25,2001-03-23,19.0,JPN,False,,2026-10-25
 Brøndby IF,Mads Frøkjær-Jensen,949266,midfielders,"CAM,RW,RM",Attacking Midfield,MF,27,1999-07-29,29.0,DEN,False,,2026-10-25
 Brøndby IF,Bartosz Slisz,742332,midfielders,"CDM,CM",Defensive Midfield,MF,27,1999-03-29,99.0,POL,False,,2026-10-25
 Brøndby IF,Olti Hyseni,1575143,attackers,LW,Left Winger,FW,19,2007-07-17,7.0,DEN,False,,2026-10-25
 Brøndby IF,Patrick Mortensen,62329,attackers,ST,Centre-Forward,FW,37,1989-07-13,9.0,DEN,False,,2026-10-25
-Brøndby IF,Filip Bundgaard,1165444,attackers,"ST,LW",Centre-Forward,FW,22,2004-07-03,11.0,DEN,False,,2026-10-25
+Brøndby IF,Filip Bundgaard,1165444,attackers,"LW,ST",Left Winger,FW,22,2004-07-03,11.0,DEN,False,,2026-10-25
 Brøndby IF,Emmanuel Dennis,769673,attackers,ST,Centre-Forward,FW,28,1997-11-15,17.0,NGA,False,,2026-10-25
 Brøndby IF,Marcus Younis,1432615,attackers,RW,Right Winger,FW,21,2005-07-03,21.0,AUS,False,,2026-10-25
 Brøndby IF,Jacob Ambæk,1717020,attackers,ST,Centre-Forward,FW,18,2008-03-28,38.0,DEN,False,,2026-10-25
@@ -136,17 +136,17 @@ AC Horsens,Dennis Smarsch,884906,keepers,GK,Goalkeeper,GK,27,1999-01-14,23.0,GER
 AC Horsens,Anders Hoff,1164982,keepers,GK,Goalkeeper,GK,23,2003-09-04,31.0,DEN,False,,2026-10-25
 AC Horsens,Anestis Tricholidis,1946610,defenders,CB,Centre-Back,DF,16,2010-05-28,,NOR,False,,2026-10-25
 AC Horsens,Christian Vestergaard,1103794,defenders,CB,Centre-Back,DF,25,2001-03-26,3.0,DEN,True,Early April 2027,2026-10-25
-AC Horsens,Ivan Miličević,1179167,defenders,"LB,LWB",Left-Back,DF,28,1998-07-16,7.0,BIH,False,,2026-10-25
+AC Horsens,Ivan Miličević,1179167,defenders,LB,Left-Back,DF,28,1998-07-16,7.0,BIH,False,,2026-10-25
 AC Horsens,Valassina Diomande,1910146,defenders,"CB,LB",Centre-Back,DF,19,2007-10-19,12.0,CIV,False,,2026-10-25
-AC Horsens,Ole Kolskogen,842807,defenders,CB,Centre-Back,DF,25,2001-01-20,24.0,NOR,True,Late October 2026,2026-10-25
+AC Horsens,Ole Kolskogen,842807,defenders,CB,Centre-Back,DF,25,2001-01-20,24.0,NOR,True,About a week,2026-10-25
 AC Horsens,Victor Pálsson,161937,defenders,"RB,CB",Right-Back,DF,35,1991-04-30,26.0,ISL,False,,2026-10-25
-AC Horsens,Alagie Saine,1433735,defenders,"LB,CB,RWB",Left-Back,DF,23,2003-01-20,28.0,GAM,False,,2026-10-25
+AC Horsens,Alagie Saine,1433735,defenders,"LB,CB,RM",Left-Back,DF,23,2003-01-20,28.0,GAM,False,,2026-10-25
 AC Horsens,Mikkel Kupijbida,1804003,defenders,CB,Centre-Back,DF,18,2008-02-07,35.0,DEN,False,,2026-10-25
 AC Horsens,Anton Mandrup,1643765,defenders,,Centre-Back,DF,18,2008-02-14,39.0,DEN,False,,2026-10-25
 AC Horsens,Andreas Bruus,821101,midfielders,RM,Right Midfield,MF,27,1999-01-16,5.0,DEN,False,,2026-10-25
-AC Horsens,Jakob Bonde,288832,midfielders,"CM,ST,CAM",Central Midfield,MF,32,1993-12-29,6.0,DEN,False,,2026-10-25
+AC Horsens,Jakob Bonde,288832,midfielders,"CAM,CM,ST",Attacking Midfield,MF,32,1993-12-29,6.0,DEN,False,,2026-10-25
 AC Horsens,Julius Madsen,1193683,midfielders,"CAM,LM,LWB",Attacking Midfield,MF,23,2003-08-01,14.0,DEN,False,,2026-10-25
-AC Horsens,Abdul Moro,1669408,midfielders,"CDM,CM",Defensive Midfield,MF,20,2006-05-05,16.0,GHA,False,,2026-10-25
+AC Horsens,Abdul Moro,1669408,midfielders,CDM,Defensive Midfield,MF,20,2006-05-05,16.0,GHA,False,,2026-10-25
 AC Horsens,Adam Herdonsson,1385819,midfielders,"CDM,CM",Defensive Midfield,MF,22,2004-04-07,17.0,SWE,False,,2026-10-25
 AC Horsens,Karlo Lusavec,1511009,midfielders,"CDM,CM",Defensive Midfield,MF,22,2003-10-30,20.0,CRO,False,,2026-10-25
 AC Horsens,Seniko Doua,1434456,midfielders,CAM,Attacking Midfield,MF,24,2001-11-01,30.0,CIV,False,,2026-10-25
@@ -176,7 +176,7 @@ OB,Adam Amrani,1836181,defenders,,Centre-Back,DF,18,2008-10-09,25.0,DEN,False,,2
 OB,James Gomez,1127584,defenders,CB,Centre-Back,DF,24,2001-11-14,29.0,GAM,False,,2026-10-25
 OB,Fredrik Ulvestad,180283,midfielders,"CDM,CM,RM",Defensive Midfield,MF,34,1992-05-19,6.0,NOR,False,,2026-10-25
 OB,Jann-Fiete Arp,844432,midfielders,"CAM,LM,RW,ST,RM,LW",Attacking Midfield,MF,26,2000-01-06,7.0,GER,False,,2026-10-25
-OB,Rasmus Falk,199818,midfielders,"CM,CDM",Central Midfield,MF,34,1992-01-15,8.0,DEN,False,,2026-10-25
+OB,Rasmus Falk,199818,midfielders,"CDM,CM",Defensive Midfield,MF,34,1992-01-15,8.0,DEN,False,,2026-10-25
 OB,Anssi Suhonen,1274568,midfielders,"CM,LM",Central Midfield,MF,25,2001-01-14,10.0,FIN,False,,2026-10-25
 OB,Nikolaj Juul-Sandberg,1653810,midfielders,"CM,CDM,RM",Central Midfield,MF,20,2006-04-21,19.0,DEN,False,,2026-10-25
 OB,Vitus Friis,1813670,midfielders,,Central Midfield,MF,19,2007-03-31,21.0,DEN,False,,2026-10-25
@@ -209,7 +209,7 @@ Silkeborg,Mads Larsen,927874,midfielders,"CDM,CM",Defensive Midfield,MF,25,2001-
 Silkeborg,Rami Al Hajj,1027551,midfielders,"CAM,ST",Attacking Midfield,MF,25,2001-09-17,22.0,SWE,False,,2026-10-25
 Silkeborg,Mikkel Øxenberg,1735712,midfielders,,Central Midfield,MF,19,2007-01-25,26.0,DEN,False,,2026-10-25
 Silkeborg,William Kirk,1881633,midfielders,"CDM,CM",Defensive Midfield,MF,19,2007-01-13,27.0,DEN,False,,2026-10-25
-Silkeborg,Mads Freundlich,1183836,midfielders,CDM,Defensive Midfield,MF,23,2003-03-25,33.0,DEN,False,,2026-10-25
+Silkeborg,Mads Freundlich,1183836,midfielders,"CDM,CB",Defensive Midfield,MF,23,2003-03-25,33.0,DEN,False,,2026-10-25
 Silkeborg,Kristian Kirkegaard,865687,attackers,"LW,RW,LM",Left Winger,FW,29,1997-10-02,10.0,DEN,False,,2026-10-25
 Silkeborg,Oliver Ross,1311196,attackers,"CAM,ST,LW,RW",Attacking Midfield,FW,22,2004-10-10,11.0,DEN,False,,2026-10-25
 Silkeborg,Sofus Berger,1169301,attackers,"RW,CAM",Right Winger,FW,23,2003-06-02,14.0,DEN,False,,2026-10-25
@@ -222,7 +222,7 @@ Randers FC,Daniel Høegh,172768,defenders,CB,Centre-Back,DF,35,1991-01-06,3.0,DE
 Randers FC,Wessel Dammers,560853,defenders,CB,Centre-Back,DF,31,1995-03-01,4.0,NED,True,Day to day,2026-10-25
 Randers FC,Oliver Jones,1415942,defenders,CB,Centre-Back,DF,23,2003-02-06,5.0,AUS,False,,2026-10-25
 Randers FC,Benjamin Örn,1560738,defenders,RB,Right-Back,DF,22,2004-04-26,23.0,SWE,True,Late January 2027,2026-10-25
-Randers FC,Sabil Hansen,1451493,defenders,"RB,RWB",Right-Back,DF,20,2005-11-14,24.0,DEN,False,,2026-10-25
+Randers FC,Sabil Hansen,1451493,defenders,"RB,RM",Right-Back,DF,20,2005-11-14,24.0,DEN,False,,2026-10-25
 Randers FC,Nikolai Hopland,1255796,defenders,CB,Centre-Back,DF,22,2004-07-24,27.0,NOR,False,,2026-10-25
 Randers FC,Simon Stüker,1780090,defenders,"RB,LB",Right-Back,DF,19,2007-04-23,29.0,DEN,False,,2026-10-25
 Randers FC,Felix Sommer,1988823,defenders,CB,Centre-Back,DF,17,2009-05-25,31.0,DEN,False,,2026-10-25
@@ -232,12 +232,12 @@ Randers FC,Laurits Raun Pedersen,1463682,midfielders,"CDM,CM",Defensive Midfield
 Randers FC,Elies Mahmoud,1184685,midfielders,"RW,RM,CAM",Right Winger,MF,25,2001-02-10,11.0,FRA,False,,2026-10-25
 Randers FC,Frederik Lauenborg,525592,midfielders,CDM,Defensive Midfield,MF,29,1997-05-18,14.0,DEN,True,Day to day,2026-10-25
 Randers FC,Mathias Greve,553554,midfielders,"LM,CAM,CDM,LW,CM",Left Midfield,MF,31,1995-02-11,17.0,DEN,False,,2026-10-25
-Randers FC,Axel Henriksson,1239553,midfielders,"ST,CAM,RM",Centre-Forward,MF,24,2002-04-16,21.0,SWE,False,,2026-10-25
 Randers FC,Ousseynou Fall Seck,1792258,midfielders,RM,Right Midfield,MF,19,2007-06-22,25.0,SEN,False,,2026-10-25
-Randers FC,Hector Lux Høyrup,1800982,midfielders,CM,Central Midfield,MF,17,2009-03-29,26.0,DEN,False,,2026-10-25
+Randers FC,Hector Lux Høyrup,1800982,midfielders,LW,Left Winger,MF,17,2009-03-29,26.0,DEN,False,,2026-10-25
 Randers FC,Mike Themsen,1614318,attackers,"CAM,RW,LW,LM",Attacking Midfield,FW,20,2006-03-01,7.0,DEN,False,,2026-10-25
 Randers FC,Warren Caddy,630488,attackers,ST,Centre-Forward,FW,29,1997-04-09,10.0,MAD,False,,2026-10-25
 Randers FC,Martin André Sjølstad,937242,attackers,"LW,LB",Left Winger,FW,26,2000-07-09,15.0,NOR,False,,2026-10-25
+Randers FC,Axel Henriksson,1239553,attackers,"ST,RW,CAM",Centre-Forward,FW,24,2002-04-16,21.0,SWE,False,,2026-10-25
 Randers FC,Mohamed Sankoh,1116945,attackers,ST,Centre-Forward,FW,23,2003-10-16,30.0,NED,False,,2026-10-25
 Randers FC,Cyril Edudzi,1756868,attackers,"LW,ST",Left Winger,FW,20,2006-01-15,33.0,GHA,False,,2026-10-25
 Randers FC,Amady Camara,1515220,attackers,RW,Right Winger,FW,21,2005-05-28,36.0,MLI,False,,2026-10-25
@@ -254,8 +254,8 @@ AGF,Mouhammade Camara,2093305,defenders,CB,Centre-Back,DF,19,2007-03-28,44.0,MLI
 AGF,Magnus Knudsen,1025560,midfielders,"CDM,CM",Defensive Midfield,MF,25,2001-06-15,4.0,NOR,False,,2026-10-25
 AGF,Nicolai Poulsen,392809,midfielders,CM,Central Midfield,MF,33,1993-08-15,6.0,DEN,False,,2026-10-25
 AGF,Markus Solbakken,742410,midfielders,"CM,CDM",Central Midfield,MF,26,2000-07-25,7.0,NOR,False,,2026-10-25
-AGF,Kristian Arnstad,1053293,midfielders,"LW,CDM,CAM,CM",Left Winger,MF,23,2003-09-07,10.0,NOR,False,,2026-10-25
-AGF,Gift Links,787031,midfielders,"LM,RWB,RM,LWB",Left Midfield,MF,28,1998-10-02,11.0,RSA,False,,2026-10-25
+AGF,Kristian Arnstad,1053293,midfielders,"LW,CM,CDM,CAM",Left Winger,MF,23,2003-09-07,10.0,NOR,False,,2026-10-25
+AGF,Gift Links,787031,midfielders,"LM,RM,LWB,RWB",Left Midfield,MF,28,1998-10-02,11.0,RSA,False,,2026-10-25
 AGF,Jens Jønsson,274334,midfielders,"CDM,CM",Defensive Midfield,MF,33,1993-01-10,16.0,DEN,False,,2026-10-25
 AGF,Kevin Yakob,941579,midfielders,"CM,CDM",Central Midfield,MF,26,2000-10-10,17.0,IRQ,True,Day to day,2026-10-25
 AGF,Callum McCowatt,848352,midfielders,"CAM,CM,RW,ST,CDM",Attacking Midfield,MF,27,1999-04-30,18.0,NZL,False,,2026-10-25
@@ -294,11 +294,11 @@ Sønderjyske,Jacob Steen Christensen,949273,midfielders,"CDM,CM",Defensive Midfi
 Sønderjyske,Matthew Hoppe,1202104,attackers,ST,Centre-Forward,FW,25,2001-03-13,9.0,USA,False,,2026-10-25
 Sønderjyske,Osaze De Rosario,1136487,attackers,ST,Centre-Forward,FW,25,2001-07-19,11.0,GUY,False,,2026-10-25
 Sønderjyske,Dalton Wilkins,1053732,attackers,LW,Left Winger,FW,27,1999-04-15,13.0,NZL,False,,2026-10-25
-Sønderjyske,Teodor Berg Haltvik,1047036,attackers,"ST,RW,CM",Centre-Forward,FW,26,2000-04-09,14.0,NOR,False,,2026-10-25
+Sønderjyske,Teodor Berg Haltvik,1047036,attackers,"ST,RW,CM,LW",Centre-Forward,FW,26,2000-04-09,14.0,NOR,False,,2026-10-25
 Sønderjyske,Lirim Qamili,864989,attackers,"RW,LW,ST",Right Winger,FW,28,1998-06-04,15.0,MKD,False,,2026-10-25
 Sønderjyske,Omran Khattar,1737694,attackers,LW,Left Winger,FW,17,2009-04-02,18.0,DEN,False,,2026-10-25
 Sønderjyske,Bubacarr Tambedou,1367264,attackers,"ST,LW",Centre-Forward,FW,24,2002-04-05,26.0,GAM,False,,2026-10-25
-Sønderjyske,Ismaïl Seydi,1622055,attackers,"LW,RW,CAM",Left Winger,FW,25,2001-07-15,31.0,FRA,False,,2026-10-25
+Sønderjyske,Ismaïl Seydi,1622055,attackers,"RW,LW,CAM",Right Winger,FW,25,2001-07-15,31.0,FRA,False,,2026-10-25
 Sønderjyske,David Boison,1573232,attackers,"RW,ST",Right Winger,FW,19,2007-05-16,32.0,GHA,False,,2026-10-25
 Lyngby,Jón Símonarson,1532203,keepers,GK,Goalkeeper,GK,19,2007-05-26,,ISL,False,,2026-10-25
 Lyngby,Jonathan Ægidius,1201769,keepers,GK,Goalkeeper,GK,24,2002-04-22,1.0,DEN,False,,2026-10-25
