@@ -358,7 +358,7 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5881205,2026-10-23,ger.1,Stuttgart,Gladbach,83.0,Ermedin Demirović,RegularPlay,0,0.3246183395385742
 5881197,2026-10-24,ger.1,Augsburg,Union Berlin,71.0,Han-Noah Massengo,ThrowInSetPiece,0,0.0863363742828369
 5881197,2026-10-24,ger.1,Union Berlin,Augsburg,74.0,Janik Haberer,SetPiece,0,0.8776032328605652
-5881198,2026-10-24,ger.1,Dortmund,Frankfurt,80.0,Maximilian Beier,RegularPlay,0,0.04661353677511215
+5881198,2026-10-24,ger.1,Dortmund,Frankfurt,80.0,Maximilian Beier,RegularPlay,0,0.0466135367751121
 5881198,2026-10-24,ger.1,Frankfurt,Dortmund,,,none,0,
 5881199,2026-10-24,ger.1,Köln,Schalke 04,,,none,0,
 5881199,2026-10-24,ger.1,Schalke 04,Köln,,,none,0,
@@ -374,3 +374,7 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5881204,2026-10-24,ger.1,RB Leipzig,SV Elversberg,84.0,Christoph Baumgartner,FromCorner,0,0.2601381242275238
 5881204,2026-10-24,ger.1,RB Leipzig,SV Elversberg,90.0,Rômulo,RegularPlay,0,0.616104781627655
 5881204,2026-10-24,ger.1,SV Elversberg,RB Leipzig,,,none,0,
+5881201,2026-10-25,ger.1,Hoffenheim,Leverkusen,79.0,Andrej Kramarić,Penalty,0,0.7884
+5881201,2026-10-25,ger.1,Hoffenheim,Leverkusen,89.0,Alexander Prass,FastBreak,0,0.32628363370895386
+5881201,2026-10-25,ger.1,Hoffenheim,Leverkusen,90.0,Max Moerstedt,FastBreak,0,0.8277642130851746
+5881201,2026-10-25,ger.1,Leverkusen,Hoffenheim,,,none,0,

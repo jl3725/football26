@@ -9,8 +9,8 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 532,
-   "exact": 490,
+   "total": 535,
+   "exact": 493,
    "rule": 8,
    "ambiguous": 0,
    "orphan": 34,
@@ -277,8 +277,8 @@
    ]
   },
   "espn_subs": {
-   "total": 395,
-   "exact": 395,
+   "total": 397,
+   "exact": 397,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -304,8 +304,8 @@
    ]
   },
   "match_events": {
-   "total": 355,
-   "exact": 355,
+   "total": 358,
+   "exact": 358,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -330,8 +330,8 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 599,
-   "exact": 491,
+   "total": 600,
+   "exact": 492,
    "rule": 22,
    "ambiguous": 1,
    "orphan": 86,
@@ -339,7 +339,7 @@
     {
      "squad": "Celta Vigo",
      "name": "Andrei Radu",
-     "starts": 9
+     "starts": 10
     },
     {
      "squad": "Alavés",
@@ -765,8 +765,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 282,
-   "exact": 282,
+   "total": 283,
+   "exact": 283,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -791,8 +791,8 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 640,
-   "exact": 557,
+   "total": 641,
+   "exact": 558,
    "rule": 10,
    "ambiguous": 1,
    "orphan": 73,
@@ -1029,8 +1029,8 @@
    ]
   },
   "espn_subs": {
-   "total": 440,
-   "exact": 435,
+   "total": 442,
+   "exact": 437,
    "rule": 1,
    "ambiguous": 1,
    "orphan": 4,
@@ -1072,8 +1072,8 @@
    ]
   },
   "match_events": {
-   "total": 331,
-   "exact": 331,
+   "total": 333,
+   "exact": 333,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1271,15 +1271,20 @@
    ]
   },
   "espn_subs": {
-   "total": 359,
+   "total": 360,
    "exact": 355,
    "rule": 3,
    "ambiguous": 0,
-   "orphan": 1,
+   "orphan": 2,
    "orphans": [
     {
      "squad": "Rennes",
      "name": "Aboubakar Nagida",
+     "starts": 0
+    },
+    {
+     "squad": "Lille",
+     "name": "Angel Yondjo",
      "starts": 0
     }
    ]
@@ -1293,8 +1298,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 264,
-   "exact": 264,
+   "total": 267,
+   "exact": 267,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1720,11 +1725,11 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 514,
+   "total": 515,
    "exact": 442,
    "rule": 40,
    "ambiguous": 1,
-   "orphan": 32,
+   "orphan": 33,
    "orphans": [
     {
      "squad": "Charleroi",
@@ -1855,16 +1860,11 @@
   },
   "espn_lineups_cups": {
    "total": 125,
-   "exact": 122,
+   "exact": 123,
    "rule": 1,
    "ambiguous": 0,
-   "orphan": 2,
+   "orphan": 1,
    "orphans": [
-    {
-     "squad": "Club Brugge",
-     "name": "Milan Robberechts",
-     "starts": 0
-    },
     {
      "squad": "Union SG",
      "name": "Daniel Tshilanda",
@@ -1873,8 +1873,8 @@
    ]
   },
   "espn_subs": {
-   "total": 280,
-   "exact": 280,
+   "total": 283,
+   "exact": 283,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -2441,8 +2441,8 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 365,
-   "exact": 337,
+   "total": 368,
+   "exact": 340,
    "rule": 1,
    "ambiguous": 0,
    "orphan": 27,
@@ -2589,8 +2589,8 @@
    ]
   },
   "espn_subs": {
-   "total": 281,
-   "exact": 281,
+   "total": 282,
+   "exact": 282,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -2624,10 +2624,10 @@
   },
   "espn_lineups": {
    "total": 346,
-   "exact": 338,
+   "exact": 337,
    "rule": 1,
    "ambiguous": 0,
-   "orphan": 7,
+   "orphan": 8,
    "orphans": [
     {
      "squad": "Young Boys",
@@ -2642,6 +2642,11 @@
     {
      "squad": "Basel",
      "name": "Albian Ajeti",
+     "starts": 0
+    },
+    {
+     "squad": "Servette",
+     "name": "Julian von Moos",
      "starts": 0
     },
     {
