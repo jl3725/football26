@@ -1383,6 +1383,38 @@
    "away": "Juventus",
    "at": "2026-10-25T19:52:39+00:00",
    "model": "gemini-flash-lite-latest"
+  },
+  "401875566": {
+   "text": "Twente가 AFAS Stadion에서 AZ Alkmaar를 2-0으로 꺾으며 승리를 거뒀다. 후반 84' Sondre Ørjasaeter의 결승골에 이어 90'+3' Lucas Vennegoor Of Hesselink가 추가골을 기록했고, 88'에는 Twente의 Daouda Weidmann이 퇴장당했다. 슈팅 수에서 16대 13으로 앞선 Twente는 AZ Alkmaar와 점유율과 패스 성공률에서 대등한 경기를 펼쳤다. 이번 결과는 Twente의 승리를 점쳤던 모델 예측은 적중했으나 AZ Alkmaar의 승리를 예상했던 팬 투표와 ClubElo의 예측은 빗나갔다.",
+   "date": "2026-10-25",
+   "home": "AZ Alkmaar",
+   "away": "Twente",
+   "at": "2026-10-25T21:21:00+00:00",
+   "model": "gemini-3.1-flash-lite"
+  },
+  "401878961": {
+   "text": "Union SG가 Cercle Brugge를 상대로 5-2 대승을 거두며 승점 3점을 획득했다. 경기 초반 24' Steve Ngoura의 페널티킥 득점으로 Cercle Brugge가 앞서갔으나, 48' Massiré Sylla의 자책골을 시작으로 Raul Florucz, Massiré Sylla, Emmanuel Kakou의 자책골, Relebohile Mofokeng, Kevin Rodríguez가 연달아 득점하며 경기를 뒤집었고 64'에는 Dante Vanzeir가 퇴장당했다. Union SG는 점유율 67.1%와 슈팅 23개를 기록하며 Cercle Brugge를 압도했고, 92%의 확률로 Union SG의 승리를 점쳤던 모델 예측 또한 적중했다.",
+   "date": "2026-10-25",
+   "home": "Union SG",
+   "away": "Cercle Brugge",
+   "at": "2026-10-25T21:21:06+00:00",
+   "model": "gemini-3.1-flash-lite"
+  },
+  "401885416": {
+   "text": "Nacional이 Braga를 상대로 1-0 승리를 거두며 귀중한 승점 3점을 챙겼다. 승부를 결정지은 득점은 19'에 터졌으며, Song Min-Kyu의 도움을 받은 Miguel Baeza가 Nacional의 결승골을 기록했다. 경기 내내 Braga가 71.3%의 점유율과 20개의 슈팅을 기록하며 경기를 주도했으나, 유효 슈팅은 오히려 4개를 기록한 Nacional이 앞서며 효율적인 공격을 선보였다. Braga의 승리를 점쳤던 팬 투표와 모델의 예측은 이번 경기 결과로 인해 빗나갔다.",
+   "date": "2026-10-25",
+   "home": "Nacional",
+   "away": "Braga",
+   "at": "2026-10-25T21:21:16+00:00",
+   "model": "gemini-3.1-flash-lite"
+  },
+  "401885415": {
+   "text": "Famalicão가 Rio Ave를 상대로 4-0 승리를 거두며 경기를 마무리했다. 후반 48' Roméo Beney의 득점을 시작으로, 80' Pedro Santos, 85'과 90'+5'에 페널티킥으로 득점한 Óscar Aranda가 맹활약하며 승부를 결정지었다. 경기 기록에서 Famalicão는 슈팅 12-7과 유효 슈팅 5-2로 앞섰고, Rio Ave는 점유율 57.6%와 패스 성공률 90%를 기록했으나 패배했다. 팬 투표, 모델, ClubElo 모두 Famalicão의 승리를 예측해 적중했다.",
+   "date": "2026-10-25",
+   "home": "Rio Ave",
+   "away": "Famalicão",
+   "at": "2026-10-25T21:21:32+00:00",
+   "model": "gemini-flash-lite-latest"
   }
  },
  "fails": {}

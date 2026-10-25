@@ -1339,11 +1339,11 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 543,
-   "exact": 485,
+   "total": 545,
+   "exact": 486,
    "rule": 16,
    "ambiguous": 2,
-   "orphan": 42,
+   "orphan": 43,
    "orphans": [
     {
      "squad": "Gil Vicente FC",
@@ -1356,6 +1356,11 @@
      "starts": 3
     },
     {
+     "squad": "Nacional",
+     "name": "Song Min-Kyu",
+     "starts": 3
+    },
+    {
      "squad": "Estoril",
      "name": "Fabrício Andrade",
      "starts": 2
@@ -1363,11 +1368,6 @@
     {
      "squad": "Nacional",
      "name": "Matchoi Djoló",
-     "starts": 2
-    },
-    {
-     "squad": "Nacional",
-     "name": "Song Min-Kyu",
      "starts": 2
     },
     {
@@ -1487,8 +1487,8 @@
    ]
   },
   "espn_subs": {
-   "total": 397,
-   "exact": 388,
+   "total": 399,
+   "exact": 390,
    "rule": 6,
    "ambiguous": 0,
    "orphan": 3,
@@ -1519,8 +1519,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 290,
-   "exact": 290,
+   "total": 295,
+   "exact": 295,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1698,8 +1698,8 @@
    ]
   },
   "espn_subs": {
-   "total": 406,
-   "exact": 396,
+   "total": 408,
+   "exact": 398,
    "rule": 10,
    "ambiguous": 0,
    "orphan": 0,
@@ -1714,8 +1714,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 288,
-   "exact": 288,
+   "total": 290,
+   "exact": 290,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1740,8 +1740,8 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 519,
-   "exact": 445,
+   "total": 520,
+   "exact": 446,
    "rule": 41,
    "ambiguous": 1,
    "orphan": 33,
@@ -1888,8 +1888,8 @@
    ]
   },
   "espn_subs": {
-   "total": 285,
-   "exact": 285,
+   "total": 288,
+   "exact": 288,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1904,8 +1904,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 260,
-   "exact": 260,
+   "total": 262,
+   "exact": 262,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
