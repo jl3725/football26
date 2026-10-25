@@ -33,6 +33,7 @@ DB = ROOT / "data" / "news.db"
 REF = ROOT / "data" / "news_db.ref.json"
 BRANCH = "data-news"
 NAME = "news.db.gz"
+VERCEL_SKIP = '{\n  "git": {"deploymentEnabled": false},\n  "ignoreCommand": "exit 0"\n}\n'   # 데이터 브랜치 — 웹 빌드 안 함
 MIN_RATIO = 0.8
 SOFT_BYTES = 60_000_000
 HARD_BYTES = 90_000_000
@@ -192,7 +193,11 @@ def push(min_ratio: float = MIN_RATIO) -> dict:
         if size > HARD_BYTES:
             raise SystemExit(f"[news-store] 압축 {size / 1e6:.1f}MB > {HARD_BYTES / 1e6:.0f}MB — 올리지 않음(보관 기간·수집량 확인)")
         blob = _git("hash-object", "-w", str(gz))
-    tree = _git("mktree", data=f"100644 blob {blob}\t{NAME}\n".encode())
+    # web/vercel.json(빌드 생략)을 같이 둔다 — Vercel 이 이 브랜치 커밋마다 웹을 빌드하려다(웹 폴더가 없어) 실패했다
+    # (Preview 실패 8건/이틀, 2026-10-26). 읽는 쪽은 NAME 만 본다
+    vj = _git("hash-object", "-w", "--stdin", data=VERCEL_SKIP.encode())
+    web = _git("mktree", data=f"100644 blob {vj}\tvercel.json\n".encode())
+    tree = _git("mktree", data=f"100644 blob {blob}\t{NAME}\n040000 tree {web}\tweb\n".encode())
     now = dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")
     commit = _git("commit-tree", tree, "-m", f"news.db {now} · 기사 {n}건")
     _git("push", "-f", "-q", "origin", f"{commit}:refs/heads/{BRANCH}")
