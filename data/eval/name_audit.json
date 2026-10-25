@@ -330,11 +330,11 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 598,
+   "total": 599,
    "exact": 491,
    "rule": 22,
    "ambiguous": 1,
-   "orphan": 85,
+   "orphan": 86,
    "orphans": [
     {
      "squad": "Celta Vigo",
@@ -483,11 +483,11 @@
    ]
   },
   "espn_subs": {
-   "total": 433,
-   "exact": 429,
+   "total": 436,
+   "exact": 431,
    "rule": 2,
    "ambiguous": 1,
-   "orphan": 2,
+   "orphan": 3,
    "orphans": [
     {
      "squad": "Deportivo A Coruña",
@@ -497,6 +497,11 @@
     {
      "squad": "Real Betis",
      "name": "José Antonio Morante",
+     "starts": 0
+    },
+    {
+     "squad": "Athletic Club",
+     "name": "Txus Vizcay",
      "starts": 0
     }
    ]
@@ -1520,8 +1525,8 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 546,
-   "exact": 491,
+   "total": 547,
+   "exact": 492,
    "rule": 12,
    "ambiguous": 0,
    "orphan": 43,
@@ -1529,7 +1534,7 @@
     {
      "squad": "Feyenoord",
      "name": "Oussama Targhaline",
-     "starts": 5
+     "starts": 6
     },
     {
      "squad": "Cambuur",
@@ -1673,8 +1678,8 @@
    ]
   },
   "espn_subs": {
-   "total": 404,
-   "exact": 394,
+   "total": 405,
+   "exact": 395,
    "rule": 10,
    "ambiguous": 0,
    "orphan": 0,
@@ -1689,8 +1694,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 286,
-   "exact": 286,
+   "total": 288,
+   "exact": 288,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1715,15 +1720,25 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 513,
+   "total": 514,
    "exact": 442,
    "rule": 40,
    "ambiguous": 1,
-   "orphan": 31,
+   "orphan": 32,
    "orphans": [
     {
      "squad": "Charleroi",
      "name": "Kevin Guiton",
+     "starts": 9
+    },
+    {
+     "squad": "Genk",
+     "name": "Lucca Kiaba Mounganga",
+     "starts": 9
+    },
+    {
+     "squad": "Genk",
+     "name": "Josué Ndenge",
      "starts": 9
     },
     {
@@ -1732,24 +1747,14 @@
      "starts": 9
     },
     {
+     "squad": "Standard Liège",
+     "name": "Dennis Dargahi",
+     "starts": 8
+    },
+    {
      "squad": "Westerlo",
      "name": "Issai Sakamoto",
      "starts": 8
-    },
-    {
-     "squad": "Genk",
-     "name": "Lucca Kiaba Mounganga",
-     "starts": 8
-    },
-    {
-     "squad": "Genk",
-     "name": "Josué Ndenge",
-     "starts": 8
-    },
-    {
-     "squad": "Standard Liège",
-     "name": "Dennis Dargahi",
-     "starts": 7
     },
     {
      "squad": "Zulte Waregem",
@@ -1774,6 +1779,11 @@
     {
      "squad": "Cercle Brugge",
      "name": "Lucas Michel",
+     "starts": 1
+    },
+    {
+     "squad": "Standard Liège",
+     "name": "Dimitri Lavelée",
      "starts": 1
     },
     {
@@ -1840,11 +1850,6 @@
      "squad": "Charleroi",
      "name": "Severin Nioule",
      "starts": 0
-    },
-    {
-     "squad": "Mechelen",
-     "name": "Lovro Golic",
-     "starts": 0
     }
    ]
   },
@@ -1868,8 +1873,8 @@
    ]
   },
   "espn_subs": {
-   "total": 277,
-   "exact": 277,
+   "total": 280,
+   "exact": 280,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1884,8 +1889,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 256,
-   "exact": 256,
+   "total": 257,
+   "exact": 257,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -2280,8 +2285,8 @@
    ]
   },
   "espn_subs": {
-   "total": 414,
-   "exact": 414,
+   "total": 415,
+   "exact": 415,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -2314,11 +2319,11 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 358,
+   "total": 359,
    "exact": 348,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 10,
+   "orphan": 11,
    "orphans": [
     {
      "squad": "Austria Wien",
@@ -2368,6 +2373,11 @@
     {
      "squad": "Grazer AK",
      "name": "Felix Baumgartner",
+     "starts": 0
+    },
+    {
+     "squad": "Sturm Graz",
+     "name": "Kelechi Nnamdi",
      "starts": 0
     }
    ]
@@ -2431,8 +2441,8 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 364,
-   "exact": 336,
+   "total": 365,
+   "exact": 337,
    "rule": 1,
    "ambiguous": 0,
    "orphan": 27,
@@ -2480,11 +2490,6 @@
     {
      "squad": "Sønderjyske",
      "name": "Elias Hjort-Pedersen",
-     "starts": 0
-    },
-    {
-     "squad": "FC Midtjylland",
-     "name": "Joseph Okuaghare",
      "starts": 0
     },
     {
@@ -2561,6 +2566,11 @@
      "squad": "AC Horsens",
      "name": "Muhamet Hyseni",
      "starts": 0
+    },
+    {
+     "squad": "FC København",
+     "name": "Mustapha Nyassi",
+     "starts": 0
     }
    ]
   },
@@ -2579,8 +2589,8 @@
    ]
   },
   "espn_subs": {
-   "total": 279,
-   "exact": 279,
+   "total": 281,
+   "exact": 281,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,

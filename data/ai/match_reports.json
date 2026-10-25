@@ -1111,6 +1111,70 @@
    "away": "Excelsior",
    "at": "2026-10-25T14:21:47+00:00",
    "model": "gemini-flash-lite-latest"
+  },
+  "5846009": {
+   "text": "Sturm Graz와 Ried의 경기는 2-2 무승부로 끝났다. 전반 31분 Sturm Graz의 Simon Seidl이 득점한 뒤, 45'+2'에 Sturm Graz의 Arjan Malic이 퇴장당했고 45'+5'에 Ried의 Philipp Pomer가 페널티킥으로 동점골을 넣었다. 이어 55'에 Ried의 Isaac Kiese Thelin이 득점했으나, 90'+2'에 Sturm Graz의 Belmin Beganovic가 골을 기록하며 승부를 원점으로 돌렸다. 사전에 모델이 Sturm Graz의 72퍼센트 확률로 승리를 예측했으나 이 예측은 빗나갔다.",
+   "date": "2026-10-25",
+   "home": "Sturm Graz",
+   "away": "Ried",
+   "at": "2026-10-25T15:53:30+00:00",
+   "model": "gemini-flash-lite-latest"
+  },
+  "401875568": {
+   "text": "PSV와 Feyenoord의 경기는 1-1 무승부로 끝났다. 21'에 Guus Til이 득점하고 Lutsharel Geertruida가 도움을 기록한 PSV가 앞서갔으나, 54'에 Anis Hadj Moussa가 득점하고 Luciano Valente가 도움을 기록한 Feyenoord가 동점을 만들었다. 슈팅에서 19-13으로 앞선 PSV는 점유율 51.9% 대 48.1%, 패스 성공률 80% 동등한 기록을 남겼다. 팬 투표, 모델, ClubElo 모두 PSV의 승리를 예측했으나 적중하지 않았다.",
+   "date": "2026-10-25",
+   "home": "PSV",
+   "away": "Feyenoord",
+   "at": "2026-10-25T15:53:39+00:00",
+   "model": "gemini-flash-lite-latest"
+  },
+  "401875569": {
+   "text": "NEC Nijmegen과 Groningen의 경기는 2-2 무승부로 끝났다. Groningen의 Brynjólfur Willumsson이 11'에 Marco Rente의 어시스트로 헤더 득점을 기록했고, 34'에는 Thom Van Bergen의 어시스트로 추가골을 넣었으나, NEC Nijmegen이 57' Clement Bischoff, 71' Noé Lebreton의 득점으로 동점을 만들었다. NEC Nijmegen은 슈팅 수 22-9, 유효 슈팅 9-3, 점유율 58.7%-41.3%로 경기를 주도했으나 승부를 가리지 못했다. NEC Nijmegen 승리를 예상했던 팬 투표와 Groningen 승리를 예측했던 모델의 승부 예측은 모두 빗나갔다.",
+   "date": "2026-10-25",
+   "home": "NEC Nijmegen",
+   "away": "Groningen",
+   "at": "2026-10-25T15:53:49+00:00",
+   "model": "gemini-flash-lite-latest"
+  },
+  "5739532": {
+   "text": "FC Midtjylland가 Lyngby를 상대로 3-2 승리를 거뒀다. 전반 17' Cho Gue-Sung의 득점으로 포문을 열었고, 32' Lyngby Simon Colyn의 득점 이후 48' Friday Etim과 45'+4' Philip Billing의 페널티킥 득점이 이어졌으며, 89' Gustav Fraulo의 득점이 나온 끝에 경기가 마무리되었다. 슈팅 19-13, 유효 슈팅 7-5, 점유율 51.2% 대 48.8%로 FC Midtjylland가 기록 전반에서 우위를 보였다. 모델과 ClubElo가 예측한 FC Midtjylland 승리가 적중했다.",
+   "date": "2026-10-25",
+   "home": "FC Midtjylland",
+   "away": "Lyngby",
+   "at": "2026-10-25T15:53:57+00:00",
+   "model": "gemini-flash-lite-latest"
+  },
+  "5739534": {
+   "text": "Silkeborg와 Nordsjælland의 경기는 1-1 무승부로 종료되었다. 38'에 Silkeborg의 Oliver Ross가 선제골을 기록했으나, 55'에 Nordsjælland의 Alexander Lind가 동점골을 넣으며 승부를 원점으로 돌렸다. 경기 기록을 보면 Nordsjælland가 점유율 52.5%와 슈팅 11개를 기록하며 공격을 주도했으나, Silkeborg가 유효 슈팅 5개로 더 많은 유효 슈팅을 기록하며 맞섰다. Nordsjælland의 승리를 점쳤던 사전 예측은 빗나갔다.",
+   "date": "2026-10-25",
+   "home": "Silkeborg",
+   "away": "Nordsjælland",
+   "at": "2026-10-25T15:54:05+00:00",
+   "model": "gemini-3.1-flash-lite"
+  },
+  "401882835": {
+   "text": "Athletic Club가 Getafe를 상대로 4-0 승리를 거뒀다. 전반 17' Álex Berenguer의 득점을 시작으로 35' Iñaki Williams, 70' Aitor Paredes, 88' Yuri Berchiche의 골이 터졌고, 86'에는 Getafe의 Mario Martín이 퇴장당했다. 경기 기록에서 Athletic Club는 점유율 62.5% 대 37.5%, 슈팅 11대 7, 패스 성공률 90% 대 80%로 우위를 점했다. 팬 투표와 모델 및 ClubElo의 사전 예측은 모두 Athletic Club 승리로 적중했다.",
+   "date": "2026-10-25",
+   "home": "Athletic Club",
+   "away": "Getafe",
+   "at": "2026-10-25T15:54:13+00:00",
+   "model": "gemini-flash-lite-latest"
+  },
+  "5904781": {
+   "text": "Konyaspor가 Gençlerbirliği를 상대로 2-0 승리를 거뒀다. Chidozie Awaziem이 43'과 56'에 골을 기록했고, 75'에는 Gençlerbirliği의 Franco Tongya가 페널티킥을 실축하고 Konyaspor의 BahadιR Han Gungordu가 선방했다. 점유율 52.2% 대 47.8%, 슈팅 수 16대 7 등 Konyaspor가 경기 내용을 압도했다. 모델과 ClubElo의 Konyaspor 승리 예측도 적중했다.",
+   "date": "2026-10-25",
+   "home": "Konyaspor",
+   "away": "Gençlerbirliği",
+   "at": "2026-10-25T15:54:26+00:00",
+   "model": "gemini-flash-lite-latest"
+  },
+  "401878963": {
+   "text": "Genk가 Standard Liège를 상대로 2-1 승리를 거뒀다. 27' Junya Ito의 득점으로 앞서간 Genk는 65' Standard Liège Andi Zeqiri에게 실점했으나, 77' Aaron Bibout의 결승골로 승리를 확정했다. 경기 중 33' Standard Liège Matthieu Epolo와 90'+5' Genk Daan Heymans가 각각 퇴장당했으며, 점유율 67.9% 대 32.1%, 슈팅 24대 11 등 기록 면에서도 Genk가 우세했다. 팬 투표와 모델의 Genk 승리 예측은 모두 적중했다.",
+   "date": "2026-10-25",
+   "home": "Genk",
+   "away": "Standard Liège",
+   "at": "2026-10-25T15:54:34+00:00",
+   "model": "gemini-flash-lite-latest"
   }
  },
  "fails": {}
