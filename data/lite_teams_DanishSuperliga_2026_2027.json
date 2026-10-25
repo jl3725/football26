@@ -3,14 +3,6 @@
  "league": "DanishSuperliga",
  "season": "2026_2027",
  "teams": {
-  "FC København": {
-   "fotmob_id": 8391,
-   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8391.png",
-   "color": "#375196",
-   "tm_vid": 190,
-   "tm_slug": "fc-kopenhagen",
-   "tm_name": "FC København"
-  },
   "FC Midtjylland": {
    "fotmob_id": 8113,
    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8113.png",
@@ -18,6 +10,14 @@
    "tm_vid": 865,
    "tm_slug": "fc-midtjylland",
    "tm_name": "FC Midtjylland"
+  },
+  "FC København": {
+   "fotmob_id": 8391,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8391.png",
+   "color": "#375196",
+   "tm_vid": 190,
+   "tm_slug": "fc-kopenhagen",
+   "tm_name": "FC København"
   },
   "Viborg": {
    "fotmob_id": 9939,
@@ -43,6 +43,14 @@
    "tm_slug": "brondby-if",
    "tm_name": "Brøndby IF"
   },
+  "Silkeborg": {
+   "fotmob_id": 8415,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8415.png",
+   "color": "#D11024",
+   "tm_vid": 1177,
+   "tm_slug": "silkeborg-if",
+   "tm_name": "Silkeborg"
+  },
   "AC Horsens": {
    "fotmob_id": 9814,
    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/9814.png",
@@ -58,14 +66,6 @@
    "tm_vid": 173,
    "tm_slug": "odense-boldklub",
    "tm_name": "OB"
-  },
-  "Silkeborg": {
-   "fotmob_id": 8415,
-   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8415.png",
-   "color": "#D11024",
-   "tm_vid": 1177,
-   "tm_slug": "silkeborg-if",
-   "tm_name": "Silkeborg"
   },
   "Randers FC": {
    "fotmob_id": 8410,

@@ -1,4 +1,29 @@
 squad,player,fotmob_id,group,positions,tm_position,pos,age,birth_date,shirt,ccode,injured,expected_return,fetched
+Inter,Josep Martínez,772168,keepers,GK,Goalkeeper,GK,28,1998-05-27,1.0,ESP,False,,2026-10-25
+Inter,Raffaele Di Gennaro,417743,keepers,,Goalkeeper,GK,33,1993-10-03,12.0,ITA,False,,2026-10-25
+Inter,Ivan Provedel,364822,keepers,GK,Goalkeeper,GK,32,1994-03-17,49.0,ITA,False,,2026-10-25
+Inter,John Stones,263653,defenders,CB,Centre-Back,DF,32,1994-05-28,6.0,ENG,True,Early November 2026,2026-10-25
+Inter,Manuel Akanji,521318,defenders,CB,Centre-Back,DF,31,1995-07-19,25.0,SUI,False,,2026-10-25
+Inter,Benjamin Pavard,611223,defenders,"CB,RB",Centre-Back,DF,30,1996-03-28,28.0,FRA,True,Early November 2026,2026-10-25
+Inter,Carlos Augusto,940829,defenders,"CB,LM,RM",Centre-Back,DF,27,1999-01-07,30.0,BRA,False,,2026-10-25
+Inter,Yann Aurel Bisseck,889535,defenders,CB,Centre-Back,DF,25,2000-11-29,31.0,GER,False,,2026-10-25
+Inter,Alessandro Bastoni,805451,defenders,CB,Centre-Back,DF,27,1999-04-13,95.0,ITA,False,,2026-10-25
+Inter,Djed Spence,894803,defenders,"LB,RB,LM,LWB",Left-Back,DF,26,2000-08-09,99.0,ENG,False,,2026-10-25
+Inter,Aleksandar Stanković,1410437,midfielders,"CDM,CM",Defensive Midfield,MF,21,2005-08-03,5.0,SRB,False,,2026-10-25
+Inter,Piotr Zieliński,362212,midfielders,"CM,CDM",Central Midfield,MF,32,1994-05-20,7.0,POL,False,,2026-10-25
+Inter,Petar Sučić,1382000,midfielders,"CM,CAM",Central Midfield,MF,23,2003-10-25,8.0,CRO,False,,2026-10-25
+Inter,Luis Henrique,1114635,midfielders,RM,Right Midfield,MF,24,2001-12-14,11.0,BRA,True,Early November 2026,2026-10-25
+Inter,Andy Diouf,1254297,midfielders,"RM,CM,LB",Right Midfield,MF,23,2003-05-17,17.0,FRA,False,,2026-10-25
+Inter,Hakan Çalhanoglu,304733,midfielders,"CM,CDM",Central Midfield,MF,32,1994-02-08,20.0,TUR,False,,2026-10-25
+Inter,Curtis Jones,933768,midfielders,"CDM,RB,CAM,CM",Defensive Midfield,MF,25,2001-01-30,21.0,ENG,True,Early November 2026,2026-10-25
+Inter,Henrikh Mkhitaryan,73167,midfielders,CM,Central Midfield,MF,37,1989-01-21,22.0,ARM,False,,2026-10-25
+Inter,Nicolò Barella,541820,midfielders,"CM,CAM",Central Midfield,MF,29,1997-02-07,23.0,ITA,False,,2026-10-25
+Inter,Federico Dimarco,605224,midfielders,LM,Left Midfield,MF,28,1997-11-10,32.0,ITA,False,,2026-10-25
+Inter,Marcus Thuram,621562,attackers,ST,Centre-Forward,FW,29,1997-08-06,9.0,FRA,False,,2026-10-25
+Inter,Lautaro Martínez,690230,attackers,ST,Centre-Forward,FW,29,1997-08-22,10.0,ARG,True,Mid November 2026,2026-10-25
+Inter,Ange-Yoan Bonny,1199383,attackers,ST,Centre-Forward,FW,23,2003-10-25,14.0,CIV,False,,2026-10-25
+Inter,Mattia Mosconi,1646520,attackers,"RW,LW",Right Winger,FW,19,2007-03-26,48.0,ITA,False,,2026-10-25
+Inter,Francesco Pio Esposito,1367618,attackers,ST,Centre-Forward,FW,21,2005-06-28,94.0,ITA,False,,2026-10-25
 Lazio,Christos Mandas,915156,keepers,GK,Goalkeeper,GK,25,2001-09-17,35.0,GRE,False,,2026-10-25
 Lazio,Edoardo Motta,1621082,keepers,GK,Goalkeeper,GK,21,2005-01-13,40.0,ITA,False,,2026-10-25
 Lazio,Davide Renzetti,1444195,keepers,,Goalkeeper,GK,20,2006-06-09,47.0,ITA,False,,2026-10-25
@@ -32,31 +57,6 @@ Lazio,Tijjani Noslin,1282285,attackers,"ST,LW",Centre-Forward,FW,27,1999-07-07,1
 Lazio,Matteo Cancellieri,1146500,attackers,RW,Right Winger,FW,24,2002-02-12,22.0,ITA,False,,2026-10-25
 Lazio,Federico Serra,1711283,attackers,,Centre-Forward,FW,20,2006-01-03,63.0,ITA,False,,2026-10-25
 Lazio,Albert Guðmundsson,665188,attackers,"LW,ST,CAM,LM",Left Winger,FW,29,1997-06-15,80.0,ISL,True,Mid November 2026,2026-10-25
-Inter,Josep Martínez,772168,keepers,GK,Goalkeeper,GK,28,1998-05-27,1.0,ESP,False,,2026-10-25
-Inter,Raffaele Di Gennaro,417743,keepers,,Goalkeeper,GK,33,1993-10-03,12.0,ITA,False,,2026-10-25
-Inter,Ivan Provedel,364822,keepers,GK,Goalkeeper,GK,32,1994-03-17,49.0,ITA,False,,2026-10-25
-Inter,John Stones,263653,defenders,CB,Centre-Back,DF,32,1994-05-28,6.0,ENG,True,Early November 2026,2026-10-25
-Inter,Manuel Akanji,521318,defenders,CB,Centre-Back,DF,31,1995-07-19,25.0,SUI,False,,2026-10-25
-Inter,Benjamin Pavard,611223,defenders,"CB,RB",Centre-Back,DF,30,1996-03-28,28.0,FRA,True,Early November 2026,2026-10-25
-Inter,Carlos Augusto,940829,defenders,"CB,LM,RM",Centre-Back,DF,27,1999-01-07,30.0,BRA,False,,2026-10-25
-Inter,Yann Aurel Bisseck,889535,defenders,CB,Centre-Back,DF,25,2000-11-29,31.0,GER,False,,2026-10-25
-Inter,Alessandro Bastoni,805451,defenders,CB,Centre-Back,DF,27,1999-04-13,95.0,ITA,False,,2026-10-25
-Inter,Djed Spence,894803,defenders,"LB,RB,LM,LWB",Left-Back,DF,26,2000-08-09,99.0,ENG,False,,2026-10-25
-Inter,Aleksandar Stanković,1410437,midfielders,"CDM,CM",Defensive Midfield,MF,21,2005-08-03,5.0,SRB,False,,2026-10-25
-Inter,Piotr Zieliński,362212,midfielders,"CM,CDM",Central Midfield,MF,32,1994-05-20,7.0,POL,False,,2026-10-25
-Inter,Petar Sučić,1382000,midfielders,"CM,CAM",Central Midfield,MF,23,2003-10-25,8.0,CRO,False,,2026-10-25
-Inter,Luis Henrique,1114635,midfielders,RM,Right Midfield,MF,24,2001-12-14,11.0,BRA,True,Early November 2026,2026-10-25
-Inter,Andy Diouf,1254297,midfielders,"RM,CM,LB",Right Midfield,MF,23,2003-05-17,17.0,FRA,False,,2026-10-25
-Inter,Hakan Çalhanoglu,304733,midfielders,"CM,CDM",Central Midfield,MF,32,1994-02-08,20.0,TUR,False,,2026-10-25
-Inter,Curtis Jones,933768,midfielders,"CDM,RB,CAM,CM",Defensive Midfield,MF,25,2001-01-30,21.0,ENG,True,Early November 2026,2026-10-25
-Inter,Henrikh Mkhitaryan,73167,midfielders,CM,Central Midfield,MF,37,1989-01-21,22.0,ARM,False,,2026-10-25
-Inter,Nicolò Barella,541820,midfielders,"CM,CAM",Central Midfield,MF,29,1997-02-07,23.0,ITA,False,,2026-10-25
-Inter,Federico Dimarco,605224,midfielders,LM,Left Midfield,MF,28,1997-11-10,32.0,ITA,False,,2026-10-25
-Inter,Marcus Thuram,621562,attackers,ST,Centre-Forward,FW,29,1997-08-06,9.0,FRA,False,,2026-10-25
-Inter,Lautaro Martínez,690230,attackers,ST,Centre-Forward,FW,29,1997-08-22,10.0,ARG,True,Mid November 2026,2026-10-25
-Inter,Ange-Yoan Bonny,1199383,attackers,ST,Centre-Forward,FW,23,2003-10-25,14.0,CIV,False,,2026-10-25
-Inter,Mattia Mosconi,1646520,attackers,"RW,LW",Right Winger,FW,19,2007-03-26,48.0,ITA,False,,2026-10-25
-Inter,Francesco Pio Esposito,1367618,attackers,ST,Centre-Forward,FW,21,2005-06-28,94.0,ITA,False,,2026-10-25
 Roma,Devis Vásquez,1186685,keepers,GK,Goalkeeper,GK,28,1998-05-12,32.0,COL,False,,2026-10-25
 Roma,Pierluigi Gollini,553849,keepers,GK,Goalkeeper,GK,31,1995-03-18,95.0,ITA,False,,2026-10-25
 Roma,Mile Svilar,768474,keepers,GK,Goalkeeper,GK,27,1999-08-27,99.0,SRB,True,Early November 2026,2026-10-25
@@ -483,6 +483,7 @@ Genoa,Daniele Sommariva,577914,keepers,GK,Goalkeeper,GK,29,1997-07-18,39.0,ITA,F
 Genoa,Franz Stolz,951238,keepers,GK,Goalkeeper,GK,25,2001-02-14,99.0,AUT,False,,2026-10-25
 Genoa,Mario Mitaj,1184458,defenders,"LB,LWB,LW,CB,LM",Left-Back,DF,23,2003-08-06,2.0,ALB,False,,2026-10-25
 Genoa,Leo Østigard,740944,defenders,CB,Centre-Back,DF,26,1999-11-28,5.0,NOR,False,,2026-10-25
+Genoa,Lukas Klisys,1959202,defenders,,Centre-Back,DF,19,2007-01-04,14.0,LTU,False,,2026-10-25
 Genoa,Cody Drameh,962046,defenders,"RB,RWB",Right-Back,DF,24,2001-12-08,16.0,ENG,False,,2026-10-25
 Genoa,Johan Vásquez,914103,defenders,"CB,LB",Centre-Back,DF,28,1998-10-22,22.0,MEX,False,,2026-10-25
 Genoa,Alessandro Marcandalli,1436436,defenders,CB,Centre-Back,DF,24,2002-10-25,27.0,ITA,False,,2026-10-25
@@ -490,7 +491,7 @@ Genoa,David Puczka,1405996,defenders,CB,Centre-Back,DF,21,2005-01-26,31.0,AUT,Fa
 Genoa,Sebastian Otoa,1404077,defenders,CB,Centre-Back,DF,22,2004-05-13,34.0,DEN,False,,2026-10-25
 Genoa,Mamedi Doucouré,1910652,defenders,,Centre-Back,DF,19,2007-01-19,74.0,FRA,False,,2026-10-25
 Genoa,Marcelo Vaz,2029779,defenders,,Centre-Back,DF,19,2007-07-31,85.0,GUI,False,,2026-10-25
-Genoa,Kingsley Ehizibue,586474,midfielders,"RM,RWB",Right Midfield,MF,31,1995-05-25,3.0,NED,False,,2026-10-25
+Genoa,Kingsley Ehizibue,586474,midfielders,"RM,RWB",Right Midfield,MF,31,1995-05-25,3.0,NED,True,Early November 2026,2026-10-25
 Genoa,Amorim,1469120,midfielders,"CM,CDM",Central Midfield,MF,21,2005-05-18,4.0,BRA,False,,2026-10-25
 Genoa,Tommaso Baldanzi,1200591,midfielders,"CAM,CM,ST",Attacking Midfield,MF,23,2003-03-23,8.0,ITA,False,,2026-10-25
 Genoa,Junior Messias,1003368,midfielders,CAM,Attacking Midfield,MF,35,1991-05-13,10.0,BRA,False,,2026-10-25

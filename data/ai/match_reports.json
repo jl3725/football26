@@ -1095,6 +1095,22 @@
    "away": "Porto",
    "at": "2026-10-24T21:45:38+00:00",
    "model": "gemini-3.1-flash-lite"
+  },
+  "401875036": {
+   "text": "Inter가 Fiorentina에 2-1로 역전승을 거뒀다. 후반 65'에 Fiorentina의 Álex Jiménez가 선제골을 넣었으나, Inter가 후반 90'+1' Marcus Thuram의 동점골과 후반 90'+7' Piotr Zielinski의 페널티킥 득점으로 경기를 뒤집었다. 경기에서 Inter는 점유율 63.3 대 36.7, 슈팅 33대 7, 유효 슈팅 11대 2로 경기를 압도했다. 팬 투표, 모델, ClubElo 모두 Inter의 승리를 예측해 적중했다.",
+   "date": "2026-10-25",
+   "home": "Inter",
+   "away": "Fiorentina",
+   "at": "2026-10-25T14:21:38+00:00",
+   "model": "gemini-flash-lite-latest"
+  },
+  "401875570": {
+   "text": "Fortuna Sittard가 Excelsior를 상대로 1-0 승리를 거뒀다. 승부를 가른 결정적 장면은 90'+1'에 나왔으며 Mohamed Ihattaren의 도움을 받아 Rodrigo Guth가 헤더로 결승골을 터뜨렸다. 경기 기록 비교에서 점유율은 Excelsior가 57.2%로 앞섰으나 슈팅 7대6, 유효 슈팅 5대2로 Fortuna Sittard가 공격에서 더 날카로운 모습을 보였다. 사전에 팬 투표와 모델 모두 Fortuna Sittard의 승리를 예상해 예측이 적중했다.",
+   "date": "2026-10-25",
+   "home": "Fortuna Sittard",
+   "away": "Excelsior",
+   "at": "2026-10-25T14:21:47+00:00",
+   "model": "gemini-flash-lite-latest"
   }
  },
  "fails": {}
