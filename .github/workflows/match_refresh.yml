@@ -134,9 +134,7 @@ jobs:
             echo "변경 없음 — 커밋 생략"
           else
             git commit -m "chore(data): 경기 결과·순위 아침 갱신 [skip ci]"
-            for i in 1 2 3; do
-              git pull --rebase --autostash origin main && git push && break || sleep 5
-            done
+            bash scripts/ci_push.sh   # 충돌 시 이번 수집 값으로 다시 얹고, 못 올리면 실패(조용한 유실 방지)
           fi
 
       - name: Report collector failures
