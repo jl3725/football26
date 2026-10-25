@@ -12,6 +12,7 @@ Understat 선수 시즌 xG(5대 리그) 매일 — data/understat_players[_리�
 from __future__ import annotations
 
 import sys
+import time
 from pathlib import Path
 
 import pandas as pd
@@ -40,10 +41,26 @@ def main() -> int:
     register_soccerdata_custom_leagues()
     ok = 0
     for lg in UNDERSTAT_LEAGUES:
-        try:
-            d = fetch(lg)
-        except Exception as e:  # noqa: BLE001 — 한 리그 실패는 기존 파일 유지
-            print(f"[understat-live] {lg} 실패 {type(e).__name__}: {str(e)[:120]}")
+        failed = False
+        for attempt in (1, 2):
+            try:
+                d = fetch(lg)
+                break
+            except OSError as e:
+                # 첫 요청 때 TLS 라이브러리를 내려받는데, 그 다운로드가 가끔 실패해 5개 리그가 한꺼번에 실패했다
+                # (2026-10-25 01시 'Failed to download the required TLS library') — 20초 뒤 한 번 더
+                if attempt == 1 and "TLS library" in str(e):
+                    print(f"[understat-live] {lg} TLS 라이브러리 내려받기 실패 — 20초 뒤 다시")
+                    time.sleep(20)
+                    continue
+                print(f"[understat-live] {lg} 실패 {type(e).__name__}: {str(e)[:120]}")
+                failed = True
+                break
+            except Exception as e:  # noqa: BLE001 — 한 리그 실패는 기존 파일 유지
+                print(f"[understat-live] {lg} 실패 {type(e).__name__}: {str(e)[:120]}")
+                failed = True
+                break
+        if failed:
             continue
         if d is None or len(d) < 100:
             print(f"[understat-live] {lg} 선수 {0 if d is None else len(d)}명 — 너무 적어 기존 파일 유지")

@@ -8,6 +8,7 @@ import { TONE } from "@/lib/meaning";
 const DATA_CHIP: Record<OpsState, { c: string; t: string }> = {
   late: { c: TONE.bad.c, t: "데이터 지연 있음" }, warn: { c: TONE.weak.c, t: "일부 수집 실패" },
   ok: { c: TONE.best.c, t: "수집 정상" }, nodata: { c: TONE.avg.c, t: "실행 기록 대기" },
+  down: { c: TONE.avg.c, t: "외부 원천 중단 있음" },
 };
 
 function daysBetween(a: Date, b: Date) {
@@ -28,7 +29,7 @@ export default function StatusBar({ accent, ctx, league = "EPL" }: { accent: str
   useEffect(() => {
     getOpsStatus().then((d) => {
       const c = d.counts;
-      setData(c.late ? "late" : c.warn ? "warn" : c.ok ? "ok" : "nodata");
+      setData(c.late ? "late" : c.warn ? "warn" : c.down ? "down" : c.ok ? "ok" : "nodata");
     }).catch(() => {});
   }, []);
 

@@ -7,6 +7,10 @@ ClubElo 예측 — 유럽 클럽 Elo 레이팅으로 만든 독립 예측 모델
 팀 표기는 우리 standings 표기로 맞춰 저장(team_names.best) — 챔스 등 리그 밖 상대는 원래 이름 그대로.
 출력: data/clubelo_fixtures.csv (시즌 무관 · 매번 새로 씀)
 
+2026-10-25 부터 웹 페이지가 Cloudflare 봇 확인('Just a moment…', 403), 레이팅 API 도 502 — 사이트가 자동 접근을 막았다.
+우회하지 않는다. 막혔으면 종료 코드 75(외부 원천 중단, scripts/ci_try.sh) — 워크플로는 빨갛게 안 하고 DATA 화면에
+'원천 중단'으로 보이며, 다시 열리면 다음 실행부터 그대로 이어 받는다. 기존 파일(지난 예측)은 유지.
+
     python src/fetch_clubelo.py
 """
 from __future__ import annotations
@@ -72,6 +76,8 @@ def _pct(seg: str) -> list[float]:
 def from_page() -> list[dict]:
     """웹 표 — 경기 블록마다 [윗줄: 날짜·홈팀·…·'1'·'X'] [아랫줄: 원정팀·…·'2']."""
     r = requests.get(PAGE, timeout=40, headers=UA)
+    if _blocked(r):
+        raise SourceBlocked(f"HTTP {r.status_code} 봇 확인 페이지")
     r.raise_for_status()
     h = r.text
     starts = [m.start() for m in re.finditer(r'data-live-status-game-id="', h)]
@@ -91,8 +97,18 @@ def from_page() -> list[dict]:
     return out
 
 
+class SourceBlocked(Exception):
+    """원천이 자동 접근을 막음(봇 확인 페이지) — 다시 시도해도 같다."""
+
+
+def _blocked(r: requests.Response) -> bool:
+    return r.status_code in (403, 429, 503) and ("Just a moment" in r.text[:3000] or "cf-chl" in r.text[:5000]
+                                                 or "challenge" in r.text[:3000].lower())
+
+
 def main() -> int:
     raw, src = [], "api"
+    down = None                                          # 원천 중단 사유(차단·서버 오류) — 있으면 75
     if os.getenv("CLUBELO_API") == "1":
         try:
             raw = from_api()
@@ -103,8 +119,15 @@ def main() -> int:
         for attempt in (1, 2):        # 웹 표도 가끔 시간 초과 — 30초 뒤 한 번 더(2026-10-19 점검: 주 2회꼴 실패)
             try:
                 raw, src = from_page(), "page"
+                down = None
+            except SourceBlocked as e:
+                print(f"[clubelo] 원천 차단 — {e}(우회하지 않음)", flush=True)
+                down, raw = str(e), []
+                break                                     # 봇 확인은 다시 해도 같다 — 30초 기다리지 않는다
             except Exception as e:  # noqa: BLE001
                 print(f"[clubelo] 웹 표 실패({type(e).__name__}) {attempt}/2", flush=True)
+                code = getattr(getattr(e, "response", None), "status_code", None)
+                down = f"HTTP {code}" if code and code >= 500 else None   # 사이트 서버 오류도 외부 중단
                 raw = []
             if raw or attempt == 2:
                 break
@@ -122,7 +145,7 @@ def main() -> int:
                      "home_src": x["home_src"], "away_src": x["away_src"], "source": src})
     if not rows:
         print(f"[clubelo] 우리 리그 경기 0건(원자료 {len(raw)}) — 기존 파일 유지")
-        return 1
+        return 75 if down else 1
     new = pd.DataFrame(rows)
     if OUT.exists():   # 페이지에서 빠진 지난 경기 예측도 7일간 보관(경기 리뷰의 예측 적중 판정용)
         import datetime as _dt

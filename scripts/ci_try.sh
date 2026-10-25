@@ -22,6 +22,12 @@ python "$(dirname "$0")/../src/run_ledger.py" add "${LEDGER_RUNNER:-}" "$label" 
 if [ "$code" -eq 0 ]; then
   exit 0
 fi
+# 75(EX_TEMPFAIL) = 외부 원천 중단(사이트 차단·폐쇄·서버 오류) — 우리 고장이 아니라 워크플로를 빨갛게 하지 않고,
+# 원장엔 그대로 남아 DATA 화면에 '원천 중단'으로 따로 보인다(2026-10-25 ClubElo Cloudflare 차단으로 Match Refresh 7연속 빨간불)
+if [ "$code" -eq 75 ]; then
+  echo "::notice title=외부 원천 중단::${label} — 원천이 막혀 기존 데이터 유지"
+  exit 0
+fi
 echo "::warning title=수집 실패::${label} (exit ${code})"
 echo "${label} (exit ${code})" >> "${COLLECT_FAILURES:-/tmp/collect_failures.txt}"
 exit 0

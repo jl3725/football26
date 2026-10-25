@@ -115,3 +115,22 @@ def test_new_feed_grace_counts_from_added_date() -> None:
     assert ops_status.feed_status(new, [], later, old_start)["state"] == "late"
     old = reg.Feed("y", "옛 피드", ("old_step",), ("daily_data",), "매일", 36)
     assert ops_status.feed_status(old, [], now, old_start)["state"] == "late"
+
+
+def test_source_down_state() -> None:
+    """외부 원천 중단(종료 코드 75) — 빨간 '지연·실패'가 아니라 '원천 중단'(2026-10-25 ClubElo Cloudflare 차단)."""
+    now = dt.datetime(2026, 10, 26, 3, tzinfo=dt.timezone.utc)
+    feed = reg.Feed("predictions", "예측", ("clubelo", "log_predictions"), ("match_refresh",), "매일", 30)
+    down = {**_e(1, "clubelo", None, False, now), "code": 75}
+    entries = [_e(30, "clubelo", None, True, now), _e(1, "log_predictions", None, True, now), down]
+    st = ops_status.feed_status(feed, entries, now)
+    assert st["state"] == "down" and st["down"] == ["clubelo"] and st["failing"] == [] and st["fails_24h"] == 0
+    assert st["down_age_h"] == 30.0
+    # 원천이 다시 열려 성공하면 정상
+    assert ops_status.feed_status(feed, entries + [_e(0.5, "clubelo", None, True, now)], now)["state"] == "ok"
+    # 진짜 실패가 같이 있으면 실패가 먼저
+    bad = entries + [{**_e(0.5, "log_predictions", None, False, now), "code": 1}]
+    assert ops_status.feed_status(feed, bad, now)["state"] == "warn"
+    # 모든 단계가 막혀 오래 멈춰도 '지연'이 아니라 '원천 중단'
+    only = reg.Feed("x", "x", ("clubelo",), ("match_refresh",), "매일", 30)
+    assert ops_status.feed_status(only, [_e(80, "clubelo", None, True, now), down], now)["state"] == "down"

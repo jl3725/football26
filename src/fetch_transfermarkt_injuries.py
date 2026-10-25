@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import csv
 import re
+import time
 from datetime import datetime
 from pathlib import Path
 
@@ -271,7 +272,16 @@ def parse_injury_rows(page_html: str) -> list[dict]:
 
 
 def fetch_page() -> str:
-    response = tm_http.get(URL, headers=H, timeout=30)
+    # 리그 부상자 페이지는 한 장이라 시간 초과 한 번이면 리그 전체가 실패했다(2026-10-24 Championship) — 15초 뒤 한 번 더
+    for attempt in (1, 2):
+        try:
+            response = tm_http.get(URL, headers=H, timeout=30)
+            break
+        except requests.RequestException as e:
+            if attempt == 2:
+                raise
+            print(f"[injuries] TM 응답 없음({type(e).__name__}) — 15초 뒤 다시")
+            time.sleep(15)
     response.raise_for_status()
     # TM(AWS WAF)은 데이터센터 IP 에 202 + 챌린지 페이지를 준다. raise_for_status 를 통과하므로
     # 그대로 파싱하면 0행이 되어 부상자 파일을 비우고 '전원 복귀' 가짜 이벤트를 남긴다(2026-07-15 사고).
