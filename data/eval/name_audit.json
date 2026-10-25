@@ -330,11 +330,11 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 600,
+   "total": 603,
    "exact": 492,
    "rule": 22,
    "ambiguous": 1,
-   "orphan": 86,
+   "orphan": 89,
    "orphans": [
     {
      "squad": "Celta Vigo",
@@ -465,16 +465,11 @@
   },
   "espn_lineups_cups": {
    "total": 202,
-   "exact": 200,
+   "exact": 201,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 2,
+   "orphan": 1,
    "orphans": [
-    {
-     "squad": "Barcelona",
-     "name": "Álex Campos",
-     "starts": 0
-    },
     {
      "squad": "Celta Vigo",
      "name": "Frank Germain Jonathan Miller",
@@ -483,8 +478,8 @@
    ]
   },
   "espn_subs": {
-   "total": 437,
-   "exact": 432,
+   "total": 438,
+   "exact": 433,
    "rule": 2,
    "ambiguous": 1,
    "orphan": 3,
@@ -515,8 +510,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 350,
-   "exact": 350,
+   "total": 351,
+   "exact": 351,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -806,11 +801,11 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 641,
+   "total": 646,
    "exact": 558,
    "rule": 10,
    "ambiguous": 1,
-   "orphan": 73,
+   "orphan": 78,
    "orphans": [
     {
      "squad": "Lecce",
@@ -1044,8 +1039,8 @@
    ]
   },
   "espn_subs": {
-   "total": 443,
-   "exact": 438,
+   "total": 446,
+   "exact": 441,
    "rule": 1,
    "ambiguous": 1,
    "orphan": 4,
@@ -1339,8 +1334,8 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 545,
-   "exact": 486,
+   "total": 546,
+   "exact": 487,
    "rule": 16,
    "ambiguous": 2,
    "orphan": 43,

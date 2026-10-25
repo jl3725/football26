@@ -1415,6 +1415,30 @@
    "away": "Famalicão",
    "at": "2026-10-25T21:21:32+00:00",
    "model": "gemini-flash-lite-latest"
+  },
+  "401885413": {
+   "text": "Académico de Viseu가 Sporting CP를 상대로 2-1 승리를 거두며 이변을 연출했다. 경기는 24' João Guilherme의 선제골로 Académico de Viseu가 앞서 나갔고, 62' Luis Suárez의 동점골 이후 74' João Guilherme가 다시 득점하며 승부를 결정지었다. Sporting CP는 점유율 71.1%와 슈팅 28개를 기록하며 경기를 주도했으나 유효 슈팅 4개에 그치며 효율적인 공격을 펼친 Académico de Viseu에 패했다. Sporting CP의 승리를 예상했던 팬 투표와 모델의 예측은 모두 빗나갔다.",
+   "date": "2026-10-25",
+   "home": "Sporting CP",
+   "away": "Académico de Viseu",
+   "at": "2026-10-25T22:52:04+00:00",
+   "model": "gemini-3.1-flash-lite"
+  },
+  "401882832": {
+   "text": "Real Madrid가 Spotify Camp Nou에서 열린 리그 경기에서 Barcelona를 2-1로 꺾고 승리를 거뒀다. 41' Kylian Mbappé의 선제골로 앞서간 Real Madrid는 61' Raphinha에게 동점골을 허용했으나, 87' Eduardo Camavinga의 도움을 받은 Kylian Mbappé가 결승골을 터뜨리며 승부를 결정지었다. Barcelona는 점유율 62.2%와 슈팅 18개를 기록하며 경기를 주도했으나 Real Madrid의 효율적인 공격에 밀렸고, 경기 전 Barcelona의 승리를 점쳤던 팬 투표와 각종 예측 모델의 결과는 모두 빗나갔다.",
+   "date": "2026-10-25",
+   "home": "Barcelona",
+   "away": "Real Madrid",
+   "at": "2026-10-25T22:52:09+00:00",
+   "model": "gemini-3.1-flash-lite"
+  },
+  "401874779": {
+   "text": "Milan이 Stadio Friuli에서 Udinese를 2-0으로 꺾고 승리를 거뒀다. 6' Christian Pulisic이 Luka Modric의 도움을 받아 선제골을 기록했고, 65' Omari Hutchinson이 추가 골을 성공시키며 승부에 쐐기를 박았다. Milan은 점유율 59.9%와 슈팅 19개를 기록하며 Udinese보다 우세한 경기력을 보였고, 경기 전 팬 투표와 모델, ClubElo가 모두 Milan의 승리를 예측한 결과가 그대로 적중했다.",
+   "date": "2026-10-25",
+   "home": "Udinese",
+   "away": "Milan",
+   "at": "2026-10-25T22:52:13+00:00",
+   "model": "gemini-3.1-flash-lite"
   }
  },
  "fails": {}
