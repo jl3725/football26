@@ -1,4 +1,28 @@
 squad,player,fotmob_id,group,positions,tm_position,pos,age,birth_date,shirt,ccode,injured,expected_return,fetched
+PSG,Alessandro Longoni,1662399,keepers,,Goalkeeper,GK,18,2008-01-31,16.0,ITA,False,,2026-10-26
+PSG,Lucas Chevalier,1177131,keepers,GK,Goalkeeper,GK,24,2001-11-06,30.0,FRA,False,,2026-10-26
+PSG,Matvey Safonov,800880,keepers,GK,Goalkeeper,GK,27,1999-02-25,39.0,RUS,False,,2026-10-26
+PSG,Achraf Hakimi,770881,defenders,RB,Right-Back,DF,27,1998-11-04,2.0,MAR,False,,2026-10-26
+PSG,Marquinhos,267365,defenders,CB,Centre-Back,DF,32,1994-05-14,5.0,BRA,True,A few weeks,2026-10-26
+PSG,Ilya Zabarnyi,1140003,defenders,"CB,RB",Centre-Back,DF,24,2002-09-01,6.0,UKR,False,,2026-10-26
+PSG,Lucas Digne,210111,defenders,LB,Left-Back,DF,33,1993-07-20,12.0,FRA,False,,2026-10-26
+PSG,Lucas Hernández,504606,defenders,"LB,CB",Left-Back,DF,30,1996-02-14,21.0,FRA,False,,2026-10-26
+PSG,Nuno Mendes,1158945,defenders,LB,Left-Back,DF,24,2002-06-19,25.0,POR,True,A few weeks,2026-10-26
+PSG,Willian Pacho,1137670,defenders,CB,Centre-Back,DF,25,2001-10-16,51.0,ECU,False,,2026-10-26
+PSG,Lucas Beraldo,1255209,midfielders,"CM,CB",Central Midfield,MF,22,2003-11-24,4.0,BRA,False,,2026-10-26
+PSG,Fabián Ruiz,605654,midfielders,"CM,CDM",Central Midfield,MF,30,1996-04-03,8.0,ESP,False,,2026-10-26
+PSG,Vítinha,1061249,midfielders,"CM,CDM,CAM",Central Midfield,MF,26,2000-02-13,17.0,POR,False,,2026-10-26
+PSG,Senny Mayulu,1574189,midfielders,"CM,ST,RB,LW",Central Midfield,MF,20,2006-05-17,24.0,FRA,False,,2026-10-26
+PSG,Dro Fernández,1682313,midfielders,CM,Central Midfield,MF,18,2008-01-12,27.0,ESP,False,,2026-10-26
+PSG,Warren Zaïre-Emery,1367615,midfielders,"CM,RB,CDM,LB",Central Midfield,MF,20,2006-03-08,33.0,FRA,False,,2026-10-26
+PSG,Quentin Ndjantou,1699549,midfielders,"CM,ST",Central Midfield,MF,19,2007-07-23,47.0,FRA,False,,2026-10-26
+PSG,João Neves,1342757,midfielders,"CM,CDM",Central Midfield,MF,22,2004-09-27,87.0,POR,False,,2026-10-26
+PSG,Khvicha Kvaratskhelia,900433,attackers,"LW,RW,ST",Left Winger,FW,25,2001-02-12,7.0,GEO,True,Out for season,2026-10-26
+PSG,Ferrán Torres,881771,attackers,"ST,RW,LW",Centre-Forward,FW,26,2000-02-29,9.0,ESP,False,,2026-10-26
+PSG,Ousmane Dembélé,692984,attackers,"ST,RW,CAM",Centre-Forward,FW,29,1997-05-15,10.0,FRA,True,A few weeks,2026-10-26
+PSG,Maghnes Akliouche,1305618,attackers,"RW,CAM,ST,CM",Right Winger,FW,24,2002-02-25,11.0,FRA,False,,2026-10-26
+PSG,Désiré Doué,1339208,attackers,"RW,LW,ST,CM",Right Winger,FW,21,2005-06-03,14.0,FRA,False,,2026-10-26
+PSG,Mika Godts,1396372,attackers,"LW,LM",Left Winger,FW,21,2005-06-07,22.0,BEL,False,,2026-10-26
 Rennes,Nicolas Lemaître,625422,keepers,GK,Goalkeeper,GK,29,1997-01-12,16.0,FRA,False,,2026-10-26
 Rennes,Brice Samba,279714,keepers,GK,Goalkeeper,GK,32,1994-04-25,30.0,FRA,False,,2026-10-26
 Rennes,Kilian Belazzoug,1841191,keepers,GK,Goalkeeper,GK,20,2006-07-18,60.0,ALG,False,,2026-10-26
@@ -113,30 +137,6 @@ Lyon,Loïs Openda,747767,attackers,"ST,LW",Centre-Forward,FW,26,2000-02-16,17.0,
 Lyon,Julien Duranville,1368304,attackers,"RW,LW",Right Winger,FW,20,2006-05-05,24.0,BEL,False,,2026-10-26
 Lyon,Kaïl Boudache,1896949,attackers,"RW,CAM",Right Winger,FW,20,2006-06-15,26.0,ALG,False,,2026-10-26
 Lyon,Rémi Himbert,1793704,attackers,"ST,RW",Centre-Forward,FW,18,2008-02-29,45.0,FRA,False,,2026-10-26
-PSG,Alessandro Longoni,1662399,keepers,,Goalkeeper,GK,18,2008-01-31,16.0,ITA,False,,2026-10-26
-PSG,Lucas Chevalier,1177131,keepers,GK,Goalkeeper,GK,24,2001-11-06,30.0,FRA,False,,2026-10-26
-PSG,Matvey Safonov,800880,keepers,GK,Goalkeeper,GK,27,1999-02-25,39.0,RUS,False,,2026-10-26
-PSG,Achraf Hakimi,770881,defenders,RB,Right-Back,DF,27,1998-11-04,2.0,MAR,False,,2026-10-26
-PSG,Marquinhos,267365,defenders,CB,Centre-Back,DF,32,1994-05-14,5.0,BRA,True,A few weeks,2026-10-26
-PSG,Ilya Zabarnyi,1140003,defenders,"CB,RB",Centre-Back,DF,24,2002-09-01,6.0,UKR,False,,2026-10-26
-PSG,Lucas Digne,210111,defenders,LB,Left-Back,DF,33,1993-07-20,12.0,FRA,False,,2026-10-26
-PSG,Lucas Hernández,504606,defenders,"LB,CB",Left-Back,DF,30,1996-02-14,21.0,FRA,False,,2026-10-26
-PSG,Nuno Mendes,1158945,defenders,LB,Left-Back,DF,24,2002-06-19,25.0,POR,True,A few weeks,2026-10-26
-PSG,Willian Pacho,1137670,defenders,CB,Centre-Back,DF,25,2001-10-16,51.0,ECU,False,,2026-10-26
-PSG,Lucas Beraldo,1255209,midfielders,"CM,CB",Central Midfield,MF,22,2003-11-24,4.0,BRA,False,,2026-10-26
-PSG,Fabián Ruiz,605654,midfielders,"CM,CDM",Central Midfield,MF,30,1996-04-03,8.0,ESP,False,,2026-10-26
-PSG,Vítinha,1061249,midfielders,"CM,CDM,CAM",Central Midfield,MF,26,2000-02-13,17.0,POR,False,,2026-10-26
-PSG,Senny Mayulu,1574189,midfielders,"CM,ST,RB,LW",Central Midfield,MF,20,2006-05-17,24.0,FRA,False,,2026-10-26
-PSG,Dro Fernández,1682313,midfielders,CM,Central Midfield,MF,18,2008-01-12,27.0,ESP,False,,2026-10-26
-PSG,Warren Zaïre-Emery,1367615,midfielders,"CM,RB,CDM,LB",Central Midfield,MF,20,2006-03-08,33.0,FRA,False,,2026-10-26
-PSG,Quentin Ndjantou,1699549,midfielders,"CM,ST",Central Midfield,MF,19,2007-07-23,47.0,FRA,False,,2026-10-26
-PSG,João Neves,1342757,midfielders,"CM,CDM",Central Midfield,MF,22,2004-09-27,87.0,POR,False,,2026-10-26
-PSG,Khvicha Kvaratskhelia,900433,attackers,"LW,RW,ST",Left Winger,FW,25,2001-02-12,7.0,GEO,True,Out for season,2026-10-26
-PSG,Ferrán Torres,881771,attackers,"ST,RW,LW",Centre-Forward,FW,26,2000-02-29,9.0,ESP,False,,2026-10-26
-PSG,Ousmane Dembélé,692984,attackers,"ST,RW,CAM",Centre-Forward,FW,29,1997-05-15,10.0,FRA,True,A few weeks,2026-10-26
-PSG,Maghnes Akliouche,1305618,attackers,"RW,CAM,ST,CM",Right Winger,FW,24,2002-02-25,11.0,FRA,False,,2026-10-26
-PSG,Désiré Doué,1339208,attackers,"RW,LW,ST,CM",Right Winger,FW,21,2005-06-03,14.0,FRA,False,,2026-10-26
-PSG,Mika Godts,1396372,attackers,"LW,LM",Left Winger,FW,21,2005-06-07,22.0,BEL,False,,2026-10-26
 Paris FC,Kevin Trapp,145550,keepers,GK,Goalkeeper,GK,36,1990-07-08,1.0,GER,False,,2026-10-26
 Paris FC,Obed Nkambadio,1127125,keepers,GK,Goalkeeper,GK,23,2003-02-07,16.0,FRA,False,,2026-10-26
 Paris FC,Ibrahim Meite,2406287,keepers,,Goalkeeper,GK,22,2004-07-26,50.0,FRA,False,,2026-10-26
