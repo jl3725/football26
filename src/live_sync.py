@@ -119,16 +119,22 @@ def sync_data(get=requests.get, notify: bool = True) -> int:
     db_needed = bool(db_sha) and _sha256(db_path) != db_sha
     gz, tmp_db = db_path.with_name("football.db.gz.part"), db_path.with_name("football.db.part")
     parts: list[tuple[Path, Path]] = []
+    def fetch(item):
+        rel, h = item
+        body = get(_raw(rel, DATA_BRANCH), timeout=60).content
+        dst = ROOT / rel
+        dst.parent.mkdir(parents=True, exist_ok=True)
+        tmp = dst.with_name(dst.name + ".part")
+        tmp.write_bytes(body)
+        parts.append((tmp, dst))                        # 지움 목록에 먼저 — 지문이 달라도 임시 파일은 치운다
+        if hashlib.sha256(body).hexdigest() != h:
+            raise ValueError(f"지문 다름 {rel}")
+
     try:
-        for rel, h in todo.items():                    # 1) 전부 임시 파일로 받아 지문 확인(CDN 이 옛 파일을 주면 다음 차례에)
-            body = get(_raw(rel, DATA_BRANCH), timeout=60).content
-            if hashlib.sha256(body).hexdigest() != h:
-                raise ValueError(f"지문 다름 {rel}")
-            dst = ROOT / rel
-            dst.parent.mkdir(parents=True, exist_ok=True)
-            tmp = dst.with_name(dst.name + ".part")
-            tmp.write_bytes(body)
-            parts.append((tmp, dst))
+        # 1) 전부 임시 파일로 받아 지문 확인(CDN 이 옛 파일을 주면 다음 차례에) — 8개씩 동시에(한 개씩이면 677개에 7분 걸렸다)
+        from concurrent.futures import ThreadPoolExecutor  # noqa: PLC0415
+        with ThreadPoolExecutor(max_workers=8) as ex:
+            list(ex.map(fetch, todo.items()))
         if db_needed:
             with get(_raw(str(man.get("db_gz") or "data/football.db.gz"), DATA_BRANCH), stream=True, timeout=180) as resp:
                 resp.raise_for_status()
