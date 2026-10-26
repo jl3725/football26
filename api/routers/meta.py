@@ -10,6 +10,7 @@ import api.bootstrap  # noqa: F401
 import datastore as ds
 from leagues import ACTIVE_LEAGUE, league_config
 import infra_health
+import live_sync
 from season_context import current_window, season_label
 
 router = APIRouter(prefix="/api", tags=["meta"])
@@ -47,6 +48,9 @@ def health():
         "infra": infra_health.status(),   # 차단 중인 선택 인프라(neo4j·qdrant)
         # 운영이 어느 커밋으로 떠 있나 — watchdog 이 최신 코드 커밋과 비교(배포 실패로 옛 버전에 머무는 걸 잡는다)
         "commit": os.getenv("RENDER_GIT_COMMIT", "")[:12],
+        # 이 프로세스가 언제 떴나(재시작·재배포 횟수 확인) + 실행 중 데이터 받기 상태(src/live_sync.py)
+        "up_since": live_sync.STATE["started"],
+        "live_sync": {k: live_sync.STATE[k] for k in ("enabled", "news_sha", "news_at", "small_at", "small_updated", "last_error")},
     }
 
 

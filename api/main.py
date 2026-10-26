@@ -56,9 +56,11 @@ _MEMO_LOCKS: dict = {}
 _MEMO_GUARD = __import__("threading").Lock()
 
 
-def _memo(ttl: float = 3600.0):
+def _memo(ttl: float = 3600.0, news: bool = False):
     """메모이즈(ttl 초) — 같은 키는 한 스레드만 계산하고 나머지는 결과를 기다린다.
-    Render 무료(0.1 CPU)에서 데우기 스레드와 첫 요청이 같은 리그 전체 계산을 동시에 돌려 Overview 가 30초를 넘겼다(2026-10-15)."""
+    Render 무료(0.1 CPU)에서 데우기 스레드와 첫 요청이 같은 리그 전체 계산을 동시에 돌려 Overview 가 30초를 넘겼다(2026-10-15).
+    news=True — 뉴스 표를 읽는 계산은 뉴스 파일(data/news_view.db) 시각도 열쇠에: 실행 중에 뉴스만 바뀌면(src/live_sync.py)
+    이 계산만 다시 한다(나머지 캐시는 그대로)."""
     import functools
     import threading
     import time as _t
@@ -66,7 +68,7 @@ def _memo(ttl: float = 3600.0):
     def deco(fn):
         @functools.wraps(fn)
         def wrapped(*args, **kwargs):
-            key = (fn.__name__, args, tuple(sorted(kwargs.items())), _db_stamp())
+            key = (fn.__name__, args, tuple(sorted(kwargs.items())), _db_stamp(), ds.news_mtime() if news else 0)
             hit = _MEMO.get(key)
             if hit and hit[0] > _t.monotonic():
                 return hit[1]
@@ -1922,18 +1924,18 @@ _INJ_GOOD = re.compile(r"\b(return\w*|back in training|back from|fit again|recov
                        r"wieder (im|fit|dabei|einsatzbereit)|trains? again|hersteld|r[ée]tabli\w*)\b", re.I)
 
 
-@_memo(ttl=1800)
+@_memo(ttl=1800, news=True)
 def _news_injury_rows(league: str, days: int = 3, min_sources: int = 2) -> list[dict]:
     """뉴스 '부상 보도' — 최근 days 일 '부상' 기사(분류 kind=injury)에 이름 전체로 태그된 선수 중, 서로 다른 매체 min_sources 곳
     이상이 다친 쪽으로 쓴 경우(제목에 부상 낱말, '복귀·훈련 복귀·회복' 낱말 없음). 보도 뒤에 실제로 뛰었으면 뺀다.
     공식 목록(TM 하루 2번·FotMob 경기 직전 결장 명단)보다 몇 시간~하루 빠르다 — 챔스 바이에른전 10분 만에 실려 나간
     사카가 다음 날까지 부상 목록에 없었다(2026-10-22 사용자). 확인 전이라 '부상 보도(확인 전)'로 따로 보인다."""
     import sqlite3  # noqa: PLC0415
-    if not ds.DB_PATH.exists():
+    if not ds.db_path("news_articles").exists():
         return []
     since = (datetime.date.today() - datetime.timedelta(days=days)).isoformat()
     try:
-        c = sqlite3.connect(f"file:{ds.DB_PATH}?mode=ro", uri=True)
+        c = sqlite3.connect(f"file:{ds.db_path('news_articles')}?mode=ro", uri=True)
         try:
             rows = c.execute(
                 """SELECT p.player, p.squad, a.source, a.headline, coalesce(nullif(substr(a.published,1,10),''), a.first_seen)
@@ -2058,11 +2060,11 @@ def _transfer_wire(league: str, days: int = 10, limit: int = 18) -> list[dict]:
     import sqlite3  # noqa: PLC0415
     st = ds.read_table("standings", league=league)
     teams = [] if st is None or st.empty else sorted(set(st["squad"].astype(str)))
-    if not teams or not ds.DB_PATH.exists():
+    if not teams or not ds.db_path("news_articles").exists():
         return []
     since = (datetime.date.today() - datetime.timedelta(days=days)).isoformat()
     try:
-        c = sqlite3.connect(f"file:{ds.DB_PATH}?mode=ro", uri=True)
+        c = sqlite3.connect(f"file:{ds.db_path('news_articles')}?mode=ro", uri=True)
         try:
             rows = c.execute(
                 f"""SELECT a.link, a.team, a.source, coalesce(nullif(a.headline_ko, ''), a.headline), a.headline,
@@ -2144,7 +2146,7 @@ def _fm_return_kr(s: str) -> str:
     return t
 
 
-@_memo(ttl=1800)
+@_memo(ttl=1800, news=True)
 def _injuries_table(league: str):
     """현재 결장 — Transfermarkt 부상(부상 시작 뒤 실제로 뛴 선수 _injury_returns 는 뺌) + FotMob 결장자.
 
@@ -3053,7 +3055,7 @@ def transfers(team: str, league: str = ACTIVE_LEAGUE, window: str = "current"):
 
 
 @app.get("/api/news/{team}")
-@_memo(ttl=21600)
+@_memo(ttl=21600, news=True)
 def news(team: str, league: str = ACTIVE_LEAGUE):
     na = ds.read_table("news_articles", league=league)
     if na is None:
@@ -3152,11 +3154,11 @@ def _news_track() -> dict:
 
 def _news_side_table(sql: str, links: list[str]) -> list[tuple]:
     """news_* 보조 테이블을 리그 필터 없이 링크로 읽는다(datastore.read_table 은 league 열로 거른다)."""
-    if not links or not ds.DB_PATH.exists():
+    if not links or not ds.db_path("news_articles").exists():
         return []
     import sqlite3  # noqa: PLC0415
     try:
-        c = sqlite3.connect(f"file:{ds.DB_PATH}?mode=ro", uri=True)
+        c = sqlite3.connect(f"file:{ds.db_path('news_articles')}?mode=ro", uri=True)
         try:
             return c.execute(sql.format(q=",".join("?" * len(links))), links).fetchall()
         finally:
@@ -3178,7 +3180,7 @@ def _news_tags_any_league(links: list[str]) -> dict:
 
 
 @app.get("/api/news-player/{player}")
-@_memo(ttl=3600)
+@_memo(ttl=3600, news=True)
 def news_player(player: str, club: str = "", league: str = ACTIVE_LEAGUE, limit: int = 8):
     """선수가 나온 최근 기사(news.db 선수 태그 — 이름 전체, 또는 성 + 같은 기사 속 클럽 이름)."""
     tags, na = ds.read_table("news_players", league=league), ds.read_table("news_articles", league=league)
@@ -5393,7 +5395,7 @@ def captains(team: str, league: str = ACTIVE_LEAGUE):
 
 
 @app.get("/api/signals")
-@_memo(ttl=900)
+@_memo(ttl=900, news=True)
 def signals(team: str = "", league: str = ACTIVE_LEAGUE, limit: int = 60):
     """agent 자동감지 통합 피드 — 부상·감독·이적·계약 변화를 한 곳에.
     team 지정 시 해당 팀만, 없으면 리그 전체(순위표에 있는 팀만 — 다른 리그 팀 데이터 혼입 방지).
@@ -5917,7 +5919,7 @@ def inbox(team: str, league: str = ACTIVE_LEAGUE):
 
 
 @app.get("/api/home")
-@_memo(ttl=1800)
+@_memo(ttl=1800, news=True)
 def home(league: str = ACTIVE_LEAGUE):
     """리그 홈 대시보드 집계 — 이적 펄스·시그널·감독교체·순위·뉴스 한 번에."""
     win = _current_window()
@@ -7104,7 +7106,7 @@ def _with_ai_report(rv: dict) -> dict:
 
 
 @app.get("/api/digest")
-@_memo(ttl=1800)
+@_memo(ttl=1800, news=True)
 def digest(league: str = ACTIVE_LEAGUE, days: int = 7):
     """WEEKLY DIGEST — 지난 days 일 리그 변화 요약(설계도 3단계 '주간 스카우팅 다이제스트'). 규칙 기반·무료, 숫자는 데이터 값만.
     리그 홈의 결과·일정·리뷰·이적 속보와 겹치지 않게 '이번 주에 바뀐 것'만: OVR ▲▼ · 부상 변동 · 뉴스 언급 · 루머 · A매치 기간."""
@@ -7668,6 +7670,9 @@ def _warm_up() -> None:
             print(f"[warm-up] 건너뜀: {type(e).__name__}: {e}", flush=True)
 
     threading.Thread(target=run, name="warm-up", daemon=True).start()
+    # 운영(Render)에서만 — 뉴스·AI 요약·DATA 상태 파일을 재배포 없이 GitHub 에서 받는다(src/live_sync.py)
+    import live_sync  # noqa: PLC0415
+    live_sync.start()
 
 
 @app.get("/api/home/all")

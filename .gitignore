@@ -71,3 +71,7 @@ data/team_units.json
 data/runtime_cache/
 # 뉴스 sqlite 는 main 이력 밖 data-news 브랜치에(src/news_store.py) — main 에는 포인터 data/news_db.ref.json 만
 data/news.db
+# 뉴스 화면 표(배포·실행 중 news.db 에서 만듦, src/news_view.py) · 실행 중 받기 임시 파일(src/live_sync.py)
+data/news_view.db
+data/news_view.db.tmp
+data/*.part

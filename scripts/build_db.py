@@ -104,31 +104,13 @@ def build() -> None:
         except Exception as e:  # noqa: BLE001 — 받지 못해도 나머지 표는 만든다
             print(f"  ! news.db 받기 실패: {e}")
     if NEWS_DB.exists():
+        # 뉴스 표(기사·선수 태그·분류)는 football.db 가 아니라 따로 둔 data/news_view.db 에 — 실행 중인 서버가 뉴스만
+        # 갈아 끼울 수 있게(src/news_view.py · src/live_sync.py). 예전엔 뉴스가 바뀔 때마다 재배포였다(2026-10-26)
         try:
-            # 화면이 쓰는 최근 60일만(src/news_relevance.MAX_DAYS) — 오래된 기사가 40% 를 차지하며 무료 인스턴스(512MB)
-            # 메모리만 썼다. 루머 판정·적중률(news_reliability)은 news.db 원본을 직접 읽어 영향 없음(2026-10-21)
-            ndf = pd.read_sql("SELECT link, team, source, headline, headline_ko, descr, descr_ko, published, image, first_seen, via "
-                              "FROM articles WHERE coalesce(nullif(substr(published, 1, 10), ''), first_seen) >= date('now', '-60 day')",
-                              sqlite3.connect(NEWS_DB))
-            ndf.to_sql("news_articles", conn, if_exists="replace", index=False)
-            total_rows += len(ndf)
-            print(f"  · {'news_articles':38s} {len(ndf):6d} rows  (news.db)")
-            try:   # 기사 선수 태그(src/news_tags.py) — 선수 화면 IN THE NEWS · Ask Scout
-                tdf = pd.read_sql("SELECT link, player, squad, league, how FROM article_players", sqlite3.connect(NEWS_DB))
-                tdf.to_sql("news_players", conn, if_exists="replace", index=False)
-                conn.execute("CREATE INDEX IF NOT EXISTS idx_news_players_link ON news_players(link)")
-                print(f"  · {'news_players':38s} {len(tdf):6d} rows  (news.db)")
-            except Exception:  # noqa: BLE001 — 태깅 전 news.db
-                pass
-            try:   # 기사 분류(src/news_classify.py) — 뉴스 탭 종류·이적 단계·기자·STORY
-                mdf = pd.read_sql("SELECT link, kind, stage, journalists, by FROM article_meta", sqlite3.connect(NEWS_DB))
-                mdf.to_sql("news_meta", conn, if_exists="replace", index=False)
-                conn.execute("CREATE INDEX IF NOT EXISTS idx_news_meta_link ON news_meta(link)")
-                print(f"  · {'news_meta':38s} {len(mdf):6d} rows  (news.db)")
-            except Exception:  # noqa: BLE001 — 분류 전 news.db
-                pass
+            import news_view  # noqa: PLC0415
+            total_rows += news_view.build(NEWS_DB)
         except Exception as e:  # noqa: BLE001
-            print(f"  ! news.db 병합 실패: {e}")
+            print(f"  ! news_view.db 만들기 실패: {e}")
 
     conn.commit()
     conn.close()

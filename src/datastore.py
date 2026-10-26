@@ -23,6 +23,37 @@ from leagues import (
 )
 
 DB_PATH = DATA_DIR / "football.db"
+# 뉴스 표는 따로 둔 파일 — 실행 중인 서버가 뉴스만 갈아 끼우고(src/live_sync.py), 뉴스 캐시만 무효화되게(src/news_view.py).
+# 파일이 없으면(옛 빌드) football.db 에서 읽는다
+NEWS_VIEW_PATH = DATA_DIR / "news_view.db"
+NEWS_TABLES = frozenset({"news_articles", "news_players", "news_meta"})
+
+
+def db_path(table: str) -> Path:
+    """표가 들어 있는 DB 파일."""
+    return NEWS_VIEW_PATH if table in NEWS_TABLES and NEWS_VIEW_PATH.exists() else DB_PATH
+
+
+def _mtime(p: Path) -> float:
+    try:
+        return p.stat().st_mtime
+    except OSError:
+        return 0.0
+
+
+def news_mtime() -> float:
+    """뉴스 표 파일 시각 — 뉴스 캐시 열쇠(api _memo(news=True))."""
+    return _mtime(db_path("news_articles"))
+
+
+def forget(tables) -> int:
+    """이 표들의 읽기 캐시를 버린다 — 실행 중 뉴스를 갈아 끼운 뒤 옛 사본(수십 MB)이 LRU 로 밀려날 때까지 남지 않게."""
+    tables = set(tables)
+    with _CACHE_LOCK:
+        keys = [k for k in _CACHE if k[0] in tables]
+        for k in keys:
+            _CACHE.pop(k, None)
+    return len(keys)
 
 # DB 읽기 캐시 — API 요청 하나가 같은 테이블을 수십 번 읽었다(추천 1회에 read_table 40회, 무료 인스턴스
 # 에서 수 초). 키에 DB 수정 시각을 넣어 배포·재빌드 시 자동 무효화. 호출부가 고쳐 써도 안전하게 사본을 준다.
@@ -59,7 +90,7 @@ def read_table(
     league = league or ACTIVE_LEAGUE
     season = season or SEASON
 
-    key = (table, league, season, _db_mtime())
+    key = (table, league, season, _mtime(db_path(table)))
     if _unscoped(table):
         # 리그·시즌 열이 없는 표(뉴스 기사 등)는 리그마다 같은 표 전체가 읽혔다 — 사본을 리그마다 캐시하면
         # 뉴스 3만 건(43MB) × 8개 리그로 무료 인스턴스(512MB)를 거의 채운다(2026-10-21). 한 벌만 둔다.
@@ -86,14 +117,15 @@ _SCOPE: dict = {}
 
 def _unscoped(table: str) -> bool:
     """리그·시즌 열도, 리그별로 달라지는 정규화 대상(squad·선수 이름)도 없는 표인가 — DB 파일 시각마다 한 번 확인."""
-    mt = _db_mtime()
+    path = db_path(table)
+    mt = _mtime(path)
     hit = _SCOPE.get(table)
     if hit and hit[0] == mt:
         return hit[1]
     out = False
-    if DB_PATH.exists():
+    if path.exists():
         try:
-            conn = sqlite3.connect(f"file:{DB_PATH}?mode=ro", uri=True)
+            conn = sqlite3.connect(f"file:{path}?mode=ro", uri=True)
             try:
                 cols = {r[1] for r in conn.execute(f'PRAGMA table_info("{table}")')}
             finally:
@@ -151,10 +183,11 @@ def _cleanse_names(table: str, df: pd.DataFrame | None, league: str, season: str
 
 
 def _read_from_db(table: str, league: str, season: str) -> pd.DataFrame | None:
-    if not DB_PATH.exists():
+    path = db_path(table)
+    if not path.exists():
         return None
     try:
-        conn = sqlite3.connect(f"file:{DB_PATH}?mode=ro", uri=True)
+        conn = sqlite3.connect(f"file:{path}?mode=ro", uri=True)
     except sqlite3.Error:
         return None
     try:

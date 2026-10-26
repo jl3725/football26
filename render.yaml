@@ -31,6 +31,15 @@ services:
         - requirements-kg.txt
         - pytest.ini
         - docker-compose.yml
+        # 실행 중인 서버가 GitHub 에서 직접 받는 파일(src/live_sync.py) — 뉴스 커밋(2시간마다)·운영 기록만 바뀐 커밋은
+        # 재배포하지 않는다(2026-10-26: 36시간에 재배포 25번, 그중 뉴스 7번 — 그때마다 서버 재시작·캐시 비움)
+        - data/news_db.ref.json
+        - data/news_feeds.json
+        - data/news_claims.csv
+        - data/news_reliability.csv
+        - data/ai/news_digest.json
+        - data/ai/usage_*.json
+        - data/ops/**
     envVars:
       - key: PYTHON_VERSION
         value: "3.12.7"
