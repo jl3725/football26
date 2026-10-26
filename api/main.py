@@ -6616,7 +6616,7 @@ def _fx_enrich(m: dict, src: dict) -> dict:
 
 @_memo(ttl=1800)
 def _predictions() -> dict:
-    """외부 예측 — data/fan_votes.csv(Sofascore 팬 투표, 로컬 하루 2회) · data/clubelo_fixtures.csv(ClubElo, 클라우드 매일).
+    """외부 예측 — data/fan_votes.csv(Sofascore 팬 투표, 로컬 하루 2회) (Elo 기준은 _elo_pred 가 우리 Elo 로 계산 — ClubElo 는 10/25 사이트 차단으로 중단).
     (날짜, 홈, 원정) 키. 없으면 빈 dict."""
     out: dict = {"fans": {}, "elo": {}}
     base = ds.DB_PATH.parent
@@ -6624,12 +6624,6 @@ def _predictions() -> dict:
         fv = pd.read_csv(base / "fan_votes.csv")
         for _, r in fv.iterrows():
             out["fans"][(str(r["date"]), str(r["home"]), str(r["away"]))] = r.to_dict()
-    except (OSError, ValueError, KeyError):
-        pass
-    try:
-        ce = pd.read_csv(base / "clubelo_fixtures.csv")
-        for _, r in ce.iterrows():
-            out["elo"][(str(r["date"]), str(r["home"]), str(r["away"]))] = r.to_dict()
     except (OSError, ValueError, KeyError):
         pass
     return out
@@ -6652,7 +6646,7 @@ def _pred_lookup(table: dict, date: str, h: str, a: str):
 
 
 def _attach_predictions(m: dict) -> None:
-    """경기에 팬 투표(fans)·ClubElo(elo) — 날짜는 하루 어긋남(시간대) 허용."""
+    """경기에 팬 투표(fans, 날짜 하루 어긋남 허용)·ELO 기준(elo, 우리 Elo 만으로 낸 승·무·패)."""
     pr = _predictions()
     h, a = m["home"]["team"], m["away"]["team"]
     d0 = datetime.date.fromisoformat(m["date"])
@@ -6669,9 +6663,11 @@ def _attach_predictions(m: dict) -> None:
                              "btts": round(int(f["btts_yes"]) / bt, 3) if bt >= 20 else None,
                              "first_h": round(int(f["first_home"]) / fs, 3) if fs >= 20 else None,
                              "first_a": round(int(f["first_away"]) / fs, 3) if fs >= 20 else None}
-        e = _pred_lookup(pr["elo"], day, h, a)
-        if e and "elo" not in m:
-            m["elo"] = {"h": float(e["p_home"]), "d": float(e["p_draw"]), "a": float(e["p_away"])}
+    # ELO 기준 — 우리 Elo(전 대회 결과)만으로 낸 승·무·패, 그 경기 날 아침 값(끝난 경기도 경기 전 기준).
+    # 예전 ClubElo 는 10/25 부터 사이트가 자동 접근을 막아 멈췄다(2026-10-26)
+    e = _elo_pred(h, a, m["date"])
+    if e:
+        m["elo"] = e
 
 
 _MODEL_CACHE: dict = {}
@@ -6708,6 +6704,36 @@ def _team_elo(before: str | None = None) -> dict:
         ms = ms[ms["date"] < before]
     elo, _ = te.run(ms, {lg: te.league_base(league_level.level(lg)) for lg in ds.available_leagues()})
     return elo
+
+
+@_memo(ttl=3600)
+def _elo_snaps() -> tuple[dict, dict]:
+    """(지금 Elo, {날짜: 그날 아침 Elo}) — 일정에 있는 모든 날짜(끝난 경기·다가오는 경기)를 한 번에. 경기마다 Elo 를
+    처음부터 다시 돌리면 운영(0.1 CPU)에서 느려서 스냅숏을 한 번 만들어 둔다. 다가오는 날짜는 지금 값과 같다."""
+    import league_level  # noqa: PLC0415
+    import team_elo as te  # noqa: PLC0415
+    frames, dates = [], set()
+    for se in (f"{SEASON_START - 1}_{SEASON_START}", f"{SEASON_START}_{SEASON_START + 1}"):
+        fr = {lg: ds.read_table("schedule_full", league=lg, season=se) for lg in ds.available_leagues()}
+        fr = {k: v for k, v in fr.items() if v is not None}
+        frames.append(te.matches_from(fr))
+        if se.startswith(str(SEASON_START)):
+            for v in fr.values():
+                dates |= set(v["date"].astype(str).str[:10])
+    ms = pd.concat(frames, ignore_index=True).drop_duplicates("event_id").sort_values(["date", "event_id"])
+    return te.run(ms, {lg: te.league_base(league_level.level(lg)) for lg in ds.available_leagues()}, dates)
+
+
+def _elo_pred(home: str, away: str, date: str) -> dict | None:
+    """우리 Elo 만으로 낸 승·무·패(src/team_elo.wdl) — 그 날 아침 Elo. 한 팀이라도 Elo 가 없으면 None."""
+    import team_elo as te  # noqa: PLC0415
+    final, snaps = _elo_snaps()
+    elo = snaps.get(str(date)[:10]) or final
+    d = te.elo_diff(elo, home, away)
+    if d is None:
+        return None
+    ph, pd_, pa = te.wdl(d, **te.draw_params())
+    return {"h": round(ph, 3), "d": round(pd_, 3), "a": round(pa, 3)}
 
 
 @_memo(ttl=1800)
@@ -7033,7 +7059,7 @@ _REVIEW_CACHE: dict = {}
 @app.get("/api/review/{event_id}")
 def match_review_api(event_id: str, comp: str = ""):
     """경기 리뷰(Match Review) — ESPN 경기 상세로 규칙 기반 리포트(src/match_review.py). 유료 AI 없음.
-    종료 경기는 하루, 진행 중은 1분 캐시. 우리 일정에 있으면 우리 표기·로고·예측(팬 투표·ClubElo)을 붙이고,
+    종료 경기는 하루, 진행 중은 1분 캐시. 우리 일정에 있으면 우리 표기·로고·예측(팬 투표·Elo 기준)을 붙이고,
     없으면(유럽대회 상대끼리 등) comp 로 ESPN 표기 그대로."""
     import json as _json
     import time as _t
@@ -7455,7 +7481,8 @@ def team_season(team: str, league: str = ACTIVE_LEAGUE):
 @app.get("/api/prediction-league")
 @_memo(ttl=1800)
 def prediction_league():
-    """예측 성적표 — 팬 투표 vs 우리 모델 vs ClubElo(data/predictions_log.csv, scripts/log_predictions.py).
+    """예측 성적표 — 팬 투표 vs 우리 모델 vs Elo 기준(data/predictions_log.csv, scripts/log_predictions.py).
+    Elo 기준 = 우리 Elo 만으로 낸 승·무·패(src/team_elo.wdl). 10/15~10/24 의 ClubElo 기록은 clubelo_* 로 따로(legacy).
     sources: 출처별 적중률·브라이어(낮을수록 좋음)·로그손실, h2h: 팬·모델이 둘 다 있던 경기만 맞대결,
     recent: 최근 끝난 경기 12개(각 출처의 픽·결과), split: 다가오는 경기 중 팬과 모델의 픽이 갈린 경기."""
     import math as _m
@@ -7463,7 +7490,7 @@ def prediction_league():
     if not p.exists():
         return {"available": False, "sources": [], "h2h": None, "recent": [], "split": []}
     df = pd.read_csv(p, dtype={"event_id": str})
-    keys = (("fans", "FANS", "팬 투표"), ("model", "MODEL", "우리 모델"), ("elo", "CLUBELO", "ClubElo"))
+    keys = (("fans", "FANS", "팬 투표"), ("model", "MODEL", "우리 모델"), ("elo", "ELO", "Elo 기준"))
 
     def probs(r, k):
         v = [r.get(f"{k}_{x}") for x in ("h", "d", "a")]
@@ -7536,8 +7563,11 @@ def prediction_league():
                           "fans": pick(r, "fans"), "model": pick(r, "model"), "gap": round(gap, 3),
                           "kind": "pick" if differ else "confidence", "model_on_fan_pick": round(mo[fk], 3)})
     split.sort(key=lambda x: (x["kind"] != "pick", -x["gap"]))
+    # 예전 ClubElo(10/15~10/24, 사이트 차단으로 중단) — 섞지 않고 따로(ⓘ 참고)
+    legacy = score(done, "clubelo") if "clubelo_h" in df.columns else None
     return {"available": True, "since": str(df["date"].min()), "sources": sources, "h2h": h2h, "recent": recent,
-            "split": split[:6], "common": common, "model_versions": {k: int(v) for k, v in vers.items()}, "v3_since": v3_since}
+            "split": split[:6], "common": common, "model_versions": {k: int(v) for k, v in vers.items()}, "v3_since": v3_since,
+            "legacy_clubelo": legacy if legacy and legacy["n"] else None}
 
 
 # 분석 탭 '리그 백분위' 지표 — (컬럼 또는 계산 키, 영어, 한글, 높을수록 좋은가, 표시 형식)

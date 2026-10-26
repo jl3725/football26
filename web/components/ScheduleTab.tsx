@@ -32,7 +32,7 @@ function UpcomingPreview({ team, match, accent }: { team: string; match: Match; 
   if (fx === undefined) return <div style={{ padding: 20 }}><Skel h={16} w="60%" /></div>;
   if (!fx) return <div className="mgr-meta" style={{ padding: 20 }}>프리뷰는 1~2주 전 공개</div>;
   const home = fx.home.team === team;
-  const rows: [string, { h: number; d: number; a: number } | undefined | null][] = [["FANS", fx.fans], ["MODEL", fx.model], ["CLUBELO", fx.elo]];
+  const rows: [string, { h: number; d: number; a: number } | undefined | null][] = [["FANS", fx.fans], ["MODEL", fx.model], ["ELO", fx.elo]];
   const pct = (v: number) => `${Math.round(v * 100)}%`;
   return (
     <div className="scd-prev">

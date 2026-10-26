@@ -102,7 +102,89 @@ def win_prob(d: float) -> float:
     return 1.0 / (1.0 + 10 ** (-d / 400.0))
 
 
+# ── Elo 만으로 승·무·패 — 홈 PREDICTION LEAGUE 의 'ELO' 기준 예측(2026-10-26) ─────────────────────────────────
+# ClubElo 가 10/25 부터 Cloudflare 봇 확인·API 502 로 막혀 같은 방식의 단순 기준을 우리 Elo 로 낸다. 이길 기대치
+# E = 승 + 무/2 는 Elo 식 그대로 지키고, 무승부는 두 팀 차이가 작을수록 크게(종 모양 곡선 draw_max·exp(−(d/width)²)).
+# 곡선 두 값은 **지난 시즌 경기로만** 맞춘다(그 경기 아침 Elo) — 이번 시즌 경기를 소급 예측해도 미래 정보가 안 섞인다.
+DRAW_JSON = __import__("pathlib").Path(__file__).resolve().parent.parent / "data" / "elo_draw.json"
+DEFAULT_DRAW = {"draw_max": 0.29, "draw_width": 420.0}
+
+
+def wdl(d: float, draw_max: float, draw_width: float) -> tuple[float, float, float]:
+    """홈 어드밴티지를 넣은 Elo 차 → (홈 승, 무, 원정 승)."""
+    import math  # noqa: PLC0415
+    e = win_prob(d)
+    pdraw = min(draw_max * math.exp(-(d / draw_width) ** 2), 1.96 * min(e, 1.0 - e))
+    return e - pdraw / 2.0, pdraw, 1.0 - e - pdraw / 2.0
+
+
+def fit_draw(samples: list[tuple[float, str]]) -> dict:
+    """[(Elo 차, 'H'|'D'|'A')] → 로그 손실이 가장 낮은 무승부 곡선(격자)."""
+    import math  # noqa: PLC0415
+    best = None
+    for dm in [x / 100 for x in range(18, 37)]:
+        for w in range(150, 801, 25):
+            ll = 0.0
+            for d, res in samples:
+                ph, pd_, pa = wdl(d, dm, float(w))
+                ll -= math.log(max(1e-6, {"H": ph, "D": pd_, "A": pa}[res]))
+            if best is None or ll < best[0]:
+                best = (ll, dm, float(w))
+    n = len(samples)
+    return {"draw_max": best[1], "draw_width": best[2], "n": n, "logloss": round(best[0] / max(1, n), 4),
+            "draw_actual": round(sum(r == "D" for _, r in samples) / max(1, n), 3)}
+
+
+def draw_params() -> dict:
+    import json  # noqa: PLC0415
+    try:
+        d = json.loads(DRAW_JSON.read_text(encoding="utf-8"))
+        return {"draw_max": float(d["draw_max"]), "draw_width": float(d["draw_width"])}
+    except (OSError, ValueError, KeyError):
+        return dict(DEFAULT_DRAW)
+
+
 def to_log_lambda(d: float) -> float:
     """Elo 차 → 기대 득점 로그 배수 단위(400 Elo = 1)."""
     return d / 400.0 if d == d else 0.0
 
+
+
+def fit_from_files(season_start: int | None = None) -> dict:
+    """지난 시즌 일정 파일로 Elo 를 돌려(시즌 첫 3개월은 Elo 가 자리 잡는 기간이라 뺌) 무승부 곡선을 맞춘다."""
+    import datetime as dt  # noqa: PLC0415
+    import sys  # noqa: PLC0415
+    from pathlib import Path  # noqa: PLC0415
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    import league_level  # noqa: PLC0415
+    from leagues import LEAGUES, SEASON_START, data_path  # noqa: PLC0415
+    s0 = season_start or SEASON_START
+    prev = f"{s0 - 1}_{s0}"
+    fr = {}
+    for lg in LEAGUES:
+        p = data_path("schedule_full", lg, season=prev)
+        if p.exists():
+            fr[lg] = pd.read_csv(p, dtype={"event_id": str})
+    ms = matches_from(fr).sort_values(["date", "event_id"])
+    lo, hi = f"{s0 - 1}-10-01", f"{s0}-07-01"
+    fit_rows = ms[(ms["date"] >= lo) & (ms["date"] < hi)]
+    _, snaps = run(ms, {lg: league_base(league_level.level(lg)) for lg in LEAGUES}, set(fit_rows["date"]))
+    samples = []
+    for r in fit_rows.itertuples(index=False):
+        snap = snaps.get(r.date, {})
+        if r.home in snap and r.away in snap:
+            samples.append((snap[r.home] + HFA - snap[r.away], "H" if r.hg > r.ag else "A" if r.hg < r.ag else "D"))
+    out = fit_draw(samples)
+    out.update({"fit_on": f"{lo}~{hi}", "asof": dt.date.today().isoformat(),
+                "note": "Elo 만으로 승·무·패(team_elo.wdl) — 무승부 곡선은 지난 시즌 경기로만 맞춤(이번 시즌 소급 예측에 미래 정보 없음)"})
+    return out
+
+
+if __name__ == "__main__":
+    import json as _json
+    import sys as _sys
+    res = fit_from_files()
+    if "--write" in _sys.argv:
+        DRAW_JSON.write_text(_json.dumps(res, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    print(f"elo_draw: draw_max {res['draw_max']} · width {res['draw_width']} · 경기 {res['n']} · 로그손실 {res['logloss']} "
+          f"· 실제 무승부 {res['draw_actual']} ({res['fit_on']})")

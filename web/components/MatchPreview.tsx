@@ -119,7 +119,7 @@ function Drawer({ m: m0, onClose }: { m: Fixture; onClose: () => void }) {
                   <ul>
                     <li><b>FANS</b> — Sofascore 앱 사용자 투표</li>
                     <li><b>MODEL</b> — 이 사이트의 데이터 모델</li>
-                    <li><b>CLUBELO</b> — clubelo.com 의 공개 예측(유럽 클럽 Elo 레이팅 기반 독립 예측)</li>
+                    <li><b>ELO</b> — 전 대회 결과로 계산한 팀 Elo 만으로 낸 단순 예측(비교 기준)</li>
                   </ul>
                   <p className="muted">한쪽이 10%p 넘게 높으면 그 칸을 강조합니다. 재미로 보는 정보이며 베팅 정보가 아닙니다.</p>
                 </Info></h3>
@@ -186,8 +186,9 @@ function Drawer({ m: m0, onClose }: { m: Fixture; onClose: () => void }) {
               )}
               {m.elo && (
                 <div className="pv-elo">
-                  <div className="pv-src">CLUBELO <em>참고</em>
-                    <Info label="CLUBELO 설명"><p>clubelo.com 의 유럽 클럽 Elo 레이팅으로 낸 독립 예측입니다(참고용).</p></Info>
+                  <div className="pv-src">ELO <em>참고</em>
+                    <Info label="ELO 설명"><p>리그·컵·유럽대회 결과로 직접 계산한 팀 Elo 만으로 낸 단순 예측입니다(비교 기준).</p>
+                      <p className="muted">예전엔 ClubElo 였지만 10/25 부터 사이트가 자동 접근을 막아 바꿨습니다.</p></Info>
                   </div>
                   <PredictBar m={m} only="elo" slim />
                 </div>

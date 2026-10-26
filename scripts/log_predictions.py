@@ -1,4 +1,8 @@
-"""경기 전 예측 기록 — 팬 투표 · 우리 모델 · ClubElo 를 경기 전에 저장하고, 끝나면 결과를 붙인다(2026-10-15).
+"""경기 전 예측 기록 — 팬 투표 · 우리 모델 · Elo 기준을 경기 전에 저장하고, 끝나면 결과를 붙인다(2026-10-15).
+
+Elo 기준(elo_*) = 우리 Elo 만으로 낸 승·무·패(src/team_elo.wdl, 그 경기 날 아침 Elo · 무승부 곡선은 지난 시즌으로만 맞춤 —
+소급해도 미래 정보 없음). 2026-10-26 전까지 이 칸은 ClubElo 였고(10/25 부터 사이트 차단), 그 값은 clubelo_* 로 옮겨
+따로 둔다(성적표에 섞지 않음). elo_ver 가 비어 있는 옛 행은 한 번 옮기고 Elo 기준을 소급해 채운다.
 
 '팬 vs 모델 누가 더 잘 맞히나' 성적표(/api/prediction-league)의 원천: data/predictions_log.csv
   · 다가오는 경기(킥오프 전): 최신 예측으로 덮어쓴다 — 마지막 기록 = 경기 직전에 가장 가까운 예측
@@ -27,7 +31,10 @@ COLS = ["event_id", "date", "kickoff", "comp_code", "home", "away", "home_league
         "model_h", "model_d", "model_a", "model_score", "fans_h", "fans_d", "fans_a", "fans_n",
         "elo_h", "elo_d", "elo_a", "logged_at", "hg", "ag", "result",
         # model_ver: 기록 당시 모델 버전(비어 있으면 v2 시절) · v3r_*: v3 를 '그 경기 전 데이터만으로' 다시 계산한 값(참고, v3 이전 경기)
-        "model_ver", "v3r_h", "v3r_d", "v3r_a"]
+        "model_ver", "v3r_h", "v3r_d", "v3r_a",
+        # elo_ver: Elo 기준 버전(own-v1) · clubelo_*: 예전 ClubElo 기록(10/15~10/24)
+        "elo_ver", "clubelo_h", "clubelo_d", "clubelo_a"]
+ELO_VER = "own-v1"
 
 
 def _row(m: dict, now: str) -> dict:
@@ -39,7 +46,27 @@ def _row(m: dict, now: str) -> dict:
             "model_h": mo.get("h"), "model_d": mo.get("d"), "model_a": mo.get("a"), "model_score": mo.get("score"),
             "fans_h": fa.get("h"), "fans_d": fa.get("d"), "fans_a": fa.get("a"), "fans_n": fa.get("n"),
             "elo_h": el.get("h"), "elo_d": el.get("d"), "elo_a": el.get("a"), "logged_at": now,
-            "model_ver": pm.MODEL_VERSION if mo else None}
+            "model_ver": pm.MODEL_VERSION if mo else None, "elo_ver": ELO_VER if el else None}
+
+
+def _blank(v) -> bool:
+    return v is None or v != v or str(v).strip() in ("", "nan")
+
+
+def migrate_elo(rows: dict) -> tuple[int, int]:
+    """옛 행의 elo_*(ClubElo) → clubelo_* 로 옮기고, Elo 기준이 없는 행은 그 경기 날 아침 Elo 로 채운다. (옮김, 채움)"""
+    moved = filled = 0
+    for r in rows.values():
+        if _blank(r.get("elo_ver")) and not _blank(r.get("elo_h")):
+            r["clubelo_h"], r["clubelo_d"], r["clubelo_a"] = r.get("elo_h"), r.get("elo_d"), r.get("elo_a")
+            r["elo_h"] = r["elo_d"] = r["elo_a"] = None
+            moved += 1
+        if r.get("elo_ver") != ELO_VER:
+            e = api._elo_pred(str(r["home"]), str(r["away"]), str(r["date"])[:10])
+            if e:
+                r["elo_h"], r["elo_d"], r["elo_a"], r["elo_ver"] = e["h"], e["d"], e["a"], ELO_VER
+                filled += 1
+    return moved, filled
 
 
 def main() -> int:
@@ -49,6 +76,7 @@ def main() -> int:
     now = now_utc.isoformat(timespec="minutes")
     log = pd.read_csv(OUT, dtype={"event_id": str}) if OUT.exists() else pd.DataFrame(columns=COLS)
     rows = {r["event_id"]: r for r in log.to_dict("records")}
+    moved, filled = migrate_elo(rows)
 
     # 1) 다가오는 경기 — 킥오프 전이면 최신 예측으로 덮어쓴다
     up = 0
@@ -75,8 +103,8 @@ def main() -> int:
             m = api._fx_enrich(m, src)
             m.pop("model", None)
             api._attach_model(m, before=m["date"])     # 결과 누설 없이
-            if not (m.get("fans") or m.get("elo")):
-                continue                               # 비교할 외부 예측이 없으면 성적표에 넣지 않는다
+            if not m.get("fans"):
+                continue                               # 외부 예측(팬 투표)이 없으면 성적표에 넣지 않는다 — Elo 기준은 늘 있어서 기준이 못 된다
             rows[eid] = _row(m, now)
             back += 1
         r = rows[eid]
@@ -103,7 +131,8 @@ def main() -> int:
             rep_n += 1
     out = pd.DataFrame(list(rows.values()), columns=COLS).sort_values(["date", "kickoff"])
     out.to_csv(OUT, index=False)
-    print(f"[predictions-log] 예정 갱신 {up} · 지난 경기 추가 {back} · 결과 채움 {res} · v3 재계산 {rep_n} · 전체 {len(out)}")
+    print(f"[predictions-log] 예정 갱신 {up} · 지난 경기 추가 {back} · 결과 채움 {res} · v3 재계산 {rep_n} · "
+          f"ClubElo 옮김 {moved} · Elo 기준 채움 {filled} · 전체 {len(out)}")
     return 0
 
 

@@ -235,7 +235,7 @@ def _say_team_now(r: dict) -> str:
         opp = m["away"] if m["home"] == t else m["home"]
         s = f"다음 경기는 {m.get('date', '')[5:].replace('-', '/')} {opp}전({side}, {m.get('comp') or ''})."
         preds = []
-        for k, lab in (("model", "MODEL"), ("fans", "팬 투표"), ("elo", "ClubElo")):
+        for k, lab in (("model", "MODEL"), ("fans", "팬 투표"), ("elo", "Elo 기준")):
             p = m.get(k)
             if p and p.get("h") is not None:
                 preds.append(f"{lab} 홈승 {_pc(p['h'])}·무 {_pc(p['d'])}·원정승 {_pc(p['a'])}")

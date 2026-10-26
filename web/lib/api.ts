@@ -710,7 +710,7 @@ export type FixtureSide = { team: string; league: string | null; rank: number | 
   logo: string; color: string; ovr: number | null; form: string[] };
 // 승리 확률 — 팀 OVR 차이 + 경기당 골득실 → 포아송 모델(src/match_center.win_prob). 베팅 배당 아님.
 export type WinProb = { h: number; d: number; a: number; xg_h: number; xg_a: number };
-// 외부 예측 — fans = Sofascore 팬 투표(n 표, BTTS·선제골 투표 포함), elo = ClubElo 독립 Elo 모델
+// 외부 예측 — fans = Sofascore 팬 투표(n 표, BTTS·선제골 투표 포함), elo = Elo 기준(우리 Elo 만으로 낸 단순 예측)
 export type FanVote = { h: number; d: number; a: number; n: number; btts: number | null; first_h: number | null; first_a: number | null };
 export type EloProb = { h: number; d: number; a: number };
 // 우리 예측 모델 v2(src/predict_model.py) — xG·골 공격/수비 강도 + 선수 평점(OVR) 사전값 + Dixon-Coles. 백테스트 scripts/backtest_model.py
@@ -734,7 +734,7 @@ export type TableGap = { team: string; logo: string; league: string; rank: numbe
   points: number; n: number; manager: string; hot_seat: boolean };
 export type HubPulse = { results: ResultMatch[]; watch: WatchMatch[]; race: { league: string; teams: RaceTeam[] }[]; over: TableGap[]; under: TableGap[] };
 export const getHubPulse = () => j<HubPulse>(`/api/hub/pulse`);
-// 예측 성적표 — 팬 투표 vs 우리 모델 vs ClubElo(/api/prediction-league, 원천 data/predictions_log.csv)
+// 예측 성적표 — 팬 투표 vs 우리 모델 vs Elo 기준(/api/prediction-league, 원천 data/predictions_log.csv)
 export type PredScore = { key: "fans" | "model" | "elo"; en: string; kr: string; n: number; acc: number | null; brier: number | null; logloss: number | null; hits: number };
 export type PredPick = { pick: "H" | "D" | "A"; p: number } | null;
 export type PredRecent = { event_id: string; date: string; home: string; away: string; home_logo: string; away_logo: string; hg: number; ag: number;
@@ -745,7 +745,8 @@ type PredStat = Omit<PredScore, "key" | "en" | "kr">;
 export type PredictionLeague = { available: boolean; since?: string; sources: PredScore[];
   h2h: { n: number; fans: PredStat; model: PredStat } | null; recent: PredRecent[]; split: PredSplit[];
   common?: { n: number; scores: Record<string, PredStat>; rank: string[]; v3: PredStat | null; v3_live: number } | null;
-  model_versions?: Record<string, number>; v3_since?: string | null };
+  model_versions?: Record<string, number>; v3_since?: string | null;
+  legacy_clubelo?: { n: number; acc: number | null; brier: number | null } | null };   // 예전 ClubElo(10/15~10/24, 사이트 차단으로 중단)
 export const getPredictionLeague = () => j<PredictionLeague>(`/api/prediction-league`);
 // 경기 리뷰 — ESPN 경기 상세로 만든 규칙 기반 리포트(src/match_review.py). 종료 하루·진행 중 1분 캐시
 export type ReviewSide = "home" | "away";

@@ -2,7 +2,7 @@
 경기 리뷰(Match Review) — ESPN 경기 상세(summary)로 규칙 기반 리포트를 만든다(유료 AI 없음).
 
 입력: ESPN /summary JSON(keyEvents 득점·카드·페널티, boxscore 팀 기록, gameInfo 경기장·관중)
-      + 우리 쪽 맥락(팀 표기·로고·색, 경기 전 팬 투표·ClubElo 예측).
+      + 우리 쪽 맥락(팀 표기·로고·색, 경기 전 팬 투표·Elo 기준 예측).
 출력: 헤드라인 · 요약 문장 · 득점 타임라인 · 카드 · 실축 페널티 · 기록 비교 · 스타 플레이어 · 예측 적중.
 숫자는 모두 ESPN 원자료 그대로 인용한다(지어내지 않음). 진행 중 경기면 '현재까지' 기준.
 """
@@ -171,7 +171,7 @@ def build(p: dict, home: str, away: str, fans: dict | None = None, elo: dict | N
     # 예측 적중
     pred = []
     outcome = "h" if win == "home" else "a" if win == "away" else "d"
-    for label, v in (("팬 투표", fans), ("모델", model), ("ClubElo", elo)):
+    for label, v in (("팬 투표", fans), ("모델", model), ("Elo", elo)):
         if not v:
             continue
         pick = max(("h", "d", "a"), key=lambda k: v.get(k) or 0)

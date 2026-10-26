@@ -11,7 +11,7 @@ const RANDOM_BRIER = 0.667;
 // 순위 색 — 셋이 같은 경기를 두고 겨룬 결과(예전 '무작위 33% 대비' 꼬리표는 셋 다 '크게 높음'이라 변별력이 없었다, 2026-10-19)
 const RANK_TONE = [TONE.best, TONE.avg, TONE.weak];
 
-// 홈 'PREDICTION LEAGUE' — 팬 투표 vs 우리 모델 vs ClubElo, 누가 더 잘 맞히나(경기 전 기록 → 결과 대조)
+// 홈 'PREDICTION LEAGUE' — 팬 투표 vs 우리 모델 vs Elo 기준, 누가 더 잘 맞히나(경기 전 기록 → 결과 대조)
 //   왼쪽: 출처별 적중률·브라이어(낮을수록 좋음) / 오른쪽: 다가오는 경기 중 팬과 모델의 픽이 갈린 경기 / 아래: 최근 결과 채점표
 const PICK_KO = (p: PredPick, home: string, away: string) =>
   !p ? "—" : p.pick === "H" ? `${home} 승` : p.pick === "A" ? `${away} 승` : "무승부";
@@ -36,7 +36,8 @@ export default function PredictionLeague() {
       <SectionHead title="PREDICTION LEAGUE" kr="팬 vs 모델" meta={`${d.since?.slice(5).replace("-", "/")}부터`}
         info={<>
           <p>경기 전에 남긴 예측을 결과와 대조해 누가 더 잘 맞히나 겨룹니다.</p>
-          <p><b>MODEL</b> 이 사이트의 통계 모델(xG·득실·선수 평점·Elo) · <b>FANS</b> Sofascore 팬 투표 · <b>ELO</b> ClubElo</p>
+          <p><b>MODEL</b> 이 사이트의 통계 모델(xG·득실·선수 평점·Elo) · <b>FANS</b> Sofascore 팬 투표 · <b>ELO</b> 팀 Elo 만으로 낸 단순 예측(비교 기준, 그 경기 날 아침 Elo)</p>
+          {d.legacy_clubelo && <p className="muted">예전 세 번째 칸은 ClubElo 였습니다(10/15~10/24 · {d.legacy_clubelo.n}경기 적중 {Math.round((d.legacy_clubelo.acc ?? 0) * 100)}%). 10/25 부터 사이트가 자동 접근을 막아 바꿨습니다.</p>}
           <p className="muted">재미용 — 베팅 정보가 아닙니다</p>
         </>} />
       <div className="pl5">

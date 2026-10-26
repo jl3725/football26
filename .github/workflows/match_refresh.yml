@@ -99,9 +99,6 @@ jobs:
             FB_LEAGUE=$LG bash scripts/ci_try.sh "team_defense $LG" python src/fetch_team_defense.py
           done
 
-      - name: Predictions (ClubElo)
-        run: bash scripts/ci_try.sh "clubelo" python src/fetch_clubelo.py
-
       - name: Refresh global home snapshot (home_all.json)
         run: |
           python scripts/build_db.py > /dev/null

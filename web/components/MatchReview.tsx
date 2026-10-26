@@ -127,7 +127,7 @@ export function ReviewSections({ m, inPlay, hc, ac }: { m: Fixture; inPlay: bool
             )}
             {rv.state === "post" && rv.predictions.map((p) => (
               <span className={`rv5-pred ${p.hit ? "hit" : "miss"}`} key={p.source}>
-                <em>{p.source === "팬 투표" ? "FAN VOTE" : p.source === "모델" ? "MODEL" : "CLUBELO"}</em><b>{p.hit ? "적중" : "빗나감"}</b><span>{p.pick} {Math.round(p.p * 100)}%</span>
+                <em>{p.source === "팬 투표" ? "FAN VOTE" : p.source === "모델" ? "MODEL" : "ELO"}</em><b>{p.hit ? "적중" : "빗나감"}</b><span>{p.pick} {Math.round(p.p * 100)}%</span>
               </span>
             ))}
           </div>

@@ -150,10 +150,12 @@ AGENTS: tuple[Agent, ...] = (
               Feed("names_ko", "한글 이름·별칭·팬 애칭(Ask Scout·검색)", ("names_ko",), ("kg_reload",), "주 1회 · 화 12:00 KST", WEEK_H,
                    ("names_ko.csv",)),
           ), checks=("watchdog: names(기준 명단 밖 이름)", "watchdog: identity(애매한 클럽 표기 확인 필요)")),
-    Agent("analyst", "ANALYST", "예측·해석", "경기 예측(모델·ClubElo·팬 투표)과 성적표, AI 해석(경기 리포트·뉴스 요약·주간 서술)",
-          ("ClubElo", "Sofascore 팬 투표", "Gemini 무료 등급"), (
-              Feed("predictions", "예측·성적표", ("clubelo", "log_predictions"), ("match_refresh", "daily_data"),
+    Agent("analyst", "ANALYST", "예측·해석", "경기 예측(모델·Elo 기준·팬 투표)과 성적표, AI 해석(경기 리포트·뉴스 요약·주간 서술)",
+          ("자체 Elo(전 대회 결과)", "Sofascore 팬 투표", "Gemini 무료 등급"), (
+              Feed("predictions", "예측·성적표", ("log_predictions",), ("match_refresh", "daily_data"),
                    "매일 2회", 30, ("predictions_log.csv",)),
+              Feed("elo_draw", "Elo 기준 예측(무승부 곡선)", ("elo_draw",), ("daily_data",), "매일", 36, ("elo_draw.json",),
+                   added="2026-10-26"),
               Feed("cross_cal", "리그 간 예측 보정(평균 득점·무승부 배수)", ("cross_calibration",), ("daily_data",), "매일", 36,
                    ("model_cross.json",)),
               Feed("fanvote", "팬 투표", ("fanvote",), ("local-fanvote",), "매일 10:30·18:30 KST(이 PC)", 24,

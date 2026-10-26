@@ -81,12 +81,12 @@ export function PowerBar({ m }: { m: Fixture }) {
 }
 
 // 승리 확률(모델) — 홈 · 무 · 원정. 확률이 없으면(전력 모름) 전력 막대로
-// 승부 예측 — 팬 투표(Sofascore 사용자 '누가 이길까?') 우선, 없으면 ClubElo(독립 Elo 모델).
+// 승부 예측 — 팬 투표(Sofascore 사용자 '누가 이길까?') 우선, 없으면 Elo 기준(우리 Elo 만으로 낸 단순 예측).
 // 둘 다 없으면(챔스 일부·수집 전) 팀 OVR 전력 막대로. 우리 자체 계산 확률은 보여 주지 않는다(사용자 피드백).
 type Probs = { h: number; d: number; a: number };
 const favOf = (v: Probs) => (v.h >= v.d && v.h >= v.a ? "h" : v.a >= v.d ? "a" : "d");
 
-// 승부 예측 — 팬 투표(Sofascore) ↔ 우리 모델 두 줄 비교. 하나만 있으면 한 줄, 둘 다 없으면 ClubElo, 그것도 없으면 전력 막대.
+// 승부 예측 — 팬 투표(Sofascore) ↔ 우리 모델 두 줄 비교. 하나만 있으면 한 줄, 둘 다 없으면 Elo 기준, 그것도 없으면 전력 막대.
 // 두 예측의 가장 높은 결과가 다르면 '의견 갈림'(팬과 데이터가 다르게 본 경기).
 export function PredictBar({ m, detail = false, slim = false, only }: { m: Fixture; detail?: boolean; slim?: boolean; only?: "fans" | "model" | "elo" }) {
   const hc = liftHex(m.home.color), ac0 = liftHex(m.away.color);
@@ -98,7 +98,7 @@ export function PredictBar({ m, detail = false, slim = false, only }: { m: Fixtu
     m.model ? { key: "model", label: "MODEL", v: m.model, tip: "우리 예측 모델 — 경기 내용(xG·득실)과 선수 평점 기반 통계 모델" } : null,
   ];
   let rows = all.filter((r): r is Row => !!r && (!only || r.key === only));
-  if (!rows.length && m.elo && (!only || only === "elo")) rows = [{ key: "elo", label: "CLUBELO", v: m.elo, tip: "ClubElo — 유럽 클럽 Elo 레이팅 기반 독립 예측" }];
+  if (!rows.length && m.elo && (!only || only === "elo")) rows = [{ key: "elo", label: "ELO", v: m.elo, tip: "Elo 기준 — 전 대회 결과로 계산한 팀 Elo 만으로 낸 단순 예측" }];
   if (!rows.length) return slim || only ? null : <PowerBar m={m} />;
   const split = rows.length === 2 && favOf(rows[0].v) !== favOf(rows[1].v);
   const score = m.model && rows.some((r) => r.key === "model") ? m.model.score : null;
