@@ -443,6 +443,15 @@ def main() -> int:
     except Exception as e:  # noqa: BLE001  (팀 id 없이도 라이트 리그·위키데이터는 된다)
         print(f"[manager_fill] FotMob 팀 id 실패: {type(e).__name__}")
         team_ids = {}
+    # 라이트 리그 팀 id(lite_teams 표) — 감독이 대표팀 등과 겸임해 '지금' 기록이 둘이면 팀 id 로 골라야 한다(Thun, 2026-10-26)
+    for lg in LEAGUES:
+        try:
+            lt = json.loads(data_path("lite_teams", lg, ext="json").read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            continue
+        for sq, t in (lt.get("teams") or {}).items():
+            if t.get("fotmob_id"):
+                team_ids.setdefault(sq, int(t["fotmob_id"]))
     try:
         cache = json.loads(CACHE.read_text(encoding="utf-8"))
     except (OSError, ValueError):
