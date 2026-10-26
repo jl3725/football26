@@ -75,6 +75,10 @@ ALIASES: dict[str, dict[str, str]] = {
     "LigaPortugal": {
         "Acad. Viseu": "Académico de Viseu",
     },
+    "SuperLig": {
+        # FotMob 시즌 평점 표만 'Amedspor' — 나머지 20개 표는 'Amed Sportif'(watchdog identity 확인 요청, 2026-10-27 확인)
+        "Amedspor": "Amed Sportif",
+    },
 }
 
 

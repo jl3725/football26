@@ -28,8 +28,10 @@ jobs:
         with:
           python-version: "3.12"
 
+      # 서버와 같은 의존성 — 스쿼드 점검(scripts/audit_squads.py)이 화면 스쿼드를 api.main 으로 만든다. 예전엔
+      # requests·pandas·unidecode 만 깔아 10/22 부터 'No module named fastapi' 로 점검이 돌지 못했다(2026-10-27)
       - name: Install
-        run: pip install requests pandas unidecode   # xg 점검이 선수 표(datastore)를 읽는다
+        run: pip install -r requirements.txt
 
       - name: Check production
         env:
