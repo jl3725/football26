@@ -1,15 +1,12 @@
 {
- "checked": "2026-10-25T12:48:43+00:00",
+ "checked": "2026-10-26T14:37:10+00:00",
  "results": {
   "ovr": [],
   "season": [],
   "hub": [],
   "frontend": [],
   "backend": [],
-  "workflows": [
-   "daily_data.yml 최근 실행 failure (2026-10-25T09:19) https://github.com/jl3725/football26/actions/runs/40180167450",
-   "match_refresh.yml 최근 실행 failure (2026-10-25T01:06) https://github.com/jl3725/football26/actions/runs/40149315940"
-  ],
+  "workflows": [],
   "news": [],
   "tm_agent": [],
   "coverage": [],
@@ -17,10 +14,7 @@
   "ratings": [],
   "names": [],
   "xg": [],
-  "agents": [
-   "STATS · Sofascore 평점 — 마지막 성공 57시간 전(허용 48시간, local-sofascore-daily, local-season-weekly)",
-   "ANALYST · 팬 투표 — 마지막 성공 59시간 전(허용 24시간, local-fanvote)"
-  ],
+  "agents": [],
   "expectations": [],
   "screen": [],
   "squads": [
@@ -30,6 +24,5 @@
    "SuperLig 'Amedspor' ≈ 'Amed Sportif'?(0.53·fotmob_ratings) — 맞으면 src/squads.py ALIASES 에 추가"
   ],
   "fair_price": []
- },
- "ai_cause": "- match_refresh의 understat_live 단계(코드 1) 및 daily_data의 clubelo 단계(코드 1)에서 오류가 발생하여 워크플로우가 실패했습니다. (workflows)\n- match_refresh(understat_live 단계, 코드 1)와 daily_data(clubelo 단계, 코드 1)의 실패로 인해 데이터 수집이 지연되었을 가능성이 있습니다. (agents)\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인) (squads)\n- match_refresh(understat_live 단계, 코드 1) 및 daily_data(clubelo 단계, 코드 1) 실패 기록이 있어 데이터 정합성에 영향이 있었을 추정입니다. (identity)"
+ }
 }
