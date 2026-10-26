@@ -1,7 +1,7 @@
 {
- "date": "2026-10-25",
+ "date": "2026-10-26",
  "model": "v3.9",
- "players": 5757,
+ "players": 5759,
  "golden": [],
  "scout": [
   {
@@ -29,14 +29,6 @@
    "off": 2
   },
   {
-   "player": "Christian Pulisic",
-   "league": "SerieA",
-   "ovr": 81,
-   "lo": 83,
-   "hi": 87,
-   "off": -2
-  },
-  {
    "player": "Dominik Szoboszlai",
    "league": "EPL",
    "ovr": 89,
@@ -50,14 +42,6 @@
    "ovr": 87,
    "lo": 82,
    "hi": 86,
-   "off": 1
-  },
-  {
-   "player": "Luka Vušković",
-   "league": "EPL",
-   "ovr": 85,
-   "lo": 77,
-   "hi": 84,
    "off": 1
   },
   {
@@ -115,12 +99,20 @@
    "lo": 82,
    "hi": 87,
    "off": -1
+  },
+  {
+   "player": "Christian Pulisic",
+   "league": "SerieA",
+   "ovr": 82,
+   "lo": 83,
+   "hi": 87,
+   "off": -1
   }
  ],
  "scout_far": [],
  "audit": {
   "rise": {
-   "n": 16,
+   "n": 15,
    "limit": 25,
    "desc": "지난 시즌(1,500분+) 대비 +6 이상 — 한 시즌 급등",
    "examples": [

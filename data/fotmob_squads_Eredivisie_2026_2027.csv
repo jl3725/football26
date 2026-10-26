@@ -17,8 +17,8 @@ Feyenoord,Givairo Read,1351133,defenders,RB,Right-Back,DF,20,2006-06-02,26.0,NED
 Feyenoord,Tijme Wessels,2088463,defenders,CB,Centre-Back,DF,19,2007-02-23,32.0,NED,False,,2026-10-26
 Feyenoord,Mika Mármol,1225450,defenders,"CB,LB",Centre-Back,DF,25,2001-07-01,35.0,ESP,False,,2026-10-26
 Feyenoord,Hakeem Agboluaje,1876641,defenders,,Centre-Back,DF,19,2007-09-24,72.0,NED,False,,2026-10-26
-Feyenoord,Jakub Moder,891855,midfielders,"CM,CAM",Central Midfield,MF,27,1999-04-07,7.0,POL,True,Day to day,2026-10-26
-Feyenoord,Gjivai Zechiël,1523822,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,22,2004-06-01,8.0,NED,False,,2026-10-26
+Feyenoord,Jakub Moder,891855,midfielders,"CM,CAM",Central Midfield,MF,27,1999-04-07,7.0,POL,False,,2026-10-26
+Feyenoord,Gjivai Zechiël,1523822,midfielders,"CM,CDM,CAM",Central Midfield,MF,22,2004-06-01,8.0,NED,False,,2026-10-26
 Feyenoord,Luciano Valente,1256180,midfielders,"CDM,CM,CAM,LW",Defensive Midfield,MF,23,2003-10-04,10.0,NED,False,,2026-10-26
 Feyenoord,Sem Steijn,947898,midfielders,"CM,CAM",Central Midfield,MF,24,2001-11-12,14.0,NED,False,,2026-10-26
 Feyenoord,Oussama Targhalline,1228273,midfielders,"CDM,CM",Defensive Midfield,MF,24,2002-05-20,28.0,MAR,False,,2026-10-26
@@ -40,12 +40,12 @@ Ajax,Anton Gaaei,1329665,defenders,RB,Right-Back,DF,23,2002-11-19,3.0,DEN,True,L
 Ajax,Owen Wijndal,798062,defenders,"LB,LWB",Left-Back,DF,26,1999-11-28,5.0,NED,False,,2026-10-26
 Ajax,Thilo Kehrer,604088,defenders,CB,Centre-Back,DF,30,1996-09-21,6.0,GER,False,,2026-10-26
 Ajax,Caio Henrique,769525,defenders,"LB,LWB,CB",Left-Back,DF,29,1997-07-31,12.0,BRA,True,Day to day,2026-10-26
-Ajax,Youri Baas,1214036,defenders,CB,Centre-Back,DF,23,2003-03-17,15.0,NED,False,,2026-10-26
-Ajax,Daley Blind,161012,defenders,CB,Centre-Back,DF,36,1990-03-09,17.0,NED,True,Back in training,2026-10-26
+Ajax,Youri Baas,1214036,defenders,"CB,LB",Centre-Back,DF,23,2003-03-17,15.0,NED,False,,2026-10-26
+Ajax,Daley Blind,161012,defenders,CB,Centre-Back,DF,36,1990-03-09,17.0,NED,False,,2026-10-26
 Ajax,Jofre Torrents,1789791,defenders,LB,Left-Back,DF,19,2007-01-28,21.0,ESP,False,,2026-10-26
 Ajax,Aaron Bouwman,1640681,defenders,CB,Centre-Back,DF,19,2007-08-28,30.0,NED,False,,2026-10-26
 Ajax,Dies Janse,1531402,defenders,CB,Centre-Back,DF,20,2006-01-17,36.0,NED,False,,2026-10-26
-Ajax,Sofyan Amrabat,593116,midfielders,"CDM,CM",Defensive Midfield,MF,30,1996-08-21,4.0,MAR,False,,2026-10-26
+Ajax,Sofyan Amrabat,593116,midfielders,"CM,CDM",Central Midfield,MF,30,1996-08-21,4.0,MAR,False,,2026-10-26
 Ajax,Julian Brandt,516846,midfielders,"CAM,CM,RW",Attacking Midfield,MF,30,1996-05-02,8.0,GER,False,,2026-10-26
 Ajax,Oscar Gloukh,1337911,midfielders,"CAM,LW,CM,RW,ST,LM",Attacking Midfield,MF,22,2004-04-01,10.0,ISR,False,,2026-10-26
 Ajax,Davy Klaassen,298448,midfielders,"CM,CDM,CAM,RW",Central Midfield,MF,33,1993-02-21,18.0,NED,False,,2026-10-26
@@ -54,7 +54,7 @@ Ajax,Yves Bissouma,724306,midfielders,"CDM,CM",Defensive Midfield,MF,30,1996-08-
 Ajax,Abdellah Ouazane,1795819,midfielders,"CAM,LW,CM,ST,RW",Attacking Midfield,MF,17,2009-01-15,68.0,MAR,False,,2026-10-26
 Ajax,Simon Adingra,1227012,attackers,"LWB,LW,LM,ST,RW",Left-Back,FW,24,2002-01-01,7.0,CIV,False,,2026-10-26
 Ajax,Kasper Dolberg,640742,attackers,ST,Centre-Forward,FW,29,1997-10-06,9.0,DEN,True,Out for season,2026-10-26
-Ajax,Viktor Tsigankov,564847,attackers,"RW,RM,CAM,ST",Right Winger,FW,28,1997-11-15,11.0,UKR,False,,2026-10-26
+Ajax,Viktor Tsigankov,564847,attackers,"RW,RM,ST,CAM",Right Winger,FW,28,1997-11-15,11.0,UKR,False,,2026-10-26
 Ajax,Oliver Edvardsen,1049004,attackers,"LW,RW",Left Winger,FW,27,1999-03-19,20.0,NOR,False,,2026-10-26
 Ajax,Steven Berghuis,209786,attackers,"RW,RM",Right Winger,FW,34,1991-12-19,23.0,NED,True,Back in training,2026-10-26
 Ajax,Marcos Leonardo,1174663,attackers,ST,Centre-Forward,FW,23,2003-05-02,38.0,BRA,False,,2026-10-26
@@ -78,7 +78,7 @@ PSV,Kodai Sano,1337282,midfielders,"CDM,CAM,CM",Defensive Midfield,MF,23,2003-09
 PSV,Shuryjano Cornecion,1874113,midfielders,"CM,CAM,CDM",Central Midfield,MF,18,2008-06-28,42.0,NED,False,,2026-10-26
 PSV,Sam Lammers,665164,attackers,ST,Centre-Forward,FW,29,1997-04-30,,NED,True,Day to day,2026-10-26
 PSV,Ivan Perišić,163670,attackers,"LW,RW,LM,LB,LWB",Left Winger,FW,37,1989-02-02,5.0,CRO,False,,2026-10-26
-PSV,Ruben van Bommel,1359970,attackers,LW,Left Winger,FW,22,2004-08-03,7.0,NED,True,Mid November 2026,2026-10-26
+PSV,Ruben van Bommel,1359970,attackers,LW,Left Winger,FW,22,2004-08-03,7.0,NED,False,,2026-10-26
 PSV,Ricardo Pepi,1036401,attackers,ST,Centre-Forward,FW,23,2003-01-09,9.0,USA,True,Day to day,2026-10-26
 PSV,Alassane Pléa,294859,attackers,ST,Centre-Forward,FW,33,1993-03-10,14.0,FRA,True,Early January 2027,2026-10-26
 PSV,Esmir Bajraktarević,1346860,attackers,"RW,RM,ST",Right Winger,FW,21,2005-03-10,19.0,BIH,False,,2026-10-26
@@ -124,12 +124,12 @@ AZ Alkmaar,Jur Schipper,1451503,keepers,GK,Goalkeeper,GK,20,2006-07-11,71.0,NED,
 AZ Alkmaar,Seiya Maikuma,1134723,defenders,RB,Right-Back,DF,29,1997-10-16,2.0,JPN,False,,2026-10-26
 AZ Alkmaar,Wouter Goes,1307387,defenders,CB,Centre-Back,DF,22,2004-06-10,3.0,NED,False,,2026-10-26
 AZ Alkmaar,Lewis Schouten,1329774,defenders,"CB,CM,CDM",Centre-Back,DF,22,2004-02-04,4.0,NED,False,,2026-10-26
-AZ Alkmaar,Mateo Chávez,1432212,defenders,"LB,LWB,LM",Left-Back,DF,22,2004-05-12,5.0,MEX,False,,2026-10-26
+AZ Alkmaar,Mateo Chávez,1432212,defenders,"LB,LWB",Left-Back,DF,22,2004-05-12,5.0,MEX,False,,2026-10-26
 AZ Alkmaar,Elijah Dijkstra,1466557,defenders,"RB,LB",Right-Back,DF,20,2006-08-05,22.0,NED,False,,2026-10-26
 AZ Alkmaar,Wesley Hoedt,465628,defenders,CB,Centre-Back,DF,32,1994-03-06,29.0,NED,False,,2026-10-26
 AZ Alkmaar,Denso Kasius,1114874,defenders,RB,Right-Back,DF,24,2002-10-06,30.0,NED,False,,2026-10-26
 AZ Alkmaar,Mees de Wit,873560,defenders,"LB,RB",Left-Back,DF,28,1998-04-17,34.0,NED,False,,2026-10-26
-AZ Alkmaar,Peer Koopmeiners,915415,midfielders,"CM,CDM",Central Midfield,MF,26,2000-05-04,6.0,NED,False,,2026-10-26
+AZ Alkmaar,Peer Koopmeiners,915415,midfielders,"CDM,CM",Defensive Midfield,MF,26,2000-05-04,6.0,NED,False,,2026-10-26
 AZ Alkmaar,Jordy Clasie,209384,midfielders,"CDM,CM",Defensive Midfield,MF,35,1991-06-27,8.0,NED,False,,2026-10-26
 AZ Alkmaar,Kees Smit,1417581,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,20,2006-01-20,10.0,NED,True,About a week,2026-10-26
 AZ Alkmaar,Stije Resink,1206846,midfielders,"CDM,CM",Defensive Midfield,MF,23,2003-05-28,16.0,NED,True,Early January 2027,2026-10-26
@@ -148,7 +148,7 @@ Fortuna Sittard,Mattijs Branderhorst,245395,keepers,GK,Goalkeeper,GK,32,1993-12-
 Fortuna Sittard,Kaylen Reitmaier,1518437,keepers,,Goalkeeper,GK,22,2004-04-05,33.0,GER,False,,2026-10-26
 Fortuna Sittard,Siebe Wylin,1301657,defenders,"RB,RWB",Right-Back,DF,23,2003-05-27,2.0,BEL,False,,2026-10-26
 Fortuna Sittard,Rodrigo Guth,1166329,defenders,CB,Centre-Back,DF,25,2000-11-10,3.0,BRA,False,,2026-10-26
-Fortuna Sittard,Iván Márquez,639782,defenders,CB,Centre-Back,DF,32,1994-06-09,4.0,ESP,True,Day to day,2026-10-26
+Fortuna Sittard,Iván Márquez,639782,defenders,CB,Centre-Back,DF,32,1994-06-09,4.0,ESP,False,,2026-10-26
 Fortuna Sittard,Syb van Ottele,1180218,defenders,"CB,CDM",Centre-Back,DF,24,2002-02-02,6.0,NED,False,,2026-10-26
 Fortuna Sittard,Jasper Dahlhaus,1184695,defenders,"LB,LWB",Left-Back,DF,24,2001-11-27,8.0,NED,False,,2026-10-26
 Fortuna Sittard,Ivo Pinto,163815,defenders,"RB,RWB,CB",Right-Back,DF,36,1990-01-07,12.0,POR,False,,2026-10-26
@@ -156,9 +156,9 @@ Fortuna Sittard,Nick de Groot,1285136,defenders,"LB,LWB,LW",Left-Back,DF,25,2001
 Fortuna Sittard,Daley Sinkgraven,514806,defenders,CM,Central Midfield,DF,31,1995-07-04,24.0,NED,False,,2026-10-26
 Fortuna Sittard,Justin Hubner,1213683,defenders,"CB,LB,LWB",Centre-Back,DF,23,2003-09-14,28.0,IDN,False,,2026-10-26
 Fortuna Sittard,Kevin van Burgsteden,2130433,defenders,,Centre-Back,DF,18,2007-10-30,35.0,NED,False,,2026-10-26
-Fortuna Sittard,Yassin Oukili,1119702,midfielders,"CM,CDM",Central Midfield,MF,25,2001-01-03,5.0,NED,True,Day to day,2026-10-26
+Fortuna Sittard,Yassin Oukili,1119702,midfielders,"CM,CDM",Central Midfield,MF,25,2001-01-03,5.0,NED,False,,2026-10-26
 Fortuna Sittard,Ole Romeny,915365,midfielders,"CAM,ST",Attacking Midfield,MF,26,2000-06-20,10.0,IDN,False,,2026-10-26
-Fortuna Sittard,Sven Simons,1389662,midfielders,"CM,CDM,ST",Central Midfield,MF,22,2004-03-02,14.0,NED,False,,2026-10-26
+Fortuna Sittard,Sven Simons,1389662,midfielders,"CM,CDM,ST,RM",Central Midfield,MF,22,2004-03-02,14.0,NED,False,,2026-10-26
 Fortuna Sittard,Édouard Michut,1173785,midfielders,"CDM,CM",Defensive Midfield,MF,23,2003-03-04,20.0,FRA,False,,2026-10-26
 Fortuna Sittard,Shiloh Zand,1522438,midfielders,CM,Central Midfield,MF,23,2003-05-14,22.0,NED,False,,2026-10-26
 Fortuna Sittard,Philip Brittijn,1285451,midfielders,"CDM,CM,CB",Defensive Midfield,MF,22,2004-04-09,23.0,NED,False,,2026-10-26
@@ -212,7 +212,7 @@ Groningen,Wouter Prins,1552425,defenders,LB,Left-Back,DF,22,2004-02-06,2.0,NED,F
 Groningen,Thijmen Blokzijl,1256173,defenders,CB,Centre-Back,DF,21,2005-02-25,3.0,NED,False,,2026-10-26
 Groningen,Márk Csinger,1436365,defenders,CB,Centre-Back,DF,23,2003-05-31,4.0,HUN,False,,2026-10-26
 Groningen,Marco Rente,798011,defenders,"RB,CB",Right-Back,DF,29,1997-02-25,5.0,GER,False,,2026-10-26
-Groningen,Nikolas Brandis,1645652,defenders,LB,Left-Back,DF,21,2005-05-06,12.0,SVK,True,Day to day,2026-10-26
+Groningen,Nikolas Brandis,1645652,defenders,LB,Left-Back,DF,21,2005-05-06,12.0,SVK,False,,2026-10-26
 Groningen,Elvis van der Laan,1720296,defenders,CB,Centre-Back,DF,18,2008-02-29,15.0,SWE,True,Day to day,2026-10-26
 Groningen,Malcolm Jeng,1457824,defenders,CB,Centre-Back,DF,21,2005-03-09,21.0,SWE,True,Day to day,2026-10-26
 Groningen,Tyrique Mercera,1575747,defenders,RB,Right-Back,DF,22,2003-12-19,29.0,CUW,True,Day to day,2026-10-26
@@ -363,8 +363,9 @@ Excelsior,Celton Biai,1106567,keepers,GK,Goalkeeper,GK,26,2000-08-13,16.0,GNB,Fa
 Excelsior,Tijmen Holla,1693190,keepers,GK,Goalkeeper,GK,20,2006-07-25,40.0,NED,False,,2026-10-26
 Excelsior,Marlon van de Wetering,1797146,defenders,RB,Right-Back,DF,18,2007-11-26,,NED,False,,2026-10-26
 Excelsior,Eric da Silva Moreira,1487909,defenders,"RB,RM,RWB",Right-Back,DF,20,2006-05-03,2.0,GER,False,,2026-10-26
-Excelsior,Rick Meissen,1217654,defenders,"CB,RB,CM,CDM",Centre-Back,DF,24,2002-02-24,3.0,NED,False,,2026-10-26
+Excelsior,Rick Meissen,1217654,defenders,"CB,RB,CDM,CM",Centre-Back,DF,24,2002-02-24,3.0,NED,False,,2026-10-26
 Excelsior,Casper Widell,1159831,defenders,CB,Centre-Back,DF,23,2003-05-05,4.0,SWE,False,,2026-10-26
+Excelsior,Kasey Bos,1613323,defenders,LB,Left-Back,DF,22,2004-05-08,12.0,AUS,False,,2026-10-26
 Excelsior,Jan Plug,1553374,defenders,CB,Centre-Back,DF,21,2005-04-02,14.0,NED,False,,2026-10-26
 Excelsior,Simon Janssen,947896,defenders,"LB,LWB",Left-Back,DF,26,2000-09-25,15.0,NED,False,,2026-10-26
 Excelsior,Osman Mohamed Turay,1830760,defenders,LB,Left-Back,DF,18,2008-03-17,22.0,GER,False,,2026-10-26
@@ -377,9 +378,8 @@ Excelsior,Valentin Sulzbacher,1357944,midfielders,"CDM,CB",Defensive Midfield,MF
 Excelsior,Lennard Hartjes,1276311,midfielders,"CM,CDM,CAM",Central Midfield,MF,23,2003-04-07,20.0,NED,False,,2026-10-26
 Excelsior,Gijs van den Berg,1901433,midfielders,,Central Midfield,MF,33,1993-06-22,25.0,NED,False,,2026-10-26
 Excelsior,Quinten Kraaijvanger,2407719,midfielders,,Central Midfield,MF,19,2007-01-08,34.0,NED,False,,2026-10-26
-Excelsior,Aymen Sliti,1553362,attackers,"RW,LW",Right Winger,FW,20,2006-03-24,7.0,NED,False,,2026-10-26
+Excelsior,Aymen Sliti,1553362,attackers,RW,Right Winger,FW,20,2006-03-24,7.0,NED,False,,2026-10-26
 Excelsior,Alireza Jahanbakhsh,466890,attackers,"RW,LW,CM",Right Winger,FW,33,1993-08-11,11.0,IRN,False,,2026-10-26
-Excelsior,Kasey Bos,1613323,attackers,LB,Left-Back,FW,22,2004-05-08,12.0,AUS,False,,2026-10-26
 Excelsior,David Garden,1406446,attackers,ST,Centre-Forward,FW,22,2004-06-20,19.0,NED,False,,2026-10-26
 Excelsior,Ilano Silva Timas,1665413,attackers,"LW,RW,LM",Left Winger,FW,24,2002-09-29,21.0,CPV,False,,2026-10-26
 Excelsior,Yaqub Finey,1603365,attackers,ST,Centre-Forward,FW,23,2003-09-24,23.0,SWE,False,,2026-10-26
@@ -486,7 +486,7 @@ ADO Den Haag,Lasse Wilhelm,1426063,defenders,CB,Centre-Back,DF,23,2003-03-20,22.
 ADO Den Haag,Devyn Payne,1641227,defenders,,Centre-Back,DF,21,2005-06-26,31.0,USA,False,,2026-10-26
 ADO Den Haag,Sanyika Bergtop,1737699,defenders,LB,Left-Back,DF,19,2007-07-31,35.0,SUR,False,,2026-10-26
 ADO Den Haag,Jan Žambůrek,1024959,midfielders,"CM,CDM",Central Midfield,MF,25,2001-02-13,8.0,CZE,False,,2026-10-26
-ADO Den Haag,Evan Rottier,1183486,midfielders,"CAM,ST,CM,LW",Attacking Midfield,MF,24,2002-02-11,11.0,NED,False,,2026-10-26
+ADO Den Haag,Evan Rottier,1183486,midfielders,"ST,CAM,CM,LW",Centre-Forward,MF,24,2002-02-11,11.0,NED,False,,2026-10-26
 ADO Den Haag,Mylian Jiménez,1243243,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,23,2003-01-13,14.0,NED,False,,2026-10-26
 ADO Den Haag,Finn de Bruin,1599289,midfielders,CM,Central Midfield,MF,22,2004-04-05,16.0,NED,False,,2026-10-26
 ADO Den Haag,Jalen Hawkings,1159196,midfielders,"RW,CM,LM,RM",Right Winger,MF,25,2001-01-24,17.0,USA,False,,2026-10-26

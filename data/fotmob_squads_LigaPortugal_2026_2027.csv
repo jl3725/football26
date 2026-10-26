@@ -146,7 +146,7 @@ Arouca,Naïs Djouahra,770328,attackers,LW,Left Winger,FW,26,1999-11-23,7.0,FRA,F
 Arouca,Fally Mayulu,1286192,attackers,ST,Centre-Forward,FW,24,2002-07-15,9.0,FRA,False,,2026-10-26
 Arouca,Miguel Puche,1287512,attackers,RW,Right Winger,FW,25,2001-04-30,11.0,ESP,True,Day to day,2026-10-26
 Arouca,Barbero,1027396,attackers,ST,Centre-Forward,FW,28,1998-08-17,17.0,ESP,False,,2026-10-26
-Arouca,Alfonso Trezza,1139353,attackers,"RW,CAM",Right Winger,FW,27,1999-06-22,19.0,URU,False,,2026-10-26
+Arouca,Alfonso Trezza,1139353,attackers,RW,Right Winger,FW,27,1999-06-22,19.0,URU,False,,2026-10-26
 Arouca,Gabriel Rukavina,1386766,attackers,"LW,RW",Left Winger,FW,22,2004-01-16,20.0,CRO,False,,2026-10-26
 Arouca,Dylan Nandín,1350681,attackers,ST,Centre-Forward,FW,24,2002-02-28,23.0,URU,False,,2026-10-26
 Arouca,Brian Mansilla,1353472,attackers,CAM,Attacking Midfield,FW,24,2002-05-14,24.0,URU,False,,2026-10-26
@@ -281,7 +281,7 @@ Moreirense,Leandro Santos,1558067,defenders,"RB,RM",Right-Back,DF,21,2005-09-28,
 Moreirense,Kevyn Monteiro,1807642,defenders,CB,Centre-Back,DF,21,2005-09-13,4.0,BRA,False,,2026-10-26
 Moreirense,Álvaro Martínez,1791693,defenders,LB,Left-Back,DF,24,2002-05-04,17.0,ESP,False,,2026-10-26
 Moreirense,Maracás,938392,defenders,CB,Centre-Back,DF,32,1994-04-27,26.0,BRA,False,,2026-10-26
-Moreirense,Kiko,1525010,defenders,LB,Left-Back,DF,24,2002-04-16,27.0,POR,False,,2026-10-26
+Moreirense,Kiko,1525010,defenders,"LB,CB",Left-Back,DF,24,2002-04-16,27.0,POR,False,,2026-10-26
 Moreirense,Pedro Jesus,2131166,defenders,,Centre-Back,DF,18,2007-12-25,31.0,BRA,False,,2026-10-26
 Moreirense,Janderson,1736526,defenders,,Centre-Back,DF,21,2005-08-31,32.0,BRA,False,,2026-10-26
 Moreirense,Gilberto Batista,1413843,defenders,CB,Centre-Back,DF,22,2003-12-29,66.0,GNB,False,,2026-10-26
@@ -295,7 +295,7 @@ Moreirense,Nile John,1127306,midfielders,"CM,CDM,CAM",Central Midfield,MF,23,200
 Moreirense,Afonso Assis,1705704,midfielders,"CDM,CM",Defensive Midfield,MF,20,2006-07-15,25.0,POR,False,,2026-10-26
 Moreirense,Jimi Gower,1254278,midfielders,CDM,Defensive Midfield,MF,22,2004-10-01,30.0,ENG,False,,2026-10-26
 Moreirense,Guilherme Liberato,1668273,midfielders,"CM,CDM",Central Midfield,MF,25,2001-06-16,65.0,BRA,False,,2026-10-26
-Moreirense,Manuel Mendonça,1525414,attackers,"RW,CAM,ST,CM,LW",Right Winger,FW,21,2005-03-24,7.0,POR,False,,2026-10-26
+Moreirense,Manuel Mendonça,1525414,attackers,"RW,CAM,ST,LW",Right Winger,FW,21,2005-03-24,7.0,POR,False,,2026-10-26
 Moreirense,Alexandre Duville-Parsemain,1283074,attackers,ST,Centre-Forward,FW,23,2003-05-27,9.0,MTQ,False,,2026-10-26
 Moreirense,Kiko Bondoso,1150871,attackers,"LW,RW,RM",Left Winger,FW,30,1995-11-17,10.0,POR,False,,2026-10-26
 Moreirense,Landerson,1797925,attackers,"LW,RW",Left Winger,FW,19,2006-12-12,11.0,BRA,False,,2026-10-26
@@ -327,7 +327,7 @@ Famalicão,Tamás Szucs,1315571,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,2
 Famalicão,Mathis Jangéal,1819218,midfielders,CM,Central Midfield,MF,18,2008-06-24,24.0,FRA,False,,2026-10-26
 Famalicão,Sorriso,1257305,attackers,"LW,RW",Left Winger,FW,25,2001-02-23,7.0,BRA,False,,2026-10-26
 Famalicão,Umar Abubakar,1783963,attackers,ST,Centre-Forward,FW,20,2006-02-15,9.0,NGA,False,,2026-10-26
-Famalicão,Óscar Aranda,1208987,attackers,LW,Left Winger,FW,24,2002-04-29,11.0,ESP,True,Early November 2026,2026-10-26
+Famalicão,Óscar Aranda,1208987,attackers,LW,Left Winger,FW,24,2002-04-29,11.0,ESP,False,,2026-10-26
 Famalicão,Roméo Beney,1481890,attackers,RW,Right Winger,FW,21,2005-01-19,18.0,SUI,False,,2026-10-26
 Famalicão,Gil Dias,566467,attackers,RW,Right Winger,FW,30,1996-09-28,23.0,POR,False,,2026-10-26
 Famalicão,Patricio Salas,1513185,attackers,ST,Centre-Forward,FW,22,2004-02-17,33.0,MEX,False,,2026-10-26
@@ -438,10 +438,10 @@ Nacional,Deivison,1791597,defenders,RB,Right-Back,DF,20,2006-05-04,88.0,BRA,Fals
 Nacional,Josué,1568991,midfielders,CM,Central Midfield,MF,21,2005-04-25,,BRA,False,,2026-10-26
 Nacional,Matheus Dias,1380814,midfielders,"CM,CDM,CB",Central Midfield,MF,24,2002-05-09,6.0,BRA,False,,2026-10-26
 Nacional,Miguel Baeza,1088053,midfielders,"CM,CDM,RW,CAM",Central Midfield,MF,26,2000-03-27,8.0,ESP,False,,2026-10-26
-Nacional,Min-Kyu Song,927102,midfielders,"LM,LW,ST",Left Midfield,MF,27,1999-09-12,12.0,KOR,False,,2026-10-26
-Nacional,Chiheb Labidi,1242656,midfielders,"CM,CDM",Central Midfield,MF,25,2001-06-01,15.0,TUN,False,,2026-10-26
-Nacional,Matchoi,1069628,midfielders,"CM,CAM",Central Midfield,MF,23,2003-04-10,20.0,POR,False,,2026-10-26
-Nacional,William Kokolo,982245,midfielders,"LM,LB",Left Midfield,MF,26,2000-06-09,21.0,FRA,False,,2026-10-26
+Nacional,Stavros Gavriel,1178054,midfielders,"RW,CAM",Right Winger,MF,24,2002-01-29,11.0,CYP,False,,2026-10-26
+Nacional,Chiheb Labidi,1242656,midfielders,CM,Central Midfield,MF,25,2001-06-01,15.0,TUN,False,,2026-10-26
+Nacional,Matchoi,1069628,midfielders,CM,Central Midfield,MF,23,2003-04-10,20.0,POR,False,,2026-10-26
+Nacional,William Kokolo,982245,midfielders,"LM,LWB",Left Midfield,MF,26,2000-06-09,21.0,FRA,False,,2026-10-26
 Nacional,Filipe Soares,793256,midfielders,"CM,CDM",Central Midfield,MF,27,1999-05-20,22.0,POR,False,,2026-10-26
 Nacional,Mateus Iseppe,1804860,midfielders,CAM,Attacking Midfield,MF,20,2006-05-02,23.0,BRA,False,,2026-10-26
 Nacional,Joel da Silva,1393748,midfielders,CM,Central Midfield,MF,23,2003-02-11,26.0,POR,False,,2026-10-26
@@ -451,7 +451,7 @@ Nacional,Danel Dongmo,1393659,midfielders,"CM,CDM",Central Midfield,MF,25,2001-0
 Nacional,Markus Gustav Jensen,1367941,attackers,"RW,LW,LM",Right Winger,FW,21,2005-07-15,7.0,DEN,False,,2026-10-26
 Nacional,Allen Obando,1482775,attackers,ST,Centre-Forward,FW,20,2006-06-13,9.0,ECU,False,,2026-10-26
 Nacional,Daniel,1336918,attackers,"RW,LW,CM",Right Winger,FW,24,2002-05-09,10.0,BRA,False,,2026-10-26
-Nacional,Stavros Gavriel,1178054,attackers,"RW,CAM",Right Winger,FW,24,2002-01-29,11.0,CYP,False,,2026-10-26
+Nacional,Min-Kyu Song,927102,attackers,"LW,LM",Left Winger,FW,27,1999-09-12,12.0,KOR,False,,2026-10-26
 Nacional,Fernando Nava,1535424,attackers,"LW,LM,RW",Left Winger,FW,22,2004-06-08,17.0,BOL,False,,2026-10-26
 Nacional,Njoya Kader,1623143,attackers,ST,Centre-Forward,FW,23,2003-10-05,29.0,CMR,False,,2026-10-26
 Nacional,Pablo Ruan,1536269,attackers,"ST,RW",Centre-Forward,FW,23,2003-02-01,99.0,BRA,False,,2026-10-26
@@ -541,7 +541,7 @@ Estoril,Xeka,470810,midfielders,"CM,CDM",Central Midfield,MF,31,1994-11-10,8.0,P
 Estoril,Jordan Holsgrove,877568,midfielders,"CM,CDM",Central Midfield,MF,27,1999-09-10,10.0,SCO,False,,2026-10-26
 Estoril,João Carvalho,603808,midfielders,"CAM,LM,RW,CM,LW",Attacking Midfield,MF,29,1997-03-09,12.0,POR,False,,2026-10-26
 Estoril,Pedro Carvalho,1525164,midfielders,RM,Right Midfield,MF,23,2003-02-14,22.0,POR,False,,2026-10-26
-Estoril,Milan Robin,1359270,midfielders,"CM,CAM,CDM",Central Midfield,MF,26,1999-11-24,44.0,FRA,False,,2026-10-26
+Estoril,Milan Robin,1359270,midfielders,"CM,RW,CDM,CAM",Central Midfield,MF,26,1999-11-24,44.0,FRA,False,,2026-10-26
 Estoril,Luís Gomes,1368826,midfielders,CM,Central Midfield,MF,22,2004-04-24,80.0,POR,False,,2026-10-26
 Estoril,Tiago Brito,1459916,midfielders,"CM,CDM",Central Midfield,MF,22,2004-04-16,90.0,POR,False,,2026-10-26
 Estoril,Isra Salazar,1418044,attackers,RW,Right Winger,FW,23,2003-05-10,,ESP,False,,2026-10-26

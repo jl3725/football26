@@ -5,7 +5,7 @@ Barcelona,Dominik Livaković,383971,keepers,GK,Goalkeeper,GK,31,1995-01-09,25.0,
 Barcelona,João Cancelo,361757,defenders,"LB,RB",Left-Back,DF,32,1994-05-27,2.0,POR,False,,2026-10-26
 Barcelona,Alejandro Balde,1254166,defenders,LB,Left-Back,DF,23,2003-10-18,3.0,ESP,False,,2026-10-26
 Barcelona,Pau Cubarsí,1532137,defenders,CB,Centre-Back,DF,19,2007-01-22,5.0,ESP,False,,2026-10-26
-Barcelona,Xavi Espart,1815149,defenders,"LB,CM,RB",Left-Back,DF,19,2007-05-21,12.0,ESP,True,Early November 2026,2026-10-26
+Barcelona,Xavi Espart,1815149,defenders,"LB,RB,CM",Left-Back,DF,19,2007-05-21,12.0,ESP,True,Early November 2026,2026-10-26
 Barcelona,Andreas Christensen,449232,defenders,CB,Centre-Back,DF,30,1996-04-10,15.0,DEN,True,Mid November 2026,2026-10-26
 Barcelona,Gerard Martín,1598982,defenders,"CB,LB",Centre-Back,DF,24,2002-02-26,18.0,ESP,False,,2026-10-26
 Barcelona,Jules Koundé,705450,defenders,RB,Right-Back,DF,27,1998-11-12,23.0,FRA,True,Early November 2026,2026-10-26
@@ -64,7 +64,7 @@ Real Madrid,Ferland Mendy,623537,defenders,LB,Left-Back,DF,31,1995-06-08,23.0,FR
 Real Madrid,Denzel Dumfries,593118,defenders,"RB,RM",Right-Back,DF,30,1996-04-18,24.0,NED,False,,2026-10-26
 Real Madrid,Jude Bellingham,1077894,midfielders,"CAM,CM,LM",Attacking Midfield,MF,23,2003-06-29,5.0,ENG,False,,2026-10-26
 Real Madrid,Eduardo Camavinga,1015185,midfielders,"CDM,CM,LM,LB",Defensive Midfield,MF,23,2002-11-10,6.0,FRA,False,,2026-10-26
-Real Madrid,Federico Valverde,743533,midfielders,"RB,RM,CDM,CM,RW,CAM",Right-Back,MF,28,1998-07-22,8.0,URU,False,,2026-10-26
+Real Madrid,Federico Valverde,743533,midfielders,"RB,RM,CDM,CM,RW,CAM",Right-Back,MF,28,1998-07-22,8.0,URU,True,Doubtful,2026-10-26
 Real Madrid,Aurélien Tchouaméni,914458,midfielders,"CM,CDM",Central Midfield,MF,26,2000-01-27,14.0,FRA,False,,2026-10-26
 Real Madrid,Arda Güler,1253890,midfielders,"CAM,CM,RW,LM,CDM,ST",Attacking Midfield,MF,21,2005-02-25,15.0,TUR,False,,2026-10-26
 Real Madrid,Bernardo Silva,488139,midfielders,"CDM,CAM,RW,CM",Defensive Midfield,MF,32,1994-08-10,20.0,POR,False,,2026-10-26
@@ -119,8 +119,8 @@ Real Sociedad,Jon Gorrotxategi,1323827,midfielders,"CDM,CM",Defensive Midfield,M
 Real Sociedad,Beñat Turrientes,1210647,midfielders,"CDM,CM",Defensive Midfield,MF,24,2002-01-31,8.0,ESP,False,,2026-10-26
 Real Sociedad,Carlos Soler,708890,midfielders,"CM,CDM,CAM,ST",Central Midfield,MF,29,1997-01-02,18.0,ESP,False,,2026-10-26
 Real Sociedad,Yangel Herrera,730901,midfielders,"CM,CDM",Central Midfield,MF,28,1998-01-07,21.0,VEN,False,,2026-10-26
-Real Sociedad,Luka Sučić,959597,midfielders,"CAM,ST,RW,RM",Attacking Midfield,MF,24,2002-09-08,24.0,CRO,False,,2026-10-26
-Real Sociedad,Ander Barrenetxea,1002618,attackers,"LW,LM,RW,RM",Left Winger,FW,24,2001-12-27,7.0,ESP,False,,2026-10-26
+Real Sociedad,Luka Sučić,959597,midfielders,"CAM,ST,RM,RW",Attacking Midfield,MF,24,2002-09-08,24.0,CRO,False,,2026-10-26
+Real Sociedad,Ander Barrenetxea,1002618,attackers,"LW,RW,LM,RM",Left Winger,FW,24,2001-12-27,7.0,ESP,False,,2026-10-26
 Real Sociedad,Orri Óskarsson,1097229,attackers,ST,Centre-Forward,FW,22,2004-08-29,9.0,ISL,False,,2026-10-26
 Real Sociedad,Mikel Oyarzabal,678234,attackers,ST,Centre-Forward,FW,29,1997-04-21,10.0,ESP,False,,2026-10-26
 Real Sociedad,Gonçalo Guedes,536455,attackers,"LW,LM,RM,RW,ST",Left Winger,FW,29,1996-11-29,11.0,POR,False,,2026-10-26
@@ -193,7 +193,7 @@ Athletic Club,Yuri Berchiche,80295,defenders,"LB,CB",Left-Back,DF,36,1990-02-10,
 Athletic Club,Johaneko Louis-Jean,1327006,defenders,LB,Left-Back,DF,22,2004-06-28,31.0,FRA,False,,2026-10-26
 Athletic Club,Beñat Prados,1229176,midfielders,CDM,Defensive Midfield,MF,25,2001-02-08,6.0,ESP,False,,2026-10-26
 Athletic Club,Oihan Sancet,950545,midfielders,CAM,Attacking Midfield,MF,26,2000-04-25,8.0,ESP,True,Early November 2026,2026-10-26
-Athletic Club,Íñigo Ruíz de Galarreta,282462,midfielders,CDM,Defensive Midfield,MF,33,1993-08-06,16.0,ESP,False,,2026-10-26
+Athletic Club,Íñigo Ruíz de Galarreta,282462,midfielders,CDM,Defensive Midfield,MF,33,1993-08-06,16.0,ESP,True,Early November 2026,2026-10-26
 Athletic Club,Mikel Jauregizar,1553099,midfielders,CDM,Defensive Midfield,MF,22,2003-11-13,18.0,ESP,False,,2026-10-26
 Athletic Club,Alejandro Rego,1425769,midfielders,CDM,Defensive Midfield,MF,23,2003-06-11,20.0,ESP,False,,2026-10-26
 Athletic Club,Beñat Gerenabarrena,1425173,midfielders,"CM,CDM,RB",Central Midfield,MF,23,2003-03-29,24.0,ESP,False,,2026-10-26
@@ -205,14 +205,14 @@ Athletic Club,Nico Williams,1202110,attackers,LW,Left Winger,FW,24,2002-07-12,10
 Athletic Club,Gorka Guruzeta,711231,attackers,"ST,CAM",Centre-Forward,FW,30,1996-09-12,11.0,ESP,True,Out for season,2026-10-26
 Athletic Club,Maroan Sannadi,1425206,attackers,ST,Centre-Forward,FW,25,2001-02-01,21.0,MAR,False,,2026-10-26
 Athletic Club,Nico Serrano,1203614,attackers,RW,Right Winger,FW,23,2003-03-05,22.0,ESP,False,,2026-10-26
-Athletic Club,Robert Navarro,1011117,attackers,"RW,LW,CAM",Right Winger,FW,24,2002-04-12,23.0,ESP,False,,2026-10-26
+Athletic Club,Robert Navarro,1011117,attackers,"LW,RW,CAM",Left Winger,FW,24,2002-04-12,23.0,ESP,False,,2026-10-26
 Celta Vigo,Altay Bayındır,866967,keepers,GK,Goalkeeper,GK,28,1998-04-14,1.0,TUR,False,,2026-10-26
 Celta Vigo,Ionuț Radu,681213,keepers,GK,Goalkeeper,GK,29,1997-05-28,13.0,ROU,False,,2026-10-26
 Celta Vigo,Iván Villar,786630,keepers,GK,Goalkeeper,GK,29,1997-07-09,25.0,ESP,False,,2026-10-26
 Celta Vigo,Carl Starfelt,497662,defenders,CB,Centre-Back,DF,31,1995-06-01,2.0,SWE,True,Early November 2026,2026-10-26
 Celta Vigo,Marcos Alonso,196169,defenders,CB,Centre-Back,DF,35,1990-12-28,3.0,ESP,False,,2026-10-26
 Celta Vigo,Abdoulaye Faye,1555492,defenders,CB,Centre-Back,DF,22,2004-09-22,4.0,SEN,False,,2026-10-26
-Celta Vigo,Álvaro Núñez,1132355,defenders,"CB,RB,CM,RM,RWB",Centre-Back,DF,26,2000-07-07,15.0,ESP,True,Late November 2026,2026-10-26
+Celta Vigo,Álvaro Núñez,1132355,defenders,"CB,RB,RM,CM",Centre-Back,DF,26,2000-07-07,15.0,ESP,True,Late November 2026,2026-10-26
 Celta Vigo,Yoel Lago,1578176,defenders,CB,Centre-Back,DF,22,2004-03-25,18.0,ESP,False,,2026-10-26
 Celta Vigo,Javi Rodríguez,1435439,defenders,"CB,RB",Centre-Back,DF,23,2003-06-27,20.0,ESP,False,,2026-10-26
 Celta Vigo,Sebastián Cáceres,1020026,defenders,CB,Centre-Back,DF,27,1999-08-18,21.0,URU,False,,2026-10-26
@@ -221,13 +221,13 @@ Celta Vigo,Sergio Carreira,1106742,midfielders,"LM,RM,LWB",Left Midfield,MF,26,2
 Celta Vigo,Ilaix Moriba,1109046,midfielders,"CM,CDM",Central Midfield,MF,23,2003-01-19,6.0,GUI,False,,2026-10-26
 Celta Vigo,Miguel Román,1359911,midfielders,"CM,CDM",Central Midfield,MF,23,2002-12-26,8.0,ESP,True,Early November 2026,2026-10-26
 Celta Vigo,Aleix Febas,671686,midfielders,"CM,CAM",Central Midfield,MF,30,1996-02-02,14.0,ESP,False,,2026-10-26
-Celta Vigo,Javi Rueda,1310440,midfielders,"RM,RWB",Right Midfield,MF,24,2002-05-08,17.0,ESP,False,,2026-10-26
+Celta Vigo,Javi Rueda,1310440,midfielders,"RM,RWB,RW",Right Midfield,MF,24,2002-05-08,17.0,ESP,False,,2026-10-26
 Celta Vigo,Jones El-Abdellaoui,1379196,midfielders,"RM,RW",Right Midfield,MF,20,2006-01-12,39.0,MAR,True,Mid January 2027,2026-10-26
 Celta Vigo,Borja Iglesias,609505,attackers,ST,Centre-Forward,FW,33,1993-01-17,7.0,ESP,True,Late November 2026,2026-10-26
 Celta Vigo,Ferrán Jutglà,1102732,attackers,"ST,RW,LW",Centre-Forward,FW,27,1999-02-01,9.0,ESP,False,,2026-10-26
 Celta Vigo,Iago Aspas,174472,attackers,"RW,CAM,ST,CM",Right Winger,FW,39,1987-08-01,10.0,ESP,False,,2026-10-26
 Celta Vigo,Pablo Durán,1322858,attackers,"ST,RW,LW",Centre-Forward,FW,25,2001-05-25,11.0,ESP,False,,2026-10-26
-Celta Vigo,Hugo González,1226783,attackers,"ST,RW",Centre-Forward,FW,23,2003-02-07,16.0,ESP,False,,2026-10-26
+Celta Vigo,Hugo González,1226783,attackers,"RW,ST",Right Winger,FW,23,2003-02-07,16.0,ESP,False,,2026-10-26
 Celta Vigo,Williot Swedberg,1272740,attackers,"LW,CAM,RW",Left Winger,FW,22,2004-02-01,19.0,SWE,False,,2026-10-26
 Celta Vigo,Hugo Álvarez,1308414,attackers,"LW,LM,CAM,RW",Left Winger,FW,23,2003-07-02,23.0,ESP,False,,2026-10-26
 Celta Vigo,Couhaib Driouech,1184693,attackers,"LW,LM",Left Winger,FW,24,2002-04-17,24.0,MAR,False,,2026-10-26
@@ -348,7 +348,7 @@ Levante,Jon Olasagasti,1131957,midfielders,"CAM,CM,LM,CDM",Attacking Midfield,MF
 Levante,Enzo Bardeli,1332540,midfielders,"CAM,CM",Attacking Midfield,MF,25,2001-04-11,18.0,FRA,True,Early November 2026,2026-10-26
 Levante,Oriol Rey,914401,midfielders,"CM,CDM",Central Midfield,MF,28,1998-02-25,20.0,ESP,False,,2026-10-26
 Levante,Jorge de Asís,1748952,attackers,,Centre-Forward,FW,20,2006-01-29,,ARG,False,,2026-10-26
-Levante,Roger Brugué,1286471,attackers,"RW,LM",Right Winger,FW,29,1996-11-04,7.0,ESP,False,,2026-10-26
+Levante,Roger Brugué,1286471,attackers,"RW,LM",Right Winger,FW,29,1996-11-04,7.0,ESP,True,Early November 2026,2026-10-26
 Levante,Iván Romero,1209441,attackers,"ST,LW,CAM",Centre-Forward,FW,25,2001-04-10,9.0,ESP,False,,2026-10-26
 Levante,Petar Ratkov,1302821,attackers,ST,Centre-Forward,FW,23,2003-08-18,10.0,SRB,False,,2026-10-26
 Levante,Yanis Musuayi,1836083,attackers,ST,Centre-Forward,FW,19,2007-06-26,11.0,BEL,False,,2026-10-26
@@ -421,13 +421,13 @@ Getafe,Nemanja Gudelj,178753,defenders,"CB,CDM,CM",Centre-Back,DF,34,1991-11-16,
 Getafe,Daniel Carvajal,282674,defenders,RB,Right-Back,DF,34,1992-01-11,14.0,ESP,False,,2026-10-26
 Getafe,Sebastián Boselli,1414777,defenders,CB,Centre-Back,DF,22,2003-12-04,15.0,URU,False,,2026-10-26
 Getafe,Kiko,175311,defenders,"RWB,RM,RB",Right-Back,DF,35,1991-02-02,17.0,ESP,False,,2026-10-26
-Getafe,Andrés García,1430406,defenders,"RB,RM",Right-Back,DF,23,2003-02-07,21.0,ESP,False,,2026-10-26
 Getafe,Johan Mojica,474673,defenders,"LB,LWB",Left-Back,DF,34,1992-08-21,22.0,COL,False,,2026-10-26
 Getafe,Zaid Abner Romero,1118199,defenders,CB,Centre-Back,DF,26,1999-12-15,24.0,ARG,True,Back in training,2026-10-26
 Getafe,Jean Ives Valou,1792368,defenders,CB,Centre-Back,DF,20,2005-12-22,26.0,CIV,False,,2026-10-26
 Getafe,Mario Martín,1321605,midfielders,"CM,ST,CAM,CDM",Central Midfield,MF,22,2004-03-05,6.0,ESP,False,,2026-10-26
-Getafe,Ramón Terrats,1202587,midfielders,"LM,CAM,CM,ST",Left Midfield,MF,26,2000-10-18,11.0,ESP,False,,2026-10-26
+Getafe,Ramón Terrats,1202587,midfielders,"LM,CAM,CM,LW,ST,RM,RW",Left Midfield,MF,26,2000-10-18,11.0,ESP,False,,2026-10-26
 Getafe,Francho Serrano,1183650,midfielders,"RW,CM,CDM,CAM",Right Winger,MF,25,2001-10-17,16.0,ESP,False,,2026-10-26
+Getafe,Andrés García,1430406,midfielders,"RM,RB",Right Midfield,MF,23,2003-02-07,21.0,ESP,False,,2026-10-26
 Getafe,Orel Mangala,765693,midfielders,"CM,CDM",Central Midfield,MF,28,1998-03-18,23.0,BEL,True,Early November 2026,2026-10-26
 Getafe,Alberto Risco,1637438,midfielders,CM,Central Midfield,MF,21,2005-08-30,28.0,ESP,False,,2026-10-26
 Getafe,Juanmi,191873,attackers,ST,Centre-Forward,FW,33,1993-05-20,7.0,ESP,True,Unknown,2026-10-26

@@ -48,12 +48,12 @@ Salzburg,Justin Omoregie,1230285,midfielders,CB,Centre-Back,MF,23,2003-09-21,36,
 Salzburg,Haris Tabaković,388903,attackers,ST,Centre-Forward,FW,32,1994-06-20,9,BIH,False,,2026-10-26
 Salzburg,Yorbe Vertessen,940453,attackers,"ST,LW,CAM,RW",Centre-Forward,FW,25,2001-01-08,11,BEL,False,,2026-10-26
 Salzburg,Karim Konaté,1293688,attackers,"ST,CAM",Centre-Forward,FW,22,2004-03-21,19,CIV,False,,2026-10-26
-Salzburg,Edmund Baidoo,1632055,attackers,"RW,ST,LW",Right Winger,FW,20,2006-01-30,20,GHA,True,Doubtful,2026-10-26
+Salzburg,Edmund Baidoo,1632055,attackers,"RW,ST,LW",Right Winger,FW,20,2006-01-30,20,GHA,False,,2026-10-26
 Salzburg,Damir Redzic,1188420,attackers,"RW,LW",Right Winger,FW,23,2003-03-23,23,HUN,False,,2026-10-26
 Salzburg,Gaoussou Diakite,1607324,attackers,"ST,CAM",Centre-Forward,FW,21,2005-09-26,30,MLI,False,,2026-10-26
 Salzburg,Aboubacar Camara,1583511,attackers,ST,Centre-Forward,FW,20,2006-09-30,33,BFA,False,,2026-10-26
 Salzburg,Enrique Aguilar,1667685,attackers,"LW,RW",Left Winger,FW,19,2007-01-27,43,SUI,True,A few weeks,2026-10-26
-LASK,Lukas Jungwirth,1156883,keepers,GK,Goalkeeper,GK,22,2004-04-30,1,AUT,True,Doubtful,2026-10-26
+LASK,Lukas Jungwirth,1156883,keepers,GK,Goalkeeper,GK,22,2004-04-30,1,AUT,False,,2026-10-26
 LASK,Tobias Schützenauer,557349,keepers,GK,Goalkeeper,GK,29,1997-05-19,33,AUT,False,,2026-10-26
 LASK,Christof Katzmayr,2397894,keepers,GK,Goalkeeper,GK,18,2008-05-10,39,AUT,False,,2026-10-26
 LASK,Fabian Schillinger,1671273,keepers,GK,Goalkeeper,GK,19,2007-05-24,50,AUT,False,,2026-10-26
@@ -206,14 +206,14 @@ Grazer AK,Yannick Oberleitner,1146400,defenders,CB,Centre-Back,DF,24,2002-05-27,
 Grazer AK,Christoph Hasenhuettl,2117199,defenders,,Centre-Back,DF,16,2010-02-16,30,AUT,False,,2026-10-26
 Grazer AK,Tim Trummer,1515147,defenders,RB,Right-Back,DF,20,2005-11-10,37,AUT,False,,2026-10-26
 Grazer AK,Petar Marković,1869842,defenders,,Centre-Back,DF,20,2006-02-05,72,AUT,False,,2026-10-26
-Grazer AK,Beres Owusu,1585596,defenders,CB,Centre-Back,DF,23,2003-09-19,82,FRA,True,Doubtful,2026-10-26
+Grazer AK,Beres Owusu,1585596,defenders,CB,Centre-Back,DF,23,2003-09-19,82,FRA,True,Unknown,2026-10-26
 Grazer AK,Liam Hermesh,1612420,midfielders,CDM,Defensive Midfield,MF,22,2004-03-12,6,ISR,False,,2026-10-26
 Grazer AK,Tobias Koch,941702,midfielders,"CAM,CDM",Attacking Midfield,MF,25,2001-04-06,8,AUT,False,,2026-10-26
 Grazer AK,Christian Lichtenberger,951310,midfielders,CAM,Attacking Midfield,MF,30,1995-12-12,10,AUT,False,,2026-10-26
-Grazer AK,Jacob Italiano,889093,midfielders,"CAM,RWB,RM,LW",Attacking Midfield,MF,25,2001-07-30,14,AUS,False,,2026-10-26
+Grazer AK,Jacob Italiano,889093,midfielders,"CAM,RWB,RM,LW",Attacking Midfield,MF,25,2001-07-30,14,AUS,True,Doubtful,2026-10-26
 Grazer AK,Souleyman Mandey,1562715,midfielders,"CAM,RW",Attacking Midfield,MF,20,2006-02-06,17,AUT,False,,2026-10-26
 Grazer AK,Christopher Cvetko,768312,midfielders,"CDM,CM",Defensive Midfield,MF,29,1997-04-02,24,AUT,False,,2026-10-26
-Grazer AK,Anderson,1024295,midfielders,"RWB,RW",Right-Back,MF,28,1998-01-03,28,BRA,False,,2026-10-26
+Grazer AK,Anderson,1024295,midfielders,"RWB,RW",Right-Back,MF,28,1998-01-03,28,BRA,True,A few weeks,2026-10-26
 Grazer AK,Peter Michorl,488194,midfielders,"CAM,CDM,CM,ST",Attacking Midfield,MF,31,1995-05-09,34,AUT,False,,2026-10-26
 Grazer AK,Matthias Gragger,1243520,midfielders,"LM,LW,LWB,ST,CM",Left Midfield,MF,24,2001-11-03,48,AUT,False,,2026-10-26
 Grazer AK,Julian Rumpl,2173167,midfielders,,Central Midfield,MF,18,2008-07-30,52,AUS,False,,2026-10-26
@@ -259,13 +259,13 @@ Austria Lustenau,Frederic Flatz,1663359,keepers,,Goalkeeper,GK,20,2006-08-25,33,
 Austria Lustenau,Danilo Soares,207039,defenders,LB,Left-Back,DF,34,1991-10-29,3,BRA,False,,2026-10-26
 Austria Lustenau,Fabian Gmeiner,792751,defenders,"RB,CB,LB",Right-Back,DF,29,1997-01-27,7,AUT,False,,2026-10-26
 Austria Lustenau,Novak Rajic,2100444,defenders,,Centre-Back,DF,18,2008-09-27,12,AUT,False,,2026-10-26
-Austria Lustenau,Emmanuel Chukwu,1789411,defenders,CB,Centre-Back,DF,19,2006-11-07,15,NGA,False,,2026-10-26
+Austria Lustenau,Emmanuel Chukwu,1789411,defenders,CB,Centre-Back,DF,19,2006-11-07,15,NGA,True,About a week,2026-10-26
 Austria Lustenau,Robin Voisine,1362354,defenders,CB,Centre-Back,DF,24,2002-04-07,18,FRA,False,,2026-10-26
 Austria Lustenau,Anilson,1255208,defenders,"RB,RM",Right-Back,DF,25,2001-09-04,21,BRA,False,,2026-10-26
 Austria Lustenau,Lukas Ibertsberger,1276628,defenders,LB,Left-Back,DF,23,2003-08-06,26,AUT,False,,2026-10-26
 Austria Lustenau,Niklas Pertlwieser,1353012,defenders,"CB,LB",Centre-Back,DF,22,2003-11-23,29,AUT,False,,2026-10-26
 Austria Lustenau,Matthias Maak,207070,defenders,"CB,RB",Centre-Back,DF,34,1992-05-12,31,AUT,False,,2026-10-26
-Austria Lustenau,Dion Kacuri,1310255,midfielders,"CDM,CM",Defensive Midfield,MF,22,2004-02-11,8,KVX,False,,2026-10-26
+Austria Lustenau,Dion Kacuri,1310255,midfielders,"CDM,CM",Defensive Midfield,MF,22,2004-02-11,8,KVX,True,A few weeks,2026-10-26
 Austria Lustenau,Ibrahim Ouattara,1683132,midfielders,CM,Central Midfield,MF,22,2004-06-26,10,CIV,False,,2026-10-26
 Austria Lustenau,Sacha Delaye,1258142,midfielders,"CM,CDM,CAM",Central Midfield,MF,24,2002-04-23,19,FRA,True,About 1-2 weeks,2026-10-26
 Austria Lustenau,Lord Afrifa,1681533,midfielders,"CAM,CDM",Attacking Midfield,MF,20,2006-06-05,20,GHA,False,,2026-10-26
