@@ -30,3 +30,28 @@ def test_common_words_from_team_feed():
     texts = ["El fútbol es así", "Villarreal gana", "fútbol base", "La Liga de fútbol", "más fútbol", "fútbol total", "Villarreal pierde"]
     weak = nr.common_words(texts, terms)
     assert "futbol" in weak and "villarreal" not in weak
+
+
+def test_other_squad_women_youth_other_sports():
+    yes = [("La Real femenina anuncia a su nuevo entrenador", "", ""),
+           ("Eintracht Frankfurt: Boss Hellmann will Frauenfußball-Revolution", "", ""),
+           ("Previa Liga F, Jornada 8: Athletic Club vs Sevilla FC", "", ""),
+           ("Relief for Slegers as Russo rescues Arsenal against Tottenham in WSL", "", ""),
+           ("Leeds United U21 manager Scott Gardner after 4-3 EFL Trophy win", "", ""),
+           ("Il Como Primavera non sbaglia", "", ""),
+           ("3-2: Schröder y el orgullo blanco reinan en un derbi loco", "", "https://www.mundodeportivo.com/futbol/femenino/20260830/1/x"),
+           ("Relief for Slegers as Russo rescues Arsenal", "", "https://www.theguardian.com/football/2026/oct/24/tottenham-arsenal-wsl-match-report")]
+    no = [("BBC Sport's Sam Harris explains the footage showing Nico Williams handball", "", ""),   # 축구의 핸드볼 반칙
+          ("West Ham United bring in Norway U21 international winger Edvin Austbo", "", ""),       # 1군 선수 소개의 U21
+          ("Iago Aspas tendrá su escultura en primavera", "", ""),                                 # 스페인어 '봄'
+          ("Santa Clara é uma das 11 equipas invictas esta época", "", ""),                        # 포르투갈어 '팀' 여성명사
+          ("Arsenal beat Chelsea", "", "https://www.bbc.co.uk/sport/football/articles/abc")]
+    for h, r, link in yes:
+        assert nr.other_squad(h, r, link), h
+    for h, r, link in no:
+        assert not nr.other_squad(h, r, link), h
+
+
+def test_relevant_drops_women_even_if_tagged():
+    row = {"headline": "Arsenal Women beat Chelsea", "descr": "", "published": "2099-01-01", "first_seen": "2099-01-01"}
+    assert not nr.relevant(row, nr.team_terms("Arsenal", ()), tagged=True)

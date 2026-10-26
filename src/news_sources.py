@@ -115,11 +115,8 @@ def _strip_outlet(title: str, outlet: str) -> str:
 # 불법 중계·도박 홍보(해킹된 대학 사이트 등이 'Lens vs Troyes LIVE STREAM' 을 대량 게시) — 전각 문자·느낌표 뭉치도 같은 부류
 SPAM = re.compile(r"live\s*-?\s*stream|livestream|streaming|watch\s*live|live\s*free|free\s*(tv|online|live)|en\s*direct|"
                   r"direct\s*gratuit|en\s*vivo|in\s*diretta|promo\s*code|bonus|betting\s*tips|[！-～]|[!@#~+]{2,}", re.I)
-# 같은 클럽의 다른 종목·여자팀·유소년(배구·풋살·Women·Primavera …) — 1군 축구 기사만
-OTHER_SQUAD = re.compile(r"\b(women|womens|ladies|feminin[ao]?|femenino|femminile|frauen|vrouwen|f[ée]minine|voleibol|"
-                         r"volley(ball)?|basket(ball)?|futsal|hockey|h[óo]quei|andebol|handball|primavera|juvenil|jugend|"
-                         r"u\s?-?1\d|u\s?-?2[0-3])\b",   # 'Young Boys U 21'·'BSC Young Boys Jugend' 이 1군 기사로 남았다(10/26)
-                         re.I)
+# 같은 클럽의 다른 종목·여자팀·유소년 — 1군 축구 기사만. 규칙은 화면 관련성과 한 곳(src/news_relevance.other_squad)
+from news_relevance import other_squad  # noqa: E402
 
 
 # 베팅 예측·배당 기사('Pronostic Bruges – RC Lens : prono, cotes', 'voorspelling - Odds') — 제목이나 매체 이름으로
@@ -128,7 +125,7 @@ BETTING = re.compile(r"\b(prono|pronostic|pronostico|pron[oó]stico|odds|cotes|b
 
 
 def keep(headline: str, outlet: str) -> bool:
-    return not (SPAM.search(headline) or OTHER_SQUAD.search(headline) or SPAM.search(outlet or "")
+    return not (SPAM.search(headline) or other_squad(headline, outlet or "") or SPAM.search(outlet or "")
                 or BETTING.search(headline) or BETTING.search(outlet or ""))
 
 

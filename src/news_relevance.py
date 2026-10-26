@@ -21,6 +21,34 @@ GENERIC = {"city", "united", "town", "club", "real", "sporting", "athletic", "at
            "de", "la", "le", "les", "del", "der", "und", "the", "and", "1.", "04", "05"}
 
 
+# 같은 클럽의 다른 종목·여자팀·유소년 — 1군 남자 축구 기사만. 수집(news_sources.keep — 제목·매체)과 화면(relevant — 제목·요약·매체)이
+# 같은 규칙. 2026-10-26: 화면 뉴스의 여자 축구 기사 312건 — 수집 거르개가 구글 뉴스·속보 제목에만 걸리고 구단 RSS 는 안 거쳤고,
+# 'femenina'·'Frauenfußball'·'Liga F'·'WSL'·'kvinde'·'kadın' 과 여성형 표현('invictas'·'jugadoras')이 빠져 있었다.
+# 여자팀·다른 종목 — 제목·요약·매체에서. 여성형 낱말은 뜻이 하나인 것만('invictas'·'campeãs' 는 포르투갈어 '팀(equipas)'이
+# 여성명사라 남자팀 기사에도 쓰여 뺐다), 'handball' 은 영어로 축구의 핸드볼 반칙이라 뺐다(포르투갈어 andebol 만)
+OTHER_SQUAD = re.compile(
+    r"\b(women|womens|woman|ladies|lionesses|wsl|liga f|liga bpi|d1 arkema|copa de la reina|frauen\w*|damen\w*|dames|"
+    r"femenin\w*|feminin\w*|femminil\w*|f[ée]minin\w*|vrouwen\w*|kvinde\w*|kad[ıi]n\w*|"
+    r"jugadoras|campeonas|las chicas|jogadoras|giocatrici|calciatrici|joueuses|championnes|spielerinnen|trainerin|speelsters|"
+    r"voleibol|volley(ball)?|basket(ball)?|futsal|hockey|h[óo]quei|andebol)\b", re.I)
+# 유소년 — 제목에서만('Norway U21 international winger' 처럼 1군 선수 소개에 나오는 'U21' 은 아님, 스페인어 'primavera'(봄)는
+# 아님 — 이탈리아 유소년 리그 'Primavera' 는 대문자로만)
+YOUTH = re.compile(r"\b(?:[Jj]uvenil|[Jj]ugend\w*|Primavera|[Uu]\s?-?(?:1\d|2[0-3])(?!\s+(?:international|nationalspieler|"
+                   r"internacional|internazionale|international\w*)))\b")
+
+
+# 기사 주소의 여자 축구 경로 — 'mundodeportivo.com/futbol/femenino/…'·'…-wsl-match-report' 처럼 제목엔 낱말이 없어도
+# 매체가 여자 축구 섹션에 둔 기사(10/26 화면에 30건 남아 있었다)
+WOMEN_URL = re.compile(r"[/_-](?:women|womens|wsl|femenino|femenina|futbol-femenino|feminin\w*|frauen\w*|vrouwen\w*|kvinde\w*|"
+                       r"kadin\w*|ladies|liga-f)(?=[/_.-]|$)", re.I)
+
+
+def other_squad(headline: str, rest: str = "", link: str = "") -> bool:
+    """여자팀·다른 종목(제목·요약·매체·주소) 또는 유소년(제목) 기사인가."""
+    return bool(OTHER_SQUAD.search(f"{headline} {rest}") or YOUTH.search(headline or "")
+                or WOMEN_URL.search(str(link or "").split("?")[0]))
+
+
 def _fold(s) -> str:
     return " ".join(re.sub(r"[^a-z0-9 ]", " ", unidecode(str(s or "")).lower()).split())
 
@@ -102,4 +130,6 @@ def relevant(row: dict, terms, tagged: bool) -> bool:
     """기사 하나(dict: headline, descr, published, first_seen)가 이 팀 기사인가."""
     if not recent(row.get("published"), row.get("first_seen")):
         return False
+    if other_squad(str(row.get("headline") or ""), f"{row.get('descr') or ''} {row.get('source') or ''}", str(row.get("link") or "")):
+        return False                                    # 여자팀·유소년·다른 종목 — 선수 태그가 있어도(동명이인·같은 성)
     return tagged or mentions(f"{row.get('headline') or ''} {row.get('descr') or ''}", terms)
