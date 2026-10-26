@@ -3075,6 +3075,9 @@ def news(team: str, league: str = ACTIVE_LEAGUE):
     import news_sources  # noqa: PLC0415
     import news_stories  # noqa: PLC0415
     terms = nr.team_terms(team, (tm.team_fullname(team), *news_sources.cached_local_names(team)))   # 'Standard Luik' 같은 현지 표기
+    # 이 팀 기사에서 소문자로 자주 쓰인 이름 낱말(정식 이름의 'futbol'·'clube' 등)은 팀을 가리키지 못한다 — 뺀다
+    weak = nr.common_words((f"{h} {d}" for h, d in zip(ta["headline"].fillna(""), ta["descr"].fillna(""))), terms)
+    terms = tuple(t for t in terms if t not in weak)
     rows = [r for _, r in ta.iterrows()
             if nr.relevant(r.to_dict(), terms, bool(tagmap.get(str(r.get("link") or ""))))]
     rows = rows[:NEWS_MAX]

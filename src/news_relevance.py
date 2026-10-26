@@ -40,9 +40,51 @@ def team_terms(team: str, extra: tuple = ()) -> tuple[str, ...]:
     return tuple(sorted(out, key=len, reverse=True))
 
 
+_WORD = re.compile(r"\w+", re.U)
+
+
+def common_words(texts, terms, min_n: int = 5, share: float = 0.3) -> set[str]:
+    """이 팀 기사 원문에서 소문자로 자주 쓰인 이름 낱말 = 흔한 말 — 팀을 가리키지 못한다.
+    정식 이름의 'futbol'(Villarreal Club de Fútbol)·'clube'(Sporting Clube)·'1907'(Como 1907)이 그 낱말만으로 아무 기사나
+    그 팀 기사로 만들었다(2026-10-26, 라리가 'futbol' 소문자 81~100%). 손으로 적은 목록 대신 그 팀 기사 묶음에서 잰다."""
+    single = {t for t in terms if " " not in t}
+    n: dict[str, int] = {}
+    low: dict[str, int] = {}
+    for s in texts:
+        for w in _WORD.findall(str(s or "")):
+            f = _fold(w)
+            if f in single:
+                n[f] = n.get(f, 0) + 1
+                if not w[:1].isupper():
+                    low[f] = low.get(f, 0) + 1
+    return {w for w in single if n.get(w, 0) >= min_n and low.get(w, 0) / n[w] >= share}
+
+
+def _proper(words: list[str], folded: list[str], term: str) -> bool:
+    """원문에서 이름이 고유명사 꼴로 쓰였나 — 첫 낱말과 4자 이상 낱말은 대문자 시작('Vitória de Guimarães' 의 'de' 는 예외)."""
+    tw = term.split()
+    k = len(tw)
+    for i in range(len(folded) - k + 1):
+        if folded[i:i + k] == tw and all(w[:1].isupper() or w[:1].isdigit()
+                                         for j, w in enumerate(words[i:i + k]) if j == 0 or len(w) >= 4):
+            return True
+    return False
+
+
 def mentions(text, terms) -> bool:
+    """이름이 원문에서 고유명사(대문자 시작)로 쓰였을 때만 — 'four boys'·'two young boys murdered' 같은 일반 기사가
+    영보이스 기사가 됐다(2026-10-26). 접은 글자로 먼저 거르고(빠름), 맞는 것만 원문 대소문자를 본다."""
     t = f" {_fold(text)} "
-    return any(f" {x} " in t for x in terms)
+    words = folded = None
+    for x in terms:
+        if f" {x} " not in t:
+            continue
+        if words is None:
+            words = _WORD.findall(str(text or ""))
+            folded = [_fold(w) for w in words]
+        if _proper(words, folded, x):
+            return True
+    return False
 
 
 def recent(published, first_seen, today: dt.date | None = None, days: int = MAX_DAYS) -> bool:

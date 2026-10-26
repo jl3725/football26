@@ -117,7 +117,8 @@ SPAM = re.compile(r"live\s*-?\s*stream|livestream|streaming|watch\s*live|live\s*
                   r"direct\s*gratuit|en\s*vivo|in\s*diretta|promo\s*code|bonus|betting\s*tips|[！-～]|[!@#~+]{2,}", re.I)
 # 같은 클럽의 다른 종목·여자팀·유소년(배구·풋살·Women·Primavera …) — 1군 축구 기사만
 OTHER_SQUAD = re.compile(r"\b(women|womens|ladies|feminin[ao]?|femenino|femminile|frauen|vrouwen|f[ée]minine|voleibol|"
-                         r"volley(ball)?|basket(ball)?|futsal|hockey|h[óo]quei|andebol|handball|primavera|juvenil|u-?1\d|u-?2[0-3])\b",
+                         r"volley(ball)?|basket(ball)?|futsal|hockey|h[óo]quei|andebol|handball|primavera|juvenil|jugend|"
+                         r"u\s?-?1\d|u\s?-?2[0-3])\b",   # 'Young Boys U 21'·'BSC Young Boys Jugend' 이 1군 기사로 남았다(10/26)
                          re.I)
 
 
