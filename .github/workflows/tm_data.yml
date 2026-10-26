@@ -33,9 +33,9 @@ jobs:
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}   # 새 부상명 한글 표기(무료 등급, src/injury_names.py)
       MODE: ${{ github.event.schedule == '30 3 * * 1' && 'weekly' || inputs.mode || 'daily' }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
 
