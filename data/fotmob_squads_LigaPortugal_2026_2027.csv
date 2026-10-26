@@ -45,7 +45,7 @@ Benfica,Fredrik Aursnes,310768,midfielders,"CDM,RB,RW,CM,LW",Defensive Midfield,
 Benfica,Georgiy Sudakov,1192398,midfielders,"CAM,LW",Attacking Midfield,MF,24,2002-09-01,10.0,UKR,False,,2026-10-26
 Benfica,Jakub Kamiński,1067260,midfielders,"CAM,LW,LM,CM,RWB,RM,CDM",Attacking Midfield,MF,24,2002-06-05,13.0,POL,True,Day to day,2026-10-26
 Benfica,Manu Silva,1198071,midfielders,CDM,Defensive Midfield,MF,25,2001-06-12,16.0,POR,False,,2026-10-26
-Benfica,Leandro Barreiro,930065,midfielders,"CDM,CAM,CM",Defensive Midfield,MF,26,2000-01-03,18.0,LUX,False,,2026-10-26
+Benfica,Leandro Barreiro,930065,midfielders,"CDM,CAM,CM",Defensive Midfield,MF,26,2000-01-03,18.0,LUX,True,Early July 2027,2026-10-26
 Benfica,João Palhinha,524434,midfielders,"CDM,CB,CM",Defensive Midfield,MF,31,1995-07-09,36.0,POR,False,,2026-10-26
 Benfica,José Neto,1843149,midfielders,"LM,LB",Left Midfield,MF,18,2008-04-19,62.0,POR,False,,2026-10-26
 Benfica,Miguel Figueiredo,1801706,midfielders,CM,Central Midfield,MF,18,2008-08-02,73.0,POR,False,,2026-10-26
@@ -56,7 +56,7 @@ Benfica,Vangelis Pavlidis,637749,attackers,ST,Centre-Forward,FW,27,1998-11-21,14
 Benfica,Andreas Schjelderup,1228558,attackers,"LW,RW",Left Winger,FW,22,2004-06-01,21.0,NOR,False,,2026-10-26
 Benfica,Jhon Durán,1088066,attackers,ST,Centre-Forward,FW,22,2003-12-13,22.0,COL,False,,2026-10-26
 Benfica,Gianluca Prestianni,1363660,attackers,"RW,LW,CAM,LM",Right Winger,FW,20,2006-01-31,25.0,ARG,False,,2026-10-26
-Benfica,Rafa Silva,477023,attackers,"CAM,RW,LW",Attacking Midfield,FW,33,1993-05-17,27.0,POR,False,,2026-10-26
+Benfica,Rafa Silva,477023,attackers,"RW,CAM,LW",Right Winger,FW,33,1993-05-17,27.0,POR,False,,2026-10-26
 Benfica,Claudio Echeverri,1486264,attackers,"ST,CAM",Centre-Forward,FW,20,2006-01-02,30.0,ARG,False,,2026-10-26
 Benfica,Anísio Cabral,1760687,attackers,ST,Centre-Forward,FW,18,2008-02-15,72.0,POR,False,,2026-10-26
 Sporting CP,Rui Silva,361717,keepers,GK,Goalkeeper,GK,32,1994-02-07,1.0,POR,False,,2026-10-26
@@ -64,11 +64,11 @@ Sporting CP,Kaique Pereira,1320169,keepers,GK,Goalkeeper,GK,23,2003-04-16,30.0,B
 Sporting CP,Diego Callai,1282449,keepers,GK,Goalkeeper,GK,22,2004-07-18,41.0,BRA,False,,2026-10-26
 Sporting CP,Zeno Debast,1232172,defenders,CB,Centre-Back,DF,23,2003-10-24,6.0,BEL,True,Early November 2026,2026-10-26
 Sporting CP,Georgios Vagiannidis,1119687,defenders,RB,Right-Back,DF,25,2001-09-12,13.0,GRE,False,,2026-10-26
-Sporting CP,Moncef Zekri,1755850,defenders,"LB,LM,LW",Left-Back,DF,18,2008-09-20,18.0,MAR,False,,2026-10-26
+Sporting CP,Moncef Zekri,1755850,defenders,"LB,LW",Left-Back,DF,18,2008-09-20,18.0,MAR,False,,2026-10-26
 Sporting CP,Maxi Araújo,1031656,defenders,"LB,LW,LM",Left-Back,DF,26,2000-02-15,20.0,URU,False,,2026-10-26
 Sporting CP,Iván Fresneda,1325998,defenders,"RB,LB",Right-Back,DF,22,2004-09-28,22.0,ESP,False,,2026-10-26
 Sporting CP,Gonçalo Inácio,1165710,defenders,CB,Centre-Back,DF,25,2001-08-25,25.0,POR,False,,2026-10-26
-Sporting CP,Rodrigo Dias,1703622,defenders,"RB,LB,RM,CB",Right-Back,DF,21,2005-07-12,50.0,POR,False,,2026-10-26
+Sporting CP,Rodrigo Dias,1703622,defenders,"RB,LB,RM",Right-Back,DF,21,2005-07-12,50.0,POR,False,,2026-10-26
 Sporting CP,Ibrahima Ba,1609327,defenders,CB,Centre-Back,DF,21,2005-05-26,55.0,SEN,False,,2026-10-26
 Sporting CP,Salvador Blopa,1712326,defenders,"RB,RW",Right-Back,DF,19,2007-06-13,70.0,POR,False,,2026-10-26
 Sporting CP,Eduardo Quaresma,1156380,defenders,"CB,RB",Centre-Back,DF,24,2002-03-02,72.0,POR,False,,2026-10-26
@@ -76,9 +76,9 @@ Sporting CP,Sotiris Alexandropoulos,1093025,midfielders,CDM,Defensive Midfield,M
 Sporting CP,Silas Andersen,1425101,midfielders,"CDM,CM",Defensive Midfield,MF,22,2004-06-13,4.0,DEN,False,,2026-10-26
 Sporting CP,Sergi Altimira,1310480,midfielders,"CDM,CM",Defensive Midfield,MF,25,2001-08-25,5.0,ESP,False,,2026-10-26
 Sporting CP,João Simões,1663855,midfielders,"CDM,CM",Defensive Midfield,MF,19,2007-01-06,8.0,POR,False,,2026-10-26
-Sporting CP,Nestory Irankunda,1327214,midfielders,"RM,LW,CAM,RW,ST",Right Midfield,MF,20,2006-02-09,19.0,AUS,False,,2026-10-26
+Sporting CP,Nestory Irankunda,1327214,midfielders,"RM,LW,LM,ST,CAM",Right Midfield,MF,20,2006-02-09,19.0,AUS,False,,2026-10-26
 Sporting CP,Pedro Lima,1459257,midfielders,"CM,CAM",Central Midfield,MF,23,2003-03-27,21.0,BRA,False,,2026-10-26
-Sporting CP,Eduardo Felicíssimo,1648470,midfielders,"CB,CM,CDM",Centre-Back,MF,19,2007-01-08,73.0,POR,False,,2026-10-26
+Sporting CP,Eduardo Felicíssimo,1648470,midfielders,"CM,CDM,CB",Central Midfield,MF,19,2007-01-08,73.0,POR,False,,2026-10-26
 Sporting CP,Issa Doumbia,1339345,midfielders,"CM,CDM,LW",Central Midfield,MF,23,2003-10-16,77.0,ITA,False,,2026-10-26
 Sporting CP,Delcio Aurelio,1918387,attackers,,Centre-Forward,FW,19,2007-06-20,,ANG,False,,2026-10-26
 Sporting CP,Rodrigo Rodrigues,1759322,attackers,,Centre-Forward,FW,18,2007-12-06,,POR,False,,2026-10-26
@@ -89,7 +89,7 @@ Sporting CP,Nuno Santos,554283,attackers,LB,Left-Back,FW,31,1995-02-13,11.0,POR,
 Sporting CP,Rodrigo Zalazar,1070776,attackers,"RW,CAM,CM,ST",Right Winger,FW,27,1999-08-12,17.0,URU,True,Early November 2026,2026-10-26
 Sporting CP,Jesse Derry,1526704,attackers,LW,Left Winger,FW,19,2007-06-30,28.0,ENG,False,,2026-10-26
 Sporting CP,Luís Guilherme,1458757,attackers,"LW,RW",Left Winger,FW,20,2006-02-09,31.0,BRA,False,,2026-10-26
-Sporting CP,Flávio Gonçalves,1691190,attackers,"LW,RW,LM",Left Winger,FW,19,2007-05-30,58.0,POR,False,,2026-10-26
+Sporting CP,Flávio Gonçalves,1691190,attackers,"LW,LM,RW",Left Winger,FW,19,2007-05-30,58.0,POR,False,,2026-10-26
 Sporting CP,Luis Suárez,792303,attackers,ST,Centre-Forward,FW,28,1997-12-02,97.0,COL,False,,2026-10-26
 Santa Clara,Lucas França,750049,keepers,GK,Goalkeeper,GK,30,1996-01-19,1.0,BRA,False,,2026-10-26
 Santa Clara,Neneca,1463488,keepers,GK,Goalkeeper,GK,23,2003-08-27,12.0,BRA,False,,2026-10-26
@@ -109,15 +109,15 @@ Santa Clara,Dje,2386904,midfielders,,Central Midfield,MF,23,2003-02-06,8.0,CPV,F
 Santa Clara,Djé Tavares,1759728,midfielders,"CM,CDM,CAM",Central Midfield,MF,23,2003-06-02,8.0,CPV,False,,2026-10-26
 Santa Clara,Vasconcelos,1507906,midfielders,CAM,Attacking Midfield,MF,21,2005-02-26,17.0,POR,False,,2026-10-26
 Santa Clara,Tiago Ribeiro,1331118,midfielders,"CM,CDM,CAM",Central Midfield,MF,24,2002-03-14,20.0,POR,False,,2026-10-26
+Santa Clara,Vitinho,1625789,midfielders,LW,Left Winger,MF,22,2004-02-18,22.0,BRA,False,,2026-10-26
 Santa Clara,Frederico Silva,1843166,midfielders,,Central Midfield,MF,20,2006-05-25,25.0,POR,False,,2026-10-26
 Santa Clara,Daniel Borges,1615930,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,23,2003-04-06,41.0,BRA,False,,2026-10-26
 Santa Clara,Seydou Fofana,2173070,midfielders,,Central Midfield,MF,19,2007-09-08,81.0,BFA,False,,2026-10-26
 Santa Clara,Luis Fernando,1570655,attackers,ST,Centre-Forward,FW,21,2005-04-12,7.0,BRA,False,,2026-10-26
 Santa Clara,Gonçalo Paciência,388514,attackers,ST,Centre-Forward,FW,32,1994-08-01,9.0,POR,False,,2026-10-26
-Santa Clara,Brenner,1525452,attackers,"RW,LW,ST",Right Winger,FW,24,2002-01-02,10.0,BRA,False,,2026-10-26
+Santa Clara,Brenner,1525452,attackers,"LW,RW,ST",Left Winger,FW,24,2002-01-02,10.0,BRA,False,,2026-10-26
 Santa Clara,Welinton,1072255,attackers,"RW,LW,LM",Right Winger,FW,27,1999-06-30,11.0,BRA,False,,2026-10-26
 Santa Clara,Afonso Duarte,1530312,attackers,LW,Left Winger,FW,21,2005-09-05,18.0,POR,False,,2026-10-26
-Santa Clara,Vitinho,1625789,attackers,LW,Left Winger,FW,22,2004-02-18,22.0,BRA,False,,2026-10-26
 Santa Clara,Vital Maia,1711999,attackers,,Centre-Forward,FW,19,2007-02-17,51.0,POR,False,,2026-10-26
 Santa Clara,Vinícius,1044194,attackers,"RW,LW,LM,ST",Right Winger,FW,27,1999-05-07,70.0,BRA,False,,2026-10-26
 Santa Clara,Léo Jacó,1801079,attackers,ST,Centre-Forward,FW,21,2005-04-06,73.0,BRA,False,,2026-10-26
@@ -186,7 +186,7 @@ Gil Vicente FC,André Picornell,1387418,keepers,GK,Goalkeeper,GK,22,2004-04-03,1
 Gil Vicente FC,Lucão,1088156,keepers,GK,Goalkeeper,GK,25,2001-02-26,30.0,BRA,False,,2026-10-26
 Gil Vicente FC,Tiago Ferreira,2131161,keepers,,Goalkeeper,GK,17,2009-01-12,44.0,POR,False,,2026-10-26
 Gil Vicente FC,Samuel Portugal,493724,keepers,GK,Goalkeeper,GK,32,1994-03-29,94.0,BRA,False,,2026-10-26
-Gil Vicente FC,José Silva,1553491,defenders,"RB,RM",Right-Back,DF,21,2005-08-20,2.0,POR,False,,2026-10-26
+Gil Vicente FC,José Silva,1553491,defenders,RB,Right-Back,DF,21,2005-08-20,2.0,POR,False,,2026-10-26
 Gil Vicente FC,Antonio Espigares,1425768,defenders,CB,Centre-Back,DF,22,2004-09-05,3.0,ESP,False,,2026-10-26
 Gil Vicente FC,Marvin Gilbert,1242634,defenders,CB,Centre-Back,DF,23,2003-02-20,4.0,FRA,False,,2026-10-26
 Gil Vicente FC,Weverson,891744,defenders,LB,Left-Back,DF,26,2000-07-05,26.0,BRA,False,,2026-10-26
@@ -233,7 +233,7 @@ Alverca,Davy Gui,1707494,midfielders,"CDM,CM",Defensive Midfield,MF,20,2006-06-1
 Alverca,Vasco Moreira,1524672,midfielders,"CM,LW,RW",Central Midfield,MF,25,2001-05-07,8.0,POR,False,,2026-10-26
 Alverca,Isaac James,1670614,midfielders,"LM,CB,LWB,LB",Left Midfield,MF,22,2004-08-28,12.0,NGA,False,,2026-10-26
 Alverca,Zakaria Kassary,1813121,midfielders,CM,Central Midfield,MF,20,2006-01-25,18.0,MAR,False,,2026-10-26
-Alverca,Diogo Spencer,1374499,midfielders,"RM,RWB,RB,CAM,LM",Right Midfield,MF,22,2004-04-17,20.0,POR,False,,2026-10-26
+Alverca,Diogo Spencer,1374499,midfielders,"RM,RWB,CAM,LM",Right Midfield,MF,22,2004-04-17,20.0,POR,False,,2026-10-26
 Alverca,Ian Luccas,1459547,midfielders,"CDM,CM,ST,CAM",Defensive Midfield,MF,23,2003-02-11,25.0,BRA,False,,2026-10-26
 Alverca,Rayan Lucas,1578180,midfielders,"CM,CDM",Central Midfield,MF,21,2005-01-03,35.0,BRA,False,,2026-10-26
 Alverca,Francisco Chissumba,1524671,midfielders,"LM,LWB",Left Midfield,MF,21,2005-05-29,55.0,POR,False,,2026-10-26
@@ -258,7 +258,7 @@ Braga,Adrian Barišić,1242261,defenders,CB,Centre-Back,DF,25,2001-07-19,37.0,BI
 Braga,Adrian Bajrami,1348741,defenders,"CB,LB",Centre-Back,DF,24,2002-04-05,44.0,SUI,False,,2026-10-26
 Braga,Víctor Gómez,927647,midfielders,"RM,RB,RWB,CB",Right Midfield,MF,26,2000-04-01,2.0,ESP,False,,2026-10-26
 Braga,João Moutinho,37549,midfielders,"CM,CDM",Central Midfield,MF,40,1986-09-08,8.0,POR,False,,2026-10-26
-Braga,Tomás Marqués,1777474,midfielders,CDM,Defensive Midfield,MF,19,2006-10-30,16.0,ESP,False,,2026-10-26
+Braga,Tomás Marqués,1777474,midfielders,CM,Central Midfield,MF,19,2006-10-30,16.0,ESP,False,,2026-10-26
 Braga,Mario Dorgeles,1395939,midfielders,"RM,RW,LM",Right Midfield,MF,22,2004-08-07,20.0,CIV,False,,2026-10-26
 Braga,Denis Huseinbašić,1235068,midfielders,"CM,CDM",Central Midfield,MF,25,2001-07-03,23.0,BIH,False,,2026-10-26
 Braga,Jean-Baptiste Gorby,1292369,midfielders,"CM,CDM",Central Midfield,MF,24,2002-07-25,29.0,FRA,False,,2026-10-26
@@ -271,7 +271,7 @@ Braga,Pau Víctor,1159237,attackers,"ST,RW,LW,CAM",Centre-Forward,FW,24,2001-11-
 Braga,Gabriel Silva,1173684,attackers,"LW,RW,ST,LM,RM,LWB",Left Winger,FW,24,2002-03-22,11.0,BRA,False,,2026-10-26
 Braga,Jovan Milošević,1366937,attackers,ST,Centre-Forward,FW,21,2005-07-31,17.0,SRB,False,,2026-10-26
 Braga,Jonas Wind,889785,attackers,ST,Centre-Forward,FW,27,1999-02-07,19.0,DEN,False,,2026-10-26
-Braga,Ricardo Horta,432591,attackers,"LW,CAM,RW,ST",Left Winger,FW,32,1994-09-15,21.0,POR,False,,2026-10-26
+Braga,Ricardo Horta,432591,attackers,"LW,CAM,ST,RW",Left Winger,FW,32,1994-09-15,21.0,POR,False,,2026-10-26
 Braga,João Aragão,1797159,attackers,RW,Right Winger,FW,18,2008-03-24,72.0,POR,False,,2026-10-26
 Moreirense,Aranha,1791824,keepers,,Goalkeeper,GK,21,2005-02-07,1.0,BRA,False,,2026-10-26
 Moreirense,Francisco Barbosa,2233014,keepers,,Goalkeeper,GK,18,2007-11-13,12.0,POR,False,,2026-10-26
@@ -503,23 +503,23 @@ Rio Ave,Gustavo Mancha,1736561,defenders,CB,Centre-Back,DF,22,2004-07-25,39.0,BR
 Rio Ave,Caike,1931556,defenders,,Centre-Back,DF,21,2005-05-14,60.0,BRA,False,,2026-10-26
 Rio Ave,Andreas-Richardos Ntoi,1403350,midfielders,"CDM,CM,CB,RB",Defensive Midfield,MF,23,2003-02-02,5.0,GRE,False,,2026-10-26
 Rio Ave,Ryan Guilherme,1254743,midfielders,CDM,Defensive Midfield,MF,23,2002-12-07,8.0,BRA,False,,2026-10-26
-Rio Ave,Brandon Aguilera,1021336,midfielders,"CM,CDM",Central Midfield,MF,23,2003-06-28,10.0,CRC,True,Early December 2026,2026-10-26
+Rio Ave,Brandon Aguilera,1021336,midfielders,CM,Central Midfield,MF,23,2003-06-28,10.0,CRC,True,Early December 2026,2026-10-26
 Rio Ave,Malik Sellouki,1230595,midfielders,"RM,CAM,ST,LM",Right Midfield,MF,26,2000-03-21,19.0,FRA,False,,2026-10-26
 Rio Ave,João Tomé,1374504,midfielders,"RM,RB",Right Midfield,MF,23,2003-02-12,20.0,POR,False,,2026-10-26
 Rio Ave,Tamás Nikitscher,1204394,midfielders,"CDM,CM",Defensive Midfield,MF,26,1999-11-03,44.0,HUN,False,,2026-10-26
 Rio Ave,Giorgos Liavas,958222,midfielders,"CDM,CM,RB",Defensive Midfield,MF,25,2001-02-12,54.0,GRE,False,,2026-10-26
 Rio Ave,Antoine Wenck,2131163,midfielders,,Central Midfield,MF,20,2006-06-30,70.0,SEN,False,,2026-10-26
 Rio Ave,Dijar Ferati,1640801,midfielders,LM,Left Midfield,MF,18,2008-09-24,75.0,ALB,False,,2026-10-26
-Rio Ave,Miguel Patricio,2131164,midfielders,"CAM,CDM",Attacking Midfield,MF,19,2007-01-27,79.0,POR,False,,2026-10-26
+Rio Ave,Miguel Patricio,2131164,midfielders,CAM,Attacking Midfield,MF,19,2007-01-27,79.0,POR,False,,2026-10-26
 Rio Ave,Diogo Nascimento,1210508,midfielders,"CDM,CAM,CM",Defensive Midfield,MF,23,2002-11-02,90.0,POR,False,,2026-10-26
 Rio Ave,Diogo Bezerra,1693611,attackers,"RW,LW",Right Winger,FW,24,2002-07-16,7.0,BRA,False,,2026-10-26
 Rio Ave,Tamble Monteiro,1195295,attackers,ST,Centre-Forward,FW,25,2000-11-15,9.0,GNB,False,,2026-10-26
 Rio Ave,Jalen Blesa,1611573,attackers,"ST,CAM,LW",Centre-Forward,FW,25,2001-02-05,11.0,ESP,False,,2026-10-26
 Rio Ave,Radek Šiler,1621148,attackers,ST,Centre-Forward,FW,22,2004-09-10,21.0,CZE,False,,2026-10-26
 Rio Ave,Tobías Medina,1513342,attackers,CAM,Attacking Midfield,FW,22,2004-03-03,27.0,ARG,False,,2026-10-26
-Rio Ave,Roland Galcík,972080,attackers,"RW,ST",Right Winger,FW,25,2001-06-30,30.0,SVK,False,,2026-10-26
+Rio Ave,Roland Galcík,972080,attackers,RW,Right Winger,FW,25,2001-06-30,30.0,SVK,False,,2026-10-26
 Rio Ave,Samuel Alves,1927468,attackers,,Centre-Forward,FW,18,2008-03-30,67.0,BRA,False,,2026-10-26
-Rio Ave,Dario Špikić,1067806,attackers,"LW,CAM",Left Winger,FW,27,1999-03-22,77.0,CRO,False,,2026-10-26
+Rio Ave,Dario Špikić,1067806,attackers,"LW,RW",Left Winger,FW,27,1999-03-22,77.0,CRO,False,,2026-10-26
 Rio Ave,Sebastian Clemmensen,1513663,attackers,"RW,ST",Right Winger,FW,23,2003-09-01,80.0,DEN,False,,2026-10-26
 Estoril,Joel Robles,186054,keepers,GK,Goalkeeper,GK,36,1990-06-17,1.0,ESP,False,,2026-10-26
 Estoril,Martin Turk,1201554,keepers,GK,Goalkeeper,GK,23,2003-08-21,16.0,SVN,False,,2026-10-26

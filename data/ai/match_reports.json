@@ -1439,6 +1439,46 @@
    "away": "Milan",
    "at": "2026-10-25T22:52:13+00:00",
    "model": "gemini-3.1-flash-lite"
+  },
+  "401885414": {
+   "text": "Benfica가 Santa Clara를 상대로 2-1 역전승을 거두며 승점 3점을 획득했다. 전반 32' Fernando가 페널티킥으로 선제골을 넣었으나, 후반 62' Vangelis Pavlidis의 동점골과 68' Gianluca Prestianni의 역전골이 터지며 경기가 뒤집혔고 후반 90'+6'에는 Benfica의 Jhon Durán이 퇴장당했다. 점유율은 Benfica가 61.1%로 우세했으나 유효 슈팅은 Santa Clara가 6개로 Benfica의 3개보다 많았다. 경기 전 팬 투표와 모델, Elo 예측 모두 Benfica의 승리를 점쳤으며 결과적으로 이 예측들은 적중했다.",
+   "date": "2026-10-26",
+   "home": "Santa Clara",
+   "away": "Benfica",
+   "at": "2026-10-26T21:16:31+00:00",
+   "model": "gemini-3.1-flash-lite"
+  },
+  "5904782": {
+   "text": "Galatasaray가 Fenerbahçe를 상대로 2-1 승리를 거두며 경기를 마무리했다. 결정적 장면으로는 Galatasaray의 Victor Osimhen이 29'과 44'에 연속 골을 터뜨렸고, Fenerbahçe는 62'에 Irfan Can Kahveci가 득점했다. 경기 내용에서는 점유율 61.7%-38.3%, 슈팅 23-4, 유효 슈팅 8-3으로 Galatasaray가 앞섰다. 사전에 모델과 Elo가 예측했던 Galatasaray 승리가 적중했다.",
+   "date": "2026-10-26",
+   "home": "Galatasaray",
+   "away": "Fenerbahçe",
+   "at": "2026-10-26T21:16:39+00:00",
+   "model": "gemini-flash-lite-latest"
+  },
+  "5739530": {
+   "text": "FC København과 OB의 경기는 1대1 무승부로 끝났다. 전반 34분 OB의 Noah Ganaus가 득점했으나, 후반 77분 FC København의 Birger Meling이 동점골을 넣었다. 경기에서 FC København은 점유율 68대 32, 슈팅 22대 7로 경기를 주도했으나 승리를 거두지 못했다. 사전에 FC København의 승리를 예상했던 모델과 Elo의 예측은 빗나갔다.",
+   "date": "2026-10-26",
+   "home": "FC København",
+   "away": "OB",
+   "at": "2026-10-26T21:16:46+00:00",
+   "model": "gemini-flash-lite-latest"
+  },
+  "5904783": {
+   "text": "Beşiktaş가 Başakşehir를 상대로 2-0 승리를 거뒀다. 76'에 Oh Hyeon-Gyu의 결승골이 터졌고, 89'에는 Junior Olaitan이 득점을 추가했다. 점유율 65.2% 대 34.8%, 슈팅 17-9 등 Beşiktaş가 경기 내용을 압도했다. 모델과 Elo의 Beşiktaş 승리 예측은 적중했다.",
+   "date": "2026-10-26",
+   "home": "Beşiktaş",
+   "away": "Başakşehir",
+   "at": "2026-10-26T21:16:54+00:00",
+   "model": "gemini-flash-lite-latest"
+  },
+  "5904779": {
+   "text": "Trabzonspor가 Rizespor와의 경기에서 4-3으로 역전승을 거뒀다. 전반전을 Rizespor가 2-0으로 앞섰으나, Trabzonspor는 49' Melih Kabasakal, 51' Aral Simsir, 57' Franculino Djú의 연속골로 경기를 뒤집은 뒤 68' Qazim Laçi에게 실점했으나 83' Franculino Djú의 결승골로 승리했다. 슈팅 수 14-9, 유효 슈팅 7-6, 패스 성공률 90% 대 80%로 Trabzonspor가 기록 면에서도 우위를 보였다. 경기 전 Trabzonspor의 승리를 점쳤던 모델과 Elo의 예측은 적중했다.",
+   "date": "2026-10-26",
+   "home": "Rizespor",
+   "away": "Trabzonspor",
+   "at": "2026-10-26T21:17:03+00:00",
+   "model": "gemini-flash-lite-latest"
   }
  },
  "fails": {}

@@ -11,7 +11,7 @@ Lugano,Lars Lukas Mai,844430,defenders,CB,Centre-Back,DF,26,2000-03-31,17.0,GER,
 Lugano,Joel Bichsel,1450813,defenders,CB,Centre-Back,DF,24,2002-03-04,18.0,SUI,False,,2026-10-26
 Lugano,Martim Marques,1520468,defenders,"LB,LWB,CB",Left-Back,DF,22,2004-02-11,26.0,POR,False,,2026-10-26
 Lugano,Carbone,1671354,defenders,LB,Left-Back,DF,21,2005-01-29,44.0,BRA,True,About 1-2 weeks,2026-10-26
-Lugano,Behruzjon Karimov,1898281,midfielders,"RM,RWB,RB",Right Midfield,MF,19,2007-08-07,2.0,UZB,False,,2026-10-26
+Lugano,Behruzjon Karimov,1898281,midfielders,"RM,RWB,CAM,RB",Right Midfield,MF,19,2007-08-07,2.0,UZB,False,,2026-10-26
 Lugano,Anto Grgic,656668,midfielders,"CDM,CM",Defensive Midfield,MF,29,1996-11-28,8.0,SUI,False,,2026-10-26
 Lugano,Ahmed Kendouci,1124844,midfielders,"CAM,CM",Attacking Midfield,MF,27,1999-06-22,14.0,ALG,False,,2026-10-26
 Lugano,Yanis Cimignani,1177753,midfielders,"LWB,LM,RW,LW,RWB,RM,CAM,CM",Left-Back,MF,24,2002-01-22,21.0,FRA,False,,2026-10-26
@@ -23,7 +23,7 @@ Lugano,Mattia Zanotti,1276510,midfielders,"RWB,RB,CB,RM,LM,CAM",Right-Back,MF,23
 Lugano,Albian Ajeti,527104,attackers,ST,Centre-Forward,FW,29,1997-02-26,9.0,SUI,False,,2026-10-26
 Lugano,Renato Steffen,384376,attackers,"ST,CAM",Centre-Forward,FW,34,1991-11-03,11.0,SUI,True,Doubtful,2026-10-26
 Lugano,Claudio Cassano,1414036,attackers,RW,Right Winger,FW,23,2003-07-22,19.0,ITA,True,Early November 2026,2026-10-26
-Lugano,Beckham Castro,1454308,attackers,"RW,ST,CAM",Right Winger,FW,23,2003-09-12,22.0,COL,False,,2026-10-26
+Lugano,Beckham Castro,1454308,attackers,"ST,RW,CAM",Centre-Forward,FW,23,2003-09-12,22.0,COL,False,,2026-10-26
 Lugano,Elias Pihlström,1612762,attackers,"ST,LWB",Centre-Forward,FW,20,2006-08-31,24.0,SWE,False,,2026-10-26
 Lugano,Dereck Moncada,1738403,attackers,"RW,ST",Right Winger,FW,18,2007-11-30,30.0,HON,False,,2026-10-26
 Lugano,Nicolò Puddu,1785101,attackers,,Centre-Forward,FW,19,2007-09-19,32.0,SUI,False,,2026-10-26
@@ -77,10 +77,10 @@ Sion,Lorenzo Villa,1416117,defenders,CB,Centre-Back,DF,23,2003-07-26,55.0,ITA,Fa
 Sion,Alessandro Nisci,1808135,midfielders,,Central Midfield,MF,20,2006-01-23,,ITA,False,,2026-10-26
 Sion,Jason Almeida,2092866,midfielders,,Central Midfield,MF,21,2005-06-23,,POR,False,,2026-10-26
 Sion,Baltazar,949711,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,26,2000-05-06,8.0,BRA,True,A few weeks,2026-10-26
-Sion,Liam Chipperfield,1291567,midfielders,"CAM,CM,RW,CDM",Attacking Midfield,MF,22,2004-02-14,21.0,SUI,False,,2026-10-26
+Sion,Liam Chipperfield,1291567,midfielders,"CM,CAM,RW,CDM",Central Midfield,MF,22,2004-02-14,21.0,SUI,False,,2026-10-26
 Sion,Fodé Sylla,1438611,midfielders,"CAM,CM",Attacking Midfield,MF,20,2006-04-16,37.0,FRA,False,,2026-10-26
 Sion,Ryan Kessler,1641963,midfielders,RWB,Right-Back,MF,21,2005-08-28,38.0,SUI,False,,2026-10-26
-Sion,Donat Rrudhani,1100015,midfielders,"CAM,RW,CDM,LM,LW",Attacking Midfield,MF,27,1999-05-02,77.0,KVX,False,,2026-10-26
+Sion,Donat Rrudhani,1100015,midfielders,"RW,CAM,CDM,LM,LW",Right Winger,MF,27,1999-05-02,77.0,KVX,False,,2026-10-26
 Sion,Ali Kabacalman,682539,midfielders,"CDM,CM",Defensive Midfield,MF,31,1995-09-27,88.0,SUI,False,,2026-10-26
 Sion,Altin Shala,1576777,attackers,CM,Central Midfield,FW,23,2002-12-18,,SUI,False,,2026-10-26
 Sion,Djaota Mael Luyet,1785955,attackers,,Centre-Forward,FW,18,2007-12-09,,SUI,False,,2026-10-26
@@ -88,7 +88,7 @@ Sion,Islem Chouik,1683637,attackers,LM,Left Midfield,FW,23,2003-08-27,,SUI,False
 Sion,Ivano Srdoč,1842305,attackers,,Centre-Forward,FW,21,2005-05-08,,CRO,False,,2026-10-26
 Sion,Rayan Stoll,1761908,attackers,ST,Centre-Forward,FW,20,2006-03-19,,SUI,False,,2026-10-26
 Sion,Ilyas Chouaref,995447,attackers,"LW,RW,ST,CAM",Left Winger,FW,25,2000-12-12,7.0,MLT,False,,2026-10-26
-Sion,Josias Lukembila,1107422,attackers,"LW,RW,CAM,ST",Left Winger,FW,27,1999-09-09,9.0,SUI,False,,2026-10-26
+Sion,Josias Lukembila,1107422,attackers,"RW,LW,CAM,ST",Right Winger,FW,27,1999-09-09,9.0,SUI,False,,2026-10-26
 Sion,Benjamin Kololli,394472,attackers,"RW,CAM",Right Winger,FW,34,1992-05-15,10.0,KVX,False,,2026-10-26
 Sion,Winsley Boteli,1480623,attackers,"ST,CAM",Centre-Forward,FW,20,2006-07-05,13.0,SUI,False,,2026-10-26
 Sion,Franck Surdez,1269992,attackers,LW,Left Winger,FW,24,2002-05-05,19.0,SUI,False,,2026-10-26
@@ -210,7 +210,7 @@ Basel,Akpe Victory,1785229,defenders,CB,Centre-Back,DF,20,2006-07-19,55.0,NGA,Fa
 Basel,Adriano Onyegbule,1383307,midfielders,CAM,Attacking Midfield,MF,20,2006-06-23,,GER,False,,2026-10-26
 Basel,Metinho,1256694,midfielders,"CDM,CM",Defensive Midfield,MF,23,2003-04-23,5.0,BRA,False,,2026-10-26
 Basel,Ludwig Malachowski Thorell,1338075,midfielders,"CM,CDM,RW",Central Midfield,MF,21,2005-02-25,8.0,SWE,False,,2026-10-26
-Basel,Xherdan Shaqiri,176300,midfielders,"CAM,ST,RW",Attacking Midfield,MF,35,1991-10-10,10.0,SUI,False,,2026-10-26
+Basel,Xherdan Shaqiri,176300,midfielders,"CAM,RW,ST",Attacking Midfield,MF,35,1991-10-10,10.0,SUI,False,,2026-10-26
 Basel,Andrej Bacanin,1760251,midfielders,"CM,CDM,CAM",Central Midfield,MF,19,2007-03-07,14.0,SRB,False,,2026-10-26
 Basel,Gabriel Sigua,1448049,midfielders,"CDM,CM",Defensive Midfield,MF,21,2005-06-30,26.0,GEO,True,Unknown,2026-10-26
 Basel,Jean Doucoure,2076336,midfielders,CM,Central Midfield,MF,17,2009-03-17,41.0,SUI,False,,2026-10-26
@@ -316,7 +316,7 @@ Grasshopper,Luka Mikulić,1819492,defenders,CB,Centre-Back,DF,21,2005-05-07,4.0,
 Grasshopper,Abdoulaye Diaby,1054120,defenders,CB,Centre-Back,DF,26,2000-07-04,15.0,MLI,True,About 1-2 weeks,2026-10-26
 Grasshopper,Pantaleo Creti,1780247,defenders,LB,Left-Back,DF,18,2008-07-22,22.0,ITA,True,Unknown,2026-10-26
 Grasshopper,John Hilton,1285132,defenders,LB,Left-Back,DF,25,2001-06-15,25.0,USA,False,,2026-10-26
-Grasshopper,Simone Stroscio,1305752,defenders,"CB,RB,LM,LB",Centre-Back,DF,23,2003-08-20,28.0,SUI,False,,2026-10-26
+Grasshopper,Simone Stroscio,1305752,defenders,"CB,RB,LM,LB,RM",Centre-Back,DF,23,2003-08-20,28.0,SUI,False,,2026-10-26
 Grasshopper,Allan Arigoni,924873,defenders,"RB,LB",Right-Back,DF,27,1998-11-04,34.0,SUI,False,,2026-10-26
 Grasshopper,Bujar Pllana,1510878,defenders,CB,Centre-Back,DF,24,2001-10-29,44.0,ALB,False,,2026-10-26
 Grasshopper,Nico Rissi,1859293,defenders,LB,Left-Back,DF,22,2004-01-30,57.0,SUI,False,,2026-10-26
@@ -336,7 +336,7 @@ Grasshopper,Luke Plange,1113891,attackers,"RW,ST,LW",Right Winger,FW,23,2002-11-
 Grasshopper,Nikolas Muci,1257646,attackers,ST,Centre-Forward,FW,23,2003-02-08,9.0,SUI,False,,2026-10-26
 Grasshopper,Óscar Clemente,973765,attackers,"RW,CM",Right Winger,FW,27,1999-03-26,10.0,ESP,False,,2026-10-26
 Grasshopper,Giotto Morandi,861710,attackers,"CAM,RW",Attacking Midfield,FW,27,1999-03-04,11.0,SUI,False,,2026-10-26
-Grasshopper,Samuel Krasniqi,1833130,attackers,"LW,RW,LM,RM,CM",Left Winger,FW,21,2005-03-01,17.0,SUI,False,,2026-10-26
+Grasshopper,Samuel Krasniqi,1833130,attackers,"LW,LM,RW,RM,CM",Left Winger,FW,21,2005-03-01,17.0,SUI,False,,2026-10-26
 Grasshopper,Young-Jun Lee,1238478,attackers,ST,Centre-Forward,FW,23,2003-05-23,18.0,KOR,False,,2026-10-26
 Grasshopper,Diego Ferrazza,2120297,attackers,,Centre-Forward,FW,19,2007-05-04,20.0,ITA,False,,2026-10-26
 Grasshopper,Demis Fiechter,1988600,attackers,ST,Centre-Forward,FW,20,2005-12-30,36.0,SUI,False,,2026-10-26
@@ -345,12 +345,12 @@ Grasshopper,Julian von Moos,945926,attackers,ST,Centre-Forward,FW,25,2001-04-01,
 Lausanne,Thomas Castella,229798,keepers,GK,Goalkeeper,GK,33,1993-06-30,1.0,SUI,False,,2026-10-26
 Lausanne,Emilien Grosso,1867486,keepers,,Goalkeeper,GK,19,2006-12-13,61.0,SUI,False,,2026-10-26
 Lausanne,Melvin Mastil,1285492,keepers,GK,Goalkeeper,GK,26,2000-02-19,90.0,ALG,False,,2026-10-26
-Lausanne,Brandon Soppy,1178363,defenders,"RB,RW,RM",Right-Back,DF,24,2002-02-21,2.0,FRA,False,,2026-10-26
+Lausanne,Brandon Soppy,1178363,defenders,"RB,RM,RW",Right-Back,DF,24,2002-02-21,2.0,FRA,False,,2026-10-26
 Lausanne,Tyler Fredricson,1403351,defenders,CB,Centre-Back,DF,21,2005-02-23,3.0,ENG,True,Early December 2026,2026-10-26
 Lausanne,Étienne Youté Kinkoué,1337979,defenders,CB,Centre-Back,DF,24,2002-01-14,4.0,FRA,False,,2026-10-26
 Lausanne,Dircssi Ngonzo,1607519,defenders,CB,Centre-Back,DF,21,2005-07-31,5.0,SUI,False,,2026-10-26
 Lausanne,Theo Bergvall,1368642,defenders,RB,Right-Back,DF,22,2004-09-21,6.0,SWE,True,About 1-2 weeks,2026-10-26
-Lausanne,Morgan Poaty,792754,defenders,"LB,CB,LM",Left-Back,DF,29,1997-07-15,18.0,CGO,False,,2026-10-26
+Lausanne,Morgan Poaty,792754,defenders,"LB,LM,CB",Left-Back,DF,29,1997-07-15,18.0,CGO,False,,2026-10-26
 Lausanne,Hamza Abdallah,1576743,defenders,RB,Right-Back,DF,23,2003-06-13,20.0,FRA,False,,2026-10-26
 Lausanne,Thomas Cordier,1830662,defenders,LB,Left-Back,DF,20,2006-03-13,22.0,FRA,False,,2026-10-26
 Lausanne,Nicolas Cozza,865010,defenders,"CB,LB",Centre-Back,DF,27,1999-01-08,31.0,FRA,False,,2026-10-26
@@ -361,7 +361,7 @@ Lausanne,Karim Sow,1285493,defenders,CB,Centre-Back,DF,23,2003-05-22,71.0,SUI,Fa
 Lausanne,Olivier Custodio,462949,midfielders,"CDM,CM,CB",Defensive Midfield,MF,31,1995-02-10,10.0,SUI,False,,2026-10-26
 Lausanne,Nicky Beloko,892410,midfielders,"CDM,CM",Defensive Midfield,MF,26,2000-02-16,16.0,CMR,True,Unknown,2026-10-26
 Lausanne,Beyatt Lekoueiry,1326921,midfielders,"CAM,CM,RM",Attacking Midfield,MF,21,2005-04-11,27.0,MTN,True,Out for season,2026-10-26
-Lausanne,Alexis Blin,605848,midfielders,CDM,Defensive Midfield,MF,30,1996-09-16,29.0,FRA,False,,2026-10-26
+Lausanne,Alexis Blin,605848,midfielders,"CDM,CM",Defensive Midfield,MF,30,1996-09-16,29.0,FRA,False,,2026-10-26
 Lausanne,Souleymane N'Diaye,1662755,midfielders,CDM,Defensive Midfield,MF,20,2005-11-01,47.0,SUI,False,,2026-10-26
 Lausanne,Eren Özcan,1914667,midfielders,,Central Midfield,MF,18,2008-08-13,52.0,SUI,False,,2026-10-26
 Lausanne,Sekou Koné,1710742,midfielders,"CDM,CM",Defensive Midfield,MF,20,2006-02-03,80.0,MLI,False,,2026-10-26

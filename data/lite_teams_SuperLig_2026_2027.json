@@ -3,14 +3,6 @@
  "league": "SuperLig",
  "season": "2026_2027",
  "teams": {
-  "Amed Sportif": {
-   "fotmob_id": 96498,
-   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/96498.png",
-   "color": "#1B6900",
-   "tm_vid": 12382,
-   "tm_slug": "amed-sk",
-   "tm_name": "Amed Sportif"
-  },
   "Galatasaray": {
    "fotmob_id": 8637,
    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8637.png",
@@ -19,13 +11,13 @@
    "tm_slug": "galatasaray-istanbul",
    "tm_name": "Galatasaray"
   },
-  "Fenerbahçe": {
-   "fotmob_id": 8695,
-   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8695.png",
-   "color": "#002D72",
-   "tm_vid": 36,
-   "tm_slug": "fenerbahce-istanbul",
-   "tm_name": "Fenerbahçe"
+  "Amed Sportif": {
+   "fotmob_id": 96498,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/96498.png",
+   "color": "#1B6900",
+   "tm_vid": 12382,
+   "tm_slug": "amed-sk",
+   "tm_name": "Amed Sportif"
   },
   "Trabzonspor": {
    "fotmob_id": 9752,
@@ -35,14 +27,6 @@
    "tm_slug": "trabzonspor",
    "tm_name": "Trabzonspor"
   },
-  "Kasımpaşa": {
-   "fotmob_id": 4685,
-   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/4685.png",
-   "color": "#243781",
-   "tm_vid": 10484,
-   "tm_slug": "kasimpasa",
-   "tm_name": "Kasımpaşa"
-  },
   "Beşiktaş": {
    "fotmob_id": 10188,
    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/10188.png",
@@ -50,6 +34,22 @@
    "tm_vid": 114,
    "tm_slug": "besiktas-istanbul",
    "tm_name": "Beşiktaş"
+  },
+  "Fenerbahçe": {
+   "fotmob_id": 8695,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8695.png",
+   "color": "#002D72",
+   "tm_vid": 36,
+   "tm_slug": "fenerbahce-istanbul",
+   "tm_name": "Fenerbahçe"
+  },
+  "Kasımpaşa": {
+   "fotmob_id": 4685,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/4685.png",
+   "color": "#243781",
+   "tm_vid": 10484,
+   "tm_slug": "kasimpasa",
+   "tm_name": "Kasımpaşa"
   },
   "Kocaelispor": {
    "fotmob_id": 1569,
