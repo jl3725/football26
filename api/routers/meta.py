@@ -50,7 +50,8 @@ def health():
         "commit": os.getenv("RENDER_GIT_COMMIT", "")[:12],
         # 이 프로세스가 언제 떴나(재시작·재배포 횟수 확인) + 실행 중 데이터 받기 상태(src/live_sync.py)
         "up_since": live_sync.STATE["started"],
-        "live_sync": {k: live_sync.STATE[k] for k in ("enabled", "news_sha", "news_at", "small_at", "small_updated", "last_error")},
+        "live_sync": {k: live_sync.STATE[k] for k in ("enabled", "data_sha", "data_at", "db_at", "data_files",
+                                                       "news_sha", "news_at", "small_at", "small_updated", "last_error")},
     }
 
 

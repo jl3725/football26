@@ -7702,9 +7702,21 @@ def _warm_up() -> None:
         except Exception as e:  # noqa: BLE001 — 데우기는 실패해도 서비스엔 영향 없음
             print(f"[warm-up] 건너뜀: {type(e).__name__}: {e}", flush=True)
 
-    threading.Thread(target=run, name="warm-up", daemon=True).start()
-    # 운영(Render)에서만 — 뉴스·AI 요약·DATA 상태 파일을 재배포 없이 GitHub 에서 받는다(src/live_sync.py)
+    # 운영(Render)에서만 — 데이터·뉴스·DATA 상태를 재배포 없이 GitHub(data-live·data-news)에서 받는다(src/live_sync.py).
+    # 시작할 때는 데우기 전에 최신 데이터부터(코드 배포가 며칠 전이면 빌드한 데이터가 옛것), 실행 중 서버 DB 가 바뀌면
+    # live_sync 가 캐시를 비운 뒤 다시 데운다 — 재배포 때 프로세스가 새로 뜨며 하던 일
     import live_sync  # noqa: PLC0415
+
+    def boot():
+        if live_sync.enabled():
+            try:
+                live_sync.sync_data(notify=False)
+            except Exception as e:  # noqa: BLE001 — 못 받으면 빌드한 데이터로
+                print(f"[live-sync] 시작 데이터 받기 실패 {type(e).__name__}", flush=True)
+        run()
+
+    live_sync.on_db_swap(lambda: threading.Thread(target=run, name="warm-up", daemon=True).start())
+    threading.Thread(target=boot, name="warm-up", daemon=True).start()
     live_sync.start()
 
 

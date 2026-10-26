@@ -181,6 +181,9 @@ AGENTS: tuple[Agent, ...] = (
               Feed("infra", "벡터·그래프 핑", ("infra_ping",), ("daily_data",), "매일 13:30 KST", 36),
               Feed("graph", "그래프·벡터 재적재", ("kg_reload", "kg_extras", "vectors_reload"), ("kg_reload",),
                    "주 1회 · 화 12:00 KST", WEEK_H),
+              # 데이터 배포본(서버 DB·캐시 → data-live, 운영 서버가 바뀐 파일만 받음) — 데이터 커밋 재배포 대신(2026-10-26)
+              Feed("publish_data", "운영 데이터 배포본(data-live)", ("build_db_live", "team_units_live", "publish_data"),
+                   ("publish_data",), "데이터 수집이 끝날 때마다", 30, added="2026-10-26"),
           ), checks=("watchdog: hub(스냅샷 36시간)",)),
 )
 

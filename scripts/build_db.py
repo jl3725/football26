@@ -97,13 +97,17 @@ def build() -> None:
         print(f"  · {stem:38s} {len(combined):6d} rows  ({len(items)} file)")
 
     # 2) news.db articles 병합 — main 에 없으면 data-news 보관소에서 받는다(src/news_store.py, Render 빌드도 여기서)
-    if not NEWS_DB.exists():
+    #    SKIP_NEWS=1: 데이터 배포본 만들기(scripts/publish_data.py) — 뉴스 화면 DB 는 운영 서버가 따로 받는다(src/live_sync.py)
+    import os  # noqa: PLC0415
+    if os.getenv("SKIP_NEWS") == "1":
+        pass
+    elif not NEWS_DB.exists():
         try:
             import news_store  # noqa: PLC0415
             news_store.ensure()
         except Exception as e:  # noqa: BLE001 — 받지 못해도 나머지 표는 만든다
             print(f"  ! news.db 받기 실패: {e}")
-    if NEWS_DB.exists():
+    if os.getenv("SKIP_NEWS") != "1" and NEWS_DB.exists():
         # 뉴스 표(기사·선수 태그·분류)는 football.db 가 아니라 따로 둔 data/news_view.db 에 — 실행 중인 서버가 뉴스만
         # 갈아 끼울 수 있게(src/news_view.py · src/live_sync.py). 예전엔 뉴스가 바뀔 때마다 재배포였다(2026-10-26)
         try:

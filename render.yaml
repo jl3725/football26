@@ -31,15 +31,10 @@ services:
         - requirements-kg.txt
         - pytest.ini
         - docker-compose.yml
-        # 실행 중인 서버가 GitHub 에서 직접 받는 파일(src/live_sync.py) — 뉴스 커밋(2시간마다)·운영 기록만 바뀐 커밋은
-        # 재배포하지 않는다(2026-10-26: 36시간에 재배포 25번, 그중 뉴스 7번 — 그때마다 서버 재시작·캐시 비움)
-        - data/news_db.ref.json
-        - data/news_feeds.json
-        - data/news_claims.csv
-        - data/news_reliability.csv
-        - data/ai/news_digest.json
-        - data/ai/usage_*.json
-        - data/ops/**
+        # 데이터는 재배포하지 않는다 — 실행 중인 서버가 GitHub 에서 바뀐 파일만 받는다(src/live_sync.py: data-live 배포본은
+        # Publish Data 워크플로가 이 빌드와 같은 일을 클라우드에서, 뉴스는 data-news). 2026-10-26: 데이터 커밋마다 재배포해
+        # 3일 72번 — 그때마다 서버 재시작·캐시 비움. 이제 재배포는 코드가 바뀔 때만
+        - data/**
     envVars:
       - key: PYTHON_VERSION
         value: "3.12.7"

@@ -1,0 +1,69 @@
+name: Publish Data
+
+# 데이터 배포본 — 데이터 수집 워크플로가 끝나면 Render 빌드와 같은 일(서버 DB·미리 계산한 캐시)을 여기서 하고 data-live 브랜치에
+# 올린다(scripts/publish_data.py). 운영 서버가 바뀐 파일만 받아 바꿔 넣는다(src/live_sync.py) — 데이터 커밋마다 하던 재배포
+# (3일 72번)를 없앤다. render.yaml 은 data/** 만 바뀐 커밋을 재배포하지 않는다(2026-10-26).
+# 뉴스(Daily News)는 따로(data-news · live_sync 뉴스·작은 파일) — 여기서 다시 만들지 않는다.
+on:
+  workflow_run:
+    workflows: ["Match Refresh", "Daily Data Fetch", "TM Data", "KG Reload", "Daily World Cup Fetch"]
+    types: [completed]
+  workflow_dispatch:
+
+# 늘 가장 최근 main 으로 한 번만 — 앞의 실행이 아직이면 취소(뒤 실행이 그 데이터까지 담는다)
+concurrency:
+  group: publish-data
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      PYTHONIOENCODING: utf-8
+      SKIP_NEWS: "1"
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      # 운영 서버와 같은 의존성(pandas·numpy 고정) — 미리 계산한 캐시(pickle)를 서버가 그대로 읽는다
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Build server DB and caches (Render 빌드와 같은 일)
+        run: |
+          bash scripts/ci_try.sh "build_db_live" python scripts/build_db.py
+          bash scripts/ci_try.sh "team_units_live" python scripts/precompute_team_units.py
+
+      # DB·캐시 만들기가 하나라도 실패했으면 올리지 않는다 — 불완전한 DB 가 운영 서버로 가지 않게(서버는 이전 배포본 유지)
+      - name: Publish to data-live
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if [ -s "${COLLECT_FAILURES:-/tmp/collect_failures.txt}" ]; then
+            echo "::warning title=배포본 건너뜀::DB·캐시 만들기 실패 — 이전 배포본 유지"
+          else
+            bash scripts/ci_try.sh "publish_data" python scripts/publish_data.py
+          fi
+
+      - name: Commit run ledger
+        run: |
+          git add -- data/ops/runs/
+          if git diff --staged --quiet; then
+            echo "변경 없음 — 커밋 생략"
+          else
+            git commit -m "chore(ops): 데이터 배포본 실행 기록 [skip ci]"
+            bash scripts/ci_push.sh
+          fi
+
+      - name: Report failures
+        run: bash scripts/ci_report.sh
