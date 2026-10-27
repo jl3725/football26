@@ -1,11 +1,13 @@
 {
- "checked": "2026-10-26T14:37:10+00:00",
+ "checked": "2026-10-27T13:41:20+00:00",
  "results": {
   "ovr": [],
   "season": [],
   "hub": [],
   "frontend": [],
-  "backend": [],
+  "backend": [
+   "운영 백엔드가 옛 버전(d4fd71e) — 최신 코드 07522c0(2026-10-27T07:18) 미반영. Render 배포 로그 확인(시작 실패면 requirements 누락 의심)"
+  ],
   "workflows": [],
   "news": [],
   "tm_agent": [],
@@ -17,12 +19,9 @@
   "agents": [],
   "expectations": [],
   "screen": [],
-  "squads": [
-   "스쿼드 점검 실패 — ModuleNotFoundError: No module named 'fastapi'"
-  ],
-  "identity": [
-   "SuperLig 'Amedspor' ≈ 'Amed Sportif'?(0.53·fotmob_ratings) — 맞으면 src/squads.py ALIASES 에 추가"
-  ],
+  "squads": [],
+  "identity": [],
   "fair_price": []
- }
+ },
+ "ai_cause": "- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인) (backend)"
 }
