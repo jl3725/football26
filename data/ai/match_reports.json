@@ -1495,6 +1495,38 @@
    "away": "Osasuna",
    "at": "2026-10-26T22:34:10+00:00",
    "model": "gemini-flash-lite-latest"
+  },
+  "401917028": {
+   "text": "Augsburg가 DFB-포칼 경기에서 SG SONNENHOF GROßASPACH SONNENHOF GROßASPACH를 4-2로 꺾고 승리를 거뒀다. 전반 13'와 21'에 터진 Rodrigo Ribeiro의 멀티 골로 앞서 나간 Augsburg는 Luca Molinari와 Volkan Celiktas에게 실점하며 동점을 허용했으나, 69' Arijon Ibrahimovic의 결승 골과 74' Anton Kade의 추가 골로 승부를 결정지었다. Augsburg는 점유율 60%와 슈팅 19개, 유효 슈팅 9개를 기록하며 경기 내용 면에서 SG SONNENHOF GROßASPACH SONNENHOF GROßASPACH를 압도했다.",
+   "date": "2026-10-27",
+   "home": "SG SONNENHOF GROßASPACH SONNENHOF GROßASPACH",
+   "away": "Augsburg",
+   "at": "2026-10-27T19:35:48+00:00",
+   "model": "gemini-3.1-flash-lite"
+  },
+  "401916920": {
+   "text": "Frankfurt가 DFB-포칼에서 Hamburger SV를 3-1로 꺾고 승리했다. 후반 56' Robin Koch의 선제골을 시작으로 71' Jonathan Burkardt, 75' Younes Ebnoutalib가 연달아 득점하며 승기를 잡았고, Hamburger SV는 79' Terem Moffi가 한 골을 만회하는 데 그쳤다. Hamburger SV는 슈팅 15개와 유효 슈팅 6개로 Frankfurt보다 공격 지표가 앞섰으나, 효율적인 득점력을 보인 Frankfurt가 승리하며 Hamburger SV의 승리를 점쳤던 모델과 Elo의 예측은 빗나갔다.",
+   "date": "2026-10-27",
+   "home": "Hamburger SV",
+   "away": "Frankfurt",
+   "at": "2026-10-27T19:36:24+00:00",
+   "model": "gemini-3.1-flash-lite"
+  },
+  "401917029": {
+   "text": "VfL Bochum이 DFB-포칼에서 Mainz 05를 2-0으로 꺾고 승리를 거뒀다. 46' Christian Rasmussen의 선제골과 75' Philipp Hofmann의 추가골이 터지며 승부를 갈랐다. Mainz 05가 점유율 51.8%와 유효 슈팅 5개로 기록상 우위를 점했으나, VfL Bochum은 5개의 선방을 기록하며 효율적인 경기를 펼쳤다. 이번 결과는 Mainz 05의 승리를 점쳤던 Elo의 예측과는 다르게 나타났다.",
+   "date": "2026-10-27",
+   "home": "VfL Bochum",
+   "away": "Mainz 05",
+   "at": "2026-10-27T19:36:27+00:00",
+   "model": "gemini-3.1-flash-lite"
+  },
+  "401917027": {
+   "text": "RB Leipzig가 DFB-포칼 경기에서 Rot-Weiss Essen을 상대로 2-1 역전승을 거두었다. Rot-Weiss Essen이 9' Lucas Brumme의 골로 앞서갔으나, 44' Nicolas Seiwald의 퇴장 악재를 극복한 RB Leipzig가 78'와 82'에 터진 Christoph Baumgartner의 연속 골로 경기를 뒤집었다. 점유율 63%와 패스 성공률 80%를 기록한 RB Leipzig는 수적 열세 속에서도 주도권을 유지하며 Elo의 승리 예측을 적중시켰다.",
+   "date": "2026-10-27",
+   "home": "Rot-Weiss Essen",
+   "away": "RB Leipzig",
+   "at": "2026-10-27T19:36:31+00:00",
+   "model": "gemini-3.1-flash-lite"
   }
  },
  "fails": {}

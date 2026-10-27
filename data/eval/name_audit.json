@@ -672,11 +672,11 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 408,
-   "exact": 392,
+   "total": 428,
+   "exact": 411,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 16,
+   "orphan": 17,
    "orphans": [
     {
      "squad": "Augsburg",
@@ -757,6 +757,11 @@
      "squad": "Hamburger SV",
      "name": "Kelvin Ojo",
      "starts": 0
+    },
+    {
+     "squad": "Augsburg",
+     "name": "Loris Husic",
+     "starts": 0
     }
    ]
   },
@@ -777,8 +782,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 285,
-   "exact": 285,
+   "total": 287,
+   "exact": 287,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
