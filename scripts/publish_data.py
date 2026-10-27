@@ -10,7 +10,8 @@ data-live 트리
   manifest.json          main 커밋 · 만든 시각 · 파일별 sha256 · DB 묶음(football.db 의 sha256)
   data/…                 데이터 파일(main 에서 추적하는 것 — 서버가 따로 받는 뉴스·운영 기록 제외)
   data/football.db.gz    서버 DB(압축)
-  data/team_units.json · data/runtime_cache/*.pkl   같은 DB 로 만든 캐시 — DB 가 바뀔 때만 새로(아니면 이전 것 그대로)
+  data/team_units.json · data/runtime_cache/*.pkl   같은 DB·코드로 만든 캐시 — DB 나 코드 지문(manifest code_sig,
+                         src/code_sig.py)이 바뀔 때만 새로(아니면 이전 것 그대로). 2026-10-27: 모델만 바뀐 날 옛 OVR 캐시가 갔다
   web/vercel.json        이 브랜치는 웹 빌드 안 함
 
     python scripts/publish_data.py [--dry-run]     (먼저 SKIP_NEWS=1 build_db.py · precompute_team_units.py)
@@ -28,6 +29,9 @@ import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT / "src"))
+from code_sig import code_sig  # noqa: E402
+
 BRANCH = "data-live"
 DB = ROOT / "data" / "football.db"
 DB_GZ = "data/football.db.gz"
@@ -76,13 +80,15 @@ def remote_state() -> tuple[str | None, dict]:
         return None, {}
 
 
-def plan(local: dict[str, str], db_sha: str, remote: dict) -> dict:
-    """무엇을 새로 올리나 — {'changed': [...], 'db_changed': bool}. 순수 함수(테스트용)."""
+def plan(local: dict[str, str], db_sha: str, remote: dict, sig: str | None = None) -> dict:
+    """무엇을 새로 올리나 — {'changed', 'removed', 'db_changed', 'cache_changed'}. 순수 함수(테스트용).
+    cache_changed = DB 나 캐시를 만든 코드의 지문(sig)이 바뀜 → 캐시 묶음을 새로 올린다."""
     rfiles = remote.get("files") or {}
     db_changed = remote.get("db_sha") != db_sha
     changed = [p for p, h in local.items() if rfiles.get(p) != h]
     removed = [p for p in rfiles if p not in local and not p.startswith(("data/runtime_cache/", "data/team_units.json"))]
-    return {"changed": changed, "removed": removed, "db_changed": db_changed}
+    return {"changed": changed, "removed": removed, "db_changed": db_changed,
+            "cache_changed": db_changed or remote.get("code_sig") != sig}
 
 
 def main() -> int:
@@ -95,37 +101,43 @@ def main() -> int:
     main_sha = _git("rev-parse", "HEAD")
     files = {p: sha256(ROOT / p) for p in data_files()}
     db_sha = sha256(DB)
+    sig = code_sig()
     rcommit, remote = remote_state()
-    pl = plan(files, db_sha, remote)
-    if not pl["changed"] and not pl["removed"] and not pl["db_changed"]:
+    pl = plan(files, db_sha, remote, sig)
+    if not pl["changed"] and not pl["removed"] and not pl["cache_changed"]:
         print(f"[publish-data] 바뀐 것 없음 — 올리지 않음(data-live {str(rcommit)[:12]})")
         return 0
-    print(f"[publish-data] 데이터 파일 {len(pl['changed'])}개 바뀜 · 지움 {len(pl['removed'])} · DB {'바뀜' if pl['db_changed'] else '그대로'}")
+    print(f"[publish-data] 데이터 파일 {len(pl['changed'])}개 바뀜 · 지움 {len(pl['removed'])} · DB {'바뀜' if pl['db_changed'] else '그대로'}"
+          f" · 캐시 {'새로' if pl['cache_changed'] else '그대로'}")
     if dry:
         return 0
     names = list(files)                                # 경로 → blob sha (한 번에 — 파일 870개를 하나씩 부르면 느리다)
     entries: dict[str, str] = dict(zip(names, _git("hash-object", "-w", "--stdin-paths",
                                                    data="\n".join(names).encode()).splitlines()))
-    if pl["db_changed"] or not rcommit:
+    prev: dict[str, str] = {}                          # 이전 배포본의 경로 → blob (그대로 둘 DB·캐시)
+    if rcommit:
+        for line in _git("ls-tree", "-r", rcommit).splitlines():
+            meta, path = line.split("\t", 1)
+            prev[path] = meta.split()[2]
+    if pl["db_changed"] or DB_GZ not in prev:
         with tempfile.TemporaryDirectory() as td:
             gz = Path(td) / "football.db.gz"
             with DB.open("rb") as src, gzip.open(gz, "wb", compresslevel=6) as dst:
                 while chunk := src.read(1 << 20):
                     dst.write(chunk)
             entries[DB_GZ] = _git("hash-object", "-w", str(gz))
+    else:                                              # DB 그대로 — 이전 배포본의 DB 를 그대로 둔다
+        entries[DB_GZ] = prev[DB_GZ]
+    group = {p: h for p, h in (remote.get("files") or {}).items()
+             if p.startswith("data/runtime_cache/") or p == "data/team_units.json"}
+    if pl["cache_changed"] or not all(p in prev for p in group):
         group = {p: sha256(ROOT / p) for p in db_group()}
         gnames = list(group)
         entries.update(zip(gnames, _git("hash-object", "-w", "--stdin-paths", data="\n".join(gnames).encode()).splitlines()))
-    else:                                              # DB 그대로 — 이전 배포본의 DB·캐시 묶음을 그대로 둔다
-        group = {p: h for p, h in (remote.get("files") or {}).items()
-                 if p.startswith("data/runtime_cache/") or p == "data/team_units.json"}
-        ls = _git("ls-tree", "-r", rcommit)
-        for line in ls.splitlines():
-            meta, path = line.split("\t", 1)
-            if path == DB_GZ or path in group:
-                entries[path] = meta.split()[2]
+    else:                                              # DB·코드 그대로 — 이전 배포본의 캐시 묶음을 그대로 둔다
+        entries.update({p: prev[p] for p in group})
     manifest = {"main_sha": main_sha, "built_at": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"),
-                "db_sha": db_sha, "db_gz": DB_GZ, "files": {**files, **group}}
+                "db_sha": db_sha, "db_gz": DB_GZ, "code_sig": sig, "files": {**files, **group}}
     entries["manifest.json"] = _git("hash-object", "-w", "--stdin",
                                     data=(json.dumps(manifest, ensure_ascii=False, indent=1) + "\n").encode())
     entries["web/vercel.json"] = _git("hash-object", "-w", "--stdin", data=VERCEL_SKIP.encode())

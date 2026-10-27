@@ -145,10 +145,20 @@ YOUTH_ADJ_SCALE = 0.85     # v3.6: 잠재력 차감 0.85배 — 경기력 가중
 PE_A, PE_B = 79.85, 37.8
 # v3.8 탐색(golden 위반 0 · 스카우트 3+ 이탈 0): 6점 넘는 몫의 50% — Šeško 83→82 · Højlund 80→76 · Kvaratskhelia 88→87
 UNDERPERF_GAP, UNDERPERF_K, UNDERPERF_MIN_AGE = 6.0, 0.5, 22.0
+# 이번 시즌 부진(v3.10, 2026-10-27 사용자: '17위 맨유 쿠냐·음뵈모가 87 — 스탯이 반영되나'). 시장가치는 TM 이 다시 매기기
+# 전까지(EPL 은 시즌 중 1~2번) 시즌 시작 때 값이고, 경기력 보정에서 이번 시즌 몫은 시즌 초 10% 남짓이라 이번 시즌 부진이
+# 거의 안 보였다. 이번 시즌 평점 수준(리그+유럽·컵, 자기 커리어 수준 쪽으로 SLUMP_PRIOR_MIN 분어치 수축)이
+#   ① 자기 커리어 수준보다 낮고(decline) ② 지금 OVR 보다 PE 로 SLUMP_GAP 넘게 낮으면(over)
+# min(over, decline) 의 SLUMP_K × min(이번 시즌 출전 / SLUMP_FULL_MIN, 1) 을 뺀다(최대 SLUMP_MAX). 한쪽 방향만 —
+# 잘하는 쪽은 경기력 보정과 몸값 재평가가 맡는다. 몸값이 다시 매겨지면 over 가 줄어 저절로 작아진다.
+# 탐색(grid_v310 3차, 5,759명): golden 위반 0 · 스카우트 평균 이탈 그대로(0.168) · 바뀐 선수 189 · −2 이상 12(대부분 폼 45~59).
+# 쿠냐 87→86(같은 페이스면 1,100분 무렵 84), 음뵈모 87→86. 포지션 평균 쪽으로 수축하면 시즌 초엔 폼 94 브루노까지 깎였고,
+# 차감 0.7+ 이면 쿠냐 85 지만 강팀 센터백(Pacho·Bastoni·Inácio)이 스카우트 범위 밖으로 나갔다.
+SLUMP_GAP, SLUMP_K, SLUMP_FULL_MIN, SLUMP_MAX, SLUMP_PRIOR_MIN = 3.0, 0.5, 1500.0, 4.0, 600.0
 # v3.6 탐색(golden 위반 0 · 스카우트 3+ 이탈 0 · Groß 78 · Dowman 70 · Vušković>Konsa): 36세 45%
 _VET_PE_AGES, _VET_PE_W = (30.0, 32.0, 34.0, 36.0), (0.0, 0.18, 0.34, 0.45)
 # 모델 버전 — 바뀌면 rating_history 가 과거 기록을 평행이동해 모델 변경이 선수 추이(▲▼)로 보이지 않게 한다
-MODEL_VERSION = "v3.9"
+MODEL_VERSION = "v3.10"
 # 잠재력 프리미엄 — 같은 시장가치·리그에서 어린 선수의 실제 경기력(리그 보정 평점)이 낮은 만큼(vov 환산).
 # 25/26 1,500분+ 1,450명 회귀(27~29세 기준): 17~20세 −6.8 · 21세 −4.9 · 22세 −5.1 · 23세 −4.4 · 24세 −3.9 ·
 # 25세 −3.8 · 26세 −2.4 (같은 회귀에서 30~32세 +5.3 · 33세+ +9.4 — 베테랑 보정과 같은 근거).
@@ -207,7 +217,7 @@ def class_ss(ss_rating, minutes, prev_ss_rating, prev_minutes, ln: str, league_l
 
 
 def _class_parts(ss_rating, minutes, prev_ss_rating, prev_minutes, ln, league_level, prev_league_level,
-                 hist_ss_rating=None, hist_minutes=None, hist_league_level=None, extra=()):
+                 hist_ss_rating=None, hist_minutes=None, hist_league_level=None, extra=(), prior_min=None):
     """(리그 안 상대 평점 블렌드, 같은 가중의 리그 보정량). class_ss = 앞 − 뒤.
 
     hist_* = 2시즌 전 이상(attach_prev_season.attach_hist — 시즌 가중을 곱한 유효 출전). 시즌이 쌓이면 자동으로
@@ -240,9 +250,10 @@ def _class_parts(ss_rating, minutes, prev_ss_rating, prev_minutes, ln, league_le
         lv_ = _num(x_lvl)
         x_off = RATING_PER_LEVEL * (100.0 - lv_) if lv_ > 0 else 0.0
         xs, xw, xo = xs + r_ * m_, xw + m_, xo + x_off * m_
-    w = w_cur + w_prev + w_hist + xw + _CLASS_PRIOR_MIN
-    return ((ss * w_cur + pss * w_prev + hss * w_hist + xs + mid * _CLASS_PRIOR_MIN) / w,
-            (off_cur * w_cur + off_prev * w_prev + off_hist * w_hist + xo + off_cur * _CLASS_PRIOR_MIN) / w)
+    pm = _CLASS_PRIOR_MIN if prior_min is None else prior_min
+    w = w_cur + w_prev + w_hist + xw + pm
+    return ((ss * w_cur + pss * w_prev + hss * w_hist + xs + mid * pm) / w,
+            (off_cur * w_cur + off_prev * w_prev + off_hist * w_hist + xo + off_cur * pm) / w)
 
 
 # 골키퍼 선방률·클린시트 — 이번 시즌 + 직전 시즌 + 평균(67%·27%)을 1,200분어치 섞는다.
@@ -354,6 +365,22 @@ def absolute_ovr(*, value, ss_rating, minutes, age, pos_group,
             if over > 0:
                 cut = UNDERPERF_K * over * _clamp(mn / 2500.0, 0.0, 1.0)
                 rec("underperf", -cut)
+                raw -= cut
+        # 이번 시즌 부진 — 위 차감 뒤의 값으로 본다(두 규칙이 같은 몫을 두 번 빼지 않게).
+        # 이번 시즌 수준은 '자기 커리어 수준' 쪽으로 수축한다 — 포지션 평균 쪽으로 당기면 시즌 초엔 잘하는 엘리트(브루노 폼 94)까지
+        # 평범해 보여 깎였다. 두 조건이 다 맞을 때만: 이번 시즌이 자기 수준보다 낮고(decline), OVR 이 이번 시즌 수준보다 높다(over).
+        c_w = (_num(minutes) if _num(ss_rating) > 0 else 0.0) + (_num(x_minutes) if _num(x_ss_rating) > 0 else 0.0)
+        if rel > 0 and SLUMP_K > 0 and a >= UNDERPERF_MIN_AGE and c_w > 0 and _num(ss_rating) > 0:
+            c_rel, c_off = _class_parts(ss_rating, minutes, None, None, ln, league_level, None,
+                                        extra=[(x_ss_rating, x_minutes, x_level, False)], prior_min=0.0)
+            own = rel - off
+            cur = ((c_rel - c_off) * c_w + own * SLUMP_PRIOR_MIN) / (c_w + SLUMP_PRIOR_MIN)
+            # PE 는 화면 OVR 척도(상단 압축 뒤)로 맞춘 회귀 — 압축 전 값과 비교하면 폼 96 페드리까지 '부진'이 됐다
+            over = _soft_cap(raw) - (PE_A + PE_B * (cur - _SS_MID[ln]) + _POS_ADJ[ln]) - SLUMP_GAP
+            decline = PE_B * (own - cur)
+            if over > 0 and decline > 0:
+                cut = min(SLUMP_MAX, SLUMP_K * min(over, decline) * _clamp(c_w / SLUMP_FULL_MIN, 0.0, 1.0))
+                rec("slump", -cut)
                 raw -= cut
     bm = _big_match_bonus(ucl_starts, uel_starts, conf_starts, cup_starts)
     raw += bm
@@ -576,6 +603,7 @@ PART_LABELS = {
     "vet_pe": ("VETERAN FORM", "베테랑 — '평점이 말하는 수준' 쪽으로"), "big": ("BIG MATCH", "유럽대항전·컵 선발"),
     "youth": ("POTENTIAL", "어린 선수 몸값의 잠재력 몫 빼기"), "gate": ("UNPROVEN", "출전 부족 — 검증 전 기준점 쪽으로"),
     "underperf": ("UNDERPERFORM", "몸값 대비 경기력 저조 — 평점 수준보다 크게 높은 몫 일부 빼기"),
+    "slump": ("SEASON SLUMP", "이번 시즌 부진 — 몸값이 아직 반영 못 한 이번 시즌 평점 수준 쪽으로"),
     "cap": ("TOP CAP", "88 초과분 압축"), "league": ("LEAGUE", "리그 수준 보정"), "youth_cap": ("AGE CAP", "나이별 천장"),
 }
 

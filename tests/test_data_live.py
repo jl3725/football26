@@ -25,10 +25,14 @@ def _h(b: bytes) -> str:
 
 def test_plan_detects_changes():
     remote = {"db_sha": "d1", "files": {"data/a.csv": "1", "data/b.csv": "2", "data/runtime_cache/x.pkl": "9"}}
-    pl = pdp.plan({"data/a.csv": "1", "data/b.csv": "3", "data/c.csv": "4"}, "d1", remote)
-    assert pl == {"changed": ["data/b.csv", "data/c.csv"], "removed": [], "db_changed": False}
+    pl = pdp.plan({"data/a.csv": "1", "data/b.csv": "3", "data/c.csv": "4"}, "d1", {**remote, "code_sig": "s1"}, "s1")
+    assert pl == {"changed": ["data/b.csv", "data/c.csv"], "removed": [], "db_changed": False, "cache_changed": False}
     assert pdp.plan({"data/a.csv": "1"}, "d2", remote)["removed"] == ["data/b.csv"]   # 캐시 묶음은 '지움'으로 안 본다
     assert pdp.plan({}, "d2", {})["db_changed"] is True
+    # 모델 코드만 바뀌어도(DB 그대로) 캐시 묶음은 새로 — 2026-10-27 옛 OVR 캐시가 그대로 가던 것
+    moved = pdp.plan({"data/a.csv": "1", "data/b.csv": "2"}, "d1", {**remote, "code_sig": "s1"}, "s2")
+    assert moved["db_changed"] is False and moved["cache_changed"] is True
+    assert pdp.plan({}, "d1", remote, "s1")["cache_changed"] is True     # 지문 없는 옛 배포본
 
 
 class _Resp:
@@ -52,13 +56,14 @@ class _Resp:
         return False
 
 
-def _setup(tmp_path, monkeypatch, remote: dict[str, bytes], db: bytes, main_sha="m1"):
+def _setup(tmp_path, monkeypatch, remote: dict[str, bytes], db: bytes, main_sha="m1", sig="sig1"):
     monkeypatch.setattr(live_sync, "ROOT", tmp_path)
+    monkeypatch.setattr(live_sync, "_SIG", ["sig1"])                 # 이 서버 코드의 지문
     monkeypatch.setattr(live_sync, "_HASHES", {})
     monkeypatch.setattr(live_sync, "_ON_DB_SWAP", [])
     monkeypatch.setitem(live_sync.STATE, "data_sha", "")
     (tmp_path / "data").mkdir(exist_ok=True)
-    man = {"main_sha": main_sha, "db_sha": _h(db), "db_gz": "data/football.db.gz",
+    man = {"main_sha": main_sha, "db_sha": _h(db), "db_gz": "data/football.db.gz", "code_sig": sig,
            "files": {p: _h(b) for p, b in remote.items()}}
     store = {"manifest.json": json.dumps(man).encode(), "data/football.db.gz": gzip.compress(db), **remote}
 
@@ -86,6 +91,19 @@ def test_sync_data_replaces_changed_and_swaps_db(tmp_path, monkeypatch):
     assert called == [1] and live_sync.STATE["data_sha"] == "m1"
     assert not list((tmp_path / "data").rglob("*.part"))
     assert live_sync.sync_data(get) == 0                             # 같은 배포본이면 다시 안 받는다
+
+
+def test_sync_data_skips_caches_built_by_other_code(tmp_path, monkeypatch):
+    # 배포본 캐시를 만든 코드 ≠ 이 서버 코드 → 캐시는 안 받고(서버가 자기 코드로 만든 것을 지킨다) 데이터·DB 만
+    (tmp_path / "data" / "runtime_cache").mkdir(parents=True)
+    (tmp_path / "data" / "runtime_cache" / "x.pkl").write_bytes(b"MINE")
+    (tmp_path / "data" / "football.db").write_bytes(b"DB")
+    get, _ = _setup(tmp_path, monkeypatch, {"data/a.csv": b"A", "data/runtime_cache/x.pkl": b"OLD-CODE",
+                                            "data/team_units.json": b"{}"}, b"DB", sig="other")
+    assert live_sync.sync_data(get) == 1
+    assert (tmp_path / "data" / "a.csv").read_bytes() == b"A"
+    assert (tmp_path / "data" / "runtime_cache" / "x.pkl").read_bytes() == b"MINE"
+    assert not (tmp_path / "data" / "team_units.json").exists()
 
 
 def test_sync_data_aborts_on_hash_mismatch(tmp_path, monkeypatch):

@@ -104,6 +104,17 @@ def reset_caches(modules=None) -> int:
     return n
 
 
+_SIG: list[str] = []
+
+
+def _code_sig() -> str:
+    """이 서버 코드의 지문(src/code_sig.py) — 실행 중엔 코드가 안 바뀌므로 한 번만 계산."""
+    if not _SIG:
+        from code_sig import code_sig  # noqa: PLC0415
+        _SIG.append(code_sig(ROOT))
+    return _SIG[0]
+
+
 def sync_data(get=requests.get, notify: bool = True) -> int:
     """data-live 배포본에서 바뀐 파일만 받아 바꿔 넣는다. 바꾼 파일 수(0 = 그대로)."""
     r = get(_raw("manifest.json", DATA_BRANCH), timeout=30)
@@ -114,6 +125,10 @@ def sync_data(get=requests.get, notify: bool = True) -> int:
     if not main_sha or main_sha == STATE["data_sha"]:
         return 0
     files = dict(man.get("files") or {})
+    # 캐시(선수 표·OVR 등)는 만든 코드가 이 서버 코드와 같을 때만 받는다 — 모델만 바뀐 배포 직후 서버가 새 코드로 만든 캐시를
+    # 옛 코드의 캐시로 덮어쓰던 것(2026-10-27). 안 받으면 DB 가 바뀔 때 이 서버가 자기 코드로 다시 만든다.
+    if man.get("code_sig") != _code_sig():
+        files = {p: h for p, h in files.items() if not p.startswith("data/runtime_cache/") and p != "data/team_units.json"}
     db_path, db_sha = ROOT / "data" / "football.db", str(man.get("db_sha") or "")
     todo = {p: h for p, h in files.items() if _sha256(ROOT / p) != h}
     db_needed = bool(db_sha) and _sha256(db_path) != db_sha

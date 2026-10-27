@@ -92,6 +92,24 @@ def test_expensive_breakout_is_not_a_proven_star() -> None:
     assert rice > anderson and anderson <= 89
 
 
+def test_season_slump_pulls_stale_value_down() -> None:
+    # 쿠냐(2026-10-27): €75M 그대로 · 이번 시즌 평점 6.81(550분) — 몸값이 모르는 이번 시즌 부진만큼 내려간다.
+    # 같은 선수가 이번 시즌을 잘 보내면(7.45) 차감 없음, 출전이 적으면(90분) 거의 없음
+    kw = dict(value=75e6, age=27, pos_group="ATT", league_level=100, prev_minutes=2494, prev_ss_rating=7.12,
+              hist_ss_rating=7.27, hist_minutes=1300, x_ss_rating=7.24, x_minutes=150, x_level=92)
+
+    def slump(**k) -> float:
+        parts: list = []
+        rv3.absolute_ovr(_parts=parts, **{**kw, **k})
+        return dict(parts).get("slump", 0.0)
+
+    assert slump(ss_rating=6.81, minutes=550) <= -0.5
+    assert slump(ss_rating=7.45, minutes=550) == 0.0
+    assert slump(ss_rating=6.81, minutes=90, x_minutes=0) > -0.3
+    assert (rv3.absolute_ovr(ss_rating=6.81, minutes=550, **kw)
+            < rv3.absolute_ovr(ss_rating=7.45, minutes=550, **kw))
+
+
 def test_value_jump_guard_ignores_tiny_prev_value() -> None:
     # 직전 시장가치 €150K(매칭 오류·1군 데뷔)는 '급등'으로 보지 않는다 — Cho 77→60 같은 폭락 방지
     kw = dict(value=15e6, ss_rating=6.93, minutes=76, age=22, pos_group="ATT", prev_minutes=1667,
