@@ -70,3 +70,21 @@ def test_fill_frame_by_fotmob_id_and_photo_id():
     out = fsq.fill_frame(frame, squads)
     assert out.loc[0, "age"] > 0 and out.loc[0, "tm_position"] == "Central Midfield"
     assert out.loc[1, "fm_photo_id"] == 111 and pd.isna(out.loc[1, "fm_id"])     # 사진 번호만, 평점 번호는 그대로
+
+
+def test_photo_ids_from_matches_exact_surname_but_not_first_name_only():
+    import fotmob_squads as fsq
+    frame = pd.DataFrame([
+        {"squad": "Cercle Brugge", "player": "Jean Thierry Lazare", "minutes": 175, "fm_id": None, "tm_photo": None},
+        {"squad": "Cercle Brugge", "player": "Youth Kid", "minutes": 20, "fm_id": None, "tm_photo": None},
+        {"squad": "Espanyol", "player": "José López", "minutes": 90, "fm_id": None, "tm_photo": None},
+        {"squad": "Espanyol", "player": "Has Photo", "minutes": 900, "fm_id": 7, "tm_photo": None},
+    ])
+    rows = pd.DataFrame([
+        {"squad": "Cercle Brugge", "player": "Lazare Amani", "fotmob_id": 768459, "minutes": 174},
+        {"squad": "Cercle Brugge", "player": "Youth Kid", "fotmob_id": 11, "minutes": 20},
+        {"squad": "Espanyol", "player": "José Ángel", "fotmob_id": 1687255, "minutes": 90},     # 이름만 겹침 — 잇지 않음
+        {"squad": "Espanyol", "player": "Has Photo", "fotmob_id": 7, "minutes": 900},
+    ])
+    out = fsq.photo_ids_from_matches(frame, rows)
+    assert list(out["fm_photo_id"][:3]) == [768459, 11, None]

@@ -113,11 +113,62 @@ def find(idx: dict[str, dict[str, dict]], squad: str, name: str) -> dict | None:
     return team.get(hit) if hit else None
 
 
-def fill_frame(frame: pd.DataFrame, squads: pd.DataFrame, info: pd.DataFrame | None = None) -> pd.DataFrame:
-    """선수 표의 빈 나이·세부 포지션을 FotMob 명단으로(있는 값은 그대로) — 명단에 없으면 선수 데이터(player_info)의 생년월일.
-    '0세'·포지션 없음 방지."""
-    if frame is None or frame.empty or ((squads is None or squads.empty) and (info is None or info.empty)):
+def photo_ids_from_matches(frame: pd.DataFrame, rows: pd.DataFrame | None) -> pd.DataFrame:
+    """명단에도 없는 출전 선수(유스·시즌 중 합류·임대) — FotMob 경기별 기록에서 같은 팀 선수의 번호로 사진만(fm_photo_id).
+    2026-10-27: 사진 없는 149명 전원이 이번 시즌 뛴 선수였고 126명은 경기별 기록에 같은 팀·같은 이름으로 있었다.
+    이름이 다르면(Jean Thierry Lazare ↔ Lazare Amani) 같은 팀에서 성(어느 한쪽의 마지막 낱말, 4자+)이 겹치거나 이름이
+    비슷하고(0.75+) 출전 분이 가까운(±max(30, 20%)) 선수가 하나뿐일 때만 — 이름(첫 낱말)만 겹치는 'José López ↔ José Ángel'은
+    잇지 않는다(틀린 얼굴이 이니셜보다 나쁘다). 이미 다른 선수가 쓰는 번호는 건너뛴다. 평점 연결(fm_id)엔 섞지 않는다."""
+    import difflib  # noqa: PLC0415
+
+    import player_registry as preg  # noqa: PLC0415
+    if frame is None or frame.empty or rows is None or rows.empty or not {"squad", "player", "fotmob_id"} <= set(rows.columns):
         return frame
+    has_tm = frame.get("tm_photo", pd.Series(None, index=frame.index)).map(lambda v: isinstance(v, str) and v.startswith("http"))
+    num = lambda c: pd.to_numeric(frame[c], errors="coerce") if c in frame.columns else pd.Series(float("nan"), index=frame.index)  # noqa: E731
+    need = ~has_tm & num("fm_id").isna() & num("fm_photo_id").isna()
+    if not need.any():
+        return frame
+    used = {int(v) for c in ("fm_id", "fm_photo_id") for v in num(c).dropna()}
+    r = rows[rows["fotmob_id"].notna()].copy()
+    r["_fid"] = pd.to_numeric(r["fotmob_id"], errors="coerce")
+    r["_m"] = pd.to_numeric(r.get("minutes"), errors="coerce").fillna(0)
+    by_squad: dict[str, dict[int, tuple[str, float]]] = {}
+    for (sq, fid), g in r.dropna(subset=["_fid"]).groupby(["squad", "_fid"]):
+        by_squad.setdefault(str(sq), {})[int(fid)] = (str(g["player"].iloc[-1]), float(g["_m"].sum()))
+    out = frame.copy()
+    if "fm_photo_id" not in out.columns:
+        out["fm_photo_id"] = None
+    out["fm_photo_id"] = out["fm_photo_id"].astype("object")
+    for i in out.index[need]:
+        cands = {f: v for f, v in by_squad.get(str(out.at[i, "squad"]), {}).items() if f not in used}
+        name = preg.norm(out.at[i, "player"])
+        exact = [f for f, (p, _) in cands.items() if preg.norm(p) == name]
+        pick = exact[0] if len(exact) == 1 else None
+        if pick is None and not exact:
+            mins = pd.to_numeric(out.at[i, "minutes"], errors="coerce")
+            near = []
+            for f, (p, m) in cands.items():
+                pn = preg.norm(p)
+                common = {t for t in set(name.split()) & set(pn.split()) if len(t) >= 4}
+                surnames = {w.split()[-1] for w in (name, pn) if w.split()}
+                alike = bool(common & surnames) or difflib.SequenceMatcher(None, name, pn).ratio() >= 0.75
+                close = mins == mins and abs(m - float(mins)) <= max(30.0, 0.2 * float(mins))
+                if alike and close:
+                    near.append(f)
+            pick = near[0] if len(near) == 1 else None
+        if pick is not None:
+            out.at[i, "fm_photo_id"] = pick
+            used.add(pick)
+    return out
+
+
+def fill_frame(frame: pd.DataFrame, squads: pd.DataFrame, info: pd.DataFrame | None = None,
+               match_rows: pd.DataFrame | None = None) -> pd.DataFrame:
+    """선수 표의 빈 나이·세부 포지션을 FotMob 명단으로(있는 값은 그대로) — 명단에 없으면 선수 데이터(player_info)의 생년월일.
+    '0세'·포지션 없음 방지. match_rows(FotMob 경기별 기록)가 있으면 명단에 없는 출전 선수의 사진 번호도."""
+    if frame is None or frame.empty or ((squads is None or squads.empty) and (info is None or info.empty)):
+        return photo_ids_from_matches(frame, match_rows)
     sq_part = squads if squads is not None and not squads.empty else pd.DataFrame(columns=COLS)
     if info is not None and not info.empty:     # 생년월일만 있는 행 — 명단 행 뒤에(명단이 먼저)
         extra = info[["squad", "player", "birth_date"]].assign(tm_position=None)
@@ -150,6 +201,7 @@ def fill_frame(frame: pd.DataFrame, squads: pd.DataFrame, info: pd.DataFrame | N
                 except (TypeError, ValueError):
                     ids.append(None)
             frame["fm_photo_id"] = ids
+    frame = photo_ids_from_matches(frame, match_rows)
     tp = frame["tm_position"] if "tm_position" in frame.columns else pd.Series([None] * len(frame), index=frame.index)
     need_pos = ~tp.map(lambda v: isinstance(v, str) and bool(v.strip()))
     todo = frame.index[need_age | need_pos]

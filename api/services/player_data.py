@@ -321,7 +321,8 @@ def _build_frame(league: str, season: str | None = None):
         try:
             import fotmob_squads as fsq  # noqa: PLC0415
             frame = fsq.fill_frame(frame, ds.read_table("fotmob_squads", league=league),
-                                   ds.read_table("fotmob_player_info", league=league))
+                                   ds.read_table("fotmob_player_info", league=league),
+                                   ds.read_table("fotmob_match_ratings", league=league))
         except Exception as e:  # noqa: BLE001
             print(f"[fotmob_squads] {league}: 건너뜀 {type(e).__name__}: {e}")
     import ratings_v3 as rv3  # noqa: PLC0415
