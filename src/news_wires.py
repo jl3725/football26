@@ -316,7 +316,10 @@ def discover(idx: TeamIndex, feeds: dict, limit: int = 8) -> list[str]:
 def fotmob_team_ids(refresh_days: int = 7) -> dict[str, int]:
     """{우리 클럽: FotMob 팀 id} — 리그 일정에서(7일 캐시)."""
     cache = _load(FM_IDS, {})
-    if cache.get("at", "") >= (dt.date.today() - dt.timedelta(days=refresh_days)).isoformat() and cache.get("ids"):
+    # 리그 구성이 바뀌면(라이트 리그 5개, 2026-10-22) 7일을 기다리지 않고 다시 — 그 전 목록엔 150팀(8개 리그)만 있어
+    # 덴마크·스위스·오스트리아·튀르키예·챔피언십 클럽의 FotMob 팀 뉴스가 0건이었다(2026-10-27)
+    same = sorted(cache.get("leagues") or []) == sorted(lg for lg in LEAGUES if FOTMOB_ID_OF(lg))
+    if same and cache.get("at", "") >= (dt.date.today() - dt.timedelta(days=refresh_days)).isoformat() and cache.get("ids"):
         return cache["ids"]
     from fetch_fotmob_ratings import FOTMOB_ID, _get  # noqa: PLC0415
     from squads import to_ours  # noqa: PLC0415
@@ -336,8 +339,13 @@ def fotmob_team_ids(refresh_days: int = 7) -> dict[str, int]:
                     ids[name] = int(t["id"])
         time.sleep(0.5)
     if ids:
-        _save(FM_IDS, {"at": _today(), "ids": ids})
+        _save(FM_IDS, {"at": _today(), "leagues": sorted(lg for lg in LEAGUES if FOTMOB_ID.get(lg)), "ids": ids})
     return ids
+
+
+def FOTMOB_ID_OF(lg: str):  # noqa: N802 — fetch_fotmob_ratings.FOTMOB_ID 를 늦게 불러(무거운 import 를 캐시 확인 뒤로)
+    from fetch_fotmob_ratings import FOTMOB_ID  # noqa: PLC0415
+    return FOTMOB_ID.get(lg)
 
 
 def fotmob_articles(idx: TeamIndex, hour: int | None = None) -> tuple[dict[str, list[dict]], int]:

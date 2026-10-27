@@ -46,6 +46,10 @@ EN = LOCALE["England"]
 # 두 언어 언론이 나뉜 나라 — 현지 검색을 언어마다(벨기에 프랑스어권 Standard·Charleroi 는 네덜란드어 검색에 거의 안 나온다)
 EXTRA_LOCALES = {"Belgium": [("fr", "BE", "BE:fr", "football")],
                  "Switzerland": [("fr", "CH", "CH:fr", "football")]}     # 서부(세르베트·로잔·시옹)는 프랑스어 언론
+# Google 뉴스에 그 나라 판이 없는 곳 — 영어판에서 검색하고 한 낱말 이름엔 리그 이름을 붙인다. 덴마크(DK:da)는 노르웨이판(NO:no)과
+# 똑같은 결과를 주고 덴마크 매체가 하나도 없었다(2026-10-27: 덴마크 12팀 30일 구글 기사 0~7건, 'OB'·'AGF' 0건 ↔ 영어판 7~9건)
+# 한정어는 OR 묶음 — 'Superliga' 하나면 AGF 0건, '(Superliga OR Superligaen OR Danish)'면 12건(14일)
+NO_EDITION = {"Denmark": "(Superliga OR Superligaen OR Danish)"}
 TRANSFER_Q = '(transfer OR signing OR "here we go" OR bid OR loan)'
 PER_QUERY = 8                  # 검색 한 번에 최신순으로 이만큼까지
 DAILY_CAP = 12                 # 팀당 하루 새 기사 상한(news.db 는 저장소에 커밋 — 크기 관리)
@@ -91,7 +95,8 @@ def names_for(*names: str) -> list[str]:
     out: list[str] = []
     for n in names:
         n = re.sub(r"\s+", " ", str(n or "")).strip()
-        if n and n not in out and not re.search(r"(^|\s)[A-Za-zÀ-ÿ]{1,4}\.(\s|$)", n):
+        # 약자 표기 제외 — 단 'St.'(Saint)는 정식 이름의 일부('FC St. Gallen' 이 빠져 프랑스어 'Saint-Gall' 만 검색됐다, 2026-10-27)
+        if n and n not in out and not re.search(r"(^|\s)(?!St\.)[A-Za-zÀ-ÿ]{1,4}\.(\s|$)", n):
             out.append(n)
     return out
 
@@ -154,7 +159,8 @@ def fetch_team(team: str, names: list[str], league: str, br: Breaker, terms=None
     terms(news_relevance.team_terms) 를 주면 제목에 그 팀 이름이 나오는 기사만 — Google 은 본문만 맞아도 준다."""
     import news_relevance as nr  # noqa: PLC0415
     country = LEAGUES[league].country if league in LEAGUES else "England"
-    locs = [LOCALE.get(country, EN), *EXTRA_LOCALES.get(country, [])]
+    locs = ([(*EN[:3], NO_EDITION[country])] if country in NO_EDITION
+            else [LOCALE.get(country, EN), *EXTRA_LOCALES.get(country, [])])
     urls = [search_url(query(names, lc), lc, 2) for lc in locs] + [search_url(query(names, EN, TRANSFER_Q), EN, 3)]
     seen, out = set(), []
     for u in urls:

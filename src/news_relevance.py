@@ -18,7 +18,9 @@ MAX_DAYS = 60
 GENERIC = {"city", "united", "town", "club", "real", "sporting", "athletic", "atletico", "olympique", "inter", "racing",
            "deportivo", "union", "royal", "county", "rovers", "wanderers", "albion", "paris", "football", "calcio",
            "fc", "cf", "sc", "ac", "afc", "as", "sv", "vfb", "vfl", "fk", "sk", "kv", "kaa", "rsc", "rc", "cd", "ud", "sd",
-           "de", "la", "le", "les", "del", "der", "und", "the", "and", "1.", "04", "05"}
+           "de", "la", "le", "les", "del", "der", "und", "the", "and", "1.", "04", "05",
+           # 클럽 형태 약자(대문자 약자를 팀 이름으로 쓰기 시작해 — 'Grazer AK'의 AK·'Brøndby IF'의 IF 는 팀을 가리키지 못한다)
+           "ak", "if", "bk", "ff", "ik", "bv", "ss", "us", "ad", "ca", "sl", "tsv", "tsg", "vv", "ssc", "ac", "rcd"}
 
 
 # 같은 클럽의 다른 종목·여자팀·유소년 — 1군 남자 축구 기사만. 수집(news_sources.keep — 제목·매체)과 화면(relevant — 제목·요약·매체)이
@@ -65,6 +67,11 @@ def team_terms(team: str, extra: tuple = ()) -> tuple[str, ...]:
         for w in f.split():
             if len(w) >= 4 and w not in GENERIC:
                 out.add(w)
+        # 대문자 약자 — 언론은 'NEC Nijmegen'을 'NEC'로 쓴다(2026-10-27: NEC 구글 검색 55건 중 제목 판정 2건). FC·SC 같은 일반 약자 제외.
+        # 3자 이하 한 낱말은 원문에 전부 대문자로 나올 때만 인정(_proper) — 덴마크 'OB' 가 독일어 'Ob'(~인지)와 섞이지 않게
+        for tok in re.findall(r"(?<![A-Za-z])[A-Z]{2,4}(?![A-Za-z])", str(name or "")):
+            if tok.lower() not in GENERIC:
+                out.add(tok.lower())
     return tuple(sorted(out, key=len, reverse=True))
 
 
@@ -92,9 +99,12 @@ def _proper(words: list[str], folded: list[str], term: str) -> bool:
     """원문에서 이름이 고유명사 꼴로 쓰였나 — 첫 낱말과 4자 이상 낱말은 대문자 시작('Vitória de Guimarães' 의 'de' 는 예외)."""
     tw = term.split()
     k = len(tw)
+    caps = k == 1 and len(term) <= 3          # 'OB'·'AGF'·'NEC' — 약자는 원문도 전부 대문자여야
     for i in range(len(folded) - k + 1):
         if folded[i:i + k] == tw and all(w[:1].isupper() or w[:1].isdigit()
                                          for j, w in enumerate(words[i:i + k]) if j == 0 or len(w) >= 4):
+            if caps and not words[i].isupper():
+                continue
             return True
     return False
 
