@@ -143,15 +143,20 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 521,
+   "total": 523,
    "exact": 483,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 38,
+   "orphan": 40,
    "orphans": [
     {
      "squad": "Arsenal",
      "name": "Marli Salmon",
+     "starts": 2
+    },
+    {
+     "squad": "Arsenal",
+     "name": "Ceadach O’Neill",
      "starts": 1
     },
     {
@@ -167,11 +172,6 @@
     {
      "squad": "Arsenal",
      "name": "Maalik Hashi",
-     "starts": 0
-    },
-    {
-     "squad": "Arsenal",
-     "name": "Ceadach O’Neill",
      "starts": 0
     },
     {
@@ -285,8 +285,8 @@
    "orphans": []
   },
   "espn_subs_cups": {
-   "total": 321,
-   "exact": 318,
+   "total": 323,
+   "exact": 320,
    "rule": 1,
    "ambiguous": 0,
    "orphan": 2,
@@ -465,11 +465,11 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 247,
-   "exact": 245,
+   "total": 295,
+   "exact": 290,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 2,
+   "orphan": 5,
    "orphans": [
     {
      "squad": "Celta Vigo",
@@ -479,6 +479,21 @@
     {
      "squad": "Elche",
      "name": "Yago Alonso",
+     "starts": 0
+    },
+    {
+     "squad": "Villarreal",
+     "name": "Mauro Roca Martínez",
+     "starts": 0
+    },
+    {
+     "squad": "Villarreal",
+     "name": "Sergio Barrera Martín",
+     "starts": 0
+    },
+    {
+     "squad": "Villarreal",
+     "name": "César Bonafé Ceita",
      "starts": 0
     }
    ]
@@ -508,16 +523,16 @@
    ]
   },
   "espn_subs_cups": {
-   "total": 142,
-   "exact": 142,
-   "rule": 0,
+   "total": 168,
+   "exact": 165,
+   "rule": 3,
    "ambiguous": 0,
    "orphan": 0,
    "orphans": []
   },
   "match_events": {
-   "total": 355,
-   "exact": 355,
+   "total": 360,
+   "exact": 360,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -677,11 +692,11 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 428,
-   "exact": 411,
+   "total": 456,
+   "exact": 438,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 17,
+   "orphan": 18,
    "orphans": [
     {
      "squad": "Augsburg",
@@ -767,6 +782,11 @@
      "squad": "Augsburg",
      "name": "Loris Husic",
      "starts": 0
+    },
+    {
+     "squad": "Werder Bremen",
+     "name": "Mats Heitmann",
+     "starts": 0
     }
    ]
   },
@@ -787,8 +807,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 287,
-   "exact": 287,
+   "total": 290,
+   "exact": 290,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -814,11 +834,11 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 646,
-   "exact": 558,
+   "total": 648,
+   "exact": 559,
    "rule": 10,
    "ambiguous": 1,
-   "orphan": 78,
+   "orphan": 79,
    "orphans": [
     {
      "squad": "Lecce",
@@ -1052,8 +1072,8 @@
    ]
   },
   "espn_subs": {
-   "total": 448,
-   "exact": 443,
+   "total": 450,
+   "exact": 445,
    "rule": 1,
    "ambiguous": 1,
    "orphan": 4,
@@ -1095,8 +1115,8 @@
    ]
   },
   "match_events": {
-   "total": 333,
-   "exact": 333,
+   "total": 335,
+   "exact": 335,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1690,8 +1710,8 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 238,
-   "exact": 231,
+   "total": 261,
+   "exact": 254,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 7,
