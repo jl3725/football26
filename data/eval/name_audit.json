@@ -465,15 +465,20 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 202,
-   "exact": 201,
+   "total": 247,
+   "exact": 245,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 1,
+   "orphan": 2,
    "orphans": [
     {
      "squad": "Celta Vigo",
      "name": "Frank Germain Jonathan Miller",
+     "starts": 0
+    },
+    {
+     "squad": "Elche",
+     "name": "Yago Alonso",
      "starts": 0
     }
    ]
@@ -503,16 +508,16 @@
    ]
   },
   "espn_subs_cups": {
-   "total": 120,
-   "exact": 120,
+   "total": 142,
+   "exact": 142,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
    "orphans": []
   },
   "match_events": {
-   "total": 351,
-   "exact": 351,
+   "total": 355,
+   "exact": 355,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1047,8 +1052,8 @@
    ]
   },
   "espn_subs": {
-   "total": 446,
-   "exact": 441,
+   "total": 448,
+   "exact": 443,
    "rule": 1,
    "ambiguous": 1,
    "orphan": 4,
@@ -1685,11 +1690,11 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 148,
-   "exact": 146,
+   "total": 238,
+   "exact": 231,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 2,
+   "orphan": 7,
    "orphans": [
     {
      "squad": "Ajax",
@@ -1699,6 +1704,31 @@
     {
      "squad": "Ajax",
      "name": "Diego Pugno",
+     "starts": 0
+    },
+    {
+     "squad": "Cambuur",
+     "name": "Kick Eerhart",
+     "starts": 0
+    },
+    {
+     "squad": "Cambuur",
+     "name": "Louka Vanderbruggen",
+     "starts": 0
+    },
+    {
+     "squad": "Cambuur",
+     "name": "Amar Bakkati",
+     "starts": 0
+    },
+    {
+     "squad": "Cambuur",
+     "name": "Reen Zandstra",
+     "starts": 0
+    },
+    {
+     "squad": "Cambuur",
+     "name": "Tjalling Van Keimpema",
      "starts": 0
     }
    ]
@@ -1720,8 +1750,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 290,
-   "exact": 290,
+   "total": 291,
+   "exact": 291,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
