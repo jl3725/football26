@@ -45,3 +45,20 @@ def test_middle_name_variants_merge_into_one_identity() -> None:
             "tm1": {"squad": "Sassuolo", "canonical": "Sebastiano Esposito", "tm_id": "1", "src": "players_full"}}
     root = pr.merge_middle_names(ents)
     assert root == {"tm930781": "pf:Inter:francesco esposito", "esp:Inter:francesco pio esposito": "pf:Inter:francesco esposito"}
+
+
+def test_minutes_pairs_links_nicknames_but_not_lookalikes():
+    """출전 시간 지문(2026-10-27) — 별명 표기('Pepelu')는 잇고, 시간만 비슷한 다른 선수는 안 잇는다."""
+    import player_registry as pr
+    # 이미 짝지은 선수들 — FotMob 이 25% 더 많다(반영 시점 차이)
+    pmin = {"A One": 800, "B Two": 700, "C Three": 600, "D Four": 500, "E Five": 400,
+            "José Luis García Vayá": 655, "Ismaël Doukouré": 249}
+    fmin = {"A One": 1000, "B Two": 875, "C Three": 750, "D Four": 625, "E Five": 500,
+            "Pepelu": 820, "Karim Coulibaly": 298}
+    matched = [(n, n) for n in ("A One", "B Two", "C Three", "D Four", "E Five")]
+    out = {p: f for p, f, _ in pr.minutes_pairs(pmin, fmin, matched)}
+    assert out.get("José Luis García Vayá") == "Pepelu"          # 이름이 전혀 달라도 시간이 아주 정확하면(5% 이내·300분+)
+    assert "Ismaël Doukouré" not in out                            # 이름 단서 없음 + 오차 큼 → 안 잇는다
+    # 포지션이 다르면 안 잇는다
+    out2 = pr.minutes_pairs(pmin, fmin, matched, {"José Luis García Vayá": {"MF"}}, {"Pepelu": {"GK"}})
+    assert all(p != "José Luis García Vayá" for p, _, _ in out2)

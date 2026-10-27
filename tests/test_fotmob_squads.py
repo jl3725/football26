@@ -55,3 +55,18 @@ def test_news_injury_words() -> None:
     assert all(M._INJ_BAD.search(h) for h in bad)
     assert all(M._INJ_GOOD.search(h) for h in good)
     assert not M._INJ_BAD.search("DE BRUYNE TORNA PROTAGONISTA")                          # 'torn' ≠ 'TORNA'
+
+
+def test_fill_frame_by_fotmob_id_and_photo_id():
+    """이름이 전혀 다른 표기는 FotMob 번호로 나이를, TM·평점 번호가 없으면 명단 번호로 사진만(2026-10-27)."""
+    import pandas as pd
+    import fotmob_squads as fsq
+    squads = pd.DataFrame([{"squad": "Valencia", "player": "Pepelu", "fotmob_id": 673689, "age": 28, "birth_date": "1998-05-11",
+                            "tm_position": "Central Midfield"},
+                           {"squad": "Valencia", "player": "Kid Youth", "fotmob_id": 111, "age": 18, "birth_date": "2008-01-01",
+                            "tm_position": "Left Winger"}])
+    frame = pd.DataFrame([{"squad": "Valencia", "player": "José Luis García Vayá", "age": None, "tm_position": None, "fm_id": 673689.0},
+                          {"squad": "Valencia", "player": "Kid Youth", "age": 18, "tm_position": "Left Winger", "fm_id": None}])
+    out = fsq.fill_frame(frame, squads)
+    assert out.loc[0, "age"] > 0 and out.loc[0, "tm_position"] == "Central Midfield"
+    assert out.loc[1, "fm_photo_id"] == 111 and pd.isna(out.loc[1, "fm_id"])     # 사진 번호만, 평점 번호는 그대로

@@ -10,6 +10,7 @@
 규칙(같은 팀 후보 안, 점수가 가장 높고 2등과 동점이 아닐 때만): 정확 100 · 같은 tm_id 99 · 어순만 다름·붙여 쓰기 95 ·
 한쪽 이름이 다른 쪽에 포함 85 · 성 같고 이름 호환(앞 3글자·애칭·유사) 80 · 성 같고 이니셜만('G. Magalhães') 70 ·
 한 단어 이름이 상대 이름의 단어 60. 이름이 서로 다른 사람(Raúl ↔ Rubén García)은 성이 같아도 0.
+글자로 못 맞춘 FotMob 평점 선수는 같은 팀 출전 시간 지문으로 한 번 더(65, minutes_pairs — 'Pepelu'·'Cucho' 같은 별명 표기).
 수동 지정은 data/name_aliases.csv(squad, alias, canonical)가 가장 먼저.
 
 출력: data/player_registry[_리그]_<시즌>.csv — squad, entity, canonical, tm_id, alias, source, score
@@ -109,6 +110,58 @@ def best_match(name: str, cands: dict[str, str]) -> tuple[str | None, int]:
     return ent, top
 
 
+def _pos_set(v) -> set[str]:
+    """포지션 표기 → {GK, DF, MF, FW} — FBref 'DF,MF'·FotMob 'DF'."""
+    return {x for x in re.split(r"[,/ ]+", str(v or "").upper()) if x in ("GK", "DF", "MF", "FW")}
+
+
+def _name_hint(a: str, b: str) -> bool:
+    """두 이름이 낱말 하나라도 닮았나 — 같은 낱말, 앞 4글자 같음('Valde'·'Valdepeñas'), 비슷함(0.8)."""
+    ta, tb = _norm(a).split(), _norm(b).split()
+    for x in ta:
+        for y in tb:
+            if x == y or (min(len(x), len(y)) >= 4 and x[:4] == y[:4]) or difflib.SequenceMatcher(None, x, y).ratio() >= 0.8:
+                return True
+    return False
+
+
+def minutes_pairs(pmin: dict[str, float], fmin: dict[str, float], matched: list[tuple[str, str]],
+                  ppos: dict[str, set] | None = None, fpos: dict[str, set] | None = None) -> list[tuple[str, str, float]]:
+    """출전 시간 지문 — 글자로 못 맞춘 우리 선수(pmin) ↔ FotMob 선수(fmin), 같은 팀. 'Pepelu'↔'José Luis García Vayá',
+    'Cucho'↔'Juan Hernández' 처럼 이름이 전혀 다른 표기를 잇는다(2026-10-27 사용자: 사진·나이가 빠진 선수 217명).
+    · 두 출처의 반영 시점이 달라(FotMob 이 25% 더 많기도) 같은 팀에서 이미 짝지은 선수들의 시간 비율(가운데 값)로 환산
+    · 서로가 가장 가까운 후보이고 2등과 0.1 넘게 차이, 오차 15% 이내 + 이름이 닮았거나(낱말 하나라도),
+      이름이 전혀 다르면 오차 5% 이내·2등과 0.2 차이·300분 이상만(출전 시간만 비슷한 다른 선수 — Doukouré↔Coulibaly 를 막는다)
+    · 포지션을 둘 다 알면 겹쳐야 한다"""
+    ratios = sorted(fmin[f] / pmin[p] for p, f in matched if pmin.get(p, 0) >= 180 and fmin.get(f, 0) >= 180)
+    if len(ratios) < 5:
+        return []
+    r = ratios[len(ratios) // 2]
+    done = {p for p, _ in matched}, {f for _, f in matched}
+    up = {p: m * r for p, m in pmin.items() if p not in done[0] and m >= 90}
+    uf = {f: m for f, m in fmin.items() if f not in done[1] and m >= 90}
+    if not up or not uf:
+        return []
+
+    def cost(p, f):
+        return abs(uf[f] - up[p]) / max(up[p], 90)
+    out = []
+    for p in up:
+        fs = sorted(uf, key=lambda f: cost(p, f))
+        best = fs[0]
+        ps = sorted(up, key=lambda q: cost(q, best))
+        if ps[0] != p:
+            continue
+        c = cost(p, best)
+        gap = min(cost(p, fs[1]) if len(fs) > 1 else 9, cost(ps[1], best) if len(ps) > 1 else 9) - c
+        a, b = (ppos or {}).get(p) or set(), (fpos or {}).get(best) or set()
+        if a and b and not (a & b):
+            continue
+        if (c <= 0.15 and gap >= 0.1 and _name_hint(p, best)) or (c <= 0.05 and gap >= 0.2 and pmin[p] >= 300):
+            out.append((p, best, round(c, 3)))
+    return out
+
+
 def _read(stem: str, lg: str, season: str, cols=None) -> pd.DataFrame | None:
     p = data_path(stem, lg, season)
     if not p.exists():
@@ -183,7 +236,7 @@ def build(lg: str, season: str) -> tuple[pd.DataFrame, dict]:
         rows.append({"squad": squad, "entity": eid, "alias": canonical, "source": source, "score": 100})
 
     # 1) 기준: players_full(리그 출전자) — 표기는 이것을 따른다
-    pf = _read("players_full", lg, season, {"player", "squad", "tm_id"})
+    pf = _read("players_full", lg, season, {"player", "squad", "tm_id", "minutes", "pos"})
     by_tm: dict[str, str] = {}
     if pf is not None:
         for r in pf.itertuples():
@@ -215,6 +268,7 @@ def build(lg: str, season: str) -> tuple[pd.DataFrame, dict]:
 
     # 3) 그 밖의 원천 — 이름 규칙으로 별칭. 실제로 뛴 기록(라인업·교체·이벤트)인데 못 찾으면 '고아'로 새 신원
     audit = defaultdict(lambda: {"total": 0, "exact": 0, "rule": 0, "ambiguous": 0, "orphan": 0, "orphans": []})
+    merged: dict[str, str] = {}                                 # 출전 시간 지문으로 합친 신원 — 옛 entity → 우리 선수 entity
     srcs = [("wiki_squads", ["player"]), ("espn_lineups", ["player"]), ("espn_lineups_cups", ["player"]),
             ("espn_subs", ["player_in", "player_out"]), ("espn_subs_cups", ["player_in", "player_out"]),
             ("match_events", ["player"]), ("fotmob_ratings", ["player"])]   # FotMob 평점(두 출처 평균 평점)
@@ -233,6 +287,7 @@ def build(lg: str, season: str) -> tuple[pd.DataFrame, dict]:
         else:
             starts = {}
         seen = set()
+        fm_seen: dict[str, list[tuple[str, str | None]]] = defaultdict(list)   # FotMob 평점: 팀 → [(이름, entity|None)]
         for c in cols:
             if c not in d.columns:
                 continue
@@ -251,6 +306,8 @@ def build(lg: str, season: str) -> tuple[pd.DataFrame, dict]:
                     sc = 100
                 else:
                     eid, sc = best_match(nm, names.get(sq, {}))
+                if stem == "fotmob_ratings":
+                    fm_seen[sq].append((nm, eid))
                 if eid:
                     a["exact" if sc == 100 else "rule"] += 1
                     names[sq].setdefault(nm, eid)
@@ -263,8 +320,44 @@ def build(lg: str, season: str) -> tuple[pd.DataFrame, dict]:
                     n_st = int(starts.get((sq, nm), 0))
                     a["orphans"].append({"squad": sq, "name": nm, "starts": n_st})
                     add_entity(f"esp:{sq}:{norm(nm)}", sq, nm, "", stem)
+        if stem == "fotmob_ratings" and pf is not None and "minutes" in d.columns:
+            a = audit[stem]
+            a["minutes"] = 0
+            fsq = _read("fotmob_squads", lg, season, {"squad", "player", "pos"})
+            fpos_all = {} if fsq is None else {(str(r.squad), str(r.player)): _pos_set(r.pos) for r in fsq.itertuples()}
+            fmins = {(str(sq_), str(p_)): float(m_ or 0) for sq_, p_, m_ in zip(d["squad"], d["player"], d["minutes"].fillna(0))}
+            for sq, lst in fm_seen.items():
+                g = pf[pf["squad"].astype(str) == sq]
+                if g.empty:
+                    continue
+                pmin = {str(p_): float(m_ or 0) for p_, m_ in zip(g["player"], g.get("minutes", pd.Series(0, index=g.index)).fillna(0))}
+                ppos = {str(p_): _pos_set(v) for p_, v in zip(g["player"], g.get("pos", pd.Series("", index=g.index)))}
+                ent_of = {str(p_): names[sq].get(str(p_)) for p_ in g["player"]}
+                canon_of = {e: p_ for p_, e in ent_of.items() if e}
+                matched = [(canon_of[e], f) for f, e in lst if e and e in canon_of]
+                fmin = {f: fmins.get((sq, f), 0.0) for f, _ in lst}
+                fpos = {f: fpos_all.get((sq, f), set()) for f, _ in lst}
+                for p_, f, c in minutes_pairs(pmin, fmin, matched, ppos, fpos):
+                    eid = ent_of.get(p_)
+                    if not eid:
+                        continue
+                    old = names[sq].get(f)
+                    if old and old != eid:
+                        # 그 이름이 이미 다른 신원(TM 명단에서 따로 생긴 'Pepelu' tm328480 등)이면 합친다 — TM 번호까지 넘어와
+                        # 사진·나이가 붙는다(합치지 않으면 FotMob 'Pepelu' 가 그쪽으로 가서 우리 선수는 계속 비었다)
+                        merged[old] = eid
+                    names[sq][f] = eid
+                    rows.append({"squad": sq, "entity": eid, "alias": f, "source": "fotmob_minutes", "score": 65})
+                    a["minutes"] += 1
     # 4) 가운데 이름 생략으로 갈라진 신원 합치기 — 'Francesco Esposito'(FBref) · 'Pio Esposito'(TM·ESPN 선발) ·
     #    'Francesco Pio Esposito'(ESPN 교체)가 셋으로 따로 잡혀 포메이션에서 사진·OVR 이 비었다(2026-10-19 사용자 지적)
+    for old, new in merged.items():                             # 3b) 출전 시간 지문으로 합친 신원 — 별칭·TM 번호를 우리 선수로
+        for r in rows:
+            if r["entity"] == old:
+                r["entity"] = new
+        if old in ents and new in ents and not ents[new].get("tm_id") and ents[old].get("tm_id"):
+            ents[new]["tm_id"] = ents[old]["tm_id"]
+        ents.pop(old, None)
     root = merge_middle_names(ents)
     if root:
         for r in rows:

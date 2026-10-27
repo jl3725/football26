@@ -30,11 +30,12 @@ def photo_url(row) -> str:
         # (2026-10-19 점검: 15명) — FotMob 사진이 있으면 그쪽
         if not (re.search(r"/portrait/medium/\d+\.png$", str(photo)) and fid is not None and not pd.isna(fid)):
             return str(photo)
-    try:
-        if fid is not None and not pd.isna(fid) and int(fid) > 0:
-            return f"https://images.fotmob.com/image_resources/playerimages/{int(fid)}.png"
-    except (TypeError, ValueError):
-        pass
+    for fid in (fid, row.get("fm_photo_id")):          # 평점 번호 → 없으면 FotMob 명단 번호(사진만, src/fotmob_squads.fill_frame)
+        try:
+            if fid is not None and not pd.isna(fid) and int(fid) > 0:
+                return f"https://images.fotmob.com/image_resources/playerimages/{int(fid)}.png"
+        except (TypeError, ValueError):
+            continue
     return ""
 
 

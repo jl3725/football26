@@ -123,8 +123,33 @@ def fill_frame(frame: pd.DataFrame, squads: pd.DataFrame, info: pd.DataFrame | N
         extra = info[["squad", "player", "birth_date"]].assign(tm_position=None)
         sq_part = pd.concat([extra, sq_part], ignore_index=True)   # index() 는 나중 행이 덮으므로 명단을 뒤에
     idx = index(sq_part)
+    # 이름으로 못 찾으면 FotMob 번호로(선수 표의 fm_id — src/rating_blend.attach) — 'Pepelu'↔'José Luis García Vayá' 처럼
+    # 표기가 전혀 다른 선수는 이름 규칙으로 안 붙어 나이가 비었다(2026-10-27, 출전 시간 지문으로 번호가 붙은 선수)
+    by_id: dict[str, dict] = {}
+    if "fotmob_id" in sq_part.columns:
+        for r in sq_part.to_dict("records"):
+            try:
+                by_id[str(int(float(r.get("fotmob_id"))))] = r
+            except (TypeError, ValueError):
+                continue
     age = pd.to_numeric(frame.get("age"), errors="coerce")
     need_age = age.isna() | (age <= 0)
+    # 사진 번호 — TM 사진도 FotMob 평점 번호(fm_id)도 없는 선수(출전이 짧아 평점 표에 없음 등)는 명단의 FotMob 번호로 사진만.
+    # 평점 연결(fm_id)엔 섞지 않는다(2026-10-27: 사진 없는 출전 선수 203명 중 56명)
+    if "fm_id" in frame.columns:
+        no_photo = frame["fm_id"].isna() & ~frame.get("tm_photo", pd.Series(None, index=frame.index)).map(
+            lambda v: isinstance(v, str) and v.startswith("http"))
+        if no_photo.any():
+            frame = frame.copy()
+            ids = []
+            for i in frame.index:
+                r = find(idx, frame.at[i, "squad"], frame.at[i, "player"]) if no_photo.loc[i] else None
+                v = (r or {}).get("fotmob_id")
+                try:
+                    ids.append(int(float(v)) if v is not None and str(v) not in ("", "nan") else None)
+                except (TypeError, ValueError):
+                    ids.append(None)
+            frame["fm_photo_id"] = ids
     tp = frame["tm_position"] if "tm_position" in frame.columns else pd.Series([None] * len(frame), index=frame.index)
     need_pos = ~tp.map(lambda v: isinstance(v, str) and bool(v.strip()))
     todo = frame.index[need_age | need_pos]
@@ -136,6 +161,11 @@ def fill_frame(frame: pd.DataFrame, squads: pd.DataFrame, info: pd.DataFrame | N
     frame["age"] = pd.to_numeric(frame["age"], errors="coerce")
     for i in todo:
         r = find(idx, frame.at[i, "squad"], frame.at[i, "player"])
+        if r is None and "fm_id" in frame.columns:
+            try:
+                r = by_id.get(str(int(float(frame.at[i, "fm_id"]))))
+            except (TypeError, ValueError):
+                r = None
         if r is None:
             continue
         if need_age.loc[i]:
