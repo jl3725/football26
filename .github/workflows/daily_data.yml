@@ -164,6 +164,11 @@ jobs:
       - name: International competitions (대륙별 대회·상태)
         run: bash scripts/ci_try.sh "intl_comps" python src/intl_comps.py
 
+      # 대표팀 경기 선수 평점(FotMob — 월드컵·대륙 대회·네이션스리그·예선·친선, 대회 자동 발견) → OVR 경기력 표본(nt_*,
+      # src/allcomp_stats.py). 새로 끝난 경기만 받는다 — 평소엔 A매치 기간에만 늘어난다(2026-10-27 사용자: 국대 활약도 넣자)
+      - name: International match ratings (대표팀 평점)
+        run: bash scripts/ci_try.sh "intl_ratings" python src/fetch_fotmob_intl.py --max 800
+
       # 클럽 라이벌 — 위키 클럽 문서의 라이벌·더비 섹션(+더비 문서)에서 같은 리그 라이벌 자동 판정(7일 캐시라 주 1회만 받음)
       # → 이적 작업대·스카우팅 풀에서 라이벌 구단 선수는 '거래 어려움'(src/club_rivals.py)
       - name: Club rivals (위키 라이벌·더비)

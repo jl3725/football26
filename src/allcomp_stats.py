@@ -35,6 +35,7 @@ EURO = {"uefa.champions": (100.0, 90.0), "uefa.europa": (94.0, 86.0), "uefa.euro
 CUP_DROP = 12.0                 # 국내 컵 하부 리그 상대 — 자기 리그 수준에서 뺀다
 LVL_MIN, LVL_MAX = 75.0, 115.0  # 상대 Elo 수준 범위 — 평점 보정 +0.5 ~ −0.3(한 경기 상대가 OVR 을 크게 흔들지 않게)
 W_EURO, W_CUP = 1.0, 0.5
+RATING_MIN_APP = 30             # 리그 밖 경기 평점 표본 — 이 분 미만 교체 출전은 평점에서 뺀다(rating_table)
 
 # 우리 지표 열 ← FotMob 세부 기록: ('n', 분자) = per90, ('p', 성공, 시도) = %, ('p2', 승, 패) = 승/(승+패) %
 MAP = {
@@ -114,7 +115,9 @@ def rating_table(x: pd.DataFrame) -> tuple[dict, dict]:
         return {}, {}
     d = x[_num(x["rating"]).notna()].copy()
     d["rating"] = _num(d["rating"])
-    d["_wm"] = d["minutes"] * d["_w"]
+    # 평점은 RATING_MIN_APP 분 이상 뛴 경기만 — 짧은 교체 출전 평점은 체계적으로 낮고(같은 선수 클럽 리그 평점보다 30분 미만
+    # −0.45 · 30~45분 −0.3) 정보가 거의 없다(상관 0.12, 2026-10-27 유럽 979경기·대표팀 1,054경기). 출전 분·대회 표시는 전부.
+    d["_wm"] = d["minutes"] * d["_w"] * (d["minutes"] >= RATING_MIN_APP)
 
     def summ(g: pd.DataFrame) -> dict:
         wm = float(g["_wm"].sum())
@@ -127,24 +130,119 @@ def rating_table(x: pd.DataFrame) -> tuple[dict, dict]:
     return by_id, by_name
 
 
-def attach_x(frame: pd.DataFrame, cur: tuple[dict, dict], prev: tuple[dict, dict] | None = None) -> pd.DataFrame:
-    """선수 표에 x_ss_rating · x_minutes(가중) · x_level · x_raw_minutes · x_comps(+ prev_x_*). fm_id 우선, 없으면 팀|이름."""
+def attach_x(frame: pd.DataFrame, cur: tuple[dict, dict], prev: tuple[dict, dict] | None = None,
+             names: tuple[str, str] = ("x", "prev_x")) -> pd.DataFrame:
+    """선수 표에 x_ss_rating · x_minutes(가중) · x_level · x_raw_minutes · x_comps(+ prev_x_*). fm_id 우선, 없으면 팀|이름.
+    names=('nt', 'prev_nt') 면 대표팀 표본(nt_tables) — 같은 모양의 열을 다른 이름으로."""
     from rating_blend import fm_to_ss  # noqa: PLC0415
     out = frame.copy()
-    for pre, (by_id, by_name) in (("x", cur), ("prev_x", prev or ({}, {}))):
+    for pre, (by_id, by_name) in ((names[0], cur), (names[1], prev or ({}, {}))):
         vals = []
         for _, r in out.iterrows():
             f = fid_of(r.get("fm_id"))
             t = by_id.get(f) if f else None
-            if t is None and pre == "x":
+            if t is None and pre == names[0]:
                 t = by_name.get(f"{r.get('squad')}|{r.get('player')}")
             vals.append(t)
         out[f"{pre}_ss_rating"] = [fm_to_ss(t["fm_rating"]) if t and t["fm_rating"] is not None else pd.NA for t in vals]
         out[f"{pre}_minutes"] = [t["minutes"] if t else pd.NA for t in vals]
         out[f"{pre}_level"] = [t["level"] if t else pd.NA for t in vals]
         out[f"{pre}_raw_minutes"] = [t["raw_minutes"] if t else pd.NA for t in vals]
-        if pre == "x":
-            out["x_comps"] = [t["comps"] if t else None for t in vals]
+        if pre == names[0]:
+            out[f"{pre}_comps"] = [t["comps"] if t else None for t in vals]
+    return out
+
+
+# ── 대표팀 경기(src/fetch_fotmob_intl.py → fotmob_intl_ratings_{시즌}) ─────────────────────────
+# 2026-10-27 사용자: '국대 활약도 넣자'(하베르츠 월드컵 3골). 유럽·컵과 같은 '리그 밖 표본'이지만 OVR 에만 넣는다 —
+# 폼(이번 시즌 클럽)과 세부 지표(리그+유럽·컵)는 그대로. 열 이름 nt_* · prev_nt_*(attach_x names).
+#   상대 수준 = NT_A + NT_B × (상대 FIFA 점수 − 1500) — nt_cal 이 데이터로 다시 맞춘다: 같은 선수의 같은 시즌 클럽 리그 평점
+#   (FotMob)과 대표팀 평점의 차이가 상대 점수에 따라 어떻게 달라지는지(경기마다 '이 평점이 말하는 상대 수준'을 출전 분 가중
+#   최소제곱). 표본이 모자라면(NT_CAL_MIN 줄 미만) 기본값. 랭킹에 없는 나라는 점수 NT_UNKNOWN_POINTS(약체)로.
+#   가중: 공식 대회 0.5, 친선 0.25 — 같은 출전 시간대(300~600분)에서 표본 평점(수준 보정)과 같은 선수 클럽 리그 평점의 상관이
+#   대표팀 0.26 · 유럽 0.38 · 국내 컵 0.39(2026-10-27, 각 285~296명). 동료·전술·준비 기간이 달라 클럽 실력을 덜 말해 준다.
+#   1.0 으로 넣었을 땐 교체 3~4번(평점 6.7)뿐인 35세 그로스가 베테랑 보정에 증폭돼 78→77(golden 밖)
+NT_A, NT_B = 94.2, 0.04          # 2026-10-27 nt_cal 결과(7,784줄) — 표본이 모자랄 때만 쓰는 기본값
+NT_CAL_MIN, NT_UNKNOWN_POINTS = 300, 1150.0
+W_NT, W_FRIENDLY = 0.5, 0.25
+
+
+def nt_level(points, cal: tuple[float, float] = (NT_A, NT_B)) -> float:
+    p = float(points) if points is not None and points == points else NT_UNKNOWN_POINTS
+    return min(LVL_MAX, max(LVL_MIN, cal[0] + cal[1] * (p - 1500.0)))
+
+
+def _nt_raw(read, season: str) -> pd.DataFrame:
+    t = read("fotmob_intl_ratings", "EPL", season)
+    if t is None or t.empty or "fotmob_id" not in t.columns:
+        return pd.DataFrame()
+    d = t[t["fotmob_id"].notna()].copy()
+    d["minutes"] = _num(d["minutes"]).fillna(0)
+    d["rating"] = _num(d["rating"])
+    d = d[(d["minutes"] > 0) & d["rating"].notna()]
+    d["_fid"] = d["fotmob_id"].map(fid_of)
+    return d
+
+
+def nt_cal(read, seasons: list[str]) -> tuple[float, float, int]:
+    """(a, b, 줄 수) — 상대 수준 = a + b × (상대 점수 − 1500). 클럽 리그 평점(FotMob, 그 시즌 450분+)이 있는 선수 경기만.
+    경기마다 L = 클럽 리그 수준 − (대표팀 평점 − 클럽 평점)(Sofascore 척도)/평점 보정(0.02) — 대표팀에서 평점이 클럽보다
+    높으면 상대가 약했다는 뜻. 한 경기 평점은 흔들림이 커서(±0.7 → ±25 레벨) 많은 줄로 맞추고 L 은 40~160 으로 자른다."""
+    import league_level  # noqa: PLC0415
+    import rating_blend as rb  # noqa: PLC0415
+    from league_level import RATING_PER_LEVEL  # noqa: PLC0415
+    xs, ys, ws = [], [], []
+    for se in seasons:
+        d = _nt_raw(read, se)
+        if d.empty or "opp_points" not in d.columns:
+            continue
+        base = rb._by_id(lambda lg, s: read("fotmob_ratings", lg, s), se)
+        for f, r, m, p in zip(d["_fid"], d["rating"], d["minutes"], _num(d["opp_points"])):
+            b = base.get(int(f)) if f else None
+            if b is None or b[1] < 450 or p != p:
+                continue
+            diff = (rb.fm_to_ss(r) - rb.fm_to_ss(b[0]))
+            L = league_level.level(b[2]) - diff / RATING_PER_LEVEL
+            xs.append(float(p) - 1500.0)
+            ys.append(min(160.0, max(40.0, L)))
+            ws.append(min(float(m), 90.0))
+    if len(xs) < NT_CAL_MIN:
+        return NT_A, NT_B, len(xs)
+    import numpy as np  # noqa: PLC0415
+    x, y, w = np.array(xs), np.array(ys), np.array(ws)
+    xm, ym = np.average(x, weights=w), np.average(y, weights=w)
+    b = float(np.sum(w * (x - xm) * (y - ym)) / np.sum(w * (x - xm) ** 2))
+    return float(ym - b * xm), b, len(xs)
+
+
+def nt_rows(read, season: str, cal: tuple[float, float]) -> pd.DataFrame:
+    """대표팀 경기 → rating_table 이 읽는 모양(_w·_lvl·_fid·squad·comp_code)."""
+    d = _nt_raw(read, season)
+    if d.empty:
+        return d
+    pts = _num(d["opp_points"]) if "opp_points" in d.columns else pd.Series(float("nan"), index=d.index)
+    d["_lvl"] = [nt_level(p, cal) for p in pts]
+    d["_w"] = [W_FRIENDLY if int(f or 0) else W_NT for f in _num(d.get("friendly", 0)).fillna(0)]
+    d["squad"] = d["club"].astype(str) if "club" in d.columns else ""
+    d["comp_code"] = "intl." + d["comp_id"].astype(str)
+    return d
+
+
+def nt_tables(read, season: str, version=None) -> tuple[dict, dict]:
+    """대표팀 표본 요약(rating_table) — 상대 수준 보정은 이번·지난 시즌을 함께 맞춘 값."""
+    key = ("nt", season, version)
+    if version is not None and key in _CACHE:
+        return _CACHE[key]
+    from leagues import SEASON_START  # noqa: PLC0415
+    ckey = ("ntcal", "", version)
+    cal = _CACHE.get(ckey) if version is not None else None
+    if cal is None:
+        cal = nt_cal(read, [f"{SEASON_START - 1}_{SEASON_START}", f"{SEASON_START}_{SEASON_START + 1}"])
+        if version is not None:
+            _put(ckey, cal)
+    out = rating_table(nt_rows(read, season, cal[:2]))
+    if version is not None:
+        _put(key, out)
     return out
 
 

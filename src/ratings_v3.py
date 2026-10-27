@@ -158,7 +158,7 @@ SLUMP_GAP, SLUMP_K, SLUMP_FULL_MIN, SLUMP_MAX, SLUMP_PRIOR_MIN = 3.0, 0.5, 1500.
 # v3.6 탐색(golden 위반 0 · 스카우트 3+ 이탈 0 · Groß 78 · Dowman 70 · Vušković>Konsa): 36세 45%
 _VET_PE_AGES, _VET_PE_W = (30.0, 32.0, 34.0, 36.0), (0.0, 0.18, 0.34, 0.45)
 # 모델 버전 — 바뀌면 rating_history 가 과거 기록을 평행이동해 모델 변경이 선수 추이(▲▼)로 보이지 않게 한다
-MODEL_VERSION = "v3.10"
+MODEL_VERSION = "v3.11"
 # 잠재력 프리미엄 — 같은 시장가치·리그에서 어린 선수의 실제 경기력(리그 보정 평점)이 낮은 만큼(vov 환산).
 # 25/26 1,500분+ 1,450명 회귀(27~29세 기준): 17~20세 −6.8 · 21세 −4.9 · 22세 −5.1 · 23세 −4.4 · 24세 −3.9 ·
 # 25세 −3.8 · 26세 −2.4 (같은 회귀에서 30~32세 +5.3 · 33세+ +9.4 — 베테랑 보정과 같은 근거).
@@ -289,7 +289,9 @@ def absolute_ovr(*, value, ss_rating, minutes, age, pos_group,
                  prev_league_level=None, prev_gk_save_pct=None, prev_gk_cs_pct=None, prev_value=None,
                  hist_ss_rating=None, hist_minutes=None, hist_league_level=None,
                  x_ss_rating=None, x_minutes=None, x_level=None,
-                 prev_x_ss_rating=None, prev_x_minutes=None, prev_x_level=None, _parts: list | None = None) -> int:
+                 prev_x_ss_rating=None, prev_x_minutes=None, prev_x_level=None,
+                 nt_ss_rating=None, nt_minutes=None, nt_level=None,
+                 prev_nt_ss_rating=None, prev_nt_minutes=None, prev_nt_level=None, _parts: list | None = None) -> int:
     """_parts 에 리스트를 주면 단계별 기여(키, 값)를 채운다 — 화면 'OVR 구성'(ovr_parts_of_row)."""
     ln = line_of(pos_group)
     a = _num(age)
@@ -310,7 +312,9 @@ def absolute_ovr(*, value, ss_rating, minutes, age, pos_group,
         rec("jump", -cut)
     rel, off = _class_parts(ss_rating, minutes, prev_ss_rating, prev_minutes, ln, league_level, prev_league_level,
                             hist_ss_rating, hist_minutes, hist_league_level,
-                            extra=[(x_ss_rating, x_minutes, x_level, False), (prev_x_ss_rating, prev_x_minutes, prev_x_level, True)])
+                            extra=[(x_ss_rating, x_minutes, x_level, False), (prev_x_ss_rating, prev_x_minutes, prev_x_level, True),
+                                   # 대표팀(allcomp_stats nt_*) — 리그와 무관해 이적 할인(지난 시즌?)을 걸지 않는다
+                                   (nt_ss_rating, nt_minutes, nt_level, False), (prev_nt_ss_rating, prev_nt_minutes, prev_nt_level, False)])
     # GK 성능 리그 보정 — 평점 척도(×8)의 1.5배: 선방·클린시트는 팀 지배력 영향이 커 약한 리그 강팀 GK 가
     # 더 부풀려진다(포르투갈 주전 GK CS 35% vs EPL 31.5%, Porto Costa 직전 시즌 CS 63.6%)
     lg_off = rating_offset(league_level) * 12.0
@@ -369,6 +373,8 @@ def absolute_ovr(*, value, ss_rating, minutes, age, pos_group,
         # 이번 시즌 부진 — 위 차감 뒤의 값으로 본다(두 규칙이 같은 몫을 두 번 빼지 않게).
         # 이번 시즌 수준은 '자기 커리어 수준' 쪽으로 수축한다 — 포지션 평균 쪽으로 당기면 시즌 초엔 잘하는 엘리트(브루노 폼 94)까지
         # 평범해 보여 깎였다. 두 조건이 다 맞을 때만: 이번 시즌이 자기 수준보다 낮고(decline), OVR 이 이번 시즌 수준보다 높다(over).
+        # 이번 시즌 = 클럽 경기(리그+유럽·컵)만 — A매치 교체 30분(하베르츠 네덜란드전 6.36)이 '부진'을 키우지 않게.
+        # 대표팀 표본은 자기 커리어 수준(own = rel)에만 들어간다
         c_w = (_num(minutes) if _num(ss_rating) > 0 else 0.0) + (_num(x_minutes) if _num(x_ss_rating) > 0 else 0.0)
         if rel > 0 and SLUMP_K > 0 and a >= UNDERPERF_MIN_AGE and c_w > 0 and _num(ss_rating) > 0:
             c_rel, c_off = _class_parts(ss_rating, minutes, None, None, ln, league_level, None,
@@ -574,7 +580,8 @@ def _prev_level(row, col: str = "prev_league"):
 
 def _x_args(row) -> dict:
     """유럽·컵 평점 표본(src/allcomp_stats.attach_x) — 열이 없으면 빈 값(리그 평점만, 예전 동작)."""
-    return {k: row.get(k) for k in ("x_ss_rating", "x_minutes", "x_level", "prev_x_ss_rating", "prev_x_minutes", "prev_x_level")}
+    return {k: row.get(k) for k in ("x_ss_rating", "x_minutes", "x_level", "prev_x_ss_rating", "prev_x_minutes", "prev_x_level",
+                                    "nt_ss_rating", "nt_minutes", "nt_level", "prev_nt_ss_rating", "prev_nt_minutes", "prev_nt_level")}
 
 
 def ovr_of_row(row) -> int:
@@ -597,7 +604,7 @@ def ovr_of_row(row) -> int:
 PART_LABELS = {
     "base": ("VALUE", "시장가치 기준점"), "base_fallback": ("VALUE", "시장가치 없음 → 출전 시간대 기준점"),
     "jump": ("VALUE JUMP", "몸값 급등 감쇠(새 몸값의 절반만)"), "pos": ("POSITION", "포지션 보정"),
-    "perf": ("PERFORMANCE", "경기력 — 평점(Sofascore·FotMob 평균, 이번·지난 시즌, 리그+유럽·컵, 대회 수준 보정)"),
+    "perf": ("PERFORMANCE", "경기력 — 평점(Sofascore·FotMob 평균, 이번·지난 시즌, 리그+유럽·컵+대표팀, 대회·상대 수준 보정)"),
     "gk_base": ("GK", "골키퍼 기준"), "gk_perf": ("PERFORMANCE", "선방률·클린시트(리그 보정)"),
     "vet": ("VETERAN", "베테랑 — 나이로 깎인 몸값 일부 되돌림"), "age": ("AGE", "나이 보정"),
     "vet_pe": ("VETERAN FORM", "베테랑 — '평점이 말하는 수준' 쪽으로"), "big": ("BIG MATCH", "유럽대항전·컵 선발"),

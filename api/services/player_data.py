@@ -284,6 +284,9 @@ def _build_frame(league: str, season: str | None = None):
         ver = ds._db_mtime()
         y0 = int(season[:4]) if season else _S0
         frame = acs.attach_x(frame, acs.x_tables(rd, f"{y0}_{y0 + 1}", ver), acs.x_tables(rd, f"{y0 - 1}_{y0}", ver))
+        # 대표팀 경기(nt_*) — OVR 경기력에만(폼·세부 지표는 클럽 경기). 2026-10-27 사용자: 국대 활약도 넣자
+        frame = acs.attach_x(frame, acs.nt_tables(rd, f"{y0}_{y0 + 1}", ver), acs.nt_tables(rd, f"{y0 - 1}_{y0}", ver),
+                             names=("nt", "prev_nt"))
     except Exception as e:  # noqa: BLE001 — 경기별 기록이 없으면 리그 평점만
         print(f"[allcomp] {league} {season or ''}: 건너뜀 {type(e).__name__}: {e}")
     # 나이·세부 포지션 빈칸 — FotMob 팀 명단(src/fotmob_squads.py)으로. 'Mahdi Jazuli MF 0세'(TM 은 'Mahdi Nicoll-Jazuli'라
