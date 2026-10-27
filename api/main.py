@@ -1560,7 +1560,7 @@ def _comp_profile(row, usage_idx) -> dict:
         + ([f"부상 결장 {missed}경기 제외"] if missed else [])
     return {"role": role, "role_evidence": " · ".join(parts),
             "big_match": rv3.big_match_proven(euro_starts=es, euro_apps=ea),
-            "league_min": int(lm), "comps": comps}
+            "league_min": int(lm), "comps": comps, "injury_missed": int(missed or 0)}
 
 
 def _role_for(row, usage_idx) -> dict:
@@ -2928,7 +2928,7 @@ def player_detail(team: str, player: str, league: str = ACTIVE_LEAGUE, basis: st
     except Exception:  # noqa: BLE001
         pass
 
-    return {
+    out = {
         "player": row["player"], "team": team, "color": tm.team_color(team),
         "value_history": vhist, "peers": {"line": my_line, "n": int(len(pool))},
         "pos": _pos_label(row),
@@ -2954,6 +2954,19 @@ def player_detail(team: str, player: str, league: str = ACTIVE_LEAGUE, basis: st
         "form": _player_form(row),
         "recent": _recent_of(row, league),
     }
+    out["scout_take"] = _scout_take(out, league)
+    return out
+
+
+def _scout_take(payload: dict, league: str) -> dict | None:
+    """SCOUT TAKE — AI 한줄평(매일 data/ai/scout_takes.json, 지금 숫자로도 맞는 것만) + 강점·약점·역할 칩(src/scout_take.py)."""
+    try:
+        import scout_take as stk  # noqa: PLC0415
+        ranks, n = stk.team_ranks(league)
+        return stk.for_payload(payload, league, ranks.get(str(payload.get("team"))), n or None)
+    except Exception as e:  # noqa: BLE001 — 한줄평이 선수 화면을 깨지 않게
+        print(f"[scout_take] {payload.get('player')}: {type(e).__name__}: {e}")
+        return None
 
 
 @_memo(ttl=21600)

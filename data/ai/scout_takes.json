@@ -1,0 +1,495 @@
+{
+ "version": "8",
+ "takes": {
+  "EPL|Manchester City|Erling Haaland": {
+   "l1": "리그 정상급 득점력을 과시하는 스트라이커",
+   "l2": "리그 9골로 득점 1위 — 평점 7.8로 지난 시즌 대비 상승세",
+   "sig": "318821ed64c5",
+   "scene": "elite_peak",
+   "at": "2026-10-27T06:58:13+00:00"
+  },
+  "EPL|Arsenal|Bukayo Saka": {
+   "l1": "리그 정상급 기량을 유지 중인 핵심 윙어",
+   "l2": "평점 7.43으로 리그 3위 — 지난 시즌보다 상승한 경기력",
+   "sig": "bf6cb4410935",
+   "scene": "elite_peak",
+   "at": "2026-10-27T06:58:13+00:00"
+  },
+  "EPL|Arsenal|Declan Rice": {
+   "l1": "지금 리그에서 가장 폼이 좋은 중앙 미드필더",
+   "l2": "도움 리그 1위, 평점 7.49 — 공 배급의 중심",
+   "sig": "db7c1eab2e3c",
+   "scene": "elite_peak",
+   "at": "2026-10-27T07:02:19+00:00"
+  },
+  "EPL|Manchester Utd|Bruno Fernandes": {
+   "l1": "정상급 공격력을 갖춘 팀의 핵심 미드필더",
+   "l2": "리그 3골 1도움 — 공격 상위 6%의 공격 가담",
+   "sig": "75ad47815635",
+   "scene": "elite_peak",
+   "at": "2026-10-27T06:58:13+00:00"
+  },
+  "EPL|Arsenal|David Raya": {
+   "l1": "리그 정상급 안정감을 보여주는 최고의 골키퍼",
+   "l2": "클린시트 1위 — 평점 7.29로 지난 시즌 대비 큰 폭 상승",
+   "sig": "e3a56d430dea",
+   "scene": "elite_peak",
+   "at": "2026-10-27T06:58:13+00:00"
+  },
+  "EPL|Arsenal|Gabriel Magalhães": {
+   "l1": "리그 정상급 폼을 유지 중인 센터백",
+   "l2": "평점 7.29 — 결정력(골-xG) 리그 1위로 수비수 이상의 공격 기여",
+   "sig": "6dad71f4b000",
+   "scene": "elite_peak",
+   "at": "2026-10-27T06:58:13+00:00"
+  },
+  "EPL|Liverpool|Dominik Szoboszlai": {
+   "l1": "부상 결장에도 클래스를 증명하는 시즌",
+   "l2": "리그 6경기 출전 — 부상으로 2경기 결장했으나 복귀 후 준수한 폼",
+   "sig": "74fbbf121593",
+   "scene": "elite_steady",
+   "at": "2026-10-27T06:58:13+00:00"
+  },
+  "EPL|Manchester City|Enzo Fernández": {
+   "l1": "꾸준한 활약으로 중원의 중심을 잡는 중",
+   "l2": "리그 6경기 출전 — 지난 시즌(7.15)과 유사한 평점 7.14 유지",
+   "sig": "f21620fea1fa",
+   "scene": "elite_steady",
+   "at": "2026-10-27T06:58:13+00:00"
+  },
+  "EPL|Manchester City|Gianluigi Donnarumma": {
+   "l1": "선발로 꾸준히 나서지만 존재감은 평범한 시즌",
+   "l2": "평점 6.99 — 선방율 리그 2위이나 박스 지배는 하위 25% 수준",
+   "sig": "2e6e01b74eb3",
+   "scene": "steady_average",
+   "at": "2026-10-27T06:58:13+00:00"
+  },
+  "EPL|Manchester City|Rayan Cherki": {
+   "l1": "지금 리그에서 가장 폼이 좋은 공격형 미드필더",
+   "l2": "평점 7.52 — 4골 2도움으로 공격 상위 4%의 정상급 퍼포먼스",
+   "sig": "72bea021d25b",
+   "scene": "elite_peak",
+   "at": "2026-10-27T06:58:13+00:00"
+  },
+  "EPL|Arsenal|Bruno Guimarães": {
+   "l1": "피지컬 듀얼 능력은 확실하나 입지는 평범",
+   "l2": "피지컬·듀얼 상위 1% — 평점 7.1",
+   "sig": "324c21ecc8fc",
+   "scene": "bench_start",
+   "at": "2026-10-27T06:58:13+00:00"
+  },
+  "EPL|Chelsea|Cole Palmer": {
+   "l1": "리그 정상급 클래스로 올 시즌도 폼 절정",
+   "l2": "리그 도움 3개 — 드리블 리그 3위",
+   "sig": "4a0a37d6a054",
+   "scene": "elite_peak",
+   "at": "2026-10-27T06:58:13+00:00"
+  },
+  "EPL|Chelsea|João Pedro": {
+   "l1": "리그 정상급 골감각으로 올 시즌 폼 절정",
+   "l2": "리그 골 5개 — 평점 리그 2위",
+   "sig": "01c6be2fc9c0",
+   "scene": "elite_peak",
+   "at": "2026-10-27T06:58:13+00:00"
+  },
+  "EPL|Liverpool|Virgil van Dijk": {
+   "l1": "리그 정상급 수비로 35세에도 폼 절정",
+   "l2": "공중볼 리그 3위 — 평점 7.25",
+   "sig": "6507e68e75b3",
+   "scene": "elite_peak",
+   "at": "2026-10-27T06:58:13+00:00"
+  },
+  "EPL|Manchester City|Elliot Anderson": {
+   "l1": "리그 정상급 활약으로 올 시즌 폼 절정",
+   "l2": "평점 리그 3위 — 평점 7.4",
+   "sig": "451c4008fbc8",
+   "scene": "elite_peak",
+   "at": "2026-10-27T06:58:13+00:00"
+  },
+  "EPL|Manchester City|Jeremy Doku": {
+   "l1": "부상 복귀 후 폼을 끌어올리는 중인 윙어",
+   "l2": "평점 7.43으로 준수한 활약 — 최근 5경기 폼 85로 상승세",
+   "sig": "cae5c46f7d5b",
+   "scene": "injury_return",
+   "at": "2026-10-27T06:58:13+00:00"
+  },
+  "EPL|Manchester City|Joško Gvardiol": {
+   "l1": "공수 양면에서 존재감 확실한 리그 정상급 풀백",
+   "l2": "도움 3개, 평점 7.18 — 공격 상위 11%로 팀의 측면 공격 주도",
+   "sig": "666c39152140",
+   "scene": "elite_peak",
+   "at": "2026-10-27T06:58:13+00:00"
+  },
+  "EPL|Manchester City|Marc Guéhi": {
+   "l1": "공격 가담 능력까지 갖춘 엘리트 센터백의 시즌",
+   "l2": "리그 1골 1도움 — 볼 운반 상위 13%의 전진성 보유",
+   "sig": "1a42e5db3a52",
+   "scene": "elite_peak",
+   "at": "2026-10-27T06:58:13+00:00"
+  },
+  "EPL|Arsenal|Jurriën Timber": {
+   "l1": "출전 시간이 다소 아쉬운 로테이션 자원",
+   "l2": "유럽대항전 선발 2경기, 리그 출전 4경기 — 주전 경쟁 중",
+   "sig": "dad2acfac806",
+   "scene": "bench_start",
+   "at": "2026-10-27T07:02:19+00:00"
+  },
+  "EPL|Chelsea|Moisés Caicedo": {
+   "l1": "출전 시간 확보가 시급한 24세 미드필더의 분전",
+   "l2": "리그 출전 265분 — 최근 5경기 폼 73으로 반등 기회 모색",
+   "sig": "beab90ff4c4d",
+   "scene": "injury_return",
+   "at": "2026-10-27T06:58:13+00:00"
+  },
+  "EPL|Liverpool|Alexander Isak": {
+   "l1": "리그에서 가장 폼이 좋은 정상급 스트라이커",
+   "l2": "득점 리그 2위, 평점 7.35 — 절정의 골 감각 보여주는 시즌",
+   "sig": "d0fa1ab5c48f",
+   "scene": "elite_peak",
+   "at": "2026-10-27T06:58:13+00:00"
+  },
+  "EPL|Liverpool|Bradley Barcola": {
+   "l1": "꾸준한 경기력으로 팀 전술의 중심을 지키는 윙어",
+   "l2": "평점 6.93 — 몸값 €100M에 걸맞은 준수한 활약 지속",
+   "sig": "7b72f3da6248",
+   "scene": "elite_steady",
+   "at": "2026-10-27T06:58:13+00:00"
+  },
+  "EPL|Liverpool|Florian Wirtz": {
+   "l1": "리그에서 가장 창조적인 정상급 공격형 미드필더",
+   "l2": "키패스/90 리그 1위 — 2도움으로 중원 배급의 중심",
+   "sig": "78dbb8a2ca45",
+   "scene": "elite_steady",
+   "at": "2026-10-27T06:52:25+00:00"
+  },
+  "EPL|Manchester City|Antoine Semenyo": {
+   "l1": "리그 선두 팀의 공격을 주도하는 정상급 윙어",
+   "l2": "리그 2골 3도움, 평점 7.14 — 창조적 움직임 상위 17%",
+   "sig": "be7a31c4bbd0",
+   "scene": "elite_peak",
+   "at": "2026-10-27T06:58:13+00:00"
+  },
+  "EPL|Manchester City|Rúben Dias": {
+   "l1": "올 시즌도 변함없이 제 몫을 다하는 수비의 중심",
+   "l2": "리그 8경기 출전 — 피지컬·듀얼 하위 14%로 수비 부담은 상존",
+   "sig": "006967e676f3",
+   "scene": "elite_steady",
+   "at": "2026-10-27T06:58:13+00:00"
+  },
+  "EPL|Liverpool|Alisson": {
+   "l1": "클래스는 분명하나 올 시즌 활약은 다소 주춤",
+   "l2": "클린시트 리그 3위 — 평점 6.9로 이름값 대비 아쉬운 시즌",
+   "sig": "ecda568106df",
+   "scene": "class_slump",
+   "at": "2026-10-27T06:58:13+00:00"
+  },
+  "EPL|Liverpool|Cody Gakpo": {
+   "l1": "리그 정상급 폼을 과시하며 절정의 기량 발휘 중",
+   "l2": "키패스/90 리그 2위 — 1골 3도움으로 공격 포인트 생산 활발",
+   "sig": "4eb28ccb80c5",
+   "scene": "elite_peak",
+   "at": "2026-10-27T06:58:13+00:00"
+  },
+  "EPL|Manchester City|Matheus Nunes": {
+   "l1": "정상급 피지컬로 측면에서 제 몫을 다하는 풀백",
+   "l2": "피지컬·듀얼 상위 12% — 평점 7.11로 준수한 시즌",
+   "sig": "2ea606c76f7b",
+   "scene": "elite_steady",
+   "at": "2026-10-27T06:58:13+00:00"
+  },
+  "EPL|Manchester Utd|Bryan Mbeumo": {
+   "l1": "꾸준한 활약으로 팀 공격의 중심 역할",
+   "l2": "리그 8경기 4골 — 유럽대항전 3경기 선발 출전으로 입지 증명",
+   "sig": "0382bd800d14",
+   "scene": "elite_steady",
+   "at": "2026-10-27T07:02:19+00:00"
+  },
+  "EPL|Tottenham Hotspur|Jan Paul van Hecke": {
+   "l1": "리그에서 가장 폼이 좋은 정상급 센터백",
+   "l2": "평점 리그 2위, 평점 7.41 — 올 시즌 수비진의 핵심",
+   "sig": "e538db192a49",
+   "scene": "elite_peak",
+   "at": "2026-10-27T06:58:13+00:00"
+  },
+  "EPL|Tottenham Hotspur|Sandro Tonali": {
+   "l1": "몸값에 걸맞은 안정감을 보여주는 주전 미드필더",
+   "l2": "몸값 €90M — 배급 상위 29%로 중원 운영의 핵심",
+   "sig": "1105bc6a48ec",
+   "scene": "elite_steady",
+   "at": "2026-10-27T06:58:13+00:00"
+  },
+  "EPL|Arsenal|Eberechi Eze": {
+   "l1": "지난 시즌 대비 떨어진 평점으로 고전하는 시즌",
+   "l2": "평점 6.55로 하락 — 몸값 60M 유로 대비 기대 이하의 활약",
+   "sig": "8da5504e7032",
+   "scene": "bench_start",
+   "at": "2026-10-27T07:02:19+00:00"
+  },
+  "EPL|Arsenal|Martín Zubimendi": {
+   "l1": "출전 기회가 제한적인 컵 대회 위주의 미드필더",
+   "l2": "리그 6경기 99분 출전 — 팀 내 입지가 좁아진 상황",
+   "sig": "442d9b28abec",
+   "scene": "few_minutes",
+   "at": "2026-10-27T06:58:13+00:00"
+  },
+  "EPL|Arsenal|Riccardo Calafiori": {
+   "l1": "공격 가담이 돋보이는 준수한 풀백",
+   "l2": "리그 1골 2도움 — 평점 6.9로 팀의 리그 2위 순위 유지에 기여",
+   "sig": "d47c89e2ca53",
+   "scene": "good_season",
+   "at": "2026-10-27T06:52:25+00:00"
+  },
+  "EPL|Brentford|Caoimhín Kelleher": {
+   "l1": "안정적인 선방으로 리그 6위 수성 중",
+   "l2": "선방율 리그 3위 — 평점 7.03으로 지난 시즌 대비 성장세",
+   "sig": "45959fdaa51c",
+   "scene": "good_season",
+   "at": "2026-10-27T06:52:25+00:00"
+  },
+  "EPL|Brighton|Bart Verbruggen": {
+   "l1": "현재 리그에서 가장 폼이 좋은 골키퍼",
+   "l2": "클린시트 리그 1위 — 평점 7.26으로 최고의 시즌을 보내는 중",
+   "sig": "e2a179f619d2",
+   "scene": "good_season",
+   "at": "2026-10-27T06:52:25+00:00"
+  },
+  "EPL|Chelsea|Morgan Rogers": {
+   "l1": "리그에서 가장 결정력이 뛰어난 미드필더",
+   "l2": "결정력(골-xG) 리그 1위 — 리그 4골 1도움으로 팀 공격의 핵심",
+   "sig": "3861510777ed",
+   "scene": "good_season",
+   "at": "2026-10-27T06:52:25+00:00"
+  },
+  "EPL|Chelsea|Pedro Neto": {
+   "l1": "창의적인 움직임으로 공격의 실마리를 푸는 중",
+   "l2": "창조 상위 27% — 평점 7.18로 지난 시즌보다 향상된 기량",
+   "sig": "ae391262d505",
+   "scene": "good_season",
+   "at": "2026-10-27T06:52:25+00:00"
+  },
+  "EPL|Crystal Palace|Dean Henderson": {
+   "l1": "팀 성적 부진과 함께 고전 중인 주전 골키퍼",
+   "l2": "지난 시즌 평점 6.93 대비 하락 — 17위 팀의 실점 부담 가중",
+   "sig": "57fa5f975b6e",
+   "scene": "steady_average",
+   "at": "2026-10-27T06:52:25+00:00"
+  },
+  "EPL|Leeds United|James Trafford": {
+   "l1": "리그에서 가장 폼이 좋은 골키퍼 중 하나",
+   "l2": "선방율 리그 1위, 평점 7.29 — 팀을 7위로 이끄는 핵심",
+   "sig": "d7acb7b73a33",
+   "scene": "good_season",
+   "at": "2026-10-27T06:52:25+00:00"
+  },
+  "EPL|Liverpool|Alexis Mac Allister": {
+   "l1": "리그와 유럽대항전을 오가며 맹활약 중인 미드필더",
+   "l2": "평점 7.08 — 지난 시즌 6.78보다 향상된 기량",
+   "sig": "a58ac5133a62",
+   "scene": "good_season",
+   "at": "2026-10-27T06:52:25+00:00"
+  },
+  "EPL|Liverpool|Ryan Gravenberch": {
+   "l1": "상위 주전급 이름값에 비해 아쉬운 올 시즌 활약",
+   "l2": "평점 6.78로 지난 시즌보다 하락 — 몸값 75M 유로 대비 저조한 공격 포인트",
+   "sig": "aefaf5bf2852",
+   "scene": "class_slump",
+   "at": "2026-10-27T06:52:25+00:00"
+  },
+  "EPL|Manchester City|Iliman Ndiaye": {
+   "l1": "리그 선두 팀의 알짜배기 윙어로 활약 중인 시즌",
+   "l2": "도움 3개 — 평점 7.04로 지난 시즌 6.98 대비 상승",
+   "sig": "ba48bbb800e4",
+   "scene": "good_season",
+   "at": "2026-10-27T06:52:25+00:00"
+  },
+  "EPL|Manchester City|Nico O'Reilly": {
+   "l1": "출전 시간 확보가 시급한 로테이션 자원",
+   "l2": "평점 6.64 — 지난 시즌 평점 6.96 대비 하락세",
+   "sig": "d8c1675c30af",
+   "scene": "young",
+   "at": "2026-10-27T06:52:25+00:00"
+  },
+  "EPL|Manchester City|Phil Foden": {
+   "l1": "창의적인 배급으로 팀 공격을 주도 중",
+   "l2": "창조 상위 1% — 리그 1골 2도움으로 주전 활약",
+   "sig": "f3181b1507e8",
+   "scene": "good_season",
+   "at": "2026-10-27T06:52:25+00:00"
+  },
+  "EPL|Manchester Utd|Youri Tielemans": {
+   "l1": "리그와 유럽대항전 모두 책임지는 주전",
+   "l2": "유럽대항전 3경기 선발 — 지난 시즌 평점 7.12 유지",
+   "sig": "4b2d786a2e3d",
+   "scene": "good_season",
+   "at": "2026-10-27T06:52:25+00:00"
+  },
+  "EPL|Nottingham Forest|Morgan Gibbs-White": {
+   "l1": "팀의 어려운 순위 속 빛나는 창의성",
+   "l2": "창조 상위 4% — 1골 2도움으로 공격 핵심 역할",
+   "sig": "a0717a3b5fbd",
+   "scene": "good_season",
+   "at": "2026-10-27T06:52:25+00:00"
+  },
+  "EPL|Arsenal|Ben White": {
+   "l1": "가장 폼이 좋은 팀의 핵심 풀백",
+   "l2": "리그 3도움 — 평점 7.26으로 시즌 최고 활약 중",
+   "sig": "27d7255df625",
+   "scene": "good_season",
+   "at": "2026-10-27T06:52:25+00:00"
+  },
+  "EPL|Arsenal|Christos Tzolis": {
+   "l1": "꾸준히 선발로 나서지만, 존재감은 평범한 시즌",
+   "l2": "평점 6.96으로 리그 평균 수준 — 지난 시즌 평점 7.71 대비 하락세",
+   "sig": "c3b77b01339d",
+   "scene": "steady_average",
+   "at": "2026-10-27T06:52:25+00:00"
+  },
+  "EPL|Arsenal|Ezri Konsa": {
+   "l1": "팀 수비의 핵심으로 거듭난 절정의 시즌",
+   "l2": "이번 시즌 평점 7.04 — 결정력(골-xG) 리그 1위로 공수 양면에서 존재감",
+   "sig": "518783e835ad",
+   "scene": "good_season",
+   "at": "2026-10-27T06:52:25+00:00"
+  },
+  "EPL|Arsenal|Piero Hincapié": {
+   "l1": "출전 기회가 부족해 기량을 증명하기 어려운 시즌",
+   "l2": "리그 3경기 42분 출전 — 평점 6.77로 지난 시즌 6.94 대비 소폭 하락",
+   "sig": "261c4eaa41d0",
+   "scene": "few_minutes",
+   "at": "2026-10-27T06:52:25+00:00"
+  },
+  "EPL|Bournemouth|Alex Scott": {
+   "l1": "이적 시장 가치 70M 유로에 걸맞은 경기력",
+   "l2": "리그 5경기 출전 — 유럽대항전 선발 1회로 증명된 팀 내 입지",
+   "sig": "e58958212461",
+   "scene": "good_season",
+   "at": "2026-10-27T06:52:25+00:00"
+  },
+  "EPL|Brighton|Luka Vušković": {
+   "l1": "19세의 나이로 주전 자리를 꿰찬 차세대 수비수",
+   "l2": "리그 8경기 출전 — 지난 시즌(7.25)보다 상승한 평점으로 안정감 입증",
+   "sig": "22935b4cbf9c",
+   "scene": "good_season",
+   "at": "2026-10-27T06:52:25+00:00"
+  },
+  "EPL|Chelsea|Emiliano Martínez": {
+   "l1": "34세의 나이가 무색한 리그 최고의 골키퍼",
+   "l2": "평점 7.4 — 지난 시즌 6.97 대비 압도적인 폼 상승세",
+   "sig": "ea2ffab9f39a",
+   "scene": "veteran_rise",
+   "at": "2026-10-27T06:52:25+00:00"
+  },
+  "EPL|Chelsea|Maxence Lacroix": {
+   "l1": "주전 자리는 지키고 있으나 존재감은 평범한 시즌",
+   "l2": "최근 5경기 폼 57 — 몸값 60M 유로에 걸맞은 활약이 부족한 상황",
+   "sig": "5aa7a0c477ff",
+   "scene": "class_slump",
+   "at": "2026-10-27T06:52:25+00:00"
+  },
+  "EPL|Chelsea|Reece James": {
+   "l1": "강점인 배급 능력을 살리지 못하고 있는 풀백",
+   "l2": "창조 하위 4% — 올 시즌 폼 54로 주전급 기대치에 미달",
+   "sig": "ebfba70ef827",
+   "scene": "class_slump",
+   "at": "2026-10-27T06:52:25+00:00"
+  },
+  "EPL|Everton|James Garner": {
+   "l1": "꾸준히 선발로 나서지만 눈에 띄는 활약은 부족",
+   "l2": "평점 7.03 — 지난 시즌(7.23)보다 소폭 하락한 평점",
+   "sig": "4005076ea2db",
+   "scene": "steady_average",
+   "at": "2026-10-27T06:52:25+00:00"
+  },
+  "EPL|Everton|Jordan Pickford": {
+   "l1": "리그 중위권에서 묵묵히 제 몫을 다하는 시즌",
+   "l2": "8경기 출전, 평점 6.95 유지 — 팀 내 주전 입지는 확고한 상황",
+   "sig": "277bf681ac01",
+   "scene": "steady_average",
+   "at": "2026-10-27T06:52:25+00:00"
+  },
+  "EPL|Liverpool|Jérémy Jacquet": {
+   "l1": "절정의 폼으로 팀의 4위 수성을 이끄는 센터백",
+   "l2": "이번 시즌 폼 95 — 지난 시즌 평점 6.91 대비 비약적 상승",
+   "sig": "e26a6833608e",
+   "scene": "good_season",
+   "at": "2026-10-27T06:52:25+00:00"
+  },
+  "EPL|Manchester City|Jack Grealish": {
+   "l1": "이름값에 못 미치는 활약으로 아쉬운 시즌",
+   "l2": "리그 공격 포인트 0개 — 이번 시즌 폼 62로 주춤",
+   "sig": "c7fa39e64ac8",
+   "scene": "class_slump",
+   "at": "2026-10-27T06:52:25+00:00"
+  },
+  "EPL|Manchester Utd|Lisandro Martínez": {
+   "l1": "수비 안정감이 다소 떨어져 고민이 깊은 수비수",
+   "l2": "피지컬·듀얼 하위 23% — 지난 시즌 평점 7.09 대비 하락",
+   "sig": "addb84eafda3",
+   "scene": "steady_average",
+   "at": "2026-10-27T06:52:25+00:00"
+  },
+  "EPL|Nottingham Forest|Daniel Muñoz": {
+   "l1": "공격적인 재능은 돋보이나 수비는 불안한 모습",
+   "l2": "창조 상위 11% — 피지컬·듀얼 하위 28%의 약점",
+   "sig": "032fae71cfcb",
+   "scene": "steady_average",
+   "at": "2026-10-27T06:52:25+00:00"
+  },
+  "EPL|Nottingham Forest|Murillo": {
+   "l1": "리그 18위 팀의 고군분투를 이끄는 수비의 중심",
+   "l2": "8경기 출전하며 718분 소화 — 팀 내 비중 높은 주전 수비수",
+   "sig": "c623dba51386",
+   "scene": "good_season",
+   "at": "2026-10-27T06:52:25+00:00"
+  },
+  "EPL|Tottenham Hotspur|Pedro Porro": {
+   "l1": "출전 기회가 줄어들며 아쉬움을 남기는 이번 시즌",
+   "l2": "평점 6.6으로 지난 시즌 대비 하락 — 4경기 출전 224분 소화",
+   "sig": "578b061eaa11",
+   "scene": "few_minutes",
+   "at": "2026-10-27T06:52:25+00:00"
+  },
+  "EPL|Arsenal|Kai Havertz": {
+   "l1": "리그 2위 팀의 주전 공격수치곤 아쉬운 득점력",
+   "l2": "리그 8경기 2골 — 지난 시즌 평점 6.73 대비 소폭 상승했으나 여전히 부족",
+   "sig": "e424ef78eef6",
+   "scene": "steady_average",
+   "at": "2026-10-27T06:52:25+00:00"
+  },
+  "EPL|Arsenal|Martin Ødegaard": {
+   "l1": "리그 정상급 기량을 증명하는 공격형 미드필더",
+   "l2": "평점 7.38로 지난 시즌 대비 상승 — 팀의 리그 2위 질주를 이끄는 핵심",
+   "sig": "f5b06173d00c",
+   "scene": "elite_peak",
+   "at": "2026-10-27T06:58:13+00:00"
+  },
+  "EPL|Manchester Utd|Matheus Cunha": {
+   "l1": "이름값에 비해 아쉬운 스트라이커의 올 시즌",
+   "l2": "평점 6.81로 지난 시즌 대비 하락 — 리그 1골 2도움으로 몸값(€75M)에 못 미치는 활약",
+   "sig": "5cbe361e7a66",
+   "scene": "class_slump",
+   "at": "2026-10-27T07:02:19+00:00"
+  },
+  "EPL|Brighton|Pascal Groß": {
+   "l1": "노련한 경기 운영으로 팀을 이끄는 중앙 미드필더",
+   "l2": "리그 골 3골, 도움 4개 — 알토란 같은 활약",
+   "sig": "dfda4f0501dc",
+   "scene": "veteran_rise",
+   "at": "2026-10-27T07:02:19+00:00"
+  },
+  "EPL|Arsenal|Max Dowman": {
+   "l1": "16세 유망주 — 1군은 아직 맛보기 단계",
+   "l2": "출전 시간이 쌓이면 평가가 빠르게 바뀔 선수",
+   "sig": "bc743149e7fe",
+   "scene": "young",
+   "at": "2026-10-27T07:02:19+00:00"
+  },
+  "EPL|Manchester Utd|Benjamin Šeško": {
+   "l1": "아직은 벤치에서 기회를 기다리는 백업 단계",
+   "l2": "리그 4경기 출전, 유럽대항전 1경기 선발 — 반등이 필요한 시점",
+   "sig": "37625dc05627",
+   "scene": "expensive_unproven",
+   "at": "2026-10-27T07:02:19+00:00"
+  }
+ }
+}

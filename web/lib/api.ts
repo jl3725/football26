@@ -276,6 +276,10 @@ export type Players = { team: string; color: string; players: PlayerCard[] };
 export type MetricBar = { label: string; pct: number; raw: number; low?: boolean; att?: number | null; inv?: boolean; key?: string };
 export type MetricCat = { name: string; avg: number | null; metrics: MetricBar[] };   // avg null = 묶음 전부 표본 부족
 export type Badge = { label: string; rank: number; medal: string; scope?: string; tie?: boolean };   // scope: 리그 · 미드필더 450′+
+// SCOUT TAKE — AI 한줄평(검증 통과분만, 없으면 l1 없음) + 강점·약점·역할 칩(src/scout_take.py)
+export type ScoutTake = { l1?: string; l2?: string; src?: "ai"; at?: string; scene?: string;
+  strengths?: string[]; weaks?: string[]; thin?: boolean; role?: string; role_evidence?: string };
+
 export type PlayerDetail = {
   player: string; team: string; color: string; pos: string; line: string;
   age: number; nationality: string; value_eur: number; photo: string;
@@ -297,6 +301,7 @@ export type PlayerDetail = {
   value_history: { date: string; value_eur: number }[];
   peers: { line: string; n: number };
   season_log?: SeasonLog;
+  scout_take?: ScoutTake | null;
 };
 // 선수 시즌 기록 — 경기별(대회·출전 분·골·도움) + 대회별 합계 + 전체 합산(리그·컵·유럽 분리)
 export type SeasonLogMatch = { date: string; comp: string; comp_code: string; opponent: string; home_away: string; score: string;

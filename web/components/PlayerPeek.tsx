@@ -175,6 +175,13 @@ export function PeekProvider({ children, onOpenPlayer, onOpenTeam }: {
               </div>
             )}
 
+            {detail?.scout_take?.l1 && (
+              <div className="peek-take">
+                <span>SCOUT TAKE</span>
+                <p>{detail.scout_take.l1}</p>
+              </div>
+            )}
+
             {base || detail ? (
               <>
               <div className="peek-stats">

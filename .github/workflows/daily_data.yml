@@ -230,6 +230,11 @@ jobs:
       - name: AI weekly digest text (주간 요약 서술)
         run: bash scripts/ci_try.sh "digest_text" python src/ai_notes.py digest
 
+      # SCOUT TAKE — 선수 화면 한줄평(src/scout_take.py). 바뀐 선수만, OVR 높은 선수부터, 하루 120호출(5명씩 · 후보 3개 중 검증
+      # 통과분). 문장은 AI 만 — 검증을 못 넘으면 화면엔 문장 없이 칩만(2026-10-27 사용자: 룰베이스 싫다·명사체)
+      - name: AI scout takes (선수 한줄평)
+        run: bash scripts/ci_try.sh "scout_take" python src/scout_take.py --build
+
       - name: Validate core data contracts
         run: python scripts/validate_data.py --no-optional   # 품질 게이트 — 실패 시 커밋 차단
 

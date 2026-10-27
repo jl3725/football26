@@ -1,5 +1,6 @@
 "use client";
 import OvrBreakdown from "./OvrBreakdown";
+import ScoutTake from "./ScoutTake";
 import FormPair, { RecentStrip } from "./FormPair";
 import { useEffect, useState } from "react";
 import { getPlayers, getPlayerDetail, getSimilar, getHeatmaps, fmtEur, foldName, type Players, type PlayerDetail, type SimilarResult, type HeatmapData } from "@/lib/api";
@@ -121,6 +122,7 @@ function Detail({ team, player, accent, heatmap }: { team: string; player: strin
         </div>
       </div>
       <TrendLine t={d.trend} ovr={d.ovr} />
+      <ScoutTake t={d.scout_take} />
       {(d.form != null || d.recent) && (
         <div className="pd-form">
           <div className="pd-form-h"><b>FORM</b><span>시즌 vs 최근 5경기</span>

@@ -168,6 +168,8 @@ AGENTS: tuple[Agent, ...] = (
                    ("ai/news_digest.json",)),
               Feed("ai_digest", "AI 주간 서술", ("digest_text",), ("daily_data",), "매일 13:30 KST", 36,
                    ("ai/digest_text.json",)),
+              Feed("scout_take", "선수 한줄평(SCOUT TAKE)", ("scout_take",), ("daily_data",), "매일 13:30 KST", 36,
+                   ("ai/scout_takes.json",), added="2026-10-27"),
           ), checks=("숫자·영문 이름 원자료 대조(src/llm.py) — 안 맞으면 저장 안 함", "용도별 하루 호출 상한(data/ai/usage_*.json)"),
           extras=("경기 리뷰 — /api/review, ESPN 경기 상세로 규칙 기반 생성(요청 시)",)),
     Agent("watchdog", "WATCHDOG", "감시·검증", "OVR·평점 자체 검증, 운영 점검(문제 시 GitHub 이슈)",

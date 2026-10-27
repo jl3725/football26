@@ -1280,6 +1280,9 @@ button:focus-visible, .peekable:focus-visible, a:focus-visible {
 .peek-ovr b { font-family: var(--font-num); font-size: 34px; line-height: .9; display: block; }
 .peek-ovr span { font-size: 11px; letter-spacing: 1.6px; color: var(--muted); font-weight: 700; }
 .peek-tags { display: flex; gap: 5px; flex-wrap: wrap; padding: 0 16px 10px; }
+.peek-take { margin: 0 16px 10px; padding-top: 9px; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 3px; }
+.peek-take span { font-family: var(--font-num); font-weight: 700; letter-spacing: 0.16em; font-size: 11px; color: var(--warning); }
+.peek-take p { margin: 0; font-size: 13.5px; font-weight: 700; line-height: 1.45; color: var(--txt); word-break: keep-all; }
 .peek-stats {
   display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
   background: var(--line); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
@@ -3982,6 +3985,23 @@ LIGA’처럼 글자가 접히던 것) — 넘치면 가로로 넘긴다 */
 .rs5-i b { font: 700 14px/1 var(--font-num); padding: 4px 7px; border-radius: 6px; }
 .rs5-i span { font-size: 11px; font-weight: 600; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .rs5-i em { font-style: normal; font-size: 9.5px; color: var(--muted-2); white-space: nowrap; }
+/* SCOUT TAKE — 선수 화면 한줄평(2026-10-27, components/ScoutTake.tsx) — 결론 먼저, 근거는 칩·ⓘ */
+.stk { margin: 4px 0 12px; padding: 16px 18px 16px; border-radius: 14px; border: 1px solid rgba(244,207,94,0.28);
+  background: var(--surface-raised); display: flex; flex-direction: column; gap: 9px; }
+.stk-h { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.stk-h h3 { margin: 0; font-family: var(--font-num); font-weight: 700; letter-spacing: 0.16em; font-size: 13px; color: var(--warning); }
+.stk-h > span { font-size: 11px; color: var(--muted); }
+.stk-h .info-tip, .stk-h > button { margin-left: auto; }
+.stk-l1 { margin: 0; font-size: 19px; font-weight: 700; line-height: 1.42; letter-spacing: -0.01em; color: var(--txt); word-break: keep-all; }
+.stk-l2 { margin: 0; font-size: 13.5px; color: #c3cad4; line-height: 1.6; word-break: keep-all; }
+.stk-chips { display: flex; flex-wrap: wrap; gap: 8px 16px; padding-top: 2px; }
+.stk-g { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.stk-k { font-size: 11px; color: var(--muted); font-weight: 700; }
+.stk-c { font-size: 12px; color: #dde2e8; background: rgba(255,255,255,0.06); border-radius: 999px; padding: 4px 10px; }
+.stk-c.good { color: #9be0bd; background: rgba(155,224,189,0.12); }
+.stk-c.weak { color: #f2b06f; background: rgba(242,176,111,0.13); }
+.stk-note { margin: 0; font-size: 11px; color: var(--muted); }
+@media (max-width: 560px) { .stk { padding: 14px 14px; } .stk-l1 { font-size: 17px; } .stk-l2 { font-size: 13px; } }
 .pd-form { margin: 4px 0 12px; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line); background: rgba(255,255,255,0.02); }
 .pd-form-h { display: flex; align-items: baseline; gap: 8px; margin-bottom: 8px; }
 .pd-form-h b { font: 700 12px/1 var(--font-display); letter-spacing: .12em; }
