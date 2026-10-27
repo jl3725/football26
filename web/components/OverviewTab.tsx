@@ -25,6 +25,7 @@ import SectionHead from "./SectionHead";
 import Info from "./Info";
 import Clamp from "./Clamp";
 import { GoalMixCompare, SeasonProfile, SeasonSnapshot, useTeamSeason } from "./TeamSeason";
+import { surname } from "@/lib/names";
 
 function repStars(rank?: number | null): string {
   if (!rank) return "★★★☆☆";
@@ -45,7 +46,7 @@ function Delta({ d }: { d?: number }) {
 const titleCase = (s: string) => s.split(" ").map((w) => (w ? w[0].toUpperCase() + w.slice(1) : w)).join(" ");
 type UnitWho = { player: string; strength: number; injured?: boolean; until?: string }[];
 type RecRow = TeamRecordRow;
-const shortName = (n: string) => { const p = n.split(" "); return p.length > 1 ? p.slice(1).join(" ") : n; };
+const shortName = surname;
 
 // 라인 OVR — 숫자 + 등급 단어(OVR 띠) + 리그 순위 + (공격·수비) 시즌별 득점·실점 기록.
 // 막대는 팀 라인 OVR 이 실제로 퍼진 65~95 구간 — 0~100 으로 그리면 모든 팀이 80% 근처라 차이가 안 보였다.
@@ -328,7 +329,7 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
                 onClick={(e) => peek(e, { name: ld.player, club: ov.team, hint: { photo: ld.photo } })}>
                 <div className="leader-lbl" style={{ color: accent }}>{ld.label}</div>
                 {ld.photo ? <img src={ld.photo} alt="" /> : <span className="leader-ph" />}
-                <div className="leader-name">{ld.player.split(" ").slice(-1)[0]}</div>
+                <div className="leader-name">{surname(ld.player)}</div>
                 <div className="leader-val teko">{ld.value}</div>
               </div>
             ))}

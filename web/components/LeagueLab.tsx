@@ -4,12 +4,13 @@ import type { LabFinish, LabCreate, LabPlaymaker, LabBallWinner, TeamStyle } fro
 import { usePeek } from "./PlayerPeek";
 import { TONE } from "@/lib/meaning";
 import Info from "./Info";
+import { surname } from "@/lib/names";
 
 // 리그 분석 랩(홈 LEAGUE FOCUS) — /api/league-lab/{league}, Sofascore 시즌 기록.
 // 분석가가 실제로 보는 형태로: 기대값 대비(골 vs xG·도움 vs xA), 팀 스타일 사분면, 90분당 수비 액션.
 type Pick = (team: string, league?: string) => void;
 
-const lastName = (n: string) => { const p = n.split(" "); return p.length > 1 ? p[p.length - 1] : n; };
+const lastName = surname;
 // 실제 − 기대(골 − xG · 도움 − xA)의 색·말 — ±1 이상이면 '기대보다 많이/적게', 색은 TONE good/weak
 const diffTone = (d: number) => (d >= 1 ? TONE.good : d <= -1 ? TONE.weak : TONE.avg);
 const diffWords = (d: number, fin: boolean) => {

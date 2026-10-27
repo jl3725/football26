@@ -9,6 +9,7 @@ import { usePeek } from "./PlayerPeek";
 import { SkelPitch } from "./Skeleton";
 import EmptyState from "./EmptyState";
 import { showNextSeason } from "@/lib/season";
+import { surname } from "@/lib/names";
 
 type Departed = { player: string; left_for: string; pos: string; photo: string };
 
@@ -68,7 +69,7 @@ export default function LineupBoard({ team, accent, departed = [] }: { team: str
         <div className="bench-chip peekable" key={i}
           onClick={(e) => peek(e, { name: b.player, club: team, hint: { photo: b.photo, ovr: b.ovr, pos: b.pos } })}>
           {b.photo ? <img src={b.photo} alt="" /> : <span className="bench-ph" />}
-          <span className="bench-name">{b.player.split(" ").slice(-1)[0]}</span>
+          <span className="bench-name">{surname(b.player)}</span>
           <span className="bench-ovr" style={{ color: tier(b.ovr).light }} title={`OVR ${b.ovr} · ${tier(b.ovr).ko}`}>{b.ovr}</span>
         </div>
       ))}
@@ -81,7 +82,7 @@ export default function LineupBoard({ team, accent, departed = [] }: { team: str
         <div className="bench-chip peekable" key={i}
           onClick={(e) => peek(e, { name: d.player, hint: { photo: d.photo, pos: d.pos } })}>
           {d.photo ? <img src={d.photo} alt="" /> : <span className="bench-ph" />}
-          <span className="bench-name">{d.player.split(" ").slice(-1)[0]}</span>
+          <span className="bench-name">{surname(d.player)}</span>
           <span className="bench-to">→ {d.left_for}</span>
         </div>
       ))}

@@ -1,13 +1,12 @@
 "use client";
 import type { Placement } from "@/lib/api";
 import { usePeek } from "./PlayerPeek";
+import { surname } from "@/lib/names";
 
 const KIND_COLOR: Record<string, string> = { GK: "#37c98a", DEF: "#4c8ef0", MID: "#e0a53a", FWD: "#e2564f" };
 
 function lastName(name: string): string {
-  if (!name || name === "—") return "—";
-  const parts = name.split(" ");
-  return parts.length > 1 ? parts[parts.length - 1] : name;
+  return !name || name === "—" ? "—" : surname(name);   // 'van Dijk'·'Mac Allister'(lib/names)
 }
 
 function initials(name: string): string {

@@ -8,6 +8,7 @@ import { usePeek } from "./PlayerPeek";
 import SectionHead from "./SectionHead";
 import Icon from "./Icon";
 import { Skel } from "./Skeleton";
+import { surname } from "@/lib/names";
 
 // TRACKING — SHORTLIST(영입 후보)의 최근 14일 변화를 Signals 맨 위에(2026-10-23 사용자 '관심 선수 알림').
 // 위 줄 = 후보 얼굴(테 색 = 가장 중요한 새 소식, 이름 아래 상태 칩), 누르면 그 후보 소식만. 아래 = 소식(종류 색·아이콘·NEW).
@@ -25,7 +26,7 @@ const LOOK: Record<TrackType, Look> = {
   absent: { en: "BENCHED", ko: "출전 없음", icon: "clock", c: "#9aa3b5" },
 };
 const md = (d: string) => (d ? `${Number(d.slice(5, 7))}/${Number(d.slice(8, 10))}` : "이번 창");
-const lastName = (n: string) => { const w = n.split(" "); return w.length > 1 ? w.slice(1).join(" ") : n; };
+const lastName = surname;
 const initials = (n: string) => n.split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase();
 
 export default function Tracking({ team, accent }: { team: string; accent?: string }) {

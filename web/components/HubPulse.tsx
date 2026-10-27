@@ -12,6 +12,7 @@ import type { LiveMark } from "@/lib/liveTable";
 import { SS_NOTE, TONE, ssMeaning } from "@/lib/meaning";
 import { MeaningTag } from "./Meaning";
 import Info from "./Info";
+import { surname } from "@/lib/names";
 
 // 홈 '지금' 섹션들 — /api/hub/pulse(요청 시 계산·30분 캐시, 일정·결과는 daily_data 가 매일 갱신)
 type Pick = (team: string, league?: string) => void;
@@ -310,7 +311,7 @@ export function TeamOfSeason({ players, league, formation, subs = [] }: { player
                   title={`${s.player} · ${s.club} · ${s.minutes}분${s.goals || s.assists ? ` · ${s.goals}골 ${s.assists}도움` : ""}`}>
                   <span className="tots5-sub-role">{ROLE_KO[s.role] ?? s.role}</span>
                   {s.club_logo ? <img src={s.club_logo} alt="" /> : <span className="tots5-ph" />}
-                  <b>{s.player.split(" ").slice(-1)[0]}</b>
+                  <b>{surname(s.player)}</b>
                   <em style={{ color: ssMeaning(s.rating).c }}>{s.rating.toFixed(2)}</em>
                 </button>
               ))}

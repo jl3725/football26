@@ -6,6 +6,7 @@ import { ovrMeaning, scoreMeaning } from "@/lib/meaning";
 import { MeaningTag } from "./Meaning";
 import Info from "./Info";
 import { usePeek } from "./PlayerPeek";
+import { surname } from "@/lib/names";
 
 // Best XI 빌더 — 포메이션 칸마다 역할(GK·LB·CB·RB·DM·CM·AM·LW·RW·ST)이 있고, '선수 OVR × 그 역할 적합도'의 합이
 // 가장 큰 배치를 고른다(헝가리안 알고리즘). 적합도: 주포지션 1.0 · 2/3포지션 0.95 · 비슷한 자리 0.85 · 같은 라인 0.75.
@@ -18,7 +19,7 @@ const LINE: Record<Role, string> = { GK: "GK", LB: "DEF", CB: "DEF", RB: "DEF", 
 const COLOR: Record<string, string> = { GK: "#f4cf5e", DEF: "#6aa6e0", MID: "#4fc27f", ATT: "#e0707a" };
 const NEAR: Record<Role, Role[]> = { LB: ["CB", "LW"], RB: ["CB", "RW"], CB: ["LB", "RB", "DM"], DM: ["CM", "CB"], CM: ["DM", "AM"],
   AM: ["CM", "LW", "RW", "ST"], LW: ["RW", "AM", "ST", "LB"], RW: ["LW", "AM", "ST", "RB"], ST: ["AM", "LW", "RW"], GK: [] };
-const last = (n: string) => n.split(" ").slice(-1)[0];
+const last = surname;
 
 // y: 0 = 상대 골문(위) … 100 = 우리 골문, x: 왼쪽 → 오른쪽
 const FORMATIONS: Record<string, Slot[]> = {

@@ -9,6 +9,7 @@ import SectionHead from "./SectionHead";
 import { usePeek } from "./PlayerPeek";
 import { SkelCards } from "./Skeleton";
 import { TrendArrow } from "./Trend";
+import { surname } from "@/lib/names";
 
 const LINES: { key: string; label: string }[] = [
   { key: "GK", label: "골키퍼" }, { key: "DEF", label: "수비" },
@@ -101,7 +102,7 @@ export default function SquadTab({ team, accent }: { team: string; accent: strin
               onClick={(e) => peek(e, { name: o.player, club: team, hint: { photo: o.photo, ovr: o.ovr, age: o.age } })}
               title={o.kind === "secondary" ? `${o.player} — 주포지션 ${o.primary}, ${b.pos} 멀티` : o.player}>
               {rank <= 2 && <i className="dp5-n">{rank === 1 ? "2nd" : "3rd"}</i>}
-              <b style={{ color: tier(o.ovr).light }}>{o.ovr}</b> {o.player.split(" ").slice(-1)[0]}
+              <b style={{ color: tier(o.ovr).light }}>{o.ovr}</b> {surname(o.player)}
               {o.kind === "secondary" && <em className="dp5-m">멀티·{o.primary}</em>}
               {o.injured && <em className="dp5-inj">✚</em>}
             </span>
@@ -111,7 +112,7 @@ export default function SquadTab({ team, accent }: { team: string; accent: strin
               <span className="depth-pos">{POS_LABEL[b.pos] || b.pos}</span>
               <span className={`depth-starter peekable${b.starter.injured ? " inj" : ""}`}
                 onClick={(e) => peek(e, { name: b.starter.player, club: team, hint: { photo: b.starter.photo, ovr: b.starter.ovr, age: b.starter.age } })}>
-                <b style={{ color: tier(b.starter.ovr).light }}>{b.starter.ovr}</b> {b.starter.player.split(" ").slice(-1)[0]}
+                <b style={{ color: tier(b.starter.ovr).light }}>{b.starter.ovr}</b> {surname(b.starter.player)}
                 {b.starter.kind === "secondary" && <em className="dp5-m">멀티·{b.starter.primary}</em>}
                 {b.starter.injured && <em className="dp5-inj">✚</em>}
               </span>

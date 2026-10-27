@@ -5,6 +5,7 @@ import { tier, ageText } from "@/lib/ui";
 import { TONE } from "@/lib/meaning";
 import { usePeek } from "./PlayerPeek";
 import Info from "./Info";
+import { surname } from "@/lib/names";
 
 // 스카우트 데스크 — 포지션 니즈 v2(api _position_needs)를 그림으로: 피치 위 포지션마다 시급도 점(색·크기),
 // 누르면 그 포지션 근거를 아이콘 칩으로(뎁스 칸 · 이번 창 나감→영입 사진 · 부상 주 수 · 폼 · 나이·계약).
@@ -17,7 +18,7 @@ const SPOT: Record<string, [number, number]> = {
   ST: [50, 13], LW: [17, 23], RW: [83, 23], AM: [50, 33], CM: [50, 47], DM: [50, 60],
   LB: [14, 70], CB: [50, 76], RB: [86, 70], GK: [50, 91],
 };
-const last = (n: string) => n.split(" ").slice(-1)[0];
+const last = surname;
 
 function Face({ name, photo, mark, tone, sub }: { name: string; photo?: string; mark?: string; tone?: string; sub?: string }) {
   return (

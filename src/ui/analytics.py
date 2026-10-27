@@ -29,6 +29,7 @@ from .common import (
     fmt_value,
 )
 from .overview import team_ratings
+from short_name import surname  # 짧은 이름 — 'van Dijk'·'Mac Allister'
 
 # ── Metric vocabulary ────────────────────────────────────────────────────────
 _CLEAN_METRICS = [
@@ -344,7 +345,7 @@ def _player_chips(rows: list[tuple[str, float]], pmap: dict, tcol: str, size: in
         return f"<div style='font-size:11px;color:{empty_col};margin-top:5px'>데이터 확인 필요</div>"
     out = []
     for name, _ in rows:
-        short = html.escape(name.split()[-1] if name else "")
+        short = html.escape(surname(name) if name else "")
         out.append(
             "<div style='display:flex;align-items:center;gap:7px'>"
             f"{avatar(pmap.get(name, ''), tcol, size, 'flex:none')}"
@@ -456,7 +457,7 @@ def _factor_verdict(spec: dict, leaders: list[tuple[str, float]], gaps: list[tup
         return f"{stand} · 핵심 기여자 데이터 확인 필요"
 
     lead_full = leaders[0][0]
-    lead = lead_full.split()[-1] if lead_full else ""
+    lead = surname(lead_full) if lead_full else ""
     head_col = spec["metrics"][0]
     label, dec, unit = _HEAD_LABEL.get(head_col, ("", 1, ""))
     val = _player_value(team, full_df, lead_full, head_col)

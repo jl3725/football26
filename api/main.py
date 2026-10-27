@@ -26,6 +26,7 @@ from api.bootstrap import ROOT  # noqa: E402,F401
 
 import datastore as ds  # noqa: E402
 import teammeta as tm  # noqa: E402
+from short_name import surname as _sn  # noqa: E402  (짧은 이름 — 'van Dijk'·'Mac Allister', 웹 lib/names.ts 와 같은 규칙)
 import ratings as rt  # noqa: E402
 import ratings_v3 as rv3  # noqa: E402  (절대 클래스·폼·POT·신뢰도)
 import transfer_adjust as ta  # noqa: E402
@@ -4635,7 +4636,7 @@ def _position_needs(team: str, league: str) -> dict:
                 sig["injury"] = {"drop": round(drop, 1), "players": [{"player": c["player"], "weeks": c["out_w"], "photo": c["photo"]}
                                                                     for c in prim + sec if c["injured"]]}
                 pts += min(40, 5 * drop + (10 if long_out else 0))
-                hurt = [f"{c['player'].split()[-1]} {c['out_w']:.0f}주" for c in prim + sec if c["injured"]]
+                hurt = [f"{_sn(c['player'])} {c['out_w']:.0f}주" for c in prim + sec if c["injured"]]
                 reasons.append(f"부상으로 이 자리 전력 −{drop:.0f}" + (f" ({', '.join(hurt)})" if hurt else ""))
                 jan = jan or bool(long_out)
         mv = moves.get(b, {"in": [], "out": []})
@@ -4654,13 +4655,13 @@ def _position_needs(team: str, league: str) -> dict:
         if cold and d:
             sig["cold"] = [{"player": c["player"], "recent": c["recent"], "photo": c["photo"]} for c in cold]
             pts += min(24, 12 * len(cold))
-            reasons.append("주전 최근 폼 저조: " + ", ".join(f"{c['player'].split()[-1]} LAST 5 {c['recent']}" for c in cold))
+            reasons.append("주전 최근 폼 저조: " + ", ".join(f"{_sn(c['player'])} LAST 5 {c['recent']}" for c in cold))
         old = [c for c in starters if c["age"] >= old_age]
         young = [c for c in prim if c["age"] and c["age"] <= 23 and c["ovr"] >= lvl_opt]
         if old and not young and d:
             sig["aging"] = [{"player": c["player"], "age": c["age"]} for c in old]
             pts += 10
-            reasons.append("주전 " + ", ".join(f"{c['player'].split()[-1]} {c['age']}세" for c in old) + " · 젊은 후계 없음")
+            reasons.append("주전 " + ", ".join(f"{_sn(c['player'])} {c['age']}세" for c in old) + " · 젊은 후계 없음")
         # 올해 이후 만료만, 이번 여름 새로 온 선수는 제외 — TM 계약일이 전 소속 값으로 남아 'Torp ~2024'·
         # 'Rushworth ~2026'(€25.7M 영입)이 근거로 나왔다(2026-10-20 점검)
         season_start = f"{SEASON_START}-07-01"
@@ -4669,7 +4670,7 @@ def _position_needs(team: str, league: str) -> dict:
         if exp and d:
             sig["contract"] = [{"player": c["player"], "until": c["contract"]} for c in exp]
             pts += 8
-            reasons.append("주전 계약 " + ", ".join(f"{c['player'].split()[-1]} ~{c['contract']}" for c in exp))
+            reasons.append("주전 계약 " + ", ".join(f"{_sn(c['player'])} ~{c['contract']}" for c in exp))
         pts = min(100.0, pts)
         level = "urgent" if pts >= 50 else "need" if pts >= 30 else "watch" if pts >= 15 else "ok"
         verdict = ""
@@ -5519,7 +5520,7 @@ def _signals_league(league: str) -> list[dict]:
                 top = g.reindex(g["_d"].abs().sort_values(ascending=False).index).head(3)
                 add(rd, sq, "value", "info", "💹", "", f"시장가치 갱신 {len(g)}명",
                     f"상승 {ups} · 하락 {downs} — " + ", ".join(
-                        f"{str(r['player']).split()[-1]} {'+' if r['_d'] >= 0 else '-'}€{abs(r['_d']) / 1e6:.1f}M" for _, r in top.iterrows()))
+                        f"{_sn(r['player'])} {'+' if r['_d'] >= 0 else '-'}€{abs(r['_d']) / 1e6:.1f}M" for _, r in top.iterrows()))
                 continue
             for _, r in g.iterrows():
                 delta = _num(r.get("delta"))
@@ -5791,7 +5792,7 @@ def inbox(team: str, league: str = ACTIVE_LEAGUE):
             bits.append(f"팬 승 {round(m['fans'][side] * 100)}%")
         if inj:
             names = sorted(inj, key=lambda k: -(ovr_of.get(k) or 0))[:3]
-            bits.append(f"결장 {len(inj)}명({', '.join(n.split()[-1].title() for n in names)})")
+            bits.append(f"결장 {len(inj)}명({', '.join(_sn(n.title()) for n in names)})")
         rk = f" ({op['rank']}위)" if op.get("rank") else ""
         dd = m["d_day"]
         add("match", "match_next", "info", "⚽", f"다음 경기 {'오늘' if dd <= 0 else f'D-{dd}'} · vs {op['team']}{rk}",
@@ -5805,7 +5806,7 @@ def inbox(team: str, league: str = ACTIVE_LEAGUE):
                 # 누가 부담이 큰지 — 최근 14일 출전 분(FotMob 경기별, 전 대회) 상위 3명
                 load = _recent_load(team, league, today, 14)
                 if load:
-                    detail += " — 부담 큰 선수(14일): " + " · ".join(f"{n.split()[-1]} {m}′" for n, m in load[:3])
+                    detail += " — 부담 큰 선수(14일): " + " · ".join(f"{_sn(n)} {m}′" for n, m in load[:3])
                 add("match", "congestion", "warn", "🗓️", f"{span + 1}일 동안 3경기 — 로테이션 필요", detail, 62, trio[0]["date"])
                 break
     try:

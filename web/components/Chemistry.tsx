@@ -6,9 +6,10 @@ import { usePeek } from "./PlayerPeek";
 import { SkelCards } from "./Skeleton";
 import EmptyState from "./EmptyState";
 import Info from "./Info";
+import { surname } from "@/lib/names";
 
 const LINE_COLOR: Record<string, string> = { GK: "#f4cf5e", DEF: "#6aa6e0", MID: "#4fc27f", ATT: "#e0707a" };
-const last = (n: string) => n.split(" ").slice(-1)[0];
+const last = surname;
 // 케미 숫자의 뜻(api/main.py chemistry) — 분 기준: 팀 시즌 전체 시간(경기 수 × 90분) 중 둘이 함께 뛴 비율(%)
 // 경기 기준(관계 그래프): 함께 뛴 경기 수를 팀 안 최다 듀오 = 100 으로 둔 상대값
 const CHEM_MIN_NOTE = "팀 시즌 전체 시간(경기 수 × 90분) 중 둘이 함께 그라운드에 있던 비율";

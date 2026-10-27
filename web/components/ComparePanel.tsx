@@ -5,6 +5,7 @@ import { tier, hexA, ageText } from "@/lib/ui";
 import { ssMeaning, TONE, SS_NOTE } from "@/lib/meaning";
 import { MeaningTag } from "./Meaning";
 import Info from "./Info";
+import { surname } from "@/lib/names";
 
 const CB = "#e0a05e";   // B 선수 색(대비)
 
@@ -113,8 +114,8 @@ export default function ComparePanel({ team, a, b, bTeam, bLeague, accent, onCle
       </div>
 
       <div style={{ display: "flex", gap: 8, justifyContent: "center", marginBottom: 4, fontSize: 11 }}>
-        <span style={{ color: accent }}>■ {da.player.split(" ").slice(-1)[0]}</span>
-        <span style={{ color: CB }}>■ {db.player.split(" ").slice(-1)[0]}</span>
+        <span style={{ color: accent }}>■ {surname(da.player)}</span>
+        <span style={{ color: CB }}>■ {surname(db.player)}</span>
       </div>
       <div style={{ display: "flex", justifyContent: "center" }}>
         <CompareRadar a={sameTpl ? da.radar : (da.radar_line ?? da.radar)} b={sameTpl ? db.radar : (db.radar_line ?? db.radar)} ca={accent} />

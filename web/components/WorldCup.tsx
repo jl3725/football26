@@ -4,6 +4,7 @@ import { getWC, getWCSquad, type WorldCupData, type WCSquad } from "@/lib/api";
 import { usePeek } from "./PlayerPeek";
 import Info from "./Info";
 import { Skel, SkelCards, SkelRows } from "./Skeleton";
+import { surname } from "@/lib/names";
 
 function WSec({ en, kr, accent, right }: { en: string; kr: string; accent: string; right?: ReactNode }) {
   return (
@@ -141,7 +142,7 @@ export default function WorldCup({ accent, onPickTeam }: { accent: string; onPic
                   {c.players.slice(0, 6).map((p, i) => (
                     <div className="wc-pl" key={i} title={`${p.player} · ${p.nation}`}>
                       {p.photo ? <img src={p.photo} alt="" /> : <span className="wc-pl-ph" />}
-                      <span className="wc-pl-nm">{p.player.split(" ").slice(-1)[0]}</span>
+                      <span className="wc-pl-nm">{surname(p.player)}</span>
                       {p.goals > 0 && <span className="wc-pl-g">⚽{p.goals}</span>}
                     </div>
                   ))}

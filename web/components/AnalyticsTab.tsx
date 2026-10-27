@@ -10,6 +10,7 @@ import { usePeek } from "./PlayerPeek";
 import { SkelTab } from "./Skeleton";
 import SectionHead from "./SectionHead";
 import TeamTrendsBoard from "./TeamTrends";
+import { surname } from "@/lib/names";
 
 const LINE_LABEL: Record<string, string> = { GK: "골키퍼", DEF: "수비", MID: "미드필드", ATT: "공격" };
 const LINE_COLOR: Record<string, string> = { GK: "#7fb4f0", DEF: "#6aa6e0", MID: "#caa64e", ATT: "#d98169" };
@@ -30,7 +31,7 @@ function FactorCard({ f, kind, accent, team }: { f: Factor; kind: "s" | "w"; acc
           <span className="fac-chip peekable" key={i}
             onClick={(e) => peek(e, { name: p.player, club: team, hint: { photo: p.photo, ovr: p.ovr } })}>
             {p.photo ? <img src={p.photo} alt="" /> : <span className="fac-ph" />}
-            {p.player.split(" ").slice(-1)[0]}
+            {surname(p.player)}
           </span>
         ))}
       </div>}

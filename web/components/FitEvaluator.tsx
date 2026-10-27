@@ -8,6 +8,7 @@ import Bar from "./Bar";
 import { usePeek } from "./PlayerPeek";
 import { SkelCards } from "./Skeleton";
 import Info from "./Info";
+import { surname } from "@/lib/names";
 
 // 첫 칸 '자동' = 후보의 본 포지션(TM). 예전 기본값이 '중앙 MF'라 이름을 직접 넣으면 크바라츠헬리아도 CM 으로 평가됐다(2026-10-19)
 const ROLES = [
@@ -95,7 +96,7 @@ export default function FitEvaluator({ team, accent, suggestions, initial }:
             {suggestions.slice(0, 8).map((s, i) => (
               <button key={i} onClick={() => pick(s)} style={{ fontSize: 11, padding: "3px 9px", borderRadius: 10,
                 cursor: "pointer", background: hexA(accent, 0.12), border: `1px solid ${hexA(accent, 0.3)}`, color: "inherit" }}>
-                {s.player.split(" ").slice(-1)[0]}
+                {surname(s.player)}
               </button>
             ))}
           </div>

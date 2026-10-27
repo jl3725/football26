@@ -1,5 +1,6 @@
 "use client";
 import { useId, type ReactNode } from "react";
+import { surname } from "@/lib/names";
 
 // NETWORK 탭 공통 — 선 색·영입 방식 색, SVG 안 선수 사진 원형 아바타.
 export const LINE_COLOR: Record<string, string> = { GK: "#f4cf5e", DEF: "#6aa6e0", MID: "#4fc27f", ATT: "#e0707a" };
@@ -15,7 +16,7 @@ export const ACQ: Record<string, { c: string; en: string; ko: string }> = {
 };
 
 export const initials = (n: string) => n.split(/\s+/).filter(Boolean).map((w) => w[0]).slice(0, 2).join("").toUpperCase();
-export const lastName = (n: string) => { const t = n.split(" "); return t.length > 1 ? t.slice(-1)[0] : n; };
+export const lastName = surname;   // 짧은 이름 한 곳(lib/names) — 'van Dijk'·'Mac Allister'
 
 export function SvgAvatar({ x, y, r, photo, name, ring, ringW = 2, dim = false, fit = "face", onClick, onEnter, onLeave, children }: {
   x: number; y: number; r: number; photo?: string; name: string; ring: string; ringW?: number; dim?: boolean;
