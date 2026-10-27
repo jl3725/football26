@@ -2985,8 +2985,13 @@ def _rating_sources(row) -> dict:
         v = pd.to_numeric(row.get(k), errors="coerce")
         return None if pd.isna(v) or v <= 0 else round(float(v), 2)
     fm = f("fm_rating")
+    mins = lambda k: int(_num(row.get(k))) or None   # noqa: E731
+    share = pd.to_numeric(row.get("ss_share_sofa"), errors="coerce")
     return {"blend": f("ss_rating"), "sofascore": f("ss_rating_sofa"), "fotmob": fm,
             "fotmob_scaled": round(float(rb.fm_to_ss(fm)), 2) if fm else None,
+            # 출처별 반영 출전 시간·Sofascore 몫 — Sofascore 는 이 PC 에서만 받아 며칠 늦을 수 있다(rating_blend.coverage_avg)
+            "sofascore_minutes": mins("ss_minutes"), "fotmob_minutes": mins("fm_minutes"),
+            "sofascore_share": None if pd.isna(share) else round(float(share), 2),
             "prev_blend": f("prev_ss_rating"), "prev_sofascore": f("prev_ss_rating_sofa"), "prev_fotmob": f("prev_fm_rating"),
             "hist": f("hist_ss_rating"), "prev_minutes": int(_num(row.get("prev_minutes"))) or None}
 

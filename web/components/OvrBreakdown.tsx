@@ -21,6 +21,8 @@ export default function OvrBreakdown({ ovr, parts, ratings }: { ovr: number; par
   const rest = parts.slice(1);
   const top = [...rest].sort((a, b) => Math.abs(b.value) - Math.abs(a.value)).slice(0, 2);
   const r = ratings;
+  // Sofascore 가 FotMob 보다 출전 시간을 덜 반영(이 PC 수집이 늦음) — 몫 0.45 미만 = 반영 분이 FotMob 의 약 82% 미만
+  const lag = r?.sofascore_share != null && r.sofascore_share < 0.45;
   const fmt = (v: number) => `${v > 0 ? "+" : "−"}${Math.abs(v).toFixed(1)}`;
   return (
     <div className="ob5">
@@ -54,6 +56,7 @@ export default function OvrBreakdown({ ovr, parts, ratings }: { ovr: number; par
               <b>평점(경기력 입력)
                 <Info wide label="평점 출처">
                   <p><b>이번 시즌</b> = Sofascore · FotMob 평균{r.fotmob != null && r.fotmob_scaled != null ? ` · FotMob ${r.fotmob.toFixed(2)} → 같은 척도 ${r.fotmob_scaled.toFixed(2)}` : ""}</p>
+                  <p className="muted">두 출처는 각자 반영한 출전 시간만큼 섞습니다 — Sofascore 는 하루 한 번 받아 최근 경기가 늦게 들어오면 그동안 FotMob 비중이 커집니다</p>
                   <p className="muted">OVR 경기력은 이번·지난·2시즌 전을 출전 시간으로 섞고(오래될수록 덜), 폼은 이번 시즌만</p>
                 </Info>
               </b>
@@ -63,12 +66,15 @@ export default function OvrBreakdown({ ovr, parts, ratings }: { ovr: number; par
               {/* 출처별·이전 시즌 평점은 이 패널을 연 이유라 화면에 그대로(공식만 ⓘ) */}
               <span>
                 {[
-                  r.sofascore != null ? `Sofascore ${r.sofascore.toFixed(2)}` : null,
-                  r.fotmob != null ? `FotMob ${r.fotmob.toFixed(2)}` : null,
+                  r.sofascore != null ? `Sofascore ${r.sofascore.toFixed(2)}${lag && r.sofascore_minutes ? ` (${r.sofascore_minutes.toLocaleString()}′)` : ""}` : null,
+                  r.fotmob != null ? `FotMob ${r.fotmob.toFixed(2)}${lag && r.fotmob_minutes ? ` (${r.fotmob_minutes.toLocaleString()}′)` : ""}` : null,
                   r.prev_blend ? `지난 시즌 ${r.prev_blend.toFixed(2)}${r.prev_minutes ? ` (${r.prev_minutes.toLocaleString()}분)` : ""}` : null,
                   r.hist ? `2시즌 전 ${r.hist.toFixed(2)}` : null,
                 ].filter(Boolean).join(" · ")}
               </span>
+              {lag && r.sofascore_share != null && (
+                <span className="ob5-lag">Sofascore 가 최근 경기를 아직 반영하지 않아 FotMob 비중 {Math.round((1 - r.sofascore_share) * 100)}%</span>
+              )}
             </div>
           )}
         </div>

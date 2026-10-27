@@ -44,3 +44,16 @@ def test_ovr_parts_add_up_to_ovr() -> None:
         assert p["ovr"] == rv3.ovr_of_row(r)
         assert abs(sum(x["value"] for x in p["parts"]) - p["ovr"]) <= 1.0     # 반올림 오차만
         assert p["parts"][0]["key"].startswith("base")
+
+
+def test_stale_source_counts_by_minutes_it_covers() -> None:
+    # Sofascore 는 이 PC 에서만 받는다 — PC 가 꺼져 360분까지만 반영했고 FotMob 은 720분이면 Sofascore 몫 1/3
+    s = pd.Series([7.0, 7.0, 7.0, None])
+    sm = pd.Series([720, 360, None, None])
+    f = pd.Series([7.6, 7.6, 7.6, 7.6])
+    fm = pd.Series([720, 720, 720, 720])
+    avg, share = rb.coverage_avg(s, sm, f, fm)
+    assert abs(avg[0] - 7.3) < 1e-9 and share[0] == 0.5            # 둘 다 최신 = 단순 평균(예전과 같음)
+    assert abs(avg[1] - (7.0 / 3 + 7.6 * 2 / 3)) < 1e-9 and abs(share[1] - 1 / 3) < 1e-9
+    assert abs(avg[2] - 7.3) < 1e-9                                # 출전 시간을 모르면 최신으로 본다
+    assert avg[3] == 7.6 and share[3] == 0.0                       # 한쪽만 있으면 그 값

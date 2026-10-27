@@ -846,7 +846,8 @@ export type TeamRecordRow = { season: string; label: string; w?: number; played:
 // OVR 구성(단계별 기여)·평점 출처 — /api/player ovr_parts · ratings (src/ratings_v3.ovr_parts_of_row, rating_blend)
 export type OvrPart = { key: string; en: string; ko: string; value: number };
 export type RatingSources = { blend: number | null; sofascore: number | null; fotmob: number | null; fotmob_scaled: number | null;
-  prev_blend: number | null; prev_sofascore: number | null; prev_fotmob: number | null; hist: number | null; prev_minutes: number | null };
+  prev_blend: number | null; prev_sofascore: number | null; prev_fotmob: number | null; hist: number | null; prev_minutes: number | null;
+  sofascore_minutes?: number | null; fotmob_minutes?: number | null; sofascore_share?: number | null };
 
 // ── DATA STATUS (/status) — 에이전트 레지스트리 × 실행 원장 × watchdog ──
 export type OpsState = "ok" | "warn" | "late" | "down" | "nodata";

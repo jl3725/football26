@@ -3927,6 +3927,7 @@ LIGA’처럼 글자가 접히던 것) — 넘치면 가로로 넘긴다 */
 .ob5-rate { display: flex; flex-direction: column; gap: 4px; margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--line); font-size: 12px; color: var(--muted); }
 .ob5-rate b { color: var(--txt); font-size: 11.5px; }
 .ob5-rate strong { color: var(--txt); }
+.ob5-rate .ob5-lag { color: var(--warning); font-size: 11.5px; }
 .ob5-note { margin: 8px 0 0; font-size: 11px; color: var(--muted-2); line-height: 1.5; word-break: keep-all; }
 @media (max-width: 560px) { .ob5 { margin: 8px 10px 4px; } .ob5-row { grid-template-columns: 84px minmax(0, 1fr) 44px; } }
 

@@ -101,12 +101,29 @@ def _avg(a: pd.Series, b: pd.Series) -> pd.Series:
     return pd.concat([a, b], axis=1).mean(axis=1, skipna=True)
 
 
+def coverage_avg(a: pd.Series, a_min: pd.Series, b: pd.Series, b_min: pd.Series) -> tuple[pd.Series, pd.Series]:
+    """(평균, a 의 몫) — 각 출처가 반영한 이번 시즌 출전 시간만큼. 둘 다 최신이면(분이 같으면) 단순 평균과 같다.
+    2026-10-27: Sofascore 는 이 PC 에서만 받는다(클라우드 IP 차단) — PC 가 꺼진 날엔 며칠 전 값이 오늘 FotMob 과 반반
+    섞였다. 이제 Sofascore 가 360분, FotMob 이 720분을 반영했으면 Sofascore 몫은 1/3. 출전 시간이 없는 쪽은 최신으로 본다."""
+    a, b = _num(a).where(_num(a) > 0), _num(b).where(_num(b) > 0)
+    am, bm = _num(a_min), _num(b_min)
+    top = pd.concat([am, bm], axis=1).max(axis=1)
+    wa = (am / top).where(am.notna() & (top > 0), 1.0).clip(0, 1).where(a.notna(), 0.0)
+    wb = (bm / top).where(bm.notna() & (top > 0), 1.0).clip(0, 1).where(b.notna(), 0.0)
+    w = wa + wb
+    avg = ((a.fillna(0) * wa + b.fillna(0) * wb) / w).where(w > 0)
+    return avg, (wa / w).where(w > 0)
+
+
 def blend(frame: pd.DataFrame) -> pd.DataFrame:
-    """ss_rating(·prev_ss_rating) = Sofascore 와 FotMob(척도 맞춤)의 평균, hist_* 빈칸은 FotMob 2시즌 전으로."""
+    """ss_rating(·prev_ss_rating) = Sofascore 와 FotMob(척도 맞춤)의 평균, hist_* 빈칸은 FotMob 2시즌 전으로.
+    이번 시즌은 출처별 반영 출전 시간 가중(coverage_avg) — ss_share_sofa 에 Sofascore 몫."""
     out = frame.copy()
     out["ss_rating_sofa"] = out.get("ss_rating")
     fm = fm_to_ss(_num(out.get("fm_rating")))
-    out["ss_rating"] = _avg(out.get("ss_rating"), fm)
+    col = lambda c: out[c] if c in out.columns else pd.Series(pd.NA, index=out.index, dtype="object")   # noqa: E731
+    out["ss_rating"], out["ss_share_sofa"] = coverage_avg(col("ss_rating"), col("ss_minutes"),
+                                                          pd.Series(fm, index=out.index), col("fm_minutes"))
     if "prev_fm_rating" in out.columns:
         pfm = fm_to_ss(_num(out["prev_fm_rating"]))
         if "prev_ss_rating" not in out.columns:
