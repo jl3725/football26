@@ -17,6 +17,7 @@ concurrency:
 
 permissions:
   contents: write
+  actions: write   # 데이터 배포본(Publish Data) 직접 요청 — 아래 마지막 단계
 
 jobs:
   refresh:
@@ -133,6 +134,14 @@ jobs:
             git commit -m "chore(data): 경기 결과·순위 아침 갱신 [skip ci]"
             bash scripts/ci_push.sh   # 충돌 시 이번 수집 값으로 다시 얹고, 못 올리면 실패(조용한 유실 방지)
           fi
+
+      # 감시(match_watch)가 기본 토큰으로 띄운 실행은 workflow_run 연쇄를 만들지 않는다(GitHub 규칙) — 그래서 경기 직후
+      # 갱신이 데이터 배포본에 안 올라갔다(2026-10-27 밤 Match Refresh 4번 뒤 Publish Data 0번). 그때만 직접 요청
+      - name: Request data publish (data-live)
+        if: github.event_name == 'workflow_dispatch' && github.actor == 'github-actions[bot]'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: bash scripts/ci_try.sh "publish_request" gh workflow run publish_data.yml --ref main
 
       - name: Report collector failures
         if: always()

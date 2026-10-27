@@ -29,8 +29,9 @@ sys.path[:0] = [str(ROOT), str(ROOT / "src")]
 OUT = ROOT / "data" / "ai" / "scout_takes.json"
 PROMPT_VERSION = "9"
 DAILY_CALLS = 120         # 하루 호출 상한(무료 키를 번역·Ask Scout·경기 리포트와 나눔) — 한 번에 BATCH_AI 명
-BATCH_AI = 5              # 10명 묶음은 시간 초과·빠진 선수가 잦았다(2026-10-27 시험)
-RETRY_WAIT = (8, 25)      # 시간 초과·503 이면 이만큼 쉬고 다시
+BATCH_AI = 6              # 10명 묶음은 시간 초과·빠진 선수가 잦았다(2026-10-27 시험)
+RETRY_WAIT = (12,)        # 시간 초과·503 이면 한 번만 쉬고 다시(llm.generate 가 이미 다음 모델로 넘어감)
+TIMEOUT = 45
 KEEP_DAYS = 60
 
 POS = {"ATT": "공격수", "MID": "미드필더", "DEF": "수비수", "GK": "골키퍼"}
@@ -298,22 +299,29 @@ def write_ai(items: list[tuple[str, dict, str]]) -> dict[str, dict]:
                 time.sleep(wait)
             if llm.remaining() <= 0:
                 return None
-            got = llm.generate_json(prompt, SYSTEM, temperature=0.6)
+            got = llm.generate_json(prompt, SYSTEM, temperature=0.6, timeout=TIMEOUT)
             if isinstance(got, dict):
                 return got
         return None
 
-    for n in range(0, len(items), BATCH_AI):
-        if llm.remaining() <= 0:
-            break
-        part = items[n:n + BATCH_AI]
-        got = ask(part) or {}
-        for i, f, sc in part:
-            t = _pick(got.get(i), f)
-            if t is None and llm.remaining() > 0:          # 묶음에서 빠졌거나 셋 다 탈락 — 혼자 한 번 더
-                t = _pick((ask([(i, f, sc)]) or {}).get(i), f)
-            if t:
-                out[i] = t
+    def run(pool: list) -> list:
+        """묶음으로 쓰고 못 쓴 선수(빠짐·셋 다 탈락·호출 한도)를 돌려준다."""
+        left: list = []
+        for n in range(0, len(pool), BATCH_AI):
+            if llm.remaining() <= 0:
+                return left + pool[n:]
+            part = pool[n:n + BATCH_AI]
+            got = ask(part) or {}
+            for i, f, sc in part:
+                t = _pick(got.get(i), f)
+                if t:
+                    out[i] = t
+                else:
+                    left.append((i, f, sc))
+        return left
+
+    # 못 쓴 선수는 끝에 모아 묶음으로 한 번 더 — 예전엔 한 명씩 다시 보내 120호출에 172명이었다(2026-10-27 CI)
+    run(run(items))
     return out
 
 

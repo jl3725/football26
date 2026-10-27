@@ -133,8 +133,8 @@ def generate(prompt: str, system: str | None = None, temperature: float = 0.3, j
     return None
 
 
-def generate_json(prompt: str, system: str | None = None, temperature: float = 0.2):
-    t = generate(prompt, system, temperature, json_out=True, timeout=30)   # 여러 팀 묶음이라 길다
+def generate_json(prompt: str, system: str | None = None, temperature: float = 0.2, timeout: float = 30):
+    t = generate(prompt, system, temperature, json_out=True, timeout=timeout)   # 여러 팀 묶음이라 길다
     if not t:
         return None
     try:
