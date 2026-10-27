@@ -50,7 +50,7 @@ Dortmund,tm408574,Joey Veerman,408574,Joey Veerman,players_full,100
 Dortmund,tm370789,Julian Ryerson,370789,Julian Ryerson,players_full,100
 Dortmund,tm1275068,Kauã Prates,1275068,Kauã Prates,players_full,100
 Dortmund,pf:Dortmund:kos karetsas,Kos Karetsas,,Kos Karetsas,players_full,100
-Dortmund,pf:Dortmund:kouakou gadou,Kouakou Gadou,,Kouakou Gadou,players_full,100
+Dortmund,pf:Dortmund:kouakou gadou,Kouakou Gadou,1075577,Kouakou Gadou,players_full,100
 Dortmund,tm1074990,Luca Reggiani,1074990,Luca Reggiani,players_full,100
 Dortmund,tm106987,Marcel Sabitzer,106987,Marcel Sabitzer,players_full,100
 Dortmund,tm578392,Maximilian Beier,578392,Maximilian Beier,players_full,100
@@ -214,7 +214,7 @@ Leverkusen,tm952282,Afonso Moreira,952282,Afonso Moreira,players_full,100
 Leverkusen,tm261504,Aleix García,261504,Aleix García,players_full,100
 Leverkusen,tm1364454,Christian Kofane,1364454,Christian Kofane,players_full,100
 Leverkusen,tm564545,Edmond Tapsoba,564545,Edmond Tapsoba,players_full,100
-Leverkusen,pf:Leverkusen:ezequiel fernandez,Ezequiél Fernández,,Ezequiél Fernández,players_full,100
+Leverkusen,pf:Leverkusen:ezequiel fernandez,Ezequiél Fernández,664708,Ezequiél Fernández,players_full,100
 Leverkusen,tm474800,Facundo Medina,474800,Facundo Medina,players_full,100
 Leverkusen,tm711980,Guéla Doué,711980,Guéla Doué,players_full,100
 Leverkusen,tm905011,Ibrahim Maza,905011,Ibrahim Maza,players_full,100
@@ -332,7 +332,7 @@ Stuttgart,tm924117,Finn Jeltsch,924117,Finn Jeltsch,players_full,100
 Stuttgart,tm234029,Grischa Prömel,234029,Grischa Prömel,players_full,100
 Stuttgart,tm518505,Jamie Leweling,518505,Jamie Leweling,players_full,100
 Stuttgart,tm448258,Josha Vagnoman,448258,Josha Vagnoman,players_full,100
-Stuttgart,pf:Stuttgart:julian chabot,Julian Chabot,,Julian Chabot,players_full,100
+Stuttgart,pf:Stuttgart:julian chabot,Julian Chabot,303219,Julian Chabot,players_full,100
 Stuttgart,tm710886,Leo Sauer,710886,Leo Sauer,players_full,100
 Stuttgart,tm507345,Leonidas Stergiou,507345,Leonidas Stergiou,players_full,100
 Stuttgart,tm282660,Maximilian Mittelstädt,282660,Maximilian Mittelstädt,players_full,100
@@ -366,7 +366,7 @@ Union Berlin,tm738774,Zeno Van den Bosch,738774,Zeno Van den Bosch,players_full,
 Werder Bremen,tm334221,Amos Pieper,334221,Amos Pieper,players_full,100
 Werder Bremen,tm977464,Arthur,977464,Arthur,players_full,100
 Werder Bremen,tm243856,Cedric Itten,243856,Cedric Itten,players_full,100
-Werder Bremen,pf:Werder Bremen:chuky san jose,Chuky san jose,,Chuky san jose,players_full,100
+Werder Bremen,pf:Werder Bremen:chuky san jose,Chuky san jose,926763,Chuky san jose,players_full,100
 Werder Bremen,tm826795,Dariusz Stalmach,826795,Dariusz Stalmach,players_full,100
 Werder Bremen,tm645774,Eren Dinkçi,645774,Eren Dinkçi,players_full,100
 Werder Bremen,tm596153,Justin Njinmah,596153,Justin Njinmah,players_full,100
@@ -393,7 +393,7 @@ Bayern Munich,tm1497653,Bara Sapoko Ndiaye,1497653,Bara Sapoko Ndiaye,transferma
 Dortmund,tm76158,Alexander Meyer,76158,Alexander Meyer,transfermarkt_contracts,100
 Dortmund,tm94192,Patrick Drewes,94192,Patrick Drewes,transfermarkt_contracts,100
 Dortmund,tm684116,Silas Ostrzinski,684116,Silas Ostrzinski,transfermarkt_contracts,100
-Dortmund,tm1075577,Joane Gadou,1075577,Joane Gadou,transfermarkt_contracts,100
+Dortmund,pf:Dortmund:kouakou gadou,Kouakou Gadou,1075577,Joane Gadou,transfermarkt_contracts,100
 Dortmund,tm883007,Filippo Mane,883007,Filippo Mané,transfermarkt_contracts,99
 Dortmund,tm119296,Emre Can,119296,Emre Can,transfermarkt_contracts,100
 Dortmund,tm1141179,Mussa Kaba,1141179,Mussa Kaba,transfermarkt_contracts,100
@@ -405,7 +405,7 @@ Leverkusen,tm81173,Janis Blaswich,81173,Janis Blaswich,transfermarkt_contracts,1
 Leverkusen,tm85543,Niklas Lomb,85543,Niklas Lomb,transfermarkt_contracts,100
 Leverkusen,tm730581,Loïc Bade,730581,Loïc Badé,transfermarkt_contracts,99
 Leverkusen,tm696164,Tim Oermann,696164,Tim Oermann,transfermarkt_contracts,100
-Leverkusen,tm664708,Equi Fernández,664708,Equi Fernández,transfermarkt_contracts,100
+Leverkusen,pf:Leverkusen:ezequiel fernandez,Ezequiél Fernández,664708,Equi Fernández,transfermarkt_contracts,100
 Leverkusen,tm1214123,Kennet Eichhorn,1214123,Kennet Eichhorn,transfermarkt_contracts,100
 Leverkusen,tm810895,Eliesse Ben Seghir,810895,Eliesse Ben Seghir,transfermarkt_contracts,100
 Leverkusen,tm1058514,Montrell Culbreath,1058514,Montrell Culbreath,transfermarkt_contracts,100
@@ -421,7 +421,7 @@ RB Leipzig,tm952779,Andrija Maksimović,952779,Andrija Maksimovic,transfermarkt_
 RB Leipzig,tm1074526,Viggo Gebel,1074526,Viggo Gebel,transfermarkt_contracts,100
 Stuttgart,tm170517,Marius Funk,170517,Marius Funk,transfermarkt_contracts,100
 Stuttgart,tm388067,Stefan Drljaca,388067,Stefan Drljaca,transfermarkt_contracts,100
-Stuttgart,tm303219,Jeff Chabot,303219,Jeff Chabot,transfermarkt_contracts,100
+Stuttgart,pf:Stuttgart:julian chabot,Julian Chabot,303219,Jeff Chabot,transfermarkt_contracts,100
 Stuttgart,tm539798,Luca Jaquez,539798,Luca Jaquez,transfermarkt_contracts,100
 Stuttgart,tm620598,Ameen Al-Dakhil,620598,Ameen Al-Dakhil,transfermarkt_contracts,100
 Stuttgart,tm344598,Dan-Axel Zagadou,344598,Dan-Axel Zagadou,transfermarkt_contracts,100
@@ -512,7 +512,7 @@ Werder Bremen,tm649022,Moussa Ndiaye,649022,Moussa Ndiaye,transfermarkt_contract
 Werder Bremen,tm393512,Felix Agu,393512,Felix Agu,transfermarkt_contracts,100
 Werder Bremen,tm855134,Skelly Alvero,855134,Skelly Alvero,transfermarkt_contracts,100
 Werder Bremen,tm289835,Jens Stage,289835,Jens Stage,transfermarkt_contracts,100
-Werder Bremen,tm926763,Chuki,926763,Chuki,transfermarkt_contracts,100
+Werder Bremen,pf:Werder Bremen:chuky san jose,Chuky san jose,926763,Chuki,transfermarkt_contracts,100
 Werder Bremen,tm1071244,Darwin Soylu,1071244,Darwin Soylu,transfermarkt_contracts,100
 Werder Bremen,tm701757,Keke Topp,701757,Keke Topp,transfermarkt_contracts,100
 Werder Bremen,tm1178695,Kenny Quetant,1178695,Kenny Quetant,transfermarkt_contracts,100
@@ -601,7 +601,7 @@ Gladbach,tm355816,Ko Itakura,355816,Kou Itakura,espn_lineups,80
 Gladbach,tm1118874,Jan Leszczyński,1118874,Jan Leszczynski,espn_lineups,100
 SV Elversberg,tm448259,Lukas Pinckert,448259,Lukas Finn Pinckert,espn_lineups,85
 SV Elversberg,tm929943,Francis Onyeka,929943,Francis-Ikechukwu Onyeka,espn_lineups,85
-Leverkusen,pf:Leverkusen:ezequiel fernandez,Ezequiél Fernández,,Ezequiel Fernández,espn_lineups,100
+Leverkusen,pf:Leverkusen:ezequiel fernandez,Ezequiél Fernández,664708,Ezequiel Fernández,espn_lineups,100
 Leverkusen,esp:Leverkusen:arthur,Arthur,,Arthur,espn_lineups,100
 Leverkusen,esp:Leverkusen:jeanuel belocian,Jeanuël Belocian,,Jeanuël Belocian,espn_lineups,100
 Hamburger SV,esp:Hamburger SV:daniel elfadli,Daniel Elfadli,,Daniel Elfadli,espn_lineups,100
@@ -665,3 +665,4 @@ Union Berlin,pf:Union Berlin:jeong woo yeong,Jeong Woo-yeong,,Woo-Yeong Jeong,fo
 Schalke 04,pf:Schalke 04:hwang hee chan,Hwang Hee-chan,,Hee-Chan Hwang,fotmob_ratings,100
 Augsburg,pf:Augsburg:seol young woo,Seol Young-woo,,Young-Woo Seol,fotmob_ratings,100
 Leverkusen,tm730581,Loïc Bade,730581,Loic Badé,fotmob_ratings,100
+Schalke 04,tm452477,Junior Adamu,452477,Chukwubuike Adamu,fotmob_minutes,65

@@ -133,7 +133,7 @@ Frosinone,tm616628,Giorgio Cittadini,616628,Giorgio Cittadini,players_full,100
 Frosinone,tm550116,Ilario Monterisi,550116,Ilario Monterisi,players_full,100
 Frosinone,tm705355,Lorenzo Palmisani,705355,Lorenzo Palmisani,players_full,100
 Frosinone,tm724178,Luis Hasa,724178,Luis Hasa,players_full,100
-Frosinone,pf:Frosinone:matteo chichella,Matteo Chichella,,Matteo Chichella,players_full,100
+Frosinone,pf:Frosinone:matteo chichella,Matteo Chichella,927905,Matteo Chichella,players_full,100
 Frosinone,tm459665,Patrizio Masini,459665,Patrizio Masini,players_full,100
 Frosinone,tm346853,Romano Schmid,346853,Romano Schmid,players_full,100
 Frosinone,tm866250,Seydou Fini,866250,Seydou Fini,players_full,100
@@ -171,7 +171,7 @@ Inter,tm585982,Carlos Augusto,585982,Carlos Augusto,players_full,100
 Inter,tm433188,Curtis Jones,433188,Curtis Jones,players_full,100
 Inter,tm483348,Djed Spence,483348,Djed Spence,players_full,100
 Inter,tm198116,Federico Dimarco,198116,Federico Dimarco,players_full,100
-Inter,pf:Inter:francesco esposito,Francesco Esposito,930781,Francesco Esposito,players_full,100
+Inter,pf:Inter:francesco esposito,Francesco Esposito,,Francesco Esposito,players_full,100
 Inter,tm126414,Hakan Çalhanoğlu,126414,Hakan Çalhanoğlu,players_full,100
 Inter,tm55735,Henrikh Mkhitaryan,55735,Henrikh Mkhitaryan,players_full,100
 Inter,tm186590,John Stones,186590,John Stones,players_full,100
@@ -226,7 +226,7 @@ Lazio,tm550106,Matteo Cancellieri,550106,Matteo Cancellieri,players_full,100
 Lazio,tm283735,Mattia Zaccagni,283735,Mattia Zaccagni,players_full,100
 Lazio,tm525704,Nicolò Rovella,525704,Nicolò Rovella,players_full,100
 Lazio,tm535955,Nuno Tavares,535955,Nuno Tavares,players_full,100
-Lazio,pf:Lazio:oliver nielsen,Oliver Nielsen,,Oliver Nielsen,players_full,100
+Lazio,pf:Lazio:oliver nielsen,Oliver Nielsen,644408,Oliver Nielsen,players_full,100
 Lazio,tm982855,Reda Belahyane,982855,Reda Belahyane,players_full,100
 Lazio,pf:Lazio:romano floriani,Romano Floriani,,Romano Floriani,players_full,100
 Lazio,tm457736,Tijjani Noslin,457736,Tijjani Noslin,players_full,100
@@ -473,7 +473,7 @@ Inter,tm388516,Josep Martinez,388516,Josep Martínez,transfermarkt_contracts,99
 Inter,tm197929,Ivan Provedel,197929,Ivan Provedel,transfermarkt_contracts,100
 Inter,tm70580,Raffaele Di Gennaro,70580,Raffaele Di Gennaro,transfermarkt_contracts,100
 Inter,pf:Inter:yann aurel bisseck,Yann Aurel Bisseck,,Yann Bisseck,transfermarkt_contracts,85
-Inter,pf:Inter:francesco esposito,Francesco Esposito,930781,Pio Esposito,transfermarkt_contracts,100
+Inter,tm930781,Pio Esposito,930781,Pio Esposito,transfermarkt_contracts,100
 Juventus,tm346551,Kamil Grabara,346551,Kamil Grabara,transfermarkt_contracts,100
 Juventus,tm111819,Neto,111819,Neto,transfermarkt_contracts,100
 Juventus,tm75411,Carlo Pinsoglio,75411,Carlo Pinsoglio,transfermarkt_contracts,100
@@ -533,7 +533,7 @@ Fiorentina,tm1350478,Federico Croci,1350478,Federico Croci,transfermarkt_contrac
 Lazio,tm916430,Edoardo Motta,916430,Edoardo Motta,transfermarkt_contracts,100
 Lazio,tm538079,Alessio Furlanetto,538079,Alessio Furlanetto,transfermarkt_contracts,100
 Lazio,tm918957,Davide Renzetti,918957,Davide Renzetti,transfermarkt_contracts,100
-Lazio,tm644408,Oliver Provstgaard,644408,Oliver Provstgaard,transfermarkt_contracts,100
+Lazio,pf:Lazio:oliver nielsen,Oliver Nielsen,644408,Oliver Provstgaard,transfermarkt_contracts,100
 Lazio,tm371001,Josip Šutalo,371001,Josip Sutalo,transfermarkt_contracts,99
 Lazio,tm1110645,Filipe Bordon,1110645,Filipe Bordon,transfermarkt_contracts,100
 Lazio,tm1253815,Ricardo Bordon,1253815,Ricardo Bordon,transfermarkt_contracts,100
@@ -633,7 +633,7 @@ Frosinone,tm168444,Matteo Pisseri,168444,Matteo Pisseri,transfermarkt_contracts,
 Frosinone,tm160241,Kevin Akpoguma,160241,Kevin Akpoguma,transfermarkt_contracts,100
 Frosinone,tm1036405,Omar Fayed,1036405,Omar Fayed,transfermarkt_contracts,100
 Frosinone,tm842338,Enzo Tchato,842338,Enzo Tchato,transfermarkt_contracts,100
-Frosinone,tm927905,Matteo Cichella,927905,Matteo Cichella,transfermarkt_contracts,100
+Frosinone,pf:Frosinone:matteo chichella,Matteo Chichella,927905,Matteo Cichella,transfermarkt_contracts,100
 Frosinone,tm522681,Ben Lhassine Kone,522681,Ben Lhassine Kone,transfermarkt_contracts,100
 Frosinone,tm337811,Francesco Gelli,337811,Francesco Gelli,transfermarkt_contracts,100
 Frosinone,tm888738,Farés Ghedjemis,888738,Farès Ghedjemis,transfermarkt_contracts,99
@@ -822,12 +822,12 @@ Monza,tm1046867,Jan Ziolkowski,1046867,Jan Ziólkowski,espn_lineups_cups,100
 Genoa,tm586853,Vitinha,586853,Vítinha,espn_subs,100
 Como,tm495667,Lucas Da Cunha,495667,Lucas da Cunha,espn_subs,100
 Parma,pf:Parma:ben cremaschi,Ben Cremaschi,,Benjamín Cremaschi,espn_subs,100
-Inter,pf:Inter:francesco esposito,Francesco Esposito,930781,Francesco Pio Esposito,espn_subs,100
+Inter,pf:Inter:francesco esposito,Francesco Esposito,,Francesco Pio Esposito,espn_subs,100
 Frosinone,tm510103,Tomáš Bobček,510103,Tomás Bobcek,espn_subs,100
 Venezia,tm488996,Þórir Jóhann Helgason,488996,Thórir Helgason,espn_subs,85
 Fiorentina,esp:Fiorentina:pote,Pote,,Pote,espn_subs,100
 Atalanta,tm294808,Franck Kessié,294808,Franck Kessie,espn_subs,100
-Fiorentina,esp:Fiorentina:valde,Valde,,Valde,espn_subs,100
+Fiorentina,tm1186245,Victor Valdepeñas,1186245,Valde,espn_subs,100
 Como,esp:Como:tasos douvikas,Tasos Douvikas,,Tasos Douvikas,espn_subs,100
 Lecce,esp:Lecce:hjalte morel laerke,Hjalte Morel Lærke,,Hjalte Lærke,espn_subs_cups,85
 Torino,esp:Torino:tino anjorin,Tino Anjorin,,Tino Anjorin,espn_subs_cups,100
