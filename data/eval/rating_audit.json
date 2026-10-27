@@ -1,6 +1,6 @@
 {
- "date": "2026-10-26",
- "model": "v3.9",
+ "date": "2026-10-27",
+ "model": "v3.11",
  "players": 5759,
  "golden": [],
  "scout": [
@@ -29,6 +29,14 @@
    "off": 2
   },
   {
+   "player": "Christian Pulisic",
+   "league": "SerieA",
+   "ovr": 81,
+   "lo": 83,
+   "hi": 87,
+   "off": -2
+  },
+  {
    "player": "Dominik Szoboszlai",
    "league": "EPL",
    "ovr": 89,
@@ -51,22 +59,6 @@
    "lo": 84,
    "hi": 87,
    "off": 1
-  },
-  {
-   "player": "Antoine Semenyo",
-   "league": "EPL",
-   "ovr": 88,
-   "lo": 83,
-   "hi": 87,
-   "off": 1
-  },
-  {
-   "player": "Micky van de Ven",
-   "league": "EPL",
-   "ovr": 81,
-   "lo": 82,
-   "hi": 87,
-   "off": -1
   },
   {
    "player": "Enzo Fernández",
@@ -93,19 +85,11 @@
    "off": -1
   },
   {
-   "player": "Kevin De Bruyne",
+   "player": "Nicolò Barella",
    "league": "SerieA",
-   "ovr": 81,
-   "lo": 82,
-   "hi": 87,
-   "off": -1
-  },
-  {
-   "player": "Christian Pulisic",
-   "league": "SerieA",
-   "ovr": 82,
-   "lo": 83,
-   "hi": 87,
+   "ovr": 85,
+   "lo": 86,
+   "hi": 89,
    "off": -1
   }
  ],
@@ -131,18 +115,17 @@
    "limit": 25,
    "desc": "지난 시즌(1,500분+) 대비 −8 이하 — 급락(부상·이적·데이터 오류?)",
    "examples": [
-    "André(Göztepe, 24) 63 ← 78"
+    "André(Göztepe, 24) 63 ← 77"
    ]
   },
   "underperf_high": {
-   "n": 4,
+   "n": 3,
    "limit": 10,
    "desc": "OVR 86+ 인데 리그 보정 평점이 포지션 평균보다 0.1 넘게 낮음(900분+)",
    "examples": [
     "Achraf Hakimi(PSG, 27) 88 ← 89",
-    "João Neves(PSG, 22) 88 ← 88",
-    "Trent Alexander-Arnold(Real Madrid, 28) 86 ← 85",
-    "Willian Pacho(PSG, 25) 86 ← 86"
+    "João Neves(PSG, 22) 87 ← 88",
+    "Trent Alexander-Arnold(Real Madrid, 28) 86 ← 85"
    ]
   },
   "young_elite": {
@@ -155,15 +138,14 @@
    ]
   },
   "no_value_high": {
-   "n": 5,
+   "n": 4,
    "limit": 10,
    "desc": "시장가치 없이 OVR 80+ (TM 매칭 실패·이적 잔류 행)",
    "examples": [
     "Jack Grealish(Manchester City, 31) 84",
     "Robert Sánchez(Chelsea, 28) 82",
-    "Nick Woltemade(Newcastle United, 24) 81",
-    "Joey Veerman(PSV, 27) 81",
-    "Samu Omorodion(Porto, ) 80"
+    "Nick Woltemade(Newcastle United, 24) 82",
+    "Joey Veerman(PSV, 27) 81"
    ]
   }
  }

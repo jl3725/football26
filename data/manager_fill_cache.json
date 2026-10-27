@@ -342,6 +342,12 @@
    "src": "fotmob",
    "val": "Mar 2024"
   },
+  "Estoril|leandro pires": {
+   "at": "2026-10-27",
+   "date": "2026-10-16",
+   "src": "fotmob",
+   "val": "Oct 2026"
+  },
   "Estoril|sergio raimundo": {
    "at": "2026-10-23",
    "val": ""
@@ -391,6 +397,12 @@
   "Famalicão|carlos carvalhal": {
    "at": "2026-10-23",
    "val": ""
+  },
+  "Famalicão|ricardo silva": {
+   "at": "2026-10-27",
+   "date": "2026-10-24",
+   "src": "fotmob",
+   "val": "Oct 2026"
   },
   "Fenerbahçe|ismail kartal": {
    "at": "2026-10-23",
@@ -1351,10 +1363,12 @@
   "Elche|martin anselmi": "2026-10-23",
   "Espanyol|manolo gonzalez": "2026-10-23",
   "Estoril|sergio raimundo": "2026-10-23",
+  "Estoril|sergio raimundo (caretaker)": "2026-10-27",
   "Estrela|pepa": "2026-10-23",
   "Everton|david moyes": "2026-10-23",
   "Excelsior|ruben den uil": "2026-10-23",
   "Famalicão|carlos carvalhal": "2026-10-23",
+  "Famalicão|ricardo (caretaker)": "2026-10-27",
   "Feyenoord|giovanni van bronckhorst": "2026-10-23",
   "Fiorentina|paolo vanoli": "2026-10-23",
   "Fortuna Sittard|danny buijs": "2026-10-23",
@@ -1460,6 +1474,30 @@
   "Zwolle|dennis van der ree (a i ) and maikel van der werff (a i )": "2026-10-23"
  },
  "override": {
+  "Estoril": {
+   "at": "2026-10-27",
+   "bio_at": "2026-10-27",
+   "bio_ko": "레안드로 가르시아 아제베두 피레스는 포르투갈 출신의 축구 감독이자 전 축구 선수이다. 현재 에스토릴의 감독 대행을 맡고 있다.",
+   "bio_source": "en-wiki-translated",
+   "fotmob_id": 45364,
+   "from": "Sérgio Raimundo (caretaker)",
+   "name": "Leandro Pires",
+   "nationality": "Portugal",
+   "start": "2026-10-16",
+   "wiki_title": "Leandro Pires"
+  },
+  "Famalicão": {
+   "at": "2026-10-27",
+   "bio_at": "2026-10-27",
+   "bio_ko": "리카르두 살바도르 마세두 에 시우바는 포르투갈 출신의 축구 감독이다. 현재 리가 포르투갈 2의 루시타니아 로로사 감독을 맡고 있으며, 같은 리그의 파수스 드 페헤이라와 올리베이렌세 감독직을 역임한 바 있다. 빌라베르덴세 시절에는 4부 리그에서 2부 리그까지 2년 연속 승격을 이뤄냈다.",
+   "bio_source": "en-wiki-translated",
+   "fotmob_id": 24590,
+   "from": "Ricardo (caretaker)",
+   "name": "Ricardo Silva",
+   "nationality": "Cape Verde",
+   "start": "2026-10-24",
+   "wiki_title": "Ricardo Silva (football manager)"
+  },
   "Kortrijk": {
    "at": "2026-10-23",
    "bio_at": "2026-10-23",
@@ -1999,6 +2037,11 @@
    "focus": "",
    "style": ""
   },
+  "leandro pires": {
+   "at": "2026-10-27",
+   "focus": "",
+   "style": ""
+  },
   "lee johnson (footballer)": {
    "at": "2026-10-23",
    "focus": "",
@@ -2331,6 +2374,11 @@
   },
   "rene wagner": {
    "at": "2026-10-23",
+   "focus": "",
+   "style": ""
+  },
+  "ricardo silva (football manager)": {
+   "at": "2026-10-27",
    "focus": "",
    "style": ""
   },

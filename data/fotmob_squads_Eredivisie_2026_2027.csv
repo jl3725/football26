@@ -65,7 +65,7 @@ PSV,Lutsharel Geertruida,881640,defenders,"CB,RB,CDM",Centre-Back,DF,26,2000-07-
 PSV,Yarek Gąsiorowski,1506480,defenders,CB,Centre-Back,DF,21,2005-01-12,3.0,ESP,False,,2026-10-27
 PSV,Armando Obispo,794244,defenders,CB,Centre-Back,DF,27,1999-03-05,4.0,CUW,False,,2026-10-27
 PSV,Ryan Flamingo,1386551,defenders,CB,Centre-Back,DF,23,2002-12-31,6.0,NED,False,,2026-10-27
-PSV,Sergiño Dest,892816,defenders,"RB,RW,LB,RWB,RM",Right-Back,DF,25,2000-11-03,8.0,USA,False,,2026-10-27
+PSV,Sergiño Dest,892816,defenders,"RB,LB,RW,RM,RWB",Right-Back,DF,25,2000-11-03,8.0,USA,False,,2026-10-27
 PSV,Mauro Júnior,873556,defenders,"LB,CDM,CM",Left-Back,DF,27,1999-05-06,17.0,BRA,False,,2026-10-27
 PSV,Filip Kostić,281012,defenders,"LB,LWB,LW",Left-Back,DF,33,1992-11-01,18.0,SRB,False,,2026-10-27
 PSV,Jerdy Schouten,772104,defenders,"CB,CDM,CM",Centre-Back,DF,29,1997-01-12,22.0,NED,True,Day to day,2026-10-27
@@ -74,7 +74,7 @@ PSV,Adamo Nagalo,1237425,defenders,CB,Centre-Back,DF,24,2002-09-22,39.0,BFA,True
 PSV,Paul Wanner,1327149,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,20,2005-12-23,10.0,AUT,True,About a week,2026-10-27
 PSV,Guus Til,774947,midfielders,"CAM,ST,CM,RW",Attacking Midfield,MF,28,1997-12-22,20.0,NED,False,,2026-10-27
 PSV,Sven Mijnans,1035643,midfielders,"CAM,CM,ST",Attacking Midfield,MF,26,2000-03-09,21.0,NED,False,,2026-10-27
-PSV,Kodai Sano,1337282,midfielders,"CDM,CAM,CM",Defensive Midfield,MF,23,2003-09-25,24.0,JPN,False,,2026-10-27
+PSV,Kodai Sano,1337282,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,23,2003-09-25,24.0,JPN,False,,2026-10-27
 PSV,Shuryjano Cornecion,1874113,midfielders,"CM,CAM,CDM",Central Midfield,MF,18,2008-06-28,42.0,NED,False,,2026-10-27
 PSV,Sam Lammers,665164,attackers,ST,Centre-Forward,FW,29,1997-04-30,,NED,True,Day to day,2026-10-27
 PSV,Ivan Perišić,163670,attackers,"LW,RW,LM,LB,LWB",Left Winger,FW,37,1989-02-02,5.0,CRO,False,,2026-10-27
@@ -216,17 +216,17 @@ Groningen,Nikolas Brandis,1645652,defenders,LB,Left-Back,DF,21,2005-05-06,12.0,S
 Groningen,Elvis van der Laan,1720296,defenders,CB,Centre-Back,DF,18,2008-02-29,15.0,SWE,True,Day to day,2026-10-27
 Groningen,Malcolm Jeng,1457824,defenders,CB,Centre-Back,DF,21,2005-03-09,21.0,SWE,True,Day to day,2026-10-27
 Groningen,Tyrique Mercera,1575747,defenders,RB,Right-Back,DF,22,2003-12-19,29.0,CUW,True,Day to day,2026-10-27
-Groningen,Hans Hateboer,485047,defenders,"RB,LB,CB",Right-Back,DF,32,1994-01-09,33.0,NED,False,,2026-10-27
+Groningen,Hans Hateboer,485047,defenders,"RB,CB,LB",Right-Back,DF,32,1994-01-09,33.0,NED,False,,2026-10-27
 Groningen,Jesper Mosselaar,2130792,defenders,,Centre-Back,DF,21,2005-02-14,42.0,NED,False,,2026-10-27
 Groningen,Travis Hernes,1400979,midfielders,LM,Left Midfield,MF,20,2005-11-04,7.0,NOR,False,,2026-10-27
 Groningen,Tika de Jonge,1256176,midfielders,"CDM,CM",Defensive Midfield,MF,23,2003-03-11,8.0,NED,False,,2026-10-27
 Groningen,Alvin Nordin,1693295,midfielders,"RM,CM",Right Midfield,MF,18,2007-12-24,16.0,SWE,False,,2026-10-27
-Groningen,David van der Werff,1695991,midfielders,"RW,CAM,RM",Right Winger,MF,22,2004-08-31,17.0,NED,False,,2026-10-27
 Groningen,Tygo Land,1426704,midfielders,"CDM,CM",Defensive Midfield,MF,20,2006-01-11,18.0,NED,False,,2026-10-27
 Groningen,Pelle Clement,637741,midfielders,"CDM,LW",Defensive Midfield,MF,30,1996-05-19,24.0,NED,False,,2026-10-27
 Groningen,Jismerai Dillema,1797832,midfielders,,Central Midfield,MF,19,2007-02-14,44.0,NED,False,,2026-10-27
 Groningen,Brynjólfur Willumsson,937032,attackers,ST,Centre-Forward,FW,26,2000-08-12,9.0,ISL,False,,2026-10-27
 Groningen,Jacob Ondrejka,1109476,attackers,"LW,ST,CAM",Left Winger,FW,24,2002-09-02,11.0,SWE,False,,2026-10-27
+Groningen,David van der Werff,1695991,attackers,"RW,CAM,RM,LW,LM",Right Winger,FW,22,2004-08-31,17.0,NED,False,,2026-10-27
 Groningen,Oskar Zawada,560109,attackers,ST,Centre-Forward,FW,30,1996-02-01,19.0,POL,False,,2026-10-27
 Groningen,Nils Eggens,1595608,attackers,ST,Centre-Forward,FW,21,2005-04-08,20.0,NED,False,,2026-10-27
 Groningen,Thom van Bergen,1412105,attackers,"ST,CAM",Centre-Forward,FW,22,2004-01-06,26.0,NED,False,,2026-10-27
@@ -341,7 +341,7 @@ NEC Nijmegen,Yassin Moslih,1804643,defenders,,Centre-Back,DF,19,2007-07-24,42.0,
 NEC Nijmegen,Mees Rensen,1928271,defenders,,Centre-Back,DF,16,2010-01-28,44.0,NED,False,,2026-10-27
 NEC Nijmegen,Gabriel Brás,1525033,defenders,CB,Centre-Back,DF,22,2004-03-25,73.0,POR,False,,2026-10-27
 NEC Nijmegen,Mitchel Bakker,891870,midfielders,CB,Centre-Back,MF,26,2000-06-20,5.0,NED,False,,2026-10-27
-NEC Nijmegen,Darko Nejašmić,1052861,midfielders,"CDM,CM",Defensive Midfield,MF,27,1999-01-25,6.0,CRO,False,,2026-10-27
+NEC Nijmegen,Darko Nejašmić,1052861,midfielders,CDM,Defensive Midfield,MF,27,1999-01-25,6.0,CRO,False,,2026-10-27
 NEC Nijmegen,Emre Mor,683333,midfielders,RWB,Right-Back,MF,29,1997-07-24,7.0,TUR,True,Day to day,2026-10-27
 NEC Nijmegen,Isak Hansen-Aarøen,1162969,midfielders,CDM,Defensive Midfield,MF,22,2004-08-22,8.0,NOR,False,,2026-10-27
 NEC Nijmegen,Tjaronn Chery,117541,midfielders,"CAM,ST,RW",Attacking Midfield,MF,38,1988-06-04,9.0,SUR,False,,2026-10-27

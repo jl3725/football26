@@ -36,19 +36,19 @@ Rennes,Abdelhamid Aït Boudlal,1581722,defenders,CB,Centre-Back,DF,20,2006-04-16
 Rennes,Przemysław Frankowski,402419,defenders,"RB,RM,RWB,LB",Right-Back,DF,31,1995-04-12,95.0,POL,False,,2026-10-27
 Rennes,Ayanda Sishuba,1508735,midfielders,,Central Midfield,MF,21,2005-02-02,,BEL,False,,2026-10-27
 Rennes,Djaoui Cissé,1553515,midfielders,CM,Central Midfield,MF,22,2004-01-31,6.0,FRA,False,,2026-10-27
-Rennes,Ludovic Blas,693171,midfielders,"RW,RM,CM,LW",Right Winger,MF,28,1997-12-31,10.0,FRA,False,,2026-10-27
 Rennes,Mousa Tamari,813055,midfielders,"LM,RW,ST,LW,RM",Left Midfield,MF,29,1997-06-10,11.0,JOR,False,,2026-10-27
 Rennes,Sebastian Szymański,765466,midfielders,"CM,CAM,RW,RM,CDM",Central Midfield,MF,27,1999-05-10,17.0,POL,False,,2026-10-27
 Rennes,Valentin Rongier,562719,midfielders,"CM,CDM",Central Midfield,MF,31,1994-12-07,21.0,FRA,False,,2026-10-27
 Rennes,Adrien Thomasson,317062,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,32,1993-12-10,28.0,FRA,False,,2026-10-27
 Rennes,Mahdi Camara,770321,midfielders,"CM,CAM,CDM",Central Midfield,MF,28,1998-06-30,45.0,FRA,False,,2026-10-27
 Rennes,Estéban Lepaul,1280225,attackers,ST,Centre-Forward,FW,26,2000-04-18,9.0,FRA,True,About 1-2 weeks,2026-10-27
+Rennes,Ludovic Blas,693171,attackers,"RW,RM,CM,LW",Right Winger,FW,28,1997-12-31,10.0,FRA,False,,2026-10-27
 Rennes,Eliezer Mayenda,1391052,attackers,"ST,RW",Centre-Forward,FW,21,2005-05-08,12.0,ESP,False,,2026-10-27
 Rennes,Boulaye Dia,972120,attackers,ST,Centre-Forward,FW,29,1996-11-16,22.0,SEN,False,,2026-10-27
 Rennes,Elías Legendre,1858591,attackers,,Centre-Forward,FW,18,2008-04-22,35.0,ECU,False,,2026-10-27
 Rennes,Henrick Do Marcolino,1707955,attackers,,Centre-Forward,FW,20,2006-03-21,65.0,GAB,False,,2026-10-27
 Rennes,Arnaud Nordin,770340,attackers,"LW,ST",Left Winger,FW,28,1998-06-17,70.0,FRA,False,,2026-10-27
-Rennes,Issa Soumaré,1103837,attackers,"ST,LW,CAM",Centre-Forward,FW,26,2000-10-10,90.0,SEN,False,,2026-10-27
+Rennes,Issa Soumaré,1103837,attackers,"ST,LW",Centre-Forward,FW,26,2000-10-10,90.0,SEN,False,,2026-10-27
 Lille,Berke Özer,815912,keepers,GK,Goalkeeper,GK,26,2000-05-25,1.0,TUR,False,,2026-10-27
 Lille,Orlando Gill,1683391,keepers,GK,Goalkeeper,GK,26,2000-06-11,12.0,PAR,False,,2026-10-27
 Lille,Thomas Sajous,1793779,keepers,GK,Goalkeeper,GK,18,2008-05-15,50.0,FRA,False,,2026-10-27
@@ -105,7 +105,7 @@ Monaco,Matthis Abline,1250492,attackers,"LW,ST,RW",Left Winger,FW,23,2003-03-28,
 Monaco,Mika Biereth,1113809,attackers,ST,Centre-Forward,FW,23,2003-02-08,14.0,DEN,False,,2026-10-27
 Monaco,Stanis Idumbo,1366936,attackers,"LW,LM",Left Winger,FW,21,2005-06-29,17.0,COD,True,About 1-2 weeks,2026-10-27
 Monaco,Paris Brunner,1412956,attackers,"ST,LW",Centre-Forward,FW,20,2006-02-15,29.0,GER,False,,2026-10-27
-Monaco,Ansu Fati,1086012,attackers,"CAM,LW,RW,ST",Attacking Midfield,FW,23,2002-10-31,31.0,ESP,False,,2026-10-27
+Monaco,Ansu Fati,1086012,attackers,"CAM,LW,RW,ST",Attacking Midfield,FW,23,2002-10-31,31.0,ESP,True,Mid November 2026,2026-10-27
 Monaco,Safouane Benzahra,1845327,attackers,,Centre-Forward,FW,18,2008-08-18,47.0,MAR,False,,2026-10-27
 Lyon,Dominik Greif,651910,keepers,GK,Goalkeeper,GK,29,1997-04-06,1.0,SVK,False,,2026-10-27
 Lyon,Justin Bengui,1514441,keepers,GK,Goalkeeper,GK,21,2005-07-09,25.0,FRA,False,,2026-10-27
@@ -252,7 +252,7 @@ Nice,Mohamed Abdelmonem,1179331,defenders,CB,Centre-Back,DF,27,1999-02-01,5.0,EG
 Nice,Antoine Mendy,1254147,defenders,"CB,RB",Centre-Back,DF,22,2004-05-27,33.0,SEN,True,Late May 2027,2026-10-27
 Nice,Xavier Mandza,2116938,defenders,CB,Centre-Back,DF,17,2009-04-06,35.0,FRA,False,,2026-10-27
 Nice,Alidu Seidu,1177779,defenders,"RB,CB",Right-Back,DF,26,2000-06-04,36.0,GHA,False,,2026-10-27
-Nice,Youssouf Ndayishimiye,1057703,defenders,"CB,CM",Centre-Back,DF,27,1998-10-27,55.0,BDI,False,,2026-10-27
+Nice,Youssouf Ndayishimiye,1057703,defenders,"CB,CM",Centre-Back,DF,28,1998-10-27,55.0,BDI,False,,2026-10-27
 Nice,Moïse Bombito,1440009,defenders,CB,Centre-Back,DF,26,2000-03-30,64.0,CAN,True,Early November 2026,2026-10-27
 Nice,Hamza Koutoune,1796096,defenders,CB,Centre-Back,DF,20,2006-09-17,84.0,MAR,False,,2026-10-27
 Nice,Hicham Boudaoui,1033099,midfielders,"CM,CDM",Central Midfield,MF,27,1999-09-23,6.0,ALG,False,,2026-10-27
@@ -267,7 +267,7 @@ Nice,Aboulaye Camara,2117308,midfielders,,Central Midfield,MF,18,2008-02-10,38.0
 Nice,Djibril Coulibaly,1763598,midfielders,CDM,Defensive Midfield,MF,17,2008-11-18,39.0,FRA,False,,2026-10-27
 Nice,Everton,1696775,midfielders,CDM,Defensive Midfield,MF,19,2007-04-12,87.0,FRA,False,,2026-10-27
 Nice,Jonathan Clauss,715301,midfielders,"RWB,RB,RM",Right-Back,MF,34,1992-09-25,92.0,FRA,False,,2026-10-27
-Nice,Salis Abdul Samed,1074642,midfielders,"CDM,CM",Defensive Midfield,MF,26,2000-03-26,99.0,GHA,False,,2026-10-27
+Nice,Salis Abdul Samed,1074642,midfielders,"CM,CDM",Central Midfield,MF,26,2000-03-26,99.0,GHA,False,,2026-10-27
 Nice,Mohamed Amoura,1134206,attackers,"ST,CAM,LW",Centre-Forward,FW,26,2000-05-09,9.0,ALG,False,,2026-10-27
 Nice,Elye Wahi,1213430,attackers,ST,Centre-Forward,FW,23,2003-01-02,11.0,CIV,False,,2026-10-27
 Nice,Isak Jansson,944385,attackers,LW,Left Winger,FW,24,2002-01-31,21.0,SWE,False,,2026-10-27
