@@ -2862,6 +2862,8 @@ def player_detail(team: str, player: str, league: str = ACTIVE_LEAGUE, basis: st
                 "comps": comps, "league_minutes": int(_num(trow.get("_league_minutes"), 0)),
                 "x_minutes": int(_num(trow.get("_x_minutes"), 0)),
                 "x_comps": _x_comp_list(row.get("x_comps")) if comps == "all" else [],
+                # 원천(이 PC 의 Sofascore·FBref)이 아직 반영하지 않아 FotMob 경기별 기록으로 채운 최근 리그 출전 분(allcomp_stats.top_up_league)
+                "topup_minutes": int(_num(trow.get("_topup_minutes"), 0)),
                 # 백분위 지표를 보여 줄 만큼의 표본 — 실제로 섞인 분량(이번 시즌 전 대회 + 안정화로 섞은 지난 시즌).
                 # 예전엔 이번 시즌 리그 분만 봐서 부상 복귀한 Timber(156′)·Guimarães(217′)의 레이더가 숨었다(2026-10-21 사용자).
                 "eff_minutes": int(cur_m + pri_m), "enough": bool(cur_m + pri_m >= (300 if is_gk else 450)),

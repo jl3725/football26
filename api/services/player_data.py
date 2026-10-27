@@ -126,6 +126,24 @@ def frame_cache_name(league: str, season: str | None) -> str:
     return f"frame_{league}_{season or 'cur'}.pkl"
 
 
+def _detail_cover(frame) -> dict[str, str]:
+    """세부 지표 열 → 그 값을 만든 원천이 반영한 출전 분 열(top_up_league 용). 열을 frame 에 붙인다.
+    Sofascore 열 = ss_minutes · FBref 횟수 지표(Sofascore 합계로 다시 계산한 행이면 ss_minutes, 아니면 주간 분) ·
+    xG 계열(Understat 최신이면 지금 분 = 채울 것 없음, 아니면 주간 분) · 나머지 = 주간(FBref) 분."""
+    import allcomp_stats as acs  # noqa: PLC0415
+    from merge_sofascore import _FB_FROM_SS, _SS_COLS  # noqa: PLC0415
+    from season_totals import _US_P90  # noqa: PLC0415
+    fb = pd.to_numeric(frame["_fb_minutes"], errors="coerce") if "_fb_minutes" in frame.columns else pd.to_numeric(frame["minutes"], errors="coerce")
+    frame["_fb_minutes"] = fb
+    ss = pd.to_numeric(frame.get("ss_minutes"), errors="coerce") if "ss_minutes" in frame.columns else fb
+    src = frame["fb_counts_src"].astype(str) if "fb_counts_src" in frame.columns else pd.Series("", index=frame.index)
+    frame["_cov_counts"] = ss.where(src == "sofascore", fb)
+    xg = frame["_xg_src"].astype(str) if "_xg_src" in frame.columns else pd.Series("", index=frame.index)
+    frame["_cov_xg"] = pd.to_numeric(frame["minutes"], errors="coerce").where(xg == "understat_live", fb)
+    return {c: ("ss_minutes" if c in _SS_COLS else "_cov_counts" if c in _FB_FROM_SS else "_cov_xg" if c in _US_P90
+                else "_fb_minutes") for c in acs.MAP}
+
+
 def player_frame(league: str, season: str | None = None):
     """players_full과 대회별 선발 수를 합친 선수 데이터 단일 진입점.
 
@@ -269,11 +287,19 @@ def _build_frame(league: str, season: str | None = None):
         try:
             import season_totals as st  # noqa: PLC0415
             # xG 계열 먼저(FBref 분과 비교해야 하므로 FotMob 이 분을 바꾸기 전에) — Understat 매일, 5대 리그
+            frame["_fb_minutes"] = pd.to_numeric(frame.get("minutes"), errors="coerce")   # 주간 표(FBref)가 반영한 분 — 세부 지표 채우기용
             frame = st.apply_understat_live(frame, ds.read_table("understat_players", league=league))
             frame = st.apply_live_totals(frame, ds.read_table("fotmob_match_ratings", league=league), league)
             frame = st.apply_gk_live(frame, ds.read_table("players_sofascore_stats", league=league))   # GK 클린시트% 최신
         except Exception as e:  # noqa: BLE001 — 경기별 기록이 없으면 FBref 그대로
             print(f"[season_totals] {league}: 건너뜀 {type(e).__name__}: {e}")
+        # 세부 지표 — 원천(Sofascore 매일·FBref 주간, 둘 다 이 PC 에서만 받음)이 아직 반영하지 않은 최근 리그 경기를
+        # FotMob 경기별 기록(클라우드 매일)으로 채운다(src/allcomp_stats.top_up_league). PC 가 꺼져도 레이더·템플릿이 멈추지 않게(2026-10-27)
+        try:
+            import allcomp_stats as acs  # noqa: PLC0415
+            frame = acs.top_up_league(frame, ds.read_table("fotmob_match_ratings", league=league), _detail_cover(frame))
+        except Exception as e:  # noqa: BLE001
+            print(f"[topup] {league}: 건너뜀 {type(e).__name__}: {e}")
     # 유럽·컵 평점(그 시즌 + 직전 시즌) — OVR 경기력이 리그 평점만 보던 것(src/allcomp_stats.py, 2026-10-21 PSG).
     # 지난 시즌 표에도 같은 방식으로 붙인다 — '지난 시즌 OVR'(▲▼ 비교 기준)이 유럽 평점 없이 계산돼 올 시즌 OVR 과
     # 공식이 달랐다(크바라츠헬리아 지난 시즌 87 로 보여 +2, 같은 공식이면 90 → −1, 2026-10-21 검수)

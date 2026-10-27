@@ -297,6 +297,69 @@ def calibrate(ours: pd.DataFrame, fm_league: pd.DataFrame) -> dict:
     return cal
 
 
+TOPUP_MIN_GAP = 90.0            # 원천이 한 경기 이상 늦었을 때만 채운다
+
+
+def top_up_league(frame: pd.DataFrame, rows: pd.DataFrame | None, cover: dict[str, str]) -> pd.DataFrame:
+    """리그 세부 지표(우리 표)를 원천이 아직 반영하지 않은 최근 리그 경기만큼 FotMob 경기별 기록으로 채운다.
+
+    2026-10-27: 세부 지표 대부분은 Sofascore 시즌 표(이 PC 에서 매일)·FBref(이 PC 주간)라 PC 가 꺼지면 레이더·템플릿이 멈췄다.
+    FotMob 경기별 기록(클라우드 매일)은 리그 경기마다 같은 항목이 있다. 열마다 원천이 반영한 출전 분(cover = {열: 분 열})과
+    FotMob 리그 출전 분의 차이가 TOPUP_MIN_GAP 이상이면, 최근 경기부터 그 차이만큼 골라 per90·비율을 내고(같은 선수들의 리그
+    값으로 척도 맞춤 — calibrate) 분으로 섞는다. 원천이 최신이면(차이 < 한 경기) 아무것도 바꾸지 않는다. `_topup_minutes` 열."""
+    out = frame.copy()
+    out["_topup_minutes"] = 0.0
+    if rows is None or rows.empty or "comp_code" not in rows.columns:
+        return out
+    lr = rows[(rows["comp_code"].map(kind) == "league") & (_num(rows["minutes"]).fillna(0) > 0)].copy()
+    if "det" in lr.columns:
+        lr = lr[_num(lr["det"]).fillna(0) > 0]
+    if lr.empty:
+        return out
+    lr["minutes"] = _num(lr["minutes"]).fillna(0)
+    lr["_key"] = row_keys(lr)
+    keys = pd.Series(frame_keys(out, lr), index=out.index)
+    cols = [c for c in MAP if c in out.columns and c in cover]
+    ours = pd.DataFrame({"_key": keys.values, "minutes": _num(out.get("ss_minutes", out["minutes"])).values,
+                         **{c: _num(out[c]).values for c in cols}})
+    cal = calibrate(ours, per90(lr))
+    if not cal:
+        return out
+    live = lr.groupby("_key")["minutes"].sum()
+    lr = lr.sort_values("date", ascending=False)
+    by_key = {k: g for k, g in lr.groupby("_key", sort=False)}
+    covered = {c: _num(out[cover[c]]) if cover[c] in out.columns else pd.Series(float("nan"), index=out.index) for c in cols}
+    for i, k in keys.items():
+        lm = float(live.get(k, 0.0))
+        g = by_key.get(k)
+        if g is None or lm < TOPUP_MIN_GAP:
+            continue
+        cache: dict[float, pd.Series] = {}
+        for c in cols:
+            if c not in cal:
+                continue
+            cv, old = covered[c].get(i), pd.to_numeric(out.at[i, c], errors="coerce")
+            if cv is None or cv != cv or old != old:
+                continue                                   # 원천에 없는 선수·지표는 그대로(채우기만, 새로 만들지 않음)
+            cv = max(0.0, float(cv))
+            gap = lm - cv
+            if gap < TOPUP_MIN_GAP:
+                continue
+            gk = round(gap)
+            if gk not in cache:
+                take = g[g["minutes"].cumsum().shift(fill_value=0) < gap]   # 최근 경기부터 차이만큼
+                cache[gk] = apply_cal(per90(take), cal).iloc[0] if not take.empty else None
+            win = cache[gk]
+            if win is None or c not in win.index or pd.isna(win[c]):
+                continue
+            wm = float(win["_m"])
+            if cv + wm <= 0:
+                continue
+            out.at[i, c] = (float(old) * cv + float(win[c]) * wm) / (cv + wm)
+            out.at[i, "_topup_minutes"] = max(float(out.at[i, "_topup_minutes"]), wm)
+    return out
+
+
 def apply_cal(x: pd.DataFrame, cal: dict) -> pd.DataFrame:
     out = x.copy()
     for col, (how, k) in cal.items():

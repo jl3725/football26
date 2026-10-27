@@ -107,3 +107,20 @@ def test_short_cameos_count_as_minutes_but_not_rating():
     by_id, _ = acs.rating_table(t)
     assert by_id["7"]["fm_rating"] == 7.4 and by_id["7"]["minutes"] == 90
     assert by_id["7"]["raw_minutes"] == 102 and by_id["7"]["comps"] == {"uefa.champions": 102}
+
+
+def test_top_up_fills_only_matches_the_source_has_not_seen():
+    # 우리 표(Sofascore)가 540분까지만 반영 · FotMob 리그 경기 8×90 — 최근 2경기(180분)만 FotMob 으로 채운다
+    games = [{"match_id": str(i), "date": f"2026-09-{10 + i:02d}", "comp_code": "eng.1", "squad": "X", "player": "P",
+              "fotmob_id": "5", "minutes": 90, "det": 1, "chances": 1 if i < 6 else 5} for i in range(8)]
+    others = [{"match_id": str(100 + j), "date": "2026-09-10", "comp_code": "eng.1", "squad": "Y", "player": f"Q{j}",
+               "fotmob_id": str(500 + j), "minutes": 600, "det": 1, "chances": 6} for j in range(40)]
+    rows = pd.DataFrame(games + others)
+    frame = pd.DataFrame([{"player": "P", "squad": "X", "fm_id": 5, "minutes": 720, "ss_minutes": 540, "key_passes_per90": 1.0}]
+                         + [{"player": f"Q{j}", "squad": "Y", "fm_id": 500 + j, "minutes": 600, "ss_minutes": 600,
+                             "key_passes_per90": 0.9} for j in range(40)])
+    out = acs.top_up_league(frame, rows, {"key_passes_per90": "ss_minutes"})
+    p = out.iloc[0]
+    # 척도: 같은 선수들 리그 값 0.9 ↔ FotMob 0.9 → 1.0 · 최근 2경기 FotMob 5.0/90분 → (1.0×540 + 5.0×180)/720
+    assert p["_topup_minutes"] == 180 and abs(p["key_passes_per90"] - (1.0 * 540 + 5.0 * 180) / 720) < 0.05   # 척도에 P 자신도 들어가 0.976
+    assert (out.iloc[1:]["_topup_minutes"] == 0).all() and (out.iloc[1:]["key_passes_per90"] == 0.9).all()   # 최신이면 그대로

@@ -211,7 +211,8 @@ function Detail({ team, player, accent, heatmap }: { team: string; player: strin
               <p><b>기록</b> — {d.template.comps === "league" ? "리그 경기만."
                 : d.template.x_comps?.length
                   ? <>리그 {(d.template.league_minutes ?? 0).toLocaleString()}′ + {d.template.x_comps.map((c) => `${c.name} ${c.minutes}′${c.weight < 1 ? `(×${c.weight})` : ""}`).join(" · ")}. 유럽·컵은 리그 표 척도로 맞춰 섞음.</>
-                  : "전 대회(이번 시즌 유럽·컵 출전 없음)."}</p>
+                  : "전 대회(이번 시즌 유럽·컵 출전 없음)."}
+                {(d.template.topup_minutes ?? 0) > 0 ? <> 최근 리그 {d.template.topup_minutes}′는 기본 원천(Sofascore·FBref)에 아직 없어 FotMob 경기별 기록으로 채움.</> : null}</p>
               <p><b>{d.template.basis === "blend" ? "안정화" : "이번 시즌만"}</b> — {d.template.basis === "blend" && (d.template.prior_minutes ?? 0) > 0
                 ? <>이번 시즌 {(d.template.cur_minutes ?? 0).toLocaleString()}′ + 지난 시즌 {(d.template.prior_minutes ?? 0).toLocaleString()}′치(비중 {Math.round((d.template.prior_share ?? 0) * 100)}%, 출전이 쌓일수록 줄어듦).</>
                 : d.template.basis === "blend" ? <>지난 시즌 기록 없음 — 이번 시즌 {(d.template.cur_minutes ?? 0).toLocaleString()}′.</>

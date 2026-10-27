@@ -288,6 +288,7 @@ export type PlayerDetail = {
   template?: { key: string; en: string; ko: string; n: number; scope: string;
     basis?: "blend" | "season"; cur_minutes?: number; prior_minutes?: number; prior_share?: number; possession?: number | null; padj?: number;
     comps?: "all" | "league"; league_minutes?: number; x_minutes?: number; x_comps?: { code: string; name: string; minutes: number; weight: number }[];
+    topup_minutes?: number;
     eff_minutes?: number; enough?: boolean };
   league?: string; league_level?: number; rating_epl?: number | null; proj?: Record<string, number>;
   categories_line?: MetricCat[]; radar_line?: { axis: string; value: number }[];   // 라인 공통 축(포지션 다른 선수 비교용)
