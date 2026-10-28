@@ -143,11 +143,11 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 523,
-   "exact": 483,
-   "rule": 0,
+   "total": 535,
+   "exact": 493,
+   "rule": 1,
    "ambiguous": 0,
-   "orphan": 40,
+   "orphan": 41,
    "orphans": [
     {
      "squad": "Arsenal",
@@ -285,8 +285,8 @@
    "orphans": []
   },
   "espn_subs_cups": {
-   "total": 323,
-   "exact": 320,
+   "total": 343,
+   "exact": 340,
    "rule": 1,
    "ambiguous": 0,
    "orphan": 2,
@@ -304,8 +304,8 @@
    ]
   },
   "match_events": {
-   "total": 358,
-   "exact": 358,
+   "total": 366,
+   "exact": 366,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -692,11 +692,11 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 466,
-   "exact": 447,
+   "total": 470,
+   "exact": 450,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 19,
+   "orphan": 20,
    "orphans": [
     {
      "squad": "Augsburg",
@@ -792,6 +792,11 @@
      "squad": "Schalke 04",
      "name": "Edion Gashi",
      "starts": 0
+    },
+    {
+     "squad": "Leverkusen",
+     "name": "Kenan Doganay",
+     "starts": 0
     }
    ]
   },
@@ -812,8 +817,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 291,
-   "exact": 291,
+   "total": 292,
+   "exact": 292,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -839,11 +844,11 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 651,
+   "total": 652,
    "exact": 561,
    "rule": 10,
    "ambiguous": 1,
-   "orphan": 80,
+   "orphan": 81,
    "orphans": [
     {
      "squad": "Lecce",
@@ -1077,8 +1082,8 @@
    ]
   },
   "espn_subs": {
-   "total": 453,
-   "exact": 448,
+   "total": 456,
+   "exact": 451,
    "rule": 1,
    "ambiguous": 1,
    "orphan": 4,
