@@ -1807,6 +1807,30 @@
    "away": "Brighton",
    "at": "2026-10-28T22:12:32+00:00",
    "model": "gemini-3.1-flash-lite"
+  },
+  "401921842": {
+   "text": "EFL컵에서 Liverpool과 Chelsea가 1-1로 비기며 승부차기로 이어졌다. 40' Morgan Rogers가 페널티킥으로 선제골을 넣었으나, 43' Cody Gakpo가 곧바로 페널티킥으로 동점골을 기록했다. 양 팀은 점유율 51.7% 대 48.3%, 유효 슈팅 4개씩을 주고받으며 팽팽한 경기를 펼쳤고, Liverpool 승리를 예상했던 모델과 Elo의 예측은 빗나갔다.",
+   "date": "2026-10-28",
+   "home": "Liverpool",
+   "away": "Chelsea",
+   "at": "2026-10-28T22:53:39+00:00",
+   "model": "gemini-3.1-flash-lite"
+  },
+  "401925223": {
+   "text": "Heerenveen이 KNVB Beker 경기에서 Excelsior를 2-0으로 꺾고 승리를 거두었다. 팽팽하던 경기는 63' Dylan Vente의 선제골과 75' Jacob Trenskow의 추가골이 터지며 Heerenveen 쪽으로 기울었다. Heerenveen은 점유율 73.4%와 유효 슈팅 7개를 기록하며 Excelsior를 압도했고, Elo의 Heerenveen 승리 예측도 적중했다.",
+   "date": "2026-10-28",
+   "home": "Excelsior",
+   "away": "Heerenveen",
+   "at": "2026-10-28T22:53:44+00:00",
+   "model": "gemini-3.1-flash-lite"
+  },
+  "401917034": {
+   "text": "DFB-포칼에서 Holstein Kiel과 Hoffenheim이 1-1로 비기며 승부차기로 이어졌다. 전반 11'에 Hoffenheim의 Adam Hlozek이 선제골을 넣었으나, 23'에 Holstein Kiel의 Adrian Kapralik이 동점골을 기록하며 균형을 맞췄다. 경기 기록상 점유율은 Hoffenheim이 55.7%로 앞섰지만, 슈팅 수는 Holstein Kiel이 16개로 더 많았다. 이번 경기는 Hoffenheim의 승리를 점쳤던 Elo의 예측과 다른 결과가 나왔다.",
+   "date": "2026-10-28",
+   "home": "Holstein Kiel",
+   "away": "Hoffenheim",
+   "at": "2026-10-28T22:53:48+00:00",
+   "model": "gemini-3.1-flash-lite"
   }
  },
  "fails": {}

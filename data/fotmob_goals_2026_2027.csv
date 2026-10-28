@@ -430,9 +430,9 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 6275367,2026-10-27,eng.league_cup,Arsenal,Fleetwood Town,93.0,Kai Havertz,Penalty,0,0.7884
 6275367,2026-10-27,eng.league_cup,Arsenal,Fleetwood Town,95.0,Viktor Gyökeres,Penalty,0,0.7884
 6275368,2026-10-28,eng.league_cup,Brighton,Manchester City,30.0,Malick Junior Yalcouyé,RegularPlay,0,0.7559738159179688
-6275368,2026-10-28,eng.league_cup,Manchester City,Brighton,40.0,Mateo Kovačić,RegularPlay,0,0.044771283864974976
-6275368,2026-10-28,eng.league_cup,Brighton,Manchester City,47.0,Georginio Rutter,RegularPlay,0,0.13734982907772064
-6275368,2026-10-28,eng.league_cup,Manchester City,Brighton,72.0,Vitor Reis,SetPiece,0,0.10541574656963348
+6275368,2026-10-28,eng.league_cup,Manchester City,Brighton,40.0,Mateo Kovačić,RegularPlay,0,0.0447712838649749
+6275368,2026-10-28,eng.league_cup,Brighton,Manchester City,47.0,Georginio Rutter,RegularPlay,0,0.1373498290777206
+6275368,2026-10-28,eng.league_cup,Manchester City,Brighton,72.0,Vitor Reis,SetPiece,0,0.1054157465696334
 6275368,2026-10-28,eng.league_cup,Manchester City,Brighton,91.0,Phil Foden,Penalty,0,0.7884
 6275368,2026-10-28,eng.league_cup,Brighton,Manchester City,92.0,Pascal Groß,Penalty,0,0.7884
 6275368,2026-10-28,eng.league_cup,Manchester City,Brighton,92.0,Enzo Fernández,Penalty,0,0.7884
@@ -443,11 +443,24 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 6275370,2026-10-28,eng.league_cup,Sunderland,Brentford,26.0,Chemsdine Talbi,FastBreak,0,0.98001629114151
 6275370,2026-10-28,eng.league_cup,Sunderland,Brentford,29.0,Timur Tuterov,RegularPlay,0,0.7014650106430054
 6275370,2026-10-28,eng.league_cup,Sunderland,Brentford,39.0,Malick Fofana,RegularPlay,0,0.3744093179702759
-6275370,2026-10-28,eng.league_cup,Brentford,Sunderland,42.0,Callum Wilson,RegularPlay,0,0.22630180418491364
-6275370,2026-10-28,eng.league_cup,Brentford,Sunderland,90.0,Igor Thiago,RegularPlay,0,0.08749020844697952
-6275373,2026-10-28,eng.league_cup,Crystal Palace,Fulham,37.0,Edward Nketiah,FastBreak,0,0.10104387253522873
+6275370,2026-10-28,eng.league_cup,Brentford,Sunderland,42.0,Callum Wilson,RegularPlay,0,0.2263018041849136
+6275370,2026-10-28,eng.league_cup,Brentford,Sunderland,90.0,Igor Thiago,RegularPlay,0,0.0874902084469795
+6275371,2026-10-28,eng.league_cup,Chelsea,Liverpool,40.0,Morgan Rogers,Penalty,0,0.7884
+6275371,2026-10-28,eng.league_cup,Liverpool,Chelsea,43.0,Cody Gakpo,Penalty,0,0.7884
+6275371,2026-10-28,eng.league_cup,Liverpool,Chelsea,91.0,Alexis Mac Allister,Penalty,0,0.7884
+6275371,2026-10-28,eng.league_cup,Chelsea,Liverpool,92.0,Pedro Neto,Penalty,0,0.7884
+6275371,2026-10-28,eng.league_cup,Liverpool,Chelsea,93.0,Alexander Isak,Penalty,0,0.7884
+6275371,2026-10-28,eng.league_cup,Chelsea,Liverpool,94.0,Morgan Rogers,Penalty,0,0.7884
+6275371,2026-10-28,eng.league_cup,Liverpool,Chelsea,94.0,Cody Gakpo,Penalty,0,0.7884
+6275371,2026-10-28,eng.league_cup,Chelsea,Liverpool,95.0,Roméo Lavia,Penalty,0,0.7884
+6275371,2026-10-28,eng.league_cup,Liverpool,Chelsea,96.0,Florian Wirtz,Penalty,0,0.7884
+6275371,2026-10-28,eng.league_cup,Chelsea,Liverpool,99.0,Jordan Henderson,Penalty,0,0.7884
+6275371,2026-10-28,eng.league_cup,Liverpool,Chelsea,100.0,Bradley Barcola,Penalty,0,0.7884
+6275371,2026-10-28,eng.league_cup,Chelsea,Liverpool,101.0,Levi Colwill,Penalty,0,0.7884
+6275371,2026-10-28,eng.league_cup,Liverpool,Chelsea,103.0,Joseph Gomez,Penalty,0,0.7884
+6275373,2026-10-28,eng.league_cup,Crystal Palace,Fulham,37.0,Edward Nketiah,FastBreak,0,0.1010438725352287
 6275373,2026-10-28,eng.league_cup,Fulham,Crystal Palace,,,none,0,
-6275374,2026-10-28,eng.league_cup,Bournemouth,Aston Villa,7.0,Amine Adli,RegularPlay,0,0.32121968269348145
-6275374,2026-10-28,eng.league_cup,Bournemouth,Aston Villa,51.0,Lewis Cook,FromCorner,0,0.011662866920232773
+6275374,2026-10-28,eng.league_cup,Bournemouth,Aston Villa,7.0,Amine Adli,RegularPlay,0,0.3212196826934814
+6275374,2026-10-28,eng.league_cup,Bournemouth,Aston Villa,51.0,Lewis Cook,FromCorner,0,0.0116628669202327
 6275374,2026-10-28,eng.league_cup,Bournemouth,Aston Villa,69.0,Álvaro Rodriguez,RegularPlay,0,0.259254515171051
 6275374,2026-10-28,eng.league_cup,Aston Villa,Bournemouth,,,none,0,
