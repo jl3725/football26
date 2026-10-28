@@ -1,8 +1,8 @@
 {
  "EPL 2026_2027": {
   "wiki_squads": {
-   "total": 743,
-   "exact": 543,
+   "total": 745,
+   "exact": 544,
    "rule": 7,
    "ambiguous": 0,
    "orphan": 0,
@@ -323,7 +323,7 @@
  },
  "LaLiga 2026_2027": {
   "wiki_squads": {
-   "total": 599,
+   "total": 601,
    "exact": 506,
    "rule": 7,
    "ambiguous": 0,
@@ -826,7 +826,7 @@
  },
  "SerieA 2026_2027": {
   "wiki_squads": {
-   "total": 875,
+   "total": 876,
    "exact": 593,
    "rule": 4,
    "ambiguous": 1,
@@ -1123,13 +1123,13 @@
    "orphans": []
   },
   "fotmob_ratings": {
-   "total": 341,
-   "exact": 339,
+   "total": 347,
+   "exact": 345,
    "rule": 2,
    "ambiguous": 0,
    "orphan": 0,
    "orphans": [],
-   "minutes": 4
+   "minutes": 3
   }
  },
  "Ligue1 2026_2027": {
@@ -1577,10 +1577,10 @@
   },
   "espn_lineups": {
    "total": 547,
-   "exact": 492,
+   "exact": 491,
    "rule": 12,
    "ambiguous": 0,
-   "orphan": 43,
+   "orphan": 44,
    "orphans": [
     {
      "squad": "Feyenoord",
@@ -1664,6 +1664,11 @@
     },
     {
      "squad": "Groningen",
+     "name": "Jahelille Hall",
+     "starts": 0
+    },
+    {
+     "squad": "Groningen",
      "name": "Travis Hearnes",
      "starts": 0
     },
@@ -1700,11 +1705,6 @@
     {
      "squad": "ADO Den Haag",
      "name": "Alexander Veselov",
-     "starts": 0
-    },
-    {
-     "squad": "Ajax",
-     "name": "Kou Itakura",
      "starts": 0
     }
    ]
@@ -1980,7 +1980,7 @@
  },
  "Championship 2026_2027": {
   "wiki_squads": {
-   "total": 899,
+   "total": 900,
    "exact": 663,
    "rule": 5,
    "ambiguous": 0,

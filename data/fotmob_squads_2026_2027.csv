@@ -30,7 +30,7 @@ Arsenal,Illan Meslier,952029,keepers,GK,Goalkeeper,GK,26,2000-03-02,30.0,FRA,Fal
 Arsenal,William Saliba,955406,defenders,CB,Centre-Back,DF,25,2001-03-24,2.0,FRA,True,Late November 2026,2026-10-28
 Arsenal,Cristhian Mosquera,1298907,defenders,"CB,RB",Centre-Back,DF,22,2004-06-27,3.0,ESP,False,,2026-10-28
 Arsenal,Ben White,776151,defenders,RB,Right-Back,DF,29,1997-10-08,4.0,ENG,False,,2026-10-28
-Arsenal,Piero Hincapié,1137667,defenders,"LB,CB",Left-Back,DF,24,2002-01-09,5.0,ECU,True,Doubtful,2026-10-28
+Arsenal,Piero Hincapié,1137667,defenders,"LB,CB",Left-Back,DF,24,2002-01-09,5.0,ECU,False,,2026-10-28
 Arsenal,Gabriel,795179,defenders,CB,Centre-Back,DF,28,1997-12-19,6.0,BRA,False,,2026-10-28
 Arsenal,Jurriën Timber,942381,defenders,"RB,CB,LB",Right-Back,DF,25,2001-06-17,12.0,NED,False,,2026-10-28
 Arsenal,Ezri Konsa,710159,defenders,CB,Centre-Back,DF,29,1997-10-23,15.0,ENG,False,,2026-10-28
@@ -41,7 +41,7 @@ Arsenal,Mikel Merino,574645,midfielders,"CM,ST,CDM",Central Midfield,MF,30,1996-
 Arsenal,Martín Zubimendi,1031325,midfielders,"CDM,CM,RB",Defensive Midfield,MF,27,1999-02-02,36.0,ESP,False,,2026-10-28
 Arsenal,Bruno Guimarães,850354,midfielders,"CM,CDM,CAM",Central Midfield,MF,28,1997-11-16,39.0,BRA,False,,2026-10-28
 Arsenal,Declan Rice,654096,midfielders,"CDM,CM",Defensive Midfield,MF,27,1999-01-14,41.0,ENG,False,,2026-10-28
-Arsenal,Myles Lewis-Skelly,1406436,midfielders,"LB,CDM,CM",Left-Back,MF,20,2006-09-26,49.0,ENG,False,,2026-10-28
+Arsenal,Myles Lewis-Skelly,1406436,midfielders,"CDM,LB,CM",Defensive Midfield,MF,20,2006-09-26,49.0,ENG,False,,2026-10-28
 Arsenal,Bukayo Saka,961995,attackers,"RW,CAM",Right Winger,FW,25,2001-09-05,7.0,ENG,True,Early December 2026,2026-10-28
 Arsenal,Viktor Gyökeres,664500,attackers,ST,Centre-Forward,FW,28,1998-06-04,14.0,SWE,False,,2026-10-28
 Arsenal,Christos Tzolis,1157237,attackers,"LW,CAM,LM,RW",Left Winger,FW,24,2002-01-30,17.0,GRE,True,Early November 2026,2026-10-28
@@ -56,18 +56,18 @@ Brighton,Lewis Dunk,201690,defenders,CB,Centre-Back,DF,34,1991-11-21,5.0,ENG,Fal
 Brighton,Costinha,1079456,defenders,RB,Right-Back,DF,26,2000-03-26,20.0,POR,False,,2026-10-28
 Brighton,Olivier Boscagli,613715,defenders,"CB,LB",Centre-Back,DF,28,1997-11-18,21.0,FRA,False,,2026-10-28
 Brighton,Ferdi Kadıoğlu,774448,defenders,"LB,RB,RWB,LWB,RW",Left-Back,DF,27,1999-10-07,24.0,TUR,True,Doubtful,2026-10-28
-Brighton,Mats Wieffer,970243,defenders,RB,Right-Back,DF,26,1999-11-16,27.0,NED,True,Back in training,2026-10-28
+Brighton,Mats Wieffer,970243,defenders,RB,Right-Back,DF,26,1999-11-16,27.0,NED,True,Doubtful,2026-10-28
 Brighton,Michael Svoboda,951921,defenders,CB,Centre-Back,DF,28,1998-10-15,30.0,AUT,False,,2026-10-28
 Brighton,Luka Vušković,1413996,defenders,CB,Centre-Back,DF,19,2007-02-24,44.0,CRO,False,,2026-10-28
 Brighton,Jack Hinshelwood,1251334,midfielders,"CAM,CDM,CM",Attacking Midfield,MF,21,2005-04-11,8.0,ENG,False,,2026-10-28
 Brighton,Pascal Groß,167008,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,35,1991-06-15,13.0,GER,False,,2026-10-28
-Brighton,Chema Andrés,1586552,midfielders,"CDM,CM",Defensive Midfield,MF,21,2005-04-25,14.0,ESP,False,,2026-10-28
+Brighton,Chema Andrés,1586552,midfielders,"CDM,CM",Defensive Midfield,MF,21,2005-04-25,14.0,ESP,True,Doubtful,2026-10-28
 Brighton,Yasin Ayari,1168311,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,23,2003-10-06,26.0,SWE,False,,2026-10-28
 Brighton,Matthew O'Riley,866686,midfielders,"CM,RW,CAM",Central Midfield,MF,25,2000-11-21,33.0,DEN,False,,2026-10-28
 Brighton,Malick Junior Yalcouyé,1602352,midfielders,"CAM,CDM",Attacking Midfield,MF,20,2005-11-18,35.0,CIV,False,,2026-10-28
 Brighton,Stefanos Tzimas,1423616,attackers,ST,Centre-Forward,FW,20,2006-01-06,9.0,GRE,True,Early November 2026,2026-10-28
 Brighton,Georginio Rutter,956925,attackers,"ST,CAM",Centre-Forward,FW,24,2002-04-20,10.0,FRA,False,,2026-10-28
-Brighton,Yankuba Minteh,1400227,attackers,"RW,LW",Right Winger,FW,22,2004-07-22,11.0,GAM,True,Early November 2026,2026-10-28
+Brighton,Yankuba Minteh,1400227,attackers,"RW,LW",Right Winger,FW,22,2004-07-22,11.0,GAM,True,Doubtful,2026-10-28
 Brighton,Promise David,1252132,attackers,ST,Centre-Forward,FW,25,2001-07-03,12.0,CAN,False,,2026-10-28
 Brighton,Ibrahim Osman,1215410,attackers,"LW,LM",Left Winger,FW,21,2004-11-29,15.0,GHA,False,,2026-10-28
 Brighton,Charalampos Kostoulas,1561249,attackers,"ST,LW",Centre-Forward,FW,19,2007-05-30,19.0,GRE,False,,2026-10-28
@@ -102,7 +102,7 @@ Liverpool,Alexander Isak,690107,attackers,ST,Centre-Forward,FW,27,1999-09-21,9.0
 Liverpool,Federico Chiesa,784510,attackers,"ST,RW",Centre-Forward,FW,29,1997-10-25,14.0,ITA,False,,2026-10-28
 Liverpool,Cody Gakpo,806552,attackers,"LW,ST,RW",Left Winger,FW,27,1999-05-07,18.0,NED,False,,2026-10-28
 Liverpool,Hugo Ekitiké,1197030,attackers,"ST,LW",Centre-Forward,FW,24,2002-06-20,22.0,FRA,True,Early January 2027,2026-10-28
-Liverpool,Víctor Muñoz,1553105,attackers,"LW,RW,LM",Left Winger,FW,23,2003-07-13,23.0,ESP,True,Doubtful,2026-10-28
+Liverpool,Víctor Muñoz,1553105,attackers,"LW,RW,LM",Left Winger,FW,23,2003-07-13,23.0,ESP,True,A few days,2026-10-28
 Liverpool,Bradley Barcola,1297165,attackers,"LW,RW,ST",Left Winger,FW,24,2002-09-02,29.0,FRA,False,,2026-10-28
 Liverpool,Lewis Koumas,1364042,attackers,"ST,LW,CAM",Centre-Forward,FW,21,2005-09-19,67.0,WAL,False,,2026-10-28
 Liverpool,Rio Ngumoha,1597668,attackers,"LW,RW",Left Winger,FW,18,2008-08-29,73.0,ENG,False,,2026-10-28
@@ -115,7 +115,7 @@ Chelsea,Maxence Lacroix,950485,defenders,CB,Centre-Back,DF,26,2000-04-06,5.0,FRA
 Chelsea,Levi Colwill,1096400,defenders,CB,Centre-Back,DF,23,2003-02-26,6.0,ENG,False,,2026-10-28
 Chelsea,Jorrel Hato,1413846,defenders,"LB,CB,LWB",Left-Back,DF,20,2006-03-07,21.0,NED,False,,2026-10-28
 Chelsea,Malo Gusto,1197250,defenders,"RB,RWB,LB",Right-Back,DF,23,2003-05-19,27.0,FRA,False,,2026-10-28
-Chelsea,Pep Chavarría,988805,defenders,"LB,LWB",Left-Back,DF,28,1998-04-10,29.0,ESP,True,About a week,2026-10-28
+Chelsea,Pep Chavarría,988805,defenders,"LB,LWB",Left-Back,DF,28,1998-04-10,29.0,ESP,True,Doubtful,2026-10-28
 Chelsea,Aaron Anselmino,1494947,defenders,CB,Centre-Back,DF,21,2005-04-29,30.0,ARG,False,,2026-10-28
 Chelsea,Josh Acheampong,1400216,defenders,"CB,RB",Centre-Back,DF,20,2006-05-05,34.0,ENG,False,,2026-10-28
 Chelsea,Marco Palestra,1473806,midfielders,"RM,RB,LM",Right Midfield,MF,21,2005-03-03,2.0,ITA,False,,2026-10-28
@@ -128,9 +128,9 @@ Chelsea,Moisés Caicedo,1137668,midfielders,"CDM,CM",Defensive Midfield,MF,24,20
 Chelsea,Roméo Lavia,1190867,midfielders,"CDM,CM",Defensive Midfield,MF,22,2004-01-06,45.0,BEL,False,,2026-10-28
 Chelsea,Pedro Neto,843040,attackers,"RW,LW,RWB,CAM,RM",Right Winger,FW,26,2000-03-09,7.0,POR,False,,2026-10-28
 Chelsea,João Pedro,1021382,attackers,"ST,CAM",Centre-Forward,FW,25,2001-09-26,9.0,BRA,True,Early November 2026,2026-10-28
-Chelsea,Jamie Gittens,1113692,attackers,"LW,LM,RW",Left Winger,FW,22,2004-08-08,11.0,ENG,True,About a week,2026-10-28
+Chelsea,Jamie Gittens,1113692,attackers,"LW,LM,RW",Left Winger,FW,22,2004-08-08,11.0,ENG,True,Doubtful,2026-10-28
 Chelsea,Danny Welbeck,113836,attackers,ST,Centre-Forward,FW,35,1990-11-26,18.0,ENG,False,,2026-10-28
-Chelsea,Emanuel Emegha,1183148,attackers,ST,Centre-Forward,FW,23,2003-02-03,22.0,NED,True,About a week,2026-10-28
+Chelsea,Emanuel Emegha,1183148,attackers,ST,Centre-Forward,FW,23,2003-02-03,22.0,NED,False,,2026-10-28
 Chelsea,Geovany Quenda,1530314,attackers,"LW,RW,RM",Left Winger,FW,19,2007-04-30,23.0,POR,False,,2026-10-28
 Chelsea,Estêvão,1580774,attackers,RW,Right Winger,FW,19,2007-04-24,41.0,BRA,False,,2026-10-28
 Brentford,Caoimhín Kelleher,776689,keepers,GK,Goalkeeper,GK,27,1998-11-23,1.0,IRL,False,,2026-10-28

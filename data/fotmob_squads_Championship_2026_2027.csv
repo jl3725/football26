@@ -65,6 +65,7 @@ West Ham United,Edson Álvarez,783505,midfielders,"CDM,CB,CM",Defensive Midfield
 West Ham United,Arne Engels,1178443,midfielders,"CM,CDM",Central Midfield,MF,23,2003-09-08,7.0,BEL,False,,2026-10-28
 West Ham United,Divine Mukasa,1463282,midfielders,"CAM,CM,CDM,ST",Attacking Midfield,MF,19,2007-08-22,14.0,ENG,False,,2026-10-28
 West Ham United,Mohamadou Kanté,1529203,midfielders,"CM,CDM,CAM,LM",Central Midfield,MF,21,2005-09-20,17.0,FRA,False,,2026-10-28
+West Ham United,Keiber Lamadrid,1354086,midfielders,"LW,RM",Left Winger,MF,22,2003-11-18,21.0,VEN,True,Early November 2026,2026-10-28
 West Ham United,Soungoutou Magassa,1385894,midfielders,"CDM,CM",Defensive Midfield,MF,23,2003-10-08,27.0,FRA,False,,2026-10-28
 West Ham United,Tomás Souček,524437,midfielders,"CM,CDM,CAM",Central Midfield,MF,31,1995-02-27,28.0,CZE,False,,2026-10-28
 West Ham United,Lewis Orford,1331666,midfielders,"CDM,CM",Defensive Midfield,MF,20,2006-02-18,61.0,ENG,False,,2026-10-28
@@ -74,7 +75,6 @@ West Ham United,Manor Solomon,822237,attackers,"LW,LM,RW,CAM",Left Winger,FW,27,
 West Ham United,Valentín Castellanos,823658,attackers,ST,Centre-Forward,FW,28,1998-10-03,11.0,ARG,False,,2026-10-28
 West Ham United,Pablo,1227326,attackers,"ST,CAM,LW",Centre-Forward,FW,22,2004-01-02,19.0,BRA,False,,2026-10-28
 West Ham United,Jarrod Bowen,523825,attackers,"RM,RW,ST,CAM",Right Midfield,FW,29,1996-12-20,20.0,ENG,False,,2026-10-28
-West Ham United,Keiber Lamadrid,1354086,attackers,"LW,RM",Left Winger,FW,22,2003-11-18,21.0,VEN,True,Early November 2026,2026-10-28
 West Ham United,Maxwel Cornet,426880,attackers,RW,Right Winger,FW,30,1996-09-27,22.0,CIV,False,,2026-10-28
 West Ham United,Edvin Austbø,1367620,attackers,"LW,LM",Left Winger,FW,21,2005-05-01,35.0,NOR,False,,2026-10-28
 Wolves,José Sá,416175,keepers,GK,Goalkeeper,GK,33,1993-01-17,1.0,POR,False,,2026-10-28
@@ -86,7 +86,7 @@ Wolves,Toti Gomes,1013277,defenders,CB,Centre-Back,DF,27,1999-01-16,24.0,POR,Fal
 Wolves,Ghislain Konan,740997,defenders,LB,Left-Back,DF,30,1995-12-27,33.0,CIV,False,,2026-10-28
 Wolves,Nasser Djiga,1273707,defenders,CB,Centre-Back,DF,23,2002-11-15,34.0,BFA,False,,2026-10-28
 Wolves,Ladislav Krejcí,798029,defenders,"CB,CM",Centre-Back,DF,27,1999-04-20,37.0,CZE,False,,2026-10-28
-Wolves,Hugo Bueno,1116391,midfielders,"LB,LWB,LM",Left-Back,MF,24,2002-09-18,3.0,ESP,False,,2026-10-28
+Wolves,Hugo Bueno,1116391,midfielders,"LWB,LB,LM",Left-Back,MF,24,2002-09-18,3.0,ESP,False,,2026-10-28
 Wolves,Marshall Munetsi,786580,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,30,1996-06-22,5.0,ZIM,False,,2026-10-28
 Wolves,André,1174296,midfielders,"CDM,CM",Defensive Midfield,MF,25,2001-07-16,7.0,BRA,False,,2026-10-28
 Wolves,Jordan James,1310975,midfielders,"CDM,CAM,CM",Defensive Midfield,MF,22,2004-07-02,8.0,WAL,False,,2026-10-28
@@ -187,7 +187,7 @@ Queens Park Rangers,Tariq Lamptey,955139,defenders,LB,Left-Back,DF,26,2000-09-30
 Queens Park Rangers,Ilias Chair,676504,midfielders,"LW,LM,CAM",Left Winger,MF,28,1997-10-30,10.0,MAR,True,Early November 2026,2026-10-28
 Queens Park Rangers,Paul Smyth,712737,midfielders,"LM,LW,RM",Left Midfield,MF,29,1997-09-10,11.0,NIR,False,,2026-10-28
 Queens Park Rangers,Koki Saito,950861,midfielders,"LM,LW,RW,CAM",Left Midfield,MF,25,2001-08-10,14.0,JPN,False,,2026-10-28
-Queens Park Rangers,Glen Kamara,604783,midfielders,"CM,CDM",Central Midfield,MF,30,1995-10-28,18.0,FIN,False,,2026-10-28
+Queens Park Rangers,Glen Kamara,604783,midfielders,"CM,CDM",Central Midfield,MF,31,1995-10-28,18.0,FIN,False,,2026-10-28
 Queens Park Rangers,Harvey Vale,1180500,midfielders,"RM,CAM,ST,CM,CDM",Right Midfield,MF,23,2003-09-11,20.0,IRL,False,,2026-10-28
 Queens Park Rangers,Isak Alemayehu,1414866,midfielders,CM,Central Midfield,MF,20,2006-10-11,23.0,SWE,False,,2026-10-28
 Queens Park Rangers,Nicolas Madsen,917830,midfielders,"CM,CDM",Central Midfield,MF,26,2000-03-17,24.0,DEN,True,Late November 2026,2026-10-28
@@ -339,7 +339,7 @@ Millwall,Lyndon Dykes,768635,attackers,"ST,CAM",Centre-Forward,FW,31,1995-10-07,
 Millwall,Josh Coburn,1113907,attackers,ST,Centre-Forward,FW,23,2002-12-06,19.0,ENG,True,Doubtful,2026-10-28
 Millwall,Kyrell Lisbie,1469332,attackers,"LW,RW",Left Winger,FW,22,2003-12-01,22.0,ENG,False,,2026-10-28
 Millwall,Zak Lovelace,1325368,attackers,ST,Centre-Forward,FW,20,2006-01-23,29.0,ENG,False,,2026-10-28
-Millwall,Yanis Issoufou,1479744,attackers,LW,Left Winger,FW,19,2006-10-28,35.0,FRA,False,,2026-10-28
+Millwall,Yanis Issoufou,1479744,attackers,LW,Left Winger,FW,20,2006-10-28,35.0,FRA,False,,2026-10-28
 Millwall,Regan Monty,2197182,attackers,,Centre-Forward,FW,15,2010-11-10,57.0,ENG,False,,2026-10-28
 Bristol City,Sam Tickle,1184473,keepers,GK,Goalkeeper,GK,24,2002-03-31,1.0,ENG,False,,2026-10-28
 Bristol City,Lewis Thomas,815078,keepers,GK,Goalkeeper,GK,29,1997-09-20,32.0,WAL,False,,2026-10-28
@@ -357,7 +357,7 @@ Bristol City,Brian De Keersmaecker,1039566,midfielders,"CDM,CAM",Defensive Midfi
 Bristol City,Joe Williams,605260,midfielders,CDM,Defensive Midfield,MF,29,1996-12-08,8.0,ENG,False,,2026-10-28
 Bristol City,Scott Twine,746406,midfielders,"CAM,LW,CM,RW,ST",Attacking Midfield,MF,27,1999-07-14,10.0,ENG,False,,2026-10-28
 Bristol City,Jason Knight,1051415,midfielders,"CDM,CM,RWB,CB,RB,CAM",Defensive Midfield,MF,25,2001-02-13,12.0,IRL,False,,2026-10-28
-Bristol City,Tomi Horvat,978170,midfielders,"CAM,CDM,RW,CM,RM",Attacking Midfield,MF,27,1999-03-24,14.0,SVN,False,,2026-10-28
+Bristol City,Tomi Horvat,978170,midfielders,"CAM,RW,CDM,CM,RM",Attacking Midfield,MF,27,1999-03-24,14.0,SVN,False,,2026-10-28
 Bristol City,Sam Greenwood,1049805,midfielders,"LW,CAM,CDM",Left Winger,MF,24,2002-01-26,20.0,ENG,False,,2026-10-28
 Bristol City,Gibson Yah,1218557,midfielders,"CDM,CM",Defensive Midfield,MF,23,2003-09-27,27.0,NED,False,,2026-10-28
 Bristol City,Yu Hirakawa,1319774,attackers,"RW,LW,CAM",Right Winger,FW,25,2001-01-03,7.0,JPN,False,,2026-10-28
@@ -457,7 +457,7 @@ Bolton Wanderers,Eoin Toal,860282,defenders,CB,Centre-Back,DF,27,1999-02-15,18.0
 Bolton Wanderers,Max Conway,1194102,defenders,"LB,LM",Left-Back,DF,23,2003-09-05,25.0,ENG,False,,2026-10-28
 Bolton Wanderers,Xavier Simons,1096398,midfielders,"CDM,CM",Defensive Midfield,MF,23,2003-02-20,4.0,ENG,False,,2026-10-28
 Bolton Wanderers,Josh Sheehan,489335,midfielders,"CDM,CM",Defensive Midfield,MF,31,1995-03-30,8.0,WAL,False,,2026-10-28
-Bolton Wanderers,David Watson,1389991,midfielders,"CM,CDM,LM,CAM",Central Midfield,MF,21,2005-02-12,12.0,SCO,False,,2026-10-28
+Bolton Wanderers,David Watson,1389991,midfielders,"CDM,CM,LM,CAM",Defensive Midfield,MF,21,2005-02-12,12.0,SCO,False,,2026-10-28
 Bolton Wanderers,Atsuki Ito,1227813,midfielders,"CDM,RM,CM",Defensive Midfield,MF,28,1998-08-11,17.0,JPN,False,,2026-10-28
 Bolton Wanderers,Rúben Rodrigues,955974,midfielders,"CAM,CDM",Attacking Midfield,MF,30,1996-08-02,20.0,POR,False,,2026-10-28
 Bolton Wanderers,Ethan Erhahon,914169,midfielders,CDM,Defensive Midfield,MF,25,2001-05-09,21.0,SCO,True,Doubtful,2026-10-28
@@ -489,7 +489,7 @@ Charlton Athletic,Conor Coventry,770256,midfielders,"CDM,CM",Defensive Midfield,
 Charlton Athletic,Harvey Knibbs,1056689,midfielders,CAM,Attacking Midfield,MF,27,1999-04-26,8.0,ENG,False,,2026-10-28
 Charlton Athletic,Sonny Carey,1081081,midfielders,"CAM,CM,ST,LW,RW",Attacking Midfield,MF,25,2001-01-20,14.0,ENG,False,,2026-10-28
 Charlton Athletic,Nathaniel Chalobah,215658,midfielders,"CDM,CM",Defensive Midfield,MF,31,1994-12-12,15.0,ENG,True,Doubtful,2026-10-28
-Charlton Athletic,Timothy Ouma,1312934,midfielders,"CM,CDM",Central Midfield,MF,22,2004-06-10,16.0,KEN,False,,2026-10-28
+Charlton Athletic,Timothy Ouma,1312934,midfielders,"CDM,CM",Defensive Midfield,MF,22,2004-06-10,16.0,KEN,False,,2026-10-28
 Charlton Athletic,Joe Rankin-Costello,789547,midfielders,"CAM,CDM,CM",Attacking Midfield,MF,27,1999-07-26,26.0,ENG,False,,2026-10-28
 Charlton Athletic,Oliver Skipp,873014,midfielders,CDM,Defensive Midfield,MF,26,2000-09-16,34.0,ENG,False,,2026-10-28
 Charlton Athletic,Josh Laqeretabua,1477502,midfielders,CB,Centre-Back,MF,21,2005-09-26,38.0,FIJ,False,,2026-10-28
