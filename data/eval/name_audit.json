@@ -692,11 +692,11 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 456,
-   "exact": 438,
+   "total": 466,
+   "exact": 447,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 18,
+   "orphan": 19,
    "orphans": [
     {
      "squad": "Augsburg",
@@ -787,6 +787,11 @@
      "squad": "Werder Bremen",
      "name": "Mats Heitmann",
      "starts": 0
+    },
+    {
+     "squad": "Schalke 04",
+     "name": "Edion Gashi",
+     "starts": 0
     }
    ]
   },
@@ -807,8 +812,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 290,
-   "exact": 290,
+   "total": 291,
+   "exact": 291,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -834,8 +839,8 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 648,
-   "exact": 559,
+   "total": 649,
+   "exact": 560,
    "rule": 10,
    "ambiguous": 1,
    "orphan": 79,
@@ -1072,8 +1077,8 @@
    ]
   },
   "espn_subs": {
-   "total": 450,
-   "exact": 445,
+   "total": 451,
+   "exact": 446,
    "rule": 1,
    "ambiguous": 1,
    "orphan": 4,
@@ -1362,7 +1367,7 @@
  "LigaPortugal 2026_2027": {
   "wiki_squads": {
    "total": 597,
-   "exact": 499,
+   "exact": 500,
    "rule": 16,
    "ambiguous": 2,
    "orphan": 0,
@@ -1370,10 +1375,10 @@
   },
   "espn_lineups": {
    "total": 546,
-   "exact": 487,
+   "exact": 488,
    "rule": 16,
    "ambiguous": 2,
-   "orphan": 43,
+   "orphan": 42,
    "orphans": [
     {
      "squad": "Gil Vicente FC",
@@ -1461,11 +1466,6 @@
      "starts": 0
     },
     {
-     "squad": "Moreirense",
-     "name": "Jimi Gower",
-     "starts": 0
-    },
-    {
      "squad": "Braga",
      "name": "Luisinho",
      "starts": 0
@@ -1498,6 +1498,11 @@
     {
      "squad": "Moreirense",
      "name": "Rodrigo Bernardino Soares",
+     "starts": 0
+    },
+    {
+     "squad": "Alverca",
+     "name": "André Paulo",
      "starts": 0
     }
    ]
