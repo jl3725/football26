@@ -1,14 +1,18 @@
 {
- "checked": "2026-10-27T13:41:20+00:00",
+ "checked": "2026-10-28T07:01:37+00:00",
  "results": {
   "ovr": [],
   "season": [],
-  "hub": [],
+  "hub": [
+   "홈 스냅샷이 44시간 전 생성 — daily_data 의 precompute_hub 확인"
+  ],
   "frontend": [],
   "backend": [
-   "운영 백엔드가 옛 버전(d4fd71e) — 최신 코드 07522c0(2026-10-27T07:18) 미반영. Render 배포 로그 확인(시작 실패면 requirements 누락 의심)"
+   "운영 백엔드가 옛 버전(d4fd71e) — 최신 코드 c9277c5(2026-10-27T23:09) 미반영. Render 배포 로그 확인(시작 실패면 requirements 누락 의심)"
   ],
-  "workflows": [],
+  "workflows": [
+   "match_refresh.yml 최근 실행 failure (2026-10-28T02:10) https://github.com/jl3725/football26/actions/runs/40619399347"
+  ],
   "news": [],
   "tm_agent": [],
   "coverage": [],
@@ -23,5 +27,5 @@
   "identity": [],
   "fair_price": []
  },
- "ai_cause": "- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인) (backend)"
+ "ai_cause": "- **hub**: 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인)\n- **backend**: 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인)\n- **workflows**: understat_live 단계에서 코드 1로 종료되며 실패함 — 해당 API 응답 오류나 데이터 구조 변경 여부 확인(match_refresh.yml, understat_live 단계)"
 }
