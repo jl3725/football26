@@ -1,10 +1,10 @@
 {
- "checked": "2026-10-28T07:01:37+00:00",
+ "checked": "2026-10-28T14:36:00+00:00",
  "results": {
   "ovr": [],
   "season": [],
   "hub": [
-   "홈 스냅샷이 44시간 전 생성 — daily_data 의 precompute_hub 확인"
+   "홈 스냅샷이 52시간 전 생성 — daily_data 의 precompute_hub 확인"
   ],
   "frontend": [],
   "backend": [
@@ -27,5 +27,5 @@
   "identity": [],
   "fair_price": []
  },
- "ai_cause": "- **hub**: 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인)\n- **backend**: 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인)\n- **workflows**: understat_live 단계에서 코드 1로 종료되며 실패함 — 해당 API 응답 오류나 데이터 구조 변경 여부 확인(match_refresh.yml, understat_live 단계)"
+ "ai_cause": "- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인) (hub)\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인) (backend)\n- `understat_live` 단계에서 오류 코드 1로 실패하여, 해당 라이브 데이터 수집 과정에서 에러가 발생했을 추정 (workflows: understat_live)"
 }
