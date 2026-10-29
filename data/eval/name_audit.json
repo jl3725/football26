@@ -465,8 +465,8 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 295,
-   "exact": 290,
+   "total": 313,
+   "exact": 308,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 5,
@@ -523,16 +523,16 @@
    ]
   },
   "espn_subs_cups": {
-   "total": 168,
-   "exact": 165,
-   "rule": 3,
+   "total": 178,
+   "exact": 174,
+   "rule": 4,
    "ambiguous": 0,
    "orphan": 0,
    "orphans": []
   },
   "match_events": {
-   "total": 360,
-   "exact": 360,
+   "total": 363,
+   "exact": 363,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -551,7 +551,7 @@
  "Bundesliga 2026_2027": {
   "wiki_squads": {
    "total": 666,
-   "exact": 509,
+   "exact": 510,
    "rule": 1,
    "ambiguous": 0,
    "orphan": 0,
@@ -560,9 +560,9 @@
   "espn_lineups": {
    "total": 467,
    "exact": 428,
-   "rule": 14,
+   "rule": 16,
    "ambiguous": 0,
-   "orphan": 25,
+   "orphan": 23,
    "orphans": [
     {
      "squad": "Bayern Munich",
@@ -662,16 +662,6 @@
     {
      "squad": "Schalke 04",
      "name": "Jean-Paul N'Diaye",
-     "starts": 0
-    },
-    {
-     "squad": "Hamburger SV",
-     "name": "Jason-Dean Bissi Mouelle",
-     "starts": 0
-    },
-    {
-     "squad": "Bayern Munich",
-     "name": "David Daiber",
      "starts": 0
     },
     {
@@ -856,14 +846,14 @@
      "starts": 6
     },
     {
-     "squad": "Fiorentina",
-     "name": "Joao Victor",
+     "squad": "Lecce",
+     "name": "Francisco Esteban Sánchez",
      "starts": 2
     },
     {
-     "squad": "Lecce",
-     "name": "Francisco Esteban Sánchez",
-     "starts": 1
+     "squad": "Fiorentina",
+     "name": "Joao Victor",
+     "starts": 2
     },
     {
      "squad": "Inter",
@@ -1125,8 +1115,8 @@
    ]
   },
   "match_events": {
-   "total": 337,
-   "exact": 337,
+   "total": 339,
+   "exact": 339,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1720,8 +1710,8 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 372,
-   "exact": 364,
+   "total": 395,
+   "exact": 387,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 8,
