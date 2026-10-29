@@ -143,8 +143,8 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 542,
-   "exact": 499,
+   "total": 546,
+   "exact": 503,
    "rule": 1,
    "ambiguous": 0,
    "orphan": 42,
@@ -285,8 +285,8 @@
    "orphans": []
   },
   "espn_subs_cups": {
-   "total": 348,
-   "exact": 345,
+   "total": 354,
+   "exact": 351,
    "rule": 1,
    "ambiguous": 0,
    "orphan": 2,
@@ -304,8 +304,8 @@
    ]
   },
   "match_events": {
-   "total": 367,
-   "exact": 367,
+   "total": 369,
+   "exact": 369,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -465,11 +465,11 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 319,
-   "exact": 311,
+   "total": 410,
+   "exact": 395,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 8,
+   "orphan": 15,
    "orphans": [
     {
      "squad": "Getafe",
@@ -479,6 +479,11 @@
     {
      "squad": "Getafe",
      "name": "Ibrahima Danfakha Keita",
+     "starts": 1
+    },
+    {
+     "squad": "Racing Santander",
+     "name": "Héctor Mejía",
      "starts": 1
     },
     {
@@ -510,6 +515,36 @@
      "squad": "Getafe",
      "name": "Vladyslav Kysil",
      "starts": 0
+    },
+    {
+     "squad": "Athletic Club",
+     "name": "Aritz Conde Albiol",
+     "starts": 0
+    },
+    {
+     "squad": "Racing Santander",
+     "name": "Mario Solórzano",
+     "starts": 0
+    },
+    {
+     "squad": "Racing Santander",
+     "name": "Alejandro Laso Molino",
+     "starts": 0
+    },
+    {
+     "squad": "Racing Santander",
+     "name": "Álvaro Fernández Fernández",
+     "starts": 0
+    },
+    {
+     "squad": "Racing Santander",
+     "name": "Gabriel Jiménez Carpintero",
+     "starts": 0
+    },
+    {
+     "squad": "Racing Santander",
+     "name": "Junior Bita",
+     "starts": 0
     }
    ]
   },
@@ -538,16 +573,22 @@
    ]
   },
   "espn_subs_cups": {
-   "total": 183,
-   "exact": 178,
-   "rule": 5,
+   "total": 221,
+   "exact": 209,
+   "rule": 11,
    "ambiguous": 0,
-   "orphan": 0,
-   "orphans": []
+   "orphan": 1,
+   "orphans": [
+    {
+     "squad": "Deportivo A Coruña",
+     "name": "Noé",
+     "starts": 0
+    }
+   ]
   },
   "match_events": {
-   "total": 364,
-   "exact": 364,
+   "total": 377,
+   "exact": 377,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -849,11 +890,11 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 652,
-   "exact": 561,
+   "total": 654,
+   "exact": 562,
    "rule": 10,
    "ambiguous": 1,
-   "orphan": 81,
+   "orphan": 82,
    "orphans": [
     {
      "squad": "Lecce",
@@ -1087,8 +1128,8 @@
    ]
   },
   "espn_subs": {
-   "total": 456,
-   "exact": 451,
+   "total": 458,
+   "exact": 453,
    "rule": 1,
    "ambiguous": 1,
    "orphan": 4,
@@ -1725,8 +1766,8 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 395,
-   "exact": 387,
+   "total": 418,
+   "exact": 410,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 8,
