@@ -465,12 +465,22 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 313,
-   "exact": 308,
+   "total": 319,
+   "exact": 311,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 5,
+   "orphan": 8,
    "orphans": [
+    {
+     "squad": "Getafe",
+     "name": "Sebastián Salazar Trujillo",
+     "starts": 1
+    },
+    {
+     "squad": "Getafe",
+     "name": "Ibrahima Danfakha Keita",
+     "starts": 1
+    },
     {
      "squad": "Celta Vigo",
      "name": "Frank Germain Jonathan Miller",
@@ -494,6 +504,11 @@
     {
      "squad": "Villarreal",
      "name": "César Bonafé Ceita",
+     "starts": 0
+    },
+    {
+     "squad": "Getafe",
+     "name": "Vladyslav Kysil",
      "starts": 0
     }
    ]
@@ -523,16 +538,16 @@
    ]
   },
   "espn_subs_cups": {
-   "total": 178,
-   "exact": 174,
-   "rule": 4,
+   "total": 183,
+   "exact": 178,
+   "rule": 5,
    "ambiguous": 0,
    "orphan": 0,
    "orphans": []
   },
   "match_events": {
-   "total": 363,
-   "exact": 363,
+   "total": 364,
+   "exact": 364,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
