@@ -54,6 +54,7 @@ AGENTS: tuple[Agent, ...] = (
                    ("match_stats_*",)),
           ), checks=("validate: schedule_full·espn_lineups 계약",),
           extras=("라이브 스코어 — Vercel 서버 라우트 /live-scores, ESPN 30초 캐시(원장 밖)",
+                  "방금 경기 평점(JUST PLAYED·TOP RATED) — Vercel 서버 라우트 /live-ratings, FotMob 경기 평점 30초 캐시(원장 밖)",
                   "경기 종료 감시 — match_watch.yml: 경기일 5분 간격, 끝나고 20분 뒤 match_refresh 즉시 실행")),
     Agent("team", "TEAM", "팀·감독", "순위, 감독·교체 감지, 팀 정보·색, 팀 유닛 지표",
           ("ESPN", "Wikipedia", "UEFA", "StatBunker"), (

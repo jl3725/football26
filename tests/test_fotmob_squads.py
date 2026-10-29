@@ -88,3 +88,11 @@ def test_photo_ids_from_matches_exact_surname_but_not_first_name_only():
     ])
     out = fsq.photo_ids_from_matches(frame, rows)
     assert list(out["fm_photo_id"][:3]) == [768459, 11, None]
+
+
+def test_player_detail_fotmob_id_for_just_played():
+    """선수 화면 JUST PLAYED 가 실시간 평점에서 선수를 찾는 번호 — 평점 번호 → 없으면 사진 번호(2026-10-29)."""
+    import api.main as M  # noqa: PLC0415
+    assert M._fotmob_pid({"fm_id": 719330.0, "fm_photo_id": 5.0}) == 719330
+    assert M._fotmob_pid({"fm_id": float("nan"), "fm_photo_id": 111.0}) == 111
+    assert M._fotmob_pid({"fm_id": None}) is None

@@ -8,6 +8,8 @@ import { Chevron } from "./SectionHead";
 import Info from "./Info";
 import { useLive, liveLabel, type LiveEvent } from "@/lib/live";
 import { useLiveFixture } from "@/lib/standings";
+import { TopRated, useTopRated } from "./JustPlayed";
+import { usePeek } from "./PlayerPeek";
 
 // 라이브 상태 배지·가운데 스코어 — 진행 중이면 빨간 LIVE·경기 시간, 끝났으면 FT(일정은 하루 갱신이라 화면이 먼저 안다)
 function StateBadge({ m, lv }: { m: Fixture; lv?: LiveEvent }) {
@@ -149,6 +151,8 @@ export default function MatchCard({ m: m0, onPick, compact = false }: { m: Fixtu
   const open = () => preview?.(m);
   const lv = useLive(m.event_id);
   const played = lv && lv.state !== "pre";
+  const tr = useTopRated(m, compact ? undefined : lv);   // 경기 중·종료 — 승부 예측 자리에 평점 상위 3명
+  const peek = usePeek();
 
   if (compact) return (
     <button className={`mc5 compact${tone === "ucl" ? " ucl" : ""}${lv?.state === "in" ? " is-live" : ""}`} onClick={open} disabled={!preview}>
@@ -185,7 +189,7 @@ export default function MatchCard({ m: m0, onPick, compact = false }: { m: Fixtu
         <Center lv={lv} time={time} date={date} cls="mc5-ko" />
         <Side s={m.away} other={m.home} onPick={onPick} align="r" />
       </div>
-      <PredictBar m={m} />
+      {tr ? <TopRated {...tr} onPeek={peek} /> : <PredictBar m={m} />}
       <div className="mc5-foot">
         {why ? <span className="mc5-why"><em>WHY</em>{why}</span> : <span />}
         {preview && <span className="mc5-cta">PREVIEW<Chevron /></span>}
@@ -203,6 +207,8 @@ export function MatchHero({ m: m0, onPick }: { m: Fixture; onPick?: Pick_ }) {
   const hc = liftHex(m.home.color), ac = liftHex(m.away.color);
   const why = whyBig(m);
   const lv = useLive(m.event_id);
+  const tr = useTopRated(m, lv);
+  const peek = usePeek();
   const side = (s: FixtureSide, o: FixtureSide, r: boolean) => (
     <button className={`mh5-side${r ? " r" : ""}`} disabled={!onPick || !s.league}
       onClick={() => { if (onPick && s.league) onPick(s.team, s.league); }} title={s.league ? `${s.team} 팀 화면` : s.team}>
@@ -230,7 +236,7 @@ export function MatchHero({ m: m0, onPick }: { m: Fixture; onPick?: Pick_ }) {
         <Center lv={lv} time={time} date={date} cls="mh5-ko" sub={`${date} · KST`} />
         {side(m.away, m.home, true)}
       </div>
-      <PredictBar m={m} detail />
+      {tr ? <TopRated {...tr} onPeek={peek} /> : <PredictBar m={m} detail />}
       <div className="mh5-foot">
         <span className="mc5-why"><span className="bdg neutral">WHY</span>{why}</span>
         {preview && <button className="btn5" onClick={() => preview(m)}>MATCH PREVIEW<Chevron /></button>}

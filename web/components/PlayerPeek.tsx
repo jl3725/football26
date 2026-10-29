@@ -13,6 +13,7 @@ import { tier, roleClass } from "@/lib/ui";
 import { ssMeaning, SS_NOTE } from "@/lib/meaning";
 import { MeaningTag } from "./Meaning";
 import { Skel } from "./Skeleton";
+import { JustPlayedLine } from "./JustPlayed";
 import { isLeagueCode } from "@/lib/leagues";
 
 export type PeekHint = Partial<Pick<DbPlayer,
@@ -174,6 +175,8 @@ export function PeekProvider({ children, onOpenPlayer, onOpenTeam }: {
                 {bigMatch && <span className="role-bm">⚡ 빅매치 검증</span>}
               </div>
             )}
+
+            <JustPlayedLine d={detail} />
 
             {detail?.scout_take?.l1 && (
               <div className="peek-take">

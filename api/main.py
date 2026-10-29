@@ -2953,9 +2953,20 @@ def player_detail(team: str, player: str, league: str = ACTIVE_LEAGUE, basis: st
         "ratings": _rating_sources(row),
         "form": _player_form(row),
         "recent": _recent_of(row, league),
+        # FotMob 선수 번호 — 화면이 방금 경기 실시간 평점(web/app/live-ratings, JUST PLAYED)에서 이 선수를 찾는다(2026-10-29)
+        "fotmob_id": _fotmob_pid(row),
     }
     out["scout_take"] = _scout_take(out, league)
     return out
+
+
+def _fotmob_pid(row) -> int | None:
+    """평점 연결 번호(fm_id) → 없으면 FotMob 명단·경기 기록 번호(fm_photo_id, src/fotmob_squads.fill_frame)."""
+    for k in ("fm_id", "fm_photo_id"):
+        v = _num(row.get(k))
+        if v > 0:
+            return int(v)
+    return None
 
 
 def _scout_take(payload: dict, league: str) -> dict | None:
