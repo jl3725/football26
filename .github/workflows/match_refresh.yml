@@ -4,7 +4,9 @@ name: Match Refresh
 # daily_data(04:30 UTC = 한국 13:30)만으로는 새벽 경기 결과가 낮까지 '예정'으로 남았다(2026-10-15 사용자 지적).
 # 경기 중·직후 화면의 스코어는 Vercel 서버 라우트(web/app/live-scores, ESPN 30초)가 바로 덮어쓰고,
 # 이 작업은 원본 데이터(순위·폼·결과 띠·빅매치 목록·주목할 매치·리그/컵 라인업)를 맞춘다. 감독·부상 등은 daily_data 담당.
-# 경기일에는 match_watch.yml 이 경기 종료 20분 뒤 이 작업을 바로 실행한다(재배포가 잦지 않게 90분에 한 번, 마지막 물결은 바로).
+# 경기일에는 match_watch.yml 이 경기 종료 20분 뒤 이 작업을 바로 실행한다(물결 중엔 30분에 한 번, 마지막 물결은 바로).
+# 두 단계(2026-10-29 사용자 '실시간 느낌'): 1단계 = 결과·순위·라인업·경기 기록·평점·홈(약 7분) → 커밋하고 바로 데이터 배포본 요청,
+# 2단계 = xG·부상·명단·라이트 리그 선수 표·예측 성적표·AI 리포트 → 다시 커밋·배포본. 예전엔 16분을 다 돌고 나서야 올렸다.
 # 아래 예약은 감시가 놓친 경기를 아침에 한 번 더 맞추는 안전망.
 on:
   schedule:
@@ -28,6 +30,7 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
+          cache: pip
 
       - name: Install dependencies
         # 수집기는 requests·bs4 를 쓰는데 백엔드 requirements.txt 엔 없다(daily_data 와 같은 목록 + 백엔드)
@@ -78,6 +81,39 @@ jobs:
       - name: FotMob match ratings (최근 폼)
         run: bash scripts/ci_try.sh "fotmob_matches" python src/fetch_fotmob_matches.py
 
+      - name: Refresh global home snapshot (home_all.json)
+        run: |
+          python scripts/build_db.py > /dev/null
+          bash scripts/ci_try.sh "precompute_hub" python scripts/precompute_hub.py
+
+      # 선수 이름 레지스트리 — 원천마다 다른 표기를 기준 표기로 묶는다(src/player_registry.py, API 가 읽을 때 정규화)
+      - name: Player registry (이름 정규화)
+        run: bash scripts/ci_try.sh "player_registry" python src/player_registry.py
+
+      - name: Validate core data contracts (1단계)
+        run: python scripts/validate_data.py --no-optional
+
+      - name: Commit results first (1단계)
+        id: commit1
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/
+          if git diff --staged --quiet; then
+            echo "변경 없음 — 커밋 생략"
+          else
+            git commit -m "chore(data): 경기 결과·평점 먼저 갱신 [skip ci]"
+            bash scripts/ci_push.sh && echo "pushed=1" >> "$GITHUB_OUTPUT"
+          fi
+
+      # 1단계 결과를 바로 운영 서버로 — 기본 토큰의 workflow_dispatch 는 허용된다(예약 실행이어도 같은 길)
+      - name: Request data publish (1단계)
+        if: steps.commit1.outputs.pushed == '1'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: bash scripts/ci_try.sh "publish_request" gh workflow run publish_data.yml --ref main
+
+      # ── 2단계: 경기 직후 화면에 덜 급한 것(xG·부상·명단·라이트 리그 선수 표·예측 성적표·AI 리포트) ──
       # 선수 xG 계열(xg·npxg·xa·키패스·슈팅·xG chain) — 5대 리그 Understat 리그당 1요청, 화면 선수 표가 덮어씀(주간 빌드 대신 매일)
       - name: Understat player xG (매일)
         run: bash scripts/ci_try.sh "understat_live" python src/fetch_understat_live.py
@@ -100,11 +136,6 @@ jobs:
             FB_LEAGUE=$LG bash scripts/ci_try.sh "team_defense $LG" python src/fetch_team_defense.py
           done
 
-      - name: Refresh global home snapshot (home_all.json)
-        run: |
-          python scripts/build_db.py > /dev/null
-          bash scripts/ci_try.sh "precompute_hub" python scripts/precompute_hub.py
-
       # 경기 전 예측 기록(팬 투표·우리 모델·ClubElo) → 결과 대조 — 홈 PREDICTION LEAGUE 원천(scripts/log_predictions.py)
       - name: Log predictions (팬 vs 모델 성적표)
         run: bash scripts/ci_try.sh "log_predictions" python scripts/log_predictions.py
@@ -116,14 +147,15 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: bash scripts/ci_try.sh "ai_match" python src/ai_notes.py match
 
-      # 선수 이름 레지스트리 — 원천마다 다른 표기를 기준 표기로 묶는다(src/player_registry.py, API 가 읽을 때 정규화)
-      - name: Player registry (이름 정규화)
-        run: bash scripts/ci_try.sh "player_registry" python src/player_registry.py
+      - name: Refresh global home snapshot again (2단계 — 부상·명단·성적표 반영)
+        run: |
+          python scripts/build_db.py > /dev/null
+          bash scripts/ci_try.sh "precompute_hub" python scripts/precompute_hub.py
 
-      - name: Validate core data contracts
+      - name: Validate core data contracts (2단계)
         run: python scripts/validate_data.py --no-optional
 
-      - name: Commit updated data
+      - name: Commit updated data (2단계)
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"

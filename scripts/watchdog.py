@@ -50,7 +50,7 @@ from leagues import LEAGUES, data_path  # noqa: E402
 REPO = os.getenv("GITHUB_REPOSITORY", "jl3725/football26")
 BACKEND = os.getenv("BACKEND_URL", "https://football26-api.onrender.com").rstrip("/")
 WORKFLOWS = ["daily_data.yml", "daily_news.yml", "match_refresh.yml", "match_watch.yml", "tm_data.yml",
-             "transfer_watch.yml", "kg_reload.yml", "keep_alive.yml", "ci.yml"]
+             "transfer_watch.yml", "kg_reload.yml", "keep_alive.yml", "ci.yml", "deploy_backend.yml"]
 NOW = dt.datetime.now(dt.timezone.utc)
 LABEL = "watchdog"
 
@@ -144,7 +144,9 @@ def check_frontend() -> list[str]:
             f"({latest_ok['created_at'][:16]}). Vercel 빌드 로그 확인"]
 
 
-BACKEND_PATHS = ("api", "src", "requirements.txt", "render.yaml")
+from deploy_backend import BACKEND_PATHS  # noqa: E402 — 배포 판단과 같은 목록
+# 배포는 하루 한 번(scripts/deploy_backend.py, 2026-10-29 자동 배포 끔) — 커밋 뒤 다음 예약 배포(GH 예약 지연 포함)까지 기다린다
+BACKEND_GRACE_H = 36
 
 
 def check_backend() -> list[str]:
@@ -168,10 +170,10 @@ def check_backend() -> list[str]:
     if cmp.get("status") in ("identical", "ahead"):
         return []
     at = latest["commit"]["committer"]["date"]
-    if _age_h(at) < 1:
-        return []                                         # 방금 커밋 — 빌드 중일 수 있음
-    return [f"운영 백엔드가 옛 버전({prod[:7]}) — 최신 코드 {latest['sha'][:7]}({at[:16]}) 미반영. "
-            "Render 배포 로그 확인(시작 실패면 requirements 누락 의심)"]
+    if _age_h(at) < BACKEND_GRACE_H:
+        return []                                         # 다음 예약 배포 전
+    return [f"운영 백엔드가 옛 버전({prod[:7]}) — 최신 코드 {latest['sha'][:7]}({at[:16]}) {BACKEND_GRACE_H}시간 넘게 미반영. "
+            "Deploy Backend 워크플로·Render Events 확인(빌드 분 한도·시작 실패면 requirements 누락 의심)"]
 
 
 def check_workflows() -> list[str]:

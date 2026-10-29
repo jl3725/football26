@@ -6,11 +6,14 @@
   뉴스 DB   2시간마다 — 원격 data/news_db.ref.json 의 sha 가 바뀌었으면 news.db.gz 를 디스크로 받아 풀고(512MB 서버라
             메모리에 통째로 올리지 않음) data/news_view.db 만 갈아 끼운다(src/news_view.py). 뉴스 캐시만 무효화된다
   작은 파일 30분마다 — AI 뉴스 요약 · 루머 판정표 · 매체 적중률 · DATA 상태(실행 원장 · watchdog). ETag 로 바뀐 것만
-  나머지 데이터 10분마다 — data-live 브랜치(scripts/publish_data.py, Publish Data 워크플로가 Render 빌드와 같은 일을 클라우드에서)의
+  나머지 데이터 3분마다 — data-live 브랜치(scripts/publish_data.py, Publish Data 워크플로가 Render 빌드와 같은 일을 클라우드에서)의
             manifest 를 보고 바뀐 파일만 받는다. 전부 임시 파일로 받아 지문(sha256)을 맞춘 뒤 한꺼번에 바꿔 넣고(DB 마지막),
             서버 DB 가 바뀌었으면 우리 코드의 계산 캐시를 모두 비우고 미리 데우기를 다시 돌린다(재배포 때 프로세스가 새로
-            뜨며 하던 일 — 이제 프로세스를 끄지 않고). render.yaml 은 data/** 만 바뀐 커밋을 재배포하지 않는다
+            뜨며 하던 일 — 이제 프로세스를 끄지 않고). render.yaml 은 data/** 만 바뀐 커밋을 재배포하지 않는다.
+            확인은 브랜치 머리 커밋만(head — git 목록 1KB) 보고, 받을 때는 그 커밋 번호 주소로 — 브랜치 이름 주소는 raw CDN 이
+            5분까지 옛것을 줘서 10분 주기에 최대 15분 늦었다(2026-10-29 사용자 '실시간 느낌')
 켜는 조건: RENDER 환경변수(Render 가 넣음) 또는 LIVE_SYNC=1. 로컬·CI 는 꺼짐(git 이 최신을 준다).
+Render 빌드도 DB 를 새로 만들지 않고 이것으로 받는다(scripts/fetch_live_data.py).
 """
 from __future__ import annotations
 
@@ -30,11 +33,11 @@ import requests
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
 SMALL = ["data/ai/news_digest.json", "data/news_claims.csv", "data/news_reliability.csv", "data/ops/watchdog.json"]
-SMALL_EVERY, NEWS_EVERY, DATA_EVERY, FIRST_WAIT = 30 * 60, 2 * 3600, 10 * 60, 90
+SMALL_EVERY, NEWS_EVERY, DATA_EVERY, FIRST_WAIT = 30 * 60, 2 * 3600, 3 * 60, 90
 DATA_BRANCH = "data-live"
 STATE: dict = {"started": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"), "enabled": False,
                "news_sha": "", "news_at": "", "small_at": "", "small_updated": 0, "last_error": "",
-               "data_sha": "", "data_at": "", "data_files": 0, "db_at": ""}
+               "data_sha": "", "data_ref": "", "data_caches": True, "data_at": "", "data_files": 0, "db_at": ""}
 _ETAGS: dict[str, str] = {}
 _HASHES: dict[str, tuple[float, int, str]] = {}        # 경로 → (수정 시각, 크기, sha256) — 같은 파일을 매번 다시 읽지 않게
 _ON_DB_SWAP: list = []
@@ -49,6 +52,48 @@ def enabled() -> bool:
 def _raw(path: str, ref: str = "main") -> str:
     import news_store  # noqa: PLC0415
     return f"https://raw.githubusercontent.com/{news_store.repo()}/{ref}/{path}"
+
+
+def head(branch: str = DATA_BRANCH, get=requests.get) -> str:
+    """브랜치 머리 커밋 — git 스마트 HTTP 목록(github.com/…git/info/refs). raw CDN 처럼 묵지 않고 REST API 처럼 시간당
+    60회 한도(Render 는 나가는 IP 를 여럿이 같이 쓴다)도 없다. 못 읽으면 ''(호출하는 쪽이 브랜치 이름 주소로)."""
+    import news_store  # noqa: PLC0415
+    try:
+        r = get(f"https://github.com/{news_store.repo()}.git/info/refs?service=git-upload-pack", timeout=20)
+        if r.status_code != 200:
+            return ""
+        m = re.search(rf"([0-9a-f]{{40}}) refs/heads/{re.escape(branch)}(?![\w/-])", r.content.decode("latin-1"))
+        return m.group(1) if m else ""
+    except Exception:  # noqa: BLE001 — 못 보면 예전 방식으로
+        return ""
+
+
+# 마지막으로 맞춘 배포본(data-live 커밋·main 커밋) 기록 — 빌드에서 받은 그대로 뜬 서버가 시작할 때 900개 파일·DB(70MB)
+# 지문을 다시 계산하지 않게(0.1 CPU 에서 데우기를 늦춘다). 디스크가 이 기록보다 새것이면 머리 커밋이 달라 어차피 다시 맞춘다
+def _mark() -> Path:
+    return ROOT / "data" / "runtime_cache" / "live_sync.json"
+
+
+def _load_mark() -> None:
+    if STATE["data_ref"] or STATE.get("mark_read"):
+        return
+    STATE["mark_read"] = True
+    try:
+        m = json.loads(_mark().read_text(encoding="utf-8"))
+        if m.get("code_sig") == _code_sig():                    # 다른 코드가 남긴 기록(캐시 판단이 달랐다)은 안 믿는다
+            STATE.update(data_ref=str(m.get("ref") or ""), data_sha=str(m.get("main_sha") or ""),
+                         data_caches=bool(m.get("caches", True)))
+    except (OSError, ValueError):
+        pass
+
+
+def _save_mark() -> None:
+    try:
+        _mark().parent.mkdir(parents=True, exist_ok=True)
+        _mark().write_text(json.dumps({"ref": STATE["data_ref"], "main_sha": STATE["data_sha"], "caches": STATE["data_caches"],
+                                    "code_sig": _code_sig(), "at": STATE["data_at"]}), encoding="utf-8")
+    except OSError:
+        pass
 
 
 def _sha256(p: Path) -> str | None:
@@ -117,17 +162,24 @@ def _code_sig() -> str:
 
 def sync_data(get=requests.get, notify: bool = True) -> int:
     """data-live 배포본에서 바뀐 파일만 받아 바꿔 넣는다. 바꾼 파일 수(0 = 그대로)."""
-    r = get(_raw("manifest.json", DATA_BRANCH), timeout=30)
+    _load_mark()
+    ref = head(get=get)
+    if ref and ref == STATE["data_ref"]:
+        return 0                                                  # 배포본 그대로 — manifest 도 안 받는다
+    at = ref or DATA_BRANCH                                       # 커밋 번호 주소 = CDN 이 옛것을 줄 일 없음
+    r = get(_raw("manifest.json", at), timeout=30)
     if r.status_code != 200:
         return 0
     man = r.json()
     main_sha = str(man.get("main_sha") or "")
     if not main_sha or main_sha == STATE["data_sha"]:
+        STATE["data_ref"] = ref
         return 0
     files = dict(man.get("files") or {})
     # 캐시(선수 표·OVR 등)는 만든 코드가 이 서버 코드와 같을 때만 받는다 — 모델만 바뀐 배포 직후 서버가 새 코드로 만든 캐시를
     # 옛 코드의 캐시로 덮어쓰던 것(2026-10-27). 안 받으면 DB 가 바뀔 때 이 서버가 자기 코드로 다시 만든다.
-    if man.get("code_sig") != _code_sig():
+    caches = man.get("code_sig") == _code_sig()
+    if not caches:
         files = {p: h for p, h in files.items() if not p.startswith("data/runtime_cache/") and p != "data/team_units.json"}
     db_path, db_sha = ROOT / "data" / "football.db", str(man.get("db_sha") or "")
     todo = {p: h for p, h in files.items() if _sha256(ROOT / p) != h}
@@ -136,7 +188,7 @@ def sync_data(get=requests.get, notify: bool = True) -> int:
     parts: list[tuple[Path, Path]] = []
     def fetch(item):
         rel, h = item
-        body = get(_raw(rel, DATA_BRANCH), timeout=60).content
+        body = get(_raw(rel, at), timeout=60).content
         dst = ROOT / rel
         dst.parent.mkdir(parents=True, exist_ok=True)
         tmp = dst.with_name(dst.name + ".part")
@@ -146,12 +198,12 @@ def sync_data(get=requests.get, notify: bool = True) -> int:
             raise ValueError(f"지문 다름 {rel}")
 
     try:
-        # 1) 전부 임시 파일로 받아 지문 확인(CDN 이 옛 파일을 주면 다음 차례에) — 8개씩 동시에(한 개씩이면 677개에 7분 걸렸다)
+        # 1) 전부 임시 파일로 받아 지문 확인(머리 커밋을 못 봐 브랜치 주소로 받다 CDN 이 옛 파일을 주면 다음 차례에) — 8개씩 동시에(한 개씩이면 677개에 7분 걸렸다)
         from concurrent.futures import ThreadPoolExecutor  # noqa: PLC0415
         with ThreadPoolExecutor(max_workers=8) as ex:
             list(ex.map(fetch, todo.items()))
         if db_needed:
-            with get(_raw(str(man.get("db_gz") or "data/football.db.gz"), DATA_BRANCH), stream=True, timeout=180) as resp:
+            with get(_raw(str(man.get("db_gz") or "data/football.db.gz"), at), stream=True, timeout=180) as resp:
                 resp.raise_for_status()
                 with gz.open("wb") as fh:
                     for chunk in resp.iter_content(1 << 20):
@@ -169,7 +221,8 @@ def sync_data(get=requests.get, notify: bool = True) -> int:
         gz.unlink(missing_ok=True)
         tmp_db.unlink(missing_ok=True)
     now = dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")
-    STATE.update(data_sha=main_sha, data_at=now, data_files=STATE["data_files"] + len(parts))
+    STATE.update(data_sha=main_sha, data_ref=ref, data_caches=caches, data_at=now, data_files=STATE["data_files"] + len(parts))
+    _save_mark()
     if db_needed:
         STATE["db_at"] = now
         n = reset_caches()

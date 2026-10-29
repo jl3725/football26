@@ -14,11 +14,15 @@
 
 1. https://render.com → **New → Blueprint** → `football26` repo 선택
    → repo 루트의 `render.yaml` 을 자동 인식(빌드/시작 명령 포함)
-   - 또는 수동: New → Web Service → Build `pip install -r requirements.txt`,
-     Start `python scripts/build_db.py && uvicorn api.main:app --host 0.0.0.0 --port $PORT`
+   - 또는 수동: New → Web Service → Build/Start 명령은 `render.yaml` 과 같게(빌드는 data-live 배포본을 받고
+     `scripts/fetch_live_data.py`, 못 받으면 `scripts/build_db.py` 로 만든다)
 2. 필요한 리소스와 콜드스타트 허용 여부에 맞는 plan 선택 → Deploy
 3. 발급 URL 예: `https://football26-api.onrender.com`
 4. 확인: `https://football26-api.onrender.com/api/health` → `{"ok": true, ...}`
+5. **자동 배포는 끈다**(`render.yaml` `autoDeploy: false`, 대시보드 Settings → Build & Deploy → Auto-Deploy = No).
+   배포는 `.github/workflows/deploy_backend.yml` 이 하루 한 번(백엔드 코드가 바뀐 날만, 경기 진행 중이면 끝난 뒤)과
+   수동 실행(Actions → Deploy Backend → Run workflow)으로 한다. Settings → **Deploy Hook** 주소를 GitHub 저장소 비밀
+   `RENDER_DEPLOY_HOOK` 에 넣어 둘 것. 데이터는 배포와 무관하게 서버가 data-live 에서 3분마다 받는다(`src/live_sync.py`).
 
 > 다른 컨테이너 호스팅을 사용할 때도 build/start 명령과 환경변수는 동일하다.
 
@@ -35,7 +39,7 @@
    - 프론트는 항상 `/api/*` 로 호출하고 Vercel 이 서버사이드로 Render 에 프록시
      → 브라우저 입장에선 same-origin (CORS 불필요)
 
-이후 코드를 push하면 Vercel과 Render가 연결된 브랜치를 자동 배포한다.
+이후 코드를 push하면 Vercel 은 자동 배포하고, Render(백엔드)는 위 Deploy Backend 워크플로가 배포한다.
 
 ---
 

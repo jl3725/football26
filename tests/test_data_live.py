@@ -106,6 +106,33 @@ def test_sync_data_skips_caches_built_by_other_code(tmp_path, monkeypatch):
     assert not (tmp_path / "data" / "team_units.json").exists()
 
 
+def test_sync_data_uses_head_commit_and_skips_when_same(tmp_path, monkeypatch):
+    # 머리 커밋을 보면 그 커밋 주소로 받고(브랜치 주소는 raw CDN 이 5분까지 옛것), 머리가 그대로면 manifest 도 안 받는다
+    # (3분 주기 · 2026-10-29 사용자 '실시간 느낌')
+    (tmp_path / "data").mkdir()
+    (tmp_path / "data" / "football.db").write_bytes(b"OLD")
+    _, store = _setup(tmp_path, monkeypatch, {"data/a.csv": b"A"}, b"NEW")
+    monkeypatch.setitem(live_sync.STATE, "data_ref", "")
+    monkeypatch.setitem(live_sync.STATE, "mark_read", True)
+    monkeypatch.setattr(live_sync, "reset_caches", lambda: 0)
+    head, seen = "c" * 40, []
+
+    def get(url, **kw):
+        seen.append(url)
+        if url.endswith("info/refs?service=git-upload-pack"):
+            return _Resp(f"0045{'d' * 40} refs/heads/data-livex\n0042{head} refs/heads/data-live\n".encode())
+        return _Resp(store[url.split(f"/{head}/", 1)[1]])
+    assert live_sync.sync_data(get, notify=False) == 2                # a.csv · DB
+    assert live_sync.STATE["data_ref"] == head
+    seen.clear()
+    assert live_sync.sync_data(get, notify=False) == 0 and len(seen) == 1   # 머리만 보고 끝
+    # 다시 뜬 서버(빌드에서 받은 그대로)는 기록(runtime_cache/live_sync.json)으로 같은 배포본임을 안다 — 지문 재계산 없음
+    for k, v in (("data_ref", ""), ("data_sha", ""), ("mark_read", False)):
+        monkeypatch.setitem(live_sync.STATE, k, v)
+    seen.clear()
+    assert live_sync.sync_data(get, notify=False) == 0 and len(seen) == 1 and live_sync.STATE["data_sha"] == "m1"
+
+
 def test_sync_data_aborts_on_hash_mismatch(tmp_path, monkeypatch):
     (tmp_path / "data").mkdir()
     (tmp_path / "data" / "x.csv").write_bytes(b"OLD")

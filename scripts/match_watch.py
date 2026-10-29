@@ -9,7 +9,8 @@
   1. 우리 8개 리그 팀의 전 대회 일정(schedule_full)에서 지금 앞뒤 경기(event_id·대회 코드·킥오프)를 고른다.
   2. 5분마다 그 대회·날짜의 ESPN scoreboard 를 본다(요청 수 = 대회×날짜, 보통 5~15개).
   3. ESPN 에서 끝났는데 우리 데이터엔 아직 안 끝난 경기가 GRACE(20분 — FotMob 평점·ESPN 기록 확정) 지나면
-     match_refresh 를 workflow_dispatch 로 실행. 재배포가 너무 잦지 않게 MIN_GAP(90분)에 한 번,
+     match_refresh 를 workflow_dispatch 로 실행. 물결 중엔 MIN_GAP(30분)에 한 번 — 예전 90분은 갱신마다 재배포하던 때의
+     값(이제 데이터는 재배포 없이 data-live 로, 2026-10-29 사용자 '실시간 느낌'). 갱신 한 번이 ~16분이라 겹치지 않는다,
      단 남은 경기(진행 중·LOOKAHEAD 안 킥오프)가 없으면 마지막 물결이라 바로.
   4. 진행·임박·대기 경기가 없고 다음 킥오프가 시간 예산 밖이면 끝(예약 시동이 다시 시작 — 하루 종일 빈 감시 안 함).
      시간 예산을 다 썼는데 경기가 남았으면(또는 6시간 안 킥오프) 자기 자신을 다시 실행(이어 달리기).
@@ -40,7 +41,7 @@ from leagues import LEAGUES, data_path  # noqa: E402
 
 POLL_S = 300
 GRACE = dt.timedelta(minutes=20)
-MIN_GAP = dt.timedelta(minutes=90)
+MIN_GAP = dt.timedelta(minutes=30)
 LOOKAHEAD = dt.timedelta(hours=3)        # 이 안에 킥오프할 경기가 있으면 '아직 물결 중'
 MATCH_LEN = dt.timedelta(hours=2, minutes=15)
 FT_AFTER = dt.timedelta(hours=1, minutes=55)   # 킥오프 → 보통 종료(전후반 90 + 휴식 15 + 추가 시간)

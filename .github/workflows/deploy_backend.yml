@@ -1,0 +1,64 @@
+name: Deploy Backend
+
+# 백엔드(Render) 배포 — 하루 한 번 + 수동(Run workflow). render.yaml autoDeploy 는 끔(2026-10-29).
+# 자동 배포는 빌드 7분 × 코드 커밋마다라 무료 빌드 분(월 500분)을 10/26 에 다 썼고, 배포마다 서버가 다시 떠 캐시가 비며
+# '서버 응답 없음'이 났다. 데이터는 배포와 무관(data-live → 운영 서버가 3분마다). 판단은 scripts/deploy_backend.py:
+# 백엔드 코드가 그대로면 아무것도 안 하고, 예약 실행은 우리 팀 경기가 진행 중이면 끝날 때까지 기다린다.
+# 필요: GitHub 비밀 RENDER_DEPLOY_HOOK(Render 대시보드 → football26-api → Settings → Deploy Hook 주소)
+on:
+  schedule:
+    - cron: "30 17 * * *"   # 02:30 KST 시동 — GH 예약은 1~8시간 늦게 돈다
+    - cron: "0 4 * * *"     # 13:00 KST 한 번 더(앞 실행이 건너뛰었거나 경기로 미뤘을 때) — 이미 최신이면 아무것도 안 함
+  workflow_dispatch:
+    inputs:
+      now:
+        description: "경기 중이어도 지금 배포"
+        type: boolean
+        default: true
+
+concurrency:
+  group: deploy-backend
+  cancel-in-progress: false
+
+permissions:
+  contents: write    # 실행 원장 커밋
+  actions: write     # Publish Data 요청
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    env:
+      PYTHONIOENCODING: utf-8
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Install
+        run: pip install -q requests pandas
+
+      - name: Deploy if backend code changed
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          BACKEND_URL: ${{ vars.BACKEND_URL }}
+          RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
+        run: bash scripts/ci_try.sh "deploy_backend" python scripts/deploy_backend.py ${{ (github.event_name == 'workflow_dispatch' && inputs.now) && '--now' || '' }}
+
+      - name: Commit run ledger
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -- data/ops/runs/
+          if git diff --staged --quiet; then
+            echo "변경 없음 — 커밋 생략"
+          else
+            git commit -m "chore(ops): 백엔드 배포 실행 기록 [skip ci]"
+            bash scripts/ci_push.sh
+          fi
+
+      - name: Report failures
+        if: always()
+        run: bash scripts/ci_report.sh

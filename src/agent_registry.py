@@ -188,6 +188,9 @@ AGENTS: tuple[Agent, ...] = (
               # 데이터 배포본(서버 DB·캐시 → data-live, 운영 서버가 바뀐 파일만 받음) — 데이터 커밋 재배포 대신(2026-10-26)
               Feed("publish_data", "운영 데이터 배포본(data-live)", ("build_db_live", "team_units_live", "publish_data", "publish_request"),
                    ("publish_data", "match_refresh"), "데이터 수집이 끝날 때마다", 30, added="2026-10-26"),
+              # 백엔드 배포 — 자동 배포 대신 하루 한 번·수동, 코드가 바뀐 날만 실제 배포(scripts/deploy_backend.py, 2026-10-29)
+              Feed("deploy", "백엔드 배포(Render · 코드 바뀐 날만)", ("deploy_backend",), ("deploy_backend",),
+                   "매일 02:30 KST · 수동", 36, added="2026-10-29"),
           ), checks=("watchdog: hub(스냅샷 36시간)",)),
 )
 

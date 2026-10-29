@@ -40,11 +40,13 @@ def test_batches_during_wave_with_min_gap() -> None:
     assert d["refresh"] == ["a"] and d["live"] == ["c"]
     w.handled.update(d["refresh"])
     w.last_refresh = T0
-    # 30분 뒤 b 도 끝났지만 c 진행 중 + 지난 갱신 90분 안 → 묶어서 나중에
-    t1 = T0 + dt.timedelta(minutes=30)
+    # 20분 뒤 b 도 끝났지만 c 진행 중 + 지난 갱신 30분 안 → 묶어서 나중에
+    t1 = T0 + dt.timedelta(minutes=20)
     d = w.decide(f, {"a": "post", "b": "post", "c": "in"}, t1)
     assert d["refresh"] == [] and d["held"] == ["b"] and w.busy(d)
-    # c 까지 끝나고 d 는 3시간 밖 → 물결 끝, 90분 안이어도 바로
+    # 30분이 지나면 물결 중이어도 갱신 — 데이터가 재배포 없이 가게 된 뒤 90분 → 30분(2026-10-29)
+    assert w.decide(f, {"a": "post", "b": "post", "c": "in"}, T0 + dt.timedelta(minutes=35))["refresh"] == ["b"]
+    # c 까지 끝나고 d 는 3시간 밖 → 물결 끝, 바로
     t2 = T0 + dt.timedelta(hours=2, minutes=20)
     d = w.decide(f, {"a": "post", "b": "post", "c": "post", "d": "pre"}, t2)
     assert sorted(d["refresh"]) == ["b", "c"] and d["soon"] == ["d"] and d["next_kick"] == pd.Timestamp("2026-10-24T16:30Z")

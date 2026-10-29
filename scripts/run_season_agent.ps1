@@ -58,8 +58,16 @@ if ($LASTEXITCODE -eq 0) {
     if ($BuildCode -ne 0) { $msg += "`n`n일부 단계 실패 — logs/season-$Season-*.log 참고" }
     git commit -m $msg -- $Paths
     $pushed = $false
+    # 충돌이면 rebase 를 되돌리고 충돌 칸은 이번 수집 값으로(scripts/ci_push.sh 와 같은 규칙) — 예전엔 '충돌 중'으로 멈춰
+    # 저장소가 rebase 상태로 남고 주간 수집분이 안 올라갔다(2026-10-28 players_*·contracts 충돌)
     for ($i = 1; $i -le 3 -and -not $pushed; $i++) {
         git pull --rebase --autostash origin main
+        if ($LASTEXITCODE -ne 0) {
+            git rebase --abort 2>$null
+            git fetch origin main
+            git rebase -X theirs --autostash origin/main
+            if ($LASTEXITCODE -ne 0) { git rebase --abort 2>$null }
+        }
         if ($LASTEXITCODE -eq 0) { git push origin HEAD:main; $pushed = ($LASTEXITCODE -eq 0) }
         if (-not $pushed) { Start-Sleep -Seconds 5 }
     }
