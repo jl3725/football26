@@ -1,17 +1,15 @@
 {
- "checked": "2026-10-28T14:36:00+00:00",
+ "checked": "2026-10-29T14:42:41+00:00",
  "results": {
   "ovr": [],
   "season": [],
   "hub": [
-   "홈 스냅샷이 52시간 전 생성 — daily_data 의 precompute_hub 확인"
+   "홈 스냅샷이 76시간 전 생성 — daily_data 의 precompute_hub 확인"
   ],
   "frontend": [],
-  "backend": [
-   "운영 백엔드가 옛 버전(d4fd71e) — 최신 코드 c9277c5(2026-10-27T23:09) 미반영. Render 배포 로그 확인(시작 실패면 requirements 누락 의심)"
-  ],
+  "backend": [],
   "workflows": [
-   "match_refresh.yml 최근 실행 failure (2026-10-28T02:10) https://github.com/jl3725/football26/actions/runs/40619399347"
+   "daily_data.yml 최근 실행 failure (2026-10-29T11:02) https://github.com/jl3725/football26/actions/runs/40862266920"
   ],
   "news": [],
   "tm_agent": [],
@@ -20,12 +18,14 @@
   "ratings": [],
   "names": [],
   "xg": [],
-  "agents": [],
+  "agents": [
+   "ANALYST · 팬 투표 — 마지막 성공 37시간 전(허용 24시간, local-fanvote)"
+  ],
   "expectations": [],
   "screen": [],
   "squads": [],
   "identity": [],
   "fair_price": []
  },
- "ai_cause": "- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인) (hub)\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인) (backend)\n- `understat_live` 단계에서 오류 코드 1로 실패하여, 해당 라이브 데이터 수집 과정에서 에러가 발생했을 추정 (workflows: understat_live)"
+ "ai_cause": "- `manager_careers` 단계의 코드 1번 오류로 인해 데이터 생성이 중단되었을 가능성이 높으므로, 해당 단계의 로그를 확인해야 합니다. (hub: manager_careers 단계 실패 추정)\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인) (workflows: related_failed_steps 비어 있음)\n- `understat_live`와 `manager_careers` 단계에서 연쇄적인 코드 1번 오류가 발생했으므로, 데이터 수집 및 처리 프로세스의 정상 작동 여부를 점검해야 합니다. (agents: understat_live, manager_careers 단계 실패 추정)"
 }
