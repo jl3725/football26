@@ -54,7 +54,7 @@ Lille,Orlando Gill,1683391,keepers,GK,Goalkeeper,GK,26,2000-06-11,12.0,PAR,False
 Lille,Thomas Sajous,1793779,keepers,GK,Goalkeeper,GK,18,2008-05-15,50.0,FRA,False,,2026-10-29
 Lille,Zadig Lanssade,1867240,keepers,GK,Goalkeeper,GK,18,2008-03-03,60.0,FRA,False,,2026-10-29
 Lille,Loun Srdanovic,1660370,defenders,RB,Right-Back,DF,20,2006-08-04,2.0,SUI,False,,2026-10-29
-Lille,Nathan Ngoy,1252070,defenders,CB,Centre-Back,DF,23,2003-06-10,3.0,BEL,False,,2026-10-29
+Lille,Nathan Ngoy,1252070,defenders,"CB,RB",Centre-Back,DF,23,2003-06-10,3.0,BEL,False,,2026-10-29
 Lille,Alexsandro Ribeiro,1186553,defenders,CB,Centre-Back,DF,27,1999-08-09,4.0,BRA,False,,2026-10-29
 Lille,Romain Perraud,815465,defenders,"LB,LWB",Left-Back,DF,29,1997-09-22,15.0,FRA,False,,2026-10-29
 Lille,Tiago Santos,1397857,defenders,RB,Right-Back,DF,24,2002-07-23,22.0,POR,True,Late June 2027,2026-10-29
@@ -189,7 +189,7 @@ Lens,Saud Abdulhamid,1002617,midfielders,"RWB,RB,RM",Right-Back,MF,27,1999-07-18
 Lens,Michaël Cuisance,861445,midfielders,"CAM,CDM",Attacking Midfield,MF,27,1999-08-16,27.0,FRA,False,,2026-10-29
 Lens,Mezian Mesloub Soares,1980586,midfielders,CAM,Attacking Midfield,MF,16,2009-11-08,38.0,FRA,False,,2026-10-29
 Lens,Thorgan Hazard,264190,attackers,"CAM,ST,RW",Attacking Midfield,FW,33,1993-03-29,9.0,BEL,False,,2026-10-29
-Lens,Odsonne Édouard,637746,attackers,ST,Centre-Forward,FW,28,1998-01-16,11.0,FRA,False,,2026-10-29
+Lens,Odsonne Édouard,637746,attackers,ST,Centre-Forward,FW,28,1998-01-16,11.0,FRA,True,Early January 2027,2026-10-29
 Lens,Junior Kadile,1334534,attackers,"LW,LM,CAM",Left Winger,FW,23,2002-12-16,28.0,COD,False,,2026-10-29
 Lens,Franjo Ivanović,1406419,attackers,"ST,CAM,RW",Centre-Forward,FW,23,2003-10-01,29.0,CRO,False,,2026-10-29
 Marseille,Jeffrey De Lange,687868,keepers,GK,Goalkeeper,GK,28,1998-04-01,1.0,NED,False,,2026-10-29
@@ -476,15 +476,15 @@ Le Havre,Arnaud Bodart,841705,keepers,GK,Goalkeeper,GK,28,1998-03-11,16.0,BEL,Fa
 Le Havre,Alex Teixeira,1735851,keepers,,Goalkeeper,GK,19,2007-02-25,40.0,FRA,False,,2026-10-29
 Le Havre,Lionel Mpasi-Nzau,912286,keepers,GK,Goalkeeper,GK,32,1994-08-01,77.0,COD,True,Late October 2026,2026-10-29
 Le Havre,Gauthier Gallon,348409,keepers,GK,Goalkeeper,GK,33,1993-04-23,93.0,FRA,False,,2026-10-29
-Le Havre,Ahmed Touba,792653,defenders,CB,Centre-Back,DF,28,1998-03-13,5.0,ALG,False,,2026-10-29
+Le Havre,Ahmed Touba,792653,defenders,"CB,LB",Centre-Back,DF,28,1998-03-13,5.0,ALG,False,,2026-10-29
 Le Havre,Elias Jelert,1305787,defenders,"RB,RWB",Right-Back,DF,23,2003-06-12,12.0,DEN,True,Late October 2026,2026-10-29
 Le Havre,Ayumu Seko,857120,defenders,"CB,CDM,CM",Centre-Back,DF,26,2000-06-07,15.0,JPN,False,,2026-10-29
 Le Havre,Djibril Ouziad,2156004,defenders,"RWB,RB",Right-Back,DF,17,2009-04-27,20.0,FRA,False,,2026-10-29
 Le Havre,Vincent Sasso,210443,defenders,CB,Centre-Back,DF,35,1991-02-16,23.0,FRA,False,,2026-10-29
-Le Havre,Enzo Koffi,1816726,defenders,LB,Left-Back,DF,20,2006-03-04,27.0,FRA,False,,2026-10-29
+Le Havre,Enzo Koffi,1816726,defenders,"LB,LWB",Left-Back,DF,20,2006-03-04,27.0,FRA,False,,2026-10-29
 Le Havre,Stephan Zagadou,1729826,defenders,CB,Centre-Back,DF,18,2008-10-24,29.0,FRA,True,Early January 2027,2026-10-29
 Le Havre,Lamine N'Diaye,1787357,defenders,LB,Left-Back,DF,21,2005-07-16,97.0,SEN,False,,2026-10-29
-Le Havre,Junior Mwanga,1362622,midfielders,"CM,CB,CDM,RB",Central Midfield,MF,23,2003-05-11,6.0,FRA,False,,2026-10-29
+Le Havre,Junior Mwanga,1362622,midfielders,"CM,CB",Central Midfield,MF,23,2003-05-11,6.0,FRA,False,,2026-10-29
 Le Havre,Amir Richardson,1255860,midfielders,"CM,CDM",Central Midfield,MF,24,2002-01-24,7.0,MAR,False,,2026-10-29
 Le Havre,Rassoul Ndiaye,1073905,midfielders,"CAM,CDM,CM,RW",Attacking Midfield,MF,24,2001-12-11,14.0,SEN,False,,2026-10-29
 Le Havre,Kaito Mizuta,1072117,midfielders,"CAM,LW,CM,LM",Attacking Midfield,MF,26,2000-04-08,17.0,JPN,False,,2026-10-29
@@ -499,5 +499,5 @@ Le Havre,Felix Mambimbi,942354,attackers,"ST,CAM",Centre-Forward,FW,25,2001-01-1
 Le Havre,Joan Tincrès,1487962,attackers,ST,Centre-Forward,FW,20,2006-06-17,19.0,FRA,False,,2026-10-29
 Le Havre,Mbwana Samatta,437329,attackers,"ST,LW,CAM",Centre-Forward,FW,33,1992-12-23,25.0,TAN,False,,2026-10-29
 Le Havre,Hakim Dongopandji,2221625,attackers,,Centre-Forward,FW,19,2007-02-21,33.0,FRA,False,,2026-10-29
-Le Havre,Rayan Fofana,1586559,attackers,"ST,CAM",Centre-Forward,FW,20,2006-02-12,38.0,CIV,False,,2026-10-29
+Le Havre,Rayan Fofana,1586559,attackers,"ST,RW",Centre-Forward,FW,20,2006-02-12,38.0,CIV,False,,2026-10-29
 Le Havre,Ismaïl Bouneb,1487952,attackers,ST,Centre-Forward,FW,20,2006-06-07,44.0,FRA,False,,2026-10-29
