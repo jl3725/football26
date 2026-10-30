@@ -225,7 +225,7 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5846008,2026-10-24,aut.1,Rapid Wien,Austria Lustenau,85.0,Marco Tilio,RegularPlay,0,0.0726276114583015
 5846010,2026-10-24,aut.1,Grazer AK,WSG Tirol,9.0,Alexander Hofleitner,Penalty,0,0.7884
 5846010,2026-10-24,aut.1,WSG Tirol,Grazer AK,63.0,Nikolai Baden,FreeKick,0,0.0440789759159088
-5846007,2026-10-25,aut.1,LASK,Salzburg,13.0,Samuel Adeniran,FastBreak,0,0.04904314875602722
+5846007,2026-10-25,aut.1,LASK,Salzburg,13.0,Samuel Adeniran,FastBreak,0,0.0490431487560272
 5846007,2026-10-25,aut.1,Salzburg,LASK,25.0,Haris Tabaković,FastBreak,0,0.5325499176979065
 5846007,2026-10-25,aut.1,Salzburg,LASK,49.0,Haris Tabaković,RegularPlay,0,0.4815855622291565
 5846007,2026-10-25,aut.1,Salzburg,LASK,74.0,Haris Tabaković,RegularPlay,0,0.7671666145324707
@@ -233,3 +233,8 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5846009,2026-10-25,aut.1,Ried,Sturm Graz,45.0,Philipp Pomer,Penalty,0,0.7884
 5846009,2026-10-25,aut.1,Ried,Sturm Graz,55.0,Isaac Kiese Thelin,RegularPlay,0,0.2382362186908722
 5846009,2026-10-25,aut.1,Sturm Graz,Ried,90.0,Belmin Beganović,RegularPlay,0,0.579168975353241
+5846013,2026-10-30,aut.1,Hartberg,Grazer AK,12.0,Marco Hoffmann,RegularPlay,0,0.9194029569625854
+5846013,2026-10-30,aut.1,Hartberg,Grazer AK,25.0,Marco Hoffmann,RegularPlay,0,0.4630402624607086
+5846013,2026-10-30,aut.1,Hartberg,Grazer AK,63.0,Nikolaus Feldhofer,RegularPlay,0,0.5317334532737732
+5846013,2026-10-30,aut.1,Hartberg,Grazer AK,66.0,Donovan Pines,OwnGoal,1,
+5846013,2026-10-30,aut.1,Grazer AK,Hartberg,,,none,0,
