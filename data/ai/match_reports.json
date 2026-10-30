@@ -1919,6 +1919,38 @@
    "away": "Atalanta",
    "at": "2026-10-29T22:15:17+00:00",
    "model": "gemini-3.1-flash-lite"
+  },
+  "5739538": {
+   "text": "Lyngby가 Randers FC를 상대로 2-1 승리를 거두며 리그 경기에서 승점 3점을 획득했다. 23' Frederik Gytkjaer의 선제골로 앞서간 Lyngby는 45'+3' Mohamed Sankoh에게 동점골을 허용했으나, 69' Markus Anderson이 결승골을 기록하며 승부를 결정지었다. Randers FC는 총 슈팅 수에서 20-15로 앞섰지만 유효 슈팅은 4-8로 뒤처졌고, 경기 결과는 Lyngby의 승리를 점쳤던 모델과 Elo의 예측대로 적중했다.",
+   "date": "2026-10-30",
+   "home": "Lyngby",
+   "away": "Randers FC",
+   "at": "2026-10-30T20:34:53+00:00",
+   "model": "gemini-3.1-flash-lite"
+  },
+  "401876421": {
+   "text": "PSG가 Le Havre를 상대로 5-1 대승을 거두며 원정에서 승점 3점을 획득했다. 경기 초반 18' Josh Maja에게 선제골을 허용했으나, 26' Mika Godts의 동점골을 시작으로 28', 55', 69'에 득점한 Achraf Hakimi의 해트트릭과 62' Senny Mayulu의 골이 터지며 경기를 뒤집었다. PSG는 70.7%의 점유율과 90%의 패스 성공률을 기록하며 경기를 주도했고, 팬 투표와 모델, Elo 예측 모두 PSG의 승리를 예상한 결과가 적중했다.",
+   "date": "2026-10-30",
+   "home": "Le Havre",
+   "away": "PSG",
+   "at": "2026-10-30T20:34:59+00:00",
+   "model": "gemini-3.1-flash-lite"
+  },
+  "401876416": {
+   "text": "Nice가 Allianz Riviera에서 Rennes를 상대로 5-2 대승을 거두며 경기를 마무리했다. 12', 34', 73'에 득점하며 해트트릭을 기록한 Elye Wahi의 활약이 돋보였고, Rennes는 Sebastian Szymanski와 Boulaye Dia가 득점했으나 승부를 뒤집지 못했다. Rennes가 점유율 52.5%와 유효 슈팅 9개를 기록하며 기록상 우위를 점했음에도 Nice는 8개의 유효 슈팅으로 5골을 만들어내는 높은 효율을 보였다. 경기 전 모델과 Elo가 모두 Rennes의 승리를 예측했으나 실제 결과는 Nice의 승리로 끝나며 예측이 빗나갔다.",
+   "date": "2026-10-30",
+   "home": "Nice",
+   "away": "Rennes",
+   "at": "2026-10-30T20:35:03+00:00",
+   "model": "gemini-3.1-flash-lite"
+  },
+  "5904790": {
+   "text": "Galatasaray가 Konyaspor를 상대로 4대0 대승을 거두며 경기를 마무리했다. 전반 12' Victor Osimhen의 득점을 시작으로 28' Yunus Akgün, 49' Alexey Batrakov, 그리고 55' Rafael Leão의 페널티킥 득점이 이어지며 승기를 잡았다. Galatasaray는 점유율 54.1대45.9, 슈팅 16대9, 유효 슈팅 8대1로 경기 내용에서 상대를 압도했다. 이 경기는 모델과 Elo의 Galatasaray 승리 예측이 적중했다.",
+   "date": "2026-10-30",
+   "home": "Konyaspor",
+   "away": "Galatasaray",
+   "at": "2026-10-30T20:35:28+00:00",
+   "model": "gemini-flash-lite-latest"
   }
  },
  "fails": {}
