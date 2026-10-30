@@ -106,3 +106,25 @@
 {"t": "2026-10-27T04:08:56+00:00", "runner": "local-sofascore-daily", "step": "merge_sofascore", "league": "SerieA", "ok": true, "code": 0, "sec": 2.1}
 {"t": "2026-10-27T04:11:55+00:00", "runner": "local-sofascore-daily", "step": "sofascore", "league": "BelgianProLeague", "ok": false, "code": 1, "sec": 178.7, "note": "Belgian Pro League 26/27 시즌 id 조회 실패"}
 {"t": "2026-10-27T04:11:57+00:00", "runner": "local-sofascore-daily", "step": "merge_sofascore", "league": "BelgianProLeague", "ok": true, "code": 0, "sec": 2.1}
+{"t": "2026-10-30T02:42:58+00:00", "runner": "local-sofascore-daily", "step": "sofascore", "league": "EPL", "ok": false, "code": 1, "sec": 173.6, "note": "Premier League 26/27 시즌 id 조회 실패"}
+{"t": "2026-10-30T02:42:59+00:00", "runner": "local-sofascore-daily", "step": "merge_sofascore", "league": "EPL", "ok": true, "code": 0, "sec": 1.9}
+{"t": "2026-10-30T02:45:51+00:00", "runner": "local-sofascore-daily", "step": "sofascore", "league": "LaLiga", "ok": false, "code": 1, "sec": 171.2, "note": "La Liga 26/27 시즌 id 조회 실패"}
+{"t": "2026-10-30T02:45:53+00:00", "runner": "local-sofascore-daily", "step": "merge_sofascore", "league": "LaLiga", "ok": true, "code": 0, "sec": 1.8}
+{"t": "2026-10-30T02:47:55+00:00", "runner": "local-sofascore-daily", "step": "sofascore", "league": "Bundesliga", "ok": true, "code": 0, "sec": 122.8}
+{"t": "2026-10-30T02:47:57+00:00", "runner": "local-sofascore-daily", "step": "merge_sofascore", "league": "Bundesliga", "ok": true, "code": 0, "sec": 1.9}
+{"t": "2026-10-30T02:49:37+00:00", "runner": "local-sofascore-daily", "step": "sofascore", "league": "SerieA", "ok": true, "code": 0, "sec": 99.7}
+{"t": "2026-10-30T02:49:39+00:00", "runner": "local-sofascore-daily", "step": "merge_sofascore", "league": "SerieA", "ok": true, "code": 0, "sec": 1.7}
+{"t": "2026-10-30T02:52:26+00:00", "runner": "local-sofascore-daily", "step": "sofascore", "league": "Ligue1", "ok": false, "code": 1, "sec": 167.0, "note": "Ligue 1 26/27 시즌 id 조회 실패"}
+{"t": "2026-10-30T02:52:28+00:00", "runner": "local-sofascore-daily", "step": "merge_sofascore", "league": "Ligue1", "ok": true, "code": 0, "sec": 1.9}
+{"t": "2026-10-30T02:55:07+00:00", "runner": "local-sofascore-daily", "step": "sofascore", "league": "LigaPortugal", "ok": true, "code": 0, "sec": 159.4}
+{"t": "2026-10-30T02:55:09+00:00", "runner": "local-sofascore-daily", "step": "merge_sofascore", "league": "LigaPortugal", "ok": true, "code": 0, "sec": 2.2}
+{"t": "2026-10-30T02:56:59+00:00", "runner": "local-sofascore-daily", "step": "sofascore", "league": "Eredivisie", "ok": true, "code": 0, "sec": 109.6}
+{"t": "2026-10-30T02:57:02+00:00", "runner": "local-sofascore-daily", "step": "merge_sofascore", "league": "Eredivisie", "ok": true, "code": 0, "sec": 2.7}
+{"t": "2026-10-30T02:58:48+00:00", "runner": "local-sofascore-daily", "step": "sofascore", "league": "BelgianProLeague", "ok": true, "code": 0, "sec": 106.6}
+{"t": "2026-10-30T02:58:50+00:00", "runner": "local-sofascore-daily", "step": "merge_sofascore", "league": "BelgianProLeague", "ok": true, "code": 0, "sec": 2.1}
+{"t": "2026-10-30T03:18:14+00:00", "runner": "local-sofascore-daily", "step": "sofascore", "league": "EPL", "ok": false, "code": 1, "sec": 184.3, "note": "Premier League 26/27 시즌 id 조회 실패"}
+{"t": "2026-10-30T03:18:17+00:00", "runner": "local-sofascore-daily", "step": "merge_sofascore", "league": "EPL", "ok": true, "code": 0, "sec": 3.2}
+{"t": "2026-10-30T03:21:22+00:00", "runner": "local-sofascore-daily", "step": "sofascore", "league": "LaLiga", "ok": false, "code": 1, "sec": 185.2, "note": "La Liga 26/27 시즌 id 조회 실패"}
+{"t": "2026-10-30T03:21:24+00:00", "runner": "local-sofascore-daily", "step": "merge_sofascore", "league": "LaLiga", "ok": true, "code": 0, "sec": 2.1}
+{"t": "2026-10-30T03:25:44+00:00", "runner": "local-sofascore-daily", "step": "sofascore", "league": "Ligue1", "ok": false, "code": 1, "sec": 259.6, "note": "Ligue 1 26/27 시즌 id 조회 실패"}
+{"t": "2026-10-30T03:25:46+00:00", "runner": "local-sofascore-daily", "step": "merge_sofascore", "league": "Ligue1", "ok": true, "code": 0, "sec": 2.3}
