@@ -1975,6 +1975,38 @@
    "away": "Hartberg",
    "at": "2026-10-30T22:05:58+00:00",
    "model": "gemini-3.1-flash-lite"
+  },
+  "401885408": {
+   "text": "Sporting CP가 Casa Pia를 상대로 2-0 승리를 거두며 경기를 마무리했다. 결정적인 장면은 전반 13' Iván Fresneda의 도움을 받은 Pedro Lima의 득점과 90'+4' Iván Fresneda의 도움으로 이어진 Geny Catamo의 추가골이었다. 경기 내용 면에서는 Sporting CP가 슈팅 23-12, 유효 슈팅 11-2로 상대를 압도했다. 이번 결과는 팬 투표, 모델, Elo 등 사전 예측이 모두 적중한 경기였다.",
+   "date": "2026-10-30",
+   "home": "Casa Pia",
+   "away": "Sporting CP",
+   "at": "2026-10-30T22:29:25+00:00",
+   "model": "gemini-flash-lite-latest"
+  },
+  "401876420": {
+   "text": "Lille가 Lens를 상대로 1-0 승리를 거뒀다. 86'에 Olivier Giroud가 결승골을 터뜨리며 경기를 결정지었다. Lille은 점유율 62.3% 대 37.7%, 슈팅 16-5, 유효 슈팅 7-3으로 경기를 압도했다. 팬 투표는 Lille 승리를 예측해 적중한 반면, 모델과 Elo의 Lens 승리 예측은 빗나갔다.",
+   "date": "2026-10-30",
+   "home": "Lille",
+   "away": "Lens",
+   "at": "2026-10-30T22:29:33+00:00",
+   "model": "gemini-flash-lite-latest"
+  },
+  "5836904": {
+   "text": "Sheffield United가 Wrexham을 상대로 1-0 승리를 거뒀다. 전반 30분 Ben Brereton Díaz가 결승골을 터뜨리며 경기의 승부를 결정지었다. 양 팀은 점유율에서 50.9 대 49.1로 팽팽했으나 슈팅 13대 9, 유효 슈팅 4대 1로 Sheffield United가 공격에서 우위를 보였다. 모델과 Elo 예측 모두 Sheffield United의 승리를 예상해 적중했다.",
+   "date": "2026-10-30",
+   "home": "Sheffield United",
+   "away": "Wrexham",
+   "at": "2026-10-30T22:29:41+00:00",
+   "model": "gemini-flash-lite-latest"
+  },
+  "401882817": {
+   "text": "Espanyol이 Villarreal을 상대로 0-1 승리를 거뒀다. 결승골은 60'에 Leandro Cabrera가 넣었고 Bryan Zaragoza가 도움을 기록했다. Villarreal은 점유율 62.8%와 슈팅 14개를 기록하며 경기를 주도했으나 패배했다. 팬 투표, 모델, Elo의 사전 예측 모두 Villarreal의 승리를 점쳤으나 빗나갔다.",
+   "date": "2026-10-30",
+   "home": "Villarreal",
+   "away": "Espanyol",
+   "at": "2026-10-30T22:29:49+00:00",
+   "model": "gemini-flash-lite-latest"
   }
  },
  "fails": {}
