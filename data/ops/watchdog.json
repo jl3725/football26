@@ -1,15 +1,16 @@
 {
- "checked": "2026-10-29T14:42:41+00:00",
+ "checked": "2026-10-30T14:38:48+00:00",
  "results": {
   "ovr": [],
   "season": [],
   "hub": [
-   "홈 스냅샷이 76시간 전 생성 — daily_data 의 precompute_hub 확인"
+   "홈 스냅샷이 100시간 전 생성 — daily_data 의 precompute_hub 확인"
   ],
   "frontend": [],
   "backend": [],
   "workflows": [
-   "daily_data.yml 최근 실행 failure (2026-10-29T11:02) https://github.com/jl3725/football26/actions/runs/40862266920"
+   "daily_data.yml 최근 실행 failure (2026-10-30T10:59) https://github.com/jl3725/football26/actions/runs/41044722169",
+   "deploy_backend.yml 최근 실행 failure (2026-10-30T10:30) https://github.com/jl3725/football26/actions/runs/41041252251"
   ],
   "news": [],
   "tm_agent": [],
@@ -19,7 +20,8 @@
   "names": [],
   "xg": [],
   "agents": [
-   "ANALYST · 팬 투표 — 마지막 성공 37시간 전(허용 24시간, local-fanvote)"
+   "STATS · Sofascore 평점 — 마지막 성공 55시간 전(허용 48시간, local-sofascore-daily, local-season-weekly)",
+   "SERVING · 백엔드 배포(Render · 코드 바뀐 날만) — 성공 기록 없음(허용 36시간, deploy_backend)"
   ],
   "expectations": [],
   "screen": [],
@@ -27,5 +29,5 @@
   "identity": [],
   "fair_price": []
  },
- "ai_cause": "- `manager_careers` 단계의 코드 1번 오류로 인해 데이터 생성이 중단되었을 가능성이 높으므로, 해당 단계의 로그를 확인해야 합니다. (hub: manager_careers 단계 실패 추정)\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인) (workflows: related_failed_steps 비어 있음)\n- `understat_live`와 `manager_careers` 단계에서 연쇄적인 코드 1번 오류가 발생했으므로, 데이터 수집 및 처리 프로세스의 정상 작동 여부를 점검해야 합니다. (agents: understat_live, manager_careers 단계 실패 추정)"
+ "ai_cause": "**hub**\n- `manager_careers` 단계에서 코드 1번 오류가 반복 발생하여 데이터 전처리가 중단된 것으로 보입니다. (daily_data: manager_careers)\n- 해당 단계의 실행 로그를 확인하여 데이터 처리 로직의 예외 상황을 먼저 점검해야 합니다. (daily_data: manager_careers 추정)\n**workflows**\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인)\n**agents**\n- `manager_careers` 단계의 반복 실패로 인해 `local-sofascore-daily` 등 데이터 수집 작업이 영향을 받았을 가능성이 큽니다. (daily_data: manager_careers)\n- `deploy_backend` 단계에서 코드 1번 오류가 지속되고 있으므로, 배포 스크립트나 환경 설정의 변경 사항을 먼저 확인해야 합니다. (deploy_backend: deploy_backend)"
 }
