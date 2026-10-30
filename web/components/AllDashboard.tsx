@@ -34,6 +34,7 @@ type Pick = (team: string, league?: string, tab?: string) => void;
 type Row = {
   key: string; player: string; club: string; club_logo: string; league: string; photo: string;
   sub: string; why: ReactNode; ovr?: number; trend?: Trend; right?: ReactNode; bare?: boolean;
+  keyWhy?: boolean;   // why 가 이 탭의 핵심(몸값 대비·시장가치 변화) — 폰에서도 이름 아래 한 줄로(폰은 오른쪽 why 칸을 숨긴다)
 };
 
 const TODAY_EN = () => {
@@ -52,6 +53,7 @@ function PlayerRow({ r, rank, onPick }: { r: Row; rank?: number; onPick: Pick })
       <button className="pr5-who" onClick={() => onPick(r.club, r.league)} title={`${r.club} 팀 화면`}>
         <b>{r.player}</b>
         <span>{r.club_logo && <img src={r.club_logo} alt="" />}{r.sub}</span>
+        {r.keyWhy && <span className="pr5-why-m">{r.why}</span>}
       </button>
       <span className="pr5-why">{r.why}</span>
       {r.right ?? (r.ovr != null && <OvrCell ovr={r.ovr} trend={r.trend} bare={r.bare} />)}
@@ -196,10 +198,21 @@ export default function AllDashboard({ onPick, switcher, leagueMap }: {
     { k: "down", label: "FALLERS", rows: (d.movers_down ?? []).map(moverRow) },
     { k: "form", label: "HOT FORM", rows: d.hot_form.map((p) => ({ key: p.player + p.club, player: p.player, club: p.club, club_logo: p.club_logo, league: p.league, photo: p.photo, sub: sub(p.club, p.pos), why: rt(p.rating), ovr: p.ovr, bare: true })) },
     { k: "prospect", label: "PROSPECTS", rows: d.prospects.map((p) => ({ key: p.player + p.club, player: p.player, club: p.club, club_logo: p.club_logo, league: p.league, photo: p.photo, sub: sub(p.club, p.pos), why: <>{ageText(p.age)} · {rtn(p.rating)}</>, ovr: p.ovr, bare: true })) },
-    { k: "value", label: "VALUE PICKS", rows: d.value_picks.map((p) => ({ key: p.player + p.club, player: p.player, club: p.club, club_logo: p.club_logo, league: p.league, photo: p.photo, sub: sub(p.club, p.pos), why: <span title={p.ovr_expected != null ? `같은 나이·포지션·시장가치 선수들의 평균 OVR ${p.ovr_expected}보다 ${p.ovr_gap} 높음` : undefined}>{fmtEur(p.value_eur)}{p.ovr_gap ? <b style={{ color: "var(--positive)", marginLeft: 6 }}>+{p.ovr_gap}</b> : null}</span>, ovr: p.ovr, bare: true })) },
-    { k: "riser", label: "MARKET ▲", rows: d.risers.map((p) => ({ key: p.player + p.club, player: p.player, club: p.club, club_logo: p.club_logo, league: p.league, photo: p.photo, sub: sub(p.club), why: `${fmtEur(p.value_eur)}`, right: <span className="td up">▲{p.pct}%</span> })) },
+    // 가성비 — 숫자에 뜻을 붙인다('€75.0M +5'가 몸값·OVR 변화처럼 읽혔다, 2026-10-30 사용자). 기대 OVR 은 마우스를 올리면
+    { k: "value", label: "VALUE PICKS", rows: d.value_picks.map((p) => ({ key: p.player + p.club, player: p.player, club: p.club, club_logo: p.club_logo, league: p.league, photo: p.photo, sub: sub(p.club, p.pos),
+      why: <span title={p.ovr_expected != null ? `같은 나이·포지션·몸값 선수들의 평균 OVR ${p.ovr_expected} → 실제 ${p.ovr} (${p.ovr_gap && p.ovr_gap > 0 ? "+" : ""}${p.ovr_gap})` : undefined}>{fmtEur(p.value_eur)}{p.ovr_gap ? <> · 몸값 대비 <b style={{ color: "var(--positive)" }}>+{p.ovr_gap}</b></> : null}</span>, ovr: p.ovr, bare: true, keyWhy: true })) },
+    // 시장가치 상승 — 가장 최근 TM 갱신(직전 값 → 갱신 값 · 갱신일). TM 은 리그마다 시즌에 몇 번 몰아서 갱신
+    { k: "riser", label: "MARKET ▲", rows: d.risers.map((p) => ({ key: p.player + p.club, player: p.player, club: p.club, club_logo: p.club_logo, league: p.league, photo: p.photo,
+      sub: sub(p.club, undefined, p.date ? `${p.date.slice(5).replace("-", "/")} 갱신` : undefined),
+      why: p.prev_eur ? `${fmtEur(p.prev_eur)} → ${fmtEur(p.value_eur)}` : fmtEur(p.value_eur), right: <span className="td up">▲{p.pct}%</span>, keyWhy: true })) },
   ].filter((t) => t.rows.length > 0);
   const curMv = MV.find((t) => t.k === mv) ?? MV[0];
+  const MV_INFO: Record<string, ReactNode> = {
+    value: <><p><b>몸값 대비</b> — 같은 나이·포지션·몸값 선수들의 평균 OVR(기대 OVR)보다 실제 OVR 이 얼마나 높은가.</p>
+      <p className="muted">28세 이하 · OVR 70+ · 리그당 3명 · 포지션(GK·DEF·MID·ATT)당 2명, 차이가 같으면 몸값 낮은 순.</p></>,
+    riser: <><p><b>TM 최근 갱신</b> — Transfermarkt 는 리그마다 시즌에 몇 번 몰아서 시장가치를 갱신합니다. 선수마다 가장 최근 갱신에서 오른 폭(직전 값 → 갱신 값).</p>
+      <p className="muted">가장 최근 갱신일 45일 안 · 직전 값 €2M 이상. 갱신이 없는 리그는 비어 있다가 TM 이 갱신하면 들어옵니다.</p></>,
+  };
 
   // ── 리그 순위 ──
   const snaps = d.snapshots.filter((s) => s.table.length > 0);
@@ -328,7 +341,9 @@ export default function AllDashboard({ onPick, switcher, leagueMap }: {
       <div className="h5-row">
         {curMv && (
           <section className="card h5-card">
-            <SectionHead title="MOVERS" kr="선수 동향" meta={curMv.k === "up" || curMv.k === "down" ? `OVR · ${basisTxt} 대비` : `${d.leagues.length}개 리그`} />
+            <SectionHead title="MOVERS" kr="선수 동향"
+              meta={curMv.k === "up" || curMv.k === "down" ? `OVR · ${basisTxt} 대비` : curMv.k === "value" ? "몸값 대비 OVR" : curMv.k === "riser" ? "TM 최근 갱신 기준" : `${d.leagues.length}개 리그`}
+              info={MV_INFO[curMv.k]} />
             <Tabs items={MV.map((t) => ({ k: t.k, label: t.label }))} cur={curMv.k} onChange={(k) => { setMv(k); setMvMore(false); }} />
             <div className="pr5-list">{mvRows.map((r, i) => <PlayerRow key={r.key} r={r} rank={i + 1} onPick={onPick} />)}</div>
             {curMv.rows.length > 6 && <button className="more5" onClick={() => setMvMore((v) => !v)}>{mvMore ? "SHOW LESS" : `SHOW ${curMv.rows.length - 6} MORE`}</button>}

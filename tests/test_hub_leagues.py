@@ -59,3 +59,30 @@ def test_value_picks_expected_ovr() -> None:
     out = M._value_picks(rows)
     assert out and out[0]["player"] == "P7" and out[0]["ovr_gap"] >= 6
     assert all(x["ovr"] >= 70 for x in out)
+
+
+def test_value_picks_line_cap_and_cheaper_first() -> None:
+    """골키퍼 쏠림(12명 중 6명) → 라인당 2명, 차이가 같으면 몸값 낮은 순(2026-10-30 사용자 '+5 가 어색')."""
+    import math
+    import api.main as M
+    rows = []
+    for i in range(80):
+        mv = 1e6 * (1 + i % 20)
+        ln = ("GK", "DEF", "MID", "ATT")[i % 4]
+        lg = ("EPL", "SerieA", "LaLiga", "Bundesliga")[i % 4 // 2 + (i // 40) * 2]
+        ovr = int(round(30 + 2.5 * math.log(mv))) + (7 if ln == "GK" and i < 40 else 0)   # 골키퍼 10명이 다 위
+        rows.append(({"player": f"P{i}", "league": lg, "ovr": ovr}, mv, 22 + i % 6, ln, ovr))
+    out = M._value_picks(rows)
+    assert sum(x["line"] == "GK" for x in out) <= 2
+    gks = [x for x in out if x["line"] == "GK"]
+    assert gks and all(gks[0]["value_eur"] <= g["value_eur"] for g in gks if g["ovr_gap"] == gks[0]["ovr_gap"])
+    assert all("_resid" not in x for x in out)
+
+
+def test_latest_rise_uses_last_value_change_only() -> None:
+    import api.main as M
+    # 기준선 7/1 €30M → 10/14 €50M → 10/20 소속만 바뀜(값 그대로) — 직전 값 €30M, 갱신일 10/14
+    assert M._latest_rise([30e6, 50e6, 50e6], ["2026-07-01", "2026-10-14", "2026-10-20"], 2e6) == (30e6, 50e6, "2026-10-14")
+    assert M._latest_rise([0.8e6, 15e6], ["2026-07-01", "2026-10-14"], 2e6) is None      # 작은 몸값 출발은 % 과장
+    assert M._latest_rise([50e6, 40e6], ["2026-07-01", "2026-10-14"], 2e6) is None        # 하락
+    assert M._latest_rise([30e6], ["2026-10-23"], 2e6) is None                            # 기준선뿐

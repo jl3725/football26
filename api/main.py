@@ -6107,15 +6107,19 @@ def _tier_interleave(items: list[dict], limit: int) -> list[dict]:
     return out
 
 
-def _merit(items: list[dict], key, limit: int = 12, cap: int = 3) -> list[dict]:
-    """리그를 넘나드는 순위 — key 순(실력 순) + 리그당 최대 cap. 라이트 리그 선수는 리그 수준 보정 뒤에도 높을 때만."""
+def _merit(items: list[dict], key, limit: int = 12, cap: int = 3, line_cap: int | None = None) -> list[dict]:
+    """리그를 넘나드는 순위 — key 순(실력 순) + 리그당 최대 cap(+ 라인(GK·DEF·MID·ATT)당 최대 line_cap).
+    라이트 리그 선수는 리그 수준 보정 뒤에도 높을 때만."""
     seen: dict[str, int] = {}
+    by_line: dict[str, int] = {}
     out: list[dict] = []
     for it in sorted(items, key=key):
-        lg = it["league"]
-        if seen.get(lg, 0) >= cap:
+        lg, ln = it["league"], it.get("line")
+        if seen.get(lg, 0) >= cap or (line_cap is not None and ln and by_line.get(ln, 0) >= line_cap):
             continue
         seen[lg] = seen.get(lg, 0) + 1
+        if ln:
+            by_line[ln] = by_line.get(ln, 0) + 1
         out.append(it)
         if len(out) >= limit:
             break
@@ -6123,9 +6127,10 @@ def _merit(items: list[dict], key, limit: int = 12, cap: int = 3) -> list[dict]:
 
 
 def _value_picks(rows: list[tuple], limit: int = 12) -> list[dict]:
-    """VALUE PICKS — 나이·포지션(라인)·시장가치로 기대되는 OVR 보다 얼마나 높은가(28세 이하 · OVR 70+ · 리그당 3명).
+    """VALUE PICKS — 나이·포지션(라인)·시장가치로 기대되는 OVR 보다 얼마나 높은가(28세 이하 · OVR 70+ · 리그당 3명 · 라인당 2명).
     rows = [(카드 dict, 시장가치, 나이, 라인, OVR)] — 기대 OVR 회귀는 900분+ · €1M+ 전원(나이 무관)으로 맞춘다.
-    예전 '평점 ÷ (시장가치 + 3)'은 13개 리그로 늘리자 €0.1~0.5M 노장으로 채워졌고, 시장가치만 보면 노장·골키퍼가 위로 왔다."""
+    예전 '평점 ÷ (시장가치 + 3)'은 13개 리그로 늘리자 €0.1~0.5M 노장으로 채워졌고, 시장가치만 보면 노장·골키퍼가 위로 왔다.
+    2026-10-30 사용자 '+5 가 어색': 12명 중 6명이 골키퍼(GK 시장가치가 OVR 에 비해 늘 낮다) → 라인당 2명, 차이가 같으면 몸값 낮은 순."""
     import numpy as np  # noqa: PLC0415
     if len(rows) < 30:
         return []
@@ -6136,10 +6141,26 @@ def _value_picks(rows: list[tuple], limit: int = 12) -> list[dict]:
     beta, *_ = np.linalg.lstsq(X, y, rcond=None)
     exp = X @ beta
     cards = []
-    for (card, mv, age, _ln, ovr), e in zip(rows, exp):
+    for (card, mv, age, ln, ovr), e in zip(rows, exp):
         if age <= 28 and ovr >= 70:
-            cards.append({**card, "value_eur": mv, "ovr_expected": int(round(e)), "ovr_gap": int(round(ovr - e))})
-    return _merit(cards, key=lambda c: (-(c["ovr"] - c["ovr_expected"]), -c["ovr"]), limit=limit, cap=3)
+            cards.append({**card, "line": ln, "value_eur": mv, "ovr_expected": int(round(e)), "ovr_gap": int(round(ovr - e)),
+                          "_resid": float(ovr - e)})
+    out = _merit(cards, key=lambda c: (-c["ovr_gap"], c["value_eur"], -c["_resid"]), limit=limit, cap=3, line_cap=2)
+    return [{k: v for k, v in c.items() if k != "_resid"} for c in out]
+def _latest_rise(vals: list, dates: list, min_prev: float) -> tuple[float, float, str] | None:
+    """선수 한 명의 시장가치 기록(날짜 순, 처음 = 기준선) → 가장 최근 값 변동이 상승이면 (직전 값, 지금 값, 그 날짜).
+    소속만 바뀐 줄(값 그대로)은 건너뛴다. 직전 값이 min_prev 미만이면 %가 과장돼 뺀다(€0.8M → €15M +1775%, 2026-10-30)."""
+    j = len(vals) - 1
+    while j > 0 and vals[j] == vals[j - 1]:
+        j -= 1
+    if j == 0:
+        return None
+    prev, last = float(vals[j - 1]), float(vals[-1])
+    if prev < min_prev or last <= prev:
+        return None
+    return prev, last, str(dates[j])[:10]
+
+
 _HUB_CACHE: dict = {"key": None, "body": None}
 
 
@@ -6543,8 +6564,11 @@ def _compute_hub_body() -> bytes:
     movers_up = _merit([_mcard(t) for t in mv if t[3] > 0], lambda c: (-c["delta"], -c["ovr"]))
     movers_down = _merit([_mcard(t) for t in mv if t[3] < 0], lambda c: (c["delta"], -c["ovr"]))
 
-    # 시장가치 급등 — 리그별 변경분 기록(market_value_log)의 처음 값 → 지금 값. 예전엔 EPL 한 파일(market_value_history)만
-    # 쌓여 MARKET ▲ 가 EPL 선수뿐이었다(2026-10-23, 13개 리그로)
+    # 시장가치 상승 — 리그별 변경분 기록(market_value_log)에서 선수마다 '가장 최근 변동'(직전 값 → 바뀐 값, 그 날짜).
+    # TM 은 리그마다 시즌에 몇 번 몰아서 갱신한다 — 예전 '기록 처음 → 지금' 누적은 몇 주째 같은 EPL 목록이었고, €0.8M → €15M
+    # (+1775%) 같은 작은 몸값이 맨 위였다(2026-10-30 사용자). 가장 최근 변동일에서 RISE_WINDOW_D 안 갱신만, 직전 값 RISE_MIN_EUR 이상.
+    # 처음 = 기준선(전원)이라 기준선 뒤 갱신이 없는 리그는 아직 비어 있다(TM 이 그 리그를 갱신하면 자동으로 들어온다)
+    RISE_WINDOW_D, RISE_MIN_EUR = 45, 2_000_000
     risers = []
     try:
         rows = []
@@ -6558,16 +6582,21 @@ def _compute_hub_body() -> bytes:
             for player, grp in m.groupby("player"):
                 if len(grp) < 2:
                     continue
-                first, last = float(grp.iloc[0]["_v"]), float(grp.iloc[-1]["_v"])
-                sq = str(grp.iloc[-1]["squad"]); lg = squad2league.get(sq) or lg_
-                if first <= 0 or last <= first:
+                rise = _latest_rise(grp["_v"].tolist(), grp["date"].astype(str).tolist(), RISE_MIN_EUR)
+                if rise is None:
                     continue
+                prev, last, when = rise
+                sq = str(grp.iloc[-1]["squad"]); lg = squad2league.get(sq) or lg_
                 rows.append({"player": str(player), "club": sq, "club_logo": tm.team_logo(sq),
-                             "value_eur": last, "delta_eur": last - first,
-                             "pct": round((last - first) / first * 100),
+                             "value_eur": last, "prev_eur": prev, "delta_eur": last - prev, "date": when,
+                             "pct": round((last - prev) / prev * 100),
                              # 예전엔 비워 둬서 '시장가치 급등' 탭 사진이 전부 빠졌다(Dowman 등)
                              "photo": _resolve_photo(str(player), _players_lookup(lg), lg),
                              "league": lg, "league_name": _lname(lg)})
+        if rows:
+            newest = max(r["date"] for r in rows)
+            cut = (datetime.date.fromisoformat(newest) - datetime.timedelta(days=RISE_WINDOW_D)).isoformat()
+            rows = [r for r in rows if r["date"] >= cut]
         rows.sort(key=lambda x: -x["pct"])
         risers = _interleave(rows, 12)
     except Exception:  # noqa: BLE001

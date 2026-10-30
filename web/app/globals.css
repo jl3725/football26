@@ -2511,6 +2511,7 @@ body {
 .pr5-who span img { width: 14px; height: 14px; object-fit: contain; flex-shrink: 0; }
 .pr5-who:hover b { color: #fff; }
 .pr5-why { font-size: 12px; color: var(--muted-2); white-space: nowrap; flex-shrink: 0; }
+.pr5-who .pr5-why-m { display: none; }
 .pr5-ovr { display: inline-flex; align-items: baseline; justify-content: flex-end; gap: 1px; min-width: 54px; font: 700 21px/1 var(--font-num); flex-shrink: 0; }
 .pr5-ovr .trend { font-size: 13px; }
 .seg5 { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 6px; }
@@ -2642,6 +2643,7 @@ body {
   .mh5-foot { flex-direction: column; align-items: stretch; }
   .btn5 { justify-content: center; }
   .pr5-why { display: none; }
+  .pr5-who .pr5-why-m { display: block; font-size: 11.5px; color: var(--muted-2); }
   .card.h5-card { padding: 16px; }
   .pv-two { grid-template-columns: 1fr; }
   .workspace-header.is-home { justify-content: stretch; }

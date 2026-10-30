@@ -664,7 +664,9 @@ export type HubForm = { player: string; club: string; club_logo: string; rating:
   rating_adj?: number };   // 리그 수준만큼 뺀 평점(리그를 넘나드는 순위 기준)
 // VALUE PICKS — 나이·포지션·시장가치로 기대되는 OVR 보다 얼마나 높은가(ovr_gap)
 export type HubValue = HubForm & { value_eur: number; ovr_expected?: number; ovr_gap?: number };
-export type HubRiser = { player: string; club: string; club_logo: string; value_eur: number; delta_eur: number; pct: number; photo: string; league: string; league_name: string };
+// 시장가치 상승 — 선수마다 가장 최근 TM 갱신(prev_eur → value_eur, date). 옛 스냅샷엔 prev_eur·date 가 없을 수 있음
+export type HubRiser = { player: string; club: string; club_logo: string; value_eur: number; delta_eur: number; pct: number; photo: string; league: string; league_name: string;
+  prev_eur?: number; date?: string };
 export type HubGoal = { player: string; club: string; club_logo: string; goals: number; assists: number; ovr: number; age: number; photo: string; league: string; league_name: string };
 export type HubContract = { player: string; club: string; club_logo: string; until: string; value_eur: number; ovr: number; age: number; photo: string; league: string; league_name: string };
 export type HubInjury = { player: string; club: string; club_logo: string; event: string; injury: string; date: string; photo: string; league: string; league_name: string };
