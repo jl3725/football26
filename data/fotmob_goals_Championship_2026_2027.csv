@@ -537,8 +537,8 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5836887,2026-10-23,eng.2,Bolton Wanderers,Middlesbrough,45.0,Thelonius Bair,RegularPlay,0,0.192123994231224
 5836887,2026-10-23,eng.2,Middlesbrough,Bolton Wanderers,73.0,Amario Cozier-Duberry,RegularPlay,0,0.1612358838319778
 5836887,2026-10-23,eng.2,Middlesbrough,Bolton Wanderers,78.0,Will Lankshear,FastBreak,0,0.6013240218162537
-5836886,2026-10-24,eng.2,Blackburn Rovers,Wrexham,44.0,Andri Guðjohnsen,RegularPlay,0,0.16062866151332855
-5836886,2026-10-24,eng.2,Blackburn Rovers,Wrexham,79.0,Andri Guðjohnsen,RegularPlay,0,0.07403293251991272
+5836886,2026-10-24,eng.2,Blackburn Rovers,Wrexham,44.0,Andri Guðjohnsen,RegularPlay,0,0.1606286615133285
+5836886,2026-10-24,eng.2,Blackburn Rovers,Wrexham,79.0,Andri Guðjohnsen,RegularPlay,0,0.0740329325199127
 5836886,2026-10-24,eng.2,Wrexham,Blackburn Rovers,,,none,0,
 5836888,2026-10-24,eng.2,Cardiff City,Birmingham City,31.0,Yousef Salech,RegularPlay,0,0.6557559370994568
 5836888,2026-10-24,eng.2,Birmingham City,Cardiff City,,,none,0,
@@ -548,28 +548,30 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5836889,2026-10-24,eng.2,Norwich City,Charlton Athletic,76.0,Ivan Mesík,OwnGoal,1,
 5836890,2026-10-24,eng.2,Burnley,Lincoln City,39.0,Andréas Hountondji,FromCorner,0,0.9111565351486206
 5836890,2026-10-24,eng.2,Lincoln City,Burnley,45.0,Ben House,ThrowInSetPiece,0,0.5209082961082458
-5836890,2026-10-24,eng.2,Lincoln City,Burnley,49.0,Mikkel Ladefoged,RegularPlay,0,0.13774262368679047
-5836890,2026-10-24,eng.2,Lincoln City,Burnley,57.0,Dom Jefferies,FromCorner,0,0.058941300958395004
+5836890,2026-10-24,eng.2,Lincoln City,Burnley,49.0,Mikkel Ladefoged,RegularPlay,0,0.1377426236867904
+5836890,2026-10-24,eng.2,Lincoln City,Burnley,57.0,Dom Jefferies,FromCorner,0,0.058941300958395
 5836890,2026-10-24,eng.2,Lincoln City,Burnley,67.0,Mikkel Ladefoged,RegularPlay,0,0.2516542971134186
 5836891,2026-10-24,eng.2,Millwall,Portsmouth,6.0,Jenson Metcalfe,RegularPlay,0,0.199111670255661
 5836891,2026-10-24,eng.2,Portsmouth,Millwall,16.0,Lyndon Dykes,OwnGoal,1,
 5836891,2026-10-24,eng.2,Portsmouth,Millwall,82.0,Thomas Waddingham,RegularPlay,0,0.1946117281913757
 5836892,2026-10-24,eng.2,Preston North End,West Bromwich Albion,78.0,Andrew Hughes,FromCorner,0,0.3614497184753418
-5836892,2026-10-24,eng.2,West Bromwich Albion,Preston North End,82.0,Aune Selland Heggebø,RegularPlay,0,0.37830862402915955
+5836892,2026-10-24,eng.2,West Bromwich Albion,Preston North End,82.0,Aune Selland Heggebø,RegularPlay,0,0.3783086240291595
 5836893,2026-10-24,eng.2,Queens Park Rangers,Swansea City,2.0,Richard Kone,RegularPlay,0,0.7845023274421692
-5836893,2026-10-24,eng.2,Queens Park Rangers,Swansea City,9.0,Richard Kone,RegularPlay,0,0.19574512541294098
+5836893,2026-10-24,eng.2,Queens Park Rangers,Swansea City,9.0,Richard Kone,RegularPlay,0,0.1957451254129409
 5836893,2026-10-24,eng.2,Queens Park Rangers,Swansea City,15.0,Richard Kone,Penalty,0,0.7884
-5836893,2026-10-24,eng.2,Queens Park Rangers,Swansea City,45.0,Jimmy Dunne,FromCorner,0,0.19253458082675934
+5836893,2026-10-24,eng.2,Queens Park Rangers,Swansea City,45.0,Jimmy Dunne,FromCorner,0,0.1925345808267593
 5836893,2026-10-24,eng.2,Queens Park Rangers,Swansea City,86.0,Jimmy Dunne,SetPiece,0,0.360900342464447
 5836893,2026-10-24,eng.2,Swansea City,Queens Park Rangers,,,none,0,
 5836894,2026-10-24,eng.2,Derby County,Sheffield United,37.0,Bobby Clark,RegularPlay,0,0.4238434135913849
 5836894,2026-10-24,eng.2,Sheffield United,Derby County,79.0,Patrick Bamford,FromCorner,0,0.8269892334938049
 5836895,2026-10-24,eng.2,Stoke City,Bristol City,,,none,0,
 5836895,2026-10-24,eng.2,Bristol City,Stoke City,,,none,0,
-5836896,2026-10-24,eng.2,Southampton,West Ham United,2.0,Kuryu Matsuki,RegularPlay,0,0.16839048266410828
+5836896,2026-10-24,eng.2,Southampton,West Ham United,2.0,Kuryu Matsuki,RegularPlay,0,0.1683904826641082
 5836896,2026-10-24,eng.2,Southampton,West Ham United,11.0,James Bree,RegularPlay,0,0.0381317101418972
-5836896,2026-10-24,eng.2,West Ham United,Southampton,24.0,Kyle Walker-Peters,RegularPlay,0,0.06441447883844376
+5836896,2026-10-24,eng.2,West Ham United,Southampton,24.0,Kyle Walker-Peters,RegularPlay,0,0.0644144788384437
 5836896,2026-10-24,eng.2,Southampton,West Ham United,34.0,Lewis Dobbin,RegularPlay,0,0.801673412322998
-5836896,2026-10-24,eng.2,West Ham United,Southampton,90.0,Tomás Souček,RegularPlay,0,0.06847024708986282
-5836897,2026-10-24,eng.2,Wolves,Watford,35.0,Adam Armstrong,RegularPlay,0,0.05191085487604141
+5836896,2026-10-24,eng.2,West Ham United,Southampton,90.0,Tomás Souček,RegularPlay,0,0.0684702470898628
+5836897,2026-10-24,eng.2,Wolves,Watford,35.0,Adam Armstrong,RegularPlay,0,0.0519108548760414
 5836897,2026-10-24,eng.2,Watford,Wolves,,,none,0,
+5836904,2026-10-30,eng.2,Sheffield United,Wrexham,30.0,Ben Brereton,RegularPlay,0,0.23669935762882233
+5836904,2026-10-30,eng.2,Wrexham,Sheffield United,,,none,0,

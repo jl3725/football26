@@ -331,11 +331,11 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 603,
+   "total": 605,
    "exact": 491,
    "rule": 23,
    "ambiguous": 1,
-   "orphan": 89,
+   "orphan": 91,
    "orphans": [
     {
      "squad": "Celta Vigo",
@@ -365,6 +365,11 @@
     {
      "squad": "Málaga",
      "name": "Eneko Jauregui",
+     "starts": 1
+    },
+    {
+     "squad": "Espanyol",
+     "name": "Alejandro Santiago Vargas",
      "starts": 1
     },
     {
@@ -456,11 +461,6 @@
      "squad": "Espanyol",
      "name": "Adama Timera",
      "starts": 0
-    },
-    {
-     "squad": "Espanyol",
-     "name": "Llorenç Serred",
-     "starts": 0
     }
    ]
   },
@@ -549,9 +549,9 @@
    ]
   },
   "espn_subs": {
-   "total": 438,
+   "total": 441,
    "exact": 433,
-   "rule": 2,
+   "rule": 5,
    "ambiguous": 1,
    "orphan": 3,
    "orphans": [
@@ -587,8 +587,8 @@
    ]
   },
   "match_events": {
-   "total": 377,
-   "exact": 377,
+   "total": 378,
+   "exact": 378,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1573,8 +1573,8 @@
    ]
   },
   "espn_subs": {
-   "total": 400,
-   "exact": 391,
+   "total": 401,
+   "exact": 392,
    "rule": 6,
    "ambiguous": 0,
    "orphan": 3,
@@ -1605,8 +1605,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 295,
-   "exact": 295,
+   "total": 296,
+   "exact": 296,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
