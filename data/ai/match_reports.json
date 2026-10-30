@@ -1951,6 +1951,30 @@
    "away": "Galatasaray",
    "at": "2026-10-30T20:35:28+00:00",
    "model": "gemini-flash-lite-latest"
+  },
+  "401878956": {
+   "text": "Club Brugge가 Zulte Waregem을 상대로 4-2 승리를 거두며 원정에서 귀중한 승점 3점을 챙겼다. 경기 초반 3' Hugo Vetlesen의 득점을 시작으로 Carlos Forbs, Nicolo Tresoldi, Hans Vanaken이 연달아 골망을 흔들며 전반을 4-1로 마쳤고, Zulte Waregem은 Tobias Hedl이 32'와 59'에 득점하며 분전했다. Club Brugge는 점유율 75.8%와 슈팅 17개를 기록하며 경기 내용 면에서 Zulte Waregem을 압도했다. 이번 결과는 Club Brugge의 승리를 점쳤던 팬 투표와 모델, Elo 예측을 모두 적중시켰다.",
+   "date": "2026-10-30",
+   "home": "Zulte Waregem",
+   "away": "Club Brugge",
+   "at": "2026-10-30T22:05:49+00:00",
+   "model": "gemini-3.1-flash-lite"
+  },
+  "401884746": {
+   "text": "SV Elversberg가 Mainz 05를 상대로 4-1 대승을 거두며 리그 경기에서 완승을 기록했다. 경기 초반 7' Felix Keidel의 득점을 시작으로 26' Francis-Ikechukwu Onyeka, 45'+1' Maurice Krattenmacher가 연달아 골을 넣으며 전반을 3-0으로 마쳤고, 90' Cole Campbell의 추가 골 이후 90'+2' Benedict Hollerbach가 한 골을 만회했으며 90'+5'에는 Stefan Posch가 퇴장당했다. SV Elversberg는 점유율 54.1%와 유효 슈팅 6개를 기록하며 10개의 슈팅에 그친 Mainz 05를 압도했다. 이번 결과는 Mainz 05의 승리를 점쳤던 팬 투표와 모델, Elo 예측을 모두 빗나가게 했다.",
+   "date": "2026-10-30",
+   "home": "SV Elversberg",
+   "away": "Mainz 05",
+   "at": "2026-10-30T22:05:54+00:00",
+   "model": "gemini-3.1-flash-lite"
+  },
+  "5846013": {
+   "text": "Hartberg가 Merkur Arena에서 Grazer AK를 상대로 4-0 대승을 거두며 완승을 기록했다. 전반 12'와 25'에 터진 Marco Hoffman의 멀티 골로 기선을 제압한 Hartberg는 63' Nikolaus Feldhofer의 득점과 66' Donovan Pines의 자책골을 묶어 승리를 확정 지었다. 경기 중 Grazer AK는 3개, Hartberg는 2개의 경고를 받았으며, 당초 Grazer AK의 승리를 점쳤던 모델과 Elo의 예측은 모두 빗나갔다.",
+   "date": "2026-10-30",
+   "home": "Grazer AK",
+   "away": "Hartberg",
+   "at": "2026-10-30T22:05:58+00:00",
+   "model": "gemini-3.1-flash-lite"
   }
  },
  "fails": {}
