@@ -2111,9 +2111,108 @@
    "away": "RB Leipzig",
    "at": "2026-10-31T17:03:09+00:00",
    "model": "gemini-3.1-flash-lite"
+  },
+  "401882818": {
+   "text": "Rayo Vallecano가 Celta Vigo를 상대로 3대0 승리를 거뒀다. 전반 36'와 후반 55'에 터진 Jorge de Frutos의 멀티골과 후반 73' Unai López의 득점이 더해지며 승부가 갈렸다. 경기 통계에서 Rayo Vallecano는 슈팅 14대11, 유효 슈팅 8대0으로 공격을 주도했다. 팬 투표와 모델이 Celta Vigo의 승리를 예측했던 것과 달리 Elo의 승리 예측이 적중했다.",
+   "date": "2026-10-31",
+   "home": "Rayo Vallecano",
+   "away": "Celta Vigo",
+   "at": "2026-10-31T17:34:00+00:00",
+   "model": "gemini-flash-lite-latest"
+  },
+  "401879251": {
+   "text": "Bournemouth가 Leeds United를 상대로 2-0 승리를 거뒀다. 전반 31' Justin Kluivert의 도움을 받은 Evanilson의 결승골과 90'+4' Junior Kroupi의 도움으로 터진 Amine Adli의 득점이 이어졌다. 점유율에서는 Leeds United가 56.1%로 우세했으나, 슈팅 수 11대 10, 유효 슈팅 수 5대 1로 Bournemouth가 골문 앞 집중력에서 앞섰다. 팬 투표, 모델, Elo의 사전 예측 모두 Bournemouth 승리를 정확히 맞혔다.",
+   "date": "2026-10-31",
+   "home": "Bournemouth",
+   "away": "Leeds United",
+   "at": "2026-10-31T17:34:31+00:00",
+   "model": "gemini-flash-lite-latest"
+  },
+  "401879249": {
+   "text": "Brentford가 Gtech Community Stadium에서 Nottingham Forest를 2-0으로 꺾으며 승리를 거뒀다. 30' Nikola Milenkovic의 자책골로 리드를 잡은 Brentford는 76' Jaidon Anthony의 도움을 받은 Igor Thiago의 추가 골로 승부에 쐐기를 박았다. Nottingham Forest는 점유율 58.3%와 슈팅 15개를 기록하며 공세를 펼쳤으나 유효 슈팅은 1개에 그쳤고, Brentford는 효율적인 경기 운영으로 팬 투표와 모델, Elo 예측을 모두 적중시켰다.",
+   "date": "2026-10-31",
+   "home": "Brentford",
+   "away": "Nottingham Forest",
+   "at": "2026-10-31T17:34:33+00:00",
+   "model": "gemini-3.1-flash-lite"
+  },
+  "401879245": {
+   "text": "Brighton이 Manchester City를 상대로 1-0 승리를 거뒀다. 전반 11'에 Maxim De Cuyper의 도움을 받은 Yasin Ayari가 결승골을 터뜨렸다. Manchester City가 점유율 62.4대 37.6, 슈팅 21대 7로 경기를 주도했으나 패배했다. 팬 투표, 모델, Elo의 Manchester City 승리 예측은 모두 빗나갔다.",
+   "date": "2026-10-31",
+   "home": "Manchester City",
+   "away": "Brighton",
+   "at": "2026-10-31T17:35:01+00:00",
+   "model": "gemini-flash-lite-latest"
+  },
+  "401878958": {
+   "text": "Mechelen가 Genk를 상대로 1-0 승리를 거뒀다. 전반 22'에 터진 Simion Michez의 득점이 결승골이 되었다. Genk가 점유율 58%와 슈팅 20개로 경기를 주도했으나 Mechelen가 골을 지켜냈다. 팬 투표, 모델, Elo 예측 모두 Genk의 승리를 점쳤으나 빗나갔다.",
+   "date": "2026-10-31",
+   "home": "Mechelen",
+   "away": "Genk",
+   "at": "2026-10-31T17:36:45+00:00",
+   "model": "gemini-flash-lite-latest"
+  },
+  "5836907": {
+   "text": "Swansea City가 Blackburn Rovers를 상대로 4-0 대승을 거두었다. Swansea City는 11' Stephen Eustáquio의 선제골을 시작으로 32' Joseph Opoku, 36' Filip Lissah, 59' Ross Stewart가 연속 골을 터뜨리며 점수 차를 벌렸다. Swansea City는 점유율 66.8% 대 33.2%, 슈팅 20개 대 7개, 유효 슈팅 9개 대 2개로 Blackburn Rovers를 경기 내내 압도했다. 이번 결과는 Swansea City의 승리 확률을 각각 46%와 47%로 바라본 모델과 Elo의 사전 예측에 부합했다.",
+   "date": "2026-10-31",
+   "home": "Swansea City",
+   "away": "Blackburn Rovers",
+   "at": "2026-10-31T17:37:20+00:00",
+   "model": "gemini-3.5-flash"
+  },
+  "5836898": {
+   "text": "Bristol City가 Bolton Wanderers 원정 경기에서 3-2 역전승을 거두었다. Bristol City는 13' Dominic Ballard의 선제골 이후 16' Josh Sheehan과 57' Sam Dalby에게 연속 실점하며 끌려갔으나, 84' Sam Bell의 동점골과 90'+3' Scott Twine의 결승골로 극적인 승리를 거머쥐었다. Bolton Wanderers가 점유율 65.0%와 슈팅 19개로 경기를 주도했으나 유효 슈팅에서는 9개를 기록한 Bristol City가 앞섰다. 이 경기는 경기 전 Bolton Wanderers의 승리를 전망했던 모델과 Elo의 예측을 모두 비껴갔다.",
+   "date": "2026-10-31",
+   "home": "Bolton Wanderers",
+   "away": "Bristol City",
+   "at": "2026-10-31T17:38:02+00:00",
+   "model": "gemini-3.5-flash"
+  },
+  "5836899": {
+   "text": "Burnley와 Portsmouth의 경기는 0-0 무승부로 종료되었다. Burnley는 슈팅 수 18-5, 유효 슈팅 4-0으로 경기를 주도하며 Portsmouth를 몰아붙였으나 득점에 실패했고, 양 팀은 각각 1개의 경고를 기록했다. Burnley의 승리를 점쳤던 모델과 Elo의 예측은 이번 결과로 빗나갔다.",
+   "date": "2026-10-31",
+   "home": "Burnley",
+   "away": "Portsmouth",
+   "at": "2026-10-31T17:38:03+00:00",
+   "model": "gemini-3.1-flash-lite"
+  },
+  "5836909": {
+   "text": "Wolves가 Cardiff City를 상대로 3대0 승리를 거뒀다. 전반 10' Fernando López의 헤더 선제골을 시작으로, 15' Adam Armstrong, 58' Ladislav Krejcí가 차례로 헤더 득점을 기록하며 경기를 매듭지었다. Cardiff City가 점유율 61.3대38.7과 유효 슈팅 9대4로 우세한 경기를 펼쳤으나, Wolves는 골키퍼의 선방 9개를 바탕으로 실점을 막았다. 사전에 Wolves 승리를 예상했던 모델과 Elo 예측은 적중했다.",
+   "date": "2026-10-31",
+   "home": "Wolves",
+   "away": "Cardiff City",
+   "at": "2026-10-31T17:38:17+00:00",
+   "model": "gemini-flash-lite-latest"
+  },
+  "5836901": {
+   "text": "Middlesbrough가 Charlton Athletic을 상대로 3-0 완승을 거두며 경기를 마무리했다. 전반 12' Sebastian Berhalter의 선제골에 이어 Will Lankshear가 44'와 82'에 연속 골을 터뜨리며 승부를 결정지었다. Middlesbrough는 점유율 57.8대 42.2, 슈팅 수 16대 7, 유효 슈팅 수 6대 0으로 경기를 압도했다. 경기 전 Middlesbrough의 승리를 예상했던 모델과 Elo의 예측은 정확히 적중했다.",
+   "date": "2026-10-31",
+   "home": "Middlesbrough",
+   "away": "Charlton Athletic",
+   "at": "2026-10-31T17:38:25+00:00",
+   "model": "gemini-flash-lite-latest"
+  },
+  "5836902": {
+   "text": "Millwall가 Derby County를 상대로 4-1 승리를 거뒀다. 전반 3'과 10' Kyrell Lisbie의 연속골을 시작으로 17' Luke Cundle, 84' Jake Cooper가 득점했고, Derby County는 87' Filip Bilbija가 만회골을 넣었다. Millwall는 점유율 55.5%대 44.5%, 슈팅 22대 13, 유효 슈팅 9대 4로 경기를 압도했다. 모델과 Elo의 Millwall 승리 예측은 적중했다.",
+   "date": "2026-10-31",
+   "home": "Millwall",
+   "away": "Derby County",
+   "at": "2026-10-31T17:38:33+00:00",
+   "model": "gemini-flash-lite-latest"
+  },
+  "5836905": {
+   "text": "Southampton가 Queens Park Rangers를 상대로 4-1 승리를 거뒀다. 전반 11' Kuryu Matsuki의 득점으로 앞서간 Southampton는 후반 55' Cameron Bragg, 후반 66' Keven Schlotterbeck, 후반 90'+5' Welington의 추가골이 터졌고, Queens Park Rangers는 후반 68' Richard Kone이 한 골을 만회했다. 경기 기록에서 Southampton는 슈팅 19-12, 유효 슈팅 9-2로 우위를 점했다. 이 경기는 Southampton 승리를 점쳤던 모델과 Elo의 사전 예측과 일치했다.",
+   "date": "2026-10-31",
+   "home": "Southampton",
+   "away": "Queens Park Rangers",
+   "at": "2026-10-31T17:38:47+00:00",
+   "model": "gemini-flash-lite-latest"
   }
  },
  "fails": {
-  "5904793": 1
+  "5904793": 1,
+  "401879247": 1,
+  "401878763": 1,
+  "5836908": 1
  }
 }
