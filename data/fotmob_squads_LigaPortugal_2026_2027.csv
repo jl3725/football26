@@ -5,7 +5,7 @@ Porto,João Afonso,1603224,keepers,GK,Goalkeeper,GK,19,2007-04-30,50.0,POR,False
 Porto,Diogo Costa,795630,keepers,GK,Goalkeeper,GK,27,1999-09-19,99.0,POR,False,,2026-10-31
 Porto,Jakub Kiwior,1021834,defenders,"CB,LB",Centre-Back,DF,26,2000-02-15,4.0,POL,False,,2026-10-31
 Porto,Jan Bednarek,490868,defenders,CB,Centre-Back,DF,30,1996-04-12,5.0,POL,False,,2026-10-31
-Porto,Chris Smalling,165823,defenders,CB,Centre-Back,DF,36,1989-11-22,6.0,ENG,False,,2026-10-31
+Porto,Chris Smalling,165823,defenders,CB,Centre-Back,DF,36,1989-11-22,6.0,ENG,True,Late November 2027,2026-10-31
 Porto,Zaidu Sanusi,1079056,defenders,LB,Left-Back,DF,29,1997-06-13,12.0,NGA,False,,2026-10-31
 Porto,Nehuén Pérez,902383,defenders,CB,Centre-Back,DF,26,2000-06-24,18.0,ARG,False,,2026-10-31
 Porto,Alberto Costa,1387439,defenders,RB,Right-Back,DF,23,2003-09-29,20.0,POR,False,,2026-10-31
@@ -29,7 +29,7 @@ Porto,Borja Sainz,1083204,attackers,LW,Left Winger,FW,25,2001-02-21,17.0,ESP,Fal
 Porto,André Silva,388523,attackers,ST,Centre-Forward,FW,30,1995-11-06,19.0,POR,False,,2026-10-31
 Porto,Santiago Giménez,954092,attackers,ST,Centre-Forward,FW,25,2001-04-18,29.0,MEX,False,,2026-10-31
 Porto,Duarte Cunha,1766344,attackers,RW,Right Winger,FW,18,2008-01-25,57.0,POR,False,,2026-10-31
-Porto,Oskar Pietuszewski,1647807,attackers,LW,Left Winger,FW,18,2008-05-20,77.0,POL,False,,2026-10-31
+Porto,Oskar Pietuszewski,1647807,attackers,LW,Left Winger,FW,18,2008-05-20,77.0,POL,True,Late November 2026,2026-10-31
 Benfica,Anatoliy Trubin,1022350,keepers,GK,Goalkeeper,GK,25,2001-08-01,1.0,UKR,False,,2026-10-31
 Benfica,Samuel Soares,1201004,keepers,GK,Goalkeeper,GK,24,2002-06-15,24.0,POR,False,,2026-10-31
 Benfica,Clément Lenglet,488412,defenders,CB,Centre-Back,DF,31,1995-06-17,2.0,FRA,False,,2026-10-31
@@ -532,14 +532,15 @@ Estoril,Antef Tsoungui,1089750,defenders,"CB,CDM,CM",Centre-Back,DF,23,2002-12-3
 Estoril,Xavi Sintes,1418042,defenders,CB,Centre-Back,DF,25,2001-08-05,6.0,ESP,False,,2026-10-31
 Estoril,Ismael Sierra,1433007,defenders,CB,Centre-Back,DF,23,2003-03-17,15.0,ESP,False,,2026-10-31
 Estoril,Tiago Parente,1636736,defenders,"LB,LM",Left-Back,DF,22,2004-01-14,19.0,POR,False,,2026-10-31
-Estoril,Roko Jurišić,1202918,defenders,"LB,CB,LWB",Left-Back,DF,25,2001-09-28,21.0,CRO,False,,2026-10-31
+Estoril,Roko Jurišić,1202918,defenders,"LB,CB,LWB,LM",Left-Back,DF,25,2001-09-28,21.0,CRO,False,,2026-10-31
 Estoril,Stélios Andreou,1110862,defenders,"CB,RB",Centre-Back,DF,24,2002-07-24,25.0,CYP,False,,2026-10-31
 Estoril,Samuel Amissah,1441892,defenders,CB,Centre-Back,DF,19,2007-03-07,35.0,ENG,False,,2026-10-31
+Estoril,Kazim,1934827,defenders,,Centre-Back,DF,21,2005-03-28,41.0,BRA,False,,2026-10-31
 Estoril,Jordan Arnolin,2129387,defenders,,Centre-Back,DF,18,2008-04-29,42.0,POR,False,,2026-10-31
 Estoril,Longin Bimai,1795442,defenders,,Centre-Back,DF,20,2006-02-17,57.0,FRA,False,,2026-10-31
 Estoril,Xeka,470810,midfielders,"CM,CDM",Central Midfield,MF,31,1994-11-10,8.0,POR,False,,2026-10-31
 Estoril,Jordan Holsgrove,877568,midfielders,"CM,CDM",Central Midfield,MF,27,1999-09-10,10.0,SCO,False,,2026-10-31
-Estoril,João Carvalho,603808,midfielders,"CAM,RW,LM,CM,LW",Attacking Midfield,MF,29,1997-03-09,12.0,POR,False,,2026-10-31
+Estoril,João Carvalho,603808,midfielders,"CAM,RW,CM,LM,LW",Attacking Midfield,MF,29,1997-03-09,12.0,POR,False,,2026-10-31
 Estoril,Pedro Carvalho,1525164,midfielders,RM,Right Midfield,MF,23,2003-02-14,22.0,POR,False,,2026-10-31
 Estoril,Milan Robin,1359270,midfielders,"CM,RW,CDM,CAM",Central Midfield,MF,26,1999-11-24,44.0,FRA,False,,2026-10-31
 Estoril,Luís Gomes,1368826,midfielders,CM,Central Midfield,MF,22,2004-04-24,80.0,POR,False,,2026-10-31
