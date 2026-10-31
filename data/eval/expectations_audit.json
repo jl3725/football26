@@ -1,0 +1,123 @@
+{
+ "date": "2026-10-31",
+ "results": [
+  {
+   "kind": "influence_top",
+   "league": "EPL",
+   "team": "Arsenal",
+   "player": "Martin Ødegaard|Declan Rice",
+   "ok": true,
+   "detail": "Arsenal 영향력 상위 3: Martin Ødegaard 89, Bukayo Saka 81, Declan Rice 75",
+   "note": "사용자 2026-10-20 — 외데고르·라이스 영향력이 매우 높다(입단 기준으로만 판단하지 말 것)"
+  },
+  {
+   "kind": "captain",
+   "league": "EPL",
+   "team": "Arsenal",
+   "player": "Martin Ødegaard",
+   "ok": true,
+   "detail": "Arsenal 1순위 주장: Martin Ødegaard",
+   "note": "위키 주장단 · 사용자 확인 2026-10-20"
+  },
+  {
+   "kind": "captain_not",
+   "league": "LaLiga",
+   "team": "Barcelona",
+   "player": "Lamine Yamal",
+   "ok": true,
+   "detail": "Barcelona 1순위 주장: Raphinha",
+   "note": "사용자 2026-10-20 — 야말이 메인 주장으로 나옴('5th captain' 파싱 오류)"
+  },
+  {
+   "kind": "bucket_in",
+   "league": "Ligue1",
+   "team": "",
+   "player": "Khvicha Kvaratskhelia",
+   "ok": true,
+   "detail": "Khvicha Kvaratskhelia 버킷 LW(기대 LW)",
+   "note": "사용자 2026-10-19 — 적합도 평가에서 CM 으로 나옴"
+  },
+  {
+   "kind": "fit_natural",
+   "league": "Ligue1",
+   "team": "Arsenal",
+   "player": "Khvicha Kvaratskhelia",
+   "ok": true,
+   "detail": "Khvicha Kvaratskhelia → Arsenal 적합도 기본 역할 Left Winger(기대 Left Winger)",
+   "note": "사용자 2026-10-19 — 적합도 평가 기본 역할은 본 포지션"
+  },
+  {
+   "kind": "bucket_in",
+   "league": "EPL",
+   "team": "",
+   "player": "Johan Manzambi",
+   "ok": true,
+   "detail": "Johan Manzambi 버킷 AM(기대 DM|CM|AM)",
+   "note": "사용자 2026-10-19 — 만잠비는 중앙 미드필더(윙어 아님)"
+  },
+  {
+   "kind": "bucket_in",
+   "league": "EPL",
+   "team": "",
+   "player": "Bukayo Saka",
+   "ok": true,
+   "detail": "Bukayo Saka 버킷 RW(기대 RW|LW)",
+   "note": "사용자 기준 — 사카는 윙어"
+  },
+  {
+   "kind": "similar_not",
+   "league": "EPL",
+   "team": "",
+   "player": "Bukayo Saka",
+   "ok": true,
+   "detail": "Bukayo Saka 유사: Michael Olise, Lamine Yamal, Franco Mastantuono, Florian Thauvin, Gianluca Prestianni, Yan Diomandé",
+   "note": "사용자 2026-10-19 — 사카 유사 선수 1위가 만잠비(중미)"
+  },
+  {
+   "kind": "similar_bucket",
+   "league": "EPL",
+   "team": "",
+   "player": "Bukayo Saka",
+   "ok": true,
+   "detail": "Bukayo Saka 유사 버킷: RW, RW, RW, RW, RW, RW",
+   "note": "사용자 2026-10-19 — 윙어는 윙어끼리 비교"
+  },
+  {
+   "kind": "stat_ge",
+   "league": "EPL",
+   "team": "Manchester City",
+   "player": "Erling Haaland",
+   "ok": true,
+   "detail": "Erling Haaland goals 9.0(기대 8 이상)",
+   "note": "사용자 2026-10-20 — 리그 8골인데 6골로 나옴(주간 FBref). 시즌 누적이라 시즌 안에선 줄지 않음"
+  },
+  {
+   "kind": "radar_shown",
+   "league": "EPL",
+   "team": "Arsenal",
+   "player": "Jurriën Timber",
+   "ok": true,
+   "detail": "Jurriën Timber 레이더 8축 · 표본 1696′ · enough=True",
+   "note": "사용자 2026-10-21 — 팀버·기마랑이스·엔조 육각형 스탯이 안 보임(이번 시즌 리그 분만 보고 숨김)"
+  },
+  {
+   "kind": "radar_shown",
+   "league": "EPL",
+   "team": "Arsenal",
+   "player": "Bruno Guimarães",
+   "ok": true,
+   "detail": "Bruno Guimarães 레이더 8축 · 표본 1809′ · enough=True",
+   "note": "사용자 2026-10-21 — 위와 같음"
+  },
+  {
+   "kind": "radar_shown",
+   "league": "EPL",
+   "team": "Manchester City",
+   "player": "Enzo Fernández",
+   "ok": true,
+   "detail": "Enzo Fernández 레이더 8축 · 표본 2085′ · enough=True",
+   "note": "사용자 2026-10-21 — 위와 같음"
+  }
+ ],
+ "failures": 0
+}

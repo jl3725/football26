@@ -1,0 +1,47 @@
+{
+ "generated": "2026-10-31T11:14:40+00:00",
+ "windows": [
+  {
+   "start": "2026-09-21",
+   "first_match": "2026-09-24",
+   "end": "2026-10-06",
+   "matches": 292,
+   "club_matches": 0,
+   "kind": "break",
+   "comps": [
+    "caf.nations_qual",
+    "concacaf.nations.league",
+    "fifa.friendly",
+    "uefa.nations"
+   ],
+   "label": "9월 A매치 기간"
+  },
+  {
+   "start": "2026-11-09",
+   "first_match": "2026-11-12",
+   "end": "2026-11-17",
+   "matches": 161,
+   "club_matches": 2,
+   "kind": "break",
+   "comps": [
+    "caf.nations_qual",
+    "concacaf.nations.league",
+    "fifa.friendly",
+    "uefa.nations"
+   ],
+   "label": "11월 A매치 기간"
+  },
+  {
+   "start": "2026-12-31",
+   "first_match": "2027-01-07",
+   "end": "2027-02-05",
+   "matches": 51,
+   "club_matches": 392,
+   "kind": "tournament",
+   "comps": [
+    "afc.asian.cup"
+   ],
+   "label": "AFC 아시안컵 2027"
+  }
+ ]
+}

@@ -1,0 +1,160 @@
+{
+ "date": "2026-10-31",
+ "model": "v3.11",
+ "players": 5759,
+ "golden": [],
+ "scout": [
+  {
+   "player": "Rayan Cherki",
+   "league": "EPL",
+   "ovr": 89,
+   "lo": 83,
+   "hi": 87,
+   "off": 2
+  },
+  {
+   "player": "Jeremy Doku",
+   "league": "EPL",
+   "ovr": 88,
+   "lo": 82,
+   "hi": 86,
+   "off": 2
+  },
+  {
+   "player": "Yan Diomandé",
+   "league": "LaLiga",
+   "ovr": 87,
+   "lo": 76,
+   "hi": 85,
+   "off": 2
+  },
+  {
+   "player": "Jamal Musiala",
+   "league": "Bundesliga",
+   "ovr": 81,
+   "lo": 83,
+   "hi": 90,
+   "off": -2
+  },
+  {
+   "player": "Christian Pulisic",
+   "league": "SerieA",
+   "ovr": 81,
+   "lo": 83,
+   "hi": 87,
+   "off": -2
+  },
+  {
+   "player": "Dominik Szoboszlai",
+   "league": "EPL",
+   "ovr": 89,
+   "lo": 85,
+   "hi": 88,
+   "off": 1
+  },
+  {
+   "player": "Bradley Barcola",
+   "league": "EPL",
+   "ovr": 87,
+   "lo": 82,
+   "hi": 86,
+   "off": 1
+  },
+  {
+   "player": "Marc Guéhi",
+   "league": "EPL",
+   "ovr": 88,
+   "lo": 84,
+   "hi": 87,
+   "off": 1
+  },
+  {
+   "player": "Enzo Fernández",
+   "league": "EPL",
+   "ovr": 89,
+   "lo": 85,
+   "hi": 88,
+   "off": 1
+  },
+  {
+   "player": "Nico Williams",
+   "league": "LaLiga",
+   "ovr": 80,
+   "lo": 81,
+   "hi": 86,
+   "off": -1
+  },
+  {
+   "player": "Cristian Romero",
+   "league": "LaLiga",
+   "ovr": 84,
+   "lo": 85,
+   "hi": 88,
+   "off": -1
+  },
+  {
+   "player": "Nicolò Barella",
+   "league": "SerieA",
+   "ovr": 85,
+   "lo": 86,
+   "hi": 89,
+   "off": -1
+  }
+ ],
+ "scout_far": [],
+ "audit": {
+  "rise": {
+   "n": 15,
+   "limit": 25,
+   "desc": "지난 시즌(1,500분+) 대비 +6 이상 — 한 시즌 급등",
+   "examples": [
+    "Diego Moreira(Milan, 22) 81 ← 75",
+    "Luis Milla(Como, 32) 78 ← 71",
+    "Nobel Mendy(Hull City, 22) 74 ← 68",
+    "Nathan Saliba(Villarreal, 22) 73 ← 66",
+    "Adama Camara(Paris FC, 30) 71 ← 64",
+    "Tiago Araújo(Gent, 25) 69 ← 63",
+    "Tibe De Vlieger(Gent, 20) 68 ← 62",
+    "Adnane Abid(Standard Liège, 23) 68 ← 61"
+   ]
+  },
+  "fall": {
+   "n": 1,
+   "limit": 25,
+   "desc": "지난 시즌(1,500분+) 대비 −8 이하 — 급락(부상·이적·데이터 오류?)",
+   "examples": [
+    "André(Göztepe, 24) 63 ← 77"
+   ]
+  },
+  "underperf_high": {
+   "n": 3,
+   "limit": 10,
+   "desc": "OVR 86+ 인데 리그 보정 평점이 포지션 평균보다 0.1 넘게 낮음(900분+)",
+   "examples": [
+    "Achraf Hakimi(PSG, 27) 88 ← 89",
+    "João Neves(PSG, 22) 87 ← 88",
+    "Trent Alexander-Arnold(Real Madrid, 28) 86 ← 85"
+   ]
+  },
+  "young_elite": {
+   "n": 2,
+   "limit": 6,
+   "desc": "21세 이하 OVR 88+",
+   "examples": [
+    "Lamine Yamal(Barcelona, 19) 90 ← 90",
+    "Désiré Doué(PSG, 21) 88 ← 87"
+   ]
+  },
+  "no_value_high": {
+   "n": 4,
+   "limit": 10,
+   "desc": "시장가치 없이 OVR 80+ (TM 매칭 실패·이적 잔류 행)",
+   "examples": [
+    "Jack Grealish(Manchester City, 31) 84",
+    "Robert Sánchez(Chelsea, 28) 82",
+    "Nick Woltemade(Newcastle United, 24) 82",
+    "Joey Veerman(PSV, 27) 81"
+   ]
+  }
+ }
+}

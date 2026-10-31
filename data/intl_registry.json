@@ -1,0 +1,152 @@
+{
+ "date": "2026-10-28",
+ "comps": [
+  {
+   "code": "fifa.world",
+   "name": "FIFA World Cup",
+   "conf": "GLOBAL",
+   "kind": "tournament",
+   "name_ko": "FIFA 월드컵"
+  },
+  {
+   "code": "uefa.nations",
+   "name": "UEFA Nations League",
+   "conf": "UEFA",
+   "kind": "nations_league",
+   "name_ko": "UEFA 네이션스리그"
+  },
+  {
+   "code": "fifa.friendly",
+   "name": "International Friendly",
+   "conf": "GLOBAL",
+   "kind": "friendly",
+   "name_ko": "국제 친선경기"
+  },
+  {
+   "code": "concacaf.nations.league",
+   "name": "Concacaf Nations League",
+   "conf": "CONCACAF",
+   "kind": "nations_league",
+   "name_ko": "CONCACAF 네이션스리그"
+  },
+  {
+   "code": "fifa.worldq.uefa",
+   "name": "FIFA World Cup Qualifying - UEFA",
+   "conf": "GLOBAL",
+   "kind": "qualifier",
+   "name_ko": "FIFA 월드컵 유럽 예선"
+  },
+  {
+   "code": "fifa.wcq.ply",
+   "name": "FIFA World Cup Qualifying - Playoff Tournament",
+   "conf": "GLOBAL",
+   "kind": "qualifier",
+   "name_ko": "FIFA 월드컵 예선 플레이오프"
+  },
+  {
+   "code": "fifa.worldq.concacaf",
+   "name": "FIFA World Cup Qualifying - Concacaf",
+   "conf": "GLOBAL",
+   "kind": "qualifier",
+   "name_ko": "FIFA 월드컵 북중미 예선"
+  },
+  {
+   "code": "fifa.worldq.afc",
+   "name": "FIFA World Cup Qualifying - AFC",
+   "conf": "GLOBAL",
+   "kind": "qualifier",
+   "name_ko": "FIFA 월드컵 아시아 예선"
+  },
+  {
+   "code": "fifa.worldq.caf",
+   "name": "FIFA World Cup Qualifying - CAF",
+   "conf": "GLOBAL",
+   "kind": "qualifier",
+   "name_ko": "FIFA 월드컵 아프리카 예선"
+  },
+  {
+   "code": "fifa.worldq.conmebol",
+   "name": "FIFA World Cup Qualifying - CONMEBOL",
+   "conf": "GLOBAL",
+   "kind": "qualifier",
+   "name_ko": "FIFA 월드컵 남미 예선"
+  },
+  {
+   "code": "fifa.worldq.ofc",
+   "name": "FIFA World Cup Qualifying - OFC",
+   "conf": "GLOBAL",
+   "kind": "qualifier",
+   "name_ko": "FIFA 월드컵 오세아니아 예선"
+  },
+  {
+   "code": "caf.nations",
+   "name": "Africa Cup of Nations",
+   "conf": "CAF",
+   "kind": "tournament",
+   "name_ko": "아프리카 네이션스컵"
+  },
+  {
+   "code": "caf.nations_qual",
+   "name": "Africa Cup of Nations Qualifying",
+   "conf": "CAF",
+   "kind": "qualifier",
+   "name_ko": "아프리카 네이션스컵 예선"
+  },
+  {
+   "code": "concacaf.gold",
+   "name": "Concacaf Gold Cup",
+   "conf": "CONCACAF",
+   "kind": "tournament",
+   "name_ko": "CONCACAF 골드컵"
+  },
+  {
+   "code": "concacaf.gold_qual",
+   "name": "Concacaf Gold Cup Qualifying",
+   "conf": "CONCACAF",
+   "kind": "qualifier",
+   "name_ko": "CONCACAF 골드컵 예선"
+  },
+  {
+   "code": "uefa.euro",
+   "name": "UEFA European Championship",
+   "conf": "UEFA",
+   "kind": "tournament",
+   "name_ko": "UEFA 유럽 축구 선수권 대회"
+  },
+  {
+   "code": "conmebol.america",
+   "name": "Copa América",
+   "conf": "CONMEBOL",
+   "kind": "tournament",
+   "name_ko": "코파 아메리카"
+  },
+  {
+   "code": "afc.asian.cup",
+   "name": "AFC Asian Cup",
+   "conf": "AFC",
+   "kind": "tournament",
+   "name_ko": "AFC 아시안컵"
+  },
+  {
+   "code": "afc.cupq",
+   "name": "AFC Asian Cup Qualifiers",
+   "conf": "AFC",
+   "kind": "qualifier",
+   "name_ko": "AFC 아시안컵 예선"
+  },
+  {
+   "code": "caf.championship",
+   "name": "African Nations Championship",
+   "conf": "CAF",
+   "kind": "tournament",
+   "name_ko": "아프리카 네이션스 챔피언십"
+  },
+  {
+   "code": "caf.cosafa",
+   "name": "COSAFA Cup",
+   "conf": "CAF",
+   "kind": "tournament",
+   "name_ko": "COSAFA 컵"
+  }
+ ]
+}
