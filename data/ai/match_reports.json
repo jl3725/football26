@@ -2071,6 +2071,46 @@
    "away": "Çorum FK",
    "at": "2026-10-31T16:30:46+00:00",
    "model": "gemini-3.1-flash-lite"
+  },
+  "401884751": {
+   "text": "Freiburg가 Augsburg를 상대로 2-1 역전승을 거두며 승점 3점을 획득했다. Augsburg는 18' Michael Gregoritsch의 선제골로 앞서갔으나, 65' Igor Matanovic의 동점골과 85' Cyriaque Irié의 헤더 결승골을 허용하며 경기를 내주었다. Augsburg가 점유율 51.5%와 슈팅 15개를 기록하며 기록상 우위를 점했으나, Freiburg는 효율적인 공격으로 승리를 가져갔다. 이번 결과는 Freiburg의 승리를 점쳤던 팬 투표 예측과는 일치했으나, Augsburg의 승리를 예상했던 모델과 Elo 예측은 빗나갔다.",
+   "date": "2026-10-31",
+   "home": "Augsburg",
+   "away": "Freiburg",
+   "at": "2026-10-31T17:02:51+00:00",
+   "model": "gemini-3.1-flash-lite"
+  },
+  "401884749": {
+   "text": "Gladbach와 SC Paderborn의 경기는 득점 없이 0-0 무승부로 종료되었다. 양 팀은 각각 12개와 13개의 슈팅을 시도하며 4개씩의 유효 슈팅을 기록했으나 승부를 가리지 못했고, 경고는 Gladbach가 2개, SC Paderborn이 3개를 받았다. 점유율은 SC Paderborn이 57%로 Gladbach의 43%보다 높았으며, 패스 성공률 또한 SC Paderborn이 80%로 Gladbach의 70%를 앞섰다. Gladbach의 승리를 예상했던 팬 투표와 모델, Elo의 예측은 모두 빗나갔다.",
+   "date": "2026-10-31",
+   "home": "Gladbach",
+   "away": "SC Paderborn",
+   "at": "2026-10-31T17:02:56+00:00",
+   "model": "gemini-3.1-flash-lite"
+  },
+  "401884748": {
+   "text": "Werder Bremen이 Hoffenheim을 상대로 2-0 승리를 거두며 리그 경기에서 승점 3점을 획득했다. 57' Niclas Füllkrug가 Karl Hein의 도움을 받아 결승골을 기록했고, 82'에는 Marco Grüll의 도움을 받은 Eren Dinkci가 추가 골을 터뜨렸다. 경기 점유율은 Hoffenheim이 58.6%로 앞섰으나, 슈팅 수에서 18대 16으로 우위를 점한 Werder Bremen이 유효 슈팅 4개를 기록하며 효율적인 공격을 펼쳤다. 이번 결과는 Werder Bremen의 승리를 점쳤던 모델과 Elo 예측을 적중시켰으며, Hoffenheim의 승리를 예상했던 팬 투표와는 다른 결과가 나왔다.",
+   "date": "2026-10-31",
+   "home": "Werder Bremen",
+   "away": "Hoffenheim",
+   "at": "2026-10-31T17:02:58+00:00",
+   "model": "gemini-3.1-flash-lite"
+  },
+  "401884753": {
+   "text": "Stuttgart가 Leverkusen을 상대로 4-2 승리를 거두며 원정에서 귀중한 승점 3점을 챙겼다. 경기 초반 14' Ermedin Demirovic과 22' Jamie Leweling의 연속골로 앞서 나간 Stuttgart는 28' Patrik Schick에게 실점했으나, 51' Bilal El Khannouss와 65' Ermedin Demirovic의 추가골로 승기를 굳혔고 Leverkusen은 79' Ibrahim Maza가 헤더로 한 골을 만회하는 데 그쳤다. Leverkusen은 점유율 63.2%와 슈팅 24개를 기록하며 경기를 주도했으나 Stuttgart가 효율적인 공격으로 더 많은 득점을 올렸다. 팬 투표와 모델, Elo 예측 모두 Leverkusen의 승리를 점쳤으나 결과는 Stuttgart의 승리로 끝나며 모든 예측이 빗나갔다.",
+   "date": "2026-10-31",
+   "home": "Leverkusen",
+   "away": "Stuttgart",
+   "at": "2026-10-31T17:03:07+00:00",
+   "model": "gemini-3.1-flash-lite"
+  },
+  "401884747": {
+   "text": "RB Leipzig가 Veltins Arena에서 Schalke 04를 2-0으로 꺾고 승리를 거뒀다. 37' Antonio Nusa가 페널티킥으로 선제골을 기록했고, 78'에는 Antonio Nusa의 도움을 받은 Rômulo가 추가 골을 넣으며 승부에 쐐기를 박았다. RB Leipzig는 점유율 60.3%와 유효 슈팅 10개를 기록하며 1개에 그친 Schalke 04를 압도했다. 이번 결과는 RB Leipzig의 승리를 점쳤던 팬 투표, 모델, Elo 예측 모두와 일치했다.",
+   "date": "2026-10-31",
+   "home": "Schalke 04",
+   "away": "RB Leipzig",
+   "at": "2026-10-31T17:03:09+00:00",
+   "model": "gemini-3.1-flash-lite"
   }
  },
  "fails": {
