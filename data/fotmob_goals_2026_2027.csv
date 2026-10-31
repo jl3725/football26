@@ -471,6 +471,8 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5795495,2026-10-31,eng.1,Bournemouth,Leeds United,31.0,Evanilson,RegularPlay,0,0.4889613389968872
 5795495,2026-10-31,eng.1,Bournemouth,Leeds United,90.0,Amine Adli,RegularPlay,0,0.3209750056266784
 5795495,2026-10-31,eng.1,Leeds United,Bournemouth,,,none,0,
+5795496,2026-10-31,eng.1,Aston Villa,Fulham,39.0,Nicolas Jackson,RegularPlay,0,0.1977415382862091
+5795496,2026-10-31,eng.1,Fulham,Aston Villa,64.0,Zion Suzuki,OwnGoal,1,
 5795497,2026-10-31,eng.1,Brentford,Nottingham Forest,30.0,Nikola Milenković,OwnGoal,1,
 5795497,2026-10-31,eng.1,Brentford,Nottingham Forest,76.0,Igor Thiago,FastBreak,0,0.2495074123144149
 5795497,2026-10-31,eng.1,Nottingham Forest,Brentford,,,none,0,
@@ -487,6 +489,6 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5795500,2026-10-31,eng.1,Ipswich Town,Hull City,74.0,Julio Enciso,RegularPlay,0,0.0373542867600917
 5795502,2026-10-31,eng.1,Brighton,Manchester City,11.0,Yasin Ayari,SetPiece,0,0.5212521553039551
 5795502,2026-10-31,eng.1,Manchester City,Brighton,,,none,0,
-5795504,2026-10-31,eng.1,Tottenham Hotspur,Crystal Palace,25.0,Archie Gray,FromCorner,0,0.18447326123714447
+5795504,2026-10-31,eng.1,Tottenham Hotspur,Crystal Palace,25.0,Archie Gray,FromCorner,0,0.1844732612371444
 5795504,2026-10-31,eng.1,Tottenham Hotspur,Crystal Palace,73.0,Jan Paul van Hecke,FromCorner,0,0.42828568816185
 5795504,2026-10-31,eng.1,Crystal Palace,Tottenham Hotspur,,,none,0,

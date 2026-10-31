@@ -304,8 +304,8 @@
    ]
   },
   "match_events": {
-   "total": 376,
-   "exact": 376,
+   "total": 378,
+   "exact": 378,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -331,11 +331,11 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 605,
+   "total": 607,
    "exact": 491,
    "rule": 23,
    "ambiguous": 1,
-   "orphan": 91,
+   "orphan": 93,
    "orphans": [
     {
      "squad": "Celta Vigo",
@@ -345,7 +345,7 @@
     {
      "squad": "Alavés",
      "name": "Jonny",
-     "starts": 8
+     "starts": 9
     },
     {
      "squad": "Espanyol",
@@ -587,8 +587,8 @@
    ]
   },
   "match_events": {
-   "total": 379,
-   "exact": 379,
+   "total": 380,
+   "exact": 380,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -885,11 +885,11 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 654,
+   "total": 655,
    "exact": 562,
    "rule": 10,
    "ambiguous": 1,
-   "orphan": 82,
+   "orphan": 83,
    "orphans": [
     {
      "squad": "Lecce",
@@ -1193,20 +1193,20 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 487,
-   "exact": 442,
+   "total": 488,
+   "exact": 443,
    "rule": 10,
    "ambiguous": 0,
    "orphan": 35,
    "orphans": [
     {
-     "squad": "Nice",
-     "name": "Mohamed Abdelmoneim",
-     "starts": 8
-    },
-    {
      "squad": "Troyes",
      "name": "Michel Diaz",
+     "starts": 9
+    },
+    {
+     "squad": "Nice",
+     "name": "Mohamed Abdelmoneim",
      "starts": 8
     },
     {
@@ -1366,8 +1366,8 @@
    ]
   },
   "espn_subs": {
-   "total": 367,
-   "exact": 362,
+   "total": 368,
+   "exact": 363,
    "rule": 3,
    "ambiguous": 0,
    "orphan": 2,
@@ -1393,8 +1393,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 277,
-   "exact": 277,
+   "total": 281,
+   "exact": 281,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1627,11 +1627,11 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 547,
+   "total": 548,
    "exact": 491,
    "rule": 12,
    "ambiguous": 0,
-   "orphan": 44,
+   "orphan": 45,
    "orphans": [
     {
      "squad": "Feyenoord",
@@ -1762,19 +1762,14 @@
   },
   "espn_lineups_cups": {
    "total": 418,
-   "exact": 410,
+   "exact": 411,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 8,
+   "orphan": 7,
    "orphans": [
     {
      "squad": "Ajax",
      "name": "Aymean El Hani",
-     "starts": 0
-    },
-    {
-     "squad": "Ajax",
-     "name": "Diego Pugno",
      "starts": 0
     },
     {
@@ -1810,8 +1805,8 @@
    ]
   },
   "espn_subs": {
-   "total": 409,
-   "exact": 399,
+   "total": 410,
+   "exact": 400,
    "rule": 10,
    "ambiguous": 0,
    "orphan": 0,
@@ -1826,8 +1821,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 302,
-   "exact": 302,
+   "total": 303,
+   "exact": 303,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1875,6 +1870,11 @@
      "starts": 9
     },
     {
+     "squad": "Westerlo",
+     "name": "Issai Sakamoto",
+     "starts": 9
+    },
+    {
      "squad": "Charleroi",
      "name": "Kevin Guiton",
      "starts": 9
@@ -1883,11 +1883,6 @@
      "squad": "La Louvière",
      "name": "Mustapha Ubandoma",
      "starts": 9
-    },
-    {
-     "squad": "Westerlo",
-     "name": "Issai Sakamoto",
-     "starts": 8
     },
     {
      "squad": "Zulte Waregem",
@@ -2001,8 +1996,8 @@
    ]
   },
   "espn_subs": {
-   "total": 292,
-   "exact": 292,
+   "total": 293,
+   "exact": 293,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -2017,8 +2012,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 270,
-   "exact": 270,
+   "total": 273,
+   "exact": 273,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -2824,8 +2819,8 @@
    ]
   },
   "espn_subs": {
-   "total": 278,
-   "exact": 278,
+   "total": 280,
+   "exact": 280,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
