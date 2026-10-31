@@ -2247,6 +2247,38 @@
    "away": "West Bromwich Albion",
    "at": "2026-10-31T18:06:44+00:00",
    "model": "gemini-flash-lite-latest"
+  },
+  "401878953": {
+   "text": "Standard Liège와 Kortrijk의 경기는 1-1 무승부로 종료되었다. 45'+1'에 Goduine Koyalipou가 페널티킥으로 선제골을 기록했으나, 63'에 Salieu Drammeh가 동점골을 터뜨리며 승부를 원점으로 돌렸다. Standard Liège는 60.1%의 점유율과 18개의 슈팅을 기록하며 경기를 주도했으나, Standard Liège의 승리를 점쳤던 팬 투표와 모델, Elo의 예측은 모두 빗나갔다.",
+   "date": "2026-10-31",
+   "home": "Standard Liège",
+   "away": "Kortrijk",
+   "at": "2026-10-31T19:30:23+00:00",
+   "model": "gemini-3.1-flash-lite"
+  },
+  "401874990": {
+   "text": "Roma가 Stadio Friuli에서 Udinese를 5-2로 꺾으며 승리했다. 전반 10' Bryan Cristante, 31' Rodrigo Mora, 33' Donyell Malen, 37' Evan Ndicka의 연속 득점으로 Roma가 전반을 4-0으로 앞섰고, 후반에는 Udinese의 Nicolò Zaniolo와 Matteo Palma가 득점했으나 90'+2' Daniele Ghilardi가 추가 골을 넣었다. 경기 기록에서 Udinese는 슈팅 15개, Roma는 14개를 기록했으며 유효 슈팅은 Udinese 7개, Roma 9개로 집계되었다. 팬 투표와 모델, Elo 예측 모두 Roma의 승리를 예상한 결과가 적중했다.",
+   "date": "2026-10-31",
+   "home": "Udinese",
+   "away": "Roma",
+   "at": "2026-10-31T19:30:34+00:00",
+   "model": "gemini-3.1-flash-lite"
+  },
+  "5846011": {
+   "text": "Altach와 Ried의 경기는 1-1 무승부로 종료되었다. 77'에 Ried의 Isaac Kiese Thelin이 선제골을 넣었으나, 90'+1'에 Altach의 Srdjan Hrstic이 동점골을 기록하며 승부를 원점으로 돌렸다. 양 팀은 각각 한 장씩의 경고를 받았으며, 경기 전 Altach의 승리를 점쳤던 모델과 Elo의 예측은 빗나갔다.",
+   "date": "2026-10-31",
+   "home": "Altach",
+   "away": "Ried",
+   "at": "2026-10-31T19:30:40+00:00",
+   "model": "gemini-3.1-flash-lite"
+  },
+  "5904791": {
+   "text": "Fenerbahçe가 Göztepe에 1-2로 역전패하며 승점 획득에 실패했다. 45'+1'에 Matteo Guendouzi가 선제골을 넣었으나, 76' Sinclair Armstrong과 78' André Henrique에게 연속 실점하며 경기가 뒤집혔다. Fenerbahçe는 점유율 66%와 슈팅 18개를 기록하며 경기를 주도했으나 유효 슈팅은 6개로 Göztepe와 동일했다. Fenerbahçe의 승리를 점쳤던 모델과 Elo의 예측은 모두 빗나갔다.",
+   "date": "2026-10-31",
+   "home": "Fenerbahçe",
+   "away": "Göztepe",
+   "at": "2026-10-31T19:30:43+00:00",
+   "model": "gemini-3.1-flash-lite"
   }
  },
  "fails": {
