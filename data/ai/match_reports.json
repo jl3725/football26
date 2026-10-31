@@ -2007,7 +2007,57 @@
    "away": "Espanyol",
    "at": "2026-10-30T22:29:49+00:00",
    "model": "gemini-flash-lite-latest"
+  },
+  "401882820": {
+   "text": "Atlético Madrid가 Levante를 상대로 2-0 승리를 거뒀다. 전반 36'에 Alejandro Grimaldo의 득점으로 앞서간 Atlético Madrid는 후반 62'에 Álex Baena의 도움을 받은 Giuliano Simeone의 추가골로 승부에 마침표를 찍었다. 경기 통계에서는 Levante가 슈팅 20-11로 앞섰으나 유효 슈팅에서는 4-5로 뒤졌고, 패스 성공률은 두 팀 모두 90%를 기록했다. 팬 투표, 모델, Elo의 사전 예측 모두 Atlético Madrid의 승리를 예상해 그대로 적중했다.",
+   "date": "2026-10-31",
+   "home": "Levante",
+   "away": "Atlético Madrid",
+   "at": "2026-10-31T15:51:58+00:00",
+   "model": "gemini-flash-lite-latest"
+  },
+  "5904792": {
+   "text": "Kocaelispor와 Rizespor는 득점 없이 무승부를 기록했다. 경기 통계에서 슈팅은 Kocaelispor가 14개, Rizespor가 17개를 기록했으며, 유효 슈팅은 각각 4개씩이었다. 점유율은 Kocaelispor가 49%, Rizespor가 51%였고 패스 성공률은 두 팀 모두 80%로 같았다. 사전에 Kocaelispor의 승리를 예상했던 모델과 Elo의 예측은 빗나갔다.",
+   "date": "2026-10-31",
+   "home": "Kocaelispor",
+   "away": "Rizespor",
+   "at": "2026-10-31T15:52:18+00:00",
+   "model": "gemini-flash-lite-latest"
+  },
+  "401879248": {
+   "text": "Chelsea가 Manchester Utd를 상대로 2-0 승리를 거뒀다. 후반 50' Romeo Lavia의 도움을 받은 Morgan Rogers의 선제골과 64' Cole Palmer의 페널티킥 득점이 터졌고, Manchester Utd는 63' Lisandro Martínez가 퇴장당했다. 점유율 58.7% 대 41.3%, 슈팅 18대 12, 유효 슈팅 9대 5 등 기록 비교에서 Chelsea가 우세한 경기를 펼쳤다. 팬 투표와 모델, Elo의 사전 예측 모두 Chelsea의 승리를 맞혔다.",
+   "date": "2026-10-31",
+   "home": "Chelsea",
+   "away": "Manchester Utd",
+   "at": "2026-10-31T15:52:26+00:00",
+   "model": "gemini-flash-lite-latest"
+  },
+  "5836900": {
+   "text": "Birmingham City가 Lincoln City를 3-1로 꺾고 승리를 거뒀다. 전반 16' August Priske의 선제골로 앞서간 Birmingham City는 후반 60' August Priske의 추가골로 달아났고, Lincoln City가 63' Tom Bayliss의 득점으로 추격했으나 73' Alex Cochrane이 쐐기골을 터뜨렸다. 경기 기록에서는 Birmingham City가 슈팅 17-12, 유효 슈팅 7-6으로 우위를 점했다. 이 경기는 Birmingham City 승리를 예상했던 모델의 예측이 적중했다.",
+   "date": "2026-10-31",
+   "home": "Lincoln City",
+   "away": "Birmingham City",
+   "at": "2026-10-31T15:52:35+00:00",
+   "model": "gemini-flash-lite-latest"
+  },
+  "5836903": {
+   "text": "Norwich City가 Watford에 3대2로 역전승을 거두며 승리를 거뒀다. 전반 10분과 27분 Watford의 Myron Boadu가 연속 골을 터뜨렸으나, Norwich City가 후반 53분 Benjamin Chrisene, 62분 Anthony Musaba, 71분 Paris Maghoma의 득점으로 경기를 뒤집었다. 슈팅 수 15대8, 코너킥 9대2 등으로 Norwich City가 내용에서 우위를 점했다. 사전 모델과 Elo 예측 모두 Norwich City의 승리를 맞혔다.",
+   "date": "2026-10-31",
+   "home": "Norwich City",
+   "away": "Watford",
+   "at": "2026-10-31T15:52:43+00:00",
+   "model": "gemini-flash-lite-latest"
+  },
+  "5836906": {
+   "text": "Stoke City가 Preston North End를 상대로 2-0 승리를 거뒀다. 전반 29분 Jack McGlynn의 도움을 받은 Ben Wilmot의 헤더 선제골과 53분 Ethan Galbraith가 도움을 기록한 Jack McGlynn의 추가골이 터졌다. 경기에서 Stoke City는 점유율 60.2% 대 39.8%, 슈팅 수 18대 3, 유효 슈팅 수 6대 0으로 상대를 압도했다. 경기 전 Stoke City 승리를 예상했던 모델과 Elo의 예측은 그대로 적중했다.",
+   "date": "2026-10-31",
+   "home": "Stoke City",
+   "away": "Preston North End",
+   "at": "2026-10-31T15:52:51+00:00",
+   "model": "gemini-flash-lite-latest"
   }
  },
- "fails": {}
+ "fails": {
+  "5904793": 1
+ }
 }

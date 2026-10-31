@@ -1,4 +1,28 @@
 squad,player,fotmob_id,group,positions,tm_position,pos,age,birth_date,shirt,ccode,injured,expected_return,fetched
+Atlético Madrid,Juan Musso,389050,keepers,GK,Goalkeeper,GK,32,1994-05-06,1.0,ARG,False,,2026-10-31
+Atlético Madrid,Jan Oblak,177126,keepers,GK,Goalkeeper,GK,33,1993-01-07,13.0,SVN,False,,2026-10-31
+Atlético Madrid,Salvi Esquivel,1553402,keepers,GK,Goalkeeper,GK,21,2005-09-30,25.0,ESP,False,,2026-10-31
+Atlético Madrid,Marcos Llorente,602563,defenders,"RB,CM,RM,CDM",Right-Back,DF,31,1995-01-30,14.0,ESP,False,,2026-10-31
+Atlético Madrid,Dávid Hancko,727897,defenders,"CB,LB",Centre-Back,DF,28,1997-12-13,17.0,SVK,False,,2026-10-31
+Atlético Madrid,Marc Pubill,1323897,defenders,"CB,RB",Centre-Back,DF,23,2003-06-20,18.0,ESP,False,,2026-10-31
+Atlético Madrid,Cristian Romero,789066,defenders,CB,Centre-Back,DF,28,1998-04-27,21.0,ARG,False,,2026-10-31
+Atlético Madrid,Robin Le Normand,609516,defenders,CB,Centre-Back,DF,29,1996-11-11,24.0,ESP,False,,2026-10-31
+Atlético Madrid,Dani Martínez,1531100,defenders,LB,Left-Back,DF,22,2004-05-05,30.0,ESP,False,,2026-10-31
+Atlético Madrid,Obed Vargas,1254394,midfielders,"CM,CDM,LM",Central Midfield,MF,21,2005-08-05,3.0,MEX,False,,2026-10-31
+Atlético Madrid,Rodrigo Mendoza,1419969,midfielders,"CM,CDM,CAM,LM",Central Midfield,MF,21,2005-03-15,4.0,ESP,False,,2026-10-31
+Atlético Madrid,Johnny Cardoso,1173678,midfielders,"CM,CDM",Central Midfield,MF,25,2001-09-20,5.0,USA,True,Back in training,2026-10-31
+Atlético Madrid,Koke,184533,midfielders,"CM,CDM",Central Midfield,MF,34,1992-01-08,6.0,ESP,True,Back in training,2026-10-31
+Atlético Madrid,Pablo Barrios,1338192,midfielders,"CM,CDM",Central Midfield,MF,23,2003-06-15,8.0,ESP,False,,2026-10-31
+Atlético Madrid,Álex Baena,942372,midfielders,"LM,LW,CAM,ST,CM,RM",Left Midfield,MF,25,2001-07-20,10.0,ESP,False,,2026-10-31
+Atlético Madrid,Ademola Lookman,690516,midfielders,"ST,LM,CAM,LW",Centre-Forward,MF,29,1997-10-20,11.0,NGA,False,,2026-10-31
+Atlético Madrid,Giuliano Simeone,1226147,midfielders,"RM,RW,RWB",Right Midfield,MF,23,2002-12-18,20.0,ARG,False,,2026-10-31
+Atlético Madrid,Alejandro Grimaldo,288406,midfielders,"LWB,LB,LM",Left-Back,MF,31,1995-09-20,22.0,ESP,False,,2026-10-31
+Atlético Madrid,Morten Hjulmand,950199,midfielders,"CDM,CM",Defensive Midfield,MF,27,1999-06-25,23.0,DEN,False,,2026-10-31
+Atlético Madrid,Kang-In Lee,940976,attackers,"RW,ST,CAM,RM,CM",Right Winger,FW,25,2001-02-19,7.0,KOR,False,,2026-10-31
+Atlético Madrid,Alexander Sørloth,440330,attackers,"ST,RW",Centre-Forward,FW,30,1995-12-05,9.0,NOR,False,,2026-10-31
+Atlético Madrid,Jonathan David,939569,attackers,ST,Centre-Forward,FW,26,2000-01-14,15.0,CAN,False,,2026-10-31
+Atlético Madrid,Arnau Ortiz,1297989,attackers,ST,Centre-Forward,FW,25,2001-10-29,16.0,ESP,False,,2026-10-31
+Atlético Madrid,Julián Álvarez,974753,attackers,ST,Centre-Forward,FW,26,2000-01-31,19.0,ARG,False,,2026-10-31
 Barcelona,Joan García,1167220,keepers,GK,Goalkeeper,GK,25,2001-05-04,1.0,ESP,False,,2026-10-31
 Barcelona,Wojciech Szczęsny,169718,keepers,GK,Goalkeeper,GK,36,1990-04-18,13.0,POL,False,,2026-10-31
 Barcelona,Dominik Livaković,383971,keepers,GK,Goalkeeper,GK,31,1995-01-09,25.0,CRO,False,,2026-10-31
@@ -26,30 +50,6 @@ Barcelona,Anthony Gordon,906937,attackers,"LW,ST",Left Winger,FW,25,2001-02-24,1
 Barcelona,Roony Bardghji,1315475,attackers,RW,Right Winger,FW,20,2005-11-15,19.0,SWE,True,Late February 2027,2026-10-31
 Barcelona,Jesse Bisiwu,1656591,attackers,LW,Left Winger,FW,18,2008-01-22,27.0,BEL,False,,2026-10-31
 Barcelona,Hamza Abdelkarim,1708842,attackers,ST,Centre-Forward,FW,18,2008-01-01,29.0,EGY,False,,2026-10-31
-Atlético Madrid,Juan Musso,389050,keepers,GK,Goalkeeper,GK,32,1994-05-06,1.0,ARG,False,,2026-10-31
-Atlético Madrid,Jan Oblak,177126,keepers,GK,Goalkeeper,GK,33,1993-01-07,13.0,SVN,False,,2026-10-31
-Atlético Madrid,Salvi Esquivel,1553402,keepers,GK,Goalkeeper,GK,21,2005-09-30,25.0,ESP,False,,2026-10-31
-Atlético Madrid,Marcos Llorente,602563,defenders,"RB,CM,RM,CDM",Right-Back,DF,31,1995-01-30,14.0,ESP,False,,2026-10-31
-Atlético Madrid,Dávid Hancko,727897,defenders,"CB,LB",Centre-Back,DF,28,1997-12-13,17.0,SVK,False,,2026-10-31
-Atlético Madrid,Marc Pubill,1323897,defenders,"CB,RB",Centre-Back,DF,23,2003-06-20,18.0,ESP,False,,2026-10-31
-Atlético Madrid,Cristian Romero,789066,defenders,CB,Centre-Back,DF,28,1998-04-27,21.0,ARG,False,,2026-10-31
-Atlético Madrid,Robin Le Normand,609516,defenders,CB,Centre-Back,DF,29,1996-11-11,24.0,ESP,False,,2026-10-31
-Atlético Madrid,Dani Martínez,1531100,defenders,LB,Left-Back,DF,22,2004-05-05,30.0,ESP,False,,2026-10-31
-Atlético Madrid,Obed Vargas,1254394,midfielders,"CM,CDM,LM",Central Midfield,MF,21,2005-08-05,3.0,MEX,False,,2026-10-31
-Atlético Madrid,Rodrigo Mendoza,1419969,midfielders,"CM,CDM,CAM,LM",Central Midfield,MF,21,2005-03-15,4.0,ESP,False,,2026-10-31
-Atlético Madrid,Johnny Cardoso,1173678,midfielders,"CM,CDM",Central Midfield,MF,25,2001-09-20,5.0,USA,True,Back in training,2026-10-31
-Atlético Madrid,Koke,184533,midfielders,"CM,CDM",Central Midfield,MF,34,1992-01-08,6.0,ESP,True,Back in training,2026-10-31
-Atlético Madrid,Pablo Barrios,1338192,midfielders,"CM,CDM",Central Midfield,MF,23,2003-06-15,8.0,ESP,False,,2026-10-31
-Atlético Madrid,Álex Baena,942372,midfielders,"LM,LW,CAM,ST,CM,RM",Left Midfield,MF,25,2001-07-20,10.0,ESP,False,,2026-10-31
-Atlético Madrid,Ademola Lookman,690516,midfielders,"ST,LM,CAM,LW",Centre-Forward,MF,29,1997-10-20,11.0,NGA,False,,2026-10-31
-Atlético Madrid,Giuliano Simeone,1226147,midfielders,"RM,RW,RWB",Right Midfield,MF,23,2002-12-18,20.0,ARG,False,,2026-10-31
-Atlético Madrid,Alejandro Grimaldo,288406,midfielders,"LWB,LB,LM",Left-Back,MF,31,1995-09-20,22.0,ESP,False,,2026-10-31
-Atlético Madrid,Morten Hjulmand,950199,midfielders,"CDM,CM",Defensive Midfield,MF,27,1999-06-25,23.0,DEN,False,,2026-10-31
-Atlético Madrid,Kang-In Lee,940976,attackers,"RW,ST,CAM,RM,CM",Right Winger,FW,25,2001-02-19,7.0,KOR,False,,2026-10-31
-Atlético Madrid,Alexander Sørloth,440330,attackers,"ST,RW",Centre-Forward,FW,30,1995-12-05,9.0,NOR,False,,2026-10-31
-Atlético Madrid,Jonathan David,939569,attackers,ST,Centre-Forward,FW,26,2000-01-14,15.0,CAN,False,,2026-10-31
-Atlético Madrid,Arnau Ortiz,1297989,attackers,ST,Centre-Forward,FW,25,2001-10-29,16.0,ESP,False,,2026-10-31
-Atlético Madrid,Julián Álvarez,974753,attackers,ST,Centre-Forward,FW,26,2000-01-31,19.0,ARG,False,,2026-10-31
 Real Madrid,Thibaut Courtois,170323,keepers,GK,Goalkeeper,GK,34,1992-05-11,1.0,BEL,False,,2026-10-31
 Real Madrid,Andriy Lunin,800882,keepers,GK,Goalkeeper,GK,27,1999-02-11,13.0,UKR,False,,2026-10-31
 Real Madrid,Raúl Asencio,1580528,defenders,"CB,RB",Centre-Back,DF,23,2003-02-13,2.0,ESP,True,Early January 2027,2026-10-31
@@ -357,31 +357,6 @@ Racing Santander,Asier Villalibre,670031,attackers,ST,Centre-Forward,FW,29,1997-
 Racing Santander,Pablo García,1662379,attackers,"RW,RM",Right Winger,FW,20,2006-06-13,15.0,ESP,False,,2026-10-31
 Racing Santander,Iker Luque,1586390,attackers,LW,Left Winger,FW,21,2005-06-05,19.0,ESP,False,,2026-10-31
 Racing Santander,Yassir Zabiri,1640985,attackers,ST,Centre-Forward,FW,21,2005-02-23,21.0,MAR,False,,2026-10-31
-Levante,Pablo Campos,1237455,keepers,GK,Goalkeeper,GK,24,2002-04-28,1.0,ESP,False,,2026-10-31
-Levante,Mathew Ryan,185644,keepers,GK,Goalkeeper,GK,34,1992-04-08,13.0,AUS,False,,2026-10-31
-Levante,Aïssa Mandi,210683,defenders,CB,Centre-Back,DF,35,1991-10-22,2.0,ALG,False,,2026-10-31
-Levante,Ifeanyi Ndukwe,1780239,defenders,CB,Centre-Back,DF,18,2008-03-03,3.0,AUT,False,,2026-10-31
-Levante,Adrián De La Fuente,952528,defenders,CB,Centre-Back,DF,27,1999-02-26,4.0,ESP,False,,2026-10-31
-Levante,Jorge Cabello,1617146,defenders,CB,Centre-Back,DF,22,2004-04-25,14.0,ESP,False,,2026-10-31
-Levante,Axel Tape,1695701,defenders,CDM,Defensive Midfield,DF,19,2007-08-10,16.0,FRA,False,,2026-10-31
-Levante,Jeremy Toljan,443966,defenders,RB,Right-Back,DF,32,1994-08-08,22.0,GER,False,,2026-10-31
-Levante,Manuel Sánchez,1052330,defenders,LB,Left-Back,DF,26,2000-08-24,23.0,ESP,False,,2026-10-31
-Levante,Nacho Pérez,1800611,defenders,RB,Right-Back,DF,18,2008-08-29,29.0,ESP,False,,2026-10-31
-Levante,Marc Santos,2141146,defenders,,Centre-Back,DF,15,2010-11-01,33.0,ESP,False,,2026-10-31
-Levante,Hugo Sotelo,1254218,midfielders,CM,Central Midfield,MF,22,2003-12-19,5.0,ESP,False,,2026-10-31
-Levante,Dani Requena,1481503,midfielders,"CM,CDM",Central Midfield,MF,22,2004-02-12,6.0,ESP,False,,2026-10-31
-Levante,Jon Olasagasti,1131957,midfielders,"CAM,CM,LM,CDM",Attacking Midfield,MF,26,2000-08-16,8.0,ESP,False,,2026-10-31
-Levante,Enzo Bardeli,1332540,midfielders,"CAM,CM",Attacking Midfield,MF,25,2001-04-11,18.0,FRA,True,Mid November 2026,2026-10-31
-Levante,Oriol Rey,914401,midfielders,"CM,CDM",Central Midfield,MF,28,1998-02-25,20.0,ESP,False,,2026-10-31
-Levante,Jorge de Asís,1748952,attackers,,Centre-Forward,FW,20,2006-01-29,,ARG,False,,2026-10-31
-Levante,Roger Brugué,1286471,attackers,"RW,LM,RM",Right Winger,FW,29,1996-11-04,7.0,ESP,False,,2026-10-31
-Levante,Iván Romero,1209441,attackers,"ST,LW,CAM",Centre-Forward,FW,25,2001-04-10,9.0,ESP,False,,2026-10-31
-Levante,Petar Ratkov,1302821,attackers,ST,Centre-Forward,FW,23,2003-08-18,10.0,SRB,False,,2026-10-31
-Levante,Yanis Musuayi,1836083,attackers,ST,Centre-Forward,FW,19,2007-06-26,11.0,BEL,False,,2026-10-31
-Levante,Víctor García,977618,attackers,"RW,RB,RM",Right Winger,FW,29,1997-09-16,17.0,ESP,False,,2026-10-31
-Levante,Etta Eyong,1392779,attackers,ST,Centre-Forward,FW,23,2003-10-14,21.0,CMR,False,,2026-10-31
-Levante,Thiago Fernández,1460063,attackers,"LW,LM",Left Winger,FW,22,2004-04-03,24.0,ARG,False,,2026-10-31
-Levante,Paco Cortés,1649293,attackers,LW,Left Winger,FW,19,2007-08-11,27.0,ESP,False,,2026-10-31
 Elche,Matías Dituro,592412,keepers,GK,Goalkeeper,GK,39,1987-05-08,1.0,ARG,False,,2026-10-31
 Elche,Alejandro Iturbe,1311126,keepers,GK,Goalkeeper,GK,23,2003-09-02,13.0,ESP,False,,2026-10-31
 Elche,Buba Sangaré,1583872,defenders,"RB,RWB,CB,RM",Right-Back,DF,19,2007-08-06,2.0,ESP,False,,2026-10-31
@@ -410,6 +385,31 @@ Elche,Fer Niño,1127224,attackers,ST,Centre-Forward,FW,26,2000-10-24,14.0,ESP,Fa
 Elche,Josan,623982,attackers,"RW,RWB",Right Winger,FW,36,1989-12-03,17.0,ESP,False,,2026-10-31
 Elche,Lucas Cepeda,1280756,attackers,"RW,CM,CAM",Right Winger,FW,24,2002-10-31,21.0,CHI,False,,2026-10-31
 Elche,Abiel Osorio,1343195,attackers,"ST,RW",Centre-Forward,FW,24,2002-06-13,24.0,ARG,False,,2026-10-31
+Levante,Pablo Campos,1237455,keepers,GK,Goalkeeper,GK,24,2002-04-28,1.0,ESP,False,,2026-10-31
+Levante,Mathew Ryan,185644,keepers,GK,Goalkeeper,GK,34,1992-04-08,13.0,AUS,False,,2026-10-31
+Levante,Aïssa Mandi,210683,defenders,CB,Centre-Back,DF,35,1991-10-22,2.0,ALG,False,,2026-10-31
+Levante,Ifeanyi Ndukwe,1780239,defenders,CB,Centre-Back,DF,18,2008-03-03,3.0,AUT,False,,2026-10-31
+Levante,Adrián De La Fuente,952528,defenders,CB,Centre-Back,DF,27,1999-02-26,4.0,ESP,False,,2026-10-31
+Levante,Jorge Cabello,1617146,defenders,CB,Centre-Back,DF,22,2004-04-25,14.0,ESP,False,,2026-10-31
+Levante,Axel Tape,1695701,defenders,CDM,Defensive Midfield,DF,19,2007-08-10,16.0,FRA,False,,2026-10-31
+Levante,Jeremy Toljan,443966,defenders,RB,Right-Back,DF,32,1994-08-08,22.0,GER,False,,2026-10-31
+Levante,Manuel Sánchez,1052330,defenders,LB,Left-Back,DF,26,2000-08-24,23.0,ESP,True,Doubtful,2026-10-31
+Levante,Nacho Pérez,1800611,defenders,RB,Right-Back,DF,18,2008-08-29,29.0,ESP,False,,2026-10-31
+Levante,Marc Santos,2141146,defenders,,Centre-Back,DF,15,2010-11-01,33.0,ESP,False,,2026-10-31
+Levante,Hugo Sotelo,1254218,midfielders,CM,Central Midfield,MF,22,2003-12-19,5.0,ESP,False,,2026-10-31
+Levante,Dani Requena,1481503,midfielders,"CM,CDM",Central Midfield,MF,22,2004-02-12,6.0,ESP,False,,2026-10-31
+Levante,Jon Olasagasti,1131957,midfielders,"CM,CDM,CAM",Central Midfield,MF,26,2000-08-16,8.0,ESP,False,,2026-10-31
+Levante,Enzo Bardeli,1332540,midfielders,"CAM,CM",Attacking Midfield,MF,25,2001-04-11,18.0,FRA,True,Mid November 2026,2026-10-31
+Levante,Oriol Rey,914401,midfielders,"CM,CDM",Central Midfield,MF,28,1998-02-25,20.0,ESP,False,,2026-10-31
+Levante,Jorge de Asís,1748952,attackers,,Centre-Forward,FW,20,2006-01-29,,ARG,False,,2026-10-31
+Levante,Roger Brugué,1286471,attackers,"RW,LM,RM",Right Winger,FW,29,1996-11-04,7.0,ESP,False,,2026-10-31
+Levante,Iván Romero,1209441,attackers,"ST,LW,CAM",Centre-Forward,FW,25,2001-04-10,9.0,ESP,False,,2026-10-31
+Levante,Petar Ratkov,1302821,attackers,ST,Centre-Forward,FW,23,2003-08-18,10.0,SRB,False,,2026-10-31
+Levante,Yanis Musuayi,1836083,attackers,ST,Centre-Forward,FW,19,2007-06-26,11.0,BEL,False,,2026-10-31
+Levante,Víctor García,977618,attackers,"RW,RM",Right Winger,FW,29,1997-09-16,17.0,ESP,False,,2026-10-31
+Levante,Etta Eyong,1392779,attackers,ST,Centre-Forward,FW,23,2003-10-14,21.0,CMR,False,,2026-10-31
+Levante,Thiago Fernández,1460063,attackers,"LW,LM",Left Winger,FW,22,2004-04-03,24.0,ARG,False,,2026-10-31
+Levante,Paco Cortés,1649293,attackers,LW,Left Winger,FW,19,2007-08-11,27.0,ESP,False,,2026-10-31
 Rayo Vallecano,Dani Cárdenas,1041445,keepers,GK,Goalkeeper,GK,29,1997-03-28,1.0,ESP,False,,2026-10-31
 Rayo Vallecano,Augusto Batalla,621415,keepers,GK,Goalkeeper,GK,30,1996-04-30,13.0,ARG,True,Early January 2027,2026-10-31
 Rayo Vallecano,Emil Audero,602845,keepers,GK,Goalkeeper,GK,29,1997-01-18,25.0,IDN,False,,2026-10-31
@@ -422,7 +422,7 @@ Rayo Vallecano,Iván Balliu,264885,defenders,"RB,LB",Right-Back,DF,34,1992-01-01
 Rayo Vallecano,Pelayo Fernández,1411818,defenders,CB,Centre-Back,DF,23,2003-04-29,22.0,ESP,False,,2026-10-31
 Rayo Vallecano,Florian Lejeune,184521,defenders,CB,Centre-Back,DF,35,1991-05-20,24.0,FRA,False,,2026-10-31
 Rayo Vallecano,Jozhua Vertrouwd,1255090,defenders,"LB,CB",Left-Back,DF,22,2004-08-21,33.0,NED,False,,2026-10-31
-Rayo Vallecano,Pedro Díaz,715069,midfielders,"CM,CAM,CDM",Central Midfield,MF,28,1998-06-05,4.0,ESP,False,,2026-10-31
+Rayo Vallecano,Pedro Díaz,715069,midfielders,"CAM,CM,CDM",Attacking Midfield,MF,28,1998-06-05,4.0,ESP,False,,2026-10-31
 Rayo Vallecano,Pathé Ciss,872396,midfielders,"CDM,CB,CM",Defensive Midfield,MF,32,1994-03-16,6.0,SEN,False,,2026-10-31
 Rayo Vallecano,Isi Palazón,638010,midfielders,"CAM,CM,ST,RW",Attacking Midfield,MF,31,1994-12-27,7.0,ESP,False,,2026-10-31
 Rayo Vallecano,Unai López,571615,midfielders,"CDM,CM",Defensive Midfield,MF,31,1995-10-30,8.0,ESP,False,,2026-10-31
