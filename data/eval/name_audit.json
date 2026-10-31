@@ -614,11 +614,11 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 467,
-   "exact": 428,
+   "total": 480,
+   "exact": 433,
    "rule": 16,
    "ambiguous": 0,
-   "orphan": 23,
+   "orphan": 31,
    "orphans": [
     {
      "squad": "Bayern Munich",
@@ -734,15 +734,25 @@
      "squad": "Bayern Munich",
      "name": "Jannis Bärtl",
      "starts": 0
+    },
+    {
+     "squad": "Leverkusen",
+     "name": "Kenan Doganay",
+     "starts": 0
+    },
+    {
+     "squad": "Leverkusen",
+     "name": "Dustin Buck",
+     "starts": 0
     }
    ]
   },
   "espn_lineups_cups": {
    "total": 470,
-   "exact": 450,
+   "exact": 453,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 20,
+   "orphan": 17,
    "orphans": [
     {
      "squad": "Augsburg",
@@ -825,31 +835,16 @@
      "starts": 0
     },
     {
-     "squad": "Augsburg",
-     "name": "Loris Husic",
-     "starts": 0
-    },
-    {
      "squad": "Werder Bremen",
      "name": "Mats Heitmann",
-     "starts": 0
-    },
-    {
-     "squad": "Schalke 04",
-     "name": "Edion Gashi",
-     "starts": 0
-    },
-    {
-     "squad": "Leverkusen",
-     "name": "Kenan Doganay",
      "starts": 0
     }
    ]
   },
   "espn_subs": {
-   "total": 355,
-   "exact": 353,
-   "rule": 2,
+   "total": 363,
+   "exact": 360,
+   "rule": 3,
    "ambiguous": 0,
    "orphan": 0,
    "orphans": []
@@ -863,8 +858,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 294,
-   "exact": 294,
+   "total": 299,
+   "exact": 299,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -2050,10 +2045,10 @@
   },
   "espn_lineups": {
    "total": 702,
-   "exact": 638,
+   "exact": 639,
    "rule": 5,
    "ambiguous": 0,
-   "orphan": 59,
+   "orphan": 58,
    "orphans": [
     {
      "squad": "Sheffield United",
