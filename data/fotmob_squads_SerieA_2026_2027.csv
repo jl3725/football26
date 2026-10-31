@@ -2,9 +2,9 @@ squad,player,fotmob_id,group,positions,tm_position,pos,age,birth_date,shirt,ccod
 Inter,Josep Martínez,772168,keepers,GK,Goalkeeper,GK,28,1998-05-27,1.0,ESP,False,,2026-10-31
 Inter,Raffaele Di Gennaro,417743,keepers,,Goalkeeper,GK,33,1993-10-03,12.0,ITA,False,,2026-10-31
 Inter,Ivan Provedel,364822,keepers,GK,Goalkeeper,GK,32,1994-03-17,49.0,ITA,False,,2026-10-31
-Inter,John Stones,263653,defenders,CB,Centre-Back,DF,32,1994-05-28,6.0,ENG,True,Early November 2026,2026-10-31
+Inter,John Stones,263653,defenders,CB,Centre-Back,DF,32,1994-05-28,6.0,ENG,True,Mid November 2026,2026-10-31
 Inter,Manuel Akanji,521318,defenders,CB,Centre-Back,DF,31,1995-07-19,25.0,SUI,False,,2026-10-31
-Inter,Benjamin Pavard,611223,defenders,"CB,RB",Centre-Back,DF,30,1996-03-28,28.0,FRA,True,Early November 2026,2026-10-31
+Inter,Benjamin Pavard,611223,defenders,"CB,RB",Centre-Back,DF,30,1996-03-28,28.0,FRA,True,Mid November 2026,2026-10-31
 Inter,Carlos Augusto,940829,defenders,"CB,LM,RM",Centre-Back,DF,27,1999-01-07,30.0,BRA,False,,2026-10-31
 Inter,Yann Aurel Bisseck,889535,defenders,CB,Centre-Back,DF,25,2000-11-29,31.0,GER,False,,2026-10-31
 Inter,Alessandro Bastoni,805451,defenders,CB,Centre-Back,DF,27,1999-04-13,95.0,ITA,False,,2026-10-31
@@ -12,10 +12,10 @@ Inter,Djed Spence,894803,defenders,"LB,RB,LM,LWB",Left-Back,DF,26,2000-08-09,99.
 Inter,Aleksandar Stanković,1410437,midfielders,"CDM,CM",Defensive Midfield,MF,21,2005-08-03,5.0,SRB,False,,2026-10-31
 Inter,Piotr Zieliński,362212,midfielders,"CM,CDM",Central Midfield,MF,32,1994-05-20,7.0,POL,False,,2026-10-31
 Inter,Petar Sučić,1382000,midfielders,"CM,CAM",Central Midfield,MF,23,2003-10-25,8.0,CRO,False,,2026-10-31
-Inter,Luis Henrique,1114635,midfielders,RM,Right Midfield,MF,24,2001-12-14,11.0,BRA,True,Early November 2026,2026-10-31
+Inter,Luis Henrique,1114635,midfielders,RM,Right Midfield,MF,24,2001-12-14,11.0,BRA,True,Mid November 2026,2026-10-31
 Inter,Andy Diouf,1254297,midfielders,"RM,CM,LB",Right Midfield,MF,23,2003-05-17,17.0,FRA,False,,2026-10-31
 Inter,Hakan Çalhanoglu,304733,midfielders,"CM,CDM",Central Midfield,MF,32,1994-02-08,20.0,TUR,False,,2026-10-31
-Inter,Curtis Jones,933768,midfielders,"CDM,RB,CAM,CM",Defensive Midfield,MF,25,2001-01-30,21.0,ENG,True,Early November 2026,2026-10-31
+Inter,Curtis Jones,933768,midfielders,"CDM,RB,CAM,CM",Defensive Midfield,MF,25,2001-01-30,21.0,ENG,True,Mid November 2026,2026-10-31
 Inter,Henrikh Mkhitaryan,73167,midfielders,CM,Central Midfield,MF,37,1989-01-21,22.0,ARM,False,,2026-10-31
 Inter,Nicolò Barella,541820,midfielders,"CM,CAM",Central Midfield,MF,29,1997-02-07,23.0,ITA,False,,2026-10-31
 Inter,Federico Dimarco,605224,midfielders,"LM,LW",Left Midfield,MF,28,1997-11-10,32.0,ITA,False,,2026-10-31
@@ -59,7 +59,7 @@ Lazio,Federico Serra,1711283,attackers,,Centre-Forward,FW,20,2006-01-03,63.0,ITA
 Lazio,Albert Guðmundsson,665188,attackers,"LW,ST,CAM,LM",Left Winger,FW,29,1997-06-15,80.0,ISL,True,Mid November 2026,2026-10-31
 Roma,Devis Vásquez,1186685,keepers,GK,Goalkeeper,GK,28,1998-05-12,32.0,COL,False,,2026-10-31
 Roma,Pierluigi Gollini,553849,keepers,GK,Goalkeeper,GK,31,1995-03-18,95.0,ITA,False,,2026-10-31
-Roma,Mile Svilar,768474,keepers,GK,Goalkeeper,GK,27,1999-08-27,99.0,SRB,True,Early November 2026,2026-10-31
+Roma,Mile Svilar,768474,keepers,GK,Goalkeeper,GK,27,1999-08-27,99.0,SRB,True,Mid November 2026,2026-10-31
 Roma,Konstantinos Koulierakis,1337884,defenders,CB,Centre-Back,DF,22,2003-11-28,3.0,GRE,False,,2026-10-31
 Roma,Evan N'Dicka,787242,defenders,CB,Centre-Back,DF,27,1999-08-20,5.0,CIV,False,,2026-10-31
 Roma,Nahuel Molina,726345,defenders,"RB,RWB,LWB,LM",Right-Back,DF,28,1998-04-06,20.0,ARG,False,,2026-10-31
@@ -96,7 +96,7 @@ Como,Yan Couto,1109171,defenders,"RB,RWB",Right-Back,DF,24,2002-06-03,27.0,BRA,F
 Como,Ivan Smolčić,1353289,defenders,RB,Right-Back,DF,26,2000-08-17,28.0,CRO,False,,2026-10-31
 Como,Adam Asfour,2141204,defenders,,Centre-Back,DF,17,2009-04-09,31.0,FRA,False,,2026-10-31
 Como,Willy Kambwala,1344550,defenders,CB,Centre-Back,DF,22,2004-08-25,53.0,COD,False,,2026-10-31
-Como,Trevoh Chalobah,793907,defenders,CB,Centre-Back,DF,27,1999-07-05,99.0,ENG,True,Early November 2026,2026-10-31
+Como,Trevoh Chalobah,793907,defenders,CB,Centre-Back,DF,27,1999-07-05,99.0,ENG,True,Mid November 2026,2026-10-31
 Como,Máximo Perrone,1336582,midfielders,CDM,Defensive Midfield,MF,23,2003-01-07,5.0,ARG,False,,2026-10-31
 Como,Luis Milla,638090,midfielders,"CM,CDM",Central Midfield,MF,32,1994-10-07,6.0,ESP,False,,2026-10-31
 Como,Lucas Da Cunha,1076647,midfielders,"CDM,RW,CM",Defensive Midfield,MF,25,2001-06-09,7.0,FRA,False,,2026-10-31
@@ -104,12 +104,12 @@ Como,Maxence Caqueret,846000,midfielders,"CAM,CDM,LW",Attacking Midfield,MF,26,2
 Como,Nico Paz,1347574,midfielders,"CAM,ST,RW,RM",Attacking Midfield,MF,22,2004-09-08,10.0,ARG,False,,2026-10-31
 Como,Adrian Lahdo,1615459,midfielders,LW,Left Winger,MF,18,2007-12-26,15.0,SWE,False,,2026-10-31
 Como,Samuele Ricci,941656,midfielders,"CM,CDM",Central Midfield,MF,25,2001-08-21,21.0,ITA,False,,2026-10-31
-Como,Mattia Liberali,1593861,midfielders,"CAM,RW,CM",Attacking Midfield,MF,19,2007-04-06,30.0,ITA,True,Early November 2026,2026-10-31
+Como,Mattia Liberali,1593861,midfielders,"CAM,RW,CM",Attacking Midfield,MF,19,2007-04-06,30.0,ITA,True,Mid November 2026,2026-10-31
 Como,Anastasios Douvikas,873270,attackers,ST,Centre-Forward,FW,27,1999-08-02,9.0,GRE,False,,2026-10-31
 Como,Assane Diao,1434889,attackers,"RW,LW",Right Winger,FW,21,2005-09-07,11.0,SEN,True,Mid November 2026,2026-10-31
-Como,Jesús Rodríguez,1624039,attackers,LW,Left Winger,FW,20,2005-11-21,17.0,ESP,True,Early November 2026,2026-10-31
+Como,Jesús Rodríguez,1624039,attackers,LW,Left Winger,FW,20,2005-11-21,17.0,ESP,True,Mid November 2026,2026-10-31
 Como,Martin Baturina,1215064,attackers,"LW,CAM",Left Winger,FW,23,2003-02-16,20.0,CRO,False,,2026-10-31
-Como,Jayden Addai,1347241,attackers,RW,Right Winger,FW,21,2005-08-26,42.0,NED,True,Doubtful,2026-10-31
+Como,Jayden Addai,1347241,attackers,RW,Right Winger,FW,21,2005-08-26,42.0,NED,True,Mid November 2026,2026-10-31
 Como,Moise Kean,747926,attackers,ST,Centre-Forward,FW,26,2000-02-28,90.0,ITA,True,Mid November 2026,2026-10-31
 Milan,Pietro Terracciano,281762,keepers,GK,Goalkeeper,GK,36,1990-03-08,1.0,ITA,True,Doubtful,2026-10-31
 Milan,Mike Maignan,466439,keepers,GK,Goalkeeper,GK,31,1995-07-03,16.0,FRA,False,,2026-10-31
@@ -183,7 +183,7 @@ Napoli,Alessandro Buongiorno,823018,defenders,CB,Centre-Back,DF,27,1999-06-06,4.
 Napoli,Benoît Badiashile,955376,defenders,CB,Centre-Back,DF,25,2001-03-26,5.0,FRA,True,Early December 2026,2026-10-31
 Napoli,Amir Rrahmani,544693,defenders,CB,Centre-Back,DF,32,1994-02-24,13.0,KVX,False,,2026-10-31
 Napoli,Rafa Marín,1313884,defenders,CB,Centre-Back,DF,24,2002-05-19,16.0,ESP,False,,2026-10-31
-Napoli,Mathías Olivera,729093,defenders,"CB,LB,LWB,LM",Centre-Back,DF,28,1997-10-31,17.0,URU,False,,2026-10-31
+Napoli,Mathías Olivera,729093,defenders,"CB,LB,LWB,LM",Centre-Back,DF,29,1997-10-31,17.0,URU,False,,2026-10-31
 Napoli,Giovanni Di Lorenzo,414906,defenders,"RB,CB,RWB,RM",Right-Back,DF,33,1993-08-04,22.0,ITA,False,,2026-10-31
 Napoli,Sam Beukema,873573,defenders,CB,Centre-Back,DF,27,1998-11-17,31.0,NED,False,,2026-10-31
 Napoli,Luca Marianucci,1529148,defenders,CB,Centre-Back,DF,22,2004-07-23,35.0,ITA,False,,2026-10-31
@@ -254,7 +254,7 @@ Torino,Cesare Casadei,1339372,midfielders,"CM,CAM",Central Midfield,MF,23,2003-0
 Torino,Kian Fitz-Jim,1218556,midfielders,"CM,CDM",Central Midfield,MF,23,2003-07-05,28.0,NED,False,,2026-10-31
 Torino,Rafik Belghali,1231029,midfielders,"RM,RB,RWB,CAM,LM",Right Midfield,MF,24,2002-06-07,45.0,ALG,False,,2026-10-31
 Torino,Gvidas Gineitis,1421505,midfielders,"CM,CDM",Central Midfield,MF,22,2004-04-15,66.0,LTU,False,,2026-10-31
-Torino,Alessio Cacciamani,1746591,midfielders,"LM,LWB",Left Midfield,MF,19,2007-06-29,77.0,ITA,False,,2026-10-31
+Torino,Alessio Cacciamani,1746591,midfielders,"LM,LWB",Left Midfield,MF,19,2007-06-29,77.0,ITA,True,Doubtful,2026-10-31
 Torino,Andrea Luongo,1762472,midfielders,"CM,CDM",Central Midfield,MF,18,2008-02-16,79.0,ITA,False,,2026-10-31
 Torino,Pietro Pellegri,817844,attackers,ST,Centre-Forward,FW,25,2001-03-17,9.0,ITA,False,,2026-10-31
 Torino,Gaetano Oristanio,1110045,attackers,"CAM,RW",Attacking Midfield,FW,24,2002-09-28,11.0,ITA,False,,2026-10-31
@@ -272,9 +272,9 @@ Cagliari,Yerry Mina,496042,defenders,CB,Centre-Back,DF,32,1994-09-23,26.0,COL,Fa
 Cagliari,Yukinari Sugawara,924610,defenders,"RB,RM,RWB",Right-Back,DF,26,2000-06-28,28.0,JPN,False,,2026-10-31
 Cagliari,Adam Obert,1289961,defenders,"LB,LM,CB",Left-Back,DF,24,2002-08-23,33.0,SVK,False,,2026-10-31
 Cagliari,Antoni Franke,1817271,defenders,,Centre-Back,DF,20,2006-09-30,35.0,POL,False,,2026-10-31
-Cagliari,Riyad Idrissi,1668219,midfielders,LM,Left Midfield,MF,21,2005-06-13,3.0,ITA,True,Early November 2026,2026-10-31
+Cagliari,Riyad Idrissi,1668219,midfielders,LM,Left Midfield,MF,21,2005-06-13,3.0,ITA,True,Late November 2026,2026-10-31
 Cagliari,Alessandro Romano,1705649,midfielders,"CM,CDM",Central Midfield,MF,20,2006-06-17,4.0,ITA,False,,2026-10-31
-Cagliari,Harry Winks,528453,midfielders,"CDM,CM",Defensive Midfield,MF,30,1996-02-02,6.0,ENG,True,Early November 2026,2026-10-31
+Cagliari,Harry Winks,528453,midfielders,"CDM,CM",Defensive Midfield,MF,30,1996-02-02,6.0,ENG,True,Mid November 2026,2026-10-31
 Cagliari,Michel Ndary Adopo,936164,midfielders,"CM,CDM,CAM,RW",Central Midfield,MF,26,2000-07-19,8.0,FRA,False,,2026-10-31
 Cagliari,Mattia Felici,1021302,midfielders,LM,Left Midfield,MF,25,2001-04-17,17.0,ITA,True,Out for season,2026-10-31
 Cagliari,Riccardo Ciervo,1210653,midfielders,"RM,RW",Right Midfield,MF,24,2002-04-01,20.0,ITA,False,,2026-10-31
@@ -305,7 +305,7 @@ Bologna,Torbjørn Heggem,935550,defenders,CB,Centre-Back,DF,27,1999-01-12,14.0,N
 Bologna,Nicolò Casale,814398,defenders,CB,Centre-Back,DF,28,1998-02-14,16.0,ITA,False,,2026-10-31
 Bologna,Nadir Zortea,1080669,defenders,"RB,RM,RWB",Right-Back,DF,27,1999-06-19,20.0,ITA,False,,2026-10-31
 Bologna,Rahim Alhassane,1333066,defenders,LB,Left-Back,DF,24,2002-01-01,23.0,NIG,False,,2026-10-31
-Bologna,Lorenzo De Silvestri,25587,defenders,RB,Right-Back,DF,38,1988-05-23,29.0,ITA,True,Doubtful,2026-10-31
+Bologna,Lorenzo De Silvestri,25587,defenders,RB,Right-Back,DF,38,1988-05-23,29.0,ITA,True,Mid November 2026,2026-10-31
 Bologna,Juan Miranda,873956,defenders,"LB,LM",Left-Back,DF,26,2000-01-19,33.0,ESP,False,,2026-10-31
 Bologna,Matteo Darmian,46820,defenders,"CB,RM",Centre-Back,DF,36,1989-12-02,36.0,ITA,False,,2026-10-31
 Bologna,Martin Vitík,1198712,defenders,CB,Centre-Back,DF,23,2003-01-21,41.0,CZE,False,,2026-10-31
@@ -316,14 +316,14 @@ Bologna,Oussama El Azzouzi,1283469,midfielders,CM,Central Midfield,MF,25,2001-05
 Bologna,Marco Libra,2008804,midfielders,CDM,Defensive Midfield,MF,18,2008-03-21,18.0,VEN,False,,2026-10-31
 Bologna,Lewis Ferguson,888921,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,27,1999-08-24,19.0,SCO,False,,2026-10-31
 Bologna,Jens Odgaard,689680,midfielders,"CAM,ST",Attacking Midfield,MF,27,1999-03-31,21.0,DEN,False,,2026-10-31
-Bologna,Riccardo Orsolini,661761,attackers,RW,Right Winger,FW,29,1997-01-24,7.0,ITA,True,Early November 2026,2026-10-31
+Bologna,Riccardo Orsolini,661761,attackers,RW,Right Winger,FW,29,1997-01-24,7.0,ITA,False,,2026-10-31
 Bologna,Artem Dovbyk,655696,attackers,ST,Centre-Forward,FW,29,1997-06-21,9.0,UKR,False,,2026-10-31
 Bologna,Federico Bernardeschi,414245,attackers,"RW,LW,CAM",Right Winger,FW,32,1994-02-16,10.0,ITA,False,,2026-10-31
 Bologna,Samuel Mbangula,1402900,attackers,"LW,CAM,LM",Left Winger,FW,22,2004-01-16,11.0,BEL,False,,2026-10-31
-Bologna,Jay Enem,1344246,attackers,ST,Centre-Forward,FW,23,2003-03-11,22.0,NED,True,Doubtful,2026-10-31
+Bologna,Jay Enem,1344246,attackers,ST,Centre-Forward,FW,23,2003-03-11,22.0,NED,True,About 1-2 weeks,2026-10-31
 Bologna,Nicolò Cambiaghi,1044029,attackers,LW,Left Winger,FW,25,2000-12-28,28.0,ITA,False,,2026-10-31
 Bologna,Simone Negri,1896939,attackers,,Centre-Forward,FW,18,2007-12-05,74.0,ITA,False,,2026-10-31
-Bologna,Roberto Piccoli,1017401,attackers,ST,Centre-Forward,FW,25,2001-01-27,91.0,ITA,True,Early November 2026,2026-10-31
+Bologna,Roberto Piccoli,1017401,attackers,ST,Centre-Forward,FW,25,2001-01-27,91.0,ITA,True,Doubtful,2026-10-31
 Atalanta,Thomas Pompei,2189043,keepers,,Goalkeeper,GK,20,2006-07-04,22.0,ITA,True,Mid November 2026,2026-10-31
 Atalanta,Marco Carnesecchi,1013021,keepers,GK,Goalkeeper,GK,26,2000-07-01,29.0,ITA,False,,2026-10-31
 Atalanta,Mattia Sonzogni,1837500,keepers,GK,Goalkeeper,GK,17,2009-07-30,51.0,ITA,False,,2026-10-31
@@ -373,7 +373,7 @@ Genoa,Stefano Sabelli,364104,midfielders,"RM,LWB,LM",Right Midfield,MF,33,1993-0
 Genoa,Hamed Traorè,875672,midfielders,"CAM,LW,CDM",Attacking Midfield,MF,26,2000-02-16,25.0,CIV,False,,2026-10-31
 Genoa,Morten Frendrup,921543,midfielders,"CM,CDM",Central Midfield,MF,25,2001-04-07,32.0,DEN,False,,2026-10-31
 Genoa,Samuel Wiafe,1902062,midfielders,"CM,CDM",Central Midfield,MF,18,2008-06-22,71.0,ITA,False,,2026-10-31
-Genoa,Mikael Egill Ellertsson,942193,midfielders,"RM,CM,RWB,LB,LWB,LM",Right Midfield,MF,24,2002-03-11,77.0,ISL,False,,2026-10-31
+Genoa,Mikael Egill Ellertsson,942193,midfielders,"RM,CM,RWB,LB,LWB,LM",Right Midfield,MF,24,2002-03-11,77.0,ISL,True,Doubtful,2026-10-31
 Genoa,Stephan El Shaarawy,161328,midfielders,"CAM,LW",Attacking Midfield,MF,34,1992-10-27,92.0,ITA,False,,2026-10-31
 Genoa,Djibril Sow,707970,midfielders,"CM,CDM,RW,LM",Central Midfield,MF,29,1997-02-06,97.0,SUI,False,,2026-10-31
 Genoa,Vítinha,1215057,attackers,"ST,CAM,LW",Centre-Forward,FW,26,2000-03-15,9.0,POR,False,,2026-10-31
@@ -393,15 +393,15 @@ Lecce,Ali Dembélé,1429871,defenders,"CB,RWB",Centre-Back,DF,22,2004-01-05,2.0,
 Lecce,Corrie Ndaba,1041508,defenders,"LB,CB",Left-Back,DF,26,1999-12-25,3.0,IRL,False,,2026-10-31
 Lecce,Kialonda Gaspar,1206806,defenders,CB,Centre-Back,DF,29,1997-09-27,4.0,ANG,False,,2026-10-31
 Lecce,Jamil Siebert,1185260,defenders,CB,Centre-Back,DF,24,2002-04-02,5.0,GER,False,,2026-10-31
-Lecce,Danilo Veiga,1306664,defenders,"RB,RM",Right-Back,DF,24,2002-09-25,17.0,POR,False,,2026-10-31
+Lecce,Danilo Veiga,1306664,defenders,"RB,RM,RWB",Right-Back,DF,24,2002-09-25,17.0,POR,False,,2026-10-31
 Lecce,Gaby Jean,1388474,defenders,CB,Centre-Back,DF,26,2000-02-19,18.0,FRA,False,,2026-10-31
-Lecce,Antonino Gallo,879065,defenders,LB,Left-Back,DF,26,2000-01-05,25.0,ITA,False,,2026-10-31
+Lecce,Antonino Gallo,879065,defenders,"LB,LWB",Left-Back,DF,26,2000-01-05,25.0,ITA,False,,2026-10-31
 Lecce,Elijah Scott,1666206,defenders,,Centre-Back,DF,20,2006-02-03,31.0,GER,False,,2026-10-31
 Lecce,Marlon Ubani,1898344,defenders,,Centre-Back,DF,21,2005-03-26,36.0,GER,False,,2026-10-31
 Lecce,Tiago Gabriel,1574492,defenders,CB,Centre-Back,DF,21,2004-12-26,44.0,POR,False,,2026-10-31
 Lecce,Sadik Fofana,1285732,midfielders,"CDM,LW",Defensive Midfield,MF,23,2003-05-16,8.0,TOG,False,,2026-10-31
 Lecce,Medon Berisha,1395728,midfielders,CAM,Attacking Midfield,MF,23,2003-10-21,10.0,ALB,True,Doubtful,2026-10-31
-Lecce,Youssef Maleh,789243,midfielders,"CM,CAM,CDM",Central Midfield,MF,28,1998-08-22,14.0,MAR,False,,2026-10-31
+Lecce,Youssef Maleh,789243,midfielders,"CM,CDM,CAM",Central Midfield,MF,28,1998-08-22,14.0,MAR,False,,2026-10-31
 Lecce,Omri Gandelman,1202114,midfielders,"CAM,CM,RW",Attacking Midfield,MF,26,2000-05-16,16.0,ISR,False,,2026-10-31
 Lecce,Ivan Ilić,1036182,midfielders,"CM,CAM",Central Midfield,MF,25,2001-03-17,20.0,SRB,True,Late November 2026,2026-10-31
 Lecce,Olaf Gorter,1414124,midfielders,CM,Central Midfield,MF,21,2005-01-31,28.0,NED,False,,2026-10-31
@@ -487,12 +487,12 @@ Udinese,Maduka Okoye,1091193,keepers,GK,Goalkeeper,GK,27,1999-08-28,40.0,NGA,Fal
 Udinese,Bartosz Mrozek,770994,keepers,GK,Goalkeeper,GK,26,2000-02-23,41.0,POL,False,,2026-10-31
 Udinese,Daniele Padelli,42692,keepers,GK,Goalkeeper,GK,41,1985-10-25,93.0,ITA,False,,2026-10-31
 Udinese,Edoardo Piana,1146636,keepers,GK,Goalkeeper,GK,23,2003-09-29,99.0,ITA,False,,2026-10-31
-Udinese,David Alaba,121633,defenders,CB,Centre-Back,DF,34,1992-06-24,5.0,AUT,True,Early November 2026,2026-10-31
+Udinese,David Alaba,121633,defenders,CB,Centre-Back,DF,34,1992-06-24,5.0,AUT,True,Mid November 2026,2026-10-31
 Udinese,Nicolò Bertola,1258292,defenders,"CB,LM,RWB",Centre-Back,DF,23,2003-03-23,13.0,ITA,False,,2026-10-31
 Udinese,James Abankwah,1269329,defenders,"CB,RB,LB,RWB",Centre-Back,DF,22,2004-01-16,14.0,IRL,False,,2026-10-31
 Udinese,Matteo Palma,1645922,defenders,CB,Centre-Back,DF,18,2008-03-13,16.0,ITA,False,,2026-10-31
 Udinese,Christian Kabasele,149219,defenders,CB,Centre-Back,DF,35,1991-02-24,27.0,BEL,False,,2026-10-31
-Udinese,Oumar Solet,866708,defenders,CB,Centre-Back,DF,26,2000-02-07,28.0,FRA,True,Early November 2026,2026-10-31
+Udinese,Oumar Solet,866708,defenders,CB,Centre-Back,DF,26,2000-02-07,28.0,FRA,True,Mid November 2026,2026-10-31
 Udinese,Enzo Ebosse,769167,defenders,CB,Centre-Back,DF,27,1999-03-11,77.0,CMR,False,,2026-10-31
 Udinese,Sandi Lovrić,557346,midfielders,"CM,CDM",Central Midfield,MF,28,1998-03-28,4.0,SVN,False,,2026-10-31
 Udinese,Oier Zarraga,1106916,midfielders,CDM,Defensive Midfield,MF,27,1999-01-04,6.0,ESP,False,,2026-10-31
@@ -505,12 +505,12 @@ Udinese,Giorgi Chakvetadze,837847,midfielders,"LM,CAM,ST,LW,CDM",Left Midfield,M
 Udinese,Jurgen Ekkelenkamp,934156,midfielders,"CM,CAM",Central Midfield,MF,26,2000-04-05,32.0,NED,False,,2026-10-31
 Udinese,Lennon Miller,1399969,midfielders,"CM,CDM",Central Midfield,MF,20,2006-08-25,38.0,SCO,False,,2026-10-31
 Udinese,Unai Gómez,1436270,midfielders,"CAM,ST,RW,LW",Attacking Midfield,MF,23,2003-05-25,46.0,ESP,False,,2026-10-31
-Udinese,Alessandro Zanoli,916710,midfielders,RM,Right Midfield,MF,26,2000-10-03,59.0,ITA,True,Early November 2026,2026-10-31
+Udinese,Alessandro Zanoli,916710,midfielders,RM,Right Midfield,MF,26,2000-10-03,59.0,ITA,True,Mid November 2026,2026-10-31
 Udinese,David Pejičić,1480713,midfielders,CM,Central Midfield,MF,19,2007-06-14,79.0,SVN,False,,2026-10-31
 Udinese,Idrissa Gueye,1532261,attackers,ST,Centre-Forward,FW,20,2006-09-16,7.0,SEN,True,Late December 2026,2026-10-31
 Udinese,Keinan Davis,724368,attackers,ST,Centre-Forward,FW,28,1998-02-13,9.0,JAM,False,,2026-10-31
 Udinese,Nicolò Zaniolo,818893,attackers,"ST,CAM",Centre-Forward,FW,27,1999-07-02,10.0,ITA,False,,2026-10-31
-Udinese,Vakoun Issouf Bayo,644738,attackers,"ST,CAM",Centre-Forward,FW,29,1997-01-10,15.0,CIV,True,Early November 2026,2026-10-31
+Udinese,Vakoun Issouf Bayo,644738,attackers,"ST,CAM",Centre-Forward,FW,29,1997-01-10,15.0,CIV,True,Mid November 2026,2026-10-31
 Udinese,Giulio Vinciati,1805112,attackers,,Centre-Forward,FW,19,2007-08-29,45.0,ITA,False,,2026-10-31
 Udinese,Lazar Jovanović,1518938,attackers,RW,Right Winger,FW,19,2006-11-30,91.0,SRB,False,,2026-10-31
 Fiorentina,Luca Lezzerini,282059,keepers,GK,Goalkeeper,GK,31,1995-03-24,19.0,ITA,False,,2026-10-31
@@ -577,9 +577,9 @@ Venezia,Matteo Grandi,415091,keepers,GK,Goalkeeper,GK,34,1992-10-12,23.0,ITA,Fal
 Venezia,Alessio Pozzi,879393,keepers,,Goalkeeper,GK,25,2000-12-14,28.0,ITA,False,,2026-10-31
 Venezia,Lorenzo Montipò,491784,keepers,GK,Goalkeeper,GK,30,1996-02-20,96.0,ITA,False,,2026-10-31
 Venezia,Matías Moreno,1605748,defenders,CB,Centre-Back,DF,23,2003-09-24,2.0,ARG,False,,2026-10-31
-Venezia,Joël Schingtienne,1352744,defenders,CB,Centre-Back,DF,24,2002-08-14,3.0,BEL,False,,2026-10-31
-Venezia,Bartol Franjić,1072710,defenders,CB,Centre-Back,DF,26,2000-01-14,4.0,CRO,True,Early November 2026,2026-10-31
-Venezia,Thierry Correia,992052,defenders,"RB,RM,LM",Right-Back,DF,27,1999-03-09,14.0,POR,True,Early November 2026,2026-10-31
+Venezia,Joël Schingtienne,1352744,defenders,"CB,RM",Centre-Back,DF,24,2002-08-14,3.0,BEL,False,,2026-10-31
+Venezia,Bartol Franjić,1072710,defenders,CB,Centre-Back,DF,26,2000-01-14,4.0,CRO,True,Doubtful,2026-10-31
+Venezia,Thierry Correia,992052,defenders,"RB,RM,LM",Right-Back,DF,27,1999-03-09,14.0,POR,True,Mid November 2026,2026-10-31
 Venezia,Juan Jesus,197352,defenders,CB,Centre-Back,DF,35,1991-06-10,15.0,BRA,False,,2026-10-31
 Venezia,Rufai Mohammed,1681811,defenders,"CB,RB",Centre-Back,DF,20,2006-03-15,16.0,GHA,False,,2026-10-31
 Venezia,Armel Bella-Kotchap,951765,defenders,CB,Centre-Back,DF,24,2001-12-11,17.0,GER,False,,2026-10-31
@@ -589,7 +589,7 @@ Venezia,Ale Gomes,1842921,defenders,"CB,RB",Centre-Back,DF,18,2008-02-14,95.0,ES
 Venezia,Ridgeciano Haps,414232,midfielders,"LM,LB",Left Midfield,MF,33,1993-06-12,5.0,SUR,False,,2026-10-31
 Venezia,Gianluca Busio,924431,midfielders,"CM,CDM",Central Midfield,MF,24,2002-05-28,6.0,USA,False,,2026-10-31
 Venezia,Lamine Fanne,1460862,midfielders,"CAM,CDM,CM",Attacking Midfield,MF,22,2004-01-30,8.0,ESP,False,,2026-10-31
-Venezia,Antoine Hainaut,1290968,midfielders,"RM,CAM",Right Midfield,MF,24,2002-02-18,18.0,FRA,False,,2026-10-31
+Venezia,Antoine Hainaut,1290968,midfielders,"RM,LM",Right Midfield,MF,24,2002-02-18,18.0,FRA,False,,2026-10-31
 Venezia,Simon Sohm,975242,midfielders,"CM,CAM,CDM",Central Midfield,MF,25,2001-04-11,19.0,SUI,False,,2026-10-31
 Venezia,Richie Sagrado,1388039,midfielders,LM,Left Midfield,MF,22,2004-01-30,20.0,BEL,False,,2026-10-31
 Venezia,Thórir Helgason,939593,midfielders,CM,Central Midfield,MF,26,2000-09-28,21.0,ISL,False,,2026-10-31

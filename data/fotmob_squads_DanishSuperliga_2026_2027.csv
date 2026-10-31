@@ -1,6 +1,6 @@
 squad,player,fotmob_id,group,positions,tm_position,pos,age,birth_date,shirt,ccode,injured,expected_return,fetched
 FC Midtjylland,Elías Ólafsson,841966,keepers,GK,Goalkeeper,GK,26,2000-03-11,1.0,ISL,True,Day to day,2026-10-31
-FC Midtjylland,Nordin Bakker,956176,keepers,GK,Goalkeeper,GK,28,1997-10-31,25.0,NED,False,,2026-10-31
+FC Midtjylland,Nordin Bakker,956176,keepers,GK,Goalkeeper,GK,29,1997-10-31,25.0,NED,False,,2026-10-31
 FC Midtjylland,Ovie Ejeheri,1206284,keepers,GK,Goalkeeper,GK,23,2003-04-23,30.0,ENG,False,,2026-10-31
 FC Midtjylland,Mark Ugboh,1386749,keepers,GK,Goalkeeper,GK,22,2004-01-03,60.0,NGA,False,,2026-10-31
 FC Midtjylland,Andreas Maxsø,408570,defenders,CB,Centre-Back,DF,32,1994-03-18,2.0,DEN,False,,2026-10-31
@@ -140,16 +140,16 @@ AC Horsens,Ivan Miličević,1179167,defenders,LB,Left-Back,DF,28,1998-07-16,7.0,
 AC Horsens,Valassina Diomande,1910146,defenders,"CB,LB",Centre-Back,DF,19,2007-10-19,12.0,CIV,False,,2026-10-31
 AC Horsens,Ole Kolskogen,842807,defenders,CB,Centre-Back,DF,25,2001-01-20,24.0,NOR,True,About a week,2026-10-31
 AC Horsens,Victor Pálsson,161937,defenders,"RB,CB",Right-Back,DF,35,1991-04-30,26.0,ISL,False,,2026-10-31
-AC Horsens,Alagie Saine,1433735,defenders,"LB,CB,RWB",Left-Back,DF,23,2003-01-20,28.0,GAM,False,,2026-10-31
+AC Horsens,Alagie Saine,1433735,defenders,"CB,LB,RWB",Centre-Back,DF,23,2003-01-20,28.0,GAM,False,,2026-10-31
+AC Horsens,Seniko Doua,1434456,defenders,RB,Right-Back,DF,24,2001-11-01,30.0,CIV,False,,2026-10-31
 AC Horsens,Mikkel Kupijbida,1804003,defenders,CB,Centre-Back,DF,18,2008-02-07,35.0,DEN,False,,2026-10-31
-AC Horsens,Anton Mandrup,1643765,defenders,,Centre-Back,DF,18,2008-02-14,39.0,DEN,False,,2026-10-31
+AC Horsens,Anton Mandrup,1643765,defenders,LB,Left-Back,DF,18,2008-02-14,39.0,DEN,False,,2026-10-31
 AC Horsens,Andreas Bruus,821101,midfielders,RM,Right Midfield,MF,27,1999-01-16,5.0,DEN,False,,2026-10-31
 AC Horsens,Jakob Bonde,288832,midfielders,"CM,ST,CAM",Central Midfield,MF,32,1993-12-29,6.0,DEN,False,,2026-10-31
 AC Horsens,Julius Madsen,1193683,midfielders,"CAM,LM,LWB",Attacking Midfield,MF,23,2003-08-01,14.0,DEN,False,,2026-10-31
 AC Horsens,Abdul Moro,1669408,midfielders,CDM,Defensive Midfield,MF,20,2006-05-05,16.0,GHA,False,,2026-10-31
 AC Horsens,Adam Herdonsson,1385819,midfielders,"CDM,CM",Defensive Midfield,MF,22,2004-04-07,17.0,SWE,False,,2026-10-31
-AC Horsens,Karlo Lusavec,1511009,midfielders,"CDM,CM",Defensive Midfield,MF,22,2003-10-30,20.0,CRO,False,,2026-10-31
-AC Horsens,Seniko Doua,1434456,midfielders,CAM,Attacking Midfield,MF,24,2001-11-01,30.0,CIV,False,,2026-10-31
+AC Horsens,Karlo Lusavec,1511009,midfielders,"CDM,CM",Defensive Midfield,MF,23,2003-10-30,20.0,CRO,False,,2026-10-31
 AC Horsens,Abdoulaye Gouba,1916547,midfielders,,Central Midfield,MF,19,2007-01-31,37.0,MLI,False,,2026-10-31
 AC Horsens,Omar Jarju,1609552,attackers,,Centre-Forward,FW,21,2005-08-18,,GAM,False,,2026-10-31
 AC Horsens,Kelvin Ehibhatiomhan,1188049,attackers,ST,Centre-Forward,FW,23,2003-04-23,11.0,ENG,False,,2026-10-31
@@ -170,13 +170,13 @@ OB,Adam Sørensen,921546,defenders,"LB,LWB,RM",Left-Back,DF,25,2000-11-11,3.0,DE
 OB,Julian Pauli,1571179,defenders,CB,Centre-Back,DF,21,2005-07-18,4.0,ENG,False,,2026-10-31
 OB,Ulrik Yttergård Jenssen,429581,defenders,"CB,LB",Centre-Back,DF,30,1996-07-17,5.0,NOR,False,,2026-10-31
 OB,Julius Askou,1661169,defenders,CB,Centre-Back,DF,20,2006-05-27,13.0,DEN,False,,2026-10-31
-OB,Marcus McCoy,1418385,defenders,"LB,RB,CB,LM,RM",Left-Back,DF,21,2005-08-24,15.0,DEN,False,,2026-10-31
+OB,Marcus McCoy,1418385,defenders,"LB,RB,RM,CB,LM",Left-Back,DF,21,2005-08-24,15.0,DEN,False,,2026-10-31
 OB,Mikkel Rakneberg,1255833,defenders,LB,Left-Back,DF,24,2002-02-28,24.0,NOR,False,,2026-10-31
 OB,Adam Amrani,1836181,defenders,,Centre-Back,DF,18,2008-10-09,25.0,DEN,False,,2026-10-31
 OB,Magnus Andersen,1692417,defenders,"RM,LB,RB",Right Midfield,DF,20,2006-04-03,28.0,DEN,False,,2026-10-31
 OB,James Gomez,1127584,defenders,CB,Centre-Back,DF,24,2001-11-14,29.0,GAM,False,,2026-10-31
 OB,Fredrik Ulvestad,180283,midfielders,"CDM,CM,RM",Defensive Midfield,MF,34,1992-05-19,6.0,NOR,False,,2026-10-31
-OB,Jann-Fiete Arp,844432,midfielders,"CAM,LM,RW,ST,RM,LW",Attacking Midfield,MF,26,2000-01-06,7.0,GER,False,,2026-10-31
+OB,Jann-Fiete Arp,844432,midfielders,"CAM,LM,ST,RW,RM,LW",Attacking Midfield,MF,26,2000-01-06,7.0,GER,False,,2026-10-31
 OB,Rasmus Falk,199818,midfielders,"CM,CDM",Central Midfield,MF,34,1992-01-15,8.0,DEN,False,,2026-10-31
 OB,Anssi Suhonen,1274568,midfielders,"CM,LM",Central Midfield,MF,25,2001-01-14,10.0,FIN,False,,2026-10-31
 OB,Nikolaj Juul-Sandberg,1653810,midfielders,"CM,CDM,RM",Central Midfield,MF,20,2006-04-21,19.0,DEN,False,,2026-10-31
