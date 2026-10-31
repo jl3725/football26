@@ -2207,6 +2207,46 @@
    "away": "Queens Park Rangers",
    "at": "2026-10-31T17:38:47+00:00",
    "model": "gemini-flash-lite-latest"
+  },
+  "401875565": {
+   "text": "Feyenoord와 Fortuna Sittard의 경기는 1-1 무승부로 종료되었다. 59'에 Anis Hadj Moussa의 도움을 받은 Luciano Valente가 선제골을 기록했으나, 86'에 Sven Simons의 패스를 받은 Shiloh ’t Zand가 동점골을 터뜨리며 승부를 원점으로 돌렸다. Feyenoord는 69.3%의 점유율과 15개의 슈팅을 기록하며 경기를 주도했으나, Feyenoord의 승리를 예상했던 팬 투표와 모델, Elo 예측은 모두 빗나갔다.",
+   "date": "2026-10-31",
+   "home": "Feyenoord",
+   "away": "Fortuna Sittard",
+   "at": "2026-10-31T18:05:50+00:00",
+   "model": "gemini-3.1-flash-lite"
+  },
+  "401885405": {
+   "text": "Moreirense가 Estrela를 상대로 2-1 승리를 거두며 경기를 마무리했다. 후반 50' Landerson의 선제골로 Moreirense가 앞서갔으나, Estrela가 57' Lovro Zvonarek의 골로 동점을 만들었고, 이어 90'+5'에 Nile John이 Tiago Andrade의 도움을 받아 결승골을 터뜨렸다. 양 팀은 슈팅 11개와 패스 성공률 80%로 팽팽한 기록을 보였으나 Moreirense가 유효 슈팅에서 4대 1로 우세했다. 사전에 팬 투표와 Elo 예측은 Moreirense의 승리를 예상해 적중한 반면, 모델의 Estrela 승리 예측은 빗나갔다.",
+   "date": "2026-10-31",
+   "home": "Moreirense",
+   "away": "Estrela",
+   "at": "2026-10-31T18:06:03+00:00",
+   "model": "gemini-flash-lite-latest"
+  },
+  "401879247": {
+   "text": "Coventry City가 Sunderland를 상대로 3-1 승리를 거두며 홈에서 귀중한 승점 3점을 챙겼다. 전반 17' Tatsuhiro Sakamoto의 선제골과 37' Taiwo Awoniyi의 득점으로 앞서 나간 Coventry City는 후반 52' Jack Rudoni의 추가골까지 더했고, Sunderland는 67' Enzo Le Fée가 페널티킥으로 한 골을 만회했으나 90'+9' Omar Alderete가 퇴장당하며 추격의 동력을 잃었다. 경기 기록상 Sunderland가 점유율 56.5%와 슈팅 17개를 기록하며 공세를 펼쳤으나, 유효 슈팅은 4개를 기록한 Coventry City가 2개에 그친 Sunderland보다 효율적인 공격을 선보였다. 경기 전 팬 투표와 모델, Elo 예측 모두 Sunderland의 승리를 점쳤으나 실제 결과는 예측과 다르게 나타났다.",
+   "date": "2026-10-31",
+   "home": "Coventry City",
+   "away": "Sunderland",
+   "at": "2026-10-31T18:06:11+00:00",
+   "model": "gemini-3.1-flash-lite"
+  },
+  "401878763": {
+   "text": "Hull City와 Ipswich Town은 2-2 무승부를 거뒀다. 전반 22분 Abdoul Ouattara의 도움을 받은 Florentino의 득점으로 Ipswich Town이 앞서갔으나, 후반 58분 Tim Iroegbunam과 후반 68분 Oliver McBurnie의 연속골로 Hull City가 경기를 뒤집었고, 이어 후반 74분 Azor Matusiwa가 도운 Julio Enciso의 득점으로 Ipswich Town이 균형을 맞췄다. 경기 통계에서는 점유율 38.5% 대 61.5%, 슈팅 9회 대 15회로 Ipswich Town이 우세했다. 팬 투표와 모델 예측은 Hull City 승리를, Elo 예측은 Ipswich Town 승리를 예상했으나 모두 빗나갔다.",
+   "date": "2026-10-31",
+   "home": "Hull City",
+   "away": "Ipswich Town",
+   "at": "2026-10-31T18:06:29+00:00",
+   "model": "gemini-flash-lite-latest"
+  },
+  "5836908": {
+   "text": "West Bromwich Albion이 West Ham United와의 경기에서 3대1로 승리했다. 전반 20분 Felix Horn Myhre의 선제골로 West Bromwich Albion이 앞서갔으나, 29분 West Ham United의 Jarrod Bowen이 동점골을 넣었고, 이어 48분 Jimmy Morgan의 결승골과 72분 Callum Styles의 추가골이 터졌다. 경기 통계에서 West Ham United는 점유율 55.1퍼센트 대 44.9퍼센트, 슈팅 14대 12, 유효 슈팅 5대 3으로 앞섰으나 효율적인 공격을 펼친 West Bromwich Albion에 패했다. 모델과 Elo가 West Ham United의 승리를 72퍼센트와 65퍼센트로 예측했으나 이 역시 빗나갔다.",
+   "date": "2026-10-31",
+   "home": "West Ham United",
+   "away": "West Bromwich Albion",
+   "at": "2026-10-31T18:06:44+00:00",
+   "model": "gemini-flash-lite-latest"
   }
  },
  "fails": {
