@@ -2679,6 +2679,30 @@
    "away": "La Louvière",
    "at": "2026-11-01T20:54:19+00:00",
    "model": "gemini-flash-lite-latest"
+  },
+  "401882826": {
+   "text": "Athletic Club이 San Mamés에서 열린 경기에서 Real Sociedad를 2-1로 꺾고 승리를 거뒀다. 14' Iñaki Williams의 선제골 이후 30' Luka Sucic가 동점골을 넣었으나, 45'+2' Álex Berenguer가 페널티킥으로 결승골을 기록하며 승부를 결정지었다. Real Sociedad가 점유율 62%와 슈팅 14개를 기록하며 경기를 주도했으나, Athletic Club은 효율적인 공격과 4개의 선방을 앞세워 승리를 지켜냈다. 이번 결과는 Athletic Club의 승리를 점쳤던 팬 투표와 모델, Elo 예측 모두와 일치했다.",
+   "date": "2026-11-01",
+   "home": "Athletic Club",
+   "away": "Real Sociedad",
+   "at": "2026-11-01T22:22:28+00:00",
+   "model": "gemini-3.1-flash-lite"
+  },
+  "401876417": {
+   "text": "Marseille가 Toulouse를 상대로 2-0 승리를 거두며 리그 경기에서 승점 3점을 획득했다. 경기 시작 1' 만에 Amine Gouiri의 도움을 받은 Amine Harit이 선제골을 기록했고, 25'에는 Igor Paixão의 도움으로 Amine Gouiri가 추가 골을 넣으며 일찌감치 승기를 잡았다. Toulouse가 점유율 56.4%와 유효 슈팅 7개를 기록하며 Marseille보다 공격적인 지표에서 앞섰으나, Marseille는 6개의 선방을 기록한 골키퍼의 활약과 효율적인 득점으로 승리를 지켜냈다. 팬 투표와 모델, Elo 예측 모두 Marseille의 승리를 점쳤으며 이번 결과는 해당 예측들과 일치했다.",
+   "date": "2026-11-01",
+   "home": "Marseille",
+   "away": "Toulouse",
+   "at": "2026-11-01T22:22:36+00:00",
+   "model": "gemini-3.1-flash-lite"
+  },
+  "401874949": {
+   "text": "Juventus가 Allianz Stadium에서 Napoli를 2-0으로 꺾고 승리를 거뒀다. 70' Kerim Alajbegovic의 선제골 이후 75' Napoli의 Luca Marianucci가 퇴장당했고, 87' Jérémie Boga가 추가골을 기록하며 승부에 쐐기를 박았다. Juventus는 슈팅 18개와 유효 슈팅 4개를 기록하며 슈팅 8개와 유효 슈팅 1개에 그친 Napoli를 상대로 경기 내용 면에서 우위를 점했다. 이번 결과는 Juventus의 승리를 점쳤던 팬 투표와 Elo 예측을 적중시켰으나 Napoli의 승리를 예상했던 모델의 예측과는 엇갈렸다.",
+   "date": "2026-11-01",
+   "home": "Juventus",
+   "away": "Napoli",
+   "at": "2026-11-01T22:22:47+00:00",
+   "model": "gemini-3.1-flash-lite"
   }
  },
  "fails": {
