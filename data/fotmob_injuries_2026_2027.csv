@@ -1,10 +1,10 @@
 squad,player,fotmob_id,kind,expected_return,match_id,match_date,fetched
-Everton,Jarrad Branthwaite,1030829,injury,Doubtful,5795508,2026-11-06,2026-11-01
-Coventry City,Bobby Thomas,1161885,injury,Doubtful,5795508,2026-11-06,2026-11-01
-Coventry City,Aurèle Amenda,1257648,injury,Early November 2026,5795508,2026-11-06,2026-11-01
-Coventry City,Josh Eccles,962000,injury,Early November 2026,5795508,2026-11-06,2026-11-01
-Coventry City,Luke Woolfenden,866688,injury,Early November 2026,5795508,2026-11-06,2026-11-01
-Coventry City,Haji Wright,848268,injury,Early November 2026,5795508,2026-11-06,2026-11-01
+Ipswich Town,Saša Lukić,556972,injury,Doubtful,5795510,2026-11-08,2026-11-01
+Ipswich Town,Jack Taylor,789507,injury,Back in training,5795510,2026-11-08,2026-11-01
+Bournemouth,Alex Tóth,1449690,injury,Early November 2026,5795510,2026-11-08,2026-11-01
+Bournemouth,Alex Scott,1233655,injury,Early November 2026,5795510,2026-11-08,2026-11-01
+Bournemouth,Veljko Milosavljević,1666977,injury,Doubtful,5795510,2026-11-08,2026-11-01
+Bournemouth,Julián Araujo,1027447,injury,Late November 2026,5795510,2026-11-08,2026-11-01
 Leeds United,Joe Rodon,717174,injury,Back in training,5795511,2026-11-07,2026-11-01
 Leeds United,Mateo Joseph,1344677,injury,Early January 2027,5795511,2026-11-07,2026-11-01
 Tottenham Hotspur,Tosin Adarabioyo,683402,injury,About a week,5795511,2026-11-07,2026-11-01
@@ -22,11 +22,6 @@ Liverpool,Dominik Szoboszlai,846005,injury,Doubtful,5795507,2026-11-08,2026-11-0
 Liverpool,Hugo Ekitiké,1197030,injury,Early January 2027,5795507,2026-11-08,2026-11-01
 Liverpool,Conor Bradley,1113690,injury,Early January 2027,5795507,2026-11-08,2026-11-01
 Liverpool,Giovanni Leoni,1609209,injury,Late November 2026,5795507,2026-11-08,2026-11-01
-Newcastle United,Lewis Miley,1296763,injury,Doubtful,5795503,2026-11-02,2026-11-01
-Newcastle United,Matias Fernandez-Pardo,1444231,injury,Doubtful,5795503,2026-11-02,2026-11-01
-Newcastle United,Ewen Jaouen,1438570,injury,Early December 2026,5795503,2026-11-02,2026-11-01
-Newcastle United,Valentino Livramento,1107910,injury,Late November 2026,5795503,2026-11-02,2026-11-01
-Newcastle United,William Osula,1258092,injury,Doubtful,5795503,2026-11-02,2026-11-01
 Manchester Utd,Lisandro Martínez,847983,suspension,Early November 2026,5795512,2026-11-08,2026-11-01
 Manchester Utd,Amad Diallo,1070052,injury,Doubtful,5795512,2026-11-08,2026-11-01
 Manchester Utd,Marcus Rashford,696365,injury,Doubtful,5795512,2026-11-08,2026-11-01
@@ -37,17 +32,6 @@ Manchester Utd,Manuel Ugarte,1035614,injury,Early April 2027,5795512,2026-11-08,
 Aston Villa,Aaron Wan-Bissaka,760320,injury,Mid November 2026,5795512,2026-11-08,2026-11-01
 Aston Villa,Matteo Ruggeri,1051097,injury,Mid December 2026,5795512,2026-11-08,2026-11-01
 Aston Villa,Amadou Onana,1185748,injury,Mid April 2027,5795512,2026-11-08,2026-11-01
-Brighton,Ferdi Kadıoğlu,774448,injury,Back in training,5795506,2026-11-08,2026-11-01
-Brighton,Pascal Struijk,796974,injury,Early November 2026,5795506,2026-11-08,2026-11-01
-Brighton,Zadok Yohanna,1782648,injury,Early November 2026,5795506,2026-11-08,2026-11-01
-Brighton,Femi Azeez,1083185,injury,Early November 2026,5795506,2026-11-08,2026-11-01
-Brighton,Evan Ferguson,1068482,injury,Early November 2026,5795506,2026-11-08,2026-11-01
-Brighton,Kaoru Mitoma,862608,injury,Late November 2026,5795506,2026-11-08,2026-11-01
-Brighton,Stefanos Tzimas,1423616,injury,Early November 2026,5795506,2026-11-08,2026-11-01
-Brentford,Fábio Carvalho,963965,injury,Late November 2026,5795506,2026-11-08,2026-11-01
-Brentford,Rico Henry,562892,injury,Early November 2026,5795506,2026-11-08,2026-11-01
-Brentford,Joshua Dasilva,759566,injury,Doubtful,5795506,2026-11-08,2026-11-01
-Brentford,Antoni Milambo,1276312,injury,Doubtful,5795506,2026-11-08,2026-11-01
 Arsenal,Max Dowman,1635773,suspension,Late November 2026,5795505,2026-11-07,2026-11-01
 Arsenal,Noni Madueke,1084981,injury,Doubtful,5795505,2026-11-07,2026-11-01
 Arsenal,Riccardo Calafiori,1105912,injury,Doubtful,5795505,2026-11-07,2026-11-01
@@ -61,12 +45,6 @@ Hull City,Jack Butland,288880,injury,Doubtful,5795505,2026-11-07,2026-11-01
 Hull City,Darko Gyabi,1125874,injury,Late November 2026,5795505,2026-11-07,2026-11-01
 Hull City,Charlie Hughes,1331703,injury,Late November 2026,5795505,2026-11-07,2026-11-01
 Hull City,Eliot Matazo,1178514,injury,Early February 2027,5795505,2026-11-07,2026-11-01
-Ipswich Town,Saša Lukić,556972,injury,Doubtful,5795510,2026-11-08,2026-11-01
-Ipswich Town,Jack Taylor,789507,injury,Back in training,5795510,2026-11-08,2026-11-01
-Bournemouth,Alex Tóth,1449690,injury,Early November 2026,5795510,2026-11-08,2026-11-01
-Bournemouth,Alex Scott,1233655,injury,Early November 2026,5795510,2026-11-08,2026-11-01
-Bournemouth,Veljko Milosavljević,1666977,injury,Doubtful,5795510,2026-11-08,2026-11-01
-Bournemouth,Julián Araujo,1027447,injury,Late November 2026,5795510,2026-11-08,2026-11-01
 Sunderland,Nordi Mukiele,602304,injury,Doubtful,5795514,2026-11-08,2026-11-01
 Sunderland,Daniel Ballard,974268,injury,Early November 2026,5795514,2026-11-08,2026-11-01
 Sunderland,Romaine Mundle,1123947,injury,Early January 2027,5795514,2026-11-08,2026-11-01
@@ -77,7 +55,29 @@ Chelsea,João Pedro,1021382,injury,Early November 2026,5795514,2026-11-08,2026-1
 Chelsea,Emiliano Martínez,268375,injury,Early November 2026,5795514,2026-11-08,2026-11-01
 Chelsea,Jamie Gittens,1113692,injury,Back in training,5795514,2026-11-08,2026-11-01
 Chelsea,Reece James,807729,injury,Mid January 2027,5795514,2026-11-08,2026-11-01
+Everton,Jarrad Branthwaite,1030829,injury,Doubtful,5795508,2026-11-06,2026-11-01
+Coventry City,Bobby Thomas,1161885,injury,A few days,5795508,2026-11-06,2026-11-01
+Coventry City,Aurèle Amenda,1257648,injury,Early November 2026,5795508,2026-11-06,2026-11-01
+Coventry City,Josh Eccles,962000,injury,Early November 2026,5795508,2026-11-06,2026-11-01
+Coventry City,Luke Woolfenden,866688,injury,Early November 2026,5795508,2026-11-06,2026-11-01
+Coventry City,Haji Wright,848268,injury,Early November 2026,5795508,2026-11-06,2026-11-01
+Newcastle United,Lewis Miley,1296763,injury,Doubtful,5795503,2026-11-02,2026-11-01
+Newcastle United,Matias Fernandez-Pardo,1444231,injury,Doubtful,5795503,2026-11-02,2026-11-01
+Newcastle United,Ewen Jaouen,1438570,injury,Early December 2026,5795503,2026-11-02,2026-11-01
+Newcastle United,Valentino Livramento,1107910,injury,Late November 2026,5795503,2026-11-02,2026-11-01
+Newcastle United,William Osula,1258092,injury,Doubtful,5795503,2026-11-02,2026-11-01
 Nottingham Forest,Nicolás Dominguez,827315,injury,About a week,5795513,2026-11-07,2026-11-01
 Nottingham Forest,Igor Jesus,1082102,injury,Early November 2026,5795513,2026-11-07,2026-11-01
 Nottingham Forest,Nicolò Savona,1622290,injury,Early November 2026,5795513,2026-11-07,2026-11-01
 Manchester City,Antoine Semenyo,933576,injury,Mid December 2026,5795513,2026-11-07,2026-11-01
+Brighton,Ferdi Kadıoğlu,774448,injury,Back in training,5795506,2026-11-08,2026-11-01
+Brighton,Pascal Struijk,796974,injury,Early November 2026,5795506,2026-11-08,2026-11-01
+Brighton,Zadok Yohanna,1782648,injury,Early November 2026,5795506,2026-11-08,2026-11-01
+Brighton,Femi Azeez,1083185,injury,Early November 2026,5795506,2026-11-08,2026-11-01
+Brighton,Evan Ferguson,1068482,injury,Early November 2026,5795506,2026-11-08,2026-11-01
+Brighton,Kaoru Mitoma,862608,injury,Late November 2026,5795506,2026-11-08,2026-11-01
+Brighton,Stefanos Tzimas,1423616,injury,Early November 2026,5795506,2026-11-08,2026-11-01
+Brentford,Fábio Carvalho,963965,injury,Late November 2026,5795506,2026-11-08,2026-11-01
+Brentford,Rico Henry,562892,injury,Early November 2026,5795506,2026-11-08,2026-11-01
+Brentford,Joshua Dasilva,759566,injury,Doubtful,5795506,2026-11-08,2026-11-01
+Brentford,Antoni Milambo,1276312,injury,Doubtful,5795506,2026-11-08,2026-11-01
