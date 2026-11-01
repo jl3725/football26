@@ -1,5 +1,5 @@
 squad,player,fotmob_id,group,positions,tm_position,pos,age,birth_date,shirt,ccode,injured,expected_return,fetched
-Bayern Munich,Manuel Neuer,27299,keepers,GK,Goalkeeper,GK,40,1986-03-27,1.0,GER,True,About a week,2026-11-01
+Bayern Munich,Manuel Neuer,27299,keepers,GK,Goalkeeper,GK,40,1986-03-27,1.0,GER,True,Doubtful,2026-11-01
 Bayern Munich,Sven Ulreich,94841,keepers,GK,Goalkeeper,GK,38,1988-08-03,26.0,GER,False,,2026-11-01
 Bayern Munich,Jonas Urbig,1285872,keepers,GK,Goalkeeper,GK,23,2003-08-08,40.0,GER,False,,2026-11-01
 Bayern Munich,Leon Klanac,1664982,keepers,GK,Goalkeeper,GK,19,2007-03-01,48.0,GER,False,,2026-11-01
@@ -14,10 +14,10 @@ Bayern Munich,Sacha Boey,1034808,defenders,RB,Right-Back,DF,26,2000-09-13,23.0,F
 Bayern Munich,Konrad Laimer,526827,defenders,"RB,LB,CDM,RW",Right-Back,DF,29,1997-05-27,27.0,AUT,False,,2026-11-01
 Bayern Munich,Josip Stanišić,950824,defenders,"RB,LB,RWB",Right-Back,DF,26,2000-04-02,44.0,CRO,False,,2026-11-01
 Bayern Munich,Joshua Kimmich,460632,midfielders,"CDM,RB",Defensive Midfield,MF,31,1995-02-08,6.0,GER,False,,2026-11-01
-Bayern Munich,Serge Gnabry,385437,midfielders,"CAM,LW",Attacking Midfield,MF,31,1995-07-14,7.0,GER,True,Mid November 2026,2026-11-01
+Bayern Munich,Serge Gnabry,385437,midfielders,"CAM,LW,RW",Attacking Midfield,MF,31,1995-07-14,7.0,GER,True,Late November 2026,2026-11-01
 Bayern Munich,Tom Bischof,1286183,midfielders,"CDM,LB,CM,RB",Defensive Midfield,MF,21,2005-06-28,8.0,GER,False,,2026-11-01
 Bayern Munich,Jamal Musiala,1156141,midfielders,"CAM,LW",Attacking Midfield,MF,23,2003-02-26,10.0,GER,True,A few weeks,2026-11-01
-Bayern Munich,Ismael Saibari,1180288,midfielders,"CAM,ST,LW,CM",Attacking Midfield,MF,25,2001-01-28,34.0,MAR,True,Mid November 2026,2026-11-01
+Bayern Munich,Ismael Saibari,1180288,midfielders,"CAM,ST,LW,CM",Attacking Midfield,MF,25,2001-01-28,34.0,MAR,True,Mid December 2026,2026-11-01
 Bayern Munich,Erblin Osmani,1904968,midfielders,CDM,Defensive Midfield,MF,17,2009-05-19,38.0,KVX,False,,2026-11-01
 Bayern Munich,Bara Ndiaye,1798782,midfielders,CDM,Defensive Midfield,MF,18,2007-12-31,39.0,SEN,True,Mid November 2026,2026-11-01
 Bayern Munich,Lennart Karl,1737700,midfielders,"CAM,RW",Attacking Midfield,MF,18,2008-02-22,42.0,GER,False,,2026-11-01
@@ -41,13 +41,13 @@ Dortmund,Kauã Prates,1750565,defenders,LB,Left-Back,DF,18,2008-08-12,36.0,BRA,T
 Dortmund,Filippo Mane,1663094,defenders,CB,Centre-Back,DF,21,2005-03-08,39.0,ITA,False,,2026-11-01
 Dortmund,Luca Reggiani,1845173,defenders,CB,Centre-Back,DF,18,2008-01-09,49.0,ITA,False,,2026-11-01
 Dortmund,Miguel Adje,1845223,midfielders,RM,Right Midfield,MF,18,2008-02-03,,GER,False,,2026-11-01
-Dortmund,Jobe Bellingham,1287373,midfielders,"CDM,CM",Defensive Midfield,MF,21,2005-09-23,7.0,ENG,False,,2026-11-01
+Dortmund,Jobe Bellingham,1287373,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,21,2005-09-23,7.0,ENG,False,,2026-11-01
 Dortmund,Felix Nmecha,966019,midfielders,"CDM,CM",Defensive Midfield,MF,26,2000-10-10,8.0,GER,False,,2026-11-01
 Dortmund,Maximilian Beier,1047667,midfielders,"CAM,LWB,ST,LM",Attacking Midfield,MF,24,2002-10-17,14.0,GER,False,,2026-11-01
 Dortmund,Carney Chukwuemeka,1089685,midfielders,CAM,Attacking Midfield,MF,23,2003-10-20,17.0,AUT,False,,2026-11-01
 Dortmund,Ethan Nwaneri,1254234,midfielders,"CAM,CM,RW",Attacking Midfield,MF,19,2007-03-21,18.0,ENG,False,,2026-11-01
 Dortmund,Marcel Sabitzer,215151,midfielders,"CDM,LW,CM,CAM",Defensive Midfield,MF,32,1994-03-17,20.0,AUT,False,,2026-11-01
-Dortmund,Daniel Svensson,1209228,midfielders,"LWB,LM,RWB,CB,LB,RB,RM",Left-Back,MF,24,2002-02-12,24.0,SWE,False,,2026-11-01
+Dortmund,Daniel Svensson,1209228,midfielders,"LWB,RWB,LM,LB,CB,RB",Left-Back,MF,24,2002-02-12,24.0,SWE,False,,2026-11-01
 Dortmund,Joey Veerman,792429,midfielders,"CDM,CM",Defensive Midfield,MF,27,1998-11-19,25.0,NED,False,,2026-11-01
 Dortmund,Julian Ryerson,659272,midfielders,"RWB,RB,RM,LWB",Right-Back,MF,28,1997-11-17,26.0,NOR,False,,2026-11-01
 Dortmund,Justin Lerma,1636870,midfielders,"CAM,CDM,CM",Attacking Midfield,MF,18,2008-05-05,28.0,ECU,True,About 1-2 weeks,2026-11-01
@@ -68,7 +68,7 @@ Freiburg,Anthony Jung,343766,defenders,CB,Centre-Back,DF,34,1991-11-03,5.0,GER,F
 Freiburg,Lukas Kübler,307209,defenders,RB,Right-Back,DF,34,1992-08-30,17.0,GER,False,,2026-11-01
 Freiburg,Berkay Yılmaz,1580371,defenders,LB,Left-Back,DF,21,2005-02-25,27.0,TUR,False,,2026-11-01
 Freiburg,Matthias Ginter,303912,defenders,CB,Centre-Back,DF,32,1994-01-19,28.0,GER,False,,2026-11-01
-Freiburg,Philipp Treu,1281090,defenders,"RB,LB,RW",Right-Back,DF,25,2000-12-03,29.0,GER,True,About 1-2 weeks,2026-11-01
+Freiburg,Philipp Treu,1281090,defenders,"RB,LB,RW",Right-Back,DF,25,2000-12-03,29.0,GER,True,Doubtful,2026-11-01
 Freiburg,Christian Günter,355358,defenders,LB,Left-Back,DF,33,1993-02-28,30.0,GER,False,,2026-11-01
 Freiburg,Jordy Makengo,1281108,defenders,LB,Left-Back,DF,25,2001-08-03,33.0,COD,False,,2026-11-01
 Freiburg,Max Rosenfelder,1281107,defenders,CB,Centre-Back,DF,23,2003-02-10,37.0,GER,False,,2026-11-01
@@ -104,13 +104,13 @@ RB Leipzig,Ezechiel Banzuzi,1310001,midfielders,"CM,CDM",Central Midfield,MF,21,
 RB Leipzig,Assan Ouédraogo,1486541,midfielders,CM,Central Midfield,MF,20,2006-05-09,8.0,GER,True,Late December 2026,2026-11-01
 RB Leipzig,Nicolas Seiwald,1024672,midfielders,"CM,CDM,CB",Central Midfield,MF,25,2001-05-04,13.0,AUT,False,,2026-11-01
 RB Leipzig,Christoph Baumgartner,747718,midfielders,"CM,CAM",Central Midfield,MF,27,1999-08-01,14.0,AUT,False,,2026-11-01
-RB Leipzig,Rocco Reitz,1174726,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,24,2002-05-29,20.0,GER,False,,2026-11-01
+RB Leipzig,Rocco Reitz,1174726,midfielders,"CM,CDM,RW,CAM",Central Midfield,MF,24,2002-05-29,20.0,GER,False,,2026-11-01
 RB Leipzig,Neil El Aynaoui,1274060,midfielders,"CDM,CM",Defensive Midfield,MF,25,2001-07-02,21.0,MAR,False,,2026-11-01
 RB Leipzig,Andrija Maksimović,1482209,midfielders,"RW,CM",Right Winger,MF,19,2007-06-05,30.0,SRB,False,,2026-11-01
 RB Leipzig,Benno Kaltefleiter,1875892,midfielders,CM,Central Midfield,MF,18,2008-02-14,37.0,GER,False,,2026-11-01
 RB Leipzig,Antonio Nusa,1248482,attackers,"LW,LM",Left Winger,FW,21,2005-04-17,7.0,NOR,False,,2026-11-01
 RB Leipzig,Marc Guiu,1412137,attackers,ST,Centre-Forward,FW,20,2006-01-04,9.0,ESP,True,A few weeks,2026-11-01
-RB Leipzig,Brajan Gruda,1430151,attackers,"RW,CAM,CM",Right Winger,FW,22,2004-05-31,10.0,GER,False,,2026-11-01
+RB Leipzig,Brajan Gruda,1430151,attackers,"RW,CAM,CM,RM",Right Winger,FW,22,2004-05-31,10.0,GER,False,,2026-11-01
 RB Leipzig,Johan Bakayoko,1203194,attackers,RW,Right Winger,FW,23,2003-04-20,11.0,BEL,False,,2026-11-01
 RB Leipzig,Tidiam Gomis,1482733,attackers,"ST,LW",Centre-Forward,FW,20,2006-08-08,27.0,FRA,False,,2026-11-01
 RB Leipzig,Christopher Nkunku,704523,attackers,"ST,CAM",Centre-Forward,FW,28,1997-11-14,28.0,FRA,False,,2026-11-01
@@ -273,19 +273,19 @@ Augsburg,Chrislain Matsima,1178512,defenders,CB,Centre-Back,DF,24,2002-05-15,5.0
 Augsburg,Jeffrey Gouweleeuw,245315,defenders,CB,Centre-Back,DF,35,1991-07-10,6.0,NED,False,,2026-11-01
 Augsburg,Young-Woo Seol,1132818,defenders,"RB,RWB,LB,CAM,LWB",Right-Back,DF,27,1998-12-05,7.0,KOR,False,,2026-11-01
 Augsburg,Juma Bah,1539619,defenders,CB,Centre-Back,DF,20,2006-04-11,35.0,SLE,False,,2026-11-01
-Augsburg,Noahkai Banks,1641063,defenders,CB,Centre-Back,DF,19,2006-12-01,40.0,USA,True,Late October 2026,2026-11-01
+Augsburg,Noahkai Banks,1641063,defenders,CB,Centre-Back,DF,19,2006-12-01,40.0,USA,True,Mid November 2026,2026-11-01
 Augsburg,Mahmut Kücüksahin,1645635,midfielders,,Central Midfield,MF,22,2004-04-07,,TUR,False,,2026-11-01
 Augsburg,Robert Draghici,2113980,midfielders,,Central Midfield,MF,18,2008-06-21,,ROU,False,,2026-11-01
 Augsburg,Han-Noah Massengo,978680,midfielders,"CDM,CM",Defensive Midfield,MF,25,2001-07-07,4.0,FRA,False,,2026-11-01
-Augsburg,Sima Suso,1561984,midfielders,"CB,CAM,CDM",Centre-Back,MF,21,2005-05-28,8.0,GER,True,Late October 2026,2026-11-01
-Augsburg,Mert Kömür,1453218,midfielders,"CAM,ST",Attacking Midfield,MF,21,2005-07-17,10.0,TUR,False,,2026-11-01
+Augsburg,Sima Suso,1561984,midfielders,"CB,CAM,CDM",Centre-Back,MF,21,2005-05-28,8.0,GER,True,Mid November 2026,2026-11-01
+Augsburg,Mert Kömür,1453218,midfielders,CAM,Attacking Midfield,MF,21,2005-07-17,10.0,TUR,False,,2026-11-01
 Augsburg,Yannik Keitel,844431,midfielders,"CB,CDM",Centre-Back,MF,26,2000-02-15,14.0,GER,False,,2026-11-01
 Augsburg,Hennes Behrens,1678681,midfielders,"LWB,LB",Left-Back,MF,21,2005-01-19,16.0,GER,False,,2026-11-01
 Augsburg,Tim Breithaupt,1201713,midfielders,CDM,Defensive Midfield,MF,24,2002-02-07,18.0,GER,True,About 1-2 weeks,2026-11-01
-Augsburg,Robin Fellhauer,1185609,midfielders,"RWB,CAM,CDM,LWB,RM",Right-Back,MF,28,1998-01-21,19.0,GER,False,,2026-11-01
-Augsburg,Alexis Claude-Maurice,689065,midfielders,"CAM,LW,ST",Attacking Midfield,MF,28,1998-06-06,20.0,FRA,False,,2026-11-01
+Augsburg,Robin Fellhauer,1185609,midfielders,"RWB,CAM,CDM,LWB",Right-Back,MF,28,1998-01-21,19.0,GER,False,,2026-11-01
+Augsburg,Alexis Claude-Maurice,689065,midfielders,"CAM,ST",Attacking Midfield,MF,28,1998-06-06,20.0,FRA,False,,2026-11-01
 Augsburg,Arijon Ibrahimović,1327150,midfielders,"CAM,RW,LM,ST,RWB,LW",Attacking Midfield,MF,20,2005-12-11,21.0,GER,False,,2026-11-01
-Augsburg,Faik Sakar,1679517,midfielders,,Central Midfield,MF,18,2008-01-14,23.0,GER,True,Late October 2026,2026-11-01
+Augsburg,Faik Sakar,1679517,midfielders,,Central Midfield,MF,18,2008-01-14,23.0,GER,True,Mid November 2026,2026-11-01
 Augsburg,Marius Wolf,556029,midfielders,RWB,Right-Back,MF,31,1995-05-27,27.0,GER,False,,2026-11-01
 Augsburg,Anton Kade,1310103,midfielders,"CAM,ST,RW,RM,RWB",Attacking Midfield,MF,22,2004-01-17,30.0,GER,False,,2026-11-01
 Augsburg,Fabian Rieder,1161211,midfielders,"CAM,CDM,RW,LWB",Attacking Midfield,MF,24,2002-02-16,32.0,SUI,False,,2026-11-01
@@ -293,31 +293,31 @@ Augsburg,Tim Schnitzer,1875448,midfielders,,Central Midfield,MF,18,2008-02-07,37
 Augsburg,Loris Husic,1894328,midfielders,CAM,Attacking Midfield,MF,18,2008-01-17,38.0,AUT,False,,2026-11-01
 Augsburg,Rodrigo Ribeiro,1343749,attackers,"ST,CAM",Centre-Forward,FW,21,2005-04-28,9.0,POR,False,,2026-11-01
 Augsburg,Michael Gregoritsch,198316,attackers,ST,Centre-Forward,FW,32,1994-04-18,11.0,AUT,False,,2026-11-01
-Augsburg,Steve Mounié,478527,attackers,ST,Centre-Forward,FW,32,1994-09-29,15.0,BEN,True,Late October 2026,2026-11-01
+Augsburg,Steve Mounié,478527,attackers,ST,Centre-Forward,FW,32,1994-09-29,15.0,BEN,True,Mid November 2026,2026-11-01
 Augsburg,Uchenna Ogundu,1718174,attackers,ST,Centre-Forward,FW,20,2006-05-12,39.0,NGA,False,,2026-11-01
 Stuttgart,Fabian Bredlow,522236,keepers,GK,Goalkeeper,GK,31,1995-03-02,1.0,GER,False,,2026-11-01
 Stuttgart,Marius Funk,659086,keepers,GK,Goalkeeper,GK,30,1996-01-01,33.0,GER,False,,2026-11-01
 Stuttgart,Dennis Seimen,1478098,keepers,GK,Goalkeeper,GK,20,2005-12-01,41.0,GER,False,,2026-11-01
 Stuttgart,Stefan Drljača,1175706,keepers,GK,Goalkeeper,GK,27,1999-04-20,46.0,GER,False,,2026-11-01
-Stuttgart,Ameen Al Dakhil,1279764,defenders,CB,Centre-Back,DF,24,2002-03-06,2.0,BEL,False,,2026-11-01
+Stuttgart,Ameen Al Dakhil,1279764,defenders,"CB,RB",Centre-Back,DF,24,2002-03-06,2.0,BEL,False,,2026-11-01
 Stuttgart,Ramon Hendriks,1125187,defenders,"CB,LB",Centre-Back,DF,25,2001-07-18,3.0,NED,False,,2026-11-01
 Stuttgart,Josha Vagnoman,928454,defenders,"RB,RWB",Right-Back,DF,25,2000-12-11,4.0,GER,True,A few weeks,2026-11-01
-Stuttgart,Maximilian Mittelstädt,614384,defenders,"LB,LWB,CB",Left-Back,DF,29,1997-03-18,7.0,GER,False,,2026-11-01
+Stuttgart,Maximilian Mittelstädt,614384,defenders,"LB,CB,LWB",Left-Back,DF,29,1997-03-18,7.0,GER,False,,2026-11-01
 Stuttgart,Luca Jaquez,1270002,defenders,CB,Centre-Back,DF,23,2003-06-02,14.0,SUI,False,,2026-11-01
 Stuttgart,Lorenz Assignon,1192406,defenders,"RB,RWB",Right-Back,DF,26,2000-06-22,22.0,FRA,False,,2026-11-01
-Stuttgart,Dan-Axel Zagadou,852347,defenders,CB,Centre-Back,DF,27,1999-06-03,23.0,FRA,True,Late October 2026,2026-11-01
+Stuttgart,Dan-Axel Zagadou,852347,defenders,CB,Centre-Back,DF,27,1999-06-03,23.0,FRA,True,Mid November 2026,2026-11-01
 Stuttgart,Jeff Chabot,867080,defenders,CB,Centre-Back,DF,28,1998-02-12,24.0,GER,False,,2026-11-01
 Stuttgart,Finn Jeltsch,1487877,defenders,"CB,RB",Centre-Back,DF,20,2006-07-17,29.0,GER,False,,2026-11-01
 Stuttgart,Angelo Stiller,1071186,midfielders,"CDM,CM",Defensive Midfield,MF,25,2001-04-04,6.0,GER,True,Mid November 2026,2026-11-01
-Stuttgart,Chris Führich,892679,midfielders,"LW,LWB,CAM,LM",Left Winger,MF,28,1998-01-09,10.0,GER,False,,2026-11-01
 Stuttgart,Bilal El Khannouss,1340895,midfielders,"CAM,RW,LW,ST",Attacking Midfield,MF,22,2004-05-10,11.0,MAR,False,,2026-11-01
 Stuttgart,Atakan Karazor,684983,midfielders,"CDM,CM",Defensive Midfield,MF,30,1996-10-13,16.0,TUR,False,,2026-11-01
 Stuttgart,Grischa Prömel,625175,midfielders,"CDM,CM",Defensive Midfield,MF,31,1995-01-09,21.0,GER,False,,2026-11-01
 Stuttgart,Nikolas Nartey,869298,midfielders,"CAM,RB",Attacking Midfield,MF,26,2000-02-22,28.0,DEN,False,,2026-11-01
 Stuttgart,Tiago Tomás,1164506,attackers,"RW,CAM,ST",Right Winger,FW,24,2002-06-16,8.0,POR,False,,2026-11-01
 Stuttgart,Ermedin Demirović,840241,attackers,"ST,CAM",Centre-Forward,FW,28,1998-03-25,9.0,BIH,False,,2026-11-01
+Stuttgart,Chris Führich,892679,attackers,"LW,LWB,CAM,LM",Left Winger,FW,28,1998-01-09,10.0,GER,False,,2026-11-01
 Stuttgart,Dženan Pejčinović,1366602,attackers,"ST,CAM",Centre-Forward,FW,21,2005-02-15,17.0,GER,False,,2026-11-01
-Stuttgart,Jamie Leweling,1074968,attackers,"LW,RW,RWB,CAM",Left Winger,FW,25,2001-02-26,18.0,GER,False,,2026-11-01
+Stuttgart,Jamie Leweling,1074968,attackers,"RW,LW,RWB,CAM",Right Winger,FW,25,2001-02-26,18.0,GER,False,,2026-11-01
 Stuttgart,Deniz Undav,661519,attackers,"ST,CAM",Centre-Forward,FW,30,1996-07-19,26.0,GER,False,,2026-11-01
 Stuttgart,Leo Sauer,1425998,attackers,"LW,RW",Left Winger,FW,20,2005-12-16,44.0,SVK,True,About 1-2 weeks,2026-11-01
 Hoffenheim,Oliver Baumann,178778,keepers,GK,Goalkeeper,GK,36,1990-06-02,1.0,GER,False,,2026-11-01
