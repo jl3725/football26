@@ -2591,6 +2591,38 @@
    "away": "Sparta R.",
    "at": "2026-11-01T18:21:54+00:00",
    "model": "gemini-3.1-flash-lite"
+  },
+  "401879246": {
+   "text": "Arsenal이 Anfield 원정에서 Liverpool을 1-0으로 꺾고 승리를 거뒀다. 전반 16분 Declan Rice의 도움을 받은 Kai Havertz가 결승골을 기록하며 승부를 결정지었다. Liverpool은 점유율 56.4%와 슈팅 17개를 기록하며 공세를 펼쳤으나 유효 슈팅 0개에 그쳤고, 반면 Arsenal은 유효 슈팅 3개를 기록하며 효율적인 경기를 운영했다. 이번 결과는 Arsenal의 승리를 점쳤던 팬 투표와 모델, Elo 예측 모두와 일치했다.",
+   "date": "2026-11-01",
+   "home": "Liverpool",
+   "away": "Arsenal",
+   "at": "2026-11-01T18:53:00+00:00",
+   "model": "gemini-3.1-flash-lite"
+  },
+  "401884752": {
+   "text": "Frankfurt가 Hamburger SV를 상대로 3-1 승리를 거두며 리그 경기에서 승점 3점을 획득했다. 10' Warmed Omari의 자책골로 앞서간 Frankfurt는 14' Terem Moffi에게 실점했으나, 47' Raphael Onyedika의 결승골과 69' Younes Ebnoutalib의 추가골로 승부를 결정지었다. Frankfurt는 점유율 51.9%와 유효 슈팅 10개를 기록하며 Hamburger SV보다 공격적인 흐름을 주도했다. 경기 전 팬 투표와 모델, Elo 예측 모두 Frankfurt의 승리를 예상했으며 이 결과는 적중했다.",
+   "date": "2026-11-01",
+   "home": "Frankfurt",
+   "away": "Hamburger SV",
+   "at": "2026-11-01T18:53:09+00:00",
+   "model": "gemini-3.1-flash-lite"
+  },
+  "401876418": {
+   "text": "Lyon이 Groupama Stadium에서 열린 경기에서 Angers를 2-0으로 꺾고 승리를 거뒀다. 38'에 Corentin Tolisso의 도움을 받은 Ernest Nuamah가 선제골을 기록했고, 86'에는 Felix Bacher의 도움을 받은 Corentin Tolisso가 헤더로 추가 골을 넣으며 승부에 쐐기를 박았다. Lyon은 점유율 63.8%와 슈팅 21개를 기록하며 8개의 슈팅에 그친 Angers를 상대로 경기 내용을 압도했다. 팬 투표와 모델, Elo 예측 모두 Lyon의 승리를 점쳤으며 실제 결과도 이와 일치했다.",
+   "date": "2026-11-01",
+   "home": "Lyon",
+   "away": "Angers",
+   "at": "2026-11-01T18:53:18+00:00",
+   "model": "gemini-3.1-flash-lite"
+  },
+  "401876415": {
+   "text": "Paris FC가 Monaco를 3-1로 꺾으며 승리를 거뒀다. 전반 38'와 44'에 터진 Lassine Sinayoko의 연속 골로 리드를 잡은 Paris FC는 65' Folarin Balogun에게 실점했으나, 74' Pablo Pagis의 추가 골로 승기를 굳혔다. Paris FC는 점유율에서는 44.4%로 밀렸으나 슈팅 19개와 유효 슈팅 10개를 기록하며 Monaco보다 공격적인 경기력을 보였다. 이번 결과는 Paris FC의 승리를 점쳤던 Elo 예측은 적중했으나, Monaco의 승리를 예상했던 팬 투표와 모델의 예측은 빗나갔다.",
+   "date": "2026-11-01",
+   "home": "Paris FC",
+   "away": "Monaco",
+   "at": "2026-11-01T18:53:29+00:00",
+   "model": "gemini-3.1-flash-lite"
   }
  },
  "fails": {
