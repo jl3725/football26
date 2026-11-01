@@ -1,5 +1,4 @@
 target_club,player,pos_detail,age,current_club,market_value_eur,probability,date
-Arsenal,Nico Paz,Attacking Midfield,22,Como 1907,80000000.0,,31/10/2026
 Arsenal,Désiré Doué,Right Winger,21,Paris Saint-Germain,120000000.0,,30/10/2026
 Arsenal,Álex Baena,Left Winger,25,Atlético de Madrid,45000000.0,,30/10/2026
 Arsenal,Eduardo Pape,Central Midfield,17,Cruzeiro EC U20,,,29/10/2026
@@ -24,6 +23,7 @@ Arsenal,Maximilian Beier,Centre-Forward,24,Borussia Dortmund,35000000.0,,20/09/2
 Arsenal,Luca Weinhandl,Central Midfield,17,SK Sturm Graz,15000000.0,,16/09/2026
 Arsenal,Iago Machado,Centre-Back,17,Sport Club Corinthians Paulista,3000000.0,,16/09/2026
 Arsenal,João Ananias,Centre-Back,19,Santos FC,5000000.0,,27/08/2026
+Arsenal,Iliman Ndiaye,Left Winger,26,Manchester City,65000000.0,,27/08/2026
 Aston Villa,Estéban Lepaul,Centre-Forward,26,Stade Rennais FC,45000000.0,,12/10/2026
 Aston Villa,Min-jae Kim,Centre-Back,29,FC Bayern Munich,20000000.0,,30/09/2026
 Aston Villa,Kevin Viveros,Centre-Forward,26,Club Athletico Paranaense,20000000.0,,29/09/2026
@@ -50,7 +50,6 @@ Brighton,Luca Weinhandl,Central Midfield,17,SK Sturm Graz,15000000.0,,16/09/2026
 Brighton,Mauro Coronel,Centre-Back,18,Club Nacional Asunción,400000.0,,12/09/2026
 Brighton,Yeremay Hernández,Left Winger,23,Deportivo A Coruña,25000000.0,,22/08/2026
 Brighton,Cameron Ashia,Attacking Midfield,21,Huddersfield Town,125000.0,,21/08/2026
-Chelsea,Nico Paz,Attacking Midfield,22,Como 1907,80000000.0,,31/10/2026
 Chelsea,Trent Alexander-Arnold,Right-Back,28,Real Madrid,60000000.0,,30/10/2026
 Chelsea,Désiré Doué,Right Winger,21,Paris Saint-Germain,120000000.0,,30/10/2026
 Chelsea,Nicolò Tresoldi,Centre-Forward,22,Club Brugge KV,35000000.0,,28/10/2026
@@ -125,7 +124,7 @@ Leeds United,Dion Beljo,Centre-Forward,24,GNK Dinamo Zagreb,15000000.0,,14/10/20
 Leeds United,Estéban Lepaul,Centre-Forward,26,Stade Rennais FC,45000000.0,,12/10/2026
 Leeds United,Andrei Rațiu,Right-Back,28,Rayo Vallecano,24000000.0,,21/08/2026
 Liverpool,Konstantinos Tzolakis,Goalkeeper,23,Hull City,22000000.0,,28/10/2026
-Liverpool,Lennart Karl,Attacking Midfield,18,FC Bayern Munich,60000000.0,3,27/10/2026
+Liverpool,Lennart Karl,Attacking Midfield,18,FC Bayern Munich,60000000.0,11,27/10/2026
 Liverpool,Luka Vuskovic,Centre-Back,19,Brighton & Hove Albion,65000000.0,,25/10/2026
 Liverpool,David Otorbi,Right Winger,19,Valencia CF,3500000.0,,25/10/2026
 Liverpool,Tarik Muharemović,Centre-Back,23,Leeds United,40000000.0,,25/10/2026
@@ -157,11 +156,10 @@ Manchester City,Natan,Centre-Back,25,Real Betis Balompié,30000000.0,,23/08/2026
 Manchester City,Malo Gusto,Right-Back,23,Chelsea FC,35000000.0,,17/08/2026
 Manchester Utd,Calvin Bassey,Centre-Back,26,Fulham FC,28000000.0,,31/10/2026
 Manchester Utd,Jacobo Ramón,Centre-Back,21,Como 1907,45000000.0,,31/10/2026
-Manchester Utd,Nico Paz,Attacking Midfield,22,Como 1907,80000000.0,,31/10/2026
 Manchester Utd,Pablo Barrios,Central Midfield,23,Atlético de Madrid,70000000.0,,30/10/2026
 Manchester Utd,Rayan Aït-Nouri,Left-Back,25,Manchester City,35000000.0,,30/10/2026
 Manchester Utd,Dominic Calvert-Lewin,Centre-Forward,29,Leeds United,25000000.0,,30/10/2026
-Manchester Utd,Lennart Karl,Attacking Midfield,18,FC Bayern Munich,60000000.0,18,27/10/2026
+Manchester Utd,Lennart Karl,Attacking Midfield,18,FC Bayern Munich,60000000.0,22,27/10/2026
 Manchester Utd,Tarik Muharemović,Centre-Back,23,Leeds United,40000000.0,,25/10/2026
 Manchester Utd,Diego Gómez,Central Midfield,23,Brighton & Hove Albion,30000000.0,,23/10/2026
 Manchester Utd,Daniel Banjaqui,Right-Back,18,SL Benfica,10000000.0,,22/10/2026
@@ -180,6 +178,7 @@ Manchester Utd,Louis Page,Central Midfield,18,Leicester City,4000000.0,,01/09/20
 Manchester Utd,Jorge Salinas,Left-Back,19,Racing Santander,10000000.0,,01/09/2026
 Manchester Utd,Ian Maatsen,Left-Back,24,Aston Villa,35000000.0,,29/08/2026
 Manchester Utd,Ferdi Kadıoğlu,Left-Back,27,Brighton & Hove Albion,40000000.0,,25/08/2026
+Manchester Utd,David Raum,Left-Back,28,RB Leipzig,25000000.0,,11/08/2026
 Newcastle United,Javi Rodríguez,Centre-Back,23,Celta de Vigo,18000000.0,,30/10/2026
 Newcastle United,Eduardo Pape,Central Midfield,17,Cruzeiro EC U20,,,29/10/2026
 Newcastle United,Nicolò Tresoldi,Centre-Forward,22,Club Brugge KV,35000000.0,,28/10/2026
