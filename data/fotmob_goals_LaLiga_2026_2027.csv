@@ -448,11 +448,11 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5868112,2026-10-31,esp.1,Real Betis,Málaga,45.0,Pablo Fornals,SetPiece,0,0.0595325864851474
 5868112,2026-10-31,esp.1,Málaga,Real Betis,68.0,Adrián Niño,RegularPlay,0,0.5793585181236267
 5868115,2026-10-31,esp.1,Barcelona,Alavés,8.0,Raphinha,RegularPlay,0,0.5938800573348999
-5868115,2026-10-31,esp.1,Barcelona,Alavés,23.0,Fermín López,RegularPlay,0,0.05344453081488609
-5868115,2026-10-31,esp.1,Barcelona,Alavés,41.0,Raphinha,RegularPlay,0,0.21010801196098328
-5868115,2026-10-31,esp.1,Barcelona,Alavés,45.0,Lamine Yamal,RegularPlay,0,0.026312189176678658
-5868115,2026-10-31,esp.1,Barcelona,Alavés,64.0,Lamine Yamal,RegularPlay,0,0.28862902522087097
-5868115,2026-10-31,esp.1,Barcelona,Alavés,81.0,Anthony Gordon,RegularPlay,0,0.42555317282676697
+5868115,2026-10-31,esp.1,Barcelona,Alavés,23.0,Fermín López,RegularPlay,0,0.053444530814886
+5868115,2026-10-31,esp.1,Barcelona,Alavés,41.0,Raphinha,RegularPlay,0,0.2101080119609832
+5868115,2026-10-31,esp.1,Barcelona,Alavés,45.0,Lamine Yamal,RegularPlay,0,0.0263121891766786
+5868115,2026-10-31,esp.1,Barcelona,Alavés,64.0,Lamine Yamal,RegularPlay,0,0.2886290252208709
+5868115,2026-10-31,esp.1,Barcelona,Alavés,81.0,Anthony Gordon,RegularPlay,0,0.4255531728267669
 5868115,2026-10-31,esp.1,Alavés,Barcelona,84.0,Mariano Díaz,RegularPlay,0,0.0965014100074768
 5868117,2026-10-31,esp.1,Atlético Madrid,Levante,36.0,Alejandro Grimaldo,RegularPlay,0,0.109760858118534
 5868117,2026-10-31,esp.1,Atlético Madrid,Levante,62.0,Giuliano Simeone,RegularPlay,0,0.1497138142585754
@@ -461,3 +461,7 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5868119,2026-10-31,esp.1,Rayo Vallecano,Celta Vigo,55.0,Jorge de Frutos,RegularPlay,0,0.0845585465431213
 5868119,2026-10-31,esp.1,Rayo Vallecano,Celta Vigo,73.0,Unai López,FastBreak,0,0.0305478572845459
 5868119,2026-10-31,esp.1,Celta Vigo,Rayo Vallecano,,,none,0,
+5868116,2026-11-01,esp.1,Sevilla,Getafe,19.0,Kike Salas,FromCorner,0,0.02929249033331871
+5868116,2026-11-01,esp.1,Getafe,Sevilla,68.0,Enes Ünal,RegularPlay,0,0.34460580348968506
+5868116,2026-11-01,esp.1,Getafe,Sevilla,73.0,Martín Satriano,RegularPlay,0,0.5793585181236267
+5868116,2026-11-01,esp.1,Getafe,Sevilla,90.0,Orel Mangala,RegularPlay,0,0.13170243799686432

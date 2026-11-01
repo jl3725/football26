@@ -331,11 +331,11 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 607,
+   "total": 608,
    "exact": 491,
    "rule": 23,
    "ambiguous": 1,
-   "orphan": 93,
+   "orphan": 94,
    "orphans": [
     {
      "squad": "Celta Vigo",
@@ -466,19 +466,14 @@
   },
   "espn_lineups_cups": {
    "total": 410,
-   "exact": 395,
+   "exact": 396,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 15,
+   "orphan": 14,
    "orphans": [
     {
      "squad": "Getafe",
      "name": "Sebastián Salazar Trujillo",
-     "starts": 1
-    },
-    {
-     "squad": "Getafe",
-     "name": "Ibrahima Danfakha Keita",
      "starts": 1
     },
     {
@@ -549,8 +544,8 @@
    ]
   },
   "espn_subs": {
-   "total": 443,
-   "exact": 435,
+   "total": 445,
+   "exact": 437,
    "rule": 5,
    "ambiguous": 1,
    "orphan": 3,
@@ -587,8 +582,8 @@
    ]
   },
   "match_events": {
-   "total": 380,
-   "exact": 380,
+   "total": 381,
+   "exact": 381,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -614,8 +609,8 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 480,
-   "exact": 433,
+   "total": 481,
+   "exact": 434,
    "rule": 16,
    "ambiguous": 0,
    "orphan": 31,
@@ -842,8 +837,8 @@
    ]
   },
   "espn_subs": {
-   "total": 363,
-   "exact": 360,
+   "total": 364,
+   "exact": 361,
    "rule": 3,
    "ambiguous": 0,
    "orphan": 0,
@@ -858,8 +853,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 300,
-   "exact": 300,
+   "total": 303,
+   "exact": 303,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -885,11 +880,11 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 655,
+   "total": 656,
    "exact": 562,
    "rule": 10,
    "ambiguous": 1,
-   "orphan": 83,
+   "orphan": 84,
    "orphans": [
     {
      "squad": "Lecce",
@@ -1123,8 +1118,8 @@
    ]
   },
   "espn_subs": {
-   "total": 459,
-   "exact": 454,
+   "total": 460,
+   "exact": 455,
    "rule": 1,
    "ambiguous": 1,
    "orphan": 4,
@@ -1166,8 +1161,8 @@
    ]
   },
   "match_events": {
-   "total": 341,
-   "exact": 341,
+   "total": 344,
+   "exact": 344,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1193,8 +1188,8 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 488,
-   "exact": 443,
+   "total": 489,
+   "exact": 444,
    "rule": 10,
    "ambiguous": 0,
    "orphan": 35,
@@ -1366,8 +1361,8 @@
    ]
   },
   "espn_subs": {
-   "total": 368,
-   "exact": 363,
+   "total": 370,
+   "exact": 365,
    "rule": 3,
    "ambiguous": 0,
    "orphan": 2,
@@ -1393,8 +1388,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 281,
-   "exact": 281,
+   "total": 283,
+   "exact": 283,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1627,8 +1622,8 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 549,
-   "exact": 492,
+   "total": 550,
+   "exact": 493,
    "rule": 12,
    "ambiguous": 0,
    "orphan": 45,
@@ -1805,8 +1800,8 @@
    ]
   },
   "espn_subs": {
-   "total": 412,
-   "exact": 402,
+   "total": 415,
+   "exact": 405,
    "rule": 10,
    "ambiguous": 0,
    "orphan": 0,
@@ -1821,8 +1816,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 303,
-   "exact": 303,
+   "total": 307,
+   "exact": 307,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1996,8 +1991,8 @@
    ]
   },
   "espn_subs": {
-   "total": 293,
-   "exact": 293,
+   "total": 295,
+   "exact": 295,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -2012,8 +2007,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 273,
-   "exact": 273,
+   "total": 276,
+   "exact": 276,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -2342,11 +2337,11 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 576,
-   "exact": 567,
+   "total": 581,
+   "exact": 569,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 9,
+   "orphan": 12,
    "orphans": [
     {
      "squad": "Kasımpaşa",
@@ -2392,6 +2387,21 @@
      "squad": "Konyaspor",
      "name": "Eren Yagmur",
      "starts": 0
+    },
+    {
+     "squad": "Samsunspor",
+     "name": "Yusuf Efe Yurtsever",
+     "starts": 0
+    },
+    {
+     "squad": "Gaziantep FK",
+     "name": "Ahmet Eren Sirma",
+     "starts": 0
+    },
+    {
+     "squad": "Gaziantep FK",
+     "name": "Mehmet Ali Genc",
+     "starts": 0
     }
    ]
   },
@@ -2410,8 +2420,8 @@
    ]
   },
   "espn_subs": {
-   "total": 418,
-   "exact": 418,
+   "total": 421,
+   "exact": 421,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -2445,11 +2455,11 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 360,
-   "exact": 349,
+   "total": 364,
+   "exact": 351,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 11,
+   "orphan": 13,
    "orphans": [
     {
      "squad": "Austria Wien",
@@ -2505,21 +2515,26 @@
      "squad": "Sturm Graz",
      "name": "Kelechi Nnamdi",
      "starts": 0
+    },
+    {
+     "squad": "Salzburg",
+     "name": "Lassina Traoré",
+     "starts": 0
+    },
+    {
+     "squad": "Sturm Graz",
+     "name": "Mate Grgić",
+     "starts": 0
     }
    ]
   },
   "espn_lineups_cups": {
    "total": 77,
-   "exact": 74,
+   "exact": 75,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 3,
+   "orphan": 2,
    "orphans": [
-    {
-     "squad": "Sturm Graz",
-     "name": "Mate Grgić",
-     "starts": 0
-    },
     {
      "squad": "Sturm Graz",
      "name": "Jonas Petritsch",
@@ -2533,8 +2548,8 @@
    ]
   },
   "espn_subs": {
-   "total": 263,
-   "exact": 263,
+   "total": 266,
+   "exact": 266,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -2568,11 +2583,11 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 369,
+   "total": 373,
    "exact": 341,
    "rule": 1,
    "ambiguous": 0,
-   "orphan": 27,
+   "orphan": 31,
    "orphans": [
     {
      "squad": "Lyngby",
@@ -2751,8 +2766,8 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 352,
-   "exact": 342,
+   "total": 354,
+   "exact": 344,
    "rule": 1,
    "ambiguous": 0,
    "orphan": 9,
