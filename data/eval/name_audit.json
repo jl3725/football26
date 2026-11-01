@@ -1843,12 +1843,17 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 521,
+   "total": 522,
    "exact": 446,
    "rule": 41,
    "ambiguous": 1,
-   "orphan": 34,
+   "orphan": 35,
    "orphans": [
+    {
+     "squad": "Charleroi",
+     "name": "Kevin Guiton",
+     "starts": 10
+    },
     {
      "squad": "Genk",
      "name": "Lucca Kiaba Mounganga",
@@ -1860,6 +1865,11 @@
      "starts": 10
     },
     {
+     "squad": "La Louvière",
+     "name": "Mustapha Ubandoma",
+     "starts": 10
+    },
+    {
      "squad": "Standard Liège",
      "name": "Dennis Dargahi",
      "starts": 9
@@ -1867,16 +1877,6 @@
     {
      "squad": "Westerlo",
      "name": "Issai Sakamoto",
-     "starts": 9
-    },
-    {
-     "squad": "Charleroi",
-     "name": "Kevin Guiton",
-     "starts": 9
-    },
-    {
-     "squad": "La Louvière",
-     "name": "Mustapha Ubandoma",
      "starts": 9
     },
     {
@@ -1991,8 +1991,8 @@
    ]
   },
   "espn_subs": {
-   "total": 295,
-   "exact": 295,
+   "total": 297,
+   "exact": 297,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
