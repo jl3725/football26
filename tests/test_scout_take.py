@@ -83,3 +83,28 @@ def test_for_payload_shows_only_verified_ai_text_never_rules(tmp_path, monkeypat
     # 숫자가 낡은 근거 줄(골이 늘었다)은 빼고 평가 줄만
     stale = st.for_payload(payload(goals=3, ss_rating=6.95), "EPL", 16, 20)
     assert stale.get("l1") and "l2" not in stale
+
+
+def test_new_takes_keep_numbers_out_of_l1():
+    """평가 줄에 숫자가 있으면 순위·경기 수가 바뀔 때 문장이 통째로 사라졌다('리그 2위' → 1위, 2026-11-02) — 새 문장은 숫자를 l2 로."""
+    f = st.facts(payload(), team_rank=16, n_teams=20)
+    cands = [{"l1": "팀 16위 속 홀로 빛나는 스트라이커", "l2": "평점 6.81 — 1골 2도움"},      # 순위가 l1 에 — 탈락
+             {"l1": "이름값에 비해 아쉬운 스트라이커의 올 시즌", "l2": "평점 6.81 — 리그 1골 2도움"}]
+    assert st._pick(cands, f)["l1"] == "이름값에 비해 아쉬운 스트라이커의 올 시즌"
+    assert st.l1_has_number("팀의 리그 2위 순위를 지탱하는 꾸준한 경기력")
+    assert not st.l1_has_number("1군은 아직 맛보기 단계인 유망주")                              # 1군·2군은 숫자 아님
+    assert not any(st.l1_has_number(a) for _, a, _ in st.EXAMPLES)                             # 예시도 규칙을 지킨다
+
+
+def test_team_band_words_must_match_current_rank():
+    """'선두 질주' 문장이 팀이 3위로 내려간 뒤에도 남지 않게 — 순위대는 다시 쓰는 기준(sig)과 화면 검증 둘 다(2026-11-02)."""
+    assert [st.team_band(r, 20) for r in (1, 2, 6, 7, 15, 16, 20)] == ["선두", "상위권", "상위권", "중위권", "중위권", "하위권", "하위권"]
+    lead = st.facts(payload(), team_rank=1, n_teams=20)
+    third = st.facts(payload(), team_rank=3, n_teams=20)
+    take = {"l1": "팀의 선두 질주를 이끄는 공격의 핵", "l2": "평점 6.81 — 리그 1골 2도움"}
+    assert not any("순위대" in b for b in st.check(take, lead))
+    assert any("순위대" in b for b in st.check(take, third))
+    assert st.sig(lead, "elite_peak") != st.sig(third, "elite_peak")
+    # 같은 포지션 백분위 '하위권'(팀 순위가 아님)은 걸지 않는다
+    pos = {"l1": "찬스 메이킹은 같은 포지션 하위권인 시즌", "l2": "평점 6.81 — 리그 1골 2도움"}
+    assert not any("순위대" in b for b in st.check(pos, lead))

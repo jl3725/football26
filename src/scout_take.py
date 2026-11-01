@@ -27,7 +27,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path[:0] = [str(ROOT), str(ROOT / "src")]
 
 OUT = ROOT / "data" / "ai" / "scout_takes.json"
-PROMPT_VERSION = "9"
+PROMPT_VERSION = "10"
 DAILY_CALLS = 120         # 하루 호출 상한(무료 키를 번역·Ask Scout·경기 리포트와 나눔) — 한 번에 BATCH_AI 명
 BATCH_AI = 6              # 10명 묶음은 시간 초과·빠진 선수가 잦았다(2026-10-27 시험)
 RETRY_WAIT = (12,)        # 시간 초과·503 이면 한 번만 쉬고 다시(llm.generate 가 이미 다음 모델로 넘어감)
@@ -68,9 +68,9 @@ EXAMPLES = [
     ("elite_peak", "지금 리그에서 가장 폼이 좋은 미드필더 중 하나", "도움 리그 1위, 평점 7.49 — 중원 배급의 중심"),
     ("steady_average", "꾸준히 선발로 나서지만, 존재감은 평범한 시즌", "평점 6.84로 리그 평균 수준 — 찬스 메이킹은 같은 포지션 하위권"),
     ("bench_start", "리그에선 벤치에서 시작하는 날이 많은 시즌", "최근 5경기는 상승세, 유럽대항전 2경기 선발"),
-    ("veteran_rise", "35세에도 녹슬지 않은 클래스, 올 시즌 기대 이상", "도움 리그 1위, 평점 7.22 — 찬스 메이킹 상위 3%"),
-    ("young", "16세 유망주 — 1군은 아직 맛보기 단계", "출전이 쌓이면 평가가 빠르게 바뀔 선수"),
-    ("expensive_unproven", "비싼 몸값(€75M)만큼의 모습은 아직", "올 시즌 출전이 적고, 지난 시즌 평점도 6.77로 평범"),
+    ("veteran_rise", "나이를 잊은 클래스, 올 시즌 기대 이상", "35세 · 도움 리그 1위, 평점 7.22 — 찬스 메이킹 상위 3%"),
+    ("young", "1군은 아직 맛보기 단계인 유망주", "16세 — 출전이 쌓이면 평가가 빠르게 바뀔 선수"),
+    ("expensive_unproven", "비싼 몸값만큼의 모습은 아직", "몸값 €75M — 올 시즌 출전이 적고, 지난 시즌 평점도 6.77로 평범"),
 ]
 
 
@@ -108,6 +108,14 @@ def chips(p: dict) -> dict:
             "role": cu.get("role") or "", "role_evidence": cu.get("role_evidence") or ""}
 
 
+def team_band(rank: int | None, n: int | None) -> str | None:
+    """팀 순위대 — 선두(1위)·상위권(위 1/4)·하위권(아래 1/4)·중위권. 문장에 순위를 말로 쓸 땐 이 말만(바뀌면 다시 쓴다)."""
+    if not rank or not n:
+        return None
+    q = max(1, round(n / 4))
+    return "선두" if rank == 1 else "상위권" if rank <= q + 1 else "하위권" if rank > n - q else "중위권"
+
+
 def facts(p: dict, team_rank: int | None = None, n_teams: int | None = None) -> dict:
     """화면 값(선수 API 응답)에서 문장에 쓸 사실만 — 검증(llm.problems)의 근거. 키 이름은 뜻이 드러나게(문장에 새지 않게)."""
     role = (p.get("comp_usage") or {}).get("role") or ""
@@ -123,6 +131,7 @@ def facts(p: dict, team_rank: int | None = None, n_teams: int | None = None) -> 
          "몸값_백만유로": int(round(p["value_eur"] / 1e6)) if (p.get("value_eur") or 0) >= 1e6 else None,
          "이번시즌_부진으로_OVR에서_뺀_점수": _part(p, "slump", "underperf") or None,
          "역할": role, "역할_뜻": ROLE_DESC.get(role), "팀": p.get("team"), "팀_리그순위": team_rank, "리그_팀수": n_teams,
+         "팀_순위대": team_band(team_rank, n_teams),
          "부상_결장_경기": int((p.get("comp_usage") or {}).get("injury_missed") or 0) or None,
          "강점": ch["strengths"], "약점": ch["weaks"]}
     f["배지"] = next((s for s in ch["strengths"] if s.endswith("위")), None)
@@ -235,6 +244,11 @@ def check(take: dict, f: dict, lines: tuple[str, ...] = ("l1", "l2")) -> list[st
     l1 = str(take.get("l1") or "")
     if "l1" in lines and re.match(r"(리그\s*)?정상급", l1.strip()):
         bad.append("상투적 시작 '리그 정상급'")      # 폼 절정 선수 대부분이 같은 말로 시작했다(2026-10-27 EPL 65명)
+    band = f.get("팀_순위대")
+    if "l1" in lines and band:                       # 순위를 말로 쓴 평가 — 지금 순위대와 어긋나면('선두' 인데 3위) 탈락
+        team_word = "팀" in l1 or "순위" in l1
+        if ("선두" in l1 and band != "선두") or (team_word and "상위권" in l1 and band not in ("선두", "상위권")) or                 (("강등" in l1 or (team_word and "하위권" in l1)) and band != "하위권") or (team_word and "중위권" in l1 and band != "중위권"):
+            bad.append(f"팀 순위대({band})와 다른 평가")
     fw = f.get("이번시즌_폼_뜻")
     if "l1" in lines and fw in ("절정", "좋음") and any(w in l1 for w in _NEG):
         bad.append(f"폼 {fw}인데 평가가 부정")
@@ -256,6 +270,8 @@ PROMPT = """선수마다 스카우트 한줄평(두 줄)을 서로 다른 관점
 JSON 으로만 답하라: {{"<id>": [{{"l1": "...", "l2": "..."}}, {{"l1": "...", "l2": "..."}}, {{"l1": "...", "l2": "..."}}], ...}}
 - l1: 팬이 3초 안에 읽는 평가 한 줄 — 26자 이내, 짧고 단정하게. 이번 시즌 활약의 핵심(폼·활약이 기대·이름값 대비 어떤지)을
   말한다. 역할(주전·로테이션)만 다시 말하는 문장은 안 된다. scene_ko 는 관점 힌트 — 그 사실 범위 안에서 자연스럽게.
+  l1 에는 숫자를 하나도 쓰지 않는다(순위·골·경기 수·나이·몸값 모두 l2 로) — 순위·경기 수가 바뀌어도 평가 줄은 그대로 맞게.
+  팀 순위를 말로 쓸 땐 facts.팀_순위대 그대로(선두·상위권·중위권·하위권).
 - l2: 근거 한 줄 — 55자 이내, '숫자 — 짧은 해석' 꼴. 숫자는 facts 에 있는 것만, 두 가지 이내. 출전 시간·경기 수처럼 매 경기
   바뀌는 숫자보다 평점·골·도움·순위·몸값을 먼저.
 - l1 의 평가 방향은 facts.이번시즌_폼_뜻 과 같아야 한다(절정·좋음이면 긍정, 주춤·부진이면 아쉬움). 부상_결장_경기 가 있으면
@@ -277,11 +293,17 @@ def _examples() -> str:
     return "\n".join(f"- [{sc}] l1: {a} / l2: {b}" for sc, a, b in EXAMPLES)
 
 
+def l1_has_number(l1: str) -> bool:
+    """평가 줄에 숫자 — 순위·경기 수가 바뀌면 문장이 통째로 틀려져 화면에서 사라졌다('리그 2위' → 아스날 1위, 2026-11-02 사카).
+    새로 쓰는 문장에만 적용(이미 저장된 문장은 지금 사실로 맞으면 그대로 보여 주고 다시 쓸 때 바뀐다). '1군·2군'은 숫자로 안 본다."""
+    return bool(re.search(r"\d", re.sub(r"[12]군", "", l1 or "")))
+
+
 def _pick(cands, f: dict) -> dict | None:
-    """후보 중 검증을 넘은 첫 번째(AI 가 좋은 순으로 준다) — 예시 문장을 그대로 베낀 것은 뒤로."""
+    """후보 중 검증을 넘은 첫 번째(AI 가 좋은 순으로 준다) — 예시 문장을 그대로 베낀 것은 뒤로, 평가 줄에 숫자가 있으면 탈락."""
     ex = {a for _, a, _ in EXAMPLES}
     ok = [{"l1": c["l1"].strip(), "l2": c["l2"].strip()} for c in (cands if isinstance(cands, list) else [cands])
-          if isinstance(c, dict) and c.get("l1") and c.get("l2") and not check(c, f)]
+          if isinstance(c, dict) and c.get("l1") and c.get("l2") and not l1_has_number(c["l1"]) and not check(c, f)]
     ok.sort(key=lambda c: c["l1"] in ex)
     return ok[0] if ok else None
 
@@ -327,7 +349,7 @@ def write_ai(items: list[tuple[str, dict, str]]) -> dict[str, dict]:
 
 # ── 저장·API ───────────────────────────────────────────────────────────────
 _STABLE = ("OVR", "OVR_등급", "이번시즌_폼_뜻", "리그_골", "리그_도움", "배지", "역할", "몸값_백만유로", "지난시즌_평점",
-           "이번시즌_부진으로_OVR에서_뺀_점수", "나이")
+           "이번시즌_부진으로_OVR에서_뺀_점수", "나이", "팀_순위대")   # 순위대가 바뀌면('선두 질주' → 2위) 다시 쓴다
 
 
 def sig(f: dict, sc: str) -> str:
@@ -385,7 +407,7 @@ def build(leagues: list[str] | None = None, max_calls: int = DAILY_CALLS) -> dic
     from api.services.player_data import player_frame  # noqa: PLC0415
     from leagues import LEAGUES  # noqa: PLC0415
     takes: dict = dict(load().get("takes") or {})
-    todo: list[tuple[float, str, dict, str]] = []
+    todo: list[tuple[tuple[int, float], str, dict, str]] = []
     seen = 0
     for lg in leagues or list(LEAGUES):
         df = player_frame(lg)
@@ -407,7 +429,9 @@ def build(leagues: list[str] | None = None, max_calls: int = DAILY_CALLS) -> dic
             old = takes.get(k)
             if old and old.get("sig") == sig(f, sc) and not check(old, f):
                 continue
-            todo.append((-(p.get("ovr") or 0), k, f, sc))
+            # 지금 화면에 문장이 안 나오는 선수(없음·평가 줄이 사실과 어긋남)를 먼저, 그다음 OVR 높은 순
+            shown = bool(old) and not check(old, f, ("l1",))
+            todo.append(((1 if shown else 0, -(p.get("ovr") or 0)), k, f, sc))
     todo.sort(key=lambda x: x[0])
     llm.start("scout_take", max_calls)
     made = 0
