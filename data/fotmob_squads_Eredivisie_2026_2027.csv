@@ -47,7 +47,7 @@ Ajax,Aaron Bouwman,1640681,defenders,CB,Centre-Back,DF,19,2007-08-28,30.0,NED,Fa
 Ajax,Dies Janse,1531402,defenders,CB,Centre-Back,DF,20,2006-01-17,36.0,NED,False,,2026-11-01
 Ajax,Sofyan Amrabat,593116,midfielders,"CM,CDM",Central Midfield,MF,30,1996-08-21,4.0,MAR,False,,2026-11-01
 Ajax,Julian Brandt,516846,midfielders,"CAM,CM,RW",Attacking Midfield,MF,30,1996-05-02,8.0,GER,False,,2026-11-01
-Ajax,Oscar Gloukh,1337911,midfielders,"CM,LW,CAM,RW,ST",Central Midfield,MF,22,2004-04-01,10.0,ISR,False,,2026-11-01
+Ajax,Oscar Gloukh,1337911,midfielders,"CAM,LW,CM,RW,ST,LM",Attacking Midfield,MF,22,2004-04-01,10.0,ISR,False,,2026-11-01
 Ajax,Davy Klaassen,298448,midfielders,"CM,CDM,CAM,RW",Central Midfield,MF,33,1993-02-21,18.0,NED,False,,2026-11-01
 Ajax,Jorthy Mokio,1617161,midfielders,"CM,CDM",Central Midfield,MF,18,2008-02-29,24.0,COD,False,,2026-11-01
 Ajax,Yves Bissouma,724306,midfielders,"CDM,CM",Defensive Midfield,MF,30,1996-08-30,28.0,MLI,False,,2026-11-01
@@ -65,10 +65,10 @@ PSV,Lutsharel Geertruida,881640,defenders,"CB,RB,CDM",Centre-Back,DF,26,2000-07-
 PSV,Yarek Gąsiorowski,1506480,defenders,CB,Centre-Back,DF,21,2005-01-12,3.0,ESP,False,,2026-11-01
 PSV,Armando Obispo,794244,defenders,CB,Centre-Back,DF,27,1999-03-05,4.0,CUW,False,,2026-11-01
 PSV,Ryan Flamingo,1386551,defenders,CB,Centre-Back,DF,23,2002-12-31,6.0,NED,False,,2026-11-01
-PSV,Sergiño Dest,892816,defenders,"RB,LB,RW,RM,RWB",Right-Back,DF,25,2000-11-03,8.0,USA,False,,2026-11-01
+PSV,Sergiño Dest,892816,defenders,"RB,LB,RW,RWB,RM",Right-Back,DF,25,2000-11-03,8.0,USA,False,,2026-11-01
 PSV,Mauro Júnior,873556,defenders,"LB,CDM,CM",Left-Back,DF,27,1999-05-06,17.0,BRA,False,,2026-11-01
 PSV,Filip Kostić,281012,defenders,"LB,LWB,LW",Left-Back,DF,34,1992-11-01,18.0,SRB,False,,2026-11-01
-PSV,Jerdy Schouten,772104,defenders,"CB,CDM,CM",Centre-Back,DF,29,1997-01-12,22.0,NED,True,Day to day,2026-11-01
+PSV,Jerdy Schouten,772104,defenders,"CB,CDM",Centre-Back,DF,29,1997-01-12,22.0,NED,True,Day to day,2026-11-01
 PSV,Kilian Sildillia,1124533,defenders,RB,Right-Back,DF,24,2002-05-16,25.0,FRA,False,,2026-11-01
 PSV,Adamo Nagalo,1237425,defenders,CB,Centre-Back,DF,24,2002-09-22,39.0,BFA,True,Out for season,2026-11-01
 PSV,Paul Wanner,1327149,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,20,2005-12-23,10.0,AUT,True,Day to day,2026-11-01
@@ -78,7 +78,7 @@ PSV,Kodai Sano,1337282,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,23,2003-09
 PSV,Shuryjano Cornecion,1874113,midfielders,"CM,CAM,CDM",Central Midfield,MF,18,2008-06-28,42.0,NED,False,,2026-11-01
 PSV,Sam Lammers,665164,attackers,ST,Centre-Forward,FW,29,1997-04-30,,NED,True,Day to day,2026-11-01
 PSV,Ivan Perišić,163670,attackers,"LW,RW,LM,LB,LWB",Left Winger,FW,37,1989-02-02,5.0,CRO,False,,2026-11-01
-PSV,Ruben van Bommel,1359970,attackers,"LW,ST",Left Winger,FW,22,2004-08-03,7.0,NED,False,,2026-11-01
+PSV,Ruben van Bommel,1359970,attackers,LW,Left Winger,FW,22,2004-08-03,7.0,NED,False,,2026-11-01
 PSV,Ricardo Pepi,1036401,attackers,ST,Centre-Forward,FW,23,2003-01-09,9.0,USA,False,,2026-11-01
 PSV,Alassane Pléa,294859,attackers,ST,Centre-Forward,FW,33,1993-03-10,14.0,FRA,True,Early January 2027,2026-11-01
 PSV,Esmir Bajraktarević,1346860,attackers,"RW,RM,ST",Right Winger,FW,21,2005-03-10,19.0,BIH,False,,2026-11-01
@@ -90,7 +90,7 @@ Twente,Joël Drommel,588337,keepers,GK,Goalkeeper,GK,29,1996-11-16,16.0,NED,Fals
 Twente,Remko Pasveer,26547,keepers,GK,Goalkeeper,GK,42,1983-11-08,22.0,NED,False,,2026-11-01
 Twente,Yannick Gerritsen,1741493,keepers,,Goalkeeper,GK,20,2006-02-14,31.0,NED,False,,2026-11-01
 Twente,Bjorn Titulaer,1853308,defenders,,Centre-Back,DF,18,2008-08-13,,NED,False,,2026-11-01
-Twente,Michał Rosiak,1442493,defenders,RWB,Right-Back,DF,21,2005-10-12,2.0,POL,False,,2026-11-01
+Twente,Michał Rosiak,1442493,defenders,"RWB,RB",Right-Back,DF,21,2005-10-12,2.0,POL,False,,2026-11-01
 Twente,Robin Pröpper,298933,defenders,CB,Centre-Back,DF,33,1993-09-23,3.0,NED,False,,2026-11-01
 Twente,Ruud Nijstad,1709029,defenders,"CB,LB",Centre-Back,DF,18,2008-01-17,4.0,NED,False,,2026-11-01
 Twente,Stav Lemkin,1408459,defenders,CB,Centre-Back,DF,23,2003-04-02,23.0,ISR,True,Day to day,2026-11-01
@@ -105,7 +105,7 @@ Twente,Daouda Weidmann,1382346,midfielders,"CDM,CM",Defensive Midfield,MF,23,200
 Twente,Younes Taha,1298600,midfielders,"CAM,RW,LW,ST,RM",Attacking Midfield,MF,23,2002-11-27,10.0,MAR,False,,2026-11-01
 Twente,Kristian Hlynsson,1098086,midfielders,"CAM,CM,LM",Attacking Midfield,MF,22,2004-01-23,14.0,ISL,False,,2026-11-01
 Twente,Jordy Bawuah,1552456,midfielders,"CM,CDM",Central Midfield,MF,19,2006-11-17,18.0,BEL,False,,2026-11-01
-Twente,Thomas van den Belt,955203,midfielders,"CDM,CM",Defensive Midfield,MF,25,2001-06-18,20.0,NED,False,,2026-11-01
+Twente,Thomas van den Belt,955203,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,25,2001-06-18,20.0,NED,False,,2026-11-01
 Twente,Benjamin Nagel,1815956,midfielders,,Central Midfield,MF,18,2007-11-11,26.0,NED,False,,2026-11-01
 Twente,Gijs Besselink,1445408,midfielders,"CM,CDM",Central Midfield,MF,22,2004-06-16,41.0,NED,False,,2026-11-01
 Twente,Marko Pjaca,307235,attackers,"RW,LW",Right Winger,FW,31,1995-05-06,7.0,CRO,False,,2026-11-01
@@ -113,7 +113,7 @@ Twente,Wout Weghorst,351999,attackers,ST,Centre-Forward,FW,34,1992-08-07,9.0,NED
 Twente,Daan Rots,1203490,attackers,"RW,CAM",Right Winger,FW,25,2001-07-25,11.0,NED,False,,2026-11-01
 Twente,Filip Thorvaldsen,1460786,attackers,"ST,RM,RW,LM",Centre-Forward,FW,20,2006-04-15,17.0,NOR,True,Day to day,2026-11-01
 Twente,Lucas Vennegoor of Hesselink,1607488,attackers,ST,Centre-Forward,FW,20,2006-03-14,25.0,NED,False,,2026-11-01
-Twente,Sondre Ørjasæter,1353293,attackers,LW,Left Winger,FW,22,2003-11-28,27.0,NOR,False,,2026-11-01
+Twente,Sondre Ørjasæter,1353293,attackers,"LW,RW",Left Winger,FW,22,2003-11-28,27.0,NOR,False,,2026-11-01
 Twente,Nigel Groenewald,1900482,attackers,,Centre-Forward,FW,19,2007-02-01,36.0,NED,False,,2026-11-01
 Twente,Naci Ünüvar,1050856,attackers,"LW,CAM",Left Winger,FW,23,2003-06-13,37.0,NED,False,,2026-11-01
 AZ Alkmaar,Rome Owusu-Oduro,1321124,keepers,GK,Goalkeeper,GK,22,2004-07-02,1.0,NED,False,,2026-11-01
@@ -124,19 +124,19 @@ AZ Alkmaar,Jur Schipper,1451503,keepers,GK,Goalkeeper,GK,20,2006-07-11,71.0,NED,
 AZ Alkmaar,Seiya Maikuma,1134723,defenders,RB,Right-Back,DF,29,1997-10-16,2.0,JPN,False,,2026-11-01
 AZ Alkmaar,Wouter Goes,1307387,defenders,CB,Centre-Back,DF,22,2004-06-10,3.0,NED,True,Early November 2026,2026-11-01
 AZ Alkmaar,Lewis Schouten,1329774,defenders,"CB,CM,CDM",Centre-Back,DF,22,2004-02-04,4.0,NED,False,,2026-11-01
-AZ Alkmaar,Mateo Chávez,1432212,defenders,"LB,LWB,LM",Left-Back,DF,22,2004-05-12,5.0,MEX,False,,2026-11-01
+AZ Alkmaar,Mateo Chávez,1432212,defenders,"LB,LWB",Left-Back,DF,22,2004-05-12,5.0,MEX,False,,2026-11-01
 AZ Alkmaar,Elijah Dijkstra,1466557,defenders,"RB,LB",Right-Back,DF,20,2006-08-05,22.0,NED,False,,2026-11-01
 AZ Alkmaar,Wesley Hoedt,465628,defenders,CB,Centre-Back,DF,32,1994-03-06,29.0,NED,False,,2026-11-01
 AZ Alkmaar,Denso Kasius,1114874,defenders,RB,Right-Back,DF,24,2002-10-06,30.0,NED,False,,2026-11-01
 AZ Alkmaar,Mees de Wit,873560,defenders,"LB,RB",Left-Back,DF,28,1998-04-17,34.0,NED,False,,2026-11-01
-AZ Alkmaar,Peer Koopmeiners,915415,midfielders,"CM,CDM",Central Midfield,MF,26,2000-05-04,6.0,NED,False,,2026-11-01
+AZ Alkmaar,Peer Koopmeiners,915415,midfielders,"CDM,CM",Defensive Midfield,MF,26,2000-05-04,6.0,NED,False,,2026-11-01
 AZ Alkmaar,Jordy Clasie,209384,midfielders,"CDM,CM",Defensive Midfield,MF,35,1991-06-27,8.0,NED,False,,2026-11-01
 AZ Alkmaar,Kees Smit,1417581,midfielders,"CM,CDM,CAM",Central Midfield,MF,20,2006-01-20,10.0,NED,True,Day to day,2026-11-01
 AZ Alkmaar,Stije Resink,1206846,midfielders,"CDM,CM",Defensive Midfield,MF,23,2003-05-28,16.0,NED,True,Early January 2027,2026-11-01
 AZ Alkmaar,Valdemar Byskov,1332217,midfielders,"CAM,CDM,CM,RW,LM,LW",Attacking Midfield,MF,21,2005-01-25,17.0,DEN,False,,2026-11-01
 AZ Alkmaar,Dave Kwakman,1389199,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,22,2004-08-07,21.0,NED,False,,2026-11-01
 AZ Alkmaar,Rio Robbemond,1609509,midfielders,"CDM,CM,ST",Defensive Midfield,MF,21,2005-01-05,56.0,NED,False,,2026-11-01
-AZ Alkmaar,Weslley Pinto,1383534,attackers,"RW,CAM",Right Winger,FW,23,2003-10-01,7.0,BRA,False,,2026-11-01
+AZ Alkmaar,Weslley Pinto,1383534,attackers,RW,Right Winger,FW,23,2003-10-01,7.0,BRA,False,,2026-11-01
 AZ Alkmaar,Mexx Meerdink,1321125,attackers,ST,Centre-Forward,FW,23,2003-07-24,9.0,NED,False,,2026-11-01
 AZ Alkmaar,Ro-Zangelo Daal,1352213,attackers,"LW,LM",Left Winger,FW,22,2004-02-10,11.0,NED,False,,2026-11-01
 AZ Alkmaar,Calvin Stengs,800624,attackers,"RW,CAM",Right Winger,FW,27,1998-12-18,14.0,NED,False,,2026-11-01
@@ -152,26 +152,26 @@ Fortuna Sittard,Iván Márquez,639782,defenders,CB,Centre-Back,DF,32,1994-06-09,
 Fortuna Sittard,Syb van Ottele,1180218,defenders,"CB,CDM",Centre-Back,DF,24,2002-02-02,6.0,NED,False,,2026-11-01
 Fortuna Sittard,Jasper Dahlhaus,1184695,defenders,"LB,LWB,LM",Left-Back,DF,24,2001-11-27,8.0,NED,False,,2026-11-01
 Fortuna Sittard,Ivo Pinto,163815,defenders,"RB,RWB,CB",Right-Back,DF,36,1990-01-07,12.0,POR,False,,2026-11-01
-Fortuna Sittard,Nick de Groot,1285136,defenders,"LB,RB,LWB,CB",Left-Back,DF,25,2001-08-20,15.0,NED,False,,2026-11-01
+Fortuna Sittard,Nick de Groot,1285136,defenders,"LB,LWB,LW",Left-Back,DF,25,2001-08-20,15.0,NED,False,,2026-11-01
 Fortuna Sittard,Daley Sinkgraven,514806,defenders,CM,Central Midfield,DF,31,1995-07-04,24.0,NED,False,,2026-11-01
 Fortuna Sittard,Justin Hubner,1213683,defenders,"CB,LB,LWB",Centre-Back,DF,23,2003-09-14,28.0,IDN,False,,2026-11-01
 Fortuna Sittard,Kevin van Burgsteden,2130433,defenders,,Centre-Back,DF,19,2007-10-30,35.0,NED,False,,2026-11-01
 Fortuna Sittard,Yassin Oukili,1119702,midfielders,"CM,CDM",Central Midfield,MF,25,2001-01-03,5.0,NED,False,,2026-11-01
 Fortuna Sittard,Ole Romeny,915365,midfielders,"CAM,ST",Attacking Midfield,MF,26,2000-06-20,10.0,IDN,False,,2026-11-01
-Fortuna Sittard,Sven Simons,1389662,midfielders,"CM,CDM,ST",Central Midfield,MF,22,2004-03-02,14.0,NED,False,,2026-11-01
-Fortuna Sittard,Édouard Michut,1173785,midfielders,"CDM,CM,RW",Defensive Midfield,MF,23,2003-03-04,20.0,FRA,False,,2026-11-01
+Fortuna Sittard,Sven Simons,1389662,midfielders,"CM,CDM,ST,RW,RM",Central Midfield,MF,22,2004-03-02,14.0,NED,False,,2026-11-01
+Fortuna Sittard,Édouard Michut,1173785,midfielders,"CDM,CM",Defensive Midfield,MF,23,2003-03-04,20.0,FRA,False,,2026-11-01
 Fortuna Sittard,Shiloh Zand,1522438,midfielders,CM,Central Midfield,MF,23,2003-05-14,22.0,NED,False,,2026-11-01
 Fortuna Sittard,Philip Brittijn,1285451,midfielders,"CDM,CM,CB",Defensive Midfield,MF,22,2004-04-09,23.0,NED,False,,2026-11-01
 Fortuna Sittard,Alhaji Bah,1755855,midfielders,,Central Midfield,MF,18,2008-02-09,36.0,NED,False,,2026-11-01
 Fortuna Sittard,Moussa Gbemou,1793215,midfielders,CDM,Defensive Midfield,MF,19,2007-02-09,38.0,BEL,False,,2026-11-01
 Fortuna Sittard,Gani Buyukhan,1981089,midfielders,,Central Midfield,MF,17,2009-10-07,39.0,TUR,False,,2026-11-01
 Fortuna Sittard,Amin Laoukili,1821430,midfielders,,Central Midfield,MF,21,2005-01-14,47.0,NED,False,,2026-11-01
+Fortuna Sittard,Mohammed Ihattaren,1015183,midfielders,"RW,CAM,RM,CM",Right Winger,MF,24,2002-02-12,52.0,MAR,False,,2026-11-01
 Fortuna Sittard,Kristoffer Peterson,510399,attackers,"LW,LM",Left Winger,FW,31,1994-11-28,7.0,SWE,False,,2026-11-01
 Fortuna Sittard,Anthony Descotte,1116199,attackers,"ST,CAM,LW",Centre-Forward,FW,23,2003-08-03,9.0,BEL,False,,2026-11-01
 Fortuna Sittard,Lequincio Zeefuik,1250495,attackers,ST,Centre-Forward,FW,21,2004-11-26,25.0,NED,False,,2026-11-01
 Fortuna Sittard,Sjors-Lowis Hermsen,1644069,attackers,,Centre-Forward,FW,20,2006-06-12,27.0,NED,False,,2026-11-01
 Fortuna Sittard,Owen Johnson,1712124,attackers,,Centre-Forward,FW,21,2005-08-03,45.0,NED,False,,2026-11-01
-Fortuna Sittard,Mohammed Ihattaren,1015183,attackers,"RW,CAM,RM,CM",Right Winger,FW,24,2002-02-12,52.0,MAR,False,,2026-11-01
 Heerenveen,Bernt Klaverboer,1435849,keepers,GK,Goalkeeper,GK,21,2005-09-26,1.0,NED,False,,2026-11-01
 Heerenveen,Timo Schreuder,1888955,keepers,,Goalkeeper,GK,20,2006-09-25,30.0,NED,False,,2026-11-01
 Heerenveen,Andries Noppert,466852,keepers,GK,Goalkeeper,GK,32,1994-04-07,44.0,NED,False,,2026-11-01
@@ -211,7 +211,7 @@ Groningen,Daan Erdman,2172378,keepers,,Goalkeeper,GK,17,2009-07-24,73.0,NED,Fals
 Groningen,Wouter Prins,1552425,defenders,LB,Left-Back,DF,22,2004-02-06,2.0,NED,False,,2026-11-01
 Groningen,Thijmen Blokzijl,1256173,defenders,CB,Centre-Back,DF,21,2005-02-25,3.0,NED,False,,2026-11-01
 Groningen,Márk Csinger,1436365,defenders,CB,Centre-Back,DF,23,2003-05-31,4.0,HUN,False,,2026-11-01
-Groningen,Marco Rente,798011,defenders,"RB,CB",Right-Back,DF,29,1997-02-25,5.0,GER,False,,2026-11-01
+Groningen,Marco Rente,798011,defenders,"RB,CB,LB",Right-Back,DF,29,1997-02-25,5.0,GER,False,,2026-11-01
 Groningen,Nikolas Brandis,1645652,defenders,LB,Left-Back,DF,21,2005-05-06,12.0,SVK,False,,2026-11-01
 Groningen,Elvis van der Laan,1720296,defenders,CB,Centre-Back,DF,18,2008-02-29,15.0,SWE,True,Day to day,2026-11-01
 Groningen,Malcolm Jeng,1457824,defenders,CB,Centre-Back,DF,21,2005-03-09,21.0,SWE,True,Day to day,2026-11-01
@@ -226,7 +226,7 @@ Groningen,Pelle Clement,637741,midfielders,"CDM,LW",Defensive Midfield,MF,30,199
 Groningen,Jismerai Dillema,1797832,midfielders,,Central Midfield,MF,19,2007-02-14,44.0,NED,False,,2026-11-01
 Groningen,Brynjólfur Willumsson,937032,attackers,ST,Centre-Forward,FW,26,2000-08-12,9.0,ISL,False,,2026-11-01
 Groningen,Jacob Ondrejka,1109476,attackers,"LW,ST",Left Winger,FW,24,2002-09-02,11.0,SWE,False,,2026-11-01
-Groningen,David van der Werff,1695991,attackers,"RW,CAM,RM,LW,LM",Right Winger,FW,22,2004-08-31,17.0,NED,False,,2026-11-01
+Groningen,David van der Werff,1695991,attackers,"RW,CAM,RM,LW",Right Winger,FW,22,2004-08-31,17.0,NED,False,,2026-11-01
 Groningen,Oskar Zawada,560109,attackers,ST,Centre-Forward,FW,30,1996-02-01,19.0,POL,False,,2026-11-01
 Groningen,Nils Eggens,1595608,attackers,ST,Centre-Forward,FW,21,2005-04-08,20.0,NED,False,,2026-11-01
 Groningen,Thom van Bergen,1412105,attackers,"ST,CAM",Centre-Forward,FW,22,2004-01-06,26.0,NED,False,,2026-11-01
@@ -242,7 +242,7 @@ Cambuur,Jorn Berkhout,1180296,defenders,"CB,CM",Centre-Back,DF,24,2002-03-18,3.0
 Cambuur,Ismaël Baouf,1572671,defenders,CB,Centre-Back,DF,20,2006-09-17,4.0,MAR,False,,2026-11-01
 Cambuur,Jamal Amofa,1069658,defenders,CB,Centre-Back,DF,27,1998-11-25,6.0,NED,True,Early July 2027,2026-11-01
 Cambuur,Billy van Duijl,1362137,defenders,"CB,LB",Centre-Back,DF,21,2005-10-04,14.0,NED,False,,2026-11-01
-Cambuur,Rik Mulders,1082599,defenders,"RB,LB",Right-Back,DF,26,2000-08-06,16.0,NED,False,,2026-11-01
+Cambuur,Rik Mulders,1082599,defenders,RB,Right-Back,DF,26,2000-08-06,16.0,NED,False,,2026-11-01
 Cambuur,Lucas Jetten,1665409,defenders,"LB,LW,RW",Left-Back,DF,19,2007-07-07,23.0,NED,False,,2026-11-01
 Cambuur,Wiebe Kooistra,1526223,defenders,RB,Right-Back,DF,20,2006-07-23,27.0,NED,False,,2026-11-01
 Cambuur,Morgan Costarelli,1690090,defenders,LB,Left-Back,DF,21,2005-04-28,28.0,FRA,False,,2026-11-01
@@ -254,11 +254,11 @@ Cambuur,Rafik El Arguioui,1344244,midfielders,"CM,CAM,ST,CDM",Central Midfield,M
 Cambuur,Ethan Apkakou,1893952,midfielders,"CM,CDM",Central Midfield,MF,20,2006-10-15,17.0,FRA,False,,2026-11-01
 Cambuur,Wiebe van der Heide,1868386,midfielders,CM,Central Midfield,MF,20,2006-05-09,18.0,NED,False,,2026-11-01
 Cambuur,Daan Visser,1737697,midfielders,CM,Central Midfield,MF,21,2004-11-05,20.0,NED,True,Day to day,2026-11-01
-Cambuur,Mathieu Maertens,497572,midfielders,"CDM,ST,CAM,RW",Defensive Midfield,MF,31,1995-03-27,33.0,BEL,False,,2026-11-01
+Cambuur,Mathieu Maertens,497572,midfielders,"ST,CDM,CAM,CM,RW",Centre-Forward,MF,31,1995-03-27,33.0,BEL,False,,2026-11-01
 Cambuur,Damian Westerhof,2128846,midfielders,CDM,Defensive Midfield,MF,17,2008-12-23,48.0,NED,False,,2026-11-01
 Cambuur,Sami Bouhoudane,1623572,attackers,ST,Centre-Forward,FW,18,2008-01-13,7.0,NED,False,,2026-11-01
 Cambuur,Skye Vink,1403394,attackers,"ST,CM,CDM,CAM",Centre-Forward,FW,20,2006-07-01,9.0,NED,False,,2026-11-01
-Cambuur,Ilyès Hamache,1280182,attackers,"LW,LM",Left Winger,FW,23,2003-02-11,11.0,FRA,False,,2026-11-01
+Cambuur,Ilyès Hamache,1280182,attackers,"LW,LM,CAM",Left Winger,FW,23,2003-02-11,11.0,FRA,False,,2026-11-01
 Cambuur,Nicolas Binder,1195326,attackers,ST,Centre-Forward,FW,24,2002-01-13,13.0,AUT,False,,2026-11-01
 Cambuur,Fabian Kvam,1685344,attackers,"LW,RW",Left Winger,FW,21,2005-10-18,15.0,NOR,False,,2026-11-01
 Cambuur,Danyello Look,1874120,attackers,CDM,Defensive Midfield,FW,19,2007-03-22,19.0,NED,False,,2026-11-01
@@ -284,7 +284,7 @@ Go Ahead Eagles,Dani Tijman,1860035,defenders,,Centre-Back,DF,20,2006-06-13,31.0
 Go Ahead Eagles,Terence Lantveld,2173271,defenders,,Centre-Back,DF,19,2006-12-29,35.0,NED,False,,2026-11-01
 Go Ahead Eagles,Evert Linthorst,935623,midfielders,CDM,Defensive Midfield,MF,26,2000-03-03,8.0,NED,False,,2026-11-01
 Go Ahead Eagles,Robbin Weijenberg,1393697,midfielders,CDM,Defensive Midfield,MF,21,2004-11-08,15.0,NED,False,,2026-11-01
-Go Ahead Eagles,Victor Edvardsen,658222,midfielders,"CAM,ST,RW",Attacking Midfield,MF,30,1996-01-14,16.0,SWE,False,,2026-11-01
+Go Ahead Eagles,Victor Edvardsen,658222,midfielders,"CAM,ST",Attacking Midfield,MF,30,1996-01-14,16.0,SWE,False,,2026-11-01
 Go Ahead Eagles,Melle Meulensteen,864893,midfielders,"CDM,CB,CM",Defensive Midfield,MF,27,1999-07-04,21.0,NED,False,,2026-11-01
 Go Ahead Eagles,Yassir Salah Rahmouni,1794261,midfielders,CDM,Defensive Midfield,MF,20,2006-06-13,34.0,NED,False,,2026-11-01
 Go Ahead Eagles,Stefán Sigurðarson,1044355,attackers,ST,Centre-Forward,FW,25,2001-01-27,9.0,ISL,False,,2026-11-01
@@ -305,7 +305,7 @@ Utrecht,Nikolas Panayiotou,988798,defenders,CB,Centre-Back,DF,26,2000-05-12,5.0,
 Utrecht,Guus Offerhaus,1604509,defenders,"CB,CDM,CM",Centre-Back,DF,25,2001-01-03,6.0,NED,False,,2026-11-01
 Utrecht,Jakov Medić,824717,defenders,CB,Centre-Back,DF,28,1998-09-07,18.0,CRO,False,,2026-11-01
 Utrecht,Neville Ogidi Nwankwo,1706503,defenders,CB,Centre-Back,DF,24,2002-10-08,21.0,NED,False,,2026-11-01
-Utrecht,Niklas Vesterlund,1022438,defenders,"RB,RM,RW,RWB",Right-Back,DF,27,1999-06-06,23.0,DEN,False,,2026-11-01
+Utrecht,Niklas Vesterlund,1022438,defenders,"RB,RM,RW",Right-Back,DF,27,1999-06-06,23.0,DEN,False,,2026-11-01
 Utrecht,Per Kloosterboer,1522707,defenders,"CB,RB,LB",Centre-Back,DF,21,2005-03-08,32.0,NED,False,,2026-11-01
 Utrecht,Arthur Zagré,949807,defenders,"LB,LWB,LM",Left-Back,DF,25,2001-10-04,92.0,BFA,False,,2026-11-01
 Utrecht,Victor Jensen,915331,midfielders,"CM,CAM",Central Midfield,MF,26,2000-02-08,7.0,DEN,True,Day to day,2026-11-01
@@ -314,7 +314,7 @@ Utrecht,Dani de Wit,813428,midfielders,"CAM,CM,ST",Attacking Midfield,MF,28,1998
 Utrecht,Alonzo Engwanda,1665129,midfielders,"CDM,CM",Defensive Midfield,MF,23,2003-01-27,27.0,BEL,True,Day to day,2026-11-01
 Utrecht,Kevin Paredes,1136099,midfielders,LW,Left Winger,MF,23,2003-05-07,30.0,USA,True,Day to day,2026-11-01
 Utrecht,Davy van den Berg,1075819,midfielders,"CM,CAM,CDM",Central Midfield,MF,26,2000-02-04,34.0,NED,False,,2026-11-01
-Utrecht,Oualid Agougil,1426165,midfielders,"CDM,CM",Defensive Midfield,MF,21,2005-08-07,38.0,NED,False,,2026-11-01
+Utrecht,Oualid Agougil,1426165,midfielders,"CM,CDM",Central Midfield,MF,21,2005-08-07,38.0,NED,False,,2026-11-01
 Utrecht,Jaygo van Ommeren,1708469,midfielders,"CM,CDM",Central Midfield,MF,18,2008-05-08,46.0,NED,False,,2026-11-01
 Utrecht,Artem Stepanov,1684420,attackers,ST,Centre-Forward,FW,19,2007-08-10,9.0,UKR,False,,2026-11-01
 Utrecht,Yoann Cathline,1234634,attackers,"LW,RW,LM",Left Winger,FW,24,2002-07-22,10.0,FRA,False,,2026-11-01
@@ -349,7 +349,7 @@ NEC Nijmegen,Dušan Tadić,94267,midfielders,"CAM,ST,LW,RM,RW",Attacking Midfiel
 NEC Nijmegen,Willum Willumsson,774237,midfielders,CAM,Attacking Midfield,MF,28,1998-10-23,11.0,ISL,False,,2026-11-01
 NEC Nijmegen,Dennis Geiger,784495,midfielders,"CAM,CDM,CM",Attacking Midfield,MF,28,1998-06-10,18.0,GER,False,,2026-11-01
 NEC Nijmegen,Adam Tahaui,1667708,midfielders,"CAM,CM,RWB,RW",Attacking Midfield,MF,21,2005-07-21,19.0,NED,False,,2026-11-01
-NEC Nijmegen,Noé Lebreton,1366049,midfielders,"CAM,CDM,LWB,LW",Attacking Midfield,MF,22,2004-04-22,20.0,FRA,False,,2026-11-01
+NEC Nijmegen,Noé Lebreton,1366049,midfielders,"CAM,CDM,LWB,LW,RW",Attacking Midfield,MF,22,2004-04-22,20.0,FRA,False,,2026-11-01
 NEC Nijmegen,Sam de Laat,1797459,midfielders,CAM,Attacking Midfield,MF,20,2006-06-12,26.0,NED,False,,2026-11-01
 NEC Nijmegen,Kevin Kers,1896583,midfielders,RWB,Right-Back,MF,20,2006-01-04,34.0,NED,False,,2026-11-01
 NEC Nijmegen,Jamiro Monteiro,680905,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,32,1993-11-23,35.0,CPV,False,,2026-11-01
@@ -358,58 +358,6 @@ NEC Nijmegen,Clement Bischoff,1436850,midfielders,"LWB,LW,LM",Left-Back,MF,20,20
 NEC Nijmegen,Kaj Sierhuis,813429,attackers,ST,Centre-Forward,FW,28,1998-04-27,14.0,NED,False,,2026-11-01
 NEC Nijmegen,Bryan Linssen,147594,attackers,"ST,CAM",Centre-Forward,FW,36,1990-10-08,30.0,NED,False,,2026-11-01
 NEC Nijmegen,Ayodele Thomas,1615528,attackers,"LW,LWB",Left Winger,FW,19,2007-07-23,77.0,NED,False,,2026-11-01
-Excelsior,Stijn van Gassel,510425,keepers,GK,Goalkeeper,GK,30,1996-10-18,1.0,NED,False,,2026-11-01
-Excelsior,Celton Biai,1106567,keepers,GK,Goalkeeper,GK,26,2000-08-13,16.0,GNB,False,,2026-11-01
-Excelsior,Tijmen Holla,1693190,keepers,GK,Goalkeeper,GK,20,2006-07-25,40.0,NED,False,,2026-11-01
-Excelsior,Marlon van de Wetering,1797146,defenders,RB,Right-Back,DF,18,2007-11-26,,NED,False,,2026-11-01
-Excelsior,Eric da Silva Moreira,1487909,defenders,"RB,RM,RWB",Right-Back,DF,20,2006-05-03,2.0,GER,False,,2026-11-01
-Excelsior,Rick Meissen,1217654,defenders,"CB,RB,CM,CDM",Centre-Back,DF,24,2002-02-24,3.0,NED,False,,2026-11-01
-Excelsior,Casper Widell,1159831,defenders,CB,Centre-Back,DF,23,2003-05-05,4.0,SWE,False,,2026-11-01
-Excelsior,Kasey Bos,1613323,defenders,LB,Left-Back,DF,22,2004-05-08,12.0,AUS,False,,2026-11-01
-Excelsior,Jan Plug,1553374,defenders,CB,Centre-Back,DF,21,2005-04-02,14.0,NED,False,,2026-11-01
-Excelsior,Simon Janssen,947896,defenders,LB,Left-Back,DF,26,2000-09-25,15.0,NED,False,,2026-11-01
-Excelsior,Osman Mohamed Turay,1830760,defenders,LB,Left-Back,DF,18,2008-03-17,22.0,GER,False,,2026-11-01
-Excelsior,Guilliano Cairo,1667712,defenders,CB,Centre-Back,DF,20,2006-03-18,24.0,NED,False,,2026-11-01
-Excelsior,Daniël van Vianen,1301320,midfielders,"CDM,CM",Defensive Midfield,MF,23,2003-04-28,6.0,NED,False,,2026-11-01
-Excelsior,Irakli Yegoian,1434603,midfielders,"CM,CDM,CAM,LW",Central Midfield,MF,22,2004-03-19,8.0,GEO,False,,2026-11-01
-Excelsior,Mario Domínguez,1358338,midfielders,ST,Centre-Forward,MF,22,2004-02-10,9.0,ESP,False,,2026-11-01
-Excelsior,Noah Naujoks,1276314,midfielders,"CAM,CM,ST",Attacking Midfield,MF,24,2002-05-02,10.0,NED,False,,2026-11-01
-Excelsior,Valentin Sulzbacher,1357944,midfielders,"CDM,CB",Defensive Midfield,MF,21,2005-03-11,18.0,AUT,False,,2026-11-01
-Excelsior,Lennard Hartjes,1276311,midfielders,"CM,CDM,CAM",Central Midfield,MF,23,2003-04-07,20.0,NED,False,,2026-11-01
-Excelsior,Gijs van den Berg,1901433,midfielders,,Central Midfield,MF,33,1993-06-22,25.0,NED,False,,2026-11-01
-Excelsior,Quinten Kraaijvanger,2407719,midfielders,,Central Midfield,MF,19,2007-01-08,34.0,NED,False,,2026-11-01
-Excelsior,Aymen Sliti,1553362,attackers,RW,Right Winger,FW,20,2006-03-24,7.0,NED,False,,2026-11-01
-Excelsior,Alireza Jahanbakhsh,466890,attackers,"RW,LW,CM",Right Winger,FW,33,1993-08-11,11.0,IRN,False,,2026-11-01
-Excelsior,David Garden,1406446,attackers,ST,Centre-Forward,FW,22,2004-06-20,19.0,NED,False,,2026-11-01
-Excelsior,Ilano Silva Timas,1665413,attackers,"LW,RW,LM",Left Winger,FW,24,2002-09-29,21.0,CPV,False,,2026-11-01
-Excelsior,Yaqub Finey,1603365,attackers,ST,Centre-Forward,FW,23,2003-09-24,23.0,SWE,False,,2026-11-01
-Excelsior,Nesto Groen,1553368,attackers,ST,Centre-Forward,FW,22,2004-07-22,28.0,NED,False,,2026-11-01
-Excelsior,Ágúst Thorsteinsson,1284359,attackers,"RW,LW,ST,RM",Right Winger,FW,21,2005-01-14,30.0,ISL,False,,2026-11-01
-Sparta R.,Michael Brouwer,351869,keepers,GK,Goalkeeper,GK,33,1993-01-21,1.0,NED,False,,2026-11-01
-Sparta R.,Filip Bednarek,243490,keepers,GK,Goalkeeper,GK,34,1992-09-26,20.0,POL,False,,2026-11-01
-Sparta R.,Pascal Kuiper,1188299,keepers,GK,Goalkeeper,GK,22,2004-03-17,30.0,NED,False,,2026-11-01
-Sparta R.,Rik Suur,1844071,keepers,,Goalkeeper,GK,19,2006-11-14,30.0,NED,False,,2026-11-01
-Sparta R.,Max de Ligt,1556871,defenders,CB,Centre-Back,DF,22,2004-07-20,,NED,False,,2026-11-01
-Sparta R.,Lushendry Martes,1804213,defenders,"RB,RWB,CB",Right-Back,DF,18,2008-05-06,2.0,NED,False,,2026-11-01
-Sparta R.,Marvin Young,1668089,defenders,CB,Centre-Back,DF,21,2005-10-02,3.0,NED,False,,2026-11-01
-Sparta R.,Bruno Martins Indi,212511,defenders,CB,Centre-Back,DF,34,1992-02-08,4.0,NED,False,,2026-11-01
-Sparta R.,Bas Kuipers,467480,defenders,"LB,LWB",Left-Back,DF,32,1994-08-17,5.0,NED,False,,2026-11-01
-Sparta R.,Nick Verschuren,1562023,defenders,CB,Centre-Back,DF,21,2005-01-13,6.0,NED,False,,2026-11-01
-Sparta R.,Boyd Reith,954924,defenders,"RB,LB",Right-Back,DF,27,1999-05-05,12.0,NED,False,,2026-11-01
-Sparta R.,Teo Quintero,1045822,defenders,"LB,CB",Left-Back,DF,27,1999-03-02,14.0,VEN,False,,2026-11-01
-Sparta R.,Giannino Vianello,1605894,defenders,LB,Left-Back,DF,19,2007-06-10,15.0,NED,False,,2026-11-01
-Sparta R.,Robin van Cruijsen,1797591,midfielders,"CM,CDM,CAM,RW,RM",Central Midfield,MF,20,2006-02-20,7.0,NED,False,,2026-11-01
-Sparta R.,Jens Toornstra,188557,midfielders,"CDM,CM",Defensive Midfield,MF,37,1989-04-04,8.0,NED,False,,2026-11-01
-Sparta R.,Cedric Hatenboer,1603786,midfielders,"CDM,CM",Defensive Midfield,MF,21,2005-03-19,10.0,NED,False,,2026-11-01
-Sparta R.,Isaac Babadi,1252642,midfielders,LM,Left Midfield,MF,21,2005-04-06,11.0,NED,False,,2026-11-01
-Sparta R.,Julian Baas,1180499,midfielders,"CDM,CM",Defensive Midfield,MF,24,2002-04-16,16.0,NED,False,,2026-11-01
-Sparta R.,Alwande Roaldsøy,1506448,midfielders,CM,Central Midfield,MF,22,2004-06-09,18.0,NOR,False,,2026-11-01
-Sparta R.,Shunsuke Mito,1227814,attackers,"LW,CAM",Left Winger,FW,24,2002-09-28,,JPN,True,Day to day,2026-11-01
-Sparta R.,Milan Zonneveld,1291881,attackers,ST,Centre-Forward,FW,23,2003-10-08,9.0,NED,False,,2026-11-01
-Sparta R.,Mitchell van Bergen,709734,attackers,"RW,LW",Right Winger,FW,27,1999-08-27,17.0,NED,False,,2026-11-01
-Sparta R.,Andrej Kostić,1659858,attackers,ST,Centre-Forward,FW,19,2007-01-16,19.0,MNE,False,,2026-11-01
-Sparta R.,Casper Terho,1087574,attackers,RW,Right Winger,FW,23,2003-06-24,21.0,FIN,False,,2026-11-01
-Sparta R.,Joel Ideho,1206283,attackers,LW,Left Winger,FW,23,2003-07-17,22.0,NED,False,,2026-11-01
 Zwolle,Jasper Schendelaar,873529,keepers,GK,Goalkeeper,GK,26,2000-09-02,1.0,NED,False,,2026-11-01
 Zwolle,Tom de Graaff,1310630,keepers,GK,Goalkeeper,GK,21,2004-12-10,16.0,NED,False,,2026-11-01
 Zwolle,Nick Dobben,1705132,keepers,,Goalkeeper,GK,18,2008-05-17,40.0,NED,False,,2026-11-01
@@ -440,6 +388,58 @@ Zwolle,Sydney van Hooijdonk,949481,attackers,ST,Centre-Forward,FW,26,2000-02-06,
 Zwolle,Odysseus Velanas,775666,attackers,"LW,CAM,RW",Left Winger,FW,28,1998-06-05,18.0,GRE,False,,2026-11-01
 Zwolle,Ibrahim Cissoko,1282156,attackers,"LW,LM",Left Winger,FW,23,2003-03-26,22.0,NED,False,,2026-11-01
 Zwolle,Gilles van der Wal,1946368,attackers,RW,Right Winger,FW,18,2008-06-24,37.0,NED,False,,2026-11-01
+Excelsior,Stijn van Gassel,510425,keepers,GK,Goalkeeper,GK,30,1996-10-18,1.0,NED,False,,2026-11-01
+Excelsior,Celton Biai,1106567,keepers,GK,Goalkeeper,GK,26,2000-08-13,16.0,GNB,False,,2026-11-01
+Excelsior,Tijmen Holla,1693190,keepers,GK,Goalkeeper,GK,20,2006-07-25,40.0,NED,False,,2026-11-01
+Excelsior,Marlon van de Wetering,1797146,defenders,RB,Right-Back,DF,18,2007-11-26,,NED,False,,2026-11-01
+Excelsior,Eric da Silva Moreira,1487909,defenders,"RB,RM,RWB",Right-Back,DF,20,2006-05-03,2.0,GER,False,,2026-11-01
+Excelsior,Rick Meissen,1217654,defenders,"CB,RB,CM,CDM",Centre-Back,DF,24,2002-02-24,3.0,NED,False,,2026-11-01
+Excelsior,Casper Widell,1159831,defenders,CB,Centre-Back,DF,23,2003-05-05,4.0,SWE,False,,2026-11-01
+Excelsior,Kasey Bos,1613323,defenders,LB,Left-Back,DF,22,2004-05-08,12.0,AUS,False,,2026-11-01
+Excelsior,Jan Plug,1553374,defenders,CB,Centre-Back,DF,21,2005-04-02,14.0,NED,False,,2026-11-01
+Excelsior,Simon Janssen,947896,defenders,LB,Left-Back,DF,26,2000-09-25,15.0,NED,False,,2026-11-01
+Excelsior,Osman Mohamed Turay,1830760,defenders,LB,Left-Back,DF,18,2008-03-17,22.0,GER,False,,2026-11-01
+Excelsior,Guilliano Cairo,1667712,defenders,CB,Centre-Back,DF,20,2006-03-18,24.0,NED,False,,2026-11-01
+Excelsior,Daniël van Vianen,1301320,midfielders,"CDM,CM",Defensive Midfield,MF,23,2003-04-28,6.0,NED,False,,2026-11-01
+Excelsior,Irakli Yegoian,1434603,midfielders,"CM,CDM,CAM,LW",Central Midfield,MF,22,2004-03-19,8.0,GEO,False,,2026-11-01
+Excelsior,Mario Domínguez,1358338,midfielders,ST,Centre-Forward,MF,22,2004-02-10,9.0,ESP,False,,2026-11-01
+Excelsior,Noah Naujoks,1276314,midfielders,"CM,ST,CAM",Central Midfield,MF,24,2002-05-02,10.0,NED,False,,2026-11-01
+Excelsior,Valentin Sulzbacher,1357944,midfielders,"CDM,CB",Defensive Midfield,MF,21,2005-03-11,18.0,AUT,False,,2026-11-01
+Excelsior,Lennard Hartjes,1276311,midfielders,"CM,CDM,CAM",Central Midfield,MF,23,2003-04-07,20.0,NED,False,,2026-11-01
+Excelsior,Gijs van den Berg,1901433,midfielders,,Central Midfield,MF,33,1993-06-22,25.0,NED,False,,2026-11-01
+Excelsior,Quinten Kraaijvanger,2407719,midfielders,,Central Midfield,MF,19,2007-01-08,34.0,NED,False,,2026-11-01
+Excelsior,Aymen Sliti,1553362,attackers,"RW,LW",Right Winger,FW,20,2006-03-24,7.0,NED,False,,2026-11-01
+Excelsior,Alireza Jahanbakhsh,466890,attackers,"RW,LW,CM",Right Winger,FW,33,1993-08-11,11.0,IRN,False,,2026-11-01
+Excelsior,David Garden,1406446,attackers,ST,Centre-Forward,FW,22,2004-06-20,19.0,NED,False,,2026-11-01
+Excelsior,Ilano Silva Timas,1665413,attackers,"LW,RW,LM",Left Winger,FW,24,2002-09-29,21.0,CPV,False,,2026-11-01
+Excelsior,Yaqub Finey,1603365,attackers,ST,Centre-Forward,FW,23,2003-09-24,23.0,SWE,False,,2026-11-01
+Excelsior,Nesto Groen,1553368,attackers,ST,Centre-Forward,FW,22,2004-07-22,28.0,NED,False,,2026-11-01
+Excelsior,Ágúst Thorsteinsson,1284359,attackers,"RW,LW,ST,RM",Right Winger,FW,21,2005-01-14,30.0,ISL,False,,2026-11-01
+Sparta R.,Michael Brouwer,351869,keepers,GK,Goalkeeper,GK,33,1993-01-21,1.0,NED,False,,2026-11-01
+Sparta R.,Filip Bednarek,243490,keepers,GK,Goalkeeper,GK,34,1992-09-26,20.0,POL,False,,2026-11-01
+Sparta R.,Pascal Kuiper,1188299,keepers,GK,Goalkeeper,GK,22,2004-03-17,30.0,NED,False,,2026-11-01
+Sparta R.,Rik Suur,1844071,keepers,,Goalkeeper,GK,19,2006-11-14,30.0,NED,False,,2026-11-01
+Sparta R.,Max de Ligt,1556871,defenders,CB,Centre-Back,DF,22,2004-07-20,,NED,False,,2026-11-01
+Sparta R.,Lushendry Martes,1804213,defenders,"RB,RWB,CB",Right-Back,DF,18,2008-05-06,2.0,NED,False,,2026-11-01
+Sparta R.,Marvin Young,1668089,defenders,CB,Centre-Back,DF,21,2005-10-02,3.0,NED,False,,2026-11-01
+Sparta R.,Bruno Martins Indi,212511,defenders,CB,Centre-Back,DF,34,1992-02-08,4.0,NED,False,,2026-11-01
+Sparta R.,Bas Kuipers,467480,defenders,"LB,LWB",Left-Back,DF,32,1994-08-17,5.0,NED,False,,2026-11-01
+Sparta R.,Nick Verschuren,1562023,defenders,CB,Centre-Back,DF,21,2005-01-13,6.0,NED,False,,2026-11-01
+Sparta R.,Boyd Reith,954924,defenders,"RB,LB",Right-Back,DF,27,1999-05-05,12.0,NED,False,,2026-11-01
+Sparta R.,Teo Quintero,1045822,defenders,"LB,CB",Left-Back,DF,27,1999-03-02,14.0,VEN,False,,2026-11-01
+Sparta R.,Giannino Vianello,1605894,defenders,LB,Left-Back,DF,19,2007-06-10,15.0,NED,False,,2026-11-01
+Sparta R.,Cedric Hatenboer,1603786,midfielders,"CDM,CM",Defensive Midfield,MF,21,2005-03-19,8.0,NED,False,,2026-11-01
+Sparta R.,Jens Toornstra,188557,midfielders,"CDM,CM",Defensive Midfield,MF,37,1989-04-04,10.0,NED,False,,2026-11-01
+Sparta R.,Isaac Babadi,1252642,midfielders,LM,Left Midfield,MF,21,2005-04-06,11.0,NED,False,,2026-11-01
+Sparta R.,Julian Baas,1180499,midfielders,"CDM,CM",Defensive Midfield,MF,24,2002-04-16,13.0,NED,False,,2026-11-01
+Sparta R.,Alwande Roaldsøy,1506448,midfielders,CM,Central Midfield,MF,22,2004-06-09,16.0,NOR,False,,2026-11-01
+Sparta R.,Robin van Cruijsen,1797591,midfielders,"CM,CDM,CAM,RW,RM",Central Midfield,MF,20,2006-02-20,18.0,NED,False,,2026-11-01
+Sparta R.,Mitchell van Bergen,709734,attackers,"RW,LW",Right Winger,FW,27,1999-08-27,7.0,NED,False,,2026-11-01
+Sparta R.,Milan Zonneveld,1291881,attackers,ST,Centre-Forward,FW,23,2003-10-08,9.0,NED,False,,2026-11-01
+Sparta R.,Casper Terho,1087574,attackers,RW,Right Winger,FW,23,2003-06-24,17.0,FIN,False,,2026-11-01
+Sparta R.,Andrej Kostić,1659858,attackers,ST,Centre-Forward,FW,19,2007-01-16,19.0,MNE,False,,2026-11-01
+Sparta R.,Shunsuke Mito,1227814,attackers,"LW,CAM",Left Winger,FW,24,2002-09-28,21.0,JPN,True,Day to day,2026-11-01
+Sparta R.,Joel Ideho,1206283,attackers,LW,Left Winger,FW,23,2003-07-17,22.0,NED,False,,2026-11-01
 Telstar,Ronald Koeman,369295,keepers,GK,Goalkeeper,GK,31,1995-05-23,1.0,NED,False,,2026-11-01
 Telstar,Finn Mulder,1709754,keepers,,Goalkeeper,GK,18,2008-02-01,13.0,NED,False,,2026-11-01
 Telstar,Daan Reiziger,1012784,keepers,GK,Goalkeeper,GK,25,2001-06-18,20.0,NED,False,,2026-11-01
@@ -463,7 +463,7 @@ Telstar,Rui Mendes,953929,midfielders,"CAM,RW",Attacking Midfield,MF,26,1999-11-
 Telstar,Tyrone Owusu,1290453,midfielders,"CDM,CAM,CM",Defensive Midfield,MF,27,1999-03-05,10.0,NED,False,,2026-11-01
 Telstar,Harrie Kuster,1662353,midfielders,"CM,CAM,ST,RW",Central Midfield,MF,21,2005-09-11,14.0,NED,False,,2026-11-01
 Telstar,Nils Rossen,1329268,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,22,2004-08-01,17.0,NED,False,,2026-11-01
-Telstar,Noach Shenkman,1825940,midfielders,CDM,Defensive Midfield,MF,20,2006-10-02,23.0,NED,False,,2026-11-01
+Telstar,Noach Shenkman,1825940,midfielders,"CM,CDM",Central Midfield,MF,20,2006-10-02,23.0,NED,False,,2026-11-01
 Telstar,Patrick Brouwer,1294800,midfielders,"CAM,LW",Attacking Midfield,MF,25,2001-03-19,27.0,NED,False,,2026-11-01
 Telstar,Rojendro Oudsten,1797839,midfielders,CDM,Defensive Midfield,MF,18,2007-11-12,28.0,SUR,False,,2026-11-01
 Telstar,Emirhan Demircan,1579433,attackers,"LW,LM,ST",Left Winger,FW,21,2005-01-20,8.0,TUR,False,,2026-11-01
@@ -471,7 +471,7 @@ Telstar,Jelani Seedorf,1393996,attackers,ST,Centre-Forward,FW,21,2004-12-12,9.0,
 Telstar,Nökkvi Thorisson,1044472,attackers,ST,Centre-Forward,FW,27,1999-08-13,11.0,ISL,False,,2026-11-01
 Telstar,Fabiano Rust,1553366,attackers,,Centre-Forward,FW,21,2005-01-16,19.0,NED,False,,2026-11-01
 Telstar,Fofin Turay,1485517,attackers,RW,Right Winger,FW,22,2004-06-07,21.0,NED,False,,2026-11-01
-Telstar,Arjany Martha,1180735,attackers,"RW,CAM,CM,ST",Right Winger,FW,23,2003-09-04,42.0,CUW,False,,2026-11-01
+Telstar,Arjany Martha,1180735,attackers,"RW,ST,CAM,CM",Right Winger,FW,23,2003-09-04,42.0,CUW,False,,2026-11-01
 ADO Den Haag,Kilian Nikièma,1313190,keepers,GK,Goalkeeper,GK,23,2003-06-22,1.0,BFA,False,,2026-11-01
 ADO Den Haag,Caleb Kramer,1794163,keepers,,Goalkeeper,GK,20,2006-08-01,20.0,NED,False,,2026-11-01
 ADO Den Haag,Niclas Thiede,1074000,keepers,GK,Goalkeeper,GK,27,1999-04-14,23.0,GER,False,,2026-11-01
