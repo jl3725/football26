@@ -468,15 +468,15 @@ Rio Ave,Nelson Abbey,1118906,defenders,"LB,CB",Left-Back,DF,23,2003-08-28,6.0,EN
 Rio Ave,Julien Lomboto,1452500,defenders,CB,Centre-Back,DF,24,2002-05-13,13.0,FRA,False,,2026-11-01
 Rio Ave,Jakub Brabec,173899,defenders,CB,Centre-Back,DF,34,1992-08-06,14.0,CZE,False,,2026-11-01
 Rio Ave,Marios Vrousai,914964,defenders,"RB,RM,LB,LM",Right-Back,DF,28,1998-07-02,17.0,GRE,False,,2026-11-01
+Rio Ave,João Tomé,1374504,defenders,"RB,RM",Right-Back,DF,23,2003-02-12,20.0,POR,False,,2026-11-01
 Rio Ave,Francisco Petrasso,1435030,defenders,CB,Centre-Back,DF,24,2002-01-28,23.0,ARG,False,,2026-11-01
 Rio Ave,Pedro Amaral,776584,defenders,"LB,LM,CB,RM",Left-Back,DF,29,1997-08-25,24.0,POR,False,,2026-11-01
 Rio Ave,Gustavo Mancha,1736561,defenders,CB,Centre-Back,DF,22,2004-07-25,39.0,BRA,False,,2026-11-01
 Rio Ave,Caike,1931556,defenders,,Centre-Back,DF,21,2005-05-14,60.0,BRA,False,,2026-11-01
 Rio Ave,Andreas-Richardos Ntoi,1403350,midfielders,"CDM,CM,CB,RB",Defensive Midfield,MF,23,2003-02-02,5.0,GRE,False,,2026-11-01
 Rio Ave,Ryan Guilherme,1254743,midfielders,CDM,Defensive Midfield,MF,23,2002-12-07,8.0,BRA,False,,2026-11-01
-Rio Ave,Brandon Aguilera,1021336,midfielders,CM,Central Midfield,MF,23,2003-06-28,10.0,CRC,True,Early December 2026,2026-11-01
+Rio Ave,Brandon Aguilera,1021336,midfielders,CM,Central Midfield,MF,23,2003-06-28,10.0,CRC,False,,2026-11-01
 Rio Ave,Malik Sellouki,1230595,midfielders,"RM,CAM,ST,LM",Right Midfield,MF,26,2000-03-21,19.0,FRA,False,,2026-11-01
-Rio Ave,João Tomé,1374504,midfielders,"RM,RB",Right Midfield,MF,23,2003-02-12,20.0,POR,False,,2026-11-01
 Rio Ave,Tamás Nikitscher,1204394,midfielders,"CDM,CM",Defensive Midfield,MF,26,1999-11-03,44.0,HUN,False,,2026-11-01
 Rio Ave,Giorgos Liavas,958222,midfielders,"CDM,CM,RB",Defensive Midfield,MF,25,2001-02-12,54.0,GRE,False,,2026-11-01
 Rio Ave,Antoine Wenck,2131163,midfielders,,Central Midfield,MF,20,2006-06-30,70.0,SEN,False,,2026-11-01
@@ -490,7 +490,7 @@ Rio Ave,Radek Šiler,1621148,attackers,ST,Centre-Forward,FW,22,2004-09-10,21.0,C
 Rio Ave,Tobías Medina,1513342,attackers,CAM,Attacking Midfield,FW,22,2004-03-03,27.0,ARG,False,,2026-11-01
 Rio Ave,Roland Galcík,972080,attackers,RW,Right Winger,FW,25,2001-06-30,30.0,SVK,False,,2026-11-01
 Rio Ave,Samuel Alves,1927468,attackers,,Centre-Forward,FW,18,2008-03-30,67.0,BRA,False,,2026-11-01
-Rio Ave,Dario Špikić,1067806,attackers,"LW,RW",Left Winger,FW,27,1999-03-22,77.0,CRO,False,,2026-11-01
+Rio Ave,Dario Špikić,1067806,attackers,"LW,CAM",Left Winger,FW,27,1999-03-22,77.0,CRO,False,,2026-11-01
 Rio Ave,Sebastian Clemmensen,1513663,attackers,"RW,ST",Right Winger,FW,23,2003-09-01,80.0,DEN,False,,2026-11-01
 Casa Pia,Patrick Sequeira,1237856,keepers,GK,Goalkeeper,GK,27,1999-03-01,1.0,CRC,False,,2026-11-01
 Casa Pia,Daniel Azevedo,824650,keepers,GK,Goalkeeper,GK,28,1998-02-12,22.0,POR,False,,2026-11-01
@@ -532,16 +532,16 @@ Estoril,Antef Tsoungui,1089750,defenders,"CB,CDM,CM",Centre-Back,DF,23,2002-12-3
 Estoril,Xavi Sintes,1418042,defenders,CB,Centre-Back,DF,25,2001-08-05,6.0,ESP,False,,2026-11-01
 Estoril,Ismael Sierra,1433007,defenders,CB,Centre-Back,DF,23,2003-03-17,15.0,ESP,False,,2026-11-01
 Estoril,Tiago Parente,1636736,defenders,"LB,LM",Left-Back,DF,22,2004-01-14,19.0,POR,False,,2026-11-01
-Estoril,Roko Jurišić,1202918,defenders,"LB,CB,LWB,LM",Left-Back,DF,25,2001-09-28,21.0,CRO,False,,2026-11-01
+Estoril,Roko Jurišić,1202918,defenders,"LB,CB,LWB",Left-Back,DF,25,2001-09-28,21.0,CRO,False,,2026-11-01
 Estoril,Stélios Andreou,1110862,defenders,"CB,RB",Centre-Back,DF,24,2002-07-24,25.0,CYP,False,,2026-11-01
 Estoril,Samuel Amissah,1441892,defenders,CB,Centre-Back,DF,19,2007-03-07,35.0,ENG,False,,2026-11-01
 Estoril,Kazim,1934827,defenders,,Centre-Back,DF,21,2005-03-28,41.0,BRA,False,,2026-11-01
-Estoril,Jordan Arnolin,2129387,defenders,,Centre-Back,DF,18,2008-04-29,42.0,POR,False,,2026-11-01
+Estoril,Jordan Arnolin,2129387,defenders,CM,Central Midfield,DF,18,2008-04-29,42.0,POR,False,,2026-11-01
 Estoril,Longin Bimai,1795442,defenders,,Centre-Back,DF,20,2006-02-17,57.0,FRA,False,,2026-11-01
 Estoril,Xeka,470810,midfielders,"CM,CDM",Central Midfield,MF,31,1994-11-10,8.0,POR,False,,2026-11-01
 Estoril,Jordan Holsgrove,877568,midfielders,"CM,CDM",Central Midfield,MF,27,1999-09-10,10.0,SCO,False,,2026-11-01
-Estoril,João Carvalho,603808,midfielders,"CAM,RW,CM,LM,LW",Attacking Midfield,MF,29,1997-03-09,12.0,POR,False,,2026-11-01
-Estoril,Pedro Carvalho,1525164,midfielders,RM,Right Midfield,MF,23,2003-02-14,22.0,POR,False,,2026-11-01
+Estoril,João Carvalho,603808,midfielders,"CAM,RW,LM,CM,LW",Attacking Midfield,MF,29,1997-03-09,12.0,POR,False,,2026-11-01
+Estoril,Pedro Carvalho,1525164,midfielders,"RM,RB",Right Midfield,MF,23,2003-02-14,22.0,POR,False,,2026-11-01
 Estoril,Milan Robin,1359270,midfielders,"CM,RW,CDM,CAM",Central Midfield,MF,26,1999-11-24,44.0,FRA,False,,2026-11-01
 Estoril,Luís Gomes,1368826,midfielders,CM,Central Midfield,MF,22,2004-04-24,80.0,POR,False,,2026-11-01
 Estoril,Tiago Brito,1459916,midfielders,"CM,CDM",Central Midfield,MF,22,2004-04-16,90.0,POR,False,,2026-11-01
@@ -552,4 +552,4 @@ Estoril,Nail Omerović,1510990,attackers,"LW,CAM,RW",Left Winger,FW,24,2002-10-2
 Estoril,Yanis Begraoui,933639,attackers,"ST,LW,RW",Centre-Forward,FW,25,2001-07-04,14.0,MAR,False,,2026-11-01
 Estoril,Peixinho,1524512,attackers,LW,Left Winger,FW,22,2004-05-23,17.0,POR,False,,2026-11-01
 Estoril,Fabrício Garcia,1413282,attackers,LW,Left Winger,FW,25,2001-05-04,98.0,CPV,True,Late November 2026,2026-11-01
-Estoril,Rafik Guitane,814869,attackers,RW,Right Winger,FW,27,1999-05-26,99.0,FRA,False,,2026-11-01
+Estoril,Rafik Guitane,814869,attackers,"RW,RM",Right Winger,FW,27,1999-05-26,99.0,FRA,False,,2026-11-01

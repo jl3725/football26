@@ -2567,6 +2567,30 @@
    "away": "Real Madrid",
    "at": "2026-11-01T17:53:42+00:00",
    "model": "gemini-3.1-flash-lite"
+  },
+  "5846012": {
+   "text": "Rapid Wien이 Austria Wien을 상대로 2-0 승리를 거뒀다. 60' Yusuf Demir의 페널티킥 결승골과 82' Lee Tae-Seok의 자책골이 이어지며 승부가 갈렸다. 모델과 Elo의 사전 예측대로 Rapid Wien이 승리했다.",
+   "date": "2026-11-01",
+   "home": "Austria Wien",
+   "away": "Rapid Wien",
+   "at": "2026-11-01T18:21:23+00:00",
+   "model": "gemini-flash-lite-latest"
+  },
+  "5904786": {
+   "text": "Kasımpaşa와 Beşiktaş의 경기는 2-2 무승부로 끝났다. Beşiktaş는 28' Leandro Trossard와 47' Dusan Vlahovic의 득점으로 앞서갔으나, Kasımpaşa가 60' Cláudio Winck과 87' Marcus Rafferty의 골로 따라붙었다. 점유율은 Beşiktaş가 58.5%로 앞섰지만 슈팅 수는 Kasımpaşa가 16개로 Beşiktaş의 8개보다 많았다. Beşiktaş 승리를 예측했던 모델과 Elo의 전망은 빗나갔다.",
+   "date": "2026-11-01",
+   "home": "Kasımpaşa",
+   "away": "Beşiktaş",
+   "at": "2026-11-01T18:21:43+00:00",
+   "model": "gemini-flash-lite-latest"
+  },
+  "401875557": {
+   "text": "Sparta R.가 Groningen을 상대로 3-2 역전승을 거두며 원정에서 승점 3점을 획득했다. 경기 시작 1' 만에 Jacob Ondrejka가 선제골을 넣었으나, Sparta R.는 15' Cedric Hatenboer와 25' Milan Zonneveld의 연속골로 경기를 뒤집었고, 29' Thom Van Bergen의 동점골 이후 85' Andrej Kostic이 결승골을 기록했다. Groningen은 점유율 58.9%와 슈팅 20개를 기록하며 공세를 펼쳤으나 Sparta R.의 골키퍼가 8개의 선방을 기록하는 등 효율적인 수비에 막혔다. 이번 결과는 Groningen의 승리를 점쳤던 모델과 Elo의 예측을 빗나가게 했다.",
+   "date": "2026-11-01",
+   "home": "Groningen",
+   "away": "Sparta R.",
+   "at": "2026-11-01T18:21:54+00:00",
+   "model": "gemini-3.1-flash-lite"
   }
  },
  "fails": {
