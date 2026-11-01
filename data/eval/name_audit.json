@@ -1415,11 +1415,11 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 547,
+   "total": 548,
    "exact": 488,
    "rule": 16,
    "ambiguous": 2,
-   "orphan": 43,
+   "orphan": 44,
    "orphans": [
     {
      "squad": "Gil Vicente FC",
@@ -1427,13 +1427,13 @@
      "starts": 5
     },
     {
-     "squad": "Arouca",
-     "name": "Lee Hyun-Ju",
-     "starts": 3
-    },
-    {
      "squad": "Nacional",
      "name": "Song Min-Kyu",
+     "starts": 4
+    },
+    {
+     "squad": "Arouca",
+     "name": "Lee Hyun-Ju",
      "starts": 3
     },
     {
@@ -1445,6 +1445,11 @@
      "squad": "Nacional",
      "name": "Matchoi Djoló",
      "starts": 2
+    },
+    {
+     "squad": "Arouca",
+     "name": "Ivan Martínez",
+     "starts": 1
     },
     {
      "squad": "Marítimo",
@@ -1540,11 +1545,6 @@
      "squad": "Moreirense",
      "name": "Rodrigo Bernardino Soares",
      "starts": 0
-    },
-    {
-     "squad": "Alverca",
-     "name": "André Paulo",
-     "starts": 0
     }
    ]
   },
@@ -1595,8 +1595,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 298,
-   "exact": 298,
+   "total": 300,
+   "exact": 300,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1800,8 +1800,8 @@
    ]
   },
   "espn_subs": {
-   "total": 415,
-   "exact": 405,
+   "total": 417,
+   "exact": 407,
    "rule": 10,
    "ambiguous": 0,
    "orphan": 0,
@@ -2338,10 +2338,10 @@
   },
   "espn_lineups": {
    "total": 581,
-   "exact": 569,
+   "exact": 570,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 12,
+   "orphan": 11,
    "orphans": [
     {
      "squad": "Kasımpaşa",
@@ -2386,11 +2386,6 @@
     {
      "squad": "Konyaspor",
      "name": "Eren Yagmur",
-     "starts": 0
-    },
-    {
-     "squad": "Samsunspor",
-     "name": "Yusuf Efe Yurtsever",
      "starts": 0
     },
     {
@@ -2448,7 +2443,7 @@
  "AustrianBundesliga 2026_2027": {
   "wiki_squads": {
    "total": 411,
-   "exact": 327,
+   "exact": 329,
    "rule": 4,
    "ambiguous": 1,
    "orphan": 0,
@@ -2456,10 +2451,10 @@
   },
   "espn_lineups": {
    "total": 364,
-   "exact": 351,
+   "exact": 353,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 13,
+   "orphan": 11,
    "orphans": [
     {
      "squad": "Austria Wien",
@@ -2514,16 +2509,6 @@
     {
      "squad": "Sturm Graz",
      "name": "Kelechi Nnamdi",
-     "starts": 0
-    },
-    {
-     "squad": "Salzburg",
-     "name": "Lassina Traoré",
-     "starts": 0
-    },
-    {
-     "squad": "Sturm Graz",
-     "name": "Mate Grgić",
      "starts": 0
     }
    ]

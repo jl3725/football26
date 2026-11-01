@@ -403,7 +403,7 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5781787,2026-10-31,ned.1,Fortuna Sittard,Feyenoord,86.0,Shiloh Zand,RegularPlay,0,0.0555609129369258
 5781788,2026-10-31,ned.1,Cambuur,Go Ahead Eagles,7.0,Ismaël Baouf,FromCorner,0,0.5627270340919495
 5781788,2026-10-31,ned.1,Cambuur,Go Ahead Eagles,15.0,Jason Çeka,RegularPlay,0,0.0839744582772255
-5781788,2026-10-31,ned.1,Cambuur,Go Ahead Eagles,41.0,Billy van Duijl,RegularPlay,0,0.04862513020634651
+5781788,2026-10-31,ned.1,Cambuur,Go Ahead Eagles,41.0,Billy van Duijl,RegularPlay,0,0.0486251302063465
 5781788,2026-10-31,ned.1,Cambuur,Go Ahead Eagles,80.0,Rafik El Arguioui,FastBreak,0,0.3295588493347168
 5781788,2026-10-31,ned.1,Go Ahead Eagles,Cambuur,,,none,0,
 5781791,2026-10-31,ned.1,Heerenveen,NEC Nijmegen,66.0,Dylan Vente,RegularPlay,0,0.4190351963043213
@@ -416,19 +416,24 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5781793,2026-10-31,ned.1,PSV,Willem II,77.0,Kodai Sano,RegularPlay,0,0.3184482157230377
 5781793,2026-10-31,ned.1,PSV,Willem II,81.0,Shuryjano Cornecion,RegularPlay,0,0.0837619081139564
 5781793,2026-10-31,ned.1,Willem II,PSV,,,none,0,
+5781789,2026-11-01,ned.1,Groningen,Sparta R.,1.0,Jacob Ondrejka,RegularPlay,0,0.050555408000946045
+5781789,2026-11-01,ned.1,Sparta R.,Groningen,15.0,Cedric Hatenboer,RegularPlay,0,0.6010464429855347
+5781789,2026-11-01,ned.1,Sparta R.,Groningen,25.0,Milan Zonneveld,RegularPlay,0,0.5510837435722351
+5781789,2026-11-01,ned.1,Groningen,Sparta R.,29.0,Thom van Bergen,RegularPlay,0,0.6470489501953125
+5781789,2026-11-01,ned.1,Sparta R.,Groningen,85.0,Andrej Kostić,RegularPlay,0,0.7711489796638489
 5781790,2026-11-01,ned.1,Telstar,Utrecht,8.0,Tyrone Owusu,FastBreak,0,0.772642195224762
-5781790,2026-11-01,ned.1,Telstar,Utrecht,25.0,Abdelnor Soualhia,FromCorner,0,0.26685526967048645
-5781790,2026-11-01,ned.1,Utrecht,Telstar,42.0,Ángel Alarcon,RegularPlay,0,0.15288512408733368
-5781790,2026-11-01,ned.1,Telstar,Utrecht,44.0,Nökkvi Thorisson,RegularPlay,0,0.22996918857097626
-5781790,2026-11-01,ned.1,Utrecht,Telstar,46.0,Yoann Cathline,RegularPlay,0,0.057841669768095016
+5781790,2026-11-01,ned.1,Telstar,Utrecht,25.0,Abdelnor Soualhia,FromCorner,0,0.2668552696704864
+5781790,2026-11-01,ned.1,Utrecht,Telstar,42.0,Ángel Alarcon,RegularPlay,0,0.1528851240873336
+5781790,2026-11-01,ned.1,Telstar,Utrecht,44.0,Nökkvi Thorisson,RegularPlay,0,0.2299691885709762
+5781790,2026-11-01,ned.1,Utrecht,Telstar,46.0,Yoann Cathline,RegularPlay,0,0.057841669768095
 5781790,2026-11-01,ned.1,Telstar,Utrecht,59.0,Arjany Martha,FastBreak,0,0.5483267903327942
-5781792,2026-11-01,ned.1,Zwolle,ADO Den Haag,45.0,Dylan Mbayo,RegularPlay,0,0.11308009177446365
+5781792,2026-11-01,ned.1,Zwolle,ADO Den Haag,45.0,Dylan Mbayo,RegularPlay,0,0.1130800917744636
 5781792,2026-11-01,ned.1,ADO Den Haag,Zwolle,,,none,0,
-5781794,2026-11-01,ned.1,Twente,Excelsior,12.0,Wout Weghorst,RegularPlay,0,0.22610439360141754
+5781794,2026-11-01,ned.1,Twente,Excelsior,12.0,Wout Weghorst,RegularPlay,0,0.2261043936014175
 5781794,2026-11-01,ned.1,Twente,Excelsior,32.0,Wout Weghorst,RegularPlay,0,0.2848265767097473
-5781794,2026-11-01,ned.1,Twente,Excelsior,33.0,Wout Weghorst,RegularPlay,0,0.15525536239147186
-5781794,2026-11-01,ned.1,Twente,Excelsior,39.0,Thomas van den Belt,RegularPlay,0,0.22925417125225067
-5781794,2026-11-01,ned.1,Twente,Excelsior,45.0,Daan Rots,RegularPlay,0,0.18440967798233032
+5781794,2026-11-01,ned.1,Twente,Excelsior,33.0,Wout Weghorst,RegularPlay,0,0.1552553623914718
+5781794,2026-11-01,ned.1,Twente,Excelsior,39.0,Thomas van den Belt,RegularPlay,0,0.2292541712522506
+5781794,2026-11-01,ned.1,Twente,Excelsior,45.0,Daan Rots,RegularPlay,0,0.1844096779823303
 5781794,2026-11-01,ned.1,Twente,Excelsior,49.0,Jordy Bawuah,RegularPlay,0,0.4528939127922058
 5781794,2026-11-01,ned.1,Twente,Excelsior,62.0,Wout Weghorst,Penalty,0,0.7884
 5781794,2026-11-01,ned.1,Twente,Excelsior,71.0,Ramiz Zerrouki,Penalty,0,0.7884
