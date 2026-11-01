@@ -8,7 +8,7 @@ Lugano,Damian Kelvin,1697796,defenders,CB,Centre-Back,DF,24,2002-06-15,4.0,SUI,F
 Lugano,Antonios Papadopoulos,892068,defenders,CB,Centre-Back,DF,27,1999-09-10,6.0,GER,False,,2026-11-01
 Lugano,Lars Lukas Mai,844430,defenders,CB,Centre-Back,DF,26,2000-03-31,17.0,GER,False,,2026-11-01
 Lugano,Joel Bichsel,1450813,defenders,CB,Centre-Back,DF,24,2002-03-04,18.0,SUI,False,,2026-11-01
-Lugano,Martim Marques,1520468,defenders,"LB,LWB,CB",Left-Back,DF,22,2004-02-11,26.0,POR,False,,2026-11-01
+Lugano,Martim Marques,1520468,defenders,"LB,CB",Left-Back,DF,22,2004-02-11,26.0,POR,False,,2026-11-01
 Lugano,Carbone,1671354,defenders,LB,Left-Back,DF,21,2005-01-29,44.0,BRA,True,About 1-2 weeks,2026-11-01
 Lugano,Behruzjon Karimov,1898281,midfielders,"RM,RWB,CAM,RB",Right Midfield,MF,19,2007-08-07,2.0,UZB,False,,2026-11-01
 Lugano,Ezgjan Alioski,406283,midfielders,"LWB,LB",Left-Back,MF,34,1992-02-12,7.0,MKD,False,,2026-11-01
@@ -48,7 +48,7 @@ Young Boys,Stefan Bukinac,1515182,defenders,LB,Left-Back,DF,21,2005-07-08,33.0,S
 Young Boys,Edimilson Fernandes,451335,midfielders,"CDM,CM",Defensive Midfield,MF,30,1996-04-15,6.0,SUI,False,,2026-11-01
 Young Boys,Armin Gigović,1057426,midfielders,"CDM,CM",Defensive Midfield,MF,24,2002-04-06,8.0,BIH,False,,2026-11-01
 Young Boys,Alvyn Sanches,1203528,midfielders,"CAM,RW,RM",Attacking Midfield,MF,23,2003-02-12,10.0,SUI,False,,2026-11-01
-Young Boys,Dominik Pech,1473991,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,20,2006-09-04,13.0,CZE,False,,2026-11-01
+Young Boys,Dominik Pech,1473991,midfielders,"CDM,CM",Defensive Midfield,MF,20,2006-09-04,13.0,CZE,False,,2026-11-01
 Young Boys,Benjamin Kabeya,1337010,midfielders,,Central Midfield,MF,25,2001-06-16,24.0,SUI,True,Unknown,2026-11-01
 Young Boys,Noe Tschanz,2155778,midfielders,,Central Midfield,MF,20,2006-07-21,52.0,SUI,False,,2026-11-01
 Young Boys,Alan Virginius,1173793,attackers,"LW,RW,LM,RM",Left Winger,FW,23,2003-01-03,7.0,FRA,False,,2026-11-01
@@ -76,7 +76,7 @@ Sion,Kreshnik Hajrizi,1219288,defenders,CB,Centre-Back,DF,27,1999-05-28,28.0,KVX
 Sion,Lorenzo Villa,1416117,defenders,CB,Centre-Back,DF,23,2003-07-26,55.0,ITA,True,Unknown,2026-11-01
 Sion,Alessandro Nisci,1808135,midfielders,,Central Midfield,MF,20,2006-01-23,,ITA,False,,2026-11-01
 Sion,Jason Almeida,2092866,midfielders,,Central Midfield,MF,21,2005-06-23,,POR,False,,2026-11-01
-Sion,Baltazar,949711,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,26,2000-05-06,8.0,BRA,True,A few weeks,2026-11-01
+Sion,Baltazar,949711,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,26,2000-05-06,8.0,BRA,False,,2026-11-01
 Sion,Liam Chipperfield,1291567,midfielders,"CM,CAM,RW,CDM",Central Midfield,MF,22,2004-02-14,21.0,SUI,False,,2026-11-01
 Sion,Fodé Sylla,1438611,midfielders,"CAM,CM",Attacking Midfield,MF,20,2006-04-16,37.0,FRA,False,,2026-11-01
 Sion,Ryan Kessler,1641963,midfielders,RWB,Right-Back,MF,21,2005-08-28,38.0,SUI,False,,2026-11-01
@@ -277,7 +277,7 @@ FC Vaduz,Marcel Monsberger,856035,attackers,ST,Centre-Forward,FW,25,2001-03-12,9
 FC Vaduz,Ranjan Neelakandan,1536429,attackers,LW,Left Winger,FW,21,2005-01-20,16.0,SUI,True,A few weeks,2026-11-01
 FC Vaduz,Daniel Kasper,1393814,attackers,ST,Centre-Forward,FW,24,2002-06-23,18.0,GER,False,,2026-11-01
 FC Vaduz,Dejan Djokic,1161158,attackers,ST,Centre-Forward,FW,26,2000-09-26,19.0,BIH,False,,2026-11-01
-FC Vaduz,Lado Akhalaia,1355557,attackers,ST,Centre-Forward,FW,24,2002-07-01,24.0,MDA,True,A few weeks,2026-11-01
+FC Vaduz,Lado Akhalaia,1355557,attackers,ST,Centre-Forward,FW,24,2002-07-01,24.0,MDA,False,,2026-11-01
 FC Vaduz,Dejan Sorgić,149010,attackers,ST,Centre-Forward,FW,37,1989-09-15,39.0,SRB,True,A few weeks,2026-11-01
 Thun,Niklas Steffen,1161221,keepers,GK,Goalkeeper,GK,25,2001-01-19,1.0,SUI,False,,2026-11-01
 Thun,Dario Wälti,2025152,keepers,,Goalkeeper,GK,20,2006-01-23,22.0,SUI,False,,2026-11-01
@@ -363,7 +363,7 @@ Lausanne,Olivier Custodio,462949,midfielders,"CDM,CM,CB",Defensive Midfield,MF,3
 Lausanne,Nicky Beloko,892410,midfielders,"CDM,CM",Defensive Midfield,MF,26,2000-02-16,16.0,CMR,True,Unknown,2026-11-01
 Lausanne,Beyatt Lekoueiry,1326921,midfielders,"CAM,CM,RM",Attacking Midfield,MF,21,2005-04-11,27.0,MTN,True,Out for season,2026-11-01
 Lausanne,Alexis Blin,605848,midfielders,"CDM,CM",Defensive Midfield,MF,30,1996-09-16,29.0,FRA,False,,2026-11-01
-Lausanne,Souleymane N'Diaye,1662755,midfielders,CDM,Defensive Midfield,MF,20,2005-11-01,47.0,SUI,False,,2026-11-01
+Lausanne,Souleymane N'Diaye,1662755,midfielders,CDM,Defensive Midfield,MF,21,2005-11-01,47.0,SUI,False,,2026-11-01
 Lausanne,Eren Özcan,1914667,midfielders,,Central Midfield,MF,18,2008-08-13,52.0,SUI,False,,2026-11-01
 Lausanne,Sekou Koné,1710742,midfielders,"CDM,CM",Defensive Midfield,MF,20,2006-02-03,80.0,MLI,False,,2026-11-01
 Lausanne,Koba Koindredi,1091973,midfielders,"CDM,CM",Defensive Midfield,MF,25,2001-10-27,88.0,FRA,True,Out for season,2026-11-01

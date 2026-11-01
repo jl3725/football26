@@ -1,8 +1,10 @@
 {
- "date": "2026-10-31",
+ "date": "2026-11-01",
  "model": "v3.11",
- "players": 5759,
- "golden": [],
+ "players": 5767,
+ "golden": [
+  "[범위] Pascal Groß ovr=77 (기대 78~83) — 사용자 지적 2026-10-19 — 35세 이번 시즌 3골 4도움·평점 7.5(FotMob 7.8)인데 76"
+ ],
  "scout": [
   {
    "player": "Rayan Cherki",
@@ -34,14 +36,6 @@
    "ovr": 81,
    "lo": 83,
    "hi": 90,
-   "off": -2
-  },
-  {
-   "player": "Christian Pulisic",
-   "league": "SerieA",
-   "ovr": 81,
-   "lo": 83,
-   "hi": 87,
    "off": -2
   },
   {
@@ -98,6 +92,14 @@
    "ovr": 85,
    "lo": 86,
    "hi": 89,
+   "off": -1
+  },
+  {
+   "player": "Christian Pulisic",
+   "league": "SerieA",
+   "ovr": 82,
+   "lo": 83,
+   "hi": 87,
    "off": -1
   }
  ],

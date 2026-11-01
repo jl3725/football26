@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-31T11:14:40+00:00",
+ "generated": "2026-11-01T11:55:52+00:00",
  "windows": [
   {
    "start": "2026-09-21",
@@ -42,6 +42,18 @@
     "afc.asian.cup"
    ],
    "label": "AFC 아시안컵 2027"
+  },
+  {
+   "start": "2027-03-21",
+   "first_match": "2027-03-24",
+   "end": "2027-03-28",
+   "matches": 48,
+   "club_matches": 0,
+   "kind": "break",
+   "comps": [
+    "caf.nations_qual"
+   ],
+   "label": "3월 A매치 기간"
   }
  ]
 }
