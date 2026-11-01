@@ -11,6 +11,7 @@ $ErrorActionPreference = "Continue"
 if (-not $Root) { $Root = Resolve-Path (Join-Path $PSScriptRoot "..") }
 $Python = Join-Path $Root ".venv\Scripts\python.exe"
 Set-Location $Root
+. (Join-Path $PSScriptRoot "git_sync.ps1")   # Sync-Main · Push-Main(충돌이면 -X theirs, scripts/ci_push.sh 와 같은 규칙)
 $env:PYTHONIOENCODING = "utf-8"
 
 $LogDir = Join-Path $Root "logs"
@@ -23,10 +24,8 @@ function Finish([int]$code) {
 }
 
 Write-Host "[season-agent] $(Get-Date -Format s) git pull"
-git pull --rebase --autostash origin main
-if ($LASTEXITCODE -ne 0) {
-    git rebase --abort 2>$null
-    Write-Host "[season-agent] pull 실패(로컬 충돌 가능) — 중단"
+if (-not (Sync-Main)) {
+    Write-Host "[season-agent] pull 실패 — 중단"
     Finish 1
 }
 
@@ -57,21 +56,8 @@ if ($LASTEXITCODE -eq 0) {
     $msg = "chore(data): 시즌 $Season 주간 빌드 — 선수 스탯·라인업·히트맵 [skip ci]"
     if ($BuildCode -ne 0) { $msg += "`n`n일부 단계 실패 — logs/season-$Season-*.log 참고" }
     git commit -m $msg -- $Paths
-    $pushed = $false
-    # 충돌이면 rebase 를 되돌리고 충돌 칸은 이번 수집 값으로(scripts/ci_push.sh 와 같은 규칙) — 예전엔 '충돌 중'으로 멈춰
-    # 저장소가 rebase 상태로 남고 주간 수집분이 안 올라갔다(2026-10-28 players_*·contracts 충돌)
-    for ($i = 1; $i -le 3 -and -not $pushed; $i++) {
-        git pull --rebase --autostash origin main
-        if ($LASTEXITCODE -ne 0) {
-            git rebase --abort 2>$null
-            git fetch origin main
-            git rebase -X theirs --autostash origin/main
-            if ($LASTEXITCODE -ne 0) { git rebase --abort 2>$null }
-        }
-        if ($LASTEXITCODE -eq 0) { git push origin HEAD:main; $pushed = ($LASTEXITCODE -eq 0) }
-        if (-not $pushed) { Start-Sleep -Seconds 5 }
-    }
-    if (-not $pushed) { Write-Host "[season-agent] push 실패 — 다음 실행 때 함께 push 됨" }
+    # 충돌이면 충돌 칸은 이번 수집 값으로(scripts/git_sync.ps1) — 예전엔 '충돌 중'으로 멈춰 주간 수집분이 안 올라갔다(10/28)
+    $pushed = Push-Main "season-agent"
 }
 Write-Host "[season-agent] done (build exit $BuildCode)"
 Finish $BuildCode

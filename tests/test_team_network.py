@@ -81,6 +81,9 @@ def test_manager_infobox_career() -> None:
     assert [(s["club"], s["start"], s["end"]) for s in managed] == [
         ("Anderlecht", 2020, 2022), ("Burnley", 2022, 2024), ("Bayern Munich", 2024, None)]
     assert [s["club"] for s in played] == ["Anderlecht", "Hamburger SV"]
+    # 위키백과 새 항목 이름(manager_clubs1 · manager_years1, 2026-10 말부터 문서마다 바뀌는 중)도 같은 결과
+    new = INFOBOX.replace("manageryears", "manager_years").replace("managerclubs", "manager_clubs")
+    assert fm.career(fm.infobox(new))[0] == managed
 
 
 def test_ties_dedupe_teammate_and_reunion() -> None:

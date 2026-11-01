@@ -55,12 +55,19 @@ def years(v: str) -> tuple[int | None, int | None]:
     return ys[0], ys[1]
 
 
+# 인포박스 항목 이름 — 위키백과가 2026-10 말부터 'managerclubs1' → 'manager_clubs1' 로 문서마다 바꾸는 중(봇 정리).
+# 바뀐 문서만 경력이 비어 감독 경력이 154명 → 5명으로 줄었다(daily_data 4일 연속 실패, 2026-11-02). 둘 다 읽는다
+KEYS = {"manageryears": ("manager_years", "manageryears"), "managerclubs": ("manager_clubs", "managerclubs"),
+        "years": ("years",), "clubs": ("clubs",)}
+
+
 def career(box: str) -> tuple[list[dict], list[dict]]:
     f = _fields(box)
     managed, played = [], []
+    pick = lambda key, n: next((f[k + str(n)] for k in KEYS[key] if k + str(n) in f), None)   # noqa: E731
     for kind, ykey, ckey, out in (("m", "manageryears", "managerclubs", managed), ("p", "years", "clubs", played)):
         for n in range(1, 40):
-            c = f.get(f"{ckey}{n}")
+            c = pick(ckey, n)
             if c is None:
                 continue
             raw = re.sub(r"<ref.*?</ref>|<ref[^>]*/>", "", c, flags=re.S)
@@ -72,7 +79,7 @@ def career(box: str) -> tuple[list[dict], list[dict]]:
             club = re.sub(r"\s*\(.*?\)\s*", " ", _link_text(raw)).replace("→", "").strip(" ,")
             if not club or "loan" in low and kind == "p" and False:
                 continue
-            s, e = years(f.get(f"{ykey}{n}", ""))
+            s, e = years(pick(ykey, n) or "")
             rec = {"club": club, "start": s, "end": e}
             if kind == "m":
                 rec["role"] = role
@@ -99,12 +106,20 @@ def main() -> int:
     mgrs = managers()
     texts = wikitexts(sorted(set(mgrs.values())))
     today = dt.date.today().isoformat()
+    try:
+        prev = json.loads(OUT.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        prev = {}
     res, miss = {}, []
     for name, title in sorted(mgrs.items()):
         box = infobox(texts.get(title, ""))
         managed, played = career(box) if box else ([], [])
         if not managed:
             miss.append(name)
+            old = prev.get(name) or {}
+            if old.get("managed") and old.get("wiki_title") == title:
+                res[name] = old                        # 이번에 못 읽었으면 지난번 경력 유지(실패가 데이터를 지우지 않게)
+                continue
         res[name] = {"wiki_title": title, "managed": managed, "played": played, "fetched": today}
     OUT.write_text(json.dumps(res, ensure_ascii=False, indent=1), encoding="utf-8")
     print(f"[manager_careers] {len(res) - len(miss)}/{len(res)} 감독 경력 확인" + (f" · 없음 {miss[:12]}" if miss else ""))

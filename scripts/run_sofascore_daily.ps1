@@ -10,6 +10,7 @@ $ErrorActionPreference = "Continue"
 if (-not $Root) { $Root = Resolve-Path (Join-Path $PSScriptRoot "..") }
 $Python = Join-Path $Root ".venv\Scripts\python.exe"
 Set-Location $Root
+. (Join-Path $PSScriptRoot "git_sync.ps1")   # Sync-Main · Push-Main(충돌이면 -X theirs, scripts/ci_push.sh 와 같은 규칙)
 $env:PYTHONIOENCODING = "utf-8"
 
 $LogDir = Join-Path $Root "logs"
@@ -27,10 +28,8 @@ if ((Get-Date).DayOfWeek -eq [System.DayOfWeek]::Wednesday) {
 }
 
 Write-Host "[sofascore-daily] $(Get-Date -Format s) git pull"
-git pull --rebase --autostash origin main
-if ($LASTEXITCODE -ne 0) {
-    git rebase --abort 2>$null
-    Write-Host "[sofascore-daily] pull 실패(로컬 충돌 가능) — 중단"
+if (-not (Sync-Main)) {
+    Write-Host "[sofascore-daily] pull 실패 — 중단"
     Finish 1
 }
 
@@ -61,13 +60,7 @@ if ($LASTEXITCODE -eq 0) {
     $msg = "chore(data): Sofascore 평점 일일 갱신 — 시즌 $Season [skip ci]"
     if ($BuildCode -ne 0) { $msg += "`n`n일부 리그 실패 — logs/season-$Season-*.log 참고" }
     git commit -m $msg -- $Paths
-    $pushed = $false
-    for ($i = 1; $i -le 3 -and -not $pushed; $i++) {
-        git pull --rebase --autostash origin main
-        if ($LASTEXITCODE -eq 0) { git push origin HEAD:main; $pushed = ($LASTEXITCODE -eq 0) }
-        if (-not $pushed) { Start-Sleep -Seconds 5 }
-    }
-    if (-not $pushed) { Write-Host "[sofascore-daily] push 실패 — 다음 실행 때 함께 push 됨" }
+    $pushed = Push-Main "sofascore-daily"
 }
 Write-Host "[sofascore-daily] done (build exit $BuildCode)"
 Finish $BuildCode

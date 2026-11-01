@@ -8,6 +8,7 @@ $ErrorActionPreference = "Continue"
 if (-not $Root) { $Root = Resolve-Path (Join-Path $PSScriptRoot "..") }
 $Python = Join-Path $Root ".venv\Scripts\python.exe"
 Set-Location $Root
+. (Join-Path $PSScriptRoot "git_sync.ps1")   # Sync-Main · Push-Main(충돌이면 -X theirs, scripts/ci_push.sh 와 같은 규칙)
 $env:PYTHONIOENCODING = "utf-8"
 
 $LogDir = Join-Path $Root "logs"
@@ -15,8 +16,7 @@ New-Item -ItemType Directory -Force $LogDir | Out-Null
 Start-Transcript -Path (Join-Path $LogDir ("fanvote-agent-{0:yyyyMMdd}.log" -f (Get-Date))) -Append | Out-Null
 function Finish([int]$code) { Stop-Transcript | Out-Null; exit $code }
 
-git pull --rebase --autostash origin main
-if ($LASTEXITCODE -ne 0) { git rebase --abort 2>$null; Write-Host "[fanvote] pull 실패 — 중단"; Finish 1 }
+if (-not (Sync-Main)) { Write-Host "[fanvote] pull 실패 — 중단"; Finish 1 }
 
 $t0 = Get-Date
 & $Python src\fetch_fan_votes.py
@@ -31,11 +31,7 @@ git add -- $Paths
 git diff --cached --quiet -- $Paths
 if ($LASTEXITCODE -ne 0) {
     git commit -m "chore(data): 팬 투표(Sofascore) 로컬 수집 [skip ci]" -- $Paths
-    for ($i = 1; $i -le 3; $i++) {
-        git pull --rebase --autostash origin main
-        if ($LASTEXITCODE -eq 0) { git push origin HEAD:main; if ($LASTEXITCODE -eq 0) { break } }
-        Start-Sleep -Seconds 5
-    }
+    $null = Push-Main "fanvote"
 }
 if ($failed) { Finish 1 }
 Finish 0
