@@ -38,15 +38,15 @@ Inter,Ivan Provedel,364822,keepers,GK,Goalkeeper,GK,32,1994-03-17,49.0,ITA,True,
 Inter,John Stones,263653,defenders,CB,Centre-Back,DF,32,1994-05-28,6.0,ENG,True,Mid November 2026,2026-11-01
 Inter,Manuel Akanji,521318,defenders,CB,Centre-Back,DF,31,1995-07-19,25.0,SUI,False,,2026-11-01
 Inter,Benjamin Pavard,611223,defenders,"CB,RB",Centre-Back,DF,30,1996-03-28,28.0,FRA,True,Mid November 2026,2026-11-01
-Inter,Carlos Augusto,940829,defenders,"CB,LM,RM",Centre-Back,DF,27,1999-01-07,30.0,BRA,False,,2026-11-01
+Inter,Carlos Augusto,940829,defenders,"CB,LM,RM,LWB",Centre-Back,DF,27,1999-01-07,30.0,BRA,False,,2026-11-01
 Inter,Yann Aurel Bisseck,889535,defenders,CB,Centre-Back,DF,25,2000-11-29,31.0,GER,False,,2026-11-01
 Inter,Alessandro Bastoni,805451,defenders,CB,Centre-Back,DF,27,1999-04-13,95.0,ITA,False,,2026-11-01
-Inter,Djed Spence,894803,defenders,"LB,RB,LM,LWB",Left-Back,DF,26,2000-08-09,99.0,ENG,False,,2026-11-01
+Inter,Djed Spence,894803,defenders,"LB,RB,RWB,LM,LWB,RM",Left-Back,DF,26,2000-08-09,99.0,ENG,False,,2026-11-01
 Inter,Aleksandar Stanković,1410437,midfielders,"CDM,CM",Defensive Midfield,MF,21,2005-08-03,5.0,SRB,False,,2026-11-01
 Inter,Piotr Zieliński,362212,midfielders,"CM,CDM",Central Midfield,MF,32,1994-05-20,7.0,POL,False,,2026-11-01
 Inter,Petar Sučić,1382000,midfielders,"CM,CAM",Central Midfield,MF,23,2003-10-25,8.0,CRO,False,,2026-11-01
 Inter,Luis Henrique,1114635,midfielders,RM,Right Midfield,MF,24,2001-12-14,11.0,BRA,True,Mid November 2026,2026-11-01
-Inter,Andy Diouf,1254297,midfielders,"RM,CM,LB",Right Midfield,MF,23,2003-05-17,17.0,FRA,False,,2026-11-01
+Inter,Andy Diouf,1254297,midfielders,"RM,CM,CAM,LB",Right Midfield,MF,23,2003-05-17,17.0,FRA,False,,2026-11-01
 Inter,Hakan Çalhanoglu,304733,midfielders,"CM,CDM",Central Midfield,MF,32,1994-02-08,20.0,TUR,False,,2026-11-01
 Inter,Curtis Jones,933768,midfielders,"CDM,RB,CAM,CM",Defensive Midfield,MF,25,2001-01-30,21.0,ENG,True,Mid November 2026,2026-11-01
 Inter,Henrikh Mkhitaryan,73167,midfielders,CM,Central Midfield,MF,37,1989-01-21,22.0,ARM,False,,2026-11-01
@@ -137,7 +137,7 @@ Milan,Luca Menon,2412013,midfielders,,Central Midfield,MF,17,2009-03-07,49.0,ITA
 Milan,Alexis Saelemaekers,921341,midfielders,"RM,RW,CAM",Right Midfield,MF,27,1999-06-27,56.0,BEL,True,Mid January 2027,2026-11-01
 Milan,Alphadjo Cissè,1445650,midfielders,"CAM,ST,CM",Attacking Midfield,MF,20,2006-10-22,70.0,ITA,False,,2026-11-01
 Milan,Maiga-Hamadoun Cisse,2412014,midfielders,,Central Midfield,MF,18,2008-03-27,79.0,FRA,False,,2026-11-01
-Milan,Yunus Musah,1137272,midfielders,"CDM,CM",Defensive Midfield,MF,23,2002-11-29,80.0,USA,False,,2026-11-01
+Milan,Yunus Musah,1137272,midfielders,CDM,Defensive Midfield,MF,23,2002-11-29,80.0,USA,False,,2026-11-01
 Milan,Gonçalo Ramos,940087,attackers,ST,Centre-Forward,FW,25,2001-06-20,9.0,POR,False,,2026-11-01
 Milan,Christian Pulisic,688295,attackers,"ST,LW,CAM",Centre-Forward,FW,28,1998-09-18,11.0,USA,False,,2026-11-01
 Milan,Omari Hutchinson,1215652,attackers,"RW,RM,CAM,LW",Right Winger,FW,23,2003-10-30,20.0,ENG,False,,2026-11-01
@@ -240,12 +240,11 @@ Juventus,Gleison Bremer,857269,defenders,CB,Centre-Back,DF,29,1997-03-18,3.0,BRA
 Juventus,Federico Gatti,1189288,defenders,CB,Centre-Back,DF,28,1998-06-24,4.0,ITA,False,,2026-11-01
 Juventus,Lloyd Kelly,819215,defenders,"CB,LB",Centre-Back,DF,28,1998-10-06,6.0,ENG,False,,2026-11-01
 Juventus,Teun Koopmeiners,866516,defenders,"CB,CM,CDM",Centre-Back,DF,28,1998-02-28,8.0,NED,False,,2026-11-01
-Juventus,Pierre Kalulu,1131217,defenders,"CB,RB,RWB",Centre-Back,DF,26,2000-06-05,15.0,FRA,False,,2026-11-01
+Juventus,Pierre Kalulu,1131217,defenders,"CB,RB",Centre-Back,DF,26,2000-06-05,15.0,FRA,False,,2026-11-01
 Juventus,Daniele Rugani,358155,defenders,CB,Centre-Back,DF,32,1994-07-29,24.0,ITA,False,,2026-11-01
 Juventus,Jhon Lucumí,860913,defenders,CB,Centre-Back,DF,28,1998-06-26,26.0,COL,False,,2026-11-01
 Juventus,Zeki Çelik,867225,midfielders,"RWB,CB,RM,RB,LB",Right-Back,MF,29,1997-02-17,2.0,TUR,True,Mid November 2026,2026-11-01
 Juventus,Manuel Locatelli,624166,midfielders,"CDM,CM",Defensive Midfield,MF,28,1998-01-08,5.0,ITA,True,Late March 2027,2026-11-01
-Juventus,Edon Zhegrova,862616,midfielders,"CAM,RW",Attacking Midfield,MF,27,1999-03-31,11.0,KVX,False,,2026-11-01
 Juventus,Douglas Luiz,787350,midfielders,"CDM,CM",Defensive Midfield,MF,28,1998-05-09,12.0,BRA,False,,2026-11-01
 Juventus,Khéphren Thuram-Ulien,980793,midfielders,"CDM,CM",Defensive Midfield,MF,25,2001-03-26,19.0,FRA,True,Mid January 2027,2026-11-01
 Juventus,Andrea Cambiaso,1078846,midfielders,"LWB,LB,LM,RM,RWB",Left-Back,MF,26,2000-02-20,20.0,ITA,False,,2026-11-01
@@ -257,6 +256,7 @@ Juventus,Augusto Owusu,1667019,midfielders,CM,Central Midfield,MF,21,2005-01-28,
 Juventus,Francisco Conceição,1185336,attackers,"RW,CAM",Right Winger,FW,23,2002-12-14,7.0,POR,True,Mid November 2026,2026-11-01
 Juventus,Randal Kolo Muani,823825,attackers,"ST,RW,LW,CAM",Centre-Forward,FW,27,1998-12-05,9.0,FRA,False,,2026-11-01
 Juventus,Kenan Yıldız,1412132,attackers,"LW,CAM,ST",Left Winger,FW,21,2005-05-04,10.0,TUR,True,Early December 2026,2026-11-01
+Juventus,Edon Zhegrova,862616,attackers,"RW,CAM",Right Winger,FW,27,1999-03-31,11.0,KVX,False,,2026-11-01
 Juventus,Jérémie Boga,643229,attackers,"LW,ST,CAM",Left Winger,FW,29,1997-01-03,13.0,CIV,False,,2026-11-01
 Juventus,Arkadiusz Milik,277460,attackers,ST,Centre-Forward,FW,32,1994-02-28,14.0,POL,False,,2026-11-01
 Juventus,Kerim Alajbegović,1684401,attackers,"LW,CAM,LM,CM",Left Winger,FW,19,2007-09-21,17.0,BIH,False,,2026-11-01
@@ -373,10 +373,10 @@ Genoa,Stefano Sabelli,364104,midfielders,"RM,LWB,LM",Right Midfield,MF,33,1993-0
 Genoa,Hamed Traorè,875672,midfielders,"CAM,LW,CDM",Attacking Midfield,MF,26,2000-02-16,25.0,CIV,False,,2026-11-01
 Genoa,Morten Frendrup,921543,midfielders,"CM,CDM",Central Midfield,MF,25,2001-04-07,32.0,DEN,False,,2026-11-01
 Genoa,Samuel Wiafe,1902062,midfielders,"CM,CDM",Central Midfield,MF,18,2008-06-22,71.0,ITA,False,,2026-11-01
-Genoa,Mikael Egill Ellertsson,942193,midfielders,"RM,CM,RWB,LB,LWB,LM",Right Midfield,MF,24,2002-03-11,77.0,ISL,False,,2026-11-01
+Genoa,Mikael Egill Ellertsson,942193,midfielders,"CM,RWB,RM,LWB,LB",Central Midfield,MF,24,2002-03-11,77.0,ISL,False,,2026-11-01
 Genoa,Stephan El Shaarawy,161328,midfielders,"CAM,LW",Attacking Midfield,MF,34,1992-10-27,92.0,ITA,False,,2026-11-01
 Genoa,Djibril Sow,707970,midfielders,"CM,CDM,RW,LM",Central Midfield,MF,29,1997-02-06,97.0,SUI,False,,2026-11-01
-Genoa,Vítinha,1215057,attackers,"ST,CAM,LW",Centre-Forward,FW,26,2000-03-15,9.0,POR,False,,2026-11-01
+Genoa,Vítinha,1215057,attackers,"ST,CAM",Centre-Forward,FW,26,2000-03-15,9.0,POR,False,,2026-11-01
 Genoa,Elias Havel,1231904,attackers,ST,Centre-Forward,FW,23,2003-04-16,17.0,AUT,True,Doubtful,2026-11-01
 Genoa,Milutin Osmajić,936603,attackers,"ST,RW",Centre-Forward,FW,27,1999-07-25,18.0,MNE,False,,2026-11-01
 Genoa,Joi Xheto Nuredini,1729334,attackers,,Centre-Forward,FW,19,2007-08-05,19.0,ALB,False,,2026-11-01
