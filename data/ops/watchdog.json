@@ -1,31 +1,33 @@
 {
- "checked": "2026-10-31T13:57:22+00:00",
+ "checked": "2026-11-01T14:34:43+00:00",
  "results": {
   "ovr": [],
   "season": [],
   "hub": [
-   "홈 스냅샷이 123시간 전 생성 — daily_data 의 precompute_hub 확인"
+   "홈 스냅샷이 148시간 전 생성 — daily_data 의 precompute_hub 확인"
   ],
   "frontend": [],
   "backend": [
    "운영 백엔드가 옛 버전(d4fd71e) — 최신 코드 1bfb249(2026-10-30T00:57) 36시간 넘게 미반영. Deploy Backend 워크플로·Render Events 확인(빌드 분 한도·시작 실패면 requirements 누락 의심)"
   ],
   "workflows": [
-   "daily_data.yml 최근 실행 failure (2026-10-31T10:32) https://github.com/jl3725/football26/actions/runs/41193146018",
-   "deploy_backend.yml 최근 실행 failure (2026-10-31T10:00) https://github.com/jl3725/football26/actions/runs/41190924452"
+   "daily_data.yml 최근 실행 failure (2026-11-01T11:26) https://github.com/jl3725/football26/actions/runs/41301917327",
+   "deploy_backend.yml 최근 실행 failure (2026-11-01T10:51) https://github.com/jl3725/football26/actions/runs/41299284477"
   ],
   "news": [
-   "news.db 압축본 52MB — GitHub 50MB 경고 구간(60MB 넘으면 넓힌 원천의 14일 지난 비이적 기사를 자동 정리, 90MB 넘으면 올리기 거부 — src/news_store.py)"
+   "news.db 압축본 56MB — GitHub 50MB 경고 구간(60MB 넘으면 넓힌 원천의 14일 지난 비이적 기사를 자동 정리, 90MB 넘으면 올리기 거부 — src/news_store.py)"
   ],
   "tm_agent": [],
   "coverage": [],
   "rating_history": [],
-  "ratings": [],
+  "ratings": [
+   "사용자 기준 위반: [범위] Pascal Groß ovr=77 (기대 78~83) — 사용자 지적 2026-10-19 — 35세 이번 시즌 3골 4도움·평점 7.5(FotMob 7.8)인데 76"
+  ],
   "names": [],
   "xg": [],
   "agents": [
-   "STATS · Sofascore 평점 — 마지막 성공 78시간 전(허용 48시간, local-sofascore-daily, local-season-weekly)",
-   "ANALYST · 팬 투표 — 마지막 성공 36시간 전(허용 24시간, local-fanvote)",
+   "STATS · Sofascore 평점 — 마지막 성공 103시간 전(허용 48시간, local-sofascore-daily, local-season-weekly)",
+   "ANALYST · 팬 투표 — 마지막 성공 61시간 전(허용 24시간, local-fanvote)",
    "SERVING · 백엔드 배포(Render · 코드 바뀐 날만) — 성공 기록 없음(허용 36시간, deploy_backend)"
   ],
   "expectations": [],
@@ -33,6 +35,5 @@
   "squads": [],
   "identity": [],
   "fair_price": []
- },
- "ai_cause": "**hub**\n- manager_careers 단계가 반복 실패하여(코드 1) precompute_hub 실행에 지장이 생겼을 추정 (hub · manager_careers)\n- 먼저 2026-10-30T11:25 및 2026-10-31T11:05에 발생한 manager_careers 실패 로그를 확인할 것 (hub · manager_careers)\n**backend**\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인) (backend)\n**workflows**\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인) (workflows)\n**news**\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인) (news)\n**agents**\n- deploy_backend와 manager_careers 단계에서 반복적인 코드 1 실패가 확인됨 (agents · deploy_backend, manager_careers)\n- 먼저 2026-10-29부터 2026-10-31 사이에 발생한 deploy_backend 및 manager_careers의 실패 원인을 확인할 것 (agents · deploy_backend, manager_careers)"
+ }
 }
