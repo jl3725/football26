@@ -3078,43 +3078,83 @@ Auxerre,2026-11-01,Strasbourg,away,3-4-2-1,False,29,Marvin Senaya,SUB,0.0,401876
 Auxerre,2026-11-01,Strasbourg,away,3-4-2-1,False,20,Sinaly Diomande,SUB,0.0,401876414
 Auxerre,2026-11-01,Strasbourg,away,3-4-2-1,False,34,Lamfia Dioubaté,SUB,0.0,401876414
 Auxerre,2026-11-01,Strasbourg,away,3-4-2-1,False,23,Mamadou Diop,SUB,0.0,401876414
-Lyon,2026-11-01,Angers,home,4-3-3,True,1,Dominik Greif,G,1,401876418
-Lyon,2026-11-01,Angers,home,4-3-3,True,19,Moussa Niakhaté,CD-L,6,401876418
-Lyon,2026-11-01,Angers,home,4-3-3,True,20,Felix Bacher,CD-R,5,401876418
-Lyon,2026-11-01,Angers,home,4-3-3,True,16,Abner,LB,3,401876418
-Lyon,2026-11-01,Angers,home,4-3-3,True,13,Zachary Athekame,RB,2,401876418
-Lyon,2026-11-01,Angers,home,4-3-3,True,6,Tanner Tessmann,CM,4,401876418
-Lyon,2026-11-01,Angers,home,4-3-3,True,8,Corentin Tolisso,LM,8,401876418
-Lyon,2026-11-01,Angers,home,4-3-3,True,2,Mads Bidstrup,RM,7,401876418
-Lyon,2026-11-01,Angers,home,4-3-3,True,7,Ernest Nuamah,F,9,401876418
-Lyon,2026-11-01,Angers,home,4-3-3,True,11,Keito Nakamura,LF,11,401876418
-Lyon,2026-11-01,Angers,home,4-3-3,True,24,Julien Duranville,RF,10,401876418
-Lyon,2026-11-01,Angers,home,4-3-3,False,18,Khalis Merah,SUB,0,401876418
-Lyon,2026-11-01,Angers,home,4-3-3,False,26,Kail Boudache,SUB,0,401876418
-Lyon,2026-11-01,Angers,home,4-3-3,False,22,Clinton Mata,SUB,0,401876418
-Lyon,2026-11-01,Angers,home,4-3-3,False,3,Nicolás Tagliafico,SUB,0,401876418
-Lyon,2026-11-01,Angers,home,4-3-3,False,40,Rémy Descamps,SUB,0,401876418
-Lyon,2026-11-01,Angers,home,4-3-3,False,32,Alejandro Rodríguez,SUB,0,401876418
-Lyon,2026-11-01,Angers,home,4-3-3,False,99,Noah Nartey,SUB,0,401876418
-Lyon,2026-11-01,Angers,home,4-3-3,False,21,Ruben Kluivert,SUB,0,401876418
-Lyon,2026-11-01,Angers,home,4-3-3,False,33,Cluver Sambi Mbungu,SUB,0,401876418
-Angers,2026-11-01,Lyon,away,5-4-1,True,1,Anthony Lopes,G,1,401876418
-Angers,2026-11-01,Lyon,away,5-4-1,True,4,Ousmane Camara,CD,5,401876418
-Angers,2026-11-01,Lyon,away,5-4-1,True,21,Jordan Lefort,CD-L,4,401876418
-Angers,2026-11-01,Lyon,away,5-4-1,True,2,Carlens Arcus,CD-R,6,401876418
-Angers,2026-11-01,Lyon,away,5-4-1,True,17,Joseph Kalulu Kyatengwa,LB,3,401876418
-Angers,2026-11-01,Lyon,away,5-4-1,True,27,Lilian Raolisoa,RB,2,401876418
-Angers,2026-11-01,Lyon,away,5-4-1,True,8,Branco van den Boomen,CM-L,10,401876418
-Angers,2026-11-01,Lyon,away,5-4-1,True,93,Haris Belkebla,CM-R,8,401876418
-Angers,2026-11-01,Lyon,away,5-4-1,True,10,Amine Sbaï,LM,11,401876418
-Angers,2026-11-01,Lyon,away,5-4-1,True,14,Yassin Belkhdim,RM,7,401876418
-Angers,2026-11-01,Lyon,away,5-4-1,True,9,Prosper Peter,F,9,401876418
-Angers,2026-11-01,Lyon,away,5-4-1,False,7,Mamadou Simbakoli,SUB,0,401876418
-Angers,2026-11-01,Lyon,away,5-4-1,False,18,Jim Allevinah,SUB,0,401876418
-Angers,2026-11-01,Lyon,away,5-4-1,False,34,Maël Gernigon,SUB,0,401876418
-Angers,2026-11-01,Lyon,away,5-4-1,False,26,Anthony Bermont,SUB,0,401876418
-Angers,2026-11-01,Lyon,away,5-4-1,False,24,Emmanuel Biumla,SUB,0,401876418
-Angers,2026-11-01,Lyon,away,5-4-1,False,11,Harouna Djibirin,SUB,0,401876418
-Angers,2026-11-01,Lyon,away,5-4-1,False,6,Louis Mouton,SUB,0,401876418
-Angers,2026-11-01,Lyon,away,5-4-1,False,16,Melvin Zinga,SUB,0,401876418
-Angers,2026-11-01,Lyon,away,5-4-1,False,20,Marius Louãr,SUB,0,401876418
+Lyon,2026-11-01,Angers,home,4-3-3,True,1,Dominik Greif,G,1.0,401876418
+Lyon,2026-11-01,Angers,home,4-3-3,True,19,Moussa Niakhaté,CD-L,6.0,401876418
+Lyon,2026-11-01,Angers,home,4-3-3,True,20,Felix Bacher,CD-R,5.0,401876418
+Lyon,2026-11-01,Angers,home,4-3-3,True,16,Abner,LB,3.0,401876418
+Lyon,2026-11-01,Angers,home,4-3-3,True,13,Zachary Athekame,RB,2.0,401876418
+Lyon,2026-11-01,Angers,home,4-3-3,True,6,Tanner Tessmann,CM,4.0,401876418
+Lyon,2026-11-01,Angers,home,4-3-3,True,8,Corentin Tolisso,LM,8.0,401876418
+Lyon,2026-11-01,Angers,home,4-3-3,True,2,Mads Bidstrup,RM,7.0,401876418
+Lyon,2026-11-01,Angers,home,4-3-3,True,7,Ernest Nuamah,F,9.0,401876418
+Lyon,2026-11-01,Angers,home,4-3-3,True,11,Keito Nakamura,LF,11.0,401876418
+Lyon,2026-11-01,Angers,home,4-3-3,True,24,Julien Duranville,RF,10.0,401876418
+Lyon,2026-11-01,Angers,home,4-3-3,False,18,Khalis Merah,SUB,0.0,401876418
+Lyon,2026-11-01,Angers,home,4-3-3,False,26,Kail Boudache,SUB,0.0,401876418
+Lyon,2026-11-01,Angers,home,4-3-3,False,22,Clinton Mata,SUB,0.0,401876418
+Lyon,2026-11-01,Angers,home,4-3-3,False,3,Nicolás Tagliafico,SUB,0.0,401876418
+Lyon,2026-11-01,Angers,home,4-3-3,False,40,Rémy Descamps,SUB,0.0,401876418
+Lyon,2026-11-01,Angers,home,4-3-3,False,32,Alejandro Rodríguez,SUB,0.0,401876418
+Lyon,2026-11-01,Angers,home,4-3-3,False,99,Noah Nartey,SUB,0.0,401876418
+Lyon,2026-11-01,Angers,home,4-3-3,False,21,Ruben Kluivert,SUB,0.0,401876418
+Lyon,2026-11-01,Angers,home,4-3-3,False,33,Cluver Sambi Mbungu,SUB,0.0,401876418
+Angers,2026-11-01,Lyon,away,5-4-1,True,1,Anthony Lopes,G,1.0,401876418
+Angers,2026-11-01,Lyon,away,5-4-1,True,4,Ousmane Camara,CD,5.0,401876418
+Angers,2026-11-01,Lyon,away,5-4-1,True,21,Jordan Lefort,CD-L,4.0,401876418
+Angers,2026-11-01,Lyon,away,5-4-1,True,2,Carlens Arcus,CD-R,6.0,401876418
+Angers,2026-11-01,Lyon,away,5-4-1,True,17,Joseph Kalulu Kyatengwa,LB,3.0,401876418
+Angers,2026-11-01,Lyon,away,5-4-1,True,27,Lilian Raolisoa,RB,2.0,401876418
+Angers,2026-11-01,Lyon,away,5-4-1,True,8,Branco van den Boomen,CM-L,10.0,401876418
+Angers,2026-11-01,Lyon,away,5-4-1,True,93,Haris Belkebla,CM-R,8.0,401876418
+Angers,2026-11-01,Lyon,away,5-4-1,True,10,Amine Sbaï,LM,11.0,401876418
+Angers,2026-11-01,Lyon,away,5-4-1,True,14,Yassin Belkhdim,RM,7.0,401876418
+Angers,2026-11-01,Lyon,away,5-4-1,True,9,Prosper Peter,F,9.0,401876418
+Angers,2026-11-01,Lyon,away,5-4-1,False,7,Mamadou Simbakoli,SUB,0.0,401876418
+Angers,2026-11-01,Lyon,away,5-4-1,False,18,Jim Allevinah,SUB,0.0,401876418
+Angers,2026-11-01,Lyon,away,5-4-1,False,34,Maël Gernigon,SUB,0.0,401876418
+Angers,2026-11-01,Lyon,away,5-4-1,False,26,Anthony Bermont,SUB,0.0,401876418
+Angers,2026-11-01,Lyon,away,5-4-1,False,24,Emmanuel Biumla,SUB,0.0,401876418
+Angers,2026-11-01,Lyon,away,5-4-1,False,11,Harouna Djibirin,SUB,0.0,401876418
+Angers,2026-11-01,Lyon,away,5-4-1,False,6,Louis Mouton,SUB,0.0,401876418
+Angers,2026-11-01,Lyon,away,5-4-1,False,16,Melvin Zinga,SUB,0.0,401876418
+Angers,2026-11-01,Lyon,away,5-4-1,False,20,Marius Louãr,SUB,0.0,401876418
+Paris FC,2026-11-01,Monaco,home,4-2-3-1,True,1,Kevin Trapp,G,1,401876415
+Paris FC,2026-11-01,Monaco,home,4-2-3-1,True,42,Diego Coppola,CD-L,6,401876415
+Paris FC,2026-11-01,Monaco,home,4-2-3-1,True,31,Samir Chergui,CD-R,5,401876415
+Paris FC,2026-11-01,Monaco,home,4-2-3-1,True,6,Otavio,LB,3,401876415
+Paris FC,2026-11-01,Monaco,home,4-2-3-1,True,14,Hamari Traoré,RB,2,401876415
+Paris FC,2026-11-01,Monaco,home,4-2-3-1,True,7,Pablo Pagis,AM,10,401876415
+Paris FC,2026-11-01,Monaco,home,4-2-3-1,True,33,Pierre Lees-Melou,LM,4,401876415
+Paris FC,2026-11-01,Monaco,home,4-2-3-1,True,20,Maxime López,RM,8,401876415
+Paris FC,2026-11-01,Monaco,home,4-2-3-1,True,9,Lassine Sinayoko,F,9,401876415
+Paris FC,2026-11-01,Monaco,home,4-2-3-1,True,27,Moses Simon,AM-L,11,401876415
+Paris FC,2026-11-01,Monaco,home,4-2-3-1,True,10,Ilan Kebbal,AM-R,7,401876415
+Paris FC,2026-11-01,Monaco,home,4-2-3-1,False,16,Obed Nkambadio,SUB,0,401876415
+Paris FC,2026-11-01,Monaco,home,4-2-3-1,False,3,Emmanuel Mbemba,SUB,0,401876415
+Paris FC,2026-11-01,Monaco,home,4-2-3-1,False,11,Jean-Phillipe Krasso,SUB,0,401876415
+Paris FC,2026-11-01,Monaco,home,4-2-3-1,False,5,Moustapha Mbow,SUB,0,401876415
+Paris FC,2026-11-01,Monaco,home,4-2-3-1,False,23,Rudy Matondo,SUB,0,401876415
+Paris FC,2026-11-01,Monaco,home,4-2-3-1,False,8,Zabi Gueu,SUB,0,401876415
+Paris FC,2026-11-01,Monaco,home,4-2-3-1,False,4,Vincent Marchetti,SUB,0,401876415
+Paris FC,2026-11-01,Monaco,home,4-2-3-1,False,28,Thibault De Smet,SUB,0,401876415
+Paris FC,2026-11-01,Monaco,home,4-2-3-1,False,18,Omar Sissoko,SUB,0,401876415
+Monaco,2026-11-01,Paris FC,away,4-2-3-1,True,1,Lukas Hradecky,G,1,401876415
+Monaco,2026-11-01,Paris FC,away,4-2-3-1,True,15,Eric Dier,CD-L,6,401876415
+Monaco,2026-11-01,Paris FC,away,4-2-3-1,True,72,Sadibou Sané,CD-R,5,401876415
+Monaco,2026-11-01,Paris FC,away,4-2-3-1,True,20,Názinho,LB,3,401876415
+Monaco,2026-11-01,Paris FC,away,4-2-3-1,True,2,Vanderson,RB,2,401876415
+Monaco,2026-11-01,Paris FC,away,4-2-3-1,True,10,Aleksandr Golovin,AM,10,401876415
+Monaco,2026-11-01,Paris FC,away,4-2-3-1,True,6,Denis Zakaria,LM,4,401876415
+Monaco,2026-11-01,Paris FC,away,4-2-3-1,True,8,Lamine Camara,RM,8,401876415
+Monaco,2026-11-01,Paris FC,away,4-2-3-1,True,29,Paris Brunner,F,9,401876415
+Monaco,2026-11-01,Paris FC,away,4-2-3-1,True,11,Matthis Abline,AM-L,11,401876415
+Monaco,2026-11-01,Paris FC,away,4-2-3-1,True,37,Edan Diop,AM-R,7,401876415
+Monaco,2026-11-01,Paris FC,away,4-2-3-1,False,16,Philipp Köhn,SUB,0,401876415
+Monaco,2026-11-01,Paris FC,away,4-2-3-1,False,7,Mathys Detourbet,SUB,0,401876415
+Monaco,2026-11-01,Paris FC,away,4-2-3-1,False,9,Folarin Balogun,SUB,0,401876415
+Monaco,2026-11-01,Paris FC,away,4-2-3-1,False,18,Takumi Minamino,SUB,0,401876415
+Monaco,2026-11-01,Paris FC,away,4-2-3-1,False,19,Pape Cabral,SUB,0,401876415
+Monaco,2026-11-01,Paris FC,away,4-2-3-1,False,4,Jordan Teze,SUB,0,401876415
+Monaco,2026-11-01,Paris FC,away,4-2-3-1,False,49,Ilane Touré,SUB,0,401876415
+Monaco,2026-11-01,Paris FC,away,4-2-3-1,False,28,Mamadou Coulibaly,SUB,0,401876415
+Monaco,2026-11-01,Paris FC,away,4-2-3-1,False,13,Christian Mawissa,SUB,0,401876415
