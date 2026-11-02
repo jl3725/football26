@@ -101,7 +101,7 @@ def main() -> int:
     main_sha = _git("rev-parse", "HEAD")
     files = {p: sha256(ROOT / p) for p in data_files()}
     db_sha = sha256(DB)
-    sig = code_sig()
+    sig = os.getenv("CACHE_CODE_SIG") or code_sig()      # 캐시를 운영 서버 코드로 만들었으면 그 지문(scripts/cache_code.py)
     rcommit, remote = remote_state()
     pl = plan(files, db_sha, remote, sig)
     if not pl["changed"] and not pl["removed"] and not pl["cache_changed"]:

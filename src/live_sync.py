@@ -38,6 +38,9 @@ SMALL_EVERY, NEWS_EVERY, DATA_EVERY, FIRST_WAIT = 30 * 60, 2 * 3600, 3 * 60, 90
 # 경기일엔 배포본이 10~15분마다 바뀌어(11/1 하루 29번) 서버가 거의 늘 데우는 중이었고, 데우기가 겹치면 메모리가 넘쳐
 # 재시작됐다(2026-11-03 사용자 '운영이 자꾸 느리고 안 뜬다'). 방금 경기 평점(JUST PLAYED)은 Vercel 이 따로 받아 영향 없음
 SWAP_MIN_GAP = 20 * 60
+# 배포본 캐시가 다른 코드로 만든 것이면 DB 교체를 이만큼까지 미룬다 — 캐시 없이 바꾸면 서버가 0.1 CPU 로 선수 표·세부 지표를
+# 직접 다시 만든다. 평소 배포본은 운영 코드로 캐시를 만들어(scripts/cache_code.py) 지문이 다른 건 배포 전후 잠깐뿐
+CACHE_WAIT = 2 * 3600
 WARM_STALE = 30 * 60      # 데우기가 이보다 오래 '진행 중'이면 멈춘 것으로 보고 교체를 막지 않는다
 DATA_BRANCH = "data-live"
 STATE: dict = {"started": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"), "enabled": False,
@@ -143,6 +146,15 @@ def swap_wait(now: dt.datetime | None = None) -> str:
     return ""
 
 
+def _swapped_within(sec: float) -> bool:
+    """직전 DB 교체가 sec 초 안인가(시작 뒤 아직 교체 전이면 False — 너무 오래 미루지 않게)."""
+    try:
+        last = dt.datetime.fromisoformat(STATE["db_at"]) if STATE.get("db_at") else None
+    except ValueError:
+        return False
+    return last is not None and (dt.datetime.now(dt.timezone.utc) - last).total_seconds() < sec
+
+
 def on_db_swap(fn) -> None:
     """서버 DB 를 바꿔 넣은 뒤 부를 함수(api: 미리 데우기)."""
     _ON_DB_SWAP.append(fn)
@@ -219,8 +231,12 @@ def sync_data(get=requests.get, notify: bool = True) -> int:
     if not caches:
         files = {p: h for p, h in files.items() if not p.startswith("data/runtime_cache/") and p != "data/team_units.json"}
     db_path, db_sha = ROOT / "data" / "football.db", str(man.get("db_sha") or "")
-    todo = {p: h for p, h in files.items() if _sha256(ROOT / p) != h}
     db_needed = bool(db_sha) and _sha256(db_path) != db_sha
+    if notify and db_needed and not caches and _swapped_within(CACHE_WAIT):
+        STATE["swap_wait"] = "caches"                              # 이 서버 코드의 캐시가 올 때까지(최대 CACHE_WAIT)
+        STATE["swaps_deferred"] += 1
+        return 0
+    todo = {p: h for p, h in files.items() if _sha256(ROOT / p) != h}
     gz, tmp_db = db_path.with_name("football.db.gz.part"), db_path.with_name("football.db.part")
     parts: list[tuple[Path, Path]] = []
     def fetch(item):

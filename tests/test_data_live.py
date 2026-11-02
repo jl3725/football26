@@ -120,6 +120,30 @@ def test_runtime_swap_waits_for_warm_up_and_gap(tmp_path, monkeypatch):
     assert live_sync.swap_wait() == ""
 
 
+def test_runtime_swap_waits_for_matching_caches(tmp_path, monkeypatch):
+    """배포본 캐시가 다른 코드로 만든 것이면 실행 중엔 DB 교체를 미룬다(최대 2시간) — 캐시 없이 바꾸면 서버가 직접 다시
+    만들어 느렸다(2026-11-03). 직전 교체가 오래됐으면(또는 시작 때) 받는다."""
+    import datetime as dt
+    (tmp_path / "data").mkdir()
+    (tmp_path / "data" / "football.db").write_bytes(b"OLD")
+    get, _ = _setup(tmp_path, monkeypatch, {"data/a.csv": b"A"}, b"NEW", sig="other")
+    monkeypatch.setattr(live_sync, "reset_caches", lambda: 0)
+    t = lambda m: (dt.datetime.now(dt.timezone.utc) - dt.timedelta(minutes=m)).isoformat(timespec="seconds")  # noqa: E731
+    monkeypatch.setitem(live_sync.STATE, "db_at", t(30))
+    assert live_sync.sync_data(get) == 0 and live_sync.STATE["swap_wait"] == "caches"
+    assert (tmp_path / "data" / "football.db").read_bytes() == b"OLD"
+    monkeypatch.setitem(live_sync.STATE, "db_at", t(150))
+    assert live_sync.sync_data(get) == 2                                 # 2시간 넘게 기다렸으면 캐시 없이라도
+    assert (tmp_path / "data" / "football.db").read_bytes() == b"NEW"
+
+
+def test_publish_uses_cache_code_sig(monkeypatch):
+    """캐시를 운영 서버 코드로 만들었으면 배포본 지문도 그 코드의 것(scripts/cache_code.py → CACHE_CODE_SIG)."""
+    import inspect
+    src = inspect.getsource(pdp.main)
+    assert 'os.getenv("CACHE_CODE_SIG") or code_sig()' in src
+
+
 def test_sync_data_skips_caches_built_by_other_code(tmp_path, monkeypatch):
     # 배포본 캐시를 만든 코드 ≠ 이 서버 코드 → 캐시는 안 받고(서버가 자기 코드로 만든 것을 지킨다) 데이터·DB 만
     (tmp_path / "data" / "runtime_cache").mkdir(parents=True)
@@ -197,3 +221,16 @@ def test_reset_caches_clears_lru_and_named_dicts(monkeypatch):
     assert mod._THING_CACHE == {} and mod._HUB_CACHE == {"key": None, "body": None} and mod._LABELS == {"x": "y"}
     assert mod._LAZY_CACHE is None                                   # 빈 dict 면 '읽었음'으로 보고 다시 안 읽는다
     assert mod._VALS_CACHE == {}
+
+
+def test_cache_code_falls_back_to_main(monkeypatch, tmp_path):
+    """운영 커밋을 못 읽거나 운영 = main 이면 캐시는 main 코드로(아무 환경 변수도 안 씀)."""
+    import cache_code
+    import deploy_backend as dbk
+    env = tmp_path / "env"
+    monkeypatch.setenv("GITHUB_ENV", str(env))
+    monkeypatch.setattr(dbk, "prod_commit", lambda: "")
+    assert cache_code.main([]) == 0 and not env.exists()
+    head = cache_code._git("rev-parse", "HEAD")
+    monkeypatch.setattr(dbk, "prod_commit", lambda: head[:12])
+    assert cache_code.main([]) == 0 and not env.exists()

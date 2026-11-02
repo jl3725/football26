@@ -109,14 +109,26 @@ def ensure_publish(dry: bool) -> bool:
     print("[deploy] 배포본 캐시가 옛 코드 — Publish Data 요청")
     if dry:
         return False
-    _gh("actions/workflows/publish_data.yml/dispatches", method="POST", json={"ref": "main"})
+    # 배포 직전엔 새로 뜰 코드(main)로 — 평소 배포본은 운영 서버가 지금 돌리는 코드로 캐시를 만든다(scripts/cache_code.py).
+    # 그 사이 데이터 수집이 끝나 끼어든 배포본(운영 코드 캐시)이 이 요청을 취소할 수 있어(concurrency) 지문이 맞을 때까지
+    # 다시 요청한다(최대 3번)
+    def ask():
+        _gh("actions/workflows/publish_data.yml/dispatches", method="POST", json={"ref": "main", "inputs": {"cache_code": "head"}})
+    ask()
+    asked, last = 1, str(manifest().get("built_at") or "")
     end = time.monotonic() + WAIT_PUBLISH
     while time.monotonic() < end:
         time.sleep(60)
         m = manifest()
-        if m.get("code_sig") == sig or str(m.get("built_at") or "") >= t0:   # 그새 main 이 더 나갔으면 그 코드로 만든 것도 됨
+        if m.get("code_sig") == sig:
             print(f"[deploy] 배포본 갱신 {str(m.get('main_sha'))[:12]}")
             return True
+        built = str(m.get("built_at") or "")
+        if built >= t0 and built != last and asked < 3:      # 다른 코드 캐시로 새로 나옴 — 다시 요청
+            print(f"[deploy] 끼어든 배포본({built}, 다른 코드 캐시) — Publish Data 다시 요청")
+            ask()
+            asked += 1
+        last = built
     print("::notice title=배포본 대기 끝::Publish Data 가 늦음 — 빌드가 캐시를 직접 만든다(빌드 몇 분 더)")
     return False
 

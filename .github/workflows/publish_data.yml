@@ -9,6 +9,10 @@ on:
     workflows: ["Match Refresh", "Daily Data Fetch", "TM Data", "KG Reload", "Daily World Cup Fetch"]
     types: [completed]
   workflow_dispatch:
+    inputs:
+      cache_code:
+        description: "캐시를 만들 코드 — prod(운영 서버가 지금 돌리는 코드, 기본) | head(main 최신, Deploy Backend 가 배포 직전에)"
+        default: prod
 
 # 늘 가장 최근 main 으로 한 번만 — 앞의 실행이 아직이면 취소(뒤 실행이 그 데이터까지 담는다)
 concurrency:
@@ -39,10 +43,34 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      # 캐시는 운영 서버가 지금 돌리는 코드로(scripts/cache_code.py) — 코드를 푸시한 날 배포 전까지 지문이 달라 서버가 캐시를
+      # 못 받고 직접 다시 만들어 느렸다(2026-11-03). 운영 = main 이거나 운영 커밋을 못 읽으면 예전처럼 main 코드
+      - name: Pick code for caches
+        if: ${{ inputs.cache_code != 'head' }}
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          BACKEND_URL: ${{ vars.BACKEND_URL }}
+        run: |
+          python scripts/cache_code.py
+          if [ -f /tmp/srvcode/requirements.txt ] && [ -L /tmp/srvcode/data ]; then pip install -q -r /tmp/srvcode/requirements.txt; fi
+
       - name: Build server DB and caches (Render 빌드와 같은 일)
         run: |
           bash scripts/ci_try.sh "build_db_live" python scripts/build_db.py
-          bash scripts/ci_try.sh "team_units_live" python scripts/precompute_team_units.py
+          if [ -n "${CACHE_CODE_DIR:-}" ]; then
+            t0=$(date +%s)
+            if (cd "$CACHE_CODE_DIR" && python scripts/precompute_team_units.py); then
+              echo "캐시 = 운영 서버 코드($CACHE_CODE_DIR)"
+              python src/run_ledger.py add "${LEDGER_RUNNER:-}" "team_units_live" 0 "$(( $(date +%s) - t0 ))" || true
+            else
+              # 운영 코드로 못 만들면 main 코드로 — 데이터 배포가 멈추지 않게(서버는 지문이 달라 직접 만든다)
+              echo "::warning title=운영 코드 캐시 실패::main 코드로 다시 만든다"
+              echo "CACHE_CODE_SIG=" >> "$GITHUB_ENV"
+              bash scripts/ci_try.sh "team_units_live" python scripts/precompute_team_units.py
+            fi
+          else
+            bash scripts/ci_try.sh "team_units_live" python scripts/precompute_team_units.py
+          fi
 
       # DB·캐시 만들기가 하나라도 실패했으면 올리지 않는다 — 불완전한 DB 가 운영 서버로 가지 않게(서버는 이전 배포본 유지)
       - name: Publish to data-live
