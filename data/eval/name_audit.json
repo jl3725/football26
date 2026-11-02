@@ -277,8 +277,8 @@
    ]
   },
   "espn_subs": {
-   "total": 401,
-   "exact": 401,
+   "total": 403,
+   "exact": 403,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -324,7 +324,7 @@
  "LaLiga 2026_2027": {
   "wiki_squads": {
    "total": 587,
-   "exact": 503,
+   "exact": 506,
    "rule": 6,
    "ambiguous": 0,
    "orphan": 0,
@@ -332,10 +332,10 @@
   },
   "espn_lineups": {
    "total": 609,
-   "exact": 487,
+   "exact": 491,
    "rule": 23,
    "ambiguous": 1,
-   "orphan": 99,
+   "orphan": 95,
    "orphans": [
     {
      "squad": "Celta Vigo",
@@ -365,11 +365,6 @@
     {
      "squad": "Málaga",
      "name": "Eneko Jauregui",
-     "starts": 1
-    },
-    {
-     "squad": "Real Madrid",
-     "name": "Andriy Lunin",
      "starts": 1
     },
     {
@@ -460,6 +455,11 @@
     {
      "squad": "Villarreal",
      "name": "Willy Kambwala",
+     "starts": 0
+    },
+    {
+     "squad": "Espanyol",
+     "name": "Adama Timera",
      "starts": 0
     }
    ]
@@ -602,39 +602,19 @@
  "Bundesliga 2026_2027": {
   "wiki_squads": {
    "total": 667,
-   "exact": 487,
-   "rule": 2,
+   "exact": 511,
+   "rule": 1,
    "ambiguous": 0,
    "orphan": 0,
    "orphans": []
   },
   "espn_lineups": {
    "total": 482,
-   "exact": 420,
-   "rule": 15,
+   "exact": 435,
+   "rule": 16,
    "ambiguous": 0,
-   "orphan": 47,
+   "orphan": 31,
    "orphans": [
-    {
-     "squad": "Frankfurt",
-     "name": "Noël Aséko",
-     "starts": 5
-    },
-    {
-     "squad": "Hoffenheim",
-     "name": "Natnael Abraha",
-     "starts": 1
-    },
-    {
-     "squad": "Freiburg",
-     "name": "Patrick Osterhage",
-     "starts": 1
-    },
-    {
-     "squad": "Bayern Munich",
-     "name": "Hiroki Ito",
-     "starts": 0
-    },
     {
      "squad": "Bayern Munich",
      "name": "Arijon Ibrahimovic",
@@ -651,23 +631,8 @@
      "starts": 0
     },
     {
-     "squad": "Frankfurt",
-     "name": "Kauã Santos",
-     "starts": 0
-    },
-    {
      "squad": "Köln",
      "name": "Jonathan Friemel",
-     "starts": 0
-    },
-    {
-     "squad": "Hoffenheim",
-     "name": "Cajetan Lenz",
-     "starts": 0
-    },
-    {
-     "squad": "Hoffenheim",
-     "name": "Luca Philipp",
      "starts": 0
     },
     {
@@ -688,16 +653,6 @@
     {
      "squad": "Hamburger SV",
      "name": "Daniel Elfadli",
-     "starts": 0
-    },
-    {
-     "squad": "Freiburg",
-     "name": "Florian Müller",
-     "starts": 0
-    },
-    {
-     "squad": "Freiburg",
-     "name": "Christian Günter",
      "starts": 0
     },
     {
@@ -731,23 +686,68 @@
      "starts": 0
     },
     {
-     "squad": "Bayern Munich",
-     "name": "Sacha Boey",
+     "squad": "Gladbach",
+     "name": "Yukhym Konoplia",
+     "starts": 0
+    },
+    {
+     "squad": "Köln",
+     "name": "Assad Kotya-Fofana",
+     "starts": 0
+    },
+    {
+     "squad": "Hoffenheim",
+     "name": "Valentin Lässig",
      "starts": 0
     },
     {
      "squad": "Gladbach",
-     "name": "Yukhym Konoplia",
+     "name": "Lion Schweers",
+     "starts": 0
+    },
+    {
+     "squad": "Gladbach",
+     "name": "Josiah Kaled Uwakhonye",
+     "starts": 0
+    },
+    {
+     "squad": "Schalke 04",
+     "name": "Jean-Paul N'Diaye",
+     "starts": 0
+    },
+    {
+     "squad": "Bayern Munich",
+     "name": "Tim Binder",
+     "starts": 0
+    },
+    {
+     "squad": "Bayern Munich",
+     "name": "Cassiano Kiala",
+     "starts": 0
+    },
+    {
+     "squad": "Bayern Munich",
+     "name": "Jannis Bärtl",
+     "starts": 0
+    },
+    {
+     "squad": "Leverkusen",
+     "name": "Kenan Doganay",
+     "starts": 0
+    },
+    {
+     "squad": "Leverkusen",
+     "name": "Dustin Buck",
      "starts": 0
     }
    ]
   },
   "espn_lineups_cups": {
    "total": 470,
-   "exact": 452,
+   "exact": 453,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 18,
+   "orphan": 17,
    "orphans": [
     {
      "squad": "Augsburg",
@@ -762,11 +762,6 @@
     {
      "squad": "Bayern Munich",
      "name": "David Podar-Stiube",
-     "starts": 0
-    },
-    {
-     "squad": "Hoffenheim",
-     "name": "Lúkas Petersson",
      "starts": 0
     },
     {
@@ -843,8 +838,8 @@
   },
   "espn_subs": {
    "total": 365,
-   "exact": 361,
-   "rule": 4,
+   "exact": 362,
+   "rule": 3,
    "ambiguous": 0,
    "orphan": 0,
    "orphans": []
@@ -867,8 +862,8 @@
   },
   "fotmob_ratings": {
    "total": 281,
-   "exact": 278,
-   "rule": 2,
+   "exact": 279,
+   "rule": 1,
    "ambiguous": 0,
    "orphan": 0,
    "orphans": [],
@@ -878,24 +873,19 @@
  "SerieA 2026_2027": {
   "wiki_squads": {
    "total": 881,
-   "exact": 589,
+   "exact": 593,
    "rule": 4,
    "ambiguous": 1,
    "orphan": 0,
    "orphans": []
   },
   "espn_lineups": {
-   "total": 662,
-   "exact": 558,
+   "total": 663,
+   "exact": 562,
    "rule": 10,
    "ambiguous": 1,
-   "orphan": 94,
+   "orphan": 91,
    "orphans": [
-    {
-     "squad": "Roma",
-     "name": "Evan Ndicka",
-     "starts": 7
-    },
     {
      "squad": "Lecce",
      "name": "Kialonda Gaspar",
@@ -1015,15 +1005,20 @@
      "squad": "Juventus",
      "name": "Fabio Miretti",
      "starts": 0
+    },
+    {
+     "squad": "Venezia",
+     "name": "Lamine Dabo",
+     "starts": 0
     }
    ]
   },
   "espn_lineups_cups": {
    "total": 526,
-   "exact": 507,
+   "exact": 508,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 19,
+   "orphan": 18,
    "orphans": [
     {
      "squad": "Parma",
@@ -1058,11 +1053,6 @@
     {
      "squad": "Atalanta",
      "name": "Isaac Collins Isoa",
-     "starts": 0
-    },
-    {
-     "squad": "Atalanta",
-     "name": "Sergej Levak",
      "starts": 0
     },
     {
@@ -1123,8 +1113,8 @@
    ]
   },
   "espn_subs": {
-   "total": 461,
-   "exact": 456,
+   "total": 464,
+   "exact": 459,
    "rule": 1,
    "ambiguous": 1,
    "orphan": 4,
@@ -1393,8 +1383,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 285,
-   "exact": 285,
+   "total": 288,
+   "exact": 288,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1620,7 +1610,7 @@
  "Eredivisie 2026_2027": {
   "wiki_squads": {
    "total": 560,
-   "exact": 497,
+   "exact": 496,
    "rule": 6,
    "ambiguous": 0,
    "orphan": 0,
@@ -1628,10 +1618,10 @@
   },
   "espn_lineups": {
    "total": 550,
-   "exact": 493,
+   "exact": 492,
    "rule": 12,
    "ambiguous": 0,
-   "orphan": 45,
+   "orphan": 46,
    "orphans": [
     {
      "squad": "Feyenoord",
@@ -1739,6 +1729,11 @@
      "starts": 0
     },
     {
+     "squad": "Heerenveen",
+     "name": "Jimte Scholten",
+     "starts": 0
+    },
+    {
      "squad": "Willem II",
      "name": "Tygo Kotte",
      "starts": 0
@@ -1751,11 +1746,6 @@
     {
      "squad": "AZ Alkmaar",
      "name": "Matej Sin",
-     "starts": 0
-    },
-    {
-     "squad": "ADO Den Haag",
-     "name": "Alexander Veselov",
      "starts": 0
     }
    ]
@@ -2343,10 +2333,10 @@
   },
   "espn_lineups": {
    "total": 587,
-   "exact": 575,
+   "exact": 576,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 12,
+   "orphan": 11,
    "orphans": [
     {
      "squad": "Kasımpaşa",
@@ -2401,11 +2391,6 @@
     {
      "squad": "Gaziantep FK",
      "name": "Mehmet Ali Genc",
-     "starts": 0
-    },
-    {
-     "squad": "Gençlerbirliği",
-     "name": "Bilal Sari",
      "starts": 0
     }
    ]
