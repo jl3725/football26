@@ -885,11 +885,11 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 661,
+   "total": 662,
    "exact": 558,
    "rule": 10,
    "ambiguous": 1,
-   "orphan": 93,
+   "orphan": 94,
    "orphans": [
     {
      "squad": "Roma",
@@ -1166,8 +1166,8 @@
    ]
   },
   "match_events": {
-   "total": 347,
-   "exact": 347,
+   "total": 349,
+   "exact": 349,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -2342,11 +2342,11 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 583,
-   "exact": 572,
+   "total": 587,
+   "exact": 575,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 11,
+   "orphan": 12,
    "orphans": [
     {
      "squad": "Kasımpaşa",
@@ -2402,6 +2402,11 @@
      "squad": "Gaziantep FK",
      "name": "Mehmet Ali Genc",
      "starts": 0
+    },
+    {
+     "squad": "Gençlerbirliği",
+     "name": "Bilal Sari",
+     "starts": 0
     }
    ]
   },
@@ -2420,8 +2425,8 @@
    ]
   },
   "espn_subs": {
-   "total": 421,
-   "exact": 421,
+   "total": 422,
+   "exact": 422,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -2721,8 +2726,8 @@
    ]
   },
   "espn_subs": {
-   "total": 285,
-   "exact": 285,
+   "total": 287,
+   "exact": 287,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
