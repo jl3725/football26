@@ -4,18 +4,20 @@ name: TM Data
 # TM(AWS WAF)은 GH 러너 IP 에 202 챌린지를 주지만, 브라우저(seleniumbase UC)로 한 번 열어 받은 토큰을
 # requests 에 넘기면 열린다(src/tm_http.py, 진단 scripts/diag_sources.py). 토큰은 .cache 파일로 단계 간 재사용.
 #
-#   daily  : 이적(transfers) · 현재 부상(injuries) · 계약(contracts) · 이적 루머(rumors) · 시장가치 스냅샷 · 포지션(positions —
-#            TM 프로필 대표·그 밖의 포지션, 새 선수·60일 지난 선수만 리그당 150명) — 전 리그, 하루 2회
+#   daily  : 이적(transfers) · 현재 부상(injuries) · 계약(contracts) · 이적 루머(rumors) · 시장가치 스냅샷 — 전 리그, 하루 2회
+#   positions: TM 프로필 대표·그 밖의 포지션(src/fetch_tm_positions.py) — 매일 05:30 KST 따로, 3초 간격·한 번에 900명.
+#            매일 수집 뒤에 붙였더니 프로필 요청이 403 을 불러 다음 리그 계약 수집까지 막혔다(2026-11-02)
 #   weekly : 선수별 통산 부상 이력(tm_injury_history) — 선수 페이지 수천 개, 주 1회(약 1.5시간)
 # 실패는 ci_try 로 모아 마지막 ci_report 에서 빨간불(숨기지 않음). 품질 게이트 실패 시 커밋하지 않는다.
 on:
   schedule:
     - cron: "30 1,9 * * *"   # 매일 10:30 · 18:30 KST
     - cron: "30 3 * * 1"     # 매주 월 12:30 KST — 통산 부상 이력
+    - cron: "30 20 * * *"    # 매일 05:30 KST — TM 프로필 포지션(다른 TM 수집과 겹치지 않는 시간)
   workflow_dispatch:
     inputs:
       mode:
-        description: "daily | weekly"
+        description: "daily | weekly | positions"
         default: daily
 
 concurrency:
@@ -32,7 +34,7 @@ jobs:
     env:
       PYTHONIOENCODING: utf-8
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}   # 새 부상명 한글 표기(무료 등급, src/injury_names.py)
-      MODE: ${{ github.event.schedule == '30 3 * * 1' && 'weekly' || inputs.mode || 'daily' }}
+      MODE: ${{ github.event.schedule == '30 3 * * 1' && 'weekly' || github.event.schedule == '30 20 * * *' && 'positions' || inputs.mode || 'daily' }}
     steps:
       - uses: actions/checkout@v7
 
@@ -46,11 +48,16 @@ jobs:
 
       - name: Collect (${{ env.MODE }})
         run: |
+          if [ "$MODE" = "positions" ]; then
+            # 전 리그를 한 프로세스가 천천히 — 막히면 한 번 쉬고, 다시 막히면 멈춤(exit 75 = 원천 중단, 받은 것은 저장)
+            bash scripts/ci_try.sh "positions" python src/fetch_tm_positions.py
+            exit 0
+          fi
           if [ "$MODE" = "weekly" ]; then
             STEPS="injury_history:src/fetch_tm_injury_history.py"
           else
             # 계약(스쿼드 페이지)이 먼저 — 라이트 리그는 여기서 TM 클럽 ↔ 우리 표기를 정해 적고(src/lite_league.py) 이적·부상·루머가 그 표기를 쓴다
-            STEPS="contracts:src/sync_transfermarkt_contracts.py transfers:src/fetch_transfers.py injuries:src/fetch_transfermarkt_injuries.py rumors:src/fetch_transfer_rumors.py market_value:scripts/snapshot_market_values.py positions:src/fetch_tm_positions.py"
+            STEPS="contracts:src/sync_transfermarkt_contracts.py transfers:src/fetch_transfers.py injuries:src/fetch_transfermarkt_injuries.py rumors:src/fetch_transfer_rumors.py market_value:scripts/snapshot_market_values.py"
           fi
           for LG in $(python scripts/league_keys.py); do   # 전 리그(라이트 리그 포함) — 목록은 src/leagues.py 한 곳
             for S in $STEPS; do
@@ -81,9 +88,11 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           if [ "$MODE" = "weekly" ]; then
             PATHS="data/tm_injury_history_*.csv data/injury_names_ko.json data/ai/usage_injury_names.json data/ops/runs/"; SUBJECT="통산 부상 이력"
+          elif [ "$MODE" = "positions" ]; then
+            PATHS="data/tm_positions_*.csv data/ops/runs/"; SUBJECT="포지션"
           else
-            PATHS="data/transfers_*.csv data/transfermarkt_*.csv data/transfer_rumors_*.csv data/players_*.csv data/market_value_*.csv data/tm_positions_*.csv data/lite_teams_*.json data/league_exports.json data/injury_names_ko.json data/ai/usage_injury_names.json data/ops/runs/"
-            SUBJECT="이적·부상·계약·루머·시장가치·포지션"
+            PATHS="data/transfers_*.csv data/transfermarkt_*.csv data/transfer_rumors_*.csv data/players_*.csv data/market_value_*.csv data/lite_teams_*.json data/league_exports.json data/injury_names_ko.json data/ai/usage_injury_names.json data/ops/runs/"
+            SUBJECT="이적·부상·계약·루머·시장가치"
           fi
           git add -- $PATHS
           if git diff --staged --quiet; then

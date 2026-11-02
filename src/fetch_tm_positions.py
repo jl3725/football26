@@ -5,14 +5,17 @@ Transfermarkt 선수 프로필 → 대표 포지션 + 그 밖의 포지션(커�
 시즌이 바뀌면 지난 시즌 선발이 빠지며 익숙함이 내려간다(2026-11-02 사용자: 'OVR 도 좀 더 stable 해질까요').
 TM 프로필의 'Main position' · 'Other position'(최대 2)을 받아 둔다 — 경기 수는 없어 익숙함 하한으로만 쓴다.
 
-포지션은 거의 안 바뀌므로 처음 보는 선수 먼저, 이미 받은 선수는 REFRESH_DAYS 지나면 다시. 한 번에 리그당 MAX_PER_RUN 명
-(TM Data 하루 2회 — 처음 채우기 2~3일, 그 뒤엔 새 선수만이라 몇 분).
+선수마다 프로필 한 장이라 요청이 많다. TM(WAF)은 짧은 시간에 많이 부르면 403 을 주고, 그 뒤엔 같은 실행의 다른 TM
+수집도 막힌다 — 매일 수집(계약·이적…) 뒤에 붙였더니 리그마다 10명쯤에서 403, 다음 리그 계약 수집까지 실패했다
+(2026-11-02). 그래서 따로 도는 단계(TM Data mode=positions)로, 천천히(PAUSE), 한 번에 MAX_PER_RUN 명까지,
+막히면 한 번 쉬었다가 다시 막히면 그 실행을 멈춘다(exit 75 = 원천 중단, 받은 것은 저장).
+포지션은 거의 안 바뀌므로 처음 보는 선수 먼저, 이미 받은 선수는 REFRESH_DAYS 지나면 다시.
 
 Writes data/tm_positions[_리그].csv: squad, player, tm_player_id, main_position, other_positions('|' 구분), last_checked
 
 Usage:
-  FB_LEAGUE=EPL python src/fetch_tm_positions.py            # 리그 한 개(TM Data 워크플로가 리그마다 부름)
-  FB_LEAGUE=EPL python src/fetch_tm_positions.py --max 0    # 제한 없이(처음 한 번에 채우기)
+  python src/fetch_tm_positions.py                 # 전 리그(src/leagues.py), 한 번에 MAX_PER_RUN 명
+  python src/fetch_tm_positions.py --league EPL --max 20
 """
 from __future__ import annotations
 
@@ -28,19 +31,23 @@ from bs4 import BeautifulSoup
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import tm_http  # noqa: E402  — 클라우드(WAF 202)에서도 열리게
-from leagues import data_path  # noqa: E402
+from leagues import LEAGUES, data_path  # noqa: E402
 
-PLAYERS = data_path("players_full")
-OUT = data_path("tm_positions")
 FIELDS = ["squad", "player", "tm_player_id", "main_position", "other_positions", "last_checked"]
 REFRESH_DAYS = 60
-MAX_PER_RUN = 150
-MAX_STREAK = 15          # 연속 실패 — 전면 차단이면 일찍 멈추고 받은 것만 저장
+MAX_PER_RUN = 900        # 전 리그 합 — 3초 간격이면 약 45분
+PAUSE = 3.0              # 요청 간격(초)
+COOLDOWN = 300           # 처음 막혔을 때 쉬는 시간(초) — 다시 막히면 그 실행은 멈춘다
+EX_SOURCE_DOWN = 75
 H = {
     "User-Agent": ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
                    "(KHTML, like Gecko) Chrome/124.0 Safari/537.36"),
     "Accept-Language": "en-US,en;q=0.9",
 }
+
+
+class Blocked(RuntimeError):
+    pass
 
 
 def parse_positions(page_html: str) -> tuple[str, list[str]]:
@@ -60,21 +67,22 @@ def parse_positions(page_html: str) -> tuple[str, list[str]]:
 
 def fetch(tm_id: str) -> tuple[str, list[str]]:
     resp = tm_http.get(f"https://www.transfermarkt.com/-/profil/spieler/{tm_id}", headers=H, timeout=30)
-    if resp.status_code != 200 or not resp.text.strip():
-        raise RuntimeError(f"HTTP {resp.status_code} (WAF 챌린지 추정)")
+    if resp.status_code in (202, 403, 429) or (resp.status_code == 200 and not resp.text.strip()):
+        raise Blocked(f"HTTP {resp.status_code}")
+    resp.raise_for_status()
     return parse_positions(resp.text)
 
 
-def read_existing() -> dict[str, dict]:
-    if not OUT.exists():
+def read_existing(out) -> dict[str, dict]:
+    if not out.exists():
         return {}
-    with OUT.open("r", newline="", encoding="utf-8") as f:
+    with out.open("r", newline="", encoding="utf-8") as f:
         return {r["tm_player_id"]: r for r in csv.DictReader(f) if r.get("tm_player_id")}
 
 
-def write_rows(rows: dict[str, dict]) -> None:
-    OUT.parent.mkdir(parents=True, exist_ok=True)
-    with OUT.open("w", newline="", encoding="utf-8") as f:
+def write_rows(out, rows: dict[str, dict]) -> None:
+    out.parent.mkdir(parents=True, exist_ok=True)
+    with out.open("w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=FIELDS)
         w.writeheader()
         w.writerows(sorted(rows.values(), key=lambda r: (r["squad"], r["player"])))
@@ -87,63 +95,86 @@ def _age_days(checked: str, today: date) -> int:
         return 10 ** 6
 
 
-def todo(players: pd.DataFrame, have: dict[str, dict], today: date) -> list[tuple[str, str, str]]:
-    """받을 선수 (tm_id, squad, player) — 처음 보는 선수 먼저, 그다음 오래된 순."""
-    out = []
-    for tid, sq, pl in zip(players["__tmid"], players["squad"].astype(str), players["player"].astype(str)):
-        if not tid:
+def todo(players: pd.DataFrame, have: dict[str, dict], today: date) -> list[tuple[int, str, str, str]]:
+    """받을 선수 (오래된 정도, tm_id, squad, player) — 처음 보는 선수 먼저, 그다음 오래된 순."""
+    ids = players["tm_id"] if "tm_id" in players.columns else pd.Series([None] * len(players))
+    out, seen = [], set()
+    for v, sq, pl in zip(ids, players["squad"].astype(str), players["player"].astype(str)):
+        if pd.isna(v) or str(v).strip() in ("", "nan"):
             continue
+        tid = str(int(float(v)))
+        if tid in seen:
+            continue
+        seen.add(tid)
         age = _age_days(have[tid]["last_checked"], today) if tid in have else 10 ** 7
         if age >= REFRESH_DAYS:
             out.append((age, tid, sq, pl))
     out.sort(key=lambda x: -x[0])
-    seen, uniq = set(), []
-    for _age, tid, sq, pl in out:
-        if tid not in seen:
-            seen.add(tid)
-            uniq.append((tid, sq, pl))
-    return uniq
+    return out
 
 
 def main(argv: list[str]) -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--max", type=int, default=MAX_PER_RUN, help="이번에 받을 최대 선수 수(0 = 제한 없음)")
+    ap.add_argument("--league", action="append", help="리그(여러 번 가능) — 없으면 전 리그")
+    ap.add_argument("--max", type=int, default=MAX_PER_RUN, help="이번에 받을 최대 선수 수(전 리그 합)")
     args = ap.parse_args(argv)
-    if not PLAYERS.exists():
-        print(f"선수 표 없음: {PLAYERS}")
-        return 0
-    df = pd.read_csv(PLAYERS)
-    ids = df["tm_id"] if "tm_id" in df.columns else pd.Series([None] * len(df))
-    df["__tmid"] = [str(int(float(v))) if pd.notna(v) and str(v).strip() not in ("", "nan") else "" for v in ids]
-    have = read_existing()
     today = datetime.now().astimezone().date()
-    queue = todo(df, have, today)
-    if args.max:
-        queue = queue[:args.max]
-    print(f"[tm_positions] {OUT.name}: 받을 선수 {len(queue)}명(기존 {len(have)}명)")
-    done = streak = 0
-    for i, (tid, squad, player) in enumerate(queue, 1):
+    leagues = args.league or list(LEAGUES)
+    # 리그마다 할 일 — 처음 보는 선수가 많은 리그부터 고르게 돌도록 리그를 번갈아 뽑는다
+    state, queues = {}, {}
+    for lg in leagues:
+        src = data_path("players_full", lg)
+        if not src.exists():
+            continue
+        out = data_path("tm_positions", lg)
+        have = read_existing(out)
+        state[lg] = (out, have)
+        queues[lg] = todo(pd.read_csv(src), have, today)
+    plan: list[tuple[str, str, str, str]] = []
+    while len(plan) < args.max and any(queues.values()):
+        for lg in leagues:
+            if queues.get(lg) and len(plan) < args.max:
+                _age, tid, sq, pl = queues[lg].pop(0)
+                plan.append((lg, tid, sq, pl))
+    print(f"[tm_positions] 이번 {len(plan)}명 · 남은 {sum(len(q) for q in queues.values())}명 · 리그 {len(state)}")
+    done, cooled, dirty = 0, False, set()
+    i = 0
+    while i < len(plan):
+        lg, tid, squad, player = plan[i]
         try:
             main_pos, others = fetch(tid)
-        except Exception as e:  # noqa: BLE001
-            streak += 1
-            print(f"    x {player} ({tid}): {e}")
-            if streak >= MAX_STREAK:
-                print(f"  ! 연속 {streak}회 실패 — 차단으로 보고 중단(받은 것만 저장)")
-                break
-            time.sleep(1.0)
+        except Blocked as e:
+            if not cooled:
+                print(f"  ! {player} ({tid}) {e} — {COOLDOWN}s 쉬고 다시")
+                for g in dirty:
+                    write_rows(*state[g])
+                dirty.clear()
+                time.sleep(COOLDOWN)
+                cooled = True
+                continue                       # 같은 선수 다시
+            print(f"  ! 다시 막힘({e}) — 이번 실행 멈춤, 받은 {done}명 저장")
+            break
+        except Exception as e:  # noqa: BLE001 — 한 선수 실패(404 등)는 건너뛴다
+            print(f"    x {player} ({tid}): {type(e).__name__}: {e}")
+            i += 1
+            time.sleep(PAUSE)
             continue
-        streak = 0
+        out, have = state[lg]
         have[tid] = {"squad": squad, "player": player, "tm_player_id": tid, "main_position": main_pos,
                      "other_positions": "|".join(others), "last_checked": today.isoformat()}
+        dirty.add(lg)
         done += 1
-        if i % 50 == 0:
-            write_rows(have)              # 중간 저장
-        time.sleep(1.2)
-    if done:
-        write_rows(have)
-    print(f"Done. 받음 {done} / {len(queue)} → {OUT}")
-    return 1 if (streak >= MAX_STREAK and done == 0 and queue) else 0
+        i += 1
+        if done % 50 == 0:
+            for g in dirty:
+                write_rows(*state[g])
+            dirty.clear()
+            print(f"    · {done}명")
+        time.sleep(PAUSE)
+    for g in dirty:
+        write_rows(*state[g])
+    print(f"Done. 받음 {done} / {len(plan)}")
+    return EX_SOURCE_DOWN if i < len(plan) else 0          # 두 번 막혀 멈춤 = 원천 중단(받은 것은 저장)
 
 
 if __name__ == "__main__":
