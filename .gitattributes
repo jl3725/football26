@@ -1,0 +1,4 @@
+# 선수 표 CSV 는 칸 단위 3-way 병합(scripts/csv_cell_merge.py) — 여러 작업이 같은 표를 통째로 다시 써서 줄 단위 병합이
+# 다른 작업이 바꾼 칸을 옛 값으로 덮었다(2026-11-02). 드라이버 정의는 git config(scripts/ci_push.sh · scripts/git_sync.ps1 이 넣음),
+# 정의가 없는 곳에선 git 기본 병합으로 돌아간다
+data/players*.csv merge=csvcells

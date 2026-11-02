@@ -9,6 +9,9 @@
 # git 출력은 Out-Host 로 — 함수 반환값에 섞이면 늘 참으로 읽힌다.
 
 function Sync-Main {
+    # 선수 표 CSV 칸 단위 병합 드라이버(.gitattributes merge=csvcells, scripts/csv_cell_merge.py) — 줄 단위 병합이 다른 작업의 칸을 덮었다(11/02)
+    git config merge.csvcells.name "players csv cell merge" | Out-Host
+    git config merge.csvcells.driver "python scripts/csv_cell_merge.py %O %A %B" | Out-Host
     git pull --rebase --autostash origin main | Out-Host
     if ($LASTEXITCODE -eq 0) { return $true }
     git rebase --abort 2>$null | Out-Host

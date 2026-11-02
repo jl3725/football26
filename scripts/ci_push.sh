@@ -10,6 +10,10 @@
 #      다른 줄은 양쪽 변경을 다 살린다. 상대 워크플로가 고친 같은 줄은 그 워크플로 다음 실행이 다시 계산한다
 #   3) 그래도 못 올리면 실패(빨간불) — 조용히 잃지 않는다
 set -u
+# 선수 표 CSV(players*.csv)는 칸 단위 병합 — 줄 단위 -X theirs 가 다른 작업이 바꾼 칸(주간 빌드 FBref·지난 시즌 기록)을
+# 옛 값으로 덮었다(2026-11-02, .gitattributes · scripts/csv_cell_merge.py)
+git config merge.csvcells.name "players csv cell merge"
+git config merge.csvcells.driver "python scripts/csv_cell_merge.py %O %A %B"
 for i in 1 2 3 4; do
   if git pull --rebase --autostash origin main; then
     git push && exit 0
