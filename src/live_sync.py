@@ -41,6 +41,7 @@ SWAP_MIN_GAP = 20 * 60
 # 배포본 캐시가 다른 코드로 만든 것이면 DB 교체를 이만큼까지 미룬다 — 캐시 없이 바꾸면 서버가 0.1 CPU 로 선수 표·세부 지표를
 # 직접 다시 만든다. 평소 배포본은 운영 코드로 캐시를 만들어(scripts/cache_code.py) 지문이 다른 건 배포 전후 잠깐뿐
 CACHE_WAIT = 2 * 3600
+TRIM_EVERY = 10 * 60      # 메모리 돌려주기 주기(src/memtrim.py)
 WARM_STALE = 30 * 60      # 데우기가 이보다 오래 '진행 중'이면 멈춘 것으로 보고 교체를 막지 않는다
 DATA_BRANCH = "data-live"
 STATE: dict = {"started": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"), "enabled": False,
@@ -368,7 +369,7 @@ def sync_news(get=requests.get) -> bool:
 def _loop() -> None:
     time.sleep(FIRST_WAIT)                                        # 데우기(warm-up)가 먼저(시작 때 데이터는 데우기 전에 받는다)
     last_small = last_news = 0.0
-    last_data = time.monotonic()
+    last_data = last_trim = time.monotonic()
     while True:
         now = time.monotonic()
         try:
@@ -384,6 +385,13 @@ def _loop() -> None:
         except Exception as e:  # noqa: BLE001 — 받기 실패는 다음 차례에(서비스엔 영향 없음)
             STATE["last_error"] = f"{type(e).__name__}: {str(e)[:120]}"
             print(f"[live-sync] 실패 {STATE['last_error']}", flush=True)
+        if now - last_trim >= TRIM_EVERY:                          # 요청이 쓰고 놓은 메모리도 주기적으로(src/memtrim.py)
+            last_trim = now
+            try:
+                import memtrim  # noqa: PLC0415
+                memtrim.trim()
+            except Exception:  # noqa: BLE001
+                pass
         time.sleep(60)
 
 

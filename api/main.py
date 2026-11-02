@@ -8022,6 +8022,10 @@ def _warm_up() -> None:
             print(f"[warm-up] 건너뜀: {type(e).__name__}: {e}", flush=True)
         finally:
             live_sync.warming(False, _t.monotonic() - t0)
+            import memtrim  # noqa: PLC0415 — 데우기 중 잠깐 쓴 메모리를 운영체제에 돌려준다(리눅스, 2026-11-03)
+            freed = memtrim.trim()
+            if freed is not None:
+                print(f"[warm-up] 메모리 돌려줌 {freed}MB → {memtrim.rss_mb()}MB", flush=True)
 
     # 운영(Render)에서만 — 데이터·뉴스·DATA 상태를 재배포 없이 GitHub(data-live·data-news)에서 받는다(src/live_sync.py).
     # 시작할 때는 데우기 전에 최신 데이터부터(코드 배포가 며칠 전이면 빌드한 데이터가 옛것), 실행 중 서버 DB 가 바뀌면

@@ -11,6 +11,11 @@ source_path = str(SRC)
 if source_path not in sys.path:
     sys.path.insert(0, source_path)
 
+# 리눅스 운영 서버 메모리 — 스레드별 영역 2개·큰 배열은 놓을 때 바로 돌려주게(src/memtrim.py). 다른 OS 는 아무것도 안 함
+import memtrim  # noqa: E402
+
+memtrim.setup()
+
 
 def _load_dotenv() -> None:
     """저장소 루트 ``.env`` 의 값을 환경변수 기본값으로 올린다(이미 있는 값은 보존, 의존성 없음).

@@ -11,6 +11,7 @@ import datastore as ds
 from leagues import ACTIVE_LEAGUE, league_config
 import infra_health
 import live_sync
+import memtrim
 from season_context import current_window, season_label
 
 router = APIRouter(prefix="/api", tags=["meta"])
@@ -55,18 +56,8 @@ def health():
                                                        "swap_wait", "swaps_deferred")},
         # 미리 데우기 상태 · 메모리(512MB 서버 — 넘치면 재시작) — '운영이 느리다'를 숫자로 보려고(2026-11-03)
         "proc": {"warming": live_sync.STATE["warming"], "warm_at": live_sync.STATE["warm_at"],
-                 "warm_sec": live_sync.STATE["warm_sec"], "mem_mb": _mem_mb()},
+                 "warm_sec": live_sync.STATE["warm_sec"], "mem_mb": memtrim.rss_mb(), **memtrim.STATE},
     }
-
-
-def _mem_mb() -> float | None:
-    """지금 프로세스 메모리(RSS, MB) — 리눅스(/proc)만, 그 밖엔 None."""
-    try:
-        with open("/proc/self/statm", encoding="ascii") as f:
-            pages = int(f.read().split()[1])
-        return round(pages * os.sysconf("SC_PAGE_SIZE") / 2**20, 1)
-    except (OSError, ValueError, AttributeError, IndexError):
-        return None
 
 
 @router.get("/ops/status")
