@@ -96,7 +96,9 @@ def build_status(now: dt.datetime | None = None, entries: list[dict] | None = No
                        "n_ok": sum(1 for f in feeds if f["state"] == "ok"), "n_feeds": len(feeds)})
     known = reg.step_index()
     fails = [e for e in reversed(entries) if not e.get("ok")][:20]
-    unknown = sorted({e.get("step", "") for e in entries} - set(known) - {""})
+    # 최근 7일 안에 돈 단계만 — 그만둔 단계(clubelo, 10/25 차단 뒤 뺌)가 원장에 남아 '등록 안 된 단계'로 계속 보였다
+    recent = (now - dt.timedelta(days=7)).isoformat()
+    unknown = sorted({e.get("step", "") for e in entries if str(e.get("t") or "") >= recent} - set(known) - {""})
     wd = None
     if WATCHDOG_JSON.exists():
         try:
