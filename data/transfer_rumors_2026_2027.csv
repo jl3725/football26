@@ -1,4 +1,6 @@
 target_club,player,pos_detail,age,current_club,market_value_eur,probability,date
+Arsenal,Endrick,Centre-Forward,20,Real Madrid,40000000.0,,01/11/2026
+Arsenal,Aleksey Batrakov,Attacking Midfield,21,Galatasaray,28000000.0,,01/11/2026
 Arsenal,Désiré Doué,Right Winger,21,Paris Saint-Germain,120000000.0,,30/10/2026
 Arsenal,Álex Baena,Left Winger,25,Atlético de Madrid,45000000.0,,30/10/2026
 Arsenal,Eduardo Pape,Central Midfield,17,Cruzeiro EC U20,,,29/10/2026
@@ -22,8 +24,6 @@ Arsenal,Ibrahim Maza,Attacking Midfield,20,Bayer 04 Leverkusen,50000000.0,,27/09
 Arsenal,Maximilian Beier,Centre-Forward,24,Borussia Dortmund,35000000.0,,20/09/2026
 Arsenal,Luca Weinhandl,Central Midfield,17,SK Sturm Graz,15000000.0,,16/09/2026
 Arsenal,Iago Machado,Centre-Back,17,Sport Club Corinthians Paulista,3000000.0,,16/09/2026
-Arsenal,João Ananias,Centre-Back,19,Santos FC,5000000.0,,27/08/2026
-Arsenal,Iliman Ndiaye,Left Winger,26,Manchester City,65000000.0,,27/08/2026
 Aston Villa,Estéban Lepaul,Centre-Forward,26,Stade Rennais FC,45000000.0,,12/10/2026
 Aston Villa,Min-jae Kim,Centre-Back,29,FC Bayern Munich,20000000.0,,30/09/2026
 Aston Villa,Kevin Viveros,Centre-Forward,26,Club Athletico Paranaense,20000000.0,,29/09/2026
@@ -50,6 +50,7 @@ Brighton,Luca Weinhandl,Central Midfield,17,SK Sturm Graz,15000000.0,,16/09/2026
 Brighton,Mauro Coronel,Centre-Back,18,Club Nacional Asunción,400000.0,,12/09/2026
 Brighton,Yeremay Hernández,Left Winger,23,Deportivo A Coruña,25000000.0,,22/08/2026
 Brighton,Cameron Ashia,Attacking Midfield,21,Huddersfield Town,125000.0,,21/08/2026
+Chelsea,Aleksey Batrakov,Attacking Midfield,21,Galatasaray,28000000.0,,02/11/2026
 Chelsea,Trent Alexander-Arnold,Right-Back,28,Real Madrid,60000000.0,,30/10/2026
 Chelsea,Désiré Doué,Right Winger,21,Paris Saint-Germain,120000000.0,,30/10/2026
 Chelsea,Nicolò Tresoldi,Centre-Forward,22,Club Brugge KV,35000000.0,,28/10/2026
@@ -123,6 +124,7 @@ Leeds United,Igor Paixão,Left Winger,26,Olympique Marseille,35000000.0,,17/10/2
 Leeds United,Dion Beljo,Centre-Forward,24,GNK Dinamo Zagreb,15000000.0,,14/10/2026
 Leeds United,Estéban Lepaul,Centre-Forward,26,Stade Rennais FC,45000000.0,,12/10/2026
 Leeds United,Andrei Rațiu,Right-Back,28,Rayo Vallecano,24000000.0,,21/08/2026
+Liverpool,Aleksey Batrakov,Attacking Midfield,21,Galatasaray,28000000.0,,01/11/2026
 Liverpool,Konstantinos Tzolakis,Goalkeeper,23,Hull City,22000000.0,,28/10/2026
 Liverpool,Lennart Karl,Attacking Midfield,18,FC Bayern Munich,60000000.0,11,27/10/2026
 Liverpool,Luka Vuskovic,Centre-Back,19,Brighton & Hove Albion,65000000.0,,25/10/2026
@@ -132,7 +134,7 @@ Liverpool,Felix Nmecha,Central Midfield,26,Borussia Dortmund,65000000.0,27,22/10
 Liverpool,Johan Manzambi,Attacking Midfield,21,Aston Villa,65000000.0,,22/10/2026
 Liverpool,Xavi Espart,Right-Back,19,FC Barcelona,25000000.0,,22/10/2026
 Liverpool,Mathis Albert,Left Winger,17,Borussia Dortmund,5000000.0,,22/10/2026
-Liverpool,Gilberto Mora,Attacking Midfield,18,Club Tijuana,25000000.0,61,15/10/2026
+Liverpool,Gilberto Mora,Attacking Midfield,18,Club Tijuana,25000000.0,59,15/10/2026
 Liverpool,Alex Scott,Central Midfield,23,AFC Bournemouth,70000000.0,,14/10/2026
 Liverpool,Wesley,Right-Back,23,AS Roma,40000000.0,,14/10/2026
 Liverpool,Marc Bernal,Central Midfield,19,FC Barcelona,40000000.0,,12/10/2026
@@ -143,17 +145,19 @@ Liverpool,Michael Mulholland,Centre-Forward,15,Crusaders FC U18,,,24/09/2026
 Liverpool,Ismaïla Sarr,Right Winger,28,Crystal Palace,45000000.0,,31/08/2026
 Liverpool,William Gomes,Right Winger,20,FC Porto,30000000.0,,22/08/2026
 Liverpool,Andrei Rațiu,Right-Back,28,Rayo Vallecano,24000000.0,,21/06/2026
+Manchester City,Aleksey Batrakov,Attacking Midfield,21,Galatasaray,28000000.0,,01/11/2026
 Manchester City,Désiré Doué,Right Winger,21,Paris Saint-Germain,120000000.0,,30/10/2026
 Manchester City,Nicolò Tresoldi,Centre-Forward,22,Club Brugge KV,35000000.0,,28/10/2026
-Manchester City,Arda Güler,Attacking Midfield,21,Real Madrid,100000000.0,6,16/10/2026
+Manchester City,Arda Güler,Attacking Midfield,21,Real Madrid,100000000.0,18,16/10/2026
 Manchester City,Mathis Albert,Left Winger,17,Borussia Dortmund,5000000.0,28,16/10/2026
 Manchester City,Dion Beljo,Centre-Forward,24,GNK Dinamo Zagreb,15000000.0,,14/10/2026
 Manchester City,Jules Koundé,Right-Back,27,FC Barcelona,55000000.0,,06/10/2026
-Manchester City,Niko Ilicevic,Attacking Midfield,16,Eintracht Frankfurt II,,,06/10/2026
+Manchester City,Niko Ilicevic,Attacking Midfield,16,Eintracht Frankfurt II,5000000.0,,06/10/2026
 Manchester City,JJ Gabriel,Attacking Midfield,16,Manchester United U21,,,16/09/2026
 Manchester City,Cody Gakpo,Left Winger,27,Liverpool FC,75000000.0,,31/08/2026
 Manchester City,Natan,Centre-Back,25,Real Betis Balompié,30000000.0,,23/08/2026
 Manchester City,Malo Gusto,Right-Back,23,Chelsea FC,35000000.0,,17/08/2026
+Manchester Utd,Aleksey Batrakov,Attacking Midfield,21,Galatasaray,28000000.0,,01/11/2026
 Manchester Utd,Calvin Bassey,Centre-Back,26,Fulham FC,28000000.0,,31/10/2026
 Manchester Utd,Jacobo Ramón,Centre-Back,21,Como 1907,45000000.0,,31/10/2026
 Manchester Utd,Pablo Barrios,Central Midfield,23,Atlético de Madrid,70000000.0,,30/10/2026
@@ -178,7 +182,6 @@ Manchester Utd,Louis Page,Central Midfield,18,Leicester City,4000000.0,,01/09/20
 Manchester Utd,Jorge Salinas,Left-Back,19,Racing Santander,10000000.0,,01/09/2026
 Manchester Utd,Ian Maatsen,Left-Back,24,Aston Villa,35000000.0,,29/08/2026
 Manchester Utd,Ferdi Kadıoğlu,Left-Back,27,Brighton & Hove Albion,40000000.0,,25/08/2026
-Manchester Utd,David Raum,Left-Back,28,RB Leipzig,25000000.0,,11/08/2026
 Newcastle United,Javi Rodríguez,Centre-Back,23,Celta de Vigo,18000000.0,,30/10/2026
 Newcastle United,Eduardo Pape,Central Midfield,17,Cruzeiro EC U20,,,29/10/2026
 Newcastle United,Nicolò Tresoldi,Centre-Forward,22,Club Brugge KV,35000000.0,,28/10/2026
