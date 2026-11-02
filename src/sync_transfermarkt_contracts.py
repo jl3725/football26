@@ -263,6 +263,16 @@ def merge_contracts(player_path: Path, contracts: pd.DataFrame) -> int:
         if not same_text(df.at[idx, "tm_contract_signal"], signal):
             df.at[idx, "tm_contract_signal"] = signal
             row_changed = True
+        # 시장가치·나이 — 스쿼드 페이지에서 이미 함께 읽는다. 예전엔 계약·사진만 넣어 시장가치는 로컬 주간 빌드(fetch_transfermarkt)
+        # 에서만 바뀌었다 — PC 가 꺼지면 멈추고(2026-11-02 사용자 '시장가치 몇 주째'), 생일이 지난 나이(콘사 28 → 29)도 늦었다
+        for col, raw_v in (("market_value_eur", rec.get("market_value_eur")), ("age", rec.get("age"))):
+            v = pd.to_numeric(raw_v, errors="coerce")
+            if col not in df.columns or pd.isna(v) or float(v) <= 0:
+                continue
+            cur_v = pd.to_numeric(df.at[idx, col], errors="coerce")
+            if pd.isna(cur_v) or float(cur_v) != float(v):
+                df.at[idx, col] = float(v)
+                row_changed = True
         current_photo = "" if pd.isna(df.at[idx, "tm_photo"]) else str(df.at[idx, "tm_photo"]).strip()
         if photo and (not current_photo or current_photo.endswith(".png") or "?lm=" not in current_photo):
             df.at[idx, "tm_photo"] = photo

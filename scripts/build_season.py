@@ -19,8 +19,9 @@
   12 espn_lineups     리그 경기 라인업(증분)                    (ESPN)
   13 espn_subs        교체 기록(증분)                           (ESPN)
   14 cup_lineups      컵·유럽대회 라인업                         (ESPN)
-  15 comp_usage       대회별 출전 사용량                         (ESPN)
-  16 heatmaps         선수 시즌 히트맵                          (Sofascore, 브라우저)
+  15 heatmaps         선수 시즌 히트맵                          (Sofascore, 브라우저)
+  (대회별 출전 사용량은 클라우드 match_refresh 의 comp_usage_live 가 매일 — 2026-11-02 여기서 뺌: 옛 계산기가 매주 수요일
+   클라우드의 새 계산(열 더 많고 선수 누락 없음)을 하루 동안 덮었다)
 
 사용:
     FB_SEASON_START=2026 python scripts/build_season.py                     # 8개 리그 전체
@@ -66,7 +67,6 @@ STEPS: list[tuple[str, list[str]]] = [
     ("espn_lineups", ["src/fetch_espn_lineups.py"]),
     ("espn_subs", ["src/fetch_espn_subs.py"]),
     ("cup_lineups", ["src/fetch_cup_lineups.py", "--league", "{league}"]),
-    ("comp_usage", ["src/fetch_comp_usage.py", "--league", "{league}"]),
     ("heatmaps", ["src/fetch_sofascore_heatmaps.py"]),
 ]
 STEP_NAMES = [n for n, _ in STEPS]
