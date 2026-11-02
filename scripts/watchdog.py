@@ -147,6 +147,20 @@ def check_frontend() -> list[str]:
 from deploy_backend import BACKEND_PATHS  # noqa: E402 — 배포 판단과 같은 목록
 # 배포는 하루 한 번(scripts/deploy_backend.py, 2026-10-29 자동 배포 끔) — 커밋 뒤 다음 예약 배포(GH 예약 지연 포함)까지 기다린다
 BACKEND_GRACE_H = 36
+# 운영 서버 메모리(Render 512MB) — 넘으면 재시작되어 화면이 안 뜬다. 데우기 뒤 390MB 안팎(2026-11-03 메모리 점검 후)
+BACKEND_MEM_WARN = 450
+
+
+def _backend_memory(h: dict) -> list[str]:
+    """/api/health proc.mem_mb 가 BACKEND_MEM_WARN 을 넘으면 경고(데우는 중엔 판단 보류)."""
+    p = h.get("proc") or {}
+    mem = p.get("mem_mb")
+    if mem is None or p.get("warming"):
+        return []
+    if mem > BACKEND_MEM_WARN:
+        return [f"운영 서버 메모리 {mem:.0f}MB / 512MB — {BACKEND_MEM_WARN}MB 넘음(넘치면 재시작). "
+                "src/memtrim.py · 큰 캐시(_MEMO·_STAT_FRAME·transfer_fit 풀) 확인"]
+    return []
 
 
 def check_backend() -> list[str]:
@@ -156,23 +170,24 @@ def check_backend() -> list[str]:
         h = requests.get(f"{BACKEND}/api/health", timeout=90).json()
     except (requests.RequestException, ValueError) as e:
         return [f"/api/health 실패 — {type(e).__name__}"]
+    out = _backend_memory(h)
     prod = str(h.get("commit") or "")
     if not prod:
-        return []                                         # commit 을 싣기 전 버전(첫 배포 전) — 판단 보류
+        return out                                        # commit 을 싣기 전 버전(첫 배포 전) — 판단 보류
     latest = None
     for path in BACKEND_PATHS:
         c = gh("commits", params={"sha": "main", "path": path, "per_page": 1})
         if c and (latest is None or c[0]["commit"]["committer"]["date"] > latest["commit"]["committer"]["date"]):
             latest = c[0]
     if latest is None or latest["sha"].startswith(prod):
-        return []
+        return out
     cmp = gh(f"compare/{latest['sha']}...{prod}")
     if cmp.get("status") in ("identical", "ahead"):
-        return []
+        return out
     at = latest["commit"]["committer"]["date"]
     if _age_h(at) < BACKEND_GRACE_H:
-        return []                                         # 다음 예약 배포 전
-    return [f"운영 백엔드가 옛 버전({prod[:7]}) — 최신 코드 {latest['sha'][:7]}({at[:16]}) {BACKEND_GRACE_H}시간 넘게 미반영. "
+        return out                                        # 다음 예약 배포 전
+    return out + [f"운영 백엔드가 옛 버전({prod[:7]}) — 최신 코드 {latest['sha'][:7]}({at[:16]}) {BACKEND_GRACE_H}시간 넘게 미반영. "
             "Deploy Backend 워크플로·Render Events 확인(빌드 분 한도·시작 실패면 requirements 누락 의심)"]
 
 
