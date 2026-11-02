@@ -2815,6 +2815,22 @@
    "away": "Parma",
    "at": "2026-11-02T22:31:18+00:00",
    "model": "gemini-3.1-flash-lite"
+  },
+  "401885403": {
+   "text": "Benfica가 Estádio da Luz에서 열린 경기에서 Alverca를 1-0으로 꺾고 승리를 거뒀다. 승부를 결정지은 유일한 득점은 51'에 Vangelis Pavlidis가 성공시킨 페널티킥이었다. Benfica는 점유율 65.2%와 패스 성공률 90%를 기록하며 경기를 주도했고, 팬 투표와 모델, Elo 예측 모두 Benfica의 승리를 점친 결과가 적중했다.",
+   "date": "2026-11-02",
+   "home": "Benfica",
+   "away": "Alverca",
+   "at": "2026-11-02T23:03:40+00:00",
+   "model": "gemini-3.1-flash-lite"
+  },
+  "401885407": {
+   "text": "Gil Vicente FC와 Vit. Guimarães의 경기는 득점 없이 0-0 무승부로 끝났다. 양 팀은 총 21개의 슈팅을 시도했으나 유효 슈팅은 각각 1개와 2개에 그쳤고, 점유율과 패스 성공률에서도 큰 차이를 보이지 않으며 팽팽한 흐름을 이어갔다. 경기 전 Gil Vicente FC의 승리를 예상했던 모델과 Elo의 예측은 이번 결과로 인해 빗나갔다.",
+   "date": "2026-11-02",
+   "home": "Gil Vicente FC",
+   "away": "Vit. Guimarães",
+   "at": "2026-11-02T23:03:43+00:00",
+   "model": "gemini-3.1-flash-lite"
   }
  },
  "fails": {
