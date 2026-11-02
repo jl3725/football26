@@ -280,8 +280,13 @@ export type Badge = { label: string; rank: number; medal: string; scope?: string
 export type ScoutTake = { l1?: string; l2?: string; src?: "ai"; at?: string; scene?: string;
   strengths?: string[]; weaks?: string[]; thin?: boolean; role?: string; role_evidence?: string };
 
+// 포지션별 OVR(src/position_ovr.py) — 역할·그 자리 OVR·익숙함(0~1, 최근 두 시즌 선발·TM 커리어 포지션)·레이더 템플릿
+export type PosOvr = { role: string; ovr: number; fam: number; tpl: string | null };
+export type TemplateTab = { key: string; en: string; ko: string; roles: string[]; ovr: number };
+
 export type PlayerDetail = {
   player: string; team: string; color: string; pos: string; line: string;
+  main_pos?: string | null; positions?: PosOvr[];
   age: number; nationality: string; value_eur: number; photo: string;
   ovr: number; ss_rating: number; minutes: number; goals: number; assists: number;
   contract_until: string; joined?: string | null; is_gk: boolean; trend?: Trend;
@@ -293,7 +298,7 @@ export type PlayerDetail = {
     basis?: "blend" | "season"; cur_minutes?: number; prior_minutes?: number; prior_share?: number; possession?: number | null; padj?: number;
     comps?: "all" | "league"; league_minutes?: number; x_minutes?: number; x_comps?: { code: string; name: string; minutes: number; weight: number }[];
     topup_minutes?: number;
-    eff_minutes?: number; enough?: boolean };
+    eff_minutes?: number; enough?: boolean; tabs?: TemplateTab[] };
   league?: string; league_level?: number; rating_epl?: number | null; proj?: Record<string, number>;
   categories_line?: MetricCat[]; radar_line?: { axis: string; value: number }[];   // 라인 공통 축(포지션 다른 선수 비교용)
   badges: Badge[];
@@ -412,9 +417,10 @@ export const getMatch = (t: string, eid: string, l = _league) =>
 export const getPlayers = (t: string, l = _league) => j<Players>(`/api/players/${q(t, l)}`);
 // basis — blend(기본: 시즌 초 안정화 + 점유율 보정) | season(이번 시즌만, 점유율 보정은 유지)
 // comps — all(기본: 리그 + 유럽·컵) | league(리그만) · peers=all — 8개 리그 같은 템플릿과 비교(리그 간 비교)
+// tpl — 레이더 템플릿(포지션 탭 DM·FB…), 없으면 대표 포지션 템플릿
 export const getPlayerDetail = (t: string, p: string, l = _league, basis: "blend" | "season" = "blend",
-  comps: "all" | "league" = "all", peers: "auto" | "all" = "auto") =>
-  j<PlayerDetail>(`/api/player/${encodeURIComponent(t)}/${encodeURIComponent(p)}?league=${encodeURIComponent(l)}${basis === "season" ? "&basis=season" : ""}${comps === "league" ? "&comps=league" : ""}${peers === "all" ? "&peers=all" : ""}`);
+  comps: "all" | "league" = "all", peers: "auto" | "all" = "auto", tpl?: string) =>
+  j<PlayerDetail>(`/api/player/${encodeURIComponent(t)}/${encodeURIComponent(p)}?league=${encodeURIComponent(l)}${basis === "season" ? "&basis=season" : ""}${comps === "league" ? "&comps=league" : ""}${peers === "all" ? "&peers=all" : ""}${tpl ? `&tpl=${encodeURIComponent(tpl)}` : ""}`);
 export const getTransfers = (t: string, l = _league) => j<Transfers>(`/api/transfers/${q(t, l)}`);
 export const getNews = (t: string, l = _league) => j<News>(`/api/news/${q(t, l)}`);
 export const getAnalytics = (t: string, l = _league) => j<Analytics>(`/api/analytics/${q(t, l)}`);

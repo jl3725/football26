@@ -63,19 +63,45 @@ function Bar({ label, pct, raw, low, att }: { label: string; pct: number; raw: n
   );
 }
 
+// 포지션별 OVR 칩 — 대표 먼저, 덜 뛴 자리(익숙함 60% 미만)는 점선. 자리가 하나뿐이면 OVR 상자(OVR · RW)로 충분
+function PosChips({ d }: { d: PlayerDetail }) {
+  const ps = d.positions ?? [];
+  if (ps.length < 2) return null;
+  return (
+    <div className="pd-pos">
+      {ps.map((p) => (
+        <span key={p.role} className={"pd-pos-c" + (p.role === d.main_pos ? " pd-pos-main" : "") + (p.fam < 0.6 ? " pd-pos-low" : "")}
+          title={`${p.role} ${p.ovr} · 익숙함 ${Math.round(p.fam * 100)}%`}>
+          <em>{p.role}</em><b style={{ color: tier(p.ovr).light }}>{p.ovr}</b>
+        </span>
+      ))}
+      <Info wide label="포지션별 OVR">
+        <p><b>포지션별 OVR</b> — 그 자리 핵심 지표(같은 OVR 선수 대비)와 익숙함으로 계산. 대표 = 가장 높은 자리.</p>
+        <p><b>익숙함</b> — 최근 두 시즌 그 자리 선발(지난 시즌은 절반) · TM 커리어 포지션. 덜 뛴 자리일수록 낮음(최대 −8).</p>
+        <p className="muted">점선 = 익숙함 60% 미만(땜질·경험 적은 자리)</p>
+      </Info>
+    </div>
+  );
+}
+
 function Detail({ team, player, accent, heatmap }: { team: string; player: string; accent: string; heatmap: HeatmapData | null }) {
   const [d, setD] = useState<PlayerDetail | null>(null);
   const [sim, setSim] = useState<SimilarResult[]>([]);
   const [simScope, setSimScope] = useState<"all" | "league">("all");   // 유사 선수 — 8개 리그 | 같은 리그
   const [basis, setBasis] = useState<"blend" | "season">("blend");     // 세부 지표 — 시즌 초 안정화 | 이번 시즌만
   const [comps, setComps] = useState<"all" | "league">("all");          // 세부 지표 — 전 대회(리그 + 유럽·컵) | 리그만
+  // 레이더 포지션 탭(대표 포지션 템플릿이 기본) — 선수가 바뀌면 저절로 기본으로(선수 이름과 함께 기억)
+  const [tplFor, setTplFor] = useState<{ p: string; t: string } | null>(null);
+  const tpl = tplFor?.p === player ? tplFor.t : undefined;
   const peek = usePeek();
   const hm = heatmap?.players?.find((p) => p.player === player);
   useEffect(() => {
-    let a = true; setD(null); setSim([]);
-    getPlayerDetail(team, player, undefined, basis, comps).then((x) => a && setD(x)).catch(() => {});
+    let a = true; setSim([]);
+    // 같은 선수의 기준·탭만 바뀌면 이전 화면을 둔 채 바꾼다(전체가 스켈레톤으로 깜빡이지 않게)
+    setD((prev) => (prev && prev.player === player && prev.team === team ? prev : null));
+    getPlayerDetail(team, player, undefined, basis, comps, "auto", tpl).then((x) => a && setD(x)).catch(() => {});
     return () => { a = false; };
-  }, [team, player, basis, comps]);
+  }, [team, player, basis, comps, tpl]);
   useEffect(() => {
     let a = true; setSim([]);
     getSimilar(player, undefined, simScope).then((x) => a && setSim(x.results)).catch(() => {});
@@ -102,7 +128,7 @@ function Detail({ team, player, accent, heatmap }: { team: string; player: strin
         <div style={{ flex: 1 }}>
           <div className="pd-name">{d.player}</div>
           {/* 빈 정보는 숨긴다 — 나이 0·국적 없음이 'DF · 0세 · '로 찍히던 194명(2026-10-20 점검) */}
-          <div className="pd-meta">{[d.pos, d.age > 0 ? `${d.age}세` : "", d.nationality].filter(Boolean).join(" · ")}</div>
+          <div className="pd-meta">{[d.positions?.length ? "" : d.pos, d.age > 0 ? `${d.age}세` : "", d.nationality].filter(Boolean).join(" · ")}</div>
           {(d.joined || d.contract_until) && (
             <div className="pd-meta">{[d.joined ? `입단 ${d.joined.slice(0, 7).replace("-", ".")}` : "",
               d.contract_until ? `계약 ~${d.contract_until.slice(0, 7).replace("-", ".")}${contractLeft(d.contract_until)}` : ""].filter(Boolean).join(" · ")}</div>
@@ -114,11 +140,12 @@ function Detail({ team, player, accent, heatmap }: { team: string; player: strin
             )}
             {d.value_eur > 0 && <>{" · "}{fmtEur(d.value_eur)}</>}
           </div>
+          <PosChips d={d} />
         </div>
         <div className="pd-ovr" style={{ color: t.light, borderColor: hexA(t.light, 0.5) }}
           title={`OVR ${d.ovr} · ${t.ko} (${ovrBand(d.ovr).range}) — ${ovrBand(d.ovr).desc}`}>
           <div className="teko" style={{ fontSize: 46, lineHeight: .8 }}>{d.ovr}</div>
-          <div style={{ fontSize: 10, letterSpacing: 1, color: "var(--muted)" }}>OVR</div>
+          <div style={{ fontSize: 11, letterSpacing: 1, color: "var(--muted)", whiteSpace: "nowrap" }}>OVR{d.main_pos ? <> · <b style={{ color: "var(--txt)" }}>{d.main_pos}</b></> : null}</div>
           <div style={{ fontSize: 11, fontWeight: 700, marginTop: 3, whiteSpace: "nowrap", fontFamily: "var(--font-ui)", letterSpacing: 0 }}>{t.ko}</div>
         </div>
       </div>
@@ -206,6 +233,14 @@ function Detail({ team, player, accent, heatmap }: { team: string; player: strin
           </div>
         );
       })()}
+      {(d.template?.tabs?.length ?? 0) > 1 && (
+        <div className="pd-tpl-tabs">
+          <span className="pd-tpl-tabs-h">POSITION <small>포지션별 레이더</small></span>
+          <span className="it-chips">{d.template!.tabs!.map((tb) => (
+            <button key={tb.key} className={d.template!.key === tb.key ? "on" : ""} title={`${tb.en} · ${tb.ko} 기준 백분위`}
+              onClick={() => setTplFor({ p: player, t: tb.key })}>{tb.roles.join("·")} <b>{tb.ovr}</b></button>))}</span>
+        </div>
+      )}
       {d.template ? (
         <div className="pd-tpl">
           <span className="pd-tpl-k">{d.template.en}</span>

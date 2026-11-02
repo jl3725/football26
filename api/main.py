@@ -1842,6 +1842,47 @@ def _role_counts_all() -> dict:
     return role_counts(None)
 
 
+def _pos_ovr_map(row) -> dict:
+    """{역할: 포지션 OVR} — player_frame 의 _pos_ovr(JSON, src/position_ovr.py). 없으면 {}."""
+    import json  # noqa: PLC0415
+    v = row.get("_pos_ovr") if hasattr(row, "get") else None
+    try:
+        return {k: int(x) for k, x in json.loads(v).items()} if isinstance(v, str) and v else {}
+    except (TypeError, ValueError):
+        return {}
+
+
+def _positions_of(row) -> list[dict]:
+    """[{role, ovr, fam, tpl}] — 대표 먼저, 그다음 OVR 높은 순. 화면 포지션 칩·탭."""
+    import json  # noqa: PLC0415
+
+    import position_ovr as po  # noqa: PLC0415
+    by = _pos_ovr_map(row)
+    if not by:
+        return []
+    try:
+        fam = json.loads(row.get("_pos_fam")) if isinstance(row.get("_pos_fam"), str) else {}
+    except (TypeError, ValueError):
+        fam = {}
+    main = row.get("_main_pos")
+    out = [{"role": r, "ovr": v, "fam": round(float(fam.get(r, 1.0)), 2), "tpl": po.ROLE_TEMPLATE.get(r)} for r, v in by.items()]
+    out.sort(key=lambda x: (x["role"] != main, -x["ovr"]))
+    return out
+
+
+def _template_tabs(positions: list[dict], ptpl) -> list[dict]:
+    """포지션 → 레이더 템플릿 탭(같은 템플릿 자리는 묶고 OVR 은 높은 쪽). 하나뿐이면 []."""
+    tabs: dict[str, dict] = {}
+    for p in positions:
+        t = p["tpl"]
+        if not t or t == "GK":
+            continue
+        tab = tabs.setdefault(t, {"key": t, "en": ptpl.LABEL[t][0], "ko": ptpl.LABEL[t][1], "roles": [], "ovr": p["ovr"]})
+        tab["roles"].append(p["role"])
+        tab["ovr"] = max(tab["ovr"], p["ovr"])
+    return list(tabs.values()) if len(tabs) > 1 else []
+
+
 def _pos_profile(r) -> dict:
     """선수 주포지션·2/3포지션(실제로 선 자리 우선, 부족하면 TM)."""
     import positions as ps  # noqa: PLC0415
@@ -2382,7 +2423,7 @@ def squad(team: str, league: str = ACTIVE_LEAGUE):
         cards.append({"player": r["player"], "ovr": _player_ovr(r), "minutes": int(_num(r.get("minutes"))),
                       "age": int(_num(r.get("age"))), "photo": _photo(r), "primary": pr["primary"],
                       "secondary": pr["secondary"], "injured": ps.norm_name(r["player"]) in inj,
-                      "role_starts": pr.get("roles") or {}})
+                      "role_starts": pr.get("roles") or {}, "pos_ovr": _pos_ovr_map(r)})
     buckets = []
     first_of: dict[str, str] = {}                         # 선수 → 이미 1st 인 자리(한 선수는 한 자리에서만 1st)
     # 1st 판단은 이번 시즌 리그 선발만(지난 시즌 0.5 가중이 섞인 역할 집계로는 Ødegaard·Eze AM 이 동점이었다) —
@@ -2396,8 +2437,10 @@ def squad(team: str, league: str = ACTIVE_LEAGUE):
         for c in cards:
             c["role_starts"] = dict(ps.lookup(cur_roles, c["player"]) or {})
     for b in ps.ROLES:
-        main = sorted([c for c in cards if c["primary"] == b], key=lambda x: (-x["ovr"], -x["minutes"]))
-        alt = sorted([c for c in cards if b in c["secondary"]], key=lambda x: (-x["ovr"], -x["minutes"]))
+        # 그 자리 OVR = 포지션별 OVR(src/position_ovr.py — 덜 뛴 자리는 낮게), 없으면 대표 OVR
+        at = [{**{k: v for k, v in c.items() if k != "pos_ovr"}, "ovr": c["pos_ovr"].get(b, c["ovr"])} for c in cards]
+        main = sorted([c for c in at if c["primary"] == b], key=lambda x: (-x["ovr"], -x["minutes"]))
+        alt = sorted([c for c in at if b in c["secondary"]], key=lambda x: (-x["ovr"], -x["minutes"]))
         opts = [{**c, "kind": "primary"} for c in main] + [{**c, "kind": "secondary"} for c in alt]
         if not opts:
             continue
@@ -2967,8 +3010,9 @@ def _season_log(team: str, player: str, league: str, is_gk: bool = False, fm_id=
 @app.get("/api/player/{team}/{player}")
 @_memo(ttl=21600)
 def player_detail(team: str, player: str, league: str = ACTIVE_LEAGUE, basis: str = "blend", comps: str = "all",
-                  peers: str = "auto"):
-    """peers=all — 템플릿 백분위를 늘 8개 리그 같은 템플릿과 비교(리그가 다른 두 선수 비교 — 같은 잣대, P2 ⑥)."""
+                  peers: str = "auto", tpl: str | None = None):
+    """peers=all — 템플릿 백분위를 늘 8개 리그 같은 템플릿과 비교(리그가 다른 두 선수 비교 — 같은 잣대, P2 ⑥).
+    tpl — 레이더 템플릿(포지션 탭: DM·FB…). 없으면 대표 포지션(src/position_ovr.py)의 템플릿."""
     full = _pf(league)
     if full is None:
         raise HTTPException(404, "players not found")
@@ -3018,8 +3062,13 @@ def player_detail(team: str, player: str, league: str = ACTIVE_LEAGUE, basis: st
     # 포지션 템플릿(src/position_templates.py) — DM·CM·AM·W·ST·CB·FB·GK 마다 다른 지표·레이더 축, 같은 템플릿끼리 백분위.
     # 예전엔 모든 필드 플레이어가 같은 6축이고 비교 대상이 '같은 라인'(수비형·공격형 미드를 한 무리로) 이었다.
     # 위 categories·radar(라인 기준)는 포지션이 다른 두 선수를 비교할 때 쓰도록 *_line 으로 남긴다.
+    import position_ovr as po  # noqa: PLC0415
     import position_templates as ptpl  # noqa: PLC0415
-    tpl_key = "GK" if is_gk else ptpl.template_of(row.get("tm_position"), row.get("pos"))
+    positions = _positions_of(row)
+    main_pos = row.get("_main_pos") if isinstance(row.get("_main_pos"), str) else None
+    tpl_key = "GK" if is_gk else (po.ROLE_TEMPLATE.get(main_pos) or ptpl.template_of(row.get("tm_position"), row.get("pos")))
+    if not is_gk and tpl in ptpl.TEMPLATES and tpl != "GK":
+        tpl_key = tpl
     # 점유율 보정 + 시즌 초 안정화(basis=blend, 기본) — 비교 대상 전원 같은 기준(_stat_frame)
     basis = "season" if basis == "season" else "blend"
     comps = "league" if comps == "league" else "all"      # 기본 = 전 대회(리그 + 유럽·컵, 2026-10-21 사용자)
@@ -3043,7 +3092,9 @@ def player_detail(team: str, player: str, league: str = ACTIVE_LEAGUE, basis: st
                 "eff_minutes": int(cur_m + pri_m), "enough": bool(cur_m + pri_m >= (300 if is_gk else 450)),
                 "prior_share": round(pri_m / (cur_m + pri_m), 2) if cur_m + pri_m else 0.0,
                 "possession": None if pd.isna(trow.get("_poss")) else round(float(trow.get("_poss")), 1),
-                "padj": round(float(trow.get("_padj_f") or 1.0), 2)}
+                "padj": round(float(trow.get("_padj_f") or 1.0), 2),
+                # 포지션 탭 — 이 선수가 서는 자리의 템플릿(대표 먼저, LB·RB = FB · LW·RW = W 처럼 묶음)
+                "tabs": _template_tabs(positions, ptpl)}
 
     # 리그 랭크 배지
     badge_cfg = [("선방율", "gk_save_pct"), ("클린시트", "gk_cs_pct")] if is_gk else _BADGE_METRICS
@@ -3115,6 +3166,8 @@ def player_detail(team: str, player: str, league: str = ACTIVE_LEAGUE, basis: st
         "contract_until": str(row.get("tm_contract_until") or ""),
         "joined": str(row.get("tm_joined_date") or "")[:10] or None,     # 입단일 — 헤더 '입단 2023-07 · 계약 ~2028-06'
         "is_gk": is_gk, "categories": prof["categories"], "radar": prof["radar"], "template": template,
+        # 포지션별 OVR(src/position_ovr.py) — 대표 포지션과 다른 자리 OVR·익숙함(0~1)
+        "main_pos": main_pos, "positions": positions,
         # 리그 간 비교(P2 ⑥) — 리그 수준, EPL 환산 평점(리그 보정), 다른 리그로 옮기면 예상 OVR(_project_ovr)
         "league": league, "league_level": _LEAGUE_LEVEL.get(league),
         "rating_epl": round(_num(row.get("ss_rating")) - _ll.rating_offset(_LEAGUE_LEVEL.get(league)), 2) if _num(row.get("ss_rating")) > 0 else None,
@@ -4137,7 +4190,11 @@ _STARTER_ROLES = {"핵심 주전", "주전·유럽 로테이션", "리그 주전
 
 def _pos_label(row) -> str:
     """화면 표시용 세부 포지션(CB·DM·RW…). FBref 대분류 'MF'·'FW,MF' 로는 사카·라이스가 다 'MF' 였다.
-    역할 정보(tm_position·fl_group)가 없으면 FBref 값 그대로."""
+    역할 정보(tm_position·fl_group)가 없으면 FBref 값 그대로. 대표 포지션(src/position_ovr.py)이 있으면 그것 —
+    보이는 OVR 이 그 자리 OVR 이라(헤더 'OVR 89 · DM' 인데 목록은 TM 'AM' 이던 소보슬라이)."""
+    mp = row.get("_main_pos")
+    if isinstance(mp, str) and mp:
+        return mp
     if any(pd.notna(row.get(c)) and str(row.get(c)).strip() for c in ("tm_position", "fl_group")):
         return _pos_bucket(row)
     return str(row.get("pos") or "")

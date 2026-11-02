@@ -40,8 +40,8 @@ def team_sources(m, team: str, lg: str, db_rows: list[dict], detail_names: list[
             _add(src, "squad", p.get("player"), p.get("ovr"))
     for b in sq.get("buckets") or []:
         for p in [b.get("starter")] + list(b.get("rotation") or []):
-            if p:
-                _add(src, "squad_depth", p.get("player"), p.get("ovr"))
+            if p:                               # 뎁스 칸 = 그 자리 포지션 OVR(src/position_ovr.py) — '선수@자리'로 따로 대조
+                _add(src, "squad_depth", f"{p.get('player')}@{b.get('pos')}", p.get("ovr"))
     for p in (m.players(team, lg).get("players") or []):
         _add(src, "players", p.get("player"), p.get("ovr"))
     ov = m.overview(team, lg)
@@ -76,6 +76,7 @@ def audit_league(m, lg: str, detail_n: int) -> dict:
     if "left_for" in cur.columns:
         cur = cur[cur["left_for"].isna() | (cur["left_for"].astype(str).str.strip() == "")]
     truth = {(str(r["squad"]), str(r["player"])): int(r["_ovr"]) for _, r in cur.iterrows() if r.get("_ovr") == r.get("_ovr")}
+    pos_truth = {(str(r["squad"]), str(r["player"])): m._pos_ovr_map(r) for _, r in cur.iterrows()}
     db = json.loads(m.database().body.decode("utf-8"))["players"]
     db_by_team: dict[str, list[dict]] = {}
     for r in db:
@@ -86,7 +87,11 @@ def audit_league(m, lg: str, detail_n: int) -> dict:
         top = cur[cur["squad"] == team].sort_values("_ovr", ascending=False)["player"].astype(str).head(detail_n).tolist()
         for name, vals in team_sources(m, team, lg, db_by_team.get(team, []), top).items():
             for player, v in vals.items():
-                t = truth.get((team, player))
+                if name == "squad_depth":           # 그 자리 OVR, 없으면 대표 OVR
+                    player, pos = player.rsplit("@", 1)
+                    t = pos_truth.get((team, player), {}).get(pos, truth.get((team, player)))
+                else:
+                    t = truth.get((team, player))
                 if t is None:
                     continue                    # 기준표 밖(계약 명단만 있는 백업 등) — 따로 계산된 값이라 비교 안 함
                 checked += 1
