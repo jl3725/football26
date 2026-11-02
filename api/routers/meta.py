@@ -51,8 +51,22 @@ def health():
         # 이 프로세스가 언제 떴나(재시작·재배포 횟수 확인) + 실행 중 데이터 받기 상태(src/live_sync.py)
         "up_since": live_sync.STATE["started"],
         "live_sync": {k: live_sync.STATE[k] for k in ("enabled", "data_sha", "data_at", "db_at", "data_files",
-                                                       "news_sha", "news_at", "small_at", "small_updated", "last_error")},
+                                                       "news_sha", "news_at", "small_at", "small_updated", "last_error",
+                                                       "swap_wait", "swaps_deferred")},
+        # 미리 데우기 상태 · 메모리(512MB 서버 — 넘치면 재시작) — '운영이 느리다'를 숫자로 보려고(2026-11-03)
+        "proc": {"warming": live_sync.STATE["warming"], "warm_at": live_sync.STATE["warm_at"],
+                 "warm_sec": live_sync.STATE["warm_sec"], "mem_mb": _mem_mb()},
     }
+
+
+def _mem_mb() -> float | None:
+    """지금 프로세스 메모리(RSS, MB) — 리눅스(/proc)만, 그 밖엔 None."""
+    try:
+        with open("/proc/self/statm", encoding="ascii") as f:
+            pages = int(f.read().split()[1])
+        return round(pages * os.sysconf("SC_PAGE_SIZE") / 2**20, 1)
+    except (OSError, ValueError, AttributeError, IndexError):
+        return None
 
 
 @router.get("/ops/status")

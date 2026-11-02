@@ -62,6 +62,8 @@ def _setup(tmp_path, monkeypatch, remote: dict[str, bytes], db: bytes, main_sha=
     monkeypatch.setattr(live_sync, "_HASHES", {})
     monkeypatch.setattr(live_sync, "_ON_DB_SWAP", [])
     monkeypatch.setitem(live_sync.STATE, "data_sha", "")
+    monkeypatch.setitem(live_sync.STATE, "db_at", "")
+    monkeypatch.setitem(live_sync.STATE, "warming", False)
     (tmp_path / "data").mkdir(exist_ok=True)
     man = {"main_sha": main_sha, "db_sha": _h(db), "db_gz": "data/football.db.gz", "code_sig": sig,
            "files": {p: _h(b) for p, b in remote.items()}}
@@ -91,6 +93,31 @@ def test_sync_data_replaces_changed_and_swaps_db(tmp_path, monkeypatch):
     assert called == [1] and live_sync.STATE["data_sha"] == "m1"
     assert not list((tmp_path / "data").rglob("*.part"))
     assert live_sync.sync_data(get) == 0                             # 같은 배포본이면 다시 안 받는다
+
+
+def test_runtime_swap_waits_for_warm_up_and_gap(tmp_path, monkeypatch):
+    """실행 중 교체는 데우는 중이거나 직전 교체 20분 안이면 다음 차례로 — 경기일 10~15분마다 교체·데우기가 겹쳐
+    운영이 늘 느렸다(2026-11-03). 시작 때(notify=False)는 바로 받는다."""
+    import datetime as dt
+    (tmp_path / "data").mkdir()
+    (tmp_path / "data" / "football.db").write_bytes(b"OLD")
+    get, _ = _setup(tmp_path, monkeypatch, {"data/a.csv": b"A"}, b"NEW")
+    monkeypatch.setattr(live_sync, "reset_caches", lambda: 0)
+    calls = []
+
+    def counting_get(url, **kw):
+        calls.append(url)
+        return get(url, **kw)
+    live_sync.warming(True)
+    assert live_sync.sync_data(counting_get) == 0 and not calls and live_sync.STATE["swap_wait"] == "warming"
+    live_sync.warming(False, 12.0)
+    recent = (dt.datetime.now(dt.timezone.utc) - dt.timedelta(minutes=5)).isoformat(timespec="seconds")
+    monkeypatch.setitem(live_sync.STATE, "db_at", recent)
+    assert live_sync.sync_data(counting_get) == 0 and not calls and live_sync.STATE["swap_wait"] == "gap"
+    assert live_sync.sync_data(counting_get, notify=False) == 2          # 시작 때는 미루지 않음
+    old = (dt.datetime.now(dt.timezone.utc) - dt.timedelta(minutes=25)).isoformat(timespec="seconds")
+    monkeypatch.setitem(live_sync.STATE, "db_at", old)
+    assert live_sync.swap_wait() == ""
 
 
 def test_sync_data_skips_caches_built_by_other_code(tmp_path, monkeypatch):

@@ -34,10 +34,17 @@ ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
 SMALL = ["data/ai/news_digest.json", "data/news_claims.csv", "data/news_reliability.csv", "data/ops/watchdog.json"]
 SMALL_EVERY, NEWS_EVERY, DATA_EVERY, FIRST_WAIT = 30 * 60, 2 * 3600, 3 * 60, 90
+# 실행 중 DB 교체 최소 간격 · 데우는 중엔 교체 미룸 — 교체마다 캐시를 다 비우고 다시 데우는데(운영 0.1 CPU 로 수 분),
+# 경기일엔 배포본이 10~15분마다 바뀌어(11/1 하루 29번) 서버가 거의 늘 데우는 중이었고, 데우기가 겹치면 메모리가 넘쳐
+# 재시작됐다(2026-11-03 사용자 '운영이 자꾸 느리고 안 뜬다'). 방금 경기 평점(JUST PLAYED)은 Vercel 이 따로 받아 영향 없음
+SWAP_MIN_GAP = 20 * 60
+WARM_STALE = 30 * 60      # 데우기가 이보다 오래 '진행 중'이면 멈춘 것으로 보고 교체를 막지 않는다
 DATA_BRANCH = "data-live"
 STATE: dict = {"started": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"), "enabled": False,
                "news_sha": "", "news_at": "", "small_at": "", "small_updated": 0, "last_error": "",
-               "data_sha": "", "data_ref": "", "data_caches": True, "data_at": "", "data_files": 0, "db_at": ""}
+               "data_sha": "", "data_ref": "", "data_caches": True, "data_at": "", "data_files": 0, "db_at": "",
+               "warming": False, "warm_at": "", "warm_sec": None, "swap_wait": "", "swaps_deferred": 0}
+_WARM_T0: list[float] = []
 _ETAGS: dict[str, str] = {}
 _HASHES: dict[str, tuple[float, int, str]] = {}        # 경로 → (수정 시각, 크기, sha256) — 같은 파일을 매번 다시 읽지 않게
 _ON_DB_SWAP: list = []
@@ -112,6 +119,30 @@ def _sha256(p: Path) -> str | None:
     return h.hexdigest()
 
 
+def warming(on: bool, sec: float | None = None) -> None:
+    """api 미리 데우기 시작·끝 — 데우는 중엔 DB 교체를 미룬다(swap_wait)."""
+    STATE["warming"] = on
+    if on:
+        _WARM_T0[:] = [time.monotonic()]
+    else:
+        STATE["warm_at"] = dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")
+        STATE["warm_sec"] = None if sec is None else round(sec, 1)
+
+
+def swap_wait(now: dt.datetime | None = None) -> str:
+    """지금 DB 를 바꿔 넣으면 안 되는 이유('' = 바꿔도 됨) — 데우는 중 · 직전 교체 SWAP_MIN_GAP 안."""
+    if STATE.get("warming") and _WARM_T0 and time.monotonic() - _WARM_T0[0] < WARM_STALE:
+        return "warming"
+    if STATE.get("db_at"):
+        try:
+            last = dt.datetime.fromisoformat(STATE["db_at"])
+        except ValueError:
+            return ""
+        if ((now or dt.datetime.now(dt.timezone.utc)) - last).total_seconds() < SWAP_MIN_GAP:
+            return "gap"
+    return ""
+
+
 def on_db_swap(fn) -> None:
     """서버 DB 를 바꿔 넣은 뒤 부를 함수(api: 미리 데우기)."""
     _ON_DB_SWAP.append(fn)
@@ -161,7 +192,13 @@ def _code_sig() -> str:
 
 
 def sync_data(get=requests.get, notify: bool = True) -> int:
-    """data-live 배포본에서 바뀐 파일만 받아 바꿔 넣는다. 바꾼 파일 수(0 = 그대로)."""
+    """data-live 배포본에서 바뀐 파일만 받아 바꿔 넣는다. 바꾼 파일 수(0 = 그대로).
+    실행 중(notify=True)엔 데우는 중이거나 직전 교체가 SWAP_MIN_GAP 안이면 다음 차례로 미룬다(시작 때는 바로)."""
+    wait = swap_wait() if notify else ""
+    STATE["swap_wait"] = wait
+    if wait:
+        STATE["swaps_deferred"] += 1
+        return 0
     _load_mark()
     ref = head(get=get)
     if ref and ref == STATE["data_ref"]:
