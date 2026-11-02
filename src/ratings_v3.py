@@ -155,10 +155,13 @@ UNDERPERF_GAP, UNDERPERF_K, UNDERPERF_MIN_AGE = 6.0, 0.5, 22.0
 # 쿠냐 87→86(같은 페이스면 1,100분 무렵 84), 음뵈모 87→86. 포지션 평균 쪽으로 수축하면 시즌 초엔 폼 94 브루노까지 깎였고,
 # 차감 0.7+ 이면 쿠냐 85 지만 강팀 센터백(Pacho·Bastoni·Inácio)이 스카우트 범위 밖으로 나갔다.
 SLUMP_GAP, SLUMP_K, SLUMP_FULL_MIN, SLUMP_MAX, SLUMP_PRIOR_MIN = 3.0, 0.5, 1500.0, 4.0, 600.0
+# 이번 시즌 상승(SEASON RISE) — SLUMP 의 거울. 부진만 빼고 상승은 몸값이 따라올 때까지 안 올려 줘, 커리어 평균보다 잘하는 시즌의
+# 선수(브라이튼 3위 — 주전 평점 리그 3위인데 OVR 11위, 그로스·덩크·더 카위퍼르)가 낮게 남았다(2026-11-02 사용자). 같은 간격·비율·상한
+RISE_GAP, RISE_K, RISE_MAX = SLUMP_GAP, SLUMP_K, SLUMP_MAX
 # v3.6 탐색(golden 위반 0 · 스카우트 3+ 이탈 0 · Groß 78 · Dowman 70 · Vušković>Konsa): 36세 45%
 _VET_PE_AGES, _VET_PE_W = (30.0, 32.0, 34.0, 36.0), (0.0, 0.18, 0.34, 0.45)
 # 모델 버전 — 바뀌면 rating_history 가 과거 기록을 평행이동해 모델 변경이 선수 추이(▲▼)로 보이지 않게 한다
-MODEL_VERSION = "v3.11"
+MODEL_VERSION = "v3.12"
 # 잠재력 프리미엄 — 같은 시장가치·리그에서 어린 선수의 실제 경기력(리그 보정 평점)이 낮은 만큼(vov 환산).
 # 25/26 1,500분+ 1,450명 회귀(27~29세 기준): 17~20세 −6.8 · 21세 −4.9 · 22세 −5.1 · 23세 −4.4 · 24세 −3.9 ·
 # 25세 −3.8 · 26세 −2.4 (같은 회귀에서 30~32세 +5.3 · 33세+ +9.4 — 베테랑 보정과 같은 근거).
@@ -388,6 +391,13 @@ def absolute_ovr(*, value, ss_rating, minutes, age, pos_group,
                 cut = min(SLUMP_MAX, SLUMP_K * min(over, decline) * _clamp(c_w / SLUMP_FULL_MIN, 0.0, 1.0))
                 rec("slump", -cut)
                 raw -= cut
+            # 거울: 이번 시즌이 자기 수준보다 높고(rise), OVR 이 이번 시즌 수준보다 RISE_GAP 넘게 낮을 때(under)만
+            under = (PE_A + PE_B * (cur - _SS_MID[ln]) + _POS_ADJ[ln]) - _soft_cap(raw) - RISE_GAP
+            rise = PE_B * (cur - own)
+            if RISE_K > 0 and under > 0 and rise > 0:
+                up = min(RISE_MAX, RISE_K * min(under, rise) * _clamp(c_w / SLUMP_FULL_MIN, 0.0, 1.0))
+                rec("rise", up)
+                raw += up
     bm = _big_match_bonus(ucl_starts, uel_starts, conf_starts, cup_starts)
     raw += bm
     rec("big", bm)
@@ -611,6 +621,7 @@ PART_LABELS = {
     "youth": ("POTENTIAL", "어린 선수 몸값의 잠재력 몫 빼기"), "gate": ("UNPROVEN", "출전 부족 — 검증 전 기준점 쪽으로"),
     "underperf": ("UNDERPERFORM", "몸값 대비 경기력 저조 — 평점 수준보다 크게 높은 몫 일부 빼기"),
     "slump": ("SEASON SLUMP", "이번 시즌 부진 — 몸값이 아직 반영 못 한 이번 시즌 평점 수준 쪽으로"),
+    "rise": ("SEASON RISE", "이번 시즌 상승 — 몸값이 아직 반영 못 한 이번 시즌 평점 수준 쪽으로"),
     "cap": ("TOP CAP", "88 초과분 압축"), "league": ("LEAGUE", "리그 수준 보정"), "youth_cap": ("AGE CAP", "나이별 천장"),
 }
 

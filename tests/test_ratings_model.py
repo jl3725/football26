@@ -110,6 +110,25 @@ def test_season_slump_pulls_stale_value_down() -> None:
             < rv3.absolute_ovr(ss_rating=7.45, minutes=550, **kw))
 
 
+def test_season_rise_mirrors_slump() -> None:
+    # 브라이튼 그로스(2026-11-02): €2.5M · 35세 · 이번 시즌 7.18(791분)이 지난 시즌 7.07·그 전 6.97 보다 높다 — 부진은 빼고
+    # 상승은 안 올려 77 이었다(브라이튼 주전 평점 리그 3위인데 OVR 11위). 상승이 없거나 출전이 적으면 거의 없음
+    kw = dict(value=2.5e6, age=35, pos_group="MID", league_level=100, prev_minutes=1636, prev_ss_rating=7.07,
+              hist_ss_rating=6.97, hist_minutes=2500)
+
+    def rise(**k) -> float:
+        parts: list = []
+        rv3.absolute_ovr(_parts=parts, **{**kw, **k})
+        return dict(parts).get("rise", 0.0)
+
+    assert rise(ss_rating=7.45, minutes=800) >= 0.5
+    assert rise(ss_rating=6.95, minutes=800) == 0.0                    # 자기 수준 이하 — 상승 아님
+    assert rise(ss_rating=7.45, minutes=90) < 0.3                      # 표본 적음
+    assert rise(ss_rating=7.45, minutes=3000) <= rv3.RISE_MAX
+    # 몸값이 이미 이번 시즌 수준을 말하는 선수(€80M)는 올리지 않는다
+    assert rise(ss_rating=7.45, minutes=800, value=80e6, age=26) == 0.0
+
+
 def test_value_jump_guard_ignores_tiny_prev_value() -> None:
     # 직전 시장가치 €150K(매칭 오류·1군 데뷔)는 '급등'으로 보지 않는다 — Cho 77→60 같은 폭락 방지
     kw = dict(value=15e6, ss_rating=6.93, minutes=76, age=22, pos_group="ATT", prev_minutes=1667,

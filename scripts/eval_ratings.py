@@ -111,7 +111,10 @@ def audit(s: pd.DataFrame) -> dict:
     d["delta"] = d["ovr"] - d["ovr_prev"]
     full_prev = d["prev_season_min"].fillna(0) >= 1500
     rules = {
-        "rise": ("지난 시즌(1,500분+) 대비 +6 이상 — 한 시즌 급등", full_prev & (d["delta"] >= 6)),
+        # 이번 시즌 평점이 받쳐 주는 급등(7.2+ · 450분+)은 빼고 — v3.12 SEASON RISE 로 진짜 상승(벨기에·네덜란드 7.2~7.9)이
+        # 늘어 데이터 오류 감시가 묻혔다(2026-11-02 27명). 근거 약한 급등(몸값만 오른 것·소표본)만 센다
+        "rise": ("지난 시즌(1,500분+) 대비 +6 이상인데 이번 시즌 평점(7.2+·450분+)이 받쳐 주지 않는 급등",
+                 full_prev & (d["delta"] >= 6) & ~((d["ss_rating"].fillna(0) >= 7.2) & (d["minutes"].fillna(0) >= 450))),
         "fall": ("지난 시즌(1,500분+) 대비 −8 이하 — 급락(부상·이적·데이터 오류?)",
                  full_prev & (d["delta"] <= -8) & (d["minutes"].fillna(0) >= 450)),
         "underperf_high": ("OVR 86+ 인데 리그 보정 평점이 포지션 평균보다 0.1 넘게 낮음(900분+)",
