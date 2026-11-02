@@ -58,7 +58,7 @@ Lyon,Rémy Descamps,767014,keepers,GK,Goalkeeper,GK,30,1996-06-25,40.0,FRA,False
 Lyon,Lassine Diarra,1510394,keepers,GK,Goalkeeper,GK,23,2002-11-11,50.0,MLI,False,,2026-11-02
 Lyon,Nicolás Tagliafico,195750,defenders,"LB,CB",Left-Back,DF,34,1992-08-31,3.0,ARG,False,,2026-11-02
 Lyon,Zachary Athekame,1595629,defenders,"RB,RM",Right-Back,DF,21,2004-12-13,13.0,SUI,False,,2026-11-02
-Lyon,Abner,1060604,defenders,"LB,CDM,LWB,LW",Left-Back,DF,26,2000-05-27,16.0,BRA,False,,2026-11-02
+Lyon,Abner,1060604,defenders,"LB,LWB,LW,CDM,CM",Left-Back,DF,26,2000-05-27,16.0,BRA,False,,2026-11-02
 Lyon,Moussa Niakhaté,592102,defenders,CB,Centre-Back,DF,30,1996-03-08,19.0,SEN,False,,2026-11-02
 Lyon,Felix Bacher,951498,defenders,CB,Centre-Back,DF,26,2000-10-25,20.0,AUT,False,,2026-11-02
 Lyon,Ruben Kluivert,1125076,defenders,"CB,LB,RB",Centre-Back,DF,25,2001-05-21,21.0,NED,False,,2026-11-02
@@ -69,16 +69,16 @@ Lyon,Noham Kamara,1744188,defenders,CB,Centre-Back,DF,19,2007-01-22,85.0,FRA,Fal
 Lyon,Paul Akouokou,797132,midfielders,CDM,Defensive Midfield,MF,28,1997-12-20,,CIV,False,,2026-11-02
 Lyon,Mads Bidstrup,1081025,midfielders,"CM,CDM",Central Midfield,MF,25,2001-02-25,2.0,DEN,False,,2026-11-02
 Lyon,Tanner Tessmann,1057433,midfielders,"CDM,CM,CB",Defensive Midfield,MF,25,2001-09-24,6.0,USA,False,,2026-11-02
-Lyon,Corentin Tolisso,473852,midfielders,"CAM,CDM,CM,LW",Attacking Midfield,MF,32,1994-08-03,8.0,FRA,False,,2026-11-02
+Lyon,Corentin Tolisso,473852,midfielders,"CM,CAM,CDM,LW",Central Midfield,MF,32,1994-08-03,8.0,FRA,False,,2026-11-02
 Lyon,Khalis Merah,1793640,midfielders,"CAM,CM,ST",Attacking Midfield,MF,19,2007-02-24,18.0,FRA,False,,2026-11-02
 Lyon,Tyler Morton,1113724,midfielders,"CDM,CM,CB",Defensive Midfield,MF,24,2002-10-31,23.0,ENG,True,Late November 2026,2026-11-02
 Lyon,Cluver Sambi Mbungu,2429665,midfielders,,Central Midfield,MF,17,2008-11-08,33.0,COD,False,,2026-11-02
-Lyon,Mohamed Ouédraogo,1512829,midfielders,"LM,LB,LWB,CB",Left Midfield,MF,23,2003-01-02,76.0,BFA,True,Late June 2027,2026-11-02
+Lyon,Mohamed Ouédraogo,1512829,midfielders,"LM,LWB,LB,CB",Left Midfield,MF,23,2003-01-02,76.0,BFA,True,Late June 2027,2026-11-02
 Lyon,Noah Nartey,1368710,midfielders,"CM,CAM,ST,LW",Central Midfield,MF,21,2005-10-05,99.0,DEN,False,,2026-11-02
 Lyon,Ernest Nuamah,1338390,attackers,"RW,ST",Right Winger,FW,23,2003-11-01,7.0,GHA,False,,2026-11-02
 Lyon,Pavel Šulc,1037539,attackers,"CAM,ST,RW,LW",Attacking Midfield,FW,25,2000-12-29,10.0,CZE,True,Early January 2027,2026-11-02
 Lyon,Keito Nakamura,887704,attackers,"LW,LWB,ST,LM",Left Winger,FW,26,2000-07-28,11.0,JPN,False,,2026-11-02
-Lyon,Loïs Openda,747767,attackers,"ST,LW",Centre-Forward,FW,26,2000-02-16,17.0,BEL,True,Mid November 2026,2026-11-02
+Lyon,Loïs Openda,747767,attackers,ST,Centre-Forward,FW,26,2000-02-16,17.0,BEL,True,Mid November 2026,2026-11-02
 Lyon,Julien Duranville,1368304,attackers,"RW,LW",Right Winger,FW,20,2006-05-05,24.0,BEL,False,,2026-11-02
 Lyon,Kaïl Boudache,1896949,attackers,"RW,CAM",Right Winger,FW,20,2006-06-15,26.0,ALG,False,,2026-11-02
 Lyon,Alejandro Gomes Rodríguez,1603531,attackers,"ST,LW",Centre-Forward,FW,18,2008-03-11,32.0,ENG,False,,2026-11-02
@@ -272,7 +272,7 @@ Lorient,Mohamed Bamba,1202239,attackers,ST,Centre-Forward,FW,24,2001-12-10,9.0,C
 Lorient,Isak Steiner Jensen,1202070,attackers,"LW,RW",Left Winger,FW,22,2003-12-23,10.0,DEN,False,,2026-11-02
 Lorient,Aiyegun Tosin,841395,attackers,"ST,RW",Centre-Forward,FW,28,1998-06-26,15.0,BEN,False,,2026-11-02
 Lorient,Ibrahima Baldé,1282665,attackers,ST,Centre-Forward,FW,23,2003-01-17,18.0,FRA,False,,2026-11-02
-Lorient,Souleymane Faye,1107257,attackers,"LW,CAM",Left Winger,FW,23,2003-02-08,19.0,SEN,False,,2026-11-02
+Lorient,Souleymane Faye,1107257,attackers,LW,Left Winger,FW,23,2003-02-08,19.0,SEN,False,,2026-11-02
 Lorient,Samir Haribou,2357100,attackers,,Centre-Forward,FW,19,2007-04-18,31.0,FRA,False,,2026-11-02
 Lorient,Mamadou Koné,1888816,attackers,ST,Centre-Forward,FW,19,2006-11-20,42.0,CIV,False,,2026-11-02
 Toulouse,Theo Collin,2221627,keepers,,Goalkeeper,GK,20,2006-06-16,1.0,FRA,False,,2026-11-02

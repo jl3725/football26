@@ -2759,6 +2759,30 @@
    "away": "Servette",
    "at": "2026-11-02T02:47:49+00:00",
    "model": "gemini-3.1-flash-lite"
+  },
+  "5739537": {
+   "text": "FC København이 Sønderjyske를 상대로 2-0 승리를 거뒀다. 전반 20'에 터진 Felix Beijmo의 득점과 40'에 이어진 Andreas Cornelius의 골로 결정됐다. 경기 기록 비교에서 FC København이 점유율 66.1대 33.9, 슈팅 13대 4로 경기를 압도했다. FC København의 승리를 점쳤던 모델과 Elo의 사전 예측은 적중했다.",
+   "date": "2026-11-02",
+   "home": "Sønderjyske",
+   "away": "FC København",
+   "at": "2026-11-02T20:27:31+00:00",
+   "model": "gemini-flash-lite-latest"
+  },
+  "401874963": {
+   "text": "Fiorentina가 Sassuolo를 상대로 4-2 승리를 거두며 원정에서 귀중한 승점 3점을 챙겼다. 경기는 25' Armand Laurienté의 선제골로 Sassuolo가 앞서갔으나, 45'+2' Mateo Pellegrino, 50' Alieu Njie, 79' Franco Mastantuono, 90'+3' Víctor Valdepeñas의 연속 득점이 터지며 Fiorentina가 역전승을 완성했다. Sassuolo가 58.2%의 점유율을 기록했음에도 Fiorentina는 슈팅 15회와 유효 슈팅 6회를 기록하며 공격 효율성에서 앞섰다. 이번 결과는 Fiorentina의 승리를 예측했던 모델의 분석과 일치했다.",
+   "date": "2026-11-02",
+   "home": "Sassuolo",
+   "away": "Fiorentina",
+   "at": "2026-11-02T20:27:39+00:00",
+   "model": "gemini-3.1-flash-lite"
+  },
+  "5904789": {
+   "text": "Gençlerbirliği가 Alanyaspor를 상대로 5-0 대승을 거두며 경기를 마무리했다. 1' Ogulcan Ülgün의 선제골을 시작으로 59' Franco Tongya, 66'와 78' Tiago Gouveia, 68' Pedro Mendes가 연달아 득점에 성공했다. 점유율은 41.2% 대 58.8%로 Alanyaspor가 높았으나, 슈팅 수에서 12 대 9, 유효 슈팅에서 7 대 3으로 앞선 Gençlerbirliği가 효율적인 공격을 펼쳤다. 이번 결과는 Alanyaspor의 승리를 점쳤던 모델의 예측과 달리 Elo의 승리 예측이 적중한 경기였다.",
+   "date": "2026-11-02",
+   "home": "Gençlerbirliği",
+   "away": "Alanyaspor",
+   "at": "2026-11-02T20:27:44+00:00",
+   "model": "gemini-3.1-flash-lite"
   }
  },
  "fails": {
