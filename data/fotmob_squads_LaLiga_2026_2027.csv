@@ -6,9 +6,9 @@ Barcelona,João Cancelo,361757,defenders,"LB,RB",Left-Back,DF,32,1994-05-27,2.0,
 Barcelona,Alejandro Balde,1254166,defenders,LB,Left-Back,DF,23,2003-10-18,3.0,ESP,False,,2026-11-02
 Barcelona,Pau Cubarsí,1532137,defenders,CB,Centre-Back,DF,19,2007-01-22,5.0,ESP,False,,2026-11-02
 Barcelona,Xavi Espart,1815149,defenders,"LB,RB,CM",Left-Back,DF,19,2007-05-21,12.0,ESP,True,Mid December 2026,2026-11-02
-Barcelona,Andreas Christensen,449232,defenders,CB,Centre-Back,DF,30,1996-04-10,15.0,DEN,True,Back in training,2026-11-02
+Barcelona,Andreas Christensen,449232,defenders,CB,Centre-Back,DF,30,1996-04-10,15.0,DEN,True,Doubtful,2026-11-02
 Barcelona,Gerard Martín,1598982,defenders,"CB,LB",Centre-Back,DF,24,2002-02-26,18.0,ESP,False,,2026-11-02
-Barcelona,Jules Koundé,705450,defenders,RB,Right-Back,DF,27,1998-11-12,23.0,FRA,False,,2026-11-02
+Barcelona,Jules Koundé,705450,defenders,RB,Right-Back,DF,27,1998-11-12,23.0,FRA,True,Doubtful,2026-11-02
 Barcelona,Eric García,940573,defenders,"CB,RB,CDM",Centre-Back,DF,25,2001-01-09,24.0,ESP,True,Mid November 2026,2026-11-02
 Barcelona,Brian Fariñas,1821727,midfielders,CM,Central Midfield,MF,20,2006-02-09,4.0,ESP,False,,2026-11-02
 Barcelona,Gavi,1279040,midfielders,"CDM,LW",Defensive Midfield,MF,22,2004-08-05,6.0,ESP,False,,2026-11-02
@@ -37,15 +37,15 @@ Atlético Madrid,Robin Le Normand,609516,defenders,CB,Centre-Back,DF,29,1996-11-
 Atlético Madrid,Dani Martínez,1531100,defenders,LB,Left-Back,DF,22,2004-05-05,30.0,ESP,False,,2026-11-02
 Atlético Madrid,Obed Vargas,1254394,midfielders,"CM,CDM,LM",Central Midfield,MF,21,2005-08-05,3.0,MEX,False,,2026-11-02
 Atlético Madrid,Rodrigo Mendoza,1419969,midfielders,"CM,CDM,CAM,LM",Central Midfield,MF,21,2005-03-15,4.0,ESP,False,,2026-11-02
-Atlético Madrid,Johnny Cardoso,1173678,midfielders,"CM,CDM",Central Midfield,MF,25,2001-09-20,5.0,USA,True,Back in training,2026-11-02
-Atlético Madrid,Koke,184533,midfielders,"CM,CDM",Central Midfield,MF,34,1992-01-08,6.0,ESP,True,Back in training,2026-11-02
+Atlético Madrid,Johnny Cardoso,1173678,midfielders,"CM,CDM",Central Midfield,MF,25,2001-09-20,5.0,USA,True,Doubtful,2026-11-02
+Atlético Madrid,Koke,184533,midfielders,"CM,CDM",Central Midfield,MF,34,1992-01-08,6.0,ESP,False,,2026-11-02
 Atlético Madrid,Pablo Barrios,1338192,midfielders,"CM,CDM",Central Midfield,MF,23,2003-06-15,8.0,ESP,False,,2026-11-02
 Atlético Madrid,Álex Baena,942372,midfielders,"LM,LW,CAM,ST,CM,RM",Left Midfield,MF,25,2001-07-20,10.0,ESP,False,,2026-11-02
 Atlético Madrid,Ademola Lookman,690516,midfielders,"ST,LM,CAM,LW",Centre-Forward,MF,29,1997-10-20,11.0,NGA,False,,2026-11-02
 Atlético Madrid,Giuliano Simeone,1226147,midfielders,"RM,RW,RWB",Right Midfield,MF,23,2002-12-18,20.0,ARG,False,,2026-11-02
 Atlético Madrid,Alejandro Grimaldo,288406,midfielders,"LWB,LB,LM",Left-Back,MF,31,1995-09-20,22.0,ESP,False,,2026-11-02
 Atlético Madrid,Morten Hjulmand,950199,midfielders,"CDM,CM",Defensive Midfield,MF,27,1999-06-25,23.0,DEN,False,,2026-11-02
-Atlético Madrid,Kang-In Lee,940976,attackers,"RW,ST,CAM,RM,CM",Right Winger,FW,25,2001-02-19,7.0,KOR,False,,2026-11-02
+Atlético Madrid,Kang-In Lee,940976,attackers,"ST,RW,CAM,RM,CM",Centre-Forward,FW,25,2001-02-19,7.0,KOR,False,,2026-11-02
 Atlético Madrid,Alexander Sørloth,440330,attackers,"ST,RW",Centre-Forward,FW,30,1995-12-05,9.0,NOR,False,,2026-11-02
 Atlético Madrid,Jonathan David,939569,attackers,ST,Centre-Forward,FW,26,2000-01-14,15.0,CAN,False,,2026-11-02
 Atlético Madrid,Arnau Ortiz,1297989,attackers,ST,Centre-Forward,FW,25,2001-10-29,16.0,ESP,False,,2026-11-02
@@ -146,12 +146,12 @@ Sevilla,Peque Fernández,1132607,midfielders,"CAM,CM,RM",Attacking Midfield,MF,2
 Sevilla,Manu Bueno,1428849,midfielders,CDM,Defensive Midfield,MF,22,2004-07-27,14.0,ESP,False,,2026-11-02
 Sevilla,Jon Guridi,678192,midfielders,"CM,CAM,CDM",Central Midfield,MF,31,1995-02-28,18.0,ESP,False,,2026-11-02
 Sevilla,Chidera Ejuke,837270,midfielders,"RW,LM,RM",Right Winger,MF,28,1998-01-02,21.0,NGA,False,,2026-11-02
-Sevilla,Youssouf Fofana,954621,midfielders,"CM,CDM,CAM",Central Midfield,MF,27,1999-01-10,24.0,FRA,False,,2026-11-02
+Sevilla,Youssouf Fofana,954621,midfielders,"CM,CDM,CAM",Central Midfield,MF,27,1999-01-10,24.0,FRA,True,About 1-2 weeks,2026-11-02
 Sevilla,Nico Guillen,1783498,midfielders,CDM,Defensive Midfield,MF,18,2008-01-30,27.0,ESP,False,,2026-11-02
 Sevilla,Alfon González,926643,attackers,"LM,LW",Left Midfield,FW,27,1999-05-04,7.0,ESP,False,,2026-11-02
 Sevilla,Robbie Ure,1399218,attackers,ST,Centre-Forward,FW,22,2004-02-26,9.0,SCO,False,,2026-11-02
 Sevilla,Rubén Vargas,860752,attackers,"LW,RW,RM",Left Winger,FW,28,1998-08-05,11.0,SUI,False,,2026-11-02
-Sevilla,Isaac Romero,1130991,attackers,"ST,CAM",Centre-Forward,FW,26,2000-05-18,16.0,ESP,False,,2026-11-02
+Sevilla,Isaac Romero,1130991,attackers,"ST,CAM",Centre-Forward,FW,26,2000-05-18,16.0,ESP,True,Late November 2026,2026-11-02
 Sevilla,Lucas Stassin,1398377,attackers,ST,Centre-Forward,FW,21,2004-11-29,19.0,BEL,False,,2026-11-02
 Sevilla,Félix Correia,942358,attackers,"LW,RW,LM",Left Winger,FW,25,2001-01-22,20.0,POR,False,,2026-11-02
 Sevilla,Miguel Sierra,1797904,attackers,RW,Right Winger,FW,22,2004-07-14,30.0,ESP,True,Early December 2026,2026-11-02
@@ -186,12 +186,12 @@ Villarreal,Péter Gulácsi,151001,keepers,GK,Goalkeeper,GK,36,1990-05-06,25.0,HU
 Villarreal,Logan Costa,922877,defenders,CB,Centre-Back,DF,25,2001-04-01,2.0,CPV,False,,2026-11-02
 Villarreal,Alex Freeman,1338696,defenders,"RB,CB",Right-Back,DF,22,2004-08-09,3.0,USA,False,,2026-11-02
 Villarreal,Pau Navarro,1531887,defenders,"CB,RB",Centre-Back,DF,21,2005-04-25,6.0,ESP,False,,2026-11-02
-Villarreal,Juan Foyth,833219,defenders,CB,Centre-Back,DF,28,1998-01-12,8.0,ARG,False,,2026-11-02
+Villarreal,Juan Foyth,833219,defenders,CB,Centre-Back,DF,28,1998-01-12,8.0,ARG,True,Doubtful,2026-11-02
 Villarreal,Renato Veiga,1343750,defenders,CB,Centre-Back,DF,23,2003-07-29,12.0,POR,False,,2026-11-02
 Villarreal,Santiago Mouriño,1407468,defenders,RB,Right-Back,DF,24,2002-02-13,15.0,URU,False,,2026-11-02
 Villarreal,Carlos Romero,1395964,defenders,LB,Left-Back,DF,25,2001-10-29,20.0,ESP,False,,2026-11-02
 Villarreal,Sergi Cardona,1059657,defenders,LB,Left-Back,DF,27,1999-07-08,23.0,ESP,False,,2026-11-02
-Villarreal,Alassane Diatta,1695966,midfielders,LM,Left Midfield,MF,21,2005-05-14,5.0,SEN,False,,2026-11-02
+Villarreal,Alassane Diatta,1695966,midfielders,LM,Left Midfield,MF,21,2005-05-14,5.0,SEN,True,Doubtful,2026-11-02
 Villarreal,Alberto Moleiro,1184694,midfielders,"LM,LW,ST,CAM",Left Midfield,MF,23,2003-09-30,10.0,ESP,False,,2026-11-02
 Villarreal,Santi Comesaña,671865,midfielders,"CM,CDM",Central Midfield,MF,30,1996-10-05,14.0,ESP,False,,2026-11-02
 Villarreal,Carlos Maciá,1841906,midfielders,CM,Central Midfield,MF,18,2008-09-01,16.0,ESP,False,,2026-11-02
@@ -220,15 +220,15 @@ Celta Vigo,Sergio Carreira,1106742,midfielders,"LM,RM,LWB",Left Midfield,MF,26,2
 Celta Vigo,Ilaix Moriba,1109046,midfielders,"CM,CDM",Central Midfield,MF,23,2003-01-19,6.0,GUI,False,,2026-11-02
 Celta Vigo,Miguel Román,1359911,midfielders,"CM,CDM",Central Midfield,MF,23,2002-12-26,8.0,ESP,True,Doubtful,2026-11-02
 Celta Vigo,Aleix Febas,671686,midfielders,"CM,CAM",Central Midfield,MF,30,1996-02-02,14.0,ESP,False,,2026-11-02
-Celta Vigo,Javi Rueda,1310440,midfielders,"RM,RWB",Right Midfield,MF,24,2002-05-08,17.0,ESP,False,,2026-11-02
+Celta Vigo,Javi Rueda,1310440,midfielders,"RM,RWB,RW",Right Midfield,MF,24,2002-05-08,17.0,ESP,False,,2026-11-02
 Celta Vigo,Jones El-Abdellaoui,1379196,midfielders,"RM,RW",Right Midfield,MF,20,2006-01-12,39.0,MAR,True,Mid January 2027,2026-11-02
 Celta Vigo,Borja Iglesias,609505,attackers,ST,Centre-Forward,FW,33,1993-01-17,7.0,ESP,True,Late November 2026,2026-11-02
 Celta Vigo,Ferrán Jutglà,1102732,attackers,"ST,RW,LW",Centre-Forward,FW,27,1999-02-01,9.0,ESP,False,,2026-11-02
 Celta Vigo,Iago Aspas,174472,attackers,"RW,CAM,ST,CM",Right Winger,FW,39,1987-08-01,10.0,ESP,False,,2026-11-02
 Celta Vigo,Pablo Durán,1322858,attackers,"ST,RW,LW",Centre-Forward,FW,25,2001-05-25,11.0,ESP,False,,2026-11-02
-Celta Vigo,Hugo González,1226783,attackers,RW,Right Winger,FW,23,2003-02-07,16.0,ESP,True,Mid November 2026,2026-11-02
+Celta Vigo,Hugo González,1226783,attackers,"RW,LW",Right Winger,FW,23,2003-02-07,16.0,ESP,True,Mid November 2026,2026-11-02
 Celta Vigo,Williot Swedberg,1272740,attackers,"LW,CAM,RW",Left Winger,FW,22,2004-02-01,19.0,SWE,False,,2026-11-02
-Celta Vigo,Hugo Álvarez,1308414,attackers,"LW,LM,CAM,RW",Left Winger,FW,23,2003-07-02,23.0,ESP,False,,2026-11-02
+Celta Vigo,Hugo Álvarez,1308414,attackers,"LW,LM,RW,CAM",Left Winger,FW,23,2003-07-02,23.0,ESP,False,,2026-11-02
 Celta Vigo,Couhaib Driouech,1184693,attackers,"LW,LM",Left Winger,FW,24,2002-04-17,24.0,MAR,False,,2026-11-02
 Alavés,Antonio Sivera,530468,keepers,GK,Goalkeeper,GK,30,1996-08-11,1.0,ESP,False,,2026-11-02
 Alavés,Adrián Rodriguez,1136937,keepers,GK,Goalkeeper,GK,25,2000-12-12,13.0,ESP,False,,2026-11-02
@@ -371,7 +371,7 @@ Osasuna,Abel Bretones,1323398,defenders,"LB,LWB,LM",Left-Back,DF,26,2000-08-21,2
 Osasuna,Alejandro Catena,814663,defenders,CB,Centre-Back,DF,32,1994-10-28,24.0,ESP,False,,2026-11-02
 Osasuna,Iñigo Arguibide,1614872,defenders,"RB,RWB",Right-Back,DF,21,2005-04-19,27.0,ESP,False,,2026-11-02
 Osasuna,Asier Osambela,1431121,defenders,CB,Centre-Back,DF,22,2004-10-30,29.0,ESP,False,,2026-11-02
-Osasuna,Unai Santos,1682298,defenders,CB,Centre-Back,DF,20,2005-11-02,35.0,ESP,False,,2026-11-02
+Osasuna,Unai Santos,1682298,defenders,CB,Centre-Back,DF,21,2005-11-02,35.0,ESP,False,,2026-11-02
 Osasuna,Rockson Yeboah,1603025,defenders,CB,Centre-Back,DF,22,2004-08-02,48.0,GHA,False,,2026-11-02
 Osasuna,Lucas Torró,303879,midfielders,"CDM,CM",Defensive Midfield,MF,32,1994-07-19,6.0,ESP,False,,2026-11-02
 Osasuna,Jon Moncayola,921825,midfielders,"CDM,CM,RB",Defensive Midfield,MF,28,1998-05-13,7.0,ESP,False,,2026-11-02
@@ -387,7 +387,7 @@ Osasuna,Romain Del Castillo,696263,attackers,"RW,CAM",Right Winger,FW,30,1996-03
 Osasuna,Jonathan Dubasin,1242139,attackers,"RW,ST,LW,RM",Right Winger,FW,26,2000-02-02,21.0,BEL,False,,2026-11-02
 Racing Santander,Simon Eriksson,1441736,keepers,GK,Goalkeeper,GK,20,2006-04-24,1.0,SWE,False,,2026-11-02
 Racing Santander,Julen Agirrezabala,1280020,keepers,GK,Goalkeeper,GK,25,2000-12-26,13.0,ESP,False,,2026-11-02
-Racing Santander,Álvaro Mantilla,1199649,defenders,RB,Right-Back,DF,26,2000-05-09,2.0,ESP,False,,2026-11-02
+Racing Santander,Álvaro Mantilla,1199649,defenders,RB,Right-Back,DF,26,2000-05-09,2.0,ESP,True,Unknown,2026-11-02
 Racing Santander,Manu,863169,defenders,"CB,RB",Centre-Back,DF,28,1998-07-19,4.0,ESP,False,,2026-11-02
 Racing Santander,Pablo Ramón,982734,defenders,CB,Centre-Back,DF,25,2001-06-30,5.0,ESP,False,,2026-11-02
 Racing Santander,Facundo González,1212179,defenders,CB,Centre-Back,DF,23,2003-06-06,16.0,URU,False,,2026-11-02
@@ -415,7 +415,7 @@ Elche,Buba Sangaré,1583872,defenders,"RB,RWB,CB,RM",Right-Back,DF,19,2007-08-06
 Elche,Roy Revivo,1337914,defenders,"LB,LWB,CB",Left-Back,DF,23,2003-05-22,3.0,ISR,False,,2026-11-02
 Elche,Bambo Diaby,884383,defenders,CB,Centre-Back,DF,28,1997-12-17,4.0,ESP,False,,2026-11-02
 Elche,Federico Redondo,1277343,defenders,CB,Centre-Back,DF,23,2003-01-18,5.0,ARG,False,,2026-11-02
-Elche,Pedro Bigas,291635,defenders,"CB,LB",Centre-Back,DF,36,1990-05-15,6.0,ESP,True,Doubtful,2026-11-02
+Elche,Pedro Bigas,291635,defenders,"CB,LB",Centre-Back,DF,36,1990-05-15,6.0,ESP,False,,2026-11-02
 Elche,Kevin Lomónaco,1206583,defenders,CB,Centre-Back,DF,24,2002-01-08,15.0,ARG,False,,2026-11-02
 Elche,Rubén Sánchez,1330035,defenders,"RB,RW",Right-Back,DF,25,2001-02-04,22.0,ESP,False,,2026-11-02
 Elche,Víctor Chust,1192393,defenders,CB,Centre-Back,DF,26,2000-03-05,23.0,ESP,False,,2026-11-02
@@ -425,7 +425,7 @@ Elche,Facundo Buonanotte,1336566,midfielders,CAM,Attacking Midfield,MF,21,2004-1
 Elche,Germán Valera,1102708,midfielders,"LM,LWB,LW,RW,LB",Left Midfield,MF,24,2002-03-16,11.0,ESP,False,,2026-11-02
 Elche,Gonzalo Villar,881773,midfielders,CM,Central Midfield,MF,28,1998-03-23,12.0,ESP,False,,2026-11-02
 Elche,Martim Neto,1226189,midfielders,"CM,CAM",Central Midfield,MF,23,2003-01-14,16.0,POR,False,,2026-11-02
-Elche,Thomas Lemar,468931,midfielders,"CAM,CM",Attacking Midfield,MF,30,1995-11-12,18.0,FRA,False,,2026-11-02
+Elche,Thomas Lemar,468931,midfielders,"CAM,CM",Attacking Midfield,MF,30,1995-11-12,18.0,FRA,True,About 1-2 weeks,2026-11-02
 Elche,Grady Diangana,654091,midfielders,"CM,ST,RM,CAM",Central Midfield,MF,28,1998-04-19,19.0,COD,False,,2026-11-02
 Elche,Tete Morente,801213,midfielders,"RM,RW,LM,RWB",Right Midfield,MF,29,1996-12-04,20.0,ESP,False,,2026-11-02
 Elche,Ali Houary,1670281,midfielders,"CM,LM",Central Midfield,MF,21,2005-08-05,29.0,MAR,False,,2026-11-02
@@ -445,12 +445,12 @@ Levante,Adrián De La Fuente,952528,defenders,CB,Centre-Back,DF,27,1999-02-26,4.
 Levante,Jorge Cabello,1617146,defenders,CB,Centre-Back,DF,22,2004-04-25,14.0,ESP,False,,2026-11-02
 Levante,Axel Tape,1695701,defenders,CDM,Defensive Midfield,DF,19,2007-08-10,16.0,FRA,False,,2026-11-02
 Levante,Jeremy Toljan,443966,defenders,RB,Right-Back,DF,32,1994-08-08,22.0,GER,False,,2026-11-02
-Levante,Manuel Sánchez,1052330,defenders,LB,Left-Back,DF,26,2000-08-24,23.0,ESP,True,Doubtful,2026-11-02
+Levante,Manuel Sánchez,1052330,defenders,LB,Left-Back,DF,26,2000-08-24,23.0,ESP,True,Late November 2026,2026-11-02
 Levante,Nacho Pérez,1800611,defenders,RB,Right-Back,DF,18,2008-08-29,29.0,ESP,False,,2026-11-02
 Levante,Marc Santos,2141146,defenders,,Centre-Back,DF,16,2010-11-01,33.0,ESP,False,,2026-11-02
 Levante,Hugo Sotelo,1254218,midfielders,CM,Central Midfield,MF,22,2003-12-19,5.0,ESP,False,,2026-11-02
 Levante,Dani Requena,1481503,midfielders,"CM,CDM",Central Midfield,MF,22,2004-02-12,6.0,ESP,False,,2026-11-02
-Levante,Jon Olasagasti,1131957,midfielders,"CM,CDM,CAM",Central Midfield,MF,26,2000-08-16,8.0,ESP,False,,2026-11-02
+Levante,Jon Olasagasti,1131957,midfielders,"CAM,CM,CDM,LM",Attacking Midfield,MF,26,2000-08-16,8.0,ESP,False,,2026-11-02
 Levante,Enzo Bardeli,1332540,midfielders,"CAM,CM",Attacking Midfield,MF,25,2001-04-11,18.0,FRA,True,Mid November 2026,2026-11-02
 Levante,Oriol Rey,914401,midfielders,"CM,CDM",Central Midfield,MF,28,1998-02-25,20.0,ESP,False,,2026-11-02
 Levante,Jorge de Asís,1748952,attackers,,Centre-Forward,FW,20,2006-01-29,,ARG,False,,2026-11-02
@@ -501,11 +501,11 @@ Málaga,Diego Murillo,1408529,defenders,CB,Centre-Back,DF,25,2001-03-14,16.0,ESP
 Málaga,Fernando Calero,839232,defenders,CB,Centre-Back,DF,31,1995-09-14,20.0,ESP,False,,2026-11-02
 Málaga,Juan Berrocal,873838,defenders,CB,Centre-Back,DF,27,1999-02-05,25.0,ESP,False,,2026-11-02
 Málaga,Rafita,1717331,defenders,"LB,RB",Left-Back,DF,21,2004-11-09,31.0,ESP,False,,2026-11-02
-Málaga,Adam Aznou,1573563,defenders,"LB,LWB",Left-Back,DF,20,2006-06-02,39.0,MAR,False,,2026-11-02
+Málaga,Adam Aznou,1573563,defenders,"LB,LW",Left-Back,DF,20,2006-06-02,39.0,MAR,False,,2026-11-02
 Málaga,Jens-Lys Cajuste,801120,midfielders,CDM,Defensive Midfield,MF,27,1999-08-10,2.0,SWE,False,,2026-11-02
 Málaga,Ramón Enríquez,1082957,midfielders,CDM,Defensive Midfield,MF,25,2001-04-19,6.0,ESP,False,,2026-11-02
 Málaga,Haitam Abaida,1220748,midfielders,RM,Right Midfield,MF,24,2002-06-01,7.0,MAR,False,,2026-11-02
-Málaga,Carlos Dotor,1209421,midfielders,"CM,ST,CAM",Central Midfield,MF,25,2001-03-15,8.0,ESP,False,,2026-11-02
+Málaga,Carlos Dotor,1209421,midfielders,"CAM,CM,ST,CDM",Attacking Midfield,MF,25,2001-03-15,8.0,ESP,False,,2026-11-02
 Málaga,David Larrubia,1108863,midfielders,"RM,RW",Right Midfield,MF,24,2002-04-20,10.0,ESP,False,,2026-11-02
 Málaga,Joaquín Muñoz,951739,midfielders,"LM,LW",Left Midfield,MF,27,1999-03-10,11.0,ESP,True,Mid November 2026,2026-11-02
 Málaga,Rafa Rodríguez,1434474,midfielders,"CM,CDM,ST",Central Midfield,MF,23,2003-07-10,14.0,ESP,False,,2026-11-02

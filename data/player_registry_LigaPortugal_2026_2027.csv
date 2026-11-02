@@ -11,7 +11,7 @@ Académico de Viseu,tm682047,Ewerton,682047,Ewerton,players_full,100
 Académico de Viseu,pf:Académico de Viseu:gustavo costa,Gustavo Costa,,Gustavo Costa,players_full,100
 Académico de Viseu,tm789045,Igor Milioransa,789045,Igor Milioransa,players_full,100
 Académico de Viseu,tm808443,João Guilherme,808443,João Guilherme,players_full,100
-Académico de Viseu,pf:Académico de Viseu:lorougnon biagne,Lorougnon Biagne,1256478,Lorougnon Biagne,players_full,100
+Académico de Viseu,pf:Académico de Viseu:lorougnon biagne,Lorougnon Biagne,,Lorougnon Biagne,players_full,100
 Académico de Viseu,pf:Académico de Viseu:luis manuel costa silva,Luís Manuel Costa Silva,,Luís Manuel Costa Silva,players_full,100
 Académico de Viseu,tm211628,Mohamed Bouldini,211628,Mohamed Bouldini,players_full,100
 Académico de Viseu,tm584452,Nikolaos Michelis,584452,Nikolaos Michelis,players_full,100
@@ -106,7 +106,7 @@ Braga,tm984540,Diego Rodrigues,984540,Diego Rodrigues,players_full,100
 Braga,tm478317,Diogo Travassos,478317,Diogo Travassos,players_full,100
 Braga,tm284883,Fran Navarro,284883,Fran Navarro,players_full,100
 Braga,tm906948,Gabri Martínez,906948,Gabri Martínez,players_full,100
-Braga,pf:Braga:gabriel vieira,Gabriel Vieira,627224,Gabriel Vieira,players_full,100
+Braga,pf:Braga:gabriel vieira,Gabriel Vieira,,Gabriel Vieira,players_full,100
 Braga,tm485395,Gustaf Lagerbielke,485395,Gustaf Lagerbielke,players_full,100
 Braga,pf:Braga:jean gorby,Jean Gorby,,Jean Gorby,players_full,100
 Braga,tm391004,Jonas Wind,391004,Jonas Wind,players_full,100
@@ -478,7 +478,7 @@ Braga,pf:Braga:tomas marques,Tomas Marques,,Tommy Marqués,transfermarkt_contrac
 Braga,pf:Braga:jean gorby,Jean Gorby,,Gorby,transfermarkt_contracts,60
 Braga,tm1045972,Mario Dorgelès,1045972,Mario Dorgeles,transfermarkt_contracts,99
 Braga,tm959049,João Trovisco,959049,João Trovisco,transfermarkt_contracts,100
-Braga,pf:Braga:gabriel vieira,Gabriel Vieira,627224,Gabriel Silva,transfermarkt_contracts,100
+Braga,tm627224,Gabriel Silva,627224,Gabriel Silva,transfermarkt_contracts,100
 Braga,tm707572,Pau Victor,707572,Pau Víctor,transfermarkt_contracts,99
 Braga,tm943795,Jovan Milošević,943795,Jovan Milosevic,transfermarkt_contracts,99
 Famalicão,tm282654,Ivan Zlobin,282654,Ivan Zlobin,transfermarkt_contracts,100
@@ -552,17 +552,6 @@ Rio Ave,tm631996,Brandon Aguilera,631996,Brandon Aguilera,transfermarkt_contract
 Rio Ave,pf:Rio Ave:miguel almeida patricio,Miguel Almeida Patrício,,Miguel Patricío,transfermarkt_contracts,85
 Rio Ave,tm856592,Tobías Medina,856592,Tobías Medina,transfermarkt_contracts,100
 Rio Ave,tm1046726,Radek Siler,1046726,Radek Siler,transfermarkt_contracts,100
-Arouca,tm367651,Ignacio De Arruabarrena,367651,Ignacio de Arruabarrena,transfermarkt_contracts,99
-Arouca,tm912688,Jakub Vinarčík,912688,Jakub Vinarčík,transfermarkt_contracts,100
-Arouca,tm575723,Martim Duarte,575723,Martim Duarte,transfermarkt_contracts,100
-Arouca,tm940858,Leo Shahar,940858,Leo Shahar,transfermarkt_contracts,100
-Arouca,pf:Arouca:lee hyunju,Lee Hyunju,709166,Hyun-ju Lee,transfermarkt_contracts,100
-Arouca,tm622992,Pablo Gozalbez,622992,Pablo Gozálbez,transfermarkt_contracts,99
-Arouca,pf:Arouca:gabrijel rukavina,Gabrijel Rukavina,,Gabriel Rukavina,transfermarkt_contracts,80
-Arouca,tm1154528,Si-hoo Park,1154528,Si-hoo Park,transfermarkt_contracts,100
-Arouca,tm632901,Miguel Puche,632901,Miguel Puche,transfermarkt_contracts,100
-Arouca,tm1582293,Costinha,1582293,Costinha,transfermarkt_contracts,100
-Arouca,pf:Arouca:barbero,Barbero,,Iván Barbero,transfermarkt_contracts,60
 Casa Pia,tm378482,Patrick Sequeira,378482,Patrick Sequeira,transfermarkt_contracts,100
 Casa Pia,tm815219,Ivan Mandic,815219,Ivan Mandić,transfermarkt_contracts,99
 Casa Pia,tm383008,Daniel Azevedo,383008,Daniel Azevedo,transfermarkt_contracts,100
@@ -626,6 +615,43 @@ Nacional,tm746358,Daniel Jr,746358,Daniel Jr,transfermarkt_contracts,100
 Nacional,tm581977,Min-kyu Song,581977,Min-kyu Song,transfermarkt_contracts,100
 Nacional,pf:Nacional:pablo,Pablo,,Pablo Ruan,transfermarkt_contracts,60
 Nacional,tm1236397,Njoya Abdel,1236397,Njoya Abdel,transfermarkt_contracts,100
+Arouca,tm367651,Ignacio De Arruabarrena,367651,Ignacio de Arruabarrena,transfermarkt_contracts,99
+Arouca,tm912688,Jakub Vinarčík,912688,Jakub Vinarčík,transfermarkt_contracts,100
+Arouca,tm575723,Martim Duarte,575723,Martim Duarte,transfermarkt_contracts,100
+Arouca,tm940858,Leo Shahar,940858,Leo Shahar,transfermarkt_contracts,100
+Arouca,pf:Arouca:lee hyunju,Lee Hyunju,709166,Hyun-ju Lee,transfermarkt_contracts,100
+Arouca,tm622992,Pablo Gozalbez,622992,Pablo Gozálbez,transfermarkt_contracts,99
+Arouca,pf:Arouca:gabrijel rukavina,Gabrijel Rukavina,,Gabriel Rukavina,transfermarkt_contracts,80
+Arouca,tm1154528,Si-hoo Park,1154528,Si-hoo Park,transfermarkt_contracts,100
+Arouca,tm632901,Miguel Puche,632901,Miguel Puche,transfermarkt_contracts,100
+Arouca,tm1582293,Costinha,1582293,Costinha,transfermarkt_contracts,100
+Arouca,pf:Arouca:barbero,Barbero,,Iván Barbero,transfermarkt_contracts,60
+AVS Futebol,tm520093,Raul,520093,Raul,transfermarkt_contracts,100
+AVS Futebol,tm566666,Dani Rebollo,566666,Dani Rebollo,transfermarkt_contracts,100
+AVS Futebol,tm1224655,Estevão,1224655,Estevão,transfermarkt_contracts,100
+AVS Futebol,tm1082427,Bernardo Conde,1082427,Bernardo Conde,transfermarkt_contracts,100
+AVS Futebol,tm198053,Lazar Rosic,198053,Lazar Rosic,transfermarkt_contracts,100
+AVS Futebol,tm1083635,Davi Schuindt,1083635,Davi Schuindt,transfermarkt_contracts,100
+AVS Futebol,tm341516,Ponck,341516,Ponck,transfermarkt_contracts,100
+AVS Futebol,tm690124,Daniel Rivas,690124,Daniel Rivas,transfermarkt_contracts,100
+AVS Futebol,tm372459,André Sousa,372459,André Sousa,transfermarkt_contracts,100
+AVS Futebol,tm978615,Mateus Pivô,978615,Mateus Pivô,transfermarkt_contracts,100
+AVS Futebol,tm1044429,Diogo Brasido,1044429,Diogo Brasido,transfermarkt_contracts,100
+AVS Futebol,tm725049,Roni,725049,Roni,transfermarkt_contracts,100
+AVS Futebol,tm933988,Fernando Almeida,933988,Fernando Almeida,transfermarkt_contracts,100
+AVS Futebol,tm997473,Hiago,997473,Hiago,transfermarkt_contracts,100
+AVS Futebol,tm1460088,Pedro Pimentel,1460088,Pedro Pimentel,transfermarkt_contracts,100
+AVS Futebol,tm997076,Andrey,997076,Andrey,transfermarkt_contracts,100
+AVS Futebol,tm742454,Jorge Meireles,742454,Jorge Meireles,transfermarkt_contracts,100
+AVS Futebol,tm1065761,Guilherme Neiva,1065761,Guilherme Neiva,transfermarkt_contracts,100
+AVS Futebol,tm949489,Abdoulaye Keita,949489,Abdoulaye Keita,transfermarkt_contracts,100
+AVS Futebol,tm1500442,Guga,1500442,Guga,transfermarkt_contracts,100
+AVS Futebol,tm1097263,Rafael Lobato,1097263,Rafael Lobato,transfermarkt_contracts,100
+AVS Futebol,tm1090823,Ruan Assis,1090823,Ruan Assis,transfermarkt_contracts,100
+AVS Futebol,tm711640,Régis N'Do,711640,Régis N'Do,transfermarkt_contracts,100
+AVS Futebol,tm718098,Deandre Kerr,718098,Deandre Kerr,transfermarkt_contracts,100
+AVS Futebol,tm980866,Talles Wander,980866,Talles Wander,transfermarkt_contracts,100
+AVS Futebol,tm366278,Rodrigo Pinho,366278,Rodrigo Pinho,transfermarkt_contracts,100
 Académico de Viseu,tm251892,Juan Soriano,251892,Juan Soriano,transfermarkt_contracts,100
 Académico de Viseu,tm282409,Marcos Lavín,282409,Marcos Lavín,transfermarkt_contracts,100
 Académico de Viseu,tm980036,Matheus Sampaio,980036,Matheus Sampaio,transfermarkt_contracts,100
@@ -635,7 +661,7 @@ Académico de Viseu,pf:Académico de Viseu:brau,Brau,,Miguel Ángel Brau,transfe
 Académico de Viseu,pf:Académico de Viseu:robinho vieira,Robinho Vieira,,Robinho,transfermarkt_contracts,60
 Académico de Viseu,tm927838,Andro Babic,927838,Andro Babic,transfermarkt_contracts,100
 Académico de Viseu,pf:Académico de Viseu:luis manuel costa silva,Luís Manuel Costa Silva,,Luís Silva,transfermarkt_contracts,85
-Académico de Viseu,pf:Académico de Viseu:lorougnon biagne,Lorougnon Biagne,1256478,Lorougnon Gohi,transfermarkt_contracts,100
+Académico de Viseu,tm1256478,Lorougnon Gohi,1256478,Lorougnon Gohi,transfermarkt_contracts,100
 Académico de Viseu,tm331496,Valery Fernández,331496,Valery Fernández,transfermarkt_contracts,100
 Marítimo,tm540182,Gonçalo Tabuaço,540182,Gonçalo Tabuaço,transfermarkt_contracts,100
 Marítimo,pf:Marítimo:nilton varela,Nilton Varela,,Nilton,transfermarkt_contracts,60
@@ -785,16 +811,17 @@ Estoril,tm613964,Stelios Andreou,613964,Stélios Andreou,espn_subs,100
 Arouca,tm609361,José Fontán,609361,Jose Fontán,fotmob_ratings,100
 Braga,tm875337,Demir Ege Tıknaz,875337,Demir Tıknaz,fotmob_ratings,85
 Académico de Viseu,tm564890,André Clóvis,564890,André Clovis,fotmob_ratings,100
-Famalicão,tm420189,Tom van de Looi,420189,Tommie van de Looi,fotmob_ratings,80
 Porto,pf:Porto:hwang in beom,Hwang In-beom,,In-Beom Hwang,fotmob_ratings,100
+Famalicão,tm420189,Tom van de Looi,420189,Tommie van de Looi,fotmob_ratings,80
+Rio Ave,pf:Rio Ave:miguel almeida patricio,Miguel Almeida Patrício,,Miguel Patricio,fotmob_ratings,100
 Casa Pia,tm696504,Pedro Rosas,696504,Pedro Silva Rosas,fotmob_ratings,85
 Casa Pia,tm1018201,Mohamed Salah,1018201,Mohamed El Boukammiri,fotmob_ratings,85
 Nacional,tm794592,Markus Jensen,794592,Markus Gustav Jensen,fotmob_ratings,85
 Santa Clara,tm1091608,Fernando,1091608,Luis Fernando,fotmob_ratings,60
+Nacional,tm581977,Min-kyu Song,581977,Min-Kyu Song,fotmob_ratings,100
+Académico de Viseu,tm466812,Nils Mortimer,466812,Nils Mortimer Moreno,fotmob_ratings,85
 Arouca,pf:Arouca:lee hyunju,Lee Hyunju,709166,Hyun-Ju Lee,fotmob_ratings,100
 Santa Clara,tm687361,Welinton Torrão,687361,Welinton,fotmob_ratings,60
-Académico de Viseu,tm466812,Nils Mortimer,466812,Nils Mortimer Moreno,fotmob_ratings,85
 Rio Ave,tm724035,Andreas Ntoi,724035,Andreas-Richardos Ntoi,fotmob_ratings,85
-Braga,tm553062,Vitor Carvalho,553062,Carvalho,fotmob_minutes,65
 Gil Vicente FC,tm862628,Marvin Elimbi,862628,Marvin Gilbert,fotmob_minutes,65
 Rio Ave,tm481676,Georgios Liavas,481676,Giorgos Liavas,fotmob_minutes,65

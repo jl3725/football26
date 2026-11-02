@@ -1,11 +1,17 @@
 {
- "date": "2026-11-01",
- "model": "v3.11",
- "players": 5767,
- "golden": [
-  "[범위] Pascal Groß ovr=77 (기대 78~83) — 사용자 지적 2026-10-19 — 35세 이번 시즌 3골 4도움·평점 7.5(FotMob 7.8)인데 76"
- ],
+ "date": "2026-11-02",
+ "model": "v3.14",
+ "players": 5756,
+ "golden": [],
  "scout": [
+  {
+   "player": "Jeremy Doku",
+   "league": "EPL",
+   "ovr": 89,
+   "lo": 82,
+   "hi": 86,
+   "off": 3
+  },
   {
    "player": "Rayan Cherki",
    "league": "EPL",
@@ -15,11 +21,11 @@
    "off": 2
   },
   {
-   "player": "Jeremy Doku",
+   "player": "Marc Guéhi",
    "league": "EPL",
-   "ovr": 88,
-   "lo": 82,
-   "hi": 86,
+   "ovr": 89,
+   "lo": 84,
+   "hi": 87,
    "off": 2
   },
   {
@@ -31,12 +37,20 @@
    "off": 2
   },
   {
-   "player": "Jamal Musiala",
-   "league": "Bundesliga",
-   "ovr": 81,
-   "lo": 83,
-   "hi": 90,
+   "player": "Scott McTominay",
+   "league": "SerieA",
+   "ovr": 82,
+   "lo": 84,
+   "hi": 87,
    "off": -2
+  },
+  {
+   "player": "Elliot Anderson",
+   "league": "EPL",
+   "ovr": 89,
+   "lo": 85,
+   "hi": 88,
+   "off": 1
   },
   {
    "player": "Dominik Szoboszlai",
@@ -55,36 +69,44 @@
    "off": 1
   },
   {
-   "player": "Marc Guéhi",
+   "player": "Viktor Gyökeres",
    "league": "EPL",
-   "ovr": 88,
-   "lo": 84,
+   "ovr": 82,
+   "lo": 83,
    "hi": 87,
+   "off": -1
+  },
+  {
+   "player": "Raphinha",
+   "league": "LaLiga",
+   "ovr": 91,
+   "lo": 87,
+   "hi": 90,
    "off": 1
   },
   {
-   "player": "Enzo Fernández",
-   "league": "EPL",
+   "player": "Michael Olise",
+   "league": "Bundesliga",
+   "ovr": 92,
+   "lo": 87,
+   "hi": 91,
+   "off": 1
+  },
+  {
+   "player": "Jamal Musiala",
+   "league": "Bundesliga",
+   "ovr": 82,
+   "lo": 83,
+   "hi": 90,
+   "off": -1
+  },
+  {
+   "player": "Dayot Upamecano",
+   "league": "Bundesliga",
    "ovr": 89,
-   "lo": 85,
+   "lo": 84,
    "hi": 88,
    "off": 1
-  },
-  {
-   "player": "Nico Williams",
-   "league": "LaLiga",
-   "ovr": 80,
-   "lo": 81,
-   "hi": 86,
-   "off": -1
-  },
-  {
-   "player": "Cristian Romero",
-   "league": "LaLiga",
-   "ovr": 84,
-   "lo": 85,
-   "hi": 88,
-   "off": -1
   },
   {
    "player": "Nicolò Barella",
@@ -101,23 +123,40 @@
    "lo": 83,
    "hi": 87,
    "off": -1
+  },
+  {
+   "player": "Désiré Doué",
+   "league": "Ligue1",
+   "ovr": 89,
+   "lo": 83,
+   "hi": 88,
+   "off": 1
   }
  ],
- "scout_far": [],
+ "scout_far": [
+  {
+   "player": "Jeremy Doku",
+   "league": "EPL",
+   "ovr": 89,
+   "lo": 82,
+   "hi": 86,
+   "off": 3
+  }
+ ],
  "audit": {
   "rise": {
-   "n": 15,
+   "n": 8,
    "limit": 25,
-   "desc": "지난 시즌(1,500분+) 대비 +6 이상 — 한 시즌 급등",
+   "desc": "지난 시즌(1,500분+) 대비 +6 이상인데 이번 시즌 평점(7.2+·450분+)이 받쳐 주지 않는 급등",
    "examples": [
-    "Diego Moreira(Milan, 22) 81 ← 75",
     "Luis Milla(Como, 32) 78 ← 71",
     "Nobel Mendy(Hull City, 22) 74 ← 68",
-    "Nathan Saliba(Villarreal, 22) 73 ← 66",
-    "Adama Camara(Paris FC, 30) 71 ← 64",
-    "Tiago Araújo(Gent, 25) 69 ← 63",
+    "Adama Camara(Paris FC, 30) 70 ← 63",
     "Tibe De Vlieger(Gent, 20) 68 ← 62",
-    "Adnane Abid(Standard Liège, 23) 68 ← 61"
+    "Aske Adelgaard(Twente, 22) 65 ← 56",
+    "Ianis Stoica(Estrela, 23) 65 ← 57",
+    "Barbero(Arouca, 28) 62 ← 56",
+    "Jerry Afriyie(Genk, 19) 58 ← 52"
    ]
   },
   "fall": {
@@ -134,7 +173,7 @@
    "desc": "OVR 86+ 인데 리그 보정 평점이 포지션 평균보다 0.1 넘게 낮음(900분+)",
    "examples": [
     "Achraf Hakimi(PSG, 27) 88 ← 89",
-    "João Neves(PSG, 22) 87 ← 88",
+    "João Neves(PSG, 22) 88 ← 89",
     "Trent Alexander-Arnold(Real Madrid, 28) 86 ← 85"
    ]
   },
@@ -144,18 +183,15 @@
    "desc": "21세 이하 OVR 88+",
    "examples": [
     "Lamine Yamal(Barcelona, 19) 90 ← 90",
-    "Désiré Doué(PSG, 21) 88 ← 87"
+    "Désiré Doué(PSG, 21) 89 ← 88"
    ]
   },
   "no_value_high": {
-   "n": 4,
+   "n": 1,
    "limit": 10,
    "desc": "시장가치 없이 OVR 80+ (TM 매칭 실패·이적 잔류 행)",
    "examples": [
-    "Jack Grealish(Manchester City, 31) 84",
-    "Robert Sánchez(Chelsea, 28) 82",
-    "Nick Woltemade(Newcastle United, 24) 82",
-    "Joey Veerman(PSV, 27) 81"
+    "Jack Grealish(Manchester City, 31) 83"
    ]
   }
  }
