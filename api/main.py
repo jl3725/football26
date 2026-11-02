@@ -7150,23 +7150,35 @@ def match_review_api(event_id: str, comp: str = ""):
     if not comp:
         raise HTTPException(status_code=404, detail="unknown event")
     espn_id = event_id
+    fotmob = False
     lite_lg = next((x for x in (lg_h, lg_a) if x and _LEAGUES_CFG.get(x) and _LEAGUES_CFG[x].lite), None)
     if lite_lg:
-        # 라이트 리그 일정의 경기 id 는 FotMob — 같은 날 같은 두 팀의 ESPN 경기로 바꿔 상세를 받는다(없으면 리뷰 없음)
+        # 라이트 리그 일정의 경기 id 는 FotMob — 같은 날 같은 두 팀의 ESPN 경기로 바꿔 상세를 받는다.
+        # ESPN 이 없는 리그·경기(스위스)는 FotMob 경기 상세로 같은 꼴을 만든다(2026-11-02 — 예전엔 '리뷰 없음' 404)
         import lite_league  # noqa: PLC0415
         espn_id = (lite_league.espn_event_for(lite_lg, date or "", home or "", away or "")
                    if comp == _LEAGUES_CFG[lite_lg].espn else None)
-        if not espn_id:
-            raise HTTPException(status_code=404, detail="no review for this match")
-    url = f"https://site.api.espn.com/apis/site/v2/sports/soccer/{comp}/summary?event={espn_id}"
+        fotmob = not espn_id
+    url = (f"https://www.fotmob.com/api/data/matchDetails?matchId={event_id}" if fotmob
+           else f"https://site.api.espn.com/apis/site/v2/sports/soccer/{comp}/summary?event={espn_id}")
     try:
         req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (football26)"})
         with urllib.request.urlopen(req, timeout=15) as resp:
             data = _json.loads(resp.read().decode("utf-8"))
     except Exception as e:  # noqa: BLE001
-        raise HTTPException(status_code=502, detail=f"espn {type(e).__name__}") from e
-    p = mrv.parse(data)
-    cps = {c.get("homeAway"): c for c in ((data.get("header", {}).get("competitions") or [{}])[0].get("competitors", []))}
+        raise HTTPException(status_code=502, detail=f"{'fotmob' if fotmob else 'espn'} {type(e).__name__}") from e
+    if fotmob:
+        fm_teams = (data.get("header") or {}).get("teams") or []
+        if len(fm_teams) < 2:
+            raise HTTPException(status_code=404, detail="no review for this match")
+        p = mrv.parse_fotmob(data)
+        # ESPN 꼴 competitors 로 맞춰 아래 이름·로고 대체를 그대로 쓴다
+        cps = {side: {"team": {"shortDisplayName": t.get("name"), "logo": t.get("imageUrl") or ""}}
+               for side, t in zip(("home", "away"), fm_teams)}
+        data = {"header": {"competitions": [{"date": ((data.get("header") or {}).get("status") or {}).get("utcTime")}]}}
+    else:
+        p = mrv.parse(data)
+        cps = {c.get("homeAway"): c for c in ((data.get("header", {}).get("competitions") or [{}])[0].get("competitors", []))}
     # 일정 밖 경기는 ESPN 이름 — 결과 띠(scoreboard shortDisplayName)와 같은 짧은 이름을 먼저
     _nm = lambda side: next((t.get(k) for t in [(cps.get(side) or {}).get("team", {})]  # noqa: E731
                              for k in ("shortDisplayName", "displayName", "name") if t.get(k)), "")

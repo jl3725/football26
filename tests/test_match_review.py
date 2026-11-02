@@ -67,3 +67,53 @@ def test_live_state_headline() -> None:
     rv = mrv.build(mrv.parse(s), "Chelsea", "Arsenal")
     assert rv["state"] == "in" and "리드 중" in rv["headline"]
     assert rv["predictions"] == []
+
+
+
+def _fotmob(events, stats=None, shots=None, finished=True):
+    """FotMob matchDetails 최소 꼴 — events: (분, 추가, 'Goal'|'Card', 이름, home?, newScore|card, 설명·도움)."""
+    ev = []
+    for t, ov, typ, name, is_home, extra, more in events:
+        e = {"type": typ, "time": t, "overloadTime": ov, "nameStr": name, "isHome": is_home}
+        if typ == "Goal":
+            e.update({"newScore": extra, **(more or {})})
+        else:
+            e["card"] = extra
+        ev.append(e)
+    groups = [{"stats": [{"key": k, "stats": v} for k, v in (stats or {}).items()]}]
+    return {"header": {"status": {"finished": finished, "started": True, "reason": {"short": "FT"}, "utcTime": "2026-11-01T13:00:00Z"},
+                       "teams": [{"name": "Young Boys", "id": 1, "score": 3}, {"name": "FC Zürich", "id": 2, "score": 5}]},
+            "content": {"matchFacts": {"events": {"events": ev}, "infoBox": {"Stadium": {"name": "Wankdorf"}, "Attendance": 29746}},
+                        "stats": {"Periods": {"All": {"stats": groups}}}, "shotmap": {"shots": shots or []}}}
+
+
+def test_parse_fotmob_same_shape_as_espn() -> None:
+    """ESPN 이 없는 리그(스위스)는 FotMob 경기 상세로 같은 꼴 — 2026-11-02 AI 경기 리포트 6경기가 매번 '리뷰 없음'."""
+    d = _fotmob([(12, None, "Goal", "Kény", False, [0, 1], {"goalDescriptionKey": "penalty", "suffix": "Pen"}),
+                 (22, None, "Goal", "Essende", True, [1, 1], {"assistStr": "assist by Blum"}),
+                 (35, None, "Card", "Zesiger", True, "Yellow", None),
+                 (60, None, "Goal", "Hack", True, [1, 2], {"ownGoal": True}),          # 자책골 — 점수가 바뀐 쪽(원정) 득점
+                 (90, 2, "Goal", "Umeh", False, [1, 3], {"assistStr": "assist by Hodza"}),
+                 (70, None, "Card", "Blum", True, "Red", None)],
+                stats={"BallPossesion": [50, 50], "total_shots": [16, 16], "accurate_passes": ["298 (79%)", "307 (78%)"]},
+                shots=[{"situation": "Penalty", "eventType": "AttemptSaved", "min": 50, "teamId": 1, "playerName": "Sanches"}])
+    p = mrv.parse_fotmob(d)
+    assert p["state"] == "post" and p["detail"] == "FT" and p["venue"] == "Wankdorf"
+    assert [(g["minute"], g["side"], g["kind"]) for g in p["goals"]] == [
+        ("12'", "away", "pen"), ("22'", "home", ""), ("60'", "away", "og"), ("90'+2'", "away", "")]
+    assert p["goals"][1]["assist"] == "Blum" and p["goals"][0]["assist"] == ""
+    assert [c["color"] for c in p["cards"]] == ["yellow", "red"]
+    assert p["pens"] == [{"minute": "50'", "m": 50, "side": "home", "player": "Sanches", "result": "saved"}]
+    rv = mrv.build(p, "Young Boys", "FC Zürich")
+    assert {s["label"]: (s["h"], s["a"]) for s in rv["stats"]}["패스 성공률"] == (79, 78)
+
+
+def test_comeback_after_scoring_first_is_not_conceded_first() -> None:
+    # 취리히 5-3(2026-11-02): 선제골을 넣고 한때 2-3 으로 뒤졌다 뒤집음 — '선제골을 내주고도'가 아니다
+    s = _summary([("12'", "away", "Kény", "", "Penalty - Scored"), ("22'", "home", "Essende", "", "Goal"),
+                  ("25'", "away", "Umeh", "", "Goal"), ("29'", "home", "Essende", "", "Goal"),
+                  ("40'", "home", "Sanches", "", "Goal"), ("60'", "away", "Comenencia", "", "Goal"),
+                  ("82'", "away", "Hodza", "", "Goal"), ("90'+2'", "away", "Umeh", "", "Goal")])
+    lines = mrv.build(mrv.parse(s), "Young Boys", "FC Zürich")["lines"]
+    assert not any("선제골을 내주고도" in x for x in lines)
+    assert any("한때 리드를 내줬지만 다시 뒤집었다" in x for x in lines)

@@ -159,7 +159,10 @@ def run_match(days: int = 3, limit: int = 40) -> int:
         try:
             rv = match_review_api(m["event_id"], m["comp"])
         except Exception as e:  # noqa: BLE001 — ESPN 한 경기 실패는 건너뜀
-            print(f"  ! {m['event_id']} 리뷰 실패: {type(e).__name__}")
+            # '리뷰 없음'(404)은 다시 해도 같다 — 실패로 세어 두 번이면 그만(예전엔 스위스 6경기를 매 실행 다시 시도)
+            if getattr(e, "status_code", None) == 404:
+                fails[m["event_id"]] = fails.get(m["event_id"], 0) + 1
+            print(f"  ! {m['event_id']} 리뷰 실패: {type(e).__name__} {getattr(e, 'detail', '')}")
             continue
         if rv.get("state") != "post":
             continue

@@ -64,6 +64,80 @@ def parse(summary: dict, home_espn_id: str | None = None) -> dict:
             "venue": (gi.get("venue") or {}).get("fullName", ""), "attendance": gi.get("attendance")}
 
 
+# FotMob 경기 상세 기록 → ESPN 이름(STATS 키). ESPN 이 없는 리그(스위스 — 2026-11-02 AI 경기 리포트 대상 6경기가 매번
+# 'no review' 로 실패)는 FotMob matchDetails 로 같은 꼴을 만든다
+_FM_STATS = {"BallPossesion": "possessionPct", "total_shots": "totalShots", "ShotsOnTarget": "shotsOnTarget",
+             "corners": "wonCorners", "keeper_saves": "saves", "accurate_passes": "passPct", "fouls": "foulsCommitted",
+             "Offsides": "offsides", "interceptions": "interceptions"}
+
+
+def _fm_minute(e: dict) -> tuple[str, int]:
+    t, ov = int(_num(e.get("time"))), int(_num(e.get("overloadTime")))
+    return (f"{t}'+{ov}'" if ov else f"{t}'"), t + ov
+
+
+def parse_fotmob(details: dict) -> dict:
+    """FotMob matchDetails → parse() 와 같은 꼴(사건·기록). 득점 쪽은 바뀐 점수(newScore)로 정한다 — 자책골도 득점한 팀 기준."""
+    hdr = details.get("header") or {}
+    st = hdr.get("status") or {}
+    teams = (hdr.get("teams") or []) + [{}, {}]
+    state = "post" if st.get("finished") else "in" if st.get("started") and not st.get("cancelled") else "pre"
+    if state == "post":
+        detail = (st.get("reason") or {}).get("short") or "FT"
+    else:
+        detail = str((st.get("liveTime") or {}).get("short") or "").replace("\u200e", "").replace("’", "'")
+    content = details.get("content") or {}
+    mf = content.get("matchFacts") or {}
+    goals, cards = [], []
+    prev = (0, 0)
+    for e in ((mf.get("events") or {}).get("events") or []):
+        if e.get("isPenaltyShootoutEvent"):
+            continue
+        typ = e.get("type")
+        minute, m = _fm_minute(e)
+        name = str(e.get("nameStr") or (e.get("player") or {}).get("name") or "")
+        if typ == "Goal":
+            ns = e.get("newScore") or [e.get("homeScore"), e.get("awayScore")]
+            cur = (int(_num(ns[0])), int(_num(ns[1]))) if ns and len(ns) == 2 else prev
+            side = "home" if cur[0] > prev[0] else "away" if cur[1] > prev[1] else ("home" if e.get("isHome") else "away")
+            prev = cur
+            desc = str(e.get("goalDescriptionKey") or e.get("goalDescription") or "").lower()
+            kind = ("og" if e.get("ownGoal") else "pen" if "penalty" in desc or e.get("suffix") == "Pen"
+                    else "header" if "header" in desc else "")
+            assist = re.sub(r"^assist by\s+", "", str(e.get("assistStr") or ""), flags=re.I).strip()
+            goals.append({"minute": minute, "m": m, "side": side, "scorer": name,
+                          "assist": "" if kind == "pen" else assist, "kind": kind})
+        elif typ == "Card" and e.get("card"):
+            cards.append({"minute": minute, "m": m, "side": "home" if e.get("isHome") else "away", "player": name,
+                          "color": "yellow" if e.get("card") == "Yellow" else "red"})
+    hid = teams[0].get("id")
+    pens = []
+    for s in ((content.get("shotmap") or {}).get("shots") or []):      # 실축·선방 페널티(득점한 페널티는 위 득점)
+        if s.get("situation") == "Penalty" and s.get("eventType") != "Goal":
+            mn = int(_num(s.get("min")))
+            pens.append({"minute": f"{mn}'", "m": mn + int(_num(s.get("minAdded"))),
+                         "side": "home" if s.get("teamId") == hid else "away", "player": str(s.get("playerName") or ""),
+                         "result": "saved" if s.get("eventType") == "AttemptSaved" else "missed"})
+    stats: dict = {}
+    for grp in ((((content.get("stats") or {}).get("Periods") or {}).get("All") or {}).get("stats") or []):
+        for s in grp.get("stats") or []:
+            key = _FM_STATS.get(str(s.get("key")))
+            vals = s.get("stats") or []
+            if not key or key in stats or len(vals) != 2 or vals[0] is None or vals[1] is None:
+                continue
+            if key == "passPct":          # '298 (79%)' → 0.79(ESPN passPct 와 같은 비율)
+                ms = [re.search(r"\((\d+)%\)", str(v)) for v in vals]
+                if not all(ms):
+                    continue
+                vals = [_num(x.group(1)) / 100 for x in ms]
+            stats[key] = {"home": vals[0], "away": vals[1]}
+    info = mf.get("infoBox") or {}
+    return {"state": state, "detail": detail,
+            "score": {"home": int(_num(teams[0].get("score"))), "away": int(_num(teams[1].get("score")))},
+            "goals": sorted(goals, key=lambda g: g["m"]), "cards": cards, "pens": pens, "stats": stats,
+            "venue": (info.get("Stadium") or {}).get("name", ""), "attendance": info.get("Attendance")}
+
+
 def build(p: dict, home: str, away: str, fans: dict | None = None, elo: dict | None = None,
           model: dict | None = None) -> dict:
     """사건·기록 → 화면용 리뷰(한국어 문장)."""
@@ -120,8 +194,11 @@ def build(p: dict, home: str, away: str, fans: dict | None = None, elo: dict | N
         elif ht["home"] == ht["away"] == 0 and hs + as_ > 0 and not live:
             lines.append("전반은 0-0, 골은 모두 후반에 나왔다.")
     if win and trailed[win] and not live:
+        # 선제골을 넣고도 한때 뒤졌다 뒤집은 경기(취리히 5-3, 2026-11-02)를 '선제골을 내주고도'로 쓰지 않게 첫 골 쪽을 본다
+        conceded_first = bool(p["goals"]) and p["goals"][0]["side"] != win
         lines.append(f"{name[win]}, {deficit[win]}골 차로 끌려가다 뒤집었다." if deficit[win] >= 2
-                     else f"{name[win]}, 선제골을 내주고도 뒤집었다.")
+                     else f"{name[win]}, 선제골을 내주고도 뒤집었다." if conceded_first
+                     else f"{name[win]}, 한때 리드를 내줬지만 다시 뒤집었다.")
     elif win is None and not live:
         for s in ("home", "away"):
             if deficit[s] >= 2:
