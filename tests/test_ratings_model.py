@@ -129,6 +129,19 @@ def test_season_rise_mirrors_slump() -> None:
     assert rise(ss_rating=7.45, minutes=800, value=80e6, age=26) == 0.0
 
 
+def test_veteran_add_back_only_up_to_performance_level() -> None:
+    # 콘사(2026-11-02): 29세 · €50M(기준점 84) · 평점 수준 ≈ 포지션 평균 — 몸값이 이미 평점 수준보다 높아 나이 되돌림이 없어야
+    # 한다(생일 하나로 84 → 86, 사용자 '84~85'). 몸값이 나이로 크게 깎인 35세(€2.5M)는 그대로 다 되돌린다
+    def vet(**k) -> float:
+        parts: list = []
+        rv3.absolute_ovr(_parts=parts, pos_group="DEF", league_level=100, minutes=641, prev_minutes=3035,
+                         ss_rating=6.95, prev_ss_rating=6.92, **k)
+        return dict(parts).get("vet", 0.0)
+
+    assert vet(value=50e6, age=29) == 0.0
+    assert vet(value=2.5e6, age=35) >= 8.0
+
+
 def test_value_jump_guard_ignores_tiny_prev_value() -> None:
     # 직전 시장가치 €150K(매칭 오류·1군 데뷔)는 '급등'으로 보지 않는다 — Cho 77→60 같은 폭락 방지
     kw = dict(value=15e6, ss_rating=6.93, minutes=76, age=22, pos_group="ATT", prev_minutes=1667,

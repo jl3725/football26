@@ -161,7 +161,7 @@ RISE_GAP, RISE_K, RISE_MAX = SLUMP_GAP, SLUMP_K, SLUMP_MAX
 # v3.6 탐색(golden 위반 0 · 스카우트 3+ 이탈 0 · Groß 78 · Dowman 70 · Vušković>Konsa): 36세 45%
 _VET_PE_AGES, _VET_PE_W = (30.0, 32.0, 34.0, 36.0), (0.0, 0.18, 0.34, 0.45)
 # 모델 버전 — 바뀌면 rating_history 가 과거 기록을 평행이동해 모델 변경이 선수 추이(▲▼)로 보이지 않게 한다
-MODEL_VERSION = "v3.12"
+MODEL_VERSION = "v3.13"
 # 잠재력 프리미엄 — 같은 시장가치·리그에서 어린 선수의 실제 경기력(리그 보정 평점)이 낮은 만큼(vov 환산).
 # 25/26 1,500분+ 1,450명 회귀(27~29세 기준): 17~20세 −6.8 · 21세 −4.9 · 22세 −5.1 · 23세 −4.4 · 24세 −3.9 ·
 # 25세 −3.8 · 26세 −2.4 (같은 회귀에서 30~32세 +5.3 · 33세+ +9.4 — 베테랑 보정과 같은 근거).
@@ -183,6 +183,10 @@ _MOVED_PREV_W = 0.4
 # 리세일·잔여 커리어 몫. 측정 할인의 60~75% 를 되돌린다(실제 노쇠분 여유). 출전 1,500분(이번+직전)에 비례.
 # 예전엔 30세+ 일괄 +3 이라 Modrić(41, 직전 시즌 평점 7.53·2,811분) 76, Neuer 77 이었다(2026-10-15 사용자 지적).
 _VET_AGES, _VET_ADJ = (28.0, 30.0, 32.0, 34.0, 36.0, 38.0), (0.0, 3.0, 5.4, 7.8, 9.5, 11.0)
+# 베테랑 되돌림은 '나이로 깎인 몸값이 평점 수준(PE)보다 낮은 만큼'까지만 — 몸값 기준점이 이미 평점 수준 + VET_PE_ROOM 보다 높으면
+# 되돌릴 게 없다. 생일 하나로 평범한 평점의 29세 콘사(€50M → 기준점 84, 평점 수준 80)가 84 → 86 이 됐다(2026-11-02 사용자
+# '84~85 가 적당'). 몸값이 나이로 크게 깎인 베테랑(그로스 €2.5M · 덩크 €4M)은 그대로 다 되돌린다
+VET_PE_ROOM = 3.0
 # GK: 같은 회귀(148명)에서 32세 −4.7, 34세 −11.7, 35세+ −9~−14. GK 전성기는 더 늦게까지 가므로 35세+ 는 80% 가까이.
 # 어린 GK 는 잠재력 프리미엄 −0.8/년(하한 −3.2).
 # 예전엔 30세+ 일괄 +2 라 24세 €40M Verbruggen 이 31세 €30M Raya(3연속 골든글러브)보다 높았다.
@@ -350,6 +354,9 @@ def absolute_ovr(*, value, ss_rating, minutes, age, pos_group,
         # 리그 보정은 상한 밖에서 — 약한 리그 최상위가 상한(+3.5)에 걸려 보정이 사라지지 않게
         perf_adj = _clamp((rel - _SS_MID[ln]) * PERF_SLOPE, -PERF_CAP, PERF_CAP) - off * 8.0 if rel > 0 else 0.0
         vet_adj = _interp(a, _VET_AGES, _VET_ADJ) * proven if a > 0 else 0.0
+        if vet_adj > 0 and rel > 0:
+            room = PE_A + PE_B * (rel - off - _SS_MID[ln]) + _POS_ADJ[ln] + VET_PE_ROOM - (base + _POS_ADJ[ln] + perf_adj)
+            vet_adj = _clamp(room, 0.0, vet_adj)
         raw = base + _POS_ADJ[ln] + perf_adj + vet_adj
         rec("pos", _POS_ADJ[ln])
         rec("perf", perf_adj)
