@@ -2148,6 +2148,55 @@ def _fm_return_kr(s: str) -> str:
 
 
 @_memo(ttl=1800, news=True)
+def _fm_first_seen(league: str) -> dict:
+    """{(팀, 정규화 이름): (날짜, 그때 복귀 예상)} — FotMob 결장 상태가 마지막으로 기록된 날(새 부상·복귀 예상 변경,
+    fotmob_injury_changes)."""
+    import positions as ps  # noqa: PLC0415
+    ch = ds.read_table("fotmob_injury_changes", league=league)
+    out: dict = {}
+    if ch is None or ch.empty or not {"event_type", "run_date", "squad", "player"} <= set(ch.columns):
+        return out
+    nu = ch["new_until"].astype(str) if "new_until" in ch.columns else pd.Series("", index=ch.index)
+    for sq, pl, ev, d, u in zip(ch["squad"].astype(str), ch["player"].astype(str), ch["event_type"].astype(str),
+                                ch["run_date"].astype(str), nu):
+        if ev.lower().startswith(("new", "until")):
+            k = (sq, ps.norm_name(pl))
+            if d[:10] >= out.get(k, ("", ""))[0]:
+                out[k] = (d[:10], "" if u == "nan" else u)
+    return out
+
+
+def _fm_played_since(r: dict, pr: dict, fmd: dict, first_seen: dict, today: str) -> str | None:
+    """FotMob 결장·부상 표시인데 그 뒤 실제로 뛴 경기 날짜(없으면 None) — TM 의 _injury_returns 와 같은 규칙.
+    FotMob 다음 경기 결장 명단은 경기 직후에도 한동안 옛 '출전 불투명'을 둔다: 칼라피오리·마두에케·촐리스가 11/1 리버풀전
+    84~90분 뒤에도 '부상'으로 보였다(2026-11-02 사용자). 처음 오른 날 뒤 출전이면 뺀다. 처음 오른 날을 모르면 '출전 불투명'인데
+    최근 4일 안 60분+ 뛴 경우만. 경기 중 부상 교체는 그 경기에 뛴 게 당연하니 보지 않는다."""
+    import positions as ps  # noqa: PLC0415
+    if str(r.get("kind") or "injury") == "in_match":
+        return None
+    fid = str(r.get("fotmob_id") or "").split(".")[0] or (
+        str(int(pr["fm_id"])) if pr.get("fm_id") is not None and pr.get("fm_id") == pr.get("fm_id") else "")
+    games = (fmd.get(("id", fid)) if fid else None) or fmd.get(("nm", f"{r.get('squad')}|{pr.get('player') or r.get('player')}")) or {}
+    played = sorted(d for d, g in games.items() if (g.get("m") or 0) > 0)
+    seen = first_seen.get((str(r.get("squad")), ps.norm_name(str(pr.get("player") or r.get("player")))))
+    if seen:
+        since, logged = seen
+        cur = str(r.get("expected_return") or "").strip().lower()
+        if cur == "doubtful":                             # '출전 불투명'은 약한 표시 — 그 뒤 60분+ 뛰었으면 옛 표시(마두에케 '11월 말' → 불투명 → 90분)
+            full = [d for d, g in games.items() if d > since and (g.get("m") or 0) >= 60]
+            if full:
+                return max(full)
+        if logged and cur and logged.strip().lower() != cur:
+            return None                                   # 기록 뒤에 상태가 바뀜(뛴 뒤 다시 다침 — 로프터스치크 '불투명' → '11월 말')
+        after = [d for d in played if d > since]
+        return after[-1] if after else None
+    if str(r.get("expected_return") or "").strip().lower() == "doubtful":
+        cut = (datetime.date.fromisoformat(today) - datetime.timedelta(days=4)).isoformat()
+        recent = [d for d, g in games.items() if d >= cut and (g.get("m") or 0) >= 60]
+        return max(recent) if recent else None
+    return None
+
+
 def _injuries_table(league: str):
     """현재 결장 — Transfermarkt 부상(부상 시작 뒤 실제로 뛴 선수 _injury_returns 는 뺌) + FotMob 결장자.
 
@@ -2202,8 +2251,11 @@ def _injuries_table(league: str):
         except (TypeError, ValueError):
             pass
     add = []
+    fmd, first_seen, today = _fm_match_dates(league), _fm_first_seen(league), _today_kst().isoformat()
     for r in fm.to_dict("records"):
         pr = by_fm.get(str(r.get("fotmob_id") or "").split(".")[0]) or rows_of.get((str(r["squad"]), str(r["player"]))) or {}
+        if _fm_played_since(r, pr, fmd, first_seen, today):
+            continue                                      # 결장 표시 뒤 실제로 뜀 — 옛 표시(TM 행 복귀일 채우기에도 안 씀)
         name = str(pr.get("player") or r["player"])
         tid = str(pr.get("tm_id")).split(".")[0] if pr.get("tm_id") is not None and pr.get("tm_id") == pr.get("tm_id") else ""
         key = (str(r["squad"]), ps.norm_name(name))

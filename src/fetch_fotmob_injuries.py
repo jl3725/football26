@@ -135,12 +135,23 @@ def injury_changes(prev: pd.DataFrame | None, cur: pd.DataFrame, today: str) -> 
     if prev is None or prev.empty:
         return []
     cur = cur[cur["kind"].isin(list(KIND_KO))]
-    seen = {(str(s), str(f).split(".")[0]) for s, f in zip(prev["squad"], prev["fotmob_id"])}
-    new = cur[[(str(s), str(f).split(".")[0]) not in seen for s, f in zip(cur["squad"], cur["fotmob_id"])]]
-    return [{"run_date": (str(r["match_date"])[:10] if r["kind"] == "in_match" and str(r.get("match_date") or "") else today),
-             "event_type": "new_injury", "squad": r["squad"], "player": r["player"], "old_injury": "",
-             "new_injury": KIND_KO[r["kind"]], "old_until": "", "new_until": str(r.get("expected_return") or ""),
-             "source": "fotmob"} for r in new.to_dict("records")]
+    key = lambda s, f: (str(s), str(f).split(".")[0])  # noqa: E731
+    seen = {key(s, f): str(u or "") for s, f, u in zip(prev["squad"], prev["fotmob_id"], prev.get("expected_return", [""] * len(prev)))}
+    new = cur[[key(s, f) not in seen for s, f in zip(cur["squad"], cur["fotmob_id"])]]
+    out = [{"run_date": (str(r["match_date"])[:10] if r["kind"] == "in_match" and str(r.get("match_date") or "") else today),
+            "event_type": "new_injury", "squad": r["squad"], "player": r["player"], "old_injury": "",
+            "new_injury": KIND_KO[r["kind"]], "old_until": "", "new_until": str(r.get("expected_return") or ""),
+            "source": "fotmob"} for r in new.to_dict("records")]
+    # 복귀 예상이 바뀐 것('출전 불투명' → '11월 말') — 새 부상 신호는 아니고, 화면이 '결장 표시 뒤 실제로 뛰었나'를 볼 때
+    # 마지막으로 상태가 바뀐 날로 쓴다(api _fm_played_since — 뛴 뒤 다시 다친 로프터스치크를 옛 표시로 빼지 않게, 2026-11-02)
+    for r in cur.to_dict("records"):
+        k = key(r["squad"], r["fotmob_id"])
+        nu = str(r.get("expected_return") or "")
+        if k in seen and r["kind"] != "in_match" and seen[k].strip().lower() != nu.strip().lower():
+            out.append({"run_date": today, "event_type": "until_changed", "squad": r["squad"], "player": r["player"],
+                        "old_injury": KIND_KO[r["kind"]], "new_injury": KIND_KO[r["kind"]], "old_until": seen[k],
+                        "new_until": nu, "source": "fotmob"})
+    return out
 
 
 def write_changes(lg: str, prev: pd.DataFrame | None, cur: pd.DataFrame) -> int:
@@ -155,7 +166,10 @@ def write_changes(lg: str, prev: pd.DataFrame | None, cur: pd.DataFrame) -> int:
     if not rows and have is not None:
         return 0
     out = pd.concat([x for x in (have, pd.DataFrame(rows, columns=CHANGE_COLS)) if x is not None], ignore_index=True)
-    out = out.drop_duplicates(subset=["event_type", "squad", "player", "new_injury"], keep="first")
+    is_new = out["event_type"] == "new_injury"       # 새 부상은 선수·종류당 처음 것만, 복귀 예상 변경은 날짜·값마다
+    out = pd.concat([out[is_new].drop_duplicates(subset=["event_type", "squad", "player", "new_injury"], keep="first"),
+                     out[~is_new].drop_duplicates(subset=["run_date", "event_type", "squad", "player", "new_until"], keep="first")],
+                    ignore_index=True).sort_values("run_date", kind="stable")
     out.to_csv(path, index=False, encoding="utf-8", lineterminator="\n")
     return len(rows)
 
