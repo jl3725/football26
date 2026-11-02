@@ -161,7 +161,7 @@ RISE_GAP, RISE_K, RISE_MAX = SLUMP_GAP, SLUMP_K, SLUMP_MAX
 # v3.6 탐색(golden 위반 0 · 스카우트 3+ 이탈 0 · Groß 78 · Dowman 70 · Vušković>Konsa): 36세 45%
 _VET_PE_AGES, _VET_PE_W = (30.0, 32.0, 34.0, 36.0), (0.0, 0.18, 0.34, 0.45)
 # 모델 버전 — 바뀌면 rating_history 가 과거 기록을 평행이동해 모델 변경이 선수 추이(▲▼)로 보이지 않게 한다
-MODEL_VERSION = "v3.13"
+MODEL_VERSION = "v3.14"   # v3.14: 대표 OVR = 대표 포지션 OVR(src/position_ovr.py — 공통 OVR + 역할 기여 ±2)
 # 잠재력 프리미엄 — 같은 시장가치·리그에서 어린 선수의 실제 경기력(리그 보정 평점)이 낮은 만큼(vov 환산).
 # 25/26 1,500분+ 1,450명 회귀(27~29세 기준): 17~20세 −6.8 · 21세 −4.9 · 22세 −5.1 · 23세 −4.4 · 24세 −3.9 ·
 # 25세 −3.8 · 26세 −2.4 (같은 회귀에서 30~32세 +5.3 · 33세+ +9.4 — 베테랑 보정과 같은 근거).
@@ -655,7 +655,8 @@ def ovr_parts_of_row(row) -> dict:
 def player_line(row) -> dict:
     # 라인은 역할(tm_position) 우선 — FBref 'MF'·'FW,MF' 같은 대분류로 윙어를 미드로 보던 것 수정
     pos = line_of_row(row)
-    ab = ovr_of_row(row)
+    ab = row.get("_ovr")                           # player_frame 의 대표 포지션 OVR(src/position_ovr.py)이 있으면 그 값
+    ab = int(ab) if ab is not None and ab == ab else ovr_of_row(row)
     fm = row.get("_form")
     if fm is None or fm != fm:                     # 리그 내 순위 폼이 없으면(단독 행) 근사식
         fm = form_rating(ss_rating=row.get("ss_rating"), minutes=row.get("minutes"),

@@ -1439,8 +1439,15 @@ def _trend(row, league: str, ovr: int | None = None, form: int | None = None) ->
     prev = rh.lookup_prev(_prev_season(), row)
     # 지난 시즌 값이 유망주 검증 보정에 걸렸으면(출전 부족으로 60 쪽으로 깎인 값) 비교하지 않는다
     if prev and prev.get("minutes", 0) >= 300 and not prev.get("gated"):
-        out["ovr_prev"] = prev["ovr"]
+        out["ovr_prev"] = prev["ovr"] + _role_term(row, ovr)
     return out
+
+
+def _role_term(row, ovr: int) -> int:
+    """대표 OVR − 공통 OVR(이번 시즌 역할 기여, src/position_ovr.py). 지난 시즌 OVR 은 공통 OVR 이라 같은 기준으로 비교하려고
+    더한다 — 안 더하면 역할 기여 ±1 이 '지난 시즌 대비 ▲▼'로 보였다."""
+    c = row.get("_ovr_common")
+    return int(ovr - int(c)) if c is not None and c == c else 0
 
 
 # ── 대회별 사용량 (역할 축 · EPL Phase 1) ─────────────────────────────
@@ -2687,6 +2694,69 @@ def _stat_frame(league: str, basis: str = "blend", comps: str = "all"):
 
 def _stat_frame_cache_name(league: str, basis: str, comps: str) -> str:
     return f"statframe_{league}_{basis}_{comps}.pkl"
+
+
+_POS_CACHE: dict = {}
+
+
+def _position_table() -> dict:
+    """{리그: {_pf 인덱스: {main, ovr, by_role}}} — 포지션별 OVR(src/position_ovr.py). 역할 기여는 8개 리그 같은 템플릿
+    백분위라 리그를 함께 본다. 세부 지표 표(유럽·컵·시즌 초 안정화)는 공통 OVR 표로 만들고(pos_busy), 만든 뒤 그 표들의
+    _ovr 도 대표 포지션 OVR 로 고쳐 둔다(화면 백분위 비교·스카우트 표가 같은 숫자를 보게). DB 시각 기준 캐시."""
+    import json  # noqa: PLC0415
+
+    import position_ovr as po  # noqa: PLC0415
+    import positions as ps  # noqa: PLC0415
+    from api.services.player_data import pos_busy, role_counts  # noqa: PLC0415
+    key = ds._db_mtime()
+    if key in _POS_CACHE:
+        return _POS_CACHE[key]
+    frames = {}
+    with pos_busy():
+        for lg in _LEAGUE_LEVEL:
+            try:
+                f = _stat_frame(lg, "blend", "all")
+            except Exception as e:  # noqa: BLE001 — 한 리그가 안 되면 그 리그만 공통 OVR
+                print(f"[position_ovr] {lg}: 세부 지표 표 없음 {type(e).__name__}: {e}")
+                continue
+            if f is not None and not f.empty:
+                frames[lg] = f
+    contrib = po.contributions(frames, {lg: pd.to_numeric(f["_ovr_common"] if "_ovr_common" in f.columns else f["_ovr"],
+                                                       errors="coerce") for lg, f in frames.items()})
+    counts = role_counts(None)
+    table: dict = {}
+    for lg, f in frames.items():
+        sq = ds.read_table("fotmob_squads", league=lg)
+        listed = {}
+        if sq is not None and not sq.empty and "positions" in sq.columns:
+            for s_, p_, pos in zip(sq["squad"].astype(str), sq["player"].astype(str), sq["positions"]):
+                listed[(s_, ps.norm_name(p_))] = pos
+        common = pd.to_numeric(f["_ovr_common"] if "_ovr_common" in f.columns else f["_ovr"], errors="coerce")
+        cdf = contrib[lg]
+        tm_pos = f["tm_position"] if "tm_position" in f.columns else pd.Series(None, index=f.index)
+        lines = [rv3.line_of_row(r) for r in f.to_dict("records")]
+        out = {}
+        for idx, c, line, row_c, (squad, name, tmp) in zip(f.index, common, lines, cdf.to_dict("records"),
+                                                           zip(f["squad"].astype(str), f["player"].astype(str), tm_pos)):
+            if c != c or line == "GK":
+                continue
+            # 지금 쓰이는 자리 = FotMob 첫 포지션 + TM 대표 포지션(나머지 FotMob 목록은 후보 아님 — 실제 선발로만)
+            prim = [*po.fm_roles(listed.get((squad, ps.norm_name(name))))[:1],
+                    *[r for r in [ps.tm_role(tmp if isinstance(tmp, str) else None)] if r]]
+            out[idx] = po.choose(float(c), po.experience(ps.lookup(counts, name), prim), row_c, prim)
+        table[lg] = out
+        # 세부 지표 표(캐시 객체)도 같은 숫자로 — 인덱스는 _pf 그대로
+        if "_ovr_common" not in f.columns:
+            f["_ovr_common"] = f["_ovr"]
+        f["_ovr"] = [out[i]["ovr"] if i in out else v for i, v in zip(f.index, f["_ovr_common"])]
+        f["_main_pos"] = [out[i]["main"] if i in out else None for i in f.index]
+        f["_pos_ovr"] = [json.dumps(out[i]["by_role"], separators=(",", ":")) if i in out and out[i]["by_role"] else None
+                         for i in f.index]
+        f["_pos_fam"] = [json.dumps(out[i]["fam"], separators=(",", ":")) if i in out and out[i]["fam"] else None
+                         for i in f.index]
+    _POS_CACHE.clear()
+    _POS_CACHE[key] = table
+    return table
 
 
 def _template_pool_all(tpl: str, min_min: float, basis: str = "blend", comps: str = "all"):

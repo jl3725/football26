@@ -2,13 +2,14 @@
 from __future__ import annotations
 
 import re
+from contextlib import contextmanager
 
 import pandas as pd
 from unidecode import unidecode
 
 import api.bootstrap  # noqa: F401
 import datastore as ds
-from leagues import data_path
+from leagues import SEASON_START, data_path
 
 _EXTRA_PHOTO_CACHE: dict[str, dict[str, str]] = {}
 
@@ -151,19 +152,79 @@ def player_frame(league: str, season: str | None = None):
     시각 기준으로 캐시하고, 호출부가 고쳐 써도 안전하게 사본을 준다. season(예: "2025_2026")을 주면
     그 시즌 표(지난 시즌 대비 성장 계산용).
     """
+    if season == f"{SEASON_START}_{SEASON_START + 1}":
+        season = None                   # 이번 시즌을 이름으로 불러도 같은 표(포지션 OVR·캐시) — fee_comps
     key = (league, season, ds._db_mtime())
     hit = _FRAME_CACHE.get(key)
     if hit is not None:
         return hit.copy()
+    frame = _raw_frame(league, season)
+    if frame is None:
+        return None
+    if season is None and "_main_pos" not in frame.columns:   # 이번 시즌 = 포지션별 OVR(대표 포지션 OVR 을 _ovr 로)
+        if _POS_BUSY[0]:
+            return frame.copy()         # 포지션 표를 계산하는 중(세부 지표 표가 이 표를 부름) — 공통 OVR 표 그대로
+        apply_positions(league, frame)
+    if len(_FRAME_CACHE) > 24:          # 8개 리그 × 이번·지난 시즌(16) + 여유 — 넘치면 전부 비워 다시 계산하므로 넉넉히
+        _FRAME_CACHE.clear()
+    _FRAME_CACHE[key] = frame
+    return frame.copy()
+
+
+_RAW_CACHE: dict = {}
+_POS_BUSY = [0]
+
+
+def _raw_frame(league: str, season: str | None):
+    """포지션 OVR 을 붙이기 전 선수 표(빌드 캐시 → 없으면 계산). 붙인 뒤에도 같은 객체라 메모리를 두 배로 쓰지 않는다."""
+    key = (league, season, ds._db_mtime())
+    hit = _RAW_CACHE.get(key)
+    if hit is not None:
+        return hit
     frame = _disk_get(frame_cache_name(league, season))
     if frame is None:
         frame = _build_frame(league, season)
     if frame is not None:
-        if len(_FRAME_CACHE) > 24:      # 8개 리그 × 이번·지난 시즌(16) + 여유 — 넘치면 전부 비워 다시 계산하므로 넉넉히
-            _FRAME_CACHE.clear()
-        _FRAME_CACHE[key] = frame
-        return frame.copy()
-    return None
+        if len(_RAW_CACHE) > 24:
+            _RAW_CACHE.clear()
+        _RAW_CACHE[key] = frame
+    return frame
+
+
+@contextmanager
+def pos_busy():
+    """포지션 표 계산 중 — player_frame 이 공통 OVR 표를 그대로 준다(세부 지표 표 → player_frame → 포지션 표 순환 끊기)."""
+    _POS_BUSY[0] += 1
+    try:
+        yield
+    finally:
+        _POS_BUSY[0] -= 1
+
+
+def apply_positions(league: str, frame: pd.DataFrame) -> None:
+    """이번 시즌 표에 포지션별 OVR(src/position_ovr.py) — _ovr_common(공통) · _ovr(대표 포지션 OVR) · _main_pos · _pos_ovr
+    ({역할: OVR} JSON) · _pos_fam({역할: 익숙함 0~1} JSON). 표는 8개 리그를 함께 봐야 해서(같은 템플릿 백분위) api.main._position_table 이 만든다.
+    실패하면 공통 OVR 그대로 두고 _main_pos 만 비운다(다음 DB 에서 다시)."""
+    import json  # noqa: PLC0415
+    if "_ovr_common" not in frame.columns:
+        frame["_ovr_common"] = frame["_ovr"]
+    try:
+        from api import main as M  # noqa: PLC0415
+        table = M._position_table().get(league, {})
+    except Exception as e:  # noqa: BLE001
+        print(f"[position_ovr] {league}: 공통 OVR 그대로 {type(e).__name__}: {e}")
+        table = {}
+    mains, ovrs, by, fam = [], [], [], []
+    for idx, common in zip(frame.index, frame["_ovr_common"]):
+        r = table.get(idx)
+        mains.append(r["main"] if r else None)
+        ovrs.append(r["ovr"] if r else common)
+        by.append(json.dumps(r["by_role"], separators=(",", ":")) if r and r["by_role"] else None)
+        fam.append(json.dumps(r["fam"], separators=(",", ":")) if r and r.get("fam") else None)
+    frame["_ovr"] = ovrs
+    frame["_main_pos"] = mains
+    frame["_pos_ovr"] = by
+    frame["_pos_fam"] = fam
 
 
 _MOVED_CACHE: dict = {}

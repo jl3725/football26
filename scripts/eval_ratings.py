@@ -72,7 +72,9 @@ def snapshot() -> pd.DataFrame:
                          "ss_rating": _num(r.get("ss_rating")),
                          "value": _num(r.get("market_value_eur")),
                          "class_vs_mid": round(cls - rv3._SS_MID[ln], 3) if cls > 0 else None,
-                         "ovr_prev": p["ovr"] if p and p.get("minutes", 0) >= 300 else None,
+                         "ovr_prev": p["ovr"] + (ovr - int(r["_ovr_common"]) if r.get("_ovr_common") == r.get("_ovr_common")
+                                                 and r.get("_ovr_common") is not None else 0)
+                         if p and p.get("minutes", 0) >= 300 else None,   # 같은 기준(역할 기여) — api _role_term
                          "prev_season_min": p.get("minutes") if p else None,
                          "ovr": ovr, "form": form})
     s = pd.DataFrame(rows)
