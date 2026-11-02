@@ -1724,52 +1724,40 @@ def _loan_details(team: str, league: str) -> list[dict]:
 
 
 @_memo(ttl=21600)
-def _prev_rows() -> pd.DataFrame:
-    """pid(tm id) → 지난 시즌 선수 행(출전 가장 많은 것) — 이번 시즌 출전 없는 스쿼드 선수 보강용."""
-    import rating_history as rh  # noqa: PLC0415
-    from leagues import LEAGUES  # noqa: PLC0415
-    season = f"{SEASON_START - 1}_{SEASON_START}"
-    frames = []
-    for lg in LEAGUES:
-        df = _pf(lg, season)
-        if df is None or "tm_id" not in df.columns:
-            continue
-        tid = pd.to_numeric(df["tm_id"], errors="coerce")
-        sub = df[tid.notna()].copy()
-        sub["_pid"] = "tm" + tid[tid.notna()].astype("int64").astype(str)
-        sub["_mn"] = pd.to_numeric(sub.get("minutes"), errors="coerce").fillna(0)
-        frames.append(sub)
-    if not frames:
-        return pd.DataFrame()
-    # 한 선수가 여러 행(시즌 중 이적)이면 출전이 가장 많은 행. 표 그대로(pid 색인) 두고 필요한 행만 꺼낸다 —
-    # 예전엔 전 리그 ~5천 행을 iterrows 로 dict 로 풀어(운영 0.1 CPU 에서 수십 초 · 메모리 수십 MB) 데우기가 길어졌다.
-    allp = pd.concat(frames, ignore_index=True).sort_values("_mn", ascending=False).drop_duplicates("_pid")
-    return allp.drop(columns=["_mn"]).set_index("_pid")
-
-
-@_memo(ttl=21600)
-def _prev_by_name() -> dict:
-    """{정규화 이름: 지난 시즌 행} — tm id 가 없는 행도(지난 시즌 4,470행 중 1,342행). 펜더르스(스트라스부르 2,970분)가
-    tm id 가 없어 첼시 스쿼드에서 빠지고 '대체 GK 없음'이 됐다(2026-10-22). 이름이 겹치면(동명이인) 그 이름은 쓰지 않는다."""
+def _prev_index() -> tuple:
+    """지난 시즌 선수 행 한 벌(전 리그 표) + 찾기 색인 {pid(tm id): 행 번호} · {정규화 이름: 행 번호} — 이번 시즌 출전 없는
+    스쿼드 선수 보강용(_roster_extras). pid 는 출전이 가장 많은 행, 이름은 다른 팀 행이면 출전 많은 쪽(시즌 중 이적).
+    이름 색인은 tm id 가 없는 행도(지난 시즌 4,470행 중 1,342행 — 펜더르스 스트라스부르 2,970분이 tm id 가 없어 첼시
+    스쿼드에서 빠지고 '대체 GK 없음', 2026-10-22).
+    예전엔 pid 표(9MB)와 이름 → 행 dict(4,470명 × 열 150여 개, 37MB)를 따로 들어 아무 팀 화면이나 처음 열 때 운영 서버
+    (512MB)가 46MB를 더 썼다(2026-11-03 메모리 점검). 이제 표 한 벌 + 작은 색인 둘."""
     import player_registry as preg  # noqa: PLC0415
     from leagues import LEAGUES  # noqa: PLC0415
     season = f"{SEASON_START - 1}_{SEASON_START}"
-    seen: dict = {}
-    dup: set = set()
-    for lg in LEAGUES:
-        df = _pf(lg, season)
-        if df is None:
+    frames = [f for f in (_pf(lg, season) for lg in LEAGUES) if f is not None and not f.empty]
+    if not frames:
+        return pd.DataFrame(), {}, {}
+    allp = pd.concat(frames, ignore_index=True)
+    del frames
+    mn = pd.to_numeric(allp["minutes"], errors="coerce").fillna(0).to_numpy() if "minutes" in allp.columns else [0.0] * len(allp)
+    by_pid: dict[str, int] = {}
+    if "tm_id" in allp.columns:
+        for i, t in enumerate(pd.to_numeric(allp["tm_id"], errors="coerce")):
+            if t == t:
+                k = f"tm{int(t)}"
+                j = by_pid.get(k)
+                if j is None or mn[i] > mn[j]:
+                    by_pid[k] = i
+    by_name: dict[str, int] = {}
+    squads = allp["squad"].astype(str).tolist() if "squad" in allp.columns else [""] * len(allp)
+    for i, name in enumerate(allp["player"]):
+        k = preg.norm(name)
+        if not k:
             continue
-        for r in df.to_dict("records"):
-            k = preg.norm(r.get("player"))
-            if not k:
-                continue
-            if k in seen and str(seen[k].get("squad")) != str(r.get("squad")):
-                if _num(r.get("minutes")) > _num(seen[k].get("minutes")):
-                    seen[k] = r                      # 같은 사람이 시즌 중 이적 — 출전 많은 쪽
-                continue
-            seen.setdefault(k, r)
-    return {k: v for k, v in seen.items() if k not in dup}
+        j = by_name.get(k)
+        if j is None or (squads[j] != squads[i] and mn[i] > mn[j]):
+            by_name[k] = i
+    return allp, by_pid, by_name
 
 
 def _roster_extras(team: str, league: str, df) -> list[dict]:
@@ -1789,8 +1777,7 @@ def _roster_extras(team: str, league: str, df) -> list[dict]:
     have_tm = {str(int(_num(t))) for t in df.get("tm_id", pd.Series(dtype=float)).dropna()} if df is not None else set()
     have_nk = set(df["norm_key"].astype(str)) if df is not None and "norm_key" in df.columns else set()
     mine = {str(n): str(n) for n in df.loc[df["squad"] == team, "player"].dropna()} if df is not None and "squad" in df.columns else {}
-    prev = _prev_rows()
-    by_name = _prev_by_name()
+    prev, by_pid, by_name = _prev_index()
     fidx = fsq.index(fm)
     lo = _loans_out(team, league)
     cands = [] if ct is None or "squad" not in ct.columns else list(ct[ct["squad"] == team].to_dict("records"))
@@ -1807,7 +1794,9 @@ def _roster_extras(team: str, league: str, df) -> list[dict]:
         if lo and _is_loaned(name, lo):
             continue
         pid = f"tm{tid}" if tid else None
-        pr = prev.loc[pid].to_dict() if pid and not prev.empty and pid in prev.index else by_name.get(preg.norm(name))
+        i = by_pid.get(pid) if pid else None
+        i = by_name.get(preg.norm(name)) if i is None else i
+        pr = prev.iloc[i].to_dict() if i is not None else None
         if pr is None:
             f = fsq.find(fidx, team, name)               # 지난 시즌 기록도 없으면 FotMob 명단의 포지션·나이(유스·하부 리그 출신)
             if f is None:
@@ -2907,11 +2896,34 @@ def _fm_match_dates(league: str) -> dict:
     for fid, sq, pl, d, r, m, g, a in zip(t["fotmob_id"].astype(str).str.replace(r"\.0$", "", regex=True), t["squad"].astype(str),
                                           t["player"].astype(str), t["date"].astype(str), num("rating"), num("minutes"),
                                           num("goals"), num("assists")):
-        v = {"r": None if r != r else round(float(r), 2), "m": None if m != m else int(m),
-             "g": None if g != g else int(g), "a": None if a != a else int(a)}
-        out.setdefault(("id", fid), {})[d[:10]] = v
-        out.setdefault(("nm", f"{sq}|{pl}"), {})[d[:10]] = v
+        v = _FmGame((None if r != r else round(float(r), 2), None if m != m else int(m),
+                     None if g != g else int(g), None if a != a else int(a)))
+        ki, kn = ("id", fid), ("nm", f"{sq}|{pl}")
+        gi, gn = out.get(ki), out.get(kn)
+        if gi is None and gn is None:                      # 두 열쇠가 같은 날짜 묶음을 함께 쓴다(메모리 절반)
+            out[ki] = out[kn] = gi = gn = {}
+        elif gi is None:
+            out[ki] = gi = {}
+        elif gn is None:
+            out[kn] = gn = {}
+        gi[d[:10]] = v
+        if gn is not gi:
+            gn[d[:10]] = v
     return out
+
+
+class _FmGame(tuple):
+    """경기 한 줄(평점 r · 분 m · 골 g · 도움 a) — dict 처럼 .get('m')·['m'] 로 읽는다. 13개 리그 경기별 기록을 dict 로 들면
+    15MB 였다(2026-11-03 메모리 점검, 운영 512MB)."""
+    __slots__ = ()
+    _K = {"r": 0, "m": 1, "g": 2, "a": 3}
+
+    def get(self, k, default=None):
+        i = self._K.get(k)
+        return default if i is None else tuple.__getitem__(self, i)
+
+    def __getitem__(self, k):
+        return tuple.__getitem__(self, self._K[k] if isinstance(k, str) else k)
 
 
 def _season_log(team: str, player: str, league: str, is_gk: bool = False, fm_id=None) -> dict:

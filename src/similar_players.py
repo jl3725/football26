@@ -21,8 +21,20 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
-from sklearn.metrics.pairwise import cosine_similarity
-from sklearn.preprocessing import StandardScaler
+
+
+# sklearn(StandardScaler · cosine_similarity) 대신 numpy — 두 줄 때문에 scipy 까지 올라와 운영 서버(512MB)에서 61MB를 썼다
+# (2026-11-03 메모리 점검: 데우기 뒤 404MB). 계산은 sklearn 과 같다(분산 0 열은 나누지 않음, 길이 0 벡터는 유사도 0).
+def _standardize(x: np.ndarray) -> np.ndarray:
+    sd = x.std(axis=0)
+    return (x - x.mean(axis=0)) / np.where(sd == 0, 1.0, sd)
+
+
+def cosine_similarity(a: np.ndarray, b: np.ndarray) -> np.ndarray:
+    def unit(m):
+        n = np.linalg.norm(m, axis=1, keepdims=True)
+        return m / np.where(n == 0, 1.0, n)
+    return unit(np.asarray(a, dtype=float)) @ unit(np.asarray(b, dtype=float)).T
 
 # ── 피처 정의 ──────────────────────────────────────────────────────────────
 ALL_FEATURES: list[str] = [
@@ -290,7 +302,7 @@ def build_embeddings(df: pd.DataFrame,
     if method == "zscore":
         raw = df[feat_list].to_numpy(dtype=float)
         raw = np.nan_to_num(raw, nan=0.0)
-        return StandardScaler().fit_transform(raw), feat_list
+        return _standardize(raw), feat_list
     return _percentile_matrix(df, feat_list), feat_list
 
 
