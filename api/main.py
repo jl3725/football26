@@ -2045,7 +2045,42 @@ def _injury_events(league: str, days: int = 60) -> list[dict]:
                 continue
         first[k] = len(out)
         out.append(e)
+    out = _settle_by_appearances(league, out, sig)
     out.sort(key=lambda e: e["date"], reverse=True)
+    return out
+
+
+def _settle_by_appearances(league: str, events: list[dict], sig) -> list[dict]:
+    """부상 신호를 실제 출전으로 정리 — '부상 발생' 뒤 7일 안에 뛰었으면 결장 신호가 아니었다(출전 불투명·가벼운 타박)고 보고 뺀다.
+    그보다 늦게 뛰었으면 '복귀'를 그 출전일로 더한다(TM 목록은 며칠 늦게 빠진다). 출전 = FotMob 경기별 기록(전 대회).
+    2026-11-02 사용자: 아스날 브리핑에 칼라피오리·마두에케 '부상'이 계속 — 결장 목록만 고치고(_fm_played_since) 신호는 그대로였다."""
+    t = ds.read_table("fotmob_match_ratings", league=league)
+    if t is None or t.empty or not {"squad", "player", "date", "minutes"} <= set(t.columns):
+        return events
+    played: dict = {}
+    for sq, pl, d, m in zip(t["squad"].astype(str), t["player"].astype(str), t["date"].astype(str),
+                            pd.to_numeric(t["minutes"], errors="coerce").fillna(0)):
+        if m > 0:
+            played.setdefault((sq, sig(pl)), set()).add(d[:10])
+    returns = {(e["squad"], sig(e["player"])): e["date"] for e in events if e["event"] != "new" and e["date"]}
+    out: list[dict] = []
+    for e in events:
+        if e["event"] != "new" or not e["date"]:
+            out.append(e)
+            continue
+        k = (e["squad"], sig(e["player"]))
+        after = sorted(d for d in played.get(k, ()) if d > e["date"])
+        if not after:
+            out.append(e)
+            continue
+        gap = (datetime.date.fromisoformat(after[0]) - datetime.date.fromisoformat(e["date"])).days
+        if gap <= 7:
+            continue                                      # 며칠 만에 뛰었다 — 결장 신호가 아니었다
+        out.append(e)
+        r0 = returns.get(k)
+        if not r0 or r0 < e["date"]:                      # 그 부상의 복귀 신호가 아직 없으면 첫 출전일로
+            out.append({"date": after[0], "event": "return", "squad": e["squad"], "player": e["player"],
+                        "source": "출전", "injury": e["injury"], "until": ""})
     return out
 
 

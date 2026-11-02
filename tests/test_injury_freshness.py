@@ -58,3 +58,20 @@ def test_change_log_records_until_changes() -> None:
     ev = fi.injury_changes(prev, cur, TODAY)
     assert [(e["event_type"], e["old_until"], e["new_until"]) for e in ev] == [("until_changed", "Doubtful", "Late November 2026")]
     assert fi.injury_changes(prev, prev, TODAY) == []
+
+
+def test_injury_signals_settled_by_appearances(monkeypatch) -> None:
+    """브리핑·Signals 의 '부상 발생'도 출전으로 정리 — 7일 안에 뛰었으면 결장 신호가 아니었다(칼라피오리 10/27 불투명 → 11/1 90분)."""
+    import datastore as ds
+    t = pd.DataFrame([{"squad": "Arsenal", "player": "Riccardo Calafiori", "date": "2026-11-01", "minutes": 90},
+                      {"squad": "Arsenal", "player": "Bukayo Saka", "date": "2026-11-20", "minutes": 70}])
+    monkeypatch.setattr(ds, "read_table", lambda name, league=None: t if name == "fotmob_match_ratings" else None)
+    sig = lambda p: p.split()[-1].lower()  # noqa: E731
+    ev = [{"date": "2026-10-27", "event": "new", "squad": "Arsenal", "player": "Riccardo Calafiori", "source": "FotMob", "injury": "부상", "until": ""},
+          {"date": "2026-10-22", "event": "new", "squad": "Arsenal", "player": "Bukayo Saka", "source": "FotMob", "injury": "부상", "until": ""},
+          {"date": "2026-10-30", "event": "new", "squad": "Arsenal", "player": "William Saliba", "source": "TM", "injury": "허리", "until": ""}]
+    out = M._settle_by_appearances("EPL", ev, sig)
+    got = [(e["event"], e["player"], e["date"]) for e in out]
+    assert ("new", "Riccardo Calafiori", "2026-10-27") not in got                       # 5일 만에 90분 — 신호 아님
+    assert ("new", "Bukayo Saka", "2026-10-22") in got and ("return", "Bukayo Saka", "2026-11-20") in got
+    assert ("new", "William Saliba", "2026-10-30") in got                               # 뛴 기록 없음 — 그대로
