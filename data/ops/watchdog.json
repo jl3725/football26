@@ -1,39 +1,33 @@
 {
- "checked": "2026-11-01T14:34:43+00:00",
+ "checked": "2026-11-02T17:30:00+00:00",
  "results": {
   "ovr": [],
   "season": [],
-  "hub": [
-   "홈 스냅샷이 148시간 전 생성 — daily_data 의 precompute_hub 확인"
-  ],
+  "hub": [],
   "frontend": [],
-  "backend": [
-   "운영 백엔드가 옛 버전(d4fd71e) — 최신 코드 1bfb249(2026-10-30T00:57) 36시간 넘게 미반영. Deploy Backend 워크플로·Render Events 확인(빌드 분 한도·시작 실패면 requirements 누락 의심)"
-  ],
+  "backend": [],
   "workflows": [
-   "daily_data.yml 최근 실행 failure (2026-11-01T11:26) https://github.com/jl3725/football26/actions/runs/41301917327",
-   "deploy_backend.yml 최근 실행 failure (2026-11-01T10:51) https://github.com/jl3725/football26/actions/runs/41299284477"
+   "match_refresh.yml 최근 실행 failure (2026-11-02T02:27) https://github.com/jl3725/football26/actions/runs/41377875300"
   ],
   "news": [
-   "news.db 압축본 56MB — GitHub 50MB 경고 구간(60MB 넘으면 넓힌 원천의 14일 지난 비이적 기사를 자동 정리, 90MB 넘으면 올리기 거부 — src/news_store.py)"
+   "news.db 압축본 60MB — GitHub 50MB 경고 구간(60MB 넘으면 넓힌 원천의 14일 지난 비이적 기사를 자동 정리, 90MB 넘으면 올리기 거부 — src/news_store.py)"
   ],
   "tm_agent": [],
   "coverage": [],
   "rating_history": [],
   "ratings": [
-   "사용자 기준 위반: [범위] Pascal Groß ovr=77 (기대 78~83) — 사용자 지적 2026-10-19 — 35세 이번 시즌 3골 4도움·평점 7.5(FotMob 7.8)인데 76"
+   "스카우트 기준 이탈: Jeremy Doku 89 (기대 82~86)"
   ],
   "names": [],
   "xg": [],
   "agents": [
-   "STATS · Sofascore 평점 — 마지막 성공 103시간 전(허용 48시간, local-sofascore-daily, local-season-weekly)",
-   "ANALYST · 팬 투표 — 마지막 성공 61시간 전(허용 24시간, local-fanvote)",
-   "SERVING · 백엔드 배포(Render · 코드 바뀐 날만) — 성공 기록 없음(허용 36시간, deploy_backend)"
+   "STATS · Sofascore 평점 — 마지막 성공 86시간 전(허용 48시간, local-sofascore-daily, local-season-weekly)"
   ],
   "expectations": [],
   "screen": [],
   "squads": [],
   "identity": [],
   "fair_price": []
- }
+ },
+ "ai_cause": "각 항목에 대한 분석 결과입니다.\n**workflows**\n- `understat_live` 단계에서 반복적인 코드 1 오류가 발생하고 있어, 외부 데이터 소스(Understat)의 응답 지연이나 API 구조 변경 가능성이 높습니다. (match_refresh.yml / understat_live 단계)\n- `manager_careers` 단계의 실패가 선행되었으므로, 데이터 파이프라인의 의존성이나 데이터 정합성 문제를 먼저 확인해야 합니다. (daily_data / manager_careers 단계)\n**news**\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인)\n**ratings**\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인)\n**agents**\n- `understat_live` 단계의 반복 실패로 인해 데이터 업데이트가 지연되어 평점 갱신이 이루어지지 않았을 가능성이 큽니다. (match_refresh / understat_live 단계)\n- `manager_careers` 단계의 실패가 전체 데이터 흐름을 차단하고 있는지 확인이 필요합니다. (daily_data / manager_careers 단계)"
 }
