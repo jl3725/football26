@@ -2700,13 +2700,15 @@ _POS_CACHE: dict = {}
 
 
 def _position_table() -> dict:
-    """{리그: {_pf 인덱스: {main, ovr, by_role}}} — 포지션별 OVR(src/position_ovr.py). 역할 기여는 8개 리그 같은 템플릿
-    백분위라 리그를 함께 본다. 세부 지표 표(유럽·컵·시즌 초 안정화)는 공통 OVR 표로 만들고(pos_busy), 만든 뒤 그 표들의
-    _ovr 도 대표 포지션 OVR 로 고쳐 둔다(화면 백분위 비교·스카우트 표가 같은 숫자를 보게). DB 시각 기준 캐시."""
+    """{리그: {_pf 인덱스: {main, ovr, raw, by_role, fam}}} — 포지션별 OVR(src/position_ovr.py) + 표시값 버티기(hold — 기준은
+    rating_history 마지막 기록, GK 포함 전원). 역할 기여는 8개 리그 같은 템플릿 백분위라 리그를 함께 본다. 세부 지표 표
+    (유럽·컵·시즌 초 안정화)는 공통 OVR 표로 만들고(pos_busy), 만든 뒤 그 표들의 _ovr 도 같은 숫자로 고쳐 둔다
+    (화면 백분위 비교·스카우트 표가 같은 숫자를 보게). DB 시각 기준 캐시."""
     import json  # noqa: PLC0415
 
     import position_ovr as po  # noqa: PLC0415
     import positions as ps  # noqa: PLC0415
+    import rating_history as rh  # noqa: PLC0415
     from api.services.player_data import pos_busy, role_counts  # noqa: PLC0415
     key = ds._db_mtime()
     if key in _POS_CACHE:
@@ -2721,8 +2723,10 @@ def _position_table() -> dict:
                 continue
             if f is not None and not f.empty:
                 frames[lg] = f
-    contrib = po.contributions(frames, {lg: pd.to_numeric(f["_ovr_common"] if "_ovr_common" in f.columns else f["_ovr"],
-                                                       errors="coerce") for lg, f in frames.items()})
+    def common_of(f):                     # 반올림 전 공통 OVR(옛 캐시 표엔 없어 정수)
+        col = "_ovr_raw" if "_ovr_raw" in f.columns else "_ovr_common" if "_ovr_common" in f.columns else "_ovr"
+        return pd.to_numeric(f[col], errors="coerce")
+    contrib = po.contributions(frames, {lg: common_of(f) for lg, f in frames.items()})
     counts = role_counts(None)
     table: dict = {}
     for lg, f in frames.items():
@@ -2731,24 +2735,37 @@ def _position_table() -> dict:
         if sq is not None and not sq.empty and "positions" in sq.columns:
             for s_, p_, pos in zip(sq["squad"].astype(str), sq["player"].astype(str), sq["positions"]):
                 listed[(s_, ps.norm_name(p_))] = pos
-        common = pd.to_numeric(f["_ovr_common"] if "_ovr_common" in f.columns else f["_ovr"], errors="coerce")
+        common = common_of(f)
         cdf = contrib[lg]
-        tm_pos = f["tm_position"] if "tm_position" in f.columns else pd.Series(None, index=f.index)
-        lines = [rv3.line_of_row(r) for r in f.to_dict("records")]
+        shown = rh.anchors(lg)
+        career = {}                       # tm id → TM 프로필 대표·그 밖의 포지션(src/fetch_tm_positions.py)
+        tp = ds.read_table("tm_positions", league=lg)
+        if tp is not None and not tp.empty and "tm_player_id" in tp.columns:
+            for tid, m, o in zip(tp["tm_player_id"], tp["main_position"], tp["other_positions"]):
+                roles = [ps.tm_role(x) for x in [m, *str(o if isinstance(o, str) else "").split("|")] if isinstance(x, str) and x]
+                career[str(int(float(tid)))] = [r for r in roles if r]
+        recs = f.to_dict("records")
         out = {}
-        for idx, c, line, row_c, (squad, name, tmp) in zip(f.index, common, lines, cdf.to_dict("records"),
-                                                           zip(f["squad"].astype(str), f["player"].astype(str), tm_pos)):
-            if c != c or line == "GK":
+        for idx, c, rec, row_c in zip(f.index, common, recs, cdf.to_dict("records")):
+            if c != c:
                 continue
-            # 지금 쓰이는 자리 = FotMob 첫 포지션 + TM 대표 포지션(나머지 FotMob 목록은 후보 아님 — 실제 선발로만)
-            prim = [*po.fm_roles(listed.get((squad, ps.norm_name(name))))[:1],
-                    *[r for r in [ps.tm_role(tmp if isinstance(tmp, str) else None)] if r]]
-            out[idx] = po.choose(float(c), po.experience(ps.lookup(counts, name), prim), row_c, prim)
+            if rv3.line_of_row(rec) == "GK":
+                res = po.choose(float(c), {}, {})
+            else:
+                # 지금 쓰이는 자리 = FotMob 첫 포지션 + TM 대표 포지션(나머지 FotMob 목록은 후보 아님 — 실제 선발로만)
+                name, tmp = str(rec["player"]), rec.get("tm_position")
+                prim = [*po.fm_roles(listed.get((str(rec["squad"]), ps.norm_name(name))))[:1],
+                        *[r for r in [ps.tm_role(tmp if isinstance(tmp, str) else None)] if r]]
+                tid = rec.get("tm_id")
+                car = career.get(str(int(float(tid))), []) if tid is not None and tid == tid else []
+                res = po.choose(float(c), po.experience(ps.lookup(counts, name), prim, car), row_c, prim, car)
+            out[idx] = po.held(res, shown.get(rh.pid(rec)))
         table[lg] = out
         # 세부 지표 표(캐시 객체)도 같은 숫자로 — 인덱스는 _pf 그대로
         if "_ovr_common" not in f.columns:
             f["_ovr_common"] = f["_ovr"]
         f["_ovr"] = [out[i]["ovr"] if i in out else v for i, v in zip(f.index, f["_ovr_common"])]
+        f["_ovr_pos_raw"] = [out[i]["raw"] if i in out else None for i in f.index]
         f["_main_pos"] = [out[i]["main"] if i in out else None for i in f.index]
         f["_pos_ovr"] = [json.dumps(out[i]["by_role"], separators=(",", ":")) if i in out and out[i]["by_role"] else None
                          for i in f.index]

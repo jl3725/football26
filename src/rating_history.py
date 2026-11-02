@@ -91,6 +91,18 @@ def load(league: str) -> pd.DataFrame:
     return pd.read_csv(p, dtype={"date": str})
 
 
+def anchors(league: str) -> dict[str, int]:
+    """{pid: 마지막으로 기록된 OVR} — 표시값 버티기(src/position_ovr.hold)의 기준. 지금 모델 버전 기록만(버전이 바뀐 날은
+    record 의 rebase 가 옛 기록을 옮겨 표시하기 전까지 버티기 없이 반올림)."""
+    import ratings_v3 as rv3
+    hist = load(league)
+    if hist.empty or "model" not in hist.columns:
+        return {}
+    st = state_at(hist, "9999-12-31")
+    st = st[st["model"].astype(str) == rv3.MODEL_VERSION]
+    return {str(p): int(v) for p, v in zip(st["pid"], pd.to_numeric(st["ovr"], errors="coerce")) if v == v}
+
+
 def state_at(hist: pd.DataFrame, date: str) -> pd.DataFrame:
     """date(포함) 이전 각 선수의 마지막 기록."""
     h = hist[hist["date"] <= date]

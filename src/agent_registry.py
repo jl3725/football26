@@ -111,6 +111,9 @@ AGENTS: tuple[Agent, ...] = (
                    24, ("market_value_*",)),
               Feed("tm_profile", "TM 선수 정보", ("transfermarkt",), ("local-season-weekly",),
                    "주 1회 · 수 12:30 KST(이 PC)", WEEK_H),
+              # TM 프로필 대표·그 밖의 포지션 — 포지션별 OVR 의 커리어 익숙함 하한(src/fetch_tm_positions.py → position_ovr)
+              Feed("positions", "TM 포지션(대표·그 밖의)", ("positions",), ("tm_data",),
+                   "매일 10:30·18:30 KST(새 선수·60일 지난 선수만)", 36, ("tm_positions_*",), added="2026-11-02"),
           )),
     Agent("injury", "INJURY", "부상", "현재 부상자·결장 명단, 통산 부상 이력",
           ("Transfermarkt", "FotMob"), (

@@ -85,3 +85,38 @@ def test_contribution_is_scale_neutral() -> None:
     assert abs(float(top.mean())) < 0.4 and abs(float(out.mean())) < 0.1
     raw = po.contributions({"X": f}, None, templates=["CM"])["X"]["CM"]
     assert float(raw[common >= 85].mean()) > 1.0                  # 보통 백분위를 안 빼면 상위권이 크게 오른다
+
+
+def test_career_positions_from_tm_set_a_floor() -> None:
+    """TM 프로필 그 밖의 포지션 = 커리어상 익숙한 자리 — 최근 두 시즌에 안 뛰어도 칩이 있고 땜질보다 높다."""
+    prim = ["DM"]
+    starts = {"DM": 12.0, "CM": 10.0, "AM": 4.0, "RW": 2.5}
+    no = po.choose(78.0, po.experience(starts, prim), ZERO, prim)
+    car = ["AM", "CM", "RW"]                                       # 베르나르두 TM: 대표 AM · 그 밖에 CM·RW
+    yes = po.choose(78.0, po.experience(starts, prim, car), ZERO, prim, car)
+    assert yes["by_role"]["RW"] == 78 - 3 and yes["by_role"]["RW"] > no["by_role"]["RW"]
+    only = po.choose(80.0, po.experience({"CB": 25.0}, ["CB"], ["CB", "RB"]), ZERO, ["CB"], ["CB", "RB"])
+    assert only["main"] == "CB" and only["by_role"]["RB"] == 77   # 최근 선발 0 이어도 TM 이 적은 자리
+
+
+def test_hold_keeps_shown_value_near_rounding_boundary() -> None:
+    """표시값 버티기 — 84 로 보이던 선수는 84.79 까지 84, 84.8 부터 85(반올림 경계 ±1 흔들림 막기)."""
+    assert po.hold(84, 84.6) == 84 and po.hold(84, 84.79) == 84 and po.hold(84, 84.81) == 85
+    assert po.hold(84, 83.21) == 84 and po.hold(84, 83.19) == 83
+    assert po.hold(84, 86.4) == 86                                 # 크게 움직이면 바로
+    assert po.hold(None, 84.6) == 85                               # 기록 없는 선수는 반올림
+
+
+def test_held_keeps_chips_below_main() -> None:
+    prim = ["CM"]
+    res = po.choose(84.6, po.experience({"CM": 20.0, "AM": 8.0}, prim), ZERO, prim)
+    assert res["ovr"] == 85
+    h = po.held(res, 84)
+    assert h["ovr"] == 84 and h["by_role"]["CM"] == 84 and h["by_role"]["AM"] <= 84
+
+
+def test_ovr_parts_include_position_and_hold() -> None:
+    import ratings_v3 as rv3
+    row = {"_ovr_raw": 83.2, "_ovr_pos_raw": 84.6, "_ovr": 84}
+    keys = {p["key"]: p["value"] for p in rv3.position_parts(row)}
+    assert keys == {"position": 1.4, "hold": -0.6}                 # 83.2 + 1.4 − 0.6 = 84(보이는 값)

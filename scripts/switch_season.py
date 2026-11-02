@@ -33,8 +33,9 @@ OLD = f"{SEASON_START - 1}_{SEASON_START}"
 SEASON_BEGIN = f"{SEASON_START}-07-01"
 
 # tm_injury_history 는 '그 시즌 결장 경기 수'라 시즌 기록 — 이관하지 않고 새 시즌 수집으로 채운다.
+# tm_positions(TM 프로필 포지션)는 시즌과 무관 — 이관해 새 시즌에 전원 다시 받지 않게(60일마다 새로 고침).
 SNAPSHOT_CSV = ["transfermarkt_injuries", "transfermarkt_contracts", "transfer_rumors",
-                "transfer_buzz", "team_home_kits"]
+                "transfer_buzz", "team_home_kits", "tm_positions"]
 SNAPSHOT_JSON = ["manager_profiles", "season_teams"]
 # 변경 이력: (stem, 날짜 컬럼)
 LOGS = [("manager_changes", "detected_at"), ("transfermarkt_injury_changes", "run_date"),

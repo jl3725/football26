@@ -202,8 +202,8 @@ def pos_busy():
 
 
 def apply_positions(league: str, frame: pd.DataFrame) -> None:
-    """이번 시즌 표에 포지션별 OVR(src/position_ovr.py) — _ovr_common(공통) · _ovr(대표 포지션 OVR) · _main_pos · _pos_ovr
-    ({역할: OVR} JSON) · _pos_fam({역할: 익숙함 0~1} JSON). 표는 8개 리그를 함께 봐야 해서(같은 템플릿 백분위) api.main._position_table 이 만든다.
+    """이번 시즌 표에 포지션별 OVR(src/position_ovr.py) — _ovr_common(공통) · _ovr(대표 포지션 OVR, 표시값 버티기 뒤) ·
+    _ovr_pos_raw(대표 반올림 전) · _main_pos · _pos_ovr({역할: OVR} JSON) · _pos_fam({역할: 익숙함 0~1} JSON). 표는 8개 리그를 함께 봐야 해서(같은 템플릿 백분위) api.main._position_table 이 만든다.
     실패하면 공통 OVR 그대로 두고 _main_pos 만 비운다(다음 DB 에서 다시)."""
     import json  # noqa: PLC0415
     if "_ovr_common" not in frame.columns:
@@ -214,14 +214,16 @@ def apply_positions(league: str, frame: pd.DataFrame) -> None:
     except Exception as e:  # noqa: BLE001
         print(f"[position_ovr] {league}: 공통 OVR 그대로 {type(e).__name__}: {e}")
         table = {}
-    mains, ovrs, by, fam = [], [], [], []
+    mains, ovrs, raws, by, fam = [], [], [], [], []
     for idx, common in zip(frame.index, frame["_ovr_common"]):
         r = table.get(idx)
         mains.append(r["main"] if r else None)
         ovrs.append(r["ovr"] if r else common)
+        raws.append(r["raw"] if r else None)
         by.append(json.dumps(r["by_role"], separators=(",", ":")) if r and r["by_role"] else None)
         fam.append(json.dumps(r["fam"], separators=(",", ":")) if r and r.get("fam") else None)
     frame["_ovr"] = ovrs
+    frame["_ovr_pos_raw"] = raws
     frame["_main_pos"] = mains
     frame["_pos_ovr"] = by
     frame["_pos_fam"] = fam
@@ -399,6 +401,8 @@ def _build_frame(league: str, season: str | None = None):
             frame = rf.add_recent_form(frame, ds.read_table("fotmob_match_ratings", league=league))
         except Exception as e:  # noqa: BLE001 — 경기별 평점 표가 없으면 시즌 폼만
             print(f"[recent_form] {league}: 건너뜀 {type(e).__name__}: {e}")
-    # OVR 은 행 데이터만으로 정해지므로 표를 만들 때 한 번만 — 추천 1회에 3,500번 다시 계산하던 것
-    frame["_ovr"] = [rv3.ovr_of_row(r) for _, r in frame.iterrows()]
+    # OVR 은 행 데이터만으로 정해지므로 표를 만들 때 한 번만 — 추천 1회에 3,500번 다시 계산하던 것.
+    # 반올림 전 값(_ovr_raw)도 — 포지션 OVR 과 표시값 버티기(api _position_table)가 쓴다
+    frame["_ovr_raw"] = [rv3.ovr_of_row(r, exact=True) for _, r in frame.iterrows()]
+    frame["_ovr"] = [int(round(v)) for v in frame["_ovr_raw"]]
     return frame

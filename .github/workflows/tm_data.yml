@@ -4,7 +4,8 @@ name: TM Data
 # TM(AWS WAF)은 GH 러너 IP 에 202 챌린지를 주지만, 브라우저(seleniumbase UC)로 한 번 열어 받은 토큰을
 # requests 에 넘기면 열린다(src/tm_http.py, 진단 scripts/diag_sources.py). 토큰은 .cache 파일로 단계 간 재사용.
 #
-#   daily  : 이적(transfers) · 현재 부상(injuries) · 계약(contracts) · 이적 루머(rumors) · 시장가치 스냅샷 — 8개 리그, 하루 2회
+#   daily  : 이적(transfers) · 현재 부상(injuries) · 계약(contracts) · 이적 루머(rumors) · 시장가치 스냅샷 · 포지션(positions —
+#            TM 프로필 대표·그 밖의 포지션, 새 선수·60일 지난 선수만 리그당 150명) — 전 리그, 하루 2회
 #   weekly : 선수별 통산 부상 이력(tm_injury_history) — 선수 페이지 수천 개, 주 1회(약 1.5시간)
 # 실패는 ci_try 로 모아 마지막 ci_report 에서 빨간불(숨기지 않음). 품질 게이트 실패 시 커밋하지 않는다.
 on:
@@ -49,7 +50,7 @@ jobs:
             STEPS="injury_history:src/fetch_tm_injury_history.py"
           else
             # 계약(스쿼드 페이지)이 먼저 — 라이트 리그는 여기서 TM 클럽 ↔ 우리 표기를 정해 적고(src/lite_league.py) 이적·부상·루머가 그 표기를 쓴다
-            STEPS="contracts:src/sync_transfermarkt_contracts.py transfers:src/fetch_transfers.py injuries:src/fetch_transfermarkt_injuries.py rumors:src/fetch_transfer_rumors.py market_value:scripts/snapshot_market_values.py"
+            STEPS="contracts:src/sync_transfermarkt_contracts.py transfers:src/fetch_transfers.py injuries:src/fetch_transfermarkt_injuries.py rumors:src/fetch_transfer_rumors.py market_value:scripts/snapshot_market_values.py positions:src/fetch_tm_positions.py"
           fi
           for LG in $(python scripts/league_keys.py); do   # 전 리그(라이트 리그 포함) — 목록은 src/leagues.py 한 곳
             for S in $STEPS; do
@@ -81,8 +82,8 @@ jobs:
           if [ "$MODE" = "weekly" ]; then
             PATHS="data/tm_injury_history_*.csv data/injury_names_ko.json data/ai/usage_injury_names.json data/ops/runs/"; SUBJECT="통산 부상 이력"
           else
-            PATHS="data/transfers_*.csv data/transfermarkt_*.csv data/transfer_rumors_*.csv data/players_*.csv data/market_value_*.csv data/lite_teams_*.json data/league_exports.json data/injury_names_ko.json data/ai/usage_injury_names.json data/ops/runs/"
-            SUBJECT="이적·부상·계약·루머·시장가치"
+            PATHS="data/transfers_*.csv data/transfermarkt_*.csv data/transfer_rumors_*.csv data/players_*.csv data/market_value_*.csv data/tm_positions_*.csv data/lite_teams_*.json data/league_exports.json data/injury_names_ko.json data/ai/usage_injury_names.json data/ops/runs/"
+            SUBJECT="이적·부상·계약·루머·시장가치·포지션"
           fi
           git add -- $PATHS
           if git diff --staged --quiet; then

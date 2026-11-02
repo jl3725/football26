@@ -298,8 +298,10 @@ def absolute_ovr(*, value, ss_rating, minutes, age, pos_group,
                  x_ss_rating=None, x_minutes=None, x_level=None,
                  prev_x_ss_rating=None, prev_x_minutes=None, prev_x_level=None,
                  nt_ss_rating=None, nt_minutes=None, nt_level=None,
-                 prev_nt_ss_rating=None, prev_nt_minutes=None, prev_nt_level=None, _parts: list | None = None) -> int:
-    """_parts 에 리스트를 주면 단계별 기여(키, 값)를 채운다 — 화면 'OVR 구성'(ovr_parts_of_row)."""
+                 prev_nt_ss_rating=None, prev_nt_minutes=None, prev_nt_level=None, _parts: list | None = None,
+                 exact: bool = False):
+    """_parts 에 리스트를 주면 단계별 기여(키, 값)를 채운다 — 화면 'OVR 구성'(ovr_parts_of_row).
+    exact=True 면 반올림 전 값(float) — 포지션 OVR·표시값 버티기(src/position_ovr.py)가 쓴다."""
     ln = line_of(pos_group)
     a = _num(age)
 
@@ -434,6 +436,8 @@ def absolute_ovr(*, value, ss_rating, minutes, age, pos_group,
     if 0 < a <= 21 and ovr > 88.0 + (a - 15) * 1.0:
         rec("youth_cap", 88.0 + (a - 15) * 1.0 - ovr)
         ovr = 88.0 + (a - 15) * 1.0
+    if exact:
+        return float(_clamp(ovr, 45.0, 99.0))
     return int(_clamp(round(ovr), 45, 99))
 
 
@@ -601,9 +605,10 @@ def _x_args(row) -> dict:
                                     "nt_ss_rating", "nt_minutes", "nt_level", "prev_nt_ss_rating", "prev_nt_minutes", "prev_nt_level")}
 
 
-def ovr_of_row(row) -> int:
-    """선수 행 → 절대 OVR (API _player_ovr 와 같은 입력). player_frame 이 리그 표에 `_ovr` 로 미리 붙인다."""
-    return absolute_ovr(
+def ovr_of_row(row, exact: bool = False):
+    """선수 행 → 절대 OVR (API _player_ovr 와 같은 입력). player_frame 이 리그 표에 `_ovr` 로 미리 붙인다.
+    exact=True 면 반올림 전 값(float)."""
+    return absolute_ovr(exact=exact,
         value=row.get("market_value_eur"), ss_rating=row.get("ss_rating"),
         minutes=row.get("minutes"), age=row.get("age"), pos_group=line_of_row(row),
         gk_save_pct=row.get("gk_save_pct"), gk_cs_pct=row.get("gk_cs_pct"),
@@ -630,7 +635,27 @@ PART_LABELS = {
     "slump": ("SEASON SLUMP", "이번 시즌 부진 — 몸값이 아직 반영 못 한 이번 시즌 평점 수준 쪽으로"),
     "rise": ("SEASON RISE", "이번 시즌 상승 — 몸값이 아직 반영 못 한 이번 시즌 평점 수준 쪽으로"),
     "cap": ("TOP CAP", "88 초과분 압축"), "league": ("LEAGUE", "리그 수준 보정"), "youth_cap": ("AGE CAP", "나이별 천장"),
+    "position": ("POSITION FIT", "대표 포지션 — 그 자리 핵심 지표(같은 OVR 선수 대비)·익숙함"),
+    "hold": ("STABLE", "표시값 유지 — 반올림 경계 근처 하루 흔들림 막기"),
 }
+
+
+def part(key: str, value: float) -> dict:
+    """'OVR 구성' 한 줄(ovr_parts_of_row 와 같은 모양)."""
+    return {"key": key, "en": PART_LABELS.get(key, (key, ""))[0], "ko": PART_LABELS.get(key, ("", key))[1], "value": value}
+
+
+def position_parts(row) -> list[dict]:
+    """대표 포지션 OVR(src/position_ovr.py)과 표시값 버티기 몫 — 공통 OVR 단계들 뒤에 붙여 합이 보이는 OVR 이 되게."""
+    common, pos, shown = row.get("_ovr_raw"), row.get("_ovr_pos_raw"), row.get("_ovr")
+    if common is None or pos is None or common != common or pos != pos or shown is None:
+        return []
+    out = []
+    if abs(pos - common) >= 0.05:
+        out.append(part("position", round(float(pos - common), 1)))
+    if int(shown) != int(round(pos)):
+        out.append(part("hold", round(float(shown - pos), 1)))
+    return out
 
 
 def ovr_parts_of_row(row) -> dict:
@@ -648,8 +673,7 @@ def ovr_parts_of_row(row) -> dict:
         prev_value=row.get("prev_market_value_eur"),
         hist_ss_rating=row.get("hist_ss_rating"), hist_minutes=row.get("hist_minutes"),
         hist_league_level=_prev_level(row, "hist_league"), **_x_args(row), _parts=parts)
-    return {"ovr": ovr, "parts": [{"key": k, "en": PART_LABELS.get(k, (k, ""))[0], "ko": PART_LABELS.get(k, ("", k))[1],
-                                   "value": v} for k, v in parts]}
+    return {"ovr": ovr, "parts": [part(k, v) for k, v in parts] + position_parts(row)}
 
 
 def player_line(row) -> dict:
