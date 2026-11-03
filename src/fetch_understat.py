@@ -32,6 +32,7 @@ FBREF = data_path("players")
 OUT = data_path("players_full")
 CFG = league_config()
 LEAGUE = CFG.fbref_id
+NO_UNDERSTAT = {"LigaPortugal", "Eredivisie", "BelgianProLeague"}   # Understat 가 안 다루는 리그 — FBref 관측값으로
 
 
 def normalize_name(s: str) -> str:
@@ -190,14 +191,23 @@ def read_understat_or_empty(fb: pd.DataFrame) -> pd.DataFrame:
         "goals",
         "assists",
     ])
+    if ACTIVE_LEAGUE in NO_UNDERSTAT:
+        print(f"skip (Understat does not cover {CFG.name})", end=" ", flush=True)
+        return empty
     try:
-        if ACTIVE_LEAGUE in {"LigaPortugal", "Eredivisie", "BelgianProLeague"}:
-            raise RuntimeError(f"Understat does not cover {CFG.name}")
         us = sd.Understat(leagues=LEAGUE, seasons=SEASON_FBREF)
         return us.read_player_season_stats().reset_index()
     except Exception as e:
-        print(f"skip ({e})", end=" ", flush=True)
-        return empty
+        print(f"Understat 접속 실패({str(e)[:80]})", end=" ", flush=True)
+    # 사이트가 안 될 때(2026-11-02~ understat.com 연결 시간 초과) 빈 표로 진행하면 아래 결측 보강이 xG 를 0·실제 골로 덮어
+    # 5대 리그 선수 표 xG 가 통째로 망가진다 — 매일 받아 두는 파일(src/fetch_understat_live.py)의 마지막 값으로
+    last = data_path("understat_players")
+    if last.exists():
+        d = pd.read_csv(last)
+        if len(d) >= 100 and "squad" in d.columns:
+            print(f"→ 마지막 받은 파일 {last.name}({len(d)}명)", end=" ", flush=True)
+            return d.rename(columns={"squad": "team"})
+    return empty
 
 
 def main() -> int:
@@ -208,6 +218,10 @@ def main() -> int:
     print("→ Understat xG 수집 ...", end=" ", flush=True)
     udf = read_understat_or_empty(fb)
     print(f"{len(udf)}명 ✓")
+    if udf.empty and ACTIVE_LEAGUE not in NO_UNDERSTAT:
+        # Understat 리그인데 xG 가 없으면 선수 표를 덮지 않는다(xG 가 0·대체값으로 바뀌는 것보다 지난주 표가 낫다)
+        print(f"[skip] {CFG.name} Understat xG 없음 — {OUT.name} 그대로 둠(원천 중단)")
+        return 75
 
     n90 = udf["minutes"] / 90
     udf["xg_p90"]       = (udf["xg"]         / n90).round(3)

@@ -23,6 +23,11 @@ from leagues import SEASON_FBREF, data_path, league_config, register_soccerdata_
 from squads import canonical_squad  # noqa: E402
 
 UNDERSTAT_LEAGUES = ("EPL", "LaLiga", "SerieA", "Bundesliga", "Ligue1")
+EX_SOURCE_DOWN = 75       # 원천 중단(scripts/ci_try.sh — 빨간불 대신 DATA 화면 '원천 중단', 기존 파일 유지)
+# 사이트에 닿지 못한 오류 — 2026-11-02 부터 understat.com 이 클라우드·로컬 모두 연결 시간 초과(dial tcp … i/o timeout)라
+# Match Refresh 가 연속 빨간불이었다(우리 고장이 아님)
+_NET_ERR = ("dial tcp", "i/o timeout", "TLS Client Error", "timed out", "Connection", "connection", "Name or service",
+            "getaddrinfo", "Max retries")
 COLS = ["squad", "player", "minutes", "xg", "np_xg", "xa", "key_passes", "shots", "xg_chain", "goals", "assists"]
 
 
@@ -33,6 +38,16 @@ def fetch(league: str) -> pd.DataFrame | None:
         return None
     d["squad"] = [canonical_squad(t, league) for t in d["team"]]
     return d[[c for c in COLS if c in d.columns]]
+
+
+def reachable(timeout: float = 15.0) -> bool:
+    """understat.com 에 닿는가 — 연결만 본다(응답 코드는 상관없음)."""
+    import requests  # noqa: PLC0415
+    try:
+        requests.get("https://understat.com/", timeout=timeout)
+        return True
+    except requests.RequestException:
+        return False
 
 
 def main() -> int:
@@ -58,6 +73,9 @@ def main() -> int:
                 break
             except Exception as e:  # noqa: BLE001 — 한 리그 실패는 기존 파일 유지
                 print(f"[understat-live] {lg} 실패 {type(e).__name__}: {str(e)[:120]}")
+                if any(k in str(e) for k in _NET_ERR) and not reachable():
+                    print("[understat-live] understat.com 에 닿지 않음 — 원천 중단(기존 파일 유지, 나머지 리그 건너뜀)")
+                    return EX_SOURCE_DOWN if ok == 0 else 1
                 failed = True
                 break
         if failed:
