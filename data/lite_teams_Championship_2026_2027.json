@@ -11,14 +11,6 @@
    "tm_slug": "fc-middlesbrough",
    "tm_name": "Middlesbrough"
   },
-  "Swansea City": {
-   "fotmob_id": 10003,
-   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/10003.png",
-   "color": "#000000",
-   "tm_vid": 2288,
-   "tm_slug": "swansea-city",
-   "tm_name": "Swansea City"
-  },
   "Birmingham City": {
    "fotmob_id": 8658,
    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8658.png",
@@ -26,6 +18,22 @@
    "tm_vid": 337,
    "tm_slug": "birmingham-city",
    "tm_name": "Birmingham City"
+  },
+  "Stoke City": {
+   "fotmob_id": 10194,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/10194.png",
+   "color": "#D7172F",
+   "tm_vid": 512,
+   "tm_slug": "stoke-city",
+   "tm_name": "Stoke City"
+  },
+  "Swansea City": {
+   "fotmob_id": 10003,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/10003.png",
+   "color": "#000000",
+   "tm_vid": 2288,
+   "tm_slug": "swansea-city",
+   "tm_name": "Swansea City"
   },
   "West Bromwich Albion": {
    "fotmob_id": 8659,
@@ -51,14 +59,6 @@
    "tm_slug": "wolverhampton-wanderers",
    "tm_name": "Wolves"
   },
-  "Stoke City": {
-   "fotmob_id": 10194,
-   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/10194.png",
-   "color": "#D7172F",
-   "tm_vid": 512,
-   "tm_slug": "stoke-city",
-   "tm_name": "Stoke City"
-  },
   "West Ham United": {
    "fotmob_id": 8654,
    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8654.png",
@@ -66,22 +66,6 @@
    "tm_vid": 379,
    "tm_slug": "west-ham-united",
    "tm_name": "West Ham United"
-  },
-  "Queens Park Rangers": {
-   "fotmob_id": 10172,
-   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/10172.png",
-   "color": "#0054A4",
-   "tm_vid": 1039,
-   "tm_slug": "queens-park-rangers",
-   "tm_name": "Queens Park Rangers"
-  },
-  "Portsmouth": {
-   "fotmob_id": 8462,
-   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8462.png",
-   "color": "#0056A1",
-   "tm_vid": 1020,
-   "tm_slug": "fc-portsmouth",
-   "tm_name": "Portsmouth"
   },
   "Sheffield United": {
    "fotmob_id": 8657,
@@ -91,21 +75,21 @@
    "tm_slug": "sheffield-united",
    "tm_name": "Sheffield United"
   },
-  "Blackburn Rovers": {
-   "fotmob_id": 8655,
-   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8655.png",
-   "color": "#005E9C",
-   "tm_vid": 164,
-   "tm_slug": "blackburn-rovers",
-   "tm_name": "Blackburn Rovers"
+  "Portsmouth": {
+   "fotmob_id": 8462,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8462.png",
+   "color": "#0056A1",
+   "tm_vid": 1020,
+   "tm_slug": "fc-portsmouth",
+   "tm_name": "Portsmouth"
   },
-  "Millwall": {
-   "fotmob_id": 10004,
-   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/10004.png",
-   "color": "#003078",
-   "tm_vid": 1028,
-   "tm_slug": "fc-millwall",
-   "tm_name": "Millwall"
+  "Queens Park Rangers": {
+   "fotmob_id": 10172,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/10172.png",
+   "color": "#0054A4",
+   "tm_vid": 1039,
+   "tm_slug": "queens-park-rangers",
+   "tm_name": "Queens Park Rangers"
   },
   "Norwich City": {
    "fotmob_id": 9850,
@@ -115,6 +99,22 @@
    "tm_slug": "norwich-city",
    "tm_name": "Norwich City"
   },
+  "Millwall": {
+   "fotmob_id": 10004,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/10004.png",
+   "color": "#003078",
+   "tm_vid": 1028,
+   "tm_slug": "fc-millwall",
+   "tm_name": "Millwall"
+  },
+  "Blackburn Rovers": {
+   "fotmob_id": 8655,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8655.png",
+   "color": "#005E9C",
+   "tm_vid": 164,
+   "tm_slug": "blackburn-rovers",
+   "tm_name": "Blackburn Rovers"
+  },
   "Bristol City": {
    "fotmob_id": 8427,
    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8427.png",
@@ -122,14 +122,6 @@
    "tm_vid": 698,
    "tm_slug": "bristol-city",
    "tm_name": "Bristol City"
-  },
-  "Lincoln City": {
-   "fotmob_id": 8430,
-   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8430.png",
-   "color": "#F80000",
-   "tm_vid": 1198,
-   "tm_slug": "lincoln-city",
-   "tm_name": "Lincoln City"
   },
   "Bolton Wanderers": {
    "fotmob_id": 8559,
@@ -139,13 +131,13 @@
    "tm_slug": "bolton-wanderers",
    "tm_name": "Bolton Wanderers"
   },
-  "Charlton Athletic": {
-   "fotmob_id": 8451,
-   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8451.png",
-   "color": "#D00820",
-   "tm_vid": 358,
-   "tm_slug": "charlton-athletic",
-   "tm_name": "Charlton Athletic"
+  "Lincoln City": {
+   "fotmob_id": 8430,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8430.png",
+   "color": "#F80000",
+   "tm_vid": 1198,
+   "tm_slug": "lincoln-city",
+   "tm_name": "Lincoln City"
   },
   "Cardiff City": {
    "fotmob_id": 8344,
@@ -171,6 +163,14 @@
    "tm_slug": "fc-watford",
    "tm_name": "Watford"
   },
+  "Charlton Athletic": {
+   "fotmob_id": 8451,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8451.png",
+   "color": "#D00820",
+   "tm_vid": 358,
+   "tm_slug": "charlton-athletic",
+   "tm_name": "Charlton Athletic"
+  },
   "Burnley": {
    "fotmob_id": 8191,
    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8191.png",
@@ -179,14 +179,6 @@
    "tm_slug": "fc-burnley",
    "tm_name": "Burnley"
   },
-  "Preston North End": {
-   "fotmob_id": 8411,
-   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8411.png",
-   "color": "#001850",
-   "tm_vid": 466,
-   "tm_slug": "preston-north-end",
-   "tm_name": "Preston North End"
-  },
   "Derby County": {
    "fotmob_id": 10170,
    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/10170.png",
@@ -194,6 +186,14 @@
    "tm_vid": 22,
    "tm_slug": "derby-county",
    "tm_name": "Derby County"
+  },
+  "Preston North End": {
+   "fotmob_id": 8411,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8411.png",
+   "color": "#001850",
+   "tm_vid": 466,
+   "tm_slug": "preston-north-end",
+   "tm_name": "Preston North End"
   }
  },
  "espn": {

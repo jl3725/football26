@@ -70,10 +70,10 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 6005666,2026-08-26,eng.league_cup,Tottenham Hotspur,Charlton Athletic,67.0,Kevin Danso,SetPiece,0,0.0435875058174133
 6005666,2026-08-26,eng.league_cup,Tottenham Hotspur,Charlton Athletic,82.0,Sávio,RegularPlay,0,0.0365852117538452
 6005666,2026-08-26,eng.league_cup,Tottenham Hotspur,Charlton Athletic,85.0,Ben Davies,FromCorner,0,0.3294503688812256
-5988084,2026-08-27,uefa.europa.conf_qual,Brighton,Tromsø,22.0,Charalampos Kostoulas,RegularPlay,0,0.01687811315059662
+5988084,2026-08-27,uefa.europa.conf_qual,Brighton,Tromsø,22.0,Charalampos Kostoulas,RegularPlay,0,0.0168781131505966
 5988084,2026-08-27,uefa.europa.conf_qual,Brighton,Tromsø,33.0,Maxim De Cuyper,RegularPlay,0,0.5716181993484497
-5988084,2026-08-27,uefa.europa.conf_qual,Brighton,Tromsø,38.0,Mats Wieffer,RegularPlay,0,0.11092601716518402
-5988084,2026-08-27,uefa.europa.conf_qual,Brighton,Tromsø,86.0,Olivier Boscagli,RegularPlay,0,0.028655661270022392
+5988084,2026-08-27,uefa.europa.conf_qual,Brighton,Tromsø,38.0,Mats Wieffer,RegularPlay,0,0.110926017165184
+5988084,2026-08-27,uefa.europa.conf_qual,Brighton,Tromsø,86.0,Olivier Boscagli,RegularPlay,0,0.0286556612700223
 6005663,2026-08-27,eng.league_cup,Fulham,AFC Wimbledon,37.0,Emile Smith Rowe,RegularPlay,0,0.3350866436958313
 6005663,2026-08-27,eng.league_cup,Fulham,AFC Wimbledon,42.0,Rodrigo Muniz,FromCorner,0,0.0394347980618476
 6005663,2026-08-27,eng.league_cup,Fulham,AFC Wimbledon,90.0,Gonzalo García,FastBreak,0,0.4511998295783996
@@ -501,3 +501,7 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5795501,2026-11-01,eng.1,Liverpool,Arsenal,,,none,0,
 5795503,2026-11-02,eng.1,Everton,Newcastle United,49.0,Thierno Barry,SetPiece,0,0.9947919249534608
 5795503,2026-11-02,eng.1,Newcastle United,Everton,,,none,0,
+6106263,2026-11-03,uefa.champions,Aston Villa,Barcelona,,,none,0,
+6106291,2026-11-03,uefa.champions,Manchester Utd,Roma,58.0,Bruno Fernandes,Penalty,0,0.7884
+6106291,2026-11-03,uefa.champions,Manchester Utd,Roma,83.0,Matheus Cunha,RegularPlay,0,0.715132474899292
+6106291,2026-11-03,uefa.champions,Manchester Utd,Roma,86.0,Matheus Cunha,RegularPlay,0,0.11315637826919556
