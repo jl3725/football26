@@ -340,8 +340,12 @@ def main() -> int:
         # 파이프라인이 이 스텝을 안전하게 건너뛰도록.
         print(f"[skip] StatBunker comp_id 미설정({ACTIVE_LEAGUE} {SEASON_START}) — 수집 생략", file=sys.stderr)
         return 0
-    team_rows = build_team_stats()
-    penalty_takers = build_penalty_takers()
+    try:
+        team_rows = build_team_stats()
+        penalty_takers = build_penalty_takers()
+    except requests.HTTPError as e:                         # 403 = IP 차단(클라우드), 5xx 연속 = 서버 — 원천 중단(기존 파일 유지)
+        print(f"[statbunker] 원천 중단 {str(e)[:80]} — 기존 파일 유지", file=sys.stderr)
+        return 75
     write_csv(OUT_TEAMS, team_rows)
     write_csv(OUT_PENALTY_TAKERS, penalty_takers)
     print(f"[OK] wrote {OUT_TEAMS} ({len(team_rows)} teams)")

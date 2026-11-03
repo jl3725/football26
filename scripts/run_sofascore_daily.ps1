@@ -38,7 +38,8 @@ Write-Host "[sofascore-daily] 시즌 $Season Sofascore 평점 갱신 시작"
 # 실패한 리그는 build_season 이 2분 뒤 한 번 더 받는다(Sofascore 가 브라우저 세션을 끊는 일 — 2026-10-19 리그 1)
 # 단계마다 실행 원장 data/ops/runs/local-sofascore-daily.jsonl 에 남는다(DATA STATUS 화면)
 $env:LEDGER_RUNNER = "local-sofascore-daily"
-& $Python scripts\build_season.py --only sofascore,merge_sofascore
+# StatBunker(세트피스·PK·규율, EPL·라리가·세리에A)도 여기서 매일 — 클라우드 IP 는 403(2026-11-03), 주 1회면 2~4경기 늦었다
+& $Python scripts\build_season.py --only sofascore,merge_sofascore,statbunker
 $BuildCode = $LASTEXITCODE
 
 # 히트맵 따라잡기 — 주간 빌드(수)가 실패한 리그(분데스리가·벨기에 2026-10-28 '시즌 id 못 찾음')는 다음 수요일까지 옛 히트맵이었다.
@@ -62,7 +63,8 @@ if ($LASTEXITCODE -ne 0) {
 & $Python scripts\precompute_hub.py
 
 $Paths = @("data/players_sofascore_stats_*$Season.csv", "data/players_full_*$Season.csv", "data/home_all.json",
-           "data/player_heatmaps_*$Season.csv", "data/sofascore_season_ids.json", "data/ops/runs/local-sofascore-daily.jsonl")
+           "data/player_heatmaps_*$Season.csv", "data/sofascore_season_ids.json", "data/statbunker_*$Season.csv",
+           "data/ops/runs/local-sofascore-daily.jsonl")
 $Paths = @($Paths | Where-Object { Test-Path $_ })   # 없는 경로가 섞이면 git add 가 통째로 실패한다
 git add -- $Paths
 git diff --cached --quiet -- $Paths
