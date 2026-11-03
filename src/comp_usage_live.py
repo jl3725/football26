@@ -23,6 +23,8 @@ import datastore as ds  # noqa: E402
 from leagues import LEAGUE_CODES, LEAGUES, data_path  # noqa: E402
 
 GROUP = {"uefa.champions": "ucl", "uefa.europa": "uel", "uefa.europa.conf": "conf",
+         # 예선(7~8월)도 그 대회 축으로 — fm.1061x 로 들어와 '기타 컵'으로 세던 것(2026-11-03)
+         "uefa.champions_qual": "ucl", "uefa.europa_qual": "uel", "uefa.europa.conf_qual": "conf",
          "eng.fa": "facup", "eng.league_cup": "lcup", "esp.copa_del_rey": "copa"}
 EURO = ("ucl", "uel", "conf")
 COLS = ["ucl", "uel", "conf", "facup", "lcup", "copa"]

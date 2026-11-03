@@ -301,14 +301,37 @@ def get(path: str, retries: int = 3, delay: float = 0.6):
     return None
 
 
+SEASON_IDS = DATA / "sofascore_season_ids.json"      # {리그: {"26/27": id}} — 조회가 막힌 날 쓰는 지난 답
+
+
 def find_season_id() -> int | None:
-    d = get("/unique-tournament/{}/seasons".format(UT_ID), delay=0.2)
-    if not d:
-        return None
-    for s in d.get("seasons", []):
-        if s.get("year") == SEASON_YEAR:
-            return s["id"]
-    return None
+    """활성 시즌 Sofascore season id — 목록 조회를 3번(세션 갱신 사이) 시도하고, 다 막히면 지난 답(SEASON_IDS).
+    2026-10-28 주간 빌드: 분데스리가·벨기에 히트맵이 '/seasons' 연결 끊김 한 번에 '시즌 id 못 찾음'으로 끝나 2주째 옛 히트맵."""
+    import json  # noqa: PLC0415
+    for attempt in range(3):
+        d = get("/unique-tournament/{}/seasons".format(UT_ID), delay=0.2)
+        for s in (d or {}).get("seasons", []):
+            if s.get("year") == SEASON_YEAR:
+                sid = int(s["id"])
+                try:
+                    cache = json.loads(SEASON_IDS.read_text(encoding="utf-8")) if SEASON_IDS.exists() else {}
+                    cache.setdefault(ACTIVE_LEAGUE, {})[SEASON_YEAR] = sid
+                    SEASON_IDS.write_text(json.dumps(cache, ensure_ascii=False, indent=1), encoding="utf-8")
+                except OSError:
+                    pass
+                return sid
+        if d:                                            # 목록은 왔는데 그 시즌이 없음 — 재시도 무의미
+            break
+        print(f"  [sofascore] 시즌 목록 실패({attempt + 1}/3) — 세션 갱신", flush=True)
+        sofascore_client.reset()
+        time.sleep(5 * (attempt + 1))
+    try:
+        cached = json.loads(SEASON_IDS.read_text(encoding="utf-8")).get(ACTIVE_LEAGUE, {}).get(SEASON_YEAR)
+    except (OSError, ValueError):
+        cached = None
+    if cached:
+        print(f"  [sofascore] 시즌 id 조회 실패 — 지난 답 {cached} 사용", flush=True)
+    return int(cached) if cached else None
 
 
 def fetch_teams(season_id: int) -> list[dict]:

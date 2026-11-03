@@ -159,8 +159,25 @@ def as_float(value: str) -> float:
     return float(match.group(0)) if match else 0.0
 
 
+def _standing_squads() -> list[str]:
+    p = data_path("standings")
+    if not p.exists():
+        return []
+    import pandas as pd  # noqa: PLC0415
+    return [str(x) for x in pd.read_csv(p, usecols=["squad"])["squad"]]
+
+
+_OURS = _standing_squads()
+
+
 def normalize_team(team: str) -> str:
-    return TEAM_ALIASES.get(clean_text(team), clean_text(team))
+    """StatBunker 표기 → 우리 표준 이름. 손 별칭 → 순위표 이름 대조(src/squads.to_ours: 별칭·악센트·낱말 유사도).
+    'CD Alaves' 가 별칭에 없어 Alavés 와 안 이어졌다(2026-11-03 점검)."""
+    t = TEAM_ALIASES.get(clean_text(team), clean_text(team))
+    if not _OURS or t in _OURS:
+        return t
+    from squads import to_ours  # noqa: PLC0415
+    return to_ours(t, ACTIVE_LEAGUE, _OURS) or t
 
 
 def fetch_html(slug: str) -> str:

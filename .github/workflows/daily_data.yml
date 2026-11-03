@@ -119,9 +119,14 @@ jobs:
         run: |
           bash scripts/ci_try.sh "lite_players" python src/build_lite_players.py
           bash scripts/ci_try.sh "lite_players prev" python src/build_lite_players.py --season prev
-          for LG in $(python scripts/league_keys.py --lite); do
-            FB_LEAGUE=$LG bash scripts/ci_try.sh "unit_metrics $LG" python src/build_team_unit_metrics.py
+          # 팀 득실·유닛 지표는 전 리그 매일 — 빅8 도 순위표·선수 표가 저장소에 있어 여기서 계산된다(예전엔 라이트 리그만이라
+          # 빅8 은 주 1회(이 PC) → 1~2경기 늦었다, 2026-11-03 점검). StatBunker(세트피스·PK, comp_id 있는 리그)는 유닛 지표 전에
+          for LG in $(python scripts/league_keys.py --statbunker); do
+            FB_LEAGUE=$LG bash scripts/ci_try.sh "statbunker $LG" python src/fetch_statbunker_team_stats.py
+          done
+          for LG in $(python scripts/league_keys.py); do
             FB_LEAGUE=$LG bash scripts/ci_try.sh "team_defense $LG" python src/fetch_team_defense.py
+            FB_LEAGUE=$LG bash scripts/ci_try.sh "unit_metrics $LG" python src/build_team_unit_metrics.py
           done
 
       # 과거 시즌 최종 순위(ESPN) — 팀 실적(득점·실점)을 여러 시즌 반영(src/season_history.py). 시즌이 넘어가면

@@ -51,13 +51,14 @@ def test_changes_from_big_moves_only() -> None:
 def test_snapshot_rerun_same_day_is_idempotent(tmp_path, monkeypatch) -> None:
     full = pd.DataFrame([{"squad": "Arsenal", "player": "A", "tm_id": 1, "market_value_eur": 10e6, "left_for": None},
                          {"squad": "Arsenal", "player": "Gone", "tm_id": 9, "market_value_eur": 5e6, "left_for": "Al-Hilal"}])
-    monkeypatch.setattr(smv.ds, "read_table", lambda name, league=None, **k: full)
     monkeypatch.setattr(smv, "data_path", lambda stem, league=None, season=None: tmp_path / f"{stem}_{league}.csv")
+    full.to_csv(tmp_path / "players_full_LaLiga.csv", index=False)       # 스냅샷은 CSV 직접(로컬 옛 DB 를 안 보게)
     monkeypatch.setattr(smv, "_today", lambda: "2026-10-23")
     assert smv.snapshot("LaLiga") == 0
     log = pd.read_csv(tmp_path / "market_value_log_LaLiga.csv")
     assert list(log["player"]) == ["A"]                                         # 떠난 선수 줄은 빼고 기준선
     full.loc[0, "market_value_eur"] = 14e6
+    full.to_csv(tmp_path / "players_full_LaLiga.csv", index=False)
     monkeypatch.setattr(smv, "_today", lambda: "2026-10-24")
     smv.snapshot("LaLiga")
     smv.snapshot("LaLiga")                                                      # 같은 날 두 번 — 줄이 늘지 않는다
@@ -65,3 +66,20 @@ def test_snapshot_rerun_same_day_is_idempotent(tmp_path, monkeypatch) -> None:
     assert len(log) == 2 and log["market_value_eur"].iloc[-1] == 14e6
     chg = pd.read_csv(tmp_path / "market_value_changes_LaLiga.csv")
     assert list(chg["player"]) == ["A"] and float(chg["pct"].iloc[0]) == 40.0
+
+
+def test_snapshot_frame_uses_tm_squad_page_and_current_teams(tmp_path, monkeypatch) -> None:
+    """TM 스쿼드 페이지 전원(선수 표에 없는 민테 포함) + 선수 표에만 있는 선수, 강등팀 잔류 줄은 뺌(2026-11-03 점검)."""
+    monkeypatch.setattr(smv, "data_path", lambda stem, league=None, season=None: tmp_path / f"{stem}_{league}.csv")
+    pd.DataFrame([{"squad": "Brighton"}, {"squad": "Arsenal"}]).to_csv(tmp_path / "standings_EPL.csv", index=False)
+    pd.DataFrame([{"squad": "Brighton", "player": "Yankuba Minteh", "tm_id": 5, "market_value_eur": 55e6},
+                  {"squad": "Arsenal", "player": "A", "tm_id": 1, "market_value_eur": 12e6},
+                  {"squad": "Wolfsburg", "player": "Relegated", "tm_id": 7, "market_value_eur": 3e6}]
+                 ).to_csv(tmp_path / "transfermarkt_contracts_EPL.csv", index=False)
+    pd.DataFrame([{"squad": "Arsenal", "player": "A", "tm_id": 1, "market_value_eur": 10e6, "left_for": None},
+                  {"squad": "Arsenal", "player": "NoTm", "tm_id": None, "market_value_eur": 2e6, "left_for": None}]
+                 ).to_csv(tmp_path / "players_full_EPL.csv", index=False)
+    f = smv.snapshot_frame("EPL")
+    got = {r["player"]: r["market_value_eur"] for r in f.to_dict("records")}
+    assert got == {"Yankuba Minteh": 55e6, "A": 12e6, "NoTm": 2e6}             # TM 값 우선 · 강등팀 제외 · 표에만 있는 선수 포함
+

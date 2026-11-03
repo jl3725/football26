@@ -150,8 +150,14 @@ def main(argv=None) -> int:
         print("[DRY] 저장 안 함.")
     else:
         lout, sout = data_path("espn_lineups_cups", league), data_path("espn_subs_cups", league)
-        ldf.to_csv(lout, index=False, encoding="utf-8")
-        sdf.to_csv(sout, index=False, encoding="utf-8")
+        # 통째로 덮어쓰면 다른 원천(FotMob — ESPN 명단이 비는 하부 컵, src/fetch_fotmob_matches)이 채운 경기가 사라진다.
+        # ESPN 이 이번에 준 경기만 바꾸고 나머지는 둔다(2026-11-03)
+        for df_, out in ((ldf, lout), (sdf, sout)):
+            if out.exists() and "event_id" in df_.columns:
+                old = pd.read_csv(out, dtype={"event_id": str})
+                old = old[~old["event_id"].astype(str).isin(set(df_["event_id"].astype(str)))]
+                df_ = pd.concat([old, df_.astype({"event_id": str})], ignore_index=True)
+            df_.to_csv(out, index=False, encoding="utf-8")
         print(f"[OK] {lout.name} + {sout.name}")
     return 0
 

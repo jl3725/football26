@@ -41,6 +41,18 @@ $env:LEDGER_RUNNER = "local-sofascore-daily"
 & $Python scripts\build_season.py --only sofascore,merge_sofascore
 $BuildCode = $LASTEXITCODE
 
+# 히트맵 따라잡기 — 주간 빌드(수)가 실패한 리그(분데스리가·벨기에 2026-10-28 '시즌 id 못 찾음')는 다음 수요일까지 옛 히트맵이었다.
+# 파일이 8일 넘게 안 바뀐 풀 리그만 여기서 다시 받는다(리그당 10~20분이라 평소엔 0개)
+$Stale = @()
+foreach ($lg in ((& $Python scripts\league_keys.py --full).Trim() -split " ")) {
+    $hm = if ($lg -eq "EPL") { "data\player_heatmaps_$Season.csv" } else { "data\player_heatmaps_${lg}_$Season.csv" }
+    if (-not (Test-Path $hm) -or ((Get-Date) - (Get-Item $hm).LastWriteTime).TotalDays -gt 8) { $Stale += $lg }
+}
+if ($Stale.Count -gt 0) {
+    Write-Host "[sofascore-daily] 히트맵 따라잡기: $($Stale -join ', ')"
+    & $Python scripts\build_season.py --only heatmaps --no-retry @Stale
+}
+
 & $Python scripts\build_db.py | Out-Null
 & $Python scripts\validate_data.py --no-optional
 if ($LASTEXITCODE -ne 0) {
@@ -50,7 +62,7 @@ if ($LASTEXITCODE -ne 0) {
 & $Python scripts\precompute_hub.py
 
 $Paths = @("data/players_sofascore_stats_*$Season.csv", "data/players_full_*$Season.csv", "data/home_all.json",
-           "data/ops/runs/local-sofascore-daily.jsonl")
+           "data/player_heatmaps_*$Season.csv", "data/sofascore_season_ids.json", "data/ops/runs/local-sofascore-daily.jsonl")
 $Paths = @($Paths | Where-Object { Test-Path $_ })   # 없는 경로가 섞이면 git add 가 통째로 실패한다
 git add -- $Paths
 git diff --cached --quiet -- $Paths

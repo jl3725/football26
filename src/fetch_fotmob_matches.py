@@ -39,9 +39,13 @@ import fotmob_lineups
 
 # FotMob 대회 id → 우리 대회 코드(ESPN 표기 — schedule_full comp_code 와 같은 축)
 CUPS = {42: "uefa.champions", 73: "uefa.europa", 10216: "uefa.europa.conf",
+        # UEFA 예선(7~8월, 라이트 리그 팀이 많이 낀다) — 코드가 uefa. 로 시작해야 역할 축·OVR 표본이 유럽으로 센다
+        10611: "uefa.champions_qual", 10613: "uefa.europa_qual", 10615: "uefa.europa.conf_qual",
         132: "eng.fa", 133: "eng.league_cup", 138: "esp.copa_del_rey", 141: "ita.coppa_italia",
         209: "ger.dfb_pokal", 134: "fra.coupe_de_france", 186: "por.taca.portugal", 235: "ned.cup",
-        149: "bel.cup"}
+        149: "bel.cup",
+        # 라이트 리그 국내컵 — 없으면 lite_league 가 'fm.<id>' 로만 적고 여기선 받지 않았다(2026-11-03 점검)
+        278: "aut.cup", 242: "den.cup", 164: "sui.cup", 151: "tur.cup"}
 LEAGUE_CODE = {"EPL": "eng.1", "LaLiga": "esp.1", "SerieA": "ita.1", "Bundesliga": "ger.1", "Ligue1": "fra.1",
                "LigaPortugal": "por.1", "Eredivisie": "ned.1", "BelgianProLeague": "bel.1"}
 LEAGUE_CODE.update({k: c.espn for k, c in LEAGUES.items() if c.espn and k not in LEAGUE_CODE})   # 라이트 리그
@@ -133,10 +137,69 @@ def goal_rows(j: dict, match: dict, comp: str, sides: dict) -> list[dict]:
     return rows
 
 
+def _sub_times(j: dict) -> tuple[dict, dict]:
+    """교체 이벤트 → ({들어온 선수 이름·id: 분}, {나간 선수 이름·id: 분})."""
+    ev = ((((j.get("content") or {}).get("matchFacts") or {}).get("events") or {}).get("events")) or []
+    sub_in: dict = {}
+    sub_out: dict = {}
+    for e in ev:
+        if e.get("type") != "Substitution" or not isinstance(e.get("time"), (int, float)):
+            continue
+        sw = e.get("swap") or []
+        for k, d in ((0, sub_in), (1, sub_out)):
+            if len(sw) > k and isinstance(sw[k], dict):
+                for key in (sw[k].get("name"), sw[k].get("id")):
+                    if key is not None:
+                        d[str(key)] = float(e["time"])
+    return sub_in, sub_out
+
+
+def lineup_player_rows(j: dict, match: dict, comp: str, sides: dict) -> list[dict]:
+    """playerStats 가 없는 경기(하부 컵 — FotMob 'simple' 라인업: 타사 드 포르투갈·벨기에컵 초반, 스위스·튀르키예컵)
+    → 라인업·교체로 출전 분만(평점·세부 기록 없음, det=0). 예전엔 행이 안 생겨 그 경기를 매번 다시 받았고 컵 출전이
+    어디에도 안 잡혔다(2026-11-03 점검). 분 = 선발 90(교체로 나가면 그때까지) · 교체 투입 90−투입 분."""
+    lu = ((j.get("content") or {}).get("lineup")) or {}
+    home, away = match.get("home") or {}, match.get("away") or {}
+    date = str((match.get("status") or {}).get("utcTime") or "")[:10]
+    name_of = {str(home.get("id")): home.get("name"), str(away.get("id")): away.get("name")}
+    sub_in, sub_out = _sub_times(j)
+    rows = []
+    for side, key in (("home", "homeTeam"), ("away", "awayTeam")):
+        team = lu.get(key) or {}
+        tid = str(team.get("id") or (match.get(side) or {}).get("id") or "")
+        if tid not in sides:
+            continue
+        lg, squad = sides[tid]
+        opp_id = str(away.get("id")) if side == "home" else str(home.get("id"))
+        opp = sides.get(opp_id, (None, name_of.get(opp_id) or ""))[1]
+        for starter, plist in ((True, team.get("starters") or []), (False, team.get("subs") or [])):
+            for p in plist:
+                keys = [str(x) for x in (p.get("name"), p.get("id")) if x is not None]
+                t_out = next((sub_out[k] for k in keys if k in sub_out), None)
+                t_in = next((sub_in[k] for k in keys if k in sub_in), None)
+                if starter:
+                    mn = t_out if t_out is not None else 90.0
+                elif t_in is not None:
+                    mn = max(0.0, (t_out if t_out is not None else 90.0) - t_in)
+                else:
+                    continue                           # 벤치(출전 없음)
+                if mn <= 0:
+                    continue
+                row = {"league": lg, "match_id": str(match["id"]), "date": date, "comp_code": comp, "squad": squad,
+                       "opponent": opp, "home_away": side, "fotmob_id": str(p.get("id") or ""), "player": p.get("name"),
+                       "minutes": int(round(mn)), "rating": None, "goals": 0, "assists": 0, "det": 0}
+                for col in DETAIL:
+                    row[col] = None
+                rows.append(row)
+    return rows
+
+
 def player_rows(match: dict, comp: str, sides: dict, j: dict | None = None) -> list[dict]:
     """sides: {fotmob 팀 id: (리그, 우리 팀 표기)} — 이 경기에서 우리 리그 팀만."""
     j = _details(match) if j is None else j
     ps = ((j.get("content") or {}).get("playerStats")) or {}
+    if not ps:
+        return lineup_player_rows(j, match, comp, sides)
     home, away = match.get("home") or {}, match.get("away") or {}
     date = str((match.get("status") or {}).get("utcTime") or "")[:10]
     name_of = {str(home.get("id")): home.get("name"), str(away.get("id")): away.get("name")}
@@ -242,8 +305,10 @@ def main() -> int:
     lu_have: dict[tuple[str, str], pd.DataFrame] = {}
     lu_seen: set[str] = set()
     ms_seen: set[str] = set()
-    for lg in lite:
-        for stem in ("espn_lineups", "espn_lineups_cups", "espn_subs", "espn_subs_cups", "match_stats"):
+    for lg in ([] if prev else leagues):
+        # 풀 리그는 컵 라인업만(ESPN 명단이 비는 하부 컵 — 타사 드 포르투갈 14경기 중 1경기, 벨기에컵 0, 2026-11-03 점검)
+        for stem in (("espn_lineups", "espn_lineups_cups", "espn_subs", "espn_subs_cups", "match_stats") if lg in lite
+                     else ("espn_lineups_cups", "espn_subs_cups")):
             p = data_path(stem, lg, season)
             if p.exists():
                 lu_have[(lg, stem)] = pd.read_csv(p, dtype={"event_id": str})
@@ -260,19 +325,55 @@ def main() -> int:
     new_sub: list[dict] = []
     new_ms: list[dict] = []
 
-    def _lineups(j: dict, m: dict, code: str) -> None:
-        if not lite_sides or not is_lite(m):
+    sched_cache: dict[str, dict] = {}
+
+    def _espn_event(lg: str, squad: str, day: str) -> str | None:
+        """풀 리그 컵 경기의 FotMob 경기 → 일정(schedule_full, ESPN id) event_id — 같은 팀·같은 날(±1일)."""
+        if lg not in sched_cache:
+            try:
+                sc = pd.read_csv(data_path("schedule_full", lg, season), dtype={"event_id": str})
+                sc = sc[~sc["comp_code"].astype(str).isin(set(LEAGUE_CODE.values()))]
+                sched_cache[lg] = {(str(s), str(d)[:10]): str(e).replace(".0", "") for s, d, e in
+                                   zip(sc["squad"], sc["date"], sc["event_id"]) if pd.notna(e)}
+            except (FileNotFoundError, KeyError, ValueError):
+                sched_cache[lg] = {}
+        idx = sched_cache[lg]
+        try:
+            d0 = pd.Timestamp(day)
+        except (TypeError, ValueError):
+            return idx.get((squad, day))
+        for off in (0, 1, -1):
+            hit = idx.get((squad, (d0 + pd.Timedelta(days=off)).strftime("%Y-%m-%d")))
+            if hit:
+                return hit
+        return None
+
+    def _lineups(j: dict, m: dict, code: str, full_cup: bool = False) -> None:
+        """라이트 리그 = 모든 경기. 풀 리그 = full_cup(컵·유럽인데 playerStats 가 없는 경기)만 — ESPN 명단이 비는 하부 컵."""
+        use = dict(lite_sides)
+        if full_cup and code not in set(LEAGUE_CODE.values()):
+            for s in ("home", "away"):
+                tid = str((m.get(s) or {}).get("id"))
+                if tid in sides and sides[tid][0] not in lite:
+                    use[tid] = sides[tid]
+        if not use or not any(str((m.get(s) or {}).get("id")) in use for s in ("home", "away")):
             return
-        for r in fotmob_lineups.lineup_rows(j, m, lite_sides):
-            lg = next(v[0] for v in lite_sides.values() if v[1] == r["squad"])
+        day = str((m.get("status") or {}).get("utcTime") or "")[:10]
+        for r in fotmob_lineups.lineup_rows(j, m, use):
+            lg = next(v[0] for v in use.values() if v[1] == r["squad"])
+            if lg not in lite:
+                r = {**r, "event_id": _espn_event(lg, r["squad"], day) or r["event_id"]}
             new_lu.append({**r, "_key": (lg, "espn_lineups" if code == LEAGUE_CODE.get(lg) else "espn_lineups_cups")})
-        for r in fotmob_lineups.sub_rows(j, m, lite_sides):
+        for r in fotmob_lineups.sub_rows(j, m, use):
             side = str((m.get(r["home_away"]) or {}).get("id"))
-            lg = lite_sides[side][0]
+            lg, squad = use[side]
+            if lg not in lite:
+                r = {**r, "event_id": _espn_event(lg, squad, day) or r["event_id"]}
             new_sub.append({**r, "_key": (lg, "espn_subs" if code == LEAGUE_CODE.get(lg) else "espn_subs_cups")})
-        for r in fotmob_lineups.team_stat_rows(j, m, lite_sides, code):   # 팀 경기 기록(분석 탭) — 리그·컵·유럽 전부
-            lg = next(v[0] for v in lite_sides.values() if v[1] == r["squad"])
-            new_ms.append({**r, "_key": (lg, "match_stats")})
+        if lite_sides and is_lite(m):
+            for r in fotmob_lineups.team_stat_rows(j, m, lite_sides, code):   # 팀 경기 기록(분석 탭) — 라이트 리그만
+                lg = next(v[0] for v in lite_sides.values() if v[1] == r["squad"])
+                new_ms.append({**r, "_key": (lg, "match_stats")})
     print(f"    골 상황 백필 {len(goal_only)}경기(남은 {sum(1 for m, _ in jobs if str(m['id']) not in goals_seen)})")
     new: list[dict] = []
     new_goals: list[dict] = []
@@ -282,7 +383,7 @@ def main() -> int:
             j = _details(m)
             rows = player_rows(m, code, sides, j)
             new_goals.extend(goal_rows(j, m, code, sides))
-            _lineups(j, m, code)
+            _lineups(j, m, code, full_cup=not ((j.get("content") or {}).get("playerStats")))
         except Exception as e:  # noqa: BLE001 — 한 경기 실패가 전체를 멈추지 않게
             print(f"    [실패] {m.get('id')}: {e}")
             rows, bad = [], bad + 1

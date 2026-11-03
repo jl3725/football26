@@ -410,6 +410,22 @@ def check_xg() -> list[str]:
     return out
 
 
+def check_digest() -> list[str]:
+    """AI 주간 서술 — 리그마다 마지막 갱신(at)이 DIGEST_STALE_DAYS 넘게 지났으면. 파일은 매일 다시 쓰여 파일 나이로는 안 보였다
+    (세리에A 10/26·덴마크·스위스 10/23 문단이 11/03 까지, 2026-11-03 점검)."""
+    from ai_notes import DIGEST_STALE_DAYS
+    p = ROOT / "data" / "ai" / "digest_text.json"
+    if not p.exists():
+        return []
+    store = json.loads(p.read_text(encoding="utf-8"))
+    old = []
+    for lg, v in store.items():
+        at = str((v or {}).get("at") or "")[:10]
+        if at and (NOW.date() - dt.date.fromisoformat(at)).days > DIGEST_STALE_DAYS:
+            old.append(f"{lg}({at})")
+    return [f"AI 주간 서술 낡음 {len(old)}개 리그: {', '.join(old)} — src/ai_notes.py run_digest 검증·예산 확인"] if old else []
+
+
 def check_progress() -> list[str]:
     """수집 결과의 '내용' 신선도 — 표가 담은 팀당 경기 수 vs 일정(src/content_progress.py). 원장은 'ok' 인데 FBref 가 10/13
     캐시만 3주 다시 읽고(팀당 5~8경기), Understat 렌 선수가 PSG 로 들어간 것을 원장만 봐서는 못 잡았다(2026-11-03)."""
@@ -454,7 +470,7 @@ CHECKS = {"ovr": check_ovr, "season": check_season, "hub": check_hub, "frontend"
           "workflows": check_workflows, "news": check_news, "tm_agent": check_tm_agent,
           "coverage": check_coverage, "rating_history": check_rating_history, "ratings": check_ratings,
           "names": check_names, "xg": check_xg, "agents": check_agents, "expectations": check_expectations, "screen": check_screen, "squads": check_squads,
-          "identity": check_identity, "fair_price": check_fair_price, "progress": check_progress}
+          "identity": check_identity, "fair_price": check_fair_price, "progress": check_progress, "digest": check_digest}
 
 
 def run() -> dict[str, list[str]]:

@@ -14,13 +14,14 @@ import pandas as pd
 
 LAG_GAMES = 2.0
 TEAM_MIN_GP = 4          # 팀 단위 검사는 4경기 이상 치른 뒤부터(시즌 초 잡음)
-# (표, 경기 수 계산) — 'min:열' = 선수 출전 분 합 ÷ 990(11명 × 90분), 'col:열' = 팀 경기 수 열
+# (표, 경기 수 계산, 이름, 허용 지연) — 'min:열' = 선수 출전 분 합 ÷ 990(11명 × 90분), 'col:열' = 팀 경기 수 열.
+# StatBunker 는 원천 자체가 경기 뒤 1~2경기 늦게 올라와 3경기부터
 SPECS = [
-    ("players", "min:minutes", "FBref 선수 표(주간)"),
-    ("understat_players", "min:minutes", "Understat xG"),
-    ("players_sofascore_stats", "min:minutesPlayed", "Sofascore 시즌 통계"),
-    ("statbunker_team_stats", "col:matches_statbunker", "StatBunker 팀 통계"),
-    ("team_defense", "col:games_played", "팀 득실 강도"),
+    ("players", "min:minutes", "FBref 선수 표(주간)", LAG_GAMES),
+    ("understat_players", "min:minutes", "Understat xG", LAG_GAMES),
+    ("players_sofascore_stats", "min:minutesPlayed", "Sofascore 시즌 통계", LAG_GAMES),
+    ("statbunker_team_stats", "col:matches_statbunker", "StatBunker 팀 통계", 3.0),
+    ("team_defense", "col:games_played", "팀 득실 강도", LAG_GAMES),
 ]
 
 
@@ -53,7 +54,7 @@ def check_league(league: str, read) -> list[dict]:
     out = []
     from squads import canonical_squad  # noqa: PLC0415 — 앱이 읽을 때와 같은 표준 이름(자동 별칭 포함)으로 대조
     gp = gp.groupby([canonical_squad(t, league) for t in gp.index]).max()
-    for table, how, label in SPECS:
+    for table, how, label, max_lag in SPECS:
         df = read(table, league)
         if df is not None and not df.empty and "squad" in df.columns:
             df = df.assign(squad=[canonical_squad(t, league) for t in df["squad"]])
@@ -63,7 +64,7 @@ def check_league(league: str, read) -> list[dict]:
         j = pd.concat([gp.rename("gp"), est.rename("est")], axis=1)
         j = j[j["gp"].notna()]
         lag = (j["gp"] - j["est"]).median()
-        if lag >= LAG_GAMES:
+        if lag >= max_lag:
             out.append({"table": table, "label": label, "kind": "stale",
                         "detail": f"팀당 {j['est'].median():.0f}경기분 · 일정 {j['gp'].median():.0f}경기(가운데 값 {lag:.0f}경기 늦음)"})
             continue

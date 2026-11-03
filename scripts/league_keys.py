@@ -4,6 +4,7 @@
     python scripts/league_keys.py            # 전 리그
     python scripts/league_keys.py --full     # 풀 리그(FBref·Sofascore·ESPN 수집기)
     python scripts/league_keys.py --lite     # 라이트 리그(FotMob·TM 만 — src/lite_league.py)
+    python scripts/league_keys.py --statbunker   # StatBunker comp_id 가 있는 리그(src/fetch_statbunker_team_stats.py)
 """
 from __future__ import annotations
 
@@ -15,5 +16,9 @@ from leagues import FULL_LEAGUES, LEAGUES, LITE_LEAGUES  # noqa: E402
 
 if __name__ == "__main__":
     arg = sys.argv[1] if len(sys.argv) > 1 else ""
-    keys = FULL_LEAGUES if arg == "--full" else LITE_LEAGUES if arg == "--lite" else list(LEAGUES)
+    if arg == "--statbunker":
+        from fetch_statbunker_team_stats import COMP_IDS  # noqa: E402
+        keys = [k for k in LEAGUES if k in COMP_IDS]
+    else:
+        keys = FULL_LEAGUES if arg == "--full" else LITE_LEAGUES if arg == "--lite" else list(LEAGUES)
     print(" ".join(keys))

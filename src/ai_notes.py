@@ -289,7 +289,8 @@ def run_news(min_articles: int = 2, regen_h: float = 6, chunk: int = 10) -> int:
 
 
 # ── ③ WEEKLY DIGEST 서술 ─────────────────────────────────────────────────────
-DIGEST_PROMPT = """아래는 {league} 지난 7일({since}~{until}) 변화 데이터다. 이번 주 흐름을 한국어 3~4문장, 한 문단으로 요약하라.
+DIGEST_PROMPT = """아래는 {league}({league_ko}) 지난 7일({since}~{until}) 변화 데이터다. 이번 주 흐름을 한국어 3~4문장, 한 문단으로 요약하라.
+- 리그 이름은 '{league_ko}'로 쓴다.
 - 단순 나열보다 '무엇이 눈에 띄는지'를 연결해서. 가장 큰 변화부터.
 - form_delta 는 '폼 지수 +N/-N', ovr 는 'OVR N'처럼 데이터 값 그대로. 몸값은 market_value 표기 그대로(예: €40m).
 - 데이터의 키 이름(영문 필드명)을 문장에 쓰지 마라. 날짜는 '11월 9일'처럼.
@@ -298,7 +299,27 @@ DIGEST_PROMPT = """아래는 {league} 지난 7일({since}~{until}) 변화 데이
 {facts}"""
 
 
-def digest_facts(d: dict) -> dict:
+def _league_names(lg: str) -> list[str]:
+    """검증에 허용할 리그 표기 — 키·영문 이름·한글 이름(Serie A·Superliga·Super League 가 '데이터에 없는 이름'으로 거부됐다)."""
+    from leagues import LEAGUES  # noqa: PLC0415
+    cfg = LEAGUES.get(lg)
+    out = [lg, getattr(cfg, "name", "") or "", league_ko(lg)]
+    return [x for x in dict.fromkeys(out) if x]
+
+
+def league_ko(lg: str) -> str:
+    """리그 한글 표기 — api.main._SRC_LABEL(라리가·세리에A …), 없으면 표시명."""
+    try:
+        from api.main import _SRC_LABEL  # noqa: PLC0415
+        if lg in _SRC_LABEL:
+            return _SRC_LABEL[lg]
+    except Exception:  # noqa: BLE001
+        pass
+    from leagues import LEAGUES  # noqa: PLC0415
+    return getattr(LEAGUES.get(lg), "name", "") or lg
+
+
+def digest_facts(d: dict, lg: str | None = None) -> dict:
     mv = lambda x: {"player": x["player"], "team": x["squad"], "ovr": x["ovr"], "form": x["form"],  # noqa: E731
                     "form_delta": x["delta"], "ovr_delta": x.get("ovr_delta") or 0}
     inj = lambda x: {k: x.get(k) for k in ("player", "squad", "injury", "until", "ovr")}  # noqa: E731
@@ -314,35 +335,47 @@ def digest_facts(d: dict) -> dict:
                                          "market_value": None if x.get("value_eur") is None else f"€{x['value_eur'] / 1e6:g}m"}
                                         for x in rum.get("top", [])]},
         "international_break": d.get("intl") and {k: d["intl"].get(k) for k in ("label", "start", "end", "days_to")},
+        # 검증 근거 — 기간(날짜 숫자 '10월 27일')·리그 이름은 사실인데 facts 에 없어 거부됐다(세리에A·덴마크·스위스 2주째 옛 문단, 2026-11-03)
+        "period": {"since": d.get("since"), "until": d.get("until")},
+        "league": _league_names(lg) if lg else [],
     }
+
+
+DIGEST_STALE_DAYS = 3   # 이보다 오래된 리그 문단 = 낡음(watchdog ai_digest 가 알린다)
 
 
 def run_digest() -> int:
     from api.main import digest  # noqa: PLC0415
     from leagues import LEAGUES  # noqa: PLC0415
     store = _read("digest")
-    made = 0
-    for lg in LEAGUES:
+    made, failed = 0, []
+    # 오래된 문단부터 — 하루 예산(30회)이 끝나면 뒤 리그가 잘리는데, 목록 끝(오스트리아·덴마크·스위스)이 늘 잘렸다
+    order = sorted(LEAGUES, key=lambda k: str((store.get(k) or {}).get("at") or ""))
+    for lg in order:
         if llm.remaining() <= 0:
             break
         try:
             d = digest(league=lg)
         except Exception as e:  # noqa: BLE001
             print(f"  ! {lg} digest 실패: {type(e).__name__}")
+            failed.append(lg)
             continue
-        facts = digest_facts(d)
+        facts = digest_facts(d, lg)
         if not (facts["form_up"] or facts["form_down"] or facts["new_injuries"] or facts["most_in_news"]):
             continue
-        text = write_checked(DIGEST_PROMPT.format(league=lg, since=d["since"], until=d["until"],
-                                                  facts=json.dumps(facts, ensure_ascii=False)), facts)
+        prompt = DIGEST_PROMPT.format(league=lg, league_ko=league_ko(lg),
+                                      since=d["since"], until=d["until"], facts=json.dumps(facts, ensure_ascii=False))
+        text = write_checked(prompt, facts) or (llm.remaining() > 0 and write_checked(prompt, facts)) or None
         if text:
             store[lg] = {"text": text, "since": d["since"], "until": d["until"], "at": _now().isoformat(timespec="seconds")}
             made += 1
             print(f"  + {lg}")
         else:
+            failed.append(lg)
+            store.setdefault(lg, {})["failed_at"] = _now().isoformat(timespec="seconds")
             print(f"  - {lg}: 검증 실패·생성 실패 — 이전 문단 유지")
     _write("digest", store)
-    print(f"[ai-digest] {made}개 리그 갱신")
+    print(f"[ai-digest] {made}개 리그 갱신" + (f" · 실패 {failed}" if failed else ""))
     return 0
 
 

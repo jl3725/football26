@@ -35,9 +35,12 @@ from leagues import LEAGUES, data_path  # noqa: E402
 
 FIELDS = ["squad", "player", "tm_player_id", "main_position", "other_positions", "last_checked"]
 REFRESH_DAYS = 60
-MAX_PER_RUN = 900        # 전 리그 합 — 3초 간격이면 약 45분
-PAUSE = 3.0              # 요청 간격(초)
-COOLDOWN = 300           # 처음 막혔을 때 쉬는 시간(초) — 다시 막히면 그 실행은 멈춘다
+MAX_PER_RUN = 900        # 전 리그 합(시간 예산 안에서 — 15초 간격이면 약 700명)
+# 2026-11-03 점검: 3초 간격은 20명쯤에서 403, 300초 뒤 또 막혀 실행마다 20명(전체 3%). 부상 이력 수집(1.2초 간격 5천 장)은
+# 안 막히는 걸 보면 프로필 페이지만 따로 세는 듯 — 천천히, 막히면 10·20·30분 쉬고 이어서, 시간 예산까지
+PAUSE = 15.0             # 요청 간격(초)
+BACKOFF = (600, 1200, 1800)   # 막힐 때마다 쉬는 시간(초) — 성공하면 처음부터
+BUDGET_S = 3.5 * 3600    # 실행 시간 예산(초) — 워크플로 제한(300분) 안
 EX_SOURCE_DOWN = 75
 H = {
     "User-Agent": ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
@@ -137,22 +140,26 @@ def main(argv: list[str]) -> int:
                 _age, tid, sq, pl = queues[lg].pop(0)
                 plan.append((lg, tid, sq, pl))
     print(f"[tm_positions] 이번 {len(plan)}명 · 남은 {sum(len(q) for q in queues.values())}명 · 리그 {len(state)}")
-    done, cooled, dirty = 0, False, set()
+    done, blocks, dirty = 0, 0, set()
+    t0 = time.monotonic()
     i = 0
     while i < len(plan):
+        if time.monotonic() - t0 > BUDGET_S:
+            print(f"  · 시간 예산 끝 — 받은 {done}명 저장, 남은 {len(plan) - i}명은 다음 실행")
+            break
         lg, tid, squad, player = plan[i]
         try:
             main_pos, others = fetch(tid)
         except Blocked as e:
-            if not cooled:
-                print(f"  ! {player} ({tid}) {e} — {COOLDOWN}s 쉬고 다시")
-                for g in dirty:
-                    write_rows(*state[g])
-                dirty.clear()
-                time.sleep(COOLDOWN)
-                cooled = True
+            for g in dirty:
+                write_rows(*state[g])
+            dirty.clear()
+            if blocks < len(BACKOFF) and time.monotonic() - t0 + BACKOFF[blocks] < BUDGET_S:
+                print(f"  ! {player} ({tid}) {e} — {BACKOFF[blocks] // 60}분 쉬고 다시(받은 {done}명)")
+                time.sleep(BACKOFF[blocks])
+                blocks += 1
                 continue                       # 같은 선수 다시
-            print(f"  ! 다시 막힘({e}) — 이번 실행 멈춤, 받은 {done}명 저장")
+            print(f"  ! 계속 막힘({e}) — 이번 실행 멈춤, 받은 {done}명 저장")
             break
         except Exception as e:  # noqa: BLE001 — 한 선수 실패(404 등)는 건너뛴다
             print(f"    x {player} ({tid}): {type(e).__name__}: {e}")
@@ -164,6 +171,7 @@ def main(argv: list[str]) -> int:
                      "other_positions": "|".join(others), "last_checked": today.isoformat()}
         dirty.add(lg)
         done += 1
+        blocks = 0
         i += 1
         if done % 50 == 0:
             for g in dirty:
@@ -174,7 +182,7 @@ def main(argv: list[str]) -> int:
     for g in dirty:
         write_rows(*state[g])
     print(f"Done. 받음 {done} / {len(plan)}")
-    return EX_SOURCE_DOWN if i < len(plan) else 0          # 두 번 막혀 멈춤 = 원천 중단(받은 것은 저장)
+    return 0 if done or not plan else EX_SOURCE_DOWN        # 하나도 못 받았을 때만 원천 중단(받은 만큼은 진척)
 
 
 if __name__ == "__main__":

@@ -31,7 +31,9 @@ try:                                       # 라이트 리그 리그 경기 코�
     LEAGUE_CODES |= {c.espn for c in _LG.values() if c.espn}
 except ImportError:
     pass
-EURO = {"uefa.champions": (100.0, 90.0), "uefa.europa": (94.0, 86.0), "uefa.europa.conf": (90.0, 82.0)}
+EURO = {"uefa.champions": (100.0, 90.0), "uefa.europa": (94.0, 86.0), "uefa.europa.conf": (90.0, 82.0),
+        # 예선 — 본선보다 한 단계 아래 수준(상대는 어차피 Elo 로 따로 반영)
+        "uefa.champions_qual": (94.0, 86.0), "uefa.europa_qual": (90.0, 82.0), "uefa.europa.conf_qual": (86.0, 78.0)}
 CUP_DROP = 12.0                 # 국내 컵 하부 리그 상대 — 자기 리그 수준에서 뺀다
 LVL_MIN, LVL_MAX = 75.0, 115.0  # 상대 Elo 수준 범위 — 평점 보정 +0.5 ~ −0.3(한 경기 상대가 OVR 을 크게 흔들지 않게)
 W_EURO, W_CUP = 1.0, 0.5

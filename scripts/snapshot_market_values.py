@@ -109,16 +109,45 @@ def changes_from(log: pd.DataFrame, run_date: str, old: pd.DataFrame | None) -> 
     return out.sort_values(["run_date", "delta"], key=lambda s: s.abs() if s.name == "delta" else s, ascending=False)
 
 
+def _csv(table: str, league: str) -> pd.DataFrame | None:
+    """CSV 직접 — 로컬에서 돌면 datastore 가 옛 football.db 를 먼저 읽어 바뀐 값을 못 본다."""
+    p = data_path(table, league)
+    return pd.read_csv(p, low_memory=False) if p.exists() else None
+
+
+def snapshot_frame(league: str) -> pd.DataFrame | None:
+    """오늘 스냅샷 — TM 스쿼드 페이지 전원(transfermarkt_contracts, 현재 리그 팀만) + 선수 표에만 있는 선수.
+    선수 표(players_full)만 보던 때는 리그 출전이 없는 선수(민테 45→55M·아이트누리 40→35M)의 변동이 빠졌다(2026-11-03 점검)."""
+    full = _csv("players_full", league)
+    ct = _csv("transfermarkt_contracts", league)
+    st = _csv("standings", league)
+    teams = set(st["squad"].astype(str)) if st is not None and "squad" in st.columns else set()
+    parts = []
+    if ct is not None and not ct.empty and {"squad", "player", "market_value_eur"} <= set(ct.columns):
+        c = ct[ct["squad"].astype(str).isin(teams)] if teams else ct      # 강등팀 잔류 줄(Wolfsburg·AVS…)은 뺀다
+        parts.append(c[["squad", "player", "tm_id", "market_value_eur"]].copy() if "tm_id" in c.columns
+                     else c[["squad", "player", "market_value_eur"]].assign(tm_id=None))
+    if full is not None and not full.empty:
+        if "left_for" in full.columns:                       # 떠난 선수 줄(이적·임대로 나감)은 새 소속 쪽에서 센다
+            full = full[full["left_for"].isna() | (full["left_for"].astype(str).str.strip() == "")]
+        cols = [c for c in ["squad", "player", "tm_id", "market_value_eur"] if c in full.columns]
+        f = full[cols].copy()
+        if "tm_id" not in f.columns:
+            f["tm_id"] = None
+        parts.append(f)
+    if not parts:
+        return None
+    snap = pd.concat(parts, ignore_index=True)
+    snap["_pid"] = _pid(snap)
+    return snap.drop_duplicates("_pid", keep="first").drop(columns="_pid")   # TM 스쿼드 페이지 값이 우선
+
+
 def snapshot(league: str | None = None) -> int:
     league = league or ACTIVE_LEAGUE
-    full = ds.read_table("players_full", league=league)
-    if full is None or full.empty:
-        print(f"! {league} players_full 없음 — 중단")
+    snap = snapshot_frame(league)
+    if snap is None or snap.empty:
+        print(f"! {league} 선수 표·TM 계약표 없음 — 중단")
         return 1
-    if "left_for" in full.columns:                           # 떠난 선수 줄(이적·임대로 나감)은 새 소속 쪽에서 센다
-        full = full[full["left_for"].isna() | (full["left_for"].astype(str).str.strip() == "")]
-    cols = [c for c in ["squad", "player", "tm_id", "market_value_eur"] if c in full.columns]
-    snap = full[cols].copy()
     snap["market_value_eur"] = pd.to_numeric(snap["market_value_eur"], errors="coerce")
     snap = snap.dropna(subset=["market_value_eur"])
     snap = snap[snap["market_value_eur"] > 0]
