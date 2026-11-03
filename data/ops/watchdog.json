@@ -1,5 +1,5 @@
 {
- "checked": "2026-11-02T17:30:00+00:00",
+ "checked": "2026-11-03T15:32:13+00:00",
  "results": {
   "ovr": [],
   "season": [],
@@ -7,10 +7,11 @@
   "frontend": [],
   "backend": [],
   "workflows": [
-   "match_refresh.yml 최근 실행 failure (2026-11-02T02:27) https://github.com/jl3725/football26/actions/runs/41377875300"
+   "daily_data.yml 최근 실행 failure (2026-11-03T12:14) https://github.com/jl3725/football26/actions/runs/41634027899",
+   "ci.yml 최근 실행 failure (2026-11-03T06:40) https://github.com/jl3725/football26/actions/runs/41591333444"
   ],
   "news": [
-   "news.db 압축본 60MB — GitHub 50MB 경고 구간(60MB 넘으면 넓힌 원천의 14일 지난 비이적 기사를 자동 정리, 90MB 넘으면 올리기 거부 — src/news_store.py)"
+   "news.db 압축본 62MB — GitHub 50MB 경고 구간(60MB 넘으면 넓힌 원천의 14일 지난 비이적 기사를 자동 정리, 90MB 넘으면 올리기 거부 — src/news_store.py)"
   ],
   "tm_agent": [],
   "coverage": [],
@@ -21,13 +22,28 @@
   "names": [],
   "xg": [],
   "agents": [
-   "STATS · Sofascore 평점 — 마지막 성공 86시간 전(허용 48시간, local-sofascore-daily, local-season-weekly)"
+   "NEWS · 뉴스 수집·분류·번역 — 마지막 성공 9시간 전(허용 6시간, daily_news)",
+   "ANALYST · AI 팀 뉴스 요약 — 마지막 성공 9시간 전(허용 8시간, daily_news)"
   ],
   "expectations": [],
   "screen": [],
   "squads": [],
   "identity": [],
-  "fair_price": []
+  "fair_price": [],
+  "progress": [
+   "EPL FBref 선수 표(주간)(players) 늦음: 팀당 6경기분 · 일정 9경기(가운데 값 3경기 늦음)",
+   "LaLiga FBref 선수 표(주간)(players) 늦음: 팀당 8경기분 · 일정 11경기(가운데 값 3경기 늦음)",
+   "LaLiga StatBunker 팀 통계(statbunker_team_stats) 팀 누락: 팀 1곳 경기분이 절반 이하·없음 — Alavés(0/11) (팀 이름 매칭 확인)",
+   "Bundesliga FBref 선수 표(주간)(players) 늦음: 팀당 5경기분 · 일정 8경기(가운데 값 3경기 늦음)",
+   "SerieA FBref 선수 표(주간)(players) 늦음: 팀당 6경기분 · 일정 10경기(가운데 값 4경기 늦음)",
+   "SerieA StatBunker 팀 통계(statbunker_team_stats) 늦음: 팀당 6경기분 · 일정 10경기(가운데 값 4경기 늦음)",
+   "Ligue1 FBref 선수 표(주간)(players) 늦음: 팀당 6경기분 · 일정 9경기(가운데 값 3경기 늦음)",
+   "Ligue1 Understat xG(understat_players) 팀 누락: 팀 1곳 경기분이 절반 이하·없음 — Rennes(1.8/9) (팀 이름 매칭 확인)",
+   "LigaPortugal FBref 선수 표(주간)(players) 늦음: 팀당 8경기분 · 일정 10경기(가운데 값 2경기 늦음)",
+   "Eredivisie FBref 선수 표(주간)(players) 늦음: 팀당 8경기분 · 일정 11경기(가운데 값 3경기 늦음)",
+   "BelgianProLeague FBref 선수 표(주간)(players) 늦음: 팀당 8경기분 · 일정 10경기(가운데 값 2경기 늦음)"
+  ],
+  "digest": []
  },
- "ai_cause": "각 항목에 대한 분석 결과입니다.\n**workflows**\n- `understat_live` 단계에서 반복적인 코드 1 오류가 발생하고 있어, 외부 데이터 소스(Understat)의 응답 지연이나 API 구조 변경 가능성이 높습니다. (match_refresh.yml / understat_live 단계)\n- `manager_careers` 단계의 실패가 선행되었으므로, 데이터 파이프라인의 의존성이나 데이터 정합성 문제를 먼저 확인해야 합니다. (daily_data / manager_careers 단계)\n**news**\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인)\n**ratings**\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인)\n**agents**\n- `understat_live` 단계의 반복 실패로 인해 데이터 업데이트가 지연되어 평점 갱신이 이루어지지 않았을 가능성이 큽니다. (match_refresh / understat_live 단계)\n- `manager_careers` 단계의 실패가 전체 데이터 흐름을 차단하고 있는지 확인이 필요합니다. (daily_data / manager_careers 단계)"
+ "ai_cause": "**workflows**\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인)\n**news**\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인)\n**ratings**\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인)\n**agents**\n- 외부 데이터 소스(understat_live)의 반복적인 연결 오류(code 1, 75)로 인해 수집이 지연되고 있습니다. (match_refresh, understat_live 추정)\n- 이후 실행된 daily_data 워크플로우에서 statbunker 데이터 수집이 실패하며 전체 프로세스가 중단되었습니다. (daily_data, statbunker 추정)\n**progress**\n- understat_live 단계의 지속적인 오류로 인해 실시간 매치 데이터 갱신이 원활하지 않습니다. (match_refresh, understat_live 추정)\n- statbunker 데이터 수집 실패로 인해 EPL, LaLiga, SerieA 등 주요 리그의 통계 업데이트가 누락되거나 지연되고 있습니다. (daily_data, statbunker 추정)"
 }
