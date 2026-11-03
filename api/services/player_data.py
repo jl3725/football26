@@ -140,7 +140,7 @@ def _detail_cover(frame) -> dict[str, str]:
     src = frame["fb_counts_src"].astype(str) if "fb_counts_src" in frame.columns else pd.Series("", index=frame.index)
     frame["_cov_counts"] = ss.where(src == "sofascore", fb)
     xg = frame["_xg_src"].astype(str) if "_xg_src" in frame.columns else pd.Series("", index=frame.index)
-    frame["_cov_xg"] = pd.to_numeric(frame["minutes"], errors="coerce").where(xg == "understat_live", fb)
+    frame["_cov_xg"] = pd.to_numeric(frame["minutes"], errors="coerce").where(xg.isin(["understat_live", "fotmob"]), fb)
     return {c: ("ss_minutes" if c in _SS_COLS else "_cov_counts" if c in _FB_FROM_SS else "_cov_xg" if c in _US_P90
                 else "_fb_minutes") for c in acs.MAP}
 
@@ -366,6 +366,8 @@ def _build_frame(league: str, season: str | None = None):
             # xG 계열 먼저(FBref 분과 비교해야 하므로 FotMob 이 분을 바꾸기 전에) — Understat 매일, 5대 리그
             frame["_fb_minutes"] = pd.to_numeric(frame.get("minutes"), errors="coerce")   # 주간 표(FBref)가 반영한 분 — 세부 지표 채우기용
             frame = st.apply_understat_live(frame, ds.read_table("understat_players", league=league))
+            # Understat 가 없거나(빅5 밖·접속 불가) 낡은 선수는 FotMob(Opta) 리그 경기 합으로 — 2026-11-03 사용자 '대체 사이트'
+            frame = st.apply_fotmob_xg(frame, ds.read_table("fotmob_match_ratings", league=league), league)
             frame = st.apply_live_totals(frame, ds.read_table("fotmob_match_ratings", league=league), league)
             frame = st.apply_gk_live(frame, ds.read_table("players_sofascore_stats", league=league))   # GK 클린시트% 최신
         except Exception as e:  # noqa: BLE001 — 경기별 기록이 없으면 FBref 그대로

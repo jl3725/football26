@@ -136,6 +136,54 @@ def _attach_understat(df: pd.DataFrame, league: str) -> pd.DataFrame:
     return df
 
 
+def _attach_fotmob_xg(df: pd.DataFrame, league: str, mr: pd.DataFrame | None = None) -> pd.DataFrame:
+    """Understat 가 못 채운(접속 불가·빅5 밖 리그) 리그 경기의 xg·xga·npxg·npxga 를 FotMob 선수 xG 합으로.
+    같은 팀·같은 날(±1일)·홈/원정으로 잇는다. `xg_src` 열(understat | fotmob). 2026-11-03 사용자 '대체 사이트'."""
+    if df.empty:
+        return df
+    if mr is None:
+        p = data_path("fotmob_match_ratings", league)
+        mr = pd.read_csv(p, dtype={"match_id": str}) if p.exists() else None
+    if mr is None or mr.empty or "comp_code" not in mr.columns:
+        return df
+    code = league_config(league).espn if hasattr(league_config(league), "espn") else ""
+    from season_totals import league_code  # noqa: PLC0415
+    code = league_code(league) or code
+    d = mr[(mr["comp_code"].astype(str) == code) & (pd.to_numeric(mr.get("det"), errors="coerce").fillna(0) > 0)].copy()
+    if d.empty:
+        return df
+    for c in ("xg", "npxg"):
+        d[c] = pd.to_numeric(d.get(c), errors="coerce").fillna(0)
+    g = d.groupby(["match_id", "squad"]).agg(xg=("xg", "sum"), npxg=("npxg", "sum"), date=("date", "first"),
+                                             opponent=("opponent", "first"), home_away=("home_away", "first")).reset_index()
+    by_team = {(str(r.squad), str(r.date)[:10], "H" if r.home_away == "home" else "A"): r for r in g.itertuples(index=False)}
+    by_match = {(str(r.match_id), str(r.squad)): r for r in g.itertuples(index=False)}
+    for c in ("xg", "xga", "npxg", "npxga", "xg_src"):
+        if c not in df.columns:
+            df[c] = None
+    df.loc[pd.to_numeric(df["xg"], errors="coerce").notna() & df["xg_src"].isna(), "xg_src"] = "understat"
+    hit = 0
+    for i, r in df[df["comp_code"].astype(str) == code].iterrows():
+        if pd.to_numeric(r.get("xg"), errors="coerce") == pd.to_numeric(r.get("xg"), errors="coerce"):
+            continue                                     # 이미 있음(Understat)
+        base = pd.Timestamp(r["date"])
+        for dd in (0, -1, 1):
+            day = (base + pd.Timedelta(days=dd)).date().isoformat()
+            me = by_team.get((str(r["squad"]), day, str(r["home_away"])))
+            if me is None:
+                continue
+            opp = by_match.get((str(me.match_id), str(me.opponent)))
+            df.at[i, "xg"], df.at[i, "npxg"] = round(float(me.xg), 3), round(float(me.npxg), 3)
+            if opp is not None:
+                df.at[i, "xga"], df.at[i, "npxga"] = round(float(opp.xg), 3), round(float(opp.npxg), 3)
+            df.at[i, "xg_src"] = "fotmob"
+            hit += 1
+            break
+    if hit:
+        print(f"  · FotMob xG 보충 {hit}경기(Understat 없음·접속 불가)", flush=True)
+    return df
+
+
 EVENT_COLS = ["event_id", "date", "comp_code", "squad", "minute", "type", "player"]
 
 
@@ -266,6 +314,7 @@ def main() -> int:
         print("! 기록 없음 — 저장 안 함")
         return 1 if fail else 0
     df = _attach_understat(df, league)
+    df = _attach_fotmob_xg(df, league)
     df = df.drop_duplicates(["event_id", "squad"], keep="last").sort_values(["squad", "date"])
     df.to_csv(out_p, index=False)
     print(f"[OK] {out_p.name} · {len(df)}행(새 {len(rows)} · 실패 {fail})", flush=True)

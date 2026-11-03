@@ -121,6 +121,91 @@ def apply_understat_live(frame: pd.DataFrame, us: pd.DataFrame | None) -> pd.Dat
     return out
 
 
+# ── xG 계열 대체 원천(FotMob · Opta xG — 13개 리그 경기마다, 클라우드 매일) ──────────────
+# 2026-11-03 사용자: Understat(빅5만, 11/02 부터 접속 불가) 대체 사이트? → FotMob 경기별 선수 기록(xg·npxg·xa·키패스·슈팅,
+# 선수-경기 4.3만 건 xG 100%)을 자동 대체로. Understat 가 살아 있으면 그대로 우선(understat_live), 그렇지 않을 때
+# 값이 비었거나 FotMob 이 한 경기 이상 더 최신이면 FotMob 합으로. 척도는 같은 선수들의 기존 값과 비율로 맞춘다.
+_FM_XG = {"xg_p90": "xg", "npxg_p90": "npxg", "xa_p90": "xa", "kp_p90": "chances", "shots_p90": "shots"}
+FM_XG_MIN_GAP = 90.0        # 주간 값보다 이만큼(한 경기) 더 최신일 때만 바꾼다(값이 비어 있으면 바로)
+FM_XG_CAL_MIN, FM_XG_CAL_N = 450, 30
+
+
+def fotmob_xg_totals(mr: pd.DataFrame | None, league: str) -> pd.DataFrame:
+    """리그 경기(세부 기록 있는 행) 선수별 합 — index = 키(FotMob id 또는 '팀|이름'), 열 = xg·npxg·xa·chances·shots·minutes."""
+    import allcomp_stats as acs  # noqa: PLC0415
+    code = league_code(league)
+    if mr is None or mr.empty or not code or "comp_code" not in mr.columns:
+        return pd.DataFrame()
+    d = mr[(mr["comp_code"].astype(str) == code) & (pd.to_numeric(mr.get("det"), errors="coerce").fillna(0) > 0)].copy()
+    if d.empty:
+        return pd.DataFrame()
+    d["_key"] = acs.row_keys(d)
+    cols = [*_FM_XG.values(), "minutes"]
+    for c in cols:
+        d[c] = pd.to_numeric(d.get(c), errors="coerce").fillna(0)
+    return d.groupby("_key")[cols].sum()
+
+
+def _xg_ratio(frame: pd.DataFrame, tot: pd.DataFrame, keys: pd.Series) -> tuple[dict[str, float], set[str]]:
+    """({열: 우리 값 / FotMob per90 비율(출전 가중)}, {기준이 없는 열}) — 450′+ 선수 30명 이상일 때 0.4~2.5, 모자라면 1.
+    기준이 없는 열 = 450′+ 선수 절반 이상이 0·빈값(포르투갈·에레디비시·벨기에는 Understat 가 없어 xg_p90 이 전부 0 이었다 —
+    0 에 맞추면 비율이 0.4 로 눌린다) → 비율 1, 그 리그는 FotMob 으로 바로 채운다."""
+    mins = pd.to_numeric(frame["minutes"], errors="coerce")
+    fm = keys.map(tot["minutes"]) if "minutes" in tot.columns else pd.Series(float("nan"), index=frame.index)
+    ok = (mins >= FM_XG_CAL_MIN) & (fm >= FM_XG_CAL_MIN)
+    out, none = {}, set()
+    for col, src in _FM_XG.items():
+        if col not in frame.columns:
+            continue
+        a = pd.to_numeric(frame[col], errors="coerce")
+        b = keys.map(tot[src]) / fm * 90
+        if ok.sum() >= 10 and float((a[ok].fillna(0) == 0).mean()) >= 0.5:
+            out[col] = 1.0
+            none.add(col)
+            continue
+        m = ok & a.notna() & (a > 0) & b.notna() & (b > 0)
+        if m.sum() < FM_XG_CAL_N:
+            out[col] = 1.0
+            continue
+        w = mins[m]
+        out[col] = round(min(2.5, max(0.4, float((a[m] * w).sum() / (b[m] * w).sum()))), 3)
+    return out, none
+
+
+def apply_fotmob_xg(frame: pd.DataFrame, mr: pd.DataFrame | None, league: str) -> pd.DataFrame:
+    """Understat 최신값(understat_live)이 아닌 선수의 xG 계열 per90 을 FotMob 리그 경기 합으로 — 값이 비었거나
+    FotMob 출전 분이 주간 표보다 FM_XG_MIN_GAP 이상 많을 때. `_xg_src = 'fotmob'`, `_xg_ratio` 열(보정 비율, 점검용)."""
+    import allcomp_stats as acs  # noqa: PLC0415
+    out = frame.copy()
+    if "_xg_src" not in out.columns:
+        out["_xg_src"] = "weekly"
+    tot = fotmob_xg_totals(mr, league)
+    if tot.empty:
+        return out
+    lg_rows = mr[mr["comp_code"].astype(str) == league_code(league)] if "comp_code" in mr.columns else mr
+    keys = pd.Series(acs.frame_keys(out, lg_rows), index=out.index)
+    ratio, no_base = _xg_ratio(out, tot, keys)
+    fm_min = pd.to_numeric(keys.map(tot["minutes"]), errors="coerce")
+    fb_min = pd.to_numeric(out["minutes"], errors="coerce").fillna(0)
+    n = 0
+    for i in out.index:
+        lm = fm_min.get(i)
+        if lm is None or lm != lm or lm <= 0 or str(out.at[i, "_xg_src"]) == "understat_live":
+            continue
+        vals = {c: pd.to_numeric(out.at[i, c], errors="coerce") for c in _FM_XG if c in out.columns}
+        empty = any(v != v for v in vals.values()) or bool(no_base)       # 기준 자체가 없는 리그는 바로
+        if not empty and lm - float(fb_min.get(i, 0)) < FM_XG_MIN_GAP:
+            continue
+        t = tot.loc[keys.at[i]]
+        for col, src in _FM_XG.items():
+            if col in out.columns:
+                out.at[i, col] = round(float(t[src]) / lm * 90 * ratio.get(col, 1.0), 3)
+        out.at[i, "_xg_src"] = "fotmob"
+        n += 1
+    out["_xg_ratio"] = str({k: v for k, v in ratio.items()} | ({"no_base": sorted(no_base)} if no_base else {})) if n else ""
+    return out
+
+
 def apply_gk_live(frame: pd.DataFrame, ss: pd.DataFrame | None) -> pd.DataFrame:
     """GK 클린시트% 를 Sofascore 시즌 기록(cleanSheet ÷ appearances, 매일)으로 — FBref(주간)는 한 라운드 늦어
     Raya 가 50%(3/6)로 나왔다(실제 4/7, 2026-10-20 점검). Sofascore 는 매일 갱신이라 GK 행은 이 값으로 덮는다."""
