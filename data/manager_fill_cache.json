@@ -6,6 +6,10 @@
    "src": "fotmob",
    "val": "Apr 2026"
   },
+  "ADO Den Haag|levi schwiebbe (a i )": {
+   "at": "2026-11-03",
+   "val": ""
+  },
   "ADO Den Haag|robin peter": {
    "at": "2026-10-23",
    "date": "2025-07-14",
@@ -119,6 +123,12 @@
    "date": "2024-12-01",
    "src": "fotmob",
    "val": "Dec 2024"
+  },
+  "Austria Wien|maximilian uhlig": {
+   "at": "2026-11-03",
+   "date": "2026-10-24",
+   "src": "fotmob",
+   "val": "Oct 2026"
   },
   "Austria Wien|stephan helm": {
    "at": "2026-10-23",
@@ -363,6 +373,12 @@
   "Estoril|sergio raimundo": {
    "at": "2026-10-23",
    "val": ""
+  },
+  "Estoril|sergio raimundo (caretaker)": {
+   "at": "2026-11-03",
+   "date": "2026-10-30",
+   "src": "fotmob",
+   "val": "Oct 2026"
   },
   "Estrela|pepa": {
    "at": "2026-10-23",
@@ -1300,6 +1316,12 @@
    "src": "wikidata",
    "val": "Oct 2026"
   },
+  "Willem II|jurgen streppel": {
+   "at": "2026-11-03",
+   "date": "2026-10-28",
+   "src": "fotmob",
+   "val": "Oct 2026"
+  },
   "Wolfsberger AC|manfred schmid": {
    "at": "2026-10-28",
    "date": "2026-10-22",
@@ -1348,6 +1370,7 @@
   }
  },
  "coach_check": {
+  "ADO Den Haag|levi schwiebbe (a i )": "2026-11-03",
   "ADO Den Haag|robin peter": "2026-10-30",
   "AZ Alkmaar|lee roy echteld": "2026-10-30",
   "Académico de Viseu|bruno pinheiro": "2026-10-30",
@@ -1393,7 +1416,7 @@
   "Espanyol|manolo gonzalez": "2026-10-23",
   "Espanyol|sergio garcia (caretaker)": "2026-10-29",
   "Estoril|sergio raimundo": "2026-10-23",
-  "Estoril|sergio raimundo (caretaker)": "2026-10-27",
+  "Estoril|sergio raimundo (caretaker)": "2026-11-03",
   "Estrela|pepa": "2026-10-30",
   "Everton|david moyes": "2026-10-30",
   "Excelsior|ruben den uil": "2026-10-30",
@@ -1501,24 +1524,13 @@
   "Werder Bremen|daniel thioune": "2026-10-30",
   "Westerlo|issame charai": "2026-10-30",
   "Willem II|adrie koster (a i )": "2026-10-30",
+  "Willem II|jurgen streppel": "2026-11-03",
   "Zulte Waregem|michael beale": "2026-10-30",
   "Zwolle|dennis van der ree (a i ) and maikel van der werff (a i )": "2026-10-30"
  },
  "override": {
-  "Estoril": {
-   "at": "2026-10-27",
-   "bio_at": "2026-10-27",
-   "bio_ko": "레안드로 가르시아 아제베두 피레스는 포르투갈 출신의 축구 감독이자 전 축구 선수이다. 현재 에스토릴의 감독 대행을 맡고 있다.",
-   "bio_source": "en-wiki-translated",
-   "fotmob_id": 45364,
-   "from": "Sérgio Raimundo (caretaker)",
-   "name": "Leandro Pires",
-   "nationality": "Portugal",
-   "start": "2026-10-16",
-   "wiki_title": "Leandro Pires"
-  },
   "Famalicão": {
-   "at": "2026-10-27",
+   "at": "2026-11-03",
    "bio_at": "2026-10-27",
    "bio_ko": "리카르두 살바도르 마세두 에 시우바는 포르투갈 출신의 축구 감독이다. 현재 리가 포르투갈 2의 루시타니아 로로사 감독을 맡고 있으며, 같은 리그의 파수스 드 페헤이라와 올리베이렌세 감독직을 역임한 바 있다. 빌라베르덴세 시절에는 4부 리그에서 2부 리그까지 2년 연속 승격을 이뤄냈다.",
    "bio_source": "en-wiki-translated",
@@ -2073,6 +2085,11 @@
    "focus": "",
    "style": ""
   },
+  "jurgen streppel": {
+   "at": "2026-11-03",
+   "focus": "",
+   "style": ""
+  },
   "kim hellberg": {
    "at": "2026-10-23",
    "focus": "possession, high press, direct/counter-attack, attacking",
@@ -2100,6 +2117,11 @@
   },
   "lee roy echteld": {
    "at": "2026-10-23",
+   "focus": "",
+   "style": ""
+  },
+  "levi schwiebbe (a i )": {
+   "at": "2026-11-03",
    "focus": "",
    "style": ""
   },
@@ -2495,6 +2517,11 @@
   },
   "sergio raimundo": {
    "at": "2026-10-23",
+   "focus": "",
+   "style": ""
+  },
+  "sergio raimundo (caretaker)": {
+   "at": "2026-11-03",
    "focus": "",
    "style": ""
   },

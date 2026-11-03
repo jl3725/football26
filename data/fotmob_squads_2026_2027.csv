@@ -32,7 +32,7 @@ Manchester City,Rayan Aït-Nouri,933845,defenders,"LB,LW",Left-Back,DF,25,2001-0
 Manchester City,Vitor Reis,1580952,defenders,CB,Centre-Back,DF,20,2006-01-12,22.0,BRA,False,,2026-11-03
 Manchester City,Joško Gvardiol,1070712,defenders,"LB,CB",Left-Back,DF,24,2002-01-23,24.0,CRO,False,,2026-11-03
 Manchester City,Matheus Nunes,955529,defenders,RB,Right-Back,DF,28,1998-08-27,27.0,POR,False,,2026-11-03
-Manchester City,Nico O'Reilly,1300526,defenders,"LB,LW,CDM",Left-Back,DF,21,2005-03-21,33.0,ENG,False,,2026-11-03
+Manchester City,Nico O'Reilly,1300526,defenders,"LB,CDM,LW,CAM",Left-Back,DF,21,2005-03-21,33.0,ENG,False,,2026-11-03
 Manchester City,Abdukodir Khusanov,1362998,defenders,"CB,RB",Centre-Back,DF,22,2004-02-29,45.0,UZB,False,,2026-11-03
 Manchester City,Rico Lewis,1288450,defenders,"RB,CM,LB",Right-Back,DF,21,2004-11-21,82.0,ENG,False,,2026-11-03
 Manchester City,Josh Wilson-Esbrand,1187225,defenders,LB,Left-Back,DF,23,2002-12-26,97.0,ENG,False,,2026-11-03
@@ -46,7 +46,7 @@ Manchester City,Iliman Ndiaye,965764,attackers,"RW,LW,CAM",Right Winger,FW,26,20
 Manchester City,Erling Haaland,737066,attackers,ST,Centre-Forward,FW,26,2000-07-21,9.0,NOR,False,,2026-11-03
 Manchester City,Jérémy Doku,942368,attackers,"LW,RW,CAM",Left Winger,FW,24,2002-05-27,11.0,BEL,False,,2026-11-03
 Manchester City,Allan,1721789,attackers,"RW,RM,RWB,LW",Right Winger,FW,22,2004-04-19,37.0,BRA,False,,2026-11-03
-Manchester City,Antoine Semenyo,933576,attackers,"RW,LW,ST",Right Winger,FW,26,2000-01-07,42.0,GHA,True,Mid December 2026,2026-11-03
+Manchester City,Antoine Semenyo,933576,attackers,"RW,LW,ST,RM",Right Winger,FW,26,2000-01-07,42.0,GHA,True,Mid December 2026,2026-11-03
 Manchester City,Ryan McAidoo,1680328,attackers,RW,Right Winger,FW,18,2008-06-24,56.0,ENG,False,,2026-11-03
 Brighton,Bart Verbruggen,1131987,keepers,GK,Goalkeeper,GK,24,2002-08-18,1.0,NED,False,,2026-11-03
 Brighton,Jason Steele,107917,keepers,GK,Goalkeeper,GK,36,1990-08-18,23.0,ENG,False,,2026-11-03
@@ -89,7 +89,7 @@ Chelsea,Malo Gusto,1197250,defenders,"RB,LB,RWB",Right-Back,DF,23,2003-05-19,27.
 Chelsea,Pep Chavarría,988805,defenders,"LB,LWB",Left-Back,DF,28,1998-04-10,29.0,ESP,False,,2026-11-03
 Chelsea,Aaron Anselmino,1494947,defenders,CB,Centre-Back,DF,21,2005-04-29,30.0,ARG,True,Mid November 2026,2026-11-03
 Chelsea,Josh Acheampong,1400216,defenders,"RB,CB",Right-Back,DF,20,2006-05-05,34.0,ENG,False,,2026-11-03
-Chelsea,Marco Palestra,1473806,midfielders,"RM,RB,LM",Right Midfield,MF,21,2005-03-03,2.0,ITA,False,,2026-11-03
+Chelsea,Marco Palestra,1473806,midfielders,"RM,RB,LM,LB",Right Midfield,MF,21,2005-03-03,2.0,ITA,False,,2026-11-03
 Chelsea,Valentín Barco,1272440,midfielders,"CDM,CM",Defensive Midfield,MF,22,2004-07-23,4.0,ARG,False,,2026-11-03
 Chelsea,Cole Palmer,1096353,midfielders,"CAM,RW",Attacking Midfield,MF,24,2002-05-06,10.0,ENG,False,,2026-11-03
 Chelsea,Jordan Henderson,156008,midfielders,"CDM,CM",Defensive Midfield,MF,36,1990-06-17,14.0,ENG,False,,2026-11-03
@@ -181,7 +181,7 @@ Everton,Jack Grealish,312765,attackers,LW,Left Winger,FW,31,1995-09-10,10.0,ENG,
 Everton,Thierno Barry,1398392,attackers,ST,Centre-Forward,FW,24,2002-10-21,11.0,FRA,False,,2026-11-03
 Everton,Tyrique George,1424875,attackers,LW,Left Winger,FW,20,2006-02-04,19.0,ENG,False,,2026-11-03
 Everton,Tyler Dibling,1292833,attackers,RW,Right Winger,FW,20,2006-02-17,20.0,ENG,False,,2026-11-03
-Everton,Brennan Johnson,1076756,attackers,"RW,CAM,LW,RWB",Right Winger,FW,25,2001-05-23,22.0,WAL,False,,2026-11-03
+Everton,Brennan Johnson,1076756,attackers,"CAM,RW,LW,RWB",Attacking Midfield,FW,25,2001-05-23,22.0,WAL,False,,2026-11-03
 Bournemouth,Djordje Petrović,1067256,keepers,GK,Goalkeeper,GK,27,1999-10-08,1.0,SRB,False,,2026-11-03
 Bournemouth,Fraser Forster,95336,keepers,GK,Goalkeeper,GK,38,1988-03-17,17.0,ENG,False,,2026-11-03
 Bournemouth,Michele Di Gregorio,766062,keepers,GK,Goalkeeper,GK,29,1997-07-27,20.0,ITA,False,,2026-11-03
@@ -264,9 +264,9 @@ Aston Villa,Emiliano Buendía,610184,attackers,"LW,CAM,LM",Left Winger,FW,29,199
 Aston Villa,Nicolas Jackson,1197347,attackers,"ST,LW",Centre-Forward,FW,25,2001-06-20,11.0,SEN,False,,2026-11-03
 Aston Villa,Alejandro Garnacho,1203665,attackers,LW,Left Winger,FW,22,2004-07-01,17.0,ARG,False,,2026-11-03
 Aston Villa,Tammy Abraham,749661,attackers,ST,Centre-Forward,FW,29,1997-10-02,18.0,ENG,False,,2026-11-03
-Aston Villa,Ibrahim Mbaye,1593857,attackers,"RW,LW,LWB",Right Winger,FW,18,2008-01-24,19.0,SEN,False,,2026-11-03
+Aston Villa,Ibrahim Mbaye,1593857,attackers,"RW,LW",Right Winger,FW,18,2008-01-24,19.0,SEN,False,,2026-11-03
 Aston Villa,Brian Madjo,1729841,attackers,ST,Centre-Forward,FW,17,2009-01-12,39.0,LUX,False,,2026-11-03
-Aston Villa,Alysson Edward,1656860,attackers,"RW,RWB",Right Winger,FW,20,2006-05-05,47.0,BRA,False,,2026-11-03
+Aston Villa,Alysson Edward,1656860,attackers,RW,Right Winger,FW,20,2006-05-05,47.0,BRA,False,,2026-11-03
 Hull City,Jack Butland,288880,keepers,GK,Goalkeeper,GK,33,1993-03-10,1.0,ENG,True,Doubtful,2026-11-03
 Hull City,Dillon Phillips,518500,keepers,GK,Goalkeeper,GK,31,1995-06-11,12.0,ENG,False,,2026-11-03
 Hull City,Konstantinos Tzolakis,1072068,keepers,GK,Goalkeeper,GK,23,2002-11-08,19.0,GRE,False,,2026-11-03
@@ -347,7 +347,7 @@ Newcastle United,William Osula,1258092,attackers,ST,Centre-Forward,FW,23,2003-08
 Newcastle United,Harvey Barnes,760359,attackers,"LW,RW",Left Winger,FW,28,1997-12-09,11.0,ENG,False,,2026-11-03
 Newcastle United,Bazoumana Touré,1624586,attackers,"LW,LM,ST",Left Winger,FW,20,2006-03-02,17.0,CIV,False,,2026-11-03
 Newcastle United,Anthony Elanga,1050166,attackers,"RW,CAM",Right Winger,FW,24,2002-04-27,19.0,SWE,False,,2026-11-03
-Newcastle United,Matias Fernandez-Pardo,1444231,attackers,"ST,LW,RW",Centre-Forward,FW,21,2005-02-03,20.0,BEL,True,Doubtful,2026-11-03
+Newcastle United,Matias Fernandez-Pardo,1444231,attackers,"ST,LW",Centre-Forward,FW,21,2005-02-03,20.0,BEL,True,Doubtful,2026-11-03
 Newcastle United,Jacob Murphy,521148,attackers,"RW,RM",Right Winger,FW,31,1995-02-24,23.0,ENG,False,,2026-11-03
 Ipswich Town,Alex Palmer,643228,keepers,GK,Goalkeeper,GK,30,1996-08-10,1.0,ENG,False,,2026-11-03
 Ipswich Town,David Button,111027,keepers,GK,Goalkeeper,GK,37,1989-02-27,27.0,ENG,False,,2026-11-03
@@ -359,7 +359,7 @@ Ipswich Town,Cédric Kipré,760398,defenders,CB,Centre-Back,DF,29,1996-12-09,4.0
 Ipswich Town,Issa Diop,696443,defenders,CB,Centre-Back,DF,29,1997-01-09,6.0,MAR,False,,2026-11-03
 Ipswich Town,Jacob Greaves,1079103,defenders,"CB,LB",Centre-Back,DF,26,2000-09-12,24.0,ENG,False,,2026-11-03
 Ipswich Town,Dara O'Shea,789578,defenders,"CB,RB",Centre-Back,DF,27,1999-03-04,26.0,IRL,False,,2026-11-03
-Ipswich Town,Abdoul Ouattara,1343053,defenders,"RB,LB,CDM,RWB",Right-Back,DF,21,2005-10-22,42.0,CIV,False,,2026-11-03
+Ipswich Town,Abdoul Ouattara,1343053,defenders,"RB,LB,CDM",Right-Back,DF,21,2005-10-22,42.0,CIV,False,,2026-11-03
 Ipswich Town,Azor Matusiwa,797594,midfielders,CDM,Defensive Midfield,MF,28,1998-04-28,5.0,NED,False,,2026-11-03
 Ipswich Town,Julio Enciso,1073742,midfielders,"CAM,ST",Attacking Midfield,MF,22,2004-01-23,10.0,PAR,False,,2026-11-03
 Ipswich Town,Florentino,793255,midfielders,"CDM,CM",Defensive Midfield,MF,27,1999-08-19,12.0,POR,False,,2026-11-03
@@ -375,7 +375,7 @@ Ipswich Town,Jaden Philogene-Bidace,1089645,attackers,LW,Left Winger,FW,24,2002-
 Ipswich Town,Emersonn,1320949,attackers,ST,Centre-Forward,FW,22,2004-07-16,19.0,BRA,False,,2026-11-03
 Ipswich Town,Kasey McAteer,1113915,attackers,RW,Right Winger,FW,24,2001-11-22,20.0,IRL,False,,2026-11-03
 Ipswich Town,Chuba Akpom,413158,attackers,"CAM,ST",Attacking Midfield,FW,31,1995-10-09,29.0,ENG,False,,2026-11-03
-Ipswich Town,Daizen Maeda,728765,attackers,"ST,LW,RW,CAM",Centre-Forward,FW,29,1997-10-20,38.0,JPN,False,,2026-11-03
+Ipswich Town,Daizen Maeda,728765,attackers,"ST,LW,CAM,RW",Centre-Forward,FW,29,1997-10-20,38.0,JPN,False,,2026-11-03
 Ipswich Town,Jack Clarke,914402,attackers,"LW,CAM",Left Winger,FW,25,2000-11-23,47.0,ENG,False,,2026-11-03
 Fulham,Bernd Leno,215168,keepers,GK,Goalkeeper,GK,34,1992-03-04,1.0,GER,False,,2026-11-03
 Fulham,Benjamin Lecomte,210114,keepers,GK,Goalkeeper,GK,35,1991-04-26,23.0,FRA,False,,2026-11-03
@@ -444,7 +444,7 @@ Manchester Utd,Leny Yoro,1358581,defenders,"CB,RB",Centre-Back,DF,20,2005-11-13,
 Manchester Utd,Luke Shaw,362694,defenders,"LB,CB",Left-Back,DF,31,1995-07-12,23.0,ENG,True,Early November 2026,2026-11-03
 Manchester Utd,Ayden Heaven,1559639,defenders,CB,Centre-Back,DF,20,2006-09-22,26.0,ENG,False,,2026-11-03
 Manchester Utd,Mason Mount,750032,midfielders,"CDM,CAM",Defensive Midfield,MF,27,1999-01-10,7.0,ENG,False,,2026-11-03
-Manchester Utd,Bruno Fernandes,422685,midfielders,"CAM,CDM,LW,RW,ST",Attacking Midfield,MF,32,1994-09-08,8.0,POR,False,,2026-11-03
+Manchester Utd,Bruno Fernandes,422685,midfielders,"CAM,CDM,RW,LW",Attacking Midfield,MF,32,1994-09-08,8.0,POR,False,,2026-11-03
 Manchester Utd,Andrey Santos,1372921,midfielders,"CDM,CM",Defensive Midfield,MF,22,2004-05-03,17.0,BRA,False,,2026-11-03
 Manchester Utd,Youri Tielemans,465960,midfielders,"CDM,CAM,CM",Defensive Midfield,MF,29,1997-05-07,18.0,BEL,False,,2026-11-03
 Manchester Utd,Carlos Baleba,1352713,midfielders,"CDM,CM",Defensive Midfield,MF,22,2004-01-03,20.0,CMR,False,,2026-11-03

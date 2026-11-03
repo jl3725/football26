@@ -1,7 +1,7 @@
 {
- "date": "2026-11-02",
+ "date": "2026-11-03",
  "model": "v3.14",
- "players": 5756,
+ "players": 5961,
  "golden": [],
  "scout": [
   {
@@ -93,14 +93,6 @@
    "off": 1
   },
   {
-   "player": "Jamal Musiala",
-   "league": "Bundesliga",
-   "ovr": 82,
-   "lo": 83,
-   "hi": 90,
-   "off": -1
-  },
-  {
    "player": "Dayot Upamecano",
    "league": "Bundesliga",
    "ovr": 89,
@@ -150,10 +142,10 @@
    "desc": "지난 시즌(1,500분+) 대비 +6 이상인데 이번 시즌 평점(7.2+·450분+)이 받쳐 주지 않는 급등",
    "examples": [
     "Luis Milla(Como, 32) 78 ← 71",
+    "Thierno Barry(Everton, 24) 77 ← 71",
     "Nobel Mendy(Hull City, 22) 74 ← 68",
     "Adama Camara(Paris FC, 30) 70 ← 63",
     "Tibe De Vlieger(Gent, 20) 68 ← 62",
-    "Aske Adelgaard(Twente, 22) 65 ← 56",
     "Ianis Stoica(Estrela, 23) 65 ← 57",
     "Barbero(Arouca, 28) 62 ← 56",
     "Jerry Afriyie(Genk, 19) 58 ← 52"
@@ -172,7 +164,7 @@
    "limit": 10,
    "desc": "OVR 86+ 인데 리그 보정 평점이 포지션 평균보다 0.1 넘게 낮음(900분+)",
    "examples": [
-    "Achraf Hakimi(PSG, 27) 88 ← 89",
+    "Achraf Hakimi(PSG, 27) 88 ← 88",
     "João Neves(PSG, 22) 88 ← 89",
     "Trent Alexander-Arnold(Real Madrid, 28) 86 ← 85"
    ]

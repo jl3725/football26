@@ -13,7 +13,7 @@ Club Brugge,Brandon Mechele,445873,defenders,CB,Centre-Back,DF,33,1993-01-28,44.
 Club Brugge,Samba Coulibaly,1830647,defenders,CB,Centre-Back,DF,18,2008-04-04,54.0,FRA,False,,2026-11-03
 Club Brugge,Jorne Spileers,1233418,defenders,CB,Centre-Back,DF,21,2005-01-21,58.0,BEL,False,,2026-11-03
 Club Brugge,Kyriani Sabbe,1227590,defenders,"RB,CB",Right-Back,DF,21,2005-01-26,64.0,BEL,False,,2026-11-03
-Club Brugge,Joaquin Seys,1489449,defenders,LB,Left-Back,DF,21,2005-03-28,65.0,BEL,False,,2026-11-03
+Club Brugge,Joaquin Seys,1489449,defenders,"LB,RB",Left-Back,DF,21,2005-03-28,65.0,BEL,False,,2026-11-03
 Club Brugge,Freddie Potts,1206287,midfielders,"CDM,CM",Defensive Midfield,MF,23,2003-09-12,8.0,ENG,False,,2026-11-03
 Club Brugge,Hugo Vetlesen,837064,midfielders,"CAM,RW,CM,CDM",Attacking Midfield,MF,26,2000-02-29,10.0,NOR,False,,2026-11-03
 Club Brugge,Cheveyo Tsawa,1612843,midfielders,"CM,CDM,CAM",Central Midfield,MF,19,2006-12-09,16.0,SUI,False,,2026-11-03
@@ -21,7 +21,7 @@ Club Brugge,Hans Vanaken,203666,midfielders,"CAM,CDM,CM",Attacking Midfield,MF,3
 Club Brugge,Milan Robberechts,1355523,midfielders,"RM,RW",Right Midfield,MF,22,2004-03-04,39.0,BEL,False,,2026-11-03
 Club Brugge,Lynnt Audoor,1178442,midfielders,CDM,Defensive Midfield,MF,23,2003-10-13,62.0,BEL,False,,2026-11-03
 Club Brugge,Alejandro Granados,1485173,midfielders,"CAM,CDM",Attacking Midfield,MF,20,2006-05-30,70.0,ESP,False,,2026-11-03
-Club Brugge,Félix Lemaréchal,1284071,midfielders,CDM,Defensive Midfield,MF,23,2003-08-07,80.0,FRA,False,,2026-11-03
+Club Brugge,Félix Lemaréchal,1284071,midfielders,"CDM,CM",Defensive Midfield,MF,23,2003-08-07,80.0,FRA,False,,2026-11-03
 Club Brugge,Nicolò Tresoldi,1334552,attackers,ST,Centre-Forward,FW,22,2004-08-20,7.0,GER,False,,2026-11-03
 Club Brugge,Carlos Forbs,1186529,attackers,"RW,RM",Right Winger,FW,22,2004-03-19,9.0,POR,False,,2026-11-03
 Club Brugge,Jan Virgili,1690093,attackers,"LW,LM,ST",Left Winger,FW,20,2006-07-26,11.0,ESP,False,,2026-11-03
@@ -82,12 +82,12 @@ Gent,Mathias Delorge,1280741,midfielders,"CDM,CM",Defensive Midfield,MF,22,2004-
 Gent,Tiago Araújo,1185329,midfielders,"LB,LWB,LM,LW",Left-Back,MF,25,2001-03-27,20.0,POR,False,,2026-11-03
 Gent,Leonardo Lopes,604396,midfielders,"CDM,CM,CB",Defensive Midfield,MF,27,1998-11-30,22.0,POR,False,,2026-11-03
 Gent,Tibe De Vlieger,1553506,midfielders,"CDM,CM",Defensive Midfield,MF,20,2005-11-05,27.0,BEL,False,,2026-11-03
-Gent,Mohammed El Âdfaoui,1760239,midfielders,"CAM,CDM,CM,RW",Attacking Midfield,MF,18,2008-02-28,28.0,BEL,False,,2026-11-03
+Gent,Mohammed El Âdfaoui,1760239,midfielders,"CAM,CDM,CM",Attacking Midfield,MF,18,2008-02-28,28.0,BEL,False,,2026-11-03
 Gent,Abdelkahar Kadri,1120987,midfielders,"CAM,CM",Attacking Midfield,MF,26,2000-06-24,37.0,ALG,False,,2026-11-03
 Gent,Kyrell Wilson,1580120,attackers,"RW,CAM",Right Winger,FW,21,2004-12-01,14.0,ENG,False,,2026-11-03
 Gent,Moctar Diop,1460671,attackers,ST,Centre-Forward,FW,21,2005-01-06,19.0,SEN,False,,2026-11-03
 Gent,Max Dean,1187331,attackers,"ST,RW",Centre-Forward,FW,22,2004-02-21,21.0,ENG,False,,2026-11-03
-Gent,Hyllarion Goore,1666324,attackers,"ST,LW,RW,RWB",Centre-Forward,FW,21,2005-08-24,45.0,CIV,False,,2026-11-03
+Gent,Hyllarion Goore,1666324,attackers,"ST,LW,RWB,RW",Centre-Forward,FW,21,2005-08-24,45.0,CIV,False,,2026-11-03
 Gent,Josué Vergara,1676100,attackers,ST,Centre-Forward,FW,19,2007-07-25,47.0,PAN,False,,2026-11-03
 Gent,El Hadji Seck,1798011,attackers,"ST,LW,CAM",Centre-Forward,FW,19,2007-01-14,59.0,SEN,False,,2026-11-03
 Gent,Ibrahima Cisse,1898989,attackers,ST,Centre-Forward,FW,19,2007-09-24,75.0,SEN,False,,2026-11-03
@@ -101,14 +101,13 @@ Charleroi,Noah Solheid,1403864,defenders,CB,Centre-Back,DF,23,2003-07-08,33.0,BE
 Charleroi,Massamba Sow,1664993,defenders,CB,Centre-Back,DF,22,2004-06-13,44.0,FRA,True,Late November 2026,2026-11-03
 Charleroi,Rafael Teugels,2130883,defenders,LB,Left-Back,DF,20,2006-06-07,65.0,BEL,False,,2026-11-03
 Charleroi,Cheick Keita,1406567,defenders,CB,Centre-Back,DF,23,2003-04-02,95.0,MLI,False,,2026-11-03
-Charleroi,Triston Rowe,1442496,midfielders,"RB,RM,RWB",Right-Back,MF,20,2006-10-02,2.0,ENG,False,,2026-11-03
+Charleroi,Triston Rowe,1442496,midfielders,"RB,RM,RWB,LB",Right-Back,MF,20,2006-10-02,2.0,ENG,False,,2026-11-03
 Charleroi,Amine Boukamir,1624100,midfielders,CDM,Defensive Midfield,MF,20,2006-10-23,6.0,MAR,False,,2026-11-03
 Charleroi,Jakob Napoleon Romsaas,1281232,midfielders,CAM,Attacking Midfield,MF,22,2004-05-16,8.0,NOR,False,,2026-11-03
 Charleroi,Gaku Nawata,1583858,midfielders,"CAM,RW",Attacking Midfield,MF,20,2006-07-29,13.0,JPN,False,,2026-11-03
 Charleroi,Patrick Pflücke,562906,midfielders,"CAM,RW",Attacking Midfield,MF,29,1996-11-30,14.0,GER,False,,2026-11-03
 Charleroi,Yassine Khalifi,1783815,midfielders,CDM,Defensive Midfield,MF,21,2005-08-09,18.0,MAR,False,,2026-11-03
 Charleroi,Isaac Cissé,1816242,midfielders,"CM,CDM,LW",Central Midfield,MF,20,2006-10-10,19.0,CIV,False,,2026-11-03
-Charleroi,Freddy Mbemba,1406676,midfielders,"LW,LM",Left Winger,MF,23,2002-12-16,20.0,FRA,False,,2026-11-03
 Charleroi,Boubakar Dembaga,1840468,midfielders,,Central Midfield,MF,20,2006-06-07,23.0,FRA,False,,2026-11-03
 Charleroi,Yoann Cissé,1703570,midfielders,,Central Midfield,MF,21,2004-12-13,45.0,FRA,False,,2026-11-03
 Charleroi,Mory Kera,1895841,midfielders,CDM,Defensive Midfield,MF,18,2008-06-26,51.0,BEL,False,,2026-11-03
@@ -116,8 +115,10 @@ Charleroi,Matteo Noto,1970847,midfielders,,Central Midfield,MF,19,2007-09-27,77.
 Charleroi,Slobodan Stanojlović,1076941,attackers,,Centre-Forward,FW,24,2001-12-28,,SRB,False,,2026-11-03
 Charleroi,Adama Bojang,1478147,attackers,"ST,RW",Centre-Forward,FW,22,2004-05-28,9.0,GAM,True,Late November 2026,2026-11-03
 Charleroi,Antoine Bernier,945883,attackers,"RW,LW",Right Winger,FW,29,1997-09-10,17.0,BEL,True,Day to day,2026-11-03
+Charleroi,Freddy Mbemba,1406676,attackers,"LW,LM",Left Winger,FW,23,2002-12-16,20.0,FRA,False,,2026-11-03
 Charleroi,Aurélien Scheidler,846963,attackers,ST,Centre-Forward,FW,28,1998-06-04,21.0,FRA,False,,2026-11-03
 Charleroi,Antoine Colassin,1127251,attackers,ST,Centre-Forward,FW,25,2001-02-26,25.0,BEL,False,,2026-11-03
+Charleroi,Ahmed Mulumba,1755426,attackers,,Centre-Forward,FW,19,2007-05-09,83.0,BEL,False,,2026-11-03
 Anderlecht,Timon Vanhoutte,1178644,keepers,GK,Goalkeeper,GK,22,2004-01-29,,BEL,False,,2026-11-03
 Anderlecht,Colin Coosemans,208699,keepers,GK,Goalkeeper,GK,34,1992-08-03,26.0,BEL,False,,2026-11-03
 Anderlecht,Justin Heekeren,1310438,keepers,GK,Goalkeeper,GK,25,2000-11-27,32.0,GER,False,,2026-11-03
@@ -155,7 +156,7 @@ Anderlecht,Tawfik Bentayeb,1436306,attackers,"ST,RW",Centre-Forward,FW,24,2002-0
 Anderlecht,Elyèss Dao,1666477,attackers,LW,Left Winger,FW,19,2006-11-20,22.0,FRA,False,,2026-11-03
 Anderlecht,Jayden Seke,1898992,attackers,"RW,LW,RM",Right Winger,FW,17,2009-05-08,49.0,BEL,False,,2026-11-03
 Anderlecht,Tristan Degreef,1520067,attackers,"LW,RW,CAM",Left Winger,FW,21,2005-01-19,83.0,BEL,False,,2026-11-03
-Anderlecht,Adriano Bertaccini,1073421,attackers,"RW,ST,LW,CAM",Right Winger,FW,26,2000-08-13,91.0,BEL,False,,2026-11-03
+Anderlecht,Adriano Bertaccini,1073421,attackers,"RW,ST,LW",Right Winger,FW,26,2000-08-13,91.0,BEL,False,,2026-11-03
 Genk,Hendrik van Crombrugge,277845,keepers,GK,Goalkeeper,GK,33,1993-04-30,1.0,BEL,False,,2026-11-03
 Genk,Tobe Leysen,1092104,keepers,GK,Goalkeeper,GK,24,2002-03-09,1.0,BEL,False,,2026-11-03
 Genk,Tobias Lawal,950832,keepers,GK,Goalkeeper,GK,26,2000-06-07,26.0,AUT,False,,2026-11-03
@@ -167,7 +168,6 @@ Genk,Christiaan Ravych,1336773,defenders,CB,Centre-Back,DF,24,2002-07-30,5.0,BEL
 Genk,Matte Smets,1390101,defenders,CB,Centre-Back,DF,22,2004-01-04,6.0,BEL,False,,2026-11-03
 Genk,Joris Kayembe Ditu,500932,defenders,"LB,CB",Left-Back,DF,32,1994-08-08,18.0,COD,False,,2026-11-03
 Genk,Yaimar Medina,1391753,defenders,"LB,LW,LWB,LM",Left-Back,DF,21,2004-11-05,19.0,ECU,False,,2026-11-03
-Genk,Kevin Amaro,1437365,defenders,"RB,RWB,CM,RW,RM",Right-Back,DF,22,2004-03-03,20.0,URU,False,,2026-11-03
 Genk,Brad Manguelle,1527091,defenders,CB,Centre-Back,DF,18,2007-11-27,22.0,BEL,False,,2026-11-03
 Genk,Milan Roganović,1362985,defenders,RB,Right-Back,DF,21,2005-10-28,25.0,MNE,False,,2026-11-03
 Genk,Ken Nkuba,974314,defenders,RB,Right-Back,DF,24,2002-01-21,27.0,BEL,True,Day to day,2026-11-03
@@ -178,8 +178,9 @@ Genk,Christian Akpan,1624055,defenders,"RB,CDM,LB",Right-Back,DF,21,2005-01-29,6
 Genk,Benjamin Tahirović,1415104,midfielders,"CM,CDM",Central Midfield,MF,23,2003-03-03,4.0,BIH,False,,2026-11-03
 Genk,Bryan Heynen,659493,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,29,1997-02-06,8.0,BEL,False,,2026-11-03
 Genk,Jeppe Erenbjerg,1013281,midfielders,"CAM,RW,CM,ST",Attacking Midfield,MF,26,2000-04-29,11.0,DEN,False,,2026-11-03
+Genk,Kevin Amaro,1437365,midfielders,"RB,RWB,CM,RW,RM",Right-Back,MF,22,2004-03-03,20.0,URU,False,,2026-11-03
 Genk,Ibrahima Sory Bangoura,1436275,midfielders,"CDM,CM",Defensive Midfield,MF,22,2004-01-05,21.0,GUI,False,,2026-11-03
-Genk,Nikolas Sattlberger,1199243,midfielders,"CDM,CB,CM",Defensive Midfield,MF,22,2004-01-18,24.0,AUT,False,,2026-11-03
+Genk,Nikolas Sattlberger,1199243,midfielders,"CDM,CM,CB",Defensive Midfield,MF,22,2004-01-18,24.0,AUT,False,,2026-11-03
 Genk,Daan Heymans,768505,midfielders,"CAM,CM,CDM",Attacking Midfield,MF,27,1999-06-15,38.0,BEL,False,,2026-11-03
 Genk,August De Wannemacker,1692858,midfielders,"CDM,CAM,ST,CM",Defensive Midfield,MF,17,2008-12-25,56.0,BEL,False,,2026-11-03
 Genk,Kenan Haroun,1638934,midfielders,"CDM,CM",Defensive Midfield,MF,20,2006-07-05,86.0,BEL,True,Day to day,2026-11-03
@@ -248,7 +249,7 @@ Westerlo,Norman Bassette,1292100,attackers,ST,Centre-Forward,FW,21,2004-11-09,9.
 Westerlo,Nikola Storm,465726,attackers,"LW,CAM",Left Winger,FW,32,1994-09-30,10.0,BEL,False,,2026-11-03
 Westerlo,Naoufal Bohamdi-Kamoni,1839169,attackers,RW,Right Winger,FW,19,2007-08-20,11.0,BEL,False,,2026-11-03
 Westerlo,David Amegnaglo,1666306,attackers,,Centre-Forward,FW,21,2005-01-28,17.0,GER,False,,2026-11-03
-Westerlo,Cameron Congreve,1113700,attackers,"RW,RM,LW",Right Winger,FW,22,2004-01-24,20.0,WAL,False,,2026-11-03
+Westerlo,Cameron Congreve,1113700,attackers,"RW,RM",Right Winger,FW,22,2004-01-24,20.0,WAL,False,,2026-11-03
 Westerlo,Felix Emmanuel Tsimba,1680585,attackers,"RW,ST",Right Winger,FW,20,2006-06-22,22.0,SUI,False,,2026-11-03
 Westerlo,Thomas Van den Keybus,1126079,attackers,LW,Left Winger,FW,25,2001-04-25,39.0,BEL,False,,2026-11-03
 Westerlo,Min-Hyeok Yang,1609329,attackers,RW,Right Winger,FW,20,2006-04-16,47.0,KOR,False,,2026-11-03
@@ -300,8 +301,8 @@ Zulte Waregem,Benoit de Jaegere,1807886,defenders,CB,Centre-Back,DF,22,2004-04-1
 Zulte Waregem,Franz Tangala,1875914,defenders,RB,Right-Back,DF,21,2005-04-15,49.0,BEL,False,,2026-11-03
 Zulte Waregem,Yannick Cappelle,1595635,defenders,"LB,LWB",Left-Back,DF,23,2003-07-07,55.0,BEL,False,,2026-11-03
 Zulte Waregem,Enrique Lofolomo,1334818,midfielders,"CDM,CM,CB",Defensive Midfield,MF,26,2000-04-14,6.0,GER,False,,2026-11-03
-Zulte Waregem,Thomas Claes,1417102,midfielders,"CDM,CM",Defensive Midfield,MF,22,2004-03-26,8.0,BEL,False,,2026-11-03
-Zulte Waregem,Marley Aké,1078258,midfielders,"LW,LWB,CDM,LM,CM,RW,ST,CAM",Left Winger,MF,25,2001-01-05,11.0,FRA,False,,2026-11-03
+Zulte Waregem,Thomas Claes,1417102,midfielders,"CM,CDM",Central Midfield,MF,22,2004-03-26,8.0,BEL,False,,2026-11-03
+Zulte Waregem,Marley Aké,1078258,midfielders,"LW,LWB,CDM,LM,CM,ST,RW,CAM",Left Winger,MF,25,2001-01-05,11.0,FRA,False,,2026-11-03
 Zulte Waregem,Wilguens Paugain,1394254,midfielders,"RWB,RB,RM",Right-Back,MF,25,2001-08-24,12.0,HAI,True,Day to day,2026-11-03
 Zulte Waregem,Youssoupha Mbodji,1785676,midfielders,"LM,LB",Left Midfield,MF,22,2004-01-09,15.0,SEN,False,,2026-11-03
 Zulte Waregem,Benoît Nyssen,948441,midfielders,"RM,RB,RWB",Right Midfield,MF,29,1997-09-12,19.0,BEL,False,,2026-11-03
@@ -324,6 +325,7 @@ Antwerp,Taishi Brandon Nozawa,1134460,keepers,GK,Goalkeeper,GK,23,2002-12-25,41.
 Antwerp,Niels Devalckeneer,1387391,keepers,GK,Goalkeeper,GK,22,2004-05-17,81.0,BEL,False,,2026-11-03
 Antwerp,Álvaro Cortés,1695867,defenders,CB,Centre-Back,DF,21,2005-03-17,3.0,ESP,False,,2026-11-03
 Antwerp,Yuto Tsunashima,1437306,defenders,CB,Centre-Back,DF,26,2000-08-15,4.0,JPN,False,,2026-11-03
+Antwerp,Semm Renders,1676874,defenders,"RWB,RB,LB",Right-Back,DF,18,2007-12-17,17.0,BEL,False,,2026-11-03
 Antwerp,Rein Van Helden,1342516,defenders,"CB,RB",Centre-Back,DF,24,2002-07-24,20.0,BEL,False,,2026-11-03
 Antwerp,Glenn Bijl,557885,defenders,CB,Centre-Back,DF,31,1995-07-13,23.0,NED,False,,2026-11-03
 Antwerp,Eran Tuypens,1578872,defenders,"LB,LWB",Left-Back,DF,20,2005-12-07,27.0,BEL,False,,2026-11-03
@@ -336,11 +338,10 @@ Antwerp,Christopher Scott,1161288,midfielders,"CAM,LM,CDM,CM,RW,LWB",Attacking M
 Antwerp,Youssef Hamdaoui,1709474,midfielders,CAM,Attacking Midfield,MF,18,2008-03-20,11.0,MAR,False,,2026-11-03
 Antwerp,Xander Dierckx,1842901,midfielders,"CDM,CM,CAM,RW",Defensive Midfield,MF,17,2009-02-27,14.0,BEL,False,,2026-11-03
 Antwerp,Louie Van Gelder,1818984,midfielders,"CM,CDM",Central Midfield,MF,17,2009-01-30,16.0,BEL,False,,2026-11-03
-Antwerp,Semm Renders,1676874,midfielders,"RWB,RB,LB",Right-Back,MF,18,2007-12-17,17.0,BEL,False,,2026-11-03
 Antwerp,Farouck Adekami,1679130,midfielders,LWB,Left-Back,MF,20,2006-02-13,22.0,CIV,False,,2026-11-03
 Antwerp,Koki Ando,1900024,midfielders,,Central Midfield,MF,19,2007-09-22,22.0,JPN,False,,2026-11-03
-Antwerp,Thibo Somers,1106599,midfielders,"RM,RWB,CAM,RB,LM",Right Midfield,MF,27,1999-03-16,24.0,BEL,False,,2026-11-03
-Antwerp,Modibo Fofana,1991136,midfielders,CM,Central Midfield,MF,18,2007-11-03,25.0,CIV,False,,2026-11-03
+Antwerp,Thibo Somers,1106599,midfielders,"RM,CAM,RWB,RB,LM",Right Midfield,MF,27,1999-03-16,24.0,BEL,False,,2026-11-03
+Antwerp,Modibo Fofana,1991136,midfielders,CM,Central Midfield,MF,19,2007-11-03,25.0,CIV,False,,2026-11-03
 Antwerp,Arthur Vermeeren,1387389,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,21,2005-02-07,48.0,BEL,False,,2026-11-03
 Antwerp,Luis Narh,2131033,midfielders,LM,Left Midfield,MF,18,2007-12-25,99.0,GHA,False,,2026-11-03
 Antwerp,Ibrahim Salah,1387741,attackers,"RW,LW,RM",Right Winger,FW,25,2001-08-30,7.0,MAR,False,,2026-11-03
@@ -383,7 +384,7 @@ Mechelen,Nacho Mirás,1317534,keepers,GK,Goalkeeper,GK,29,1997-07-19,13.0,ESP,Fa
 Mechelen,Tijn Van Ingelgom,1785904,keepers,,Goalkeeper,GK,19,2007-03-05,15.0,BEL,False,,2026-11-03
 Mechelen,Axel Willockx,1746269,keepers,,Goalkeeper,GK,19,2007-02-07,32.0,BEL,False,,2026-11-03
 Mechelen,Luc Marijnissen,1199227,defenders,"CB,RWB",Centre-Back,DF,23,2003-01-09,2.0,NED,False,,2026-11-03
-Mechelen,José Marsà,1300670,defenders,"CB,LWB,LM",Centre-Back,DF,24,2002-03-04,3.0,ESP,False,,2026-11-03
+Mechelen,José Marsà,1300670,defenders,"CB,LWB",Centre-Back,DF,24,2002-03-04,3.0,ESP,False,,2026-11-03
 Mechelen,Gora Diouf,1452730,defenders,CB,Centre-Back,DF,23,2003-09-20,4.0,SEN,False,,2026-11-03
 Mechelen,Leo Hjelde,1222770,defenders,CB,Centre-Back,DF,23,2003-08-26,5.0,NOR,True,Day to day,2026-11-03
 Mechelen,Ian Struyf,1789604,defenders,CB,Centre-Back,DF,19,2007-08-22,18.0,BEL,True,Day to day,2026-11-03
@@ -397,6 +398,7 @@ Mechelen,Ryan Teague,1075426,midfielders,"CM,CDM",Central Midfield,MF,24,2002-01
 Mechelen,Fredrik Hammar,883719,midfielders,"CDM,CM",Defensive Midfield,MF,25,2001-02-26,6.0,SWE,False,,2026-11-03
 Mechelen,Thérence Koudou,1451226,midfielders,"RM,RWB,LWB,LM",Right Midfield,MF,21,2004-12-13,7.0,FRA,False,,2026-11-03
 Mechelen,Dikeni Salifou,1319661,midfielders,"CM,CDM",Central Midfield,MF,23,2003-06-08,8.0,TOG,True,Day to day,2026-11-03
+Mechelen,Myron van Brederode,1199124,midfielders,"CAM,ST,LW",Attacking Midfield,MF,23,2003-07-06,9.0,NED,False,,2026-11-03
 Mechelen,Bilal Bafdili,1431105,midfielders,CAM,Attacking Midfield,MF,22,2004-08-03,11.0,BEL,False,,2026-11-03
 Mechelen,Cedric Van Meirvenne,1874164,midfielders,"RM,LW,ST,LM,LWB,CAM,RW",Right Midfield,MF,21,2005-04-18,17.0,BEL,False,,2026-11-03
 Mechelen,Simion Michez,1402538,midfielders,"RM,RWB",Right Midfield,MF,24,2002-02-09,23.0,CMR,False,,2026-11-03
@@ -404,7 +406,6 @@ Mechelen,Dennis Praet,282012,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,32,1
 Mechelen,Bill Antonio,1313003,midfielders,"RWB,RM",Right-Back,MF,24,2002-09-03,29.0,ZIM,False,,2026-11-03
 Mechelen,Marco Decherf,1945735,midfielders,CDM,Defensive Midfield,MF,20,2006-10-23,30.0,FRA,False,,2026-11-03
 Mechelen,Amine Ouahabi,1889534,midfielders,,Central Midfield,MF,18,2008-07-04,40.0,MAR,False,,2026-11-03
-Mechelen,Myron van Brederode,1199124,attackers,"CAM,LW,ST",Attacking Midfield,FW,23,2003-07-06,9.0,NED,False,,2026-11-03
 Mechelen,Maxim Kireev,1617968,attackers,ST,Centre-Forward,FW,22,2004-07-09,10.0,BLR,False,,2026-11-03
 Mechelen,Hassane Bandé,862621,attackers,RW,Right Winger,FW,28,1998-10-30,12.0,BFA,False,,2026-11-03
 Mechelen,Benito Raman,289248,attackers,"ST,RW",Centre-Forward,FW,31,1994-11-07,14.0,BEL,False,,2026-11-03
@@ -421,8 +422,8 @@ OH Leuven,Arnaud Jacques,2357574,keepers,,Goalkeeper,GK,16,2010-09-28,98.0,BEL,F
 OH Leuven,Tibo Peys,2405916,keepers,,Goalkeeper,GK,16,2010-06-20,98.0,BEL,False,,2026-11-03
 OH Leuven,Noë Dussenne,202471,defenders,CB,Centre-Back,DF,34,1992-04-07,3.0,BEL,False,,2026-11-03
 OH Leuven,Jamie Lawrence,1189794,defenders,CB,Centre-Back,DF,23,2002-11-10,5.0,GER,False,,2026-11-03
-OH Leuven,Viktor Damjanić,1644084,defenders,,Centre-Back,DF,20,2005-11-03,15.0,CRO,False,,2026-11-03
-OH Leuven,Takuya Ogiwara,922834,defenders,LB,Left-Back,DF,26,1999-11-23,26.0,JPN,False,,2026-11-03
+OH Leuven,Viktor Damjanić,1644084,defenders,,Centre-Back,DF,21,2005-11-03,15.0,CRO,False,,2026-11-03
+OH Leuven,Takuya Ogiwara,922834,defenders,"LB,LM",Left-Back,DF,26,1999-11-23,26.0,JPN,False,,2026-11-03
 OH Leuven,Ewoud Pletinckx,965823,defenders,CB,Centre-Back,DF,26,2000-10-10,28.0,BEL,False,,2026-11-03
 OH Leuven,Alessandro Fontanarosa,1384360,defenders,"CB,LB",Centre-Back,DF,23,2003-02-07,30.0,ITA,False,,2026-11-03
 OH Leuven,Roggerio Nyakossi,1270037,defenders,CB,Centre-Back,DF,22,2004-01-13,34.0,SUI,False,,2026-11-03
@@ -430,7 +431,7 @@ OH Leuven,Liam McAlinney,1559616,defenders,CB,Centre-Back,DF,20,2006-01-19,43.0,
 OH Leuven,Christ Souanga,1631335,defenders,CB,Centre-Back,DF,20,2006-10-23,63.0,BEL,False,,2026-11-03
 OH Leuven,Birger Verstraete,294252,midfielders,"CM,CDM",Central Midfield,MF,32,1994-04-16,4.0,BEL,False,,2026-11-03
 OH Leuven,Wouter George,1188386,midfielders,"CM,CDM",Central Midfield,MF,24,2002-03-03,6.0,BEL,False,,2026-11-03
-OH Leuven,Siebe Schrijvers,354494,midfielders,"CDM,CM",Defensive Midfield,MF,30,1996-07-18,8.0,BEL,False,,2026-11-03
+OH Leuven,Siebe Schrijvers,354494,midfielders,"CM,CDM",Central Midfield,MF,30,1996-07-18,8.0,BEL,False,,2026-11-03
 OH Leuven,Abdoul Traoré,1668205,midfielders,"CAM,LW,ST",Attacking Midfield,MF,19,2007-01-12,9.0,GUI,False,,2026-11-03
 OH Leuven,Thibaud Verlinden,789532,midfielders,"LWB,LM,RW,CAM",Left-Back,MF,27,1999-07-09,10.0,BEL,True,Day to day,2026-11-03
 OH Leuven,Henok Teklab,1190950,midfielders,"LWB,LM,CAM,LW",Left-Back,MF,27,1998-11-16,11.0,GER,False,,2026-11-03
@@ -441,13 +442,13 @@ OH Leuven,Bryang Kayo,1187362,midfielders,CM,Central Midfield,MF,24,2002-07-27,4
 OH Leuven,Sebastian Murru,1800232,midfielders,,Central Midfield,MF,20,2006-03-16,72.0,BEL,False,,2026-11-03
 OH Leuven,Thibault Vlietinck,659998,midfielders,RM,Right Midfield,MF,29,1997-08-19,77.0,BEL,False,,2026-11-03
 OH Leuven,Matteo Heremans,1705107,midfielders,,Central Midfield,MF,20,2006-01-08,80.0,BEL,False,,2026-11-03
-OH Leuven,Davis Opoku,1644338,midfielders,"RWB,LM",Right-Back,MF,19,2007-10-29,99.0,BEL,False,,2026-11-03
+OH Leuven,Davis Opoku,1644338,midfielders,"RWB,LM,RM",Right-Back,MF,19,2007-10-29,99.0,BEL,False,,2026-11-03
 OH Leuven,Emmanuel Addai,1453194,attackers,LW,Left Winger,FW,25,2001-08-01,7.0,GHA,False,,2026-11-03
 OH Leuven,Kyan Vaesen,1110376,attackers,"ST,CAM",Centre-Forward,FW,25,2001-04-13,17.0,BEL,False,,2026-11-03
 OH Leuven,Robin Mirisola,1560046,attackers,ST,Centre-Forward,FW,19,2006-12-08,18.0,BEL,False,,2026-11-03
 OH Leuven,Chukwubuikem Ikwuemesi,1297995,attackers,ST,Centre-Forward,FW,25,2001-08-05,19.0,NGA,False,,2026-11-03
 OH Leuven,Shin Yamada,1054789,attackers,ST,Centre-Forward,FW,26,2000-05-30,20.0,JPN,False,,2026-11-03
-OH Leuven,William Balikwisha,951973,attackers,"RW,LW",Right Winger,FW,27,1999-05-12,21.0,COD,False,,2026-11-03
+OH Leuven,William Balikwisha,951973,attackers,"LW,RW",Left Winger,FW,27,1999-05-12,21.0,COD,False,,2026-11-03
 Sint-Truiden,Jo Coppens,131403,keepers,GK,Goalkeeper,GK,35,1990-12-21,12.0,BEL,False,,2026-11-03
 Sint-Truiden,Leo Kokubo,1155621,keepers,GK,Goalkeeper,GK,25,2001-01-23,16.0,JPN,False,,2026-11-03
 Sint-Truiden,Matt Lendfers,1596364,keepers,GK,Goalkeeper,GK,20,2006-03-10,21.0,BEL,False,,2026-11-03
@@ -490,9 +491,9 @@ La Louvière,Patrick Nkoa,1398397,defenders,CB,Centre-Back,DF,27,1999-07-11,33.0
 La Louvière,Mehdi Boukamir,1325098,defenders,CB,Centre-Back,DF,22,2004-01-26,44.0,MAR,False,,2026-11-03
 La Louvière,Yllan Okou,1320866,defenders,CB,Centre-Back,DF,23,2002-12-23,99.0,FRA,False,,2026-11-03
 La Louvière,Thierno Diallo,1553782,midfielders,CDM,Defensive Midfield,MF,22,2004-08-05,,BEL,False,,2026-11-03
-La Louvière,Nolan Gillot,1697455,midfielders,"LWB,LM,RWB",Left-Back,MF,24,2002-10-31,3.0,FRA,False,,2026-11-03
+La Louvière,Nolan Gillot,1697455,midfielders,"LWB,RWB,LM",Left-Back,MF,24,2002-10-31,3.0,FRA,False,,2026-11-03
 La Louvière,Thierry Lutonda,1073472,midfielders,"LWB,CDM,LM,LW",Left-Back,MF,26,2000-10-27,5.0,BEL,False,,2026-11-03
-La Louvière,Mátyás Kovács,1217886,midfielders,"RWB,RM,LWB",Right-Back,MF,23,2003-07-07,7.0,HUN,False,,2026-11-03
+La Louvière,Mátyás Kovács,1217886,midfielders,"RWB,RM",Right-Back,MF,23,2003-07-07,7.0,HUN,False,,2026-11-03
 La Louvière,Mame Wade,1508335,midfielders,"CM,CAM",Central Midfield,MF,24,2002-10-10,10.0,SEN,False,,2026-11-03
 La Louvière,Noah Makembo-Ntemo,1577951,midfielders,,Central Midfield,MF,19,2007-03-14,20.0,BEL,False,,2026-11-03
 La Louvière,Joël Ito,1688868,midfielders,"CM,CAM,CDM",Central Midfield,MF,28,1998-03-27,23.0,BEL,False,,2026-11-03
@@ -510,7 +511,7 @@ La Louvière,Mouhamed Belkheir,957710,attackers,ST,Centre-Forward,FW,27,1999-01-
 La Louvière,Zsombor Gruber,1251656,attackers,"ST,RW",Centre-Forward,FW,22,2004-09-07,30.0,HUN,False,,2026-11-03
 La Louvière,Quentin Benaets,1689046,attackers,,Centre-Forward,FW,23,2003-08-26,43.0,BEL,False,,2026-11-03
 La Louvière,Léandro Rousseau,1797624,attackers,ST,Centre-Forward,FW,23,2003-07-07,90.0,BEL,False,,2026-11-03
-Cercle Brugge,Gaëtan Coucke,682696,keepers,GK,Goalkeeper,GK,27,1998-11-03,1.0,BEL,False,,2026-11-03
+Cercle Brugge,Gaëtan Coucke,682696,keepers,GK,Goalkeeper,GK,28,1998-11-03,1.0,BEL,False,,2026-11-03
 Cercle Brugge,Yann Lienard,1291293,keepers,GK,Goalkeeper,GK,23,2003-03-16,21.0,FRA,False,,2026-11-03
 Cercle Brugge,Bas Langenbick,1344613,keepers,GK,Goalkeeper,GK,23,2003-02-13,84.0,BEL,False,,2026-11-03
 Cercle Brugge,Sam Behaeghe,2173843,defenders,,Centre-Back,DF,21,2005-03-14,,BEL,False,,2026-11-03
