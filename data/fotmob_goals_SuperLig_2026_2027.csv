@@ -1,4 +1,16 @@
 match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
+5787785,2026-07-21,uefa.champions_qual,Fenerbahçe,Górnik Zabrze,37.0,Talisca,FreeKick,0,0.03774837777018547
+5789149,2026-07-22,uefa.europa.conf_qual,Başakşehir,FC Inter Turku,54.0,Emin Bayram,FromCorner,0,0.24440188705921173
+5788580,2026-07-23,uefa.europa_qual,Beşiktaş,FC Midtjylland,26.0,Orkun Kökcü,RegularPlay,0,0.05040222406387329
+5787787,2026-07-29,uefa.champions_qual,Fenerbahçe,Górnik Zabrze,12.0,Talisca,Penalty,0,0.7884
+5788589,2026-07-30,uefa.europa_qual,Beşiktaş,FC Midtjylland,70.0,Milot Rashica,RegularPlay,0,0.24340994656085968
+5788589,2026-07-30,uefa.europa_qual,Beşiktaş,FC Midtjylland,76.0,Orkun Kökcü,Penalty,0,0.7884
+5789197,2026-07-30,uefa.europa.conf_qual,Başakşehir,FC Inter Turku,,,none,0,
+5954870,2026-08-05,uefa.champions_qual,Fenerbahçe,Sturm Graz,9.0,Talisca,RegularPlay,0,0.07782215625047684
+5954870,2026-08-05,uefa.champions_qual,Fenerbahçe,Sturm Graz,45.0,Mason Greenwood,FromCorner,0,0.021016769111156464
+5955030,2026-08-06,uefa.europa_qual,Beşiktaş,Hradec Králové,80.0,Semih Kiliçsoy,RegularPlay,0,0.9369354844093323
+5954880,2026-08-11,uefa.champions_qual,Fenerbahçe,Sturm Graz,66.0,Talisca,Penalty,0,0.7884
+5955031,2026-08-13,uefa.europa_qual,Beşiktaş,Hradec Králové,40.0,Václav Cerny,FastBreak,0,0.15303459763526917
 5904710,2026-08-14,tur.1,Galatasaray,Çorum FK,53.0,Victor Osimhen,RegularPlay,0,0.0846699029207229
 5904710,2026-08-14,tur.1,Çorum FK,Galatasaray,59.0,Alexandros Kyziridis,FastBreak,0,0.0304870717227458
 5904710,2026-08-14,tur.1,Çorum FK,Galatasaray,61.0,Jesús Ramírez,FastBreak,0,0.1790195852518081
@@ -27,6 +39,11 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5904712,2026-08-17,tur.1,Göztepe,Samsunspor,46.0,Sinclair Armstrong,ThrowInSetPiece,0,0.2456531226634979
 5904712,2026-08-17,tur.1,Göztepe,Samsunspor,65.0,Efkan Bekiroglu,FastBreak,0,0.2059281170368194
 5904712,2026-08-17,tur.1,Samsunspor,Göztepe,90.0,Celil Yüksel,RegularPlay,0,0.0444393903017044
+5987803,2026-08-18,uefa.champions_qual,Fenerbahçe,Lyon,47.0,Mason Greenwood,RegularPlay,0,0.0528670959174633
+5987955,2026-08-20,uefa.europa_qual,Trabzonspor,Ferencváros,,,none,0,
+5987964,2026-08-20,uefa.europa_qual,Beşiktaş,FK Kauno Žalgiris,6.0,Hyeon-Gyu Oh,FromCorner,0,0.022822126746177673
+5987964,2026-08-20,uefa.europa_qual,Beşiktaş,FK Kauno Žalgiris,12.0,Amir Murillo,RegularPlay,0,0.4110681116580963
+5987964,2026-08-20,uefa.europa_qual,Beşiktaş,FK Kauno Žalgiris,59.0,Orkun Kökcü,Penalty,0,0.7884
 5904721,2026-08-21,tur.1,Galatasaray,Erzurumspor FK,12.0,Roland Sallai,FromCorner,0,0.1837701350450515
 5904721,2026-08-21,tur.1,Galatasaray,Erzurumspor FK,20.0,Yunus Akgün,RegularPlay,0,0.8627147674560547
 5904721,2026-08-21,tur.1,Galatasaray,Erzurumspor FK,45.0,Victor Osimhen,RegularPlay,0,0.5412271618843079
@@ -55,6 +72,10 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5904720,2026-08-24,tur.1,Kocaelispor,Amed Sportif,16.0,Berkan Kutlu,RegularPlay,0,0.0262246597558259
 5904720,2026-08-24,tur.1,Kocaelispor,Amed Sportif,87.0,Matej Maglica,SetPiece,0,0.1816189140081405
 5904720,2026-08-24,tur.1,Amed Sportif,Kocaelispor,,,none,0,
+5987810,2026-08-26,uefa.champions_qual,Fenerbahçe,Lyon,24.0,Vedat Muriqi,RegularPlay,0,0.7115811705589294
+5987810,2026-08-26,uefa.champions_qual,Fenerbahçe,Lyon,28.0,Archie Brown,FromCorner,0,0.14956331253051758
+5987967,2026-08-27,uefa.europa_qual,Trabzonspor,Ferencváros,,,none,0,
+5987976,2026-08-27,uefa.europa_qual,Beşiktaş,FK Kauno Žalgiris,,,none,0,
 5904726,2026-08-28,tur.1,Erzurumspor FK,Gençlerbirliği,55.0,Eren Tozlu,RegularPlay,0,0.3328063189983368
 5904726,2026-08-28,tur.1,Gençlerbirliği,Erzurumspor FK,66.0,Adama Traoré,FastBreak,0,0.0275108348578214
 5904722,2026-08-29,tur.1,Rizespor,Gaziantep FK,12.0,Emrecan Bulut,RegularPlay,0,0.2604862153530121
@@ -341,9 +362,11 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5904788,2026-11-01,tur.1,Amed Sportif,Eyüpspor,51.0,Samuel Ballet,FastBreak,0,0.9987640380859376
 5904788,2026-11-01,tur.1,Eyüpspor,Amed Sportif,73.0,Ahmed Abdullahi,RegularPlay,0,0.5312629342079163
 5904788,2026-11-01,tur.1,Amed Sportif,Eyüpspor,83.0,Samuel Ballet,Penalty,0,0.7884
-5904789,2026-11-02,tur.1,Gençlerbirliği,Alanyaspor,1.0,Ogulcan Ülgün,RegularPlay,0,0.07420112937688828
-5904789,2026-11-02,tur.1,Gençlerbirliği,Alanyaspor,59.0,Franco Tongya,RegularPlay,0,0.027363015338778496
-5904789,2026-11-02,tur.1,Gençlerbirliği,Alanyaspor,66.0,Tiago Gouveia,RegularPlay,0,0.02931615151464939
+5904789,2026-11-02,tur.1,Gençlerbirliği,Alanyaspor,1.0,Ogulcan Ülgün,RegularPlay,0,0.0742011293768882
+5904789,2026-11-02,tur.1,Gençlerbirliği,Alanyaspor,59.0,Franco Tongya,RegularPlay,0,0.0273630153387784
+5904789,2026-11-02,tur.1,Gençlerbirliği,Alanyaspor,66.0,Tiago Gouveia,RegularPlay,0,0.0293161515146493
 5904789,2026-11-02,tur.1,Gençlerbirliği,Alanyaspor,68.0,Pedro Mendes,RegularPlay,0,0.4193226397037506
 5904789,2026-11-02,tur.1,Gençlerbirliği,Alanyaspor,78.0,Tiago Gouveia,FastBreak,0,0.1460002064704895
 5904789,2026-11-02,tur.1,Alanyaspor,Gençlerbirliği,,,none,0,
+6106341,2026-11-03,uefa.champions,Galatasaray,Stuttgart,12.0,Aleksey Batrakov,RegularPlay,0,0.26346367597579956
+6106341,2026-11-03,uefa.champions,Galatasaray,Stuttgart,15.0,Aleksey Batrakov,RegularPlay,0,0.14518113434314728

@@ -1,4 +1,25 @@
 match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
+5788579,2026-07-23,uefa.europa_qual,Twente,Ferencváros,38.0,Aske Adelgaard,RegularPlay,0,0.16034622490406036
+5789177,2026-07-23,uefa.europa.conf_qual,Ajax,Vojvodina,3.0,Davy Klaassen,RegularPlay,0,0.33720195293426514
+5789177,2026-07-23,uefa.europa.conf_qual,Ajax,Vojvodina,37.0,Steven Berghuis,FromCorner,0,0.029367588460445404
+5789177,2026-07-23,uefa.europa.conf_qual,Ajax,Vojvodina,52.0,Oscar Gloukh,RegularPlay,0,0.134760782122612
+5789177,2026-07-23,uefa.europa.conf_qual,Ajax,Vojvodina,90.0,Mohamed Abdalla,RegularPlay,0,0.1631280481815338
+5788588,2026-07-30,uefa.europa_qual,Twente,Ferencváros,82.0,Wout Weghorst,FromCorner,0,0.1049380749464035
+5788588,2026-07-30,uefa.europa_qual,Twente,Ferencváros,86.0,Lucas Vennegoor of Hesselink,ThrowInSetPiece,0,0.09405440092086792
+5789226,2026-07-30,uefa.europa.conf_qual,Ajax,Vojvodina,44.0,Davy Klaassen,FromCorner,0,0.2999976873397827
+5789226,2026-07-30,uefa.europa.conf_qual,Ajax,Vojvodina,53.0,Oscar Gloukh,RegularPlay,0,0.14405877888202667
+5789226,2026-07-30,uefa.europa.conf_qual,Ajax,Vojvodina,58.0,Oscar Gloukh,RegularPlay,0,0.1485798954963684
+5789226,2026-07-30,uefa.europa.conf_qual,Ajax,Vojvodina,71.0,Oscar Gloukh,RegularPlay,0,0.14173053205013275
+5954868,2026-08-04,uefa.champions_qual,NEC Nijmegen,Olympiacos,,,none,0,
+5955327,2026-08-06,uefa.europa.conf_qual,Ajax,Shelbourne,6.0,Mika Godts,Penalty,0,0.7884
+5955327,2026-08-06,uefa.europa.conf_qual,Ajax,Shelbourne,22.0,Owen Wijndal,RegularPlay,0,0.6765541434288025
+5955327,2026-08-06,uefa.europa.conf_qual,Ajax,Shelbourne,50.0,Kasper Dolberg,RegularPlay,0,0.5264760851860046
+5955348,2026-08-06,uefa.europa.conf_qual,Twente,DAC 1904 Dunajska Streda,7.0,Daan Rots,RegularPlay,0,0.6449501514434814
+5955348,2026-08-06,uefa.europa.conf_qual,Twente,DAC 1904 Dunajska Streda,11.0,Marko Pjaca,RegularPlay,0,0.03206777945160866
+5955348,2026-08-06,uefa.europa.conf_qual,Twente,DAC 1904 Dunajska Streda,48.0,Daouda Weidmann,RegularPlay,0,0.10052987188100815
+5955348,2026-08-06,uefa.europa.conf_qual,Twente,DAC 1904 Dunajska Streda,56.0,Max Bruns,SetPiece,0,0.662064254283905
+5955348,2026-08-06,uefa.europa.conf_qual,Twente,DAC 1904 Dunajska Streda,64.0,Ramiz Zerrouki,FromCorner,0,0.02216584049165249
+5955348,2026-08-06,uefa.europa.conf_qual,Twente,DAC 1904 Dunajska Streda,78.0,Klemen Nemanic,OwnGoal,1,
 5781701,2026-08-07,ned.1,Excelsior,Cambuur,17.0,Irakli Yegoian,FastBreak,0,0.2906406819820404
 5781701,2026-08-07,ned.1,Excelsior,Cambuur,31.0,Noah Naujoks,RegularPlay,0,0.4253637194633484
 5781701,2026-08-07,ned.1,Excelsior,Cambuur,42.0,David Garden,FromCorner,0,0.2522426545619964
@@ -29,6 +50,13 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5781704,2026-08-09,ned.1,Groningen,Utrecht,8.0,Brynjólfur Willumsson,RegularPlay,0,0.4676928520202636
 5781704,2026-08-09,ned.1,Groningen,Utrecht,48.0,Thom van Bergen,RegularPlay,0,0.0943608358502388
 5781704,2026-08-09,ned.1,Utrecht,Groningen,80.0,Adrian Blake,RegularPlay,0,0.2104783505201339
+5954878,2026-08-11,uefa.champions_qual,NEC Nijmegen,Olympiacos,70.0,Bryan Linssen,FastBreak,0,0.39841556549072266
+5954878,2026-08-11,uefa.champions_qual,NEC Nijmegen,Olympiacos,95.0,Emre Mor,RegularPlay,0,0.2848283052444458
+5955357,2026-08-13,uefa.europa.conf_qual,Ajax,Shelbourne,20.0,Julian Brandt,FromCorner,0,0.022347981110215187
+5955357,2026-08-13,uefa.europa.conf_qual,Ajax,Shelbourne,39.0,Anton Gaaei,RegularPlay,0,0.03968334197998047
+5955377,2026-08-13,uefa.europa.conf_qual,Twente,DAC 1904 Dunajska Streda,7.0,Max Bruns,FromCorner,0,0.11680924147367477
+5955377,2026-08-13,uefa.europa.conf_qual,Twente,DAC 1904 Dunajska Streda,51.0,Marko Pjaca,RegularPlay,0,0.020029772073030472
+5955377,2026-08-13,uefa.europa.conf_qual,Twente,DAC 1904 Dunajska Streda,90.0,Marko Pjaca,RegularPlay,0,0.3189508318901062
 5781710,2026-08-14,ned.1,Sparta R.,Telstar,6.0,Marvin Young,FromCorner,0,0.5405908226966858
 5781710,2026-08-14,ned.1,Sparta R.,Telstar,53.0,Nökkvi Thorisson,RegularPlay,0,0.2630477249622345
 5781710,2026-08-14,ned.1,Telstar,Sparta R.,90.0,Abdelnor Soualhia,RegularPlay,0,0.9048451781272888
@@ -67,6 +95,12 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5781712,2026-08-16,ned.1,Groningen,ADO Den Haag,45.0,David van der Werff,FastBreak,0,0.2169352620840072
 5781712,2026-08-16,ned.1,ADO Den Haag,Groningen,55.0,Yannick Eduardo,RegularPlay,0,0.4616850018501282
 5781712,2026-08-16,ned.1,Groningen,ADO Den Haag,81.0,Nils Eggens,RegularPlay,0,0.0697291418910026
+5987804,2026-08-19,uefa.champions_qual,NEC Nijmegen,Bodø/Glimt,85.0,Clement Bischoff,RegularPlay,0,0.6801317930221558
+5988070,2026-08-20,uefa.europa.conf_qual,Ajax,Sion,53.0,Julian Brandt,RegularPlay,0,0.06465066224336624
+5988070,2026-08-20,uefa.europa.conf_qual,Ajax,Sion,60.0,Marcos Leonardo,RegularPlay,0,0.8440555334091187
+5988070,2026-08-20,uefa.europa.conf_qual,Ajax,Sion,74.0,Tolu Arokodare,RegularPlay,0,0.14018242061138153
+5988070,2026-08-20,uefa.europa.conf_qual,Ajax,Sion,87.0,Davy Klaassen,RegularPlay,0,0.6360962390899658
+5988072,2026-08-20,uefa.europa.conf_qual,Twente,Qarabağ FK,,,none,0,
 5781715,2026-08-22,ned.1,Utrecht,Sparta R.,16.0,Matisse Didden,FromCorner,0,0.2172961235046386
 5781715,2026-08-22,ned.1,Sparta R.,Utrecht,45.0,Marvin Young,RegularPlay,0,0.14167520403862
 5781715,2026-08-22,ned.1,Utrecht,Sparta R.,46.0,Artem Stepanov,RegularPlay,0,0.9465153813362122
@@ -97,6 +131,15 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5781721,2026-08-23,ned.1,Cambuur,Feyenoord,80.0,Rafik El Arguioui,RegularPlay,0,0.0542833320796489
 5781721,2026-08-23,ned.1,Feyenoord,Cambuur,83.0,Gjivai Zechiël,RegularPlay,0,0.3818587064743042
 5987811,2026-08-25,uefa.champions,NEC Nijmegen,Bodø/Glimt,,,none,0,
+5988094,2026-08-27,uefa.europa.conf_qual,Ajax,Sion,1.0,Youri Baas,FromCorner,0,0.541455090045929
+5988094,2026-08-27,uefa.europa.conf_qual,Ajax,Sion,39.0,Davy Klaassen,RegularPlay,0,0.16384996473789215
+5988094,2026-08-27,uefa.europa.conf_qual,Ajax,Sion,45.0,Tolu Arokodare,RegularPlay,0,0.07345131784677505
+5988094,2026-08-27,uefa.europa.conf_qual,Ajax,Sion,51.0,Tolu Arokodare,RegularPlay,0,0.4498137831687927
+5988094,2026-08-27,uefa.europa.conf_qual,Ajax,Sion,54.0,Oliver Edvardsen,RegularPlay,0,0.6272943019866943
+5988096,2026-08-27,uefa.europa.conf_qual,Twente,Qarabağ FK,79.0,Marko Pjaca,RegularPlay,0,0.10744296759366989
+5988096,2026-08-27,uefa.europa.conf_qual,Twente,Qarabağ FK,90.0,Max Bruns,FromCorner,0,0.7868130207061768
+5988096,2026-08-27,uefa.europa.conf_qual,Twente,Qarabağ FK,94.0,Wout Weghorst,RegularPlay,0,0.1624804139137268
+5988096,2026-08-27,uefa.europa.conf_qual,Twente,Qarabağ FK,114.0,Younes Taha,RegularPlay,0,0.2977921962738037
 5781729,2026-08-28,ned.1,Fortuna Sittard,Groningen,12.0,Mohammed Ihattaren,FastBreak,0,0.2036166042089462
 5781729,2026-08-28,ned.1,Groningen,Fortuna Sittard,19.0,David van der Werff,RegularPlay,0,0.2798132002353668
 5781729,2026-08-28,ned.1,Fortuna Sittard,Groningen,28.0,Lequincio Zeefuik,RegularPlay,0,0.186498150229454
@@ -416,7 +459,7 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5781793,2026-10-31,ned.1,PSV,Willem II,77.0,Kodai Sano,RegularPlay,0,0.3184482157230377
 5781793,2026-10-31,ned.1,PSV,Willem II,81.0,Shuryjano Cornecion,RegularPlay,0,0.0837619081139564
 5781793,2026-10-31,ned.1,Willem II,PSV,,,none,0,
-5781789,2026-11-01,ned.1,Groningen,Sparta R.,1.0,Jacob Ondrejka,RegularPlay,0,0.050555408000946045
+5781789,2026-11-01,ned.1,Groningen,Sparta R.,1.0,Jacob Ondrejka,RegularPlay,0,0.050555408000946
 5781789,2026-11-01,ned.1,Sparta R.,Groningen,15.0,Cedric Hatenboer,RegularPlay,0,0.6010464429855347
 5781789,2026-11-01,ned.1,Sparta R.,Groningen,25.0,Milan Zonneveld,RegularPlay,0,0.5510837435722351
 5781789,2026-11-01,ned.1,Groningen,Sparta R.,29.0,Thom van Bergen,RegularPlay,0,0.6470489501953125

@@ -1,4 +1,5 @@
 match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
+5955034,2026-08-06,uefa.europa_qual,Anderlecht,PAOK Thessaloniki,1.0,Mihajlo Cvetkovic,RegularPlay,0,0.5169687271118164
 5811710,2026-08-07,bel.1,Club Brugge,Kortrijk,30.0,Hugo Vetlesen,RegularPlay,0,0.923294484615326
 5811710,2026-08-07,bel.1,Club Brugge,Kortrijk,68.0,Carlos Forbs,RegularPlay,0,0.5579933524131775
 5811710,2026-08-07,bel.1,Club Brugge,Kortrijk,74.0,Nicolò Tresoldi,Penalty,0,0.7884
@@ -31,6 +32,11 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5811718,2026-08-09,bel.1,Beveren,Antwerp,29.0,Chris Lokesa,FastBreak,0,0.3482003211975097
 5811718,2026-08-09,bel.1,Antwerp,Beveren,62.0,Michael Frey,RegularPlay,0,0.4431441128253937
 5811718,2026-08-09,bel.1,Antwerp,Beveren,86.0,Michael Frey,RegularPlay,0,0.1268891990184784
+5954879,2026-08-11,uefa.champions_qual,Union SG,Bodø/Glimt,61.0,Guilherme Smith,RegularPlay,0,0.04106949642300606
+5954879,2026-08-11,uefa.champions_qual,Union SG,Bodø/Glimt,88.0,Mohammed Fuseini,RegularPlay,0,0.017127249389886856
+5955035,2026-08-13,uefa.europa_qual,Anderlecht,PAOK Thessaloniki,19.0,Léo Pétrot,FromCorner,0,0.566188633441925
+5955035,2026-08-13,uefa.europa_qual,Anderlecht,PAOK Thessaloniki,47.0,Lukás Ambros,RegularPlay,0,0.08839686214923859
+5955035,2026-08-13,uefa.europa_qual,Anderlecht,PAOK Thessaloniki,55.0,Danylo Sikan,RegularPlay,0,0.043364740908145905
 5811719,2026-08-14,bel.1,Sint-Truiden,Cercle Brugge,1.0,Ryan Merlen,RegularPlay,0,0.2452979832887649
 5811719,2026-08-14,bel.1,Cercle Brugge,Sint-Truiden,28.0,Steve Ngoura,FromCorner,0,0.9600805640220642
 5811719,2026-08-14,bel.1,Sint-Truiden,Cercle Brugge,37.0,Ryan Merlen,RegularPlay,0,0.363677442073822
@@ -65,6 +71,7 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5811726,2026-08-16,bel.1,Mechelen,Standard Liège,90.0,Myron van Brederode,Penalty,0,0.7884
 5811727,2026-08-16,bel.1,Charleroi,Lommel,63.0,Amine Boukamir,FromCorner,0,0.0237862840294837
 5811727,2026-08-16,bel.1,Lommel,Charleroi,,,none,0,
+5987957,2026-08-20,uefa.europa_qual,Sint-Truiden,Omonia Nicosia,90.0,Shogo Taniguchi,RegularPlay,0,0.6608554124832153
 5811728,2026-08-21,bel.1,Standard Liège,La Louvière,68.0,Salieu Drammeh,FastBreak,0,0.0540561601519584
 5811728,2026-08-21,bel.1,Standard Liège,La Louvière,73.0,Salieu Drammeh,RegularPlay,0,0.118652306497097
 5811728,2026-08-21,bel.1,La Louvière,Standard Liège,,,none,0,
@@ -91,6 +98,14 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5811734,2026-08-23,bel.1,Westerlo,Lommel,,,none,0,
 5811735,2026-08-23,bel.1,Club Brugge,Cercle Brugge,38.0,Nicolò Tresoldi,RegularPlay,0,0.7492592930793762
 5811735,2026-08-23,bel.1,Cercle Brugge,Club Brugge,,,none,0,
+5987969,2026-08-27,uefa.europa_qual,Sint-Truiden,Omonia Nicosia,33.0,Ilias Sebaoui,Penalty,0,0.7884
+5987969,2026-08-27,uefa.europa_qual,Sint-Truiden,Omonia Nicosia,90.0,Ilias Sebaoui,RegularPlay,0,0.13666845858097076
+5987974,2026-08-27,uefa.europa_qual,Anderlecht,Kairat Almaty,45.0,Mihajlo Cvetkovic,Penalty,0,0.7884
+5987974,2026-08-27,uefa.europa_qual,Anderlecht,Kairat Almaty,53.0,Danylo Sikan,RegularPlay,0,0.29133158922195435
+5987974,2026-08-27,uefa.europa_qual,Anderlecht,Kairat Almaty,71.0,Giulian Biancone,FromCorner,0,0.1858915239572525
+5988087,2026-08-27,uefa.europa.conf_qual,Gent,Hibernian,39.0,Josué Vergara,RegularPlay,0,0.06694705784320831
+5988087,2026-08-27,uefa.europa.conf_qual,Gent,Hibernian,84.0,Christian Burgess,FromCorner,0,0.15425631403923035
+5988087,2026-08-27,uefa.europa.conf_qual,Gent,Hibernian,90.0,Miguel Chaiwa,OwnGoal,1,
 5811736,2026-08-28,bel.1,Genk,Beveren,9.0,Rafiu Durosinmi,Penalty,0,0.7884
 5811736,2026-08-28,bel.1,Genk,Beveren,19.0,Junya Ito,RegularPlay,0,0.0659546554088592
 5811736,2026-08-28,bel.1,Genk,Beveren,43.0,Josue Kongolo,FastBreak,0,0.5094258189201355
@@ -349,13 +364,13 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5811793,2026-11-01,bel.1,Cercle Brugge,Antwerp,48.0,Babatunde Akinsola,FastBreak,0,0.062814861536026
 5811793,2026-11-01,bel.1,Cercle Brugge,Antwerp,61.0,Babatunde Akinsola,ThrowInSetPiece,0,0.2010097503662109
 5811793,2026-11-01,bel.1,Antwerp,Cercle Brugge,81.0,Modibo Fofana,RegularPlay,0,0.6892470717430115
-5811794,2026-11-01,bel.1,Charleroi,La Louvière,6.0,Jakob Napoleon Romsaas,RegularPlay,0,0.15837857127189636
+5811794,2026-11-01,bel.1,Charleroi,La Louvière,6.0,Jakob Napoleon Romsaas,RegularPlay,0,0.1583785712718963
 5811794,2026-11-01,bel.1,Charleroi,La Louvière,33.0,Aurélien Scheidler,Penalty,0,0.7884
 5811794,2026-11-01,bel.1,Charleroi,La Louvière,47.0,Wagane Faye,OwnGoal,1,
 5811794,2026-11-01,bel.1,Charleroi,La Louvière,49.0,Freddy Mbemba,RegularPlay,0,0.3323627710342407
-5811794,2026-11-01,bel.1,La Louvière,Charleroi,75.0,Léandro Rousseau,RegularPlay,0,0.19935300946235657
+5811794,2026-11-01,bel.1,La Louvière,Charleroi,75.0,Léandro Rousseau,RegularPlay,0,0.1993530094623565
 5811794,2026-11-01,bel.1,La Louvière,Charleroi,76.0,Mustapha Isah,FastBreak,0,0.1813681572675705
-5811794,2026-11-01,bel.1,Charleroi,La Louvière,84.0,Antoine Colassin,FastBreak,0,0.07788877189159393
+5811794,2026-11-01,bel.1,Charleroi,La Louvière,84.0,Antoine Colassin,FastBreak,0,0.0778887718915939
 5811796,2026-11-01,bel.1,Lommel,Gent,82.0,Juho Talvitie,RegularPlay,0,0.0568681508302688
 5811796,2026-11-01,bel.1,Lommel,Gent,87.0,Djordje Gordić,RegularPlay,0,0.1425919830799102
 5811796,2026-11-01,bel.1,Gent,Lommel,,,none,0,

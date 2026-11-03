@@ -1,4 +1,24 @@
 match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
+5787786,2026-07-21,uefa.champions_qual,Sturm Graz,Heart of Midlothian,4.0,Jon Gorenc Stankovic,ThrowInSetPiece,0,0.09805534034967422
+5787786,2026-07-21,uefa.champions_qual,Sturm Graz,Heart of Midlothian,50.0,Jeyland Mitchell,FromCorner,0,0.23375831544399261
+5787786,2026-07-21,uefa.champions_qual,Sturm Graz,Heart of Midlothian,53.0,Luca Weinhandl,FastBreak,0,0.07385699450969696
+5787786,2026-07-21,uefa.champions_qual,Sturm Graz,Heart of Midlothian,59.0,Jürgen Heil,FastBreak,0,0.08149558305740356
+5789154,2026-07-23,uefa.europa.conf_qual,Austria Wien,FK Liepāja,31.0,Florian Wustinger,SetPiece,0,0.04657291993498802
+5789154,2026-07-23,uefa.europa.conf_qual,Austria Wien,FK Liepāja,55.0,Moritz Wels,RegularPlay,0,0.08438588678836823
+5789180,2026-07-23,uefa.europa.conf_qual,Rapid Wien,FC Santa Coloma,50.0,Serge Raux Yao,FromCorner,0,0.17208737134933472
+5789180,2026-07-23,uefa.europa.conf_qual,Rapid Wien,FC Santa Coloma,56.0,Yusuf Demir,RegularPlay,0,0.12389310449361801
+5789180,2026-07-23,uefa.europa.conf_qual,Rapid Wien,FC Santa Coloma,89.0,Moulaye Haïdara,RegularPlay,0,0.5551581978797913
+5787788,2026-07-28,uefa.champions_qual,Sturm Graz,Heart of Midlothian,64.0,Simon Seidl,RegularPlay,0,0.08420028537511826
+5787788,2026-07-28,uefa.champions_qual,Sturm Graz,Heart of Midlothian,68.0,Emran Soglo,RegularPlay,0,0.5735024213790894
+5789229,2026-07-29,uefa.europa.conf_qual,Rapid Wien,FC Santa Coloma,10.0,Ercan Kara,RegularPlay,0,0.11410479247570038
+5789229,2026-07-29,uefa.europa.conf_qual,Rapid Wien,FC Santa Coloma,24.0,Petter Nosakhare Dahl,RegularPlay,0,0.33378714323043823
+5789229,2026-07-29,uefa.europa.conf_qual,Rapid Wien,FC Santa Coloma,33.0,Ercan Kara,RegularPlay,0,0.3892858326435089
+5789229,2026-07-29,uefa.europa.conf_qual,Rapid Wien,FC Santa Coloma,58.0,Nenad Cvetkovic,SetPiece,0,0.640879213809967
+5789229,2026-07-29,uefa.europa.conf_qual,Rapid Wien,FC Santa Coloma,63.0,Ercan Kara,RegularPlay,0,0.3424410820007324
+5789229,2026-07-29,uefa.europa.conf_qual,Rapid Wien,FC Santa Coloma,82.0,Nikolaus Wurmbrand,RegularPlay,0,0.9641254544258118
+5789203,2026-07-30,uefa.europa.conf_qual,Austria Wien,FK Liepāja,19.0,Jonas Feddersen,RegularPlay,0,0.032007575035095215
+5789203,2026-07-30,uefa.europa.conf_qual,Austria Wien,FK Liepāja,29.0,Kelvin Boateng,RegularPlay,0,0.4488776624202728
+5789203,2026-07-30,uefa.europa.conf_qual,Austria Wien,FK Liepāja,66.0,Reinhold Ranftl,RegularPlay,0,0.1108957901597023
 5845951,2026-07-31,aut.1,LASK,Grazer AK,20.0,Samuel Adeniran,RegularPlay,0,0.2116183191537857
 5845951,2026-07-31,aut.1,LASK,Grazer AK,29.0,Samuel Adeniran,Penalty,0,0.7884
 5845951,2026-07-31,aut.1,LASK,Grazer AK,79.0,Christoph Lang,RegularPlay,0,0.1503343135118484
@@ -15,6 +35,14 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5845955,2026-08-02,aut.1,Austria Wien,Wolfsberger AC,,,none,0,
 5845956,2026-08-02,aut.1,Rapid Wien,Altach,4.0,Petter Nosakhare Dahl,RegularPlay,0,0.1465010643005371
 5845956,2026-08-02,aut.1,Altach,Rapid Wien,,,none,0,
+5954870,2026-08-05,uefa.champions_qual,Sturm Graz,Fenerbahçe,,,none,0,
+5955037,2026-08-06,uefa.europa_qual,Salzburg,Pafos FC,88.0,Haris Tabakovic,RegularPlay,0,0.2798592448234558
+5955334,2026-08-06,uefa.europa.conf_qual,Austria Wien,Beitar Jerusalem,45.0,Vasilije Markovic,RegularPlay,0,0.08934955298900604
+5955334,2026-08-06,uefa.europa.conf_qual,Austria Wien,Beitar Jerusalem,69.0,Sanel Saljic,RegularPlay,0,0.12955045700073242
+5955343,2026-08-06,uefa.europa.conf_qual,Rapid Wien,Paide Linnameeskond,5.0,Bendegúz Bolla,Penalty,0,0.7884
+5955343,2026-08-06,uefa.europa.conf_qual,Rapid Wien,Paide Linnameeskond,83.0,Moulaye Haïdara,RegularPlay,0,0.3012945353984833
+5955343,2026-08-06,uefa.europa.conf_qual,Rapid Wien,Paide Linnameeskond,85.0,Petter Nosakhare Dahl,RegularPlay,0,0.6003313660621643
+5955343,2026-08-06,uefa.europa.conf_qual,Rapid Wien,Paide Linnameeskond,90.0,Moulaye Haïdara,RegularPlay,0,0.5539795756340027
 5845957,2026-08-07,aut.1,WSG Tirol,Altach,13.0,Husein Balic,ThrowInSetPiece,0,0.477975457906723
 5845957,2026-08-07,aut.1,Altach,WSG Tirol,19.0,Patrick Greil,RegularPlay,0,0.4284359514713287
 5845957,2026-08-07,aut.1,Altach,WSG Tirol,56.0,Yann Massombo,RegularPlay,0,0.0913304686546325
@@ -33,6 +61,17 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5845962,2026-08-09,aut.1,LASK,Austria Wien,54.0,Andrés Andrade,FromCorner,0,0.6520932912826538
 5845962,2026-08-09,aut.1,LASK,Austria Wien,83.0,Moses Usor,SetPiece,0,0.6410225033760071
 5845962,2026-08-09,aut.1,Austria Wien,LASK,,,none,0,
+5954880,2026-08-11,uefa.champions_qual,Sturm Graz,Fenerbahçe,,,none,0,
+5955373,2026-08-12,uefa.europa.conf_qual,Rapid Wien,Paide Linnameeskond,38.0,Marco Tilio,RegularPlay,0,0.720899760723114
+5955373,2026-08-12,uefa.europa.conf_qual,Rapid Wien,Paide Linnameeskond,82.0,Louis Schaub,Penalty,0,0.7884
+5955036,2026-08-13,uefa.europa_qual,Salzburg,Pafos FC,54.0,Haris Tabakovic,RegularPlay,0,0.29176780581474304
+5955036,2026-08-13,uefa.europa_qual,Salzburg,Pafos FC,58.0,Haris Tabakovic,Penalty,0,0.7884
+5955036,2026-08-13,uefa.europa_qual,Salzburg,Pafos FC,70.0,Haris Tabakovic,SetPiece,0,0.10975009202957153
+5955364,2026-08-13,uefa.europa.conf_qual,Austria Wien,Beitar Jerusalem,58.0,Kelvin Boateng,RegularPlay,0,0.6158566474914551
+5955364,2026-08-13,uefa.europa.conf_qual,Austria Wien,Beitar Jerusalem,122.0,Manfred Fischer,Penalty,0,0.7884
+5955364,2026-08-13,uefa.europa.conf_qual,Austria Wien,Beitar Jerusalem,124.0,Tae-Seok Lee,Penalty,0,0.7884
+5955364,2026-08-13,uefa.europa.conf_qual,Austria Wien,Beitar Jerusalem,125.0,Reinhold Ranftl,Penalty,0,0.7884
+5955364,2026-08-13,uefa.europa.conf_qual,Austria Wien,Beitar Jerusalem,129.0,Sanel Saljic,Penalty,0,0.7884
 5845963,2026-08-14,aut.1,Ried,LASK,8.0,Niama Sissoko,RegularPlay,0,0.4414789974689483
 5845963,2026-08-14,aut.1,LASK,Ried,10.0,Samuel Adeniran,RegularPlay,0,0.2369476407766342
 5845963,2026-08-14,aut.1,LASK,Ried,18.0,Moses Usor,RegularPlay,0,0.4642285406589508
@@ -59,6 +98,11 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5845968,2026-08-16,aut.1,Rapid Wien,Grazer AK,74.0,Tonni Adamsen,FromCorner,0,0.0339380539953708
 5845968,2026-08-16,aut.1,Rapid Wien,Grazer AK,86.0,Tonni Adamsen,RegularPlay,0,0.2658586502075195
 5845968,2026-08-16,aut.1,Grazer AK,Rapid Wien,,,none,0,
+5987799,2026-08-19,uefa.champions_qual,LASK,Celtic,,,none,0,
+5987961,2026-08-20,uefa.europa_qual,Salzburg,Mjällby,90.0,Tom Pettersson,OwnGoal,1,
+5988059,2026-08-20,uefa.europa.conf_qual,Rapid Wien,Heart of Midlothian,30.0,Serge Raux Yao,FromCorner,0,0.23687933385372162
+5988059,2026-08-20,uefa.europa.conf_qual,Rapid Wien,Heart of Midlothian,79.0,Nikolaus Wurmbrand,FromCorner,0,0.025974903255701065
+5988071,2026-08-20,uefa.europa.conf_qual,Austria Wien,Braga,,,none,0,
 5845969,2026-08-21,aut.1,Ried,Grazer AK,45.0,Niama Sissoko,Penalty,0,0.7884
 5845969,2026-08-21,aut.1,Grazer AK,Ried,,,none,0,
 5845970,2026-08-22,aut.1,Hartberg,Altach,16.0,Angelo Gattermayer,RegularPlay,0,0.6796133518218994
@@ -66,6 +110,20 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5845970,2026-08-22,aut.1,Hartberg,Altach,90.0,Benjamin Markus,RegularPlay,0,0.1128053814172744
 5845971,2026-08-22,aut.1,Austria Lustenau,Sturm Graz,10.0,Dominik Weixelbraun,FromCorner,0,0.1354676783084869
 5845971,2026-08-22,aut.1,Sturm Graz,Austria Lustenau,65.0,Seedy Jatta,Penalty,0,0.7884
+5987806,2026-08-25,uefa.champions_qual,LASK,Celtic,32.0,Moses Usor,RegularPlay,0,0.4375779330730438
+5987806,2026-08-25,uefa.champions_qual,LASK,Celtic,48.0,Robert Ljubicic,RegularPlay,0,0.05981453135609627
+5987806,2026-08-25,uefa.champions_qual,LASK,Celtic,58.0,Samuel Adeniran,FastBreak,0,0.04599573090672493
+5987806,2026-08-25,uefa.champions_qual,LASK,Celtic,90.0,Florian Flecker,RegularPlay,0,0.8311444520950317
+5987806,2026-08-25,uefa.champions_qual,LASK,Celtic,109.0,Samuel Adeniran,RegularPlay,0,0.04750349372625351
+5988083,2026-08-26,uefa.europa.conf_qual,Rapid Wien,Heart of Midlothian,34.0,Ercan Kara,RegularPlay,0,0.6741317510604858
+5988083,2026-08-26,uefa.europa.conf_qual,Rapid Wien,Heart of Midlothian,119.0,Nenad Cvetkovic,RegularPlay,0,0.21762345731258392
+5988083,2026-08-26,uefa.europa.conf_qual,Rapid Wien,Heart of Midlothian,122.0,Ercan Kara,Penalty,0,0.7884
+5988083,2026-08-26,uefa.europa.conf_qual,Rapid Wien,Heart of Midlothian,124.0,Louis Schaub,Penalty,0,0.7884
+5988083,2026-08-26,uefa.europa.conf_qual,Rapid Wien,Heart of Midlothian,127.0,Yusuf Demir,Penalty,0,0.7884
+5987973,2026-08-27,uefa.europa_qual,Salzburg,Mjällby,61.0,Karim Konaté,FromCorner,0,0.40456634759902954
+5987973,2026-08-27,uefa.europa_qual,Salzburg,Mjällby,67.0,Karim Konaté,RegularPlay,0,0.16796791553497314
+5987973,2026-08-27,uefa.europa_qual,Salzburg,Mjällby,80.0,Haris Tabakovic,RegularPlay,0,0.5147897601127625
+5988095,2026-08-27,uefa.europa.conf_qual,Austria Wien,Braga,,,none,0,
 5845975,2026-08-28,aut.1,WSG Tirol,Austria Lustenau,42.0,Michael Olakigbe,RegularPlay,0,0.3710505068302154
 5845975,2026-08-28,aut.1,WSG Tirol,Austria Lustenau,52.0,Nikolai Baden,FastBreak,0,0.0705489218235015
 5845975,2026-08-28,aut.1,WSG Tirol,Austria Lustenau,60.0,Marc Striednig,FromCorner,0,0.0599069558084011

@@ -1,4 +1,9 @@
 match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
+5787768,2026-07-21,uefa.champions_qual,Thun,Dinamo Zagreb,20.0,Brighton Labeau,FromCorner,0,0.27272120118141174
+5788583,2026-07-23,uefa.europa_qual,St. Gallen,Benfica,37.0,Aliou Baldé,RegularPlay,0,0.047982219606637955
+5788583,2026-07-23,uefa.europa_qual,St. Gallen,Benfica,80.0,Tom Gaal,SetPiece,0,0.2564243674278259
+5789148,2026-07-23,uefa.europa.conf_qual,Lugano,Dukagjini,31.0,Renato Steffen,RegularPlay,0,0.11659295856952667
+5789169,2026-07-23,uefa.europa.conf_qual,Sion,BATE Borisov,42.0,Winsley Boteli,RegularPlay,0,0.1519877314567566
 5804220,2026-07-25,sui.1,Lausanne,Grasshopper,33.0,Ibrahim Bah Mendes,IndividualPlay,0,0.1364227533340454
 5804220,2026-07-25,sui.1,Grasshopper,Lausanne,81.0,Samuele Bengondo,ThrowInSetPiece,0,0.0862896740436554
 5804221,2026-07-25,sui.1,Basel,Servette,78.0,Zan Celar,Penalty,0,0.7884
@@ -19,6 +24,18 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5804225,2026-07-26,sui.1,FC Zürich,St. Gallen,50.0,Emmanuel Umeh,RegularPlay,0,0.090797409415245
 5804225,2026-07-26,sui.1,St. Gallen,FC Zürich,70.0,Lukas Görtler,FromCorner,0,0.0801180675625801
 5804225,2026-07-26,sui.1,St. Gallen,FC Zürich,74.0,Andrin Hunziker,RegularPlay,0,0.5110970139503479
+5787780,2026-07-28,uefa.champions_qual,Thun,Dinamo Zagreb,4.0,Brighton Labeau,RegularPlay,0,0.7145284414291382
+5787780,2026-07-28,uefa.champions_qual,Thun,Dinamo Zagreb,22.0,Marco Bürki,SetPiece,0,0.03630377724766731
+5789198,2026-07-29,uefa.europa.conf_qual,Lugano,Dukagjini,6.0,Kevin Behrens,RegularPlay,0,0.637817919254303
+5789198,2026-07-29,uefa.europa.conf_qual,Lugano,Dukagjini,9.0,Daniel Dos Santos,RegularPlay,0,0.7016028761863708
+5789198,2026-07-29,uefa.europa.conf_qual,Lugano,Dukagjini,36.0,Kevin Behrens,RegularPlay,0,0.15898661315441132
+5789198,2026-07-29,uefa.europa.conf_qual,Lugano,Dukagjini,51.0,Egzon Sinani,OwnGoal,1,
+5789198,2026-07-29,uefa.europa.conf_qual,Lugano,Dukagjini,58.0,Kevin Behrens,RegularPlay,0,0.9895256757736206
+5788592,2026-07-30,uefa.europa_qual,St. Gallen,Benfica,,,none,0,
+5789218,2026-07-30,uefa.europa.conf_qual,Sion,BATE Borisov,5.0,Winsley Boteli,RegularPlay,0,0.1661934107542038
+5789218,2026-07-30,uefa.europa.conf_qual,Sion,BATE Borisov,38.0,Rilind Nivokazi,RegularPlay,0,0.10530084371566772
+5789218,2026-07-30,uefa.europa.conf_qual,Sion,BATE Borisov,58.0,Baltazar,RegularPlay,0,0.02057453617453575
+5789218,2026-07-30,uefa.europa.conf_qual,Sion,BATE Borisov,68.0,Théo Berdayes,SetPiece,0,0.4020503759384155
 5804226,2026-08-01,sui.1,Lausanne,Basel,90.0,Florent Mollet,ThrowInSetPiece,0,0.0625646486878395
 5804226,2026-08-01,sui.1,Basel,Lausanne,,,none,0,
 5804227,2026-08-01,sui.1,FC Zürich,Servette,35.0,Valon Berisha,FreeKick,0,0.0349470898509025
@@ -45,6 +62,16 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5804231,2026-08-02,sui.1,Sion,Luzern,70.0,Théo Berdayes,RegularPlay,0,0.4875170290470123
 5804231,2026-08-02,sui.1,Sion,Luzern,77.0,Josias Lukembila,FastBreak,0,0.5680829882621765
 5804231,2026-08-02,sui.1,Luzern,Sion,,,none,0,
+5955028,2026-08-06,uefa.europa_qual,Thun,Víkingur Reykjavík,19.0,Jan Bamert,FromCorner,0,0.0945354625582695
+5955028,2026-08-06,uefa.europa_qual,Thun,Víkingur Reykjavík,25.0,Brighton Labeau,SetPiece,0,0.10891889035701752
+5955028,2026-08-06,uefa.europa_qual,Thun,Víkingur Reykjavík,90.0,Fabio Saiz,FromCorner,0,0.029400767758488655
+5955329,2026-08-06,uefa.europa.conf_qual,Sion,FC Noah,13.0,Winsley Boteli,FastBreak,0,0.8035140037536621
+5955329,2026-08-06,uefa.europa.conf_qual,Sion,FC Noah,57.0,Ilyas Chouaref,RegularPlay,0,0.06110889092087746
+5955332,2026-08-06,uefa.europa.conf_qual,St. Gallen,FC Sheriff,63.0,Andrin Hunziker,ThrowInSetPiece,0,0.5656910538673401
+5955332,2026-08-06,uefa.europa.conf_qual,St. Gallen,FC Sheriff,70.0,Leon Frokaj,RegularPlay,0,0.3115544617176056
+5955332,2026-08-06,uefa.europa.conf_qual,St. Gallen,FC Sheriff,90.0,Christian Witzig,RegularPlay,0,0.031608592718839645
+5955338,2026-08-06,uefa.europa.conf_qual,Lugano,NSÍ Runavík,7.0,Elias Pihlström,RegularPlay,0,0.03906739130616188
+5955338,2026-08-06,uefa.europa.conf_qual,Lugano,NSÍ Runavík,79.0,Kevin Behrens,FromCorner,0,0.5957491397857666
 5804233,2026-08-08,sui.1,Young Boys,Lausanne,48.0,Cédric Zesiger,FromCorner,0,0.1110371947288513
 5804233,2026-08-08,sui.1,Young Boys,Lausanne,75.0,Dominik Pech,FastBreak,0,0.1919204443693161
 5804233,2026-08-08,sui.1,Lausanne,Young Boys,77.0,Florent Mollet,RegularPlay,0,0.3729413449764251
@@ -73,6 +100,23 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5804237,2026-08-09,sui.1,Luzern,St. Gallen,46.0,Daniel Mikolajewski,RegularPlay,0,0.0783524513244628
 5804237,2026-08-09,sui.1,Luzern,St. Gallen,89.0,Matteo Di Giusto,FastBreak,0,0.5319914221763611
 5804237,2026-08-09,sui.1,St. Gallen,Luzern,90.0,Lukas Görtler,Penalty,0,0.7884
+5955029,2026-08-13,uefa.europa_qual,Thun,Víkingur Reykjavík,10.0,Fabio Fehr,ThrowInSetPiece,0,0.37815725803375244
+5955029,2026-08-13,uefa.europa_qual,Thun,Víkingur Reykjavík,35.0,Brighton Labeau,FromCorner,0,0.049122367054224014
+5955359,2026-08-13,uefa.europa.conf_qual,Sion,FC Noah,53.0,Winsley Boteli,FastBreak,0,0.053197093307971954
+5955359,2026-08-13,uefa.europa.conf_qual,Sion,FC Noah,63.0,Baltazar,RegularPlay,0,0.04910646751523018
+5955362,2026-08-13,uefa.europa.conf_qual,St. Gallen,FC Sheriff,1.0,Diego Besio,RegularPlay,0,0.24209222197532654
+5955362,2026-08-13,uefa.europa.conf_qual,St. Gallen,FC Sheriff,34.0,Andrin Hunziker,FastBreak,0,0.09050530940294266
+5955362,2026-08-13,uefa.europa.conf_qual,St. Gallen,FC Sheriff,59.0,Andrin Hunziker,SetPiece,0,0.7110751867294312
+5955362,2026-08-13,uefa.europa.conf_qual,St. Gallen,FC Sheriff,76.0,Diego Besio,RegularPlay,0,0.2965174615383148
+5955362,2026-08-13,uefa.europa.conf_qual,St. Gallen,FC Sheriff,87.0,Mihailo Stevanovic,SetPiece,0,0.19441360235214233
+5955368,2026-08-13,uefa.europa.conf_qual,Lugano,NSÍ Runavík,66.0,Yanis Cimignani,RegularPlay,0,0.5656910538673401
+5955368,2026-08-13,uefa.europa.conf_qual,Lugano,NSÍ Runavík,79.0,Kevin Behrens,SetPiece,0,0.35146984457969666
+5987963,2026-08-20,uefa.europa_qual,Thun,Lech Poznań,,,none,0,
+5988068,2026-08-20,uefa.europa.conf_qual,St. Gallen,Nordsjælland,,,none,0,
+5988070,2026-08-20,uefa.europa.conf_qual,Sion,Ajax,34.0,Franck Surdez,RegularPlay,0,0.09736690670251846
+5988070,2026-08-20,uefa.europa.conf_qual,Sion,Ajax,71.0,Ilyas Chouaref,Penalty,0,0.7884
+5988074,2026-08-20,uefa.europa.conf_qual,Lugano,Maccabi Tel Aviv,30.0,Kevin Behrens,RegularPlay,0,0.1483757197856903
+5988074,2026-08-20,uefa.europa.conf_qual,Lugano,Maccabi Tel Aviv,54.0,Anto Grgic,Penalty,0,0.7884
 5804238,2026-08-22,sui.1,Luzern,Lausanne,3.0,Matteo Di Giusto,RegularPlay,0,0.4320269525051117
 5804238,2026-08-22,sui.1,Lausanne,Luzern,,,none,0,
 5804239,2026-08-22,sui.1,FC Zürich,Basel,8.0,Philippe Kény,Penalty,0,0.7884
@@ -84,6 +128,14 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5804240,2026-08-23,sui.1,FC Vaduz,Young Boys,43.0,Milos Cocic,RegularPlay,0,0.8858866691589355
 5804240,2026-08-23,sui.1,Young Boys,FC Vaduz,57.0,Alvyn Sanches,RegularPlay,0,0.2847410440444946
 5804240,2026-08-23,sui.1,Young Boys,FC Vaduz,87.0,Armin Gigovic,RegularPlay,0,0.0273952782154083
+5987975,2026-08-27,uefa.europa_qual,Thun,Lech Poznań,22.0,Simon Lengen,RegularPlay,0,0.27746573090553284
+5987975,2026-08-27,uefa.europa_qual,Thun,Lech Poznań,43.0,Furkan Dursun,RegularPlay,0,0.16385310888290405
+5988092,2026-08-27,uefa.europa.conf_qual,St. Gallen,Nordsjælland,21.0,Lukas Görtler,Penalty,0,0.7884
+5988092,2026-08-27,uefa.europa.conf_qual,St. Gallen,Nordsjælland,28.0,Aliou Baldé,RegularPlay,0,0.09690486639738083
+5988094,2026-08-27,uefa.europa.conf_qual,Sion,Ajax,18.0,Winsley Boteli,FromCorner,0,0.09091145545244217
+5988094,2026-08-27,uefa.europa.conf_qual,Sion,Ajax,36.0,Winsley Boteli,RegularPlay,0,0.3039686977863312
+5988094,2026-08-27,uefa.europa.conf_qual,Sion,Ajax,90.0,Winsley Boteli,FastBreak,0,0.14767096936702728
+5988098,2026-08-27,uefa.europa.conf_qual,Lugano,Maccabi Tel Aviv,79.0,Dereck Moncada,FastBreak,0,0.07364765554666519
 5804244,2026-08-29,sui.1,Lausanne,FC Zürich,31.0,Enzo Molebe,RegularPlay,0,0.2832638025283813
 5804244,2026-08-29,sui.1,FC Zürich,Lausanne,47.0,Bledian Krasniqi,RegularPlay,0,0.4584451913833618
 5804244,2026-08-29,sui.1,FC Zürich,Lausanne,58.0,Lindrit Kamberi,FromCorner,0,0.2311053425073623
@@ -284,18 +336,18 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5804290,2026-10-31,sui.1,St. Gallen,Servette,6.0,Carlo Boukhalfa,RegularPlay,0,0.1442264169454574
 5804290,2026-10-31,sui.1,St. Gallen,Servette,65.0,Lukas Görtler,Penalty,0,0.7884
 5804290,2026-10-31,sui.1,Servette,St. Gallen,82.0,Jesper Karlsson,RegularPlay,0,0.0467460565268993
-5804287,2026-11-01,sui.1,Thun,Lausanne,12.0,Furkan Dursun,SetPiece,0,0.17096486687660217
+5804287,2026-11-01,sui.1,Thun,Lausanne,12.0,Furkan Dursun,SetPiece,0,0.1709648668766021
 5804287,2026-11-01,sui.1,Lausanne,Thun,36.0,Omar Janneh,Penalty,0,0.7884
 5804287,2026-11-01,sui.1,Lausanne,Thun,45.0,Omar Janneh,FromCorner,0,0.3105478882789612
 5804287,2026-11-01,sui.1,Lausanne,Thun,53.0,Enzo Molebe,RegularPlay,0,0.1445530503988266
 5804287,2026-11-01,sui.1,Lausanne,Thun,62.0,Lucien Dähler,OwnGoal,1,
-5804287,2026-11-01,sui.1,Thun,Lausanne,70.0,Brighton Labeau,SetPiece,0,0.9841966032981873
+5804287,2026-11-01,sui.1,Thun,Lausanne,70.0,Brighton Labeau,SetPiece,0,0.9841966032981871
 5804287,2026-11-01,sui.1,Thun,Lausanne,81.0,Riccardo Braschi,RegularPlay,0,0.7281967401504517
 5804287,2026-11-01,sui.1,Thun,Lausanne,86.0,Karim Sow,OwnGoal,1,
-5804287,2026-11-01,sui.1,Thun,Lausanne,90.0,Brighton Labeau,ThrowInSetPiece,0,0.24149782955646515
+5804287,2026-11-01,sui.1,Thun,Lausanne,90.0,Brighton Labeau,ThrowInSetPiece,0,0.2414978295564651
 5804288,2026-11-01,sui.1,Lugano,Basel,10.0,Daniel Dos Santos,RegularPlay,0,0.2254931777715683
-5804288,2026-11-01,sui.1,Lugano,Basel,26.0,Yanis Cimignani,RegularPlay,0,0.027835190296173096
-5804288,2026-11-01,sui.1,Basel,Lugano,37.0,Philip Otele,FromCorner,0,0.25224265456199646
+5804288,2026-11-01,sui.1,Lugano,Basel,26.0,Yanis Cimignani,RegularPlay,0,0.027835190296173
+5804288,2026-11-01,sui.1,Basel,Lugano,37.0,Philip Otele,FromCorner,0,0.2522426545619964
 5804291,2026-11-01,sui.1,FC Zürich,Young Boys,12.0,Philippe Kény,Penalty,0,0.7884
 5804291,2026-11-01,sui.1,Young Boys,FC Zürich,22.0,Samuel Essende,RegularPlay,0,0.3262234330177307
 5804291,2026-11-01,sui.1,FC Zürich,Young Boys,25.0,Emmanuel Umeh,RegularPlay,0,0.4369125068187713

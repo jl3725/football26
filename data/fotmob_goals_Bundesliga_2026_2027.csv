@@ -1,4 +1,7 @@
 match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
+5988056,2026-08-20,uefa.europa.conf_qual,Freiburg,Motherwell,28.0,Matthias Ginter,SetPiece,0,0.12187407165765762
+5988056,2026-08-20,uefa.europa.conf_qual,Freiburg,Motherwell,65.0,Matthias Ginter,Penalty,0,0.7884
+5988056,2026-08-20,uefa.europa.conf_qual,Freiburg,Motherwell,90.0,Keisuke Goto,FromCorner,0,0.12042777985334396
 5750671,2026-08-21,ger.dfb_pokal,Frankfurt,SC St. Tönis,4.0,Jonathan Burkardt,FromCorner,0,0.1364181488752365
 5750671,2026-08-21,ger.dfb_pokal,Frankfurt,SC St. Tönis,10.0,Robin Koch,FromCorner,0,0.0705373957753181
 5750671,2026-08-21,ger.dfb_pokal,Frankfurt,SC St. Tönis,17.0,Ayoube Amaimouni-Echghouyab,RegularPlay,0,0.1272898018360138
@@ -73,6 +76,10 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5750694,2026-08-24,ger.dfb_pokal,Schalke 04,Hallescher FC,98.0,Moussa Sylla,RegularPlay,0,0.2884862422943115
 5750694,2026-08-24,ger.dfb_pokal,Schalke 04,Hallescher FC,105.0,Chukwubuike Adamu,RegularPlay,0,0.3155495524406433
 5750694,2026-08-24,ger.dfb_pokal,Schalke 04,Hallescher FC,117.0,Edin Dzeko,RegularPlay,0,0.5886548161506653
+5988080,2026-08-27,uefa.europa.conf_qual,Freiburg,Motherwell,6.0,Derry Scherhant,RegularPlay,0,0.5509026646614075
+5988080,2026-08-27,uefa.europa.conf_qual,Freiburg,Motherwell,60.0,Igor Matanovic,FromCorner,0,0.21350103616714478
+5988080,2026-08-27,uefa.europa.conf_qual,Freiburg,Motherwell,63.0,Cyriaque Irié,FromCorner,0,0.4149525761604309
+5988080,2026-08-27,uefa.europa.conf_qual,Freiburg,Motherwell,85.0,Keisuke Goto,RegularPlay,0,0.23517939448356628
 5881143,2026-08-28,ger.1,Bayern Munich,Stuttgart,21.0,Dayot Upamecano,FromCorner,0,0.2355771958827972
 5881143,2026-08-28,ger.1,Stuttgart,Bayern Munich,52.0,Josha Vagnoman,RegularPlay,0,0.1089103817939758
 5881143,2026-08-28,ger.1,Bayern Munich,Stuttgart,55.0,Michael Olise,RegularPlay,0,0.602142870426178
@@ -460,3 +467,4 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5881210,2026-11-01,ger.1,Frankfurt,Hamburger SV,69.0,Younes Ebnoutalib,FastBreak,0,0.5994727611541748
 5881213,2026-11-01,ger.1,Union Berlin,Köln,10.0,Janik Haberer,RegularPlay,0,0.7693782448768616
 5881213,2026-11-01,ger.1,Köln,Union Berlin,79.0,Malek El Mala,FromCorner,0,0.36136195063591
+6106341,2026-11-03,uefa.champions,Stuttgart,Galatasaray,,,none,0,

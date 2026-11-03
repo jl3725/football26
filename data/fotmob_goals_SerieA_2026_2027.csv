@@ -27,6 +27,7 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5852784,2026-08-17,ita.coppa_italia,Sassuolo,Cesena,45.0,Vasilije Adzic,RegularPlay,0,0.3060578405857086
 5852784,2026-08-17,ita.coppa_italia,Sassuolo,Cesena,75.0,Luca Lipani,RegularPlay,0,0.2231999784708023
 5852786,2026-08-17,ita.coppa_italia,Lecce,Palermo,,,none,0,
+5988065,2026-08-20,uefa.europa.conf_qual,Atalanta,Hapoel Tel Aviv,,,none,0,
 5749644,2026-08-22,ita.1,Napoli,Genoa,82.0,Kevin De Bruyne,RegularPlay,0,0.2671746909618377
 5749644,2026-08-22,ita.1,Napoli,Genoa,87.0,Antonio Vergara,FastBreak,0,0.1150540336966514
 5749644,2026-08-22,ita.1,Genoa,Napoli,,,none,0,
@@ -57,6 +58,7 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5749640,2026-08-24,ita.1,Fiorentina,Roma,,,none,0,
 5749642,2026-08-24,ita.1,Lazio,Bologna,59.0,Davide Frattesi,ThrowInSetPiece,0,0.2147511541843414
 5749642,2026-08-24,ita.1,Bologna,Lazio,,,none,0,
+5988089,2026-08-27,uefa.europa.conf_qual,Atalanta,Hapoel Tel Aviv,72.0,Gianluca Scamacca,FromCorner,0,0.3195528984069824
 5749650,2026-08-28,ita.1,Milan,Venezia,69.0,Gonçalo Ramos,FastBreak,0,0.1027212813496589
 5749650,2026-08-28,ita.1,Milan,Venezia,89.0,Redouane Halhal,OwnGoal,1,
 5749650,2026-08-28,ita.1,Venezia,Milan,,,none,0,
@@ -447,9 +449,9 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5749737,2026-11-01,ita.1,Genoa,Lecce,11.0,Milutin Osmajić,RegularPlay,0,0.353232741355896
 5749737,2026-11-01,ita.1,Genoa,Lecce,28.0,Junior Messias,RegularPlay,0,0.0944702103734016
 5749737,2026-11-01,ita.1,Lecce,Genoa,40.0,Youssef Maleh,FreeKick,0,0.0793298706412315
-5749731,2026-11-02,ita.1,Parma,Atalanta,41.0,Giovanni Fabbian,FromCorner,0,0.15382133424282074
+5749731,2026-11-02,ita.1,Parma,Atalanta,41.0,Giovanni Fabbian,FromCorner,0,0.1538213342428207
 5749731,2026-11-02,ita.1,Parma,Atalanta,47.0,Davide Zappacosta,OwnGoal,1,
-5749731,2026-11-02,ita.1,Parma,Atalanta,58.0,Simone Lontani,RegularPlay,0,0.05632077902555466
+5749731,2026-11-02,ita.1,Parma,Atalanta,58.0,Simone Lontani,RegularPlay,0,0.0563207790255546
 5749731,2026-11-02,ita.1,Atalanta,Parma,,,none,0,
 5749738,2026-11-02,ita.1,Sassuolo,Fiorentina,25.0,Armand Laurienté,FastBreak,0,0.5276614427566528
 5749738,2026-11-02,ita.1,Fiorentina,Sassuolo,45.0,Mateo Pellegrino,RegularPlay,0,0.5077623724937439

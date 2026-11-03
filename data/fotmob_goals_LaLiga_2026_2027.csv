@@ -21,6 +21,9 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5868012,2026-08-19,esp.1,Málaga,Atlético Madrid,,,none,0,
 5868029,2026-08-20,esp.1,Rayo Vallecano,Alavés,48.0,Sergio Camello,RegularPlay,0,0.0957450345158577
 5868029,2026-08-20,esp.1,Alavés,Rayo Vallecano,84.0,Mariano Díaz,RegularPlay,0,0.1843241900205612
+5988073,2026-08-20,uefa.europa.conf_qual,Getafe,Partizan Beograd,9.0,Enes Ünal,RegularPlay,0,0.335494726896286
+5988073,2026-08-20,uefa.europa.conf_qual,Getafe,Partizan Beograd,87.0,Andrés García,RegularPlay,0,0.42409083247184753
+5988073,2026-08-20,uefa.europa.conf_qual,Getafe,Partizan Beograd,90.0,Johan Mojica,IndividualPlay,0,0.03847711160778999
 5868023,2026-08-21,esp.1,Real Betis,Real Sociedad,63.0,Rodrigo Riquelme,FastBreak,0,0.0848758742213249
 5868023,2026-08-21,esp.1,Real Sociedad,Real Betis,,,none,0,
 5868021,2026-08-22,esp.1,Sevilla,Athletic Club,15.0,Oso,RegularPlay,0,0.4710880219936371
@@ -61,6 +64,7 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5868016,2026-08-27,esp.1,Barcelona,Athletic Club,37.0,Raphinha,RegularPlay,0,0.6976730823516846
 5868016,2026-08-27,esp.1,Barcelona,Athletic Club,82.0,Fermín López,RegularPlay,0,0.9695444107055664
 5868016,2026-08-27,esp.1,Athletic Club,Barcelona,,,none,0,
+5988097,2026-08-27,uefa.europa.conf_qual,Getafe,Partizan Beograd,69.0,Enes Ünal,FromCorner,0,0.1797509640455246
 5868031,2026-08-28,esp.1,Alavés,Villarreal,31.0,Lucas Boyé,RegularPlay,0,0.4494013488292694
 5868031,2026-08-28,esp.1,Villarreal,Alavés,,,none,0,
 5868037,2026-08-28,esp.1,Racing Santander,Elche,15.0,Yassir Zabiri,RegularPlay,0,0.0803405940532684
@@ -475,5 +479,5 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5868118,2026-11-01,esp.1,Real Madrid,Racing Santander,36.0,Yan Diomande,FromCorner,0,0.0293709393590688
 5868118,2026-11-01,esp.1,Racing Santander,Real Madrid,,,none,0,
 5868113,2026-11-02,esp.1,Osasuna,Deportivo A Coruña,32.0,Ante Budimir,RegularPlay,0,0.2990429997444153
-5868113,2026-11-02,esp.1,Deportivo A Coruña,Osasuna,64.0,Mario Soriano,FreeKick,0,0.15558677911758423
+5868113,2026-11-02,esp.1,Deportivo A Coruña,Osasuna,64.0,Mario Soriano,FreeKick,0,0.1555867791175842
 5868113,2026-11-02,esp.1,Deportivo A Coruña,Osasuna,87.0,Bil Nsongo,RegularPlay,0,0.8573585748672485

@@ -845,16 +845,16 @@
    "orphans": []
   },
   "espn_subs_cups": {
-   "total": 116,
-   "exact": 116,
+   "total": 120,
+   "exact": 120,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
    "orphans": []
   },
   "match_events": {
-   "total": 304,
-   "exact": 304,
+   "total": 305,
+   "exact": 305,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1544,25 +1544,65 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 126,
-   "exact": 125,
-   "rule": 0,
-   "ambiguous": 0,
-   "orphan": 1,
+   "total": 397,
+   "exact": 375,
+   "rule": 13,
+   "ambiguous": 2,
+   "orphan": 9,
    "orphans": [
+    {
+     "squad": "Braga",
+     "name": "Carvalho",
+     "starts": 3
+    },
+    {
+     "squad": "Santa Clara",
+     "name": "Djé Tavares",
+     "starts": 1
+    },
+    {
+     "squad": "Rio Ave",
+     "name": "Giorgos Liavas",
+     "starts": 1
+    },
+    {
+     "squad": "Nacional",
+     "name": "Matchoi",
+     "starts": 1
+    },
+    {
+     "squad": "Braga",
+     "name": "Lukás Hornícek",
+     "starts": 1
+    },
     {
      "squad": "Porto",
      "name": "João Teixeira",
+     "starts": 0
+    },
+    {
+     "squad": "Estrela",
+     "name": "Rafael Monteiro Batista das Merc",
+     "starts": 0
+    },
+    {
+     "squad": "Vit. Guimarães",
+     "name": "Rodrigo Macedo",
+     "starts": 0
+    },
+    {
+     "squad": "Gil Vicente FC",
+     "name": "Marvin Gilbert",
      "starts": 0
     }
    ]
   },
   "espn_subs": {
    "total": 412,
-   "exact": 401,
-   "rule": 8,
+   "exact": 404,
+   "rule": 6,
    "ambiguous": 0,
-   "orphan": 3,
+   "orphan": 2,
    "orphans": [
     {
      "squad": "Nacional",
@@ -1573,17 +1613,12 @@
      "squad": "Nacional",
      "name": "Chiheb Laabidi",
      "starts": 0
-    },
-    {
-     "squad": "Santa Clara",
-     "name": "Djé Tavares",
-     "starts": 0
     }
    ]
   },
   "espn_subs_cups": {
-   "total": 66,
-   "exact": 66,
+   "total": 75,
+   "exact": 75,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1599,9 +1634,9 @@
   },
   "fotmob_ratings": {
    "total": 281,
-   "exact": 266,
-   "rule": 9,
-   "ambiguous": 4,
+   "exact": 279,
+   "rule": 0,
+   "ambiguous": 2,
    "orphan": 0,
    "orphans": [],
    "minutes": 4
@@ -1972,15 +2007,50 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 125,
-   "exact": 124,
-   "rule": 0,
-   "ambiguous": 0,
-   "orphan": 1,
+   "total": 413,
+   "exact": 399,
+   "rule": 6,
+   "ambiguous": 1,
+   "orphan": 8,
    "orphans": [
+    {
+     "squad": "Beveren",
+     "name": "Josua Lusamba Tshiolola",
+     "starts": 1
+    },
+    {
+     "squad": "Union SG",
+     "name": "Anan Khalaili",
+     "starts": 1
+    },
+    {
+     "squad": "Gent",
+     "name": "Wilfried Kanga",
+     "starts": 1
+    },
     {
      "squad": "Union SG",
      "name": "Daniel Tshilanda",
+     "starts": 0
+    },
+    {
+     "squad": "Mechelen",
+     "name": "Maxim Kireev",
+     "starts": 0
+    },
+    {
+     "squad": "Cercle Brugge",
+     "name": "Omotayo Adaramola",
+     "starts": 0
+    },
+    {
+     "squad": "Anderlecht",
+     "name": "César Huerta",
+     "starts": 0
+    },
+    {
+     "squad": "Anderlecht",
+     "name": "Luis Vázquez",
      "starts": 0
     }
    ]
@@ -1994,8 +2064,8 @@
    "orphans": []
   },
   "espn_subs_cups": {
-   "total": 70,
-   "exact": 70,
+   "total": 93,
+   "exact": 93,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -2011,8 +2081,8 @@
   },
   "fotmob_ratings": {
    "total": 271,
-   "exact": 268,
-   "rule": 2,
+   "exact": 270,
+   "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
    "orphans": [],
@@ -2396,15 +2466,70 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 97,
-   "exact": 96,
-   "rule": 0,
+   "total": 259,
+   "exact": 246,
+   "rule": 1,
    "ambiguous": 0,
-   "orphan": 1,
+   "orphan": 12,
    "orphans": [
+    {
+     "squad": "Fenerbahçe",
+     "name": "Fred",
+     "starts": 2
+    },
+    {
+     "squad": "Başakşehir",
+     "name": "Berat Özdemir",
+     "starts": 1
+    },
     {
      "squad": "Trabzonspor",
      "name": "Hakan Yılmaz",
+     "starts": 0
+    },
+    {
+     "squad": "Alanyaspor",
+     "name": "Oguz Arslan",
+     "starts": 0
+    },
+    {
+     "squad": "Alanyaspor",
+     "name": "Kartal Yigit",
+     "starts": 0
+    },
+    {
+     "squad": "Beşiktaş",
+     "name": "Felix Uduokhai",
+     "starts": 0
+    },
+    {
+     "squad": "Fenerbahçe",
+     "name": "Caglar Söyüncü",
+     "starts": 0
+    },
+    {
+     "squad": "Fenerbahçe",
+     "name": "Sidiki Cherif",
+     "starts": 0
+    },
+    {
+     "squad": "Fenerbahçe",
+     "name": "Anthony Musaba",
+     "starts": 0
+    },
+    {
+     "squad": "Beşiktaş",
+     "name": "Cumali Gursel",
+     "starts": 0
+    },
+    {
+     "squad": "Başakşehir",
+     "name": "Nuno da Costa",
+     "starts": 0
+    },
+    {
+     "squad": "Beşiktaş",
+     "name": "Devrim Sahin",
      "starts": 0
     }
    ]
@@ -2418,8 +2543,8 @@
    "orphans": []
   },
   "espn_subs_cups": {
-   "total": 59,
-   "exact": 59,
+   "total": 102,
+   "exact": 102,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -2509,11 +2634,11 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 77,
-   "exact": 75,
+   "total": 154,
+   "exact": 149,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 2,
+   "orphan": 5,
    "orphans": [
     {
      "squad": "Sturm Graz",
@@ -2523,6 +2648,21 @@
     {
      "squad": "Sturm Graz",
      "name": "Jonas Peinhart",
+     "starts": 0
+    },
+    {
+     "squad": "Rapid Wien",
+     "name": "Moritz Oswald",
+     "starts": 0
+    },
+    {
+     "squad": "Salzburg",
+     "name": "Hendry Blank",
+     "starts": 0
+    },
+    {
+     "squad": "Austria Wien",
+     "name": "Dejan Radonjic",
      "starts": 0
     }
    ]
@@ -2536,8 +2676,8 @@
    "orphans": []
   },
   "espn_subs_cups": {
-   "total": 43,
-   "exact": 43,
+   "total": 108,
+   "exact": 108,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -2697,15 +2837,135 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 95,
-   "exact": 94,
+   "total": 355,
+   "exact": 327,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 1,
+   "orphan": 28,
    "orphans": [
+    {
+     "squad": "AC Horsens",
+     "name": "Christian Jørgensen",
+     "starts": 1
+    },
+    {
+     "squad": "Lyngby",
+     "name": "Malthe Henriksen",
+     "starts": 1
+    },
+    {
+     "squad": "FC Midtjylland",
+     "name": "Han-Beom Lee",
+     "starts": 1
+    },
     {
      "squad": "AGF",
      "name": "Marius van der Raad",
+     "starts": 0
+    },
+    {
+     "squad": "Lyngby",
+     "name": "Oscar Wind",
+     "starts": 0
+    },
+    {
+     "squad": "Randers FC",
+     "name": "Oliver Sandris",
+     "starts": 0
+    },
+    {
+     "squad": "AC Horsens",
+     "name": "Tudor Cocu",
+     "starts": 0
+    },
+    {
+     "squad": "AC Horsens",
+     "name": "Magne Flemming Bjerregaard",
+     "starts": 0
+    },
+    {
+     "squad": "FC København",
+     "name": "Noah Madsen",
+     "starts": 0
+    },
+    {
+     "squad": "FC København",
+     "name": "Sean Fetterlein",
+     "starts": 0
+    },
+    {
+     "squad": "Lyngby",
+     "name": "Nicolaj Hjulmand",
+     "starts": 0
+    },
+    {
+     "squad": "Lyngby",
+     "name": "Rilke Thomsen",
+     "starts": 0
+    },
+    {
+     "squad": "Lyngby",
+     "name": "Mads Larsen",
+     "starts": 0
+    },
+    {
+     "squad": "Lyngby",
+     "name": "Jamil El-Rrami",
+     "starts": 0
+    },
+    {
+     "squad": "AC Horsens",
+     "name": "Yaser Abbas",
+     "starts": 0
+    },
+    {
+     "squad": "Lyngby",
+     "name": "Hjalte Froholdt",
+     "starts": 0
+    },
+    {
+     "squad": "Lyngby",
+     "name": "Aksel Jörgensen",
+     "starts": 0
+    },
+    {
+     "squad": "FC Midtjylland",
+     "name": "Dani Silva",
+     "starts": 0
+    },
+    {
+     "squad": "FC København",
+     "name": "Gustav Fritz",
+     "starts": 0
+    },
+    {
+     "squad": "FC København",
+     "name": "Liam West",
+     "starts": 0
+    },
+    {
+     "squad": "Randers FC",
+     "name": "Henry Leal Soares",
+     "starts": 0
+    },
+    {
+     "squad": "FC Midtjylland",
+     "name": "Liam Selin",
+     "starts": 0
+    },
+    {
+     "squad": "Nordsjælland",
+     "name": "Carl Kristoffersen",
+     "starts": 0
+    },
+    {
+     "squad": "Nordsjælland",
+     "name": "Daníel Jóhannesson",
+     "starts": 0
+    },
+    {
+     "squad": "FC Midtjylland",
+     "name": "Jonatan Lindekilde",
      "starts": 0
     }
    ]
@@ -2719,8 +2979,8 @@
    "orphans": []
   },
   "espn_subs_cups": {
-   "total": 58,
-   "exact": 58,
+   "total": 147,
+   "exact": 147,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -2739,7 +2999,7 @@
  "SwissSuperLeague 2026_2027": {
   "wiki_squads": {
    "total": 467,
-   "exact": 347,
+   "exact": 346,
    "rule": 3,
    "ambiguous": 0,
    "orphan": 0,
@@ -2800,15 +3060,45 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 47,
-   "exact": 46,
+   "total": 325,
+   "exact": 318,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 1,
+   "orphan": 7,
    "orphans": [
     {
      "squad": "Thun",
      "name": "Dario Waelti",
+     "starts": 0
+    },
+    {
+     "squad": "Lausanne",
+     "name": "Eduardo Iezzi Penteado",
+     "starts": 0
+    },
+    {
+     "squad": "Thun",
+     "name": "Leon Grando",
+     "starts": 0
+    },
+    {
+     "squad": "St. Gallen",
+     "name": "Jorge Rans",
+     "starts": 0
+    },
+    {
+     "squad": "St. Gallen",
+     "name": "Fabio Rissi",
+     "starts": 0
+    },
+    {
+     "squad": "Young Boys",
+     "name": "Tristan Estebán Jost",
+     "starts": 0
+    },
+    {
+     "squad": "Thun",
+     "name": "Christopher Ibayi",
      "starts": 0
     }
    ]
@@ -2822,8 +3112,8 @@
    "orphans": []
   },
   "espn_subs_cups": {
-   "total": 27,
-   "exact": 27,
+   "total": 98,
+   "exact": 98,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,

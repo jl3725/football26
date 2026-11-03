@@ -1,4 +1,12 @@
 match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
+5954871,2026-08-04,uefa.champions_qual,Lyon,Sparta Prague,45.0,Martin Suchomel,OwnGoal,1,
+5954881,2026-08-11,uefa.champions_qual,Lyon,Sparta Prague,20.0,Ernest Nuamah,RegularPlay,0,0.29150381684303284
+5954881,2026-08-11,uefa.champions_qual,Lyon,Sparta Prague,66.0,Ainsley Maitland-Niles,RegularPlay,0,0.7306160926818848
+5954881,2026-08-11,uefa.champions_qual,Lyon,Sparta Prague,72.0,Tyler Morton,RegularPlay,0,0.14578849077224731
+5987803,2026-08-18,uefa.champions_qual,Lyon,Fenerbahçe,40.0,Loïs Openda,RegularPlay,0,0.20610609650611877
+5988057,2026-08-20,uefa.europa.conf_qual,Monaco,Górnik Zabrze,9.0,Mika Biereth,FastBreak,0,0.19488893449306488
+5988057,2026-08-20,uefa.europa.conf_qual,Monaco,Górnik Zabrze,51.0,Lamine Camara,RegularPlay,0,0.02708638645708561
+5988057,2026-08-20,uefa.europa.conf_qual,Monaco,Górnik Zabrze,58.0,Paris Brunner,RegularPlay,0,0.3666638731956482
 5802905,2026-08-21,fra.1,Marseille,Strasbourg,46.0,Amine Gouiri,RegularPlay,0,0.3808726072311401
 5802905,2026-08-21,fra.1,Marseille,Strasbourg,68.0,Amine Gouiri,Penalty,0,0.7884
 5802905,2026-08-21,fra.1,Marseille,Strasbourg,89.0,Keyliane Abdallah,RegularPlay,0,0.0233531072735786
@@ -31,6 +39,11 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5803105,2026-08-23,fra.1,Rennes,PSG,38.0,Estéban Lepaul,RegularPlay,0,0.282217264175415
 5803105,2026-08-23,fra.1,PSG,Rennes,71.0,Ferran Torres,RegularPlay,0,0.6368634700775146
 5803105,2026-08-23,fra.1,PSG,Rennes,82.0,Ferran Torres,RegularPlay,0,0.1247299760580062
+5987810,2026-08-26,uefa.champions_qual,Lyon,Fenerbahçe,61.0,Malick Fofana,RegularPlay,0,0.061988431960344315
+5988081,2026-08-27,uefa.europa.conf_qual,Monaco,Górnik Zabrze,30.0,Paris Brunner,FastBreak,0,0.1349855363368988
+5988081,2026-08-27,uefa.europa.conf_qual,Monaco,Górnik Zabrze,43.0,Mamadou Coulibaly,FromCorner,0,0.06833544373512268
+5988081,2026-08-27,uefa.europa.conf_qual,Monaco,Górnik Zabrze,50.0,Aleksandr Golovin,RegularPlay,0,0.20640920102596283
+5988081,2026-08-27,uefa.europa.conf_qual,Monaco,Górnik Zabrze,78.0,Mika Biereth,RegularPlay,0,0.902471125125885
 5802918,2026-08-28,fra.1,Lille,PSG,21.0,Hákon Arnar Haraldsson,RegularPlay,0,0.1202828139066696
 5802918,2026-08-28,fra.1,Lille,PSG,84.0,Dilane Bakwa,RegularPlay,0,0.0377379618585109
 5802918,2026-08-28,fra.1,PSG,Lille,90.0,Vítinha,RegularPlay,0,0.0414351597428321
@@ -323,6 +336,6 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5802980,2026-11-01,fra.1,Auxerre,Strasbourg,68.0,Cameron Archer,RegularPlay,0,0.1959507018327713
 5802980,2026-11-01,fra.1,Strasbourg,Auxerre,77.0,Gessime Yassine,RegularPlay,0,0.0849354714155197
 5802980,2026-11-01,fra.1,Strasbourg,Auxerre,85.0,Gessime Yassine,RegularPlay,0,0.5609121322631836
-5802975,2026-11-02,fra.1,Brest,Lorient,69.0,Ludovic Ajorque,RegularPlay,0,0.07420112937688828
+5802975,2026-11-02,fra.1,Brest,Lorient,69.0,Ludovic Ajorque,RegularPlay,0,0.0742011293768882
 5802975,2026-11-02,fra.1,Brest,Lorient,90.0,Noah Edjouma,RegularPlay,0,0.3993161916732788
 5802975,2026-11-02,fra.1,Lorient,Brest,,,none,0,
