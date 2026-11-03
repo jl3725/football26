@@ -87,7 +87,7 @@ export default function ThisWeek({ team, accent }: { team: string; accent: strin
                 <p><b>기준</b> = {d.xi.basis}.</p>
                 <p>결장으로 빈 자리는 빠진 선수와 같은 세부 포지션 후보 중 OVR 이 가장 높은 선수로 채웁니다(없으면 같은 라인).</p>
               </Info></h3>
-            <Pitch placements={d.xi.placements} accent={accent} team={team} />
+            <Pitch placements={d.xi.placements} accent={accent} team={team} showOut={false} />
             {d.xi.changes.length > 0 ? (
               <ul className="tw-changes">
                 {d.xi.changes.map((c) => (

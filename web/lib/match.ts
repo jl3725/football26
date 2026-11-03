@@ -1,5 +1,5 @@
 // 경기 카드·매치 프리뷰 공용 계산(화면 문구) — 데이터는 /api/fixtures(src/match_center.py).
-import type { Fixture, FixtureSide } from "./api";
+import type { Fixture, FixtureSide, OtherApps } from "./api";
 import { LEAGUE_LIST, isLeagueCode } from "./leagues";
 
 export const BIG = 35;   // 빅매치 기준 점수(서버 BIG_MIN 과 같음)
@@ -22,8 +22,8 @@ export function splitKst(kst: string) {
 }
 
 export function compTone(code: string): "ucl" | "uel" | "neutral" {
-  if (code === "uefa.champions") return "ucl";
-  if (code === "uefa.europa" || code === "uefa.europa.conf") return "uel";
+  if (code?.startsWith("uefa.champions")) return "ucl";
+  if (code?.startsWith("uefa.europa")) return "uel";
   return "neutral";
 }
 
@@ -32,8 +32,22 @@ const COMP_EN: Record<string, string> = {
   "uefa.champions": "UCL", "uefa.europa": "UEL", "uefa.europa.conf": "UECL",
   "eng.fa": "FA CUP", "eng.league_cup": "EFL CUP", "esp.copa_del_rey": "COPA DEL REY", "ita.coppa_italia": "COPPA ITALIA",
   "ger.dfb_pokal": "DFB-POKAL", "fra.coupe_de_france": "COUPE DE FRANCE", "por.taca.portugal": "TAÇA", "ned.cup": "KNVB BEKER",
+  "bel.cup": "BELGIAN CUP", "uefa.champions_qual": "UCL Q", "uefa.europa_qual": "UEL Q", "uefa.europa.conf_qual": "UECL Q",
+  "aut.cup": "ÖFB CUP", "den.cup": "DBU POKALEN", "sui.cup": "SWISS CUP", "tur.cup": "TÜRKİYE KUPASI",
 };
 export const compEn = (code?: string | null) => (code && COMP_EN[code]) || "";
+// 리그 밖 출전 한 줄 — 'EFL CUP 90′ · A매치 4경기'. 리그 출전이 없는 선수를 '출전 없음'으로만 보이던 것
+// (2026-11-03 사용자: 메슬리에 EFL컵 출전인데 출전 없음). max = 보일 대회 수(나머지는 '외 N')
+export function otherAppsParts(o?: OtherApps | null, max = 2): string[] {
+  if (!o) return [];
+  const one = (c: OtherApps["club"][number]) =>
+    `${compEn(c.code) || (c.kind === "euro" ? "EUROPE" : "CUP")} ${c.apps > 1 ? `${c.apps}경기 ` : ""}${c.min}′`;
+  const parts = o.club.slice(0, max).map(one);
+  if (o.club.length > max) parts.push(`외 ${o.club.length - max}개 대회`);
+  if (o.nt) parts.push(`A매치 ${o.nt.apps}경기`);
+  return parts;
+}
+export const otherAppsText = (o?: OtherApps | null, max = 2) => otherAppsParts(o, max).join(" · ");
 // 일정 표의 한글 대회명 → 영어 약칭(화면 라벨은 영어 위주 — 'EPL · UCL · EFL CUP'). 리그는 그 리그 약칭
 const COMP_EN_BY_KO: Record<string, string> = {
   "챔피언스리그": "UCL", "유로파리그": "UEL", "컨퍼런스리그": "UECL", "FA컵": "FA CUP", "EFL컵": "EFL CUP",

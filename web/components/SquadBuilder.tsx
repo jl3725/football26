@@ -8,6 +8,7 @@ import { MeaningTag } from "./Meaning";
 import Info from "./Info";
 import { usePeek } from "./PlayerPeek";
 import { surname } from "@/lib/names";
+import { otherAppsText } from "@/lib/match";
 
 // Best XI 빌더 — 포메이션 칸마다 역할(GK·LB·CB·RB·DM·CM·AM·LW·RW·ST)이 있고, '그 자리 OVR'(포지션별 OVR — 덜 뛴 자리는
 // 익숙함만큼 낮게, src/position_ovr.py)의 합이 가장 큰 배치를 고른다(헝가리안 알고리즘). 예전엔 OVR × 고정 적합도
@@ -184,7 +185,7 @@ export default function SquadBuilder({ team, accent }: { team: string; accent: s
                 {cands.map((p) => (
                   <button key={p.player} className="sb5-row" onClick={() => { setOverrides((o) => ({ ...o, [pick]: p.player })); setPick(null); }}>
                     {p.photo ? <img src={p.photo} alt="" /> : <span className="ph" />}
-                    <span className="sb5-who"><b>{p.player}</b><em>{[p.primary, ...p.secondary].join(" · ")}{p.minutes === 0 ? " · 출전 없음" : ""}{p.injured ? ` · ${absenceWord(p.injured.kind)} ${p.injured.until ? `~${p.injured.until.slice(0, 5)}` : ""}` : ""}</em></span>
+                    <span className="sb5-who"><b>{p.player}</b><em>{[p.primary, ...p.secondary].join(" · ")}{p.minutes === 0 ? (p.other_apps ? ` · 리그 0′ · ${otherAppsText(p.other_apps, 1)}` : " · 출전 없음") : ""}{p.injured ? ` · ${absenceWord(p.injured.kind)} ${p.injured.until ? `~${p.injured.until.slice(0, 5)}` : ""}` : ""}</em></span>
                     <span className={`sb5-tag ${tagOf(p, slots[pick].role) === "주" ? "p" : tagOf(p, slots[pick].role) === "멀티" ? "s" : "x"}`}>{tagOf(p, slots[pick].role)}</span>
                     <b className="sb5-ov" style={{ color: tier(slotOvr(p, slots[pick].role)).light }}
                       title={`${slots[pick].role} 자리 OVR · 대표 ${mainOf(p)} ${p.ovr}`}>{slotOvr(p, slots[pick].role)}</b>
@@ -199,7 +200,7 @@ export default function SquadBuilder({ team, accent }: { team: string; accent: s
                 {bench.map((p) => (
                   <button key={p.player} className="sb5-row" onClick={(e) => peek(e, { name: p.player, club: team, hint: { photo: p.photo, ovr: p.ovr } })}>
                     {p.photo ? <img src={p.photo} alt="" /> : <span className="ph" />}
-                    <span className="sb5-who"><b>{p.player}</b><em>{[p.primary, ...p.secondary].join(" · ")}{p.minutes === 0 ? " · 출전 없음" : ""}{p.injured ? ` · ${absenceWord(p.injured.kind)}` : ""}</em></span>
+                    <span className="sb5-who"><b>{p.player}</b><em>{[p.primary, ...p.secondary].join(" · ")}{p.minutes === 0 ? (p.other_apps ? ` · 리그 0′ · ${otherAppsText(p.other_apps, 1)}` : " · 출전 없음") : ""}{p.injured ? ` · ${absenceWord(p.injured.kind)}` : ""}</em></span>
                     <b className="sb5-ov" style={{ color: tier(p.ovr).light }}>{p.ovr}</b>
                   </button>
                 ))}

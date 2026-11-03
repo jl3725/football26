@@ -240,9 +240,12 @@ export type SquadPlayer = {
   player: string; pos: string; age: number; minutes: number;
   value_eur: number; ovr: number; photo: string; goals: number; assists: number; trend?: Trend;
   roster_only?: boolean;   // 이번 시즌 출전 없음(TM 스쿼드 명단에서 보강 — 지난 시즌 기록 기준)
+  other_apps?: OtherApps | null;   // 리그 출전이 없을 때 리그 밖 출전(컵·유럽·대표팀)
   roles?: string[];          // [주포지션, 2포지션, 3포지션] — 실제로 선 자리(src/positions.py)
 };
 export type DepthPlayer = { player: string; ovr: number; minutes: number; age: number; photo: string };
+// 이번 시즌 리그 밖 출전 — club = 컵·유럽 대회별(code = uefa.champions·eng.league_cup …), nt = 대표팀(A매치)
+export type OtherApps = { club: { code: string; kind: "cup" | "euro"; apps: number; min: number }[]; nt: { apps: number; min: number } | null };
 // 포지션 뎁스 옵션 — kind: primary(주포지션) · secondary(2·3포지션 = 멀티), injured: 현재 부상
 export type DepthOption = DepthPlayer & { kind?: "primary" | "secondary"; primary?: string; secondary?: string[]; injured?: boolean; absence?: Absence };
 export type Bucket = { pos: string; count: number; multi?: number; depth: number; starter: DepthOption; rotation: DepthOption[] };
@@ -250,7 +253,7 @@ export type Bucket = { pos: string; count: number; multi?: number; depth: number
 export type BuilderPlayer = { player: string; ovr: number; photo: string; age: number; minutes: number; primary: string; secondary: string[];
   line: string; starts: number; injured: { injury: string; until: string; kind?: Absence } | null; roster_only: boolean;
   // 포지션별 OVR·익숙함(src/position_ovr.py) — 그 자리에 세웠을 때의 OVR
-  main_pos?: string | null; pos_ovr?: Record<string, number>; pos_fam?: Record<string, number> };
+  main_pos?: string | null; pos_ovr?: Record<string, number>; pos_fam?: Record<string, number>; other_apps?: OtherApps | null };
 export const getBuilder = (t: string, l = _league) => j<{ team: string; color: string; players: BuilderPlayer[]; formation?: string | null }>(`/api/builder/${q(t, l)}`);
 export type LoanOut = { player: string; club: string; pos: string; nat: string; photo: string; source: string; minutes: number | null; ovr: number | null };
 export type Squad = { team: string; color: string; lines: Record<string, SquadPlayer[]>; buckets: Bucket[]; loans?: LoanOut[] };
