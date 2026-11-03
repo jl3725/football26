@@ -5097,3 +5097,24 @@ LIGA’처럼 글자가 접히던 것) — 넘치면 가로로 넘긴다 */
 .pd-tpl-tabs-h { font: 700 11px/1 var(--font-label); letter-spacing: .12em; color: var(--muted); }
 .pd-tpl-tabs-h small { font: 400 11px var(--font-ui); letter-spacing: 0; margin-left: 4px; }
 .pd-tpl-tabs .it-chips button b { font-family: var(--font-num); margin-left: 3px; }
+
+/* 모바일 선수 헤더 — 사진·이름·OVR 한 줄, 포지션 칩, 정보는 화면 폭 2열 칸(작은 이름표 + 큰 값). 예전엔 좁은 가운데 칸에
+   나이·국적·입단·계약·출전·몸값을 이어 붙여 낱말 중간 줄바꿈 + 회색 글이 붉은 배경에 묻혔다(2026-11-03 사용자) */
+.pd-facts { display: none; }
+@media (max-width: 560px) {
+  .pd-head { display: grid; grid-template-columns: 60px minmax(0, 1fr) auto; grid-template-areas: "photo name ovr" "chips chips chips" "facts facts facts";
+    column-gap: 12px; row-gap: 10px; align-items: center; padding: 16px; }
+  .pd-head > .pd-photo { grid-area: photo; width: 60px; height: 60px; border-radius: 14px; }
+  .pd-head > .pd-id { display: contents; }
+  .pd-head .pd-name { grid-area: name; font-size: 24px; line-height: 1.05; overflow-wrap: anywhere; }
+  .pd-head .pd-id .pd-meta { display: none; }
+  .pd-head .pd-pos { grid-area: chips; margin-top: 0; }
+  .pd-head > .pd-ovr { grid-area: ovr; padding: 6px 10px; }
+  .pd-head > .pd-ovr .teko { font-size: 36px !important; }
+  .pd-facts { grid-area: facts; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+  .pd-facts > div { display: flex; flex-direction: column; gap: 2px; min-width: 0; padding: 8px 10px; border-radius: 10px;
+    background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.08); }
+  .pd-facts em { font-style: normal; font-size: 11px; color: rgba(255, 255, 255, 0.6); }
+  .pd-facts b { font: 700 15px/1.25 var(--font-ui); color: var(--txt); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+  .pd-facts i { font-style: normal; font-size: 11.5px; line-height: 1.35; color: rgba(255, 255, 255, 0.72); }
+}

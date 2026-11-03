@@ -63,6 +63,29 @@ function Bar({ label, pct, raw, low, att }: { label: string; pct: number; raw: n
   );
 }
 
+// 모바일 선수 정보 칸 — 좁은 화면에선 사진·이름·OVR 사이 좁은 칸에 '27세 · England · 입단 … · 계약 …(1년 8개월 남음) · 리그 …'를
+// 한 줄씩 이어 붙여 낱말 중간에서 줄이 바뀌고 회색 글이 붉은 배경에 묻혔다(2026-11-03 사용자 'RICE 들어가면 27세 england 부분 가독성').
+// 화면 폭 전체 2열 칸(작은 이름표 + 큰 값)으로. 데스크톱은 위 pd-meta 줄 그대로(globals.css 에서 모바일만 보임)
+function PdFacts({ d }: { d: PlayerDetail }) {
+  const ym = (s?: string | null) => (s ? s.slice(0, 7).replace("-", ".") : "");
+  const left = d.contract_until ? contractLeft(d.contract_until).replace(/^ \(|\)$/g, "") : "";
+  const all = d.season_log?.available && d.season_log.by_comp.length > 1 ? d.season_log.total : null;
+  const cells: { k: string; v: string; s?: string[] }[] = [];
+  if (!d.positions?.length && d.pos) cells.push({ k: "포지션", v: d.pos });
+  if (d.age > 0) cells.push({ k: "나이", v: `${d.age}세` });
+  if (d.nationality) cells.push({ k: "국적", v: d.nationality });
+  if (d.value_eur > 0) cells.push({ k: "시장가치", v: fmtEur(d.value_eur) });
+  if (d.contract_until) cells.push({ k: "계약", v: `~${ym(d.contract_until)}`, s: [left, d.joined ? `입단 ${ym(d.joined)}` : ""].filter(Boolean) });
+  else if (d.joined) cells.push({ k: "입단", v: ym(d.joined) });
+  cells.push({ k: "리그", v: `${d.minutes.toLocaleString()}′`, s: [`${d.goals}골 ${d.assists}도움`] });
+  if (all) cells.push({ k: "전체 대회", v: `${all.minutes.toLocaleString()}′`, s: [`${all.goals}골 ${all.assists}도움`] });
+  return (
+    <div className="pd-facts">
+      {cells.map((c) => <div key={c.k}><em>{c.k}</em><b>{c.v}</b>{(c.s ?? []).map((x) => <i key={x}>{x}</i>)}</div>)}
+    </div>
+  );
+}
+
 // 포지션별 OVR 칩 — 대표 먼저, 덜 뛴 자리(익숙함 60% 미만)는 점선. 자리가 하나뿐이면 OVR 상자(OVR · RW)로 충분
 function PosChips({ d }: { d: PlayerDetail }) {
   const ps = d.positions ?? [];
@@ -125,7 +148,7 @@ function Detail({ team, player, accent, heatmap }: { team: string; player: strin
     <div className="card pd-card">
       <div className="pd-head" style={{ background: `linear-gradient(120deg, ${hexA(d.color, 0.28)}, transparent)` }}>
         {d.photo ? <img className="pd-photo" src={d.photo} alt="" /> : <span className="pd-photo ph" />}
-        <div style={{ flex: 1 }}>
+        <div className="pd-id" style={{ flex: 1 }}>
           <div className="pd-name">{d.player}</div>
           {/* 빈 정보는 숨긴다 — 나이 0·국적 없음이 'DF · 0세 · '로 찍히던 194명(2026-10-20 점검) */}
           <div className="pd-meta">{[d.positions?.length ? "" : d.pos, d.age > 0 ? `${d.age}세` : "", d.nationality].filter(Boolean).join(" · ")}</div>
@@ -148,6 +171,7 @@ function Detail({ team, player, accent, heatmap }: { team: string; player: strin
           <div style={{ fontSize: 11, letterSpacing: 1, color: "var(--muted)", whiteSpace: "nowrap" }}>OVR{d.main_pos ? <> · <b style={{ color: "var(--txt)" }}>{d.main_pos}</b></> : null}</div>
           <div style={{ fontSize: 11, fontWeight: 700, marginTop: 3, whiteSpace: "nowrap", fontFamily: "var(--font-ui)", letterSpacing: 0 }}>{t.ko}</div>
         </div>
+        <PdFacts d={d} />
       </div>
       <TrendLine t={d.trend} ovr={d.ovr} />
       <JustPlayedStrip d={d} />
