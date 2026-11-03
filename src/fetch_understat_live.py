@@ -73,8 +73,11 @@ def main() -> int:
                 break
             except Exception as e:  # noqa: BLE001 — 한 리그 실패는 기존 파일 유지
                 print(f"[understat-live] {lg} 실패 {type(e).__name__}: {str(e)[:120]}")
-                if any(k in str(e) for k in _NET_ERR) and not reachable():
-                    print("[understat-live] understat.com 에 닿지 않음 — 원천 중단(기존 파일 유지, 나머지 리그 건너뜀)")
+                # 연결 자체가 안 되거나, 닿긴 하는데 JSON 대신 차단 페이지(HTML)를 주는 경우(2026-11-03 밤부터 'Expecting value')
+                # 둘 다 우리 고장이 아닌 원천 중단 — 빨간불 대신 75(FotMob 이 xG 를 대신 채운다, src/season_totals.apply_fotmob_xg)
+                blocked = isinstance(e, ValueError) and "Expecting value" in str(e)
+                if blocked or (any(k in str(e) for k in _NET_ERR) and not reachable()):
+                    print("[understat-live] understat.com 차단·불통 — 원천 중단(기존 파일 유지, 나머지 리그 건너뜀)")
                     return EX_SOURCE_DOWN if ok == 0 else 1
                 failed = True
                 break
