@@ -7,6 +7,7 @@
   3. transfers    이적료 없는 IN(승격형)과 OUT 에 같은 선수가 없음        (2군 승격 후 판 선수 — 바이백·재판매는 정상)
   4. opponents    다음 경기 상대가 우리 8개 리그 팀이면 리그·순위가 붙음  (Paris Saint-Germain 연결 실패)
   5. leaders      TEAM LEADERS 90분당 1위가 최소 출전을 넘김             (10분 뛴 키패스 1위)
+  7. injury_return '부상 복귀' 신호(Inbox·Signals)인데 지금도 결장 명단에 있음 — 아직 안 돌아온 선수(살리바, 2026-11-03)
   6. heatmap_side 화면 히트맵(공격 →, 위 = 왼쪽)의 좌우 = 이번 시즌 라인업 좌우(ESPN L*·R* 4선발+, 75%+ 한쪽)
                   (2026-11-03 사용자 '라이스·외데고르 히트맵이 같은 곳' — 라이스가 이번 시즌 RM 이라 맞았다. 214명 대조 반대 0명)
 결과: data/eval/screen_audit.json (daily_data, watchdog 'screen' 점검이 읽음)
@@ -61,7 +62,8 @@ def run(full: bool = False) -> dict:
     from leagues import LEAGUES
 
     issues: list[dict] = []
-    checked = {"season_log": 0, "team_xg": 0, "transfers": 0, "opponents": 0, "leaders": 0, "heatmap_side": 0}
+    checked = {"season_log": 0, "team_xg": 0, "transfers": 0, "opponents": 0, "leaders": 0, "heatmap_side": 0,
+               "injury_return": 0}
     ours = set(m._club_names())
 
     def bad(kind, team, detail):
@@ -92,6 +94,30 @@ def run(full: bool = False) -> dict:
             if (b["goals"], b["assists"]) != (d["goals"], d["assists"]) or abs(b["minutes"] - d["minutes"]) > 2:
                 bad("season_log", r["squad"], f"{r['player']} 헤더 {d['minutes']}′ {d['goals']}G {d['assists']}A ≠ "
                                               f"SEASON LOG {b['minutes']}′ {b['goals']}G {b['assists']}A")
+        # 7) '부상 복귀'인데 지금도 결장 — 전 팀(리그 단위 신호라 싸다)
+        try:
+            out_now = {}
+            for team in teams:
+                for k, v in (m._active_injuries(team, lg) or {}).items():
+                    out_now[(team, k)] = v
+            recent = (dt.date.today() - dt.timedelta(days=14)).isoformat()
+            evs = m._injury_events(lg)                           # 화면(홈·Signals)과 같은 60일 창, 최근 2주만
+            later = {}                                           # 복귀 뒤 따로 잡힌 새 부상(우아이사 햄스트링 복귀 → 9일 뒤 무릎)은 정상
+            for e in evs:
+                if e["event"] == "new":
+                    k = (e["squad"], _norm(e["player"]))
+                    later[k] = max(later.get(k, ""), e["date"])
+            for e in evs:
+                if e["event"] != "return" or e.get("source") == "출전" or e["date"] < recent:
+                    continue
+                if later.get((e["squad"], _norm(e["player"])), "") > e["date"]:
+                    continue
+                checked["injury_return"] += 1
+                v = out_now.get((e["squad"], _norm(e["player"])))
+                if v:
+                    bad("injury_return", e["squad"], f"{e['player']} {e['date']} '부상 복귀' 인데 지금도 결장({v.get('injury')} ~{v.get('until')})")
+        except Exception:  # noqa: BLE001
+            pass
         sides = _lineup_sides(lg)
         for team in sample:
             # 6) 히트맵 좌우 — 화면 그리드(API 가 행을 뒤집어 위 = 왼쪽)의 무게중심이 라인업 쪽과 같은가

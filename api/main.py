@@ -457,6 +457,7 @@ def overview(team: str, league: str = ACTIVE_LEAGUE):
         import positions as _ps  # noqa: PLC0415
         _inj = _active_injuries(team, league)
         ovr["units"] = {k: [{**x, "injured": _ps.norm_name(x["player"]) in _inj,
+                             "absence": (_inj.get(_ps.norm_name(x["player"])) or {}).get("kind"),
                              "until": (_inj.get(_ps.norm_name(x["player"])) or {}).get("until", "")} for x in v]
                         for k, v in (adj.get("units") or {}).items()}
 
@@ -2056,7 +2057,9 @@ def _injury_events(league: str, days: int = 60) -> list[dict]:
             if d < since:
                 continue
             new = str(r.get("event_type")) == "new_injury"
-            if not new and src != "Transfermarkt":
+            # 복귀 = TM 목록에서 빠짐(recovered_or_removed)만. 'updated'(복귀 예정일만 바뀜)를 복귀로 읽어 아직 결장 중인 살리바
+            # (허리, 11/12 → 11/20)가 Inbox '부상 복귀'로 나왔다(2026-11-03 사용자) — 전 리그 122건
+            if not new and (src != "Transfermarkt" or str(r.get("event_type")) != "recovered_or_removed"):
                 continue
             until = str(r.get("new_until") or "") if new else ""
             ev.append({"date": d, "event": "new" if new else "return", "squad": str(r.get("squad") or ""),
@@ -2101,8 +2104,33 @@ def _injury_events(league: str, days: int = 60) -> list[dict]:
         first[k] = len(out)
         out.append(e)
     out = _settle_by_appearances(league, out, sig)
+    out = _drop_returns_still_out(league, out, sig)
     out.sort(key=lambda e: e["date"], reverse=True)
     return out
+
+
+def _drop_returns_still_out(league: str, events: list[dict], sig) -> list[dict]:
+    """'부상 복귀' 인데 지금도 결장 명단(TM·FotMob)에 있으면 뺀다 — 다른 원천은 아직 결장으로 보거나, TM 목록에서 잠깐 빠졌다
+    다시 찬 경우(오로스 10/25 빠짐 → 10/26 다시, 조회 창이 짧으면 '복귀' + '새 부상'으로 갈렸다). 복귀 뒤 7일 넘어 새 부상이
+    따로 잡혔을 때만 둘 다 둔다. 출전으로 확인한 복귀(source '출전')는 그대로(2026-11-03 사용자 '살리바는 아직 복귀 안 했는데')."""
+    inj = _injuries_table(league)
+    if inj is None or inj.empty or "squad" not in inj.columns:
+        return events
+    if "active" in inj.columns:
+        inj = inj[inj["active"].astype(str).str.lower().isin({"true", "1", "yes", "y"})]
+    out_now = {(str(s), sig(p)) for s, p in zip(inj["squad"], inj["player"])}
+    newer = {}
+    for e in events:
+        if e["event"] == "new":
+            k = (e["squad"], sig(e["player"]))
+            newer[k] = max(newer.get(k, ""), e["date"])
+    def flicker(e) -> bool:
+        k = (e["squad"], sig(e["player"]))
+        if e["event"] != "return" or e.get("source") == "출전" or k not in out_now:
+            return False
+        nd = newer.get(k, "")
+        return not (nd and e["date"] and (datetime.date.fromisoformat(nd) - datetime.date.fromisoformat(e["date"])).days > 7)
+    return [e for e in events if not flicker(e)]
 
 
 def _settle_by_appearances(league: str, events: list[dict], sig) -> list[dict]:
@@ -2373,8 +2401,15 @@ def _injuries_table(league: str):
     return extra if inj is None or inj.empty else pd.concat([inj, extra], ignore_index=True)
 
 
+def _absence_kind(text) -> str:
+    """결장 종류 — 'suspension'(출장 정지·징계) | 'injury'. 화면이 출장 정지를 부상(✚)으로 그리던 것(다우먼, 2026-11-03)."""
+    t = str(text or "")
+    return "suspension" if ("출장 정지" in t or "징계" in t or "suspen" in t.lower() or "red card" in t.lower()) else "injury"
+
+
 def _active_injuries(team: str, league: str) -> dict:
-    """{정규화 이름: {injury, until}} — 현재 부상(TM, 부상 뒤 실제로 뛴 선수 제외)."""
+    """{정규화 이름: {injury, until, kind}} — 현재 결장(TM 부상 · FotMob 결장 명단, 부상 뒤 실제로 뛴 선수 제외).
+    kind = 'suspension'(출장 정지) | 'injury'."""
     import positions as ps  # noqa: PLC0415
     inj = _injuries_table(league)
     out = {}
@@ -2384,7 +2419,8 @@ def _active_injuries(team: str, league: str) -> dict:
     if "active" in ti.columns:
         ti = ti[ti["active"].astype(str).str.lower().isin({"true", "1", "yes", "y"})]
     for _, r in ti.iterrows():
-        out[ps.norm_name(r.get("player"))] = {"injury": str(r.get("injury") or "부상"), "until": str(r.get("until") or "")}
+        txt = str(r.get("injury") or "부상")
+        out[ps.norm_name(r.get("player"))] = {"injury": txt, "until": str(r.get("until") or ""), "kind": _absence_kind(txt)}
     return out
 
 
@@ -2430,6 +2466,7 @@ def squad(team: str, league: str = ACTIVE_LEAGUE):
         cards.append({"player": r["player"], "ovr": _player_ovr(r), "minutes": int(_num(r.get("minutes"))),
                       "age": int(_num(r.get("age"))), "photo": _photo(r), "primary": pr["primary"],
                       "secondary": pr["secondary"], "injured": ps.norm_name(r["player"]) in inj,
+                      "absence": (inj.get(ps.norm_name(r["player"])) or {}).get("kind"),
                       "role_starts": pr.get("roles") or {}, "pos_ovr": _pos_ovr_map(r)})
     buckets = []
     first_of: dict[str, str] = {}                         # 선수 → 이미 1st 인 자리(한 선수는 한 자리에서만 1st)
@@ -3994,7 +4031,7 @@ def _placements(team: str, league: str, last_n: int | None = None, exclude: set 
     formation = str(fm.iloc[0]) if not fm.empty else "4-3-3"
     import positions as _ps_  # noqa: PLC0415
     _norm_inj = _ps_.norm_name
-    _inj_now = set(_active_injuries(team, league) or {})          # 지금 결장(부상) — 배치 선수에 ✚
+    _inj_now = _active_injuries(team, league) or {}               # 지금 결장 — 배치 선수에 ✚(부상) · ▮(출장 정지)
 
     # 최근 창(last_n)이면 최근 경기일수록 무겁게(0.6 → 1.0) — 예전엔 같은 무게라 아스날 최근 3경기에서
     # 칼라피오리(리즈 CB·포레스트 LB)와 루이스스켈리(리즈 MF·릴 LB)가 동점이 되고 이름순으로 스켈리가 들어갔다(2026-10-22 사용자)
@@ -4072,6 +4109,7 @@ def _placements(team: str, league: str, last_n: int | None = None, exclude: set 
             "photo": (_photo(row) if row is not None else "") or (_resolve_photo(player, resolve, league) if player else ""),
             # 지금 부상 중이면 표시 — 시즌 XI 의 Tzolis(~10/30)가 표시 없이 선발로 보여 다음 경기 XI 로 오해됐다
             "injured": bool(player) and _norm_inj(player) in _inj_now,
+            "absence": (_inj_now.get(_norm_inj(player)) or {}).get("kind") if player else None,
         })
     return {"formation": formation, "placements": placements, "matches": len(matches)}
 
@@ -4872,6 +4910,7 @@ def _position_needs(team: str, league: str) -> dict:
         cards.append({"player": str(r["player"]), "ovr": int(_player_ovr(r)), "age": int(_num(r.get("age"))),
                       "primary": pr["primary"], "secondary": list(pr["secondary"]), "photo": _photo(r),
                       "injured": nk in inj, "until": (inj.get(nk) or {}).get("until", ""),
+                      "absence": (inj.get(nk) or {}).get("kind"),
                       "out_w": round(_weeks_out((inj.get(nk) or {}).get("until"), today), 1) if nk in inj else 0.0,
                       "recent": int(rec) if rec is not None and rec == rec else None,
                       "form": int(frm) if frm is not None and frm == frm else None,
@@ -4980,7 +5019,8 @@ def _position_needs(team: str, league: str) -> dict:
                       "level": level, "when": "1월 창" if jan else "여름 창", "reasons": reasons, "signals": sig,
                       "options": round(options, 1), "need_n": need_n,
                       "depth": [{"player": c["player"], "ovr": c["ovr"], "kind": "primary" if c in prim else "secondary",
-                                 "injured": c["injured"], "until": c["until"], "recent": c["recent"], "age": c["age"],
+                                 "injured": c["injured"], "absence": c.get("absence"), "until": c["until"],
+                                 "recent": c["recent"], "age": c["age"],
                                  "photo": c["photo"]} for c in depth[:6]],
                       "window": {"out": mv["out"], "in": mv["in"], "verdict": verdict}})
     roles.sort(key=lambda x: (-x["urgency"], x["role"]))
@@ -6660,7 +6700,7 @@ def _compute_hub_body() -> bytes:
     deals, buzz, changes, snaps = [], [], [], []
     form_c, goal_c, contract_c, injuries = [], [], [], []
     # 홈 상단 요약 — 아래 목록들은 리그별 상위 몇 건만 담으므로 전체 수치는 따로 센다
-    summary = {"spend_eur": 0.0, "signings": 0, "manager_changes": 0, "injured": 0}
+    summary = {"spend_eur": 0.0, "signings": 0, "manager_changes": 0, "injured": 0, "suspended": 0}
     prospect_c, veteran_c, value_c = [], [], []      # 유망주 U21 · 베테랑 32+ · 저평가 가성비
     mover_c = []                                     # 선수 동향 — OVR 변화(2주 전 또는 지난 시즌 대비)
     golden_boot, tots, injury_impact = {}, {}, []    # 리그별 득점왕 레이스 · 시즌 베스트 XI · 부상으로 잃은 전력
@@ -6773,7 +6813,10 @@ def _compute_hub_body() -> bytes:
                     mover_c.append((r, lg, "season", o - int(t_["ovr_prev"]), o, int(t_["ovr_prev"])))
 
         cur_inj = _injuries_table(lg)
-        summary["injured"] += 0 if cur_inj is None else int(len(cur_inj))
+        if cur_inj is not None and not cur_inj.empty:      # 출장 정지는 부상 수에서 빼고 따로(다우먼, 2026-11-03)
+            _sus = (cur_inj["injury"].map(_absence_kind) == "suspension") if "injury" in cur_inj.columns else pd.Series(False, index=cur_inj.index)
+            summary["injured"] += int((~_sus).sum())
+            summary["suspended"] += int(_sus.sum())
         if pf is not None and "player" in pf.columns:
             golden_boot[lg] = _golden_boot(p, lg)
             _t = _team_of_season(p, lg)

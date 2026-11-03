@@ -64,16 +64,17 @@ def test_injury_returns_deduped(monkeypatch) -> None:
     today = datetime.date.today()
     d = lambda n: (today - datetime.timedelta(days=n)).isoformat()   # noqa: E731
     tm = pd.DataFrame([
-        {"run_date": d(8), "event_type": "returned", "squad": "Liverpool", "player": "Dominik Szoboszlai", "old_injury": "Thigh problems"},
-        {"run_date": d(7), "event_type": "returned", "squad": "Liverpool", "player": "Dominik Szoboszlai", "old_injury": "Thigh problems"},
-        {"run_date": d(7), "event_type": "returned", "squad": "Liverpool", "player": "Dominik Szoboszlai", "old_injury": "Thigh problems"},
+        {"run_date": d(8), "event_type": "recovered_or_removed", "squad": "Liverpool", "player": "Dominik Szoboszlai", "old_injury": "Thigh problems"},
+        {"run_date": d(7), "event_type": "recovered_or_removed", "squad": "Liverpool", "player": "Dominik Szoboszlai", "old_injury": "Thigh problems"},
+        {"run_date": d(7), "event_type": "recovered_or_removed", "squad": "Liverpool", "player": "Dominik Szoboszlai", "old_injury": "Thigh problems"},
         {"run_date": d(2), "event_type": "new_injury", "squad": "Liverpool", "player": "Dominik Szoboszlai", "new_injury": "Thigh problems",
          "new_until": ""},
-        {"run_date": d(40), "event_type": "returned", "squad": "Liverpool", "player": "Cody Gakpo", "old_injury": "Ankle injury"},
-        {"run_date": d(7), "event_type": "returned", "squad": "Liverpool", "player": "Cody Gakpo", "old_injury": "Ankle injury"},
+        {"run_date": d(40), "event_type": "recovered_or_removed", "squad": "Liverpool", "player": "Cody Gakpo", "old_injury": "Ankle injury"},
+        {"run_date": d(7), "event_type": "recovered_or_removed", "squad": "Liverpool", "player": "Cody Gakpo", "old_injury": "Ankle injury"},
     ])
     monkeypatch.setattr(M.ds, "read_table", lambda name, league=None: tm if name == "transfermarkt_injury_changes" else None)
     monkeypatch.setattr(M, "_news_injury_rows", lambda league, days=7: [])
+    monkeypatch.setattr(M, "_injuries_table", lambda league: pd.DataFrame())   # 지금 결장 명단과 대조(_drop_returns_still_out)는 따로 시험
     ev = M._injury_events("EPL", days=60)
     rets = [(e["player"], e["date"]) for e in ev if e["event"] == "return"]
     assert rets.count(("Dominik Szoboszlai", d(7))) == 1 and len([r for r in rets if r[0] == "Dominik Szoboszlai"]) == 1
