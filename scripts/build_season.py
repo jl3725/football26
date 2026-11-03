@@ -167,7 +167,8 @@ def main(argv: list[str] | None = None) -> int:
             t0 = time.time()
             code, out = _run_step(args, env)
             log.write(out[-8000:] + "\n")
-            status = "ok" if code == 0 else ("TIMEOUT" if code is None else f"FAIL({code})")
+            # 75 = 외부 원천 문제(차단·원천이 멈춤 — fetch_fbref SOURCE STALE 등): 실패·재시도 아님, 원장엔 SOURCE DOWN
+            status = ("ok" if code == 0 else "TIMEOUT" if code is None else "SOURCE" if code == 75 else f"FAIL({code})")
             tail = (out.strip().splitlines() or [""])[-1][:110]
             emit(f"   {status} {time.time() - t0:5.0f}s  {tail}")
             # 실행 원장(DATA STATUS) — 로컬 agent 는 LEDGER_RUNNER 로 자기 이름(local-sofascore-daily 등)을 넘긴다

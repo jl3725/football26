@@ -23,10 +23,15 @@ def _fid(v) -> str | None:
         return None
 
 
+def league_code(league: str) -> str:
+    """FotMob 경기별 기록의 리그 대회 코드(eng.1 …) — 라이트 리그(eng.2 …)는 leagues.py espn."""
+    from leagues import LEAGUES  # noqa: PLC0415
+    return LEAGUE_CODE[league][0] if league in LEAGUE_CODE else getattr(LEAGUES.get(league), "espn", "")
+
+
 def league_totals(mr: pd.DataFrame | None, league: str) -> tuple[dict, dict]:
     """({fotmob_id: 합계}, {'squad|player': 합계}) — 리그 경기만. 합계 = {minutes, goals, assists, apps, asof}."""
-    from leagues import LEAGUES  # noqa: PLC0415
-    code = LEAGUE_CODE[league][0] if league in LEAGUE_CODE else getattr(LEAGUES.get(league), "espn", "")   # 라이트 리그(eng.2 …)
+    code = league_code(league)
     if mr is None or mr.empty or not code:
         return {}, {}
     d = mr[mr["comp_code"].astype(str) == code].copy()

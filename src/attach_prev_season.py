@@ -39,15 +39,25 @@ def _tmid(v) -> str:
         return ""
 
 
-def load_prev(season_start: int) -> pd.DataFrame:
-    """직전 시즌 전 리그 players_full (필요 컬럼만)."""
+_USE = {"player", "squad", "minutes", "ss_rating", "tm_id", "norm_key", "gk_save_pct", "gk_cs_pct", "market_value_eur",
+        "nationality"}
+
+
+def load_prev(season_start: int, read=None) -> pd.DataFrame:
+    """직전 시즌 전 리그 players_full (필요 컬럼만). read(league, season) 를 주면 그걸로(서버 = datastore DB) — 없으면 CSV."""
     frames = []
     for lg in LEAGUES:
-        path = data_path("players_full", lg, f"{season_start - 1}_{season_start}")
-        if not path.exists():
-            continue
-        df = pd.read_csv(path, usecols=lambda c: c in {"player", "squad", "minutes", "ss_rating", "tm_id", "norm_key",
-                                                       "gk_save_pct", "gk_cs_pct", "market_value_eur", "nationality"})
+        tag = f"{season_start - 1}_{season_start}"
+        if read is not None:
+            df = read(lg, tag)
+            if df is None or df.empty:
+                continue
+            df = df[[c for c in df.columns if c in _USE]].copy()
+        else:
+            path = data_path("players_full", lg, tag)
+            if not path.exists():
+                continue
+            df = pd.read_csv(path, usecols=lambda c: c in _USE)
         for c in ("gk_save_pct", "gk_cs_pct", "market_value_eur", "nationality"):
             if c not in df.columns:
                 df[c] = pd.NA

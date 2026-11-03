@@ -69,6 +69,19 @@ def attach(frame: pd.DataFrame, league: str, season: str | None, read) -> pd.Dat
                 fid[idx] = int(hit[0]) if pd.notna(hit[0]) else None
                 out.at[idx, "fm_rating"] = hit[1]
                 out.at[idx, "fm_minutes"] = hit[2]
+        # 이름이 원천마다 다른 선수 — src/live_roster 가 같은 팀·같은 성으로 맞춘 FotMob 번호(_fm_hint)로
+        # ('Bachir Belloumi' ↔ 'Mohamed Belloumi', 2026-11-03)
+        if "_fm_hint" in out.columns:
+            by_id = {int(i): (r, mn) for i, r, mn in zip(cur["fotmob_id"], _num(cur["rating"]), _num(cur["minutes"]))
+                     if pd.notna(i)}
+            for idx in out.index[fid.isna() & out["_fm_hint"].notna()]:
+                try:
+                    k = int(float(out.at[idx, "_fm_hint"]))
+                except (TypeError, ValueError):
+                    continue
+                fid[idx] = k
+                if k in by_id:
+                    out.at[idx, "fm_rating"], out.at[idx, "fm_minutes"] = by_id[k]
     # 이번 시즌 FotMob 에 없는 선수(출전 적음·부상)는 직전 시즌 표에서 (직전 팀, 이름)으로 id 를 찾는다
     prev_tag = _season_tag(season, 1)
     if "prev_squad" in out.columns:

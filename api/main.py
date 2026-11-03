@@ -1761,6 +1761,62 @@ def _prev_index() -> tuple:
     return allp, by_pid, by_name
 
 
+@_memo(ttl=1800)
+def _other_apps_index(league: str) -> tuple[dict, dict, dict]:
+    """이번 시즌 리그 밖 출전 — ({FotMob 번호: 클럽 대회 목록}, {(팀, 정규화 이름): 클럽 대회 목록}, {FotMob 번호: 대표팀}).
+    클럽 대회 목록 = [{code, kind('cup'|'euro'), apps, min}] (경기 수 많은 순), 대표팀 = {apps, min}.
+    2026-11-03 사용자: '메슬리에 EFL컵 뛰었는데 출전 없음 — 컵·국대 포함 안 되나요'(리그 출전만 셌다)."""
+    import allcomp_stats as acs  # noqa: PLC0415
+    import positions as ps  # noqa: PLC0415
+    by_id: dict = {}
+    by_name: dict = {}
+    mr = ds.read_table("fotmob_match_ratings", league=league)
+    if mr is not None and not mr.empty and "comp_code" in mr.columns:
+        d = mr[pd.to_numeric(mr["minutes"], errors="coerce").fillna(0) > 0].copy()
+        d["_kind"] = d["comp_code"].map(acs.kind)
+        d = d[d["_kind"] != "league"]
+        d["minutes"] = pd.to_numeric(d["minutes"], errors="coerce").fillna(0)
+        for (fid, sq, pl), g in d.groupby([d["fotmob_id"].map(acs.fid_of).fillna(""), "squad", "player"]):
+            comps = [{"code": str(c), "kind": str(k), "apps": int(len(x)), "min": int(x["minutes"].sum())}
+                     for (c, k), x in g.groupby(["comp_code", "_kind"])]
+            comps.sort(key=lambda c: (-c["apps"], -c["min"]))
+            if fid:
+                by_id[fid] = comps
+            by_name[(str(sq), ps.norm_name(pl))] = comps
+    nt: dict = {}
+    t = ds.read_table("fotmob_intl_ratings", league="EPL")
+    if t is not None and not t.empty and "fotmob_id" in t.columns:
+        t = t[pd.to_numeric(t["minutes"], errors="coerce").fillna(0) > 0]
+        for fid, g in t.groupby(t["fotmob_id"].map(acs.fid_of).fillna("")):
+            if fid:
+                nt[fid] = {"apps": int(len(g)), "min": int(pd.to_numeric(g["minutes"], errors="coerce").sum())}
+    return by_id, by_name, nt
+
+
+def _other_apps(team: str, league: str, row) -> dict | None:
+    """그 선수의 이번 시즌 리그 밖 출전 {club: [...], nt: {...}} — 없으면 None. FotMob 번호(표 fm_id → 팀 FotMob 명단) → 팀·이름."""
+    import allcomp_stats as acs  # noqa: PLC0415
+    import positions as ps  # noqa: PLC0415
+    by_id, by_name, nt = _other_apps_index(league)
+    fid = acs.fid_of(row.get("fm_id"))
+    if not fid:
+        try:
+            import fotmob_squads as fsq  # noqa: PLC0415
+            f = fsq.find(_fm_squad_index(league), team, str(row.get("player") or ""))
+            fid = acs.fid_of(f.get("fotmob_id")) if f else None
+        except Exception:  # noqa: BLE001
+            fid = None
+    club = (by_id.get(fid) if fid else None) or by_name.get((team, ps.norm_name(row.get("player"))))
+    n = nt.get(fid) if fid else None
+    return {"club": club or [], "nt": n} if (club or n) else None
+
+
+@_memo(ttl=1800)
+def _fm_squad_index(league: str) -> dict:
+    import fotmob_squads as fsq  # noqa: PLC0415
+    return fsq.index(ds.read_table("fotmob_squads", league=league))
+
+
 def _roster_extras(team: str, league: str, df) -> list[dict]:
     """이번 시즌 출전이 없어 players_full 에 없는 스쿼드 선수(TM 스쿼드 명단 = 계약 데이터).
 
@@ -1787,11 +1843,14 @@ def _roster_extras(team: str, league: str, df) -> list[dict]:
         if preg.norm(r.get("player")) not in known and not preg.best_match(str(r.get("player")), {c.get("player"): c.get("player") for c in cands})[0]:
             cands.append({"player": r.get("player"), "norm_key": None, "tm_id": None, "tm_photo": None})
     out = []
+    import live_roster as lrs  # noqa: PLC0415
+    mine_l = list(mine)
     for r in cands:
         name = str(r.get("player") or "")
         tid = str(int(_num(r.get("tm_id")))) if pd.notna(r.get("tm_id")) and r.get("tm_id") is not None else ""
-        if (tid and tid in have_tm) or str(r.get("norm_key")) in have_nk or preg.best_match(name, mine)[0]:
-            continue                                      # 이미 출전자로 있음('Mahdi Nicoll-Jazuli' = 'Mahdi Jazuli')
+        if (tid and tid in have_tm) or str(r.get("norm_key")) in have_nk or lrs.match_in_squad(name, mine_l):
+            continue                                      # 이미 출전자로 있음('Mahdi Nicoll-Jazuli' = 'Mahdi Jazuli',
+            #                                               같은 팀 하나뿐인 성 'Mohamed' ↔ 'Bachir Belloumi', 2026-11-03)
         if lo and _is_loaned(name, lo):
             continue
         pid = f"tm{tid}" if tid else None
@@ -1805,11 +1864,15 @@ def _roster_extras(team: str, league: str, df) -> list[dict]:
             out.append({"player": name, "squad": team, "norm_key": r.get("norm_key"), "tm_id": r.get("tm_id"),
                         "pos": f.get("pos"), "fl_group": f.get("pos"), "tm_position": f.get("tm_position"),
                         "age": fsq.age_of(f), "minutes": 0, "goals": 0, "assists": 0, "ss_rating": None,
+                        "market_value_eur": _num(r.get("market_value_eur"), None),
                         "tm_photo": r.get("tm_photo"), "_ovr": None, "_form": None,
                         "_league_level": league_level.level(league), "left_for": None, "_roster_only": True, "_no_record": True})
             continue
         pr = dict(pr)
         row = dict(pr)
+        mv = _num(r.get("market_value_eur"), None)       # 지금 TM 시장가치 우선(메슬리에 '-' — 지난 시즌 리그 표에 없던 선수, 2026-11-03)
+        if mv and mv > 0:
+            row["market_value_eur"] = mv
         row.update({
             "player": r.get("player"), "squad": team, "norm_key": r.get("norm_key"), "tm_id": r.get("tm_id"),
             "minutes": 0, "goals": 0, "assists": 0, "ss_rating": None,
@@ -2446,6 +2509,7 @@ def squad(team: str, league: str = ACTIVE_LEAGUE):
             "ovr": _o,
             "trend": _trend(r, league, ovr=_o),
             "roster_only": bool(r.get("_roster_only") is True),
+            "other_apps": _other_apps(team, league, r) if (r.get("_roster_only") is True or _num(r.get("minutes")) <= 0) else None,
             "photo": _photo(r),
             "goals": int(_num(r.get("goals"))),
             "assists": int(_num(r.get("assists"))),
@@ -2528,7 +2592,8 @@ def builder(team: str, league: str = ACTIVE_LEAGUE):
                     "line": ps.LINE_OF[pr["primary"]], "starts": pr["starts"],
                     "main_pos": r.get("_main_pos") if isinstance(r.get("_main_pos"), str) else None,
                     "pos_ovr": {p["role"]: p["ovr"] for p in pos}, "pos_fam": {p["role"]: p["fam"] for p in pos},
-                    "injured": inj.get(ps.norm_name(r["player"])), "roster_only": bool(r.get("_roster_only") is True)})
+                    "injured": inj.get(ps.norm_name(r["player"])), "roster_only": bool(r.get("_roster_only") is True),
+                    "other_apps": _other_apps(team, league, r) if _num(r.get("minutes")) <= 0 else None})
     out.sort(key=lambda x: -x["ovr"])
     # 시작 포메이션 = 실제 리그 최빈값(빌더가 4-3-3 고정으로 시작해 Overview·뎁스와 XI 가 달랐다, 2026-10-20 점검)
     return {"team": team, "color": tm.team_color(team), "players": out,

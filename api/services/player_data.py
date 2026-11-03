@@ -310,6 +310,20 @@ def _build_frame(league: str, season: str | None = None):
             stale = frame["tm_id"].isna() & pd.Series(
                 [(_nk(r), str(r.get("squad"))) in moved for _, r in frame.iterrows()], index=frame.index)
             frame = frame[~stale].copy()
+    # 리그 출전인데 표에 없는 선수 줄 + 원천마다 이름이 다른 선수 짝(src/live_roster.py) — 주간 표(FBref)가 멈추거나 늦어도
+    # 경기 20분 뒤 FotMob 기록으로. 2026-11-03 사용자: 메슬리에 '출전 없음' → FBref 10/13 캐시, 그 뒤 데뷔 선수가 표에 없었다
+    if season is None:
+        try:
+            import live_roster as lr  # noqa: PLC0415
+            from leagues import SEASON_START as _S0  # noqa: PLC0415
+            frame = lr.add_debuts(frame, ds.read_table("fotmob_match_ratings", league=league), league,
+                                  ds.read_table("fotmob_squads", league=league),
+                                  ds.read_table("transfermarkt_contracts", league=league),
+                                  prev_read=lambda lg, s: ds.read_table("players_full", league=lg, season=s),
+                                  season_start=_S0, version=ds._db_mtime(),
+                                  squads_read=lambda lg: ds.read_table("fotmob_squads", league=lg))
+        except Exception as e:  # noqa: BLE001 — 경기별 기록이 없으면 주간 표 그대로
+            print(f"[live_roster] {league}: 건너뜀 {type(e).__name__}: {e}")
     # 평점 리그 보정용(ratings_v3) — 행마다 리그 레벨을 실어 어느 호출부에서든 같은 보정이 되게
     import league_level  # noqa: PLC0415
     frame["_league_level"] = league_level.level(league)

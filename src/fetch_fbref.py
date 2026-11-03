@@ -119,7 +119,33 @@ def main() -> int:
 
     print(f"\n[OK] 저장: {OUT.name}  ({len(out)} 명),  {SAMPLE.name} (상위 30명)")
     print(out.sort_values("minutes", ascending=False).head(8).to_string(index=False))
+    lag = games_behind(out)
+    if lag is not None and lag[0] - lag[1] >= STALE_GAMES:
+        # 새로 받아도 원천 자체가 멈춘 경우 — 2026-10 FBref 26/27 표가 10월 초(팀당 5~8경기)에서 멈춰 주간 빌드가 'ok' 로
+        # 남는 동안 그 뒤 리그 데뷔 선수가 선수 표에 없었다(메슬리에·펜더스, 2026-11-03). 선수 줄·분·세부 지표는 FotMob 이
+        # 보강(src/live_roster·season_totals·allcomp_stats) — 여기선 원천 문제로 알린다
+        print(f"[fbref] 원천이 뒤처짐 — 팀당 FBref {lag[1]:.0f}경기 · FotMob {lag[0]:.0f}경기 (SOURCE STALE)")
+        return EX_SOURCE_STALE
     return 0
+
+
+STALE_GAMES = 2          # FotMob 리그 경기 수보다 이만큼 뒤면 원천 문제
+EX_SOURCE_STALE = 75     # 외부 원천 문제(scripts/ci_try.sh · 운영 원장 SOURCE DOWN, 빨간불 아님)
+
+
+def games_behind(out: pd.DataFrame) -> tuple[float, float] | None:
+    """(FotMob 팀당 리그 경기 수 중앙값, FBref 팀당 경기 수 ≈ 팀 최다 출전 분 ÷ 90 중앙값) — FotMob 기록이 없으면 None."""
+    from season_totals import league_code
+    path = data_path("fotmob_match_ratings")
+    if not path.exists() or out.empty:
+        return None
+    mr = pd.read_csv(path, usecols=["match_id", "comp_code", "squad"])
+    mr = mr[mr["comp_code"].astype(str) == league_code(LEAGUE_KEY)]
+    if mr.empty:
+        return None
+    fm = float(mr.groupby("squad")["match_id"].nunique().median())
+    fb = float((pd.to_numeric(out["minutes"], errors="coerce").groupby(out["squad"]).max() / 90).median())
+    return fm, fb
 
 
 if __name__ == "__main__":
