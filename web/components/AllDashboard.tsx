@@ -296,7 +296,7 @@ export default function AllDashboard({ onPick, switcher, leagueMap }: {
                 ["SIGNINGS", s.signings, undefined, "영입 · 임대 제외"],
               ]),
               ["MANAGER CHANGES", s.manager_changes, undefined, `이번 시즌 감독 교체 · 시즌 중 ${s.manager_changes_inseason ?? 0}`],
-              ["INJURED", s.injured, undefined, `현재 부상 결장 · ${d.leagues.length}개 리그`],
+              ["INJURED", s.injured, undefined, `현재 부상 결장 · ${d.leagues.length}개 리그${s.suspended ? ` · 출장 정지 ${s.suspended}명 별도` : ""}`],
             ] as [string, number, ((v: number) => string) | undefined, string, ReactNode?][]).map(([l, v, f, m, info]) => (
               <div className="kpi5" key={l}><span className="kpi5-l">{l}</span><b className="kpi5-v"><CountUp value={v} format={f} /></b>
                 <span className="kpi5-m">{m}{info ? <Info label={`${l} 기준`}>{info}</Info> : null}</span></div>

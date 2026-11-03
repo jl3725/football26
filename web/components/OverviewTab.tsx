@@ -2,7 +2,8 @@
 import { useLiveRow } from "@/lib/standings";
 import FormPair from "./FormPair";
 import type { Overview, TeamRecordRow } from "@/lib/api";
-import { ovrMeaning, rankMeaning } from "@/lib/meaning";
+import { ovrMeaning, rankMeaning, absenceWord, untilText, type Absence } from "@/lib/meaning";
+import { SusCard } from "./AbsenceMark";
 import { MeaningTag } from "./Meaning";
 import { feeLabel, fmtEur } from "@/lib/api";
 import { tier, hexA, roleClass, futTier } from "@/lib/ui";
@@ -44,7 +45,7 @@ function Delta({ d }: { d?: number }) {
 }
 
 const titleCase = (s: string) => s.split(" ").map((w) => (w ? w[0].toUpperCase() + w.slice(1) : w)).join(" ");
-type UnitWho = { player: string; strength: number; injured?: boolean; until?: string }[];
+type UnitWho = { player: string; strength: number; injured?: boolean; absence?: Absence; until?: string }[];
 type RecRow = TeamRecordRow;
 const shortName = surname;
 
@@ -79,8 +80,8 @@ function Unit({ label, ko, value, delta, perf, who, rank, rec, recKind }: {
       {who && who.length > 0 && (
         <div className="unit-who">
           {who.map((x) => (
-            <span key={x.player} className={x.injured ? "inj" : ""} title={`${x.player} ${x.strength}${x.injured ? ` · 부상${x.until ? `(${x.until} 복귀 예정)` : ""}` : ""}`}>
-              {shortName(x.player)}{x.injured ? " ✚" : ""}
+            <span key={x.player} className={x.injured ? "inj" : ""} title={`${x.player} ${x.strength}${x.injured ? ` · ${absenceWord(x.absence)}${x.until ? `(${untilText(x.until)})` : ""}` : ""}`}>
+              {shortName(x.player)}{x.injured ? (x.absence === "suspension" ? <SusCard /> : " ✚") : ""}
             </span>
           ))}
         </div>

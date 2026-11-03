@@ -2,7 +2,8 @@
 import { useEffect, useState } from "react";
 import { fmtEur, type Needs, type PositionNeed } from "@/lib/api";
 import { tier, ageText } from "@/lib/ui";
-import { TONE } from "@/lib/meaning";
+import { TONE, absenceWord } from "@/lib/meaning";
+import { SusCard } from "./AbsenceMark";
 import { usePeek } from "./PlayerPeek";
 import Info from "./Info";
 import { surname } from "@/lib/names";
@@ -105,9 +106,9 @@ function Detail({ n, team }: { n: PositionNeed; team: string }) {
         <span className="sn-tags">
           {n.depth.map((d) => (
             <button key={d.player} className={`sn-p${d.kind === "secondary" ? " sec" : ""}${d.injured ? " hurt" : ""} peekable`}
-              title={`${d.player} · OVR ${d.ovr}${d.kind === "secondary" ? " · 2·3포지션" : ""}${d.injured ? ` · 부상 ${d.until || ""}` : ""}${d.recent != null ? ` · LAST 5 ${d.recent}` : ""}`}
+              title={`${d.player} · OVR ${d.ovr}${d.kind === "secondary" ? " · 2·3포지션" : ""}${d.injured ? ` · ${absenceWord(d.absence)} ${d.until || ""}` : ""}${d.recent != null ? ` · LAST 5 ${d.recent}` : ""}`}
               onClick={(e) => peek(e, { name: d.player, club: team, hint: { photo: d.photo, ovr: d.ovr } })}>
-              {last(d.player)} <b style={{ color: tier(d.ovr).light }}>{d.ovr}</b>{d.injured ? <i>✚</i> : null}
+              {last(d.player)} <b style={{ color: tier(d.ovr).light }}>{d.ovr}</b>{d.injured ? (d.absence === "suspension" ? <SusCard /> : <i>✚</i>) : null}
             </button>
           ))}
           {n.depth.length === 0 && <span className="sn-none">이 자리 선수 없음</span>}

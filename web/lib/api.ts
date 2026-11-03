@@ -1,4 +1,5 @@
 // API 타입 + fetch 헬퍼. next.config rewrites 로 /api/* → FastAPI(8000) 프록시.
+import type { Absence } from "./meaning";
 
 export type Team = {
   name: string;
@@ -44,7 +45,7 @@ export type Overview = {
   };
   ovr: { overall: number; attack: number; midfield: number; defense: number; top_xi?: number;
     perf_adj?: Partial<Record<"attack" | "midfield" | "defense", number>>;
-    units?: Partial<Record<"attack" | "midfield" | "defense", { player: string; strength: number; injured?: boolean; until?: string }[]>>;
+    units?: Partial<Record<"attack" | "midfield" | "defense", { player: string; strength: number; injured?: boolean; absence?: Absence; until?: string }[]>>;
     unit_rank?: Partial<Record<"overall" | "attack" | "midfield" | "defense", { rank: number; n: number }>>;
     record?: { current: TeamRecordRow | null; past: TeamRecordRow[] } };
   ovr_delta?: { overall: number; attack: number; midfield: number; defense: number };
@@ -74,7 +75,7 @@ export type Overview = {
 
 export type CalEvent = { name: string; start: string; end: string; icon: string; kind: string };
 
-export type Placement = { slot: string; player: string; x: number; y: number; kind: string; ovr: number | null; photo: string; changed?: boolean; in?: boolean; out?: string; club?: string; injured?: boolean };
+export type Placement = { slot: string; player: string; x: number; y: number; kind: string; ovr: number | null; photo: string; changed?: boolean; in?: boolean; out?: string; club?: string; injured?: boolean; absence?: Absence };
 // FORMATION 대회 — league · 대회 코드 하나(uefa.champions·eng.league_cup …) · euro·cup(묶음) · all(전 대회) · last(가장 최근 한 경기)
 export type LineupComp = "league" | "euro" | "cup" | "all" | "last" | (string & {});
 export type Lineup = {
@@ -243,11 +244,11 @@ export type SquadPlayer = {
 };
 export type DepthPlayer = { player: string; ovr: number; minutes: number; age: number; photo: string };
 // 포지션 뎁스 옵션 — kind: primary(주포지션) · secondary(2·3포지션 = 멀티), injured: 현재 부상
-export type DepthOption = DepthPlayer & { kind?: "primary" | "secondary"; primary?: string; secondary?: string[]; injured?: boolean };
+export type DepthOption = DepthPlayer & { kind?: "primary" | "secondary"; primary?: string; secondary?: string[]; injured?: boolean; absence?: Absence };
 export type Bucket = { pos: string; count: number; multi?: number; depth: number; starter: DepthOption; rotation: DepthOption[] };
 // Best XI 빌더(/api/builder) — 전체 스쿼드 + 주·2·3포지션(실제로 선 자리, src/positions.py) + 부상
 export type BuilderPlayer = { player: string; ovr: number; photo: string; age: number; minutes: number; primary: string; secondary: string[];
-  line: string; starts: number; injured: { injury: string; until: string } | null; roster_only: boolean;
+  line: string; starts: number; injured: { injury: string; until: string; kind?: Absence } | null; roster_only: boolean;
   // 포지션별 OVR·익숙함(src/position_ovr.py) — 그 자리에 세웠을 때의 OVR
   main_pos?: string | null; pos_ovr?: Record<string, number>; pos_fam?: Record<string, number> };
 export const getBuilder = (t: string, l = _league) => j<{ team: string; color: string; players: BuilderPlayer[]; formation?: string | null }>(`/api/builder/${q(t, l)}`);
@@ -573,7 +574,7 @@ export type NeedsWindow = { is_open: boolean; label: string; kr: string | null; 
 export type PositionNeed = {
   role: string; label: string; demand: number; urgency: number; level: "urgent" | "need" | "watch" | "ok"; when: string;
   reasons: string[]; options: number; need_n: number;
-  depth: { player: string; ovr: number; kind: "primary" | "secondary"; injured: boolean; until: string; recent: number | null; age: number; photo: string }[];
+  depth: { player: string; ovr: number; kind: "primary" | "secondary"; injured: boolean; absence?: Absence; until: string; recent: number | null; age: number; photo: string }[];
   window: { out: NeedMove[]; in: NeedMove[]; verdict: string };
   signals?: NeedSignals;   // 근거 구조화(화면 아이콘 칩) — reasons 는 같은 내용의 문장
 };
@@ -707,7 +708,7 @@ export type HomeAll = { window: Context["window"]; leagues: { key: string; name:
   movers_up?: HubMover[]; movers_down?: HubMover[]; movers_basis?: "2w" | "season";
   golden_boot?: Record<string, HubBoot[]>; tots?: Record<string, TotsPlayer[]>; injury_impact?: InjuryImpactRow[];
   // 리그 전체 집계(목록은 리그별 상위 몇 건뿐) — 예전 스냅샷엔 없을 수 있음
-  summary?: { spend_eur: number; signings: number; manager_changes: number; manager_changes_inseason?: number; injured: number }; generated_at?: string };
+  summary?: { spend_eur: number; signings: number; manager_changes: number; manager_changes_inseason?: number; injured: number; suspended?: number }; generated_at?: string };
 export const getHomeAll = () => j<HomeAll>(`/api/home/all`);
 
 // ── 홈 리그 지도(/api/league-map) — 티어(리그 수준 92·86)·2부 리그 부모·순위 1~3위·빅5로 보낸 이적료 ──

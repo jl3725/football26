@@ -2,6 +2,7 @@
 import type { Placement } from "@/lib/api";
 import { usePeek } from "./PlayerPeek";
 import { surname } from "@/lib/names";
+import { SusCard } from "./AbsenceMark";
 
 const KIND_COLOR: Record<string, string> = { GK: "#37c98a", DEF: "#4c8ef0", MID: "#e0a53a", FWD: "#e2564f" };
 
@@ -60,7 +61,7 @@ export default function Pitch({ placements, accent, team, metric = "OVR" }: { pl
               {p.in && <span className="ptok-in">IN</span>}
             </div>
             <div className="ptok-name" style={{ maxWidth: `min(82px, calc(${(gapOf[i] * (gapOf[i] < 14 ? 2 : 1)).toFixed(1)}cqw - 4px))` }}>
-              {lastName(p.player)}{p.injured && <span className="ptok-inj" title="지금 부상 결장">✚</span>}{p.out && <span className="ptok-out">↔ {lastName(p.out)}</span>}</div>
+              <span className="ptok-nm">{lastName(p.player)}</span>{p.injured && (p.absence === "suspension" ? <SusCard /> : <span className="ptok-inj" title="지금 부상 결장">✚</span>)}{p.out && <span className="ptok-out">↔ {lastName(p.out)}</span>}</div>
           </div>
         );
       })}

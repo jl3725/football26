@@ -133,3 +133,9 @@ export function ppgMeaning(v: number | null | undefined): Meaning {
   if (v >= 1.0) return m("하위권 페이스", "weak");
   return m("강등권 페이스", "bad");
 }
+
+// 결장 종류 — 부상(✚)과 출장 정지(빨간 카드 모양 SusCard)를 따로. 다우먼 출장 정지가 ✚·'부상'으로 보였다(2026-11-03 사용자)
+export type Absence = "injury" | "suspension" | null | undefined;
+export const absenceWord = (k: Absence) => (k === "suspension" ? "출장 정지" : "부상");
+// '11월 말 복귀 예상'처럼 이미 '복귀'가 든 FotMob 문구에 '복귀 예정'을 또 붙이지 않게
+export const untilText = (u?: string | null) => (!u ? "" : /복귀|훈련|불투명|점검/.test(u) ? u : `${u} 복귀 예정`);

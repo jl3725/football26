@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { getSquad, fmtEur, type Squad, type SquadPlayer, type DepthOption } from "@/lib/api";
 import { tier, hexA, ageText } from "@/lib/ui";
 import { depthMeaning } from "@/lib/meaning";
+import { SusCard } from "./AbsenceMark";
 import { MeaningTag } from "./Meaning";
 import SquadBuilder from "./SquadBuilder";
 import SectionHead from "./SectionHead";
@@ -104,7 +105,7 @@ export default function SquadTab({ team, accent }: { team: string; accent: strin
               {rank <= 2 && <i className="dp5-n">{rank === 1 ? "2nd" : "3rd"}</i>}
               <b style={{ color: tier(o.ovr).light }}>{o.ovr}</b> {surname(o.player)}
               {o.kind === "secondary" && <em className="dp5-m">멀티·{o.primary}</em>}
-              {o.injured && <em className="dp5-inj">✚</em>}
+              {o.injured && (o.absence === "suspension" ? <SusCard /> : <em className="dp5-inj" title="부상 결장">✚</em>)}
             </span>
           );
           return (
@@ -114,7 +115,7 @@ export default function SquadTab({ team, accent }: { team: string; accent: strin
                 onClick={(e) => peek(e, { name: b.starter.player, club: team, hint: { photo: b.starter.photo, ovr: b.starter.ovr, age: b.starter.age } })}>
                 <b style={{ color: tier(b.starter.ovr).light }}>{b.starter.ovr}</b> {surname(b.starter.player)}
                 {b.starter.kind === "secondary" && <em className="dp5-m">멀티·{b.starter.primary}</em>}
-                {b.starter.injured && <em className="dp5-inj">✚</em>}
+                {b.starter.injured && (b.starter.absence === "suspension" ? <SusCard /> : <em className="dp5-inj" title="부상 결장">✚</em>)}
               </span>
               <span className="depth-rot">
                 {b.rotation.length === 0 ? <em>백업 없음</em> : b.rotation.map((r, i) => chip(r, i + 1))}

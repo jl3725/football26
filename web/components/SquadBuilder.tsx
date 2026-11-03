@@ -2,7 +2,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { getBuilder, type BuilderPlayer } from "@/lib/api";
 import { tier } from "@/lib/ui";
-import { ovrMeaning, scoreMeaning } from "@/lib/meaning";
+import { ovrMeaning, scoreMeaning, absenceWord } from "@/lib/meaning";
+import { SusCard } from "./AbsenceMark";
 import { MeaningTag } from "./Meaning";
 import Info from "./Info";
 import { usePeek } from "./PlayerPeek";
@@ -93,7 +94,7 @@ export default function SquadBuilder({ team, accent }: { team: string; accent: s
   const [formation, setFormation] = useState("4-3-3");
   const [overrides, setOverrides] = useState<Record<number, string>>({});
   const [pick, setPick] = useState<number | null>(null);
-  const [availOnly, setAvailOnly] = useState(true);    // 부상 제외 — 기본 켬(다음 경기에 뛸 수 있는 XI)
+  const [availOnly, setAvailOnly] = useState(true);    // 결장(부상·출장 정지) 제외 — 기본 켬(다음 경기에 뛸 수 있는 XI)
   const peek = usePeek();
   useEffect(() => {
     let a = true; setPlayers(null); setOverrides({});
@@ -139,7 +140,7 @@ export default function SquadBuilder({ team, accent }: { team: string; accent: s
             <button key={f} className={f === formation ? "on" : ""} onClick={() => { setFormation(f); setOverrides({}); setPick(null); }}>{f}</button>
           ))}
         </div>
-        <label className="sb5-tg"><input type="checkbox" checked={availOnly} onChange={(e) => { setAvailOnly(e.target.checked); setOverrides({}); }} />부상 선수 제외</label>
+        <label className="sb5-tg"><input type="checkbox" checked={availOnly} onChange={(e) => { setAvailOnly(e.target.checked); setOverrides({}); }} />결장 선수 제외</label>
         <div className="sb5-ovr" style={{ flexWrap: "wrap", rowGap: 4 }}>
           <em>XI OVR</em>
           <b style={{ color: tier(teamOvr).light }} title={`베스트 XI 평균 — 각 자리 포지션 OVR ${teamOvr} · ${ovrMeaning(teamOvr).label}`}>{teamOvr}</b>
@@ -167,7 +168,7 @@ export default function SquadBuilder({ team, accent }: { team: string; accent: s
                 <span className="sb5-ph" style={{ borderColor: COLOR[LINE[s.role]] }}>
                   {p?.photo ? <img src={p.photo} alt="" /> : <i>{s.role}</i>}
                   {p && <b className="sb5-o" style={{ background: tier(so).deep }}>{so}</b>}
-                  {p?.injured && <em className="sb5-inj">+</em>}
+                  {p?.injured && (p.injured.kind === "suspension" ? <SusCard badge /> : <em className="sb5-inj" title="부상 결장">+</em>)}
                 </span>
                 <span className="sb5-nm">{p ? last(p.player) : "—"}</span>
                 <span className={`sb5-rl${p && mainOf(p) !== s.role && f < 0.6 ? " off" : ""}`}>{s.role}{p && mainOf(p) !== s.role ? ` · ${mainOf(p)}` : ""}</span>
@@ -183,7 +184,7 @@ export default function SquadBuilder({ team, accent }: { team: string; accent: s
                 {cands.map((p) => (
                   <button key={p.player} className="sb5-row" onClick={() => { setOverrides((o) => ({ ...o, [pick]: p.player })); setPick(null); }}>
                     {p.photo ? <img src={p.photo} alt="" /> : <span className="ph" />}
-                    <span className="sb5-who"><b>{p.player}</b><em>{[p.primary, ...p.secondary].join(" · ")}{p.minutes === 0 ? " · 출전 없음" : ""}{p.injured ? ` · 부상 ${p.injured.until ? `~${p.injured.until.slice(0, 5)}` : ""}` : ""}</em></span>
+                    <span className="sb5-who"><b>{p.player}</b><em>{[p.primary, ...p.secondary].join(" · ")}{p.minutes === 0 ? " · 출전 없음" : ""}{p.injured ? ` · ${absenceWord(p.injured.kind)} ${p.injured.until ? `~${p.injured.until.slice(0, 5)}` : ""}` : ""}</em></span>
                     <span className={`sb5-tag ${tagOf(p, slots[pick].role) === "주" ? "p" : tagOf(p, slots[pick].role) === "멀티" ? "s" : "x"}`}>{tagOf(p, slots[pick].role)}</span>
                     <b className="sb5-ov" style={{ color: tier(slotOvr(p, slots[pick].role)).light }}
                       title={`${slots[pick].role} 자리 OVR · 대표 ${mainOf(p)} ${p.ovr}`}>{slotOvr(p, slots[pick].role)}</b>
@@ -198,7 +199,7 @@ export default function SquadBuilder({ team, accent }: { team: string; accent: s
                 {bench.map((p) => (
                   <button key={p.player} className="sb5-row" onClick={(e) => peek(e, { name: p.player, club: team, hint: { photo: p.photo, ovr: p.ovr } })}>
                     {p.photo ? <img src={p.photo} alt="" /> : <span className="ph" />}
-                    <span className="sb5-who"><b>{p.player}</b><em>{[p.primary, ...p.secondary].join(" · ")}{p.minutes === 0 ? " · 출전 없음" : ""}{p.injured ? ` · 부상` : ""}</em></span>
+                    <span className="sb5-who"><b>{p.player}</b><em>{[p.primary, ...p.secondary].join(" · ")}{p.minutes === 0 ? " · 출전 없음" : ""}{p.injured ? ` · ${absenceWord(p.injured.kind)}` : ""}</em></span>
                     <b className="sb5-ov" style={{ color: tier(p.ovr).light }}>{p.ovr}</b>
                   </button>
                 ))}
