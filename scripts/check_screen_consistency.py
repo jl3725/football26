@@ -7,6 +7,8 @@
   3. transfers    이적료 없는 IN(승격형)과 OUT 에 같은 선수가 없음        (2군 승격 후 판 선수 — 바이백·재판매는 정상)
   4. opponents    다음 경기 상대가 우리 8개 리그 팀이면 리그·순위가 붙음  (Paris Saint-Germain 연결 실패)
   5. leaders      TEAM LEADERS 90분당 1위가 최소 출전을 넘김             (10분 뛴 키패스 1위)
+  6. heatmap_side 화면 히트맵(공격 →, 위 = 왼쪽)의 좌우 = 이번 시즌 라인업 좌우(ESPN L*·R* 4선발+, 75%+ 한쪽)
+                  (2026-11-03 사용자 '라이스·외데고르 히트맵이 같은 곳' — 라이스가 이번 시즌 RM 이라 맞았다. 214명 대조 반대 0명)
 결과: data/eval/screen_audit.json (daily_data, watchdog 'screen' 점검이 읽음)
 
     python scripts/check_screen_consistency.py            # 표본(리그별 출전 상위 선수 4명·팀 4개)
@@ -24,6 +26,34 @@ sys.path[:0] = [str(ROOT), str(ROOT / "src")]
 OUT = ROOT / "data" / "eval" / "screen_audit.json"
 
 
+def _norm(name) -> str:
+    import positions as ps  # noqa: PLC0415
+    return ps.norm_name(name)
+
+
+def _lineup_sides(lg: str) -> dict:
+    """{(팀, 정규화 이름): 'L'|'R'} — 이번 시즌 리그 선발 위치(ESPN L*·R*)가 4경기 이상, 75% 넘게 한쪽인 선수."""
+    from collections import Counter
+
+    import pandas as pd
+
+    from leagues import data_path
+    from player_names import read_lineup_csv
+    path = data_path("espn_lineups", lg)
+    if not path.exists():
+        return {}
+    lu = read_lineup_csv(path, ["squad", "player", "starter", "espn_pos"])
+    lu = lu[pd.to_numeric(lu["starter"], errors="coerce") == 1]
+    out = {}
+    for (sq, pl), g in lu.groupby(["squad", "player"]):
+        c = Counter("L" if str(p).startswith("L") else "R" if str(p).startswith("R") else "C" for p in g["espn_pos"])
+        n = sum(c.values())
+        side = max(("L", "R"), key=lambda x: c[x])
+        if n >= 4 and c[side] / n >= 0.75:
+            out[(str(sq), _norm(pl))] = side
+    return out
+
+
 def run(full: bool = False) -> dict:
     import pandas as pd
 
@@ -31,7 +61,7 @@ def run(full: bool = False) -> dict:
     from leagues import LEAGUES
 
     issues: list[dict] = []
-    checked = {"season_log": 0, "team_xg": 0, "transfers": 0, "opponents": 0, "leaders": 0}
+    checked = {"season_log": 0, "team_xg": 0, "transfers": 0, "opponents": 0, "leaders": 0, "heatmap_side": 0}
     ours = set(m._club_names())
 
     def bad(kind, team, detail):
@@ -62,7 +92,27 @@ def run(full: bool = False) -> dict:
             if (b["goals"], b["assists"]) != (d["goals"], d["assists"]) or abs(b["minutes"] - d["minutes"]) > 2:
                 bad("season_log", r["squad"], f"{r['player']} 헤더 {d['minutes']}′ {d['goals']}G {d['assists']}A ≠ "
                                               f"SEASON LOG {b['minutes']}′ {b['goals']}G {b['assists']}A")
+        sides = _lineup_sides(lg)
         for team in sample:
+            # 6) 히트맵 좌우 — 화면 그리드(API 가 행을 뒤집어 위 = 왼쪽)의 무게중심이 라인업 쪽과 같은가
+            try:
+                hm = m.heatmaps(team, lg)
+                for hp in hm.get("players") or []:
+                    sd = sides.get((team, _norm(hp["player"])))
+                    if not sd or int(hp.get("n_points") or 0) < 80:
+                        continue
+                    g, gw = hp["grid"], int(hm.get("gw") or 12)
+                    tot = sum(g)
+                    if not tot:
+                        continue
+                    gh = len(g) // gw
+                    cy = sum((i // gw) * v for i, v in enumerate(g)) / tot / max(1, gh - 1)
+                    shown = "L" if cy < 0.45 else "R" if cy > 0.55 else "C"
+                    checked["heatmap_side"] += 1
+                    if shown != "C" and shown != sd:
+                        bad("heatmap_side", team, f"{hp['player']} 라인업 {sd} · 화면 히트맵 {shown}(세로 {cy:.2f})")
+            except Exception:  # noqa: BLE001
+                pass
             # 2) 팀 xG — Overview vs Analytics
             try:
                 ts = m.team_season(team, lg)

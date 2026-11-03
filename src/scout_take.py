@@ -437,7 +437,11 @@ def build(leagues: list[str] | None = None, max_calls: int = DAILY_CALLS) -> dic
     made = 0
     if llm.available():
         fs = {k: (f, sc) for _, k, f, sc in todo}
-        got = write_ai([(k, f, sc) for _, k, f, sc in todo])
+        # 지금 문장이 안 보이는 선수(없음·평가 줄이 사실과 어긋남)를 따로 먼저 — 실패(Gemini 503·시간 초과)도 그 묶음 안에서 바로
+        # 다시. 한꺼번에 돌리면 다시 쓰기가 맨 끝이라 호출이 바닥나, 아스날이 1위가 되며 '2위' 문장이 숨겨진 라이스·외데고르가
+        # 11/2 하루를 그냥 넘겼다(2026-11-03 사용자 '라이스 외데고르는 안 나온다'). 이미 보이는 선수의 새로 쓰기는 남은 호출로
+        got = write_ai([(k, f, sc) for pri, k, f, sc in todo if pri[0] == 0])
+        got.update(write_ai([(k, f, sc) for pri, k, f, sc in todo if pri[0] != 0]))
         now = dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")
         for k, t in got.items():
             f, sc = fs[k]
