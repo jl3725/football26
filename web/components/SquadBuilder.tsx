@@ -8,8 +8,9 @@ import Info from "./Info";
 import { usePeek } from "./PlayerPeek";
 import { surname } from "@/lib/names";
 
-// Best XI 빌더 — 포메이션 칸마다 역할(GK·LB·CB·RB·DM·CM·AM·LW·RW·ST)이 있고, '선수 OVR × 그 역할 적합도'의 합이
-// 가장 큰 배치를 고른다(헝가리안 알고리즘). 적합도: 주포지션 1.0 · 2/3포지션 0.95 · 비슷한 자리 0.85 · 같은 라인 0.75.
+// Best XI 빌더 — 포메이션 칸마다 역할(GK·LB·CB·RB·DM·CM·AM·LW·RW·ST)이 있고, '그 자리 OVR'(포지션별 OVR — 덜 뛴 자리는
+// 익숙함만큼 낮게, src/position_ovr.py)의 합이 가장 큰 배치를 고른다(헝가리안 알고리즘). 예전엔 OVR × 고정 적합도
+// (주 1.0 · 멀티 0.95 · 비슷한 자리 0.85 · 같은 라인 0.75)라 땜질 RB 와 주전 RB 가 거의 같게 보였다(2026-11-03).
 // 주·2·3포지션 = 실제로 선 자리(ESPN 라인업, src/positions.py). 예전엔 라인만 봐서 Calafiori(LB)가 RB 에 들어갔고,
 // 이번 시즌 출전이 없는 Saliba(부상)·Guimarães 는 후보에서 빠졌다 → 전체 스쿼드 + '부상 제외' 토글.
 
@@ -37,14 +38,24 @@ const FORMATIONS: Record<string, Slot[]> = {
     { role: "LB", x: 10, y: 50 }, { role: "CM", x: 33, y: 47 }, { role: "DM", x: 50, y: 56 }, { role: "CM", x: 67, y: 47 }, { role: "RB", x: 90, y: 50 }, { role: "ST", x: 39, y: 18 }, { role: "ST", x: 61, y: 18 }],
 };
 
-function fit(p: BuilderPlayer, role: Role): number {
-  if (p.primary === role) return 1;
-  if (p.secondary.includes(role)) return 0.95;
-  if (role === "GK" || p.primary === "GK") return 0.2;
-  if (NEAR[p.primary as Role]?.includes(role)) return 0.85;
-  return LINE[p.primary as Role] === LINE[role] ? 0.75 : 0.55;
+// 그 자리 OVR — 포지션별 OVR 이 있으면 그 값, 없으면(뛰어 본 적 없는 자리) 모델과 같은 기준으로 깎는다
+// (익숙함 0 = −8 · 다른 라인은 더 · GK ↔ 필드는 사실상 불가)
+function slotOvr(p: BuilderPlayer, role: Role): number {
+  const v = p.pos_ovr?.[role];
+  if (v != null) return v;
+  if (p.primary === role) return p.ovr;
+  if (role === "GK" || p.primary === "GK") return p.ovr - 40;
+  if (p.secondary.includes(role)) return p.ovr - 2;
+  if (NEAR[p.primary as Role]?.includes(role)) return p.ovr - 6;
+  return LINE[p.primary as Role] === LINE[role] ? p.ovr - 8 : p.ovr - 12;
 }
-const score = (p: BuilderPlayer, role: Role) => p.ovr * fit(p, role);
+// 익숙함(0~1) — 최근 두 시즌 그 자리 선발 · TM 커리어 포지션
+function famOf(p: BuilderPlayer, role: Role): number {
+  const f = p.pos_fam?.[role];
+  if (f != null) return f;
+  return p.primary === role ? 1 : p.secondary.includes(role) ? 0.8 : 0;
+}
+const score = slotOvr;
 
 // 헝가리안(최소 비용) — 칸 n ≤ 선수 m. 비용 = -점수. 반환: 칸마다 선수 인덱스(-1 = 없음)
 function assign(cost: number[][]): number[] {
@@ -106,8 +117,9 @@ export default function SquadBuilder({ team, accent }: { team: string; accent: s
     openIdx.forEach((si, k) => { xi[si] = pickIdx[k] >= 0 ? free[pickIdx[k]] : null; });
     const inXI = new Set(xi.filter(Boolean).map((p) => p!.player));
     const bench = pool.filter((p) => !inXI.has(p.player));
-    const rated = xi.map((p, i) => (p ? { p, f: fit(p, slots[i].role) } : null)).filter(Boolean) as { p: BuilderPlayer; f: number }[];
-    const teamOvr = rated.length ? Math.round(rated.reduce((s, r) => s + r.p.ovr * r.f, 0) / rated.length) : 0;
+    const rated = xi.map((p, i) => (p ? { o: slotOvr(p, slots[i].role), f: famOf(p, slots[i].role) } : null))
+      .filter(Boolean) as { o: number; f: number }[];
+    const teamOvr = rated.length ? Math.round(rated.reduce((s, r) => s + r.o, 0) / rated.length) : 0;
     const fitAvg = rated.length ? Math.round((rated.reduce((s, r) => s + r.f, 0) / rated.length) * 100) : 0;
     return { xi, bench, teamOvr, fitAvg };
   }, [pool, slots, overrides]);
@@ -115,8 +127,9 @@ export default function SquadBuilder({ team, accent }: { team: string; accent: s
   if (players === null) return <div className="skel-wrap"><span className="skel" style={{ display: "block", height: 430, borderRadius: 16 }} /></div>;
   const cands = pick == null ? [] : [...pool].filter((p) => !xi.some((x, i) => i !== pick && x?.player === p.player))
     .sort((a, b) => score(b, slots[pick].role) - score(a, slots[pick].role));
+  const mainOf = (p: BuilderPlayer) => p.main_pos ?? p.primary;
   const tagOf = (p: BuilderPlayer, role: Role) =>
-    p.primary === role ? "주" : p.secondary.includes(role) ? "멀티" : `${p.primary}`;
+    mainOf(p) === role ? "주" : famOf(p, role) >= 0.6 ? "멀티" : `${mainOf(p)}`;
 
   return (
     <div className="sb5">
@@ -129,14 +142,14 @@ export default function SquadBuilder({ team, accent }: { team: string; accent: s
         <label className="sb5-tg"><input type="checkbox" checked={availOnly} onChange={(e) => { setAvailOnly(e.target.checked); setOverrides({}); }} />부상 선수 제외</label>
         <div className="sb5-ovr" style={{ flexWrap: "wrap", rowGap: 4 }}>
           <em>XI OVR</em>
-          <b style={{ color: tier(teamOvr).light }} title={`베스트 XI 평균 OVR(자리 적합도 반영) ${teamOvr} · ${ovrMeaning(teamOvr).label}`}>{teamOvr}</b>
+          <b style={{ color: tier(teamOvr).light }} title={`베스트 XI 평균 — 각 자리 포지션 OVR ${teamOvr} · ${ovrMeaning(teamOvr).label}`}>{teamOvr}</b>
           <MeaningTag sm m={ovrMeaning(teamOvr)} title="OVR 등급(OVR GUIDE 와 같은 띠)" />
           <span>
-            포지션 적합도 <b style={{ font: "inherit", fontWeight: 700, color: scoreMeaning(fitAvg).c }}>{fitAvg}%</b>
-            <Info label="포지션 적합도 기준">
-              <p><b>포지션 적합도</b> = 선수들이 본래 자리에 얼마나 맞게 섰는지(XI 평균).</p>
-              <p>주 포지션 100% · 멀티 95% · 비슷한 자리 85% · 같은 라인 75%</p>
-              <p className="muted">포지션 = 실제로 선 자리(이번 시즌 + 지난 시즌 선발, 부족하면 Transfermarkt).</p>
+            포지션 익숙함 <b style={{ font: "inherit", fontWeight: 700, color: scoreMeaning(fitAvg).c }}>{fitAvg}%</b>
+            <Info label="XI OVR · 익숙함 기준">
+              <p><b>XI OVR</b> = 각 자리에 세운 선수의 그 자리 포지션 OVR 평균 — 덜 뛴 자리는 익숙함만큼 낮게(최대 −8).</p>
+              <p><b>익숙함</b> = 그 자리를 얼마나 뛰어 봤나(XI 평균) — 최근 두 시즌 선발(지난 시즌 절반) · TM 커리어 포지션.</p>
+              <p className="muted">뛰어 본 적 없는 자리는 같은 라인 −8 · 다른 라인 −12.</p>
             </Info>
           </span>
         </div>
@@ -146,17 +159,18 @@ export default function SquadBuilder({ team, accent }: { team: string; accent: s
         <div className="sb5-pitch">
           {slots.map((s, i) => {
             const p = xi[i];
-            const f = p ? fit(p, s.role) : 0;
+            const f = p ? famOf(p, s.role) : 0;
+            const so = p ? slotOvr(p, s.role) : 0;
             return (
               <button key={i} className={`sb5-slot${pick === i ? " on" : ""}${p?.injured ? " inj" : ""}`} style={{ left: `${s.x}%`, top: `${s.y}%` }}
-                onClick={() => setPick(pick === i ? null : i)} title={p ? `${p.player} · ${s.role} 적합도 ${Math.round(f * 100)}%` : s.role}>
+                onClick={() => setPick(pick === i ? null : i)} title={p ? `${p.player} · ${s.role} OVR ${so} · 익숙함 ${Math.round(f * 100)}%` : s.role}>
                 <span className="sb5-ph" style={{ borderColor: COLOR[LINE[s.role]] }}>
                   {p?.photo ? <img src={p.photo} alt="" /> : <i>{s.role}</i>}
-                  {p && <b className="sb5-o" style={{ background: tier(p.ovr).deep }}>{p.ovr}</b>}
+                  {p && <b className="sb5-o" style={{ background: tier(so).deep }}>{so}</b>}
                   {p?.injured && <em className="sb5-inj">+</em>}
                 </span>
                 <span className="sb5-nm">{p ? last(p.player) : "—"}</span>
-                <span className={`sb5-rl${p && f < 0.95 ? " off" : ""}`}>{s.role}{p && f < 0.95 ? ` · ${p.primary}` : ""}</span>
+                <span className={`sb5-rl${p && mainOf(p) !== s.role && f < 0.6 ? " off" : ""}`}>{s.role}{p && mainOf(p) !== s.role ? ` · ${mainOf(p)}` : ""}</span>
               </button>
             );
           })}
@@ -164,14 +178,15 @@ export default function SquadBuilder({ team, accent }: { team: string; accent: s
         <div className="sb5-side">
           {pick != null ? (
             <>
-              <div className="sb5-st">{slots[pick].role} 자리 · 교체 선수 <span>적합도 × OVR 순</span></div>
+              <div className="sb5-st">{slots[pick].role} 자리 · 교체 선수 <span>그 자리 OVR 순</span></div>
               <div className="sb5-list">
                 {cands.map((p) => (
                   <button key={p.player} className="sb5-row" onClick={() => { setOverrides((o) => ({ ...o, [pick]: p.player })); setPick(null); }}>
                     {p.photo ? <img src={p.photo} alt="" /> : <span className="ph" />}
                     <span className="sb5-who"><b>{p.player}</b><em>{[p.primary, ...p.secondary].join(" · ")}{p.minutes === 0 ? " · 출전 없음" : ""}{p.injured ? ` · 부상 ${p.injured.until ? `~${p.injured.until.slice(0, 5)}` : ""}` : ""}</em></span>
                     <span className={`sb5-tag ${tagOf(p, slots[pick].role) === "주" ? "p" : tagOf(p, slots[pick].role) === "멀티" ? "s" : "x"}`}>{tagOf(p, slots[pick].role)}</span>
-                    <b className="sb5-ov" style={{ color: tier(p.ovr).light }}>{p.ovr}</b>
+                    <b className="sb5-ov" style={{ color: tier(slotOvr(p, slots[pick].role)).light }}
+                      title={`${slots[pick].role} 자리 OVR · 대표 ${mainOf(p)} ${p.ovr}`}>{slotOvr(p, slots[pick].role)}</b>
                   </button>
                 ))}
               </div>

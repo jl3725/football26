@@ -5,6 +5,7 @@ import SectionHead from "./SectionHead";
 import Info from "./Info";
 import { Skel } from "./Skeleton";
 import { TONE } from "@/lib/meaning";
+import { clubShort } from "@/lib/names";
 
 // 세 결과에 1/3씩 걸면 브라이어 (2/3)²+(1/3)²+(1/3)² = 0.667 — 확률 오차의 '찍기' 수준
 const RANDOM_BRIER = 0.667;
@@ -15,7 +16,8 @@ const RANK_TONE = [TONE.best, TONE.avg, TONE.weak];
 //   왼쪽: 출처별 적중률·브라이어(낮을수록 좋음) / 오른쪽: 다가오는 경기 중 팬과 모델의 픽이 갈린 경기 / 아래: 최근 결과 채점표
 const PICK_KO = (p: PredPick, home: string, away: string) =>
   !p ? "—" : p.pick === "H" ? `${home} 승` : p.pick === "A" ? `${away} 승` : "무승부";
-const short = (t: string) => (t.length > 14 ? t.split(" ").slice(-1)[0] : t);
+// 좁은 표 — 구단 이름 줄이기(lib/names.clubShort: 'Newcastle United' → 'Newcastle', 같은 도시 두 팀이면 그대로)
+const short = (t: string, other = "") => clubShort(t, [other]);
 
 function Mark({ p, r, why }: { p: PredPick; r: PredRecent["result"]; why?: string }) {
   if (!p) return <i className="pl5-mk none" title={why}>—</i>;
@@ -95,7 +97,7 @@ export default function PredictionLeague() {
               <div className="pl5-rr" key={r.event_id}>
                 <span className="pl5-m">
                   {r.home_logo ? <img src={r.home_logo} alt="" /> : <i className="ph" />}
-                  <b>{short(r.home)}</b><strong>{r.hg}-{r.ag}</strong><b>{short(r.away)}</b>
+                  <b>{short(r.home, r.away)}</b><strong>{r.hg}-{r.ag}</strong><b>{short(r.away, r.home)}</b>
                   {r.away_logo ? <img src={r.away_logo} alt="" /> : <i className="ph" />}
                 </span>
                 <Mark p={r.fans} r={r.result} /><Mark p={r.model} r={r.result} why={r.outside ? "8개 리그 밖 팀 — 모델 예측 없음" : undefined} /><Mark p={r.elo} r={r.result} />
@@ -113,10 +115,10 @@ export default function PredictionLeague() {
                 <span className="pl5-d">{x.date.slice(5).replace("-", "/")}</span>
               </div>
               <div className="pl5-sp">
-                <span className="fans">FANS <b>{PICK_KO(x.fans, short(x.home), short(x.away))}</b> {x.fans ? `${Math.round(x.fans.p * 100)}%` : ""}</span>
+                <span className="fans">FANS <b>{PICK_KO(x.fans, short(x.home, x.away), short(x.away, x.home))}</b> {x.fans ? `${Math.round(x.fans.p * 100)}%` : ""}</span>
                 {x.kind === "confidence" && x.model_on_fan_pick != null
                   ? <span className="model">MODEL <b>같은 예상</b> {Math.round(x.model_on_fan_pick * 100)}% <em className="pl5-gap">차이 {Math.round(x.gap * 100)}%p</em></span>
-                  : <span className="model">MODEL <b>{PICK_KO(x.model, short(x.home), short(x.away))}</b> {x.model ? `${Math.round(x.model.p * 100)}%` : ""}</span>}
+                  : <span className="model">MODEL <b>{PICK_KO(x.model, short(x.home, x.away), short(x.away, x.home))}</b> {x.model ? `${Math.round(x.model.p * 100)}%` : ""}</span>}
               </div>
             </div>
           )) : <p className="pv-empty">이번 주는 팬과 모델의 예상과 확률이 비슷합니다</p>}

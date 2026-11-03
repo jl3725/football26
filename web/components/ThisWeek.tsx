@@ -7,6 +7,7 @@ import SectionHead from "./SectionHead";
 import Info from "./Info";
 import { useOpenTeam, usePeek } from "./PlayerPeek";
 import { Skel } from "./Skeleton";
+import { surname } from "@/lib/names";
 
 // THIS WEEK — 감독용 한 블록(Overview 맨 위). 7일 안 경기(전 대회) · 양 팀 결장 · 결장 반영 예상 XI · 로테이션 부담 · A매치 차출.
 // 예전 '다음 경기' 카드 자리. 예상 XI = 최근 3경기 최빈 선발에서 빠진 자리를 같은 세부 포지션 최고 OVR 로(src/this_week.py).
@@ -107,7 +108,7 @@ export default function ThisWeek({ team, accent }: { team: string; accent: strin
               {d.rotation.map((r) => (
                 <li key={r.player} className={`peekable lv-${r.level}`} onClick={(e) => peek(e, { name: r.player, club: team })}
                   title={`최근 14일 ${r.minutes14}′ · 최근부터 연속 풀타임(85′+) ${r.full_streak}경기`}>
-                  <b>{r.player}</b>
+                  <b title={r.player}>{surname(r.player)}</b>
                   <span className="tw-bar"><i style={{ width: `${Math.min(100, (r.minutes14 / 450) * 100)}%` }} /></span>
                   <span>{r.minutes14}′{r.full_streak >= 2 ? ` · ${r.full_streak}연속 풀타임` : ""}</span>
                 </li>

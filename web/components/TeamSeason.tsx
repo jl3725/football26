@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { getTeamSeason, type GoalMix, type GoalMixPart, type PointsPath, type ProfileAxis, type ResultMatch, type TeamSeason } from "@/lib/api";
 import { compLabel, compTone, lgEn, liftHex, splitKst } from "@/lib/match";
 import { idxMeaning, rankMeaning } from "@/lib/meaning";
+import { clubShort } from "@/lib/names";
 import { useLiveAll, liveLabel, type LiveEvent } from "@/lib/live";
 import { liveTable } from "@/lib/liveTable";
 import { MeaningTag, ScaleLegend } from "./Meaning";
@@ -67,7 +68,7 @@ function PointsChart({ me, refs, color, prov }: { me: PointsPath; refs: PointsPa
       {refs.map((r) => r.path.length > 0 && (
         <g key={r.team} className="ts5-ref">
           <path d={line(r.path)} />
-          <text x={x(r.path.length - 1) + 8} y={endY[r.team] + 4}>{r.label} {r.team.split(" ").slice(-1)[0]} {r.path[r.path.length - 1]}</text>
+          <text x={x(r.path.length - 1) + 8} y={endY[r.team] + 4}>{r.label} {clubShort(r.team, [me.team, ...refs.map((o) => o.team)])} {r.path[r.path.length - 1]}</text>
         </g>
       ))}
       {me.path.length > 0 && (
@@ -148,11 +149,11 @@ export function SeasonSnapshot({ d, team, league, color }: { d: TeamSeason | nul
               {mine?.live && mine.move ? <i className={`lv5-mv ${mine.move > 0 ? "up" : "down"}`}>{mine.move > 0 ? "▲" : "▼"}{Math.abs(mine.move)}</i> : null}</b>
               <span>{s.rank === 1 ? "선두" : `1위와 ${gap}점 차`}</span></div>
             <div><em>POINTS</em><b>{s.points}</b><span>{s.won}승 {s.drawn}무 {s.lost}패</span></div>
-            <div><em>GOALS</em><b>{s.gf}<small>:{s.ga}</small></b><span>득점:실점 · 득실 {s.gd > 0 ? `+${s.gd}` : s.gd}</span></div>
+            <div title="득점 : 실점"><em>GOALS</em><b>{s.gf}<small>:{s.ga}</small></b><span>득실 {s.gd > 0 ? `+${s.gd}` : s.gd}</span></div>
             <div title="xG = 슈팅 위치·상황으로 본 '기대 득점'. 높을수록 좋은 찬스를 많이 만든다">
               <em>xG / GAME</em>
               <b style={d.xg_rank ? { color: rankMeaning(d.xg_rank, d.n).c } : undefined}>{d.xg_pg != null ? d.xg_pg.toFixed(2) : "—"}</b>
-              <span>{d.xg_rank ? `리그 ${d.xg_rank}위${d.xg_avg != null ? ` · 평균 ${d.xg_avg.toFixed(2)}` : ""}` : "경기당 기대 득점"}</span>
+              <span>{d.xg_rank ? `${d.xg_rank}위${d.xg_avg != null ? ` · 리그 평균 ${d.xg_avg.toFixed(2)}` : ""}` : "경기당 기대 득점"}</span>
             </div>
           </div>
           <PointsChart me={d.path} refs={d.refs} color={c}

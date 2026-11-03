@@ -1841,6 +1841,24 @@ def _pos_ovr_map(row) -> dict:
         return {}
 
 
+def _slot_role_map(formation: str) -> dict:
+    """포메이션 칸 코드 → 역할(GK·LB·CB·DM·CM·AM·LW·RW·ST, src/positions.slot_roles)."""
+    import positions as ps  # noqa: PLC0415
+    try:
+        return dict(zip(formation_slots(formation), ps.slot_roles(formation)))
+    except Exception:  # noqa: BLE001
+        return {}
+
+
+def _slot_ovr(row, role: str | None):
+    """그 자리에 선 선수의 OVR — 포지션별 OVR(그 자리 익숙함 반영)이 있으면 그 값, 없으면 대표 OVR.
+    빌더·스쿼드 뎁스와 같은 숫자(2026-11-03 팬 관점 점검: 포메이션은 대표 OVR 이라 레위스스켈리 DM 이 81, 빌더는 80)."""
+    if row is None:
+        return None
+    v = _pos_ovr_map(row).get(role) if role else None
+    return v if v is not None else _player_ovr(row)
+
+
 def _positions_of(row) -> list[dict]:
     """[{role, ovr, fam, tpl}] — 대표 먼저, 그다음 OVR 높은 순. 화면 포지션 칩·탭."""
     import json  # noqa: PLC0415
@@ -2451,9 +2469,9 @@ def squad(team: str, league: str = ACTIVE_LEAGUE):
 
 @app.get("/api/builder/{team}")
 def builder(team: str, league: str = ACTIVE_LEAGUE):
-    """Best XI 빌더 — 전체 스쿼드(이번 시즌 출전 없는 선수·부상자 포함)에 주·2·3포지션과 부상 정보를 붙인다.
-    예전 빌더는 출전 기록이 있는 선수만 받아 Saliba(부상)·Guimarães 가 빠졌고, 라인(수비/중원/공격)만 보고
-    OVR 순으로 채워 Calafiori(LB)가 RB 칸에 들어갔다. 배치는 화면이 역할 적합도 × OVR 최적화로 한다."""
+    """Best XI 빌더 — 전체 스쿼드(이번 시즌 출전 없는 선수·부상자 포함)에 주·2·3포지션·포지션별 OVR·익숙함과 부상 정보를
+    붙인다. 예전 빌더는 출전 기록이 있는 선수만 받아 Saliba(부상)·Guimarães 가 빠졌고, 라인(수비/중원/공격)만 보고
+    OVR 순으로 채워 Calafiori(LB)가 RB 칸에 들어갔다. 배치는 화면이 '그 자리 OVR' 합 최대로 한다(2026-11-03)."""
     import positions as ps  # noqa: PLC0415
     df = _squad_df(team, league)
     if df is None or df.empty:
@@ -2467,9 +2485,12 @@ def builder(team: str, league: str = ACTIVE_LEAGUE):
         pr = _pos_profile(r)
         if not pr.get("primary"):
             continue
+        pos = _positions_of(r)          # 그 자리 OVR·익숙함(src/position_ovr.py) — 화면이 자리마다 이 값으로 배치
         out.append({"player": r["player"], "ovr": _player_ovr(r), "photo": _photo(r), "age": int(_num(r.get("age"))),
                     "minutes": int(_num(r.get("minutes"))), "primary": pr["primary"], "secondary": pr["secondary"],
                     "line": ps.LINE_OF[pr["primary"]], "starts": pr["starts"],
+                    "main_pos": r.get("_main_pos") if isinstance(r.get("_main_pos"), str) else None,
+                    "pos_ovr": {p["role"]: p["ovr"] for p in pos}, "pos_fam": {p["role"]: p["fam"] for p in pos},
                     "injured": inj.get(ps.norm_name(r["player"])), "roster_only": bool(r.get("_roster_only") is True)})
     out.sort(key=lambda x: -x["ovr"])
     # 시작 포메이션 = 실제 리그 최빈값(빌더가 4-3-3 고정으로 시작해 Overview·뎁스와 XI 가 달랐다, 2026-10-20 점검)
@@ -2574,15 +2595,16 @@ def match(team: str, event_id: str, league: str = ACTIVE_LEAGUE):
         slots = espn_assign_slots([str(x) for x in starters["espn_pos"].tolist()], formation)
     except Exception:  # noqa: BLE001
         slots = [None] * len(starters)
+    roles = _slot_role_map(formation)
     for (_, row), slot in zip(starters.iterrows(), slots):
         if not slot:
             continue
         x, y = slot_xy(slot, formation)
         pr = resolve(str(row["player"]))
         placements.append({
-            "slot": display_slot(slot, formation), "player": str(row["player"]),
+            "slot": display_slot(slot, formation), "player": str(row["player"]), "role": roles.get(slot),
             "x": round(float(x), 1), "y": round(float(y), 1), "kind": slot_kind(slot),
-            "ovr": _player_ovr(pr) if pr is not None else None, "photo": _photo(pr) if pr is not None else "",
+            "ovr": _slot_ovr(pr, roles.get(slot)), "photo": _photo(pr) if pr is not None else "",
         })
 
     # 교체 타임라인 (리그+컵·유럽)
@@ -4028,6 +4050,7 @@ def _placements(team: str, league: str, last_n: int | None = None, exclude: set 
             used.add(p)
     placements = []
     extras = None
+    roles = _slot_role_map(formation)
     for slot in formation_slots(formation):
         player = pick[slot].pop(0) if pick.get(slot) else None
         x, y = slot_xy(slot, formation)
@@ -4042,10 +4065,10 @@ def _placements(team: str, league: str, last_n: int | None = None, exclude: set 
             row = extras.get(_person_key(player))
         placements.append({
             "slot": display_slot(slot, formation),
-            "player": player or "—",
+            "player": player or "—", "role": roles.get(slot),
             "x": round(float(x), 1), "y": round(float(y), 1),
             "kind": slot_kind(slot),
-            "ovr": _player_ovr(row) if row is not None else None,
+            "ovr": _slot_ovr(row, roles.get(slot)),             # 그 자리 OVR(빌더·뎁스와 같은 숫자)
             "photo": (_photo(row) if row is not None else "") or (_resolve_photo(player, resolve, league) if player else ""),
             # 지금 부상 중이면 표시 — 시즌 XI 의 Tzolis(~10/30)가 표시 없이 선발로 보여 다음 경기 XI 로 오해됐다
             "injured": bool(player) and _norm_inj(player) in _inj_now,

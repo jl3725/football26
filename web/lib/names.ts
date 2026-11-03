@@ -25,3 +25,27 @@ export function surname(name?: string | null): string {
   while (s - 1 >= 1 && PARTICLES.has(t[s - 1].toLowerCase())) s -= 1;
   return t.slice(s).join(" ");
 }
+
+// 짧은 구단 이름 — 좁은 표·차트 라벨. 예전엔 '14자 넘으면 마지막 낱말'이라 'Newcastle United' → 'United',
+// 'Manchester City' → 'City' 였다(2026-11-03 팬 관점 점검: 예측 리그 '최근 결과'에 'United 0-1 Everton').
+//   · 구단 약어 낱말(FC·AC·AS·SV·VfB·1. …)을 빼고, 그래도 길면 United → Utd, 끝의 흔한 구단 낱말(Hotspur·Albion·Town …)을 뺀다
+//   · City 는 그대로(Manchester City 를 'Manchester' 로 줄이면 United 와 헷갈린다), 같이 보이는 구단(ctx)과 겹치면 빼지 않는다
+const CLUB_AFFIX = new Set(["FC", "AFC", "CF", "SC", "AC", "AS", "SV", "SS", "US", "CD", "UD", "SD", "CA", "RC", "VfB", "VfL",
+  "FK", "BK", "SK", "KV", "1.", "Club"]);
+const CLUB_TAIL = new Set(["Town", "Hotspur", "Albion", "Athletic", "Wanderers", "Rovers", "County", "Calcio"]);
+
+export function clubShort(name?: string | null, ctx: (string | null | undefined)[] = [], max = 12): string {
+  const n = String(name ?? "").trim();
+  const strip = (s: string) => s.split(/\s+/).filter((w) => !CLUB_AFFIX.has(w)).join(" ") || s;
+  let base = strip(n);
+  if (base.length <= max) return base;
+  base = base.replace(/ United$/, " Utd");
+  if (base.length <= max) return base;
+  const w = base.split(" ");
+  if (w.length > 1 && CLUB_TAIL.has(w[w.length - 1])) {
+    const cut = w.slice(0, -1).join(" ");
+    const clash = ctx.some((o) => o && o !== n && (strip(String(o)) === cut || strip(String(o)).startsWith(`${cut} `)));
+    if (!clash) return cut;
+  }
+  return base;
+}

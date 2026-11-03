@@ -247,7 +247,9 @@ export type DepthOption = DepthPlayer & { kind?: "primary" | "secondary"; primar
 export type Bucket = { pos: string; count: number; multi?: number; depth: number; starter: DepthOption; rotation: DepthOption[] };
 // Best XI 빌더(/api/builder) — 전체 스쿼드 + 주·2·3포지션(실제로 선 자리, src/positions.py) + 부상
 export type BuilderPlayer = { player: string; ovr: number; photo: string; age: number; minutes: number; primary: string; secondary: string[];
-  line: string; starts: number; injured: { injury: string; until: string } | null; roster_only: boolean };
+  line: string; starts: number; injured: { injury: string; until: string } | null; roster_only: boolean;
+  // 포지션별 OVR·익숙함(src/position_ovr.py) — 그 자리에 세웠을 때의 OVR
+  main_pos?: string | null; pos_ovr?: Record<string, number>; pos_fam?: Record<string, number> };
 export const getBuilder = (t: string, l = _league) => j<{ team: string; color: string; players: BuilderPlayer[]; formation?: string | null }>(`/api/builder/${q(t, l)}`);
 export type LoanOut = { player: string; club: string; pos: string; nat: string; photo: string; source: string; minutes: number | null; ovr: number | null };
 export type Squad = { team: string; color: string; lines: Record<string, SquadPlayer[]>; buckets: Bucket[]; loans?: LoanOut[] };

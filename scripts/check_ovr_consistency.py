@@ -54,8 +54,8 @@ def team_sources(m, team: str, lg: str, db_rows: list[dict], detail_names: list[
     except Exception:  # noqa: BLE001 — 라인업 없는 팀(시즌 초·승격팀)
         lu = {}
     for key in ("season", "recent"):
-        for p in ((lu.get(key) or {}).get("placements") or []):
-            _add(src, f"lineup_{key}", p.get("player"), p.get("ovr"))
+        for p in ((lu.get(key) or {}).get("placements") or []):   # 그 자리 OVR — '선수@자리'로 대조(뎁스와 같이)
+            _add(src, f"lineup_{key}", f"{p.get('player')}@{p.get('role')}" if p.get("role") else p.get("player"), p.get("ovr"))
     for p in lu.get("bench") or []:
         _add(src, "lineup_bench", p.get("player"), p.get("ovr"))
     for name in detail_names:
@@ -87,7 +87,7 @@ def audit_league(m, lg: str, detail_n: int) -> dict:
         top = cur[cur["squad"] == team].sort_values("_ovr", ascending=False)["player"].astype(str).head(detail_n).tolist()
         for name, vals in team_sources(m, team, lg, db_by_team.get(team, []), top).items():
             for player, v in vals.items():
-                if name == "squad_depth":           # 그 자리 OVR, 없으면 대표 OVR
+                if "@" in player:                     # 그 자리 OVR(뎁스·포메이션), 없으면 대표 OVR
                     player, pos = player.rsplit("@", 1)
                     t = pos_truth.get((team, player), {}).get(pos, truth.get((team, player)))
                 else:
