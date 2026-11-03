@@ -161,7 +161,9 @@ def main(argv: list[str] | None = None) -> int:
 
         def run(lg: str, name: str, cmd: list[str]) -> str:
             env = {**os.environ, "FB_LEAGUE": lg, "FB_SEASON_START": str(SEASON_START),
-                   "PYTHONIOENCODING": "utf-8", "PYTHONUNBUFFERED": "1"}
+                   "PYTHONIOENCODING": "utf-8", "PYTHONUNBUFFERED": "1",
+                   # soccerdata 캐시 유효기간(일) — 없으면 진행 중 시즌 표도 캐시를 영원히 쓴다(FBref 10/13 캐시 3주, 2026-11-03)
+                   "SOCCERDATA_MAXAGE": os.environ.get("SOCCERDATA_MAXAGE", "2")}
             args = [python] + [c.replace("{league}", lg).replace("{season}", season) for c in cmd]
             emit(f"── {lg} · {name}")
             t0 = time.time()

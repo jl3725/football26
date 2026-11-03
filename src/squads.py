@@ -168,8 +168,12 @@ def to_ours(name, league: str, ours) -> str | None:
 
 
 def canonical_squad(name, league: str) -> str:
-    """소스 표기 → 표준 표기(모르는 이름은 그대로). 수동 ALIASES → 자동 별칭 → 악센트 무시 비교."""
+    """소스 표기 → 표준 표기(모르는 이름은 그대로). 수동 ALIASES → 자동 별칭 → 악센트 무시 비교.
+    쉼표로 여러 팀('Paris Saint Germain,Rennes' — Understat 시즌 중 소속 목록)이면 마지막 팀(지금 팀). 첫 팀을 써서 렌 선수
+    31명이 PSG 로 들어가 렌 xG 가 비었다(2026-11-03 점검)."""
     s = str(name or "").strip()
+    if "," in s:
+        s = s.split(",")[-1].strip()
     if s in ALIASES.get(league, {}):
         return ALIASES[league][s]
     if league not in ALIASES:                      # 라이트 리그 — 팀 대조표(src/lite_league.py)의 원천 표기

@@ -43,3 +43,11 @@ def test_full_streak_and_rotation() -> None:
     rot = tw.rotation([("Rice", 270), ("Raya", 380)], {"Rice": 4, "Raya": 1})
     assert [(r["player"], r["level"]) for r in rot] == [("Raya", "high"), ("Rice", "high")]   # 360′+ 또는 4연속 → high
     assert tw.rotation([("Odegaard", 280)], {"Odegaard": 1})[0]["level"] == "mid"
+
+
+def test_replacement_does_not_inherit_absence_mark() -> None:
+    """대신 들어간 선수에 빠진 선수의 결장 표시가 붙지 않음 — 라르센 옆 마테타 출장 정지 카드(2026-11-03)."""
+    xi0 = [{**XI[3], "injured": True, "absence": "suspension"}]
+    xi, ch = tw.pick_xi(xi0, {"havertz": {"injury": "출장 정지"}}, POOL, norm, OWN, SLOT)
+    assert xi[0]["player"] == "Gyokeres" and xi[0]["out"] == "Havertz"
+    assert xi[0]["injured"] is False and xi[0]["absence"] is None

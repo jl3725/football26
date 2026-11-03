@@ -4081,7 +4081,34 @@ def _team_lineups(team: str, league: str, comp: str = "league"):
     return df[(df["squad"] == team) & (pd.to_numeric(df["starter"], errors="coerce") == 1)].copy()
 
 
-def _placements(team: str, league: str, last_n: int | None = None, exclude: set | None = None, comp: str = "league"):
+# 다른 포메이션 경기의 역할 → 이 포메이션에서 받을 역할(앞일수록 우선). 예측·시즌 XI 가 '가장 흔한 포메이션' 경기만 세서
+# 맨시티 최신 리그 경기(4-3-3, 홀란 선발)가 통째로 빠지고 EFL컵 로테이션 XI 가 예상 XI 가 됐다(2026-11-03 사용자)
+_ROLE_FALLBACK = {"GK": ("GK",), "CB": ("CB",), "LB": ("LB",), "RB": ("RB",), "DM": ("DM", "CM"), "CM": ("CM", "DM", "AM"),
+                  "AM": ("AM", "CM"), "LW": ("LW", "AM", "ST"), "RW": ("RW", "AM", "ST"), "ST": ("ST", "AM")}
+
+
+def _map_slot(slot: str, src_formation: str, formation: str) -> str | None:
+    """다른 포메이션 경기에서 선 칸 → 이 포메이션의 칸. 같은 역할(없으면 _ROLE_FALLBACK 순) 칸 중 좌우가 가장 가까운 칸,
+    그래도 없으면 위치가 가장 가까운 칸."""
+    if src_formation == formation:
+        return slot
+    src_role = _slot_role_map(src_formation).get(slot)
+    try:
+        sx, sy = slot_xy(slot, src_formation)
+    except Exception:  # noqa: BLE001
+        return None
+    tgt = _slot_role_map(formation)
+    xy = {t: slot_xy(t, formation) for t in formation_slots(formation)}
+    for role in _ROLE_FALLBACK.get(src_role or "", ()):
+        cand = [t for t, r in tgt.items() if r == role]
+        if cand:
+            return min(cand, key=lambda t: (abs(xy[t][0] - sx), abs(xy[t][1] - sy)))
+    return min(xy, key=lambda t: (xy[t][0] - sx) ** 2 + (xy[t][1] - sy) ** 2) if xy else None
+
+
+def _placements(team: str, league: str, last_n: int | None = None, exclude: set | None = None, comp: str = "league",
+                comp_weight: dict | None = None):
+    """comp_weight = {'league'|'euro'|'cup': 무게} — 예상 XI 는 다음 경기 대회 기준(컵 로테이션 XI 를 리그 XI 와 같게 세지 않게)."""
     df = _team_lineups(team, league, comp)
     if df is None:
         return None
@@ -4092,8 +4119,6 @@ def _placements(team: str, league: str, last_n: int | None = None, exclude: set 
     if last_n:
         matches = matches[-last_n:]
     sub = df[df["event_id"].isin(matches)]
-    fm = sub.groupby("event_id")["formation"].first().mode()
-    formation = str(fm.iloc[0]) if not fm.empty else "4-3-3"
     import positions as _ps_  # noqa: PLC0415
     _norm_inj = _ps_.norm_name
     _inj_now = _active_injuries(team, league) or {}               # 지금 결장 — 배치 선수에 ✚(부상) · ▮(출장 정지)
@@ -4101,19 +4126,28 @@ def _placements(team: str, league: str, last_n: int | None = None, exclude: set 
     # 최근 창(last_n)이면 최근 경기일수록 무겁게(0.6 → 1.0) — 예전엔 같은 무게라 아스날 최근 3경기에서
     # 칼라피오리(리즈 CB·포레스트 LB)와 루이스스켈리(리즈 MF·릴 LB)가 동점이 되고 이름순으로 스켈리가 들어갔다(2026-10-22 사용자)
     n_m = len(matches)
-    wts = {eid: (0.6 + 0.4 * i / (n_m - 1) if (last_n and n_m > 1) else 1.0) for i, eid in enumerate(matches)}
+    kind_of = sub.groupby("event_id")["_kind"].first().to_dict() if "_kind" in sub.columns else {}
+    wts = {eid: (0.6 + 0.4 * i / (n_m - 1) if (last_n and n_m > 1) else 1.0)
+           * ((comp_weight or {}).get(str(kind_of.get(eid)), 1.0) if comp_weight else 1.0) for i, eid in enumerate(matches)}
+    # 포메이션 = 경기 무게 합이 가장 큰 것(무게가 같으면 예전처럼 이름순 — 시즌 XI 는 최빈값과 같음)
+    fw: dict[str, float] = {}
+    for eid, f_ in sub.groupby("event_id")["formation"].first().items():
+        fw[str(f_)] = fw.get(str(f_), 0.0) + wts.get(eid, 1.0)
+    formation = min(fw, key=lambda f_: (-round(fw[f_], 6), f_)) if fw else "4-3-3"
     slot_counts: dict[str, dict[str, float]] = {}
     starts: dict[str, float] = {}
     last_start: dict[str, int] = {}
     for i, eid in enumerate(matches):
-        m = sub[(sub["event_id"] == eid) & (sub["formation"] == formation)].sort_values("formation_place")
+        m = sub[sub["event_id"] == eid].sort_values("formation_place")
         if len(m) < 11:
             continue
+        mf = str(m["formation"].iloc[0])
         try:
-            slots = espn_assign_slots([str(x) for x in m["espn_pos"].tolist()], formation)
+            slots = espn_assign_slots([str(x) for x in m["espn_pos"].tolist()], mf)
         except Exception:  # noqa: BLE001
             continue
         for (_, row), slot in zip(m.iterrows(), slots):
+            slot = _map_slot(slot, mf, formation) if slot else None    # 다른 포메이션 경기는 같은 역할 칸으로
             if not slot:
                 continue
             p_ = row["player"]
@@ -4142,12 +4176,24 @@ def _placements(team: str, league: str, last_n: int | None = None, exclude: set 
             continue
         pick.setdefault(s, []).append(p)
         used.add(p)
-    # 그래도 빈 칸은 고른 11명 중 남은 선수(다른 칸에 다 배정된 경우), 그다음 선발 무게가 큰 남은 선수
+    # 그래도 빈 칸은 그 역할을 서 본 선수부터(같은 역할 → 비슷한 역할 → 아무나), 그다음 고른 11명 · 선발 무게 순.
+    # 예전엔 역할을 안 봐서 인테르 윙백 스펜스가 투톱 칸(RST)에 들어갔다(2026-11-03)
     spare = [p for p, _ in sorted(starts.items(), key=lambda x: (-(x[0] in chosen), -x[1], -last_start.get(x[0], -1)))
              if p not in used and (not exclude or _person_key(p) not in exclude)]
+    _roles_now = _slot_role_map(formation)
+    played = {p: {_roles_now.get(s) for s, c in slot_counts.items() if p in c} for p in spare}
+
+    def _fit(p, s):
+        r = _roles_now.get(s)
+        if r in played.get(p, ()):
+            return 0
+        if any(r in _ROLE_FALLBACK.get(x or "", ()) or x in _ROLE_FALLBACK.get(r or "", ()) for x in played.get(p, ())):
+            return 1
+        return 2
     for s, n in need.items():
         while len(pick.get(s, [])) < n and spare:
-            p = spare.pop(0)
+            p = min(spare, key=lambda q: (_fit(q, s), spare.index(q)))
+            spare.remove(p)
             pick.setdefault(s, []).append(p)
             used.add(p)
     placements = []
@@ -6043,8 +6089,13 @@ def this_week(team: str, league: str = ACTIVE_LEAGUE):
             if club == team:
                 absent.setdefault(k, {"injury": "대표팀 차출", "until": ""})
 
-    # 최근 3경기 최빈 선발(전 대회) — 5경기면 '최근 2경기 선발 제외'(Inbox) 선수가 남아 어긋났다(2026-10-21 브뤼헤 이한범)
-    base = (_placements(team, league, last_n=3, exclude=gone, comp="all") or _placements(team, league, last_n=5, exclude=gone, comp="all")
+    # 최근 3경기 선발(전 대회) — 5경기면 '최근 2경기 선발 제외'(Inbox) 선수가 남아 어긋났다(2026-10-21 브뤼헤 이한범).
+    # 대회 무게 = 다음 경기 기준: 리그·유럽 경기 앞이면 국내컵 로테이션 XI 는 0.3(맨시티 EFL컵 XI 가 예상 XI 가 되고
+    # 하베르츠가 좌윙으로 밀렸다, 2026-11-03 사용자), 컵 경기 앞이면 컵 XI 가 1.0
+    nk = _comp_kind(str((first or {}).get("comp_code") or "")) if first else "league"
+    cw = {"cup": 1.0, "league": 0.6, "euro": 0.6} if nk == "cup" else {"league": 1.0, "euro": 0.9, "cup": 0.3}
+    base = (_placements(team, league, last_n=3, exclude=gone, comp="all", comp_weight=cw)
+            or _placements(team, league, last_n=5, exclude=gone, comp="all", comp_weight=cw)
             or _placements(team, league, exclude=gone))
     xi, changes = ([], [])
     if base and base.get("placements"):
@@ -6108,7 +6159,7 @@ def this_week(team: str, league: str = ACTIVE_LEAGUE):
     return {"team": team, "today": today.isoformat(), "week": week, "congestion": len([m for m in week if m.get("d_day", 99) <= 7]),
             "absences": ours, "opponent": opp,
             "xi": {"formation": (base or {}).get("formation"), "placements": xi, "changes": changes,
-                   "basis": "최근 3경기 최빈 선발(전 대회)"},
+                   "basis": "최근 3경기 선발(전 대회 · 다음 경기 대회 기준 무게)"},
             "rotation": rot[:6], "games14": games14, "intl": intl_info}
 
 

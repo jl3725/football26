@@ -14,11 +14,17 @@ standard / shooting / misc 3개 테이블을 병합해 90분당 10개 지표를 
 """
 from __future__ import annotations
 
+import os
 from pathlib import Path
 
-import numpy as np
-import pandas as pd
-import soccerdata as sd
+# soccerdata 의 read_player_season_stats 는 진행 중 시즌도 캐시를 영원히 쓴다(MAXAGE=None, no_cache 없음) — 주간 빌드가
+# 10/13 에 받은 HTML 만 3주 다시 읽으며 12초 만에 'ok'(2026-11-03 점검: 새로 받으니 EPL 최다 출전 540 → 810분).
+# 캐시 유효기간(일) — soccerdata 를 가져오기 전에 정해야 한다(_config 가 import 때 읽음)
+os.environ.setdefault("SOCCERDATA_MAXAGE", "2")
+
+import numpy as np  # noqa: E402
+import pandas as pd  # noqa: E402
+import soccerdata as sd  # noqa: E402
 
 from leagues import SEASON_FBREF, data_path, league_config, register_soccerdata_custom_leagues
 from squads import canonical_squad
@@ -121,10 +127,10 @@ def main() -> int:
     print(out.sort_values("minutes", ascending=False).head(8).to_string(index=False))
     lag = games_behind(out)
     if lag is not None and lag[0] - lag[1] >= STALE_GAMES:
-        # 새로 받아도 원천 자체가 멈춘 경우 — 2026-10 FBref 26/27 표가 10월 초(팀당 5~8경기)에서 멈춰 주간 빌드가 'ok' 로
-        # 남는 동안 그 뒤 리그 데뷔 선수가 선수 표에 없었다(메슬리에·펜더스, 2026-11-03). 선수 줄·분·세부 지표는 FotMob 이
-        # 보강(src/live_roster·season_totals·allcomp_stats) — 여기선 원천 문제로 알린다
-        print(f"[fbref] 원천이 뒤처짐 — 팀당 FBref {lag[1]:.0f}경기 · FotMob {lag[0]:.0f}경기 (SOURCE STALE)")
+        # 받은 표가 FotMob 경기 기록보다 늦음(캐시 재사용·원천 지연) — 2026-10 캐시만 다시 읽어 팀당 5~8경기에서 멈춘 동안
+        # 주간 빌드가 'ok' 였고 그 뒤 리그 데뷔 선수가 선수 표에 없었다(메슬리에·펜더스, 2026-11-03). 선수 줄·분·세부 지표는
+        # FotMob 이 보강(src/live_roster·season_totals·allcomp_stats) — 여기선 원천 문제로 알린다
+        print(f"[fbref] 표가 뒤처짐 — 팀당 FBref {lag[1]:.0f}경기 · FotMob {lag[0]:.0f}경기 (SOURCE STALE)")
         return EX_SOURCE_STALE
     return 0
 

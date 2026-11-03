@@ -65,10 +65,26 @@ def score(a: str, b: str) -> float:
     reserve = {"jong", "ii", "b", "u19", "u21", "u23", "reserves", "youth", "castilla", "atletic"}
     if bool(ta & reserve) != bool(tb & reserve):
         return 0.0
-    # 포함은 단어 단위로만 — 글자 단위면 'Lech'→'Anderlecht', 'Lillestrøm'→'Lille' 처럼 엉뚱하게 붙었다
+    # 포함은 단어 단위로만 — 글자 단위면 'Lech'→'Anderlecht', 'Lillestrøm'→'Lille' 처럼 엉뚱하게 붙었다.
+    # 포함끼리 동점이면 더 많이 겹치는 쪽 — 'Grasshopper Club Zürich' 가 'FC Zürich'(zurich)와 'Grasshopper'(grasshopper)에
+    # 똑같이 0.9 라 목록 앞의 FC Zürich 로 갔다(2026-11-03 점검, 그 팀 FotMob 평점 33명이 FC Zürich 로 쌓임)
     if ta <= tb or tb <= ta:
-        return 0.9
+        small, big = (na, nb) if len(ta) <= len(tb) else (nb, na)
+        return 0.9 + 0.09 * len(small.replace(" ", "")) / max(1, len(big.replace(" ", "")))
+    # 약자 — 'RZ Pellets WAC' ↔ 'Wolfsberger AC'(W + AC), 스폰서 이름이 붙은 원천 표기
+    if (len(ac := _acro(b)) >= 3 and ac in ta) or (len(ac := _acro(a)) >= 3 and ac in tb):
+        return 0.85
     return len(ta & tb) / len(ta | tb)
+
+
+@lru_cache(maxsize=16384)
+def _acro(name: str) -> str:
+    """약자 — 낱말 첫 글자, 4자 이하 대문자 낱말(AC·FK)은 통째로: 'Wolfsberger AC' → 'wac'."""
+    out = ""
+    for w in re.split(r"[^A-Za-z0-9]+", unidecode(str(name or ""))):
+        if w:
+            out += w.lower() if (w.isupper() and len(w) <= 4) else w[0].lower()
+    return out
 
 
 def best(name: str, candidates) -> str | None:
