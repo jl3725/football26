@@ -32,11 +32,11 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5811718,2026-08-09,bel.1,Beveren,Antwerp,29.0,Chris Lokesa,FastBreak,0,0.3482003211975097
 5811718,2026-08-09,bel.1,Antwerp,Beveren,62.0,Michael Frey,RegularPlay,0,0.4431441128253937
 5811718,2026-08-09,bel.1,Antwerp,Beveren,86.0,Michael Frey,RegularPlay,0,0.1268891990184784
-5954879,2026-08-11,uefa.champions_qual,Union SG,Bodø/Glimt,61.0,Guilherme Smith,RegularPlay,0,0.04106949642300606
-5954879,2026-08-11,uefa.champions_qual,Union SG,Bodø/Glimt,88.0,Mohammed Fuseini,RegularPlay,0,0.017127249389886856
+5954879,2026-08-11,uefa.champions_qual,Union SG,Bodø/Glimt,61.0,Guilherme Smith,RegularPlay,0,0.041069496423006
+5954879,2026-08-11,uefa.champions_qual,Union SG,Bodø/Glimt,88.0,Mohammed Fuseini,RegularPlay,0,0.0171272493898868
 5955035,2026-08-13,uefa.europa_qual,Anderlecht,PAOK Thessaloniki,19.0,Léo Pétrot,FromCorner,0,0.566188633441925
-5955035,2026-08-13,uefa.europa_qual,Anderlecht,PAOK Thessaloniki,47.0,Lukás Ambros,RegularPlay,0,0.08839686214923859
-5955035,2026-08-13,uefa.europa_qual,Anderlecht,PAOK Thessaloniki,55.0,Danylo Sikan,RegularPlay,0,0.043364740908145905
+5955035,2026-08-13,uefa.europa_qual,Anderlecht,PAOK Thessaloniki,47.0,Lukás Ambros,RegularPlay,0,0.0883968621492385
+5955035,2026-08-13,uefa.europa_qual,Anderlecht,PAOK Thessaloniki,55.0,Danylo Sikan,RegularPlay,0,0.0433647409081459
 5811719,2026-08-14,bel.1,Sint-Truiden,Cercle Brugge,1.0,Ryan Merlen,RegularPlay,0,0.2452979832887649
 5811719,2026-08-14,bel.1,Cercle Brugge,Sint-Truiden,28.0,Steve Ngoura,FromCorner,0,0.9600805640220642
 5811719,2026-08-14,bel.1,Sint-Truiden,Cercle Brugge,37.0,Ryan Merlen,RegularPlay,0,0.363677442073822
@@ -99,12 +99,12 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5811735,2026-08-23,bel.1,Club Brugge,Cercle Brugge,38.0,Nicolò Tresoldi,RegularPlay,0,0.7492592930793762
 5811735,2026-08-23,bel.1,Cercle Brugge,Club Brugge,,,none,0,
 5987969,2026-08-27,uefa.europa_qual,Sint-Truiden,Omonia Nicosia,33.0,Ilias Sebaoui,Penalty,0,0.7884
-5987969,2026-08-27,uefa.europa_qual,Sint-Truiden,Omonia Nicosia,90.0,Ilias Sebaoui,RegularPlay,0,0.13666845858097076
+5987969,2026-08-27,uefa.europa_qual,Sint-Truiden,Omonia Nicosia,90.0,Ilias Sebaoui,RegularPlay,0,0.1366684585809707
 5987974,2026-08-27,uefa.europa_qual,Anderlecht,Kairat Almaty,45.0,Mihajlo Cvetkovic,Penalty,0,0.7884
-5987974,2026-08-27,uefa.europa_qual,Anderlecht,Kairat Almaty,53.0,Danylo Sikan,RegularPlay,0,0.29133158922195435
+5987974,2026-08-27,uefa.europa_qual,Anderlecht,Kairat Almaty,53.0,Danylo Sikan,RegularPlay,0,0.2913315892219543
 5987974,2026-08-27,uefa.europa_qual,Anderlecht,Kairat Almaty,71.0,Giulian Biancone,FromCorner,0,0.1858915239572525
-5988087,2026-08-27,uefa.europa.conf_qual,Gent,Hibernian,39.0,Josué Vergara,RegularPlay,0,0.06694705784320831
-5988087,2026-08-27,uefa.europa.conf_qual,Gent,Hibernian,84.0,Christian Burgess,FromCorner,0,0.15425631403923035
+5988087,2026-08-27,uefa.europa.conf_qual,Gent,Hibernian,39.0,Josué Vergara,RegularPlay,0,0.0669470578432083
+5988087,2026-08-27,uefa.europa.conf_qual,Gent,Hibernian,84.0,Christian Burgess,FromCorner,0,0.1542563140392303
 5988087,2026-08-27,uefa.europa.conf_qual,Gent,Hibernian,90.0,Miguel Chaiwa,OwnGoal,1,
 5811736,2026-08-28,bel.1,Genk,Beveren,9.0,Rafiu Durosinmi,Penalty,0,0.7884
 5811736,2026-08-28,bel.1,Genk,Beveren,19.0,Junya Ito,RegularPlay,0,0.0659546554088592
@@ -377,3 +377,7 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5811798,2026-11-01,bel.1,Sint-Truiden,OH Leuven,46.0,Nathanaël Mbuku,RegularPlay,0,0.0623418688774108
 5811798,2026-11-01,bel.1,OH Leuven,Sint-Truiden,53.0,Robin Mirisola,FromCorner,0,0.1977157592773437
 5811798,2026-11-01,bel.1,OH Leuven,Sint-Truiden,81.0,Davis Opoku,RegularPlay,0,0.1149291172623634
+5811786,2026-11-04,bel.1,Kortrijk,Mechelen,53.0,Thierry Ambrose,RegularPlay,0,0.18027330935001373
+5811786,2026-11-04,bel.1,Mechelen,Kortrijk,69.0,Myron van Brederode,SetPiece,0,0.045853275805711746
+5811786,2026-11-04,bel.1,Mechelen,Kortrijk,72.0,Mohamed Fofana,OwnGoal,1,
+5811786,2026-11-04,bel.1,Mechelen,Kortrijk,90.0,Boris Lambert,OwnGoal,1,
