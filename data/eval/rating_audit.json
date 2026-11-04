@@ -1,7 +1,7 @@
 {
- "date": "2026-11-03",
+ "date": "2026-11-04",
  "model": "v3.14",
- "players": 5961,
+ "players": 5983,
  "golden": [],
  "scout": [
   {
@@ -137,18 +137,18 @@
  ],
  "audit": {
   "rise": {
-   "n": 8,
+   "n": 10,
    "limit": 25,
    "desc": "지난 시즌(1,500분+) 대비 +6 이상인데 이번 시즌 평점(7.2+·450분+)이 받쳐 주지 않는 급등",
    "examples": [
+    "Talisca(Fenerbahçe, 32) 79 ← 73",
     "Luis Milla(Como, 32) 78 ← 71",
     "Thierno Barry(Everton, 24) 77 ← 71",
     "Nobel Mendy(Hull City, 22) 74 ← 68",
+    "Ilias Sebaoui(Sint-Truiden, 25) 70 ← 64",
     "Adama Camara(Paris FC, 30) 70 ← 63",
     "Tibe De Vlieger(Gent, 20) 68 ← 62",
-    "Ianis Stoica(Estrela, 23) 65 ← 57",
-    "Barbero(Arouca, 28) 62 ← 56",
-    "Jerry Afriyie(Genk, 19) 58 ← 52"
+    "Ianis Stoica(Estrela, 23) 65 ← 57"
    ]
   },
   "fall": {
@@ -160,13 +160,14 @@
    ]
   },
   "underperf_high": {
-   "n": 3,
+   "n": 4,
    "limit": 10,
    "desc": "OVR 86+ 인데 리그 보정 평점이 포지션 평균보다 0.1 넘게 낮음(900분+)",
    "examples": [
-    "Achraf Hakimi(PSG, 27) 88 ← 88",
-    "João Neves(PSG, 22) 88 ← 89",
-    "Trent Alexander-Arnold(Real Madrid, 28) 86 ← 85"
+    "Achraf Hakimi(PSG, 28) 88 ← 88",
+    "João Neves(PSG, 22) 88 ← 88",
+    "Trent Alexander-Arnold(Real Madrid, 28) 86 ← 85",
+    "Fabián Ruiz Peña(PSG, 30) 86 ← 81"
    ]
   },
   "young_elite": {

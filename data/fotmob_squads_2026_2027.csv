@@ -2,7 +2,7 @@ squad,player,fotmob_id,group,positions,tm_position,pos,age,birth_date,shirt,ccod
 Arsenal,David Raya,562727,keepers,GK,Goalkeeper,GK,31,1995-09-15,1.0,ESP,False,,2026-11-04
 Arsenal,Kepa Arrizabalaga,317564,keepers,GK,Goalkeeper,GK,32,1994-10-03,13.0,ESP,False,,2026-11-04
 Arsenal,Illan Meslier,952029,keepers,GK,Goalkeeper,GK,26,2000-03-02,30.0,FRA,False,,2026-11-04
-Arsenal,William Saliba,955406,defenders,CB,Centre-Back,DF,25,2001-03-24,2.0,FRA,True,Late November 2026,2026-11-04
+Arsenal,William Saliba,955406,defenders,CB,Centre-Back,DF,25,2001-03-24,2.0,FRA,False,,2026-11-04
 Arsenal,Cristhian Mosquera,1298907,defenders,"CB,RB",Centre-Back,DF,22,2004-06-27,3.0,ESP,False,,2026-11-04
 Arsenal,Ben White,776151,defenders,RB,Right-Back,DF,29,1997-10-08,4.0,ENG,False,,2026-11-04
 Arsenal,Piero Hincapié,1137667,defenders,"LB,CB",Left-Back,DF,24,2002-01-09,5.0,ECU,False,,2026-11-04
@@ -121,7 +121,7 @@ Liverpool,Jeremie Frimpong,966018,defenders,"RB,RW",Right-Back,DF,25,2000-12-10,
 Liverpool,Ronald Araujo,921253,defenders,"CB,RB",Centre-Back,DF,27,1999-03-07,33.0,URU,False,,2026-11-04
 Liverpool,Dominik Szoboszlai,846005,midfielders,"CDM,CAM,RW,RB,LW",Defensive Midfield,MF,26,2000-10-25,8.0,HUN,False,,2026-11-04
 Liverpool,Alexis Mac Allister,831489,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,27,1998-12-24,10.0,ARG,False,,2026-11-04
-Liverpool,Ryan Gravenberch,956683,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,24,2002-05-16,38.0,NED,False,,2026-11-04
+Liverpool,Ryan Gravenberch,956683,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,24,2002-05-16,38.0,NED,True,A few days,2026-11-04
 Liverpool,Trey Nyoni,1436258,midfielders,"CDM,CM",Defensive Midfield,MF,19,2007-06-30,42.0,ENG,False,,2026-11-04
 Liverpool,James McConnell,1231075,midfielders,"CDM,CAM",Defensive Midfield,MF,22,2004-09-13,53.0,ENG,False,,2026-11-04
 Liverpool,Florian Wirtz,1152455,attackers,"CAM,LW,ST",Attacking Midfield,FW,23,2003-05-03,7.0,GER,False,,2026-11-04
@@ -223,6 +223,7 @@ Tottenham Hotspur,Destiny Udogie,1052898,defenders,"LB,LWB",Left-Back,DF,23,2002
 Tottenham Hotspur,Pedro Porro,941573,defenders,"RB,RM",Right-Back,DF,27,1999-09-13,23.0,ESP,False,,2026-11-04
 Tottenham Hotspur,Ben Davies,276121,defenders,"CB,LB",Centre-Back,DF,33,1993-04-24,33.0,WAL,False,,2026-11-04
 Tottenham Hotspur,Micky van de Ven,1097466,defenders,"CB,LB",Centre-Back,DF,25,2001-04-19,37.0,NED,False,,2026-11-04
+Tottenham Hotspur,Luca Williams-Barnett,1636112,midfielders,"CAM,CM",Attacking Midfield,MF,18,2008-10-01,,ENG,False,,2026-11-04
 Tottenham Hotspur,Xavi Simons,1173787,midfielders,"CAM,LW,RW",Attacking Midfield,MF,23,2003-04-21,7.0,NED,True,Early February 2027,2026-11-04
 Tottenham Hotspur,Conor Gallagher,966027,midfielders,"CAM,CM,CDM",Attacking Midfield,MF,26,2000-02-06,8.0,ENG,False,,2026-11-04
 Tottenham Hotspur,James Maddison,493165,midfielders,CAM,Attacking Midfield,MF,29,1996-11-23,10.0,ENG,False,,2026-11-04
@@ -444,20 +445,20 @@ Manchester Utd,Leny Yoro,1358581,defenders,"CB,RB",Centre-Back,DF,20,2005-11-13,
 Manchester Utd,Luke Shaw,362694,defenders,"LB,CB",Left-Back,DF,31,1995-07-12,23.0,ENG,True,Early November 2026,2026-11-04
 Manchester Utd,Ayden Heaven,1559639,defenders,CB,Centre-Back,DF,20,2006-09-22,26.0,ENG,False,,2026-11-04
 Manchester Utd,Mason Mount,750032,midfielders,"CDM,CAM",Defensive Midfield,MF,27,1999-01-10,7.0,ENG,False,,2026-11-04
-Manchester Utd,Bruno Fernandes,422685,midfielders,"CAM,CDM,RW,LW",Attacking Midfield,MF,32,1994-09-08,8.0,POR,False,,2026-11-04
+Manchester Utd,Bruno Fernandes,422685,midfielders,"CAM,CDM,LW,RW",Attacking Midfield,MF,32,1994-09-08,8.0,POR,False,,2026-11-04
 Manchester Utd,Andrey Santos,1372921,midfielders,"CDM,CM",Defensive Midfield,MF,22,2004-05-03,17.0,BRA,False,,2026-11-04
 Manchester Utd,Youri Tielemans,465960,midfielders,"CDM,CAM,CM",Defensive Midfield,MF,29,1997-05-07,18.0,BEL,False,,2026-11-04
 Manchester Utd,Carlos Baleba,1352713,midfielders,"CDM,CM",Defensive Midfield,MF,22,2004-01-03,20.0,CMR,True,Late November 2026,2026-11-04
 Manchester Utd,Manuel Ugarte,1035614,midfielders,"CDM,CM",Defensive Midfield,MF,25,2001-04-11,25.0,URU,True,Early April 2027,2026-11-04
 Manchester Utd,Kobbie Mainoo,1292810,midfielders,CDM,Defensive Midfield,MF,21,2005-04-19,37.0,ENG,False,,2026-11-04
-Manchester Utd,Jack Fletcher,1575707,midfielders,"CAM,CDM,CM,ST",Attacking Midfield,MF,19,2007-03-19,38.0,ENG,False,,2026-11-04
+Manchester Utd,Jack Fletcher,1575707,midfielders,"CAM,CM,CDM,ST",Attacking Midfield,MF,19,2007-03-19,38.0,ENG,False,,2026-11-04
 Manchester Utd,Tyler Fletcher,1676985,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,19,2007-03-19,39.0,SCO,False,,2026-11-04
 Manchester Utd,Harry Amass,1430832,midfielders,"LWB,LM,LB",Left-Back,MF,19,2007-03-16,41.0,ENG,False,,2026-11-04
 Manchester Utd,Marcus Rashford,696365,attackers,LW,Left Winger,FW,29,1997-10-31,9.0,ENG,True,A few days,2026-11-04
 Manchester Utd,Matheus Cunha,863098,attackers,"LW,ST,CAM",Left Winger,FW,27,1999-05-27,10.0,BRA,False,,2026-11-04
 Manchester Utd,Joshua Zirkzee,950830,attackers,ST,Centre-Forward,FW,25,2001-05-22,11.0,NED,False,,2026-11-04
 Manchester Utd,Patrick Dorgu,1526560,attackers,"LW,LB,LWB,RW",Left Winger,FW,22,2004-10-26,13.0,DEN,True,Early November 2026,2026-11-04
-Manchester Utd,Amad Diallo,1070052,attackers,"RW,RWB,CAM",Right Winger,FW,24,2002-07-11,16.0,CIV,True,Doubtful,2026-11-04
+Manchester Utd,Amad Diallo,1070052,attackers,"RW,RWB,CAM",Right Winger,FW,24,2002-07-11,16.0,CIV,False,,2026-11-04
 Manchester Utd,Bryan Mbeumo,923312,attackers,"ST,RW,CAM",Centre-Forward,FW,27,1999-08-07,19.0,CMR,False,,2026-11-04
 Manchester Utd,Benjamin Šeško,1073977,attackers,ST,Centre-Forward,FW,23,2003-05-31,30.0,SVN,True,Early January 2027,2026-11-04
 Manchester Utd,Shea Lacey,1436260,attackers,"RW,CAM",Right Winger,FW,19,2007-04-14,31.0,ENG,False,,2026-11-04

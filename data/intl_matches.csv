@@ -1,6 +1,4 @@
 event_id,kickoff,date,comp_code,season,stage,home_logo,away_logo,home,away,hg,ag,state
-760505,2026-07-06T01:00Z,2026-07-06,fifa.world,2026,,https://a.espncdn.com/i/teamlogos/countries/500/mex.png,https://a.espncdn.com/i/teamlogos/countries/500/eng.png,Mexico,England,2,3,post
-760506,2026-07-06T19:00Z,2026-07-06,fifa.world,2026,,https://a.espncdn.com/i/teamlogos/countries/500/por.png,https://a.espncdn.com/i/teamlogos/countries/500/esp.png,Portugal,Spain,0,1,post
 760507,2026-07-07T00:00Z,2026-07-07,fifa.world,2026,,https://a.espncdn.com/i/teamlogos/countries/500/usa.png,https://a.espncdn.com/i/teamlogos/countries/500/bel.png,United States,Belgium,1,4,post
 760509,2026-07-07T16:00Z,2026-07-07,fifa.world,2026,,https://a.espncdn.com/i/teamlogos/countries/500/arg.png,https://a.espncdn.com/i/teamlogos/countries/500/egy.png,Argentina,Egypt,3,2,post
 760508,2026-07-07T20:00Z,2026-07-07,fifa.world,2026,Switzerland advance 4-3 on penalties,https://a.espncdn.com/i/teamlogos/countries/500/sui.png,https://a.espncdn.com/i/teamlogos/countries/500/col.png,Switzerland,Colombia,0,0,post
@@ -319,6 +317,7 @@ event_id,kickoff,date,comp_code,season,stage,home_logo,away_logo,home,away,hg,ag
 401903298,2026-10-07T02:30Z,2026-10-07,fifa.friendly,2026,,https://a.espncdn.com/i/teamlogos/countries/500/mex.png,https://a.espncdn.com/i/teamlogos/countries/500/chi.png,Mexico,Chile,0,2,post
 401930244,2026-11-11T12:00Z,2026-11-11,fifa.friendly,2026,,https://a.espncdn.com/i/teamlogos/countries/500/vie.png,https://a.espncdn.com/i/teamlogos/soccer/500/14561.png,Vietnam,Chinese Taipei,,,pre
 401906458,2026-11-12T06:00Z,2026-11-12,fifa.friendly,2026,,https://a.espncdn.com/i/teamlogos/countries/500/nzl.png,https://a.espncdn.com/i/teamlogos/countries/500/ind.png,New Zealand,India,,,pre
+401930962,2026-11-12T15:00Z,2026-11-12,fifa.friendly,2026,,https://a.espncdn.com/i/teamlogos/countries/500/uzb.png,https://a.espncdn.com/i/teamlogos/countries/500/rus.png,Uzbekistan,Russia,,,pre
 401927214,2026-11-12T15:00Z,2026-11-12,caf.nations_qual,2026,,https://a.espncdn.com/i/teamlogos/countries/500/gha.png,https://a.espncdn.com/i/teamlogos/countries/500/som.png,Ghana,Somalia,,,pre
 401927211,2026-11-12T16:00Z,2026-11-12,caf.nations_qual,2026,,https://a.espncdn.com/i/teamlogos/countries/500/rdc.png,https://a.espncdn.com/i/teamlogos/countries/500/sle.png,Congo DR,Sierra Leone,,,pre
 401927210,2026-11-12T16:00Z,2026-11-12,caf.nations_qual,2026,,https://a.espncdn.com/i/teamlogos/countries/500/eqg.png,https://a.espncdn.com/i/teamlogos/soccer/500/4214.png,Equatorial Guinea,Zimbabwe,,,pre
@@ -326,6 +325,7 @@ event_id,kickoff,date,comp_code,season,stage,home_logo,away_logo,home,away,hg,ag
 401927184,2026-11-12T16:00Z,2026-11-12,caf.nations_qual,2026,,https://a.espncdn.com/i/teamlogos/countries/500/mad.png,https://a.espncdn.com/i/teamlogos/countries/500/gnb.png,Madagascar,Guinea-Bissau,,,pre
 401861146,2026-11-12T17:00Z,2026-11-12,uefa.nations,2026,,https://a.espncdn.com/i/teamlogos/countries/500/fifa.armenia.png,https://a.espncdn.com/i/teamlogos/countries/500/cyp.png,Armenia,Cyprus,,,pre
 401861145,2026-11-12T17:00Z,2026-11-12,uefa.nations,2026,,https://a.espncdn.com/i/teamlogos/countries/500/tur.png,https://a.espncdn.com/i/teamlogos/countries/500/bel.png,Türkiye,Belgium,,,pre
+401933115,2026-11-12T17:00Z,2026-11-12,fifa.friendly,2026,,https://a.espncdn.com/i/teamlogos/countries/500/ltu.png,https://a.espncdn.com/i/teamlogos/countries/500/sur.png,Lithuania,Suriname,,,pre
 401931296,2026-11-12T17:30Z,2026-11-12,fifa.friendly,2026,,https://a.espncdn.com/i/teamlogos/countries/500/mlt.png,https://a.espncdn.com/i/teamlogos/countries/500/swz.png,Malta,Eswatini,,,pre
 401929779,2026-11-12T19:00Z,2026-11-12,concacaf.nations.league,2026,1st Leg,https://a.espncdn.com/i/teamlogos/countries/500/aru.png,https://a.espncdn.com/i/teamlogos/countries/500/marq.png,Aruba,Martinique,,,pre
 401929778,2026-11-12T19:00Z,2026-11-12,concacaf.nations.league,2026,,https://a.espncdn.com/i/teamlogos/countries/500/brb.png,https://a.espncdn.com/i/teamlogos/countries/500/gdl.png,Barbados,Guadeloupe,,,pre
@@ -340,7 +340,6 @@ event_id,kickoff,date,comp_code,season,stage,home_logo,away_logo,home,away,hg,ag
 401861151,2026-11-12T19:45Z,2026-11-12,uefa.nations,2026,,https://a.espncdn.com/i/teamlogos/countries/500/ita.png,https://a.espncdn.com/i/teamlogos/countries/500/fra.png,Italy,France,,,pre
 401861152,2026-11-12T19:45Z,2026-11-12,uefa.nations,2026,,https://a.espncdn.com/i/teamlogos/countries/500/mtg.png,https://a.espncdn.com/i/teamlogos/countries/500/lva.png,Montenegro,Latvia,,,pre
 401861149,2026-11-12T19:45Z,2026-11-12,uefa.nations,2026,,https://a.espncdn.com/i/teamlogos/countries/500/smr.png,https://a.espncdn.com/i/teamlogos/countries/500/blr.png,San Marino,Belarus,,,pre
-401930962,2026-11-12T20:00Z,2026-11-12,fifa.friendly,2026,,https://a.espncdn.com/i/teamlogos/countries/500/uzb.png,https://a.espncdn.com/i/teamlogos/countries/500/rus.png,Uzbekistan,Russia,,,pre
 401929777,2026-11-12T20:00Z,2026-11-12,concacaf.nations.league,2026,,https://a.espncdn.com/i/teamlogos/countries/500/boe.png,https://a.espncdn.com/i/teamlogos/countries/500/cub.png,Bonaire,Cuba,,,pre
 401929796,2026-11-12T23:00Z,2026-11-12,concacaf.nations.league,2026,1st Leg,https://a.espncdn.com/i/teamlogos/countries/500/atg.png,https://a.espncdn.com/i/teamlogos/countries/500/tri.png,Antigua and Barbuda,Trinidad and Tobago,,,pre
 401929776,2026-11-13T00:00Z,2026-11-13,concacaf.nations.league,2026,1st Leg,https://a.espncdn.com/i/teamlogos/soccer/500/11678.png,https://a.espncdn.com/i/teamlogos/countries/500/pan.png,Curaçao,Panama,,,pre
@@ -387,6 +386,7 @@ event_id,kickoff,date,comp_code,season,stage,home_logo,away_logo,home,away,hg,ag
 401930236,2026-11-14T12:00Z,2026-11-14,fifa.friendly,2026,,https://a.espncdn.com/i/teamlogos/countries/500/chn.png,https://a.espncdn.com/i/teamlogos/countries/500/mas.png,China,Malaysia,,,pre
 401930243,2026-11-14T12:00Z,2026-11-14,fifa.friendly,2026,,https://a.espncdn.com/i/teamlogos/soccer/500/14561.png,https://a.espncdn.com/i/teamlogos/countries/500/kgz.png,Chinese Taipei,Kyrgyz Republic,,,pre
 401861163,2026-11-14T14:00Z,2026-11-14,uefa.nations,2026,,https://a.espncdn.com/i/teamlogos/countries/500/kosovo.png,https://a.espncdn.com/i/teamlogos/countries/500/isr.png,Kosovo,Israel,,,pre
+401932237,2026-11-14T16:00Z,2026-11-14,fifa.friendly,2026,,https://a.espncdn.com/i/teamlogos/countries/500/pal.png,https://a.espncdn.com/i/teamlogos/countries/500/irn.png,Palestine,Iran,,,pre
 401927188,2026-11-14T16:00Z,2026-11-14,caf.nations_qual,2026,,https://a.espncdn.com/i/teamlogos/countries/500/uga.png,https://a.espncdn.com/i/teamlogos/countries/500/bot.png,Uganda,Botswana,,,pre
 401861164,2026-11-14T17:00Z,2026-11-14,uefa.nations,2026,,https://a.espncdn.com/i/teamlogos/countries/500/geo.png,https://a.espncdn.com/i/teamlogos/countries/500/hun.png,Georgia,Hungary,,,pre
 401861165,2026-11-14T17:00Z,2026-11-14,uefa.nations,2026,,https://a.espncdn.com/i/teamlogos/countries/500/nor.png,https://a.espncdn.com/i/teamlogos/countries/500/wal.png,Norway,Wales,,,pre
@@ -398,7 +398,6 @@ event_id,kickoff,date,comp_code,season,stage,home_logo,away_logo,home,away,hg,ag
 401861167,2026-11-14T19:45Z,2026-11-14,uefa.nations,2026,,https://a.espncdn.com/i/teamlogos/countries/500/por.png,https://a.espncdn.com/i/teamlogos/countries/500/den.png,Portugal,Denmark,,,pre
 401861168,2026-11-14T19:45Z,2026-11-14,uefa.nations,2026,,https://a.espncdn.com/i/teamlogos/countries/500/rom.png,https://a.espncdn.com/i/teamlogos/countries/500/pol.png,Romania,Poland,,,pre
 401861166,2026-11-14T19:45Z,2026-11-14,uefa.nations,2026,,https://a.espncdn.com/i/teamlogos/countries/500/swe.png,https://a.espncdn.com/i/teamlogos/countries/500/bih.png,Sweden,Bosnia-Herzegovina,,,pre
-401932237,2026-11-14T20:00Z,2026-11-14,fifa.friendly,2026,,https://a.espncdn.com/i/teamlogos/countries/500/pal.png,https://a.espncdn.com/i/teamlogos/countries/500/irn.png,Palestine,Iran,,,pre
 401929710,2026-11-14T21:30Z,2026-11-14,concacaf.nations.league,2026,1st Leg,https://a.espncdn.com/i/teamlogos/countries/500/hai.png,https://a.espncdn.com/i/teamlogos/countries/500/usa.png,Haiti,United States,,,pre
 401929773,2026-11-15T00:00Z,2026-11-15,concacaf.nations.league,2026,,https://a.espncdn.com/i/teamlogos/countries/500/vin.png,https://a.espncdn.com/i/teamlogos/countries/500/blz.png,St. Vincent and the Grenadines,Belize,,,pre
 401929772,2026-11-15T01:00Z,2026-11-15,concacaf.nations.league,2026,1st Leg,https://a.espncdn.com/i/teamlogos/countries/500/jam.png,https://a.espncdn.com/i/teamlogos/countries/500/mex.png,Jamaica,Mexico,,,pre
@@ -449,13 +448,13 @@ event_id,kickoff,date,comp_code,season,stage,home_logo,away_logo,home,away,hg,ag
 401931477,2026-11-17T14:00Z,2026-11-17,fifa.friendly,2026,,https://a.espncdn.com/i/teamlogos/countries/500/qat.png,https://a.espncdn.com/i/teamlogos/countries/500/kors.png,Qatar,South Korea,,,pre
 401931495,2026-11-17T15:30Z,2026-11-17,fifa.friendly,2026,,https://a.espncdn.com/i/teamlogos/countries/500/ksa.png,https://a.espncdn.com/i/teamlogos/countries/500/uzb.png,Saudi Arabia,Uzbekistan,,,pre
 401919974,2026-11-17T16:00Z,2026-11-17,fifa.friendly,2026,,https://a.espncdn.com/i/teamlogos/countries/500/jor.png,https://a.espncdn.com/i/teamlogos/countries/500/aus.png,Jordan,Australia,,,pre
+401930978,2026-11-17T16:00Z,2026-11-17,fifa.friendly,2026,,https://a.espncdn.com/i/teamlogos/countries/500/rus.png,https://a.espncdn.com/i/teamlogos/countries/500/ven.png,Russia,Venezuela,,,pre
 401927182,2026-11-17T16:00Z,2026-11-17,caf.nations_qual,2026,,https://a.espncdn.com/i/teamlogos/countries/500/gam.png,https://a.espncdn.com/i/teamlogos/countries/500/civ.png,Gambia,Ivory Coast,,,pre
 401927166,2026-11-17T16:00Z,2026-11-17,caf.nations_qual,2026,,https://a.espncdn.com/i/teamlogos/countries/500/gnb.png,https://a.espncdn.com/i/teamlogos/countries/500/mad.png,Guinea-Bissau,Madagascar,,,pre
 401927175,2026-11-17T16:00Z,2026-11-17,caf.nations_qual,2026,,https://a.espncdn.com/i/teamlogos/countries/500/ken.png,https://a.espncdn.com/i/teamlogos/countries/500/rsa.png,Kenya,South Africa,,,pre
 401927137,2026-11-17T16:00Z,2026-11-17,caf.nations_qual,2026,,https://a.espncdn.com/i/teamlogos/countries/500/lby.png,https://a.espncdn.com/i/teamlogos/countries/500/tun.png,Libya,Tunisia,,,pre
 401927174,2026-11-17T16:00Z,2026-11-17,caf.nations_qual,2026,,https://a.espncdn.com/i/teamlogos/countries/500/sle.png,https://a.espncdn.com/i/teamlogos/countries/500/rdc.png,Sierra Leone,Congo DR,,,pre
 401927136,2026-11-17T16:00Z,2026-11-17,caf.nations_qual,2026,,https://a.espncdn.com/i/teamlogos/countries/500/tog.png,https://a.espncdn.com/i/teamlogos/countries/500/alg.png,Togo,Algeria,,,pre
-401930978,2026-11-17T17:00Z,2026-11-17,fifa.friendly,2026,,https://a.espncdn.com/i/teamlogos/countries/500/rus.png,https://a.espncdn.com/i/teamlogos/countries/500/ven.png,Russia,Venezuela,,,pre
 401929704,2026-11-17T19:00Z,2026-11-17,concacaf.nations.league,2026,,https://a.espncdn.com/i/teamlogos/countries/500/blz.png,https://a.espncdn.com/i/teamlogos/countries/500/sma.png,Belize,Sint Maarten,,,pre
 401929769,2026-11-17T19:00Z,2026-11-17,concacaf.nations.league,2026,,https://a.espncdn.com/i/teamlogos/countries/500/dma.png,https://a.espncdn.com/i/teamlogos/countries/500/cay.png,Dominica,Cayman Islands,,,pre
 401929768,2026-11-17T19:00Z,2026-11-17,concacaf.nations.league,2026,,https://a.espncdn.com/i/teamlogos/countries/500/lca.png,https://a.espncdn.com/i/teamlogos/countries/500/brb.png,St. Lucia,Barbados,,,pre
@@ -526,21 +525,10 @@ event_id,kickoff,date,comp_code,season,stage,home_logo,away_logo,home,away,hg,ag
 401872273,2027-01-20T10:30Z,2027-01-20,afc.asian.cup,2027,,https://a.espncdn.com/i/teamlogos/countries/500/tha.png,https://a.espncdn.com/i/teamlogos/countries/500/idn.png,Thailand,Indonesia,,,pre
 401872272,2027-01-20T13:30Z,2027-01-20,afc.asian.cup,2027,,https://a.espncdn.com/i/teamlogos/countries/500/kors.png,https://a.espncdn.com/i/teamlogos/countries/500/uae.png,South Korea,United Arab Emirates,,,pre
 401872271,2027-01-20T13:30Z,2027-01-20,afc.asian.cup,2027,,https://a.espncdn.com/i/teamlogos/countries/500/vie.png,https://a.espncdn.com/i/teamlogos/countries/500/yem.png,Vietnam,Yemen,,,pre
-401872274,2027-01-22T20:00Z,2027-01-22,afc.asian.cup,2027,,,,Group A 2nd Place,Group C 2nd Place,,,pre
-401872275,2027-01-22T20:00Z,2027-01-22,afc.asian.cup,2027,,,,Group B Winner,3rd Place Group A/C/D,,,pre
-401872276,2027-01-23T20:00Z,2027-01-23,afc.asian.cup,2027,,,,Group A Winner,3rd Place Group C/D/E,,,pre
-401872277,2027-01-23T20:00Z,2027-01-23,afc.asian.cup,2027,,,,Group D Winner,3rd Place Group B,,,pre
-401872278,2027-01-24T20:00Z,2027-01-24,afc.asian.cup,2027,,,,Group B 2nd Place,Group F 2nd Place,,,pre
-401872279,2027-01-24T20:00Z,2027-01-24,afc.asian.cup,2027,,,,Group F Winner,Group E 2nd Place,,,pre
 401872280,2027-01-25T20:00Z,2027-01-25,afc.asian.cup,2027,,,,Group C Winner,3rd Place Group A,,,pre
 401872281,2027-01-25T20:00Z,2027-01-25,afc.asian.cup,2027,,,,Group E Winner,Group D 2nd Place,,,pre
 401872282,2027-01-28T20:00Z,2027-01-28,afc.asian.cup,2027,,,,Round of 16 1 Winner,Round of 16 3 Winner,,,pre
 401872283,2027-01-28T20:00Z,2027-01-28,afc.asian.cup,2027,,,,Round of 16 2 Winner,Round of 16 5 Winner,,,pre
-401872284,2027-01-29T20:00Z,2027-01-29,afc.asian.cup,2027,,,,Round of 16 4 Winner,Round of 16 6 Winner,,,pre
-401872285,2027-01-29T20:00Z,2027-01-29,afc.asian.cup,2027,,,,Round of 16 8 Winner,Round of 16 7 Winner,,,pre
-401872286,2027-02-01T20:00Z,2027-02-01,afc.asian.cup,2027,,,,Quarterfinal 1 Winner,Quarterfinal 2 Winner,,,pre
-401872287,2027-02-02T20:00Z,2027-02-02,afc.asian.cup,2027,,,,Quarterfinal 3 Winner,Quarterfinal 4 Winner,,,pre
-401872288,2027-02-05T20:00Z,2027-02-05,afc.asian.cup,2027,,,,Semifinal 1 Winner,Semifinal 2 Winner,,,pre
 401927164,2027-03-24T18:00Z,2027-03-24,caf.nations_qual,2026,,https://a.espncdn.com/i/teamlogos/countries/500/ang.png,https://a.espncdn.com/i/teamlogos/countries/500/egy.png,Angola,Egypt,,,pre
 401927129,2027-03-24T18:00Z,2027-03-24,caf.nations_qual,2026,,https://a.espncdn.com/i/teamlogos/countries/500/ben.png,https://a.espncdn.com/i/teamlogos/countries/500/bka.png,Benin,Burkina Faso,,,pre
 401927127,2027-03-24T18:00Z,2027-03-24,caf.nations_qual,2026,,https://a.espncdn.com/i/teamlogos/countries/500/bot.png,https://a.espncdn.com/i/teamlogos/countries/500/lby.png,Botswana,Libya,,,pre

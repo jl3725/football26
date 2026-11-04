@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-03T13:13:31+00:00",
+ "generated": "2026-11-04T13:07:25+00:00",
  "competitions": [
   {
    "code": "fifa.world",
@@ -48,29 +48,10 @@
    "editions": [
     {
      "season": "2023",
-     "start": "2025-09-09",
+     "start": "2025-10-06",
      "end": "2025-11-16",
-     "matches": 72,
-     "played": 72,
-     "status": "finished",
-     "champion": null,
-     "runner_up": null
-    }
-   ]
-  },
-  {
-   "code": "fifa.worldq.conmebol",
-   "name": "FIFA World Cup Qualifying - CONMEBOL",
-   "conf": "GLOBAL",
-   "kind": "qualifier",
-   "name_ko": "FIFA 월드컵 남미 예선",
-   "editions": [
-    {
-     "season": "2023",
-     "start": "2025-09-09",
-     "end": "2025-09-09",
-     "matches": 5,
-     "played": 5,
+     "matches": 57,
+     "played": 57,
      "status": "finished",
      "champion": null,
      "runner_up": null
@@ -86,10 +67,10 @@
    "editions": [
     {
      "season": "2024",
-     "start": "2025-09-09",
+     "start": "2025-09-10",
      "end": "2025-11-19",
-     "matches": 30,
-     "played": 30,
+     "matches": 28,
+     "played": 28,
      "status": "finished",
      "champion": null,
      "runner_up": null
@@ -124,10 +105,10 @@
    "editions": [
     {
      "season": "2025",
-     "start": "2025-09-09",
+     "start": "2025-10-09",
      "end": "2026-03-31",
-     "matches": 117,
-     "played": 117,
+     "matches": 108,
+     "played": 108,
      "status": "finished",
      "champion": null,
      "runner_up": null
@@ -143,10 +124,10 @@
    "editions": [
     {
      "season": "2025",
-     "start": "2025-09-09",
+     "start": "2025-09-10",
      "end": "2025-12-21",
-     "matches": 139,
-     "played": 139,
+     "matches": 130,
+     "played": 130,
      "status": "finished",
      "champion": null,
      "runner_up": null
@@ -155,7 +136,7 @@
      "season": "2026",
      "start": "2026-01-18",
      "end": "2026-12-27",
-     "matches": 401,
+     "matches": 402,
      "played": 361,
      "status": "live",
      "champion": null,
@@ -231,8 +212,8 @@
     {
      "season": "2027",
      "start": "2027-01-07",
-     "end": "2027-02-05",
-     "matches": 51,
+     "end": "2027-01-28",
+     "matches": 40,
      "played": 0,
      "status": "upcoming",
      "champion": null,

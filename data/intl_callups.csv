@@ -1,6 +1,7 @@
 nation,nation_conf,fifa_rank,flag,squad_for,player,club,pos,caps,goals,our_player,our_squad,our_league,match_score
 Afghanistan,AFC,161.0,https://api.fifa.com/api/v3/picture/flags-sq-2/AFG,2026-06-10,Amin Nabizada,Watford,MF,3.0,0.0,Amin Nabizada,Watford,Championship,100
 Albania,UEFA,66.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ALB,2026-10-06,Simon Simoni,Luzern,GK,1.0,0.0,Simon Simoni,Luzern,SwissSuperLeague,100
+Albania,UEFA,66.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ALB,2026-10-06,Mario Mitaj,Genoa,DF,37.0,0.0,Mario Mitaj,Genoa,SerieA,100
 Albania,UEFA,66.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ALB,2026-10-06,Ardian Ismajli,Torino,DF,51.0,3.0,Ardian Ismajli,Torino,SerieA,100
 Albania,UEFA,66.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ALB,2026-10-06,Luis Hasa,Frosinone,MF,2.0,0.0,Luis Hasa,Frosinone,SerieA,100
 Albania,UEFA,66.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ALB,2026-10-06,Ernest Muçi,Trabzonspor,MF,21.0,4.0,Ernest Muçi,Trabzonspor,SuperLig,100
@@ -24,27 +25,24 @@ Angola,CAF,89.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ANG,2026-10-06,Ki
 Angola,CAF,89.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ANG,2026-10-06,Pedro Bondo,Famalicão,DF,19.0,1.0,Pedro Bondo,Famalicão,LigaPortugal,100
 Angola,CAF,89.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ANG,2026-10-06,Show,Kocaelispor,MF,66.0,2.0,Show,Kocaelispor,SuperLig,100
 Angola,CAF,89.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ANG,2026-10-06,Randy Nteka,Rayo Vallecano,MF,15.0,2.0,Randy Nteka,Rayo Vallecano,LaLiga,100
-Argentina,CONMEBOL,2.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ARG,2026-10-06,Emiliano Martínez,Chelsea,GK,70.0,0.0,Emiliano Martínez,Chelsea,EPL,100
-Argentina,CONMEBOL,2.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ARG,2026-10-06,Leonardo Balerdi,Roma,DF,13.0,0.0,Leonardo Balerdi,Roma,SerieA,100
-Argentina,CONMEBOL,2.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ARG,2026-10-06,Nicolás Tagliafico,Lyon,DF,84.0,1.0,Nicolás Tagliafico,Lyon,Ligue1,100
-Argentina,CONMEBOL,2.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ARG,2026-10-06,Lisandro Martínez,Manchester United,DF,38.0,2.0,Lisandro Martínez,Manchester Utd,EPL,100
-Argentina,CONMEBOL,2.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ARG,2026-10-06,Cristian Romero,Atlético Madrid,DF,61.0,5.0,Cristian Romero,Atlético Madrid,LaLiga,100
-Argentina,CONMEBOL,2.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ARG,2026-10-06,Facundo Medina,Bayer Leverkusen,DF,16.0,0.0,Facundo Medina,Leverkusen,Bundesliga,100
-Argentina,CONMEBOL,2.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ARG,2026-10-06,Valentín Gómez,Betis,DF,1.0,0.0,Valentín Gómez,Real Betis,LaLiga,100
-Argentina,CONMEBOL,2.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ARG,2026-10-06,Enzo Fernández,Manchester City,MF,51.0,8.0,Enzo Fernández,Manchester City,EPL,100
-Argentina,CONMEBOL,2.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ARG,2026-10-06,Giovani Lo Celso,Betis,MF,69.0,5.0,Giovani Lo Celso,Real Betis,LaLiga,100
-Argentina,CONMEBOL,2.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ARG,2026-10-06,Exequiel Palacios,Ipswich Town,MF,44.0,0.0,Exequiel Palacios,Ipswich Town,EPL,100
-Argentina,CONMEBOL,2.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ARG,2026-10-06,Nico Paz,Como,MF,14.0,4.0,Nico Paz,Como,SerieA,100
-Argentina,CONMEBOL,2.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ARG,2026-10-06,Alexis Mac Allister,Liverpool,MF,57.0,7.0,Alexis Mac Allister,Liverpool,EPL,100
-Argentina,CONMEBOL,2.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ARG,2026-10-06,Valentín Barco,Chelsea,MF,7.0,2.0,Valentín Barco,Chelsea,EPL,100
-Argentina,CONMEBOL,2.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ARG,2026-10-06,Julián Alvarez,Atlético Madrid,FW,62.0,16.0,Julián Álvarez,Atlético Madrid,LaLiga,100
-Argentina,CONMEBOL,2.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ARG,2026-10-06,Nico González,Juventus,FW,60.0,6.0,Nicolás González,Juventus,SerieA,80
-Argentina,CONMEBOL,2.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ARG,2026-10-06,Gianluca Prestianni,Benfica,FW,3.0,1.0,Gianluca Prestianni,Benfica,LigaPortugal,100
-Argentina,CONMEBOL,2.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ARG,2026-10-06,Giuliano Simeone,Atlético Madrid,FW,17.0,3.0,Giuliano Simeone,Atlético Madrid,LaLiga,100
-Argentina,CONMEBOL,2.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ARG,2026-10-06,Lautaro Martínez,Internazionale,FW,87.0,42.0,Lautaro Martínez,Inter,SerieA,100
-Argentina,CONMEBOL,2.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ARG,2026-10-06,Matías Soulé,Roma,FW,1.0,0.0,Matìas Soulé,Roma,SerieA,100
-Argentina,CONMEBOL,2.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ARG,2026-10-06,Santiago Castro,Roma,FW,1.0,0.0,Santiago Castro,Roma,SerieA,100
-Argentina,CONMEBOL,2.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ARG,2026-10-06,Franco Mastantuono,Fiorentina,FW,7.0,1.0,Franco Mastantuono,Fiorentina,SerieA,100
+Argentina,CONMEBOL,2.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ARG,2026-11-17,Emiliano Martínez,Chelsea,GK,70.0,0.0,Emiliano Martínez,Chelsea,EPL,100
+Argentina,CONMEBOL,2.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ARG,2026-11-17,Nicolás Tagliafico,Lyon,DF,84.0,1.0,Nicolás Tagliafico,Lyon,Ligue1,100
+Argentina,CONMEBOL,2.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ARG,2026-11-17,Lisandro Martínez,Manchester United,DF,38.0,2.0,Lisandro Martínez,Manchester Utd,EPL,100
+Argentina,CONMEBOL,2.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ARG,2026-11-17,Facundo Medina,Bayer Leverkusen,DF,16.0,0.0,Facundo Medina,Leverkusen,Bundesliga,100
+Argentina,CONMEBOL,2.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ARG,2026-11-17,Leonardo Balerdi,Roma,DF,13.0,0.0,Leonardo Balerdi,Roma,SerieA,100
+Argentina,CONMEBOL,2.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ARG,2026-11-17,Mariano Troilo,Parma,DF,0.0,0.0,Mariano Troilo,Parma,SerieA,100
+Argentina,CONMEBOL,2.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ARG,2026-11-17,Alexis Mac Allister,Liverpool,MF,57.0,7.0,Alexis Mac Allister,Liverpool,EPL,100
+Argentina,CONMEBOL,2.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ARG,2026-11-17,Enzo Fernández,Manchester City,MF,51.0,8.0,Enzo Fernández,Manchester City,EPL,100
+Argentina,CONMEBOL,2.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ARG,2026-11-17,Exequiel Palacios,Ipswich Town,MF,44.0,0.0,Exequiel Palacios,Ipswich Town,EPL,100
+Argentina,CONMEBOL,2.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ARG,2026-11-17,Nico Paz,Como,MF,14.0,4.0,Nico Paz,Como,SerieA,100
+Argentina,CONMEBOL,2.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ARG,2026-11-17,Valentín Barco,Chelsea,MF,7.0,2.0,Valentín Barco,Chelsea,EPL,100
+Argentina,CONMEBOL,2.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ARG,2026-11-17,Máximo Perrone,Como,MF,2.0,0.0,Máximo Perrone,Como,SerieA,100
+Argentina,CONMEBOL,2.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ARG,2026-11-17,Julián Alvarez,Atlético Madrid,FW,62.0,16.0,Julián Álvarez,Atlético Madrid,LaLiga,100
+Argentina,CONMEBOL,2.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ARG,2026-11-17,Giuliano Simeone,Atlético Madrid,FW,17.0,3.0,Giuliano Simeone,Atlético Madrid,LaLiga,100
+Argentina,CONMEBOL,2.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ARG,2026-11-17,Franco Mastantuono,Fiorentina,FW,7.0,1.0,Franco Mastantuono,Fiorentina,SerieA,100
+Argentina,CONMEBOL,2.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ARG,2026-11-17,Gianluca Prestianni,Benfica,FW,3.0,1.0,Gianluca Prestianni,Benfica,LigaPortugal,100
+Argentina,CONMEBOL,2.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ARG,2026-11-17,Santiago Castro,Roma,FW,1.0,0.0,Santiago Castro,Roma,SerieA,100
+Argentina,CONMEBOL,2.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ARG,2026-11-17,Matías Soulé,Roma,FW,1.0,0.0,Matìas Soulé,Roma,SerieA,100
 Australia,AFC,26.0,https://api.fifa.com/api/v3/picture/flags-sq-2/AUS,2026-09-29,Paul Izzo,Randers,GK,4.0,0.0,Paul Izzo,Randers FC,DanishSuperliga,100
 Australia,AFC,26.0,https://api.fifa.com/api/v3/picture/flags-sq-2/AUS,2026-09-29,Patrick Beach,Troyes,GK,8.0,0.0,Patrick Beach,Troyes,Ligue1,100
 Australia,AFC,26.0,https://api.fifa.com/api/v3/picture/flags-sq-2/AUS,2026-09-29,Alessandro Circati,Benfica,DF,19.0,2.0,Alessandro Circati,Benfica,LigaPortugal,100
@@ -72,6 +70,7 @@ Austria,UEFA,23.0,https://api.fifa.com/api/v3/picture/flags-sq-2/AUT,2026-11-14,
 Austria,UEFA,23.0,https://api.fifa.com/api/v3/picture/flags-sq-2/AUT,2026-11-14,Nicolas Seiwald,RB Leipzig,MF,55.0,1.0,Nicolas Seiwald,RB Leipzig,Bundesliga,100
 Austria,UEFA,23.0,https://api.fifa.com/api/v3/picture/flags-sq-2/AUT,2026-11-14,Romano Schmid,Frosinone,MF,42.0,5.0,Romano Schmid,Frosinone,SerieA,100
 Austria,UEFA,23.0,https://api.fifa.com/api/v3/picture/flags-sq-2/AUT,2026-11-14,Carney Chukwuemeka,Borussia Dortmund,MF,9.0,2.0,Carney Chukwuemeka,Dortmund,Bundesliga,100
+Austria,UEFA,23.0,https://api.fifa.com/api/v3/picture/flags-sq-2/AUT,2026-11-14,Christoph Baumgartner,RB Leipzig,MF,58.0,19.0,Christoph Baumgartner,RB Leipzig,Bundesliga,100
 Austria,UEFA,23.0,https://api.fifa.com/api/v3/picture/flags-sq-2/AUT,2026-11-14,Konrad Laimer,Bayern Munich,MF,63.0,7.0,Konrad Laimer,Bayern Munich,Bundesliga,100
 Austria,UEFA,23.0,https://api.fifa.com/api/v3/picture/flags-sq-2/AUT,2026-11-14,Sascha Horvath,LASK,MF,1.0,0.0,Sascha Horvath,LASK,AustrianBundesliga,100
 Austria,UEFA,23.0,https://api.fifa.com/api/v3/picture/flags-sq-2/AUT,2026-11-14,Luca Weinhandl,Sturm Graz,MF,0.0,0.0,Luca Weinhandl,Sturm Graz,AustrianBundesliga,100
@@ -83,6 +82,7 @@ Austria,UEFA,23.0,https://api.fifa.com/api/v3/picture/flags-sq-2/AUT,2026-11-14,
 Bangladesh,AFC,184.0,https://api.fifa.com/api/v3/picture/flags-sq-2/BAN,2026-11-02,Hamza Choudhury,Sheffield United,MF,13.0,4.0,Hamza Choudhury,Sheffield United,Championship,100
 Belgium,UEFA,8.0,https://api.fifa.com/api/v3/picture/flags-sq-2/BEL,2026-10-05,Senne Lammens,Manchester United,GK,6.0,0.0,Senne Lammens,Manchester Utd,EPL,100
 Belgium,UEFA,8.0,https://api.fifa.com/api/v3/picture/flags-sq-2/BEL,2026-10-05,Maarten Vandevoordt,RB Leipzig,GK,1.0,0.0,Maarten Vandevoordt,RB Leipzig,Bundesliga,100
+Belgium,UEFA,8.0,https://api.fifa.com/api/v3/picture/flags-sq-2/BEL,2026-10-05,Mike Penders,Chelsea,GK,0.0,0.0,Mike Penders,Chelsea,EPL,100
 Belgium,UEFA,8.0,https://api.fifa.com/api/v3/picture/flags-sq-2/BEL,2026-10-05,Jari De Busser,AZ,GK,0.0,0.0,Jari De Busser,AZ Alkmaar,Eredivisie,100
 Belgium,UEFA,8.0,https://api.fifa.com/api/v3/picture/flags-sq-2/BEL,2026-10-05,Zeno Debast,Sporting CP,DF,26.0,1.0,Zeno Debast,Sporting CP,LigaPortugal,100
 Belgium,UEFA,8.0,https://api.fifa.com/api/v3/picture/flags-sq-2/BEL,2026-10-05,Arthur Theate,Bologna,DF,36.0,1.0,Arthur Theate,Bologna,SerieA,100
@@ -162,17 +162,19 @@ Cameroon,CAF,52.0,https://api.fifa.com/api/v3/picture/flags-sq-2/CMR,2026-10-03,
 Cameroon,CAF,52.0,https://api.fifa.com/api/v3/picture/flags-sq-2/CMR,2026-10-03,Carlos Baleba,Manchester United,MF,16.0,0.0,Carlos Baleba,Manchester Utd,EPL,100
 Cameroon,CAF,52.0,https://api.fifa.com/api/v3/picture/flags-sq-2/CMR,2026-10-03,Bryan Mbeumo,Manchester United,FW,35.0,8.0,Bryan Mbeumo,Manchester Utd,EPL,100
 Cameroon,CAF,52.0,https://api.fifa.com/api/v3/picture/flags-sq-2/CMR,2026-10-03,Bil Nsongo,Deportivo A Coruña,FW,3.0,1.0,Bil Nsongo,Deportivo A Coruña,LaLiga,100
+Cameroon,CAF,52.0,https://api.fifa.com/api/v3/picture/flags-sq-2/CMR,2026-10-03,Angel Yondjo,Lille,FW,3.0,0.0,Angel Yondjo Matah,Lille,Ligue1,85
 Cameroon,CAF,52.0,https://api.fifa.com/api/v3/picture/flags-sq-2/CMR,2026-10-03,Iván Cédric,Alanyaspor,FW,1.0,0.0,Iván Cédric,Alanyaspor,SuperLig,100
 Cameroon,CAF,52.0,https://api.fifa.com/api/v3/picture/flags-sq-2/CMR,2026-10-03,Harouna Djibirin,Angers,FW,1.0,0.0,Harouna Djibirin,Angers,Ligue1,100
-Canada,CONCACAF,27.0,https://api.fifa.com/api/v3/picture/flags-sq-2/CAN,2026-10-06,Niko Sigur,Toulouse,DF,25.0,2.0,Niko Sigur,Toulouse,Ligue1,100
-Canada,CONCACAF,27.0,https://api.fifa.com/api/v3/picture/flags-sq-2/CAN,2026-10-06,Stephen Eustáquio,Swansea City,MF,64.0,5.0,Stephen Eustaquio,Swansea City,Championship,100
-Canada,CONCACAF,27.0,https://api.fifa.com/api/v3/picture/flags-sq-2/CAN,2026-10-06,Liam Millar,Birmingham City,MF,47.0,1.0,Liam Millar,Birmingham City,Championship,100
-Canada,CONCACAF,27.0,https://api.fifa.com/api/v3/picture/flags-sq-2/CAN,2026-10-06,Nathan Saliba,Villarreal,MF,21.0,3.0,Nathan Saliba,Villarreal,LaLiga,100
-Canada,CONCACAF,27.0,https://api.fifa.com/api/v3/picture/flags-sq-2/CAN,2026-10-06,Jonathan David,Atlético Madrid,FW,85.0,43.0,Jonathan David,Atlético Madrid,LaLiga,100
-Canada,CONCACAF,27.0,https://api.fifa.com/api/v3/picture/flags-sq-2/CAN,2026-10-06,Tani Oluwaseyi,Villarreal,FW,31.0,2.0,Tani Oluwaseyi,Villarreal,LaLiga,100
-Canada,CONCACAF,27.0,https://api.fifa.com/api/v3/picture/flags-sq-2/CAN,2026-10-06,Jacen Russell-Rowe,Toulouse,FW,11.0,0.0,Jacen Russell-Rowe,Toulouse,Ligue1,100
-Canada,CONCACAF,27.0,https://api.fifa.com/api/v3/picture/flags-sq-2/CAN,2026-10-06,Promise David,Brighton & Hove Albion,FW,17.0,4.0,Promise David,Brighton,EPL,100
-Canada,CONCACAF,27.0,https://api.fifa.com/api/v3/picture/flags-sq-2/CAN,2026-10-06,Daniel Jebbison,Bournemouth,FW,9.0,0.0,Daniel Jebbison,Bournemouth,EPL,100
+Canada,CONCACAF,27.0,https://api.fifa.com/api/v3/picture/flags-sq-2/CAN,2026-11-16,Alphonso Davies,Bayern Munich,DF,59.0,15.0,Alphonso Davies,Bayern Munich,Bundesliga,100
+Canada,CONCACAF,27.0,https://api.fifa.com/api/v3/picture/flags-sq-2/CAN,2026-11-16,Niko Sigur,Toulouse,DF,25.0,2.0,Niko Sigur,Toulouse,Ligue1,100
+Canada,CONCACAF,27.0,https://api.fifa.com/api/v3/picture/flags-sq-2/CAN,2026-11-16,Tajon Buchanan,Villarreal,MF,67.0,8.0,Tajon Buchanan,Villarreal,LaLiga,100
+Canada,CONCACAF,27.0,https://api.fifa.com/api/v3/picture/flags-sq-2/CAN,2026-11-16,Liam Millar,Birmingham City,MF,47.0,1.0,Liam Millar,Birmingham City,Championship,100
+Canada,CONCACAF,27.0,https://api.fifa.com/api/v3/picture/flags-sq-2/CAN,2026-11-16,Nathan Saliba,Villarreal,MF,21.0,3.0,Nathan Saliba,Villarreal,LaLiga,100
+Canada,CONCACAF,27.0,https://api.fifa.com/api/v3/picture/flags-sq-2/CAN,2026-11-16,Jonathan David,Atlético Madrid,FW,85.0,43.0,Jonathan David,Atlético Madrid,LaLiga,100
+Canada,CONCACAF,27.0,https://api.fifa.com/api/v3/picture/flags-sq-2/CAN,2026-11-16,Tani Oluwaseyi,Villarreal,FW,31.0,2.0,Tani Oluwaseyi,Villarreal,LaLiga,100
+Canada,CONCACAF,27.0,https://api.fifa.com/api/v3/picture/flags-sq-2/CAN,2026-11-16,Promise David,Brighton & Hove Albion,FW,17.0,4.0,Promise David,Brighton,EPL,100
+Canada,CONCACAF,27.0,https://api.fifa.com/api/v3/picture/flags-sq-2/CAN,2026-11-16,Jacen Russell-Rowe,Toulouse,FW,11.0,0.0,Jacen Russell-Rowe,Toulouse,Ligue1,100
+Canada,CONCACAF,27.0,https://api.fifa.com/api/v3/picture/flags-sq-2/CAN,2026-11-16,Daniel Jebbison,Bournemouth,FW,9.0,0.0,Daniel Jebbison,Bournemouth,EPL,100
 Cape Verde,CAF,70.0,https://api.fifa.com/api/v3/picture/flags-sq-2/CPV,2026-09-29,Logan Costa,Villarreal,DF,29.0,0.0,Logan Costa,Villarreal,LaLiga,100
 Cape Verde,CAF,70.0,https://api.fifa.com/api/v3/picture/flags-sq-2/CPV,2026-09-29,Wagner Pina,Trabzonspor,DF,17.0,0.0,Wagner Pina,Trabzonspor,SuperLig,100
 Cape Verde,CAF,70.0,https://api.fifa.com/api/v3/picture/flags-sq-2/CPV,2026-09-29,Sidny Lopes Cabral,Trabzonspor,DF,16.0,5.0,Sidny Lopes Cabral,Trabzonspor,SuperLig,100
@@ -189,6 +191,7 @@ Colombia,CONMEBOL,11.0,https://api.fifa.com/api/v3/picture/flags-sq-2/COL,2026-1
 Colombia,CONMEBOL,11.0,https://api.fifa.com/api/v3/picture/flags-sq-2/COL,2026-10-06,Davinson Sánchez,Galatasaray,DF,87.0,4.0,Davinson Sánchez,Galatasaray,SuperLig,100
 Colombia,CONMEBOL,11.0,https://api.fifa.com/api/v3/picture/flags-sq-2/COL,2026-10-06,Jhon Solís,Birmingham City,MF,2.0,0.0,Jhon Solís,Birmingham City,Championship,100
 Colombia,CONMEBOL,11.0,https://api.fifa.com/api/v3/picture/flags-sq-2/COL,2026-10-06,Luis Suárez,Sporting CP,FW,20.0,6.0,Luis Suárez,Sporting CP,LigaPortugal,100
+Comoros,CAF,105.0,https://api.fifa.com/api/v3/picture/flags-sq-2/COM,2026-01-18,Ismaël Boura,Troyes,DF,5.0,0.0,Ismaël Boura,Troyes,Ligue1,100
 Comoros,CAF,105.0,https://api.fifa.com/api/v3/picture/flags-sq-2/COM,2026-01-18,Rafiki Saïd,Wolverhampton Wanderers,FW,13.0,7.0,Rafiki Saïd,Wolves,Championship,100
 Congo,CAF,133.0,https://api.fifa.com/api/v3/picture/flags-sq-2/CGO,2026-11-15,Yhoan Andzouana,Konyaspor,DF,15.0,0.0,Yhoan Andzouana,Konyaspor,SuperLig,100
 Congo,CAF,133.0,https://api.fifa.com/api/v3/picture/flags-sq-2/CGO,2026-11-15,Morgan Poaty,Lausanne-Sport,DF,11.0,0.0,Morgan Poaty,Lausanne,SwissSuperLeague,100
@@ -198,6 +201,7 @@ Congo,CAF,133.0,https://api.fifa.com/api/v3/picture/flags-sq-2/CGO,2026-11-15,K�
 Congo,CAF,133.0,https://api.fifa.com/api/v3/picture/flags-sq-2/CGO,2026-11-15,Gaius Makouta,Alanyaspor,MF,25.0,2.0,Gaïus Makouta,Alanyaspor,SuperLig,100
 Congo,CAF,133.0,https://api.fifa.com/api/v3/picture/flags-sq-2/CGO,2026-11-15,Chandrel Massanga,Eyüpspor,MF,14.0,1.0,Chandrel Massanga,Eyüpspor,SuperLig,100
 Congo,CAF,133.0,https://api.fifa.com/api/v3/picture/flags-sq-2/CGO,2026-11-15,Mons Bassouamina,Marítimo,FW,15.0,3.0,Mons Bassouamina,Marítimo,LigaPortugal,100
+Costa Rica,CONCACAF,47.0,https://api.fifa.com/api/v3/picture/flags-sq-2/CRC,2026-06-10,Patrick Sequeira,Casa Pia,GK,18.0,0.0,Patrick Sequeira,Casa Pia,LigaPortugal,100
 Costa Rica,CONCACAF,47.0,https://api.fifa.com/api/v3/picture/flags-sq-2/CRC,2026-06-10,Jeyland Mitchell,Strasbourg,DF,22.0,2.0,Jeyland Mitchell,Strasbourg,Ligue1,100
 Costa Rica,CONCACAF,47.0,https://api.fifa.com/api/v3/picture/flags-sq-2/CRC,2026-06-10,Álvaro Zamora,Académico de Viseu,FW,25.0,5.0,Álvaro Zamora,Académico de Viseu,LigaPortugal,100
 Cote d'Ivoire,CAF,44.0,https://api.fifa.com/api/v3/picture/flags-sq-2/CIV,2026-10-03,Yahia Fofana,Çaykur Rizespor,GK,40.0,0.0,Yahia Fofana,Rizespor,SuperLig,100
@@ -216,6 +220,7 @@ Cote d'Ivoire,CAF,44.0,https://api.fifa.com/api/v3/picture/flags-sq-2/CIV,2026-1
 Cote d'Ivoire,CAF,44.0,https://api.fifa.com/api/v3/picture/flags-sq-2/CIV,2026-10-03,Eddy Doué,Estrela da Amadora,MF,0.0,0.0,Eddy Doué,Estrela,LigaPortugal,100
 Cote d'Ivoire,CAF,44.0,https://api.fifa.com/api/v3/picture/flags-sq-2/CIV,2026-10-03,Malick Yalcouyé,Brighton & Hove Albion,MF,3.0,1.0,Malick Yalcouye,Brighton,EPL,100
 Cote d'Ivoire,CAF,44.0,https://api.fifa.com/api/v3/picture/flags-sq-2/CIV,2026-10-03,Ibrahim Sangaré,Nottingham Forest,MF,60.0,11.0,Ibrahim Sangaré,Nottingham Forest,EPL,100
+Cote d'Ivoire,CAF,44.0,https://api.fifa.com/api/v3/picture/flags-sq-2/CIV,2026-10-03,Yann Gboho,Coventry City,FW,2.0,1.0,Yann Gboho,Coventry City,EPL,100
 Cote d'Ivoire,CAF,44.0,https://api.fifa.com/api/v3/picture/flags-sq-2/CIV,2026-10-03,Rayan Fofana,Le Havre,FW,2.0,0.0,Rayan Fofana,Le Havre,Ligue1,100
 Cote d'Ivoire,CAF,44.0,https://api.fifa.com/api/v3/picture/flags-sq-2/CIV,2026-10-03,Ange-Yoan Bonny,Inter Milan,FW,7.0,0.0,Ange-Yoan Bonny,Inter,SerieA,100
 Cote d'Ivoire,CAF,44.0,https://api.fifa.com/api/v3/picture/flags-sq-2/CIV,2026-10-03,Yan Diomande,Real Madrid,FW,17.0,3.0,Yan Diomandé,Real Madrid,LaLiga,100
@@ -263,11 +268,13 @@ Czech Republic,UEFA,39.0,https://api.fifa.com/api/v3/picture/flags-sq-2/CZE,2026
 Czech Republic,UEFA,39.0,https://api.fifa.com/api/v3/picture/flags-sq-2/CZE,2026-10-06,Vladimír Coufal,TSG Hoffenheim,DF,67.0,2.0,Vladimír Coufal,Hoffenheim,Bundesliga,100
 Czech Republic,UEFA,39.0,https://api.fifa.com/api/v3/picture/flags-sq-2/CZE,2026-10-06,Ladislav Krejčí,Wolverhampton Wanderers,DF,32.0,6.0,Ladislav Krejcí,Wolves,Championship,100
 Czech Republic,UEFA,39.0,https://api.fifa.com/api/v3/picture/flags-sq-2/CZE,2026-10-06,Robin Hranáč,TSG Hoffenheim,DF,20.0,1.0,Robin Hranáč,Hoffenheim,Bundesliga,100
+Czech Republic,UEFA,39.0,https://api.fifa.com/api/v3/picture/flags-sq-2/CZE,2026-10-06,Martin Vitík,Bologna,DF,11.0,0.0,Martin Vitík,Bologna,SerieA,100
 Czech Republic,UEFA,39.0,https://api.fifa.com/api/v3/picture/flags-sq-2/CZE,2026-10-06,Lukáš Ambros,Anderlecht,MF,4.0,0.0,Lukáš Ambros,Anderlecht,BelgianProLeague,100
 Czech Republic,UEFA,39.0,https://api.fifa.com/api/v3/picture/flags-sq-2/CZE,2026-10-06,Adam Hložek,TSG Hoffenheim,FW,50.0,5.0,Adam Hložek,Hoffenheim,Bundesliga,100
 Czech Republic,UEFA,39.0,https://api.fifa.com/api/v3/picture/flags-sq-2/CZE,2026-10-06,Pavel Šulc,Lyon,FW,27.0,5.0,Pavel Šulc,Lyon,Ligue1,100
 DR Congo,CAF,60.0,https://api.fifa.com/api/v3/picture/flags-sq-2/COD,2026-10-05,Matthieu Epolo,Standard Liège,GK,3.0,0.0,Matthieu Epolo,Standard Liège,BelgianProLeague,100
 DR Congo,CAF,60.0,https://api.fifa.com/api/v3/picture/flags-sq-2/COD,2026-10-05,Joris Kayembe,Genk,DF,32.0,1.0,Joris Kayembe,Genk,BelgianProLeague,100
+DR Congo,CAF,60.0,https://api.fifa.com/api/v3/picture/flags-sq-2/COD,2026-10-05,Willy Kambwala,Como,DF,1.0,0.0,Willy Kambwala,Como,SerieA,100
 DR Congo,CAF,60.0,https://api.fifa.com/api/v3/picture/flags-sq-2/COD,2026-10-05,Jordy Makengo,SC Freiburg,DF,1.0,0.0,Jordy Makengo,Freiburg,Bundesliga,100
 DR Congo,CAF,60.0,https://api.fifa.com/api/v3/picture/flags-sq-2/COD,2026-10-05,Noah Sadiki,Sunderland,MF,28.0,0.0,Noah Sadiki,Sunderland,EPL,100
 DR Congo,CAF,60.0,https://api.fifa.com/api/v3/picture/flags-sq-2/COD,2026-10-05,Nathanaël Mbuku,Sint-Truiden,MF,26.0,3.0,Nathanaël Mbuku,Sint-Truiden,BelgianProLeague,100
@@ -280,24 +287,27 @@ DR Congo,CAF,60.0,https://api.fifa.com/api/v3/picture/flags-sq-2/COD,2026-10-05,
 DR Congo,CAF,60.0,https://api.fifa.com/api/v3/picture/flags-sq-2/COD,2026-10-05,Noah Mbamba,Lorient,MF,0.0,0.0,Noah Mbamba,Lorient,Ligue1,100
 DR Congo,CAF,60.0,https://api.fifa.com/api/v3/picture/flags-sq-2/COD,2026-10-05,Jackson Muleka,Konyaspor,FW,19.0,3.0,Jackson Muleka,Konyaspor,SuperLig,100
 DR Congo,CAF,60.0,https://api.fifa.com/api/v3/picture/flags-sq-2/COD,2026-10-05,Samuel Essende,Young Boys,FW,12.0,1.0,Samuel Essende,Young Boys,SwissSuperLeague,100
-Denmark,UEFA,21.0,https://api.fifa.com/api/v3/picture/flags-sq-2/DEN,2026-10-05,Andreas Jungdal,Westerlo,GK,0.0,0.0,Andreas Jungdal,Westerlo,BelgianProLeague,100
-Denmark,UEFA,21.0,https://api.fifa.com/api/v3/picture/flags-sq-2/DEN,2026-10-05,Mads Hermansen,West Ham United,GK,5.0,0.0,Mads Hermansen,West Ham United,Championship,100
-Denmark,UEFA,21.0,https://api.fifa.com/api/v3/picture/flags-sq-2/DEN,2026-10-05,Filip Jörgensen,Strasbourg,GK,4.0,0.0,Filip Jørgensen,Strasbourg,Ligue1,100
-Denmark,UEFA,21.0,https://api.fifa.com/api/v3/picture/flags-sq-2/DEN,2026-10-05,Joachim Andersen,Fulham,DF,55.0,2.0,Joachim Andersen,Fulham,EPL,100
-Denmark,UEFA,21.0,https://api.fifa.com/api/v3/picture/flags-sq-2/DEN,2026-10-05,Lucas Høgsberg,Strasbourg,DF,6.0,0.0,Lucas Høgsberg,Strasbourg,Ligue1,100
-Denmark,UEFA,21.0,https://api.fifa.com/api/v3/picture/flags-sq-2/DEN,2026-10-05,Victor Nelsson,Nordsjælland,DF,18.0,0.0,Victor Nelsson,Nordsjælland,DanishSuperliga,100
-Denmark,UEFA,21.0,https://api.fifa.com/api/v3/picture/flags-sq-2/DEN,2026-10-05,Rasmus Kristensen,Midtjylland,DF,38.0,2.0,Rasmus Kristensen,FC Midtjylland,DanishSuperliga,100
-Denmark,UEFA,21.0,https://api.fifa.com/api/v3/picture/flags-sq-2/DEN,2026-10-05,Anton Gaaei,Ajax,DF,2.0,0.0,Anton Gaaei,Ajax,Eredivisie,100
-Denmark,UEFA,21.0,https://api.fifa.com/api/v3/picture/flags-sq-2/DEN,2026-10-05,Victor Froholdt,Porto,MF,16.0,1.0,Victor Froholdt,Porto,LigaPortugal,100
-Denmark,UEFA,21.0,https://api.fifa.com/api/v3/picture/flags-sq-2/DEN,2026-10-05,Thomas Jørgensen,Toulouse,MF,1.0,0.0,Thomas Jørgensen,Toulouse,Ligue1,100
-Denmark,UEFA,21.0,https://api.fifa.com/api/v3/picture/flags-sq-2/DEN,2026-10-05,Mads Bidstrup,Lyon,MF,1.0,0.0,Mads Bidstrup,Lyon,Ligue1,100
-Denmark,UEFA,21.0,https://api.fifa.com/api/v3/picture/flags-sq-2/DEN,2026-10-05,Morten Hjulmand,Atlético Madrid,MF,31.0,1.0,Morten Hjulmand,Atlético Madrid,LaLiga,100
-Denmark,UEFA,21.0,https://api.fifa.com/api/v3/picture/flags-sq-2/DEN,2026-10-05,Pierre-Emile Højbjerg,Marseille,MF,101.0,11.0,Pierre Højbjerg,Marseille,Ligue1,85
-Denmark,UEFA,21.0,https://api.fifa.com/api/v3/picture/flags-sq-2/DEN,2026-10-05,Gustav Isaksen,Lazio,FW,19.0,7.0,Gustav Isaksen,Lazio,SerieA,100
-Denmark,UEFA,21.0,https://api.fifa.com/api/v3/picture/flags-sq-2/DEN,2026-10-05,Rasmus Højlund,Napoli,FW,39.0,16.0,Rasmus Højlund,Napoli,SerieA,100
-Denmark,UEFA,21.0,https://api.fifa.com/api/v3/picture/flags-sq-2/DEN,2026-10-05,Andreas Skov Olsen,Başakşehir,FW,41.0,8.0,Andreas Skov Olsen,Başakşehir,SuperLig,100
-Denmark,UEFA,21.0,https://api.fifa.com/api/v3/picture/flags-sq-2/DEN,2026-10-05,Adam Daghim,TSG Hoffenheim,FW,4.0,0.0,Adam Daghim,Hoffenheim,Bundesliga,100
-Denmark,UEFA,21.0,https://api.fifa.com/api/v3/picture/flags-sq-2/DEN,2026-10-05,Mathias Kvistgaarden,Norwich City,FW,2.0,0.0,Mathias Kvistgaarden,Norwich City,Championship,100
+Denmark,UEFA,21.0,https://api.fifa.com/api/v3/picture/flags-sq-2/DEN,2026-11-17,Mads Hermansen,West Ham United,GK,5.0,0.0,Mads Hermansen,West Ham United,Championship,100
+Denmark,UEFA,21.0,https://api.fifa.com/api/v3/picture/flags-sq-2/DEN,2026-11-17,Filip Jörgensen,Strasbourg,GK,4.0,0.0,Filip Jørgensen,Strasbourg,Ligue1,100
+Denmark,UEFA,21.0,https://api.fifa.com/api/v3/picture/flags-sq-2/DEN,2026-11-17,Andreas Jungdal,Westerlo,GK,0.0,0.0,Andreas Jungdal,Westerlo,BelgianProLeague,100
+Denmark,UEFA,21.0,https://api.fifa.com/api/v3/picture/flags-sq-2/DEN,2026-11-17,Joachim Andersen,Fulham,DF,55.0,2.0,Joachim Andersen,Fulham,EPL,100
+Denmark,UEFA,21.0,https://api.fifa.com/api/v3/picture/flags-sq-2/DEN,2026-11-17,Rasmus Kristensen,Midtjylland,DF,38.0,2.0,Rasmus Kristensen,FC Midtjylland,DanishSuperliga,100
+Denmark,UEFA,21.0,https://api.fifa.com/api/v3/picture/flags-sq-2/DEN,2026-11-17,Alexander Bah,Benfica,DF,23.0,1.0,Alexander Bah,Benfica,LigaPortugal,100
+Denmark,UEFA,21.0,https://api.fifa.com/api/v3/picture/flags-sq-2/DEN,2026-11-17,Victor Nelsson,Nordsjælland,DF,18.0,0.0,Victor Nelsson,Nordsjælland,DanishSuperliga,100
+Denmark,UEFA,21.0,https://api.fifa.com/api/v3/picture/flags-sq-2/DEN,2026-11-17,Victor Bak Jensen,Midtjylland,DF,0.0,0.0,Victor Bak,FC Midtjylland,DanishSuperliga,85
+Denmark,UEFA,21.0,https://api.fifa.com/api/v3/picture/flags-sq-2/DEN,2026-11-17,Rasmus Nicolaisen,Toulouse,DF,0.0,0.0,Rasmus Nicolaisen,Toulouse,Ligue1,100
+Denmark,UEFA,21.0,https://api.fifa.com/api/v3/picture/flags-sq-2/DEN,2026-11-17,Pierre-Emile Højbjerg,Marseille,MF,101.0,11.0,Pierre Højbjerg,Marseille,Ligue1,85
+Denmark,UEFA,21.0,https://api.fifa.com/api/v3/picture/flags-sq-2/DEN,2026-11-17,Mathias Jensen,Brentford,MF,32.0,1.0,Mathias Jensen,Brentford,EPL,100
+Denmark,UEFA,21.0,https://api.fifa.com/api/v3/picture/flags-sq-2/DEN,2026-11-17,Morten Hjulmand,Atlético Madrid,MF,31.0,1.0,Morten Hjulmand,Atlético Madrid,LaLiga,100
+Denmark,UEFA,21.0,https://api.fifa.com/api/v3/picture/flags-sq-2/DEN,2026-11-17,Victor Froholdt,Porto,MF,16.0,1.0,Victor Froholdt,Porto,LigaPortugal,100
+Denmark,UEFA,21.0,https://api.fifa.com/api/v3/picture/flags-sq-2/DEN,2026-11-17,Albert Grønbæk,Hamburger SV,MF,10.0,1.0,Albert Grønbaek,Hamburger SV,Bundesliga,100
+Denmark,UEFA,21.0,https://api.fifa.com/api/v3/picture/flags-sq-2/DEN,2026-11-17,Mads Bidstrup,Lyon,MF,1.0,0.0,Mads Bidstrup,Lyon,Ligue1,100
+Denmark,UEFA,21.0,https://api.fifa.com/api/v3/picture/flags-sq-2/DEN,2026-11-17,Mikkel Damsgaard,Brentford,FW,43.0,10.0,Mikkel Damsgaard,Brentford,EPL,100
+Denmark,UEFA,21.0,https://api.fifa.com/api/v3/picture/flags-sq-2/DEN,2026-11-17,Andreas Skov Olsen,Başakşehir,FW,41.0,8.0,Andreas Skov Olsen,Başakşehir,SuperLig,100
+Denmark,UEFA,21.0,https://api.fifa.com/api/v3/picture/flags-sq-2/DEN,2026-11-17,Rasmus Højlund,Napoli,FW,39.0,16.0,Rasmus Højlund,Napoli,SerieA,100
+Denmark,UEFA,21.0,https://api.fifa.com/api/v3/picture/flags-sq-2/DEN,2026-11-17,Gustav Isaksen,Lazio,FW,19.0,7.0,Gustav Isaksen,Lazio,SerieA,100
+Denmark,UEFA,21.0,https://api.fifa.com/api/v3/picture/flags-sq-2/DEN,2026-11-17,Jesper Lindstrøm,Salzburg,FW,18.0,1.0,Jesper Lindstrøm,Salzburg,AustrianBundesliga,100
+Denmark,UEFA,21.0,https://api.fifa.com/api/v3/picture/flags-sq-2/DEN,2026-11-17,William Osula,Newcastle United,FW,2.0,0.0,William Osula,Newcastle United,EPL,100
 Dominican Republic,CONCACAF,142.0,https://api.fifa.com/api/v3/picture/flags-sq-2/DOM,2026-10-04,Junior Firpo,Betis,DF,18.0,5.0,Junior Firpo,Real Betis,LaLiga,100
 Dominican Republic,CONCACAF,142.0,https://api.fifa.com/api/v3/picture/flags-sq-2/DOM,2026-10-04,Pablo Rosario,Porto,MF,14.0,1.0,Pablo Rosario,Porto,LigaPortugal,100
 Dominican Republic,CONCACAF,142.0,https://api.fifa.com/api/v3/picture/flags-sq-2/DOM,2026-10-04,Mariano Díaz,Alavés,FW,7.0,5.0,Mariano,Alavés,LaLiga,60
@@ -310,6 +320,7 @@ Ecuador,CONMEBOL,25.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ECU,2026-10
 Ecuador,CONMEBOL,25.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ECU,2026-10-05,Juan Riquelme Angulo,Sunderland,FW,3.0,1.0,Riquelme Angulo,Sunderland,EPL,85
 Ecuador,CONMEBOL,25.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ECU,2026-10-05,Nilson Angulo,Sunderland,FW,21.0,3.0,Nilson Angulo,Sunderland,EPL,100
 Egypt,CAF,35.0,https://api.fifa.com/api/v3/picture/flags-sq-2/EGY,2026-10-04,Mohamed Abdelmonem,Nice,DF,38.0,3.0,Mohamed Abdelmonem,Nice,Ligue1,100
+Egypt,CAF,35.0,https://api.fifa.com/api/v3/picture/flags-sq-2/EGY,2026-10-04,Omar Fayed,Frosinone,DF,0.0,0.0,Omar Fayed,Frosinone,SerieA,100
 Egypt,CAF,35.0,https://api.fifa.com/api/v3/picture/flags-sq-2/EGY,2026-10-04,Mohamed Salah,Trabzonspor,MF,122.0,68.0,Mohamed Salah,Trabzonspor,SuperLig,100
 Egypt,CAF,35.0,https://api.fifa.com/api/v3/picture/flags-sq-2/EGY,2026-10-04,Ibrahim Adel,Nordsjælland,MF,26.0,3.0,Ibrahim Adel,Nordsjælland,DanishSuperliga,100
 Egypt,CAF,35.0,https://api.fifa.com/api/v3/picture/flags-sq-2/EGY,2026-10-04,Omar Marmoush,Tottenham Hotspur,FW,56.0,11.0,Omar Marmoush,Tottenham Hotspur,EPL,100
@@ -335,7 +346,7 @@ England,UEFA,4.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ENG,2026-10-06,R
 England,UEFA,4.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ENG,2026-10-06,Morgan Rogers,Chelsea,FW,26.0,2.0,Morgan Rogers,Chelsea,EPL,100
 England,UEFA,4.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ENG,2026-10-06,Dominic Calvert-Lewin,Leeds United,FW,14.0,4.0,Dominic Calvert-Lewin,Leeds United,EPL,100
 England,UEFA,4.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ENG,2026-10-06,Eberechi Eze,Arsenal,FW,25.0,3.0,Eberechi Eze,Arsenal,EPL,100
-Equatorial Guinea,CAF,95.0,https://api.fifa.com/api/v3/picture/flags-sq-2/EQG,2026-09-28,Saúl Coco,Torino,DF,36.0,4.0,Saúl Coco,Torino,SerieA,100
+Equatorial Guinea,CAF,95.0,https://api.fifa.com/api/v3/picture/flags-sq-2/EQG,2026-11-16,Saúl Coco,Torino,DF,36.0,4.0,Saúl Coco,Torino,SerieA,100
 Estonia,UEFA,129.0,https://api.fifa.com/api/v3/picture/flags-sq-2/EST,2026-11-15,Karl Jakob Hein,Werder Bremen,GK,49.0,0.0,Karl Jakob Hein,Werder Bremen,Bundesliga,100
 Estonia,UEFA,129.0,https://api.fifa.com/api/v3/picture/flags-sq-2/EST,2026-11-15,Maksim Paskotši,Gent,DF,44.0,2.0,Maksim Paskotši,Gent,BelgianProLeague,100
 Estonia,UEFA,129.0,https://api.fifa.com/api/v3/picture/flags-sq-2/EST,2026-11-15,Mattias Käit,Thun,MF,70.0,11.0,Mattias Käit,Thun,SwissSuperLeague,100
@@ -343,10 +354,12 @@ Estonia,UEFA,129.0,https://api.fifa.com/api/v3/picture/flags-sq-2/EST,2026-11-15
 Estonia,UEFA,129.0,https://api.fifa.com/api/v3/picture/flags-sq-2/EST,2026-11-15,Patrik Kristal,Thun,MF,18.0,0.0,Patrik Kristal,Thun,SwissSuperLeague,100
 Faroe Islands,UEFA,136.0,https://api.fifa.com/api/v3/picture/flags-sq-2/FRO,2026-10-06,Samuel Chukwudi,SV Ried,DF,11.0,0.0,Samuel Chukwudi,Ried,AustrianBundesliga,100
 Faroe Islands,UEFA,136.0,https://api.fifa.com/api/v3/picture/flags-sq-2/FRO,2026-10-06,Adrian Justinussen,Horsens,FW,24.0,2.0,Adrian Justinussen,AC Horsens,DanishSuperliga,100
-Finland,UEFA,71.0,https://api.fifa.com/api/v3/picture/flags-sq-2/FIN,2026-10-06,Lukas Hradecky,Monaco,GK,108.0,0.0,Lukáš Hrádecký,Monaco,Ligue1,100
-Finland,UEFA,71.0,https://api.fifa.com/api/v3/picture/flags-sq-2/FIN,2026-10-06,Juho Lähteenmäki,Nordsjælland,DF,10.0,0.0,Juho Lähteenmäki,Nordsjælland,DanishSuperliga,100
-Finland,UEFA,71.0,https://api.fifa.com/api/v3/picture/flags-sq-2/FIN,2026-10-06,Anssi Suhonen,OB,MF,17.0,0.0,Anssi Suhonen,OB,DanishSuperliga,100
-Finland,UEFA,71.0,https://api.fifa.com/api/v3/picture/flags-sq-2/FIN,2026-10-06,Topi Keskinen,OB,FW,16.0,0.0,Topi Keskinen,OB,DanishSuperliga,100
+Finland,UEFA,71.0,https://api.fifa.com/api/v3/picture/flags-sq-2/FIN,2026-11-15,Lukas Hradecky,Monaco,GK,108.0,0.0,Lukáš Hrádecký,Monaco,Ligue1,100
+Finland,UEFA,71.0,https://api.fifa.com/api/v3/picture/flags-sq-2/FIN,2026-11-15,Juho Lähteenmäki,Nordsjælland,DF,10.0,0.0,Juho Lähteenmäki,Nordsjælland,DanishSuperliga,100
+Finland,UEFA,71.0,https://api.fifa.com/api/v3/picture/flags-sq-2/FIN,2026-11-15,Ville Koski,Alavés,DF,13.0,0.0,Ville Koski,Alavés,LaLiga,100
+Finland,UEFA,71.0,https://api.fifa.com/api/v3/picture/flags-sq-2/FIN,2026-11-15,Anssi Suhonen,OB,MF,17.0,0.0,Anssi Suhonen,OB,DanishSuperliga,100
+Finland,UEFA,71.0,https://api.fifa.com/api/v3/picture/flags-sq-2/FIN,2026-11-15,Topi Keskinen,OB,FW,16.0,0.0,Topi Keskinen,OB,DanishSuperliga,100
+Finland,UEFA,71.0,https://api.fifa.com/api/v3/picture/flags-sq-2/FIN,2026-11-15,Oliver Antman,Anderlecht,FW,31.0,8.0,Oliver Antman,Anderlecht,BelgianProLeague,100
 France,UEFA,3.0,https://api.fifa.com/api/v3/picture/flags-sq-2/FRA,2026-10-05,Guillaume Restes,Toulouse,GK,1.0,0.0,Guillaume Restes,Toulouse,Ligue1,100
 France,UEFA,3.0,https://api.fifa.com/api/v3/picture/flags-sq-2/FRA,2026-10-05,Mike Maignan,AC Milan,GK,51.0,0.0,Mike Maignan,Milan,SerieA,100
 France,UEFA,3.0,https://api.fifa.com/api/v3/picture/flags-sq-2/FRA,2026-10-05,Jean Butez,Como,GK,0.0,0.0,Jean Butez,Como,SerieA,100
@@ -453,31 +466,30 @@ Guinea,CAF,81.0,https://api.fifa.com/api/v3/picture/flags-sq-2/GUI,2026-06-04,Ib
 Guinea,CAF,81.0,https://api.fifa.com/api/v3/picture/flags-sq-2/GUI,2026-06-04,Ousmane Diabaté,Gençlerbirliği,MF,0.0,0.0,Ousmane Diabate,Gençlerbirliği,SuperLig,100
 Guinea,CAF,81.0,https://api.fifa.com/api/v3/picture/flags-sq-2/GUI,2026-06-04,Mohamed Cherif Haidara,Sønderjyske,MF,0.0,0.0,Mohamed Cherif,Sønderjyske,DanishSuperliga,85
 Guinea,CAF,81.0,https://api.fifa.com/api/v3/picture/flags-sq-2/GUI,2026-06-04,Abdoul Karim Traoré,OH Leuven,FW,4.0,3.0,Abdoul Karim Traoré,OH Leuven,BelgianProLeague,100
-Guinea-Bissau,CAF,130.0,https://api.fifa.com/api/v3/picture/flags-sq-2/GNB,2026-09-29,Jefferson Encada,Estrela da Amadora,DF,35.0,0.0,Jefferson Encada,Estrela,LigaPortugal,100
-Guinea-Bissau,CAF,130.0,https://api.fifa.com/api/v3/picture/flags-sq-2/GNB,2026-09-29,Víctor Rofino,Famalicão,DF,11.0,0.0,Víctor Rofino,Famalicão,LigaPortugal,100
-Guinea-Bissau,CAF,130.0,https://api.fifa.com/api/v3/picture/flags-sq-2/GNB,2026-09-29,Gilberto Batista,Moreirense,DF,2.0,0.0,Gilberto Batista,Moreirense,LigaPortugal,100
-Guinea-Bissau,CAF,130.0,https://api.fifa.com/api/v3/picture/flags-sq-2/GNB,2026-09-29,Renato Nhaga,Galatasaray,MF,10.0,0.0,Renato Nhaga,Galatasaray,SuperLig,100
-Guinea-Bissau,CAF,130.0,https://api.fifa.com/api/v3/picture/flags-sq-2/GNB,2026-09-29,Mama Baldé,Brest,FW,39.0,9.0,Mama Samba Baldé,Brest,Ligue1,85
-Guinea-Bissau,CAF,130.0,https://api.fifa.com/api/v3/picture/flags-sq-2/GNB,2026-09-29,Franculino Djú,Trabzonspor,FW,18.0,3.0,Franculino,Trabzonspor,SuperLig,60
-Guinea-Bissau,CAF,130.0,https://api.fifa.com/api/v3/picture/flags-sq-2/GNB,2026-09-29,Beto,Fiorentina,FW,12.0,1.0,Beto,Fiorentina,SerieA,100
-Guinea-Bissau,CAF,130.0,https://api.fifa.com/api/v3/picture/flags-sq-2/GNB,2026-09-29,Tamble Monteiro,Rio Ave,FW,11.0,1.0,Tamble,Rio Ave,LigaPortugal,60
+Guinea-Bissau,CAF,130.0,https://api.fifa.com/api/v3/picture/flags-sq-2/GNB,2026-11-15,Jefferson Encada,Estrela da Amadora,DF,35.0,0.0,Jefferson Encada,Estrela,LigaPortugal,100
+Guinea-Bissau,CAF,130.0,https://api.fifa.com/api/v3/picture/flags-sq-2/GNB,2026-11-15,Víctor Rofino,Famalicão,DF,11.0,0.0,Víctor Rofino,Famalicão,LigaPortugal,100
+Guinea-Bissau,CAF,130.0,https://api.fifa.com/api/v3/picture/flags-sq-2/GNB,2026-11-15,Gilberto Batista,Moreirense,DF,2.0,0.0,Gilberto Batista,Moreirense,LigaPortugal,100
+Guinea-Bissau,CAF,130.0,https://api.fifa.com/api/v3/picture/flags-sq-2/GNB,2026-11-15,Renato Nhaga,Galatasaray,MF,10.0,0.0,Renato Nhaga,Galatasaray,SuperLig,100
+Guinea-Bissau,CAF,130.0,https://api.fifa.com/api/v3/picture/flags-sq-2/GNB,2026-11-15,Mama Baldé,Brest,FW,39.0,9.0,Mama Samba Baldé,Brest,Ligue1,85
+Guinea-Bissau,CAF,130.0,https://api.fifa.com/api/v3/picture/flags-sq-2/GNB,2026-11-15,Beto,Fiorentina,FW,12.0,1.0,Beto,Fiorentina,SerieA,100
+Guinea-Bissau,CAF,130.0,https://api.fifa.com/api/v3/picture/flags-sq-2/GNB,2026-11-15,Tamble Monteiro,Rio Ave,FW,11.0,1.0,Tamble,Rio Ave,LigaPortugal,60
 Haiti,CONCACAF,87.0,https://api.fifa.com/api/v3/picture/flags-sq-2/HAI,2026-10-04,Carlens Arcus,Angers,DF,60.0,1.0,Carlens Arcus,Angers,Ligue1,100
 Haiti,CONCACAF,87.0,https://api.fifa.com/api/v3/picture/flags-sq-2/HAI,2026-10-04,Hannes Delcroix,Lugano,DF,13.0,0.0,Hannes Delcroix,Lugano,SwissSuperLeague,100
 Haiti,CONCACAF,87.0,https://api.fifa.com/api/v3/picture/flags-sq-2/HAI,2026-10-04,Jean-Ricner Bellegarde,Wolverhampton Wanderers,MF,17.0,1.0,Jean-Ricner Bellegarde,Wolves,Championship,100
 Haiti,CONCACAF,87.0,https://api.fifa.com/api/v3/picture/flags-sq-2/HAI,2026-10-04,Wilson Isidor,Sunderland,FW,11.0,6.0,Wilson Isidor,Sunderland,EPL,100
 Honduras,CONCACAF,65.0,https://api.fifa.com/api/v3/picture/flags-sq-2/HON,2026-10-05,Dereck Moncada,Lugano,FW,8.0,1.0,Dereck Moncada,Lugano,SwissSuperLeague,100
-Hungary,UEFA,41.0,https://api.fifa.com/api/v3/picture/flags-sq-2/HUN,2026-10-05,Balázs Tóth,Blackburn Rovers,GK,11.0,0.0,Balázs Tóth,Blackburn Rovers,Championship,100
-Hungary,UEFA,41.0,https://api.fifa.com/api/v3/picture/flags-sq-2/HUN,2026-10-05,Ármin Pécsi,Hartberg,GK,1.0,0.0,Ármin Pécsi,Hartberg,AustrianBundesliga,100
-Hungary,UEFA,41.0,https://api.fifa.com/api/v3/picture/flags-sq-2/HUN,2026-10-05,Márk Csinger,Groningen,DF,5.0,1.0,Márk Csinger,Groningen,Eredivisie,100
-Hungary,UEFA,41.0,https://api.fifa.com/api/v3/picture/flags-sq-2/HUN,2026-10-05,Willi Orbán,RB Leipzig,DF,72.0,6.0,Willi Orban,RB Leipzig,Bundesliga,100
-Hungary,UEFA,41.0,https://api.fifa.com/api/v3/picture/flags-sq-2/HUN,2026-10-05,Bendegúz Bolla,Rapid Wien,DF,38.0,0.0,Bendegúz Bolla,Rapid Wien,AustrianBundesliga,100
-Hungary,UEFA,41.0,https://api.fifa.com/api/v3/picture/flags-sq-2/HUN,2026-10-05,Milos Kerkez,Liverpool,DF,35.0,1.0,Milos Kerkez,Liverpool,EPL,100
-Hungary,UEFA,41.0,https://api.fifa.com/api/v3/picture/flags-sq-2/HUN,2026-10-05,Tamás Szűcs,Famalicão,MF,8.0,0.0,Tamás Szűcs,Famalicão,LigaPortugal,100
-Hungary,UEFA,41.0,https://api.fifa.com/api/v3/picture/flags-sq-2/HUN,2026-10-05,Dominik Szoboszlai,Liverpool,MF,69.0,18.0,Dominik Szoboszlai,Liverpool,EPL,100
-Hungary,UEFA,41.0,https://api.fifa.com/api/v3/picture/flags-sq-2/HUN,2026-10-05,András Schäfer,Union Berlin,MF,49.0,5.0,András Schäfer,Union Berlin,Bundesliga,100
-Hungary,UEFA,41.0,https://api.fifa.com/api/v3/picture/flags-sq-2/HUN,2026-10-05,Rajmund Tóth,Konyaspor,MF,4.0,1.0,Rajmund Tóth,Konyaspor,SuperLig,100
-Hungary,UEFA,41.0,https://api.fifa.com/api/v3/picture/flags-sq-2/HUN,2026-10-05,Alex Tóth,Bournemouth,MF,16.0,0.0,Alex Tóth,Bournemouth,EPL,100
-Hungary,UEFA,41.0,https://api.fifa.com/api/v3/picture/flags-sq-2/HUN,2026-10-05,Donát Bárány,ADO Den Haag,FW,5.0,0.0,Donát Bárány,ADO Den Haag,Eredivisie,100
+Hungary,UEFA,41.0,https://api.fifa.com/api/v3/picture/flags-sq-2/HUN,2026-11-17,Balázs Tóth,Blackburn Rovers,GK,11.0,0.0,Balázs Tóth,Blackburn Rovers,Championship,100
+Hungary,UEFA,41.0,https://api.fifa.com/api/v3/picture/flags-sq-2/HUN,2026-11-17,Ármin Pécsi,Hartberg,GK,1.0,0.0,Ármin Pécsi,Hartberg,AustrianBundesliga,100
+Hungary,UEFA,41.0,https://api.fifa.com/api/v3/picture/flags-sq-2/HUN,2026-11-17,Willi Orbán,RB Leipzig,DF,72.0,6.0,Willi Orban,RB Leipzig,Bundesliga,100
+Hungary,UEFA,41.0,https://api.fifa.com/api/v3/picture/flags-sq-2/HUN,2026-11-17,Bendegúz Bolla,Rapid Wien,DF,38.0,0.0,Bendegúz Bolla,Rapid Wien,AustrianBundesliga,100
+Hungary,UEFA,41.0,https://api.fifa.com/api/v3/picture/flags-sq-2/HUN,2026-11-17,Milos Kerkez,Liverpool,DF,35.0,1.0,Milos Kerkez,Liverpool,EPL,100
+Hungary,UEFA,41.0,https://api.fifa.com/api/v3/picture/flags-sq-2/HUN,2026-11-17,Márk Csinger,Groningen,DF,5.0,1.0,Márk Csinger,Groningen,Eredivisie,100
+Hungary,UEFA,41.0,https://api.fifa.com/api/v3/picture/flags-sq-2/HUN,2026-11-17,Dominik Szoboszlai,Liverpool,MF,69.0,18.0,Dominik Szoboszlai,Liverpool,EPL,100
+Hungary,UEFA,41.0,https://api.fifa.com/api/v3/picture/flags-sq-2/HUN,2026-11-17,András Schäfer,Union Berlin,MF,49.0,5.0,András Schäfer,Union Berlin,Bundesliga,100
+Hungary,UEFA,41.0,https://api.fifa.com/api/v3/picture/flags-sq-2/HUN,2026-11-17,Callum Styles,West Bromwich Albion,MF,31.0,0.0,Callum Styles,West Bromwich Albion,Championship,100
+Hungary,UEFA,41.0,https://api.fifa.com/api/v3/picture/flags-sq-2/HUN,2026-11-17,Rajmund Tóth,Konyaspor,MF,4.0,1.0,Rajmund Tóth,Konyaspor,SuperLig,100
+Hungary,UEFA,41.0,https://api.fifa.com/api/v3/picture/flags-sq-2/HUN,2026-11-17,Roland Sallai,Galatasaray,FW,67.0,15.0,Roland Sallai,Galatasaray,SuperLig,100
+Hungary,UEFA,41.0,https://api.fifa.com/api/v3/picture/flags-sq-2/HUN,2026-11-17,Damir Redzic,Red Bull Salzburg,FW,6.0,0.0,Damir Redzic,Salzburg,AustrianBundesliga,100
 Iceland,UEFA,74.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ISL,2026-10-06,Logi Tómasson,Samsunspor,DF,20.0,1.0,Logi Tómasson,Samsunspor,SuperLig,100
 Iceland,UEFA,74.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ISL,2026-10-06,Daníel Leó Grétarsson,AGF,DF,35.0,0.0,Daníel Grétarsson,AGF,DanishSuperliga,85
 Iceland,UEFA,74.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ISL,2026-10-06,Victor Pálsson,Horsens,DF,62.0,6.0,Victor Pálsson,AC Horsens,DanishSuperliga,100
@@ -502,6 +514,7 @@ Indonesia,AFC,119.0,https://api.fifa.com/api/v3/picture/flags-sq-2/IDN,2026-10-0
 Indonesia,AFC,119.0,https://api.fifa.com/api/v3/picture/flags-sq-2/IDN,2026-10-05,Nathan Tjoe-A-On,Willem II,MF,19.0,0.0,Nathan Tjoe-A-On,Willem II,Eredivisie,100
 Indonesia,AFC,119.0,https://api.fifa.com/api/v3/picture/flags-sq-2/IDN,2026-10-05,Ole Romeny,Fortuna Sittard,FW,14.0,7.0,Ole Romeny,Fortuna Sittard,Eredivisie,100
 Iran,AFC,22.0,https://api.fifa.com/api/v3/picture/flags-sq-2/IRN,2026-09-29,Dennis Eckert,Standard Liège,FW,2.0,0.0,Dennis Eckert,Standard Liège,BelgianProLeague,100
+Iraq,AFC,58.0,https://api.fifa.com/api/v3/picture/flags-sq-2/IRQ,2026-09-29,Marko Farji,Heerenveen,MF,14.0,0.0,Marko Farji,Heerenveen,Eredivisie,100
 Iraq,AFC,58.0,https://api.fifa.com/api/v3/picture/flags-sq-2/IRQ,2026-09-29,Jussef Nasrawe,SV Ried,MF,2.0,0.0,Jussef Nasrawe,Ried,AustrianBundesliga,100
 Ireland,UEFA,61.0,https://api.fifa.com/api/v3/picture/flags-sq-2/IRL,2026-10-04,Caoimhín Kelleher,Brentford,GK,36.0,0.0,Caoimhín Kelleher,Brentford,EPL,100
 Ireland,UEFA,61.0,https://api.fifa.com/api/v3/picture/flags-sq-2/IRL,2026-10-04,Max O'Leary,West Bromwich Albion,GK,2.0,0.0,Max O'Leary,West Bromwich Albion,Championship,100
@@ -561,25 +574,28 @@ Jamaica,CONCACAF,69.0,https://api.fifa.com/api/v3/picture/flags-sq-2/JAM,2026-10
 Jamaica,CONCACAF,69.0,https://api.fifa.com/api/v3/picture/flags-sq-2/JAM,2026-10-05,Bailey Cadamarteri,Wrexham,FW,11.0,2.0,Bailey Cadamarteri,Wrexham,Championship,100
 Jamaica,CONCACAF,69.0,https://api.fifa.com/api/v3/picture/flags-sq-2/JAM,2026-10-05,Tyreece Campbell,Charlton Athletic,FW,12.0,1.0,Tyreece Campbell,Charlton Athletic,Championship,100
 Jamaica,CONCACAF,69.0,https://api.fifa.com/api/v3/picture/flags-sq-2/JAM,2026-10-05,Rumarn Burrell,Queens Park Rangers,FW,6.0,2.0,Rumarn Burrell,Queens Park Rangers,Championship,100
-Japan,AFC,17.0,https://api.fifa.com/api/v3/picture/flags-sq-2/JPN,2026-10-05,Zion Suzuki,Aston Villa,GK,31.0,0.0,Zion Suzuki,Aston Villa,EPL,100
-Japan,AFC,17.0,https://api.fifa.com/api/v3/picture/flags-sq-2/JPN,2026-10-05,Leo Kokubo,Sint-Truiden,GK,1.0,0.0,Leo Kokubo,Sint-Truiden,BelgianProLeague,100
-Japan,AFC,17.0,https://api.fifa.com/api/v3/picture/flags-sq-2/JPN,2026-10-05,Ayumu Seko,Le Havre,DF,20.0,0.0,Ayumu Seko,Le Havre,Ligue1,100
-Japan,AFC,17.0,https://api.fifa.com/api/v3/picture/flags-sq-2/JPN,2026-10-05,Kō Itakura,Borussia Mönchengladbach,DF,44.0,2.0,Ko Itakura,Gladbach,Bundesliga,100
-Japan,AFC,17.0,https://api.fifa.com/api/v3/picture/flags-sq-2/JPN,2026-10-05,Satoshi Tanaka,Schalke 04,MF,3.0,0.0,Satoshi Tanaka,Schalke 04,Bundesliga,100
-Japan,AFC,17.0,https://api.fifa.com/api/v3/picture/flags-sq-2/JPN,2026-10-05,Ritsu Dōan,Eintracht Frankfurt,MF,73.0,12.0,Ritsu Doan,Frankfurt,Bundesliga,100
-Japan,AFC,17.0,https://api.fifa.com/api/v3/picture/flags-sq-2/JPN,2026-10-05,Keito Nakamura,Lyon,MF,33.0,11.0,Keito Nakamura,Lyon,Ligue1,100
-Japan,AFC,17.0,https://api.fifa.com/api/v3/picture/flags-sq-2/JPN,2026-10-05,Junya Itō,Genk,MF,77.0,16.0,Junya Itō,Genk,BelgianProLeague,100
-Japan,AFC,17.0,https://api.fifa.com/api/v3/picture/flags-sq-2/JPN,2026-10-05,Daichi Kamada,Crystal Palace,MF,57.0,14.0,Daichi Kamada,Crystal Palace,EPL,100
-Japan,AFC,17.0,https://api.fifa.com/api/v3/picture/flags-sq-2/JPN,2026-10-05,Ao Tanaka,Leeds United,MF,45.0,8.0,Ao Tanaka,Leeds United,EPL,100
-Japan,AFC,17.0,https://api.fifa.com/api/v3/picture/flags-sq-2/JPN,2026-10-05,Kuryu Matsuki,Southampton,MF,2.0,1.0,Kuryu Matsuki,Southampton,Championship,100
-Japan,AFC,17.0,https://api.fifa.com/api/v3/picture/flags-sq-2/JPN,2026-10-05,Takefusa Kubo,Real Sociedad,MF,54.0,7.0,Takefusa Kubo,Real Sociedad,LaLiga,100
-Japan,AFC,17.0,https://api.fifa.com/api/v3/picture/flags-sq-2/JPN,2026-10-05,Kaishū Sano,Mainz 05,MF,19.0,1.0,Kaishū Sano,Mainz 05,Bundesliga,100
-Japan,AFC,17.0,https://api.fifa.com/api/v3/picture/flags-sq-2/JPN,2026-10-05,Kodai Sano,PSV,MF,4.0,0.0,Kodai Sano,PSV,Eredivisie,100
-Japan,AFC,17.0,https://api.fifa.com/api/v3/picture/flags-sq-2/JPN,2026-10-05,Shunsuke Saito,Westerlo,MF,1.0,0.0,Shunsuke Saito,Westerlo,BelgianProLeague,100
-Japan,AFC,17.0,https://api.fifa.com/api/v3/picture/flags-sq-2/JPN,2026-10-05,Yuito Suzuki,SC Freiburg,FW,9.0,0.0,Yuito Suzuki,Freiburg,Bundesliga,100
-Japan,AFC,17.0,https://api.fifa.com/api/v3/picture/flags-sq-2/JPN,2026-10-05,Keisuke Gotō,SC Freiburg,FW,6.0,0.0,Keisuke Gotō,Freiburg,Bundesliga,100
-Japan,AFC,17.0,https://api.fifa.com/api/v3/picture/flags-sq-2/JPN,2026-10-05,Daizen Maeda,Ipswich Town,FW,33.0,5.0,Daizen Maeda,Ipswich Town,EPL,100
-Japan,AFC,17.0,https://api.fifa.com/api/v3/picture/flags-sq-2/JPN,2026-10-05,Ayase Ueda,Lille,FW,47.0,22.0,Ayase Ueda,Lille,Ligue1,100
+Japan,AFC,17.0,https://api.fifa.com/api/v3/picture/flags-sq-2/JPN,2026-11-17,Zion Suzuki,Aston Villa,GK,31.0,0.0,Zion Suzuki,Aston Villa,EPL,100
+Japan,AFC,17.0,https://api.fifa.com/api/v3/picture/flags-sq-2/JPN,2026-11-17,Leo Kokubo,Sint-Truiden,GK,1.0,0.0,Leo Kokubo,Sint-Truiden,BelgianProLeague,100
+Japan,AFC,17.0,https://api.fifa.com/api/v3/picture/flags-sq-2/JPN,2026-11-17,Kō Itakura,Borussia Mönchengladbach,DF,44.0,2.0,Ko Itakura,Gladbach,Bundesliga,100
+Japan,AFC,17.0,https://api.fifa.com/api/v3/picture/flags-sq-2/JPN,2026-11-17,Hiroki Itō,Bayern Munich,DF,32.0,1.0,Hiroki Ito,Bayern Munich,Bundesliga,100
+Japan,AFC,17.0,https://api.fifa.com/api/v3/picture/flags-sq-2/JPN,2026-11-17,Yukinari Sugawara,Cagliari,DF,25.0,2.0,Yukinari Sugawara,Cagliari,SerieA,100
+Japan,AFC,17.0,https://api.fifa.com/api/v3/picture/flags-sq-2/JPN,2026-11-17,Ayumu Seko,Le Havre,DF,20.0,0.0,Ayumu Seko,Le Havre,Ligue1,100
+Japan,AFC,17.0,https://api.fifa.com/api/v3/picture/flags-sq-2/JPN,2026-11-17,Kōki Machida,TSG Hoffenheim,DF,17.0,0.0,Koki Machida,Hoffenheim,Bundesliga,100
+Japan,AFC,17.0,https://api.fifa.com/api/v3/picture/flags-sq-2/JPN,2026-11-17,Tsuyoshi Watanabe,Feyenoord,DF,14.0,0.0,Tsuyoshi Watanabe,Feyenoord,Eredivisie,100
+Japan,AFC,17.0,https://api.fifa.com/api/v3/picture/flags-sq-2/JPN,2026-11-17,Junya Itō,Genk,MF,77.0,16.0,Junya Itō,Genk,BelgianProLeague,100
+Japan,AFC,17.0,https://api.fifa.com/api/v3/picture/flags-sq-2/JPN,2026-11-17,Ritsu Dōan,Eintracht Frankfurt,MF,73.0,12.0,Ritsu Doan,Frankfurt,Bundesliga,100
+Japan,AFC,17.0,https://api.fifa.com/api/v3/picture/flags-sq-2/JPN,2026-11-17,Takumi Minamino,Monaco,MF,73.0,26.0,Takumi Minamino,Monaco,Ligue1,100
+Japan,AFC,17.0,https://api.fifa.com/api/v3/picture/flags-sq-2/JPN,2026-11-17,Daichi Kamada,Crystal Palace,MF,57.0,14.0,Daichi Kamada,Crystal Palace,EPL,100
+Japan,AFC,17.0,https://api.fifa.com/api/v3/picture/flags-sq-2/JPN,2026-11-17,Takefusa Kubo,Real Sociedad,MF,54.0,7.0,Takefusa Kubo,Real Sociedad,LaLiga,100
+Japan,AFC,17.0,https://api.fifa.com/api/v3/picture/flags-sq-2/JPN,2026-11-17,Ao Tanaka,Leeds United,MF,45.0,8.0,Ao Tanaka,Leeds United,EPL,100
+Japan,AFC,17.0,https://api.fifa.com/api/v3/picture/flags-sq-2/JPN,2026-11-17,Keito Nakamura,Lyon,MF,33.0,11.0,Keito Nakamura,Lyon,Ligue1,100
+Japan,AFC,17.0,https://api.fifa.com/api/v3/picture/flags-sq-2/JPN,2026-11-17,Kaishū Sano,Mainz 05,MF,19.0,1.0,Kaishū Sano,Mainz 05,Bundesliga,100
+Japan,AFC,17.0,https://api.fifa.com/api/v3/picture/flags-sq-2/JPN,2026-11-17,Kodai Sano,PSV,MF,4.0,0.0,Kodai Sano,PSV,Eredivisie,100
+Japan,AFC,17.0,https://api.fifa.com/api/v3/picture/flags-sq-2/JPN,2026-11-17,Kuryu Matsuki,Southampton,MF,2.0,1.0,Kuryu Matsuki,Southampton,Championship,100
+Japan,AFC,17.0,https://api.fifa.com/api/v3/picture/flags-sq-2/JPN,2026-11-17,Tatsuhiro Sakamoto,Coventry City,MF,2.0,0.0,Tatsuhiro Sakamoto,Coventry City,EPL,100
+Japan,AFC,17.0,https://api.fifa.com/api/v3/picture/flags-sq-2/JPN,2026-11-17,Daizen Maeda,Ipswich Town,FW,33.0,5.0,Daizen Maeda,Ipswich Town,EPL,100
+Japan,AFC,17.0,https://api.fifa.com/api/v3/picture/flags-sq-2/JPN,2026-11-17,Yuito Suzuki,SC Freiburg,FW,9.0,0.0,Yuito Suzuki,Freiburg,Bundesliga,100
+Japan,AFC,17.0,https://api.fifa.com/api/v3/picture/flags-sq-2/JPN,2026-11-17,Keisuke Gotō,SC Freiburg,FW,6.0,0.0,Keisuke Gotō,Freiburg,Bundesliga,100
 Jordan,AFC,62.0,https://api.fifa.com/api/v3/picture/flags-sq-2/JOR,2026-10-06,Musa Al-Taamari,Rennes,FW,97.0,25.0,Musa Al-Taamari,Rennes,Ligue1,100
 Jordan,AFC,62.0,https://api.fifa.com/api/v3/picture/flags-sq-2/JOR,2026-10-06,Tammer Bany Odeh,West Bromwich Albion,FW,3.0,0.0,Tammer Bany,West Bromwich Albion,Championship,85
 Kenya,CAF,111.0,https://api.fifa.com/api/v3/picture/flags-sq-2/KEN,2026-10-01,Timothy Ouma,Charlton Athletic,MF,12.0,0.0,Timothy Noor Ouma,Charlton Athletic,Championship,85
@@ -648,6 +664,7 @@ Mauritania,CAF,110.0,https://api.fifa.com/api/v3/picture/flags-sq-2/MTN,2026-09-
 Mexico,CONCACAF,10.0,https://api.fifa.com/api/v3/picture/flags-sq-2/MEX,2026-10-06,Johan Vásquez,Genoa,DF,53.0,3.0,Johan Vásquez,Genoa,SerieA,100
 Mexico,CONCACAF,10.0,https://api.fifa.com/api/v3/picture/flags-sq-2/MEX,2026-10-06,Álvaro Fidalgo,Betis,MF,11.0,1.0,Álvaro Fidalgo,Real Betis,LaLiga,100
 Mexico,CONCACAF,10.0,https://api.fifa.com/api/v3/picture/flags-sq-2/MEX,2026-10-06,Santiago Giménez,Porto,FW,54.0,6.0,Santiago Giménez,Porto,LigaPortugal,100
+Moldova,UEFA,156.0,https://api.fifa.com/api/v3/picture/flags-sq-2/MDA,2026-11-16,Oleg Reabciuk,Anderlecht,DF,66.0,0.0,Oleg Reabciuk,Anderlecht,BelgianProLeague,100
 Montenegro,UEFA,80.0,https://api.fifa.com/api/v3/picture/flags-sq-2/MNE,2026-10-05,Stefan Savić,Trabzonspor,DF,81.0,9.0,Stefan Savić,Trabzonspor,SuperLig,100
 Montenegro,UEFA,80.0,https://api.fifa.com/api/v3/picture/flags-sq-2/MNE,2026-10-05,Adam Marušić,Lazio,DF,70.0,5.0,Adam Marušić,Lazio,SerieA,100
 Montenegro,UEFA,80.0,https://api.fifa.com/api/v3/picture/flags-sq-2/MNE,2026-10-05,Milan Roganović,Genk,DF,10.0,0.0,Milan Roganović,Genk,BelgianProLeague,100
@@ -707,11 +724,11 @@ Nigeria,CAF,45.0,https://api.fifa.com/api/v3/picture/flags-sq-2/NGA,2026-10-06,I
 Nigeria,CAF,45.0,https://api.fifa.com/api/v3/picture/flags-sq-2/NGA,2026-10-06,Umar Abubakar,Famalicão,FW,1.0,0.0,Abubakar Umar,Famalicão,LigaPortugal,95
 Nigeria,CAF,45.0,https://api.fifa.com/api/v3/picture/flags-sq-2/NGA,2026-10-06,Moses Simon,Paris,FW,102.0,12.0,Moses Simon,Paris FC,Ligue1,100
 Nigeria,CAF,45.0,https://api.fifa.com/api/v3/picture/flags-sq-2/NGA,2026-10-06,Akor Adams,Venezia,FW,18.0,7.0,Akor Adams,Venezia,SerieA,100
-North Macedonia,UEFA,63.0,https://api.fifa.com/api/v3/picture/flags-sq-2/MKD,2026-10-07,Stole Dimitrievski,Valencia,GK,94.0,0.0,Stole Dimitrievski,Valencia,LaLiga,100
-North Macedonia,UEFA,63.0,https://api.fifa.com/api/v3/picture/flags-sq-2/MKD,2026-10-07,Ezgjan Alioski,Lugano,DF,92.0,13.0,Ezgjan Alioski,Lugano,SwissSuperLeague,100
-North Macedonia,UEFA,63.0,https://api.fifa.com/api/v3/picture/flags-sq-2/MKD,2026-10-07,Visar Musliu,Sint-Truiden,DF,78.0,2.0,Visar Musliu,Sint-Truiden,BelgianProLeague,100
-North Macedonia,UEFA,63.0,https://api.fifa.com/api/v3/picture/flags-sq-2/MKD,2026-10-07,Enis Bardhi,Konyaspor,MF,86.0,20.0,Enis Bardhi,Konyaspor,SuperLig,100
-North Macedonia,UEFA,63.0,https://api.fifa.com/api/v3/picture/flags-sq-2/MKD,2026-10-07,Eljif Elmas,Atalanta,MF,83.0,13.0,Elif Elmas,Atalanta,SerieA,80
+North Macedonia,UEFA,63.0,https://api.fifa.com/api/v3/picture/flags-sq-2/MKD,2026-11-16,Stole Dimitrievski,Valencia,GK,94.0,0.0,Stole Dimitrievski,Valencia,LaLiga,100
+North Macedonia,UEFA,63.0,https://api.fifa.com/api/v3/picture/flags-sq-2/MKD,2026-11-16,Ezgjan Alioski,Lugano,DF,92.0,13.0,Ezgjan Alioski,Lugano,SwissSuperLeague,100
+North Macedonia,UEFA,63.0,https://api.fifa.com/api/v3/picture/flags-sq-2/MKD,2026-11-16,Visar Musliu,Sint-Truiden,DF,78.0,2.0,Visar Musliu,Sint-Truiden,BelgianProLeague,100
+North Macedonia,UEFA,63.0,https://api.fifa.com/api/v3/picture/flags-sq-2/MKD,2026-11-16,Enis Bardhi,Konyaspor,MF,86.0,20.0,Enis Bardhi,Konyaspor,SuperLig,100
+North Macedonia,UEFA,63.0,https://api.fifa.com/api/v3/picture/flags-sq-2/MKD,2026-11-16,Eljif Elmas,Atalanta,MF,83.0,13.0,Elif Elmas,Atalanta,SerieA,80
 Northern Ireland,UEFA,72.0,https://api.fifa.com/api/v3/picture/flags-sq-2/NIR,2026-11-17,Pierce Charles,Queens Park Rangers,GK,16.0,0.0,Pierce Charles,Queens Park Rangers,Championship,100
 Northern Ireland,UEFA,72.0,https://api.fifa.com/api/v3/picture/flags-sq-2/NIR,2026-11-17,Paddy McNair,Hull City,DF,85.0,7.0,Paddy McNair,Hull City,EPL,100
 Northern Ireland,UEFA,72.0,https://api.fifa.com/api/v3/picture/flags-sq-2/NIR,2026-11-17,Trai Hume,Sunderland,DF,35.0,1.0,Trai Hume,Sunderland,EPL,100
@@ -725,25 +742,28 @@ Northern Ireland,UEFA,72.0,https://api.fifa.com/api/v3/picture/flags-sq-2/NIR,20
 Northern Ireland,UEFA,72.0,https://api.fifa.com/api/v3/picture/flags-sq-2/NIR,2026-11-17,Justin Devenny,Stoke City,MF,18.0,1.0,Justin Devenny,Stoke City,Championship,100
 Northern Ireland,UEFA,72.0,https://api.fifa.com/api/v3/picture/flags-sq-2/NIR,2026-11-17,Paul Smyth,Queens Park Rangers,FW,25.0,2.0,Paul Smyth,Queens Park Rangers,Championship,100
 Northern Ireland,UEFA,72.0,https://api.fifa.com/api/v3/picture/flags-sq-2/NIR,2026-11-17,Eoin Kenny,Portsmouth,FW,0.0,0.0,Eoin Kenny,Portsmouth,Championship,100
-Norway,UEFA,19.0,https://api.fifa.com/api/v3/picture/flags-sq-2/NOR,2026-10-04,Egil Selvik,Brest,GK,9.0,0.0,Egil Selvik,Brest,Ligue1,100
-Norway,UEFA,19.0,https://api.fifa.com/api/v3/picture/flags-sq-2/NOR,2026-10-04,Kristoffer Ajer,Brentford,DF,61.0,3.0,Kristoffer Ajer,Brentford,EPL,100
-Norway,UEFA,19.0,https://api.fifa.com/api/v3/picture/flags-sq-2/NOR,2026-10-04,Leo Østigård,Genoa,DF,46.0,2.0,Leo Østigård,Genoa,SerieA,100
-Norway,UEFA,19.0,https://api.fifa.com/api/v3/picture/flags-sq-2/NOR,2026-10-04,David Møller Wolfe,Hamburger SV,DF,30.0,1.0,David Møller Wolfe,Hamburger SV,Bundesliga,100
-Norway,UEFA,19.0,https://api.fifa.com/api/v3/picture/flags-sq-2/NOR,2026-10-04,Sondre Langås,Derby County,DF,4.0,0.0,Sondre Klingen Langås,Derby County,Championship,85
-Norway,UEFA,19.0,https://api.fifa.com/api/v3/picture/flags-sq-2/NOR,2026-10-04,Torbjørn Heggem,Bologna,DF,23.0,0.0,Torbjørn Heggem,Bologna,SerieA,100
-Norway,UEFA,19.0,https://api.fifa.com/api/v3/picture/flags-sq-2/NOR,2026-10-04,Julian Ryerson,Borussia Dortmund,DF,50.0,1.0,Julian Ryerson,Dortmund,Bundesliga,100
-Norway,UEFA,19.0,https://api.fifa.com/api/v3/picture/flags-sq-2/NOR,2026-10-04,Fredrik Aursnes,Benfica,MF,32.0,1.0,Fredrik Aursnes,Benfica,LigaPortugal,100
-Norway,UEFA,19.0,https://api.fifa.com/api/v3/picture/flags-sq-2/NOR,2026-10-04,Sander Berge,Fulham,MF,75.0,1.0,Sander Berge,Fulham,EPL,100
-Norway,UEFA,19.0,https://api.fifa.com/api/v3/picture/flags-sq-2/NOR,2026-10-04,Martin Ødegaard,Arsenal,MF,77.0,5.0,Martin Ødegaard,Arsenal,EPL,100
-Norway,UEFA,19.0,https://api.fifa.com/api/v3/picture/flags-sq-2/NOR,2026-10-04,Kristian Thorstvedt,Sassuolo,MF,40.0,4.0,Kristian Thorstvedt,Sassuolo,SerieA,100
-Norway,UEFA,19.0,https://api.fifa.com/api/v3/picture/flags-sq-2/NOR,2026-10-04,Thelo Aasgaard,Anderlecht,MF,12.0,6.0,Thelo Aasgaard,Anderlecht,BelgianProLeague,100
-Norway,UEFA,19.0,https://api.fifa.com/api/v3/picture/flags-sq-2/NOR,2026-10-04,Erling Haaland,Manchester City,FW,59.0,65.0,Erling Haaland,Manchester City,EPL,100
-Norway,UEFA,19.0,https://api.fifa.com/api/v3/picture/flags-sq-2/NOR,2026-10-04,Jørgen Strand Larsen,Crystal Palace,FW,33.0,6.0,Jørgen Strand Larsen,Crystal Palace,EPL,100
-Norway,UEFA,19.0,https://api.fifa.com/api/v3/picture/flags-sq-2/NOR,2026-10-04,Antonio Nusa,RB Leipzig,FW,34.0,9.0,Antonio Nusa,RB Leipzig,Bundesliga,100
-Norway,UEFA,19.0,https://api.fifa.com/api/v3/picture/flags-sq-2/NOR,2026-10-04,Andreas Schjelderup,Benfica,FW,22.0,2.0,Andreas Schjelderup,Benfica,LigaPortugal,100
-Norway,UEFA,19.0,https://api.fifa.com/api/v3/picture/flags-sq-2/NOR,2026-10-04,Oscar Bobb,Fulham,FW,30.0,4.0,Oscar Bobb,Fulham,EPL,100
+Norway,UEFA,19.0,https://api.fifa.com/api/v3/picture/flags-sq-2/NOR,2026-11-17,Ørjan Nyland,RB Leipzig,GK,79.0,0.0,Ørjan Nyland,RB Leipzig,Bundesliga,100
+Norway,UEFA,19.0,https://api.fifa.com/api/v3/picture/flags-sq-2/NOR,2026-11-17,Egil Selvik,Brest,GK,9.0,0.0,Egil Selvik,Brest,Ligue1,100
+Norway,UEFA,19.0,https://api.fifa.com/api/v3/picture/flags-sq-2/NOR,2026-11-17,Kristoffer Ajer,Brentford,DF,61.0,3.0,Kristoffer Ajer,Brentford,EPL,100
+Norway,UEFA,19.0,https://api.fifa.com/api/v3/picture/flags-sq-2/NOR,2026-11-17,Julian Ryerson,Borussia Dortmund,DF,50.0,1.0,Julian Ryerson,Dortmund,Bundesliga,100
+Norway,UEFA,19.0,https://api.fifa.com/api/v3/picture/flags-sq-2/NOR,2026-11-17,Leo Østigård,Genoa,DF,46.0,2.0,Leo Østigård,Genoa,SerieA,100
+Norway,UEFA,19.0,https://api.fifa.com/api/v3/picture/flags-sq-2/NOR,2026-11-17,David Møller Wolfe,Hamburger SV,DF,30.0,1.0,David Møller Wolfe,Hamburger SV,Bundesliga,100
+Norway,UEFA,19.0,https://api.fifa.com/api/v3/picture/flags-sq-2/NOR,2026-11-17,Torbjørn Heggem,Bologna,DF,23.0,0.0,Torbjørn Heggem,Bologna,SerieA,100
+Norway,UEFA,19.0,https://api.fifa.com/api/v3/picture/flags-sq-2/NOR,2026-11-17,Eivind Helland,Bologna,DF,1.0,0.0,Eivind Helland,Bologna,SerieA,100
+Norway,UEFA,19.0,https://api.fifa.com/api/v3/picture/flags-sq-2/NOR,2026-11-17,Martin Ødegaard,Arsenal,MF,77.0,5.0,Martin Ødegaard,Arsenal,EPL,100
+Norway,UEFA,19.0,https://api.fifa.com/api/v3/picture/flags-sq-2/NOR,2026-11-17,Sander Berge,Fulham,MF,75.0,1.0,Sander Berge,Fulham,EPL,100
+Norway,UEFA,19.0,https://api.fifa.com/api/v3/picture/flags-sq-2/NOR,2026-11-17,Fredrik Aursnes,Benfica,MF,32.0,1.0,Fredrik Aursnes,Benfica,LigaPortugal,100
+Norway,UEFA,19.0,https://api.fifa.com/api/v3/picture/flags-sq-2/NOR,2026-11-17,Thelo Aasgaard,Anderlecht,MF,12.0,6.0,Thelo Aasgaard,Anderlecht,BelgianProLeague,100
+Norway,UEFA,19.0,https://api.fifa.com/api/v3/picture/flags-sq-2/NOR,2026-11-17,Felix Horn Myhre,West Bromwich Albion,MF,7.0,2.0,Felix Horn Myhre,West Bromwich Albion,Championship,100
+Norway,UEFA,19.0,https://api.fifa.com/api/v3/picture/flags-sq-2/NOR,2026-11-17,Alexander Sørloth,Atlético Madrid,FW,77.0,26.0,Alexander Sørloth,Atlético Madrid,LaLiga,100
+Norway,UEFA,19.0,https://api.fifa.com/api/v3/picture/flags-sq-2/NOR,2026-11-17,Erling Haaland,Manchester City,FW,59.0,65.0,Erling Haaland,Manchester City,EPL,100
+Norway,UEFA,19.0,https://api.fifa.com/api/v3/picture/flags-sq-2/NOR,2026-11-17,Antonio Nusa,RB Leipzig,FW,34.0,9.0,Antonio Nusa,RB Leipzig,Bundesliga,100
+Norway,UEFA,19.0,https://api.fifa.com/api/v3/picture/flags-sq-2/NOR,2026-11-17,Jørgen Strand Larsen,Crystal Palace,FW,33.0,6.0,Jørgen Strand Larsen,Crystal Palace,EPL,100
+Norway,UEFA,19.0,https://api.fifa.com/api/v3/picture/flags-sq-2/NOR,2026-11-17,Oscar Bobb,Fulham,FW,30.0,4.0,Oscar Bobb,Fulham,EPL,100
+Norway,UEFA,19.0,https://api.fifa.com/api/v3/picture/flags-sq-2/NOR,2026-11-17,Andreas Schjelderup,Benfica,FW,22.0,2.0,Andreas Schjelderup,Benfica,LigaPortugal,100
 Panama,CONCACAF,30.0,https://api.fifa.com/api/v3/picture/flags-sq-2/PAN,2026-10-05,Amir Murillo,Beşiktaş,DF,100.0,9.0,Amir Murillo,Beşiktaş,SuperLig,100
 Panama,CONCACAF,30.0,https://api.fifa.com/api/v3/picture/flags-sq-2/PAN,2026-10-05,Josué Vergara,Gent,FW,1.0,1.0,Josúe Vergara,Gent,BelgianProLeague,100
+Paraguay,CONMEBOL,37.0,https://api.fifa.com/api/v3/picture/flags-sq-2/PAR,2026-10-03,Orlando Gill,Lille,GK,12.0,0.0,Orlando Gill,Lille,Ligue1,100
 Paraguay,CONMEBOL,37.0,https://api.fifa.com/api/v3/picture/flags-sq-2/PAR,2026-10-03,Omar Alderete,Sunderland,DF,42.0,3.0,Omar Alderete,Sunderland,EPL,100
 Paraguay,CONMEBOL,37.0,https://api.fifa.com/api/v3/picture/flags-sq-2/PAR,2026-10-03,Diego Gómez,Brighton & Hove Albion,MF,30.0,3.0,Diego Gómez,Brighton,EPL,100
 Paraguay,CONMEBOL,37.0,https://api.fifa.com/api/v3/picture/flags-sq-2/PAR,2026-10-03,Julio Enciso,Ipswich Town,FW,39.0,5.0,Julio Enciso,Ipswich Town,EPL,100
@@ -829,17 +849,18 @@ Senegal,CAF,18.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SEN,2026-10-04,I
 Senegal,CAF,18.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SEN,2026-10-04,Iliman Ndiaye,Manchester City,FW,45.0,6.0,Iliman Ndiaye,Manchester City,EPL,100
 Senegal,CAF,18.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SEN,2026-10-04,Ibrahim Mbaye,Aston Villa,FW,18.0,5.0,Ibrahim Mbaye,Aston Villa,EPL,100
 Serbia,UEFA,34.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SRB,,Vanja Milinković-Savić,Napoli,GK,23.0,0.0,Vanja Milinković-Savić,Napoli,SerieA,100
+Serbia,UEFA,34.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SRB,,Đorđe Petrović,Bournemouth,GK,13.0,0.0,Đorđe Petrović,Bournemouth,EPL,100
 Serbia,UEFA,34.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SRB,,Filip Stanković,Venezia,GK,2.0,0.0,Filip Stankovic,Venezia,SerieA,100
-Serbia,UEFA,34.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SRB,,Nemanja Gudelj,Getafe,DF,79.0,1.0,Nemanja Gudelj,Getafe,LaLiga,100
+Serbia,UEFA,34.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SRB,,Nikola Milenković,Nottingham Forest,DF,71.0,3.0,Nikola Milenković,Nottingham Forest,EPL,100
 Serbia,UEFA,34.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SRB,,Strahinja Pavlović,AC Milan,DF,59.0,5.0,Strahinja Pavlović,Milan,SerieA,100
 Serbia,UEFA,34.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SRB,,Strahinja Eraković,Samsunspor,DF,23.0,1.0,Strahinja Eraković,Samsunspor,SuperLig,100
 Serbia,UEFA,34.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SRB,,Aleksa Terzić,Frosinone,DF,18.0,1.0,Aleksa Terzić,Frosinone,SerieA,100
-Serbia,UEFA,34.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SRB,,Ognjen Mimović,Fenerbahçe,DF,8.0,0.0,Ognjen Mimović,Fenerbahçe,SuperLig,100
 Serbia,UEFA,34.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SRB,,Dušan Tadić,NEC,MF,115.0,23.0,Dušan Tadić,NEC Nijmegen,Eredivisie,100
 Serbia,UEFA,34.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SRB,,Filip Kostić,PSV,MF,76.0,3.0,Filip Kostić,PSV,Eredivisie,100
 Serbia,UEFA,34.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SRB,,Saša Lukić,Ipswich Town,MF,66.0,2.0,Saša Lukić,Ipswich Town,EPL,100
 Serbia,UEFA,34.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SRB,,Lazar Samardžić,Atalanta,MF,30.0,1.0,Lazar Samardzic,Atalanta,SerieA,100
 Serbia,UEFA,34.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SRB,,Aleksandar Stanković,Inter Milan,MF,10.0,1.0,Aleksandar Stanković,Inter,SerieA,100
+Serbia,UEFA,34.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SRB,,Dušan Vlahović,Beşiktaş,FW,41.0,16.0,Dušan Vlahović,Beşiktaş,SuperLig,100
 Serbia,UEFA,34.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SRB,,Mihajlo Cvetković,Anderlecht,FW,5.0,1.0,Mihajlo Cvetković,Anderlecht,BelgianProLeague,100
 Sierra Leone,CAF,122.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SLE,2026-09-28,Alex Bangura,Middlesbrough,DF,5.0,0.0,Alex Bangura,Middlesbrough,Championship,100
 Sierra Leone,CAF,122.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SLE,2026-09-28,Juma Bah,FC Augsburg,DF,9.0,1.0,Abdulai Juma Bah,Augsburg,Bundesliga,85
@@ -857,7 +878,9 @@ Slovakia,UEFA,42.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SVK,2026-10-06
 Slovenia,UEFA,50.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SVN,2026-11-16,Jan Oblak,Atlético Madrid,GK,88.0,0.0,Jan Oblak,Atlético Madrid,LaLiga,100
 Slovenia,UEFA,50.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SVN,2026-11-16,Jaka Bijol,Leeds United,DF,77.0,1.0,Jaka Bijol,Leeds United,EPL,100
 Slovenia,UEFA,50.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SVN,2026-11-16,Vanja Drkušić,Espanyol,DF,33.0,1.0,Vanja Drkušič,Espanyol,LaLiga,100
+Slovenia,UEFA,50.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SVN,2026-11-16,Srđan Kuzmić,Lorient,DF,4.0,0.0,Srđan Kuzmić,Lorient,Ligue1,100
 Slovenia,UEFA,50.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SVN,2026-11-16,Žan Zaletel,Viborg,DF,2.0,0.0,Žan Zaletel,Viborg,DanishSuperliga,100
+Slovenia,UEFA,50.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SVN,2026-11-16,Relja Obrić,Atalanta,DF,0.0,0.0,Relja Obrić,Atalanta,SerieA,100
 Slovenia,UEFA,50.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SVN,2026-11-16,Sandi Lovrić,Udinese,MF,49.0,6.0,Sandi Lovrić,Udinese,SerieA,100
 Slovenia,UEFA,50.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SVN,2026-11-16,Tomi Horvat,Bristol City,MF,15.0,0.0,Tomi Horvat,Bristol City,Championship,100
 Slovenia,UEFA,50.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SVN,2026-11-16,Žan Vipotnik,Swansea City,FW,30.0,6.0,Žan Vipotnik,Swansea City,Championship,100
@@ -890,19 +913,25 @@ Suriname,CONCACAF,131.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SUR,2026-
 Suriname,CONCACAF,131.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SUR,2026-10-05,Shiloh 't Zand,Fortuna Sittard,MF,3.0,0.0,Shiloh 't Zand,Fortuna Sittard,Eredivisie,100
 Suriname,CONCACAF,131.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SUR,2026-10-05,Gyrano Kerk,Erzurumspor,FW,17.0,3.0,Gyrano Kerk,Erzurumspor FK,SuperLig,100
 Suriname,CONCACAF,131.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SUR,2026-10-05,Richonell Margaret,Go Ahead Eagles,FW,17.0,4.0,Richonell Margaret,Go Ahead Eagles,Eredivisie,100
-Sweden,UEFA,32.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SWE,2026-10-05,Noel Törnqvist,Monza,GK,0.0,0.0,Noel Törnqvist,Monza,SerieA,100
-Sweden,UEFA,32.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SWE,2026-10-05,Viktor Johansson,Stoke City,GK,16.0,0.0,Viktor Johansson,Stoke City,Championship,100
-Sweden,UEFA,32.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SWE,2026-10-05,Victor Lindelöf,Aston Villa,DF,84.0,3.0,Victor Lindelöf,Aston Villa,EPL,100
-Sweden,UEFA,32.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SWE,2026-10-05,Gabriel Gudmundsson,Leeds United,DF,32.0,0.0,Gabriel Gudmundsson,Leeds United,EPL,100
-Sweden,UEFA,32.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SWE,2026-10-05,Daniel Svensson,Borussia Dortmund,DF,19.0,0.0,Daniel Svensson,Dortmund,Bundesliga,100
-Sweden,UEFA,32.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SWE,2026-10-05,Samuel Dahl,Benfica,DF,3.0,0.0,Samuel Dahl,Benfica,LigaPortugal,100
-Sweden,UEFA,32.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SWE,2026-10-05,Lucas Bergvall,Tottenham Hotspur,MF,18.0,0.0,Lucas Bergvall,Tottenham Hotspur,EPL,100
-Sweden,UEFA,32.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SWE,2026-10-05,Hugo Bolin,Borussia Mönchengladbach,MF,3.0,0.0,Hugo Bolin,Gladbach,Bundesliga,100
-Sweden,UEFA,32.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SWE,2026-10-05,Williot Swedberg,Celta Vigo,MF,3.0,0.0,Williot Swedberg,Celta Vigo,LaLiga,100
-Sweden,UEFA,32.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SWE,2026-10-05,Jesper Karlström,Udinese,MF,30.0,0.0,Jesper Karlström,Udinese,SerieA,100
-Sweden,UEFA,32.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SWE,2026-10-05,Sebastian Nanasi,Strasbourg,MF,14.0,3.0,Sebastian Nanasi,Strasbourg,Ligue1,100
-Sweden,UEFA,32.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SWE,2026-10-05,Hugo Larsson,Fulham,MF,15.0,0.0,Hugo Larsson,Fulham,EPL,100
-Sweden,UEFA,32.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SWE,2026-10-05,Viktor Gyökeres,Arsenal,FW,41.0,25.0,Viktor Gyökeres,Arsenal,EPL,100
+Sweden,UEFA,32.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SWE,2026-11-17,Jacob Widell Zetterström,Derby County,GK,5.0,0.0,Jacob Widell Zetterström,Derby County,Championship,100
+Sweden,UEFA,32.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SWE,2026-11-17,Viktor Johansson,Stoke City,GK,16.0,0.0,Viktor Johansson,Stoke City,Championship,100
+Sweden,UEFA,32.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SWE,2026-11-17,Noel Törnqvist,Monza,GK,0.0,0.0,Noel Törnqvist,Monza,SerieA,100
+Sweden,UEFA,32.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SWE,2026-11-17,Gustaf Lagerbielke,Braga,DF,15.0,2.0,Gustaf Lagerbielke,Braga,LigaPortugal,100
+Sweden,UEFA,32.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SWE,2026-11-17,Victor Lindelöf,Aston Villa,DF,84.0,3.0,Victor Lindelöf,Aston Villa,EPL,100
+Sweden,UEFA,32.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SWE,2026-11-17,Gabriel Gudmundsson,Leeds United,DF,32.0,0.0,Gabriel Gudmundsson,Leeds United,EPL,100
+Sweden,UEFA,32.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SWE,2026-11-17,Daniel Svensson,Borussia Dortmund,DF,19.0,0.0,Daniel Svensson,Dortmund,Bundesliga,100
+Sweden,UEFA,32.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SWE,2026-11-17,Hjalmar Ekdal,Burnley,DF,14.0,0.0,Hjalmar Ekdal,Burnley,Championship,100
+Sweden,UEFA,32.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SWE,2026-11-17,Genesis Antwi,Strasbourg,DF,0.0,0.0,Genesis Antwi,Strasbourg,Ligue1,100
+Sweden,UEFA,32.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SWE,2026-11-17,Elliot Stroud,Hull City,DF,6.0,0.0,Elliot Stroud,Hull City,EPL,100
+Sweden,UEFA,32.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SWE,2026-11-17,Jesper Karlström,Udinese,MF,30.0,0.0,Jesper Karlström,Udinese,SerieA,100
+Sweden,UEFA,32.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SWE,2026-11-17,Yasin Ayari,Brighton & Hove Albion,MF,27.0,6.0,Yasin Ayari,Brighton,EPL,100
+Sweden,UEFA,32.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SWE,2026-11-17,Sebastian Nanasi,Strasbourg,MF,14.0,3.0,Sebastian Nanasi,Strasbourg,Ligue1,100
+Sweden,UEFA,32.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SWE,2026-11-17,Hugo Larsson,Fulham,MF,15.0,0.0,Hugo Larsson,Fulham,EPL,100
+Sweden,UEFA,32.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SWE,2026-11-17,Dejan Kulusevski,Tottenham Hotspur,MF,45.0,5.0,Dejan Kulusevski,Tottenham Hotspur,EPL,100
+Sweden,UEFA,32.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SWE,2026-11-17,Alexander Isak,Liverpool,FW,63.0,19.0,Alexander Isak,Liverpool,EPL,100
+Sweden,UEFA,32.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SWE,2026-11-17,Anthony Elanga,Newcastle United,FW,34.0,8.0,Anthony Elanga,Newcastle United,EPL,100
+Sweden,UEFA,32.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SWE,2026-11-17,Viktor Gyökeres,Arsenal,FW,41.0,25.0,Viktor Gyökeres,Arsenal,EPL,100
+Sweden,UEFA,32.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SWE,2026-11-17,Alieu Njie,Fiorentina,FW,0.0,0.0,Alieu Njie,Fiorentina,SerieA,100
 Switzerland,UEFA,12.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SUI,2026-10-06,Gregor Kobel,Borussia Dortmund,GK,30.0,0.0,Gregor Kobel,Dortmund,Bundesliga,100
 Switzerland,UEFA,12.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SUI,2026-10-06,Yvon Mvogo,Lorient,GK,15.0,0.0,Yvon Mvogo,Lorient,Ligue1,100
 Switzerland,UEFA,12.0,https://api.fifa.com/api/v3/picture/flags-sq-2/SUI,2026-10-06,Marvin Keller,Young Boys,GK,1.0,0.0,Marvin Keller,Young Boys,SwissSuperLeague,100
@@ -986,6 +1015,7 @@ United States,CONCACAF,16.0,https://api.fifa.com/api/v3/picture/flags-sq-2/USA,2
 United States,CONCACAF,16.0,https://api.fifa.com/api/v3/picture/flags-sq-2/USA,2026-10-06,Zavier Gozo,Crystal Palace,MF,1.0,0.0,Zavier Gozo,Crystal Palace,EPL,100
 United States,CONCACAF,16.0,https://api.fifa.com/api/v3/picture/flags-sq-2/USA,2026-10-06,Sebastian Berhalter,Middlesbrough,MF,22.0,4.0,Sebastian Berhalter,Middlesbrough,Championship,100
 United States,CONCACAF,16.0,https://api.fifa.com/api/v3/picture/flags-sq-2/USA,2026-10-06,Malik Tillman,Bayer Leverkusen,MF,39.0,7.0,Malik Tillman,Leverkusen,Bundesliga,100
+United States,CONCACAF,16.0,https://api.fifa.com/api/v3/picture/flags-sq-2/USA,2026-10-06,Mathis Albert,Borussia Dortmund,MF,4.0,1.0,Mathis Albert,Dortmund,Bundesliga,100
 United States,CONCACAF,16.0,https://api.fifa.com/api/v3/picture/flags-sq-2/USA,2026-10-06,Cole Campbell,SV Elversberg,FW,1.0,0.0,Cole Campbell,SV Elversberg,Bundesliga,100
 Uruguay,CONMEBOL,20.0,https://api.fifa.com/api/v3/picture/flags-sq-2/URU,2026-10-06,Ignacio de Arruabarrena,Arouca,GK,0.0,0.0,Ignacio De Arruabarrena,Arouca,LigaPortugal,100
 Uruguay,CONMEBOL,20.0,https://api.fifa.com/api/v3/picture/flags-sq-2/URU,2026-10-06,José María Giménez,Deportivo A Coruña,DF,101.0,8.0,José María Giménez,Deportivo A Coruña,LaLiga,100
@@ -1005,25 +1035,33 @@ Uruguay,CONMEBOL,20.0,https://api.fifa.com/api/v3/picture/flags-sq-2/URU,2026-10
 Uruguay,CONMEBOL,20.0,https://api.fifa.com/api/v3/picture/flags-sq-2/URU,2026-10-06,Álvaro Rodríguez,Bournemouth,FW,0.0,0.0,Álvaro Rodríguez,Bournemouth,EPL,100
 Uzbekistan,AFC,54.0,https://api.fifa.com/api/v3/picture/flags-sq-2/UZB,2026-10-06,Abdukodir Khusanov,Manchester City,DF,32.0,0.0,Abdukodir Khusanov,Manchester City,EPL,100
 Uzbekistan,AFC,54.0,https://api.fifa.com/api/v3/picture/flags-sq-2/UZB,2026-10-06,Eldor Shomurodov,İstanbul Başakşehir,FW,96.0,47.0,Eldor Shomurodov,Başakşehir,SuperLig,100
-Venezuela,CONMEBOL,49.0,https://api.fifa.com/api/v3/picture/flags-sq-2/VEN,2026-10-06,Marco Libra,Bologna Primavera,MF,4.0,0.0,Marco Libra,Bologna,SerieA,100
-Wales,UEFA,31.0,https://api.fifa.com/api/v3/picture/flags-sq-2/WAL,2026-10-04,Danny Ward,Wrexham,GK,49.0,0.0,Danny Ward,Wrexham,Championship,100
-Wales,UEFA,31.0,https://api.fifa.com/api/v3/picture/flags-sq-2/WAL,2026-10-04,Connor Roberts,Burnley,DF,65.0,3.0,Connor Roberts,Burnley,Championship,100
-Wales,UEFA,31.0,https://api.fifa.com/api/v3/picture/flags-sq-2/WAL,2026-10-04,Neco Williams,Nottingham Forest,DF,61.0,5.0,Neco Williams,Nottingham Forest,EPL,100
-Wales,UEFA,31.0,https://api.fifa.com/api/v3/picture/flags-sq-2/WAL,2026-10-04,Chris Mepham,West Bromwich Albion,DF,57.0,0.0,Chris Mepham,West Bromwich Albion,Championship,100
-Wales,UEFA,31.0,https://api.fifa.com/api/v3/picture/flags-sq-2/WAL,2026-10-04,Ben Cabango,Swansea City,DF,19.0,0.0,Ben Cabango,Swansea City,Championship,100
-Wales,UEFA,31.0,https://api.fifa.com/api/v3/picture/flags-sq-2/WAL,2026-10-04,Rhys Norrington-Davies,Sheffield United,DF,17.0,1.0,Rhys Norrington-Davies,Sheffield United,Championship,100
-Wales,UEFA,31.0,https://api.fifa.com/api/v3/picture/flags-sq-2/WAL,2026-10-04,Jay Dasilva,Coventry City,DF,13.0,0.0,Jay Dasilva,Coventry City,EPL,100
-Wales,UEFA,31.0,https://api.fifa.com/api/v3/picture/flags-sq-2/WAL,2026-10-04,Ethan Ampadu,Leeds United,MF,67.0,0.0,Ethan Ampadu,Leeds United,EPL,100
-Wales,UEFA,31.0,https://api.fifa.com/api/v3/picture/flags-sq-2/WAL,2026-10-04,Jordan James,Wolverhampton Wanderers,MF,30.0,1.0,Jordan James,Wolves,Championship,100
-Wales,UEFA,31.0,https://api.fifa.com/api/v3/picture/flags-sq-2/WAL,2026-10-04,Josh Sheehan,Bolton Wanderers,MF,23.0,0.0,Josh Sheehan,Bolton Wanderers,Championship,100
-Wales,UEFA,31.0,https://api.fifa.com/api/v3/picture/flags-sq-2/WAL,2026-10-04,Joel Colwill,Cardiff City,MF,4.0,0.0,Joel Colwill,Cardiff City,Championship,100
-Wales,UEFA,31.0,https://api.fifa.com/api/v3/picture/flags-sq-2/WAL,2026-10-04,Cameron Congreve,Westerlo,MF,2.0,0.0,Cameron Congreve,Westerlo,BelgianProLeague,100
-Wales,UEFA,31.0,https://api.fifa.com/api/v3/picture/flags-sq-2/WAL,2026-10-04,Daniel James,Leeds United,FW,68.0,11.0,Daniel James,Leeds United,EPL,100
-Wales,UEFA,31.0,https://api.fifa.com/api/v3/picture/flags-sq-2/WAL,2026-10-04,Kieffer Moore,Wrexham,FW,57.0,15.0,Kieffer Moore,Wrexham,Championship,100
-Wales,UEFA,31.0,https://api.fifa.com/api/v3/picture/flags-sq-2/WAL,2026-10-04,Brennan Johnson,Everton,FW,49.0,7.0,Brennan Johnson,Everton,EPL,100
-Wales,UEFA,31.0,https://api.fifa.com/api/v3/picture/flags-sq-2/WAL,2026-10-04,Sorba Thomas,Hull City,FW,31.0,2.0,Sorba Thomas,Hull City,EPL,100
-Wales,UEFA,31.0,https://api.fifa.com/api/v3/picture/flags-sq-2/WAL,2026-10-04,Lewis Koumas,Liverpool,FW,16.0,1.0,Lewis Koumas,Liverpool,EPL,100
-Wales,UEFA,31.0,https://api.fifa.com/api/v3/picture/flags-sq-2/WAL,2026-10-04,Cian Ashford,Cardiff City,FW,0.0,0.0,Cian Ashford,Cardiff City,Championship,100
+Venezuela,CONMEBOL,49.0,https://api.fifa.com/api/v3/picture/flags-sq-2/VEN,2026-11-17,Jon Aramburu,Real Sociedad,DF,24.0,1.0,Jon Aramburu,Real Sociedad,LaLiga,100
+Venezuela,CONMEBOL,49.0,https://api.fifa.com/api/v3/picture/flags-sq-2/VEN,2026-11-17,Luis Balbo,Sturm Graz,DF,6.0,0.0,Luís Balbo,Sturm Graz,AustrianBundesliga,100
+Venezuela,CONMEBOL,49.0,https://api.fifa.com/api/v3/picture/flags-sq-2/VEN,2026-11-17,Cristian Cásseres,Toulouse,MF,50.0,1.0,Cristian Cásseres Jr.,Toulouse,Ligue1,85
+Venezuela,CONMEBOL,49.0,https://api.fifa.com/api/v3/picture/flags-sq-2/VEN,2026-11-17,Yangel Herrera,Real Sociedad,MF,47.0,3.0,Yangel Herrera,Real Sociedad,LaLiga,100
+Venezuela,CONMEBOL,49.0,https://api.fifa.com/api/v3/picture/flags-sq-2/VEN,2026-11-17,Marco Libra,Bologna Primavera,MF,4.0,0.0,Marco Libra,Bologna,SerieA,100
+Venezuela,CONMEBOL,49.0,https://api.fifa.com/api/v3/picture/flags-sq-2/VEN,2026-11-17,Jesús Ramírez,Çorum,FW,8.0,2.0,Jesús Ramírez,Çorum FK,SuperLig,100
+Wales,UEFA,31.0,https://api.fifa.com/api/v3/picture/flags-sq-2/WAL,2026-11-17,Danny Ward,Wrexham,GK,49.0,0.0,Danny Ward,Wrexham,Championship,100
+Wales,UEFA,31.0,https://api.fifa.com/api/v3/picture/flags-sq-2/WAL,2026-11-17,Ben Davies,Tottenham Hotspur,DF,104.0,3.0,Ben Davies,Tottenham Hotspur,EPL,100
+Wales,UEFA,31.0,https://api.fifa.com/api/v3/picture/flags-sq-2/WAL,2026-11-17,Connor Roberts,Burnley,DF,65.0,3.0,Connor Roberts,Burnley,Championship,100
+Wales,UEFA,31.0,https://api.fifa.com/api/v3/picture/flags-sq-2/WAL,2026-11-17,Joe Rodon,Leeds United,DF,62.0,2.0,Joe Rodon,Leeds United,EPL,100
+Wales,UEFA,31.0,https://api.fifa.com/api/v3/picture/flags-sq-2/WAL,2026-11-17,Neco Williams,Nottingham Forest,DF,61.0,5.0,Neco Williams,Nottingham Forest,EPL,100
+Wales,UEFA,31.0,https://api.fifa.com/api/v3/picture/flags-sq-2/WAL,2026-11-17,Chris Mepham,West Bromwich Albion,DF,57.0,0.0,Chris Mepham,West Bromwich Albion,Championship,100
+Wales,UEFA,31.0,https://api.fifa.com/api/v3/picture/flags-sq-2/WAL,2026-11-17,Ben Cabango,Swansea City,DF,19.0,0.0,Ben Cabango,Swansea City,Championship,100
+Wales,UEFA,31.0,https://api.fifa.com/api/v3/picture/flags-sq-2/WAL,2026-11-17,Jay Dasilva,Coventry City,DF,13.0,0.0,Jay Dasilva,Coventry City,EPL,100
+Wales,UEFA,31.0,https://api.fifa.com/api/v3/picture/flags-sq-2/WAL,2026-11-17,Ethan Ampadu,Leeds United,MF,67.0,0.0,Ethan Ampadu,Leeds United,EPL,100
+Wales,UEFA,31.0,https://api.fifa.com/api/v3/picture/flags-sq-2/WAL,2026-11-17,Josh Sheehan,Bolton Wanderers,MF,23.0,0.0,Josh Sheehan,Bolton Wanderers,Championship,100
+Wales,UEFA,31.0,https://api.fifa.com/api/v3/picture/flags-sq-2/WAL,2026-11-17,Rubin Colwill,Cardiff City,MF,10.0,1.0,Rubin Colwill,Cardiff City,Championship,100
+Wales,UEFA,31.0,https://api.fifa.com/api/v3/picture/flags-sq-2/WAL,2026-11-17,Joel Colwill,Cardiff City,MF,4.0,0.0,Joel Colwill,Cardiff City,Championship,100
+Wales,UEFA,31.0,https://api.fifa.com/api/v3/picture/flags-sq-2/WAL,2026-11-17,Cian Ashford,Cardiff City,MF,0.0,0.0,Cian Ashford,Cardiff City,Championship,100
+Wales,UEFA,31.0,https://api.fifa.com/api/v3/picture/flags-sq-2/WAL,2026-11-17,Harry Wilson,Leeds United,FW,69.0,17.0,Harry Wilson,Leeds United,EPL,100
+Wales,UEFA,31.0,https://api.fifa.com/api/v3/picture/flags-sq-2/WAL,2026-11-17,Daniel James,Leeds United,FW,68.0,11.0,Daniel James,Leeds United,EPL,100
+Wales,UEFA,31.0,https://api.fifa.com/api/v3/picture/flags-sq-2/WAL,2026-11-17,Kieffer Moore,Wrexham,FW,57.0,15.0,Kieffer Moore,Wrexham,Championship,100
+Wales,UEFA,31.0,https://api.fifa.com/api/v3/picture/flags-sq-2/WAL,2026-11-17,Brennan Johnson,Everton,FW,49.0,7.0,Brennan Johnson,Everton,EPL,100
+Wales,UEFA,31.0,https://api.fifa.com/api/v3/picture/flags-sq-2/WAL,2026-11-17,David Brooks,Bournemouth,FW,46.0,7.0,David Brooks,Bournemouth,EPL,100
+Wales,UEFA,31.0,https://api.fifa.com/api/v3/picture/flags-sq-2/WAL,2026-11-17,Sorba Thomas,Hull City,FW,31.0,2.0,Sorba Thomas,Hull City,EPL,100
+Wales,UEFA,31.0,https://api.fifa.com/api/v3/picture/flags-sq-2/WAL,2026-11-17,Lewis Koumas,Liverpool,FW,16.0,1.0,Lewis Koumas,Liverpool,EPL,100
+Zambia,CAF,85.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ZAM,2026-09-29,Joseph Liteta,Cagliari,MF,1.0,0.0,Joseph Liteta,Cagliari,SerieA,100
 Zambia,CAF,85.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ZAM,2026-09-29,Patson Daka,Hamburger SV,FW,46.0,21.0,Patson Daka,Hamburger SV,Bundesliga,100
 Zambia,CAF,85.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ZAM,2026-09-29,Kingstone Mutandwa,Servette,FW,2.0,0.0,Kingstone Mutandwa,Servette,SwissSuperLeague,100
 Zimbabwe,CAF,125.0,https://api.fifa.com/api/v3/picture/flags-sq-2/ZIM,2026-09-28,Munashe Garananga,Lyngby,DF,22.0,1.0,Munashe Garananga,Lyngby,DanishSuperliga,100

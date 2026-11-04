@@ -28,7 +28,7 @@ Galatasaray,Deniz Gül,1406300,attackers,"ST,LW",Centre-Forward,FW,22,2004-07-02
 Galatasaray,Armando Güner,1901084,attackers,"RW,CAM",Right Winger,FW,18,2008-01-07,27.0,ARG,False,,2026-11-04
 Galatasaray,Rafael Leão,848844,attackers,"ST,LW",Centre-Forward,FW,27,1999-06-10,27.0,POR,False,,2026-11-04
 Galatasaray,Victor Osimhen,687681,attackers,ST,Centre-Forward,FW,27,1998-12-29,45.0,NGA,False,,2026-11-04
-Galatasaray,Barış Alper Yılmaz,890232,attackers,"LW,ST,RW,LM,RB",Left Winger,FW,26,2000-05-23,53.0,TUR,False,,2026-11-04
+Galatasaray,Barış Alper Yılmaz,890232,attackers,"LW,ST,RW,RB",Left Winger,FW,26,2000-05-23,53.0,TUR,False,,2026-11-04
 Galatasaray,Berat Luş,1682656,attackers,LW,Left Winger,FW,19,2007-04-20,73.0,TUR,False,,2026-11-04
 Amed Sportif,Veysel Sapan,632312,keepers,GK,Goalkeeper,GK,30,1996-01-11,,TUR,False,,2026-11-04
 Amed Sportif,Mustafa Burak Bozan,938416,keepers,GK,Goalkeeper,GK,26,2000-08-23,27.0,TUR,False,,2026-11-04
@@ -80,11 +80,11 @@ Trabzonspor,Ozan Tufan,358936,midfielders,"CDM,RB,CAM,CM,CB",Defensive Midfield,
 Trabzonspor,Ruslan Malinovsky,459658,midfielders,"CM,CDM,CAM",Central Midfield,MF,33,1993-05-04,17.0,UKR,True,Late November 2026,2026-11-04
 Trabzonspor,Tim Jabol-Folcarelli,1244808,midfielders,"CDM,CM",Defensive Midfield,MF,26,1999-12-06,26.0,FRA,False,,2026-11-04
 Trabzonspor,Melih Kabasakal,718867,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,30,1996-02-18,57.0,TUR,False,,2026-11-04
-Trabzonspor,Aral Şimşir,1126769,midfielders,"CAM,LW,ST,LM",Attacking Midfield,MF,24,2002-06-19,58.0,TUR,True,Mid November 2026,2026-11-04
+Trabzonspor,Aral Şimşir,1126769,midfielders,"CAM,LW,ST",Attacking Midfield,MF,24,2002-06-19,58.0,TUR,True,Mid November 2026,2026-11-04
 Trabzonspor,Yiğithan Çubukcu,1747246,midfielders,,Central Midfield,MF,18,2008-09-09,82.0,TUR,False,,2026-11-04
 Trabzonspor,Oğuzhan Ertem,1840956,midfielders,CM,Central Midfield,MF,18,2008-08-01,90.0,TUR,False,,2026-11-04
 Trabzonspor,Umut Beşli,1747245,attackers,,Centre-Forward,FW,18,2008-03-18,,TUR,False,,2026-11-04
-Trabzonspor,Franculino,1374500,attackers,"ST,RW",Centre-Forward,FW,22,2004-06-28,9.0,GNB,True,Mid November 2026,2026-11-04
+Trabzonspor,Franculino,1374500,attackers,"ST,CAM,RW",Centre-Forward,FW,22,2004-06-28,9.0,GNB,True,Mid November 2026,2026-11-04
 Trabzonspor,Mohamed Salah,292462,attackers,"RW,ST,CAM",Right Winger,FW,34,1992-06-15,10.0,EGY,False,,2026-11-04
 Trabzonspor,Mehmet Umut Nayir,411605,attackers,ST,Centre-Forward,FW,33,1993-06-28,14.0,TUR,False,,2026-11-04
 Trabzonspor,Paul Onuachu,412357,attackers,ST,Centre-Forward,FW,32,1994-05-28,30.0,NGA,False,,2026-11-04
@@ -107,7 +107,7 @@ Beşiktaş,Amir Murillo,643635,defenders,"RB,RWB,CB",Right-Back,DF,30,1996-02-11
 Beşiktaş,Azem Yortac,2210579,defenders,,Centre-Back,DF,18,2008-03-01,63.0,TUR,False,,2026-11-04
 Beşiktaş,Wilfred Ndidi,533228,midfielders,"CDM,CM,CAM,CB",Defensive Midfield,MF,29,1996-12-16,4.0,NGA,False,,2026-11-04
 Beşiktaş,Salih Özcan,738064,midfielders,"CDM,CM",Defensive Midfield,MF,28,1998-01-11,6.0,TUR,False,,2026-11-04
-Beşiktaş,Kartal Yılmaz,1001348,midfielders,CDM,Defensive Midfield,MF,25,2000-11-04,8.0,TUR,False,,2026-11-04
+Beşiktaş,Kartal Yılmaz,1001348,midfielders,CDM,Defensive Midfield,MF,26,2000-11-04,8.0,TUR,False,,2026-11-04
 Beşiktaş,Orkun Kökcü,935409,midfielders,"CAM,CDM,CM",Attacking Midfield,MF,25,2000-12-29,10.0,TUR,True,Mid November 2026,2026-11-04
 Beşiktaş,Junior Olaïtan,1264368,midfielders,"CAM,LW",Attacking Midfield,MF,24,2002-05-09,15.0,BEN,False,,2026-11-04
 Beşiktaş,Ernest Poku,1251666,midfielders,"CAM,LW,RWB,LWB",Attacking Midfield,MF,22,2004-01-28,17.0,NED,False,,2026-11-04
@@ -347,12 +347,12 @@ Alanyaspor,Enes Keskin,1302409,midfielders,"LWB,LM",Left-Back,MF,25,2001-06-04,8
 Alanyaspor,Ianis Hagi,645107,midfielders,"CAM,LW",Attacking Midfield,MF,28,1998-10-22,10.0,ROU,False,,2026-11-04
 Alanyaspor,Ruan,1402068,midfielders,"LWB,LM,LW",Left-Back,MF,21,2005-05-03,11.0,BRA,False,,2026-11-04
 Alanyaspor,Paolo Fernandes,760745,midfielders,"RM,CAM,LM,RW,LW",Right Midfield,MF,28,1998-08-09,22.0,ESP,True,Doubtful,2026-11-04
-Alanyaspor,İzzet Çelik,1388695,midfielders,CAM,Attacking Midfield,MF,22,2004-06-20,26.0,TUR,False,,2026-11-04
+Alanyaspor,İzzet Çelik,1388695,midfielders,CDM,Defensive Midfield,MF,22,2004-06-20,26.0,TUR,False,,2026-11-04
 Alanyaspor,Arouna Soro,2132116,midfielders,CB,Centre-Back,MF,19,2007-07-12,32.0,CIV,False,,2026-11-04
 Alanyaspor,Gaïus Makouta,773062,midfielders,"CDM,CM",Defensive Midfield,MF,29,1997-07-25,42.0,CGO,False,,2026-11-04
 Alanyaspor,Baran Gezek,1398327,midfielders,"CM,CDM,CAM,CB",Central Midfield,MF,21,2005-08-26,55.0,TUR,False,,2026-11-04
 Alanyaspor,Maestro,1525007,midfielders,"CM,CDM",Central Midfield,MF,23,2003-08-04,58.0,ANG,False,,2026-11-04
-Alanyaspor,Yusuf Özdemir,1213283,midfielders,LM,Left Midfield,MF,25,2001-01-10,88.0,TUR,False,,2026-11-04
+Alanyaspor,Yusuf Özdemir,1213283,midfielders,LB,Left-Back,MF,25,2001-01-10,88.0,TUR,False,,2026-11-04
 Alanyaspor,Florent Hadërgjonaj,492132,midfielders,"RWB,RM",Right-Back,MF,32,1994-07-31,94.0,KVX,False,,2026-11-04
 Alanyaspor,İbrahim Kaya,1300869,attackers,"LW,RW,RWB",Left Winger,FW,25,2001-03-09,7.0,TUR,False,,2026-11-04
 Alanyaspor,Omar Ben Ali,1677029,attackers,ST,Centre-Forward,FW,21,2005-04-22,9.0,TUN,False,,2026-11-04
@@ -374,7 +374,7 @@ Rizespor,Taha Şahin,1339581,defenders,"RB,RWB",Right-Back,DF,26,2000-10-22,37.0
 Rizespor,Mithat Pala,1183742,defenders,"RB,LB,LWB",Right-Back,DF,26,2000-08-15,54.0,TUR,False,,2026-11-04
 Rizespor,Modibo Sagnan,884272,defenders,CB,Centre-Back,DF,27,1999-04-14,93.0,MLI,False,,2026-11-04
 Rizespor,Habil Özbakir,1647537,defenders,CDM,Defensive Midfield,DF,21,2005-02-06,95.0,TUR,False,,2026-11-04
-Rizespor,Moussa Diakité,1415502,midfielders,"CM,CDM",Central Midfield,MF,22,2003-11-04,6.0,MLI,False,,2026-11-04
+Rizespor,Moussa Diakité,1415502,midfielders,"CM,CDM",Central Midfield,MF,23,2003-11-04,6.0,MLI,False,,2026-11-04
 Rizespor,Dal Varešanović,1078853,midfielders,CAM,Attacking Midfield,MF,25,2001-05-23,8.0,BIH,False,,2026-11-04
 Rizespor,Ibrahim Olawoyin,1042086,midfielders,"CAM,CM,CDM,RW",Attacking Midfield,MF,28,1997-12-01,10.0,NGA,False,,2026-11-04
 Rizespor,Taylan Antalyalı,449999,midfielders,"CDM,CM",Defensive Midfield,MF,31,1995-01-08,14.0,TUR,False,,2026-11-04
@@ -451,7 +451,7 @@ Konyaspor,Mostafa Mohamed,817500,attackers,ST,Centre-Forward,FW,28,1997-11-28,42
 Konyaspor,Emir Bars,1527137,attackers,"RW,LW",Right Winger,FW,21,2005-04-11,45.0,TUR,False,,2026-11-04
 Konyaspor,Jean-Luc Dompé,613260,attackers,LW,Left Winger,FW,31,1995-08-12,91.0,FRA,False,,2026-11-04
 Konyaspor,Enis Destan,1197548,attackers,ST,Centre-Forward,FW,24,2002-06-15,94.0,TUR,False,,2026-11-04
-Gaziantep FK,Kacper Tobiasz,1194358,keepers,GK,Goalkeeper,GK,23,2002-11-04,25.0,POL,True,Mid November 2026,2026-11-04
+Gaziantep FK,Kacper Tobiasz,1194358,keepers,GK,Goalkeeper,GK,24,2002-11-04,25.0,POL,True,Mid November 2026,2026-11-04
 Gaziantep FK,Ataberk Dadakdeniz,751562,keepers,GK,Goalkeeper,GK,27,1999-08-05,35.0,TUR,False,,2026-11-04
 Gaziantep FK,Cemilhan Aslan,1927471,keepers,,Goalkeeper,GK,18,2008-05-07,81.0,TUR,False,,2026-11-04
 Gaziantep FK,İbrahim Alkış,1766201,keepers,,Goalkeeper,GK,20,2006-01-01,95.0,TUR,False,,2026-11-04
@@ -472,13 +472,13 @@ Gaziantep FK,Drissa Camara,967759,midfielders,"CAM,CM,CDM",Attacking Midfield,MF
 Gaziantep FK,Ulrich Meleke,951084,midfielders,"CB,CM,CDM",Centre-Back,MF,27,1999-05-24,6.0,CIV,True,Mid November 2026,2026-11-04
 Gaziantep FK,Juninho Bacuna,614574,midfielders,"CDM,CM,ST,CAM,LM,RW",Defensive Midfield,MF,29,1997-08-07,7.0,CUW,False,,2026-11-04
 Gaziantep FK,Victor Gidado,1637892,midfielders,"CM,CDM,CAM",Central Midfield,MF,22,2004-07-14,8.0,NGA,False,,2026-11-04
-Gaziantep FK,Kacper Kozłowski,1051411,midfielders,"CM,RW,CAM,LW,RM,ST",Central Midfield,MF,23,2003-10-16,10.0,POL,False,,2026-11-04
 Gaziantep FK,Mirza Cihan,891482,midfielders,CM,Central Midfield,MF,26,2000-10-26,11.0,TUR,False,,2026-11-04
 Gaziantep FK,Deian Sorescu,783806,midfielders,"RW,RWB,RM,RB",Right Winger,MF,29,1997-08-29,18.0,ROU,False,,2026-11-04
 Gaziantep FK,Alexandru Maxim,298923,midfielders,"CAM,ST,CM,CDM",Attacking Midfield,MF,36,1990-07-08,44.0,ROU,False,,2026-11-04
 Gaziantep FK,Ogün Özcicek,1289513,midfielders,"CM,CDM",Central Midfield,MF,27,1999-01-24,61.0,TUR,True,Mid November 2026,2026-11-04
 Gaziantep FK,Florin Ștefan,861520,midfielders,"LM,LWB",Left Midfield,MF,30,1996-05-09,96.0,ROU,False,,2026-11-04
 Gaziantep FK,Trivante Stewart,1420378,attackers,ST,Centre-Forward,FW,26,2000-03-22,9.0,JAM,False,,2026-11-04
+Gaziantep FK,Kacper Kozłowski,1051411,attackers,"RW,CM,CAM,LW,RM,ST",Right Winger,FW,23,2003-10-16,10.0,POL,False,,2026-11-04
 Gaziantep FK,Ali Mevran Ablak,1665501,attackers,RW,Right Winger,FW,23,2003-07-27,16.0,TUR,False,,2026-11-04
 Gaziantep FK,Karamba Gassama,1717397,attackers,"CM,RW",Central Midfield,FW,21,2005-01-02,17.0,GAM,False,,2026-11-04
 Gaziantep FK,Serdar Dursun,317267,attackers,ST,Centre-Forward,FW,35,1991-10-19,19.0,TUR,True,Doubtful,2026-11-04

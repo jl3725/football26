@@ -15,7 +15,7 @@ Middlesbrough,Sebastian Berhalter,1136096,midfielders,"CDM,CM",Defensive Midfiel
 Middlesbrough,Riley McGree,733486,midfielders,"CAM,LM,LW,CDM,RW",Attacking Midfield,MF,28,1998-11-02,8.0,AUS,False,,2026-11-04
 Middlesbrough,Aidan Morris,1136097,midfielders,"CDM,CM",Defensive Midfield,MF,24,2001-11-16,10.0,USA,False,,2026-11-04
 Middlesbrough,Myles Peart-Harris,1113813,midfielders,"LW,CAM,CDM",Left Winger,MF,24,2002-09-18,14.0,ENG,False,,2026-11-04
-Middlesbrough,Max Arfsten,1348329,midfielders,"LWB,LM,RM,LB",Left-Back,MF,25,2001-04-19,17.0,USA,False,,2026-11-04
+Middlesbrough,Max Arfsten,1348329,midfielders,"LM,LWB,RM,LB",Left Midfield,MF,25,2001-04-19,17.0,USA,False,,2026-11-04
 Middlesbrough,Connor Barron,1068643,midfielders,"CDM,CM",Defensive Midfield,MF,24,2002-08-29,18.0,SCO,False,,2026-11-04
 Middlesbrough,Leo Castledine,1226849,midfielders,"CM,LW",Central Midfield,MF,21,2005-08-20,19.0,ENG,False,,2026-11-04
 Middlesbrough,Rokas Pukštas,1377897,midfielders,"CAM,CDM,CM",Attacking Midfield,MF,22,2004-08-25,21.0,USA,True,Mid November 2026,2026-11-04
@@ -57,7 +57,7 @@ Stoke City,Frank Fielding,95323,keepers,GK,Goalkeeper,GK,38,1988-04-04,34.0,ENG,
 Stoke City,Ben Johnson,770267,defenders,"RM,LB,RB",Right Midfield,DF,26,2000-01-24,2.0,ENG,False,,2026-11-04
 Stoke City,Aaron Cresswell,155782,defenders,"LB,CB",Left-Back,DF,36,1989-12-15,3.0,ENG,True,Doubtful,2026-11-04
 Stoke City,Luke Graham,1410414,defenders,CB,Centre-Back,DF,22,2004-02-11,5.0,SCO,False,,2026-11-04
-Stoke City,Ben Wilmot,798603,defenders,"CB,RB",Centre-Back,DF,26,1999-11-04,16.0,ENG,False,,2026-11-04
+Stoke City,Ben Wilmot,798603,defenders,"CB,RB",Centre-Back,DF,27,1999-11-04,16.0,ENG,False,,2026-11-04
 Stoke City,Eric Bocat,1123949,defenders,"LB,LM,LWB",Left-Back,DF,27,1999-07-16,17.0,FRA,True,Mid November 2026,2026-11-04
 Stoke City,Bosun Lawal,1276045,defenders,"CB,RB,LB,CDM",Centre-Back,DF,23,2003-05-30,18.0,IRL,False,,2026-11-04
 Stoke City,Luca Bombino,1617160,defenders,"LB,RB,LM",Left-Back,DF,20,2006-07-10,21.0,USA,False,,2026-11-04
@@ -114,7 +114,7 @@ West Bromwich Albion,Conor Townsend,295069,defenders,LB,Left-Back,DF,33,1993-03-
 West Bromwich Albion,Nolan Galves,1473605,defenders,"RWB,RB",Right-Back,DF,23,2003-07-23,25.0,FRA,True,Out for season,2026-11-04
 West Bromwich Albion,Felix Myhre,632885,midfielders,"CM,CAM,ST",Central Midfield,MF,27,1999-03-04,7.0,NOR,False,,2026-11-04
 West Bromwich Albion,Jayson Molumby,789574,midfielders,"CM,CDM,RM,CAM",Central Midfield,MF,27,1999-08-06,8.0,IRL,False,,2026-11-04
-West Bromwich Albion,Jimmy-Jay Morgan,1296772,midfielders,"CAM,ST",Attacking Midfield,MF,20,2006-01-21,11.0,ENG,True,Doubtful,2026-11-04
+West Bromwich Albion,Jimmy-Jay Morgan,1296772,midfielders,"CAM,ST",Attacking Midfield,MF,20,2006-01-21,11.0,ENG,False,,2026-11-04
 West Bromwich Albion,Toby Collyer,1421810,midfielders,CDM,Defensive Midfield,MF,22,2004-01-03,15.0,ENG,True,Early December 2026,2026-11-04
 West Bromwich Albion,Ousmane Diakité,951953,midfielders,"CM,CDM",Central Midfield,MF,26,2000-07-25,17.0,MLI,False,,2026-11-04
 West Bromwich Albion,Rabby Nzingoula,1609064,midfielders,"CM,RM,CDM,CAM",Central Midfield,MF,20,2005-11-25,20.0,FRA,False,,2026-11-04
@@ -196,12 +196,12 @@ West Ham United,Joshua Ajala,1529880,midfielders,"CAM,ST,LW,LM",Attacking Midfie
 West Ham United,Joël Piroe,792540,attackers,"ST,CAM",Centre-Forward,FW,27,1999-08-02,9.0,SUR,False,,2026-11-04
 West Ham United,Manor Solomon,822237,attackers,"LW,LM,RW,CAM",Left Winger,FW,27,1999-07-24,10.0,ISR,False,,2026-11-04
 West Ham United,Valentín Castellanos,823658,attackers,ST,Centre-Forward,FW,28,1998-10-03,11.0,ARG,False,,2026-11-04
-West Ham United,Pablo,1227326,attackers,"ST,CAM,LW",Centre-Forward,FW,22,2004-01-02,19.0,BRA,False,,2026-11-04
+West Ham United,Pablo,1227326,attackers,"ST,CAM",Centre-Forward,FW,22,2004-01-02,19.0,BRA,False,,2026-11-04
 West Ham United,Maxwel Cornet,426880,attackers,RW,Right Winger,FW,30,1996-09-27,22.0,CIV,False,,2026-11-04
 West Ham United,Edvin Austbø,1367620,attackers,"LW,LM",Left Winger,FW,21,2005-05-01,35.0,NOR,False,,2026-11-04
 Sheffield United,Michael Cooper,876161,keepers,GK,Goalkeeper,GK,27,1999-10-08,1.0,ENG,False,,2026-11-04
 Sheffield United,Adam Davies,401932,keepers,GK,Goalkeeper,GK,34,1992-07-17,17.0,WAL,False,,2026-11-04
-Sheffield United,Matt Doherty,239920,defenders,"CB,RB",Centre-Back,DF,34,1992-01-16,2.0,IRL,True,Mid November 2026,2026-11-04
+Sheffield United,Matt Doherty,239920,defenders,"CB,RB",Centre-Back,DF,34,1992-01-16,2.0,IRL,False,,2026-11-04
 Sheffield United,Sam McCallum,962002,defenders,"LB,LM",Left-Back,DF,26,2000-09-02,3.0,ENG,False,,2026-11-04
 Sheffield United,Japhet Tanganga,873018,defenders,"CB,RB",Centre-Back,DF,27,1999-03-31,5.0,ENG,False,,2026-11-04
 Sheffield United,Hamza Choudhury,728123,defenders,"RB,CDM,CM,RM",Right-Back,DF,29,1997-10-01,8.0,BAN,False,,2026-11-04
@@ -214,8 +214,8 @@ Sheffield United,Jamal Baptiste,1111613,defenders,"CB,LB,RB",Centre-Back,DF,22,2
 Sheffield United,Femi Seriki,997560,defenders,RB,Right-Back,DF,24,2002-04-28,38.0,ENG,False,,2026-11-04
 Sheffield United,Oliver Arblaster,1344572,midfielders,"CDM,CM",Defensive Midfield,MF,22,2004-01-08,4.0,ENG,False,,2026-11-04
 Sheffield United,Joe Rothwell,613182,midfielders,"CM,CDM",Central Midfield,MF,31,1995-01-11,7.0,ENG,False,,2026-11-04
-Sheffield United,Romelle Donovan,1433230,midfielders,"RW,RM,LM",Right Winger,MF,19,2006-11-30,11.0,ENG,True,About 1-2 weeks,2026-11-04
-Sheffield United,Tahith Chong,751066,midfielders,"RW,RM",Right Winger,MF,26,1999-12-04,19.0,CUW,True,About 1-2 weeks,2026-11-04
+Sheffield United,Romelle Donovan,1433230,midfielders,"RW,RM,LM",Right Winger,MF,19,2006-11-30,11.0,ENG,False,,2026-11-04
+Sheffield United,Tahith Chong,751066,midfielders,"RW,RM",Right Winger,MF,26,1999-12-04,19.0,CUW,False,,2026-11-04
 Sheffield United,Kalvin Phillips,609755,midfielders,"CM,CDM",Central Midfield,MF,30,1995-12-02,27.0,ENG,False,,2026-11-04
 Sheffield United,Sydie Peck,1420818,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,22,2004-09-13,42.0,ENG,False,,2026-11-04
 Sheffield United,Jaïro Riedewald,496563,midfielders,"CM,CDM",Central Midfield,MF,30,1996-09-09,44.0,NED,False,,2026-11-04
@@ -244,7 +244,7 @@ Portsmouth,Rocco Shein,1177437,midfielders,"CM,CDM,LM,CAM",Central Midfield,MF,2
 Portsmouth,Odin Bailey,932610,midfielders,"CDM,CM,CAM,LM",Defensive Midfield,MF,26,1999-12-08,27.0,ENG,False,,2026-11-04
 Portsmouth,Iyad Mohamed,1280355,midfielders,"CM,CDM",Central Midfield,MF,25,2001-03-05,37.0,COM,False,,2026-11-04
 Portsmouth,Ebou Adams,538329,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,30,1996-01-15,38.0,GAM,False,,2026-11-04
-Portsmouth,Colby Bishop,517663,attackers,ST,Centre-Forward,FW,29,1996-11-04,9.0,ENG,True,Early December 2026,2026-11-04
+Portsmouth,Colby Bishop,517663,attackers,ST,Centre-Forward,FW,30,1996-11-04,9.0,ENG,True,Early December 2026,2026-11-04
 Portsmouth,Adrian Segečić,1265460,attackers,"RW,CAM,LW",Right Winger,FW,22,2004-06-01,10.0,CRO,False,,2026-11-04
 Portsmouth,Abu Kamara,1136450,attackers,RW,Right Winger,FW,23,2003-07-21,11.0,ENG,False,,2026-11-04
 Portsmouth,Franco Umeh-Chibueze,1437781,attackers,RW,Right Winger,FW,21,2005-01-26,15.0,IRL,False,,2026-11-04
@@ -334,7 +334,7 @@ Millwall,Massimo Luongo,305219,midfielders,CDM,Defensive Midfield,MF,34,1992-09-
 Millwall,Casper De Norre,688991,midfielders,"CDM,CM",Defensive Midfield,MF,29,1997-02-07,24.0,BEL,True,Doubtful,2026-11-04
 Millwall,Luke Cundle,968944,midfielders,CAM,Attacking Midfield,MF,24,2002-04-26,25.0,ENG,False,,2026-11-04
 Millwall,Derek Mazou-Sacko,1285497,midfielders,CDM,Defensive Midfield,MF,22,2004-10-06,49.0,FRA,False,,2026-11-04
-Millwall,Taïryk Arconte,1234653,attackers,"ST,CAM,RW",Centre-Forward,FW,22,2003-11-12,7.0,GLP,True,Mid November 2026,2026-11-04
+Millwall,Taïryk Arconte,1234653,attackers,"ST,CAM,RW",Centre-Forward,FW,22,2003-11-12,7.0,GLP,False,,2026-11-04
 Millwall,Mihailo Ivanović,1439831,attackers,ST,Centre-Forward,FW,21,2004-11-29,9.0,SRB,False,,2026-11-04
 Millwall,Romain Esse,1428401,attackers,"RW,LW",Right Winger,FW,21,2005-05-13,11.0,ENG,False,,2026-11-04
 Millwall,Lyndon Dykes,768635,attackers,"ST,CAM",Centre-Forward,FW,31,1995-10-07,13.0,SCO,False,,2026-11-04
@@ -345,7 +345,7 @@ Millwall,Yanis Issoufou,1479744,attackers,LW,Left Winger,FW,20,2006-10-28,35.0,F
 Millwall,Regan Monty,2197182,attackers,,Centre-Forward,FW,15,2010-11-10,57.0,ENG,False,,2026-11-04
 Blackburn Rovers,Aynsley Pears,807752,keepers,GK,Goalkeeper,GK,28,1998-04-23,1.0,ENG,False,,2026-11-04
 Blackburn Rovers,Balázs Tóth,861001,keepers,GK,Goalkeeper,GK,29,1997-09-04,22.0,HUN,False,,2026-11-04
-Blackburn Rovers,Harry Pickering,827247,defenders,"LWB,LB",Left-Back,DF,27,1998-12-29,3.0,ENG,True,Doubtful,2026-11-04
+Blackburn Rovers,Harry Pickering,827247,defenders,"LWB,LB",Left-Back,DF,27,1998-12-29,3.0,ENG,False,,2026-11-04
 Blackburn Rovers,Tom Atcheson,1443861,defenders,CB,Centre-Back,DF,20,2006-09-22,6.0,NIR,False,,2026-11-04
 Blackburn Rovers,Sean McLoughlin,864266,defenders,CB,Centre-Back,DF,29,1996-11-13,15.0,IRL,False,,2026-11-04
 Blackburn Rovers,Scott Wharton,765563,defenders,CB,Centre-Back,DF,29,1997-10-03,16.0,ENG,False,,2026-11-04
@@ -384,7 +384,7 @@ Bristol City,Brian De Keersmaecker,1039566,midfielders,CDM,Defensive Midfield,MF
 Bristol City,Joe Williams,605260,midfielders,CDM,Defensive Midfield,MF,29,1996-12-08,8.0,ENG,False,,2026-11-04
 Bristol City,Scott Twine,746406,midfielders,"CAM,LW,CM,RW,ST",Attacking Midfield,MF,27,1999-07-14,10.0,ENG,False,,2026-11-04
 Bristol City,Jason Knight,1051415,midfielders,"CDM,CM,RWB,CB,RB,CAM",Defensive Midfield,MF,25,2001-02-13,12.0,IRL,False,,2026-11-04
-Bristol City,Tomi Horvat,978170,midfielders,"CAM,RW,CDM,CM,RM",Attacking Midfield,MF,27,1999-03-24,14.0,SVN,False,,2026-11-04
+Bristol City,Tomi Horvat,978170,midfielders,"CAM,RW,CM,CDM,RM",Attacking Midfield,MF,27,1999-03-24,14.0,SVN,False,,2026-11-04
 Bristol City,Sam Greenwood,1049805,midfielders,"LW,CAM,CDM",Left Winger,MF,24,2002-01-26,20.0,ENG,False,,2026-11-04
 Bristol City,Gibson Yah,1218557,midfielders,"CDM,CM",Defensive Midfield,MF,23,2003-09-27,27.0,NED,False,,2026-11-04
 Bristol City,Yu Hirakawa,1319774,attackers,"RW,LW,CAM",Right Winger,FW,25,2001-01-03,7.0,JPN,False,,2026-11-04
@@ -396,7 +396,7 @@ Bristol City,Elijah Adebayo,873237,attackers,ST,Centre-Forward,FW,28,1998-01-07,
 Bolton Wanderers,Jack Bonham,299148,keepers,GK,Goalkeeper,GK,33,1993-09-14,1.0,IRL,False,,2026-11-04
 Bolton Wanderers,David Harrington,967230,keepers,GK,Goalkeeper,GK,26,2000-07-01,23.0,WAL,False,,2026-11-04
 Bolton Wanderers,Gavin Bazunu,939390,keepers,GK,Goalkeeper,GK,24,2002-02-20,31.0,IRL,False,,2026-11-04
-Bolton Wanderers,Chris Forino,1127293,defenders,CB,Centre-Back,DF,26,2000-04-26,3.0,STL,True,About 1-2 weeks,2026-11-04
+Bolton Wanderers,Chris Forino,1127293,defenders,CB,Centre-Back,DF,26,2000-04-26,3.0,STL,False,,2026-11-04
 Bolton Wanderers,Lewis Brunt,1089592,defenders,"CB,RB",Centre-Back,DF,25,2000-11-06,5.0,ENG,False,,2026-11-04
 Bolton Wanderers,Ben Davies,424609,defenders,CB,Centre-Back,DF,31,1995-08-11,6.0,ENG,False,,2026-11-04
 Bolton Wanderers,Akin Famewo,780818,defenders,"LB,CB",Left-Back,DF,27,1998-11-09,14.0,ENG,False,,2026-11-04
@@ -498,7 +498,7 @@ Wrexham,Matty James,173408,midfielders,"CDM,CM",Defensive Midfield,MF,35,1991-07
 Wrexham,Ryan Longman,886155,midfielders,"RWB,RM,RW",Right-Back,MF,25,2000-11-06,47.0,ENG,False,,2026-11-04
 Wrexham,Bailey Cadamarteri,1420266,attackers,"ST,CAM",Centre-Forward,FW,21,2005-05-09,11.0,JAM,False,,2026-11-04
 Wrexham,Kieffer Moore,469202,attackers,ST,Centre-Forward,FW,34,1992-08-08,19.0,WAL,False,,2026-11-04
-Wrexham,Sam Smith,791416,attackers,"ST,CAM",Centre-Forward,FW,28,1998-03-08,28.0,ENG,False,,2026-11-04
+Wrexham,Sam Smith,791416,attackers,"ST,CAM",Centre-Forward,FW,28,1998-03-08,28.0,ENG,True,Early January 2027,2026-11-04
 Watford,Federico Ravaglia,793041,keepers,GK,Goalkeeper,GK,26,1999-11-11,1.0,ITA,False,,2026-11-04
 Watford,Sam Walker,256599,keepers,GK,Goalkeeper,GK,35,1991-10-02,24.0,ENG,False,,2026-11-04
 Watford,Daniel Bachmann,203964,keepers,GK,Goalkeeper,GK,32,1994-07-09,26.0,AUT,False,,2026-11-04
@@ -556,7 +556,7 @@ Charlton Athletic,Karlan Grant,586467,attackers,"LW,CAM,RW,LM",Left Winger,FW,29
 Charlton Athletic,Miles Leaburn,1389994,attackers,ST,Centre-Forward,FW,22,2003-11-28,11.0,ENG,False,,2026-11-04
 Charlton Athletic,Millenic Alli,1119806,attackers,"LW,RW",Left Winger,FW,26,2000-02-06,19.0,IRL,False,,2026-11-04
 Charlton Athletic,Charlie Kelman,982745,attackers,ST,Centre-Forward,FW,25,2001-11-02,23.0,USA,False,,2026-11-04
-Charlton Athletic,Matty Godden,184367,attackers,ST,Centre-Forward,FW,35,1991-07-29,24.0,ENG,True,Mid November 2026,2026-11-04
+Charlton Athletic,Matty Godden,184367,attackers,ST,Centre-Forward,FW,35,1991-07-29,24.0,ENG,False,,2026-11-04
 Charlton Athletic,Rob Apter,1206308,attackers,RW,Right Winger,FW,23,2003-04-23,30.0,SCO,False,,2026-11-04
 Charlton Athletic,Micah Mbick,1581073,attackers,"CAM,ST",Attacking Midfield,FW,19,2006-11-08,33.0,ENG,False,,2026-11-04
 Charlton Athletic,Junior Nkeng,1787141,attackers,"LW,LWB,LM,RM,ST",Left Winger,FW,19,2007-08-04,35.0,ESP,False,,2026-11-04
@@ -607,7 +607,6 @@ Derby County,Ryan Nyambe,629924,defenders,"RB,RWB,CB",Right-Back,DF,28,1997-12-0
 Derby County,Shane Duffy,174325,defenders,CB,Centre-Back,DF,34,1992-01-01,25.0,IRL,False,,2026-11-04
 Derby County,Dion Sanderson,1070973,defenders,CB,Centre-Back,DF,26,1999-12-15,28.0,ENG,False,,2026-11-04
 Derby County,Eiran Cashin,1127305,defenders,"CB,LB",Centre-Back,DF,24,2001-11-09,44.0,IRL,True,Mid November 2026,2026-11-04
-Derby County,Cruz Allen,1469204,midfielders,"CAM,CM,CDM",Attacking Midfield,MF,19,2007-02-25,,WAL,False,,2026-11-04
 Derby County,David Ozoh,1330872,midfielders,CDM,Defensive Midfield,MF,21,2005-05-06,4.0,ENG,True,About 1-2 weeks,2026-11-04
 Derby County,Bobby Clark,1296625,midfielders,"CDM,CAM,CM,LW",Defensive Midfield,MF,21,2005-02-07,8.0,ENG,False,,2026-11-04
 Derby County,Sam Szmodics,491827,midfielders,"CAM,LW,ST",Attacking Midfield,MF,31,1995-09-24,11.0,IRL,False,,2026-11-04

@@ -69,7 +69,7 @@ LASK,George Bello,953995,midfielders,"LWB,LM",Left-Back,MF,24,2002-01-22,2,USA,T
 LASK,Art Smakaj,1510970,midfielders,CDM,Defensive Midfield,MF,23,2003-02-04,5,KVX,False,,2026-11-04
 LASK,Melayro Bogarde,1108604,midfielders,"CDM,CM,LWB",Defensive Midfield,MF,24,2002-05-28,6,SUR,False,,2026-11-04
 LASK,Kryštof Daněk,1118147,midfielders,"CAM,CM,ST",Attacking Midfield,MF,23,2003-01-05,9,CZE,False,,2026-11-04
-LASK,Robert Ljubičić,939430,midfielders,"CM,RM,RW,CAM,CDM",Central Midfield,MF,27,1999-07-14,10,AUT,False,,2026-11-04
+LASK,Robert Ljubičić,939430,midfielders,"CM,RM,RW,CAM",Central Midfield,MF,27,1999-07-14,10,AUT,False,,2026-11-04
 LASK,Alessandro Schöpf,461357,midfielders,"CDM,CM",Defensive Midfield,MF,32,1994-02-07,18,AUT,False,,2026-11-04
 LASK,Kasper Jørgensen,1029360,midfielders,"RWB,RM",Right-Back,MF,26,1999-11-07,20,DEN,False,,2026-11-04
 LASK,Florian Flecker,619687,midfielders,RWB,Right-Back,MF,31,1995-10-29,29,AUT,False,,2026-11-04
@@ -154,9 +154,9 @@ Ried,Lukas Malicsek,840982,midfielders,"CDM,CM,RB,CB",Defensive Midfield,MF,27,1
 Ried,Yusuf Maart,849991,midfielders,"CDM,CM",Defensive Midfield,MF,31,1995-07-17,6,RSA,False,,2026-11-04
 Ried,Martin Rasner,459261,midfielders,"CM,CDM,RWB",Central Midfield,MF,31,1995-05-18,8,AUT,False,,2026-11-04
 Ried,Jussef Nasrawe,1680584,midfielders,"CAM,CM,CDM",Attacking Midfield,MF,19,2007-03-22,10,IRQ,False,,2026-11-04
-Ried,Ante Bajić,951245,midfielders,"RW,RWB,RM,CAM,CDM",Right Winger,MF,31,1995-08-22,12,AUT,True,About 1-2 weeks,2026-11-04
+Ried,Ante Bajić,951245,midfielders,"RW,RWB,CAM,RM,CDM",Right Winger,MF,31,1995-08-22,12,AUT,True,About 1-2 weeks,2026-11-04
 Ried,Joris Boguo,1789053,midfielders,RM,Right Midfield,MF,19,2007-10-17,15,AUT,False,,2026-11-04
-Ried,Philipp Pomer,803558,midfielders,"LWB,LB,LM,CM,LW,RM,RB,RWB",Left-Back,MF,29,1997-08-12,17,AUT,False,,2026-11-04
+Ried,Philipp Pomer,803558,midfielders,"LWB,LB,CM,LW,LM,RM,RB,RWB",Left-Back,MF,29,1997-08-12,17,AUT,False,,2026-11-04
 Ried,Fabian Rossdorfer,1515126,midfielders,"RB,LWB,LM,ST,RW",Right-Back,MF,20,2005-11-09,18,AUT,False,,2026-11-04
 Ried,Stefan Schwab,166934,midfielders,"CDM,CM",Defensive Midfield,MF,36,1990-09-27,22,AUT,False,,2026-11-04
 Ried,Nermin Mesic,1688461,midfielders,,Central Midfield,MF,20,2006-01-23,38,GER,False,,2026-11-04
@@ -193,13 +193,13 @@ WSG Tirol,Thomas Goiginger,557330,midfielders,"CAM,RW,ST",Attacking Midfield,MF,
 WSG Tirol,Moritz Wels,1291593,midfielders,"CAM,LW,RW",Attacking Midfield,MF,22,2004-09-25,37,AUT,False,,2026-11-04
 WSG Tirol,Simon Wieser,2119342,midfielders,,Central Midfield,MF,19,2007-08-12,38,AUT,False,,2026-11-04
 WSG Tirol,Quincy Butler,1167250,attackers,RM,Right Midfield,FW,25,2001-09-01,7,USA,True,Unknown,2026-11-04
-WSG Tirol,Nikolai Baden,861933,attackers,"CAM,RW,ST,LW",Attacking Midfield,FW,26,2000-05-18,8,DEN,False,,2026-11-04
-WSG Tirol,Thomas Sabitzer,814457,attackers,"ST,LW",Centre-Forward,FW,26,2000-10-12,10,AUT,True,Doubtful,2026-11-04
+WSG Tirol,Nikolai Baden,861933,attackers,"CAM,ST,RW,LW",Attacking Midfield,FW,26,2000-05-18,8,DEN,False,,2026-11-04
+WSG Tirol,Thomas Sabitzer,814457,attackers,ST,Centre-Forward,FW,26,2000-10-12,10,AUT,True,Doubtful,2026-11-04
 WSG Tirol,Lukas Hinterseer,176831,attackers,ST,Centre-Forward,FW,35,1991-03-28,16,AUT,False,,2026-11-04
 WSG Tirol,Michael Olakigbe,1130797,attackers,"LW,CAM",Left Winger,FW,22,2004-04-06,17,NGA,False,,2026-11-04
 WSG Tirol,Husein Balić,658589,attackers,RW,Right Winger,FW,30,1996-02-15,18,AUT,False,,2026-11-04
 Grazer AK,Jakob Meierhofer,723669,keepers,GK,Goalkeeper,GK,28,1997-11-06,1,AUT,False,,2026-11-04
-Grazer AK,Cican Stanković,338809,keepers,GK,Goalkeeper,GK,33,1992-11-04,23,AUT,False,,2026-11-04
+Grazer AK,Cican Stanković,338809,keepers,GK,Goalkeeper,GK,34,1992-11-04,23,AUT,False,,2026-11-04
 Grazer AK,Christoph Nicht,338762,keepers,GK,Goalkeeper,GK,32,1994-01-05,26,AUT,False,,2026-11-04
 Grazer AK,Donovan Pines,1025947,defenders,CB,Centre-Back,DF,28,1998-03-07,2,USA,False,,2026-11-04
 Grazer AK,Ludwig Vraa-Jensen,1436842,defenders,CB,Centre-Back,DF,21,2005-06-23,3,DEN,False,,2026-11-04
@@ -213,7 +213,7 @@ Grazer AK,Liam Hermesh,1612420,midfielders,CDM,Defensive Midfield,MF,22,2004-03-
 Grazer AK,Tobias Koch,941702,midfielders,"CAM,CDM",Attacking Midfield,MF,25,2001-04-06,8,AUT,False,,2026-11-04
 Grazer AK,Christian Lichtenberger,951310,midfielders,"CAM,LW",Attacking Midfield,MF,30,1995-12-12,10,AUT,False,,2026-11-04
 Grazer AK,Jacob Italiano,889093,midfielders,"CAM,RWB,RM",Attacking Midfield,MF,25,2001-07-30,14,AUS,True,Unknown,2026-11-04
-Grazer AK,Souleyman Mandey,1562715,midfielders,"CAM,RW",Attacking Midfield,MF,20,2006-02-06,17,AUT,False,,2026-11-04
+Grazer AK,Souleyman Mandey,1562715,midfielders,CAM,Attacking Midfield,MF,20,2006-02-06,17,AUT,False,,2026-11-04
 Grazer AK,Christopher Cvetko,768312,midfielders,"CDM,CM",Defensive Midfield,MF,29,1997-04-02,24,AUT,False,,2026-11-04
 Grazer AK,Anderson,1024295,midfielders,"RWB,RW,RM",Right-Back,MF,28,1998-01-03,28,BRA,False,,2026-11-04
 Grazer AK,Peter Michorl,488194,midfielders,"CAM,CDM,CM,ST",Attacking Midfield,MF,31,1995-05-09,34,AUT,False,,2026-11-04
@@ -247,7 +247,7 @@ Altach,Salif Tietietta,1663200,midfielders,,Central Midfield,MF,21,2004-11-29,24
 Altach,Niklas Niehoff,1357426,midfielders,"RM,RWB,RW",Right Midfield,MF,22,2004-08-20,29,GER,False,,2026-11-04
 Altach,Nemanja Krstovic,1807864,midfielders,,Central Midfield,MF,18,2008-08-29,32,AUT,False,,2026-11-04
 Altach,Adrian Vonbrül,1807865,midfielders,,Central Midfield,MF,18,2008-01-13,34,AUT,False,,2026-11-04
-Altach,Benjamin Böckle,1185195,midfielders,"LM,LWB,RM",Left Midfield,MF,24,2002-06-17,37,AUT,False,,2026-11-04
+Altach,Benjamin Böckle,1185195,midfielders,"LM,LWB",Left Midfield,MF,24,2002-06-17,37,AUT,False,,2026-11-04
 Altach,Marko Raguž,765227,attackers,ST,Centre-Forward,FW,28,1998-06-10,9,AUT,True,Mid November 2026,2026-11-04
 Altach,Ousmane Diawara,1119118,attackers,ST,Centre-Forward,FW,27,1999-10-10,10,MLI,False,,2026-11-04
 Altach,Shingo Nakano,1652644,attackers,,Centre-Forward,FW,21,2004-12-26,11,JPN,False,,2026-11-04
@@ -255,7 +255,7 @@ Altach,Patrick Greil,951250,attackers,"LW,CAM,CM",Left Winger,FW,30,1996-09-08,1
 Altach,Srdjan Hrstić,1290727,attackers,"ST,RW,LW",Centre-Forward,FW,23,2003-07-18,19,SRB,False,,2026-11-04
 Altach,Yann Massombo,1697790,attackers,"RW,CAM,CDM,ST,CM",Right Winger,FW,26,2000-02-12,28,FRA,False,,2026-11-04
 Altach,Nico Helbock,1708840,attackers,,Centre-Forward,FW,21,2005-07-03,35,AUT,False,,2026-11-04
-Altach,Rodney Elongo-Yombo,1282946,attackers,"LW,CAM,ST",Left Winger,FW,25,2001-07-27,39,GER,False,,2026-11-04
+Altach,Rodney Elongo-Yombo,1282946,attackers,"LW,ST",Left Winger,FW,25,2001-07-27,39,GER,False,,2026-11-04
 Austria Lustenau,Domenik Schierl,459256,keepers,GK,Goalkeeper,GK,32,1994-07-20,27,AUT,False,,2026-11-04
 Austria Lustenau,Phillip Böhm,1663025,keepers,GK,Goalkeeper,GK,24,2002-02-12,30,GER,False,,2026-11-04
 Austria Lustenau,Frederic Flatz,1663359,keepers,,Goalkeeper,GK,20,2006-08-25,33,AUT,False,,2026-11-04

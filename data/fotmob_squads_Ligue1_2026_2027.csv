@@ -2,7 +2,7 @@ squad,player,fotmob_id,group,positions,tm_position,pos,age,birth_date,shirt,ccod
 PSG,Alessandro Longoni,1662399,keepers,,Goalkeeper,GK,18,2008-01-31,16.0,ITA,False,,2026-11-04
 PSG,Lucas Chevalier,1177131,keepers,GK,Goalkeeper,GK,24,2001-11-06,30.0,FRA,False,,2026-11-04
 PSG,Matvey Safonov,800880,keepers,GK,Goalkeeper,GK,27,1999-02-25,39.0,RUS,False,,2026-11-04
-PSG,Achraf Hakimi,770881,defenders,RB,Right-Back,DF,27,1998-11-04,2.0,MAR,False,,2026-11-04
+PSG,Achraf Hakimi,770881,defenders,RB,Right-Back,DF,28,1998-11-04,2.0,MAR,False,,2026-11-04
 PSG,Marquinhos,267365,defenders,CB,Centre-Back,DF,32,1994-05-14,5.0,BRA,True,A few weeks,2026-11-04
 PSG,Ilya Zabarnyi,1140003,defenders,CB,Centre-Back,DF,24,2002-09-01,6.0,UKR,False,,2026-11-04
 PSG,Lucas Digne,210111,defenders,LB,Left-Back,DF,33,1993-07-20,12.0,FRA,False,,2026-11-04
@@ -28,7 +28,7 @@ Lille,Orlando Gill,1683391,keepers,GK,Goalkeeper,GK,26,2000-06-11,12.0,PAR,False
 Lille,Zadig Lanssade,1867240,keepers,GK,Goalkeeper,GK,18,2008-03-03,40.0,FRA,False,,2026-11-04
 Lille,Thomas Sajous,1793779,keepers,GK,Goalkeeper,GK,18,2008-05-15,50.0,FRA,False,,2026-11-04
 Lille,Loun Srdanovic,1660370,defenders,RB,Right-Back,DF,20,2006-08-04,2.0,SUI,False,,2026-11-04
-Lille,Nathan Ngoy,1252070,defenders,CB,Centre-Back,DF,23,2003-06-10,3.0,BEL,False,,2026-11-04
+Lille,Nathan Ngoy,1252070,defenders,"CB,RB",Centre-Back,DF,23,2003-06-10,3.0,BEL,False,,2026-11-04
 Lille,Alexsandro Ribeiro,1186553,defenders,CB,Centre-Back,DF,27,1999-08-09,4.0,BRA,False,,2026-11-04
 Lille,Romain Perraud,815465,defenders,"LB,LWB",Left-Back,DF,29,1997-09-22,15.0,FRA,False,,2026-11-04
 Lille,Tiago Santos,1397857,defenders,RB,Right-Back,DF,24,2002-07-23,22.0,POR,True,Late June 2027,2026-11-04
@@ -118,12 +118,12 @@ Rennes,Bryan Reynolds,924446,defenders,"RB,LB,RWB",Right-Back,DF,25,2001-06-28,1
 Rennes,Mahamadou Nagida,1553514,defenders,"LB,RB,LWB",Left-Back,DF,21,2005-06-28,18.0,CMR,False,,2026-11-04
 Rennes,Anthony Rouault,1079554,defenders,CB,Centre-Back,DF,25,2001-05-29,24.0,FRA,False,,2026-11-04
 Rennes,Quentin Merlin,1233931,defenders,"LB,RM,CM",Left-Back,DF,24,2002-05-16,26.0,FRA,False,,2026-11-04
-Rennes,Abdelhamid Aït Boudlal,1581722,defenders,CB,Centre-Back,DF,20,2006-04-16,48.0,MAR,False,,2026-11-04
+Rennes,Abdelhamid Aït Boudlal,1581722,defenders,CB,Centre-Back,DF,20,2006-04-16,48.0,MAR,True,Doubtful,2026-11-04
 Rennes,Przemysław Frankowski,402419,defenders,"RB,RM,RWB,LB",Right-Back,DF,31,1995-04-12,95.0,POL,False,,2026-11-04
 Rennes,Ayanda Sishuba,1508735,midfielders,,Central Midfield,MF,21,2005-02-02,,BEL,False,,2026-11-04
 Rennes,Djaoui Cissé,1553515,midfielders,CM,Central Midfield,MF,22,2004-01-31,6.0,FRA,False,,2026-11-04
 Rennes,Sebastian Szymański,765466,midfielders,"CM,CAM,RW,RM,CDM",Central Midfield,MF,27,1999-05-10,17.0,POL,False,,2026-11-04
-Rennes,Valentin Rongier,562719,midfielders,"CM,CDM",Central Midfield,MF,31,1994-12-07,21.0,FRA,False,,2026-11-04
+Rennes,Valentin Rongier,562719,midfielders,"CM,CDM",Central Midfield,MF,31,1994-12-07,21.0,FRA,True,Doubtful,2026-11-04
 Rennes,Adrien Thomasson,317062,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,32,1993-12-10,28.0,FRA,False,,2026-11-04
 Rennes,Mahdi Camara,770321,midfielders,"CM,CAM,CDM",Central Midfield,MF,28,1998-06-30,45.0,FRA,False,,2026-11-04
 Rennes,Estéban Lepaul,1280225,attackers,ST,Centre-Forward,FW,26,2000-04-18,9.0,FRA,True,About 1-2 weeks,2026-11-04
@@ -188,7 +188,7 @@ Monaco,Matthis Abline,1250492,attackers,"LW,ST,RW",Left Winger,FW,23,2003-03-28,
 Monaco,Mika Biereth,1113809,attackers,ST,Centre-Forward,FW,23,2003-02-08,14.0,DEN,False,,2026-11-04
 Monaco,Stanis Idumbo,1366936,attackers,"LW,LM",Left Winger,FW,21,2005-06-29,17.0,COD,True,About 1-2 weeks,2026-11-04
 Monaco,Paris Brunner,1412956,attackers,"ST,LW",Centre-Forward,FW,20,2006-02-15,29.0,GER,False,,2026-11-04
-Monaco,Ansu Fati,1086012,attackers,"CAM,LW,RW,ST",Attacking Midfield,FW,24,2002-10-31,31.0,ESP,True,Mid November 2026,2026-11-04
+Monaco,Ansu Fati,1086012,attackers,"CAM,LW,RW,ST",Attacking Midfield,FW,24,2002-10-31,31.0,ESP,True,Late December 2026,2026-11-04
 Monaco,Safouane Benzahra,1845327,attackers,,Centre-Forward,FW,18,2008-08-18,47.0,MAR,False,,2026-11-04
 Nice,Yéhvann Diouf,766574,keepers,GK,Goalkeeper,GK,26,1999-11-16,23.0,SEN,False,,2026-11-04
 Nice,Teddy Boulhendi,1210649,keepers,GK,Goalkeeper,GK,25,2001-04-09,77.0,ALG,False,,2026-11-04
@@ -239,7 +239,7 @@ Lens,Yacine Titraoui,1288907,midfielders,CDM,Defensive Midfield,MF,23,2003-07-26
 Lens,Florian Thauvin,254308,midfielders,"CAM,RW",Attacking Midfield,MF,33,1993-01-26,10.0,FRA,False,,2026-11-04
 Lens,Matthieu Udol,660326,midfielders,"LWB,LM,CB",Left-Back,MF,30,1996-03-20,14.0,FRA,False,,2026-11-04
 Lens,Amadou Haidara,688830,midfielders,CDM,Defensive Midfield,MF,28,1998-01-31,21.0,MLI,False,,2026-11-04
-Lens,Michał Skóras,954190,midfielders,"LWB,RWB,LW,LM,RW,RM",Left-Back,MF,26,2000-02-15,22.0,POL,False,,2026-11-04
+Lens,Michał Skóras,954190,midfielders,"LW,LWB,RWB,RW,LM",Left Winger,MF,26,2000-02-15,22.0,POL,False,,2026-11-04
 Lens,Saud Abdulhamid,1002617,midfielders,"RWB,RB,RM",Right-Back,MF,27,1999-07-18,23.0,KSA,False,,2026-11-04
 Lens,Michaël Cuisance,861445,midfielders,"CAM,CDM",Attacking Midfield,MF,27,1999-08-16,27.0,FRA,False,,2026-11-04
 Lens,Mezian Mesloub Soares,1980586,midfielders,CAM,Attacking Midfield,MF,16,2009-11-08,38.0,FRA,False,,2026-11-04
@@ -420,9 +420,9 @@ Troyes,Zacharie Boucher,210682,keepers,GK,Goalkeeper,GK,34,1992-03-07,1.0,FRA,Fa
 Troyes,Patrick Beach,1335765,keepers,GK,Goalkeeper,GK,23,2003-08-06,33.0,AUS,False,,2026-11-04
 Troyes,Hillel Konaté,560896,keepers,GK,Goalkeeper,GK,31,1994-12-28,40.0,BFA,False,,2026-11-04
 Troyes,Lucas Maronnier,1330942,defenders,RB,Right-Back,DF,26,2000-03-09,2.0,FRA,False,,2026-11-04
-Troyes,Anis Ouzenadji,1797614,defenders,LB,Left-Back,DF,19,2006-11-04,3.0,FRA,True,Early November 2026,2026-11-04
+Troyes,Anis Ouzenadji,1797614,defenders,LB,Left-Back,DF,20,2006-11-04,3.0,FRA,True,Early November 2026,2026-11-04
 Troyes,Michel Diaz,1401205,defenders,CB,Centre-Back,DF,23,2003-07-23,4.0,CIV,False,,2026-11-04
-Troyes,Paolo Gozzi,1039458,defenders,"LB,CB",Left-Back,DF,25,2001-04-25,5.0,ITA,False,,2026-11-04
+Troyes,Paolo Gozzi,1039458,defenders,LB,Left-Back,DF,25,2001-04-25,5.0,ITA,False,,2026-11-04
 Troyes,Adrien Monfray,465719,defenders,CB,Centre-Back,DF,35,1990-12-20,6.0,FRA,False,,2026-11-04
 Troyes,Ismaël Boura,1177359,defenders,"LB,CB",Left-Back,DF,26,2000-08-14,14.0,COM,False,,2026-11-04
 Troyes,Noah Donkor,1844131,defenders,RB,Right-Back,DF,19,2006-11-25,31.0,FRA,False,,2026-11-04
@@ -432,7 +432,7 @@ Troyes,Mouhamed Diop,1321149,midfielders,"CDM,CM",Defensive Midfield,MF,26,2000-
 Troyes,Jérémy Le Douaron,917808,midfielders,"CAM,ST,LW",Attacking Midfield,MF,28,1998-04-21,9.0,FRA,False,,2026-11-04
 Troyes,Iron Gomis,1030945,midfielders,CM,Central Midfield,MF,26,1999-11-08,11.0,FRA,False,,2026-11-04
 Troyes,Roman Murcy,1797608,midfielders,,Central Midfield,MF,20,2006-02-23,16.0,FRA,False,,2026-11-04
-Troyes,Antoine Mille,1342983,midfielders,"CAM,CM,CDM,RW",Attacking Midfield,MF,29,1997-08-14,17.0,FRA,False,,2026-11-04
+Troyes,Antoine Mille,1342983,midfielders,"CAM,CDM,CM,RW",Attacking Midfield,MF,29,1997-08-14,17.0,FRA,False,,2026-11-04
 Troyes,Hugo Picard,1411553,midfielders,"LM,LW",Left Midfield,MF,23,2003-05-09,22.0,FRA,False,,2026-11-04
 Troyes,Alexandre Phliponeau,992082,midfielders,"CDM,CM",Defensive Midfield,MF,26,2000-01-26,26.0,FRA,False,,2026-11-04
 Troyes,Dermane Karim,1276315,midfielders,"CAM,CDM,CM",Attacking Midfield,MF,22,2003-12-26,29.0,TOG,False,,2026-11-04

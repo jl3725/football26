@@ -1,12 +1,12 @@
 {
- "date": "2026-11-03",
+ "date": "2026-11-04",
  "model": "v3.14",
- "checked": 45681,
+ "checked": 45840,
  "mismatches": [],
  "leagues": {
   "EPL": {
    "teams": 20,
-   "checked": 3621,
+   "checked": 3629,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -14,7 +14,7 @@
   },
   "AustrianBundesliga": {
    "teams": 12,
-   "checked": 2555,
+   "checked": 2561,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -22,7 +22,7 @@
   },
   "BelgianProLeague": {
    "teams": 18,
-   "checked": 3397,
+   "checked": 3399,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -30,7 +30,7 @@
   },
   "Bundesliga": {
    "teams": 18,
-   "checked": 3274,
+   "checked": 3299,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -38,7 +38,7 @@
   },
   "Championship": {
    "teams": 24,
-   "checked": 5065,
+   "checked": 5074,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -46,7 +46,7 @@
   },
   "DanishSuperliga": {
    "teams": 12,
-   "checked": 2581,
+   "checked": 2607,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -54,7 +54,7 @@
   },
   "Eredivisie": {
    "teams": 18,
-   "checked": 3423,
+   "checked": 3433,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -62,7 +62,7 @@
   },
   "LaLiga": {
    "teams": 20,
-   "checked": 3850,
+   "checked": 3878,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -70,18 +70,18 @@
   },
   "LigaPortugal": {
    "teams": 18,
-   "checked": 3492,
+   "checked": 3511,
    "mismatches": 0,
    "changed": 1,
    "model_changed": 0,
    "changes_top": [
     {
      "team": "Santa Clara",
-     "player": "Henrique Silva",
-     "from": 50,
-     "to": 52,
-     "d": 2,
-     "since": "2026-11-03",
+     "player": "Frederico Silva",
+     "from": 52,
+     "to": 50,
+     "d": -2,
+     "since": "2026-11-04",
      "model_change": false
     }
    ]
@@ -90,23 +90,13 @@
    "teams": 18,
    "checked": 3330,
    "mismatches": 0,
-   "changed": 1,
+   "changed": 0,
    "model_changed": 0,
-   "changes_top": [
-    {
-     "team": "Angers",
-     "player": "Marius Louer",
-     "from": 60,
-     "to": 59,
-     "d": -1,
-     "since": "2026-10-14",
-     "model_change": false
-    }
-   ]
+   "changes_top": []
   },
   "SerieA": {
    "teams": 20,
-   "checked": 3836,
+   "checked": 3848,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -114,7 +104,7 @@
   },
   "SuperLig": {
    "teams": 18,
-   "checked": 3969,
+   "checked": 3983,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -124,9 +114,19 @@
    "teams": 12,
    "checked": 2768,
    "mismatches": 0,
-   "changed": 0,
+   "changed": 1,
    "model_changed": 0,
-   "changes_top": []
+   "changes_top": [
+    {
+     "team": "Lugano",
+     "player": "Elias Pihlström",
+     "from": 56,
+     "to": 57,
+     "d": 1,
+     "since": "2026-11-04",
+     "model_change": false
+    }
+   ]
   }
  }
 }
