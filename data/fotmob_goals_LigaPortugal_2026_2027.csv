@@ -1,15 +1,15 @@
 match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5788583,2026-07-23,uefa.europa_qual,Benfica,St. Gallen,44.0,Rafa Silva,FastBreak,0,0.6015554070472717
-5788592,2026-07-30,uefa.europa_qual,Benfica,St. Gallen,11.0,Vangelis Pavlidis,ThrowInSetPiece,0,0.15635018050670624
-5788592,2026-07-30,uefa.europa_qual,Benfica,St. Gallen,55.0,Vangelis Pavlidis,RegularPlay,0,0.46917182207107544
+5788592,2026-07-30,uefa.europa_qual,Benfica,St. Gallen,11.0,Vangelis Pavlidis,ThrowInSetPiece,0,0.1563501805067062
+5788592,2026-07-30,uefa.europa_qual,Benfica,St. Gallen,55.0,Vangelis Pavlidis,RegularPlay,0,0.4691718220710754
 5788592,2026-07-30,uefa.europa_qual,Benfica,St. Gallen,65.0,Vangelis Pavlidis,RegularPlay,0,0.618718683719635
 5788592,2026-07-30,uefa.europa_qual,Benfica,St. Gallen,74.0,Vangelis Pavlidis,Penalty,0,0.7884
-5788592,2026-07-30,uefa.europa_qual,Benfica,St. Gallen,82.0,Clément Lenglet,FromCorner,0,0.12784449756145477
+5788592,2026-07-30,uefa.europa_qual,Benfica,St. Gallen,82.0,Clément Lenglet,FromCorner,0,0.1278444975614547
 5955038,2026-08-06,uefa.europa_qual,Benfica,Heart of Midlothian,3.0,Rafa Silva,RegularPlay,0,0.4200032353401184
-5955038,2026-08-06,uefa.europa_qual,Benfica,Heart of Midlothian,23.0,Tomás Araújo,FromCorner,0,0.05064782872796059
+5955038,2026-08-06,uefa.europa_qual,Benfica,Heart of Midlothian,23.0,Tomás Araújo,FromCorner,0,0.0506478287279605
 5955038,2026-08-06,uefa.europa_qual,Benfica,Heart of Midlothian,42.0,Vangelis Pavlidis,Penalty,0,0.7884
-5955038,2026-08-06,uefa.europa_qual,Benfica,Heart of Midlothian,59.0,Gianluca Prestianni,RegularPlay,0,0.10481172055006027
-5955038,2026-08-06,uefa.europa_qual,Benfica,Heart of Midlothian,87.0,Jhon Durán,FastBreak,0,0.26141026616096497
+5955038,2026-08-06,uefa.europa_qual,Benfica,Heart of Midlothian,59.0,Gianluca Prestianni,RegularPlay,0,0.1048117205500602
+5955038,2026-08-06,uefa.europa_qual,Benfica,Heart of Midlothian,87.0,Jhon Durán,FastBreak,0,0.2614102661609649
 5955038,2026-08-06,uefa.europa_qual,Benfica,Heart of Midlothian,90.0,Andreas Schjelderup,Penalty,0,0.7884
 5887559,2026-08-07,por.1,Famalicão,Estoril,32.0,Georgios Koutsias,RegularPlay,0,0.9011914134025574
 5887559,2026-08-07,por.1,Estoril,Famalicão,72.0,Yanis Begraoui,RegularPlay,0,0.363353967666626
@@ -38,7 +38,7 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5887564,2026-08-10,por.1,Santa Clara,Nacional,21.0,Gonçalo Paciência,FromCorner,0,0.3082887232303619
 5887564,2026-08-10,por.1,Nacional,Santa Clara,36.0,Liziero,Penalty,0,0.7884
 5887564,2026-08-10,por.1,Nacional,Santa Clara,45.0,Miguel Baeza,ThrowInSetPiece,0,0.1346276849508285
-5955039,2026-08-13,uefa.europa_qual,Benfica,Heart of Midlothian,78.0,Dodi Lukébakio,RegularPlay,0,0.09781148284673691
+5955039,2026-08-13,uefa.europa_qual,Benfica,Heart of Midlothian,78.0,Dodi Lukébakio,RegularPlay,0,0.0978114828467369
 5887599,2026-08-14,por.1,Sporting CP,Vit. Guimarães,9.0,Flávio Gonçalves,FastBreak,0,0.6496789455413818
 5887599,2026-08-14,por.1,Sporting CP,Vit. Guimarães,22.0,Fotis Ioannidis,FastBreak,0,0.364162802696228
 5887599,2026-08-14,por.1,Sporting CP,Vit. Guimarães,41.0,Sergi Altimira,RegularPlay,0,0.033790223300457
@@ -72,7 +72,7 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5887595,2026-08-17,por.1,Benfica,Casa Pia,58.0,Lawrence Ofori,OwnGoal,1,
 5887595,2026-08-17,por.1,Benfica,Casa Pia,61.0,Jhon Durán,RegularPlay,0,0.0874251127243042
 5887595,2026-08-17,por.1,Casa Pia,Benfica,,,none,0,
-5987965,2026-08-20,uefa.europa_qual,Benfica,AGF,2.0,Rafa Silva,RegularPlay,0,0.39192384481430054
+5987965,2026-08-20,uefa.europa_qual,Benfica,AGF,2.0,Rafa Silva,RegularPlay,0,0.3919238448143005
 5987965,2026-08-20,uefa.europa_qual,Benfica,AGF,31.0,Leandro Barreiro,FromCorner,0,0.4818999469280243
 5987965,2026-08-20,uefa.europa_qual,Benfica,AGF,45.0,Vangelis Pavlidis,Penalty,0,0.7884
 5988071,2026-08-20,uefa.europa.conf_qual,Braga,Austria Wien,24.0,Pau Víctor,Penalty,0,0.7884
@@ -98,9 +98,9 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5887602,2026-08-24,por.1,Gil Vicente FC,Casa Pia,20.0,Gil Martins,RegularPlay,0,0.240081250667572
 5887602,2026-08-24,por.1,Gil Vicente FC,Casa Pia,45.0,Héctor Hernández,Penalty,0,0.7884
 5887602,2026-08-24,por.1,Casa Pia,Gil Vicente FC,,,none,0,
-5987977,2026-08-27,uefa.europa_qual,Benfica,AGF,19.0,Gianluca Prestianni,RegularPlay,0,0.04516436159610748
-5987977,2026-08-27,uefa.europa_qual,Benfica,AGF,55.0,Rafa Silva,RegularPlay,0,0.11742538213729858
-5987977,2026-08-27,uefa.europa_qual,Benfica,AGF,61.0,Gianluca Prestianni,RegularPlay,0,0.030819281935691833
+5987977,2026-08-27,uefa.europa_qual,Benfica,AGF,19.0,Gianluca Prestianni,RegularPlay,0,0.0451643615961074
+5987977,2026-08-27,uefa.europa_qual,Benfica,AGF,55.0,Rafa Silva,RegularPlay,0,0.1174253821372985
+5987977,2026-08-27,uefa.europa_qual,Benfica,AGF,61.0,Gianluca Prestianni,RegularPlay,0,0.0308192819356918
 5988095,2026-08-27,uefa.europa.conf_qual,Braga,Austria Wien,,,none,0,
 5887616,2026-08-28,por.1,Sporting CP,Rio Ave,5.0,Flávio Gonçalves,RegularPlay,0,0.3897983133792877
 5887616,2026-08-28,por.1,Sporting CP,Rio Ave,19.0,Geny Catamo,FastBreak,0,0.084262691438198
@@ -340,3 +340,7 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5887671,2026-11-02,por.1,Benfica,Alverca,51.0,Vangelis Pavlidis,Penalty,0,0.7884
 5887671,2026-11-02,por.1,Alverca,Benfica,,,none,0,
 6106335,2026-11-03,uefa.champions,Sporting CP,Shakhtar Donetsk,59.0,Issa Doumbia,RegularPlay,0,0.2605201303958893
+6106288,2026-11-04,uefa.champions,Porto,Napoli,11.0,Jan Bednarek,FromCorner,0,0.06453479081392288
+6106288,2026-11-04,uefa.champions,Porto,Napoli,71.0,Gabriel Veiga,FastBreak,0,0.6614168286323547
+6106288,2026-11-04,uefa.champions,Porto,Napoli,80.0,Jakub Kiwior,FromCorner,0,0.1857938915491104
+6106288,2026-11-04,uefa.champions,Porto,Napoli,90.0,Samuel Aghehowa,Penalty,0,0.7884

@@ -143,8 +143,8 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 546,
-   "exact": 504,
+   "total": 547,
+   "exact": 505,
    "rule": 1,
    "ambiguous": 0,
    "orphan": 41,
@@ -285,8 +285,8 @@
    "orphans": []
   },
   "espn_subs_cups": {
-   "total": 356,
-   "exact": 353,
+   "total": 357,
+   "exact": 354,
    "rule": 1,
    "ambiguous": 0,
    "orphan": 2,
@@ -573,8 +573,8 @@
    ]
   },
   "espn_subs_cups": {
-   "total": 226,
-   "exact": 214,
+   "total": 228,
+   "exact": 216,
    "rule": 11,
    "ambiguous": 0,
    "orphan": 1,
@@ -858,8 +858,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 305,
-   "exact": 305,
+   "total": 307,
+   "exact": 307,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1019,11 +1019,11 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 527,
-   "exact": 509,
+   "total": 531,
+   "exact": 512,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 18,
+   "orphan": 19,
    "orphans": [
     {
      "squad": "Parma",
@@ -1038,6 +1038,11 @@
     {
      "squad": "Inter",
      "name": "Francesco Stante",
+     "starts": 0
+    },
+    {
+     "squad": "Como",
+     "name": "Federico Grilli",
      "starts": 0
     },
     {
@@ -1147,8 +1152,8 @@
    ]
   },
   "espn_subs_cups": {
-   "total": 303,
-   "exact": 301,
+   "total": 304,
+   "exact": 302,
    "rule": 1,
    "ambiguous": 0,
    "orphan": 1,
@@ -1161,8 +1166,8 @@
    ]
   },
   "match_events": {
-   "total": 350,
-   "exact": 350,
+   "total": 351,
+   "exact": 351,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1385,8 +1390,8 @@
    ]
   },
   "espn_subs_cups": {
-   "total": 116,
-   "exact": 116,
+   "total": 117,
+   "exact": 117,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1796,8 +1801,8 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 420,
-   "exact": 413,
+   "total": 421,
+   "exact": 414,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 7,
