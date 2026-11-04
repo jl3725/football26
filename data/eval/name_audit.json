@@ -285,8 +285,8 @@
    "orphans": []
   },
   "espn_subs_cups": {
-   "total": 355,
-   "exact": 352,
+   "total": 356,
+   "exact": 353,
    "rule": 1,
    "ambiguous": 0,
    "orphan": 2,
@@ -304,8 +304,8 @@
    ]
   },
   "match_events": {
-   "total": 379,
-   "exact": 379,
+   "total": 380,
+   "exact": 380,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -465,8 +465,8 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 413,
-   "exact": 398,
+   "total": 414,
+   "exact": 399,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 15,
@@ -573,8 +573,8 @@
    ]
   },
   "espn_subs_cups": {
-   "total": 225,
-   "exact": 213,
+   "total": 226,
+   "exact": 214,
    "rule": 11,
    "ambiguous": 0,
    "orphan": 1,
@@ -607,7 +607,7 @@
  "Bundesliga 2026_2027": {
   "wiki_squads": {
    "total": 667,
-   "exact": 512,
+   "exact": 513,
    "rule": 1,
    "ambiguous": 0,
    "orphan": 0,
@@ -615,10 +615,10 @@
   },
   "espn_lineups": {
    "total": 482,
-   "exact": 439,
+   "exact": 440,
    "rule": 17,
    "ambiguous": 0,
-   "orphan": 26,
+   "orphan": 25,
    "orphans": [
     {
      "squad": "Bayern Munich",
@@ -707,11 +707,6 @@
     },
     {
      "squad": "Bayern Munich",
-     "name": "Tim Binder",
-     "starts": 0
-    },
-    {
-     "squad": "Bayern Munich",
      "name": "Cassiano Kiala",
      "starts": 0
     },
@@ -743,6 +738,11 @@
     {
      "squad": "Hoffenheim",
      "name": "Klaus Gjasula",
+     "starts": 0
+    },
+    {
+     "squad": "Hoffenheim",
+     "name": "Oskar Hencke",
      "starts": 0
     }
    ]
@@ -1655,18 +1655,18 @@
  "Eredivisie 2026_2027": {
   "wiki_squads": {
    "total": 560,
-   "exact": 496,
-   "rule": 6,
+   "exact": 497,
+   "rule": 5,
    "ambiguous": 0,
    "orphan": 0,
    "orphans": []
   },
   "espn_lineups": {
    "total": 550,
-   "exact": 494,
+   "exact": 500,
    "rule": 11,
    "ambiguous": 0,
-   "orphan": 45,
+   "orphan": 39,
    "orphans": [
     {
      "squad": "Feyenoord",
@@ -1676,11 +1676,6 @@
     {
      "squad": "Cambuur",
      "name": "Buddy Vogelzang",
-     "starts": 0
-    },
-    {
-     "squad": "Cambuur",
-     "name": "Damian Westerhof",
      "starts": 0
     },
     {
@@ -1750,17 +1745,7 @@
     },
     {
      "squad": "Groningen",
-     "name": "Jahelille Hall",
-     "starts": 0
-    },
-    {
-     "squad": "Groningen",
      "name": "Travis Hearnes",
-     "starts": 0
-    },
-    {
-     "squad": "Zwolle",
-     "name": "Dylan Ruward",
      "starts": 0
     },
     {
@@ -1791,6 +1776,21 @@
     {
      "squad": "AZ Alkmaar",
      "name": "Matej Sin",
+     "starts": 0
+    },
+    {
+     "squad": "ADO Den Haag",
+     "name": "Alexander Veselov",
+     "starts": 0
+    },
+    {
+     "squad": "Ajax",
+     "name": "Kou Itakura",
+     "starts": 0
+    },
+    {
+     "squad": "Fortuna Sittard",
+     "name": "David Stockbrink",
      "starts": 0
     }
    ]
@@ -2477,8 +2477,8 @@
   },
   "espn_lineups_cups": {
    "total": 280,
-   "exact": 266,
-   "rule": 1,
+   "exact": 267,
+   "rule": 0,
    "ambiguous": 0,
    "orphan": 13,
    "orphans": [
