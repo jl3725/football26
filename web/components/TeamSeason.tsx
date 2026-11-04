@@ -42,7 +42,12 @@ export function useNarrow(q = "(max-width: 640px)") {
 function PointsChart({ me, refs, color, prov }: { me: PointsPath; refs: PointsPath[]; color: string; prov?: { pts: number; live: boolean } | null }) {
   // 폰에선 그림을 좁게 그려(viewBox) 글자가 6px 로 줄어들지 않게
   const narrow = useNarrow();
-  const W = narrow ? 340 : 560, H = narrow ? 180 : 190, L = 26, R = narrow ? 96 : 120, T = 12, B = 24;
+  const ctx = [me.team, ...refs.map((o) => o.team)];
+  const endLabel = (r: PointsPath) => `${r.label} ${clubShort(r.team, ctx)} ${r.path[r.path.length - 1] ?? 0}`;
+  // 오른쪽 여백 = 가장 긴 끝 라벨 폭(글자당 약 6.5) — 고정 96/120 이면 'West Bromwich' 같은 이름이 잘렸다
+  const longest = Math.max(4, ...refs.map((r) => endLabel(r).length));
+  const W = narrow ? 340 : 560, H = narrow ? 180 : 190, L = 26, T = 12, B = 24;
+  const R = Math.min(W * 0.45, Math.max(narrow ? 96 : 120, 14 + longest * (narrow ? 6.5 : 6.8)));
   const all = [me, ...refs].filter((p) => p.path.length);
   const n = Math.max(1, ...all.map((p) => p.path.length));
   const max = Math.max(3, ...all.map((p) => p.path[p.path.length - 1] ?? 0));
@@ -68,7 +73,7 @@ function PointsChart({ me, refs, color, prov }: { me: PointsPath; refs: PointsPa
       {refs.map((r) => r.path.length > 0 && (
         <g key={r.team} className="ts5-ref">
           <path d={line(r.path)} />
-          <text x={x(r.path.length - 1) + 8} y={endY[r.team] + 4}>{r.label} {clubShort(r.team, [me.team, ...refs.map((o) => o.team)])} {r.path[r.path.length - 1]}</text>
+          <text x={x(r.path.length - 1) + 8} y={endY[r.team] + 4}>{endLabel(r)}</text>
         </g>
       ))}
       {me.path.length > 0 && (

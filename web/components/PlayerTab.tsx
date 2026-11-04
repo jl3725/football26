@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { getPlayers, getPlayerDetail, getSimilar, getHeatmaps, fmtEur, foldName, type Players, type PlayerDetail, type SimilarResult, type HeatmapData } from "@/lib/api";
 import { tier, hexA, roleClass, futTier } from "@/lib/ui";
 import { lgEn } from "@/lib/match";
+import { clubShort } from "@/lib/names";
 import { pctMeaning, scoreMeaning, ovrBand, signTone, FORM_NOTE, RECENT_NOTE } from "@/lib/meaning";
 import { MeaningTag } from "./Meaning";
 import Radar from "./Radar";
@@ -361,7 +362,7 @@ function Detail({ team, player, accent, heatmap }: { team: string; player: strin
                   onClick={(e) => peek(e, { name: s.player, club: s.squad, hint: { pos: s.pos, age: s.age, value_eur: s.value_eur, logo: s.logo } })}>
                   {s.logo ? <img src={s.logo} alt="" /> : <span className="pd-sim-logo" />}
                   <span className="pd-sim-name">{s.player}</span>
-                  <span className="pd-sim-squad">{s.squad}{s.league && <em className={`pd-sim-lg${s.cross_league ? " x" : ""}`}>{lgEn(s.league) || s.league}</em>}</span>
+                  <span className="pd-sim-squad" title={s.squad}>{clubShort(s.squad, sim.map((o) => o.squad))}{s.league && <em className={`pd-sim-lg${s.cross_league ? " x" : ""}`}>{lgEn(s.league) || s.league}</em>}</span>
                   <span className="pd-sim-score" style={{ color: sm.c, whiteSpace: "nowrap", flexShrink: 0 }}
                     title={`스타일 유사도 ${s.score}% (${sm.label}) — 플레이 스타일 ${s.style} · 기록 ${s.perf}`}>
                     <span style={{ fontSize: 10, opacity: 0.7, fontWeight: 500, marginRight: 4 }}>유사도</span>{s.score}%
