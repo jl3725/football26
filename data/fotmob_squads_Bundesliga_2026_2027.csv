@@ -46,7 +46,7 @@ Dortmund,Felix Nmecha,966019,midfielders,"CDM,CM",Defensive Midfield,MF,26,2000-
 Dortmund,Maximilian Beier,1047667,midfielders,"CAM,LWB,ST,LM",Attacking Midfield,MF,24,2002-10-17,14.0,GER,False,,2026-11-04
 Dortmund,Carney Chukwuemeka,1089685,midfielders,CAM,Attacking Midfield,MF,23,2003-10-20,17.0,AUT,False,,2026-11-04
 Dortmund,Ethan Nwaneri,1254234,midfielders,"CAM,CM,RW",Attacking Midfield,MF,19,2007-03-21,18.0,ENG,False,,2026-11-04
-Dortmund,Marcel Sabitzer,215151,midfielders,"CDM,LW,CM,CAM",Defensive Midfield,MF,32,1994-03-17,20.0,AUT,False,,2026-11-04
+Dortmund,Marcel Sabitzer,215151,midfielders,"CDM,LW,CM,CAM",Defensive Midfield,MF,32,1994-03-17,20.0,AUT,True,About a week,2026-11-04
 Dortmund,Daniel Svensson,1209228,midfielders,"LWB,LM,RWB,CB,LB,RB,RM",Left-Back,MF,24,2002-02-12,24.0,SWE,False,,2026-11-04
 Dortmund,Joey Veerman,792429,midfielders,"CDM,CM",Defensive Midfield,MF,27,1998-11-19,25.0,NED,False,,2026-11-04
 Dortmund,Julian Ryerson,659272,midfielders,"RWB,RB,RM,LWB",Right-Back,MF,28,1997-11-17,26.0,NOR,False,,2026-11-04
@@ -154,7 +154,7 @@ Leverkusen,Niklas Lomb,358675,keepers,GK,Goalkeeper,GK,33,1993-07-28,36.0,GER,Fa
 Leverkusen,Facundo Medina,812652,defenders,"CB,LB",Centre-Back,DF,27,1999-05-28,2.0,ARG,False,,2026-11-04
 Leverkusen,Miguel Gutiérrez,942379,defenders,"LB,LWB,RWB",Left-Back,DF,25,2001-07-27,3.0,ESP,False,,2026-11-04
 Leverkusen,Jarell Quansah,1107620,defenders,"CB,RB",Centre-Back,DF,23,2003-01-29,4.0,ENG,False,,2026-11-04
-Leverkusen,Loic Badé,1119461,defenders,CB,Centre-Back,DF,26,2000-04-11,5.0,FRA,True,About a week,2026-11-04
+Leverkusen,Loic Badé,1119461,defenders,CB,Centre-Back,DF,26,2000-04-11,5.0,FRA,True,Doubtful,2026-11-04
 Leverkusen,Robert Andrich,411851,defenders,"CB,CDM",Centre-Back,DF,32,1994-09-22,8.0,GER,False,,2026-11-04
 Leverkusen,Edmond Tapsoba,789914,defenders,CB,Centre-Back,DF,27,1999-02-02,12.0,BFA,False,,2026-11-04
 Leverkusen,Tim Oermann,1381853,defenders,CB,Centre-Back,DF,23,2003-10-06,15.0,GER,False,,2026-11-04
@@ -166,7 +166,7 @@ Leverkusen,Malik Tillman,1126058,midfielders,"CAM,CDM,LW",Attacking Midfield,MF,
 Leverkusen,Martin Terrier,770136,midfielders,"CAM,ST",Attacking Midfield,MF,29,1997-03-04,11.0,FRA,True,Early December 2026,2026-11-04
 Leverkusen,Lucas Vázquez,359193,midfielders,"RWB,RB",Right-Back,MF,35,1991-07-01,17.0,ESP,False,,2026-11-04
 Leverkusen,Kennet Eichhorn,1793217,midfielders,CDM,Defensive Midfield,MF,17,2009-07-27,18.0,GER,True,Late November 2026,2026-11-04
-Leverkusen,Nathan Tella,877700,midfielders,CAM,Attacking Midfield,MF,27,1999-07-05,23.0,NGA,False,,2026-11-04
+Leverkusen,Nathan Tella,877700,midfielders,CAM,Attacking Midfield,MF,27,1999-07-05,23.0,NGA,True,About a week,2026-11-04
 Leverkusen,Aleix García,642551,midfielders,"CDM,CM",Defensive Midfield,MF,29,1997-06-28,24.0,ESP,False,,2026-11-04
 Leverkusen,Ibrahim Maza,1457626,midfielders,"CAM,CDM,CM,RW,ST,LW",Attacking Midfield,MF,20,2005-11-24,30.0,ALG,False,,2026-11-04
 Leverkusen,Montrell Culbreath,1793199,midfielders,"RWB,RW",Right-Back,MF,19,2007-08-29,42.0,GER,False,,2026-11-04
@@ -177,8 +177,8 @@ Leverkusen,Afonso Moreira,1367047,attackers,"LW,ST,LM",Left Winger,FW,21,2005-03
 Leverkusen,Patrik Schick,540097,attackers,"ST,CAM",Centre-Forward,FW,30,1996-01-24,14.0,CZE,False,,2026-11-04
 Leverkusen,Moussa Diaby,923498,attackers,"RW,LW,ST",Right Winger,FW,27,1999-07-07,19.0,FRA,True,Mid November 2026,2026-11-04
 Leverkusen,Victor Okoh Boniface,1035208,attackers,ST,Centre-Forward,FW,25,2000-12-23,22.0,NGA,False,,2026-11-04
-Leverkusen,Eliesse Ben Seghir,1393439,attackers,LW,Left Winger,FW,21,2005-02-16,29.0,MAR,True,About 1-2 weeks,2026-11-04
-Leverkusen,Christian Kofane,1705081,attackers,ST,Centre-Forward,FW,20,2006-07-26,35.0,CMR,True,A few weeks,2026-11-04
+Leverkusen,Eliesse Ben Seghir,1393439,attackers,LW,Left Winger,FW,21,2005-02-16,29.0,MAR,True,Doubtful,2026-11-04
+Leverkusen,Christian Kofane,1705081,attackers,ST,Centre-Forward,FW,20,2006-07-26,35.0,CMR,True,Doubtful,2026-11-04
 SV Elversberg,Frank Lehmann,94840,keepers,GK,Goalkeeper,GK,37,1989-04-29,1.0,GER,False,,2026-11-04
 SV Elversberg,Elias Etringer,2155059,keepers,,Goalkeeper,GK,18,2007-11-24,12.0,GER,False,,2026-11-04
 SV Elversberg,Nicolas Kristof,1285926,keepers,GK,Goalkeeper,GK,26,1999-12-20,20.0,AUT,False,,2026-11-04
@@ -517,8 +517,9 @@ Gladbach,Yukhym Konoplya,1054026,defenders,RB,Right-Back,DF,27,1999-08-26,22.0,U
 Gladbach,Lukas Ullrich,1398483,defenders,"LB,LWB,LM",Left-Back,DF,22,2004-03-16,26.0,GER,False,,2026-11-04
 Gladbach,Kevin Stöger,276739,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,33,1993-08-27,7.0,AUT,False,,2026-11-04
 Gladbach,Enzo Leopold,1301517,midfielders,"CM,CDM,CB",Central Midfield,MF,26,2000-07-23,8.0,GER,True,Late May 2027,2026-11-04
-Gladbach,Florian Neuhaus,764507,midfielders,"CM,CAM,CDM",Central Midfield,MF,29,1997-03-16,10.0,GER,False,,2026-11-04
+Gladbach,Florian Neuhaus,764507,midfielders,"CM,CDM,CAM",Central Midfield,MF,29,1997-03-16,10.0,GER,False,,2026-11-04
 Gladbach,Jens Castrop,1185902,midfielders,"LWB,CM,RM,RWB,LM,LW",Left-Back,MF,23,2003-07-29,17.0,KOR,False,,2026-11-04
+Gladbach,Robin Hack,884919,midfielders,"CAM,LW",Attacking Midfield,MF,28,1998-08-27,25.0,GER,False,,2026-11-04
 Gladbach,Fritz Fleck,1838513,midfielders,,Central Midfield,MF,19,2007-05-30,27.0,GER,True,About 1-2 weeks,2026-11-04
 Gladbach,Joseph Scally,959696,midfielders,"RWB,RM,RB,CB",Right-Back,MF,23,2002-12-31,29.0,USA,False,,2026-11-04
 Gladbach,Mathieu Nguefack,1975572,midfielders,CDM,Defensive Midfield,MF,18,2008-05-14,34.0,GER,False,,2026-11-04
@@ -531,5 +532,4 @@ Gladbach,Franck Honorat,501543,attackers,"ST,CAM,RW",Centre-Forward,FW,30,1996-0
 Gladbach,Tim Kleindienst,442728,attackers,ST,Centre-Forward,FW,31,1995-08-31,11.0,GER,True,About 1-2 weeks,2026-11-04
 Gladbach,Shuto Machino,915111,attackers,"ST,CAM",Centre-Forward,FW,27,1999-09-30,18.0,JPN,False,,2026-11-04
 Gladbach,Nicolas-Gerrit Kühn,888745,attackers,RW,Right Winger,FW,26,2000-01-01,19.0,GER,True,About 1-2 weeks,2026-11-04
-Gladbach,Robin Hack,884919,attackers,"CAM,LW",Attacking Midfield,FW,28,1998-08-27,25.0,GER,False,,2026-11-04
 Gladbach,Iaia Manco Danfa,1904630,attackers,ST,Centre-Forward,FW,19,2007-04-06,39.0,GNB,False,,2026-11-04

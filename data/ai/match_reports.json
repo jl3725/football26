@@ -3007,6 +3007,30 @@
    "away": "Eyüpspor",
    "at": "2026-11-04T18:07:40+00:00",
    "model": "gemini-3.5-flash"
+  },
+  "401915382": {
+   "text": "Fenerbahce가 Liverpool을 상대로 3-2 역전승을 거두었다. 전반 25' Liverpool의 Trey Nyoni가 선제골을 넣었으나, 29' Fenerbahce의 Mason Greenwood가 동점골을 넣었고, 이후 69' Alexander Isak, 73' Archie Brown, 79' Vedat Muriqi의 득점이 이어지며 승부가 갈렸다. Liverpool이 점유율 67.6%와 슈팅 22개로 경기를 주도했으나 유효 슈팅은 6개로 양팀이 같았다. Liverpool의 승리를 예상했던 팬 투표와 Elo 예측은 빗나갔다.",
+   "date": "2026-11-04",
+   "home": "Fenerbahce",
+   "away": "Liverpool",
+   "at": "2026-11-04T20:18:01+00:00",
+   "model": "gemini-flash-lite-latest"
+  },
+  "401915383": {
+   "text": "Real Madrid가 AEK Athens와의 챔피언스리그 경기에서 3-2로 승리했다. 전반 12분 Aboubakary Koita의 선제골로 AEK Athens가 앞서갔으나, Jude Bellingham, Kylian Mbappé, Federico Valverde의 득점이 터진 Real Madrid가 경기를 뒤집었고 후반 90'+5'에는 Aboubakary Koita가 퇴장당했다. 점유율 69.6%와 슈팅 24-9 등 내용에서 Real Madrid가 우세했다. 팬 투표와 Elo 예측은 모두 Real Madrid 승리를 예상하여 적중했다.",
+   "date": "2026-11-04",
+   "home": "AEK Athens",
+   "away": "Real Madrid",
+   "at": "2026-11-04T20:18:20+00:00",
+   "model": "gemini-flash-lite-latest"
+  },
+  "6106330": {
+   "text": "Fenerbahçe가 Liverpool을 상대로 3-2 역전승을 거두며 챔피언스리그 경기를 마무리했다. 경기 전 팬 투표와 Elo 예측에서 82%와 62 확률로 Liverpool의 승리가 점쳐졌으나 이 예측은 빗나갔다. 전반 25' Trey Nyoni의 선제골로 Liverpool이 앞서갔으나 29' Mason Greenwood의 득점으로 균형이 맞춰졌고, 69' Alexander Isak의 헤더 골 이후 73' Archie Brown과 79' Vedat Muriqi의 헤더 득점이 이어지며 승부가 뒤집혔다. Liverpool이 점유율 68%와 슈팅 22개를 기록하며 공세 헸으나 유효 슈팅은 6-6으로 같았다.",
+   "date": "2026-11-04",
+   "home": "Fenerbahçe",
+   "away": "Liverpool",
+   "at": "2026-11-04T20:18:28+00:00",
+   "model": "gemini-flash-lite-latest"
   }
  },
  "fails": {}
