@@ -19,7 +19,7 @@ Arsenal,Declan Rice,654096,midfielders,"CDM,CM",Defensive Midfield,MF,27,1999-01
 Arsenal,Myles Lewis-Skelly,1406436,midfielders,"CDM,LB,CM",Defensive Midfield,MF,20,2006-09-26,49.0,ENG,False,,2026-11-04
 Arsenal,Bukayo Saka,961995,attackers,"RW,CAM",Right Winger,FW,25,2001-09-05,7.0,ENG,True,Mid November 2026,2026-11-04
 Arsenal,Viktor Gyökeres,664500,attackers,ST,Centre-Forward,FW,28,1998-06-04,14.0,SWE,False,,2026-11-04
-Arsenal,Christos Tzolis,1157237,attackers,"LW,LM,RW,CAM",Left Winger,FW,24,2002-01-30,17.0,GRE,False,,2026-11-04
+Arsenal,Christos Tzolis,1157237,attackers,"LW,LM,CAM",Left Winger,FW,24,2002-01-30,17.0,GRE,False,,2026-11-04
 Arsenal,Noni Madueke,1084981,attackers,"RW,LW",Right Winger,FW,24,2002-03-10,20.0,ENG,False,,2026-11-04
 Arsenal,Kai Havertz,749736,attackers,"ST,CAM,CM",Centre-Forward,FW,27,1999-06-11,29.0,GER,False,,2026-11-04
 Arsenal,Max Dowman,1635773,attackers,"RW,CAM,CM",Right Winger,FW,16,2009-12-31,56.0,ENG,False,,2026-11-04
@@ -121,7 +121,7 @@ Liverpool,Jeremie Frimpong,966018,defenders,"RB,RW",Right-Back,DF,25,2000-12-10,
 Liverpool,Ronald Araujo,921253,defenders,"CB,RB",Centre-Back,DF,27,1999-03-07,33.0,URU,False,,2026-11-04
 Liverpool,Dominik Szoboszlai,846005,midfielders,"CDM,CAM,RW,RB,LW",Defensive Midfield,MF,26,2000-10-25,8.0,HUN,False,,2026-11-04
 Liverpool,Alexis Mac Allister,831489,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,27,1998-12-24,10.0,ARG,False,,2026-11-04
-Liverpool,Ryan Gravenberch,956683,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,24,2002-05-16,38.0,NED,True,A few days,2026-11-04
+Liverpool,Ryan Gravenberch,956683,midfielders,"CDM,CM,CB",Defensive Midfield,MF,24,2002-05-16,38.0,NED,True,A few days,2026-11-04
 Liverpool,Trey Nyoni,1436258,midfielders,"CDM,CM",Defensive Midfield,MF,19,2007-06-30,42.0,ENG,False,,2026-11-04
 Liverpool,James McConnell,1231075,midfielders,"CDM,CAM",Defensive Midfield,MF,22,2004-09-13,53.0,ENG,False,,2026-11-04
 Liverpool,Florian Wirtz,1152455,attackers,"CAM,LW,ST",Attacking Midfield,FW,23,2003-05-03,7.0,GER,False,,2026-11-04
@@ -129,7 +129,7 @@ Liverpool,Alexander Isak,690107,attackers,ST,Centre-Forward,FW,27,1999-09-21,9.0
 Liverpool,Federico Chiesa,784510,attackers,"RW,ST",Right Winger,FW,29,1997-10-25,14.0,ITA,False,,2026-11-04
 Liverpool,Cody Gakpo,806552,attackers,"LW,ST,RW",Left Winger,FW,27,1999-05-07,18.0,NED,False,,2026-11-04
 Liverpool,Hugo Ekitiké,1197030,attackers,"ST,LW",Centre-Forward,FW,24,2002-06-20,22.0,FRA,True,Early January 2027,2026-11-04
-Liverpool,Víctor Muñoz,1553105,attackers,"LW,RW,LM",Left Winger,FW,23,2003-07-13,23.0,ESP,False,,2026-11-04
+Liverpool,Víctor Muñoz,1553105,attackers,"LW,RW",Left Winger,FW,23,2003-07-13,23.0,ESP,False,,2026-11-04
 Liverpool,Bradley Barcola,1297165,attackers,"LW,RW,ST",Left Winger,FW,24,2002-09-02,29.0,FRA,False,,2026-11-04
 Liverpool,Lewis Koumas,1364042,attackers,"ST,LW,CAM,RW",Centre-Forward,FW,21,2005-09-19,67.0,WAL,False,,2026-11-04
 Liverpool,Rio Ngumoha,1597668,attackers,"LW,RW",Left Winger,FW,18,2008-08-29,73.0,ENG,False,,2026-11-04
@@ -293,12 +293,12 @@ Hull City,Matt Crooks,280507,midfielders,"CDM,CM,CAM,ST",Defensive Midfield,MF,3
 Hull City,Kieran Dowell,605262,midfielders,CAM,Attacking Midfield,MF,29,1997-10-10,26.0,ENG,False,,2026-11-04
 Hull City,Regan Slater,807930,midfielders,"CDM,CM",Defensive Midfield,MF,27,1999-09-11,27.0,ENG,False,,2026-11-04
 Hull City,Lucas Gourna-Douath,1137106,midfielders,"CDM,CM",Defensive Midfield,MF,23,2003-08-05,29.0,FRA,True,Doubtful,2026-11-04
-Hull City,Abdülkadir Ömür,704138,midfielders,"RW,CAM,CM",Right Winger,MF,27,1999-06-25,33.0,TUR,False,,2026-11-04
 Hull City,Christos Mouzakitis,1574198,midfielders,CDM,Defensive Midfield,MF,19,2006-12-25,36.0,GRE,False,,2026-11-04
 Hull City,Tim Iroegbunam,1203512,midfielders,"CDM,CM",Defensive Midfield,MF,23,2003-06-30,42.0,ENG,False,,2026-11-04
 Hull City,Sorba Thomas,812982,attackers,"LW,RB,LM,RW,RWB",Left Winger,FW,27,1999-01-25,7.0,WAL,False,,2026-11-04
 Hull City,Oli McBurnie,509151,attackers,ST,Centre-Forward,FW,30,1996-06-04,9.0,SCO,False,,2026-11-04
 Hull City,Ilyas Ansah,1515977,attackers,"CAM,ST,LW",Attacking Midfield,FW,21,2004-11-08,28.0,GER,True,Early November 2026,2026-11-04
+Hull City,Abdülkadir Ömür,704138,attackers,"RW,CAM",Right Winger,FW,27,1999-06-25,33.0,TUR,False,,2026-11-04
 Hull City,Robinio Vaz,1705134,attackers,ST,Centre-Forward,FW,19,2007-02-17,47.0,FRA,False,,2026-11-04
 Hull City,Mohamed-Ali Cho,1180718,attackers,"RW,ST,CAM,RM",Right Winger,FW,22,2004-01-19,50.0,FRA,False,,2026-11-04
 Leeds United,James Trafford,1187213,keepers,GK,Goalkeeper,GK,24,2002-10-10,1.0,ENG,False,,2026-11-04
@@ -476,7 +476,7 @@ Crystal Palace,Tyrick Mitchell,1120224,midfielders,"LWB,LM",Left-Back,MF,27,1999
 Crystal Palace,Jefferson Lerma,466672,midfielders,"CDM,CB,CM",Defensive Midfield,MF,32,1994-10-25,8.0,COL,False,,2026-11-04
 Crystal Palace,Edward Nketiah,860920,midfielders,"CAM,ST",Attacking Midfield,MF,27,1999-05-30,9.0,ENG,False,,2026-11-04
 Crystal Palace,Yéremi Pino,1047676,midfielders,"CAM,LW,RW",Attacking Midfield,MF,24,2002-10-20,10.0,ESP,False,,2026-11-04
-Crystal Palace,Zavier Gozo,1455818,midfielders,"RWB,RM,RW",Right-Back,MF,19,2007-03-22,12.0,USA,False,,2026-11-04
+Crystal Palace,Zavier Gozo,1455818,midfielders,"RWB,RM,RW,CAM",Right-Back,MF,19,2007-03-22,12.0,USA,False,,2026-11-04
 Crystal Palace,Daichi Kamada,621515,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,30,1996-08-05,18.0,JPN,False,,2026-11-04
 Crystal Palace,Will Hughes,295067,midfielders,"CDM,CM",Defensive Midfield,MF,31,1995-04-17,19.0,ENG,False,,2026-11-04
 Crystal Palace,Adam Wharton,1296650,midfielders,"CDM,CM",Defensive Midfield,MF,22,2004-02-06,20.0,ENG,False,,2026-11-04
@@ -524,7 +524,7 @@ Sunderland,Luke O'Nien,480253,defenders,CB,Centre-Back,DF,31,1994-11-21,13.0,ENG
 Sunderland,Omar Alderete,751998,defenders,CB,Centre-Back,DF,29,1996-12-26,15.0,PAR,False,,2026-11-04
 Sunderland,Reinildo,600524,defenders,"LB,LWB,CB",Left-Back,DF,32,1994-01-21,17.0,MOZ,False,,2026-11-04
 Sunderland,Nordi Mukiele,602304,defenders,"RB,CB",Right-Back,DF,29,1997-11-01,20.0,FRA,True,Doubtful,2026-11-04
-Sunderland,Trai Hume,1067763,defenders,"RW,RB,RWB,LB,RM,CB",Right Winger,DF,24,2002-03-18,32.0,NIR,False,,2026-11-04
+Sunderland,Trai Hume,1067763,defenders,"RW,RB,RWB,LB,CB,RM",Right Winger,DF,24,2002-03-18,32.0,NIR,False,,2026-11-04
 Sunderland,Ajibola Alese,963940,defenders,CB,Centre-Back,DF,25,2001-01-17,42.0,ENG,False,,2026-11-04
 Sunderland,Dayann Méthalie,1664716,midfielders,"LWB,LB",Left-Back,MF,20,2006-02-15,6.0,FRA,False,,2026-11-04
 Sunderland,Alan Browne,434498,midfielders,"CDM,CAM,RB,CM,RM",Defensive Midfield,MF,31,1995-04-15,8.0,IRL,False,,2026-11-04
