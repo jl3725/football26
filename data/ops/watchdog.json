@@ -1,5 +1,5 @@
 {
- "checked": "2026-11-03T15:32:13+00:00",
+ "checked": "2026-11-04T15:49:17+00:00",
  "results": {
   "ovr": [],
   "season": [],
@@ -7,43 +7,33 @@
   "frontend": [],
   "backend": [],
   "workflows": [
-   "daily_data.yml 최근 실행 failure (2026-11-03T12:14) https://github.com/jl3725/football26/actions/runs/41634027899",
-   "ci.yml 최근 실행 failure (2026-11-03T06:40) https://github.com/jl3725/football26/actions/runs/41591333444"
+   "ci.yml 최근 실행 failure (2026-11-04T00:06) https://github.com/jl3725/football26/actions/runs/41744280792"
   ],
   "news": [
-   "news.db 압축본 62MB — GitHub 50MB 경고 구간(60MB 넘으면 넓힌 원천의 14일 지난 비이적 기사를 자동 정리, 90MB 넘으면 올리기 거부 — src/news_store.py)"
+   "news.db 압축본 65MB — GitHub 50MB 경고 구간(60MB 넘으면 넓힌 원천의 14일 지난 비이적 기사를 자동 정리, 90MB 넘으면 올리기 거부 — src/news_store.py)"
   ],
   "tm_agent": [],
-  "coverage": [],
+  "coverage": [
+   "Championship 감독 프로필 누락 ['West Ham United'] — daily_data 감독 수집 단계 확인"
+  ],
   "rating_history": [],
   "ratings": [
    "스카우트 기준 이탈: Jeremy Doku 89 (기대 82~86)"
   ],
   "names": [],
   "xg": [],
-  "agents": [
-   "NEWS · 뉴스 수집·분류·번역 — 마지막 성공 9시간 전(허용 6시간, daily_news)",
-   "ANALYST · AI 팀 뉴스 요약 — 마지막 성공 9시간 전(허용 8시간, daily_news)"
-  ],
+  "agents": [],
   "expectations": [],
   "screen": [],
   "squads": [],
   "identity": [],
   "fair_price": [],
   "progress": [
-   "EPL FBref 선수 표(주간)(players) 늦음: 팀당 6경기분 · 일정 9경기(가운데 값 3경기 늦음)",
-   "LaLiga FBref 선수 표(주간)(players) 늦음: 팀당 8경기분 · 일정 11경기(가운데 값 3경기 늦음)",
    "LaLiga StatBunker 팀 통계(statbunker_team_stats) 팀 누락: 팀 1곳 경기분이 절반 이하·없음 — Alavés(0/11) (팀 이름 매칭 확인)",
-   "Bundesliga FBref 선수 표(주간)(players) 늦음: 팀당 5경기분 · 일정 8경기(가운데 값 3경기 늦음)",
-   "SerieA FBref 선수 표(주간)(players) 늦음: 팀당 6경기분 · 일정 10경기(가운데 값 4경기 늦음)",
    "SerieA StatBunker 팀 통계(statbunker_team_stats) 늦음: 팀당 6경기분 · 일정 10경기(가운데 값 4경기 늦음)",
-   "Ligue1 FBref 선수 표(주간)(players) 늦음: 팀당 6경기분 · 일정 9경기(가운데 값 3경기 늦음)",
-   "Ligue1 Understat xG(understat_players) 팀 누락: 팀 1곳 경기분이 절반 이하·없음 — Rennes(1.8/9) (팀 이름 매칭 확인)",
-   "LigaPortugal FBref 선수 표(주간)(players) 늦음: 팀당 8경기분 · 일정 10경기(가운데 값 2경기 늦음)",
-   "Eredivisie FBref 선수 표(주간)(players) 늦음: 팀당 8경기분 · 일정 11경기(가운데 값 3경기 늦음)",
-   "BelgianProLeague FBref 선수 표(주간)(players) 늦음: 팀당 8경기분 · 일정 10경기(가운데 값 2경기 늦음)"
+   "Ligue1 Understat xG(understat_players) 팀 누락: 팀 1곳 경기분이 절반 이하·없음 — Rennes(1.8/9) (팀 이름 매칭 확인)"
   ],
   "digest": []
  },
- "ai_cause": "**workflows**\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인)\n**news**\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인)\n**ratings**\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인)\n**agents**\n- 외부 데이터 소스(understat_live)의 반복적인 연결 오류(code 1, 75)로 인해 수집이 지연되고 있습니다. (match_refresh, understat_live 추정)\n- 이후 실행된 daily_data 워크플로우에서 statbunker 데이터 수집이 실패하며 전체 프로세스가 중단되었습니다. (daily_data, statbunker 추정)\n**progress**\n- understat_live 단계의 지속적인 오류로 인해 실시간 매치 데이터 갱신이 원활하지 않습니다. (match_refresh, understat_live 추정)\n- statbunker 데이터 수집 실패로 인해 EPL, LaLiga, SerieA 등 주요 리그의 통계 업데이트가 누락되거나 지연되고 있습니다. (daily_data, statbunker 추정)"
+ "ai_cause": "각 점검 항목에 대한 분석 결과입니다.\n**workflows**\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인)\n**news**\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인)\n**coverage**\n- `statbunker` 및 `uefa_coefficients` 단계에서 코드 1 오류가 반복 발생하여 데이터 수집이 중단됨(daily_data 단계 추정)\n- 해당 단계의 실행 로그를 확인하여 외부 API 응답 오류인지 스크립트 내부 예외인지 먼저 확인 필요(daily_data 단계 추정)\n**ratings**\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인)\n**progress**\n- `statbunker` 단계에서 404 오류 및 코드 1 오류가 발생하여 팀 통계 데이터가 누락됨(statbunker 단계 추정)\n- `understat_live` 단계에서 코드 75 및 1 오류가 발생하여 Rennes 팀의 xG 데이터 수집이 실패함(match_refresh 단계 추정)\n- 외부 원천(StatBunker, Understat)의 접속 가능 여부와 URL 변경 여부를 먼저 확인해야 함(statbunker 및 understat_live 단계 추정)"
 }
