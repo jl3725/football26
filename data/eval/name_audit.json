@@ -1322,8 +1322,8 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 182,
-   "exact": 173,
+   "total": 183,
+   "exact": 174,
    "rule": 1,
    "ambiguous": 0,
    "orphan": 8,
@@ -2476,11 +2476,11 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 259,
-   "exact": 246,
+   "total": 280,
+   "exact": 266,
    "rule": 1,
    "ambiguous": 0,
-   "orphan": 12,
+   "orphan": 13,
    "orphans": [
     {
      "squad": "Fenerbahçe",
@@ -2530,6 +2530,11 @@
     {
      "squad": "Beşiktaş",
      "name": "Devrim Sahin",
+     "starts": 0
+    },
+    {
+     "squad": "Eyüpspor",
+     "name": "Halil Balta",
      "starts": 0
     },
     {
