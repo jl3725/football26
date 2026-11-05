@@ -64,5 +64,6 @@ def health():
 def ops_status():
     """DATA STATUS — 에이전트 레지스트리 × 실행 원장(data/ops/runs) × watchdog 결과.
     에이전트·feed 별 마지막 성공, 허용 지연 초과(지연), 최근 실패 단계. 화면: /status."""
-    import ops_status as ops   # noqa: PLC0415 — 요청 때만(원장은 데이터 커밋마다 새 배포로 갱신)
+    import ops_status as ops   # noqa: PLC0415 — 요청 때만
+    live_sync.refresh_small()  # 원장이 5분 넘게 묵었으면 지금 받는다 — 깨어난 직후 하루 전 원장으로 '지연 19건'(2026-11-05)
     return ops.build_status()

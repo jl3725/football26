@@ -33,7 +33,11 @@ import requests
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
 SMALL = ["data/ai/news_digest.json", "data/news_claims.csv", "data/news_reliability.csv", "data/ops/watchdog.json"]
-SMALL_EVERY, NEWS_EVERY, DATA_EVERY, FIRST_WAIT = 30 * 60, 2 * 3600, 3 * 60, 90
+# 작은 파일(실행 원장 등)은 10분마다 — 30분이면 DATA STATUS 가 그만큼 늦었고, 서버가 깨어난 직후엔 배포 시점(하루 전) 원장으로
+# 계산해 '지연 19건'으로 보였다(2026-11-05 사용자). 화면이 열릴 때도 5분 넘게 묵었으면 바로 받는다(refresh_small)
+SMALL_EVERY, NEWS_EVERY, DATA_EVERY, FIRST_WAIT = 10 * 60, 2 * 3600, 3 * 60, 90
+SMALL_FRESH = 5 * 60
+_SMALL_LOCK = threading.Lock()
 # 실행 중 DB 교체 최소 간격 · 데우는 중엔 교체 미룸 — 교체마다 캐시를 다 비우고 다시 데우는데(운영 0.1 CPU 로 수 분),
 # 경기일엔 배포본이 10~15분마다 바뀌어(11/1 하루 29번) 서버가 거의 늘 데우는 중이었고, 데우기가 겹치면 메모리가 넘쳐
 # 재시작됐다(2026-11-03 사용자 '운영이 자꾸 느리고 안 뜬다'). 방금 경기 평점(JUST PLAYED)은 Vercel 이 따로 받아 영향 없음
@@ -326,6 +330,31 @@ def sync_small(get=requests.get) -> int:
     return n
 
 
+def refresh_small(max_age: float = SMALL_FRESH) -> bool:
+    """DATA STATUS 처럼 작은 파일(실행 원장)을 바로 읽는 화면이 열릴 때 — 마지막 받은 지 max_age 초가 넘었으면 지금 받는다.
+    이미 받는 중이면(다른 요청·루프) 기다리지 않고 지나간다. 받았으면 True."""
+    if not enabled():
+        return False
+    at = STATE.get("small_at") or ""
+    if at:
+        try:
+            age = (dt.datetime.now(dt.timezone.utc) - dt.datetime.fromisoformat(at)).total_seconds()
+            if age < max_age:
+                return False
+        except ValueError:
+            pass
+    if not _SMALL_LOCK.acquire(blocking=False):
+        return False
+    try:
+        sync_small()
+        return True
+    except Exception as e:  # noqa: BLE001
+        STATE["last_error"] = f"{type(e).__name__}: {str(e)[:120]}"
+        return False
+    finally:
+        _SMALL_LOCK.release()
+
+
 def sync_news(get=requests.get) -> bool:
     """원격 뉴스 DB 가 바뀌었으면 받아서 news_view.db 를 갈아 끼운다. 바꿨으면 True."""
     import news_store  # noqa: PLC0415
@@ -373,15 +402,16 @@ def _loop() -> None:
     while True:
         now = time.monotonic()
         try:
+            if now - last_small >= SMALL_EVERY:                    # 작은 파일 먼저 — 몇 초면 끝나 DATA STATUS 가 바로 맞는다
+                last_small = now
+                with _SMALL_LOCK:
+                    sync_small()
             if now - last_data >= DATA_EVERY:
                 last_data = now
                 sync_data()
             if now - last_news >= NEWS_EVERY:
                 last_news = now
                 sync_news()
-            if now - last_small >= SMALL_EVERY:
-                last_small = now
-                sync_small()
         except Exception as e:  # noqa: BLE001 — 받기 실패는 다음 차례에(서비스엔 영향 없음)
             STATE["last_error"] = f"{type(e).__name__}: {str(e)[:120]}"
             print(f"[live-sync] 실패 {STATE['last_error']}", flush=True)
