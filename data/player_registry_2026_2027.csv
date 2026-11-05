@@ -87,7 +87,7 @@ Brentford,tm469050,Nathan Collins,469050,Nathan Collins,players_full,100
 Brentford,tm339556,Rico Henry,339556,Rico Henry,players_full,100
 Brentford,tm541231,Sepp van den Berg,541231,Sepp van den Berg,players_full,100
 Brentford,tm270171,Vitaly Janelt,270171,Vitaly Janelt,players_full,100
-Brentford,pf:Brentford:yehor yarmoliuk,Yehor Yarmoliuk,,Yehor Yarmoliuk,players_full,100
+Brentford,pf:Brentford:yehor yarmoliuk,Yehor Yarmoliuk,717411,Yehor Yarmoliuk,players_full,100
 Brighton,tm565093,Bart Verbruggen,565093,Bart Verbruggen,players_full,100
 Brighton,tm1060087,Charalampos Kostoulas,1060087,Charalampos Kostoulas,players_full,100
 Brighton,pf:Brighton:chema,Chema,,Chema,players_full,100
@@ -524,7 +524,7 @@ Brentford,tm456292,Ellery Balcombe,456292,Ellery Balcombe,transfermarkt_contract
 Brentford,tm709767,Ji-soo Kim,709767,Ji-soo Kim,transfermarkt_contracts,100
 Brentford,tm1071138,Benjamin Fredrick,1071138,Benjamin Fredrick,transfermarkt_contracts,100
 Brentford,tm808348,Mamadou Sangare,808348,Mamadou Sangaré,transfermarkt_contracts,99
-Brentford,tm717411,Yegor Yarmolyuk,717411,Yegor Yarmolyuk,transfermarkt_contracts,100
+Brentford,pf:Brentford:yehor yarmoliuk,Yehor Yarmoliuk,717411,Yegor Yarmolyuk,transfermarkt_contracts,100
 Brentford,tm340321,Josh Dasilva,340321,Josh Dasilva,transfermarkt_contracts,100
 Brentford,tm683620,Antoni Milambo,683620,Antoni Milambo,transfermarkt_contracts,100
 Brentford,tm559263,Fabio Carvalho,559263,Fábio Carvalho,transfermarkt_contracts,99
@@ -603,7 +603,7 @@ Hull City,pf:Hull City:mohamed ali cho,Mohamed Ali Cho,,Mohamed-Ali Cho,transfer
 Hull City,tm271495,Abdülkadir Ömür,271495,Abdülkadir Ömür,transfermarkt_contracts,100
 Hull City,tm1035765,Ilyas Ansah,1035765,Ilyas Ansah,transfermarkt_contracts,100
 Hull City,pf:Hull City:oliver mcburnie,Oliver McBurnie,,Oli McBurnie,transfermarkt_contracts,80
-Brentford,tm717411,Yegor Yarmolyuk,717411,Yehor Yarmolyuk,wiki_squads,80
+Brentford,pf:Brentford:yehor yarmoliuk,Yehor Yarmoliuk,717411,Yehor Yarmolyuk,wiki_squads,80
 Brentford,tm709767,Ji-soo Kim,709767,Kim Ji-soo,wiki_squads,95
 Crystal Palace,tm568157,Yéremy Pino,568157,Yeremy Pino,wiki_squads,100
 Everton,tm404842,Vitaliy Mykolenko,404842,Vitalii Mykolenko,wiki_squads,80
@@ -723,3 +723,40 @@ Ipswich Town,pf:Ipswich Town:jaden philogene bidace,Jaden Philogene Bidace,,Jade
 Aston Villa,tm184573,Victor Lindelöf,184573,Victor Nilsson Lindelöf,fotmob_ratings,85
 Brentford,tm1111589,El Hadji Malick Diouf,1111589,Malick Diouf,fotmob_ratings,85
 Crystal Palace,tm340324,Eddie Nketiah,340324,Edward Nketiah,fotmob_minutes,65
+Arsenal,tm435338,Gabriel Magalhães,435338,Gabriel Magalhaes,s365_ratings,100
+Arsenal,tm316264,Martin Ødegaard,316264,Martin Odegaard,s365_ratings,100
+Arsenal,tm659813,Piero Hincapié,659813,Piero Hincapie,s365_ratings,100
+Aston Villa,tm184573,Victor Lindelöf,184573,Victor Lindelof,s365_ratings,100
+Aston Villa,pf:Aston Villa:emi buendia,Emi Buendía,,Emilliano Buendía,s365_ratings,80
+Bournemouth,tm650568,António Silva,650568,Antonio Silva,s365_ratings,100
+Bournemouth,tm719673,Ben Gannon-Doak,719673,Ben Doak,s365_ratings,60
+Bournemouth,pf:Bournemouth:eli junior kroupi,Eli Junior Kroupi,,Eli Kroupi,s365_ratings,85
+Brentford,tm340918,Caoimhín Kelleher,340918,Caoimhin Kelleher,s365_ratings,100
+Brentford,tm644401,Keane Lewis-Potter,644401,Keane Lewis Potter,s365_ratings,100
+Brentford,tm823486,Michael Kayode,823486,Michael  Kayode,s365_ratings,100
+Brentford,tm541231,Sepp van den Berg,541231,Sepp Van den Berg,s365_ratings,100
+Brighton,tm996897,Diego Gómez,996897,Diego Gomez,s365_ratings,100
+Brighton,tm429915,Maxim De Cuyper,429915,Maxim de Cuyper,s365_ratings,100
+Chelsea,tm111873,Emiliano Martínez,111873,Emiliano Martinez,s365_ratings,100
+Chelsea,tm687626,Moisés Caicedo,687626,Moises Caicedo,s365_ratings,100
+Chelsea,tm849410,Valentín Barco,849410,Valentin Barco,s365_ratings,100
+Chelsea,pf:Chelsea:robert sanchez,Robert Sánchez,,Robert Sanchez,s365_ratings,100
+Crystal Palace,tm296802,Walter Benítez,296802,Walter Benitez,s365_ratings,100
+Crystal Palace,tm420002,Jean-Philippe Mateta,420002,Jean Philippe Mateta,s365_ratings,100
+Crystal Palace,tm331505,Óscar Mingueza,331505,Oscar Mingueza,s365_ratings,100
+Everton,tm148367,Christian Nørgaard,148367,Christian Norgaard,s365_ratings,100
+Fulham,tm392765,Emile Smith Rowe,392765,Emile Smith-Rowe,s365_ratings,100
+Hull City,pf:Hull City:bachir belloumi,Bachir Belloumi,857079,Mohamed Bachir Belloumi,s365_ratings,85
+Ipswich Town,pf:Ipswich Town:abdul fatawu issahaku,Abdul Fatawu Issahaku,,Issahaku Fatawu,s365_ratings,95
+Ipswich Town,tm991487,Abdoul Ouattara,991487,Abdoul Kader Ouattara,s365_ratings,85
+Ipswich Town,pf:Ipswich Town:florentino luis,Florentino Luís,,Florentino Luis,s365_ratings,100
+Leeds United,pf:Leeds United:jean matteo bahoya,Jean Mattéo Bahoya,,Jean Bahoya,s365_ratings,85
+Manchester City,tm258004,Rúben Dias,258004,Ruben Dias,s365_ratings,100
+Manchester City,tm648195,Enzo Fernández,648195,Enzo Fernandez,s365_ratings,100
+Manchester Utd,tm480762,Lisandro Martínez,480762,Lisandro Martinez,s365_ratings,100
+Newcastle United,tm1067904,Bazoumana Touré,1067904,Bazoumana Toure,s365_ratings,100
+Nottingham Forest,tm493003,Daniel Muñoz,493003,Daniel Munoz,s365_ratings,100
+Nottingham Forest,tm375885,Ibrahim Sangaré,375885,Ibrahim Sangare,s365_ratings,100
+Nottingham Forest,tm497291,Nicolás Domínguez,497291,Nicolas Dominguez,s365_ratings,100
+Sunderland,tm633992,Enzo Le Fée,633992,Enzo Le Fee,s365_ratings,100
+Tottenham Hotspur,pf:Tottenham Hotspur:savio,Sávio,,Savinho,fotmob_minutes,65

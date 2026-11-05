@@ -143,7 +143,7 @@ Hartberg,tm291090,Lukas Fridrikas,291090,Lukas Fridrikas,players_full,100
 LASK,tm629011,Lukas Jungwirth,629011,Lukas Jungwirth,players_full,100
 LASK,tm640432,Xavier Mbuyamba,640432,Xavier Mbuyamba,players_full,100
 LASK,tm403808,Andrés Andrade,403808,Andrés Andrade,players_full,100
-LASK,pf:LASK:alemao,Alemão,,Alemão,players_full,100
+LASK,pf:LASK:alemao,Alemão,1005651,Alemão,players_full,100
 LASK,tm186365,Sascha Horvath,186365,Sascha Horvath,players_full,100
 LASK,tm476915,Melayro Bogarde,476915,Melayro Bogarde,players_full,100
 LASK,tm527589,Christoph Lang,527589,Christoph Lang,players_full,100
@@ -209,7 +209,7 @@ Ried,tm742018,Dejan Radonjić,742018,Dejan Radonjić,players_full,100
 Ried,tm985139,Jaedin Rhodes,985139,Jaedin Rhodes,players_full,100
 Ried,tm195745,Martin Rasner,195745,Martin Rasner,players_full,100
 Ried,tm960444,Oliver Sorg,960444,Oliver Sorg,players_full,100
-Ried,pf:Ried:niama sissoko,Niama Sissoko,,Niama Sissoko,players_full,100
+Ried,pf:Ried:niama sissoko,Niama Sissoko,1228320,Niama Sissoko,players_full,100
 Ried,tm805503,Fabian Rossdorfer,805503,Fabian Rossdorfer,players_full,100
 Ried,tm205902,Luka Capan,205902,Luka Capan,players_full,100
 Ried,tm1116031,Joris Boguo,1116031,Joris Boguo,players_full,100
@@ -363,7 +363,7 @@ Sturm Graz,tm960463,Jacob Hödl,960463,Jacob Peter Hödl,transfermarkt_contracts
 Sturm Graz,tm822601,Leon Grgić,822601,Leon Grgic,transfermarkt_contracts,99
 Sturm Graz,tm693092,Belmin Beganović,693092,Belmin Beganovic,transfermarkt_contracts,99
 Sturm Graz,tm554282,Szymon Włodarczyk,554282,Szymon Wlodarczyk,transfermarkt_contracts,99
-LASK,tm1005651,João Tornich,1005651,João Tornich,transfermarkt_contracts,100
+LASK,pf:LASK:alemao,Alemão,1005651,João Tornich,transfermarkt_contracts,100
 LASK,tm353634,Robert Ljubičić,353634,Robert Ljubicic,transfermarkt_contracts,99
 LASK,tm652047,Kryštof Daněk,652047,Krystof Danek,transfermarkt_contracts,99
 LASK,tm1369023,Naël Kane,1369023,Nael Kane,transfermarkt_contracts,99
@@ -411,7 +411,7 @@ Ried,tm156680,Hidajet Hankić,156680,Hidajet Hankic,transfermarkt_contracts,99
 Ried,tm842187,Dominik Stoger,842187,Dominik Stöger,transfermarkt_contracts,99
 Ried,tm742018,Dejan Radonjić,742018,Dejan Radonjic,transfermarkt_contracts,99
 Ried,tm282918,Ante Bajić,282918,Ante Bajic,transfermarkt_contracts,99
-Ried,tm1228320,Pape Sissoko,1228320,Pape Sissoko,transfermarkt_contracts,100
+Ried,pf:Ried:niama sissoko,Niama Sissoko,1228320,Pape Sissoko,transfermarkt_contracts,100
 Ried,tm1185190,Tino Kusanović,1185190,Tino Kusanovic,transfermarkt_contracts,99
 Altach,tm619305,Srdjan Hrstić,619305,Srđan Hrstić,wiki_squads,80
 Austria Lustenau,tm813047,Anilson,813047,Anílson,wiki_squads,100
@@ -445,3 +445,26 @@ Sturm Graz,pf:Sturm Graz:mate grgic,Mate Grgić,,Mate Grgic,espn_lineups_cups,10
 Rapid Wien,esp:Rapid Wien:moritz oswald,Moritz Oswald,,Moritz Oswald,espn_lineups_cups,100
 Salzburg,esp:Salzburg:hendry blank,Hendry Blank,,Hendry Blank,espn_lineups_cups,100
 Austria Wien,esp:Austria Wien:dejan radonjic,Dejan Radonjic,,Dejan Radonjic,espn_lineups_cups,100
+Altach,tm120206,Lukas Jäger,120206,Lukas Jager,s365_ratings,100
+Altach,tm488048,Benjamin Böckle,488048,Benjamin Bockle,s365_ratings,100
+Altach,tm193006,Mike-Steven Bähre,193006,Mike Bahre,s365_ratings,85
+Austria Wien,tm77563,Samuel Şahin-Radlinger,77563,Samuel Radlinger,s365_ratings,85
+Austria Wien,tm307817,Valentino Müller,307817,Valentino Muller,s365_ratings,100
+LASK,tm403808,Andrés Andrade,403808,Andres Andrade,s365_ratings,100
+LASK,tm467236,Kasper Jørgensen,467236,Kasper Jorgensen,s365_ratings,100
+Rapid Wien,tm439351,Bendegúz Bolla,439351,Bendeguz Bolla,s365_ratings,100
+Rapid Wien,tm912078,Petter Nosakhare Dahl,912078,Petter Dahl,s365_ratings,85
+Rapid Wien,pf:Rapid Wien:romeo amane,Romeo Amané,,Romeo Amane,s365_ratings,100
+Ried,tm965947,Evan Eghosa Aisowieren,965947,Evan Aisowieren,s365_ratings,85
+Salzburg,tm709727,Kévin Boma,709727,Kevin Boma,s365_ratings,100
+Salzburg,tm513245,Jesper Lindstrøm,513245,Jesper Lindstrom,s365_ratings,100
+Sturm Graz,tm245034,Jon Gorenc Stankovič,245034,Jon Stankovič,s365_ratings,85
+Sturm Graz,tm271223,Jürgen Heil,271223,Jurgen Heil,s365_ratings,100
+Sturm Graz,tm974365,Filip Rózga,974365,Filip Rozga,s365_ratings,100
+WSG Tirol,tm400550,Nikolai Baden,400550,Nikolai Frederiksen,s365_ratings,85
+WSG Tirol,tm434104,Matthäus Taferner,434104,Matthaus Taferner,s365_ratings,100
+WSG Tirol,tm842271,Raphael Gschösser,842271,Raphael Gschosser,s365_ratings,100
+WSG Tirol,pf:WSG Tirol:giorgi bedianashvili,Giorgi Bedianashvili,,Georgi Bedianashvili,s365_ratings,80
+Wolfsberger AC,tm371430,Lukas Gütlbauer,371430,Lukas Gutlbauer,s365_ratings,100
+Wolfsberger AC,tm1228946,Adama Dramé,1228946,Adama Drame,s365_ratings,100
+Hartberg,tm597424,Marco Hoffmann,597424,Marco Hoffman,fotmob_minutes,65

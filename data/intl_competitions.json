@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-04T13:07:25+00:00",
+ "generated": "2026-11-05T13:18:31+00:00",
  "competitions": [
   {
    "code": "fifa.world",
@@ -67,10 +67,10 @@
    "editions": [
     {
      "season": "2024",
-     "start": "2025-09-10",
+     "start": "2025-10-10",
      "end": "2025-11-19",
-     "matches": 28,
-     "played": 28,
+     "matches": 24,
+     "played": 24,
      "status": "finished",
      "champion": null,
      "runner_up": null
@@ -124,10 +124,10 @@
    "editions": [
     {
      "season": "2025",
-     "start": "2025-09-10",
+     "start": "2025-10-05",
      "end": "2025-12-21",
-     "matches": 130,
-     "played": 130,
+     "matches": 129,
+     "played": 129,
      "status": "finished",
      "champion": null,
      "runner_up": null
@@ -216,6 +216,25 @@
      "matches": 40,
      "played": 0,
      "status": "upcoming",
+     "champion": null,
+     "runner_up": null
+    }
+   ]
+  },
+  {
+   "code": "afc.saff.championship",
+   "name": "SAFF Championship",
+   "conf": "AFC",
+   "kind": "tournament",
+   "name_ko": "SAFF 챔피언십",
+   "editions": [
+    {
+     "season": "2026",
+     "start": "2026-11-05",
+     "end": "2026-11-11",
+     "matches": 6,
+     "played": 0,
+     "status": "live",
      "champion": null,
      "runner_up": null
     }

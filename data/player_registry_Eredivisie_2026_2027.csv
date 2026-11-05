@@ -73,7 +73,7 @@ Ajax,tm287579,Sofyan Amrabat,287579,Sofyan Amrabat,players_full,100
 Ajax,tm129554,Steven Berghuis,129554,Steven Berghuis,players_full,100
 Ajax,tm228948,Thilo Kehrer,228948,Thilo Kehrer,players_full,100
 Ajax,tm683571,Tolu Arokodare,683571,Tolu Arokodare,players_full,100
-Ajax,pf:Ajax:viktor tsyhankov,Viktor Tsyhankov,,Viktor Tsyhankov,players_full,100
+Ajax,pf:Ajax:viktor tsyhankov,Viktor Tsyhankov,264372,Viktor Tsyhankov,players_full,100
 Ajax,tm559327,Youri Baas,559327,Youri Baas,players_full,100
 Ajax,pf:Ajax:youri regeer,Youri Regeer,,Youri Regeer,players_full,100
 Ajax,tm410425,Yves Bissouma,410425,Yves Bissouma,players_full,100
@@ -386,7 +386,7 @@ Utrecht,pf:Utrecht:michael brouwer,Michael Brouwer,,Michael Brouwer,players_full
 Utrecht,pf:Utrecht:mike eerdhuijzen,Mike Eerdhuijzen,,Mike Eerdhuijzen,players_full,100
 Utrecht,tm951398,Neville Ogidi Nwankwo,951398,Neville Ogidi Nwankwo,players_full,100
 Utrecht,tm422932,Niklas Vesterlund,422932,Niklas Vesterlund,players_full,100
-Utrecht,pf:Utrecht:nikolas panayiotou,Nikolas Panayiotou,,Nikolas Panayiotou,players_full,100
+Utrecht,pf:Utrecht:nikolas panayiotou,Nikolas Panayiotou,562665,Nikolas Panayiotou,players_full,100
 Utrecht,tm55619,Nordin Amrabat,55619,Nordin Amrabat,players_full,100
 Utrecht,tm738475,Oualid Agougil,738475,Oualid Agougil,players_full,100
 Utrecht,tm937571,Per Kloosterboer,937571,Per Kloosterboer,players_full,100
@@ -523,7 +523,7 @@ Ajax,pf:Ajax:marc andre ter stegen,Marc-André ter Stegen,,Marc ter Stegen,trans
 Ajax,tm923667,Joeri Heerkens,923667,Joeri Heerkens,transfermarkt_contracts,100
 Ajax,pf:Ajax:lucas oliveira rosa,Lucas Oliveira Rosa,,Lucas Rosa,transfermarkt_contracts,85
 Ajax,tm1242209,Mohamed Abdalla,1242209,Mohamed Abdalla,transfermarkt_contracts,100
-Ajax,tm264372,Viktor Tsygankov,264372,Viktor Tsygankov,transfermarkt_contracts,100
+Ajax,pf:Ajax:viktor tsyhankov,Viktor Tsyhankov,264372,Viktor Tsygankov,transfermarkt_contracts,100
 AZ Alkmaar,tm704772,Rome-Jayden Owusu-Oduro,704772,Rome-Jayden Owusu-Oduro,transfermarkt_contracts,100
 AZ Alkmaar,tm79045,Jeroen Zoet,79045,Jeroen Zoet,transfermarkt_contracts,100
 AZ Alkmaar,tm116471,Hobie Verhulst,116471,Hobie Verhulst,transfermarkt_contracts,100
@@ -545,7 +545,7 @@ Twente,tm508639,Naci Ünüvar,508639,Naci Ünüvar,transfermarkt_contracts,100
 Utrecht,tm607133,Kevin Gadellaa,607133,Kevin Gadellaa,transfermarkt_contracts,100
 Utrecht,tm933914,Mees Eppink,933914,Mees Eppink,transfermarkt_contracts,100
 Utrecht,tm488755,Jakov Medić,488755,Jakov Medic,transfermarkt_contracts,99
-Utrecht,tm562665,Nikolas Panagiotou,562665,Nikolas Panagiotou,transfermarkt_contracts,100
+Utrecht,pf:Utrecht:nikolas panayiotou,Nikolas Panayiotou,562665,Nikolas Panagiotou,transfermarkt_contracts,100
 Utrecht,tm536477,Arthur Zagre,536477,Arthur Zagré,transfermarkt_contracts,99
 Utrecht,tm565436,Alonzo Engwanda,565436,Alonzo Engwanda,transfermarkt_contracts,100
 Utrecht,pf:Utrecht:dave van den berg,Dave Van Den Berg,,Davy van den Berg,transfermarkt_contracts,80
@@ -781,5 +781,18 @@ PSV,tm550829,Matej Kovar,550829,Matěj Kovár,fotmob_ratings,100
 ADO Den Haag,tm559319,Kilian Nikiema,559319,Kilian Nikièma,fotmob_ratings,100
 Telstar,tm381349,Nökkvi Þórisson,381349,Nökkvi Thorisson,fotmob_ratings,100
 ADO Den Haag,tm724025,Matej Sin,724025,Matěj Sín,fotmob_ratings,100
-Ajax,pf:Ajax:viktor tsyhankov,Viktor Tsyhankov,,Viktor Tsigankov,fotmob_minutes,65
+Ajax,pf:Ajax:viktor tsyhankov,Viktor Tsyhankov,264372,Viktor Tsigankov,fotmob_minutes,65
 ADO Den Haag,tm433091,Jalen Hawkins,433091,Jalen Hawkings,fotmob_minutes,65
+ADO Den Haag,tm559319,Kilian Nikiema,559319,Kilian Nikiéma,s365_ratings,100
+AZ Alkmaar,tm1066953,Mateo Chávez,1066953,Mateo Chavez,s365_ratings,100
+Groningen,tm464444,Brynjólfur Willumsson,464444,Brynjolfur Darri Willumsson,s365_ratings,85
+PSV,tm323910,Mauro Júnior,323910,Mauro Junior,s365_ratings,100
+PSV,tm361104,Sergiño Dest,361104,Sergino Dest,s365_ratings,100
+Telstar,tm648541,Gabi Caschili,648541,Gabrielle Caschili,s365_ratings,80
+Twente,tm412941,Thomas van den Belt,412941,Thomas Van Den Belt,s365_ratings,100
+Twente,tm997646,Lucas Vennegoor of Hesselink,997646,Lucas Vennegoor,s365_ratings,85
+Utrecht,tm340459,Dani de Wit,340459,Dani De Wit,s365_ratings,100
+Utrecht,tm646739,Ángel Alarcón,646739,Angel Alarcon,s365_ratings,100
+Willem II,tm565401,Amine Et-Taibi,565401,Amine Et Taibi,s365_ratings,100
+Zwolle,tm422930,Elias Sørensen,422930,Elias Sorensen,s365_ratings,100
+Sparta R.,tm928592,Marvin Young,928592,Marvin Youngman,fotmob_minutes,65

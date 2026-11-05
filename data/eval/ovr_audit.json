@@ -1,12 +1,12 @@
 {
- "date": "2026-11-04",
- "model": "v3.14",
- "checked": 45840,
+ "date": "2026-11-05",
+ "model": "v3.17",
+ "checked": 45740,
  "mismatches": [],
  "leagues": {
   "EPL": {
    "teams": 20,
-   "checked": 3629,
+   "checked": 3631,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -22,7 +22,7 @@
   },
   "BelgianProLeague": {
    "teams": 18,
-   "checked": 3399,
+   "checked": 3407,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -30,7 +30,7 @@
   },
   "Bundesliga": {
    "teams": 18,
-   "checked": 3299,
+   "checked": 3294,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -38,7 +38,7 @@
   },
   "Championship": {
    "teams": 24,
-   "checked": 5074,
+   "checked": 5081,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -46,7 +46,7 @@
   },
   "DanishSuperliga": {
    "teams": 12,
-   "checked": 2607,
+   "checked": 2606,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -54,7 +54,7 @@
   },
   "Eredivisie": {
    "teams": 18,
-   "checked": 3433,
+   "checked": 3421,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -62,7 +62,7 @@
   },
   "LaLiga": {
    "teams": 20,
-   "checked": 3878,
+   "checked": 3864,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -70,7 +70,7 @@
   },
   "LigaPortugal": {
    "teams": 18,
-   "checked": 3511,
+   "checked": 3479,
    "mismatches": 0,
    "changed": 1,
    "model_changed": 0,
@@ -78,17 +78,17 @@
     {
      "team": "Santa Clara",
      "player": "Frederico Silva",
-     "from": 52,
+     "from": 53,
      "to": 50,
-     "d": -2,
-     "since": "2026-11-04",
+     "d": -3,
+     "since": "2026-11-05",
      "model_change": false
     }
    ]
   },
   "Ligue1": {
    "teams": 18,
-   "checked": 3330,
+   "checked": 3309,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -96,7 +96,7 @@
   },
   "SerieA": {
    "teams": 20,
-   "checked": 3848,
+   "checked": 3815,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -104,7 +104,7 @@
   },
   "SuperLig": {
    "teams": 18,
-   "checked": 3983,
+   "checked": 3984,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -114,19 +114,9 @@
    "teams": 12,
    "checked": 2768,
    "mismatches": 0,
-   "changed": 1,
+   "changed": 0,
    "model_changed": 0,
-   "changes_top": [
-    {
-     "team": "Lugano",
-     "player": "Elias Pihlström",
-     "from": 56,
-     "to": 57,
-     "d": 1,
-     "since": "2026-11-04",
-     "model_change": false
-    }
-   ]
+   "changes_top": []
   }
  }
 }

@@ -1,5 +1,5 @@
 {
- "date": "2026-11-04",
+ "date": "2026-11-05",
  "checked": {
   "season_log": 52,
   "team_xg": 52,
@@ -7,7 +7,13 @@
   "opponents": 156,
   "leaders": 156,
   "heatmap_side": 96,
-  "injury_return": 229
+  "injury_return": 232
  },
- "issues": []
+ "issues": [
+  {
+   "kind": "season_log",
+   "team": "Cambuur",
+   "detail": "Thijs Jansen 헤더 990′ 0G 0A ≠ SEASON LOG 982′ 0G 0A"
+  }
+ ]
 }

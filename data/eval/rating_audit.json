@@ -1,7 +1,7 @@
 {
- "date": "2026-11-04",
- "model": "v3.14",
- "players": 5983,
+ "date": "2026-11-05",
+ "model": "v3.17",
+ "players": 5965,
  "golden": [],
  "scout": [
   {
@@ -21,19 +21,11 @@
    "off": 2
   },
   {
-   "player": "Marc Guéhi",
-   "league": "EPL",
-   "ovr": 89,
-   "lo": 84,
-   "hi": 87,
-   "off": 2
-  },
-  {
-   "player": "Yan Diomandé",
+   "player": "Raphinha",
    "league": "LaLiga",
-   "ovr": 87,
-   "lo": 76,
-   "hi": 85,
+   "ovr": 92,
+   "lo": 87,
+   "hi": 90,
    "off": 2
   },
   {
@@ -53,7 +45,31 @@
    "off": 1
   },
   {
-   "player": "Dominik Szoboszlai",
+   "player": "Luka Vušković",
+   "league": "EPL",
+   "ovr": 85,
+   "lo": 77,
+   "hi": 84,
+   "off": 1
+  },
+  {
+   "player": "Marc Guéhi",
+   "league": "EPL",
+   "ovr": 88,
+   "lo": 84,
+   "hi": 87,
+   "off": 1
+  },
+  {
+   "player": "Alexis Mac Allister",
+   "league": "EPL",
+   "ovr": 84,
+   "lo": 85,
+   "hi": 88,
+   "off": -1
+  },
+  {
+   "player": "Enzo Fernández",
    "league": "EPL",
    "ovr": 89,
    "lo": 85,
@@ -61,27 +77,11 @@
    "off": 1
   },
   {
-   "player": "Bradley Barcola",
-   "league": "EPL",
-   "ovr": 87,
-   "lo": 82,
-   "hi": 86,
-   "off": 1
-  },
-  {
-   "player": "Viktor Gyökeres",
-   "league": "EPL",
-   "ovr": 82,
-   "lo": 83,
-   "hi": 87,
-   "off": -1
-  },
-  {
-   "player": "Raphinha",
+   "player": "Yan Diomandé",
    "league": "LaLiga",
-   "ovr": 91,
-   "lo": 87,
-   "hi": 90,
+   "ovr": 86,
+   "lo": 76,
+   "hi": 85,
    "off": 1
   },
   {
@@ -109,20 +109,28 @@
    "off": -1
   },
   {
+   "player": "Alessandro Bastoni",
+   "league": "SerieA",
+   "ovr": 85,
+   "lo": 86,
+   "hi": 89,
+   "off": -1
+  },
+  {
+   "player": "Kevin De Bruyne",
+   "league": "SerieA",
+   "ovr": 81,
+   "lo": 82,
+   "hi": 87,
+   "off": -1
+  },
+  {
    "player": "Christian Pulisic",
    "league": "SerieA",
    "ovr": 82,
    "lo": 83,
    "hi": 87,
    "off": -1
-  },
-  {
-   "player": "Désiré Doué",
-   "league": "Ligue1",
-   "ovr": 89,
-   "lo": 83,
-   "hi": 88,
-   "off": 1
   }
  ],
  "scout_far": [
@@ -137,37 +145,31 @@
  ],
  "audit": {
   "rise": {
-   "n": 10,
+   "n": 6,
    "limit": 25,
    "desc": "지난 시즌(1,500분+) 대비 +6 이상인데 이번 시즌 평점(7.2+·450분+)이 받쳐 주지 않는 급등",
    "examples": [
-    "Talisca(Fenerbahçe, 32) 79 ← 73",
-    "Luis Milla(Como, 32) 78 ← 71",
-    "Thierno Barry(Everton, 24) 77 ← 71",
-    "Nobel Mendy(Hull City, 22) 74 ← 68",
-    "Ilias Sebaoui(Sint-Truiden, 25) 70 ← 64",
-    "Adama Camara(Paris FC, 30) 70 ← 63",
-    "Tibe De Vlieger(Gent, 20) 68 ← 62",
-    "Ianis Stoica(Estrela, 23) 65 ← 57"
+    "Nobel Mendy(Hull City, 22) 75 ← 69",
+    "Tibe De Vlieger(Gent, 21) 69 ← 62",
+    "Aske Adelgaard(Twente, 22) 66 ← 56",
+    "Ianis Stoica(Estrela, 23) 64 ← 57",
+    "Barbero(Arouca, 28) 63 ← 57",
+    "Jerry Afriyie(Genk, 19) 59 ← 52"
    ]
   },
   "fall": {
-   "n": 1,
+   "n": 0,
    "limit": 25,
    "desc": "지난 시즌(1,500분+) 대비 −8 이하 — 급락(부상·이적·데이터 오류?)",
-   "examples": [
-    "André(Göztepe, 24) 63 ← 77"
-   ]
+   "examples": []
   },
   "underperf_high": {
-   "n": 4,
+   "n": 2,
    "limit": 10,
    "desc": "OVR 86+ 인데 리그 보정 평점이 포지션 평균보다 0.1 넘게 낮음(900분+)",
    "examples": [
-    "Achraf Hakimi(PSG, 28) 88 ← 88",
-    "João Neves(PSG, 22) 88 ← 88",
-    "Trent Alexander-Arnold(Real Madrid, 28) 86 ← 85",
-    "Fabián Ruiz Peña(PSG, 30) 86 ← 81"
+    "Achraf Hakimi(PSG, 28) 88 ← 89",
+    "João Neves(PSG, 22) 88 ← 88"
    ]
   },
   "young_elite": {
@@ -175,16 +177,17 @@
    "limit": 6,
    "desc": "21세 이하 OVR 88+",
    "examples": [
-    "Lamine Yamal(Barcelona, 19) 90 ← 90",
-    "Désiré Doué(PSG, 21) 89 ← 88"
+    "Lamine Yamal(Barcelona, 19) 91 ← 91",
+    "Désiré Doué(PSG, 21) 88 ← 88"
    ]
   },
   "no_value_high": {
-   "n": 1,
+   "n": 2,
    "limit": 10,
    "desc": "시장가치 없이 OVR 80+ (TM 매칭 실패·이적 잔류 행)",
    "examples": [
-    "Jack Grealish(Manchester City, 31) 83"
+    "Jack Grealish(Manchester City, 31) 83",
+    "Talisca(Fenerbahçe, 32) 80"
    ]
   }
  }
