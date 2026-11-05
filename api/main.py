@@ -2488,6 +2488,7 @@ def _active_injuries(team: str, league: str) -> dict:
 
 
 @app.get("/api/squad/{team}")
+@_memo(ttl=1800)                                   # 운영 2026-11-05 점검: 매번 1~4초(명단 보강·포지션 OVR·뎁스) — 데이터가 바뀌면 열쇠(_db_stamp)가 바뀐다
 def squad(team: str, league: str = ACTIVE_LEAGUE):
     df = _squad_df(team, league)
     if df is None or df.empty:
@@ -2569,6 +2570,7 @@ def squad(team: str, league: str = ACTIVE_LEAGUE):
 
 
 @app.get("/api/builder/{team}")
+@_memo(ttl=1800)
 def builder(team: str, league: str = ACTIVE_LEAGUE):
     """Best XI 빌더 — 전체 스쿼드(이번 시즌 출전 없는 선수·부상자 포함)에 주·2·3포지션·포지션별 OVR·익숙함과 부상 정보를
     붙인다. 예전 빌더는 출전 기록이 있는 선수만 받아 Saliba(부상)·Guimarães 가 빠졌고, 라인(수비/중원/공격)만 보고

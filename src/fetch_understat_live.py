@@ -16,7 +16,6 @@ import time
 from pathlib import Path
 
 import pandas as pd
-import soccerdata as sd
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from leagues import SEASON_FBREF, data_path, league_config, register_soccerdata_custom_leagues  # noqa: E402
@@ -32,6 +31,7 @@ COLS = ["squad", "player", "minutes", "xg", "np_xg", "xa", "key_passes", "shots"
 
 
 def fetch(league: str) -> pd.DataFrame | None:
+    import soccerdata as sd  # noqa: PLC0415 — 수집 전용 의존(requirements-agents) — CI 테스트는 이 모듈을 불러오기만 한다
     us = sd.Understat(leagues=league_config(league).fbref_id, seasons=SEASON_FBREF, no_cache=True)
     d = us.read_player_season_stats().reset_index()
     if d.empty:
