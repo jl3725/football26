@@ -38,6 +38,10 @@ SMALL = ["data/ai/news_digest.json", "data/news_claims.csv", "data/news_reliabil
 SMALL_EVERY, NEWS_EVERY, DATA_EVERY, FIRST_WAIT = 10 * 60, 2 * 3600, 3 * 60, 90
 SMALL_FRESH = 5 * 60
 _SMALL_LOCK = threading.Lock()
+# 스스로 깨어 있기 — Render 무료 서버는 15분 동안 들어오는 요청이 없으면 잠들고(깨는 데 30~60초 + 데우기), 10분마다 깨우기로 한
+# GitHub 작업(keep_alive.yml)은 실제로 6~8시간에 한 번만 돌았다(2026-11-05 사용자 '오래 안 켜면 죽나요'). 자기 공개 주소
+# (Render 가 넣는 RENDER_EXTERNAL_URL)로 8분마다 /api/health 를 불러 들어오는 요청을 만든다
+SELF_PING_EVERY = 8 * 60
 # 실행 중 DB 교체 최소 간격 · 데우는 중엔 교체 미룸 — 교체마다 캐시를 다 비우고 다시 데우는데(운영 0.1 CPU 로 수 분),
 # 경기일엔 배포본이 10~15분마다 바뀌어(11/1 하루 29번) 서버가 거의 늘 데우는 중이었고, 데우기가 겹치면 메모리가 넘쳐
 # 재시작됐다(2026-11-03 사용자 '운영이 자꾸 느리고 안 뜬다'). 방금 경기 평점(JUST PLAYED)은 Vercel 이 따로 받아 영향 없음
@@ -51,7 +55,8 @@ DATA_BRANCH = "data-live"
 STATE: dict = {"started": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"), "enabled": False,
                "news_sha": "", "news_at": "", "small_at": "", "small_updated": 0, "last_error": "",
                "data_sha": "", "data_ref": "", "data_caches": True, "data_at": "", "data_files": 0, "db_at": "",
-               "warming": False, "warm_at": "", "warm_sec": None, "swap_wait": "", "swaps_deferred": 0}
+               "warming": False, "warm_at": "", "warm_sec": None, "swap_wait": "", "swaps_deferred": 0,
+               "ping_at": "", "pings": 0, "ping_fail": 0}
 _WARM_T0: list[float] = []
 _ETAGS: dict[str, str] = {}
 _HASHES: dict[str, tuple[float, int, str]] = {}        # 경로 → (수정 시각, 크기, sha256) — 같은 파일을 매번 다시 읽지 않게
@@ -330,6 +335,24 @@ def sync_small(get=requests.get) -> int:
     return n
 
 
+def self_url() -> str:
+    return (os.getenv("RENDER_EXTERNAL_URL") or os.getenv("SELF_PING_URL") or "").rstrip("/")
+
+
+def self_ping(get=requests.get) -> bool:
+    """자기 공개 주소로 /api/health 한 번 — 잠들지 않게. 주소가 없으면(로컬) 아무것도 안 한다."""
+    url = self_url()
+    if not url:
+        return False
+    try:
+        ok = get(f"{url}/api/health", timeout=30).status_code == 200
+    except requests.RequestException:
+        ok = False
+    STATE["ping_at"] = dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")
+    STATE["pings" if ok else "ping_fail"] += 1
+    return ok
+
+
 def refresh_small(max_age: float = SMALL_FRESH) -> bool:
     """DATA STATUS 처럼 작은 파일(실행 원장)을 바로 읽는 화면이 열릴 때 — 마지막 받은 지 max_age 초가 넘었으면 지금 받는다.
     이미 받는 중이면(다른 요청·루프) 기다리지 않고 지나간다. 받았으면 True."""
@@ -398,9 +421,12 @@ def sync_news(get=requests.get) -> bool:
 def _loop() -> None:
     time.sleep(FIRST_WAIT)                                        # 데우기(warm-up)가 먼저(시작 때 데이터는 데우기 전에 받는다)
     last_small = last_news = 0.0
-    last_data = last_trim = time.monotonic()
+    last_data = last_trim = last_ping = time.monotonic()
     while True:
         now = time.monotonic()
+        if now - last_ping >= SELF_PING_EVERY:
+            last_ping = now
+            self_ping()
         try:
             if now - last_small >= SMALL_EVERY:                    # 작은 파일 먼저 — 몇 초면 끝나 DATA STATUS 가 바로 맞는다
                 last_small = now

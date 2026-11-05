@@ -163,6 +163,32 @@ def _backend_memory(h: dict) -> list[str]:
     return []
 
 
+RESTART_WARN = 3     # 24시간 안 재시작(up_since 가 바뀜) 이 횟수 이상이면 — 수면(15분 무요청)·메모리 초과 의심
+
+
+def _backend_restarts(h: dict) -> list[str]:
+    """/api/health 의 up_since 를 이어 기록해 하루 재시작 횟수를 센다(data/ops/backend_uptime.json). 2026-11-05 사용자
+    '서버가 죽나요' — 10분마다 깨우는 GitHub 작업이 실제론 6~8시간에 한 번 돌아 자주 잠들었다(이제 서버가 스스로 핑)."""
+    up = str(h.get("up_since") or "")
+    if not up:
+        return []
+    p = ROOT / "data" / "ops" / "backend_uptime.json"
+    try:
+        hist = json.loads(p.read_text(encoding="utf-8")) if p.exists() else []
+    except ValueError:
+        hist = []
+    if up not in hist:
+        hist = (hist + [up])[-60:]
+        p.parent.mkdir(parents=True, exist_ok=True)
+        p.write_text(json.dumps(hist, indent=0), encoding="utf-8")
+    day = [u for u in hist if _age_h(u) <= 24]
+    pings = (h.get("live_sync") or {}).get("pings")
+    if len(day) >= RESTART_WARN:
+        return [f"운영 서버 재시작 {len(day)}회/24h(마지막 {up[:16]}) — 수면(15분 무요청)·메모리 초과 의심"
+                + (f" · 자체 핑 {pings}회" if pings is not None else "")]
+    return []
+
+
 def check_backend() -> list[str]:
     """운영 백엔드(Render)가 최신 코드 커밋을 담고 있나 — /api/health 의 commit 과 api·src·requirements 최신 커밋 비교.
     2026-10-20: requirements 에 requests 가 빠져 a7cdee9 부터 새 배포가 시작 단계에서 실패, 운영이 4시간 넘게 옛 버전에 머묾."""
@@ -170,7 +196,7 @@ def check_backend() -> list[str]:
         h = requests.get(f"{BACKEND}/api/health", timeout=90).json()
     except (requests.RequestException, ValueError) as e:
         return [f"/api/health 실패 — {type(e).__name__}"]
-    out = _backend_memory(h)
+    out = _backend_memory(h) + _backend_restarts(h)
     prod = str(h.get("commit") or "")
     if not prod:
         return out                                        # commit 을 싣기 전 버전(첫 배포 전) — 판단 보류

@@ -53,6 +53,7 @@ def health():
         "up_since": live_sync.STATE["started"],
         "live_sync": {k: live_sync.STATE[k] for k in ("enabled", "data_sha", "data_at", "db_at", "data_files",
                                                        "news_sha", "news_at", "small_at", "small_updated", "last_error",
+                                                       "ping_at", "pings", "ping_fail",
                                                        "swap_wait", "swaps_deferred")},
         # 미리 데우기 상태 · 메모리(512MB 서버 — 넘치면 재시작) — '운영이 느리다'를 숫자로 보려고(2026-11-03)
         "proc": {"warming": live_sync.STATE["warming"], "warm_at": live_sync.STATE["warm_at"],
