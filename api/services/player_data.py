@@ -420,5 +420,18 @@ def _build_frame(league: str, season: str | None = None):
     # OVR 은 행 데이터만으로 정해지므로 표를 만들 때 한 번만 — 추천 1회에 3,500번 다시 계산하던 것.
     # 반올림 전 값(_ovr_raw)도 — 포지션 OVR 과 표시값 버티기(api _position_table)가 쓴다
     frame["_ovr_raw"] = [rv3.ovr_of_row(r, exact=True) for _, r in frame.iterrows()]
+    # TEAM FORM(v3.15) — 팀 몫을 더하기 전 OVR 로 리그 안 '스쿼드 수준 ~ 승점' 회귀를 세워 잔차를 붙이고 다시 계산.
+    # 2026-11-05 사용자: 라치오 1위인데 OVR 낮고 맨유 꼴찌인데 86~87 — 순위를 따라 움직이게
+    frame["_ovr_base"] = frame["_ovr_raw"]
+    frame["_team_resid"], frame["_team_games"] = None, None
+    try:
+        resid = rv3.team_residuals(frame, ds.read_table("standings", league=league, season=season))
+    except Exception as e:  # noqa: BLE001 — 순위표가 없으면 팀 몫 없이
+        print(f"[team_form] {league} {season or ''}: 건너뜀 {type(e).__name__}: {e}")
+        resid = {}
+    if resid:
+        frame["_team_resid"] = frame["squad"].astype(str).map(lambda t: resid.get(t, (None, None))[0])
+        frame["_team_games"] = frame["squad"].astype(str).map(lambda t: resid.get(t, (None, None))[1])
+        frame["_ovr_raw"] = [rv3.ovr_of_row(r, exact=True) for _, r in frame.iterrows()]
     frame["_ovr"] = [int(round(v)) for v in frame["_ovr_raw"]]
     return frame

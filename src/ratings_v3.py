@@ -158,10 +158,17 @@ SLUMP_GAP, SLUMP_K, SLUMP_FULL_MIN, SLUMP_MAX, SLUMP_PRIOR_MIN = 3.0, 0.5, 1500.
 # 이번 시즌 상승(SEASON RISE) — SLUMP 의 거울. 부진만 빼고 상승은 몸값이 따라올 때까지 안 올려 줘, 커리어 평균보다 잘하는 시즌의
 # 선수(브라이튼 3위 — 주전 평점 리그 3위인데 OVR 11위, 그로스·덩크·더 카위퍼르)가 낮게 남았다(2026-11-02 사용자). 같은 간격·비율·상한
 RISE_GAP, RISE_K, RISE_MAX = SLUMP_GAP, SLUMP_K, SLUMP_MAX
+# TEAM FORM(v3.15) — 팀 성적이 스쿼드 수준(주전 14명 OVR 평균)으로 기대한 승점보다 높거나 낮으면 선수 OVR 을 출전 비례로 ±.
+# 2026-11-05 사용자: 라치오가 세리에A 1위인데 선수 OVR 이 너무 낮고(주전 평균 73, 몸값 €11M) 맨유는 86~87 인데 꼴찌권.
+# 평점(ss)은 순위와 상관 −0.9 로 잘 따라가는데 OVR 은 몸값 몫이 커 −0.6~−0.7 — 리그마다 '경기당 승점 ~ OVR14' 회귀의 잔차(ppg)를
+# TEAM_K 배, ±TEAM_MAX 까지, 리그 출전(TEAM_FULL_MIN)·치른 경기 수(TEAM_FULL_GAMES, 시즌 초 요동 방지)에 비례. 상한 압축 전에 더한다.
+# 시험(11/05): 라치오 주전 +2(만다스 78→80·자카니 80→82), 맨유 −2(브루누 90→88), 순위 상관 세리에A −0.71→−0.82 · EPL −0.59→−0.74
+TEAM_K, TEAM_MAX, TEAM_FULL_MIN, TEAM_FULL_GAMES = 2.5, 2.0, 900.0, 8.0
+TEAM_MIN_TEAMS, TEAM_MIN_GAMES = 8, 3          # 회귀에 쓰는 최소 팀 수 · 팀당 최소 경기
 # v3.6 탐색(golden 위반 0 · 스카우트 3+ 이탈 0 · Groß 78 · Dowman 70 · Vušković>Konsa): 36세 45%
 _VET_PE_AGES, _VET_PE_W = (30.0, 32.0, 34.0, 36.0), (0.0, 0.18, 0.34, 0.45)
 # 모델 버전 — 바뀌면 rating_history 가 과거 기록을 평행이동해 모델 변경이 선수 추이(▲▼)로 보이지 않게 한다
-MODEL_VERSION = "v3.14"   # v3.14: 대표 OVR = 대표 포지션 OVR(src/position_ovr.py — 공통 OVR + 역할 기여 ±2)
+MODEL_VERSION = "v3.15"   # v3.15: TEAM FORM — 팀 승점이 스쿼드 수준 대비 초과·미달이면 출전 비례 ±2(v3.14: 대표 포지션 OVR)
 # 잠재력 프리미엄 — 같은 시장가치·리그에서 어린 선수의 실제 경기력(리그 보정 평점)이 낮은 만큼(vov 환산).
 # 25/26 1,500분+ 1,450명 회귀(27~29세 기준): 17~20세 −6.8 · 21세 −4.9 · 22세 −5.1 · 23세 −4.4 · 24세 −3.9 ·
 # 25세 −3.8 · 26세 −2.4 (같은 회귀에서 30~32세 +5.3 · 33세+ +9.4 — 베테랑 보정과 같은 근거).
@@ -298,7 +305,8 @@ def absolute_ovr(*, value, ss_rating, minutes, age, pos_group,
                  x_ss_rating=None, x_minutes=None, x_level=None,
                  prev_x_ss_rating=None, prev_x_minutes=None, prev_x_level=None,
                  nt_ss_rating=None, nt_minutes=None, nt_level=None,
-                 prev_nt_ss_rating=None, prev_nt_minutes=None, prev_nt_level=None, _parts: list | None = None,
+                 prev_nt_ss_rating=None, prev_nt_minutes=None, prev_nt_level=None,
+                 team_resid=None, team_games=None, _parts: list | None = None,
                  exact: bool = False):
     """_parts 에 리스트를 주면 단계별 기여(키, 값)를 채운다 — 화면 'OVR 구성'(ovr_parts_of_row).
     exact=True 면 반올림 전 값(float) — 포지션 OVR·표시값 버티기(src/position_ovr.py)가 쓴다."""
@@ -410,6 +418,15 @@ def absolute_ovr(*, value, ss_rating, minutes, age, pos_group,
     bm = _big_match_bonus(ucl_starts, uel_starts, conf_starts, cup_starts)
     raw += bm
     rec("big", bm)
+    tf = team_form_adj(team_resid, minutes, team_games)
+    if tf > 0 and rel > 0:
+        # 올릴 땐 '몸값이 아직 반영 못 한 몫'(평점이 말하는 수준 PE 까지)만 — 이미 평점 수준 이상인 선수(에제·코스타)는 팀이 잘해도
+        # 더 안 올린다. 라치오처럼 몸값은 낮고 평점은 높은 선수가 팀 성적까지 받쳐 줄 때 올라간다
+        pe = PE_A + PE_B * (rel - off - _SS_MID[ln]) + _POS_ADJ.get(ln, 0.0)
+        tf = min(tf, max(0.0, pe - raw))
+    if abs(tf) >= 0.05:
+        rec("team", tf)
+        raw += tf
     if 0 < a < _YOUTH_AGES[-1] and vov is not None and ln != "GK":     # GK 는 위 나이 보정에 포함
         ya = _interp(a, _YOUTH_AGES, _YOUTH_ADJ) * YOUTH_ADJ_SCALE    # 시장가치의 잠재력 프리미엄
         raw += ya
@@ -605,6 +622,41 @@ def _x_args(row) -> dict:
                                     "nt_ss_rating", "nt_minutes", "nt_level", "prev_nt_ss_rating", "prev_nt_minutes", "prev_nt_level")}
 
 
+def team_form_adj(team_resid, minutes, team_games) -> float:
+    """TEAM FORM 몫 — 잔차(경기당 승점) × TEAM_K, ±TEAM_MAX, 리그 출전·치른 경기 수 비례. 잔차가 없으면 0."""
+    r = _num(team_resid, None)
+    if r is None or TEAM_K <= 0:
+        return 0.0
+    w = _clamp(_num(minutes) / TEAM_FULL_MIN, 0.0, 1.0) * _clamp(_num(team_games, TEAM_FULL_GAMES) / TEAM_FULL_GAMES, 0.0, 1.0)
+    return float(_clamp(r * TEAM_K, -TEAM_MAX, TEAM_MAX) * w)
+
+
+def team_residuals(frame, standings) -> dict[str, tuple[float, float]]:
+    """{팀: (잔차 ppg, 치른 경기)} — 팀 승점(경기당) 에서 '스쿼드 수준이 말하는 승점'(리그 안 주전 14명 OVR 평균 ~ ppg 1차 회귀)을 뺀 것.
+    frame 엔 팀 몫을 더하기 전 OVR(_ovr_base)이 있어야 한다. 팀·경기가 모자라면 빈 dict."""
+    import numpy as np  # noqa: PLC0415
+    import pandas as pd  # noqa: PLC0415
+    if frame is None or standings is None or standings.empty or not {"squad", "points", "played"} <= set(standings.columns):
+        return {}
+    col = "_ovr_base" if "_ovr_base" in frame.columns else "_ovr_raw"
+    f = frame[["squad", "minutes", col]].copy()
+    f["minutes"] = pd.to_numeric(f["minutes"], errors="coerce").fillna(0)
+    f[col] = pd.to_numeric(f[col], errors="coerce")
+    ovr14 = f.sort_values("minutes", ascending=False).groupby("squad").head(14).groupby("squad")[col].mean()
+    st = standings.copy()
+    st["played"] = pd.to_numeric(st["played"], errors="coerce").fillna(0)
+    st["points"] = pd.to_numeric(st["points"], errors="coerce").fillna(0)
+    st = st[(st["played"] >= TEAM_MIN_GAMES) & st["squad"].astype(str).isin(ovr14.index)]
+    if len(st) < TEAM_MIN_TEAMS:
+        return {}
+    x = np.array([float(ovr14[t]) for t in st["squad"].astype(str)])
+    y = (st["points"] / st["played"]).to_numpy(dtype=float)
+    if np.ptp(x) < 1.0:
+        return {}
+    b, a = np.polyfit(x, y, 1)
+    return {str(t): (float(ppg - (a + b * ovr14[str(t)])), float(g)) for t, ppg, g in zip(st["squad"], y, st["played"])}
+
+
 def ovr_of_row(row, exact: bool = False):
     """선수 행 → 절대 OVR (API _player_ovr 와 같은 입력). player_frame 이 리그 표에 `_ovr` 로 미리 붙인다.
     exact=True 면 반올림 전 값(float)."""
@@ -619,7 +671,8 @@ def ovr_of_row(row, exact: bool = False):
         prev_gk_save_pct=row.get("prev_gk_save_pct"), prev_gk_cs_pct=row.get("prev_gk_cs_pct"),
         prev_value=row.get("prev_market_value_eur"),
         hist_ss_rating=row.get("hist_ss_rating"), hist_minutes=row.get("hist_minutes"),
-        hist_league_level=_prev_level(row, "hist_league"), **_x_args(row))
+        hist_league_level=_prev_level(row, "hist_league"),
+        team_resid=row.get("_team_resid"), team_games=row.get("_team_games"), **_x_args(row))
 
 
 # 'OVR 구성' 화면 이름 — 키: (영문, 한글 설명)
@@ -634,6 +687,7 @@ PART_LABELS = {
     "underperf": ("UNDERPERFORM", "몸값 대비 경기력 저조 — 평점 수준보다 크게 높은 몫 일부 빼기"),
     "slump": ("SEASON SLUMP", "이번 시즌 부진 — 몸값이 아직 반영 못 한 이번 시즌 평점 수준 쪽으로"),
     "rise": ("SEASON RISE", "이번 시즌 상승 — 몸값이 아직 반영 못 한 이번 시즌 평점 수준 쪽으로"),
+    "team": ("TEAM FORM", "팀 성적 — 스쿼드 수준 대비 승점 초과·미달(경기당), 리그 출전·치른 경기 비례 ±2"),
     "cap": ("TOP CAP", "88 초과분 압축"), "league": ("LEAGUE", "리그 수준 보정"), "youth_cap": ("AGE CAP", "나이별 천장"),
     "position": ("POSITION FIT", "대표 포지션 — 그 자리 핵심 지표(같은 OVR 선수 대비)·익숙함"),
     "hold": ("STABLE", "표시값 유지 — 반올림 경계 근처 하루 흔들림 막기"),
