@@ -168,7 +168,7 @@ TEAM_MIN_TEAMS, TEAM_MIN_GAMES = 8, 3          # 회귀에 쓰는 최소 팀 수
 # v3.6 탐색(golden 위반 0 · 스카우트 3+ 이탈 0 · Groß 78 · Dowman 70 · Vušković>Konsa): 36세 45%
 _VET_PE_AGES, _VET_PE_W = (30.0, 32.0, 34.0, 36.0), (0.0, 0.18, 0.34, 0.45)
 # 모델 버전 — 바뀌면 rating_history 가 과거 기록을 평행이동해 모델 변경이 선수 추이(▲▼)로 보이지 않게 한다
-MODEL_VERSION = "v3.16"   # v3.16: 평점 세 원천(Sofascore·FotMob·365Scores) 평균 · v3.15: TEAM FORM — 팀 승점이 스쿼드 수준 대비 초과·미달이면 출전 비례 ±2(v3.14: 대표 포지션 OVR)
+MODEL_VERSION = "v3.17"   # v3.17: AGE CURVE — 지난 시즌 평점을 나이만큼 옮겨 섞기 · v3.16: 평점 세 원천(Sofascore·FotMob·365Scores) 평균 · v3.15: TEAM FORM — 팀 승점이 스쿼드 수준 대비 초과·미달이면 출전 비례 ±2(v3.14: 대표 포지션 OVR)
 # 잠재력 프리미엄 — 같은 시장가치·리그에서 어린 선수의 실제 경기력(리그 보정 평점)이 낮은 만큼(vov 환산).
 # 25/26 1,500분+ 1,450명 회귀(27~29세 기준): 17~20세 −6.8 · 21세 −4.9 · 22세 −5.1 · 23세 −4.4 · 24세 −3.9 ·
 # 25세 −3.8 · 26세 −2.4 (같은 회귀에서 30~32세 +5.3 · 33세+ +9.4 — 베테랑 보정과 같은 근거).
@@ -184,6 +184,18 @@ _VALUE_JUMP_KEEP, _JUMP_MAX_CUT, _JUMP_MIN_PREV = 0.5, 3.0, 5e6
 # 리그를 옮긴 선수의 직전 시즌 평점 가중 — 옮긴 선수는 직전 평점이 이번 평점을 훨씬 덜 설명한다
 # (26/27 270분+·직전 900분+ 회귀 기울기: 잔류 946명 0.82, 이동 106명 0.51, 4레벨+ 상위 리그행 39명 0.33).
 _MOVED_PREV_W = 0.4
+# AGE CURVE(v3.17) — 지난 시즌 평점은 '그 나이 때' 값이라 어린 선수는 그새 컸고 노장은 그새 내려왔다. 섞기 전에 나이만큼 옮긴다.
+# 24/25 → 25/26 같은 리그·두 시즌 900분+ 1,073명(Sofascore·FotMob 평균, 3살 이동 평균, 전체 평균 −0.012 기준):
+# 19~20세 +0.10 · 21세 +0.04 · 22~30세 ±0.01 · 31~32세 −0.04 · 33~34세 −0.05 · 35~36세 −0.07~−0.08 · 37세 −0.11.
+# 끝 나이대는 표본이 작아(17~20세 46명 · 35세+ 24명) 80% 남짓만. 2026-11-05 사용자: 'FM 처럼 유망주는 크고 노장은 깎이나'
+_AGE_DRIFT_AGES = (19.0, 20.0, 21.0, 22.0, 30.0, 32.0, 34.0, 36.0, 38.0)
+_AGE_DRIFT = (0.09, 0.07, 0.03, 0.0, 0.0, -0.025, -0.035, -0.06, -0.08)
+
+
+def age_drift(age) -> float:
+    """그 나이에 접어드는 한 시즌 동안 평점이 평균 얼마나 오르내리나(Sofascore 척도)."""
+    a = _num(age)
+    return _interp(a, _AGE_DRIFT_AGES, _AGE_DRIFT) if a > 0 else 0.0
 # 베테랑 나이 보정 — 시장가치는 나이로 깎이지만 꾸준히 뛰는 베테랑의 기량은 유지된다.
 # 25/26 1,500분+ 1,444명(리그·평점 통제) 시장가치 기준점의 27세 대비 차: 30세 −5.0, 32세 −8.3, 34세 −11.6,
 # 35세+ −12~−14. 반면 평점(리그 보정)은 24~36세 내내 평균 −0.19~−0.25 로 같다 → 할인 대부분은
@@ -231,17 +243,22 @@ def class_ss(ss_rating, minutes, prev_ss_rating, prev_minutes, ln: str, league_l
 
 
 def _class_parts(ss_rating, minutes, prev_ss_rating, prev_minutes, ln, league_level, prev_league_level,
-                 hist_ss_rating=None, hist_minutes=None, hist_league_level=None, extra=(), prior_min=None):
+                 hist_ss_rating=None, hist_minutes=None, hist_league_level=None, extra=(), prior_min=None, age=None):
     """(리그 안 상대 평점 블렌드, 같은 가중의 리그 보정량). class_ss = 앞 − 뒤.
 
     hist_* = 2시즌 전 이상(attach_prev_season.attach_hist — 시즌 가중을 곱한 유효 출전). 시즌이 쌓이면 자동으로
     들어오고, 없으면(지금) 이번 + 직전 시즌만 쓰던 것과 같다.
     extra = [(평점, 가중 출전 분, 대회 수준, 지난 시즌?)] — 유럽·컵 경기(src/allcomp_stats.py). 리그 평점과 나란한 표본으로
-    섞고 수준만큼 보정한다(UCL 상위 상대 = EPL 수준 → 보정 0). 2026-10-21 사용자: 챔스 우승 PSG 가 리그 평점만으로 낮았다."""
+    섞고 수준만큼 보정한다(UCL 상위 상대 = EPL 수준 → 보정 0). 2026-10-21 사용자: 챔스 우승 PSG 가 리그 평점만으로 낮았다.
+    age 를 주면 지난 시즌(유럽·컵 포함)은 age_drift 한 시즌만큼, 2시즌 전은 두 시즌만큼 옮긴다(AGE CURVE)."""
     ss, mn, pss, pmn = _num(ss_rating), _num(minutes), _num(prev_ss_rating), _num(prev_minutes)
     hss, hmn = _num(hist_ss_rating), _num(hist_minutes)
     if ss <= 0 and pss <= 0 and hss <= 0:
         return 0.0, 0.0
+    d_prev = age_drift(age) if age is not None else 0.0
+    d_hist = d_prev + (age_drift(_num(age) - 1.0) if age is not None and _num(age) > 1 else 0.0)
+    pss = pss + d_prev if pss > 0 else pss
+    hss = hss + d_hist if hss > 0 else hss
     mid = _SS_MID[ln]
     off_cur = rating_offset(league_level)
     off_prev = rating_offset(prev_league_level) if prev_league_level is not None else off_cur
@@ -260,6 +277,8 @@ def _class_parts(ss_rating, minutes, prev_ss_rating, prev_minutes, ln, league_le
             continue
         if is_prev and prev_league_level is not None and league_level is not None and prev_league_level != league_level:
             m_ *= _MOVED_PREV_W
+        if is_prev:
+            r_ += d_prev
         # 상대 수준은 100(EPL 평균 상대)을 넘을 수 있다 — 리그 보정과 달리 자르지 않는다(맨시티 상대 고평점은 가산)
         lv_ = _num(x_lvl)
         x_off = RATING_PER_LEVEL * (100.0 - lv_) if lv_ > 0 else 0.0
@@ -328,7 +347,7 @@ def absolute_ovr(*, value, ss_rating, minutes, age, pos_group,
         vov -= cut
         rec("jump", -cut)
     rel, off = _class_parts(ss_rating, minutes, prev_ss_rating, prev_minutes, ln, league_level, prev_league_level,
-                            hist_ss_rating, hist_minutes, hist_league_level,
+                            hist_ss_rating, hist_minutes, hist_league_level, age=a,
                             extra=[(x_ss_rating, x_minutes, x_level, False), (prev_x_ss_rating, prev_x_minutes, prev_x_level, True),
                                    # 대표팀(allcomp_stats nt_*) — 리그와 무관해 이적 할인(지난 시즌?)을 걸지 않는다
                                    (nt_ss_rating, nt_minutes, nt_level, False), (prev_nt_ss_rating, prev_nt_minutes, prev_nt_level, False)])

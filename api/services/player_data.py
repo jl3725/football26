@@ -231,6 +231,53 @@ def apply_positions(league: str, frame: pd.DataFrame) -> None:
 
 _MOVED_CACHE: dict = {}
 _ROLE_CACHE: dict = {}
+_DOB_CACHE: dict = {}
+
+
+def _birth_dates() -> dict[str, str]:
+    """tm_id → 생년월일(TM 계약 표, 전 리그 — 리그를 옮긴 선수도). DB 시각마다 한 번."""
+    key = ds._db_mtime()
+    hit = _DOB_CACHE.get(key)
+    if hit is not None:
+        return hit
+    from leagues import LEAGUES  # noqa: PLC0415
+    out: dict[str, str] = {}
+    for lg in LEAGUES:
+        t = ds.read_table("transfermarkt_contracts", league=lg)
+        if t is None or t.empty or not {"tm_id", "birth_date"} <= set(t.columns):
+            continue
+        for tid, b in zip(t["tm_id"], t["birth_date"]):
+            try:
+                if b == b and b and tid == tid:
+                    out.setdefault(str(int(float(tid))), str(b)[:10])
+            except (TypeError, ValueError):
+                continue
+    _DOB_CACHE.clear()
+    _DOB_CACHE[key] = out
+    return out
+
+
+def season_end_age(frame: pd.DataFrame, season: str) -> pd.Series:
+    """지난 시즌 표의 나이 → 그 시즌이 끝난 날(다음 해 7/1) 나이. 지난 시즌 표의 나이는 시즌 시작 때 값인데
+    시장가치는 시즌 끝(7/1) 값이라, 한 살 어린 나이로 OVR 을 계산해 베테랑 보정(30~32세 +1.2)·유망주 잠재력 몫
+    빼기(22~23세 +0.8)가 한 해만큼 어긋났다 — '지난 시즌 대비'가 나이와 상관없이 +1 떠 있었다(2026-11-05).
+    생년월일(TM)이 있으면 그것으로, 없으면 시즌 시작 나이 + 1."""
+    end = pd.Timestamp(f"{int(season[:4]) + 1}-07-01")
+    dob = _birth_dates()
+    age = pd.to_numeric(frame.get("age"), errors="coerce")
+    tid = frame["tm_id"] if "tm_id" in frame.columns else pd.Series(None, index=frame.index)
+
+    def one(t, a):
+        try:
+            b = dob.get(str(int(float(t)))) if t == t and t is not None else None
+        except (TypeError, ValueError):
+            b = None
+        if b:
+            d = pd.to_datetime(b, errors="coerce")
+            if d == d:
+                return float((end - d).days // 365.25)
+        return a + 1 if a == a else a
+    return pd.Series([one(t, a) for t, a in zip(tid, age)], index=frame.index, dtype="float64")
 
 
 def role_counts(season: str | None = None) -> dict:
@@ -302,6 +349,8 @@ def _build_frame(league: str, season: str | None = None):
         return None
 
     frame = frame.copy()
+    if season is not None and "age" in frame.columns:      # 지난 시즌 표 — 나이를 시장가치와 같은 때(시즌 끝)로
+        frame["age"] = season_end_age(frame, season)
     # 이적 전 팀 잔류 행 제거 — 시즌 중 옮긴 선수의 옛 팀 행(TM 매칭 없음)이 리그 목록에 중복으로 남아
     # 'Enzo Fernández(Chelsea) 89' 처럼 보였다. 새 팀 행의 직전 팀이 이 팀일 때만(동명이인 보호).
     if "tm_id" in frame.columns:

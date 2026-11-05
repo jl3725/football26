@@ -170,12 +170,17 @@ def prev_season_ovr() -> dict[str, dict]:
         if df is None:
             continue
         for _, r in df.iterrows():
+            # 시장가치 없는 지난 시즌 행은 비교하지 않는다 — 라이트 리그 지난 시즌 표엔 몸값·나이가 없어 OVR 이 출전 시간대
+            # 기본값으로 나왔다(Talisca 74 → 80 '급등', 2026-11-05)
+            mv = pd.to_numeric(r.get("market_value_eur"), errors="coerce")
+            if pd.isna(mv) or mv <= 0:
+                continue
             mn = pd.to_numeric(r.get("minutes"), errors="coerce")
             mn = 0.0 if pd.isna(mn) else float(mn)
             pmn = pd.to_numeric(r.get("prev_minutes"), errors="coerce")
-            rec = {"ovr": rv3.player_line(r)["ovr"], "league": lg, "squad": r.get("squad"), "minutes": int(mn),
-                   "gated": rv3.youth_gated(r.get("age"), mn + (0.0 if pd.isna(pmn) else float(pmn)))}
             k = pid(r)
+            rec = {"ovr": rv3.player_line(r)["ovr"], "league": lg, "squad": r.get("squad"), "minutes": int(mn), "pid": k,
+                   "gated": rv3.youth_gated(r.get("age"), mn + (0.0 if pd.isna(pmn) else float(pmn)))}
             if k not in best or best[k][0] < mn:
                 best[k] = (mn, rec)
             alt.setdefault(name_key(r), []).append(rec)
@@ -195,7 +200,12 @@ def lookup_prev(prev: dict, row) -> dict | None:
     k = pid(row)
     if not k.startswith("nk:") and k in prev:
         return prev[k]
-    return prev.get(name_key(row))
+    rec = prev.get(name_key(row))
+    # 이름+국적이 같아도 둘 다 tm id 가 있는데 다르면 다른 사람 — 괴즈테페 André(지난 시즌 기록 없음)가 울브스 André 의
+    # 지난 시즌 76 에 붙어 '76 → 63 급락'으로 보였다(2026-11-05)
+    if rec and not k.startswith("nk:") and str(rec.get("pid") or "").startswith("tm") and rec.get("pid") != k:
+        return None
+    return rec
 
 
 def main() -> int:
