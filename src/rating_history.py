@@ -143,10 +143,20 @@ def record(league: str, today: str | None = None) -> int:
 
 
 # ── 조회(API) ─────────────────────────────────────────────────────────
+def current_model(hist: pd.DataFrame) -> bool:
+    """기록이 지금 모델 버전으로 옮겨졌나 — 버전을 올린 코드가 배포된 뒤 매일 기록(record 의 rebase)이 돌기 전에는
+    옛 공식 값이라 지금 값과 비교하면 공식 변경이 ▲▼·추이 선으로 보인다(v3.17 배포 전 확인, 2026-11-05). 그동안은 숨긴다."""
+    import ratings_v3 as rv3
+    if hist.empty or "model" not in hist.columns:
+        return True
+    last = hist.sort_values("date")["model"].iloc[-1]
+    return str(last) == rv3.MODEL_VERSION or last != last or str(last) == ""
+
+
 def trend_baseline(league: str, days: int = TREND_DAYS) -> dict[str, dict]:
     """pid → {ovr, form, date} — days 일 전 시점 값. 그보다 늦게 처음 기록된 선수는 없음."""
     hist = load(league)
-    if hist.empty:
+    if hist.empty or not current_model(hist):
         return {}
     then = (dt.date.fromisoformat(_today()) - dt.timedelta(days=days)).isoformat()
     st = state_at(hist, then)

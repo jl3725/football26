@@ -1434,7 +1434,7 @@ def _ovr_history(league: str, row, days: int = 120) -> list[dict]:
         hist = rh.load(league)
     except Exception:  # noqa: BLE001
         return []
-    if hist is None or hist.empty or "pid" not in hist.columns:
+    if hist is None or hist.empty or "pid" not in hist.columns or not rh.current_model(hist):
         return []
     h = hist[hist["pid"].astype(str) == rh.pid(row)]
     if h.empty and "norm_key" in hist.columns and row.get("norm_key"):
@@ -3344,7 +3344,7 @@ def player_detail(team: str, player: str, league: str = ACTIVE_LEAGUE, basis: st
         "categories_line": categories, "radar_line": radar, "badges": badges,
         "comp_usage": _comp_profile(row, _comp_usage(league)),
         "season_log": _season_log(str(row.get("squad") or team), str(row["player"]), league, is_gk=is_gk, fm_id=row.get("fm_id")),
-        # 'OVR 이 어떻게 나왔나' — 단계별 기여(rv3.ovr_parts_of_row)와 평점 출처(Sofascore·FotMob 평균)
+        # 'OVR 이 어떻게 나왔나' — 단계별 기여(rv3.ovr_parts_of_row)와 평점 출처(Sofascore·FotMob·365Scores 평균)
         "ovr_parts": rv3.ovr_parts_of_row(row)["parts"],
         "ratings": _rating_sources(row),
         "form": _player_form(row),
