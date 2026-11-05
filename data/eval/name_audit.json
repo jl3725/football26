@@ -1020,11 +1020,16 @@
   },
   "espn_lineups_cups": {
    "total": 531,
-   "exact": 512,
+   "exact": 511,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 19,
+   "orphan": 20,
    "orphans": [
+    {
+     "squad": "Como",
+     "name": "Tasos Douvikas",
+     "starts": 3
+    },
     {
      "squad": "Parma",
      "name": "Alessandro Circati",
@@ -1124,10 +1129,10 @@
   },
   "espn_subs": {
    "total": 464,
-   "exact": 459,
+   "exact": 460,
    "rule": 1,
    "ambiguous": 1,
-   "orphan": 4,
+   "orphan": 3,
    "orphans": [
     {
      "squad": "Inter",
@@ -1142,11 +1147,6 @@
     {
      "squad": "Fiorentina",
      "name": "Valde",
-     "starts": 0
-    },
-    {
-     "squad": "Como",
-     "name": "Tasos Douvikas",
      "starts": 0
     }
    ]
@@ -5601,7 +5601,7 @@
   }
  },
  "_meta": {
-  "date": "2026-11-04",
+  "date": "2026-11-05",
   "season": "2026_2027"
  }
 }
