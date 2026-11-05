@@ -81,6 +81,10 @@ jobs:
       - name: FotMob match ratings (최근 폼)
         run: bash scripts/ci_try.sh "fotmob_matches" python src/fetch_fotmob_matches.py
 
+      # 세 번째 평점 원천 — 365Scores 경기별 선수 평점(공개 JSON, 끝난 리그 경기만 새로) → 시즌 평점(src/fetch_365_ratings.py)
+      - name: 365Scores ratings (세 번째 평점 원천)
+        run: bash scripts/ci_try.sh "s365_ratings" python src/fetch_365_ratings.py --max 120
+
       - name: Refresh global home snapshot (home_all.json)
         run: |
           python scripts/build_db.py > /dev/null

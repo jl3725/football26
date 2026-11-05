@@ -23,6 +23,7 @@ TABLE_COLS = {
     "espn_subs": ["player_in", "player_out"], "espn_subs_cups": ["player_in", "player_out"],
     "match_events": ["player"], "wiki_squads": ["player"], "transfermarkt_injuries": ["player"],
     "fotmob_ratings": ["player"], "player_match_stats": ["player"], "fotmob_match_ratings": ["player"], "fotmob_injuries": ["player"],
+    "s365_ratings": ["player"], "s365_match_ratings": ["player"],
 }
 _CACHE: dict = {}
 _SPLIT = re.compile(r" because | due to ")

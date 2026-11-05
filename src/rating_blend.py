@@ -17,6 +17,14 @@ from __future__ import annotations
 import pandas as pd
 
 FM_MU, FM_SD, SS_MU, SS_SD = 6.888, 0.296, 6.848, 0.216
+# 365Scores(세 번째 원천, src/fetch_365_ratings.py) — 척도는 리그·포지션 라인마다 이번 빌드에서 맞춘다(cal_365). 아래는 모자랄 때 기본값
+# (26/27 EPL 450분+ 192명: 365 6.855±0.340 · Sofascore 6.957±0.297, 상관 365–FotMob 0.78 · 365–Sofascore 0.64 · Sofascore–FotMob 0.81).
+# 골키퍼는 원천마다 크게 달라(E. 마르티네스 365 6.42 · Sofascore 7.63) 라인별로 맞춘다
+S365_MU, S365_SD, S365_REF_MU, S365_REF_SD = 6.855, 0.340, 6.957, 0.297
+CAL_MIN, CAL_N = 450.0, 25
+# 라인별 척도 표본 — 골키퍼는 리그당 16~21명이라 25명 기준이면 늘 리그 전체 척도로 바뀌어, 365 골키퍼 평점(평균 6.7)이
+# 필드 선수 척도로 옮겨져 골키퍼 평균이 0.15 내려갔다(2026-11-05). 12명+ 은 그 라인, 5~11명은 평균만 그 라인
+CAL_N_LINE, CAL_N_MEAN = 12, 5
 HIST_DECAY = 0.5
 
 
@@ -51,6 +59,68 @@ def _by_id(read, season: str) -> dict:
             if k not in out or (mn or 0) > out[k][1]:
                 out[k] = (float(r), float(mn or 0), lg)
     return out
+
+
+def attach_365(frame: pd.DataFrame, table: pd.DataFrame | None) -> pd.DataFrame:
+    """365Scores 시즌 평점(s365_rating·s365_minutes) — (팀, 이름) 정확히, 안 되면 같은 팀 이름 규칙·하나뿐인 성(live_roster)."""
+    out = frame.copy()
+    out["s365_rating"], out["s365_minutes"] = pd.NA, pd.NA
+    if table is None or table.empty or not {"squad", "player", "rating"} <= set(table.columns):
+        return out
+    import live_roster as lr  # noqa: PLC0415
+    by_team: dict[str, dict[str, tuple]] = {}
+    for s, p, r, mn in zip(table["squad"].astype(str), table["player"].astype(str), _num(table["rating"]), _num(table["minutes"])):
+        by_team.setdefault(s, {})[p] = (r, mn)
+    for sq, g in out.groupby(out["squad"].astype(str)):
+        cand = by_team.get(sq) or {}
+        if not cand:
+            continue
+        names = list(cand)
+        for idx, p in zip(g.index, g["player"].astype(str)):
+            hit = cand.get(p)
+            if hit is None:
+                k = lr.match_in_squad(p, names)
+                hit = cand.get(k) if k else None
+            if hit is not None:
+                out.at[idx, "s365_rating"], out.at[idx, "s365_minutes"] = hit
+    return out
+
+
+def cal_365(frame: pd.DataFrame, ref_col: str = "ss_rating") -> dict[str, tuple[float, float, float, float]]:
+    """{라인: (365 평균, 표준편차, 기준 평균, 표준편차)} — 이 리그에서 두 값이 다 있는 450분+ 선수로. 라인 표본이 CAL_N 미만이면
+    리그 전체, 그것도 모자라면 기본값. 기준 = Sofascore 척도의 이번 시즌 평점(라이트 리그는 FotMob 을 같은 척도로 바꾼 값).
+    라인 표본이 CAL_N_LINE 이상이면 그 라인 그대로, CAL_N_MEAN 이상이면 평균만 그 라인(흩어짐은 리그 전체)."""
+    import ratings_v3 as rv3  # noqa: PLC0415
+    a, b = _num(frame.get("s365_rating")), _num(frame.get(ref_col))
+    m = _num(frame.get("s365_minutes")).fillna(0)
+    ok = a.notna() & (a > 0) & b.notna() & (b > 0) & (m >= CAL_MIN)
+    lines = pd.Series([rv3.line_of_row(r) for _, r in frame.iterrows()], index=frame.index)
+    out = {}
+    pooled = (float(a[ok].mean()), float(a[ok].std()), float(b[ok].mean()), float(b[ok].std())) if ok.sum() >= CAL_N else \
+        (S365_MU, S365_SD, S365_REF_MU, S365_REF_SD)
+    for ln in ("GK", "DEF", "MID", "ATT"):
+        k = ok & (lines == ln)
+        if k.sum() >= CAL_N_LINE:
+            out[ln] = (float(a[k].mean()), float(a[k].std()), float(b[k].mean()), float(b[k].std()))
+        elif k.sum() >= CAL_N_MEAN:
+            out[ln] = (float(a[k].mean()), pooled[1], float(b[k].mean()), pooled[3])
+        else:
+            out[ln] = pooled
+    out["_lines"] = lines  # type: ignore[assignment]
+    return out
+
+
+def s365_to_ss(frame: pd.DataFrame, cal: dict) -> pd.Series:
+    """365 평점 → 같은 라인·같은 위치(z)의 Sofascore 척도."""
+    lines = cal.get("_lines")
+    x = _num(frame.get("s365_rating"))
+    out = pd.Series(pd.NA, index=frame.index, dtype="object")
+    for ln in ("GK", "DEF", "MID", "ATT"):
+        mu, sd, rmu, rsd = cal[ln]
+        k = (lines == ln) & x.notna() & (x > 0)
+        if sd and sd == sd and sd > 0:
+            out[k] = rmu + (x[k] - mu) * rsd / sd
+    return _num(out)
 
 
 def attach(frame: pd.DataFrame, league: str, season: str | None, read) -> pd.DataFrame:
@@ -128,15 +198,40 @@ def coverage_avg(a: pd.Series, a_min: pd.Series, b: pd.Series, b_min: pd.Series)
     return avg, (wa / w).where(w > 0)
 
 
-def blend(frame: pd.DataFrame) -> pd.DataFrame:
-    """ss_rating(·prev_ss_rating) = Sofascore 와 FotMob(척도 맞춤)의 평균, hist_* 빈칸은 FotMob 2시즌 전으로.
-    이번 시즌은 출처별 반영 출전 시간 가중(coverage_avg) — ss_share_sofa 에 Sofascore 몫."""
+def coverage_avg_n(vals: list[pd.Series], mins: list[pd.Series]) -> tuple[pd.Series, list[pd.Series]]:
+    """원천 N개 — 각자 반영한 이번 시즌 출전 시간만큼(가장 많은 쪽 = 1) 가중 평균. (평균, [원천별 몫])."""
+    vs = [_num(v).where(_num(v) > 0) for v in vals]
+    ms = [_num(m) for m in mins]
+    top = pd.concat(ms, axis=1).max(axis=1)
+    ws = [(m / top).where(m.notna() & (top > 0), 1.0).clip(0, 1).where(v.notna(), 0.0) for v, m in zip(vs, ms)]
+    w = sum(ws)
+    avg = (sum(v.fillna(0) * wi for v, wi in zip(vs, ws)) / w).where(w > 0)
+    return avg, [(wi / w).where(w > 0) for wi in ws]
+
+
+def blend(frame: pd.DataFrame, lite: bool = False) -> pd.DataFrame:
+    """ss_rating(·prev_ss_rating) = Sofascore · FotMob · 365Scores(척도 맞춤)의 평균, hist_* 빈칸은 FotMob 2시즌 전으로.
+    이번 시즌은 출처별 반영 출전 시간 가중(coverage_avg_n) — ss_share_sofa·ss_share_365 에 몫.
+    lite=True(라이트 리그) — ss_rating 이 이미 FotMob 을 바꾼 값이라 Sofascore 로 세지 않는다(FotMob 두 번 방지).
+    2026-11-05 사용자: '평점 원천 3곳 평균이면 신빙성이 오르지 않나' → 365Scores 추가."""
     out = frame.copy()
     out["ss_rating_sofa"] = out.get("ss_rating")
     fm = fm_to_ss(_num(out.get("fm_rating")))
     col = lambda c: out[c] if c in out.columns else pd.Series(pd.NA, index=out.index, dtype="object")   # noqa: E731
-    out["ss_rating"], out["ss_share_sofa"] = coverage_avg(col("ss_rating"), col("ss_minutes"),
-                                                          pd.Series(fm, index=out.index), col("fm_minutes"))
+    sofa = pd.Series(pd.NA, index=out.index, dtype="object") if lite else col("ss_rating")
+    vals, mins = [sofa, pd.Series(fm, index=out.index)], [col("ss_minutes"), col("fm_minutes")]
+    if "s365_rating" in out.columns and _num(out["s365_rating"]).notna().any():
+        ref = pd.Series(fm, index=out.index) if lite else _num(col("ss_rating")).where(_num(col("ss_rating")) > 0, pd.Series(fm, index=out.index))
+        cal = cal_365(out.assign(_ref=ref), ref_col="_ref")
+        out["s365_ss"] = s365_to_ss(out, cal)
+        vals.append(out["s365_ss"])
+        mins.append(col("s365_minutes"))
+    avg, shares = coverage_avg_n(vals, mins)
+    if lite and _num(avg).isna().all():
+        avg = col("ss_rating")
+    out["ss_rating"] = avg.where(avg.notna(), _num(col("ss_rating")) if not lite else avg)
+    out["ss_share_sofa"] = shares[0]
+    out["ss_share_365"] = shares[2] if len(shares) > 2 else pd.Series(0.0, index=out.index)
     if "prev_fm_rating" in out.columns:
         pfm = fm_to_ss(_num(out["prev_fm_rating"]))
         if "prev_ss_rating" not in out.columns:

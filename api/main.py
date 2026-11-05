@@ -3400,7 +3400,7 @@ def _recent_of(row, league: str) -> dict | None:
 
 
 def _rating_sources(row) -> dict:
-    """평점 출처 — 두 출처 평균(모델 입력)과 원래 값(src/rating_blend.py). 없으면 None."""
+    """평점 출처 — 세 출처(Sofascore·FotMob·365Scores) 평균(모델 입력)과 원래 값(src/rating_blend.py). 없으면 None."""
     import rating_blend as rb  # noqa: PLC0415
 
     def f(k):
@@ -3414,6 +3414,8 @@ def _rating_sources(row) -> dict:
             # 출처별 반영 출전 시간·Sofascore 몫 — Sofascore 는 이 PC 에서만 받아 며칠 늦을 수 있다(rating_blend.coverage_avg)
             "sofascore_minutes": mins("ss_minutes"), "fotmob_minutes": mins("fm_minutes"),
             "sofascore_share": None if pd.isna(share) else round(float(share), 2),
+            # 세 번째 원천 365Scores(2026-11-05) — 원래 값·같은 척도로 바꾼 값·반영 출전
+            "s365": f("s365_rating"), "s365_scaled": f("s365_ss"), "s365_minutes": mins("s365_minutes"),
             "prev_blend": f("prev_ss_rating"), "prev_sofascore": f("prev_ss_rating_sofa"), "prev_fotmob": f("prev_fm_rating"),
             "hist": f("hist_ss_rating"), "prev_minutes": int(_num(row.get("prev_minutes"))) or None}
 

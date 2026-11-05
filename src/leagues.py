@@ -69,6 +69,7 @@ class LeagueConfig:
     fotmob_id: int = 0       # FotMob 리그 id(시즌 통계·경기 상세·명단)
     espn: str = ""           # ESPN 리그 코드(eng.2 …) — 일정·라인업·교체
     division: int = 1        # 그 나라 몇 부 리그 — 2부는 UEFA 협회 계수를 1부와 나눠 쓸 수 없어 리그 수준을 따로 낸다(league_level)
+    s365_id: int = 0         # 365Scores 대회 id — 세 번째 평점 원천(src/fetch_365_ratings.py, 2026-11-05)
 
 
 # 지원 리그의 소스 식별자와 기본 UI 메타.
@@ -77,42 +78,50 @@ LEAGUES: dict[str, LeagueConfig] = {
         key="EPL", name="Premier League", country="England",
         fbref_id="ENG-Premier League", tm_id="GB1", tm_slug="premier-league",
         api_football_id=39, default_team="Arsenal", espn="eng.1",
+        s365_id=7,
     ),
     "LaLiga": LeagueConfig(
         key="LaLiga", name="La Liga", country="Spain",
         fbref_id="ESP-La Liga", tm_id="ES1", tm_slug="laliga",
         api_football_id=140, default_team="Real Madrid", espn="esp.1",
+        s365_id=11,
     ),
     "Bundesliga": LeagueConfig(
         key="Bundesliga", name="Bundesliga", country="Germany",
         fbref_id="GER-Bundesliga", tm_id="L1", tm_slug="bundesliga",
         api_football_id=78, default_team="Bayern Munich", teams=18, games_per_team=34, espn="ger.1",
+        s365_id=25,
     ),
     "SerieA": LeagueConfig(
         key="SerieA", name="Serie A", country="Italy",
         fbref_id="ITA-Serie A", tm_id="IT1", tm_slug="serie-a",
         api_football_id=135, default_team="Inter", espn="ita.1",
+        s365_id=17,
     ),
     "Ligue1": LeagueConfig(
         key="Ligue1", name="Ligue 1", country="France",
         fbref_id="FRA-Ligue 1", tm_id="FR1", tm_slug="ligue-1",
         api_football_id=61, default_team="Paris Saint-Germain", espn="fra.1",
+        s365_id=35,
     ),
     "LigaPortugal": LeagueConfig(
         key="LigaPortugal", name="Liga Portugal", country="Portugal",
         fbref_id="POR-Primeira Liga", tm_id="PO1", tm_slug="liga-portugal-betclic",
         api_football_id=94, default_team="Sporting CP", teams=18, games_per_team=34, espn="por.1",
+        s365_id=73,
     ),
     "Eredivisie": LeagueConfig(
         key="Eredivisie", name="Eredivisie", country="Netherlands",
         fbref_id="NED-Eredivisie", tm_id="NL1", tm_slug="eredivisie",
         api_football_id=88, default_team="PSV", teams=18, games_per_team=34, espn="ned.1",
+        s365_id=57,
     ),
     "BelgianProLeague": LeagueConfig(
         key="BelgianProLeague", name="Belgian Pro League", country="Belgium",
         fbref_id="BEL-Belgian Pro League", tm_id="BE1", tm_slug="jupiler-pro-league",
         # 26/27 부터 18팀(ESPN·TM 리그 페이지 기준) — 정규 34라운드 + 플레이오프
         api_football_id=144, default_team="Club Brugge", teams=18, games_per_team=34, espn="bel.1",
+        s365_id=98,
     ),
     # ── 라이트 리그(클라우드 수집만) — 팀 표기는 FotMob 리그 표 기준(src/lite_league.py) ──
     "Championship": LeagueConfig(
@@ -120,12 +129,14 @@ LEAGUES: dict[str, LeagueConfig] = {
         fbref_id="", tm_id="GB2", tm_slug="championship", api_football_id=40,
         default_team="West Ham United", teams=24, games_per_team=46,
         lite=True, fotmob_id=48, espn="eng.2", division=2,
+        s365_id=1,
     ),
     "SuperLig": LeagueConfig(
         key="SuperLig", name="Süper Lig", country="Türkiye",
         fbref_id="", tm_id="TR1", tm_slug="super-lig", api_football_id=203,
         default_team="Galatasaray", teams=18, games_per_team=34,
         lite=True, fotmob_id=71, espn="tur.1",
+        s365_id=78,
     ),
     # 오스트리아·덴마크·스위스는 정규 라운드 뒤 상·하위 그룹 라운드(스플릿) — 경기 수는 스플릿 포함
     "AustrianBundesliga": LeagueConfig(
@@ -133,18 +144,21 @@ LEAGUES: dict[str, LeagueConfig] = {
         fbref_id="", tm_id="A1", tm_slug="bundesliga", api_football_id=218,
         default_team="Salzburg", teams=12, games_per_team=32,
         lite=True, fotmob_id=38, espn="aut.1",
+        s365_id=111,
     ),
     "DanishSuperliga": LeagueConfig(
         key="DanishSuperliga", name="Danish Superliga", country="Denmark",
         fbref_id="", tm_id="DK1", tm_slug="superligaen", api_football_id=119,
         default_team="FC København", teams=12, games_per_team=32,
         lite=True, fotmob_id=46, espn="den.1",
+        s365_id=119,
     ),
     "SwissSuperLeague": LeagueConfig(
         key="SwissSuperLeague", name="Swiss Super League", country="Switzerland",
         fbref_id="", tm_id="C1", tm_slug="super-league", api_football_id=207,
         default_team="Young Boys", teams=12, games_per_team=38,
         lite=True, fotmob_id=69, espn="sui.1",
+        s365_id=95,
     ),
 }
 

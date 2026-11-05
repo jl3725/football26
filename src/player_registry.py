@@ -271,7 +271,9 @@ def build(lg: str, season: str) -> tuple[pd.DataFrame, dict]:
     merged: dict[str, str] = {}                                 # 출전 시간 지문으로 합친 신원 — 옛 entity → 우리 선수 entity
     srcs = [("wiki_squads", ["player"]), ("espn_lineups", ["player"]), ("espn_lineups_cups", ["player"]),
             ("espn_subs", ["player_in", "player_out"]), ("espn_subs_cups", ["player_in", "player_out"]),
-            ("match_events", ["player"]), ("fotmob_ratings", ["player"])]   # FotMob 평점(두 출처 평균 평점)
+            ("match_events", ["player"]), ("fotmob_ratings", ["player"]),   # FotMob 평점(세 출처 평균 평점)
+            ("s365_ratings", ["player"])]                                    # 365Scores 평점(세 번째 원천, 2026-11-05)
+    rating_srcs = {"fotmob_ratings", "s365_ratings"}                         # 출전 시간 지문으로 이름 다른 선수를 잇는 원천
     played = {"espn_lineups", "espn_lineups_cups", "espn_subs", "espn_subs_cups", "match_events"}
     for stem, cols in srcs:
         d = _read(stem, lg, season)
@@ -306,7 +308,7 @@ def build(lg: str, season: str) -> tuple[pd.DataFrame, dict]:
                     sc = 100
                 else:
                     eid, sc = best_match(nm, names.get(sq, {}))
-                if stem == "fotmob_ratings":
+                if stem in rating_srcs:
                     fm_seen[sq].append((nm, eid))
                 if eid:
                     a["exact" if sc == 100 else "rule"] += 1
@@ -320,7 +322,7 @@ def build(lg: str, season: str) -> tuple[pd.DataFrame, dict]:
                     n_st = int(starts.get((sq, nm), 0))
                     a["orphans"].append({"squad": sq, "name": nm, "starts": n_st})
                     add_entity(f"esp:{sq}:{norm(nm)}", sq, nm, "", stem)
-        if stem == "fotmob_ratings" and pf is not None and "minutes" in d.columns:
+        if stem in rating_srcs and pf is not None and "minutes" in d.columns:
             a = audit[stem]
             a["minutes"] = 0
             fsq = _read("fotmob_squads", lg, season, {"squad", "player", "pos"})
