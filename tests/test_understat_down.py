@@ -30,6 +30,11 @@ def test_live_other_errors_stay_failures(monkeypatch):
 
 
 def test_weekly_falls_back_to_last_file(monkeypatch, tmp_path):
+    try:
+        import soccerdata  # noqa: F401, PLC0415
+    except ImportError:                                      # CI 는 soccerdata 없이 테스트한다 — 빈 모듈로 대신(Understat 은 아래서 바꿔 끼움)
+        import types  # noqa: PLC0415
+        monkeypatch.setitem(sys.modules, "soccerdata", types.ModuleType("soccerdata"))
     import fetch_understat as fu
     last = tmp_path / "understat_players.csv"
     pd.DataFrame({"squad": ["Arsenal"] * 120, "player": [f"P{i}" for i in range(120)], "minutes": 900,
@@ -39,7 +44,7 @@ def test_weekly_falls_back_to_last_file(monkeypatch, tmp_path):
     class Boom:
         def __init__(self, *a, **k):
             raise OSError("dial tcp 45.90.32.72:443: i/o timeout")
-    monkeypatch.setattr(fu.sd, "Understat", Boom)
+    monkeypatch.setattr(fu.sd, "Understat", Boom, raising=False)
     monkeypatch.setattr(fu, "ACTIVE_LEAGUE", "EPL")
     monkeypatch.setattr(fu, "data_path", lambda stem, *a, **k: last)
     u = fu.read_understat_or_empty(pd.DataFrame())
