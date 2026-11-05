@@ -126,3 +126,22 @@
 {"t": "2026-11-03T03:22:42+00:00", "runner": "local-sofascore-daily", "step": "merge_sofascore", "league": "Eredivisie", "ok": true, "code": 0, "sec": 1.9}
 {"t": "2026-11-03T03:23:16+00:00", "runner": "local-sofascore-daily", "step": "sofascore", "league": "BelgianProLeague", "ok": true, "code": 0, "sec": 33.7}
 {"t": "2026-11-03T03:23:18+00:00", "runner": "local-sofascore-daily", "step": "merge_sofascore", "league": "BelgianProLeague", "ok": true, "code": 0, "sec": 1.9}
+{"t": "2026-11-05T02:40:32+00:00", "runner": "local-sofascore-daily", "step": "sofascore", "league": "EPL", "ok": true, "code": 0, "sec": 28.5}
+{"t": "2026-11-05T02:40:34+00:00", "runner": "local-sofascore-daily", "step": "merge_sofascore", "league": "EPL", "ok": true, "code": 0, "sec": 2.0}
+{"t": "2026-11-05T02:42:43+00:00", "runner": "local-sofascore-daily", "step": "statbunker", "league": "EPL", "ok": false, "code": 75, "sec": 128.6, "note": "[statbunker] 원천 중단 404 Client Error: Not Found for url: https://www.statbunker.com/competitions/Tea — 기존 파일 유지"}
+{"t": "2026-11-05T02:43:14+00:00", "runner": "local-sofascore-daily", "step": "sofascore", "league": "LaLiga", "ok": true, "code": 0, "sec": 31.8}
+{"t": "2026-11-05T02:43:16+00:00", "runner": "local-sofascore-daily", "step": "merge_sofascore", "league": "LaLiga", "ok": true, "code": 0, "sec": 1.9}
+{"t": "2026-11-05T02:46:07+00:00", "runner": "local-sofascore-daily", "step": "statbunker", "league": "LaLiga", "ok": false, "code": 75, "sec": 171.1, "note": "[statbunker] 원천 중단 502 https://www.statbunker.com/competitions/TeamsGoalScorersTypeOfPlay?comp_id=7 — 기존 파일 유지"}
+{"t": "2026-11-05T02:48:46+00:00", "runner": "local-sofascore-daily", "step": "sofascore", "league": "Bundesliga", "ok": true, "code": 0, "sec": 158.4}
+{"t": "2026-11-05T02:48:48+00:00", "runner": "local-sofascore-daily", "step": "merge_sofascore", "league": "Bundesliga", "ok": true, "code": 0, "sec": 2.0}
+{"t": "2026-11-05T02:49:19+00:00", "runner": "local-sofascore-daily", "step": "sofascore", "league": "SerieA", "ok": true, "code": 0, "sec": 31.5}
+{"t": "2026-11-05T02:49:21+00:00", "runner": "local-sofascore-daily", "step": "merge_sofascore", "league": "SerieA", "ok": true, "code": 0, "sec": 1.9}
+{"t": "2026-11-05T02:51:17+00:00", "runner": "local-sofascore-daily", "step": "statbunker", "league": "SerieA", "ok": true, "code": 0, "sec": 115.6}
+{"t": "2026-11-05T02:53:13+00:00", "runner": "local-sofascore-daily", "step": "sofascore", "league": "Ligue1", "ok": true, "code": 0, "sec": 116.3}
+{"t": "2026-11-05T02:53:15+00:00", "runner": "local-sofascore-daily", "step": "merge_sofascore", "league": "Ligue1", "ok": true, "code": 0, "sec": 1.8}
+{"t": "2026-11-05T02:54:28+00:00", "runner": "local-sofascore-daily", "step": "sofascore", "league": "LigaPortugal", "ok": true, "code": 0, "sec": 72.9}
+{"t": "2026-11-05T02:54:30+00:00", "runner": "local-sofascore-daily", "step": "merge_sofascore", "league": "LigaPortugal", "ok": true, "code": 0, "sec": 1.9}
+{"t": "2026-11-05T02:55:00+00:00", "runner": "local-sofascore-daily", "step": "sofascore", "league": "Eredivisie", "ok": true, "code": 0, "sec": 29.7}
+{"t": "2026-11-05T02:55:02+00:00", "runner": "local-sofascore-daily", "step": "merge_sofascore", "league": "Eredivisie", "ok": true, "code": 0, "sec": 2.0}
+{"t": "2026-11-05T02:55:27+00:00", "runner": "local-sofascore-daily", "step": "sofascore", "league": "BelgianProLeague", "ok": true, "code": 0, "sec": 25.4}
+{"t": "2026-11-05T02:55:29+00:00", "runner": "local-sofascore-daily", "step": "merge_sofascore", "league": "BelgianProLeague", "ok": true, "code": 0, "sec": 2.2}
