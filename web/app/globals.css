@@ -525,7 +525,6 @@ html, body {
 .sc-legend span { display: inline-flex; align-items: center; gap: 5px; }
 .sc-legend i { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
 .sc-pot { opacity: .85; }
-.star-pot { font-size: 11px; margin-left: 2px; color: #4fc27f; font-family: Inter, sans-serif; font-weight: 700; }
 
 /* 스카우트 데스크 (Needs Board) */
 .scout-desk, .inbox-hd { border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; margin-bottom: 16px; background: linear-gradient(120deg, rgba(255,255,255,0.05), transparent 60%); }
@@ -2327,7 +2326,6 @@ html[data-font="classic"] .hero h1, html[data-font="classic"] .tb-team h1 { text
 /* 등급 카드의 추이 화살표는 OVR 숫자 아래로(커진 숫자 옆에 두면 사진과 겹침) */
 .fut .pl-ovr, .fut .star-ovr { display: flex; flex-direction: column; align-items: center; gap: 2px; }
 .fut .pl-ovr .trend, .fut .star-ovr .trend { margin-left: 0; font-size: 12px; line-height: 1; }
-.fut .star-ovr .star-pot { font-size: 12px; }
 /* 경기 카드 팀 이름도 제목 글꼴(목록형 이번 주 경기는 본문 글꼴 유지 — 밀도) */
 .mc-team { font-family: var(--font-display); font-weight: 700; font-size: 15px; letter-spacing: 0.01em; }
 .mc-card.compact .mc-team { font-size: 13.5px; }

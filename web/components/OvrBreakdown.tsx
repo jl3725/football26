@@ -6,7 +6,7 @@ import { MeaningTag } from "./Meaning";
 import Info from "./Info";
 
 // OVR 이 어떻게 나왔나 — 시장가치 기준점에서 경기력·나이·포지션 등이 몇 점씩 더해졌는지(src/ratings_v3.ovr_parts_of_row).
-// 2026-10-19 사용자: '기준이 어떤 건지 애매할 때가 있다'(Groß 76 · Vušković 84 = Konsa 84). 평점은 Sofascore·FotMob 평균.
+// 2026-10-19 사용자: '기준이 어떤 건지 애매할 때가 있다'(Groß 76 · Vušković 84 = Konsa 84). 평점은 Sofascore·FotMob·365Scores 평균.
 // 공식은 ⓘ 로(2026-10-21 '글이 너무 많다') — 화면엔 숫자만(출처별·이전 시즌 평점 포함, 한 줄).
 // 접힌 줄 요약은 짧게 — 한글 이름이 길면(예: '어린 선수 몸값의 잠재력 몫 빼기') 영어 약칭으로
 const shortName = (p: OvrPart) => {
@@ -21,8 +21,9 @@ export default function OvrBreakdown({ ovr, parts, ratings }: { ovr: number; par
   const rest = parts.slice(1);
   const top = [...rest].sort((a, b) => Math.abs(b.value) - Math.abs(a.value)).slice(0, 2);
   const r = ratings;
-  // Sofascore 가 FotMob 보다 출전 시간을 덜 반영(이 PC 수집이 늦음) — 몫 0.45 미만 = 반영 분이 FotMob 의 약 82% 미만
-  const lag = r?.sofascore_share != null && r.sofascore_share < 0.45;
+  // Sofascore 지연(이 PC 수집이 늦음) — 출처가 n 곳이면 정상 몫은 1/n(두 곳 0.5 · 세 곳 0.33), 그 90% 미만이면 최근 경기를 아직 못 받은 것
+  const nSrc = r ? [r.sofascore, r.fotmob, r.s365].filter((v) => v != null).length : 0;
+  const lag = r?.sofascore_share != null && nSrc > 1 && r.sofascore_share < 0.9 / nSrc;
   const fmt = (v: number) => `${v > 0 ? "+" : "−"}${Math.abs(v).toFixed(1)}`;
   return (
     <div className="ob5">
@@ -51,13 +52,15 @@ export default function OvrBreakdown({ ovr, parts, ratings }: { ovr: number; par
               </Info>
             </span>
             <b>{ovr}</b></div>
-          {r && (r.sofascore || r.fotmob) && (
+          {r && (r.sofascore || r.fotmob || r.s365) && (
             <div className="ob5-rate">
               <b>평점(경기력 입력)
                 <Info wide label="평점 출처">
-                  <p><b>이번 시즌</b> = Sofascore · FotMob 평균{r.fotmob != null && r.fotmob_scaled != null ? ` · FotMob ${r.fotmob.toFixed(2)} → 같은 척도 ${r.fotmob_scaled.toFixed(2)}` : ""}</p>
-                  <p className="muted">두 출처는 각자 반영한 출전 시간만큼 섞습니다 — Sofascore 는 하루 한 번 받아 최근 경기가 늦게 들어오면 그동안 FotMob 비중이 커집니다</p>
-                  <p className="muted">OVR 경기력은 이번·지난·2시즌 전을 출전 시간으로 섞고(오래될수록 덜), 폼은 이번 시즌만</p>
+                  <p><b>이번 시즌</b> = Sofascore · FotMob · 365Scores 평균
+                    {r.fotmob != null && r.fotmob_scaled != null ? ` · FotMob ${r.fotmob.toFixed(2)} → 같은 척도 ${r.fotmob_scaled.toFixed(2)}` : ""}
+                    {r.s365 != null && r.s365_scaled != null ? ` · 365Scores ${r.s365.toFixed(2)} → 같은 척도 ${r.s365_scaled.toFixed(2)}` : ""}</p>
+                  <p className="muted">세 출처는 각자 반영한 출전 시간만큼 섞습니다 — Sofascore 는 하루 한 번 받아 최근 경기가 늦게 들어오면 그동안 FotMob·365Scores 비중이 커집니다. 365Scores 는 포지션 라인별로 같은 척도로 맞춥니다(골키퍼를 유난히 낮게 매기는 버릇)</p>
+                  <p className="muted">OVR 경기력은 이번·지난·2시즌 전을 출전 시간으로 섞고(오래될수록 덜 · 지난 시즌은 나이만큼 옮겨 — 유망주 ↑ 노장 ↓), 폼은 이번 시즌만</p>
                 </Info>
               </b>
               <span>
@@ -68,12 +71,13 @@ export default function OvrBreakdown({ ovr, parts, ratings }: { ovr: number; par
                 {[
                   r.sofascore != null ? `Sofascore ${r.sofascore.toFixed(2)}${lag && r.sofascore_minutes ? ` (${r.sofascore_minutes.toLocaleString()}′)` : ""}` : null,
                   r.fotmob != null ? `FotMob ${r.fotmob.toFixed(2)}${lag && r.fotmob_minutes ? ` (${r.fotmob_minutes.toLocaleString()}′)` : ""}` : null,
+                  r.s365 != null ? `365Scores ${r.s365.toFixed(2)}${lag && r.s365_minutes ? ` (${r.s365_minutes.toLocaleString()}′)` : ""}` : null,
                   r.prev_blend ? `지난 시즌 ${r.prev_blend.toFixed(2)}${r.prev_minutes ? ` (${r.prev_minutes.toLocaleString()}분)` : ""}` : null,
                   r.hist ? `2시즌 전 ${r.hist.toFixed(2)}` : null,
                 ].filter(Boolean).join(" · ")}
               </span>
               {lag && r.sofascore_share != null && (
-                <span className="ob5-lag">Sofascore 가 최근 경기를 아직 반영하지 않아 FotMob 비중 {Math.round((1 - r.sofascore_share) * 100)}%</span>
+                <span className="ob5-lag">Sofascore 가 최근 경기를 아직 반영하지 않아 {r.s365 != null ? "FotMob·365Scores" : "FotMob"} 비중 {Math.round((1 - r.sofascore_share) * 100)}%</span>
               )}
             </div>
           )}

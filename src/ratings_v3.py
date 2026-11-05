@@ -698,7 +698,7 @@ def ovr_of_row(row, exact: bool = False):
 PART_LABELS = {
     "base": ("VALUE", "시장가치 기준점"), "base_fallback": ("VALUE", "시장가치 없음 → 출전 시간대 기준점"),
     "jump": ("VALUE JUMP", "몸값 급등 감쇠(새 몸값의 절반만)"), "pos": ("POSITION", "포지션 보정"),
-    "perf": ("PERFORMANCE", "경기력 — 평점(Sofascore·FotMob 평균, 이번·지난 시즌, 리그+유럽·컵+대표팀, 대회·상대 수준 보정)"),
+    "perf": ("PERFORMANCE", "경기력 — 세 곳 평균 평점(이번·지난 시즌 · 리그+유럽·컵+대표팀)"),
     "gk_base": ("GK", "골키퍼 기준"), "gk_perf": ("PERFORMANCE", "선방률·클린시트(리그 보정)"),
     "vet": ("VETERAN", "베테랑 — 나이로 깎인 몸값 일부 되돌림"), "age": ("AGE", "나이 보정"),
     "vet_pe": ("VETERAN FORM", "베테랑 — '평점이 말하는 수준' 쪽으로"), "big": ("BIG MATCH", "유럽대항전·컵 선발"),

@@ -561,7 +561,7 @@ def player_form(player: str, club: str, league: str) -> dict:
                                   for m in (rec.get("matches") or [])[:5]]},
            "verdict": _form_verdict(recent_score, season_form),
            "note": "폼 지수 = 같은 리그·같은 포지션 안 순위(45~99). 평점 비교는 같은 척도끼리 — 최근 avg5_fotmob ↔ 시즌 rating_fotmob"
-                   "(FotMob). rating_two_sources 는 Sofascore·FotMob 평균(다른 척도)이라 최근 평균과 직접 비교하지 않는다"}
+                   "(FotMob). rating_two_sources 는 Sofascore·FotMob·365Scores 평균(이름은 예전 그대로, 다른 척도)이라 최근 평균과 직접 비교하지 않는다"}
     xs, xm = _num(r.get("x_ss_rating")), _num(r.get("x_raw_minutes"))
     if xs and xm:
         from rating_blend import FM_MU, FM_SD, SS_MU, SS_SD  # noqa: PLC0415 — 같은 FotMob 척도로 되돌려 최근 평균과 나란히

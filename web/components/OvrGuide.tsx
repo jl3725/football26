@@ -27,7 +27,8 @@ export default function OvrGuide() {
           <ul className="ovrg-p" style={{ paddingLeft: 16, marginTop: 2 }}>
             <li>시장가치 기준점</li>
             <li>포지션 — 수비 +0.5 · 미드 −0.5</li>
-            <li>경기력 — 이번·지난 시즌 평점(시즌이 쌓이면 2시즌 전 이상도 작은 가중) · 리그 보정 · ±3.5 상한</li>
+            <li>경기력 — 평점 세 곳(Sofascore·FotMob·365Scores) 평균 · 이번·지난 시즌(시즌이 쌓이면 2시즌 전 이상도 작은 가중) · 리그 보정 · ±3.5 상한</li>
+            <li>나이 곡선 — 지난 시즌 평점은 그새 큰 만큼(20세 +0.07) · 내려온 만큼(36세 −0.06) 옮겨 섞음</li>
             <li>나이 — 유망주 잠재력 몫 −, 30대 검증 베테랑 +</li>
             <li>유럽대항전 — 최대 +0.7</li>
           </ul>

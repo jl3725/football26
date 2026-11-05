@@ -290,7 +290,7 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
                   {st.big_match && <span className="star-bm" title="UCL/UEL 급 무대 검증">⚡</span>}
                   {st.photo ? <img src={st.photo} alt="" /> : <span className="star-ph" />}
                   <div className="star-ovr" style={{ color: tt.light }} title={`OVR ${st.ovr} · ${tt.ko}`}>
-                    {st.ovr}<TrendArrow t={st.trend} ovr={st.ovr} />{st.pot && st.pot > st.ovr ? <span className="star-pot">↗{st.pot}</span> : null}
+                    {st.ovr}<TrendArrow t={st.trend} ovr={st.ovr} />
                   </div>
                   <div className="star-name">{st.player}</div>
                   <div className="star-meta">{st.pos}</div>
@@ -316,7 +316,7 @@ export default function OverviewTab({ ov, accent }: { ov: Overview; accent: stri
         <>
       {/* 팀 정체성 — 감독 전술 블렌드 · 영입 성향 · 예산 */}
       <IdentityCard team={ov.team} league={ov.league} accent={accent} />
-      {/* 스쿼드 절대 평가 — OVR/POT 산점도 */}
+      {/* 스쿼드 연령 구조 — POT(잠재력) 숫자는 쓰지 않는다: 25/26→26/27 검증에서 예측 성장 +8.2 · 실제 +2.2, 도달 10%(2026-11-05) */}
       <RatingsBoard ov={ov} accent={accent} />
       {/* 팀 리더 */}
       {ov.leaders.length > 0 && (

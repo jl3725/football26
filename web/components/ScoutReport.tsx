@@ -214,7 +214,7 @@ export default function ScoutReport({ team, player, accent, onClose, league, buy
           )}
 
           <footer className="sr-foot">
-            {r.generated} 생성 · 백분위 = 리그 경기, 같은 포지션 비교 · 출처: FBref·Sofascore·FotMob·Transfermarkt·뉴스(Google News 포함) · SCOUT.AI
+            {r.generated} 생성 · 백분위 = 리그 경기, 같은 포지션 비교 · 출처: FBref·Sofascore·FotMob·365Scores·Transfermarkt·뉴스(Google News 포함) · SCOUT.AI
           </footer>
         </article>
       )}

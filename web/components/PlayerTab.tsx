@@ -207,7 +207,7 @@ function Detail({ team, player, accent, heatmap }: { team: string; player: strin
             <Info wide label="폼 기준">
               <p>{FORM_NOTE}</p>
               <p>{RECENT_NOTE}</p>
-              <p className="muted">경기 평점 = FotMob(출전 시간 가중) · 시즌 평점은 Sofascore·FotMob 평균</p>
+              <p className="muted">경기 평점 = FotMob(출전 시간 가중) · 시즌 평점은 Sofascore·FotMob·365Scores 평균</p>
             </Info>
           </div>
           <FormPair season={d.form} recent={d.recent?.score} n={d.recent?.n} />

@@ -22,7 +22,7 @@ export type Trend = { ovr_d: number | null; form_d: number | null; ovr_prev: num
 // 최근 경기 평점(FotMob, 전 대회) — 선수 화면 LAST 5 막대
 export type RecentMatch = { date: string; comp_code: string; opponent: string; home_away: string; minutes: number; rating: number; goals: number; assists: number };
 export type RecentForm = { score: number | null; n: number; avg5: number; avg3: number; matches: RecentMatch[] };
-export type Star = { trend?: Trend; player: string; pos: string; ovr: number; pot?: number; form?: number | null;
+export type Star = { trend?: Trend; player: string; pos: string; ovr: number; form?: number | null;
   form_recent?: number | null; recent_avg?: number | null; recent_n?: number | null; rating: number; goals: number; assists: number; photo: string; role?: string; big_match?: boolean };
 // source: transfermarkt | fotmob(다음 경기 결장 명단·경기 중 부상 교체 — TM 보다 빠름)
 export type Injury = { player: string; injury: string; until: string; pos: string; photo: string; source?: string };
@@ -870,7 +870,8 @@ export type TeamRecordRow = { season: string; label: string; w?: number; played:
 export type OvrPart = { key: string; en: string; ko: string; value: number };
 export type RatingSources = { blend: number | null; sofascore: number | null; fotmob: number | null; fotmob_scaled: number | null;
   prev_blend: number | null; prev_sofascore: number | null; prev_fotmob: number | null; hist: number | null; prev_minutes: number | null;
-  sofascore_minutes?: number | null; fotmob_minutes?: number | null; sofascore_share?: number | null };
+  sofascore_minutes?: number | null; fotmob_minutes?: number | null; sofascore_share?: number | null;
+  s365?: number | null; s365_scaled?: number | null; s365_minutes?: number | null };
 
 // ── DATA STATUS (/status) — 에이전트 레지스트리 × 실행 원장 × watchdog ──
 export type OpsState = "ok" | "warn" | "late" | "down" | "fallback" | "nodata";
