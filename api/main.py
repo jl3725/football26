@@ -8191,8 +8191,8 @@ def _warm_up() -> None:
             _rumor_links()
             # 팀 화면 첫 방문의 리그 단위 몫 — Inbox 신호(리그 전체 한 번), Recruit 후보 풀·리그별 부상 결장·대회 사용량
             # (운영 측정: 아무도 안 연 팀의 개요 11초·Recruit 16초 중 상당 부분이 이 공용 계산이었다, 2026-10-22)
-            import transfer_fit as _tf  # noqa: PLC0415
-            _tf._pool()
+            # 리크루트 풀(transfer_fit._pool, 전 리그 선수 표 사본 22MB)은 스카우트 도구를 처음 쓸 때 만든다 — 팬 동선엔 안 쓰이는데
+            # 데우기 때 미리 들고 있어 운영 메모리가 한도(512MB)의 85~90%였다(2026-11-05 점검: 캐시 170MB 중 가장 큰 덩어리 셋 중 하나)
             for lg in _LEAGUE_LEVEL:
                 _signals_league(lg)
                 _inj_missed_league(lg)
