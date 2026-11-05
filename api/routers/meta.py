@@ -4,7 +4,7 @@ from __future__ import annotations
 import datetime as dt
 import os
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Response
 
 import api.bootstrap  # noqa: F401
 import datastore as ds
@@ -38,6 +38,13 @@ def leagues():
         except KeyError:
             result.append({"key": league, "name": league, "country": ""})
     return result
+
+
+@router.head("/health")
+def health_head():
+    """UptimeRobot 같은 감시는 HEAD 로 살핀다 — FastAPI 는 GET 경로에 HEAD 를 자동으로 안 붙여 405 를 돌려줬고, 감시가 10/14 부터
+    '다운'으로 보였다(2026-11-05 사용자). 몸체 없이 200 만."""
+    return Response(status_code=200)
 
 
 @router.get("/health")
