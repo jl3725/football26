@@ -16,7 +16,7 @@ Barcelona,Fermín López,1404415,midfielders,"CAM,CM,LW",Attacking Midfield,MF,2
 Barcelona,Pedri,1083323,midfielders,"CDM,CM",Defensive Midfield,MF,23,2002-11-25,8.0,ESP,False,,2026-11-05
 Barcelona,Rodri,675088,midfielders,"CDM,CM",Defensive Midfield,MF,30,1996-06-22,16.0,ESP,True,Late November 2026,2026-11-05
 Barcelona,Dani Olmo,614834,midfielders,"CAM,CM,LW,ST",Attacking Midfield,MF,28,1998-05-07,20.0,ESP,True,Late November 2026,2026-11-05
-Barcelona,Frenkie de Jong,638622,midfielders,"CDM,CM",Defensive Midfield,MF,29,1997-05-12,21.0,NED,False,,2026-11-05
+Barcelona,Frenkie de Jong,638622,midfielders,"CM,CDM",Central Midfield,MF,29,1997-05-12,21.0,NED,False,,2026-11-05
 Barcelona,Marc Bernal,1573126,midfielders,"CDM,CM",Defensive Midfield,MF,19,2007-05-26,22.0,ESP,False,,2026-11-05
 Barcelona,Gabriel Jesus,576165,attackers,ST,Centre-Forward,FW,29,1997-04-03,9.0,BRA,False,,2026-11-05
 Barcelona,Lamine Yamal,1467236,attackers,RW,Right Winger,FW,19,2007-07-13,10.0,ESP,False,,2026-11-05
@@ -39,11 +39,11 @@ Atlético Madrid,Obed Vargas,1254394,midfielders,"CM,CDM,LM",Central Midfield,MF
 Atlético Madrid,Rodrigo Mendoza,1419969,midfielders,"CM,CDM,CAM,LM",Central Midfield,MF,21,2005-03-15,4.0,ESP,False,,2026-11-05
 Atlético Madrid,Johnny Cardoso,1173678,midfielders,"CM,CDM",Central Midfield,MF,25,2001-09-20,5.0,USA,False,,2026-11-05
 Atlético Madrid,Koke,184533,midfielders,"CM,CDM",Central Midfield,MF,34,1992-01-08,6.0,ESP,False,,2026-11-05
-Atlético Madrid,Pablo Barrios,1338192,midfielders,"CM,CDM",Central Midfield,MF,23,2003-06-15,8.0,ESP,True,About 1-2 weeks,2026-11-05
+Atlético Madrid,Pablo Barrios,1338192,midfielders,"CM,CDM",Central Midfield,MF,23,2003-06-15,8.0,ESP,True,Doubtful,2026-11-05
 Atlético Madrid,Álex Baena,942372,midfielders,"LM,LW,CAM,ST,CM,RM",Left Midfield,MF,25,2001-07-20,10.0,ESP,False,,2026-11-05
 Atlético Madrid,Ademola Lookman,690516,midfielders,"ST,LM,CAM,LW",Centre-Forward,MF,29,1997-10-20,11.0,NGA,False,,2026-11-05
 Atlético Madrid,Giuliano Simeone,1226147,midfielders,"RM,RW,RWB",Right Midfield,MF,23,2002-12-18,20.0,ARG,False,,2026-11-05
-Atlético Madrid,Alejandro Grimaldo,288406,midfielders,"LWB,LB,LM",Left-Back,MF,31,1995-09-20,22.0,ESP,False,,2026-11-05
+Atlético Madrid,Alejandro Grimaldo,288406,midfielders,"LWB,LB",Left-Back,MF,31,1995-09-20,22.0,ESP,False,,2026-11-05
 Atlético Madrid,Morten Hjulmand,950199,midfielders,"CDM,CM",Defensive Midfield,MF,27,1999-06-25,23.0,DEN,False,,2026-11-05
 Atlético Madrid,Kang-In Lee,940976,attackers,"ST,RW,CAM,RM,CM",Centre-Forward,FW,25,2001-02-19,7.0,KOR,False,,2026-11-05
 Atlético Madrid,Alexander Sørloth,440330,attackers,"ST,RW",Centre-Forward,FW,30,1995-12-05,9.0,NOR,False,,2026-11-05
@@ -229,7 +229,7 @@ Villarreal,Carlos Maciá,1841906,midfielders,CM,Central Midfield,MF,18,2008-09-0
 Villarreal,Tajon Buchanan,1026135,midfielders,"RM,LM,RW,LW",Right Midfield,MF,27,1999-02-08,17.0,CAN,False,,2026-11-05
 Villarreal,Pape Gueye,844544,midfielders,"CM,CDM",Central Midfield,MF,27,1999-01-24,18.0,SEN,False,,2026-11-05
 Villarreal,Nicolas Pépé,575735,midfielders,"RM,ST,RW",Right Midfield,MF,31,1995-05-29,19.0,CIV,False,,2026-11-05
-Villarreal,Nathan Saliba,1216798,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,22,2004-02-07,24.0,CAN,True,Mid November 2026,2026-11-05
+Villarreal,Nathan Saliba,1216798,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,22,2004-02-07,24.0,CAN,False,,2026-11-05
 Villarreal,Gerard Moreno,246438,attackers,ST,Centre-Forward,FW,34,1992-04-07,7.0,ESP,True,About 1-2 weeks,2026-11-05
 Villarreal,Georges Mikautadze,1117069,attackers,ST,Centre-Forward,FW,26,2000-10-31,9.0,GEO,False,,2026-11-05
 Villarreal,Ilias Akhomach,1311915,attackers,"RW,RM",Right Winger,FW,22,2004-04-16,11.0,MAR,True,Mid November 2026,2026-11-05
@@ -324,7 +324,7 @@ Getafe,Daniel Carvajal,282674,defenders,RB,Right-Back,DF,34,1992-01-11,14.0,ESP,
 Getafe,Sebastián Boselli,1414777,defenders,CB,Centre-Back,DF,22,2003-12-04,15.0,URU,False,,2026-11-05
 Getafe,Kiko,175311,defenders,"RWB,RM,RB",Right-Back,DF,35,1991-02-02,17.0,ESP,False,,2026-11-05
 Getafe,Johan Mojica,474673,defenders,"LB,LWB",Left-Back,DF,34,1992-08-21,22.0,COL,False,,2026-11-05
-Getafe,Zaid Abner Romero,1118199,defenders,CB,Centre-Back,DF,26,1999-12-15,24.0,ARG,True,Back in training,2026-11-05
+Getafe,Zaid Abner Romero,1118199,defenders,CB,Centre-Back,DF,26,1999-12-15,24.0,ARG,True,Doubtful,2026-11-05
 Getafe,Jean Ives Valou,1792368,defenders,CB,Centre-Back,DF,20,2005-12-22,26.0,CIV,False,,2026-11-05
 Getafe,Mario Martín,1321605,midfielders,"CM,ST,CDM,CAM",Central Midfield,MF,22,2004-03-05,6.0,ESP,False,,2026-11-05
 Getafe,Ramón Terrats,1202587,midfielders,"LM,CAM,CM,ST,RM",Left Midfield,MF,26,2000-10-18,11.0,ESP,False,,2026-11-05
@@ -424,6 +424,7 @@ Elche,Kevin Lomónaco,1206583,defenders,CB,Centre-Back,DF,24,2002-01-08,15.0,ARG
 Elche,Rubén Sánchez,1330035,defenders,"RB,RW",Right-Back,DF,25,2001-02-04,22.0,ESP,False,,2026-11-05
 Elche,Víctor Chust,1192393,defenders,CB,Centre-Back,DF,26,2000-03-05,23.0,ESP,False,,2026-11-05
 Elche,Matia Barzić,1670276,defenders,CB,Centre-Back,DF,22,2004-05-31,26.0,ESP,False,,2026-11-05
+Elche,Yago Santiago,1137497,midfielders,"LM,LW",Left Midfield,MF,23,2003-04-15,7.0,ESP,True,Doubtful,2026-11-05
 Elche,Marc Aguado,1392232,midfielders,"CM,CDM",Central Midfield,MF,26,2000-02-22,8.0,ESP,True,Mid November 2026,2026-11-05
 Elche,Facundo Buonanotte,1336566,midfielders,CAM,Attacking Midfield,MF,21,2004-12-23,10.0,ARG,False,,2026-11-05
 Elche,Germán Valera,1102708,midfielders,"LM,LWB,LW,RW,LB",Left Midfield,MF,24,2002-03-16,11.0,ESP,False,,2026-11-05
@@ -435,7 +436,6 @@ Elche,Tete Morente,801213,midfielders,"RM,LM,RW,RWB",Right Midfield,MF,29,1996-1
 Elche,Ali Houary,1670281,midfielders,"CM,LM",Central Midfield,MF,21,2005-08-05,29.0,MAR,False,,2026-11-05
 Elche,Adam Boayar,1577912,midfielders,CAM,Attacking Midfield,MF,21,2005-10-13,32.0,MAR,False,,2026-11-05
 Elche,Javi Morcillo,1732412,midfielders,"CM,CB",Central Midfield,MF,20,2006-03-15,47.0,ESP,False,,2026-11-05
-Elche,Yago Santiago,1137497,attackers,"LW,LM",Left Winger,FW,23,2003-04-15,7.0,ESP,False,,2026-11-05
 Elche,Ezequiel Ponce,493216,attackers,ST,Centre-Forward,FW,29,1997-03-29,9.0,ARG,False,,2026-11-05
 Elche,Fer Niño,1127224,attackers,ST,Centre-Forward,FW,26,2000-10-24,14.0,ESP,False,,2026-11-05
 Elche,Josan,623982,attackers,"RW,RWB",Right Winger,FW,36,1989-12-03,17.0,ESP,False,,2026-11-05

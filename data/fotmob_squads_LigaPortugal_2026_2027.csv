@@ -32,7 +32,7 @@ Porto,Duarte Cunha,1766344,attackers,RW,Right Winger,FW,18,2008-01-25,57.0,POR,F
 Porto,Oskar Pietuszewski,1647807,attackers,LW,Left Winger,FW,18,2008-05-20,77.0,POL,False,,2026-11-05
 Benfica,Anatoliy Trubin,1022350,keepers,GK,Goalkeeper,GK,25,2001-08-01,1.0,UKR,False,,2026-11-05
 Benfica,Samuel Soares,1201004,keepers,GK,Goalkeeper,GK,24,2002-06-15,24.0,POR,False,,2026-11-05
-Benfica,Clément Lenglet,488412,defenders,CB,Centre-Back,DF,31,1995-06-17,2.0,FRA,False,,2026-11-05
+Benfica,Clément Lenglet,488412,defenders,CB,Centre-Back,DF,31,1995-06-17,2.0,FRA,True,Late November 2026,2026-11-05
 Benfica,Alessandro Circati,1318686,defenders,CB,Centre-Back,DF,23,2003-10-10,3.0,AUS,False,,2026-11-05
 Benfica,Alexander Bah,734287,defenders,RB,Right-Back,DF,28,1997-12-09,6.0,DEN,False,,2026-11-05
 Benfica,Samuel Dahl,1085674,defenders,LB,Left-Back,DF,23,2003-03-04,26.0,SWE,False,,2026-11-05
@@ -41,11 +41,11 @@ Benfica,Souffian El Karouani,1079500,defenders,LB,Left-Back,DF,26,2000-10-19,34.
 Benfica,Tomás Araújo,1187283,defenders,"CB,RB",Centre-Back,DF,24,2002-05-16,44.0,POR,False,,2026-11-05
 Benfica,Daniel Banjaqui,1763613,defenders,RB,Right-Back,DF,18,2008-03-24,58.0,POR,False,,2026-11-05
 Benfica,Enzo Barrenechea,1352923,midfielders,CDM,Defensive Midfield,MF,25,2001-05-22,5.0,ARG,True,Day to day,2026-11-05
-Benfica,Fredrik Aursnes,310768,midfielders,"CDM,RW,CM,RB,LW",Defensive Midfield,MF,30,1995-12-10,8.0,NOR,False,,2026-11-05
+Benfica,Fredrik Aursnes,310768,midfielders,"CDM,RW,CM,RB",Defensive Midfield,MF,30,1995-12-10,8.0,NOR,False,,2026-11-05
 Benfica,Georgiy Sudakov,1192398,midfielders,"CAM,LW,CM",Attacking Midfield,MF,24,2002-09-01,10.0,UKR,False,,2026-11-05
 Benfica,Jakub Kamiński,1067260,midfielders,"CAM,LW,LM,CM,RWB,RM,CDM",Attacking Midfield,MF,24,2002-06-05,13.0,POL,False,,2026-11-05
 Benfica,Manu Silva,1198071,midfielders,CDM,Defensive Midfield,MF,25,2001-06-12,16.0,POR,False,,2026-11-05
-Benfica,Leandro Barreiro,930065,midfielders,"CDM,CAM,CM",Defensive Midfield,MF,26,2000-01-03,18.0,LUX,True,Early July 2027,2026-11-05
+Benfica,Leandro Barreiro,930065,midfielders,"CDM,CAM",Defensive Midfield,MF,26,2000-01-03,18.0,LUX,True,Early July 2027,2026-11-05
 Benfica,João Palhinha,524434,midfielders,"CDM,CM,CB",Defensive Midfield,MF,31,1995-07-09,36.0,POR,False,,2026-11-05
 Benfica,José Neto,1843149,midfielders,"LM,LB",Left Midfield,MF,18,2008-04-19,62.0,POR,False,,2026-11-05
 Benfica,Miguel Figueiredo,1801706,midfielders,CM,Central Midfield,MF,18,2008-08-02,73.0,POR,False,,2026-11-05
@@ -228,7 +228,6 @@ Braga,Jean-Baptiste Gorby,1292369,midfielders,"CM,CDM",Central Midfield,MF,24,20
 Braga,Demir Tıknaz,1300653,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,22,2004-08-17,34.0,TUR,False,,2026-11-05
 Braga,Diego Rodrigues,1524670,midfielders,"LW,LM,CM",Left Winger,MF,21,2005-05-24,50.0,POR,False,,2026-11-05
 Braga,Gabri Martínez,1287941,midfielders,"LM,LWB,LW",Left Midfield,MF,23,2003-01-22,77.0,ESP,False,,2026-11-05
-Braga,Flinto Costa,1797160,attackers,,Centre-Forward,FW,19,2007-03-09,,POR,False,,2026-11-05
 Braga,Diogo Travassos,1521234,attackers,"RW,LB,RM,RB,LM,RWB",Right Winger,FW,22,2004-03-31,7.0,POR,False,,2026-11-05
 Braga,Fran Navarro,671855,attackers,ST,Centre-Forward,FW,28,1998-02-03,9.0,ESP,False,,2026-11-05
 Braga,Pau Víctor,1159237,attackers,"ST,RW,LW,CAM",Centre-Forward,FW,24,2001-11-26,10.0,ESP,False,,2026-11-05
@@ -237,6 +236,7 @@ Braga,Jovan Milošević,1366937,attackers,ST,Centre-Forward,FW,21,2005-07-31,17.
 Braga,Jonas Wind,889785,attackers,ST,Centre-Forward,FW,27,1999-02-07,19.0,DEN,False,,2026-11-05
 Braga,Ricardo Horta,432591,attackers,"LW,CAM,ST,RW",Left Winger,FW,32,1994-09-15,21.0,POR,False,,2026-11-05
 Braga,João Aragão,1797159,attackers,RW,Right Winger,FW,18,2008-03-24,72.0,POR,False,,2026-11-05
+Braga,Flinto Costa,1797160,attackers,,Centre-Forward,FW,19,2007-03-09,98.0,POR,False,,2026-11-05
 Moreirense,Aranha,1791824,keepers,,Goalkeeper,GK,21,2005-02-07,1.0,BRA,False,,2026-11-05
 Moreirense,Francisco Barbosa,2233014,keepers,,Goalkeeper,GK,18,2007-11-13,12.0,POR,False,,2026-11-05
 Moreirense,André Ferreira,540415,keepers,GK,Goalkeeper,GK,30,1996-05-29,13.0,POR,False,,2026-11-05
