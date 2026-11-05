@@ -3,9 +3,10 @@ import { useEffect, useState } from "react";
 import { foldName, type PlayerDetail } from "./api";
 
 // 방금 경기 평점(JUST PLAYED) — /live-ratings(Vercel 서버 라우트, FotMob 경기 평점)를 팀 단위로 받는다.
-// 진행 중이면 30초, 끝났으면 2분, 경기가 없으면 5분마다. 탭이 숨겨져 있으면 쉬었다가 돌아오면 바로.
+// 진행 중이면 30초, 끝났으면 2분(킥오프 4시간 뒤엔 평점 확정이라 10분), 경기가 없으면 5분마다. 탭이 숨겨져 있으면 쉬었다가 돌아오면 바로.
 // 같은 팀을 여러 곳(선수 화면·경기 카드·PlayerPeek)이 보면 한 번만 받는다(25초 묶음).
-// 우리 데이터(OVR·LAST 5)에 그 경기가 들어오면 화면은 이 값을 내리고 원래 값을 쓴다(reflected).
+// 경기 끝나고 약 하루 보인다(/live-ratings 창 26시간) — 우리 데이터(OVR·LAST 5)에 들어와도 숨기지 않고 '반영 완료'로만(reflected).
+// 2026-11-05 사용자: 유럽 경기는 한국 새벽이라 반영(약 30분) 뒤 사라지면 볼 수가 없다.
 export type JPSide = { id: number; name: string; score: number | null; ours: string | null };
 export type JPPlayer = { id: number; name: string; team: number; rating: number | null; minutes: number | null;
   goals: number; assists: number; gk: boolean };
@@ -34,7 +35,8 @@ export function useJustPlayed(team?: string | null, enabled = true): JustPlayed 
       const x = await load(team);
       if (!alive) return;
       setV(x);
-      const next = x?.match?.state === "in" ? 30000 : x?.match ? 120000 : 300000;
+      const settled = x?.match && Date.now() - Date.parse(x.match.kickoff) > 4 * 3600 * 1000;
+      const next = x?.match?.state === "in" ? 30000 : x?.match ? (settled ? 600000 : 120000) : 300000;
       if (!document.hidden) timer = setTimeout(tick, next);
     };
     const vis = () => { if (!document.hidden) { clearTimeout(timer); tick(); } };
@@ -65,6 +67,12 @@ export function reflected(jp: JustPlayed | null, d: Pick<PlayerDetail, "season_l
   const t = Date.parse(jp.match.kickoff);
   const near = (date: string) => Math.abs(Date.parse(`${date.slice(0, 10)}T12:00:00Z`) - t) <= 36 * 3600 * 1000;
   return (d.season_log?.matches ?? []).some((m) => m.minutes > 0 && near(m.date)) || (d.recent?.matches ?? []).some((m) => near(m.date));
+}
+
+// 끝난 경기가 언제였나 — '방금 경기'(끝나고 1시간 안) · 'N시간 전 경기'(킥오프 + 2시간을 끝난 때로)
+export function playedWhen(m: JPMatch): string {
+  const h = Math.floor((Date.now() - Date.parse(m.kickoff)) / 3600000) - 2;
+  return h < 1 ? "방금 경기" : `${h}시간 전 경기`;
 }
 
 // 팀 안 평점 순위(같으면 공동)

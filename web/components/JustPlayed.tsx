@@ -1,10 +1,11 @@
 "use client";
-// JUST PLAYED — 경기 중·방금 끝난 경기의 FotMob 평점을 우리 데이터(OVR·LAST 5)에 들어오기 전까지 바로 보여 준다.
-// 2026-10-29 사용자 '실시간 느낌' — 경기 뒤 반영까지 약 30분, 그 사이 선수 화면·경기 카드가 비지 않게. 평가 문장 없이 사실만
+// JUST PLAYED — 경기 중·방금 끝난 경기의 FotMob 평점을 경기 끝나고 약 하루 동안 보여 준다(우리 데이터에 들어와도 '반영 완료'로 남김).
+// 2026-10-29 사용자 '실시간 느낌' — 경기 뒤 반영까지 약 30분, 그 사이 선수 화면·경기 카드가 비지 않게.
+// 2026-11-05 사용자: 유럽 경기는 한국 새벽이라 반영되자마자 사라지면 볼 수가 없다 → 하루 유지. 평가 문장 없이 사실만
 // (점수·평점·골·도움·출전 분·팀 내 순위), 해석은 반영 뒤 SCOUT TAKE. 원천: web/app/live-ratings(Vercel → FotMob, Render 무관).
 import type { Fixture, PlayerDetail } from "@/lib/api";
 import type { LiveEvent } from "@/lib/live";
-import { useJustPlayed, findPlayer, reflected, teamRank, sideName, type JustPlayed, type JPPlayer } from "@/lib/justPlayed";
+import { useJustPlayed, findPlayer, reflected, teamRank, sideName, playedWhen, type JustPlayed, type JPPlayer } from "@/lib/justPlayed";
 import { ssMeaning } from "@/lib/meaning";
 import { fmToSs } from "./FormPair";
 import type { PeekReq } from "./PlayerPeek";
@@ -12,13 +13,13 @@ import Info from "./Info";
 
 const tone = (r: number | null) => ssMeaning(r != null ? fmToSs(r) : null);
 
-// 이 선수의 방금 경기 — 보여 줄 게 없으면 null(경기 없음·출전 안 함·이미 반영)
+// 이 선수의 방금 경기 — 보여 줄 게 없으면 null(경기 없음·출전 안 함). done = 우리 데이터(OVR·LAST 5)에 이미 반영
 function usePlayerJP(d: PlayerDetail | null) {
   const jp = useJustPlayed(d?.team ?? null, !!d);
   if (!d || !jp?.match) return null;
   const p = findPlayer(jp, { fotmob_id: d.fotmob_id, player: d.player });
-  if (!p || (p.rating == null && !p.minutes) || reflected(jp, d)) return null;
-  return { jp, p, m: jp.match };
+  if (!p || (p.rating == null && !p.minutes)) return null;
+  return { jp, p, m: jp.match, done: reflected(jp, d) };
 }
 
 function Score({ jp }: { jp: JustPlayed }) {
@@ -34,7 +35,7 @@ function Score({ jp }: { jp: JustPlayed }) {
 export default function JustPlayedStrip({ d }: { d: PlayerDetail }) {
   const x = usePlayerJP(d);
   if (!x) return null;
-  const { jp, p, m } = x;
+  const { jp, p, m, done } = x;
   const live = m.state === "in";
   const rk = teamRank(jp, p);
   const t = tone(p.rating);
@@ -43,10 +44,10 @@ export default function JustPlayedStrip({ d }: { d: PlayerDetail }) {
       <div className="jp5-h">
         {live && <i className="live-dot" aria-hidden="true" />}
         <b>{live ? "LIVE" : "JUST PLAYED"}</b>
-        <span>{live ? "실시간 평점" : "방금 경기"}{m.comp ? ` · ${m.comp}` : ""}</span>
+        <span>{live ? "실시간 평점" : playedWhen(m)}{m.comp ? ` · ${m.comp}` : ""}</span>
         <Info label="방금 경기 기준">
           <p><b>FotMob 경기 평점</b> — 경기 중 30초마다, 끝난 뒤 2분마다 받는 값.</p>
-          <p>OVR·LAST 5·SEASON LOG 에는 경기 약 30분 뒤 반영되고, 반영되면 이 줄은 사라집니다.</p>
+          <p>OVR·LAST 5·SEASON LOG 에는 경기 약 30분 뒤 반영되고, 이 줄은 경기 끝나고 약 하루 동안 남습니다.</p>
         </Info>
       </div>
       <div className="jp5-m">
@@ -63,7 +64,7 @@ export default function JustPlayedStrip({ d }: { d: PlayerDetail }) {
         {rk && rk.rank <= 3 && <span>팀 내 평점 {rk.tie ? "공동 " : ""}{rk.rank}위</span>}
         {!live && p.minutes ? <span>{p.minutes}′</span> : null}
       </div>
-      {!live && <p className="jp5-note">OVR·LAST 5 반영 전 — 경기 약 30분 뒤 자동 반영</p>}
+      {!live && <p className="jp5-note">{done ? "OVR·LAST 5 반영 완료" : "OVR·LAST 5 반영 전 — 경기 약 30분 뒤 자동 반영"}</p>}
     </section>
   );
 }
