@@ -175,6 +175,30 @@ function Detail({ team, player, accent, heatmap }: { team: string; player: strin
         <PdFacts d={d} />
       </div>
       <TrendLine t={d.trend} ovr={d.ovr} />
+      {d.ovr_history && d.ovr_history.length >= 2 && (() => {      // OVR 추이 — 시즌 기록(바뀐 날만)을 계단선으로
+        const hs = d.ovr_history, vals = hs.map((x) => x.ovr);
+        const mn = Math.min(...vals), mx = Math.max(...vals), rng = Math.max(2, mx - mn);
+        const t0 = new Date(hs[0].date).getTime(), t1 = new Date(hs[hs.length - 1].date).getTime(), span = Math.max(1, t1 - t0);
+        const w = 150, h = 34;
+        const X = (x: { date: string }) => ((new Date(x.date).getTime() - t0) / span) * w;
+        const Y = (v: number) => h - ((v - mn) / rng) * (h - 6) - 3;
+        const pts = hs.flatMap((x, i) => (i ? [`${X(x)},${Y(hs[i - 1].ovr)}`] : []).concat([`${X(x)},${Y(x.ovr)}`])).join(" ");
+        const d0 = vals[vals.length - 1] - vals[0];
+        const days = Math.round(span / 86400000);
+        return (
+          <div className="ovr-spark" title={`OVR 추이 · ${hs[0].date.slice(5).replace("-", "/")}부터 ${days}일 · 바뀐 날만 기록`}>
+            <div>
+              <div className="ovr-spark-k">OVR 추이 · {days}일</div>
+              <div className="ovr-spark-v">{vals[0]} → {vals[vals.length - 1]}
+                {d0 !== 0 && <span style={{ color: signTone(d0).c, marginLeft: 5 }}>{d0 > 0 ? "▲" : "▼"}{Math.abs(d0)}</span>}</div>
+            </div>
+            <svg viewBox={`0 0 ${w} ${h}`} width={w} height={h} style={{ overflow: "visible" }}>
+              <polyline points={pts} fill="none" stroke="var(--accent, #ff6b7d)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              <circle cx={w} cy={Y(vals[vals.length - 1])} r="3" fill="var(--accent, #ff6b7d)" />
+            </svg>
+          </div>
+        );
+      })()}
       <JustPlayedStrip d={d} />
       <ScoutTake t={d.scout_take} />
       {(d.form != null || d.recent) && (

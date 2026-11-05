@@ -1426,6 +1426,36 @@ def _prev_season() -> dict:
     return rh.prev_season_ovr()
 
 
+def _ovr_history(league: str, row, days: int = 120) -> list[dict]:
+    """선수 OVR 추이 [{date, ovr, form}] — rating_history(매일 기록, 바뀐 날만 · 모델이 바뀐 날은 평행이동된 값)의 변경점 +
+    오늘 값. 선수 화면에 '올라갔다·내려갔다'가 선으로 보이게(2026-11-05 사용자)."""
+    import rating_history as rh  # noqa: PLC0415
+    try:
+        hist = rh.load(league)
+    except Exception:  # noqa: BLE001
+        return []
+    if hist is None or hist.empty or "pid" not in hist.columns:
+        return []
+    h = hist[hist["pid"].astype(str) == rh.pid(row)]
+    if h.empty and "norm_key" in hist.columns and row.get("norm_key"):
+        h = hist[hist["norm_key"].astype(str) == str(row.get("norm_key"))]
+    out = []
+    for d, o, f in zip(h.sort_values("date")["date"].astype(str), pd.to_numeric(h.sort_values("date")["ovr"], errors="coerce"),
+                       pd.to_numeric(h.sort_values("date")["form"], errors="coerce")):
+        if o == o:
+            out.append({"date": d[:10], "ovr": int(o), "form": int(f) if f == f else None})
+    since = (_today_kst() - datetime.timedelta(days=days)).isoformat()
+    recent = [x for x in out if x["date"] >= since]
+    out = ([out[-1]] if out and not recent else []) + recent if out else []
+    today = _today_kst().isoformat()
+    cur = _player_ovr(row)
+    if out and out[-1]["date"] == today:
+        out[-1] = {"date": today, "ovr": cur, "form": _player_form(row)}
+    elif out:
+        out.append({"date": today, "ovr": cur, "form": _player_form(row)})
+    return out
+
+
 def _trend(row, league: str, ovr: int | None = None, form: int | None = None) -> dict:
     """{ovr_d, form_d: 2주 전 대비(기록이 2주치 쌓여야 생김), ovr_prev: 지난 시즌 OVR(300분+ 뛴 경우)}."""
     import rating_history as rh  # noqa: PLC0415
@@ -2595,7 +2625,8 @@ def builder(team: str, league: str = ACTIVE_LEAGUE):
                     "main_pos": r.get("_main_pos") if isinstance(r.get("_main_pos"), str) else None,
                     "pos_ovr": {p["role"]: p["ovr"] for p in pos}, "pos_fam": {p["role"]: p["fam"] for p in pos},
                     "injured": inj.get(ps.norm_name(r["player"])), "roster_only": bool(r.get("_roster_only") is True),
-                    "other_apps": _other_apps(team, league, r) if _num(r.get("minutes")) <= 0 else None})
+                    "other_apps": _other_apps(team, league, r) if _num(r.get("minutes")) <= 0 else None,
+                    "trend": _trend(r, league, ovr=_player_ovr(r))})
     out.sort(key=lambda x: -x["ovr"])
     # 시작 포메이션 = 실제 리그 최빈값(빌더가 4-3-3 고정으로 시작해 Overview·뎁스와 XI 가 달랐다, 2026-10-20 점검)
     return {"team": team, "color": tm.team_color(team), "players": out,
@@ -3293,7 +3324,7 @@ def player_detail(team: str, player: str, league: str = ACTIVE_LEAGUE, basis: st
 
     out = {
         "player": row["player"], "team": team, "color": tm.team_color(team),
-        "value_history": vhist, "peers": {"line": my_line, "n": int(len(pool))},
+        "value_history": vhist, "ovr_history": _ovr_history(league, row), "peers": {"line": my_line, "n": int(len(pool))},
         "pos": _pos_label(row),
         "line": rv3.line_of_row(row),
         "age": int(_num(row.get("age"))), "nationality": str(row.get("nationality") or ""),
@@ -4219,6 +4250,8 @@ def _placements(team: str, league: str, last_n: int | None = None, exclude: set 
             "x": round(float(x), 1), "y": round(float(y), 1),
             "kind": slot_kind(slot),
             "ovr": _slot_ovr(row, roles.get(slot)),             # 그 자리 OVR(빌더·뎁스와 같은 숫자)
+            # 2주 전·지난 시즌 대비 ▲▼ — 포메이션·예상 XI 에서 오르내림이 안 보였다(2026-11-05 사용자)
+            "trend": _trend(row, league, ovr=_slot_ovr(row, roles.get(slot))) if row is not None else None,
             "photo": (_photo(row) if row is not None else "") or (_resolve_photo(player, resolve, league) if player else ""),
             # 지금 부상 중이면 표시 — 시즌 XI 의 Tzolis(~10/30)가 표시 없이 선발로 보여 다음 경기 XI 로 오해됐다
             "injured": bool(player) and _norm_inj(player) in _inj_now,
@@ -6083,7 +6116,7 @@ def this_week(team: str, league: str = ACTIVE_LEAGUE):
             b = _fine_bucket(r.get("tm_position") or "") or _fine_bucket(r.get("pos") or "")
             own_bucket[k] = b
             pool.append({"player": str(r["player"]), "ovr": o, "bucket": b, "line": _canon_line(rv3.line_of_row(r)),
-                         "photo": _photo(r)})
+                         "photo": _photo(r), "trend": _trend(r, league, ovr=o)})
     absent = dict(_active_injuries(team, league))
     first = week[0] if week else None
     if first:   # 리그가 계속되는 대표팀 대회(아시안컵 등) 기간이면 소집 선수도 결장

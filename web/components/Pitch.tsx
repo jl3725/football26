@@ -3,6 +3,7 @@ import type { Placement } from "@/lib/api";
 import { usePeek } from "./PlayerPeek";
 import { surname } from "@/lib/names";
 import { SusCard } from "./AbsenceMark";
+import { TrendArrow } from "./Trend";
 
 const KIND_COLOR: Record<string, string> = { GK: "#37c98a", DEF: "#4c8ef0", MID: "#e0a53a", FWD: "#e2564f" };
 
@@ -72,6 +73,7 @@ export default function Pitch({ placements, accent, team, metric = "OVR", showOu
                 ? <img src={p.photo} alt="" />
                 : <span className="ptok-init" style={{ background: `linear-gradient(135deg, ${c}44, #10151e)`, color: "#eef2f8" }}>{initials(p.player)}</span>}
               {p.ovr != null && <span className="ptok-ovr" style={{ background: c }}>{p.ovr}</span>}
+              {p.ovr != null && p.trend && <span className="ptok-trend"><TrendArrow t={p.trend} ovr={p.ovr} /></span>}
               {p.in && <span className="ptok-in">IN</span>}
             </div>
             <div className="ptok-name" style={{ maxWidth: `min(82px, calc(${(gapOf[i] * (gapOf[i] < 14 ? 2 : 1)).toFixed(1)}cqw - 4px))` }}>

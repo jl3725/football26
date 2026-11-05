@@ -12,6 +12,7 @@ import {
 import { tier, roleClass } from "@/lib/ui";
 import { ssMeaning, SS_NOTE } from "@/lib/meaning";
 import { MeaningTag } from "./Meaning";
+import { TrendArrow, TrendLine } from "./Trend";
 import { Skel } from "./Skeleton";
 import { JustPlayedLine } from "./JustPlayed";
 import { isLeagueCode } from "@/lib/leagues";
@@ -166,8 +167,10 @@ export function PeekProvider({ children, onOpenPlayer, onOpenTeam }: {
                   : <Skel w={34} h={30} style={{ margin: "0 auto" }} />}
                 <span style={{ letterSpacing: 0.2, display: "block", lineHeight: 1.25 }}>OVR</span>
                 {ovr != null && <span style={{ letterSpacing: 0, display: "block", color: tc.light, fontSize: 10.5, whiteSpace: "nowrap" }}>{tc.ko}</span>}
+                {ovr != null && detail?.trend && <span style={{ display: "block", marginTop: 2 }}><TrendArrow t={detail.trend} ovr={ovr} /></span>}
               </div>
             </div>
+            {ovr != null && detail?.trend && <TrendLine t={detail.trend} ovr={ovr} />}
 
             {(role || bigMatch) && (
               <div className="peek-tags">

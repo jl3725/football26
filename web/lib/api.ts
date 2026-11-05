@@ -75,7 +75,7 @@ export type Overview = {
 
 export type CalEvent = { name: string; start: string; end: string; icon: string; kind: string };
 
-export type Placement = { slot: string; player: string; x: number; y: number; kind: string; ovr: number | null; photo: string; changed?: boolean; in?: boolean; out?: string; club?: string; injured?: boolean; absence?: Absence };
+export type Placement = { slot: string; player: string; x: number; y: number; kind: string; ovr: number | null; photo: string; changed?: boolean; in?: boolean; out?: string; club?: string; injured?: boolean; absence?: Absence; trend?: Trend | null };
 // FORMATION 대회 — league · 대회 코드 하나(uefa.champions·eng.league_cup …) · euro·cup(묶음) · all(전 대회) · last(가장 최근 한 경기)
 export type LineupComp = "league" | "euro" | "cup" | "all" | "last" | (string & {});
 export type Lineup = {
@@ -253,7 +253,8 @@ export type Bucket = { pos: string; count: number; multi?: number; depth: number
 export type BuilderPlayer = { player: string; ovr: number; photo: string; age: number; minutes: number; primary: string; secondary: string[];
   line: string; starts: number; injured: { injury: string; until: string; kind?: Absence } | null; roster_only: boolean;
   // 포지션별 OVR·익숙함(src/position_ovr.py) — 그 자리에 세웠을 때의 OVR
-  main_pos?: string | null; pos_ovr?: Record<string, number>; pos_fam?: Record<string, number>; other_apps?: OtherApps | null };
+  main_pos?: string | null; pos_ovr?: Record<string, number>; pos_fam?: Record<string, number>; other_apps?: OtherApps | null;
+  trend?: Trend | null };
 export const getBuilder = (t: string, l = _league) => j<{ team: string; color: string; players: BuilderPlayer[]; formation?: string | null }>(`/api/builder/${q(t, l)}`);
 export type LoanOut = { player: string; club: string; pos: string; nat: string; photo: string; source: string; minutes: number | null; ovr: number | null };
 export type Squad = { team: string; color: string; lines: Record<string, SquadPlayer[]>; buckets: Bucket[]; loans?: LoanOut[] };
@@ -310,6 +311,7 @@ export type PlayerDetail = {
   badges: Badge[];
   comp_usage: CompProfile;
   value_history: { date: string; value_eur: number }[];
+  ovr_history?: { date: string; ovr: number; form: number | null }[];   // 시즌 OVR 추이(변경점 + 오늘, src/rating_history.py)
   peers: { line: string; n: number };
   season_log?: SeasonLog;
   scout_take?: ScoutTake | null;

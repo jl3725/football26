@@ -42,7 +42,7 @@ def pick_xi(placements: list[dict], absent: dict, pool: list[dict], norm, own_bu
             continue
         cands.remove(pick)
         xi.append({**p, "player": pick["player"], "ovr": pick.get("ovr"), "photo": pick.get("photo", ""),
-                   "changed": True, "out": p["player"],
+                   "trend": pick.get("trend"), "changed": True, "out": p["player"],
                    "injured": False, "absence": None})   # 결장 표시는 빠진 선수 것 — 대신 들어간 라르센 옆에 마테타 출장 정지 카드가 붙었다
         changes.append({"slot": p["slot"], "out": p["player"], "in": pick["player"], "reason": info.get("injury") or "결장",
                         "until": info.get("until") or "", "ovr_out": p.get("ovr"), "ovr_in": pick.get("ovr")})

@@ -4,6 +4,7 @@ import { getBuilder, type BuilderPlayer } from "@/lib/api";
 import { tier } from "@/lib/ui";
 import { ovrMeaning, scoreMeaning, absenceWord } from "@/lib/meaning";
 import { SusCard } from "./AbsenceMark";
+import { TrendArrow } from "./Trend";
 import { MeaningTag } from "./Meaning";
 import Info from "./Info";
 import { usePeek } from "./PlayerPeek";
@@ -169,6 +170,7 @@ export default function SquadBuilder({ team, accent }: { team: string; accent: s
                 <span className="sb5-ph" style={{ borderColor: COLOR[LINE[s.role]] }}>
                   {p?.photo ? <img src={p.photo} alt="" /> : <i>{s.role}</i>}
                   {p && <b className="sb5-o" style={{ background: tier(so).deep }}>{so}</b>}
+                  {p?.trend && <span className="sb5-tr"><TrendArrow t={p.trend} ovr={p.ovr} /></span>}
                   {p?.injured && (p.injured.kind === "suspension" ? <SusCard badge /> : <em className="sb5-inj" title="부상 결장">+</em>)}
                 </span>
                 <span className="sb5-nm">{p ? last(p.player) : "—"}</span>
@@ -201,7 +203,7 @@ export default function SquadBuilder({ team, accent }: { team: string; accent: s
                   <button key={p.player} className="sb5-row" onClick={(e) => peek(e, { name: p.player, club: team, hint: { photo: p.photo, ovr: p.ovr } })}>
                     {p.photo ? <img src={p.photo} alt="" /> : <span className="ph" />}
                     <span className="sb5-who"><b>{p.player}</b><em>{[p.primary, ...p.secondary].join(" · ")}{p.minutes === 0 ? (p.other_apps ? ` · 리그 0′ · ${otherAppsText(p.other_apps, 1)}` : " · 출전 없음") : ""}{p.injured ? ` · ${absenceWord(p.injured.kind)}` : ""}</em></span>
-                    <b className="sb5-ov" style={{ color: tier(p.ovr).light }}>{p.ovr}</b>
+                    <b className="sb5-ov" style={{ color: tier(p.ovr).light }}>{p.ovr}<TrendArrow t={p.trend} ovr={p.ovr} /></b>
                   </button>
                 ))}
               </div>

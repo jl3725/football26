@@ -5150,3 +5150,12 @@ LIGA’처럼 글자가 접히던 것) — 넘치면 가로로 넘긴다 */
 }
 /* DATA STATUS — 원천이 막혔지만 대체 원천이 채우는 중(빨간 알약 대신 초록)(2026-11-05) */
 .ds-fails span.ds-fallback { background: rgba(155, 224, 189, 0.13); color: #9be0bd; }
+/* OVR 오르내림 — 포메이션·예상 XI 토큰, 빌더 칸·목록, 미니 프로필, 선수 화면 OVR 추이(2026-11-05 사용자 '능력치가 올라가고 내려가는 게 안 보인다') */
+.ptok-trend { position: absolute; left: -6px; bottom: -3px; }
+.ptok-trend .trend, .sb5-tr .trend { margin: 0; font-size: 9.5px; padding: 1px 4px; border-radius: 7px; background: rgba(8, 12, 18, 0.85);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12); }
+.sb5-tr { position: absolute; left: -8px; bottom: -4px; }
+.sb5-ov .trend { font-size: 11px; margin-left: 4px; }
+.ovr-spark { display: flex; align-items: center; gap: 14px; margin: 4px 0 8px; }
+.ovr-spark-k { font-size: 10px; opacity: 0.5; letter-spacing: 0.3px; }
+.ovr-spark-v { font-size: 13.5px; font-weight: 700; font-variant-numeric: tabular-nums; }
