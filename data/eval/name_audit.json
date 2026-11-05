@@ -143,11 +143,11 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 547,
+   "total": 548,
    "exact": 505,
    "rule": 1,
    "ambiguous": 0,
-   "orphan": 41,
+   "orphan": 42,
    "orphans": [
     {
      "squad": "Arsenal",
@@ -260,6 +260,11 @@
      "starts": 0
     },
     {
+     "squad": "Crystal Palace",
+     "name": "Nathanael James Kalembo",
+     "starts": 0
+    },
+    {
      "squad": "Brighton",
      "name": "Shane Nti",
      "starts": 0
@@ -267,11 +272,6 @@
     {
      "squad": "Brighton",
      "name": "Steven Hall",
-     "starts": 0
-    },
-    {
-     "squad": "Ipswich Town",
-     "name": "Tudor Mendel-Idowu",
      "starts": 0
     }
    ]
@@ -285,8 +285,8 @@
    "orphans": []
   },
   "espn_subs_cups": {
-   "total": 357,
-   "exact": 354,
+   "total": 360,
+   "exact": 357,
    "rule": 1,
    "ambiguous": 0,
    "orphan": 2,
@@ -304,8 +304,8 @@
    ]
   },
   "match_events": {
-   "total": 380,
-   "exact": 380,
+   "total": 381,
+   "exact": 381,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -474,8 +474,8 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 414,
-   "exact": 399,
+   "total": 415,
+   "exact": 400,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 15,
@@ -582,8 +582,8 @@
    ]
   },
   "espn_subs_cups": {
-   "total": 228,
-   "exact": 216,
+   "total": 229,
+   "exact": 217,
    "rule": 11,
    "ambiguous": 0,
    "orphan": 1,
@@ -766,11 +766,11 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 470,
-   "exact": 453,
+   "total": 476,
+   "exact": 457,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 17,
+   "orphan": 19,
    "orphans": [
     {
      "squad": "Augsburg",
@@ -795,6 +795,16 @@
     {
      "squad": "Leverkusen",
      "name": "Ben Hawighorst",
+     "starts": 0
+    },
+    {
+     "squad": "Hoffenheim",
+     "name": "Juan Tiago Esteban Poller",
+     "starts": 0
+    },
+    {
+     "squad": "Hoffenheim",
+     "name": "Lion Wagenbach",
      "starts": 0
     },
     {
@@ -868,8 +878,8 @@
    "orphans": []
   },
   "espn_subs_cups": {
-   "total": 121,
-   "exact": 121,
+   "total": 124,
+   "exact": 124,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1046,11 +1056,11 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 531,
-   "exact": 511,
+   "total": 536,
+   "exact": 513,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 20,
+   "orphan": 23,
    "orphans": [
     {
      "squad": "Como",
@@ -1088,6 +1098,11 @@
      "starts": 0
     },
     {
+     "squad": "Milan",
+     "name": "Matteo Pittarella",
+     "starts": 0
+    },
+    {
      "squad": "Atalanta",
      "name": "Andrea Bonanomi",
      "starts": 0
@@ -1095,6 +1110,16 @@
     {
      "squad": "Atalanta",
      "name": "Isaac Collins Isoa",
+     "starts": 0
+    },
+    {
+     "squad": "Atalanta",
+     "name": "Federico Steffanoni",
+     "starts": 0
+    },
+    {
+     "squad": "Atalanta",
+     "name": "Albert Navarro",
      "starts": 0
     },
     {
@@ -1179,8 +1204,8 @@
    ]
   },
   "espn_subs_cups": {
-   "total": 304,
-   "exact": 302,
+   "total": 308,
+   "exact": 306,
    "rule": 1,
    "ambiguous": 0,
    "orphan": 1,
@@ -1193,8 +1218,8 @@
    ]
   },
   "match_events": {
-   "total": 351,
-   "exact": 351,
+   "total": 352,
+   "exact": 352,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1363,11 +1388,11 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 183,
-   "exact": 174,
+   "total": 186,
+   "exact": 176,
    "rule": 1,
    "ambiguous": 0,
-   "orphan": 8,
+   "orphan": 9,
    "orphans": [
     {
      "squad": "Lille",
@@ -1408,6 +1433,11 @@
      "squad": "Lyon",
      "name": "Angel Daniel Garcia",
      "starts": 0
+    },
+    {
+     "squad": "Lyon",
+     "name": "Tiago Manuel Gonçalves Silva",
+     "starts": 0
     }
    ]
   },
@@ -1426,16 +1456,16 @@
    ]
   },
   "espn_subs_cups": {
-   "total": 117,
-   "exact": 117,
+   "total": 120,
+   "exact": 120,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
    "orphans": []
   },
   "match_events": {
-   "total": 290,
-   "exact": 290,
+   "total": 293,
+   "exact": 293,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1604,8 +1634,8 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 397,
-   "exact": 378,
+   "total": 398,
+   "exact": 379,
    "rule": 11,
    "ambiguous": 1,
    "orphan": 8,
@@ -1677,8 +1707,8 @@
    ]
   },
   "espn_subs_cups": {
-   "total": 75,
-   "exact": 75,
+   "total": 76,
+   "exact": 76,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1702,8 +1732,8 @@
    "minutes": 11
   },
   "s365_ratings": {
-   "total": 439,
-   "exact": 433,
+   "total": 438,
+   "exact": 432,
    "rule": 4,
    "ambiguous": 1,
    "orphan": 0,
@@ -1722,10 +1752,10 @@
   },
   "espn_lineups": {
    "total": 550,
-   "exact": 500,
+   "exact": 499,
    "rule": 11,
    "ambiguous": 0,
-   "orphan": 39,
+   "orphan": 40,
    "orphans": [
     {
      "squad": "Feyenoord",
@@ -1838,6 +1868,11 @@
      "starts": 0
     },
     {
+     "squad": "PSV",
+     "name": "Khadim Ngom",
+     "starts": 0
+    },
+    {
      "squad": "ADO Den Haag",
      "name": "Alexander Veselov",
      "starts": 0
@@ -1846,17 +1881,12 @@
      "squad": "Ajax",
      "name": "Kou Itakura",
      "starts": 0
-    },
-    {
-     "squad": "Fortuna Sittard",
-     "name": "David Stockbrink",
-     "starts": 0
     }
    ]
   },
   "espn_lineups_cups": {
-   "total": 421,
-   "exact": 414,
+   "total": 423,
+   "exact": 416,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 7,
@@ -1907,16 +1937,16 @@
    "orphans": []
   },
   "espn_subs_cups": {
-   "total": 93,
-   "exact": 93,
+   "total": 99,
+   "exact": 99,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
    "orphans": []
   },
   "match_events": {
-   "total": 309,
-   "exact": 309,
+   "total": 310,
+   "exact": 310,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -2085,11 +2115,11 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 413,
-   "exact": 399,
+   "total": 415,
+   "exact": 400,
    "rule": 6,
    "ambiguous": 1,
-   "orphan": 8,
+   "orphan": 9,
    "orphans": [
     {
      "squad": "Beveren",
@@ -2130,6 +2160,11 @@
      "squad": "Anderlecht",
      "name": "Luis Vázquez",
      "starts": 0
+    },
+    {
+     "squad": "Gent",
+     "name": "Noa Vandenabeele",
+     "starts": 0
     }
    ]
   },
@@ -2142,16 +2177,16 @@
    "orphans": []
   },
   "espn_subs_cups": {
-   "total": 93,
-   "exact": 93,
+   "total": 94,
+   "exact": 94,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
    "orphans": []
   },
   "match_events": {
-   "total": 279,
-   "exact": 279,
+   "total": 280,
+   "exact": 280,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -2167,9 +2202,9 @@
    "minutes": 5
   },
   "s365_ratings": {
-   "total": 425,
+   "total": 423,
    "exact": 373,
-   "rule": 4,
+   "rule": 2,
    "ambiguous": 1,
    "orphan": 0,
    "orphans": [],
@@ -2562,11 +2597,11 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 280,
-   "exact": 267,
+   "total": 282,
+   "exact": 268,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 13,
+   "orphan": 14,
    "orphans": [
     {
      "squad": "Fenerbahçe",
@@ -2616,6 +2651,11 @@
     {
      "squad": "Beşiktaş",
      "name": "Devrim Sahin",
+     "starts": 0
+    },
+    {
+     "squad": "Trabzonspor",
+     "name": "Ahmet Güren",
      "starts": 0
     },
     {
@@ -2744,8 +2784,8 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 154,
-   "exact": 149,
+   "total": 155,
+   "exact": 150,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 5,
@@ -2786,8 +2826,8 @@
    "orphans": []
   },
   "espn_subs_cups": {
-   "total": 110,
-   "exact": 110,
+   "total": 111,
+   "exact": 111,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -3098,8 +3138,8 @@
    "orphans": []
   },
   "espn_subs_cups": {
-   "total": 147,
-   "exact": 147,
+   "total": 148,
+   "exact": 148,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -3240,8 +3280,8 @@
    "orphans": []
   },
   "espn_subs_cups": {
-   "total": 98,
-   "exact": 98,
+   "total": 99,
+   "exact": 99,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,

@@ -2,9 +2,9 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5787764,2026-07-21,uefa.champions_qual,AGF,Lech Poznań,55.0,Kristian Arnstad,FastBreak,0,0.5662394762039185
 5788580,2026-07-23,uefa.europa_qual,FC Midtjylland,Beşiktaş,,,none,0,
 5789156,2026-07-23,uefa.europa.conf_qual,Nordsjælland,GAIS,,,none,0,
-5789178,2026-07-23,uefa.europa.conf_qual,FC København,Polissya Zhytomyr,4.0,Robert,RegularPlay,0,0.040803760290145874
-5789178,2026-07-23,uefa.europa.conf_qual,FC København,Polissya Zhytomyr,54.0,Robert,RegularPlay,0,0.12192531675100327
-5789178,2026-07-23,uefa.europa.conf_qual,FC København,Polissya Zhytomyr,83.0,Mads Emil Madsen,RegularPlay,0,0.04938498139381409
+5789178,2026-07-23,uefa.europa.conf_qual,FC København,Polissya Zhytomyr,4.0,Robert,RegularPlay,0,0.0408037602901458
+5789178,2026-07-23,uefa.europa.conf_qual,FC København,Polissya Zhytomyr,54.0,Robert,RegularPlay,0,0.1219253167510032
+5789178,2026-07-23,uefa.europa.conf_qual,FC København,Polissya Zhytomyr,83.0,Mads Emil Madsen,RegularPlay,0,0.049384981393814
 5739463,2026-07-24,den.1,Viborg,OB,56.0,Thomas Jørgensen,IndividualPlay,0,0.9596946239471436
 5739463,2026-07-24,den.1,OB,Viborg,,,none,0,
 5739464,2026-07-25,den.1,Brøndby IF,AGF,52.0,Bartosz Slisz,FromCorner,0,0.2610024511814117
@@ -25,20 +25,20 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5739466,2026-07-27,den.1,Silkeborg,Randers FC,45.0,Oliver Ross,RegularPlay,0,0.534116268157959
 5787776,2026-07-29,uefa.champions_qual,AGF,Lech Poznań,32.0,Tobias Bech,RegularPlay,0,0.1445074826478958
 5787776,2026-07-29,uefa.champions_qual,AGF,Lech Poznań,55.0,Kristian Arnstad,Penalty,0,0.7884
-5787776,2026-07-29,uefa.champions_qual,AGF,Lech Poznań,75.0,Frederik Tingager,FromCorner,0,0.21168193221092224
-5787776,2026-07-29,uefa.champions_qual,AGF,Lech Poznań,100.0,Tómas Kristjánsson,RegularPlay,0,0.04019341245293617
+5787776,2026-07-29,uefa.champions_qual,AGF,Lech Poznań,75.0,Frederik Tingager,FromCorner,0,0.2116819322109222
+5787776,2026-07-29,uefa.champions_qual,AGF,Lech Poznań,100.0,Tómas Kristjánsson,RegularPlay,0,0.0401934124529361
 5787776,2026-07-29,uefa.champions_qual,AGF,Lech Poznań,123.0,Frederik Tingager,Penalty,0,0.7884
 5787776,2026-07-29,uefa.champions_qual,AGF,Lech Poznań,125.0,Tómas Kristjánsson,Penalty,0,0.7884
 5787776,2026-07-29,uefa.champions_qual,AGF,Lech Poznań,127.0,Janni Serra,Penalty,0,0.7884
 5787776,2026-07-29,uefa.champions_qual,AGF,Lech Poznań,128.0,Tobias Bech,Penalty,0,0.7884
 5789227,2026-07-29,uefa.europa.conf_qual,FC København,Polissya Zhytomyr,27.0,Mohamed Elyounoussi,Penalty,0,0.7884
-5789227,2026-07-29,uefa.europa.conf_qual,FC København,Polissya Zhytomyr,61.0,Robert,FastBreak,0,0.9415760040283203
+5789227,2026-07-29,uefa.europa.conf_qual,FC København,Polissya Zhytomyr,61.0,Robert,FastBreak,0,0.9415760040283204
 5788589,2026-07-30,uefa.europa_qual,FC Midtjylland,Beşiktaş,,,none,0,
 5789205,2026-07-30,uefa.europa.conf_qual,Nordsjælland,GAIS,11.0,Runar Robinsønn Norheim,FastBreak,0,0.2467237114906311
 5789205,2026-07-30,uefa.europa.conf_qual,Nordsjælland,GAIS,14.0,Oskar Ågren,OwnGoal,1,
 5789205,2026-07-30,uefa.europa.conf_qual,Nordsjælland,GAIS,36.0,Hjalte Boe Rasmussen,RegularPlay,0,0.4373112618923187
 5789205,2026-07-30,uefa.europa.conf_qual,Nordsjælland,GAIS,59.0,Runar Robinsønn Norheim,RegularPlay,0,0.7301639914512634
-5789205,2026-07-30,uefa.europa.conf_qual,Nordsjælland,GAIS,63.0,Prince Junior,RegularPlay,0,0.03641130030155182
+5789205,2026-07-30,uefa.europa.conf_qual,Nordsjælland,GAIS,63.0,Prince Junior,RegularPlay,0,0.0364113003015518
 5789205,2026-07-30,uefa.europa.conf_qual,Nordsjælland,GAIS,81.0,Nicklas Røjkjær,RegularPlay,0,0.6058905720710754
 5739469,2026-08-01,den.1,AGF,Lyngby,33.0,Kristian Arnstad,Penalty,0,0.7884
 5739469,2026-08-01,den.1,Lyngby,AGF,67.0,Casper Winther,FreeKick,0,0.1092983931303024
@@ -59,13 +59,13 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5739474,2026-08-03,den.1,Sønderjyske,OB,,,none,0,
 5954865,2026-08-05,uefa.champions_qual,AGF,Sabah FK,31.0,James Bogere,RegularPlay,0,0.0355222225189209
 5954865,2026-08-05,uefa.champions_qual,AGF,Sabah FK,63.0,James Bogere,RegularPlay,0,0.067287877202034
-5955331,2026-08-06,uefa.europa.conf_qual,Nordsjælland,Valur,30.0,Villum Berthelsen,RegularPlay,0,0.01704072393476963
+5955331,2026-08-06,uefa.europa.conf_qual,Nordsjælland,Valur,30.0,Villum Berthelsen,RegularPlay,0,0.0170407239347696
 5955331,2026-08-06,uefa.europa.conf_qual,Nordsjælland,Valur,78.0,Nicklas Røjkjær,Penalty,0,0.7884
-5955344,2026-08-06,uefa.europa.conf_qual,FC Midtjylland,Bohemian FC,28.0,Franculino,RegularPlay,0,0.051436491310596466
-5955344,2026-08-06,uefa.europa.conf_qual,FC Midtjylland,Bohemian FC,77.0,Valdemar Byskov,FreeKick,0,0.16060411930084229
-5955345,2026-08-06,uefa.europa.conf_qual,FC København,Debrecen,21.0,Gabriel Pereira,FromCorner,0,0.19328759610652924
-5955345,2026-08-06,uefa.europa.conf_qual,FC København,Debrecen,35.0,Robert,FromCorner,0,0.06293623894453049
-5955345,2026-08-06,uefa.europa.conf_qual,FC København,Debrecen,90.0,Andreas Cornelius,FromCorner,0,0.022640610113739967
+5955344,2026-08-06,uefa.europa.conf_qual,FC Midtjylland,Bohemian FC,28.0,Franculino,RegularPlay,0,0.0514364913105964
+5955344,2026-08-06,uefa.europa.conf_qual,FC Midtjylland,Bohemian FC,77.0,Valdemar Byskov,FreeKick,0,0.1606041193008422
+5955345,2026-08-06,uefa.europa.conf_qual,FC København,Debrecen,21.0,Gabriel Pereira,FromCorner,0,0.1932875961065292
+5955345,2026-08-06,uefa.europa.conf_qual,FC København,Debrecen,35.0,Robert,FromCorner,0,0.0629362389445304
+5955345,2026-08-06,uefa.europa.conf_qual,FC København,Debrecen,90.0,Andreas Cornelius,FromCorner,0,0.0226406101137399
 5739475,2026-08-07,den.1,Sønderjyske,Viborg,,,none,0,
 5739475,2026-08-07,den.1,Viborg,Sønderjyske,,,none,0,
 5739476,2026-08-09,den.1,Randers FC,Lyngby,15.0,Mohamed Sankoh,RegularPlay,0,0.1309083998203277
@@ -79,17 +79,17 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5954875,2026-08-11,uefa.champions_qual,AGF,Sabah FK,,,none,0,
 5955375,2026-08-12,uefa.europa.conf_qual,FC København,Debrecen,3.0,Mohamed Elyounoussi,RegularPlay,0,0.4890117943286896
 5955375,2026-08-12,uefa.europa.conf_qual,FC København,Debrecen,58.0,Mohamed Elyounoussi,Penalty,0,0.7884
-5955375,2026-08-12,uefa.europa.conf_qual,FC København,Debrecen,76.0,Alex Král,FromCorner,0,0.48184365034103394
-5955375,2026-08-12,uefa.europa.conf_qual,FC København,Debrecen,78.0,Andreas Cornelius,RegularPlay,0,0.41279086470603943
+5955375,2026-08-12,uefa.europa.conf_qual,FC København,Debrecen,76.0,Alex Král,FromCorner,0,0.4818436503410339
+5955375,2026-08-12,uefa.europa.conf_qual,FC København,Debrecen,78.0,Andreas Cornelius,RegularPlay,0,0.4127908647060394
 5955375,2026-08-12,uefa.europa.conf_qual,FC København,Debrecen,90.0,Andreas Cornelius,FastBreak,0,0.619995653629303
 5955361,2026-08-13,uefa.europa.conf_qual,Nordsjælland,Valur,5.0,Hjalte Boe Rasmussen,RegularPlay,0,0.9689528942108154
 5955361,2026-08-13,uefa.europa.conf_qual,Nordsjælland,Valur,45.0,Villum Berthelsen,RegularPlay,0,0.799087405204773
 5955361,2026-08-13,uefa.europa.conf_qual,Nordsjælland,Valur,62.0,Markus Walker,RegularPlay,0,0.6993881464004517
-5955361,2026-08-13,uefa.europa.conf_qual,Nordsjælland,Valur,71.0,Lamine Sadio,RegularPlay,0,0.30881720781326294
+5955361,2026-08-13,uefa.europa.conf_qual,Nordsjælland,Valur,71.0,Lamine Sadio,RegularPlay,0,0.3088172078132629
 5955361,2026-08-13,uefa.europa.conf_qual,Nordsjælland,Valur,74.0,Levy Néné,RegularPlay,0,0.073725126683712
 5955374,2026-08-13,uefa.europa.conf_qual,FC Midtjylland,Bohemian FC,26.0,Franculino,Penalty,0,0.7884
-5955374,2026-08-13,uefa.europa.conf_qual,FC Midtjylland,Bohemian FC,47.0,Sofus Johannesen,RegularPlay,0,0.31251752376556396
-5955374,2026-08-13,uefa.europa.conf_qual,FC Midtjylland,Bohemian FC,78.0,Stanley Iheanacho,FastBreak,0,0.9429478049278259
+5955374,2026-08-13,uefa.europa.conf_qual,FC Midtjylland,Bohemian FC,47.0,Sofus Johannesen,RegularPlay,0,0.3125175237655639
+5955374,2026-08-13,uefa.europa.conf_qual,FC Midtjylland,Bohemian FC,78.0,Stanley Iheanacho,FastBreak,0,0.942947804927826
 5739479,2026-08-14,den.1,Viborg,AGF,11.0,Mads Søndergaard,FromCorner,0,0.1031089574098587
 5739479,2026-08-14,den.1,AGF,Viborg,31.0,Frederik Emmery,RegularPlay,0,0.0702762082219123
 5739479,2026-08-14,den.1,Viborg,AGF,60.0,Mads Søndergaard,RegularPlay,0,0.0858930349349975
@@ -110,11 +110,11 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5739484,2026-08-17,den.1,Brøndby IF,Sønderjyske,45.0,Olti Hyseni,FastBreak,0,0.2981674969196319
 5739484,2026-08-17,den.1,Sønderjyske,Brøndby IF,58.0,Bubacarr Tambedou,SetPiece,0,0.2526423931121826
 5739484,2026-08-17,den.1,Sønderjyske,Brøndby IF,64.0,Mohamed Bangoura,RegularPlay,0,0.1077115461230278
-5987965,2026-08-20,uefa.europa_qual,AGF,Benfica,36.0,Sebastian Jørgensen,RegularPlay,0,0.16071969270706177
+5987965,2026-08-20,uefa.europa_qual,AGF,Benfica,36.0,Sebastian Jørgensen,RegularPlay,0,0.1607196927070617
 5988058,2026-08-20,uefa.europa.conf_qual,FC København,FC Inter Turku,,,none,0,
-5988066,2026-08-20,uefa.europa.conf_qual,FC Midtjylland,Rijeka,20.0,Gue-Sung Cho,ThrowInSetPiece,0,0.13190096616744995
-5988066,2026-08-20,uefa.europa.conf_qual,FC Midtjylland,Rijeka,48.0,Sofus Johannesen,RegularPlay,0,0.10641581565141678
-5988068,2026-08-20,uefa.europa.conf_qual,Nordsjælland,St. Gallen,13.0,Nicklas Røjkjær,RegularPlay,0,0.034225523471832275
+5988066,2026-08-20,uefa.europa.conf_qual,FC Midtjylland,Rijeka,20.0,Gue-Sung Cho,ThrowInSetPiece,0,0.1319009661674499
+5988066,2026-08-20,uefa.europa.conf_qual,FC Midtjylland,Rijeka,48.0,Sofus Johannesen,RegularPlay,0,0.1064158156514167
+5988068,2026-08-20,uefa.europa.conf_qual,Nordsjælland,St. Gallen,13.0,Nicklas Røjkjær,RegularPlay,0,0.0342255234718322
 5739485,2026-08-23,den.1,AGF,OB,21.0,James Bogere,RegularPlay,0,0.0487873516976833
 5739485,2026-08-23,den.1,OB,AGF,26.0,Jann-Fiete Arp,RegularPlay,0,0.1020541414618492
 5739485,2026-08-23,den.1,OB,AGF,42.0,Jann-Fiete Arp,RegularPlay,0,0.3688746392726898
@@ -137,18 +137,18 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5739490,2026-08-24,den.1,Brøndby IF,Silkeborg,51.0,Jordi Vanlerberghe,FromCorner,0,0.1488257497549057
 5739490,2026-08-24,den.1,Brøndby IF,Silkeborg,54.0,Oskar Fenger,RegularPlay,0,0.9177520275115968
 5739490,2026-08-24,den.1,Brøndby IF,Silkeborg,87.0,Luis Binks,SetPiece,0,0.2471410036087036
-5987977,2026-08-27,uefa.europa_qual,AGF,Benfica,60.0,Rasmus Carstensen,RegularPlay,0,0.03707810118794441
-5988082,2026-08-27,uefa.europa.conf_qual,FC København,FC Inter Turku,41.0,Gabriel Pereira,FromCorner,0,0.14287042617797852
-5988082,2026-08-27,uefa.europa.conf_qual,FC København,FC Inter Turku,49.0,Mads Emil Madsen,RegularPlay,0,0.24585436284542084
-5988082,2026-08-27,uefa.europa.conf_qual,FC København,FC Inter Turku,78.0,William Clem,RegularPlay,0,0.06593850255012512
+5987977,2026-08-27,uefa.europa_qual,AGF,Benfica,60.0,Rasmus Carstensen,RegularPlay,0,0.0370781011879444
+5988082,2026-08-27,uefa.europa.conf_qual,FC København,FC Inter Turku,41.0,Gabriel Pereira,FromCorner,0,0.1428704261779785
+5988082,2026-08-27,uefa.europa.conf_qual,FC København,FC Inter Turku,49.0,Mads Emil Madsen,RegularPlay,0,0.2458543628454208
+5988082,2026-08-27,uefa.europa.conf_qual,FC København,FC Inter Turku,78.0,William Clem,RegularPlay,0,0.0659385025501251
 5988082,2026-08-27,uefa.europa.conf_qual,FC København,FC Inter Turku,90.0,Prosper Ahiabu,OwnGoal,1,
-5988090,2026-08-27,uefa.europa.conf_qual,FC Midtjylland,Rijeka,17.0,Stanley Iheanacho,FromCorner,0,0.23848427832126617
-5988090,2026-08-27,uefa.europa.conf_qual,FC Midtjylland,Rijeka,51.0,Darío Osorio,FromCorner,0,0.020158153027296066
-5988090,2026-08-27,uefa.europa.conf_qual,FC Midtjylland,Rijeka,56.0,Magnus Jensen,RegularPlay,0,0.41904497146606445
-5988090,2026-08-27,uefa.europa.conf_qual,FC Midtjylland,Rijeka,78.0,Gue-Sung Cho,FromCorner,0,0.09739670902490616
-5988092,2026-08-27,uefa.europa.conf_qual,Nordsjælland,St. Gallen,14.0,Juho Lähteenmäki,RegularPlay,0,0.37433648109436035
-5988092,2026-08-27,uefa.europa.conf_qual,Nordsjælland,St. Gallen,24.0,Prince Junior,FastBreak,0,0.04726847633719444
-5988092,2026-08-27,uefa.europa.conf_qual,Nordsjælland,St. Gallen,82.0,Hjalte Boe Rasmussen,RegularPlay,0,0.12418342381715775
+5988090,2026-08-27,uefa.europa.conf_qual,FC Midtjylland,Rijeka,17.0,Stanley Iheanacho,FromCorner,0,0.2384842783212661
+5988090,2026-08-27,uefa.europa.conf_qual,FC Midtjylland,Rijeka,51.0,Darío Osorio,FromCorner,0,0.020158153027296
+5988090,2026-08-27,uefa.europa.conf_qual,FC Midtjylland,Rijeka,56.0,Magnus Jensen,RegularPlay,0,0.4190449714660644
+5988090,2026-08-27,uefa.europa.conf_qual,FC Midtjylland,Rijeka,78.0,Gue-Sung Cho,FromCorner,0,0.0973967090249061
+5988092,2026-08-27,uefa.europa.conf_qual,Nordsjælland,St. Gallen,14.0,Juho Lähteenmäki,RegularPlay,0,0.3743364810943603
+5988092,2026-08-27,uefa.europa.conf_qual,Nordsjælland,St. Gallen,24.0,Prince Junior,FastBreak,0,0.0472684763371944
+5988092,2026-08-27,uefa.europa.conf_qual,Nordsjælland,St. Gallen,82.0,Hjalte Boe Rasmussen,RegularPlay,0,0.1241834238171577
 5739491,2026-08-28,den.1,Viborg,AC Horsens,34.0,Dorian Hanza,RegularPlay,0,0.4078587889671325
 5739491,2026-08-28,den.1,Viborg,AC Horsens,45.0,Charly Horneman,RegularPlay,0,0.058437168598175
 5739491,2026-08-28,den.1,AC Horsens,Viborg,47.0,Kelvin Ehibhatiomhan,SetPiece,0,0.5901775360107422
@@ -203,12 +203,12 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5739505,2026-09-07,den.1,FC Midtjylland,Nordsjælland,72.0,Friday Etim,ThrowInSetPiece,0,0.334753930568695
 5739505,2026-09-07,den.1,Nordsjælland,FC Midtjylland,74.0,Hjalte Boe Rasmussen,RegularPlay,0,0.8926885724067688
 5739505,2026-09-07,den.1,FC Midtjylland,Nordsjælland,86.0,Martin Erlic,ThrowInSetPiece,0,0.3351703286170959
-6133876,2026-09-10,den.cup,FC Midtjylland,Sundby BK,29.0,Julius Emefile,FastBreak,0,0.9619965553283691
-6133876,2026-09-10,den.cup,FC Midtjylland,Sundby BK,34.0,Kjell Wätjen,RegularPlay,0,0.09833170473575592
+6133876,2026-09-10,den.cup,FC Midtjylland,Sundby BK,29.0,Julius Emefile,FastBreak,0,0.9619965553283693
+6133876,2026-09-10,den.cup,FC Midtjylland,Sundby BK,34.0,Kjell Wätjen,RegularPlay,0,0.0983317047357559
 6133876,2026-09-10,den.cup,FC Midtjylland,Sundby BK,42.0,Kjell Wätjen,RegularPlay,0,0.183964341878891
 6133876,2026-09-10,den.cup,FC Midtjylland,Sundby BK,45.0,Julius Emefile,RegularPlay,0,0.5931840538978577
 6133876,2026-09-10,den.cup,FC Midtjylland,Sundby BK,45.0,Mileta Rajović,Penalty,0,0.7884
-6133876,2026-09-10,den.cup,FC Midtjylland,Sundby BK,68.0,Friday Etim,FromCorner,0,0.39325255155563354
+6133876,2026-09-10,den.cup,FC Midtjylland,Sundby BK,68.0,Friday Etim,FromCorner,0,0.3932525515556335
 6133876,2026-09-10,den.cup,FC Midtjylland,Sundby BK,76.0,Julius Emefile,Penalty,0,0.7884
 5739506,2026-09-11,den.1,FC København,AC Horsens,7.0,Felix Beijmo,FromCorner,0,0.0347312130033969
 5739506,2026-09-11,den.1,FC København,AC Horsens,49.0,Viktor Daðason,RegularPlay,0,0.0309143085032701
@@ -229,10 +229,10 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5739509,2026-09-14,den.1,FC Midtjylland,Brøndby IF,74.0,Gue-Sung Cho,RegularPlay,0,0.1046582981944084
 5739509,2026-09-14,den.1,FC Midtjylland,Brøndby IF,89.0,Magnus Jensen,FromCorner,0,0.0390963107347488
 6133875,2026-09-15,den.cup,FC København,Skovshoved,31.0,Geovanni Vianney,RegularPlay,0,0.2998729348182678
-6133875,2026-09-15,den.cup,FC København,Skovshoved,59.0,William Clem,RegularPlay,0,0.10137619823217392
+6133875,2026-09-15,den.cup,FC København,Skovshoved,59.0,William Clem,RegularPlay,0,0.1013761982321739
 6133875,2026-09-15,den.cup,FC København,Skovshoved,68.0,Viktor Daðason,RegularPlay,0,0.3906753361225128
 6133881,2026-09-17,den.cup,Brøndby IF,Vejle Boldklub,40.0,Marcus Younis,RegularPlay,0,0.2127503752708435
-6133881,2026-09-17,den.cup,Brøndby IF,Vejle Boldklub,84.0,Sho Fukuda,RegularPlay,0,0.13351035118103027
+6133881,2026-09-17,den.cup,Brøndby IF,Vejle Boldklub,84.0,Sho Fukuda,RegularPlay,0,0.1335103511810302
 5739514,2026-09-18,den.1,Silkeborg,Lyngby,39.0,Alexander Madsen,FromCorner,0,0.0461603179574012
 5739514,2026-09-18,den.1,Silkeborg,Lyngby,52.0,Oliver Ross,RegularPlay,0,0.1394705474376678
 5739514,2026-09-18,den.1,Silkeborg,Lyngby,72.0,Villads Westh,RegularPlay,0,0.0432439111173152
@@ -337,18 +337,18 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5739535,2026-10-25,den.1,AC Horsens,Sønderjyske,90.0,John Batigi,FastBreak,0,0.042250744998455
 5739530,2026-10-26,den.1,OB,FC København,34.0,Noah Ganaus,RegularPlay,0,0.1187274754047393
 5739530,2026-10-26,den.1,FC København,OB,77.0,Birger Meling,RegularPlay,0,0.1865183115005493
-6298360,2026-10-27,den.cup,Brøndby IF,AB,46.0,Filip Bundgaard,RegularPlay,0,0.07469987869262695
+6298360,2026-10-27,den.cup,Brøndby IF,AB,46.0,Filip Bundgaard,RegularPlay,0,0.0746998786926269
 6298360,2026-10-27,den.cup,Brøndby IF,AB,78.0,Oskar Fenger,FastBreak,0,0.299486368894577
 6298361,2026-10-28,den.cup,AC Horsens,Brabrand,,,none,0,
 6298362,2026-10-28,den.cup,Nordsjælland,Esbjerg fB,12.0,Alexander Lind,RegularPlay,0,0.5793585181236267
 6298363,2026-10-28,den.cup,AGF,FC Roskilde,67.0,Markus Solbakken,RegularPlay,0,0.2975095212459564
-6298363,2026-10-28,den.cup,AGF,FC Roskilde,71.0,Tobias Bech,FastBreak,0,0.9606112837791443
-6298364,2026-10-29,den.cup,FC København,Aarhus Fremad,20.0,William Clem,RegularPlay,0,0.14026443660259247
-6298364,2026-10-29,den.cup,FC København,Aarhus Fremad,39.0,Mohamed Elyounoussi,FromCorner,0,0.05923612788319588
+6298363,2026-10-28,den.cup,AGF,FC Roskilde,71.0,Tobias Bech,FastBreak,0,0.9606112837791444
+6298364,2026-10-29,den.cup,FC København,Aarhus Fremad,20.0,William Clem,RegularPlay,0,0.1402644366025924
+6298364,2026-10-29,den.cup,FC København,Aarhus Fremad,39.0,Mohamed Elyounoussi,FromCorner,0,0.0592361278831958
 6298364,2026-10-29,den.cup,FC København,Aarhus Fremad,71.0,Alexander Ludwig,OwnGoal,1,
-6298365,2026-10-29,den.cup,FC Midtjylland,OB,27.0,Mads Bech,SetPiece,0,0.06320922821760178
-6298365,2026-10-29,den.cup,OB,FC Midtjylland,42.0,Noah Ganaus,RegularPlay,0,0.14341384172439575
-6298365,2026-10-29,den.cup,FC Midtjylland,OB,62.0,Sofus Johannesen,RegularPlay,0,0.08492948114871979
+6298365,2026-10-29,den.cup,FC Midtjylland,OB,27.0,Mads Bech,SetPiece,0,0.0632092282176017
+6298365,2026-10-29,den.cup,OB,FC Midtjylland,42.0,Noah Ganaus,RegularPlay,0,0.1434138417243957
+6298365,2026-10-29,den.cup,FC Midtjylland,OB,62.0,Sofus Johannesen,RegularPlay,0,0.0849294811487197
 5739538,2026-10-30,den.1,Lyngby,Randers FC,23.0,Frederik Gytkjær,FromCorner,0,0.8833217620849609
 5739538,2026-10-30,den.1,Randers FC,Lyngby,45.0,Mohamed Sankoh,FromCorner,0,0.9269772171974182
 5739538,2026-10-30,den.1,Lyngby,Randers FC,69.0,Markus Anderson,RegularPlay,0,0.3941866755485534
@@ -372,3 +372,5 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5739537,2026-11-02,den.1,Sønderjyske,FC København,,,none,0,
 6298366,2026-11-03,den.cup,Lyngby,Randers FC,90.0,William Steindorsson,RegularPlay,0,0.9282943606376648
 6298366,2026-11-03,den.cup,Randers FC,Lyngby,,,none,0,
+6112405,2026-11-05,uefa.europa.conf,FC Midtjylland,Ajax,28.0,Friday Etim,RegularPlay,0,0.904259443283081
+6112532,2026-11-05,uefa.europa.conf,AGF,Braga,,,none,0,
