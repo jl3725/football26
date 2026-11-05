@@ -6,6 +6,7 @@ DATA STATUS — 에이전트 레지스트리 × 실행 원장 → 에이전트·
   late    마지막 성공이 허용 지연을 넘음(또는 성공 기록이 없음) — '이 데이터가 멈췄다'
   down    외부 원천 중단 — 어떤 단계의 가장 최근 실행이 75(사이트 차단·폐쇄·서버 오류)로 끝남. 우리 고장이 아니라
           고칠 수 없어 '지연'과 나눈다(2026-10-25 ClubElo Cloudflare 차단). 다른 단계 실패가 있으면 warn 이 먼저
+  fallback 원천은 막혔지만 대체 원천(Feed.fallback)이 그 자리를 채우고 있음 — 화면은 정상에 가깝게(2026-11-05 Understat 점검 중, FotMob xG)
   nodata  원장에 아직 기록이 없음(원장 도입 직후·새 단계)
 
 /api/ops/status 와 watchdog 'agents' 점검이 같은 계산을 쓴다.
@@ -21,7 +22,7 @@ import run_ledger
 
 ROOT = Path(__file__).resolve().parent.parent
 WATCHDOG_JSON = ROOT / "data" / "ops" / "watchdog.json"
-RANK = {"late": 4, "warn": 3, "down": 2, "nodata": 1, "ok": 0}
+RANK = {"late": 5, "warn": 4, "down": 3, "fallback": 2, "nodata": 1, "ok": 0}
 SOURCE_DOWN = 75                                         # scripts/ci_try.sh 와 같은 약속(EX_TEMPFAIL)
 
 
@@ -64,7 +65,7 @@ def feed_status(feed: reg.Feed, entries: list[dict], now: dt.datetime, ledger_st
     elif failing:
         state = "warn"
     elif down:
-        state = "down"                                   # 막힌 원천뿐 — 다른 단계가 성공 중이어도, 전부 막혀 멈췄어도
+        state = "fallback" if feed.fallback else "down"  # 막힌 원천뿐 — 대체 원천이 채우고 있으면 fallback
     elif age is None or age > feed.max_age_h:
         state = "late"
     else:
@@ -75,6 +76,7 @@ def feed_status(feed: reg.Feed, entries: list[dict], now: dt.datetime, ledger_st
             "max_age_h": feed.max_age_h, "runners": list(feed.runners), "outputs": list(feed.outputs),
             "last_ok": last_ok, "last_run": last_run, "age_h": age, "failing": failing[:12],
             "n_failing": len(failing), "down": down[:12], "down_age_h": _age_h(down_ok, now), "runs_24h": len(recent),
+            "fallback": feed.fallback or None,
             "fails_24h": sum(1 for e in recent if not e.get("ok") and e.get("code") != SOURCE_DOWN)}
 
 

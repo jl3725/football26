@@ -40,6 +40,19 @@ def fetch(league: str) -> pd.DataFrame | None:
     return d[[c for c in COLS if c in d.columns]]
 
 
+def site_state(timeout: float = 15.0) -> str:
+    """막힌 이유를 사람 말로 — 점검 페이지('We will come back soon', 2026-11-02~)·차단·불통."""
+    import requests  # noqa: PLC0415
+    try:
+        r = requests.get("https://understat.com/", timeout=timeout, headers={"User-Agent": "Mozilla/5.0"})
+    except requests.RequestException:
+        return "understat.com 불통"
+    body = r.text.lower()
+    if "come back soon" in body or "maintenance" in body:
+        return "understat.com 점검 중('We will come back soon')"
+    return f"understat.com 차단(HTTP {r.status_code})"
+
+
 def reachable(timeout: float = 15.0) -> bool:
     """understat.com 에 닿는가 — 연결만 본다(응답 코드는 상관없음)."""
     import requests  # noqa: PLC0415
@@ -77,7 +90,7 @@ def main() -> int:
                 # 둘 다 우리 고장이 아닌 원천 중단 — 빨간불 대신 75(FotMob 이 xG 를 대신 채운다, src/season_totals.apply_fotmob_xg)
                 blocked = isinstance(e, ValueError) and "Expecting value" in str(e)
                 if blocked or (any(k in str(e) for k in _NET_ERR) and not reachable()):
-                    print("[understat-live] understat.com 차단·불통 — 원천 중단(기존 파일 유지, 나머지 리그 건너뜀)")
+                    print(f"[understat-live] {site_state()} — 원천 중단(기존 파일 유지, 나머지 리그 건너뜀 · FotMob 이 xG 대신 채움)")
                     return EX_SOURCE_DOWN if ok == 0 else 1
                 failed = True
                 break

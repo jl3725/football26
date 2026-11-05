@@ -26,6 +26,9 @@ class Feed:
     # 새로 넣은 피드는 추가한 날(YYYY-MM-DD)을 적는다 — 첫 실행 전 '성공 기록 없음' 유예를 원장 시작(10/20)이 아니라 이 날부터 센다.
     # 안 적으면 넣자마자 DATA 가 빨간불이 됐다(2026-10-23 적정 이적료·부상명 피드)
     added: str = ""
+    # 원천이 막혔을 때(75) 그 자리를 채우는 것 — 있으면 DATA STATUS 가 '원천 중단' 대신 '대체 원천 사용 중'으로 보인다
+    # (2026-11-05 사용자 '원천 중단 살릴 방법 없나요' — Understat 는 사이트 점검 중이고 FotMob 이 xG 를 대신 채운다)
+    fallback: str = ""
 
 
 @dataclass(frozen=True)
@@ -68,7 +71,8 @@ AGENTS: tuple[Agent, ...] = (
                    "매일 13:30 KST", 36),
               Feed("units", "팀 유닛 지표", ("team_defense", "unit_metrics", "statbunker"),
                    ("local-season-weekly", "daily_data", "match_refresh"),
-                   "매일 2회(클라우드, 전 리그) · StatBunker 는 이 PC 매일 11:40", 30, ("team_unit_metrics_*", "team_defense_*")),
+                   "매일 2회(클라우드, 전 리그) · StatBunker 는 이 PC 매일 11:40", 30, ("team_unit_metrics_*", "team_defense_*"),
+                   fallback="StatBunker 가 막히면 세트피스·PK 는 지난 값 유지(득실·유닛 지표는 계속 갱신)"),
               Feed("lite", "라이트 리그 순위·일정·명단·감독(FotMob)", ("lite_league", "lite_managers"), ("match_refresh", "daily_data"),
                    "매일 2회", 30, ("standings_*", "schedule_full_*", "lite_teams_*", "manager_profiles_*")),
               Feed("manager_fill", "감독 부임일·전술 성향(FotMob·위키데이터·위키)", ("manager_fill",), ("daily_data",),
@@ -82,7 +86,8 @@ AGENTS: tuple[Agent, ...] = (
               Feed("fotmob", "FotMob 평점·최근 폼·골·도움·경기별 세부 기록(전 대회)", ("fotmob_ratings", "fotmob_matches"), ("daily_data", "match_refresh"),
                    "매일 2회 · 경기 20분 뒤", 30, ("fotmob_*",)),
               Feed("understat", "xG 계열(Understat)", ("understat_live",), ("match_refresh",), "매일 · 경기 20분 뒤", 36,
-                   ("understat_players_*",)),
+                   ("understat_players_*",),
+                   fallback="FotMob(Opta) 경기별 xG 로 대신 채움(선수 xG·xA·키패스, 경기별 팀 xG) — Understat 가 돌아오면 자동 복귀"),
               Feed("rating_history", "평점 일일 기록", ("rating_history",), ("daily_data",), "매일 13:30 KST", 36),
               Feed("lite_players", "라이트 리그 선수 표(FotMob 시즌 통계 + TM)", ("lite_players",), ("daily_data", "match_refresh"),
                    "매일 2회", 30, ("players_full_*", "league_strength.json")),

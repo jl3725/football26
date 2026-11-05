@@ -13,6 +13,7 @@ export const STATE: Record<OpsState, { ko: string; en: string; tone: keyof typeo
   warn: { ko: "일부 실패", en: "PARTIAL", tone: "weak" },
   late: { ko: "지연", en: "LATE", tone: "bad" },
   down: { ko: "원천 중단", en: "SOURCE DOWN", tone: "avg" },     // 외부 사이트 차단·폐쇄 — 우리 고장 아님(2026-10-26)
+  fallback: { ko: "대체 원천", en: "FALLBACK", tone: "good" },   // 원천은 막혔지만 대체 원천이 채우는 중(2026-11-05)
   nodata: { ko: "기록 대기", en: "WAITING", tone: "avg" },
 };
 
@@ -49,8 +50,9 @@ function FeedRow({ f }: { f: OpsFeed }) {
           {f.runs_24h > 0 && <> · 24시간 {f.runs_24h}회{f.fails_24h > 0 && <em> · 실패 {f.fails_24h}</em>}</>}
         </div>
         {(f.down?.length ?? 0) > 0 && (
-          <div className="ds-fails ds-down" title="원천 사이트가 막혀(차단·폐쇄·서버 오류) 기존 데이터를 유지 중 — 다시 열리면 자동으로 이어 받는다">
-            <em>원천 중단{f.down_age_h != null ? ` · 마지막 성공 ${ago(f.down_age_h)}` : ""}</em>
+          <div className="ds-fails ds-down" title={f.fallback ? `원천이 막혀 있는 동안 대신 채움 — ${f.fallback}` : "원천 사이트가 막혀(차단·폐쇄·서버 오류) 기존 데이터를 유지 중 — 다시 열리면 자동으로 이어 받는다"}>
+            <em>{f.fallback ? "대체 원천 사용 중" : "원천 중단"}{f.down_age_h != null ? ` · 마지막 성공 ${ago(f.down_age_h)}` : ""}</em>
+            {f.fallback && <span className="ds-fallback">{f.fallback}</span>}
             {f.down!.slice(0, 6).map((x) => <span key={x}>{x}</span>)}
           </div>
         )}
@@ -95,7 +97,7 @@ export default function DataStatus() {
   if (!d) return <div className="ds-wrap"><p className="ds-note">불러오는 중…</p></div>;
 
   const wdFail = d.watchdog ? Object.entries(d.watchdog.results).filter(([, v]) => v.length) : [];
-  const order: OpsState[] = ["late", "warn", "down", "nodata", "ok"];
+  const order: OpsState[] = ["late", "warn", "down", "fallback", "nodata", "ok"];
   const agents = [...d.agents].sort((x, y) => order.indexOf(x.state) - order.indexOf(y.state));
 
   return (
@@ -109,7 +111,7 @@ export default function DataStatus() {
       </div>
 
       <div className="ds-summary">
-        {(["ok", "warn", "late", "down", "nodata"] as OpsState[]).map((s) => {
+        {(["ok", "warn", "late", "down", "fallback", "nodata"] as OpsState[]).map((s) => {
           const t = TONE[STATE[s].tone];
           return (
             <div key={s} className="ds-count" style={{ borderColor: d.counts[s] && s !== "ok" ? t.c : undefined }}>
