@@ -1,5 +1,5 @@
 {
- "checked": "2026-11-05T15:52:14+00:00",
+ "checked": "2026-11-06T15:26:53+00:00",
  "results": {
   "ovr": [],
   "season": [],
@@ -8,7 +8,7 @@
   "backend": [],
   "workflows": [],
   "news": [
-   "news.db 압축본 66MB — GitHub 50MB 경고 구간(60MB 넘으면 넓힌 원천의 14일 지난 비이적 기사를 자동 정리, 90MB 넘으면 올리기 거부 — src/news_store.py)"
+   "news.db 압축본 67MB — GitHub 50MB 경고 구간(60MB 넘으면 넓힌 원천의 14일 지난 비이적 기사를 자동 정리, 90MB 넘으면 올리기 거부 — src/news_store.py)"
   ],
   "tm_agent": [],
   "coverage": [],
@@ -20,18 +20,16 @@
   "xg": [],
   "agents": [],
   "expectations": [],
-  "screen": [
-   "season_log Cambuur: Thijs Jansen 헤더 990′ 0G 0A ≠ SEASON LOG 982′ 0G 0A"
-  ],
+  "screen": [],
   "squads": [],
   "identity": [],
   "fair_price": [],
   "progress": [
-   "LaLiga StatBunker 팀 통계(statbunker_team_stats) 팀 누락: 팀 1곳 경기분이 절반 이하·없음 — Alavés(0/11) (팀 이름 매칭 확인)",
    "SerieA StatBunker 팀 통계(statbunker_team_stats) 늦음: 팀당 6경기분 · 일정 10경기(가운데 값 4경기 늦음)",
    "Ligue1 Understat xG(understat_players) 팀 누락: 팀 1곳 경기분이 절반 이하·없음 — Rennes(1.8/9) (팀 이름 매칭 확인)"
   ],
-  "digest": []
+  "digest": [],
+  "scout_answers": []
  },
- "ai_cause": "- **news**: 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인)\n- **ratings**: 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인)\n- **screen**: 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인)\n- **progress**: \n    - `understat_live` 단계에서 반복적인 코드 75 오류가 발생하여 데이터 수집이 원활하지 않음(match_refresh 단계 추정)\n    - `statbunker` 단계에서 404 및 502 오류로 인해 원천 데이터 접근이 차단되어 팀 통계가 누락됨(local-sofascore-daily 단계 추정)"
+ "ai_cause": "**news**\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인)\n**ratings**\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인)\n**progress**\n- StatBunker 원천 사이트의 404 및 502 오류로 인해 데이터 수집이 중단되었으므로, 해당 URL의 접근 가능 여부와 서버 상태를 먼저 확인해야 합니다(statbunker 단계).\n- Understat 데이터 수집 단계(understat_live)에서 지속적인 코드 75 오류가 발생하고 있으므로, API 응답 구조 변경이나 네트워크 연결 문제를 우선 점검해야 합니다(understat_live 단계)."
 }
