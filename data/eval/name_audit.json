@@ -870,8 +870,8 @@
    ]
   },
   "espn_subs": {
-   "total": 365,
-   "exact": 363,
+   "total": 368,
+   "exact": 366,
    "rule": 2,
    "ambiguous": 0,
    "orphan": 0,
@@ -886,8 +886,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 307,
-   "exact": 307,
+   "total": 309,
+   "exact": 309,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1218,8 +1218,8 @@
    ]
   },
   "match_events": {
-   "total": 354,
-   "exact": 354,
+   "total": 355,
+   "exact": 355,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1254,11 +1254,11 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 491,
+   "total": 492,
    "exact": 446,
    "rule": 10,
    "ambiguous": 0,
-   "orphan": 35,
+   "orphan": 36,
    "orphans": [
     {
      "squad": "Troyes",
@@ -1442,8 +1442,8 @@
    ]
   },
   "espn_subs": {
-   "total": 372,
-   "exact": 367,
+   "total": 373,
+   "exact": 368,
    "rule": 4,
    "ambiguous": 0,
    "orphan": 1,
@@ -1464,8 +1464,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 296,
-   "exact": 296,
+   "total": 297,
+   "exact": 297,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1976,12 +1976,17 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 522,
+   "total": 523,
    "exact": 447,
    "rule": 41,
    "ambiguous": 1,
-   "orphan": 34,
+   "orphan": 35,
    "orphans": [
+    {
+     "squad": "Standard Liège",
+     "name": "Dennis Dargahi",
+     "starts": 10
+    },
     {
      "squad": "Charleroi",
      "name": "Kevin Guiton",
@@ -2001,11 +2006,6 @@
      "squad": "La Louvière",
      "name": "Mustapha Ubandoma",
      "starts": 10
-    },
-    {
-     "squad": "Standard Liège",
-     "name": "Dennis Dargahi",
-     "starts": 9
     },
     {
      "squad": "Westerlo",
@@ -2164,8 +2164,8 @@
    ]
   },
   "espn_subs": {
-   "total": 298,
-   "exact": 298,
+   "total": 300,
+   "exact": 300,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -2180,8 +2180,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 281,
-   "exact": 281,
+   "total": 282,
+   "exact": 282,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -3151,7 +3151,7 @@
    "ambiguous": 0,
    "orphan": 0,
    "orphans": [],
-   "minutes": 5
+   "minutes": 7
   }
  },
  "SwissSuperLeague 2026_2027": {
