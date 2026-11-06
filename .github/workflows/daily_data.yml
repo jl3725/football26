@@ -251,6 +251,18 @@ jobs:
           git status --short data/ >> "$GITHUB_STEP_SUMMARY"
           echo '```' >> "$GITHUB_STEP_SUMMARY"
 
+      # 그래프 매일 반영(빠른 것만) — 선수 OVR·폼·부상·소속·주장단·기사 동시 언급·대표 소집·이적설·루머 주장
+      # (scripts/build_kg.py --fast). 전체(팀동료·이적 기록·감독 등)는 주 1회 kg_reload. Ask Scout 그래프 답이 최대 7일 늦던 것
+      - name: Graph daily sync (KG fast)
+        env:
+          NEO4J_URI: ${{ secrets.NEO4J_URI }}
+          NEO4J_USERNAME: ${{ secrets.NEO4J_USERNAME }}
+          NEO4J_USER: ${{ secrets.NEO4J_USERNAME }}
+          NEO4J_PASSWORD: ${{ secrets.NEO4J_PASSWORD }}
+        run: |
+          if [ -z "$NEO4J_URI" ]; then echo "NEO4J_URI 시크릿 없음 — 건너뜀"; exit 0; fi
+          bash scripts/ci_try.sh "kg_fast" python scripts/build_kg.py --fast
+
       - name: Commit updated data
         run: |
           git config user.name  "github-actions[bot]"

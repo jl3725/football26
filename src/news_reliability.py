@@ -143,6 +143,16 @@ def _same_club(a: str, b: str) -> bool:
     return bool(fa) and (fa == fb or fa in fb or fb in fa)
 
 
+def _journalists(a) -> str:
+    """본문에 인용된 기자(article_meta) + 기사 작성자(RSS 바이라인, 사람 이름만) — '|' 로."""
+    from news_classify import byline_names  # noqa: PLC0415
+    names = [x for x in str(a.journalists or "").split("|") if x]
+    for n in byline_names(getattr(a, "author", "") or "", a.source or ""):
+        if n not in names:
+            names.append(n)
+    return "|".join(names)
+
+
 def claims(today: dt.date | None = None) -> pd.DataFrame:
     today = today or dt.date.today()
     tr = load_transfers()
@@ -153,7 +163,7 @@ def claims(today: dt.date | None = None) -> pd.DataFrame:
     try:
         arts = pd.read_sql(
             """SELECT a.link, max(a.headline) AS headline, max(a.source) AS source, max(a.published) AS published,
-                      max(a.first_seen) AS first_seen, m.stage, m.journalists
+                      max(a.first_seen) AS first_seen, m.stage, m.journalists, max(a.author) AS author
                FROM articles a JOIN article_meta m ON m.link = a.link
                WHERE m.kind = 'transfer' GROUP BY a.link""", con)
         tags = pd.read_sql("SELECT link, player, squad, how FROM article_players", con)
@@ -204,7 +214,7 @@ def claims(today: dt.date | None = None) -> pd.DataFrame:
                 resolved = today > close + dt.timedelta(days=GRACE_DAYS) or moved_to_d
                 denied = a.stage == "denied"
                 hit = (not moved_to_d) if denied else moved_to_d
-                rows.append({"link": a.link, "date": day.isoformat(), "source": a.source or "", "journalists": a.journalists or "",
+                rows.append({"link": a.link, "date": day.isoformat(), "source": a.source or "", "journalists": _journalists(a),
                              "stage": a.stage or "", "player": p.player, "origin": origin, "dest": d,
                              "window": f"{sid} {win}", "status": ("hit" if hit else "miss") if resolved else "pending",
                              "headline": a.headline})

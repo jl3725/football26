@@ -92,6 +92,8 @@ def _retry_hint(intent: str | None, result) -> str | None:
             return ("0행 — 조건을 넓혀 graph_query 를 한 번 더 시도할 수 있다: 정확한 이름 대신 CONTAINS, "
                     "Journalist 대신 Outlet(기자 이름이 붙은 기사는 드물다), RUMORED_WITH 대신 LINKED_TO(이적설 종합), "
                     "p.active 조건 빼기. 넓혀도 없으면 '해당 데이터 없음'이라고 답하라.")
+    elif intent == "news" and "count" in result and not result.get("count") and not result.get("error"):
+        return "0건 — player_news(이름 태그 기사 목록)로 다시 찾을 수 있다. 그래도 없으면 최근 기사가 없다고 답하라."
     elif result.get("error"):
         return "도구 오류 — 다른 도구로 답할 수 있으면 그 도구를 부르고, 아니면 조회가 안 됐다고 답하라."
     return None
@@ -204,6 +206,7 @@ _KG_SCHEMA = """노드:
   Competition {name}  (UEFA Champions League / Europa League / Conference League)
   Claim {id, player, dest, origin, window('2026 winter'), stage(interest/talks/agreed/done/denied), first, last, n(기사 수), status(hit/miss/pending)}
   Outlet {name, n, hits, rate(적중률 0~1), score, few} · Journalist {name, n, hits, rate, score, few}   // 뉴스 이적 루머 보도자
+  Match {id, date('YYYY-MM-DD'), comp(eng.1·uefa.champions…), home, away, score('2-1' 홈-원정)} · Injury {type, from, until, games, season('25/26')}
   Role {name} · TacticalSnapshot {club, season, period, manager, style_tags, pressing, control, creativity, attack, aerial, disruption}
 관계(방향 정확히):
   (Player)-[:PLAYS_FOR]->(Club)
@@ -215,6 +218,8 @@ _KG_SCHEMA = """노드:
   (Manager)-[:MANAGES]->(Club)
   (Manager)-[:EMPHASIZES {minutes_share}]->(Role)
   (Club)-[:HAS_SNAPSHOT]->(TacticalSnapshot), (Manager)-[:HAD_SNAPSHOT]->(TacticalSnapshot)   // 시즌별 전술 지표
+  (Player)-[:PLAYED {minutes, rating(FotMob), goals, assists, xg}]->(Match), (Match)-[:HOME]->(Club), (Match)-[:AWAY]->(Club)   // 이번 시즌 전 대회
+  (Player)-[:SUFFERED]->(Injury)   // 이번·지난 시즌 부상 구간(결장 경기 games)
   (TransferEvent)-[:OF]->(Player), (TransferEvent)-[:FROM]->(Club), (TransferEvent)-[:TO]->(Club)
   (League)-[:IN_COUNTRY]->(Country)
   (Player)-[:CAPTAIN_OF {rank, role}]->(Club)          // 주장단(1=주장, 2=부주장 …)
@@ -248,6 +253,9 @@ _CYPHER_TIPS = """graph_query Cypher 팁:
   [우리 팀 선수의 이적설] MATCH (p:Player)-[:PLAYS_FOR]->(:Club {name:'Chelsea'}) MATCH (p)-[l:LINKED_TO]->(c:Club) RETURN p.name, c.name, l.heat, l.stage ORDER BY l.heat DESC LIMIT 15
   [팀동료 중 이적설] MATCH (a:Player {name:'Vitinha'})-[:TEAMMATE_OF]-(b:Player)-[l:LINKED_TO]->(c:Club) RETURN DISTINCT b.name, c.name, l.heat ORDER BY l.heat DESC LIMIT 15
   [보도 많이 된 이적설] MATCH (o:Outlet)-[e:REPORTED]->(k:Claim)-[:TO_CLUB]->(:Club {name:'Arsenal'}) RETURN k.player, k.stage, k.status, count(DISTINCT o) AS outlets, sum(e.n) AS articles ORDER BY articles DESC LIMIT 15
+  [최근 경기] MATCH (p:Player {name:'Bukayo Saka'})-[x:PLAYED]->(m:Match) RETURN m.date, m.comp, m.home, m.away, m.score, x.minutes, x.rating, x.goals ORDER BY m.date DESC LIMIT 5
+  [같이 선발] MATCH (a:Player {name:'Declan Rice'})-[x:PLAYED]->(m:Match)<-[y:PLAYED]-(b:Player {name:'Martin Ødegaard'}) WHERE x.minutes>=60 AND y.minutes>=60 RETURN count(m) AS games, avg(x.rating) AS rice_rating
+  [부상 많은 선수] MATCH (p:Player)-[:SUFFERED]->(i:Injury {season:'25/26'}) WHERE p.active = true WITH p, sum(i.games) AS missed, count(i) AS spells RETURN p.name, p.league, missed, spells ORDER BY missed DESC LIMIT 15
   [전술 지표] MATCH (:Club {name:'Arsenal'})-[:HAS_SNAPSHOT]->(t:TacticalSnapshot) RETURN t.season, t.period, t.manager, t.pressing, t.control, t.attack ORDER BY t.season DESC LIMIT 5
   [매체 적중률] MATCH (o:Outlet) WHERE o.rate IS NOT NULL AND o.few = false RETURN o.name, o.rate, o.n ORDER BY o.rate DESC LIMIT 10
   [계약임박 CB] MATCH (p:Player) WHERE p.contract_until CONTAINS '{EXPIRY_YEAR}' AND p.pos_detail='Centre-Back' AND p.age<=26 RETURN p.name,p.contract_until,p.league,p.market_value_eur ORDER BY p.market_value_eur DESC LIMIT 15"""
@@ -371,6 +379,18 @@ TOOLS = [
                        "BelgianProLeague·Championship·SuperLig·AustrianBundesliga·DanishSuperliga·SwissSuperLeague). 없으면 현재 리그"}},
             "required": []}}},
     {"type": "function", "function": {
+        "name": "search_news",
+        "description": "기사 제목·요약을 **뜻으로** 찾는다(최근 30일, 이적·부상·인터뷰·공식 발표, 출처·날짜·링크). "
+                       "'사카 부상 관련 보도 요약', '아스날 미드필더 영입 관련 기사', '바스토니 이적 루머 기사', '감독 경질설' 같은 질문. "
+                       "특정 선수의 최신 기사 목록만 원하면 player_news.",
+        "parameters": {"type": "object", "properties": {
+            "query": {"type": "string", "description": "찾을 내용(질문 그대로 또는 핵심어)"},
+            "player": {"type": "string", "description": "선수 이름(있으면 그 선수 태그 기사로 좁힘)"},
+            "team": {"type": "string", "description": "클럽(있으면 그 클럽 기사로 좁힘)"},
+            "kind": {"type": "string", "enum": ["transfer", "injury", "interview", "official"],
+                     "description": "기사 종류(있으면 좁힘)"}},
+            "required": ["query"]}}},
+    {"type": "function", "function": {
         "name": "graph_query",
         "description": "위 툴로 안 되는 열린 그래프 질문에 read-only Cypher를 직접 작성해 실행. "
                        "특히 **이적설/링크**('아스날에 링크나는 선수'=LINKED_TO heat 순), 관계 traversal"
@@ -393,6 +413,8 @@ _SYSTEM = (
     "- **'링크/루머/관심/영입설'은 추천이 아니라 이적설 조회다 → graph_query 로 LINKED_TO(TM 루머 + 뉴스 종합, heat 순).** "
     "TM 확률만 물으면 RUMORED_WITH, '어디서 보도'는 Claim·Outlet.\n"
     "- 결과가 비면 조건을 넓혀 한 번 더 조회할 수 있고, 여러 정보를 엮어야 하면 도구를 이어서 불러도 된다(최대 3번).\n"
+    "- **기사 내용(부상 소식·이적 루머·감독 발언)을 요약·근거로 답할 땐 search_news** — 답에 매체 이름과 날짜를 밝혀라. "
+    "기사에 없는 내용은 덧붙이지 않는다.\n"
     "- 관계·다중필터·집계·이적경로 질문도 graph_query(read-only Cypher). 구조화 툴이 맞으면 그걸 우선.\n"
     "- **주장·부주장·팀 안 영향력**은 team_leadership(그래프 쿼리보다 우선).\n"
     "- 답에는 툴 결과에 있는 사실·숫자만 쓴다. 결과에 없는 플레이 스타일 설명·평가·추측은 덧붙이지 않는다.\n"
@@ -510,6 +532,14 @@ def _execute(name: str, args: dict, league: str):
         return "identity", api.identity(_resolve_club(args.get("team", "")), league)
     if name == "graph_query":
         return "graph", _run_cypher(args.get("cypher", ""))
+    if name == "search_news":                     # 뉴스 본문 의미 검색(src/news_vectors.py) — 카드는 기존 뉴스 카드
+        import news_vectors as nvx  # noqa: PLC0415
+        players = None
+        if args.get("player"):
+            import scout_router as sr  # noqa: PLC0415 — 한글 이름도 표준 표기로
+            players = [p["name"] for p in (sr.parse(args["player"], None, league).get("players") or [])][:2] or [args["player"]]
+        return "news", nvx.search(args.get("query", ""), players, _resolve_club(args["team"]) if args.get("team") else None,
+                                  args.get("kind") or None)
     if name in ("team_now", "team_form", "team_leadership"):     # 대화 리그가 아니라 그 팀의 리그로
         team = _resolve_club(args.get("team", ""))
         tlg = _league_of(team, league)
@@ -744,9 +774,13 @@ def _slim(intent: str, r: dict) -> dict:
     if intent == "graph":
         return {"cypher": r.get("cypher"), "count": r.get("count"),
                 "rows": (r.get("rows") or [])[:15], "error": r.get("error")}
-    if intent == "news":
-        return {"player": r.get("player"), "total": r.get("total"),
-                "articles": [{k: a.get(k) for k in ("headline", "source", "published")} for a in (r.get("articles") or [])[:6]]}
+    if intent == "news":                       # player_news(이름 태그) · search_news(뜻 검색 — count·query·headline_ko 있음)
+        out = {"player": r.get("player"), "total": r.get("total"),
+               "articles": [{k: a.get(k) for k in ("headline", "headline_ko", "source", "published") if a.get(k)}
+                            for a in (r.get("articles") or [])[:6]]}
+        if "count" in r:
+            out.update({"query": r.get("query"), "count": r.get("count")})
+        return out
     if intent == "week":
         return {k: r.get(k) for k in ("league", "since", "risers", "fallers", "news", "intl")} | {
             "injuries": {k: (r.get("injuries") or {}).get(k) for k in ("n_new", "n_back", "new", "back")},

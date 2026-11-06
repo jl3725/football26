@@ -85,6 +85,8 @@ CONSTRAINTS = [
     "CREATE CONSTRAINT transfer_id IF NOT EXISTS FOR (t:TransferEvent) REQUIRE t.id IS UNIQUE",
     "CREATE CONSTRAINT competition_name IF NOT EXISTS FOR (x:Competition) REQUIRE x.name IS UNIQUE",
     "CREATE CONSTRAINT claim_id IF NOT EXISTS FOR (k:Claim) REQUIRE k.id IS UNIQUE",
+    "CREATE CONSTRAINT match_id IF NOT EXISTS FOR (m:Match) REQUIRE m.id IS UNIQUE",
+    "CREATE CONSTRAINT injury_id IF NOT EXISTS FOR (i:Injury) REQUIRE i.id IS UNIQUE",
     "CREATE CONSTRAINT outlet_name IF NOT EXISTS FOR (o:Outlet) REQUIRE o.name IS UNIQUE",
     "CREATE CONSTRAINT journalist_name IF NOT EXISTS FOR (j:Journalist) REQUIRE j.name IS UNIQUE",
 ]
@@ -382,6 +384,95 @@ def _load_news_pairs(n2p_by_league: dict, days: int = 60) -> tuple[list[dict], d
     return [{"a": a, "b": b, "n": n, "last": lt} for (a, b), (n, lt) in pair.items()], count
 
 
+MATCH_FAST_DAYS = 10      # --fast 는 최근 이만큼의 경기만 다시 쓴다(전체는 주 1회)
+
+
+def _read(stem: str, league: str) -> pd.DataFrame | None:
+    """화면과 같은 이름 표기(datastore — 이름 레지스트리 정규화), 안 되면 CSV."""
+    try:
+        import datastore as ds  # noqa: PLC0415
+        df = ds.read_table(stem, league=league)
+        if df is not None:
+            return df
+    except Exception:  # noqa: BLE001
+        pass
+    try:
+        return pd.read_csv(data_path(stem, league))
+    except (OSError, ValueError):
+        return None
+
+
+def _load_matches(n2p_by_league: dict, since: str | None = None) -> tuple[list[dict], list[dict]]:
+    """경기 노드 + 출전 관계 — FotMob 경기별 기록(전 대회, 이번 시즌). 점수는 ESPN 일정(schedule_full, 우리 팀 기준 득-실).
+    2026-11-06 그래프 RAG 4단계: 경기 단위 질문('사카 최근 5경기 평점', '라이스·외데고르가 같이 선발로 뛴 경기')이 TEAMMATE_OF
+    쌍 개수로만 답해졌다."""
+    matches: dict[str, dict] = {}
+    plays: list[dict] = []
+    for lg, n2p in n2p_by_league.items():
+        mr = _read("fotmob_match_ratings", lg)
+        if mr is None or mr.empty or not {"match_id", "date", "squad", "opponent", "player", "minutes"} <= set(mr.columns):
+            continue
+        mr = mr[pd.to_numeric(mr["minutes"], errors="coerce").fillna(0) > 0]
+        if since:
+            mr = mr[mr["date"].astype(str) >= since]
+        sch: dict = {}
+        sf = _read("schedule_full", lg)
+        if sf is not None and not sf.empty and {"squad", "date", "opponent", "gf", "ga"} <= set(sf.columns):
+            for s_ in sf.itertuples(index=False):
+                if pd.notna(s_.gf) and pd.notna(s_.ga):
+                    sch[(str(s_.squad), str(s_.date)[:10], str(s_.opponent))] = (int(s_.gf), int(s_.ga))
+        for r in mr.itertuples(index=False):
+            mid, day = str(r.match_id), str(r.date)[:10]
+            home_side = str(getattr(r, "home_away", "")).lower().startswith("h")
+            home, away = (str(r.squad), str(r.opponent)) if home_side else (str(r.opponent), str(r.squad))
+            m = matches.setdefault(mid, {"id": mid, "date": day, "comp": str(getattr(r, "comp_code", "") or ""),
+                                         "home": home, "away": away, "score": ""})
+            if not m["score"]:
+                g = sch.get((str(r.squad), day, str(r.opponent)))
+                if g:
+                    m["score"] = f"{g[0]}-{g[1]}" if home_side else f"{g[1]}-{g[0]}"
+            pid = n2p.get(_norm(r.player))
+            if pid:
+                plays.append({"pid": pid, "mid": mid, "min": _num(r.minutes), "rt": _num(getattr(r, "rating", None)),
+                              "g": _num(getattr(r, "goals", None)), "a": _num(getattr(r, "assists", None)),
+                              "xg": _num(getattr(r, "xg", None))})
+    return list(matches.values()), plays
+
+
+def _load_injury_spells(league: str, seasons: tuple[str, ...]) -> list[dict]:
+    """부상 구간(tm_injury_history spells_json) → Injury 노드 — 이번·지난 시즌 파일(그래프 크기). TM 번호로 잇으므로 CSV 그대로
+    (datastore 로 읽으면 'season' 칸이 season_src 로 바뀐다)."""
+    from leagues import SEASON_START  # noqa: PLC0415
+    frames = []
+    for y in (SEASON_START - 1, SEASON_START):
+        try:
+            frames.append(pd.read_csv(data_path("tm_injury_history", league, f"{y}_{y + 1}")))
+        except (OSError, ValueError):
+            pass
+    df = pd.concat(frames, ignore_index=True) if frames else None
+    if df is None or df.empty or "spells_json" not in df.columns:
+        return []
+    out = []
+    for r in df.itertuples(index=False):
+        tid = _clean(getattr(r, "tm_player_id", None))
+        if tid is None or str(getattr(r, "season", "")) not in seasons:
+            continue
+        try:
+            spells = json.loads(r.spells_json) if isinstance(r.spells_json, str) else []
+        except ValueError:
+            continue
+        for sp in spells:
+            fr = pd.to_datetime(sp.get("from"), format="%d/%m/%Y", errors="coerce")
+            un = pd.to_datetime(sp.get("until"), format="%d/%m/%Y", errors="coerce")
+            if pd.isna(fr):
+                continue
+            kind = str(sp.get("injury") or "")
+            out.append({"id": f"{int(tid)}|{fr.date().isoformat()}|{kind}", "pid": f"tm:{int(tid)}", "type": kind,
+                        "from": fr.date().isoformat(), "until": "" if pd.isna(un) else un.date().isoformat(),
+                        "games": _num(sp.get("games")), "season": str(r.season)})
+    return out
+
+
 def _load_callups(n2p_by_league: dict) -> list[dict]:
     path = ROOT / "data" / "intl_callups.csv"
     if not path.exists():
@@ -552,11 +643,28 @@ def _batched(session, cypher, rows, batch=500, **params):
         session.run(cypher, rows=rows[i:i + batch], **params)
 
 
-def main() -> int:
+# --fast(매일, daily_data) — 빨리 바뀌는 것만: 선수 속성(OVR·폼·부상·영향력)·소속·주장단·기사 동시 언급·대표 소집·이적설·루머 주장.
+# 팀동료 쌍·이적 기록·대표/유럽 출전·감독·계수는 주 1회 전체(kg_reload)만. 2026-11-06 그래프 RAG 3단계 — 그래프 답이 최대 7일 늦었다
+def _recent_seasons() -> tuple[str, ...]:
+    """부상 노드에 넣을 시즌 표기('25/26', '26/27') — 이번·지난 시즌."""
+    from leagues import SEASON_START  # noqa: PLC0415
+    y = SEASON_START % 100
+    return (f"{y - 1:02d}/{y:02d}", f"{y:02d}/{y + 1:02d}")
+
+
+FAST_CLEAN = ("PLAYS_FOR", "CAPTAIN_OF", "MENTIONED_WITH", "CALLED_UP", "LINKED_TO", "REPORTED", "WRITES_FOR")
+FULL_CLEAN = ("PLAYS_FOR", "MANAGES", "CAPTAIN_OF", "MENTIONED_WITH", "CALLED_UP", "LINKED_TO", "REPORTED", "WRITES_FOR")
+
+
+def main(argv=None) -> int:
+    import argparse  # noqa: PLC0415
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--fast", action="store_true", help="빨리 바뀌는 관계·속성만(매일)")
+    fast = ap.parse_args(argv).fast
     from neo4j import GraphDatabase
     driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USER, NEO4J_PASSWORD))
     driver.verify_connectivity()
-    print(f"[kg] connected {NEO4J_URI}")
+    print(f"[kg] connected {NEO4J_URI}{' · fast' if fast else ''}")
 
     with driver.session() as s:
         for c in CONSTRAINTS:
@@ -598,14 +706,17 @@ def main() -> int:
                      "      p.influence=r.inf, p.injured_now=r.inj, p.captain_rank=r.cap, p.active=true, p.seen=$run "
                      "MERGE (p)-[pf:PLAYS_FOR]->(c) SET pf.seen=$run", players, key=lg, run=RUN)
 
+            _batched(s, "UNWIND $rows AS r MATCH (p:Player {id:r.pid}) MATCH (c:Club {name:r.club}) "
+                        "MERGE (p)-[k:CAPTAIN_OF]->(c) SET k.rank=r.rank, k.role=r.role, k.seen=$run", caps, run=RUN)
+            tot["cap"] += len(caps)
+            if fast:
+                print(f"  {lg:14} players={len(players):4} captains={len(caps)}")
+                continue
+
             _batched(s, "UNWIND $rows AS r MERGE (m:Manager {name:r.name}) "
                         "SET m.nationality=r.nationality, m.formation=r.formation "
                         "MERGE (c:Club {name:r.club}) MERGE (m)-[mg:MANAGES]->(c) SET mg.seen=$run",
                      _load_managers(lg), run=RUN)
-
-            _batched(s, "UNWIND $rows AS r MATCH (p:Player {id:r.pid}) MATCH (c:Club {name:r.club}) "
-                        "MERGE (p)-[k:CAPTAIN_OF]->(c) SET k.rank=r.rank, k.role=r.role, k.seen=$run", caps, run=RUN)
-            tot["cap"] += len(caps)
 
             _batched(s, "UNWIND $rows AS r MERGE (t:TransferEvent {id:r.id}) "
                         "  SET t.player=r.player, t.fee_eur=r.fee_eur, t.fee_text=r.fee_text, "
@@ -628,6 +739,10 @@ def main() -> int:
             inj = _load_injuries(lg)
             _batched(s, "UNWIND $rows AS r MATCH (p:Player {id:r.pid}) "
                         "SET p.career_games_missed=r.gm, p.career_spells=r.sp", inj)
+            spells = _load_injury_spells(lg, _recent_seasons())
+            _batched(s, "UNWIND $rows AS r MATCH (p:Player {id:r.pid}) MERGE (i:Injury {id:r.id}) "
+                        "SET i.type=r.type, i.from=r.from, i.until=r.until, i.games=r.games, i.season=r.season "
+                        "MERGE (p)-[:SUFFERED]->(i)", spells)
 
             mates = _load_teammates(lg, n2p)
             _batched(s, "UNWIND $rows AS r MATCH (a:Player {id:r.a}), (b:Player {id:r.b}) "
@@ -637,6 +752,17 @@ def main() -> int:
             tot["comp"] += len(comp); tot["inj"] += len(inj)
             print(f"  {lg:14} players={len(players):4} teammates={len(mates):5} "
                   f"reps={len(reps):4} euro={len(comp):4} inj={len(inj):4}")
+
+        # 경기 노드·출전 — 매일(--fast)은 최근 경기만, 주 1회는 시즌 전체
+        since = (dt.date.today() - dt.timedelta(days=MATCH_FAST_DAYS)).isoformat() if fast else None
+        matches, plays = _load_matches(n2p_by_league, since)
+        _batched(s, "UNWIND $rows AS r MERGE (m:Match {id:r.id}) "
+                    "SET m.date=r.date, m.comp=r.comp, m.home=r.home, m.away=r.away, m.score=r.score "
+                    "MERGE (h:Club {name:r.home}) MERGE (m)-[:HOME]->(h) "
+                    "MERGE (a:Club {name:r.away}) MERGE (m)-[:AWAY]->(a)", matches)
+        _batched(s, "UNWIND $rows AS r MATCH (p:Player {id:r.pid}) MATCH (m:Match {id:r.mid}) "
+                    "MERGE (p)-[x:PLAYED]->(m) SET x.minutes=r.min, x.rating=r.rt, x.goals=r.g, x.assists=r.a, x.xg=r.xg", plays)
+        print(f"  경기 {len(matches)}개 · 출전 {len(plays)}건{' (최근 ' + str(MATCH_FAST_DAYS) + '일)' if fast else ''}")
 
         # 리그 걸친 관계: 기사 동시 언급(최근 60일), 대표팀 소집
         pairs, ncount = _load_news_pairs(n2p_by_league)
@@ -678,7 +804,7 @@ def main() -> int:
         print(f"  루머 주장 {len(g['claims'])}건 · 보도 {len(g['reports'])}건 · 매체·기자 {len(g['nodes'])}곳")
 
         # 이번 실행에서 다시 확인 안 된 관계 정리 — 떠난 선수의 소속·바뀐 감독·지난 주장·옛 소집·오래된 동시 언급
-        for rel in ("PLAYS_FOR", "MANAGES", "CAPTAIN_OF", "MENTIONED_WITH", "CALLED_UP", "LINKED_TO", "REPORTED", "WRITES_FOR"):
+        for rel in (FAST_CLEAN if fast else FULL_CLEAN):
             n = s.run(f"MATCH ()-[r:{rel}]-() WHERE coalesce(r.seen, '') <> $run "
                       "WITH DISTINCT r DELETE r RETURN count(r) AS n", run=RUN).single()["n"]
             print(f"  정리 {rel}: {n}")
@@ -688,6 +814,9 @@ def main() -> int:
         gone = s.run("MATCH (p:Player) WHERE coalesce(p.seen, '') <> $run SET p.active=false RETURN count(p) AS n",
                      run=RUN).single()["n"]
         print(f"  이번에 안 보인 선수 active=false: {gone}")
+        if fast:
+            driver.close()
+            return 0
 
         # 글로벌 보강: 클럽 UEFA 계수, 국가 FIFA 랭킹
         _enrich_club_coef(s)

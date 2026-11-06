@@ -29,3 +29,8 @@ Arsenal transfer rumors,Arsenal,EPL,tool:graph_query;nonempty;grounded,영어 �
 아스날 영입 후보 중 이적설도 있는 선수는?,Arsenal,EPL,nonempty;no_empty,추천 + 이적설 두 단계
 맨유 감독은 누구고 어떤 포메이션을 써?,Manchester Utd,EPL,nonempty,
 첼시 선수 중 이적설이 있는 선수,Chelsea,EPL,tool:graph_query;nonempty,
+사카 부상 관련 최근 보도 요약해줘,Arsenal,EPL,tool:search_news;nonempty;no_empty,뉴스 본문 검색(Qdrant news)
+아스날 미드필더 영입 관련 기사 찾아줘,Arsenal,EPL,tool:search_news;nonempty,
+사카 최근 5경기 평점,Arsenal,EPL,nonempty;grounded,player_form 또는 Match·PLAYED
+라이스와 외데고르가 같이 60분 넘게 뛴 경기는 몇 경기야?,Arsenal,EPL,tool:graph_query;nonempty;grounded,Match·PLAYED(경기 노드)
+지난 시즌 부상으로 가장 많이 결장한 선수,,EPL,tool:graph_query;nonempty,Injury·SUFFERED(25/26)

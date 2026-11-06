@@ -206,6 +206,37 @@ def save_journalists(j: dict[str, dict]) -> None:
             w.writerow({k: r.get(k, "") for k in w.fieldnames})
 
 
+# 기사 작성자(RSS author·dc:creator) → 사람 이름만. 편집국·통신사·이메일은 뺀다(2026-11-06 그래프 RAG 3단계 — 루머 주장의 기자 칸이
+# 0% 였다. 매체 RSS 이적 기사 961건 중 561건에 작성자가 있었는데 블루스카이 글에만 쓰고 있었다)
+_DESK = re.compile(r"(?i)\b(staff|redac\w*|redaz\w*|redaktion|r[ée]daction|sportredactie|newsroom|news\s*desk|desk|editor\w*|"
+                   r"editorial|agenc\w*|team|sport\s*team|online|digital|web|reuters|afp|ap|efe|ansa|dpa|pa\s*media|"
+                   r"belga|anp|press|sports?)\b")
+
+
+def byline_names(author: str, source: str = "") -> list[str]:
+    """'By Alex Young' → ['Alex Young'] · 'redaction@walfoot.be (Scott Crabbé)' → ['Scott Crabbé'] ·
+    'info@vi.nl (Voetbal International)'·'Sportredactie'·'La Redazione' → [] · 'A and B' → [A, B]."""
+    s = str(author or "").strip()
+    if not s:
+        return []
+    m = re.search(r"\(([^()]+)\)", s)
+    if "@" in s:
+        s = m.group(1) if m else ""                       # 이메일이면 괄호 안 이름만
+    s = re.sub(r"(?i)^\s*(by|von|par|por|di|door)\s+", "", s)
+    out = []
+    for part in re.split(r"\s*(?:,|;|&|\band\b|\bund\b|\bet\b|\by\b|\be\b|\ben\b|/)\s*", s):
+        part = part.strip(" .·-|")
+        toks = part.split()
+        if not 2 <= len(toks) <= 4 or any(ch.isdigit() for ch in part) or _DESK.search(part):
+            continue
+        if source and _fold(part) in _fold(source) or _fold(source) and _fold(source) in _fold(part):
+            continue                                       # 매체 이름 그대로
+        if not all(t[:1].isupper() or t.lower() in {"van", "de", "da", "di", "del", "der", "den", "la", "le", "von", "dos"} for t in toks):
+            continue
+        out.append(part)
+    return out
+
+
 def find_journalists(text: str, known: dict[str, dict]) -> list[str]:
     """학습한 기자 이름 전체가 글에 나오면(접은 글, 낱말 경계)."""
     f = f" {_fold(text)} "

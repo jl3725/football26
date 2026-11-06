@@ -197,6 +197,12 @@ AGENTS: tuple[Agent, ...] = (
               Feed("infra", "벡터·그래프 핑", ("infra_ping",), ("daily_data",), "매일 13:30 KST", 36),
               Feed("graph", "그래프·벡터 재적재", ("kg_reload", "kg_extras", "vectors_reload"), ("kg_reload",),
                    "주 1회 · 화 12:00 KST", WEEK_H),
+              # 뉴스 본문 검색(src/news_vectors.py — Gemini 무료 임베딩 → Qdrant 'news', Ask Scout search_news), 2026-11-06
+              Feed("news_vectors", "뉴스 본문 검색(벡터)", ("news_vectors",), ("daily_news",), "하루 2번 · 뉴스 수집 뒤", 30,
+                   added="2026-11-06"),
+              # 그래프 매일 반영(빠른 관계·속성만, scripts/build_kg.py --fast) — Ask Scout 그래프 답이 최대 7일 늦던 것(2026-11-06)
+              Feed("graph_daily", "그래프 매일 반영(이적설·기사·소집·선수 값)", ("kg_fast",), ("daily_data",), "매일", 36,
+                   added="2026-11-06"),
               # Ask Scout 답 평가 — 운영 /api/scout 30문항(그래프 질의 0행·결과에 없는 숫자·'데이터 없음' 답), 2026-11-06
               Feed("scout_answers", "Ask Scout 답 평가", ("scout_answers",), ("kg_reload",), "주 1회 · 화 12:00 KST", WEEK_H,
                    ("scout_answers.json",), added="2026-11-06"),
