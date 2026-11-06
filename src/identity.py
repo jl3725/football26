@@ -41,7 +41,9 @@ SOURCES = [("players", "squad"), ("players_full", "squad"), ("players_sofascore_
            ("fotmob_ratings", "squad"), ("transfermarkt_injuries", "squad"), ("tm_injury_history", "squad"),
            ("wiki_squads", "squad"), ("espn_lineups", "squad"), ("team_unit_metrics", "squad"),
            ("player_comp_usage", "squad"), ("market_value", "squad"), ("player_registry", "squad"),
-           ("transfers", "squad"), ("rating_history", "squad")]
+           ("transfers", "squad"), ("rating_history", "squad"),
+           # StatBunker(로컬 매일) — 'CD Alaves' 를 못 맞춰 알라베스 세트피스·페널티 통계가 빠졌다(watchdog progress, 2026-11-06)
+           ("statbunker_team_stats", "squad"), ("statbunker_penalty_takers", "squad")]
 GENERIC = {"fc", "cf", "sc", "ac", "as", "sv", "sk", "kv", "vv", "rc", "cd", "ud", "sd", "ca", "cs", "afc", "bk", "fk",
            "ssc", "us", "club", "calcio", "de", "da", "do", "di", "del", "of", "the", "a", "1", "04", "05", "07", "08",
            "1846", "1899", "1900", "1907", "1909", "1913"}

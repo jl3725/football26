@@ -56,6 +56,11 @@ def league_totals(mr: pd.DataFrame | None, league: str) -> tuple[dict, dict]:
     return by_id, by_name
 
 
+# 같은 경기를 두 원천이 몇 분 다르게 센다(추가 시간 — 26/27 1,408명이 FotMob 1~15분 적음). 이 안이고 골·도움도 덜하지 않으면
+# FotMob 이 경기를 빠뜨린 게 아니라 같은 경기 — 헤더도 SEASON LOG(FotMob 경기별)와 같은 값으로(Thijs Jansen 990′ ≠ 982′, 2026-11-06)
+MINUTE_SLACK = 15
+
+
 def apply_live_totals(frame: pd.DataFrame, mr: pd.DataFrame | None, league: str) -> pd.DataFrame:
     """선수 표의 goals·assists·minutes 를 FotMob 리그 합으로(더 최신일 때만). `_stats_src`·`_stats_asof`·`_apps_live` 열."""
     out = frame.copy()
@@ -72,7 +77,9 @@ def apply_live_totals(frame: pd.DataFrame, mr: pd.DataFrame | None, league: str)
             continue
         mins = pd.to_numeric(r.get("minutes"), errors="coerce")
         if mins == mins and t["minutes"] < mins:
-            continue                                   # FotMob 쪽이 경기를 빠뜨림 — FBref 유지
+            g, a = pd.to_numeric(r.get("goals"), errors="coerce"), pd.to_numeric(r.get("assists"), errors="coerce")
+            if mins - t["minutes"] > MINUTE_SLACK or (g == g and t["goals"] < g) or (a == a and t["assists"] < a):
+                continue                               # FotMob 쪽이 경기를 빠뜨림(분이 한참 적거나 골·도움이 덜함) — FBref 유지
         out.at[i, "goals"], out.at[i, "assists"], out.at[i, "minutes"] = t["goals"], t["assists"], t["minutes"]
         out.at[i, "_stats_src"], out.at[i, "_stats_asof"], out.at[i, "_apps_live"] = "fotmob", t["asof"], t["apps"]
     return out

@@ -36,6 +36,19 @@ def test_live_totals_league_only_and_newer_only() -> None:
     assert out.loc["Joshua King", "goals"] == 1 and out.loc["Joshua King", "_stats_src"] == "fotmob"
 
 
+def test_same_games_counted_few_minutes_apart_follow_fotmob() -> None:
+    # Thijs Jansen — 같은 11경기를 FBref 990′ · FotMob 982′(한 경기 82′) → SEASON LOG 와 같은 982′
+    mr = pd.DataFrame([{"date": "2026-10-31", "comp_code": "ned.1", "squad": "Cambuur", "fotmob_id": 7, "player": "Thijs Jansen",
+                        "minutes": 82, "goals": 0, "assists": 0},
+                       {"date": "2026-10-31", "comp_code": "ned.1", "squad": "Sevilla", "fotmob_id": 8, "player": "Auba",
+                        "minutes": 82, "goals": 0, "assists": 0}])
+    frame = pd.DataFrame([{"player": "Thijs Jansen", "squad": "Cambuur", "fm_id": 7, "goals": 0, "assists": 0, "minutes": 90},
+                          {"player": "Auba", "squad": "Sevilla", "fm_id": 8, "goals": 1, "assists": 0, "minutes": 90}])
+    out = st.apply_live_totals(frame, mr, "Eredivisie").set_index("player")
+    assert out.loc["Thijs Jansen", "minutes"] == 82 and out.loc["Thijs Jansen", "_stats_src"] == "fotmob"
+    assert out.loc["Auba", "minutes"] == 90 and out.loc["Auba", "_stats_src"] == "fbref"     # 골이 덜하면 경기를 빠뜨린 것
+
+
 def test_no_match_table_keeps_fbref() -> None:
     out = st.apply_live_totals(FRAME, None, "EPL")
     assert list(out["goals"]) == [1, 3, 0] and set(out["_stats_src"]) == {"fbref"}
