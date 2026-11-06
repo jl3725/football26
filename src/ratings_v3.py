@@ -154,7 +154,11 @@ UNDERPERF_GAP, UNDERPERF_K, UNDERPERF_MIN_AGE = 6.0, 0.5, 22.0
 # 탐색(grid_v310 3차, 5,759명): golden 위반 0 · 스카우트 평균 이탈 그대로(0.168) · 바뀐 선수 189 · −2 이상 12(대부분 폼 45~59).
 # 쿠냐 87→86(같은 페이스면 1,100분 무렵 84), 음뵈모 87→86. 포지션 평균 쪽으로 수축하면 시즌 초엔 폼 94 브루노까지 깎였고,
 # 차감 0.7+ 이면 쿠냐 85 지만 강팀 센터백(Pacho·Bastoni·Inácio)이 스카우트 범위 밖으로 나갔다.
-SLUMP_GAP, SLUMP_K, SLUMP_FULL_MIN, SLUMP_MAX, SLUMP_PRIOR_MIN = 3.0, 0.5, 1500.0, 4.0, 600.0
+# v3.18(2026-11-06 사용자 '반 헤케는 왜 이렇게 높나' — 9경기 7.53(한 경기 9점대)에 SEASON RISE +1.7 로 88): 시즌 초 평점은 흩어짐이
+# 풀시즌의 두 배라 이번 시즌 수준을 자기 수준 쪽으로 600 → 1,800분어치 당기고, 다 반영은 1,500 → 3,000분. 상승·부진 같은 기준.
+# 시험(grid_rise·grid_sym): golden 위반 0 · 스카우트 이탈 16명(합 21) → 12명(16) · 바뀐 선수 303(대부분 −1) · 반 헤케 88→86 ·
+# 하피냐 92→90 · 바스토니 85→86. 출전이 쌓이면(3,000분) 예전 크기로 돌아간다
+SLUMP_GAP, SLUMP_K, SLUMP_FULL_MIN, SLUMP_MAX, SLUMP_PRIOR_MIN = 3.0, 0.5, 3000.0, 4.0, 1800.0
 # 이번 시즌 상승(SEASON RISE) — SLUMP 의 거울. 부진만 빼고 상승은 몸값이 따라올 때까지 안 올려 줘, 커리어 평균보다 잘하는 시즌의
 # 선수(브라이튼 3위 — 주전 평점 리그 3위인데 OVR 11위, 그로스·덩크·더 카위퍼르)가 낮게 남았다(2026-11-02 사용자). 같은 간격·비율·상한
 RISE_GAP, RISE_K, RISE_MAX = SLUMP_GAP, SLUMP_K, SLUMP_MAX
@@ -168,7 +172,7 @@ TEAM_MIN_TEAMS, TEAM_MIN_GAMES = 8, 3          # 회귀에 쓰는 최소 팀 수
 # v3.6 탐색(golden 위반 0 · 스카우트 3+ 이탈 0 · Groß 78 · Dowman 70 · Vušković>Konsa): 36세 45%
 _VET_PE_AGES, _VET_PE_W = (30.0, 32.0, 34.0, 36.0), (0.0, 0.18, 0.34, 0.45)
 # 모델 버전 — 바뀌면 rating_history 가 과거 기록을 평행이동해 모델 변경이 선수 추이(▲▼)로 보이지 않게 한다
-MODEL_VERSION = "v3.17"   # v3.17: AGE CURVE — 지난 시즌 평점을 나이만큼 옮겨 섞기 · v3.16: 평점 세 원천(Sofascore·FotMob·365Scores) 평균 · v3.15: TEAM FORM — 팀 승점이 스쿼드 수준 대비 초과·미달이면 출전 비례 ±2(v3.14: 대표 포지션 OVR)
+MODEL_VERSION = "v3.18"   # v3.18: 시즌 초 상승·부진 표본 1,800/3,000분 · 이적 직후 몸값 상승 인정 안 함 · v3.17: AGE CURVE — 지난 시즌 평점을 나이만큼 옮겨 섞기 · v3.16: 평점 세 원천(Sofascore·FotMob·365Scores) 평균 · v3.15: TEAM FORM — 팀 승점이 스쿼드 수준 대비 초과·미달이면 출전 비례 ±2(v3.14: 대표 포지션 OVR)
 # 잠재력 프리미엄 — 같은 시장가치·리그에서 어린 선수의 실제 경기력(리그 보정 평점)이 낮은 만큼(vov 환산).
 # 25/26 1,500분+ 1,450명 회귀(27~29세 기준): 17~20세 −6.8 · 21세 −4.9 · 22세 −5.1 · 23세 −4.4 · 24세 −3.9 ·
 # 25세 −3.8 · 26세 −2.4 (같은 회귀에서 30~32세 +5.3 · 33세+ +9.4 — 베테랑 보정과 같은 근거).
@@ -181,6 +185,9 @@ _YOUTH_AGES, _YOUTH_ADJ = (20.0, 21.0, 23.0, 25.0, 26.0, 27.0), (-3.5, -2.5, -1.
 # 새 수준에서 검증되기 전엔 절반만 인정(최대 −3). 26/27 시장가치 2,371명 중 75% 는 그대로, 상위 10% 가 ×1.5+.
 # 직전 가치 €5M 미만은 제외 — 1군 데뷔 유망주의 정상 성장이거나 매칭 오류(Cho 직전 €150K)라서.
 _VALUE_JUMP_KEEP, _JUMP_MAX_CUT, _JUMP_MIN_PREV = 0.5, 3.0, 5e6
+# 이적으로 오른 몸값(지난 시즌과 소속이 다름) — 사 간 구단이 낸 이적료가 곧 새 몸값이 되는 일이 많아(앤더슨 €75M→€120M ·
+# 엔소 €90M→€120M) 오른 몫은 인정하지 않는다(최대 −3, 경기력은 평점이 따로 반영). v3.18, 2026-11-06 사용자 '엔소 87~88 · 앤더슨 85~86'
+MOVED_JUMP_KEEP = 0.0
 # 리그를 옮긴 선수의 직전 시즌 평점 가중 — 옮긴 선수는 직전 평점이 이번 평점을 훨씬 덜 설명한다
 # (26/27 270분+·직전 900분+ 회귀 기울기: 잔류 946명 0.82, 이동 106명 0.51, 4레벨+ 상위 리그행 39명 0.33).
 _MOVED_PREV_W = 0.4
@@ -325,7 +332,7 @@ def absolute_ovr(*, value, ss_rating, minutes, age, pos_group,
                  prev_x_ss_rating=None, prev_x_minutes=None, prev_x_level=None,
                  nt_ss_rating=None, nt_minutes=None, nt_level=None,
                  prev_nt_ss_rating=None, prev_nt_minutes=None, prev_nt_level=None,
-                 team_resid=None, team_games=None, _parts: list | None = None,
+                 team_resid=None, team_games=None, moved: bool = False, _parts: list | None = None,
                  exact: bool = False):
     """_parts 에 리스트를 주면 단계별 기여(키, 값)를 채운다 — 화면 'OVR 구성'(ovr_parts_of_row).
     exact=True 면 반올림 전 값(float) — 포지션 OVR·표시값 버티기(src/position_ovr.py)가 쓴다."""
@@ -343,7 +350,7 @@ def absolute_ovr(*, value, ss_rating, minutes, age, pos_group,
     if vov is None:
         vov = pv
     elif pv is not None and vov > pv and _num(prev_value) >= _JUMP_MIN_PREV:
-        cut = min(_JUMP_MAX_CUT, (1.0 - _VALUE_JUMP_KEEP) * (vov - pv))
+        cut = min(_JUMP_MAX_CUT, (1.0 - (MOVED_JUMP_KEEP if moved else _VALUE_JUMP_KEEP)) * (vov - pv))
         vov -= cut
         rec("jump", -cut)
     rel, off = _class_parts(ss_rating, minutes, prev_ss_rating, prev_minutes, ln, league_level, prev_league_level,
@@ -676,6 +683,12 @@ def team_residuals(frame, standings) -> dict[str, tuple[float, float]]:
     return {str(t): (float(ppg - (a + b * ovr14[str(t)])), float(g)) for t, ppg, g in zip(st["squad"], y, st["played"])}
 
 
+def _moved(row) -> bool:
+    """지난 시즌과 소속이 다른가(여름 이적) — prev_squad 가 있고 지금 팀과 다를 때."""
+    p = str(row.get("prev_squad") or "").strip()
+    return p not in ("", "nan", "None") and p != str(row.get("squad") or "").strip()
+
+
 def ovr_of_row(row, exact: bool = False):
     """선수 행 → 절대 OVR (API _player_ovr 와 같은 입력). player_frame 이 리그 표에 `_ovr` 로 미리 붙인다.
     exact=True 면 반올림 전 값(float)."""
@@ -688,7 +701,7 @@ def ovr_of_row(row, exact: bool = False):
         prev_minutes=row.get("prev_minutes"), prev_ss_rating=row.get("prev_ss_rating"),
         league_level=row.get("_league_level"), prev_league_level=_prev_level(row),
         prev_gk_save_pct=row.get("prev_gk_save_pct"), prev_gk_cs_pct=row.get("prev_gk_cs_pct"),
-        prev_value=row.get("prev_market_value_eur"),
+        prev_value=row.get("prev_market_value_eur"), moved=_moved(row),
         hist_ss_rating=row.get("hist_ss_rating"), hist_minutes=row.get("hist_minutes"),
         hist_league_level=_prev_level(row, "hist_league"),
         team_resid=row.get("_team_resid"), team_games=row.get("_team_games"), **_x_args(row))
@@ -697,7 +710,7 @@ def ovr_of_row(row, exact: bool = False):
 # 'OVR 구성' 화면 이름 — 키: (영문, 한글 설명)
 PART_LABELS = {
     "base": ("VALUE", "시장가치 기준점"), "base_fallback": ("VALUE", "시장가치 없음 → 출전 시간대 기준점"),
-    "jump": ("VALUE JUMP", "몸값 급등 감쇠(새 몸값의 절반만)"), "pos": ("POSITION", "포지션 보정"),
+    "jump": ("VALUE JUMP", "몸값 급등 감쇠(새 몸값의 절반만 · 이적 직후 오른 몫은 인정 안 함)"), "pos": ("POSITION", "포지션 보정"),
     "perf": ("PERFORMANCE", "경기력 — 세 곳 평균 평점(이번·지난 시즌 · 리그+유럽·컵+대표팀)"),
     "gk_base": ("GK", "골키퍼 기준"), "gk_perf": ("PERFORMANCE", "선방률·클린시트(리그 보정)"),
     "vet": ("VETERAN", "베테랑 — 나이로 깎인 몸값 일부 되돌림"), "age": ("AGE", "나이 보정"),
@@ -743,7 +756,7 @@ def ovr_parts_of_row(row) -> dict:
         prev_minutes=row.get("prev_minutes"), prev_ss_rating=row.get("prev_ss_rating"),
         league_level=row.get("_league_level"), prev_league_level=_prev_level(row),
         prev_gk_save_pct=row.get("prev_gk_save_pct"), prev_gk_cs_pct=row.get("prev_gk_cs_pct"),
-        prev_value=row.get("prev_market_value_eur"),
+        prev_value=row.get("prev_market_value_eur"), moved=_moved(row),
         hist_ss_rating=row.get("hist_ss_rating"), hist_minutes=row.get("hist_minutes"),
         hist_league_level=_prev_level(row, "hist_league"), **_x_args(row), _parts=parts)
     return {"ovr": ovr, "parts": [part(k, v) for k, v in parts] + position_parts(row)}

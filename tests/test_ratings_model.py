@@ -103,7 +103,9 @@ def test_season_slump_pulls_stale_value_down() -> None:
         rv3.absolute_ovr(_parts=parts, **{**kw, **k})
         return dict(parts).get("slump", 0.0)
 
-    assert slump(ss_rating=6.81, minutes=550) <= -0.5
+    # v3.18(2026-11-06): 시즌 초 표본은 1,800분어치 자기 수준 쪽으로 당기고 3,000분에 다 반영 — 550분엔 작게, 쌓이면 커진다
+    assert -0.5 < slump(ss_rating=6.81, minutes=550) < 0.0
+    assert slump(ss_rating=6.81, minutes=1500) <= -0.5
     assert slump(ss_rating=7.45, minutes=550) == 0.0
     assert slump(ss_rating=6.81, minutes=90, x_minutes=0) > -0.3
     assert (rv3.absolute_ovr(ss_rating=6.81, minutes=550, **kw)
