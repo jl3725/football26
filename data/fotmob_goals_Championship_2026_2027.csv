@@ -650,7 +650,7 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5836917,2026-11-03,eng.2,Southampton,West Bromwich Albion,53.0,Samuel Edozie,RegularPlay,0,0.4465881288051605
 5836920,2026-11-03,eng.2,Bolton Wanderers,Charlton Athletic,18.0,Sam Dalby,RegularPlay,0,0.118218645453453
 5836920,2026-11-03,eng.2,Charlton Athletic,Bolton Wanderers,,,none,0,
-5836918,2026-11-04,eng.2,Bristol City,Wolves,34.0,Scott Twine,FreeKick,0,0.07659313082695007
+5836918,2026-11-04,eng.2,Bristol City,Wolves,34.0,Scott Twine,FreeKick,0,0.07659313082695
 5836918,2026-11-04,eng.2,Wolves,Bristol City,82.0,Sean Neave,RegularPlay,0,0.8032909035682678
 5836918,2026-11-04,eng.2,Wolves,Bristol City,89.0,Sean Neave,SetPiece,0,0.7939453125
 5836919,2026-11-04,eng.2,Cardiff City,West Ham United,11.0,Jack Moylan,RegularPlay,0,0.0508332811295986
@@ -662,3 +662,7 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5836921,2026-11-04,eng.2,Wrexham,Middlesbrough,70.0,George Thomason,RegularPlay,0,0.0432767271995544
 5836921,2026-11-04,eng.2,Wrexham,Middlesbrough,84.0,Oliver Rathbone,RegularPlay,0,0.0980553403496742
 5836921,2026-11-04,eng.2,Middlesbrough,Wrexham,,,none,0,
+5836927,2026-11-06,eng.2,Bolton Wanderers,Derby County,42.0,Rúben Rodrigues,FastBreak,0,0.205002099275589
+5836927,2026-11-06,eng.2,Derby County,Bolton Wanderers,46.0,Ryan Nyambe,RegularPlay,0,0.31217285990715027
+5836927,2026-11-06,eng.2,Derby County,Bolton Wanderers,49.0,Jack Robinson,SetPiece,0,0.16499416530132294
+5836927,2026-11-06,eng.2,Derby County,Bolton Wanderers,90.0,Rhian Brewster,RegularPlay,0,0.32842448353767395
