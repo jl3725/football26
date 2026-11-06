@@ -5161,11 +5161,11 @@
    "at": "2026-10-30T12:03:25+00:00"
   },
   "Ligue1|Marseille|Nayef Aguerd": {
-   "l1": "선발로 꾸준히 나서지만 존재감은 아쉬운 시즌",
-   "l2": "평점 6.89로 지난 시즌(7.13) 대비 하락 — 창조력 하위 1%",
-   "sig": "22fcca3b812f",
-   "scene": "steady_average",
-   "at": "2026-10-29T12:44:03+00:00"
+   "l1": "안정적인 수비력으로 팀의 허리를 받치는 센터백",
+   "l2": "몸값 €15M — 리그 9경기 출전하며 꾸준한 활약 유지",
+   "sig": "84d5f5fd8e06",
+   "scene": "good_season",
+   "at": "2026-11-06T13:59:07+00:00"
   },
   "LigaPortugal|Porto|Jan Bednarek": {
    "l1": "배급 능력까지 갖춘 팀 내 가장 신뢰받는 수비수",
@@ -18921,6 +18921,3611 @@
    "sig": "5dde717754ab",
    "scene": "bench_start",
    "at": "2026-11-05T14:13:45+00:00"
+  },
+  "Championship|West Bromwich Albion|Callum Styles": {
+   "l1": "공격 가담 능력이 돋보이는 핵심 자원",
+   "l2": "공격 상위 25% · 창조 상위 20%",
+   "sig": "901f13421025",
+   "scene": "overachiever",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Lyon|Ruben Kluivert": {
+   "l1": "출전 시간이 부족해 아쉬움을 남기는 시즌",
+   "l2": "평점 6.57 · 몸값 €8M",
+   "sig": "be63b7f7fb27",
+   "scene": "bench_start",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Championship|Wolves|Tommy Doyle": {
+   "l1": "출전이 제한되면서 존재감을 보여주기 힘든 상황",
+   "l2": "평점 6.61 · 볼 운반 하위 10%",
+   "sig": "ffed4e6274d0",
+   "scene": "bench_start",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SwissSuperLeague|Lugano|Yanis Cimignani": {
+   "l1": "팀을 선두로 이끄는 가장 파괴적인 풀백",
+   "l2": "리그 4골 · 결정력(골-xG) 리그 1위 — 평점 7.22로 지난 시즌 대비 상승세",
+   "sig": "4c637e910b81",
+   "scene": "overachiever",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Bundesliga|Union Berlin|Zeno Van den Bosch": {
+   "l1": "하위권 팀의 수비 불안을 해결하지 못하는 시즌",
+   "l2": "평점 6.6 · 지난 시즌 평점 6.88 대비 하락세",
+   "sig": "152c6f82f770",
+   "scene": "struggling",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Frosinone|Ilario Monterisi": {
+   "l1": "상위권 팀의 수비 라인을 지키는 평범한 주전",
+   "l2": "평점 6.89 · 리그 9경기 출전 — 볼 운반은 하위 1%로 아쉬움",
+   "sig": "6e127ed52615",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Eredivisie|Heerenveen|Marcus Linday": {
+   "l1": "부상으로 흐름이 끊기며 주춤하는 미드필더",
+   "l2": "부상 결장 3경기 · 평점 6.96 — 지난 시즌과 유사한 수준",
+   "sig": "184d2c737cbd",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Eredivisie|Heerenveen|Ringo Meerveld": {
+   "l1": "드리블로 리그를 흔드는 중위권 팀의 핵심",
+   "l2": "드리블 리그 2위 · 볼 운반 상위 5% — 평점 7.07로 좋은 활약",
+   "sig": "4ed68a2cdfd9",
+   "scene": "good_season",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Championship|Lincoln City|Mikkel Ladefoged": {
+   "l1": "하위권 팀에서 출전 기회는 적지만 폼은 좋은 편",
+   "l2": "리그 7경기 출전 · 몸값 €4M — 득점 관여는 꾸준한 모습",
+   "sig": "410544b62fd1",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Championship|Swansea City|Stephen Welsh": {
+   "l1": "팀의 상위권 도약을 이끄는 핵심 수비수",
+   "l2": "평점 7.09 — 배급 상위 12%의 정확도로 빌드업 중심 역할",
+   "sig": "eb45bc2b05d6",
+   "scene": "overachiever",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SuperLig|Amed Sportif|David Bates": {
+   "l1": "상위권 팀의 수비 라인을 든든하게 지키는 중",
+   "l2": "평점 7.0 — 지난 시즌 6.89 대비 안정적인 수비력 상승",
+   "sig": "976fc7345c81",
+   "scene": "good_season",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SuperLig|Samsunspor|Antoine Makoumbou": {
+   "l1": "출전 기회 부족으로 존재감을 보이지 못하는 시즌",
+   "l2": "70분 출전 — 팀의 하위권 탈출을 위해 기여가 필요한 상황",
+   "sig": "5eea9fadea87",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SwissSuperLeague|Lugano|Hannes Delcroix": {
+   "l1": "리그에서 가장 압도적인 폼을 보여주는 수비수",
+   "l2": "평점 7.58로 리그 1위 — 3골 2도움으로 공격 가담까지 완벽",
+   "sig": "6ca0e7cdce4d",
+   "scene": "overachiever",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Deportivo A Coruña|Luismi": {
+   "l1": "창의적인 플레이는 가능하나 마무리가 부족한 윙어",
+   "l2": "619분 출전 — 경기당 영향력을 높여야 하는 과제",
+   "sig": "f3883c339e47",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Elche|Martim Neto": {
+   "l1": "출전 기회가 적어 팀 내 입지가 좁아진 상황",
+   "l2": "223분 출전 — 부진한 폼으로 인해 컵 대회 위주의 출전",
+   "sig": "31746ed027bc",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Valencia|Jesus Vazquez": {
+   "l1": "수비적인 안정감이 떨어져 아쉬움이 남는 시즌",
+   "l2": "리그 9경기 출전 — 피지컬·듀얼 능력은 하위 22% 수준",
+   "sig": "6e8f9308c56d",
+   "scene": "bench_start",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Bundesliga|Hoffenheim|Cajetan Lenz": {
+   "l1": "이제 막 성인 무대를 밟기 시작한 유망주",
+   "l2": "몸값 €10M — 리그 1경기 출전으로 아직은 적응 단계",
+   "sig": "be70624ece8a",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Cagliari|Harry Winks": {
+   "l1": "중원 중심을 잡지만 공격 기여는 아쉬운 시즌",
+   "l2": "공중볼 리그 1위 — 평점 6.85로 리그 평균 수준",
+   "sig": "e57404d3a1fe",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Como|Mattia Liberali": {
+   "l1": "상위권 팀에서 예열을 마치고 기회를 엿보는 단계",
+   "l2": "몸값 €10M — 19세의 나이로 리그 4경기 출전",
+   "sig": "781a113ffb48",
+   "scene": "injury_return",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Lecce|Willem Geubbels": {
+   "l1": "잦은 부상으로 인해 흐름이 끊긴 아쉬운 시즌",
+   "l2": "부상 결장 5경기 — 평점 6.22로 지난 시즌 대비 하락",
+   "sig": "c3d2767ec9a8",
+   "scene": "injury_return",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Milan|Francesco Camarda": {
+   "l1": "상위권 팀의 미래를 짊어질 어린 유망주",
+   "l2": "18세 — 유럽대항전 1경기 선발로 경험 쌓는 중",
+   "sig": "9bc321bb758e",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Parma|Emanuele Valeri": {
+   "l1": "창조적인 패스로 팀 공격을 돕는 풀백",
+   "l2": "창조 상위 8% — 평점 6.86으로 지난 시즌과 유사한 폼",
+   "sig": "5f70363466fb",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Sassuolo|Luca Lipani": {
+   "l1": "하위권 팀에서 로테이션 자원으로 고전하는 중",
+   "l2": "평점 6.4 — 지난 시즌 평점 6.58 대비 다소 부진",
+   "sig": "eb234f24fa82",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Sassuolo|Rafel Obrador": {
+   "l1": "출전 기회가 제한적인 시즌",
+   "l2": "136분 출전 — 컵 대회 위주로 출전하며 실전 감각 부족",
+   "sig": "8454e968ea61",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Venezia|Joël Schingtienne": {
+   "l1": "올 시즌 경기력 회복이 절실한 단계",
+   "l2": "폼 46 — 최근 5경기 폼도 49로 낮은 수준 유지",
+   "sig": "1a003360899d",
+   "scene": "struggling",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Brest|Mama Samba Baldé": {
+   "l1": "짧은 출전 시간 속 효율적인 공격 기여",
+   "l2": "평점 6.74 — 몸값 3백만 유로 대비 준수한 활약",
+   "sig": "5152ba9449f8",
+   "scene": "bench_start",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LigaPortugal|Arouca|Taichi Fukui": {
+   "l1": "올 시즌 리그 상위권 도약을 이끄는 절정의 폼",
+   "l2": "인터셉트 리그 2위 — 평점 7.15로 팀 내 핵심 역할",
+   "sig": "a564e42fce85",
+   "scene": "overachiever",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Eredivisie|Ajax|Abdellah Ouazane": {
+   "l1": "출전이 쌓일수록 가치가 상승하는 단계",
+   "l2": "17세 — 몸값 8백만 유로가 증명하는 잠재력",
+   "sig": "cf8e27b147a7",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "BelgianProLeague|Charleroi|Patrick Pflücke": {
+   "l1": "팀의 상위권 도약을 이끄는 날카로운 배급의 중심",
+   "l2": "도움 4개 — 창조성 상위 8%의 실력으로 팀 공격을 주도",
+   "sig": "ae0bcafbc012",
+   "scene": "overachiever",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SuperLig|Kasımpaşa|Adem Arous": {
+   "l1": "팀의 상위권 순위를 지탱하는 공수 겸장 센터백",
+   "l2": "몸값 €4M — 출전 시간 대비 확실한 공격 포인트 생산",
+   "sig": "3cd161580072",
+   "scene": "overachiever",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SuperLig|Kocaelispor|Berkan Kutlu": {
+   "l1": "공수 균형이 완벽에 가까운 팀의 핵심 주전",
+   "l2": "평점 7.3 — 공격 상위 24%와 수비 상위 26%의 고른 활약",
+   "sig": "7260fce2177a",
+   "scene": "overachiever",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SuperLig|Rizespor|Taha Şahin": {
+   "l1": "출전 기회를 잡기 위해 분투 중인 백업 풀백",
+   "l2": "148분 출전 — 팀 내 입지를 다지기엔 아직 부족한 기회",
+   "sig": "bbd206bb9cf3",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "AustrianBundesliga|Rapid Wien|Serge Raux Yao": {
+   "l1": "지난 시즌보다 한층 성숙해진 모습의 주전 센터백",
+   "l2": "평점 6.96 — 공수 기여도를 높이며 팀의 좋은 흐름 유지",
+   "sig": "622916b2e05b",
+   "scene": "good_season",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "AustrianBundesliga|Sturm Graz|Jon Gorenc Stankovič": {
+   "l1": "상위권 팀의 중원을 묵묵히 지키는 핵심 자원",
+   "l2": "평점 7.06으로 지난 시즌 대비 상승 — 리그 11경기 출전 중",
+   "sig": "5beb74faea5d",
+   "scene": "good_season",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "AustrianBundesliga|Sturm Graz|Oumar Diakité": {
+   "l1": "상위권 팀의 해결사로 완벽하게 자리 잡은 공격수",
+   "l2": "평점 7.4 — 지난 시즌 6.67에서 비약적인 실력 상승",
+   "sig": "aad28a20200d",
+   "scene": "overachiever",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "DanishSuperliga|FC København|Diant Ramaj": {
+   "l1": "리그 최고의 선방 능력을 갖춘 최후의 보루",
+   "l2": "선방율 리그 1위 — 평점 7.07로 팀의 상위권 질주 견인",
+   "sig": "fee60cb5f930",
+   "scene": "overachiever",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SwissSuperLeague|Lugano|Kevin Behrens": {
+   "l1": "부상 복귀 후에도 절정의 기량을 보여주는 베테랑",
+   "l2": "리그 2골 1도움 — 선두 팀의 공격을 이끄는 핵심",
+   "sig": "7950baffa499",
+   "scene": "injury_return",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Elche|Víctor Chust": {
+   "l1": "꾸준한 출전으로 수비진의 중심을 지키는 선수",
+   "l2": "990분 출전, 몸값 €2M — 지난 시즌 대비 평점 소폭 하락했으나 여전한 입지",
+   "sig": "77894b439777",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Levante|Axel Tapé": {
+   "l1": "1군 무대 적응을 위해 출전 기회를 받는 유망주",
+   "l2": "지난 시즌 평점 6.33 대비 성장세 — 실전 경험이 쌓이면 평가가 바뀔 선수",
+   "sig": "430a91792b4c",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Levante|Thiago Fernández": {
+   "l1": "하위권 팀에서 고군분투하나 영향력은 미미한 단계",
+   "l2": "리그 0골 — 팀 순위 18위로 고전 중",
+   "sig": "913b2ae822ca",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Rayo Vallecano|Alexandre Alemão": {
+   "l1": "팀 내 입지 확보가 시급한 공격 자원",
+   "l2": "몸값 4백만 유로 — 평점 6.35로 지난 시즌 대비 하락",
+   "sig": "b68cb14a6d02",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Bundesliga|SV Elversberg|Maximilian Rohr": {
+   "l1": "공격 가담까지 쏠쏠한 팀의 핵심 수비수",
+   "l2": "리그 1골 — 볼 운반 하위 1%로 수비 집중형",
+   "sig": "0ea494a2c431",
+   "scene": "good_season",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Bundesliga|Union Berlin|Oliver Burke": {
+   "l1": "벤치에서 복귀를 준비하며 기회를 엿보는 단계",
+   "l2": "몸값 €3M — 지난 시즌 평점 6.73 대비 떨어진 출전 시간",
+   "sig": "d3f3e624181a",
+   "scene": "injury_return",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Lecce|Danilo Veiga": {
+   "l1": "왕성한 활동량에 비해 수비적 보완이 남은 단계",
+   "l2": "볼 운반 상위 30% — 공격 하위 1%의 약점을 메우는 과제",
+   "sig": "3faf35b271f2",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Lecce|Lassana Coulibaly": {
+   "l1": "배급 능력은 다소 아쉽지만 헌신적인 시즌",
+   "l2": "배급 하위 16% — 30세의 나이에도 꾸준한 출전 시간 유지 중",
+   "sig": "205b5625dfc2",
+   "scene": "good_season",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Monza|Andrea Carboni": {
+   "l1": "하위권 팀 수비진에서 고전하며 힘겨운 시즌",
+   "l2": "평점 6.48 · 0골 — 볼 운반 하위 28%로 공수 전환 시 어려움",
+   "sig": "722c74c4c616",
+   "scene": "struggling",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Monza|Dany Mota": {
+   "l1": "출전 기회 대비 효율적인 공격형 미드필더",
+   "l2": "평점 7.05 · 2도움 — 선발과 교체를 오가는 상황에서도 폼 유지",
+   "sig": "0e0cf89981e6",
+   "scene": "bench_start",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Monza|Michael Folorunsho": {
+   "l1": "부상 여파로 리듬을 찾지 못하고 있는 미드필더",
+   "l2": "부상 2경기 결장 · 평점 6.61 — 지난 시즌과 유사한 평점 유지",
+   "sig": "835d77e43366",
+   "scene": "injury_return",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Monza|Ricardo Mangas": {
+   "l1": "공격적 재능은 돋보이나 수비는 평범한 풀백",
+   "l2": "창조 상위 22% · 1골 2도움 — 피지컬 하위 24%로 듀얼 대응 부족",
+   "sig": "95d20c465107",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Udinese|Giorgi Chakvetadze": {
+   "l1": "부상에서 회복하며 다시 폼을 끌어올리는 중",
+   "l2": "부상 2경기 결장 · 최근 폼 79 — 배급 상위 19%의 패스 감각",
+   "sig": "6e58e0fa888a",
+   "scene": "injury_return",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Nice|Xavier Mandza Tsiendi": {
+   "l1": "성장세가 기대되는 중위권 팀의 어린 수비 자원",
+   "l2": "17세 · 최근 5경기 폼 76 — 출전 시간 715분으로 경험 쌓는 중",
+   "sig": "f47183c4e930",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Toulouse|Santiago Hidalgo": {
+   "l1": "기대치에 미치지 못한 부진한 시즌을 보내는 중",
+   "l2": "평점 6.5 · 지난 시즌 6.67 대비 하락 — 공격 상위 1% 재능 발휘 미비",
+   "sig": "4388a64206e0",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LigaPortugal|Gil Vicente FC|Murilo Costa": {
+   "l1": "팀의 공격 전개에 힘을 보태고 있는 측면 자원",
+   "l2": "리그 7위 팀 소속 · 공격 하위 18% — 마무리보다는 연계에 치중",
+   "sig": "520ca82b4e2d",
+   "scene": "good_season",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Eredivisie|Fortuna Sittard|Mattijs Branderhorst": {
+   "l1": "팀의 중위권 도약을 이끄는 최고의 수문장",
+   "l2": "선방율 리그 3위 · 11경기 출전 — 빌드업은 다소 아쉬운 단계",
+   "sig": "2fded524b665",
+   "scene": "veteran_rise",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Eredivisie|Go Ahead Eagles|Joris Kramer": {
+   "l1": "주전으로 뛰고 있으나 이름값 대비 활약은 부족",
+   "l2": "11경기 출전 · 평점 6.54 — 지난 시즌 6.94와 비교되는 주춤한 모습",
+   "sig": "bde7571c1624",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Eredivisie|Sparta R.|Lushendry Martes": {
+   "l1": "팀의 측면을 책임지며 무난하게 성장 중인 시즌",
+   "l2": "11경기 출전 · 평점 6.74 — 지난 시즌 6.77과 유사한 안정적인 흐름",
+   "sig": "a7326b7b6249",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Eredivisie|Utrecht|Artem Stepanov": {
+   "l1": "중위권 팀에서 무난 이상의 활약을 보여주는 시즌",
+   "l2": "8경기 출전 · 5골 — 부상으로 2경기 결장했음에도 준수한 득점력",
+   "sig": "91ea6a09df13",
+   "scene": "good_season",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Championship|Wolves|Boubacar Traoré": {
+   "l1": "지난 시즌 대비 활용도가 낮아진 수비형 미드필더",
+   "l2": "몸값 €4M · 평점 6.47 — 팀 내 경쟁에서 밀려나 입지 축소",
+   "sig": "4e25fb983a5a",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SuperLig|Beşiktaş|Semih Kiliçsoy": {
+   "l1": "성장을 위해 출전 기회를 기다리는 어린 유망주",
+   "l2": "몸값 €8M · 리그 1경기 출전 — 경험이 쌓이면 평가가 바뀔 선수",
+   "sig": "6b1ae99e6a83",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SuperLig|Konyaspor|Adil Demirbağ": {
+   "l1": "팀의 부진과 함께 고전하는 센터백",
+   "l2": "평점 6.58로 지난 시즌보다 하락 — 부상으로 4경기 결장하며 흐름 끊김",
+   "sig": "f45775e471f1",
+   "scene": "struggling",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SuperLig|Samsunspor|Mohamed Bayo": {
+   "l1": "리그에서 선발과 교체를 오가는 로테이션 자원",
+   "l2": "6경기 출전 — 1도움에 그치며 팀의 하위권 탈출을 돕지 못하는 상황",
+   "sig": "83ec2d592029",
+   "scene": "bench_start",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "AustrianBundesliga|Rapid Wien|Petter Nosakhare Dahl": {
+   "l1": "선두 팀의 측면을 책임지는 핵심 주전 윙어",
+   "l2": "인터셉트 리그 2위 — 5골 1도움으로 지난 시즌 평점 6.82를 상회하는 성장세",
+   "sig": "a0c1b3e8b7f0",
+   "scene": "good_season",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "AustrianBundesliga|Ried|Jonas Mayer": {
+   "l1": "출전 기회가 극히 적어 증명이 필요한 미드필더",
+   "l2": "2경기 출전 — 부진으로 인해 몸값과 평가가 하락한 상태",
+   "sig": "94c4c54c8465",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "AustrianBundesliga|Salzburg|Sota Kitano": {
+   "l1": "올 시즌 주전으로 도약하며 보여주는 좋은 폼",
+   "l2": "9경기 출전 — 지난 시즌 평점 6.94 대비 상승한 경기 영향력",
+   "sig": "82eeee2f219b",
+   "scene": "good_season",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "AustrianBundesliga|Salzburg|Damir Redzic": {
+   "l1": "부상 공백을 딛고 최근 상승세를 타는 윙어",
+   "l2": "평점 6.86 · 최근 5경기 폼 88 — 부상 결장 3경기 제외하고 꾸준한 활약 중",
+   "sig": "ca0dffbbbc44",
+   "scene": "injury_return",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "AustrianBundesliga|Sturm Graz|Jacob Hödl": {
+   "l1": "상위권 팀의 주전으로 자리 잡은 윙어",
+   "l2": "리그 11경기 출전 · 평점 6.81 — 지난 시즌(6.73) 대비 소폭 상승한 경기력",
+   "sig": "8b46d7dc8364",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "AustrianBundesliga|Wolfsberger AC|Nikolas Polster": {
+   "l1": "출전 기회는 적지만 실력은 증명한 골키퍼",
+   "l2": "평점 7.32 · 무실점 상위 8% — 지난 시즌(7.0) 대비 눈에 띄게 좋아진 폼",
+   "sig": "c655b968f4b0",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "DanishSuperliga|Brøndby IF|Frederik Alves Ibsen": {
+   "l1": "상위권 팀 로테이션 자원으로 쏠쏠한 활약",
+   "l2": "리그 8경기 출전 · 몸값 €2M — 수비 안정감 더하며 팀 순위 유지에 기여",
+   "sig": "088e62589698",
+   "scene": "bench_start",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "DanishSuperliga|FC København|William Clem": {
+   "l1": "중원에서 제 몫을 다하는 핵심 미드필더",
+   "l2": "평점 7.03 · 리그 13경기 출전 — 지난 시즌(6.91) 대비 확실히 성장한 모습",
+   "sig": "afc83dbf42f2",
+   "scene": "good_season",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "DanishSuperliga|Nordsjælland|Andreas Hansen": {
+   "l1": "팀의 중위권 도약을 이끄는 주전 골키퍼",
+   "l2": "리그 13경기 출전 · 선방 상위 23% — 박스 지배력은 아쉽지만 확실한 방어 능력",
+   "sig": "e10abebc4e89",
+   "scene": "overachiever",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "DanishSuperliga|Nordsjælland|Juho Lähteenmäki": {
+   "l1": "성장이 필요한 단계의 핵심 자원",
+   "l2": "지난 시즌 대비 평점 소폭 하락 — 1041분 출전으로 경기 경험 쌓는 중",
+   "sig": "75f76eac7d40",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "DanishSuperliga|Nordsjælland|Alexander Lind": {
+   "l1": "주전 공격수로서 제 몫을 충분히 해내는 시즌",
+   "l2": "4골 1도움 — 674분 출전으로 효율적인 득점 생산",
+   "sig": "e256fc8de791",
+   "scene": "good_season",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Athletic Club|Maroan Sannadi": {
+   "l1": "검증이 필요한 단계의 유망한 자원",
+   "l2": "7경기 출전 — 컵 대회 위주의 출전으로 실전 경험 부족",
+   "sig": "ad62c5a11a34",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Athletic Club|Yeray Álvarez": {
+   "l1": "로테이션 자원으로 안정감을 더해주는 시즌",
+   "l2": "평점 6.75로 지난 시즌보다 향상 — 볼 운반 능력 상위 26%",
+   "sig": "e9e854c51104",
+   "scene": "bench_start",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Real Sociedad|Pablo Marín": {
+   "l1": "잦은 부상으로 흐름이 끊긴 아쉬운 시즌",
+   "l2": "부상 7경기 결장 — 출전 시간 66분으로 존재감 증명 부족",
+   "sig": "8300f9bdf368",
+   "scene": "injury_return",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Bundesliga|Köln|Linton Maina": {
+   "l1": "팀 공격의 중심에서 제 몫을 하는 윙어",
+   "l2": "1골 2도움 — 평점 6.93으로 리그 평균 이상의 활약",
+   "sig": "476866664d87",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Bundesliga|SC Paderborn|Lauren Ulrich": {
+   "l1": "중원에서 분전하지만 성장이 필요한 시즌",
+   "l2": "평점 6.75점 — 피지컬과 듀얼 능력 보완이 시급한 상황",
+   "sig": "6d994c668bd1",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Bundesliga|RB Leipzig|Ørjan Nyland": {
+   "l1": "출전할 때마다 확실한 능력을 증명하는 골키퍼",
+   "l2": "평점 7.55점 — 무실점 능력 상위 1%의 안정감",
+   "sig": "ddc4f54c8321",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Bundesliga|Union Berlin|Livan Burcu": {
+   "l1": "측면에서 활발히 움직이나 공격 생산성 부족",
+   "l2": "1골 — 수비와 볼 운반 능력은 준수하나 창조적 역할 아쉬움",
+   "sig": "697bc08a31fc",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Fiorentina|Victor Valdepeñas": {
+   "l1": "로테이션으로 경험을 쌓는 초기 단계",
+   "l2": "몸값 12백만 유로 — 20세의 나이로 8경기 출전하며 성장 중",
+   "sig": "19f238baaa31",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Toulouse|Jacen Russell-Rowe": {
+   "l1": "주전으로 나서고 있지만 기대에 미치지 못하는 폼",
+   "l2": "9경기 2골 — 평점 6.75에 그치며 최근 공격 흐름이 주춤",
+   "sig": "cff7ad077d90",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LigaPortugal|Vit. Guimarães|Gustavo da Silva": {
+   "l1": "창의적인 패스로 공격 활로를 여는 측면 자원",
+   "l2": "키패스 리그 2위 · 평점 7.04로 지난 시즌 대비 상승세",
+   "sig": "1e084a912ad5",
+   "scene": "good_season",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LigaPortugal|Vit. Guimarães|Telmo Arcanjo": {
+   "l1": "출전 기회가 제한적인 상황 속 아쉬운 시즌",
+   "l2": "리그 4경기 출전 · 평점 6.7로 지난 시즌과 유사한 수준",
+   "sig": "f4aa1acc8b76",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Eredivisie|Ajax|Owen Wijndal": {
+   "l1": "유럽대항전과 리그를 오가며 활약하는 수비수",
+   "l2": "몸값 2백만 유로 · 공격 가담은 하위 3% 수준",
+   "sig": "47c6795a54b4",
+   "scene": "good_season",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Eredivisie|Heerenveen|Sam Kersten": {
+   "l1": "리그 중위권 팀의 중심을 잡는 견고한 수비수",
+   "l2": "평점 6.95 · 지난 시즌 대비 안정감 있는 모습",
+   "sig": "13f00433ba20",
+   "scene": "good_season",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Eredivisie|NEC Nijmegen|Philippe Sandler": {
+   "l1": "잦은 부상으로 인해 아쉬움이 남는 시즌",
+   "l2": "리그 3경기 출전 · 몸값 2백만 유로의 수비수",
+   "sig": "28ae63d972df",
+   "scene": "injury_return",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "BelgianProLeague|Westerlo|Isa Sakamoto": {
+   "l1": "중위권 팀의 공격을 이끄는 창의적인 미드필더",
+   "l2": "4도움 — 평점 6.91로 지난 시즌 대비 상승세",
+   "sig": "326903d089f2",
+   "scene": "good_season",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Championship|Bristol City|Rio Cardines": {
+   "l1": "리그에서 가장 창조적인 패스를 뿌리는 핵심 풀백",
+   "l2": "키패스/90 리그 1위 — 도움 6개로 팀 내 가장 높은 기여",
+   "sig": "ef976f7859cf",
+   "scene": "overachiever",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Championship|Bristol City|Adam Randell": {
+   "l1": "공격적인 기여가 다소 아쉬운 수비형 미드필더",
+   "l2": "공격 하위 1% — 280분 출전으로 기회 확보가 절실한 상황",
+   "sig": "5575dd8e681f",
+   "scene": "bench_start",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Championship|Derby County|Filip Bilbija": {
+   "l1": "컵 대회 위주로 출전하며 복귀를 준비하는 시즌",
+   "l2": "1골 — 출전 시간 87분에 그치며 팀 내 입지 회복이 필요한 상황",
+   "sig": "d3b6026995ec",
+   "scene": "injury_return",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Championship|West Ham United|Adama Boiro": {
+   "l1": "중위권 팀에서 주변 자원으로 머물며 정체된 모습",
+   "l2": "평점 6.73 — 지난 시즌 6.45 대비 소폭 상승세",
+   "sig": "cd9286b935f8",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SuperLig|Galatasaray|Deniz Gül": {
+   "l1": "팀은 선두지만 공격수로서 존재감은 부족한 시즌",
+   "l2": "리그 6경기 출전 및 0골 0도움 — 평점 6.46으로 지난 시즌 대비 하락세",
+   "sig": "8442b3528c72",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SuperLig|Rizespor|Valentin Mihăilă": {
+   "l1": "부상 여파로 출전이 제한되며 흐름이 끊긴 윙어",
+   "l2": "부상 결장 1경기 및 0골 0도움 — 평점 6.32로 지난 시즌 대비 부진",
+   "sig": "f283a9da59bb",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "DanishSuperliga|FC København|Maher Carrizo": {
+   "l1": "부상 회복 후 경기 감각을 끌어올리는 중인 윙어",
+   "l2": "리그 4경기 출전 — 부상으로 2경기 결장하며 실전 공백 발생",
+   "sig": "89a15b427d18",
+   "scene": "injury_return",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "DanishSuperliga|FC Midtjylland|Magnus Jensen": {
+   "l1": "수비수임에도 공격 기여도가 돋보이는 핵심 자원",
+   "l2": "리그 2골 — 공격 상위 19%로 팀 선두 질주에 기여 중",
+   "sig": "45982efe3ea2",
+   "scene": "overachiever",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SwissSuperLeague|Servette|Kingstone Mutandwa": {
+   "l1": "선발과 교체를 오가며 꾸준히 성장하는 중",
+   "l2": "평점 7.12 — 지난 시즌보다 상승한 폼으로 팀 공격 활력소 역할",
+   "sig": "239eef44b028",
+   "scene": "bench_start",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SwissSuperLeague|Young Boys|Lewin Blum": {
+   "l1": "상위권 팀의 공격 전개를 도맡는 절정의 윙백",
+   "l2": "리그 2골 4도움 — 평점 7.07로 지난 시즌 대비 확실한 성장",
+   "sig": "45720b3c76ef",
+   "scene": "overachiever",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SwissSuperLeague|Young Boys|Gregory Wüthrich": {
+   "l1": "부상 복귀 후 안정감을 찾아가는 센터백",
+   "l2": "4경기 결장 — 리그 5경기 출전으로 아직은 로테이션 자원",
+   "sig": "8f3f60988e46",
+   "scene": "injury_return",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "EPL|Coventry City|Stephen Mfuni": {
+   "l1": "어린 나이에 1군 무대를 경험하는 센터백",
+   "l2": "리그 217분 출전 — 하위권 팀에서 기회를 받으며 성장 중",
+   "sig": "f03c6f1216ad",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Alavés|Ander Guevara": {
+   "l1": "올 시즌은 기대에 미치지 못하며 주춤하는 단계",
+   "l2": "평점 6.63 — 리그 0골 0도움으로 공격 기여도가 아쉬운 상황",
+   "sig": "04a5577575e0",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Alavés|Carlos Benavídez": {
+   "l1": "중원 수비는 준수하나 올 시즌 전반적으로 부진",
+   "l2": "수비 상위 16% — 평점 6.5로 지난 시즌 대비 하락세",
+   "sig": "8f51ba4f9737",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Alavés|Denis Suárez": {
+   "l1": "로테이션 자원으로 기용되나 폼은 다소 주춤",
+   "l2": "평점 6.74 — 리그 0골 0도움으로 이름값에 비해 저조한 활약",
+   "sig": "04963cfdb68c",
+   "scene": "bench_start",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Levante|Ifeanyi Ndukwe": {
+   "l1": "경험을 쌓아가는 단계의 센터백",
+   "l2": "평점 6.78 — 리그 7경기 출전으로 하위권 팀 수비진 보조",
+   "sig": "5ef70931783b",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Levante|Olasagasti": {
+   "l1": "중원에서 꾸준히 제 몫을 하는 미드필더",
+   "l2": "평점 6.79 — 창조력은 상위 15%로 팀 공격의 연결 고리",
+   "sig": "091a1b6868f1",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Málaga|Adrian Niño": {
+   "l1": "기대 이상의 득점력을 과시하는 중",
+   "l2": "리그 7경기 출전 — 출전 시간 대비 높은 효율로 팀 공격 견인",
+   "sig": "041aec8cb446",
+   "scene": "overachiever",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Málaga|Dani Lorenzo": {
+   "l1": "드리블 돌파가 돋보이는 미드필더",
+   "l2": "드리블 리그 3위 — 볼 운반 능력 상위 28%로 전진성 확보",
+   "sig": "68283f4cd596",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Málaga|Izan Merino": {
+   "l1": "로테이션 자원으로 기회를 찾는 단계",
+   "l2": "몸값 5백만 유로 — 리그 8경기 출전하며 경기력 회복 시도",
+   "sig": "a8515c273391",
+   "scene": "struggling",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Málaga|José Salinas": {
+   "l1": "교체 출전이 잦은 로테이션 풀백",
+   "l2": "평점 6.6 — 지난 시즌 평점 6.35 대비 소폭 상승한 활약",
+   "sig": "057dd896052d",
+   "scene": "bench_start",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Racing Santander|Pablo Ramon": {
+   "l1": "주전으로 나서며 제 몫을 다하는 수비수",
+   "l2": "9경기 출전 — 몸값 100만 유로 대비 안정적인 기량",
+   "sig": "0ce1eef65ffe",
+   "scene": "good_season",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Sevilla|Peque": {
+   "l1": "출전 기회는 적지만 나올 때마다 강한 인상",
+   "l2": "4경기 1골 — 지난 시즌 평점 6.74 대비 상승한 6.96",
+   "sig": "a36e4e1f825f",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Valencia|Aaron Mayol": {
+   "l1": "팀의 하위권 탈출을 위해 기회를 얻는 유망주",
+   "l2": "18세 — 3경기 출전으로 경험 쌓는 단계",
+   "sig": "95223eb428d2",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Bundesliga|Augsburg|Yannik Keitel": {
+   "l1": "컵 대회에서 기회를 찾으며 반등을 노리는 중",
+   "l2": "4경기 출전 — 지난 시즌 평점 6.62보다 낮은 6.51",
+   "sig": "db64ded14888",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Bundesliga|Dortmund|Mathis Albert": {
+   "l1": "상위권 팀에서 데뷔 기회를 잡은 어린 윙어",
+   "l2": "17세 — 1군 무대 적응을 시작하는 단계",
+   "sig": "5a04941f6a89",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Bundesliga|Frankfurt|Jeremiaha Maluze": {
+   "l1": "부상 복귀 후 압도적인 폼을 과시하는 센터백",
+   "l2": "최근 폼 98 — 평점 7.63으로 수비진의 핵심",
+   "sig": "08255757cd3d",
+   "scene": "injury_return",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Bundesliga|Frankfurt|Love Arrhov": {
+   "l1": "1군 무대 적응을 위해 담금질 중인 유망주",
+   "l2": "평점 6.46 — 팀 내에서 출전 시간을 쌓으며 잠재력을 입증할 시기",
+   "sig": "277a434ea823",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Bundesliga|Frankfurt|Niko Iličević": {
+   "l1": "짧은 시간 강렬한 인상을 남긴 신예 미드필더",
+   "l2": "16세 · 평점 7.1 — 아직 1경기 출전에 불과한 유망주",
+   "sig": "99fb2317c1a5",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Bundesliga|Gladbach|Lion Schweers": {
+   "l1": "출전 기회가 극히 제한적인 센터백",
+   "l2": "30세 · 리그 1경기 출전 — 팀의 하위권 탈출을 위해 더 많은 시간이 필요한 상태",
+   "sig": "03ae38a787e5",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Bundesliga|Gladbach|Shuto Machino": {
+   "l1": "기대 대비 아쉬운 활약을 보여주는 공격수",
+   "l2": "몸값 €3M — 지난 시즌 평점 6.61에 미치지 못하는 현재의 폼",
+   "sig": "61d3ec85beac",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Bundesliga|Hamburger SV|Alexander Røssing-Lelesiit": {
+   "l1": "1군 무대 경험을 쌓으며 성장 중인 윙어",
+   "l2": "19세 · 평점 6.82 — 출전이 쌓이면 평가가 빠르게 바뀔 선수",
+   "sig": "0435c533ff05",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Bundesliga|Hamburger SV|Kofi Amoako": {
+   "l1": "아직은 성장이 필요한 수비형 미드필더 유망주",
+   "l2": "3경기 출전 · 평점 6.62 — 몸값 4백만 유로의 가능성",
+   "sig": "adcdfd3617b7",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Bundesliga|Hamburger SV|Louis Lemke": {
+   "l1": "주전 도약을 위해 폼 회복이 시급한 풀백",
+   "l2": "평점 6.48 · 최근 폼 58 — 리그 6경기 출전으로 로테이션 소화",
+   "sig": "0b1ec007c753",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Bundesliga|Hoffenheim|Muhammed Batuhan Zor": {
+   "l1": "아직은 1군 무대 적응이 필요한 중앙 미드필더",
+   "l2": "1경기 3분 출전 — 팀 중위권 경쟁 속 출전 기회 부족",
+   "sig": "e8265d74fb77",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Bundesliga|Köln|Jan Thielmann": {
+   "l1": "컵 대회에서 기회를 엿보는 윙어",
+   "l2": "평점 6.74 · 공격 하위 5% — 지난 시즌과 유사한 평점 유지",
+   "sig": "519e1c86336f",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Bundesliga|Mainz 05|Lennard Maloney": {
+   "l1": "팀 중위권 순위 내에서 출전 기회가 적은 상황",
+   "l2": "5경기 40분 출전 — 주변 자원으로 머무는 중",
+   "sig": "51651b57e276",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Bundesliga|SC Paderborn|Marvin Pieringer": {
+   "l1": "득점력 부재로 고전 중인 주전 스트라이커",
+   "l2": "8경기 0골 · 평점 6.29 — 지난 시즌 대비 하락세",
+   "sig": "fc2cdc6b3b8b",
+   "scene": "struggling",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Bundesliga|RB Leipzig|Samba Konaté": {
+   "l1": "성장을 위해 더 많은 기회가 필요한 유망주",
+   "l2": "17세 — 출전 시간이 적고 리그 공격 포인트는 없는 단계",
+   "sig": "3ebc32259422",
+   "scene": "injury_return",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Bundesliga|Schalke 04|Ron Schallenberg": {
+   "l1": "부상 복귀 이후 경기력을 회복해야 하는 시기",
+   "l2": "부상 2경기 결장 — 평점 5.93으로 팀의 하위권 성적과 동반 부진",
+   "sig": "ba11e6d0036a",
+   "scene": "injury_return",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Bundesliga|Union Berlin|Jeong Woo-yeong": {
+   "l1": "팀의 하위권 탈출을 위해 반등이 절실한 주전",
+   "l2": "이번 시즌 폼 51 — 지난 시즌 대비 평점 소폭 상승했으나 여전히 아쉬움",
+   "sig": "7efd5bea9eb7",
+   "scene": "struggling",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Bundesliga|Union Berlin|Kastriot Imeri": {
+   "l1": "잦은 부상으로 인해 흐름이 끊긴 공격형 미드필더",
+   "l2": "부상 5경기 결장 — 복귀 후 출전 시간 164분으로 페이스 회복 중",
+   "sig": "da18e1321191",
+   "scene": "injury_return",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Bundesliga|SC Paderborn|Luka Djuric": {
+   "l1": "1군 무대에서 자신의 가치를 입증해야 할 단계",
+   "l2": "1경기 출전 — 출전 시간 13분으로 주변 자원에 머무는 중",
+   "sig": "b3a5002a9070",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Bologna|Oussama El Azzouzi": {
+   "l1": "부상에서 돌아와 중원 경쟁력을 높여야 할 백업",
+   "l2": "부상 3경기 결장 — 창조 상위 13%의 배급 능력은 확실한 강점",
+   "sig": "454ad1300a66",
+   "scene": "injury_return",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Cagliari|Kevin Carlos": {
+   "l1": "아직 리그 무대 적응이 필요한 백업 스트라이커",
+   "l2": "리그 6경기 출전 및 0골 0도움 — 평점 6.32로 공격진 내 경쟁력 증명 과제",
+   "sig": "08330eb2f710",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Cagliari|Riccardo Ciervo": {
+   "l1": "컵 대회 위주로 출전하며 기회를 엿보는 윙어",
+   "l2": "리그 1경기 출전 및 9분 소화 — 아직 리그 무대서 검증이 필요한 단계",
+   "sig": "ece9b308d3bf",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Genoa|David Puczka": {
+   "l1": "성장을 위해 출전 기회를 늘려가는 유망한 센터백",
+   "l2": "리그 4경기 출전 및 138분 소화 — 최근 폼 82로 상승세",
+   "sig": "e99a1abd9468",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Genoa|Robinho Junior": {
+   "l1": "1군 무대 경험을 쌓으며 성장을 도모하는 윙어",
+   "l2": "리그 1경기 출전 및 7분 소화 — 검증이 더 필요한 유망주",
+   "sig": "46d089b748fa",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Genoa|Sebastian Otoa": {
+   "l1": "수비수로서 공격 가담은 아쉬움이 남는 시즌",
+   "l2": "공격 하위 1% — 리그 4경기 출전하며 팀의 중위권 수비 보조",
+   "sig": "29acfca24dca",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Lecce|Mohamed Kaba": {
+   "l1": "출전 기회를 더 기다려야 하는 검증 전 선수",
+   "l2": "리그 160분 출전 — 지난 시즌 대비 평점 6.62에서 6.53으로 소폭 하락",
+   "sig": "4e3f0d13ac6c",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Lecce|Nikola Štulić": {
+   "l1": "부진한 흐름 속 돌파구를 찾아야 할 스트라이커",
+   "l2": "리그 8경기 0골 — 최근 폼 45로 지난 시즌 평점 6.45에 미달",
+   "sig": "c83b54536b8a",
+   "scene": "bench_start",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Lecce|Santiago Pierotti": {
+   "l1": "부상 여파와 부진이 겹치며 고전하는 윙어",
+   "l2": "부상 결장 3경기 — 평점 6.48로 지난 시즌보다 낮은 활약",
+   "sig": "9aa9e9d4858f",
+   "scene": "struggling",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Monza|Demba Thiam": {
+   "l1": "출전 기회를 잡았으나 기대에 미치지 못하는 시즌",
+   "l2": "평점 6.13 — 이번 시즌 폼 53으로 부진한 흐름",
+   "sig": "756d7d5fb916",
+   "scene": "bench_start",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Parma|Ben Cremaschi": {
+   "l1": "이제 막 1군 무대를 밟기 시작한 유망주",
+   "l2": "리그 2경기 34분 출전 — 향후 성장 가능성이 기대되는 단계",
+   "sig": "73c2156f5a22",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Parma|Lautaro Valenti": {
+   "l1": "컵 대회 위주로 출전하며 기회를 기다리는 센터백",
+   "l2": "리그 1경기 45분 출전 — 평점 6.76으로 안정적인 수비 유지",
+   "sig": "bf4c7e97bfc5",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Udinese|Enzo Ebosse": {
+   "l1": "팀의 하위권 부진 속에 고전하는 센터백",
+   "l2": "평점 6.51 — 지난 시즌 평점 6.63 대비 하락세",
+   "sig": "d310284562bd",
+   "scene": "struggling",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Udinese|Giulio Vincinati": {
+   "l1": "1군 무대 적응을 위해 시간이 더 필요한 공격수",
+   "l2": "8분 출전 — 출전 기회가 거의 없는 주변 자원",
+   "sig": "7cac0d4c7916",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Venezia|Pasquale Mazzocchi": {
+   "l1": "벤치에서 머무는 시간이 길어지며 주춤한 풀백",
+   "l2": "평점 6.64 — 팀 순위 최하위로 인한 전술적 영향",
+   "sig": "b15ec7456fcf",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Venezia|Toni Fernández": {
+   "l1": "이제 막 1군 경험을 쌓기 시작한 어린 유망주",
+   "l2": "18세 · 3경기 출전 — 미래를 위한 성장 단계",
+   "sig": "dd6854e070c9",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Angers|Louis Mouton": {
+   "l1": "출전 기회를 얻지 못하며 정체된 공격형 미드필더",
+   "l2": "4경기 70분 출전 — 팀 내 입지가 좁은 주변 자원",
+   "sig": "2e046e132e98",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Auxerre|Lamine Sy": {
+   "l1": "공수 양면에서 기여하지만 기복이 있는 시즌",
+   "l2": "공격 및 수비 상위 27% — 피지컬·듀얼 하위 24%의 한계",
+   "sig": "4fd19b21ce31",
+   "scene": "struggling",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Auxerre|Mamadou Diop": {
+   "l1": "선발로 꾸준히 나서지만 존재감은 아쉬운 시즌",
+   "l2": "평점 6.75 — 빌드업 하위 1%로 팀의 중위권 사수 고전 중",
+   "sig": "10057b0abdfa",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Auxerre|Naouirou Ahamada": {
+   "l1": "이름값에 비해 활약이 저조한 중앙 미드필더",
+   "l2": "평점 6.6 — 지난 시즌 6.77 대비 하락한 폼",
+   "sig": "678a088e1f75",
+   "scene": "struggling",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Auxerre|Pierre Ekwah Elimby": {
+   "l1": "출전 기회가 제한되어 성장이 정체된 미드필더",
+   "l2": "52분 출전 — 5경기 교체 위주로 출전하며 입지 부족",
+   "sig": "4dd2799c1786",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Brest|Noah Edjouma": {
+   "l1": "아직은 1군 적응이 필요한 어린 공격형 미드필더",
+   "l2": "평점 6.62 — 4경기 교체 출전하며 경험 쌓는 중",
+   "sig": "5d93954cd856",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Le Havre|Ahmed Touba": {
+   "l1": "공격 가담보다는 수비에 집중해야 할 시즌",
+   "l2": "몸값 2백만 유로 — 창조 하위 30%로 공격 전개 한계",
+   "sig": "22ac62fc7e90",
+   "scene": "struggling",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Le Havre|Amir Richardson": {
+   "l1": "중원에서 배급 능력이 아쉬운 시즌",
+   "l2": "배급 하위 27% — 9경기 동안 공격 포인트 부재",
+   "sig": "5bff185df35a",
+   "scene": "struggling",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Le Mans|Louis Mafouta": {
+   "l1": "꾸준히 선발로 나서지만 존재감은 평범한 시즌",
+   "l2": "평점 6.92로 리그 평균 수준 — 볼 운반 하위 21%로 공격 기여는 부족",
+   "sig": "67e9c20b899f",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Le Mans|Nicolas Kocik": {
+   "l1": "골문 앞 존재감이 아쉬운 주전 골키퍼",
+   "l2": "무실점 하위 1% — 평점 6.88로 팀 실점 방어에 어려움",
+   "sig": "b4c4d03d07fd",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Lens|Florian Sotoca": {
+   "l1": "교체로 투입되어도 제 몫을 다하는 미드필더",
+   "l2": "평점 6.93 — 지난 시즌 6.55 대비 상승세",
+   "sig": "d6c846d29bb8",
+   "scene": "bench_start",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Lille|Soriba Diaoune": {
+   "l1": "수비 기여도가 돋보이는 어린 윙어",
+   "l2": "수비 상위 15% — 공격 하위 20%로 공격적 성장은 과제",
+   "sig": "9ba532f3bc52",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Lorient|Alec Georgen": {
+   "l1": "출전 기회가 적어 증명이 필요한 백업 자원",
+   "l2": "리그 2경기 출전 96분 — 제한된 시간 속 평점 6.98",
+   "sig": "e7581257155b",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Lorient|Dembo Sylla": {
+   "l1": "리그 주전으로 안정감을 보여주는 센터백",
+   "l2": "평점 7.05 — 이번 시즌 폼 89로 상승세",
+   "sig": "d351e45b02b0",
+   "scene": "good_season",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Lorient|Ibrahima Baldé": {
+   "l1": "출전 기회를 살리지 못하며 아쉬운 시즌",
+   "l2": "평점 6.53 — 7경기 출전 동안 1골에 그친 저조한 득점력",
+   "sig": "60639a8a1f2a",
+   "scene": "bench_start",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Lorient|Souleymane Faye": {
+   "l1": "벤치에 머무는 시간이 길어지며 제자리걸음인 시즌",
+   "l2": "지난 시즌 평점 6.56에서 올 시즌 6.57로 정체된 성장세",
+   "sig": "f917ba3f1fc8",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Lorient|Souleymane Touré": {
+   "l1": "팀의 중위권 수비를 책임지는 최고의 발견",
+   "l2": "리그 4경기 출전 — 몸값 €1M이 믿기지 않는 절정의 활약",
+   "sig": "abb7acd9e3d3",
+   "scene": "overachiever",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Lyon|Julien Duranville": {
+   "l1": "아직 1군 무대 적응이 필요한 어린 윙어",
+   "l2": "리그 4경기 268분 출전 — 다소 아쉬운 경기당 영향력",
+   "sig": "6c73bc76ccbb",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Marseille|Keyliane Abdallah": {
+   "l1": "성장을 위해 더 많은 기회가 필요한 어린 윙어",
+   "l2": "평점 6.48 — 출전 시간 170분으로 아직 검증이 필요한 단계",
+   "sig": "6924dfea4d29",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Monaco|Pape Cabral": {
+   "l1": "1군 무대에서 가능성을 시험받는 어린 미드필더",
+   "l2": "평점 7.0 — 지난 시즌 6.6 대비 눈에 띄는 성장세",
+   "sig": "38326d861fb7",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Nice|Isak Jansson": {
+   "l1": "아직은 팀 내 입지가 좁은 윙어",
+   "l2": "리그 5경기 출전, 공격 포인트 0개 — 몸값 3백만 유로의 검증이 필요한 단계",
+   "sig": "eac60d7284c0",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Paris FC|Obed Nkambadio": {
+   "l1": "상위권 팀의 벤치를 지키는 골키퍼",
+   "l2": "리그 1경기 출전 — 출전 시간이 90분에 불과해 기량 판단은 유보",
+   "sig": "c54e8521bf8f",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Strasbourg|Omari Kellyman": {
+   "l1": "기회를 엿보는 어린 스트라이커",
+   "l2": "리그 1경기 출전 — 21세의 유망주로 본격적인 출전은 아직 이른 단계",
+   "sig": "e99a1abd9468",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Strasbourg|Sekou Mara": {
+   "l1": "지난 시즌보다 아쉬운 흐름의 스트라이커",
+   "l2": "평점 6.25 — 공격 포인트 0개로 팀 내 입지 확보가 절실",
+   "sig": "13e70ab14b26",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Toulouse|Christ Tapé": {
+   "l1": "팀 내 주전으로 뛰지만 평범한 활약",
+   "l2": "평점 6.73 — 리그 중위권에서 더 확실한 임팩트가 필요한 시점",
+   "sig": "dddf466c846f",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Toulouse|Seny Koumbassa": {
+   "l1": "로테이션 자원으로 기회를 받는 유망주",
+   "l2": "리그 6경기 출전 — 19세의 나이로 성장을 위한 경험 축적 중",
+   "sig": "51d4ab592ea9",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LigaPortugal|Académico de Viseu|Lorougnon Biagne": {
+   "l1": "선발로 꾸준히 나서지만 존재감은 평범한 시즌",
+   "l2": "평점 6.81 — 리그 10경기 출전, 1골로 무난한 활약",
+   "sig": "e68efd5bfd58",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LigaPortugal|Arouca|Barbero": {
+   "l1": "팀의 상위권 도약을 이끄는 공격의 핵심",
+   "l2": "리그 5골 — 평점 6.89로 지난 시즌보다 상승한 폼",
+   "sig": "d3eb6a0279a1",
+   "scene": "good_season",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LigaPortugal|Casa Pia|João Rêgo": {
+   "l1": "리그에서 가장 폼이 좋은 공격형 미드필더",
+   "l2": "평점 7.25 — 드리블 리그 3위로 팀 내 최고 활약",
+   "sig": "985593edd9fc",
+   "scene": "overachiever",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LigaPortugal|Casa Pia|Jérémy Livolant": {
+   "l1": "올 시즌 출전 기회가 극히 적어 아쉬운 윙어",
+   "l2": "리그 2경기 75분 출전 — 팀 내 입지가 좁아진 상황",
+   "sig": "f8293109ad78",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LigaPortugal|Estoril|Stelios Andreou": {
+   "l1": "아직은 팀 내 입지가 좁은 센터백",
+   "l2": "134분 출전 — 팀이 하위권에 머무는 동안 아직 검증이 필요한 단계",
+   "sig": "ef3eab6a253a",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LigaPortugal|Estrela|Leandro Antonetti": {
+   "l1": "꾸준히 기회를 얻으나 임팩트는 아쉬운 스트라이커",
+   "l2": "4골 1도움 — 평점 6.86으로 지난 시즌 대비 성장했으나 볼 운반은 하위권",
+   "sig": "97228df886fa",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LigaPortugal|Famalicão|Georgios Koutsias": {
+   "l1": "중위권 팀에서 주전으로 뛰는 공격 자원",
+   "l2": "10경기 출전 — 지난 시즌 평점 6.73에서 소폭 상승한 폼",
+   "sig": "6f200784dee0",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LigaPortugal|Gil Vicente FC|Facundo Cáseres": {
+   "l1": "수비적인 기여도는 탁월한 미드필더",
+   "l2": "피지컬 및 듀얼 상위 9% — 중원에서 궂은일을 도맡는 선수",
+   "sig": "f01a67f41d23",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LigaPortugal|Gil Vicente FC|Tidjany Chabrol": {
+   "l1": "아직 1군 무대에서 자리를 잡지 못한 미드필더",
+   "l2": "184분 출전 — 지난 시즌 평점 6.6으로 아직 보여줄 것이 많은 단계",
+   "sig": "f694e77d84c7",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LigaPortugal|Moreirense|Kiko": {
+   "l1": "중위권 팀의 주전으로 꾸준히 출전 중",
+   "l2": "10경기 833분 — 배급 능력은 하위 18%로 개선이 필요한 수치",
+   "sig": "f7b2a598bae9",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LigaPortugal|Rio Ave|Diogo Nascimento": {
+   "l1": "벤치에서 머무는 시간이 길어지며 아쉬운 시즌",
+   "l2": "평점 6.67 — 하위권 팀에서 배급은 준수하나 공격 기여는 부족",
+   "sig": "f03b095f0a96",
+   "scene": "bench_start",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LigaPortugal|Santa Clara|Frederico Medeiros": {
+   "l1": "출전 기회를 거의 잡지 못하고 있는 유망 자원",
+   "l2": "출전 6분 — 상위권 팀의 두터운 선수층에 가려진 모습",
+   "sig": "20d52a24186f",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LigaPortugal|Vit. Guimarães|João Mendes": {
+   "l1": "리그 주전으로 나서지만 존재감은 평범한 시즌",
+   "l2": "평점 6.88 — 지난 시즌 6.72 대비 소폭 상승했으나 여전히 무난한 수준",
+   "sig": "927f85d2c3ca",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Eredivisie|Excelsior|Stijn van Gassel": {
+   "l1": "지난 시즌 대비 다소 주춤한 하위권 팀 골키퍼",
+   "l2": "평점 6.76 — 지난 시즌 7.21에 비해 다소 떨어진 활약",
+   "sig": "b78d204582a0",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Eredivisie|Groningen|Marco Rente": {
+   "l1": "부상 결장에도 불구하고 제 몫을 해주는 풀백",
+   "l2": "부상 4경기 결장 — 평점 6.94로 지난 시즌 7.08에 근접한 폼",
+   "sig": "d928d7bd90e3",
+   "scene": "good_season",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Eredivisie|Groningen|Tygo Land": {
+   "l1": "공격 포인트까지 가세하며 팀의 주전으로 안착",
+   "l2": "2골 1도움 — 몸값 €4M으로 중위권 팀 내 핵심 자원",
+   "sig": "6c03e62f9886",
+   "scene": "good_season",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Eredivisie|NEC Nijmegen|Bryan Linssen": {
+   "l1": "꾸준히 출전 중이나 공격 포인트는 아쉬운 시즌",
+   "l2": "1골 · 평점 6.5 — 지난 시즌 평점 7.0 대비 하락세",
+   "sig": "5ab266ec4559",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Eredivisie|PSV|Ayoni Santos": {
+   "l1": "성장을 위해 출전 시간이 더 필요한 유망주",
+   "l2": "4경기 출전 · 몸값 €4M — 공격과 볼 운반은 준수",
+   "sig": "720dc0712d86",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Eredivisie|Telstar|Jeff Hardeveld": {
+   "l1": "하위권 팀에서 벤치 자원으로 밀려난 시즌",
+   "l2": "9경기 출전 · 평점 6.48 — 피지컬 및 듀얼 능력 하위 5%로 고전",
+   "sig": "e4c0914aae10",
+   "scene": "bench_start",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Eredivisie|Telstar|Ronald Koeman Jr.": {
+   "l1": "기대 이상의 활약으로 골문을 든든히 지키는 중",
+   "l2": "990분 출전 · 폼 95 — 등급을 뛰어넘는 안정감",
+   "sig": "75fac2709f31",
+   "scene": "overachiever",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Eredivisie|Utrecht|Dani de Wit": {
+   "l1": "꾸준히 선발로 나서지만 공격 기여는 아쉬운 시즌",
+   "l2": "2골 1도움 · 평점 6.85 — 배급 능력 하위 6%로 고전",
+   "sig": "6445c50c142e",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Eredivisie|Utrecht|Nikolas Panayiotou": {
+   "l1": "중위권 팀에서 수비 중심을 잡아야 할 단계",
+   "l2": "0골 0도움 · 평점 6.46 — 경기력 안정화가 필요한 시점",
+   "sig": "0019ad0e961c",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Eredivisie|Utrecht|Siebe Horemans": {
+   "l1": "팀의 중위권 사수 속 고전 중인 풀백",
+   "l2": "평점 6.39 — 지난 시즌 대비 하락한 수치와 공격 포인트 부재가 아쉬운 시즌",
+   "sig": "00c1322e5f4a",
+   "scene": "struggling",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Eredivisie|Willem II|Thomas Verheijdt": {
+   "l1": "벤치에서 출전 시간을 기다리는 스트라이커",
+   "l2": "139분 출전 — 팀의 최하위권 순위 흐름 속 존재감 증명이 필요한 시기",
+   "sig": "07f235d4d72e",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "BelgianProLeague|Anderlecht|Adriano Bertaccini": {
+   "l1": "상위권 팀의 백업으로 기회를 엿보는 윙어",
+   "l2": "평점 6.87 — 지난 시즌 평점 6.63 대비 상승한 폼",
+   "sig": "48a098f1297f",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "BelgianProLeague|Antwerp|Thibo Somers": {
+   "l1": "중위권 팀에서 꾸준히 선발로 활약 중",
+   "l2": "평점 6.83 — 지난 시즌 평점 6.85와 유사한 꾸준한 폼",
+   "sig": "3916e6d14537",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "BelgianProLeague|Cercle Brugge|Abdoulie Manneh": {
+   "l1": "부상 복귀 후 높은 평점으로 활약을 예고",
+   "l2": "평점 7.14 — 부상으로 6경기 결장했으나 출전 시 영향력은 확실",
+   "sig": "b34327a2b82e",
+   "scene": "injury_return",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "BelgianProLeague|Genk|Ayumu Yokoyama": {
+   "l1": "리그에서 선발과 교체를 오가는 윙어",
+   "l2": "평점 6.88 — 볼 운반 상위 17%로 준수한 개인 기량",
+   "sig": "5d9d400c262f",
+   "scene": "bench_start",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "BelgianProLeague|Gent|Abdelkahar Kadri": {
+   "l1": "창조적 역할은 다소 부족한 모습",
+   "l2": "창조 하위 13% — 피지컬·듀얼 상위 30%의 활동량 위주 선수",
+   "sig": "35f7ac9ccd95",
+   "scene": "bench_start",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "BelgianProLeague|Gent|Hyllarion Goore": {
+   "l1": "부상 복귀 후 컨디션을 끌어올리는 단계",
+   "l2": "부상 4경기 결장 — 공격 상위 7%의 잠재력 보유",
+   "sig": "1a19cb5385ab",
+   "scene": "injury_return",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "BelgianProLeague|Gent|Josúe Vergara": {
+   "l1": "최근 폼이 가파르게 상승 중인 유망주",
+   "l2": "최근 5경기 폼 85 — 평점 6.91로 리그 준수한 활약",
+   "sig": "d0e99de6ae7b",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "BelgianProLeague|Gent|László Bénes": {
+   "l1": "부상으로 인해 흐름이 끊긴 시즌",
+   "l2": "부상 3경기 결장 — 평점 6.59로 지난 시즌 대비 부진",
+   "sig": "a3cd1461f587",
+   "scene": "injury_return",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "BelgianProLeague|Gent|Matties Volckaert": {
+   "l1": "피지컬을 앞세워 안정감을 주는 시즌",
+   "l2": "9경기 출전 · 544분 소화 — 피지컬·듀얼 상위 25%의 강점",
+   "sig": "f5ab39e8f1b5",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "BelgianProLeague|Lommel|Matthias Pieklak": {
+   "l1": "주전으로 안착하며 매 경기 안정감을 더하는 중",
+   "l2": "리그 10경기 900분 출전 — 선방 상위 18%의 확실한 안정감",
+   "sig": "d897476ead1d",
+   "scene": "good_season",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "BelgianProLeague|OH Leuven|Noë Dussenne": {
+   "l1": "부상을 딛고 다시 선발 라인업에 복귀한 센터백",
+   "l2": "부상 2경기 결장 — 평점 6.92로 무난한 활약을 이어가는 중",
+   "sig": "95af7b6544ab",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "BelgianProLeague|Sint-Truiden|Loïc Mbe Soh": {
+   "l1": "탄탄한 피지컬을 갖췄으나 출전 기회 부족",
+   "l2": "피지컬·듀얼 상위 12% — 리그 2경기 출전에 그친 시즌",
+   "sig": "f95572f81630",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "BelgianProLeague|Sint-Truiden|Samed Baždar": {
+   "l1": "팀 공격을 이끄는 효율적인 스트라이커",
+   "l2": "리그 5골 — 공격 상위 13%의 득점력",
+   "sig": "d751d40e14eb",
+   "scene": "good_season",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "BelgianProLeague|Standard Liège|Dimitri Lavalée": {
+   "l1": "짧은 출전 시간 속 강렬한 인상",
+   "l2": "평점 7.43 — 리그 1경기 출전의 짧은 표본",
+   "sig": "3c28f3fa260a",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "BelgianProLeague|Standard Liège|Gustav Mortensen": {
+   "l1": "꾸준히 선발로 나서지만 활약은 다소 주춤",
+   "l2": "평점 6.68 — 부상 결장 3경기 이후 폼 회복 과제",
+   "sig": "4a49e9260e18",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "BelgianProLeague|Westerlo|Botond Balogh": {
+   "l1": "피지컬은 좋으나 출전 기회 부재",
+   "l2": "피지컬·듀얼 상위 27% — 리그 7분 출전에 머문 시즌",
+   "sig": "4cb889cef4c5",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "BelgianProLeague|Westerlo|Nikola Storm": {
+   "l1": "공격적 재능은 있으나 피지컬이 아쉬운 윙어",
+   "l2": "공격 상위 15% — 피지컬·듀얼 하위 1%로 한계",
+   "sig": "662a03ec86ca",
+   "scene": "injury_return",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "BelgianProLeague|Westerlo|Norman Bassette": {
+   "l1": "등급을 뛰어넘는 압도적인 득점 감각의 스트라이커",
+   "l2": "리그 7골 · 득점 리그 2위 — 평점 7.14로 팀 내 핵심 공격 자원",
+   "sig": "5b07bcb1ee31",
+   "scene": "overachiever",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Championship|Birmingham City|Ryan Allsop": {
+   "l1": "출전 기회는 적지만 나올 때마다 확실한 존재감",
+   "l2": "무실점 상위 4% · 평점 7.35 — 컵 대회 위주로 출전하며 증명 중",
+   "sig": "623a02f15d04",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Championship|Blackburn Rovers|Ryoya Morishita": {
+   "l1": "중위권 팀의 공격을 적절히 지원하는 주전 윙어",
+   "l2": "리그 2골 2도움 · 평점 6.91 — 배급 상위 22%로 준수한 연계",
+   "sig": "91e52ff06896",
+   "scene": "good_season",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Championship|Blackburn Rovers|Harry Pickering": {
+   "l1": "매 경기 선발로 나서지만 눈에 띄는 활약은 부족",
+   "l2": "리그 10경기 출전 · 평점 6.88 — 볼 운반 하위 2%로 공격 관여 저조",
+   "sig": "2603cc2fa14a",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Championship|Blackburn Rovers|Hayden Carter": {
+   "l1": "팀 중위권 수비진의 일원이지만 활약은 다소 주춤",
+   "l2": "10경기 출전 — 창조성 하위 4%로 공격 전개 기여는 부족",
+   "sig": "97b282decf18",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Championship|Blackburn Rovers|Mathias Jørgensen": {
+   "l1": "리그 주전 경쟁에서 밀려나며 입지가 좁아진 상황",
+   "l2": "59분 출전 — 평점 6.13으로 팀 내 공격 지원 역할 미미",
+   "sig": "c72b74442ef5",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Championship|Bolton Wanderers|Chris Forino-Joseph": {
+   "l1": "등급을 뛰어넘는 활약으로 팀 수비를 지탱하는 중",
+   "l2": "평점 7.18로 절정의 폼 — 수비 상위 30%의 견고함",
+   "sig": "4b74478e65c4",
+   "scene": "overachiever",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Championship|Bolton Wanderers|Atsuki Ito": {
+   "l1": "교체로 나서도 확실한 공격 포인트로 존재감 과시",
+   "l2": "2골 1도움 — 배급 상위 15%로 공격 지원에 강점",
+   "sig": "27d0b745e03a",
+   "scene": "bench_start",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Championship|Bristol City|Brian De Keersmaecker": {
+   "l1": "벤치 자원으로 머물며 출전 기회가 적은 시즌",
+   "l2": "5경기 189분 출전 — 지난 시즌 평점 7.05 대비 하락세",
+   "sig": "43d3661ae334",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Championship|Burnley|Connor Roberts": {
+   "l1": "선발과 교체를 오가지만 영향력이 줄어든 풀백",
+   "l2": "몸값 €2M — 31세 베테랑으로서 경기력 회복이 과제",
+   "sig": "15bf67c83e88",
+   "scene": "bench_start",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Championship|Burnley|Jamie Vardy": {
+   "l1": "팀의 하위권 탈출을 돕기엔 아쉬운 영향력",
+   "l2": "몸값 1백만 유로 — 수비 기여도 하위 10%로 공격 외 역할 제한",
+   "sig": "4cdfff3bf427",
+   "scene": "bench_start",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Championship|Cardiff City|Perry Ng": {
+   "l1": "중위권 팀의 측면을 지키는 든든한 주전",
+   "l2": "평점 6.91 — 배급 상위 20%와 수비 상위 28%의 준수한 공수 균형",
+   "sig": "f02bb6d522be",
+   "scene": "good_season",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Championship|Lincoln City|Chiedozie Ogbene": {
+   "l1": "공격적인 재능은 있으나 부진이 길어지는 시즌",
+   "l2": "평점 6.52 — 공격 상위 13%의 강점에도 배급 하위 15%로 고전",
+   "sig": "e2b3cfcd02b0",
+   "scene": "bench_start",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Championship|Millwall|Taïryk Arconte": {
+   "l1": "중위권 팀의 공격을 이끄는 젊은 에이스",
+   "l2": "3골 — 볼 운반 상위 28%의 강점으로 팀 내 주전 입지 확보",
+   "sig": "97338c27d507",
+   "scene": "good_season",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Championship|Millwall|Casper de Norre": {
+   "l1": "팀 내 입지가 좁아지며 고전하는 수비형 미드필더",
+   "l2": "리그 4경기 출전 및 309분 소화 — 공격 포인트 없이 중위권 팀에서 고군분투",
+   "sig": "27287447d264",
+   "scene": "bench_start",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Championship|Millwall|Ryan Leonard": {
+   "l1": "잦은 부상으로 인해 흐름이 끊긴 수비수",
+   "l2": "13경기 결장 — 창조성 상위 13%의 강점에도 불구하고 출전 시간 확보가 관건",
+   "sig": "53d6095ad1b7",
+   "scene": "injury_return",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Championship|Norwich City|Kellen Fisher": {
+   "l1": "성장이 정체된 듯한 모습을 보이는 유망한 풀백",
+   "l2": "몸값 3백만 유로 — 중위권 팀에서 로테이션으로 출전 중",
+   "sig": "5187ded547c8",
+   "scene": "struggling",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Championship|Norwich City|Ante Crnac": {
+   "l1": "리그 출전 기회가 제한적인 윙어의 답답한 시즌",
+   "l2": "리그 94분 출전 — 컵 대회 위주로 나서며 1군 입지 다지는 중",
+   "sig": "91775897de80",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Championship|Portsmouth|Conor Shaughnessy": {
+   "l1": "중위권 팀의 수비 라인을 든든하게 지키는 중",
+   "l2": "창조성 하위 12%의 약점에도 불구 — 올 시즌 폼 85로 기대 이상의 활약",
+   "sig": "440ff012eff8",
+   "scene": "bench_start",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Championship|Preston North End|Liam Lindsay": {
+   "l1": "팀의 하위권 추락 속에 입지가 좁아진 센터백",
+   "l2": "평점 6.44 — 지난 시즌(6.92) 대비 하락세가 뚜렷한 수비수",
+   "sig": "cef1233f232b",
+   "scene": "bench_start",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Championship|Queens Park Rangers|Amadou Salif Mbengue": {
+   "l1": "중위권 팀에서 꾸준히 기회를 받는 풀백",
+   "l2": "10경기 출전 — 1개의 도움으로 팀의 중위권 유지에 기여 중",
+   "sig": "f481f5091256",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Championship|Sheffield United|Thomas Cannon": {
+   "l1": "중위권 팀의 주전 공격수로 뛰고 있는 스트라이커",
+   "l2": "3골 — 창조성은 아쉽지만 13경기 출전으로 꾸준한 기회 확보",
+   "sig": "e6ee7b03cff3",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Championship|Sheffield United|Romelle Donovan": {
+   "l1": "드리블로 리그에서 존재감을 드러내는 어린 윙어",
+   "l2": "드리블 리그 2위 — 1골 2도움으로 공격의 활력소 역할",
+   "sig": "7523274fce07",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Championship|Sheffield United|Rhys Norrington-Davies": {
+   "l1": "올 시즌 출전 기회가 적어 아쉬움이 남는 풀백",
+   "l2": "235분 출전 — 부진한 폼으로 인해 컵 대회 위주 출전",
+   "sig": "3fa3c1e15073",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Championship|Southampton|Divin Mubama": {
+   "l1": "상위권 팀에서 출전 기회를 엿보는 스트라이커",
+   "l2": "배급 상위 12% — 적은 출전 시간 속에서도 준수한 연계 능력",
+   "sig": "b3fd770b9b02",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Championship|Stoke City|Junior Tchamadeu": {
+   "l1": "상위권 팀에서 기회를 잡지 못하며 아쉬운 시즌",
+   "l2": "리그 7경기 출전 · 평점 6.45 — 지난 시즌 대비 하락한 폼",
+   "sig": "a011fb0f4c28",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Championship|Stoke City|Tomás Rigo": {
+   "l1": "상위권 팀의 두터운 선수층에 가려진 미드필더",
+   "l2": "리그 92분 출전 — 공격 하위 20%로 제한적인 영향력",
+   "sig": "7a0a38ce3f34",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Championship|Watford|Iker Bravo": {
+   "l1": "하위권 팀의 공격을 홀로 이끄는 드리블러",
+   "l2": "드리블 리그 1위 · 도움 3개 — 평점 6.88로 팀 내 핵심 역할",
+   "sig": "a8105a04a7f0",
+   "scene": "good_season",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Championship|Watford|Edo Kayembe": {
+   "l1": "꾸준히 선발로 나서지만 존재감은 평범한 시즌",
+   "l2": "평점 6.8 · 리그 14경기 출전 — 지난 시즌과 유사한 퍼포먼스",
+   "sig": "0246c5e339e4",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Championship|Wrexham|Josh Windass": {
+   "l1": "이름값에 비해 출전 기회와 활약이 부족한 시즌",
+   "l2": "평점 6.74 · 리그 260분 출전 — 지난 시즌 대비 하락세",
+   "sig": "881beef820fd",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SuperLig|Amed Sportif|Ermal Krasniqi": {
+   "l1": "검증 전 등급을 무색하게 만드는 절정의 기량",
+   "l2": "리그 10경기 1골 2도움 — 상위권 팀의 핵심 전력",
+   "sig": "13e45dc3277b",
+   "scene": "overachiever",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SuperLig|Başakşehir|Davie Selke": {
+   "l1": "부상 여파로 실전 감각 회복이 시급한 스트라이커",
+   "l2": "부상으로 2경기 결장 — 출전 시간 212분으로 경기 소화량 부족",
+   "sig": "0bbe35296051",
+   "scene": "injury_return",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SuperLig|Beşiktaş|Taylan Bulut": {
+   "l1": "1군 무대 적응을 거치며 성장 중인 어린 유망주",
+   "l2": "20세 — 유럽대항전 1경기 선발로 경험 쌓는 단계",
+   "sig": "498f48fb90e0",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SuperLig|Göztepe|André": {
+   "l1": "중위권 팀의 허리에서 제 몫 이상을 해내는 선수",
+   "l2": "리그 10경기 출전 — 이번 시즌 폼 80으로 상승세 유지",
+   "sig": "25a3a6d251b3",
+   "scene": "good_season",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SuperLig|Kasımpaşa|Kerem Demirbay": {
+   "l1": "부상 공백을 딛고 꾸준한 경기력을 보여주는 주전",
+   "l2": "부상 1경기 결장 — 지난 시즌 평점 6.9 대비 상승한 폼",
+   "sig": "96cd69593670",
+   "scene": "veteran_rise",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SuperLig|Kocaelispor|Anfernee Dijksteel": {
+   "l1": "탄탄한 수비력으로 주전 자리를 지키는 센터백",
+   "l2": "리그 9경기 출전 — 부상으로 1경기 결장했으나 꾸준한 활약",
+   "sig": "eeea8d4281de",
+   "scene": "good_season",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SuperLig|Konyaspor|Enis Bardhi": {
+   "l1": "출전 기회 부족으로 아쉬움이 남는 시즌",
+   "l2": "평점 6.49 — 지난 시즌 6.93보다 떨어진 영향력",
+   "sig": "302dfc735fee",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SuperLig|Rizespor|Modibo Sagnan": {
+   "l1": "중위권 팀에서 묵묵히 제 몫을 다하는 센터백",
+   "l2": "리그 10경기 898분 출전 — 꾸준함으로 팀 수비 중심 유지",
+   "sig": "df54d210a551",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SuperLig|Samsunspor|Bilal Bayazıt": {
+   "l1": "하위권 팀에서 출전 기회를 잡지 못하는 골키퍼",
+   "l2": "리그 2경기 180분 출전 — 지난 시즌보다 떨어진 평점 5.65",
+   "sig": "193e72380419",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SuperLig|Çorum FK|Ylber Ramadani": {
+   "l1": "팀 중위권 순위 속 아쉬운 경기력",
+   "l2": "평점 6.68 — 지난 시즌 대비 하락한 수치로 공격 포인트 부재",
+   "sig": "7ef8e4aa452d",
+   "scene": "struggling",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SuperLig|Çorum FK|Ermin Mahmić": {
+   "l1": "출전 기회를 통해 성장 중인 유망주",
+   "l2": "리그 8경기 2골 1도움 — 짧은 출전 시간 속 효율적인 공격 포인트",
+   "sig": "697eb5673252",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "AustrianBundesliga|LASK|Daniel Elfadli": {
+   "l1": "출전은 적지만 나올 때마다 강렬한 센터백",
+   "l2": "평점 7.32 — 지난 시즌 대비 비약적인 상승세",
+   "sig": "f67d8e85f284",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "AustrianBundesliga|Salzburg|Tim Drexler": {
+   "l1": "상위권 팀 수비의 핵심으로 자리 잡은 시즌",
+   "l2": "평점 7.02 — 배급 상위 12%의 준수한 빌드업 능력",
+   "sig": "3ad191e97137",
+   "scene": "good_season",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "AustrianBundesliga|Sturm Graz|Daniil Khudyakov": {
+   "l1": "리그에서 가장 폼이 좋은 골키퍼 중 하나",
+   "l2": "클린시트 리그 2위 — 부상 결장에도 압도적인 절정의 기량",
+   "sig": "1910d51e8986",
+   "scene": "overachiever",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "AustrianBundesliga|Sturm Graz|Joshua Quarshie": {
+   "l1": "꾸준히 선발로 나서지만 평범한 존재감",
+   "l2": "평점 6.80 — 상위권 팀 수비진에서 무난한 시즌",
+   "sig": "b861fc40c9ac",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "DanishSuperliga|AGF|Callum McCowatt": {
+   "l1": "중위권 팀 공격을 이끄는 창조적인 미드필더",
+   "l2": "결정력 리그 2위 · 평점 6.94 — 팀 내 핵심 공격 자원",
+   "sig": "e2c901b314a3",
+   "scene": "good_season",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "DanishSuperliga|AGF|Colin Rösler": {
+   "l1": "수비 안정감이 아쉬운 중위권 팀의 주전",
+   "l2": "수비 하위 20% · 평점 58 — 리그 6경기 출전 및 부상 1경기 결장",
+   "sig": "5f652b718ccb",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "DanishSuperliga|AGF|Markus Solbakken": {
+   "l1": "벤치에서 기회를 기다리는 중원의 백업",
+   "l2": "배급 상위 14% · 1도움 — 리그 270분 출전으로 입지 제한",
+   "sig": "6e4ce276cee2",
+   "scene": "bench_start",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "DanishSuperliga|Brøndby IF|Max Ejdum": {
+   "l1": "상위권 팀 중원을 책임지는 급성장한 미드필더",
+   "l2": "2골 3도움 · 평점 7.17 — 리그 13경기 1043분 활약",
+   "sig": "045e7c860b36",
+   "scene": "overachiever",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "DanishSuperliga|FC København|Robert": {
+   "l1": "상위권 팀 공격을 책임지는 절정의 윙어",
+   "l2": "2골 1도움 · 평점 7.01 — 배급 상위 18%로 공격 활로 개척",
+   "sig": "71bf9e7cc7ea",
+   "scene": "overachiever",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "DanishSuperliga|FC Midtjylland|David Martínez": {
+   "l1": "부상으로 인해 흐름이 끊긴 선두 팀 윙어",
+   "l2": "부상 4경기 결장 · 리그 127분 출전 — 경기 감각 회복 단계",
+   "sig": "e168480dab5b",
+   "scene": "injury_return",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "DanishSuperliga|Nordsjælland|Nicklas Røjkjær": {
+   "l1": "중원 공격의 활로를 뚫어주는 핵심 미드필더",
+   "l2": "리그 1골 2도움 — 창조성 상위 13%로 공격 기여도 준수",
+   "sig": "abaabd39c763",
+   "scene": "good_season",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "DanishSuperliga|OB|Julius Askou": {
+   "l1": "절정의 폼으로 수비진의 중심을 잡는 선수",
+   "l2": "리그 12경기 출전 — 팀의 중위권 도약을 뒷받침하는 활약",
+   "sig": "3d700c162a1c",
+   "scene": "overachiever",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "DanishSuperliga|OB|Rasmus Falk": {
+   "l1": "볼 운반 능력은 여전한 중원의 조율사",
+   "l2": "평점 6.94 — 볼 운반 상위 20%로 팀 내 영향력 유지",
+   "sig": "18deb4983dae",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "DanishSuperliga|Viborg|Žan Zaletel": {
+   "l1": "상위권 팀의 철벽 수비를 책임지는 핵심 센터백",
+   "l2": "배급 상위 7% — 평점 7.11로 공수 전환의 연결고리",
+   "sig": "4d661e93820e",
+   "scene": "overachiever",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "DanishSuperliga|Viborg|Bilal Brahimi": {
+   "l1": "출전 기회를 잡지 못하며 아쉬운 시즌",
+   "l2": "리그 156분 출전 — 창조성 하위 5%로 공격 기여 부족",
+   "sig": "6d20d6d8f499",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SwissSuperLeague|Lugano|Behruzjon Karimov": {
+   "l1": "공격적 재능으로 리그를 놀라게 하는 유망주",
+   "l2": "1골 1도움 — 경기당 활약이 돋보이는 절정의 폼",
+   "sig": "57e5d0f5d0cf",
+   "scene": "overachiever",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SwissSuperLeague|St. Gallen|Lawrence Ati-Zigi": {
+   "l1": "중위권 팀의 골문을 지키지만 다소 아쉬운 흐름",
+   "l2": "평점 6.61 — 지난 시즌 7.08보다 낮은 평점으로 주춤하는 중",
+   "sig": "e0714ba856db",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SwissSuperLeague|St. Gallen|Carlo Boukhalfa": {
+   "l1": "부상 공백을 딛고 다시 주전 경쟁에 나선 선수",
+   "l2": "2경기 결장 — 유럽대항전 2경기 선발로 기량 입증 중",
+   "sig": "12f22532dbe6",
+   "scene": "injury_return",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "EPL|Bournemouth|Adam Smith": {
+   "l1": "중위권 팀의 핵심 주전이나 부진을 겪는 중",
+   "l2": "35세 — 지난 시즌 평점 6.51과 유사한 아쉬운 흐름",
+   "sig": "7ebcb60f8f15",
+   "scene": "struggling",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "EPL|Chelsea|Mahdi Jazuli": {
+   "l1": "상위권 팀에서 기회를 기다리는 어린 유망주",
+   "l2": "3분 출전 — 향후 경기 경험이 쌓이면 평가가 달라질 선수",
+   "sig": "f53e1a9c762a",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "EPL|Manchester City|Kaden Braithwaite": {
+   "l1": "상위권 팀의 미래를 책임질 어린 센터백",
+   "l2": "18세 · 1경기 출전 — 1군 무대 경험을 쌓는 단계",
+   "sig": "a0cfb32a65c5",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "EPL|Sunderland|Jocelin Ta Bi": {
+   "l1": "하위권 팀에서 반등을 노리는 어린 윙어",
+   "l2": "몸값 2백만 유로 · 최근 폼 95 — 상승세를 이어갈지 주목",
+   "sig": "8069ae061f0d",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "EPL|Sunderland|Riquelme Angulo": {
+   "l1": "하위권 팀 공격진의 새로운 대안으로 떠오르는 중",
+   "l2": "18세 · 9분 출전 — 꾸준한 출전으로 기량을 증명할 단계",
+   "sig": "197de2e69dc1",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "EPL|Tottenham Hotspur|Luca Williams Barnett": {
+   "l1": "중위권 팀에서 1군 무대 맛을 본 유망주",
+   "l2": "18세 · 2분 출전 — 향후 팀 내 입지를 다질 준비 중",
+   "sig": "8db4d673079f",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "EPL|Tottenham Hotspur|Mikey Moore": {
+   "l1": "중위권 팀에서 기회를 넓혀가는 공격형 미드필더",
+   "l2": "90분 출전 · 평점 6.58 — 꾸준한 출전으로 존재감을 드러내는 중",
+   "sig": "15b496bf4e5b",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Alavés|Carles Aleñá": {
+   "l1": "출전 기회가 제한되며 아쉬움을 남기는 시즌",
+   "l2": "리그 8경기 출전 · 평점 6.69 — 창조력은 상위 14%이나 공격 기여는 하위 9%",
+   "sig": "170f50b876f8",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Alavés|Xanet Olaiz": {
+   "l1": "아직 1군 무대 경험이 필요한 어린 센터백",
+   "l2": "리그 1경기 출전 · 평점 6.75 — 출전 시간이 쌓여야 검증 가능",
+   "sig": "37415eb7ee43",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Barcelona|Wojciech Szczęsny": {
+   "l1": "팀 내 입지가 좁아지며 아쉬움을 남기는 시즌",
+   "l2": "36세 · 리그 1경기 출전 — 팀 순위 선두와 대조적인 개인 활약",
+   "sig": "c3976c2e242b",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Celta Vigo|Hugo García": {
+   "l1": "중위권 팀에서 출전이 드문 주변 자원",
+   "l2": "지난 시즌 평점 6.7 — 올 시즌 출전 기회 부족으로 평가 유보",
+   "sig": "0e6d9a971433",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Elche|Tete Morente": {
+   "l1": "하위권 팀에서 공중볼 경합에 강점이 있는 윙어",
+   "l2": "공중볼 리그 3위 · 도움 3개 — 다만 공격 기여는 하위 7%로 아쉬움",
+   "sig": "343c5610db2f",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Elche|Umaru Konare": {
+   "l1": "하위권 팀의 주변 자원으로 머물러 있는 공격수",
+   "l2": "22세 · 공격 포인트 없음 — 향후 출전 기회 확보가 관건",
+   "sig": "70e64780d645",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Levante|Marc Santos": {
+   "l1": "1군 무대 적응을 시작한 어린 유망주",
+   "l2": "15세 · 평점 6.67 — 출전 시간을 쌓으며 성장하는 단계",
+   "sig": "33b0b1330446",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Málaga|Juan Cruz": {
+   "l1": "하위권 팀의 백업으로 활약 중인 윙어",
+   "l2": "242분 출전 · 몸값 €2M — 1군 무대에서 영향력을 증명할 단계",
+   "sig": "fab5dd20dff1",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Osasuna|Kike Barja": {
+   "l1": "올 시즌 출전 시간 확보가 시급한 상황",
+   "l2": "249분 출전 · 몸값 €2M — 중위권 팀에서 입지 회복이 필요한 단계",
+   "sig": "a34d57b774c4",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Racing Santander|Gustavo Puerta": {
+   "l1": "아직은 팀의 백업 자원으로 머물러 있는 시즌",
+   "l2": "23세 — 공격 포인트 없이 묵묵히 기회를 엿보는 중",
+   "sig": "c7ce5d94efc3",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Rayo Vallecano|Francisco Perez": {
+   "l1": "컵 대회 위주로 출전하며 실전 감각을 쌓는 중",
+   "l2": "몸값 2백만 유로 — 지난 시즌 평점 6.56보다 낮아진 폼",
+   "sig": "3b6550fe9832",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Real Sociedad|Luken Beitia": {
+   "l1": "부상으로 인해 올 시즌 흐름이 다소 주춤한 모습",
+   "l2": "유럽대항전 1경기 선발 — 지난 시즌 평점 6.45와 유사한 수준",
+   "sig": "4cee58f151c0",
+   "scene": "injury_return",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Real Sociedad|Unai Marrero": {
+   "l1": "유럽대항전에서 확실한 존재감을 증명 중인 골키퍼",
+   "l2": "유럽대항전 4경기 선발 — 선방 능력은 상위 2%의 클래스",
+   "sig": "0b6a38192c48",
+   "scene": "bench_start",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Sevilla|Julio Diaz": {
+   "l1": "짧은 출전 시간 속에서도 돋보이는 성장세",
+   "l2": "21세 · 몸값 2백만 유로 — 최근 폼 86으로 가파른 상승세",
+   "sig": "682adf659dbb",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Valencia|Dani Raba": {
+   "l1": "백업 역할에 머물며 주전 도약을 노리는 미드필더",
+   "l2": "최근 폼 61 — 리그 5경기 출전으로 아직 기여도가 낮은 시즌",
+   "sig": "6876622485b9",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Valencia|David Otorbi": {
+   "l1": "부상 여파로 아쉬운 흐름을 이어가는 윙어",
+   "l2": "평점 6.75 — 리그 하위권 팀에서 9경기 출전하며 회복 중",
+   "sig": "041b23f864a4",
+   "scene": "injury_return",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Valencia|Mouctar Diakhaby": {
+   "l1": "팀의 하위권 탈출에 힘을 보태지 못하는 부진",
+   "l2": "3경기 결장 — 창조성 하위 1%로 공격 기여 부족",
+   "sig": "255b55b27811",
+   "scene": "injury_return",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Málaga|Juan Fernandez": {
+   "l1": "이제 막 프로 무대를 경험하기 시작한 유망주",
+   "l2": "19세 — 최근 폼 90으로 가파른 상승세",
+   "sig": "918d401fc96e",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Bundesliga|SV Elversberg|Noah Darvich": {
+   "l1": "부상 공백으로 인해 폼 회복이 절실한 미드필더",
+   "l2": "평점 6.41 — 2경기 결장 이후 경기력 주춤",
+   "sig": "bc93c0688d9d",
+   "scene": "injury_return",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Bundesliga|SV Elversberg|Tom Zimmerschied": {
+   "l1": "잦은 부상으로 팀 내 입지가 좁아진 윙어",
+   "l2": "7경기 결장 — 1경기 출전으로 경기력 저하",
+   "sig": "888a82936ba1",
+   "scene": "injury_return",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Bundesliga|Frankfurt|Malik Pimpong": {
+   "l1": "부상 결장으로 인해 흐름이 끊긴 시즌",
+   "l2": "평점 6.11 — 2경기 출전으로 아직 보여줄 것이 많은 유망주",
+   "sig": "a7c772629712",
+   "scene": "injury_return",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Bundesliga|Frankfurt|Otávio": {
+   "l1": "1군 무대 적응 단계에 있는 어린 센터백",
+   "l2": "20세 · 리그 출전 1경기 — 경험이 쌓이면 평가가 달라질 유망주",
+   "sig": "6ce62097107a",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Bundesliga|Gladbach|Jan Leszczyński": {
+   "l1": "부상으로 인해 흐름이 끊긴 센터백",
+   "l2": "부상 결장 3경기 · 평점 6.64 — 하위권 팀에서 반등이 절실한 시점",
+   "sig": "f55814a12e2e",
+   "scene": "injury_return",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Bundesliga|Hamburger SV|Otto Stange": {
+   "l1": "하위권 팀에서 기회를 얻는 유망주",
+   "l2": "리그 출전 7경기 · 몸값 €5M — 지난 시즌 대비 평점 하락세",
+   "sig": "28a89a34be79",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Bundesliga|Hamburger SV|Patson Daka": {
+   "l1": "부상 이후 폼 회복이 더딘 스트라이커",
+   "l2": "부상 결장 3경기 · 평점 6.44 — 피지컬은 상위 29%로 준수함",
+   "sig": "d3ebbc71e187",
+   "scene": "injury_return",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Bundesliga|Köln|Joël Schmied": {
+   "l1": "컵 대회에서 존재감을 보이는 센터백",
+   "l2": "평점 7.04 · 피지컬 상위 18% — 올 시즌 출전 기회가 적은 편",
+   "sig": "2f4c672e0d5c",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Bundesliga|Schalke 04|Edin Džeko": {
+   "l1": "출전 기회가 제한적인 베테랑 스트라이커",
+   "l2": "40세 · 몸값 €1M — 주로 컵 대회에서 모습을 보이는 중",
+   "sig": "b018ec91daca",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Bundesliga|Schalke 04|Vitalie Becker": {
+   "l1": "아직은 성장이 필요한 단계의 풀백",
+   "l2": "6경기 출전 · 평점 6.62로 리그 하위권 팀에서 고전 중",
+   "sig": "920f3c5470e4",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Bundesliga|Stuttgart|Yanik Spalt": {
+   "l1": "1군 무대 적응을 시작한 어린 미드필더",
+   "l2": "19세 · 출전 시간 56분으로 경험을 쌓아가는 중",
+   "sig": "e2a724ba117f",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Bundesliga|Union Berlin|Robert Skov": {
+   "l1": "부상으로 인해 자리를 잡지 못한 시즌",
+   "l2": "부상 결장 1경기 · 1분 출전에 그치며 팀 내 입지 좁아짐",
+   "sig": "d002d7399dd1",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Bundesliga|Werder Bremen|Mick Schmetgens": {
+   "l1": "상위권 팀에서 기회를 엿보는 어린 센터백",
+   "l2": "19세 · 최근 5경기 폼 76으로 빠른 상승세",
+   "sig": "f5170389efec",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Bundesliga|Werder Bremen|Patrice Čović": {
+   "l1": "아직 1군 무대 경험이 부족한 미드필더",
+   "l2": "19세 · 1경기 출전으로 기회를 기다리는 단계",
+   "sig": "218ce42410a3",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Bologna|Lorenzo De Silvestri": {
+   "l1": "부상으로 인해 많은 경기를 놓친 베테랑",
+   "l2": "부상 결장 2경기 · 38세의 나이로 출전 기회 감소",
+   "sig": "16197bf1dadb",
+   "scene": "injury_return",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Frosinone|Alessio Zerbin": {
+   "l1": "공수 양면에서 존재감을 드러내는 풀백",
+   "l2": "공격과 수비 모두 상위 7% — 상위권 팀의 컵 대회 전용 자원",
+   "sig": "c6133d55bb81",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Frosinone|Anouar El Azzouzi": {
+   "l1": "컵 대회에서 기회를 엿보는 중앙 미드필더",
+   "l2": "리그 2경기 출전 — 컵 대회 위주로 출전하며 팀의 상위권 순위 유지 기여",
+   "sig": "22da8f330e3e",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Frosinone|Enzo Tchato": {
+   "l1": "짧은 출전 시간에도 높은 효율을 증명하는 풀백",
+   "l2": "평점 7.15 — 상위권 팀의 컵 대회 전용 자원으로 활약",
+   "sig": "1f6826d57606",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Frosinone|Seydou Fini": {
+   "l1": "성장을 위해 경험을 쌓아가는 어린 유망주",
+   "l2": "리그 6경기 출전 — 20세의 나이로 출전 기회를 받는 단계",
+   "sig": "26997818a164",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Lecce|Amar Ahmed": {
+   "l1": "중위권 팀에서 주전 도약을 위해 분투하는 단계",
+   "l2": "리그 368분 출전 — 22세의 나이로 선발과 교체를 오가는 중",
+   "sig": "1b1963da1da0",
+   "scene": "struggling",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Lecce|Oumar Ngom": {
+   "l1": "중위권 팀의 주전으로 나서지만 폼은 정체",
+   "l2": "10경기 출전 · 평점 6.72 — 지난 시즌 평점 6.61 대비 성장세 부족",
+   "sig": "c52b08200fd3",
+   "scene": "struggling",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Monza|Leonardo Colombo": {
+   "l1": "아직 1군 무대 적응이 필요한 어린 유망주",
+   "l2": "21세 · 3경기 출전 — 부상으로 1경기 결장하며 흐름 끊김",
+   "sig": "b4311b8ad230",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Monza|Nicolas Galazzi": {
+   "l1": "하위권 팀 전력 외로 분류된 힘겨운 시기",
+   "l2": "평점 6.6 — 출전 시간이 부족해 실질적인 기여도 평가 불가",
+   "sig": "9101dca09176",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Parma|Rachid Kouda": {
+   "l1": "리그 무대에서 좀처럼 자리를 잡지 못하는 상황",
+   "l2": "15분 출전 · 1경기 소화 — 중위권 팀 내 주변 자원 역할",
+   "sig": "ab1a6f73015c",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Roma|Alessandro Di Nunzio": {
+   "l1": "상위권 팀의 미래를 책임질 어린 유망주",
+   "l2": "19세 · 1경기 출전 — 2분이라는 짧은 시간으로 경험 쌓는 중",
+   "sig": "7aa28bf177a4",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Sassuolo|Simone Cinquegrano": {
+   "l1": "공격적 재능은 보이나 수비에서 고전하는 시즌",
+   "l2": "공격 상위 28% · 수비 하위 28% — 8경기 출전으로 기복 노출",
+   "sig": "935ef38ffa9d",
+   "scene": "struggling",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Udinese|Juan Arizala": {
+   "l1": "기대치에 비해 아쉬운 시즌 초반",
+   "l2": "최근 5경기 폼 53 · 공격 포인트 없음 — 지난 시즌 평점 6.68 대비 하락",
+   "sig": "e7dcceee95e5",
+   "scene": "injury_return",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Udinese|Vakoun Bayo": {
+   "l1": "팀 하위권 탈출을 위해 분발이 필요한 시기",
+   "l2": "도움 1개 · 이번 시즌 평점 6.29 — 지난 시즌 평점 6.41보다 낮은 수치",
+   "sig": "150b02a25154",
+   "scene": "injury_return",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Venezia|Lion Lauberbach": {
+   "l1": "지난 시즌 대비 활약이 다소 주춤한 모습",
+   "l2": "평점 6.41 — 지난 시즌 평점 6.77에 미치지 못하는 공격 포인트 무득점",
+   "sig": "43052da475b5",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Angers|Amine El Ouazzani": {
+   "l1": "피지컬 활용은 좋으나 공격 기여는 숙제",
+   "l2": "피지컬·듀얼 상위 24% — 팀 하위권 순위 속 선발 출전 꾸준함",
+   "sig": "8cd88859f98a",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Angers|Joseph Kalulu": {
+   "l1": "공수 균형을 갖추려 노력 중인 주전 풀백",
+   "l2": "창조 상위 21% · 수비 상위 25% — 리그 8경기 선발 출전으로 팀 내 비중 확대",
+   "sig": "4a6bf3e3a125",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Auxerre|Josué Casimir": {
+   "l1": "피지컬은 확실하나 실전 경험이 부족한 윙어",
+   "l2": "피지컬·듀얼 상위 1% — 리그 2경기 출전으로 아직 보여줄 단계",
+   "sig": "ea892829220c",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Brest|Djylian N'Guessan": {
+   "l1": "1군 무대 적응을 위해 경험을 쌓는 유망주",
+   "l2": "18세 — 출전이 쌓이면 평가가 빠르게 바뀔 선수",
+   "sig": "56d4e7e81568",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Brest|Pathé Mboup": {
+   "l1": "꾸준히 선발로 나서며 제 몫을 하는 윙어",
+   "l2": "2골 1도움 — 평점 6.93으로 지난 시즌보다 상승한 폼",
+   "sig": "68c95d06e322",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Le Havre|Arnaud Bodart": {
+   "l1": "팀의 하위권 탈출을 위해 반등이 절실한 골키퍼",
+   "l2": "평점 5.56 — 지난 시즌 대비 하락한 폼과 적은 출전 기회",
+   "sig": "8e3675636710",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Le Havre|Simon Ebonog": {
+   "l1": "꾸준히 선발로 나서지만 올 시즌은 다소 주춤",
+   "l2": "평점 6.79 — 지난 시즌보다 상승했으나 창조성은 하위 13%",
+   "sig": "b7aec120fb40",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Lens|Souleymane Sagnan": {
+   "l1": "로테이션 자원으로 기회를 엿보는 센터백",
+   "l2": "3경기 출전 — 유럽대항전 선발 경험하며 성장 중",
+   "sig": "24b8ea83474c",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Lorient|Nosa Edward Obaretin": {
+   "l1": "아직은 1군 무대 적응이 필요한 센터백",
+   "l2": "리그 2경기 출전 — 출전 시간 18분으로 검증이 더 필요한 단계",
+   "sig": "b3ab997b4bed",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Lyon|Mathys De Carvalho": {
+   "l1": "기대주로 분류되나 아직은 맛보기 단계",
+   "l2": "리그 1경기 출전 — 이번 시즌 평점 6.54로 성장이 필요한 유망주",
+   "sig": "829179236ad2",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Toulouse|Niklas Schmidt": {
+   "l1": "팀의 중위권 사수를 위해 분전하는 로테이션 자원",
+   "l2": "출전 시간 247분 — 공격 포인트 없이 평범한 경기력 유지",
+   "sig": "a811d15988e4",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Troyes|Dermane Karim": {
+   "l1": "하위권 팀의 공격을 조율하지만 존재감은 미미",
+   "l2": "평점 6.88 — 지난 시즌 평점 6.7에서 소폭 상승한 수준",
+   "sig": "1e84b1820b8a",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LigaPortugal|Académico de Viseu|Ewerton": {
+   "l1": "리그에서 가장 폼이 좋은 골키퍼",
+   "l2": "선방율 리그 3위, 평점 7.34 — 팀을 중위권으로 이끄는 핵심",
+   "sig": "cd391505f829",
+   "scene": "overachiever",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LigaPortugal|Académico de Viseu|Soufiane Messeguem": {
+   "l1": "공격 포인트로 자신의 가치를 증명하는 주전",
+   "l2": "3골 1도움 — 평점 6.88로 팀의 중위권 유지에 공헌",
+   "sig": "8c5aef629914",
+   "scene": "good_season",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LigaPortugal|Braga|Fran Navarro": {
+   "l1": "리그에서 출전 기회를 잡지 못하며 주춤한 시즌",
+   "l2": "1골 · 331분 출전 — 볼 운반 하위 1%로 팀 내 입지 좁아짐",
+   "sig": "10634a6ec9f1",
+   "scene": "bench_start",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LigaPortugal|Estrela|Luan Patrick": {
+   "l1": "리그 주전으로 무난하게 수비진을 지키는 센터백",
+   "l2": "평점 6.82 — 배급 상위 25%와 피지컬 상위 26%로 안정적",
+   "sig": "219739663aa7",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LigaPortugal|Estrela|Stefan Lekovic": {
+   "l1": "주전으로 나서지만 기대에 미치지 못하는 경기력",
+   "l2": "9경기 · 810분 출전 — 피지컬 강점에도 창조 하위 16%로 고전",
+   "sig": "9aa2c6409643",
+   "scene": "struggling",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LigaPortugal|Marítimo|Martín Tejón": {
+   "l1": "팀의 측면 공격을 담당하지만 파괴력은 다소 부족",
+   "l2": "1골 1도움 — 리그 중위권 팀에서 10경기 출전하며 경험 쌓는 중",
+   "sig": "6bc11ee09bb7",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LigaPortugal|Moreirense|Gilberto Batista": {
+   "l1": "공격 가담은 적지만 수비 안정감은 돋보이는 시즌",
+   "l2": "몸값 €2M — 볼 운반 상위 26%로 후방 빌드업에 기여 중",
+   "sig": "16181a66b6c2",
+   "scene": "good_season",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LigaPortugal|Rio Ave|Andreas Ntoi": {
+   "l1": "팀의 부진과 함께 고전하며 아쉬움이 남는 시즌",
+   "l2": "평점 6.47로 지난 시즌(6.69) 대비 하락 — 공격 기여도 하위 5%",
+   "sig": "2b1cfc943537",
+   "scene": "struggling",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LigaPortugal|Santa Clara|Hiago Santos": {
+   "l1": "상위권 팀에서 출전 기회 자체가 적은 시즌",
+   "l2": "1경기 출전 — 9분으로 경기 감각 회복이 필요한 단계",
+   "sig": "86f9da41f4a9",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LigaPortugal|Santa Clara|Lucas Soares": {
+   "l1": "측면에서 활발한 움직임으로 팀의 상승세를 견인",
+   "l2": "평점 7.0으로 지난 시즌(6.7)보다 향상 — 공격 상위 30%의 파괴력",
+   "sig": "e409ebab3b99",
+   "scene": "good_season",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LigaPortugal|Sporting CP|Pedro Lima": {
+   "l1": "아직 검증이 필요한 단계의 유망한 중원 자원",
+   "l2": "몸값 3백만 유로 — 제한된 출전 시간 속에 성장 도모 중",
+   "sig": "5f091474cbad",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LigaPortugal|Sporting CP|Rafael Nel": {
+   "l1": "이제 막 1군 무대를 경험하기 시작한 스트라이커",
+   "l2": "리그 1경기 출전 — 15분이라는 짧은 시간으로 판단은 시기상조",
+   "sig": "84ae8299d837",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LigaPortugal|Famalicão|Matheus Colombo": {
+   "l1": "중위권 팀에서 1군 적응기를 보내고 있는 센터백",
+   "l2": "리그 1경기 출전 — 20분 출전으로 검증 전 단계",
+   "sig": "49ebcc06378c",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Eredivisie|Cambuur|Billy van Duijl": {
+   "l1": "가장 안정적인 수비를 선보이는 중위권 팀의 핵심",
+   "l2": "평점 7.26 · 수비 상위 25% — 이번 시즌 폼 절정 유지 중",
+   "sig": "1c4e2247da5e",
+   "scene": "overachiever",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Eredivisie|Cambuur|Ilyes Hamache": {
+   "l1": "올 시즌 리그에서 가장 폼이 좋은 윙어",
+   "l2": "5골 3도움 · 평점 7.43 — 공격과 수비 모두 상위권 활약",
+   "sig": "a0a52fb3f3c9",
+   "scene": "overachiever",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Eredivisie|Cambuur|Rafik el Arguioui": {
+   "l1": "가장 위협적인 찬스 메이킹을 선보이는 주전",
+   "l2": "몸값 1백만 유로 — 부상 결장 2경기에도 팀 공격의 중심",
+   "sig": "b52d2ba30325",
+   "scene": "overachiever",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Eredivisie|NEC Nijmegen|Gabriel Brás": {
+   "l1": "유럽 대항전과 리그를 오가며 경험을 쌓는 센터백",
+   "l2": "유럽대항전 2경기 선발 — 최근 5경기 폼 83으로 상승세",
+   "sig": "40b5043dcdff",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Eredivisie|NEC Nijmegen|Kaj Sierhuis": {
+   "l1": "지난 시즌보다 무게감이 떨어진 스트라이커의 입지",
+   "l2": "평점 6.66 — 지난 시즌 6.99 대비 폼 하락",
+   "sig": "5b2396ee4e44",
+   "scene": "bench_start",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Eredivisie|NEC Nijmegen|Tobias Storm": {
+   "l1": "리그에서 태클이 가장 정확한 핵심 수비수",
+   "l2": "태클 리그 1위 — 리그와 유럽대항전 모두 주전으로 활약",
+   "sig": "710f16a1f061",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Eredivisie|Sparta R.|Andrej Kostić": {
+   "l1": "성장을 위해 출전 시간을 늘려가고 있는 유망주",
+   "l2": "19세 — 리그 6경기 출전으로 아직은 적응 단계",
+   "sig": "3fb08667fcf2",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Eredivisie|Sparta R.|Shunsuke Mito": {
+   "l1": "부상 복귀 후 다시 주전 자리를 다지는 윙어",
+   "l2": "부상 5경기 결장 — 배급 상위 28%의 준수한 패스 능력",
+   "sig": "60e5b59dff45",
+   "scene": "injury_return",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Eredivisie|Twente|Filip Thorvaldsen": {
+   "l1": "부상 회복 후 다시 기회를 노리는 유망주",
+   "l2": "부상으로 3경기 결장 — 몸값 €5M으로 상위권 팀 내 입지 다지는 중",
+   "sig": "3bacbc6f3f82",
+   "scene": "injury_return",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Eredivisie|Willem II|Chidozie Obi-Martin": {
+   "l1": "1군 무대는 아직 맛보기 단계인 유망주",
+   "l2": "18세 · 53분 출전 — 출전이 쌓이면 평가가 빠르게 바뀔 선수",
+   "sig": "46cb878e9e5b",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Eredivisie|Zwolle|Ryan Thomas": {
+   "l1": "리그에서 가장 폼이 좋은 미드필더 중 하나",
+   "l2": "인터셉트 리그 1위 · 평점 7.26 — 피지컬·듀얼 상위 6%로 중원 장악",
+   "sig": "12f80af77ade",
+   "scene": "good_season",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "BelgianProLeague|Anderlecht|Mario Stroeykens": {
+   "l1": "교체 투입으로도 확실한 존재감을 보이는 미드필더",
+   "l2": "1골 · 평점 7.2 — 지난 시즌 평점 6.57 대비 뚜렷한 기량 상승세",
+   "sig": "171ef39f2be7",
+   "scene": "bench_start",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "BelgianProLeague|Antwerp|Daam Foulon": {
+   "l1": "부상이 잦아 컨디션 회복이 절실한 시즌",
+   "l2": "6경기 결장 — 평점 6.37로 지난 시즌 대비 하락세",
+   "sig": "514101532738",
+   "scene": "injury_return",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "BelgianProLeague|Beveren|Victor Olatunji": {
+   "l1": "벤치에서 기회를 기다리는 스트라이커",
+   "l2": "리그 3경기 출전 — 평점 6.88로 준수한 모습",
+   "sig": "59dbefae032d",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "BelgianProLeague|Beveren|Yoni Gomis": {
+   "l1": "수비진의 핵심으로 자리 잡은 젊은 센터백",
+   "l2": "평점 7.08 — 리그 9경기 선발로 팀 수비 책임지는 중",
+   "sig": "94bdd578c7cf",
+   "scene": "good_season",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "BelgianProLeague|Club Brugge|Andrej Vasovic": {
+   "l1": "성장을 위해 출전 기회가 필요한 유망주",
+   "l2": "19세 — 리그 9분 출전으로 아직 검증 단계",
+   "sig": "09e3b82e373b",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "BelgianProLeague|Genk|Aaron Bibout": {
+   "l1": "교체로 나서 짧은 시간 동안 확실한 결정력",
+   "l2": "리그 3골 — 공격 상위 1%의 득점 감각 보유",
+   "sig": "57820d824f62",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "BelgianProLeague|Genk|Milan Roganović": {
+   "l1": "미래가 기대되는 신예 풀백",
+   "l2": "21세 — 14분 출전으로 가능성 확인 중",
+   "sig": "e9880c538225",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "BelgianProLeague|La Louvière|Mustapha Isah": {
+   "l1": "하위권 팀의 공격을 책임지는 핵심 자원",
+   "l2": "득점 리그 공동 3위 — 평점 7.03으로 팀 내 돋보이는 활약",
+   "sig": "d324fa0ed28e",
+   "scene": "good_season",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "BelgianProLeague|Mechelen|Moncef Zekri": {
+   "l1": "이제 막 1군 무대를 밟기 시작한 유망주",
+   "l2": "리그 1경기 출전 — 성장 가능성을 확인하는 단계",
+   "sig": "a202cd8f1e2c",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "BelgianProLeague|OH Leuven|Alessandro Fontanarosa": {
+   "l1": "올 시즌 출전 기회가 극히 제한적인 수비수",
+   "l2": "리그 1경기 출전 — 100만 유로의 몸값 대비 입지 확보가 우선",
+   "sig": "888b3f741f0f",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "BelgianProLeague|OH Leuven|Robin Mirisola": {
+   "l1": "피지컬을 앞세워 입지를 다지는 유망주",
+   "l2": "피지컬·듀얼 상위 11% — 리그 2골로 가능성 입증 중",
+   "sig": "0b3ae568534c",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "BelgianProLeague|Sint-Truiden|Arbnor Muja": {
+   "l1": "하위권 팀에서 도약을 노리는 로테이션 자원",
+   "l2": "몸값 2백만 유로 — 지난 시즌 평점 6.89 대비 아쉬운 현재 상황",
+   "sig": "e065f82845dd",
+   "scene": "injury_return",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "BelgianProLeague|Sint-Truiden|Nathanaël Mbuku": {
+   "l1": "기대치에 비해 공격 포인트 생산이 아쉬운 윙어",
+   "l2": "몸값 2백만 유로 — 팀 순위 하위권 속 분전이 필요한 시점",
+   "sig": "d4afa0de90e7",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "BelgianProLeague|Standard Liège|Alexis Trouillet": {
+   "l1": "주전으로 꾸준히 나서지만 임팩트는 평범한 단계",
+   "l2": "몸값 2백만 유로 — 팀 순위 중위권에서 무난한 활약 이어가는 중",
+   "sig": "802f89229dbe",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "BelgianProLeague|Standard Liège|Rayan Touzghar": {
+   "l1": "주전으로 뛰지만 기대치보다 성장이 더딘 미드필더",
+   "l2": "평점 6.82 — 리그 10경기 선발 출전 중이나 공격 포인트 부재",
+   "sig": "a03fb58bb2dc",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "BelgianProLeague|Standard Liège|Tobias Mohr": {
+   "l1": "출전 기회가 제한적인 시즌",
+   "l2": "리그 출전 7경기 — 평점 6.35로 지난 시즌 대비 하락세",
+   "sig": "8463f702f92a",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "BelgianProLeague|Union SG|Dylan Aquino": {
+   "l1": "성장을 위해 경험이 필요한 유망주",
+   "l2": "21세 — 출전 3경기, 아직 기량을 검증할 시간 부족",
+   "sig": "22bd842e6a2f",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "BelgianProLeague|Union SG|Nikki Havenaar": {
+   "l1": "유럽대항전과 리그를 오가는 핵심",
+   "l2": "유럽대항전 선발 4경기 — 리그에서도 8경기 출전",
+   "sig": "b3721947b012",
+   "scene": "good_season",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "BelgianProLeague|Zulte Waregem|Jakob Kiilerich": {
+   "l1": "중위권 팀 수비의 중심을 잡는 주전",
+   "l2": "리그 10경기 출전 — 피지컬 및 듀얼 상위 21% 강점",
+   "sig": "e47bb189d153",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "BelgianProLeague|Zulte Waregem|Marley Aké": {
+   "l1": "피지컬 강점이 돋보이는 윙어",
+   "l2": "피지컬 및 듀얼 상위 6% — 리그 10경기 출전",
+   "sig": "967152661815",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Championship|Blackburn Rovers|Balázs Tóth": {
+   "l1": "주전으로 나서지만 존재감은 다소 평범한 시즌",
+   "l2": "평점 6.59로 지난 시즌(6.92)보다 하락 — 박스 지배 하위 14%",
+   "sig": "3c07b9ce9b75",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Championship|Blackburn Rovers|Aynsley Pears": {
+   "l1": "리그에선 벤치에서 시작하는 날이 많은 시즌",
+   "l2": "무실점 상위 15% — 리그 3경기 출전으로 출전 기회 제한",
+   "sig": "24db3db86501",
+   "scene": "bench_start",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Championship|Burnley|Dastan Satpaev": {
+   "l1": "부상으로 인한 공백이 길어 아쉬움이 남는 유망주",
+   "l2": "부상 결장 4경기 — 308분 출전하며 복귀 후 적응 중",
+   "sig": "89f7d8749138",
+   "scene": "injury_return",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Championship|Burnley|Mike Trésor": {
+   "l1": "올 시즌 출전 기회가 극히 제한적인 상황",
+   "l2": "리그 0골 0도움 — 27세의 나이에 비해 부족한 리그 경험",
+   "sig": "53c9258655fe",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Championship|Derby County|Dion Sanderson": {
+   "l1": "팀의 하위권 성적과 함께 고전 중인 수비수",
+   "l2": "평점 6.58 · 폼 47 — 지난 시즌 평점 6.73 대비 하락세",
+   "sig": "352b056c29d3",
+   "scene": "struggling",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Championship|Derby County|Sammie Szmodics": {
+   "l1": "공격적인 재능은 확실하나 볼 운반은 보완할 부분",
+   "l2": "몸값 €4M · 리그 13경기 — 볼 운반 하위 14%의 약점에도 공격 기여도 높음",
+   "sig": "2ae1eac2414c",
+   "scene": "good_season",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Championship|Derby County|Charlie Taylor": {
+   "l1": "잦은 부상으로 인해 올 시즌 고전 중인 풀백",
+   "l2": "부상 결장 7경기 · 평점 6.6 — 리그 8경기 출전으로 흐름 끊긴 상황",
+   "sig": "40d423f273eb",
+   "scene": "struggling",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Championship|Preston North End|Lewis Gibson": {
+   "l1": "주전 도약을 위해 안정감을 되찾아야 할 센터백",
+   "l2": "평점 6.85 · 6경기 출전 — 팀 순위 하위권에서 고전하는 중",
+   "sig": "4c8b619db1f3",
+   "scene": "bench_start",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Championship|Queens Park Rangers|Pierce Charles": {
+   "l1": "빌드업 능력을 갖춘 골키퍼로 팀의 든든한 주전",
+   "l2": "빌드업 상위 12% · 14경기 출전 — 팀 순위 중위권의 핵심 자원",
+   "sig": "3ad1cda8d051",
+   "scene": "good_season",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Championship|Queens Park Rangers|Koki Saito": {
+   "l1": "번뜩이는 돌파는 있지만 결과물이 부족한 시즌",
+   "l2": "볼 운반 상위 29% · 창조 상위 18% — 공격 포인트 생산은 미흡",
+   "sig": "4c4483d9004f",
+   "scene": "bench_start",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Championship|Queens Park Rangers|Jonathan Varane": {
+   "l1": "팀의 중위권 도약을 위해 분전하는 시즌",
+   "l2": "몸값 2백만 유로 · 461분 출전 — 수비 가담은 확실한 강점",
+   "sig": "c25123bacb97",
+   "scene": "bench_start",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Championship|Sheffield United|Jaïro Riedewald": {
+   "l1": "출전 기회를 찾지 못하며 고전하는 시즌",
+   "l2": "6경기 출전 · 평점 6.48 — 창조 능력 하위 9%로 부진",
+   "sig": "e39289310c4c",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Championship|Southampton|Zach Abbott": {
+   "l1": "성장을 위해 출전 시간을 기다리는 유망주",
+   "l2": "20세 · 1경기 출전 — 미래를 위한 경험 축적 중",
+   "sig": "f7afc4cc8f9e",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Championship|Stoke City|Sam Gallagher": {
+   "l1": "상위권 팀에서 효율적인 활약을 펼치는 스트라이커",
+   "l2": "2골 1도움 · 평점 6.99 — 이번 시즌 폼 매우 좋음",
+   "sig": "6617e53490f9",
+   "scene": "bench_start",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Championship|Swansea City|Marko Stamenić": {
+   "l1": "배급 능력은 준수하나 존재감은 평범한 시즌",
+   "l2": "평점 6.78로 리그 평균 수준 — 배급 상위 10% 강점에도 공격 포인트 부재",
+   "sig": "6ca543db144a",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Championship|Watford|Kévin Keben": {
+   "l1": "팀의 부진 속에서 고전하고 있는 센터백",
+   "l2": "평점 6.56으로 지난 시즌보다 하락 — 창조 하위 9%의 공격 가담",
+   "sig": "9611d7c909fe",
+   "scene": "struggling",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Championship|Watford|Branimir Mlačić": {
+   "l1": "1군 경험을 쌓는 단계인 어린 유망주",
+   "l2": "19세 — 7경기 출전으로 기량 증명에 시간이 필요한 상황",
+   "sig": "00de4796410e",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Championship|West Bromwich Albion|Rabby Nzingoula": {
+   "l1": "수비와 배급에서 준수한 모습을 보이는 유망주",
+   "l2": "배급 상위 30% — 몸값 €4M에 걸맞은 경기 운영 능력",
+   "sig": "23cd0a3dcdb4",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Championship|Wrexham|Ryan Longman": {
+   "l1": "수비 기여도는 확실하나 출전 기회가 부족한 시즌",
+   "l2": "수비 상위 2% — 리그 9경기 출전에 그치며 입지 확보가 과제",
+   "sig": "d692328ede9d",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SuperLig|Başakşehir|Ousseynou Ba": {
+   "l1": "후방 빌드업의 핵심으로 자리 잡은 센터백",
+   "l2": "배급 상위 10% — 평점 6.96으로 안정적인 수비력 증명",
+   "sig": "946b6aa7465d",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SuperLig|Erzurumspor FK|Miguel Cardoso": {
+   "l1": "기대 이상의 득점력을 보여주는 측면 공격 자원",
+   "l2": "배급 상위 22% — 평점 6.86으로 지난 시즌과 유사한 폼",
+   "sig": "11a4c047337f",
+   "scene": "bench_start",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SuperLig|Erzurumspor FK|İlkan Sever": {
+   "l1": "아직은 기회를 기다리는 단계의 공격수",
+   "l2": "22세 · 리그 출전 1경기 — 출전 시간 8분으로 검증이 필요한 시즌",
+   "sig": "f47ae3293519",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SuperLig|Gaziantep FK|Alexandru Maxim": {
+   "l1": "하위권 팀의 공격을 홀로 이끄는 창조자",
+   "l2": "도움 2개 · 키패스 리그 3위 — 창조 능력은 상위 15% 수준",
+   "sig": "63d1d33b3090",
+   "scene": "veteran_rise",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SuperLig|Gaziantep FK|Ulrich Meleke": {
+   "l1": "팀 수비의 중심을 든든히 지키는 중원 자원",
+   "l2": "인터셉트 리그 2위 · 평점 7.04 — 수비 능력은 상위 20% 수준",
+   "sig": "3220e477d614",
+   "scene": "good_season",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SuperLig|Gaziantep FK|Abakar Sylla": {
+   "l1": "기대치에 비해 아쉬움이 남는 시즌",
+   "l2": "평점 6.67 · 리그 6경기 출전 — 로테이션으로 밀려난 현재 상황",
+   "sig": "52bf16e22b5d",
+   "scene": "bench_start",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SuperLig|Gaziantep FK|Sontje Hansen": {
+   "l1": "부상 회복 후 기회를 엿보는 윙어",
+   "l2": "부상 결장 3경기 · 평점 6.41 — 출전 시간 확보가 시급한 시즌",
+   "sig": "373b9c398153",
+   "scene": "injury_return",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SuperLig|Gençlerbirliği|İrfan Eğribayat": {
+   "l1": "무난 이상의 활약으로 신뢰를 받는 주전",
+   "l2": "리그 1도움 · 선방 능력 상위 28% — 나이 28세의 안정적인 시즌",
+   "sig": "2007d1d40be7",
+   "scene": "good_season",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SuperLig|Gençlerbirliği|Rafael Luís": {
+   "l1": "1군 무대 적응을 이어가고 있는 성장기 유망주",
+   "l2": "21세 — 출전 시간이 쌓이면 평가가 빠르게 바뀔 선수",
+   "sig": "ad822aa7a0cf",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SuperLig|Kasımpaşa|Matei Cristian Ilie": {
+   "l1": "팀의 상위권 도약에 기여 중인 주전 수비수",
+   "l2": "팀 순위 5위 — 든든한 출전 시간으로 수비 라인 중심",
+   "sig": "7b0a68d148b1",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SuperLig|Kasımpaşa|Ayberk Karapo": {
+   "l1": "리그에서 가장 강력한 태클 능력을 보유한 수비수",
+   "l2": "태클 리그 1위 — 평점 6.79로 준수한 활약",
+   "sig": "4647fa9f6696",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SuperLig|Kasımpaşa|Mortadha Ben Ouanes": {
+   "l1": "잦은 부상으로 인해 올 시즌 입지가 좁아진 상태",
+   "l2": "부상 결장 9경기 — 리그 1경기 출전에 그친 아쉬운 시즌",
+   "sig": "9c6118a65354",
+   "scene": "injury_return",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SuperLig|Çorum FK|Marcos Felipe": {
+   "l1": "꾸준히 선발로 나서지만 존재감은 평범한 시즌",
+   "l2": "평점 6.64로 지난 시즌(6.81)보다 하락 — 무실점 비율은 하위 6% 수준",
+   "sig": "cf15dd9bb912",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SuperLig|Çorum FK|Berat Özdemir": {
+   "l1": "건강하지만 벤치에서 시작하는 날이 많은 시즌",
+   "l2": "8경기 출전 — 배급 능력은 상위 20%로 준수",
+   "sig": "3f0796c5ccba",
+   "scene": "bench_start",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "AustrianBundesliga|Austria Wien|Aleksandar Dragović": {
+   "l1": "부상 여파로 올 시즌 다소 주춤한 핵심 주전",
+   "l2": "부상으로 3경기 결장 — 평점 6.61로 지난 시즌(6.85) 대비 하락",
+   "sig": "6fb30644f165",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "AustrianBundesliga|LASK|Alessandro Schöpf": {
+   "l1": "교체와 선발을 오가며 팀 승리에 기여 중",
+   "l2": "9경기 출전 — 지난 시즌 평점 7.07과 유사한 활약",
+   "sig": "2e465d9308aa",
+   "scene": "bench_start",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "AustrianBundesliga|Rapid Wien|Niklas Hedl": {
+   "l1": "올 시즌 최고의 활약을 보여주는 주전 골키퍼",
+   "l2": "무실점 상위 8% — 빌드업 23%로 팀 공격의 시작점",
+   "sig": "1d09744923c7",
+   "scene": "overachiever",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "AustrianBundesliga|Rapid Wien|Ercan Kara": {
+   "l1": "팀의 핵심 주전으로 공격의 마침표를 찍는 선수",
+   "l2": "11경기 출전 — 창조적 관여는 하위 12%로 다소 부족",
+   "sig": "2dd33ad75da7",
+   "scene": "overachiever",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "AustrianBundesliga|Rapid Wien|Nikolaus Wurmbrand": {
+   "l1": "공격 작업에서 번뜩이는 재능을 보여주는 윙어",
+   "l2": "공격 상위 4% · 창조 상위 14% — 아직은 성장 단계인 유망주",
+   "sig": "a6f91f0e3bae",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "AustrianBundesliga|Salzburg|Gaoussou Diakite": {
+   "l1": "공격적인 재능은 확실하나 흐름이 끊긴 시즌",
+   "l2": "공격 상위 2% · 평점 6.95 — 부상 여파로 출전 시간 부족",
+   "sig": "87974f437c2e",
+   "scene": "injury_return",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "AustrianBundesliga|Salzburg|Umut Tohumcu": {
+   "l1": "백업 자원으로 벤치에서 기회를 엿보는 미드필더",
+   "l2": "유럽대항전 선발 1경기 — 최근 5경기 폼 56으로 정체",
+   "sig": "858a22a0c3b8",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "AustrianBundesliga|Sturm Graz|Nelson Weiper": {
+   "l1": "득점 감각은 증명했으나 꾸준한 출전이 관건",
+   "l2": "리그 출전 4경기 · 21세 — 상위권 팀 내 유망주로 성장 중",
+   "sig": "b8706d68c7cf",
+   "scene": "injury_return",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "DanishSuperliga|AC Horsens|Kingsley Bimpong": {
+   "l1": "리그에서 가장 뜨거운 폼을 자랑하는 유망주",
+   "l2": "평점 8.12 · 2골 — 최근 5경기 폼 69로 절정의 활약",
+   "sig": "af6549da9a52",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "DanishSuperliga|Brøndby IF|Olti Hyseni": {
+   "l1": "상위권 팀의 공격을 이끄는 무서운 신예",
+   "l2": "공격 상위 21% — 19세의 나이로 리그 12경기 주전 도약",
+   "sig": "f558d9d3ba37",
+   "scene": "overachiever",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "DanishSuperliga|Brøndby IF|Mathias Jensen": {
+   "l1": "아직은 1군 무대 적응이 필요한 유망주",
+   "l2": "리그 출전 2경기 — 공격 하위 1%로 경기 영향력은 제한적",
+   "sig": "315fb729c634",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "DanishSuperliga|FC København|Alex Král": {
+   "l1": "상위권 팀의 중원을 지키는 묵묵한 살림꾼",
+   "l2": "평점 6.8 — 지난 시즌 6.58 대비 소폭 개선된 활약",
+   "sig": "4aed75b793a5",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "DanishSuperliga|FC Midtjylland|Pedro Bravo": {
+   "l1": "지난 시즌 대비 폼이 다소 주춤한 중원 자원",
+   "l2": "평점 6.72 — 지난 시즌 6.91 대비 하락세 반영",
+   "sig": "ae942e176099",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "DanishSuperliga|FC Midtjylland|Andreas Maxsø": {
+   "l1": "선두 팀의 컵 대회 전용으로 활약 중인 베테랑",
+   "l2": "리그 출전 4경기 — 32세의 나이로 벤치에서 시작하는 날이 다수",
+   "sig": "3820397f51d3",
+   "scene": "bench_start",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "DanishSuperliga|FC Midtjylland|Adam Gabriel": {
+   "l1": "아직 팀 전술에 녹아들지 못한 수비 자원",
+   "l2": "리그 0골 0도움 — 2경기 출전으로 기회 자체가 부족한 상황",
+   "sig": "a5f5429972ea",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "DanishSuperliga|Nordsjælland|Ibrahim Adel": {
+   "l1": "드리블 돌파로 공격 활로를 뚫어내는 핵심 윙어",
+   "l2": "드리블 리그 공동 2위 — 2골 1도움으로 공격 기여도 상위 11%",
+   "sig": "9aa49b9ed8c3",
+   "scene": "good_season",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "DanishSuperliga|Nordsjælland|Levy Nene": {
+   "l1": "아직은 1군 무대 적응이 필요한 어린 공격수",
+   "l2": "평점 7.41 — 리그 1경기 출전으로 데이터가 쌓이는 과정",
+   "sig": "49ebcc06378c",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "DanishSuperliga|Randers FC|Musa Touré": {
+   "l1": "본격적인 1군 무대 진입을 노리는 어린 유망주",
+   "l2": "20세 나이 — 리그 1경기 출전으로 아직은 맛보기 단계",
+   "sig": "6e360d51dc06",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "DanishSuperliga|Sønderjyske|Enis Zeqiri": {
+   "l1": "아직 1군 무대 적응이 필요한 유망주",
+   "l2": "리그 1경기 출전 — 출전 시간 9분으로 검증이 더 필요한 단계",
+   "sig": "7ae0a94fb2e7",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SwissSuperLeague|Basel|Keigo Tsunemoto": {
+   "l1": "공격 효율을 끌어올려야 하는 풀백",
+   "l2": "리그 10경기 출전 — 공격 하위 4%에 머물며 아쉬운 활약 중",
+   "sig": "613cadab4a0d",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SwissSuperLeague|Basel|Asane Sow": {
+   "l1": "부상을 딛고 절정의 기량을 뽐내는 윙어",
+   "l2": "부상 4경기 결장 — 3골 4도움으로 팀의 중위권 도약 견인",
+   "sig": "24c5a6dc73b3",
+   "scene": "overachiever",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SwissSuperLeague|FC Zürich|Philippe Kény": {
+   "l1": "득점력 하나만큼은 확실한 팀의 주포",
+   "l2": "득점 리그 공동 2위 — 6골 1도움으로 팀의 상위권 순위 유지 기여",
+   "sig": "6c6e35970557",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SwissSuperLeague|Lausanne|Koba Koindredi": {
+   "l1": "벤치에서 복귀를 기다리는 백업 자원",
+   "l2": "4경기 출전 — 평점 6.42로 지난 시즌 대비 하락한 폼",
+   "sig": "b62d23bf290d",
+   "scene": "injury_return",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SwissSuperLeague|Lugano|Daniel Dos Santos": {
+   "l1": "리그 선두를 이끄는 가장 파괴적인 미드필더",
+   "l2": "결정력 리그 1위 · 평점 7.25로 지난 시즌 대비 기량 상승세",
+   "sig": "ea42503fb355",
+   "scene": "overachiever",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SwissSuperLeague|Lugano|Dereck Moncada": {
+   "l1": "주전 경쟁에서 확실한 눈도장을 찍은 시즌",
+   "l2": "11경기 출전 · 창조적 플레이는 다소 부족해도 득점력으로 증명",
+   "sig": "201610d52cbc",
+   "scene": "good_season",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SwissSuperLeague|Lugano|Martim Marques": {
+   "l1": "부상 여파로 인해 아쉬움이 남는 시즌",
+   "l2": "부상 결장 5경기 · 지난 시즌 대비 평점 소폭 하락",
+   "sig": "11d10f34bdd6",
+   "scene": "injury_return",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SwissSuperLeague|Luzern|Oscar Kabwit": {
+   "l1": "꾸준히 선발로 나서지만 눈에 띄는 존재감은 부족",
+   "l2": "3골 1도움 · 평점 6.86으로 리그 중위권 팀의 평범한 활약",
+   "sig": "f6b2094f3b23",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SwissSuperLeague|St. Gallen|Aliou Baldé": {
+   "l1": "상대 수비를 흔드는 능력이 돋보이는 시즌",
+   "l2": "12경기 출전 — 볼 운반 상위 30%의 활동량",
+   "sig": "581521114f07",
+   "scene": "good_season",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SwissSuperLeague|St. Gallen|Christian Witzig": {
+   "l1": "중위권 팀의 주전으로 활약 중이나 득점력은 부족",
+   "l2": "1골 — 2경기 부상 결장 이후 복귀한 상태",
+   "sig": "bd351c625817",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SwissSuperLeague|St. Gallen|Tom Gaal": {
+   "l1": "부상 공백을 딛고 최근 다시 폼을 끌어올리는 중",
+   "l2": "6경기 부상 결장 — 최근 5경기 폼 83으로 상승세",
+   "sig": "1143b684bad2",
+   "scene": "injury_return",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SwissSuperLeague|Thun|Fabio Fehr": {
+   "l1": "날카로운 킥으로 공격 기회를 생산하는 핵심",
+   "l2": "1골 2도움 — 유럽대항전 5경기 선발로 경험 축적",
+   "sig": "16ed0771e757",
+   "scene": "good_season",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SwissSuperLeague|Young Boys|Armin Gigović": {
+   "l1": "상위권 팀 중원을 묵묵히 지키는 살림꾼",
+   "l2": "평점 7.01 — 배급 상위 26%의 안정적인 경기 운영",
+   "sig": "7a5d17c0ab82",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "EPL|Sunderland|Luke O'Nien": {
+   "l1": "꾸준히 기회를 얻지만 기대만큼의 존재감은 부족",
+   "l2": "4경기 출전 — 볼 운반은 상위 30% 수준",
+   "sig": "e620c53a8e18",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Athletic Club|Jesús Vizcay": {
+   "l1": "1군 무대 적응을 시작하는 스트라이커",
+   "l2": "21세 · 1경기 출전 — 앞으로의 성장세가 기대되는 단계",
+   "sig": "84d4e32e5c37",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Athletic Club|Nicolás Serrano": {
+   "l1": "컵 대회 위주로 출전하며 기회를 엿보는 윙어",
+   "l2": "4분 출전 · 몸값 €2M — 지난 시즌 평점 6.66 대비 정체된 시즌",
+   "sig": "8f9ea3201639",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Deportivo A Coruña|Kevin Sánchez": {
+   "l1": "성장 가능성을 확인 중인 스트라이커",
+   "l2": "21세 · 15분 출전 — 최근 폼 71로 서서히 올라오는 단계",
+   "sig": "84d4e32e5c37",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Deportivo A Coruña|Riki Rodríguez": {
+   "l1": "로테이션 자원으로 기회를 노리는 윙어",
+   "l2": "평점 6.58 · 8경기 출전 — 이번 시즌 폼 56으로 주춤한 흐름",
+   "sig": "92070634baf4",
+   "scene": "bench_start",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Deportivo A Coruña|Teun Gijselhart": {
+   "l1": "중앙 미드필더로서 가능성을 보여주는 단계",
+   "l2": "21세 · 평점 6.62 — 1경기 출전으로 아직은 검증 전",
+   "sig": "84d4e32e5c37",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Espanyol|Alejandro Santiago Vargas": {
+   "l1": "1군 무대에서 가능성을 입증한 유망주",
+   "l2": "19세 · 평점 6.92 — 짧은 출전 시간 속에서도 준수한 활약",
+   "sig": "fceaf5b3ecba",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Espanyol|Jan Peries": {
+   "l1": "1군 무대를 경험하며 성장 중인 스트라이커",
+   "l2": "19세 · 1경기 출전 — 성인 리그 적응을 거치는 단계",
+   "sig": "fceaf5b3ecba",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Espanyol|José López": {
+   "l1": "성인 무대에서 가능성을 타진하는 어린 풀백",
+   "l2": "20세 · 2경기 출전 — 1군 적응을 위해 경험을 쌓는 중",
+   "sig": "6735a9b5952e",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Getafe|Oscar Lopez": {
+   "l1": "1군 데뷔를 거치며 경험을 쌓는 유망주",
+   "l2": "20세 · 2경기 출전 — 출전 시간을 늘려야 할 시점",
+   "sig": "6735a9b5952e",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Getafe|Sebastián Boselli": {
+   "l1": "제한된 기회 속에서도 수비력은 확실한 센터백",
+   "l2": "수비 상위 3% · 평점 6.79 — 최근 폼 97로 급상승세",
+   "sig": "1a4cd059e422",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Levante|Yanis Musuayi": {
+   "l1": "프로 무대 적응을 거치며 성장하는 유망주",
+   "l2": "19세 · 4경기 출전 — 하위권 팀에서 기회를 얻는 중",
+   "sig": "ba8e19853a46",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Málaga|Joaquín Muñoz": {
+   "l1": "이름값에 비해 아쉬운 활약이 이어지는 시즌",
+   "l2": "공격 하위 6% · 이번 시즌 폼 46 — 반등이 절실한 상황",
+   "sig": "ab4a86d1b0b5",
+   "scene": "struggling",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Málaga|Julen Lobete": {
+   "l1": "아직 팀에 녹아들지 못한 채 공백기가 긴 윙어",
+   "l2": "리그 출전 5분 — 몸값 100만 유로 대비 성과가 아쉬운 상황",
+   "sig": "eecfa0fe2db6",
+   "scene": "injury_return",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Racing Santander|Manu Hernando": {
+   "l1": "선발과 교체를 오가며 반등을 노리는 센터백",
+   "l2": "평점 6.41 및 리그 5경기 출전 — 벤치에 머무는 시간이 더 긴 시즌",
+   "sig": "c6c68c039de3",
+   "scene": "bench_start",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Real Sociedad|Alex Marchal": {
+   "l1": "출전 시간이 늘어나며 1군 무대에 적응하는 선수",
+   "l2": "평점 6.46 및 리그 5경기 — 앞으로의 성장이 기대되는 단계",
+   "sig": "a24f5de0ee90",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Valencia|Aimar Blazquez": {
+   "l1": "출전이 너무 적어 평가를 내리기 이른 공격수",
+   "l2": "평점 6.47 및 리그 1경기 — 긴 호흡으로 지켜봐야 할 시즌",
+   "sig": "0e115d1ff026",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Valencia|Ryūnosuke Satō": {
+   "l1": "성장이 절실한 단계의 윙어",
+   "l2": "20세 · 리그 5경기 출전 — 팀 순위 하위권에서 반등을 위한 기회 부족",
+   "sig": "be9e5b97ddca",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Villarreal|Nizar": {
+   "l1": "본격적인 1군 경험을 쌓는 유망주",
+   "l2": "21세 · 리그 2경기 출전 — 10분이라는 짧은 시간 속 증명이 필요한 단계",
+   "sig": "84d4e32e5c37",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Athletic Club|Christian Imga": {
+   "l1": "미래가 기대되는 어린 윙어",
+   "l2": "17세 · 최근 폼 67 — 리그 출전 경험을 쌓으며 성장하는 단계",
+   "sig": "2e0c48af3b8f",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "LaLiga|Alavés|Carlos Protesoni": {
+   "l1": "주전 경쟁에서 다소 밀려난 수비형 미드필더",
+   "l2": "평점 6.49 · 리그 5경기 출전 — 중위권 팀 내에서 백업 역할에 머무는 중",
+   "sig": "94e10d505fd5",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Bundesliga|Augsburg|Uchenna Ogundu": {
+   "l1": "아직 1군 무대 적응이 필요한 유망주",
+   "l2": "20세 · 리그 2경기 출전 — 출전 시간 3분으로 검증이 더 필요한 단계",
+   "sig": "1944154f596b",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Bundesliga|SV Elversberg|Nicholas Mickelson": {
+   "l1": "컵 대회 위주로 기회를 받는 풀백",
+   "l2": "리그 4경기 출전 · 도움 1개 — 70분 출전으로 제한적인 활약 중",
+   "sig": "86e4f02aba46",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Bundesliga|Frankfurt|Noel Nkili": {
+   "l1": "팀 중위권 경쟁 속에서 성장을 꾀하는 중",
+   "l2": "369분 출전 — 평점 6.8로 가능성을 입증하는 과정",
+   "sig": "c8a23aa50fea",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Bundesliga|Gladbach|Mathieu Nguefack": {
+   "l1": "팀 하위권 상황 속 출전 기회를 늘려가는 중",
+   "l2": "5경기 출전 — 평점 6.36으로 아직은 검증이 필요한 단계",
+   "sig": "257ef2bd7102",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Bundesliga|Hamburger SV|Yussuf Poulsen": {
+   "l1": "피지컬 강점을 앞세워 팀 공격에 힘을 보태는 중",
+   "l2": "피지컬·듀얼 상위 17% — 리그 2골로 득점력 발휘",
+   "sig": "d983e2968e3c",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Bundesliga|Hoffenheim|Jykese Fields": {
+   "l1": "이제 막 1군 무대를 밟기 시작한 어린 자원",
+   "l2": "19세 — 출전 경험을 쌓으며 미래를 준비하는 단계",
+   "sig": "fceaf5b3ecba",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Bundesliga|SC Paderborn|Oliver Batista-Meier": {
+   "l1": "부상으로 인해 온전한 시즌을 보내지 못하는 상황",
+   "l2": "부상 결장 3경기 — 복귀 후 컨디션 회복이 급선무",
+   "sig": "b7e3e77cb535",
+   "scene": "injury_return",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Bundesliga|Schalke 04|Timo Becker": {
+   "l1": "리그에서 가장 확실한 태클 능력을 갖춘 수비수",
+   "l2": "태클 리그 1위 — 수비 상위 27%로 팀 수비의 중심",
+   "sig": "c0fef3604f27",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Bundesliga|Stuttgart|Fabian Bredlow": {
+   "l1": "경험을 바탕으로 팀의 뒷문을 책임지는 중",
+   "l2": "31세 베테랑, 몸값 100만 유로에 걸맞은 평범한 활약",
+   "sig": "4a42f57fca7e",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Bundesliga|Union Berlin|Marin Ljubicic": {
+   "l1": "컵 대회 위주로 나서며 기회를 엿보는 공격수",
+   "l2": "평점 6.3으로 부진, 지난 시즌 6.95 대비 하락세",
+   "sig": "4e933495738b",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Bundesliga|Werder Bremen|Cedric Itten": {
+   "l1": "상위권 팀의 컵 전용 자원으로 머무는 시즌",
+   "l2": "리그 5경기 출전, 출전 시간 90분으로 입지 부족",
+   "sig": "a4c0d40af5ee",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Bundesliga|Union Berlin|Linus Guether": {
+   "l1": "이제 막 1군 무대를 밟기 시작한 어린 유망주",
+   "l2": "16세, 리그 1경기 출전으로 아직 평가가 이른 단계",
+   "sig": "25dfad05c356",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Atalanta|Javison Idele": {
+   "l1": "중위권 팀에서 미래를 준비하는 어린 센터백",
+   "l2": "19세, 리그 1경기 출전으로 실전 경험 쌓는 중",
+   "sig": "fceaf5b3ecba",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Cagliari|Alessandro Sugamele": {
+   "l1": "이제 막 프로 무대를 밟기 시작한 유망주",
+   "l2": "19세 · 출전 시간 16분 — 성장을 위한 경험이 필요한 단계",
+   "sig": "fceaf5b3ecba",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Cagliari|Joseph Liteta": {
+   "l1": "잠재력을 확인하기엔 아직 이른 유망주",
+   "l2": "평점 6.57 — 지난 시즌 대비 소폭 상승한 기량",
+   "sig": "c7cc12ae4acc",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Frosinone|Matteo Chichella": {
+   "l1": "상위권 팀에서 알찬 활약을 보여주는 미드필더",
+   "l2": "1골 · 평점 6.73 — 최근 경기 폼 상승세가 돋보이는 중",
+   "sig": "20caaf487eaf",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Genoa|Adam Zulevic": {
+   "l1": "1군 무대 적응을 위해 담금질 중인 스트라이커",
+   "l2": "19세 · 리그 1경기 출전 — 긴 호흡으로 성장을 기다려야 할 선수",
+   "sig": "fceaf5b3ecba",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Genoa|Samuel Wiafe": {
+   "l1": "최근 경기력을 끌어올리며 존재감을 드러내는 중",
+   "l2": "최근 폼 78 · 평점 6.61 — 시즌 초반의 주춤함을 딛고 일어서는 단계",
+   "sig": "195299e906e0",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Juventus|Justin Oboavwoduo": {
+   "l1": "미래를 위해 1군 무대를 경험 중인 스트라이커",
+   "l2": "20세 · 리그 1경기 출전 — 성장을 위해 더 많은 기회가 필요한 단계",
+   "sig": "6735a9b5952e",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Lecce|Ali Dembélé": {
+   "l1": "아직 1군 무대 적응이 필요한 센터백",
+   "l2": "리그 1경기 출전 — 22세의 나이와 몸값 €1M으로 성장이 필요한 단계",
+   "sig": "704fed4da20b",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Milan|Sankhoun Diawara": {
+   "l1": "성장 가능성을 확인 중인 어린 유망주",
+   "l2": "최근 폼 73 — 유럽대항전 선발 1회로 경험을 쌓는 중",
+   "sig": "eecbb03cddce",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Monza|Adam Bakoune": {
+   "l1": "리그 적응에 어려움을 겪는 풀백",
+   "l2": "최근 폼 50 · 평점 6.48 — 하위권 팀에서 주전 도약이 시급한 상황",
+   "sig": "574b0dca7ea4",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Parma|Franco Carboni": {
+   "l1": "컵 대회 위주로 출전 기회를 얻는 수비수",
+   "l2": "리그 2경기 출전 — 지난 시즌 6.5 대비 소폭 상승한 평점 6.58",
+   "sig": "f38ff8eed31c",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Parma|Pontus Almqvist": {
+   "l1": "부상 복귀 후 창조성을 뽐내는 윙어",
+   "l2": "창조 상위 2% — 부상 3경기 결장에도 평점 6.71 유지",
+   "sig": "0b150a8d56ac",
+   "scene": "injury_return",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Sassuolo|Cas Odenthal": {
+   "l1": "수비력에 비해 득점력은 돋보이는 센터백",
+   "l2": "리그 2골 — 하위권 팀에서 평점 6.81로 제 몫을 하는 중",
+   "sig": "582b5c33c63b",
+   "scene": "bench_start",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Sassuolo|Gabriel Kulla": {
+   "l1": "이제 막 프로 무대를 경험하는 어린 스트라이커",
+   "l2": "18세 — 출전 경험이 쌓이며 성장 중인 유망주",
+   "sig": "4ddbf37d502b",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Sassuolo|Laurs Skjellerup": {
+   "l1": "리그에서 출전 기회를 잡지 못하는 스트라이커",
+   "l2": "몸값 €1M — 1경기 출전으로 활약을 증명하기엔 부족한 상황",
+   "sig": "6c163fc6d39b",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Venezia|Bartol Franjić": {
+   "l1": "부상으로 인해 흐름이 끊긴 센터백",
+   "l2": "8경기 결장 — 복귀 후 경기력을 회복해야 하는 시점",
+   "sig": "eac1c3f29783",
+   "scene": "injury_return",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "SerieA|Venezia|Lamine Fanne": {
+   "l1": "아직 리그에서 자신의 가치를 증명하지 못한 단계",
+   "l2": "평점 6.67 — 출전 시간 25분으로 제한적인 활약",
+   "sig": "952ff3d1748a",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Angers|Anthony Bermont": {
+   "l1": "성장을 위해 더 많은 출전이 필요한 어린 윙어",
+   "l2": "몸값 €3M — 6경기 출전으로 경험을 쌓아가는 중",
+   "sig": "75bb34f8475f",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Auxerre|Paul Nardi": {
+   "l1": "로테이션 자원으로 밀려나며 고전하는 골키퍼",
+   "l2": "3경기 출전 — 이름값 대비 아쉬운 활약이 반영된 현재",
+   "sig": "392c54e9db05",
+   "scene": "bench_start",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Le Havre|Fodé Doucouré": {
+   "l1": "지난 시즌 대비 아쉬움이 남는 출전 시간과 활약",
+   "l2": "지난 시즌 평점 6.78 대비 하락 — 95분 출전으로 존재감 증명 미흡",
+   "sig": "f6d856d5d346",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Le Havre|Mouhamed Ndiaye": {
+   "l1": "하위권 팀의 수비 라인에서 경험을 쌓아가는 단계",
+   "l2": "21세 — 출전 시간 확보가 향후 평가의 핵심",
+   "sig": "ba8f345fee10",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Le Havre|Timothee Pembele": {
+   "l1": "로테이션으로 출전하며 수비 안정화가 필요한 시점",
+   "l2": "몸값 2백만 유로 — 배급 하위 12% 개선이 과제",
+   "sig": "d623d662c83e",
+   "scene": "injury_return",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Le Mans|Milan Robin": {
+   "l1": "수비형 미드필더로서 존재감을 증명해야 할 시기",
+   "l2": "평점 6.52 — 출전 시간 부족으로 인한 실전 감각 저하 우려",
+   "sig": "56db04558df8",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Lens|Mezian Soares": {
+   "l1": "성장을 위해 경험을 쌓아가는 단계",
+   "l2": "16세 — 아직은 출전 기회를 넓혀가며 적응하는 과정",
+   "sig": "39ff5b03f3df",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Lille|Isaac Cossier": {
+   "l1": "상위권 팀에서 기회를 엿보는 유망주",
+   "l2": "19세 — 유럽대항전 선발 경험을 바탕으로 성장을 도모 중",
+   "sig": "6be67089bf9b",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Lille|Tanguy Nianzou": {
+   "l1": "로테이션 자원으로 기회를 기다리는 중",
+   "l2": "평점 6.76 — 지난 시즌 대비 소폭 상승한 평점",
+   "sig": "131ff7c12941",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Lorient|Noah Mbamba": {
+   "l1": "부상을 털고 다시 상승세를 타는 미드필더",
+   "l2": "최근 5경기 폼 80 — 부상 결장 5경기를 지나 다시 입지 확보 중",
+   "sig": "c2ad05925988",
+   "scene": "injury_return",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Nice|Morgan Sanson": {
+   "l1": "출전 기회를 찾지 못해 아쉬운 시즌",
+   "l2": "출전 19분 · 2경기 출전 — 팀의 중위권 경쟁에서 밀려난 상태",
+   "sig": "399aa51b31f7",
+   "scene": "few_minutes",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Strasbourg|Genesis Antwi": {
+   "l1": "주전으로 뛰고 있으나 고전하는 시즌",
+   "l2": "폼 47 · 평점 6.52 — 팀의 중위권 성적 속 개인적인 부진",
+   "sig": "05825f0f873f",
+   "scene": "struggling",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Toulouse|Mathys Niflore": {
+   "l1": "1군 무대 경험을 쌓으며 성장 중인 골키퍼",
+   "l2": "19세 · 출전 2경기 — 향후 기회에 따라 평가가 바뀔 유망주",
+   "sig": "1f5c4ec57d5c",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Toulouse|Rafik Messali": {
+   "l1": "피지컬 보완이 필요한 주전 측면 수비수",
+   "l2": "피지컬·듀얼 하위 22% — 지난 시즌 평점 6.79 대비 소폭 향상",
+   "sig": "4a782ec4c6a4",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Toulouse|Sion Oppong": {
+   "l1": "1군 무대 적응을 이어가는 어린 유망주",
+   "l2": "출전 6경기 · 몸값 4백만 유로 — 출전 시간을 늘려야 할 단계",
+   "sig": "8900e39d2734",
+   "scene": "young",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Troyes|Adrien Monfray": {
+   "l1": "나이를 잊은 클래스, 올 시즌 팀의 핵심 센터백",
+   "l2": "태클 리그 1위 · 평점 6.99 — 피지컬 상위 6%로 수비 중심",
+   "sig": "e31c0fc2a8ca",
+   "scene": "veteran_rise",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Troyes|Anis Ouzenadji": {
+   "l1": "선발로 나서며 팀 측면을 지키는 주전 풀백",
+   "l2": "1도움 · 평점 6.77 — 수비 상위 26%로 기여 중",
+   "sig": "768c25d31dcf",
+   "scene": "steady_average",
+   "at": "2026-11-06T13:59:07+00:00"
+  },
+  "Ligue1|Troyes|Yvann Titi": {
+   "l1": "부상 회복 후 본격적인 경쟁을 앞둔 유망주",
+   "l2": "8경기 결장 — 출전 1경기로 실전 감각 회복이 우선",
+   "sig": "c7d21f6c6395",
+   "scene": "injury_return",
+   "at": "2026-11-06T13:59:07+00:00"
   }
  }
 }

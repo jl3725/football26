@@ -1,6 +1,6 @@
 squad,player,fotmob_id,group,positions,tm_position,pos,age,birth_date,shirt,ccode,injured,expected_return,fetched
 PSG,Alessandro Longoni,1662399,keepers,,Goalkeeper,GK,18,2008-01-31,16.0,ITA,False,,2026-11-06
-PSG,Lucas Chevalier,1177131,keepers,GK,Goalkeeper,GK,24,2001-11-06,30.0,FRA,False,,2026-11-06
+PSG,Lucas Chevalier,1177131,keepers,GK,Goalkeeper,GK,25,2001-11-06,30.0,FRA,False,,2026-11-06
 PSG,Matvey Safonov,800880,keepers,GK,Goalkeeper,GK,27,1999-02-25,39.0,RUS,False,,2026-11-06
 PSG,Achraf Hakimi,770881,defenders,RB,Right-Back,DF,28,1998-11-04,2.0,MAR,False,,2026-11-06
 PSG,Marquinhos,267365,defenders,CB,Centre-Back,DF,32,1994-05-14,5.0,BRA,True,A few weeks,2026-11-06
@@ -269,7 +269,7 @@ Brest,Kamory Doumbia,1310270,midfielders,CAM,Attacking Midfield,MF,23,2003-02-18
 Brest,Lucas Tousart,612277,midfielders,"CB,CAM,CM,CDM",Centre-Back,MF,29,1997-04-29,29.0,FRA,False,,2026-11-06
 Brest,Pathé Mboup,1514456,attackers,LW,Left Winger,FW,23,2003-10-19,9.0,SEN,False,,2026-11-06
 Brest,Giovani Versini,1441955,attackers,"ST,RW",Centre-Forward,FW,22,2004-03-18,10.0,FRA,False,,2026-11-06
-Brest,Mama Baldé,541933,attackers,"RW,ST",Right Winger,FW,30,1995-11-06,17.0,GNB,False,,2026-11-06
+Brest,Mama Baldé,541933,attackers,"RW,ST",Right Winger,FW,31,1995-11-06,17.0,GNB,False,,2026-11-06
 Brest,Ludovic Ajorque,471153,attackers,ST,Centre-Forward,FW,32,1994-02-25,19.0,FRA,False,,2026-11-06
 Brest,Ibrahim Kanté,1669616,attackers,,Centre-Forward,FW,19,2007-03-18,21.0,FRA,False,,2026-11-06
 Brest,Mathis Laine,2155246,attackers,,Centre-Forward,FW,19,2007-03-30,32.0,FRA,False,,2026-11-06
@@ -313,7 +313,7 @@ Toulouse,Niko Sigur,1494508,defenders,"RB,CDM,CM",Right-Back,DF,23,2003-09-09,14
 Toulouse,David Odogu,1469996,defenders,CB,Centre-Back,DF,20,2006-06-03,19.0,GER,False,,2026-11-06
 Toulouse,Ismaïl Diallo,1668299,defenders,RB,Right-Back,DF,23,2003-08-23,94.0,FRA,False,,2026-11-06
 Toulouse,Alexis Vossah,1791727,midfielders,"CDM,CM",Defensive Midfield,MF,18,2008-03-11,6.0,FRA,False,,2026-11-06
-Toulouse,Thomas Jørgensen,1481910,midfielders,"CM,CAM,CDM,LM",Central Midfield,MF,21,2005-09-30,8.0,DEN,False,,2026-11-06
+Toulouse,Thomas Jørgensen,1481910,midfielders,"CM,CAM,CDM,RM,LM",Central Midfield,MF,21,2005-09-30,8.0,DEN,False,,2026-11-06
 Toulouse,Santiago Hidalgo,1362516,midfielders,"CAM,RW,ST",Attacking Midfield,MF,21,2005-02-17,9.0,ARG,False,,2026-11-06
 Toulouse,Aron Dønnum,823293,midfielders,"CAM,RWB,RM,LWB",Attacking Midfield,MF,28,1998-04-20,15.0,NOR,False,,2026-11-06
 Toulouse,Abu Francis,1066264,midfielders,CDM,Defensive Midfield,MF,25,2001-04-27,17.0,GHA,False,,2026-11-06
@@ -325,7 +325,7 @@ Toulouse,Aymen Amaaouch,2173745,midfielders,CM,Central Midfield,MF,17,2009-09-30
 Toulouse,Julián Vignolo,1611220,attackers,RW,Right Winger,FW,19,2006-12-07,7.0,ARG,False,,2026-11-06
 Toulouse,Sion Oppong,1717493,attackers,"LW,LM",Left Winger,FW,19,2007-09-25,11.0,SWE,False,,2026-11-06
 Toulouse,Jacen Russell-Rowe,1106866,attackers,ST,Centre-Forward,FW,24,2002-09-13,13.0,CAN,False,,2026-11-06
-Toulouse,Casper Tengstedt,1102240,attackers,ST,Centre-Forward,FW,26,2000-06-01,20.0,DEN,False,,2026-11-06
+Toulouse,Casper Tengstedt,1102240,attackers,"ST,CAM",Centre-Forward,FW,26,2000-06-01,20.0,DEN,False,,2026-11-06
 Toulouse,Ilyas Azizi,1751857,attackers,LW,Left Winger,FW,18,2008-04-13,37.0,FRA,False,,2026-11-06
 Strasbourg,Filip Jörgensen,1200984,keepers,GK,Goalkeeper,GK,24,2002-04-16,1.0,DEN,False,,2026-11-06
 Strasbourg,Miłosz Piekutowski,1283393,keepers,GK,Goalkeeper,GK,20,2006-05-08,12.0,POL,False,,2026-11-06
@@ -343,7 +343,7 @@ Strasbourg,Maxi Oyedele,1355526,midfielders,CDM,Defensive Midfield,MF,21,2004-11
 Strasbourg,Giovanni Reyna,1071179,midfielders,"CAM,CM",Attacking Midfield,MF,23,2002-11-13,10.0,USA,False,,2026-11-06
 Strasbourg,Sebastian Nanasi,1156569,midfielders,"CAM,LW,LM",Attacking Midfield,MF,24,2002-05-16,11.0,SWE,False,,2026-11-06
 Strasbourg,Dário Essugo,1239595,midfielders,"CM,CDM",Central Midfield,MF,21,2005-03-14,14.0,POR,False,,2026-11-06
-Strasbourg,Pape Demba Diop,1417802,midfielders,"CDM,CM",Defensive Midfield,MF,23,2003-09-04,21.0,SEN,False,,2026-11-06
+Strasbourg,Pape Demba Diop,1417802,midfielders,"CM,CDM",Central Midfield,MF,23,2003-09-04,21.0,SEN,False,,2026-11-06
 Strasbourg,Diogo Sousa,1701117,midfielders,CDM,Defensive Midfield,MF,20,2006-01-20,23.0,POR,False,,2026-11-06
 Strasbourg,Samir El Mourabet,1598170,midfielders,"CDM,CM",Defensive Midfield,MF,21,2005-10-06,29.0,MAR,False,,2026-11-06
 Strasbourg,Benjamin Brantlind,1611469,midfielders,"LW,LM",Left Winger,MF,18,2008-08-15,45.0,SWE,False,,2026-11-06
@@ -362,7 +362,7 @@ Auxerre,Paul Nardi,291643,keepers,GK,Goalkeeper,GK,32,1994-05-18,1.0,FRA,False,,
 Auxerre,Mamadou Diop,1387237,keepers,GK,Goalkeeper,GK,26,2000-01-03,23.0,MTN,False,,2026-11-06
 Auxerre,Louis Mezerette,1526281,keepers,,Goalkeeper,GK,20,2006-08-30,37.0,FRA,False,,2026-11-06
 Auxerre,Ackah-Tidiane Thiongane-Zoukrou,1845354,defenders,LB,Left-Back,DF,18,2008-09-13,,FRA,False,,2026-11-06
-Auxerre,Axel Tuanzebe,690149,defenders,CB,Centre-Back,DF,28,1997-11-14,4.0,COD,False,,2026-11-06
+Auxerre,Axel Tuanzebe,690149,defenders,CB,Centre-Back,DF,28,1997-11-14,4.0,COD,True,Doubtful,2026-11-06
 Auxerre,Telli Siwe,1744576,defenders,CB,Centre-Back,DF,21,2004-12-14,13.0,FRA,False,,2026-11-06
 Auxerre,Christ Makosso,1474555,defenders,CB,Centre-Back,DF,22,2004-05-09,15.0,CGO,False,,2026-11-06
 Auxerre,Sinaly Diomandé,1133081,defenders,CB,Centre-Back,DF,25,2001-04-09,20.0,CIV,False,,2026-11-06
@@ -375,8 +375,7 @@ Auxerre,Clément Akpa,1388678,defenders,"CB,LB",Centre-Back,DF,24,2001-11-24,92.
 Auxerre,Sékou Fofana,1273881,defenders,LB,Left-Back,DF,23,2003-03-25,93.0,CIV,True,Mid November 2026,2026-11-06
 Auxerre,Eros Maddy,961355,midfielders,RM,Right Midfield,MF,25,2001-02-05,,NED,False,,2026-11-06
 Auxerre,Kévin Danois,1305543,midfielders,"CM,CDM",Central Midfield,MF,22,2004-06-28,5.0,FRA,False,,2026-11-06
-Auxerre,Naouirou Ahamada,1192854,midfielders,"CM,CDM",Central Midfield,MF,24,2002-03-29,8.0,FRA,False,,2026-11-06
-Auxerre,Danny Namaso,817724,midfielders,"CAM,LW,ST,RW,LM,CM",Attacking Midfield,MF,26,2000-08-28,10.0,CMR,False,,2026-11-06
+Auxerre,Naouirou Ahamada,1192854,midfielders,"CM,CDM,CAM",Central Midfield,MF,24,2002-03-29,8.0,FRA,False,,2026-11-06
 Auxerre,Pierre Ekwah,1113784,midfielders,CM,Central Midfield,MF,24,2002-01-15,17.0,FRA,False,,2026-11-06
 Auxerre,Assane Dioussé,612212,midfielders,CM,Central Midfield,MF,29,1997-09-20,18.0,SEN,True,Early May 2027,2026-11-06
 Auxerre,Fredrik Oppegård,1203189,midfielders,"LWB,LM,LW,LB",Left-Back,MF,24,2002-08-07,22.0,NOR,False,,2026-11-06
@@ -384,8 +383,9 @@ Auxerre,Lamfia Dioubate,1988951,midfielders,,Central Midfield,MF,19,2007-07-20,3
 Auxerre,Tidiane Devernois,1813437,midfielders,,Central Midfield,MF,19,2007-10-18,36.0,FRA,False,,2026-11-06
 Auxerre,Arthur Piedfort,1441582,midfielders,"CDM,CM",Defensive Midfield,MF,21,2005-02-01,46.0,BEL,False,,2026-11-06
 Auxerre,Youssef Khoudda,2357741,attackers,,Centre-Forward,FW,19,2007-04-20,,MAR,False,,2026-11-06
-Auxerre,Rémy Lascary,1401248,attackers,"LW,ST",Left Winger,FW,23,2003-03-03,3.0,GLP,True,Mid November 2026,2026-11-06
+Auxerre,Rémy Lascary,1401248,attackers,"LW,ST",Left Winger,FW,23,2003-03-03,3.0,GLP,False,,2026-11-06
 Auxerre,Cameron Archer,1086647,attackers,"ST,CAM",Centre-Forward,FW,24,2001-12-09,9.0,JAM,False,,2026-11-06
+Auxerre,Danny Namaso,817724,attackers,"CAM,LW,ST,CM,RW",Attacking Midfield,FW,26,2000-08-28,10.0,CMR,False,,2026-11-06
 Auxerre,Romain Faivre,904021,attackers,"RW,CAM",Right Winger,FW,28,1998-07-14,21.0,FRA,False,,2026-11-06
 Auxerre,Ryan Rodin,1692895,attackers,ST,Centre-Forward,FW,20,2006-02-03,31.0,FRA,False,,2026-11-06
 Auxerre,Rayan Mandengue,1810011,attackers,RW,Right Winger,FW,20,2006-01-06,32.0,CMR,False,,2026-11-06
@@ -432,10 +432,10 @@ Troyes,Mouhamed Diop,1321149,midfielders,"CDM,CM",Defensive Midfield,MF,26,2000-
 Troyes,Jérémy Le Douaron,917808,midfielders,"CAM,ST,LW",Attacking Midfield,MF,28,1998-04-21,9.0,FRA,False,,2026-11-06
 Troyes,Iron Gomis,1030945,midfielders,CM,Central Midfield,MF,26,1999-11-08,11.0,FRA,False,,2026-11-06
 Troyes,Roman Murcy,1797608,midfielders,,Central Midfield,MF,20,2006-02-23,16.0,FRA,False,,2026-11-06
-Troyes,Antoine Mille,1342983,midfielders,"CAM,CDM,CM,RW",Attacking Midfield,MF,29,1997-08-14,17.0,FRA,False,,2026-11-06
+Troyes,Antoine Mille,1342983,midfielders,"CAM,CM,CDM,RW",Attacking Midfield,MF,29,1997-08-14,17.0,FRA,False,,2026-11-06
 Troyes,Hugo Picard,1411553,midfielders,"LM,LW",Left Midfield,MF,23,2003-05-09,22.0,FRA,False,,2026-11-06
 Troyes,Alexandre Phliponeau,992082,midfielders,"CDM,CM",Defensive Midfield,MF,26,2000-01-26,26.0,FRA,False,,2026-11-06
-Troyes,Dermane Karim,1276315,midfielders,"CAM,CDM,CM",Attacking Midfield,MF,22,2003-12-26,29.0,TOG,False,,2026-11-06
+Troyes,Dermane Karim,1276315,midfielders,"CAM,CM,LM,CDM",Attacking Midfield,MF,22,2003-12-26,29.0,TOG,False,,2026-11-06
 Troyes,Kandet Diawara,1108031,attackers,"LW,RW",Left Winger,FW,26,2000-02-10,7.0,GUI,False,,2026-11-06
 Troyes,Merwan Ifnaou,1523321,attackers,"RW,RM",Right Winger,FW,28,1998-10-22,10.0,FRA,False,,2026-11-06
 Troyes,Renaud Ripart,348420,attackers,"ST,RW",Centre-Forward,FW,33,1993-03-14,20.0,FRA,False,,2026-11-06

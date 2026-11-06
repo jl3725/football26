@@ -5,7 +5,7 @@ Porto,João Afonso,1603224,keepers,GK,Goalkeeper,GK,19,2007-04-30,50.0,POR,False
 Porto,Diogo Costa,795630,keepers,GK,Goalkeeper,GK,27,1999-09-19,99.0,POR,False,,2026-11-06
 Porto,Jakub Kiwior,1021834,defenders,"CB,LB",Centre-Back,DF,26,2000-02-15,4.0,POL,False,,2026-11-06
 Porto,Jan Bednarek,490868,defenders,CB,Centre-Back,DF,30,1996-04-12,5.0,POL,False,,2026-11-06
-Porto,Chris Smalling,165823,defenders,CB,Centre-Back,DF,36,1989-11-22,6.0,ENG,True,Late November 2027,2026-11-06
+Porto,Chris Smalling,165823,defenders,CB,Centre-Back,DF,36,1989-11-22,6.0,ENG,True,Late November 2026,2026-11-06
 Porto,Zaidu Sanusi,1079056,defenders,LB,Left-Back,DF,29,1997-06-13,12.0,NGA,False,,2026-11-06
 Porto,Nehuén Pérez,902383,defenders,CB,Centre-Back,DF,26,2000-06-24,18.0,ARG,False,,2026-11-06
 Porto,Alberto Costa,1387439,defenders,RB,Right-Back,DF,23,2003-09-29,20.0,POR,False,,2026-11-06
@@ -26,9 +26,9 @@ Porto,William Gomes,1580427,attackers,RW,Right Winger,FW,20,2006-03-15,7.0,BRA,T
 Porto,Samuel Aghehowa,1414859,attackers,ST,Centre-Forward,FW,22,2004-05-05,9.0,ESP,False,,2026-11-06
 Porto,Pepê,850356,attackers,"RW,LW",Right Winger,FW,29,1997-02-24,11.0,BRA,False,,2026-11-06
 Porto,Borja Sainz,1083204,attackers,LW,Left Winger,FW,25,2001-02-21,17.0,ESP,False,,2026-11-06
-Porto,André Silva,388523,attackers,ST,Centre-Forward,FW,30,1995-11-06,19.0,POR,False,,2026-11-06
+Porto,André Silva,388523,attackers,ST,Centre-Forward,FW,31,1995-11-06,19.0,POR,False,,2026-11-06
 Porto,Santiago Giménez,954092,attackers,ST,Centre-Forward,FW,25,2001-04-18,29.0,MEX,False,,2026-11-06
-Porto,Duarte Cunha,1766344,attackers,RW,Right Winger,FW,18,2008-01-25,57.0,POR,False,,2026-11-06
+Porto,Duarte Cunha,1766344,attackers,"RW,CM",Right Winger,FW,18,2008-01-25,57.0,POR,False,,2026-11-06
 Porto,Oskar Pietuszewski,1647807,attackers,LW,Left Winger,FW,18,2008-05-20,77.0,POL,False,,2026-11-06
 Benfica,Anatoliy Trubin,1022350,keepers,GK,Goalkeeper,GK,25,2001-08-01,1.0,UKR,False,,2026-11-06
 Benfica,Samuel Soares,1201004,keepers,GK,Goalkeeper,GK,24,2002-06-15,24.0,POR,False,,2026-11-06
@@ -40,12 +40,12 @@ Benfica,Gabriel Índio,1817871,defenders,CB,Centre-Back,DF,18,2008-07-26,33.0,BR
 Benfica,Souffian El Karouani,1079500,defenders,LB,Left-Back,DF,26,2000-10-19,34.0,MAR,False,,2026-11-06
 Benfica,Tomás Araújo,1187283,defenders,"CB,RB",Centre-Back,DF,24,2002-05-16,44.0,POR,False,,2026-11-06
 Benfica,Daniel Banjaqui,1763613,defenders,RB,Right-Back,DF,18,2008-03-24,58.0,POR,False,,2026-11-06
-Benfica,Enzo Barrenechea,1352923,midfielders,CDM,Defensive Midfield,MF,25,2001-05-22,5.0,ARG,True,Day to day,2026-11-06
-Benfica,Fredrik Aursnes,310768,midfielders,"CDM,RW,CM,RB",Defensive Midfield,MF,30,1995-12-10,8.0,NOR,False,,2026-11-06
+Benfica,Enzo Barrenechea,1352923,midfielders,CDM,Defensive Midfield,MF,25,2001-05-22,5.0,ARG,False,,2026-11-06
+Benfica,Fredrik Aursnes,310768,midfielders,"CDM,RW,CM,RB,LW",Defensive Midfield,MF,30,1995-12-10,8.0,NOR,False,,2026-11-06
 Benfica,Georgiy Sudakov,1192398,midfielders,"CAM,LW,CM",Attacking Midfield,MF,24,2002-09-01,10.0,UKR,False,,2026-11-06
 Benfica,Jakub Kamiński,1067260,midfielders,"CAM,LW,LM,CM,RWB,RM,CDM",Attacking Midfield,MF,24,2002-06-05,13.0,POL,False,,2026-11-06
 Benfica,Manu Silva,1198071,midfielders,CDM,Defensive Midfield,MF,25,2001-06-12,16.0,POR,False,,2026-11-06
-Benfica,Leandro Barreiro,930065,midfielders,"CDM,CAM",Defensive Midfield,MF,26,2000-01-03,18.0,LUX,True,Early July 2027,2026-11-06
+Benfica,Leandro Barreiro,930065,midfielders,"CDM,CAM,CM",Defensive Midfield,MF,26,2000-01-03,18.0,LUX,True,Early July 2027,2026-11-06
 Benfica,João Palhinha,524434,midfielders,"CDM,CM,CB",Defensive Midfield,MF,31,1995-07-09,36.0,POR,False,,2026-11-06
 Benfica,José Neto,1843149,midfielders,"LM,LB",Left Midfield,MF,18,2008-04-19,62.0,POR,False,,2026-11-06
 Benfica,Miguel Figueiredo,1801706,midfielders,CM,Central Midfield,MF,18,2008-08-02,73.0,POR,False,,2026-11-06
@@ -137,7 +137,7 @@ Arouca,Espen van Ee,1526602,midfielders,CDM,Defensive Midfield,MF,23,2003-07-05,
 Arouca,Taichi Fukui,1269404,midfielders,"CDM,CAM",Defensive Midfield,MF,22,2004-07-15,8.0,JPN,False,,2026-11-06
 Arouca,Pablo Gozálbez,1118703,midfielders,"CAM,RW",Attacking Midfield,MF,25,2001-04-30,10.0,ESP,False,,2026-11-06
 Arouca,Hyun-Ju Lee,1328820,midfielders,CAM,Attacking Midfield,MF,23,2003-02-07,14.0,KOR,False,,2026-11-06
-Arouca,Mateo Flores,1664552,midfielders,LB,Left-Back,MF,22,2004-04-07,21.0,ESP,False,,2026-11-06
+Arouca,Mateo Flores,1664552,midfielders,CDM,Defensive Midfield,MF,22,2004-04-07,21.0,ESP,False,,2026-11-06
 Arouca,Rachid Gomes,2192769,midfielders,,Central Midfield,MF,18,2008-05-11,27.0,CPV,False,,2026-11-06
 Arouca,Si-Hoo Park,1836748,midfielders,"LM,LW",Left Midfield,MF,19,2007-08-18,77.0,KOR,False,,2026-11-06
 Arouca,Pedro Santos,1356299,midfielders,CDM,Defensive Midfield,MF,26,2000-10-12,89.0,POR,False,,2026-11-06

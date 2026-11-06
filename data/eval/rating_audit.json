@@ -1,7 +1,7 @@
 {
- "date": "2026-11-05",
- "model": "v3.17",
- "players": 5965,
+ "date": "2026-11-06",
+ "model": "v3.18",
+ "players": 5958,
  "golden": [],
  "scout": [
   {
@@ -21,28 +21,12 @@
    "off": 2
   },
   {
-   "player": "Raphinha",
-   "league": "LaLiga",
-   "ovr": 92,
-   "lo": 87,
-   "hi": 90,
-   "off": 2
-  },
-  {
    "player": "Scott McTominay",
    "league": "SerieA",
    "ovr": 82,
    "lo": 84,
    "hi": 87,
    "off": -2
-  },
-  {
-   "player": "Elliot Anderson",
-   "league": "EPL",
-   "ovr": 89,
-   "lo": 85,
-   "hi": 88,
-   "off": 1
   },
   {
    "player": "Luka Vušković",
@@ -69,14 +53,6 @@
    "off": -1
   },
   {
-   "player": "Enzo Fernández",
-   "league": "EPL",
-   "ovr": 89,
-   "lo": 85,
-   "hi": 88,
-   "off": 1
-  },
-  {
    "player": "Yan Diomandé",
    "league": "LaLiga",
    "ovr": 86,
@@ -85,31 +61,7 @@
    "off": 1
   },
   {
-   "player": "Michael Olise",
-   "league": "Bundesliga",
-   "ovr": 92,
-   "lo": 87,
-   "hi": 91,
-   "off": 1
-  },
-  {
-   "player": "Dayot Upamecano",
-   "league": "Bundesliga",
-   "ovr": 89,
-   "lo": 84,
-   "hi": 88,
-   "off": 1
-  },
-  {
    "player": "Nicolò Barella",
-   "league": "SerieA",
-   "ovr": 85,
-   "lo": 86,
-   "hi": 89,
-   "off": -1
-  },
-  {
-   "player": "Alessandro Bastoni",
    "league": "SerieA",
    "ovr": 85,
    "lo": 86,
@@ -149,11 +101,11 @@
    "limit": 25,
    "desc": "지난 시즌(1,500분+) 대비 +6 이상인데 이번 시즌 평점(7.2+·450분+)이 받쳐 주지 않는 급등",
    "examples": [
-    "Nobel Mendy(Hull City, 22) 75 ← 69",
-    "Tibe De Vlieger(Gent, 21) 69 ← 62",
-    "Aske Adelgaard(Twente, 22) 66 ← 56",
-    "Ianis Stoica(Estrela, 23) 64 ← 57",
+    "Nobel Mendy(Hull City, 22) 74 ← 68",
+    "Tibe De Vlieger(Gent, 21) 70 ← 62",
+    "Aske Adelgaard(Twente, 22) 65 ← 57",
     "Barbero(Arouca, 28) 63 ← 57",
+    "Ianis Stoica(Estrela, 23) 63 ← 57",
     "Jerry Afriyie(Genk, 19) 59 ← 52"
    ]
   },
@@ -182,12 +134,11 @@
    ]
   },
   "no_value_high": {
-   "n": 2,
+   "n": 1,
    "limit": 10,
    "desc": "시장가치 없이 OVR 80+ (TM 매칭 실패·이적 잔류 행)",
    "examples": [
-    "Jack Grealish(Manchester City, 31) 83",
-    "Talisca(Fenerbahçe, 32) 80"
+    "Jack Grealish(Manchester City, 31) 83"
    ]
   }
  }

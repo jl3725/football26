@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-05T13:17:06+00:00",
+ "generated": "2026-11-06T13:03:28+00:00",
  "windows": [
   {
    "start": "2026-09-21",
@@ -17,11 +17,23 @@
    "label": "9월 A매치 기간"
   },
   {
+   "start": "2026-10-29",
+   "first_match": "2026-11-05",
+   "end": "2026-11-11",
+   "matches": 6,
+   "club_matches": 116,
+   "kind": "tournament",
+   "comps": [
+    "afc.saff.championship"
+   ],
+   "label": "SAFF 챔피언십 2026"
+  },
+  {
    "start": "2026-11-09",
    "first_match": "2026-11-12",
    "end": "2026-11-17",
-   "matches": 162,
-   "club_matches": 2,
+   "matches": 163,
+   "club_matches": 3,
    "kind": "break",
    "comps": [
     "caf.nations_qual",

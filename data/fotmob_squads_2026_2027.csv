@@ -8,11 +8,11 @@ Arsenal,Ben White,776151,defenders,RB,Right-Back,DF,29,1997-10-08,4.0,ENG,False,
 Arsenal,Piero Hincapié,1137667,defenders,"LB,CB",Left-Back,DF,24,2002-01-09,5.0,ECU,False,,2026-11-06
 Arsenal,Gabriel,795179,defenders,CB,Centre-Back,DF,28,1997-12-19,6.0,BRA,False,,2026-11-06
 Arsenal,Jurriën Timber,942381,defenders,"RB,CB,LB",Right-Back,DF,25,2001-06-17,12.0,NED,False,,2026-11-06
-Arsenal,Ezri Konsa,710159,defenders,CB,Centre-Back,DF,29,1997-10-23,15.0,ENG,False,,2026-11-06
+Arsenal,Ezri Konsa,710159,defenders,CB,Centre-Back,DF,29,1997-10-23,15.0,ENG,True,Doubtful,2026-11-06
 Arsenal,Riccardo Calafiori,1105912,defenders,"LB,CB",Left-Back,DF,24,2002-05-19,33.0,ITA,False,,2026-11-06
 Arsenal,Martin Ødegaard,534670,midfielders,"CM,CAM",Central Midfield,MF,27,1998-12-17,8.0,NOR,False,,2026-11-06
 Arsenal,Eberechi Eze,818975,midfielders,"CAM,LW,CM,CDM",Attacking Midfield,MF,28,1998-06-29,10.0,ENG,False,,2026-11-06
-Arsenal,Mikel Merino,574645,midfielders,"CM,ST,CDM",Central Midfield,MF,30,1996-06-22,23.0,ESP,False,,2026-11-06
+Arsenal,Mikel Merino,574645,midfielders,"CM,ST,CDM,CAM",Central Midfield,MF,30,1996-06-22,23.0,ESP,False,,2026-11-06
 Arsenal,Martín Zubimendi,1031325,midfielders,"CDM,CM,RB",Defensive Midfield,MF,27,1999-02-02,36.0,ESP,False,,2026-11-06
 Arsenal,Bruno Guimarães,850354,midfielders,"CM,CDM,CAM",Central Midfield,MF,28,1997-11-16,39.0,BRA,False,,2026-11-06
 Arsenal,Declan Rice,654096,midfielders,"CDM,CM",Defensive Midfield,MF,27,1999-01-14,41.0,ENG,False,,2026-11-06
@@ -36,7 +36,7 @@ Manchester City,Nico O'Reilly,1300526,defenders,"LB,CDM,LW,CAM",Left-Back,DF,21,
 Manchester City,Abdukodir Khusanov,1362998,defenders,"CB,RB",Centre-Back,DF,22,2004-02-29,45.0,UZB,False,,2026-11-06
 Manchester City,Rico Lewis,1288450,defenders,"RB,CM,LB",Right-Back,DF,21,2004-11-21,82.0,ENG,False,,2026-11-06
 Manchester City,Josh Wilson-Esbrand,1187225,defenders,LB,Left-Back,DF,23,2002-12-26,97.0,ENG,False,,2026-11-06
-Manchester City,Elliot Anderson,1089691,midfielders,"CDM,CM",Defensive Midfield,MF,23,2002-11-06,5.0,ENG,False,,2026-11-06
+Manchester City,Elliot Anderson,1089691,midfielders,"CDM,CM",Defensive Midfield,MF,24,2002-11-06,5.0,ENG,False,,2026-11-06
 Manchester City,Mateo Kovačić,239219,midfielders,"CDM,CAM",Defensive Midfield,MF,32,1994-05-06,8.0,CRO,False,,2026-11-06
 Manchester City,Rayan Cherki,1104053,midfielders,"CAM,RW,LW,CM",Attacking Midfield,MF,23,2003-08-17,10.0,FRA,False,,2026-11-06
 Manchester City,Enzo Fernández,1137705,midfielders,"CAM,CDM,CM,LW",Attacking Midfield,MF,25,2001-01-17,17.0,ARG,False,,2026-11-06
@@ -172,7 +172,7 @@ Everton,Jake O'Brien,1098607,defenders,"RB,CB",Right-Back,DF,25,2001-05-15,15.0,
 Everton,Vitaliy Mykolenko,874025,defenders,LB,Left-Back,DF,27,1999-05-29,16.0,UKR,False,,2026-11-06
 Everton,Merlin Röhl,1210384,defenders,"RB,RW,CDM",Right-Back,DF,24,2002-07-05,34.0,GER,False,,2026-11-06
 Everton,Kiernan Dewsbury-Hall,886016,midfielders,"CAM,CDM",Attacking Midfield,MF,28,1998-09-06,8.0,ENG,False,,2026-11-06
-Everton,Christian Nørgaard,266520,midfielders,"CDM,CM,CB",Defensive Midfield,MF,32,1994-03-10,23.0,DEN,False,,2026-11-06
+Everton,Christian Nørgaard,266520,midfielders,"CDM,CB,CM",Defensive Midfield,MF,32,1994-03-10,23.0,DEN,False,,2026-11-06
 Everton,Charly Alcaraz,1128965,midfielders,CAM,Attacking Midfield,MF,23,2002-11-30,24.0,ARG,False,,2026-11-06
 Everton,Hayden Hackney,982394,midfielders,"CDM,CM,CAM,LW",Defensive Midfield,MF,24,2002-06-26,30.0,ENG,False,,2026-11-06
 Everton,James Garner,950474,midfielders,"CDM,RB",Defensive Midfield,MF,25,2001-03-13,37.0,ENG,False,,2026-11-06
@@ -308,18 +308,18 @@ Leeds United,Tarik Muharemović,1250485,defenders,CB,Centre-Back,DF,23,2003-02-2
 Leeds United,Joe Rodon,717174,defenders,CB,Centre-Back,DF,29,1997-10-22,6.0,WAL,True,Back in training,2026-11-06
 Leeds United,Jaka Bijol,861805,defenders,CB,Centre-Back,DF,27,1999-02-05,15.0,SVN,False,,2026-11-06
 Leeds United,James Justin,710158,defenders,"CB,LWB,RWB,LM,RM",Centre-Back,DF,28,1998-02-23,24.0,ENG,False,,2026-11-06
-Leeds United,Melvin Bard,1092403,defenders,"LWB,LB,CB,LM",Left-Back,DF,25,2000-11-06,26.0,FRA,False,,2026-11-06
+Leeds United,Melvin Bard,1092403,defenders,"LWB,LB,CB,LM",Left-Back,DF,26,2000-11-06,26.0,FRA,False,,2026-11-06
 Leeds United,Nico Elvedi,517346,defenders,CB,Centre-Back,DF,30,1996-09-30,30.0,SUI,False,,2026-11-06
 Leeds United,Jayden Bogle,789646,midfielders,"RWB,RM,RB",Right-Back,MF,26,2000-07-27,2.0,ENG,False,,2026-11-06
 Leeds United,Gabriel Gudmundsson,744494,midfielders,"LWB,LM,LB",Left-Back,MF,27,1999-04-29,3.0,SWE,False,,2026-11-06
 Leeds United,Ethan Ampadu,780432,midfielders,"CM,CDM,CB",Central Midfield,MF,26,2000-09-14,4.0,WAL,False,,2026-11-06
+Leeds United,Daniel James,717176,midfielders,"RW,CAM,RWB",Right Winger,MF,28,1997-11-10,7.0,WAL,False,,2026-11-06
 Leeds United,Sean Longstaff,820024,midfielders,"CDM,CAM,CM",Defensive Midfield,MF,29,1997-10-30,8.0,ENG,False,,2026-11-06
 Leeds United,Brenden Aaronson,952322,midfielders,"CAM,RW,CM,LM,ST,LW",Attacking Midfield,MF,26,2000-10-22,11.0,USA,False,,2026-11-06
 Leeds United,Anton Stach,881735,midfielders,"CM,CAM,CDM,RM",Central Midfield,MF,27,1998-11-15,18.0,GER,False,,2026-11-06
 Leeds United,Ao Tanaka,935728,midfielders,"CDM,CM",Defensive Midfield,MF,28,1998-09-10,22.0,JPN,False,,2026-11-06
 Leeds United,Ilia Gruev,1080983,midfielders,"CM,CDM",Central Midfield,MF,26,2000-05-06,44.0,BUL,False,,2026-11-06
 Leeds United,Mateo Joseph,1344677,attackers,"RW,ST",Right Winger,FW,23,2003-10-19,,ESP,True,Early January 2027,2026-11-06
-Leeds United,Daniel James,717176,attackers,"RW,RWB,CAM",Right Winger,FW,28,1997-11-10,7.0,WAL,False,,2026-11-06
 Leeds United,Dominic Calvert-Lewin,612150,attackers,ST,Centre-Forward,FW,29,1997-03-16,9.0,ENG,False,,2026-11-06
 Leeds United,Harry Wilson,494417,attackers,"RW,CAM",Right Winger,FW,29,1997-03-22,10.0,WAL,False,,2026-11-06
 Leeds United,Lukas Nmecha,861197,attackers,ST,Centre-Forward,FW,27,1998-12-14,14.0,GER,False,,2026-11-06
@@ -419,7 +419,7 @@ Coventry City,Jack Rudoni,1030830,midfielders,"CAM,RW,CDM",Attacking Midfield,MF
 Coventry City,Matt Grimes,478357,midfielders,"CDM,CM",Defensive Midfield,MF,31,1995-07-15,6.0,ENG,False,,2026-11-06
 Coventry City,Caleb Yirenkyi,1615927,midfielders,"CM,CB,CDM",Central Midfield,MF,20,2006-01-15,8.0,GHA,False,,2026-11-06
 Coventry City,Frank Onyeka,856685,midfielders,"CDM,CM",Defensive Midfield,MF,28,1998-01-01,16.0,NGA,False,,2026-11-06
-Coventry City,Josh Eccles,962000,midfielders,"CAM,CDM,CM",Attacking Midfield,MF,26,2000-04-06,28.0,ENG,True,Early November 2026,2026-11-06
+Coventry City,Josh Eccles,962000,midfielders,"CAM,CDM",Attacking Midfield,MF,26,2000-04-06,28.0,ENG,True,Early November 2026,2026-11-06
 Coventry City,Victor Torp,845985,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,27,1999-07-30,29.0,DEN,False,,2026-11-06
 Coventry City,Yann Gboho,955411,midfielders,"CAM,LW",Attacking Midfield,MF,25,2001-01-14,34.0,CIV,False,,2026-11-06
 Coventry City,Tatsuhiro Sakamoto,1025603,attackers,"RW,RM",Right Winger,FW,30,1996-10-22,7.0,JPN,False,,2026-11-06
@@ -523,7 +523,7 @@ Sunderland,Thomas Meunier,277771,defenders,"RB,RW",Right-Back,DF,35,1991-09-12,1
 Sunderland,Luke O'Nien,480253,defenders,CB,Centre-Back,DF,31,1994-11-21,13.0,ENG,False,,2026-11-06
 Sunderland,Omar Alderete,751998,defenders,CB,Centre-Back,DF,29,1996-12-26,15.0,PAR,False,,2026-11-06
 Sunderland,Reinildo,600524,defenders,"LB,LWB,CB",Left-Back,DF,32,1994-01-21,17.0,MOZ,False,,2026-11-06
-Sunderland,Nordi Mukiele,602304,defenders,"RB,CB",Right-Back,DF,29,1997-11-01,20.0,FRA,True,Doubtful,2026-11-06
+Sunderland,Nordi Mukiele,602304,defenders,"RB,CB",Right-Back,DF,29,1997-11-01,20.0,FRA,False,,2026-11-06
 Sunderland,Trai Hume,1067763,defenders,"RW,RB,RWB,LB,CB,RM",Right Winger,DF,24,2002-03-18,32.0,NIR,False,,2026-11-06
 Sunderland,Ajibola Alese,963940,defenders,CB,Centre-Back,DF,25,2001-01-17,42.0,ENG,False,,2026-11-06
 Sunderland,Dayann Méthalie,1664716,midfielders,"LWB,LB",Left-Back,MF,20,2006-02-15,6.0,FRA,False,,2026-11-06
