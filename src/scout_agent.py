@@ -72,8 +72,55 @@ def _gemini_call(body: dict) -> dict:
     raise RuntimeError(f"Gemini 오류: {last}")
 
 
+MAX_STEPS = 3          # 한 질문에 도구 호출 최대 — 빈 결과 다시 시도·여러 도구 엮기(추천 → 이적설 → 기사)
+
+
+def _parts(r: dict) -> list:
+    return ((r.get("candidates") or [{}])[0].get("content") or {}).get("parts") or []
+
+
+def _retry_hint(intent: str | None, result) -> str | None:
+    """도구 결과가 비거나 오류일 때 Gemini 에게 한 번 더 시도할 방향(2026-11-06: '아스날 이적설 기자 보도' 가 기자 이름 없는
+    Journalist 경로만 찾아 0행 → '데이터 없음'. 원천엔 아스날행 보도 48건)."""
+    if not isinstance(result, dict):
+        return None
+    if intent == "graph":
+        if result.get("error"):
+            return ("Cypher 오류 — 스키마의 라벨·관계 이름과 방향을 다시 확인해 graph_query 를 한 번 더 시도하라. "
+                    "그래도 안 되면 조회가 안 됐다고 답하라.")
+        if not result.get("count"):
+            return ("0행 — 조건을 넓혀 graph_query 를 한 번 더 시도할 수 있다: 정확한 이름 대신 CONTAINS, "
+                    "Journalist 대신 Outlet(기자 이름이 붙은 기사는 드물다), RUMORED_WITH 대신 LINKED_TO(이적설 종합), "
+                    "p.active 조건 빼기. 넓혀도 없으면 '해당 데이터 없음'이라고 답하라.")
+    elif result.get("error"):
+        return "도구 오류 — 다른 도구로 답할 수 있으면 그 도구를 부르고, 아니면 조회가 안 됐다고 답하라."
+    return None
+
+
+def _facts_text(message: str, team: str | None, steps: list) -> str:
+    """숫자 대조 근거 — 질문·팀 문맥·모든 도구 결과(LLM 에 준 축약본 + 원본)."""
+    return json.dumps({"q": message, "team": team, "steps": [{"slim": s["slim"], "raw": s["result"]} for s in steps]},
+                      ensure_ascii=False, default=str)
+
+
+def _unverified_numbers(answer: str, facts: str) -> list[str]:
+    """답 속 숫자 중 도구 결과에 없는 것 — llm.unverified_numbers 에 Ask Scout 표기(€75M = 75,000,000 · 목록 번호 ·
+    '상위 5명' 같은 5 이하 개수)를 더 허용."""
+    import llm  # noqa: PLC0415
+    text = re.sub(r"(?m)^\s*\d+[.)]\s", " ", str(answer or ""))          # 1. 2. 목록 번호
+    big = []
+    for x in llm._NUM.findall(facts.replace(",", "")):
+        f = float(x)
+        if f >= 1000:
+            big += [f / 1e6, f / 1e3]
+    extra = " ".join(f"{v:g} {round(v, 1):g} {round(v):g}" for v in big)
+    bad = llm.unverified_numbers(text, facts + " " + extra)
+    return [b for b in bad if float(b) > 5]
+
+
 def _answer_gemini(message: str, team: str | None, league: str, history: list | None) -> dict:
-    """Gemini 무료 등급 함수 호출 — 1차: 도구 고르기, 2차: 도구 결과로 한국어 브리핑(숫자는 결과 값만)."""
+    """Gemini 무료 등급 함수 호출 — 도구를 최대 MAX_STEPS 번 이어 부르고(빈 결과면 힌트로 다시 시도), 결과로 한국어 브리핑.
+    답 속 숫자가 결과에 없으면 한 번 고쳐 쓰게 한다(숫자는 결과 값만)."""
     sys_prompt = _SYSTEM + f"\n가능한 클럽: {', '.join(_clubs())}"
     if team:
         sys_prompt += f"\n현재 팀 컨텍스트: {team} (리그 {league})"
@@ -87,25 +134,56 @@ def _answer_gemini(message: str, team: str | None, league: str, history: list | 
              "parameters": _gemini_schema(t["function"]["parameters"])} for t in TOOLS]
     base = {"systemInstruction": {"parts": [{"text": sys_prompt}]}, "tools": [{"functionDeclarations": decl}],
             "generationConfig": {"temperature": 0}}
-    r1 = _gemini_call({**base, "contents": contents})
-    parts = ((r1.get("candidates") or [{}])[0].get("content") or {}).get("parts") or []
-    call_part = next((p for p in parts if "functionCall" in p), None)     # thoughtSignature 까지 그대로 돌려줘야 함(Gemini 3)
-    call = call_part["functionCall"] if call_part else None
-    if not call:
+    no_tools = {"functionCallingConfig": {"mode": "NONE"}}
+    r = _gemini_call({**base, "contents": contents})
+    steps: list[dict] = []
+    while True:
+        parts = _parts(r)
+        call_part = next((p for p in parts if "functionCall" in p), None)   # thoughtSignature 까지 그대로 돌려줘야 함(Gemini 3)
+        if not call_part:
+            break
+        call = call_part["functionCall"]
+        args = call.get("args") or {}
+        intent, result = _execute(call["name"], args, league)
+        slim = _slim(intent, result)
+        steps.append({"tool": call["name"], "args": args, "intent": intent, "result": result, "slim": slim})
+        hint = _retry_hint(intent, result) if len(steps) < MAX_STEPS else None
+        resp = {"name": call["name"], "response": {"content": {**slim, "hint": hint} if hint else slim}}
+        if call.get("id"):
+            resp["id"] = call["id"]
+        contents += [{"role": "model", "parts": [call_part]}, {"role": "user", "parts": [{"functionResponse": resp}]}]
+        body = {**base, "contents": contents, "generationConfig": {"temperature": 0.2}}
+        if len(steps) >= MAX_STEPS:
+            body["toolConfig"] = no_tools                 # 마지막엔 글로만(예전엔 두 번째 도구 호출이 오면 답이 비었다)
+        try:
+            r = _gemini_call(body)
+        except Exception:  # noqa: BLE001
+            r = {}
+            break
+    if not steps:
         return {"available": True, "engine": "gemini", "intent": None,
-                "answer": "".join(p.get("text", "") for p in parts), "result": None}
-    args = call.get("args") or {}
-    intent, result = _execute(call["name"], args, league)
-    resp = {"name": call["name"], "response": {"content": _slim(intent, result)}}
-    if call.get("id"):
-        resp["id"] = call["id"]
-    contents += [{"role": "model", "parts": [call_part]}, {"role": "user", "parts": [{"functionResponse": resp}]}]
-    try:
-        r2 = _gemini_call({**base, "contents": contents, "generationConfig": {"temperature": 0.2}})
-        ans = "".join(p.get("text", "") for p in ((r2.get("candidates") or [{}])[0].get("content") or {}).get("parts") or [])
-    except Exception:  # noqa: BLE001
-        ans = ""
-    out = {"available": True, "engine": "gemini", "intent": intent, "args": args, "answer": ans, "result": result}
+                "answer": "".join(p.get("text", "") for p in _parts(r)), "result": None}
+    ans = "".join(p.get("text", "") for p in _parts(r)) if r else ""
+    # 숫자 대조 — 결과에 없는 숫자가 있으면 한 번 고쳐 쓰게
+    facts = _facts_text(message, team, steps)
+    bad = _unverified_numbers(ans, facts) if ans.strip() else []
+    if bad:
+        fix = contents + [{"role": "model", "parts": [{"text": ans}]},
+                          {"role": "user", "parts": [{"text": f"이 숫자는 도구 결과에 없다: {', '.join(bad[:8])}. "
+                                                              "도구 결과에 있는 값만으로 같은 답을 다시 써라."}]}]
+        try:
+            r3 = _gemini_call({**base, "contents": fix, "generationConfig": {"temperature": 0}, "toolConfig": no_tools})
+            ans2 = "".join(p.get("text", "") for p in _parts(r3))
+            if ans2.strip():
+                ans, bad = ans2, _unverified_numbers(ans2, facts)
+        except Exception:  # noqa: BLE001
+            pass
+    main = next((s for s in reversed(steps) if not _retry_hint(s["intent"], s["result"])), steps[-1])
+    out = {"available": True, "engine": "gemini", "intent": main["intent"], "args": main["args"], "answer": ans,
+           "result": main["result"], "grounding": {"ok": not bad, "unverified": bad[:8]},
+           "steps": [{"tool": s["tool"], "args": s["args"],
+                      "count": s["result"].get("count") if isinstance(s["result"], dict) else None,
+                      "error": s["result"].get("error") if isinstance(s["result"], dict) else None} for s in steps]}
     if not ans.strip():                      # 요약이 비면(도구 오류·한도) 규칙 엔진 문장으로
         import scout_router  # noqa: PLC0415
         rb = scout_router.answer(message, team, league)
@@ -126,16 +204,17 @@ _KG_SCHEMA = """노드:
   Competition {name}  (UEFA Champions League / Europa League / Conference League)
   Claim {id, player, dest, origin, window('2026 winter'), stage(interest/talks/agreed/done/denied), first, last, n(기사 수), status(hit/miss/pending)}
   Outlet {name, n, hits, rate(적중률 0~1), score, few} · Journalist {name, n, hits, rate, score, few}   // 뉴스 이적 루머 보도자
-  Role {name} · TacticalSnapshot · Scout · ScoutReport
+  Role {name} · TacticalSnapshot {club, season, period, manager, style_tags, pressing, control, creativity, attack, aerial, disruption}
 관계(방향 정확히):
   (Player)-[:PLAYS_FOR]->(Club)
   (Player)-[:TEAMMATE_OF]->(Player)        // 같은 팀 선발 공유
   (Player)-[:REPRESENTS]->(Country)         // 국가대표
   (Player)-[:PLAYED_IN]->(Competition)      // 유럽대항전 출전
-  (Player)-[:RUMORED_WITH {probability}]->(Club)   // 이적 루머/링크
+  (Player)-[:RUMORED_WITH {probability}]->(Club)   // Transfermarkt 루머 확률만(좁다) — 이적설은 LINKED_TO 먼저
   (Club)-[:COMPETES_IN]->(League)
   (Manager)-[:MANAGES]->(Club)
-  (Manager)-[:EMPHASIZES]->(Role)
+  (Manager)-[:EMPHASIZES {minutes_share}]->(Role)
+  (Club)-[:HAS_SNAPSHOT]->(TacticalSnapshot), (Manager)-[:HAD_SNAPSHOT]->(TacticalSnapshot)   // 시즌별 전술 지표
   (TransferEvent)-[:OF]->(Player), (TransferEvent)-[:FROM]->(Club), (TransferEvent)-[:TO]->(Club)
   (League)-[:IN_COUNTRY]->(Country)
   (Player)-[:CAPTAIN_OF {rank, role}]->(Club)          // 주장단(1=주장, 2=부주장 …)
@@ -143,7 +222,8 @@ _KG_SCHEMA = """노드:
   (Player)-[:CALLED_UP {squad_for, caps, goals}]->(Country)  // 대표팀 소집(가장 최근 명단)
   (Player)-[:LINKED_TO {heat, stage, tm_prob, news, outlets, last}]->(Club)   // 이적설 종합(TM 루머 + 뉴스, heat 0~100)
   (Claim)-[:ABOUT]->(Player), (Claim)-[:TO_CLUB]->(Club), (Claim)-[:FROM_CLUB]->(Club)   // 뉴스 루머 주장(선수·행선지·시장)
-  (Outlet)-[:REPORTED {first, last, n, stage}]->(Claim), (Journalist)-[:REPORTED {...}]->(Claim), (Journalist)-[:WRITES_FOR {n}]->(Outlet)"""
+  (Outlet)-[:REPORTED {first, last, n, stage}]->(Claim), (Journalist)-[:REPORTED {...}]->(Claim), (Journalist)-[:WRITES_FOR {n}]->(Outlet)
+  // 기자 이름이 붙은 기사는 드물다 — '몇 군데서 보도'는 Outlet 으로 센다"""
 
 # graph_query Cypher 작성 가이드 + few-shot(정확도↑). 라이브 값 기반.
 _CYPHER_TIPS = """graph_query Cypher 팁:
@@ -152,8 +232,11 @@ _CYPHER_TIPS = """graph_query Cypher 팁:
 - League.key = EPL/LaLiga/SerieA/Bundesliga/Ligue1/LigaPortugal/Eredivisie/BelgianProLeague/Championship/SuperLig/AustrianBundesliga/DanishSuperliga/SwissSuperLeague. contract_until 형식 'YYYY-MM-DD'(계약임박=CONTAINS '{EXPIRY_YEAR}').
 - 이름 애매하면 WHERE x.name CONTAINS '...'. ORDER BY 속성엔 WHERE 속성 IS NOT NULL(NULL이 DESC 최상단 오는 것 방지). 반드시 LIMIT.
 - 지금 소속 선수만: WHERE p.active = true (떠난 선수 노드는 active=false 로 남음). 골·도움·OVR 은 매주 화요일 기준.
+- 결과가 0행이면 조건을 넓혀 한 번 더 시도할 수 있다(CONTAINS · Outlet · LINKED_TO · active 빼기).
+- Country.name 은 Transfermarkt 표기('Korea, South'·'Bosnia-Herzegovina'·'United States') — 나라는 CONTAINS 로(c.name CONTAINS 'Korea').
 예시:
-  [루머] MATCH (p:Player)-[r:RUMORED_WITH]->(c:Club {name:'Arsenal'}) WHERE r.probability IS NOT NULL RETURN p.name, p.pos_detail, r.probability ORDER BY r.probability DESC LIMIT 15
+  [이적설] MATCH (p:Player)-[l:LINKED_TO]->(c:Club {name:'Arsenal'}) WHERE l.heat IS NOT NULL RETURN p.name, p.pos_detail, l.heat, l.stage, l.tm_prob, l.news, l.outlets ORDER BY l.heat DESC LIMIT 15
+  [TM 루머 확률] MATCH (p:Player)-[r:RUMORED_WITH]->(c:Club {name:'Arsenal'}) WHERE r.probability IS NOT NULL RETURN p.name, p.pos_detail, r.probability ORDER BY r.probability DESC LIMIT 15
   [챔스 U23 풀백] MATCH (p:Player)-[:PLAYED_IN]->(comp:Competition) WHERE comp.name CONTAINS 'Champions' AND p.age<=23 AND p.pos_detail IN ['Right-Back','Left-Back'] RETURN DISTINCT p.name,p.age,p.pos_detail,p.league,p.ss_rating ORDER BY p.ss_rating DESC LIMIT 15
   [주장단] MATCH (p:Player)-[k:CAPTAIN_OF]->(:Club {name:'Arsenal'}) RETURN p.name, k.role ORDER BY k.rank LIMIT 6
   [영향력] MATCH (p:Player)-[:PLAYS_FOR]->(:Club {name:'Arsenal'}) WHERE p.influence IS NOT NULL RETURN p.name, p.influence ORDER BY p.influence DESC LIMIT 5
@@ -161,8 +244,11 @@ _CYPHER_TIPS = """graph_query Cypher 팁:
   [대표팀 차출] MATCH (p:Player)-[c:CALLED_UP]->(co:Country) MATCH (p)-[:PLAYS_FOR]->(:Club {name:'Arsenal'}) RETURN p.name, co.name, c.caps LIMIT 20
   [이적경로 Ligue1→EPL] MATCH (fr:Club)-[:COMPETES_IN]->(:League {key:'Ligue1'}) MATCH (fr)<-[:FROM]-(t:TransferEvent)-[:TO]->(to:Club)-[:COMPETES_IN]->(:League {key:'EPL'}) MATCH (t)-[:OF]->(p:Player) RETURN p.name,fr.name,to.name,t.fee_text LIMIT 15
   [국대 동료] MATCH (a:Player {name:'Bukayo Saka'})-[:REPRESENTS]->(ctry)<-[:REPRESENTS]-(b:Player) WHERE a<>b RETURN b.name,b.pos_detail,b.league LIMIT 15
-  [팀동료 중 루머] MATCH (a:Player {name:'Vitinha'})-[:TEAMMATE_OF]-(b:Player)-[:RUMORED_WITH]->(c:Club) RETURN DISTINCT b.name,c.name LIMIT 15
-  [기자 보도 루머] MATCH (j:Journalist)-[e:REPORTED]->(k:Claim)-[:TO_CLUB]->(:Club {name:'Arsenal'}) RETURN j.name, j.rate, k.player, k.stage, k.status, k.last ORDER BY k.last DESC LIMIT 15
+  [한국 대표] MATCH (p:Player)-[:REPRESENTS]->(c:Country) WHERE c.name CONTAINS 'Korea' AND p.active = true RETURN p.name, p.league, p.pos_detail LIMIT 20
+  [우리 팀 선수의 이적설] MATCH (p:Player)-[:PLAYS_FOR]->(:Club {name:'Chelsea'}) MATCH (p)-[l:LINKED_TO]->(c:Club) RETURN p.name, c.name, l.heat, l.stage ORDER BY l.heat DESC LIMIT 15
+  [팀동료 중 이적설] MATCH (a:Player {name:'Vitinha'})-[:TEAMMATE_OF]-(b:Player)-[l:LINKED_TO]->(c:Club) RETURN DISTINCT b.name, c.name, l.heat ORDER BY l.heat DESC LIMIT 15
+  [보도 많이 된 이적설] MATCH (o:Outlet)-[e:REPORTED]->(k:Claim)-[:TO_CLUB]->(:Club {name:'Arsenal'}) RETURN k.player, k.stage, k.status, count(DISTINCT o) AS outlets, sum(e.n) AS articles ORDER BY articles DESC LIMIT 15
+  [전술 지표] MATCH (:Club {name:'Arsenal'})-[:HAS_SNAPSHOT]->(t:TacticalSnapshot) RETURN t.season, t.period, t.manager, t.pressing, t.control, t.attack ORDER BY t.season DESC LIMIT 5
   [매체 적중률] MATCH (o:Outlet) WHERE o.rate IS NOT NULL AND o.few = false RETURN o.name, o.rate, o.n ORDER BY o.rate DESC LIMIT 10
   [계약임박 CB] MATCH (p:Player) WHERE p.contract_until CONTAINS '{EXPIRY_YEAR}' AND p.pos_detail='Centre-Back' AND p.age<=26 RETURN p.name,p.contract_until,p.league,p.market_value_eur ORDER BY p.market_value_eur DESC LIMIT 15"""
 
@@ -287,13 +373,13 @@ TOOLS = [
     {"type": "function", "function": {
         "name": "graph_query",
         "description": "위 툴로 안 되는 열린 그래프 질문에 read-only Cypher를 직접 작성해 실행. "
-                       "특히 **이적 루머/링크**('아스날에 링크나는 선수'=RUMORED_WITH), 관계 traversal"
+                       "특히 **이적설/링크**('아스날에 링크나는 선수'=LINKED_TO heat 순), 관계 traversal"
                        "('국대 동료','팀 동료'), 다중 조건 필터('챔스 뛴 U23 풀백'), 이적 경로"
                        "('PSG→EPL 이적'), 집계('유럽 출전 최다 MF'). 반드시 스키마의 라벨/관계/속성만 사용.",
         "parameters": {"type": "object", "properties": {
             "cypher": {"type": "string", "description": "읽기 전용 Cypher(스키마 준수, 항상 LIMIT). "
-                       "예: MATCH (p:Player)-[r:RUMORED_WITH]->(c:Club {name:'Arsenal'}) "
-                       "RETURN p.name, p.pos_detail, r.probability ORDER BY r.probability DESC LIMIT 15"}},
+                       "예: MATCH (p:Player)-[l:LINKED_TO]->(c:Club {name:'Arsenal'}) "
+                       "RETURN p.name, p.pos_detail, l.heat, l.stage ORDER BY l.heat DESC LIMIT 15"}},
             "required": ["cypher"]}}},
 ]
 
@@ -304,7 +390,9 @@ _SYSTEM = (
     "- 클럽명은 아래 '가능한 클럽' 목록의 정확한 표기를 써라(예: Manchester United→'Manchester Utd').\n"
     "- 답변은 한국어로, 스카우트 브리핑처럼 간결하게. 툴 결과의 근거(팀니즈·유럽검증·시장가·전술적합)를 짚어라.\n"
     "- '우리 팀'/'이 팀'은 현재 보고 있는 팀 컨텍스트를 쓴다.\n"
-    "- **'링크/루머/관심/영입설'은 추천이 아니라 RUMORED_WITH 조회다 → graph_query 사용.**\n"
+    "- **'링크/루머/관심/영입설'은 추천이 아니라 이적설 조회다 → graph_query 로 LINKED_TO(TM 루머 + 뉴스 종합, heat 순).** "
+    "TM 확률만 물으면 RUMORED_WITH, '어디서 보도'는 Claim·Outlet.\n"
+    "- 결과가 비면 조건을 넓혀 한 번 더 조회할 수 있고, 여러 정보를 엮어야 하면 도구를 이어서 불러도 된다(최대 3번).\n"
     "- 관계·다중필터·집계·이적경로 질문도 graph_query(read-only Cypher). 구조화 툴이 맞으면 그걸 우선.\n"
     "- **주장·부주장·팀 안 영향력**은 team_leadership(그래프 쿼리보다 우선).\n"
     "- 답에는 툴 결과에 있는 사실·숫자만 쓴다. 결과에 없는 플레이 스타일 설명·평가·추측은 덧붙이지 않는다.\n"

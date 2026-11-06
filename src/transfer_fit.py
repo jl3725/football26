@@ -319,7 +319,7 @@ def _kg_enrich(team, recs, tgt_league):
         d.close()
     for r in recs:
         pr = rumored.get(r["player"])
-        if pr is not None:
+        if r["player"] in rumored:               # 확률 없는 루머도 연결(예전엔 None 이라 빠졌다)
             r["kg_rumored"] = True
             r["kg_rumor_prob"] = pr
             r["why_fit"].append(f"🔗 이 클럽과 루머 연결{f' ({int(pr)}%)' if pr else ''}")

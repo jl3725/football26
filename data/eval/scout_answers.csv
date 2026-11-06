@@ -1,0 +1,31 @@
+q,team,league,checks,note
+아스날 주장은 누구야?,Arsenal,EPL,tool:team_leadership;contains_any:Ødegaard|외데고르;grounded,위키 주장단(사용자 확인 2026-10-20)
+아스날 이적설 정리해줘,Arsenal,EPL,tool:graph_query;nonempty;grounded;no_empty,이적설 = LINKED_TO(TM + 뉴스)
+아스날 이적설 중 여러 매체가 보도한 선수는?,Arsenal,EPL,tool:graph_query;nonempty;no_empty,기자 이름은 드물다 → Outlet 경로(2026-11-06 0행 사례)
+아스날과 이적설이 있는 선수 중 기자들이 많이 보도한 선수는?,Arsenal,EPL,tool:graph_query;nonempty;no_empty,Journalist 0행 → 넓혀서 다시
+Arsenal transfer rumors,Arsenal,EPL,tool:graph_query;nonempty;grounded,영어 질문
+레알 마드리드 이적설,Real Madrid,LaLiga,tool:graph_query;nonempty;no_empty,
+이적설 열기가 가장 높은 선수들은?,,EPL,tool:graph_query;nonempty;grounded,
+라이스와 같은 기사에 자주 나오는 선수는?,Arsenal,EPL,tool:graph_query;nonempty;grounded,MENTIONED_WITH
+브루노 페르난데스와 같이 기사에 나온 선수,Manchester Utd,EPL,tool:graph_query;nonempty,
+사카의 잉글랜드 대표팀 동료 중 우리 리그 선수는?,Arsenal,EPL,tool:graph_query;nonempty,REPRESENTS
+우리 리그에서 뛰는 한국 국가대표 선수는?,,EPL,tool:graph_query;nonempty;contains_any:김민재|Kim|이강인|Lee|황희찬|Hwang|손흥민|Son|오현규|Oh|양현준|Yang|설영우|Seol,
+챔피언스리그를 뛴 23세 이하 풀백,,EPL,tool:graph_query;nonempty;grounded,PLAYED_IN + 나이 + 포지션
+리그1에서 EPL로 이적한 선수,,EPL,tool:graph_query;nonempty,TransferEvent 경로
+적중률이 높은 이적설 매체는?,,EPL,tool:graph_query;nonempty;grounded,Outlet rate
+계약 만료가 다가오는 젊은 센터백,,EPL,tool:graph_query;nonempty,contract_until
+비티냐 팀동료 중 이적설 있는 선수,PSG,Ligue1,tool:graph_query;nonempty,TEAMMATE_OF + LINKED_TO
+맨시티 전술 지표 보여줘,Manchester City,EPL,nonempty;grounded,TacticalSnapshot 또는 club_identity
+유럽대항전에 가장 많이 나간 미드필더,,EPL,tool:graph_query;nonempty,
+아스날 선수 중 대표팀에 뽑힌 선수,Arsenal,EPL,nonempty;grounded,CALLED_UP 또는 team_now
+바르셀로나에서 영향력 높은 선수,Barcelona,LaLiga,nonempty;grounded,team_leadership
+사카 최근 뉴스,Arsenal,EPL,tool:player_news;nonempty,
+홀란 요즘 폼 어때?,Manchester City,EPL,tool:player_form;grounded,
+아스날 다음 경기 어때?,Arsenal,EPL,tool:team_now;grounded,
+이번 주 EPL 어땠어?,,EPL,tool:league_week;grounded,
+리버풀 요즘 흐름,Liverpool,EPL,tool:team_form;grounded,
+아스날 왼쪽 윙 영입 추천,Arsenal,EPL,tool:recommend_players;nonempty;grounded,
+도쿠와 비슷한 선수,Manchester City,EPL,tool:find_similar;nonempty,
+아스날 영입 후보 중 이적설도 있는 선수는?,Arsenal,EPL,nonempty;no_empty,추천 + 이적설 두 단계
+맨유 감독은 누구고 어떤 포메이션을 써?,Manchester Utd,EPL,nonempty,
+첼시 선수 중 이적설이 있는 선수,Chelsea,EPL,tool:graph_query;nonempty,

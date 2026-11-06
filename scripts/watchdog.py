@@ -424,6 +424,23 @@ def check_expectations() -> list[str]:
     return out
 
 
+def check_scout_answers() -> list[str]:
+    """Ask Scout 답 평가(scripts/eval_scout_answers.py — kg_reload 주 1회, 운영 /api/scout 에 30문항) — 점수가 기준 아래거나
+    9일 넘게 안 돌았으면 알린다. 그래프 질의 0행·결과에 없는 숫자·'데이터 없음' 답을 잡는다(2026-11-06)."""
+    p = ROOT / "data" / "eval" / "scout_answers.json"
+    if not p.exists():
+        return [f"{p.name} 없음 — kg_reload 'Ask Scout 답 평가' 단계 확인"]
+    a = json.loads(p.read_text(encoding="utf-8"))
+    out = []
+    if a.get("date", "") < (NOW.date() - dt.timedelta(days=9)).isoformat():
+        out.append(f"Ask Scout 답 평가 마지막 {a.get('date')} — kg_reload 확인")
+    if a.get("score", 1.0) < a.get("min", 0.8):
+        bad = [x["q"] for x in a.get("results", []) if not x.get("ok")][:4]
+        out.append(f"Ask Scout 답 평가 {a.get('pass')}/{a.get('n')}({a.get('score', 0):.0%}) < {a.get('min', 0.8):.0%} — "
+                   f"실패 유형 {a.get('fail_by_check')} · 예: {' / '.join(bad)}")
+    return out
+
+
 def check_xg() -> list[str]:
     """출전은 있는데 xG 가 하나도 안 붙은 팀 — Understat 팀 이름 매칭이 어긋난 것(25/26 내내 19개 팀이 0 이었다).
     리그 30% 이상이면 validate_data 가 저장을 막고, 그 아래(한두 팀)는 여기서 팀 이름으로 알린다."""
@@ -496,7 +513,8 @@ CHECKS = {"ovr": check_ovr, "season": check_season, "hub": check_hub, "frontend"
           "workflows": check_workflows, "news": check_news, "tm_agent": check_tm_agent,
           "coverage": check_coverage, "rating_history": check_rating_history, "ratings": check_ratings,
           "names": check_names, "xg": check_xg, "agents": check_agents, "expectations": check_expectations, "screen": check_screen, "squads": check_squads,
-          "identity": check_identity, "fair_price": check_fair_price, "progress": check_progress, "digest": check_digest}
+          "identity": check_identity, "fair_price": check_fair_price, "progress": check_progress, "digest": check_digest,
+          "scout_answers": check_scout_answers}
 
 
 def run() -> dict[str, list[str]]:
