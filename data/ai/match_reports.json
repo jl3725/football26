@@ -3351,6 +3351,38 @@
    "away": "FK Kauno Žalgiris",
    "at": "2026-11-05T22:36:34+00:00",
    "model": "gemini-3.1-flash-lite"
+  },
+  "401875556": {
+   "text": "Willem II와 Zwolle의 경기는 1-1 무승부로 종료되었다. 경기 시작 직후인 2'에 Sydney van Hooijdonk가 선제골을 넣었으나, 3'에 Hidde ter Avest가 곧바로 동점골을 기록하며 승부를 원점으로 돌렸다. Zwolle가 점유율 57.9%와 패스 성공률 90%로 경기를 주도했으나, 유효 슈팅은 Willem II가 5개로 Zwolle의 2개보다 많았다. 경기 전 팬 투표와 모델이 예상했던 Zwolle의 승리는 실현되지 않았다.",
+   "date": "2026-11-06",
+   "home": "Willem II",
+   "away": "Zwolle",
+   "at": "2026-11-06T21:35:49+00:00",
+   "model": "gemini-3.1-flash-lite"
+  },
+  "5846020": {
+   "text": "Rapid Wien이 Allianz Stadion에서 Wolfsberger AC를 상대로 6-0 대승을 거두며 압도적인 경기력을 선보였다. Petter Dahl이 9'와 45'에 득점하며 전반을 2-0으로 이끌었고, 후반에는 Ercan Kara가 67'와 79', Tonni Adamsen이 76', Claudy Mbuyi가 83'에 추가 골을 기록했다. 경기 전 모델과 Elo가 예측한 Rapid Wien의 승리 확률은 각각 94%와 80%였으며, 실제 경기 결과가 예측과 일치하며 적중했다.",
+   "date": "2026-11-06",
+   "home": "Rapid Wien",
+   "away": "Wolfsberger AC",
+   "at": "2026-11-06T21:35:54+00:00",
+   "model": "gemini-3.1-flash-lite"
+  },
+  "5739547": {
+   "text": "Silkeborg가 JYSK Park에서 열린 Lyngby와의 경기에서 1-0으로 승리하며 예측대로 승점 3점을 챙겼다. 승부를 결정지은 유일한 득점은 57'에 터진 Jens Martin Gammelby의 골이었다. Silkeborg는 점유율은 47.6%로 상대보다 낮았으나 슈팅 수 10-4, 유효 슈팅 2-0을 기록하며 공격적인 면에서 우위를 점했다. 경기 결과는 Silkeborg의 승리를 점쳤던 모델과 Elo의 예측과 일치했다.",
+   "date": "2026-11-06",
+   "home": "Silkeborg",
+   "away": "Lyngby",
+   "at": "2026-11-06T21:35:58+00:00",
+   "model": "gemini-3.1-flash-lite"
+  },
+  "5904794": {
+   "text": "Kasımpaşa가 Gaziantep FK를 상대로 2-0 승리를 거두며 원정에서 귀중한 승점 3점을 챙겼다. 경기 초반 3' Haris Hajradinovic의 선제골과 21' Adrian Benedyczak의 페널티킥 득점이 연달아 터지며 전반전에 승부가 결정되었다. Gaziantep FK는 점유율 61.8%와 슈팅 16개를 기록하며 공세를 펼쳤으나 유효 슈팅 4개에 그쳐 득점에 실패했다. 이번 결과는 Kasımpaşa의 승리를 점쳤던 모델과 Elo의 예측을 모두 적중시켰다.",
+   "date": "2026-11-06",
+   "home": "Gaziantep FK",
+   "away": "Kasımpaşa",
+   "at": "2026-11-06T21:36:04+00:00",
+   "model": "gemini-3.1-flash-lite"
   }
  },
  "fails": {}
