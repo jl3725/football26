@@ -340,9 +340,9 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 609,
+   "total": 610,
    "exact": 492,
-   "rule": 25,
+   "rule": 26,
    "ambiguous": 1,
    "orphan": 92,
    "orphans": [
@@ -359,7 +359,7 @@
     {
      "squad": "Espanyol",
      "name": "Cala",
-     "starts": 6
+     "starts": 7
     },
     {
      "squad": "Elche",
@@ -559,8 +559,8 @@
   },
   "espn_subs": {
    "total": 448,
-   "exact": 441,
-   "rule": 4,
+   "exact": 442,
+   "rule": 3,
    "ambiguous": 1,
    "orphan": 3,
    "orphans": [
@@ -596,8 +596,8 @@
    ]
   },
   "match_events": {
-   "total": 386,
-   "exact": 386,
+   "total": 387,
+   "exact": 387,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1940,8 +1940,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 311,
-   "exact": 311,
+   "total": 312,
+   "exact": 312,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -2209,7 +2209,7 @@
  "Championship 2026_2027": {
   "wiki_squads": {
    "total": 903,
-   "exact": 665,
+   "exact": 666,
    "rule": 5,
    "ambiguous": 0,
    "orphan": 0,
@@ -2217,10 +2217,10 @@
   },
   "espn_lineups": {
    "total": 710,
-   "exact": 644,
+   "exact": 646,
    "rule": 5,
    "ambiguous": 0,
-   "orphan": 61,
+   "orphan": 59,
    "orphans": [
     {
      "squad": "Sheffield United",
@@ -2265,11 +2265,6 @@
     {
      "squad": "Wrexham",
      "name": "Samuel Chesworth",
-     "starts": 0
-    },
-    {
-     "squad": "West Bromwich Albion",
-     "name": "Matthew Crowther",
      "starts": 0
     },
     {
@@ -2345,6 +2340,11 @@
     {
      "squad": "Southampton",
      "name": "Princewill Ehibhatiomhan",
+     "starts": 0
+    },
+    {
+     "squad": "Stoke City",
+     "name": "Laurence Giani",
      "starts": 0
     }
    ]
