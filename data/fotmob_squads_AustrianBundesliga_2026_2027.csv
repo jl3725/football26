@@ -71,7 +71,7 @@ LASK,Melayro Bogarde,1108604,midfielders,"CDM,CM,LWB",Defensive Midfield,MF,24,2
 LASK,Kryštof Daněk,1118147,midfielders,"CAM,CM,ST",Attacking Midfield,MF,23,2003-01-05,9,CZE,False,,2026-11-07
 LASK,Robert Ljubičić,939430,midfielders,"CM,RM,RW,CAM",Central Midfield,MF,27,1999-07-14,10,AUT,False,,2026-11-07
 LASK,Alessandro Schöpf,461357,midfielders,"CDM,CM",Defensive Midfield,MF,32,1994-02-07,18,AUT,False,,2026-11-07
-LASK,Kasper Jørgensen,1029360,midfielders,"RWB,RM",Right-Back,MF,26,1999-11-07,20,DEN,False,,2026-11-07
+LASK,Kasper Jørgensen,1029360,midfielders,"RWB,RM",Right-Back,MF,27,1999-11-07,20,DEN,False,,2026-11-07
 LASK,Florian Flecker,619687,midfielders,RWB,Right-Back,MF,31,1995-10-29,29,AUT,False,,2026-11-07
 LASK,Sascha Horvath,426726,midfielders,"CDM,CM",Defensive Midfield,MF,30,1996-08-22,30,AUT,False,,2026-11-07
 LASK,Jonas Ilk,2023415,midfielders,CDM,Defensive Midfield,MF,19,2007-04-06,47,AUT,False,,2026-11-07
@@ -91,18 +91,18 @@ Sturm Graz,Petar Petrović,1574180,defenders,CB,Centre-Back,DF,21,2005-07-13,21,
 Sturm Graz,Arjan Malić,1515122,defenders,"RB,CB",Right-Back,DF,21,2005-08-28,23,BIH,False,,2026-11-07
 Sturm Graz,Mate Grgić,1965796,defenders,"LWB,LB,CAM",Left-Back,DF,19,2007-06-23,25,CRO,False,,2026-11-07
 Sturm Graz,Luís Balbo,1584085,defenders,"LB,LWB",Left-Back,DF,20,2006-03-28,27,VEN,False,,2026-11-07
-Sturm Graz,Jürgen Heil,861777,defenders,"RWB,RB,CM",Right-Back,DF,29,1997-04-04,28,AUT,False,,2026-11-07
+Sturm Graz,Jürgen Heil,861777,defenders,"RWB,RB,CM,RM",Right-Back,DF,29,1997-04-04,28,AUT,False,,2026-11-07
 Sturm Graz,Paul-Friedrich Koller,1002670,defenders,CB,Centre-Back,DF,24,2002-02-22,30,AUT,False,,2026-11-07
 Sturm Graz,Jon Gorenc Stankovič,446392,midfielders,"CDM,CM,CB",Defensive Midfield,MF,30,1996-01-14,4,SVN,False,,2026-11-07
 Sturm Graz,Filip Rózga,1484822,midfielders,"LM,RW",Left Midfield,MF,20,2006-08-07,8,POL,True,A few weeks,2026-11-07
 Sturm Graz,Otar Kiteishvili,652954,midfielders,"CAM,CM,LW",Attacking Midfield,MF,30,1996-03-26,10,GEO,True,Unknown,2026-11-07
-Sturm Graz,Gizo Mamageishvili,1382325,midfielders,"CAM,LW,ST",Attacking Midfield,MF,23,2003-01-15,15,GEO,True,About 1-2 weeks,2026-11-07
+Sturm Graz,Gizo Mamageishvili,1382325,midfielders,"CAM,LW,ST",Attacking Midfield,MF,23,2003-01-15,15,GEO,False,,2026-11-07
 Sturm Graz,Emran Soglo,1525418,midfielders,"LB,LM,LWB,RW",Left-Back,MF,21,2005-07-11,18,FRA,True,A few weeks,2026-11-07
 Sturm Graz,Simon Seidl,1385123,midfielders,"CAM,RM,ST,CDM,RWB,LW,LM",Attacking Midfield,MF,24,2002-09-04,19,AUT,False,,2026-11-07
 Sturm Graz,Luca Weinhandl,1698675,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,17,2009-01-11,39,AUT,False,,2026-11-07
 Sturm Graz,Julian Halwachs,1276632,midfielders,"CM,CDM",Central Midfield,MF,23,2003-01-25,40,AUT,False,,2026-11-07
 Sturm Graz,Jacob Hödl,1587610,midfielders,"RWB,CM,RW,LW,LM,RM,LWB,CAM",Right-Back,MF,19,2007-01-31,43,AUT,False,,2026-11-07
-Sturm Graz,Valmir Matoshi,1422124,midfielders,"LM,CAM,LW,CM,RW,CDM",Left Midfield,MF,23,2003-07-04,78,KVX,False,,2026-11-07
+Sturm Graz,Valmir Matoshi,1422124,midfielders,"LM,LW,CAM,CM,RW,CDM",Left Midfield,MF,23,2003-07-04,78,KVX,False,,2026-11-07
 Sturm Graz,Leon Grgić,1385272,attackers,ST,Centre-Forward,FW,20,2006-01-22,9,CRO,False,,2026-11-07
 Sturm Graz,Axel Kayombo,1515630,attackers,"ST,LW",Centre-Forward,FW,20,2006-02-25,11,COD,False,,2026-11-07
 Sturm Graz,Oumar Diakité,1328540,attackers,ST,Centre-Forward,FW,22,2003-12-20,14,CIV,False,,2026-11-07
@@ -262,7 +262,7 @@ Austria Lustenau,Frederic Flatz,1663359,keepers,,Goalkeeper,GK,20,2006-08-25,33,
 Austria Lustenau,Danilo Soares,207039,defenders,LB,Left-Back,DF,35,1991-10-29,3,BRA,False,,2026-11-07
 Austria Lustenau,Fabian Gmeiner,792751,defenders,"RB,CB,LB",Right-Back,DF,29,1997-01-27,7,AUT,False,,2026-11-07
 Austria Lustenau,Novak Rajic,2100444,defenders,,Centre-Back,DF,18,2008-09-27,12,AUT,False,,2026-11-07
-Austria Lustenau,Emmanuel Chukwu,1789411,defenders,CB,Centre-Back,DF,19,2006-11-07,15,NGA,True,About a week,2026-11-07
+Austria Lustenau,Emmanuel Chukwu,1789411,defenders,CB,Centre-Back,DF,20,2006-11-07,15,NGA,True,About a week,2026-11-07
 Austria Lustenau,Robin Voisine,1362354,defenders,CB,Centre-Back,DF,24,2002-04-07,18,FRA,False,,2026-11-07
 Austria Lustenau,Anilson,1255208,defenders,RB,Right-Back,DF,25,2001-09-04,21,BRA,False,,2026-11-07
 Austria Lustenau,Lukas Ibertsberger,1276628,defenders,LB,Left-Back,DF,23,2003-08-06,26,AUT,False,,2026-11-07
@@ -282,13 +282,12 @@ Austria Lustenau,Seydou Diarra,1663355,attackers,"LW,CAM,RW",Left Winger,FW,22,2
 Austria Lustenau,Antonio Verinac,1455593,attackers,ST,Centre-Forward,FW,21,2004-12-27,39,CRO,False,,2026-11-07
 Austria Lustenau,Melih Akbulut,1663356,attackers,,Centre-Forward,FW,20,2006-04-10,54,AUT,False,,2026-11-07
 Austria Lustenau,Haris Ismailcebioglu,1481060,attackers,"LW,RW",Left Winger,FW,23,2003-09-19,61,AUT,False,,2026-11-07
-Austria Wien,Samuel Şahin-Radlinger,176431,keepers,GK,Goalkeeper,GK,33,1992-11-07,1,AUT,False,,2026-11-07
+Austria Wien,Samuel Şahin-Radlinger,176431,keepers,GK,Goalkeeper,GK,34,1992-11-07,1,AUT,False,,2026-11-07
 Austria Wien,Lukas Wedl,557829,keepers,GK,Goalkeeper,GK,31,1995-10-19,13,AUT,False,,2026-11-07
 Austria Wien,Kenan Jusic,1385050,keepers,GK,Goalkeeper,GK,21,2005-05-10,32,AUT,False,,2026-11-07
 Austria Wien,Mirko Kos,769953,keepers,GK,Goalkeeper,GK,29,1997-04-12,99,AUT,False,,2026-11-07
 Austria Wien,Wilhelm Vorsager,840983,defenders,"CB,CM",Centre-Back,DF,29,1997-06-29,2,AUT,False,,2026-11-07
 Austria Wien,Ibrahim Buhari,1262823,defenders,CB,Centre-Back,DF,25,2001-10-08,3,NGA,False,,2026-11-07
-Austria Wien,Jonas Feddersen,1845217,defenders,CB,Centre-Back,DF,19,2007-01-21,4,GER,False,,2026-11-07
 Austria Wien,Aleksandar Dragović,128106,defenders,CB,Centre-Back,DF,35,1991-03-06,15,AUT,False,,2026-11-07
 Austria Wien,Philipp Wiesinger,459258,defenders,CB,Centre-Back,DF,32,1994-05-23,28,AUT,False,,2026-11-07
 Austria Wien,Johannes Handl,951272,defenders,CB,Centre-Back,DF,28,1998-05-07,46,AUT,False,,2026-11-07
@@ -303,11 +302,9 @@ Austria Wien,Matteo Schablas,1515195,midfielders,"LB,LWB",Left-Back,MF,21,2005-0
 Austria Wien,Florian Wustinger,1213388,midfielders,"CDM,CM",Defensive Midfield,MF,23,2003-07-21,22,AUT,False,,2026-11-07
 Austria Wien,Reinhold Ranftl,447085,midfielders,"RWB,RM,CB,RB",Right-Back,MF,34,1992-01-24,26,AUT,False,,2026-11-07
 Austria Wien,Manfred Fischer,658636,midfielders,"CAM,RW,CDM",Attacking Midfield,MF,31,1995-08-06,30,AUT,False,,2026-11-07
-Austria Wien,Noah Botić,1106919,attackers,RW,Right Winger,FW,24,2002-01-11,9,AUS,True,Unknown,2026-11-07
 Austria Wien,Manprit Sarkaria,766797,attackers,LW,Left Winger,FW,30,1996-08-26,11,AUT,True,Unknown,2026-11-07
 Austria Wien,Kelvin Boateng,1160111,attackers,"ST,CAM",Centre-Forward,FW,26,2000-03-24,14,UGA,False,,2026-11-07
 Austria Wien,Johannes Eggestein,638127,attackers,ST,Centre-Forward,FW,28,1998-05-08,19,GER,False,,2026-11-07
-Austria Wien,Abdoulaye Kanté,1671480,attackers,ST,Centre-Forward,FW,21,2005-05-15,47,CIV,False,,2026-11-07
 Austria Wien,Hasan Deshishku,1788353,attackers,"ST,RW",Centre-Forward,FW,18,2008-02-23,74,AUT,False,,2026-11-07
 Wolfsberger AC,Lukas Gütlbauer,951243,keepers,GK,Goalkeeper,GK,25,2000-12-06,1,AUT,False,,2026-11-07
 Wolfsberger AC,Lior Gliklich,1477921,keepers,GK,Goalkeeper,GK,23,2003-01-02,12,ISR,False,,2026-11-07

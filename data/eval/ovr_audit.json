@@ -1,12 +1,12 @@
 {
- "date": "2026-11-06",
+ "date": "2026-11-07",
  "model": "v3.18",
- "checked": 45705,
+ "checked": 45724,
  "mismatches": [],
  "leagues": {
   "EPL": {
    "teams": 20,
-   "checked": 3626,
+   "checked": 3624,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -14,7 +14,7 @@
   },
   "AustrianBundesliga": {
    "teams": 12,
-   "checked": 2561,
+   "checked": 2563,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -22,7 +22,7 @@
   },
   "BelgianProLeague": {
    "teams": 18,
-   "checked": 3396,
+   "checked": 3402,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -30,7 +30,7 @@
   },
   "Bundesliga": {
    "teams": 18,
-   "checked": 3295,
+   "checked": 3300,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -38,7 +38,7 @@
   },
   "Championship": {
    "teams": 24,
-   "checked": 5078,
+   "checked": 5075,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -46,7 +46,7 @@
   },
   "DanishSuperliga": {
    "teams": 12,
-   "checked": 2609,
+   "checked": 2610,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -62,7 +62,7 @@
   },
   "LaLiga": {
    "teams": 20,
-   "checked": 3851,
+   "checked": 3850,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -70,25 +70,25 @@
   },
   "LigaPortugal": {
    "teams": 18,
-   "checked": 3474,
+   "checked": 3473,
    "mismatches": 0,
    "changed": 1,
    "model_changed": 0,
    "changes_top": [
     {
      "team": "Santa Clara",
-     "player": "Frederico Silva",
-     "from": 52,
-     "to": 50,
-     "d": -2,
-     "since": "2026-11-06",
+     "player": "Henrique Silva",
+     "from": 50,
+     "to": 52,
+     "d": 2,
+     "since": "2026-11-07",
      "model_change": false
     }
    ]
   },
   "Ligue1": {
    "teams": 18,
-   "checked": 3302,
+   "checked": 3311,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -96,7 +96,7 @@
   },
   "SerieA": {
    "teams": 20,
-   "checked": 3815,
+   "checked": 3816,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -104,7 +104,7 @@
   },
   "SuperLig": {
    "teams": 18,
-   "checked": 3988,
+   "checked": 3990,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,

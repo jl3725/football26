@@ -35,7 +35,7 @@ Union SG,Hervé Koffi,695405,keepers,GK,Goalkeeper,GK,30,1996-10-16,12.0,BFA,Fal
 Union SG,Giorgi Kavlashvili,1747247,keepers,GK,Goalkeeper,GK,19,2007-01-24,18.0,GEO,False,,2026-11-07
 Union SG,Keo Boets,1414500,keepers,,Goalkeeper,GK,23,2003-10-21,71.0,BEL,False,,2026-11-07
 Union SG,Nohim Chibani,1668203,defenders,CB,Centre-Back,DF,23,2003-10-06,4.0,FRA,False,,2026-11-07
-Union SG,Kevin Mac Allister,728290,defenders,CB,Centre-Back,DF,28,1997-11-07,5.0,ARG,True,Early June 2027,2026-11-07
+Union SG,Kevin Mac Allister,728290,defenders,CB,Centre-Back,DF,29,1997-11-07,5.0,ARG,True,Early June 2027,2026-11-07
 Union SG,Denzel De Roeve,1232229,defenders,RB,Right-Back,DF,22,2004-08-10,21.0,BEL,False,,2026-11-07
 Union SG,Ross Sykes,768266,defenders,CB,Centre-Back,DF,27,1999-03-26,26.0,ENG,False,,2026-11-07
 Union SG,Massiré Sylla,1670317,defenders,CB,Centre-Back,DF,21,2005-01-07,29.0,SEN,False,,2026-11-07
@@ -49,7 +49,7 @@ Union SG,Ivan Pavlić,1231676,midfielders,CM,Central Midfield,MF,24,2001-11-10,1
 Union SG,Rob Schoofs,215415,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,32,1994-03-23,17.0,BEL,False,,2026-11-07
 Union SG,Besfort Zeneli,1338361,midfielders,"CAM,CM,RW,LW,CDM,ST",Attacking Midfield,MF,23,2002-11-21,23.0,SWE,False,,2026-11-07
 Union SG,Ilan Hurtevent,1869291,midfielders,CAM,Attacking Midfield,MF,21,2005-05-25,25.0,BEL,False,,2026-11-07
-Union SG,Louis Patris,1178319,midfielders,"CAM,RWB,RM,LWB",Attacking Midfield,MF,25,2001-06-07,27.0,BEL,False,,2026-11-07
+Union SG,Louis Patris,1178319,midfielders,"RWB,CAM,RM,LWB",Right-Back,MF,25,2001-06-07,27.0,BEL,False,,2026-11-07
 Union SG,Darius Olaru,817821,midfielders,"CAM,CM,LW,RW,CDM",Attacking Midfield,MF,28,1998-03-03,28.0,ROU,False,,2026-11-07
 Union SG,Mateo Biondic,1385813,attackers,"ST,RW,CAM",Centre-Forward,FW,23,2003-07-24,9.0,GER,True,Late November 2026,2026-11-07
 Union SG,Kevin Rodríguez,1421270,attackers,ST,Centre-Forward,FW,26,2000-03-04,13.0,ECU,False,,2026-11-07
@@ -68,7 +68,6 @@ Gent,Maksim Paskotši,1176726,defenders,CB,Centre-Back,DF,23,2003-01-19,3.0,EST,
 Gent,Mouhamed Ngom,1363733,defenders,"CB,RB",Centre-Back,DF,26,2000-05-12,5.0,SEN,True,Early June 2027,2026-11-07
 Gent,Christian Burgess,332300,defenders,CB,Centre-Back,DF,35,1991-10-07,16.0,ENG,False,,2026-11-07
 Gent,Matisse Samoise,1169695,defenders,"RB,RWB",Right-Back,DF,24,2001-11-21,18.0,BEL,False,,2026-11-07
-Gent,Tiago Araújo,1185329,defenders,"LB,LWB,LM,LW",Left-Back,DF,25,2001-03-27,20.0,POR,False,,2026-11-07
 Gent,Gilles De Meyer,1693004,defenders,"RB,LB",Right-Back,DF,20,2006-09-17,35.0,BEL,False,,2026-11-07
 Gent,Abdoul Ayindé,1605574,defenders,LB,Left-Back,DF,21,2005-07-17,39.0,BFA,False,,2026-11-07
 Gent,Siebe van der Heyden,768432,defenders,"CB,LB",Centre-Back,DF,28,1998-05-30,44.0,BEL,False,,2026-11-07
@@ -80,6 +79,7 @@ Gent,Lászlo Bénes,629112,midfielders,"CDM,CAM,CM",Defensive Midfield,MF,29,199
 Gent,Aimé Omgba,1396340,midfielders,CM,Central Midfield,MF,24,2002-10-22,10.0,NED,False,,2026-11-07
 Gent,Momodou Sonko,1355206,midfielders,"CAM,LW,LM,ST",Attacking Midfield,MF,21,2005-01-31,11.0,SWE,False,,2026-11-07
 Gent,Mathias Delorge,1280741,midfielders,"CDM,CM",Defensive Midfield,MF,22,2004-07-31,17.0,BEL,False,,2026-11-07
+Gent,Tiago Araújo,1185329,midfielders,"LB,LWB,LM,LW",Left-Back,MF,25,2001-03-27,20.0,POR,False,,2026-11-07
 Gent,Leonardo Lopes,604396,midfielders,"CDM,CM,CB",Defensive Midfield,MF,27,1998-11-30,22.0,POR,False,,2026-11-07
 Gent,Tibe De Vlieger,1553506,midfielders,"CDM,CM",Defensive Midfield,MF,21,2005-11-05,27.0,BEL,False,,2026-11-07
 Gent,Mohammed El Âdfaoui,1760239,midfielders,"CAM,CDM,CM",Attacking Midfield,MF,18,2008-02-28,28.0,BEL,False,,2026-11-07
@@ -318,12 +318,12 @@ Mechelen,Marco Decherf,1945735,midfielders,CDM,Defensive Midfield,MF,20,2006-10-
 Mechelen,Amine Ouahabi,1889534,midfielders,,Central Midfield,MF,18,2008-07-04,40.0,MAR,False,,2026-11-07
 Mechelen,Maxim Kireev,1617968,attackers,ST,Centre-Forward,FW,22,2004-07-09,10.0,BLR,False,,2026-11-07
 Mechelen,Hassane Bandé,862621,attackers,RW,Right Winger,FW,28,1998-10-30,12.0,BFA,False,,2026-11-07
-Mechelen,Benito Raman,289248,attackers,"ST,RW",Centre-Forward,FW,31,1994-11-07,14.0,BEL,False,,2026-11-07
-Mechelen,Adeshina Ayodele,2130623,attackers,CAM,Attacking Midfield,FW,20,2006-06-22,16.0,NGA,True,Late May 2027,2026-11-07
+Mechelen,Benito Raman,289248,attackers,"ST,RW",Centre-Forward,FW,32,1994-11-07,14.0,BEL,False,,2026-11-07
+Mechelen,Adeshina Ayodele,2130623,attackers,CAM,Attacking Midfield,FW,20,2006-06-22,16.0,NGA,True,Early May 2027,2026-11-07
 Mechelen,Malcolm Lohunanu-Mbasi,2130776,attackers,ST,Centre-Forward,FW,18,2008-05-11,19.0,BEL,False,,2026-11-07
 Mechelen,Halil Özdemir,1788571,attackers,CAM,Attacking Midfield,FW,21,2005-08-18,21.0,TUR,False,,2026-11-07
 Mechelen,Keano Vanrafelghem,1180808,attackers,"RW,ST",Right Winger,FW,23,2003-08-02,27.0,BEL,True,Day to day,2026-11-07
-Mechelen,Bouke Boersma,1712589,attackers,ST,Centre-Forward,FW,21,2005-06-23,28.0,NED,True,A few days,2026-11-07
+Mechelen,Bouke Boersma,1712589,attackers,ST,Centre-Forward,FW,21,2005-06-23,28.0,NED,True,Day to day,2026-11-07
 Zulte Waregem,Louis Bostyn,242247,keepers,GK,Goalkeeper,GK,33,1993-10-04,1.0,BEL,False,,2026-11-07
 Zulte Waregem,Brent Gabriël,1034773,keepers,GK,Goalkeeper,GK,27,1999-01-27,13.0,BEL,False,,2026-11-07
 Zulte Waregem,Arnaud Dobbels,1439686,keepers,,Goalkeeper,GK,21,2005-02-02,42.0,BEL,False,,2026-11-07
@@ -337,7 +337,7 @@ Zulte Waregem,Franz Tangala,1875914,defenders,RB,Right-Back,DF,21,2005-04-15,49.
 Zulte Waregem,Yannick Cappelle,1595635,defenders,"LB,LWB",Left-Back,DF,23,2003-07-07,55.0,BEL,False,,2026-11-07
 Zulte Waregem,Enrique Lofolomo,1334818,midfielders,"CDM,CM,CB",Defensive Midfield,MF,26,2000-04-14,6.0,GER,False,,2026-11-07
 Zulte Waregem,Thomas Claes,1417102,midfielders,"CM,CDM",Central Midfield,MF,22,2004-03-26,8.0,BEL,False,,2026-11-07
-Zulte Waregem,Marley Aké,1078258,midfielders,"LW,LWB,CDM,LM,CM,ST,RW,CAM",Left Winger,MF,25,2001-01-05,11.0,FRA,False,,2026-11-07
+Zulte Waregem,Marley Aké,1078258,midfielders,"LW,LWB,CDM,LM,CM,RW,ST,CAM",Left Winger,MF,25,2001-01-05,11.0,FRA,False,,2026-11-07
 Zulte Waregem,Wilguens Paugain,1394254,midfielders,"RWB,RB,RM",Right-Back,MF,25,2001-08-24,12.0,HAI,True,Day to day,2026-11-07
 Zulte Waregem,Youssoupha Mbodji,1785676,midfielders,"LM,LB",Left Midfield,MF,22,2004-01-09,15.0,SEN,False,,2026-11-07
 Zulte Waregem,Benoît Nyssen,948441,midfielders,"RM,RB,RWB",Right Midfield,MF,29,1997-09-12,19.0,BEL,False,,2026-11-07
@@ -401,12 +401,12 @@ Beveren,Jannik Robatsch,1512863,defenders,LM,Left Midfield,DF,21,2004-12-28,48.0
 Beveren,Stephane Keller,1222405,defenders,CB,Centre-Back,DF,25,2001-08-20,77.0,CMR,False,,2026-11-07
 Beveren,Léandre Kuavita,1396064,midfielders,RW,Right Winger,MF,22,2004-05-31,14.0,BEL,True,Day to day,2026-11-07
 Beveren,Sieben Dewaele,992053,midfielders,"CDM,CM",Defensive Midfield,MF,27,1999-02-02,18.0,BEL,False,,2026-11-07
-Beveren,Arno Verschueren,560413,midfielders,CAM,Attacking Midfield,MF,29,1997-04-08,24.0,BEL,False,,2026-11-07
+Beveren,Arno Verschueren,560413,midfielders,RW,Right Winger,MF,29,1997-04-08,24.0,BEL,False,,2026-11-07
 Beveren,Cheick Conde,1132551,midfielders,CDM,Defensive Midfield,MF,26,2000-07-26,44.0,GUI,False,,2026-11-07
-Beveren,Chris Lokesa,1276291,attackers,"LW,RW",Left Winger,FW,21,2004-11-07,5.0,BEL,False,,2026-11-07
+Beveren,Chris Lokesa,1276291,attackers,"LW,RW",Left Winger,FW,22,2004-11-07,5.0,BEL,False,,2026-11-07
 Beveren,Ilyes Najim,1243570,attackers,LW,Left Winger,FW,24,2002-09-10,7.0,FRA,False,,2026-11-07
 Beveren,Ferre Slegers,1428511,attackers,"RW,CAM",Right Winger,FW,21,2004-12-01,8.0,BEL,False,,2026-11-07
-Beveren,Elohim Kaboré,1711399,attackers,ST,Centre-Forward,FW,19,2006-12-20,9.0,BFA,False,,2026-11-07
+Beveren,Elohim Kaboré,1711399,attackers,"ST,CAM",Centre-Forward,FW,19,2006-12-20,9.0,BFA,False,,2026-11-07
 Beveren,Guillaume De Schryver,776905,attackers,ST,Centre-Forward,FW,30,1996-11-04,10.0,BEL,False,,2026-11-07
 Beveren,Junior Diouf,1925126,attackers,,Centre-Forward,FW,19,2007-08-16,11.0,SEN,False,,2026-11-07
 Beveren,Jearl Margaritha,1180784,attackers,"LW,LM",Left Winger,FW,26,2000-04-10,17.0,CUW,True,Late November 2026,2026-11-07

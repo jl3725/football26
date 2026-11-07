@@ -58,7 +58,7 @@ Inter,Ange-Yoan Bonny,1199383,attackers,ST,Centre-Forward,FW,23,2003-10-25,14.0,
 Inter,Mattia Mosconi,1646520,attackers,"RW,LW",Right Winger,FW,19,2007-03-26,48.0,ITA,False,,2026-11-07
 Inter,Francesco Pio Esposito,1367618,attackers,ST,Centre-Forward,FW,21,2005-06-28,94.0,ITA,False,,2026-11-07
 Roma,Devis Vásquez,1186685,keepers,GK,Goalkeeper,GK,28,1998-05-12,32.0,COL,False,,2026-11-07
-Roma,Pierluigi Gollini,553849,keepers,GK,Goalkeeper,GK,31,1995-03-18,95.0,ITA,True,Doubtful,2026-11-07
+Roma,Pierluigi Gollini,553849,keepers,GK,Goalkeeper,GK,31,1995-03-18,95.0,ITA,False,,2026-11-07
 Roma,Mile Svilar,768474,keepers,GK,Goalkeeper,GK,27,1999-08-27,99.0,SRB,True,Mid November 2026,2026-11-07
 Roma,Konstantinos Koulierakis,1337884,defenders,CB,Centre-Back,DF,22,2003-11-28,3.0,GRE,False,,2026-11-07
 Roma,Evan N'Dicka,787242,defenders,CB,Centre-Back,DF,27,1999-08-20,5.0,CIV,False,,2026-11-07
@@ -96,7 +96,7 @@ Como,Yan Couto,1109171,defenders,"RB,RWB",Right-Back,DF,24,2002-06-03,27.0,BRA,F
 Como,Ivan Smolčić,1353289,defenders,RB,Right-Back,DF,26,2000-08-17,28.0,CRO,False,,2026-11-07
 Como,Adam Asfour,2141204,defenders,CB,Centre-Back,DF,17,2009-04-09,31.0,FRA,False,,2026-11-07
 Como,Willy Kambwala,1344550,defenders,CB,Centre-Back,DF,22,2004-08-25,53.0,COD,False,,2026-11-07
-Como,Trevoh Chalobah,793907,defenders,CB,Centre-Back,DF,27,1999-07-05,99.0,ENG,True,Mid November 2026,2026-11-07
+Como,Trevoh Chalobah,793907,defenders,CB,Centre-Back,DF,27,1999-07-05,99.0,ENG,True,Doubtful,2026-11-07
 Como,Máximo Perrone,1336582,midfielders,CDM,Defensive Midfield,MF,23,2003-01-07,5.0,ARG,False,,2026-11-07
 Como,Luis Milla,638090,midfielders,"CM,CDM",Central Midfield,MF,32,1994-10-07,6.0,ESP,False,,2026-11-07
 Como,Lucas Da Cunha,1076647,midfielders,"CDM,RW,CM",Defensive Midfield,MF,25,2001-06-09,7.0,FRA,False,,2026-11-07
@@ -105,6 +105,7 @@ Como,Nico Paz,1347574,midfielders,"CAM,ST,RW,RM",Attacking Midfield,MF,22,2004-0
 Como,Adrian Lahdo,1615459,midfielders,CM,Central Midfield,MF,18,2007-12-26,15.0,SWE,False,,2026-11-07
 Como,Samuele Ricci,941656,midfielders,"CM,CDM",Central Midfield,MF,25,2001-08-21,21.0,ITA,False,,2026-11-07
 Como,Mattia Liberali,1593861,midfielders,"CAM,RW,CM",Attacking Midfield,MF,19,2007-04-06,30.0,ITA,False,,2026-11-07
+Como,Matteo Papaccioli,1817857,midfielders,CAM,Attacking Midfield,MF,18,2008-05-09,54.0,ITA,False,,2026-11-07
 Como,Anastasios Douvikas,873270,attackers,ST,Centre-Forward,FW,27,1999-08-02,9.0,GRE,False,,2026-11-07
 Como,Assane Diao,1434889,attackers,"RW,LW",Right Winger,FW,21,2005-09-07,11.0,SEN,True,Mid November 2026,2026-11-07
 Como,Jesús Rodríguez,1624039,attackers,LW,Left Winger,FW,20,2005-11-21,17.0,ESP,True,Mid November 2026,2026-11-07
@@ -213,7 +214,7 @@ Napoli,Alessandro Buongiorno,823018,defenders,CB,Centre-Back,DF,27,1999-06-06,4.
 Napoli,Benoît Badiashile,955376,defenders,CB,Centre-Back,DF,25,2001-03-26,5.0,FRA,True,Early December 2026,2026-11-07
 Napoli,Amir Rrahmani,544693,defenders,CB,Centre-Back,DF,32,1994-02-24,13.0,KVX,False,,2026-11-07
 Napoli,Rafa Marín,1313884,defenders,CB,Centre-Back,DF,24,2002-05-19,16.0,ESP,False,,2026-11-07
-Napoli,Mathías Olivera,729093,defenders,"CB,LB,LWB,LM",Centre-Back,DF,29,1997-10-31,17.0,URU,True,About 1-2 weeks,2026-11-07
+Napoli,Mathías Olivera,729093,defenders,"CB,LB,LWB,LM",Centre-Back,DF,29,1997-10-31,17.0,URU,False,,2026-11-07
 Napoli,Giovanni Di Lorenzo,414906,defenders,"RB,CB,RWB,RM",Right-Back,DF,33,1993-08-04,22.0,ITA,True,About 1-2 weeks,2026-11-07
 Napoli,Sam Beukema,873573,defenders,CB,Centre-Back,DF,27,1998-11-17,31.0,NED,False,,2026-11-07
 Napoli,Luca Marianucci,1529148,defenders,CB,Centre-Back,DF,22,2004-07-23,35.0,ITA,False,,2026-11-07
@@ -222,8 +223,8 @@ Napoli,Billy Gilmour,942549,midfielders,"CDM,CM",Defensive Midfield,MF,25,2001-0
 Napoli,David Neres,793066,midfielders,"CAM,RW",Attacking Midfield,MF,29,1997-03-03,7.0,BRA,True,Mid November 2026,2026-11-07
 Napoli,Scott McTominay,843099,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,29,1996-12-08,8.0,SCO,False,,2026-11-07
 Napoli,Kevin De Bruyne,169200,midfielders,"CAM,CM",Attacking Midfield,MF,35,1991-06-28,11.0,BEL,False,,2026-11-07
-Napoli,Matteo Politano,415539,midfielders,"RWB,RW,RM,CAM",Right-Back,MF,33,1993-08-03,21.0,ITA,False,,2026-11-07
-Napoli,Antonio Vergara,1320863,midfielders,"CAM,CM,RW,LM",Attacking Midfield,MF,23,2003-01-16,26.0,ITA,False,,2026-11-07
+Napoli,Matteo Politano,415539,midfielders,"RW,RWB,RM,CAM",Right Winger,MF,33,1993-08-03,21.0,ITA,False,,2026-11-07
+Napoli,Antonio Vergara,1320863,midfielders,"CAM,CM,RW",Attacking Midfield,MF,23,2003-01-16,26.0,ITA,False,,2026-11-07
 Napoli,Alisson Santos,1355552,midfielders,"CAM,LW",Attacking Midfield,MF,24,2002-09-27,27.0,BRA,True,Mid November 2026,2026-11-07
 Napoli,Leonardo Spinazzola,215242,midfielders,"LWB,LM,LB",Left-Back,MF,33,1993-03-25,37.0,ITA,True,Mid November 2026,2026-11-07
 Napoli,Stanislav Lobotka,308517,midfielders,"CDM,CM",Defensive Midfield,MF,31,1994-11-25,68.0,SVK,True,Late December 2026,2026-11-07
@@ -277,14 +278,14 @@ Torino,Ardian Ismajli,750880,defenders,CB,Centre-Back,DF,30,1996-09-30,44.0,ALB,
 Torino,Manuel Carrascosa,2182262,defenders,,Centre-Back,DF,18,2008-08-24,63.0,ESP,False,,2026-11-07
 Torino,Emirhan İlkhan,1301633,midfielders,"CM,CDM",Central Midfield,MF,22,2004-06-01,6.0,TUR,False,,2026-11-07
 Torino,Zakaria Aboukhlal,846761,midfielders,LM,Left Midfield,MF,26,2000-02-18,7.0,MAR,False,,2026-11-07
-Torino,Rolando Mandragora,577911,midfielders,"CM,CDM,CAM",Central Midfield,MF,29,1997-06-29,8.0,ITA,True,Mid November 2026,2026-11-07
+Torino,Rolando Mandragora,577911,midfielders,"CM,CDM,CAM",Central Midfield,MF,29,1997-06-29,8.0,ITA,False,,2026-11-07
 Torino,Nikola Vlašić,557677,midfielders,"CM,CAM,ST,RW",Central Midfield,MF,29,1997-10-04,10.0,CRO,False,,2026-11-07
 Torino,Daniel Bragança,1014980,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,27,1999-05-27,21.0,POR,False,,2026-11-07
 Torino,Cesare Casadei,1339372,midfielders,"CM,CAM",Central Midfield,MF,23,2003-01-10,22.0,ITA,False,,2026-11-07
 Torino,Kian Fitz-Jim,1218556,midfielders,"CM,CDM,CAM",Central Midfield,MF,23,2003-07-05,28.0,NED,False,,2026-11-07
-Torino,Rafik Belghali,1231029,midfielders,"RM,RB,RWB,CAM,LM",Right Midfield,MF,24,2002-06-07,45.0,ALG,True,Late November 2026,2026-11-07
+Torino,Rafik Belghali,1231029,midfielders,"RM,RB,RWB,CAM,LM",Right Midfield,MF,24,2002-06-07,45.0,ALG,False,,2026-11-07
 Torino,Gvidas Gineitis,1421505,midfielders,"CM,CDM",Central Midfield,MF,22,2004-04-15,66.0,LTU,False,,2026-11-07
-Torino,Alessio Cacciamani,1746591,midfielders,"LM,LWB",Left Midfield,MF,19,2007-06-29,77.0,ITA,True,About 1-2 weeks,2026-11-07
+Torino,Alessio Cacciamani,1746591,midfielders,"LM,LWB",Left Midfield,MF,19,2007-06-29,77.0,ITA,False,,2026-11-07
 Torino,Andrea Luongo,1762472,midfielders,"CM,CDM",Central Midfield,MF,18,2008-02-16,79.0,ITA,False,,2026-11-07
 Torino,Pietro Pellegri,817844,attackers,ST,Centre-Forward,FW,25,2001-03-17,9.0,ITA,False,,2026-11-07
 Torino,Gaetano Oristanio,1110045,attackers,"CAM,RW",Attacking Midfield,FW,24,2002-09-28,11.0,ITA,False,,2026-11-07
@@ -323,14 +324,14 @@ Genoa,Milutin Osmajić,936603,attackers,"ST,RW",Centre-Forward,FW,27,1999-07-25,
 Genoa,Joi Xheto Nuredini,1729334,attackers,,Centre-Forward,FW,19,2007-08-05,19.0,ALB,False,,2026-11-07
 Genoa,Robinho Júnior,1784631,attackers,RW,Right Winger,FW,18,2007-12-17,21.0,BRA,False,,2026-11-07
 Genoa,Lorenzo Colombo,1050163,attackers,ST,Centre-Forward,FW,24,2002-03-08,29.0,ITA,False,,2026-11-07
-Genoa,Lorenzo Venturino,1707510,attackers,CAM,Attacking Midfield,FW,20,2006-06-22,76.0,ITA,True,Back in training,2026-11-07
-Cagliari,Elia Caprile,958422,keepers,GK,Goalkeeper,GK,25,2001-08-25,1.0,ITA,False,,2026-11-07
+Genoa,Lorenzo Venturino,1707510,attackers,CAM,Attacking Midfield,FW,20,2006-06-22,76.0,ITA,True,Doubtful,2026-11-07
+Cagliari,Elia Caprile,958422,keepers,GK,Goalkeeper,GK,25,2001-08-25,1.0,ALB,False,,2026-11-07
 Cagliari,Alen Sherri,1178779,keepers,GK,Goalkeeper,GK,28,1997-12-15,12.0,ALB,False,,2026-11-07
 Cagliari,Boris Radunović,435684,keepers,GK,Goalkeeper,GK,30,1996-05-26,23.0,SRB,False,,2026-11-07
 Cagliari,Zé Pedro,957107,defenders,"RB,CB",Right-Back,DF,29,1997-06-06,2.0,POR,False,,2026-11-07
 Cagliari,Juan Rodríguez,1621219,defenders,CB,Centre-Back,DF,21,2005-05-30,15.0,URU,False,,2026-11-07
 Cagliari,Raphael Kofler,1396084,defenders,CB,Centre-Back,DF,21,2005-04-26,22.0,ITA,False,,2026-11-07
-Cagliari,Yerry Mina,496042,defenders,CB,Centre-Back,DF,32,1994-09-23,26.0,COL,False,,2026-11-07
+Cagliari,Yerry Mina,496042,defenders,CB,Centre-Back,DF,32,1994-09-23,26.0,COL,True,About 1-2 weeks,2026-11-07
 Cagliari,Adam Obert,1289961,defenders,"LB,LM,CB,LWB",Left-Back,DF,24,2002-08-23,33.0,SVK,False,,2026-11-07
 Cagliari,Riyad Idrissi,1668219,midfielders,LM,Left Midfield,MF,21,2005-06-13,3.0,ITA,True,Late November 2026,2026-11-07
 Cagliari,Alessandro Romano,1705649,midfielders,"CM,CDM",Central Midfield,MF,20,2006-06-17,4.0,ITA,False,,2026-11-07
@@ -339,7 +340,7 @@ Cagliari,Michel Ndary Adopo,936164,midfielders,"CM,CDM,CAM,RW",Central Midfield,
 Cagliari,Mattia Felici,1021302,midfielders,LM,Left Midfield,MF,25,2001-04-17,17.0,ITA,True,Out for season,2026-11-07
 Cagliari,Riccardo Ciervo,1210653,midfielders,"RM,RW",Right Midfield,MF,24,2002-04-01,20.0,ITA,False,,2026-11-07
 Cagliari,Roberto Gagliardini,485634,midfielders,CM,Central Midfield,MF,32,1994-04-07,21.0,ITA,False,,2026-11-07
-Cagliari,Giuseppe Aurelio,1165232,midfielders,"LM,LB",Left Midfield,MF,26,2000-03-22,24.0,ITA,False,,2026-11-07
+Cagliari,Giuseppe Aurelio,1165232,midfielders,"LM,LB",Left Midfield,MF,26,2000-03-22,24.0,ITA,True,Late November 2026,2026-11-07
 Cagliari,Alessandro Deiola,449283,midfielders,"CB,CM,CDM",Centre-Back,MF,31,1995-08-01,27.0,ITA,False,,2026-11-07
 Cagliari,Joseph Liteta,1807301,midfielders,"CM,CDM",Central Midfield,MF,20,2006-02-22,27.0,ZAM,False,,2026-11-07
 Cagliari,Yukinari Sugawara,924610,midfielders,"RB,RWB,RM",Right-Back,MF,26,2000-06-28,28.0,JPN,False,,2026-11-07
@@ -358,9 +359,10 @@ Atalanta,Thomas Pompei,2189043,keepers,,Goalkeeper,GK,20,2006-07-04,22.0,ITA,Tru
 Atalanta,Marco Carnesecchi,1013021,keepers,GK,Goalkeeper,GK,26,2000-07-01,29.0,ITA,False,,2026-11-07
 Atalanta,Mattia Sonzogni,1837500,keepers,GK,Goalkeeper,GK,17,2009-07-30,51.0,ITA,False,,2026-11-07
 Atalanta,Marco Sportiello,212630,keepers,GK,Goalkeeper,GK,34,1992-05-10,57.0,ITA,False,,2026-11-07
+Atalanta,Javison Idele,1756869,defenders,RB,Right-Back,DF,19,2007-01-23,,ITA,False,,2026-11-07
 Atalanta,Odilon Kossounou,1014496,defenders,CB,Centre-Back,DF,25,2001-01-04,3.0,CIV,True,Mid November 2026,2026-11-07
 Atalanta,Isak Hien,939780,defenders,CB,Centre-Back,DF,27,1999-01-13,4.0,SWE,True,Back in training,2026-11-07
-Atalanta,Sead Kolašinac,304345,defenders,"CB,LB",Centre-Back,DF,33,1993-06-20,23.0,BIH,True,About 1-2 weeks,2026-11-07
+Atalanta,Sead Kolašinac,304345,defenders,"CB,LB",Centre-Back,DF,33,1993-06-20,23.0,BIH,False,,2026-11-07
 Atalanta,Thomas Kristensen,1190029,defenders,CB,Centre-Back,DF,24,2002-01-17,31.0,DEN,True,Mid November 2026,2026-11-07
 Atalanta,Relja Obrić,1692456,defenders,CB,Centre-Back,DF,20,2006-04-11,40.0,SVN,False,,2026-11-07
 Atalanta,Giorgio Scalvini,1202358,defenders,CB,Centre-Back,DF,22,2003-12-11,42.0,ITA,False,,2026-11-07
@@ -372,9 +374,9 @@ Atalanta,Éderson,957203,midfielders,"CDM,CM",Defensive Midfield,MF,27,1999-07-0
 Atalanta,Raoul Bellanova,902651,midfielders,"RWB,RB",Right-Back,MF,26,2000-05-17,16.0,ITA,True,Mid November 2026,2026-11-07
 Atalanta,Charles De Ketelaere,1095432,midfielders,"CAM,ST,RW",Attacking Midfield,MF,25,2001-03-10,17.0,BEL,False,,2026-11-07
 Atalanta,Giacomo Raspadori,951743,midfielders,"CAM,LW,ST",Attacking Midfield,MF,26,2000-02-18,18.0,ITA,True,Mid November 2026,2026-11-07
-Atalanta,Franck Kessié,579747,midfielders,"CM,CDM,CAM,CB",Central Midfield,MF,29,1996-12-19,19.0,CIV,True,Mid November 2026,2026-11-07
+Atalanta,Franck Kessié,579747,midfielders,"CM,CDM,CAM,CB",Central Midfield,MF,29,1996-12-19,19.0,CIV,False,,2026-11-07
 Atalanta,Lorenzo Bernasconi,1191093,midfielders,"LWB,LB",Left-Back,MF,22,2003-11-16,47.0,ITA,False,,2026-11-07
-Atalanta,Nicola Zalewski,1053714,midfielders,"CAM,LWB,LW,LM,RW",Attacking Midfield,MF,24,2002-01-23,59.0,POL,False,,2026-11-07
+Atalanta,Nicola Zalewski,1053714,midfielders,"CAM,LWB,RW,LW,LM",Attacking Midfield,MF,24,2002-01-23,59.0,POL,False,,2026-11-07
 Atalanta,Gianluca Gaetano,1012842,midfielders,"CM,CDM,CAM",Central Midfield,MF,26,2000-05-05,70.0,ITA,True,Late November 2026,2026-11-07
 Atalanta,Davide Zappacosta,244811,midfielders,"RWB,LWB,RB,LB",Right-Back,MF,34,1992-06-11,77.0,ITA,False,,2026-11-07
 Atalanta,Eljif Elmas,741049,midfielders,"CAM,CDM,RW,LW,CM",Attacking Midfield,MF,27,1999-09-24,99.0,MKD,False,,2026-11-07
@@ -403,7 +405,7 @@ Lecce,Youssef Maleh,789243,midfielders,"CM,CAM,CDM",Central Midfield,MF,28,1998-
 Lecce,Omri Gandelman,1202114,midfielders,"CAM,CM,RW",Attacking Midfield,MF,26,2000-05-16,16.0,ISR,False,,2026-11-07
 Lecce,Ivan Ilić,1036182,midfielders,"CM,CAM",Central Midfield,MF,25,2001-03-17,20.0,SRB,True,Late November 2026,2026-11-07
 Lecce,Olaf Gorter,1414124,midfielders,CM,Central Midfield,MF,21,2005-01-31,28.0,NED,False,,2026-11-07
-Lecce,Lassana Coulibaly,664587,midfielders,"CAM,CM,CDM,RW",Attacking Midfield,MF,30,1996-04-10,29.0,MLI,True,Mid November 2026,2026-11-07
+Lecce,Lassana Coulibaly,664587,midfielders,"CAM,CM,CDM,RW",Attacking Midfield,MF,30,1996-04-10,29.0,MLI,False,,2026-11-07
 Lecce,Mohamed Kaba,1299869,midfielders,"CM,CAM",Central Midfield,MF,25,2001-10-27,77.0,FRA,False,,2026-11-07
 Lecce,Oumar Ngom,1332538,midfielders,"CDM,CM",Defensive Midfield,MF,22,2004-03-09,79.0,MTN,False,,2026-11-07
 Lecce,Niko Kovač,1801097,midfielders,CM,Central Midfield,MF,21,2005-04-08,80.0,BIH,False,,2026-11-07
@@ -413,7 +415,7 @@ Lecce,Konan N’Dri,1027594,attackers,"RW,LW",Right Winger,FW,26,2000-10-27,11.0
 Lecce,Paco Esteban,1417101,attackers,ST,Centre-Forward,FW,20,2006-05-02,22.0,ESP,False,,2026-11-07
 Lecce,Hjalte Laerke,1666063,attackers,RW,Right Winger,FW,19,2007-04-23,34.0,DEN,False,,2026-11-07
 Lecce,Santiago Pierotti,1039403,attackers,RW,Right Winger,FW,25,2001-04-03,50.0,ARG,True,Mid November 2026,2026-11-07
-Lecce,Willem Geubbels,883824,attackers,ST,Centre-Forward,FW,25,2001-08-16,69.0,FRA,True,Doubtful,2026-11-07
+Lecce,Willem Geubbels,883824,attackers,ST,Centre-Forward,FW,25,2001-08-16,69.0,FRA,False,,2026-11-07
 Lecce,Joël Monteiro,1187691,attackers,"LW,LM,CAM",Left Winger,FW,27,1999-08-05,99.0,SUI,True,Late November 2026,2026-11-07
 Parma,Simone Ghidotti,823626,keepers,GK,Goalkeeper,GK,26,2000-03-19,22.0,ITA,False,,2026-11-07
 Parma,Giovanni Daffara,1519035,keepers,GK,Goalkeeper,GK,21,2004-12-05,30.0,ITA,False,,2026-11-07
@@ -424,7 +426,7 @@ Parma,Lautaro Valenti,968029,defenders,CB,Centre-Back,DF,27,1999-01-14,5.0,ARG,F
 Parma,Enrico Del Prato,935380,defenders,"CB,RM,RB",Centre-Back,DF,26,1999-11-10,15.0,ITA,False,,2026-11-07
 Parma,Diego Carlos,570434,defenders,CB,Centre-Back,DF,33,1993-03-15,34.0,BRA,False,,2026-11-07
 Parma,Mariano Troilo,1520184,defenders,CB,Centre-Back,DF,23,2003-06-28,37.0,ARG,False,,2026-11-07
-Parma,Dominik Drobnič,1891769,defenders,CB,Centre-Back,DF,19,2007-04-05,72.0,SVN,True,Doubtful,2026-11-07
+Parma,Dominik Drobnič,1891769,defenders,CB,Centre-Back,DF,19,2007-04-05,72.0,SVN,True,Mid November 2026,2026-11-07
 Parma,Vincent Sierro,634310,midfielders,"CM,CDM",Central Midfield,MF,31,1995-10-08,4.0,SUI,False,,2026-11-07
 Parma,Adrián Bernabé,951714,midfielders,"CM,CAM,CDM",Central Midfield,MF,25,2001-05-26,10.0,ESP,True,About 1-2 weeks,2026-11-07
 Parma,Emanuele Valeri,867789,midfielders,"LM,LB,LWB,LW",Left Midfield,MF,27,1998-12-07,14.0,ITA,False,,2026-11-07
@@ -445,7 +447,7 @@ Parma,Nesta Elphege,1460253,attackers,ST,Centre-Forward,FW,25,2001-01-09,23.0,FR
 Parma,Thomás de Martis,1797278,attackers,ST,Centre-Forward,FW,18,2008-06-26,25.0,ARG,False,,2026-11-07
 Parma,Simone Lontani,1843609,attackers,"ST,LW,CAM",Centre-Forward,FW,18,2008-01-18,76.0,ITA,False,,2026-11-07
 Fiorentina,Luca Lezzerini,282059,keepers,GK,Goalkeeper,GK,31,1995-03-24,19.0,ITA,False,,2026-11-07
-Fiorentina,David de Gea,182917,keepers,GK,Goalkeeper,GK,35,1990-11-07,43.0,ESP,False,,2026-11-07
+Fiorentina,David de Gea,182917,keepers,GK,Goalkeeper,GK,36,1990-11-07,43.0,ESP,False,,2026-11-07
 Fiorentina,Mattia Magalotti,1838591,keepers,,Goalkeeper,GK,18,2008-03-08,51.0,ITA,False,,2026-11-07
 Fiorentina,Oliver Christensen,806972,keepers,GK,Goalkeeper,GK,27,1999-03-22,53.0,DEN,False,,2026-11-07
 Fiorentina,Dodô,750734,defenders,"RB,RM",Right-Back,DF,27,1998-11-17,2.0,BRA,False,,2026-11-07
@@ -476,7 +478,7 @@ Fiorentina,Federico Croci,2018923,attackers,"ST,CAM",Centre-Forward,FW,16,2010-0
 Fiorentina,Sulayman Jallow,1838587,attackers,,Centre-Forward,FW,19,2007-05-04,71.0,GAM,False,,2026-11-07
 Sassuolo,Giacomo Satalino,727654,keepers,GK,Goalkeeper,GK,27,1999-05-20,12.0,ITA,False,,2026-11-07
 Sassuolo,Lorenzo Nyarko,1839106,keepers,,Goalkeeper,GK,19,2007-10-20,22.0,ITA,False,,2026-11-07
-Sassuolo,Arijanet Murić,760752,keepers,GK,Goalkeeper,GK,27,1998-11-07,49.0,KVX,False,,2026-11-07
+Sassuolo,Arijanet Murić,760752,keepers,GK,Goalkeeper,GK,28,1998-11-07,49.0,KVX,False,,2026-11-07
 Sassuolo,Stefano Turati,869054,keepers,GK,Goalkeeper,GK,25,2001-09-05,80.0,ITA,False,,2026-11-07
 Sassuolo,Josh Doig,1130330,defenders,LB,Left-Back,DF,24,2002-05-18,3.0,SCO,False,,2026-11-07
 Sassuolo,Fali Candé,1041522,defenders,"LB,CB",Left-Back,DF,28,1998-01-24,5.0,GNB,False,,2026-11-07
@@ -502,7 +504,7 @@ Sassuolo,Ibrahim Sulemana,1396375,midfielders,"CM,LM",Central Midfield,MF,23,200
 Sassuolo,Ismaël Koné,1288119,midfielders,CM,Central Midfield,MF,24,2002-06-16,90.0,CAN,True,Doubtful,2026-11-07
 Sassuolo,Cristian Volpato,1308909,attackers,"RW,CAM",Right Winger,FW,22,2003-11-15,7.0,AUS,True,Mid November 2026,2026-11-07
 Sassuolo,Kieron Bowie,982617,attackers,ST,Centre-Forward,FW,24,2002-09-21,9.0,SCO,False,,2026-11-07
-Sassuolo,Domenico Berardi,364520,attackers,"RW,RM",Right Winger,FW,32,1994-08-01,10.0,ITA,False,,2026-11-07
+Sassuolo,Domenico Berardi,364520,attackers,"RW,RM",Right Winger,FW,32,1994-08-01,10.0,ITA,True,About 1-2 weeks,2026-11-07
 Sassuolo,Gabriel Kulla,2022716,attackers,,Centre-Forward,FW,18,2008-02-20,14.0,ALB,False,,2026-11-07
 Sassuolo,Laurs Skjellerup,1163273,attackers,ST,Centre-Forward,FW,24,2002-08-12,19.0,DEN,False,,2026-11-07
 Sassuolo,Benja Domínguez,1316088,attackers,LW,Left Winger,FW,23,2003-09-19,25.0,ARG,False,,2026-11-07
