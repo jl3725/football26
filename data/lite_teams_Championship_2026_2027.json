@@ -3,14 +3,6 @@
  "league": "Championship",
  "season": "2026_2027",
  "teams": {
-  "Birmingham City": {
-   "fotmob_id": 8658,
-   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8658.png",
-   "color": "#0032A0",
-   "tm_vid": 337,
-   "tm_slug": "birmingham-city",
-   "tm_name": "Birmingham City"
-  },
   "Middlesbrough": {
    "fotmob_id": 8549,
    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8549.png",
@@ -43,6 +35,14 @@
    "tm_slug": "west-bromwich-albion",
    "tm_name": "West Bromwich Albion"
   },
+  "Birmingham City": {
+   "fotmob_id": 8658,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8658.png",
+   "color": "#0032A0",
+   "tm_vid": 337,
+   "tm_slug": "birmingham-city",
+   "tm_name": "Birmingham City"
+  },
   "Swansea City": {
    "fotmob_id": 10003,
    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/10003.png",
@@ -51,14 +51,6 @@
    "tm_slug": "swansea-city",
    "tm_name": "Swansea City"
   },
-  "West Ham United": {
-   "fotmob_id": 8654,
-   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8654.png",
-   "color": "#7B2B3A",
-   "tm_vid": 379,
-   "tm_slug": "west-ham-united",
-   "tm_name": "West Ham United"
-  },
   "Southampton": {
    "fotmob_id": 8466,
    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8466.png",
@@ -66,6 +58,14 @@
    "tm_vid": 180,
    "tm_slug": "fc-southampton",
    "tm_name": "Southampton"
+  },
+  "West Ham United": {
+   "fotmob_id": 8654,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8654.png",
+   "color": "#7B2B3A",
+   "tm_vid": 379,
+   "tm_slug": "west-ham-united",
+   "tm_name": "West Ham United"
   },
   "Sheffield United": {
    "fotmob_id": 8657,
@@ -99,14 +99,6 @@
    "tm_slug": "norwich-city",
    "tm_name": "Norwich City"
   },
-  "Millwall": {
-   "fotmob_id": 10004,
-   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/10004.png",
-   "color": "#003078",
-   "tm_vid": 1028,
-   "tm_slug": "fc-millwall",
-   "tm_name": "Millwall"
-  },
   "Blackburn Rovers": {
    "fotmob_id": 8655,
    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8655.png",
@@ -114,6 +106,14 @@
    "tm_vid": 164,
    "tm_slug": "blackburn-rovers",
    "tm_name": "Blackburn Rovers"
+  },
+  "Millwall": {
+   "fotmob_id": 10004,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/10004.png",
+   "color": "#003078",
+   "tm_vid": 1028,
+   "tm_slug": "fc-millwall",
+   "tm_name": "Millwall"
   },
   "Wrexham": {
    "fotmob_id": 9841,
