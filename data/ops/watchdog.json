@@ -1,14 +1,16 @@
 {
- "checked": "2026-11-06T15:26:53+00:00",
+ "checked": "2026-11-07T14:26:57+00:00",
  "results": {
   "ovr": [],
   "season": [],
   "hub": [],
   "frontend": [],
-  "backend": [],
+  "backend": [
+   "운영 서버 메모리 463MB / 512MB — 450MB 넘음(넘치면 재시작). src/memtrim.py · 큰 캐시(_MEMO·_STAT_FRAME·transfer_fit 풀) 확인"
+  ],
   "workflows": [],
   "news": [
-   "news.db 압축본 67MB — GitHub 50MB 경고 구간(60MB 넘으면 넓힌 원천의 14일 지난 비이적 기사를 자동 정리, 90MB 넘으면 올리기 거부 — src/news_store.py)"
+   "news.db 압축본 68MB — GitHub 50MB 경고 구간(60MB 넘으면 넓힌 원천의 14일 지난 비이적 기사를 자동 정리, 90MB 넘으면 올리기 거부 — src/news_store.py)"
   ],
   "tm_agent": [],
   "coverage": [],
@@ -18,7 +20,9 @@
   ],
   "names": [],
   "xg": [],
-  "agents": [],
+  "agents": [
+   "ANALYST · 팬 투표 — 마지막 성공 37시간 전(허용 24시간, local-fanvote)"
+  ],
   "expectations": [],
   "screen": [],
   "squads": [],
@@ -31,5 +35,5 @@
   "digest": [],
   "scout_answers": []
  },
- "ai_cause": "**news**\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인)\n**ratings**\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인)\n**progress**\n- StatBunker 원천 사이트의 404 및 502 오류로 인해 데이터 수집이 중단되었으므로, 해당 URL의 접근 가능 여부와 서버 상태를 먼저 확인해야 합니다(statbunker 단계).\n- Understat 데이터 수집 단계(understat_live)에서 지속적인 코드 75 오류가 발생하고 있으므로, API 응답 구조 변경이나 네트워크 연결 문제를 우선 점검해야 합니다(understat_live 단계)."
+ "ai_cause": "**backend**\n- 메모리 사용량이 463MB로 임계치(450MB)를 초과하여 재시작 위험이 있으므로, `src/memtrim.py`를 통해 캐시(_MEMO, _STAT_FRAME, transfer_fit)를 즉시 정리해야 합니다. (positions 단계, 추정)\n**news**\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인)\n**ratings**\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인)\n**agents**\n- `understat_live` 단계에서 코드 75번 오류가 반복 발생하고 있으므로, 해당 데이터 소스의 연결 상태나 API 응답 형식을 먼저 확인해야 합니다. (understat_live 단계)\n**progress**\n- `understat_live` 단계의 지속적인 코드 75번 오류가 데이터 수집 실패의 원인으로 보이므로, 해당 단계의 정상화가 선행되어야 합니다. (understat_live 단계)"
 }
