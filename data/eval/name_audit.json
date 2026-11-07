@@ -340,9 +340,9 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 610,
+   "total": 611,
    "exact": 492,
-   "rule": 26,
+   "rule": 27,
    "ambiguous": 1,
    "orphan": 92,
    "orphans": [
@@ -558,8 +558,8 @@
    ]
   },
   "espn_subs": {
-   "total": 449,
-   "exact": 443,
+   "total": 450,
+   "exact": 444,
    "rule": 3,
    "ambiguous": 1,
    "orphan": 3,
@@ -596,8 +596,8 @@
    ]
   },
   "match_events": {
-   "total": 387,
-   "exact": 387,
+   "total": 388,
+   "exact": 388,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -922,11 +922,11 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 664,
+   "total": 666,
    "exact": 565,
    "rule": 10,
    "ambiguous": 1,
-   "orphan": 89,
+   "orphan": 91,
    "orphans": [
     {
      "squad": "Lecce",
@@ -1235,8 +1235,8 @@
    "minutes": 8
   },
   "s365_ratings": {
-   "total": 483,
-   "exact": 477,
+   "total": 484,
+   "exact": 478,
    "rule": 3,
    "ambiguous": 1,
    "orphan": 0,
@@ -1254,16 +1254,16 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 492,
+   "total": 493,
    "exact": 446,
    "rule": 10,
    "ambiguous": 0,
-   "orphan": 36,
+   "orphan": 37,
    "orphans": [
     {
      "squad": "Troyes",
      "name": "Michel Diaz",
-     "starts": 9
+     "starts": 10
     },
     {
      "squad": "Nice",
@@ -1442,8 +1442,8 @@
    ]
   },
   "espn_subs": {
-   "total": 374,
-   "exact": 369,
+   "total": 375,
+   "exact": 370,
    "rule": 4,
    "ambiguous": 0,
    "orphan": 1,
@@ -1481,13 +1481,13 @@
    "minutes": 7
   },
   "s365_ratings": {
-   "total": 419,
-   "exact": 412,
+   "total": 420,
+   "exact": 413,
    "rule": 7,
    "ambiguous": 0,
    "orphan": 0,
    "orphans": [],
-   "minutes": 5
+   "minutes": 4
   }
  },
  "LigaPortugal 2026_2027": {
@@ -1924,8 +1924,8 @@
    ]
   },
   "espn_subs": {
-   "total": 419,
-   "exact": 409,
+   "total": 420,
+   "exact": 410,
    "rule": 10,
    "ambiguous": 0,
    "orphan": 0,
@@ -1940,8 +1940,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 313,
-   "exact": 313,
+   "total": 314,
+   "exact": 314,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1988,6 +1988,11 @@
      "starts": 11
     },
     {
+     "squad": "La Louvière",
+     "name": "Mustapha Ubandoma",
+     "starts": 11
+    },
+    {
      "squad": "Standard Liège",
      "name": "Dennis Dargahi",
      "starts": 10
@@ -2005,11 +2010,6 @@
     {
      "squad": "Genk",
      "name": "Josué Ndenge",
-     "starts": 10
-    },
-    {
-     "squad": "La Louvière",
-     "name": "Mustapha Ubandoma",
      "starts": 10
     },
     {
@@ -2164,8 +2164,8 @@
    ]
   },
   "espn_subs": {
-   "total": 302,
-   "exact": 302,
+   "total": 305,
+   "exact": 305,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -2180,8 +2180,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 283,
-   "exact": 283,
+   "total": 284,
+   "exact": 284,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
