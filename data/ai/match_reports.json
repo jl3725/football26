@@ -3719,6 +3719,38 @@
    "away": "Young Boys",
    "at": "2026-11-07T19:36:35+00:00",
    "model": "gemini-3.1-flash-lite"
+  },
+  "401875552": {
+   "text": "ADO Den Haag가 ADO Den Haag Stadium에서 열린 Sparta R.와의 경기에서 3-1로 승리했다. 22' Juho Kilo의 헤더 선제골로 앞서간 ADO Den Haag는 50' Bas Kuipers에게 동점골을 허용했으나, 57' Nigel Thomas의 득점과 79' Daryl van Mieghem의 추가골로 승부를 결정지었다. Sparta R.는 점유율 50.8%와 슈팅 16개를 기록하며 공세를 펼쳤으나 유효 슈팅 7개를 기록한 ADO Den Haag가 더 높은 결정력을 보였다. 이번 결과로 Elo의 ADO Den Haag 승리 예측은 적중했고, Sparta R. 승리를 예상했던 모델의 예측은 빗나갔다.",
+   "date": "2026-11-07",
+   "home": "ADO Den Haag",
+   "away": "Sparta R.",
+   "at": "2026-11-07T20:06:16+00:00",
+   "model": "gemini-3.1-flash-lite"
+  },
+  "401878757": {
+   "text": "Nottingham Forest가 The City Ground에서 Manchester City를 3-1로 꺾으며 승리를 거뒀다. 전반 6' Jair Cunha의 선제골과 18' Liam Delap의 추가골로 앞서 나간 Nottingham Forest는 후반 52' Rayan Cherki에게 실점했으나, 73' Liam Delap이 다시 득점하며 승부에 쐐기를 박았다. Manchester City는 78%의 점유율과 12개의 슈팅을 기록하며 경기를 주도했으나 유효 슈팅에서 4-5로 밀리며 패배했다. 이는 Manchester City의 승리를 점쳤던 팬 투표와 모델, Elo 예측이 모두 빗나간 결과였다.",
+   "date": "2026-11-07",
+   "home": "Nottingham Forest",
+   "away": "Manchester City",
+   "at": "2026-11-07T20:06:23+00:00",
+   "model": "gemini-3.1-flash-lite"
+  },
+  "401884743": {
+   "text": "Stuttgart가 MHPArena에서 열린 리그 경기에서 Werder Bremen을 1-0으로 꺾고 승리를 거뒀다. 경기 시작 7'에 Grischa Prömel의 도움을 받은 Maximilian Mittelstädt가 결승골을 기록하며 승부를 결정지었다. Werder Bremen이 점유율 57.6%와 슈팅 24개를 기록하며 공세를 펼쳤으나, Stuttgart는 유효 슈팅 5개와 선방 5개를 기록하며 실점 없이 경기를 마쳤다. 경기 전 팬 투표와 모델, Elo 예측 모두 Stuttgart의 승리를 점쳤으며 결과적으로 이 예측들은 적중했다.",
+   "date": "2026-11-07",
+   "home": "Stuttgart",
+   "away": "Werder Bremen",
+   "at": "2026-11-07T20:06:29+00:00",
+   "model": "gemini-3.1-flash-lite"
+  },
+  "401882811": {
+   "text": "Osasuna와 Athletic Club의 경기는 1-1 무승부로 종료되었다. 84'에 Athletic Club의 Nico Williams가 득점했으나, 90'에 Osasuna의 Alejandro Catena가 동점 골을 기록하며 승부를 원점으로 돌렸다. Athletic Club이 60.7%의 점유율과 90%의 패스 성공률을 기록하며 경기를 주도했으나, 슈팅 수에서는 Osasuna가 17개로 Athletic Club의 16개보다 많았다. 경기 전 팬 투표와 모델이 예상한 Athletic Club의 승리 예측은 빗나갔다.",
+   "date": "2026-11-07",
+   "home": "Osasuna",
+   "away": "Athletic Club",
+   "at": "2026-11-07T20:06:35+00:00",
+   "model": "gemini-3.1-flash-lite"
   }
  },
  "fails": {}
