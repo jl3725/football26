@@ -1,0 +1,474 @@
+{
+ "updated": "2026-10-31",
+ "articles": 214,
+ "rivals": {
+  "Ajax": [
+   "Feyenoord",
+   "PSV"
+  ],
+  "Amed Sportif": [
+   "Fenerbahçe",
+   "Galatasaray"
+  ],
+  "Anderlecht": [
+   "Club Brugge",
+   "Standard Liège"
+  ],
+  "Antwerp": [
+   "Club Brugge"
+  ],
+  "Arsenal": [
+   "Manchester City",
+   "Manchester Utd",
+   "Tottenham Hotspur"
+  ],
+  "Aston Villa": [
+   "Bournemouth",
+   "Coventry City"
+  ],
+  "Atalanta": [
+   "Inter"
+  ],
+  "Athletic Club": [
+   "Atlético Madrid",
+   "Espanyol",
+   "Osasuna",
+   "Racing Santander",
+   "Real Madrid",
+   "Real Sociedad",
+   "Sevilla",
+   "Valencia"
+  ],
+  "Atlético Madrid": [
+   "Athletic Club",
+   "Barcelona",
+   "Real Madrid"
+  ],
+  "Austria Wien": [
+   "Rapid Wien",
+   "Sturm Graz"
+  ],
+  "Barcelona": [
+   "Atlético Madrid",
+   "Espanyol",
+   "Real Madrid"
+  ],
+  "Basel": [
+   "FC Zürich"
+  ],
+  "Bayern Munich": [
+   "Dortmund",
+   "Gladbach",
+   "Schalke 04",
+   "Werder Bremen"
+  ],
+  "Benfica": [
+   "Porto",
+   "Sporting CP",
+   "Vit. Guimarães"
+  ],
+  "Beşiktaş": [
+   "Fenerbahçe",
+   "Galatasaray",
+   "Konyaspor",
+   "Trabzonspor"
+  ],
+  "Birmingham City": [
+   "West Bromwich Albion"
+  ],
+  "Blackburn Rovers": [
+   "Bolton Wanderers",
+   "Burnley",
+   "Preston North End"
+  ],
+  "Bolton Wanderers": [
+   "Blackburn Rovers",
+   "Burnley",
+   "Preston North End"
+  ],
+  "Bournemouth": [
+   "Aston Villa"
+  ],
+  "Braga": [
+   "Vit. Guimarães"
+  ],
+  "Bristol City": [
+   "Cardiff City",
+   "Swansea City"
+  ],
+  "Burnley": [
+   "Blackburn Rovers",
+   "Bolton Wanderers",
+   "Preston North End"
+  ],
+  "Cardiff City": [
+   "Bristol City",
+   "Stoke City",
+   "Swansea City"
+  ],
+  "Cercle Brugge": [
+   "Club Brugge"
+  ],
+  "Charleroi": [
+   "Standard Liège"
+  ],
+  "Charlton Athletic": [
+   "Millwall"
+  ],
+  "Chelsea": [
+   "Manchester City",
+   "Manchester Utd",
+   "Tottenham Hotspur"
+  ],
+  "Club Brugge": [
+   "Anderlecht",
+   "Antwerp",
+   "Cercle Brugge",
+   "Genk",
+   "Gent",
+   "Standard Liège",
+   "Union SG"
+  ],
+  "Coventry City": [
+   "Aston Villa",
+   "Sunderland"
+  ],
+  "Derby County": [
+   "Stoke City"
+  ],
+  "Dortmund": [
+   "Bayern Munich",
+   "Schalke 04"
+  ],
+  "Erzurumspor FK": [
+   "Rizespor"
+  ],
+  "Espanyol": [
+   "Athletic Club",
+   "Barcelona",
+   "Real Madrid"
+  ],
+  "Everton": [
+   "Liverpool"
+  ],
+  "Excelsior": [
+   "Feyenoord"
+  ],
+  "Eyüpspor": [
+   "Kasımpaşa"
+  ],
+  "FC Zürich": [
+   "Basel"
+  ],
+  "Fenerbahçe": [
+   "Amed Sportif",
+   "Beşiktaş",
+   "Galatasaray",
+   "Konyaspor",
+   "Trabzonspor"
+  ],
+  "Feyenoord": [
+   "Ajax",
+   "Excelsior",
+   "Sparta R."
+  ],
+  "Fiorentina": [
+   "Juventus"
+  ],
+  "Galatasaray": [
+   "Amed Sportif",
+   "Beşiktaş",
+   "Fenerbahçe",
+   "Kasımpaşa",
+   "Konyaspor",
+   "Trabzonspor"
+  ],
+  "Genk": [
+   "Club Brugge",
+   "Standard Liège"
+  ],
+  "Gent": [
+   "Club Brugge"
+  ],
+  "Gençlerbirliği": [
+   "Trabzonspor"
+  ],
+  "Getafe": [
+   "Racing Santander",
+   "Real Betis"
+  ],
+  "Gladbach": [
+   "Bayern Munich",
+   "Köln",
+   "Schalke 04"
+  ],
+  "Go Ahead Eagles": [
+   "Twente",
+   "Zwolle"
+  ],
+  "Grazer AK": [
+   "Sturm Graz"
+  ],
+  "Hamburger SV": [
+   "Werder Bremen"
+  ],
+  "Hull City": [
+   "Leeds United",
+   "Manchester Utd"
+  ],
+  "Inter": [
+   "Atalanta",
+   "Juventus",
+   "Milan",
+   "Napoli",
+   "Roma"
+  ],
+  "Juventus": [
+   "Fiorentina",
+   "Inter",
+   "Milan",
+   "Napoli",
+   "Roma",
+   "Torino"
+  ],
+  "Kasımpaşa": [
+   "Eyüpspor",
+   "Galatasaray"
+  ],
+  "Konyaspor": [
+   "Beşiktaş",
+   "Fenerbahçe",
+   "Galatasaray"
+  ],
+  "Köln": [
+   "Gladbach"
+  ],
+  "Leeds United": [
+   "Hull City",
+   "Manchester Utd"
+  ],
+  "Levante": [
+   "Valencia"
+  ],
+  "Liverpool": [
+   "Everton",
+   "Manchester City",
+   "Manchester Utd"
+  ],
+  "Lyon": [
+   "PSG"
+  ],
+  "Manchester City": [
+   "Arsenal",
+   "Chelsea",
+   "Liverpool",
+   "Manchester Utd",
+   "Tottenham Hotspur"
+  ],
+  "Manchester Utd": [
+   "Arsenal",
+   "Chelsea",
+   "Hull City",
+   "Leeds United",
+   "Liverpool",
+   "Manchester City"
+  ],
+  "Marseille": [
+   "PSG",
+   "Paris FC"
+  ],
+  "Marítimo": [
+   "Nacional",
+   "Santa Clara",
+   "Sporting CP"
+  ],
+  "Milan": [
+   "Inter",
+   "Juventus"
+  ],
+  "Millwall": [
+   "Charlton Athletic",
+   "West Ham United"
+  ],
+  "Nacional": [
+   "Marítimo"
+  ],
+  "Napoli": [
+   "Inter",
+   "Juventus"
+  ],
+  "Newcastle United": [
+   "Sunderland"
+  ],
+  "Osasuna": [
+   "Athletic Club"
+  ],
+  "PSG": [
+   "Lyon",
+   "Marseille",
+   "Paris FC"
+  ],
+  "PSV": [
+   "Ajax"
+  ],
+  "Paris FC": [
+   "Marseille",
+   "PSG"
+  ],
+  "Porto": [
+   "Benfica",
+   "Sporting CP",
+   "Vit. Guimarães"
+  ],
+  "Preston North End": [
+   "Blackburn Rovers",
+   "Bolton Wanderers",
+   "Burnley"
+  ],
+  "Racing Santander": [
+   "Athletic Club",
+   "Getafe"
+  ],
+  "Rapid Wien": [
+   "Austria Wien",
+   "Sturm Graz"
+  ],
+  "Rayo Vallecano": [
+   "Real Madrid"
+  ],
+  "Real Betis": [
+   "Getafe",
+   "Sevilla"
+  ],
+  "Real Madrid": [
+   "Athletic Club",
+   "Atlético Madrid",
+   "Barcelona",
+   "Espanyol",
+   "Rayo Vallecano"
+  ],
+  "Real Sociedad": [
+   "Athletic Club"
+  ],
+  "Rizespor": [
+   "Erzurumspor FK",
+   "Samsunspor",
+   "Trabzonspor"
+  ],
+  "Roma": [
+   "Inter",
+   "Juventus"
+  ],
+  "Samsunspor": [
+   "Rizespor",
+   "Trabzonspor"
+  ],
+  "Santa Clara": [
+   "Marítimo"
+  ],
+  "Schalke 04": [
+   "Bayern Munich",
+   "Dortmund",
+   "Gladbach",
+   "Werder Bremen"
+  ],
+  "Sevilla": [
+   "Athletic Club",
+   "Real Betis"
+  ],
+  "Sheffield United": [
+   "West Ham United"
+  ],
+  "Sint-Truiden": [
+   "Standard Liège"
+  ],
+  "Sparta R.": [
+   "Feyenoord"
+  ],
+  "Sporting CP": [
+   "Benfica",
+   "Marítimo",
+   "Porto",
+   "Vit. Guimarães"
+  ],
+  "Standard Liège": [
+   "Anderlecht",
+   "Charleroi",
+   "Club Brugge",
+   "Genk",
+   "Sint-Truiden"
+  ],
+  "Stoke City": [
+   "Cardiff City",
+   "Derby County",
+   "West Bromwich Albion",
+   "Wolves"
+  ],
+  "Sturm Graz": [
+   "Austria Wien",
+   "Grazer AK",
+   "Rapid Wien"
+  ],
+  "Sunderland": [
+   "Coventry City",
+   "Newcastle United"
+  ],
+  "Swansea City": [
+   "Bristol City",
+   "Cardiff City"
+  ],
+  "Torino": [
+   "Juventus"
+  ],
+  "Tottenham Hotspur": [
+   "Arsenal",
+   "Chelsea",
+   "Manchester City"
+  ],
+  "Trabzonspor": [
+   "Beşiktaş",
+   "Fenerbahçe",
+   "Galatasaray",
+   "Gençlerbirliği",
+   "Rizespor",
+   "Samsunspor"
+  ],
+  "Twente": [
+   "Go Ahead Eagles"
+  ],
+  "Union SG": [
+   "Club Brugge"
+  ],
+  "Valencia": [
+   "Athletic Club",
+   "Levante"
+  ],
+  "Vit. Guimarães": [
+   "Benfica",
+   "Braga",
+   "Porto",
+   "Sporting CP"
+  ],
+  "Werder Bremen": [
+   "Bayern Munich",
+   "Hamburger SV",
+   "Schalke 04"
+  ],
+  "West Bromwich Albion": [
+   "Birmingham City",
+   "Stoke City",
+   "Wolves"
+  ],
+  "West Ham United": [
+   "Millwall",
+   "Sheffield United"
+  ],
+  "Wolves": [
+   "Stoke City",
+   "West Bromwich Albion"
+  ],
+  "Zwolle": [
+   "Go Ahead Eagles"
+  ]
+ }
+}

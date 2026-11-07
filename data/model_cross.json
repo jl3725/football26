@@ -1,0 +1,23 @@
+{
+ "mu_h": 1.731,
+ "mu_a": 1.247,
+ "dk": 0.712,
+ "dk_raw": 0.642,
+ "n": 248,
+ "draw_actual": 0.137,
+ "draw_pred_dk1": 0.197,
+ "goals_actual": [
+  1.83,
+  1.38
+ ],
+ "asof": "2026-11-07",
+ "seasons": [
+  "2025_2026",
+  "2026_2027"
+ ],
+ "max_match_date": "2026-11-05",
+ "logloss": 0.8464,
+ "logloss_old_params": 0.8832,
+ "ovr_scale": "절대 전력(베스트 XI 선수 OVR, 폼·팀 실적 제외) — api._club_abs",
+ "note": "scripts/backtest_cross.py --write — 리그 간 유럽 경기 기본 득점·무승부 배수"
+}

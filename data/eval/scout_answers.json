@@ -1,0 +1,476 @@
+{
+ "date": "2026-11-06",
+ "base": "https://football26-smoky.vercel.app",
+ "n": 35,
+ "pass": 35,
+ "score": 1.0,
+ "min": 0.8,
+ "fail_by_check": {},
+ "results": [
+  {
+   "q": "아스날 주장은 누구야?",
+   "ok": true,
+   "fails": [],
+   "sec": 17.5,
+   "tools": [
+    "team_leadership"
+   ],
+   "counts": [
+    null
+   ],
+   "answer": "아스날의 주장단과 영향력 상위 선수는 다음과 같습니다.\n\n- **주장 (1순위):** 마르틴 외데고르 (Martin Ødegaard) - 영향력 86\n- **부주장 (2순위):** 부카요 사카 (Bukayo Saka) - 영향력 77\n\n**팀 내 영향력 상위 선수 순위:**\n1. 마르틴 외데고르 (86)\n2. 부카요 사카 (77)\n3. 데클란 라이스 (73)\n4. 가브리엘 마갈량이스 (68)\n5. 다비드 라야 (65)"
+  },
+  {
+   "q": "아스날 이적설 정리해줘",
+   "ok": true,
+   "fails": [],
+   "sec": 9.4,
+   "tools": [
+    "graph_query"
+   ],
+   "counts": [
+    15
+   ],
+   "answer": "아스날과 연결된 주요 이적설 브리핑입니다. (Heat 지수 및 보도 매체 기준 상위 15명)\n\n1. **데지레 두에** (Désiré Doué / RW)\n   - **Heat:** 71 | **단계:** talks | **보도:** TEAMtalk, The Mirror (기사 2건)\n2. **훌리안 알바레스** (Julián Álvarez / CF)\n   - **Heat:** 70 | **단계:** done | **보도:** "
+  },
+  {
+   "q": "아스날 이적설 중 여러 매체가 보도한 선수는?",
+   "ok": true,
+   "fails": [],
+   "sec": 3.9,
+   "tools": [
+    "graph_query"
+   ],
+   "counts": [
+    15
+   ],
+   "answer": "아스날과 관련하여 여러 매체에서 보도된 주요 이적설 후보들입니다:\n\n1. **Bruno Guimarães** (뉴캐슬 Utd)\n   - 보도 매체 수: 3개사 (총 6건)\n   - 단계: agreed (합의 단계) / 상태: hit\n\n2. **Julián Álvarez** (아틀레티코 마드리드)\n   - 보도 매체 수: 3개사 (총 4건)\n   - 단계: done / 상태: pending\n\n3. **Christos Tzolis"
+  },
+  {
+   "q": "아스날과 이적설이 있는 선수 중 기자들이 많이 보도한 선수는?",
+   "ok": true,
+   "fails": [],
+   "sec": 5.6,
+   "tools": [
+    "graph_query"
+   ],
+   "counts": [
+    10
+   ],
+   "answer": "아스날과 이적설이 보도된 선수 중 매체 및 기자 언급량(기사 수 기준)이 많은 상위 선수들입니다:\n\n1. **Bruno Guimarães** (브루누 기마랑이스)\n   - 보도 매체 수: 3개 / 총 기사 수: 6건\n   - 단계: 합의 단계(agreed) / 상태: 적중(hit)\n\n2. **Christos Tzolis** (크리스토스 촐리스)\n   - 보도 매체 수: 2개 / 총 기사 수: 4건\n   - 단계: 완료 단계(d"
+  },
+  {
+   "q": "Arsenal transfer rumors",
+   "ok": true,
+   "fails": [],
+   "sec": 3.7,
+   "tools": [
+    "graph_query"
+   ],
+   "counts": [
+    15
+   ],
+   "answer": "[스카우트 브리핑] 아스날(Arsenal) 이적설 상위 루머 현황입니다.\n\n1. **데지레 두에 (Désiré Doué)** — 우측 윙어 | Heat 71 | 단계: 협상 중 (talks) | 보도: TEAMtalk, The Mirror 등\n2. **훌리안 알바레스 (Julián Álvarez)** — 센터포워드 | Heat 70 | 단계: 완료 (done) | 보도: TEAMtalk, The Mirror, Tribuna.c"
+  },
+  {
+   "q": "레알 마드리드 이적설",
+   "ok": true,
+   "fails": [],
+   "sec": 5.0,
+   "tools": [
+    "graph_query"
+   ],
+   "counts": [
+    15
+   ],
+   "answer": "[스카우트 브리핑] 레알 마드리드 주요 이적설 현황\n\n현재 레알 마드리드와 강하게 연결되고 있는 주요 영입 후보 및 이적설 목록입니다 (열기(Heat) 순):\n\n1. **Alexis Mac Allister** (Central Midfield)\n   - **이적설 강도(Heat):** 77 / **단계:** talks\n   - **관련 매체:** Football365, TEAMtalk, Yahoo Sports (보도 3건)\n\n2"
+  },
+  {
+   "q": "이적설 열기가 가장 높은 선수들은?",
+   "ok": true,
+   "fails": [],
+   "sec": 3.4,
+   "tools": [
+    "graph_query"
+   ],
+   "counts": [
+    15
+   ],
+   "answer": "현재 이적설 열기(Heat)가 가장 높은 주요 선수 순위입니다.\n\n1. **Marcus Rashford** (LW) → Everton (Heat: 97, 단계: talks, 보도 매체: Football365 등 3개)\n2. **Julián Álvarez** (CF) → Barcelona (Heat: 92, 단계: done, 보도 매체: ESPN, The Independent 등 5개)\n3. **Alex Scott** (CM) "
+  },
+  {
+   "q": "라이스와 같은 기사에 자주 나오는 선수는?",
+   "ok": true,
+   "fails": [],
+   "sec": 10.9,
+   "tools": [
+    "graph_query"
+   ],
+   "counts": [
+    10
+   ],
+   "answer": "Declan Rice 최근 기사 6건: 아르테타, 슬라비아 프라하전 패배 후 데클란 라이스 비판에 반박(Football365) / 아스널이 새로운 부상 악재를 맞이하며 미켈 아르테타 감독이 교체 카드를 사용해야 했다.(Evening Standard) / 데클런 라이스는 아스널의 프리미어리그 우승에 핵심적인 역할을 했으며, 미켈 아르테타 감독은 이번 시즌 그로부터 어떻게 더 많은 장점을 이끌어내고 있을까요?(BBC Sport) "
+  },
+  {
+   "q": "브루노 페르난데스와 같이 기사에 나온 선수",
+   "ok": true,
+   "fails": [],
+   "sec": 5.6,
+   "tools": [
+    "graph_query"
+   ],
+   "counts": [
+    10
+   ],
+   "answer": "브루노 페르난데스와 같은 기사에 함께 언급된 선수들입니다.\n\n1. **리산드로 마르티네스 (Lisandro Martínez)** - 8회\n2. **엘링 홀란 (Erling Haaland)** - 4회\n3. **콜 파머 (Cole Palmer)** - 2회\n4. **센네 라멘스 (Senne Lammens)** - 2회\n5. **엔소 페르난데스 (Enzo Fernández)** - 2회\n6. **유리 틸레만스 (Youri Tiel"
+  },
+  {
+   "q": "사카의 잉글랜드 대표팀 동료 중 우리 리그 선수는?",
+   "ok": true,
+   "fails": [],
+   "sec": 3.4,
+   "tools": [
+    "graph_query"
+   ],
+   "counts": [
+    15
+   ],
+   "answer": "부카요 사카와 잉글랜드 대표팀 동료이면서 같은 EPL(우리 리그)에 소속된 선수들입니다.\n\n- **벤 화이트** (Centre-Back / Right-Back, 아스날)\n- **데클란 라이스** (Central Midfield, 아스날)\n- **에베레치 에제** (Attacking Midfield)\n- **에즈리 콘사** (Centre-Back)\n- **노니 마두에케** (Right Winger)\n- **태미 아브라함** (C"
+  },
+  {
+   "q": "우리 리그에서 뛰는 한국 국가대표 선수는?",
+   "ok": true,
+   "fails": [],
+   "sec": 5.6,
+   "tools": [
+    "graph_query"
+   ],
+   "counts": [
+    20
+   ],
+   "answer": "현재 데이터베이스에 등록된 한국 국적의 현역 선수 명단입니다 (시장의 주요 리그 기준):\n\n- **이강인** (LaLiga, Attacking Midfield) | 시장가: €35M\n- **김민재** (Bundesliga, Centre-Back) | 시장가: €20M\n- **오현규** (SuperLig, Centre-Forward) | 시장가: €15M\n- **옌스 카스트로프** (Bundesliga, Central Midfi"
+  },
+  {
+   "q": "챔피언스리그를 뛴 23세 이하 풀백",
+   "ok": true,
+   "fails": [],
+   "sec": 4.6,
+   "tools": [
+    "graph_query"
+   ],
+   "counts": [
+    15
+   ],
+   "answer": "UEFA 챔피언스리그를 경험한 23세 이하 유망한 풀백 자원들입니다. (SS 평점 기준 정렬)\n\n1. **Kyriani Sabbe** (Club Brugge / 벨기에)\n   - 포지션: Right-Back (21세) | 시장가: €13M | 평점: 7.46\n2. **Emanuele Lulli** (SerieA)\n   - 포지션: Right-Back (19세) | 시장가: €8M | 평점: 7.34\n3. **Emran Sogl"
+  },
+  {
+   "q": "리그1에서 EPL로 이적한 선수",
+   "ok": true,
+   "fails": [],
+   "sec": 4.9,
+   "tools": [
+    "graph_query"
+   ],
+   "counts": [
+    13
+   ],
+   "answer": "리그1(Ligue 1)에서 EPL 클럽으로 이적한 주요 선수 목록입니다:\n\n- **Bradley Barcola** (PSG → Liverpool): €125.00M (여름)\n- **Ayyoub Bouaddi** (Lille → Manchester City): €95.00M (여름)\n- **Jérémy Jacquet** (Rennes → Liverpool): €63.60M (여름)\n- **Matias Fernandez-Pardo"
+  },
+  {
+   "q": "적중률이 높은 이적설 매체는?",
+   "ok": true,
+   "fails": [],
+   "sec": 3.5,
+   "tools": [
+    "graph_query"
+   ],
+   "counts": [
+    6
+   ],
+   "answer": "데이터 기준 적중률이 높은 주요 이적설 매체 순위입니다 (표본 수가 적은 매체 제외):\n\n1. **Marca** — 적중률 88.2% (34건 중 34건 중 30건 적중)\n2. **Sport** — 적중률 87.5% (8건 중 7건 적중)\n3. **ESPN** — 적중률 85.5% (62건 중 53건 적중)\n4. **BBC Sport** — 적중률 80.6% (103건 중 83건 적중)\n5. **The Guardian** — "
+  },
+  {
+   "q": "계약 만료가 다가오는 젊은 센터백",
+   "ok": true,
+   "fails": [],
+   "sec": 7.9,
+   "tools": [
+    "graph_query",
+    "graph_query"
+   ],
+   "counts": [
+    15,
+    15
+   ],
+   "answer": "계약 만료(2026~2027년)가 다가오는 26세 이하 젊은 센터백 영입 후보군입니다. 시장가 및 리그별 주요 자원입니다.\n\n### **1. 계약 만료 임박 (2026년 여름)**\n* **Jan Paul van Hecke** (브라이튼 / EPL) — 26세 | 시장가 €60M\n* **Zeno Van den Bosch** (분데스리가) — 23세 | 시장가 €6M\n* **Victor Valdepeñas** (세리에A) — 20"
+  },
+  {
+   "q": "비티냐 팀동료 중 이적설 있는 선수",
+   "ok": true,
+   "fails": [],
+   "sec": 3.2,
+   "tools": [
+    "graph_query"
+   ],
+   "counts": [
+    7
+   ],
+   "answer": "비티냐의 팀 동료 중 현재 이적설(LINKED_TO)이 있는 선수 목록입니다:\n\n- **데지레 두에 (Désiré Doué)**\n  - 아스날 (Heat: 71)\n  - 맨체스터 시티 (Heat: 33)\n  - 첼시 (Heat: 33)\n\n- **사무엘 비아페 (Samuel Wiafe)**\n  - 로마 (Heat: 30)\n  - 유벤투스 (Heat: 30)\n\n- **흐비차 크바라츠헬리아 (Khvicha Kvaratskhelia)"
+  },
+  {
+   "q": "맨시티 전술 지표 보여줘",
+   "ok": true,
+   "fails": [],
+   "sec": 5.5,
+   "tools": [
+    "graph_query"
+   ],
+   "counts": [
+    1
+   ],
+   "answer": "**맨체스터 시티 전술 지표 (시즌: 2026_2027, 감독: 엔조 마레스카)**\n\n- **점유 및 경기 조율 (Control):** 81\n- **창의성 (Creativity):** 82\n- **공격력 (Attack):** 80\n- **압박 (Pressing):** 51\n- **공중볼 경합 (Aerial):** 43\n- **수비 차단/파괴력 (Disruption):** 35"
+  },
+  {
+   "q": "유럽대항전에 가장 많이 나간 미드필더",
+   "ok": true,
+   "fails": [],
+   "sec": 3.8,
+   "tools": [
+    "graph_query"
+   ],
+   "counts": [
+    15
+   ],
+   "answer": "UEFA 챔피언스리그 등 유럽대항전 무대에 출전한 주요 미드필더 명단입니다. (그래프 쿼리 결과 기준)\n\n- **Henrikh Mkhitaryan** (Central Midfield / Serie A)\n- **Benjamin André** (Defensive Midfield / Ligue 1)\n- **Ilkay Gündogan** (Central Midfield / Super Lig)\n- **N'Golo Kanté** (Def"
+  },
+  {
+   "q": "아스날 선수 중 대표팀에 뽑힌 선수",
+   "ok": true,
+   "fails": [],
+   "sec": 7.3,
+   "tools": [
+    "graph_query"
+   ],
+   "counts": [
+    13
+   ],
+   "answer": "아스날 소속으로 최근 대표팀에 소집된 선수 명단입니다:\n\n- **잉글랜드**: 부카요 사카 (59캡 19골), 에베레치 에제 (25캡 3골), 마일스 루이스스켈리 (10캡 1골)\n- **스페인**: 미켈 메리노 (55캡 15골), 마르틴 수비멘디 (30캡 3골), 다비드 라야 (14캡 0골)\n- **브라질**: 브루누 기마랑이스 (51캡 4골), 가브리에우 마갈량이스 (24캡 1골)\n- **노르웨이**: 마르틴 외데고르 (77"
+  },
+  {
+   "q": "바르셀로나에서 영향력 높은 선수",
+   "ok": true,
+   "fails": [],
+   "sec": 11.9,
+   "tools": [
+    "team_leadership"
+   ],
+   "counts": [
+    null
+   ],
+   "answer": "바르셀로나 주장단 및 팀 내 영향력 상위 선수 현황입니다.\n\n### 📋 주장단\n1. **하피냐 (Raphinha)** - 주장 (1순위)\n2. **페드리 (Pedri)** - 부주장 (2순위)\n3. **에릭 가르시아 (Eric García)** - 3번째 주장 (3순위)\n4. **프렝키 더 용 (Frenkie de Jong)** - 4번째 주장 (4순위)\n5. **라민 야말 (Lamine Yamal)** - 5번째 주장 (5순"
+  },
+  {
+   "q": "사카 최근 뉴스",
+   "ok": true,
+   "fails": [],
+   "sec": 3.3,
+   "tools": [
+    "player_news"
+   ],
+   "counts": [
+    null
+   ],
+   "answer": "**부카요 사카(Bukayo Saka)** 관련 최근 뉴스 브리핑입니다:\n\n* **부상 및 복귀 관련 소식 (2026년 11월 5일, *Evening Standard* / *Sports Mole*)**\n  * 헐 시티전을 앞두고 사카의 부상 현황과 복귀 시점에 대한 보도가 집중되었습니다. *The False 9* (11월 3일) 보도에 따르면 헐 시티전에서는 결장이 예상되는 등 팀의 핵심 부상 문제와 연계되어 다뤄지고 있습니다"
+  },
+  {
+   "q": "홀란 요즘 폼 어때?",
+   "ok": true,
+   "fails": [],
+   "sec": 3.8,
+   "tools": [
+    "player_form"
+   ],
+   "counts": [
+    null
+   ],
+   "answer": "엘링 홀란의 최근 폼 브리핑입니다.\n\n- **폼 판정:** **최근 폼 절정 · 시즌 수준** (폼 지수 98, 리그 포지션 최상위권 유지)\n- **OVR:** 93 (지난 시즌 92에서 상승)\n- **최근 5경기 평균 평점(FotMob):** 7.94 (직전 3경기 평균 7.23)\n- **시즌 성적:** 800분 출전, 9골, 0도움 (시즌 FotMob 평점 7.81)\n\n**최근 5경기 주요 활약:**\n- PSG 전 (챔피언"
+  },
+  {
+   "q": "아스날 다음 경기 어때?",
+   "ok": true,
+   "fails": [],
+   "sec": 4.6,
+   "tools": [
+    "team_now"
+   ],
+   "counts": [
+    null
+   ],
+   "answer": "**아스날 다음 경기 및 팀 스태프 브리핑**\n\n- **다가오는 경기**: 2026년 11월 8일 (vs 홈 헐 시티, 리그)\n- **승부 예측**: 아스날 승리 확률 93% / 무승부 5.7% / 헐 시티 승리 확률 1.3% (예상 스코어 3-0, 모델 기준)\n- **부상자 및 결장자**: \n  - 윌리엄 살리바 (허리 부상, 복귀 예정 2026-11-20)\n  - 부카요 사카 (부상, 11월 중순 복귀 예상)\n  - 맥스 "
+  },
+  {
+   "q": "이번 주 EPL 어땠어?",
+   "ok": true,
+   "fails": [],
+   "sec": 7.9,
+   "tools": [
+    "league_week"
+   ],
+   "counts": [
+    null
+   ],
+   "answer": "**[EPL 지난주 주요 변화 요약 브리핑]**\n\n- **폼 급상승 선수 (Risers):** 토트넘의 안토닌 킨스키(+22)와 앤디 로버트슨(+15), 맨체스터 시티의 제레미 도쿠(+12), 에버턴의 재러드 브랜스웨이트(+12) 등이 좋은 상승세를 보였습니다.\n- **폼 하락 선수 (Fallers):** 맨체스터 유나이티드의 리산드로 마르티네스(-20), 노팅엄 포레스트의 자버 슬라거(-17), 선덜랜드의 레이닐도 만다바(-"
+  },
+  {
+   "q": "리버풀 요즘 흐름",
+   "ok": true,
+   "fails": [],
+   "sec": 8.9,
+   "tools": [
+    "team_form"
+   ],
+   "counts": [
+    null
+   ],
+   "answer": "[리버풀 최근 흐름 브리핑]\n\n- **리그 순위 및 승점**: EPL 9경기 5승 0무 4패(승점 15점), 리그 5위 (Elo 1768)\n- **최근 5경기 전적**: 2승 1무 2패 (9득점 8실점)\n  - Villarreal (H, 챔스): 4-3 승\n  - Brighton (H, 리그): 2-0 승\n  - Chelsea (H, EFL컵): 1-1 무\n  - Arsenal (H, 리그): 0-1 패\n  - Fenerbah"
+  },
+  {
+   "q": "아스날 왼쪽 윙 영입 추천",
+   "ok": true,
+   "fails": [],
+   "sec": 14.4,
+   "tools": [
+    "recommend_players"
+   ],
+   "counts": [
+    null
+   ],
+   "answer": "아스날의 왼쪽 윙어(Left Winger) 보강을 위한 Qdrant 스타일-핏 기반 영입 후보 브리핑입니다.\n\n---\n\n### **1. Yéremy Pino (Crystal Palace / EPL)**\n* **OVR:** 79 | **스타일 핏:** 70 / 100\n* **특징:** 프리미어리그 무대 경험을 갖추고 있으며, 스타일 핏 70으로 본 후보군 중 아스날의 전술적 요구에 가장 잘 부합하는 자원 중 하나입니다.\n\n###"
+  },
+  {
+   "q": "도쿠와 비슷한 선수",
+   "ok": true,
+   "fails": [],
+   "sec": 7.2,
+   "tools": [
+    "find_similar",
+    "graph_query",
+    "find_similar"
+   ],
+   "counts": [
+    null,
+    1,
+    null
+   ],
+   "answer": "[스카우트 브리핑] Jeremy Doku(Manchester City, Left Winger)와 유사한 프로파일을 가진 측면 공격수 추천 목록입니다.\n\n1. **Antonio Nusa** (RB Leipzig) — 유사도 점수: 81\n2. **Mika Godts** (PSG) — 유사도 점수: 78\n3. **Marco Grüll** (Werder Bremen) — 유사도 점수: 76\n4. **Mattia Zaccagni** ("
+  },
+  {
+   "q": "아스날 영입 후보 중 이적설도 있는 선수는?",
+   "ok": true,
+   "fails": [],
+   "sec": 3.7,
+   "tools": [
+    "graph_query"
+   ],
+   "counts": [
+    15
+   ],
+   "answer": "현재 아스날과 연결된 주요 이적설 후보 명단입니다. (열기(Heat) 지수 기준 상위 15명)\n\n1. **데지레 두에 (Désiré Doué)** — 우측 윙어 | 열기: 71 | 단계: 협상 중 (talks) | 보도: TEAMtalk, The Mirror 등\n2. **훌리안 알바레스 (Julián Álvarez)** — 센터포워드 | 열기: 70 | 단계: 완료 (done) | 보도: TEAMtalk, The Mirror,"
+  },
+  {
+   "q": "맨유 감독은 누구고 어떤 포메이션을 써?",
+   "ok": true,
+   "fails": [],
+   "sec": 5.3,
+   "tools": [
+    "graph_query",
+    "graph_query"
+   ],
+   "counts": [
+    1,
+    5
+   ],
+   "answer": "맨체스터 유나이티드의 감독은 **Michael Carrick**(2026년 1월 13일 부임)입니다."
+  },
+  {
+   "q": "첼시 선수 중 이적설이 있는 선수",
+   "ok": true,
+   "fails": [],
+   "sec": 4.1,
+   "tools": [
+    "graph_query"
+   ],
+   "counts": [
+    7
+   ],
+   "answer": "현재 첼시 소속 선수들과 연결된 주요 이적설 현황입니다 (heat 순):\n\n1. **Jordan Henderson** -> 리버풀 (Heat: 27, 단계: interest)\n2. **Estêvão Willian** -> 스트라스부르 (Heat: 21, 단계: interest)\n3. **Reece James** -> 벤피카 (Heat: 19, 단계: interest)\n4. **Enzo Fernández** -> 풀럼 (Heat"
+  },
+  {
+   "q": "사카 부상 관련 최근 보도 요약해줘",
+   "ok": true,
+   "fails": [],
+   "sec": 4.1,
+   "tools": [
+    "search_news"
+   ],
+   "counts": [
+    3
+   ],
+   "answer": "* **Sports Mole** (2026-11-05): 헐 시티전을 앞두고 부카요 사카의 부상 상태와 복귀 예정일에 대한 최신 소식이 보도되었습니다.\n* **Evening Standard** (2026-11-05): 윌리엄 살리바, 에즈리 콘사와 함께 부카요 사카의 정확한 복귀 시점에 관한 업데이트가 전해졌습니다.\n* **Evening Standard** (2026-11-05): 프리미어리그 헐 시티전을 앞두고 발표된 팀 뉴"
+  },
+  {
+   "q": "아스날 미드필더 영입 관련 기사 찾아줘",
+   "ok": true,
+   "fails": [],
+   "sec": 6.8,
+   "tools": [
+    "search_news",
+    "graph_query"
+   ],
+   "counts": [
+    6,
+    5
+   ],
+   "answer": "최근 아스날의 미드필더 영입 및 관련 이적설 동향입니다.\n\n**1. 주요 이적설 및 링크 선수 (Graph Query 기준)**\n* **칸 우준 (Can Uzun, Attacking Midfield)** — Heat 51 (관심 단계, 보도 매체: premierleaguenewsnow.com)\n* **알렉세이 바트라코프 (Aleksey Batrakov, Attacking Midfield)** — Heat 50 (관심 단계, 보"
+  },
+  {
+   "q": "사카 최근 5경기 평점",
+   "ok": true,
+   "fails": [],
+   "sec": 4.1,
+   "tools": [
+    "player_form"
+   ],
+   "counts": [
+    null
+   ],
+   "answer": "아스날 부카요 사카 선수의 최근 5경기 평점(FotMob 기준)입니다:\n\n- **2026-10-21 (챔피언스리그 vs 바이에른 뮌헨, 원정):** 평점 **6.55** (교체 출전 10분)\n- **2026-10-18 (EPL vs 노팅엄 포레스트, 원정):** 평점 **6.94** (선발 풀타임)\n- **2026-10-13 (챔피언스리그 vs 릴, 홈):** 평점 **7.94** (교체 출전 25분, 1골 1도움)\n- **2"
+  },
+  {
+   "q": "라이스와 외데고르가 같이 60분 넘게 뛴 경기는 몇 경기야?",
+   "ok": true,
+   "fails": [],
+   "sec": 14.8,
+   "tools": [
+    "graph_query"
+   ],
+   "counts": [
+    1
+   ],
+   "answer": "데클란 라이스와 마르틴 외데고르가 동시에 60분 이상 출전한 경기는 총 **11경기**입니다.\n\n**해당 11경기 주요 기록:**\n* **데클란 라이스 평균 평점:** 7.81점\n* **마르틴 외데고르 평균 평점:** 7.70점"
+  },
+  {
+   "q": "지난 시즌 부상으로 가장 많이 결장한 선수",
+   "ok": true,
+   "fails": [],
+   "sec": 4.4,
+   "tools": [
+    "graph_query"
+   ],
+   "counts": [
+    15
+   ],
+   "answer": "25/26시즌 부상으로 가장 많이 결장한 현역 선수 상위 목록입니다.\n\n1. **타릭 램프티 (Tariq Lamptey)** — Championship / **52경기 결장** (부상 2회)\n2. **로건 코스타 (Logan Costa)** — LaLiga / **51경기 결장** (부상 1회)\n3. **베냐트 프라도스 (Beñat Prados)** — LaLiga / **48경기 결장** (부상 2회)\n4. **제키 암두니 "
+  }
+ ]
+}

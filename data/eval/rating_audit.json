@@ -1,0 +1,145 @@
+{
+ "date": "2026-11-07",
+ "model": "v3.18",
+ "players": 5962,
+ "golden": [],
+ "scout": [
+  {
+   "player": "Jeremy Doku",
+   "league": "EPL",
+   "ovr": 89,
+   "lo": 82,
+   "hi": 86,
+   "off": 3
+  },
+  {
+   "player": "Rayan Cherki",
+   "league": "EPL",
+   "ovr": 89,
+   "lo": 83,
+   "hi": 87,
+   "off": 2
+  },
+  {
+   "player": "Scott McTominay",
+   "league": "SerieA",
+   "ovr": 82,
+   "lo": 84,
+   "hi": 87,
+   "off": -2
+  },
+  {
+   "player": "Luka Vušković",
+   "league": "EPL",
+   "ovr": 85,
+   "lo": 77,
+   "hi": 84,
+   "off": 1
+  },
+  {
+   "player": "Marc Guéhi",
+   "league": "EPL",
+   "ovr": 88,
+   "lo": 84,
+   "hi": 87,
+   "off": 1
+  },
+  {
+   "player": "Alexis Mac Allister",
+   "league": "EPL",
+   "ovr": 84,
+   "lo": 85,
+   "hi": 88,
+   "off": -1
+  },
+  {
+   "player": "Yan Diomandé",
+   "league": "LaLiga",
+   "ovr": 86,
+   "lo": 76,
+   "hi": 85,
+   "off": 1
+  },
+  {
+   "player": "Nicolò Barella",
+   "league": "SerieA",
+   "ovr": 85,
+   "lo": 86,
+   "hi": 89,
+   "off": -1
+  },
+  {
+   "player": "Kevin De Bruyne",
+   "league": "SerieA",
+   "ovr": 81,
+   "lo": 82,
+   "hi": 87,
+   "off": -1
+  },
+  {
+   "player": "Christian Pulisic",
+   "league": "SerieA",
+   "ovr": 82,
+   "lo": 83,
+   "hi": 87,
+   "off": -1
+  }
+ ],
+ "scout_far": [
+  {
+   "player": "Jeremy Doku",
+   "league": "EPL",
+   "ovr": 89,
+   "lo": 82,
+   "hi": 86,
+   "off": 3
+  }
+ ],
+ "audit": {
+  "rise": {
+   "n": 6,
+   "limit": 25,
+   "desc": "지난 시즌(1,500분+) 대비 +6 이상인데 이번 시즌 평점(7.2+·450분+)이 받쳐 주지 않는 급등",
+   "examples": [
+    "Nobel Mendy(Hull City, 22) 74 ← 68",
+    "Tibe De Vlieger(Gent, 21) 70 ← 62",
+    "Aske Adelgaard(Twente, 22) 65 ← 57",
+    "Barbero(Arouca, 28) 63 ← 57",
+    "Ianis Stoica(Estrela, 23) 63 ← 57",
+    "Jerry Afriyie(Genk, 19) 59 ← 52"
+   ]
+  },
+  "fall": {
+   "n": 0,
+   "limit": 25,
+   "desc": "지난 시즌(1,500분+) 대비 −8 이하 — 급락(부상·이적·데이터 오류?)",
+   "examples": []
+  },
+  "underperf_high": {
+   "n": 2,
+   "limit": 10,
+   "desc": "OVR 86+ 인데 리그 보정 평점이 포지션 평균보다 0.1 넘게 낮음(900분+)",
+   "examples": [
+    "Achraf Hakimi(PSG, 28) 88 ← 89",
+    "João Neves(PSG, 22) 88 ← 88"
+   ]
+  },
+  "young_elite": {
+   "n": 2,
+   "limit": 6,
+   "desc": "21세 이하 OVR 88+",
+   "examples": [
+    "Lamine Yamal(Barcelona, 19) 91 ← 91",
+    "Désiré Doué(PSG, 21) 88 ← 88"
+   ]
+  },
+  "no_value_high": {
+   "n": 1,
+   "limit": 10,
+   "desc": "시장가치 없이 OVR 80+ (TM 매칭 실패·이적 잔류 행)",
+   "examples": [
+    "Jack Grealish(Manchester City, 31) 83"
+   ]
+  }
+ }
+}
