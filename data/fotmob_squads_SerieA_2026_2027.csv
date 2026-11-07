@@ -58,13 +58,13 @@ Inter,Ange-Yoan Bonny,1199383,attackers,ST,Centre-Forward,FW,23,2003-10-25,14.0,
 Inter,Mattia Mosconi,1646520,attackers,"RW,LW",Right Winger,FW,19,2007-03-26,48.0,ITA,False,,2026-11-07
 Inter,Francesco Pio Esposito,1367618,attackers,ST,Centre-Forward,FW,21,2005-06-28,94.0,ITA,False,,2026-11-07
 Roma,Devis Vásquez,1186685,keepers,GK,Goalkeeper,GK,28,1998-05-12,32.0,COL,False,,2026-11-07
-Roma,Pierluigi Gollini,553849,keepers,GK,Goalkeeper,GK,31,1995-03-18,95.0,ITA,False,,2026-11-07
+Roma,Pierluigi Gollini,553849,keepers,GK,Goalkeeper,GK,31,1995-03-18,95.0,ITA,True,About 1-2 weeks,2026-11-07
 Roma,Mile Svilar,768474,keepers,GK,Goalkeeper,GK,27,1999-08-27,99.0,SRB,True,Mid November 2026,2026-11-07
 Roma,Konstantinos Koulierakis,1337884,defenders,CB,Centre-Back,DF,22,2003-11-28,3.0,GRE,False,,2026-11-07
 Roma,Evan N'Dicka,787242,defenders,CB,Centre-Back,DF,27,1999-08-20,5.0,CIV,False,,2026-11-07
 Roma,Nahuel Molina,726345,defenders,"RB,RWB,LWB",Right-Back,DF,28,1998-04-06,20.0,ARG,False,,2026-11-07
 Roma,Mario Hermoso,671203,defenders,CB,Centre-Back,DF,31,1995-06-18,22.0,ESP,False,,2026-11-07
-Roma,Gianluca Mancini,588687,defenders,CB,Centre-Back,DF,30,1996-04-17,23.0,ITA,False,,2026-11-07
+Roma,Gianluca Mancini,588687,defenders,CB,Centre-Back,DF,30,1996-04-17,23.0,ITA,True,About 1-2 weeks,2026-11-07
 Roma,Leonardo Balerdi,958464,defenders,CB,Centre-Back,DF,27,1999-01-26,26.0,ARG,False,,2026-11-07
 Roma,Daniele Ghilardi,1386006,defenders,CB,Centre-Back,DF,23,2003-01-06,87.0,ITA,False,,2026-11-07
 Roma,Devyne Rensch,1180321,midfielders,"RWB,LWB,RM",Right-Back,MF,23,2003-01-18,2.0,NED,True,Late November 2026,2026-11-07
@@ -72,7 +72,7 @@ Roma,Bryan Cristante,299799,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,31,19
 Roma,Lorenzo Pellegrini,540307,midfielders,"CAM,ST",Attacking Midfield,MF,30,1996-06-19,7.0,ITA,True,Late November 2026,2026-11-07
 Roma,Marten de Roon,198559,midfielders,"CDM,CM",Defensive Midfield,MF,35,1991-03-29,15.0,NED,False,,2026-11-07
 Roma,Manu Koné,1016132,midfielders,"CDM,CM",Defensive Midfield,MF,25,2001-05-17,17.0,FRA,True,Doubtful,2026-11-07
-Roma,Matias Soulé,1280082,midfielders,"CAM,RW,ST",Attacking Midfield,MF,23,2003-04-15,18.0,ARG,False,,2026-11-07
+Roma,Matias Soulé,1280082,midfielders,"CAM,ST,RW",Attacking Midfield,MF,23,2003-04-15,18.0,ARG,False,,2026-11-07
 Roma,Paulo Dybala,325916,midfielders,"CAM,ST",Attacking Midfield,MF,32,1993-11-15,21.0,ARG,True,Back in training,2026-11-07
 Roma,Wesley,1320176,midfielders,"LWB,LM,RB,RWB",Left-Back,MF,23,2003-09-06,43.0,BRA,False,,2026-11-07
 Roma,Niccolò Pisilli,1451196,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,22,2004-09-23,61.0,ITA,False,,2026-11-07
@@ -278,6 +278,7 @@ Bologna,Nadir Zortea,1080669,defenders,"RB,RWB,RM",Right-Back,DF,27,1999-06-19,2
 Bologna,Rahim Alhassane,1333066,defenders,LB,Left-Back,DF,24,2002-01-01,23.0,NIG,False,,2026-11-07
 Bologna,Lorenzo De Silvestri,25587,defenders,RB,Right-Back,DF,38,1988-05-23,29.0,ITA,True,About 1-2 weeks,2026-11-07
 Bologna,Juan Miranda,873956,defenders,"LB,LM,LWB",Left-Back,DF,26,2000-01-19,33.0,ESP,False,,2026-11-07
+Bologna,Matteo Darmian,46820,defenders,"CB,RM",Centre-Back,DF,36,1989-12-02,36.0,ITA,False,,2026-11-07
 Bologna,Martin Vitík,1198712,defenders,CB,Centre-Back,DF,23,2003-01-21,41.0,CZE,False,,2026-11-07
 Bologna,Tommaso Pobega,790732,midfielders,"CDM,CM",Defensive Midfield,MF,27,1999-07-15,4.0,ITA,False,,2026-11-07
 Bologna,Nikola Moro,641595,midfielders,"CDM,CM",Defensive Midfield,MF,28,1998-03-12,6.0,CRO,False,,2026-11-07
@@ -287,7 +288,6 @@ Bologna,Oussama El Azzouzi,1283469,midfielders,CM,Central Midfield,MF,25,2001-05
 Bologna,Marco Libra,2008804,midfielders,CDM,Defensive Midfield,MF,18,2008-03-21,18.0,VEN,False,,2026-11-07
 Bologna,Lewis Ferguson,888921,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,27,1999-08-24,19.0,SCO,False,,2026-11-07
 Bologna,Jens Odgaard,689680,midfielders,"CAM,ST",Attacking Midfield,MF,27,1999-03-31,21.0,DEN,False,,2026-11-07
-Bologna,Matteo Darmian,46820,midfielders,"CB,RM",Centre-Back,MF,36,1989-12-02,36.0,ITA,False,,2026-11-07
 Bologna,Riccardo Orsolini,661761,attackers,RW,Right Winger,FW,29,1997-01-24,7.0,ITA,False,,2026-11-07
 Bologna,Artem Dovbyk,655696,attackers,ST,Centre-Forward,FW,29,1997-06-21,9.0,UKR,False,,2026-11-07
 Bologna,Federico Bernardeschi,414245,attackers,"RW,CAM,LW",Right Winger,FW,32,1994-02-16,10.0,ITA,False,,2026-11-07
@@ -599,7 +599,7 @@ Udinese,Juan Arizala,1450999,midfielders,LM,Left Midfield,MF,21,2005-10-10,20.0,
 Udinese,Mërgim Vojvoda,560945,midfielders,"RWB,RW,RB,RM",Right-Back,MF,31,1995-02-01,23.0,KVX,False,,2026-11-07
 Udinese,Jakub Piotrowski,689987,midfielders,"CM,CDM",Central Midfield,MF,29,1997-10-04,24.0,POL,False,,2026-11-07
 Udinese,Giorgi Chakvetadze,837847,midfielders,"LM,CAM,ST,LW,CDM",Left Midfield,MF,27,1999-08-29,30.0,GEO,False,,2026-11-07
-Udinese,Jurgen Ekkelenkamp,934156,midfielders,"CM,CAM",Central Midfield,MF,26,2000-04-05,32.0,NED,False,,2026-11-07
+Udinese,Jurgen Ekkelenkamp,934156,midfielders,"CM,CAM,LW",Central Midfield,MF,26,2000-04-05,32.0,NED,False,,2026-11-07
 Udinese,Lennon Miller,1399969,midfielders,"CM,CDM",Central Midfield,MF,20,2006-08-25,38.0,SCO,False,,2026-11-07
 Udinese,Unai Gómez,1436270,midfielders,"CAM,ST,RW,LW",Attacking Midfield,MF,23,2003-05-25,46.0,ESP,False,,2026-11-07
 Udinese,Alessandro Zanoli,916710,midfielders,RM,Right Midfield,MF,26,2000-10-03,59.0,ITA,True,Late November 2026,2026-11-07
