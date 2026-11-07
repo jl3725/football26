@@ -9,8 +9,8 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 539,
-   "exact": 496,
+   "total": 540,
+   "exact": 497,
    "rule": 8,
    "ambiguous": 0,
    "orphan": 35,
@@ -277,8 +277,8 @@
    ]
   },
   "espn_subs": {
-   "total": 404,
-   "exact": 404,
+   "total": 405,
+   "exact": 405,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -321,8 +321,8 @@
    "minutes": 2
   },
   "s365_ratings": {
-   "total": 436,
-   "exact": 428,
+   "total": 437,
+   "exact": 429,
    "rule": 6,
    "ambiguous": 1,
    "orphan": 0,
@@ -903,8 +903,8 @@
    "minutes": 7
   },
   "s365_ratings": {
-   "total": 396,
-   "exact": 393,
+   "total": 401,
+   "exact": 398,
    "rule": 2,
    "ambiguous": 0,
    "orphan": 0,
@@ -1976,20 +1976,25 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 523,
+   "total": 525,
    "exact": 447,
-   "rule": 41,
+   "rule": 43,
    "ambiguous": 1,
    "orphan": 35,
    "orphans": [
+    {
+     "squad": "Charleroi",
+     "name": "Kevin Guiton",
+     "starts": 11
+    },
     {
      "squad": "Standard Liège",
      "name": "Dennis Dargahi",
      "starts": 10
     },
     {
-     "squad": "Charleroi",
-     "name": "Kevin Guiton",
+     "squad": "Westerlo",
+     "name": "Issai Sakamoto",
      "starts": 10
     },
     {
@@ -2006,11 +2011,6 @@
      "squad": "La Louvière",
      "name": "Mustapha Ubandoma",
      "starts": 10
-    },
-    {
-     "squad": "Westerlo",
-     "name": "Issai Sakamoto",
-     "starts": 9
     },
     {
      "squad": "Zulte Waregem",
@@ -2164,8 +2164,8 @@
    ]
   },
   "espn_subs": {
-   "total": 300,
-   "exact": 300,
+   "total": 301,
+   "exact": 301,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -2180,8 +2180,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 282,
-   "exact": 282,
+   "total": 283,
+   "exact": 283,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -2197,8 +2197,8 @@
    "minutes": 5
   },
   "s365_ratings": {
-   "total": 423,
-   "exact": 373,
+   "total": 424,
+   "exact": 374,
    "rule": 2,
    "ambiguous": 1,
    "orphan": 0,
@@ -2216,11 +2216,11 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 708,
+   "total": 710,
    "exact": 644,
    "rule": 5,
    "ambiguous": 0,
-   "orphan": 59,
+   "orphan": 61,
    "orphans": [
     {
      "squad": "Sheffield United",
@@ -2484,8 +2484,8 @@
    ]
   },
   "espn_subs": {
-   "total": 537,
-   "exact": 537,
+   "total": 540,
+   "exact": 540,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -2509,8 +2509,8 @@
    "minutes": 0
   },
   "s365_ratings": {
-   "total": 581,
-   "exact": 544,
+   "total": 583,
+   "exact": 546,
    "rule": 16,
    "ambiguous": 0,
    "orphan": 0,

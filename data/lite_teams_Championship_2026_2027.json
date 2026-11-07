@@ -3,6 +3,14 @@
  "league": "Championship",
  "season": "2026_2027",
  "teams": {
+  "Birmingham City": {
+   "fotmob_id": 8658,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8658.png",
+   "color": "#0032A0",
+   "tm_vid": 337,
+   "tm_slug": "birmingham-city",
+   "tm_name": "Birmingham City"
+  },
   "Middlesbrough": {
    "fotmob_id": 8549,
    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8549.png",
@@ -35,14 +43,6 @@
    "tm_slug": "west-bromwich-albion",
    "tm_name": "West Bromwich Albion"
   },
-  "Birmingham City": {
-   "fotmob_id": 8658,
-   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8658.png",
-   "color": "#0032A0",
-   "tm_vid": 337,
-   "tm_slug": "birmingham-city",
-   "tm_name": "Birmingham City"
-  },
   "Swansea City": {
    "fotmob_id": 10003,
    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/10003.png",
@@ -59,6 +59,14 @@
    "tm_slug": "fc-southampton",
    "tm_name": "Southampton"
   },
+  "Queens Park Rangers": {
+   "fotmob_id": 10172,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/10172.png",
+   "color": "#0054A4",
+   "tm_vid": 1039,
+   "tm_slug": "queens-park-rangers",
+   "tm_name": "Queens Park Rangers"
+  },
   "West Ham United": {
    "fotmob_id": 8654,
    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8654.png",
@@ -74,14 +82,6 @@
    "tm_vid": 350,
    "tm_slug": "sheffield-united",
    "tm_name": "Sheffield United"
-  },
-  "Queens Park Rangers": {
-   "fotmob_id": 10172,
-   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/10172.png",
-   "color": "#0054A4",
-   "tm_vid": 1039,
-   "tm_slug": "queens-park-rangers",
-   "tm_name": "Queens Park Rangers"
   },
   "Portsmouth": {
    "fotmob_id": 8462,
@@ -107,13 +107,13 @@
    "tm_slug": "blackburn-rovers",
    "tm_name": "Blackburn Rovers"
   },
-  "Millwall": {
-   "fotmob_id": 10004,
-   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/10004.png",
-   "color": "#003078",
-   "tm_vid": 1028,
-   "tm_slug": "fc-millwall",
-   "tm_name": "Millwall"
+  "Cardiff City": {
+   "fotmob_id": 8344,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8344.png",
+   "color": "#005CAA",
+   "tm_vid": 603,
+   "tm_slug": "cardiff-city",
+   "tm_name": "Cardiff City"
   },
   "Wrexham": {
    "fotmob_id": 9841,
@@ -122,6 +122,14 @@
    "tm_vid": 1112,
    "tm_slug": "afc-wrexham",
    "tm_name": "Wrexham"
+  },
+  "Millwall": {
+   "fotmob_id": 10004,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/10004.png",
+   "color": "#003078",
+   "tm_vid": 1028,
+   "tm_slug": "fc-millwall",
+   "tm_name": "Millwall"
   },
   "Bristol City": {
    "fotmob_id": 8427,
@@ -139,21 +147,13 @@
    "tm_slug": "bolton-wanderers",
    "tm_name": "Bolton Wanderers"
   },
-  "Lincoln City": {
-   "fotmob_id": 8430,
-   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8430.png",
-   "color": "#F80000",
-   "tm_vid": 1198,
-   "tm_slug": "lincoln-city",
-   "tm_name": "Lincoln City"
-  },
-  "Cardiff City": {
-   "fotmob_id": 8344,
-   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8344.png",
-   "color": "#005CAA",
-   "tm_vid": 603,
-   "tm_slug": "cardiff-city",
-   "tm_name": "Cardiff City"
+  "Charlton Athletic": {
+   "fotmob_id": 8451,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8451.png",
+   "color": "#D00820",
+   "tm_vid": 358,
+   "tm_slug": "charlton-athletic",
+   "tm_name": "Charlton Athletic"
   },
   "Watford": {
    "fotmob_id": 9817,
@@ -163,13 +163,13 @@
    "tm_slug": "fc-watford",
    "tm_name": "Watford"
   },
-  "Charlton Athletic": {
-   "fotmob_id": 8451,
-   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8451.png",
-   "color": "#D00820",
-   "tm_vid": 358,
-   "tm_slug": "charlton-athletic",
-   "tm_name": "Charlton Athletic"
+  "Lincoln City": {
+   "fotmob_id": 8430,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8430.png",
+   "color": "#F80000",
+   "tm_vid": 1198,
+   "tm_slug": "lincoln-city",
+   "tm_name": "Lincoln City"
   },
   "Burnley": {
    "fotmob_id": 8191,
