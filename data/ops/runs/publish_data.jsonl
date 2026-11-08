@@ -688,3 +688,6 @@
 {"t": "2026-11-08T21:26:39+00:00", "runner": "publish_data", "step": "build_db_live", "league": null, "ok": true, "code": 0, "sec": 6.0, "run": "42525174182"}
 {"t": "2026-11-08T21:28:42+00:00", "runner": "publish_data", "step": "team_units_live", "league": null, "ok": true, "code": 0, "sec": 123.0, "run": "42525174182"}
 {"t": "2026-11-08T21:28:56+00:00", "runner": "publish_data", "step": "publish_data", "league": null, "ok": true, "code": 0, "sec": 14.0, "run": "42525174182"}
+{"t": "2026-11-08T21:42:52+00:00", "runner": "publish_data", "step": "build_db_live", "league": null, "ok": true, "code": 0, "sec": 4.0, "run": "42526534819"}
+{"t": "2026-11-08T21:43:46+00:00", "runner": "publish_data", "step": "team_units_live", "league": null, "ok": true, "code": 0, "sec": 54.0, "run": "42526534819"}
+{"t": "2026-11-08T21:43:57+00:00", "runner": "publish_data", "step": "publish_data", "league": null, "ok": true, "code": 0, "sec": 11.0, "run": "42526534819"}
