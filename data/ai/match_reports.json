@@ -4175,6 +4175,22 @@
    "away": "Getafe",
    "at": "2026-11-08T19:49:38+00:00",
    "model": "gemini-3.1-flash-lite"
+  },
+  "401885394": {
+   "text": "Porto가 Estádio D. Afonso Henriques에서 열린 리그 경기에서 Vit. Guimarães를 2-1로 꺾고 승리를 거뒀다. 전반 38' Borja Sainz의 선제골로 앞서간 Porto는 후반 77' Alan에게 동점골을 허용했으나, 86' Martim Fernandes가 결승골을 터뜨리며 승점 3점을 챙겼다. Vit. Guimarães는 슈팅 16개와 유효 슈팅 6개를 기록하며 Porto보다 공격적인 지표에서 앞섰으나, Porto가 80%의 패스 성공률과 효율적인 득점력을 앞세워 모델과 Elo의 승리 예측을 적중시켰다.",
+   "date": "2026-11-08",
+   "home": "Vit. Guimarães",
+   "away": "Porto",
+   "at": "2026-11-08T20:25:18+00:00",
+   "model": "gemini-3.1-flash-lite"
+  },
+  "5904801": {
+   "text": "Beşiktaş가 Vodafone Park에서 열린 리그 경기에서 Gençlerbirliği를 3-0으로 완파하며 승리를 거뒀다. 전반 20분과 45분에 Dusan Vlahovic이 연속 골을 터뜨렸고, 22분에는 Gençlerbirliği의 Metehan Baltaci가 퇴장당하며 수적 열세에 놓였다. 이후 85분에 Ernest Poku가 추가 골을 기록했으며, Beşiktaş는 점유율 69.1%와 슈팅 20개를 기록하며 경기 내용 면에서 Gençlerbirliği를 압도했다. 이번 결과는 Beşiktaş의 승리를 예상했던 모델과 Elo 예측 모두 적중한 결과가 되었다.",
+   "date": "2026-11-08",
+   "home": "Beşiktaş",
+   "away": "Gençlerbirliği",
+   "at": "2026-11-08T20:25:23+00:00",
+   "model": "gemini-3.1-flash-lite"
   }
  },
  "fails": {}
