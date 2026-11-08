@@ -184,7 +184,7 @@ Juventus,Neto,176186,keepers,GK,Goalkeeper,GK,37,1989-07-19,33.0,BRA,False,,2026
 Juventus,Gleison Bremer,857269,defenders,CB,Centre-Back,DF,29,1997-03-18,3.0,BRA,False,,2026-11-08
 Juventus,Federico Gatti,1189288,defenders,CB,Centre-Back,DF,28,1998-06-24,4.0,ITA,False,,2026-11-08
 Juventus,Lloyd Kelly,819215,defenders,"CB,LB",Centre-Back,DF,28,1998-10-06,6.0,ENG,False,,2026-11-08
-Juventus,Pierre Kalulu,1131217,defenders,"CB,RB,RWB",Centre-Back,DF,26,2000-06-05,15.0,FRA,False,,2026-11-08
+Juventus,Pierre Kalulu,1131217,defenders,"RB,CB,RWB",Right-Back,DF,26,2000-06-05,15.0,FRA,False,,2026-11-08
 Juventus,Daniele Rugani,358155,defenders,CB,Centre-Back,DF,32,1994-07-29,24.0,ITA,False,,2026-11-08
 Juventus,Jhon Lucumí,860913,defenders,CB,Centre-Back,DF,28,1998-06-26,26.0,COL,False,,2026-11-08
 Juventus,Zeki Çelik,867225,midfielders,"RWB,CB,RB,LB,RM",Right-Back,MF,29,1997-02-17,2.0,TUR,False,,2026-11-08
@@ -195,7 +195,7 @@ Juventus,Douglas Luiz,787350,midfielders,"CDM,CM",Defensive Midfield,MF,28,1998-
 Juventus,Kerim Alajbegović,1684401,midfielders,"LW,CAM,LM,CM",Left Winger,MF,19,2007-09-21,17.0,BIH,False,,2026-11-08
 Juventus,Khéphren Thuram-Ulien,980793,midfielders,"CDM,CM",Defensive Midfield,MF,25,2001-03-26,19.0,FRA,True,Mid January 2027,2026-11-08
 Juventus,Andrea Cambiaso,1078846,midfielders,"LWB,LB,LM,RWB,RM",Left-Back,MF,26,2000-02-20,20.0,ITA,True,About 1-2 weeks,2026-11-08
-Juventus,Weston McKennie,848266,midfielders,"CAM,RWB,CM,RW,RM,LWB,CDM",Attacking Midfield,MF,28,1998-08-28,22.0,USA,False,,2026-11-08
+Juventus,Weston McKennie,848266,midfielders,"CAM,RWB,CM,RM,RW,LWB,CDM",Attacking Midfield,MF,28,1998-08-28,22.0,USA,False,,2026-11-08
 Juventus,Pape Sarr,1107280,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,24,2002-09-14,29.0,SEN,False,,2026-11-08
 Juventus,Nicolás González,841672,midfielders,"LM,CAM,LWB,LW",Left Midfield,MF,28,1998-04-06,31.0,ARG,True,Mid November 2026,2026-11-08
 Juventus,Juan Cabal,1083562,midfielders,"LM,LB",Left Midfield,MF,25,2001-01-08,32.0,COL,False,,2026-11-08
@@ -240,7 +240,7 @@ Bologna,Roberto Piccoli,1017401,attackers,ST,Centre-Forward,FW,25,2001-01-27,91.
 Cagliari,Elia Caprile,958422,keepers,GK,Goalkeeper,GK,25,2001-08-25,1.0,ALB,False,,2026-11-08
 Cagliari,Alen Sherri,1178779,keepers,GK,Goalkeeper,GK,28,1997-12-15,12.0,ALB,False,,2026-11-08
 Cagliari,Boris Radunović,435684,keepers,GK,Goalkeeper,GK,30,1996-05-26,23.0,SRB,False,,2026-11-08
-Cagliari,Zé Pedro,957107,defenders,"RB,CB",Right-Back,DF,29,1997-06-06,2.0,POR,False,,2026-11-08
+Cagliari,Zé Pedro,957107,defenders,"CB,RB",Centre-Back,DF,29,1997-06-06,2.0,POR,False,,2026-11-08
 Cagliari,Juan Rodríguez,1621219,defenders,CB,Centre-Back,DF,21,2005-05-30,15.0,URU,False,,2026-11-08
 Cagliari,Raphael Kofler,1396084,defenders,CB,Centre-Back,DF,21,2005-04-26,22.0,ITA,False,,2026-11-08
 Cagliari,Yerry Mina,496042,defenders,CB,Centre-Back,DF,32,1994-09-23,26.0,COL,True,About 1-2 weeks,2026-11-08
@@ -248,23 +248,23 @@ Cagliari,Adam Obert,1289961,defenders,"LB,LM,CB,LWB",Left-Back,DF,24,2002-08-23,
 Cagliari,Marton Prettenhoffer,2444144,defenders,,Centre-Back,DF,18,2008-03-10,37.0,HUN,False,,2026-11-08
 Cagliari,Riyad Idrissi,1668219,midfielders,LM,Left Midfield,MF,21,2005-06-13,3.0,ITA,True,Late November 2026,2026-11-08
 Cagliari,Alessandro Romano,1705649,midfielders,"CM,CDM",Central Midfield,MF,20,2006-06-17,4.0,ITA,False,,2026-11-08
-Cagliari,Harry Winks,528453,midfielders,CDM,Defensive Midfield,MF,30,1996-02-02,6.0,ENG,True,Late November 2026,2026-11-08
-Cagliari,Michel Ndary Adopo,936164,midfielders,"CM,CDM,CAM,RW",Central Midfield,MF,26,2000-07-19,8.0,FRA,False,,2026-11-08
+Cagliari,Harry Winks,528453,midfielders,"CDM,CM",Defensive Midfield,MF,30,1996-02-02,6.0,ENG,True,Late November 2026,2026-11-08
+Cagliari,Michel Ndary Adopo,936164,midfielders,"CM,CDM,RW,RWB,CAM",Central Midfield,MF,26,2000-07-19,8.0,FRA,False,,2026-11-08
 Cagliari,Mattia Felici,1021302,midfielders,LM,Left Midfield,MF,25,2001-04-17,17.0,ITA,True,Out for season,2026-11-08
 Cagliari,Riccardo Ciervo,1210653,midfielders,"RM,RW",Right Midfield,MF,24,2002-04-01,20.0,ITA,False,,2026-11-08
-Cagliari,Roberto Gagliardini,485634,midfielders,CM,Central Midfield,MF,32,1994-04-07,21.0,ITA,False,,2026-11-08
+Cagliari,Roberto Gagliardini,485634,midfielders,"CM,CDM",Central Midfield,MF,32,1994-04-07,21.0,ITA,False,,2026-11-08
 Cagliari,Giuseppe Aurelio,1165232,midfielders,"LM,LB",Left Midfield,MF,26,2000-03-22,24.0,ITA,True,Late November 2026,2026-11-08
 Cagliari,Alessandro Deiola,449283,midfielders,"CM,CB,CDM",Central Midfield,MF,31,1995-08-01,27.0,ITA,False,,2026-11-08
 Cagliari,Joseph Liteta,1807301,midfielders,"CM,CDM",Central Midfield,MF,20,2006-02-22,27.0,ZAM,False,,2026-11-08
 Cagliari,Yukinari Sugawara,924610,midfielders,"RB,RWB,RM",Right-Back,MF,26,2000-06-28,28.0,JPN,False,,2026-11-08
 Cagliari,Demi Akarakiri,1724391,midfielders,"CDM,CAM",Defensive Midfield,MF,19,2007-09-29,30.0,ENG,False,,2026-11-08
 Cagliari,Ivan Sulev,1305226,midfielders,,Central Midfield,MF,20,2006-09-11,32.0,BUL,False,,2026-11-08
-Cagliari,Nicola Grandu,1817272,midfielders,,Central Midfield,MF,20,2006-07-15,36.0,ITA,False,,2026-11-08
+Cagliari,Nicola Grandu,1817272,midfielders,LB,Left-Back,MF,20,2006-07-15,36.0,ITA,False,,2026-11-08
 Cagliari,Yanis Massolin,1382392,midfielders,"CM,ST,CAM",Central Midfield,MF,24,2002-09-20,79.0,FRA,False,,2026-11-08
 Cagliari,Kevin Carlos,1166344,attackers,ST,Centre-Forward,FW,25,2001-04-10,9.0,ESP,False,,2026-11-08
-Cagliari,Jacopo Fazzini,1329487,attackers,"LW,CAM,LM",Left Winger,FW,23,2003-03-16,10.0,ITA,False,,2026-11-08
+Cagliari,Jacopo Fazzini,1329487,attackers,"LW,LM,CAM",Left Winger,FW,23,2003-03-16,10.0,ITA,False,,2026-11-08
 Cagliari,M'Bala Nzola,613334,attackers,ST,Centre-Forward,FW,30,1996-08-18,18.0,ANG,True,Late November 2026,2026-11-08
-Cagliari,Yael Trepy,1861022,attackers,CAM,Attacking Midfield,FW,20,2006-05-20,19.0,FRA,True,Late November 2026,2026-11-08
+Cagliari,Yael Trepy,1861022,attackers,RW,Right Winger,FW,20,2006-05-20,19.0,FRA,True,Late November 2026,2026-11-08
 Cagliari,Paul Mendy,1902196,attackers,ST,Centre-Forward,FW,19,2007-01-13,31.0,SEN,False,,2026-11-08
 Cagliari,Alessandro Sugamele,1663296,attackers,,Centre-Forward,FW,19,2007-02-22,35.0,ITA,False,,2026-11-08
 Cagliari,Alieu Fadera,1159233,attackers,"LW,RW",Left Winger,FW,25,2001-11-03,39.0,GAM,True,Late November 2026,2026-11-08
