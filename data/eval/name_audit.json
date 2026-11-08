@@ -9,11 +9,11 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 542,
+   "total": 544,
    "exact": 499,
-   "rule": 8,
+   "rule": 9,
    "ambiguous": 0,
-   "orphan": 35,
+   "orphan": 36,
    "orphans": [
     {
      "squad": "Sunderland",
@@ -144,10 +144,10 @@
   },
   "espn_lineups_cups": {
    "total": 548,
-   "exact": 505,
-   "rule": 1,
+   "exact": 507,
+   "rule": 0,
    "ambiguous": 0,
-   "orphan": 42,
+   "orphan": 41,
    "orphans": [
     {
      "squad": "Arsenal",
@@ -197,11 +197,6 @@
     {
      "squad": "Manchester Utd",
      "name": "Tynan Thompson",
-     "starts": 0
-    },
-    {
-     "squad": "Manchester Utd",
-     "name": "Jack Fletcher",
      "starts": 0
     },
     {
@@ -273,12 +268,17 @@
      "squad": "Brighton",
      "name": "Steven Hall",
      "starts": 0
+    },
+    {
+     "squad": "Ipswich Town",
+     "name": "Tudor Mendel-Idowu",
+     "starts": 0
     }
    ]
   },
   "espn_subs": {
-   "total": 409,
-   "exact": 409,
+   "total": 411,
+   "exact": 411,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -304,8 +304,8 @@
    ]
   },
   "match_events": {
-   "total": 388,
-   "exact": 388,
+   "total": 391,
+   "exact": 391,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -321,8 +321,8 @@
    "minutes": 2
   },
   "s365_ratings": {
-   "total": 440,
-   "exact": 433,
+   "total": 442,
+   "exact": 435,
    "rule": 5,
    "ambiguous": 1,
    "orphan": 0,
@@ -632,8 +632,8 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 483,
-   "exact": 441,
+   "total": 484,
+   "exact": 442,
    "rule": 17,
    "ambiguous": 0,
    "orphan": 25,
@@ -870,8 +870,8 @@
    ]
   },
   "espn_subs": {
-   "total": 375,
-   "exact": 373,
+   "total": 378,
+   "exact": 376,
    "rule": 2,
    "ambiguous": 0,
    "orphan": 0,
@@ -886,8 +886,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 316,
-   "exact": 316,
+   "total": 317,
+   "exact": 317,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -903,8 +903,8 @@
    "minutes": 6
   },
   "s365_ratings": {
-   "total": 401,
-   "exact": 398,
+   "total": 403,
+   "exact": 400,
    "rule": 2,
    "ambiguous": 0,
    "orphan": 0,
@@ -1254,11 +1254,11 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 493,
-   "exact": 446,
+   "total": 496,
+   "exact": 447,
    "rule": 10,
    "ambiguous": 0,
-   "orphan": 37,
+   "orphan": 39,
    "orphans": [
     {
      "squad": "Troyes",
@@ -1268,7 +1268,7 @@
     {
      "squad": "Nice",
      "name": "Mohamed Abdelmoneim",
-     "starts": 8
+     "starts": 9
     },
     {
      "squad": "Lens",
@@ -1442,9 +1442,9 @@
    ]
   },
   "espn_subs": {
-   "total": 376,
-   "exact": 371,
-   "rule": 4,
+   "total": 378,
+   "exact": 372,
+   "rule": 5,
    "ambiguous": 0,
    "orphan": 1,
    "orphans": [
@@ -1464,8 +1464,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 297,
-   "exact": 297,
+   "total": 299,
+   "exact": 299,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1481,7 +1481,7 @@
    "minutes": 8
   },
   "s365_ratings": {
-   "total": 422,
+   "total": 423,
    "exact": 415,
    "rule": 7,
    "ambiguous": 0,

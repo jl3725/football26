@@ -8,6 +8,7 @@ Angers,6,2026-10-10,A,Brest,1,5,1:5,L
 Angers,7,2026-10-18,H,Marseille,2,5,2:5,L
 Angers,8,2026-10-25,H,Lorient,0,0,0:0,D
 Angers,9,2026-11-01,A,Lyon,0,2,0:2,L
+Angers,10,2026-11-08,H,Nice,0,2,0:2,L
 Auxerre,1,2026-08-22,A,Lens,2,5,2:5,L
 Auxerre,2,2026-08-29,H,Angers,1,3,1:3,L
 Auxerre,3,2026-09-04,A,Lyon,1,3,1:3,L
@@ -27,6 +28,7 @@ Brest,6,2026-10-10,H,Angers,5,1,5:1,W
 Brest,7,2026-10-17,A,Lille,1,1,1:1,D
 Brest,8,2026-10-23,H,Nice,1,2,1:2,L
 Brest,9,2026-11-02,A,Lorient,2,0,2:0,W
+Brest,10,2026-11-08,H,Lyon,2,0,2:0,W
 Le Havre,1,2026-08-23,H,Monaco,0,1,0:1,L
 Le Havre,2,2026-08-29,A,Lyon,1,1,1:1,D
 Le Havre,3,2026-09-05,H,Brest,1,2,1:2,L
@@ -36,6 +38,7 @@ Le Havre,6,2026-10-10,A,Lille,0,1,0:1,L
 Le Havre,7,2026-10-18,H,Auxerre,1,3,1:3,L
 Le Havre,8,2026-10-25,A,Marseille,3,4,3:4,L
 Le Havre,9,2026-10-30,H,PSG,1,5,1:5,L
+Le Havre,10,2026-11-08,H,Lorient,0,2,0:2,L
 Le Mans,1,2026-08-22,H,Brest,2,2,2:2,D
 Le Mans,2,2026-08-30,A,Rennes,2,3,2:3,L
 Le Mans,3,2026-09-05,A,Nice,1,1,1:1,D
@@ -45,6 +48,7 @@ Le Mans,6,2026-10-10,A,PSG,1,3,1:3,L
 Le Mans,7,2026-10-16,H,Toulouse,0,3,0:3,L
 Le Mans,8,2026-10-25,A,Auxerre,1,1,1:1,D
 Le Mans,9,2026-10-31,A,Troyes,0,2,0:2,L
+Le Mans,10,2026-11-08,H,Monaco,1,1,1:1,D
 Lens,1,2026-08-22,H,Auxerre,5,2,5:2,W
 Lens,2,2026-08-29,A,Strasbourg,1,2,1:2,L
 Lens,3,2026-09-05,H,Lorient,0,1,0:1,L
@@ -73,6 +77,7 @@ Lorient,6,2026-10-10,H,Paris FC,1,0,1:0,W
 Lorient,7,2026-10-18,H,Monaco,1,0,1:0,W
 Lorient,8,2026-10-25,A,Angers,0,0,0:0,D
 Lorient,9,2026-11-02,H,Brest,0,2,0:2,L
+Lorient,10,2026-11-08,A,Le Havre,2,0,2:0,W
 Lyon,1,2026-08-22,A,Toulouse,2,0,2:0,W
 Lyon,2,2026-08-29,H,Le Havre,1,1,1:1,D
 Lyon,3,2026-09-04,H,Auxerre,3,1,3:1,W
@@ -82,6 +87,7 @@ Lyon,6,2026-10-09,A,Lens,1,2,1:2,L
 Lyon,7,2026-10-18,H,Nice,2,1,2:1,W
 Lyon,8,2026-10-26,A,PSG,0,2,0:2,L
 Lyon,9,2026-11-01,H,Angers,2,0,2:0,W
+Lyon,10,2026-11-08,A,Brest,0,2,0:2,L
 Marseille,1,2026-08-21,H,Strasbourg,4,0,4:0,W
 Marseille,2,2026-08-30,A,Monaco,0,2,0:2,L
 Marseille,3,2026-09-06,H,Paris FC,2,3,2:3,L
@@ -100,6 +106,7 @@ Monaco,6,2026-10-10,H,Toulouse,2,2,2:2,D
 Monaco,7,2026-10-18,A,Lorient,0,1,0:1,L
 Monaco,8,2026-10-25,H,Lille,1,1,1:1,D
 Monaco,9,2026-11-01,A,Paris FC,1,3,1:3,L
+Monaco,10,2026-11-08,A,Le Mans,1,1,1:1,D
 Nice,1,2026-08-22,H,Lorient,0,0,0:0,D
 Nice,2,2026-08-30,A,Paris FC,0,3,0:3,L
 Nice,3,2026-09-05,H,Le Mans,1,1,1:1,D
@@ -109,6 +116,7 @@ Nice,6,2026-10-11,H,Strasbourg,2,1,2:1,W
 Nice,7,2026-10-18,A,Lyon,1,2,1:2,L
 Nice,8,2026-10-23,A,Brest,2,1,2:1,W
 Nice,9,2026-10-30,H,Rennes,5,2,5:2,W
+Nice,10,2026-11-08,A,Angers,2,0,2:0,W
 PSG,1,2026-08-23,A,Rennes,2,2,2:2,D
 PSG,2,2026-08-28,A,Lille,2,2,2:2,D
 PSG,3,2026-09-04,H,Monaco,1,2,1:2,L
