@@ -19,7 +19,7 @@ Arsenal,Declan Rice,654096,midfielders,"CDM,CM",Defensive Midfield,MF,27,1999-01
 Arsenal,Myles Lewis-Skelly,1406436,midfielders,"CDM,LB,CM",Defensive Midfield,MF,20,2006-09-26,49.0,ENG,False,,2026-11-08
 Arsenal,Bukayo Saka,961995,attackers,"RW,CAM",Right Winger,FW,25,2001-09-05,7.0,ENG,True,Late November 2026,2026-11-08
 Arsenal,Viktor Gyökeres,664500,attackers,ST,Centre-Forward,FW,28,1998-06-04,14.0,SWE,False,,2026-11-08
-Arsenal,Christos Tzolis,1157237,attackers,"LW,LM,CAM",Left Winger,FW,24,2002-01-30,17.0,GRE,False,,2026-11-08
+Arsenal,Christos Tzolis,1157237,attackers,"LW,LM,RW,CAM",Left Winger,FW,24,2002-01-30,17.0,GRE,False,,2026-11-08
 Arsenal,Noni Madueke,1084981,attackers,"RW,LW",Right Winger,FW,24,2002-03-10,20.0,ENG,False,,2026-11-08
 Arsenal,Kai Havertz,749736,attackers,"ST,CAM,CM",Centre-Forward,FW,27,1999-06-11,29.0,GER,False,,2026-11-08
 Arsenal,Max Dowman,1635773,attackers,"RW,CAM,CM",Right Winger,FW,16,2009-12-31,56.0,ENG,False,,2026-11-08
@@ -224,7 +224,7 @@ Leeds United,Nico Elvedi,517346,defenders,CB,Centre-Back,DF,30,1996-09-30,30.0,S
 Leeds United,Jayden Bogle,789646,midfielders,"RWB,RM,RB",Right-Back,MF,26,2000-07-27,2.0,ENG,False,,2026-11-08
 Leeds United,Gabriel Gudmundsson,744494,midfielders,"LWB,LM,LB",Left-Back,MF,27,1999-04-29,3.0,SWE,False,,2026-11-08
 Leeds United,Ethan Ampadu,780432,midfielders,"CM,CDM,CB",Central Midfield,MF,26,2000-09-14,4.0,WAL,False,,2026-11-08
-Leeds United,Sean Longstaff,820024,midfielders,"CDM,CAM,CM",Defensive Midfield,MF,29,1997-10-30,8.0,ENG,False,,2026-11-08
+Leeds United,Sean Longstaff,820024,midfielders,"CAM,CDM,CM",Attacking Midfield,MF,29,1997-10-30,8.0,ENG,False,,2026-11-08
 Leeds United,Brenden Aaronson,952322,midfielders,"CAM,RW,CM,LM,ST,LW",Attacking Midfield,MF,26,2000-10-22,11.0,USA,False,,2026-11-08
 Leeds United,Anton Stach,881735,midfielders,"CM,CAM,CDM,RM",Central Midfield,MF,27,1998-11-15,18.0,GER,True,Doubtful,2026-11-08
 Leeds United,Ao Tanaka,935728,midfielders,"CDM,CM",Defensive Midfield,MF,28,1998-09-10,22.0,JPN,False,,2026-11-08
@@ -271,10 +271,10 @@ Tottenham Hotspur,Tosin Adarabioyo,683402,defenders,CB,Centre-Back,DF,29,1997-09
 Tottenham Hotspur,Marcos Senesi,785411,defenders,CB,Centre-Back,DF,29,1997-05-10,5.0,ARG,False,,2026-11-08
 Tottenham Hotspur,Jan Paul van Hecke,974618,defenders,CB,Centre-Back,DF,26,2000-06-08,6.0,NED,False,,2026-11-08
 Tottenham Hotspur,Destiny Udogie,1052898,defenders,"LB,LWB",Left-Back,DF,23,2002-11-28,13.0,ITA,False,,2026-11-08
-Tottenham Hotspur,Pedro Porro,941573,defenders,"RB,RM",Right-Back,DF,27,1999-09-13,23.0,ESP,False,,2026-11-08
+Tottenham Hotspur,Pedro Porro,941573,defenders,"RB,RM,RW",Right-Back,DF,27,1999-09-13,23.0,ESP,False,,2026-11-08
 Tottenham Hotspur,Ben Davies,276121,defenders,"CB,LB",Centre-Back,DF,33,1993-04-24,33.0,WAL,False,,2026-11-08
 Tottenham Hotspur,Micky van de Ven,1097466,defenders,"CB,LB",Centre-Back,DF,25,2001-04-19,37.0,NED,False,,2026-11-08
-Tottenham Hotspur,Xavi Simons,1173787,midfielders,"CAM,LW,RW",Attacking Midfield,MF,23,2003-04-21,7.0,NED,True,Early February 2027,2026-11-08
+Tottenham Hotspur,Xavi Simons,1173787,midfielders,"CAM,LW,CM,ST",Attacking Midfield,MF,23,2003-04-21,7.0,NED,True,Early February 2027,2026-11-08
 Tottenham Hotspur,Conor Gallagher,966027,midfielders,"CAM,CM,CDM",Attacking Midfield,MF,26,2000-02-06,8.0,ENG,False,,2026-11-08
 Tottenham Hotspur,James Maddison,493165,midfielders,CAM,Attacking Midfield,MF,29,1996-11-23,10.0,ENG,False,,2026-11-08
 Tottenham Hotspur,Archie Gray,1323305,midfielders,"CDM,RB,CM,RWB",Defensive Midfield,MF,20,2006-03-12,14.0,ENG,False,,2026-11-08
@@ -331,6 +331,7 @@ Hull City,Matt Targett,538112,defenders,"LB,LWB,CB",Left-Back,DF,31,1995-09-18,2
 Hull City,Nobel Mendy,1428427,defenders,CB,Centre-Back,DF,22,2004-08-16,32.0,SEN,False,,2026-11-08
 Hull City,Hidemasa Morita,915102,midfielders,CDM,Defensive Midfield,MF,31,1995-05-10,5.0,JPN,False,,2026-11-08
 Hull City,Eliot Matazo,1178514,midfielders,CDM,Defensive Midfield,MF,24,2002-02-15,8.0,BEL,True,Early February 2027,2026-11-08
+Hull City,Mohamed Belloumi,1231090,midfielders,"RW,RM,CAM",Right Winger,MF,24,2002-06-01,10.0,ALG,False,,2026-11-08
 Hull City,Joe Gelhardt,956161,midfielders,"CAM,RW,RM",Attacking Midfield,MF,24,2002-05-04,11.0,ENG,False,,2026-11-08
 Hull City,Jens Hjertø-Dahl,1377949,midfielders,"CM,CAM,CDM",Central Midfield,MF,21,2005-10-31,14.0,NOR,False,,2026-11-08
 Hull City,Brooke Norton-Cuffy,1214915,midfielders,"RM,LWB,RWB",Right Midfield,MF,22,2004-01-12,18.0,ENG,False,,2026-11-08
@@ -345,7 +346,6 @@ Hull City,Christos Mouzakitis,1574198,midfielders,CDM,Defensive Midfield,MF,19,2
 Hull City,Tim Iroegbunam,1203512,midfielders,"CDM,CM",Defensive Midfield,MF,23,2003-06-30,42.0,ENG,False,,2026-11-08
 Hull City,Sorba Thomas,812982,attackers,"LW,RB,LM,RW,RWB",Left Winger,FW,27,1999-01-25,7.0,WAL,False,,2026-11-08
 Hull City,Oli McBurnie,509151,attackers,ST,Centre-Forward,FW,30,1996-06-04,9.0,SCO,False,,2026-11-08
-Hull City,Mohamed Belloumi,1231090,attackers,"RW,RM,CAM",Right Winger,FW,24,2002-06-01,10.0,ALG,False,,2026-11-08
 Hull City,Ilyas Ansah,1515977,attackers,"CAM,ST,LW",Attacking Midfield,FW,22,2004-11-08,28.0,GER,True,Early November 2026,2026-11-08
 Hull City,Abdülkadir Ömür,704138,attackers,"RW,CAM",Right Winger,FW,27,1999-06-25,33.0,TUR,False,,2026-11-08
 Hull City,Robinio Vaz,1705134,attackers,ST,Centre-Forward,FW,19,2007-02-17,47.0,FRA,False,,2026-11-08
