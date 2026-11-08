@@ -340,16 +340,16 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 612,
+   "total": 613,
    "exact": 493,
    "rule": 27,
    "ambiguous": 1,
-   "orphan": 92,
+   "orphan": 93,
    "orphans": [
     {
      "squad": "Celta Vigo",
      "name": "Andrei Radu",
-     "starts": 11
+     "starts": 12
     },
     {
      "squad": "Alavés",
@@ -596,8 +596,8 @@
    ]
   },
   "match_events": {
-   "total": 389,
-   "exact": 389,
+   "total": 390,
+   "exact": 390,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -619,7 +619,7 @@
    "ambiguous": 0,
    "orphan": 0,
    "orphans": [],
-   "minutes": 2
+   "minutes": 3
   }
  },
  "Bundesliga 2026_2027": {
@@ -1983,6 +1983,16 @@
      "starts": 11
     },
     {
+     "squad": "Genk",
+     "name": "Lucca Kiaba Mounganga",
+     "starts": 11
+    },
+    {
+     "squad": "Genk",
+     "name": "Josué Ndenge",
+     "starts": 11
+    },
+    {
      "squad": "La Louvière",
      "name": "Mustapha Ubandoma",
      "starts": 11
@@ -1995,16 +2005,6 @@
     {
      "squad": "Westerlo",
      "name": "Issai Sakamoto",
-     "starts": 10
-    },
-    {
-     "squad": "Genk",
-     "name": "Lucca Kiaba Mounganga",
-     "starts": 10
-    },
-    {
-     "squad": "Genk",
-     "name": "Josué Ndenge",
      "starts": 10
     },
     {
@@ -2159,8 +2159,8 @@
    ]
   },
   "espn_subs": {
-   "total": 310,
-   "exact": 310,
+   "total": 312,
+   "exact": 312,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -2175,8 +2175,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 284,
-   "exact": 284,
+   "total": 285,
+   "exact": 285,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -2192,7 +2192,7 @@
    "minutes": 5
   },
   "s365_ratings": {
-   "total": 427,
+   "total": 428,
    "exact": 377,
    "rule": 2,
    "ambiguous": 1,
