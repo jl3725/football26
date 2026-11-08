@@ -312,8 +312,8 @@
    "orphans": []
   },
   "fotmob_ratings": {
-   "total": 288,
-   "exact": 282,
+   "total": 291,
+   "exact": 285,
    "rule": 5,
    "ambiguous": 0,
    "orphan": 0,
@@ -604,13 +604,13 @@
    "orphans": []
   },
   "fotmob_ratings": {
-   "total": 314,
-   "exact": 304,
+   "total": 321,
+   "exact": 311,
    "rule": 7,
    "ambiguous": 0,
    "orphan": 0,
    "orphans": [],
-   "minutes": 5
+   "minutes": 6
   },
   "s365_ratings": {
    "total": 479,
@@ -894,13 +894,13 @@
    "orphans": []
   },
   "fotmob_ratings": {
-   "total": 281,
-   "exact": 279,
+   "total": 287,
+   "exact": 285,
    "rule": 1,
    "ambiguous": 0,
    "orphan": 0,
    "orphans": [],
-   "minutes": 7
+   "minutes": 6
   },
   "s365_ratings": {
    "total": 401,
@@ -909,7 +909,7 @@
    "ambiguous": 0,
    "orphan": 0,
    "orphans": [],
-   "minutes": 1
+   "minutes": 2
   }
  },
  "SerieA 2026_2027": {
@@ -1226,13 +1226,13 @@
    "orphans": []
   },
   "fotmob_ratings": {
-   "total": 327,
-   "exact": 326,
+   "total": 332,
+   "exact": 331,
    "rule": 1,
    "ambiguous": 0,
    "orphan": 0,
    "orphans": [],
-   "minutes": 8
+   "minutes": 5
   },
   "s365_ratings": {
    "total": 484,
@@ -1472,13 +1472,13 @@
    "orphans": []
   },
   "fotmob_ratings": {
-   "total": 267,
-   "exact": 259,
+   "total": 268,
+   "exact": 260,
    "rule": 6,
    "ambiguous": 0,
    "orphan": 0,
    "orphans": [],
-   "minutes": 7
+   "minutes": 8
   },
   "s365_ratings": {
    "total": 420,
@@ -1723,8 +1723,8 @@
    "orphans": []
   },
   "fotmob_ratings": {
-   "total": 282,
-   "exact": 278,
+   "total": 285,
+   "exact": 281,
    "rule": 1,
    "ambiguous": 3,
    "orphan": 0,
@@ -1732,8 +1732,8 @@
    "minutes": 11
   },
   "s365_ratings": {
-   "total": 438,
-   "exact": 432,
+   "total": 439,
+   "exact": 433,
    "rule": 4,
    "ambiguous": 1,
    "orphan": 0,
@@ -1948,8 +1948,8 @@
    "orphans": []
   },
   "fotmob_ratings": {
-   "total": 263,
-   "exact": 258,
+   "total": 274,
+   "exact": 269,
    "rule": 2,
    "ambiguous": 0,
    "orphan": 0,
@@ -2188,8 +2188,8 @@
    "orphans": []
   },
   "fotmob_ratings": {
-   "total": 276,
-   "exact": 275,
+   "total": 284,
+   "exact": 283,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -2197,9 +2197,9 @@
    "minutes": 5
   },
   "s365_ratings": {
-   "total": 425,
+   "total": 427,
    "exact": 375,
-   "rule": 2,
+   "rule": 4,
    "ambiguous": 1,
    "orphan": 0,
    "orphans": [],
@@ -2209,7 +2209,7 @@
  "Championship 2026_2027": {
   "wiki_squads": {
    "total": 903,
-   "exact": 666,
+   "exact": 667,
    "rule": 5,
    "ambiguous": 0,
    "orphan": 0,
@@ -2500,8 +2500,8 @@
    "orphans": []
   },
   "fotmob_ratings": {
-   "total": 378,
-   "exact": 378,
+   "total": 396,
+   "exact": 396,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -2682,8 +2682,8 @@
    "orphans": []
   },
   "fotmob_ratings": {
-   "total": 284,
-   "exact": 284,
+   "total": 291,
+   "exact": 291,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -2824,8 +2824,8 @@
    "orphans": []
   },
   "fotmob_ratings": {
-   "total": 183,
-   "exact": 183,
+   "total": 187,
+   "exact": 187,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -3136,8 +3136,8 @@
    "orphans": []
   },
   "fotmob_ratings": {
-   "total": 172,
-   "exact": 172,
+   "total": 175,
+   "exact": 175,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -3165,11 +3165,16 @@
   },
   "espn_lineups": {
    "total": 354,
-   "exact": 344,
+   "exact": 343,
    "rule": 1,
    "ambiguous": 0,
-   "orphan": 9,
+   "orphan": 10,
    "orphans": [
+    {
+     "squad": "Lausanne",
+     "name": "Oscar Renovales",
+     "starts": 0
+    },
     {
      "squad": "Young Boys",
      "name": "Silas Ubaka",
@@ -3278,8 +3283,8 @@
    "orphans": []
   },
   "fotmob_ratings": {
-   "total": 185,
-   "exact": 185,
+   "total": 188,
+   "exact": 188,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,

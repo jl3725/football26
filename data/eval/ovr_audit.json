@@ -1,12 +1,12 @@
 {
- "date": "2026-11-07",
+ "date": "2026-11-08",
  "model": "v3.18",
- "checked": 45724,
+ "checked": 45841,
  "mismatches": [],
  "leagues": {
   "EPL": {
    "teams": 20,
-   "checked": 3624,
+   "checked": 3640,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -14,7 +14,7 @@
   },
   "AustrianBundesliga": {
    "teams": 12,
-   "checked": 2563,
+   "checked": 2559,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -22,7 +22,7 @@
   },
   "BelgianProLeague": {
    "teams": 18,
-   "checked": 3402,
+   "checked": 3407,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -30,7 +30,7 @@
   },
   "Bundesliga": {
    "teams": 18,
-   "checked": 3300,
+   "checked": 3317,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -38,7 +38,7 @@
   },
   "Championship": {
    "teams": 24,
-   "checked": 5075,
+   "checked": 5091,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -46,7 +46,7 @@
   },
   "DanishSuperliga": {
    "teams": 12,
-   "checked": 2610,
+   "checked": 2609,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -54,7 +54,7 @@
   },
   "Eredivisie": {
    "teams": 18,
-   "checked": 3423,
+   "checked": 3428,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -62,7 +62,7 @@
   },
   "LaLiga": {
    "teams": 20,
-   "checked": 3850,
+   "checked": 3872,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -70,25 +70,25 @@
   },
   "LigaPortugal": {
    "teams": 18,
-   "checked": 3473,
+   "checked": 3474,
    "mismatches": 0,
    "changed": 1,
    "model_changed": 0,
    "changes_top": [
     {
      "team": "Santa Clara",
-     "player": "Henrique Silva",
-     "from": 50,
-     "to": 52,
-     "d": 2,
-     "since": "2026-11-07",
+     "player": "Frederico Silva",
+     "from": 52,
+     "to": 50,
+     "d": -2,
+     "since": "2026-11-08",
      "model_change": false
     }
    ]
   },
   "Ligue1": {
    "teams": 18,
-   "checked": 3311,
+   "checked": 3326,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -96,15 +96,25 @@
   },
   "SerieA": {
    "teams": 20,
-   "checked": 3816,
+   "checked": 3842,
    "mismatches": 0,
-   "changed": 0,
+   "changed": 1,
    "model_changed": 0,
-   "changes_top": []
+   "changes_top": [
+    {
+     "team": "Cagliari",
+     "player": "Alessandro Romano",
+     "from": 70,
+     "to": 71,
+     "d": 1,
+     "since": "2026-11-08",
+     "model_change": false
+    }
+   ]
   },
   "SuperLig": {
    "teams": 18,
-   "checked": 3990,
+   "checked": 3994,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -112,7 +122,7 @@
   },
   "SwissSuperLeague": {
    "teams": 12,
-   "checked": 2767,
+   "checked": 2762,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
