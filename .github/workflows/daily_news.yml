@@ -53,7 +53,7 @@ jobs:
         run: bash scripts/ci_try.sh "news_digest" python src/ai_notes.py news
 
       # 뉴스 본문 검색(RAG) — 선수 태그 기사(이적·부상·인터뷰·공식, 최근 30일)를 무료 임베딩(Gemini)으로 Qdrant 'news' 에
-      # (src/news_vectors.py). 분당 한도라 80건씩 62초 간격·한 번에 640건, 남은 건 다음 실행이 잇는다. Ask Scout search_news 가 찾는다
+      # (src/news_vectors.py). 분당·하루 한도라 80건씩 62초 간격·한 번에 400건(하루 2번 = 800, 나머지는 검색 몫), 남은 건 다음 실행이 잇는다. 이적 기사 1년 보관. Ask Scout search_news 가 찾는다
       - name: News vectors (뉴스 본문 검색)
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}

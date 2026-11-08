@@ -34,3 +34,4 @@ Arsenal transfer rumors,Arsenal,EPL,tool:graph_query;nonempty;grounded,영어 �
 사카 최근 5경기 평점,Arsenal,EPL,nonempty;grounded,player_form 또는 Match·PLAYED
 라이스와 외데고르가 같이 60분 넘게 뛴 경기는 몇 경기야?,Arsenal,EPL,tool:graph_query;nonempty;grounded,Match·PLAYED(경기 노드)
 지난 시즌 부상으로 가장 많이 결장한 선수,,EPL,tool:graph_query;nonempty,Injury·SUFFERED(25/26)
+아스날로 예전에 이적설이 났던 선수들은?,Arsenal,EPL,tool:graph_query;nonempty,WAS_LINKED(이적설 이력 — 식은 것 포함)

@@ -62,6 +62,7 @@ def _run(monkeypatch, argv):
         monkeypatch.setattr(kg, f, lambda *a, **k: [])
     monkeypatch.setattr(kg, "_load_news_pairs", lambda *a, **k: ([], {}))
     monkeypatch.setattr(kg, "_load_matches", lambda *a, **k: ([], []))
+    monkeypatch.setattr(kg, "_rumor_history", lambda rumors: [])            # 실제 data/rumor_history.csv 를 건드리지 않게
     monkeypatch.setattr(kg, "_load_injury_spells", lambda *a, **k: [])
     monkeypatch.setattr(kg, "_rumor_base", lambda *a, **k: {})
     monkeypatch.setattr(kg, "_load_claims", lambda *a, **k: {"claims": [], "nodes": [], "reports": [], "writes": []})
@@ -76,6 +77,7 @@ def test_fast_skips_slow_relations_and_keeps_managers(monkeypatch) -> None:
     q = _run(monkeypatch, ["--fast"])
     assert "PLAYS_FOR" in q and "LINKED_TO" in q and "MENTIONED_WITH" in q and "Claim" in q and ":PLAYED]" in q   # 최근 경기도 매일
     assert "Injury" not in q                                                   # 부상 구간은 주 1회
+    assert "WAS_LINKED" in q                                                   # 이적설 이력은 매일
     assert "MANAGES" not in q and "TEAMMATE_OF" not in q and "TransferEvent" not in q   # 쓰지도 지우지도 않는다
 
 

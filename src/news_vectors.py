@@ -8,9 +8,9 @@ Ask Scout search_news 도구가 질문 뜻으로 찾는다(출처·날짜·링�
   대상 = 우리 선수가 태그된(how=full) 최근 DAYS 일 기사 중 이적·부상·인터뷰·공식 발표(경기 리포트·기타 제외).
   이미 넣은 기사는 건너뛰고, 한 번에 MAX_NEW 건까지(분당 한도라 BATCH 건씩 PAUSE 초 간격) — 429 면 한 번 기다렸다 다시, 또 걸리면
   거기서 멈추고 다음 실행이 잇는다.
-  KEEP_DAYS 지난 기사는 지운다. Qdrant·Gemini 는 REST(requests)로만 — 운영(Render)에 새 의존성 없이.
+  KEEP_DAYS(이적 기사는 KEEP_TRANSFER_DAYS) 지난 기사는 지운다. Qdrant·Gemini 는 REST(requests)로만 — 운영(Render)에 새 의존성 없이.
 
-    python src/news_vectors.py [--days 30] [--max 640]
+    python src/news_vectors.py [--days 30] [--max 400]
 """
 from __future__ import annotations
 
@@ -29,7 +29,9 @@ COLLECTION = "news"
 DIM = 256
 MODEL = "gemini-embedding-001"
 # 무료 등급 = 분당 약 100건(2026-11-06: 100건 한 묶음 뒤 바로 429, 1분 뒤 풀림) — 80건씩 62초 간격으로 운영 검색 몫을 남긴다
-DAYS, KEEP_DAYS, MAX_NEW, BATCH, PAUSE = 30, 45, 640, 80, 62.0
+# 하루 한도도 있다(약 1,000건 — 11/07~08 첫 묶음부터 429) → 회당 400건 × 하루 2번 = 800, 나머지는 운영 Ask Scout 검색 몫
+# 이적 기사는 1년 보관(2026-11-09 사용자 '예전 루머 기사가 날아가지 않게' — news.db 원문은 30일 뒤 지워져도 제목·링크로 찾게)
+DAYS, KEEP_DAYS, KEEP_TRANSFER_DAYS, MAX_NEW, BATCH, PAUSE = 30, 45, 400, 400, 80, 62.0
 KINDS = ("transfer", "injury", "interview", "official")
 EX_SOURCE_DOWN = 75
 _GEMINI = "https://generativelanguage.googleapis.com/v1beta/models/{m}:batchEmbedContents"
@@ -129,9 +131,17 @@ def existing(ids: list[int]) -> set[int]:
     return have
 
 
-def prune(keep_days: int = KEEP_DAYS) -> None:
-    cut = int((dt.date.today() - dt.timedelta(days=keep_days)).strftime("%Y%m%d"))
-    _q("POST", f"/collections/{COLLECTION}/points/delete", {"filter": {"must": [{"key": "day", "range": {"lt": cut}}]}})
+def _cut(days: int) -> int:
+    return int((dt.date.today() - dt.timedelta(days=days)).strftime("%Y%m%d"))
+
+
+def prune(keep_days: int = KEEP_DAYS, keep_transfer_days: int = KEEP_TRANSFER_DAYS) -> None:
+    """이적 기사가 아닌 것은 keep_days, 이적 기사는 keep_transfer_days 뒤 지운다."""
+    _q("POST", f"/collections/{COLLECTION}/points/delete",
+       {"filter": {"must": [{"key": "day", "range": {"lt": _cut(keep_days)}}],
+                   "must_not": [{"key": "kind", "match": {"value": "transfer"}}]}})
+    _q("POST", f"/collections/{COLLECTION}/points/delete",
+       {"filter": {"must": [{"key": "day", "range": {"lt": _cut(keep_transfer_days)}}]}})
 
 
 def index(days: int = DAYS, max_new: int = MAX_NEW, pause: float = PAUSE) -> dict:

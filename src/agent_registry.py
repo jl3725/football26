@@ -202,7 +202,7 @@ AGENTS: tuple[Agent, ...] = (
                    added="2026-11-06"),
               # 그래프 매일 반영(빠른 관계·속성만, scripts/build_kg.py --fast) — Ask Scout 그래프 답이 최대 7일 늦던 것(2026-11-06)
               Feed("graph_daily", "그래프 매일 반영(이적설·기사·소집·선수 값)", ("kg_fast",), ("daily_data",), "매일", 36,
-                   added="2026-11-06"),
+                   ("rumor_history.csv",), added="2026-11-06"),   # 이적설 이력 누적(식은 것 포함, 2026-11-09)
               # Ask Scout 답 평가 — 운영 /api/scout 30문항(그래프 질의 0행·결과에 없는 숫자·'데이터 없음' 답), 2026-11-06
               Feed("scout_answers", "Ask Scout 답 평가", ("scout_answers",), ("kg_reload",), "주 1회 · 화 12:00 KST", WEEK_H,
                    ("scout_answers.json",), added="2026-11-06"),

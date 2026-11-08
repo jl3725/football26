@@ -225,7 +225,9 @@ _KG_SCHEMA = """노드:
   (Player)-[:CAPTAIN_OF {rank, role}]->(Club)          // 주장단(1=주장, 2=부주장 …)
   (Player)-[:MENTIONED_WITH {articles, last}]-(Player) // 최근 60일 같은 기사에 함께 나옴
   (Player)-[:CALLED_UP {squad_for, caps, goals}]->(Country)  // 대표팀 소집(가장 최근 명단)
-  (Player)-[:LINKED_TO {heat, stage, tm_prob, news, outlets, last}]->(Club)   // 이적설 종합(TM 루머 + 뉴스, heat 0~100)
+  (Player)-[:LINKED_TO {heat, stage, tm_prob, news, outlets, last}]->(Club)   // 지금 이적설(TM 루머 + 뉴스, heat 0~100)
+  (Player)-[:WAS_LINKED {window('2026 winter'), first, last, last_report, peak_heat, max_stage, tm_prob_max, news_max, outlets, active}]->(Club)
+      // 이적설 이력 — 식은 것 포함, 지우지 않음. '예전에 누구랑 루머 났었지'는 이것
   (Claim)-[:ABOUT]->(Player), (Claim)-[:TO_CLUB]->(Club), (Claim)-[:FROM_CLUB]->(Club)   // 뉴스 루머 주장(선수·행선지·시장)
   (Outlet)-[:REPORTED {first, last, n, stage}]->(Claim), (Journalist)-[:REPORTED {...}]->(Claim), (Journalist)-[:WRITES_FOR {n}]->(Outlet)
   // 기자 이름이 붙은 기사는 드물다 — '몇 군데서 보도'는 Outlet 으로 센다"""
@@ -240,6 +242,7 @@ _CYPHER_TIPS = """graph_query Cypher 팁:
 - 결과가 0행이면 조건을 넓혀 한 번 더 시도할 수 있다(CONTAINS · Outlet · LINKED_TO · active 빼기).
 - Country.name 은 Transfermarkt 표기('Korea, South'·'Bosnia-Herzegovina'·'United States') — 나라는 CONTAINS 로(c.name CONTAINS 'Korea').
 예시:
+  [예전 이적설] MATCH (p:Player {name:'Bukayo Saka'})-[w:WAS_LINKED]->(c:Club) RETURN c.name, w.window, w.max_stage, w.peak_heat, w.first, w.last_report ORDER BY w.last DESC LIMIT 15
   [이적설] MATCH (p:Player)-[l:LINKED_TO]->(c:Club {name:'Arsenal'}) WHERE l.heat IS NOT NULL RETURN p.name, p.pos_detail, l.heat, l.stage, l.tm_prob, l.news, l.outlets ORDER BY l.heat DESC LIMIT 15
   [TM 루머 확률] MATCH (p:Player)-[r:RUMORED_WITH]->(c:Club {name:'Arsenal'}) WHERE r.probability IS NOT NULL RETURN p.name, p.pos_detail, r.probability ORDER BY r.probability DESC LIMIT 15
   [챔스 U23 풀백] MATCH (p:Player)-[:PLAYED_IN]->(comp:Competition) WHERE comp.name CONTAINS 'Champions' AND p.age<=23 AND p.pos_detail IN ['Right-Back','Left-Back'] RETURN DISTINCT p.name,p.age,p.pos_detail,p.league,p.ss_rating ORDER BY p.ss_rating DESC LIMIT 15
@@ -411,7 +414,7 @@ _SYSTEM = (
     "- 답변은 한국어로, 스카우트 브리핑처럼 간결하게. 툴 결과의 근거(팀니즈·유럽검증·시장가·전술적합)를 짚어라.\n"
     "- '우리 팀'/'이 팀'은 현재 보고 있는 팀 컨텍스트를 쓴다.\n"
     "- **'링크/루머/관심/영입설'은 추천이 아니라 이적설 조회다 → graph_query 로 LINKED_TO(TM 루머 + 뉴스 종합, heat 순).** "
-    "TM 확률만 물으면 RUMORED_WITH, '어디서 보도'는 Claim·Outlet.\n"
+    "TM 확률만 물으면 RUMORED_WITH, '어디서 보도'는 Claim·Outlet, **'예전에·지난 시장에 루머'는 WAS_LINKED(식은 이적설 포함)**.\n"
     "- 결과가 비면 조건을 넓혀 한 번 더 조회할 수 있고, 여러 정보를 엮어야 하면 도구를 이어서 불러도 된다(최대 3번).\n"
     "- **기사 내용(부상 소식·이적 루머·감독 발언)을 요약·근거로 답할 땐 search_news** — 답에 매체 이름과 날짜를 밝혀라. "
     "기사에 없는 내용은 덧붙이지 않는다.\n"

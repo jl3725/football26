@@ -562,6 +562,16 @@ def _load_rumor_links(n2p_by_league: dict, base: tuple | None = None) -> list[di
     return rows
 
 
+def _rumor_history(rumors: list[dict]) -> list[dict]:
+    """이적설 이력 갱신(src/rumor_map.update_history) — 실패해도 그래프 적재는 계속."""
+    try:
+        import rumor_map as rm  # noqa: PLC0415
+        return rm.update_history(rumors)
+    except Exception as e:  # noqa: BLE001
+        print(f"  ! 이적설 이력 실패 {type(e).__name__}: {str(e)[:80]}")
+        return []
+
+
 def claim_graph(claims: list[dict], canon, pid_of, rel: list[dict] | None = None,
                 today: dt.date | None = None) -> dict[str, list[dict]]:
     """뉴스 루머 주장(news_claims.csv 행) → 그래프 행. 주장 = (선수, 행선지, 시장) 하나에 기사 여러 건.
@@ -781,7 +791,17 @@ def main(argv=None) -> int:
                     "MERGE (c:Club {name:r.to}) MERGE (p)-[l:LINKED_TO]->(c) "
                     "SET l.heat=r.heat, l.stage=r.stage, l.tm_prob=r.prob, l.news=r.news, l.outlets=r.outlets, "
                     "    l.last=r.last, l.seen=$run", rumors, run=RUN)
-        print(f"  기사 동시 언급 {len(pairs)}쌍 · 대표팀 소집 {len(calls)}명 · 주장단 {tot['cap']}명 · 이적설 {len(rumors)}건")
+        # 예전 이적설(식은 것 포함) — data/rumor_history.csv 누적 → WAS_LINKED(시장별, 지우지 않음). 2026-11-09
+        hist = _rumor_history(rumors)
+        _batched(s, "UNWIND $rows AS r MERGE (p:Player {id:r.pid}) "
+                    "  ON CREATE SET p.name=r.name, p.external=true, p.active=false "
+                    "MERGE (c:Club {name:r.to}) MERGE (p)-[w:WAS_LINKED {window:r.window}]->(c) "
+                    "SET w.first=r.first, w.last=r.last, w.last_report=r.last_report, w.peak_heat=toInteger(r.peak_heat), "
+                    "    w.max_stage=r.max_stage, w.tm_prob_max=r.tm_prob_max, w.news_max=toInteger(r.news_max), "
+                    "    w.outlets=r.outlets, w.active=(r.active='1')",
+                 [{**h, "outlets": [x for x in str(h.get("outlets") or "").split("|") if x]} for h in hist])
+        print(f"  기사 동시 언급 {len(pairs)}쌍 · 대표팀 소집 {len(calls)}명 · 주장단 {tot['cap']}명 · 이적설 {len(rumors)}건"
+              f" · 이적설 이력 {len(hist)}건")
         # 루머 주장 그래프 — 누가(매체·기자) 무엇을(선수→행선지, 시장) 언제 보도했고 맞았는지
         g = _load_claims(n2p_by_league, base)
         _batched(s, "UNWIND $rows AS r MERGE (k:Claim {id:r.id}) "

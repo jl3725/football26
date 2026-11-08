@@ -10,6 +10,9 @@
   열린 시장의 루머는 pending.
 매체·기자마다 적중률(베타 사전분포로 표본이 적으면 전체 평균 쪽으로) → data/news_reliability.csv,
 루머 판정 목록 → data/news_claims.csv. 화면(뉴스 탭)은 매체 칩·STORY 에 '적중 n/m' 을 붙인다.
+news_claims.csv 는 누적 보관소다(2026-11-09 사용자 '뉴스가 지워지면 예전 루머가 날아가지 않나'): Google·매체 RSS·FotMob 기사는
+30일 뒤 news.db 에서 지워지므로, 원문이 아직 있는 기사는 매번 새로 뽑고(규칙을 고치면 옛 줄도 바로잡힘), 원문이 지워진 기사의
+주장은 지난 파일에서 이어받아 판정(hit/miss/pending)만 이적 기록으로 다시 한다(carry). 적중률 근거도 그만큼 남는다.
 
     python src/news_reliability.py
 """
@@ -138,6 +141,31 @@ def club_names(tr: pd.DataFrame) -> tuple[dict[str, set[str]], set[str]]:
     return out, ours
 
 
+def _moved_to(mv_w, dest: str) -> bool:
+    """그 시장에 그 선수가 dest 로 옮겼나(TM 이적 기록: dest 로 in, 또는 dest 가 상대인 out)."""
+    if mv_w is None or not len(mv_w):
+        return False
+    return any((r.direction == "in" and _same_club(r.squad, dest)) or (r.direction == "out" and _same_club(r.club, dest))
+               for r in mv_w.itertuples())
+
+
+def _status(moved: bool, stage: str, close: dt.date, today: dt.date) -> str:
+    """판정 — 시장이 닫히고 GRACE_DAYS 뒤(또는 이미 옮김)면 hit/miss, 부인(denied)은 반대로."""
+    resolved = today > close + dt.timedelta(days=GRACE_DAYS) or moved
+    hit = (not moved) if stage == "denied" else moved
+    return ("hit" if hit else "miss") if resolved else "pending"
+
+
+def _window_close(window: str) -> tuple[int, str, dt.date] | None:
+    """'2026 winter' → (2026, 'winter', 2027-02-03)."""
+    try:
+        y, w = str(window).split()
+        y = int(y)
+    except ValueError:
+        return None
+    return (y, w, dt.date(y, 9, 1)) if w == "summer" else (y, w, dt.date(y + 1, 2, 3)) if w == "winter" else None
+
+
 def _same_club(a: str, b: str) -> bool:
     fa, fb = _fold(a), _fold(b)
     return bool(fa) and (fa == fb or fa in fb or fb in fa)
@@ -207,24 +235,55 @@ def claims(today: dt.date | None = None) -> pd.DataFrame:
             if new_club:   # 이 시장에 옮긴 선수 — 태그 클럽(squad)이 이미 새 클럽이라 그건 행선지 후보로 남긴다
                 dests = [c for c in clubs if not _same_club(c, origin)]
             for d in dests[:1]:                                  # 첫 클럽 = 보통 주어(사는 쪽) — 'Fulham agree to sign X from Real Madrid'
-                moved_to_d = False
-                if mv_w is not None and len(mv_w):
-                    moved_to_d = any((r.direction == "in" and _same_club(r.squad, d)) or
-                                     (r.direction == "out" and _same_club(r.club, d)) for r in mv_w.itertuples())
-                resolved = today > close + dt.timedelta(days=GRACE_DAYS) or moved_to_d
-                denied = a.stage == "denied"
-                hit = (not moved_to_d) if denied else moved_to_d
+                status = _status(_moved_to(mv_w, d), a.stage or "", close, today)
                 rows.append({"link": a.link, "date": day.isoformat(), "source": a.source or "", "journalists": _journalists(a),
                              "stage": a.stage or "", "player": p.player, "origin": origin, "dest": d,
-                             "window": f"{sid} {win}", "status": ("hit" if hit else "miss") if resolved else "pending",
-                             "headline": a.headline})
-    out = pd.DataFrame(rows)
+                             "window": f"{sid} {win}", "status": status, "headline": a.headline})
+    return _drop_late(pd.DataFrame(rows))
+
+
+def _drop_late(out: pd.DataFrame) -> pd.DataFrame:
     if out.empty:
         return out
     # 사후 보도 빼기 — 그 이적(선수→행선지)이 처음 '확정'으로 보도된 날 뒤의 기사는 예측이 아니다(인터뷰·후일담)
     first_done = out[(out["stage"] == "done") & (out["status"] == "hit")].groupby(["player", "dest"])["date"].min()
     late = out.apply(lambda r: (r["player"], r["dest"]) in first_done.index and r["date"] > first_done[(r["player"], r["dest"])], axis=1)
     return out[~late].reset_index(drop=True)
+
+
+def links_in_db() -> set[str]:
+    """news.db 에 원문이 아직 있는 기사 링크."""
+    if not NEWS_DB.exists():
+        return set()
+    con = sqlite3.connect(NEWS_DB)
+    try:
+        return {r[0] for r in con.execute("SELECT DISTINCT link FROM articles")}
+    finally:
+        con.close()
+
+
+def carry(old: pd.DataFrame, alive: set[str], today: dt.date | None = None) -> pd.DataFrame:
+    """지난 news_claims.csv 중 원문이 지워진 기사의 주장 — 그대로 이어받고 판정만 이적 기록으로 다시.
+    원문이 남은 기사는 여기서 빼고 claims() 가 새로 뽑는다(새 규칙에 안 걸리면 사라짐)."""
+    today = today or dt.date.today()
+    if old is None or old.empty or "link" not in old.columns:
+        return pd.DataFrame()
+    gone = old[~old["link"].astype(str).isin(alive)].copy()
+    if gone.empty:
+        return gone
+    tr = load_transfers()
+    moves = {k: g for k, g in tr.assign(key=tr["player"].map(_fold)).groupby("key")} if not tr.empty else {}
+    have = set(zip(tr["season_id"].astype(int), tr["window"].astype(str))) if not tr.empty else set()
+    st = []
+    for r in gone.itertuples(index=False):
+        wc = _window_close(r.window)
+        if wc is None or (wc[0], wc[1]) not in have:
+            st.append(r.status)                                    # 이적 기록이 없는 시장 — 예전 판정 그대로
+            continue
+        mv = moves.get(_fold(r.player))
+        mv_w = mv[(mv["season_id"] == wc[0]) & (mv["window"] == wc[1])] if mv is not None else None
+        st.append(_status(_moved_to(mv_w, str(r.dest)), str(r.stage or ""), wc[2], today))
+    return gone.assign(status=st)
 
 
 def reliability(cl: pd.DataFrame) -> pd.DataFrame:
@@ -258,11 +317,16 @@ def reliability(cl: pd.DataFrame) -> pd.DataFrame:
 def main() -> int:
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
-    cl = claims()
-    if cl.empty:
+    live = claims()
+    if live.empty:
         print("[reliability] 루머 0건 — 기존 파일 유지")
         return 0
+    old = pd.read_csv(OUT_CLAIMS) if OUT_CLAIMS.exists() else pd.DataFrame()
+    kept = carry(old, links_in_db())
+    cl = _drop_late(pd.concat([live, kept], ignore_index=True).drop_duplicates(["link", "player", "dest"], keep="first"))
+    cl = cl.sort_values(["date", "player"], ascending=[False, True]).reset_index(drop=True)
     cl.to_csv(OUT_CLAIMS, index=False)
+    print(f"[reliability] 원문 있는 기사 {len(live)}건 · 원문 지워진 기사에서 이어받음 {len(kept)}건")
     rel = reliability(cl)
     rel.to_csv(OUT_REL, index=False)
     st = cl["status"].value_counts().to_dict()

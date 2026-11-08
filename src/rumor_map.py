@@ -15,6 +15,7 @@ from __future__ import annotations
 import datetime as dt
 import math
 import re
+from pathlib import Path
 
 from unidecode import unidecode
 
@@ -277,6 +278,65 @@ def _pub(lk: dict) -> dict:
     return {"player": lk["player"], "from": lk["from"], "to": lk["to"], "heat": lk["heat"], "stage": lk["stage"],
             "tm": lk["tm"], "news": lk["news"][:4], "n_news": len(lk["news"]), "outlets": lk["outlets"],
             "last": lk["last"], "info": lk["info"]}
+
+
+# ── 이적설 이력(누적) ────────────────────────────────────────────────────────────
+# 지금 이적설(LINKED_TO)은 TM 페이지에서 내려가거나 기사가 지워지면(30일) 사라진다. 2026-11-09 사용자 '예전에 누구랑 루머
+# 났었지 하면 날아가지 않나' → (선수, 행선지, 이적시장)마다 처음·마지막 본 날·최고 열기·최고 단계·보도 수·매체를 쌓고 지우지 않는다.
+HISTORY = Path(__file__).resolve().parent.parent / "data" / "rumor_history.csv"
+HIST_COLS = ["pid", "name", "to", "window", "first", "last", "last_report", "peak_heat", "last_heat", "max_stage",
+             "tm_prob_max", "news_max", "outlets", "active"]
+
+
+def _window_of(day: str) -> str:
+    """보도일 → 목표 이적시장('2026 winter') — news_reliability.target_window 와 같은 규칙."""
+    d = parse_date(day)
+    if d is None:
+        return ""
+    if (6, 1) <= (d.month, d.day) <= (9, 1):
+        return f"{d.year} summer"
+    if (d.month, d.day) > (9, 1):
+        return f"{d.year} winter"
+    return f"{d.year - 1} winter" if (d.month, d.day) <= (2, 3) else f"{d.year} summer"
+
+
+def _stage_max(a: str, b: str) -> str:
+    """더 진전된 단계 — 부인(denied)은 다른 단계가 없을 때만."""
+    a, b = (a or "rumour"), (b or "rumour")
+    ra = STAGE_ORDER.index(a) if a in STAGE_ORDER else 1
+    rb = STAGE_ORDER.index(b) if b in STAGE_ORDER else 1
+    return a if ra >= rb else b
+
+
+def update_history(rows: list[dict], today: dt.date | None = None, path: Path | None = None) -> list[dict]:
+    """오늘의 이적설 연결(build_kg LINKED_TO 행: pid·name·to·heat·stage·prob·news·outlets·last)을 이력에 합친다.
+    오늘 안 보인 연결은 active=0 으로 남는다(지우지 않음). 합친 전체 이력 행을 돌려준다."""
+    import pandas as pd  # noqa: PLC0415
+    today = today or dt.date.today()
+    path = path or HISTORY
+    old = pd.read_csv(path, dtype=str).fillna("") if path.exists() else pd.DataFrame(columns=HIST_COLS)
+    hist = {(r["pid"], r["to"], r["window"]): dict(r) for r in old.to_dict("records")}
+    for h in hist.values():
+        h["active"] = "0"
+    for r in rows:
+        win = _window_of(r.get("last") or today.isoformat()) or _window_of(today.isoformat())
+        k = (str(r["pid"]), str(r["to"]), win)
+        h = hist.get(k) or {"pid": k[0], "name": r.get("name", ""), "to": k[1], "window": win, "first": today.isoformat(),
+                            "peak_heat": "0", "max_stage": "rumour", "tm_prob_max": "", "news_max": "0", "outlets": ""}
+        heat = int(float(r.get("heat") or 0))
+        prob = r.get("prob")
+        outs = sorted({*[x for x in str(h.get("outlets") or "").split("|") if x], *(r.get("outlets") or [])})
+        h.update({"name": r.get("name") or h.get("name", ""), "last": today.isoformat(),
+                  "last_report": str(r.get("last") or h.get("last_report") or ""),
+                  "peak_heat": str(max(heat, int(float(h.get("peak_heat") or 0)))), "last_heat": str(heat),
+                  "max_stage": _stage_max(str(h.get("max_stage") or ""), str(r.get("stage") or "")),
+                  "tm_prob_max": str(max([float(x) for x in (h.get("tm_prob_max"), prob) if x not in (None, "", "nan")], default="") or ""),
+                  "news_max": str(max(int(float(h.get("news_max") or 0)), int(r.get("news") or 0))),
+                  "outlets": "|".join(outs[:15]), "active": "1"})
+        hist[k] = h
+    out = sorted(hist.values(), key=lambda h: (h["last"], int(float(h["peak_heat"] or 0))), reverse=True)
+    pd.DataFrame(out, columns=HIST_COLS).to_csv(path, index=False, encoding="utf-8")
+    return out
 
 
 STAGE_KO = {"rumour": "루머", "interest": "관심", "talks": "협상", "agreed": "합의", "done": "확정", "denied": "부인"}
