@@ -1,4 +1,32 @@
 squad,player,fotmob_id,group,positions,tm_position,pos,age,birth_date,shirt,ccode,injured,expected_return,fetched
+Union SG,Vic Chambaere,1237977,keepers,GK,Goalkeeper,GK,23,2003-01-10,1.0,BEL,False,,2026-11-08
+Union SG,Hervé Koffi,695405,keepers,GK,Goalkeeper,GK,30,1996-10-16,12.0,BFA,False,,2026-11-08
+Union SG,Giorgi Kavlashvili,1747247,keepers,GK,Goalkeeper,GK,19,2007-01-24,18.0,GEO,False,,2026-11-08
+Union SG,Keo Boets,1414500,keepers,,Goalkeeper,GK,23,2003-10-21,71.0,BEL,False,,2026-11-08
+Union SG,Nohim Chibani,1668203,defenders,CB,Centre-Back,DF,23,2003-10-06,4.0,FRA,False,,2026-11-08
+Union SG,Kevin Mac Allister,728290,defenders,CB,Centre-Back,DF,29,1997-11-07,5.0,ARG,True,Early June 2027,2026-11-08
+Union SG,Denzel De Roeve,1232229,defenders,RB,Right-Back,DF,22,2004-08-10,21.0,BEL,False,,2026-11-08
+Union SG,Ross Sykes,768266,defenders,CB,Centre-Back,DF,27,1999-03-26,26.0,ENG,False,,2026-11-08
+Union SG,Massiré Sylla,1670317,defenders,CB,Centre-Back,DF,21,2005-01-07,29.0,SEN,False,,2026-11-08
+Union SG,Nikki Havenaar,430838,defenders,"CB,LB",Centre-Back,DF,31,1995-02-16,55.0,JPN,False,,2026-11-08
+Union SG,Ondřej Kričfaluši,1395201,defenders,"CB,CDM",Centre-Back,DF,22,2004-03-09,80.0,CZE,True,Day to day,2026-11-08
+Union SG,Kamiel van de Perre,1417095,midfielders,"CDM,CM",Defensive Midfield,MF,22,2004-02-12,6.0,BEL,False,,2026-11-08
+Union SG,Adem Zorgane,972406,midfielders,"CDM,CM,RW,CAM",Defensive Midfield,MF,26,2000-01-06,8.0,ALG,False,,2026-11-08
+Union SG,Anouar Ait El Hadj,1073471,midfielders,"CAM,LW,RW,ST",Attacking Midfield,MF,24,2002-04-20,10.0,BEL,False,,2026-11-08
+Union SG,Guilherme Smith,1307981,midfielders,"LWB,LM,LW,CAM",Left-Back,MF,23,2003-06-11,11.0,BRA,False,,2026-11-08
+Union SG,Ivan Pavlić,1231676,midfielders,CM,Central Midfield,MF,24,2001-11-10,14.0,BEL,False,,2026-11-08
+Union SG,Rob Schoofs,215415,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,32,1994-03-23,17.0,BEL,False,,2026-11-08
+Union SG,Besfort Zeneli,1338361,midfielders,"CAM,CM,RW,LW,CDM,ST",Attacking Midfield,MF,23,2002-11-21,23.0,SWE,False,,2026-11-08
+Union SG,Ilan Hurtevent,1869291,midfielders,CAM,Attacking Midfield,MF,21,2005-05-25,25.0,BEL,False,,2026-11-08
+Union SG,Louis Patris,1178319,midfielders,"RWB,CAM,RM,LWB",Right-Back,MF,25,2001-06-07,27.0,BEL,False,,2026-11-08
+Union SG,Darius Olaru,817821,midfielders,"CAM,CM,LW,RW,CDM",Attacking Midfield,MF,28,1998-03-03,28.0,ROU,False,,2026-11-08
+Union SG,Mateo Biondic,1385813,attackers,"ST,RW,CAM",Centre-Forward,FW,23,2003-07-24,9.0,GER,True,Late November 2026,2026-11-08
+Union SG,Kevin Rodríguez,1421270,attackers,ST,Centre-Forward,FW,26,2000-03-04,13.0,ECU,False,,2026-11-08
+Union SG,Dylan Aquino,1499651,attackers,"LW,LM",Left Winger,FW,21,2005-06-04,20.0,ARG,False,,2026-11-08
+Union SG,Raul Florucz,1506829,attackers,"ST,CAM,RW",Centre-Forward,FW,25,2001-06-10,30.0,AUT,False,,2026-11-08
+Union SG,Sekou Keita,1797601,attackers,ST,Centre-Forward,FW,20,2006-05-02,32.0,BEL,False,,2026-11-08
+Union SG,Relebohile Mofokeng,1471333,attackers,"CAM,LW,ST,RW",Attacking Midfield,FW,22,2004-10-23,38.0,RSA,False,,2026-11-08
+Union SG,Youssef Hamoutahar,1820536,attackers,LW,Left Winger,FW,20,2006-05-29,39.0,BEL,False,,2026-11-08
 Club Brugge,Yann Sommer,41618,keepers,GK,Goalkeeper,GK,37,1988-12-17,1.0,SUI,False,,2026-11-08
 Club Brugge,Simon Mignolet,37868,keepers,GK,Goalkeeper,GK,38,1988-03-06,22.0,BEL,False,,2026-11-08
 Club Brugge,Nordin Jackers,526227,keepers,GK,Goalkeeper,GK,29,1997-09-05,29.0,BEL,False,,2026-11-08
@@ -92,34 +120,6 @@ Charleroi,Freddy Mbemba,1406676,attackers,"LW,LM",Left Winger,FW,23,2002-12-16,2
 Charleroi,Aurélien Scheidler,846963,attackers,ST,Centre-Forward,FW,28,1998-06-04,21.0,FRA,False,,2026-11-08
 Charleroi,Antoine Colassin,1127251,attackers,ST,Centre-Forward,FW,25,2001-02-26,25.0,BEL,False,,2026-11-08
 Charleroi,Ahmed Mulumba,1755426,attackers,,Centre-Forward,FW,19,2007-05-09,83.0,BEL,False,,2026-11-08
-Union SG,Vic Chambaere,1237977,keepers,GK,Goalkeeper,GK,23,2003-01-10,1.0,BEL,False,,2026-11-08
-Union SG,Hervé Koffi,695405,keepers,GK,Goalkeeper,GK,30,1996-10-16,12.0,BFA,False,,2026-11-08
-Union SG,Giorgi Kavlashvili,1747247,keepers,GK,Goalkeeper,GK,19,2007-01-24,18.0,GEO,False,,2026-11-08
-Union SG,Keo Boets,1414500,keepers,,Goalkeeper,GK,23,2003-10-21,71.0,BEL,False,,2026-11-08
-Union SG,Nohim Chibani,1668203,defenders,CB,Centre-Back,DF,23,2003-10-06,4.0,FRA,False,,2026-11-08
-Union SG,Kevin Mac Allister,728290,defenders,CB,Centre-Back,DF,29,1997-11-07,5.0,ARG,True,Early June 2027,2026-11-08
-Union SG,Denzel De Roeve,1232229,defenders,RB,Right-Back,DF,22,2004-08-10,21.0,BEL,False,,2026-11-08
-Union SG,Ross Sykes,768266,defenders,CB,Centre-Back,DF,27,1999-03-26,26.0,ENG,False,,2026-11-08
-Union SG,Massiré Sylla,1670317,defenders,CB,Centre-Back,DF,21,2005-01-07,29.0,SEN,False,,2026-11-08
-Union SG,Nikki Havenaar,430838,defenders,"CB,LB",Centre-Back,DF,31,1995-02-16,55.0,JPN,False,,2026-11-08
-Union SG,Ondřej Kričfaluši,1395201,defenders,"CB,CDM",Centre-Back,DF,22,2004-03-09,80.0,CZE,True,Day to day,2026-11-08
-Union SG,Kamiel van de Perre,1417095,midfielders,"CDM,CM",Defensive Midfield,MF,22,2004-02-12,6.0,BEL,False,,2026-11-08
-Union SG,Adem Zorgane,972406,midfielders,"CDM,CM,RW,CAM",Defensive Midfield,MF,26,2000-01-06,8.0,ALG,False,,2026-11-08
-Union SG,Anouar Ait El Hadj,1073471,midfielders,"CAM,LW,RW,ST",Attacking Midfield,MF,24,2002-04-20,10.0,BEL,False,,2026-11-08
-Union SG,Guilherme Smith,1307981,midfielders,"LWB,LM,LW,CAM",Left-Back,MF,23,2003-06-11,11.0,BRA,False,,2026-11-08
-Union SG,Ivan Pavlić,1231676,midfielders,CM,Central Midfield,MF,24,2001-11-10,14.0,BEL,False,,2026-11-08
-Union SG,Rob Schoofs,215415,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,32,1994-03-23,17.0,BEL,False,,2026-11-08
-Union SG,Besfort Zeneli,1338361,midfielders,"CAM,CM,RW,LW,CDM,ST",Attacking Midfield,MF,23,2002-11-21,23.0,SWE,False,,2026-11-08
-Union SG,Ilan Hurtevent,1869291,midfielders,CAM,Attacking Midfield,MF,21,2005-05-25,25.0,BEL,False,,2026-11-08
-Union SG,Louis Patris,1178319,midfielders,"RWB,CAM,RM,LWB",Right-Back,MF,25,2001-06-07,27.0,BEL,False,,2026-11-08
-Union SG,Darius Olaru,817821,midfielders,"CAM,CM,LW,RW,CDM",Attacking Midfield,MF,28,1998-03-03,28.0,ROU,False,,2026-11-08
-Union SG,Mateo Biondic,1385813,attackers,"ST,RW,CAM",Centre-Forward,FW,23,2003-07-24,9.0,GER,True,Late November 2026,2026-11-08
-Union SG,Kevin Rodríguez,1421270,attackers,ST,Centre-Forward,FW,26,2000-03-04,13.0,ECU,False,,2026-11-08
-Union SG,Dylan Aquino,1499651,attackers,"LW,LM",Left Winger,FW,21,2005-06-04,20.0,ARG,False,,2026-11-08
-Union SG,Raul Florucz,1506829,attackers,"ST,CAM,RW",Centre-Forward,FW,25,2001-06-10,30.0,AUT,False,,2026-11-08
-Union SG,Sekou Keita,1797601,attackers,ST,Centre-Forward,FW,20,2006-05-02,32.0,BEL,False,,2026-11-08
-Union SG,Relebohile Mofokeng,1471333,attackers,"CAM,LW,ST,RW",Attacking Midfield,FW,22,2004-10-23,38.0,RSA,False,,2026-11-08
-Union SG,Youssef Hamoutahar,1820536,attackers,LW,Left Winger,FW,20,2006-05-29,39.0,BEL,False,,2026-11-08
 Anderlecht,Timon Vanhoutte,1178644,keepers,GK,Goalkeeper,GK,22,2004-01-29,,BEL,False,,2026-11-08
 Anderlecht,Colin Coosemans,208699,keepers,GK,Goalkeeper,GK,34,1992-08-03,26.0,BEL,False,,2026-11-08
 Anderlecht,Justin Heekeren,1310438,keepers,GK,Goalkeeper,GK,25,2000-11-27,32.0,GER,False,,2026-11-08
