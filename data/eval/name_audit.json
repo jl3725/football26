@@ -922,11 +922,11 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 669,
+   "total": 671,
    "exact": 568,
    "rule": 10,
    "ambiguous": 1,
-   "orphan": 91,
+   "orphan": 93,
    "orphans": [
     {
      "squad": "Lecce",
@@ -942,6 +942,11 @@
      "squad": "Fiorentina",
      "name": "Joao Victor",
      "starts": 2
+    },
+    {
+     "squad": "Como",
+     "name": "Tasos Douvikas",
+     "starts": 1
     },
     {
      "squad": "Inter",
@@ -1047,26 +1052,16 @@
      "squad": "Juventus",
      "name": "Fabio Miretti",
      "starts": 0
-    },
-    {
-     "squad": "Venezia",
-     "name": "Lamine Dabo",
-     "starts": 0
     }
    ]
   },
   "espn_lineups_cups": {
    "total": 537,
-   "exact": 514,
+   "exact": 515,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 23,
+   "orphan": 22,
    "orphans": [
-    {
-     "squad": "Como",
-     "name": "Tasos Douvikas",
-     "starts": 3
-    },
     {
      "squad": "Parma",
      "name": "Alessandro Circati",
@@ -2847,8 +2842,8 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 375,
-   "exact": 343,
+   "total": 376,
+   "exact": 344,
    "rule": 1,
    "ambiguous": 0,
    "orphan": 31,
@@ -3115,8 +3110,8 @@
    ]
   },
   "espn_subs": {
-   "total": 290,
-   "exact": 290,
+   "total": 291,
+   "exact": 291,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -3140,8 +3135,8 @@
    "minutes": 0
   },
   "s365_ratings": {
-   "total": 293,
-   "exact": 202,
+   "total": 294,
+   "exact": 203,
    "rule": 12,
    "ambiguous": 0,
    "orphan": 0,
