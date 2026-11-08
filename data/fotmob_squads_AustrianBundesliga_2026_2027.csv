@@ -33,7 +33,7 @@ Salzburg,Nikolas Veratschnig,1336754,defenders,"RB,LM,LWB",Right-Back,DF,23,2003
 Salzburg,Tim Drexler,1562902,defenders,"CB,RB",Centre-Back,DF,21,2005-03-06,21,GER,False,,2026-11-08
 Salzburg,Stefan Lainer,195206,defenders,RB,Right-Back,DF,34,1992-08-27,22,AUT,False,,2026-11-08
 Salzburg,Dominik Schmid,844944,defenders,LB,Left-Back,DF,28,1998-03-10,31,SUI,True,Early January 2027,2026-11-08
-Salzburg,Leandro Morgalla,1290484,defenders,"RB,RWB",Right-Back,DF,22,2004-09-13,39,GER,False,,2026-11-08
+Salzburg,Leandro Morgalla,1290484,defenders,"RB,RWB",Right-Back,DF,22,2004-09-13,39,GER,True,Doubtful,2026-11-08
 Salzburg,Kévin Boma,1187644,defenders,CB,Centre-Back,DF,23,2002-11-20,44,TOG,True,About 1-2 weeks,2026-11-08
 Salzburg,Valentin Zabransky,1646944,defenders,CB,Centre-Back,DF,19,2007-02-02,47,AUT,False,,2026-11-08
 Salzburg,Anrie Chase,1477958,defenders,CB,Centre-Back,DF,22,2004-03-24,91,JPN,False,,2026-11-08
@@ -102,7 +102,7 @@ Sturm Graz,Luca Weinhandl,1698675,midfielders,"CDM,CM,CAM",Defensive Midfield,MF
 Sturm Graz,Julian Halwachs,1276632,midfielders,"CM,CDM",Central Midfield,MF,23,2003-01-25,40,AUT,False,,2026-11-08
 Sturm Graz,Jacob Hödl,1587610,midfielders,"RWB,RW,LW,LM,CM,RM,LWB,CAM",Right-Back,MF,19,2007-01-31,43,AUT,False,,2026-11-08
 Sturm Graz,Valmir Matoshi,1422124,midfielders,"LM,LW,CAM,CM,RW,CDM",Left Midfield,MF,23,2003-07-04,78,KVX,False,,2026-11-08
-Sturm Graz,Leon Grgić,1385272,attackers,ST,Centre-Forward,FW,20,2006-01-22,9,CRO,False,,2026-11-08
+Sturm Graz,Leon Grgić,1385272,attackers,ST,Centre-Forward,FW,20,2006-01-22,9,CRO,True,A few weeks,2026-11-08
 Sturm Graz,Axel Kayombo,1515630,attackers,"ST,LW",Centre-Forward,FW,20,2006-02-25,11,COD,False,,2026-11-08
 Sturm Graz,Oumar Diakité,1328540,attackers,ST,Centre-Forward,FW,22,2003-12-20,14,CIV,False,,2026-11-08
 Sturm Graz,Szymon Włodarczyk,1116778,attackers,ST,Centre-Forward,FW,23,2003-01-05,17,POL,False,,2026-11-08
@@ -193,7 +193,7 @@ WSG Tirol,Moritz Wels,1291593,midfielders,"CAM,LW,RW",Attacking Midfield,MF,22,2
 WSG Tirol,Simon Wieser,2119342,midfielders,,Central Midfield,MF,19,2007-08-12,38,AUT,False,,2026-11-08
 WSG Tirol,Quincy Butler,1167250,attackers,RM,Right Midfield,FW,25,2001-09-01,7,USA,True,Unknown,2026-11-08
 WSG Tirol,Nikolai Baden,861933,attackers,"CAM,ST,RW,LW",Attacking Midfield,FW,26,2000-05-18,8,DEN,False,,2026-11-08
-WSG Tirol,Thomas Sabitzer,814457,attackers,ST,Centre-Forward,FW,26,2000-10-12,10,AUT,True,Doubtful,2026-11-08
+WSG Tirol,Thomas Sabitzer,814457,attackers,ST,Centre-Forward,FW,26,2000-10-12,10,AUT,False,,2026-11-08
 WSG Tirol,Lukas Hinterseer,176831,attackers,ST,Centre-Forward,FW,35,1991-03-28,16,AUT,False,,2026-11-08
 WSG Tirol,Michael Olakigbe,1130797,attackers,"LW,CAM",Left Winger,FW,22,2004-04-06,17,NGA,False,,2026-11-08
 WSG Tirol,Husein Balić,658589,attackers,RW,Right Winger,FW,30,1996-02-15,18,AUT,False,,2026-11-08
@@ -260,7 +260,7 @@ Altach,Henrique Bell,2100439,defenders,,Centre-Back,DF,19,2007-07-10,4,BRA,False
 Altach,Rassa Rahmani,1315910,defenders,CB,Centre-Back,DF,26,1999-12-14,16,SWE,False,,2026-11-08
 Altach,Lukas Jäger,276153,defenders,"CB,CM",Centre-Back,DF,32,1994-02-12,17,AUT,False,,2026-11-08
 Altach,Jakob Brandtner,1663342,defenders,"LB,CB",Left-Back,DF,20,2006-03-02,21,AUT,False,,2026-11-08
-Altach,Benedikt Zech,176791,defenders,CB,Centre-Back,DF,36,1990-11-03,23,AUT,True,Doubtful,2026-11-08
+Altach,Benedikt Zech,176791,defenders,CB,Centre-Back,DF,36,1990-11-03,23,AUT,False,,2026-11-08
 Altach,Filip Milojević,1663202,defenders,"CB,CM",Centre-Back,DF,21,2005-02-09,27,AUT,False,,2026-11-08
 Altach,Vesel Demaku,919376,midfielders,"CM,CDM",Central Midfield,MF,26,2000-02-05,6,KVX,True,About 1-2 weeks,2026-11-08
 Altach,Denizcan Cosgun,1231905,midfielders,"CAM,CB,RM",Attacking Midfield,MF,24,2002-02-16,7,AUT,False,,2026-11-08
@@ -276,7 +276,7 @@ Altach,Benjamin Böckle,1185195,midfielders,"LM,LWB",Left Midfield,MF,24,2002-06
 Altach,Marko Raguž,765227,attackers,ST,Centre-Forward,FW,28,1998-06-10,9,AUT,True,Mid November 2026,2026-11-08
 Altach,Ousmane Diawara,1119118,attackers,ST,Centre-Forward,FW,27,1999-10-10,10,MLI,False,,2026-11-08
 Altach,Shingo Nakano,1652644,attackers,,Centre-Forward,FW,21,2004-12-26,11,JPN,False,,2026-11-08
-Altach,Patrick Greil,951250,attackers,"LW,CAM,CM",Left Winger,FW,30,1996-09-08,18,AUT,True,Doubtful,2026-11-08
+Altach,Patrick Greil,951250,attackers,"LW,CAM,CM",Left Winger,FW,30,1996-09-08,18,AUT,False,,2026-11-08
 Altach,Srdjan Hrstić,1290727,attackers,"ST,RW,LW",Centre-Forward,FW,23,2003-07-18,19,SRB,False,,2026-11-08
 Altach,Yann Massombo,1697790,attackers,"RW,CAM,CDM,ST,CM",Right Winger,FW,26,2000-02-12,28,FRA,False,,2026-11-08
 Altach,Nico Helbock,1708840,attackers,,Centre-Forward,FW,21,2005-07-03,35,AUT,False,,2026-11-08
@@ -288,15 +288,15 @@ Austria Wien,Mirko Kos,769953,keepers,GK,Goalkeeper,GK,29,1997-04-12,99,AUT,Fals
 Austria Wien,Wilhelm Vorsager,840983,defenders,"CB,CM",Centre-Back,DF,29,1997-06-29,2,AUT,False,,2026-11-08
 Austria Wien,Ibrahim Buhari,1262823,defenders,CB,Centre-Back,DF,25,2001-10-08,3,NGA,False,,2026-11-08
 Austria Wien,Aleksandar Dragović,128106,defenders,CB,Centre-Back,DF,35,1991-03-06,15,AUT,False,,2026-11-08
-Austria Wien,Philipp Wiesinger,459258,defenders,CB,Centre-Back,DF,32,1994-05-23,28,AUT,False,,2026-11-08
+Austria Wien,Philipp Wiesinger,459258,defenders,CB,Centre-Back,DF,32,1994-05-23,28,AUT,True,Doubtful,2026-11-08
 Austria Wien,Johannes Handl,951272,defenders,CB,Centre-Back,DF,28,1998-05-07,46,AUT,False,,2026-11-08
 Austria Wien,Valentino Müller,655692,midfielders,"CDM,CM",Defensive Midfield,MF,27,1999-01-19,5,AUT,False,,2026-11-08
 Austria Wien,Philipp Maybach,1670148,midfielders,"CDM,CM",Defensive Midfield,MF,18,2007-12-14,6,AUT,False,,2026-11-08
 Austria Wien,Vasilije Markovic,1838767,midfielders,"CDM,CAM",Defensive Midfield,MF,18,2008-05-12,7,AUT,False,,2026-11-08
 Austria Wien,Sanel Šaljić,1385055,midfielders,"CAM,LW,ST",Attacking Midfield,MF,20,2005-11-27,10,AUT,False,,2026-11-08
-Austria Wien,Kang-Hee Lee,1149438,midfielders,"CDM,CB",Defensive Midfield,MF,25,2001-08-24,16,KOR,False,,2026-11-08
+Austria Wien,Kang-Hee Lee,1149438,midfielders,"CDM,CB",Defensive Midfield,MF,25,2001-08-24,16,KOR,True,A few weeks,2026-11-08
 Austria Wien,Tae-Seok Lee,1107251,midfielders,"LWB,LM,LB",Left-Back,MF,24,2002-07-28,17,KOR,False,,2026-11-08
-Austria Wien,Julian Hettwer,1206523,midfielders,"CAM,LW",Attacking Midfield,MF,23,2003-06-15,20,GER,False,,2026-11-08
+Austria Wien,Julian Hettwer,1206523,midfielders,"CAM,LW",Attacking Midfield,MF,23,2003-06-15,20,GER,True,Doubtful,2026-11-08
 Austria Wien,Matteo Schablas,1515195,midfielders,"LB,LWB",Left-Back,MF,21,2005-03-14,21,AUT,False,,2026-11-08
 Austria Wien,Florian Wustinger,1213388,midfielders,"CDM,CM",Defensive Midfield,MF,23,2003-07-21,22,AUT,False,,2026-11-08
 Austria Wien,Reinhold Ranftl,447085,midfielders,"RWB,RM,CB,RB",Right-Back,MF,34,1992-01-24,26,AUT,False,,2026-11-08
