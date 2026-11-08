@@ -1,4 +1,28 @@
 squad,player,fotmob_id,group,positions,tm_position,pos,age,birth_date,shirt,ccode,injured,expected_return,fetched
+PSV,Matěj Kovár,1077903,keepers,GK,Goalkeeper,GK,26,2000-05-17,32.0,CZE,False,,2026-11-08
+PSV,Lutsharel Geertruida,881640,defenders,"CB,RB,CDM",Centre-Back,DF,26,2000-07-18,2.0,NED,False,,2026-11-08
+PSV,Yarek Gąsiorowski,1506480,defenders,CB,Centre-Back,DF,21,2005-01-12,3.0,ESP,False,,2026-11-08
+PSV,Armando Obispo,794244,defenders,CB,Centre-Back,DF,27,1999-03-05,4.0,CUW,False,,2026-11-08
+PSV,Ryan Flamingo,1386551,defenders,CB,Centre-Back,DF,23,2002-12-31,6.0,NED,False,,2026-11-08
+PSV,Sergiño Dest,892816,defenders,"RB,RW,RWB,LB,RM",Right-Back,DF,26,2000-11-03,8.0,USA,False,,2026-11-08
+PSV,Mauro Júnior,873556,defenders,"LB,CDM,CM,LWB",Left-Back,DF,27,1999-05-06,17.0,BRA,False,,2026-11-08
+PSV,Filip Kostić,281012,defenders,"LB,LWB,LW",Left-Back,DF,34,1992-11-01,18.0,SRB,False,,2026-11-08
+PSV,Jerdy Schouten,772104,defenders,"CB,CDM",Centre-Back,DF,29,1997-01-12,22.0,NED,True,Day to day,2026-11-08
+PSV,Kilian Sildillia,1124533,defenders,RB,Right-Back,DF,24,2002-05-16,25.0,FRA,False,,2026-11-08
+PSV,Adamo Nagalo,1237425,defenders,CB,Centre-Back,DF,24,2002-09-22,39.0,BFA,True,Out for season,2026-11-08
+PSV,Paul Wanner,1327149,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,20,2005-12-23,10.0,AUT,True,Day to day,2026-11-08
+PSV,Guus Til,774947,midfielders,"CAM,ST,CM,RW",Attacking Midfield,MF,28,1997-12-22,20.0,NED,False,,2026-11-08
+PSV,Sven Mijnans,1035643,midfielders,"CAM,CM,ST",Attacking Midfield,MF,26,2000-03-09,21.0,NED,False,,2026-11-08
+PSV,Kodai Sano,1337282,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,23,2003-09-25,24.0,JPN,False,,2026-11-08
+PSV,Shuryjano Cornecion,1874113,midfielders,"CAM,CDM,CM",Attacking Midfield,MF,18,2008-06-28,42.0,NED,False,,2026-11-08
+PSV,Ivan Perišić,163670,attackers,"LW,RW,LM,LB,LWB,CAM",Left Winger,FW,37,1989-02-02,5.0,CRO,False,,2026-11-08
+PSV,Ruben van Bommel,1359970,attackers,"LW,CAM",Left Winger,FW,22,2004-08-03,7.0,NED,False,,2026-11-08
+PSV,Ricardo Pepi,1036401,attackers,ST,Centre-Forward,FW,23,2003-01-09,9.0,USA,False,,2026-11-08
+PSV,Alassane Pléa,294859,attackers,ST,Centre-Forward,FW,33,1993-03-10,14.0,FRA,True,Early January 2027,2026-11-08
+PSV,Esmir Bajraktarević,1346860,attackers,"RW,RM,ST",Right Winger,FW,21,2005-03-10,19.0,BIH,False,,2026-11-08
+PSV,Dennis Man,805767,attackers,"RW,RM,ST",Right Winger,FW,28,1998-08-26,27.0,ROU,False,,2026-11-08
+PSV,Sam Lammers,665164,attackers,ST,Centre-Forward,FW,29,1997-04-30,29.0,NED,True,Day to day,2026-11-08
+PSV,Amir Bouhamdi,1834912,attackers,"LW,ST,CAM,LM",Left Winger,FW,18,2008-06-17,37.0,MAR,False,,2026-11-08
 Feyenoord,Tjark Ernst,1336731,keepers,GK,Goalkeeper,GK,23,2003-03-15,1.0,GER,False,,2026-11-08
 Feyenoord,Florian Kastenmeier,1032824,keepers,GK,Goalkeeper,GK,29,1997-06-28,33.0,GER,False,,2026-11-08
 Feyenoord,Mannou Berger,1529470,keepers,GK,Goalkeeper,GK,22,2004-10-15,37.0,NED,False,,2026-11-08
@@ -93,30 +117,33 @@ Twente,Lucas Vennegoor of Hesselink,1607488,attackers,ST,Centre-Forward,FW,20,20
 Twente,Sondre Ørjasæter,1353293,attackers,"LW,RW",Left Winger,FW,22,2003-11-28,27.0,NOR,False,,2026-11-08
 Twente,Nigel Groenewald,1900482,attackers,,Centre-Forward,FW,19,2007-02-01,36.0,NED,False,,2026-11-08
 Twente,Naci Ünüvar,1050856,attackers,"LW,CAM",Left Winger,FW,23,2003-06-13,37.0,NED,False,,2026-11-08
-PSV,Matěj Kovár,1077903,keepers,GK,Goalkeeper,GK,26,2000-05-17,32.0,CZE,False,,2026-11-08
-PSV,Lutsharel Geertruida,881640,defenders,"CB,RB,CDM",Centre-Back,DF,26,2000-07-18,2.0,NED,False,,2026-11-08
-PSV,Yarek Gąsiorowski,1506480,defenders,CB,Centre-Back,DF,21,2005-01-12,3.0,ESP,False,,2026-11-08
-PSV,Armando Obispo,794244,defenders,CB,Centre-Back,DF,27,1999-03-05,4.0,CUW,False,,2026-11-08
-PSV,Ryan Flamingo,1386551,defenders,CB,Centre-Back,DF,23,2002-12-31,6.0,NED,False,,2026-11-08
-PSV,Sergiño Dest,892816,defenders,"RB,RW,RWB,LB,RM",Right-Back,DF,26,2000-11-03,8.0,USA,False,,2026-11-08
-PSV,Mauro Júnior,873556,defenders,"LB,CDM,CM,LWB",Left-Back,DF,27,1999-05-06,17.0,BRA,False,,2026-11-08
-PSV,Filip Kostić,281012,defenders,"LB,LWB,LW",Left-Back,DF,34,1992-11-01,18.0,SRB,False,,2026-11-08
-PSV,Jerdy Schouten,772104,defenders,"CB,CDM",Centre-Back,DF,29,1997-01-12,22.0,NED,True,Day to day,2026-11-08
-PSV,Kilian Sildillia,1124533,defenders,RB,Right-Back,DF,24,2002-05-16,25.0,FRA,False,,2026-11-08
-PSV,Adamo Nagalo,1237425,defenders,CB,Centre-Back,DF,24,2002-09-22,39.0,BFA,True,Out for season,2026-11-08
-PSV,Paul Wanner,1327149,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,20,2005-12-23,10.0,AUT,True,Day to day,2026-11-08
-PSV,Guus Til,774947,midfielders,"CAM,ST,CM,RW",Attacking Midfield,MF,28,1997-12-22,20.0,NED,False,,2026-11-08
-PSV,Sven Mijnans,1035643,midfielders,"CAM,CM,ST",Attacking Midfield,MF,26,2000-03-09,21.0,NED,False,,2026-11-08
-PSV,Kodai Sano,1337282,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,23,2003-09-25,24.0,JPN,False,,2026-11-08
-PSV,Shuryjano Cornecion,1874113,midfielders,"CAM,CDM,CM",Attacking Midfield,MF,18,2008-06-28,42.0,NED,False,,2026-11-08
-PSV,Ivan Perišić,163670,attackers,"LW,RW,LM,LB,LWB,CAM",Left Winger,FW,37,1989-02-02,5.0,CRO,False,,2026-11-08
-PSV,Ruben van Bommel,1359970,attackers,"LW,CAM",Left Winger,FW,22,2004-08-03,7.0,NED,False,,2026-11-08
-PSV,Ricardo Pepi,1036401,attackers,ST,Centre-Forward,FW,23,2003-01-09,9.0,USA,False,,2026-11-08
-PSV,Alassane Pléa,294859,attackers,ST,Centre-Forward,FW,33,1993-03-10,14.0,FRA,True,Early January 2027,2026-11-08
-PSV,Esmir Bajraktarević,1346860,attackers,"RW,RM,ST",Right Winger,FW,21,2005-03-10,19.0,BIH,False,,2026-11-08
-PSV,Dennis Man,805767,attackers,"RW,RM,ST",Right Winger,FW,28,1998-08-26,27.0,ROU,False,,2026-11-08
-PSV,Sam Lammers,665164,attackers,ST,Centre-Forward,FW,29,1997-04-30,29.0,NED,True,Day to day,2026-11-08
-PSV,Amir Bouhamdi,1834912,attackers,"LW,ST,CAM,LM",Left Winger,FW,18,2008-06-17,37.0,MAR,False,,2026-11-08
+AZ Alkmaar,Rome Owusu-Oduro,1321124,keepers,GK,Goalkeeper,GK,22,2004-07-02,1.0,NED,False,,2026-11-08
+AZ Alkmaar,Hobie Verhulst,212521,keepers,GK,Goalkeeper,GK,33,1993-04-02,12.0,NED,False,,2026-11-08
+AZ Alkmaar,Jari De Busser,824747,keepers,GK,Goalkeeper,GK,27,1999-10-21,28.0,BEL,False,,2026-11-08
+AZ Alkmaar,Jeroen Zoet,150236,keepers,GK,Goalkeeper,GK,35,1991-01-06,41.0,NED,True,Mid November 2026,2026-11-08
+AZ Alkmaar,Jur Schipper,1451503,keepers,GK,Goalkeeper,GK,20,2006-07-11,71.0,NED,False,,2026-11-08
+AZ Alkmaar,Seiya Maikuma,1134723,defenders,RB,Right-Back,DF,29,1997-10-16,2.0,JPN,False,,2026-11-08
+AZ Alkmaar,Wouter Goes,1307387,defenders,CB,Centre-Back,DF,22,2004-06-10,3.0,NED,False,,2026-11-08
+AZ Alkmaar,Lewis Schouten,1329774,defenders,"CB,CM,CDM",Centre-Back,DF,22,2004-02-04,4.0,NED,False,,2026-11-08
+AZ Alkmaar,Mateo Chávez,1432212,defenders,"LB,LWB,LM",Left-Back,DF,22,2004-05-12,5.0,MEX,False,,2026-11-08
+AZ Alkmaar,Elijah Dijkstra,1466557,defenders,"RB,LB",Right-Back,DF,20,2006-08-05,22.0,NED,False,,2026-11-08
+AZ Alkmaar,Wesley Hoedt,465628,defenders,CB,Centre-Back,DF,32,1994-03-06,29.0,NED,False,,2026-11-08
+AZ Alkmaar,Denso Kasius,1114874,defenders,RB,Right-Back,DF,24,2002-10-06,30.0,NED,False,,2026-11-08
+AZ Alkmaar,Mees de Wit,873560,defenders,"LB,RB",Left-Back,DF,28,1998-04-17,34.0,NED,False,,2026-11-08
+AZ Alkmaar,Peer Koopmeiners,915415,midfielders,"CDM,CM",Defensive Midfield,MF,26,2000-05-04,6.0,NED,False,,2026-11-08
+AZ Alkmaar,Jordy Clasie,209384,midfielders,"CDM,CM",Defensive Midfield,MF,35,1991-06-27,8.0,NED,False,,2026-11-08
+AZ Alkmaar,Kees Smit,1417581,midfielders,"CM,CDM,CAM",Central Midfield,MF,20,2006-01-20,10.0,NED,False,,2026-11-08
+AZ Alkmaar,Stije Resink,1206846,midfielders,"CDM,CM",Defensive Midfield,MF,23,2003-05-28,16.0,NED,True,Early January 2027,2026-11-08
+AZ Alkmaar,Valdemar Byskov,1332217,midfielders,"CAM,CDM,CM,RW,LM,LW",Attacking Midfield,MF,21,2005-01-25,17.0,DEN,False,,2026-11-08
+AZ Alkmaar,Dave Kwakman,1389199,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,22,2004-08-07,21.0,NED,False,,2026-11-08
+AZ Alkmaar,Rio Robbemond,1609509,midfielders,"CDM,CM,ST",Defensive Midfield,MF,21,2005-01-05,56.0,NED,False,,2026-11-08
+AZ Alkmaar,Weslley Pinto,1383534,attackers,RW,Right Winger,FW,23,2003-10-01,7.0,BRA,False,,2026-11-08
+AZ Alkmaar,Mexx Meerdink,1321125,attackers,ST,Centre-Forward,FW,23,2003-07-24,9.0,NED,False,,2026-11-08
+AZ Alkmaar,Ro-Zangelo Daal,1352213,attackers,"LW,LM",Left Winger,FW,22,2004-02-10,11.0,NED,False,,2026-11-08
+AZ Alkmaar,Calvin Stengs,800624,attackers,"RW,CAM",Right Winger,FW,27,1998-12-18,14.0,NED,False,,2026-11-08
+AZ Alkmaar,Jizz Hornkamp,905457,attackers,ST,Centre-Forward,FW,28,1998-03-07,19.0,NED,True,Day to day,2026-11-08
+AZ Alkmaar,Ayoub Oufkir,1656600,attackers,"RW,LW",Right Winger,FW,20,2006-01-04,24.0,MAR,False,,2026-11-08
+AZ Alkmaar,Wassim Bouziane,1574200,attackers,LW,Left Winger,FW,19,2006-12-22,27.0,NED,False,,2026-11-08
 Heerenveen,Bernt Klaverboer,1435849,keepers,GK,Goalkeeper,GK,21,2005-09-26,1.0,NED,False,,2026-11-08
 Heerenveen,Timo Schreuder,1888955,keepers,,Goalkeeper,GK,20,2006-09-25,30.0,NED,False,,2026-11-08
 Heerenveen,Andries Noppert,466852,keepers,GK,Goalkeeper,GK,32,1994-04-07,44.0,NED,False,,2026-11-08
@@ -148,33 +175,6 @@ Heerenveen,Lanroy Machine,1752228,attackers,ST,Centre-Forward,FW,21,2005-10-13,2
 Heerenveen,Jermaine Rijssel,1797586,attackers,,Centre-Forward,FW,21,2005-03-25,33.0,SUR,False,,2026-11-08
 Heerenveen,Clayton Bonevacia,1981085,attackers,,Centre-Forward,FW,20,2006-04-06,40.0,NED,False,,2026-11-08
 Heerenveen,Kirayno Schaken,1858582,attackers,,Centre-Forward,FW,18,2008-08-08,47.0,NED,False,,2026-11-08
-AZ Alkmaar,Rome Owusu-Oduro,1321124,keepers,GK,Goalkeeper,GK,22,2004-07-02,1.0,NED,False,,2026-11-08
-AZ Alkmaar,Hobie Verhulst,212521,keepers,GK,Goalkeeper,GK,33,1993-04-02,12.0,NED,False,,2026-11-08
-AZ Alkmaar,Jari De Busser,824747,keepers,GK,Goalkeeper,GK,27,1999-10-21,28.0,BEL,False,,2026-11-08
-AZ Alkmaar,Jeroen Zoet,150236,keepers,GK,Goalkeeper,GK,35,1991-01-06,41.0,NED,True,Mid November 2026,2026-11-08
-AZ Alkmaar,Jur Schipper,1451503,keepers,GK,Goalkeeper,GK,20,2006-07-11,71.0,NED,False,,2026-11-08
-AZ Alkmaar,Seiya Maikuma,1134723,defenders,RB,Right-Back,DF,29,1997-10-16,2.0,JPN,False,,2026-11-08
-AZ Alkmaar,Wouter Goes,1307387,defenders,CB,Centre-Back,DF,22,2004-06-10,3.0,NED,False,,2026-11-08
-AZ Alkmaar,Lewis Schouten,1329774,defenders,"CB,CM,CDM",Centre-Back,DF,22,2004-02-04,4.0,NED,False,,2026-11-08
-AZ Alkmaar,Mateo Chávez,1432212,defenders,"LB,LWB,LM",Left-Back,DF,22,2004-05-12,5.0,MEX,False,,2026-11-08
-AZ Alkmaar,Elijah Dijkstra,1466557,defenders,"RB,LB",Right-Back,DF,20,2006-08-05,22.0,NED,False,,2026-11-08
-AZ Alkmaar,Wesley Hoedt,465628,defenders,CB,Centre-Back,DF,32,1994-03-06,29.0,NED,False,,2026-11-08
-AZ Alkmaar,Denso Kasius,1114874,defenders,RB,Right-Back,DF,24,2002-10-06,30.0,NED,False,,2026-11-08
-AZ Alkmaar,Mees de Wit,873560,defenders,"LB,RB",Left-Back,DF,28,1998-04-17,34.0,NED,False,,2026-11-08
-AZ Alkmaar,Peer Koopmeiners,915415,midfielders,"CDM,CM",Defensive Midfield,MF,26,2000-05-04,6.0,NED,False,,2026-11-08
-AZ Alkmaar,Jordy Clasie,209384,midfielders,"CDM,CM",Defensive Midfield,MF,35,1991-06-27,8.0,NED,False,,2026-11-08
-AZ Alkmaar,Kees Smit,1417581,midfielders,"CM,CDM,CAM",Central Midfield,MF,20,2006-01-20,10.0,NED,False,,2026-11-08
-AZ Alkmaar,Stije Resink,1206846,midfielders,"CDM,CM",Defensive Midfield,MF,23,2003-05-28,16.0,NED,True,Early January 2027,2026-11-08
-AZ Alkmaar,Valdemar Byskov,1332217,midfielders,"CAM,CDM,CM,RW,LM,LW",Attacking Midfield,MF,21,2005-01-25,17.0,DEN,False,,2026-11-08
-AZ Alkmaar,Dave Kwakman,1389199,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,22,2004-08-07,21.0,NED,False,,2026-11-08
-AZ Alkmaar,Rio Robbemond,1609509,midfielders,"CDM,CM,ST",Defensive Midfield,MF,21,2005-01-05,56.0,NED,False,,2026-11-08
-AZ Alkmaar,Weslley Pinto,1383534,attackers,RW,Right Winger,FW,23,2003-10-01,7.0,BRA,False,,2026-11-08
-AZ Alkmaar,Mexx Meerdink,1321125,attackers,ST,Centre-Forward,FW,23,2003-07-24,9.0,NED,False,,2026-11-08
-AZ Alkmaar,Ro-Zangelo Daal,1352213,attackers,"LW,LM",Left Winger,FW,22,2004-02-10,11.0,NED,False,,2026-11-08
-AZ Alkmaar,Calvin Stengs,800624,attackers,"RW,CAM",Right Winger,FW,27,1998-12-18,14.0,NED,False,,2026-11-08
-AZ Alkmaar,Jizz Hornkamp,905457,attackers,ST,Centre-Forward,FW,28,1998-03-07,19.0,NED,True,Day to day,2026-11-08
-AZ Alkmaar,Ayoub Oufkir,1656600,attackers,"RW,LW",Right Winger,FW,20,2006-01-04,24.0,MAR,False,,2026-11-08
-AZ Alkmaar,Wassim Bouziane,1574200,attackers,LW,Left Winger,FW,19,2006-12-22,27.0,NED,False,,2026-11-08
 Fortuna Sittard,Luuk Koopmans,213802,keepers,GK,Goalkeeper,GK,32,1993-11-18,1.0,NED,False,,2026-11-08
 Fortuna Sittard,Mattijs Branderhorst,245395,keepers,GK,Goalkeeper,GK,32,1993-12-31,31.0,NED,False,,2026-11-08
 Fortuna Sittard,Kaylen Reitmaier,1518437,keepers,,Goalkeeper,GK,22,2004-04-05,33.0,GER,False,,2026-11-08

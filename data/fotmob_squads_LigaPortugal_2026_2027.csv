@@ -10,7 +10,7 @@ Porto,Zaidu Sanusi,1079056,defenders,LB,Left-Back,DF,29,1997-06-13,12.0,NGA,Fals
 Porto,Nehuén Pérez,902383,defenders,CB,Centre-Back,DF,26,2000-06-24,18.0,ARG,False,,2026-11-08
 Porto,Alberto Costa,1387439,defenders,RB,Right-Back,DF,23,2003-09-29,20.0,POR,False,,2026-11-08
 Porto,Dominik Prpić,1510854,defenders,CB,Centre-Back,DF,22,2004-05-19,21.0,CRO,False,,2026-11-08
-Porto,Souza,1636513,defenders,"LB,LWB",Left-Back,DF,20,2006-06-16,33.0,BRA,False,,2026-11-08
+Porto,Souza,1636513,defenders,LB,Left-Back,DF,20,2006-06-16,33.0,BRA,False,,2026-11-08
 Porto,Martim Fernandes,1404949,defenders,"RB,LB",Right-Back,DF,20,2006-01-18,52.0,POR,False,,2026-11-08
 Porto,Francisco Moura,919374,defenders,LB,Left-Back,DF,27,1999-08-16,74.0,POR,False,,2026-11-08
 Porto,Victor Froholdt,1436856,midfielders,"CM,CAM",Central Midfield,MF,20,2006-02-25,8.0,DEN,False,,2026-11-08
@@ -76,7 +76,7 @@ Sporting CP,Sotiris Alexandropoulos,1093025,midfielders,CDM,Defensive Midfield,M
 Sporting CP,Silas Andersen,1425101,midfielders,"CDM,CM",Defensive Midfield,MF,22,2004-06-13,4.0,DEN,False,,2026-11-08
 Sporting CP,Sergi Altimira,1310480,midfielders,"CDM,CM",Defensive Midfield,MF,25,2001-08-25,5.0,ESP,False,,2026-11-08
 Sporting CP,João Simões,1663855,midfielders,"CDM,CM",Defensive Midfield,MF,19,2007-01-06,8.0,POR,False,,2026-11-08
-Sporting CP,Nestory Irankunda,1327214,midfielders,"RM,LW,CAM,RW,ST",Right Midfield,MF,20,2006-02-09,19.0,AUS,False,,2026-11-08
+Sporting CP,Nestory Irankunda,1327214,midfielders,"RM,LW,LM,ST,CAM",Right Midfield,MF,20,2006-02-09,19.0,AUS,False,,2026-11-08
 Sporting CP,Pedro Lima,1459257,midfielders,"CM,CAM",Central Midfield,MF,23,2003-03-27,21.0,BRA,False,,2026-11-08
 Sporting CP,Eduardo Felicíssimo,1648470,midfielders,"CB,CM,CDM",Centre-Back,MF,19,2007-01-08,73.0,POR,False,,2026-11-08
 Sporting CP,Issa Doumbia,1339345,midfielders,"CM,CDM,LW,CAM",Central Midfield,MF,23,2003-10-16,77.0,ITA,False,,2026-11-08
@@ -348,7 +348,7 @@ Estrela,Atanas Chernev,1068297,defenders,CB,Centre-Back,DF,24,2002-03-25,79.0,BU
 Estrela,Rodrigo Dudok,1645707,midfielders,"RM,LM,CM",Right Midfield,MF,19,2007-07-23,,URU,False,,2026-11-08
 Estrela,Vuk Pavicevic,2187724,midfielders,,Central Midfield,MF,18,2008-02-22,,MNE,False,,2026-11-08
 Estrela,Kevin Höög Jansson,1072454,midfielders,"CDM,CM",Defensive Midfield,MF,26,2000-09-29,6.0,SWE,False,,2026-11-08
-Estrela,Robinho,1461827,midfielders,"CM,LW,CDM",Central Midfield,MF,24,2002-08-07,8.0,BRA,True,Early November 2026,2026-11-08
+Estrela,Robinho,1461827,midfielders,"CM,LW,CDM",Central Midfield,MF,24,2002-08-07,8.0,BRA,True,Day to day,2026-11-08
 Estrela,Lovro Zvonarek,1259680,midfielders,"CM,CAM",Central Midfield,MF,21,2005-05-08,14.0,CRO,False,,2026-11-08
 Estrela,Joan Jordán,574662,midfielders,CAM,Attacking Midfield,MF,32,1994-07-06,19.0,ESP,False,,2026-11-08
 Estrela,Tom Moustier,1356804,midfielders,"CM,CDM,CAM",Central Midfield,MF,24,2002-05-02,28.0,FRA,False,,2026-11-08
@@ -423,7 +423,7 @@ Vit. Guimarães,Miguel Nogueira,1793477,attackers,RW,Right Winger,FW,21,2005-02-
 Vit. Guimarães,Telmo Arcanjo,1165477,attackers,"RW,CAM,RM",Right Winger,FW,25,2001-06-21,18.0,CPV,False,,2026-11-08
 Vit. Guimarães,Victor Andersson,1388225,attackers,LW,Left Winger,FW,22,2004-10-22,19.0,SWE,False,,2026-11-08
 Vit. Guimarães,Alioune Ndoye,1190493,attackers,ST,Centre-Forward,FW,25,2001-10-05,24.0,SEN,False,,2026-11-08
-Vit. Guimarães,Patrick Ouotro,1435443,attackers,LW,Left Winger,FW,21,2005-09-13,29.0,CIV,False,,2026-11-08
+Vit. Guimarães,Patrick Ouotro,1435443,attackers,ST,Centre-Forward,FW,21,2005-09-13,29.0,CIV,False,,2026-11-08
 Marítimo,Goncalo Tabuaco,1285780,keepers,GK,Goalkeeper,GK,25,2001-03-11,1.0,POR,False,,2026-11-08
 Marítimo,Alfonso Pastor,1119163,keepers,GK,Goalkeeper,GK,26,2000-10-04,13.0,ESP,False,,2026-11-08
 Marítimo,Francisco Vieites,930288,keepers,GK,Goalkeeper,GK,27,1999-05-07,30.0,ESP,False,,2026-11-08
