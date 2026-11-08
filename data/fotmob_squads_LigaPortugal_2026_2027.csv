@@ -110,17 +110,17 @@ Santa Clara,Vasconcelos,1507906,midfielders,CAM,Attacking Midfield,MF,21,2005-02
 Santa Clara,Tiago Ribeiro,1331118,midfielders,"CM,CDM,CAM",Central Midfield,MF,24,2002-03-14,20.0,POR,False,,2026-11-08
 Santa Clara,Frederico Silva,1843166,midfielders,,Central Midfield,MF,20,2006-05-25,25.0,POR,False,,2026-11-08
 Santa Clara,Daniel Borges,1615930,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,23,2003-04-06,41.0,BRA,False,,2026-11-08
-Santa Clara,Seydou Fofana,2173070,midfielders,,Central Midfield,MF,19,2007-09-08,81.0,BFA,False,,2026-11-08
+Santa Clara,Seydou Fofana,2173070,midfielders,CM,Central Midfield,MF,19,2007-09-08,81.0,BFA,False,,2026-11-08
 Santa Clara,Luis Fernando,1570655,attackers,ST,Centre-Forward,FW,21,2005-04-12,7.0,BRA,False,,2026-11-08
 Santa Clara,Gonçalo Paciência,388514,attackers,ST,Centre-Forward,FW,32,1994-08-01,9.0,POR,False,,2026-11-08
 Santa Clara,Brenner,1525452,attackers,"LW,ST,RW",Left Winger,FW,24,2002-01-02,10.0,BRA,False,,2026-11-08
-Santa Clara,Welinton,1072255,attackers,"RW,LW,LM",Right Winger,FW,27,1999-06-30,11.0,BRA,False,,2026-11-08
+Santa Clara,Welinton,1072255,attackers,"LW,RW,LM",Left Winger,FW,27,1999-06-30,11.0,BRA,False,,2026-11-08
 Santa Clara,Afonso Duarte,1530312,attackers,LW,Left Winger,FW,21,2005-09-05,18.0,POR,False,,2026-11-08
 Santa Clara,Vitinho,1625789,attackers,LW,Left Winger,FW,22,2004-02-18,22.0,BRA,False,,2026-11-08
 Santa Clara,Vital Maia,1711999,attackers,,Centre-Forward,FW,19,2007-02-17,51.0,POR,False,,2026-11-08
 Santa Clara,Vinícius,1044194,attackers,"RW,LW,LM,ST",Right Winger,FW,27,1999-05-07,70.0,BRA,False,,2026-11-08
 Santa Clara,Léo Jacó,1801079,attackers,ST,Centre-Forward,FW,21,2005-04-06,73.0,BRA,False,,2026-11-08
-Santa Clara,Tiago Duarte,1589647,attackers,,Centre-Forward,FW,22,2004-05-01,80.0,POR,False,,2026-11-08
+Santa Clara,Tiago Duarte,1589647,attackers,LB,Left-Back,FW,22,2004-05-01,80.0,POR,False,,2026-11-08
 Santa Clara,Sorriso,1927888,attackers,RW,Right Winger,FW,20,2006-04-15,99.0,BRA,False,,2026-11-08
 Arouca,Jakub Vinarčík,1427016,keepers,GK,Goalkeeper,GK,21,2005-07-11,1.0,SVK,False,,2026-11-08
 Arouca,Ignacio de Arruabarrena,630168,keepers,GK,Goalkeeper,GK,29,1997-01-16,12.0,URU,False,,2026-11-08
@@ -191,7 +191,7 @@ Gil Vicente FC,Marvin Gilbert,1242634,defenders,CB,Centre-Back,DF,23,2003-02-20,
 Gil Vicente FC,Weverson,891744,defenders,LB,Left-Back,DF,26,2000-07-05,26.0,BRA,False,,2026-11-08
 Gil Vicente FC,Jonathan Buatu,201102,defenders,CB,Centre-Back,DF,33,1993-09-27,39.0,ANG,False,,2026-11-08
 Gil Vicente FC,David Moreira,1573564,defenders,"LB,CB",Left-Back,DF,22,2004-04-18,45.0,CPV,False,,2026-11-08
-Gil Vicente FC,Ricardo Esgaio,300918,defenders,"RB,LB",Right-Back,DF,33,1993-05-16,47.0,POR,False,,2026-11-08
+Gil Vicente FC,Ricardo Esgaio,300918,defenders,"RB,LB,CB",Right-Back,DF,33,1993-05-16,47.0,POR,False,,2026-11-08
 Gil Vicente FC,Arthur Tchaptchet,1603721,defenders,CB,Centre-Back,DF,20,2006-05-10,59.0,FRA,True,Day to day,2026-11-08
 Gil Vicente FC,Zé Carlos,1287747,midfielders,CDM,Defensive Midfield,MF,25,2001-10-30,6.0,POR,False,,2026-11-08
 Gil Vicente FC,Mohamed Bamba,1676895,midfielders,CDM,Defensive Midfield,MF,22,2004-10-08,8.0,CIV,True,Day to day,2026-11-08
@@ -328,11 +328,11 @@ Alverca,Zé Rafael,319796,midfielders,CM,Central Midfield,MF,33,1993-06-16,93.0,
 Alverca,Rodrigo Pereira,1752129,attackers,,Centre-Forward,FW,22,2004-09-19,,POR,False,,2026-11-08
 Alverca,André Vidigal,819916,attackers,LW,Left Winger,FW,28,1998-08-17,7.0,ANG,False,,2026-11-08
 Alverca,Vivaldo Semedo,1402324,attackers,ST,Centre-Forward,FW,21,2005-01-28,9.0,POR,False,,2026-11-08
-Alverca,Chiquinho,1127007,attackers,"LW,CAM,RW,RM",Left Winger,FW,26,2000-02-05,10.0,POR,False,,2026-11-08
+Alverca,Chiquinho,1127007,attackers,"LW,CAM,RW",Left Winger,FW,26,2000-02-05,10.0,POR,False,,2026-11-08
 Alverca,Cédric Nuozzi,1446701,attackers,LW,Left Winger,FW,20,2006-01-30,11.0,BEL,False,,2026-11-08
 Alverca,Samy Jr. Merheg,1612706,attackers,"ST,CAM",Centre-Forward,FW,19,2006-12-06,17.0,LIB,False,,2026-11-08
 Alverca,Dawda Camara,1305565,attackers,ST,Centre-Forward,FW,24,2002-11-04,19.0,MTN,False,,2026-11-08
-Alverca,Lucas Figueiredo,1130711,attackers,"RW,LW,CAM,LM",Right Winger,FW,25,2001-08-14,22.0,BRA,False,,2026-11-08
+Alverca,Lucas Figueiredo,1130711,attackers,"RW,LW,CAM",Right Winger,FW,25,2001-08-14,22.0,BRA,False,,2026-11-08
 Alverca,Matheus França,1316124,attackers,RW,Right Winger,FW,22,2004-04-01,26.0,BRA,False,,2026-11-08
 Estrela,David Grilo,1525145,keepers,GK,Goalkeeper,GK,30,1996-08-13,22.0,POR,False,,2026-11-08
 Estrela,Léo Linck,1210064,keepers,GK,Goalkeeper,GK,25,2001-03-03,24.0,BRA,False,,2026-11-08
@@ -396,12 +396,12 @@ Marítimo,Alfonso Pastor,1119163,keepers,GK,Goalkeeper,GK,26,2000-10-04,13.0,ESP
 Marítimo,Francisco Vieites,930288,keepers,GK,Goalkeeper,GK,27,1999-05-07,30.0,ESP,False,,2026-11-08
 Marítimo,Kimiss Zavala,1303454,keepers,,Goalkeeper,GK,22,2004-05-08,34.0,MOZ,False,,2026-11-08
 Marítimo,Tyler Keating,1665606,defenders,CB,Centre-Back,DF,21,2005-04-29,,USA,False,,2026-11-08
-Marítimo,Igor Julião,363485,defenders,RB,Right-Back,DF,32,1994-08-23,2.0,BRA,False,,2026-11-08
+Marítimo,Igor Julião,363485,defenders,"RB,RM",Right-Back,DF,32,1994-08-23,2.0,BRA,False,,2026-11-08
 Marítimo,Nathanael Ogbeta,950660,defenders,"LWB,LB",Left-Back,DF,25,2001-04-28,3.0,ENG,False,,2026-11-08
 Marítimo,Rafael Fernandes,1356327,defenders,CB,Centre-Back,DF,24,2002-06-28,4.0,POR,False,,2026-11-08
 Marítimo,Nilton Varela,1097853,defenders,LB,Left-Back,DF,25,2001-05-25,5.0,POR,False,,2026-11-08
 Marítimo,Gábor Szalai,1289171,defenders,CB,Centre-Back,DF,26,2000-06-09,22.0,HUN,False,,2026-11-08
-Marítimo,Paulo Henrique,522771,defenders,LB,Left-Back,DF,30,1996-10-23,23.0,POR,False,,2026-11-08
+Marítimo,Paulo Henrique,522771,defenders,"LB,LM",Left-Back,DF,30,1996-10-23,23.0,POR,False,,2026-11-08
 Marítimo,Romain Correia,955806,defenders,CB,Centre-Back,DF,27,1999-09-06,44.0,POR,False,,2026-11-08
 Marítimo,Rodrigo Andrade,1285510,midfielders,"CM,CDM,RB",Central Midfield,MF,24,2001-11-24,6.0,POR,False,,2026-11-08
 Marítimo,Maxime Dominguez,520450,midfielders,CAM,Attacking Midfield,MF,30,1996-02-01,8.0,SUI,False,,2026-11-08
@@ -420,7 +420,7 @@ Marítimo,Martín Tejón,1437469,attackers,"LW,RW,CM",Left Winger,FW,22,2004-04-
 Marítimo,Simo Bouzaidi,1238148,attackers,"RW,LW,RM",Right Winger,FW,26,1999-11-16,11.0,MAR,False,,2026-11-08
 Marítimo,Adrián Butzke,1102246,attackers,ST,Centre-Forward,FW,27,1999-03-30,17.0,ESP,False,,2026-11-08
 Marítimo,Francisco Gomes,1525110,attackers,"LW,RW",Left Winger,FW,22,2004-04-14,20.0,POR,False,,2026-11-08
-Marítimo,Samuel Bamba,1422964,attackers,"LW,ST",Left Winger,FW,22,2004-02-13,27.0,GER,False,,2026-11-08
+Marítimo,Samuel Bamba,1422964,attackers,ST,Centre-Forward,FW,22,2004-02-13,27.0,GER,False,,2026-11-08
 Marítimo,Bryan Limbombe,1067744,attackers,"RW,RM",Right Winger,FW,25,2001-05-14,35.0,BEL,False,,2026-11-08
 Marítimo,Maurice Boakye,1521007,attackers,ST,Centre-Forward,FW,22,2004-09-01,90.0,GER,False,,2026-11-08
 Casa Pia,Patrick Sequeira,1237856,keepers,GK,Goalkeeper,GK,27,1999-03-01,1.0,CRC,False,,2026-11-08
@@ -529,20 +529,20 @@ Estoril,Fletcher Lowe,1791789,keepers,GK,Goalkeeper,GK,19,2007-02-02,43.0,RSA,Fa
 Estoril,Ricard Sánchez,1098366,defenders,"RB,RM,LM",Right-Back,DF,26,2000-02-22,2.0,ESP,False,,2026-11-08
 Estoril,Fernando Medrano,1232793,defenders,"LB,LWB,LM",Left-Back,DF,26,2000-03-26,3.0,ESP,False,,2026-11-08
 Estoril,Ferro,722778,defenders,CB,Centre-Back,DF,29,1997-03-26,4.0,POR,False,,2026-11-08
-Estoril,Xavi Sintes,1418042,defenders,CB,Centre-Back,DF,25,2001-08-05,6.0,ESP,False,,2026-11-08
+Estoril,Antef Tsoungui,1089750,defenders,"CB,CDM,CM",Centre-Back,DF,23,2002-12-30,5.0,ENG,False,,2026-11-08
+Estoril,Xavi Sintes,1418042,defenders,"CB,CM",Centre-Back,DF,25,2001-08-05,6.0,ESP,False,,2026-11-08
 Estoril,Ismael Sierra,1433007,defenders,CB,Centre-Back,DF,23,2003-03-17,15.0,ESP,False,,2026-11-08
 Estoril,Tiago Parente,1636736,defenders,"LB,LM",Left-Back,DF,22,2004-01-14,19.0,POR,False,,2026-11-08
 Estoril,Roko Jurišić,1202918,defenders,"LB,CB,LWB",Left-Back,DF,25,2001-09-28,21.0,CRO,False,,2026-11-08
-Estoril,Pedro Carvalho,1525164,defenders,RB,Right-Back,DF,23,2003-02-14,22.0,POR,False,,2026-11-08
+Estoril,Pedro Carvalho,1525164,defenders,"RM,RB",Right Midfield,DF,23,2003-02-14,22.0,POR,False,,2026-11-08
 Estoril,Stélios Andreou,1110862,defenders,"CB,RB",Centre-Back,DF,24,2002-07-24,25.0,CYP,False,,2026-11-08
 Estoril,Samuel Amissah,1441892,defenders,CB,Centre-Back,DF,19,2007-03-07,35.0,ENG,False,,2026-11-08
 Estoril,Kazim,1934827,defenders,,Centre-Back,DF,21,2005-03-28,41.0,BRA,False,,2026-11-08
-Estoril,Jordan Arnolin,2129387,defenders,CM,Central Midfield,DF,18,2008-04-29,42.0,POR,False,,2026-11-08
 Estoril,Longin Bimai,1795442,defenders,,Centre-Back,DF,20,2006-02-17,57.0,FRA,False,,2026-11-08
-Estoril,Antef Tsoungui,1089750,midfielders,"CB,CDM,CM",Centre-Back,MF,23,2002-12-30,5.0,ENG,False,,2026-11-08
 Estoril,Xeka,470810,midfielders,"CM,CDM",Central Midfield,MF,31,1994-11-10,8.0,POR,False,,2026-11-08
 Estoril,Jordan Holsgrove,877568,midfielders,"CM,CDM",Central Midfield,MF,27,1999-09-10,10.0,SCO,False,,2026-11-08
-Estoril,João Carvalho,603808,midfielders,"CAM,LW,CM,LM",Attacking Midfield,MF,29,1997-03-09,12.0,POR,False,,2026-11-08
+Estoril,João Carvalho,603808,midfielders,"CAM,LM,CM,RW,LW",Attacking Midfield,MF,29,1997-03-09,12.0,POR,False,,2026-11-08
+Estoril,Jordan Arnolin,2129387,midfielders,CM,Central Midfield,MF,18,2008-04-29,42.0,POR,False,,2026-11-08
 Estoril,Milan Robin,1359270,midfielders,"CM,RW,CDM,CAM",Central Midfield,MF,26,1999-11-24,44.0,FRA,False,,2026-11-08
 Estoril,Luís Gomes,1368826,midfielders,CM,Central Midfield,MF,22,2004-04-24,80.0,POR,False,,2026-11-08
 Estoril,Tiago Brito,1459916,midfielders,"CM,CDM",Central Midfield,MF,22,2004-04-16,90.0,POR,False,,2026-11-08
