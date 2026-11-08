@@ -1500,8 +1500,8 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 560,
-   "exact": 495,
+   "total": 561,
+   "exact": 496,
    "rule": 18,
    "ambiguous": 2,
    "orphan": 47,
@@ -1514,7 +1514,7 @@
     {
      "squad": "Nacional",
      "name": "Song Min-Kyu",
-     "starts": 4
+     "starts": 5
     },
     {
      "squad": "Arouca",
@@ -1530,6 +1530,11 @@
      "squad": "Nacional",
      "name": "Matchoi Djoló",
      "starts": 2
+    },
+    {
+     "squad": "Santa Clara",
+     "name": "João Gonçalves",
+     "starts": 1
     },
     {
      "squad": "Arouca",
@@ -1607,11 +1612,6 @@
      "starts": 0
     },
     {
-     "squad": "Santa Clara",
-     "name": "João Gonçalves",
-     "starts": 0
-    },
-    {
      "squad": "Nacional",
      "name": "Martim Gustavo",
      "starts": 0
@@ -1683,8 +1683,8 @@
    ]
   },
   "espn_subs": {
-   "total": 413,
-   "exact": 404,
+   "total": 414,
+   "exact": 405,
    "rule": 6,
    "ambiguous": 0,
    "orphan": 3,
@@ -1715,8 +1715,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 303,
-   "exact": 303,
+   "total": 305,
+   "exact": 305,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1732,13 +1732,13 @@
    "minutes": 11
   },
   "s365_ratings": {
-   "total": 438,
-   "exact": 432,
+   "total": 440,
+   "exact": 434,
    "rule": 4,
    "ambiguous": 1,
    "orphan": 0,
    "orphans": [],
-   "minutes": 11
+   "minutes": 9
   }
  },
  "Eredivisie 2026_2027": {
@@ -2666,8 +2666,8 @@
    ]
   },
   "espn_subs": {
-   "total": 428,
-   "exact": 428,
+   "total": 429,
+   "exact": 429,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -3159,11 +3159,11 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 354,
-   "exact": 343,
+   "total": 356,
+   "exact": 344,
    "rule": 1,
    "ambiguous": 0,
-   "orphan": 10,
+   "orphan": 11,
    "orphans": [
     {
      "squad": "Lausanne",
@@ -3214,6 +3214,11 @@
      "squad": "Basel",
      "name": "Ibrahim Salah",
      "starts": 0
+    },
+    {
+     "squad": "Servette",
+     "name": "Damiel Mbimbo",
+     "starts": 0
     }
    ]
   },
@@ -3262,8 +3267,8 @@
    ]
   },
   "espn_subs": {
-   "total": 282,
-   "exact": 282,
+   "total": 283,
+   "exact": 283,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
