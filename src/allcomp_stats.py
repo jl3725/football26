@@ -411,6 +411,14 @@ def _put(key: tuple, val):
     return val
 
 
+def release_rows() -> int:
+    """경기별 원본 행 캐시를 놓는다(세부 지표 표를 다 만든 뒤 — 데우기 끝). 표·척도 캐시는 그대로. 놓은 수."""
+    ks = [k for k in _CACHE if k[0] in ("rows", "league")]
+    for k in ks:
+        _CACHE.pop(k, None)
+    return len(ks)
+
+
 def season_rows(read, season: str, version=None) -> pd.DataFrame:
     """read(table, league, season) → 8개 리그 경기별 기록을 합친 리그 밖 행(prep). version 이 같으면 캐시."""
     key = ("rows", season, version)

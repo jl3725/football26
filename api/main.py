@@ -8365,34 +8365,50 @@ def _warm_up() -> None:
         import time as _t
         t0 = _t.monotonic()
         live_sync.warming(True)            # 데우는 동안엔 DB 교체를 미룬다(겹치면 메모리가 넘쳐 재시작, 2026-11-03)
+        import gc  # noqa: PLC0415
+        import memtrim  # noqa: PLC0415
+
+        def settle():                      # 단계마다 잠깐 쓴 메모리 돌려주기 — MLS 추가 뒤 데우기 직후 500MB+(2026-11-09)
+            gc.collect()
+            memtrim.trim()
         try:
             _role_counts_all()                 # 포지션 프로필(전 리그 라인업 집계)
+            # 라이트 리그(챔피언십·MLS …)는 선수 표·평점 기준만 미리 — 스카우트 도구·세부 지표·신호는 첫 방문 때(2026-11-09
+            # MLS 추가 뒤 운영 데우기 직후 513MB > 한도 512MB). 방문 적은 리그의 공용 계산을 서버가 뜰 때마다 들고 있지 않게
+            from leagues import is_lite  # noqa: PLC0415
             for lg in ds.available_leagues():
                 _pf(lg)
                 _trend_base(lg)
-                _rec_pool(lg)
-                _players_lookup(lg)
-                _club_strength(lg)
+                if not is_lite(lg):
+                    _rec_pool(lg)
+                    _players_lookup(lg)
+                    _club_strength(lg)
+                settle()
             _prev_season()
             _hub_body()
             hub_pulse()              # 홈 결과 띠·주목할 매치·우승 경쟁(로컬 0.9초 → 운영 수 초라 미리)
             for lg in _hub_leagues():
                 league_lab(lg)       # 홈 LEAGUE FOCUS 분석 랩(13개 리그)
-            for lg in _LEAGUE_LEVEL:
+            settle()
+            for lg in [x for x in _LEAGUE_LEVEL if not is_lite(x)]:
                 _stat_frame(lg)      # 선수 화면 세부 지표(8개 리그 템플릿 백분위) — 빌드 캐시면 파일 읽기만
+            import allcomp_stats as _acs  # noqa: PLC0415
+            _acs.release_rows()      # 경기별 원본 행(이번 시즌 8MB)은 세부 지표 표를 만든 뒤 쓸 데가 없다
+            settle()
             _prev_lineup_pairs()     # NETWORK 전 소속 동료(빌드 캐시) · 이적설 연결(8개 리그) — 리그 첫 NETWORK 가 15초 걸렸다
             _rumor_links()
             # 팀 화면 첫 방문의 리그 단위 몫 — Inbox 신호(리그 전체 한 번), Recruit 후보 풀·리그별 부상 결장·대회 사용량
             # (운영 측정: 아무도 안 연 팀의 개요 11초·Recruit 16초 중 상당 부분이 이 공용 계산이었다, 2026-10-22)
             # 리크루트 풀(transfer_fit._pool, 전 리그 선수 표 사본 22MB)은 스카우트 도구를 처음 쓸 때 만든다 — 팬 동선엔 안 쓰이는데
             # 데우기 때 미리 들고 있어 운영 메모리가 한도(512MB)의 85~90%였다(2026-11-05 점검: 캐시 170MB 중 가장 큰 덩어리 셋 중 하나)
-            for lg in _LEAGUE_LEVEL:
+            for lg in [x for x in _LEAGUE_LEVEL if not is_lite(x)]:
                 _signals_league(lg)
                 _inj_missed_league(lg)
                 _comp_usage(lg)
                 for _s in (None, f"{SEASON_START - 1}_{SEASON_START}"):   # 리그 간 표(작다) — Recruit 첫 호출이 37번 읽었다
                     ds.read_table("standings", league=lg, season=_s)
                     ds.read_table("transfers", league=lg, season=_s)
+                settle()
             _sim_engine()            # 유사 선수 엔진(8개 리그 전원 준비 0.4초 — 선수 화면 첫 호출 몫)
             print(f"[warm-up] 완료 {_t.monotonic() - t0:.1f}s", flush=True)
         except Exception as e:  # noqa: BLE001 — 데우기는 실패해도 서비스엔 영향 없음

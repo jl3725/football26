@@ -58,7 +58,7 @@ def forget(tables) -> int:
 # DB 읽기 캐시 — API 요청 하나가 같은 테이블을 수십 번 읽었다(추천 1회에 read_table 40회, 무료 인스턴스
 # 에서 수 초). 키에 DB 수정 시각을 넣어 배포·재빌드 시 자동 무효화. 호출부가 고쳐 써도 안전하게 사본을 준다.
 _CACHE: "OrderedDict[tuple, pd.DataFrame]" = OrderedDict()
-_CACHE_MAX = 48
+_CACHE_MAX = 28            # 2026-11-09 MLS 추가 뒤 운영 513MB — 48 표(28MB) → 28
 _CACHE_LOCK = threading.Lock()
 
 
