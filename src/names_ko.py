@@ -10,6 +10,7 @@ Ask Scout 무료 모드(규칙 기반 라우터, src/scout_router.py)가 '사카
 from __future__ import annotations
 
 import json
+import re
 import sys
 import time
 from pathlib import Path
@@ -44,6 +45,35 @@ def langlinks_ko(titles: list[str]) -> dict[str, str]:
             if final in ko:
                 out[req] = ko[final]
         time.sleep(1.0)
+    return out
+
+
+def person_ko(title: str) -> str:
+    """한국어 문서 제목의 동명이인 구분 괄호를 뗀 이름 — '김민재 (1996년생 축구 선수)' → '김민재', '이재성 (1992년)' → '이재성'.
+    괄호째로 두면 '김민재 폼 어때' 같은 질문·검색과 안 맞고, 라우터가 마지막 낱말 '(1992년)'을 줄임 이름으로 썼다(2026-11-09).
+    같은 이름이 둘이면 쓰는 쪽(api names_ko · scout_router)이 이미 뺀다."""
+    return re.sub(r"\s*\([^)]*\)\s*$", "", str(title or "")).strip() or str(title or "")
+
+
+def player_titles_ko(names: list[str], born: dict[str, int] | None = None) -> dict[str, str]:
+    """{선수 이름: 한국어 제목}. 영어 문서가 동명이인 안내(또는 한국어 링크 없음)면 '이름 (footballer, born 생년)' →
+    '이름 (footballer)' 문서로 한 번 더. 2026-11-09 사용자 '김민재는 왜 안 나오나' — 'Kim Min-jae' 가 동명이인 안내 문서라
+    한글 이름이 비어 한글 검색·Ask Scout 에서 못 찾았다(이강인·이재성은 바로 선수 문서)."""
+    born = born or {}
+    out = langlinks_ko(names)
+    cand: dict[str, tuple[str, int]] = {}             # 후보 제목 → (선수 이름, 우선순위 — 생년 붙은 것 먼저)
+    for n in names:
+        if n in out:
+            continue
+        if born.get(n):
+            cand[f"{n} (footballer, born {born[n]})"] = (n, 0)
+        cand[f"{n} (footballer)"] = (n, 1)
+    best: dict[str, tuple[int, str]] = {}
+    for t, ko in langlinks_ko(list(cand)).items():
+        n, pri = cand[t]
+        if n not in best or pri < best[n][0]:
+            best[n] = (pri, ko)
+    out.update({n: ko for n, (_, ko) in best.items()})
     return out
 
 
@@ -160,17 +190,23 @@ def main() -> int:
         for a in dict.fromkeys(alts):
             rows.append({"kind": "club_alias", "league": club_league[c], "name": c, "ko": a})
     players = []
+    born: dict[str, int] = {}
     for lg in LEAGUES:
         p = data_path("players_full", lg)
         if p.exists():
-            d = pd.read_csv(p, usecols=["player", "squad", "minutes"])
-            for r in d[d["minutes"].fillna(0) > 0].itertuples():
+            d = pd.read_csv(p, usecols=lambda c: c in ("player", "squad", "minutes", "birth_date"))
+            d = d[d["minutes"].fillna(0) > 0]
+            for r in d.itertuples():
                 players.append((lg, str(r.squad), str(r.player)))
+            if "birth_date" in d.columns:
+                for pl, bd in zip(d["player"].astype(str), d["birth_date"].astype(str)):
+                    if bd[:4].isdigit():
+                        born.setdefault(pl, int(bd[:4]))
     names = sorted({pl for _, _, pl in players})
-    pk = langlinks_ko(names)
+    pk = player_titles_ko(names, born)
     for lg, sq, pl in players:
         if pl in pk:
-            rows.append({"kind": "player", "league": lg, "name": pl, "squad": sq, "ko": pk[pl]})
+            rows.append({"kind": "player", "league": lg, "name": pl, "squad": sq, "ko": person_ko(pk[pl])})
     if len(rows) < 100:
         print(f"[names-ko] {len(rows)}건 — 너무 적어 기존 파일 유지")
         return 1

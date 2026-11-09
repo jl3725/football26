@@ -30,6 +30,7 @@ DATA = ROOT / "data"
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from leagues import ACTIVE_LEAGUE, LEAGUES, data_path  # noqa: E402
 from fetch_transfermarkt import H, TEAM_TM, norm, parse_mv, season_clubs  # noqa: E402
+from short_name import swapped_order  # noqa: E402
 
 PLAYERS_FULL = data_path("players_full")
 PLAYERS_BASE = data_path("players")
@@ -224,6 +225,11 @@ def merge_contracts(player_path: Path, contracts: pd.DataFrame) -> int:
         (str(row["squad"]), str(row["norm_key"])): row
         for _, row in contracts.iterrows()
     }
+    # 성 위치가 반대인 표기('Kang-in Lee' ↔ 선수 표 'Lee Kang-in')도 같은 팀 안에서 — 정확한 이름이 먼저(2026-11-09)
+    for _, row in contracts.iterrows():
+        alt = swapped_order(row.get("player"))
+        if alt:
+            contract_map.setdefault((str(row["squad"]), norm(alt)), row)
 
     def same_text(current, incoming: str) -> bool:
         cur = "" if pd.isna(current) else str(current).strip()

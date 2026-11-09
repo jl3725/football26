@@ -22,6 +22,7 @@ from unidecode import unidecode
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from leagues import ACTIVE_LEAGUE, data_path  # noqa: E402
+from short_name import swapped_order  # noqa: E402
 
 _SS_COLS = ["ss_rating", "pass_pct", "long_ball_pct", "cross_acc_pct", "dribble_success_pct",
             "tackles_won_pct", "aerial_won_pct", "ground_duels_won_pct", "total_duels_won_pct",
@@ -123,6 +124,9 @@ def main() -> int:
     for _, s in ss.iterrows():
         vals = {**_vals(s), "_raw": s}
         full_map[_nf(s["squad"], s["player"])] = vals
+        alt = swapped_order(s["player"])            # 'Kang-in Lee' → 'Lee Kang-in'(선수 표 표기) — 정확한 이름이 먼저
+        if alt:
+            full_map.setdefault(_nf(s["squad"], alt), vals)
         lk = _lk(s["squad"], s["player"])
         if lk in last_map:
             last_dup.add(lk)
