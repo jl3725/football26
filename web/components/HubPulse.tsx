@@ -56,7 +56,7 @@ export function ResultsTicker({ results, onPick, comps }: { results: ResultMatch
         <button className={`tk5-team${hw ? " lose" : ""}`} disabled={!m.away.league} tabIndex={dup ? -1 : undefined} onClick={() => m.away.league && onPick(m.away.team, m.away.league)}>
           {m.away.team}<Crest s={m.away} size={18} />
         </button>
-        {m.upset && <span className="bdg warn">UPSET</span>}
+        {m.upset && <span className="bdg warn" title={m.upset}>SHOCK</span>}
       </span>
     );
   };

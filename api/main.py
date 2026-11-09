@@ -7556,7 +7556,7 @@ def league_lab(league: str):
         if league not in (m["home"].get("league"), m["away"].get("league")):
             continue
         m = _fx_enrich(m, src)
-        m["upset"] = mc.upset_note(m)
+        m["upset"] = mc.upset_note(m, _pre_probs().get(str(m.get("event_id"))))
         results.append(m)
     watch = []
     n_teams = 0 if st is None else len(st)
@@ -7580,6 +7580,122 @@ def league_lab(league: str):
 
 
 _REVIEW_CACHE: dict = {}
+
+
+@_memo(ttl=1800)
+def _pre_probs() -> dict:
+    """{event_id: {model|elo|fans: {h, d, a}}} — 경기 전에 기록한 예측(data/predictions_log.csv, scripts/log_predictions.py).
+    이변(SHOCK) 판정·리뷰 이변 줄이 쓴다(결과를 본 뒤 다시 계산한 값이 아니라 그때 남긴 값)."""
+    p = ds.DB_PATH.parent / "predictions_log.csv"
+    if not p.exists():
+        return {}
+    df = pd.read_csv(p, dtype={"event_id": str})
+    out: dict = {}
+    for r in df.to_dict("records"):
+        e = {}
+        for k in ("model", "elo", "fans"):
+            v = {s: r.get(f"{k}_{s}") for s in ("h", "d", "a")}
+            if all(x is not None and x == x for x in v.values()):
+                e[k] = {s: float(x) for s, x in v.items()}
+        if e:
+            out[str(r["event_id"])] = e
+    return out
+
+
+def _streak(results: list[str]) -> str:
+    """최근 결과(오래된 → 최근, 'W'·'D'·'L') → '3연승'·'4경기 무패'·'3연패'·'4경기 무승'(아니면 '')."""
+    def run(ok) -> int:
+        n = 0
+        for x in reversed(results):
+            if not ok(x):
+                break
+            n += 1
+        return n
+    w, l = run(lambda x: x == "W"), run(lambda x: x == "L")
+    unb, winless = run(lambda x: x in ("W", "D")), run(lambda x: x in ("D", "L"))
+    if w >= 3:
+        return f"{w}연승"
+    if l >= 3:
+        return f"{l}연패"
+    if unb >= 5:
+        return f"{unb}경기 무패"
+    if winless >= 4:
+        return f"{winless}경기 무승"
+    return ""
+
+
+def _review_ctx(event_id: str, date: str | None, home: str, away: str, lg_h: str | None, lg_a: str | None,
+                score: dict, state: str) -> dict:
+    """리뷰 맥락(우리 데이터) — 이변(경기 전 확률)·xG·평점 1위(FotMob 경기별)·연승/무승·리그 순위·주요 결장(최근 3일 경기만)."""
+    import match_center as mc  # noqa: PLC0415
+    ctx: dict = {}
+    if state != "post":
+        return ctx
+    try:
+        ctx["shock"] = mc.upset_note({"home": {"team": home, "goals": score.get("home")},
+                                      "away": {"team": away, "goals": score.get("away")}}, _pre_probs().get(str(event_id)))
+    except Exception:  # noqa: BLE001
+        pass
+    lgs = [x for x in dict.fromkeys((lg_h, lg_a)) if x]
+    try:
+        d0 = datetime.date.fromisoformat(str(date)[:10])
+    except (TypeError, ValueError):
+        return ctx
+    days = {(d0 + datetime.timedelta(days=k)).isoformat() for k in (-1, 0, 1)}
+    rows = []
+    for lg in lgs:
+        fm = ds.read_table("fotmob_match_ratings", league=lg)
+        if fm is None or fm.empty:
+            continue
+        sub = fm[fm["date"].astype(str).str[:10].isin(days) & fm["squad"].isin([home, away]) & fm["opponent"].isin([home, away])]
+        rows.append(sub)
+    fmr = pd.concat(rows).drop_duplicates(["squad", "player"]) if rows else pd.DataFrame()
+    if not fmr.empty and set(fmr["squad"]) == {home, away}:        # 두 팀 다 있어야(리그 밖 상대면 한쪽뿐)
+        xg = fmr.assign(x=pd.to_numeric(fmr["xg"], errors="coerce")).groupby("squad")["x"].sum(min_count=1)
+        if xg.notna().all():
+            ctx["xg"] = {"home": round(float(xg[home]), 2), "away": round(float(xg[away]), 2)}
+        rt = fmr.assign(r=pd.to_numeric(fmr["rating"], errors="coerce")).dropna(subset=["r"])
+        if not rt.empty:
+            b = rt.sort_values("r", ascending=False).iloc[0]
+            ctx["top"] = {"player": str(b["player"]), "team": str(b["squad"]), "rating": round(float(b["r"]), 1)}
+    src = _fx_sources()
+    form = {}
+    for side, team, lg in (("home", home, lg_h), ("away", away, lg_a)):
+        df = src["rows"].get(lg) if lg else None
+        if df is None or df.empty:
+            continue
+        t = df[(df["squad"] == team) & (df["status"] == "completed") & (df["date"].astype(str) <= str(date)[:10])]
+        st = _streak(list(t.sort_values("date")["result"].astype(str)))
+        if st:
+            rank = None
+            tbl = ds.read_table("standings", league=lg)
+            if tbl is not None and not tbl.empty:
+                hit = tbl[tbl["squad"] == team]
+                rank = int(hit["rank"].iloc[0]) if len(hit) else None
+            form[side] = {"streak": st, "rank": rank}
+    if form:
+        ctx["form"] = form
+    if (_today_kst() - d0).days <= 3:                                # 지금 결장 명단 = 그 경기 결장(최근 경기만)
+        absent = {}
+        for side, team, lg in (("home", home, lg_h), ("away", away, lg_a)):
+            if not lg:
+                continue
+            try:
+                inj = _injuries_table(lg)
+                f = _pf(lg)
+            except Exception:  # noqa: BLE001
+                continue
+            if inj is None or inj.empty or f is None:
+                continue
+            key = f[(f["squad"] == team) & (pd.to_numeric(f["minutes"], errors="coerce").fillna(0) >= 450)]
+            key = key.sort_values("_ovr", ascending=False).head(11)
+            out = set(inj[inj["squad"] == team]["player"].astype(str))
+            names = [str(p) for p in key["player"] if str(p) in out]
+            if names:
+                absent[side] = names
+        if absent:
+            ctx["absent"] = absent
+    return ctx
 
 
 @app.get("/api/review/{event_id}")
@@ -7653,12 +7769,19 @@ def match_review_api(event_id: str, comp: str = ""):
         _attach_model(m, before=m["date"])   # 그 경기 전 데이터만으로 다시 계산한 모델 예측(결과 누설 없음)
     except Exception:  # noqa: BLE001
         pass
-    rv = mrv.build(p, home, away, m.get("fans"), m.get("elo"), m.get("model"))
+    try:
+        ctx = _review_ctx(event_id, date, home, away, lg_h, lg_a, p.get("score") or {}, p.get("state"))
+    except Exception as e:  # noqa: BLE001 — 맥락이 없어도 리뷰는
+        print(f"[review] 맥락 실패 {type(e).__name__}: {str(e)[:80]}")
+        ctx = {}
+    rv = mrv.build(p, home, away, m.get("fans"), m.get("elo"), m.get("model"), ctx)
     logo = lambda t, side: tm.team_logo(t) or ((cps.get(side) or {}).get("team", {}).get("logo") or "")  # noqa: E731
     rv.update({"event_id": event_id, "comp": comp, "date": date,
                "home": {"team": home, "league": lg_h, "logo": logo(home, "home"), "color": tm.team_color(home)},
                "away": {"team": away, "league": lg_a, "logo": logo(away, "away"), "color": tm.team_color(away)}})
-    _REVIEW_CACHE[event_id] = (_t.time() + (86400 if p["state"] == "post" else 60), rv)
+    # 끝난 지 하루 안인데 xG(FotMob 경기별, 경기 20분 뒤)가 아직 없으면 1시간만 — 다음 요청에서 채워지게
+    fresh = p["state"] == "post" and not ctx.get("xg") and date and str(date)[:10] >= (_today_kst() - datetime.timedelta(days=1)).isoformat()
+    _REVIEW_CACHE[event_id] = (_t.time() + (3600 if fresh else 86400 if p["state"] == "post" else 60), rv)
     return _with_ai_report(rv)
 
 
@@ -7781,9 +7904,10 @@ def hub_pulse(days_back: int = 3, days: int = 7):
     leagues = _hub_leagues()
 
     results = []
+    pre = _pre_probs()
     for m in mc.results_from(src["rows"], today, days_back):
         m = _fx_enrich(m, src)
-        m["upset"] = mc.upset_note(m)
+        m["upset"] = mc.upset_note(m, pre.get(str(m.get("event_id"))))
         results.append(m)
     results.sort(key=lambda m: (m["date"], bool(m["upset"]), m["big"]), reverse=True)
 
@@ -7912,7 +8036,7 @@ def team_season(team: str, league: str = ACTIVE_LEAGUE):
         if team not in (m["home"]["team"], m["away"]["team"]):
             continue
         m = _fx_enrich(m, src)
-        m["upset"] = mc.upset_note(m)
+        m["upset"] = mc.upset_note(m, _pre_probs().get(str(m.get("event_id"))))
         recent.append(m)
         if len(recent) >= 5:
             break

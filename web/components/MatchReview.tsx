@@ -192,7 +192,7 @@ function RecapCard({ it }: { it: RecapItem }) {
       <div className="rc5-top">
         <span className={`bdg ${compTone(m.comp_code)}`}>{compLabel(m)}</span>
         <span className="rc5-when">{it.live ? liveLabel(it.live) : splitKst(m.kst).date}</span>
-        {up && <span className="bdg warn">UPSET</span>}
+        {up && <span className="bdg warn" title={up}>SHOCK</span>}
       </div>
       <div className="rc5-score">
         <span className={`rc5-t${a > h ? " lose" : ""}`}><Crest s={m.home} size={30} /><b>{m.home.team}</b></span>

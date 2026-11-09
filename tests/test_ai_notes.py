@@ -84,11 +84,17 @@ def test_match_facts_shape() -> None:
           "cards": [{"minute": "55'", "m": 55, "side": "home", "player": "X", "color": "yellow"}], "pens": [],
           "stats": [{"key": "possessionPct", "label": "점유율", "h": 26.2, "a": 73.8, "fmt": "pct"}],
           "star": {"player": "Noni Madueke", "side": "away", "goals": 1, "assists": 0},
-          "predictions": [{"source": "모델", "pick": "Arsenal 승", "p": 0.612, "hit": True}], "lines": ["결승골은 80'"]}
+          "predictions": [{"source": "모델", "pick": "Arsenal 승", "p": 0.612, "hit": True}], "lines": ["결승골은 80'"],
+          "context": {"xg": {"home": 0.4, "away": 1.6}, "form": {"away": {"streak": "3연승", "rank": 1}},
+                      "absent": {"home": ["Chris Wood"]}}}
     f = an.match_facts(rv, "리그")
     assert f["final_score"] == "Nottingham Forest 0-1 Arsenal" and f["half_time"] == "0-0"
     assert f["goals"][0]["team"] == "Arsenal" and f["yellow_cards"] == {"Nottingham Forest": 1, "Arsenal": 0}
-    assert f["pre_match_predictions"][0]["probability_pct"] == 61 and f["player_of_match"]["team"] == "Arsenal"
+    assert f["player_of_match"]["team"] == "Arsenal"
+    # 2026-11-09: 예측 적중 대신 경기 맥락 — 팀 이름으로
+    assert "pre_match_predictions" not in f and "shock" not in f and "top_rated" not in f
+    assert f["xg"] == {"Nottingham Forest": 0.4, "Arsenal": 1.6} and f["streaks"]["Arsenal"]["streak"] == "3연승"
+    assert f["absences"] == {"Nottingham Forest": ["Chris Wood"]}
 
 
 def test_news_brief_keeps_only_verified_lines(monkeypatch, tmp_path) -> None:

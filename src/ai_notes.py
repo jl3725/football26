@@ -108,6 +108,22 @@ def recent_matches(days: int = 3) -> list[dict]:
 _KIND = {"pen": "페널티킥", "og": "자책골", "header": "헤더"}
 
 
+def _match_context(ctx: dict, side: dict) -> dict:
+    """리뷰 맥락 → 요약 재료(팀 이름으로). 비어 있는 것은 넣지 않는다."""
+    out: dict = {}
+    if ctx.get("shock"):
+        out["shock"] = ctx["shock"]
+    if ctx.get("xg"):
+        out["xg"] = {side[s]: v for s, v in ctx["xg"].items()}
+    if ctx.get("top"):
+        out["top_rated"] = {**ctx["top"], "source": "FotMob"}
+    if ctx.get("form"):
+        out["streaks"] = {side[s]: v for s, v in ctx["form"].items()}
+    if ctx.get("absent"):
+        out["absences"] = {side[s]: v for s, v in ctx["absent"].items()}
+    return out
+
+
 def match_facts(rv: dict, comp_name: str = "") -> dict:
     """/api/review 결과 → 요약에 넘길 사실(필요한 것만, 원본 값 그대로)."""
     h, a = rv["home"]["team"], rv["away"]["team"]
@@ -129,21 +145,26 @@ def match_facts(rv: dict, comp_name: str = "") -> dict:
         "stats": {s["label"]: {h: s["h"], a: s["a"], "unit": "%" if s["fmt"] in ("pct", "ratio") else ""}
                   for s in rv.get("stats", [])},
         "player_of_match": rv.get("star") and {**rv["star"], "team": side[rv["star"]["side"]]},
-        "pre_match_predictions": [{"source": p["source"], "pick": p["pick"], "probability_pct": round(p["p"] * 100),
-                                   "hit": p["hit"]} for p in rv.get("predictions", [])],
+        # 경기 자체의 맥락(api _review_ctx) — 예측 적중 대신(2026-11-09 사용자)
+        **_match_context(rv.get("context") or {}, side),
         "venue": rv.get("venue") or None, "attendance": rv.get("attendance"),
         "notes": rv.get("lines", []),
     }
 
 
 MATCH_PROMPT = """아래 경기 데이터로 한국어 경기 리포트를 3~4문장, 한 문단으로 써라.
-- 순서: 결과와 의미 → 결정적 장면(득점·퇴장·페널티) → 경기 내용(기록 비교) → 경기 전 예측과의 대조. 날짜로 시작하지 마라.
+- 순서: 결과와 의미(shock 이 있으면 이변이었다는 사실) → 결정적 장면(득점·퇴장·페널티) → 경기 내용(xG·기록 비교) →
+  흐름(streaks 의 연승·연패·순위, absences 의 결장, top_rated 평점 1위). 날짜로 시작하지 마라.
 - 득점 시간은 데이터의 minute 표기 그대로(예: 80'). 전반·후반 몇 분으로 바꾸지 마라.
-- 순위·연승·시즌 기록·부상처럼 데이터에 없는 것은 쓰지 마라. notes 는 참고만 하고 그대로 베끼지 마라.
+- 순위·연승·결장·평점은 streaks·absences·top_rated 에 있는 것만, 시즌 기록처럼 데이터에 없는 것은 쓰지 마라.
+  팬 투표·모델 예측이 맞았는지는 쓰지 마라. notes 는 참고만 하고 그대로 베끼지 마라.
 - 비어 있는 항목(기록·예측이 없음)은 언급하지 마라 — '제공되지 않았다' 같은 문장 금지. 쓸 게 적으면 2문장도 된다.
 - 마크다운·목록·따옴표 없이 문장만, '~했다' 체.
 데이터:
 {facts}"""
+
+
+MATCH_V = 2   # 지시문 버전 — 2: 예측 적중 대신 이변·xG·흐름·결장(2026-11-09). 옛 버전 리포트는 다시 쓴다
 
 
 def run_match(days: int = 3, limit: int = 40) -> int:
@@ -151,7 +172,8 @@ def run_match(days: int = 3, limit: int = 40) -> int:
     store = _read("match")
     reports, fails = store.get("reports", {}), store.get("fails", {})
     recent = recent_matches(days)
-    todo = [m for m in recent if m["event_id"] not in reports and fails.get(m["event_id"], 0) < 2]
+    todo = [m for m in recent if (m["event_id"] not in reports or reports[m["event_id"]].get("v", 1) < MATCH_V)
+            and fails.get(m["event_id"], 0) < 2]
     made = 0
     for m in todo[:limit]:
         if llm.remaining() <= 0:
@@ -173,7 +195,7 @@ def run_match(days: int = 3, limit: int = 40) -> int:
             print(f"  - {facts['final_score']}: 검증 실패·생성 실패 — 저장 안 함")
             continue
         reports[m["event_id"]] = {"text": text, "date": m["date"], "home": facts["home"], "away": facts["away"],
-                                  "at": _now().isoformat(timespec="seconds"), "model": llm.last_model()}
+                                  "at": _now().isoformat(timespec="seconds"), "model": llm.last_model(), "v": MATCH_V}
         made += 1
         print(f"  + {facts['final_score']}")
     keep = (_kst_today() - dt.timedelta(days=30)).isoformat()

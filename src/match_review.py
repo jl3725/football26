@@ -138,9 +138,45 @@ def parse_fotmob(details: dict) -> dict:
             "venue": (info.get("Stadium") or {}).get("name", ""), "attendance": info.get("Attendance")}
 
 
+XG_EDGE = 0.4      # xG 차이가 이만큼은 돼야 '내용 우세'
+
+
+def _context_lines(lines: list[str], ctx: dict, name: dict, win: str | None, lose: str | None) -> list[str]:
+    """우리 데이터 맥락 줄 — 이변(맨 앞)·xG 흐름·평점 1위·연승/무승·주요 결장. 이름 바로 뒤 조사는 붙이지 않는다."""
+    out = list(lines)
+    if ctx.get("shock"):
+        out.insert(0, f"이변 — {ctx['shock']}")
+    xg = ctx.get("xg") or {}
+    if xg.get("home") is not None and xg.get("away") is not None:
+        xh, xa = float(xg["home"]), float(xg["away"])
+        lead = "home" if xh >= xa + XG_EDGE else "away" if xa >= xh + XG_EDGE else None
+        if lead is None:
+            word = "내용은 팽팽"
+        elif win and lead == win:
+            word = f"내용대로 {name[lead]} 우세"
+        else:
+            word = f"내용은 {name[lead]} 우세"
+        out.append(f"xG {xh:.1f}–{xa:.1f} · {word}")
+    top = ctx.get("top")
+    if top and top.get("rating"):
+        out.append(f"평점 1위 {top['player']}({top['team']}) {float(top['rating']):.1f} · FotMob")
+    for side in ("home", "away"):
+        f = (ctx.get("form") or {}).get(side) or {}
+        if f.get("streak"):
+            out.append(f"{name[side]} {f['streak']}" + (f" · 리그 {f['rank']}위" if f.get("rank") else ""))
+    for side in ("home", "away"):
+        miss = (ctx.get("absent") or {}).get(side) or []
+        if miss:
+            out.append(f"{name[side]} 결장 — {', '.join(miss[:3])}")
+    return out
+
+
 def build(p: dict, home: str, away: str, fans: dict | None = None, elo: dict | None = None,
-          model: dict | None = None) -> dict:
-    """사건·기록 → 화면용 리뷰(한국어 문장)."""
+          model: dict | None = None, ctx: dict | None = None) -> dict:
+    """사건·기록 → 화면용 리뷰(한국어 문장). ctx(우리 데이터 — api _review_ctx): shock(이변 한 줄)·xg{home, away}·
+    top{player, team, rating}·form{home|away: {streak, rank}}·absent{home|away: [이름]}.
+    2026-11-09 사용자 — 요약에 '모델·팬 투표 예측 적중/빗나감' 대신 경기 자체의 중요한 요소를. 예측 적중은 predictions 칸에만."""
+    ctx = ctx or {}
     hs, as_ = p["score"]["home"], p["score"]["away"]
     live = p["state"] == "in"
     name = {"home": home, "away": away}
@@ -254,15 +290,8 @@ def build(p: dict, home: str, away: str, fans: dict | None = None, elo: dict | N
         pick = max(("h", "d", "a"), key=lambda k: v.get(k) or 0)
         word = {"h": f"{home} 승", "d": "무승부", "a": f"{away} 승"}[pick]
         pred.append({"source": label, "pick": word, "p": round(float(v.get(pick) or 0), 3), "hit": (pick == outcome) and not live})
-    if pred and not live:
-        hits = [x["source"] for x in pred if x["hit"]]
-        miss = [x["source"] for x in pred if not x["hit"]]
-        bits = []
-        if hits:
-            bits.append(f"{'·'.join(hits)} 예측 적중")
-        if miss:
-            bits.append(f"{'·'.join(miss)} 빗나감")
-        lines.append(", ".join(bits) + ".")
+    if not live:
+        lines = _context_lines(lines, ctx, name, win, lose)
 
     # 스타 플레이어(데이터 기준) — 골 2 + 도움 1 + 승리 팀 1
     pts: dict[tuple, float] = {}
@@ -290,5 +319,5 @@ def build(p: dict, home: str, away: str, fans: dict | None = None, elo: dict | N
 
     return {"state": p["state"], "detail": p["detail"], "score": p["score"], "headline": head, "lines": lines,
             "goals": p["goals"], "cards": p["cards"], "pens": p["pens"], "stats": stats, "star": star,
-            "predictions": pred, "venue": p["venue"], "attendance": p["attendance"],
+            "predictions": pred, "venue": p["venue"], "attendance": p["attendance"], "context": ctx,
             "ht": ht if p["goals"] else None}

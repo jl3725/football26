@@ -291,12 +291,22 @@ def results_from(rows_by_league: dict, today: dt.date, days: int = 3) -> list[di
     return out
 
 
-def upset_note(m: dict) -> str:
-    """이변이면 한 줄 설명(아니면 빈 문자열) — 순위 8계단 이상 또는 팀 OVR 5 이상 낮은 쪽이 이김."""
+SHOCK_P = 0.25   # 이긴 쪽의 경기 전 이길 확률이 이보다 낮으면 이변(SHOCK)
+
+
+def upset_note(m: dict, pre: dict | None = None) -> str:
+    """이변이면 한 줄 설명(아니면 빈 문자열). pre = 경기 전 기록한 예측(data/predictions_log.csv — {model|elo: {h, d, a}}):
+    이긴 쪽의 경기 전 이길 확률(우리 모델, 없으면 Elo 기준)이 SHOCK_P 미만이면 이변. 2026-11-09 사용자 — 순위·전력 차이 규칙은
+    홈 이점·폼·결장을 못 보고 시즌 초 순위에 흔들렸다. 예측 기록이 없는 경기(리그 밖 팀 등)만 예전 규칙(순위 8계단·OVR 5)."""
     h, a = m["home"], m["away"]
     if h.get("goals") is None or a.get("goals") is None or h["goals"] == a["goals"]:
         return ""
+    side = "h" if h["goals"] > a["goals"] else "a"
     w, l = (h, a) if h["goals"] > a["goals"] else (a, h)
+    for key, label in (("model", "모델"), ("elo", "Elo 기준")):
+        p = ((pre or {}).get(key) or {}).get(side)
+        if p is not None and p == p:
+            return f"경기 전 이길 확률 {round(float(p) * 100)}%({label}) · {w.get('team', '')} 승" if float(p) < SHOCK_P else ""
     if w.get("rank") and l.get("rank") and w.get("league") and w.get("league") == l.get("league") and w["rank"] - l["rank"] >= 8:
         return f"{w['rank']}위가 {l['rank']}위를 꺾음"
     if w.get("ovr") and l.get("ovr") and l["ovr"] - w["ovr"] >= 5:
