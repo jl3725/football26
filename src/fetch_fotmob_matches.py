@@ -32,7 +32,7 @@ import time
 import pandas as pd
 
 from fetch_fotmob_ratings import FOTMOB_ID, _get
-from leagues import LEAGUES, SEASON_START, data_path
+from leagues import LEAGUES, SEASON_START, data_path, fm_season as _fm_season, season_window
 import team_names as tn  # noqa: F401 — 예전 호출부 호환
 from squads import to_ours
 import fotmob_lineups
@@ -228,8 +228,9 @@ def player_rows(match: dict, comp: str, sides: dict, j: dict | None = None) -> l
     return rows
 
 
-def _sides(leagues: list[str], season: str, fm_season: str | None, since: str) -> tuple[dict, list]:
-    """리그 일정 → ({FotMob 팀 id: (리그, 우리 팀 표기)}, [(경기, 대회 코드)])."""
+def _sides(leagues: list[str], season: str, y: int, prev: bool) -> tuple[dict, list]:
+    """리그 일정 → ({FotMob 팀 id: (리그, 우리 팀 표기)}, [(경기, 대회 코드)]). FotMob 시즌 이름·시작일은 리그마다
+    (달력 연도 리그 MLS 2026 = '2026'·1월부터, leagues.fm_season·season_window)."""
     sides: dict[str, tuple[str, str]] = {}
     jobs: list[tuple[dict, str]] = []
     for lg in leagues:
@@ -237,14 +238,24 @@ def _sides(leagues: list[str], season: str, fm_season: str | None, since: str) -
             ours = list(pd.read_csv(data_path("standings", lg, season))["squad"].astype(str))
         except (FileNotFoundError, KeyError):
             ours = []
-        for m in finished(FOTMOB_ID[lg], fm_season, since):
+        for m in finished(FOTMOB_ID[lg], _fm_season(lg, y) if prev else None, "" if prev else season_window(lg, y)[0]):
             for side in ("home", "away"):
                 t = m.get(side) or {}
                 if str(t.get("id")) not in sides:
                     sides[str(t.get("id"))] = (lg, to_ours(t.get("name"), lg, ours) or str(t.get("name")))
-            jobs.append((m, LEAGUE_CODE[lg]))
+            jobs.append((m, playoff_code(LEAGUE_CODE[lg], m)))
         time.sleep(0.5)
     return sides, jobs
+
+
+_KO_ROUND = ("round of", "final", "semi", "quarter", "play")
+
+
+def playoff_code(code: str, m: dict) -> str:
+    """리그 일정 속 토너먼트 경기(MLS 플레이오프 'Round of 16'·결승, 챔피언십 승격 PO) → 'usa.1.playoffs' — 리그 경기로 세면
+    시즌 평점·잠정 순위에 섞인다(2026-11-09). 숫자 라운드(정규·스플릿 라운드)는 그대로."""
+    rn = str(m.get("roundName") or "").lower()
+    return f"{code}.playoffs" if rn and not rn.isdigit() and any(w in rn for w in _KO_ROUND) else code
 
 
 def main() -> int:
@@ -262,7 +273,7 @@ def main() -> int:
     since = "" if prev else f"{SEASON_START}-07-01"
 
     # 1) 리그 일정 → FotMob 팀 id ↔ 우리 팀 표기(지난 시즌이면 지난 시즌 순위표 표기)
-    sides, jobs = _sides(leagues, season, fm_season, since)
+    sides, jobs = _sides(leagues, season, y, prev)
     if prev:
         jobs = []                                       # 지난 시즌 리그 경기는 시즌 평점·FBref 표로 충분
     # 2) 유럽·컵 — 우리 팀이 낀 경기만

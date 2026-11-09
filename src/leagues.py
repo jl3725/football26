@@ -70,6 +70,11 @@ class LeagueConfig:
     espn: str = ""           # ESPN 리그 코드(eng.2 …) — 일정·라인업·교체
     division: int = 1        # 그 나라 몇 부 리그 — 2부는 UEFA 협회 계수를 1부와 나눠 쓸 수 없어 리그 수준을 따로 낸다(league_level)
     s365_id: int = 0         # 365Scores 대회 id — 세 번째 평점 원천(src/fetch_365_ratings.py, 2026-11-05)
+    # 달력 연도 시즌(2~12월)의 마지막 해 — MLS 는 2026 시즌까지, 2027 2~5월 단축 시즌을 지나 2027-28 부터 7~5월(2025-11 리그 결정).
+    # 이 해까지는 시즌 토큰 'Y_Y+1' = 그 해 시즌(Y 년 1~12월), 마지막 해 토큰은 다음 해 6월까지(단축 시즌 포함). 0 = 늘 7~6월.
+    calendar_until: int = 0
+    # 대륙 연맹 — UEFA 밖(MLS = CONCACAF)은 UEFA 협회 계수가 없어 2부 리그처럼 '클럽 평균 시장가치 ↔ 리그 수준' 직선으로 수준을 낸다
+    confed: str = "UEFA"
 
 
 # 지원 리그의 소스 식별자와 기본 UI 메타.
@@ -160,12 +165,20 @@ LEAGUES: dict[str, LeagueConfig] = {
         lite=True, fotmob_id=69, espn="sui.1",
         s365_id=95,
     ),
+    # 2026-11-09 사용자 '손흥민 같은 선수도 보고 싶다' — 라이트 리그(FotMob·TM 클라우드). 동·서부 컨퍼런스 표 두 개 + 플레이오프.
+    "MLS": LeagueConfig(
+        key="MLS", name="Major League Soccer", country="United States",
+        fbref_id="", tm_id="MLS1", tm_slug="major-league-soccer", api_football_id=253,
+        default_team="Los Angeles FC", teams=30, games_per_team=34,
+        lite=True, fotmob_id=130, espn="usa.1",
+        s365_id=104, calendar_until=2026, confed="CONCACAF",
+    ),
 }
 
 @dataclass(frozen=True)
 class CandidateLeague:
     """아직 수집하지 않은 후보 리그 — 홈 리그 지도에 '준비 중'으로 보이고, 빅5 이적 실적(src/fetch_league_exports.py)만 미리 센다.
-    브라질·아르헨티나·MLS 는 달력 연도 시즌이라 시즌 처리를 바꾼 뒤에 LEAGUES 로 옮긴다."""
+    브라질·아르헨티나는 달력 연도 시즌 — MLS 처럼 calendar_until 로 옮길 수 있다(MLS 는 2026-11-09 LEAGUES 로)."""
     key: str
     name: str
     country: str
@@ -176,7 +189,6 @@ class CandidateLeague:
 CANDIDATE_LEAGUES: dict[str, CandidateLeague] = {
     "Brazil": CandidateLeague("Brazil", "Brasileirão", "Brazil", "BRA1", "campeonato-brasileiro-serie-a"),
     "Argentina": CandidateLeague("Argentina", "Liga Profesional", "Argentina", "ARG1", "torneo-apertura"),
-    "MLS": CandidateLeague("MLS", "MLS", "United States", "MLS1", "major-league-soccer"),
 }
 
 # 풀 리그(로컬 주간 빌드·FBref·Understat·Sofascore 가 있는 리그)와 라이트 리그.
@@ -191,6 +203,49 @@ LEAGUE_CODES: frozenset[str] = frozenset(c.espn for c in LEAGUES.values() if c.e
 
 def is_league_code(code) -> bool:
     return str(code or "") in LEAGUE_CODES
+
+
+def is_calendar(league: str | None, start_year: int | None = None) -> bool:
+    """그 시즌 토큰이 달력 연도 시즌(MLS 2026 = 2~12월)인가."""
+    c = LEAGUES.get(str(league or ""))
+    y = SEASON_START if start_year is None else int(start_year)
+    return bool(c and c.calendar_until and y <= c.calendar_until)
+
+
+def season_window(league: str | None = None, start_year: int | None = None) -> tuple[str, str]:
+    """시즌 토큰('Y_Y+1')의 날짜 범위(포함). 보통 Y-07-01 ~ Y+1-06-30. 달력 연도 리그는 Y-01-01 ~ Y-12-31,
+    마지막 달력 시즌(MLS 2026)은 다음 해 6월까지 — 7~5월로 바뀌기 전 단축 시즌(2027 2~5월)도 같은 토큰에."""
+    y = SEASON_START if start_year is None else int(start_year)
+    if is_calendar(league, y):
+        last = LEAGUES[str(league)].calendar_until
+        return f"{y}-01-01", (f"{y + 1}-06-30" if y == last else f"{y}-12-31")
+    return f"{y}-07-01", f"{y + 1}-06-30"
+
+
+def fm_season(league: str | None, start_year: int) -> str:
+    """FotMob 시즌 이름 — '2026/2027', 달력 연도 리그는 '2026'."""
+    return str(start_year) if is_calendar(league, start_year) else f"{start_year}/{start_year + 1}"
+
+
+def tm_season(league: str | None, start_year: int) -> int:
+    """Transfermarkt saison_id — 보통 시작 연도, 달력 연도 리그는 한 해 앞(MLS 2026 시즌 = saison_id 2025, 2026 이면 0팀)."""
+    return int(start_year) - 1 if is_calendar(league, start_year) else int(start_year)
+
+
+def token_of_fm_season(league: str | None, name) -> str | None:
+    """FotMob 시즌 이름 → 파일 시즌 토큰. '2026/2027' → '2026_2027'. 달력 연도 리그 '2026' → '2026_2027',
+    마지막 달력 시즌 다음 해(MLS 2027 단축 시즌) → 마지막 달력 시즌 토큰('2026_2027')."""
+    a, _, b = str(name or "").partition("/")
+    if a.isdigit() and b.isdigit():
+        return f"{a}_{b}"
+    c = LEAGUES.get(str(league or ""))
+    if a.isdigit() and not b and c and c.calendar_until:
+        y = int(a)
+        if y <= c.calendar_until:
+            return f"{y}_{y + 1}"
+        if y == c.calendar_until + 1:
+            return f"{c.calendar_until}_{c.calendar_until + 1}"
+    return None
 
 
 def is_lite(league: str | None) -> bool:

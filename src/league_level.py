@@ -24,8 +24,10 @@ LEAGUE_COUNTRY = {"EPL": "England", "LaLiga": "Spain", "SerieA": "Italy",
                   "BelgianProLeague": "Belgium"}
 try:                                             # 라이트 리그 1부(쉬페르리그·오스트리아·덴마크·스위스) — 나라 이름은 UEFA 표 표기
     from leagues import LEAGUES as _LG
-    LEAGUE_COUNTRY.update({k: c.country for k, c in _LG.items() if c.division == 1 and k not in LEAGUE_COUNTRY})
-    _SECOND = [k for k, c in _LG.items() if c.division >= 2]
+    LEAGUE_COUNTRY.update({k: c.country for k, c in _LG.items()
+                           if c.division == 1 and c.confed == "UEFA" and k not in LEAGUE_COUNTRY})
+    # 시장가치 직선으로 수준을 내는 리그 — 2부 + UEFA 밖 1부(MLS, 2026-11-09: 협회 계수가 없다)
+    _SECOND = [k for k, c in _LG.items() if c.division >= 2 or c.confed != "UEFA"]
 except ImportError:
     _SECOND = []
 _FALLBACK = {"EPL": 100.0, "LaLiga": 98.0, "SerieA": 96.0, "Bundesliga": 96.0, "Ligue1": 93.0}

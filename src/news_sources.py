@@ -41,6 +41,7 @@ LOCALE = {
     "Austria": ("de", "AT", "AT:de", "Fußball"),
     "Denmark": ("da", "DK", "DK:da", "fodbold"),
     "Switzerland": ("de", "CH", "CH:de", "Fussball"),
+    "United States": ("en-US", "US", "US:en", "soccer"),      # MLS(2026-11-09)
 }
 EN = LOCALE["England"]
 # 두 언어 언론이 나뉜 나라 — 현지 검색을 언어마다(벨기에 프랑스어권 Standard·Charleroi 는 네덜란드어 검색에 거의 안 나온다)

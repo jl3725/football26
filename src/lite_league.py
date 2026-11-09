@@ -31,7 +31,7 @@ from pathlib import Path
 import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from leagues import LEAGUES, LITE_LEAGUES, SEASON, SEASON_START, data_path  # noqa: E402
+from leagues import LEAGUES, LITE_LEAGUES, SEASON, SEASON_START, data_path, fm_season, season_window  # noqa: E402
 
 LOGO = "https://images.fotmob.com/image_resources/logo/teamlogo/{}.png"
 PHOTO = "https://images.fotmob.com/image_resources/playerimages/{}.png"
@@ -59,7 +59,38 @@ def _tables(d: dict) -> list[list[dict]]:
     return out
 
 
+def _conferences(d: dict) -> tuple[list[dict], dict[str, str]] | None:
+    """같은 단계의 그룹(컨퍼런스) 표 + 그걸 다 품는 전체 표 → (전체 표, {팀 id: 그룹 이름}). MLS: 동·서부 + 서포터즈 실드 30팀.
+    스플릿(오스트리아 — 그룹 표가 전체 표보다 경기를 더 치름)이면 None(그룹 표가 최종 순서)."""
+    for t in d.get("table") or []:
+        subs = [(str(sub.get("leagueName") or ""), (sub.get("table") or {}).get("all") or [])
+                for sub in ((t.get("data") or {}).get("tables") or [])]
+        subs = [(n, g) for n, g in subs if g]
+        if len(subs) < 3:
+            continue
+        big = max(subs, key=lambda x: len(x[1]))
+        groups = [x for x in subs if x is not big]
+        ids = {r.get("id") for _, g in groups for r in g}
+        if ids != {r.get("id") for r in big[1]}:
+            continue
+        played = {r.get("id"): r.get("played") for r in big[1]}
+        if all(played.get(r.get("id")) == r.get("played") for _, g in groups for r in g):
+            return big[1], {r.get("id"): n for n, g in groups for r in g}
+    return None
+
+
 def standings_rows(d: dict) -> list[dict]:
+    conf = _conferences(d)
+    if conf:                                   # 컨퍼런스 리그(MLS) — 순위 = 전체 표, 컨퍼런스는 group 칸(2026-11-09)
+        big, group = conf
+        rows = []
+        for x in sorted(big, key=lambda r: r.get("idx") or 0):
+            gf, _, ga = str(x.get("scoresStr") or "0-0").partition("-")
+            rows.append({"rank": int(x.get("idx") or 0), "squad": x.get("name"), "played": x.get("played"),
+                         "won": x.get("wins"), "drawn": x.get("draws"), "lost": x.get("losses"),
+                         "gf": int(gf or 0), "ga": int(ga or 0), "gd": x.get("goalConDiff"), "points": x.get("pts"),
+                         "group": group.get(x.get("id"), ""), "_id": x.get("id")})
+        return rows
     rows, base = [], 0
     for tbl in _tables(d):
         for x in sorted(tbl, key=lambda r: r.get("idx") or 0):
@@ -254,6 +285,10 @@ def _code(league: str, tour: dict, known_cups: dict[int, str]) -> tuple[str, str
     if "friendl" in name.lower():
         return None
     if lid == LEAGUES[league].fotmob_id:
+        # MLS 플레이오프 — 같은 리그 id, 대회 이름만 'Major League Soccer Playoff'. 리그로 두면 잠정 순위 승점·리그 경기 수에
+        # 섞인다 → 리그 밖(컵 취급) 코드로(2026-11-09)
+        if "playoff" in str(tour.get("name") or "").lower():
+            return f"{LEAGUES[league].espn}.playoffs", "플레이오프"
         return LEAGUES[league].espn, "리그"
     if lid in EURO:
         return EURO[lid]
@@ -265,7 +300,7 @@ def _code(league: str, tour: dict, known_cups: dict[int, str]) -> tuple[str, str
 def schedule_rows(squad: str, payload: dict, league: str, ours_by_id: dict[str, str]) -> list[dict]:
     """팀 응답의 전 대회 일정 → schedule_full 행(이번 시즌·친선 제외)."""
     from fetch_fotmob_matches import CUPS  # noqa: PLC0415
-    lo, hi = f"{SEASON_START}-07-01", f"{SEASON_START + 1}-06-30"
+    lo, hi = season_window(league)                     # 달력 연도 리그(MLS 2026)는 1월부터
     rows = []
     fx = (((payload.get("fixtures") or {}).get("allFixtures") or {}).get("fixtures")) or []
     for m in fx:
@@ -328,13 +363,13 @@ def prev_standings(league: str, get) -> int:
     out = data_path("standings", league, prev)
     if out.exists():
         return 0
-    d = get(f"https://www.fotmob.com/api/data/leagues?id={LEAGUES[league].fotmob_id}&season={SEASON_START - 1}/{SEASON_START}") or {}
+    d = get(f"https://www.fotmob.com/api/data/leagues?id={LEAGUES[league].fotmob_id}&season={fm_season(league, SEASON_START - 1).replace('/', '%2F')}") or {}
     rows = standings_rows(d)
     if len(rows) < LEAGUES[league].teams - 4:
         return 0
     rename = adopt_names([r["squad"] for r in rows])
     st = pd.DataFrame([{**r, "squad": rename[r["squad"]]} for r in rows])
-    st[STAND_COLS].to_csv(out, index=False, encoding="utf-8", lineterminator="\n")
+    st[STAND_COLS + (["group"] if "group" in st.columns else [])].to_csv(out, index=False, encoding="utf-8", lineterminator="\n")
     return len(st)
 
 
@@ -352,7 +387,7 @@ def build(league: str, get=None) -> dict:
     for r in rows:
         r["squad"] = rename[r["squad"]]
     st = pd.DataFrame(rows)
-    st[STAND_COLS].to_csv(data_path("standings", league), index=False, encoding="utf-8", lineterminator="\n")
+    st[STAND_COLS + (["group"] if "group" in st.columns else [])].to_csv(data_path("standings", league), index=False, encoding="utf-8", lineterminator="\n")
     canon = list(st["squad"].astype(str))
     ids = {r["squad"]: int(r["_id"]) for r in rows}
 
@@ -393,7 +428,7 @@ def build(league: str, get=None) -> dict:
         teams[sq] = {**prev, "fotmob_id": tid, "logo": LOGO.format(tid), "color": colors.get(str(tid)) or prev.get("color")}
     espn = {}
     if cfg.espn:
-        events = scoreboard_events(cfg.espn, *season_bounds(SEASON_START)) or []
+        events = scoreboard_events(cfg.espn, *season_bounds(SEASON_START, league)) or []
         espn = align_espn(events, _fm_fixtures(d, rename), canon, league)
     # 원천 표기 → 우리 표기(squads.canonical_squad 가 읽는다 — FotMob·ESPN·TM 수집기의 to_ours 가 같은 답을 내게)
     aliases = {k: v for k, v in (old.get("aliases") or {}).items() if v in teams}

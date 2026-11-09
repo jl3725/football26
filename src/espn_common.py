@@ -176,9 +176,10 @@ def get_json(url: str, tries: int = 3, pause: float = 0.6) -> dict | None:
     return None
 
 
-def season_bounds(start_year: int) -> tuple[str, str]:
-    """시즌(7/1~6/30) 경계 — ISO 날짜 문자열 쌍."""
-    return f"{start_year}-07-01", f"{start_year + 1}-06-30"
+def season_bounds(start_year: int, league: str | None = None) -> tuple[str, str]:
+    """시즌(7/1~6/30) 경계 — ISO 날짜 문자열 쌍. league 를 주면 달력 연도 리그(MLS)는 그 리그 규칙(leagues.season_window)."""
+    from leagues import season_window  # noqa: PLC0415 — 달력 연도 리그(MLS 2026 = 1~12월)는 그 해
+    return season_window(league, start_year)
 
 
 _PERIOD_CACHE: dict[tuple[str, str], list[dict] | None] = {}
@@ -227,7 +228,7 @@ def league_members(league: str, start_year: int) -> set[str]:
     """
     code = LEAGUE_CODE[league][0]
     members: set[str] = set()
-    for e in scoreboard_events(code, *season_bounds(start_year)) or []:
+    for e in scoreboard_events(code, *season_bounds(start_year, league)) or []:
         for c in (e.get("competitions") or [{}])[0].get("competitors", []):
             sq = squad_of(c.get("team"), league)
             if sq:
@@ -240,7 +241,7 @@ def league_team_ids(league: str, start_year: int) -> dict[str, set[str]]:
     """{우리 squad: ESPN 팀 id 집합} — 그 시즌 리그 경기에 나온 팀의 실제 ESPN id."""
     code = LEAGUE_CODE[league][0]
     ids: dict[str, set[str]] = {}
-    for e in scoreboard_events(code, *season_bounds(start_year)) or []:
+    for e in scoreboard_events(code, *season_bounds(start_year, league)) or []:
         for c in (e.get("competitions") or [{}])[0].get("competitors", []):
             t = c.get("team") or {}
             sq = squad_of(t, league)

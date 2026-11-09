@@ -26,7 +26,7 @@ from pathlib import Path
 import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from leagues import LEAGUES, SEASON_START, data_path  # noqa: E402
+from leagues import LEAGUES, SEASON_START, data_path, season_window  # noqa: E402
 
 BASE = "https://webws.365scores.com"
 Q = "appTypeId=5&langId=1&timezoneName=UTC&userCountryId=1"
@@ -130,7 +130,7 @@ def run_league(league: str, max_new: int) -> int:
     cid = getattr(cfg, "s365_id", 0)
     if not cid:
         return 0
-    since = f"{SEASON_START}-07-01"
+    since = season_window(league)[0]                  # 달력 연도 리그(MLS 2026)는 1월부터
     try:
         ours = list(pd.read_csv(data_path("standings", league))["squad"].astype(str))
     except (FileNotFoundError, KeyError):
