@@ -14,9 +14,11 @@ $env:GIT_HTTP_LOW_SPEED_LIMIT = "1000"
 $env:GIT_HTTP_LOW_SPEED_TIME = "60"
 
 function Wait-Network([int]$Seconds = 600) {
-    $end = (Get-Date).AddSeconds($Seconds)
+    # 시계가 아니라 시도 횟수로 — 기다리는 사이 PC 가 다시 잠들면(11/09 19:16 시작 → 11/10 07:54 깨어남) 깨어난 뒤
+    # 마감 시각이 이미 지나 한 번도 안 해 보고 '네트워크 없음'으로 끝났다. 깨어난 뒤에도 남은 횟수만큼 다시 해 본다
+    $tries = [math]::Ceiling($Seconds / 15)
     $first = $true
-    while ((Get-Date) -lt $end) {
+    for ($i = 0; $i -lt $tries; $i++) {
         try {
             $c = New-Object System.Net.Sockets.TcpClient
             $ok = $c.ConnectAsync("github.com", 443).Wait(5000) -and $c.Connected

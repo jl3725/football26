@@ -23,9 +23,10 @@ function Finish([int]$code) {
     exit $code
 }
 
-# 깨어남·로그온 트리거로도 불린다 — 6일 안에 끝까지 돈 적 있으면 건너뜀(수요일을 놓친 주만 깨어날 때 따라잡기)
-if (Test-RecentRun "season-weekly" 144) {
-    Write-Host "[season-agent] 6일 안에 이미 빌드함 — 건너뜀"
+# 깨어남·로그온·잠금 해제 트리거로도 불린다 — 160시간(6.7일) 안에 끝까지 돈 적 있으면 건너뜀. 144시간이면 잠금 해제가 잦아
+# 화요일 오후에 하루 일찍 돌 수 있었다 → 수요일 아침 이후에만 따라잡기
+if (Test-RecentRun "season-weekly" 160) {
+    Write-Host "[season-agent] 160시간 안에 이미 빌드함 — 건너뜀"
     Finish 0
 }
 if (-not (Wait-Network)) { Finish 1 }

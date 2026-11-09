@@ -15,5 +15,13 @@ function Get-CatchUpTriggers {
     $wake.Delay = "PT3M"
     $logon = New-ScheduledTaskTrigger -AtLogOn -User "$env:USERDOMAIN\$env:USERNAME"
     $logon.Delay = "PT5M"
-    return @($wake, $logon)
+    # 잠금 해제 — 이 노트북은 대부분 Modern Standby(Kernel-Power 507)로 깨어나 위 1번 이벤트가 없다(11/10 07:53 깨어남에 안 돎).
+    # 사람이 다시 쓰기 시작하는 순간 = 네트워크도 붙어 있을 때(2026-11-10)
+    $ucls = Get-CimClass -ClassName MSFT_TaskSessionStateChangeTrigger -Namespace Root/Microsoft/Windows/TaskScheduler
+    $unlock = $ucls | New-CimInstance -ClientOnly
+    $unlock.Enabled = $true
+    $unlock.StateChange = 8                # TASK_SESSION_UNLOCK
+    $unlock.UserId = "$env:USERDOMAIN\$env:USERNAME"
+    $unlock.Delay = "PT2M"
+    return @($wake, $logon, $unlock)
 }
