@@ -33,6 +33,10 @@ DB = ROOT / "data" / "news.db"
 REF = ROOT / "data" / "news_db.ref.json"
 BRANCH = "data-news"
 NAME = "news.db.gz"
+# 압축 형식 — 'xz' 는 같은 DB 가 27% 작다(165MB → gz 63.9 · xz 46.4MB, 2026-11-10 측정). 읽는 쪽은 파일 앞 바이트로 형식을 가리고
+# ref 'file' 이름을 따르므로, 운영 서버가 이 코드로 배포된 뒤에 'xz' 로 바꾼다(먼저 바꾸면 옛 서버가 뉴스를 못 받는다)
+ARCHIVE = "gz"
+XZ_MAGIC = b"\xfd7zXZ\x00"
 VERCEL_SKIP = '{\n  "git": {"deploymentEnabled": false},\n  "ignoreCommand": "exit 0"\n}\n'   # 데이터 브랜치 — 웹 빌드 안 함
 MIN_RATIO = 0.8
 SOFT_BYTES = 60_000_000
@@ -74,6 +78,25 @@ def articles(path: Path) -> int:
         return 0
 
 
+def archive_name(ref: dict | None = None) -> str:
+    """보관소 파일 이름 — ref 'file'(news.db.gz | news.db.xz), 없으면 NAME."""
+    return str((ref if ref is not None else read_ref()).get("file") or NAME)
+
+
+def decompress(blob: bytes) -> bytes:
+    """xz·gzip 압축본 → DB 바이트(앞 바이트로 형식을 가린다)."""
+    import lzma  # noqa: PLC0415
+    return lzma.decompress(blob) if blob[:6] == XZ_MAGIC else gzip.decompress(blob)
+
+
+def open_archive(path: Path):
+    """압축본 파일 → 풀어 읽는 파일 객체(흘려 읽기 — 운영 512MB 서버가 메모리에 다 올리지 않게)."""
+    import lzma  # noqa: PLC0415
+    with path.open("rb") as fh:
+        head = fh.read(6)
+    return lzma.open(path, "rb") if head == XZ_MAGIC else gzip.open(path, "rb")
+
+
 def _install(gz_bytes: bytes, src: str) -> bool:
     """압축본을 풀어 검사(articles 표가 있고 비지 않음)한 뒤 data/news.db 로 바꿔 넣는다."""
     DB.parent.mkdir(parents=True, exist_ok=True)
@@ -81,7 +104,7 @@ def _install(gz_bytes: bytes, src: str) -> bool:
     os.close(fd)
     tmp_p = Path(tmp)
     try:
-        tmp_p.write_bytes(gzip.decompress(gz_bytes))
+        tmp_p.write_bytes(decompress(gz_bytes))
         n = articles(tmp_p)
         if n <= 0:
             print(f"[news-store] {src}: 기사 0건 — 버림")
@@ -89,7 +112,7 @@ def _install(gz_bytes: bytes, src: str) -> bool:
         os.replace(tmp_p, DB)
         print(f"[news-store] 받음 {src} — 기사 {n}건 · {DB.stat().st_size / 1e6:.1f}MB")
         return True
-    except (OSError, EOFError, gzip.BadGzipFile) as e:
+    except Exception as e:  # noqa: BLE001 — 깨진 압축본(BadGzipFile·LZMAError·EOFError)·디스크 오류
         print(f"[news-store] {src}: 풀기 실패 {type(e).__name__}")
         return False
     finally:
@@ -102,10 +125,11 @@ def pull(force: bool = False, strict: bool = False) -> bool:
         return True
     import requests  # noqa: PLC0415
     ref = read_ref()
+    name = archive_name(ref)
     urls = []
     if ref.get("sha"):
-        urls.append(f"https://raw.githubusercontent.com/{repo()}/{ref['sha']}/{NAME}")
-    urls.append(f"https://raw.githubusercontent.com/{repo()}/{BRANCH}/{NAME}")
+        urls.append(f"https://raw.githubusercontent.com/{repo()}/{ref['sha']}/{name}")
+    urls += [f"https://raw.githubusercontent.com/{repo()}/{BRANCH}/{n}" for n in dict.fromkeys((name, NAME, "news.db.xz"))]
     for u in urls:
         try:
             r = requests.get(u, timeout=180)
@@ -116,7 +140,7 @@ def pull(force: bool = False, strict: bool = False) -> bool:
             print(f"[news-store] {u} → {type(e).__name__}")
     try:   # 마지막 — git 으로(비공개 저장소·raw 차단 대비)
         subprocess.run(["git", "fetch", "-q", "--depth=1", "origin", BRANCH], cwd=ROOT, check=True, timeout=300)
-        blob = subprocess.run(["git", "show", f"FETCH_HEAD:{NAME}"], cwd=ROOT, check=True, capture_output=True,
+        blob = subprocess.run(["git", "show", f"FETCH_HEAD:{archive_name()}"], cwd=ROOT, check=True, capture_output=True,
                               timeout=120).stdout
         if _install(blob, f"git {BRANCH}"):
             return True
@@ -150,7 +174,7 @@ def trim(path: Path | None = None, days: int = TRIM_DAYS) -> int:
         keep = "AND link NOT IN (SELECT link FROM article_meta WHERE kind='transfer')" if "article_meta" in tabs else ""
         q = ",".join("?" * len(TRIM_VIAS))
         n = c.execute(f"DELETE FROM articles WHERE via IN ({q}) AND first_seen<? {keep}", (*TRIM_VIAS, before)).rowcount
-        for t in ("article_meta", "article_players"):
+        for t in ("article_meta", "article_players", "article_tagged"):   # 태그 표도(지운 기사 줄이 7천 줄 남았다, 11/10)
             if t in tabs:
                 c.execute(f"DELETE FROM {t} WHERE link NOT IN (SELECT link FROM articles)")
         c.commit()
@@ -161,6 +185,13 @@ def trim(path: Path | None = None, days: int = TRIM_DAYS) -> int:
 
 
 def _gzip(dst_dir: str) -> Path:
+    """압축본(ARCHIVE 형식) — gz: news.db.gz(gzip 9), xz: news.db.xz(preset 6, 1분 남짓)."""
+    if ARCHIVE == "xz":
+        import lzma  # noqa: PLC0415
+        xz = Path(dst_dir) / "news.db.xz"
+        with DB.open("rb") as src, lzma.open(xz, "wb", preset=6) as dst:
+            shutil.copyfileobj(src, dst)
+        return xz
     gz = Path(dst_dir) / NAME
     with DB.open("rb") as src, gzip.open(gz, "wb", compresslevel=9) as dst:
         shutil.copyfileobj(src, dst)
@@ -197,11 +228,11 @@ def push(min_ratio: float = MIN_RATIO) -> dict:
     # (Preview 실패 8건/이틀, 2026-10-26). 읽는 쪽은 NAME 만 본다
     vj = _git("hash-object", "-w", "--stdin", data=VERCEL_SKIP.encode())
     web = _git("mktree", data=f"100644 blob {vj}\tvercel.json\n".encode())
-    tree = _git("mktree", data=f"100644 blob {blob}\t{NAME}\n040000 tree {web}\tweb\n".encode())
+    tree = _git("mktree", data=f"100644 blob {blob}\t{gz.name}\n040000 tree {web}\tweb\n".encode())
     now = dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")
     commit = _git("commit-tree", tree, "-m", f"news.db {now} · 기사 {n}건")
     _git("push", "-f", "-q", "origin", f"{commit}:refs/heads/{BRANCH}")
-    ref = {"sha": commit, "branch": BRANCH, "file": NAME, "bytes": size, "db_bytes": DB.stat().st_size,
+    ref = {"sha": commit, "branch": BRANCH, "file": gz.name, "bytes": size, "db_bytes": DB.stat().st_size,
            "articles": n, "updated": now}
     REF.write_text(json.dumps(ref, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     print(f"[news-store] 올림 {commit[:12]} — 기사 {n}건 · 압축 {size / 1e6:.1f}MB (DB {ref['db_bytes'] / 1e6:.1f}MB)")

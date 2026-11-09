@@ -308,6 +308,13 @@ def build(lg: str, season: str) -> tuple[pd.DataFrame, dict]:
                     sc = 100
                 else:
                     eid, sc = best_match(nm, names.get(sq, {}))
+                    if not eid and stem in played:
+                        # 리그 안 이적 — 예전 팀 라인업의 이름이 지금 다른 팀 명단에 정확히 한 명(2026-11-10 MLS: 시즌 한가운데 여름
+                        # 이적시장이라 나바로 콜로라도→세인트루이스·요벨리치 캔자스시티→시애틀 등이 '기준 명단 밖'으로 잡혔다)
+                        alt = [e2 for s2, nm_map in names.items() if s2 != sq
+                               for e2, sc2 in [best_match(nm, nm_map)] if e2 and sc2 == 100]
+                        if len(set(alt)) == 1:
+                            eid, sc = alt[0], 99
                 if stem in rating_srcs:
                     fm_seen[sq].append((nm, eid))
                 if eid:

@@ -287,7 +287,7 @@ def check_coverage() -> list[str]:
             continue                                      # 감독 수집 미지원 리그(벨기에 — 위키 시즌 문서에 감독표 없음)
         with st.open(encoding="utf-8") as fh:
             teams = {r["squad"] for r in csv.DictReader(fh) if r.get("squad")}
-        prof = set(json.loads(mp.read_text(encoding="utf-8")))
+        prof = set(json.loads(mp.read_text(encoding="utf-8")))   # 공석 기록(vacant — lite_league)도 '있음'
         miss, extra = sorted(teams - prof), sorted(prof - teams)
         if miss:
             out.append(f"{lg} 감독 프로필 누락 {miss}" + (f" · 다른 시즌 팀 잔류 {extra}" if extra else "")

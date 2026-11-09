@@ -337,8 +337,10 @@ def coach_of(payload: dict) -> dict | None:
     return None
 
 
-def write_managers(league: str, coaches: dict[str, dict]) -> int:
-    """manager_profiles_{리그}.json — 이름·국적·사진(나머지 칸은 비움; 화면은 있는 칸만 그린다). 감독이 바뀌면 이전 이름을 남긴다."""
+def write_managers(league: str, coaches: dict[str, dict], teams: list[str] | None = None) -> int:
+    """manager_profiles_{리그}.json — 이름·국적·사진(나머지 칸은 비움; 화면은 있는 칸만 그린다). 감독이 바뀌면 이전 이름을 남긴다.
+    teams 중 FotMob 감독 칸이 빈 팀은 공석 기록({'vacant': True, 전임 이름}) — 2026-11-10 MLS 시즌 끝 CF 몽레알·뉴잉글랜드
+    (위키데이터에도 현 감독 없음). 서버는 공석 기록을 감독으로 쓰지 않고(api _managers), watchdog 은 빠짐으로 보지 않는다."""
     p = data_path("manager_profiles", league, ext="json")
     old = _load(p)
     today = dt.date.today().isoformat()
@@ -353,6 +355,13 @@ def write_managers(league: str, coaches: dict[str, dict]) -> int:
             rec.update({"previous_name": prev["name"], "change_detected_at": today, "bio_ko": "", "appointed": ""})
             changed += 1
         out[sq] = rec
+    for sq in teams or []:
+        if sq in out:
+            continue
+        prev = old.get(sq) or {}
+        last = prev.get("previous_name", "") if prev.get("vacant") else prev.get("name", "")
+        out[sq] = {"name": "", "vacant": True, "previous_name": last, "source": "fotmob",
+                   "vacant_since": prev.get("vacant_since") or today}
     p.write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")
     return changed
 
@@ -413,7 +422,7 @@ def build(league: str, get=None) -> dict:
         sdf = pd.DataFrame(sched, columns=SCHED_COLS).drop_duplicates(["squad", "event_id"]).sort_values(["squad", "date"])
         sdf.to_csv(data_path("schedule_full", league), index=False, encoding="utf-8", lineterminator="\n")
     coaches = {sq: c for sq, p in payloads.items() if (c := coach_of(p))}
-    changed = write_managers(league, coaches) if coaches else 0
+    changed = write_managers(league, coaches, canon) if coaches else 0
 
     # 팀 대조표
     old = _load(teams_path(league))

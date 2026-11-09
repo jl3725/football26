@@ -391,7 +391,7 @@ def sync_news(get=requests.get) -> bool:
     if not sha or (sha == local.get("sha") and news_view.VIEW_DB.exists()):
         STATE["news_sha"] = sha
         return False
-    url = f"https://raw.githubusercontent.com/{news_store.repo()}/{sha}/{news_store.NAME}"
+    url = f"https://raw.githubusercontent.com/{news_store.repo()}/{sha}/{news_store.archive_name(remote)}"   # gz | xz
     gz = DATA / "news.db.gz.part"
     db_tmp = DATA / "news.db.part"
     try:
@@ -400,7 +400,7 @@ def sync_news(get=requests.get) -> bool:
             with gz.open("wb") as fh:
                 for chunk in resp.iter_content(1 << 20):
                     fh.write(chunk)
-        with gzip.open(gz, "rb") as src, db_tmp.open("wb") as dst:
+        with news_store.open_archive(gz) as src, db_tmp.open("wb") as dst:
             shutil.copyfileobj(src, dst, 1 << 20)
         if news_store.articles(db_tmp) <= 0:
             raise ValueError("기사 0건")

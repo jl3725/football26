@@ -155,9 +155,10 @@ def _managers(league: str = "EPL") -> dict:
     """감독 프로필(리그별). LaLiga 등은 manager_profiles_{league}_*.json — 없으면 {} (EPL 감독 오출력 방지)."""
     path = MANAGER_JSON if league == "EPL" else data_path("manager_profiles", league, ext="json")
     try:
-        return json.loads(path.read_text(encoding="utf-8"))
+        d = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError):
         return {}
+    return {k: v for k, v in d.items() if not (isinstance(v, dict) and v.get("vacant"))}   # 공석 기록은 감독이 아님(lite_league)
 
 
 def _team_profiles() -> dict:

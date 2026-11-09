@@ -188,6 +188,11 @@ def prune(via: str, before: str) -> int:
     with _conn() as c:
         cur = c.execute("DELETE FROM articles WHERE via=? AND first_seen<?", (via, before))
         c.execute("DELETE FROM article_meta WHERE link NOT IN (SELECT link FROM articles)")
+        for t in ("article_tagged", "article_players"):          # 지운 기사의 태그 줄도(2026-11-10: 7천 줄 남아 있었다)
+            try:
+                c.execute(f"DELETE FROM {t} WHERE link NOT IN (SELECT link FROM articles)")
+            except Exception:  # noqa: BLE001 — 표가 아직 없는 DB
+                pass
         return cur.rowcount
 
 
