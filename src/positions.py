@@ -117,8 +117,27 @@ def match_roles(espn_positions: list[str], formation: str) -> list[str | None]:
     return out
 
 
+PAIR = "ST2"     # 투톱(4-4-2·3-5-2 …) 중 한 자리 선발 — 'ST' 에도 세고 여기에 따로도 센다(역할 아님, as_second_striker 가 씀)
+
+
+def as_second_striker(counts: Counter | None, tm_position=None) -> Counter | None:
+    """투톱 선발을 TM 포지션이 공격형 미드필더·세컨드 스트라이커인 선수는 AM(세컨드 스트라이커 = 2선 창의 역할)으로.
+    2026-11-09 사용자 '이강인은 ST 가 메인이 아니다' — 아틀레티코 4-4-2 에서 바에나·루크먼과 투톱(CF-L/R)으로 서서 대표가 ST,
+    스트라이커 지표(슈팅·xG)로 평가됐다. 정통 9번·윙어 출신 투톱(루크먼)은 그대로 ST. PAIR 키는 늘 뺀다."""
+    if not counts:
+        return counts
+    out = Counter({r: n for r, n in counts.items() if r != PAIR})
+    n = min(float(counts.get(PAIR, 0.0)), float(out.get("ST", 0.0)))
+    if n > 0 and tm_role(tm_position) == "AM":
+        out["ST"] -= n
+        out["AM"] += n
+        if out["ST"] <= 1e-9:
+            del out["ST"]
+    return out
+
+
 def role_counts(lineups: list[pd.DataFrame], weights: list[float]) -> dict[str, Counter]:
-    """ESPN 라인업 표들(시즌별) → {정규화 이름: Counter(역할→가중 선발 수)}."""
+    """ESPN 라인업 표들(시즌별) → {정규화 이름: Counter(역할→가중 선발 수)} + 투톱 선발은 PAIR 에도."""
     acc: dict[str, Counter] = defaultdict(Counter)
     for df, w in zip(lineups, weights):
         if df is None or df.empty or "espn_pos" not in df.columns:
@@ -129,9 +148,13 @@ def role_counts(lineups: list[pd.DataFrame], weights: list[float]) -> dict[str, 
                 continue
             g = g.sort_values("formation_place") if "formation_place" in g.columns else g
             form = str(g["formation"].iloc[0])
-            for name, role in zip(g["player"], match_roles(g["espn_pos"].tolist(), form)):
+            roles = match_roles(g["espn_pos"].tolist(), form)
+            pair = roles.count("ST") >= 2
+            for name, role in zip(g["player"], roles):
                 if role:
                     acc[norm_name(name)][role] += w
+                    if pair and role == "ST":
+                        acc[norm_name(name)][PAIR] += w
     return acc
 
 
@@ -149,7 +172,7 @@ def lookup(counts: dict, name) -> Counter | None:
 
 def profile(counts: Counter | None, tm_position=None) -> dict:
     """역할 집계 + TM 포지션 → {"primary", "secondary": [...], "roles": {...}, "starts": n, "source"}."""
-    c = Counter(counts or {})
+    c = Counter(as_second_striker(counts, tm_position) or {})
     tot = sum(c.values())
     tmr = tm_role(tm_position)
     if tot >= 3:

@@ -2569,7 +2569,8 @@ def squad(team: str, league: str = ACTIVE_LEAGUE):
                       "age": int(_num(r.get("age"))), "photo": _photo(r), "primary": pr["primary"],
                       "secondary": pr["secondary"], "injured": ps.norm_name(r["player"]) in inj,
                       "absence": (inj.get(ps.norm_name(r["player"])) or {}).get("kind"),
-                      "role_starts": pr.get("roles") or {}, "pos_ovr": _pos_ovr_map(r)})
+                      "role_starts": pr.get("roles") or {}, "pos_ovr": _pos_ovr_map(r),
+                      "tm_position": r.get("tm_position") if isinstance(r.get("tm_position"), str) else None})
     buckets = []
     first_of: dict[str, str] = {}                         # 선수 → 이미 1st 인 자리(한 선수는 한 자리에서만 1st)
     # 1st 판단은 이번 시즌 리그 선발만(지난 시즌 0.5 가중이 섞인 역할 집계로는 Ødegaard·Eze AM 이 동점이었다) —
@@ -2581,7 +2582,7 @@ def squad(team: str, league: str = ACTIVE_LEAGUE):
         cur_roles = {}
     if cur_roles:                                         # 이번 시즌 선발이 없는 선수는 0(지난 시즌 기록으로 1st 가 되지 않게)
         for c in cards:
-            c["role_starts"] = dict(ps.lookup(cur_roles, c["player"]) or {})
+            c["role_starts"] = dict(ps.as_second_striker(ps.lookup(cur_roles, c["player"]), c.get("tm_position")) or {})
     for b in ps.ROLES:
         # 그 자리 OVR = 포지션별 OVR(src/position_ovr.py — 덜 뛴 자리는 낮게), 없으면 대표 OVR
         at = [{**{k: v for k, v in c.items() if k != "pos_ovr"}, "ovr": c["pos_ovr"].get(b, c["ovr"])} for c in cards]
@@ -2956,7 +2957,8 @@ def _position_table() -> dict:
                         *[r for r in [ps.tm_role(tmp if isinstance(tmp, str) else None)] if r]]
                 tid = rec.get("tm_id")
                 car = career.get(str(int(float(tid))), []) if tid is not None and tid == tid else []
-                res = po.choose(float(c), po.experience(ps.lookup(counts, name), prim, car), row_c, prim, car)
+                starts = ps.as_second_striker(ps.lookup(counts, name), tmp if isinstance(tmp, str) else None)   # 투톱 + TM 2선 = AM
+                res = po.choose(float(c), po.experience(starts, prim, car), row_c, prim, car)
             out[idx] = po.held(res, shown.get(rh.pid(rec)))
         table[lg] = out
         # 세부 지표 표(캐시 객체)도 같은 숫자로 — 인덱스는 _pf 그대로

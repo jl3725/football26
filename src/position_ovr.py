@@ -47,6 +47,7 @@ NEAR = {("DM", "CM"): 0.5, ("CM", "AM"): 0.5, ("DM", "AM"): 0.25, ("LW", "RW"): 
 
 FM_ROLE = {"GK": "GK", "CB": "CB", "LB": "LB", "RB": "RB", "LWB": "LB", "RWB": "RB", "CDM": "DM", "CM": "CM",
            "CAM": "AM", "LM": "LW", "RM": "RW", "LW": "LW", "RW": "RW", "ST": "ST", "CF": "ST"}
+_ORDER = {r: i for i, r in enumerate(["GK", "CB", "LB", "RB", "DM", "CM", "AM", "RW", "LW", "ST"])}
 ROLE_TEMPLATE = {"GK": "GK", "CB": "CB", "LB": "FB", "RB": "FB", "DM": "DM", "CM": "CM", "AM": "AM",
                  "LW": "W", "RW": "W", "ST": "ST"}
 
@@ -80,7 +81,8 @@ def experience(starts: dict | None, primary: list[str], career=()) -> dict[str, 
             if y in share and direct.get(x):
                 share[y] += w * direct[x]
     # 이웃 몫은 그 자리에서 직접 뛴 만큼까지만 — 안 그러면 CB 25경기 선수가 RB 2경기만 서도 RB 가 거의 다 익숙해졌다
-    return {r: direct[r] + min(share[r], direct[r]) for r in cand}
+    # 순서 고정(_ORDER) — 집합 순서는 프로세스마다 달라(문자열 해시) 동점 자리가 서버를 다시 띄울 때마다 바뀌었다(2026-11-09: 195명)
+    return {r: direct[r] + min(share[r], direct[r]) for r in sorted(cand, key=_ORDER.get)}
 
 
 def contributions(frames: dict[str, pd.DataFrame], common: dict[str, pd.Series] | None = None,
@@ -159,7 +161,9 @@ def choose(common: float, exp: dict[str, float], contrib: dict[str, float], prim
     fam = {r: max(min(1.0, e / denom) if denom > 0 else 1.0, CAREER_FAM if r in career else 0.0) for r, e in exp.items()}
     val = {r: min(99.0, max(45.0, common + fam[r] * contrib.get(ROLE_TEMPLATE[r], 0.0) - PEN_MAX * (1.0 - fam[r])))
            for r in exp}
-    rank = {r: (int(round(val[r])), r in primary, exp[r]) for r in val}
+    # 동점이면 지금 쓰이는 자리(primary 앞쪽 — FotMob 첫 포지션) → 고정 역할 순서(같은 입력이면 늘 같은 대표)
+    prim = list(primary)
+    rank = {r: (int(round(val[r])), r in prim, exp[r], -(prim.index(r) if r in prim else 99), -_ORDER.get(r, 99)) for r in val}
     main = max(val, key=lambda r: rank[r])
     by_role = {r: rank[r][0] for r in sorted(val, key=lambda r: rank[r], reverse=True)}
     return {"main": main, "ovr": by_role[main], "raw": val[main], "by_role": by_role,
