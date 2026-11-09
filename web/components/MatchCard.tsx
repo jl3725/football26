@@ -97,7 +97,7 @@ export function PredictBar({ m, detail = false, slim = false, only }: { m: Fixtu
   type Row = { key: "fans" | "model" | "elo"; label: string; v: Probs; tip: string };
   const all: (Row | null)[] = [
     m.fans ? { key: "fans", label: "FANS", v: m.fans, tip: `팬 투표 — Sofascore 사용자 ${m.fans.n.toLocaleString()}표` } : null,
-    m.model ? { key: "model", label: "MODEL", v: m.model, tip: "우리 예측 모델 — 경기 내용(xG·득실)과 선수 평점 기반 통계 모델" } : null,
+    m.model ? { key: "model", label: "MODEL", v: m.model, tip: "자체 예측 모델 — 경기 내용(xG·득실)과 선수 평점 기반 통계 모델" } : null,
   ];
   let rows = all.filter((r): r is Row => !!r && (!only || r.key === only));
   if (!rows.length && m.elo && (!only || only === "elo")) rows = [{ key: "elo", label: "ELO", v: m.elo, tip: "Elo 기준 — 전 대회 결과로 계산한 팀 Elo 만으로 낸 단순 예측" }];

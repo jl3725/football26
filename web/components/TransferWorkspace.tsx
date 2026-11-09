@@ -128,7 +128,7 @@ export default function TransferWorkspace({ team, accent, onFit, onReport }: {
                       <b>{p.player}</b>
                       <span>{p.logo ? <img src={p.logo} alt="" /> : null}{p.club} · {p.age ?? "?"}세 · {p.tm_position || p.pos}</span>
                     </div>
-                    <div className="tws-ovr" style={{ color: t.light }} title={p.cross_league ? `현재 ${p.current_ovr} → 우리 리그 예상 ${p.ovr}` : `OVR ${p.ovr}`}>{p.ovr}</div>
+                    <div className="tws-ovr" style={{ color: t.light }} title={p.cross_league ? `현재 ${p.current_ovr} → 이 팀 리그 예상 ${p.ovr}` : `OVR ${p.ovr}`}>{p.ovr}</div>
                   </div>
                   <div className="tws-facts">
                     <span title={p.fair ? `적정 이적료 가운데 ${fmtEur(p.fair.mid)} — 시장가치 × 사는 리그·나이 배수` : undefined}>적정 <b>{p.fair ? fmtEurRange(p.fair.lo, p.fair.hi) : p.likely_fee_eur ? fmtEur(p.likely_fee_eur) : "-"}</b> <em style={{ color: PRICE[p.price_verdict ?? "unknown"]?.[1] }}>{PRICE[p.price_verdict ?? "unknown"]?.[0]}</em></span>
@@ -144,7 +144,7 @@ export default function TransferWorkspace({ team, accent, onFit, onReport }: {
                   </div>
                   <div className="tws-actions">
                     <label><input type="checkbox" checked={on} disabled={!on && cmp.length >= MAX_CMP} onChange={() => toggleCmp(k)} />비교</label>
-                    <button onClick={() => onFit(p.player, p.tm_position || "")} title="이 선수의 우리 팀 적합도(FIT) 평가로">FIT</button>
+                    <button onClick={() => onFit(p.player, p.tm_position || "")} title={`이 선수의 ${team} 적합도(FIT) 평가로`}>FIT</button>
                     <button onClick={() => onReport(p.player, p.club, p.league)} title="스카우팅 리포트 한 장">리포트</button>
                     <button className="tws-x" onClick={() => sl.remove(it.player, it.club)} aria-label="빼기" title="SHORTLIST 에서 빼기">✕</button>
                   </div>

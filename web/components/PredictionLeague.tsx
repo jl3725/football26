@@ -91,7 +91,7 @@ export default function PredictionLeague() {
             <div className="pl5-rh"><span>최근 결과
               <Info label="최근 결과 표 설명">
                 <p>✓ 맞힘 · ✗ 틀림 · — 예측 없음</p>
-                <p><b>모델 —</b> 우리 8개 리그 밖 팀(예: 슬로반 브라티슬라바·사바 FK)이 낀 경기는 그 팀 선수·경기 데이터가 없어 모델 예측을 하지 않습니다.</p>
+                <p><b>모델 —</b> 8개 리그 밖 팀(예: 슬로반 브라티슬라바·사바 FK)이 낀 경기는 그 팀 선수·경기 데이터가 없어 모델 예측을 하지 않습니다.</p>
               </Info></span><em>팬</em><em>모델</em><em>Elo</em></div>
             {d.recent.slice(0, 8).map((r) => (
               <div className="pl5-rr" key={r.event_id}>

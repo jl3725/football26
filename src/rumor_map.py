@@ -356,6 +356,6 @@ def insight(team: str, m: dict) -> dict | None:
                 "big": str(m.get("n_in", 0)), "unit": "명 표적", "who": [top["player"]], "line": txt, "evidence": ev}
     o = m["out"][0]
     txt = f"{o['player']} — " + " · ".join(f"{x['to']}({STAGE_KO.get(x['stage'], x['stage'])})" for x in o["suitors"][:3])
-    return {"lens": "rumors", "icon": "⇢", "tone": "warn", "title": "우리 선수 이적설", "text": txt,
+    return {"lens": "rumors", "icon": "⇢", "tone": "warn", "title": "소속 선수 이적설", "text": txt,
             "big": str(m.get("n_out", 0)), "unit": "명 이적설", "who": [o["player"]], "line": txt,
             "evidence": [f"{o['player']} ─LINKED_TO→ {x['to']}" for x in o["suitors"][:3]]}

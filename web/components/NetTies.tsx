@@ -8,7 +8,7 @@ import Info from "./Info";
 
 // TIES — 지난 시즌 라인업(함께 선발 5경기+)으로 본 '전 소속 동료'. 왼쪽 = 우리 선수, 오른쪽 = 그 동료가 지금 뛰는 클럽.
 // 주황 = 영입생이 전 소속에서 함께 뛴 동료, 파랑 = 작년 우리 팀 동료가 떠나 지금 뛰는 곳. 재회 = 다른 팀에서 함께 뛰다 지금 우리 팀.
-const KIND = { former: { c: "#f0a35a", ko: "영입생의 전 소속 동료" }, alumni: { c: "#6aa6e0", ko: "작년 우리 팀 동료(떠남)" } } as const;
+const KIND = { former: { c: "#f0a35a", ko: "영입생의 전 소속 동료" }, alumni: { c: "#6aa6e0", ko: "작년 팀 동료(떠남)" } } as const;
 
 export default function NetTies({ d, accent }: { d: NetworkData; accent: string }) {
   const peek = usePeek();
@@ -38,7 +38,7 @@ export default function NetTies({ d, accent }: { d: NetworkData; accent: string 
             <p>지난 시즌 라인업에서 <b>함께 선발 5경기 이상</b> 뛴 동료가 지금 뛰는 클럽.</p>
             <ul>
               <li>선 굵기 = 함께 선발로 뛴 경기 수</li>
-              <li>재회 = 다른 팀에서 함께 뛰다 지금 우리 팀</li>
+              <li>재회 = 다른 팀에서 함께 뛰다 지금 이 팀</li>
               <li>클럽을 누르면 동료 목록</li>
             </ul>
           </Info>
@@ -52,7 +52,7 @@ export default function NetTies({ d, accent }: { d: NetworkData; accent: string 
         </div>
       )}
       {clubs.length > 0 && (
-        <svg viewBox={`0 0 ${W} ${H}`} className="net-svg" role="img" aria-label="우리 선수와 지난 시즌 동료가 지금 뛰는 클럽의 연결">
+        <svg viewBox={`0 0 ${W} ${H}`} className="net-svg" role="img" aria-label="소속 선수와 지난 시즌 동료가 지금 뛰는 클럽의 연결">
           {clubs.map((c, ci) => c.ties.map((t, k) => {
             const i = li[t.ours];
             if (i == null) return null;
@@ -84,7 +84,7 @@ export default function NetTies({ d, accent }: { d: NetworkData; accent: string 
               <button key={t.ours + t.mate} className="net-tie hoverable" onClick={(e) => peek(e, { name: t.mate, club: cur.club, hint: { photo: t.mate_photo || undefined, ovr: t.mate_ovr ?? undefined } })}>
                 {t.ours_photo ? <img src={t.ours_photo} alt="" /> : <span className="net-cap-ph sm" />}
                 <span className="net-tie-mid" style={{ color: KIND[t.kind === "alumni" ? "alumni" : "former"].c }}>
-                  <i>{t.starts}경기 함께</i><em>{t.from_club}{t.links && t.links > 1 ? ` · 우리 선수 ${t.links}명과` : ""}</em></span>
+                  <i>{t.starts}경기 함께</i><em>{t.from_club}{t.links && t.links > 1 ? ` · 소속 선수 ${t.links}명과` : ""}</em></span>
                 {t.mate_photo ? <img src={t.mate_photo} alt="" /> : <span className="net-cap-ph sm" />}
                 <span className="net-tie-n"><b>{lastName(t.ours)} ↔ {t.mate}</b><em>{t.mate_ovr ? `OVR ${t.mate_ovr}` : ""}</em></span>
               </button>

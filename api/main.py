@@ -72,6 +72,10 @@ def _memo(ttl: float = 3600.0, news: bool = False):
             key = (fn.__name__, args, tuple(sorted(kwargs.items())), _db_stamp(), ds.news_mtime() if news else 0)
             hit = _MEMO.get(key)
             if hit and hit[0] > _t.monotonic():
+                try:
+                    _MEMO[key] = _MEMO.pop(key)      # 최근 쓴 것은 뒤로(LRU) — 꽉 찼을 때 맨 앞부터 밀어낸다
+                except KeyError:
+                    pass
                 return hit[1]
             with _MEMO_GUARD:
                 lock = _MEMO_LOCKS.setdefault(key, threading.Lock())
@@ -82,7 +86,10 @@ def _memo(ttl: float = 3600.0, news: bool = False):
                     return hit[1]
                 out = fn(*args, **kwargs)
                 if len(_MEMO) >= _MEMO_MAX:
-                    for k in [k for k, v in _MEMO.items() if v[0] <= now][:64] or [next(iter(_MEMO))]:
+                    # 만료된 것부터, 없으면 가장 오래 안 쓴 것. 예전엔 '처음 넣은 것'이라 데우기가 만든 큰 공용 색인(_prev_index 20MB 등)이
+                    # 화면 응답에 밀려 나갔다가 다시 계산되며 잠깐 두 벌이 됐다(2026-11-09 메모리 점검: 방문 480번에 512칸 꽉 참)
+                    snap = list(_MEMO.items())
+                    for k in [k for k, v in snap if v[0] <= now][:64] or [k for k, _ in snap[:16]]:
                         _MEMO.pop(k, None)
                         _MEMO_LOCKS.pop(k, None)
                 _MEMO[key] = (now + ttl, out)
@@ -2820,12 +2827,14 @@ def _allcomp_cal() -> dict:
     hit = _ACS_CAL.get("cal")
     if hit and hit[0] > _t.time():
         return hit[1]
-    fm = acs.per90(acs.league_rows(_acs_read, f"{SEASON_START}_{SEASON_START + 1}", ds._db_mtime()))
+    # 8개 리그 리그 경기 원본(4만 행, 33MB)은 척도 한 번 맞추는 데만 — 캐시하지 않는다(결과 척도만 6시간). 2026-11-09 메모리 점검:
+    # 데이터 교체(live_sync) 뒤엔 빌드 캐시가 무효라 이 경로를 타고, 원본 표가 서버가 꺼질 때까지 남아 있었다
+    lr = acs.league_rows(_acs_read, f"{SEASON_START}_{SEASON_START + 1}", None)
+    fm = acs.per90(lr)
     ours = []
     for lg in _LEAGUE_LEVEL:
         d = _pf(lg)
         if d is not None and not d.empty:
-            lr = acs.league_rows(_acs_read, f"{SEASON_START}_{SEASON_START + 1}", ds._db_mtime())
             ours.append(pd.DataFrame({"_key": acs.frame_keys(d, lr), "minutes": d["minutes"],
                                       **{c: d[c] for c in acs.MAP if c in d.columns}}))
     cal = acs.calibrate(pd.concat(ours, ignore_index=True), fm) if ours and not fm.empty else {}
@@ -5717,6 +5726,28 @@ def network(team: str, league: str = ACTIVE_LEAGUE):
             "sources": {"captains": "wikipedia" if any(w["rank"] for w in wiki) else None}}
 
 
+@app.get("/api/influence/{team}")
+@_memo(ttl=21600)
+def influence(team: str, league: str = ACTIVE_LEAGUE):
+    """팀 안 영향력 순위 — NETWORK LEADERSHIP 과 같은 값(network 캐시를 같이 씀), 선수 화면 INFLUENCE 줄.
+    OVR·승부 예측엔 안 넣는다: 2026-11-09 백테스트(scripts/backtest_leadership.py)에서 주장 결장·선발 연속성·베테랑 수가
+    Elo + 선발 전력 위에 예측을 낫게 하지 못했다(검증 로그 손실 개선 0.001 이하) — 팀 안 역할 정보로만."""
+    b = network(team, league)
+    if not b.get("available"):
+        return {"available": False}
+    lead = b.get("leadership") or {}
+    caps = {c["name"]: c for c in lead.get("captains", [])}
+    why = {c["name"]: c.get("why", []) for c in lead.get("core", [])}
+    ranked = sorted((lead.get("influence") or {}).items(), key=lambda x: -x[1])
+    players = {}
+    for i, (name, v) in enumerate(ranked):
+        c = caps.get(name) or {}
+        players[name] = {"influence": int(v), "rank": i + 1, "captain_rank": c.get("captain_rank"),
+                         "role": c.get("label"), "role_ko": c.get("role_ko"), "why": why.get(name, [])}
+    return {"available": True, "team": team, "n": len(ranked), "armband": lead.get("armband"),
+            "players": players, "weights": lead.get("weights") or {}}
+
+
 _RUMOR_LINKS: dict = {}
 
 
@@ -8152,7 +8183,7 @@ def prediction_league():
     if not p.exists():
         return {"available": False, "sources": [], "h2h": None, "recent": [], "split": []}
     df = pd.read_csv(p, dtype={"event_id": str})
-    keys = (("fans", "FANS", "팬 투표"), ("model", "MODEL", "우리 모델"), ("elo", "ELO", "Elo 기준"))
+    keys = (("fans", "FANS", "팬 투표"), ("model", "MODEL", "자체 모델"), ("elo", "ELO", "Elo 기준"))
 
     def probs(r, k):
         v = [r.get(f"{k}_{x}") for x in ("h", "d", "a")]

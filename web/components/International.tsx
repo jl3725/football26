@@ -223,7 +223,7 @@ function CompDetail({ code, season, accent, me, onBack, onPickTeam }: {
         )}
         {ps.length > 0 && (
           <>
-            <SectionHead title="OUR LEAGUE PLAYERS" kr="출전국의 우리 리그 선수" meta={`${ps.length}개국 · ${nPlayers}명`}
+            <SectionHead title="TRACKED PLAYERS" kr="출전국의 수록 리그 선수" meta={`${ps.length}개국 · ${nPlayers}명`}
               info={<><p>가장 최근 소집 명단 기준입니다.</p><p className="muted">&lsquo;대회 명단&rsquo; = 대회 명단 발표 뒤 · &lsquo;지난 소집 기준&rsquo; = 발표 전. 이름을 누르면 클럽 화면.</p></>} />
             <NationPlayers ps={ps} onPickTeam={onPickTeam} />
           </>
@@ -293,7 +293,7 @@ function NationView({ nation, onNation, onOpen, onPickTeam }: {
         <span className="nw-lbl">MY NATION</span>
         <select value={nation} onChange={(e) => onNation(e.target.value, "")} aria-label="대표팀 고르기">
           {(list.length ? list : [{ nation, nation_ko: d?.nation_ko ?? nation, fifa_rank: null, ours: 0 } as IntlNationItem]).map((n) => (
-            <option key={n.nation} value={n.nation}>{n.nation_ko}{n.fifa_rank ? ` · FIFA ${n.fifa_rank}위` : ""}{n.ours ? ` · 우리 리그 ${n.ours}명` : ""}</option>
+            <option key={n.nation} value={n.nation}>{n.nation_ko}{n.fifa_rank ? ` · FIFA ${n.fifa_rank}위` : ""}{n.ours ? ` · 수록 리그 ${n.ours}명` : ""}</option>
           ))}
         </select>
       </div>
@@ -304,8 +304,8 @@ function NationView({ nation, onNation, onOpen, onPickTeam }: {
               {d.flag ? <img src={d.flag} alt="" /> : null}
               <div>
                 <h2>{d.nation_ko} <small>{d.display}</small></h2>
-                <p>{d.conf}{d.fifa_rank ? ` · FIFA ${d.fifa_rank}위` : ""}{d.ours ? <> · 우리 리그 {d.ours}명
-                  <Info label="우리 리그 선수 기준"><p>최근 소집 명단 중 이 사이트가 다루는 리그에서 뛰는 선수 수입니다.</p></Info></> : null}</p>
+                <p>{d.conf}{d.fifa_rank ? ` · FIFA ${d.fifa_rank}위` : ""}{d.ours ? <> · 수록 리그 {d.ours}명
+                  <Info label="수록 리그 선수 기준"><p>최근 소집 명단 중 이 사이트가 다루는 리그에서 뛰는 선수 수입니다.</p></Info></> : null}</p>
               </div>
               {d.form.length > 0 && (
                 <div className="it-form" title="최근 5경기(왼쪽이 오래된 경기)">
@@ -347,8 +347,8 @@ function NationView({ nation, onNation, onOpen, onPickTeam }: {
           </section>
           {d.squad.length > 0 && (
             <section className="card it-sec">
-              <SectionHead title="LATEST SQUAD" kr="최근 소집 중 우리 리그 선수" meta={`${d.squad_for} 명단`}
-                info={<p>{d.squad_for} 소집 명단 기준입니다. 우리 리그 선수 이름을 누르면 클럽 화면으로 갑니다.</p>} />
+              <SectionHead title="LATEST SQUAD" kr="최근 소집 중 수록 리그 선수" meta={`${d.squad_for} 명단`}
+                info={<p>{d.squad_for} 소집 명단 기준입니다. 수록 리그 선수 이름을 누르면 클럽 화면으로 갑니다.</p>} />
               {["GK", "DF", "MF", "FW", "-"].filter((p) => byPos[p]?.length).map((p) => (
                 <div className="it-sq" key={p}>
                   <span className="it-sq-pos">{p}</span>
@@ -435,8 +435,8 @@ export default function International({ accent, onPickTeam, initialComp }: {
                   {hub.window_state === "now" ? "NOW" : `D-${dday(w.start, today)}`}
                 </span>
                 <b>{w.label}</b>
-                <span>{md(w.start)}~{md(w.end)} · {w.matches}경기 · 우리 리그 {hub.callups}명
-                  <Info label="소집 선수 기준"><p>지난 소집 기준 우리 리그 선수 수입니다(명단 발표 뒤 갱신).</p><p className="muted">팀 화면 일정 탭에서 클럽별 소집 선수를 볼 수 있어요.</p></Info>
+                <span>{md(w.start)}~{md(w.end)} · {w.matches}경기 · 수록 리그 {hub.callups}명
+                  <Info label="소집 선수 기준"><p>지난 소집 기준 수록 리그 선수 수입니다(명단 발표 뒤 갱신).</p><p className="muted">팀 화면 일정 탭에서 클럽별 소집 선수를 볼 수 있어요.</p></Info>
                 </span>
               </div>
             )}
@@ -452,7 +452,7 @@ export default function International({ accent, onPickTeam, initialComp }: {
           </div>
           <section className="card it-sec">
             <SectionHead title="NEXT KEY MATCHES" kr="다가오는 주요 A매치"
-              info={<p>주요 경기 = FIFA 30위 안 나라, 또는 우리 리그 선수 4명 이상을 소집한 나라의 경기.</p>} />
+              info={<p>주요 경기 = FIFA 30위 안 나라, 또는 수록 리그 선수 4명 이상을 소집한 나라의 경기.</p>} />
             {ms === null ? <SkelRows n={6} /> : ms.length ? <div className="it-list">{ms.map((m) => <MatchRow key={m.event_id} m={m} />)}</div>
               : <p className="pv-empty">예정된 주요 A매치가 없습니다.</p>}
             <button className="it-more" onClick={() => setTab("matches")}>전체 A매치 보기 →</button>

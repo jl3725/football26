@@ -142,10 +142,10 @@ export default function TeamTrendsBoard({ team, color }: { team: string; color: 
           meta={useXg ? `리그 ${xgMs.length}경기 · xG` : `${d.matches.filter((m) => m.shots != null && m.opp_shots != null).length}경기 · 슈팅`}
           info={useXg ? <>
             <p>막대 = xG(리그 경기 · Understat) · 점 = 실제 골 · 선 = 최근 5경기 평균</p>
-            <p className="muted">위 = 우리 팀 · 아래 = 상대</p>
+            <p className="muted">위 = 이 팀 · 아래 = 상대</p>
           </> : <>
             <p>막대 = 슈팅(ESPN) · 선 = 최근 5경기 평균</p>
-            <p className="muted">위 = 우리 팀 · 아래 = 상대</p>
+            <p className="muted">위 = 이 팀 · 아래 = 상대</p>
           </>}
           right={d.has_xg ? (
             <div className="seg5 seg5-head">

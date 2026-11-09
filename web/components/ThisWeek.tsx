@@ -75,7 +75,7 @@ export default function ThisWeek({ team, accent }: { team: string; accent: strin
                 <h4>{opp.team} <span>{opp.covered ? `${opp.absences.length}명` : ""}</span></h4>
                 {opp.covered ? <AbsList items={opp.absences} team={opp.team} empty="결장 없음" />
                   : <p className="tw-empty">결장 정보 없음
-                    <Info label="결장 정보 없음 이유"><p>우리가 다루는 8개 리그 밖 팀이라 결장 정보를 모으지 않습니다.</p></Info></p>}
+                    <Info label="결장 정보 없음 이유"><p>8개 리그 밖 팀이라 결장 정보를 모으지 않습니다.</p></Info></p>}
               </div>
             )}
           </div>

@@ -157,8 +157,8 @@ export default function SquadTab({ team, accent }: { team: string; accent: strin
         <div className="card" style={{ marginTop: 16 }}>
           <SectionHead title="OUT ON LOAN" kr="임대 보낸 선수" meta={`${data.loans!.length}명`}
             info={<>
-              <p>계약은 우리 팀, 지금은 다른 팀에서 뛰는 선수 — 스쿼드·XI·팀 OVR 에서 뺍니다.</p>
-              <p className="muted">행선지 기록(출전 분·OVR)은 우리가 다루는 리그 안에서만 보입니다.</p>
+              <p>계약은 이 팀, 지금은 다른 팀에서 뛰는 선수 — 스쿼드·XI·팀 OVR 에서 뺍니다.</p>
+              <p className="muted">행선지 기록(출전 분·OVR)은 수록 리그 안에서만 보입니다.</p>
             </>} />
           <div className="loan-grid">
             {data.loans!.slice(0, allLoans ? undefined : 8).map((l) => (

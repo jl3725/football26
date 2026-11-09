@@ -103,12 +103,12 @@ export default function NetRumors({ team, accent, logo }: { team: string; accent
   return (
     <div className="net-rumors">
       <div className="net-toolbar">
-        <h4 className="net-h">RUMOUR MAP <span>이적설 지도 · 표적 {d.n_in} · 우리 선수 {d.n_out}</span><Info wide label="이적설 지도 설명">{HEAT_NOTE}<p className="muted">선 굵기 = 열기 · 색 = 단계</p><p className="muted">연결 {d.sources.links}건 중 기사 근거 {d.sources.with_news}건</p></Info></h4>
+        <h4 className="net-h">RUMOUR MAP <span>이적설 지도 · 표적 {d.n_in} · 소속 선수 {d.n_out}</span><Info wide label="이적설 지도 설명">{HEAT_NOTE}<p className="muted">선 굵기 = 열기 · 색 = 단계</p><p className="muted">연결 {d.sources.links}건 중 기사 근거 {d.sources.with_news}건</p></Info></h4>
         <span className="net-legend">{(Object.keys(STAGE) as RumorStage[]).map((k) => <span key={k}><i style={{ background: STAGE[k].c }} />{STAGE[k].ko}</span>)}</span>
       </div>
       <svg viewBox={`0 0 ${W} ${H}`} className="net-svg rm-svg" role="img"
-        aria-label={`${team} 이적설 지도 — 왼쪽은 영입 표적과 경쟁 구단, 오른쪽은 우리 선수와 관심 구단, 선 굵기는 열기`}>
-        {[[XR + 30, "RIVALS 경쟁 구단"], [XT, "TARGETS 표적"], [XC, team.toUpperCase()], [XO, "OUR PLAYERS 우리 선수"], [XS + 40, "SUITORS 관심 구단"]].map(([x, t]) => (
+        aria-label={`${team} 이적설 지도 — 왼쪽은 영입 표적과 경쟁 구단, 오른쪽은 소속 선수와 관심 구단, 선 굵기는 열기`}>
+        {[[XR + 30, "RIVALS 경쟁 구단"], [XT, "TARGETS 표적"], [XC, team.toUpperCase()], [XO, "SQUAD 소속 선수"], [XS + 40, "SUITORS 관심 구단"]].map(([x, t]) => (
           <text key={String(t)} x={Number(x)} y={16} textAnchor="middle" fontSize="10" fontWeight={700} letterSpacing=".06em" fill={hexA("#ffffff", 0.55)}>{t}</text>
         ))}
         {ins.map((x, i) => {
@@ -175,7 +175,7 @@ export default function NetRumors({ team, accent, logo }: { team: string; accent
             <Heat v={x.heat} stage={x.stage} />
           </button>
         ))}
-        {outs.length > 0 && <h5>OUR PLAYERS <span>우리 선수 이적설</span></h5>}
+        {outs.length > 0 && <h5>SQUAD <span>소속 선수 이적설</span></h5>}
         {outs.map((o) => (
           <button key={"lo" + o.player} className={`rm-li${isSel("out", o.player) ? " on" : ""}`} onClick={() => setSel({ kind: "out", x: o })}>
             {o.where?.photo ? <img src={o.where.photo} alt="" /> : <span className="net-cap-ph sm" />}

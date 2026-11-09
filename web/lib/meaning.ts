@@ -47,6 +47,15 @@ export function rankMeaning(rank: number | null | undefined, n: number | null | 
   return m("리그 최하위", "bad");
 }
 
+/** 팀 안 영향력 순위(NETWORK LEADERSHIP) — 상위 3 리더 그룹 · 상위 7 코어(NETWORK 코어와 같은 수) · 절반 안 주축 · 그 밖 로테이션. */
+export function influenceMeaning(rank: number | null | undefined, n: number | null | undefined): Meaning {
+  if (!rank || !n) return m("자료 없음", "avg");
+  if (rank <= 3) return m("리더 그룹", "best");
+  if (rank <= 7) return m("코어", "good");
+  if (rank <= Math.ceil(n / 2)) return m("주축", "avg");
+  return m("로테이션", "weak");
+}
+
 // OVR(현재 기량 45~99) — OVR GUIDE 와 같은 띠. tier()(lib/ui) 도 같은 경계를 쓴다.
 export const OVR_BANDS: { min: number; range: string; en: string; ko: string; desc: string; c: string; deep: string }[] = [
   { min: 90, range: "90+", en: "WORLD CLASS", ko: "월드클래스", desc: "세계 최정상 — 8개 리그 통틀어 10명 안팎", c: "#f9dd7e", deep: "#c2902a" },

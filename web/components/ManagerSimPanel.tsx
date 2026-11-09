@@ -180,10 +180,10 @@ function SimResult({ r, accent }: { r: ManagerSim; accent: string }) {
         <div className="card">
           <h3 style={{ color: accent }}>새 시스템 영입 우선순위 <span className="rating-note">· 강조 역할 · 스쿼드 얇음</span>{" "}
             <Info label="영입 우선순위 설명">
-              <p>새 감독이 많이 쓰는 역할 중 우리 스쿼드에 선수가 적은 자리입니다.</p>
+              <p>새 감독이 많이 쓰는 역할 중 현 스쿼드에 선수가 적은 자리입니다.</p>
               <ul>
                 <li><b>기용 비중</b> — 새 감독이 이 역할에 주는 출전 비중</li>
-                <li><b>현재 N명</b> — 우리 스쿼드의 이 역할 선수 수</li>
+                <li><b>현재 N명</b> — 현 스쿼드의 이 역할 선수 수</li>
               </ul>
             </Info></h3>
           <div className="tf2-list">
@@ -192,7 +192,7 @@ function SimResult({ r, accent }: { r: ManagerSim; accent: string }) {
                 <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12.5 }}>
                   <b>{p.role}</b>
                   <span style={{ display: "inline-flex", alignItems: "center", gap: 5, flexWrap: "wrap", justifyContent: "flex-end" }}
-                    title={`새 감독이 이 역할에 주는 출전 비중 ${Math.round(p.share * 100)}% · 우리 스쿼드의 이 역할 선수 ${p.depth}명`}>
+                    title={`새 감독이 이 역할에 주는 출전 비중 ${Math.round(p.share * 100)}% · 현 스쿼드의 이 역할 선수 ${p.depth}명`}>
                     <span style={{ opacity: 0.55 }}>기용 비중 {Math.round(p.share * 100)}% · 현재 {p.depth}명</span>
                     <MeaningTag sm m={headcountMeaning(p.depth)} />
                   </span>

@@ -363,7 +363,7 @@ def insights(team: str, lead: dict, chem: dict, duos: list, orig: dict, nat: dic
     txt = f"유스 출신 {acq.get('academy', 0)}명 · 최근 두 이적창 영입 {len(recent)}명" + (f"({_fee(fee)})" if fee else "")
     if srcs:
         n_other = sum(s["n"] for s in orig.get("sources", []) if s["league"] == "OTHER")
-        txt += f" · 우리 8개 리그 중 최다 {srcs[0]['league']} {srcs[0]['n']}명" + (f"(그 밖 리그 {n_other}명)" if n_other else "")
+        txt += f" · 8개 리그 중 최다 {srcs[0]['league']} {srcs[0]['n']}명" + (f"(그 밖 리그 {n_other}명)" if n_other else "")
     line = f"유스 {acq.get('academy', 0)}명" + (f" · {_fee(fee)}" if fee else "") + (f" · 최다 {srcs[0]['league']}" if srcs else "")
     out.append({"lens": "origins", "icon": "⌂", "tone": "info", "title": "스쿼드 구성", "text": txt,
                 "evidence": [f"{p['name']} ← {p['origin'].get('from_club') or '?'}" for p in recent[:3]],
@@ -553,14 +553,14 @@ def insights_extra(team: str, nat_web: dict, ti: dict, mg: dict) -> list[dict]:
         if others:
             top = others[0]
             out.append({"lens": "nations", "icon": "⚑", "tone": "info", "title": "대표팀 동료",
-                        "text": f"{nat} 대표팀(월드컵 명단 {len(w['players'])}명) 중 우리 {w['n_ours']}명 — "
+                        "text": f"{nat} 대표팀(월드컵 명단 {len(w['players'])}명) 중 {team} {w['n_ours']}명 — "
                                 f"나머지는 {len(others)}개 클럽, 최다 {top['club']} {top['n']}명",
                         "evidence": [f"{p} ─ {nat} ─ {top['club']}" for p in top["players"][:3]],
                         "big": str(w["n_ours"]), "unit": f"명 {nat} 대표", "flag": nat, "club": top["club"],
                         "line": f"대표팀 동료 최다 {top['club']} {top['n']}명"})
     if ti and ti.get("clubs"):
         c = ti["clubs"][0]
-        txt = f"우리 선수들의 지난 시즌 동료 {ti['n_ties']}명이 {ti['n_clubs']}개 클럽에 — 가장 많은 곳 {c['club']} {len(c['ties'])}명"
+        txt = f"소속 선수들의 지난 시즌 동료 {ti['n_ties']}명이 {ti['n_clubs']}개 클럽에 — 가장 많은 곳 {c['club']} {len(c['ties'])}명"
         if ti.get("reunions"):
             r = ti["reunions"][0]
             txt += f" · 재회: {r['ours']}·{r['mate']}({r['from_club']})"

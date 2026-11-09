@@ -165,15 +165,15 @@ export default function TransferTab({ team, accent }: { team: string; accent: st
       <div className="card" style={{ marginTop: 16, scrollMarginTop: 12 }} id="recruit-pool">
         <h3><Bar c={accent} />SCOUTING POOL <span className="rating-note">· 전 리그{focusRole ? ` · ${TM_BUCKET[focusRole] ?? focusRole}` : ""}</span>{" "}
           <Info label="SCOUTING POOL 설명" wide>
-            <p>8개 리그에서 우리 팀 니즈 포지션에 맞는 후보를 찾습니다. 카드를 누르면 선수 요약, <b>☆</b>를 누르면 위 작업대에 고정됩니다.</p>
+            <p>8개 리그에서 이 팀 니즈 포지션에 맞는 후보를 찾습니다. 카드를 누르면 선수 요약, <b>☆</b>를 누르면 위 작업대에 고정됩니다.</p>
             <ul>
-              <li><b>OVR</b> — 다른 리그 선수는 우리 리그 수준으로 보정한 예상값(아래 작은 숫자 = 현재 리그 OVR)</li>
-              <li><b>스타일 유사도</b> — 우리 팀이 그 자리에 쓰는 플레이 스타일(현재 선수들 평균)과 닮은 정도 0~100</li>
+              <li><b>OVR</b> — 다른 리그 선수는 이 팀 리그 수준으로 보정한 예상값(아래 작은 숫자 = 현재 리그 OVR)</li>
+              <li><b>스타일 유사도</b> — 이 팀이 그 자리에 쓰는 플레이 스타일(현재 선수들 평균)과 닮은 정도 0~100</li>
               <li><b>정책 부합/밖</b> — 최근 두 시즌 영입 나이·이적료 기준과 대조</li>
               <li><b>라이벌</b> — 위키 라이벌·더비 구단 소속, 거래가 드뭅니다</li>
               <li><b>가능성 낮음</b> — 경쟁 팀·강팀의 핵심 주전</li>
               <li><b>계약 N개월</b> — 12개월 안 만료, 이적료가 싸거나 자유계약 가능</li>
-              <li><b>링크</b> — 이 팀과 루머 연결 · <b>선례</b> — 그 리그에서 우리 리그로 온 이적 사례 수</li>
+              <li><b>링크</b> — 이 팀과 루머 연결 · <b>선례</b> — 그 리그에서 이 팀 리그로 온 이적 사례 수</li>
             </ul>
             <p className="muted">추천순 = 니즈 시급도·스타일·전력·가격 순, 가능성 낮음·정책 밖 후보는 뒤로.</p>
           </Info></h3>
@@ -186,7 +186,7 @@ export default function TransferTab({ team, accent }: { team: string; accent: st
           <h3><Bar c={accent} />드림 타깃 <span className="rating-note">· 영입 가능성 낮음</span>{" "}
             <Info label="드림 타깃 설명">
               <p>최상위급이지만 구단 티어·라이벌 관계상 데려오기 어려운 후보입니다.</p>
-              <p className="muted">현재 → 예상 = 다른 리그 선수의 지금 OVR을 우리 리그 수준으로 보정한 값. 스타일 적합 = 이 팀이 그 자리에 쓰는 스타일과의 유사도 0~100.</p>
+              <p className="muted">현재 → 예상 = 다른 리그 선수의 지금 OVR을 이 팀 리그 수준으로 보정한 값. 스타일 적합 = 이 팀이 그 자리에 쓰는 스타일과의 유사도 0~100.</p>
             </Info></h3>
           <div className="rec-grid">
             {rec.longshots.map((l, i) => {
@@ -199,11 +199,11 @@ export default function TransferTab({ team, accent }: { team: string; accent: st
                     onClick={(e) => { e.stopPropagation(); sl.toggle({ player: l.player, club: l.squad, league: l.source_league || "" }); }}>{sl.has(l.player, l.squad) ? "★" : "☆"}</button>
                   {l.photo ? <img className="rec-photo" src={l.photo} alt="" /> : <span className="rec-photo ph" />}
                   <div className="rec-ovr" style={{ color: t.light }}
-                    title={l.cross_league ? `현재 OVR ${l.current_ovr} (${l.source_league} 기준) → 우리 리그 기준 예상 ${l.ovr} · ${t.ko}` : `OVR ${l.ovr} · ${t.ko}`}>{l.ovr}</div>
+                    title={l.cross_league ? `현재 OVR ${l.current_ovr} (${l.source_league} 기준) → 이 팀 리그 기준 예상 ${l.ovr} · ${t.ko}` : `OVR ${l.ovr} · ${t.ko}`}>{l.ovr}</div>
                   <div className="rec-name">{l.player}</div>
                   <div className="rec-club">{l.logo && <img src={l.logo} alt="" />}{l.squad}</div>
                   <div style={{ fontSize: 11, fontWeight: 700, color: t.light }}>{t.ko}</div>
-                  {l.cross_league && l.current_ovr !== l.ovr && <div className="rec-cross" title={`${l.source_league} 현재 ${l.current_ovr} → 우리 리그 예상 ${l.ovr}`}>현재 {l.current_ovr} → {l.ovr}</div>}
+                  {l.cross_league && l.current_ovr !== l.ovr && <div className="rec-cross" title={`${l.source_league} 현재 ${l.current_ovr} → 이 팀 리그 예상 ${l.ovr}`}>현재 {l.current_ovr} → {l.ovr}</div>}
                   {l.bucket_label && <div className="rec-target" style={{ color: accent }}>◎ {l.bucket_label}</div>}
                   {l.style_fit != null && <div className="rec-style" title="이 팀이 그 자리에 쓰는 플레이 스타일(현재 선수들 평균)과의 유사도 0~100">스타일 적합 <b>{l.style_fit}</b></div>}
                   {l.role && <div className="rec-role"><span className={"role-tag " + roleClass(l.role)}>{l.role}</span></div>}

@@ -44,7 +44,7 @@ function Card({ p, accent, team }: { p: DiscoverPick; accent: string; team: stri
     p.policy_ok === true ? { t: "정책 부합", c: "#4fc27f", tip: "구단 이적 정책(최근 두 시즌 영입 나이·이적료)에 맞음" } : null,
   ] as (Badge | null)[]).filter((b): b is Badge => !!b);
   const ovrTitle = p.cross_league
-    ? `현재 OVR ${p.current_ovr} (${p.source_league} 기준) → 우리 리그 기준 예상 ${p.ovr} · ${t.ko}`
+    ? `현재 OVR ${p.current_ovr} (${p.source_league} 기준) → 이 팀 리그 기준 예상 ${p.ovr} · ${t.ko}`
     : `OVR ${p.ovr} · ${t.ko}`;
   return (
     <div className="card hoverable" style={{ padding: 13, cursor: "pointer" }}
@@ -83,7 +83,7 @@ function Card({ p, accent, team }: { p: DiscoverPick; accent: string; team: stri
         <span style={{ marginLeft: "auto", opacity: 0.7 }}>{p.age ?? "?"}세 · {fmtEur(p.value_eur || 0)}</span>
       </div>
       {/* 유사도 바 */}
-      <div style={{ marginTop: 8 }} title={`우리 팀이 이 자리에 쓰는 플레이 스타일과의 유사도 ${p.style_fit} / 100 (${sf.label})`}>
+      <div style={{ marginTop: 8 }} title={`이 팀이 이 자리에 쓰는 플레이 스타일과의 유사도 ${p.style_fit} / 100 (${sf.label})`}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: 11, marginBottom: 2 }}>
           <span style={{ opacity: 0.6 }}>스타일 유사도</span>
           <span style={{ display: "inline-flex", alignItems: "center", gap: 5 }}>

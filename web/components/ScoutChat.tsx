@@ -10,10 +10,10 @@ import Info from "./Info";
 type Msg = { role: "user" | "assistant"; text: string; data?: Scout };
 
 const EXAMPLES = [
-  "우리 팀 요즘 흐름 어때?",
+  "이 팀 요즘 흐름 어때?",
   "여름 보강 우선순위 짜줘",
   "이 팀은 어떤 팀이야?",
-  "de Jong 우리 팀 CM으로 맞아?",
+  "de Jong 이 팀 CM으로 맞아?",
   "Pedri랑 비슷한 선수",
   "이 팀에 Arteta 오면?",
 ];
@@ -61,7 +61,7 @@ function ResultCard({ d, accent, onNavigate }: { d: Scout; accent: string; onNav
                   {p.style_fit != null ? <span style={{ color: scoreMeaning(p.style_fit).c }}> · 스타일 유사도 {p.style_fit}</span> : null}</div>
               </div>
               <div style={{ textAlign: "right", flexShrink: 0 }}
-                title={p.cross_league && p.current_ovr != null ? `현재 OVR ${p.current_ovr} → 우리 리그 기준 예상 ${shown} · ${t.ko}` : `OVR ${shown} · ${t.ko}`}>
+                title={p.cross_league && p.current_ovr != null ? `현재 OVR ${p.current_ovr} → 이 팀 리그 기준 예상 ${shown} · ${t.ko}` : `OVR ${shown} · ${t.ko}`}>
                 <div style={{ fontSize: 15, fontWeight: 800, lineHeight: 1.1, color: t.light }}>{shown}</div>
                 <div style={{ fontSize: 11, fontWeight: 700, color: t.light, opacity: 0.85 }}>{t.ko}</div>
               </div>
@@ -94,7 +94,7 @@ function ResultCard({ d, accent, onNavigate }: { d: Scout; accent: string; onNav
           <Info label="FIT 점수 설명">
             <p><b>FIT SCORE</b> 0~100 — 종합 적합도(높을수록 잘 맞음).</p>
             <p>항목 점수 0~100 · 45+ 보통 · 65+ 높음 · 80+ 매우 높음.</p>
-            <p className="muted">OVR 현재 → 우리 리그 수준으로 보정한 예상값.</p>
+            <p className="muted">OVR 현재 → 이 팀 리그 수준으로 보정한 예상값.</p>
           </Info>
         </div>
         {af && <div style={{ fontSize: 11, opacity: 0.7, marginTop: 6 }}>예산: {af.likely_fee_eur ? fmtEur(af.likely_fee_eur) : "?"} / 상한 {af.ceiling_eur ? fmtEur(af.ceiling_eur) : "?"} → {VERDICT_KO[af.verdict] || af.verdict}</div>}
@@ -358,7 +358,7 @@ export default function ScoutChat({ team, league, accent, onNavigate, embedded }
       {/* 입력 */}
       <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
         <input value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => e.key === "Enter" && send()}
-          placeholder="스카우트에게 질문… (예: 우리 팀 여름 보강 우선순위)"
+          placeholder="스카우트에게 질문… (예: 이 팀 여름 보강 우선순위)"
           style={{ flex: 1, padding: "10px 13px", borderRadius: 10, fontSize: 13, background: hexA("#ffffff", 0.06),
             border: `1px solid ${hexA(accent, 0.3)}`, color: "inherit" }} />
         <button onClick={() => send()} disabled={!input.trim() || loading}

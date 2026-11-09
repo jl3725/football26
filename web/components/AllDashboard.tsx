@@ -290,7 +290,7 @@ export default function AllDashboard({ onPick, switcher, leagueMap }: {
                 ["RESULTS · 3D", pulse.results.length, undefined,
                   `최근 3일 경기 · 경기당 ${(pulse.results.reduce((a, r) => a + r.home.goals + r.away.goals, 0) / pulse.results.length).toFixed(2)}골`],
                 ["SHOCKS", pulse.results.filter((r) => r.upset).length, undefined, "이변 · 최근 3일",
-                  <p key="u">경기 전 이길 확률이 25% 아래였던 팀이 이긴 경기 수(최근 3일). 확률은 경기 전에 기록한 우리 모델 값(없으면 Elo 기준).</p>],
+                  <p key="u">경기 전 이길 확률이 25% 아래였던 팀이 이긴 경기 수(최근 3일). 확률은 경기 전에 기록한 자체 모델 값(없으면 Elo 기준).</p>],
               ] : [
                 ["SUMMER SPEND", s.spend_eur, (v: number) => (v < 1e6 ? "€0" : fmtEur(v)), `여름 이적료 · ${d.leagues.length}개 리그`],
                 ["SIGNINGS", s.signings, undefined, "영입 · 임대 제외"],

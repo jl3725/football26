@@ -498,6 +498,11 @@ export type NetManager = {
   network?: { manager: string; team: string; league: string; photo: string; logo: string; shared: { club: string; mine: string; theirs: string }[] }[];
 };
 export const getNetwork = (t: string, l = _league) => j<NetworkData>(`/api/network/${q(t, l)}`);
+// 선수 화면 INFLUENCE — 팀 안 영향력 순위(NETWORK LEADERSHIP 과 같은 값). OVR·예측엔 안 씀(scripts/backtest_leadership.py)
+export type InfluencePlayer = { influence: number; rank: number; captain_rank: number | null; role: string | null; role_ko: string | null; why: string[] };
+export type InfluenceData = { available: boolean; team?: string; n?: number; armband?: string | null;
+  players?: Record<string, InfluencePlayer>; weights?: Record<string, number> };
+export const getInfluence = (t: string, l = _league) => j<InfluenceData>(`/api/influence/${q(t, l)}`);
 // 이적설 지도(NETWORK RUMOURS 렌즈) — TM 루머 + 열린 시장 뉴스 루머(매체 적중률 가중), src/rumor_map.py
 export type RumorStage = "denied" | "rumour" | "interest" | "talks" | "agreed" | "done";
 export type RumorNews = { outlet: string; journalists: string; stage: RumorStage; date: string; link?: string; headline?: string; trust: number };

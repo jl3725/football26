@@ -19,6 +19,7 @@ import { Skel, SkelCards } from "./Skeleton";
 import { TrendArrow, TrendLine } from "./Trend";
 import SeasonLog from "./SeasonLog";
 import PlayerNews from "./PlayerNews";
+import PlayerInfluence from "./PlayerInfluence";
 import ScoutReport from "./ScoutReport";
 import Info from "./Info";
 
@@ -262,6 +263,7 @@ function Detail({ team, player, accent, heatmap }: { team: string; player: strin
           )}
         </div>
       )}
+      <PlayerInfluence team={d.team || team} player={d.player} accent={accent} />
       {d.value_history && d.value_history.length >= 2 && new Set(d.value_history.map((x) => x.value_eur)).size > 1 && (() => {   // 값이 하나뿐이면 평평한 줄만 남는다
         const vs = d.value_history, vals = vs.map((x) => x.value_eur);
         const mn = Math.min(...vals), mx = Math.max(...vals), rng = mx - mn || 1;

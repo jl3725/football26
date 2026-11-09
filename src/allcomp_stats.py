@@ -493,7 +493,10 @@ def x_tables(read, season: str, version=None) -> tuple[dict, dict]:
     key = ("tbl", season, version)
     if version is not None and key in _CACHE:
         return _CACHE[key]
-    out = rating_table(season_rows(read, season, version))
+    from leagues import SEASON_START  # noqa: PLC0415
+    # 경기별 행은 이번 시즌만 캐시(세부 지표 표가 리그마다 다시 씀) — 지난 시즌 행(1.6만 행, 13MB)은 평점 표를 만든 뒤 쓸 데가 없다(2026-11-09)
+    cur = season == f"{SEASON_START}_{SEASON_START + 1}"
+    out = rating_table(season_rows(read, season, version if cur else None))
     if version is not None:
         _put(key, out)
     return out

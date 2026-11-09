@@ -137,7 +137,7 @@ function FitCard({ r, accent }: { r: Fit; accent: string }) {
             {r.natural_role && r.natural_role !== r.role ? "" : " (본 포지션)"}</div>
           {r.role_note && <div style={{ fontSize: 11.5, color: "#e0a53a", marginTop: 3 }}>⚠ 본 포지션 {ROLE_KO[r.natural_role || ""] || r.natural_role} — {ROLE_KO[r.role] || r.role} 로 평가 중</div>}
           <div style={{ fontSize: 12, marginTop: 4, display: "flex", flexWrap: "wrap", alignItems: "center", gap: "3px 5px" }}>
-            <span>현재 OVR <b>{r.base_ovr}</b> → 우리 리그 예상 <b style={{ color: r.proj_ovr != null ? tier(r.proj_ovr).light : accent }}>{r.proj_ovr}</b></span>
+            <span>현재 OVR <b>{r.base_ovr}</b> → 이 팀 리그 예상 <b style={{ color: r.proj_ovr != null ? tier(r.proj_ovr).light : accent }}>{r.proj_ovr}</b></span>
             {r.proj_ovr != null && <MeaningTag sm m={ovrMeaning(r.proj_ovr)} />}
             <span style={{ opacity: 0.55 }}>({r.target_league})</span>
           </div>
@@ -149,7 +149,7 @@ function FitCard({ r, accent }: { r: Fit; accent: string }) {
             <Info label="FIT SCORE 설명">
               <p><b>FIT SCORE</b> 0~100 — 역할·전술·니즈·리그 적응·성장성·가치 등을 합친 종합 적합도(높을수록 잘 맞음).</p>
               <p>항목 점수 0~100 · 45+ 보통 · 65+ 높음 · 80+ 매우 높음. 리스크는 높을수록 감점.</p>
-              <p className="muted">현재 OVR = 지금 뛰는 리그 기준 · 예상 OVR = 우리 리그 수준으로 보정한 값.</p>
+              <p className="muted">현재 OVR = 지금 뛰는 리그 기준 · 예상 OVR = 이 팀 리그 수준으로 보정한 값.</p>
             </Info>
           </div>
           <MeaningTag sm m={fm} />
@@ -209,7 +209,7 @@ function FitCard({ r, accent }: { r: Fit; accent: string }) {
         </div>
       )}
       <div style={{ marginTop: 8, fontSize: 11, opacity: 0.55 }}>
-        <span title="같은 리그 경로(출신 리그 → 우리 리그) 이적 사례 수">선례 {r.precedent_transfers ?? 0}</span> · 유럽경험 {r.euro_experience ? "O" : "X"}
+        <span title="같은 리그 경로(출신 리그 → 이 팀 리그) 이적 사례 수">선례 {r.precedent_transfers ?? 0}</span> · 유럽경험 {r.euro_experience ? "O" : "X"}
         {r.notes ? ` · ${r.notes}` : ""}
       </div>
     </div>

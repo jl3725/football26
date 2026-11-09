@@ -114,7 +114,7 @@ function Drawer({ m: m0, onClose }: { m: Fixture; onClose: () => void }) {
           {state !== "pre" && m.event_id && <ReviewSections m={m} inPlay={state === "in"} hc={hc} ac={ac} />}
           {state !== "post" && (m.fans || m.elo || m.model) && (
             <section>
-              <h3>PREDICTIONS<span>팬 투표 vs 우리 모델</span>
+              <h3>PREDICTIONS<span>팬 투표 vs 자체 모델</span>
                 <Info label="PREDICTIONS 설명">
                   <ul>
                     <li><b>FANS</b> — Sofascore 앱 사용자 투표</li>

@@ -16,7 +16,7 @@ import { surname } from "@/lib/names";
 type Look = { en: string; ko: string; icon: string; c: string };
 const LOOK: Record<TrackType, Look> = {
   moved: { en: "MOVED", ko: "이적 완료", icon: "swap", c: "#b58cff" },
-  linked: { en: "LINKED", ko: "우리 팀 연결", icon: "link", c: "" },            // 팀 색
+  linked: { en: "LINKED", ko: "이 팀 연결", icon: "link", c: "" },            // 팀 색
   injury: { en: "INJURY", ko: "부상", icon: "medic", c: "#ff7285" },
   return: { en: "BACK", ko: "복귀", icon: "check", c: "#68e0a5" },
   rivals: { en: "RIVALS", ko: "다른 구단 관심", icon: "eye", c: "#f4cf5e" },
@@ -59,7 +59,7 @@ export default function Tracking({ team, accent }: { team: string; accent?: stri
       <SectionHead title="TRACKING" kr="영입 후보 소식"
         meta={`SHORTLIST ${players.length}명${t.nNew ? ` · 새 소식 ${t.nNew}` : ""}`}
         info={<>
-          <p>Recruit 작업대에 고정한 후보의 최근 14일 변화 — 이적 완료 · 우리 팀 연결 · 부상·복귀 · 다른 구단 관심 · 시장가치(적정 이적료 범위) · 경기(평점 8.0+ 또는 공격포인트 2+, 부상 아닌 결장 2경기+) · 폼(OVR 2주 ±3).</p>
+          <p>Recruit 작업대에 고정한 후보의 최근 14일 변화 — 이적 완료 · 이 팀 연결 · 부상·복귀 · 다른 구단 관심 · 시장가치(적정 이적료 범위) · 경기(평점 8.0+ 또는 공격포인트 2+, 부상 아닌 결장 2경기+) · 폼(OVR 2주 ±3).</p>
           <p className="muted">테 색 = 가장 중요한 새 소식. NEW = 최근 7일 안의 읽지 않은 소식(이 브라우저 기준).</p>
         </>}
         right={t.nNew ? <button className="ib5-all" onClick={() => t.markAll(t.data!.alerts.map((a) => a.id))}>모두 읽음</button> : null} />
