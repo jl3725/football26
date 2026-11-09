@@ -40,7 +40,7 @@ export default function PlayerInfluence({ team, player, accent }: { team: string
         <Info wide label="영향력 기준">
           <p><b>영향력 0~100</b> — 팀 안 상대값. NETWORK 탭 LEADERSHIP 과 같은 값</p>
           <p>가중치 — {w}</p>
-          <p className="muted">OVR·승부 예측엔 미반영 — 26/27 검증에서 주장 결장·선발 연속성·베테랑 수가 Elo + 선발 전력 위에 예측을 더 낫게 하지 못한 결과(로그 손실 개선 0.001 이하)</p>
+          <p className="muted">OVR·승부 예측엔 미반영 — 백테스트(2026-11, 두 시즌 약 2,900경기)에서 주장 결장·선발 연속성·베테랑 수가 Elo + 선발 전력 위에 예측을 더 낫게 하지 못한 결과(로그 손실 개선 0.001 이하)</p>
         </Info>
       </div>
       <div className="pd-inf-row">
