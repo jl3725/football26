@@ -27,6 +27,12 @@ if ((Get-Date).DayOfWeek -eq [System.DayOfWeek]::Wednesday) {
     Finish 0
 }
 
+# 깨어남·로그온 트리거로도 불린다 — 20시간 안에 끝까지 돈 적 있으면 건너뜀(아침에 깨어나 따라잡았으면 11:40 은 쉼)
+if (Test-RecentRun "sofascore-daily" 20) {
+    Write-Host "[sofascore-daily] 20시간 안에 이미 받음 — 건너뜀"
+    Finish 0
+}
+if (-not (Wait-Network)) { Finish 1 }
 Write-Host "[sofascore-daily] $(Get-Date -Format s) git pull"
 if (-not (Sync-Main)) {
     Write-Host "[sofascore-daily] pull 실패 — 중단"
@@ -76,5 +82,6 @@ if ($LASTEXITCODE -eq 0) {
     git commit -m $msg -- $Paths
     $pushed = Push-Main "sofascore-daily"
 }
+Set-RunDone "sofascore-daily"   # 일부 리그 실패여도 끝까지 돈 날은 따라잡기 대상 아님(실패 리그는 build_season 이 이미 한 번 더 받음)
 Write-Host "[sofascore-daily] done (build exit $BuildCode)"
 Finish $BuildCode

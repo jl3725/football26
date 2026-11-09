@@ -16,6 +16,9 @@ New-Item -ItemType Directory -Force $LogDir | Out-Null
 Start-Transcript -Path (Join-Path $LogDir ("fanvote-agent-{0:yyyyMMdd}.log" -f (Get-Date))) -Append | Out-Null
 function Finish([int]$code) { Stop-Transcript | Out-Null; exit $code }
 
+# 깨어남·로그온 트리거로도 불린다(scripts/register_fanvote_agent.ps1) — 6시간 안에 돈 적 있으면 건너뜀(하루 두 번 10:30·18:30)
+if (Test-RecentRun "fanvote" 6) { Write-Host "[fanvote] 6시간 안에 이미 받음 — 건너뜀"; Finish 0 }
+if (-not (Wait-Network)) { Finish 1 }
 if (-not (Sync-Main)) { Write-Host "[fanvote] pull 실패 — 중단"; Finish 1 }
 
 $t0 = Get-Date
@@ -34,4 +37,5 @@ if ($LASTEXITCODE -ne 0) {
     $null = Push-Main "fanvote"
 }
 if ($failed) { Finish 1 }
+Set-RunDone "fanvote"
 Finish 0

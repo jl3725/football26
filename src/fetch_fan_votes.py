@@ -57,6 +57,7 @@ def main() -> int:
     ours = _our_teams()
     now = time.time()
     rows = []
+    answered = 0   # Sofascore 가 일정 목록에 답한 대회 수 — 0 이면 원천 실패, 아니면 '경기 없음'은 정상(A매치 휴식기)
     for ut, comp in TOURNAMENTS.items():
         seasons = _get(f"/unique-tournament/{ut}/seasons")
         if not seasons or not seasons.get("seasons"):
@@ -66,6 +67,7 @@ def main() -> int:
         events = []
         for page in range(2):
             d = _get(f"/unique-tournament/{ut}/season/{sid}/events/next/{page}")
+            answered += d is not None
             events += (d or {}).get("events", [])
             if not d or not d.get("hasNextPage"):
                 break
@@ -98,7 +100,11 @@ def main() -> int:
         print(f"[fan_votes] {comp}: {n}경기")
     close()
     if not rows:
-        print("[fan_votes] 수집 0건 — 기존 파일 유지")
+        # 11/08·11/09 A매치 휴식기(다음 리그 경기 11/20)에 '0건 = 실패'로 찍혀 DATA STATUS 가 빨간불이었다 — 원천이 답했으면 정상
+        if answered:
+            print(f"[fan_votes] 앞으로 {DAYS}일 안 경기 없음(A매치 휴식기 등) — 기존 파일 유지")
+            return 0
+        print("[fan_votes] 수집 0건(Sofascore 응답 없음) — 기존 파일 유지")
         return 1
     new = pd.DataFrame(rows)
     if OUT.exists():   # 끝난 경기의 마지막 투표는 7일간 남긴다 — 경기 리뷰가 '팬 예측 적중'을 판정

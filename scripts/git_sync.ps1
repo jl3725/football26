@@ -8,6 +8,42 @@
 # 사용: . (Join-Path $PSScriptRoot "git_sync.ps1") 뒤 Sync-Main / Push-Main "태그"
 # git 출력은 Out-Host 로 — 함수 반환값에 섞이면 늘 참으로 읽힌다.
 
+# 절전에서 깨어난 직후엔 와이파이가 늦게 붙는다 — 그 사이 pull 이 실패·멈춤(11/07 05:08 실행이 절전을 끼고 50시간 걸림).
+# 느린 연결은 60초에 끊고(멈춘 채 남지 않게) 실행 시작 전에 github.com 연결을 기다린다.
+$env:GIT_HTTP_LOW_SPEED_LIMIT = "1000"
+$env:GIT_HTTP_LOW_SPEED_TIME = "60"
+
+function Wait-Network([int]$Seconds = 600) {
+    $end = (Get-Date).AddSeconds($Seconds)
+    $first = $true
+    while ((Get-Date) -lt $end) {
+        try {
+            $c = New-Object System.Net.Sockets.TcpClient
+            $ok = $c.ConnectAsync("github.com", 443).Wait(5000) -and $c.Connected
+            $c.Close()
+            if ($ok) { return $true }
+        } catch { }
+        if ($first) { Write-Host "[git-sync] 네트워크 기다리는 중(최대 $Seconds 초)"; $first = $false }
+        Start-Sleep -Seconds 15
+    }
+    Write-Host "[git-sync] 네트워크 없음 — 중단"
+    return $false
+}
+
+# 놓친 실행 따라잡기 — 작업 스케줄러의 '놓친 실행 시작'(StartWhenAvailable)이 Modern Standby·최대 절전 뒤엔 안 돌 때가 있다
+# (11/09 07:54 깨어난 뒤 sofascore-daily 11/07·11/08 분이 안 돎). 그래서 '깨어남·로그온' 트리거를 더 걸고, 정해진 시간 안에
+# 이미 끝까지 돈 적 있으면 건너뛴다. 표시 파일: logs/.ok-<이름> (마지막으로 끝까지 돈 시각)
+function Test-RecentRun([string]$Name, [double]$Hours) {
+    $f = Join-Path $PSScriptRoot "..\logs\.ok-$Name"
+    if (-not (Test-Path $f)) { return $false }
+    return ((Get-Date) - (Get-Item $f).LastWriteTime).TotalHours -lt $Hours
+}
+
+function Set-RunDone([string]$Name) {
+    $f = Join-Path $PSScriptRoot "..\logs\.ok-$Name"
+    Set-Content -Path $f -Value (Get-Date -Format s) -Encoding ascii
+}
+
 function Repair-Unmerged {
     # 자동 보관(autostash)을 다시 얹다 충돌해 남은 파일 — 'unmerged' 가 남으면 그 뒤 모든 로컬 수집의 pull 이 실패했다
     # (10/31 · 11/03 팬 투표 · Sofascore 평점이 그동안 안 올라감). data/ 아래 파일은 올라온 값(HEAD)이 기준 — 로컬 수정은 평가 실행 등

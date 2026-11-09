@@ -23,6 +23,12 @@ function Finish([int]$code) {
     exit $code
 }
 
+# 깨어남·로그온 트리거로도 불린다 — 6일 안에 끝까지 돈 적 있으면 건너뜀(수요일을 놓친 주만 깨어날 때 따라잡기)
+if (Test-RecentRun "season-weekly" 144) {
+    Write-Host "[season-agent] 6일 안에 이미 빌드함 — 건너뜀"
+    Finish 0
+}
+if (-not (Wait-Network)) { Finish 1 }
 Write-Host "[season-agent] $(Get-Date -Format s) git pull"
 if (-not (Sync-Main)) {
     Write-Host "[season-agent] pull 실패 — 중단"
@@ -59,5 +65,6 @@ if ($LASTEXITCODE -eq 0) {
     # 충돌이면 충돌 칸은 이번 수집 값으로(scripts/git_sync.ps1) — 예전엔 '충돌 중'으로 멈춰 주간 수집분이 안 올라갔다(10/28)
     $pushed = Push-Main "season-agent"
 }
+Set-RunDone "season-weekly"
 Write-Host "[season-agent] done (build exit $BuildCode)"
 Finish $BuildCode
