@@ -4618,7 +4618,8 @@ _SRC_LABEL = {"EPL": "EPL", "LaLiga": "라리가", "SerieA": "세리에A",
               "Bundesliga": "분데스리가", "Ligue1": "리그1",
               "LigaPortugal": "포르투갈 리그", "Eredivisie": "에레디비시",
               "BelgianProLeague": "벨기에 리그", "Championship": "챔피언십", "SuperLig": "쉬페르리그",
-              "AustrianBundesliga": "오스트리아 리그", "DanishSuperliga": "덴마크 리그", "SwissSuperLeague": "스위스 리그"}
+              "AustrianBundesliga": "오스트리아 리그", "DanishSuperliga": "덴마크 리그", "SwissSuperLeague": "스위스 리그",
+              "MLS": "MLS"}
 
 
 def _formation_bucket_needs(team: str, league: str) -> dict:

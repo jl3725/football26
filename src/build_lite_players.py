@@ -67,7 +67,7 @@ GROUP = {"keepers": "GK", "defenders": "DF", "midfielders": "MF", "attackers": "
 def stat_base(league: str, season: str) -> str | None:
     """그 시즌 FotMob 통계 파일 경로의 앞부분(…/season/<id>/)."""
     from fetch_fotmob_ratings import FOTMOB_ID, season_links  # noqa: PLC0415
-    url = season_links(FOTMOB_ID[league]).get(season)
+    url = season_links(FOTMOB_ID[league], league).get(season)
     return url.rsplit("/", 1)[0] + "/" if url else None
 
 

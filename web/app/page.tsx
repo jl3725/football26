@@ -16,7 +16,7 @@ import { MatchPreviewProvider } from "@/components/MatchPreview";
 import { LiveProvider } from "@/lib/live";
 import { StandingsProvider } from "@/lib/standings";
 import { SkelTab } from "@/components/Skeleton";
-import { DEFAULT_TEAM, LEAGUE_TABS, leagueLabel as leagueLabelOf, leagueName as leagueNameOf } from "@/lib/leagues";
+import { DEFAULT_TEAM, LEAGUE_TABS, leagueLabel as leagueLabelOf, leagueName as leagueNameOf, leagueSeasonLabel } from "@/lib/leagues";
 
 // 화면별 코드 나누기 — 홈·팀 탭은 열 때 받는다(첫 화면 JS 를 줄여 모바일에서 덜 무겁게, 2026-10-22).
 // 첫 화면이 뜬 뒤 쉬는 시간에 나머지도 미리 받아 탭을 눌렀을 때 기다리지 않게 한다(prefetchViews — 같은 import 라 덩어리 하나).
@@ -220,7 +220,7 @@ export default function Page() {
     }
   }
 
-  const seasonLabel = ctx ? ctx.data_season : "";
+  const seasonLabel = ctx ? leagueSeasonLabel(league, ctx.data_season) : "";   // MLS = '2026'
   const win = ctx?.window;
 
   return (

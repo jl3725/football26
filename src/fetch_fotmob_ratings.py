@@ -21,7 +21,7 @@ import time
 import pandas as pd
 import requests
 
-from leagues import LEAGUES, SEASON_START, data_path
+from leagues import LEAGUES, SEASON_START, data_path, token_of_fm_season
 import team_names as tn  # noqa: F401
 from squads import to_ours
 
@@ -49,15 +49,17 @@ def _get(url: str):
     return None
 
 
-def season_links(fid: int) -> dict[str, str]:
-    """{'2026_2027': 'https://data.fotmob.com/stats/47/season/36781/rating.json', …}"""
+def season_links(fid: int, league: str | None = None) -> dict[str, str]:
+    """{'2026_2027': 'https://data.fotmob.com/stats/47/season/36781/rating.json', …} — 달력 연도 리그(MLS)는 '2026' → '2026_2027'
+    (leagues.token_of_fm_season, 2027 단축 시즌도 같은 토큰 — 목록 앞(최신)이 이긴다)."""
     d = _get(f"https://www.fotmob.com/api/data/leagues?id={fid}")
-    out = {}
+    out, year = {}, {}
     for s in ((d or {}).get("stats") or {}).get("seasonStatLinks") or []:
-        name = str(s.get("Name") or "")                 # '2026/2027'
-        a, _, b = name.partition("/")
-        if a.isdigit() and b.isdigit() and s.get("TournamentId"):
-            out[f"{a}_{b}"] = f"https://data.fotmob.com/stats/{fid}/season/{s['TournamentId']}/rating.json"
+        name = str(s.get("Name") or "")
+        tok = token_of_fm_season(league, name)            # '2026/2027' → '2026_2027'
+        y = int(name[:4]) if name[:4].isdigit() else 0
+        if tok and s.get("TournamentId") and y >= year.get(tok, 0):   # 같은 토큰이면 뒤(예전 규칙)·해가 큰 쪽(MLS 2027 단축 시즌)
+            out[tok], year[tok] = f"https://data.fotmob.com/stats/{fid}/season/{s['TournamentId']}/rating.json", y
     return out
 
 
@@ -127,7 +129,7 @@ def main() -> int:
         fid = FOTMOB_ID.get(lg)
         if not fid:
             continue
-        links = season_links(fid)
+        links = season_links(fid, lg)
         for season in seasons:
             out = data_path("fotmob_ratings", lg, season)
             if season != seasons[0] and out.exists():

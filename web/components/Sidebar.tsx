@@ -16,8 +16,9 @@ function nextSeasonLabel(cur: string): string {
   return `${String(a).padStart(2, "0")}/${String(b).padStart(2, "0")}`;
 }
 
-// 리그 순위 → 진출권/강등 존. EPL 기준(잉글랜드 5 UCL 보유 시즌).
-function zoneOf(rank: number, total: number): { cls: string; tag: string } {
+// 리그 순위 → 진출권/강등 존. EPL 기준(잉글랜드 5 UCL 보유 시즌). UEFA 밖(MLS)은 강등·유럽대항전이 없어 1위(서포터즈 실드)만.
+function zoneOf(rank: number, total: number, euro = true): { cls: string; tag: string } {
+  if (!euro) return rank === 1 ? { cls: "z-title", tag: "실드" } : { cls: "", tag: "" };
   if (total >= 6 && rank >= total - 2) return { cls: "z-rel", tag: "강등" };
   if (rank === 1) return { cls: "z-title", tag: "우승" };
   if (rank <= 5) return { cls: "z-ucl", tag: "UCL" };
@@ -45,6 +46,7 @@ export default function Sidebar({
   const nextLabel = next?.season_label || nextSeasonLabel(seasonLabel);
   const total = teams.length;
   const leagueTitle = leagueName(league);
+  const euro = (leagueInfo(league)?.confed ?? "UEFA") === "UEFA";
 
   // 현재 데이터 시즌: 순위순 — 리그 경기 중·직후엔 잠정 순위(lib/standings: 공식 순위 + 라이브 스코어)
   const ls = useStandings(league);
@@ -130,7 +132,7 @@ export default function Sidebar({
       <div className="team-scroll">
         {seasonTab === "cur"
           ? curShown.map((t) => {
-              const z = zoneOf(t.rank, total);
+              const z = zoneOf(t.rank, total, euro);
               return (
                 <button key={t.name}
                   className={`team-btn ${z.cls}${t.name === sel ? " active" : ""}`}
@@ -161,7 +163,10 @@ export default function Sidebar({
         {(seasonTab === "cur" ? curShown : nextShown).length === 0 && <div className="empty">검색 결과 없음</div>}
       </div>
 
-      {seasonTab === "cur" && (
+      {seasonTab === "cur" && !euro && (
+        <div className="zone-legend"><span><i className="z-dot z-title" />서포터즈 실드(정규 시즌 1위) · 우승은 플레이오프</span></div>
+      )}
+      {seasonTab === "cur" && euro && (
         <div className="zone-legend">
           <span><i className="z-dot z-title" />우승</span>
           <span><i className="z-dot z-ucl" />UCL</span>

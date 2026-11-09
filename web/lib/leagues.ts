@@ -18,6 +18,8 @@ export type LeagueInfo = {
   lite?: boolean;
   fotmob?: number;      // FotMob 리그 id — 라이트 리그 라이브 스코어(src/leagues.py fotmob_id 와 같은 값)
   soon?: boolean;       // 준비 중(흐리게, 선택 불가)
+  calendarUntil?: number; // 달력 연도 시즌의 마지막 해(MLS 2026 — src/leagues.py calendar_until 과 같은 값)
+  confed?: string;      // UEFA 밖(MLS 'CONCACAF') — 순위표에 유럽대항전·강등 색을 칠하지 않는다
 };
 
 export const LEAGUE_LIST: LeagueInfo[] = [
@@ -36,7 +38,7 @@ export const LEAGUE_LIST: LeagueInfo[] = [
   { key: "SwissSuperLeague", name: "Swiss Super League", label: "SWITZERLAND", short: "Switzerland", abbr: "Swiss", ko: "스위스", flag: "🇨🇭", espn: "sui.1", team: "Young Boys", tier: 3, lite: true, fotmob: 69 },
   { key: "Brazil", name: "Brasileirão", label: "BRAZIL", short: "Brazil", abbr: "Brazil", ko: "브라질", flag: "🇧🇷", espn: "bra.1", team: "", tier: 3, soon: true },
   { key: "Argentina", name: "Liga Profesional", label: "ARGENTINA", short: "Argentina", abbr: "Argentina", ko: "아르헨티나", flag: "🇦🇷", espn: "arg.1", team: "", tier: 3, soon: true },
-  { key: "MLS", name: "MLS", label: "MLS", short: "MLS", abbr: "MLS", ko: "MLS", flag: "🇺🇸", espn: "usa.1", team: "", tier: 3, soon: true },
+  { key: "MLS", name: "Major League Soccer", label: "MLS", short: "MLS", abbr: "MLS", ko: "MLS", flag: "🇺🇸", espn: "usa.1", team: "Los Angeles FC", tier: 2, lite: true, fotmob: 130, calendarUntil: 2026, confed: "CONCACAF" },
 ];
 
 export const LEAGUES_ACTIVE = LEAGUE_LIST.filter((l) => !l.soon);
@@ -51,4 +53,11 @@ export const leagueOfCode = (code?: string | null) => (code ? BY_CODE.get(code) 
 export const isLeagueCode = (code?: string | null) => !!leagueOfCode(code);
 export const DEFAULT_TEAM: Record<string, string> = Object.fromEntries(LEAGUES_ACTIVE.map((l) => [l.key, l.team]));
 export const LEAGUE_TABS = LEAGUES_ACTIVE.map((l) => ({ key: l.key, label: l.label }));
+// 시즌 표기 — 달력 연도 리그(MLS)는 '26/27' 대신 그 해 '2026'(시즌 토큰 Y_Y+1 = Y 년 시즌, src/leagues.py season_window)
+export const leagueSeasonLabel = (k: string | null | undefined, label: string) => {
+  const c = leagueInfo(k)?.calendarUntil, m = /^(\d{2})\/(\d{2})$/.exec(label || "");
+  if (!c || !m) return label;
+  const y = 2000 + Number(m[1]);
+  return y <= c ? String(y) : label;
+};
 export const TIER_LABEL: Record<LeagueInfo["tier"], string> = { 1: "TIER 1", 2: "TIER 2", 3: "TIER 3" };

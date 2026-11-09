@@ -57,6 +57,15 @@ def expected(r_h: float, r_a: float, neutral: bool = False) -> float:
     return 1.0 / (1.0 + 10 ** (-(r_h + (0 if neutral else HFA) - r_a) / 400.0))
 
 
+def _first_season_end(league: str, date: str) -> str:
+    """그 리그 첫 경기 날짜 → 그 시즌이 끝난 다음 날 기준(이날부터 처음 보는 팀 = 승격팀). 보통 다음 7/1, 달력 연도 리그는 그 해 끝."""
+    from leagues import is_calendar, season_window  # noqa: PLC0415
+    y = int(date[:4])
+    if is_calendar(league, y):
+        return season_window(league, y)[1]
+    return f"{y + (1 if date[5:7] >= '07' else 0)}-07-01"
+
+
 def run(ms: pd.DataFrame, bases: dict[str, float], snap_dates: set[str] | None = None) -> tuple[dict, dict]:
     """경기 표를 날짜순으로 돌려 최종 Elo 와 (요청한 날짜 아침 기준) 스냅숏 {날짜: {팀: Elo}}.
     bases: {리그: 기본값}. 팀 리그는 경기 행의 lg_h/lg_a 로 안다."""
@@ -65,18 +74,18 @@ def run(ms: pd.DataFrame, bases: dict[str, float], snap_dates: set[str] | None =
     snaps: dict[str, dict] = {}
     want = sorted(snap_dates or [])
     wi = 0
-    first_season_end = None
+    first_end: dict[str, str] = {}          # 리그별 첫 시즌 끝 — 달력 연도 리그(MLS 2월 시작)가 섞여도 유럽 팀이 승격팀으로 안 깎이게
     for r in ms.itertuples(index=False):
         while wi < len(want) and want[wi] <= r.date:
             snaps[want[wi]] = dict(elo)
             wi += 1
-        if first_season_end is None:
-            first_season_end = f"{int(r.date[:4]) + (1 if r.date[5:7] >= '07' else 0)}-07-01"
         for team, lg in ((r.home, r.lg_h), (r.away, r.lg_a)):
+            if lg and lg not in first_end:
+                first_end[lg] = _first_season_end(lg, r.date)
             if team not in elo:
                 base = bases.get(lg, START_BASE) if lg else START_BASE
                 # 첫 시즌 뒤에 처음 보는 우리 리그 팀 = 승격팀 → 기본값보다 낮게
-                elo[team] = base - (80.0 if lg and r.date >= first_season_end else 0.0)
+                elo[team] = base - (80.0 if lg and r.date >= first_end[lg] else 0.0)
             if lg:
                 seen_lg[team] = lg
         h, a = elo[r.home], elo[r.away]

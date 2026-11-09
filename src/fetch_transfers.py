@@ -77,7 +77,8 @@ def _parse_row(tr) -> dict | None:
 
 def scrape_transfers(team: str, slug: str, vid: int, window: str = "s") -> list[dict] | None:
     """window: 's'=여름, 'w'=겨울 (?w_s 쿼리 파라미터). 요청 실패(차단 202 포함) 시 None."""
-    url = f"https://www.transfermarkt.com/{slug}/transfers/verein/{vid}/saison_id/{SEASON}"
+    from leagues import ACTIVE_LEAGUE, tm_season  # noqa: PLC0415 — 달력 연도 리그(MLS)는 한 해 앞
+    url = f"https://www.transfermarkt.com/{slug}/transfers/verein/{vid}/saison_id/{tm_season(ACTIVE_LEAGUE, SEASON)}"
     r = None
     for attempt in range(3):
         try:

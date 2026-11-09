@@ -62,7 +62,8 @@ def _is_form_q(ql: str) -> bool:
     return (any(w in ql for w in FORM_WORDS) or bool(FORM_RE.search(ql))
             or (RATING_WORD in ql and any(w in ql for w in RATING_WITH)))
 # 더 구체적인 리그가 먼저 — '오스트리아 분데스리가'가 분데스리가로, '덴마크 수페르리가'가 쉬페르리그로 잡히지 않게(첫 일치를 쓴다)
-LEAGUE_WORDS = {"AustrianBundesliga": ("오스트리아", "austria"), "Championship": ("챔피언십", "championship", "efl"),
+LEAGUE_WORDS = {"MLS": ("mls", "메이저리그 사커", "메이저 리그 사커", "major league soccer", "미국 리그"),
+                "AustrianBundesliga": ("오스트리아", "austria"), "Championship": ("챔피언십", "championship", "efl"),
                 "DanishSuperliga": ("덴마크", "superliga", "danish"),
                 "SuperLig": ("쉬페르", "튀르키예", "터키", "super lig", "süper lig"),
                 "SwissSuperLeague": ("스위스", "swiss", "super league"),

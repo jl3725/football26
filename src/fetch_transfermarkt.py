@@ -267,6 +267,8 @@ def season_clubs(league: str = ACTIVE_LEAGUE, season: int | None = None) -> dict
     from teammeta import TEAM_VEREIN
 
     season = current_window()["season_id"] if season is None else season
+    from leagues import tm_season  # noqa: PLC0415
+    season = tm_season(league, season)                 # 달력 연도 리그(MLS 2026 시즌 = saison_id 2025)
     cfg = LEAGUES[league]
     static = TEAM_TM_BY_LEAGUE.get(league) or (_lite_tm(league) if cfg.lite else EPL_TEAM_TM)
     url = f"https://www.transfermarkt.com/{cfg.tm_slug}/startseite/wettbewerb/{cfg.tm_id}/saison_id/{season}"
@@ -428,7 +430,8 @@ def search_player(name: str) -> dict | None:
 
 def scrape_team(team: str) -> list[dict]:
     slug, vid = TEAM_TM[team]
-    url = f"https://www.transfermarkt.com/{slug}/kader/verein/{vid}/saison_id/{SEASON}/plus/1"
+    from leagues import tm_season  # noqa: PLC0415
+    url = f"https://www.transfermarkt.com/{slug}/kader/verein/{vid}/saison_id/{tm_season(ACTIVE_LEAGUE, SEASON)}/plus/1"
     r = tm_http.get(url, headers=H, timeout=25)
     if r.status_code != 200:
         print(f"  [{team}] HTTP {r.status_code}")

@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { getCalendar, getOpsStatus, type CalEvent, type Context, type OpsState } from "@/lib/api";
 import { seasonChip } from "@/lib/season";
+import { leagueSeasonLabel } from "@/lib/leagues";
 import { TONE } from "@/lib/meaning";
 
 // DATA 칩 — 수집 에이전트 상태 한 줄 요약(지연 > 일부 실패 > 정상), 누르면 /status
@@ -62,7 +63,7 @@ export default function StatusBar({ accent, ctx, league = "EPL" }: { accent: str
       </div>
       {ctx && (
         <div className="sb-season">
-          <span className="sb-season-done" title={seasonChip(ctx.window, ctx.data_season)}>{seasonChip(ctx.window, ctx.data_season, true)}</span>
+          <span className="sb-season-done" title={seasonChip(ctx.window, leagueSeasonLabel(league, ctx.data_season))}>{seasonChip(ctx.window, leagueSeasonLabel(league, ctx.data_season), true)}</span>
           {/* 이적시장은 열렸을 때만 — '마감'은 대부분의 날에 붙는 기본 상태라 뺐다 */}
           {ctx.window.is_open && <span className="sb-season-open" style={{ background: accent }}>{ctx.window.kr} 이적시장 OPEN</span>}
         </div>
