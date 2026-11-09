@@ -1,12 +1,12 @@
 {
- "date": "2026-11-08",
+ "date": "2026-11-09",
  "model": "v3.18",
- "checked": 45841,
+ "checked": 53186,
  "mismatches": [],
  "leagues": {
   "EPL": {
    "teams": 20,
-   "checked": 3640,
+   "checked": 3662,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -14,7 +14,7 @@
   },
   "AustrianBundesliga": {
    "teams": 12,
-   "checked": 2559,
+   "checked": 2561,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -22,7 +22,7 @@
   },
   "BelgianProLeague": {
    "teams": 18,
-   "checked": 3407,
+   "checked": 3424,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -30,7 +30,7 @@
   },
   "Bundesliga": {
    "teams": 18,
-   "checked": 3317,
+   "checked": 3326,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -38,7 +38,7 @@
   },
   "Championship": {
    "teams": 24,
-   "checked": 5091,
+   "checked": 5095,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -46,7 +46,7 @@
   },
   "DanishSuperliga": {
    "teams": 12,
-   "checked": 2609,
+   "checked": 2607,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -54,7 +54,7 @@
   },
   "Eredivisie": {
    "teams": 18,
-   "checked": 3428,
+   "checked": 3439,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -62,7 +62,7 @@
   },
   "LaLiga": {
    "teams": 20,
-   "checked": 3872,
+   "checked": 3868,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -70,51 +70,77 @@
   },
   "LigaPortugal": {
    "teams": 18,
-   "checked": 3474,
+   "checked": 3497,
    "mismatches": 0,
    "changed": 1,
    "model_changed": 0,
    "changes_top": [
     {
      "team": "Santa Clara",
-     "player": "Frederico Silva",
-     "from": 52,
-     "to": 50,
-     "d": -2,
-     "since": "2026-11-08",
+     "player": "Henrique Silva",
+     "from": 50,
+     "to": 52,
+     "d": 2,
+     "since": "2026-11-09",
      "model_change": false
     }
    ]
   },
   "Ligue1": {
    "teams": 18,
-   "checked": 3326,
+   "checked": 3342,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
    "changes_top": []
   },
-  "SerieA": {
-   "teams": 20,
-   "checked": 3842,
+  "MLS": {
+   "teams": 30,
+   "checked": 7202,
    "mismatches": 0,
-   "changed": 1,
+   "changed": 3,
    "model_changed": 0,
    "changes_top": [
     {
-     "team": "Cagliari",
-     "player": "Alessandro Romano",
-     "from": 70,
-     "to": 71,
-     "d": 1,
-     "since": "2026-11-08",
+     "team": "Columbus Crew",
+     "player": "Hugo Picard",
+     "from": 69,
+     "to": 65,
+     "d": -4,
+     "since": "2026-11-09",
+     "model_change": false
+    },
+    {
+     "team": "Colorado Rapids",
+     "player": "Sayed Abu Farkhi",
+     "from": 63,
+     "to": 60,
+     "d": -3,
+     "since": "2026-11-09",
+     "model_change": false
+    },
+    {
+     "team": "Philadelphia Union",
+     "player": "Philippe Ossibadjouo",
+     "from": 62,
+     "to": 59,
+     "d": -3,
+     "since": "2026-11-09",
      "model_change": false
     }
    ]
   },
+  "SerieA": {
+   "teams": 20,
+   "checked": 3856,
+   "mismatches": 0,
+   "changed": 0,
+   "model_changed": 0,
+   "changes_top": []
+  },
   "SuperLig": {
    "teams": 18,
-   "checked": 3994,
+   "checked": 3983,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -122,7 +148,7 @@
   },
   "SwissSuperLeague": {
    "teams": 12,
-   "checked": 2762,
+   "checked": 2764,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,

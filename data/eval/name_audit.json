@@ -312,9 +312,9 @@
    "orphans": []
   },
   "fotmob_ratings": {
-   "total": 291,
-   "exact": 285,
-   "rule": 5,
+   "total": 300,
+   "exact": 293,
+   "rule": 6,
    "ambiguous": 0,
    "orphan": 0,
    "orphans": [],
@@ -599,13 +599,13 @@
    "orphans": []
   },
   "fotmob_ratings": {
-   "total": 321,
-   "exact": 311,
+   "total": 326,
+   "exact": 316,
    "rule": 7,
    "ambiguous": 0,
    "orphan": 0,
    "orphans": [],
-   "minutes": 6
+   "minutes": 5
   },
   "s365_ratings": {
    "total": 480,
@@ -889,8 +889,8 @@
    "orphans": []
   },
   "fotmob_ratings": {
-   "total": 287,
-   "exact": 285,
+   "total": 291,
+   "exact": 289,
    "rule": 1,
    "ambiguous": 0,
    "orphan": 0,
@@ -909,7 +909,7 @@
  },
  "SerieA 2026_2027": {
   "wiki_squads": {
-   "total": 882,
+   "total": 883,
    "exact": 594,
    "rule": 4,
    "ambiguous": 1,
@@ -1216,8 +1216,8 @@
    "orphans": []
   },
   "fotmob_ratings": {
-   "total": 332,
-   "exact": 331,
+   "total": 339,
+   "exact": 338,
    "rule": 1,
    "ambiguous": 0,
    "orphan": 0,
@@ -1462,8 +1462,8 @@
    "orphans": []
   },
   "fotmob_ratings": {
-   "total": 268,
-   "exact": 260,
+   "total": 283,
+   "exact": 275,
    "rule": 6,
    "ambiguous": 0,
    "orphan": 0,
@@ -1713,17 +1713,17 @@
    "orphans": []
   },
   "fotmob_ratings": {
-   "total": 285,
-   "exact": 281,
+   "total": 290,
+   "exact": 286,
    "rule": 1,
    "ambiguous": 3,
    "orphan": 0,
    "orphans": [],
-   "minutes": 11
+   "minutes": 9
   },
   "s365_ratings": {
-   "total": 442,
-   "exact": 436,
+   "total": 443,
+   "exact": 437,
    "rule": 4,
    "ambiguous": 1,
    "orphan": 0,
@@ -1938,13 +1938,13 @@
    "orphans": []
   },
   "fotmob_ratings": {
-   "total": 274,
-   "exact": 269,
+   "total": 286,
+   "exact": 281,
    "rule": 2,
    "ambiguous": 0,
    "orphan": 0,
    "orphans": [],
-   "minutes": 2
+   "minutes": 3
   },
   "s365_ratings": {
    "total": 424,
@@ -1953,7 +1953,7 @@
    "ambiguous": 0,
    "orphan": 0,
    "orphans": [],
-   "minutes": 4
+   "minutes": 3
   }
  },
  "BelgianProLeague 2026_2027": {
@@ -2178,8 +2178,8 @@
    "orphans": []
   },
   "fotmob_ratings": {
-   "total": 284,
-   "exact": 283,
+   "total": 290,
+   "exact": 289,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -2187,9 +2187,9 @@
    "minutes": 5
   },
   "s365_ratings": {
-   "total": 428,
+   "total": 430,
    "exact": 377,
-   "rule": 2,
+   "rule": 4,
    "ambiguous": 1,
    "orphan": 0,
    "orphans": [],
@@ -2510,20 +2510,25 @@
  },
  "SuperLig 2026_2027": {
   "wiki_squads": {
-   "total": 636,
-   "exact": 514,
-   "rule": 14,
+   "total": 637,
+   "exact": 516,
+   "rule": 12,
    "ambiguous": 1,
    "orphan": 0,
    "orphans": []
   },
   "espn_lineups": {
    "total": 592,
-   "exact": 581,
-   "rule": 0,
+   "exact": 579,
+   "rule": 1,
    "ambiguous": 0,
-   "orphan": 11,
+   "orphan": 12,
    "orphans": [
+    {
+     "squad": "Erzurumspor FK",
+     "name": "Fernando Santos",
+     "starts": 1
+    },
     {
      "squad": "Kasımpaşa",
      "name": "Muhammed Emin Bektash",
@@ -2672,8 +2677,8 @@
    "orphans": []
   },
   "fotmob_ratings": {
-   "total": 291,
-   "exact": 291,
+   "total": 293,
+   "exact": 293,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -2682,8 +2687,8 @@
   },
   "s365_ratings": {
    "total": 412,
-   "exact": 399,
-   "rule": 12,
+   "exact": 401,
+   "rule": 11,
    "ambiguous": 0,
    "orphan": 0,
    "orphans": [],
@@ -2809,8 +2814,8 @@
    "orphans": []
   },
   "fotmob_ratings": {
-   "total": 187,
-   "exact": 187,
+   "total": 193,
+   "exact": 193,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -3121,8 +3126,8 @@
    "orphans": []
   },
   "fotmob_ratings": {
-   "total": 175,
-   "exact": 175,
+   "total": 180,
+   "exact": 180,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -3273,8 +3278,8 @@
    "orphans": []
   },
   "fotmob_ratings": {
-   "total": 188,
-   "exact": 188,
+   "total": 195,
+   "exact": 195,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -3289,6 +3294,176 @@
    "orphan": 0,
    "orphans": [],
    "minutes": 5
+  }
+ },
+ "MLS 2026_2027": {
+  "wiki_squads": {
+   "total": 949,
+   "exact": 849,
+   "rule": 23,
+   "ambiguous": 0,
+   "orphan": 0,
+   "orphans": []
+  },
+  "espn_lineups": {
+   "total": 1147,
+   "exact": 1045,
+   "rule": 5,
+   "ambiguous": 0,
+   "orphan": 97,
+   "orphans": [
+    {
+     "squad": "Colorado Rapids",
+     "name": "Rafael Navarro",
+     "starts": 22
+    },
+    {
+     "squad": "Sporting Kansas City",
+     "name": "Dejan Joveljic",
+     "starts": 20
+    },
+    {
+     "squad": "Colorado Rapids",
+     "name": "Dante Sealy",
+     "starts": 15
+    },
+    {
+     "squad": "Inter Miami CF",
+     "name": "Noah Allen",
+     "starts": 12
+    },
+    {
+     "squad": "Chicago Fire FC",
+     "name": "Joel Waterman",
+     "starts": 11
+    },
+    {
+     "squad": "Columbus Crew",
+     "name": "Dániel Gazdag",
+     "starts": 10
+    },
+    {
+     "squad": "St. Louis City",
+     "name": "Eduard Löwen",
+     "starts": 8
+    },
+    {
+     "squad": "New England Revolution",
+     "name": "Brayan Ceballos",
+     "starts": 8
+    },
+    {
+     "squad": "Atlanta United",
+     "name": "Saba Lobjanidze",
+     "starts": 8
+    },
+    {
+     "squad": "Atlanta United",
+     "name": "Matías Galarza",
+     "starts": 8
+    },
+    {
+     "squad": "Vancouver Whitecaps",
+     "name": "Aziel Jackson",
+     "starts": 7
+    },
+    {
+     "squad": "San Diego FC",
+     "name": "Lewis Morgan",
+     "starts": 6
+    },
+    {
+     "squad": "Los Angeles FC",
+     "name": "Nathan Ordaz",
+     "starts": 6
+    },
+    {
+     "squad": "DC United",
+     "name": "Gabriel Pirani",
+     "starts": 6
+    },
+    {
+     "squad": "Minnesota United",
+     "name": "Devin Padelford",
+     "starts": 5
+    },
+    {
+     "squad": "CF Montréal",
+     "name": "Dagur Thórhallsson",
+     "starts": 5
+    },
+    {
+     "squad": "Austin FC",
+     "name": "Owen Wolff",
+     "starts": 4
+    },
+    {
+     "squad": "Orlando City",
+     "name": "Duncan McGuire",
+     "starts": 4
+    },
+    {
+     "squad": "Austin FC",
+     "name": "Daniel Pereira",
+     "starts": 4
+    },
+    {
+     "squad": "Chicago Fire FC",
+     "name": "Viktor Radojevic",
+     "starts": 3
+    },
+    {
+     "squad": "Inter Miami CF",
+     "name": "David Ruiz",
+     "starts": 3
+    },
+    {
+     "squad": "Red Bull New York",
+     "name": "Julian Zakrzewski",
+     "starts": 3
+    },
+    {
+     "squad": "LA Galaxy",
+     "name": "Rubén Ramos",
+     "starts": 2
+    },
+    {
+     "squad": "Real Salt Lake",
+     "name": "Pablo Ruiz",
+     "starts": 2
+    },
+    {
+     "squad": "Atlanta United",
+     "name": "Ronald Hernández",
+     "starts": 2
+    }
+   ]
+  },
+  "espn_subs": {
+   "total": 927,
+   "exact": 927,
+   "rule": 0,
+   "ambiguous": 0,
+   "orphan": 0,
+   "orphans": []
+  },
+  "fotmob_ratings": {
+   "total": 449,
+   "exact": 449,
+   "rule": 0,
+   "ambiguous": 0,
+   "orphan": 0,
+   "orphans": [],
+   "minutes": 0
+  },
+  "s365_ratings": {
+   "total": 862,
+   "exact": 805,
+   "rule": 25,
+   "ambiguous": 0,
+   "orphan": 0,
+   "orphans": [],
+   "minutes": 9
   }
  },
  "EPL 2025_2026": {
@@ -5735,6 +5910,17 @@
   "fotmob_ratings": {
    "total": 171,
    "exact": 145,
+   "rule": 0,
+   "ambiguous": 0,
+   "orphan": 0,
+   "orphans": [],
+   "minutes": 0
+  }
+ },
+ "MLS 2025_2026": {
+  "fotmob_ratings": {
+   "total": 426,
+   "exact": 426,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,

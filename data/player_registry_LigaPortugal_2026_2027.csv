@@ -332,7 +332,7 @@ Porto,pf:Porto:deniz gul,Deniz Gül,,Deniz Gül,players_full,100
 Porto,tm357153,Diogo Costa,357153,Diogo Costa,players_full,100
 Porto,tm1228661,Gabriel Mec,1228661,Gabriel Mec,players_full,100
 Porto,pf:Porto:gabriel veiga,Gabriel Veiga,,Gabriel Veiga,players_full,100
-Porto,pf:Porto:hwang in beom,Hwang In-beom,,Hwang In-beom,players_full,100
+Porto,tm365394,Hwang In-beom,365394,Hwang In-beom,players_full,100
 Porto,tm425918,Jakub Kiwior,425918,Jakub Kiwior,players_full,100
 Porto,tm243028,Jan Bednarek,243028,Jan Bednarek,players_full,100
 Porto,tm935480,Martim Fernandes,935480,Martim Fernandes,players_full,100
@@ -383,7 +383,7 @@ Santa Clara,tm973703,Brenner,973703,Brenner,players_full,100
 Santa Clara,pf:Santa Clara:daniel borges,Daniel Borges,,Daniel Borges,players_full,100
 Santa Clara,pf:Santa Clara:diogo calila,Diogo Calila,,Diogo Calila,players_full,100
 Santa Clara,tm1292917,Djé,1292917,Djé,players_full,100
-Santa Clara,pf:Santa Clara:emanuel fernandes,Emanuel Fernandes,927733,Emanuel Fernandes,players_full,100
+Santa Clara,pf:Santa Clara:emanuel fernandes,Emanuel Fernandes,,Emanuel Fernandes,players_full,100
 Santa Clara,tm1091608,Fernando,1091608,Fernando,players_full,100
 Santa Clara,pf:Santa Clara:frederico medeiros,Frederico Medeiros,,Frederico Medeiros,players_full,100
 Santa Clara,tm181547,Gonçalo Paciência,181547,Gonçalo Paciência,players_full,100
@@ -486,7 +486,7 @@ Porto,tm921533,Dominik Prpić,921533,Dominik Prpić,transfermarkt_contracts,100
 Porto,tm103427,Chris Smalling,103427,Chris Smalling,transfermarkt_contracts,100
 Porto,pf:Porto:moura,Moura,,Francisco Moura,transfermarkt_contracts,60
 Porto,tm877139,Alberto costa,877139,Alberto Costa,transfermarkt_contracts,99
-Porto,pf:Porto:hwang in beom,Hwang In-beom,,In-beom Hwang,transfermarkt_contracts,95
+Porto,tm365394,Hwang In-beom,365394,In-beom Hwang,transfermarkt_contracts,99
 Porto,tm575716,Vasco Sousa,575716,Vasco Sousa,transfermarkt_contracts,100
 Porto,pf:Porto:gabriel veiga,Gabriel Veiga,,Gabri Veiga,transfermarkt_contracts,80
 Porto,tm1182538,Duarte Cunha,1182538,Duarte Cunha,transfermarkt_contracts,100
@@ -635,7 +635,7 @@ Gil Vicente FC,pf:Gil Vicente FC:murilo costa,Murilo Costa,,Murilo,transfermarkt
 Gil Vicente FC,tm372051,Sergio Bermejo,372051,Sergio Bermejo,transfermarkt_contracts,100
 Gil Vicente FC,pf:Gil Vicente FC:hector,Héctor,,Héctor Hernández,transfermarkt_contracts,60
 Santa Clara,tm808475,MT,808475,MT,transfermarkt_contracts,100
-Santa Clara,pf:Santa Clara:emanuel fernandes,Emanuel Fernandes,927733,Emanuel Moreira,transfermarkt_contracts,100
+Santa Clara,tm927733,Emanuel Moreira,927733,Emanuel Moreira,transfermarkt_contracts,100
 Santa Clara,tm980854,Ythallo,980854,Ythallo,transfermarkt_contracts,100
 Santa Clara,pf:Santa Clara:daniel borges,Daniel Borges,,Dani Borges,transfermarkt_contracts,80
 Santa Clara,tm959680,Kamika,959680,Kamika,transfermarkt_contracts,100
@@ -727,7 +727,7 @@ Estrela,pf:Estrela:leonardo linck,Leonardo Linck,,Leo Linck,espn_lineups,100
 Sporting CP,esp:Sporting CP:joao virginia,João Virgínia,,João Virgínia,espn_lineups,100
 Sporting CP,esp:Sporting CP:eduardo felicissimo,Eduardo Felicíssimo,,Eduardo Felicíssimo,espn_lineups,100
 Sporting CP,esp:Sporting CP:ousmane diomande,Ousmane Diomande,,Ousmane Diomande,espn_lineups,100
-Porto,pf:Porto:hwang in beom,Hwang In-beom,,Hwang In-Beom,espn_lineups,100
+Porto,tm365394,Hwang In-beom,365394,Hwang In-Beom,espn_lineups,100
 Porto,esp:Porto:joao afonso,João Afonso,,João Afonso,espn_lineups,100
 Porto,tm921533,Dominik Prpić,921533,Dominik Prpic,espn_lineups,100
 Alverca,tm1135770,Yaya Bojang,1135770,Yahya Bojang,espn_lineups,80
@@ -809,7 +809,7 @@ Casa Pia,tm696504,Pedro Rosas,696504,Pedro Silva Rosas,espn_lineups_cups,85
 Casa Pia,pf:Casa Pia:mo salah,Mo Salah,1018201,Mohamed El Boukammiri,espn_lineups_cups,85
 Académico de Viseu,tm466812,Nils Mortimer,466812,Nils Mortimer Moreno,espn_lineups_cups,85
 Académico de Viseu,tm564890,André Clóvis,564890,André Clovis,espn_lineups_cups,100
-Santa Clara,tm1292917,Djé,1292917,Djé Tavares,espn_lineups_cups,100
+Santa Clara,esp:Santa Clara:dje tavares,Djé Tavares,,Djé Tavares,espn_lineups_cups,100
 Santa Clara,tm1091608,Fernando,1091608,Luis Fernando,espn_lineups_cups,60
 Santa Clara,tm687361,Welinton Torrão,687361,Welinton,espn_lineups_cups,60
 Rio Ave,tm724035,Andreas Ntoi,724035,Andreas-Richardos Ntoi,espn_lineups_cups,85
@@ -839,8 +839,8 @@ Famalicão,pf:Famalicão:patricio salas,Patricio Salas,,Pato Salas,espn_subs,80
 Nacional,tm1236397,Njoya Abdel,1236397,Abdel Njoya,espn_subs,95
 Estoril,tm613964,Stelios Andreou,613964,Stélios Andreou,espn_subs,100
 Braga,tm875337,Demir Ege Tıknaz,875337,Demir Tıknaz,fotmob_ratings,100
-Porto,pf:Porto:hwang in beom,Hwang In-beom,,In-Beom Hwang,fotmob_ratings,100
 Nacional,tm794592,Markus Jensen,794592,Markus Gustav Jensen,fotmob_ratings,85
+Porto,tm365394,Hwang In-beom,365394,In-Beom Hwang,fotmob_ratings,100
 Nacional,tm581977,Min-kyu Song,581977,Min-Kyu Song,fotmob_ratings,100
 Arouca,pf:Arouca:lee hyunju,Lee Hyunju,709166,Hyun-Ju Lee,fotmob_ratings,100
 Académico de Viseu,pf:Académico de Viseu:luis manuel costa silva,Luís Manuel Costa Silva,,Luis Silva,s365_ratings,100
