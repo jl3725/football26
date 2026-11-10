@@ -1,7 +1,7 @@
 {
- "date": "2026-11-09",
+ "date": "2026-11-10",
  "model": "v3.18",
- "checked": 53186,
+ "checked": 52923,
  "mismatches": [],
  "leagues": {
   "EPL": {
@@ -30,7 +30,7 @@
   },
   "Bundesliga": {
    "teams": 18,
-   "checked": 3326,
+   "checked": 3325,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -62,7 +62,7 @@
   },
   "LaLiga": {
    "teams": 20,
-   "checked": 3868,
+   "checked": 3874,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -70,18 +70,18 @@
   },
   "LigaPortugal": {
    "teams": 18,
-   "checked": 3497,
+   "checked": 3513,
    "mismatches": 0,
    "changed": 1,
    "model_changed": 0,
    "changes_top": [
     {
      "team": "Santa Clara",
-     "player": "Henrique Silva",
-     "from": 50,
-     "to": 52,
-     "d": 2,
-     "since": "2026-11-09",
+     "player": "Frederico Silva",
+     "from": 52,
+     "to": 50,
+     "d": -2,
+     "since": "2026-11-10",
      "model_change": false
     }
    ]
@@ -96,39 +96,11 @@
   },
   "MLS": {
    "teams": 30,
-   "checked": 7202,
+   "checked": 7201,
    "mismatches": 0,
-   "changed": 3,
+   "changed": 0,
    "model_changed": 0,
-   "changes_top": [
-    {
-     "team": "Columbus Crew",
-     "player": "Hugo Picard",
-     "from": 69,
-     "to": 65,
-     "d": -4,
-     "since": "2026-11-09",
-     "model_change": false
-    },
-    {
-     "team": "Colorado Rapids",
-     "player": "Sayed Abu Farkhi",
-     "from": 63,
-     "to": 60,
-     "d": -3,
-     "since": "2026-11-09",
-     "model_change": false
-    },
-    {
-     "team": "Philadelphia Union",
-     "player": "Philippe Ossibadjouo",
-     "from": 62,
-     "to": 59,
-     "d": -3,
-     "since": "2026-11-09",
-     "model_change": false
-    }
-   ]
+   "changes_top": []
   },
   "SerieA": {
    "teams": 20,
@@ -140,7 +112,7 @@
   },
   "SuperLig": {
    "teams": 18,
-   "checked": 3983,
+   "checked": 3702,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -148,7 +120,7 @@
   },
   "SwissSuperLeague": {
    "teams": 12,
-   "checked": 2764,
+   "checked": 2762,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,

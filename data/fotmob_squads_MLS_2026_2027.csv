@@ -23,7 +23,7 @@ Nashville SC,Edvard Tagseth,1083998,midfielders,"CM,CDM",Central Midfield,MF,25,
 Nashville SC,Famara Camara,1736094,midfielders,CM,Central Midfield,MF,21,2005-04-10,26.0,SEN,False,,2026-11-10
 Nashville SC,Cristian Espinoza,589897,attackers,"RW,RM",Right Winger,FW,31,1995-04-03,7.0,ARG,False,,2026-11-10
 Nashville SC,Sam Surridge,796747,attackers,ST,Centre-Forward,FW,28,1998-07-28,9.0,ENG,False,,2026-11-10
-Nashville SC,Hany Mukhtar,394462,attackers,"ST,CAM,LW,CM",Centre-Forward,FW,31,1995-03-21,10.0,GER,False,,2026-11-10
+Nashville SC,Hany Mukhtar,394462,attackers,"ST,CAM,CM,LW",Centre-Forward,FW,31,1995-03-21,10.0,GER,False,,2026-11-10
 Nashville SC,Elias Saad,1285773,attackers,"LW,ST,LM,CAM",Left Winger,FW,26,1999-12-27,11.0,TUN,False,,2026-11-10
 Nashville SC,Zidane Yáñez,1600849,attackers,ST,Centre-Forward,FW,18,2008-01-26,15.0,CHI,False,,2026-11-10
 Nashville SC,Jordan Knight,1348284,attackers,"RM,LW,ST",Right Midfield,FW,24,2002-06-13,23.0,CAN,False,,2026-11-10
@@ -307,7 +307,7 @@ Houston Dynamo FC,Mateusz Bogusz,954194,attackers,"RW,LM,LW,CAM,ST",Right Winger
 Houston Dynamo FC,Guilherme Augusto,763151,attackers,"LW,ST,CAM",Left Winger,FW,31,1995-04-13,20.0,BRA,False,,2026-11-10
 Houston Dynamo FC,Duncan McGuire,1439982,attackers,ST,Centre-Forward,FW,25,2001-02-05,23.0,USA,False,,2026-11-10
 Philadelphia Union,Andre Blake,525631,keepers,GK,Goalkeeper,GK,35,1990-11-21,18.0,JAM,False,,2026-11-10
-Philadelphia Union,George Marks,1338676,keepers,GK,Goalkeeper,GK,26,1999-11-10,31.0,USA,False,,2026-11-10
+Philadelphia Union,George Marks,1338676,keepers,GK,Goalkeeper,GK,27,1999-11-10,31.0,USA,False,,2026-11-10
 Philadelphia Union,Andrew Rick,1617260,keepers,GK,Goalkeeper,GK,20,2006-01-30,76.0,USA,False,,2026-11-10
 Philadelphia Union,Kaiden Moore,1668442,defenders,"CB,LB",Centre-Back,DF,19,2007-05-11,,USA,False,,2026-11-10
 Philadelphia Union,Geiner Martínez,1686706,defenders,CB,Centre-Back,DF,23,2003-01-09,2.0,COL,False,,2026-11-10
@@ -437,14 +437,14 @@ Orlando City,Vinícius Nogueira,1441441,defenders,LB,Left-Back,DF,24,2001-12-11,
 Orlando City,Clovis Archange,1780479,defenders,"LB,CB",Left-Back,DF,18,2008-07-01,33.0,USA,False,,2026-11-10
 Orlando City,Bernardo Rhein Goncalves,1780484,defenders,LB,Left-Back,DF,19,2007-09-21,44.0,USA,False,,2026-11-10
 Orlando City,Iago,1640272,defenders,CB,Centre-Back,DF,21,2005-04-18,57.0,BRA,False,,2026-11-10
-Orlando City,Luis Otávio,1664779,midfielders,"CDM,CM",Defensive Midfield,MF,19,2007-04-12,5.0,BRA,False,,2026-11-10
+Orlando City,Luis Otávio,1664779,midfielders,"CM,CDM",Central Midfield,MF,19,2007-04-12,5.0,BRA,False,,2026-11-10
 Orlando City,Braian Ojeda,1075065,midfielders,"CM,CDM",Central Midfield,MF,26,2000-06-27,8.0,PAR,False,,2026-11-10
 Orlando City,Tiago Carvalho,1660393,midfielders,"CM,LW,ST,LM",Central Midfield,MF,21,2005-04-08,11.0,BRA,False,,2026-11-10
 Orlando City,Wilder Cartagena,427216,midfielders,"CDM,CM,CB",Defensive Midfield,MF,32,1994-09-23,16.0,PER,False,,2026-11-10
 Orlando City,Eduard Atuesta,858036,midfielders,"CM,CDM",Central Midfield,MF,29,1997-06-18,20.0,COL,False,,2026-11-10
 Orlando City,Joran Gerbet,1717122,midfielders,"CM,CDM",Central Midfield,MF,25,2001-06-30,35.0,FRA,False,,2026-11-10
 Orlando City,Issah Haruna,1919495,midfielders,"RW,CAM,CDM,RM",Right Winger,MF,22,2004-03-14,38.0,GHA,False,,2026-11-10
-Orlando City,Dylan Judelson,1780483,midfielders,"CDM,CM",Defensive Midfield,MF,18,2008-06-05,41.0,USA,False,,2026-11-10
+Orlando City,Dylan Judelson,1780483,midfielders,"CM,CDM",Central Midfield,MF,18,2008-06-05,41.0,USA,False,,2026-11-10
 Orlando City,Iván Angulo,964608,midfielders,"LM,LWB,RW,LW,RB,RM,LB",Left Midfield,MF,27,1999-03-22,77.0,COL,False,,2026-11-10
 Orlando City,Ignacio Gómez,1727842,midfielders,"CDM,CM",Defensive Midfield,MF,20,2006-04-04,80.0,ARG,False,,2026-11-10
 Orlando City,Marco Pašalić,1199714,midfielders,"RM,RW,ST,CAM",Right Midfield,MF,26,2000-09-14,87.0,CRO,False,,2026-11-10
@@ -574,7 +574,7 @@ Minnesota United,Wil Trapp,431896,midfielders,"CM,CDM",Central Midfield,MF,33,19
 Minnesota United,Bongokuhle Hlongwane,1047139,midfielders,"RM,RWB,RW",Right Midfield,MF,26,2000-06-20,21.0,RSA,False,,2026-11-10
 Minnesota United,Julian Gressel,825625,midfielders,CM,Central Midfield,MF,32,1993-12-16,24.0,USA,False,,2026-11-10
 Minnesota United,Nectarios Triantis,1338086,midfielders,"CM,CDM",Central Midfield,MF,23,2003-05-11,25.0,GRE,False,,2026-11-10
-Minnesota United,Joaquín Pereyra,831541,midfielders,"CAM,RW,RM,ST,LM",Attacking Midfield,MF,27,1998-12-01,26.0,ARG,False,,2026-11-10
+Minnesota United,Joaquín Pereyra,831541,midfielders,"CAM,RW,RM,ST",Attacking Midfield,MF,27,1998-12-01,26.0,ARG,False,,2026-11-10
 Minnesota United,Owen Gene,1307695,midfielders,"CM,CDM",Central Midfield,MF,23,2003-03-19,30.0,FRA,False,,2026-11-10
 Minnesota United,Kelvin Yeboah,951927,attackers,ST,Centre-Forward,FW,26,2000-05-06,9.0,ITA,False,,2026-11-10
 Minnesota United,Maurice Malone,934742,attackers,"ST,CAM,RW",Centre-Forward,FW,26,2000-08-17,11.0,GER,False,,2026-11-10
@@ -633,11 +633,11 @@ Colorado Rapids,Wayne Frederick,1610223,midfielders,"CDM,CAM,CM,RW",Defensive Mi
 Colorado Rapids,Ali Fadal,1670484,midfielders,"CM,CDM",Central Midfield,MF,22,2004-01-14,15.0,GHA,False,,2026-11-10
 Colorado Rapids,Theodore Ku-DiPietro,1079285,midfielders,LW,Left Winger,MF,24,2002-01-28,21.0,USA,False,,2026-11-10
 Colorado Rapids,Kimani Stewart,1610224,midfielders,"LW,LM,RM",Left Winger,MF,21,2005-01-17,27.0,CAN,False,,2026-11-10
-Colorado Rapids,Youssef Maziz,814619,midfielders,"CAM,CM,LW",Attacking Midfield,MF,28,1998-06-24,88.0,FRA,False,,2026-11-10
+Colorado Rapids,Youssef Maziz,814619,midfielders,"CAM,LW,CM",Attacking Midfield,MF,28,1998-06-24,88.0,FRA,False,,2026-11-10
 Colorado Rapids,Morgan Whittaker,1081288,attackers,"RW,CAM,ST,RM,CM",Right Winger,FW,25,2001-01-07,7.0,ENG,False,,2026-11-10
 Colorado Rapids,Sayed Abu Farkhi,1518943,attackers,"ST,LW",Centre-Forward,FW,20,2006-05-11,9.0,ISR,False,,2026-11-10
 Colorado Rapids,Ibrahim Sadiq,887137,attackers,"LW,RW",Left Winger,FW,26,2000-05-07,11.0,GHA,True,Late November 2026,2026-11-10
-Colorado Rapids,Alex Harris,1663077,attackers,"ST,RM",Centre-Forward,FW,21,2005-02-16,16.0,USA,False,,2026-11-10
+Colorado Rapids,Alex Harris,1663077,attackers,ST,Centre-Forward,FW,21,2005-02-16,16.0,USA,False,,2026-11-10
 Colorado Rapids,Mamadou Billo Diop,1745119,attackers,ST,Centre-Forward,FW,20,2006-09-14,26.0,SEN,False,,2026-11-10
 Colorado Rapids,Donavan Phillip,1786169,attackers,"ST,RW,LW",Centre-Forward,FW,21,2005-01-04,32.0,LCA,False,,2026-11-10
 Colorado Rapids,Darren Yapi,1190710,attackers,"LW,ST,RW",Left Winger,FW,21,2004-11-19,77.0,USA,False,,2026-11-10
@@ -726,7 +726,7 @@ Toronto FC,Jackson Gilman,1910047,defenders,"RB,CB,CM,LB",Right-Back,DF,22,2004-
 Toronto FC,Raheem Edwards,664764,defenders,"LB,LW",Left-Back,DF,31,1995-07-17,44.0,CAN,False,,2026-11-10
 Toronto FC,Niklas Dorsch,674499,midfielders,"CM,CDM",Central Midfield,MF,28,1998-01-15,6.0,GER,False,,2026-11-10
 Toronto FC,Nelson Palacio,1374975,midfielders,"CM,CDM",Central Midfield,MF,25,2001-06-16,8.0,COL,True,Out for season,2026-11-10
-Toronto FC,Djordje Mihailović,830601,midfielders,"CM,CAM,LW",Central Midfield,MF,27,1998-11-10,10.0,USA,False,,2026-11-10
+Toronto FC,Djordje Mihailović,830601,midfielders,"CM,CAM,LW",Central Midfield,MF,28,1998-11-10,10.0,USA,False,,2026-11-10
 Toronto FC,Alonso Coello,1364471,midfielders,"CDM,CM",Defensive Midfield,MF,27,1999-10-12,14.0,ESP,False,,2026-11-10
 Toronto FC,Jonathan Osorio,432605,midfielders,"CDM,CM",Defensive Midfield,MF,34,1992-06-12,21.0,CAN,False,,2026-11-10
 Toronto FC,Theo Corbeanu,1113737,attackers,"RW,RM",Right Winger,FW,24,2002-05-17,7.0,CAN,False,,2026-11-10
@@ -767,7 +767,7 @@ San Diego FC,Emmanuel Boateng,469803,attackers,LW,Left Winger,FW,32,1994-01-17,2
 San Diego FC,Alex Mighten,1081174,attackers,LW,Left Winger,FW,24,2002-04-11,77.0,ENG,False,,2026-11-10
 San Diego FC,Amahl Pellegrino,313121,attackers,LW,Left Winger,FW,36,1990-06-18,90.0,NOR,False,,2026-11-10
 San Diego FC,Cédric Bakambu,201939,attackers,ST,Centre-Forward,FW,35,1991-04-11,94.0,COD,False,,2026-11-10
-San Diego FC,Elias Achouri,1015128,attackers,"LW,LM,RW",Left Winger,FW,27,1999-02-10,99.0,TUN,True,Mid November 2026,2026-11-10
+San Diego FC,Elias Achouri,1015128,attackers,"LM,LW,RW,ST",Left Midfield,FW,27,1999-02-10,99.0,TUN,True,Mid November 2026,2026-11-10
 Austin FC,Brad Stuver,431642,keepers,GK,Goalkeeper,GK,35,1991-04-16,1.0,USA,False,,2026-11-10
 Austin FC,Damian Las,1187234,keepers,GK,Goalkeeper,GK,24,2002-04-11,12.0,USA,False,,2026-11-10
 Austin FC,Charlie Farrar,1781726,keepers,GK,Goalkeeper,GK,23,2003-08-08,39.0,ENG,False,,2026-11-10
@@ -863,7 +863,7 @@ Sporting Kansas City,Diego Borges,1734140,defenders,CB,Centre-Back,DF,21,2004-12
 Sporting Kansas City,Jayden Reid,1440010,defenders,LB,Left-Back,DF,25,2001-08-30,99.0,USA,False,,2026-11-10
 Sporting Kansas City,Lasse Berg Johnsen,1035206,midfielders,"CM,CDM",Central Midfield,MF,27,1999-08-18,4.0,NOR,False,,2026-11-10
 Sporting Kansas City,Capita,1187420,midfielders,"LW,RM,LM,RW",Left Winger,MF,24,2002-01-10,7.0,ANG,False,,2026-11-10
-Sporting Kansas City,André Luiz,1284944,midfielders,"RM,RW,CAM",Right Midfield,MF,24,2002-02-23,11.0,BRA,False,,2026-11-10
+Sporting Kansas City,André Luiz,1284944,midfielders,"RM,RW",Right Midfield,MF,24,2002-02-23,11.0,BRA,False,,2026-11-10
 Sporting Kansas City,Calvin Harris,1244938,midfielders,"LM,LW,RW",Left Midfield,MF,26,2000-03-20,14.0,ENG,True,Unknown,2026-11-10
 Sporting Kansas City,Jacob Bartlett,1710542,midfielders,"CM,CDM",Central Midfield,MF,21,2005-10-07,16.0,USA,True,A few weeks,2026-11-10
 Sporting Kansas City,Kwaku Agyabeng,1907812,midfielders,CM,Central Midfield,MF,20,2006-06-27,20.0,GHA,True,Late December 2026,2026-11-10

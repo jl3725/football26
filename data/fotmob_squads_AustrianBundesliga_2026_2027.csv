@@ -13,7 +13,7 @@ Rapid Wien,Bendegúz Bolla,888904,defenders,"RB,RWB,RM,LB",Right-Back,DF,26,1999
 Rapid Wien,Martin Ndzie,1344678,midfielders,CDM,Defensive Midfield,MF,23,2003-01-16,14,CMR,True,Unknown,2026-11-10
 Rapid Wien,Matthias Seidl,1276078,midfielders,"CDM,CM,CAM,LW",Defensive Midfield,MF,25,2001-01-24,18,AUT,False,,2026-11-10
 Rapid Wien,Nicolas Bajlicz,1385516,midfielders,"CDM,RW,CAM,LWB",Defensive Midfield,MF,22,2004-07-08,30,AUT,False,,2026-11-10
-Rapid Wien,Lorenz Szladits,1663493,midfielders,"CM,RW,CAM,ST,CDM,LW",Central Midfield,MF,19,2006-11-10,44,AUT,False,,2026-11-10
+Rapid Wien,Lorenz Szladits,1663493,midfielders,"CM,RW,CAM,CDM,LW,ST",Central Midfield,MF,20,2006-11-10,44,AUT,False,,2026-11-10
 Rapid Wien,Marco Tilio,1053472,attackers,"RW,CAM",Right Winger,FW,25,2001-08-23,7,AUS,False,,2026-11-10
 Rapid Wien,Tonni Adamsen,950603,attackers,"ST,CAM",Centre-Forward,FW,31,1994-11-15,8,DEN,False,,2026-11-10
 Rapid Wien,Ercan Kara,1072519,attackers,ST,Centre-Forward,FW,30,1996-01-03,9,AUT,False,,2026-11-10
@@ -21,7 +21,7 @@ Rapid Wien,Petter Nosakhare Dahl,1280257,attackers,"LW,CAM",Left Winger,FW,23,20
 Rapid Wien,Nikolaus Wurmbrand,1663487,attackers,"CAM,LW,RW,ST",Attacking Midfield,FW,20,2006-01-05,15,AUT,False,,2026-11-10
 Rapid Wien,Louis Schaub,360561,attackers,LW,Left Winger,FW,31,1994-12-29,21,AUT,False,,2026-11-10
 Rapid Wien,Yusuf Demir,1114554,attackers,"RW,CAM",Right Winger,FW,23,2003-06-02,22,AUT,False,,2026-11-10
-Rapid Wien,Moulaye Haïdara,1800693,attackers,"RW,ST,CM",Right Winger,FW,20,2006-08-01,43,MLI,False,,2026-11-10
+Rapid Wien,Moulaye Haïdara,1800693,attackers,"RW,ST",Right Winger,FW,20,2006-08-01,43,MLI,False,,2026-11-10
 Rapid Wien,Daniel Nunoo,1692197,attackers,"ST,RW",Centre-Forward,FW,20,2006-08-20,54,GHA,True,Mid November 2026,2026-11-10
 Rapid Wien,Claudy M'Buyi,866723,attackers,ST,Centre-Forward,FW,27,1999-06-03,71,FRA,False,,2026-11-10
 Salzburg,Christian Früchtl,820133,keepers,GK,Goalkeeper,GK,26,2000-01-28,1,GER,False,,2026-11-10
@@ -43,7 +43,6 @@ Salzburg,Sota Kitano,1338846,midfielders,"CAM,CM,RW",Attacking Midfield,MF,22,20
 Salzburg,Bartosz Mazurek,1715680,midfielders,"CDM,CAM,CM",Defensive Midfield,MF,19,2007-01-03,15,POL,False,,2026-11-10
 Salzburg,Gaoussou Diakite,1607324,midfielders,"CAM,ST",Attacking Midfield,MF,21,2005-09-26,30,MLI,False,,2026-11-10
 Salzburg,Abubakr Barry,1220043,midfielders,"CDM,CAM,CM",Defensive Midfield,MF,26,2000-07-02,32,GAM,False,,2026-11-10
-Salzburg,Jesper Lindstrøm,958335,midfielders,"CAM,RW,LW",Attacking Midfield,MF,26,2000-02-29,35,DEN,False,,2026-11-10
 Salzburg,Justin Omoregie,1230285,midfielders,CB,Centre-Back,MF,23,2003-09-21,36,AUT,True,Out for season,2026-11-10
 Salzburg,Haris Tabaković,388903,attackers,ST,Centre-Forward,FW,32,1994-06-20,9,BIH,False,,2026-11-10
 Salzburg,Yorbe Vertessen,940453,attackers,"LW,ST,CAM,RW",Left Winger,FW,25,2001-01-08,11,BEL,False,,2026-11-10
@@ -51,6 +50,7 @@ Salzburg,Karim Konaté,1293688,attackers,"ST,CAM",Centre-Forward,FW,22,2004-03-2
 Salzburg,Edmund Baidoo,1632055,attackers,"RW,ST,LW",Right Winger,FW,20,2006-01-30,20,GHA,False,,2026-11-10
 Salzburg,Damir Redzic,1188420,attackers,"RW,LW",Right Winger,FW,23,2003-03-23,23,HUN,False,,2026-11-10
 Salzburg,Aboubacar Camara,1583511,attackers,ST,Centre-Forward,FW,20,2006-09-30,33,BFA,False,,2026-11-10
+Salzburg,Jesper Lindstrøm,958335,attackers,"CAM,LW,RW",Attacking Midfield,FW,26,2000-02-29,35,DEN,False,,2026-11-10
 Salzburg,Enrique Aguilar,1667685,attackers,"LW,RW",Left Winger,FW,19,2007-01-27,43,SUI,True,A few weeks,2026-11-10
 LASK,Lukas Jungwirth,1156883,keepers,GK,Goalkeeper,GK,22,2004-04-30,1,AUT,False,,2026-11-10
 LASK,Tobias Schützenauer,557349,keepers,GK,Goalkeeper,GK,29,1997-05-19,33,AUT,False,,2026-11-10
@@ -88,12 +88,12 @@ Hartberg,Simon Freund,2146239,defenders,,Centre-Back,DF,21,2005-03-03,3,AUT,Fals
 Hartberg,Habib Coulibaly,1783320,defenders,"CB,LWB,LB",Centre-Back,DF,22,2003-11-11,6,CIV,False,,2026-11-10
 Hartberg,Manuel Pfeifer,861775,defenders,"LB,LWB",Left-Back,DF,27,1999-09-10,12,AUT,True,A few weeks,2026-11-10
 Hartberg,Paul Komposch,1184080,defenders,CB,Centre-Back,DF,25,2001-05-13,14,AUT,True,Out for season,2026-11-10
-Hartberg,Magnus Dalpiaz,1793659,defenders,"RB,LB",Right-Back,DF,19,2007-02-20,16,AUT,False,,2026-11-10
+Hartberg,Magnus Dalpiaz,1793659,defenders,"RB,LB,RWB",Right-Back,DF,19,2007-02-20,16,AUT,False,,2026-11-10
 Hartberg,Jonas Karner,1385526,defenders,RWB,Right-Back,DF,22,2004-09-28,17,AUT,False,,2026-11-10
 Hartberg,Fabian Wilfinger,1385166,defenders,"CB,CM",Centre-Back,DF,23,2003-08-27,18,AUT,True,Early December 2026,2026-11-10
 Hartberg,Lukas Spendlhofer,446363,defenders,CB,Centre-Back,DF,33,1993-06-02,19,AUT,False,,2026-11-10
 Hartberg,Konstantin Schopp,1457376,defenders,CB,Centre-Back,DF,20,2005-12-30,27,AUT,False,,2026-11-10
-Hartberg,Benjamin Markuš,1284330,midfielders,"CM,CDM,CB",Central Midfield,MF,25,2001-01-30,4,SVN,False,,2026-11-10
+Hartberg,Benjamin Markuš,1284330,midfielders,"CM,CDM",Central Midfield,MF,25,2001-01-30,4,SVN,False,,2026-11-10
 Hartberg,Youba Diarra,923191,midfielders,"CM,CDM",Central Midfield,MF,28,1998-03-24,5,MLI,False,,2026-11-10
 Hartberg,Paul Bratschko,1790242,midfielders,,Central Midfield,MF,21,2005-10-14,20,AUT,False,,2026-11-10
 Hartberg,Tobias Kainz,264845,midfielders,"CM,CAM",Central Midfield,MF,34,1992-10-31,23,AUT,False,,2026-11-10
@@ -103,7 +103,7 @@ Hartberg,Nikolaus Feldhofer,2100469,midfielders,"LM,CAM",Left Midfield,MF,20,200
 Hartberg,Angelo Gattermayer,1257631,attackers,"ST,CAM,RW,RWB",Centre-Forward,FW,24,2002-06-06,7,AUT,False,,2026-11-10
 Hartberg,Matthias Postl,1512862,attackers,ST,Centre-Forward,FW,21,2005-09-29,8,AUT,False,,2026-11-10
 Hartberg,Agustin Urrutia,2088361,attackers,,Centre-Forward,FW,22,2004-04-23,9,ARG,False,,2026-11-10
-Hartberg,Oliver Lukić,1477571,attackers,"LW,CM,ST",Left Winger,FW,20,2006-09-22,10,CRO,False,,2026-11-10
+Hartberg,Oliver Lukić,1477571,attackers,"LW,CAM,CM,ST",Left Winger,FW,20,2006-09-22,10,CRO,False,,2026-11-10
 Hartberg,Jed Drew,1351271,attackers,ST,Centre-Forward,FW,23,2003-08-29,11,AUS,False,,2026-11-10
 Hartberg,Marco Hoffmann,1663164,attackers,ST,Centre-Forward,FW,23,2003-11-08,22,AUT,False,,2026-11-10
 Hartberg,Lukas Fridrikas,824191,attackers,"ST,CAM",Centre-Forward,FW,28,1997-12-30,30,AUT,True,Mid April 2027,2026-11-10
@@ -118,7 +118,7 @@ Sturm Graz,Albert Vallci,539087,defenders,"CB,RB",Centre-Back,DF,31,1995-07-02,5
 Sturm Graz,Petar Petrović,1574180,defenders,CB,Centre-Back,DF,21,2005-07-13,21,SRB,False,,2026-11-10
 Sturm Graz,Arjan Malić,1515122,defenders,"RB,CB",Right-Back,DF,21,2005-08-28,23,BIH,False,,2026-11-10
 Sturm Graz,Mate Grgić,1965796,defenders,"LWB,LB,CAM",Left-Back,DF,19,2007-06-23,25,CRO,False,,2026-11-10
-Sturm Graz,Luís Balbo,1584085,defenders,"LB,LWB",Left-Back,DF,20,2006-03-28,27,VEN,False,,2026-11-10
+Sturm Graz,Luís Balbo,1584085,defenders,"LWB,LB",Left-Back,DF,20,2006-03-28,27,VEN,False,,2026-11-10
 Sturm Graz,Jürgen Heil,861777,defenders,"RWB,RB,CM,RM",Right-Back,DF,29,1997-04-04,28,AUT,False,,2026-11-10
 Sturm Graz,Paul-Friedrich Koller,1002670,defenders,CB,Centre-Back,DF,24,2002-02-22,30,AUT,False,,2026-11-10
 Sturm Graz,Jon Gorenc Stankovič,446392,midfielders,"CDM,CM,CB",Defensive Midfield,MF,30,1996-01-14,4,SVN,False,,2026-11-10
@@ -126,10 +126,10 @@ Sturm Graz,Filip Rózga,1484822,midfielders,"LM,RW",Left Midfield,MF,20,2006-08-
 Sturm Graz,Otar Kiteishvili,652954,midfielders,"CAM,CM,LW",Attacking Midfield,MF,30,1996-03-26,10,GEO,True,Unknown,2026-11-10
 Sturm Graz,Gizo Mamageishvili,1382325,midfielders,"CAM,LW,ST",Attacking Midfield,MF,23,2003-01-15,15,GEO,False,,2026-11-10
 Sturm Graz,Emran Soglo,1525418,midfielders,"LB,LM,LWB,RW",Left-Back,MF,21,2005-07-11,18,FRA,True,A few weeks,2026-11-10
-Sturm Graz,Simon Seidl,1385123,midfielders,"CAM,RM,ST,CDM,RWB,LW,LM",Attacking Midfield,MF,24,2002-09-04,19,AUT,False,,2026-11-10
+Sturm Graz,Simon Seidl,1385123,midfielders,"CAM,ST,RM,CDM,LW,LM,RWB",Attacking Midfield,MF,24,2002-09-04,19,AUT,False,,2026-11-10
 Sturm Graz,Luca Weinhandl,1698675,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,17,2009-01-11,39,AUT,False,,2026-11-10
 Sturm Graz,Julian Halwachs,1276632,midfielders,"CM,CDM",Central Midfield,MF,23,2003-01-25,40,AUT,False,,2026-11-10
-Sturm Graz,Jacob Hödl,1587610,midfielders,"RWB,RW,LW,LM,CM,RM,LWB,CAM",Right-Back,MF,19,2007-01-31,43,AUT,False,,2026-11-10
+Sturm Graz,Jacob Hödl,1587610,midfielders,"RWB,RW,LW,LM,CM,CAM,RM,LWB",Right-Back,MF,19,2007-01-31,43,AUT,False,,2026-11-10
 Sturm Graz,Valmir Matoshi,1422124,midfielders,"LM,LW,CAM,CM,RW,CDM",Left Midfield,MF,23,2003-07-04,78,KVX,False,,2026-11-10
 Sturm Graz,Leon Grgić,1385272,attackers,ST,Centre-Forward,FW,20,2006-01-22,9,CRO,True,A few weeks,2026-11-10
 Sturm Graz,Axel Kayombo,1515630,attackers,"ST,LW",Centre-Forward,FW,20,2006-02-25,11,COD,False,,2026-11-10
@@ -176,7 +176,7 @@ WSG Tirol,Julian Margreiter,2101823,keepers,,Goalkeeper,GK,17,2009-11-05,35,AUT,
 WSG Tirol,David Gugganig,615413,defenders,CB,Centre-Back,DF,29,1997-02-10,3,AUT,False,,2026-11-10
 WSG Tirol,Drew Murray,1448108,defenders,"RB,CB",Right-Back,DF,21,2005-10-27,5,USA,False,,2026-11-10
 WSG Tirol,David Kubatta,1323005,defenders,CB,Centre-Back,DF,23,2003-10-29,14,GER,False,,2026-11-10
-WSG Tirol,Marco Boras,1249635,defenders,CB,Centre-Back,DF,25,2001-09-28,23,CRO,False,,2026-11-10
+WSG Tirol,Marco Boras,1249635,defenders,"CB,RB",Centre-Back,DF,25,2001-09-28,23,CRO,False,,2026-11-10
 WSG Tirol,David Jaunegg,1276647,defenders,CB,Centre-Back,DF,23,2003-02-28,27,AUT,False,,2026-11-10
 WSG Tirol,Moritz Oswald,1185210,defenders,"LB,RM",Left-Back,DF,24,2002-01-05,28,AUT,False,,2026-11-10
 WSG Tirol,Giorgi Bedianashvili,2141022,defenders,,Centre-Back,DF,19,2007-01-18,39,GEO,False,,2026-11-10
@@ -195,7 +195,7 @@ WSG Tirol,Quincy Butler,1167250,attackers,RM,Right Midfield,FW,25,2001-09-01,7,U
 WSG Tirol,Nikolai Baden,861933,attackers,"CAM,ST,RW,LW",Attacking Midfield,FW,26,2000-05-18,8,DEN,False,,2026-11-10
 WSG Tirol,Thomas Sabitzer,814457,attackers,ST,Centre-Forward,FW,26,2000-10-12,10,AUT,False,,2026-11-10
 WSG Tirol,Lukas Hinterseer,176831,attackers,ST,Centre-Forward,FW,35,1991-03-28,16,AUT,False,,2026-11-10
-WSG Tirol,Michael Olakigbe,1130797,attackers,"LW,CAM",Left Winger,FW,22,2004-04-06,17,NGA,False,,2026-11-10
+WSG Tirol,Michael Olakigbe,1130797,attackers,"LW,CAM,LM",Left Winger,FW,22,2004-04-06,17,NGA,False,,2026-11-10
 WSG Tirol,Husein Balić,658589,attackers,RW,Right Winger,FW,30,1996-02-15,18,AUT,False,,2026-11-10
 Austria Lustenau,Domenik Schierl,459256,keepers,GK,Goalkeeper,GK,32,1994-07-20,27,AUT,False,,2026-11-10
 Austria Lustenau,Phillip Böhm,1663025,keepers,GK,Goalkeeper,GK,24,2002-02-12,30,GER,False,,2026-11-10
@@ -231,7 +231,7 @@ Grazer AK,Ludwig Vraa-Jensen,1436842,defenders,CB,Centre-Back,DF,21,2005-06-23,3
 Grazer AK,Michael Sollbauer,167116,defenders,CB,Centre-Back,DF,36,1990-05-15,21,AUT,False,,2026-11-10
 Grazer AK,Yannick Oberleitner,1146400,defenders,CB,Centre-Back,DF,24,2002-05-27,27,GER,False,,2026-11-10
 Grazer AK,Christoph Hasenhuettl,2117199,defenders,,Centre-Back,DF,16,2010-02-16,30,AUT,False,,2026-11-10
-Grazer AK,Tim Trummer,1515147,defenders,"RB,CB",Right-Back,DF,20,2005-11-10,37,AUT,False,,2026-11-10
+Grazer AK,Tim Trummer,1515147,defenders,"RB,CB",Right-Back,DF,21,2005-11-10,37,AUT,False,,2026-11-10
 Grazer AK,Petar Marković,1869842,defenders,CB,Centre-Back,DF,20,2006-02-05,72,AUT,False,,2026-11-10
 Grazer AK,Beres Owusu,1585596,defenders,CB,Centre-Back,DF,23,2003-09-19,82,FRA,True,Unknown,2026-11-10
 Grazer AK,Liam Hermesh,1612420,midfielders,CDM,Defensive Midfield,MF,22,2004-03-12,6,ISR,False,,2026-11-10
@@ -263,7 +263,7 @@ Altach,Jakob Brandtner,1663342,defenders,"LB,CB",Left-Back,DF,20,2006-03-02,21,A
 Altach,Benedikt Zech,176791,defenders,CB,Centre-Back,DF,36,1990-11-03,23,AUT,False,,2026-11-10
 Altach,Filip Milojević,1663202,defenders,"CB,CM",Centre-Back,DF,21,2005-02-09,27,AUT,False,,2026-11-10
 Altach,Vesel Demaku,919376,midfielders,"CM,CDM",Central Midfield,MF,26,2000-02-05,6,KVX,True,About 1-2 weeks,2026-11-10
-Altach,Denizcan Cosgun,1231905,midfielders,"CAM,CB,RM",Attacking Midfield,MF,24,2002-02-16,7,AUT,False,,2026-11-10
+Altach,Denizcan Cosgun,1231905,midfielders,"CB,RM",Centre-Back,MF,24,2002-02-16,7,AUT,False,,2026-11-10
 Altach,Mike-Steven Bähre,614961,midfielders,"CM,CDM",Central Midfield,MF,31,1995-08-10,8,GER,False,,2026-11-10
 Altach,Johannes Naschberger,1184073,midfielders,"RWB,RM,CM,CDM",Right-Back,MF,26,2000-01-25,14,AUT,False,,2026-11-10
 Altach,Erkin Yalcin,1695972,midfielders,LWB,Left-Back,MF,22,2004-06-14,20,AUT,False,,2026-11-10
@@ -295,13 +295,13 @@ Austria Wien,Philipp Maybach,1670148,midfielders,"CDM,CM",Defensive Midfield,MF,
 Austria Wien,Vasilije Markovic,1838767,midfielders,"CDM,CAM",Defensive Midfield,MF,18,2008-05-12,7,AUT,False,,2026-11-10
 Austria Wien,Sanel Šaljić,1385055,midfielders,"CAM,LW,ST",Attacking Midfield,MF,20,2005-11-27,10,AUT,False,,2026-11-10
 Austria Wien,Kang-Hee Lee,1149438,midfielders,"CDM,CB",Defensive Midfield,MF,25,2001-08-24,16,KOR,True,A few weeks,2026-11-10
-Austria Wien,Tae-Seok Lee,1107251,midfielders,"LWB,LM,LB",Left-Back,MF,24,2002-07-28,17,KOR,False,,2026-11-10
+Austria Wien,Tae-Seok Lee,1107251,midfielders,"LWB,LB,LM",Left-Back,MF,24,2002-07-28,17,KOR,False,,2026-11-10
 Austria Wien,Julian Hettwer,1206523,midfielders,"CAM,LW",Attacking Midfield,MF,23,2003-06-15,20,GER,True,Doubtful,2026-11-10
 Austria Wien,Matteo Schablas,1515195,midfielders,"LB,LWB",Left-Back,MF,21,2005-03-14,21,AUT,False,,2026-11-10
 Austria Wien,Florian Wustinger,1213388,midfielders,"CDM,CM",Defensive Midfield,MF,23,2003-07-21,22,AUT,False,,2026-11-10
 Austria Wien,Reinhold Ranftl,447085,midfielders,"RWB,RM,CB,RB",Right-Back,MF,34,1992-01-24,26,AUT,False,,2026-11-10
 Austria Wien,Manfred Fischer,658636,midfielders,"CAM,RW,CDM",Attacking Midfield,MF,31,1995-08-06,30,AUT,False,,2026-11-10
-Austria Wien,Manprit Sarkaria,766797,attackers,LW,Left Winger,FW,30,1996-08-26,11,AUT,True,Unknown,2026-11-10
+Austria Wien,Manprit Sarkaria,766797,attackers,RW,Right Winger,FW,30,1996-08-26,11,AUT,True,Unknown,2026-11-10
 Austria Wien,Kelvin Boateng,1160111,attackers,"ST,CAM",Centre-Forward,FW,26,2000-03-24,14,UGA,False,,2026-11-10
 Austria Wien,Johannes Eggestein,638127,attackers,ST,Centre-Forward,FW,28,1998-05-08,19,GER,False,,2026-11-10
 Austria Wien,Hasan Deshishku,1788353,attackers,"ST,RW",Centre-Forward,FW,18,2008-02-23,74,AUT,False,,2026-11-10
@@ -317,7 +317,7 @@ Wolfsberger AC,Nicolas Wimmer,951288,defenders,CB,Centre-Back,DF,31,1995-03-15,3
 Wolfsberger AC,David Djuric,1786576,defenders,CB,Centre-Back,DF,20,2006-03-19,70,SRB,False,,2026-11-10
 Wolfsberger AC,Boris Matić,1663147,midfielders,"RWB,RB,LWB",Right-Back,MF,22,2004-08-19,2,SRB,False,,2026-11-10
 Wolfsberger AC,Simon Piesinger,240242,midfielders,"CB,CDM,CM",Centre-Back,MF,34,1992-05-13,8,AUT,False,,2026-11-10
-Wolfsberger AC,Donis Avdijaj,520348,midfielders,"LW,ST,CAM,CM,CDM",Left Winger,MF,30,1996-08-25,10,KVX,False,,2026-11-10
+Wolfsberger AC,Donis Avdijaj,520348,midfielders,"ST,CAM,CM,LW,CDM",Centre-Forward,MF,30,1996-08-25,10,KVX,False,,2026-11-10
 Wolfsberger AC,Aaron Schwarz,1420931,midfielders,"LM,LW,LWB,RW,LB",Left Midfield,MF,22,2004-03-20,11,AUT,False,,2026-11-10
 Wolfsberger AC,Michael Schweiger,2072701,midfielders,,Central Midfield,MF,21,2005-08-25,18,GER,False,,2026-11-10
 Wolfsberger AC,Otar Mamageishvili,1317741,midfielders,"CDM,CM",Defensive Midfield,MF,23,2003-01-15,19,GEO,False,,2026-11-10
@@ -327,7 +327,7 @@ Wolfsberger AC,Marco Sulzner,1156880,midfielders,"CDM,CM,CB,LW",Defensive Midfie
 Wolfsberger AC,Fabian Wohlmuth,1165206,midfielders,"RWB,CB,RM,LM",Right-Back,MF,24,2002-06-25,31,AUT,False,,2026-11-10
 Wolfsberger AC,Emmanuel Agyemang,1357730,midfielders,"CDM,CM",Defensive Midfield,MF,22,2004-01-03,34,GHA,False,,2026-11-10
 Wolfsberger AC,Dominik Fitz,769955,midfielders,"CM,CAM",Central Midfield,MF,27,1999-06-16,36,AUT,False,,2026-11-10
-Wolfsberger AC,René Renner,557831,midfielders,"LWB,LB,LM",Left-Back,MF,32,1993-11-29,77,AUT,False,,2026-11-10
+Wolfsberger AC,René Renner,557831,midfielders,"LWB,LM,LB",Left-Back,MF,32,1993-11-29,77,AUT,False,,2026-11-10
 Wolfsberger AC,Luca Hassler,1276614,attackers,"ST,CM",Centre-Forward,FW,22,2003-12-13,7,AUT,False,,2026-11-10
 Wolfsberger AC,Giacomo Vrioni,814285,attackers,ST,Centre-Forward,FW,28,1998-10-15,9,ALB,False,,2026-11-10
 Wolfsberger AC,Marco Schabauer,1669450,attackers,"RW,ST,CAM,CM",Right Winger,FW,21,2005-10-21,17,AUT,False,,2026-11-10

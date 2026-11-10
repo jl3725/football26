@@ -1,5 +1,5 @@
 squad,player,fotmob_id,group,positions,tm_position,pos,age,birth_date,shirt,ccode,injured,expected_return,fetched
-Lugano,David von Ballmoos,338299,keepers,GK,Goalkeeper,GK,31,1994-12-30,16.0,SUI,False,,2026-11-10
+Lugano,David von Ballmoos,338299,keepers,GK,Goalkeeper,GK,31,1994-12-30,16.0,SUI,True,About a week,2026-11-10
 Lugano,Felix Gebhardt,1186014,keepers,GK,Goalkeeper,GK,24,2002-03-01,28.0,GER,False,,2026-11-10
 Lugano,Ahmadou Ndiaye,1535467,keepers,,Goalkeeper,GK,18,2008-01-05,39.0,SUI,False,,2026-11-10
 Lugano,Diego Mina,1400238,keepers,,Goalkeeper,GK,21,2005-08-12,99.0,SUI,False,,2026-11-10
@@ -14,7 +14,7 @@ Lugano,Behruzjon Karimov,1898281,midfielders,"RM,RWB,CAM,RB",Right Midfield,MF,1
 Lugano,Ezgjan Alioski,406283,midfielders,"LWB,LM,LB",Left-Back,MF,34,1992-02-12,7.0,MKD,False,,2026-11-10
 Lugano,Anto Grgic,656668,midfielders,"CDM,CM",Defensive Midfield,MF,29,1996-11-28,8.0,SUI,False,,2026-11-10
 Lugano,Ahmed Kendouci,1124844,midfielders,"CM,CAM",Central Midfield,MF,27,1999-06-22,14.0,ALG,False,,2026-11-10
-Lugano,Yanis Cimignani,1177753,midfielders,"LWB,LM,RW,LW,RWB,RM,CAM,CM",Left-Back,MF,24,2002-01-22,21.0,FRA,False,,2026-11-10
+Lugano,Yanis Cimignani,1177753,midfielders,"LWB,LM,RW,LW,RWB,RM,CM,CAM",Left-Back,MF,24,2002-01-22,21.0,FRA,False,,2026-11-10
 Lugano,Gjan Ajdin,1840544,midfielders,CB,Centre-Back,MF,19,2007-01-13,23.0,SWE,False,,2026-11-10
 Lugano,Uran Bislimi,1189687,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,27,1999-09-25,25.0,SUI,False,,2026-11-10
 Lugano,Daniel Dos Santos,1244384,midfielders,"CAM,CM,CDM,RW,LW,LM",Attacking Midfield,MF,23,2002-12-29,27.0,SUI,False,,2026-11-10
@@ -144,7 +144,6 @@ FC Zürich,Daniel Ihendu,1789052,defenders,CB,Centre-Back,DF,21,2005-09-29,48.0,
 FC Zürich,Cosimo Fiorini,1678878,midfielders,CM,Central Midfield,MF,20,2006-05-27,6.0,ITA,False,,2026-11-10
 FC Zürich,Bledian Krasniqi,976577,midfielders,"CAM,CM,RW",Attacking Midfield,MF,25,2001-06-17,7.0,KVX,True,A few weeks,2026-11-10
 FC Zürich,Livano Comenencia,1243246,midfielders,"CM,CAM,CDM,LB,LWB",Central Midfield,MF,22,2004-02-03,8.0,CUW,False,,2026-11-10
-FC Zürich,Kevin Spadanuda,1086018,midfielders,"RW,CDM,CM",Right Winger,MF,29,1997-01-16,17.0,SUI,False,,2026-11-10
 FC Zürich,Mohamed Bangoura,1678877,midfielders,,Central Midfield,MF,20,2006-02-18,18.0,GUI,False,,2026-11-10
 FC Zürich,Leandro Schoedler,1983240,midfielders,"CDM,CB",Defensive Midfield,MF,20,2006-02-27,21.0,SUI,False,,2026-11-10
 FC Zürich,Valon Berisha,168872,midfielders,"CM,CDM,CAM",Central Midfield,MF,33,1993-02-07,23.0,KVX,False,,2026-11-10
@@ -156,6 +155,7 @@ FC Zürich,Gian Stork,1789054,midfielders,,Central Midfield,MF,19,2007-03-12,45.
 FC Zürich,Jill Stiel,1807494,midfielders,CDM,Defensive Midfield,MF,18,2008-05-01,46.0,SUI,False,,2026-11-10
 FC Zürich,Emmanuel Umeh,1413313,attackers,"LW,RM",Left Winger,FW,22,2004-08-31,11.0,NGA,False,,2026-11-10
 FC Zürich,Nevio Di Giusto,1614814,attackers,RW,Right Winger,FW,21,2005-03-18,14.0,SUI,False,,2026-11-10
+FC Zürich,Kevin Spadanuda,1086018,attackers,"RW,CDM,CM",Right Winger,FW,29,1997-01-16,17.0,SUI,False,,2026-11-10
 FC Zürich,Philippe Kény,1045039,attackers,"ST,RW",Centre-Forward,FW,27,1999-05-18,19.0,SEN,False,,2026-11-10
 FC Zürich,Damienus Reverson,1282599,attackers,"ST,RW",Centre-Forward,FW,23,2003-10-18,29.0,NED,True,Early November 2026,2026-11-10
 FC Zürich,Din Ramic,1807495,attackers,,Centre-Forward,FW,17,2008-12-28,49.0,BIH,False,,2026-11-10
@@ -167,11 +167,11 @@ Servette,Steve Rouiller,248680,defenders,CB,Centre-Back,DF,36,1990-07-10,4.0,SUI
 Servette,Lilian Njoh,1523252,defenders,"LB,LM,LWB",Left-Back,DF,24,2001-11-22,14.0,CMR,False,,2026-11-10
 Servette,Marco Burch,1114359,defenders,CB,Centre-Back,DF,26,2000-10-19,15.0,SUI,False,,2026-11-10
 Servette,Houboulang Mendes,764841,defenders,"RB,RWB,RM",Right-Back,DF,28,1998-05-04,17.0,GNB,False,,2026-11-10
-Servette,Bradley Mazikou,750596,defenders,"LB,RB,CB",Left-Back,DF,30,1996-06-02,18.0,CGO,False,,2026-11-10
+Servette,Bradley Mazikou,750596,defenders,"LB,CB,RB",Left-Back,DF,30,1996-06-02,18.0,CGO,False,,2026-11-10
 Servette,Yoan Severin,769334,defenders,CB,Centre-Back,DF,29,1997-01-24,19.0,FRA,True,Back in training,2026-11-10
 Servette,Quentin Maceiras,753549,defenders,"RB,LB",Right-Back,DF,31,1995-10-10,23.0,SUI,False,,2026-11-10
 Servette,Dylan Bronn,771686,defenders,CB,Centre-Back,DF,31,1995-06-19,25.0,TUN,False,,2026-11-10
-Servette,Téo Allix,1400232,defenders,RB,Right-Back,DF,22,2004-07-05,34.0,FRA,False,,2026-11-10
+Servette,Téo Allix,1400232,defenders,"RB,CB",Right-Back,DF,22,2004-07-05,34.0,FRA,False,,2026-11-10
 Servette,Sylvain Djoho,1980890,defenders,,Centre-Back,DF,19,2007-08-05,37.0,BRA,False,,2026-11-10
 Servette,Pedro Naressi,1109550,midfielders,"CDM,CM",Defensive Midfield,MF,28,1998-01-10,6.0,BRA,False,,2026-11-10
 Servette,Timothé Cognat,674515,midfielders,"CM,CDM,CAM",Central Midfield,MF,28,1998-01-25,8.0,FRA,True,Early November 2026,2026-11-10
@@ -237,7 +237,7 @@ Thun,Lucien Dähler,1436393,defenders,RB,Right-Back,DF,25,2001-03-22,37.0,SUI,Fa
 Thun,Fabio Fehr,1166048,defenders,RB,Right-Back,DF,26,2000-01-15,47.0,SUI,False,,2026-11-10
 Thun,Louis Passavant,1696434,defenders,CB,Centre-Back,DF,20,2006-03-06,54.0,SUI,False,,2026-11-10
 Thun,Fabio Saiz,1173382,midfielders,"CM,CAM,CDM,LW",Central Midfield,MF,25,2001-03-01,8.0,SUI,True,Out for season,2026-11-10
-Thun,Nassim Zoukit,1308521,midfielders,"CDM,CM",Defensive Midfield,MF,25,2001-04-30,13.0,SUI,False,,2026-11-10
+Thun,Nassim Zoukit,1308521,midfielders,"CM,CDM",Central Midfield,MF,25,2001-04-30,13.0,SUI,False,,2026-11-10
 Thun,Mattias Käit,695067,midfielders,"CM,CDM",Central Midfield,MF,28,1998-06-29,14.0,EST,False,,2026-11-10
 Thun,Patrik Kristal,1512735,midfielders,"CM,LM",Central Midfield,MF,18,2007-11-12,15.0,EST,False,,2026-11-10
 Thun,Justin Roth,924878,midfielders,"CM,CDM",Central Midfield,MF,26,2000-10-29,16.0,SUI,False,,2026-11-10
@@ -266,7 +266,7 @@ Luzern,Pius Dorn,664866,defenders,RB,Right-Back,DF,30,1996-09-24,20.0,GER,False,
 Luzern,Loic Lüthi,1513301,defenders,CB,Centre-Back,DF,23,2003-09-30,21.0,SUI,False,,2026-11-10
 Luzern,Ruben Dantas Fernandes,1481522,defenders,"LB,RB",Left-Back,DF,23,2003-05-19,22.0,SUI,False,,2026-11-10
 Luzern,Erblin Sadikaj,1861072,defenders,CB,Centre-Back,DF,18,2008-03-13,45.0,SUI,False,,2026-11-10
-Luzern,Bung Meng Freimann,1662707,defenders,"CB,LB",Centre-Back,DF,20,2005-12-09,46.0,SUI,False,,2026-11-10
+Luzern,Bung Meng Freimann,1662707,defenders,CB,Centre-Back,DF,20,2005-12-09,46.0,SUI,False,,2026-11-10
 Luzern,Leonardo Bertone,320184,midfielders,"CM,CDM",Central Midfield,MF,32,1994-03-14,6.0,SUI,True,A few weeks,2026-11-10
 Luzern,Lucas Ferreira,1789527,midfielders,"RW,CAM,CDM,RM,CM",Right Winger,MF,19,2006-11-25,10.0,POR,False,,2026-11-10
 Luzern,Matteo Di Giusto,1085706,midfielders,"CAM,LM,LW,CDM",Attacking Midfield,MF,26,2000-08-18,11.0,SUI,False,,2026-11-10
@@ -289,6 +289,7 @@ Grasshopper,Justin Hammel,1308464,keepers,GK,Goalkeeper,GK,25,2000-12-02,71.0,SU
 Grasshopper,Luka Mikulić,1819492,defenders,CB,Centre-Back,DF,21,2005-05-07,4.0,BIH,False,,2026-11-10
 Grasshopper,Abdoulaye Diaby,1054120,defenders,CB,Centre-Back,DF,26,2000-07-04,15.0,MLI,True,About 1-2 weeks,2026-11-10
 Grasshopper,Pantaleo Creti,1780247,defenders,LB,Left-Back,DF,18,2008-07-22,22.0,ITA,True,Unknown,2026-11-10
+Grasshopper,Samuel Marques,1473933,defenders,"RB,RM",Right-Back,DF,21,2005-02-04,23.0,SUI,False,,2026-11-10
 Grasshopper,John Hilton,1285132,defenders,LB,Left-Back,DF,25,2001-06-15,25.0,USA,False,,2026-11-10
 Grasshopper,Simone Stroscio,1305752,defenders,"CB,RB,LM,LB,RM",Centre-Back,DF,23,2003-08-20,28.0,SUI,False,,2026-11-10
 Grasshopper,Allan Arigoni,924873,defenders,"RB,LB",Right-Back,DF,28,1998-11-04,34.0,SUI,False,,2026-11-10
@@ -296,12 +297,11 @@ Grasshopper,Bujar Pllana,1510878,defenders,CB,Centre-Back,DF,25,2001-10-29,44.0,
 Grasshopper,Nico Rissi,1859293,defenders,"LB,CB",Left-Back,DF,22,2004-01-30,57.0,SUI,False,,2026-11-10
 Grasshopper,Yannick Bettkober,1687373,defenders,CB,Centre-Back,DF,21,2005-03-18,58.0,GER,False,,2026-11-10
 Grasshopper,Dorian Paloschi,1527328,defenders,CB,Centre-Back,DF,20,2005-11-21,73.0,ITA,False,,2026-11-10
-Grasshopper,Hassane Imourane,1453424,midfielders,"CM,CDM,CB,CAM",Central Midfield,MF,23,2003-04-08,5.0,BEN,False,,2026-11-10
+Grasshopper,Hassane Imourane,1453424,midfielders,"CM,CDM,CAM",Central Midfield,MF,23,2003-04-08,5.0,BEN,False,,2026-11-10
 Grasshopper,Amir Abrashi,127224,midfielders,"CM,CDM,CAM",Central Midfield,MF,36,1990-03-27,6.0,ALB,False,,2026-11-10
 Grasshopper,Tim Meyer,1515927,midfielders,"CM,CAM,CDM,CB,RW",Central Midfield,MF,22,2004-07-08,8.0,SUI,True,Unknown,2026-11-10
 Grasshopper,Matteo Mantini,1785911,midfielders,CM,Central Midfield,MF,19,2007-08-27,16.0,ITA,False,,2026-11-10
-Grasshopper,Samuel Marques,1473933,midfielders,"RM,RB",Right Midfield,MF,21,2005-02-04,23.0,SUI,False,,2026-11-10
-Grasshopper,Kenzo Goudmijn,929665,midfielders,"CAM,CDM,CM,LW",Attacking Midfield,MF,24,2001-12-18,24.0,NED,False,,2026-11-10
+Grasshopper,Kenzo Goudmijn,929665,midfielders,"CAM,CDM,CM",Attacking Midfield,MF,24,2001-12-18,24.0,NED,False,,2026-11-10
 Grasshopper,Maximilian Ullmann,557802,midfielders,"LM,LWB",Left Midfield,MF,30,1996-06-17,31.0,AUT,False,,2026-11-10
 Grasshopper,Dominik Papic,1970905,midfielders,RW,Right Winger,MF,18,2008-05-14,55.0,SUI,False,,2026-11-10
 Grasshopper,Denis Sahin,1970906,midfielders,LW,Left Winger,MF,18,2008-06-23,56.0,SUI,False,,2026-11-10

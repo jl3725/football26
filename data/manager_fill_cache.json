@@ -700,6 +700,12 @@
    "src": "fotmob",
    "val": "Oct 2025"
   },
+  "Kasımpaşa|alfred schreuder": {
+   "at": "2026-11-10",
+   "date": "2026-11-04",
+   "src": "fotmob",
+   "val": "Nov 2026"
+  },
   "Kasımpaşa|emre belozoglu": {
    "at": "2026-10-23",
    "date": "2025-12-04",
@@ -871,6 +877,12 @@
    "date": "2026-01-01",
    "src": "fotmob",
    "val": "Jan 2026"
+  },
+  "Lyon|carlos vicens": {
+   "at": "2026-11-10",
+   "date": "2026-11-09",
+   "src": "fotmob",
+   "val": "Nov 2026"
   },
   "Lyon|jorge maciel (interim)": {
    "at": "2026-11-05",
@@ -1604,7 +1616,7 @@
   }
  },
  "coach_check": {
-  "ADO Den Haag|levi schwiebbe (a i )": "2026-11-03",
+  "ADO Den Haag|levi schwiebbe (a i )": "2026-11-10",
   "ADO Den Haag|robin peter": "2026-10-30",
   "AZ Alkmaar|lee roy echteld": "2026-11-06",
   "Académico de Viseu|bruno pinheiro": "2026-11-06",
@@ -1696,6 +1708,7 @@
   "Liverpool|andoni iraola": "2026-11-06",
   "Lommel|lee johnson": "2026-11-06",
   "Lorient|alexandre dujeux": "2026-11-06",
+  "Lyon|carlos vicens": "2026-11-10",
   "Lyon|jorge maciel (interim)": "2026-11-05",
   "Lyon|paulo fonseca": "2026-10-30",
   "Mainz 05|urs fischer": "2026-11-06",
@@ -1764,14 +1777,14 @@
   "Werder Bremen|daniel thioune": "2026-11-06",
   "Westerlo|issame charai": "2026-11-06",
   "Willem II|adrie koster (a i )": "2026-10-30",
-  "Willem II|jurgen streppel": "2026-11-03",
+  "Willem II|jurgen streppel": "2026-11-10",
   "Zulte Waregem|michael beale": "2026-11-06",
   "Zwolle|alex pastoor": "2026-11-08",
   "Zwolle|dennis van der ree (a i ) and maikel van der werff (a i )": "2026-11-06"
  },
  "override": {
   "Famalicão": {
-   "at": "2026-11-03",
+   "at": "2026-11-10",
    "bio_at": "2026-10-27",
    "bio_ko": "리카르두 살바도르 마세두 에 시우바는 포르투갈 출신의 축구 감독이다. 현재 리가 포르투갈 2의 루시타니아 로로사 감독을 맡고 있으며, 같은 리그의 파수스 드 페헤이라와 올리베이렌세 감독직을 역임한 바 있다. 빌라베르덴세 시절에는 4부 리그에서 2부 리그까지 2년 연속 승격을 이뤄냈다.",
    "bio_source": "en-wiki-translated",
@@ -1838,6 +1851,11 @@
   },
   "alexandre dujeux": {
    "at": "2026-10-23",
+   "focus": "",
+   "style": ""
+  },
+  "alfred schreuder": {
+   "at": "2026-11-10",
    "focus": "",
    "style": ""
   },
@@ -1923,6 +1941,11 @@
   },
   "carlos carvalhal": {
    "at": "2026-10-23",
+   "focus": "",
+   "style": ""
+  },
+  "carlos vicens": {
+   "at": "2026-11-10",
    "focus": "",
    "style": ""
   },

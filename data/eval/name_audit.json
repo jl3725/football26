@@ -1702,8 +1702,8 @@
    "minutes": 9
   },
   "s365_ratings": {
-   "total": 442,
-   "exact": 436,
+   "total": 443,
+   "exact": 437,
    "rule": 4,
    "ambiguous": 1,
    "orphan": 0,
@@ -2167,9 +2167,9 @@
    "minutes": 5
   },
   "s365_ratings": {
-   "total": 428,
+   "total": 430,
    "exact": 377,
-   "rule": 2,
+   "rule": 4,
    "ambiguous": 1,
    "orphan": 0,
    "orphans": [],
@@ -2491,23 +2491,38 @@
  "SuperLig 2026_2027": {
   "wiki_squads": {
    "total": 637,
-   "exact": 516,
+   "exact": 511,
    "rule": 12,
-   "ambiguous": 1,
+   "ambiguous": 0,
    "orphan": 0,
    "orphans": []
   },
   "espn_lineups": {
    "total": 592,
-   "exact": 579,
-   "rule": 1,
+   "exact": 565,
+   "rule": 7,
    "ambiguous": 0,
-   "orphan": 12,
+   "orphan": 20,
    "orphans": [
     {
      "squad": "Erzurumspor FK",
      "name": "Fernando Santos",
      "starts": 1
+    },
+    {
+     "squad": "Trabzonspor",
+     "name": "Kuzey Akçay",
+     "starts": 0
+    },
+    {
+     "squad": "Kocaelispor",
+     "name": "Deni̇z Ceylan",
+     "starts": 0
+    },
+    {
+     "squad": "Amed Sportif",
+     "name": "Ismail Duyu",
+     "starts": 0
     },
     {
      "squad": "Kasımpaşa",
@@ -2520,6 +2535,11 @@
      "starts": 0
     },
     {
+     "squad": "Samsunspor",
+     "name": "Eyüp Degirmenci",
+     "starts": 0
+    },
+    {
      "squad": "Trabzonspor",
      "name": "René Mitongo",
      "starts": 0
@@ -2527,6 +2547,11 @@
     {
      "squad": "Çorum FK",
      "name": "Hasan Abdulkareem",
+     "starts": 0
+    },
+    {
+     "squad": "Kasımpaşa",
+     "name": "Taylan Aydin",
      "starts": 0
     },
     {
@@ -2555,6 +2580,16 @@
      "starts": 0
     },
     {
+     "squad": "Kocaelispor",
+     "name": "Fatihhan Demir",
+     "starts": 0
+    },
+    {
+     "squad": "Samsunspor",
+     "name": "Yusuf Efe Yurtsever",
+     "starts": 0
+    },
+    {
      "squad": "Gaziantep FK",
      "name": "Ahmet Eren Sirma",
      "starts": 0
@@ -2563,15 +2598,20 @@
      "squad": "Gaziantep FK",
      "name": "Mehmet Ali Genc",
      "starts": 0
+    },
+    {
+     "squad": "Gençlerbirliği",
+     "name": "Bilal Sari",
+     "starts": 0
     }
    ]
   },
   "espn_lineups_cups": {
    "total": 282,
-   "exact": 269,
+   "exact": 266,
    "rule": 2,
    "ambiguous": 0,
-   "orphan": 11,
+   "orphan": 14,
    "orphans": [
     {
      "squad": "Fenerbahçe",
@@ -2580,7 +2620,17 @@
     },
     {
      "squad": "Trabzonspor",
+     "name": "Oğuzhan Ertem",
+     "starts": 0
+    },
+    {
+     "squad": "Trabzonspor",
      "name": "Hakan Yılmaz",
+     "starts": 0
+    },
+    {
+     "squad": "Trabzonspor",
+     "name": "Yiğithan Çubukcu",
      "starts": 0
     },
     {
@@ -2611,6 +2661,11 @@
     {
      "squad": "Beşiktaş",
      "name": "Devrim Sahin",
+     "starts": 0
+    },
+    {
+     "squad": "Trabzonspor",
+     "name": "Ahmet Güren",
      "starts": 0
     },
     {
@@ -3223,7 +3278,7 @@
  },
  "MLS 2026_2027": {
   "wiki_squads": {
-   "total": 949,
+   "total": 950,
    "exact": 849,
    "rule": 23,
    "ambiguous": 0,
@@ -3382,13 +3437,13 @@
    "minutes": 0
   },
   "s365_ratings": {
-   "total": 858,
+   "total": 862,
    "exact": 805,
-   "rule": 21,
+   "rule": 25,
    "ambiguous": 0,
    "orphan": 0,
    "orphans": [],
-   "minutes": 8
+   "minutes": 9
   }
  },
  "EPL 2025_2026": {
