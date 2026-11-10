@@ -1,5 +1,5 @@
 {
- "checked": "2026-11-09T17:53:14+00:00",
+ "checked": "2026-11-10T15:52:26+00:00",
  "results": {
   "ovr": [],
   "season": [],
@@ -8,25 +8,17 @@
   "backend": [],
   "workflows": [],
   "news": [
-   "news.db 압축본 71MB — GitHub 50MB 경고 구간(60MB 넘으면 넓힌 원천의 14일 지난 비이적 기사를 자동 정리, 90MB 넘으면 올리기 거부 — src/news_store.py)"
+   "news.db 압축본 66MB — GitHub 50MB 경고 구간(60MB 넘으면 넓힌 원천의 14일 지난 비이적 기사를 자동 정리, 90MB 넘으면 올리기 거부 — src/news_store.py)"
   ],
   "tm_agent": [],
-  "coverage": [
-   "MLS 감독 프로필 누락 ['CF Montréal', 'New England Revolution'] — daily_data 감독 수집 단계 확인"
-  ],
+  "coverage": [],
   "rating_history": [],
   "ratings": [
    "스카우트 기준 이탈: Jeremy Doku 89 (기대 82~86)"
   ],
-  "names": [
-   "기준 명단 밖 선발 3경기+ 이름 49개(>30) — 표기 변형 확인: Rafael Navarro(Colorado Rapids 22), Dejan Joveljic(Sporting Kansas City 20), Dante Sealy(Colorado Rapids 15), Andrei Radu(Celta Vigo 12), Noah Allen(Inter Miami CF 12), Kevin Guiton(Charleroi 11)"
-  ],
+  "names": [],
   "xg": [],
-  "agents": [
-   "NEWS · 뉴스 수집·분류·번역 — 마지막 성공 8시간 전(허용 6시간, daily_news)",
-   "ANALYST · 팬 투표 — 마지막 성공 88시간 전(허용 24시간, local-fanvote)",
-   "ANALYST · AI 팀 뉴스 요약 — 마지막 성공 8시간 전(허용 8시간, daily_news)"
-  ],
+  "agents": [],
   "expectations": [],
   "screen": [],
   "squads": [],
@@ -38,7 +30,9 @@
    "Ligue1 Understat xG(understat_players) 팀 누락: 팀 1곳 경기분이 절반 이하·없음 — Rennes(1.8/10) (팀 이름 매칭 확인)"
   ],
   "digest": [],
-  "scout_answers": []
+  "scout_answers": [
+   "Ask Scout 답 평가 24/36(67%) < 80% — 실패 유형 {'engine=rules': 1, '요청': 11} · 예: 바르셀로나에서 영향력 높은 선수 / 아스날 왼쪽 윙 영입 추천 / 도쿠와 비슷한 선수 / 아스날 영입 후보 중 이적설도 있는 선수는?"
+  ]
  },
- "ai_cause": "- **news**: 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인)\n- **coverage**: 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인)\n- **ratings**: 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인)\n- **names**: 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인)\n- **agents**: `understat_live` 단계에서 코드 75 오류가 반복 발생하여 데이터 수집이 지연되고 있습니다. `local-fanvote` 단계의 코드 1 오류 원인을 먼저 파악하고, Understat API 연결 상태를 점검하십시오(agents, related_failed_steps 추정).\n- **progress**: `understat_live` 단계에서 코드 75 오류가 지속되어 데이터 누락 및 지연이 발생하고 있습니다. Understat 라이브 데이터 수집 모듈의 응답 오류를 우선 확인하십시오(progress, related_failed_steps 추정)."
+ "ai_cause": "**news**\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인)\n**ratings**\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인)\n**progress**\n- Understat 데이터 수집 단계(understat_live)에서 지속적인 코드 75 오류가 발생하여 데이터 누락이 발생한 것으로 추정됩니다. (match_refresh: understat_live)\n- Statbunker 데이터 수집 시 특정 CSV 파일의 행을 읽지 못하는 런타임 오류가 발생했으므로, 해당 파일의 구조 변경 여부를 확인해야 합니다. (local-sofascore-daily: statbunker)\n**scout_answers**\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인)"
 }
