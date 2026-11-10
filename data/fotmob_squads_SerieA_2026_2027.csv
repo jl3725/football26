@@ -21,8 +21,7 @@ Lazio,Fisayo Dele-Bashiru,1091907,midfielders,CM,Central Midfield,MF,25,2001-02-
 Lazio,Bruno Galassi,1842381,midfielders,ST,Centre-Forward,MF,19,2007-02-07,8.0,ESP,False,,2026-11-10
 Lazio,Davide Frattesi,815431,midfielders,"CM,CAM",Central Midfield,MF,27,1999-09-22,16.0,ITA,False,,2026-11-10
 Lazio,Reda Belahyane,1388071,midfielders,CM,Central Midfield,MF,22,2004-06-01,21.0,MAR,False,,2026-11-10
-Lazio,Kenneth Taylor,970565,midfielders,"CM,CDM",Central Midfield,MF,24,2002-05-16,24.0,NED,False,,2026-11-10
-Lazio,Adrian Przyborek,1435833,midfielders,RW,Right Winger,MF,19,2007-01-01,28.0,POL,False,,2026-11-10
+Lazio,Kenneth Taylor,970565,midfielders,CM,Central Midfield,MF,24,2002-05-16,24.0,NED,False,,2026-11-10
 Lazio,Danilo Cataldi,362120,midfielders,CM,Central Midfield,MF,32,1994-08-06,32.0,ITA,False,,2026-11-10
 Lazio,Valerio Farcomeni,1816668,midfielders,,Central Midfield,MF,20,2006-01-18,71.0,ITA,False,,2026-11-10
 Lazio,Andrea Pinamonti,750030,attackers,ST,Centre-Forward,FW,27,1999-05-19,9.0,ITA,False,,2026-11-10
@@ -30,6 +29,7 @@ Lazio,Mattia Zaccagni,541555,attackers,LW,Left Winger,FW,31,1995-06-16,10.0,ITA,
 Lazio,Gustav Isaksen,1016093,attackers,"RW,RM",Right Winger,FW,25,2001-04-19,11.0,DEN,False,,2026-11-10
 Lazio,Tijjani Noslin,1282285,attackers,"ST,LW",Centre-Forward,FW,27,1999-07-07,14.0,NED,False,,2026-11-10
 Lazio,Matteo Cancellieri,1146500,attackers,RW,Right Winger,FW,24,2002-02-12,22.0,ITA,False,,2026-11-10
+Lazio,Adrian Przyborek,1435833,attackers,RW,Right Winger,FW,19,2007-01-01,28.0,POL,False,,2026-11-10
 Lazio,Federico Serra,1711283,attackers,,Centre-Forward,FW,20,2006-01-03,63.0,ITA,False,,2026-11-10
 Lazio,Albert Guðmundsson,665188,attackers,"LW,ST,CAM,LM",Left Winger,FW,29,1997-06-15,80.0,ISL,True,Late November 2026,2026-11-10
 Inter,Josep Martínez,772168,keepers,GK,Goalkeeper,GK,28,1998-05-27,1.0,ESP,False,,2026-11-10
@@ -50,11 +50,11 @@ Inter,Andy Diouf,1254297,midfielders,"RM,CM,CAM,LB",Right Midfield,MF,23,2003-05
 Inter,Hakan Çalhanoglu,304733,midfielders,"CM,CDM",Central Midfield,MF,32,1994-02-08,20.0,TUR,False,,2026-11-10
 Inter,Curtis Jones,933768,midfielders,"CDM,RB,CAM,CM",Defensive Midfield,MF,25,2001-01-30,21.0,ENG,False,,2026-11-10
 Inter,Henrikh Mkhitaryan,73167,midfielders,CM,Central Midfield,MF,37,1989-01-21,22.0,ARM,False,,2026-11-10
-Inter,Nicolò Barella,541820,midfielders,CM,Central Midfield,MF,29,1997-02-07,23.0,ITA,False,,2026-11-10
-Inter,Federico Dimarco,605224,midfielders,LM,Left Midfield,MF,29,1997-11-10,32.0,ITA,False,,2026-11-10
+Inter,Nicolò Barella,541820,midfielders,"CM,CAM",Central Midfield,MF,29,1997-02-07,23.0,ITA,False,,2026-11-10
+Inter,Federico Dimarco,605224,midfielders,"LM,LW",Left Midfield,MF,29,1997-11-10,32.0,ITA,False,,2026-11-10
 Inter,Marcus Thuram,621562,attackers,ST,Centre-Forward,FW,29,1997-08-06,9.0,FRA,False,,2026-11-10
 Inter,Lautaro Martínez,690230,attackers,ST,Centre-Forward,FW,29,1997-08-22,10.0,ARG,True,Back in training,2026-11-10
-Inter,Ange-Yoan Bonny,1199383,attackers,ST,Centre-Forward,FW,23,2003-10-25,14.0,CIV,False,,2026-11-10
+Inter,Ange-Yoan Bonny,1199383,attackers,ST,Centre-Forward,FW,23,2003-10-25,14.0,CIV,True,About 1-2 weeks,2026-11-10
 Inter,Mattia Mosconi,1646520,attackers,"RW,LW",Right Winger,FW,19,2007-03-26,48.0,ITA,False,,2026-11-10
 Inter,Francesco Pio Esposito,1367618,attackers,ST,Centre-Forward,FW,21,2005-06-28,94.0,ITA,False,,2026-11-10
 Roma,Levente Kilvinger,2388785,keepers,GK,Goalkeeper,GK,17,2009-03-20,12.0,HUN,False,,2026-11-10
@@ -73,9 +73,9 @@ Roma,Bryan Cristante,299799,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,31,19
 Roma,Lorenzo Pellegrini,540307,midfielders,"CAM,ST",Attacking Midfield,MF,30,1996-06-19,7.0,ITA,True,Late November 2026,2026-11-10
 Roma,Marten de Roon,198559,midfielders,"CDM,CM",Defensive Midfield,MF,35,1991-03-29,15.0,NED,False,,2026-11-10
 Roma,Manu Koné,1016132,midfielders,"CDM,CM",Defensive Midfield,MF,25,2001-05-17,17.0,FRA,False,,2026-11-10
-Roma,Matias Soulé,1280082,midfielders,"CAM,ST",Attacking Midfield,MF,23,2003-04-15,18.0,ARG,False,,2026-11-10
+Roma,Matías Soulé,1280082,midfielders,"CAM,ST,RW",Attacking Midfield,MF,23,2003-04-15,18.0,ARG,False,,2026-11-10
 Roma,Paulo Dybala,325916,midfielders,"CAM,ST",Attacking Midfield,MF,32,1993-11-15,21.0,ARG,True,Back in training,2026-11-10
-Roma,Wesley,1320176,midfielders,"LWB,LM,RWB,RB",Left-Back,MF,23,2003-09-06,43.0,BRA,False,,2026-11-10
+Roma,Wesley,1320176,midfielders,"LWB,LM,RB,RWB",Left-Back,MF,23,2003-09-06,43.0,BRA,False,,2026-11-10
 Roma,Niccolò Pisilli,1451196,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,22,2004-09-23,61.0,ITA,False,,2026-11-10
 Roma,Alessandro Di Nunzio,2026491,midfielders,CM,Central Midfield,MF,19,2007-04-21,63.0,ITA,False,,2026-11-10
 Roma,Emanuele Lulli,1800491,midfielders,RWB,Right-Back,MF,19,2007-08-17,77.0,ITA,False,,2026-11-10
@@ -97,7 +97,7 @@ Milan,Filippo Terracciano,1163501,defenders,"CB,RB",Centre-Back,DF,23,2003-02-08
 Milan,Matteo Gabbia,844996,defenders,CB,Centre-Back,DF,27,1999-10-21,46.0,ITA,True,Early January 2027,2026-11-10
 Milan,El Hadji Cisse,1844316,defenders,CB,Centre-Back,DF,18,2008-01-05,48.0,SEN,False,,2026-11-10
 Milan,Warren Bondo,1209987,midfielders,CM,Central Midfield,MF,23,2003-09-15,,FRA,False,,2026-11-10
-Milan,Pervis Estupinán,688278,midfielders,"LM,LWB,LB",Left Midfield,MF,28,1998-01-21,2.0,ECU,False,,2026-11-10
+Milan,Pervis Estupiñán,688278,midfielders,"LM,LWB,LB",Left Midfield,MF,28,1998-01-21,2.0,ECU,False,,2026-11-10
 Milan,Ruben Loftus-Cheek,604982,midfielders,"CAM,CM,ST",Attacking Midfield,MF,30,1996-01-23,8.0,ENG,True,Late November 2026,2026-11-10
 Milan,Adrien Rabiot,352879,midfielders,"CM,CDM,CAM",Central Midfield,MF,31,1995-04-03,12.0,FRA,False,,2026-11-10
 Milan,Luka Modrić,31097,midfielders,"CM,CDM",Central Midfield,MF,41,1985-09-09,14.0,CRO,False,,2026-11-10
@@ -113,7 +113,7 @@ Milan,Yunus Musah,1137272,midfielders,"CDM,CM",Defensive Midfield,MF,23,2002-11-
 Milan,Gonçalo Ramos,940087,attackers,ST,Centre-Forward,FW,25,2001-06-20,9.0,POR,False,,2026-11-10
 Milan,Christian Pulisic,688295,attackers,"ST,LW,CAM",Centre-Forward,FW,28,1998-09-18,11.0,USA,False,,2026-11-10
 Milan,Omari Hutchinson,1215652,attackers,"RW,RM,CAM,LW",Right Winger,FW,23,2003-10-30,20.0,ENG,False,,2026-11-10
-Milan,Diego Moreira,1342754,attackers,"RW,RWB,LWB,LM",Right Winger,FW,22,2004-08-06,22.0,BEL,False,,2026-11-10
+Milan,Diego Moreira,1342754,attackers,"RW,RWB,LM,LWB",Right Winger,FW,22,2004-08-06,22.0,BEL,False,,2026-11-10
 Milan,Cheveyo Mul-Balentien,1794177,attackers,,Centre-Forward,FW,19,2006-12-18,25.0,SUR,False,,2026-11-10
 Milan,Francesco Camarda,1554575,attackers,ST,Centre-Forward,FW,18,2008-03-10,73.0,ITA,False,,2026-11-10
 Como,Jean Butez,560939,keepers,GK,Goalkeeper,GK,31,1995-06-08,1.0,FRA,False,,2026-11-10
@@ -136,7 +136,7 @@ Como,Luis Milla,638090,midfielders,"CM,CDM",Central Midfield,MF,32,1994-10-07,6.
 Como,Lucas Da Cunha,1076647,midfielders,"CDM,RW,CM",Defensive Midfield,MF,25,2001-06-09,7.0,FRA,False,,2026-11-10
 Como,Maxence Caqueret,846000,midfielders,"CAM,CDM,LW",Attacking Midfield,MF,26,2000-02-15,8.0,FRA,False,,2026-11-10
 Como,Nico Paz,1347574,midfielders,"CAM,ST,RW,RM",Attacking Midfield,MF,22,2004-09-08,10.0,ARG,False,,2026-11-10
-Como,Adrian Lahdo,1615459,midfielders,CM,Central Midfield,MF,18,2007-12-26,15.0,SWE,False,,2026-11-10
+Como,Adrian Lahdo,1615459,midfielders,LM,Left Midfield,MF,18,2007-12-26,15.0,SWE,False,,2026-11-10
 Como,Samuele Ricci,941656,midfielders,"CM,CDM",Central Midfield,MF,25,2001-08-21,21.0,ITA,False,,2026-11-10
 Como,Mattia Liberali,1593861,midfielders,"CAM,RW,CM",Attacking Midfield,MF,19,2007-04-06,30.0,ITA,False,,2026-11-10
 Como,Matteo Papaccioli,1817857,midfielders,CAM,Attacking Midfield,MF,18,2008-05-09,54.0,ITA,False,,2026-11-10
@@ -267,7 +267,7 @@ Cagliari,M'Bala Nzola,613334,attackers,ST,Centre-Forward,FW,30,1996-08-18,18.0,A
 Cagliari,Yael Trepy,1861022,attackers,RW,Right Winger,FW,20,2006-05-20,19.0,FRA,True,Late November 2026,2026-11-10
 Cagliari,Paul Mendy,1902196,attackers,ST,Centre-Forward,FW,19,2007-01-13,31.0,SEN,False,,2026-11-10
 Cagliari,Alessandro Sugamele,1663296,attackers,,Centre-Forward,FW,19,2007-02-22,35.0,ITA,False,,2026-11-10
-Cagliari,Alieu Fadera,1159233,attackers,"LW,RW",Left Winger,FW,25,2001-11-03,39.0,GAM,True,Late November 2026,2026-11-10
+Cagliari,Alieu Fadera,1159233,attackers,"RW,LW",Right Winger,FW,25,2001-11-03,39.0,GAM,True,Late November 2026,2026-11-10
 Cagliari,Daniel Maldini,1072054,attackers,"ST,CAM,LW",Centre-Forward,FW,25,2001-10-11,70.0,ITA,False,,2026-11-10
 Napoli,Alex Meret,577912,keepers,GK,Goalkeeper,GK,29,1997-03-22,1.0,ITA,False,,2026-11-10
 Napoli,Claudio Pugliese,1830797,keepers,GK,Goalkeeper,GK,18,2008-04-15,12.0,ITA,False,,2026-11-10
@@ -350,7 +350,7 @@ Atalanta,Lorenzo Bernasconi,1191093,midfielders,"LWB,LB",Left-Back,MF,22,2003-11
 Atalanta,Nicola Zalewski,1053714,midfielders,"CAM,LWB,LW,LM,RW",Attacking Midfield,MF,24,2002-01-23,59.0,POL,False,,2026-11-10
 Atalanta,Gianluca Gaetano,1012842,midfielders,"CM,CDM,CAM",Central Midfield,MF,26,2000-05-05,70.0,ITA,True,Late November 2026,2026-11-10
 Atalanta,Davide Zappacosta,244811,midfielders,"RWB,LWB,RB,LB",Right-Back,MF,34,1992-06-11,77.0,ITA,False,,2026-11-10
-Atalanta,Eljif Elmas,741049,midfielders,"CAM,CDM,RW,LW,CM",Attacking Midfield,MF,27,1999-09-24,99.0,MKD,False,,2026-11-10
+Atalanta,Eljif Elmas,741049,midfielders,"CAM,CDM,RW,CM,LW",Attacking Midfield,MF,27,1999-09-24,99.0,MKD,False,,2026-11-10
 Atalanta,Gianluca Scamacca,721089,attackers,ST,Centre-Forward,FW,27,1999-01-01,9.0,ITA,False,,2026-11-10
 Atalanta,Jonathan Rowe,1113694,attackers,"LW,RW",Left Winger,FW,23,2003-04-30,11.0,ENG,False,,2026-11-10
 Atalanta,Nikola Krstović,833638,attackers,ST,Centre-Forward,FW,26,2000-04-05,90.0,MNE,False,,2026-11-10
@@ -468,7 +468,7 @@ Parma,Mandela Keita,1239749,midfielders,"CM,CDM",Central Midfield,MF,24,2002-05-
 Parma,Sascha Britschgi,1693531,midfielders,"RM,RB,RWB,LB",Right Midfield,MF,20,2006-08-27,27.0,SUI,False,,2026-11-10
 Parma,Franco Carboni,1199360,midfielders,CM,Central Midfield,MF,23,2003-04-04,29.0,ARG,False,,2026-11-10
 Parma,Christian Ordóñez,1393542,midfielders,CM,Central Midfield,MF,22,2004-07-24,32.0,ARG,False,,2026-11-10
-Parma,Hans Nicolussi Caviglia,845994,midfielders,"CM,CDM",Central Midfield,MF,26,2000-06-18,41.0,ITA,False,,2026-11-10
+Parma,Hans Nicolussi Caviglia,845994,midfielders,CM,Central Midfield,MF,26,2000-06-18,41.0,ITA,False,,2026-11-10
 Parma,Abdou-Salam Konaté,1844134,midfielders,CM,Central Midfield,MF,19,2006-11-25,47.0,FRA,False,,2026-11-10
 Parma,Giovanni Fabbian,1276505,midfielders,"CM,CAM",Central Midfield,MF,23,2003-01-14,80.0,ITA,False,,2026-11-10
 Parma,Ousmane Diallo,1684415,attackers,RW,Right Winger,FW,19,2007-06-12,7.0,ESP,False,,2026-11-10
