@@ -457,7 +457,7 @@ Santa Clara,pf:Santa Clara:elias manoel,Elias Manoel,,Elias Manoel,players_full,
 Santa Clara,tm1091608,Fernando,1091608,Fernando,players_full,100
 Santa Clara,tm169681,Frederico Venâncio,169681,Frederico Venâncio,players_full,100
 Santa Clara,tm401535,Gabriel Batista,401535,Gabriel Batista,players_full,100
-Santa Clara,pf:Santa Clara:gabriel vieira,Gabriel Vieira,,Gabriel Vieira,players_full,100
+Santa Clara,pf:Santa Clara:gabriel vieira,Gabriel Vieira,627224,Gabriel Vieira,players_full,100
 Santa Clara,tm181547,Gonçalo Paciência,181547,Gonçalo Paciência,players_full,100
 Santa Clara,tm519879,Guilherme Romão,519879,Guilherme Romão,players_full,100
 Santa Clara,pf:Santa Clara:gustavo klismahn,Gustavo Klismahn,,Gustavo Klismahn,players_full,100
@@ -655,7 +655,7 @@ Braga,tm938156,Tommy Marqués,938156,Tommy Marqués,transfermarkt_contracts,100
 Braga,pf:Braga:jean gorby,Jean Gorby,,Gorby,transfermarkt_contracts,60
 Braga,tm678479,Denis Huseinbasic,678479,Denis Huseinbasic,transfermarkt_contracts,100
 Braga,tm1045972,Mario Dorgelès,1045972,Mario Dorgeles,transfermarkt_contracts,99
-Braga,tm627224,Gabriel Silva,627224,Gabriel Silva,transfermarkt_contracts,100
+Braga,pf:Santa Clara:gabriel vieira,Gabriel Vieira,627224,Gabriel Silva,transfermarkt_contracts,100
 Braga,tm959049,João Trovisco,959049,João Trovisco,transfermarkt_contracts,100
 Braga,tm707572,Pau Victor,707572,Pau Víctor,transfermarkt_contracts,99
 Braga,tm943795,Jovan Milosevic,943795,Jovan Milosevic,transfermarkt_contracts,100
@@ -947,7 +947,7 @@ Famalicão,pf:Famalicão:rafa soares,Rafa Soares,,Rafa,espn_lineups,60
 Famalicão,tm982575,Gustavo sá,982575,Gustavo Sá,espn_lineups,100
 Famalicão,tm420189,Tom van de Looi,420189,Tommie van de Looi,espn_lineups,80
 Santa Clara,esp:Santa Clara:edney silva,Edney Silva,,Edney Silva,espn_lineups,100
-Santa Clara,pf:Santa Clara:gabriel vieira,Gabriel Vieira,,Gabriel Silva,espn_lineups,100
+Santa Clara,pf:Santa Clara:gabriel vieira,Gabriel Vieira,627224,Gabriel Silva,espn_lineups,99
 Santa Clara,tm983843,Neneca,983843,Hélio Neneca,espn_lineups,60
 Santa Clara,esp:Santa Clara:henrique pereira,Henrique Pereira,,Henrique Pereira,espn_lineups,100
 Braga,tm629773,Lukáš Horníček,629773,Lukás Hornícek,espn_lineups,100
@@ -1012,8 +1012,8 @@ Alverca,tm1105188,Julián Martínez,1105188,Julián Martinez,espn_lineups,100
 Gil Vicente FC,esp:Gil Vicente FC:arthur tchaptchet,Arthur Tchaptchet,,Arthur Tchaptchet,espn_lineups,100
 Nacional,pf:Nacional:mootez nourani,Mootez Nourani,,Motez Nourani,espn_lineups,80
 AVS Futebol,pf:AVS Futebol:bruno lourenco,Bruno Lourenço,,Bruno Lourenco,espn_lineups,100
-Sporting CP,esp:Sporting CP:rayan lucas,Rayan Lucas,,Rayan Lucas,espn_lineups,100
-Benfica,esp:Benfica:leandro santos,Leandro Santos,,Leandro Santos,espn_lineups,100
+Sporting CP,tm1087842,Rayan Lucas,1087842,Rayan Lucas,espn_lineups,99
+Benfica,tm1173926,Leandro Santos,1173926,Leandro Santos,espn_lineups,99
 Estrela,esp:Estrela:pape fuhrer,Pape Fuhrer,,Pape Fuhrer,espn_lineups,100
 AVS Futebol,tm139393,Tomané,139393,Tómané,espn_lineups,100
 Rio Ave,pf:Rio Ave:joao graca,João Graça,,Joao Graça,espn_lineups,100
@@ -1033,13 +1033,13 @@ Alverca,pf:Alverca:kauan,Kauan,,Kauan Gomes,espn_lineups,60
 Famalicão,esp:Famalicão:renan santana,Renan Santana,,Renan Santana,espn_lineups,100
 Moreirense,pf:Moreirense:luis semedo,Luis Semedo,,Luís Semedo,espn_lineups,100
 Gil Vicente FC,esp:Gil Vicente FC:bassco soyer,Bassco Soyer,,Bassco Soyer,espn_lineups,100
-Rio Ave,esp:Rio Ave:alfonso pastor,Alfonso Pastor,,Alfonso Pastor,espn_lineups,100
+Rio Ave,tm537367,Alfonso Pastor,537367,Alfonso Pastor,espn_lineups,99
 Vit. Guimarães,esp:Vit. Guimarães:guilherme paula,Guilherme Paula,,Guilherme Paula,espn_lineups,100
 Vit. Guimarães,esp:Vit. Guimarães:gui,Gui,,Gui,espn_lineups,100
 Benfica,esp:Benfica:joshua wynder,Joshua Wynder,,Joshua Wynder,espn_lineups,100
 Benfica,pf:Benfica:rodrigo rego,Rodrigo Rego,,Rodrigo Rêgo,espn_lineups,100
-Santa Clara,esp:Santa Clara:adriel,Adriel,,Adriel,espn_lineups,100
-Sporting CP,esp:Sporting CP:rodrigo ribeiro,Rodrigo Ribeiro,,Rodrigo Ribeiro,espn_lineups,100
+Santa Clara,pf:AVS Futebol:adriel,Adriel,,Adriel,espn_lineups,99
+Sporting CP,esp:Famalicão:rodrigo ribeiro,Rodrigo Ribeiro,,Rodrigo Ribeiro,espn_lineups,99
 Gil Vicente FC,esp:Gil Vicente FC:diogo pereira,Diogo Pereira,,Diogo Pereira,espn_lineups,100
 Benfica,esp:Benfica:tiago dias freitas,Tiago Dias Freitas,,Tiago Dias Freitas,espn_lineups,100
 Casa Pia,pf:Casa Pia:claudio mendes,Claudio Mendes,,Clau Mendes,espn_lineups,80
@@ -1052,7 +1052,7 @@ Braga,esp:Braga:afonso patrao,Afonso Patrão,,Afonso Patrão,espn_lineups,100
 Santa Clara,esp:Santa Clara:luiz otavio ferreira viana,Luiz Otávio Ferreira Viana,,Luiz Otávio Ferreira Viana,espn_lineups,100
 Santa Clara,tm687361,Welinton Torrão,687361,Welinton,espn_lineups,60
 Santa Clara,pf:Santa Clara:gustavo klismahn,Gustavo Klismahn,,Klismahn,espn_lineups,60
-Sporting CP,esp:Sporting CP:david moreira,David Moreira,,David Moreira,espn_lineups,100
+Sporting CP,tm1044831,David Moreira,1044831,David Moreira,espn_lineups,99
 Alverca,esp:Alverca:mathis claricia,Mathis Claricia,,Mathis Claricia,espn_lineups,100
 Santa Clara,esp:Santa Clara:jose franco,José Franco,,José Franco,espn_lineups,100
 Vit. Guimarães,esp:Vit. Guimarães:rodrigo duarte,Rodrigo Duarte,,Rodrigo Duarte,espn_lineups,100
@@ -1060,7 +1060,7 @@ Benfica,esp:Benfica:arnas voitinovicius,Arnas Voitinovicius,,Arnas Voitinovicius
 Tondela,esp:Tondela:diego tavares,Diego Tavares,,Diego Tavares,espn_lineups,100
 Braga,pf:Braga:adrian leon barisic,Adrian Leon Barišić,,Adrian Leon Barisic,espn_lineups,100
 Santa Clara,esp:Santa Clara:edgar costa,Edgar Costa,,Edgar Costa,espn_lineups,100
-Alverca,esp:Alverca:fabricio andrade,Fabrício Andrade,,Fabrício Andrade,espn_lineups,100
+Alverca,esp:Estoril:fabricio andrade,Fabrício Andrade,,Fabrício Andrade,espn_lineups,99
 Gil Vicente FC,pf:Gil Vicente FC:hector,Héctor,,Hector Hernández,espn_lineups,100
 Braga,tm875337,Demir Ege Tıknaz,875337,Demir Ege Tiknaz,espn_lineups,100
 Casa Pia,tm815219,Ivan Mandić,815219,Ivan Mandic,espn_lineups,100
@@ -1091,13 +1091,13 @@ Braga,esp:Braga:joao goncalves,João Gonçalves,,João Gonçalves,espn_lineups,1
 AVS Futebol,esp:AVS Futebol:afonso fernandes silva,Afonso Fernandes Silva,,Afonso Fernandes Silva,espn_lineups,100
 Sporting CP,esp:Sporting CP:lucas anjos,Lucas Anjos,,Lucas Anjos,espn_lineups_cups,100
 Sporting CP,esp:Sporting CP:bruno ramos,Bruno Ramos,,Bruno Ramos,espn_lineups_cups,100
-Sporting CP,esp:Sporting CP:francisco silva,Francisco Silva,,Francisco Silva,espn_lineups_cups,100
-Braga,esp:Braga:joao marques,João Marques,,João Marques,espn_lineups_cups,100
+Sporting CP,tm1100298,Francisco Silva,1100298,Francisco Silva,espn_lineups_cups,99
+Braga,pf:Casa Pia:joao marques,João Marques,,João Marques,espn_lineups_cups,99
 Braga,esp:Braga:joao aragao,João Aragão,,João Aragão,espn_lineups_cups,100
 Porto,esp:Porto:joao pedro moreira teixeira,João Pedro Moreira Teixeira,,João Pedro Moreira Teixeira,espn_lineups_cups,100
 Porto,esp:Porto:tomas perez,Tomás Pérez,,Tomás Pérez,espn_lineups_cups,100
 Porto,esp:Porto:tiago alves pinto andrade,Tiago Alves Pinto Andrade,,Tiago Alves Pinto Andrade,espn_lineups_cups,100
-Braga,esp:Braga:samy merheg,Samy Merheg,,Samy Merheg,espn_lineups_cups,100
+Braga,tm1218658,Samy Merheg,1218658,Samy Merheg,espn_lineups_cups,99
 Porto,esp:Porto:goncalo santos sousa,Gonçalo Santos Sousa,,Gonçalo Santos Sousa,espn_lineups_cups,100
 Tondela,pf:Tondela:juan rodriguez,Juan Rodríguez,,Juanse,espn_subs,100
 Rio Ave,pf:Rio Ave:nicolaos athanasiou,Nicolaos Athanasiou,,Nikolaos Athanasiou,espn_subs,80
@@ -1128,7 +1128,7 @@ Sporting CP,tm412669,Francisco Trincão,412669,Trincão,espn_subs,60
 Tondela,pf:Tondela:benjamin mbunga kimpioka,Benjamin Mbunga-Kimpioka,,Benjamin Kimpioka,espn_subs,85
 Estrela,pf:Estrela:bilal brahimi,Bilal Brahimi,,Billal Brahimi,espn_subs,80
 Santa Clara,pf:Santa Clara:darlan mendes,Darlan Mendes,,Darlan,espn_subs,60
-Casa Pia,esp:Casa Pia:kiki,Kiki,,Kiki,espn_subs,100
+Casa Pia,tm270055,Kiki,270055,Kiki,espn_subs,99
 Braga,esp:Braga:luisinho,Luisinho,,Luisinho,espn_subs,100
 Santa Clara,esp:Santa Clara:edney silva,Edney Silva,,Edney,espn_subs,60
 Alverca,pf:Alverca:amorim,Amorim,,Alex Amorim,espn_subs,80

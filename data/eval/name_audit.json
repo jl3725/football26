@@ -11,9 +11,9 @@
   "espn_lineups": {
    "total": 544,
    "exact": 499,
-   "rule": 9,
+   "rule": 13,
    "ambiguous": 0,
-   "orphan": 36,
+   "orphan": 32,
    "orphans": [
     {
      "squad": "Sunderland",
@@ -66,16 +66,6 @@
      "starts": 0
     },
     {
-     "squad": "Brentford",
-     "name": "Ethan Pinnock",
-     "starts": 0
-    },
-    {
-     "squad": "Tottenham Hotspur",
-     "name": "Kevin Danso",
-     "starts": 0
-    },
-    {
      "squad": "Aston Villa",
      "name": "Bradley Burrowes",
      "starts": 0
@@ -88,16 +78,6 @@
     {
      "squad": "Aston Villa",
      "name": "Triston Rowe",
-     "starts": 0
-    },
-    {
-     "squad": "Manchester City",
-     "name": "Omar Marmoush",
-     "starts": 0
-    },
-    {
-     "squad": "Manchester City",
-     "name": "Nico González",
      "starts": 0
     },
     {
@@ -138,6 +118,26 @@
     {
      "squad": "Fulham",
      "name": "Macauley Zepa",
+     "starts": 0
+    },
+    {
+     "squad": "Manchester City",
+     "name": "Floyd Samba",
+     "starts": 0
+    },
+    {
+     "squad": "Brighton",
+     "name": "Younes Ibrahim",
+     "starts": 0
+    },
+    {
+     "squad": "Newcastle United",
+     "name": "Mason Miley",
+     "starts": 0
+    },
+    {
+     "squad": "Newcastle United",
+     "name": "Miodrag Pivas",
      "starts": 0
     }
    ]
@@ -342,9 +342,9 @@
   "espn_lineups": {
    "total": 614,
    "exact": 493,
-   "rule": 27,
+   "rule": 30,
    "ambiguous": 1,
-   "orphan": 94,
+   "orphan": 91,
    "orphans": [
     {
      "squad": "Celta Vigo",
@@ -629,15 +629,10 @@
   "espn_lineups": {
    "total": 484,
    "exact": 442,
-   "rule": 17,
+   "rule": 19,
    "ambiguous": 0,
-   "orphan": 25,
+   "orphan": 23,
    "orphans": [
-    {
-     "squad": "Bayern Munich",
-     "name": "Arijon Ibrahimovic",
-     "starts": 0
-    },
     {
      "squad": "Stuttgart",
      "name": "Badredine Bouanani",
@@ -656,11 +651,6 @@
     {
      "squad": "SC Paderborn",
      "name": "Luka Djuric",
-     "starts": 0
-    },
-    {
-     "squad": "Leverkusen",
-     "name": "Arthur",
      "starts": 0
     },
     {
@@ -919,9 +909,9 @@
   "espn_lineups": {
    "total": 671,
    "exact": 568,
-   "rule": 10,
+   "rule": 17,
    "ambiguous": 1,
-   "orphan": 93,
+   "orphan": 86,
    "orphans": [
     {
      "squad": "Lecce",
@@ -970,11 +960,6 @@
     },
     {
      "squad": "Udinese",
-     "name": "Saba Goglichidze",
-     "starts": 0
-    },
-    {
-     "squad": "Udinese",
      "name": "David Pejicic",
      "starts": 0
     },
@@ -1001,11 +986,6 @@
     {
      "squad": "Como",
      "name": "Riccardo Cassano",
-     "starts": 0
-    },
-    {
-     "squad": "Como",
-     "name": "Noel Törnqvist",
      "starts": 0
     },
     {
@@ -1047,15 +1027,25 @@
      "squad": "Juventus",
      "name": "Fabio Miretti",
      "starts": 0
+    },
+    {
+     "squad": "Venezia",
+     "name": "Lamine Dabo",
+     "starts": 0
+    },
+    {
+     "squad": "Venezia",
+     "name": "Okoro Obinna",
+     "starts": 0
     }
    ]
   },
   "espn_lineups_cups": {
    "total": 537,
    "exact": 515,
-   "rule": 0,
+   "rule": 1,
    "ambiguous": 0,
-   "orphan": 22,
+   "orphan": 21,
    "orphans": [
     {
      "squad": "Parma",
@@ -1125,11 +1115,6 @@
     {
      "squad": "Monza",
      "name": "Arvid Brorsson",
-     "starts": 0
-    },
-    {
-     "squad": "Fiorentina",
-     "name": "Niccolò Fortini",
      "starts": 0
     },
     {
@@ -1246,9 +1231,9 @@
   "espn_lineups": {
    "total": 497,
    "exact": 447,
-   "rule": 10,
+   "rule": 14,
    "ambiguous": 0,
-   "orphan": 40,
+   "orphan": 36,
    "orphans": [
     {
      "squad": "Troyes",
@@ -1272,17 +1257,7 @@
     },
     {
      "squad": "Strasbourg",
-     "name": "Mathis Amougou",
-     "starts": 0
-    },
-    {
-     "squad": "Strasbourg",
      "name": "Ghianny Kodia",
-     "starts": 0
-    },
-    {
-     "squad": "Lens",
-     "name": "Rayan Fofana",
      "starts": 0
     },
     {
@@ -1331,16 +1306,6 @@
      "starts": 0
     },
     {
-     "squad": "Lille",
-     "name": "Noah Edjouma",
-     "starts": 0
-    },
-    {
-     "squad": "Lille",
-     "name": "Arnaud Bodart",
-     "starts": 0
-    },
-    {
      "squad": "Le Havre",
      "name": "Mory Diaw",
      "starts": 0
@@ -1374,15 +1339,35 @@
      "squad": "Toulouse",
      "name": "Théo Collin",
      "starts": 0
+    },
+    {
+     "squad": "Troyes",
+     "name": "Lassana Simakha",
+     "starts": 0
+    },
+    {
+     "squad": "Brest",
+     "name": "Enzo Monchatre",
+     "starts": 0
+    },
+    {
+     "squad": "Lorient",
+     "name": "Samir Said Haribou",
+     "starts": 0
+    },
+    {
+     "squad": "Strasbourg",
+     "name": "Yoann Becker",
+     "starts": 0
     }
    ]
   },
   "espn_lineups_cups": {
    "total": 188,
    "exact": 178,
-   "rule": 1,
+   "rule": 2,
    "ambiguous": 0,
-   "orphan": 9,
+   "orphan": 8,
    "orphans": [
     {
      "squad": "Lille",
@@ -1402,11 +1387,6 @@
     {
      "squad": "PSG",
      "name": "Arthur Bar",
-     "starts": 0
-    },
-    {
-     "squad": "Rennes",
-     "name": "Alidu Seidu",
      "starts": 0
     },
     {
@@ -1492,9 +1472,9 @@
   "espn_lineups": {
    "total": 565,
    "exact": 499,
-   "rule": 19,
+   "rule": 23,
    "ambiguous": 2,
-   "orphan": 47,
+   "orphan": 43,
    "orphans": [
     {
      "squad": "Gil Vicente FC",
@@ -1520,11 +1500,6 @@
      "squad": "Nacional",
      "name": "Matchoi Djoló",
      "starts": 2
-    },
-    {
-     "squad": "Santa Clara",
-     "name": "João Gonçalves",
-     "starts": 1
     },
     {
      "squad": "Arouca",
@@ -1577,11 +1552,6 @@
      "starts": 0
     },
     {
-     "squad": "Rio Ave",
-     "name": "Rafael Lobato",
-     "starts": 0
-    },
-    {
      "squad": "Moreirense",
      "name": "Pedro Jesus",
      "starts": 0
@@ -1619,6 +1589,16 @@
     {
      "squad": "Moreirense",
      "name": "Rodrigo Bernardino Soares",
+     "starts": 0
+    },
+    {
+     "squad": "Alverca",
+     "name": "André Paulo",
+     "starts": 0
+    },
+    {
+     "squad": "Santa Clara",
+     "name": "Frederico Silva",
      "starts": 0
     }
    ]
@@ -1722,8 +1702,8 @@
    "minutes": 9
   },
   "s365_ratings": {
-   "total": 443,
-   "exact": 437,
+   "total": 442,
+   "exact": 436,
    "rule": 4,
    "ambiguous": 1,
    "orphan": 0,
@@ -1743,9 +1723,9 @@
   "espn_lineups": {
    "total": 552,
    "exact": 500,
-   "rule": 11,
+   "rule": 15,
    "ambiguous": 0,
-   "orphan": 41,
+   "orphan": 37,
    "orphans": [
     {
      "squad": "Feyenoord",
@@ -1799,11 +1779,6 @@
     },
     {
      "squad": "AZ Alkmaar",
-     "name": "Billy Van Duijl",
-     "starts": 0
-    },
-    {
-     "squad": "AZ Alkmaar",
      "name": "Julian Oerip",
      "starts": 0
     },
@@ -1848,16 +1823,6 @@
      "starts": 0
     },
     {
-     "squad": "AZ Alkmaar",
-     "name": "Sem van Duijn",
-     "starts": 0
-    },
-    {
-     "squad": "AZ Alkmaar",
-     "name": "Matej Sin",
-     "starts": 0
-    },
-    {
      "squad": "PSV",
      "name": "Khadim Ngom",
      "starts": 0
@@ -1870,6 +1835,21 @@
     {
      "squad": "Ajax",
      "name": "Kou Itakura",
+     "starts": 0
+    },
+    {
+     "squad": "Fortuna Sittard",
+     "name": "David Stockbrink",
+     "starts": 0
+    },
+    {
+     "squad": "AZ Alkmaar",
+     "name": "Sam De Grand",
+     "starts": 0
+    },
+    {
+     "squad": "Utrecht",
+     "name": "Viggo Plantinga",
      "starts": 0
     }
    ]
@@ -1968,9 +1948,9 @@
   "espn_lineups": {
    "total": 528,
    "exact": 448,
-   "rule": 43,
+   "rule": 45,
    "ambiguous": 1,
-   "orphan": 37,
+   "orphan": 35,
    "orphans": [
     {
      "squad": "Charleroi",
@@ -2053,11 +2033,6 @@
      "starts": 0
     },
     {
-     "squad": "OH Leuven",
-     "name": "Tobe Leysen",
-     "starts": 0
-    },
-    {
      "squad": "Zulte Waregem",
      "name": "Kadir Seven",
      "starts": 0
@@ -2065,11 +2040,6 @@
     {
      "squad": "Zulte Waregem",
      "name": "Anton Tanghe",
-     "starts": 0
-    },
-    {
-     "squad": "Anderlecht",
-     "name": "Basile Vroninks",
      "starts": 0
     },
     {
@@ -2095,6 +2065,16 @@
     {
      "squad": "Charleroi",
      "name": "Severin Nioule",
+     "starts": 0
+    },
+    {
+     "squad": "Mechelen",
+     "name": "Lovro Golic",
+     "starts": 0
+    },
+    {
+     "squad": "Cercle Brugge",
+     "name": "Sam Behaeghe",
      "starts": 0
     }
    ]
@@ -2187,9 +2167,9 @@
    "minutes": 5
   },
   "s365_ratings": {
-   "total": 430,
+   "total": 428,
    "exact": 377,
-   "rule": 4,
+   "rule": 2,
    "ambiguous": 1,
    "orphan": 0,
    "orphans": [],
@@ -2208,15 +2188,10 @@
   "espn_lineups": {
    "total": 710,
    "exact": 646,
-   "rule": 5,
+   "rule": 10,
    "ambiguous": 0,
-   "orphan": 59,
+   "orphan": 54,
    "orphans": [
-    {
-     "squad": "Sheffield United",
-     "name": "Callum O'Hare",
-     "starts": 3
-    },
     {
      "squad": "Derby County",
      "name": "Raymond Offor",
@@ -2336,21 +2311,21 @@
      "squad": "Stoke City",
      "name": "Laurence Giani",
      "starts": 0
+    },
+    {
+     "squad": "Stoke City",
+     "name": "Gabriel Kelly",
+     "starts": 0
     }
    ]
   },
   "espn_lineups_cups": {
    "total": 595,
    "exact": 555,
-   "rule": 5,
+   "rule": 10,
    "ambiguous": 0,
-   "orphan": 35,
+   "orphan": 30,
    "orphans": [
-    {
-     "squad": "Charlton Athletic",
-     "name": "Greg Docherty",
-     "starts": 1
-    },
     {
      "squad": "Lincoln City",
      "name": "Adam Jackson",
@@ -2369,21 +2344,6 @@
     {
      "squad": "Watford",
      "name": "Tomiwa Akinyimika",
-     "starts": 1
-    },
-    {
-     "squad": "Norwich City",
-     "name": "Liam Gibbs",
-     "starts": 1
-    },
-    {
-     "squad": "West Bromwich Albion",
-     "name": "Alex Mowatt",
-     "starts": 1
-    },
-    {
-     "squad": "Bristol City",
-     "name": "Max Bird",
      "starts": 1
     },
     {
@@ -2469,6 +2429,26 @@
     {
      "squad": "Bolton Wanderers",
      "name": "Charlie Warren",
+     "starts": 0
+    },
+    {
+     "squad": "Stoke City",
+     "name": "Milan Smit",
+     "starts": 0
+    },
+    {
+     "squad": "Watford",
+     "name": "Imrân Louza",
+     "starts": 0
+    },
+    {
+     "squad": "Portsmouth",
+     "name": "Hayden Matthews",
+     "starts": 0
+    },
+    {
+     "squad": "Queens Park Rangers",
+     "name": "Kieran Morgan",
      "starts": 0
     }
    ]
@@ -2589,19 +2569,14 @@
   "espn_lineups_cups": {
    "total": 282,
    "exact": 269,
-   "rule": 0,
+   "rule": 2,
    "ambiguous": 0,
-   "orphan": 13,
+   "orphan": 11,
    "orphans": [
     {
      "squad": "Fenerbahçe",
      "name": "Fred",
      "starts": 2
-    },
-    {
-     "squad": "Başakşehir",
-     "name": "Berat Özdemir",
-     "starts": 1
     },
     {
      "squad": "Trabzonspor",
@@ -2611,11 +2586,6 @@
     {
      "squad": "Beşiktaş",
      "name": "Felix Uduokhai",
-     "starts": 0
-    },
-    {
-     "squad": "Fenerbahçe",
-     "name": "Caglar Söyüncü",
      "starts": 0
     },
     {
@@ -2707,15 +2677,10 @@
   "espn_lineups": {
    "total": 368,
    "exact": 358,
-   "rule": 0,
+   "rule": 1,
    "ambiguous": 0,
-   "orphan": 10,
+   "orphan": 9,
    "orphans": [
-    {
-     "squad": "Austria Wien",
-     "name": "Moritz Wels",
-     "starts": 1
-    },
     {
      "squad": "Sturm Graz",
      "name": "Gabriel Haider",
@@ -2766,9 +2731,9 @@
   "espn_lineups_cups": {
    "total": 156,
    "exact": 151,
-   "rule": 0,
+   "rule": 2,
    "ambiguous": 0,
-   "orphan": 5,
+   "orphan": 3,
    "orphans": [
     {
      "squad": "Sturm Graz",
@@ -2781,18 +2746,8 @@
      "starts": 0
     },
     {
-     "squad": "Rapid Wien",
-     "name": "Moritz Oswald",
-     "starts": 0
-    },
-    {
      "squad": "Salzburg",
      "name": "Hendry Blank",
-     "starts": 0
-    },
-    {
-     "squad": "Austria Wien",
-     "name": "Dejan Radonjic",
      "starts": 0
     }
    ]
@@ -2844,45 +2799,10 @@
   "espn_lineups": {
    "total": 376,
    "exact": 344,
-   "rule": 1,
+   "rule": 10,
    "ambiguous": 0,
-   "orphan": 31,
+   "orphan": 22,
    "orphans": [
-    {
-     "squad": "Lyngby",
-     "name": "Casper Winther",
-     "starts": 6
-    },
-    {
-     "squad": "AC Horsens",
-     "name": "Kristian Kirkegaard",
-     "starts": 5
-    },
-    {
-     "squad": "Silkeborg",
-     "name": "Callum McCowatt",
-     "starts": 5
-    },
-    {
-     "squad": "Sønderjyske",
-     "name": "Daníel Grétarsson",
-     "starts": 4
-    },
-    {
-     "squad": "OB",
-     "name": "Jakob Bonde",
-     "starts": 4
-    },
-    {
-     "squad": "Sønderjyske",
-     "name": "Magnus Jensen",
-     "starts": 2
-    },
-    {
-     "squad": "Sønderjyske",
-     "name": "Olti Hyseni",
-     "starts": 1
-    },
     {
      "squad": "Viborg",
      "name": "Andreas Soendergaard",
@@ -2949,16 +2869,6 @@
      "starts": 0
     },
     {
-     "squad": "Silkeborg",
-     "name": "Simon Stüker",
-     "starts": 0
-    },
-    {
-     "squad": "FC København",
-     "name": "Munashe Garananga",
-     "starts": 0
-    },
-    {
      "squad": "AGF",
      "name": "Hamuza Sengooba",
      "starts": 0
@@ -2972,15 +2882,45 @@
      "squad": "FC København",
      "name": "Mustapha Nyassi",
      "starts": 0
+    },
+    {
+     "squad": "Sønderjyske",
+     "name": "Albert Rrahmani",
+     "starts": 0
+    },
+    {
+     "squad": "Lyngby",
+     "name": "Mikkel Vernon",
+     "starts": 0
+    },
+    {
+     "squad": "Silkeborg",
+     "name": "David Stojanovic",
+     "starts": 0
+    },
+    {
+     "squad": "Silkeborg",
+     "name": "Noah Munkholm",
+     "starts": 0
+    },
+    {
+     "squad": "Silkeborg",
+     "name": "Lucas Borg",
+     "starts": 0
+    },
+    {
+     "squad": "AC Horsens",
+     "name": "Christian Joergensen",
+     "starts": 0
     }
    ]
   },
   "espn_lineups_cups": {
    "total": 355,
    "exact": 327,
-   "rule": 0,
+   "rule": 1,
    "ambiguous": 0,
-   "orphan": 28,
+   "orphan": 27,
    "orphans": [
     {
      "squad": "FC Midtjylland",
@@ -3094,17 +3034,17 @@
     },
     {
      "squad": "Lyngby",
-     "name": "Mads Larsen",
-     "starts": 0
-    },
-    {
-     "squad": "Lyngby",
      "name": "Jamil El-Rrami",
      "starts": 0
     },
     {
      "squad": "AC Horsens",
      "name": "Yaser Abbas",
+     "starts": 0
+    },
+    {
+     "squad": "Lyngby",
+     "name": "Hjalte Froholdt",
      "starts": 0
     }
    ]
@@ -3156,9 +3096,9 @@
   "espn_lineups": {
    "total": 356,
    "exact": 344,
-   "rule": 1,
+   "rule": 4,
    "ambiguous": 0,
-   "orphan": 11,
+   "orphan": 8,
    "orphans": [
     {
      "squad": "Lausanne",
@@ -3171,23 +3111,8 @@
      "starts": 0
     },
     {
-     "squad": "St. Gallen",
-     "name": "Corsin Konietzke",
-     "starts": 0
-    },
-    {
      "squad": "Young Boys",
      "name": "Rhodri Smith",
-     "starts": 0
-    },
-    {
-     "squad": "Basel",
-     "name": "Albian Ajeti",
-     "starts": 0
-    },
-    {
-     "squad": "Servette",
-     "name": "Julian von Moos",
      "starts": 0
     },
     {
@@ -3308,134 +3233,134 @@
   "espn_lineups": {
    "total": 1147,
    "exact": 1045,
-   "rule": 5,
+   "rule": 42,
    "ambiguous": 0,
-   "orphan": 97,
+   "orphan": 60,
    "orphans": [
-    {
-     "squad": "Colorado Rapids",
-     "name": "Rafael Navarro",
-     "starts": 22
-    },
-    {
-     "squad": "Sporting Kansas City",
-     "name": "Dejan Joveljic",
-     "starts": 20
-    },
-    {
-     "squad": "Colorado Rapids",
-     "name": "Dante Sealy",
-     "starts": 15
-    },
-    {
-     "squad": "Inter Miami CF",
-     "name": "Noah Allen",
-     "starts": 12
-    },
-    {
-     "squad": "Chicago Fire FC",
-     "name": "Joel Waterman",
-     "starts": 11
-    },
-    {
-     "squad": "Columbus Crew",
-     "name": "Dániel Gazdag",
-     "starts": 10
-    },
-    {
-     "squad": "St. Louis City",
-     "name": "Eduard Löwen",
-     "starts": 8
-    },
-    {
-     "squad": "New England Revolution",
-     "name": "Brayan Ceballos",
-     "starts": 8
-    },
-    {
-     "squad": "Atlanta United",
-     "name": "Saba Lobjanidze",
-     "starts": 8
-    },
-    {
-     "squad": "Atlanta United",
-     "name": "Matías Galarza",
-     "starts": 8
-    },
-    {
-     "squad": "Vancouver Whitecaps",
-     "name": "Aziel Jackson",
-     "starts": 7
-    },
-    {
-     "squad": "San Diego FC",
-     "name": "Lewis Morgan",
-     "starts": 6
-    },
-    {
-     "squad": "Los Angeles FC",
-     "name": "Nathan Ordaz",
-     "starts": 6
-    },
-    {
-     "squad": "DC United",
-     "name": "Gabriel Pirani",
-     "starts": 6
-    },
-    {
-     "squad": "Minnesota United",
-     "name": "Devin Padelford",
-     "starts": 5
-    },
-    {
-     "squad": "CF Montréal",
-     "name": "Dagur Thórhallsson",
-     "starts": 5
-    },
-    {
-     "squad": "Austin FC",
-     "name": "Owen Wolff",
-     "starts": 4
-    },
-    {
-     "squad": "Orlando City",
-     "name": "Duncan McGuire",
-     "starts": 4
-    },
-    {
-     "squad": "Austin FC",
-     "name": "Daniel Pereira",
-     "starts": 4
-    },
-    {
-     "squad": "Chicago Fire FC",
-     "name": "Viktor Radojevic",
-     "starts": 3
-    },
-    {
-     "squad": "Inter Miami CF",
-     "name": "David Ruiz",
-     "starts": 3
-    },
     {
      "squad": "Red Bull New York",
      "name": "Julian Zakrzewski",
      "starts": 3
     },
     {
-     "squad": "LA Galaxy",
-     "name": "Rubén Ramos",
-     "starts": 2
+     "squad": "Austin FC",
+     "name": "Mateja Djordevic",
+     "starts": 1
+    },
+    {
+     "squad": "Columbus Crew",
+     "name": "Marcelo Herrera",
+     "starts": 1
+    },
+    {
+     "squad": "Sporting Kansas City",
+     "name": "Zamir Loyo Reynaga",
+     "starts": 0
+    },
+    {
+     "squad": "Austin FC",
+     "name": "Stefan Dobrijevic",
+     "starts": 0
+    },
+    {
+     "squad": "Sporting Kansas City",
+     "name": "Alexander Cunningham",
+     "starts": 0
+    },
+    {
+     "squad": "Houston Dynamo FC",
+     "name": "Chibuike Ukaegbu",
+     "starts": 0
+    },
+    {
+     "squad": "Philadelphia Union",
+     "name": "Kellan LeBlanc",
+     "starts": 0
+    },
+    {
+     "squad": "Inter Miami CF",
+     "name": "Idoh Zeltzer-Zubida",
+     "starts": 0
+    },
+    {
+     "squad": "Colorado Rapids",
+     "name": "Jonathan de la Fuente",
+     "starts": 0
+    },
+    {
+     "squad": "Colorado Rapids",
+     "name": "Chris Aquino",
+     "starts": 0
+    },
+    {
+     "squad": "Vancouver Whitecaps",
+     "name": "Valter Sedin",
+     "starts": 0
     },
     {
      "squad": "Real Salt Lake",
-     "name": "Pablo Ruiz",
-     "starts": 2
+     "name": "Linkon Ream",
+     "starts": 0
     },
     {
-     "squad": "Atlanta United",
-     "name": "Ronald Hernández",
-     "starts": 2
+     "squad": "New England Revolution",
+     "name": "Makai Wells",
+     "starts": 0
+    },
+    {
+     "squad": "Austin FC",
+     "name": "Erik Lauta",
+     "starts": 0
+    },
+    {
+     "squad": "Austin FC",
+     "name": "Patrick Cayelli",
+     "starts": 0
+    },
+    {
+     "squad": "Los Angeles FC",
+     "name": "Charlie Kosakoff",
+     "starts": 0
+    },
+    {
+     "squad": "FC Cincinnati",
+     "name": "Félix Samson",
+     "starts": 0
+    },
+    {
+     "squad": "Chicago Fire FC",
+     "name": "Brody Williams",
+     "starts": 0
+    },
+    {
+     "squad": "Philadelphia Union",
+     "name": "Rafael Uzcátegui",
+     "starts": 0
+    },
+    {
+     "squad": "Orlando City",
+     "name": "Justin Hylton",
+     "starts": 0
+    },
+    {
+     "squad": "Colorado Rapids",
+     "name": "Vincent Rinaldi",
+     "starts": 0
+    },
+    {
+     "squad": "Real Salt Lake",
+     "name": "Ruben Mesalles",
+     "starts": 0
+    },
+    {
+     "squad": "Houston Dynamo FC",
+     "name": "Vinicius Silva",
+     "starts": 0
+    },
+    {
+     "squad": "LA Galaxy",
+     "name": "Sebastian Conlon",
+     "starts": 0
     }
    ]
   },
@@ -3457,22 +3382,22 @@
    "minutes": 0
   },
   "s365_ratings": {
-   "total": 862,
+   "total": 858,
    "exact": 805,
-   "rule": 25,
+   "rule": 21,
    "ambiguous": 0,
    "orphan": 0,
    "orphans": [],
-   "minutes": 9
+   "minutes": 8
   }
  },
  "EPL 2025_2026": {
   "espn_lineups": {
    "total": 693,
    "exact": 561,
-   "rule": 11,
+   "rule": 16,
    "ambiguous": 0,
-   "orphan": 121,
+   "orphan": 116,
    "orphans": [
     {
      "squad": "Manchester City",
@@ -3525,11 +3450,6 @@
      "starts": 0
     },
     {
-     "squad": "Tottenham Hotspur",
-     "name": "Luka Vuskovic",
-     "starts": 0
-    },
-    {
      "squad": "Manchester City",
      "name": "Manuel Akanji",
      "starts": 0
@@ -3537,11 +3457,6 @@
     {
      "squad": "Manchester City",
      "name": "Ilkay Gündogan",
-     "starts": 0
-    },
-    {
-     "squad": "Manchester City",
-     "name": "Stefan Ortega",
      "starts": 0
     },
     {
@@ -3597,6 +3512,16 @@
     {
      "squad": "Manchester City",
      "name": "Ederson",
+     "starts": 0
+    },
+    {
+     "squad": "Aston Villa",
+     "name": "Sam Proctor",
+     "starts": 0
+    },
+    {
+     "squad": "Aston Villa",
+     "name": "Triston Rowe",
      "starts": 0
     }
    ]
@@ -3765,9 +3690,9 @@
   "espn_lineups": {
    "total": 766,
    "exact": 591,
-   "rule": 30,
+   "rule": 40,
    "ambiguous": 1,
-   "orphan": 145,
+   "orphan": 135,
    "orphans": [
     {
      "squad": "Celta Vigo",
@@ -3810,11 +3735,6 @@
      "starts": 3
     },
     {
-     "squad": "Villarreal",
-     "name": "Alfonso González",
-     "starts": 3
-    },
-    {
      "squad": "Girona",
      "name": "Gibert Jordana",
      "starts": 0
@@ -3827,16 +3747,6 @@
     {
      "squad": "Girona",
      "name": "Juan Carlos",
-     "starts": 0
-    },
-    {
-     "squad": "Villarreal",
-     "name": "Denis Suárez",
-     "starts": 0
-    },
-    {
-     "squad": "Villarreal",
-     "name": "Jean Ives Valou",
      "starts": 0
     },
     {
@@ -3866,11 +3776,6 @@
     },
     {
      "squad": "Barcelona",
-     "name": "Iñaki Peña",
-     "starts": 0
-    },
-    {
-     "squad": "Barcelona",
      "name": "Diego Kochen",
      "starts": 0
     },
@@ -3893,15 +3798,35 @@
      "squad": "Levante",
      "name": "Joan Ruiz Agustina",
      "starts": 0
+    },
+    {
+     "squad": "Levante",
+     "name": "Cayetano",
+     "starts": 0
+    },
+    {
+     "squad": "Levante",
+     "name": "Martín Krug",
+     "starts": 0
+    },
+    {
+     "squad": "Levante",
+     "name": "Alejandro Primo",
+     "starts": 0
+    },
+    {
+     "squad": "Valencia",
+     "name": "Rubén Iranzo",
+     "starts": 0
     }
    ]
   },
   "espn_lineups_cups": {
    "total": 671,
    "exact": 603,
-   "rule": 0,
+   "rule": 4,
    "ambiguous": 0,
-   "orphan": 68,
+   "orphan": 64,
    "orphans": [
     {
      "squad": "Alavés",
@@ -3952,11 +3877,6 @@
      "squad": "Alavés",
      "name": "Sergio Montero",
      "starts": 2
-    },
-    {
-     "squad": "Rayo Vallecano",
-     "name": "Josan",
-     "starts": 1
     },
     {
      "squad": "Rayo Vallecano",
@@ -4027,6 +3947,11 @@
      "squad": "Alavés",
      "name": "Valen Gómez",
      "starts": 1
+    },
+    {
+     "squad": "Alavés",
+     "name": "Marcos Moreno",
+     "starts": 1
     }
    ]
   },
@@ -4087,9 +4012,9 @@
   "espn_lineups": {
    "total": 595,
    "exact": 529,
-   "rule": 11,
+   "rule": 16,
    "ambiguous": 0,
-   "orphan": 55,
+   "orphan": 50,
    "orphans": [
     {
      "squad": "Werder Bremen",
@@ -4109,11 +4034,6 @@
     {
      "squad": "Leverkusen",
      "name": "Jeremiah Mensah",
-     "starts": 0
-    },
-    {
-     "squad": "Hoffenheim",
-     "name": "David Mokwa",
      "starts": 0
     },
     {
@@ -4139,11 +4059,6 @@
     {
      "squad": "Dortmund",
      "name": "Yannik Lührs",
-     "starts": 0
-    },
-    {
-     "squad": "Heidenheim",
-     "name": "Kevin Müller",
      "starts": 0
     },
     {
@@ -4174,11 +4089,6 @@
     {
      "squad": "Bayern Munich",
      "name": "Jannis Bärtl",
-     "starts": 0
-    },
-    {
-     "squad": "Stuttgart",
-     "name": "Noah Darvich",
      "starts": 0
     },
     {
@@ -4215,15 +4125,30 @@
      "squad": "Leverkusen",
      "name": "Ken Izekor",
      "starts": 0
+    },
+    {
+     "squad": "Mainz 05",
+     "name": "Daniel Gleiber",
+     "starts": 0
+    },
+    {
+     "squad": "Gladbach",
+     "name": "Tiago Pereira",
+     "starts": 0
+    },
+    {
+     "squad": "Bayern Munich",
+     "name": "Leon Klanac",
+     "starts": 0
     }
    ]
   },
   "espn_lineups_cups": {
    "total": 581,
    "exact": 493,
-   "rule": 0,
+   "rule": 4,
    "ambiguous": 0,
-   "orphan": 88,
+   "orphan": 84,
    "orphans": [
     {
      "squad": "Union Berlin",
@@ -4292,11 +4217,6 @@
     },
     {
      "squad": "Union Berlin",
-     "name": "Mathias Rasmussen",
-     "starts": 2
-    },
-    {
-     "squad": "Union Berlin",
      "name": "Guilherme Smith",
      "starts": 2
     },
@@ -4316,11 +4236,6 @@
      "starts": 1
     },
     {
-     "squad": "Werder Bremen",
-     "name": "Michael Zetterer",
-     "starts": 1
-    },
-    {
      "squad": "Köln",
      "name": "Dudu",
      "starts": 1
@@ -4328,11 +4243,6 @@
     {
      "squad": "Köln",
      "name": "Christoph Greger",
-     "starts": 1
-    },
-    {
-     "squad": "Köln",
-     "name": "Jonah Sticker",
      "starts": 1
     },
     {
@@ -4348,6 +4258,21 @@
     {
      "squad": "Köln",
      "name": "Tobias Eisenhuth",
+     "starts": 1
+    },
+    {
+     "squad": "Köln",
+     "name": "Simon Handle",
+     "starts": 1
+    },
+    {
+     "squad": "Köln",
+     "name": "Lucas Mika Wolf",
+     "starts": 1
+    },
+    {
+     "squad": "Köln",
+     "name": "Lex-Tyger Lobinge",
      "starts": 1
     }
    ]
@@ -4414,9 +4339,9 @@
   "espn_lineups": {
    "total": 803,
    "exact": 618,
-   "rule": 20,
+   "rule": 29,
    "ambiguous": 1,
-   "orphan": 165,
+   "orphan": 156,
    "orphans": [
     {
      "squad": "Lecce",
@@ -4485,11 +4410,6 @@
     },
     {
      "squad": "Atalanta",
-     "name": "Giovanni Bonfanti",
-     "starts": 0
-    },
-    {
-     "squad": "Atalanta",
      "name": "Francesco Rossi",
      "starts": 0
     },
@@ -4529,18 +4449,23 @@
      "starts": 0
     },
     {
-     "squad": "Napoli",
-     "name": "Alessandro Zanoli",
-     "starts": 0
-    },
-    {
-     "squad": "Napoli",
-     "name": "Luis Hasa",
+     "squad": "Cagliari",
+     "name": "Alessandro Vinciguerra",
      "starts": 0
     },
     {
      "squad": "Cagliari",
-     "name": "Alessandro Vinciguerra",
+     "name": "Velizar-Iliya Iliev",
+     "starts": 0
+    },
+    {
+     "squad": "Cagliari",
+     "name": "Giuseppe Ciocci",
+     "starts": 0
+    },
+    {
+     "squad": "Fiorentina",
+     "name": "Eman Kospo",
      "starts": 0
     }
    ]
@@ -4548,25 +4473,10 @@
   "espn_lineups_cups": {
    "total": 675,
    "exact": 648,
-   "rule": 0,
+   "rule": 3,
    "ambiguous": 0,
-   "orphan": 27,
+   "orphan": 24,
    "orphans": [
-    {
-     "squad": "Lecce",
-     "name": "Nikola Krstovic",
-     "starts": 1
-    },
-    {
-     "squad": "Cagliari",
-     "name": "Nadir Zortea",
-     "starts": 1
-    },
-    {
-     "squad": "Cagliari",
-     "name": "Roberto Piccoli",
-     "starts": 1
-    },
     {
      "squad": "Pisa",
      "name": "Alexander Lind",
@@ -4676,6 +4586,16 @@
      "squad": "Como",
      "name": "Matteo Papaccioli",
      "starts": 0
+    },
+    {
+     "squad": "Pisa",
+     "name": "Lorenzo Tosi",
+     "starts": 0
+    },
+    {
+     "squad": "Pisa",
+     "name": "Daniel Battistella",
+     "starts": 0
     }
    ]
   },
@@ -4735,9 +4655,9 @@
   "espn_lineups": {
    "total": 678,
    "exact": 548,
-   "rule": 26,
+   "rule": 29,
    "ambiguous": 0,
-   "orphan": 104,
+   "orphan": 101,
    "orphans": [
     {
      "squad": "Metz",
@@ -4787,11 +4707,6 @@
     {
      "squad": "Rennes",
      "name": "Mathys Silistre",
-     "starts": 2
-    },
-    {
-     "squad": "Metz",
-     "name": "Lucas Michel",
      "starts": 2
     },
     {
@@ -4863,15 +4778,20 @@
      "squad": "Strasbourg",
      "name": "Eduard Sobol",
      "starts": 0
+    },
+    {
+     "squad": "Metz",
+     "name": "Kevin Guiton",
+     "starts": 0
     }
    ]
   },
   "espn_lineups_cups": {
    "total": 577,
    "exact": 472,
-   "rule": 0,
+   "rule": 1,
    "ambiguous": 0,
-   "orphan": 105,
+   "orphan": 104,
    "orphans": [
     {
      "squad": "Angers",
@@ -4945,11 +4865,6 @@
     },
     {
      "squad": "Angers",
-     "name": "Derek Cornelius",
-     "starts": 2
-    },
-    {
-     "squad": "Angers",
      "name": "Oliver Antman",
      "starts": 2
     },
@@ -4996,6 +4911,11 @@
     {
      "squad": "Lyon",
      "name": "Adel Belaroussi",
+     "starts": 2
+    },
+    {
+     "squad": "Lyon",
+     "name": "Ashley Moke Njedi",
      "starts": 2
     }
    ]
@@ -5047,19 +4967,14 @@
   "espn_lineups": {
    "total": 655,
    "exact": 527,
-   "rule": 46,
+   "rule": 54,
    "ambiguous": 2,
-   "orphan": 82,
+   "orphan": 74,
    "orphans": [
     {
      "squad": "Casa Pia",
      "name": "Gaizka Larrazabal",
      "starts": 33
-    },
-    {
-     "squad": "Santa Clara",
-     "name": "Gabriel Silva",
-     "starts": 26
     },
     {
      "squad": "Arouca",
@@ -5175,15 +5090,20 @@
      "squad": "Alverca",
      "name": "André Paulo",
      "starts": 0
+    },
+    {
+     "squad": "Estoril",
+     "name": "Fabrício Andrade",
+     "starts": 0
     }
    ]
   },
   "espn_lineups_cups": {
    "total": 145,
    "exact": 135,
-   "rule": 0,
+   "rule": 3,
    "ambiguous": 0,
-   "orphan": 10,
+   "orphan": 7,
    "orphans": [
     {
      "squad": "Sporting CP",
@@ -5193,16 +5113,6 @@
     {
      "squad": "Sporting CP",
      "name": "Bruno Ramos",
-     "starts": 0
-    },
-    {
-     "squad": "Sporting CP",
-     "name": "Francisco Silva",
-     "starts": 0
-    },
-    {
-     "squad": "Braga",
-     "name": "João Marques",
      "starts": 0
     },
     {
@@ -5226,11 +5136,6 @@
      "starts": 0
     },
     {
-     "squad": "Braga",
-     "name": "Samy Merheg",
-     "starts": 0
-    },
-    {
      "squad": "Porto",
      "name": "Gonçalo Santos Sousa",
      "starts": 0
@@ -5240,9 +5145,9 @@
   "espn_subs": {
    "total": 540,
    "exact": 508,
-   "rule": 23,
-   "ambiguous": 2,
-   "orphan": 9,
+   "rule": 24,
+   "ambiguous": 1,
+   "orphan": 8,
    "orphans": [
     {
      "squad": "Tondela",
@@ -5272,11 +5177,6 @@
     {
      "squad": "Alverca",
      "name": "Marezi",
-     "starts": 0
-    },
-    {
-     "squad": "Casa Pia",
-     "name": "Kiki",
      "starts": 0
     },
     {
@@ -5313,9 +5213,9 @@
   "espn_lineups": {
    "total": 681,
    "exact": 564,
-   "rule": 20,
+   "rule": 28,
    "ambiguous": 0,
-   "orphan": 97,
+   "orphan": 89,
    "orphans": [
     {
      "squad": "Excelsior",
@@ -5338,11 +5238,6 @@
      "starts": 0
     },
     {
-     "squad": "Go Ahead Eagles",
-     "name": "Luca Plogmann",
-     "starts": 0
-    },
-    {
      "squad": "NEC Nijmegen",
      "name": "Argyrios Darelas",
      "starts": 0
@@ -5360,11 +5255,6 @@
     {
      "squad": "Feyenoord",
      "name": "Justin Bijlow",
-     "starts": 0
-    },
-    {
-     "squad": "Feyenoord",
-     "name": "Calvin Stengs",
      "starts": 0
     },
     {
@@ -5403,16 +5293,6 @@
      "starts": 0
     },
     {
-     "squad": "PSV",
-     "name": "Eus Waayers",
-     "starts": 0
-    },
-    {
-     "squad": "PSV",
-     "name": "Isaac Babadi",
-     "starts": 0
-    },
-    {
      "squad": "Zwolle",
      "name": "Braydon Manu",
      "starts": 0
@@ -5420,11 +5300,6 @@
     {
      "squad": "Zwolle",
      "name": "Nick Dobben",
-     "starts": 0
-    },
-    {
-     "squad": "Twente",
-     "name": "Alec Van Hoorenbeeck",
      "starts": 0
     },
     {
@@ -5440,6 +5315,31 @@
     {
      "squad": "Telstar",
      "name": "Tyrick Bodak",
+     "starts": 0
+    },
+    {
+     "squad": "Telstar",
+     "name": "Jaylan Van Schooneveld",
+     "starts": 0
+    },
+    {
+     "squad": "AZ Alkmaar",
+     "name": "Daniel Deen",
+     "starts": 0
+    },
+    {
+     "squad": "Groningen",
+     "name": "Sven Bouland",
+     "starts": 0
+    },
+    {
+     "squad": "Groningen",
+     "name": "Yénio Holder",
+     "starts": 0
+    },
+    {
+     "squad": "Groningen",
+     "name": "Stijn Petiet",
      "starts": 0
     }
    ]
@@ -5645,20 +5545,10 @@
   "espn_lineups": {
    "total": 574,
    "exact": 389,
-   "rule": 31,
+   "rule": 109,
    "ambiguous": 0,
-   "orphan": 154,
+   "orphan": 76,
    "orphans": [
-    {
-     "squad": "Racing Genk",
-     "name": "Bryan Heynen",
-     "starts": 40
-    },
-    {
-     "squad": "Racing Genk",
-     "name": "Matte Smets",
-     "starts": 39
-    },
     {
      "squad": "Westerlo",
      "name": "Issai Sakamoto",
@@ -5666,38 +5556,8 @@
     },
     {
      "squad": "Zulte-Waregem",
-     "name": "Brent Gabriel",
-     "starts": 36
-    },
-    {
-     "squad": "Racing Genk",
-     "name": "Mujaid Sadick",
-     "starts": 34
-    },
-    {
-     "squad": "Racing Genk",
-     "name": "Zakaria El Ouahdi",
-     "starts": 34
-    },
-    {
-     "squad": "Cercle Brugge KSV",
-     "name": "Hannes Van Der Bruggen",
-     "starts": 32
-    },
-    {
-     "squad": "Zulte-Waregem",
      "name": "Jeppe Erenbjerg",
      "starts": 32
-    },
-    {
-     "squad": "Zulte-Waregem",
-     "name": "Thomas Claes",
-     "starts": 32
-    },
-    {
-     "squad": "Cercle Brugge KSV",
-     "name": "Gary Magnée",
-     "starts": 31
     },
     {
      "squad": "Cercle Brugge KSV",
@@ -5706,27 +5566,7 @@
     },
     {
      "squad": "Cercle Brugge KSV",
-     "name": "Edan Diop",
-     "starts": 31
-    },
-    {
-     "squad": "Zulte-Waregem",
-     "name": "Joseph Opoku",
-     "starts": 30
-    },
-    {
-     "squad": "Zulte-Waregem",
-     "name": "Anosike Ementa",
-     "starts": 29
-    },
-    {
-     "squad": "Cercle Brugge KSV",
      "name": "Názinho",
-     "starts": 28
-    },
-    {
-     "squad": "Racing Genk",
-     "name": "Daan Heymans",
      "starts": 28
     },
     {
@@ -5735,33 +5575,8 @@
      "starts": 27
     },
     {
-     "squad": "Racing Genk",
-     "name": "Konstantinos Karetsas",
-     "starts": 27
-    },
-    {
-     "squad": "Cercle Brugge KSV",
-     "name": "Steve Ngoura",
-     "starts": 26
-    },
-    {
-     "squad": "Cercle Brugge KSV",
-     "name": "Christiaan Ravych",
-     "starts": 25
-    },
-    {
-     "squad": "Cercle Brugge KSV",
-     "name": "Lawrence Agyekum",
-     "starts": 25
-    },
-    {
      "squad": "Charleroi",
      "name": "Kevin Guiton",
-     "starts": 25
-    },
-    {
-     "squad": "Zulte-Waregem",
-     "name": "Jakob Kiilerich",
      "starts": 25
     },
     {
@@ -5770,24 +5585,104 @@
      "starts": 23
     },
     {
-     "squad": "Racing Genk",
-     "name": "Joris Kayembe",
+     "squad": "Dender",
+     "name": "Junior Sambu Mansoni",
      "starts": 23
+    },
+    {
+     "squad": "Charleroi",
+     "name": "Martin Delavalée",
+     "starts": 21
+    },
+    {
+     "squad": "Dender",
+     "name": "David Tosevski",
+     "starts": 19
+    },
+    {
+     "squad": "Racing Genk",
+     "name": "Ibrahima Bangoura",
+     "starts": 18
+    },
+    {
+     "squad": "Gent",
+     "name": "Bi Goore",
+     "starts": 14
+    },
+    {
+     "squad": "La Louvière",
+     "name": "Darío Benavides",
+     "starts": 12
+    },
+    {
+     "squad": "Racing Genk",
+     "name": "Josué Ndenge",
+     "starts": 12
+    },
+    {
+     "squad": "Racing Genk",
+     "name": "Lucca Kiaba Mounganga",
+     "starts": 11
+    },
+    {
+     "squad": "Cercle Brugge KSV",
+     "name": "Makaya Diaby",
+     "starts": 10
+    },
+    {
+     "squad": "Cercle Brugge KSV",
+     "name": "Dante Vanzeir",
+     "starts": 9
+    },
+    {
+     "squad": "La Louvière",
+     "name": "Mohamed Guindo",
+     "starts": 6
+    },
+    {
+     "squad": "Racing Genk",
+     "name": "Ken Nkuba Tshiend",
+     "starts": 5
+    },
+    {
+     "squad": "Cercle Brugge KSV",
+     "name": "Erick",
+     "starts": 1
+    },
+    {
+     "squad": "Westerlo",
+     "name": "Adedire Mebude",
+     "starts": 1
+    },
+    {
+     "squad": "Cercle Brugge KSV",
+     "name": "Heriberto De Jesus",
+     "starts": 1
+    },
+    {
+     "squad": "Cercle Brugge KSV",
+     "name": "Abdoul Ouattara",
+     "starts": 1
+    },
+    {
+     "squad": "Cercle Brugge KSV",
+     "name": "Abu Francis",
+     "starts": 0
+    },
+    {
+     "squad": "Zulte-Waregem",
+     "name": "Thibaud Sergeant",
+     "starts": 0
     }
    ]
   },
   "espn_lineups_cups": {
    "total": 86,
    "exact": 77,
-   "rule": 2,
+   "rule": 5,
    "ambiguous": 0,
-   "orphan": 7,
+   "orphan": 4,
    "orphans": [
-    {
-     "squad": "Genk",
-     "name": "Josué Ndenge",
-     "starts": 2
-    },
     {
      "squad": "Union SG",
      "name": "Soulaimane Berradi",
@@ -5806,16 +5701,6 @@
     {
      "squad": "Union SG",
      "name": "Youssef Hamoutahar",
-     "starts": 0
-    },
-    {
-     "squad": "Genk",
-     "name": "Lucca Kiaba Mounganga",
-     "starts": 0
-    },
-    {
-     "squad": "Genk",
-     "name": "Brent Stevens",
      "starts": 0
     }
    ]
@@ -5929,7 +5814,7 @@
   }
  },
  "_meta": {
-  "date": "2026-11-09",
+  "date": "2026-11-10",
   "season": "2026_2027"
  }
 }
