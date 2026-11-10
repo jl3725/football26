@@ -3721,20 +3721,22 @@
    "model": "gemini-3.1-flash-lite"
   },
   "401875552": {
-   "text": "ADO Den Haag가 ADO Den Haag Stadium에서 열린 Sparta R.와의 경기에서 3-1로 승리했다. 22' Juho Kilo의 헤더 선제골로 앞서간 ADO Den Haag는 50' Bas Kuipers에게 동점골을 허용했으나, 57' Nigel Thomas의 득점과 79' Daryl van Mieghem의 추가골로 승부를 결정지었다. Sparta R.는 점유율 50.8%와 슈팅 16개를 기록하며 공세를 펼쳤으나 유효 슈팅 7개를 기록한 ADO Den Haag가 더 높은 결정력을 보였다. 이번 결과로 Elo의 ADO Den Haag 승리 예측은 적중했고, Sparta R. 승리를 예상했던 모델의 예측은 빗나갔다.",
+   "text": "ADO Den Haag가 Sparta R.를 상대로 3-1 승리를 거뒀다. 경기에서는 22' Juho Kilo의 헤더 선제골을 시작으로, 50' Sparta R.의 Bas Kuipers가 동점골을 넣었으나, 57' Nigel Thomas의 결승골과 79' Daryl van Mieghem의 득점이 이어졌다. xG는 ADO Den Haag 1.61, Sparta R. 1.94를 기록했고, 점유율 49.2%-50.8%, 슈팅 13-16으로 팽팽한 흐름을 보였다. ADO Den Haag는 Yannick Eduardo와 Pascal Mulder가, Sparta R.는 Nick Verschuren이 결장했으며, FotMob 기준 ADO Den Haag의 Juho Teemu Kilo가 평점 8.2로 1위를 기록했다.",
    "date": "2026-11-07",
    "home": "ADO Den Haag",
    "away": "Sparta R.",
-   "at": "2026-11-07T20:06:16+00:00",
-   "model": "gemini-3.1-flash-lite"
+   "at": "2026-11-10T04:59:48+00:00",
+   "model": "gemini-flash-lite-latest",
+   "v": 2
   },
   "401878757": {
-   "text": "Nottingham Forest가 The City Ground에서 Manchester City를 3-1로 꺾으며 승리를 거뒀다. 전반 6' Jair Cunha의 선제골과 18' Liam Delap의 추가골로 앞서 나간 Nottingham Forest는 후반 52' Rayan Cherki에게 실점했으나, 73' Liam Delap이 다시 득점하며 승부에 쐐기를 박았다. Manchester City는 78%의 점유율과 12개의 슈팅을 기록하며 경기를 주도했으나 유효 슈팅에서 4-5로 밀리며 패배했다. 이는 Manchester City의 승리를 점쳤던 팬 투표와 모델, Elo 예측이 모두 빗나간 결과였다.",
+   "text": "경기 전 승리 확률 10%의 모델 예측을 뒤엎고 Nottingham Forest가 Manchester City를 상대로 3-1 승리를 거두며 이변을 연출했다. 전반 6' Jair Cunha의 선제골과 18' Liam Delap의 골로 기선을 제압한 Nottingham Forest는 52' Rayan Cherki에게 실점했으나, 73' Liam Delap이 추가골을 터뜨리며 승부에 마침표를 찍었다. Manchester City가 점유율 78%와 슈팅 12-11로 경기를 주도하고 xG 1.58-1.01을 기록했으나, 유효 슈팅은 4-5로 Nottingham Forest가 더 앞섰다. Manchester City의 Antoine Semenyo 결장 속에서 두 골을 넣은 Liam Delap은 FotMob 평점 8.8점으로 양팀 통틀어 가장 높은 평점을 기록했다.",
    "date": "2026-11-07",
    "home": "Nottingham Forest",
    "away": "Manchester City",
-   "at": "2026-11-07T20:06:23+00:00",
-   "model": "gemini-3.1-flash-lite"
+   "at": "2026-11-10T04:59:55+00:00",
+   "model": "gemini-flash-lite-latest",
+   "v": 2
   },
   "401884743": {
    "text": "Stuttgart가 MHPArena에서 열린 리그 경기에서 Werder Bremen을 1-0으로 꺾고 승리를 거뒀다. 경기 시작 7'에 Grischa Prömel의 도움을 받은 Maximilian Mittelstädt가 결승골을 기록하며 승부를 결정지었다. Werder Bremen이 점유율 57.6%와 슈팅 24개를 기록하며 공세를 펼쳤으나, Stuttgart는 유효 슈팅 5개와 선방 5개를 기록하며 실점 없이 경기를 마쳤다. 경기 전 팬 투표와 모델, Elo 예측 모두 Stuttgart의 승리를 점쳤으며 결과적으로 이 예측들은 적중했다.",
@@ -3753,92 +3755,103 @@
    "model": "gemini-3.1-flash-lite"
   },
   "401885402": {
-   "text": "Alverca와 Casa Pia는 1-1 무승부를 거두며 승점 1점씩을 나눠 가졌다. 전반 36' Henrique Araújo의 도움을 받은 Silvi Clua가 선제골을 기록했으나, 후반 66' Chiquinho의 도움을 받은 Ian Luccas가 헤더로 동점골을 터뜨렸다. Alverca는 점유율 55.9%와 슈팅 15개를 기록하며 Casa Pia보다 공격적인 경기를 펼쳤으나, 경기 전 Alverca의 승리를 예상했던 팬 투표와 모델, Elo의 예측은 모두 빗나갔다.",
+   "text": "Alverca와 Casa Pia의 경기는 1-1 무승부로 끝났다. 전반 36분 Henrique Araújo의 어시스트를 받아 Silvi Clua가 선제골을 터뜨렸고, 후반 66분에는 Chiquinho의 도움을 받은 Ian Luccas가 헤더로 동점골을 넣었다. 점유율 55.9 대 44.1, 슈팅 15대 11, xG 0.73 대 0.95로 양 팀은 팽팽한 경기를 펼쳤다. 4경기 무승을 기록 중이며 리그 11위에 위치한 Alverca는 홈에서 승점을 나눠 가졌고, Casa Pia의 David Sousa가 FotMob 기준 평점 8.0으로 가장 높은 평점을 받았다.",
    "date": "2026-11-07",
    "home": "Alverca",
    "away": "Casa Pia",
-   "at": "2026-11-07T20:39:53+00:00",
-   "model": "gemini-3.1-flash-lite"
+   "at": "2026-11-10T04:59:39+00:00",
+   "model": "gemini-flash-lite-latest",
+   "v": 2
   },
   "401876411": {
-   "text": "Paris FC가 Stade de l'Abbé-Deschamps에서 열린 Auxerre와의 경기에서 1-0으로 승리하며 승점 3점을 챙겼다. 63'에 Pablo Pagis의 도움을 받은 Lassine Sinayoko가 결승골을 터뜨리며 승부를 갈랐다. 경기 기록을 보면 Paris FC가 점유율 64.8%와 패스 성공률 90%를 기록하며 경기를 주도했고, Auxerre는 24개의 파울을 범하며 거칠게 맞섰다. 이번 결과는 Paris FC의 승리를 점쳤던 팬 투표, 모델, Elo 예측 모두와 일치했다.",
+   "text": "Paris FC가 Auxerre을 상대로 0-1 승리를 거뒀다. 63'에 Pablo Pagis의 도움을 받아 Lassine Sinayoko가 결승골을 터뜨렸다. 점유율에서 Paris FC가 64.8%로 우세했으나, 슈팅 7대 10, 유효 슈팅 2대 3, xG 0.71대 0.92로 내용 자체는 팽팽했다. Paris FC는 Adama Camara가 결장했고, Pablo Pagis가 FotMob 기준 7.9점으로 평점 1위를 기록했다.",
    "date": "2026-11-07",
    "home": "Auxerre",
    "away": "Paris FC",
-   "at": "2026-11-07T20:39:59+00:00",
-   "model": "gemini-3.1-flash-lite"
+   "at": "2026-11-10T04:59:43+00:00",
+   "model": "gemini-flash-lite-latest",
+   "v": 2
   },
   "401876407": {
-   "text": "PSG가 Parc des Princes에서 열린 Troyes와의 경기에서 1-0으로 승리했다. 39'에 Senny Mayulu의 도움을 받은 Illia Zabarnyi가 헤더로 결승골을 기록하며 승부를 결정지었다. PSG는 점유율 73%와 슈팅 15개를 기록하며 Troyes를 압도했고, 팬 투표와 모델 및 Elo가 예측한 PSG의 승리 결과가 그대로 적중했다.",
+   "text": "PSG가 Troyes를 상대로 1-0 승리를 거뒀다. 39'에 Senny Mayulu의 도움을 받아 Illia Zabarnyi가 헤더로 결승골을 터뜨렸다. xG에서 1.6 대 0.68을 기록했고 슈팅 15-8, 유효 슈팅 7-3으로 PSG가 내용에서 우세했다. PSG는 11연승으로 리그 1위를 기록 중인 가운데 Marquinhos와 Maghnes Akliouche가 결장했고 Troyes는 Anis Ouzenadji가 결장했으며 FotMob 기준 평점 1위는 8.8점을 기록한 PSG의 Illia Zabarnyi였다.",
    "date": "2026-11-07",
    "home": "PSG",
    "away": "Troyes",
-   "at": "2026-11-07T22:21:31+00:00",
-   "model": "gemini-3.1-flash-lite"
+   "at": "2026-11-10T04:59:07+00:00",
+   "model": "gemini-flash-lite-latest",
+   "v": 2
   },
   "401875554": {
-   "text": "Go Ahead Eagles가 Stadion Woudestein 원정에서 Excelsior를 1-0으로 꺾고 승리를 거뒀다. 72'에 Mathis Suray의 도움을 받은 Sören Tengstedt가 결승골을 터뜨리며 승부를 갈랐다. Excelsior는 슈팅 수에서 14-6으로 앞섰으나 유효 슈팅은 2-2로 동일했고, 점유율과 패스 성공률 등 주요 지표에서 팽팽한 흐름을 보였다. 경기 전 팬 투표와 모델 예측은 Go Ahead Eagles의 승리를 정확히 맞혔으나 Elo 예측은 빗나갔다.",
+   "text": "Go Ahead Eagles가 Excelsior를 상대로 0-1 승리를 거뒀다. 72'에 Mathis Suray의 도움을 받아 Sören Tengstedt가 결승골을 터뜨렸다. Excelsior가 슈팅 수에서 14-6으로 앞섰으나 유효 슈팅은 2-2를 기록했고 xG는 Excelsior 0.8, Go Ahead Eagles 0.6으로 팽팽했다. Go Ahead Eagles의 Joris Kramer가 FotMob 기준 7.9점으로 양 팀 통틀어 가장 높은 평점을 기록했다.",
    "date": "2026-11-07",
    "home": "Excelsior",
    "away": "Go Ahead Eagles",
-   "at": "2026-11-07T22:21:40+00:00",
-   "model": "gemini-3.1-flash-lite"
+   "at": "2026-11-10T04:59:11+00:00",
+   "model": "gemini-flash-lite-latest",
+   "v": 2
   },
   "401882808": {
-   "text": "Real Madrid가 Mestalla Stadium에서 Valencia를 3-0으로 완파하며 승리를 거뒀다. 전반 28' Federico Valverde와 36' Arda Güler의 득점으로 앞서 나간 Real Madrid는 후반 75' Kylian Mbappé의 추가 골과 79' Valencia José Gayà의 퇴장까지 겹치며 경기를 주도했다. Real Madrid는 점유율 68.3%와 슈팅 19개를 기록하며 Valencia를 압도했고, 경기 전 팬 투표와 모델 및 Elo 예측 모두 Real Madrid의 승리를 정확히 적중했다.",
+   "text": "Real Madrid가 Valencia를 상대로 3 대 0 완승을 거두며 8연승을 질주하고 리그 2위를 기록했다. 전반 28분 Federico Valverde의 득점과 36분 Arda Güler의 추가 골로 앞서간 Real Madrid는 후반 75분 Arda Güler의 도움을 받은 Kylian Mbappé의 쐐기 골까지 더했고, Valencia는 79분 José Gayà가 퇴장당했다. 점유율 68.3 대 31.7, 슈팅 19 대 4, xG 2.26 대 0.16 등 모든 경기 지표에서 Real Madrid가 압도했다. FotMob 기준 평점 1위는 8.8점을 기록한 Real Madrid의 Arda Güler였다.",
    "date": "2026-11-07",
    "home": "Valencia",
    "away": "Real Madrid",
-   "at": "2026-11-07T22:21:49+00:00",
-   "model": "gemini-3.1-flash-lite"
+   "at": "2026-11-10T04:59:14+00:00",
+   "model": "gemini-flash-lite-latest",
+   "v": 2
   },
   "401878950": {
-   "text": "Antwerp와 Lommel은 치열한 공방 끝에 2-2 무승부를 거두며 승점 1점씩을 나눠 가졌다. 18'에 Don-Angelo Konadu의 페널티킥 실축과 Taishi Nozawa의 페널티킥 선방이 연달아 나온 뒤, 40' Snayder Porozo, 47' Don-Angelo Konadu, 52' Modibo Fofana, 66' Don-Angelo Konadu가 차례로 득점하며 승부의 균형을 맞췄다. Antwerp는 슈팅 25개로 Lommel의 13개보다 공격적인 모습을 보였으나 승리를 가져오지 못했고, 이로써 Antwerp의 승리를 점쳤던 팬 투표와 모델, Elo 예측은 모두 빗나갔다.",
+   "text": "Antwerp와 Lommel의 경기는 2-2 무승부로 끝났다. 전반 18분 Lommel의 Don-Angelo Konadu가 페널티킥을 실축했고 Antwerp의 Taishi Nozawa가 선방해냈으며, 이어 Snayder Porozo의 40' 득점, Don-Angelo Konadu의 47' 득점, Modibo Fofana의 52' 득점, 그리고 Don-Angelo Konadu의 66' 득점이 터졌다. Antwerp가 슈팅 25-13과 xG 3.03으로 공세를 펼쳤으나 Lommel과 무승부를 기록했다. 5경기 무패로 리그 6위를 기록 중인 Lommel은 Dries Wouters가 결장한 가운데, 2골을 넣은 Don-Angelo Konadu가 평점 8.4로 1위를 차지했다.",
    "date": "2026-11-07",
    "home": "Antwerp",
    "away": "Lommel",
-   "at": "2026-11-07T22:21:58+00:00",
-   "model": "gemini-3.1-flash-lite"
+   "at": "2026-11-10T04:59:18+00:00",
+   "model": "gemini-flash-lite-latest",
+   "v": 2
   },
   "401878948": {
-   "text": "Cercle Brugge가 6'에 터진 Steve Ngoura의 결승골을 끝까지 지켜내며 La Louvière를 상대로 1-0 승리를 거뒀다. La Louvière는 45'+6' Mustapha Ubandoma와 80' Léandro Rousseau가 페널티킥을 실축하며 득점 기회를 살리지 못했고, Cercle Brugge의 Gaëtan Coucke는 80'에 페널티킥을 막아내며 팀의 승리를 견인했다. La Louvière는 점유율 62%와 슈팅 19개를 기록하며 경기를 주도했으나 유효 슈팅은 1개에 그쳤고, 이는 La Louvière의 승리를 점쳤던 팬 투표와 모델, Elo 예측이 모두 빗나가는 결과로 이어졌다.",
+   "text": "Cercle Brugge가 La Louvière을 상대로 1-0 승리를 거뒀다. 전반 6' Steve Ngoura가 기록한 결승골이 승부를 가른 가운데, La Louvière은 45'+6' Mustapha Ubandoma와 80' Léandro Rousseau가 페널티킥을 실축했고 80' Cercle Brugge의 Gaëtan Coucke가 이를 선방했다. La Louvière은 점유율 62%와 슈팅 19개, xG 3.17을 기록하며 경기를 주도했으나 유효 슈팅 1개에 그치며 패했다. Cercle Brugge의 Gary Magnée가 FotMob 기준 평점 8.8점으로 양팀 통틀어 가장 높은 평점을 받았다.",
    "date": "2026-11-07",
    "home": "La Louvière",
    "away": "Cercle Brugge",
-   "at": "2026-11-07T22:22:01+00:00",
-   "model": "gemini-3.1-flash-lite"
+   "at": "2026-11-10T04:59:23+00:00",
+   "model": "gemini-flash-lite-latest",
+   "v": 2
   },
   "401874803": {
-   "text": "Roma가 Sassuolo를 상대로 3-0 완승을 거두며 리그 경기에서 압도적인 승리를 기록했다. 27' Mario Hermoso의 선제골을 시작으로 30' Sebastian Walukiewicz의 자책골이 이어졌고, 58' Donyell Malen의 도움을 받은 Rodrigo Mora가 쐐기골을 터뜨렸다. Roma는 점유율 65.1%와 슈팅 28개를 기록하며 Sassuolo를 몰아붙였고, 경기 전 팬 투표와 모델, Elo 예측 모두 Roma의 승리를 정확히 맞혔다.",
+   "text": "Roma는 Sassuolo를 상대로 3-0 승리를 거뒀다. 전반 27' Mario Hermoso의 득점과 30' Sebastian Walukiewicz의 자책골로 앞서간 Roma는 58' Donyell Malen의 도움을 받은 Rodrigo Mora의 득점으로 승부를 결정지었다. 점유율 65.1%-34.9%, 슈팅 28-6, xG 3.4-0.2로 기록된 바와 같이 Roma가 내용에서도 압도했다. 5연패와 함께 리그 17위에 머문 Sassuolo는 Domenico Berardi가 결장했고, Roma는 Mile Svilar, Gianluca Mancini, Paulo Dybala가 결장한 가운데 FotMob 기준 평점 1위는 8.8점을 기록한 Roma의 Mario Hermoso였다.",
    "date": "2026-11-07",
    "home": "Roma",
    "away": "Sassuolo",
-   "at": "2026-11-07T22:22:09+00:00",
-   "model": "gemini-3.1-flash-lite"
+   "at": "2026-11-10T04:59:26+00:00",
+   "model": "gemini-flash-lite-latest",
+   "v": 2
   },
   "5804292": {
-   "text": "Grasshopper와 Lausanne의 경기는 1-1 무승부로 종료되었다. 29'에 Samuel Krasniqi의 도움을 받은 Kenzo Goudmijn이 선제골을 기록했으나, 85'에 Seydou Traore가 득점하며 Lausanne이 균형을 맞췄다. Lausanne은 슈팅 24개와 코너킥 14개를 기록하며 Grasshopper보다 공격적인 수치를 보였으나 점유율은 50%로 동일했다. 경기 전 Lausanne 승리를 예상했던 모델과 Grasshopper 승리를 점쳤던 Elo 예측은 모두 빗나갔다.",
+   "text": "Grasshopper와 Lausanne의 경기는 1-1 무승부로 끝났다. 전반 29'에 Grasshopper의 Kenzo Goudmijn이 Samuel Krasniqi의 도움으로 선제골을 넣었으나, Lausanne은 85'에 Seydou Traore의 득점으로 균형을 맞췄다. 슈팅 수에서 24-10으로 앞선 Lausanne이 xG 2.09를 기록하며 1.37의 Grasshopper보다 내용상 우세했다. Lausanne의 Enzo Molebe가 8.1점으로 양팀 통틀어 가장 높은 평점을 받았고, Grasshopper에서는 Marvin Hübel이 결장했다.",
    "date": "2026-11-07",
    "home": "Grasshopper",
    "away": "Lausanne",
-   "at": "2026-11-07T22:22:16+00:00",
-   "model": "gemini-3.1-flash-lite"
+   "at": "2026-11-10T04:59:31+00:00",
+   "model": "gemini-flash-lite-latest",
+   "v": 2
   },
   "5846019": {
-   "text": "LASK가 Ried를 상대로 4-2 승리를 거두며 원정에서 승점 3점을 획득했다. 경기 초반 Christoph Lang의 득점으로 앞서간 LASK는 Miguel Freckleton의 자책골과 Ante Bajic의 골로 역전을 허용했으나, Alemão, Moses Usor, Krystof Danek이 연달아 득점하며 경기를 뒤집었다. 이번 결과는 LASK의 승리를 점쳤던 모델과 Elo의 예측과 일치했다.",
+   "text": "LASK가 Ried에 4-2로 승리했다. 경기에서는 3' Christoph Lang의 득점으로 LASK가 앞서갔으나 32' Miguel Freckleton의 자책골과 37' Ante Bajic의 골로 Ried가 역전했고, 이후 39' Alemão, 90' Moses Usor, 90'+5' Krystof Danek의 연속골이 터지며 LASK가 경기를 뒤집었다. xG에서 Ried가 0.89, LASK가 2.49를 기록했다. 리그 6위 Ried는 4경기 무승을 이어갔고, 리그 3위 LASK는 4연승을 거뒀으며 LASK에서는 George Bello가 결장했고 FotMob 기준 Saša Kalajdžić가 8.7점으로 평점 1위를 기록했다.",
    "date": "2026-11-07",
    "home": "Ried",
    "away": "LASK",
-   "at": "2026-11-07T22:22:19+00:00",
-   "model": "gemini-3.1-flash-lite"
+   "at": "2026-11-10T04:59:35+00:00",
+   "model": "gemini-flash-lite-latest",
+   "v": 2
   },
   "401885395": {
-   "text": "Sporting CP가 Estádio José Alvalade에서 열린 리그 경기에서 Moreirense를 1-0으로 꺾었다. 61'에 Issa Doumbia의 도움을 받은 Luis Suárez가 결승골을 터뜨리며 승부를 갈랐다. Sporting CP는 점유율 70.7%와 슈팅 19개를 기록하며 Moreirense를 압도했고, 경기 전 팬 투표와 모델 및 Elo 예측대로 Sporting CP의 승리로 마무리되었다.",
+   "text": "Sporting CP가 Moreirense를 상대로 1-0 승리를 거뒀다. 61'에 Issa Doumbia의 도움을 받아 Luis Suárez가 결승골을 터뜨렸다. 슈팅 19-9와 유효 슈팅 5-2, xG 2.0-0.5로 집계되어 Sporting CP가 내용에서 앞섰다. 3연승과 함께 리그 3위를 기록 중인 Sporting CP에서는 Iván Fresneda가 FotMob 기준 8.0점으로 평점 1위를 차지했고 Moreirense는 Kiko가 결장했다.",
    "date": "2026-11-07",
    "home": "Sporting CP",
    "away": "Moreirense",
-   "at": "2026-11-07T22:45:08+00:00",
-   "model": "gemini-3.1-flash-lite"
+   "at": "2026-11-10T04:59:02+00:00",
+   "model": "gemini-flash-lite-latest",
+   "v": 2
   },
   "401884738": {
    "text": "Köln이 Leverkusen에 1-2로 패배했다. 7'에 Aleix García의 득점으로 앞서간 Leverkusen은 85' Patrik Schick의 결승골을 더했고, Köln은 90'+2' Said El Mala가 만회골을 넣었다. 점유율은 38.3% 대 61.7%였으며 슈팅 12 대 14, 유효 슈팅 6 대 8, xG는 1.59 대 1.75로 나타났다. Köln의 Marvin Schwäbe가 9.2점으로 평점 1위를 기록했다.",
@@ -3913,100 +3926,112 @@
    "v": 2
   },
   "5846018": {
-   "text": "Hartberg가 Altach를 상대로 3-0 승리를 거두며 리그 경기에서 완승을 기록했다. 경기 시작 3' 만에 Konstantin Schopp의 선제골이 터졌고, 이후 Marco Hoffman이 35'와 77'에 연달아 득점하며 승리를 이끌었다. 경기 중 Altach는 2개의 경고를 받았으며, 경기 전 모델과 Elo가 예측한 Hartberg의 승리 전망이 그대로 적중했다.",
+   "text": "Hartberg가 Altach를 상대로 거둔 승리는 4연승과 함께 리그 4위의 흐름을 이어간 경기였다. 전반 3' Konstantin Schopp의 득점으로 앞서간 Hartberg는 35'와 77'에 Marco Hoffman이 연속골을 터뜨리며 승부를 결정지었다. xG에서 Hartberg가 1.25로 Altach의 0.24에 비해 우세한 경기를 펼쳤다. 양 팀에서는 Hartberg의 Paul Komposch, Fabian Wilfinger와 Altach의 Vesel Demaku가 결장했고, FotMob 기준 평점 1위는 8.9점을 기록한 Hartberg의 Marco Hoffmann이었다.",
    "date": "2026-11-08",
    "home": "Hartberg",
    "away": "Altach",
-   "at": "2026-11-08T16:54:34+00:00",
-   "model": "gemini-3.1-flash-lite"
+   "at": "2026-11-10T04:55:12+00:00",
+   "model": "gemini-flash-lite-latest",
+   "v": 2
   },
   "5846022": {
-   "text": "WSG Tirol과 Austria Wien의 경기는 1-1 무승부로 종료되었다. 16'에 Nikolai Baden Frederiksen이 선제골을 기록하며 WSG Tirol이 앞서 나갔으나, 42'에 Aleksandar Dragovic가 동점골을 넣으며 승부의 균형을 맞췄다. 경기 결과는 WSG Tirol의 승리를 점쳤던 모델과 Elo의 예측과는 다르게 나타났다.",
+   "text": "WSG Tirol과 Austria Wien의 경기는 1-1 무승부로 끝났다. 전반 16'에 Nikolai Baden Frederiksen이 득점해 WSG Tirol이 앞서갔으나, 전반 42'에 Aleksandar Dragovic가 득점해 Austria Wien이 균형을 맞췄다. xG에서 WSG Tirol이 1.56으로 Austria Wien의 0.7보다 우세했다. Austria Wien은 7경기 무승을 기록하며 리그 11위에 위치했고, WSG Tirol의 Marco Boras가 평점 8.1로 가장 높은 평점을 받았다.",
    "date": "2026-11-08",
    "home": "WSG Tirol",
    "away": "Austria Wien",
-   "at": "2026-11-08T16:54:38+00:00",
-   "model": "gemini-3.1-flash-lite"
+   "at": "2026-11-10T04:55:20+00:00",
+   "model": "gemini-flash-lite-latest",
+   "v": 2
   },
   "401875550": {
-   "text": "Twente와 Ajax는 2-2 무승부를 기록하며 승점 1점씩을 나눠 가졌다. 경기 초반 Tolu Arokodare의 헤더와 Rayane Bounida의 득점으로 Ajax가 앞서갔으나, Dies Janse의 자책골과 90'+5'에 터진 Wout Weghorst의 페널티킥으로 Twente가 균형을 맞췄다. Twente는 점유율 55.6%와 슈팅 22개를 기록하며 Ajax보다 공격적인 흐름을 주도했으나 승부를 뒤집지는 못했다. 이번 결과는 Ajax 승리를 점친 팬 투표와 Twente 승리를 예상한 모델 및 Elo 예측 모두와 일치하지 않았다.",
+   "text": "Twente와 Ajax의 경기는 2-2 무승부로 끝났다. 전반 3' Tolu Arokodare의 득점으로 앞서간 Ajax는 후반 66' Rayane Bounida의 추가골을 더했으나, 후반 68' Dies Janse의 자책골과 후반 90'+5' Wout Weghorst의 페널티킥 득점을 허용하며 승리를 놓쳤다. Twente는 슈팅 수 22-6, xG 2.52-0.69로 경기를 주도하고도 무승부를 거뒀다. Twente는 5경기 무패로 리그 4위, Ajax는 6경기 무패로 리그 3위를 기록 중이며, Twente는 Lars Unnerstall, Ajax는 Julian Brandt와 Youri Baas가 결장한 가운데 FotMob 기준 평점 1위는 8.8점을 기록한 Ajax의 Oscar Gloukh였다.",
    "date": "2026-11-08",
    "home": "Twente",
    "away": "Ajax",
-   "at": "2026-11-08T16:54:45+00:00",
-   "model": "gemini-3.1-flash-lite"
+   "at": "2026-11-10T04:55:29+00:00",
+   "model": "gemini-flash-lite-latest",
+   "v": 2
   },
   "5739546": {
-   "text": "AGF가 AC Horsens를 상대로 2-0 승리를 거두며 홈에서 귀중한 승점 3점을 챙겼다. 53' Jacob Andersen의 선제골로 리드를 잡은 AGF는 87' Stefen Tchamche가 추가골을 기록하며 승부에 쐐기를 박았다. AGF는 점유율 58.6%와 패스 성공률 90%를 기록하며 경기 주도권을 잡았고, AC Horsens는 23개의 파울을 범하며 거칠게 맞섰으나 유효 슈팅 3개에 그치며 득점에 실패했다. 이번 경기는 AGF의 승리를 점쳤던 모델과 Elo의 예측대로 결과가 나타났다.",
+   "text": "AGF가 AC Horsens를 상대로 2-0 승리를 거뒀다. 후반 53' Jacob Andersen의 득점과 후반 87' Stefen Tchamche의 득점으로 경기가 갈렸으며 AC Horsens는 3개의 경고를 받았다. xG 2.22 대 0.62, 슈팅 16대 12, 유효 슈팅 6대 3으로 나타났듯 기록 전반에서 AGF가 우세했다. 패배한 AC Horsens는 리그 7위이자 3연패를 기록했고, AGF에는 Mikael Anderson, AC Horsens에는 Ole Kolskogen이 결장했으며 FotMob 기준 평점 1위는 8.8점을 받은 AGF의 Jacob Andersen이었다.",
    "date": "2026-11-08",
    "home": "AGF",
    "away": "AC Horsens",
-   "at": "2026-11-08T16:54:49+00:00",
-   "model": "gemini-3.1-flash-lite"
+   "at": "2026-11-10T04:55:36+00:00",
+   "model": "gemini-flash-lite-latest",
+   "v": 2
   },
   "401882814": {
-   "text": "Real Betis가 Estadio Martínez Valero에서 Elche를 2-0으로 꺾고 승리를 거뒀다. 팽팽하던 경기는 81' Rodrigo Riquelme의 득점과 89' Dani Ceballos의 도움을 받은 Marc Bartra의 헤더 골이 터지며 Real Betis 쪽으로 기울었다. Real Betis는 슈팅 18개와 유효 슈팅 9개를 기록하며 슈팅 13개와 유효 슈팅 1개에 그친 Elche를 상대로 경기 내용 면에서 우위를 점했다. 이번 결과는 팬 투표와 모델, Elo 예측 모두에서 Real Betis의 승리를 점쳤던 경기 전 예상을 적중시켰다.",
+   "text": "Real Betis가 Elche를 상대로 2-0 승리를 거뒀다. 81' Rodrigo Riquelme의 득점에 이어 89' Dani Ceballos의 도움을 받은 Marc Bartra의 헤더 득점이 터지며 승부가 갈렸다. 슈팅 18-13, 유효 슈팅 9-1, xG 2.16-1.22로 Real Betis가 내용에서 우세를 보였다. Elche는 Gonzalo Villar, Real Betis는 Cucho가결장한 가운데, Marc Bartra가 8.2점으로 FotMob 평점 1위를 기록했다.",
    "date": "2026-11-08",
    "home": "Elche",
    "away": "Real Betis",
-   "at": "2026-11-08T16:55:05+00:00",
-   "model": "gemini-3.1-flash-lite"
+   "at": "2026-11-10T04:55:45+00:00",
+   "model": "gemini-flash-lite-latest",
+   "v": 2
   },
   "5904799": {
-   "text": "Fenerbahçe가 Çorum Sehir Stadyumu에서 열린 경기에서 Çorum FK를 5-0으로 대파하며 완승을 거뒀다. 12'와 63'에 득점한 Mason Greenwood, 21'와 56'에 골을 기록한 Irfan Can Kahveci, 그리고 74'에 추가 골을 넣은 Oguz Aydin이 승리를 이끌었다. Çorum FK는 슈팅 수 22-10, 유효 슈팅 8-6으로 Fenerbahçe보다 공격적인 지표에서 앞섰으나 득점에는 실패했다. 이번 결과는 Fenerbahçe의 승리를 점쳤던 모델의 예측과 일치했다.",
+   "text": "Fenerbahçe가 Çorum FK를 상대로 5-0 승리를 거뒀다. 전반 12'와 63'에 Mason Greenwood가 득점했고, 21'과 56'에는 Irfan Can Kahveci가 골을 넣었으며, 74'에는 Oguz Aydin이 득점에 가세했다. Çorum FK가 슈팅 22-10, 유효 슈팅 8-6, xG 2.0-1.3으로 앞섰으나 Fenerbahçe가 승리했다. Fenerbahçe는 Nathan Aké가 결장했고, FotMob 기준 평점 1위는 9.0점을 기록한 İrfan Kahveci였다.",
    "date": "2026-11-08",
    "home": "Çorum FK",
    "away": "Fenerbahçe",
-   "at": "2026-11-08T16:55:17+00:00",
-   "model": "gemini-3.1-flash-lite"
+   "at": "2026-11-10T04:56:04+00:00",
+   "model": "gemini-flash-lite-latest",
+   "v": 2
   },
   "5804295": {
-   "text": "St. Gallen이 Lugano를 상대로 5-0 대승을 거두며 압도적인 경기력을 증명했다. 11' Lugano의 Albian Ajeti가 퇴장당한 이후 St. Gallen은 33' Chima Okoroji, 34' Andrin Hunziker, 45'+2' Tom Gaal의 연속 골로 전반을 마쳤고, 후반에도 66' Andrin Hunziker와 84' Leon Frokaj가 득점에 성공했다. St. Gallen은 점유율 60%와 유효 슈팅 7개를 기록하며 Lugano를 몰아붙였고, Lugano 승리를 점쳤던 모델과 Elo의 예측은 빗나갔다.",
+   "text": "경기 전 승리 확률 13%였던 St. Gallen이 Lugano를 상대로 거둔 승리는 이변이었다. 결정적인 장면으로 11' Lugano의 Albian Ajeti가 퇴장당했고, 33' Chima Okoroji, 34'와 66' Andrin Hunziker, 45'+2' Tom Gaal, 84' Leon Frokaj의 골이 터져 St. Gallen이 5-0으로 대승했다. 점유율 60% 대 40%, 슈팅 19-14, xG 2.22 대 0.74로 기록 비교에서도 St. Gallen이 우세했다. St. Gallen에서는 Christian Witzig가, Lugano에서는 Hannes Delcroix가 결장했으며, FotMob 기준 평점 1위는 8.9점을 기록한 St. Gallen의 Andrin Hunziker였다.",
    "date": "2026-11-08",
    "home": "St. Gallen",
    "away": "Lugano",
-   "at": "2026-11-08T16:55:21+00:00",
-   "model": "gemini-3.1-flash-lite"
+   "at": "2026-11-10T04:56:22+00:00",
+   "model": "gemini-flash-lite-latest",
+   "v": 2
   },
   "401878946": {
-   "text": "Club Brugge와 Anderlecht의 경기는 1-1 무승부로 종료되었다. 41'에 Hans Vanaken이 선제골을 기록했으나, 58'에 Mihajlo Cvetkovic이 동점골을 넣으며 승점 1점씩을 나눠 가졌다. Club Brugge는 점유율 67.3%와 슈팅 24개를 기록하며 경기를 주도했으나, 83% 이상의 승리를 예상했던 팬 투표와 모델, Elo 예측은 모두 빗나갔다.",
+   "text": "Club Brugge와 Anderlecht의 경기는 1-1 무승부로 끝났다. 전반 41'에 Hans Vanaken이 득점하며 Club Brugge가 앞서갔으나, 후반 58'에 Mihajlo Cvetkovic이 동점골을 넣었다. 경기에서 Club Brugge는 슈팅 24개를 기록하며 유효 슈팅 8개와 점유율 67.3%를 기록했고, xG는 Club Brugge가 1.53, Anderlecht가 0.75였다. 9경기 무패를 달리며 리그 2위에 위치한 Club Brugge에서는 Hans Vanaken이 FotMob 기준 8.4점으로 평점 1위를 기록했다.",
    "date": "2026-11-08",
    "home": "Club Brugge",
    "away": "Anderlecht",
-   "at": "2026-11-08T16:55:38+00:00",
-   "model": "gemini-3.1-flash-lite"
+   "at": "2026-11-10T04:56:30+00:00",
+   "model": "gemini-flash-lite-latest",
+   "v": 2
   },
   "401874810": {
-   "text": "Napoli와 Lazio의 경기는 1-1 무승부로 종료되었다. 전반 28'에 Tijjani Noslin의 도움을 받은 Davide Frattesi가 선제골을 기록했으나, 후반 48' Alfonso Pedraza의 자책골이 나오며 승부의 균형이 맞춰졌다. 양 팀은 점유율과 슈팅 수 등 주요 기록에서 팽팽하게 맞섰으며, 경기 전 팬 투표와 모델이 예상했던 Lazio의 승리는 이루어지지 않았다.",
+   "text": "Napoli와 Lazio의 경기는 1-1 무승부로 끝났다. 전반 28'에 Tijjani Noslin의 도움을 받은 Davide Frattesi가 득점하며 Lazio가 앞서갔으나, 48'에 Alfonso Pedraza의 자책골이 나오면서 Napoli가 동점을 만들었다. xG는 Napoli가 2.34, Lazio가 0.86으로 기록되었고 슈팅(15-15)과 유효 슈팅(6-6)은 동등했으며 점유율(49%-51%)과 패스 성공률(80%-90%)에서는 Lazio가 앞섰다. 11경기 무패를 달리며 리그 1위에 위치한 Lazio는 Christos Mandas가 8.8점으로 평점 1위를 기록했고, Stanislav Lobotka와 Giovanni Di Lorenzo 등이 결장한 Napoli와 맞붙었다.",
    "date": "2026-11-08",
    "home": "Napoli",
    "away": "Lazio",
-   "at": "2026-11-08T16:55:52+00:00",
-   "model": "gemini-3.1-flash-lite"
+   "at": "2026-11-10T04:56:38+00:00",
+   "model": "gemini-flash-lite-latest",
+   "v": 2
   },
   "401875551": {
-   "text": "Heerenveen이 Feyenoord를 상대로 5-3 역전승을 거두며 리그 경기에서 승점 3점을 획득했다. 전반전은 Anis Hadj Moussa의 25' 득점과 31' Nacho Ferri의 페널티킥으로 Feyenoord가 2-1로 앞섰으나, 후반 들어 Ringo Meerveld가 61', 84', 90'+3'에 득점하며 해트트릭을 기록해 경기를 뒤집었다. Heerenveen은 슈팅 18개와 유효 슈팅 9개를 기록하며 슈팅 9개와 유효 슈팅 3개에 그친 Feyenoord를 압도했다. 이번 결과로 Feyenoord 승리를 점쳤던 팬 투표와 모델의 예측은 빗나갔고, Heerenveen 승리를 예측한 Elo의 분석이 적중했다.",
+   "text": "경기 전 승리 확률 15%에 불과했던 Heerenveen이 Feyenoord를 상대로 5-3 역전승을 거두며 이변을 연출했다. 경기에서는 25' Anis Hadj Moussa의 득점과 31' Nacho Ferri의 페널티킥 득점으로 Feyenoord가 앞서갔으나, Ringo Meerveld가 61', 84', 90'+3'에 골을 터뜨리며 해트트릭과 함께 84' 결승골을 기록했다. 슈팅 수 18-9, 유효 슈팅 9-3, xG 1.89 대 1.17로 기록에서 앞선 Heerenveen은 5연승을 달리며 리그 6위가 되었고, Feyenoord는 5경기 무승을 기록하며 리그 2위에 머물렀다. 홈팀 Heerenveen에서는 Vasilios Zagaritis가, 원정팀 Feyenoord에서는 Jerry St. Juste가 결장한 가운데, Heerenveen의 Ringo Meerveld가 FotMob 기준 평점 9.5점으로 양 팀 통틀어 가장 높은 평점을 받았다.",
    "date": "2026-11-08",
    "home": "Heerenveen",
    "away": "Feyenoord",
-   "at": "2026-11-08T16:56:00+00:00",
-   "model": "gemini-3.1-flash-lite"
+   "at": "2026-11-10T04:56:50+00:00",
+   "model": "gemini-flash-lite-latest",
+   "v": 2
   },
   "5739543": {
-   "text": "FC København이 홈에서 Brøndby IF를 1-0으로 꺾고 승리를 거뒀다. 54'에 터진 William Clem의 결승골이 승부를 갈랐으며, FC København은 슈팅 16개와 유효 슈팅 5개를 기록하며 슈팅 2개에 그친 Brøndby IF를 압도했다. 경기 전 모델과 Elo가 예측했던 FC København의 승리 전망은 이번 결과로 적중했다.",
+   "text": "FC København이 Brøndby IF를 상대로 1-0 승리를 거뒀다. 결정적 장면은 54'에 터진 William Clem의 결승골이었다. 경기 내용에서는 FC København이 슈팅 16-2와 유효 슈팅 5-0으로 앞섰고 xG는 0.73 대 0.05를 기록했다. 4연승과 함께 리그 1위를 달리고 있는 FC København에서는 William Clem이 FotMob 기준 8.1점으로 평점 1위를 차지했고, Brøndby IF는 Jordi Vanlerberghe가 결장했다.",
    "date": "2026-11-08",
    "home": "FC København",
    "away": "Brøndby IF",
-   "at": "2026-11-08T16:56:10+00:00",
-   "model": "gemini-3.1-flash-lite"
+   "at": "2026-11-10T04:57:04+00:00",
+   "model": "gemini-flash-lite-latest",
+   "v": 2
   },
   "5904797": {
-   "text": "Rizespor가 Estadio Caykur Didi에서 Erzurumspor FK를 상대로 2-1 승리를 거두며 리그 경기에서 승점 3점을 획득했다. 31' Ali Sowe의 선제골 이후 37' Ibrahim Diabate가 동점골을 넣었으나, 66' Ali Sowe가 다시 득점하며 승부를 결정지었다. Rizespor는 점유율 62.3%와 슈팅 24개를 기록하며 9개의 슈팅에 그친 Erzurumspor FK를 압도했다. 이번 결과는 Rizespor의 승리를 점쳤던 모델과 Elo의 예측을 모두 적중시켰다.",
+   "text": "Rizespor가 Erzurumspor FK를 2-1로 꺾었다. 결정적 장면으로는 31' Ali Sowe의 선제골과 37' Erzurumspor FK Ibrahim Diabate의 득점, 그리고 66' Ali Sowe의 결승골이 있었다. 경기 내용 면에서는 Rizespor가 점유율 62.3% 대 37.7%, 슈팅 24대 9, xG 3.29 대 0.88로 앞서며 우세한 경기를 펼쳤다. FotMob 기준 평점 1위는 9.0점을 기록한 Rizespor의 Ali Sowe였다.",
    "date": "2026-11-08",
    "home": "Rizespor",
    "away": "Erzurumspor FK",
-   "at": "2026-11-08T16:56:24+00:00",
-   "model": "gemini-3.1-flash-lite"
+   "at": "2026-11-10T04:57:13+00:00",
+   "model": "gemini-flash-lite-latest",
+   "v": 2
   },
   "401878945": {
    "text": "Gent가 Kortrijk을 상대로 1-0 승리를 거뒀다. 전반 32' Abdelkahar Kadri의 결승골이 터졌고, 86'에는 Kortrijk의 Thierry Ambrose가 페널티킥을 실축했으며 Gent의 Davy Roef가 이를 선방했다. xG는 Gent 1.58, Kortrijk 1.3을 기록하며 슈팅은 12대 12로 팽팽했다. 4경기 무승이자 리그 18위인 Kortrijk을 상대로 Gent에서는 Christian Burgess와 Mouhamed El Bachir Ngom 등이 결장했으며, FotMob 기준 평점 1위는 9점을 받은 Gent의 Davy Roef였다.",
@@ -4294,6 +4319,141 @@
    "away": "Braga",
    "at": "2026-11-09T02:57:56+00:00",
    "model": "gemini-3.1-flash-lite",
+   "v": 2
+  },
+  "5071497": {
+   "text": "Real Salt Lake가 LA Galaxy를 2-1로 꺾었다. 결정적 장면으로는 10' Sergi Solans의 득점에 이어 13' Zach Booth가 결승골을 넣었고, 40'에는 LA Galaxy의 Luc de Fougerolles가 자책골을 기록했다. 경기 내용에서 Real Salt Lake는 xG 2.96 대 0.71, 슈팅 20-13, 유효 슈팅 9-0으로 앞섰다. Real Salt Lake에서는 Diego Luna가결장했고, Noel Çalışkan가 8.5점으로 평점 1위를 기록했다.",
+   "date": "2026-11-08",
+   "home": "Real Salt Lake",
+   "away": "LA Galaxy",
+   "at": "2026-11-10T04:57:34+00:00",
+   "model": "gemini-flash-lite-latest",
+   "v": 2
+  },
+  "5071499": {
+   "text": "Seattle Sounders FC가 Los Angeles FC를 상대로 2-1 승리를 거뒀다. 전반 1' Albert Rusnák의 득점으로 앞선 Seattle Sounders FC는 31' Sebastian Gomez의 추가골로 달아났고, Los Angeles FC는 81' Eddie Segura가 헤더로 추격했으나 승부를 뒤집지 못했다. 경기 내용에서는 Los Angeles FC가 점유율 60.8%, 슈팅 24개로 공세 를 펼쳤으나 xG 0.71 대 1.95의 기록처럼 효율적인 경기를 한 Seattle Sounders FC가 승리했다. 4경기 무승으로 리그 13위에 머문 Los Angeles FC는 Hugo Lloris 등이 결장했고, Seattle Sounders FC에서는 Danny Musovski가 결장한 가운데 평점 1위는 8.6점을 기록한 Seattle Sounders FC의 Andrew Thomas였다.",
+   "date": "2026-11-08",
+   "home": "Seattle Sounders FC",
+   "away": "Los Angeles FC",
+   "at": "2026-11-10T04:57:42+00:00",
+   "model": "gemini-flash-lite-latest",
+   "v": 2
+  },
+  "5071498": {
+   "text": "Sporting Kansas City가 San Diego FC를 상대로 1-0 승리를 거뒀다. 76'에 André Luiz가 페널티킥 결승골을 터뜨렸다. San Diego FC가 점유율 66.8%와 슈팅 16개로 경기를 주도했으나 xG 1.08대 2.54로 Sporting Kansas City가 우세했다. San Diego FC는 Elias Achouri가, Sporting Kansas City는 Moisés Mosquera와 Or Blorian이 결장했으며, FotMob 기준 평점 1위는 8.8점을 기록한 Sporting Kansas City의 André Luiz였다.",
+   "date": "2026-11-08",
+   "home": "San Diego FC",
+   "away": "Sporting Kansas City",
+   "at": "2026-11-10T04:57:51+00:00",
+   "model": "gemini-flash-lite-latest",
+   "v": 2
+  },
+  "5071493": {
+   "text": "Portland Timbers가 Austin FC를 상대로 0-2 승리를 거두며 4연승과 함께 리그 14위를 기록했다. 경기 전반 3'에 Ariel Lassiter가 Vincent Janssen의 도움으로 선제골을 넣었고, 70'에는 Kristoffer Velde가 Ian Smith의 도움으로 추가골을 터뜨렸다. Austin FC가 점유율 57.7% 대 42.3%, 슈팅 16-9, 유효 슈팅 7-4로 우세했으나 득점에는 실패했고 xG는 Austin FC가 0.64, Portland Timbers가 0.4를 기록했다. 3연패에 빠지며 리그 26위에 머문 Austin FC를 상대로 Portland Timbers는 Brandon Bye가 결장한 가운데 평점 1위를 차지한 James Pantemis의 활약 등이 어우러졌다.",
+   "date": "2026-11-08",
+   "home": "Austin FC",
+   "away": "Portland Timbers",
+   "at": "2026-11-10T04:57:59+00:00",
+   "model": "gemini-flash-lite-latest",
+   "v": 2
+  },
+  "5071494": {
+   "text": "FC Dallas가 선제골을 내주고도 3대1로 뒤집으며 Colorado Rapids를 상대로 승리를 거뒀다. 전반전을 0대0으로 마친 뒤 47'에 Colorado Rapids의 Morgan Whittaker가 선제골을 넣었으나, 75'에 Joaquín Valiente, 88'에 Kaick, 90'+2'에 Santiago Moreno가 연속골을 터뜨렸다. 슈팅 27대6, 유효 슈팅 10대1, 기대골갈(xG) 4.67대0.68로 기록된 바와 같이 FC Dallas가 내용에서 압도했다. Colorado Rapids는 Zack Steffen이 결장했고, FotMob 기준 평점 1위는 9.0점을 기록한 FC Dallas의 Kaick Ferreira였다.",
+   "date": "2026-11-08",
+   "home": "FC Dallas",
+   "away": "Colorado Rapids",
+   "at": "2026-11-10T04:58:06+00:00",
+   "model": "gemini-flash-lite-latest",
+   "v": 2
+  },
+  "5071495": {
+   "text": "St. Louis City가 후반 90'+7'에 터진 Lukas MacNaughton의 결승골에 힘입어 Houston Dynamo FC에 1-0으로 승리했다. Houston Dynamo FC는 슈팅 23-13과 유효 슈팅 6-1, xG 1.3대 0.91로 앞서고도 패했다. St. Louis City에서는 Carlo Holse와 Roman Bürki가 결장했고, 결승골을 넣은 Lukas MacNaughton이 FotMob 기준 8.7점으로 양 팀 통틀어 가장 높은 평점을 받았다.",
+   "date": "2026-11-08",
+   "home": "Houston Dynamo FC",
+   "away": "St. Louis City",
+   "at": "2026-11-10T04:58:14+00:00",
+   "model": "gemini-flash-lite-latest",
+   "v": 2
+  },
+  "5071496": {
+   "text": "Minnesota United가 San Jose Earthquakes를 상대로 3대1 역전승을 거뒀다. 전반 45'에 San Jose Earthquakes의 Preston Judd가 선제골을 넣었으나, 57' Tomás Chancalay의 득점에 이어 82' 상대 Angus Gunn의 자책골과 90'+4' Nectarios Triantis의 쐐기골이 터졌다. xG는 Minnesota United 1.31, San Jose Earthquakes 1.27이었고 슈팅 수에서 Minnesota United가 14대8로 우세했다. 3연승을 기록하며 리그 19위인 Minnesota United에서는 Nectarios Triantis가 FotMob 기준 평점 8.6점으로 1위를 차지했다.",
+   "date": "2026-11-08",
+   "home": "Minnesota United",
+   "away": "San Jose Earthquakes",
+   "at": "2026-11-10T04:58:22+00:00",
+   "model": "gemini-flash-lite-latest",
+   "v": 2
+  },
+  "5071490": {
+   "text": "Red Bull New York가 Atlanta United를 상대로 3-0 승리를 거뒀다. 전반 31' Adri Mehmeti의 득점으로 앞서간 Red Bull New York는 후반 54' Cade Cowell(도움 Sekou Kone)과 후반 81' Jahkeele Marshall-Rutty의 추가골로 승부에 마침표를 찍었다. 슈팅 14-8, 유효 슈팅 7-0, xG 2.7 대 0.58에서 보듯 Red Bull New York가 내용과 기록에서 모두 우세했다. Red Bull New York의 Jahkeele Marshall-Rutty는 8.7점으로 양 팀 통틀어 가장 높은 평점을 기록했다.",
+   "date": "2026-11-07",
+   "home": "Red Bull New York",
+   "away": "Atlanta United",
+   "at": "2026-11-10T04:58:30+00:00",
+   "model": "gemini-flash-lite-latest",
+   "v": 2
+  },
+  "5071489": {
+   "text": "Vancouver Whitecaps가 CF Montréal을 상대로 거둔 승리는 50' Cheick Sabaly의 결승골과 83' Mihail Gherasimencov의 추가골에 힘입어 이루어졌다. 슈팅 수 17-8, 유효 슈팅 8-3, xG 1.83 대 0.92 등 경기 내용 전반에서 Vancouver Whitecaps가 우세를 보였다. CF Montréal에서는 Prince Osei Owusu와 Dante Sealy가, Vancouver Whitecaps에서는 Andrés Cubas가 결장한 가운데, 리그 2위이자 3연승을 달리는 Vancouver Whitecaps가 8경기 무승으로 30위에 머문 CF Montréal을 상대로 승리를 거뒀고 FotMob 기준 평점 1위는 8.8점을 기록한 Vancouver Whitecaps의 Cheikh Sabaly가 차지했다.",
+   "date": "2026-11-07",
+   "home": "CF Montréal",
+   "away": "Vancouver Whitecaps",
+   "at": "2026-11-10T04:58:34+00:00",
+   "model": "gemini-flash-lite-latest",
+   "v": 2
+  },
+  "5071488": {
+   "text": "Inter Miami CF와 Charlotte FC의 경기는 3-3 무승부로 끝났다. 전반에 Inter Miami CF가 Ian Fray의 14' 골, Luis Suárez의 33' 골, Rodrigo De Paul의 42' 골로 3-0을 만들었으나, Charlotte FC가 Liel Abada의 50', 55' 골과 90' Rodolfo Aloko의 골로 동점을 만들었다. xG는 Inter Miami CF가 2.13, Charlotte FC가 1.79를 기록했다. Inter Miami CF에서는 Lionel Messi와 Mateo Silvetti가 결장했고, FotMob 기준 평점 1위는 8.9점을 기록한 Charlotte FC의 Liel Abada였다.",
+   "date": "2026-11-07",
+   "home": "Inter Miami CF",
+   "away": "Charlotte FC",
+   "at": "2026-11-10T04:58:39+00:00",
+   "model": "gemini-flash-lite-latest",
+   "v": 2
+  },
+  "5071485": {
+   "text": "Columbus Crew가 Chicago Fire FC를 상대로 4-3 승리를 거뒀다. 전반은 Chicago Fire FC가 3-2로 앞섰으나, 8'와 22' Robert Lewandowski의 페널티킥 득점과 45'+4' Maren Haile-Selassie의 골에도 불구하고 16'와 62' Gonzalo Tapia, 23' Anass Zaroury, 그리고 90'+3' Brais Méndez의 득점이 터진 Columbus Crew가 역전승을 거뒀다. 슈팅 수 14-11과 xG 3.34-1.77로 Chicago Fire FC가 내용 면에서 우세했으나 경기는 Columbus Crew의 승리로 끝났다. 4연승을 기록하며 리그 12위에 자리한 Columbus Crew에서는 Wessam Abou Ali가 결장했고, Chicago Fire FC에서는 Robin Lod가 결장했으며 FotMob 기준 평점 1위는 9.0점의 Robert Lewandowski였다.",
+   "date": "2026-11-07",
+   "home": "Chicago Fire FC",
+   "away": "Columbus Crew",
+   "at": "2026-11-10T04:58:43+00:00",
+   "model": "gemini-flash-lite-latest",
+   "v": 2
+  },
+  "5071487": {
+   "text": "New York City FC가 New York City FC의 87' Talles Magno 득점과 Bénie Traoré의 도움에 힘입어 DC United에 1-0 승리를 거뒀다. xG는 DC United 0.82, New York City FC 1.1을 기록했다. 6연패를 기록하며 리그 28위에 위치한 DC United는 Tai Baribo, Louis Munteanu, Sean Johnson, Lucas Bartlett, Jackson Hopkins가 결장했고, 5경기 무패로 리그 23위인 New York City FC는 Aiden O'Neill이 결장한 가운데 FotMob 기준 평점 1위는 8.7점의 Talles Magno였다.",
+   "date": "2026-11-07",
+   "home": "DC United",
+   "away": "New York City FC",
+   "at": "2026-11-10T04:58:47+00:00",
+   "model": "gemini-flash-lite-latest",
+   "v": 2
+  },
+  "5071486": {
+   "text": "FC Cincinnati와 Nashville SC의 경기에서 Nashville SC가 2-0으로 승리했다. 결정적인 장면은 61'에 터진 Sam Surridge의 골과 86'에 이어진 추가골로, Sam Surridge는 Andy Nájar와 Patrick Yazbek의 도움을 받아 멀티골을 기록했다. xG는 FC Cincinnati가 1.13, Nashville SC가 1.52를 기록했으며 슈팅과 유효 슈팅 수는 양팀이 14개와 5개로 동일했다. Jeisson Palacios가 결장한 Nashville SC는 10경기 무패를 기록하며 리그 1위에 올랐고, 2골을 넣은 Sam Surridge가 FotMob 기준 9.0의 평점 1위를 차지했다.",
+   "date": "2026-11-07",
+   "home": "FC Cincinnati",
+   "away": "Nashville SC",
+   "at": "2026-11-10T04:58:51+00:00",
+   "model": "gemini-flash-lite-latest",
+   "v": 2
+  },
+  "5071491": {
+   "text": "Orlando City가 Braian Ojeda의 결승골에 힘입어 New England Revolution을 1-0으로 꺾었다. 45'에 터진 Braian Ojeda의 골이 승부를 갈랐으며, 경기 기록에서 Orlando City는 슈팅 15-9, 유효 슈팅 4-3을 기록했고 xG는 Orlando City가 1.17, New England Revolution이 0.89였다. New England Revolution에서는 Jack Harrison과 Peyton Miller가 결장했고, FotMob 기준 평점 1위는 8.3점을 기록한 Orlando City의 Braian Ojeda였다.",
+   "date": "2026-11-07",
+   "home": "Orlando City",
+   "away": "New England Revolution",
+   "at": "2026-11-10T04:58:54+00:00",
+   "model": "gemini-flash-lite-latest",
+   "v": 2
+  },
+  "5071492": {
+   "text": "Philadelphia Union이 Toronto FC를 상대로 4-1 대승을 거뒀다. 전반 28' Cavan Sullivan의 선제골을 시작으로 41' Quinn Sullivan의 페널티킥 득점이 터졌고, Toronto FC는 45'+7' Josh Sargent의 헤더 득점으로 추격했으나 Philadelphia Union이 58' Cavan Sullivan과 73' Bruno Damiani의 페널티킥으로 승부에 마침표를 찍었다. 슈팅 수 19-6, 유효 슈팅 9-1, 기대득점(xG) 3.75-0.58에서 보듯 내용 면에서도 Philadelphia Union이 크게 앞섰다. Milan Iloski가 결장한 Philadelphia Union에서는 Cavan Sullivan이 평점 9.3을 기록하며 경기를 지배했고, Walker Zimmerman과 Benjamín Kuščević가 빠진 Toronto FC는 패배를 안았다.",
+   "date": "2026-11-07",
+   "home": "Philadelphia Union",
+   "away": "Toronto FC",
+   "at": "2026-11-10T04:58:58+00:00",
+   "model": "gemini-flash-lite-latest",
    "v": 2
   }
  },
