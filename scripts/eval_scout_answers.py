@@ -22,6 +22,7 @@ import datetime as dt
 import json
 import sys
 import time
+import urllib.error
 import urllib.request
 from pathlib import Path
 
@@ -34,11 +35,54 @@ EMPTY = ("데이터가 조회되지", "조회되지 않", "데이터가 없", "�
 EX_SOURCE_DOWN = 75
 
 
-def ask(base: str, q: str, team: str, league: str) -> dict:
+def _ask_once(base: str, q: str, team: str, league: str) -> dict:
     body = json.dumps({"q": q, "team": team or None, "league": league or "EPL"}).encode("utf-8")
     req = urllib.request.Request(f"{base}/api/scout", data=body, headers={"Content-Type": "application/json"})
     with urllib.request.urlopen(req, timeout=150) as r:
         return json.loads(r.read())
+
+
+RETRY_WAIT = 30.0
+
+
+def wait_ready(base: str, max_wait: float = 900.0, sleep=time.sleep) -> bool:
+    """운영 서버가 떠서 데우기를 마칠 때까지(/api/health proc.warming) — 11/10 평가가 정기 배포 재시작과 겹쳐 502·503 으로
+    11문항이 '실패'였다(답이 나빠진 게 아님). 30초 간격, 최대 15분."""
+    end = time.time() + max_wait
+    while True:
+        try:
+            with urllib.request.urlopen(f"{base}/api/health", timeout=60) as r:
+                h = json.loads(r.read())
+            if not (h.get("proc") or {}).get("warming"):
+                return True
+        except Exception:  # noqa: BLE001 — 깨는 중
+            pass
+        if time.time() >= end:
+            return False
+        sleep(RETRY_WAIT)
+
+
+def ask(base: str, q: str, team: str, league: str, tries: int = 3, sleep=time.sleep) -> dict:
+    """502·503·504·연결 끊김은 서버가 다시 뜨는 중 — 기다렸다 다시(최대 tries 번). Gemini 일시 오류로 규칙 답이 나오면 한 번 더."""
+    last: Exception | None = None
+    for i in range(tries):
+        try:
+            res = _ask_once(base, q, team, league)
+        except urllib.error.HTTPError as e:
+            if e.code not in (502, 503, 504):
+                raise
+            last = e
+        except (urllib.error.URLError, TimeoutError) as e:
+            last = e
+        else:
+            if res.get("engine") == "rules" and "Gemini" in str(res.get("note") or res.get("fallback") or "") and i < tries - 1:
+                sleep(RETRY_WAIT / 2)                     # Gemini 503(과부하) — 잠깐 뒤 한 번 더
+                continue
+            return res
+        if i < tries - 1:
+            wait_ready(base, max_wait=300.0, sleep=sleep)
+            sleep(RETRY_WAIT / 3)
+    raise last if last else RuntimeError("응답 없음")
 
 
 # 단계 기록(steps)이 없는 예전 서버 응답은 intent 로 도구를 거꾸로 찾는다
@@ -105,6 +149,8 @@ def main(argv=None) -> int:
     rows = list(csv.DictReader(QUESTIONS.open(encoding="utf-8")))
     if a.limit:
         rows = rows[:a.limit]
+    if not wait_ready(a.base):
+        print("[scout-eval] 서버가 15분 안에 데우기를 마치지 않음 — 그래도 진행")
     results, down = [], 0
     for i, r in enumerate(rows):
         t0 = time.time()

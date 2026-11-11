@@ -35,7 +35,7 @@ BRANCH = "data-news"
 NAME = "news.db.gz"
 # 압축 형식 — 'xz' 는 같은 DB 가 27% 작다(165MB → gz 63.9 · xz 46.4MB, 2026-11-10 측정). 읽는 쪽은 파일 앞 바이트로 형식을 가리고
 # ref 'file' 이름을 따르므로, 운영 서버가 이 코드로 배포된 뒤에 'xz' 로 바꾼다(먼저 바꾸면 옛 서버가 뉴스를 못 받는다)
-ARCHIVE = "gz"
+ARCHIVE = "xz"                    # 2026-11-12 전환 — 운영 서버(ba84823f 이후)가 xz 를 읽는 것을 확인한 뒤
 XZ_MAGIC = b"\xfd7zXZ\x00"
 VERCEL_SKIP = '{\n  "git": {"deploymentEnabled": false},\n  "ignoreCommand": "exit 0"\n}\n'   # 데이터 브랜치 — 웹 빌드 안 함
 MIN_RATIO = 0.8
