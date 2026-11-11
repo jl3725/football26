@@ -15,13 +15,13 @@ fotmob_id,player,squad,team_fm,rating,minutes,matches,nat,league,season
 40636,Luis Suárez,Inter Miami CF,Inter Miami CF,7.54,2201,30,URU,MLS,2026_2027
 1348329,Max Arfsten,Columbus Crew,Columbus Crew SC,7.54,1467,17,USA,MLS,2026_2027
 796747,Sam Surridge,Nashville SC,Nashville SC,7.53,2194,28,ENG,MLS,2026_2027
-664962,Denis Bouanga,Los Angeles FC,Los Angeles Football Club,7.52,2740,32,GAB,MLS,2026_2027
 442277,Miguel Almirón,Atlanta United,Atlanta United FC,7.52,2282,27,PAR,MLS,2026_2027
+664962,Denis Bouanga,Los Angeles FC,Los Angeles Football Club,7.52,2740,32,GAB,MLS,2026_2027
 589897,Cristian Espinoza,Nashville SC,Nashville SC,7.51,2251,30,ARG,MLS,2026_2027
 1630736,Cavan Sullivan,Philadelphia Union,Philadelphia Union,7.51,1830,29,USA,MLS,2026_2027
 116772,Thomas Müller,Vancouver Whitecaps,Vancouver Whitecaps FC,7.51,1722,25,GER,MLS,2026_2027
-20521,Martín Ojeda,Orlando City,Orlando City SC,7.5,2248,28,ARG,MLS,2026_2027
 1171013,Jack McGlynn,Houston Dynamo FC,Houston Dynamo,7.5,1373,18,USA,MLS,2026_2027
+20521,Martín Ojeda,Orlando City,Orlando City SC,7.5,2248,28,ARG,MLS,2026_2027
 837731,Kristoffer Velde,Portland Timbers,Portland Timbers,7.5,2834,33,NOR,MLS,2026_2027
 1169991,Brian Schwake,Nashville SC,Nashville SC,7.49,2970,33,USA,MLS,2026_2027
 394462,Hany Mukhtar,Nashville SC,Nashville SC,7.48,2799,34,GER,MLS,2026_2027
@@ -101,10 +101,10 @@ fotmob_id,player,squad,team_fm,rating,minutes,matches,nat,league,season
 1404547,Idan Toklomati,Charlotte FC,Charlotte FC,7.13,2508,33,ISR,MLS,2026_2027
 1107250,Tayvon Gray,New York City FC,New York City FC,7.13,2607,30,JAM,MLS,2026_2027
 450980,Timo Werner,San Jose Earthquakes,San Jose Earthquakes,7.12,1391,21,GER,MLS,2026_2027
+1091975,Liel Abada,Charlotte FC,Charlotte FC,7.12,1450,27,ISR,MLS,2026_2027
 1251793,Preston Judd,San Jose Earthquakes,San Jose Earthquakes,7.12,2284,31,USA,MLS,2026_2027
 614602,Stijn Spierings,Real Salt Lake,Real Salt Lake,7.12,1892,25,NED,MLS,2026_2027
-1091975,Liel Abada,Charlotte FC,Charlotte FC,7.12,1450,27,ISR,MLS,2026_2027
-1251200,Bernard Kamungo,FC Dallas,FC Dallas,7.11,1770,24,USA,MLS,2026_2027
+1251200,Bernard Kamungo,FC Dallas,FC Dallas,7.11,1770,24,TAN,MLS,2026_2027
 954194,Mateusz Bogusz,Houston Dynamo FC,Houston Dynamo,7.1,2874,33,POL,MLS,2026_2027
 835948,Onni Valakari,San Diego FC,San Diego,7.1,2233,32,FIN,MLS,2026_2027
 648356,Yohei Takaoka,Vancouver Whitecaps,Vancouver Whitecaps FC,7.1,2944,33,JPN,MLS,2026_2027
@@ -184,8 +184,8 @@ fotmob_id,player,squad,team_fm,rating,minutes,matches,nat,league,season
 1262208,Micael,Inter Miami CF,Inter Miami CF,6.94,2230,25,BRA,MLS,2026_2027
 432605,Jonathan Osorio,Toronto FC,Toronto FC,6.93,2141,25,CAN,MLS,2026_2027
 727165,Hannes Wolf,New York City FC,New York City FC,6.93,1787,28,AUT,MLS,2026_2027
-1663548,Morrison Agyemang,Charlotte FC,Charlotte FC,6.93,2131,27,GHA,MLS,2026_2027
 1339287,Ousseni Bouda,San Jose Earthquakes,San Jose Earthquakes,6.93,2485,33,BFA,MLS,2026_2027
+1663548,Morrison Agyemang,Charlotte FC,Charlotte FC,6.93,2131,27,GHA,MLS,2026_2027
 1729741,Manu Duah,San Diego FC,San Diego,6.93,2838,33,GHA,MLS,2026_2027
 1610145,Jeevan Badwal,Vancouver Whitecaps,Vancouver Whitecaps FC,6.93,1379,22,CAN,MLS,2026_2027
 878311,James Pantemis,Portland Timbers,Portland Timbers,6.92,3060,34,CAN,MLS,2026_2027
@@ -260,10 +260,10 @@ fotmob_id,player,squad,team_fm,rating,minutes,matches,nat,league,season
 1338765,Will Sands,New England Revolution,New England Revolution,6.8,2845,33,USA,MLS,2026_2027
 1136263,Drake Callender,Minnesota United,Minnesota United FC,6.8,3015,34,USA,MLS,2026_2027
 519093,Erik Thommy,LA Galaxy,LA Galaxy,6.8,1121,23,GER,MLS,2026_2027
+575804,Harry Toffolo,Charlotte FC,Charlotte FC,6.8,1517,22,ENG,MLS,2026_2027
 919208,Jesús Bueno,Philadelphia Union,Philadelphia Union,6.8,953,24,VEN,MLS,2026_2027
 630102,Dániel Gazdag,New England Revolution,New England Revolution,6.8,1508,29,HUN,MLS,2026_2027
 1600850,Tyrese Spicer,Orlando City,Orlando City SC,6.8,867,22,TRI,MLS,2026_2027
-575804,Harry Toffolo,Charlotte FC,Charlotte FC,6.8,1517,22,ENG,MLS,2026_2027
 198426,Sean Johnson,DC United,D.C. United,6.79,2790,31,USA,MLS,2026_2027
 525617,Daniel Lovitz,Nashville SC,Nashville SC,6.79,1786,30,USA,MLS,2026_2027
 652955,Saba Lobjanidze,Real Salt Lake,Real Salt Lake,6.79,1594,32,GEO,MLS,2026_2027
@@ -298,11 +298,11 @@ fotmob_id,player,squad,team_fm,rating,minutes,matches,nat,league,season
 678384,Silvan Hefti,DC United,D.C. United,6.74,2553,31,SUI,MLS,2026_2027
 825603,Reggie Cannon,Colorado Rapids,Colorado Rapids,6.74,1245,18,USA,MLS,2026_2027
 1188588,Alejandro Alvarado,San Diego FC,San Diego,6.74,931,25,USA,MLS,2026_2027
+1172905,Benji Kikanović,San Jose Earthquakes,San Jose Earthquakes,6.74,1832,24,USA,MLS,2026_2027
 847753,Tom Barlow,FC Cincinnati,Cincinnati,6.74,1546,34,USA,MLS,2026_2027
 112978,Roman Bürki,St. Louis City,St. Louis City SC,6.74,2520,28,SUI,MLS,2026_2027
-1172905,Benji Kikanović,San Jose Earthquakes,San Jose Earthquakes,6.74,1832,24,USA,MLS,2026_2027
-626667,Rob Holding,Colorado Rapids,Colorado Rapids,6.74,2378,30,ENG,MLS,2026_2027
 977775,Djibril Diani,Charlotte FC,Charlotte FC,6.74,1649,31,FRA,MLS,2026_2027
+626667,Rob Holding,Colorado Rapids,Colorado Rapids,6.74,2378,30,ENG,MLS,2026_2027
 1738397,Matthew Dos Santos,Red Bull New York,New York Red Bulls,6.74,1683,27,USA,MLS,2026_2027
 688296,Brandon Vázquez,Austin FC,Austin FC,6.73,1357,22,USA,MLS,2026_2027
 330470,Samuel Piette,CF Montréal,CF Montréal,6.73,1174,21,CAN,MLS,2026_2027
@@ -310,9 +310,9 @@ fotmob_id,player,squad,team_fm,rating,minutes,matches,nat,league,season
 1023942,Keisuke Kurokawa,DC United,D.C. United,6.73,3048,34,JPN,MLS,2026_2027
 748405,Ronaldo Vieira,San Jose Earthquakes,San Jose Earthquakes,6.72,2083,27,GNB,MLS,2026_2027
 1442054,Hamzat Ojediran,Colorado Rapids,Colorado Rapids,6.72,2047,31,NGA,MLS,2026_2027
+1807287,Rodolfo Aloko,Charlotte FC,Charlotte FC,6.72,888,23,BEN,MLS,2026_2027
 431896,Wil Trapp,Minnesota United,Minnesota United FC,6.72,2032,29,USA,MLS,2026_2027
 1317558,Emiro Garcés,LA Galaxy,LA Galaxy,6.72,1225,22,COL,MLS,2026_2027
-1807287,Rodolfo Aloko,Charlotte FC,Charlotte FC,6.72,888,23,BEN,MLS,2026_2027
 782782,Keaton Parks,New York City FC,New York City FC,6.72,1179,21,USA,MLS,2026_2027
 1241957,Matías Galarza,Inter Miami CF,Inter Miami CF,6.72,1164,19,PAR,MLS,2026_2027
 1664779,Luis Otávio,Orlando City,Orlando City SC,6.72,1302,26,BRA,MLS,2026_2027
@@ -351,11 +351,11 @@ fotmob_id,player,squad,team_fm,rating,minutes,matches,nat,league,season
 1724409,Zakaria Taifi,Orlando City,Orlando City SC,6.64,1207,26,USA,MLS,2026_2027
 1609838,Lucas Sanabria,LA Galaxy,LA Galaxy,6.64,1611,31,URU,MLS,2026_2027
 1458263,Mauricio González,Minnesota United,Minnesota United FC,6.63,598,22,COL,MLS,2026_2027
-466214,Júnior Alonso,Atlanta United,Atlanta United FC,6.63,1586,18,PAR,MLS,2026_2027
 525614,Nick Hagglund,FC Cincinnati,Cincinnati,6.62,1539,22,USA,MLS,2026_2027
 1440054,Devin Padelford,Red Bull New York,New York Red Bulls,6.62,1417,28,USA,MLS,2026_2027
+466214,Júnior Alonso,Atlanta United,Atlanta United FC,6.62,1586,18,PAR,MLS,2026_2027
 723682,Agustín Bouzat,Houston Dynamo FC,Houston Dynamo,6.62,1766,29,ARG,MLS,2026_2027
-212705,Nathan Byrne,Charlotte FC,Charlotte FC,6.61,2355,30,ENG,MLS,2026_2027
+212705,Nathan Byrne,Charlotte FC,Charlotte FC,6.62,2355,30,ENG,MLS,2026_2027
 1344245,Patrickson Delgado,FC Dallas,FC Dallas,6.61,894,22,ECU,MLS,2026_2027
 1082103,Jahkeele Marshall-Rutty,Red Bull New York,New York Red Bulls,6.61,1756,30,CAN,MLS,2026_2027
 643646,Diadié Samassékou,Houston Dynamo FC,Houston Dynamo,6.61,1221,27,MLI,MLS,2026_2027

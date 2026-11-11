@@ -91,8 +91,8 @@ Wolves,André,1174296,midfielders,"CDM,CM",Defensive Midfield,MF,25,2001-07-16,7
 Wolves,Jordan James,1310975,midfielders,"CDM,CAM,CM",Defensive Midfield,MF,22,2004-07-02,8.0,WAL,True,Late November 2026,2026-11-11
 Wolves,Boubacar Traoré,1054122,midfielders,"CDM,CM",Defensive Midfield,MF,25,2001-08-20,12.0,MLI,True,Late November 2026,2026-11-11
 Wolves,Tommy Doyle,940442,midfielders,"CDM,CAM",Defensive Midfield,MF,25,2001-10-17,20.0,ENG,False,,2026-11-11
-Wolves,Jean-Ricner Bellegarde,769166,midfielders,"CM,CAM,RW,CDM,LW",Central Midfield,MF,28,1998-06-27,27.0,HAI,False,,2026-11-11
-Wolves,Fer López,1573122,midfielders,"CAM,CM,RW,CDM",Attacking Midfield,MF,22,2004-05-24,28.0,ESP,False,,2026-11-11
+Wolves,Jean-Ricner Bellegarde,769166,midfielders,"CM,CAM,RW,CDM,LW",Central Midfield,MF,28,1998-06-27,27.0,HAI,True,Doubtful,2026-11-11
+Wolves,Fer López,1573122,midfielders,"CAM,CM,RW,CDM",Attacking Midfield,MF,22,2004-05-24,28.0,ESP,True,Doubtful,2026-11-11
 Wolves,Mateus Mané,1609213,midfielders,"CAM,LW,CM",Attacking Midfield,MF,19,2007-09-16,36.0,POR,False,,2026-11-11
 Wolves,Jackson Tchatchoua,1210943,midfielders,"RM,RB,RWB",Right Midfield,MF,25,2001-09-14,38.0,CMR,False,,2026-11-11
 Wolves,Raúl Jiménez,292313,attackers,ST,Centre-Forward,FW,35,1991-05-05,9.0,MEX,True,Early January 2027,2026-11-11
@@ -111,7 +111,7 @@ West Bromwich Albion,George Campbell,1047586,defenders,"CB,RB",Centre-Back,DF,25
 West Bromwich Albion,Brayann Pereira,1192053,defenders,"CB,RB,RWB",Centre-Back,DF,23,2003-05-21,18.0,CGO,False,,2026-11-11
 West Bromwich Albion,Conor Townsend,295069,defenders,LB,Left-Back,DF,33,1993-03-04,22.0,ENG,False,,2026-11-11
 West Bromwich Albion,Nolan Galves,1473605,defenders,"RWB,RB",Right-Back,DF,23,2003-07-23,25.0,FRA,True,Out for season,2026-11-11
-West Bromwich Albion,Felix Horn Myhre,632885,midfielders,"CM,CAM,ST",Central Midfield,MF,27,1999-03-04,7.0,NOR,False,,2026-11-11
+West Bromwich Albion,Felix Myhre,632885,midfielders,"CM,CAM,ST",Central Midfield,MF,27,1999-03-04,7.0,NOR,False,,2026-11-11
 West Bromwich Albion,Jayson Molumby,789574,midfielders,"CM,CDM,RM,CAM",Central Midfield,MF,27,1999-08-06,8.0,IRL,False,,2026-11-11
 West Bromwich Albion,Jimmy-Jay Morgan,1296772,midfielders,"CAM,ST",Attacking Midfield,MF,20,2006-01-21,11.0,ENG,False,,2026-11-11
 West Bromwich Albion,Toby Collyer,1421810,midfielders,CDM,Defensive Midfield,MF,22,2004-01-03,15.0,ENG,True,Early December 2026,2026-11-11
@@ -166,7 +166,7 @@ Southampton,Finn Azaz,883079,midfielders,"CAM,LW,RW",Attacking Midfield,MF,26,20
 Southampton,Cameron Bragg,1310115,midfielders,"CDM,CM",Defensive Midfield,MF,21,2005-04-10,26.0,SCO,False,,2026-11-11
 Southampton,James Ward-Prowse,279490,midfielders,"CDM,CM",Defensive Midfield,MF,32,1994-11-01,30.0,ENG,False,,2026-11-11
 Southampton,Léo Scienza,1202769,attackers,"LW,CAM",Left Winger,FW,28,1998-09-13,7.0,BRA,False,,2026-11-11
-Southampton,Cyle Larin,544312,attackers,"ST,CAM",Centre-Forward,FW,31,1995-04-17,9.0,CAN,True,Doubtful,2026-11-11
+Southampton,Cyle Larin,544312,attackers,ST,Centre-Forward,FW,31,1995-04-17,9.0,CAN,True,Doubtful,2026-11-11
 Southampton,Lewis Dobbin,1098752,attackers,"ST,CAM,LW",Centre-Forward,FW,23,2003-01-03,11.0,ENG,False,,2026-11-11
 Southampton,Tom Fellows,1118483,attackers,"RW,RWB,LW",Right Winger,FW,23,2003-07-25,18.0,ENG,False,,2026-11-11
 Southampton,Samuel Edozie,1130774,attackers,LW,Left Winger,FW,23,2003-01-28,23.0,ENG,False,,2026-11-11
@@ -221,7 +221,7 @@ West Ham United,Joshua Ajala,1529880,midfielders,"CAM,ST,LW,LM",Attacking Midfie
 West Ham United,Joël Piroe,792540,attackers,"ST,CAM",Centre-Forward,FW,27,1999-08-02,9.0,SUR,False,,2026-11-11
 West Ham United,Manor Solomon,822237,attackers,"LM,LW,RW,CAM",Left Midfield,FW,27,1999-07-24,10.0,ISR,False,,2026-11-11
 West Ham United,Valentín Castellanos,823658,attackers,ST,Centre-Forward,FW,28,1998-10-03,11.0,ARG,False,,2026-11-11
-West Ham United,Pablo,1227326,attackers,"CAM,ST",Attacking Midfield,FW,22,2004-01-02,19.0,BRA,False,,2026-11-11
+West Ham United,Pablo,1227326,attackers,"ST,CAM,LW",Centre-Forward,FW,22,2004-01-02,19.0,BRA,False,,2026-11-11
 West Ham United,Keiber Lamadrid,1354086,attackers,"LW,RM",Left Winger,FW,22,2003-11-18,21.0,VEN,True,Late November 2026,2026-11-11
 West Ham United,Maxwel Cornet,426880,attackers,RW,Right Winger,FW,30,1996-09-27,22.0,CIV,False,,2026-11-11
 West Ham United,Edvin Austbø,1367620,attackers,"LW,LM",Left Winger,FW,21,2005-05-01,35.0,NOR,False,,2026-11-11
@@ -236,7 +236,7 @@ Sheffield United,Liam Kitching,914399,defenders,CB,Centre-Back,DF,27,1999-09-25,
 Sheffield United,Jamie Shackleton,955379,defenders,RW,Right Winger,DF,27,1999-10-08,16.0,ENG,True,Late November 2026,2026-11-11
 Sheffield United,Mark McGuinness,1109477,defenders,CB,Centre-Back,DF,25,2001-01-05,25.0,IRL,False,,2026-11-11
 Sheffield United,Rhys Norrington-Davies,914132,defenders,LB,Left-Back,DF,27,1999-04-22,30.0,WAL,False,,2026-11-11
-Sheffield United,Jamal Baptiste,1111613,defenders,"CB,LB,RB",Centre-Back,DF,22,2003-11-11,33.0,ENG,False,,2026-11-11
+Sheffield United,Jamal Baptiste,1111613,defenders,"CB,LB,RB",Centre-Back,DF,23,2003-11-11,33.0,ENG,False,,2026-11-11
 Sheffield United,Femi Seriki,997560,defenders,RB,Right-Back,DF,24,2002-04-28,38.0,ENG,True,Doubtful,2026-11-11
 Sheffield United,Oliver Arblaster,1344572,midfielders,"CDM,CM",Defensive Midfield,MF,22,2004-01-08,4.0,ENG,False,,2026-11-11
 Sheffield United,Joe Rothwell,613182,midfielders,"CM,CDM",Central Midfield,MF,31,1995-01-11,7.0,ENG,True,Doubtful,2026-11-11
@@ -435,7 +435,7 @@ Bristol City,Brian De Keersmaecker,1039566,midfielders,CDM,Defensive Midfield,MF
 Bristol City,Joe Williams,605260,midfielders,CDM,Defensive Midfield,MF,29,1996-12-08,8.0,ENG,False,,2026-11-11
 Bristol City,Scott Twine,746406,midfielders,"CAM,LW,RW,CM,ST",Attacking Midfield,MF,27,1999-07-14,10.0,ENG,False,,2026-11-11
 Bristol City,Jason Knight,1051415,midfielders,"CDM,CM,CAM,RWB,CB,RB",Defensive Midfield,MF,25,2001-02-13,12.0,IRL,False,,2026-11-11
-Bristol City,Tomi Horvat,978170,midfielders,"CAM,RW,CDM,RM,CM",Attacking Midfield,MF,27,1999-03-24,14.0,SVN,False,,2026-11-11
+Bristol City,Tomi Horvat,978170,midfielders,"CAM,RW,CDM,RM",Attacking Midfield,MF,27,1999-03-24,14.0,SVN,False,,2026-11-11
 Bristol City,Sam Greenwood,1049805,midfielders,"LW,CAM,CDM",Left Winger,MF,24,2002-01-26,20.0,ENG,False,,2026-11-11
 Bristol City,Gibson Yah,1218557,midfielders,"CDM,CM",Defensive Midfield,MF,23,2003-09-27,27.0,NED,False,,2026-11-11
 Bristol City,Yu Hirakawa,1319774,attackers,"RW,LW,CAM",Right Winger,FW,25,2001-01-03,7.0,JPN,False,,2026-11-11
@@ -500,7 +500,7 @@ Charlton Athletic,Matty Godden,184367,attackers,ST,Centre-Forward,FW,35,1991-07-
 Charlton Athletic,Rob Apter,1206308,attackers,RW,Right Winger,FW,23,2003-04-23,30.0,SCO,True,Unknown,2026-11-11
 Charlton Athletic,Micah Mbick,1581073,attackers,"ST,CAM",Centre-Forward,FW,20,2006-11-08,33.0,ENG,False,,2026-11-11
 Charlton Athletic,Junior Nkeng,1787141,attackers,"LW,LWB,LM,RM,ST",Left Winger,FW,19,2007-08-04,35.0,ESP,False,,2026-11-11
-Watford,Federico Ravaglia,793041,keepers,GK,Goalkeeper,GK,26,1999-11-11,1.0,ITA,False,,2026-11-11
+Watford,Federico Ravaglia,793041,keepers,GK,Goalkeeper,GK,27,1999-11-11,1.0,ITA,False,,2026-11-11
 Watford,Sam Walker,256599,keepers,GK,Goalkeeper,GK,35,1991-10-02,24.0,ENG,False,,2026-11-11
 Watford,Daniel Bachmann,203964,keepers,GK,Goalkeeper,GK,32,1994-07-09,26.0,AUT,False,,2026-11-11
 Watford,Joshua Mullins,1678726,defenders,CM,Central Midfield,DF,20,2005-11-16,,ENG,False,,2026-11-11
@@ -608,7 +608,7 @@ Derby County,Eiran Cashin,1127305,defenders,"CB,LB",Centre-Back,DF,25,2001-11-09
 Derby County,David Ozoh,1330872,midfielders,CDM,Defensive Midfield,MF,21,2005-05-06,4.0,ENG,False,,2026-11-11
 Derby County,Bobby Clark,1296625,midfielders,"CAM,CDM,CM,LW,LM",Attacking Midfield,MF,21,2005-02-07,8.0,ENG,False,,2026-11-11
 Derby County,Sam Szmodics,491827,midfielders,"CAM,LW,ST",Attacking Midfield,MF,31,1995-09-24,11.0,IRL,True,Doubtful,2026-11-11
-Derby County,Filip Bilbija,1073007,midfielders,"CAM,CM",Attacking Midfield,MF,26,2000-04-24,13.0,GER,False,,2026-11-11
+Derby County,Filip Bilbija,1073007,midfielders,CAM,Attacking Midfield,MF,26,2000-04-24,13.0,GER,False,,2026-11-11
 Derby County,Alex Mowatt,488624,midfielders,"CDM,CM",Defensive Midfield,MF,31,1995-02-13,20.0,ENG,False,,2026-11-11
 Derby County,Ryan Hedges,611489,midfielders,"LWB,RW,LB",Left-Back,MF,31,1995-07-08,26.0,WAL,True,Doubtful,2026-11-11
 Derby County,Lewis Travis,789556,midfielders,"CDM,CM",Defensive Midfield,MF,29,1997-10-16,27.0,ENG,False,,2026-11-11
@@ -636,7 +636,7 @@ Preston North End,Thierry Small,1195277,midfielders,"LWB,LM,LW,RM",Left-Back,MF,
 Preston North End,Caleb Wiley,1170744,midfielders,LM,Left Midfield,MF,21,2004-12-22,12.0,USA,False,,2026-11-11
 Preston North End,Jordan Thompson,662728,midfielders,"CM,CDM",Central Midfield,MF,29,1997-01-03,15.0,NIR,False,,2026-11-11
 Preston North End,Andrew Moran,1137404,midfielders,"CM,CAM",Central Midfield,MF,23,2003-10-15,23.0,IRL,False,,2026-11-11
-Preston North End,Léo Leroy,1022688,midfielders,"CM,CDM,CAM",Central Midfield,MF,26,2000-02-14,27.0,FRA,False,,2026-11-11
+Preston North End,Léo Leroy,1022688,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,26,2000-02-14,27.0,FRA,False,,2026-11-11
 Preston North End,Brad Potts,363345,midfielders,"RWB,CM,RM",Right-Back,MF,32,1994-07-03,44.0,ENG,False,,2026-11-11
 Preston North End,Jusef Erabi,1228408,attackers,ST,Centre-Forward,FW,23,2003-06-08,9.0,SWE,False,,2026-11-11
 Preston North End,Callum Lang,767738,attackers,"ST,CAM,RW,LW",Centre-Forward,FW,28,1998-09-08,10.0,ENG,False,,2026-11-11

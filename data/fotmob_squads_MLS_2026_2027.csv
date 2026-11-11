@@ -48,10 +48,10 @@ Vancouver Whitecaps,Ryan Gauld,318605,midfielders,"CAM,RW",Attacking Midfield,MF
 Vancouver Whitecaps,Jeevan Badwal,1610145,midfielders,"RW,CDM,CAM",Right Winger,MF,20,2006-03-11,59.0,CAN,False,,2026-11-11
 Vancouver Whitecaps,Cheikh Sabaly,950967,attackers,"RW,LW",Right Winger,FW,27,1999-03-04,7.0,SEN,False,,2026-11-11
 Vancouver Whitecaps,Emmanuel Sabbi,848008,attackers,"RW,LW",Right Winger,FW,28,1997-12-24,11.0,USA,True,Mid November 2026,2026-11-11
-Vancouver Whitecaps,Bruno Caicedo,1691091,attackers,"LW,RW",Left Winger,FW,21,2005-01-15,14.0,ECU,False,,2026-11-11
+Vancouver Whitecaps,Bruno Caicedo,1691091,attackers,LW,Left Winger,FW,21,2005-01-15,14.0,ECU,False,,2026-11-11
 Vancouver Whitecaps,Kenji Cabrera,1257135,attackers,"LW,RW",Left Winger,FW,23,2003-01-27,17.0,PER,True,Early November 2026,2026-11-11
 Vancouver Whitecaps,Rayan Elloumi,1685596,attackers,ST,Centre-Forward,FW,19,2007-09-17,19.0,TUN,False,,2026-11-11
-Vancouver Whitecaps,Kwasi Poku,1338278,attackers,ST,Centre-Forward,FW,23,2003-02-06,22.0,CAN,False,,2026-11-11
+Vancouver Whitecaps,Kwasi Poku,1338278,attackers,RW,Right Winger,FW,23,2003-02-06,22.0,CAN,False,,2026-11-11
 Vancouver Whitecaps,Brian White,933760,attackers,ST,Centre-Forward,FW,30,1996-02-03,24.0,USA,False,,2026-11-11
 Vancouver Whitecaps,Yadaly Diaby,1317338,attackers,"LW,LM,ST",Left Winger,FW,26,2000-08-09,77.0,GUI,False,,2026-11-11
 Inter Miami CF,Luis Barraza,1026132,keepers,GK,Goalkeeper,GK,30,1996-11-08,13.0,USA,False,,2026-11-11
@@ -144,7 +144,7 @@ FC Dallas,Caleb Swann,1797282,midfielders,"CM,CAM,CDM",Central Midfield,MF,19,20
 FC Dallas,Sam Sarver,1729371,midfielders,RWB,Right-Back,MF,23,2003-03-03,28.0,USA,False,,2026-11-11
 FC Dallas,Clay Holstad,1478367,midfielders,CDM,Defensive Midfield,MF,26,2000-01-12,33.0,USA,False,,2026-11-11
 FC Dallas,Kaick Ferreira,1732589,midfielders,"CM,CDM,CAM",Central Midfield,MF,20,2005-11-29,55.0,BRA,False,,2026-11-11
-FC Dallas,Bernard Kamungo,1251200,midfielders,"LM,LWB,LB",Left Midfield,MF,24,2002-01-01,77.0,USA,False,,2026-11-11
+FC Dallas,Bernard Kamungo,1251200,midfielders,"LM,LWB,LB",Left Midfield,MF,24,2002-01-01,77.0,TAN,False,,2026-11-11
 FC Dallas,Daniel Job,1617099,attackers,"LW,CAM",Left Winger,FW,21,2005-08-26,7.0,NGA,False,,2026-11-11
 FC Dallas,Petar Musa,709796,attackers,ST,Centre-Forward,FW,28,1998-03-04,9.0,CRO,False,,2026-11-11
 FC Dallas,Ricky Louis,1904351,attackers,"RW,ST,RM,LM",Right Winger,FW,22,2004-10-04,15.0,HAI,False,,2026-11-11
@@ -168,7 +168,7 @@ Chicago Fire FC,Noah Allen,1340790,defenders,"LB,CB,LM",Left-Back,DF,22,2004-04-
 Chicago Fire FC,Anton Salétros,482204,midfielders,"CM,CDM",Central Midfield,MF,30,1996-04-12,6.0,SWE,False,,2026-11-11
 Chicago Fire FC,André Franco,1080684,midfielders,CDM,Defensive Midfield,MF,28,1998-04-12,10.0,POR,False,,2026-11-11
 Chicago Fire FC,Robin Lod,293569,midfielders,"CM,ST,CAM,RM",Central Midfield,MF,33,1993-04-17,17.0,FIN,True,Early November 2026,2026-11-11
-Chicago Fire FC,Johan Gómez,1057432,midfielders,"RWB,LW,ST,RB,CAM",Right-Back,MF,25,2001-07-23,18.0,USA,False,,2026-11-11
+Chicago Fire FC,Johan Gómez,1057432,midfielders,"RWB,LW,ST,CAM",Right-Back,MF,25,2001-07-23,18.0,USA,False,,2026-11-11
 Chicago Fire FC,Mauricio Pineda,1136089,midfielders,"CM,CDM",Central Midfield,MF,29,1997-10-17,22.0,USA,False,,2026-11-11
 Chicago Fire FC,Anzor Mekvabishvili,1176843,midfielders,"CM,CDM",Central Midfield,MF,25,2001-06-05,23.0,GEO,False,,2026-11-11
 Chicago Fire FC,Dawid Poręba,1338760,midfielders,"CAM,CDM,CM",Attacking Midfield,MF,23,2002-12-01,29.0,USA,False,,2026-11-11
@@ -296,7 +296,7 @@ Houston Dynamo FC,Felipe Andrade,1501511,defenders,"RB,CB,LB",Right-Back,DF,24,2
 Houston Dynamo FC,Artur,750922,midfielders,"CDM,CM",Defensive Midfield,MF,30,1996-03-11,6.0,BRA,False,,2026-11-11
 Houston Dynamo FC,Duane Holmes,480787,midfielders,"RM,RWB",Right Midfield,MF,32,1994-11-06,14.0,USA,False,,2026-11-11
 Houston Dynamo FC,Héctor Herrera,274623,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,36,1990-04-19,16.0,MEX,False,,2026-11-11
-Houston Dynamo FC,Diadie Samassékou,643646,midfielders,"CM,CDM,CAM",Central Midfield,MF,30,1996-01-11,18.0,MLI,False,,2026-11-11
+Houston Dynamo FC,Diadié Samassékou,643646,midfielders,"CM,CDM,CAM",Central Midfield,MF,30,1996-01-11,18.0,MLI,False,,2026-11-11
 Houston Dynamo FC,Matthew Arana,1781979,midfielders,"CDM,CM,CAM,RW",Defensive Midfield,MF,16,2010-08-28,22.0,MEX,False,,2026-11-11
 Houston Dynamo FC,Ibrahim Aliyu,1178505,midfielders,"RM,RW",Right Midfield,MF,24,2002-01-16,24.0,NGA,False,,2026-11-11
 Houston Dynamo FC,Agustín Bouzat,723682,midfielders,"CAM,CM,CDM,ST",Attacking Midfield,MF,32,1994-03-28,30.0,ARG,False,,2026-11-11
@@ -328,11 +328,11 @@ Philadelphia Union,Alejandro Bedoya,169217,midfielders,RM,Right Midfield,MF,39,1
 Philadelphia Union,Jeremy Rafanello,1059451,midfielders,CM,Central Midfield,MF,26,2000-04-14,14.0,USA,False,,2026-11-11
 Philadelphia Union,Indiana Vassilev,1101144,midfielders,"LM,RM",Left Midfield,MF,25,2001-02-16,19.0,USA,False,,2026-11-11
 Philadelphia Union,Danley Jean Jacques,1329461,midfielders,"CM,CDM,RM",Central Midfield,MF,26,2000-05-20,21.0,HAI,False,,2026-11-11
+Philadelphia Union,Agustín Anello,1228079,midfielders,"ST,LM",Centre-Forward,MF,24,2002-04-22,28.0,USA,False,,2026-11-11
 Philadelphia Union,Quinn Sullivan,1171007,midfielders,"RM,LM",Right Midfield,MF,22,2004-03-27,33.0,USA,False,,2026-11-11
 Philadelphia Union,Bruno Damiani,1441866,attackers,ST,Centre-Forward,FW,24,2002-04-18,9.0,URU,False,,2026-11-11
 Philadelphia Union,Milan Iloski,1136311,attackers,"ST,RM,LM",Centre-Forward,FW,27,1999-07-29,10.0,USA,True,Mid November 2026,2026-11-11
 Philadelphia Union,Ezekiel Alladoh,1682121,attackers,ST,Centre-Forward,FW,21,2005-09-13,23.0,GHA,False,,2026-11-11
-Philadelphia Union,Agustín Anello,1228079,attackers,"ST,LM",Centre-Forward,FW,24,2002-04-22,28.0,USA,False,,2026-11-11
 Philadelphia Union,Malik Jakupović,1767542,attackers,ST,Centre-Forward,FW,17,2009-06-24,51.0,USA,False,,2026-11-11
 Philadelphia Union,Sal Olivas,1626967,attackers,ST,Centre-Forward,FW,20,2006-07-11,55.0,USA,False,,2026-11-11
 Columbus Crew,Nicholas Hagen,960923,keepers,GK,Goalkeeper,GK,30,1996-08-02,1.0,GUA,False,,2026-11-11
@@ -395,7 +395,7 @@ Los Angeles FC,Jacob Shaffelburg,1023943,attackers,"RW,LW,LM,LWB",Right Winger,F
 Los Angeles FC,Tyler Boyd,396757,attackers,RW,Right Winger,FW,31,1994-12-30,19.0,USA,False,,2026-11-11
 Los Angeles FC,Thayllon,1738398,attackers,"RW,CAM,RM",Right Winger,FW,20,2006-08-18,43.0,BRA,False,,2026-11-11
 Los Angeles FC,Tommy Mihalić,1731726,attackers,"LW,RW",Left Winger,FW,24,2002-11-09,90.0,CRO,False,,2026-11-11
-Los Angeles FC,Denis Bouanga,664962,attackers,"LW,ST,CAM",Left Winger,FW,31,1994-11-11,99.0,GAB,False,,2026-11-11
+Los Angeles FC,Denis Bouanga,664962,attackers,"LW,ST,CAM",Left Winger,FW,32,1994-11-11,99.0,GAB,False,,2026-11-11
 Portland Timbers,Trey Muse,1025925,keepers,GK,Goalkeeper,GK,27,1999-07-26,25.0,USA,True,Late November 2026,2026-11-11
 Portland Timbers,Hunter Sulte,1082981,keepers,GK,Goalkeeper,GK,24,2002-04-25,26.0,USA,False,,2026-11-11
 Portland Timbers,James Pantemis,878311,keepers,GK,Goalkeeper,GK,29,1997-02-21,41.0,CAN,False,,2026-11-11
@@ -413,12 +413,12 @@ Portland Timbers,Jimer Fory,1200658,defenders,LB,Left-Back,DF,24,2002-05-24,27.0
 Portland Timbers,Juan Mosquera,1137454,defenders,RB,Right-Back,DF,24,2002-09-05,29.0,COL,True,Early November 2026,2026-11-11
 Portland Timbers,David Da Costa,1138769,midfielders,"CM,CAM,ST",Central Midfield,MF,25,2001-01-05,10.0,POR,False,,2026-11-11
 Portland Timbers,Cole Bassett,955472,midfielders,"CM,CDM,CAM",Central Midfield,MF,25,2001-07-28,17.0,USA,False,,2026-11-11
-Portland Timbers,Diego Chará,50336,midfielders,"CM,CDM",Central Midfield,MF,40,1986-04-05,21.0,COL,False,,2026-11-11
+Portland Timbers,Diego Chará,50336,midfielders,"CDM,CM",Defensive Midfield,MF,40,1986-04-05,21.0,COL,False,,2026-11-11
 Portland Timbers,José Caicedo,1331128,midfielders,"CM,CDM",Central Midfield,MF,24,2002-05-23,30.0,COL,False,,2026-11-11
 Portland Timbers,Eric Izoita,1780962,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,19,2007-09-08,73.0,USA,False,,2026-11-11
 Portland Timbers,Joao Ortiz,950372,midfielders,"CM,CDM",Central Midfield,MF,30,1996-05-01,80.0,ECU,False,,2026-11-11
 Portland Timbers,Ariel Lassiter,564832,attackers,"RW,LW",Right Winger,FW,32,1994-09-27,7.0,CRC,False,,2026-11-11
-Portland Timbers,Antony,1248736,attackers,"RW,LW",Right Winger,FW,25,2001-09-08,11.0,BRA,False,,2026-11-11
+Portland Timbers,Antony,1248736,attackers,"LW,RW",Left Winger,FW,25,2001-09-08,11.0,BRA,False,,2026-11-11
 Portland Timbers,Vincent Janssen,467022,attackers,ST,Centre-Forward,FW,32,1994-06-15,14.0,NED,False,,2026-11-11
 Portland Timbers,Omir Fernandez,1024172,attackers,ST,Centre-Forward,FW,27,1999-02-08,22.0,USA,False,,2026-11-11
 Portland Timbers,Alexander Aravena,1190850,attackers,LW,Left Winger,FW,24,2002-09-06,28.0,CHI,False,,2026-11-11
@@ -427,7 +427,7 @@ Portland Timbers,Kristoffer Velde,837731,attackers,"LW,RW",Left Winger,FW,27,199
 Orlando City,Javier Otero,1346741,keepers,GK,Goalkeeper,GK,23,2002-11-18,12.0,VEN,False,,2026-11-11
 Orlando City,Tristan Himes,1780481,keepers,GK,Goalkeeper,GK,23,2003-07-15,40.0,USA,False,,2026-11-11
 Orlando City,Maxime Crépeau,464919,keepers,GK,Goalkeeper,GK,32,1994-05-11,71.0,CAN,False,,2026-11-11
-Orlando City,Adrián Marin,571685,defenders,"CB,LB",Centre-Back,DF,29,1997-01-09,3.0,ESP,False,,2026-11-11
+Orlando City,Adrián Marín,571685,defenders,"CB,LB",Centre-Back,DF,29,1997-01-09,3.0,ESP,False,,2026-11-11
 Orlando City,David Brekalo,1110819,defenders,CB,Centre-Back,DF,27,1998-12-03,4.0,SVN,False,,2026-11-11
 Orlando City,Robin Jansson,202179,defenders,CB,Centre-Back,DF,34,1991-11-15,6.0,SWE,True,Late November 2026,2026-11-11
 Orlando City,Zakaria Taifi,1724409,defenders,"RB,RWB,LB",Right-Back,DF,21,2005-10-01,19.0,USA,False,,2026-11-11
@@ -767,7 +767,7 @@ San Diego FC,Emmanuel Boateng,469803,attackers,LW,Left Winger,FW,32,1994-01-17,2
 San Diego FC,Alex Mighten,1081174,attackers,LW,Left Winger,FW,24,2002-04-11,77.0,ENG,False,,2026-11-11
 San Diego FC,Amahl Pellegrino,313121,attackers,LW,Left Winger,FW,36,1990-06-18,90.0,NOR,False,,2026-11-11
 San Diego FC,Cédric Bakambu,201939,attackers,ST,Centre-Forward,FW,35,1991-04-11,94.0,COD,False,,2026-11-11
-San Diego FC,Elias Achouri,1015128,attackers,"LM,LW,RW,ST",Left Midfield,FW,27,1999-02-10,99.0,TUN,True,Mid November 2026,2026-11-11
+San Diego FC,Elias Achouri,1015128,attackers,"LW,LM,RW",Left Winger,FW,27,1999-02-10,99.0,TUN,True,Mid November 2026,2026-11-11
 Austin FC,Brad Stuver,431642,keepers,GK,Goalkeeper,GK,35,1991-04-16,1.0,USA,False,,2026-11-11
 Austin FC,Damian Las,1187234,keepers,GK,Goalkeeper,GK,24,2002-04-11,12.0,USA,False,,2026-11-11
 Austin FC,Charlie Farrar,1781726,keepers,GK,Goalkeeper,GK,23,2003-08-08,39.0,ENG,False,,2026-11-11

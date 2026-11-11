@@ -399,7 +399,7 @@ LA Galaxy,tm534435,Joseph Paintsil,534435,Joseph Paintsil,players_full,100
 LA Galaxy,tm351504,John Nelson,351504,John Nelson,players_full,100
 LA Galaxy,tm1220232,Lucas Sanabria,1220232,Lucas Sanabria,players_full,100
 LA Galaxy,pf:LA Galaxy:edwin cerrillo,Edwin Cerrillo,,Edwin Cerrillo,players_full,100
-LA Galaxy,pf:LA Galaxy:emiro garces,Emiro Garcés,,Emiro Garcés,players_full,100
+LA Galaxy,pf:LA Galaxy:emiro garces,Emiro Garcés,927635,Emiro Garcés,players_full,100
 LA Galaxy,tm498862,João Klauss,498862,João Klauss,players_full,100
 LA Galaxy,pf:LA Galaxy:gabriel pec,Gabriel Pec,,Gabriel Pec,players_full,100
 LA Galaxy,tm251836,Robert Taylor,251836,Robert Taylor,players_full,100
@@ -1079,7 +1079,7 @@ Toronto FC,tm393325,Joshua Sargent,393325,Josh Sargent,transfermarkt_contracts,9
 Nashville SC,tm356497,Jeisson Palacios,356497,Jeison Palacios,transfermarkt_contracts,99
 Nashville SC,tm796528,Isaiah LeFlore,796528,Isaiah LeFlore,transfermarkt_contracts,100
 LA Galaxy,tm336163,JT Marcinkowski,336163,JT Marcinkowski,transfermarkt_contracts,100
-LA Galaxy,tm927635,Carlos Garcés,927635,Carlos Garcés,transfermarkt_contracts,100
+LA Galaxy,pf:LA Galaxy:emiro garces,Emiro Garcés,927635,Carlos Garcés,transfermarkt_contracts,100
 Charlotte FC,tm1246704,Morrison Agyemang,1246704,Morrison,transfermarkt_contracts,99
 Charlotte FC,tm895650,Hugo Mbongue,895650,Hugo Mbongue,transfermarkt_contracts,100
 St. Louis City,tm236792,Benjamin Lundt,236792,Ben Lundt,transfermarkt_contracts,99
@@ -1302,7 +1302,7 @@ CF Montréal,tm746832,Efraín Morales,746832,Efrain Morales,espn_lineups,100
 CF Montréal,pf:CF Montréal:ivan jaime,Iván Jaime,,Ivan Jaime,espn_lineups,100
 CF Montréal,tm447482,Dagur Thórhallsson,447482,Dagur Dan Thorhallsson,espn_lineups,85
 CF Montréal,tm325603,Daniel Ríos,325603,Daniel Rios,espn_lineups,100
-LA Galaxy,tm927635,Carlos Garcés,927635,Carlos Garces,espn_lineups,100
+LA Galaxy,pf:LA Galaxy:emiro garces,Emiro Garcés,927635,Carlos Garces,espn_lineups,100
 LA Galaxy,tm661128,Julián Aude,661128,Julian Aude,espn_lineups,100
 LA Galaxy,tm498862,João Klauss,498862,Joao Klauss,espn_lineups,100
 LA Galaxy,tm1007381,Rubén Ramos,1007381,Ruben Ramos,espn_lineups,100
@@ -1327,6 +1327,7 @@ FC Cincinnati,tm482072,Kévin Denkey,482072,Kevin Denkey,espn_lineups,100
 Atlanta United,tm273000,Júnior Alonso,273000,Junior Alonso,s365_ratings,100
 Atlanta United,tm271478,Paulo Díaz,271478,Paulo Diaz,s365_ratings,100
 Atlanta United,tm627219,Will Reilly,627219,William Reilly,s365_ratings,80
+Atlanta United,tm661269,Matías Galarza,661269,M. Galarza,s365_ratings,70
 Atlanta United,pf:Atlanta United:ignacio suarez couri,Ignacio Suarez-Couri,,Ignacio Suárez,s365_ratings,85
 CF Montréal,tm207593,Prince Osei Owusu,207593,Prince-Osei Owusu,s365_ratings,100
 CF Montréal,tm40433,Alexis Sánchez,40433,Alexis Sanchez,s365_ratings,100
@@ -1341,6 +1342,7 @@ Colorado Rapids,tm1381205,Mamadou Billo Diop,1381205,Mamadou Diop,s365_ratings,8
 Columbus Crew,tm221025,André Gomes,221025,Andre Gomes,s365_ratings,100
 Columbus Crew,tm162569,Josef Martínez,162569,Josef Martinez,s365_ratings,100
 Columbus Crew,tm262022,Jamal Thiaré,262022,Jamal Thiare,s365_ratings,100
+Columbus Crew,pf:Columbus Crew:hugo picard,Hugo Picard,,H. Picard,s365_ratings,70
 DC United,pf:DC United:aaron herrera,Aarón Herrera,,Aaron Herrera,s365_ratings,100
 FC Dallas,tm654766,Santiago Moreno,654766,Santi Moreno,s365_ratings,80
 FC Dallas,pf:FC Dallas:don deedson louicius,Don Deedson Louicius,,Louicius Deedson,s365_ratings,85
@@ -1349,10 +1351,12 @@ Houston Dynamo FC,tm122043,Héctor Herrera,122043,Hector Herrera,s365_ratings,10
 Houston Dynamo FC,tm315604,Diadié Samassékou,315604,Diadie Samassekou,s365_ratings,100
 Houston Dynamo FC,tm647958,Ibrahim Aliyu,647958,Aliyu Ibrahim,s365_ratings,95
 Houston Dynamo FC,tm972764,Nick Markanich,972764,Nicholas Markanich,s365_ratings,80
+Houston Dynamo FC,tm535282,Samuel Vines,535282,S. Vines,s365_ratings,70
 Inter Miami CF,tm439750,Dayne St. Clair,439750,Dayne St Clair,s365_ratings,100
 Inter Miami CF,tm44352,Luis Suárez,44352,Luis Suarez,s365_ratings,100
 Inter Miami CF,tm282429,Sergio Reguilón,282429,Sergio Reguilon,s365_ratings,100
 Inter Miami CF,tm661269,Matías Galarza,661269,Matias Galarza,s365_ratings,100
+LA Galaxy,pf:LA Galaxy:edwin cerrillo,Edwin Cerrillo,,E. Cerrillo,s365_ratings,70
 Los Angeles FC,tm222565,Marco Delgado,222565,Marky Delgado,s365_ratings,80
 Los Angeles FC,pf:Los Angeles FC:stephen eustaquio,Stephen Eustaquio,,Stephen Eustáquio,s365_ratings,100
 Minnesota United,tm1073177,Mauricio González,1073177,Mauricio Gonzalez,s365_ratings,100
@@ -1369,9 +1373,9 @@ Portland Timbers,tm1013240,Alex Bonetig,1013240,Alexander Bonetig,s365_ratings,8
 Red Bull New York,tm45660,Eric Maxim Choupo-Moting,45660,Eric Choupo-Moting,s365_ratings,85
 Red Bull New York,tm1226831,Mijahir Jiménez,1226831,Mijahir Jimenez,s365_ratings,100
 Red Bull New York,pf:Red Bull New York:joyeux bungi,Joyeux Bungi,,Joyeux Masanka Bungi,s365_ratings,85
-San Diego FC,tm1388879,David Mimbang,1388879,D. Mimbang,s365_ratings,70
 San Diego FC,tm447482,Dagur Thórhallsson,447482,Dagur Thorhallsson,s365_ratings,100
 San Diego FC,tm127048,Cédric Bakambu,127048,Cedric Bakambu,s365_ratings,100
+San Diego FC,tm1388879,David Mimbang,1388879,D. Mimbang,s365_ratings,70
 San Jose Earthquakes,tm260655,Eduard Löwen,260655,Eduard Lowen,s365_ratings,100
 San Jose Earthquakes,tm354886,Earl Edwards Jr.,354886,Earl Edwards,s365_ratings,85
 San Jose Earthquakes,tm332764,Jonathan González,332764,Jonathan Gónzalez,s365_ratings,100
