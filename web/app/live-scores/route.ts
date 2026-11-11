@@ -11,6 +11,9 @@ const CODES = [
   "eng.1", "esp.1", "ita.1", "ger.1", "fra.1", "por.1", "ned.1", "bel.1",
   "uefa.champions", "uefa.europa", "uefa.europa.conf",
   "eng.fa", "eng.league_cup", "esp.copa_del_rey", "ita.coppa_italia", "ger.dfb_pokal", "fra.coupe_de_france",
+  // A매치(2026-11-12) — 국가대표 화면 경기 결과가 하루 한 번 수집(daily_data intl)에만 기대 경기 다음 날 오후에야 보였다.
+  // 경기가 없는 날은 빈 응답(30초 캐시)이라 부담 작음. 대회 코드는 data/intl_windows.json 의 comps 와 같은 ESPN 표기
+  "fifa.friendly", "uefa.nations", "caf.nations_qual", "concacaf.nations.league", "afc.asian.cup",
 ];
 
 type Side = { name: string; score: string | null; logo: string; winner: boolean; color: string };

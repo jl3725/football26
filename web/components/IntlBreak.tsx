@@ -4,6 +4,7 @@ import { getIntlTeam, type IntlFixture, type IntlTeam } from "@/lib/api";
 import { TONE } from "@/lib/meaning";
 import { usePeek } from "./PlayerPeek";
 import Info from "./Info";
+import { useLive, liveLabel } from "@/lib/live";
 
 // INTERNATIONAL BREAK — 다음(진행 중) A매치 기간과 우리 팀 소집 선수·대표팀 경기(설계도 2단계).
 // 원천: src/fetch_intl.py(ESPN 국가대표 경기 → 기간, 대표팀 위키 'Current squad' → 소집 명단) → /api/intl/team.
@@ -16,9 +17,13 @@ const COMP: Record<string, string> = {
 };
 
 function Fx({ f }: { f: IntlFixture }) {
+  // 실시간 점수(/live-scores, A매치 코드 포함)가 있으면 그 값 — 그 나라 기준(우리 − 상대)으로 뒤집어 보여 준다(2026-11-12)
+  const e = useLive(f.event_id);
+  const live = e && e.state !== "pre" && e.home.score != null && e.away.score != null;
+  const score = live ? (f.home ? `${e.home.score}-${e.away.score}` : `${e.away.score}-${e.home.score}`) : f.score;
   return (
-    <span className="ib-fx" title={COMP[f.comp] ?? f.comp}>
-      {md(f.date)} {f.home ? "vs" : "@"} {f.opp}{f.score && <b> {f.score}</b>}
+    <span className={`ib-fx${e?.state === "in" ? " live" : ""}`} title={COMP[f.comp] ?? f.comp}>
+      {md(f.date)} {f.home ? "vs" : "@"} {f.opp}{score && <b> {score}</b>}{e?.state === "in" ? <em> {liveLabel(e)}</em> : null}
     </span>
   );
 }

@@ -897,7 +897,7 @@ export const getOpsStatus = () => j<OpsStatus>("/api/ops/status");
 
 // ── 국가대표(INTERNATIONAL) — A매치 기간·소집 명단(/api/intl/team) ──
 export type IntlWindow = { start: string; first_match: string; end: string; matches: number; club_matches: number; kind: "break" | "tournament"; comps: string[]; label: string };
-export type IntlFixture = { date: string; opp: string; home: boolean; comp: string; score: string | null };
+export type IntlFixture = { date: string; opp: string; home: boolean; comp: string; score: string | null; event_id?: string };
 export type IntlPlayer = {
   player: string; nation: string; conf: string; flag: string; fifa_rank: number | null; caps: number | null; goals: number | null;
   pos: string; squad_for: string | null; far: boolean; fixtures: IntlFixture[]; last_results: IntlFixture[];

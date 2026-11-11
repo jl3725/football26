@@ -9,6 +9,7 @@ import SectionHead from "./SectionHead";
 import Info from "./Info";
 import { Skel, SkelRows } from "./Skeleton";
 import WorldCup from "./WorldCup";
+import { useLive, liveLabel } from "@/lib/live";
 
 // INTERNATIONAL — 국가대표 허브. 대회는 손으로 적지 않고 ESPN 리그 목록에서 자동 발견(src/intl_comps.py),
 // 상태(예정·진행·종료·우승)는 일정·결과에서 계산한다. 지저분하지 않게:
@@ -59,14 +60,26 @@ function CompCard({ c, today, onOpen }: { c: IntlCompCard; today: string; onOpen
   );
 }
 
+// 실시간 점수 덮어쓰기 — 일정 파일(하루 한 번 수집)보다 /live-scores(ESPN 30초)가 앞서면 그 값. 경기 id 가 같은 ESPN id 라
+// 홈·원정 방향도 같다(2026-11-12 A매치 기간: 경기 결과가 다음 날 오후에야 보였다)
+function useIntlScore(m: IntlMatch): { live: boolean; done: boolean; hg: number | null; ag: number | null; label: string } {
+  const e = useLive(m.event_id);
+  if (!e || e.state === "pre") {
+    return { live: false, done: m.state === "post" && m.hg != null && m.ag != null, hg: m.hg, ag: m.ag, label: "" };
+  }
+  const n = (s: string | null) => (s == null || s === "" ? null : Number(s));
+  const hg = n(e.home.score), ag = n(e.away.score);
+  return { live: e.state === "in", done: hg != null && ag != null, hg, ag, label: e.state === "in" ? liveLabel(e) : "" };
+}
+
 function MatchRow({ m }: { m: IntlMatch }) {
-  const done = m.state === "post" && m.hg != null && m.ag != null;
+  const s = useIntlScore(m);
   return (
     <div className="it-m">
       <span className="it-m-when">{kst(m.kickoff) || md(m.date)}</span>
       <span className="it-m-comp">{m.comp}{m.stage ? ` · ${m.stage}` : ""}</span>
       <span className="it-m-h" title={m.home}>{nm(m.home, m.home_ko)}{m.home_logo ? <img src={m.home_logo} alt="" /> : null}</span>
-      <b className="it-m-s">{done ? `${m.hg}-${m.ag}` : "vs"}</b>
+      <b className={`it-m-s${s.live ? " live" : ""}`}>{s.done ? `${s.hg}-${s.ag}` : "vs"}{s.label ? <em>{s.label}</em> : null}</b>
       <span className="it-m-a" title={m.away}>{m.away_logo ? <img src={m.away_logo} alt="" /> : null}{nm(m.away, m.away_ko)}</span>
     </div>
   );
@@ -91,19 +104,32 @@ function GroupCard({ g, ms, me }: { g: IntlGroup; ms: IntlMatch[]; me: string })
       </table>
       {ms.length > 0 && (
         <div className="it-gm">
-          {ms.map((m) => {
-            const done = m.state === "post" && m.hg != null;
-            return (
-              <div key={m.event_id} className={m.home === me || m.away === me ? "me" : ""}>
-                <span>{md(m.date)}</span>
-                <span className="h">{nm(m.home, m.home_ko)}</span>
-                <b>{done ? `${m.hg}-${m.ag}` : "vs"}</b>
-                <span>{nm(m.away, m.away_ko)}</span>
-              </div>
-            );
-          })}
+          {ms.map((m) => <GroupMatch key={m.event_id} m={m} me={me} />)}
         </div>
       )}
+    </div>
+  );
+}
+
+function GroupMatch({ m, me }: { m: IntlMatch; me: string }) {
+  const s = useIntlScore(m);
+  return (
+    <div className={m.home === me || m.away === me ? "me" : ""}>
+      <span>{md(m.date)}</span>
+      <span className="h">{nm(m.home, m.home_ko)}</span>
+      <b className={s.live ? "live" : ""}>{s.done ? `${s.hg}-${s.ag}` : "vs"}</b>
+      <span>{nm(m.away, m.away_ko)}</span>
+    </div>
+  );
+}
+
+function KoMatch({ m }: { m: IntlMatch }) {
+  const s = useIntlScore(m);
+  return (
+    <div className="it-ko-m">
+      <span className={m.winner === "home" ? "w" : ""}>{m.home_ko && m.home_ko !== m.home ? m.home_ko : slotKo(m.home)}</span>
+      <span className={m.winner === "away" ? "w" : ""}>{m.away_ko && m.away_ko !== m.away ? m.away_ko : slotKo(m.away)}</span>
+      <small>{md(m.date)}{s.done ? ` · ${s.hg}-${s.ag}` : ""}{s.label ? ` · ${s.label}` : ""}</small>
     </div>
   );
 }
@@ -118,16 +144,7 @@ function Knockout({ rounds, matches }: { rounds: NonNullable<IntlCompDetail["rou
         {ko.map((r) => (
           <div className="it-ko-col" key={r.slug}>
             <div className="it-ko-h">{r.en}{r.ko ? <em>{r.ko}</em> : null}</div>
-            {matches.filter((m) => m.round === r.slug).map((m) => {
-              const done = m.state === "post" && m.hg != null;
-              return (
-                <div className="it-ko-m" key={m.event_id}>
-                  <span className={m.winner === "home" ? "w" : ""}>{m.home_ko && m.home_ko !== m.home ? m.home_ko : slotKo(m.home)}</span>
-                  <span className={m.winner === "away" ? "w" : ""}>{m.away_ko && m.away_ko !== m.away ? m.away_ko : slotKo(m.away)}</span>
-                  <small>{md(m.date)}{done ? ` · ${m.hg}-${m.ag}` : ""}</small>
-                </div>
-              );
-            })}
+            {matches.filter((m) => m.round === r.slug).map((m) => <KoMatch key={m.event_id} m={m} />)}
           </div>
         ))}
       </div>
