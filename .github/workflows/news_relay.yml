@@ -1,0 +1,37 @@
+name: News Relay
+
+# 뉴스 이어 달리기 — daily_news 를 실제 2시간 간격으로(scripts/news_relay.py). GitHub 예약 실행이 밀려 '2시간마다' 뉴스 수집이
+# 하루 3~4번(간격 5~11시간)만 돌았다(2026-11-09·10 측정). 한 번 시작하면 최대 5.5시간 10분마다 보고, 마지막 뉴스 실행이
+# 110분 넘었으면 daily_news 를 직접 실행 요청 — 시간 예산을 다 쓰면 자기 자신을 다시 실행(match_watch 와 같은 방식).
+# 아래 예약은 '시동'만(사슬이 끊겼을 때 다시 잇기). 이미 돌고 있으면 대기열 1개.
+on:
+  schedule:
+    - cron: "40 1,7,13,19 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: news-relay
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  actions: write   # daily_news · 자기 자신 workflow_dispatch
+
+jobs:
+  relay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Install
+        run: pip install -q requests
+
+      - name: Relay news fetch
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python scripts/news_relay.py --max-minutes 330

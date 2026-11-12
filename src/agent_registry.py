@@ -139,7 +139,8 @@ AGENTS: tuple[Agent, ...] = (
               Feed("news", "뉴스 수집·분류·번역", ("news",), ("daily_news",), "2시간마다", 6,
                    ("news.db(data-news 브랜치)", "news_db.ref.json", "club_local_names.json", "news_journalists.csv",
                     "news_reliability.csv")),
-          ), checks=("watchdog: news(수집 1일·번역률 50%)",)),
+          ), checks=("watchdog: news(수집 1일·번역률 50%)",),
+          extras=("뉴스 이어 달리기 — news_relay.yml: 10분마다 보고 마지막 뉴스 수집이 110분 넘었으면 daily_news 직접 실행(예약 지연 대응, 2026-11-12)",)),
     Agent("intl", "INTERNATIONAL", "국가대표", "FIFA 랭킹, 대륙별 대회(자동 발견·상태), A매치 일정·기간, 소집 명단, 대표팀 경기 평점 → 국가대표 탭·팀 일정·예측·OVR",
           ("FIFA", "ESPN", "Wikipedia", "FotMob"), (
               Feed("fifa_ranking", "FIFA 랭킹", ("fifa_ranking",), ("daily_data",), "매일 13:30 KST", 36,
