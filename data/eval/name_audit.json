@@ -474,11 +474,11 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 482,
-   "exact": 465,
+   "total": 489,
+   "exact": 466,
    "rule": 1,
    "ambiguous": 0,
-   "orphan": 16,
+   "orphan": 22,
    "orphans": [
     {
      "squad": "Getafe",
@@ -551,6 +551,36 @@
      "starts": 0
     },
     {
+     "squad": "Real Betis",
+     "name": "Iván Corralejo",
+     "starts": 0
+    },
+    {
+     "squad": "Real Betis",
+     "name": "Rodrigo Marina",
+     "starts": 0
+    },
+    {
+     "squad": "Real Betis",
+     "name": "Alejandro Postigo",
+     "starts": 0
+    },
+    {
+     "squad": "Real Betis",
+     "name": "Yan Zhuravskyi",
+     "starts": 0
+    },
+    {
+     "squad": "Real Betis",
+     "name": "Ricardo Fúnez Gómez",
+     "starts": 0
+    },
+    {
+     "squad": "Real Betis",
+     "name": "Borja Alonso Cabrera",
+     "starts": 0
+    },
+    {
      "squad": "Levante",
      "name": "Alejandro Moya Grediaga",
      "starts": 0
@@ -587,8 +617,8 @@
    ]
   },
   "espn_subs_cups": {
-   "total": 263,
-   "exact": 251,
+   "total": 266,
+   "exact": 254,
    "rule": 11,
    "ambiguous": 0,
    "orphan": 1,
@@ -601,8 +631,8 @@
    ]
   },
   "match_events": {
-   "total": 395,
-   "exact": 395,
+   "total": 396,
+   "exact": 396,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
