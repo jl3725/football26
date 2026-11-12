@@ -2,8 +2,10 @@ target_club,player,pos_detail,age,current_club,market_value_eur,probability,date
 Amed Sportif,Emre Erdoğan,Left Winger,19,TSV 1860 Munich,150000.0,,25/08/2026
 Amed Sportif,Yussif Saidu,Central Midfield,21,Real Zaragoza,1000000.0,,19/08/2026
 Başakşehir,Răzvan Onea,Right-Back,28,FC Rapid 1923,850000.0,,30/10/2026
+Beşiktaş,Edon Zhegrova,Right Winger,27,Juventus FC,10000000.0,,12/11/2026
+Beşiktaş,Joe Willock,Central Midfield,27,Newcastle United,18000000.0,,12/11/2026
 Beşiktaş,Oumar Solet,Centre-Back,26,Udinese Calcio,20000000.0,,11/11/2026
-Beşiktaş,Brahim Díaz,Right Winger,27,Real Madrid,35000000.0,,10/11/2026
+Beşiktaş,Brahim Díaz,Right Winger,27,Real Madrid,35000000.0,47,10/11/2026
 Beşiktaş,Matvey Kislyak,Central Midfield,21,CSKA Moscow,25000000.0,38,29/10/2026
 Beşiktaş,Chemsdine Talbi,Right Winger,21,Sunderland AFC,25000000.0,,15/10/2026
 Beşiktaş,Konstantinos Mavropanos,Centre-Back,28,West Ham United,18000000.0,,10/10/2026
@@ -12,7 +14,6 @@ Beşiktaş,Nicolas Raskin,Defensive Midfield,25,Rangers FC,15000000.0,,02/09/202
 Beşiktaş,Jovo Lukić,Centre-Forward,27,FC Universitatea Cluj,2200000.0,,29/08/2026
 Beşiktaş,João Ananias,Centre-Back,19,Santos FC,5000000.0,,26/08/2026
 Beşiktaş,Yusuf Akçiçek,Centre-Back,20,Al-Hilal SFC,14000000.0,,26/08/2026
-Beşiktaş,Joe Willock,Central Midfield,27,Newcastle United,18000000.0,,25/08/2026
 Beşiktaş,Michael Parker,Centre-Back,21,Örgryte IS,2000000.0,,25/08/2026
 Beşiktaş,Rubén Vargas,Left Winger,28,Sevilla FC,15000000.0,,25/08/2026
 Beşiktaş,Pathé Ciss,Central Midfield,32,Rayo Vallecano,1800000.0,,25/08/2026
@@ -26,6 +27,8 @@ Beşiktaş,João Félix,Second Striker,27,Al-Nassr FC,28000000.0,,15/07/2026
 Erzurumspor FK,Milot Rashica,Right Winger,30,Beşiktaş JK,2500000.0,,22/08/2026
 Eyüpspor,James Ajako,Centre-Back,23,Renaissance Zemamra,450000.0,,30/08/2026
 Eyüpspor,Ralph Orquin,Left-Back,23,CD Cruz Azul,2000000.0,,21/08/2026
+Fenerbahçe,Hakan Çalhanoğlu,Defensive Midfield,32,Inter Milan,16000000.0,,12/11/2026
+Fenerbahçe,Arda Okan Kurtulan,Right Midfield,23,Göztepe,8000000.0,,12/11/2026
 Fenerbahçe,Danilo,Central Midfield,25,Botafogo de Futebol e Regatas,32000000.0,,11/11/2026
 Fenerbahçe,Breno Bidon,Central Midfield,21,Sport Club Corinthians Paulista,25000000.0,,11/11/2026
 Fenerbahçe,Kelechi Iheanacho,Centre-Forward,30,Bursaspor,2800000.0,,09/11/2026
@@ -34,11 +37,12 @@ Fenerbahçe,Gabriel Barbosa,Centre-Forward,30,Santos FC,4000000.0,,02/10/2026
 Fenerbahçe,Matt O'Riley,Central Midfield,25,Brighton & Hove Albion,18000000.0,,01/09/2026
 Fenerbahçe,Berke Özer,Goalkeeper,26,LOSC Lille,12000000.0,,13/08/2026
 Fenerbahçe,Ismaïla Sarr,Right Winger,28,Crystal Palace,45000000.0,,02/08/2026
+Galatasaray,Christ Inao Oulaï,Central Midfield,20,ACF Fiorentina,28000000.0,41,12/11/2026
+Galatasaray,Arda Okan Kurtulan,Right Midfield,23,Göztepe,8000000.0,,12/11/2026
 Galatasaray,Mert Müldür,Right-Back,27,Fenerbahce,7000000.0,,12/11/2026
 Galatasaray,Bilal El Khannouss,Attacking Midfield,22,VfB Stuttgart,35000000.0,,10/11/2026
-Galatasaray,Christ Inao Oulaï,Central Midfield,20,ACF Fiorentina,28000000.0,41,10/11/2026
 Galatasaray,Ermedin Demirovic,Centre-Forward,28,VfB Stuttgart,22000000.0,,05/11/2026
-Galatasaray,Mauro Icardi,Centre-Forward,33,Without ClubWithout Club,3000000.0,27,04/10/2026
+Galatasaray,Mauro Icardi,Centre-Forward,33,Without ClubWithout Club,3000000.0,31,04/10/2026
 Galatasaray,Arthur Avom,Central Midfield,21,FC Lorient,20000000.0,,02/09/2026
 Galatasaray,Kévin Danois,Central Midfield,22,AJ Auxerre,20000000.0,,01/09/2026
 Galatasaray,Fisnik Asllani,Centre-Forward,24,TSG 1899 Hoffenheim,30000000.0,,28/08/2026
@@ -58,7 +62,6 @@ Galatasaray,Nathan Zézé,Centre-Back,21,NEOM SC,20000000.0,,03/08/2026
 Galatasaray,Raúl Asencio,Centre-Back,23,Real Madrid,18000000.0,,24/07/2026
 Galatasaray,Mathys Tel,Left Winger,21,Tottenham Hotspur,22000000.0,,14/07/2026
 Galatasaray,Ilaix Moriba,Central Midfield,23,Celta de Vigo,15000000.0,,23/06/2026
-Galatasaray,Soungoutou Magassa,Defensive Midfield,23,West Ham United,15000000.0,,11/06/2026
 Gaziantep FK,Ștefan Târnovanu,Goalkeeper,26,FCSB,2300000.0,,30/08/2026
 Göztepe,Yussif Saidu,Central Midfield,21,Real Zaragoza,1000000.0,,29/08/2026
 Göztepe,Zoumana Bagbema,Central Midfield,22,SM Caen,900000.0,,29/08/2026
@@ -75,6 +78,7 @@ Konyaspor,Olivier Ntcham,Central Midfield,30,Without ClubWithout Club,1200000.0,
 Samsunspor,Rokas Pukstas,Attacking Midfield,22,Middlesbrough FC,6000000.0,,21/08/2026
 Samsunspor,Vatan Özcan,Left-Back,18,Norwich City U21,,,17/08/2026
 Samsunspor,Oğuz Aydın,Left Winger,26,Fenerbahce,9000000.0,,12/08/2026
+Trabzonspor,Richarlison,Centre-Forward,29,Tottenham Hotspur,15000000.0,,12/11/2026
 Trabzonspor,Yegor Yarmolyuk,Central Midfield,22,Brentford FC,32000000.0,,11/11/2026
 Trabzonspor,Abdoulaye Doumbia,Defensive Midfield,19,BK Häcken,5000000.0,,01/11/2026
 Trabzonspor,Folarin Balogun,Centre-Forward,25,AS Monaco,50000000.0,,02/09/2026
