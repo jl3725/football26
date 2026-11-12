@@ -78,7 +78,7 @@ def _nation_fixtures(nation: str, w: dict | None) -> list[dict]:
             score = None if r.state == "pre" or pd.isna(r.hg) else (
                 f"{int(r.hg)}-{int(r.ag)}" if home else f"{int(r.ag)}-{int(r.hg)}")
             out.append({"date": r.date, "opp": r.away if home else r.home, "home": home, "comp": r.comp_code,
-                        "score": score, "event_id": str(r.event_id)})      # 화면이 실시간 점수(/live-scores)를 덮어쓴다
+                        "score": score, "event_id": str(getattr(r, "event_id", "") or "")})      # 화면이 실시간 점수(/live-scores)를 덮어쓴다
     return out
 
 
