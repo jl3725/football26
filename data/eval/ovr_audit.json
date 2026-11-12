@@ -1,12 +1,12 @@
 {
- "date": "2026-11-11",
+ "date": "2026-11-12",
  "model": "v3.18",
- "checked": 52915,
+ "checked": 52871,
  "mismatches": [],
  "leagues": {
   "EPL": {
    "teams": 20,
-   "checked": 3662,
+   "checked": 3663,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -14,7 +14,7 @@
   },
   "AustrianBundesliga": {
    "teams": 12,
-   "checked": 2561,
+   "checked": 2560,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -22,7 +22,7 @@
   },
   "BelgianProLeague": {
    "teams": 18,
-   "checked": 3423,
+   "checked": 3418,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -30,7 +30,7 @@
   },
   "Bundesliga": {
    "teams": 18,
-   "checked": 3325,
+   "checked": 3329,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -54,7 +54,7 @@
   },
   "Eredivisie": {
    "teams": 18,
-   "checked": 3439,
+   "checked": 3441,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -62,7 +62,7 @@
   },
   "LaLiga": {
    "teams": 20,
-   "checked": 3866,
+   "checked": 3857,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -70,25 +70,25 @@
   },
   "LigaPortugal": {
    "teams": 18,
-   "checked": 3513,
+   "checked": 3492,
    "mismatches": 0,
    "changed": 1,
    "model_changed": 0,
    "changes_top": [
     {
      "team": "Santa Clara",
-     "player": "Henrique Silva",
-     "from": 50,
-     "to": 52,
-     "d": 2,
-     "since": "2026-11-11",
+     "player": "Frederico Silva",
+     "from": 52,
+     "to": 50,
+     "d": -2,
+     "since": "2026-11-12",
      "model_change": false
     }
    ]
   },
   "Ligue1": {
    "teams": 18,
-   "checked": 3342,
+   "checked": 3341,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -104,7 +104,7 @@
   },
   "SerieA": {
    "teams": 20,
-   "checked": 3856,
+   "checked": 3841,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -112,7 +112,7 @@
   },
   "SuperLig": {
    "teams": 18,
-   "checked": 3702,
+   "checked": 3703,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,

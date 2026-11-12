@@ -46,6 +46,12 @@
    "src": "fotmob",
    "val": "Mar 2025"
   },
+  "Alanyaspor|ugur ucar": {
+   "at": "2026-11-12",
+   "date": "2026-11-10",
+   "src": "fotmob",
+   "val": "Nov 2026"
+  },
   "Alavés|quique sanchez flores": {
    "at": "2026-10-23",
    "date": "2026-03-03",
@@ -908,6 +914,10 @@
    "src": "fotmob",
    "val": "Jun 2026"
   },
+  "Manchester Utd|vacant": {
+   "at": "2026-11-12",
+   "val": ""
+  },
   "Marseille|bruno genesio": {
    "at": "2026-10-23",
    "date": "2026-07-01",
@@ -1649,7 +1659,7 @@
   "Casa Pia|filipe coelho": "2026-11-06",
   "Celta Vigo|claudio giraldez": "2026-11-06",
   "Cercle Brugge|lars friis": "2026-10-30",
-  "Cercle Brugge|pedro caixinha": "2026-11-05",
+  "Cercle Brugge|pedro caixinha": "2026-11-12",
   "Charleroi|mario kohnen": "2026-11-06",
   "Chelsea|xabi alonso": "2026-11-06",
   "Club Brugge|ivan leko": "2026-11-06",
@@ -1715,6 +1725,7 @@
   "Mainz 05|urs fischer": "2026-11-06",
   "Manchester City|enzo maresca": "2026-11-06",
   "Manchester Utd|michael carrick": "2026-11-06",
+  "Manchester Utd|vacant": "2026-11-12",
   "Marseille|bruno genesio": "2026-11-06",
   "Marítimo|mitchell van der gaag": "2026-11-06",
   "Mechelen|frederik vanderbiest": "2026-11-06",
@@ -3054,6 +3065,11 @@
   },
   "tony mowbray": {
    "at": "2026-10-23",
+   "focus": "",
+   "style": ""
+  },
+  "ugur ucar": {
+   "at": "2026-11-12",
    "focus": "",
    "style": ""
   },
