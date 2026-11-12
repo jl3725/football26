@@ -1,34 +1,97 @@
 squad,player,fotmob_id,kind,expected_return,match_id,match_date,fetched
-Norwich City,Papa Diallo,1435441,injury,Late November 2026,5836939,2026-11-21,2026-11-11
-Norwich City,Mohamed Touré,1132069,injury,Early January 2027,5836939,2026-11-21,2026-11-11
-Norwich City,Gabriel Forsyth,1398105,injury,Doubtful,5836939,2026-11-21,2026-11-11
-Norwich City,Ali Ahmed,1359536,injury,Late November 2026,5836939,2026-11-21,2026-11-11
-Cardiff City,Dylan Lawlor,1639134,injury,Late November 2026,5836939,2026-11-21,2026-11-11
-Cardiff City,Calum Chambers,425255,injury,Doubtful,5836939,2026-11-21,2026-11-11
-Southampton,Keven Schlotterbeck,900523,injury,Doubtful,5836941,2026-11-21,2026-11-11
-Southampton,Caspar Jander,1328857,injury,Late November 2026,5836941,2026-11-21,2026-11-11
-Southampton,Cyle Larin,544312,injury,Doubtful,5836941,2026-11-21,2026-11-11
-Derby County,Ryan Hedges,611489,injury,Doubtful,5836941,2026-11-21,2026-11-11
-Derby County,Joe Ward,613892,injury,Doubtful,5836941,2026-11-21,2026-11-11
-Derby County,Sammie Szmodics,491827,injury,Doubtful,5836941,2026-11-21,2026-11-11
-Derby County,Sondre Klingen Langås,1127585,injury,Early January 2027,5836941,2026-11-21,2026-11-11
-Derby County,Eiran Cashin,1127305,injury,Late November 2026,5836941,2026-11-21,2026-11-11
-Derby County,Charlie Taylor,289137,injury,Doubtful,5836941,2026-11-21,2026-11-11
-Derby County,Craig Forsyth,110911,injury,Early January 2027,5836941,2026-11-21,2026-11-11
-Derby County,Derry Murkin,956736,injury,Early December 2026,5836941,2026-11-21,2026-11-11
-Millwall,Ryan Leonard,198265,injury,Late November 2026,5836938,2026-11-21,2026-11-11
-Millwall,Tristan Crama,1130766,injury,Late November 2026,5836938,2026-11-21,2026-11-11
-Millwall,Filip Marschall,1089687,injury,Doubtful,5836938,2026-11-21,2026-11-11
-Millwall,Lukas Bornhøft Jensen,937535,injury,Doubtful,5836938,2026-11-21,2026-11-11
-Millwall,Casper de Norre,688991,injury,Doubtful,5836938,2026-11-21,2026-11-11
-Millwall,Mathis Servais,1215608,injury,Unknown,5836938,2026-11-21,2026-11-11
-Queens Park Rangers,Rumarn Burrell,968935,injury,Late November 2026,5836938,2026-11-21,2026-11-11
-Queens Park Rangers,Nicolas Madsen,917830,injury,Late November 2026,5836938,2026-11-21,2026-11-11
-Queens Park Rangers,Tariq Lamptey,955139,injury,Late November 2026,5836938,2026-11-21,2026-11-11
-Queens Park Rangers,Amadou Salif Mbengue,1292335,injury,Out for season,5836938,2026-11-21,2026-11-11
-Swansea City,Gonçalo Franco,1052977,in_match,86′ 부상 교체,5836922,2026-11-07,2026-11-11
-Sheffield United,Femi Seriki,997560,in_match,51′ 부상 교체,5836926,2026-11-07,2026-11-11
-Preston North End,Andrew Hughes,212304,in_match,64′ 부상 교체,5836929,2026-11-07,2026-11-11
-Preston North End,Andrija Vukčević,551961,in_match,88′ 부상 교체,5836929,2026-11-07,2026-11-11
-Watford,Krépin Diatta,837061,in_match,14′ 부상 교체,5836931,2026-11-07,2026-11-11
-West Bromwich Albion,Rabby Nzingoula,1609064,in_match,75′ 부상 교체,5836932,2026-11-07,2026-11-11
+Southampton,Keven Schlotterbeck,900523,injury,Doubtful,5836941,2026-11-21,2026-11-12
+Southampton,Caspar Jander,1328857,injury,Late November 2026,5836941,2026-11-21,2026-11-12
+Southampton,Cyle Larin,544312,injury,Doubtful,5836941,2026-11-21,2026-11-12
+Derby County,Ryan Hedges,611489,injury,Doubtful,5836941,2026-11-21,2026-11-12
+Derby County,Joe Ward,613892,injury,Doubtful,5836941,2026-11-21,2026-11-12
+Derby County,Sammie Szmodics,491827,injury,Doubtful,5836941,2026-11-21,2026-11-12
+Derby County,Sondre Klingen Langås,1127585,injury,Early January 2027,5836941,2026-11-21,2026-11-12
+Derby County,Eiran Cashin,1127305,injury,Late November 2026,5836941,2026-11-21,2026-11-12
+Derby County,Charlie Taylor,289137,injury,Doubtful,5836941,2026-11-21,2026-11-12
+Derby County,Craig Forsyth,110911,injury,Early January 2027,5836941,2026-11-21,2026-11-12
+Derby County,Derry Murkin,956736,injury,Early December 2026,5836941,2026-11-21,2026-11-12
+Bolton Wanderers,Jayden Nelson,1082106,injury,Late November 2026,5836934,2026-11-21,2026-11-12
+Bolton Wanderers,Eoin Toal,860282,injury,Late November 2026,5836934,2026-11-21,2026-11-12
+Bolton Wanderers,Gavin Bazunu,939390,injury,Late November 2026,5836934,2026-11-21,2026-11-12
+Bolton Wanderers,Ryan Hardie,584825,injury,Late November 2026,5836934,2026-11-21,2026-11-12
+Bolton Wanderers,John McAtee,843101,injury,Late November 2026,5836934,2026-11-21,2026-11-12
+Bolton Wanderers,Ethan Erhahon,914169,injury,Late November 2026,5836934,2026-11-21,2026-11-12
+Portsmouth,Iyad Mohamed,1280355,injury,Doubtful,5836934,2026-11-21,2026-11-12
+Portsmouth,Marezi,1284376,injury,Late November 2026,5836934,2026-11-21,2026-11-12
+Portsmouth,Colby Bishop,517663,injury,Early December 2026,5836934,2026-11-21,2026-11-12
+Portsmouth,John Swift,541822,injury,Late November 2026,5836934,2026-11-21,2026-11-12
+Portsmouth,Keshi Anderson,614176,injury,Late November 2026,5836934,2026-11-21,2026-11-12
+Portsmouth,Benjamin Arthur,1621143,injury,Back in training,5836934,2026-11-21,2026-11-12
+Portsmouth,Luke Brooke-Smith,1693440,injury,Out for season,5836934,2026-11-21,2026-11-12
+Portsmouth,Connor Ogilvie,528436,injury,Unknown,5836934,2026-11-21,2026-11-12
+Portsmouth,Márk Kosznovszky,1050813,injury,Unknown,5836934,2026-11-21,2026-11-12
+Stoke City,Lamine Cissé,1252072,injury,Late November 2026,5836942,2026-11-21,2026-11-12
+Stoke City,Eric Bocat,1123949,injury,Late November 2026,5836942,2026-11-21,2026-11-12
+Stoke City,Ato Ampah,1400213,injury,Mid January 2027,5836942,2026-11-21,2026-11-12
+Stoke City,Aaron Cresswell,155782,injury,Doubtful,5836942,2026-11-21,2026-11-12
+Birmingham City,James Beadle,1431281,injury,Late November 2026,5836942,2026-11-21,2026-11-12
+Birmingham City,August Priske,1311533,injury,Doubtful,5836942,2026-11-21,2026-11-12
+Lincoln City,Mason Melia,1463084,injury,Late November 2026,5836936,2026-11-21,2026-11-12
+Lincoln City,Tendayi Darikwa,211837,injury,Doubtful,5836936,2026-11-21,2026-11-12
+Wrexham,Issa Kaboré,1099974,injury,Doubtful,5836936,2026-11-21,2026-11-12
+Wrexham,Callum O'Hare,759801,injury,Doubtful,5836936,2026-11-21,2026-11-12
+Wrexham,Sam Smith,791416,injury,Early January 2027,5836936,2026-11-21,2026-11-12
+Wrexham,Josh Windass,465909,injury,Late November 2026,5836936,2026-11-21,2026-11-12
+Wrexham,Nathan Broadhead,760329,injury,Doubtful,5836936,2026-11-21,2026-11-12
+Wrexham,Sebastian Revan,1185783,injury,Doubtful,5836936,2026-11-21,2026-11-12
+Wrexham,Liberato Cacace,919671,injury,Unknown,5836936,2026-11-21,2026-11-12
+Sheffield United,Femi Seriki,997560,injury,Doubtful,5836940,2026-11-21,2026-11-12
+Sheffield United,Joe Rothwell,613182,injury,Doubtful,5836940,2026-11-21,2026-11-12
+Sheffield United,Ryan Oné,1390003,injury,Late November 2026,5836940,2026-11-21,2026-11-12
+Sheffield United,Patrick Bamford,302241,injury,Late November 2026,5836940,2026-11-21,2026-11-12
+Sheffield United,Jamie Shackleton,955379,injury,Late November 2026,5836940,2026-11-21,2026-11-12
+Watford,Krépin Diatta,837061,injury,Doubtful,5836940,2026-11-21,2026-11-12
+Watford,Michail Antonio,158545,injury,Unknown,5836940,2026-11-21,2026-11-12
+Watford,Edoardo Bove,1212866,injury,Back in training,5836940,2026-11-21,2026-11-12
+Watford,Jeremy Ngakia,982624,injury,Late November 2026,5836940,2026-11-21,2026-11-12
+Watford,Kwadwo Baah,1097753,injury,Back in training,5836940,2026-11-21,2026-11-12
+Millwall,Ryan Leonard,198265,injury,Late November 2026,5836938,2026-11-21,2026-11-12
+Millwall,Tristan Crama,1130766,injury,Late November 2026,5836938,2026-11-21,2026-11-12
+Millwall,Filip Marschall,1089687,injury,Doubtful,5836938,2026-11-21,2026-11-12
+Millwall,Lukas Bornhøft Jensen,937535,injury,Doubtful,5836938,2026-11-21,2026-11-12
+Millwall,Casper de Norre,688991,injury,Doubtful,5836938,2026-11-21,2026-11-12
+Millwall,Mathis Servais,1215608,injury,Unknown,5836938,2026-11-21,2026-11-12
+Queens Park Rangers,Rumarn Burrell,968935,injury,Late November 2026,5836938,2026-11-21,2026-11-12
+Queens Park Rangers,Nicolas Madsen,917830,injury,Late November 2026,5836938,2026-11-21,2026-11-12
+Queens Park Rangers,Tariq Lamptey,955139,injury,Late November 2026,5836938,2026-11-21,2026-11-12
+Queens Park Rangers,Amadou Salif Mbengue,1292335,injury,Out for season,5836938,2026-11-21,2026-11-12
+Middlesbrough,Rokas Pukštas,1377897,injury,Late November 2026,5836937,2026-11-21,2026-11-12
+Middlesbrough,Alfie Jones,789598,injury,Doubtful,5836937,2026-11-21,2026-11-12
+Bristol City,Noah Eile,1231794,injury,Doubtful,5836937,2026-11-21,2026-11-12
+West Ham United,Keiber Lamadrid,1354086,injury,Late November 2026,5836944,2026-11-21,2026-11-12
+Preston North End,Andrija Vukčević,551961,injury,Doubtful,5836944,2026-11-21,2026-11-12
+Preston North End,Andrew Hughes,212304,injury,Doubtful,5836944,2026-11-21,2026-11-12
+Preston North End,Lewis Gibson,872974,injury,Late November 2026,5836944,2026-11-21,2026-11-12
+Preston North End,Johnny Kenny,1239600,injury,Late November 2026,5836944,2026-11-21,2026-11-12
+Preston North End,Harry Clarke,1086712,injury,Late November 2026,5836944,2026-11-21,2026-11-12
+Preston North End,Liam Gibbs,1111391,injury,Late November 2026,5836944,2026-11-21,2026-11-12
+Preston North End,Alistair McCann,928440,injury,Late November 2026,5836944,2026-11-21,2026-11-12
+Wolves,Jean-Ricner Bellegarde,769166,injury,Doubtful,5836945,2026-11-21,2026-11-12
+Wolves,Fer López,1573122,injury,Doubtful,5836945,2026-11-21,2026-11-12
+Wolves,Jordan James,1310975,injury,Late November 2026,5836945,2026-11-21,2026-11-12
+Wolves,Bertrand Traoré,303059,injury,Late November 2026,5836945,2026-11-21,2026-11-12
+Wolves,Boubacar Traoré,1054122,injury,Late November 2026,5836945,2026-11-21,2026-11-12
+Wolves,Raúl Jiménez,292313,injury,Early January 2027,5836945,2026-11-21,2026-11-12
+Charlton Athletic,Rob Apter,1206308,injury,Unknown,5836945,2026-11-21,2026-11-12
+Charlton Athletic,Collins Sichenje,1378819,injury,Out for season,5836945,2026-11-21,2026-11-12
+Swansea City,Marko Stamenić,1209597,suspension,,5836943,2026-11-21,2026-11-12
+Swansea City,Gonçalo Franco,1052977,injury,Doubtful,5836943,2026-11-21,2026-11-12
+Swansea City,Stephen Welsh,1052686,injury,Doubtful,5836943,2026-11-21,2026-11-12
+Swansea City,Ronald,1260020,injury,Late November 2026,5836943,2026-11-21,2026-11-12
+Swansea City,Cameron Burgess,564842,injury,Out for season,5836943,2026-11-21,2026-11-12
+West Bromwich Albion,Rabby Nzingoula,1609064,injury,Doubtful,5836943,2026-11-21,2026-11-12
+West Bromwich Albion,George Campbell,1047586,injury,Late November 2026,5836943,2026-11-21,2026-11-12
+West Bromwich Albion,Toby Collyer,1421810,injury,Early December 2026,5836943,2026-11-21,2026-11-12
+West Bromwich Albion,Nolan Galves,1473605,injury,Out for season,5836943,2026-11-21,2026-11-12
+West Bromwich Albion,Michael Johnston,766622,injury,Unknown,5836943,2026-11-21,2026-11-12
+Norwich City,Papa Diallo,1435441,injury,Late November 2026,5836939,2026-11-21,2026-11-12
+Norwich City,Mohamed Touré,1132069,injury,Early January 2027,5836939,2026-11-21,2026-11-12
+Norwich City,Gabriel Forsyth,1398105,injury,Doubtful,5836939,2026-11-21,2026-11-12
+Norwich City,Ali Ahmed,1359536,injury,Late November 2026,5836939,2026-11-21,2026-11-12
+Cardiff City,Dylan Lawlor,1639134,injury,Late November 2026,5836939,2026-11-21,2026-11-12
+Cardiff City,Calum Chambers,425255,injury,Doubtful,5836939,2026-11-21,2026-11-12
