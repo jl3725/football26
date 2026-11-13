@@ -474,12 +474,17 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 489,
-   "exact": 466,
+   "total": 492,
+   "exact": 467,
    "rule": 1,
    "ambiguous": 0,
-   "orphan": 22,
+   "orphan": 24,
    "orphans": [
+    {
+     "squad": "Celta Vigo",
+     "name": "Frank Germain Jonathan Miller",
+     "starts": 1
+    },
     {
      "squad": "Getafe",
      "name": "Sebastián Salazar Trujillo",
@@ -489,11 +494,6 @@
      "squad": "Racing Santander",
      "name": "Héctor Mejía",
      "starts": 1
-    },
-    {
-     "squad": "Celta Vigo",
-     "name": "Frank Germain Jonathan Miller",
-     "starts": 0
     },
     {
      "squad": "Elche",
@@ -589,6 +589,16 @@
      "squad": "Levante",
      "name": "Luis Miguel Pérez García",
      "starts": 0
+    },
+    {
+     "squad": "Celta Vigo",
+     "name": "Vladimir Silva",
+     "starts": 0
+    },
+    {
+     "squad": "Celta Vigo",
+     "name": "Marcos González",
+     "starts": 0
     }
    ]
   },
@@ -617,9 +627,9 @@
    ]
   },
   "espn_subs_cups": {
-   "total": 266,
-   "exact": 254,
-   "rule": 11,
+   "total": 269,
+   "exact": 256,
+   "rule": 12,
    "ambiguous": 0,
    "orphan": 1,
    "orphans": [
@@ -631,8 +641,8 @@
    ]
   },
   "match_events": {
-   "total": 396,
-   "exact": 396,
+   "total": 399,
+   "exact": 399,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1742,8 +1752,8 @@
    "minutes": 12
   },
   "s365_ratings": {
-   "total": 443,
-   "exact": 436,
+   "total": 442,
+   "exact": 435,
    "rule": 4,
    "ambiguous": 2,
    "orphan": 0,
@@ -2207,9 +2217,9 @@
    "minutes": 5
   },
   "s365_ratings": {
-   "total": 430,
+   "total": 428,
    "exact": 377,
-   "rule": 4,
+   "rule": 2,
    "ambiguous": 1,
    "orphan": 0,
    "orphans": [],
@@ -3477,13 +3487,13 @@
    "minutes": 0
   },
   "s365_ratings": {
-   "total": 862,
+   "total": 858,
    "exact": 805,
-   "rule": 25,
+   "rule": 21,
    "ambiguous": 0,
    "orphan": 0,
    "orphans": [],
-   "minutes": 9
+   "minutes": 8
   }
  },
  "EPL 2025_2026": {
