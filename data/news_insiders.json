@@ -14,6 +14,13 @@
    "via": "name",
    "checked": "2026-10-30"
   },
+  "schultzreport.bsky.social": {
+   "name": "Jordan Schultz",
+   "followers": 7480,
+   "official": true,
+   "via": "name",
+   "checked": "2026-11-13"
+  },
   "jacobsben.bsky.social": {
    "name": "Ben Jacobs",
    "followers": 6957,
@@ -272,13 +279,6 @@
    "official": true,
    "via": "follows:23carra.bsky.social",
    "checked": "2026-11-07"
-  },
-  "ptgorst.bsky.social": {
-   "name": "Paul Gorst",
-   "followers": 11890,
-   "official": true,
-   "via": "follows:23carra.bsky.social",
-   "checked": "2026-11-07"
   }
  },
  "names": {
@@ -340,6 +340,10 @@
   },
   "Marc Degryse": {
    "handle": null,
+   "checked": "2026-11-13"
+  },
+  "Jordan Schultz": {
+   "handle": "schultzreport.bsky.social",
    "checked": "2026-11-13"
   }
  },
