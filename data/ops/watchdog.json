@@ -1,5 +1,5 @@
 {
- "checked": "2026-11-12T16:23:59+00:00",
+ "checked": "2026-11-13T15:44:33+00:00",
  "results": {
   "ovr": [],
   "season": [],
@@ -7,10 +7,10 @@
   "frontend": [],
   "backend": [],
   "workflows": [
-   "daily_data.yml 최근 실행 failure (2026-11-12T13:07) https://github.com/jl3725/football26/actions/runs/43224359881"
+   "daily_data.yml 최근 실행 failure (2026-11-13T12:31) https://github.com/jl3725/football26/actions/runs/43425945406"
   ],
   "news": [
-   "news.db 압축본 52MB — GitHub 50MB 경고 구간(60MB 넘으면 넓힌 원천의 14일 지난 비이적 기사를 자동 정리, 90MB 넘으면 올리기 거부 — src/news_store.py)"
+   "news.db 압축본 55MB — GitHub 50MB 경고 구간(60MB 넘으면 넓힌 원천의 14일 지난 비이적 기사를 자동 정리, 90MB 넘으면 올리기 거부 — src/news_store.py)"
   ],
   "tm_agent": [],
   "coverage": [],
@@ -21,8 +21,9 @@
   "names": [],
   "xg": [],
   "agents": [
-   "STATS · FBref·Understat·히트맵 — 마지막 성공 202시간 전(허용 192시간, local-season-weekly)",
-   "VALUE · TM 선수 정보 — 마지막 성공 202시간 전(허용 192시간, local-season-weekly)"
+   "STATS · FBref·Understat·히트맵 — 마지막 성공 225시간 전(허용 192시간, local-season-weekly)",
+   "VALUE · TM 선수 정보 — 마지막 성공 226시간 전(허용 192시간, local-season-weekly)",
+   "ANALYST · 팬 투표 — 마지막 성공 41시간 전(허용 24시간, local-fanvote)"
   ],
   "expectations": [],
   "screen": [],
@@ -38,5 +39,5 @@
    "Ask Scout 답 평가 24/36(67%) < 80% — 실패 유형 {'engine=rules': 1, '요청': 11} · 예: 바르셀로나에서 영향력 높은 선수 / 아스날 왼쪽 윙 영입 추천 / 도쿠와 비슷한 선수 / 아스날 영입 후보 중 이적설도 있는 선수는?"
   ]
  },
- "ai_cause": "- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(workflows) (추정)\n- 원장에 관련 실패 없음 — 압축본 52MB로 GitHub 50MB 경고 구간 진입(news)\n- 원장에 관련 실패 없음 — 스카우트 기준 이탈(Jeremy Doku 89, 기대 82~86)(ratings)\n- Understat live 단계 코드 75 및 sync_manager_profiles 단계 코드 2 반복으로 마지막 성공이 허용 192시간을 초과(agents)\n- Understat live 및 sync_manager_profiles 단계의 실패 기록으로 인해 일부 리그 통계 누락 및 지연 발생(progress) (추정)\n- 원장에 관련 실패 없음 — Ask Scout 답 평가 67%로 기준치 80% 미만(scout_answers) (추정)"
+ "ai_cause": "**workflows**\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인)\n**news**\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인)\n**ratings**\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인)\n**agents**\n- Understat 데이터 수집(code 75) 및 매니저 프로필 동기화(code 2) 단계에서 반복적인 실패가 발생하여 데이터 갱신이 지연됨 (understat_live, sync_manager_profiles)\n- 해당 단계의 API 응답 오류나 네트워크 연결 상태를 먼저 점검해야 함 (추정)\n**progress**\n- Understat 라이브 데이터 수집(code 75)과 매니저 프로필 동기화(code 2) 실패로 인해 통계 데이터가 누락되거나 갱신되지 않음 (understat_live, sync_manager_profiles)\n- Rennes 팀의 데이터 매칭 오류 및 통계 수집 실패 원인을 우선 확인해야 함 (추정)\n**scout_answers**\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인)"
 }
