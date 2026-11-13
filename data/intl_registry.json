@@ -1,5 +1,5 @@
 {
- "date": "2026-11-05",
+ "date": "2026-11-13",
  "comps": [
   {
    "code": "fifa.world",
@@ -7,6 +7,13 @@
    "conf": "GLOBAL",
    "kind": "tournament",
    "name_ko": "FIFA 월드컵"
+  },
+  {
+   "code": "concacaf.nations.league",
+   "name": "Concacaf Nations League",
+   "conf": "CONCACAF",
+   "kind": "nations_league",
+   "name_ko": "CONCACAF 네이션스리그"
   },
   {
    "code": "uefa.nations",
@@ -21,13 +28,6 @@
    "conf": "GLOBAL",
    "kind": "friendly",
    "name_ko": "국제 친선경기"
-  },
-  {
-   "code": "concacaf.nations.league",
-   "name": "Concacaf Nations League",
-   "conf": "CONCACAF",
-   "kind": "nations_league",
-   "name_ko": "CONCACAF 네이션스리그"
   },
   {
    "code": "fifa.worldq.uefa",
