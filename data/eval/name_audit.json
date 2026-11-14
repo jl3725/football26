@@ -2237,8 +2237,8 @@
   },
   "espn_lineups": {
    "total": 710,
-   "exact": 646,
-   "rule": 10,
+   "exact": 651,
+   "rule": 5,
    "ambiguous": 0,
    "orphan": 54,
    "orphans": [
@@ -2371,10 +2371,10 @@
   },
   "espn_lineups_cups": {
    "total": 595,
-   "exact": 555,
-   "rule": 10,
+   "exact": 558,
+   "rule": 8,
    "ambiguous": 0,
-   "orphan": 30,
+   "orphan": 29,
    "orphans": [
     {
      "squad": "Lincoln City",
@@ -2395,11 +2395,6 @@
      "squad": "Watford",
      "name": "Tomiwa Akinyimika",
      "starts": 1
-    },
-    {
-     "squad": "Millwall",
-     "name": "Regan Anderson",
-     "starts": 0
     },
     {
      "squad": "Millwall",
@@ -2500,6 +2495,11 @@
      "squad": "Queens Park Rangers",
      "name": "Kieran Morgan",
      "starts": 0
+    },
+    {
+     "squad": "Queens Park Rangers",
+     "name": "Philip Sanyaolu",
+     "starts": 0
     }
    ]
   },
@@ -2542,17 +2542,17 @@
   "wiki_squads": {
    "total": 637,
    "exact": 511,
-   "rule": 12,
-   "ambiguous": 0,
+   "rule": 9,
+   "ambiguous": 1,
    "orphan": 0,
    "orphans": []
   },
   "espn_lineups": {
    "total": 592,
-   "exact": 565,
-   "rule": 7,
+   "exact": 569,
+   "rule": 4,
    "ambiguous": 0,
-   "orphan": 20,
+   "orphan": 19,
    "orphans": [
     {
      "squad": "Erzurumspor FK",
@@ -2572,11 +2572,6 @@
     {
      "squad": "Amed Sportif",
      "name": "Ismail Duyu",
-     "starts": 0
-    },
-    {
-     "squad": "Kasımpaşa",
-     "name": "Muhammed Emin Bektash",
      "starts": 0
     },
     {
@@ -5919,7 +5914,7 @@
   }
  },
  "_meta": {
-  "date": "2026-11-13",
+  "date": "2026-11-14",
   "season": "2026_2027"
  }
 }
