@@ -138,7 +138,6 @@ Anderlecht,Killian Sardella,1076975,defenders,"RB,CB",Right-Back,DF,24,2002-05-0
 Anderlecht,Ali Maamar,1693008,defenders,"RB,LB",Right-Back,DF,21,2005-03-23,79.0,MAR,False,,2026-11-14
 Anderlecht,Adjani Mujangi Bia,1910452,midfielders,CDM,Defensive Midfield,MF,16,2010-05-30,,BEL,False,,2026-11-14
 Anderlecht,Romeo Amané,1338495,midfielders,"CDM,CM",Defensive Midfield,MF,23,2003-02-20,8.0,CIV,False,,2026-11-14
-Anderlecht,Oliver Antman,1021082,midfielders,"RW,LM,LWB",Right Winger,MF,25,2001-08-15,11.0,FIN,False,,2026-11-14
 Anderlecht,Lukás Ambros,1412656,midfielders,"CM,RW,RM,CAM",Central Midfield,MF,22,2004-06-05,18.0,CZE,False,,2026-11-14
 Anderlecht,Thelo Aasgaard,1184468,midfielders,"CAM,CM,RW,CDM",Attacking Midfield,MF,24,2002-05-02,19.0,NOR,False,,2026-11-14
 Anderlecht,Enric Llansana,1033342,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,25,2001-04-13,24.0,NED,False,,2026-11-14
@@ -147,11 +146,12 @@ Anderlecht,Ilias Koutsoupias,1188316,midfielders,"CM,CAM",Central Midfield,MF,25
 Anderlecht,Noa Ojea,2140826,midfielders,RM,Right Midfield,MF,17,2009-08-10,53.0,BEL,False,,2026-11-14
 Anderlecht,Marco Kana,1076974,midfielders,"CM,CB,CDM",Central Midfield,MF,24,2002-08-08,55.0,BEL,False,,2026-11-14
 Anderlecht,Joshua Nga Kana,1817363,midfielders,"CAM,LW,LM,RW",Attacking Midfield,MF,17,2009-06-13,61.0,BEL,False,,2026-11-14
-Anderlecht,Noah Kalonji,2011192,midfielders,CM,Central Midfield,MF,17,2009-04-22,68.0,BEL,False,,2026-11-14
+Anderlecht,Noah Kalonji,2011192,midfielders,CDM,Defensive Midfield,MF,17,2009-04-22,68.0,BEL,False,,2026-11-14
 Anderlecht,Alexis Flips,889521,midfielders,CAM,Attacking Midfield,MF,26,2000-01-18,70.0,FRA,False,,2026-11-14
 Anderlecht,Majeed Ashimeru,850925,midfielders,"CAM,CDM",Attacking Midfield,MF,29,1997-10-10,99.0,GHA,False,,2026-11-14
-Anderlecht,Mihajlo Cvetković,1480699,attackers,"ST,RW,LW",Centre-Forward,FW,19,2007-01-10,9.0,SRB,False,,2026-11-14
+Anderlecht,Mihajlo Cvetković,1480699,attackers,"ST,LW,RW",Centre-Forward,FW,19,2007-01-10,9.0,SRB,False,,2026-11-14
 Anderlecht,Marten Winkler,1255785,attackers,"RW,LW,LM",Right Winger,FW,24,2002-10-31,10.0,GER,False,,2026-11-14
+Anderlecht,Oliver Antman,1021082,attackers,"RW,LM,LWB",Right Winger,FW,25,2001-08-15,11.0,FIN,False,,2026-11-14
 Anderlecht,Danylo Sikan,955572,attackers,"ST,CAM",Centre-Forward,FW,25,2001-04-16,14.0,UKR,False,,2026-11-14
 Anderlecht,Tawfik Bentayeb,1436306,attackers,"ST,RW",Centre-Forward,FW,24,2002-01-14,21.0,MAR,False,,2026-11-14
 Anderlecht,Elyèss Dao,1666477,attackers,LW,Left Winger,FW,19,2006-11-20,22.0,FRA,False,,2026-11-14
@@ -257,7 +257,7 @@ Standard Liège,Sylvester Jasper,1098807,attackers,LW,Left Winger,FW,25,2001-09-
 Standard Liège,Bruny Nsimba,1173031,attackers,ST,Centre-Forward,FW,26,2000-04-05,77.0,BEL,False,,2026-11-14
 Standard Liège,Grejohn Kyei,562695,attackers,ST,Centre-Forward,FW,31,1995-08-12,95.0,FRA,False,,2026-11-14
 Westerlo,Bill Lathouwers,1173030,keepers,GK,Goalkeeper,GK,27,1999-09-18,1.0,BEL,False,,2026-11-14
-Westerlo,Jahnilo Wiegel,1805952,keepers,,Goalkeeper,GK,21,2005-03-13,21.0,SUR,False,,2026-11-14
+Westerlo,Jahnilo Wiegel,1805952,keepers,GK,Goalkeeper,GK,21,2005-03-13,21.0,SUR,False,,2026-11-14
 Westerlo,Koen Van Langendonck,346114,keepers,GK,Goalkeeper,GK,37,1989-06-09,30.0,BEL,False,,2026-11-14
 Westerlo,Andreas Jungdal,1183740,keepers,GK,Goalkeeper,GK,24,2002-02-22,99.0,DEN,False,,2026-11-14
 Westerlo,Lasse Flø,1485380,defenders,"RB,RWB",Right-Back,DF,21,2005-10-15,2.0,DEN,False,,2026-11-14
@@ -376,7 +376,6 @@ Sint-Truiden,Jeremy Mbambi,1795392,defenders,CB,Centre-Back,DF,18,2008-05-04,27.
 Sint-Truiden,Rune Verheyden,2123614,defenders,,Centre-Back,DF,19,2007-04-18,39.0,BEL,False,,2026-11-14
 Sint-Truiden,Robert-Jan Vanwesemael,1596061,defenders,"RB,RW,LB",Right-Back,DF,24,2002-03-26,60.0,BEL,False,,2026-11-14
 Sint-Truiden,Abdoulaye Sissako,764779,midfielders,"CDM,CM",Defensive Midfield,MF,28,1998-05-26,8.0,UGA,False,,2026-11-14
-Sint-Truiden,Nathanaël Mbuku,1049799,midfielders,"CAM,RW,LW,LM,RM",Attacking Midfield,MF,24,2002-03-16,11.0,COD,False,,2026-11-14
 Sint-Truiden,Ryan Merlen,1609381,midfielders,"CDM,CAM,CM",Defensive Midfield,MF,24,2002-05-11,14.0,FRA,False,,2026-11-14
 Sint-Truiden,Nelson Ishiwatari,1381856,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,21,2005-05-10,18.0,JPN,False,,2026-11-14
 Sint-Truiden,Illyès Benachour,1785961,midfielders,,Central Midfield,MF,19,2007-01-09,31.0,MAR,False,,2026-11-14
@@ -386,6 +385,7 @@ Sint-Truiden,Shion Shinkawa,1717127,midfielders,CAM,Attacking Midfield,MF,19,200
 Sint-Truiden,Arbnor Muja,857141,attackers,RW,Right Winger,FW,27,1998-11-29,7.0,ALB,False,,2026-11-14
 Sint-Truiden,Samed Baždar,1284492,attackers,ST,Centre-Forward,FW,22,2004-01-31,9.0,BIH,False,,2026-11-14
 Sint-Truiden,Ilias Sebaoui,1307959,attackers,"LW,RW",Left Winger,FW,25,2001-10-04,10.0,BEL,False,,2026-11-14
+Sint-Truiden,Nathanaël Mbuku,1049799,attackers,"CAM,RW,LW,LM,RM",Attacking Midfield,FW,24,2002-03-16,11.0,COD,False,,2026-11-14
 Sint-Truiden,Frédéric Soèllé Soèllé,1406310,attackers,ST,Centre-Forward,FW,20,2005-12-24,19.0,BEL,False,,2026-11-14
 Sint-Truiden,Jay-David Mbalanda,1697341,attackers,ST,Centre-Forward,FW,19,2007-05-03,32.0,BEL,False,,2026-11-14
 Sint-Truiden,Kaito Matsuzawa,1515636,attackers,"RW,LW",Right Winger,FW,25,2001-02-05,38.0,JPN,False,,2026-11-14
@@ -487,11 +487,11 @@ Cercle Brugge,Sam Behaeghe,2173843,defenders,,Centre-Back,DF,21,2005-03-14,,BEL,
 Cercle Brugge,Ibrahim Diakité,1324373,defenders,"CB,RB",Centre-Back,DF,23,2003-10-31,2.0,GUI,False,,2026-11-14
 Cercle Brugge,Yago Lincoln,1575238,defenders,CB,Centre-Back,DF,23,2003-01-30,3.0,BRA,False,,2026-11-14
 Cercle Brugge,Emmanuel Kakou,1640208,defenders,CB,Centre-Back,DF,21,2005-06-30,5.0,CIV,False,,2026-11-14
-Cercle Brugge,Valy Konaté,1651103,defenders,"LWB,CB,LB,RM",Left-Back,DF,19,2006-11-14,12.0,CIV,False,,2026-11-14
+Cercle Brugge,Valy Konaté,1651103,defenders,"LWB,CB,LB,RM",Left-Back,DF,20,2006-11-14,12.0,CIV,False,,2026-11-14
 Cercle Brugge,Gary Magnée,1075033,defenders,"RB,RWB,RM,RW",Right-Back,DF,27,1999-10-12,15.0,BEL,False,,2026-11-14
 Cercle Brugge,Geoffrey Kondo,1508706,defenders,"CB,LB",Centre-Back,DF,24,2002-05-02,24.0,FRA,False,,2026-11-14
 Cercle Brugge,Royer Caicedo,1694373,defenders,CB,Centre-Back,DF,20,2006-05-05,33.0,COL,False,,2026-11-14
-Cercle Brugge,Omotayo Adaramola,1197626,defenders,"LB,LM,LW,LWB,CB",Left-Back,DF,22,2003-11-14,45.0,IRL,False,,2026-11-14
+Cercle Brugge,Omotayo Adaramola,1197626,defenders,"LB,LM,LW,LWB,CB",Left-Back,DF,23,2003-11-14,45.0,IRL,False,,2026-11-14
 Cercle Brugge,Louis Colman,2221844,defenders,,Centre-Back,DF,19,2007-05-05,82.0,BEL,False,,2026-11-14
 Cercle Brugge,Erick Nunes,1609360,midfielders,RWB,Right-Back,MF,22,2004-02-29,8.0,BRA,False,,2026-11-14
 Cercle Brugge,Lazare Amani,768459,midfielders,"CM,CDM",Central Midfield,MF,28,1998-03-07,10.0,CIV,False,,2026-11-14

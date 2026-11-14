@@ -19,7 +19,7 @@ Lazio,Adam Marušić,478447,defenders,"RB,LB",Right-Back,DF,34,1992-10-17,77.0,M
 Lazio,Nicolò Rovella,1020963,midfielders,CM,Central Midfield,MF,24,2001-12-04,6.0,ITA,False,,2026-11-14
 Lazio,Fisayo Dele-Bashiru,1091907,midfielders,CM,Central Midfield,MF,25,2001-02-06,7.0,NGA,False,,2026-11-14
 Lazio,Bruno Galassi,1842381,midfielders,ST,Centre-Forward,MF,19,2007-02-07,8.0,ESP,False,,2026-11-14
-Lazio,Davide Frattesi,815431,midfielders,"CM,CAM",Central Midfield,MF,27,1999-09-22,16.0,ITA,False,,2026-11-14
+Lazio,Davide Frattesi,815431,midfielders,"CM,CAM",Central Midfield,MF,27,1999-09-22,16.0,ITA,True,Doubtful,2026-11-14
 Lazio,Reda Belahyane,1388071,midfielders,CM,Central Midfield,MF,22,2004-06-01,21.0,MAR,False,,2026-11-14
 Lazio,Kenneth Taylor,970565,midfielders,CM,Central Midfield,MF,24,2002-05-16,24.0,NED,False,,2026-11-14
 Lazio,Danilo Cataldi,362120,midfielders,CM,Central Midfield,MF,32,1994-08-06,32.0,ITA,False,,2026-11-14
@@ -43,11 +43,11 @@ Inter,Yann Aurel Bisseck,889535,defenders,CB,Centre-Back,DF,25,2000-11-29,31.0,G
 Inter,Alessandro Bastoni,805451,defenders,CB,Centre-Back,DF,27,1999-04-13,95.0,ITA,False,,2026-11-14
 Inter,Djed Spence,894803,defenders,"LB,RB,RM,RWB,LM,LWB",Left-Back,DF,26,2000-08-09,99.0,ENG,True,A few days,2026-11-14
 Inter,Aleksandar Stanković,1410437,midfielders,"CDM,CM",Defensive Midfield,MF,21,2005-08-03,5.0,SRB,True,Mid December 2026,2026-11-14
-Inter,Piotr Zieliński,362212,midfielders,"CM,CDM",Central Midfield,MF,32,1994-05-20,7.0,POL,True,Doubtful,2026-11-14
+Inter,Piotr Zieliński,362212,midfielders,"CM,CDM",Central Midfield,MF,32,1994-05-20,7.0,POL,False,,2026-11-14
 Inter,Petar Sučić,1382000,midfielders,"CM,CAM,RW",Central Midfield,MF,23,2003-10-25,8.0,CRO,False,,2026-11-14
 Inter,Luis Henrique,1114635,midfielders,RM,Right Midfield,MF,24,2001-12-14,11.0,BRA,True,Late November 2026,2026-11-14
 Inter,Andy Diouf,1254297,midfielders,"RM,CM,CAM,LB",Right Midfield,MF,23,2003-05-17,17.0,FRA,False,,2026-11-14
-Inter,Hakan Çalhanoglu,304733,midfielders,"CM,CDM",Central Midfield,MF,32,1994-02-08,20.0,TUR,False,,2026-11-14
+Inter,Hakan Çalhanoğlu,304733,midfielders,"CM,CDM",Central Midfield,MF,32,1994-02-08,20.0,TUR,False,,2026-11-14
 Inter,Curtis Jones,933768,midfielders,"CDM,RB,CAM,CM",Defensive Midfield,MF,25,2001-01-30,21.0,ENG,False,,2026-11-14
 Inter,Henrikh Mkhitaryan,73167,midfielders,CM,Central Midfield,MF,37,1989-01-21,22.0,ARM,False,,2026-11-14
 Inter,Nicolò Barella,541820,midfielders,"CM,CAM",Central Midfield,MF,29,1997-02-07,23.0,ITA,False,,2026-11-14
@@ -287,7 +287,7 @@ Napoli,David Neres,793066,midfielders,"CAM,RW",Attacking Midfield,MF,29,1997-03-
 Napoli,Scott McTominay,843099,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,29,1996-12-08,8.0,SCO,False,,2026-11-14
 Napoli,Kevin De Bruyne,169200,midfielders,"CAM,CM",Attacking Midfield,MF,35,1991-06-28,11.0,BEL,False,,2026-11-14
 Napoli,Matteo Politano,415539,midfielders,"RWB,RW,RM,CAM",Right-Back,MF,33,1993-08-03,21.0,ITA,False,,2026-11-14
-Napoli,Antonio Vergara,1320863,midfielders,"CAM,RW,CM",Attacking Midfield,MF,23,2003-01-16,26.0,ITA,False,,2026-11-14
+Napoli,Antonio Vergara,1320863,midfielders,"CAM,CM,RW",Attacking Midfield,MF,23,2003-01-16,26.0,ITA,False,,2026-11-14
 Napoli,Alisson Santos,1355552,midfielders,"CAM,LW",Attacking Midfield,MF,24,2002-09-27,27.0,BRA,True,Late November 2026,2026-11-14
 Napoli,Leonardo Spinazzola,215242,midfielders,"LWB,LM,LB",Left-Back,MF,33,1993-03-25,37.0,ITA,True,Late November 2026,2026-11-14
 Napoli,Stanislav Lobotka,308517,midfielders,"CDM,CM",Defensive Midfield,MF,31,1994-11-25,68.0,SVK,True,Late December 2026,2026-11-14
@@ -303,7 +303,7 @@ Torino,Franco Israel,1053960,keepers,GK,Goalkeeper,GK,26,2000-04-22,81.0,URU,Fal
 Torino,Nathan Patterson,1112684,defenders,RB,Right-Back,DF,25,2001-10-16,2.0,SCO,False,,2026-11-14
 Torino,Cristiano Biraghi,239350,defenders,LWB,Left-Back,DF,34,1992-09-01,3.0,ITA,False,,2026-11-14
 Torino,Eray Cömert,705484,defenders,CB,Centre-Back,DF,28,1998-02-04,5.0,SUI,False,,2026-11-14
-Torino,Ricardo Rodríguez,115591,defenders,LB,Left-Back,DF,34,1992-08-25,13.0,SUI,True,Doubtful,2026-11-14
+Torino,Ricardo Rodríguez,115591,defenders,LB,Left-Back,DF,34,1992-08-25,13.0,SUI,False,,2026-11-14
 Torino,Pietro Comuzzo,1529222,defenders,CB,Centre-Back,DF,21,2005-02-20,15.0,ITA,False,,2026-11-14
 Torino,Saúl Coco,941953,defenders,CB,Centre-Back,DF,27,1999-02-09,23.0,EQG,False,,2026-11-14
 Torino,Niccolò Fortini,1642351,defenders,"RB,RWB,RM",Right-Back,DF,20,2006-02-13,29.0,ITA,True,Doubtful,2026-11-14
@@ -559,7 +559,7 @@ Venezia,Armel Bella-Kotchap,951765,defenders,CB,Centre-Back,DF,24,2001-12-11,17.
 Venezia,Redouane Halhal,1298186,defenders,CB,Centre-Back,DF,23,2003-03-05,25.0,MAR,False,,2026-11-14
 Venezia,Marin Šverko,782703,defenders,CB,Centre-Back,DF,28,1998-02-04,33.0,CRO,True,Unknown,2026-11-14
 Venezia,Ale Gomes,1842921,defenders,"RB,CB",Right-Back,DF,18,2008-02-14,95.0,ESP,False,,2026-11-14
-Venezia,Ridgeciano Haps,414232,midfielders,"LM,LB",Left Midfield,MF,33,1993-06-12,5.0,SUR,False,,2026-11-14
+Venezia,Ridgeciano Haps,414232,midfielders,"LM,CB,LWB",Left Midfield,MF,33,1993-06-12,5.0,SUR,False,,2026-11-14
 Venezia,Gianluca Busio,924431,midfielders,"CM,CDM",Central Midfield,MF,24,2002-05-28,6.0,USA,False,,2026-11-14
 Venezia,Lamine Fanne,1460862,midfielders,"CDM,CAM,CM",Defensive Midfield,MF,22,2004-01-30,8.0,ESP,False,,2026-11-14
 Venezia,Antoine Hainaut,1290968,midfielders,RM,Right Midfield,MF,24,2002-02-18,18.0,FRA,False,,2026-11-14
@@ -595,7 +595,7 @@ Udinese,Enzo Ebosse,769167,defenders,CB,Centre-Back,DF,27,1999-03-11,77.0,CMR,Fa
 Udinese,Sandi Lovrić,557346,midfielders,"CM,CDM",Central Midfield,MF,28,1998-03-28,4.0,SVN,False,,2026-11-14
 Udinese,Oier Zarraga,1106916,midfielders,CDM,Defensive Midfield,MF,27,1999-01-04,6.0,ESP,False,,2026-11-14
 Udinese,Jesper Karlström,322003,midfielders,"CM,CDM",Central Midfield,MF,31,1995-06-21,8.0,SWE,False,,2026-11-14
-Udinese,Hassane Kamara,488415,midfielders,"LM,LWB",Left Midfield,MF,32,1994-03-05,11.0,CIV,False,,2026-11-14
+Udinese,Hassane Kamara,488415,midfielders,"LM,LWB,LB",Left Midfield,MF,32,1994-03-05,11.0,CIV,False,,2026-11-14
 Udinese,Juan Arizala,1450999,midfielders,LM,Left Midfield,MF,21,2005-10-10,20.0,COL,False,,2026-11-14
 Udinese,Mërgim Vojvoda,560945,midfielders,"RWB,RW,RB,RM",Right-Back,MF,31,1995-02-01,23.0,KVX,False,,2026-11-14
 Udinese,Jakub Piotrowski,689987,midfielders,"CM,CDM",Central Midfield,MF,29,1997-10-04,24.0,POL,False,,2026-11-14

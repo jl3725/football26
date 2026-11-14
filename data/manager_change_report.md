@@ -1,6 +1,6 @@
 # Manager Change Report
 
-- Checked: 2026-11-13 12:32 UTC
+- Checked: 2026-11-14 11:41 UTC
 - Source: https://en.wikipedia.org/wiki/2026%E2%80%9327_Premier_League
 - Teams tracked: 20
 - Source teams matched: 20
@@ -8,4 +8,4 @@
 
 ## Change Candidates
 
-- Manchester Utd: local `Vacant` -> source `Mauricio Pochettino`
+- None

@@ -1,7 +1,7 @@
 {
- "date": "2026-11-13",
+ "date": "2026-11-14",
  "model": "v3.18",
- "checked": 52879,
+ "checked": 52878,
  "mismatches": [],
  "leagues": {
   "EPL": {
@@ -62,7 +62,7 @@
   },
   "LaLiga": {
    "teams": 20,
-   "checked": 3859,
+   "checked": 3858,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -77,11 +77,11 @@
    "changes_top": [
     {
      "team": "Santa Clara",
-     "player": "Henrique Silva",
-     "from": 50,
-     "to": 52,
-     "d": 2,
-     "since": "2026-11-13",
+     "player": "Frederico Silva",
+     "from": 52,
+     "to": 50,
+     "d": -2,
+     "since": "2026-11-14",
      "model_change": false
     }
    ]
