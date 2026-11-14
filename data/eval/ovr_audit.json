@@ -1,0 +1,130 @@
+{
+ "date": "2026-11-14",
+ "model": "v3.18",
+ "checked": 52878,
+ "mismatches": [],
+ "leagues": {
+  "EPL": {
+   "teams": 20,
+   "checked": 3663,
+   "mismatches": 0,
+   "changed": 0,
+   "model_changed": 0,
+   "changes_top": []
+  },
+  "AustrianBundesliga": {
+   "teams": 12,
+   "checked": 2560,
+   "mismatches": 0,
+   "changed": 0,
+   "model_changed": 0,
+   "changes_top": []
+  },
+  "BelgianProLeague": {
+   "teams": 18,
+   "checked": 3418,
+   "mismatches": 0,
+   "changed": 0,
+   "model_changed": 0,
+   "changes_top": []
+  },
+  "Bundesliga": {
+   "teams": 18,
+   "checked": 3329,
+   "mismatches": 0,
+   "changed": 0,
+   "model_changed": 0,
+   "changes_top": []
+  },
+  "Championship": {
+   "teams": 24,
+   "checked": 5095,
+   "mismatches": 0,
+   "changed": 0,
+   "model_changed": 0,
+   "changes_top": []
+  },
+  "DanishSuperliga": {
+   "teams": 12,
+   "checked": 2607,
+   "mismatches": 0,
+   "changed": 0,
+   "model_changed": 0,
+   "changes_top": []
+  },
+  "Eredivisie": {
+   "teams": 18,
+   "checked": 3441,
+   "mismatches": 0,
+   "changed": 0,
+   "model_changed": 0,
+   "changes_top": []
+  },
+  "LaLiga": {
+   "teams": 20,
+   "checked": 3858,
+   "mismatches": 0,
+   "changed": 0,
+   "model_changed": 0,
+   "changes_top": []
+  },
+  "LigaPortugal": {
+   "teams": 18,
+   "checked": 3492,
+   "mismatches": 0,
+   "changed": 1,
+   "model_changed": 0,
+   "changes_top": [
+    {
+     "team": "Santa Clara",
+     "player": "Frederico Silva",
+     "from": 52,
+     "to": 50,
+     "d": -2,
+     "since": "2026-11-14",
+     "model_change": false
+    }
+   ]
+  },
+  "Ligue1": {
+   "teams": 18,
+   "checked": 3347,
+   "mismatches": 0,
+   "changed": 0,
+   "model_changed": 0,
+   "changes_top": []
+  },
+  "MLS": {
+   "teams": 30,
+   "checked": 7202,
+   "mismatches": 0,
+   "changed": 0,
+   "model_changed": 0,
+   "changes_top": []
+  },
+  "SerieA": {
+   "teams": 20,
+   "checked": 3841,
+   "mismatches": 0,
+   "changed": 0,
+   "model_changed": 0,
+   "changes_top": []
+  },
+  "SuperLig": {
+   "teams": 18,
+   "checked": 3703,
+   "mismatches": 0,
+   "changed": 0,
+   "model_changed": 0,
+   "changes_top": []
+  },
+  "SwissSuperLeague": {
+   "teams": 12,
+   "checked": 2762,
+   "mismatches": 0,
+   "changed": 0,
+   "model_changed": 0,
+   "changes_top": []
+  }
+ }
+}

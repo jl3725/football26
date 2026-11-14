@@ -1,0 +1,14 @@
+kind,league,team,player,expect,season,note
+influence_top,EPL,Arsenal,Martin Ødegaard|Declan Rice,3,,사용자 2026-10-20 — 외데고르·라이스 영향력이 매우 높다(입단 기준으로만 판단하지 말 것)
+captain,EPL,Arsenal,Martin Ødegaard,1,,위키 주장단 · 사용자 확인 2026-10-20
+captain_not,LaLiga,Barcelona,Lamine Yamal,1,,사용자 2026-10-20 — 야말이 메인 주장으로 나옴('5th captain' 파싱 오류)
+bucket_in,Ligue1,,Khvicha Kvaratskhelia,LW,,사용자 2026-10-19 — 적합도 평가에서 CM 으로 나옴
+fit_natural,Ligue1,Arsenal,Khvicha Kvaratskhelia,Left Winger,,사용자 2026-10-19 — 적합도 평가 기본 역할은 본 포지션
+bucket_in,EPL,,Johan Manzambi,DM|CM|AM,,사용자 2026-10-19 — 만잠비는 중앙 미드필더(윙어 아님)
+bucket_in,EPL,,Bukayo Saka,RW|LW,,사용자 기준 — 사카는 윙어
+similar_not,EPL,,Bukayo Saka,Johan Manzambi,,사용자 2026-10-19 — 사카 유사 선수 1위가 만잠비(중미)
+similar_bucket,EPL,,Bukayo Saka,RW|LW,,사용자 2026-10-19 — 윙어는 윙어끼리 비교
+stat_ge,EPL,Manchester City,Erling Haaland,goals:8,2026_2027,사용자 2026-10-20 — 리그 8골인데 6골로 나옴(주간 FBref). 시즌 누적이라 시즌 안에선 줄지 않음
+radar_shown,EPL,Arsenal,Jurriën Timber,6,,사용자 2026-10-21 — 팀버·기마랑이스·엔조 육각형 스탯이 안 보임(이번 시즌 리그 분만 보고 숨김)
+radar_shown,EPL,Arsenal,Bruno Guimarães,6,,사용자 2026-10-21 — 위와 같음
+radar_shown,EPL,Manchester City,Enzo Fernández,6,,사용자 2026-10-21 — 위와 같음

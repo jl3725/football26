@@ -1,0 +1,458 @@
+{
+ "date": "2026-11-10",
+ "base": "https://football26-smoky.vercel.app",
+ "n": 36,
+ "pass": 24,
+ "score": 0.667,
+ "min": 0.8,
+ "fail_by_check": {
+  "engine=rules": 1,
+  "요청": 11
+ },
+ "results": [
+  {
+   "q": "아스날 주장은 누구야?",
+   "ok": true,
+   "fails": [],
+   "sec": 16.1,
+   "tools": [
+    "team_leadership"
+   ],
+   "counts": [
+    null
+   ],
+   "answer": "아스날의 주장은 마르틴 외데고르입니다. 부주장은 부카요 사카가 맡고 있습니다."
+  },
+  {
+   "q": "아스날 이적설 정리해줘",
+   "ok": true,
+   "fails": [],
+   "sec": 5.4,
+   "tools": [
+    "graph_query"
+   ],
+   "counts": [
+    15
+   ],
+   "answer": "현재 아스날과 연결되고 있는 주요 이적설을 정리해 드립니다. (열기 순)\n\n| 선수명 | 포지션 | 단계 | 주요 보도 매체 |\n| :--- | :--- | :--- | :--- |\n| **Julián Álvarez** | Centre-Forward | **Done** | Football London, TEAMtalk, The Mirror 등 |\n| **Antonio Nusa** | Left Winger | Interest |"
+  },
+  {
+   "q": "아스날 이적설 중 여러 매체가 보도한 선수는?",
+   "ok": true,
+   "fails": [],
+   "sec": 2.7,
+   "tools": [
+    "graph_query"
+   ],
+   "counts": [
+    10
+   ],
+   "answer": "현재 아스날과 관련하여 여러 매체에서 보도된 주요 이적설 대상 선수들입니다. 보도 빈도와 매체 수를 기준으로 정리했습니다.\n\n| 선수명 | 보도 매체 수 | 총 보도 건수 | 현재 단계 | 상태 |\n| :--- | :---: | :---: | :--- | :--- |\n| **Bruno Guimarães** | 3 | 6 | 합의(agreed) | 적중(hit) |\n| **Julián Álvarez** | 4 | 5 | 완료(d"
+  },
+  {
+   "q": "아스날과 이적설이 있는 선수 중 기자들이 많이 보도한 선수는?",
+   "ok": true,
+   "fails": [],
+   "sec": 2.6,
+   "tools": [
+    "graph_query"
+   ],
+   "counts": [
+    10
+   ],
+   "answer": "현재 아스날과 관련하여 언론 보도가 가장 많은 선수들은 다음과 같습니다.\n\n| 선수명 | 보도 건수 | 주요 매체 수 | 현재 단계 |\n| :--- | :---: | :---: | :--- |\n| **Bruno Guimarães** | 6 | 3 | 합의(agreed) |\n| **Julián Álvarez** | 5 | 4 | 완료(done) |\n| **Christos Tzolis** | 4 | 2 | 완료(done) |\n| "
+  },
+  {
+   "q": "Arsenal transfer rumors",
+   "ok": true,
+   "fails": [],
+   "sec": 15.0,
+   "tools": [
+    "graph_query"
+   ],
+   "counts": [
+    15
+   ],
+   "answer": "현재 Arsenal과 연결된 주요 이적설 브리핑입니다. (Heat 지수 및 보도 빈도 기준)\n\n*   **Julián Álvarez (CF, Heat 89):** 현재 가장 높은 관심을 받고 있으며, 보도상 'done(완료)' 단계로 언급되고 있습니다.\n*   **Antonio Nusa (LW, Heat 75):** 구단이 관심을 보이고 있는 단계입니다.\n*   **Marcus Tavernier (AM, Heat 72):** "
+  },
+  {
+   "q": "레알 마드리드 이적설",
+   "ok": true,
+   "fails": [],
+   "sec": 3.4,
+   "tools": [
+    "graph_query"
+   ],
+   "counts": [
+    15
+   ],
+   "answer": "현재 Real Madrid와 연결되고 있는 주요 이적설 브리핑입니다.\n\n가장 주목할 만한 이름은 **알렉시스 맥 알리스터(Alexis Mac Allister)**로, 현재 구단과 협상(talks) 단계에 있다는 보도가 다수 매체(Football365, TEAMtalk 등)를 통해 나오고 있습니다.\n\n**주요 이적설 요약:**\n\n*   **Alexis Mac Allister (CM):** Heat 70, 협상 단계. 중원 보강을"
+  },
+  {
+   "q": "이적설 열기가 가장 높은 선수들은?",
+   "ok": true,
+   "fails": [],
+   "sec": 29.5,
+   "tools": [
+    "graph_query"
+   ],
+   "counts": [
+    10
+   ],
+   "answer": "현재 이적 시장에서 가장 뜨거운 이적설 열기를 보이고 있는 선수들입니다. 툴 결과의 heat 지수와 진행 단계(stage)를 기준으로 정리했습니다.\n\n- **Marcus Rashford** (Everton 루머) — Heat: 94 | 단계: talks | 관련 기사: 8건\n- **Alex Scott** (Chelsea 루머) — Heat: 94 | 단계: talks | 관련 기사: 7건\n- **Julián Álvarez** "
+  },
+  {
+   "q": "라이스와 같은 기사에 자주 나오는 선수는?",
+   "ok": true,
+   "fails": [],
+   "sec": 4.2,
+   "tools": [
+    "graph_query"
+   ],
+   "counts": [
+    10
+   ],
+   "answer": "최근 언론 보도에서 데클란 라이스와 함께 언급된 주요 선수들은 다음과 같습니다.\n\n* **노니 마두에케**: 8건\n* **리카르도 칼라피오리**: 7건\n* **부카요 사카**: 3건\n* **카이 하베르츠**: 3건\n\n이 외에도 크리스토스 촐리스, 맥스 다우먼 등이 함께 언급되었습니다. 위 수치는 최근 기사에서 해당 선수들이 라이스와 같은 맥락으로 다뤄진 횟수입니다."
+  },
+  {
+   "q": "브루노 페르난데스와 같이 기사에 나온 선수",
+   "ok": true,
+   "fails": [],
+   "sec": 29.7,
+   "tools": [
+    "graph_query"
+   ],
+   "counts": [
+    10
+   ],
+   "answer": "브루노 페르난데스와 최근 기사에 함께 언급된 선수들입니다.\n\n*   **리산드로 마르티네스**: 6건\n*   **엘링 홀란드**: 4건\n*   **모건 깁스화이트**: 2건\n*   **엔소 페르난데스**: 2건\n*   **니코 파스**: 2건\n*   **콜 팔머**: 2건\n*   **도미니크 소보슬라이**: 2건\n*   **필 포든**: 1건\n*   **벤야민 세슈코**: 1건\n*   **안드레이 산투스**: 1건"
+  },
+  {
+   "q": "사카의 잉글랜드 대표팀 동료 중 우리 리그 선수는?",
+   "ok": true,
+   "fails": [],
+   "sec": 3.0,
+   "tools": [
+    "graph_query"
+   ],
+   "counts": [
+    20
+   ],
+   "answer": "사카의 잉글랜드 대표팀 동료 중 현재 EPL에서 활약 중인 주요 선수들은 다음과 같습니다.\n\n*   **Arsenal 동료:** Ben White(RB), Declan Rice(CM)\n*   **기타 EPL 선수:** Eberechi Eze(AM), Ezri Konsa(CB), Noni Madueke(RW), Tammy Abraham(CF), Ross Barkley(CM), Tyrone Mings(CB) 등\n\n이 외에도 Myl"
+  },
+  {
+   "q": "우리 리그에서 뛰는 한국 국가대표 선수는?",
+   "ok": true,
+   "fails": [],
+   "sec": 2.5,
+   "tools": [
+    "graph_query"
+   ],
+   "counts": [
+    25
+   ],
+   "answer": "현재 유럽 주요 리그에서 활동 중인 한국 국가대표 선수들입니다.\n\n**분데스리가 (Bundesliga)**\n*   김민재 (Centre-Back)\n*   이재성 (Attacking Midfield)\n*   설영우 (Right-Back)\n*   황희찬 (Centre-Forward)\n*   정우영 (Attacking Midfield)\n*   Jens Castrop (Central Midfield)\n\n**챔피언십 (Champions"
+  },
+  {
+   "q": "챔피언스리그를 뛴 23세 이하 풀백",
+   "ok": true,
+   "fails": [],
+   "sec": 3.4,
+   "tools": [
+    "graph_query"
+   ],
+   "counts": [
+    15
+   ],
+   "answer": "이번 시즌 UEFA 챔피언스리그 무대를 밟은 23세 이하 풀백 중, 평점(ss_rating) 상위권 선수들입니다.\n\n| 선수명 | 나이 | 포지션 | 소속 리그 | 평점 |\n| :--- | :---: | :--- | :--- | :---: |\n| **Kyriani Sabbe** | 21 | Right-Back | BelgianProLeague | 7.38 |\n| **Emanuele Lulli** | 19 | Right-Back"
+  },
+  {
+   "q": "리그1에서 EPL로 이적한 선수",
+   "ok": true,
+   "fails": [],
+   "sec": 2.7,
+   "tools": [
+    "graph_query"
+   ],
+   "counts": [
+    13
+   ],
+   "answer": "최근 Ligue 1에서 EPL로 이적한 주요 선수들입니다.\n\n| 선수명 | 원 소속팀 | 행선지 | 이적료 |\n| :--- | :--- | :--- | :--- |\n| **Bradley Barcola** | PSG | Liverpool | €125.00M |\n| **Ayyoub Bouaddi** | Lille | Manchester City | €95.00M |\n| **Jérémy Jacquet** | Rennes | Live"
+  },
+  {
+   "q": "적중률이 높은 이적설 매체는?",
+   "ok": true,
+   "fails": [],
+   "sec": 3.4,
+   "tools": [
+    "graph_query"
+   ],
+   "counts": [
+    6
+   ],
+   "answer": "이적설 보도 적중률이 높은 주요 매체들입니다. 데이터상 신뢰도가 높은 순으로 정리했습니다.\n\n| 매체명 | 적중률 | 보도 건수 |\n| :--- | :--- | :--- |\n| **Marca** | 88.2% | 34건 |\n| **Sport** | 87.5% | 8건 |\n| **ESPN** | 86.9% | 61건 |\n| **BBC Sport** | 79.8% | 104건 |\n| **The Guardian** | 73.1% |"
+  },
+  {
+   "q": "계약 만료가 다가오는 젊은 센터백",
+   "ok": true,
+   "fails": [],
+   "sec": 2.5,
+   "tools": [
+    "graph_query"
+   ],
+   "counts": [
+    15
+   ],
+   "answer": "2027년 여름까지 계약되어 있어 영입을 고려해볼 만한 26세 이하 젊은 센터백 리스트입니다. 시장 가치가 높은 순으로 정리했습니다.\n\n| 선수명 | 나이 | 소속 리그 | 시장가(EUR) | 계약 만료 |\n| :--- | :--- | :--- | :--- | :--- |\n| **Honest Ahanor** | 18 | EPL | 40M | 2027-06-30 |\n| **Chris Richards** | 26 | EPL | 2"
+  },
+  {
+   "q": "비티냐 팀동료 중 이적설 있는 선수",
+   "ok": true,
+   "fails": [],
+   "sec": 5.8,
+   "tools": [
+    "graph_query"
+   ],
+   "counts": [
+    7
+   ],
+   "answer": "[스카우트 브리핑]\n\nPSG 소속 비티냐의 동료 중 이적설(LINKED_TO)이 있는 선수는 다음과 같습니다.\n\n* **Désiré Doué**:\n  - 행선지 후보: Arsenal (heat: 64, 단계: talks), Manchester City (heat: 29, 단계: rumour), Chelsea (heat: 29, 단계: rumour)\n* **Samuel Wiafe**:\n  - 행선지 후보: Juventus (he"
+  },
+  {
+   "q": "맨시티 전술 지표 보여줘",
+   "ok": true,
+   "fails": [],
+   "sec": 24.4,
+   "tools": [
+    "graph_query"
+   ],
+   "counts": [
+    1
+   ],
+   "answer": "Manchester City의 2026_2027 시즌 전술 지표입니다.\n\n*   **감독:** Enzo Maresca\n*   **공격(Attack):** 81\n*   **점유/통제(Control):** 81\n*   **창의성(Creativity):** 83\n*   **압박(Pressing):** 50\n*   **공중볼(Aerial):** 40\n*   **방해/수비적 저지(Disruption):** 32\n\n해당 지표는 2026_"
+  },
+  {
+   "q": "유럽대항전에 가장 많이 나간 미드필더",
+   "ok": true,
+   "fails": [],
+   "sec": 3.2,
+   "tools": [
+    "graph_query"
+   ],
+   "counts": [
+    10
+   ],
+   "answer": "유럽대항전(UEFA 챔피언스리그 기준) 출전 기록을 집계한 결과, 현재 데이터상으로는 이강인과 황인범 선수가 각각 2회로 가장 많은 출전을 기록하고 있습니다.\n\n*참고: 본 데이터는 현재 시스템에 등록된 선수들의 최근 유럽대항전 출전 기록을 바탕으로 집계되었습니다.*"
+  },
+  {
+   "q": "아스날 선수 중 대표팀에 뽑힌 선수",
+   "ok": true,
+   "fails": [],
+   "sec": 7.6,
+   "tools": [
+    "graph_query"
+   ],
+   "counts": [
+    17
+   ],
+   "answer": "아스날 소속으로 최근 대표팀에 소집된 선수 명단입니다. (총 15명)\n\n*   **브라질:** 브루노 기마랑이스(51캡), 가브리엘 마갈량이스(24캡)\n*   **에콰도르:** 피에로 인카피에(56캡)\n*   **잉글랜드:** 데클란 라이스(80캡), 에즈리 콘사(30캡), 에베레치 에제(25캡), 벤 화이트(6캡), 마일스 루이스-스켈리(10캡)\n*   **독일:** 카이 하베르츠(63캡)\n*   **그리스:** 크리스토스 "
+  },
+  {
+   "q": "바르셀로나에서 영향력 높은 선수",
+   "ok": false,
+   "fails": [
+    "engine=rules · Gemini 실패(Gemini 오류: gemini-3.5-flash 503 {\n  \"error\": {\n   "
+   ],
+   "sec": 40.0,
+   "tools": [],
+   "counts": [],
+   "answer": "Barcelona 주장단: Raphinha(주장), Pedri(부주장), Eric García(3번째 주장), Frenkie de Jong(4번째 주장), Lamine Yamal(5번째 주장). 팀 안 영향력 상위: Raphinha 82, Pedri 81, Lamine Yamal 79, Rodri 58, Eric García 54. (실력·출전·완장·볼 관여·폼 등 가중합)"
+  },
+  {
+   "q": "사카 최근 뉴스",
+   "ok": true,
+   "fails": [],
+   "sec": 7.7,
+   "tools": [
+    "player_news"
+   ],
+   "counts": [
+    null
+   ],
+   "answer": "부카요 사카의 최근 뉴스 요약입니다.\n\n*   **부상 및 복귀 현황:** 11월 9일 *London Evening Standard* 보도에 따르면, 현재 데클란 라이스, 윌리엄 살리바와 함께 부상 회복 중이며 복귀 예정일이 논의되고 있습니다. 11월 7일 같은 매체는 미켈 아르테타 감독이 사카의 부상 상태에 대해 긍정적인 업데이트를 전했다고 보도했습니다.\n*   **A매치 차출:** 11월 9일 *The False 9*에 따"
+  },
+  {
+   "q": "홀란 요즘 폼 어때?",
+   "ok": true,
+   "fails": [],
+   "sec": 3.7,
+   "tools": [
+    "player_form"
+   ],
+   "counts": [
+    null
+   ],
+   "answer": "Erling Haaland의 최근 폼은 **'절정'** 상태입니다.\n\n최근 5경기 FotMob 평점은 **7.47점**이며, 폼 지수는 **94**로 리그 내 스트라이커 중 최상위권(45~99 척도)을 유지하고 있습니다.\n\n**최근 주요 기록:**\n*   **최근 5경기:** 4골 기록 (챔피언스리그 RB Leipzig전 1골, 프리미어리그 Aston Villa전 1골, Ipswich Town전 2골 포함)\n*   **시즌 기"
+  },
+  {
+   "q": "아스날 다음 경기 어때?",
+   "ok": true,
+   "fails": [],
+   "sec": 15.9,
+   "tools": [
+    "team_now"
+   ],
+   "counts": [
+    null
+   ],
+   "answer": "아스날의 다음 경기는 **11월 22일(한국시간) 뉴캐슬 유나이티드와의 원정 경기**입니다.\n\n현재 아스날은 11월 A매치 기간(11/9~11/17)으로, 총 17명의 선수가 10개국 대표팀에 차출된 상태입니다.\n\n**경기 전망 및 주요 정보:**\n*   **승부 예측:** 모델 예측 결과, 아스날의 승리 확률이 72.1%로 높게 점쳐지며 예상 스코어는 2-0입니다.\n*   **부상자 현황:** 윌리엄 살리바(허리 부상, 11"
+  },
+  {
+   "q": "이번 주 EPL 어땠어?",
+   "ok": true,
+   "fails": [],
+   "sec": 27.1,
+   "tools": [
+    "league_week"
+   ],
+   "counts": [
+    null
+   ],
+   "answer": "이번 주 EPL 주요 소식 브리핑입니다.\n\n### 1. 폼 변화\n*   **상승세:** 노팅엄 포레스트의 **Jair**(폼 지수 +25)와 입스위치 타운의 **Jack Clarke**가 좋은 흐름을 보였습니다.\n*   **하락세:** 브렌트포드의 **Igor Thiago**(-19)와 맨체스터 시티의 **Gianluigi Donnarumma**(-11) 등의 폼이 하락했습니다.\n\n### 2. 부상 소식\n*   **신규 부상:"
+  },
+  {
+   "q": "리버풀 요즘 흐름",
+   "ok": true,
+   "fails": [],
+   "sec": 22.6,
+   "tools": [
+    "team_form"
+   ],
+   "counts": [
+    null
+   ],
+   "answer": "리버풀의 최근 흐름을 브리핑합니다.\n\n현재 리버풀은 EPL 4위(승점 18점)를 기록 중이며, 최근 5경기 성적은 2승 1무 2패(8득점 6실점)입니다. 팀 Elo 지수는 1786입니다.\n\n**선수단 폼 현황:**\n*   **상승세:** 알렉시스 맥 알리스터(최근 폼 97, 평점 7.79), 로날드 아라우호(95, 7.48), 밀로스 케르케즈(88, 7.29)가 좋은 활약을 보여주고 있습니다.\n*   **부진:** 코디 학포("
+  },
+  {
+   "q": "아스날 왼쪽 윙 영입 추천",
+   "ok": false,
+   "fails": [
+    "요청 실패 HTTPError: HTTP Error 502: Bad Gateway"
+   ],
+   "sec": 14.0,
+   "tools": [],
+   "counts": [],
+   "answer": ""
+  },
+  {
+   "q": "도쿠와 비슷한 선수",
+   "ok": false,
+   "fails": [
+    "요청 실패 HTTPError: HTTP Error 503: Service Unavailable"
+   ],
+   "sec": 0.4,
+   "tools": [],
+   "counts": [],
+   "answer": ""
+  },
+  {
+   "q": "아스날 영입 후보 중 이적설도 있는 선수는?",
+   "ok": false,
+   "fails": [
+    "요청 실패 HTTPError: HTTP Error 503: Service Unavailable"
+   ],
+   "sec": 0.2,
+   "tools": [],
+   "counts": [],
+   "answer": ""
+  },
+  {
+   "q": "맨유 감독은 누구고 어떤 포메이션을 써?",
+   "ok": false,
+   "fails": [
+    "요청 실패 HTTPError: HTTP Error 503: Service Unavailable"
+   ],
+   "sec": 0.1,
+   "tools": [],
+   "counts": [],
+   "answer": ""
+  },
+  {
+   "q": "첼시 선수 중 이적설이 있는 선수",
+   "ok": false,
+   "fails": [
+    "요청 실패 HTTPError: HTTP Error 429: Too Many Requests"
+   ],
+   "sec": 0.1,
+   "tools": [],
+   "counts": [],
+   "answer": ""
+  },
+  {
+   "q": "사카 부상 관련 최근 보도 요약해줘",
+   "ok": false,
+   "fails": [
+    "요청 실패 HTTPError: HTTP Error 429: Too Many Requests"
+   ],
+   "sec": 0.1,
+   "tools": [],
+   "counts": [],
+   "answer": ""
+  },
+  {
+   "q": "아스날 미드필더 영입 관련 기사 찾아줘",
+   "ok": false,
+   "fails": [
+    "요청 실패 HTTPError: HTTP Error 429: Too Many Requests"
+   ],
+   "sec": 0.1,
+   "tools": [],
+   "counts": [],
+   "answer": ""
+  },
+  {
+   "q": "사카 최근 5경기 평점",
+   "ok": false,
+   "fails": [
+    "요청 실패 HTTPError: HTTP Error 429: Too Many Requests"
+   ],
+   "sec": 0.1,
+   "tools": [],
+   "counts": [],
+   "answer": ""
+  },
+  {
+   "q": "라이스와 외데고르가 같이 60분 넘게 뛴 경기는 몇 경기야?",
+   "ok": false,
+   "fails": [
+    "요청 실패 HTTPError: HTTP Error 429: Too Many Requests"
+   ],
+   "sec": 0.1,
+   "tools": [],
+   "counts": [],
+   "answer": ""
+  },
+  {
+   "q": "지난 시즌 부상으로 가장 많이 결장한 선수",
+   "ok": false,
+   "fails": [
+    "요청 실패 HTTPError: HTTP Error 503: Service Unavailable"
+   ],
+   "sec": 0.3,
+   "tools": [],
+   "counts": [],
+   "answer": ""
+  },
+  {
+   "q": "아스날로 예전에 이적설이 났던 선수들은?",
+   "ok": false,
+   "fails": [
+    "요청 실패 HTTPError: HTTP Error 429: Too Many Requests"
+   ],
+   "sec": 0.1,
+   "tools": [],
+   "counts": [],
+   "answer": ""
+  }
+ ]
+}

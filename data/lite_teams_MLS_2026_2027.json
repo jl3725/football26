@@ -1,0 +1,322 @@
+{
+ "at": "2026-11-14",
+ "league": "MLS",
+ "season": "2026_2027",
+ "teams": {
+  "Nashville SC": {
+   "fotmob_id": 915807,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/915807.png",
+   "color": "#1E1742",
+   "tm_vid": 63966,
+   "tm_slug": "nashville-sc",
+   "tm_name": "Nashville SC"
+  },
+  "Vancouver Whitecaps": {
+   "fotmob_id": 307691,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/307691.png",
+   "color": "#1F2C4D",
+   "tm_vid": 6321,
+   "tm_slug": "vancouver-whitecaps-fc",
+   "tm_name": "Vancouver Whitecaps"
+  },
+  "Inter Miami CF": {
+   "fotmob_id": 960720,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/960720.png",
+   "color": "#e28fb8",
+   "tm_vid": 69261,
+   "tm_slug": "inter-miami-cf",
+   "tm_name": "Inter Miami CF"
+  },
+  "New England Revolution": {
+   "fotmob_id": 6580,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/6580.png",
+   "color": "#002858",
+   "tm_vid": 626,
+   "tm_slug": "new-england-revolution",
+   "tm_name": "New England Revolution"
+  },
+  "FC Dallas": {
+   "fotmob_id": 6399,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/6399.png",
+   "color": "#b6283f",
+   "tm_vid": 8816,
+   "tm_slug": "fc-dallas",
+   "tm_name": "FC Dallas"
+  },
+  "Chicago Fire FC": {
+   "fotmob_id": 6397,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/6397.png",
+   "color": "#ff0000",
+   "tm_vid": 432,
+   "tm_slug": "chicago-fire-fc",
+   "tm_name": "Chicago Fire FC"
+  },
+  "Charlotte FC": {
+   "fotmob_id": 1323940,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/1323940.png",
+   "color": "#1486c9",
+   "tm_vid": 78435,
+   "tm_slug": "charlotte-fc",
+   "tm_name": "Charlotte FC"
+  },
+  "St. Louis City": {
+   "fotmob_id": 1427963,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/1427963.png",
+   "color": "#dd0047",
+   "tm_vid": 82686,
+   "tm_slug": "st-louis-city-sc",
+   "tm_name": "St. Louis City"
+  },
+  "San Jose Earthquakes": {
+   "fotmob_id": 6603,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/6603.png",
+   "color": "#0d59af",
+   "tm_vid": 218,
+   "tm_slug": "san-jose-earthquakes",
+   "tm_name": "San Jose Earthquakes"
+  },
+  "Houston Dynamo FC": {
+   "fotmob_id": 8259,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8259.png",
+   "color": "#f56800",
+   "tm_vid": 9168,
+   "tm_slug": "houston-dynamo-fc",
+   "tm_name": "Houston Dynamo FC"
+  },
+  "Philadelphia Union": {
+   "fotmob_id": 191716,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/191716.png",
+   "color": "#002850",
+   "tm_vid": 25467,
+   "tm_slug": "philadelphia-union",
+   "tm_name": "Philadelphia Union"
+  },
+  "Columbus Crew": {
+   "fotmob_id": 6001,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/6001.png",
+   "color": "#000000",
+   "tm_vid": 813,
+   "tm_slug": "columbus-crew-sc",
+   "tm_name": "Columbus Crew"
+  },
+  "Los Angeles FC": {
+   "fotmob_id": 867280,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/867280.png",
+   "color": "#000000",
+   "tm_vid": 51828,
+   "tm_slug": "los-angeles-fc",
+   "tm_name": "Los Angeles FC"
+  },
+  "Portland Timbers": {
+   "fotmob_id": 307690,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/307690.png",
+   "color": "#00520C",
+   "tm_vid": 4291,
+   "tm_slug": "portland-timbers",
+   "tm_name": "Portland Timbers"
+  },
+  "Orlando City": {
+   "fotmob_id": 267810,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/267810.png",
+   "color": "#603090",
+   "tm_vid": 45604,
+   "tm_slug": "orlando-city-sc",
+   "tm_name": "Orlando City"
+  },
+  "Seattle Sounders FC": {
+   "fotmob_id": 130394,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/130394.png",
+   "color": "#4EB74E",
+   "tm_vid": 9636,
+   "tm_slug": "seattle-sounders-fc",
+   "tm_name": "Seattle Sounders FC"
+  },
+  "FC Cincinnati": {
+   "fotmob_id": 722265,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/722265.png",
+   "color": "#182070",
+   "tm_vid": 51772,
+   "tm_slug": "fc-cincinnati",
+   "tm_name": "FC Cincinnati"
+  },
+  "Real Salt Lake": {
+   "fotmob_id": 6606,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/6606.png",
+   "color": "#972c38",
+   "tm_vid": 6643,
+   "tm_slug": "real-salt-lake-city",
+   "tm_name": "Real Salt Lake"
+  },
+  "Minnesota United": {
+   "fotmob_id": 207242,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/207242.png",
+   "color": "#231f20",
+   "tm_vid": 56089,
+   "tm_slug": "minnesota-united-fc",
+   "tm_name": "Minnesota United"
+  },
+  "LA Galaxy": {
+   "fotmob_id": 6637,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/6637.png",
+   "color": "#173F85",
+   "tm_vid": 1061,
+   "tm_slug": "los-angeles-galaxy",
+   "tm_name": "LA Galaxy"
+  },
+  "Colorado Rapids": {
+   "fotmob_id": 8314,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8314.png",
+   "color": "#88242E",
+   "tm_vid": 1247,
+   "tm_slug": "colorado-rapids",
+   "tm_name": "Colorado Rapids"
+  },
+  "Red Bull New York": {
+   "fotmob_id": 6514,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/6514.png",
+   "color": "#da0028",
+   "tm_vid": 623,
+   "tm_slug": "new-york-red-bulls",
+   "tm_name": "Red Bull New York"
+  },
+  "New York City FC": {
+   "fotmob_id": 546238,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/546238.png",
+   "color": "#7daed1",
+   "tm_vid": 40058,
+   "tm_slug": "new-york-city-fc",
+   "tm_name": "New York City FC"
+  },
+  "Toronto FC": {
+   "fotmob_id": 56453,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/56453.png",
+   "color": "#AD1329",
+   "tm_vid": 11141,
+   "tm_slug": "toronto-fc",
+   "tm_name": "Toronto FC"
+  },
+  "San Diego FC": {
+   "fotmob_id": 1701119,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/1701119.png",
+   "color": "#04182C",
+   "tm_vid": 114977,
+   "tm_slug": "san-diego-fc",
+   "tm_name": "San Diego FC"
+  },
+  "Austin FC": {
+   "fotmob_id": 1218886,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/1218886.png",
+   "color": "#51B051",
+   "tm_vid": 72309,
+   "tm_slug": "austin-fc",
+   "tm_name": "Austin FC"
+  },
+  "Atlanta United": {
+   "fotmob_id": 773958,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/773958.png",
+   "color": "#80000A",
+   "tm_vid": 51663,
+   "tm_slug": "atlanta-united-fc",
+   "tm_name": "Atlanta United"
+  },
+  "DC United": {
+   "fotmob_id": 6602,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/6602.png",
+   "color": "#000000",
+   "tm_vid": 2440,
+   "tm_slug": "d-c-united",
+   "tm_name": "DC United"
+  },
+  "Sporting Kansas City": {
+   "fotmob_id": 6604,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/6604.png",
+   "color": "#8da7d6",
+   "tm_vid": 4284,
+   "tm_slug": "sporting-kansas-city",
+   "tm_name": "Sporting Kansas City"
+  },
+  "CF Montréal": {
+   "fotmob_id": 161195,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/161195.png",
+   "color": "#0F37A8",
+   "tm_vid": 4078,
+   "tm_slug": "club-de-foot-montreal",
+   "tm_name": "CF Montréal"
+  }
+ },
+ "espn": {
+  "21812": "St. Louis City",
+  "21300": "Charlotte FC",
+  "18267": "FC Cincinnati",
+  "18418": "Atlanta United",
+  "193": "DC United",
+  "10739": "Philadelphia Union",
+  "12011": "Orlando City",
+  "190": "Red Bull New York",
+  "9727": "Vancouver Whitecaps",
+  "4771": "Real Salt Lake",
+  "20906": "Austin FC",
+  "17362": "Minnesota United",
+  "185": "FC Dallas",
+  "7318": "Toronto FC",
+  "6077": "Houston Dynamo FC",
+  "182": "Chicago Fire FC",
+  "18986": "Nashville SC",
+  "189": "New England Revolution",
+  "18966": "Los Angeles FC",
+  "20232": "Inter Miami CF",
+  "9723": "Portland Timbers",
+  "183": "Columbus Crew",
+  "22529": "San Diego FC",
+  "9720": "CF Montréal",
+  "191": "San Jose Earthquakes",
+  "186": "Sporting Kansas City",
+  "187": "LA Galaxy",
+  "17606": "New York City FC",
+  "9726": "Seattle Sounders FC",
+  "184": "Colorado Rapids"
+ },
+ "espn_names": {
+  "St. Louis CITY SC": "St. Louis City",
+  "Charlotte FC": "Charlotte FC",
+  "FC Cincinnati": "FC Cincinnati",
+  "Atlanta United FC": "Atlanta United",
+  "D.C. United": "DC United",
+  "Philadelphia Union": "Philadelphia Union",
+  "Orlando City SC": "Orlando City",
+  "Red Bull New York": "Red Bull New York",
+  "Vancouver Whitecaps": "Vancouver Whitecaps",
+  "Real Salt Lake": "Real Salt Lake",
+  "Austin FC": "Austin FC",
+  "Minnesota United FC": "Minnesota United",
+  "FC Dallas": "FC Dallas",
+  "Toronto FC": "Toronto FC",
+  "Houston Dynamo FC": "Houston Dynamo FC",
+  "Chicago Fire FC": "Chicago Fire FC",
+  "Nashville SC": "Nashville SC",
+  "New England Revolution": "New England Revolution",
+  "LAFC": "Los Angeles FC",
+  "Inter Miami CF": "Inter Miami CF",
+  "Portland Timbers": "Portland Timbers",
+  "Columbus Crew": "Columbus Crew",
+  "San Diego FC": "San Diego FC",
+  "CF Montréal": "CF Montréal",
+  "San Jose Earthquakes": "San Jose Earthquakes",
+  "Sporting Kansas City": "Sporting Kansas City",
+  "LA Galaxy": "LA Galaxy",
+  "New York City FC": "New York City FC",
+  "Seattle Sounders FC": "Seattle Sounders FC",
+  "Colorado Rapids": "Colorado Rapids"
+ },
+ "aliases": {
+  "St. Louis CITY SC": "St. Louis City",
+  "Atlanta United FC": "Atlanta United",
+  "D.C. United": "DC United",
+  "Orlando City SC": "Orlando City",
+  "Minnesota United FC": "Minnesota United",
+  "LAFC": "Los Angeles FC",
+  "Los Angeles Galaxy": "LA Galaxy",
+  "Real Salt Lake City": "Real Salt Lake",
+  "Vancouver Whitecaps FC": "Vancouver Whitecaps"
+ }
+}
