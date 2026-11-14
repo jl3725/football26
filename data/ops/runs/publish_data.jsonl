@@ -1,9 +1,3 @@
-{"t": "2026-10-30T22:38:29+00:00", "runner": "publish_data", "step": "build_db_live", "league": null, "ok": true, "code": 0, "sec": 5.0, "run": "41139381320"}
-{"t": "2026-10-30T22:40:26+00:00", "runner": "publish_data", "step": "team_units_live", "league": null, "ok": true, "code": 0, "sec": 117.0, "run": "41139381320"}
-{"t": "2026-10-30T22:40:40+00:00", "runner": "publish_data", "step": "publish_data", "league": null, "ok": true, "code": 0, "sec": 14.0, "run": "41139381320"}
-{"t": "2026-10-30T22:46:00+00:00", "runner": "publish_data", "step": "build_db_live", "league": null, "ok": true, "code": 0, "sec": 5.0, "run": "41140194206"}
-{"t": "2026-10-30T22:47:11+00:00", "runner": "publish_data", "step": "team_units_live", "league": null, "ok": true, "code": 0, "sec": 71.0, "run": "41140194206"}
-{"t": "2026-10-30T22:47:22+00:00", "runner": "publish_data", "step": "publish_data", "league": null, "ok": true, "code": 0, "sec": 11.0, "run": "41140194206"}
 {"t": "2026-10-31T02:27:45+00:00", "runner": "publish_data", "step": "build_db_live", "league": null, "ok": true, "code": 0, "sec": 6.0, "run": "41160062568"}
 {"t": "2026-10-31T02:29:42+00:00", "runner": "publish_data", "step": "team_units_live", "league": null, "ok": true, "code": 0, "sec": 117.0, "run": "41160062568"}
 {"t": "2026-10-31T02:29:53+00:00", "runner": "publish_data", "step": "publish_data", "league": null, "ok": true, "code": 0, "sec": 11.0, "run": "41160062568"}
@@ -742,3 +736,6 @@
 {"t": "2026-11-13T22:35:54+00:00", "runner": "publish_data", "step": "build_db_live", "league": null, "ok": true, "code": 0, "sec": 8.0, "run": "43520484957"}
 {"t": "2026-11-13T22:37:14+00:00", "runner": "publish_data", "step": "team_units_live", "league": null, "ok": true, "code": 0, "sec": 80.0, "run": "43520484957"}
 {"t": "2026-11-13T22:37:28+00:00", "runner": "publish_data", "step": "publish_data", "league": null, "ok": true, "code": 0, "sec": 14.0, "run": "43520484957"}
+{"t": "2026-11-14T00:59:37+00:00", "runner": "publish_data", "step": "build_db_live", "league": null, "ok": true, "code": 0, "sec": 7.0, "run": "43537691642"}
+{"t": "2026-11-14T01:01:32+00:00", "runner": "publish_data", "step": "team_units_live", "league": null, "ok": true, "code": 0, "sec": 115.0, "run": "43537691642"}
+{"t": "2026-11-14T01:01:48+00:00", "runner": "publish_data", "step": "publish_data", "league": null, "ok": true, "code": 0, "sec": 16.0, "run": "43537691642"}
