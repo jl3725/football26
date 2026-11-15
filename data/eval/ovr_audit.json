@@ -1,7 +1,7 @@
 {
- "date": "2026-11-14",
+ "date": "2026-11-15",
  "model": "v3.18",
- "checked": 52878,
+ "checked": 52876,
  "mismatches": [],
  "leagues": {
   "EPL": {
@@ -54,7 +54,7 @@
   },
   "Eredivisie": {
    "teams": 18,
-   "checked": 3441,
+   "checked": 3440,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -77,11 +77,11 @@
    "changes_top": [
     {
      "team": "Santa Clara",
-     "player": "Frederico Silva",
-     "from": 52,
-     "to": 50,
-     "d": -2,
-     "since": "2026-11-14",
+     "player": "Henrique Silva",
+     "from": 50,
+     "to": 52,
+     "d": 2,
+     "since": "2026-11-15",
      "model_change": false
     }
    ]
@@ -112,7 +112,7 @@
   },
   "SuperLig": {
    "teams": 18,
-   "checked": 3703,
+   "checked": 3702,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,

@@ -149,7 +149,7 @@ Anderlecht,Joshua Nga Kana,1817363,midfielders,"CAM,LW,LM,RW",Attacking Midfield
 Anderlecht,Noah Kalonji,2011192,midfielders,CDM,Defensive Midfield,MF,17,2009-04-22,68.0,BEL,False,,2026-11-15
 Anderlecht,Alexis Flips,889521,midfielders,CAM,Attacking Midfield,MF,26,2000-01-18,70.0,FRA,False,,2026-11-15
 Anderlecht,Majeed Ashimeru,850925,midfielders,"CAM,CDM",Attacking Midfield,MF,29,1997-10-10,99.0,GHA,False,,2026-11-15
-Anderlecht,Mihajlo Cvetković,1480699,attackers,"ST,LW,RW",Centre-Forward,FW,19,2007-01-10,9.0,SRB,False,,2026-11-15
+Anderlecht,Mihajlo Cvetković,1480699,attackers,"ST,RW,LW",Centre-Forward,FW,19,2007-01-10,9.0,SRB,False,,2026-11-15
 Anderlecht,Marten Winkler,1255785,attackers,"RW,LW,LM",Right Winger,FW,24,2002-10-31,10.0,GER,False,,2026-11-15
 Anderlecht,Oliver Antman,1021082,attackers,"RW,LM,LWB",Right Winger,FW,25,2001-08-15,11.0,FIN,False,,2026-11-15
 Anderlecht,Danylo Sikan,955572,attackers,"ST,CAM",Centre-Forward,FW,25,2001-04-16,14.0,UKR,False,,2026-11-15
@@ -376,6 +376,7 @@ Sint-Truiden,Jeremy Mbambi,1795392,defenders,CB,Centre-Back,DF,18,2008-05-04,27.
 Sint-Truiden,Rune Verheyden,2123614,defenders,,Centre-Back,DF,19,2007-04-18,39.0,BEL,False,,2026-11-15
 Sint-Truiden,Robert-Jan Vanwesemael,1596061,defenders,"RB,RW,LB",Right-Back,DF,24,2002-03-26,60.0,BEL,False,,2026-11-15
 Sint-Truiden,Abdoulaye Sissako,764779,midfielders,"CDM,CM",Defensive Midfield,MF,28,1998-05-26,8.0,UGA,False,,2026-11-15
+Sint-Truiden,Nathanaël Mbuku,1049799,midfielders,"CAM,RW,LW,LM,RM",Attacking Midfield,MF,24,2002-03-16,11.0,COD,False,,2026-11-15
 Sint-Truiden,Ryan Merlen,1609381,midfielders,"CDM,CAM,CM",Defensive Midfield,MF,24,2002-05-11,14.0,FRA,False,,2026-11-15
 Sint-Truiden,Nelson Ishiwatari,1381856,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,21,2005-05-10,18.0,JPN,False,,2026-11-15
 Sint-Truiden,Illyès Benachour,1785961,midfielders,,Central Midfield,MF,19,2007-01-09,31.0,MAR,False,,2026-11-15
@@ -385,7 +386,6 @@ Sint-Truiden,Shion Shinkawa,1717127,midfielders,CAM,Attacking Midfield,MF,19,200
 Sint-Truiden,Arbnor Muja,857141,attackers,RW,Right Winger,FW,27,1998-11-29,7.0,ALB,False,,2026-11-15
 Sint-Truiden,Samed Baždar,1284492,attackers,ST,Centre-Forward,FW,22,2004-01-31,9.0,BIH,False,,2026-11-15
 Sint-Truiden,Ilias Sebaoui,1307959,attackers,"LW,RW",Left Winger,FW,25,2001-10-04,10.0,BEL,False,,2026-11-15
-Sint-Truiden,Nathanaël Mbuku,1049799,attackers,"CAM,RW,LW,LM,RM",Attacking Midfield,FW,24,2002-03-16,11.0,COD,False,,2026-11-15
 Sint-Truiden,Frédéric Soèllé Soèllé,1406310,attackers,ST,Centre-Forward,FW,20,2005-12-24,19.0,BEL,False,,2026-11-15
 Sint-Truiden,Jay-David Mbalanda,1697341,attackers,ST,Centre-Forward,FW,19,2007-05-03,32.0,BEL,False,,2026-11-15
 Sint-Truiden,Kaito Matsuzawa,1515636,attackers,"RW,LW",Right Winger,FW,25,2001-02-05,38.0,JPN,False,,2026-11-15
@@ -517,7 +517,7 @@ Cercle Brugge,Lukas Rocha Torres,2173894,attackers,,Centre-Forward,FW,21,2005-03
 La Louvière,Tiago Pereira Cardoso,1381454,keepers,GK,Goalkeeper,GK,20,2006-04-07,16.0,LUX,False,,2026-11-15
 La Louvière,Marcos Peano,787458,keepers,GK,Goalkeeper,GK,28,1998-10-15,21.0,ARG,False,,2026-11-15
 La Louvière,Lucas Monteiro,1785916,keepers,,Goalkeeper,GK,21,2005-08-04,71.0,POR,False,,2026-11-15
-La Louvière,Théo Radelet,1676734,keepers,,Goalkeeper,GK,18,2007-11-15,91.0,BEL,False,,2026-11-15
+La Louvière,Théo Radelet,1676734,keepers,,Goalkeeper,GK,19,2007-11-15,91.0,BEL,False,,2026-11-15
 La Louvière,Soumaéla Traoré,1789675,defenders,,Centre-Back,DF,22,2004-08-01,,FRA,False,,2026-11-15
 La Louvière,Wagane Faye,1096756,defenders,CB,Centre-Back,DF,32,1993-11-20,4.0,SEN,False,,2026-11-15
 La Louvière,Shaquil Delos,1072860,defenders,"RWB,RB,RM,LWB",Right-Back,DF,27,1999-06-16,18.0,FRA,False,,2026-11-15
@@ -547,7 +547,7 @@ La Louvière,Mouhamed Belkheir,957710,attackers,ST,Centre-Forward,FW,27,1999-01-
 La Louvière,Zsombor Gruber,1251656,attackers,"ST,RW",Centre-Forward,FW,22,2004-09-07,30.0,HUN,False,,2026-11-15
 La Louvière,Quentin Benaets,1689046,attackers,,Centre-Forward,FW,23,2003-08-26,43.0,BEL,False,,2026-11-15
 La Louvière,Léandro Rousseau,1797624,attackers,ST,Centre-Forward,FW,23,2003-07-07,90.0,BEL,False,,2026-11-15
-Kortrijk,Patrik Gunnarsson,843520,keepers,GK,Goalkeeper,GK,25,2000-11-15,1.0,ISL,False,,2026-11-15
+Kortrijk,Patrik Gunnarsson,843520,keepers,GK,Goalkeeper,GK,26,2000-11-15,1.0,ISL,False,,2026-11-15
 Kortrijk,Ebbe de Vlaeminck,1340894,keepers,GK,Goalkeeper,GK,21,2005-11-04,13.0,BEL,False,,2026-11-15
 Kortrijk,Marko Ilić,750025,keepers,GK,Goalkeeper,GK,28,1998-02-03,31.0,SRB,False,,2026-11-15
 Kortrijk,Tristen Alliet,1605725,keepers,,Goalkeeper,GK,21,2005-04-19,77.0,BEL,False,,2026-11-15

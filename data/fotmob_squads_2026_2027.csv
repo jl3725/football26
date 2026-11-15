@@ -8,7 +8,7 @@ Arsenal,Ben White,776151,defenders,RB,Right-Back,DF,29,1997-10-08,4.0,ENG,False,
 Arsenal,Piero Hincapié,1137667,defenders,"LB,CB",Left-Back,DF,24,2002-01-09,5.0,ECU,False,,2026-11-15
 Arsenal,Gabriel,795179,defenders,CB,Centre-Back,DF,28,1997-12-19,6.0,BRA,False,,2026-11-15
 Arsenal,Jurriën Timber,942381,defenders,"RB,CB,LB",Right-Back,DF,25,2001-06-17,12.0,NED,False,,2026-11-15
-Arsenal,Ezri Konsa,710159,defenders,CB,Centre-Back,DF,29,1997-10-23,15.0,ENG,True,A few days,2026-11-15
+Arsenal,Ezri Konsa,710159,defenders,CB,Centre-Back,DF,29,1997-10-23,15.0,ENG,False,,2026-11-15
 Arsenal,Riccardo Calafiori,1105912,defenders,"LB,CB",Left-Back,DF,24,2002-05-19,33.0,ITA,False,,2026-11-15
 Arsenal,Martin Ødegaard,534670,midfielders,"CM,CAM",Central Midfield,MF,27,1998-12-17,8.0,NOR,False,,2026-11-15
 Arsenal,Eberechi Eze,818975,midfielders,"CAM,LW,CM,CDM",Attacking Midfield,MF,28,1998-06-29,10.0,ENG,False,,2026-11-15
@@ -20,7 +20,7 @@ Arsenal,Myles Lewis-Skelly,1406436,midfielders,"CDM,LB,CM",Defensive Midfield,MF
 Arsenal,Max Dowman,1635773,midfielders,"RW,CAM,CM",Right Winger,MF,16,2009-12-31,56.0,ENG,False,,2026-11-15
 Arsenal,Bukayo Saka,961995,attackers,"RW,CAM",Right Winger,FW,25,2001-09-05,7.0,ENG,True,Late November 2026,2026-11-15
 Arsenal,Viktor Gyökeres,664500,attackers,ST,Centre-Forward,FW,28,1998-06-04,14.0,SWE,False,,2026-11-15
-Arsenal,Christos Tzolis,1157237,attackers,"LW,LM,CAM",Left Winger,FW,24,2002-01-30,17.0,GRE,False,,2026-11-15
+Arsenal,Christos Tzolis,1157237,attackers,"LW,LM,RW,CAM",Left Winger,FW,24,2002-01-30,17.0,GRE,False,,2026-11-15
 Arsenal,Noni Madueke,1084981,attackers,"RW,LW",Right Winger,FW,24,2002-03-10,20.0,ENG,False,,2026-11-15
 Arsenal,Kai Havertz,749736,attackers,"ST,CAM,CM",Centre-Forward,FW,27,1999-06-11,29.0,GER,False,,2026-11-15
 Brighton,Bart Verbruggen,1131987,keepers,GK,Goalkeeper,GK,24,2002-08-18,1.0,NED,False,,2026-11-15
@@ -226,7 +226,7 @@ Leeds United,Gabriel Gudmundsson,744494,midfielders,"LWB,LM,LB",Left-Back,MF,27,
 Leeds United,Ethan Ampadu,780432,midfielders,"CM,CDM,CB",Central Midfield,MF,26,2000-09-14,4.0,WAL,False,,2026-11-15
 Leeds United,Sean Longstaff,820024,midfielders,"CDM,CAM,CM",Defensive Midfield,MF,29,1997-10-30,8.0,ENG,False,,2026-11-15
 Leeds United,Brenden Aaronson,952322,midfielders,"CAM,CM,LM,ST,RW,LW",Attacking Midfield,MF,26,2000-10-22,11.0,USA,False,,2026-11-15
-Leeds United,Anton Stach,881735,midfielders,"CM,CAM,CDM,RM",Central Midfield,MF,27,1998-11-15,18.0,GER,True,Doubtful,2026-11-15
+Leeds United,Anton Stach,881735,midfielders,"CM,CAM,CDM,RM",Central Midfield,MF,28,1998-11-15,18.0,GER,True,Doubtful,2026-11-15
 Leeds United,Ao Tanaka,935728,midfielders,"CDM,CM",Defensive Midfield,MF,28,1998-09-10,22.0,JPN,False,,2026-11-15
 Leeds United,Ilia Gruev,1080983,midfielders,"CM,CDM",Central Midfield,MF,26,2000-05-06,44.0,BUL,False,,2026-11-15
 Leeds United,Mateo Joseph,1344677,attackers,"RW,ST",Right Winger,FW,23,2003-10-19,,ESP,True,Early January 2027,2026-11-15
@@ -302,7 +302,7 @@ Newcastle United,Sven Botman,956682,defenders,CB,Centre-Back,DF,26,2000-01-12,4.
 Newcastle United,Fabian Schär,189982,defenders,CB,Centre-Back,DF,34,1991-12-20,5.0,SUI,False,,2026-11-15
 Newcastle United,Malick Thiaw,1137407,defenders,CB,Centre-Back,DF,25,2001-08-08,12.0,GER,False,,2026-11-15
 Newcastle United,Daniel Burn,188058,defenders,"CB,LB",Centre-Back,DF,34,1992-05-09,33.0,ENG,False,,2026-11-15
-Newcastle United,Amar Dedić,958010,defenders,RB,Right-Back,DF,24,2002-08-18,37.0,BIH,False,,2026-11-15
+Newcastle United,Amar Dedić,958010,defenders,"RB,RWB",Right-Back,DF,24,2002-08-18,37.0,BIH,False,,2026-11-15
 Newcastle United,Nico González,1280132,midfielders,"CDM,CM",Defensive Midfield,MF,24,2002-01-03,6.0,ESP,False,,2026-11-15
 Newcastle United,Joelinton,535936,midfielders,"CM,CDM,LW",Central Midfield,MF,30,1996-08-14,7.0,BRA,True,Late November 2026,2026-11-15
 Newcastle United,Aladji Bamba,1695681,midfielders,"CDM,CM",Defensive Midfield,MF,20,2006-07-14,8.0,FRA,False,,2026-11-15
@@ -314,7 +314,7 @@ Newcastle United,Yoane Wissa,666857,attackers,"ST,CAM",Centre-Forward,FW,30,1996
 Newcastle United,William Osula,1258092,attackers,ST,Centre-Forward,FW,23,2003-08-04,10.0,DEN,False,,2026-11-15
 Newcastle United,Harvey Barnes,760359,attackers,"LW,RW",Left Winger,FW,28,1997-12-09,11.0,ENG,False,,2026-11-15
 Newcastle United,Bazoumana Touré,1624586,attackers,"LW,LM,ST",Left Winger,FW,20,2006-03-02,17.0,CIV,False,,2026-11-15
-Newcastle United,Anthony Elanga,1050166,attackers,"RW,CAM",Right Winger,FW,24,2002-04-27,19.0,SWE,False,,2026-11-15
+Newcastle United,Anthony Elanga,1050166,attackers,"RW,CAM,RM",Right Winger,FW,24,2002-04-27,19.0,SWE,False,,2026-11-15
 Newcastle United,Matias Fernandez-Pardo,1444231,attackers,"ST,LW",Centre-Forward,FW,21,2005-02-03,20.0,BEL,False,,2026-11-15
 Newcastle United,Jacob Murphy,521148,attackers,"RW,RM",Right Winger,FW,31,1995-02-24,23.0,ENG,False,,2026-11-15
 Hull City,Jack Butland,288880,keepers,GK,Goalkeeper,GK,33,1993-03-10,1.0,ENG,False,,2026-11-15
@@ -392,7 +392,7 @@ Fulham,Harrison Reed,502420,midfielders,CDM,Defensive Midfield,MF,31,1995-01-27,
 Fulham,Tom Cairney,182962,midfielders,CDM,Defensive Midfield,MF,35,1991-01-20,10.0,SCO,True,Late November 2026,2026-11-15
 Fulham,Hugo Larsson,1339269,midfielders,"CDM,CM",Defensive Midfield,MF,22,2004-06-27,15.0,SWE,False,,2026-11-15
 Fulham,Sander Berge,540963,midfielders,"CDM,CM",Defensive Midfield,MF,28,1998-02-14,16.0,NOR,False,,2026-11-15
-Fulham,Alex Iwobi,604785,midfielders,"CDM,LW,CAM",Defensive Midfield,MF,30,1996-05-03,17.0,NGA,False,,2026-11-15
+Fulham,Alex Iwobi,604785,midfielders,"CDM,LW,CAM,CM",Defensive Midfield,MF,30,1996-05-03,17.0,NGA,False,,2026-11-15
 Fulham,Shea Charles,1281452,midfielders,"CDM,CM",Defensive Midfield,MF,23,2003-11-05,19.0,NIR,False,,2026-11-15
 Fulham,Manuel Ángel,1508427,midfielders,RM,Right Midfield,MF,22,2004-03-15,20.0,ESP,False,,2026-11-15
 Fulham,Joshua King,1422593,midfielders,"CAM,CM",Attacking Midfield,MF,19,2007-01-03,24.0,ENG,False,,2026-11-15
@@ -411,7 +411,7 @@ Nottingham Forest,Neco Williams,1078788,defenders,"LB,LWB,RB,LM",Left-Back,DF,25
 Nottingham Forest,Murillo,1458711,defenders,"CB,LB",Centre-Back,DF,24,2002-07-04,5.0,BRA,False,,2026-11-15
 Nottingham Forest,Jair Cunha,1391209,defenders,"CB,RB",Centre-Back,DF,21,2005-03-07,23.0,BRA,False,,2026-11-15
 Nottingham Forest,Nikola Milenković,766611,defenders,CB,Centre-Back,DF,29,1997-10-12,31.0,SRB,False,,2026-11-15
-Nottingham Forest,Ola Aina,682548,defenders,"RB,RWB,RM,LB,CB",Right-Back,DF,30,1996-10-08,34.0,NGA,False,,2026-11-15
+Nottingham Forest,Ola Aina,682548,defenders,"RB,RWB,LB,RM,CB",Right-Back,DF,30,1996-10-08,34.0,NGA,False,,2026-11-15
 Nottingham Forest,Nicolò Savona,1622290,defenders,RB,Right-Back,DF,23,2003-03-19,37.0,ITA,True,Late November 2026,2026-11-15
 Nottingham Forest,Ibrahim Sangaré,795371,midfielders,"CDM,CM",Defensive Midfield,MF,28,1997-12-02,6.0,CIV,False,,2026-11-15
 Nottingham Forest,Nicolás Domínguez,827315,midfielders,"CDM,CM,LW,CAM",Defensive Midfield,MF,28,1998-06-28,8.0,ARG,True,Late December 2026,2026-11-15
@@ -420,11 +420,11 @@ Nottingham Forest,Xaver Schlager,620027,midfielders,"CDM,CM",Defensive Midfield,
 Nottingham Forest,Ryan Yates,775614,midfielders,"CDM,CM",Defensive Midfield,MF,28,1997-11-21,22.0,ENG,False,,2026-11-15
 Nottingham Forest,James McAtee,1107648,midfielders,"CDM,CM,CAM,LW,RW",Defensive Midfield,MF,24,2002-10-18,24.0,ENG,False,,2026-11-15
 Nottingham Forest,Luca Netz,1155130,midfielders,"LWB,LB,LM",Left-Back,MF,23,2003-05-15,25.0,GER,False,,2026-11-15
-Nottingham Forest,Daniel Muñoz,859282,midfielders,"RWB,RM,RB",Right-Back,MF,30,1996-05-26,27.0,COL,False,,2026-11-15
+Nottingham Forest,Daniel Muñoz,859282,midfielders,"RWB,RB,RM",Right-Back,MF,30,1996-05-26,27.0,COL,False,,2026-11-15
 Nottingham Forest,Callum Hudson-Odoi,846383,attackers,"LW,RW",Left Winger,FW,26,2000-11-07,7.0,ENG,False,,2026-11-15
 Nottingham Forest,Chris Wood,169719,attackers,ST,Centre-Forward,FW,34,1991-12-07,9.0,NZL,False,,2026-11-15
 Nottingham Forest,Igor Jesus,1082102,attackers,"ST,CAM",Centre-Forward,FW,25,2001-02-25,11.0,BRA,False,,2026-11-15
-Nottingham Forest,Dan Ndoye,1022649,attackers,"LW,CAM,RW,ST",Left Winger,FW,26,2000-10-25,14.0,SUI,False,,2026-11-15
+Nottingham Forest,Dan Ndoye,1022649,attackers,"CAM,RW,LW,ST",Attacking Midfield,FW,26,2000-10-25,14.0,SUI,False,,2026-11-15
 Nottingham Forest,Arnaud Kalimuendo-Muinga,1095445,attackers,"ST,RW,LW,CAM",Centre-Forward,FW,24,2002-01-20,15.0,FRA,False,,2026-11-15
 Nottingham Forest,Liam Delap,1113903,attackers,ST,Centre-Forward,FW,23,2003-02-08,19.0,ENG,False,,2026-11-15
 Coventry City,Ben Wilson,302783,keepers,GK,Goalkeeper,GK,34,1992-08-09,13.0,ENG,False,,2026-11-15
@@ -534,7 +534,7 @@ Crystal Palace,Daichi Kamada,621515,midfielders,"CDM,CM,CAM,RW",Defensive Midfie
 Crystal Palace,Will Hughes,295067,midfielders,"CDM,CM",Defensive Midfield,MF,31,1995-04-17,19.0,ENG,False,,2026-11-15
 Crystal Palace,Adam Wharton,1296650,midfielders,"CDM,CM",Defensive Midfield,MF,22,2004-02-06,20.0,ENG,False,,2026-11-15
 Crystal Palace,Quinten Timber,970563,midfielders,"CDM,CAM,CM",Defensive Midfield,MF,25,2001-06-17,23.0,NED,False,,2026-11-15
-Crystal Palace,Darío Osorio,1329007,midfielders,"RWB,RM,CAM,RW,LW",Right-Back,MF,22,2004-01-24,24.0,CHI,False,,2026-11-15
+Crystal Palace,Darío Osorio,1329007,midfielders,"RWB,RM,RW,CAM,LW",Right-Back,MF,22,2004-01-24,24.0,CHI,False,,2026-11-15
 Crystal Palace,Anan Khalaili,1477878,midfielders,"RWB,RM,RW",Right-Back,MF,22,2004-09-03,25.0,ISR,False,,2026-11-15
 Crystal Palace,Cheick Oumar Doucouré,951954,midfielders,CDM,Defensive Midfield,MF,26,2000-01-08,28.0,MLI,False,,2026-11-15
 Crystal Palace,Óscar Mingueza,952095,midfielders,"RM,LM,RWB,LWB,LB",Right Midfield,MF,27,1999-05-13,30.0,ESP,False,,2026-11-15
