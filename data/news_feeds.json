@@ -98,7 +98,7 @@
    "fail": 0,
    "ok": "2026-11-15",
    "items": 20,
-   "match_rate": 0.4
+   "match_rate": 0.35
   },
   "https://feeds.footballco.com/calcio/feed/g8r5n1czq4mw7v2k": {
    "outlet": "Calciomercato.com",
@@ -158,7 +158,7 @@
    "fail": 0,
    "ok": "2026-11-15",
    "items": 99,
-   "match_rate": 0.35
+   "match_rate": 0.36
   },
   "https://le10sport.com/fr/rss/": {
    "outlet": "le10sport",
@@ -185,7 +185,7 @@
    "country": "Portugal",
    "via": "seed",
    "added": "2026-10-21",
-   "fail": 4,
+   "fail": 5,
    "ok": "2026-11-14",
    "items": 20,
    "match_rate": 0.35
@@ -248,7 +248,7 @@
    "fail": 0,
    "ok": "2026-11-15",
    "items": 50,
-   "match_rate": 0.24
+   "match_rate": 0.22
   },
   "https://www.walfoot.be/rss": {
    "outlet": "Walfoot",
@@ -275,7 +275,7 @@
    "country": "England",
    "via": "discover",
    "added": "2026-10-21",
-   "match_rate": 0.08,
+   "match_rate": 0.18,
    "fail": 0,
    "ok": "2026-11-15",
    "items": 50
