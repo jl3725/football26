@@ -69,6 +69,7 @@ Cagliari,pf:Cagliari:kingstone mutandwa,Kingstone Mutandwa,,Kingstone Mutandwa,p
 Cagliari,tm354814,M'Bala Nzola,354814,M'Bala Nzola,players_full,100
 Cagliari,tm600041,Mattia Felici,600041,Mattia Felici,players_full,100
 Cagliari,pf:Cagliari:michel ndary adopo,Michel Ndary Adopo,,Michel Ndary Adopo,players_full,100
+Cagliari,tm1048013,Nicola Grandu,1048013,Nicola Grandu,players_full,100
 Cagliari,tm1371793,Paul Mendy,1371793,Paul Mendy,players_full,100
 Cagliari,tm1039342,Raphael Kofler,1039342,Raphael Kofler,players_full,100
 Cagliari,tm628558,Riccardo Ciervo,628558,Riccardo Ciervo,players_full,100
@@ -205,6 +206,7 @@ Juventus,tm509022,Federico Gatti,509022,Federico Gatti,players_full,100
 Juventus,tm487474,Francisco Conceição,487474,Francisco Conceição,players_full,100
 Juventus,pf:Juventus:gleison bremer,Gleison Bremer,,Gleison Bremer,players_full,100
 Juventus,tm286047,Guglielmo Vicario,286047,Guglielmo Vicario,players_full,100
+Juventus,tm934878,Jeff Ekhator,934878,Jeff Ekhator,players_full,100
 Juventus,tm216569,Jeremie Boga,216569,Jeremie Boga,players_full,100
 Juventus,tm413565,Jhon Lucumí,413565,Jhon Lucumí,players_full,100
 Juventus,pf:Juventus:jonathan david,Jonathan David,,Jonathan David,players_full,100
@@ -254,7 +256,7 @@ Lecce,tm728485,Danilo Veiga,728485,Danilo Veiga,players_full,100
 Lecce,tm470794,Ivan Ilić,470794,Ivan Ilić,players_full,100
 Lecce,tm604113,Jamil Siebert,604113,Jamil Siebert,players_full,100
 Lecce,tm410787,Joel Monteiro,410787,Joel Monteiro,players_full,100
-Lecce,pf:Lecce:kialonda,Kialonda,,Kialonda,players_full,100
+Lecce,pf:Lecce:kialonda gaspar,Kialonda Gaspar,,Kialonda Gaspar,players_full,100
 Lecce,tm649490,Konan N'dri,649490,Konan N'dri,players_full,100
 Lecce,tm386552,Lassana Coulibaly,386552,Lassana Coulibaly,players_full,100
 Lecce,tm583046,Medon Berisha,583046,Medon Berisha,players_full,100
@@ -264,6 +266,7 @@ Lecce,tm748679,Olaf Gorter,748679,Olaf Gorter,players_full,100
 Lecce,tm780548,Omri Gandelman,780548,Omri Gandelman,players_full,100
 Lecce,tm980575,Oumar Ngom,980575,Oumar Ngom,players_full,100
 Lecce,tm937954,Paco Esteban,937954,Paco Esteban,players_full,100
+Lecce,tm644613,Sadik Fofana,644613,Sadik Fofana,players_full,100
 Lecce,tm674806,Santiago Pierotti,674806,Santiago Pierotti,players_full,100
 Lecce,tm1112449,Tiago Gabriel,1112449,Tiago Gabriel,players_full,100
 Lecce,tm463620,Willem Geubbels,463620,Willem Geubbels,players_full,100
@@ -375,6 +378,7 @@ Parma,tm280387,Vincent Sierro,280387,Vincent Sierro,players_full,100
 Roma,pf:Roma:alessandro di nunzio,Alessandro Di Nunzio,,Alessandro Di Nunzio,players_full,100
 Roma,tm199248,Bryan Cristante,199248,Bryan Cristante,players_full,100
 Roma,tm701819,Daniele Ghilardi,701819,Daniele Ghilardi,players_full,100
+Roma,tm495722,Devis Vásquez,495722,Devis Vásquez,players_full,100
 Roma,tm557407,Devyne Rensch,557407,Devyne Rensch,players_full,100
 Roma,tm326029,Donyell Malen,326029,Donyell Malen,players_full,100
 Roma,tm1175298,Emanuele Lulli,1175298,Emanuele Lulli,players_full,100
@@ -501,10 +505,6 @@ Venezia,tm367466,Thierry Correia,367466,Thierry Correia,players_full,100
 Venezia,tm334835,Toma Bašić,334835,Toma Bašić,players_full,100
 Venezia,tm1066206,Toni Fernández,1066206,Toni Fernández,players_full,100
 Venezia,tm488996,Þórir Jóhann Helgason,488996,Þórir Jóhann Helgason,players_full,100
-Cagliari,tm1048013,Nicola Grandu,1048013,Nicola Grandu,players_full,100
-Juventus,tm934878,Jeff Ekhator,934878,Jeff Ekhator,players_full,100
-Lecce,tm644613,Sadik Fofana,644613,Sadik Fofana,players_full,100
-Roma,tm495722,Devis Vásquez,495722,Devis Vásquez,players_full,100
 Inter,tm388516,Josep Martinez,388516,Josep Martínez,transfermarkt_contracts,99
 Inter,tm70580,Raffaele Di Gennaro,70580,Raffaele Di Gennaro,transfermarkt_contracts,100
 Inter,pf:Inter:yann aurel bisseck,Yann Aurel Bisseck,,Yann Bisseck,transfermarkt_contracts,85
@@ -658,11 +658,10 @@ Monza,tm724069,Kevin Martins,724069,Kevin Martins,transfermarkt_contracts,100
 Lecce,tm215167,Marco Bleve,215167,Marco Bleve,transfermarkt_contracts,100
 Lecce,tm667640,Alexandru Borbei,667640,Alexandru Borbei,transfermarkt_contracts,100
 Lecce,tm1084756,Plamen Penev,1084756,Plamen Penev,transfermarkt_contracts,100
-Lecce,tm836441,Gaspar,836441,Gaspar,transfermarkt_contracts,100
+Lecce,pf:Lecce:kialonda gaspar,Kialonda Gaspar,,Gaspar,transfermarkt_contracts,60
 Lecce,tm805886,Gaby Jean,805886,Gaby Jean,transfermarkt_contracts,100
 Lecce,tm1118086,Sebastian Esposito,1118086,Sebastian Esposito,transfermarkt_contracts,100
 Lecce,tm1105124,Elijah Scott,1105124,Elijah Scott,transfermarkt_contracts,100
-Lecce,tm1017950,Vernon Addo,1017950,Vernon Addo,transfermarkt_contracts,100
 Lecce,tm745595,Marlon Ubani,745595,Marlon Ubani,transfermarkt_contracts,100
 Lecce,tm866607,Niko Kovač,866607,Niko Kovač,transfermarkt_contracts,100
 Lecce,tm410787,Joel Monteiro,410787,Joël Monteiro,transfermarkt_contracts,99
@@ -726,7 +725,6 @@ Venezia,esp:Venezia:lamine dabo,Lamine Dabo,,Lamine Dabo,espn_lineups,100
 Venezia,esp:Venezia:okoro obinna,Okoro Obinna,,Okoro Obinna,espn_lineups,100
 Venezia,esp:Venezia:marko farji,Marko Farji,,Marko Farji,espn_lineups,100
 Venezia,tm488996,Þórir Jóhann Helgason,488996,Thorir Johann Helgason,espn_lineups,100
-Lecce,pf:Lecce:kialonda,Kialonda,,Kialonda Gaspar,espn_lineups,100
 Lecce,esp:Lecce:hjalte morel laerke,Hjalte Morel Lærke,,Hjalte Morel Lærke,espn_lineups,100
 Lecce,esp:Lecce:francisco esteban sanchez,Francisco Esteban Sánchez,,Francisco Esteban Sánchez,espn_lineups,100
 Atalanta,tm205938,Mario Pašalić,205938,Mario Pasalic,espn_lineups,100
