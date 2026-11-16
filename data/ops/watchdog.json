@@ -1,14 +1,16 @@
 {
- "checked": "2026-11-15T15:02:45+00:00",
+ "checked": "2026-11-16T17:33:47+00:00",
  "results": {
   "ovr": [],
   "season": [],
   "hub": [],
   "frontend": [],
   "backend": [],
-  "workflows": [],
+  "workflows": [
+   "daily_data.yml 최근 실행 failure (2026-11-16T13:03) https://github.com/jl3725/football26/actions/runs/43872211423"
+  ],
   "news": [
-   "news.db 압축본 60MB — GitHub 50MB 경고 구간(60MB 넘으면 넓힌 원천의 14일 지난 비이적 기사를 자동 정리, 90MB 넘으면 올리기 거부 — src/news_store.py)"
+   "news.db 압축본 52MB — GitHub 50MB 경고 구간(60MB 넘으면 넓힌 원천의 14일 지난 비이적 기사를 자동 정리, 90MB 넘으면 올리기 거부 — src/news_store.py)"
   ],
   "tm_agent": [],
   "coverage": [],
@@ -18,12 +20,7 @@
   ],
   "names": [],
   "xg": [],
-  "agents": [
-   "STATS · Sofascore 평점 — 마지막 성공 87시간 전(허용 48시간, local-sofascore-daily, local-season-weekly)",
-   "STATS · FBref·Understat·히트맵 — 마지막 성공 273시간 전(허용 192시간, local-season-weekly)",
-   "VALUE · TM 선수 정보 — 마지막 성공 273시간 전(허용 192시간, local-season-weekly)",
-   "ANALYST · 팬 투표 — 마지막 성공 88시간 전(허용 24시간, local-fanvote)"
-  ],
+  "agents": [],
   "expectations": [],
   "screen": [],
   "squads": [],
@@ -38,5 +35,5 @@
    "Ask Scout 답 평가 24/36(67%) < 80% — 실패 유형 {'engine=rules': 1, '요청': 11} · 예: 바르셀로나에서 영향력 높은 선수 / 아스날 왼쪽 윙 영입 추천 / 도쿠와 비슷한 선수 / 아스날 영입 후보 중 이적설도 있는 선수는?"
   ]
  },
- "ai_cause": "- **news**: 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인)\n- **ratings**: 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인)\n- **agents**: `understat_live` 단계에서 코드 75번 오류가 반복 발생하여 데이터 수집이 중단된 것으로 보임(match_refresh: understat_live)\n- **progress**: `understat_live` 단계의 지속적인 코드 75번 오류로 인해 특정 리그의 통계 데이터가 누락되거나 갱신되지 않은 것으로 추정됨(match_refresh: understat_live)\n- **scout_answers**: 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인)"
+ "ai_cause": "- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인) (workflows)\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인) (news)\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인) (ratings)\n- understat_live(코드 75)와 uefa_coefficients(코드 1) 단계에서 실패가 기록되어 데이터 수집 및 갱신에 차질이 있었던 것으로 추정 (progress)\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인) (scout_answers)"
 }
