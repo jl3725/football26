@@ -32,8 +32,11 @@ async function board(code: string, date: string): Promise<LiveEvent[]> {
       return { name: x.team?.shortDisplayName ?? x.team?.displayName ?? "", score: x.score ?? null, logo: x.team?.logo ?? "", winner: !!x.winner,
         color: x.team?.color ? `#${x.team.color}` : "" };
     };
+    // ESPN 은 연기·취소(STATUS_POSTPONED)도 state 'post'·0점 — 끝난 경기만 post(2026-11-16 아시안컵 2027 '0-0 종료')
+    const t = e.status?.type ?? {};
+    const state = t.state === "post" && t.completed === false ? "pre" : (t.state ?? "pre");
     return {
-      id: String(e.id), comp: code, date: e.date, state: e.status?.type?.state ?? "pre",
+      id: String(e.id), comp: code, date: e.date, state,
       detail: e.status?.type?.shortDetail ?? "", clock: e.status?.displayClock ?? "", home: side("home"), away: side("away"),
     } as LiveEvent;
   });
