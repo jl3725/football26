@@ -1,5 +1,5 @@
 squad,player,fotmob_id,group,positions,tm_position,pos,age,birth_date,shirt,ccode,injured,expected_return,fetched
-Porto,Cláudio Ramos,181433,keepers,GK,Goalkeeper,GK,34,1991-11-16,14.0,POR,False,,2026-11-16
+Porto,Cláudio Ramos,181433,keepers,GK,Goalkeeper,GK,35,1991-11-16,14.0,POR,False,,2026-11-16
 Porto,João Costa,289253,keepers,GK,Goalkeeper,GK,30,1996-02-02,24.0,POR,False,,2026-11-16
 Porto,João Afonso,1603224,keepers,GK,Goalkeeper,GK,19,2007-04-30,50.0,POR,False,,2026-11-16
 Porto,Diogo Costa,795630,keepers,GK,Goalkeeper,GK,27,1999-09-19,99.0,POR,False,,2026-11-16
@@ -39,7 +39,6 @@ Benfica,Samuel Dahl,1085674,defenders,LB,Left-Back,DF,23,2003-03-04,26.0,SWE,Fal
 Benfica,Gabriel Índio,1817871,defenders,CB,Centre-Back,DF,18,2008-07-26,33.0,BRA,False,,2026-11-16
 Benfica,Souffian El Karouani,1079500,defenders,LB,Left-Back,DF,26,2000-10-19,34.0,MAR,False,,2026-11-16
 Benfica,Tomás Araújo,1187283,defenders,"CB,RB",Centre-Back,DF,24,2002-05-16,44.0,POR,False,,2026-11-16
-Benfica,Daniel Banjaqui,1763613,defenders,RB,Right-Back,DF,18,2008-03-24,58.0,POR,False,,2026-11-16
 Benfica,Enzo Barrenechea,1352923,midfielders,CDM,Defensive Midfield,MF,25,2001-05-22,5.0,ARG,False,,2026-11-16
 Benfica,Fredrik Aursnes,310768,midfielders,"CDM,RW,CM,RB",Defensive Midfield,MF,30,1995-12-10,8.0,NOR,False,,2026-11-16
 Benfica,Georgiy Sudakov,1192398,midfielders,"CAM,LW,CM,CDM",Attacking Midfield,MF,24,2002-09-01,10.0,UKR,False,,2026-11-16
@@ -47,6 +46,7 @@ Benfica,Jakub Kamiński,1067260,midfielders,"CAM,LW,LM,CM,RM,CDM,RWB",Attacking 
 Benfica,Manu Silva,1198071,midfielders,CDM,Defensive Midfield,MF,25,2001-06-12,16.0,POR,False,,2026-11-16
 Benfica,Leandro Barreiro,930065,midfielders,"CDM,CAM,CM",Defensive Midfield,MF,26,2000-01-03,18.0,LUX,True,Early July 2027,2026-11-16
 Benfica,João Palhinha,524434,midfielders,"CDM,CM,CB",Defensive Midfield,MF,31,1995-07-09,36.0,POR,False,,2026-11-16
+Benfica,Daniel Banjaqui,1763613,midfielders,"RM,RB",Right Midfield,MF,18,2008-03-24,58.0,POR,False,,2026-11-16
 Benfica,José Neto,1843149,midfielders,"LM,LB",Left Midfield,MF,18,2008-04-19,62.0,POR,False,,2026-11-16
 Benfica,Miguel Figueiredo,1801706,midfielders,CM,Central Midfield,MF,18,2008-08-02,73.0,POR,False,,2026-11-16
 Benfica,Anisse Saidi,1732772,attackers,ST,Centre-Forward,FW,18,2008-06-20,,TUN,False,,2026-11-16
@@ -64,7 +64,7 @@ Sporting CP,Kaique Pereira,1320169,keepers,GK,Goalkeeper,GK,23,2003-04-16,30.0,B
 Sporting CP,Diego Callai,1282449,keepers,GK,Goalkeeper,GK,22,2004-07-18,41.0,BRA,False,,2026-11-16
 Sporting CP,Zeno Debast,1232172,defenders,CB,Centre-Back,DF,23,2003-10-24,6.0,BEL,True,Day to day,2026-11-16
 Sporting CP,Georgios Vagiannidis,1119687,defenders,RB,Right-Back,DF,25,2001-09-12,13.0,GRE,False,,2026-11-16
-Sporting CP,Moncef Zekri,1755850,defenders,"LB,LW",Left-Back,DF,18,2008-09-20,18.0,MAR,False,,2026-11-16
+Sporting CP,Moncef Zekri,1755850,defenders,LB,Left-Back,DF,18,2008-09-20,18.0,MAR,False,,2026-11-16
 Sporting CP,Maxi Araújo,1031656,defenders,"LB,LW,LM,LWB",Left-Back,DF,26,2000-02-15,20.0,URU,False,,2026-11-16
 Sporting CP,Iván Fresneda,1325998,defenders,"RB,LB",Right-Back,DF,22,2004-09-28,22.0,ESP,False,,2026-11-16
 Sporting CP,Gonçalo Inácio,1165710,defenders,CB,Centre-Back,DF,25,2001-08-25,25.0,POR,False,,2026-11-16
@@ -281,7 +281,7 @@ Famalicão,Finn van Breemen,1363788,defenders,CB,Centre-Back,DF,23,2003-02-25,4.
 Famalicão,Leny Meyer,1383372,defenders,LB,Left-Back,DF,22,2004-07-01,5.0,SUI,False,,2026-11-16
 Famalicão,Víctor Rofino,1324047,defenders,CB,Centre-Back,DF,24,2002-07-28,15.0,GNB,False,,2026-11-16
 Famalicão,Rodrigo Pinheiro,1080508,defenders,RB,Right-Back,DF,24,2002-08-28,17.0,POR,False,,2026-11-16
-Famalicão,Pedro Bondo,1230671,defenders,LB,Left-Back,DF,21,2004-11-16,28.0,ANG,False,,2026-11-16
+Famalicão,Pedro Bondo,1230671,defenders,LB,Left-Back,DF,22,2004-11-16,28.0,ANG,False,,2026-11-16
 Famalicão,Vojin Serafimović,1527310,defenders,CB,Centre-Back,DF,21,2005-10-14,30.0,SRB,False,,2026-11-16
 Famalicão,Juvenal Correia,2410575,defenders,,Centre-Back,DF,19,2007-01-17,72.0,GNB,False,,2026-11-16
 Famalicão,Tommie van de Looi,869364,midfielders,"CDM,CM",Defensive Midfield,MF,27,1999-07-02,6.0,NED,False,,2026-11-16
@@ -399,7 +399,7 @@ Nacional,Njoya Kader,1623143,attackers,ST,Centre-Forward,FW,23,2003-10-05,29.0,C
 Nacional,Pablo Ruan,1536269,attackers,"ST,RW",Centre-Forward,FW,23,2003-02-01,99.0,BRA,False,,2026-11-16
 Vit. Guimarães,Juan Diego Castillo,1477865,keepers,GK,Goalkeeper,GK,23,2003-01-13,22.0,COL,True,Day to day,2026-11-16
 Vit. Guimarães,Oliwier Zych,1117055,keepers,GK,Goalkeeper,GK,22,2004-06-28,48.0,POL,False,,2026-11-16
-Vit. Guimarães,Maga,1282445,defenders,RB,Right-Back,DF,23,2002-11-16,2.0,POR,False,,2026-11-16
+Vit. Guimarães,Maga,1282445,defenders,RB,Right-Back,DF,24,2002-11-16,2.0,POR,False,,2026-11-16
 Vit. Guimarães,Óscar Rivas,1323629,defenders,CB,Centre-Back,DF,26,2000-03-27,4.0,ESP,False,,2026-11-16
 Vit. Guimarães,Ahmed Sidibé,1681988,defenders,CB,Centre-Back,DF,24,2002-02-10,5.0,FRA,False,,2026-11-16
 Vit. Guimarães,João Mendes,1285528,defenders,LB,Left-Back,DF,26,2000-04-13,13.0,POR,False,,2026-11-16
@@ -450,7 +450,7 @@ Marítimo,Nelio Batista,1872929,midfielders,,Central Midfield,MF,17,2009-01-14,6
 Marítimo,Enrique Peña Zauner,1073488,attackers,LW,Left Winger,FW,26,2000-03-04,7.0,VEN,False,,2026-11-16
 Marítimo,Jose Melro,1355853,attackers,ST,Centre-Forward,FW,22,2004-05-26,9.0,POR,False,,2026-11-16
 Marítimo,Martín Tejón,1437469,attackers,"LW,RW,CM",Left Winger,FW,22,2004-04-12,10.0,ESP,False,,2026-11-16
-Marítimo,Simo Bouzaidi,1238148,attackers,"RW,LW,RM",Right Winger,FW,26,1999-11-16,11.0,MAR,False,,2026-11-16
+Marítimo,Simo Bouzaidi,1238148,attackers,"RW,LW,RM",Right Winger,FW,27,1999-11-16,11.0,MAR,False,,2026-11-16
 Marítimo,Adrián Butzke,1102246,attackers,ST,Centre-Forward,FW,27,1999-03-30,17.0,ESP,False,,2026-11-16
 Marítimo,Francisco Gomes,1525110,attackers,"LW,RW",Left Winger,FW,22,2004-04-14,20.0,POR,False,,2026-11-16
 Marítimo,Samuel Bamba,1422964,attackers,ST,Centre-Forward,FW,22,2004-02-13,27.0,GER,False,,2026-11-16

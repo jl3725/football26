@@ -1,6 +1,6 @@
 {
- "updated": "2026-11-08",
- "articles": 214,
+ "updated": "2026-11-16",
+ "articles": 243,
  "rivals": {
   "Ajax": [
    "Feyenoord",
@@ -39,10 +39,22 @@
    "Sevilla",
    "Valencia"
   ],
+  "Atlanta United": [
+   "Charlotte FC",
+   "Chicago Fire FC",
+   "Inter Miami CF",
+   "Nashville SC",
+   "Orlando City",
+   "Philadelphia Union"
+  ],
   "Atlético Madrid": [
    "Athletic Club",
    "Barcelona",
    "Real Madrid"
+  ],
+  "Austin FC": [
+   "FC Dallas",
+   "Houston Dynamo FC"
   ],
   "Austria Wien": [
    "Rapid Wien",
@@ -102,6 +114,10 @@
    "Preston North End",
    "Queens Park Rangers"
   ],
+  "CF Montréal": [
+   "Toronto FC",
+   "Vancouver Whitecaps"
+  ],
   "Cardiff City": [
    "Bristol City",
    "Queens Park Rangers",
@@ -114,6 +130,9 @@
   "Charleroi": [
    "Standard Liège"
   ],
+  "Charlotte FC": [
+   "Atlanta United"
+  ],
   "Charlton Athletic": [
    "Millwall"
   ],
@@ -121,6 +140,14 @@
    "Manchester City",
    "Manchester Utd",
    "Tottenham Hotspur"
+  ],
+  "Chicago Fire FC": [
+   "Atlanta United",
+   "Columbus Crew",
+   "FC Cincinnati",
+   "FC Dallas",
+   "New England Revolution",
+   "St. Louis City"
   ],
   "Club Brugge": [
    "Anderlecht",
@@ -131,9 +158,23 @@
    "Standard Liège",
    "Union SG"
   ],
+  "Colorado Rapids": [
+   "FC Dallas",
+   "Real Salt Lake"
+  ],
+  "Columbus Crew": [
+   "Chicago Fire FC",
+   "FC Cincinnati",
+   "FC Dallas",
+   "Toronto FC"
+  ],
   "Coventry City": [
    "Aston Villa",
    "Sunderland"
+  ],
+  "DC United": [
+   "New England Revolution",
+   "Philadelphia Union"
   ],
   "Derby County": [
    "Stoke City"
@@ -158,6 +199,18 @@
   ],
   "Eyüpspor": [
    "Kasımpaşa"
+  ],
+  "FC Cincinnati": [
+   "Chicago Fire FC",
+   "Columbus Crew",
+   "Philadelphia Union"
+  ],
+  "FC Dallas": [
+   "Austin FC",
+   "Chicago Fire FC",
+   "Colorado Rapids",
+   "Columbus Crew",
+   "Houston Dynamo FC"
   ],
   "FC Zürich": [
    "Basel"
@@ -214,6 +267,11 @@
   "Hamburger SV": [
    "Werder Bremen"
   ],
+  "Houston Dynamo FC": [
+   "Austin FC",
+   "FC Dallas",
+   "Sporting Kansas City"
+  ],
   "Hull City": [
    "Leeds United",
    "Manchester Utd"
@@ -224,6 +282,10 @@
    "Milan",
    "Napoli",
    "Roma"
+  ],
+  "Inter Miami CF": [
+   "Atlanta United",
+   "Orlando City"
   ],
   "Juventus": [
    "Fiorentina",
@@ -245,6 +307,12 @@
   "Köln": [
    "Gladbach"
   ],
+  "LA Galaxy": [
+   "Los Angeles FC",
+   "Portland Timbers",
+   "Real Salt Lake",
+   "San Jose Earthquakes"
+  ],
   "Leeds United": [
    "Hull City",
    "Manchester Utd"
@@ -256,6 +324,12 @@
    "Everton",
    "Manchester City",
    "Manchester Utd"
+  ],
+  "Los Angeles FC": [
+   "LA Galaxy",
+   "Philadelphia Union",
+   "Real Salt Lake",
+   "Seattle Sounders FC"
   ],
   "Lyon": [
    "PSG"
@@ -299,8 +373,27 @@
    "Inter",
    "Juventus"
   ],
+  "Nashville SC": [
+   "Atlanta United"
+  ],
+  "New England Revolution": [
+   "Chicago Fire FC",
+   "DC United",
+   "New York City FC",
+   "Philadelphia Union",
+   "Red Bull New York"
+  ],
+  "New York City FC": [
+   "New England Revolution",
+   "Philadelphia Union",
+   "Red Bull New York"
+  ],
   "Newcastle United": [
    "Sunderland"
+  ],
+  "Orlando City": [
+   "Atlanta United",
+   "Inter Miami CF"
   ],
   "Osasuna": [
    "Athletic Club"
@@ -316,6 +409,21 @@
   "Paris FC": [
    "Marseille",
    "PSG"
+  ],
+  "Philadelphia Union": [
+   "Atlanta United",
+   "DC United",
+   "FC Cincinnati",
+   "Los Angeles FC",
+   "New England Revolution",
+   "New York City FC",
+   "Seattle Sounders FC"
+  ],
+  "Portland Timbers": [
+   "LA Galaxy",
+   "San Jose Earthquakes",
+   "Seattle Sounders FC",
+   "Vancouver Whitecaps"
   ],
   "Porto": [
    "Benfica",
@@ -353,8 +461,19 @@
    "Espanyol",
    "Rayo Vallecano"
   ],
+  "Real Salt Lake": [
+   "Colorado Rapids",
+   "LA Galaxy",
+   "Los Angeles FC",
+   "Seattle Sounders FC",
+   "Sporting Kansas City"
+  ],
   "Real Sociedad": [
    "Athletic Club"
+  ],
+  "Red Bull New York": [
+   "New England Revolution",
+   "New York City FC"
   ],
   "Rizespor": [
    "Erzurumspor FK",
@@ -369,6 +488,12 @@
    "Rizespor",
    "Trabzonspor"
   ],
+  "San Jose Earthquakes": [
+   "LA Galaxy",
+   "Portland Timbers",
+   "Seattle Sounders FC",
+   "Vancouver Whitecaps"
+  ],
   "Santa Clara": [
    "Marítimo"
   ],
@@ -377,6 +502,14 @@
    "Dortmund",
    "Gladbach",
    "Werder Bremen"
+  ],
+  "Seattle Sounders FC": [
+   "Los Angeles FC",
+   "Philadelphia Union",
+   "Portland Timbers",
+   "Real Salt Lake",
+   "San Jose Earthquakes",
+   "Vancouver Whitecaps"
   ],
   "Sevilla": [
    "Athletic Club",
@@ -396,6 +529,15 @@
    "Marítimo",
    "Porto",
    "Vit. Guimarães"
+  ],
+  "Sporting Kansas City": [
+   "Houston Dynamo FC",
+   "Real Salt Lake",
+   "St. Louis City"
+  ],
+  "St. Louis City": [
+   "Chicago Fire FC",
+   "Sporting Kansas City"
   ],
   "Standard Liège": [
    "Anderlecht",
@@ -426,6 +568,11 @@
   "Torino": [
    "Juventus"
   ],
+  "Toronto FC": [
+   "CF Montréal",
+   "Columbus Crew",
+   "Vancouver Whitecaps"
+  ],
   "Tottenham Hotspur": [
    "Arsenal",
    "Chelsea",
@@ -448,6 +595,13 @@
   "Valencia": [
    "Athletic Club",
    "Levante"
+  ],
+  "Vancouver Whitecaps": [
+   "CF Montréal",
+   "Portland Timbers",
+   "San Jose Earthquakes",
+   "Seattle Sounders FC",
+   "Toronto FC"
   ],
   "Vit. Guimarães": [
    "Benfica",
