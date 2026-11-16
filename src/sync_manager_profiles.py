@@ -450,7 +450,9 @@ def main(argv: list[str] | None = None) -> int:
     print(report)
     if changed and not args.write:
         print("Run with --write to accept source manager names.")
-    return 2 if changed else 0
+    # 2 = '바뀐 감독 있음(아직 안 씀)' — 확인만 할 때의 신호. --write 로 기록까지 했으면 성공(0): 맨유 캐릭 → 공석 → 포체티노
+    # (11/12·13)를 제대로 기록하고도 daily_data 가 빨간불이었다
+    return 2 if changed and not args.write else 0
 
 
 if __name__ == "__main__":

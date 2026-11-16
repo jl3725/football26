@@ -108,13 +108,18 @@ def fetch_matches(today: dt.date) -> pd.DataFrame:
             side = {t.get("homeAway"): t for t in c.get("competitors", [])}
             h, a = side.get("home", {}), side.get("away", {})
             st = (e.get("status") or {}).get("type") or {}
+            # ESPN 은 연기·취소·미정(STATUS_POSTPONED)도 state='post'·0점 — 끝난 경기만 post 로(2026-11-16: 아시안컵 2027 36경기가
+            # '0-0 종료'로 저장돼 지난 경기 목록을 덮고 한국–사우디 결과가 안 보였다)
+            state = st.get("state", "pre")
+            if state == "post" and not st.get("completed"):
+                state = "pre"
             notes = " · ".join(n.get("headline", "") for n in c.get("notes", []) if isinstance(n, dict) and n.get("headline"))
             rows.append({"event_id": str(e.get("id")), "kickoff": e.get("date"), "date": (e.get("date") or "")[:10],
                          "comp_code": code, "season": (e.get("season") or {}).get("year"), "stage": notes,
                          "home_logo": (h.get("team") or {}).get("logo", ""), "away_logo": (a.get("team") or {}).get("logo", ""),
                          "home": (h.get("team") or {}).get("displayName", ""), "away": (a.get("team") or {}).get("displayName", ""),
-                         "hg": h.get("score") if st.get("state") != "pre" else None,
-                         "ag": a.get("score") if st.get("state") != "pre" else None, "state": st.get("state", "pre")})
+                         "hg": h.get("score") if state != "pre" else None,
+                         "ag": a.get("score") if state != "pre" else None, "state": state})
     return pd.DataFrame(rows).drop_duplicates("event_id") if rows else pd.DataFrame()
 
 

@@ -12,6 +12,7 @@
 """
 from __future__ import annotations
 
+import datetime as dt
 import json
 import re
 import sys
@@ -35,7 +36,9 @@ API = "https://en.wikipedia.org/w/api.php"
 TITLES = Path(__file__).resolve().parent.parent / "data" / "wiki_titles.json"
 FALLBACK = ["Club Brugge", "Genk", "Union SG", "Anderlecht", "Antwerp", "Gent", "Westerlo", "Sint-Truiden", "Mechelen",
             "Standard Liège", "Charleroi", "Cercle Brugge", "OH Leuven", "Zulte Waregem", "Dender", "La Louvière"]
-FIELD = re.compile(r"^\s*\|\s*(manager|head[ _]?coach|coach)\s*=\s*(.*)$", re.I | re.M)
+# "= " 뒤 공백은 줄을 넘지 않게(공백·탭만) — \s* 가 줄바꿈까지 먹어 빈 감독 칸 다음 줄 "|league =" 를 감독 이름으로 읽었다
+# (2026-11-08 라 루비에르 감독 "|league   =", 11/16 점검)
+FIELD = re.compile(r"^[ \t]*\|[ \t]*(manager|head[ _]?coach|coach)[ \t]*=[ \t]*(.*)$", re.I | re.M)
 
 
 def _api(**params) -> dict:
@@ -55,7 +58,7 @@ def infobox_manager(wikitext: str) -> tuple[str, str] | None:
     else:
         name = re.sub(r"\s*\((caretaker|interim)\)", "", v, flags=re.I).strip(" ,'\"")
         title = name
-    if not name or name.upper() in ("TBA", "TBD", "N/A", "-", "VACANT"):
+    if not name or name.upper() in ("TBA", "TBD", "N/A", "-", "VACANT") or name.startswith("|") or "=" in name:
         return None
     return name, title
 
@@ -130,14 +133,25 @@ def main() -> int:
         print(f"  {sq:16} {p['name']:24} 사진{'O' if p['photo_url'] else 'X'} {p.get('formation') or ''}")
     out = data_path("manager_profiles", LEAGUE, ext="json")
     prev = load_profiles(out) if out.exists() else {}
-    changed = [{"team": sq, "local": (prev.get(sq) or {}).get("name", ""), "source": p["name"], "change_type": "infobox"}
+    # 인포박스 감독 칸이 빈 팀 = 공석 기록(lite_league 와 같은 꼴 — 서버 _managers 는 감독으로 안 씀, watchdog 은 빠짐 아님)
+    today = dt.date.today().isoformat()
+    for sq in teams:
+        if sq in profiles:
+            continue
+        old = prev.get(sq) or {}
+        last = old.get("previous_name", "") if old.get("vacant") else old.get("name", "")
+        if "|" in str(last) or "=" in str(last):            # 예전 파싱 오류로 남은 이름은 전임으로 쓰지 않음
+            last = ""
+        profiles[sq] = {"name": "", "vacant": True, "previous_name": last, "vacant_since": old.get("vacant_since") or today}
+    changed = [{"team": sq, "local": (prev.get(sq) or {}).get("name", ""), "source": p["name"] or "Vacant", "change_type": "infobox"}
                for sq, p in profiles.items() if (prev.get(sq) or {}).get("name") and prev[sq]["name"] != p["name"]]
     for c in changed:
-        profiles[c["team"]]["previous_name"] = c["local"]
+        if not profiles[c["team"]].get("vacant"):
+            profiles[c["team"]]["previous_name"] = c["local"]
         print(f"  [감독 변화] {c['team']}: {c['local']} → {c['source']}")
     append_change_log(data_path("manager_changes", LEAGUE), changed, True)
     save_profiles(out, profiles)
-    print(f"[OK] {out.name} · {len(profiles)}팀 · 사진 {sum(1 for p in profiles.values() if p['photo_url'])}/{len(profiles)}")
+    print(f"[OK] {out.name} · {len(profiles)}팀 · 사진 {sum(1 for p in profiles.values() if p.get('photo_url'))}/{len(profiles)}")
     return 0
 
 
