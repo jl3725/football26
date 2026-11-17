@@ -1,16 +1,14 @@
 {
- "checked": "2026-11-16T17:33:47+00:00",
+ "checked": "2026-11-17T17:08:41+00:00",
  "results": {
   "ovr": [],
   "season": [],
   "hub": [],
   "frontend": [],
   "backend": [],
-  "workflows": [
-   "daily_data.yml 최근 실행 failure (2026-11-16T13:03) https://github.com/jl3725/football26/actions/runs/43872211423"
-  ],
+  "workflows": [],
   "news": [
-   "news.db 압축본 52MB — GitHub 50MB 경고 구간(60MB 넘으면 넓힌 원천의 14일 지난 비이적 기사를 자동 정리, 90MB 넘으면 올리기 거부 — src/news_store.py)"
+   "news.db 압축본 54MB — GitHub 50MB 경고 구간(60MB 넘으면 넓힌 원천의 14일 지난 비이적 기사를 자동 정리, 90MB 넘으면 올리기 거부 — src/news_store.py)"
   ],
   "tm_agent": [],
   "coverage": [],
@@ -31,9 +29,7 @@
    "Ligue1 Understat xG(understat_players) 팀 누락: 팀 1곳 경기분이 절반 이하·없음 — Rennes(1.8/10) (팀 이름 매칭 확인)"
   ],
   "digest": [],
-  "scout_answers": [
-   "Ask Scout 답 평가 24/36(67%) < 80% — 실패 유형 {'engine=rules': 1, '요청': 11} · 예: 바르셀로나에서 영향력 높은 선수 / 아스날 왼쪽 윙 영입 추천 / 도쿠와 비슷한 선수 / 아스날 영입 후보 중 이적설도 있는 선수는?"
-  ]
+  "scout_answers": []
  },
- "ai_cause": "- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인) (workflows)\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인) (news)\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인) (ratings)\n- understat_live(코드 75)와 uefa_coefficients(코드 1) 단계에서 실패가 기록되어 데이터 수집 및 갱신에 차질이 있었던 것으로 추정 (progress)\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인) (scout_answers)"
+ "ai_cause": "- **news**: 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인)\n- **ratings**: 원장에 관련 실패 없음 — 데이터 수집 단계의 오류가 아닌 스카우트 기준 설정값 자체의 문제로 추정(ratings 관련 실패 기록 없음)\n- **progress**: StatBunker 및 Understat 원천 사이트의 504 응답으로 인한 데이터 수집 실패가 누적되어 통계 지연 및 누락 발생(statbunker, understat_live 단계)\n- **progress**: UEFA 계수 업데이트 실패(code 1)가 발생했으므로 해당 단계의 실행 로그를 확인하여 네트워크 오류인지 API 응답 문제인지 파악 필요(uefa_coefficients 단계)"
 }
