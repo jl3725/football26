@@ -1,4 +1,5 @@
 target_club,player,pos_detail,age,current_club,market_value_eur,probability,date
+Arsenal,Gabriel Rajković,Left Winger,15,Vålerenga Fotball Elite,,,17/11/2026
 Arsenal,Leonard Prescott,Goalkeeper,17,FC Bayern Munich II,,,16/11/2026
 Arsenal,Antonio Nusa,Left Winger,21,RB Leipzig,45000000.0,,10/11/2026
 Arsenal,Marcus Tavernier,Attacking Midfield,27,AFC Bournemouth,30000000.0,,06/11/2026
@@ -23,7 +24,6 @@ Arsenal,Jarell Quansah,Centre-Back,23,Bayer 04 Leverkusen,50000000.0,,06/10/2026
 Arsenal,Gilberto Mora,Attacking Midfield,18,Club Tijuana,25000000.0,,06/10/2026
 Arsenal,Justin Ehikioya Ejodamen,Central Midfield,15,Borussia Dortmund Youth,,,04/10/2026
 Arsenal,Igor Matanovic,Centre-Forward,23,SC Freiburg,30000000.0,,03/10/2026
-Arsenal,Ibrahim Maza,Attacking Midfield,20,Bayer 04 Leverkusen,50000000.0,,27/09/2026
 Aston Villa,Leonard Prescott,Goalkeeper,17,FC Bayern Munich II,,,16/11/2026
 Aston Villa,Milton Delgado,Defensive Midfield,21,CA Boca Juniors,10000000.0,,11/11/2026
 Aston Villa,Roméo Lavia,Defensive Midfield,22,Chelsea FC,25000000.0,,11/11/2026
@@ -129,7 +129,7 @@ Hull City,Zan Vipotnik,Centre-Forward,24,Swansea City,22000000.0,,17/08/2026
 Hull City,Toni Fruk,Attacking Midfield,25,HNK Rijeka,7500000.0,,23/07/2026
 Ipswich Town,Tammy Abraham,Centre-Forward,29,Aston Villa,18000000.0,,27/08/2026
 Ipswich Town,Renato Sanches,Central Midfield,29,Without ClubWithout Club,1500000.0,,25/08/2026
-Leeds United,Bilal El Khannouss,Attacking Midfield,22,VfB Stuttgart,35000000.0,27,16/11/2026
+Leeds United,Bilal El Khannouss,Attacking Midfield,22,VfB Stuttgart,35000000.0,23,16/11/2026
 Leeds United,Will Lankshear,Centre-Forward,21,Middlesbrough FC,18000000.0,,13/11/2026
 Leeds United,Jack Rudoni,Attacking Midfield,25,Coventry City,20000000.0,,11/11/2026
 Leeds United,Conor Gallagher,Central Midfield,26,Tottenham Hotspur,32000000.0,,08/11/2026
@@ -140,6 +140,7 @@ Leeds United,Igor Paixão,Left Winger,26,Olympique Marseille,35000000.0,,17/10/2
 Leeds United,Dion Beljo,Centre-Forward,24,GNK Dinamo Zagreb,15000000.0,,14/10/2026
 Leeds United,Estéban Lepaul,Centre-Forward,26,Stade Rennais FC,45000000.0,,12/10/2026
 Leeds United,Andrei Rațiu,Right-Back,28,Rayo Vallecano,24000000.0,,21/08/2026
+Liverpool,Ismaëlo Ganiou,Centre-Back,21,RC Lens,30000000.0,,17/11/2026
 Liverpool,Bart Verbruggen,Goalkeeper,24,Brighton & Hove Albion,40000000.0,,08/11/2026
 Liverpool,Archie Brown,Left-Back,24,Fenerbahce,18000000.0,,06/11/2026
 Liverpool,El Hadji Malick Diouf,Left-Back,21,Brentford FC,35000000.0,,05/11/2026
@@ -177,6 +178,7 @@ Manchester City,Niko Ilicevic,Attacking Midfield,16,Eintracht Frankfurt II,50000
 Manchester City,JJ Gabriel,Attacking Midfield,16,Manchester United U21,,,16/09/2026
 Manchester City,Cody Gakpo,Left Winger,27,Liverpool FC,75000000.0,,31/08/2026
 Manchester City,Natan,Centre-Back,25,Real Betis Balompié,30000000.0,,23/08/2026
+Manchester Utd,Gabriel Rajković,Left Winger,15,Vålerenga Fotball Elite,,,17/11/2026
 Manchester Utd,Malick Thiaw,Centre-Back,25,Newcastle United,50000000.0,,16/11/2026
 Manchester Utd,Weston McKennie,Central Midfield,28,Juventus FC,30000000.0,,16/11/2026
 Manchester Utd,Omar El Hilali,Right-Back,23,RCD Espanyol Barcelona,15000000.0,,15/11/2026
@@ -201,7 +203,7 @@ Manchester Utd,Daniel Banjaqui,Right-Back,18,SL Benfica,10000000.0,,22/10/2026
 Manchester Utd,Ruud Nijstad,Centre-Back,18,FC Twente Enschede,18000000.0,,22/10/2026
 Manchester Utd,Felix Nmecha,Central Midfield,26,Borussia Dortmund,65000000.0,,20/10/2026
 Manchester Utd,Wesley,Right-Back,23,AS Roma,40000000.0,,18/10/2026
-Manchester Utd,Bazoumana Touré,Left Winger,20,Newcastle United,50000000.0,,15/10/2026
+Newcastle United,Ismaëlo Ganiou,Centre-Back,21,RC Lens,30000000.0,,17/11/2026
 Newcastle United,Sydie Peck,Central Midfield,22,Sheffield United,16000000.0,,13/11/2026
 Newcastle United,Jack Rudoni,Attacking Midfield,25,Coventry City,20000000.0,,11/11/2026
 Newcastle United,Will Lankshear,Centre-Forward,21,Middlesbrough FC,18000000.0,,07/11/2026
