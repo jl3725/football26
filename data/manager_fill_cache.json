@@ -7,8 +7,10 @@
    "val": "Apr 2026"
   },
   "ADO Den Haag|levi schwiebbe (a i )": {
-   "at": "2026-11-03",
-   "val": ""
+   "at": "2026-11-17",
+   "date": "2026-11-13",
+   "src": "fotmob",
+   "val": "Nov 2026"
   },
   "ADO Den Haag|robin peter": {
    "at": "2026-10-23",
@@ -368,6 +370,12 @@
    "src": "fotmob",
    "val": "Jun 2026"
   },
+  "Crystal Palace|thomas frank": {
+   "at": "2026-11-17",
+   "date": "2026-11-16",
+   "src": "fotmob",
+   "val": "Nov 2026"
+  },
   "DC United|rene weiler": {
    "at": "2026-11-09",
    "date": "2025-08-15",
@@ -570,11 +578,21 @@
    "src": "fotmob",
    "val": "Sep 2026"
   },
+  "Gaziantep FK|volkan demirel": {
+   "at": "2026-11-17",
+   "date": "2026-11-16",
+   "src": "fotmob",
+   "val": "Nov 2026"
+  },
   "Genk|jess thorup": {
    "at": "2026-10-23",
    "date": "2026-07-14",
    "src": "fotmob",
    "val": "Jul 2026"
+  },
+  "Genk|timmy simons": {
+   "at": "2026-11-17",
+   "val": ""
   },
   "Genoa|daniele de rossi": {
    "at": "2026-10-23",
@@ -1642,7 +1660,7 @@
   }
  },
  "coach_check": {
-  "ADO Den Haag|levi schwiebbe (a i )": "2026-11-10",
+  "ADO Den Haag|levi schwiebbe (a i )": "2026-11-17",
   "ADO Den Haag|robin peter": "2026-10-30",
   "AZ Alkmaar|lee roy echteld": "2026-11-13",
   "Académico de Viseu|bruno pinheiro": "2026-11-13",
@@ -1682,6 +1700,7 @@
   "Como|cesc fabregas": "2026-11-13",
   "Coventry City|frank lampard": "2026-11-13",
   "Crystal Palace|pierre sage": "2026-11-13",
+  "Crystal Palace|thomas frank": "2026-11-17",
   "Deportivo A Coruña|antonio hidalgo": "2026-11-13",
   "Dortmund|niko kovac": "2026-11-13",
   "Elche|martin anselmi": "2026-11-13",
@@ -1704,6 +1723,7 @@
   "Frosinone|massimiliano alvini": "2026-11-13",
   "Fulham|alvaro arbeloa": "2026-11-13",
   "Genk|jess thorup": "2026-11-13",
+  "Genk|timmy simons": "2026-11-17",
   "Genoa|daniele de rossi": "2026-11-13",
   "Gent|rik de mil": "2026-11-13",
   "Getafe|jose bordalas": "2026-11-13",
@@ -1738,7 +1758,7 @@
   "Liverpool|andoni iraola": "2026-11-13",
   "Lommel|lee johnson": "2026-11-13",
   "Lorient|alexandre dujeux": "2026-11-13",
-  "Lyon|carlos vicens": "2026-11-10",
+  "Lyon|carlos vicens": "2026-11-17",
   "Lyon|jorge maciel (interim)": "2026-11-05",
   "Lyon|paulo fonseca": "2026-10-30",
   "Mainz 05|urs fischer": "2026-11-13",
@@ -1809,7 +1829,7 @@
   "Werder Bremen|daniel thioune": "2026-11-13",
   "Westerlo|issame charai": "2026-11-13",
   "Willem II|adrie koster (a i )": "2026-10-30",
-  "Willem II|jurgen streppel": "2026-11-10",
+  "Willem II|jurgen streppel": "2026-11-17",
   "Zulte Waregem|michael beale": "2026-11-13",
   "Zwolle|alex pastoor": "2026-11-15",
   "Zwolle|dennis van der ree (a i ) and maikel van der werff (a i )": "2026-11-06"
@@ -3143,6 +3163,11 @@
   },
   "vitor severino": {
    "at": "2026-10-23",
+   "focus": "",
+   "style": ""
+  },
+  "volkan demirel": {
+   "at": "2026-11-17",
    "focus": "",
    "style": ""
   },

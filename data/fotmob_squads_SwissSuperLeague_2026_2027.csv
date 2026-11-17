@@ -6,12 +6,12 @@ Lugano,Diego Mina,1400238,keepers,,Goalkeeper,GK,21,2005-08-12,99.0,SUI,False,,2
 Lugano,Hannes Delcroix,822716,defenders,CB,Centre-Back,DF,27,1999-02-28,3.0,HAI,True,About 1-2 weeks,2026-11-17
 Lugano,Damian Kelvin,1697796,defenders,CB,Centre-Back,DF,24,2002-06-15,4.0,SUI,False,,2026-11-17
 Lugano,Antonios Papadopoulos,892068,defenders,CB,Centre-Back,DF,27,1999-09-10,6.0,GER,False,,2026-11-17
+Lugano,Ezgjan Alioski,406283,defenders,"LB,LWB,LM",Left-Back,DF,34,1992-02-12,7.0,MKD,False,,2026-11-17
 Lugano,Lars Lukas Mai,844430,defenders,CB,Centre-Back,DF,26,2000-03-31,17.0,GER,False,,2026-11-17
 Lugano,Joel Bichsel,1450813,defenders,CB,Centre-Back,DF,24,2002-03-04,18.0,SUI,False,,2026-11-17
 Lugano,Martim Marques,1520468,defenders,"LB,CB",Left-Back,DF,22,2004-02-11,26.0,POR,False,,2026-11-17
 Lugano,Carbone,1671354,defenders,LB,Left-Back,DF,21,2005-01-29,44.0,BRA,False,,2026-11-17
-Lugano,Behruzjon Karimov,1898281,midfielders,"RM,RWB,RB,CAM",Right Midfield,MF,19,2007-08-07,2.0,UZB,False,,2026-11-17
-Lugano,Ezgjan Alioski,406283,midfielders,"LWB,LB,LM",Left-Back,MF,34,1992-02-12,7.0,MKD,False,,2026-11-17
+Lugano,Behruzjon Karimov,1898281,midfielders,"RM,RWB,RB",Right Midfield,MF,19,2007-08-07,2.0,UZB,False,,2026-11-17
 Lugano,Anto Grgic,656668,midfielders,"CDM,CM",Defensive Midfield,MF,29,1996-11-28,8.0,SUI,False,,2026-11-17
 Lugano,Ahmed Kendouci,1124844,midfielders,"CM,CAM",Central Midfield,MF,27,1999-06-22,14.0,ALG,False,,2026-11-17
 Lugano,Yanis Cimignani,1177753,midfielders,"LWB,LM,LW,RW,RWB,RM,CM,CAM",Left-Back,MF,24,2002-01-22,21.0,FRA,False,,2026-11-17
@@ -40,7 +40,7 @@ Young Boys,Moritz Jenz,894802,defenders,CB,Centre-Back,DF,27,1999-04-30,4.0,GER,
 Young Boys,Gregory Wüthrich,493185,defenders,CB,Centre-Back,DF,31,1994-12-04,5.0,SUI,False,,2026-11-17
 Young Boys,Cédric Zesiger,658240,defenders,CB,Centre-Back,DF,28,1998-06-24,15.0,SUI,False,,2026-11-17
 Young Boys,Saidy Janko,575778,defenders,RB,Right-Back,DF,31,1995-10-22,17.0,GAM,False,,2026-11-17
-Young Boys,Isaac Schmidt,1107423,defenders,"RB,LB,LM,LWB",Right-Back,DF,26,1999-12-07,22.0,SUI,False,,2026-11-17
+Young Boys,Isaac Schmidt,1107423,defenders,"LM,RB,LB,LWB",Left Midfield,DF,26,1999-12-07,22.0,SUI,False,,2026-11-17
 Young Boys,Loris Benito,176680,defenders,"CB,LB",Centre-Back,DF,34,1992-01-07,23.0,SUI,True,Unknown,2026-11-17
 Young Boys,Lewin Blum,1270001,defenders,RB,Right-Back,DF,25,2001-07-27,27.0,SUI,False,,2026-11-17
 Young Boys,Sandro Lauper,659742,defenders,"CB,CDM,CM",Centre-Back,DF,30,1996-10-25,30.0,SUI,False,,2026-11-17
@@ -64,7 +64,7 @@ Sion,Anthony Racioppi,938531,keepers,GK,Goalkeeper,GK,27,1998-12-31,1.0,SUI,Fals
 Sion,Francesco Ruberto,462944,keepers,GK,Goalkeeper,GK,33,1993-03-19,12.0,SUI,False,,2026-11-17
 Sion,Simon Caillet,1816695,keepers,,Goalkeeper,GK,20,2006-07-05,40.0,SUI,False,,2026-11-17
 Sion,Adrien Fernandes,1785951,defenders,,Centre-Back,DF,21,2005-09-26,,SUI,False,,2026-11-17
-Sion,Gabriele Mulazzi,1405152,defenders,,Centre-Back,DF,23,2003-04-01,,ITA,False,,2026-11-17
+Sion,Gabriele Mulazzi,1405152,defenders,RWB,Right-Back,DF,23,2003-04-01,,ITA,False,,2026-11-17
 Sion,Nevio Biner,1785958,defenders,,Centre-Back,DF,20,2006-08-17,,SUI,False,,2026-11-17
 Sion,Noé Sow,1285468,defenders,CB,Centre-Back,DF,27,1998-12-18,5.0,FRA,False,,2026-11-17
 Sion,Marquinhos Cipriano,921205,defenders,LB,Left-Back,DF,27,1999-02-09,6.0,BRA,False,,2026-11-17
@@ -90,7 +90,7 @@ Sion,Rayan Stoll,1761908,attackers,ST,Centre-Forward,FW,20,2006-03-19,,SUI,False
 Sion,Ilyas Chouaref,995447,attackers,"LW,RW",Left Winger,FW,25,2000-12-12,7.0,MLT,False,,2026-11-17
 Sion,Josias Lukembila,1107422,attackers,"RW,LW,CAM,ST",Right Winger,FW,27,1999-09-09,9.0,SUI,False,,2026-11-17
 Sion,Benjamin Kololli,394472,attackers,"RW,CAM",Right Winger,FW,34,1992-05-15,10.0,KVX,False,,2026-11-17
-Sion,Winsley Boteli,1480623,attackers,"ST,CAM",Centre-Forward,FW,20,2006-07-05,13.0,SUI,True,Doubtful,2026-11-17
+Sion,Winsley Boteli,1480623,attackers,"ST,CAM",Centre-Forward,FW,20,2006-07-05,13.0,SUI,False,,2026-11-17
 Sion,Franck Surdez,1269992,attackers,LW,Left Winger,FW,24,2002-05-05,19.0,SUI,False,,2026-11-17
 Sion,Adrien Llukes,1761909,attackers,LW,Left Winger,FW,18,2008-07-21,22.0,SUI,False,,2026-11-17
 Sion,Théo Berdayes,1226911,attackers,"RW,CAM,LW",Right Winger,FW,24,2002-05-23,29.0,SUI,False,,2026-11-17
@@ -112,7 +112,7 @@ St. Gallen,Behar Neziri,1664984,midfielders,"CDM,CB",Defensive Midfield,MF,23,20
 St. Gallen,Lukas Daschner,836786,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,28,1998-10-01,10.0,GER,False,,2026-11-17
 St. Gallen,Carlo Boukhalfa,1093255,midfielders,"CAM,CM,ST",Attacking Midfield,MF,27,1999-05-03,11.0,GER,False,,2026-11-17
 St. Gallen,Lukas Görtler,627039,midfielders,"CAM,CM",Attacking Midfield,MF,32,1994-06-15,16.0,GER,False,,2026-11-17
-St. Gallen,Leon Frokaj,1596350,midfielders,"CM,CDM,CAM",Central Midfield,MF,21,2005-04-23,20.0,KVX,False,,2026-11-17
+St. Gallen,Leon Frokaj,1596350,midfielders,"CM,CDM",Central Midfield,MF,21,2005-04-23,20.0,KVX,False,,2026-11-17
 St. Gallen,Betim Fazliji,1071189,midfielders,CM,Central Midfield,MF,27,1999-04-25,23.0,KVX,False,,2026-11-17
 St. Gallen,Enoch Owusu,1661192,midfielders,LM,Left Midfield,MF,21,2005-01-08,47.0,ITA,True,About 1-2 weeks,2026-11-17
 St. Gallen,Mihailo Stevanović,1161214,midfielders,"LM,CDM,LW,CAM,CM",Left Midfield,MF,24,2002-01-04,64.0,SUI,False,,2026-11-17

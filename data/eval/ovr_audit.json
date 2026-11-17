@@ -1,7 +1,7 @@
 {
- "date": "2026-11-16",
+ "date": "2026-11-17",
  "model": "v3.18",
- "checked": 52873,
+ "checked": 52874,
  "mismatches": [],
  "leagues": {
   "EPL": {
@@ -22,7 +22,7 @@
   },
   "BelgianProLeague": {
    "teams": 18,
-   "checked": 3415,
+   "checked": 3414,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -70,18 +70,18 @@
   },
   "LigaPortugal": {
    "teams": 18,
-   "checked": 3494,
+   "checked": 3495,
    "mismatches": 0,
    "changed": 1,
    "model_changed": 0,
    "changes_top": [
     {
      "team": "Santa Clara",
-     "player": "Frederico Silva",
-     "from": 52,
-     "to": 50,
-     "d": -2,
-     "since": "2026-11-16",
+     "player": "Henrique Silva",
+     "from": 50,
+     "to": 52,
+     "d": 2,
+     "since": "2026-11-17",
      "model_change": false
     }
    ]
@@ -120,7 +120,7 @@
   },
   "SwissSuperLeague": {
    "teams": 12,
-   "checked": 2762,
+   "checked": 2763,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,

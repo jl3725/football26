@@ -1,11 +1,11 @@
 # Manager Change Report
 
-- Checked: 2026-11-16 13:04 UTC
+- Checked: 2026-11-17 13:45 UTC
 - Source: https://en.wikipedia.org/wiki/2026%E2%80%9327_Premier_League
 - Teams tracked: 20
 - Source teams matched: 20
-- Photos available locally: 20
+- Photos available locally: 19
 
 ## Change Candidates
 
-- None
+- Crystal Palace: local `Pierre Sage` -> source `Thomas Frank`

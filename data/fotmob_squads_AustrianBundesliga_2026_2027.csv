@@ -12,7 +12,7 @@ Rapid Wien,Furkan Demir,1385267,defenders,"RB,LB",Right-Back,DF,21,2004-11-29,61
 Rapid Wien,Bendegúz Bolla,888904,defenders,"RB,RWB,RM,LB",Right-Back,DF,26,1999-11-22,77,HUN,False,,2026-11-17
 Rapid Wien,Martin Ndzie,1344678,midfielders,CDM,Defensive Midfield,MF,23,2003-01-16,14,CMR,True,Unknown,2026-11-17
 Rapid Wien,Matthias Seidl,1276078,midfielders,"CDM,CM,CAM,LW",Defensive Midfield,MF,25,2001-01-24,18,AUT,False,,2026-11-17
-Rapid Wien,Nicolas Bajlicz,1385516,midfielders,"CDM,CAM,RW,LWB",Defensive Midfield,MF,22,2004-07-08,30,AUT,False,,2026-11-17
+Rapid Wien,Nicolas Bajlicz,1385516,midfielders,"CDM,CAM,RW,CM,LWB",Defensive Midfield,MF,22,2004-07-08,30,AUT,False,,2026-11-17
 Rapid Wien,Lorenz Szladits,1663493,midfielders,"CM,RW,CAM,CDM,LW,ST",Central Midfield,MF,20,2006-11-10,44,AUT,False,,2026-11-17
 Rapid Wien,Marco Tilio,1053472,attackers,"RW,CAM",Right Winger,FW,25,2001-08-23,7,AUS,False,,2026-11-17
 Rapid Wien,Tonni Adamsen,950603,attackers,"ST,CAM",Centre-Forward,FW,32,1994-11-15,8,DEN,False,,2026-11-17
@@ -129,7 +129,7 @@ Sturm Graz,Emran Soglo,1525418,midfielders,"LB,LM,LWB,RW",Left-Back,MF,21,2005-0
 Sturm Graz,Simon Seidl,1385123,midfielders,"CAM,ST,RM,CDM,LW,LM,RWB",Attacking Midfield,MF,24,2002-09-04,19,AUT,False,,2026-11-17
 Sturm Graz,Luca Weinhandl,1698675,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,17,2009-01-11,39,AUT,False,,2026-11-17
 Sturm Graz,Julian Halwachs,1276632,midfielders,"CM,CDM",Central Midfield,MF,23,2003-01-25,40,AUT,False,,2026-11-17
-Sturm Graz,Jacob Hödl,1587610,midfielders,"RWB,RW,LW,LM,CM,CAM,RM,LWB",Right-Back,MF,19,2007-01-31,43,AUT,False,,2026-11-17
+Sturm Graz,Jacob Hödl,1587610,midfielders,"RWB,RW,LW,RM,LM,CM,LWB,CAM",Right-Back,MF,19,2007-01-31,43,AUT,False,,2026-11-17
 Sturm Graz,Valmir Matoshi,1422124,midfielders,"LM,LW,CAM,CM,RW,CDM",Left Midfield,MF,23,2003-07-04,78,KVX,False,,2026-11-17
 Sturm Graz,Leon Grgić,1385272,attackers,ST,Centre-Forward,FW,20,2006-01-22,9,CRO,True,A few weeks,2026-11-17
 Sturm Graz,Axel Kayombo,1515630,attackers,"ST,LW",Centre-Forward,FW,20,2006-02-25,11,COD,False,,2026-11-17
@@ -237,7 +237,7 @@ Grazer AK,Beres Owusu,1585596,defenders,CB,Centre-Back,DF,23,2003-09-19,82,FRA,T
 Grazer AK,Liam Hermesh,1612420,midfielders,CDM,Defensive Midfield,MF,22,2004-03-12,6,ISR,False,,2026-11-17
 Grazer AK,Tobias Koch,941702,midfielders,"CAM,CDM",Attacking Midfield,MF,25,2001-04-06,8,AUT,False,,2026-11-17
 Grazer AK,Christian Lichtenberger,951310,midfielders,"CAM,LW",Attacking Midfield,MF,30,1995-12-12,10,AUT,False,,2026-11-17
-Grazer AK,Jacob Italiano,889093,midfielders,"CAM,RWB,RM",Attacking Midfield,MF,25,2001-07-30,14,AUS,False,,2026-11-17
+Grazer AK,Jacob Italiano,889093,midfielders,"RM,RWB,CAM",Right Midfield,MF,25,2001-07-30,14,AUS,False,,2026-11-17
 Grazer AK,Souleyman Mandey,1562715,midfielders,CAM,Attacking Midfield,MF,20,2006-02-06,17,AUT,False,,2026-11-17
 Grazer AK,Christopher Cvetko,768312,midfielders,"CDM,CM",Defensive Midfield,MF,29,1997-04-02,24,AUT,False,,2026-11-17
 Grazer AK,Anderson,1024295,midfielders,"RW,RWB,RM",Right Winger,MF,28,1998-01-03,28,BRA,False,,2026-11-17
@@ -321,6 +321,7 @@ Wolfsberger AC,Donis Avdijaj,520348,midfielders,"ST,CAM,CM,LW,CDM",Centre-Forwar
 Wolfsberger AC,Aaron Schwarz,1420931,midfielders,"LM,LW,LWB,RW,LB",Left Midfield,MF,22,2004-03-20,11,AUT,False,,2026-11-17
 Wolfsberger AC,Michael Schweiger,2072701,midfielders,,Central Midfield,MF,21,2005-08-25,18,GER,False,,2026-11-17
 Wolfsberger AC,Otar Mamageishvili,1317741,midfielders,"CDM,CM",Defensive Midfield,MF,23,2003-01-15,19,GEO,False,,2026-11-17
+Wolfsberger AC,Thorsten Schriebl,951278,midfielders,"CM,RM",Central Midfield,MF,27,1998-11-24,20,AUT,False,,2026-11-17
 Wolfsberger AC,Veljko Vukojević,1485175,midfielders,,Central Midfield,MF,20,2006-08-22,22,SRB,False,,2026-11-17
 Wolfsberger AC,Mickael Dosso,1436943,midfielders,CAM,Attacking Midfield,MF,21,2005-08-23,24,CIV,False,,2026-11-17
 Wolfsberger AC,Marco Sulzner,1156880,midfielders,"CDM,CM,CB,LW",Defensive Midfield,MF,23,2003-07-02,30,AUT,False,,2026-11-17
@@ -331,7 +332,6 @@ Wolfsberger AC,René Renner,557831,midfielders,"LWB,LM,LB",Left-Back,MF,32,1993-
 Wolfsberger AC,Luca Hassler,1276614,attackers,"ST,CM",Centre-Forward,FW,22,2003-12-13,7,AUT,False,,2026-11-17
 Wolfsberger AC,Giacomo Vrioni,814285,attackers,ST,Centre-Forward,FW,28,1998-10-15,9,ALB,False,,2026-11-17
 Wolfsberger AC,Marco Schabauer,1669450,attackers,"RW,ST,CAM,CM",Right Winger,FW,21,2005-10-21,17,AUT,False,,2026-11-17
-Wolfsberger AC,Thorsten Schriebl,951278,attackers,"RW,CAM",Right Winger,FW,27,1998-11-24,20,AUT,False,,2026-11-17
 Wolfsberger AC,Phillip Verhounig,1481059,attackers,"ST,CAM",Centre-Forward,FW,20,2006-01-05,23,AUT,False,,2026-11-17
 Wolfsberger AC,Markus Pink,167119,attackers,ST,Centre-Forward,FW,35,1991-02-24,32,AUT,False,,2026-11-17
 Wolfsberger AC,Sankara Karamoko,1435402,attackers,ST,Centre-Forward,FW,23,2003-11-09,49,CIV,False,,2026-11-17
