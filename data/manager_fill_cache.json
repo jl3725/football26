@@ -786,6 +786,10 @@
    "src": "fotmob",
    "val": "Jul 2026"
   },
+  "La Louvière|sven vandenbroeck": {
+   "at": "2026-11-18",
+   "val": ""
+  },
   "La Louvière||league =": {
    "at": "2026-11-08",
    "val": ""
@@ -1363,8 +1367,10 @@
    "val": "Jul 2026"
   },
   "Sporting CP|paulo fonseca": {
-   "at": "2026-11-04",
-   "val": ""
+   "at": "2026-11-18",
+   "date": "2026-11-05",
+   "src": "fotmob",
+   "val": "Nov 2026"
   },
   "Sporting CP|rui borges": {
    "at": "2026-10-23",
@@ -1707,7 +1713,7 @@
   "Espanyol|eder sarabia": "2026-11-14",
   "Espanyol|manolo gonzalez": "2026-10-23",
   "Espanyol|sergio garcia (caretaker)": "2026-10-29",
-  "Estoril|sergio raimundo": "2026-11-11",
+  "Estoril|sergio raimundo": "2026-11-18",
   "Estoril|sergio raimundo (caretaker)": "2026-11-03",
   "Estrela|pepa": "2026-11-13",
   "Everton|david moyes": "2026-11-13",
@@ -1741,6 +1747,7 @@
   "Kortrijk|christophe lepoint": "2026-10-23",
   "Köln|rene wagner": "2026-11-13",
   "La Louvière|edward still": "2026-11-06",
+  "La Louvière|sven vandenbroeck": "2026-11-18",
   "La Louvière||league =": "2026-11-15",
   "Lazio|gennaro gattuso": "2026-11-13",
   "Le Havre|didier digard": "2026-10-30",
@@ -1805,7 +1812,7 @@
   "Sevilla|luis garcia": "2026-11-13",
   "Sint-Truiden|frederic de meyer": "2026-11-13",
   "Sparta R.|rogier meijer": "2026-11-13",
-  "Sporting CP|paulo fonseca": "2026-11-11",
+  "Sporting CP|paulo fonseca": "2026-11-18",
   "Sporting CP|rui borges": "2026-10-30",
   "Standard Liège|vincent euvrard": "2026-11-13",
   "Strasbourg|hugo oliveira": "2026-11-13",
@@ -3058,6 +3065,11 @@
   },
   "steven schumacher": {
    "at": "2026-10-23",
+   "focus": "",
+   "style": ""
+  },
+  "sven vandenbroeck": {
+   "at": "2026-11-18",
    "focus": "",
    "style": ""
   },

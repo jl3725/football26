@@ -41,7 +41,7 @@ Benfica,Souffian El Karouani,1079500,defenders,LB,Left-Back,DF,26,2000-10-19,34.
 Benfica,Tomás Araújo,1187283,defenders,"CB,RB",Centre-Back,DF,24,2002-05-16,44.0,POR,False,,2026-11-18
 Benfica,Enzo Barrenechea,1352923,midfielders,CDM,Defensive Midfield,MF,25,2001-05-22,5.0,ARG,False,,2026-11-18
 Benfica,Fredrik Aursnes,310768,midfielders,"CDM,RW,CM,RB",Defensive Midfield,MF,30,1995-12-10,8.0,NOR,False,,2026-11-18
-Benfica,Georgiy Sudakov,1192398,midfielders,"CAM,LW,CM,CDM",Attacking Midfield,MF,24,2002-09-01,10.0,UKR,False,,2026-11-18
+Benfica,Georgiy Sudakov,1192398,midfielders,"CAM,LW,CM,CDM,LM",Attacking Midfield,MF,24,2002-09-01,10.0,UKR,False,,2026-11-18
 Benfica,Jakub Kamiński,1067260,midfielders,"CAM,LW,LM,CM,RM,CDM,RWB",Attacking Midfield,MF,24,2002-06-05,13.0,POL,False,,2026-11-18
 Benfica,Manu Silva,1198071,midfielders,CDM,Defensive Midfield,MF,25,2001-06-12,16.0,POR,False,,2026-11-18
 Benfica,Leandro Barreiro,930065,midfielders,"CDM,CAM,CM",Defensive Midfield,MF,26,2000-01-03,18.0,LUX,True,Early July 2027,2026-11-18
@@ -309,7 +309,7 @@ Alverca,Steven Baseya,1562034,defenders,CB,Centre-Back,DF,21,2005-01-14,14.0,FRA
 Alverca,Ikker Julian,1597253,defenders,CB,Centre-Back,DF,21,2005-07-07,15.0,BEL,False,,2026-11-18
 Alverca,Sergi Gómez,358148,defenders,CB,Centre-Back,DF,34,1992-03-28,21.0,ESP,False,,2026-11-18
 Alverca,Mofe Jemide,1667547,defenders,CB,Centre-Back,DF,20,2006-11-08,24.0,ENG,False,,2026-11-18
-Alverca,Toni Tamarit,1801070,defenders,"RWB,RB,RM",Right-Back,DF,20,2005-11-22,27.0,ESP,False,,2026-11-18
+Alverca,Toni Tamarit,1801070,defenders,"RB,RWB,RM",Right-Back,DF,20,2005-11-22,27.0,ESP,False,,2026-11-18
 Alverca,Bastien Meupiyou,1487920,defenders,CB,Centre-Back,DF,20,2006-03-19,33.0,FRA,True,Day to day,2026-11-18
 Alverca,Óscar Torrellas,1842328,defenders,CB,Centre-Back,DF,19,2007-01-13,77.0,ESP,False,,2026-11-18
 Alverca,Lucca Giuntini,1817035,midfielders,,Central Midfield,MF,21,2005-07-12,,BRA,False,,2026-11-18
@@ -317,7 +317,7 @@ Alverca,Tiago Octavio,2080970,midfielders,,Central Midfield,MF,22,2004-07-08,,PO
 Alverca,Nabili Touaizi,940443,midfielders,"RM,RWB",Right Midfield,MF,25,2001-02-01,2.0,ESP,False,,2026-11-18
 Alverca,Sabit Abdulai,1158933,midfielders,CM,Central Midfield,MF,27,1999-05-11,5.0,GHA,True,Day to day,2026-11-18
 Alverca,Davy Gui,1707494,midfielders,"CM,CDM",Central Midfield,MF,20,2006-06-15,6.0,CIV,False,,2026-11-18
-Alverca,Vasco Moreira,1524672,midfielders,"CM,LW,RW",Central Midfield,MF,25,2001-05-07,8.0,POR,False,,2026-11-18
+Alverca,Vasco Moreira,1524672,midfielders,"CM,RW",Central Midfield,MF,25,2001-05-07,8.0,POR,False,,2026-11-18
 Alverca,Isaac James,1670614,midfielders,"LM,CB,LWB,LB",Left Midfield,MF,22,2004-08-28,12.0,NGA,False,,2026-11-18
 Alverca,Zakaria Kassary,1813121,midfielders,LM,Left Midfield,MF,20,2006-01-25,18.0,MAR,False,,2026-11-18
 Alverca,Diogo Spencer,1374499,midfielders,"RM,RWB,LM",Right Midfield,MF,22,2004-04-17,20.0,POR,False,,2026-11-18
@@ -377,11 +377,11 @@ Nacional,Zé Vítor,1256692,defenders,CB,Centre-Back,DF,25,2001-02-09,38.0,BRA,F
 Nacional,Pedro Silva,2140899,defenders,,Centre-Back,DF,17,2008-11-21,55.0,POR,False,,2026-11-18
 Nacional,Deivison,1791597,defenders,RB,Right-Back,DF,20,2006-05-04,88.0,BRA,False,,2026-11-18
 Nacional,Josué,1568991,midfielders,CM,Central Midfield,MF,21,2005-04-25,,BRA,False,,2026-11-18
+Nacional,Matchoi,1069628,midfielders,CM,Central Midfield,MF,23,2003-04-10,,POR,False,,2026-11-18
 Nacional,Matheus Dias,1380814,midfielders,"CM,CDM,CB",Central Midfield,MF,24,2002-05-09,6.0,BRA,False,,2026-11-18
 Nacional,Miguel Baeza,1088053,midfielders,"CM,CDM,RW,CAM",Central Midfield,MF,26,2000-03-27,8.0,ESP,False,,2026-11-18
 Nacional,Stavros Gavriel,1178054,midfielders,"RW,CAM",Right Winger,MF,24,2002-01-29,11.0,CYP,False,,2026-11-18
 Nacional,Chiheb Labidi,1242656,midfielders,"CM,CAM",Central Midfield,MF,25,2001-06-01,15.0,TUN,False,,2026-11-18
-Nacional,Matchoi,1069628,midfielders,CM,Central Midfield,MF,23,2003-04-10,20.0,POR,False,,2026-11-18
 Nacional,William Kokolo,982245,midfielders,"LM,LB,LWB",Left Midfield,MF,26,2000-06-09,21.0,FRA,False,,2026-11-18
 Nacional,Filipe Soares,793256,midfielders,"CM,CDM",Central Midfield,MF,27,1999-05-20,22.0,POR,True,Early January 2027,2026-11-18
 Nacional,Mateus Iseppe,1804860,midfielders,CAM,Attacking Midfield,MF,20,2006-05-02,23.0,BRA,False,,2026-11-18
@@ -543,7 +543,7 @@ Estoril,Longin Bimai,1795442,defenders,,Centre-Back,DF,20,2006-02-17,57.0,FRA,Fa
 Estoril,Xeka,470810,midfielders,"CM,CDM",Central Midfield,MF,32,1994-11-10,8.0,POR,False,,2026-11-18
 Estoril,Jordan Holsgrove,877568,midfielders,"CM,CDM",Central Midfield,MF,27,1999-09-10,10.0,SCO,False,,2026-11-18
 Estoril,João Carvalho,603808,midfielders,"CAM,LM,CM,RW,LW",Attacking Midfield,MF,29,1997-03-09,12.0,POR,False,,2026-11-18
-Estoril,Milan Robin,1359270,midfielders,"CM,RW,CDM,CAM",Central Midfield,MF,26,1999-11-24,44.0,FRA,False,,2026-11-18
+Estoril,Milan Robin,1359270,midfielders,"CM,CDM",Central Midfield,MF,26,1999-11-24,44.0,FRA,False,,2026-11-18
 Estoril,Luís Gomes,1368826,midfielders,CM,Central Midfield,MF,22,2004-04-24,80.0,POR,False,,2026-11-18
 Estoril,Tiago Brito,1459916,midfielders,"CM,CDM",Central Midfield,MF,22,2004-04-16,90.0,POR,False,,2026-11-18
 Estoril,Isra Salazar,1418044,attackers,RW,Right Winger,FW,23,2003-05-10,,ESP,True,Day to day,2026-11-18
