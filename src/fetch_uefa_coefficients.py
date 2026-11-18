@@ -133,7 +133,7 @@ def main() -> int:
     cy, club = fetch_club()
     if not assoc and not club:
         print("[uefa] 계수 수집 실패 — 기존 파일 유지", file=sys.stderr)
-        return 1
+        return 75                                   # 원천 중단(SOURCE DOWN) — 하루 막혀도 빨간불 아님(11/16 한 번)
 
     if assoc:
         _write(OUT_ASSOC, assoc, ["rank", "country", "coefficient", "teams"])

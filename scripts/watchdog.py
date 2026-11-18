@@ -11,7 +11,7 @@
   backend   api·src·requirements 최신 커밋이 Render 운영에 떠 있는가(/api/health commit)
   workflows daily_data·daily_news·keep_alive·CI 최근 실행이 성공인가
   news      news.db 마지막 수집 1일 이내, 최근 2일 번역률 50% 이상, 넓힌 원천(wire·fotmob) 최근 2일 기사 있음,
-            압축본 50MB(GitHub 경고 구간) 미만
+            압축본 70MB 미만(50~60MB 는 자동 정리가 관리하는 톱니 구간)
   tm_agent  로컬 TM agent(이 PC 작업 스케줄러) 산출물이 최근에 커밋됐는가
   coverage  현재 시즌 팀 전원에게 감독 프로필이 있는가(시즌 전환 뒤 승격팀 누락·강등팀 잔류 탐지)
   rating_history  선수 평점 일일 기록(▲▼ 추이 원천)이 3일 안에 갱신됐는가
@@ -251,10 +251,13 @@ def check_news() -> list[str]:
     for v, what in (("wire", "매체 RSS"), ("fotmob", "FotMob 팀 뉴스")):
         if not vias.get(v):
             out.append(f"최근 2일 {what}({v}) 기사 0건 — src/news_wires.py·daily_news 로그의 [wires] 줄 확인")
+    # 압축본 크기 — 50~60MB 는 자동 정리(SOFT, 넓힌 원천 14일 지난 비이적 기사)가 관리하는 톱니 구간이라(11/15 60.0 → 49.0)
+    # 실패로 보지 않는다(2026-11-18: xz 전환·뉴스 이어 달리기 뒤 거의 매일 빨간불). 정리하고도 SOFT 를 넘거나 HARD 에 가까우면 실패
     size = int(news_store.read_ref().get("bytes") or 0)
-    if size > 50_000_000:
-        out.append(f"news.db 압축본 {size / 1e6:.0f}MB — GitHub 50MB 경고 구간(60MB 넘으면 넓힌 원천의 14일 지난 비이적 기사를 "
-                   "자동 정리, 90MB 넘으면 올리기 거부 — src/news_store.py)")
+    warn = news_store.SOFT_BYTES + (news_store.HARD_BYTES - news_store.SOFT_BYTES) // 3      # 70MB
+    if size > warn:
+        out.append(f"news.db 압축본 {size / 1e6:.0f}MB — 자동 정리({news_store.SOFT_BYTES / 1e6:.0f}MB 초과 시)로도 안 줄어듦, "
+                   f"{news_store.HARD_BYTES / 1e6:.0f}MB 넘으면 올리기 거부(src/news_store.py) — 기본 원천 보관 기간 정하기")
     return out
 
 
