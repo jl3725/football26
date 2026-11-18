@@ -1,15 +1,15 @@
 {
- "checked": "2026-11-17T17:08:41+00:00",
+ "checked": "2026-11-18T16:45:32+00:00",
  "results": {
   "ovr": [],
   "season": [],
   "hub": [],
   "frontend": [],
   "backend": [],
-  "workflows": [],
-  "news": [
-   "news.db 압축본 54MB — GitHub 50MB 경고 구간(60MB 넘으면 넓힌 원천의 14일 지난 비이적 기사를 자동 정리, 90MB 넘으면 올리기 거부 — src/news_store.py)"
+  "workflows": [
+   "tm_data.yml 최근 실행 failure (2026-11-18T08:39) https://github.com/jl3725/football26/actions/runs/44268906299"
   ],
+  "news": [],
   "tm_agent": [],
   "coverage": [],
   "rating_history": [],
@@ -31,5 +31,5 @@
   "digest": [],
   "scout_answers": []
  },
- "ai_cause": "- **news**: 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인)\n- **ratings**: 원장에 관련 실패 없음 — 데이터 수집 단계의 오류가 아닌 스카우트 기준 설정값 자체의 문제로 추정(ratings 관련 실패 기록 없음)\n- **progress**: StatBunker 및 Understat 원천 사이트의 504 응답으로 인한 데이터 수집 실패가 누적되어 통계 지연 및 누락 발생(statbunker, understat_live 단계)\n- **progress**: UEFA 계수 업데이트 실패(code 1)가 발생했으므로 해당 단계의 실행 로그를 확인하여 네트워크 오류인지 API 응답 문제인지 파악 필요(uefa_coefficients 단계)"
+ "ai_cause": "- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인) (workflows)\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인) (ratings)\n- statbunker 원천 504 오류로 기존 파일 유지 및 Ligue1 Understat xG 팀 누락 등 발생 추정 (progress - statbunker, understat_live)"
 }
