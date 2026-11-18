@@ -6,16 +6,17 @@ Augsburg,Aleksandr Maksimenko,Goalkeeper,28,Spartak Moscow,4000000.0,,20/10/2026
 Augsburg,Noah Ajayi,Left Winger,17,Manchester United U18,,,01/09/2026
 Augsburg,Monju Momuluh,Right Winger,24,Arminia Bielefeld,1800000.0,,12/08/2026
 Augsburg,Bradley Locko,Left-Back,24,Stade Brestois 29,6000000.0,,24/07/2026
+Bayern Munich,Loris Karius,Goalkeeper,33,FC Schalke 04,1200000.0,19,18/11/2026
+Bayern Munich,Juan Rodríguez,Centre-Back,21,Cagliari Calcio,14000000.0,,18/11/2026
 Bayern Munich,Jordan Arnolin,Centre-Back,18,GD Estoril Praia,300000.0,,17/11/2026
 Bayern Munich,Nicolò Tresoldi,Centre-Forward,22,Club Brugge KV,35000000.0,60,16/11/2026
 Bayern Munich,Brajan Gruda,Attacking Midfield,22,RB Leipzig,28000000.0,14,16/11/2026
 Bayern Munich,Rio Ngumoha,Left Winger,18,Liverpool FC,50000000.0,38,16/11/2026
 Bayern Munich,Robin Risser,Goalkeeper,21,RC Lens,30000000.0,34,16/11/2026
-Bayern Munich,Gianluca Prestianni,Right Winger,20,SL Benfica,40000000.0,37,12/11/2026
+Bayern Munich,Gianluca Prestianni,Right Winger,20,SL Benfica,40000000.0,31,12/11/2026
 Bayern Munich,Tomás Araújo,Centre-Back,24,SL Benfica,35000000.0,,11/11/2026
 Bayern Munich,Oliver Baumann,Goalkeeper,36,TSG 1899 Hoffenheim,2500000.0,,09/11/2026
 Bayern Munich,Bernd Leno,Goalkeeper,34,Fulham FC,6000000.0,,09/11/2026
-Bayern Munich,Loris Karius,Goalkeeper,33,FC Schalke 04,1200000.0,18,09/11/2026
 Bayern Munich,Estêvão,Right Winger,19,Chelsea FC,80000000.0,36,05/11/2026
 Bayern Munich,Oskar Pietuszewski,Left Winger,18,FC Porto,25000000.0,58,05/11/2026
 Bayern Munich,JJ Gabriel,Attacking Midfield,16,Manchester United U21,,36,04/11/2026
@@ -30,12 +31,11 @@ Bayern Munich,Fabian Bredlow,Goalkeeper,31,VfB Stuttgart,1000000.0,,20/10/2026
 Bayern Munich,Nick Pope,Goalkeeper,34,Newcastle United,3000000.0,,08/10/2026
 Bayern Munich,Johannes Schenk,Goalkeeper,23,SK Beveren,1500000.0,,08/10/2026
 Bayern Munich,Tarik Muharemović,Centre-Back,23,Leeds United,40000000.0,,06/10/2026
-Bayern Munich,Luca Williams-Barnett,Attacking Midfield,18,Tottenham Hotspur U21,4000000.0,,06/10/2026
 Dortmund,Jordan Arnolin,Centre-Back,18,GD Estoril Praia,300000.0,,17/11/2026
 Dortmund,Anis Hadj Moussa,Right Winger,24,Feyenoord Rotterdam,28000000.0,,12/11/2026
 Dortmund,Ismaëlo Ganiou,Centre-Back,21,RC Lens,30000000.0,,08/11/2026
 Dortmund,Gustavo Varela,Centre-Forward,21,AC Monza,5000000.0,,02/11/2026
-Dortmund,Wael Mohya,Attacking Midfield,17,Borussia Mönchengladbach,17000000.0,26,27/10/2026
+Dortmund,Wael Mohya,Attacking Midfield,17,Borussia Mönchengladbach,17000000.0,27,27/10/2026
 Dortmund,Marcel Reguła,Attacking Midfield,20,Zaglebie Lubin,7000000.0,42,12/10/2026
 Dortmund,Malik Jakupović,Centre-Forward,17,Philadelphia Union,300000.0,,12/10/2026
 Dortmund,Bartosz Mazurek,Central Midfield,19,Red Bull Salzburg,10000000.0,,09/10/2026
@@ -75,9 +75,9 @@ Köln,Ianis Stoica,Left Winger,23,CF Estrela Amadora,4000000.0,,15/10/2026
 Köln,Vini Souza,Defensive Midfield,27,VfL Wolfsburg,7000000.0,,25/08/2026
 Köln,Eric-Junior Bocat,Left-Back,27,Stoke City,2200000.0,,24/08/2026
 Köln,Rani Khedira,Defensive Midfield,32,1.FC Union Berlin,2000000.0,,18/08/2026
+Leverkusen,Wael Mohya,Attacking Midfield,17,Borussia Mönchengladbach,17000000.0,33,18/11/2026
 Leverkusen,Kristian Strømland Lien,Centre-Forward,25,Djurgårdens IF,3500000.0,32,11/11/2026
 Leverkusen,Bo Hegland,Attacking Midfield,22,Djurgårdens IF,7000000.0,57,11/11/2026
-Leverkusen,Wael Mohya,Attacking Midfield,17,Borussia Mönchengladbach,17000000.0,34,10/11/2026
 Leverkusen,Andrés Gómez,Left Winger,24,Clube de Regatas Vasco da Gama,15000000.0,,09/11/2026
 Leverkusen,Relebohile Mofokeng,Left Winger,22,Union Saint-Gilloise,6000000.0,,04/11/2026
 Leverkusen,Bremer,Centre-Back,29,Juventus FC,35000000.0,,23/10/2026
@@ -98,7 +98,7 @@ RB Leipzig,Soungoutou Magassa,Defensive Midfield,23,West Ham United,15000000.0,,
 RB Leipzig,Julian Hall,Centre-Forward,18,Red Bull New York,8000000.0,,27/08/2026
 RB Leipzig,Robert Andrich,Defensive Midfield,32,Bayer 04 Leverkusen,5000000.0,,26/08/2026
 SC Paderborn,Lovis Bierschenk,Left Winger,21,SV Waldhof Mannheim,800000.0,,07/10/2026
-Schalke 04,Tim Oermann,Centre-Back,23,Bayer 04 Leverkusen,4000000.0,,17/11/2026
+Schalke 04,Tim Oermann,Centre-Back,23,Bayer 04 Leverkusen,4000000.0,61,17/11/2026
 Schalke 04,Furkan Dursun,Centre-Forward,21,FC Thun,800000.0,,02/11/2026
 Schalke 04,Kristian Strømland Lien,Centre-Forward,25,Djurgårdens IF,3500000.0,,13/10/2026
 Schalke 04,Andréas Hountondji,Centre-Forward,24,Burnley FC,3000000.0,,21/08/2026
