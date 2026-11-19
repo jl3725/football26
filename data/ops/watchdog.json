@@ -1,5 +1,5 @@
 {
- "checked": "2026-11-18T16:45:32+00:00",
+ "checked": "2026-11-19T16:53:01+00:00",
  "results": {
   "ovr": [],
   "season": [],
@@ -7,7 +7,7 @@
   "frontend": [],
   "backend": [],
   "workflows": [
-   "tm_data.yml 최근 실행 failure (2026-11-18T08:39) https://github.com/jl3725/football26/actions/runs/44268906299"
+   "tm_data.yml 최근 실행 failure (2026-11-19T08:55) https://github.com/jl3725/football26/actions/runs/44491771082"
   ],
   "news": [],
   "tm_agent": [],
@@ -18,7 +18,9 @@
   ],
   "names": [],
   "xg": [],
-  "agents": [],
+  "agents": [
+   "TRANSFER · 빅5로 보낸 선수(리그 지도 TIER 3) — 마지막 성공 45시간 전(허용 36시간, tm_data)"
+  ],
   "expectations": [],
   "screen": [],
   "squads": [],
@@ -31,5 +33,5 @@
   "digest": [],
   "scout_answers": []
  },
- "ai_cause": "- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인) (workflows)\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인) (ratings)\n- statbunker 원천 504 오류로 기존 파일 유지 및 Ligue1 Understat xG 팀 누락 등 발생 추정 (progress - statbunker, understat_live)"
+ "ai_cause": "- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인) (workflows)\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인) (ratings)\n- SwissSuperLeague와 MLS의 transfers, injuries, rumors 단계 및 league_exports 등에서 코드 1 실패가 발생하여 데이터 갱신이 지연되었을 가능성(tm_data) (agents)\n- understat_live 및 uefa_coefficients 단계에서 코드 75 오류가 발생하여 통계 및 xG 데이터 수집에 차질이 생겼을 가능성(progress) (progress)"
 }
