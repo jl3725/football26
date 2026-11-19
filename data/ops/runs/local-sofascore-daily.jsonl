@@ -1,22 +1,3 @@
-{"t": "2026-11-05T02:40:32+00:00", "runner": "local-sofascore-daily", "step": "sofascore", "league": "EPL", "ok": true, "code": 0, "sec": 28.5}
-{"t": "2026-11-05T02:40:34+00:00", "runner": "local-sofascore-daily", "step": "merge_sofascore", "league": "EPL", "ok": true, "code": 0, "sec": 2.0}
-{"t": "2026-11-05T02:42:43+00:00", "runner": "local-sofascore-daily", "step": "statbunker", "league": "EPL", "ok": false, "code": 75, "sec": 128.6, "note": "[statbunker] 원천 중단 404 Client Error: Not Found for url: https://www.statbunker.com/competitions/Tea — 기존 파일 유지"}
-{"t": "2026-11-05T02:43:14+00:00", "runner": "local-sofascore-daily", "step": "sofascore", "league": "LaLiga", "ok": true, "code": 0, "sec": 31.8}
-{"t": "2026-11-05T02:43:16+00:00", "runner": "local-sofascore-daily", "step": "merge_sofascore", "league": "LaLiga", "ok": true, "code": 0, "sec": 1.9}
-{"t": "2026-11-05T02:46:07+00:00", "runner": "local-sofascore-daily", "step": "statbunker", "league": "LaLiga", "ok": false, "code": 75, "sec": 171.1, "note": "[statbunker] 원천 중단 502 https://www.statbunker.com/competitions/TeamsGoalScorersTypeOfPlay?comp_id=7 — 기존 파일 유지"}
-{"t": "2026-11-05T02:48:46+00:00", "runner": "local-sofascore-daily", "step": "sofascore", "league": "Bundesliga", "ok": true, "code": 0, "sec": 158.4}
-{"t": "2026-11-05T02:48:48+00:00", "runner": "local-sofascore-daily", "step": "merge_sofascore", "league": "Bundesliga", "ok": true, "code": 0, "sec": 2.0}
-{"t": "2026-11-05T02:49:19+00:00", "runner": "local-sofascore-daily", "step": "sofascore", "league": "SerieA", "ok": true, "code": 0, "sec": 31.5}
-{"t": "2026-11-05T02:49:21+00:00", "runner": "local-sofascore-daily", "step": "merge_sofascore", "league": "SerieA", "ok": true, "code": 0, "sec": 1.9}
-{"t": "2026-11-05T02:51:17+00:00", "runner": "local-sofascore-daily", "step": "statbunker", "league": "SerieA", "ok": true, "code": 0, "sec": 115.6}
-{"t": "2026-11-05T02:53:13+00:00", "runner": "local-sofascore-daily", "step": "sofascore", "league": "Ligue1", "ok": true, "code": 0, "sec": 116.3}
-{"t": "2026-11-05T02:53:15+00:00", "runner": "local-sofascore-daily", "step": "merge_sofascore", "league": "Ligue1", "ok": true, "code": 0, "sec": 1.8}
-{"t": "2026-11-05T02:54:28+00:00", "runner": "local-sofascore-daily", "step": "sofascore", "league": "LigaPortugal", "ok": true, "code": 0, "sec": 72.9}
-{"t": "2026-11-05T02:54:30+00:00", "runner": "local-sofascore-daily", "step": "merge_sofascore", "league": "LigaPortugal", "ok": true, "code": 0, "sec": 1.9}
-{"t": "2026-11-05T02:55:00+00:00", "runner": "local-sofascore-daily", "step": "sofascore", "league": "Eredivisie", "ok": true, "code": 0, "sec": 29.7}
-{"t": "2026-11-05T02:55:02+00:00", "runner": "local-sofascore-daily", "step": "merge_sofascore", "league": "Eredivisie", "ok": true, "code": 0, "sec": 2.0}
-{"t": "2026-11-05T02:55:27+00:00", "runner": "local-sofascore-daily", "step": "sofascore", "league": "BelgianProLeague", "ok": true, "code": 0, "sec": 25.4}
-{"t": "2026-11-05T02:55:29+00:00", "runner": "local-sofascore-daily", "step": "merge_sofascore", "league": "BelgianProLeague", "ok": true, "code": 0, "sec": 2.2}
 {"t": "2026-11-06T02:40:51+00:00", "runner": "local-sofascore-daily", "step": "sofascore", "league": "EPL", "ok": true, "code": 0, "sec": 44.4}
 {"t": "2026-11-06T02:40:53+00:00", "runner": "local-sofascore-daily", "step": "merge_sofascore", "league": "EPL", "ok": true, "code": 0, "sec": 2.2}
 {"t": "2026-11-06T02:47:41+00:00", "runner": "local-sofascore-daily", "step": "statbunker", "league": "EPL", "ok": true, "code": 0, "sec": 407.7}
@@ -151,3 +132,23 @@
 {"t": "2026-11-18T23:21:32+00:00", "runner": "local-sofascore-daily", "step": "merge_sofascore", "league": "Eredivisie", "ok": true, "code": 0, "sec": 1.7}
 {"t": "2026-11-18T23:28:01+00:00", "runner": "local-sofascore-daily", "step": "sofascore", "league": "BelgianProLeague", "ok": true, "code": 0, "sec": 389.0}
 {"t": "2026-11-18T23:28:03+00:00", "runner": "local-sofascore-daily", "step": "merge_sofascore", "league": "BelgianProLeague", "ok": true, "code": 0, "sec": 2.4}
+{"t": "2026-11-19T22:59:47+00:00", "runner": "local-sofascore-daily", "step": "sofascore", "league": "EPL", "ok": true, "code": 0, "sec": 68.0}
+{"t": "2026-11-19T22:59:49+00:00", "runner": "local-sofascore-daily", "step": "merge_sofascore", "league": "EPL", "ok": true, "code": 0, "sec": 2.0}
+{"t": "2026-11-19T23:00:21+00:00", "runner": "local-sofascore-daily", "step": "statbunker", "league": "EPL", "ok": false, "code": 1, "sec": 32.3, "note": "RuntimeError: No rows parsed for statbunker_penalty_takers_2026_2027.csv"}
+{"t": "2026-11-19T23:01:06+00:00", "runner": "local-sofascore-daily", "step": "sofascore", "league": "LaLiga", "ok": true, "code": 0, "sec": 45.2}
+{"t": "2026-11-19T23:01:08+00:00", "runner": "local-sofascore-daily", "step": "merge_sofascore", "league": "LaLiga", "ok": true, "code": 0, "sec": 2.2}
+{"t": "2026-11-19T23:01:28+00:00", "runner": "local-sofascore-daily", "step": "statbunker", "league": "LaLiga", "ok": true, "code": 0, "sec": 19.7}
+{"t": "2026-11-19T23:02:04+00:00", "runner": "local-sofascore-daily", "step": "sofascore", "league": "Bundesliga", "ok": true, "code": 0, "sec": 36.3}
+{"t": "2026-11-19T23:02:07+00:00", "runner": "local-sofascore-daily", "step": "merge_sofascore", "league": "Bundesliga", "ok": true, "code": 0, "sec": 2.4}
+{"t": "2026-11-19T23:02:52+00:00", "runner": "local-sofascore-daily", "step": "sofascore", "league": "SerieA", "ok": true, "code": 0, "sec": 45.1}
+{"t": "2026-11-19T23:02:55+00:00", "runner": "local-sofascore-daily", "step": "merge_sofascore", "league": "SerieA", "ok": true, "code": 0, "sec": 3.0}
+{"t": "2026-11-19T23:03:21+00:00", "runner": "local-sofascore-daily", "step": "statbunker", "league": "SerieA", "ok": true, "code": 0, "sec": 26.2}
+{"t": "2026-11-19T23:04:48+00:00", "runner": "local-sofascore-daily", "step": "sofascore", "league": "Ligue1", "ok": true, "code": 0, "sec": 86.9}
+{"t": "2026-11-19T23:04:51+00:00", "runner": "local-sofascore-daily", "step": "merge_sofascore", "league": "Ligue1", "ok": true, "code": 0, "sec": 2.5}
+{"t": "2026-11-19T23:05:18+00:00", "runner": "local-sofascore-daily", "step": "sofascore", "league": "LigaPortugal", "ok": true, "code": 0, "sec": 26.8}
+{"t": "2026-11-19T23:05:20+00:00", "runner": "local-sofascore-daily", "step": "merge_sofascore", "league": "LigaPortugal", "ok": true, "code": 0, "sec": 2.4}
+{"t": "2026-11-19T23:08:58+00:00", "runner": "local-sofascore-daily", "step": "sofascore", "league": "Eredivisie", "ok": true, "code": 0, "sec": 217.6}
+{"t": "2026-11-19T23:09:00+00:00", "runner": "local-sofascore-daily", "step": "merge_sofascore", "league": "Eredivisie", "ok": true, "code": 0, "sec": 2.2}
+{"t": "2026-11-19T23:10:14+00:00", "runner": "local-sofascore-daily", "step": "sofascore", "league": "BelgianProLeague", "ok": true, "code": 0, "sec": 74.3}
+{"t": "2026-11-19T23:10:17+00:00", "runner": "local-sofascore-daily", "step": "merge_sofascore", "league": "BelgianProLeague", "ok": true, "code": 0, "sec": 2.4}
+{"t": "2026-11-19T23:13:57+00:00", "runner": "local-sofascore-daily", "step": "statbunker", "league": "EPL", "ok": false, "code": 1, "sec": 100.1, "note": "RuntimeError: No rows parsed for statbunker_penalty_takers_2026_2027.csv"}
