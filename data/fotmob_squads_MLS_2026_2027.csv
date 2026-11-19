@@ -92,7 +92,7 @@ New England Revolution,Mamadou Fofana,785536,defenders,CB,Centre-Back,DF,28,1998
 New England Revolution,Tanner Beason,1136294,defenders,CB,Centre-Back,DF,29,1997-03-23,4.0,USA,False,,2026-11-19
 New England Revolution,Tylon Smith,1680964,defenders,CB,Centre-Back,DF,21,2005-05-09,6.0,RSA,False,,2026-11-19
 New England Revolution,Matt Polster,621511,defenders,"RB,CDM,CM",Right-Back,DF,33,1993-06-08,8.0,USA,False,,2026-11-19
-New England Revolution,Ilay Feingold,1477873,defenders,"RB,CB",Right-Back,DF,22,2004-08-23,12.0,ISR,False,,2026-11-19
+New England Revolution,Ilay Feingold,1477873,defenders,RB,Right-Back,DF,22,2004-08-23,12.0,ISR,False,,2026-11-19
 New England Revolution,Cody Baker,1255486,defenders,RB,Right-Back,DF,22,2004-01-04,15.0,USA,False,,2026-11-19
 New England Revolution,Damario McIntosh,1520636,defenders,"RB,RM",Right-Back,DF,19,2007-08-17,19.0,JAM,False,,2026-11-19
 New England Revolution,Benjamin Sammer,1614654,defenders,CB,Centre-Back,DF,21,2005-03-11,21.0,AUT,False,,2026-11-19
@@ -319,7 +319,7 @@ Philadelphia Union,Kai Wagner,862284,defenders,LB,Left-Back,DF,29,1997-02-15,27.
 Philadelphia Union,Giovanny Sequera,1483557,defenders,"RB,RM,LB,LM",Right-Back,DF,20,2006-02-14,38.0,VEN,False,,2026-11-19
 Philadelphia Union,Francis Westfield,1474341,defenders,"RB,LB",Right-Back,DF,20,2005-12-09,39.0,USA,False,,2026-11-19
 Philadelphia Union,Neil Pierre,1517896,defenders,CB,Centre-Back,DF,19,2007-10-19,44.0,USA,False,,2026-11-19
-Philadelphia Union,Finn Sundstrom,1658739,defenders,CB,Centre-Back,DF,19,2006-11-19,66.0,USA,False,,2026-11-19
+Philadelphia Union,Finn Sundstrom,1658739,defenders,CB,Centre-Back,DF,20,2006-11-19,66.0,USA,False,,2026-11-19
 Philadelphia Union,Jordan Romaine Griffin,1780456,defenders,LB,Left-Back,DF,18,2008-10-25,68.0,USA,False,,2026-11-19
 Philadelphia Union,Jovan Lukić,1257540,midfielders,CM,Central Midfield,MF,24,2002-01-20,4.0,SRB,False,,2026-11-19
 Philadelphia Union,Cavan Sullivan,1630736,midfielders,"RM,LM,RW",Right Midfield,MF,17,2009-09-28,6.0,USA,False,,2026-11-19
@@ -387,7 +387,7 @@ Los Angeles FC,Timothy Tillman,767793,midfielders,"CM,CAM,RW",Central Midfield,M
 Los Angeles FC,Sergio Vasquez,1741921,midfielders,"CM,CDM,RW,CAM",Central Midfield,MF,22,2004-01-04,20.0,ECU,False,,2026-11-19
 Los Angeles FC,Jude Terry,1710667,midfielders,"CM,CDM,CAM",Central Midfield,MF,18,2008-10-08,22.0,USA,False,,2026-11-19
 Los Angeles FC,Mathieu Choinière,943428,midfielders,"CM,CDM",Central Midfield,MF,27,1999-02-07,66.0,CAN,False,,2026-11-19
-Los Angeles FC,Leo Walta,1276686,midfielders,"CM,CAM,RW",Central Midfield,MF,23,2003-06-24,81.0,FIN,False,,2026-11-19
+Los Angeles FC,Leo Walta,1276686,midfielders,"CM,RW,CAM",Central Midfield,MF,23,2003-06-24,81.0,FIN,False,,2026-11-19
 Los Angeles FC,Heung-Min Son,212867,attackers,"ST,CAM",Centre-Forward,FW,34,1992-07-08,7.0,KOR,False,,2026-11-19
 Los Angeles FC,Armindo Sieb,1191741,attackers,"RW,ST,LW",Right Winger,FW,23,2003-02-17,9.0,GER,False,,2026-11-19
 Los Angeles FC,Jeremy Ebobisse,792024,attackers,ST,Centre-Forward,FW,29,1997-02-14,17.0,USA,False,,2026-11-19
@@ -395,7 +395,7 @@ Los Angeles FC,Jacob Shaffelburg,1023943,attackers,"RW,LW,LM,LWB",Right Winger,F
 Los Angeles FC,Tyler Boyd,396757,attackers,RW,Right Winger,FW,31,1994-12-30,19.0,USA,False,,2026-11-19
 Los Angeles FC,Thayllon,1738398,attackers,"RW,CAM,RM",Right Winger,FW,20,2006-08-18,43.0,BRA,False,,2026-11-19
 Los Angeles FC,Tommy Mihalić,1731726,attackers,"LW,RW",Left Winger,FW,24,2002-11-09,90.0,CRO,False,,2026-11-19
-Los Angeles FC,Denis Bouanga,664962,attackers,"LW,ST,CAM",Left Winger,FW,32,1994-11-11,99.0,GAB,False,,2026-11-19
+Los Angeles FC,Denis Bouanga,664962,attackers,"LW,ST,CAM,LM",Left Winger,FW,32,1994-11-11,99.0,GAB,False,,2026-11-19
 Portland Timbers,Trey Muse,1025925,keepers,GK,Goalkeeper,GK,27,1999-07-26,25.0,USA,True,Late November 2026,2026-11-19
 Portland Timbers,Hunter Sulte,1082981,keepers,GK,Goalkeeper,GK,24,2002-04-25,26.0,USA,False,,2026-11-19
 Portland Timbers,James Pantemis,878311,keepers,GK,Goalkeeper,GK,29,1997-02-21,41.0,CAN,False,,2026-11-19
@@ -639,8 +639,8 @@ Colorado Rapids,Sayed Abu Farkhi,1518943,attackers,"ST,LW",Centre-Forward,FW,20,
 Colorado Rapids,Ibrahim Sadiq,887137,attackers,"LW,RW",Left Winger,FW,26,2000-05-07,11.0,GHA,True,Late November 2026,2026-11-19
 Colorado Rapids,Alex Harris,1663077,attackers,ST,Centre-Forward,FW,21,2005-02-16,16.0,USA,False,,2026-11-19
 Colorado Rapids,Mamadou Billo Diop,1745119,attackers,ST,Centre-Forward,FW,20,2006-09-14,26.0,SEN,False,,2026-11-19
-Colorado Rapids,Donavan Phillip,1786169,attackers,"ST,RW,LW",Centre-Forward,FW,21,2005-01-04,32.0,LCA,False,,2026-11-19
-Colorado Rapids,Darren Yapi,1190710,attackers,"LW,ST,RW",Left Winger,FW,21,2004-11-19,77.0,USA,False,,2026-11-19
+Colorado Rapids,Donavan Phillip,1786169,attackers,"ST,LW,RW",Centre-Forward,FW,21,2005-01-04,32.0,LCA,False,,2026-11-19
+Colorado Rapids,Darren Yapi,1190710,attackers,"LW,ST,RW",Left Winger,FW,22,2004-11-19,77.0,USA,False,,2026-11-19
 Colorado Rapids,Georgi Minoungou,1387862,attackers,"LW,RW",Left Winger,FW,24,2002-07-25,93.0,BFA,False,,2026-11-19
 Red Bull New York,Tobias Szewczyk,1780504,keepers,GK,Goalkeeper,GK,17,2009-01-26,,USA,False,,2026-11-19
 Red Bull New York,AJ Marcucci,1251758,keepers,GK,Goalkeeper,GK,27,1999-07-31,1.0,USA,False,,2026-11-19
@@ -672,7 +672,7 @@ Red Bull New York,Cade Cowell,1025942,attackers,"RW,LW",Right Winger,FW,23,2003-
 Red Bull New York,Jorge Ruvalcaba,1306870,attackers,"LW,RW",Left Winger,FW,25,2001-07-23,11.0,MEX,False,,2026-11-19
 Red Bull New York,Eric Maxim Choupo-Moting,95082,attackers,ST,Centre-Forward,FW,37,1989-03-23,13.0,CMR,False,,2026-11-19
 Red Bull New York,Julian Hall,1489675,attackers,"ST,LW",Centre-Forward,FW,18,2008-03-24,16.0,USA,False,,2026-11-19
-Red Bull New York,Cameron Harper,1178309,attackers,RW,Right Winger,FW,24,2001-11-19,17.0,USA,False,,2026-11-19
+Red Bull New York,Cameron Harper,1178309,attackers,RW,Right Winger,FW,25,2001-11-19,17.0,USA,False,,2026-11-19
 Red Bull New York,Tanner Rosborough,1656933,attackers,LW,Left Winger,FW,18,2008-03-21,66.0,USA,False,,2026-11-19
 Red Bull New York,Rafael Mosquera,1514669,attackers,RW,Right Winger,FW,21,2005-05-24,79.0,PAN,False,,2026-11-19
 Red Bull New York,Mijahir Jiménez,1622640,attackers,ST,Centre-Forward,FW,19,2007-03-28,91.0,PAN,False,,2026-11-19
@@ -888,7 +888,7 @@ CF Montréal,Efraín Morales,1179047,defenders,CB,Centre-Back,DF,22,2004-03-04,2
 CF Montréal,Dawid Bugaj,1639641,defenders,"RB,RWB",Right-Back,DF,22,2004-07-09,27.0,POL,False,,2026-11-19
 CF Montréal,Viktor Radojević,1666976,defenders,LB,Left-Back,DF,22,2004-07-14,28.0,SRB,False,,2026-11-19
 CF Montréal,Samuel Piette,330470,midfielders,"CM,CDM",Central Midfield,MF,32,1994-11-12,6.0,CAN,False,,2026-11-19
-CF Montréal,Daniel Pereira,1246736,midfielders,"CM,CDM",Central Midfield,MF,26,2000-07-14,7.0,VEN,False,,2026-11-19
+CF Montréal,Daniel Pereira,1246736,midfielders,"CDM,CM",Defensive Midfield,MF,26,2000-07-14,7.0,VEN,False,,2026-11-19
 CF Montréal,Matthew Longstaff,961343,midfielders,"CM,CDM",Central Midfield,MF,26,2000-03-21,8.0,ENG,False,,2026-11-19
 CF Montréal,Wiki Carmona,1246580,midfielders,"RW,CAM,CM,RM,LW",Right Winger,MF,23,2003-02-24,16.0,VEN,False,,2026-11-19
 CF Montréal,Fabian Herbers,729983,midfielders,"CM,CAM",Central Midfield,MF,33,1993-08-17,21.0,GER,False,,2026-11-19

@@ -301,8 +301,10 @@
    "val": "Mar 2026"
   },
   "Cercle Brugge|pedro caixinha": {
-   "at": "2026-11-05",
-   "val": ""
+   "at": "2026-11-19",
+   "date": "2026-11-06",
+   "src": "fotmob",
+   "val": "Nov 2026"
   },
   "Charleroi|mario kohnen": {
    "at": "2026-10-23",
@@ -373,6 +375,12 @@
   "Crystal Palace|thomas frank": {
    "at": "2026-11-17",
    "date": "2026-11-16",
+   "src": "fotmob",
+   "val": "Nov 2026"
+  },
+  "DC United|oscar pareja": {
+   "at": "2026-11-19",
+   "date": "2026-11-15",
    "src": "fotmob",
    "val": "Nov 2026"
   },
@@ -1414,6 +1422,12 @@
    "src": "fotmob",
    "val": "Jul 2026"
   },
+  "Strasbourg|vitor matos": {
+   "at": "2026-11-19",
+   "date": "2026-11-18",
+   "src": "wikidata",
+   "val": "Nov 2026"
+  },
   "Sturm Graz|fabio ingolitsch": {
    "at": "2026-10-23",
    "date": "2025-12-29",
@@ -1699,7 +1713,7 @@
   "Casa Pia|filipe coelho": "2026-11-13",
   "Celta Vigo|claudio giraldez": "2026-11-13",
   "Cercle Brugge|lars friis": "2026-10-30",
-  "Cercle Brugge|pedro caixinha": "2026-11-12",
+  "Cercle Brugge|pedro caixinha": "2026-11-19",
   "Charleroi|mario kohnen": "2026-11-13",
   "Chelsea|xabi alonso": "2026-11-13",
   "Club Brugge|ivan leko": "2026-11-13",
@@ -1816,6 +1830,7 @@
   "Sporting CP|rui borges": "2026-10-30",
   "Standard Liège|vincent euvrard": "2026-11-13",
   "Strasbourg|hugo oliveira": "2026-11-13",
+  "Strasbourg|vitor matos": "2026-11-19",
   "Stuttgart|sebastian hoeness": "2026-11-13",
   "Sunderland|regis le bris": "2026-11-13",
   "Telstar|henk brugge": "2026-11-13",
@@ -2815,6 +2830,11 @@
   },
   "orhan ak": {
    "at": "2026-10-23",
+   "focus": "",
+   "style": ""
+  },
+  "oscar pareja": {
+   "at": "2026-11-19",
    "focus": "",
    "style": ""
   },
