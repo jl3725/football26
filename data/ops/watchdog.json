@@ -1,5 +1,5 @@
 {
- "checked": "2026-11-19T16:53:01+00:00",
+ "checked": "2026-11-20T16:27:54+00:00",
  "results": {
   "ovr": [],
   "season": [],
@@ -7,7 +7,7 @@
   "frontend": [],
   "backend": [],
   "workflows": [
-   "tm_data.yml 최근 실행 failure (2026-11-19T08:55) https://github.com/jl3725/football26/actions/runs/44491771082"
+   "tm_data.yml 최근 실행 failure (2026-11-20T08:41) https://github.com/jl3725/football26/actions/runs/44704571011"
   ],
   "news": [],
   "tm_agent": [],
@@ -19,10 +19,13 @@
   "names": [],
   "xg": [],
   "agents": [
-   "TRANSFER · 빅5로 보낸 선수(리그 지도 TIER 3) — 마지막 성공 45시간 전(허용 36시간, tm_data)"
+   "TRANSFER · 빅5로 보낸 선수(리그 지도 TIER 3) — 마지막 성공 69시간 전(허용 36시간, tm_data)"
   ],
   "expectations": [],
-  "screen": [],
+  "screen": [
+   "season_log Seattle Sounders FC: Andrew Thomas 헤더 3150′ 0G 0A ≠ SEASON LOG 3060′ 0G 0A",
+   "season_log Orlando City: Iván Angulo 헤더 3078′ 7G 6A ≠ SEASON LOG 2988′ 7G 5A"
+  ],
   "squads": [],
   "identity": [],
   "fair_price": [],
@@ -33,5 +36,5 @@
   "digest": [],
   "scout_answers": []
  },
- "ai_cause": "- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인) (workflows)\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인) (ratings)\n- SwissSuperLeague와 MLS의 transfers, injuries, rumors 단계 및 league_exports 등에서 코드 1 실패가 발생하여 데이터 갱신이 지연되었을 가능성(tm_data) (agents)\n- understat_live 및 uefa_coefficients 단계에서 코드 75 오류가 발생하여 통계 및 xG 데이터 수집에 차질이 생겼을 가능성(progress) (progress)"
+ "ai_cause": "각 항목별 점검 결과입니다.\n**workflows**\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인)\n**ratings**\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인)\n**agents**\n- SwissSuperLeague 및 MLS 리그의 rumors, contracts, transfers 등 다수 단계에서 코드 1 오류가 발생하여 데이터 수집이 중단되었습니다(tm_data runner 추정).\n- MLS 리그의 league_exports 단계까지 실패가 이어지고 있으므로, 해당 리그의 데이터 파싱 로직이나 API 응답 형식을 먼저 확인해야 합니다(tm_data runner 추정).\n**screen**\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인)\n**progress**\n- statbunker 단계에서 'No rows parsed' 오류가 발생하여 EPL 팀 통계 데이터가 정상적으로 처리되지 않았습니다(local-sofascore-daily runner 추정).\n- understat_live 단계에서 코드 75 오류가 반복되고 있어, 라이브 데이터 수집 중 연결 문제나 데이터 구조 변경 여부를 먼저 확인해야 합니다(match_refresh runner 추정)."
 }
