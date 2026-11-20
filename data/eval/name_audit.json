@@ -1752,8 +1752,8 @@
    "minutes": 12
   },
   "s365_ratings": {
-   "total": 443,
-   "exact": 436,
+   "total": 442,
+   "exact": 435,
    "rule": 4,
    "ambiguous": 2,
    "orphan": 0,
@@ -2217,9 +2217,9 @@
    "minutes": 5
   },
   "s365_ratings": {
-   "total": 430,
+   "total": 428,
    "exact": 377,
-   "rule": 4,
+   "rule": 2,
    "ambiguous": 1,
    "orphan": 0,
    "orphans": [],
@@ -3464,9 +3464,25 @@
     }
    ]
   },
+  "espn_lineups_cups": {
+   "total": 40,
+   "exact": 40,
+   "rule": 0,
+   "ambiguous": 0,
+   "orphan": 0,
+   "orphans": []
+  },
   "espn_subs": {
    "total": 927,
    "exact": 927,
+   "rule": 0,
+   "ambiguous": 0,
+   "orphan": 0,
+   "orphans": []
+  },
+  "espn_subs_cups": {
+   "total": 18,
+   "exact": 18,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -3482,13 +3498,13 @@
    "minutes": 0
   },
   "s365_ratings": {
-   "total": 862,
-   "exact": 805,
-   "rule": 25,
+   "total": 859,
+   "exact": 806,
+   "rule": 21,
    "ambiguous": 0,
    "orphan": 0,
    "orphans": [],
-   "minutes": 9
+   "minutes": 8
   }
  },
  "EPL 2025_2026": {
@@ -5914,7 +5930,7 @@
   }
  },
  "_meta": {
-  "date": "2026-11-19",
+  "date": "2026-11-20",
   "season": "2026_2027"
  }
 }
