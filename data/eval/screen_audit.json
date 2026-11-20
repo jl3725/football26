@@ -1,5 +1,5 @@
 {
- "date": "2026-11-19",
+ "date": "2026-11-20",
  "checked": {
   "season_log": 56,
   "team_xg": 56,
@@ -7,7 +7,18 @@
   "opponents": 160,
   "leaders": 168,
   "heatmap_side": 100,
-  "injury_return": 159
+  "injury_return": 163
  },
- "issues": []
+ "issues": [
+  {
+   "kind": "season_log",
+   "team": "Seattle Sounders FC",
+   "detail": "Andrew Thomas 헤더 3150′ 0G 0A ≠ SEASON LOG 3060′ 0G 0A"
+  },
+  {
+   "kind": "season_log",
+   "team": "Orlando City",
+   "detail": "Iván Angulo 헤더 3078′ 7G 6A ≠ SEASON LOG 2988′ 7G 5A"
+  }
+ ]
 }
