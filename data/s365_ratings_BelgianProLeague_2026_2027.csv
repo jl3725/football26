@@ -48,7 +48,6 @@ Antwerp,Luca Schelfhout,234085,5,250,6.214
 Antwerp,Mauricio Benitez,118680,5,181,6.505
 Antwerp,Jules Ahoka,239085,2,180,7.25
 Antwerp,Luis Narh,242891,5,148,6.609
-Antwerp,A. Valencia,,3,139,8.227
 Antwerp,Youssef Hamdaoui,196307,2,65,6.358
 Antwerp,Geoffry Hairemans,49070,2,28,6.214
 Antwerp,Gerard Vandeplas,178392,1,25,6.6
@@ -79,28 +78,29 @@ Beveren,Dominic Thompson,70997,3,50,6.916
 Beveren,Guillaume De Schryver,241258,3,46,6.326
 Beveren,Jannik Robatsch,135758,2,42,6.6
 Beveren,Ilyes Najim,183251,1,17,6.5
-Cercle Brugge,Gaetan Coucke,47373,11,990,6.327
-Cercle Brugge,Geoffrey Kondo,178987,10,900,6.56
-Cercle Brugge,Gary Magnée,86662,11,867,7.012
+Cercle Brugge,Gaetan Coucke,47373,12,1080,6.45
+Cercle Brugge,Geoffrey Kondo,178987,11,990,6.582
+Cercle Brugge,Gary Magnée,86662,12,957,7.218
+Cercle Brugge,Steve Ngoura,150117,12,865,6.848
 Cercle Brugge,Valy Konaté,161307,10,853,6.522
-Cercle Brugge,Steve Ngoura,150117,11,775,6.807
-Cercle Brugge,Ibrahim Diakite,116511,10,731,6.398
+Cercle Brugge,Ibrahim Diakite,116511,11,776,6.415
+Cercle Brugge,Viggo Martens,244174,11,704,6.712
 Cercle Brugge,Lukas Mondele,99105,11,661,6.586
-Cercle Brugge,Viggo Martens,244174,10,619,6.7
 Cercle Brugge,Emmanuel Kakou,158688,7,569,5.862
-Cercle Brugge,Dante Vanzeir,44598,8,488,6.698
-Cercle Brugge,Royer Caicedo,190162,5,450,6.98
-Cercle Brugge,Tunde Akinsola,132678,7,380,7.221
+Cercle Brugge,Dante Vanzeir,44598,9,568,6.685
+Cercle Brugge,Royer Caicedo,190162,6,540,7.017
+Cercle Brugge,Tunde Akinsola,132678,8,460,7.147
+Cercle Brugge,Hannes van der Bruggen,1277,5,430,6.953
+Cercle Brugge,Luke Le Roux,67107,5,412,6.637
 Cercle Brugge,Ibrahima Diaby,144633,4,348,6.586
-Cercle Brugge,Hannes van der Bruggen,1277,4,340,6.968
-Cercle Brugge,Luke Le Roux,67107,4,322,6.591
-Cercle Brugge,Erick Nunes,151929,7,253,6.552
+Cercle Brugge,Erick Nunes,151929,8,263,6.539
 Cercle Brugge,Krys Kouassi,193370,10,240,6.725
 Cercle Brugge,Abdoulie Manneh,156921,3,198,7.176
 Cercle Brugge,Lazare Amani,44124,5,175,6.109
 Cercle Brugge,Lucas Michal,151378,7,164,6.433
-Cercle Brugge,Charles Herrmann,144610,1,58,6.9
+Cercle Brugge,Charles Herrmann,144610,2,68,6.841
 Cercle Brugge,Tayo Adaramola,109079,2,47,5.832
+Cercle Brugge,Yago Lincoln,144935,1,45,6.9
 Cercle Brugge,Lawrence Agyekum,110914,1,29,6.8
 Cercle Brugge,Joel Ndala,145992,1,25,6.6
 Cercle Brugge,Abdoul Kader Ouattara,150708,1,20,5.7
@@ -249,6 +249,7 @@ Lommel,Don-Angelo Konadu,179738,9,739,7.116
 Lommel,Juho Talvitie,160276,10,692,6.983
 Lommel,Dries Wouters,27528,6,475,7.073
 Lommel,Sverre Nypan,122737,5,335,7.333
+Lommel,M. Salah,,5,252,7.693
 Lommel,Nicolas Rommens,1153,5,233,7.479
 Lommel,Ralf Seuntjens,49010,4,208,6.66
 Lommel,Tristan Gooijer,135556,6,188,6.535
@@ -260,7 +261,6 @@ Lommel,Niek Corthouts,245362,5,90,6.588
 Lommel,Jesper Tolinsson,77675,1,72,6.6
 Lommel,Djordje Gordic,175272,4,60,7.015
 Lommel,Alexander Reumers,238967,1,23,6.8
-Lommel,M. Salah,,1,23,6.4
 Lommel,Lars Beirinckx,244208,1,18,6.4
 Mechelen,Myron van Brederode,115639,11,990,7.464
 Mechelen,Jose Marsa,125924,11,944,6.53
@@ -285,7 +285,6 @@ Mechelen,Dikeni Salifou,105439,2,135,6.833
 Mechelen,Bill Antonio,105683,5,104,6.238
 Mechelen,Adeshina Ayodele,244881,3,99,6.585
 Mechelen,Moncef Zekri,203744,1,90,5.7
-Mechelen,M. Lohunanu-Mbasi,,1,90,7.2
 Mechelen,Leo Hjelde,87574,1,37,5.8
 Mechelen,Ian Struyf,217656,2,31,6.6
 Mechelen,Maxim Kireev,156149,2,29,6.597
@@ -385,30 +384,31 @@ Union St. Gilloise,Promise David,175827,1,59,7.8
 Union St. Gilloise,Ilan Hurtevent,242902,1,27,8.4
 Union St. Gilloise,Anouar Ait El Hadj,68928,1,24,7.3
 Union St. Gilloise,Sekou Keita,206484,1,20,6.5
-Westerlo,Andreas Jungdal,87681,11,990,5.964
-Westerlo,Cisse Sandra,99049,11,988,6.944
-Westerlo,Seiji Kimura,121741,11,982,6.392
-Westerlo,Ibrahim Fofana,178977,11,899,6.929
-Westerlo,Shunsuke Saito,222625,11,825,7.297
-Westerlo,Norman Bassette,125892,11,817,7.232
-Westerlo,Lasse Flo,145730,11,799,6.704
-Westerlo,Isa Sakamoto,115043,11,790,7.035
-Westerlo,Amando Lapage,151436,9,787,6.721
+Westerlo,Andreas Jungdal,87681,12,1080,6.0
+Westerlo,Cisse Sandra,99049,12,1078,7.015
+Westerlo,Seiji Kimura,121741,12,1072,6.435
+Westerlo,Ibrahim Fofana,178977,12,989,6.872
+Westerlo,Lasse Flo,145730,12,889,6.703
+Westerlo,Norman Bassette,125892,12,880,7.187
+Westerlo,Amando Lapage,151436,10,877,6.719
+Westerlo,Isa Sakamoto,115043,12,853,7.003
+Westerlo,Shunsuke Saito,222625,12,852,7.253
 Westerlo,Dylan Ourega,194674,9,743,6.763
-Westerlo,Cameron Congreve,111045,8,631,7.154
+Westerlo,Cameron Congreve,111045,9,694,7.131
 Westerlo,Lucas Mbamba,218079,6,274,6.395
 Westerlo,Reda Laalaoui,130967,6,224,6.697
-Westerlo,Fabio Ferraro,135635,3,164,5.82
-Westerlo,Emmanuel Tsimba,189353,4,122,6.55
+Westerlo,Fabio Ferraro,135635,4,217,6.059
+Westerlo,Emmanuel Tsimba,189353,5,149,6.468
+Westerlo,Naoufal Bohamdi-Kamoni,231648,3,132,6.865
+Westerlo,Botond Balogh,80764,3,125,6.629
 Westerlo,Nikola Storm,1176,5,99,6.8
-Westerlo,Botond Balogh,80764,2,98,6.692
-Westerlo,Naoufal Bohamdi-Kamoni,231648,2,95,7.163
 Westerlo,Pape Diong,179555,4,92,6.162
 Westerlo,Michee Ndembi,220130,1,90,5.5
 Westerlo,Min-hyeok Yang,161358,4,89,5.987
 Westerlo,Reno Munz,137395,1,84,7.1
+Westerlo,Dogucan Haspolat,44459,1,81,7.1
 Westerlo,David Amegnaglo,242884,4,77,6.226
-Westerlo,Thomas Van den Keybus,79446,1,45,6.4
+Westerlo,Thomas Van den Keybus,79446,2,54,6.483
 Zulte Waregem,Jakob Kiilerich,59833,11,990,6.782
 Zulte Waregem,Enrique Lofolomo,177912,11,977,6.449
 Zulte Waregem,Anosike Ementa,97431,11,950,7.18

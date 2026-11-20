@@ -677,11 +677,11 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 484,
+   "total": 485,
    "exact": 442,
    "rule": 19,
    "ambiguous": 0,
-   "orphan": 23,
+   "orphan": 24,
    "orphans": [
     {
      "squad": "Stuttgart",
@@ -797,6 +797,11 @@
      "squad": "Hoffenheim",
      "name": "Oskar Hencke",
      "starts": 0
+    },
+    {
+     "squad": "Bayern Munich",
+     "name": "Noah Codjo-Evora",
+     "starts": 0
     }
    ]
   },
@@ -905,8 +910,8 @@
    ]
   },
   "espn_subs": {
-   "total": 380,
-   "exact": 378,
+   "total": 382,
+   "exact": 380,
    "rule": 2,
    "ambiguous": 0,
    "orphan": 0,
@@ -938,8 +943,8 @@
    "minutes": 7
   },
   "s365_ratings": {
-   "total": 404,
-   "exact": 401,
+   "total": 405,
+   "exact": 402,
    "rule": 2,
    "ambiguous": 0,
    "orphan": 0,
@@ -1279,11 +1284,11 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 497,
+   "total": 498,
    "exact": 448,
    "rule": 14,
    "ambiguous": 0,
-   "orphan": 35,
+   "orphan": 36,
    "orphans": [
     {
      "squad": "Troyes",
@@ -1462,8 +1467,8 @@
    ]
   },
   "espn_subs": {
-   "total": 378,
-   "exact": 373,
+   "total": 379,
+   "exact": 374,
    "rule": 4,
    "ambiguous": 0,
    "orphan": 1,
@@ -1484,8 +1489,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 300,
-   "exact": 300,
+   "total": 301,
+   "exact": 301,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1752,8 +1757,8 @@
    "minutes": 12
   },
   "s365_ratings": {
-   "total": 443,
-   "exact": 436,
+   "total": 442,
+   "exact": 435,
    "rule": 4,
    "ambiguous": 2,
    "orphan": 0,
@@ -1996,12 +2001,17 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 528,
-   "exact": 449,
+   "total": 529,
+   "exact": 450,
    "rule": 45,
    "ambiguous": 1,
    "orphan": 34,
    "orphans": [
+    {
+     "squad": "Westerlo",
+     "name": "Issai Sakamoto",
+     "starts": 11
+    },
     {
      "squad": "Charleroi",
      "name": "Kevin Guiton",
@@ -2025,11 +2035,6 @@
     {
      "squad": "Standard Liège",
      "name": "Dennis Dargahi",
-     "starts": 10
-    },
-    {
-     "squad": "Westerlo",
-     "name": "Issai Sakamoto",
      "starts": 10
     },
     {
@@ -2184,8 +2189,8 @@
    ]
   },
   "espn_subs": {
-   "total": 313,
-   "exact": 313,
+   "total": 316,
+   "exact": 316,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -2200,8 +2205,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 287,
-   "exact": 287,
+   "total": 289,
+   "exact": 289,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -2218,8 +2223,8 @@
   },
   "s365_ratings": {
    "total": 430,
-   "exact": 377,
-   "rule": 4,
+   "exact": 379,
+   "rule": 2,
    "ambiguous": 1,
    "orphan": 0,
    "orphans": [],
@@ -3175,8 +3180,8 @@
    "minutes": 0
   },
   "s365_ratings": {
-   "total": 294,
-   "exact": 203,
+   "total": 296,
+   "exact": 205,
    "rule": 12,
    "ambiguous": 0,
    "orphan": 0,
@@ -3465,8 +3470,8 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 40,
-   "exact": 40,
+   "total": 80,
+   "exact": 80,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -3481,8 +3486,8 @@
    "orphans": []
   },
   "espn_subs_cups": {
-   "total": 18,
-   "exact": 18,
+   "total": 40,
+   "exact": 40,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -3498,13 +3503,13 @@
    "minutes": 0
   },
   "s365_ratings": {
-   "total": 863,
+   "total": 859,
    "exact": 806,
-   "rule": 25,
+   "rule": 21,
    "ambiguous": 0,
    "orphan": 0,
    "orphans": [],
-   "minutes": 9
+   "minutes": 8
   }
  },
  "EPL 2025_2026": {
