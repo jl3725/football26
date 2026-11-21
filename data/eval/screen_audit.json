@@ -1,5 +1,5 @@
 {
- "date": "2026-11-20",
+ "date": "2026-11-21",
  "checked": {
   "season_log": 56,
   "team_xg": 56,
@@ -7,9 +7,19 @@
   "opponents": 160,
   "leaders": 168,
   "heatmap_side": 100,
-  "injury_return": 163
+  "injury_return": 172
  },
  "issues": [
+  {
+   "kind": "season_log",
+   "team": "Gençlerbirliği",
+   "detail": "İrfan Eğribayat 헤더 1080′ 0G 1A ≠ SEASON LOG 990′ 0G 1A"
+  },
+  {
+   "kind": "season_log",
+   "team": "Gençlerbirliği",
+   "detail": "Franco Tongya 헤더 1019′ 2G 2A ≠ SEASON LOG 956′ 2G 2A"
+  },
   {
    "kind": "season_log",
    "team": "Seattle Sounders FC",
@@ -19,6 +29,11 @@
    "kind": "season_log",
    "team": "Orlando City",
    "detail": "Iván Angulo 헤더 3078′ 7G 6A ≠ SEASON LOG 2988′ 7G 5A"
+  },
+  {
+   "kind": "season_log",
+   "team": "Real Salt Lake",
+   "detail": "Rafael Cabral 헤더 3060′ 0G 0A ≠ SEASON LOG 2970′ 0G 0A"
   }
  ]
 }

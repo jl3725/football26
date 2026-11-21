@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-20T14:15:07+00:00",
+ "generated": "2026-11-21T14:01:45+00:00",
  "windows": [
   {
    "start": "2026-09-21",
@@ -47,13 +47,14 @@
   {
    "start": "2027-03-21",
    "first_match": "2027-03-24",
-   "end": "2027-03-28",
-   "matches": 53,
-   "club_matches": 0,
+   "end": "2027-03-30",
+   "matches": 78,
+   "club_matches": 14,
    "kind": "break",
    "comps": [
     "caf.nations_qual",
-    "concacaf.nations.league"
+    "concacaf.nations.league",
+    "uefa.nations"
    ],
    "label": "3월 A매치 기간"
   }

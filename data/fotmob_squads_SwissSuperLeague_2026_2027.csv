@@ -1,5 +1,5 @@
 squad,player,fotmob_id,group,positions,tm_position,pos,age,birth_date,shirt,ccode,injured,expected_return,fetched
-Lugano,David von Ballmoos,338299,keepers,GK,Goalkeeper,GK,31,1994-12-30,16.0,SUI,True,About a week,2026-11-21
+Lugano,David von Ballmoos,338299,keepers,GK,Goalkeeper,GK,31,1994-12-30,16.0,SUI,True,Doubtful,2026-11-21
 Lugano,Felix Gebhardt,1186014,keepers,GK,Goalkeeper,GK,24,2002-03-01,28.0,GER,False,,2026-11-21
 Lugano,Ahmadou Ndiaye,1535467,keepers,,Goalkeeper,GK,18,2008-01-05,39.0,SUI,False,,2026-11-21
 Lugano,Diego Mina,1400238,keepers,,Goalkeeper,GK,21,2005-08-12,99.0,SUI,False,,2026-11-21
@@ -25,7 +25,7 @@ Lugano,Renato Steffen,384376,attackers,"ST,CAM",Centre-Forward,FW,35,1991-11-03,
 Lugano,Claudio Cassano,1414036,attackers,RW,Right Winger,FW,23,2003-07-22,19.0,ITA,True,Unknown,2026-11-21
 Lugano,Beckham Castro,1454308,attackers,"ST,CAM",Centre-Forward,FW,23,2003-09-12,22.0,COL,False,,2026-11-21
 Lugano,Elias Pihlström,1612762,attackers,"ST,LWB",Centre-Forward,FW,20,2006-08-31,24.0,SWE,False,,2026-11-21
-Lugano,Dereck Moncada,1738403,attackers,"RW,ST",Right Winger,FW,18,2007-11-30,30.0,HON,True,Doubtful,2026-11-21
+Lugano,Dereck Moncada,1738403,attackers,"RW,ST",Right Winger,FW,18,2007-11-30,30.0,HON,False,,2026-11-21
 Lugano,Nicolò Puddu,1785101,attackers,,Centre-Forward,FW,19,2007-09-19,32.0,SUI,False,,2026-11-21
 Lugano,Christian Raffa,2062930,attackers,,Centre-Forward,FW,19,2007-04-07,33.0,SUI,False,,2026-11-21
 Lugano,Bryan Zurmuehle,2062933,attackers,,Centre-Forward,FW,17,2009-02-11,36.0,SUI,False,,2026-11-21
@@ -35,7 +35,7 @@ Young Boys,Ruben Salchli,1867239,keepers,GK,Goalkeeper,GK,20,2006-02-03,,NED,Fal
 Young Boys,Marvin Keller,1107298,keepers,GK,Goalkeeper,GK,24,2002-07-03,1.0,SUI,False,,2026-11-21
 Young Boys,Joël Mall,132814,keepers,GK,Goalkeeper,GK,35,1991-04-05,18.0,CYP,False,,2026-11-21
 Young Boys,Dario Marzino,656669,keepers,GK,Goalkeeper,GK,30,1996-09-19,40.0,SUI,False,,2026-11-21
-Young Boys,Ryan Andrews,1430830,defenders,RB,Right-Back,DF,22,2004-08-26,2.0,ENG,True,Unknown,2026-11-21
+Young Boys,Ryan Andrews,1430830,defenders,RB,Right-Back,DF,22,2004-08-26,2.0,ENG,False,,2026-11-21
 Young Boys,Moritz Jenz,894802,defenders,CB,Centre-Back,DF,27,1999-04-30,4.0,GER,False,,2026-11-21
 Young Boys,Gregory Wüthrich,493185,defenders,CB,Centre-Back,DF,31,1994-12-04,5.0,SUI,False,,2026-11-21
 Young Boys,Cédric Zesiger,658240,defenders,CB,Centre-Back,DF,28,1998-06-24,15.0,SUI,False,,2026-11-21
@@ -49,7 +49,7 @@ Young Boys,Edimilson Fernandes,451335,midfielders,"CDM,CM",Defensive Midfield,MF
 Young Boys,Armin Gigović,1057426,midfielders,"CDM,CM",Defensive Midfield,MF,24,2002-04-06,8.0,BIH,False,,2026-11-21
 Young Boys,Alvyn Sanches,1203528,midfielders,"CAM,RW,RM",Attacking Midfield,MF,23,2003-02-12,10.0,SUI,False,,2026-11-21
 Young Boys,Dominik Pech,1473991,midfielders,"CM,CDM",Central Midfield,MF,20,2006-09-04,13.0,CZE,False,,2026-11-21
-Young Boys,Benjamin Kabeya,1337010,midfielders,,Central Midfield,MF,25,2001-06-16,24.0,SUI,True,Unknown,2026-11-21
+Young Boys,Benjamin Kabeya,1337010,midfielders,,Central Midfield,MF,25,2001-06-16,24.0,SUI,False,,2026-11-21
 Young Boys,Noe Tschanz,2155778,midfielders,,Central Midfield,MF,20,2006-07-21,52.0,SUI,False,,2026-11-21
 Young Boys,Alan Virginius,1173793,attackers,"LW,LM,RW,RM",Left Winger,FW,23,2003-01-03,7.0,FRA,False,,2026-11-21
 Young Boys,Kaly Sène,1178350,attackers,ST,Centre-Forward,FW,25,2001-05-28,9.0,SEN,False,,2026-11-21
@@ -159,7 +159,7 @@ FC Zürich,Kevin Spadanuda,1086018,attackers,"RW,CDM,CM",Right Winger,FW,29,1997
 FC Zürich,Philippe Kény,1045039,attackers,"ST,RW",Centre-Forward,FW,27,1999-05-18,19.0,SEN,False,,2026-11-21
 FC Zürich,Damienus Reverson,1282599,attackers,"ST,RW",Centre-Forward,FW,23,2003-10-18,29.0,NED,True,Late November 2026,2026-11-21
 FC Zürich,Din Ramic,1807495,attackers,,Centre-Forward,FW,17,2008-12-28,49.0,BIH,False,,2026-11-21
-Servette,Edvinas Gertmonas,463783,keepers,GK,Goalkeeper,GK,30,1996-06-01,1.0,LTU,False,,2026-11-21
+Servette,Edvinas Gertmonas,463783,keepers,GK,Goalkeeper,GK,30,1996-06-01,1.0,LTU,True,Out for season,2026-11-21
 Servette,Jérémy Frick,292765,keepers,GK,Goalkeeper,GK,33,1993-03-08,32.0,SUI,True,Mid November 2026,2026-11-21
 Servette,Louis Rieder,1958823,keepers,,Goalkeeper,GK,23,2003-06-13,44.0,SUI,False,,2026-11-21
 Servette,Léo Besson,1284338,keepers,GK,Goalkeeper,GK,24,2002-10-27,78.0,KVX,False,,2026-11-21
@@ -186,7 +186,7 @@ Servette,Ivan Izquierdo,2092855,midfielders,,Central Midfield,MF,17,2009-03-03,4
 Servette,Sacha Denarie,1903236,attackers,,Centre-Forward,FW,19,2007-01-25,,SUI,False,,2026-11-21
 Servette,Kingstone Mutandwa,1498718,attackers,ST,Centre-Forward,FW,23,2003-01-05,7.0,ZAM,True,Unknown,2026-11-21
 Servette,Jesper Karlsson,737061,attackers,"LW,CAM,LM",Left Winger,FW,28,1998-07-25,21.0,SWE,False,,2026-11-21
-Servette,David Datro Fofana,1207581,attackers,ST,Centre-Forward,FW,23,2002-12-22,27.0,CIV,True,A few weeks,2026-11-21
+Servette,David Datro Fofana,1207581,attackers,ST,Centre-Forward,FW,23,2002-12-22,27.0,CIV,False,,2026-11-21
 Servette,Ablie Jallow,865019,attackers,CAM,Attacking Midfield,FW,28,1998-11-14,30.0,GAM,False,,2026-11-21
 Servette,Thomas Lopes,1841092,attackers,"RW,CAM",Right Winger,FW,19,2007-01-27,36.0,FRA,False,,2026-11-21
 Servette,Benoit Sida,2173217,attackers,,Centre-Forward,FW,19,2007-09-24,38.0,FRA,False,,2026-11-21
@@ -296,7 +296,7 @@ Grasshopper,Allan Arigoni,924873,defenders,"RB,LB",Right-Back,DF,28,1998-11-04,3
 Grasshopper,Bujar Pllana,1510878,defenders,CB,Centre-Back,DF,25,2001-10-29,44.0,ALB,False,,2026-11-21
 Grasshopper,Nico Rissi,1859293,defenders,"LB,CB",Left-Back,DF,22,2004-01-30,57.0,SUI,False,,2026-11-21
 Grasshopper,Yannick Bettkober,1687373,defenders,CB,Centre-Back,DF,21,2005-03-18,58.0,GER,False,,2026-11-21
-Grasshopper,Dorian Paloschi,1527328,defenders,CB,Centre-Back,DF,20,2005-11-21,73.0,ITA,False,,2026-11-21
+Grasshopper,Dorian Paloschi,1527328,defenders,CB,Centre-Back,DF,21,2005-11-21,73.0,ITA,False,,2026-11-21
 Grasshopper,Hassane Imourane,1453424,midfielders,"CM,CDM,CAM",Central Midfield,MF,23,2003-04-08,5.0,BEN,False,,2026-11-21
 Grasshopper,Amir Abrashi,127224,midfielders,"CM,CDM,CAM",Central Midfield,MF,36,1990-03-27,6.0,ALB,False,,2026-11-21
 Grasshopper,Tim Meyer,1515927,midfielders,"CM,CAM,CDM,RW",Central Midfield,MF,22,2004-07-08,8.0,SUI,True,Unknown,2026-11-21
@@ -306,7 +306,7 @@ Grasshopper,Maximilian Ullmann,557802,midfielders,"LM,LWB",Left Midfield,MF,30,1
 Grasshopper,Dominik Papic,1970905,midfielders,RW,Right Winger,MF,18,2008-05-14,55.0,SUI,False,,2026-11-21
 Grasshopper,Denis Sahin,1970906,midfielders,LW,Left Winger,MF,18,2008-06-23,56.0,SUI,False,,2026-11-21
 Grasshopper,Manex Guibelalde,1455604,midfielders,CM,Central Midfield,MF,22,2004-04-22,66.0,ESP,False,,2026-11-21
-Grasshopper,Luke Plange,1113891,attackers,"RW,ST,LW",Right Winger,FW,24,2002-11-04,7.0,ENG,False,,2026-11-21
+Grasshopper,Luke Plange,1113891,attackers,"RW,ST,LW",Right Winger,FW,24,2002-11-04,7.0,ENG,True,Unknown,2026-11-21
 Grasshopper,Nikolas Muci,1257646,attackers,ST,Centre-Forward,FW,23,2003-02-08,9.0,SUI,False,,2026-11-21
 Grasshopper,Óscar Clemente,973765,attackers,"RW,CM",Right Winger,FW,27,1999-03-26,10.0,ESP,False,,2026-11-21
 Grasshopper,Giotto Morandi,861710,attackers,RW,Right Winger,FW,27,1999-03-04,11.0,SUI,False,,2026-11-21
