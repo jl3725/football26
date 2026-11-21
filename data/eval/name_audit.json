@@ -967,11 +967,11 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 673,
+   "total": 674,
    "exact": 570,
    "rule": 17,
    "ambiguous": 0,
-   "orphan": 86,
+   "orphan": 87,
    "orphans": [
     {
      "squad": "Lecce",
@@ -1102,10 +1102,10 @@
   },
   "espn_lineups_cups": {
    "total": 537,
-   "exact": 515,
+   "exact": 516,
    "rule": 1,
    "ambiguous": 0,
-   "orphan": 21,
+   "orphan": 20,
    "orphans": [
     {
      "squad": "Parma",
@@ -1203,11 +1203,6 @@
      "starts": 0
     },
     {
-     "squad": "Parma",
-     "name": "Karlo Pajsar",
-     "starts": 0
-    },
-    {
      "squad": "Torino",
      "name": "Zalán Kugyela",
      "starts": 0
@@ -1215,8 +1210,8 @@
    ]
   },
   "espn_subs": {
-   "total": 468,
-   "exact": 464,
+   "total": 469,
+   "exact": 465,
    "rule": 1,
    "ambiguous": 1,
    "orphan": 3,
@@ -1253,8 +1248,8 @@
    ]
   },
   "match_events": {
-   "total": 362,
-   "exact": 362,
+   "total": 363,
+   "exact": 363,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -2018,23 +2013,23 @@
      "starts": 12
     },
     {
-     "squad": "Westerlo",
-     "name": "Issai Sakamoto",
-     "starts": 11
-    },
-    {
      "squad": "Genk",
      "name": "Lucca Kiaba Mounganga",
-     "starts": 11
+     "starts": 12
     },
     {
      "squad": "Genk",
      "name": "Josué Ndenge",
-     "starts": 11
+     "starts": 12
     },
     {
      "squad": "La Louvière",
      "name": "Mustapha Ubandoma",
+     "starts": 12
+    },
+    {
+     "squad": "Westerlo",
+     "name": "Issai Sakamoto",
      "starts": 11
     },
     {
@@ -3209,8 +3204,8 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 356,
-   "exact": 344,
+   "total": 357,
+   "exact": 345,
    "rule": 4,
    "ambiguous": 0,
    "orphan": 8,
