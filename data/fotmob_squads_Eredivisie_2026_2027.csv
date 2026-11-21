@@ -43,14 +43,14 @@ Feyenoord,Hakeem Agboluaje,1876641,defenders,,Centre-Back,DF,19,2007-09-24,72.0,
 Feyenoord,Jakub Moder,891855,midfielders,"CM,CAM",Central Midfield,MF,27,1999-04-07,7.0,POL,True,Mid December 2026,2026-11-21
 Feyenoord,Gjivai Zechiël,1523822,midfielders,"CM,CDM,CAM",Central Midfield,MF,22,2004-06-01,8.0,NED,False,,2026-11-21
 Feyenoord,Luciano Valente,1256180,midfielders,"CDM,CAM,LW,CM",Defensive Midfield,MF,23,2003-10-04,10.0,NED,False,,2026-11-21
-Feyenoord,Sem Steijn,947898,midfielders,"CAM,CM",Attacking Midfield,MF,25,2001-11-12,14.0,NED,False,,2026-11-21
+Feyenoord,Sem Steijn,947898,midfielders,"CM,CAM",Central Midfield,MF,25,2001-11-12,14.0,NED,False,,2026-11-21
 Feyenoord,Oussama Targhalline,1228273,midfielders,"CM,CDM",Central Midfield,MF,24,2002-05-20,28.0,MAR,False,,2026-11-21
 Feyenoord,Charles Vanhoutte,952057,midfielders,"CM,CDM",Central Midfield,MF,28,1998-09-16,34.0,BEL,False,,2026-11-21
 Feyenoord,Gonçalo Borges,1080520,attackers,"LW,RW",Left Winger,FW,25,2001-03-29,11.0,POR,False,,2026-11-21
 Feyenoord,Reiss Nelson,748382,attackers,LW,Left Winger,FW,26,1999-12-10,17.0,ENG,False,,2026-11-21
 Feyenoord,Nacho Ferri,1382019,attackers,ST,Centre-Forward,FW,22,2004-10-05,19.0,ESP,False,,2026-11-21
 Feyenoord,Tobias van den Elshout,1692856,attackers,LW,Left Winger,FW,19,2007-02-02,22.0,NED,False,,2026-11-21
-Feyenoord,Anis Hadj Moussa,1576876,attackers,RW,Right Winger,FW,24,2002-02-11,23.0,ALG,False,,2026-11-21
+Feyenoord,Anis Hadj Moussa,1576876,attackers,RW,Right Winger,FW,24,2002-02-11,23.0,ALG,True,Day to day,2026-11-21
 Feyenoord,Gaoussou Diarra,1675966,attackers,LW,Left Winger,FW,24,2002-11-21,27.0,MLI,False,,2026-11-21
 Feyenoord,Jivayno Zinhagel,1946394,attackers,LW,Left Winger,FW,17,2009-04-18,36.0,NED,False,,2026-11-21
 Feyenoord,Shaqueel van Persie,1553365,attackers,RW,Right Winger,FW,20,2006-11-16,49.0,NED,False,,2026-11-21
@@ -393,7 +393,7 @@ Utrecht,Nikolas Panayiotou,988798,defenders,CB,Centre-Back,DF,26,2000-05-12,5.0,
 Utrecht,Guus Offerhaus,1604509,defenders,"CB,CDM,CM",Centre-Back,DF,25,2001-01-03,6.0,NED,False,,2026-11-21
 Utrecht,Jakov Medić,824717,defenders,CB,Centre-Back,DF,28,1998-09-07,18.0,CRO,False,,2026-11-21
 Utrecht,Neville Ogidi Nwankwo,1706503,defenders,CB,Centre-Back,DF,24,2002-10-08,21.0,SUR,False,,2026-11-21
-Utrecht,Niklas Vesterlund,1022438,defenders,"RB,RM,RW,RWB",Right-Back,DF,27,1999-06-06,23.0,DEN,False,,2026-11-21
+Utrecht,Niklas Vesterlund,1022438,defenders,"RB,RM,RW",Right-Back,DF,27,1999-06-06,23.0,DEN,False,,2026-11-21
 Utrecht,Per Kloosterboer,1522707,defenders,"CB,LB,RB",Centre-Back,DF,21,2005-03-08,32.0,NED,False,,2026-11-21
 Utrecht,Arthur Zagré,949807,defenders,"LB,LWB,LM,LW",Left-Back,DF,25,2001-10-04,92.0,BFA,False,,2026-11-21
 Utrecht,Victor Jensen,915331,midfielders,"CM,CAM",Central Midfield,MF,26,2000-02-08,7.0,DEN,True,Day to day,2026-11-21
@@ -418,23 +418,23 @@ Excelsior,Celton Biai,1106567,keepers,GK,Goalkeeper,GK,26,2000-08-13,16.0,GNB,Fa
 Excelsior,Tijmen Holla,1693190,keepers,GK,Goalkeeper,GK,20,2006-07-25,40.0,NED,False,,2026-11-21
 Excelsior,Marlon van de Wetering,1797146,defenders,RB,Right-Back,DF,18,2007-11-26,,NED,False,,2026-11-21
 Excelsior,Eric da Silva Moreira,1487909,defenders,"RB,RM,RWB",Right-Back,DF,20,2006-05-03,2.0,GER,False,,2026-11-21
-Excelsior,Rick Meissen,1217654,defenders,"CB,RB,CM,CDM",Centre-Back,DF,24,2002-02-24,3.0,NED,False,,2026-11-21
+Excelsior,Rick Meissen,1217654,defenders,"CB,RB,CDM,CM",Centre-Back,DF,24,2002-02-24,3.0,NED,False,,2026-11-21
 Excelsior,Casper Widell,1159831,defenders,CB,Centre-Back,DF,23,2003-05-05,4.0,SWE,False,,2026-11-21
 Excelsior,Kasey Bos,1613323,defenders,LB,Left-Back,DF,22,2004-05-08,12.0,AUS,False,,2026-11-21
 Excelsior,Jan Plug,1553374,defenders,CB,Centre-Back,DF,21,2005-04-02,14.0,NED,False,,2026-11-21
-Excelsior,Simon Janssen,947896,defenders,LB,Left-Back,DF,26,2000-09-25,15.0,NED,False,,2026-11-21
+Excelsior,Simon Janssen,947896,defenders,"LB,LWB",Left-Back,DF,26,2000-09-25,15.0,NED,False,,2026-11-21
 Excelsior,Osman Mohamed Turay,1830760,defenders,LB,Left-Back,DF,18,2008-03-17,22.0,GER,False,,2026-11-21
 Excelsior,Guilliano Cairo,1667712,defenders,CB,Centre-Back,DF,20,2006-03-18,24.0,NED,False,,2026-11-21
 Excelsior,Daniël van Vianen,1301320,midfielders,"CDM,CM",Defensive Midfield,MF,23,2003-04-28,6.0,NED,False,,2026-11-21
 Excelsior,Irakli Yegoian,1434603,midfielders,"CM,CDM,CAM,LW",Central Midfield,MF,22,2004-03-19,8.0,GEO,False,,2026-11-21
-Excelsior,Noah Naujoks,1276314,midfielders,"CAM,ST,CM",Attacking Midfield,MF,24,2002-05-02,10.0,NED,False,,2026-11-21
+Excelsior,Noah Naujoks,1276314,midfielders,"CM,ST,CAM",Central Midfield,MF,24,2002-05-02,10.0,NED,False,,2026-11-21
 Excelsior,Valentin Sulzbacher,1357944,midfielders,"CDM,CB",Defensive Midfield,MF,21,2005-03-11,18.0,AUT,False,,2026-11-21
 Excelsior,Lennard Hartjes,1276311,midfielders,"CM,CDM,CAM",Central Midfield,MF,23,2003-04-07,20.0,NED,False,,2026-11-21
 Excelsior,Gijs van den Berg,1901433,midfielders,,Central Midfield,MF,33,1993-06-22,25.0,NED,False,,2026-11-21
 Excelsior,Quinten Kraaijvanger,2407719,midfielders,,Central Midfield,MF,19,2007-01-08,34.0,NED,False,,2026-11-21
 Excelsior,Aymen Sliti,1553362,attackers,RW,Right Winger,FW,20,2006-03-24,7.0,NED,False,,2026-11-21
 Excelsior,Mario Domínguez,1358338,attackers,ST,Centre-Forward,FW,22,2004-02-10,9.0,ESP,False,,2026-11-21
-Excelsior,Alireza Jahanbakhsh,466890,attackers,"LW,CM,RW",Left Winger,FW,33,1993-08-11,11.0,IRN,False,,2026-11-21
+Excelsior,Alireza Jahanbakhsh,466890,attackers,"RW,LW,CM",Right Winger,FW,33,1993-08-11,11.0,IRN,False,,2026-11-21
 Excelsior,David Garden,1406446,attackers,ST,Centre-Forward,FW,22,2004-06-20,19.0,SUR,False,,2026-11-21
 Excelsior,Ilano Silva Timas,1665413,attackers,"LW,RW,LM",Left Winger,FW,24,2002-09-29,21.0,CPV,False,,2026-11-21
 Excelsior,Yaqub Finey,1603365,attackers,ST,Centre-Forward,FW,23,2003-09-24,23.0,SWE,False,,2026-11-21
@@ -458,7 +458,7 @@ Telstar,Amine Mahdar,2088598,midfielders,,Central Midfield,MF,20,2006-09-09,,NED
 Telstar,Remi van Ekeris,1393486,midfielders,CM,Central Midfield,MF,24,2002-09-23,,NED,False,,2026-11-21
 Telstar,Jeff Hardeveld,521195,midfielders,"LWB,LM,LB",Left-Back,MF,31,1995-02-27,2.0,NED,False,,2026-11-21
 Telstar,Gerald Alders,1531392,midfielders,"RWB,RM,RB,LB",Right-Back,MF,21,2005-05-07,3.0,NED,True,Day to day,2026-11-21
-Telstar,Isaiah Ahmed,1668214,midfielders,CDM,Defensive Midfield,MF,20,2005-12-28,6.0,CUW,False,,2026-11-21
+Telstar,Isaiah Ahmed,1668214,midfielders,CM,Central Midfield,MF,20,2005-12-28,6.0,CUW,False,,2026-11-21
 Telstar,Rui Mendes,953929,midfielders,"CAM,RW",Attacking Midfield,MF,27,1999-11-10,7.0,POR,True,Late November 2026,2026-11-21
 Telstar,Tyrone Owusu,1290453,midfielders,"CDM,CAM,CM",Defensive Midfield,MF,27,1999-03-05,10.0,NED,False,,2026-11-21
 Telstar,Harrie Kuster,1662353,midfielders,"CM,CAM,ST,RW",Central Midfield,MF,21,2005-09-11,14.0,NED,False,,2026-11-21
@@ -471,7 +471,7 @@ Telstar,Jelani Seedorf,1393996,attackers,ST,Centre-Forward,FW,21,2004-12-12,9.0,
 Telstar,Nökkvi Thorisson,1044472,attackers,ST,Centre-Forward,FW,27,1999-08-13,11.0,ISL,False,,2026-11-21
 Telstar,Fabiano Rust,1553366,attackers,,Centre-Forward,FW,21,2005-01-16,19.0,NED,False,,2026-11-21
 Telstar,Fofin Turay,1485517,attackers,RW,Right Winger,FW,22,2004-06-07,21.0,NED,False,,2026-11-21
-Telstar,Arjany Martha,1180735,attackers,"RW,CM,ST,CAM",Right Winger,FW,23,2003-09-04,42.0,CUW,False,,2026-11-21
+Telstar,Arjany Martha,1180735,attackers,"RW,CAM,ST",Right Winger,FW,23,2003-09-04,42.0,CUW,False,,2026-11-21
 ADO Den Haag,Kilian Nikièma,1313190,keepers,GK,Goalkeeper,GK,23,2003-06-22,1.0,BFA,False,,2026-11-21
 ADO Den Haag,Caleb Kramer,1794163,keepers,,Goalkeeper,GK,20,2006-08-01,20.0,NED,False,,2026-11-21
 ADO Den Haag,Niclas Thiede,1074000,keepers,GK,Goalkeeper,GK,27,1999-04-14,23.0,GER,False,,2026-11-21
