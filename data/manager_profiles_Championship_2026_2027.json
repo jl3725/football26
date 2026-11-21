@@ -1,23 +1,4 @@
 {
- "Birmingham City": {
-  "appointed": "Jun 2024",
-  "style": "Compact low block",
-  "formation": "",
-  "focus": "compact low block",
-  "bio_ko": "크리스토퍼 폴 데이비스는 전직 축구 선수이자 현재 EFL 챔피언십 버밍엄 시티의 감독을 맡고 있는 프로 축구 지도자이다.",
-  "wiki_title": "Chris Davies (footballer)",
-  "name": "Chris Davies",
-  "nationality": "Wales",
-  "photo_url": "https://images.fotmob.com/image_resources/playerimages/1650429.png",
-  "fotmob_id": 1650429,
-  "source": "fotmob",
-  "bio_source": "en-wiki-translated",
-  "tactics_ko": "\"공을 소유하며 경기를 주도하는 것은 언제나 내 철학의 핵심이 될 것이다. 하지만 나는 상대와 상황에 따라 적응할 수 있는 전술적 유연성도 갖추고 싶다. 나는 실용적인 사람이며, 이러한 점이 내 지도 방식에도 반영된다고 생각한다.\" - 데이비스, 자신의 지도 철학에 대해.",
-  "tactics_source": "en-wiki",
-  "appointed_date": "2024-06-06",
-  "appointed_source": "fotmob",
-  "style_source": "en-wiki"
- },
  "Middlesbrough": {
   "appointed": "Nov 2025",
   "style": "Possession + high press",
@@ -69,6 +50,25 @@
   "appointed_date": "2026-06-15",
   "appointed_source": "fotmob"
  },
+ "Birmingham City": {
+  "appointed": "Jun 2024",
+  "style": "Compact low block",
+  "formation": "",
+  "focus": "compact low block",
+  "bio_ko": "크리스토퍼 폴 데이비스는 전직 축구 선수이자 현재 EFL 챔피언십 버밍엄 시티의 감독을 맡고 있는 프로 축구 지도자이다.",
+  "wiki_title": "Chris Davies (footballer)",
+  "name": "Chris Davies",
+  "nationality": "Wales",
+  "photo_url": "https://images.fotmob.com/image_resources/playerimages/1650429.png",
+  "fotmob_id": 1650429,
+  "source": "fotmob",
+  "bio_source": "en-wiki-translated",
+  "tactics_ko": "\"공을 소유하며 경기를 주도하는 것은 언제나 내 철학의 핵심이 될 것이다. 하지만 나는 상대와 상황에 따라 적응할 수 있는 전술적 유연성도 갖추고 싶다. 나는 실용적인 사람이며, 이러한 점이 내 지도 방식에도 반영된다고 생각한다.\" - 데이비스, 자신의 지도 철학에 대해.",
+  "tactics_source": "en-wiki",
+  "appointed_date": "2024-06-06",
+  "appointed_source": "fotmob",
+  "style_source": "en-wiki"
+ },
  "West Bromwich Albion": {
   "appointed": "Feb 2026",
   "style": "",
@@ -83,22 +83,6 @@
   "source": "fotmob",
   "bio_source": "ko-wiki",
   "appointed_date": "2026-02-25",
-  "appointed_source": "fotmob"
- },
- "Queens Park Rangers": {
-  "appointed": "Jun 2025",
-  "style": "",
-  "formation": "",
-  "focus": "",
-  "bio_ko": "줄리앙 스테판은 프랑스 출신의 프로 축구 감독이자 전 선수로, 현재 EFL 챔피언십의 퀸즈 파크 레인저스 FC에서 감독직을 맡고 있다.",
-  "wiki_title": "Julien Stéphan",
-  "name": "Julien Stéphan",
-  "nationality": "France",
-  "photo_url": "https://images.fotmob.com/image_resources/playerimages/996174.png",
-  "fotmob_id": 996174,
-  "source": "fotmob",
-  "bio_source": "en-wiki-translated",
-  "appointed_date": "2025-06-25",
   "appointed_source": "fotmob"
  },
  "Southampton": {
@@ -117,21 +101,37 @@
   "appointed_date": "2025-11-02",
   "appointed_source": "fotmob"
  },
- "West Ham United": {
-  "appointed": "Nov 2026",
+ "Queens Park Rangers": {
+  "appointed": "Jun 2025",
   "style": "",
   "formation": "",
   "focus": "",
-  "bio_ko": "스콧 매슈 파커(Scott Matthew Parker, 1980년 10월 13일 ~ )는 잉글랜드의 전 축구 선수, 현 축구 감독이다. 선수 시절 포지션은 미드필더이다.",
-  "wiki_title": "Scott Parker",
-  "name": "Scott Parker",
-  "nationality": "England",
-  "photo_url": "https://images.fotmob.com/image_resources/playerimages/24223.png",
-  "fotmob_id": 24223,
+  "bio_ko": "줄리앙 스테판은 프랑스 출신의 프로 축구 감독이자 전 선수로, 현재 EFL 챔피언십의 퀸즈 파크 레인저스 FC에서 감독직을 맡고 있다.",
+  "wiki_title": "Julien Stéphan",
+  "name": "Julien Stéphan",
+  "nationality": "France",
+  "photo_url": "https://images.fotmob.com/image_resources/playerimages/996174.png",
+  "fotmob_id": 996174,
   "source": "fotmob",
-  "bio_source": "ko-wiki",
-  "appointed_date": "2026-11-03",
+  "bio_source": "en-wiki-translated",
+  "appointed_date": "2025-06-25",
   "appointed_source": "fotmob"
+ },
+ "Swansea City": {
+  "appointed": "",
+  "style": "",
+  "formation": "",
+  "focus": "",
+  "bio_ko": "",
+  "wiki_title": "Ashley Williams",
+  "name": "Ashley Williams",
+  "vacant": true,
+  "previous_name": "Vítor Matos",
+  "source": "fotmob",
+  "vacant_since": "2026-11-20",
+  "nationality": "Wales",
+  "photo_url": "https://images.fotmob.com/image_resources/playerimages/24948.png",
+  "fotmob_id": 24948
  },
  "Sheffield United": {
   "appointed": "Dec 2023",
@@ -149,20 +149,20 @@
   "appointed_date": "2023-12-05",
   "appointed_source": "fotmob"
  },
- "Portsmouth": {
-  "appointed": "Jan 2023",
+ "West Ham United": {
+  "appointed": "Nov 2026",
   "style": "",
   "formation": "",
   "focus": "",
-  "bio_ko": "존 마이클 루이스 무시뉴는 잉글랜드의 프로 축구 감독이자 전 축구 선수로, 현재 EFL 챔피언십 클럽 포츠머스의 감독을 맡고 있다. 선수 시절 초기에는 주로 중앙 미드필더로 뛰었으나, 이후 센터백으로 활약했다.",
-  "wiki_title": "John Mousinho",
-  "name": "John Mousinho",
+  "bio_ko": "스콧 매슈 파커(Scott Matthew Parker, 1980년 10월 13일 ~ )는 잉글랜드의 전 축구 선수, 현 축구 감독이다. 선수 시절 포지션은 미드필더이다.",
+  "wiki_title": "Scott Parker",
+  "name": "Scott Parker",
   "nationality": "England",
-  "photo_url": "https://images.fotmob.com/image_resources/playerimages/22840.png",
-  "fotmob_id": 22840,
+  "photo_url": "https://images.fotmob.com/image_resources/playerimages/24223.png",
+  "fotmob_id": 24223,
   "source": "fotmob",
-  "bio_source": "en-wiki-translated",
-  "appointed_date": "2023-01-20",
+  "bio_source": "ko-wiki",
+  "appointed_date": "2026-11-03",
   "appointed_source": "fotmob"
  },
  "Norwich City": {
@@ -181,20 +181,20 @@
   "appointed_date": "2025-11-18",
   "appointed_source": "fotmob"
  },
- "Cardiff City": {
-  "appointed": "Jun 2025",
+ "Portsmouth": {
+  "appointed": "Jan 2023",
   "style": "",
   "formation": "",
   "focus": "",
-  "bio_ko": "브라이언 배리-머피는 아일랜드 출신의 프로 축구 감독이자 전 선수로, 현재 EFL 챔피언십 클럽 카디프 시티의 감독을 맡고 있다.",
-  "wiki_title": "Brian Barry-Murphy",
-  "name": "Brian Barry-Murphy",
-  "nationality": "Republic of Ireland",
-  "photo_url": "https://images.fotmob.com/image_resources/playerimages/24074.png",
-  "fotmob_id": 24074,
+  "bio_ko": "존 마이클 루이스 무시뉴는 잉글랜드의 프로 축구 감독이자 전 축구 선수로, 현재 EFL 챔피언십 클럽 포츠머스의 감독을 맡고 있다. 선수 시절 초기에는 주로 중앙 미드필더로 뛰었으나, 이후 센터백으로 활약했다.",
+  "wiki_title": "John Mousinho",
+  "name": "John Mousinho",
+  "nationality": "England",
+  "photo_url": "https://images.fotmob.com/image_resources/playerimages/22840.png",
+  "fotmob_id": 22840,
   "source": "fotmob",
   "bio_source": "en-wiki-translated",
-  "appointed_date": "2025-06-16",
+  "appointed_date": "2023-01-20",
   "appointed_source": "fotmob"
  },
  "Blackburn Rovers": {
@@ -229,6 +229,22 @@
   "appointed_date": "2021-07-01",
   "appointed_source": "fotmob"
  },
+ "Cardiff City": {
+  "appointed": "Jun 2025",
+  "style": "",
+  "formation": "",
+  "focus": "",
+  "bio_ko": "브라이언 배리-머피는 아일랜드 출신의 프로 축구 감독이자 전 선수로, 현재 EFL 챔피언십 클럽 카디프 시티의 감독을 맡고 있다.",
+  "wiki_title": "Brian Barry-Murphy",
+  "name": "Brian Barry-Murphy",
+  "nationality": "Republic of Ireland",
+  "photo_url": "https://images.fotmob.com/image_resources/playerimages/24074.png",
+  "fotmob_id": 24074,
+  "source": "fotmob",
+  "bio_source": "en-wiki-translated",
+  "appointed_date": "2025-06-16",
+  "appointed_source": "fotmob"
+ },
  "Millwall": {
   "appointed": "Dec 2024",
   "style": "",
@@ -243,22 +259,6 @@
   "source": "fotmob",
   "bio_source": "en-wiki-translated",
   "appointed_date": "2024-12-30",
-  "appointed_source": "fotmob"
- },
- "Bristol City": {
-  "appointed": "Jun 2026",
-  "style": "",
-  "formation": "",
-  "focus": "",
-  "bio_ko": "마이클 앨버트 스쿠발라는 잉글랜드 출신의 프로 축구 감독으로, 현재 EFL 챔피언십 소속 클럽인 브리스톨 시티의 감독을 맡고 있다.",
-  "wiki_title": "Michael Skubala",
-  "name": "Michael Skubala",
-  "nationality": "England",
-  "photo_url": "https://images.fotmob.com/image_resources/playerimages/1437592.png",
-  "fotmob_id": 1437592,
-  "source": "fotmob",
-  "bio_source": "en-wiki-translated",
-  "appointed_date": "2026-06-09",
   "appointed_source": "fotmob"
  },
  "Bolton Wanderers": {
@@ -277,6 +277,22 @@
   "appointed_date": "2025-01-30",
   "appointed_source": "fotmob"
  },
+ "Bristol City": {
+  "appointed": "Jun 2026",
+  "style": "",
+  "formation": "",
+  "focus": "",
+  "bio_ko": "마이클 앨버트 스쿠발라는 잉글랜드 출신의 프로 축구 감독으로, 현재 EFL 챔피언십 소속 클럽인 브리스톨 시티의 감독을 맡고 있다.",
+  "wiki_title": "Michael Skubala",
+  "name": "Michael Skubala",
+  "nationality": "England",
+  "photo_url": "https://images.fotmob.com/image_resources/playerimages/1437592.png",
+  "fotmob_id": 1437592,
+  "source": "fotmob",
+  "bio_source": "en-wiki-translated",
+  "appointed_date": "2026-06-09",
+  "appointed_source": "fotmob"
+ },
  "Charlton Athletic": {
   "appointed": "Feb 2024",
   "style": "",
@@ -291,22 +307,6 @@
   "source": "fotmob",
   "bio_source": "en-wiki-translated",
   "appointed_date": "2024-02-04",
-  "appointed_source": "fotmob"
- },
- "Watford": {
-  "appointed": "Jun 2026",
-  "style": "",
-  "formation": "",
-  "focus": "",
-  "bio_ko": "알레시오 디오니시는 이탈리아 출신의 프로 축구 감독이자 전 선수로, 현재 EFL 챔피언십 클럽 왓포드의 감독을 맡고 있다.",
-  "wiki_title": "Alessio Dionisi",
-  "name": "Alessio Dionisi",
-  "nationality": "Italy",
-  "photo_url": "https://images.fotmob.com/image_resources/playerimages/300231.png",
-  "fotmob_id": 300231,
-  "source": "fotmob",
-  "bio_source": "en-wiki-translated",
-  "appointed_date": "2026-06-15",
   "appointed_source": "fotmob"
  },
  "Lincoln City": {
@@ -325,20 +325,20 @@
   "appointed_date": "2026-05-29",
   "appointed_source": "fotmob"
  },
- "Derby County": {
-  "appointed": "Feb 2025",
+ "Watford": {
+  "appointed": "Jun 2026",
   "style": "",
   "formation": "",
   "focus": "",
-  "bio_ko": "존 마크 유스테스는 잉글랜드 출신의 프로 축구 감독이자 전 선수로, 현재 EFL 챔피언십 클럽 더비 카운티의 감독을 맡고 있다.",
-  "wiki_title": "John Eustace",
-  "name": "John Eustace",
-  "nationality": "England",
-  "photo_url": "https://images.fotmob.com/image_resources/playerimages/23309.png",
-  "fotmob_id": 23309,
+  "bio_ko": "알레시오 디오니시는 이탈리아 출신의 프로 축구 감독이자 전 선수로, 현재 EFL 챔피언십 클럽 왓포드의 감독을 맡고 있다.",
+  "wiki_title": "Alessio Dionisi",
+  "name": "Alessio Dionisi",
+  "nationality": "Italy",
+  "photo_url": "https://images.fotmob.com/image_resources/playerimages/300231.png",
+  "fotmob_id": 300231,
   "source": "fotmob",
   "bio_source": "en-wiki-translated",
-  "appointed_date": "2025-02-13",
+  "appointed_date": "2026-06-15",
   "appointed_source": "fotmob"
  },
  "Burnley": {
@@ -359,6 +359,22 @@
   "previous_name": "Nicky Hayen",
   "change_detected_at": "2026-10-31"
  },
+ "Derby County": {
+  "appointed": "Feb 2025",
+  "style": "",
+  "formation": "",
+  "focus": "",
+  "bio_ko": "존 마크 유스테스는 잉글랜드 출신의 프로 축구 감독이자 전 선수로, 현재 EFL 챔피언십 클럽 더비 카운티의 감독을 맡고 있다.",
+  "wiki_title": "John Eustace",
+  "name": "John Eustace",
+  "nationality": "England",
+  "photo_url": "https://images.fotmob.com/image_resources/playerimages/23309.png",
+  "fotmob_id": 23309,
+  "source": "fotmob",
+  "bio_source": "en-wiki-translated",
+  "appointed_date": "2025-02-13",
+  "appointed_source": "fotmob"
+ },
  "Preston North End": {
   "appointed": "Sep 2026",
   "style": "",
@@ -374,12 +390,5 @@
   "bio_source": "en-wiki-translated",
   "appointed_date": "2026-09-28",
   "appointed_source": "fotmob"
- },
- "Swansea City": {
-  "name": "",
-  "vacant": true,
-  "previous_name": "Vítor Matos",
-  "source": "fotmob",
-  "vacant_since": "2026-11-20"
  }
 }
