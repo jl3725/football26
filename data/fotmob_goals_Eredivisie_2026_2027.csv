@@ -510,10 +510,10 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5781801,2026-11-07,ned.1,Telstar,Fortuna Sittard,45.0,Abdelnor Soualhia,SetPiece,0,0.0179099384695291
 5781801,2026-11-07,ned.1,Telstar,Fortuna Sittard,45.0,Patrick Brouwer,ThrowInSetPiece,0,0.1304033547639846
 5781795,2026-11-08,ned.1,NEC Nijmegen,Utrecht,34.0,Kevin Kers,RegularPlay,0,0.4086165130138397
-5781795,2026-11-08,ned.1,NEC Nijmegen,Utrecht,38.0,Dušan Tadić,RegularPlay,0,0.07169798761606216
+5781795,2026-11-08,ned.1,NEC Nijmegen,Utrecht,38.0,Dušan Tadić,RegularPlay,0,0.0716979876160621
 5781795,2026-11-08,ned.1,Utrecht,NEC Nijmegen,56.0,Yoann Cathline,FastBreak,0,0.7223215699195862
 5781795,2026-11-08,ned.1,NEC Nijmegen,Utrecht,58.0,Dušan Tadić,RegularPlay,0,0.648705780506134
-5781795,2026-11-08,ned.1,Utrecht,NEC Nijmegen,64.0,Dani de Wit,RegularPlay,0,0.18922564387321472
+5781795,2026-11-08,ned.1,Utrecht,NEC Nijmegen,64.0,Dani de Wit,RegularPlay,0,0.1892256438732147
 5781796,2026-11-08,ned.1,PSV,Cambuur,1.0,Sven Mijnans,RegularPlay,0,0.5269089341163635
 5781796,2026-11-08,ned.1,PSV,Cambuur,15.0,Sven Mijnans,RegularPlay,0,0.3320185244083404
 5781796,2026-11-08,ned.1,PSV,Cambuur,19.0,Ruben van Bommel,RegularPlay,0,0.058670837432146
@@ -540,3 +540,8 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5781803,2026-11-08,ned.1,Ajax,Twente,66.0,Rayane Bounida,RegularPlay,0,0.0508046112954616
 5781803,2026-11-08,ned.1,Twente,Ajax,68.0,Dies Janse,OwnGoal,1,
 5781803,2026-11-08,ned.1,Twente,Ajax,90.0,Wout Weghorst,Penalty,0,0.7884
+5781805,2026-11-21,ned.1,PSV,NEC Nijmegen,14.0,Filip Kostić,RegularPlay,0,0.031172245740890503
+5781805,2026-11-21,ned.1,PSV,NEC Nijmegen,24.0,Ivan Perišić,Penalty,0,0.7884
+5781805,2026-11-21,ned.1,PSV,NEC Nijmegen,42.0,Ahmetcan Kaplan,OwnGoal,1,
+5781805,2026-11-21,ned.1,PSV,NEC Nijmegen,64.0,Ruben van Bommel,FastBreak,0,0.45883968472480774
+5781805,2026-11-21,ned.1,NEC Nijmegen,PSV,73.0,Bryan Linssen,RegularPlay,0,0.47542133927345276
