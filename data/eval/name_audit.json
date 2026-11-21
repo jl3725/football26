@@ -1284,11 +1284,11 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 498,
-   "exact": 448,
+   "total": 502,
+   "exact": 451,
    "rule": 14,
    "ambiguous": 0,
-   "orphan": 36,
+   "orphan": 37,
    "orphans": [
     {
      "squad": "Troyes",
@@ -1467,8 +1467,8 @@
    ]
   },
   "espn_subs": {
-   "total": 381,
-   "exact": 376,
+   "total": 386,
+   "exact": 381,
    "rule": 4,
    "ambiguous": 0,
    "orphan": 1,
@@ -1489,8 +1489,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 304,
-   "exact": 304,
+   "total": 307,
+   "exact": 307,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1506,8 +1506,8 @@
    "minutes": 10
   },
   "s365_ratings": {
-   "total": 423,
-   "exact": 415,
+   "total": 426,
+   "exact": 418,
    "rule": 7,
    "ambiguous": 0,
    "orphan": 0,
@@ -1659,11 +1659,11 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 413,
-   "exact": 393,
+   "total": 416,
+   "exact": 395,
    "rule": 12,
    "ambiguous": 1,
-   "orphan": 8,
+   "orphan": 9,
    "orphans": [
     {
      "squad": "Braga",
@@ -1703,6 +1703,11 @@
     {
      "squad": "Porto",
      "name": "João Teixeira",
+     "starts": 0
+    },
+    {
+     "squad": "Sporting CP",
+     "name": "Mauro Couto",
      "starts": 0
     }
    ]
@@ -1776,11 +1781,11 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 554,
-   "exact": 502,
+   "total": 556,
+   "exact": 503,
    "rule": 15,
    "ambiguous": 0,
-   "orphan": 37,
+   "orphan": 38,
    "orphans": [
     {
      "squad": "Feyenoord",
@@ -1965,8 +1970,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 323,
-   "exact": 323,
+   "total": 324,
+   "exact": 324,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -2001,8 +2006,8 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 529,
-   "exact": 450,
+   "total": 530,
+   "exact": 451,
    "rule": 45,
    "ambiguous": 1,
    "orphan": 34,
@@ -2189,8 +2194,8 @@
    ]
   },
   "espn_subs": {
-   "total": 317,
-   "exact": 317,
+   "total": 319,
+   "exact": 319,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -2205,8 +2210,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 291,
-   "exact": 291,
+   "total": 294,
+   "exact": 294,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -2222,8 +2227,8 @@
    "minutes": 5
   },
   "s365_ratings": {
-   "total": 431,
-   "exact": 380,
+   "total": 432,
+   "exact": 381,
    "rule": 2,
    "ambiguous": 1,
    "orphan": 0,
@@ -3204,8 +3209,8 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 357,
-   "exact": 345,
+   "total": 358,
+   "exact": 346,
    "rule": 4,
    "ambiguous": 0,
    "orphan": 8,
@@ -3475,8 +3480,8 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 80,
-   "exact": 80,
+   "total": 120,
+   "exact": 120,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -3491,8 +3496,8 @@
    "orphans": []
   },
   "espn_subs_cups": {
-   "total": 40,
-   "exact": 40,
+   "total": 54,
+   "exact": 54,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
