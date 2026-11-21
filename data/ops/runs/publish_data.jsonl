@@ -1,6 +1,3 @@
-{"t": "2026-11-07T20:43:08+00:00", "runner": "publish_data", "step": "build_db_live", "league": null, "ok": true, "code": 0, "sec": 4.0, "run": "42412349531"}
-{"t": "2026-11-07T20:44:07+00:00", "runner": "publish_data", "step": "team_units_live", "league": null, "ok": true, "code": 0, "sec": 59.0, "run": "42412349531"}
-{"t": "2026-11-07T20:44:18+00:00", "runner": "publish_data", "step": "publish_data", "league": null, "ok": true, "code": 0, "sec": 10.0, "run": "42412349531"}
 {"t": "2026-11-07T22:11:29+00:00", "runner": "publish_data", "step": "build_db_live", "league": null, "ok": true, "code": 0, "sec": 6.0, "run": "42419382336"}
 {"t": "2026-11-07T22:13:19+00:00", "runner": "publish_data", "step": "team_units_live", "league": null, "ok": true, "code": 0, "sec": 110.0, "run": "42419382336"}
 {"t": "2026-11-07T22:13:31+00:00", "runner": "publish_data", "step": "publish_data", "league": null, "ok": true, "code": 0, "sec": 12.0, "run": "42419382336"}
@@ -484,3 +481,6 @@
 {"t": "2026-11-21T20:33:33+00:00", "runner": "publish_data", "step": "build_db_live", "league": null, "ok": true, "code": 0, "sec": 6.0, "run": "44946851691"}
 {"t": "2026-11-21T20:35:38+00:00", "runner": "publish_data", "step": "team_units_live", "league": null, "ok": true, "code": 0, "sec": 125.0, "run": "44946851691"}
 {"t": "2026-11-21T20:35:51+00:00", "runner": "publish_data", "step": "publish_data", "league": null, "ok": true, "code": 0, "sec": 13.0, "run": "44946851691"}
+{"t": "2026-11-21T20:57:28+00:00", "runner": "publish_data", "step": "build_db_live", "league": null, "ok": true, "code": 0, "sec": 6.0, "run": "44948932575"}
+{"t": "2026-11-21T20:59:28+00:00", "runner": "publish_data", "step": "team_units_live", "league": null, "ok": true, "code": 0, "sec": 120.0, "run": "44948932575"}
+{"t": "2026-11-21T20:59:42+00:00", "runner": "publish_data", "step": "publish_data", "league": null, "ok": true, "code": 0, "sec": 14.0, "run": "44948932575"}
