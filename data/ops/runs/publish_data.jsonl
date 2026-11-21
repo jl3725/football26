@@ -1,7 +1,3 @@
-{"t": "2026-11-07T19:39:37+00:00", "runner": "publish_data", "step": "build_db_live", "league": null, "ok": true, "code": 0, "sec": 4.0, "run": "42407247131"}
-{"t": "2026-11-07T19:40:25+00:00", "runner": "publish_data", "step": "team_units_live", "league": null, "ok": true, "code": 0, "sec": 48.0, "run": "42407247131"}
-{"t": "2026-11-07T19:40:36+00:00", "runner": "publish_data", "step": "publish_data", "league": null, "ok": true, "code": 0, "sec": 11.0, "run": "42407247131"}
-{"t": "2026-11-07T19:57:45+00:00", "runner": "publish_data", "step": "build_db_live", "league": null, "ok": true, "code": 0, "sec": 5.0, "run": "42408658708"}
 {"t": "2026-11-07T19:58:59+00:00", "runner": "publish_data", "step": "team_units_live", "league": null, "ok": true, "code": 0, "sec": 74.0, "run": "42408658708"}
 {"t": "2026-11-07T19:59:11+00:00", "runner": "publish_data", "step": "publish_data", "league": null, "ok": true, "code": 0, "sec": 12.0, "run": "42408658708"}
 {"t": "2026-11-07T20:09:30+00:00", "runner": "publish_data", "step": "build_db_live", "league": null, "ok": true, "code": 0, "sec": 6.0, "run": "42409623865"}
@@ -484,3 +480,6 @@
 {"t": "2026-11-21T19:35:31+00:00", "runner": "publish_data", "step": "build_db_live", "league": null, "ok": true, "code": 0, "sec": 6.0, "run": "44941691276"}
 {"t": "2026-11-21T19:37:34+00:00", "runner": "publish_data", "step": "team_units_live", "league": null, "ok": true, "code": 0, "sec": 123.0, "run": "44941691276"}
 {"t": "2026-11-21T19:37:48+00:00", "runner": "publish_data", "step": "publish_data", "league": null, "ok": true, "code": 0, "sec": 14.0, "run": "44941691276"}
+{"t": "2026-11-21T19:55:37+00:00", "runner": "publish_data", "step": "build_db_live", "league": null, "ok": true, "code": 0, "sec": 7.0, "run": "44943464167"}
+{"t": "2026-11-21T19:57:40+00:00", "runner": "publish_data", "step": "team_units_live", "league": null, "ok": true, "code": 0, "sec": 123.0, "run": "44943464167"}
+{"t": "2026-11-21T19:57:54+00:00", "runner": "publish_data", "step": "publish_data", "league": null, "ok": true, "code": 0, "sec": 14.0, "run": "44943464167"}
