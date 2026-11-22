@@ -17,6 +17,12 @@ shift
 t0=$(date +%s)
 "$@"
 code=$?
+# SOURCE_DOWN_MARK — 이 단계가 기대는 원천이 실행 도중 막혔다는 표시 파일(워크플로가 정함, 예: TM 405 CAPTCHA → .cache/tm_stopped,
+# src/tm_http.py). 표시가 있으면 단계 실패를 원천 중단(75)으로 적는다(2026-11-21 tm_data 단계 25개가 exit 1 빨간불)
+if [ "$code" -ne 0 ] && [ -n "${SOURCE_DOWN_MARK:-}" ] && [ -e "$SOURCE_DOWN_MARK" ]; then
+  echo "[ci_try] ${label}: 원천 막힘 표시(${SOURCE_DOWN_MARK}) — exit ${code} → 75"
+  code=75
+fi
 python "$(dirname "$0")/../src/run_ledger.py" add "${LEDGER_RUNNER:-}" "$label" "$code" "$(( $(date +%s) - t0 ))" \
   || echo "::notice::실행 원장 기록 실패(${label}) — 수집과 무관"
 if [ "$code" -eq 0 ]; then

@@ -481,7 +481,19 @@ def check_progress() -> list[str]:
     def read(table, lg):
         p = data_path(table, lg)
         return pd.read_csv(p, low_memory=False) if p.exists() else None
-    return cp.check_all(read)
+    return cp.check_all(read, skip=_fallback_tables())
+
+
+def _fallback_tables() -> set[str]:
+    """원천이 막혀(75) 대체 원천이 채우고 있는 피드의 표 — 내용 지연은 원천 탓이라 알리지 않는다(DATA 화면엔 '대체 원천 사용 중').
+    Understat 가 11/02 부터 점검 페이지라 understat_players 가 매일 '2경기 늦음' 빨간불이었다(FotMob xG 가 대신 채움, xg 점검이 따로 봄)."""
+    import ops_status
+    out = set()
+    for a in ops_status.build_status(now=NOW)["agents"]:
+        for f in a["feeds"]:
+            if f["state"] == "fallback":
+                out |= {o.removesuffix("_*") for o in f["outputs"]}
+    return out
 
 
 def check_fair_price() -> list[str]:

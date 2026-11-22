@@ -9,6 +9,10 @@ TM(AWS WAF)은 데이터센터 IP(GitHub Actions 등)에 202 + 빈 본문(자바
 - 브라우저 기동 실패·여전히 202 면 202 응답을 그대로 돌려준다 → 각 수집기의 '비정상 응답이면 저장 안 함' 가드가 막는다.
 - 받은 쿠키는 파일(TM_COOKIE_FILE, 기본 .cache/tm_cookies.json)에 남겨 같은 워크플로의 다음 수집기(별도 프로세스)가
   브라우저를 다시 열지 않고 재사용한다(리그 8 × 단계 5 = 40회 기동 방지).
+- 405 는 202 와 다르다 — 사람이 푸는 확인(CAPTCHA) 단계라 풀지 않고 그 실행의 TM 요청을 멈춘다. 405 가 HARD_STREAK 번
+  이어지면 멈춤 표시(TM_STOP_FILE, 기본 .cache/tm_stopped)를 남기고, 같은 실행의 다음 수집기도 표시를 보고 요청 없이 405 를
+  돌려받는다. 2026-11-21 두 번 실행 도중부터 405 만 왔는데 202 만 알아봐서 1,300번 넘게 계속 요청하고 단계마다
+  exit 1(빨간불)이었다. scripts/ci_try.sh 는 SOURCE_DOWN_MARK 로 이 표시를 보고 실패를 원천 중단(75)으로 적는다.
 """
 from __future__ import annotations
 
@@ -26,10 +30,16 @@ UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like
 
 COOKIE_FILE = Path(os.environ.get("TM_COOKIE_FILE") or Path(__file__).resolve().parent.parent / ".cache" / "tm_cookies.json")
 
+STOP_FILE = Path(os.environ.get("TM_STOP_FILE") or COOKIE_FILE.parent / "tm_stopped")
+STOP_TTL_S = 3 * 3600    # 멈춤 표시 유효 시간 — 클라우드 러너는 실행마다 새로 시작, 집 PC 는 3시간 뒤 다시 시도
+
 _session: requests.Session | None = None
 _refreshes = 0
 _fail_streak = 0
+_hard_streak = 0
 MAX_FAIL_STREAK = 3      # 토큰을 새로 받아도 계속 202 면 그 실행에선 더 시도하지 않는다(무한 루프 방지)
+HARD_BLOCK = 405         # AWS WAF CAPTCHA — 브라우저 확인(202)과 달리 풀지 않는다
+HARD_STREAK = 2          # 한 번 튄 405 로 실행 전체를 멈추지 않게 — 두 번 이어지면 멈춤
 
 
 def session() -> requests.Session:
@@ -98,12 +108,41 @@ def refresh_token(url: str = ORIGIN) -> bool:
                 pass
 
 
+def stopped() -> bool:
+    """이 실행(또는 3시간 안의 앞 실행)에서 TM 이 405 로 막아 요청을 멈췄는가."""
+    try:
+        return time.time() - STOP_FILE.stat().st_mtime < STOP_TTL_S
+    except OSError:
+        return False
+
+
+def _stop(url: str) -> None:
+    try:
+        STOP_FILE.parent.mkdir(parents=True, exist_ok=True)
+        STOP_FILE.write_text(f"{time.strftime('%Y-%m-%dT%H:%M:%S')} {url}\n", encoding="utf-8")
+    except OSError:
+        pass
+    print(f"[tm_http] TM 이 {HARD_BLOCK}(CAPTCHA)로 막음 — 이 실행의 TM 요청 멈춤(원천 중단, 받은 것은 저장)", flush=True)
+
+
+def _stopped_response(url: str) -> requests.Response:
+    r = requests.Response()
+    r.status_code, r.url, r.reason, r._content = HARD_BLOCK, url, "TM stopped (CAPTCHA)", b""
+    return r
+
+
 def get(url: str, headers: dict | None = None, params: dict | None = None, timeout: float = 30) -> requests.Response:
-    """requests.get 대신 — WAF 202 면 토큰을 받아 한 번 더. 수집기의 기존 headers(H)는 UA 를 빼고 합친다."""
-    global _fail_streak
+    """requests.get 대신 — WAF 202 면 토큰을 받아 한 번 더. 수집기의 기존 headers(H)는 UA 를 빼고 합친다.
+    405(CAPTCHA)가 이어지면 멈춤 — 이후 요청은 보내지 않고 405 응답을 그대로 돌려준다(수집기는 실패로 건너뜀)."""
+    global _fail_streak, _hard_streak
+    if stopped():
+        return _stopped_response(url)
     h = {k: v for k, v in (headers or {}).items() if k.lower() != "user-agent"}
     r = session().get(url, headers=h, params=params, timeout=timeout)
     if _blocked(r) and refresh_token(url):
         r = session().get(url, headers=h, params=params, timeout=timeout)
     _fail_streak = _fail_streak + 1 if _blocked(r) else 0
+    _hard_streak = _hard_streak + 1 if r.status_code == HARD_BLOCK else 0
+    if _hard_streak >= HARD_STREAK:
+        _stop(url)
     return r

@@ -70,7 +70,7 @@ def parse_positions(page_html: str) -> tuple[str, list[str]]:
 
 def fetch(tm_id: str) -> tuple[str, list[str]]:
     resp = tm_http.get(f"https://www.transfermarkt.com/-/profil/spieler/{tm_id}", headers=H, timeout=30)
-    if resp.status_code in (202, 403, 429) or (resp.status_code == 200 and not resp.text.strip()):
+    if resp.status_code in (202, 403, 405, 429) or (resp.status_code == 200 and not resp.text.strip()):
         raise Blocked(f"HTTP {resp.status_code}")
     resp.raise_for_status()
     return parse_positions(resp.text)

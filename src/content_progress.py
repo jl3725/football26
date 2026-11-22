@@ -46,8 +46,9 @@ def table_games(df: pd.DataFrame, how: str) -> pd.Series | None:
     return v.groupby(df["squad"]).max()
 
 
-def check_league(league: str, read) -> list[dict]:
-    """[{table, label, kind('stale'|'team'), detail}] — read(표, 리그) → DataFrame | None."""
+def check_league(league: str, read, skip=()) -> list[dict]:
+    """[{table, label, kind('stale'|'team'), detail}] — read(표, 리그) → DataFrame | None.
+    skip — 지금 대체 원천이 채우는 표(원천 중단, ops_status 'fallback')는 늦어도 알리지 않는다."""
     gp = league_games(league, read)
     if gp.empty or gp.median() < 2:
         return []
@@ -55,6 +56,8 @@ def check_league(league: str, read) -> list[dict]:
     from squads import canonical_squad  # noqa: PLC0415 — 앱이 읽을 때와 같은 표준 이름(자동 별칭 포함)으로 대조
     gp = gp.groupby([canonical_squad(t, league) for t in gp.index]).max()
     for table, how, label, max_lag in SPECS:
+        if table in skip:
+            continue
         df = read(table, league)
         if df is not None and not df.empty and "squad" in df.columns:
             df = df.assign(squad=[canonical_squad(t, league) for t in df["squad"]])
@@ -76,10 +79,10 @@ def check_league(league: str, read) -> list[dict]:
     return out
 
 
-def check_all(read, leagues=None) -> list[str]:
+def check_all(read, leagues=None, skip=()) -> list[str]:
     from leagues import LEAGUES  # noqa: PLC0415
     msgs = []
     for lg in leagues or LEAGUES:
-        for x in check_league(lg, read):
+        for x in check_league(lg, read, skip):
             msgs.append(f"{lg} {x['label']}({x['table']}) {'늦음' if x['kind'] == 'stale' else '팀 누락'}: {x['detail']}")
     return msgs

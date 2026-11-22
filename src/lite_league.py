@@ -328,6 +328,24 @@ def schedule_rows(squad: str, payload: dict, league: str, ours_by_id: dict[str, 
     return rows
 
 
+def keep_past(new: pd.DataFrame, old: pd.DataFrame | None, league: str) -> pd.DataFrame:
+    """FotMob 팀 응답의 경기 목록은 날짜 창이 정해져 있어, 다음 시즌 일정이 올라오면 앞쪽 끝난 경기가 밀려난다 —
+    지난 파일에서 이번 응답보다 앞선 끝난 경기(이번 시즌 창 안)를 이어받는다. 2026-11-22 MLS 2027 단축 시즌 일정이 올라오자
+    2026 2~8월 리그 경기 700여 줄이 빠져 SEASON LOG 가 헤더 출전 분의 40%만 보였다(Columbus 3150′ ≠ 1260′)."""
+    if old is None or old.empty or new.empty or not {"squad", "event_id", "date", "status"} <= set(old.columns):
+        return new
+    lo, hi = season_window(league)
+    first = new.groupby("squad")["date"].min()
+    have = set(new["squad"].astype(str) + "|" + new["event_id"].astype(str))
+    o = old[[c for c in SCHED_COLS if c in old.columns]].copy()
+    o["event_id"] = o["event_id"].astype(str).str.replace(r"\.0$", "", regex=True)
+    keep = o[(o["status"].astype(str) == "completed") & o["squad"].isin(first.index)
+             & (o["date"].astype(str) >= lo) & (o["date"].astype(str) <= hi)
+             & (o["date"].astype(str) < o["squad"].map(first).astype(str))
+             & ~(o["squad"].astype(str) + "|" + o["event_id"]).isin(have)]
+    return pd.concat([keep, new], ignore_index=True) if not keep.empty else new
+
+
 def coach_of(payload: dict) -> dict | None:
     for g in (((payload.get("squad") or {}).get("squad")) or []):
         if str(g.get("title")) == "coach" and g.get("members"):
@@ -419,8 +437,11 @@ def build(league: str, get=None) -> dict:
     ours_by_id.update({str(v): k for k, v in ids.items()})
     sched = [r for sq, p in payloads.items() for r in schedule_rows(sq, p, league, ours_by_id)]
     if sched:
-        sdf = pd.DataFrame(sched, columns=SCHED_COLS).drop_duplicates(["squad", "event_id"]).sort_values(["squad", "date"])
-        sdf.to_csv(data_path("schedule_full", league), index=False, encoding="utf-8", lineterminator="\n")
+        sp = data_path("schedule_full", league)
+        sdf = pd.DataFrame(sched, columns=SCHED_COLS).drop_duplicates(["squad", "event_id"])
+        old = pd.read_csv(sp, dtype={"event_id": str}, low_memory=False) if sp.exists() else None
+        sdf = keep_past(sdf, old, league).sort_values(["squad", "date"])
+        sdf.to_csv(sp, index=False, encoding="utf-8", lineterminator="\n")
     coaches = {sq: c for sq, p in payloads.items() if (c := coach_of(p))}
     changed = write_managers(league, coaches, canon) if coaches else 0
 

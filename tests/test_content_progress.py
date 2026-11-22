@@ -28,6 +28,14 @@ def test_progress_flags_stale_table_and_missing_team() -> None:
     assert ("players", "stale") in kinds and ("understat_players", "team") in kinds
 
 
+
+def test_progress_skips_tables_filled_by_fallback() -> None:
+    """원천 중단 + 대체 원천(Understat 점검 중 → FotMob xG)인 표는 늦어도 알리지 않는다(2026-11-23)."""
+    sch = pd.DataFrame([{"comp_code": "eng.1", "status": "completed", "squad": s} for s in ("A", "B", "C") for _ in range(9)])
+    stale = pd.DataFrame([{"squad": s, "minutes": 990 * 6} for s in ("A", "B", "C")])
+    got = cp.check_league("EPL", _read({"schedule_full": sch, "understat_players": stale}), skip={"understat_players"})
+    assert got == []
+
 def test_team_names_subset_tie_and_acronym() -> None:
     assert tn.best("Grasshopper Club Zürich", ["FC Zürich", "Grasshopper", "Basel"]) == "Grasshopper"
     assert tn.best("FC Zürich", ["FC Zürich", "Grasshopper"]) == "FC Zürich"

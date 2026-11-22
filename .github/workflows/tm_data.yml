@@ -35,6 +35,9 @@ jobs:
       PYTHONIOENCODING: utf-8
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}   # 새 부상명 한글 표기(무료 등급, src/injury_names.py)
       MODE: ${{ github.event.schedule == '30 3 * * 1' && 'weekly' || github.event.schedule == '30 20 * * *' && 'positions' || inputs.mode || 'daily' }}
+      # TM 이 405(CAPTCHA)로 막으면 src/tm_http.py 가 남기는 표시 — 이후 단계는 요청 없이 끝나고 ci_try 가 원천 중단(75)으로 적는다
+      TM_STOP_FILE: .cache/tm_stopped
+      SOURCE_DOWN_MARK: .cache/tm_stopped
     steps:
       - uses: actions/checkout@v7
 
