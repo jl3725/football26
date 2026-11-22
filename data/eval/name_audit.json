@@ -1462,8 +1462,8 @@
    ]
   },
   "espn_subs": {
-   "total": 387,
-   "exact": 382,
+   "total": 388,
+   "exact": 383,
    "rule": 4,
    "ambiguous": 0,
    "orphan": 1,
@@ -1965,8 +1965,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 326,
-   "exact": 326,
+   "total": 327,
+   "exact": 327,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -2553,11 +2553,11 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 608,
-   "exact": 584,
+   "total": 611,
+   "exact": 585,
    "rule": 4,
    "ambiguous": 0,
-   "orphan": 20,
+   "orphan": 22,
    "orphans": [
     {
      "squad": "Erzurumspor FK",
@@ -2658,15 +2658,25 @@
      "squad": "Gençlerbirliği",
      "name": "Emir Arslan",
      "starts": 0
+    },
+    {
+     "squad": "Trabzonspor",
+     "name": "Yiğithan Çubukcu",
+     "starts": 0
+    },
+    {
+     "squad": "Eyüpspor",
+     "name": "Halil Balta",
+     "starts": 0
     }
    ]
   },
   "espn_lineups_cups": {
    "total": 282,
-   "exact": 266,
+   "exact": 268,
    "rule": 2,
    "ambiguous": 0,
-   "orphan": 14,
+   "orphan": 12,
    "orphans": [
     {
      "squad": "Fenerbahçe",
@@ -2681,11 +2691,6 @@
     {
      "squad": "Trabzonspor",
      "name": "Hakan Yılmaz",
-     "starts": 0
-    },
-    {
-     "squad": "Trabzonspor",
-     "name": "Yiğithan Çubukcu",
      "starts": 0
     },
     {
@@ -2724,11 +2729,6 @@
      "starts": 0
     },
     {
-     "squad": "Eyüpspor",
-     "name": "Halil Balta",
-     "starts": 0
-    },
-    {
      "squad": "Alanyaspor",
      "name": "Oguz Arslan",
      "starts": 0
@@ -2741,8 +2741,8 @@
    ]
   },
   "espn_subs": {
-   "total": 442,
-   "exact": 442,
+   "total": 446,
+   "exact": 446,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -2766,9 +2766,9 @@
    "minutes": 0
   },
   "s365_ratings": {
-   "total": 416,
-   "exact": 403,
-   "rule": 11,
+   "total": 418,
+   "exact": 404,
+   "rule": 12,
    "ambiguous": 2,
    "orphan": 0,
    "orphans": [],
@@ -2785,11 +2785,11 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 371,
+   "total": 374,
    "exact": 360,
    "rule": 1,
    "ambiguous": 0,
-   "orphan": 10,
+   "orphan": 13,
    "orphans": [
     {
      "squad": "Wolfsberger AC",
@@ -2840,6 +2840,21 @@
      "squad": "Sturm Graz",
      "name": "Kelechi Nnamdi",
      "starts": 0
+    },
+    {
+     "squad": "Austria Wien",
+     "name": "Dominik Nisandzic",
+     "starts": 0
+    },
+    {
+     "squad": "Austria Wien",
+     "name": "Bruno Jerabek",
+     "starts": 0
+    },
+    {
+     "squad": "Salzburg",
+     "name": "Oghenetejiri Adejenughure",
+     "starts": 0
     }
    ]
   },
@@ -2868,8 +2883,8 @@
    ]
   },
   "espn_subs": {
-   "total": 274,
-   "exact": 274,
+   "total": 278,
+   "exact": 278,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -2893,8 +2908,8 @@
    "minutes": 0
   },
   "s365_ratings": {
-   "total": 275,
-   "exact": 267,
+   "total": 277,
+   "exact": 269,
    "rule": 7,
    "ambiguous": 0,
    "orphan": 0,
