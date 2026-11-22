@@ -513,7 +513,7 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5749755,2026-11-21,ita.1,Lazio,Lecce,68.0,Tijjani Noslin,RegularPlay,0,0.201867401599884
 5749755,2026-11-21,ita.1,Lazio,Lecce,90.0,Davide Frattesi,FastBreak,0,0.183712750673294
 5749755,2026-11-21,ita.1,Lecce,Lazio,,,none,0,
-5749757,2026-11-21,ita.1,Napoli,Torino,73.0,Scott McTominay,FastBreak,0,0.04353249818086624
+5749757,2026-11-21,ita.1,Napoli,Torino,73.0,Scott McTominay,FastBreak,0,0.0435324981808662
 5749757,2026-11-21,ita.1,Torino,Napoli,,,none,0,
 5749758,2026-11-21,ita.1,Roma,Parma,39.0,Donyell Malen,SetPiece,0,0.3487548828125
 5749758,2026-11-21,ita.1,Parma,Roma,54.0,Nesta Elphege,FastBreak,0,0.3557792603969574
@@ -521,3 +521,13 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5749758,2026-11-21,ita.1,Roma,Parma,71.0,Rodrigo Mora,RegularPlay,0,0.1914536356925964
 5749758,2026-11-21,ita.1,Roma,Parma,77.0,Donyell Malen,RegularPlay,0,0.5399529337882996
 5749758,2026-11-21,ita.1,Roma,Parma,90.0,Donyell Malen,FastBreak,0,0.7233656644821167
+5749752,2026-11-22,ita.1,Bologna,Udinese,43.0,Nadir Zortea,RegularPlay,0,0.4059232175350189
+5749752,2026-11-22,ita.1,Udinese,Bologna,67.0,Nicolò Zaniolo,RegularPlay,0,0.3511051535606384
+5749754,2026-11-22,ita.1,Juventus,Venezia,53.0,Nick Woltemade,RegularPlay,0,0.306949257850647
+5749754,2026-11-22,ita.1,Juventus,Venezia,59.0,Teun Koopmeiners,RegularPlay,0,0.21650730073451996
+5749754,2026-11-22,ita.1,Juventus,Venezia,65.0,Juan Cabal,FromCorner,0,0.1882813572883606
+5749754,2026-11-22,ita.1,Juventus,Venezia,71.0,Randal Kolo Muani,Penalty,0,0.7884
+5749754,2026-11-22,ita.1,Venezia,Juventus,,,none,0,
+5749759,2026-11-22,ita.1,Genoa,Sassuolo,26.0,Milutin Osmajić,RegularPlay,0,0.1876201629638672
+5749759,2026-11-22,ita.1,Genoa,Sassuolo,38.0,Milutin Osmajić,FastBreak,0,0.9875686764717102
+5749759,2026-11-22,ita.1,Sassuolo,Genoa,,,none,0,
