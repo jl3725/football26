@@ -9,8 +9,8 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 547,
-   "exact": 501,
+   "total": 548,
+   "exact": 502,
    "rule": 13,
    "ambiguous": 0,
    "orphan": 33,
@@ -318,16 +318,16 @@
    "ambiguous": 0,
    "orphan": 0,
    "orphans": [],
-   "minutes": 3
+   "minutes": 2
   },
   "s365_ratings": {
-   "total": 445,
-   "exact": 438,
-   "rule": 6,
-   "ambiguous": 0,
+   "total": 446,
+   "exact": 439,
+   "rule": 5,
+   "ambiguous": 1,
    "orphan": 0,
    "orphans": [],
-   "minutes": 2
+   "minutes": 3
   }
  },
  "LaLiga 2026_2027": {
@@ -672,8 +672,8 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 486,
-   "exact": 442,
+   "total": 487,
+   "exact": 443,
    "rule": 19,
    "ambiguous": 0,
    "orphan": 25,
@@ -926,8 +926,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 321,
-   "exact": 321,
+   "total": 322,
+   "exact": 322,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1654,8 +1654,8 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 431,
-   "exact": 410,
+   "total": 435,
+   "exact": 414,
    "rule": 12,
    "ambiguous": 1,
    "orphan": 9,
@@ -2555,9 +2555,9 @@
   "espn_lineups": {
    "total": 611,
    "exact": 585,
-   "rule": 4,
+   "rule": 5,
    "ambiguous": 0,
-   "orphan": 22,
+   "orphan": 21,
    "orphans": [
     {
      "squad": "Erzurumspor FK",
@@ -2662,11 +2662,6 @@
     {
      "squad": "Trabzonspor",
      "name": "Yiğithan Çubukcu",
-     "starts": 0
-    },
-    {
-     "squad": "Eyüpspor",
-     "name": "Halil Balta",
      "starts": 0
     }
    ]
@@ -2778,7 +2773,7 @@
  "AustrianBundesliga 2026_2027": {
   "wiki_squads": {
    "total": 411,
-   "exact": 330,
+   "exact": 331,
    "rule": 4,
    "ambiguous": 1,
    "orphan": 0,
@@ -2786,16 +2781,11 @@
   },
   "espn_lineups": {
    "total": 374,
-   "exact": 360,
+   "exact": 364,
    "rule": 1,
    "ambiguous": 0,
-   "orphan": 13,
+   "orphan": 9,
    "orphans": [
-    {
-     "squad": "Wolfsberger AC",
-     "name": "Aboubacar Drabo",
-     "starts": 1
-    },
     {
      "squad": "Sturm Graz",
      "name": "Gabriel Haider",
@@ -2839,21 +2829,6 @@
     {
      "squad": "Sturm Graz",
      "name": "Kelechi Nnamdi",
-     "starts": 0
-    },
-    {
-     "squad": "Austria Wien",
-     "name": "Dominik Nisandzic",
-     "starts": 0
-    },
-    {
-     "squad": "Austria Wien",
-     "name": "Bruno Jerabek",
-     "starts": 0
-    },
-    {
-     "squad": "Salzburg",
-     "name": "Oghenetejiri Adejenughure",
      "starts": 0
     }
    ]
@@ -2928,10 +2903,10 @@
   },
   "espn_lineups": {
    "total": 377,
-   "exact": 343,
+   "exact": 344,
    "rule": 11,
    "ambiguous": 0,
-   "orphan": 23,
+   "orphan": 22,
    "orphans": [
     {
      "squad": "Viborg",
@@ -3036,11 +3011,6 @@
     {
      "squad": "Silkeborg",
      "name": "Lucas Borg",
-     "starts": 0
-    },
-    {
-     "squad": "AC Horsens",
-     "name": "Christian Joergensen",
      "starts": 0
     },
     {
@@ -3353,7 +3323,7 @@
    "ambiguous": 0,
    "orphan": 0,
    "orphans": [],
-   "minutes": 4
+   "minutes": 5
   }
  },
  "MLS 2026_2027": {
