@@ -1,5 +1,5 @@
 squad,player,fotmob_id,group,positions,tm_position,pos,age,birth_date,shirt,ccode,injured,expected_return,fetched
-Arsenal,David Raya,562727,keepers,GK,Goalkeeper,GK,31,1995-09-15,1.0,ESP,False,,2026-11-22
+Arsenal,David Raya,562727,keepers,GK,Goalkeeper,GK,31,1995-09-15,1.0,ESP,True,Doubtful,2026-11-22
 Arsenal,Kepa Arrizabalaga,317564,keepers,GK,Goalkeeper,GK,32,1994-10-03,13.0,ESP,False,,2026-11-22
 Arsenal,Illan Meslier,952029,keepers,GK,Goalkeeper,GK,26,2000-03-02,30.0,FRA,False,,2026-11-22
 Arsenal,William Saliba,955406,defenders,CB,Centre-Back,DF,25,2001-03-24,2.0,FRA,False,,2026-11-22
@@ -14,13 +14,13 @@ Arsenal,Martin Ødegaard,534670,midfielders,"CM,CAM",Central Midfield,MF,27,1998
 Arsenal,Eberechi Eze,818975,midfielders,"CAM,LW,CM,CDM",Attacking Midfield,MF,28,1998-06-29,10.0,ENG,False,,2026-11-22
 Arsenal,Mikel Merino,574645,midfielders,"CM,ST,CAM,CDM",Central Midfield,MF,30,1996-06-22,23.0,ESP,False,,2026-11-22
 Arsenal,Martín Zubimendi,1031325,midfielders,"CM,CDM,RB",Central Midfield,MF,27,1999-02-02,36.0,ESP,True,Early December 2026,2026-11-22
-Arsenal,Bruno Guimarães,850354,midfielders,"CM,CDM",Central Midfield,MF,29,1997-11-16,39.0,BRA,False,,2026-11-22
+Arsenal,Bruno Guimarães,850354,midfielders,"CM,CDM,CAM",Central Midfield,MF,29,1997-11-16,39.0,BRA,False,,2026-11-22
 Arsenal,Declan Rice,654096,midfielders,"CDM,CM",Defensive Midfield,MF,27,1999-01-14,41.0,ENG,False,,2026-11-22
 Arsenal,Myles Lewis-Skelly,1406436,midfielders,"CDM,LB,CM",Defensive Midfield,MF,20,2006-09-26,49.0,ENG,False,,2026-11-22
 Arsenal,Max Dowman,1635773,midfielders,"RW,CAM,CM",Right Winger,MF,16,2009-12-31,56.0,ENG,False,,2026-11-22
 Arsenal,Bukayo Saka,961995,attackers,"RW,CAM",Right Winger,FW,25,2001-09-05,7.0,ENG,True,Late December 2026,2026-11-22
 Arsenal,Viktor Gyökeres,664500,attackers,ST,Centre-Forward,FW,28,1998-06-04,14.0,SWE,False,,2026-11-22
-Arsenal,Christos Tzolis,1157237,attackers,"LW,LM,CAM",Left Winger,FW,24,2002-01-30,17.0,GRE,False,,2026-11-22
+Arsenal,Christos Tzolis,1157237,attackers,"LW,LM,RW,CAM",Left Winger,FW,24,2002-01-30,17.0,GRE,False,,2026-11-22
 Arsenal,Noni Madueke,1084981,attackers,"RW,LW",Right Winger,FW,24,2002-03-10,20.0,ENG,False,,2026-11-22
 Arsenal,Kai Havertz,749736,attackers,"ST,CAM,CM",Centre-Forward,FW,27,1999-06-11,29.0,GER,False,,2026-11-22
 Brighton,Bart Verbruggen,1131987,keepers,GK,Goalkeeper,GK,24,2002-08-18,1.0,NED,False,,2026-11-22
@@ -201,7 +201,7 @@ Chelsea,Morgan Rogers,883080,midfielders,"CAM,LW,RW,ST",Attacking Midfield,MF,24
 Chelsea,Reece James,807729,midfielders,"CDM,RB",Defensive Midfield,MF,26,1999-12-08,24.0,ENG,True,Mid January 2027,2026-11-22
 Chelsea,Moisés Caicedo,1137668,midfielders,"CDM,CM",Defensive Midfield,MF,25,2001-11-02,25.0,ECU,False,,2026-11-22
 Chelsea,Roméo Lavia,1190867,midfielders,"CDM,CM",Defensive Midfield,MF,22,2004-01-06,45.0,BEL,False,,2026-11-22
-Chelsea,Pedro Neto,843040,attackers,"RW,LW,RWB,ST,CAM,RM",Right Winger,FW,26,2000-03-09,7.0,POR,False,,2026-11-22
+Chelsea,Pedro Neto,843040,attackers,"RW,LW,RWB,ST,RM,CAM",Right Winger,FW,26,2000-03-09,7.0,POR,False,,2026-11-22
 Chelsea,João Pedro,1021382,attackers,"ST,CAM",Centre-Forward,FW,25,2001-09-26,9.0,BRA,True,Late November 2026,2026-11-22
 Chelsea,Jamie Gittens,1113692,attackers,"LW,RW,LM",Left Winger,FW,22,2004-08-08,11.0,ENG,True,Back in training,2026-11-22
 Chelsea,Danny Welbeck,113836,attackers,ST,Centre-Forward,FW,35,1990-11-26,18.0,ENG,False,,2026-11-22
@@ -228,7 +228,7 @@ Tottenham Hotspur,Sandro Tonali,867414,midfielders,"CM,CDM",Central Midfield,MF,
 Tottenham Hotspur,Mateus Fernandes,1356312,midfielders,"CM,CDM,CAM,LW",Central Midfield,MF,22,2004-07-10,18.0,POR,False,,2026-11-22
 Tottenham Hotspur,Dejan Kulusevski,935379,midfielders,ST,Centre-Forward,MF,26,2000-04-25,21.0,SWE,False,,2026-11-22
 Tottenham Hotspur,Rodrigo Bentancur,620618,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,29,1997-06-25,30.0,URU,False,,2026-11-22
-Tottenham Hotspur,Lucá Williams-Barnett,1636112,midfielders,"CAM,CM",Attacking Midfield,MF,18,2008-10-01,68.0,ENG,False,,2026-11-22
+Tottenham Hotspur,Lucá Williams-Barnett,1636112,midfielders,"CAM,CM,LW",Attacking Midfield,MF,18,2008-10-01,68.0,ENG,False,,2026-11-22
 Tottenham Hotspur,Richarlison,654908,attackers,"ST,LW",Centre-Forward,FW,29,1997-05-10,9.0,BRA,False,,2026-11-22
 Tottenham Hotspur,Mathys Tel,1288111,attackers,"LW,ST,LM",Left Winger,FW,21,2005-04-27,11.0,FRA,True,Late November 2026,2026-11-22
 Tottenham Hotspur,Sávio,1174337,attackers,"RW,LW",Right Winger,FW,22,2004-04-10,17.0,BRA,False,,2026-11-22
@@ -240,7 +240,7 @@ Tottenham Hotspur,Wilson Odobert,1341387,attackers,"RW,CAM,LW",Right Winger,FW,2
 Brentford,Caoimhín Kelleher,776689,keepers,GK,Goalkeeper,GK,27,1998-11-23,1.0,IRL,False,,2026-11-22
 Brentford,Hákon Rafn Valdimarsson,850962,keepers,GK,Goalkeeper,GK,25,2001-10-13,12.0,ISL,False,,2026-11-22
 Brentford,Ellery Balcombe,806579,keepers,GK,Goalkeeper,GK,27,1999-10-15,31.0,ENG,False,,2026-11-22
-Brentford,Aaron Hickey,1002039,defenders,"RB,LB",Right-Back,DF,24,2002-06-10,2.0,SCO,False,,2026-11-22
+Brentford,Aaron Hickey,1002039,defenders,"RB,LB",Right-Back,DF,24,2002-06-10,2.0,SCO,True,Late December 2026,2026-11-22
 Brentford,Rico Henry,562892,defenders,LB,Left-Back,DF,29,1997-07-08,3.0,JAM,True,Late November 2026,2026-11-22
 Brentford,Sepp van den Berg,919435,defenders,CB,Centre-Back,DF,24,2001-12-20,4.0,NED,False,,2026-11-22
 Brentford,Kristoffer Ajer,552718,defenders,"CB,LB",Centre-Back,DF,28,1998-04-17,20.0,NOR,False,,2026-11-22
@@ -254,12 +254,12 @@ Brentford,Benjamin Fredrick,1478706,defenders,CB,Centre-Back,DF,21,2005-05-28,48
 Brentford,Yehor Yarmoliuk,1157236,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,22,2004-03-01,6.0,UKR,False,,2026-11-22
 Brentford,Mathias Jensen,650616,midfielders,"CAM,CM,CDM,RW",Attacking Midfield,MF,30,1996-01-01,8.0,DEN,False,,2026-11-22
 Brentford,Joshua Dasilva,759566,midfielders,RW,Right Winger,MF,28,1998-10-23,10.0,ENG,True,Late November 2026,2026-11-22
-Brentford,Fábio Carvalho,963965,midfielders,CAM,Attacking Midfield,MF,24,2002-08-30,14.0,POR,True,Late November 2026,2026-11-22
+Brentford,Fábio Carvalho,963965,midfielders,CAM,Attacking Midfield,MF,24,2002-08-30,14.0,POR,True,Doubtful,2026-11-22
 Brentford,Antoni Milambo,1276312,midfielders,CAM,Attacking Midfield,MF,21,2005-04-03,17.0,NED,True,Late November 2026,2026-11-22
 Brentford,Mamadou Sangaré,1185211,midfielders,"CDM,CM,RW",Defensive Midfield,MF,24,2002-06-26,18.0,MLI,False,,2026-11-22
 Brentford,Mikkel Damsgaard,888912,midfielders,"CAM,LW,LM",Attacking Midfield,MF,26,2000-07-03,24.0,DEN,False,,2026-11-22
 Brentford,Vitaly Janelt,688273,midfielders,"CDM,CM",Defensive Midfield,MF,28,1998-05-10,27.0,GER,False,,2026-11-22
-Brentford,Kevin Schade,1083796,attackers,"LW,ST,CAM",Left Winger,FW,24,2001-11-27,7.0,GER,False,,2026-11-22
+Brentford,Kevin Schade,1083796,attackers,"LW,ST",Left Winger,FW,24,2001-11-27,7.0,GER,False,,2026-11-22
 Brentford,Igor Thiago,1302005,attackers,ST,Centre-Forward,FW,25,2001-06-26,9.0,BRA,False,,2026-11-22
 Brentford,Dango Ouattara,1250253,attackers,"RW,LW,ST,RM",Right Winger,FW,24,2002-02-11,11.0,BFA,False,,2026-11-22
 Brentford,Callum Wilson,184321,attackers,ST,Centre-Forward,FW,34,1992-02-27,13.0,ENG,False,,2026-11-22
@@ -302,7 +302,7 @@ Aston Villa,Zion Suzuki,1053679,keepers,GK,Goalkeeper,GK,24,2002-08-21,1.0,JPN,F
 Aston Villa,Marco Bizot,195782,keepers,GK,Goalkeeper,GK,35,1991-03-10,40.0,NED,False,,2026-11-22
 Aston Villa,Matty Cash,729731,defenders,"RB,RM",Right-Back,DF,29,1997-08-07,2.0,POL,True,Late November 2026,2026-11-22
 Aston Villa,Victor Nilsson Lindelöf,258269,defenders,"CB,CDM",Centre-Back,DF,32,1994-07-17,3.0,SWE,False,,2026-11-22
-Aston Villa,Taylor Harwood-Bellis,966021,defenders,"CB,RB",Centre-Back,DF,24,2002-01-30,4.0,ENG,False,,2026-11-22
+Aston Villa,Taylor Harwood-Bellis,966021,defenders,CB,Centre-Back,DF,24,2002-01-30,4.0,ENG,False,,2026-11-22
 Aston Villa,Tyrone Mings,419664,defenders,CB,Centre-Back,DF,33,1993-03-13,5.0,ENG,False,,2026-11-22
 Aston Villa,Matteo Ruggeri,1051097,defenders,LB,Left-Back,DF,24,2002-07-11,13.0,ITA,True,Mid December 2026,2026-11-22
 Aston Villa,Pau Torres,792645,defenders,CB,Centre-Back,DF,29,1997-01-16,14.0,ESP,False,,2026-11-22
@@ -398,7 +398,7 @@ Fulham,Shea Charles,1281452,midfielders,"CDM,CM",Defensive Midfield,MF,23,2003-1
 Fulham,Manuel Ángel,1508427,midfielders,RM,Right Midfield,MF,22,2004-03-15,20.0,ESP,False,,2026-11-22
 Fulham,Joshua King,1422593,midfielders,"CAM,CM",Attacking Midfield,MF,19,2007-01-03,24.0,ENG,False,,2026-11-22
 Fulham,Emile Smith Rowe,889534,midfielders,CAM,Attacking Midfield,MF,26,2000-07-28,32.0,ENG,True,Late November 2026,2026-11-22
-Fulham,Gonzalo García,1413847,attackers,"ST,RW",Centre-Forward,FW,22,2004-03-24,7.0,ESP,False,,2026-11-22
+Fulham,Gonzalo García,1413847,attackers,ST,Centre-Forward,FW,22,2004-03-24,7.0,ESP,False,,2026-11-22
 Fulham,César Palacios,1403691,attackers,LW,Left Winger,FW,22,2004-11-11,8.0,ESP,False,,2026-11-22
 Fulham,Rodrigo Muniz,1128945,attackers,ST,Centre-Forward,FW,25,2001-05-04,9.0,BRA,False,,2026-11-22
 Fulham,Kevin,1318400,attackers,LW,Left Winger,FW,23,2003-01-04,11.0,BRA,False,,2026-11-22
@@ -430,7 +430,7 @@ Ipswich Town,Jaden Philogene-Bidace,1089645,attackers,LW,Left Winger,FW,24,2002-
 Ipswich Town,Emersonn,1320949,attackers,ST,Centre-Forward,FW,22,2004-07-16,19.0,BRA,False,,2026-11-22
 Ipswich Town,Kasey McAteer,1113915,attackers,RW,Right Winger,FW,25,2001-11-22,20.0,IRL,False,,2026-11-22
 Ipswich Town,Chuba Akpom,413158,attackers,"ST,CAM",Centre-Forward,FW,31,1995-10-09,29.0,ENG,False,,2026-11-22
-Ipswich Town,Daizen Maeda,728765,attackers,"ST,LW,RW,CAM",Centre-Forward,FW,29,1997-10-20,38.0,JPN,False,,2026-11-22
+Ipswich Town,Daizen Maeda,728765,attackers,"ST,LW,CAM,RW",Centre-Forward,FW,29,1997-10-20,38.0,JPN,False,,2026-11-22
 Ipswich Town,Jack Clarke,914402,attackers,"LW,CAM",Left Winger,FW,25,2000-11-23,47.0,ENG,False,,2026-11-22
 Nottingham Forest,Steven Benda,887969,keepers,GK,Goalkeeper,GK,28,1998-10-01,1.0,GER,False,,2026-11-22
 Nottingham Forest,John Victor,749834,keepers,GK,Goalkeeper,GK,30,1996-02-13,12.0,BRA,False,,2026-11-22
@@ -528,9 +528,9 @@ Crystal Palace,Ben Chilwell,672469,defenders,"LB,LWB,CB",Left-Back,DF,29,1996-12
 Crystal Palace,Tyrick Mitchell,1120224,midfielders,"LWB,LM",Left-Back,MF,27,1999-09-01,3.0,ENG,False,,2026-11-22
 Crystal Palace,Jefferson Lerma,466672,midfielders,"CB,CM,CDM",Centre-Back,MF,32,1994-10-25,8.0,COL,False,,2026-11-22
 Crystal Palace,Edward Nketiah,860920,midfielders,"CAM,ST",Attacking Midfield,MF,27,1999-05-30,9.0,ENG,False,,2026-11-22
-Crystal Palace,Yéremi Pino,1047676,midfielders,"CAM,LW,RW",Attacking Midfield,MF,24,2002-10-20,10.0,ESP,False,,2026-11-22
+Crystal Palace,Yéremi Pino,1047676,midfielders,"CAM,LW,RW,LM",Attacking Midfield,MF,24,2002-10-20,10.0,ESP,False,,2026-11-22
 Crystal Palace,Zavier Gozo,1455818,midfielders,"RWB,RM,RW,CAM",Right-Back,MF,19,2007-03-22,12.0,USA,False,,2026-11-22
-Crystal Palace,Daichi Kamada,621515,midfielders,"CDM,CAM,CM",Defensive Midfield,MF,30,1996-08-05,18.0,JPN,False,,2026-11-22
+Crystal Palace,Daichi Kamada,621515,midfielders,"CDM,CM,CAM,RW",Defensive Midfield,MF,30,1996-08-05,18.0,JPN,False,,2026-11-22
 Crystal Palace,Will Hughes,295067,midfielders,"CDM,CM",Defensive Midfield,MF,31,1995-04-17,19.0,ENG,False,,2026-11-22
 Crystal Palace,Adam Wharton,1296650,midfielders,"CDM,CM",Defensive Midfield,MF,22,2004-02-06,20.0,ENG,False,,2026-11-22
 Crystal Palace,Quinten Timber,970563,midfielders,"CDM,CAM,CM",Defensive Midfield,MF,25,2001-06-17,23.0,NED,False,,2026-11-22
