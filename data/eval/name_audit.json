@@ -962,11 +962,11 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 676,
+   "total": 677,
    "exact": 570,
    "rule": 17,
    "ambiguous": 0,
-   "orphan": 89,
+   "orphan": 90,
    "orphans": [
     {
      "squad": "Lecce",
@@ -1097,10 +1097,10 @@
   },
   "espn_lineups_cups": {
    "total": 537,
-   "exact": 516,
+   "exact": 517,
    "rule": 1,
    "ambiguous": 0,
-   "orphan": 20,
+   "orphan": 19,
    "orphans": [
     {
      "squad": "Parma",
@@ -1130,11 +1130,6 @@
     {
      "squad": "Juventus",
      "name": "Antonio Stefano Merola",
-     "starts": 0
-    },
-    {
-     "squad": "Milan",
-     "name": "Matteo Pittarella",
      "starts": 0
     },
     {
@@ -1205,8 +1200,8 @@
    ]
   },
   "espn_subs": {
-   "total": 469,
-   "exact": 465,
+   "total": 470,
+   "exact": 466,
    "rule": 1,
    "ambiguous": 1,
    "orphan": 3,
@@ -1243,8 +1238,8 @@
    ]
   },
   "match_events": {
-   "total": 363,
-   "exact": 363,
+   "total": 364,
+   "exact": 364,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1654,8 +1649,8 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 435,
-   "exact": 414,
+   "total": 441,
+   "exact": 420,
    "rule": 12,
    "ambiguous": 1,
    "orphan": 9,
@@ -1666,13 +1661,13 @@
      "starts": 3
     },
     {
-     "squad": "Santa Clara",
-     "name": "Djé Tavares",
-     "starts": 1
-    },
-    {
      "squad": "Rio Ave",
      "name": "Giorgos Liavas",
+     "starts": 2
+    },
+    {
+     "squad": "Santa Clara",
+     "name": "Djé Tavares",
      "starts": 1
     },
     {
@@ -3155,8 +3150,8 @@
    ]
   },
   "espn_subs": {
-   "total": 294,
-   "exact": 294,
+   "total": 295,
+   "exact": 295,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
