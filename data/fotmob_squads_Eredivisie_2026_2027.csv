@@ -10,7 +10,7 @@ PSV,Filip Kostić,281012,defenders,"LB,LWB",Left-Back,DF,34,1992-11-01,18.0,SRB,
 PSV,Jerdy Schouten,772104,defenders,"CB,CDM",Centre-Back,DF,29,1997-01-12,22.0,NED,True,Day to day,2026-11-22
 PSV,Kilian Sildillia,1124533,defenders,RB,Right-Back,DF,24,2002-05-16,25.0,FRA,False,,2026-11-22
 PSV,Adamo Nagalo,1237425,defenders,CB,Centre-Back,DF,24,2002-09-22,39.0,BFA,True,Out for season,2026-11-22
-PSV,Paul Wanner,1327149,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,20,2005-12-23,10.0,AUT,True,Day to day,2026-11-22
+PSV,Paul Wanner,1327149,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,20,2005-12-23,10.0,AUT,False,,2026-11-22
 PSV,Guus Til,774947,midfielders,"CAM,ST,CM,RW",Attacking Midfield,MF,28,1997-12-22,20.0,NED,False,,2026-11-22
 PSV,Sven Mijnans,1035643,midfielders,"CAM,CM,ST",Attacking Midfield,MF,26,2000-03-09,21.0,NED,False,,2026-11-22
 PSV,Kodai Sano,1337282,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,23,2003-09-25,24.0,JPN,False,,2026-11-22
@@ -60,7 +60,7 @@ Feyenoord,Ilai Grootfaam,1946406,attackers,RW,Right Winger,FW,16,2010-03-15,79.0
 Ajax,Marc ter Stegen,184554,keepers,GK,Goalkeeper,GK,34,1992-04-30,1.0,GER,False,,2026-11-22
 Ajax,Maarten Paes,805463,keepers,GK,Goalkeeper,GK,28,1998-05-14,26.0,IDN,False,,2026-11-22
 Ajax,Lucas Rosa,1357723,defenders,"RB,LB",Right-Back,DF,26,2000-04-03,2.0,BRA,False,,2026-11-22
-Ajax,Anton Gaaei,1329665,defenders,RB,Right-Back,DF,24,2002-11-19,3.0,DEN,True,Late November 2026,2026-11-22
+Ajax,Anton Gaaei,1329665,defenders,RB,Right-Back,DF,24,2002-11-19,3.0,DEN,False,,2026-11-22
 Ajax,Owen Wijndal,798062,defenders,"LB,LWB",Left-Back,DF,26,1999-11-28,5.0,NED,False,,2026-11-22
 Ajax,Thilo Kehrer,604088,defenders,CB,Centre-Back,DF,30,1996-09-21,6.0,GER,False,,2026-11-22
 Ajax,Caio Henrique,769525,defenders,"LB,LWB,LM",Left-Back,DF,29,1997-07-31,12.0,BRA,False,,2026-11-22
@@ -70,7 +70,7 @@ Ajax,Jofre Torrents,1789791,defenders,LB,Left-Back,DF,19,2007-01-28,21.0,ESP,Fal
 Ajax,Aaron Bouwman,1640681,defenders,CB,Centre-Back,DF,19,2007-08-28,30.0,NED,False,,2026-11-22
 Ajax,Dies Janse,1531402,defenders,CB,Centre-Back,DF,20,2006-01-17,36.0,NED,False,,2026-11-22
 Ajax,Sofyan Amrabat,593116,midfielders,"CM,CDM",Central Midfield,MF,30,1996-08-21,4.0,MAR,False,,2026-11-22
-Ajax,Julian Brandt,516846,midfielders,"CAM,CM,RW",Attacking Midfield,MF,30,1996-05-02,8.0,GER,True,Late November 2026,2026-11-22
+Ajax,Julian Brandt,516846,midfielders,"CAM,CM,RW",Attacking Midfield,MF,30,1996-05-02,8.0,GER,False,,2026-11-22
 Ajax,Oscar Gloukh,1337911,midfielders,"LW,CAM,CM,RW,ST,LM",Left Winger,MF,22,2004-04-01,10.0,ISR,False,,2026-11-22
 Ajax,Davy Klaassen,298448,midfielders,"CM,CDM,RW,CAM",Central Midfield,MF,33,1993-02-21,18.0,NED,False,,2026-11-22
 Ajax,Jorthy Mokio,1617161,midfielders,"CM,CDM,CAM",Central Midfield,MF,18,2008-02-29,24.0,COD,False,,2026-11-22
@@ -104,7 +104,7 @@ Twente,Ramiz Zerrouki,1074967,midfielders,"CDM,CM",Defensive Midfield,MF,28,1998
 Twente,Daouda Weidmann,1382346,midfielders,"CDM,CM",Defensive Midfield,MF,23,2003-05-04,8.0,FRA,False,,2026-11-22
 Twente,Younes Taha,1298600,midfielders,"CAM,RW,LW,ST,RM",Attacking Midfield,MF,23,2002-11-27,10.0,MAR,False,,2026-11-22
 Twente,Kristian Hlynsson,1098086,midfielders,"CAM,CM,LM",Attacking Midfield,MF,22,2004-01-23,14.0,ISL,False,,2026-11-22
-Twente,Jordy Bawuah,1552456,midfielders,"CDM,CM",Defensive Midfield,MF,20,2006-11-17,18.0,BEL,False,,2026-11-22
+Twente,Jordy Bawuah,1552456,midfielders,CDM,Defensive Midfield,MF,20,2006-11-17,18.0,BEL,False,,2026-11-22
 Twente,Thomas van den Belt,955203,midfielders,"CDM,CM",Defensive Midfield,MF,25,2001-06-18,20.0,NED,False,,2026-11-22
 Twente,Benjamin Nagel,1815956,midfielders,,Central Midfield,MF,19,2007-11-11,26.0,NED,False,,2026-11-22
 Twente,Gijs Besselink,1445408,midfielders,"CM,CDM",Central Midfield,MF,22,2004-06-16,41.0,NED,False,,2026-11-22
@@ -113,7 +113,7 @@ Twente,Wout Weghorst,351999,attackers,ST,Centre-Forward,FW,34,1992-08-07,9.0,NED
 Twente,Daan Rots,1203490,attackers,"RW,CAM",Right Winger,FW,25,2001-07-25,11.0,NED,False,,2026-11-22
 Twente,Filip Thorvaldsen,1460786,attackers,"ST,RM,RW,LM",Centre-Forward,FW,20,2006-04-15,17.0,NOR,True,Day to day,2026-11-22
 Twente,Lucas Vennegoor of Hesselink,1607488,attackers,ST,Centre-Forward,FW,20,2006-03-14,25.0,NED,False,,2026-11-22
-Twente,Sondre Ørjasæter,1353293,attackers,LW,Left Winger,FW,22,2003-11-28,27.0,NOR,False,,2026-11-22
+Twente,Sondre Ørjasæter,1353293,attackers,"LW,RW",Left Winger,FW,22,2003-11-28,27.0,NOR,False,,2026-11-22
 Twente,Nigel Groenewald,1900482,attackers,,Centre-Forward,FW,19,2007-02-01,36.0,NED,False,,2026-11-22
 Twente,Naci Ünüvar,1050856,attackers,"LW,CAM",Left Winger,FW,23,2003-06-13,37.0,NED,False,,2026-11-22
 Heerenveen,Bernt Klaverboer,1435849,keepers,GK,Goalkeeper,GK,21,2005-09-26,1.0,NED,False,,2026-11-22
@@ -287,14 +287,14 @@ Groningen,Tika de Jonge,1256176,midfielders,"CDM,CM",Defensive Midfield,MF,23,20
 Groningen,Alvin Nordin,1693295,midfielders,"RM,CM",Right Midfield,MF,18,2007-12-24,16.0,SWE,False,,2026-11-22
 Groningen,Tygo Land,1426704,midfielders,"CDM,CM",Defensive Midfield,MF,20,2006-01-11,18.0,NED,False,,2026-11-22
 Groningen,Pelle Clement,637741,midfielders,"CDM,LW",Defensive Midfield,MF,30,1996-05-19,24.0,NED,False,,2026-11-22
+Groningen,Thom van Bergen,1412105,midfielders,"CAM,ST",Attacking Midfield,MF,22,2004-01-06,26.0,NED,False,,2026-11-22
 Groningen,Jismerai Dillema,1797832,midfielders,,Central Midfield,MF,19,2007-02-14,44.0,NED,False,,2026-11-22
 Groningen,Brynjólfur Willumsson,937032,attackers,ST,Centre-Forward,FW,26,2000-08-12,9.0,ISL,False,,2026-11-22
-Groningen,Jacob Ondrejka,1109476,attackers,"LW,ST,CAM",Left Winger,FW,24,2002-09-02,11.0,SWE,False,,2026-11-22
+Groningen,Jacob Ondrejka,1109476,attackers,"LW,ST",Left Winger,FW,24,2002-09-02,11.0,SWE,False,,2026-11-22
 Groningen,David van der Werff,1695991,attackers,"RW,CAM,RM,LW,LM",Right Winger,FW,22,2004-08-31,17.0,NED,False,,2026-11-22
 Groningen,Oskar Zawada,560109,attackers,ST,Centre-Forward,FW,30,1996-02-01,19.0,POL,False,,2026-11-22
 Groningen,Nils Eggens,1595608,attackers,ST,Centre-Forward,FW,21,2005-04-08,20.0,NED,False,,2026-11-22
-Groningen,Thom van Bergen,1412105,attackers,"ST,CAM",Centre-Forward,FW,22,2004-01-06,26.0,NED,False,,2026-11-22
-Groningen,Ryan Metu,1895145,attackers,,Centre-Forward,FW,18,2008-08-28,34.0,NED,True,Late November 2026,2026-11-22
+Groningen,Ryan Metu,1895145,attackers,,Centre-Forward,FW,18,2008-08-28,34.0,NED,False,,2026-11-22
 Groningen,Mark Hoekstra,1797835,attackers,,Centre-Forward,FW,20,2006-02-10,69.0,NED,False,,2026-11-22
 Zwolle,Jasper Schendelaar,873529,keepers,GK,Goalkeeper,GK,26,2000-09-02,1.0,NED,False,,2026-11-22
 Zwolle,Tom de Graaff,1310630,keepers,GK,Goalkeeper,GK,21,2004-12-10,16.0,NED,False,,2026-11-22
@@ -347,10 +347,10 @@ NEC Nijmegen,Darko Nejašmić,1052861,midfielders,"CDM,CM",Defensive Midfield,MF
 NEC Nijmegen,Emre Mor,683333,midfielders,RWB,Right-Back,MF,29,1997-07-24,7.0,TUR,True,Day to day,2026-11-22
 NEC Nijmegen,Isak Hansen-Aarøen,1162969,midfielders,CDM,Defensive Midfield,MF,22,2004-08-22,8.0,NOR,False,,2026-11-22
 NEC Nijmegen,Tjaronn Chery,117541,midfielders,"CAM,ST,RW",Attacking Midfield,MF,38,1988-06-04,9.0,SUR,False,,2026-11-22
-NEC Nijmegen,Dušan Tadić,94267,midfielders,"CAM,ST,LW,CM,RM,RW",Attacking Midfield,MF,38,1988-11-20,10.0,SRB,False,,2026-11-22
+NEC Nijmegen,Dušan Tadić,94267,midfielders,"CAM,ST,LW,RM,RW",Attacking Midfield,MF,38,1988-11-20,10.0,SRB,False,,2026-11-22
 NEC Nijmegen,Willum Willumsson,774237,midfielders,CAM,Attacking Midfield,MF,28,1998-10-23,11.0,ISL,False,,2026-11-22
-NEC Nijmegen,Dennis Geiger,784495,midfielders,"CAM,CDM,CM",Attacking Midfield,MF,28,1998-06-10,18.0,GER,True,Late November 2026,2026-11-22
-NEC Nijmegen,Adam Tahaui,1667708,midfielders,"CAM,CM,RWB,RW",Attacking Midfield,MF,21,2005-07-21,19.0,NED,False,,2026-11-22
+NEC Nijmegen,Dennis Geiger,784495,midfielders,"CAM,CDM,CM",Attacking Midfield,MF,28,1998-06-10,18.0,GER,False,,2026-11-22
+NEC Nijmegen,Adam Tahaui,1667708,midfielders,"CAM,CM,RWB",Attacking Midfield,MF,21,2005-07-21,19.0,NED,False,,2026-11-22
 NEC Nijmegen,Noé Lebreton,1366049,midfielders,"CAM,CDM,CM,LWB,LW",Attacking Midfield,MF,22,2004-04-22,20.0,FRA,False,,2026-11-22
 NEC Nijmegen,Sam de Laat,1797459,midfielders,CM,Central Midfield,MF,20,2006-06-12,26.0,NED,False,,2026-11-22
 NEC Nijmegen,Kevin Kers,1896583,midfielders,"RM,RWB",Right Midfield,MF,20,2006-01-04,34.0,NED,False,,2026-11-22
@@ -514,10 +514,10 @@ Willem II,Tygo Kotte,1847348,keepers,,Goalkeeper,GK,19,2007-03-27,41.0,NED,False
 Willem II,Vince van der Bas,1810573,keepers,,Goalkeeper,GK,20,2006-03-07,99.0,NED,False,,2026-11-22
 Willem II,Alessandro Ciranni,689296,defenders,RB,Right-Back,DF,30,1996-06-28,2.0,BEL,False,,2026-11-22
 Willem II,Finn Stam,1282595,defenders,"CB,RB",Centre-Back,DF,23,2003-04-13,3.0,NED,False,,2026-11-22
-Willem II,Justin Hoogma,728414,defenders,CB,Centre-Back,DF,28,1998-06-11,4.0,NED,True,Late October 2027,2026-11-22
-Willem II,Hidde ter Avest,574234,defenders,"RB,RWB",Right-Back,DF,29,1997-05-20,5.0,NED,False,,2026-11-22
+Willem II,Justin Hoogma,728414,defenders,CB,Centre-Back,DF,28,1998-06-11,4.0,NED,True,Day to day,2026-11-22
+Willem II,Hidde ter Avest,574234,defenders,"RB,RW",Right-Back,DF,29,1997-05-20,5.0,NED,False,,2026-11-22
 Willem II,Jens Mathijsen,1667954,defenders,RB,Right-Back,DF,19,2007-08-15,14.0,NED,False,,2026-11-22
-Willem II,Amine Et-Taïbi,1460076,defenders,"RB,LB",Right-Back,DF,23,2003-02-05,15.0,BEL,False,,2026-11-22
+Willem II,Amine Et-Taïbi,1460076,defenders,"LB,RB",Left-Back,DF,23,2003-02-05,15.0,BEL,False,,2026-11-22
 Willem II,Per van Loon,1667951,defenders,"LB,RB,RW",Left-Back,DF,21,2004-12-31,22.0,NED,False,,2026-11-22
 Willem II,Maxim Dekker,1286065,defenders,CB,Centre-Back,DF,22,2004-04-21,23.0,NED,False,,2026-11-22
 Willem II,Nathan Tjoe-A-On,1075242,defenders,"LB,LM",Left-Back,DF,24,2001-12-22,24.0,IDN,False,,2026-11-22
@@ -525,16 +525,16 @@ Willem II,Kayen Scheepens,1901814,defenders,RB,Right-Back,DF,20,2006-08-18,46.0,
 Willem II,Mats Lemmens,1381282,defenders,"CB,RB",Centre-Back,DF,24,2002-03-10,83.0,BEL,False,,2026-11-22
 Willem II,Calvin Twigt,1196739,midfielders,"CDM,CM",Defensive Midfield,MF,23,2003-01-30,6.0,NED,False,,2026-11-22
 Willem II,Kasper Boogaard,1609512,midfielders,"CDM,CM",Defensive Midfield,MF,20,2006-01-29,8.0,NED,False,,2026-11-22
-Willem II,Jari Schuurman,662748,midfielders,"CAM,CM",Attacking Midfield,MF,29,1997-02-22,10.0,NED,False,,2026-11-22
+Willem II,Jari Schuurman,662748,midfielders,CAM,Attacking Midfield,MF,29,1997-02-22,10.0,NED,False,,2026-11-22
 Willem II,Armin Culum,1430319,midfielders,RW,Right Winger,MF,23,2003-11-05,11.0,SWE,False,,2026-11-22
 Willem II,Anass Zarrouk,1667714,midfielders,"CM,CDM",Central Midfield,MF,20,2006-07-18,18.0,NED,False,,2026-11-22
-Willem II,Uriël van Aalst,1697245,midfielders,"CAM,ST,CM",Attacking Midfield,MF,20,2006-08-18,19.0,NED,False,,2026-11-22
+Willem II,Uriël van Aalst,1697245,midfielders,"CAM,ST,CM,CDM",Attacking Midfield,MF,20,2006-08-18,19.0,NED,False,,2026-11-22
 Willem II,Vito van Crooij,521471,midfielders,"CAM,LW",Attacking Midfield,MF,30,1996-01-29,32.0,NED,False,,2026-11-22
 Willem II,Amine Lachkar,1414313,midfielders,CM,Central Midfield,MF,23,2003-04-18,34.0,NED,True,Day to day,2026-11-22
 Willem II,Divano Iglesias,2130406,midfielders,,Central Midfield,MF,19,2007-07-21,40.0,NED,False,,2026-11-22
 Willem II,Sebas Wermenbol,2130409,midfielders,,Central Midfield,MF,0,,45.0,NED,False,,2026-11-22
 Willem II,Julian van Esdonk,1945733,midfielders,,Central Midfield,MF,20,2006-04-27,48.0,NED,False,,2026-11-22
-Willem II,Tonny Vilhena,304000,midfielders,CDM,Defensive Midfield,MF,31,1995-01-03,52.0,NED,False,,2026-11-22
+Willem II,Tonny Vilhena,304000,midfielders,"CDM,RW",Defensive Midfield,MF,31,1995-01-03,52.0,NED,False,,2026-11-22
 Willem II,Noeh de Bruijn,2076146,attackers,,Centre-Forward,FW,22,2004-04-01,,NED,False,,2026-11-22
 Willem II,Jaden Slory,1370583,attackers,"RW,LW",Right Winger,FW,21,2005-05-09,7.0,NED,False,,2026-11-22
 Willem II,Devin Haen,1236033,attackers,"ST,CAM",Centre-Forward,FW,22,2004-06-18,9.0,NED,False,,2026-11-22
