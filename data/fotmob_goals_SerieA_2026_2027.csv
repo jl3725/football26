@@ -529,9 +529,9 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5749750,2026-11-22,ita.1,Milan,Frosinone,68.0,Christian Pulisic,FastBreak,0,0.6093685626983643
 5749751,2026-11-22,ita.1,Inter,Atalanta,16.0,Francesco Pio Esposito,RegularPlay,0,0.5571635961532593
 5749751,2026-11-22,ita.1,Inter,Atalanta,32.0,Francesco Pio Esposito,FromCorner,0,0.2873196303844452
-5749751,2026-11-22,ita.1,Atalanta,Inter,35.0,Eljif Elmas,RegularPlay,0,0.41085729002952576
+5749751,2026-11-22,ita.1,Atalanta,Inter,35.0,Eljif Elmas,RegularPlay,0,0.4108572900295257
 5749751,2026-11-22,ita.1,Inter,Atalanta,52.0,Francesco Pio Esposito,FastBreak,0,0.6937309503555298
-5749751,2026-11-22,ita.1,Atalanta,Inter,72.0,Charles De Ketelaere,FromCorner,0,0.49970322847366333
+5749751,2026-11-22,ita.1,Atalanta,Inter,72.0,Charles De Ketelaere,FromCorner,0,0.4997032284736633
 5749751,2026-11-22,ita.1,Inter,Atalanta,76.0,Petar Sučić,Penalty,0,0.7884
 5749751,2026-11-22,ita.1,Atalanta,Inter,80.0,Charles De Ketelaere,RegularPlay,0,0.1530148983001709
 5749751,2026-11-22,ita.1,Atalanta,Inter,90.0,Franck Kessié,Penalty,0,0.7884
@@ -545,3 +545,7 @@ match_id,date,comp_code,squad,opponent,minute,player,situation,own_goal,xg
 5749759,2026-11-22,ita.1,Genoa,Sassuolo,26.0,Milutin Osmajić,RegularPlay,0,0.1876201629638672
 5749759,2026-11-22,ita.1,Genoa,Sassuolo,38.0,Milutin Osmajić,FastBreak,0,0.9875686764717102
 5749759,2026-11-22,ita.1,Sassuolo,Genoa,,,none,0,
+5749756,2026-11-23,ita.1,Monza,Fiorentina,45.0,Gustavo Varela,Penalty,0,0.7884
+5749756,2026-11-23,ita.1,Monza,Fiorentina,51.0,Gustavo Varela,FastBreak,0,0.20319044589996338
+5749756,2026-11-23,ita.1,Monza,Fiorentina,59.0,Jay Robinson,FromCorner,0,0.028726421296596527
+5749756,2026-11-23,ita.1,Fiorentina,Monza,,,none,0,
