@@ -1,5 +1,5 @@
 {
- "checked": "2026-11-22T15:44:21+00:00",
+ "checked": "2026-11-23T19:34:05+00:00",
  "results": {
   "ovr": [],
   "season": [],
@@ -16,30 +16,22 @@
   ],
   "names": [],
   "xg": [],
-  "agents": [
-   "STATS · Sofascore 평점 — 마지막 성공 65시간 전(허용 48시간, local-sofascore-daily, local-season-weekly)",
-   "ANALYST · 팬 투표 — 마지막 성공 64시간 전(허용 24시간, local-fanvote)"
-  ],
+  "agents": [],
   "expectations": [],
   "screen": [
-   "season_log Erzurumspor FK: Amar Gërxhaliu 헤더 1080′ 1G 0A ≠ SEASON LOG 990′ 1G 0A",
-   "season_log Columbus Crew: Patrick Schulte 헤더 3150′ 0G 0A ≠ SEASON LOG 1260′ 0G 0A",
-   "season_log Columbus Crew: Sean Zawadzki 헤더 3150′ 1G 1A ≠ SEASON LOG 1260′ 1G 1A",
-   "season_log New England Revolution: Matt Turner 헤더 3150′ 0G 0A ≠ SEASON LOG 1260′ 0G 0A",
-   "season_log Portland Timbers: James Pantemis 헤더 3150′ 0G 0A ≠ SEASON LOG 1260′ 0G 0A"
+   "season_log Columbus Crew: Patrick Schulte 헤더 3150′ 0G 0A ≠ SEASON LOG 3060′ 0G 0A",
+   "season_log Columbus Crew: Sean Zawadzki 헤더 3150′ 1G 1A ≠ SEASON LOG 3060′ 1G 1A",
+   "season_log Real Salt Lake: Rafael Cabral 헤더 3150′ 0G 0A ≠ SEASON LOG 2970′ 0G 0A",
+   "season_log Portland Timbers: James Pantemis 헤더 3150′ 0G 0A ≠ SEASON LOG 3060′ 0G 0A"
   ],
   "squads": [],
   "identity": [],
   "fair_price": [],
   "progress": [
-   "EPL Understat xG(understat_players) 늦음: 팀당 9경기분 · 일정 11경기(가운데 값 2경기 늦음)",
-   "LaLiga Understat xG(understat_players) 늦음: 팀당 11경기분 · 일정 12경기(가운데 값 2경기 늦음)",
-   "Bundesliga Understat xG(understat_players) 늦음: 팀당 8경기분 · 일정 10경기(가운데 값 2경기 늦음)",
-   "SerieA StatBunker 팀 통계(statbunker_team_stats) 늦음: 팀당 6경기분 · 일정 11경기(가운데 값 5경기 늦음)",
-   "Ligue1 Understat xG(understat_players) 늦음: 팀당 9경기분 · 일정 11경기(가운데 값 2경기 늦음)"
+   "SerieA StatBunker 팀 통계(statbunker_team_stats) 늦음: 팀당 7경기분 · 일정 12경기(가운데 값 5경기 늦음)"
   ],
   "digest": [],
   "scout_answers": []
  },
- "ai_cause": "- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인) (ratings)\n- match_refresh 러너의 understat_live 단계에서 반복적인 코드 75 실패가 확인되어, 해당 API 연동 장애가 원인일 것으로 추정됨 (agents)\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인) (screen)\n- match_refresh 러너의 understat_live 단계에서 반복적인 코드 75 실패가 기록되어, 이로 인한 데이터 수집 지연이 원인일 것으로 추정됨 (progress)"
+ "ai_cause": "- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인) (ratings)\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인) (screen)\n- understat_live 단계의 반복된 코드 75 오류와 statbunker 단계의 504 원천 중단 오류로 인해 데이터 수집에 차질이 발생했을 가능성(match_refresh, understat_live 및 local-season-weekly, statbunker) (progress)"
 }
