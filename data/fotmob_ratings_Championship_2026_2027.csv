@@ -8,8 +8,8 @@ fotmob_id,player,squad,team_fm,rating,minutes,matches,nat,league,season
 1417094,Will Lankshear,Middlesbrough,Middlesbrough,7.57,1061,14,,Championship,2026_2027
 1573122,Fer López,Wolves,Wolverhampton Wanderers,7.57,1175,15,,Championship,2026_2027
 1077926,Ethan Galbraith,Stoke City,Stoke City,7.51,1260,14,,Championship,2026_2027
-883079,Finn Azaz,Southampton,Southampton,7.51,1368,16,,Championship,2026_2027
 748856,Callum Styles,West Bromwich Albion,West Bromwich Albion,7.51,1440,16,,Championship,2026_2027
+883079,Finn Azaz,Southampton,Southampton,7.51,1368,16,,Championship,2026_2027
 191869,Kieran Trippier,Wolves,Wolverhampton Wanderers,7.5,718,9,,Championship,2026_2027
 719219,Konstantinos Mavropanos,West Ham United,West Ham United,7.49,1208,14,,Championship,2026_2027
 716852,Callum Brittain,Middlesbrough,Middlesbrough,7.48,1427,16,,Championship,2026_2027
@@ -23,12 +23,14 @@ fotmob_id,player,squad,team_fm,rating,minutes,matches,nat,league,season
 496732,Max O'Leary,West Bromwich Albion,West Bromwich Albion,7.38,1440,16,,Championship,2026_2027
 877701,Christoph Klarer,Birmingham City,Birmingham City,7.36,1440,16,,Championship,2026_2027
 917830,Nicolas Madsen,Queens Park Rangers,Queens Park Rangers,7.35,646,10,,Championship,2026_2027
+789593,Todd Cantwell,Blackburn Rovers,Blackburn Rovers,7.35,1301,16,,Championship,2026_2027
 886150,Edmond-Paris Maghoma,Norwich City,Norwich City,7.33,578,11,,Championship,2026_2027
 1394109,Moussa Kounfolo Yeo,Swansea City,Swansea City,7.33,880,13,,Championship,2026_2027
 1207954,Callum Doyle,Wrexham,Wrexham,7.32,1350,15,,Championship,2026_2027
 865931,Max Kilman,West Ham United,West Ham United,7.31,1350,15,,Championship,2026_2027
 1218243,Adilson Malanda,Middlesbrough,Middlesbrough,7.31,1350,15,,Championship,2026_2027
 1118910,Alex Robertson,Cardiff City,Cardiff City,7.31,1406,16,,Championship,2026_2027
+1050161,Andri Guðjohnsen,Blackburn Rovers,Blackburn Rovers,7.3,1032,15,,Championship,2026_2027
 1431281,James Beadle,Birmingham City,Birmingham City,7.3,1215,14,,Championship,2026_2027
 1196750,Jack Moylan,Cardiff City,Cardiff City,7.3,1373,16,,Championship,2026_2027
 655575,Jacob Bruun Larsen,Burnley,Burnley,7.29,611,9,,Championship,2026_2027
@@ -37,12 +39,10 @@ fotmob_id,player,squad,team_fm,rating,minutes,matches,nat,league,season
 1273707,Nasser Djiga,Wolves,Wolverhampton Wanderers,7.27,970,11,,Championship,2026_2027
 951953,Ousmane Diakité,West Bromwich Albion,West Bromwich Albion,7.25,1146,15,,Championship,2026_2027
 1203447,Camiel Neghli,Millwall,Millwall,7.24,1380,16,,Championship,2026_2027
-789593,Todd Cantwell,Blackburn Rovers,Blackburn Rovers,7.24,1212,15,,Championship,2026_2027
 1174296,André,Wolves,Wolverhampton Wanderers,7.24,1371,16,,Championship,2026_2027
 877690,Alexander Cochrane,Birmingham City,Birmingham City,7.23,1378,16,,Championship,2026_2027
-1086249,Ollie Tanner,Cardiff City,Cardiff City,7.23,1273,16,,Championship,2026_2027
 544312,Cyle Larin,Southampton,Southampton,7.23,797,12,,Championship,2026_2027
-1050161,Andri Guðjohnsen,Blackburn Rovers,Blackburn Rovers,7.22,942,14,,Championship,2026_2027
+1086249,Ollie Tanner,Cardiff City,Cardiff City,7.23,1273,16,,Championship,2026_2027
 877697,Harrison Burrows,Sheffield United,Sheffield United,7.22,642,8,,Championship,2026_2027
 1420818,Sydie Peck,Sheffield United,Sheffield United,7.22,1277,16,,Championship,2026_2027
 900523,Keven Schlotterbeck,Southampton,Southampton,7.21,1088,13,,Championship,2026_2027
@@ -60,18 +60,21 @@ fotmob_id,player,squad,team_fm,rating,minutes,matches,nat,league,season
 1180500,Harvey Vale,Queens Park Rangers,Queens Park Rangers,7.18,978,13,,Championship,2026_2027
 609755,Kalvin Phillips,Sheffield United,Sheffield United,7.17,707,11,,Championship,2026_2027
 748456,Sam Field,Norwich City,Norwich City,7.16,420,9,,Championship,2026_2027
+1254270,Kristi Montgomery,Blackburn Rovers,Blackburn Rovers,7.16,1264,15,,Championship,2026_2027
 789574,Jayson Molumby,West Bromwich Albion,West Bromwich Albion,7.16,1188,15,,Championship,2026_2027
 819762,Chris Mepham,West Bromwich Albion,West Bromwich Albion,7.16,883,12,,Championship,2026_2027
 623366,Nathan Trott,Cardiff City,Cardiff City,7.16,1440,16,,Championship,2026_2027
 1433032,Jhon Solís,Birmingham City,Birmingham City,7.15,1011,13,,Championship,2026_2027
 546252,Viktor Johansson,Stoke City,Stoke City,7.15,1440,16,,Championship,2026_2027
-864266,Sean McLoughlin,Blackburn Rovers,Blackburn Rovers,7.15,1350,15,,Championship,2026_2027
 1127293,Chris Forino-Joseph,Bolton Wanderers,Bolton Wanderers,7.15,801,10,,Championship,2026_2027
+1077915,Largie Ramazani,Burnley,Burnley,7.15,999,13,,Championship,2026_2027
 1047586,George Campbell,West Bromwich Albion,West Bromwich Albion,7.14,1123,14,,Championship,2026_2027
 1107283,Eom Ji-Sung,Swansea City,Swansea City,7.14,557,12,,Championship,2026_2027
 1463282,Divine Mukasa,West Ham United,West Ham United,7.14,969,14,,Championship,2026_2027
 1052686,Stephen Welsh,Swansea City,Swansea City,7.14,1144,15,,Championship,2026_2027
 1130978,Joel Bagan,Cardiff City,Cardiff City,7.14,1329,15,,Championship,2026_2027
+823592,Oladapo Afolayan,Blackburn Rovers,Blackburn Rovers,7.14,1200,16,,Championship,2026_2027
+864266,Sean McLoughlin,Blackburn Rovers,Blackburn Rovers,7.14,1440,16,,Championship,2026_2027
 1536401,Filip Lissah,Swansea City,Swansea City,7.13,1198,15,,Championship,2026_2027
 822237,Manor Solomon,West Ham United,West Ham United,7.13,1072,16,,Championship,2026_2027
 1121314,Ronnie Edwards,Queens Park Rangers,Queens Park Rangers,7.13,1440,16,,Championship,2026_2027
@@ -82,15 +85,12 @@ fotmob_id,player,squad,team_fm,rating,minutes,matches,nat,league,season
 539939,James Bree,Southampton,Southampton,7.12,1288,15,,Championship,2026_2027
 556952,Krystian Bielik,Cardiff City,Cardiff City,7.11,745,10,,Championship,2026_2027
 1249605,Jenson Metcalfe,Millwall,Millwall,7.11,1201,15,,Championship,2026_2027
-1077915,Largie Ramazani,Burnley,Burnley,7.11,909,12,,Championship,2026_2027
 844943,Flynn Downes,Southampton,Southampton,7.1,1027,14,,Championship,2026_2027
 746406,Scott Twine,Bristol City,Bristol City,7.1,851,13,,Championship,2026_2027
-1254270,Kristi Montgomery,Blackburn Rovers,Blackburn Rovers,7.1,1174,14,,Championship,2026_2027
 793041,Federico Ravaglia,Watford,Watford,7.1,1440,16,,Championship,2026_2027
 1296772,Jimmy-Jay Morgan,West Bromwich Albion,West Bromwich Albion,7.1,1128,16,,Championship,2026_2027
 613892,Joe Ward,Derby County,Derby County,7.1,714,10,,Championship,2026_2027
 600812,Ben Whiteman,Wrexham,Wrexham,7.09,1244,15,,Championship,2026_2027
-823592,Oladapo Afolayan,Blackburn Rovers,Blackburn Rovers,7.09,1115,15,,Championship,2026_2027
 1026833,Pelle Mattsson,Norwich City,Norwich City,7.08,966,12,,Championship,2026_2027
 185326,Sam Morsy,Blackburn Rovers,Blackburn Rovers,7.08,1074,14,,Championship,2026_2027
 1367703,Terry Devlin,Portsmouth,Portsmouth,7.08,1026,15,,Championship,2026_2027
@@ -108,6 +108,7 @@ fotmob_id,player,squad,team_fm,rating,minutes,matches,nat,league,season
 489335,Josh Sheehan,Bolton Wanderers,Bolton Wanderers,7.04,1420,16,,Championship,2026_2027
 917628,Neto Borges,Middlesbrough,Middlesbrough,7.04,980,14,,Championship,2026_2027
 1183360,Yousef Salech,Cardiff City,Cardiff City,7.04,1087,13,,Championship,2026_2027
+827247,Harry Pickering,Blackburn Rovers,Blackburn Rovers,7.04,975,12,,Championship,2026_2027
 939390,Gavin Bazunu,Bolton Wanderers,Bolton Wanderers,7.03,720,8,,Championship,2026_2027
 876161,Michael Cooper,Sheffield United,Sheffield United,7.03,1440,16,,Championship,2026_2027
 722741,Josh Tymon,Swansea City,Swansea City,7.03,1422,16,,Championship,2026_2027
@@ -135,8 +136,6 @@ fotmob_id,player,squad,team_fm,rating,minutes,matches,nat,league,season
 1127480,Tommy Conway,Middlesbrough,Middlesbrough,6.98,713,14,,Championship,2026_2027
 1227324,Rubin Colwill,Cardiff City,Cardiff City,6.98,557,9,,Championship,2026_2027
 1192166,Rodrigo Gomes,Wolves,Wolverhampton Wanderers,6.97,664,11,,Championship,2026_2027
-827247,Harry Pickering,Blackburn Rovers,Blackburn Rovers,6.97,885,11,,Championship,2026_2027
-1055136,Ryoya Morishita,Blackburn Rovers,Blackburn Rovers,6.97,833,11,,Championship,2026_2027
 1296625,Bobby Clark,Derby County,Derby County,6.97,1347,16,,Championship,2026_2027
 789566,Sam Dalby,Bolton Wanderers,Bolton Wanderers,6.97,1220,16,,Championship,2026_2027
 190851,Kenny McLean,Norwich City,Norwich City,6.96,825,11,,Championship,2026_2027
@@ -152,8 +151,10 @@ fotmob_id,player,squad,team_fm,rating,minutes,matches,nat,league,season
 1413851,Lisav Naif Eissat,Bristol City,Bristol City,6.93,1048,13,,Championship,2026_2027
 1177313,Rafiki Saïd,Wolves,Wolverhampton Wanderers,6.92,525,9,,Championship,2026_2027
 445511,Liam Lindsay,Preston North End,Preston North End,6.92,616,8,,Championship,2026_2027
+1055136,Ryoya Morishita,Blackburn Rovers,Blackburn Rovers,6.92,853,12,,Championship,2026_2027
 447418,Lloyd Jones,Charlton Athletic,Charlton Athletic,6.92,1260,14,,Championship,2026_2027
 1420144,Pierce Charles,Queens Park Rangers,Queens Park Rangers,6.92,1440,16,,Championship,2026_2027
+768331,Igor Julio,Burnley,Burnley,6.91,955,11,,Championship,2026_2027
 1574106,Jayden Meghoma,Portsmouth,Portsmouth,6.91,899,11,,Championship,2026_2027
 1338978,Tyreece Campbell,Charlton Athletic,Charlton Athletic,6.91,1269,16,,Championship,2026_2027
 873572,Boy Kemper,Queens Park Rangers,Queens Park Rangers,6.91,529,9,,Championship,2026_2027
@@ -166,7 +167,7 @@ fotmob_id,player,squad,team_fm,rating,minutes,matches,nat,league,season
 1351566,Melker Widell,Swansea City,Swansea City,6.89,833,16,,Championship,2026_2027
 1076138,Hector Kyprianou,Watford,Watford,6.89,1281,15,,Championship,2026_2027
 1014602,Jacob Widell Zetterström,Derby County,Derby County,6.89,1080,12,,Championship,2026_2027
-488624,Alex Mowatt,Derby County,Derby County,6.89,921,13,,Championship,2026_2027
+488624,Alex Mowatt,Derby County,Derby County,6.88,921,13,,Championship,2026_2027
 733486,Riley McGree,Middlesbrough,Middlesbrough,6.88,953,16,,Championship,2026_2027
 304455,Joël Veltman,West Ham United,West Ham United,6.88,719,13,,Championship,2026_2027
 728123,Hamza Choudhury,Sheffield United,Sheffield United,6.88,864,12,,Championship,2026_2027
@@ -206,17 +207,17 @@ fotmob_id,player,squad,team_fm,rating,minutes,matches,nat,league,season
 302241,Patrick Bamford,Sheffield United,Sheffield United,6.82,803,12,,Championship,2026_2027
 471271,Amari'i Bell,Charlton Athletic,Charlton Athletic,6.82,995,12,,Championship,2026_2027
 877763,Josh Key,Swansea City,Swansea City,6.82,453,10,,Championship,2026_2027
+980792,Reo Hatate,Burnley,Burnley,6.82,756,12,,Championship,2026_2027
 761834,Oliver Rathbone,Wrexham,Wrexham,6.82,687,14,,Championship,2026_2027
 914399,Liam Kitching,Sheffield United,Sheffield United,6.81,990,11,,Championship,2026_2027
 1227326,Pablo,West Ham United,West Ham United,6.81,508,9,,Championship,2026_2027
 1385177,Mohammed Fuseini,Derby County,Derby County,6.81,641,11,,Championship,2026_2027
-768331,Igor Julio,Burnley,Burnley,6.81,878,10,,Championship,2026_2027
 259809,Jay Fulton,Swansea City,Swansea City,6.8,966,15,,Championship,2026_2027
 768635,Lyndon Dykes,Millwall,Millwall,6.79,1015,16,,Championship,2026_2027
 1077922,George Tanner,Bristol City,Bristol City,6.79,1110,14,,Championship,2026_2027
 694558,Dominic Hyam,Wrexham,Wrexham,6.79,1046,13,,Championship,2026_2027
 1529203,Mohamadou Kanté,West Ham United,West Ham United,6.79,792,14,,Championship,2026_2027
-980792,Reo Hatate,Burnley,Burnley,6.78,678,11,,Championship,2026_2027
+1067168,Zeki Amdouni,Burnley,Burnley,6.79,584,11,,Championship,2026_2027
 519835,Adam Armstrong,Wolves,Wolverhampton Wanderers,6.78,1007,14,,Championship,2026_2027
 968912,Anthony Patterson,Wrexham,Wrexham,6.78,1440,16,,Championship,2026_2027
 1360352,Radek Vítek,Middlesbrough,Middlesbrough,6.78,1440,16,,Championship,2026_2027
@@ -227,9 +228,9 @@ fotmob_id,player,squad,team_fm,rating,minutes,matches,nat,league,season
 734042,Kyle Walker-Peters,West Ham United,West Ham United,6.76,698,11,,Championship,2026_2027
 1096398,Xavier Simons,Bolton Wanderers,Bolton Wanderers,6.76,602,10,,Championship,2026_2027
 1360349,Harry Whitwell,West Bromwich Albion,West Bromwich Albion,6.76,614,12,,Championship,2026_2027
+159833,Kyle Walker,Burnley,Burnley,6.76,1215,14,,Championship,2026_2027
 1077905,Ethan Laird,Birmingham City,Birmingham City,6.75,415,12,,Championship,2026_2027
 1089873,Dom Jefferies,Lincoln City,Lincoln City,6.75,836,13,,Championship,2026_2027
-1067168,Zeki Amdouni,Burnley,Burnley,6.75,507,10,,Championship,2026_2027
 586467,Karlan Grant,Charlton Athletic,Charlton Athletic,6.75,1058,15,,Championship,2026_2027
 1280355,Iyad Mohamed,Portsmouth,Portsmouth,6.75,485,10,,Championship,2026_2027
 621182,Rob Dickie,Bristol City,Bristol City,6.75,796,9,,Championship,2026_2027
@@ -247,12 +248,12 @@ fotmob_id,player,squad,team_fm,rating,minutes,matches,nat,league,season
 1367620,Edvin Austbø,West Ham United,West Ham United,6.73,459,12,,Championship,2026_2027
 1292335,Amadou Salif Mbengue,Queens Park Rangers,Queens Park Rangers,6.73,567,10,,Championship,2026_2027
 950861,Koki Saito,Queens Park Rangers,Queens Park Rangers,6.72,530,12,,Championship,2026_2027
-159833,Kyle Walker,Burnley,Burnley,6.72,1125,13,,Championship,2026_2027
 846009,Adam Idah,Swansea City,Swansea City,6.72,793,14,,Championship,2026_2027
 1190030,Odel Offiah,Preston North End,Preston North End,6.72,1018,14,,Championship,2026_2027
 1344572,Ollie Arblaster,Sheffield United,Sheffield United,6.72,609,14,,Championship,2026_2027
 360099,Conor McGrandles,Lincoln City,Lincoln City,6.72,944,12,,Championship,2026_2027
 729721,Jake Clarke-Salter,Queens Park Rangers,Queens Park Rangers,6.72,738,10,,Championship,2026_2027
+1662406,Moussa Baradji,Blackburn Rovers,Blackburn Rovers,6.71,393,9,,Championship,2026_2027
 1285497,Derek Mazou-Sacko,Millwall,Millwall,6.71,917,12,,Championship,2026_2027
 1127585,Sondre Klingen Langås,Derby County,Derby County,6.71,822,10,,Championship,2026_2027
 759563,Marc Bola,Watford,Watford,6.71,421,8,,Championship,2026_2027
@@ -269,7 +270,6 @@ fotmob_id,player,squad,team_fm,rating,minutes,matches,nat,league,season
 1187285,Ryan Alebiosu,Blackburn Rovers,Blackburn Rovers,6.68,1165,14,,Championship,2026_2027
 245300,Sonny Bradley,Lincoln City,Lincoln City,6.68,1018,12,,Championship,2026_2027
 1185779,Ryley Towler,Lincoln City,Lincoln City,6.67,655,11,,Championship,2026_2027
-637744,Marcus Edwards,Burnley,Burnley,6.67,547,11,,Championship,2026_2027
 909803,Edo Kayembe,Watford,Watford,6.67,1182,16,,Championship,2026_2027
 861001,Balázs Tóth,Blackburn Rovers,Blackburn Rovers,6.66,1080,12,,Championship,2026_2027
 1113899,Lorent Tolaj,Bristol City,Bristol City,6.66,913,13,,Championship,2026_2027
@@ -279,23 +279,22 @@ fotmob_id,player,squad,team_fm,rating,minutes,matches,nat,league,season
 848102,Paik Seung-Ho,Birmingham City,Birmingham City,6.64,475,10,,Championship,2026_2027
 768325,Jordan Storey,Preston North End,Preston North End,6.64,1037,13,,Championship,2026_2027
 551961,Andrija Vukčević,Preston North End,Preston North End,6.64,929,14,,Championship,2026_2027
+1414691,Max Alleyne,Burnley,Burnley,6.64,1088,13,,Championship,2026_2027
 662728,Jordan Thompson,Preston North End,Preston North End,6.64,1233,15,,Championship,2026_2027
 1335102,Ugo Raghouber,Burnley,Burnley,6.63,481,10,,Championship,2026_2027
-1414691,Max Alleyne,Burnley,Burnley,6.63,998,12,,Championship,2026_2027
-523193,Josh Laurent,Burnley,Burnley,6.63,1157,14,,Championship,2026_2027
 873014,Oliver Skipp,Charlton Athletic,Charlton Athletic,6.63,674,10,,Championship,2026_2027
 1109477,Mark McGuinness,Sheffield United,Sheffield United,6.62,724,11,,Championship,2026_2027
-1133564,Hayden Carter,Blackburn Rovers,Blackburn Rovers,6.62,728,11,,Championship,2026_2027
+1133564,Hayden Carter,Blackburn Rovers,Blackburn Rovers,6.62,818,12,,Championship,2026_2027
 660170,George Dobson,Wrexham,Wrexham,6.62,462,10,,Championship,2026_2027
 890346,Cameron Pring,Bristol City,Bristol City,6.62,847,14,,Championship,2026_2027
-1662406,Moussa Baradji,Blackburn Rovers,Blackburn Rovers,6.61,303,8,,Championship,2026_2027
 1118483,Tom Fellows,Southampton,Southampton,6.61,408,9,,Championship,2026_2027
 1368061,Samuel Iling-Junior,Bolton Wanderers,Bolton Wanderers,6.61,738,15,,Championship,2026_2027
+523193,Josh Laurent,Burnley,Burnley,6.61,1247,15,,Championship,2026_2027
 1209597,Marko Stamenić,Swansea City,Swansea City,6.6,989,14,,Championship,2026_2027
 962062,George Wickens,Lincoln City,Lincoln City,6.6,1440,16,,Championship,2026_2027
 1298925,Jeremy Sarmiento,Middlesbrough,Middlesbrough,6.6,377,12,,Championship,2026_2027
-1113670,Aaron Ramsey,Burnley,Burnley,6.6,540,10,,Championship,2026_2027
 1249531,Žan Vipotnik,Swansea City,Swansea City,6.6,532,16,,Championship,2026_2027
+637744,Marcus Edwards,Burnley,Burnley,6.59,571,12,,Championship,2026_2027
 1223132,José Córdoba,Norwich City,Norwich City,6.59,1069,13,,Championship,2026_2027
 1218557,Gibson Yah,Bristol City,Bristol City,6.59,459,10,,Championship,2026_2027
 289137,Charlie Taylor,Derby County,Derby County,6.59,711,8,,Championship,2026_2027
@@ -306,6 +305,7 @@ fotmob_id,player,squad,team_fm,rating,minutes,matches,nat,league,season
 1609716,Amin Nabizada,Watford,Watford,6.58,597,13,,Championship,2026_2027
 1053736,Elijah Just,Swansea City,Swansea City,6.58,739,15,,Championship,2026_2027
 287892,Jed Wallace,Bristol City,Bristol City,6.57,594,14,,Championship,2026_2027
+1113670,Aaron Ramsey,Burnley,Burnley,6.57,552,11,,Championship,2026_2027
 881519,Tom Bayliss,Lincoln City,Lincoln City,6.56,574,14,,Championship,2026_2027
 1239600,Johnny Kenny,Preston North End,Preston North End,6.56,466,8,,Championship,2026_2027
 1227813,Atsuki Ito,Bolton Wanderers,Bolton Wanderers,6.56,433,10,,Championship,2026_2027
@@ -318,7 +318,7 @@ fotmob_id,player,squad,team_fm,rating,minutes,matches,nat,league,season
 1235431,Kévin Keben,Watford,Watford,6.55,1350,15,,Championship,2026_2027
 1254208,Dominic Ballard,Bristol City,Bristol City,6.55,804,16,,Championship,2026_2027
 1075463,Maksym Talovierov,Stoke City,Stoke City,6.54,467,10,,Championship,2026_2027
-1195742,Jayden Fevrier,Blackburn Rovers,Blackburn Rovers,6.54,596,15,,Championship,2026_2027
+1443861,Tom Atcheson,Blackburn Rovers,Blackburn Rovers,6.54,821,11,,Championship,2026_2027
 767738,Callum Lang,Preston North End,Preston North End,6.53,1015,16,,Championship,2026_2027
 1044785,Ivan Mesík,Charlton Athletic,Charlton Athletic,6.53,687,12,,Championship,2026_2027
 967941,Mads Hermansen,West Ham United,West Ham United,6.53,1350,15,,Championship,2026_2027
@@ -328,6 +328,7 @@ fotmob_id,player,squad,team_fm,rating,minutes,matches,nat,league,season
 1524063,Yunus Emre Konak,Lincoln City,Lincoln City,6.53,539,9,,Championship,2026_2027
 940442,Tommy Doyle,Wolves,Wolverhampton Wanderers,6.52,366,15,,Championship,2026_2027
 1389994,Miles Leaburn,Charlton Athletic,Charlton Athletic,6.52,946,14,,Championship,2026_2027
+1195742,Jayden Fevrier,Blackburn Rovers,Blackburn Rovers,6.52,658,16,,Championship,2026_2027
 1118480,Dennis Cirkin,Queens Park Rangers,Queens Park Rangers,6.52,515,12,,Championship,2026_2027
 1254762,Stanley Mills,Preston North End,Preston North End,6.51,745,12,,Championship,2026_2027
 1177437,Rocco Shein,Portsmouth,Portsmouth,6.51,458,9,,Championship,2026_2027
@@ -337,7 +338,6 @@ fotmob_id,player,squad,team_fm,rating,minutes,matches,nat,league,season
 935502,Aune Selland Heggebø,West Bromwich Albion,West Bromwich Albion,6.51,623,15,,Championship,2026_2027
 1243571,Andréas Hountondji,Burnley,Burnley,6.51,442,10,,Championship,2026_2027
 759580,Stephy Mavididi,Watford,Watford,6.5,356,8,,Championship,2026_2027
-1443861,Tom Atcheson,Blackburn Rovers,Blackburn Rovers,6.49,813,10,,Championship,2026_2027
 874621,Martín Payero,Watford,Watford,6.49,618,13,,Championship,2026_2027
 841150,Rhian Brewster,Derby County,Derby County,6.48,574,13,,Championship,2026_2027
 1223119,Freddie Draper,Lincoln City,Lincoln City,6.48,948,14,,Championship,2026_2027
@@ -354,19 +354,20 @@ fotmob_id,player,squad,team_fm,rating,minutes,matches,nat,league,season
 1284376,Marezi,Portsmouth,Portsmouth,6.43,603,12,,Championship,2026_2027
 759589,Jordi Osei-Tutu,Millwall,Millwall,6.4,605,10,,Championship,2026_2027
 750033,George Hirst,Stoke City,Stoke City,6.39,660,15,,Championship,2026_2027
+1060617,Oliver Sonne,Burnley,Burnley,6.39,642,12,,Championship,2026_2027
 617763,Daniel Iversen,Preston North End,Preston North End,6.39,1260,14,,Championship,2026_2027
 517663,Colby Bishop,Portsmouth,Portsmouth,6.38,490,9,,Championship,2026_2027
 674009,Chiedozie Ogbene,Lincoln City,Lincoln City,6.37,297,11,,Championship,2026_2027
-831044,Hjalmar Ekdal,Burnley,Burnley,6.37,608,9,,Championship,2026_2027
 904710,Delano Burgzorg,Preston North End,Preston North End,6.37,765,14,,Championship,2026_2027
 1204282,Robert Street,Lincoln City,Lincoln City,6.36,706,16,,Championship,2026_2027
+286119,Jamie Vardy,Burnley,Burnley,6.36,364,8,,Championship,2026_2027
 1273294,Oscar Fraulo,Derby County,Derby County,6.36,454,12,,Championship,2026_2027
 1393660,Kyliane Dong,Bolton Wanderers,Bolton Wanderers,6.35,509,12,,Championship,2026_2027
 1203658,Divin Mubama,Southampton,Southampton,6.35,239,14,,Championship,2026_2027
+831044,Hjalmar Ekdal,Burnley,Burnley,6.34,621,10,,Championship,2026_2027
 1668671,Ronan Kpakio,Cardiff City,Cardiff City,6.33,335,10,,Championship,2026_2027
 1184465,Kyle Joseph,Middlesbrough,Middlesbrough,6.32,505,14,,Championship,2026_2027
 1080917,Omar Traoré,Watford,Watford,6.32,786,12,,Championship,2026_2027
-1060617,Oliver Sonne,Burnley,Burnley,6.31,552,11,,Championship,2026_2027
 1049805,Sam Greenwood,Bristol City,Bristol City,6.31,437,11,,Championship,2026_2027
 1184473,Sam Tickle,Bristol City,Bristol City,6.25,990,11,,Championship,2026_2027
 1394402,Rocco Vata,Watford,Watford,6.24,255,11,,Championship,2026_2027
@@ -380,5 +381,5 @@ fotmob_id,player,squad,team_fm,rating,minutes,matches,nat,league,season
 1712223,Branimir Mlačić,Watford,Watford,6.16,517,9,,Championship,2026_2027
 315201,Max Crocombe,Millwall,Millwall,6.14,855,10,,Championship,2026_2027
 1195277,Thierry Small,Preston North End,Preston North End,6.14,408,11,,Championship,2026_2027
+1307639,Max Weiß,Burnley,Burnley,6.07,720,8,,Championship,2026_2027
 1296413,Henrik Meister,Derby County,Derby County,6.06,448,10,,Championship,2026_2027
-1307639,Max Weiß,Burnley,Burnley,6.01,630,7,,Championship,2026_2027

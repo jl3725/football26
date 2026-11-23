@@ -1,39 +1,34 @@
 {
- "date": "2026-11-22",
+ "date": "2026-11-23",
  "checked": {
   "season_log": 56,
   "team_xg": 56,
   "transfers": 56,
-  "opponents": 160,
+  "opponents": 157,
   "leaders": 168,
-  "heatmap_side": 102,
-  "injury_return": 218
+  "heatmap_side": 101,
+  "injury_return": 269
  },
  "issues": [
   {
    "kind": "season_log",
-   "team": "Erzurumspor FK",
-   "detail": "Amar Gërxhaliu 헤더 1080′ 1G 0A ≠ SEASON LOG 990′ 1G 0A"
+   "team": "Columbus Crew",
+   "detail": "Patrick Schulte 헤더 3150′ 0G 0A ≠ SEASON LOG 3060′ 0G 0A"
   },
   {
    "kind": "season_log",
    "team": "Columbus Crew",
-   "detail": "Patrick Schulte 헤더 3150′ 0G 0A ≠ SEASON LOG 1260′ 0G 0A"
+   "detail": "Sean Zawadzki 헤더 3150′ 1G 1A ≠ SEASON LOG 3060′ 1G 1A"
   },
   {
    "kind": "season_log",
-   "team": "Columbus Crew",
-   "detail": "Sean Zawadzki 헤더 3150′ 1G 1A ≠ SEASON LOG 1260′ 1G 1A"
-  },
-  {
-   "kind": "season_log",
-   "team": "New England Revolution",
-   "detail": "Matt Turner 헤더 3150′ 0G 0A ≠ SEASON LOG 1260′ 0G 0A"
+   "team": "Real Salt Lake",
+   "detail": "Rafael Cabral 헤더 3150′ 0G 0A ≠ SEASON LOG 2970′ 0G 0A"
   },
   {
    "kind": "season_log",
    "team": "Portland Timbers",
-   "detail": "James Pantemis 헤더 3150′ 0G 0A ≠ SEASON LOG 1260′ 0G 0A"
+   "detail": "James Pantemis 헤더 3150′ 0G 0A ≠ SEASON LOG 3060′ 0G 0A"
   }
  ]
 }

@@ -1,7 +1,7 @@
 {
- "date": "2026-11-22",
+ "date": "2026-11-23",
  "model": "v3.18",
- "players": 6947,
+ "players": 6964,
  "golden": [],
  "scout": [
   {
@@ -43,14 +43,6 @@
    "lo": 84,
    "hi": 87,
    "off": 1
-  },
-  {
-   "player": "Alexis Mac Allister",
-   "league": "EPL",
-   "ovr": 84,
-   "lo": 85,
-   "hi": 88,
-   "off": -1
   },
   {
    "player": "Micky van de Ven",
@@ -125,11 +117,10 @@
    "examples": []
   },
   "underperf_high": {
-   "n": 2,
+   "n": 1,
    "limit": 10,
    "desc": "OVR 86+ 인데 리그 보정 평점이 포지션 평균보다 0.1 넘게 낮음(900분+)",
    "examples": [
-    "Achraf Hakimi(PSG, 28) 88 ← 88",
     "João Neves(PSG, 22) 88 ← 88"
    ]
   },

@@ -5,7 +5,7 @@ Porto,João Afonso,1603224,keepers,GK,Goalkeeper,GK,19,2007-04-30,50.0,POR,False
 Porto,Diogo Costa,795630,keepers,GK,Goalkeeper,GK,27,1999-09-19,99.0,POR,False,,2026-11-23
 Porto,Jakub Kiwior,1021834,defenders,"CB,LB",Centre-Back,DF,26,2000-02-15,4.0,POL,False,,2026-11-23
 Porto,Jan Bednarek,490868,defenders,CB,Centre-Back,DF,30,1996-04-12,5.0,POL,False,,2026-11-23
-Porto,Chris Smalling,165823,defenders,CB,Centre-Back,DF,37,1989-11-22,6.0,ENG,True,About a week,2026-11-23
+Porto,Chris Smalling,165823,defenders,CB,Centre-Back,DF,37,1989-11-22,6.0,ENG,True,Day to day,2026-11-23
 Porto,Zaidu Sanusi,1079056,defenders,LB,Left-Back,DF,29,1997-06-13,12.0,NGA,False,,2026-11-23
 Porto,Nehuén Pérez,902383,defenders,CB,Centre-Back,DF,26,2000-06-24,18.0,ARG,False,,2026-11-23
 Porto,Alberto Costa,1387439,defenders,RB,Right-Back,DF,23,2003-09-29,20.0,POR,False,,2026-11-23
@@ -42,7 +42,7 @@ Benfica,Tomás Araújo,1187283,defenders,"CB,RB",Centre-Back,DF,24,2002-05-16,44
 Benfica,Enzo Barrenechea,1352923,midfielders,CDM,Defensive Midfield,MF,25,2001-05-22,5.0,ARG,False,,2026-11-23
 Benfica,Fredrik Aursnes,310768,midfielders,"CDM,RW,CM,RB",Defensive Midfield,MF,30,1995-12-10,8.0,NOR,False,,2026-11-23
 Benfica,Georgiy Sudakov,1192398,midfielders,"CAM,LW,CM,CDM,LM",Attacking Midfield,MF,24,2002-09-01,10.0,UKR,False,,2026-11-23
-Benfica,Jakub Kamiński,1067260,midfielders,"CAM,LW,LM,CM,CDM,RWB",Attacking Midfield,MF,24,2002-06-05,13.0,POL,False,,2026-11-23
+Benfica,Jakub Kamiński,1067260,midfielders,"CAM,LM,LW,CM,CDM,RWB",Attacking Midfield,MF,24,2002-06-05,13.0,POL,False,,2026-11-23
 Benfica,Manu Silva,1198071,midfielders,CDM,Defensive Midfield,MF,25,2001-06-12,16.0,POR,False,,2026-11-23
 Benfica,Leandro Barreiro,930065,midfielders,"CDM,CAM",Defensive Midfield,MF,26,2000-01-03,18.0,LUX,True,Early July 2027,2026-11-23
 Benfica,João Palhinha,524434,midfielders,"CDM,CM,CB",Defensive Midfield,MF,31,1995-07-09,36.0,POR,False,,2026-11-23
@@ -79,7 +79,7 @@ Sporting CP,João Simões,1663855,midfielders,"CDM,CM",Defensive Midfield,MF,19,
 Sporting CP,Nestory Irankunda,1327214,midfielders,"RM,LW,LM,ST,CAM",Right Midfield,MF,20,2006-02-09,19.0,AUS,False,,2026-11-23
 Sporting CP,Pedro Lima,1459257,midfielders,"CM,CAM",Central Midfield,MF,23,2003-03-27,21.0,BRA,False,,2026-11-23
 Sporting CP,Eduardo Felicíssimo,1648470,midfielders,"CB,CM,CDM",Centre-Back,MF,19,2007-01-08,73.0,POR,False,,2026-11-23
-Sporting CP,Issa Doumbia,1339345,midfielders,"CM,CDM,LW,CAM",Central Midfield,MF,23,2003-10-16,77.0,ITA,False,,2026-11-23
+Sporting CP,Issa Doumbia,1339345,midfielders,"CM,CDM,CAM",Central Midfield,MF,23,2003-10-16,77.0,ITA,False,,2026-11-23
 Sporting CP,Delcio Aurelio,1918387,attackers,,Centre-Forward,FW,19,2007-06-20,,ANG,False,,2026-11-23
 Sporting CP,Fotis Ioannidis,899701,attackers,"ST,CAM",Centre-Forward,FW,26,2000-01-10,7.0,GRE,False,,2026-11-23
 Sporting CP,Rafael Nel,1525416,attackers,ST,Centre-Forward,FW,21,2005-04-03,9.0,POR,False,,2026-11-23
@@ -141,7 +141,7 @@ Arouca,Mateo Flores,1664552,midfielders,CAM,Attacking Midfield,MF,22,2004-04-07,
 Arouca,Rachid Gomes,2192769,midfielders,,Central Midfield,MF,18,2008-05-11,27.0,CPV,False,,2026-11-23
 Arouca,Si-Hoo Park,1836748,midfielders,LM,Left Midfield,MF,19,2007-08-18,77.0,KOR,False,,2026-11-23
 Arouca,Pedro Santos,1356299,midfielders,CDM,Defensive Midfield,MF,26,2000-10-12,89.0,POR,False,,2026-11-23
-Arouca,Naïs Djouahra,770328,attackers,LW,Left Winger,FW,26,1999-11-23,7.0,FRA,False,,2026-11-23
+Arouca,Naïs Djouahra,770328,attackers,LW,Left Winger,FW,27,1999-11-23,7.0,FRA,False,,2026-11-23
 Arouca,Fally Mayulu,1286192,attackers,ST,Centre-Forward,FW,24,2002-07-15,9.0,FRA,False,,2026-11-23
 Arouca,Miguel Puche,1287512,attackers,RW,Right Winger,FW,25,2001-04-30,11.0,ESP,True,Day to day,2026-11-23
 Arouca,Barbero,1027396,attackers,ST,Centre-Forward,FW,28,1998-08-17,17.0,ESP,False,,2026-11-23
@@ -174,7 +174,7 @@ Académico de Viseu,Andro Babić,1428038,midfielders,CM,Central Midfield,MF,22,2
 Académico de Viseu,Alejandro Mestanza,1477850,midfielders,RM,Right Midfield,MF,21,2004-12-07,45.0,ESP,False,,2026-11-23
 Académico de Viseu,Mohamed Bouldini,955586,attackers,ST,Centre-Forward,FW,30,1995-11-27,9.0,MAR,False,,2026-11-23
 Académico de Viseu,Álvaro Zamora,1401581,attackers,"LW,RW",Left Winger,FW,24,2002-03-09,10.0,CRC,False,,2026-11-23
-Académico de Viseu,Valery Fernández,977760,attackers,"LW,LM",Left Winger,FW,26,1999-11-23,17.0,ESP,False,,2026-11-23
+Académico de Viseu,Valery Fernández,977760,attackers,"LW,LM",Left Winger,FW,27,1999-11-23,17.0,ESP,False,,2026-11-23
 Académico de Viseu,Nils Mortimer Moreno,942377,attackers,RW,Right Winger,FW,25,2001-06-11,22.0,ESP,False,,2026-11-23
 Académico de Viseu,Issoufi Maiga,1421283,attackers,,Centre-Forward,FW,24,2002-02-12,23.0,MLI,False,,2026-11-23
 Académico de Viseu,João Guilherme,1641845,attackers,"RW,LW",Right Winger,FW,26,2000-10-30,31.0,BRA,False,,2026-11-23
