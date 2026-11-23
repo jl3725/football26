@@ -104,7 +104,7 @@ Celta Vigo,tm278359,Borja Iglesias,278359,Borja Iglesias,players_full,100
 Celta Vigo,tm258987,Carl Starfelt,258987,Carl Starfelt,players_full,100
 Celta Vigo,tm593837,Couhaib Driouech,593837,Couhaib Driouech,players_full,100
 Celta Vigo,tm599231,Ferran Jutglà,599231,Ferran Jutglà,players_full,100
-Celta Vigo,pf:Celta Vigo:hugo garcia,Hugo García,,Hugo García,players_full,100
+Celta Vigo,pf:Celta Vigo:hugo garcia,Hugo García,1262787,Hugo García,players_full,100
 Celta Vigo,tm707279,Hugo González,707279,Hugo González,players_full,100
 Celta Vigo,tm892929,Hugo Álvarez,892929,Hugo Álvarez,players_full,100
 Celta Vigo,tm72047,Iago Aspas,72047,Iago Aspas,players_full,100
@@ -172,7 +172,7 @@ Elche,tm205562,Thomas Lemar,205562,Thomas Lemar,players_full,100
 Elche,pf:Elche:umaru konare,Umaru Konare,,Umaru Konare,players_full,100
 Elche,tm495625,Víctor Chust,495625,Víctor Chust,players_full,100
 Elche,pf:Elche:alvaro padilla,Álvaro Padilla,,Álvaro Padilla,players_full,100
-Espanyol,pf:Espanyol:alejandro santiago vargas,Alejandro Santiago Vargas,,Alejandro Santiago Vargas,players_full,100
+Espanyol,pf:Espanyol:alejandro santiago,Alejandro Santiago,,Alejandro Santiago,players_full,100
 Espanyol,tm713644,Bryan Zaragoza,713644,Bryan Zaragoza,players_full,100
 Espanyol,tm692070,Clemens Riedel,692070,Clemens Riedel,players_full,100
 Espanyol,tm506248,Edu Expósito,506248,Edu Expósito,players_full,100
@@ -333,7 +333,7 @@ Rayo Vallecano,tm127108,Florian Lejeune,127108,Florian Lejeune,players_full,100
 Rayo Vallecano,pf:Rayo Vallecano:francisco perez,Francisco Perez,,Francisco Perez,players_full,100
 Rayo Vallecano,pf:Rayo Vallecano:gnangoro,Gnangoro,,Gnangoro,players_full,100
 Rayo Vallecano,pf:Rayo Vallecano:heorhii tsitaishvili,Heorhii Tsitaishvili,,Heorhii Tsitaishvili,players_full,100
-Rayo Vallecano,pf:Rayo Vallecano:isaac palazon camacho,Isaac Palazón Camacho,,Isaac Palazón Camacho,players_full,100
+Rayo Vallecano,pf:Rayo Vallecano:isaac palazon camacho,Isaac Palazón Camacho,362086,Isaac Palazón Camacho,players_full,100
 Rayo Vallecano,tm85295,Iván Balliu,85295,Iván Balliu,players_full,100
 Rayo Vallecano,tm455181,Jorge de Frutos,455181,Jorge de Frutos,players_full,100
 Rayo Vallecano,tm765467,Jozhua Vertrouwd,765467,Jozhua Vertrouwd,players_full,100
@@ -449,6 +449,7 @@ Valencia,pf:Valencia:aimar blazquez,Aimar Blazquez,,Aimar Blazquez,players_full,
 Valencia,tm410427,Aliou Dieng,410427,Aliou Dieng,players_full,100
 Valencia,tm826224,Arnau Martinez,826224,Arnau Martinez,players_full,100
 Valencia,tm355861,Arnaut Danjuma,355861,Arnaut Danjuma,players_full,100
+Valencia,pf:Valencia:copete,Copete,,Copete,players_full,100
 Valencia,tm707274,César Tárrega,707274,César Tárrega,players_full,100
 Valencia,tm413262,Dani Raba,413262,Dani Raba,players_full,100
 Valencia,tm1009766,David Otorbi,1009766,David Otorbi,players_full,100
@@ -533,7 +534,7 @@ Athletic Club,pf:Athletic Club:roberto navarro,Roberto Navarro,,Robert Navarro,t
 Athletic Club,pf:Athletic Club:nicolas serrano,Nicolás Serrano,,Nico Serrano,transfermarkt_contracts,80
 Celta Vigo,tm336077,Altay Bayındır,336077,Altay Bayındır,transfermarkt_contracts,100
 Celta Vigo,tm297194,Iván Villar,297194,Iván Villar,transfermarkt_contracts,100
-Celta Vigo,tm1262787,Hugo Burcio,1262787,Hugo Burcio,transfermarkt_contracts,100
+Celta Vigo,pf:Celta Vigo:hugo garcia,Hugo García,1262787,Hugo Burcio,transfermarkt_contracts,100
 Sevilla,tm1055220,Fran González,1055220,Fran González,transfermarkt_contracts,100
 Sevilla,pf:Sevilla:castrin,Castrin,,Andrés Castrín,transfermarkt_contracts,60
 Sevilla,tm439022,Marcão,439022,Marcão,transfermarkt_contracts,100
@@ -549,7 +550,7 @@ Sevilla,pf:Sevilla:miguel angel sierra,Miguel Ángel Sierra,,Miguel Sierra,trans
 Sevilla,pf:Sevilla:peque,Peque,,Peque Fernández,transfermarkt_contracts,60
 Valencia,tm790669,Kayne van Oevelen,790669,Kayne van Oevelen,transfermarkt_contracts,100
 Valencia,tm398131,Cristian Rivero,398131,Cristian Rivero,transfermarkt_contracts,100
-Valencia,tm520840,José Copete,520840,José Copete,transfermarkt_contracts,100
+Valencia,pf:Valencia:copete,Copete,,José Copete,transfermarkt_contracts,60
 Valencia,pf:Valencia:jose luis gaya,José Luis Gayà,,José Gayà,transfermarkt_contracts,85
 Valencia,tm623024,Jesus Vazquez,623024,Jesús Vázquez,transfermarkt_contracts,99
 Valencia,tm826224,Arnau Martinez,826224,Arnau Martínez,transfermarkt_contracts,99
@@ -586,7 +587,7 @@ Rayo Vallecano,tm457931,Luiz Felipe,457931,Luiz Felipe,transfermarkt_contracts,1
 Rayo Vallecano,tm692208,Pelayo Fernandez,692208,Pelayo Fernández,transfermarkt_contracts,99
 Rayo Vallecano,tm527966,Andrei Ratiu,527966,Andrei Rațiu,transfermarkt_contracts,99
 Rayo Vallecano,pf:Rayo Vallecano:gnangoro,Gnangoro,,Gnangoro Bouare,transfermarkt_contracts,60
-Rayo Vallecano,tm362086,Isi Palazón,362086,Isi Palazón,transfermarkt_contracts,100
+Rayo Vallecano,pf:Rayo Vallecano:isaac palazon camacho,Isaac Palazón Camacho,362086,Isi Palazón,transfermarkt_contracts,100
 Rayo Vallecano,tm419067,Giorgi Tsitaishvili,419067,Giorgi Tsitaishvili,transfermarkt_contracts,100
 Rayo Vallecano,pf:Rayo Vallecano:francisco perez,Francisco Perez,,Fran Pérez,transfermarkt_contracts,80
 Rayo Vallecano,pf:Rayo Vallecano:alexandre alemao,Alexandre Alemão,,Alemão,transfermarkt_contracts,60
@@ -777,13 +778,12 @@ Athletic Club,pf:Athletic Club:jesus vizcay,Jesús Vizcay,,Jesús Vizcay Hurtado
 Barcelona,esp:Barcelona:alex campos,Álex Campos,,Álex Campos,espn_lineups,100
 Barcelona,esp:Barcelona:orian goren,Orian Goren,,Orian Goren,espn_lineups,100
 Real Madrid,esp:Real Madrid:illia voloshyn,Illia Voloshyn,,Illia Voloshyn,espn_lineups,100
+Espanyol,pf:Espanyol:alejandro santiago,Alejandro Santiago,,Alejandro Santiago Vargas,espn_lineups,85
 Espanyol,pf:Espanyol:jan peries,Jan Peries,,Jan Peries Duran,espn_lineups,85
 Barcelona,esp:Barcelona:guillem victor,Guillem Víctor,,Guillem Víctor,espn_lineups,100
 Barcelona,esp:Barcelona:ebrima tunkara,Ebrima Tunkara,,Ebrima Tunkara,espn_lineups,100
 Getafe,esp:Getafe:ibrahima danfakha keita,Ibrahima Danfakha Keita,,Ibrahima Danfakha Keita,espn_lineups,100
 Real Sociedad,esp:Real Sociedad:aitor fraga,Aitor Fraga,,Aitor Fraga,espn_lineups,100
-Espanyol,pf:Espanyol:alejandro santiago vargas,Alejandro Santiago Vargas,,Alejandro Santiago,espn_lineups,85
-Valencia,tm520840,José Copete,520840,Copete,espn_lineups,60
 Levante,esp:Levante:huseini nakoha,Huseini Nakoha,,Huseini Nakoha,espn_lineups,100
 Atlético Madrid,esp:Atlético Madrid:romeo hueso moya,Romeo Hueso Moya,,Romeo Hueso Moya,espn_lineups,100
 Espanyol,esp:Espanyol:makar kotovshchikov,Makar Kotovshchikov,,Makar Kotovshchikov,espn_lineups,100
@@ -854,6 +854,7 @@ Levante,tm618809,Manu Sánchez,618809,Manuel Sánchez,fotmob_ratings,80
 Valencia,tm420196,Justin de Haas,420196,Justin De Haas,fotmob_ratings,100
 Celta Vigo,tm599231,Ferran Jutglà,599231,Ferrán Jutglà,fotmob_ratings,100
 Deportivo A Coruña,tm856274,Jonathan Asp Jensen,856274,Jonathan Asp,fotmob_ratings,85
+Real Betis,pf:Real Betis:cucho,Cucho,,Juan Hernández,fotmob_minutes,65
 Sevilla,pf:Sevilla:castrin,Castrin,,Andrés López,fotmob_minutes,65
 Osasuna,tm541555,Enzo Boyomo,541555,Flavien Boyomo,fotmob_minutes,65
 Alavés,tm785353,Pablo Ibáñez,785353,Pablo Ibañez,s365_ratings,100

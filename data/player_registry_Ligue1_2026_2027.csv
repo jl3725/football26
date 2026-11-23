@@ -74,6 +74,7 @@ Le Havre,tm325924,Ahmed Touba,325924,Ahmed Touba,players_full,100
 Le Havre,tm893675,Amir Richardson,893675,Amir Richardson,players_full,100
 Le Havre,tm417278,Arnaud Bodart,417278,Arnaud Bodart,players_full,100
 Le Havre,tm405389,Ayumu Seko,405389,Ayumu Seko,players_full,100
+Le Havre,pf:Le Havre:bocar wade,Bocar Wade,,Bocar Wade,players_full,100
 Le Havre,tm1119880,Daren Mosengo,1119880,Daren Mosengo,players_full,100
 Le Havre,tm1524445,Djibril Ouziad,1524445,Djibril Ouziad,players_full,100
 Le Havre,tm646478,Elias Jelert,646478,Elias Jelert,players_full,100
@@ -130,12 +131,13 @@ Lens,tm184892,Florian Thauvin,184892,Florian Thauvin,players_full,100
 Lens,tm548028,Franjo Ivanović,548028,Franjo Ivanović,players_full,100
 Lens,tm1020191,Ismaëlo Ganiou,1020191,Ismaëlo Ganiou,players_full,100
 Lens,tm605184,Jean-Clair Todibo,605184,Jean-Clair Todibo,players_full,100
+Lens,tm713787,Jhoanner Chávez,713787,Jhoanner Chávez,players_full,100
 Lens,tm126557,Jonathan Gradit,126557,Jonathan Gradit,players_full,100
 Lens,tm585958,Junior Kadile,585958,Junior Kadile,players_full,100
 Lens,tm1186789,Kyllian Antonio,1186789,Kyllian Antonio,players_full,100
 Lens,tm407745,Maik Nawrocki,407745,Maik Nawrocki,players_full,100
 Lens,tm344886,Matthieu Udol,344886,Matthieu Udol,players_full,100
-Lens,pf:Lens:mezian soares,Mezian Soares,,Mezian Soares,players_full,100
+Lens,pf:Lens:mezian soares,Mezian Soares,1297674,Mezian Soares,players_full,100
 Lens,tm393565,Michał Skóraś,393565,Michał Skóraś,players_full,100
 Lens,pf:Lens:mickael cuisance,Mickaël Cuisance,,Mickaël Cuisance,players_full,100
 Lens,tm344152,Odsonne Édouard,344152,Odsonne Édouard,players_full,100
@@ -250,6 +252,7 @@ Monaco,tm175722,Eric Dier,175722,Eric Dier,players_full,100
 Monaco,pf:Monaco:flavio nazinho,Flávio Nazinho,,Flávio Nazinho,players_full,100
 Monaco,tm503770,Folarin Balogun,503770,Folarin Balogun,players_full,100
 Monaco,pf:Monaco:ilane toure,Ilane Touré,,Ilane Touré,players_full,100
+Monaco,pf:Monaco:ilies belmokhtar,Ilies Belmokhtar,,Ilies Belmokhtar,players_full,100
 Monaco,tm364245,Jordan Teze,364245,Jordan Teze,players_full,100
 Monaco,tm918969,Lamine Camara,918969,Lamine Camara,players_full,100
 Monaco,tm48015,Lukáš Hrádecký,48015,Lukáš Hrádecký,players_full,100
@@ -482,11 +485,10 @@ Lens,tm60543,Mathieu Gorgelin,60543,Mathieu Gorgelin,transfermarkt_contracts,100
 Lens,tm39918,Régis Gurtner,39918,Régis Gurtner,transfermarkt_contracts,100
 Lens,tm1200424,Ilan Jourdren,1200424,Ilan Jourdren,transfermarkt_contracts,100
 Lens,tm819566,Nidal Celik,819566,Nidal Celik,transfermarkt_contracts,100
-Lens,tm713787,Jhoanner Chávez,713787,Jhoanner Chávez,transfermarkt_contracts,100
 Lens,pf:Lens:yassine titraoui,Yassine Titraoui,748445,Yacine Titraoui,transfermarkt_contracts,100
 Lens,tm986291,Andrija Bulatović,986291,Andrija Bulatovic,transfermarkt_contracts,99
 Lens,pf:Lens:mickael cuisance,Mickaël Cuisance,,Michaël Cuisance,transfermarkt_contracts,80
-Lens,tm1297674,Mezian Mesloub,1297674,Mezian Mesloub,transfermarkt_contracts,100
+Lens,pf:Lens:mezian soares,Mezian Soares,1297674,Mezian Mesloub,transfermarkt_contracts,100
 Paris FC,pf:Paris FC:otavio ataide,Otavio Ataide,,Otávio,transfermarkt_contracts,60
 Paris FC,tm914539,Yoan Koré,914539,Yoan Koré,transfermarkt_contracts,100
 Paris FC,tm955281,Nhoa Sangui,955281,Nhoa Sangui,transfermarkt_contracts,100
@@ -543,6 +545,7 @@ Brest,tm272619,Romain Cagnon,272619,Romain Cagnon,transfermarkt_contracts,100
 Brest,tm1228465,Noé Poillion,1228465,Noé Poillion,transfermarkt_contracts,100
 Brest,tm1166473,Raphael Le Guen,1166473,Raphaël Le Guen,transfermarkt_contracts,99
 Brest,tm250779,Brendan Chardonnet,250779,Brendan Chardonnet,transfermarkt_contracts,100
+Brest,pf:Brest:ibrahim kante,Ibrahim Kanté,,Ibrahim Yayiya Kanté,transfermarkt_contracts,85
 Brest,pf:Brest:mama samba balde,Mama Samba Baldé,,Mama Baldé,transfermarkt_contracts,85
 Angers,tm548347,Melvin Zinga,548347,Melvin Zinga,transfermarkt_contracts,100
 Angers,tm1073176,Oumar Pona,1073176,Oumar Pona,transfermarkt_contracts,100
@@ -663,8 +666,6 @@ PSG,esp:PSG:younes idder,Younes Idder,,Younes Idder,espn_lineups,100
 Le Havre,esp:Le Havre:thomas rousseau,Thomas Rousseau,,Thomas Rousseau,espn_lineups,100
 Le Mans,pf:Le Mans:adnane kharroubi,Adnane Kharroubi,,Adnane Hamza Kharroubi,espn_lineups,85
 Lens,esp:Lens:moussa diarra,Moussa Diarra,,Moussa Diarra,espn_lineups,100
-Le Havre,esp:Le Havre:bocar wade,Bocar Wade,,Bocar Wade,espn_lineups,100
-Monaco,esp:Monaco:ilies belmokhtar,Ilies Belmokhtar,,Ilies Belmokhtar,espn_lineups,100
 Lens,tm713787,Jhoanner Chávez,713787,Jhoanner Chavez,espn_lineups,100
 Angers,esp:Angers:ianis sacko,Ianis Sacko,,Ianis Sacko,espn_lineups,100
 Lille,esp:Lille:thomas sajous,Thomas Sajous,,Thomas Sajous,espn_lineups_cups,100
@@ -697,13 +698,14 @@ Lorient,tm801886,Isak Jensen,801886,Isak Steiner Jensen,fotmob_ratings,85
 Auxerre,tm917778,Rémy Labeau Lascary,917778,Rémy Lascary,fotmob_ratings,85
 Angers,tm829874,Lilian Raolisoa,829874,Lilian Rao-Lisoa,fotmob_ratings,95
 Le Mans,tm344888,Habib Diallo,344888,Habibou Mouhamadou Diallo,fotmob_ratings,80
+Brest,tm748807,Joseph Nonge,748807,Joseph Boende,fotmob_minutes,65
 Troyes,tm976861,Merwan Ifnaoui,976861,Merwan Ifnaou,fotmob_minutes,65
 Angers,tm203938,Branco van den Boomen,203938,Branco Van Den Boomen,s365_ratings,100
 Angers,tm807688,Yassin Belkhdim,807688,Yassine Belkhdim,s365_ratings,80
 Angers,pf:Angers:jacques ekomie,Jacques Ekomie,,Jacques Ekomié,s365_ratings,100
 Auxerre,pf:Auxerre:josue casimir,Josué Casimir,,Josue Casimir,s365_ratings,100
 Brest,pf:Brest:mama samba balde,Mama Samba Baldé,,Mama Balde,s365_ratings,100
-Brest,pf:Brest:ibrahim kante,Ibrahim Kanté,,Ibrahim Yayiya Kante,s365_ratings,85
+Brest,pf:Brest:ibrahim kante,Ibrahim Kanté,,Ibrahim Yayiya Kante,s365_ratings,100
 Le Havre,tm662242,Rassoul Ndiaye,662242,Rassoul N'Diaye,s365_ratings,100
 Le Havre,tm1119880,Daren Mosengo,1119880,Daren Nbenbege Mosengo,s365_ratings,85
 Le Mans,tm161869,Djibril Sidibé,161869,Djibril Sidibe,s365_ratings,100

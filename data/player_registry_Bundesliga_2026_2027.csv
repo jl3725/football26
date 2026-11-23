@@ -38,8 +38,10 @@ Bayern Munich,tm480692,Luis Díaz,480692,Luis Díaz,players_full,100
 Bayern Munich,tm17259,Manuel Neuer,17259,Manuel Neuer,players_full,100
 Bayern Munich,tm566723,Michael Olise,566723,Michael Olise,players_full,100
 Bayern Munich,tm691892,Nathaniel Brown,691892,Nathaniel Brown,players_full,100
+Bayern Munich,pf:Bayern Munich:noah codjo evora,Noah Codjo-Evora,,Noah Codjo-Evora,players_full,100
 Bayern Munich,tm475413,Sacha Boey,475413,Sacha Boey,players_full,100
 Bayern Munich,tm159471,Serge Gnabry,159471,Serge Gnabry,players_full,100
+Bayern Munich,pf:Bayern Munich:tim binder,Tim Binder,,Tim Binder,players_full,100
 Bayern Munich,tm822959,Tom Bischof,822959,Tom Bischof,players_full,100
 Dortmund,tm659459,Carney Chukwuemeka,659459,Carney Chukwuemeka,players_full,100
 Dortmund,tm579287,Daniel Svensson,579287,Daniel Svensson,players_full,100
@@ -251,6 +253,7 @@ Leverkusen,tm395516,Moussa Diaby,395516,Moussa Diaby,players_full,100
 Leverkusen,tm340322,Nathan Tella,340322,Nathan Tella,players_full,100
 Leverkusen,tm242086,Patrik Schick,242086,Patrik Schick,players_full,100
 Leverkusen,tm159088,Robert Andrich,159088,Robert Andrich,players_full,100
+Leverkusen,tm696164,Tim Oermann,696164,Tim Oermann,players_full,100
 Leverkusen,tm656681,Victor Boniface,656681,Victor Boniface,players_full,100
 Mainz 05,tm93763,Alexander Schwolow,93763,Alexander Schwolow,players_full,100
 Mainz 05,tm453016,Anthony Caci,453016,Anthony Caci,players_full,100
@@ -450,11 +453,6 @@ Wolfsburg,tm633454,Alexander Bernhardsson,633454,Alexander Bernhardsson,transfer
 Wolfsburg,tm1144627,Kento Shiogai,1144627,Kento Shiogai,transfermarkt_contracts,100
 Wolfsburg,tm388160,Fraser Hornby,388160,Fraser Hornby,transfermarkt_contracts,100
 Wolfsburg,tm196139,Robert Glatzel,196139,Robert Glatzel,transfermarkt_contracts,100
-RB Leipzig,tm160971,Leopold Zingerle,160971,Leopold Zingerle,transfermarkt_contracts,100
-RB Leipzig,tm93740,Willi Orban,93740,Willi Orbán,transfermarkt_contracts,99
-RB Leipzig,tm1279157,Benno Kaltefleiter,1279157,Benno Kaltefleiter,transfermarkt_contracts,100
-RB Leipzig,tm952779,Andrija Maksimović,952779,Andrija Maksimovic,transfermarkt_contracts,99
-RB Leipzig,tm1074526,Viggo Gebel,1074526,Viggo Gebel,transfermarkt_contracts,100
 Bayern Munich,tm40680,Sven Ulreich,40680,Sven Ulreich,transfermarkt_contracts,100
 Bayern Munich,tm503482,Kim Min-jae,503482,Min-jae Kim,transfermarkt_contracts,99
 Bayern Munich,tm483046,Josip Stanišić,483046,Josip Stanisic,transfermarkt_contracts,99
@@ -473,12 +471,16 @@ Dortmund,tm1185507,Justin Lerma,1185507,Justin Lerma,transfermarkt_contracts,100
 Leverkusen,tm81173,Janis Blaswich,81173,Janis Blaswich,transfermarkt_contracts,100
 Leverkusen,tm85543,Niklas Lomb,85543,Niklas Lomb,transfermarkt_contracts,100
 Leverkusen,tm730581,Loïc Bade,730581,Loïc Badé,transfermarkt_contracts,99
-Leverkusen,tm696164,Tim Oermann,696164,Tim Oermann,transfermarkt_contracts,100
 Leverkusen,pf:Leverkusen:ezequiel fernandez,Ezequiél Fernández,664708,Equi Fernández,transfermarkt_contracts,100
 Leverkusen,tm1214123,Kennet Eichhorn,1214123,Kennet Eichhorn,transfermarkt_contracts,100
 Leverkusen,tm810895,Eliesse Ben Seghir,810895,Eliesse Ben Seghir,transfermarkt_contracts,100
 Leverkusen,tm1058514,Montrell Culbreath,1058514,Montrell Culbreath,transfermarkt_contracts,100
 Leverkusen,tm1392804,Ndjicoura Bomba,1392804,Ndjicoura Bomba,transfermarkt_contracts,100
+RB Leipzig,tm160971,Leopold Zingerle,160971,Leopold Zingerle,transfermarkt_contracts,100
+RB Leipzig,tm93740,Willi Orban,93740,Willi Orbán,transfermarkt_contracts,99
+RB Leipzig,tm1279157,Benno Kaltefleiter,1279157,Benno Kaltefleiter,transfermarkt_contracts,100
+RB Leipzig,tm952779,Andrija Maksimović,952779,Andrija Maksimovic,transfermarkt_contracts,99
+RB Leipzig,tm1074526,Viggo Gebel,1074526,Viggo Gebel,transfermarkt_contracts,100
 Stuttgart,tm170517,Marius Funk,170517,Marius Funk,transfermarkt_contracts,100
 Stuttgart,tm388067,Stefan Drljaca,388067,Stefan Drljaca,transfermarkt_contracts,100
 Stuttgart,pf:Stuttgart:julian chabot,Julian Chabot,303219,Jeff Chabot,transfermarkt_contracts,100
@@ -674,7 +676,6 @@ Schalke 04,esp:Schalke 04:jean paul ndiaye,Jean-Paul N'Diaye,,Jean-Paul N'Diaye,
 Hamburger SV,pf:Hamburger SV:jason bissi mouelle,Jason Bissi Mouelle,,Jason-Dean Bissi Mouelle,espn_lineups,85
 Dortmund,tm1311594,Enzo dos Santos,1311594,Enzo De Pina Duarte Dos Santos,espn_lineups,85
 Bayern Munich,tm1118495,David Santos Daiber,1118495,David Daiber,espn_lineups,85
-Bayern Munich,esp:Bayern Munich:tim binder,Tim Binder,,Tim Binder,espn_lineups,100
 Bayern Munich,esp:Bayern Munich:cassiano kiala,Cassiano Kiala,,Cassiano Kiala,espn_lineups,100
 Bayern Munich,esp:Bayern Munich:jannis bartl,Jannis Bärtl,,Jannis Bärtl,espn_lineups,100
 Leverkusen,esp:Leverkusen:kenan doganay,Kenan Doganay,,Kenan Doganay,espn_lineups,100
@@ -684,7 +685,6 @@ Schalke 04,esp:Schalke 04:edion gashi,Edion Gashi,,Edion Gashi,espn_lineups,100
 Hoffenheim,esp:Hoffenheim:klaus gjasula,Klaus Gjasula,,Klaus Gjasula,espn_lineups,100
 Hoffenheim,pf:Hoffenheim:muhammed batuhan zor,Muhammed Batuhan Zor,,Muhammed Yasin Batuhan Zor,espn_lineups,85
 Hoffenheim,esp:Hoffenheim:oskar hencke,Oskar Hencke,,Oskar Hencke,espn_lineups,100
-Bayern Munich,esp:Bayern Munich:noah codjo evora,Noah Codjo-Evora,,Noah Codjo-Evora,espn_lineups,100
 Bayern Munich,esp:Bayern Munich:david podar stiube,David Podar-Stiube,,David Podar-Stiube,espn_lineups_cups,100
 Leverkusen,esp:Leverkusen:gabriel minutillo,Gabriel Minutillo,,Gabriel Minutillo,espn_lineups_cups,100
 Leverkusen,esp:Leverkusen:ben hawighorst,Ben Hawighorst,,Ben Hawighorst,espn_lineups_cups,100

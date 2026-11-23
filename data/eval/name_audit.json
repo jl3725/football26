@@ -341,8 +341,8 @@
   },
   "espn_lineups": {
    "total": 624,
-   "exact": 496,
-   "rule": 30,
+   "exact": 497,
+   "rule": 29,
    "ambiguous": 1,
    "orphan": 98,
    "orphans": [
@@ -650,7 +650,7 @@
    "ambiguous": 0,
    "orphan": 0,
    "orphans": [],
-   "minutes": 7
+   "minutes": 9
   },
   "s365_ratings": {
    "total": 482,
@@ -659,13 +659,13 @@
    "ambiguous": 1,
    "orphan": 0,
    "orphans": [],
-   "minutes": 2
+   "minutes": 3
   }
  },
  "Bundesliga 2026_2027": {
   "wiki_squads": {
    "total": 668,
-   "exact": 512,
+   "exact": 514,
    "rule": 1,
    "ambiguous": 0,
    "orphan": 0,
@@ -673,10 +673,10 @@
   },
   "espn_lineups": {
    "total": 487,
-   "exact": 443,
+   "exact": 445,
    "rule": 19,
    "ambiguous": 0,
-   "orphan": 25,
+   "orphan": 23,
    "orphans": [
     {
      "squad": "Stuttgart",
@@ -755,11 +755,6 @@
     },
     {
      "squad": "Bayern Munich",
-     "name": "Tim Binder",
-     "starts": 0
-    },
-    {
-     "squad": "Bayern Munich",
      "name": "Cassiano Kiala",
      "starts": 0
     },
@@ -796,11 +791,6 @@
     {
      "squad": "Hoffenheim",
      "name": "Oskar Hencke",
-     "starts": 0
-    },
-    {
-     "squad": "Bayern Munich",
-     "name": "Noah Codjo-Evora",
      "starts": 0
     }
    ]
@@ -1275,10 +1265,10 @@
   },
   "espn_lineups": {
    "total": 503,
-   "exact": 451,
+   "exact": 453,
    "rule": 14,
    "ambiguous": 0,
-   "orphan": 38,
+   "orphan": 36,
    "orphans": [
     {
      "squad": "Troyes",
@@ -1493,16 +1483,16 @@
    "ambiguous": 0,
    "orphan": 0,
    "orphans": [],
-   "minutes": 6
+   "minutes": 9
   },
   "s365_ratings": {
    "total": 427,
-   "exact": 419,
-   "rule": 7,
+   "exact": 420,
+   "rule": 6,
    "ambiguous": 0,
    "orphan": 0,
    "orphans": [],
-   "minutes": 2
+   "minutes": 1
   }
  },
  "LigaPortugal 2026_2027": {
@@ -3465,8 +3455,8 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 222,
-   "exact": 222,
+   "total": 285,
+   "exact": 285,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -3481,8 +3471,8 @@
    "orphans": []
   },
   "espn_subs_cups": {
-   "total": 107,
-   "exact": 107,
+   "total": 137,
+   "exact": 137,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -5930,7 +5920,7 @@
   }
  },
  "_meta": {
-  "date": "2026-11-22",
+  "date": "2026-11-23",
   "season": "2026_2027"
  }
 }
