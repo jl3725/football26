@@ -1,12 +1,14 @@
 {
- "checked": "2026-11-23T19:34:05+00:00",
+ "checked": "2026-11-24T19:09:04+00:00",
  "results": {
   "ovr": [],
   "season": [],
   "hub": [],
   "frontend": [],
   "backend": [],
-  "workflows": [],
+  "workflows": [
+   "kg_reload.yml 최근 실행 cancelled (2026-11-24T13:27) https://github.com/jl3725/football26/actions/runs/45403676973"
+  ],
   "news": [],
   "tm_agent": [],
   "coverage": [],
@@ -19,9 +21,9 @@
   "agents": [],
   "expectations": [],
   "screen": [
-   "season_log Columbus Crew: Patrick Schulte 헤더 3150′ 0G 0A ≠ SEASON LOG 3060′ 0G 0A",
+   "season_log Seattle Sounders FC: Andrew Thomas 헤더 3150′ 0G 0A ≠ SEASON LOG 3060′ 0G 0A",
    "season_log Columbus Crew: Sean Zawadzki 헤더 3150′ 1G 1A ≠ SEASON LOG 3060′ 1G 1A",
-   "season_log Real Salt Lake: Rafael Cabral 헤더 3150′ 0G 0A ≠ SEASON LOG 2970′ 0G 0A",
+   "season_log St. Louis City: Timo Baumgartl 헤더 3150′ 1G 0A ≠ SEASON LOG 3060′ 1G 0A",
    "season_log Portland Timbers: James Pantemis 헤더 3150′ 0G 0A ≠ SEASON LOG 3060′ 0G 0A"
   ],
   "squads": [],
@@ -32,6 +34,5 @@
   ],
   "digest": [],
   "scout_answers": []
- },
- "ai_cause": "- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인) (ratings)\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인) (screen)\n- understat_live 단계의 반복된 코드 75 오류와 statbunker 단계의 504 원천 중단 오류로 인해 데이터 수집에 차질이 발생했을 가능성(match_refresh, understat_live 및 local-season-weekly, statbunker) (progress)"
+ }
 }
