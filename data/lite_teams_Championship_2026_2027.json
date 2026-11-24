@@ -3,14 +3,6 @@
  "league": "Championship",
  "season": "2026_2027",
  "teams": {
-  "Wolves": {
-   "fotmob_id": 8602,
-   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8602.png",
-   "color": "#e89700",
-   "tm_vid": 543,
-   "tm_slug": "wolverhampton-wanderers",
-   "tm_name": "Wolves"
-  },
   "Middlesbrough": {
    "fotmob_id": 8549,
    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8549.png",
@@ -19,6 +11,14 @@
    "tm_slug": "fc-middlesbrough",
    "tm_name": "Middlesbrough"
   },
+  "Wolves": {
+   "fotmob_id": 8602,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8602.png",
+   "color": "#e89700",
+   "tm_vid": 543,
+   "tm_slug": "wolverhampton-wanderers",
+   "tm_name": "Wolves"
+  },
   "Stoke City": {
    "fotmob_id": 10194,
    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/10194.png",
@@ -26,22 +26,6 @@
    "tm_vid": 512,
    "tm_slug": "stoke-city",
    "tm_name": "Stoke City"
-  },
-  "Southampton": {
-   "fotmob_id": 8466,
-   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8466.png",
-   "color": "#d71920",
-   "tm_vid": 180,
-   "tm_slug": "fc-southampton",
-   "tm_name": "Southampton"
-  },
-  "Queens Park Rangers": {
-   "fotmob_id": 10172,
-   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/10172.png",
-   "color": "#0054A4",
-   "tm_vid": 1039,
-   "tm_slug": "queens-park-rangers",
-   "tm_name": "Queens Park Rangers"
   },
   "Birmingham City": {
    "fotmob_id": 8658,
@@ -59,6 +43,22 @@
    "tm_slug": "west-bromwich-albion",
    "tm_name": "West Bromwich Albion"
   },
+  "Southampton": {
+   "fotmob_id": 8466,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8466.png",
+   "color": "#d71920",
+   "tm_vid": 180,
+   "tm_slug": "fc-southampton",
+   "tm_name": "Southampton"
+  },
+  "Queens Park Rangers": {
+   "fotmob_id": 10172,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/10172.png",
+   "color": "#0054A4",
+   "tm_vid": 1039,
+   "tm_slug": "queens-park-rangers",
+   "tm_name": "Queens Park Rangers"
+  },
   "Swansea City": {
    "fotmob_id": 10003,
    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/10003.png",
@@ -66,14 +66,6 @@
    "tm_vid": 2288,
    "tm_slug": "swansea-city",
    "tm_name": "Swansea City"
-  },
-  "Portsmouth": {
-   "fotmob_id": 8462,
-   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8462.png",
-   "color": "#0056A1",
-   "tm_vid": 1020,
-   "tm_slug": "fc-portsmouth",
-   "tm_name": "Portsmouth"
   },
   "Sheffield United": {
    "fotmob_id": 8657,
@@ -83,13 +75,13 @@
    "tm_slug": "sheffield-united",
    "tm_name": "Sheffield United"
   },
-  "West Ham United": {
-   "fotmob_id": 8654,
-   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8654.png",
-   "color": "#7B2B3A",
-   "tm_vid": 379,
-   "tm_slug": "west-ham-united",
-   "tm_name": "West Ham United"
+  "Portsmouth": {
+   "fotmob_id": 8462,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8462.png",
+   "color": "#0056A1",
+   "tm_vid": 1020,
+   "tm_slug": "fc-portsmouth",
+   "tm_name": "Portsmouth"
   },
   "Norwich City": {
    "fotmob_id": 9850,
@@ -99,13 +91,13 @@
    "tm_slug": "norwich-city",
    "tm_name": "Norwich City"
   },
-  "Wrexham": {
-   "fotmob_id": 9841,
-   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/9841.png",
-   "color": "#E5131C",
-   "tm_vid": 1112,
-   "tm_slug": "afc-wrexham",
-   "tm_name": "Wrexham"
+  "West Ham United": {
+   "fotmob_id": 8654,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8654.png",
+   "color": "#7B2B3A",
+   "tm_vid": 379,
+   "tm_slug": "west-ham-united",
+   "tm_name": "West Ham United"
   },
   "Blackburn Rovers": {
    "fotmob_id": 8655,
@@ -115,6 +107,14 @@
    "tm_slug": "blackburn-rovers",
    "tm_name": "Blackburn Rovers"
   },
+  "Wrexham": {
+   "fotmob_id": 9841,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/9841.png",
+   "color": "#E5131C",
+   "tm_vid": 1112,
+   "tm_slug": "afc-wrexham",
+   "tm_name": "Wrexham"
+  },
   "Charlton Athletic": {
    "fotmob_id": 8451,
    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8451.png",
@@ -122,6 +122,14 @@
    "tm_vid": 358,
    "tm_slug": "charlton-athletic",
    "tm_name": "Charlton Athletic"
+  },
+  "Bristol City": {
+   "fotmob_id": 8427,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8427.png",
+   "color": "#E01A24",
+   "tm_vid": 698,
+   "tm_slug": "bristol-city",
+   "tm_name": "Bristol City"
   },
   "Cardiff City": {
    "fotmob_id": 8344,
@@ -147,13 +155,13 @@
    "tm_slug": "bolton-wanderers",
    "tm_name": "Bolton Wanderers"
   },
-  "Bristol City": {
-   "fotmob_id": 8427,
-   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8427.png",
-   "color": "#E01A24",
-   "tm_vid": 698,
-   "tm_slug": "bristol-city",
-   "tm_name": "Bristol City"
+  "Watford": {
+   "fotmob_id": 9817,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/9817.png",
+   "color": "#d99f00",
+   "tm_vid": 1010,
+   "tm_slug": "fc-watford",
+   "tm_name": "Watford"
   },
   "Lincoln City": {
    "fotmob_id": 8430,
@@ -162,14 +170,6 @@
    "tm_vid": 1198,
    "tm_slug": "lincoln-city",
    "tm_name": "Lincoln City"
-  },
-  "Watford": {
-   "fotmob_id": 9817,
-   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/9817.png",
-   "color": "#d99f00",
-   "tm_vid": 1010,
-   "tm_slug": "fc-watford",
-   "tm_name": "Watford"
   },
   "Preston North End": {
    "fotmob_id": 8411,

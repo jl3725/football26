@@ -143,11 +143,11 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 548,
+   "total": 549,
    "exact": 507,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 41,
+   "orphan": 42,
    "orphans": [
     {
      "squad": "Arsenal",
@@ -202,6 +202,11 @@
     {
      "squad": "Manchester Utd",
      "name": "Jaydan Kamason",
+     "starts": 0
+    },
+    {
+     "squad": "Arsenal",
+     "name": "Jack Porter",
      "starts": 0
     },
     {
@@ -267,11 +272,6 @@
     {
      "squad": "Brighton",
      "name": "Steven Hall",
-     "starts": 0
-    },
-    {
-     "squad": "Ipswich Town",
-     "name": "Tudor Mendel-Idowu",
      "starts": 0
     }
    ]
@@ -622,8 +622,8 @@
    ]
   },
   "espn_subs_cups": {
-   "total": 269,
-   "exact": 256,
+   "total": 275,
+   "exact": 262,
    "rule": 12,
    "ambiguous": 0,
    "orphan": 1,
@@ -796,11 +796,11 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 476,
+   "total": 477,
    "exact": 457,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 19,
+   "orphan": 20,
    "orphans": [
     {
      "squad": "Augsburg",
@@ -815,6 +815,11 @@
     {
      "squad": "Bayern Munich",
      "name": "David Podar-Stiube",
+     "starts": 0
+    },
+    {
+     "squad": "RB Leipzig",
+     "name": "Toni Stefan Langsteiner",
      "starts": 0
     },
     {
@@ -908,8 +913,8 @@
    "orphans": []
   },
   "espn_subs_cups": {
-   "total": 125,
-   "exact": 125,
+   "total": 127,
+   "exact": 127,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1086,11 +1091,11 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 537,
-   "exact": 517,
+   "total": 539,
+   "exact": 518,
    "rule": 1,
    "ambiguous": 0,
-   "orphan": 19,
+   "orphan": 20,
    "orphans": [
     {
      "squad": "Parma",
@@ -1110,6 +1115,11 @@
     {
      "squad": "Como",
      "name": "Federico Grilli",
+     "starts": 0
+    },
+    {
+     "squad": "Como",
+     "name": "Cristian Mazzara",
      "starts": 0
     },
     {
@@ -1214,8 +1224,8 @@
    ]
   },
   "espn_subs_cups": {
-   "total": 310,
-   "exact": 308,
+   "total": 312,
+   "exact": 310,
    "rule": 1,
    "ambiguous": 0,
    "orphan": 1,
@@ -1398,11 +1408,11 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 188,
+   "total": 189,
    "exact": 178,
    "rule": 2,
    "ambiguous": 0,
-   "orphan": 8,
+   "orphan": 9,
    "orphans": [
     {
      "squad": "Lille",
@@ -1422,6 +1432,11 @@
     {
      "squad": "PSG",
      "name": "Arthur Bar",
+     "starts": 0
+    },
+    {
+     "squad": "Lens",
+     "name": "Leopold Joursky",
      "starts": 0
     },
     {
@@ -1895,8 +1910,8 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 423,
-   "exact": 417,
+   "total": 425,
+   "exact": 419,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 6,
@@ -1942,16 +1957,16 @@
    "orphans": []
   },
   "espn_subs_cups": {
-   "total": 104,
-   "exact": 104,
+   "total": 106,
+   "exact": 106,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
    "orphans": []
   },
   "match_events": {
-   "total": 327,
-   "exact": 327,
+   "total": 328,
+   "exact": 328,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -2226,11 +2241,11 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 718,
+   "total": 719,
    "exact": 657,
    "rule": 6,
    "ambiguous": 0,
-   "orphan": 55,
+   "orphan": 56,
    "orphans": [
     {
      "squad": "Derby County",
@@ -2494,8 +2509,8 @@
    ]
   },
   "espn_subs": {
-   "total": 548,
-   "exact": 548,
+   "total": 553,
+   "exact": 553,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
