@@ -1,349 +1,5 @@
 {
  "reports": {
-  "401875036": {
-   "text": "Inter가 Fiorentina에 2-1로 역전승을 거뒀다. 후반 65'에 Fiorentina의 Álex Jiménez가 선제골을 넣었으나, Inter가 후반 90'+1' Marcus Thuram의 동점골과 후반 90'+7' Piotr Zielinski의 페널티킥 득점으로 경기를 뒤집었다. 경기에서 Inter는 점유율 63.3 대 36.7, 슈팅 33대 7, 유효 슈팅 11대 2로 경기를 압도했다. 팬 투표, 모델, ClubElo 모두 Inter의 승리를 예측해 적중했다.",
-   "date": "2026-10-25",
-   "home": "Inter",
-   "away": "Fiorentina",
-   "at": "2026-10-25T14:21:38+00:00",
-   "model": "gemini-flash-lite-latest"
-  },
-  "401875570": {
-   "text": "Fortuna Sittard가 Excelsior를 상대로 1-0 승리를 거뒀다. 승부를 가른 결정적 장면은 90'+1'에 나왔으며 Mohamed Ihattaren의 도움을 받아 Rodrigo Guth가 헤더로 결승골을 터뜨렸다. 경기 기록 비교에서 점유율은 Excelsior가 57.2%로 앞섰으나 슈팅 7대6, 유효 슈팅 5대2로 Fortuna Sittard가 공격에서 더 날카로운 모습을 보였다. 사전에 팬 투표와 모델 모두 Fortuna Sittard의 승리를 예상해 예측이 적중했다.",
-   "date": "2026-10-25",
-   "home": "Fortuna Sittard",
-   "away": "Excelsior",
-   "at": "2026-10-25T14:21:47+00:00",
-   "model": "gemini-flash-lite-latest"
-  },
-  "5846009": {
-   "text": "Sturm Graz와 Ried의 경기는 2-2 무승부로 끝났다. 전반 31분 Sturm Graz의 Simon Seidl이 득점한 뒤, 45'+2'에 Sturm Graz의 Arjan Malic이 퇴장당했고 45'+5'에 Ried의 Philipp Pomer가 페널티킥으로 동점골을 넣었다. 이어 55'에 Ried의 Isaac Kiese Thelin이 득점했으나, 90'+2'에 Sturm Graz의 Belmin Beganovic가 골을 기록하며 승부를 원점으로 돌렸다. 사전에 모델이 Sturm Graz의 72퍼센트 확률로 승리를 예측했으나 이 예측은 빗나갔다.",
-   "date": "2026-10-25",
-   "home": "Sturm Graz",
-   "away": "Ried",
-   "at": "2026-10-25T15:53:30+00:00",
-   "model": "gemini-flash-lite-latest"
-  },
-  "401875568": {
-   "text": "PSV와 Feyenoord의 경기는 1-1 무승부로 끝났다. 21'에 Guus Til이 득점하고 Lutsharel Geertruida가 도움을 기록한 PSV가 앞서갔으나, 54'에 Anis Hadj Moussa가 득점하고 Luciano Valente가 도움을 기록한 Feyenoord가 동점을 만들었다. 슈팅에서 19-13으로 앞선 PSV는 점유율 51.9% 대 48.1%, 패스 성공률 80% 동등한 기록을 남겼다. 팬 투표, 모델, ClubElo 모두 PSV의 승리를 예측했으나 적중하지 않았다.",
-   "date": "2026-10-25",
-   "home": "PSV",
-   "away": "Feyenoord",
-   "at": "2026-10-25T15:53:39+00:00",
-   "model": "gemini-flash-lite-latest"
-  },
-  "401875569": {
-   "text": "NEC Nijmegen과 Groningen의 경기는 2-2 무승부로 끝났다. Groningen의 Brynjólfur Willumsson이 11'에 Marco Rente의 어시스트로 헤더 득점을 기록했고, 34'에는 Thom Van Bergen의 어시스트로 추가골을 넣었으나, NEC Nijmegen이 57' Clement Bischoff, 71' Noé Lebreton의 득점으로 동점을 만들었다. NEC Nijmegen은 슈팅 수 22-9, 유효 슈팅 9-3, 점유율 58.7%-41.3%로 경기를 주도했으나 승부를 가리지 못했다. NEC Nijmegen 승리를 예상했던 팬 투표와 Groningen 승리를 예측했던 모델의 승부 예측은 모두 빗나갔다.",
-   "date": "2026-10-25",
-   "home": "NEC Nijmegen",
-   "away": "Groningen",
-   "at": "2026-10-25T15:53:49+00:00",
-   "model": "gemini-flash-lite-latest"
-  },
-  "5739532": {
-   "text": "FC Midtjylland가 Lyngby를 상대로 3-2 승리를 거뒀다. 전반 17' Cho Gue-Sung의 득점으로 포문을 열었고, 32' Lyngby Simon Colyn의 득점 이후 48' Friday Etim과 45'+4' Philip Billing의 페널티킥 득점이 이어졌으며, 89' Gustav Fraulo의 득점이 나온 끝에 경기가 마무리되었다. 슈팅 19-13, 유효 슈팅 7-5, 점유율 51.2% 대 48.8%로 FC Midtjylland가 기록 전반에서 우위를 보였다. 모델과 ClubElo가 예측한 FC Midtjylland 승리가 적중했다.",
-   "date": "2026-10-25",
-   "home": "FC Midtjylland",
-   "away": "Lyngby",
-   "at": "2026-10-25T15:53:57+00:00",
-   "model": "gemini-flash-lite-latest"
-  },
-  "5739534": {
-   "text": "Silkeborg와 Nordsjælland의 경기는 1-1 무승부로 종료되었다. 38'에 Silkeborg의 Oliver Ross가 선제골을 기록했으나, 55'에 Nordsjælland의 Alexander Lind가 동점골을 넣으며 승부를 원점으로 돌렸다. 경기 기록을 보면 Nordsjælland가 점유율 52.5%와 슈팅 11개를 기록하며 공격을 주도했으나, Silkeborg가 유효 슈팅 5개로 더 많은 유효 슈팅을 기록하며 맞섰다. Nordsjælland의 승리를 점쳤던 사전 예측은 빗나갔다.",
-   "date": "2026-10-25",
-   "home": "Silkeborg",
-   "away": "Nordsjælland",
-   "at": "2026-10-25T15:54:05+00:00",
-   "model": "gemini-3.1-flash-lite"
-  },
-  "401882835": {
-   "text": "Athletic Club가 Getafe를 상대로 4-0 승리를 거뒀다. 전반 17' Álex Berenguer의 득점을 시작으로 35' Iñaki Williams, 70' Aitor Paredes, 88' Yuri Berchiche의 골이 터졌고, 86'에는 Getafe의 Mario Martín이 퇴장당했다. 경기 기록에서 Athletic Club는 점유율 62.5% 대 37.5%, 슈팅 11대 7, 패스 성공률 90% 대 80%로 우위를 점했다. 팬 투표와 모델 및 ClubElo의 사전 예측은 모두 Athletic Club 승리로 적중했다.",
-   "date": "2026-10-25",
-   "home": "Athletic Club",
-   "away": "Getafe",
-   "at": "2026-10-25T15:54:13+00:00",
-   "model": "gemini-flash-lite-latest"
-  },
-  "5904781": {
-   "text": "Konyaspor가 Gençlerbirliği를 상대로 2-0 승리를 거뒀다. Chidozie Awaziem이 43'과 56'에 골을 기록했고, 75'에는 Gençlerbirliği의 Franco Tongya가 페널티킥을 실축하고 Konyaspor의 BahadιR Han Gungordu가 선방했다. 점유율 52.2% 대 47.8%, 슈팅 수 16대 7 등 Konyaspor가 경기 내용을 압도했다. 모델과 ClubElo의 Konyaspor 승리 예측도 적중했다.",
-   "date": "2026-10-25",
-   "home": "Konyaspor",
-   "away": "Gençlerbirliği",
-   "at": "2026-10-25T15:54:26+00:00",
-   "model": "gemini-flash-lite-latest"
-  },
-  "401878963": {
-   "text": "Genk가 Standard Liège를 상대로 2-1 승리를 거뒀다. 27' Junya Ito의 득점으로 앞서간 Genk는 65' Standard Liège Andi Zeqiri에게 실점했으나, 77' Aaron Bibout의 결승골로 승리를 확정했다. 경기 중 33' Standard Liège Matthieu Epolo와 90'+5' Genk Daan Heymans가 각각 퇴장당했으며, 점유율 67.9% 대 32.1%, 슈팅 24대 11 등 기록 면에서도 Genk가 우세했다. 팬 투표와 모델의 Genk 승리 예측은 모두 적중했다.",
-   "date": "2026-10-25",
-   "home": "Genk",
-   "away": "Standard Liège",
-   "at": "2026-10-25T15:54:34+00:00",
-   "model": "gemini-flash-lite-latest"
-  },
-  "401882833": {
-   "text": "Celta Vigo와 Real Betis의 경기는 0대0 무승부로 끝났다. 경기 기록 비교에서는 Real Betis가 점유율 56.5대43.5, 슈팅 15대12로 우세했으나 득점을 기록하지 못했다. 팬 투표, 모델, ClubElo 모두 Real Betis의 승리를 예측했으나 빗나갔다.",
-   "date": "2026-10-25",
-   "home": "Celta Vigo",
-   "away": "Real Betis",
-   "at": "2026-10-25T17:26:08+00:00",
-   "model": "gemini-flash-lite-latest"
-  },
-  "401878964": {
-   "text": "Club Brugge가 Sint-Truiden을 상대로 3-2 승리를 거뒀다. 41'와 43'에 터진 Nicolo Tresoldi의 연속골로 앞서간 Club Brugge는 55' Ilias Sebaoui에게 페널티킥 실점을 허용했으나, 75' Nicolo Tresoldi가 득점하며 해트트릭을 완성했고 90'+3' Shogo Taniguchi가 한 골을 만회한 Sint-Truiden은 90'+5' Robert-Jan Vanwesemael이 퇴장당했다. 점유율 52.5대 47.5, 슈팅 12대 8, 유효 슈팅 5대 3으로 기록에서 앞선 Club Brugge의 승리는 경기 전 86%의 확률로 Club Brugge 승리를 예상했던 모델 예측과 일치했다.",
-   "date": "2026-10-25",
-   "home": "Club Brugge",
-   "away": "Sint-Truiden",
-   "at": "2026-10-25T17:26:17+00:00",
-   "model": "gemini-flash-lite-latest"
-  },
-  "5739535": {
-   "text": "AC Horsens가 Sønderjyske를 상대로 5-1 승리를 거뒀다. 전반 12' Kingsley Bimpong의 선제골을 시작으로 Julius Madsen이 27'와 45'+3'에 득점했고, 후반에는 66' Kingsley Bimpong과 90'+2' John Batigi가 골을 추가하며 전반 3-1 리드를 지켜 대승을 완성했다. 경기 기록에서는 Sønderjyske가 점유율 53%와 슈팅 19개로 앞섰으나 유효 슈팅 수에서는 AC Horsens가 8-6으로 우위를 보였다. 사전에 AC Horsens 승리를 예상했던 모델의 예측은 적중했다.",
-   "date": "2026-10-25",
-   "home": "AC Horsens",
-   "away": "Sønderjyske",
-   "at": "2026-10-25T17:26:25+00:00",
-   "model": "gemini-flash-lite-latest"
-  },
-  "401884760": {
-   "text": "Hoffenheim이 Leverkusen을 상대로 3-0 승리를 거뒀다. 후반 79' Andrej Kramaric의 페널티킥 득점을 시작으로, 89' Alexander Prass의 득점과 90'+5' Max Moerstedt의 득점이 터졌고 90'+1'에는 Alexander Prass가 퇴장당했다. 경기 기록에서 Hoffenheim은 슈팅 수 20대 9, 유효 슈팅 수 6대 1로 경기를 압도했다. 팬 투표, 모델, ClubElo 모두 Leverkusen의 승리를 예측했으나 적중하지 않았다.",
-   "date": "2026-10-25",
-   "home": "Hoffenheim",
-   "away": "Leverkusen",
-   "at": "2026-10-25T17:26:33+00:00",
-   "model": "gemini-flash-lite-latest"
-  },
-  "401879252": {
-   "text": "Manchester Utd는 Bournemouth와의 홈 경기에서 0-3으로 패배했다. Bournemouth는 38' Rayan, 43' Marcus Tavernier, 71' Evanilson의 연속 골로 승리를 거뒀다. Manchester Utd가 점유율 62.6% 대 37.4%, 슈팅 17대 10으로 앞섰으나 경기를 뒤집지 못했다. 팬 투표와 모델, ClubElo가 모두 Manchester Utd의 승리를 예측했으나 빗나갔다.",
-   "date": "2026-10-25",
-   "home": "Manchester Utd",
-   "away": "Bournemouth",
-   "at": "2026-10-25T17:26:41+00:00",
-   "model": "gemini-flash-lite-latest"
-  },
-  "401878766": {
-   "text": "Hull City와 Brentford의 경기는 1-1 무승부로 끝났다. 전반 24'에 Hull City의 Oliver McBurnie가 페널티킥으로 선제골을 넣었으나, Brentford는 63'에 Igor Thiago의 도움을 받아 Dango Ouattara가 동점골을 터뜨렸다. 경기 통계에서 Brentford는 점유율 57.6대 42.4, 슈팅 14대 12, 유효 슈팅 6대 2로 공세를 펼쳤으나 승부를 가리지 못했다. 팬 투표와 모델 및 ClubElo가 모두 Brentford의 승리를 예측했으나 이 예측들은 모두 빗나갔다.",
-   "date": "2026-10-25",
-   "home": "Hull City",
-   "away": "Brentford",
-   "at": "2026-10-25T17:27:00+00:00",
-   "model": "gemini-flash-lite-latest"
-  },
-  "401878765": {
-   "text": "Liverpool이 Anfield에서 Brighton을 상대로 2-0 승리를 거두며 경기를 마무리했다. 17' Pascal Gross의 자책골로 리드를 잡은 Liverpool은 21' Bradley Barcola의 도움을 받은 Alexander Isak의 추가 골로 승기를 굳혔다. Brighton은 점유율 64.4%와 슈팅 17개를 기록하며 경기를 주도했으나 유효 슈팅은 1개에 그쳐 4개를 기록한 Liverpool에 효율성에서 밀렸다. 이번 결과는 Liverpool의 승리를 점쳤던 팬 투표와 모델, ClubElo의 예측과 일치했다.",
-   "date": "2026-10-25",
-   "home": "Liverpool",
-   "away": "Brighton",
-   "at": "2026-10-25T17:27:08+00:00",
-   "model": "gemini-3.1-flash-lite"
-  },
-  "401879254": {
-   "text": "Newcastle United가 Selhurst Park에서 Crystal Palace를 2-0으로 꺾고 승리를 거뒀다. 후반 47분 Jacob Murphy의 도움을 받은 William Osula가 결승골을 기록했고, 이어 58분 Amar Dedic의 도움으로 Harvey Barnes가 추가 골을 터뜨렸다. Crystal Palace는 점유율 52.6%와 슈팅 17개를 기록하며 공격을 주도했으나, 유효 슈팅 4개에 그치며 Newcastle United의 효율적인 공격에 밀렸다. 경기 전 팬 투표와 ClubElo의 승리 예측은 적중했으나, Crystal Palace의 승리를 점친 모델의 예측은 빗나갔다.",
-   "date": "2026-10-25",
-   "home": "Crystal Palace",
-   "away": "Newcastle United",
-   "at": "2026-10-25T17:27:18+00:00",
-   "model": "gemini-3.1-flash-lite"
-  },
-  "401876425": {
-   "text": "Monaco와 Lille의 경기는 1-1 무승부로 끝났다. 전반 24분 Soriba Diaoune의 도움을 받은 Lille의 Ethan Mbappé가 선제골을 넣었으나, 후반 66분 Lille의 Tanguy Nianzou가 퇴장당한 뒤 후반 74분 Jordan Teze의 도움을 받은 Monaco의 Edan Diop가 동점골을 터뜨렸다. 경기 통계에서 Monaco는 점유율 63.5대 36.5, 슈팅 20대 4로 경기를 주도했으나 승부를 가리지 못했다. 팬 투표, 모델, ClubElo가 모두 Monaco의 승리를 예측했으나 빗나갔다.",
-   "date": "2026-10-25",
-   "home": "Monaco",
-   "away": "Lille",
-   "at": "2026-10-25T17:27:25+00:00",
-   "model": "gemini-flash-lite-latest"
-  },
-  "401874972": {
-   "text": "Atalanta와 Frosinone의 경기는 4대4 무승부로 끝났다. Frosinone의 Romano Schmid가 1'과 17'에 득점했고, Atalanta는 33'에 Éderson이 페널티킥으로 골을 넣었으며 Nikola Krstovic가 14'과 45'에 득점하는 등 난타전이 벌어졌다. 점유율은 Atalanta가 46.4%, Frosinone가 53.6%를 기록했고 슈팅은 Atalanta가 22회, Frosinone가 24회를 기록했다. 팬 투표와 모델이 모두 Atalanta 승리를 예측했으나 빗나갔다.",
-   "date": "2026-10-25",
-   "home": "Atalanta",
-   "away": "Frosinone",
-   "at": "2026-10-25T17:27:33+00:00",
-   "model": "gemini-flash-lite-latest"
-  },
-  "401874952": {
-   "text": "Genoa가 Venezia를 상대로 1-0 승리를 거뒀다. 전반 25분 Stephan El Shaarawy의 도움을 받아 Mikael Ellertsson이 터뜨린 골이 결승골이 되었다. Venezia가 점유율 55.3대 44.7, 슈팅 19대 7로 경기를 주도했으나 Genoa가 승리했다. 팬 투표, 모델, ClubElo의 사전 예측은 모두 Genoa 승리로 적중했다.",
-   "date": "2026-10-25",
-   "home": "Genoa",
-   "away": "Venezia",
-   "at": "2026-10-25T17:27:41+00:00",
-   "model": "gemini-flash-lite-latest"
-  },
-  "401878764": {
-   "text": "Sunderland와 Leeds United의 경기는 0대0 무승부로 끝났다. 점유율은 Sunderland가 50.4퍼센트, Leeds United가 49.6퍼센트를 기록했으며, 슈팅은 Sunderland가 15개, Leeds United가 11개였다. 팬 투표와 모델, ClubElo 모두 Leeds United의 승리를 예측했으나 빗나갔다.",
-   "date": "2026-10-25",
-   "home": "Sunderland",
-   "away": "Leeds United",
-   "at": "2026-10-25T18:55:10+00:00",
-   "model": "gemini-flash-lite-latest"
-  },
-  "401884759": {
-   "text": "Bayern Munich가 Freiburg를 상대로 3-1 승리를 거두며 원정에서 승점 3점을 획득했다. 전반 16' Dayot Upamecano의 선제골과 42' Serge Gnabry의 득점으로 앞서 나간 Bayern Munich는 82' Tom Bischof의 자책골 이후 90'+5' Michael Olise가 쐐기골을 기록했다. 경기 기록상 Bayern Munich는 점유율 55.9%와 유효 슈팅 9개를 기록하며 Freiburg를 앞섰고, 경기 전 팬 투표와 모델 및 ClubElo의 Bayern Munich 승리 예측은 모두 적중했다.",
-   "date": "2026-10-25",
-   "home": "Freiburg",
-   "away": "Bayern Munich",
-   "at": "2026-10-25T18:55:16+00:00",
-   "model": "gemini-3.1-flash-lite"
-  },
-  "401876430": {
-   "text": "Angers와 Lorient의 경기는 0대0 무승부로 끝났다. 두 팀은 경고를 각각 1장씩 받았고 득점이나 퇴장, 페널티는 없었다. 점유율은 Lorient가 52.5 대 47.5로 앞섰고, 슈팅은 Lorient가 10개, Angers가 8개를 기록했다. 팬 투표와 모델이 모두 Lorient의 승리를 예측했으나 적중하지 않았다.",
-   "date": "2026-10-25",
-   "home": "Angers",
-   "away": "Lorient",
-   "at": "2026-10-25T18:55:23+00:00",
-   "model": "gemini-flash-lite-latest"
-  },
-  "401876429": {
-   "text": "Auxerre와 Le Mans의 경기는 1-1 무승부로 끝났다. 48'에 Lucas Buades가 헤더로 선제골을 넣었으나, 56'에 Cameron Archer가 헤더로 동점골을 기록했다. 경기 통계에서 Auxerre는 점유율 59.6% 대 40.4%, 슈팅 13대 11, 유효 슈팅 5대 2로 우세한 경기를 펼쳤으나 승부를 가리지 못했다. 팬 투표와 모델이 모두 Auxerre의 승리를 예상했으나 빗나갔다.",
-   "date": "2026-10-25",
-   "home": "Auxerre",
-   "away": "Le Mans",
-   "at": "2026-10-25T18:55:31+00:00",
-   "model": "gemini-flash-lite-latest"
-  },
-  "401876426": {
-   "text": "Marseille가 Le Havre를 상대로 4-3 승리를 거뒀다. 전반 5' CJ Egan-Riley의 헤더 선제골과 33' Timothy Weah의 득점으로 앞서간 Marseille는 50' Igor Paixão와 55' Himad Abdelli의 추가골로 점수 차를 벌렸고, Le Havre는 77' Josh Maja의 페널티킥 득점과 86' Mouhamed N'Diaye의 헤더, 89' Josh Maja의 헤더로 추격했으나 승부를 뒤집지 못했다. 경기 기록에서 Le Havre가 슈팅 21-11, 유효 슈팅 7-5로 우세했으나 Marseille가 효율적인 공격을 보였다. 팬 투표와 모델의 Marseille 승리 예측은 적중했다.",
-   "date": "2026-10-25",
-   "home": "Marseille",
-   "away": "Le Havre",
-   "at": "2026-10-25T18:55:40+00:00",
-   "model": "gemini-flash-lite-latest"
-  },
-  "401876424": {
-   "text": "Rennes가 Strasbourg을 상대로 3대0 승리를 거뒀다. 전반 34분 Boulaye Dia의 득점을 시작으로 Sebastian Szymanski가 41분과 61분에 연속골을 터뜨리며 승부를 결정지었다. 경기 통계에서는 Strasbourg이 점유율 53.4대 46.6으로 앞섰으나, 슈팅 수에서 15대 12로 우세했던 Rennes가 효율적인 공격을 선보였다. 사전 예측에서 모델과 ClubElo 모두 Rennes 승리를 예상해 적중했다.",
-   "date": "2026-10-25",
-   "home": "Rennes",
-   "away": "Strasbourg",
-   "at": "2026-10-25T18:55:47+00:00",
-   "model": "gemini-flash-lite-latest"
-  },
-  "401876423": {
-   "text": "Toulouse와 Troyes의 경기는 0대0 무승부로 끝났다. 경기에서 득점, 퇴장, 페널티는 발생하지 않았고 Toulouse가 6개의 경고, Troyes가 2개의 경고를 받았다. 점유율은 Toulouse가 62.8퍼센트, Troyes가 37.2퍼센트를 기록했고 슈팅은 Toulouse가 7개, Troyes가 8개였다. 팬 투표와 모델 모두 Toulouse 승리를 예측했으나 빗나갔다.",
-   "date": "2026-10-25",
-   "home": "Toulouse",
-   "away": "Troyes",
-   "at": "2026-10-25T18:55:55+00:00",
-   "model": "gemini-flash-lite-latest"
-  },
-  "5846007": {
-   "text": "Salzburg가 LASK에 3-1로 역전승을 거두며 경기를 마무리했다. 전반 13' LASK의 Samuel Adeniran이 선제골을 터뜨렸으나, Salzburg의 Haris Tabakovic가 25', 49', 74'에 연속으로 골을 몰아치며 해트트릭을 기록해 경기를 뒤집었다. LASK는 3개의 경고를 받았고 Salzburg는 2개의 경고를 기록했다. 경기 전 모델이 LASK의 승리를 예측했으나 적중하지 않았다.",
-   "date": "2026-10-25",
-   "home": "LASK",
-   "away": "Salzburg",
-   "at": "2026-10-25T18:56:03+00:00",
-   "model": "gemini-flash-lite-latest"
-  },
-  "5904780": {
-   "text": "Göztepe가 Çorum FK를 상대로 2-0 승리를 거두며 경기를 마무리했다. 전반 3'에 Alexis Antunes가 결승골을 넣었고, 38'에 Juan이 추가 골을 기록했다. Çorum FK가 63.2%의 점유율과 80%의 패스 성공률을 기록하며 경기를 주도했으나, Göztepe는 슈팅 15개와 유효 슈팅 7개를 기록하며 효율적인 경기를 펼쳤다. 사전 예측에서 모델과 ClubElo 모두 Göztepe의 승리를 예상하여 적중했다.",
-   "date": "2026-10-25",
-   "home": "Göztepe",
-   "away": "Çorum FK",
-   "at": "2026-10-25T18:56:12+00:00",
-   "model": "gemini-flash-lite-latest"
-  },
-  "401875567": {
-   "text": "Ajax가 Sparta R.을 상대로 2-1 승리를 거두며 경기를 마무리했다. 전반 22분 Abdellah Ouazane의 득점으로 Ajax가 앞서간 뒤, 43분 Sparta R.의 Jens Toornstra가 헤더로 동점골을 넣었으나, 45'+1'에 Tolu Arokodare가 결승골을 터뜨렸다. 경기 기록에서 Ajax는 점유율 59.4대 40.6, 슈팅 16대 11로 경기를 주도했다. 이번 경기는 Ajax의 승리를 점친 모델의 예측대로 적중했다.",
-   "date": "2026-10-25",
-   "home": "Sparta R.",
-   "away": "Ajax",
-   "at": "2026-10-25T18:56:20+00:00",
-   "model": "gemini-flash-lite-latest"
-  },
-  "401885418": {
-   "text": "Moreirense가 Estoril을 상대로 3-1 승리를 거두며 경기를 매듭지었다. 전반전에는 Moreirense의 Manuel Mendonça가 12', Tiago Andrade가 15', Nile John이 28'에 연속 골을 터뜨렸고, 후반 추가시간 90'+4'에 Estoril의 Peixinho가 득점했다. Estoril은 점유율 57.2% 대 42.8%, 슈팅 26대 13, 유효 슈팅 7대 4로 경기를 주도했으나 패배했다. 팬 투표, 모델, ClubElo 모두 Estoril의 승리를 예상했으나 빗나갔다.",
-   "date": "2026-10-25",
-   "home": "Estoril",
-   "away": "Moreirense",
-   "at": "2026-10-25T18:56:39+00:00",
-   "model": "gemini-flash-lite-latest"
-  },
-  "401878962": {
-   "text": "Gent가 Anderlecht를 상대로 4-0 대승을 거뒀다. 전반 14' Abdelkahar Kadri의 득점으로 앞서간 Gent는 후반 72' Ibrahima Cisse, 77' Momodou Sonko, 81' Matties Volckaert의 연속 골을 더해 경기를 매듭지었다. 경기 통계에서 Anderlecht가 점유율 64.4%와 슈팅 19개를 기록하며 앞섰으나, Gent는 8개의 슈팅 중 유효 슈팅 7개를 기록하며 효율적인 공격을 선보였다. 사전에 Gent 승리를 점쳤던 팬 투표와 모델 예측은 적중했다.",
-   "date": "2026-10-25",
-   "home": "Gent",
-   "away": "Anderlecht",
-   "at": "2026-10-25T19:52:14+00:00",
-   "model": "gemini-flash-lite-latest"
-  },
-  "401882829": {
-   "text": "Real Sociedad가 Levante를 상대로 2-1 승리를 거뒀다. 전반 6' Orri Óskarsson의 득점으로 Real Sociedad가 앞서갔으나, 22' Levante가 Nacho Pérez의 득점(도움 Thiago Fernandez)으로 동점을 만들었고, 이어 27' Beñat Turrientes가 Gonçalo Guedes의 도움을 받아 결승골을 터뜨렸다. 경기 기록에서 Real Sociedad는 점유율 62.1%대 37.9%, 슈팅 17대 6, 패스 성공률 90%대 80%로 상대를 압도했다. 팬 투표와 모델, ClubElo 모두 Real Sociedad의 승리를 예측해 적중했다.",
-   "date": "2026-10-25",
-   "home": "Real Sociedad",
-   "away": "Levante",
-   "at": "2026-10-25T19:52:23+00:00",
-   "model": "gemini-flash-lite-latest"
-  },
-  "5739533": {
-   "text": "AGF가 Viborg를 상대로 2-1 승리를 거두었다. 전반 8' Frederik Emmery의 선제골과 56' Tobias Bech의 결승골로 앞서간 AGF는 81' Viborg의 Giulio에게 실점했으나 리드를 지켜냈다. 경기 통계에서 점유율 53.3대 46.7, 슈팅 20대 12, 코너킥 10대 3으로 AGF가 경기를 주도했다. 경기 전 Viborg의 승리를 예상했던 모델의 예측은 빗나갔다.",
-   "date": "2026-10-25",
-   "home": "AGF",
-   "away": "Viborg",
-   "at": "2026-10-25T19:52:31+00:00",
-   "model": "gemini-flash-lite-latest"
-  },
-  "401874772": {
-   "text": "Juventus가 Lecce를 상대로 2-0 승리를 거두며 경기를 마무리했다. 전반 29' Weston McKennie의 선제골과 41' Douglas Luiz의 추가골이 터졌고, 후반 90'+4'에는 Lecce의 Kialonda Gaspar가 퇴장당했다. 경기 내용 면에서는 Lecce가 슈팅 16-8, 유효 슈팅 4-2로 우세했으나 득점으로 이어지지 않았다. 팬 투표와 모델, ClubElo 모두 Juventus의 승리를 예상해 사전 예측이 적중했다.",
-   "date": "2026-10-25",
-   "home": "Lecce",
-   "away": "Juventus",
-   "at": "2026-10-25T19:52:39+00:00",
-   "model": "gemini-flash-lite-latest"
-  },
-  "401875566": {
-   "text": "Twente가 AFAS Stadion에서 AZ Alkmaar를 2-0으로 꺾으며 승리를 거뒀다. 후반 84' Sondre Ørjasaeter의 결승골에 이어 90'+3' Lucas Vennegoor Of Hesselink가 추가골을 기록했고, 88'에는 Twente의 Daouda Weidmann이 퇴장당했다. 슈팅 수에서 16대 13으로 앞선 Twente는 AZ Alkmaar와 점유율과 패스 성공률에서 대등한 경기를 펼쳤다. 이번 결과는 Twente의 승리를 점쳤던 모델 예측은 적중했으나 AZ Alkmaar의 승리를 예상했던 팬 투표와 ClubElo의 예측은 빗나갔다.",
-   "date": "2026-10-25",
-   "home": "AZ Alkmaar",
-   "away": "Twente",
-   "at": "2026-10-25T21:21:00+00:00",
-   "model": "gemini-3.1-flash-lite"
-  },
-  "401878961": {
-   "text": "Union SG가 Cercle Brugge를 상대로 5-2 대승을 거두며 승점 3점을 획득했다. 경기 초반 24' Steve Ngoura의 페널티킥 득점으로 Cercle Brugge가 앞서갔으나, 48' Massiré Sylla의 자책골을 시작으로 Raul Florucz, Massiré Sylla, Emmanuel Kakou의 자책골, Relebohile Mofokeng, Kevin Rodríguez가 연달아 득점하며 경기를 뒤집었고 64'에는 Dante Vanzeir가 퇴장당했다. Union SG는 점유율 67.1%와 슈팅 23개를 기록하며 Cercle Brugge를 압도했고, 92%의 확률로 Union SG의 승리를 점쳤던 모델 예측 또한 적중했다.",
-   "date": "2026-10-25",
-   "home": "Union SG",
-   "away": "Cercle Brugge",
-   "at": "2026-10-25T21:21:06+00:00",
-   "model": "gemini-3.1-flash-lite"
-  },
-  "401885416": {
-   "text": "Nacional이 Braga를 상대로 1-0 승리를 거두며 귀중한 승점 3점을 챙겼다. 승부를 결정지은 득점은 19'에 터졌으며, Song Min-Kyu의 도움을 받은 Miguel Baeza가 Nacional의 결승골을 기록했다. 경기 내내 Braga가 71.3%의 점유율과 20개의 슈팅을 기록하며 경기를 주도했으나, 유효 슈팅은 오히려 4개를 기록한 Nacional이 앞서며 효율적인 공격을 선보였다. Braga의 승리를 점쳤던 팬 투표와 모델의 예측은 이번 경기 결과로 인해 빗나갔다.",
-   "date": "2026-10-25",
-   "home": "Nacional",
-   "away": "Braga",
-   "at": "2026-10-25T21:21:16+00:00",
-   "model": "gemini-3.1-flash-lite"
-  },
-  "401885415": {
-   "text": "Famalicão가 Rio Ave를 상대로 4-0 승리를 거두며 경기를 마무리했다. 후반 48' Roméo Beney의 득점을 시작으로, 80' Pedro Santos, 85'과 90'+5'에 페널티킥으로 득점한 Óscar Aranda가 맹활약하며 승부를 결정지었다. 경기 기록에서 Famalicão는 슈팅 12-7과 유효 슈팅 5-2로 앞섰고, Rio Ave는 점유율 57.6%와 패스 성공률 90%를 기록했으나 패배했다. 팬 투표, 모델, ClubElo 모두 Famalicão의 승리를 예측해 적중했다.",
-   "date": "2026-10-25",
-   "home": "Rio Ave",
-   "away": "Famalicão",
-   "at": "2026-10-25T21:21:32+00:00",
-   "model": "gemini-flash-lite-latest"
-  },
-  "401885413": {
-   "text": "Académico de Viseu가 Sporting CP를 상대로 2-1 승리를 거두며 이변을 연출했다. 경기는 24' João Guilherme의 선제골로 Académico de Viseu가 앞서 나갔고, 62' Luis Suárez의 동점골 이후 74' João Guilherme가 다시 득점하며 승부를 결정지었다. Sporting CP는 점유율 71.1%와 슈팅 28개를 기록하며 경기를 주도했으나 유효 슈팅 4개에 그치며 효율적인 공격을 펼친 Académico de Viseu에 패했다. Sporting CP의 승리를 예상했던 팬 투표와 모델의 예측은 모두 빗나갔다.",
-   "date": "2026-10-25",
-   "home": "Sporting CP",
-   "away": "Académico de Viseu",
-   "at": "2026-10-25T22:52:04+00:00",
-   "model": "gemini-3.1-flash-lite"
-  },
-  "401882832": {
-   "text": "Real Madrid가 Spotify Camp Nou에서 열린 리그 경기에서 Barcelona를 2-1로 꺾고 승리를 거뒀다. 41' Kylian Mbappé의 선제골로 앞서간 Real Madrid는 61' Raphinha에게 동점골을 허용했으나, 87' Eduardo Camavinga의 도움을 받은 Kylian Mbappé가 결승골을 터뜨리며 승부를 결정지었다. Barcelona는 점유율 62.2%와 슈팅 18개를 기록하며 경기를 주도했으나 Real Madrid의 효율적인 공격에 밀렸고, 경기 전 Barcelona의 승리를 점쳤던 팬 투표와 각종 예측 모델의 결과는 모두 빗나갔다.",
-   "date": "2026-10-25",
-   "home": "Barcelona",
-   "away": "Real Madrid",
-   "at": "2026-10-25T22:52:09+00:00",
-   "model": "gemini-3.1-flash-lite"
-  },
-  "401874779": {
-   "text": "Milan이 Stadio Friuli에서 Udinese를 2-0으로 꺾고 승리를 거뒀다. 6' Christian Pulisic이 Luka Modric의 도움을 받아 선제골을 기록했고, 65' Omari Hutchinson이 추가 골을 성공시키며 승부에 쐐기를 박았다. Milan은 점유율 59.9%와 슈팅 19개를 기록하며 Udinese보다 우세한 경기력을 보였고, 경기 전 팬 투표와 모델, ClubElo가 모두 Milan의 승리를 예측한 결과가 그대로 적중했다.",
-   "date": "2026-10-25",
-   "home": "Udinese",
-   "away": "Milan",
-   "at": "2026-10-25T22:52:13+00:00",
-   "model": "gemini-3.1-flash-lite"
-  },
   "401885414": {
    "text": "Benfica가 Santa Clara를 상대로 2-1 역전승을 거두며 승점 3점을 획득했다. 전반 32' Fernando가 페널티킥으로 선제골을 넣었으나, 후반 62' Vangelis Pavlidis의 동점골과 68' Gianluca Prestianni의 역전골이 터지며 경기가 뒤집혔고 후반 90'+6'에는 Benfica의 Jhon Durán이 퇴장당했다. 점유율은 Benfica가 61.1%로 우세했으나 유효 슈팅은 Santa Clara가 6개로 Benfica의 3개보다 많았다. 경기 전 팬 투표와 모델, Elo 예측 모두 Benfica의 승리를 점쳤으며 결과적으로 이 예측들은 적중했다.",
    "date": "2026-10-26",
@@ -4527,6 +4183,33 @@
    "home": "St. Louis City",
    "away": "Los Angeles FC",
    "at": "2026-11-24T07:18:20+00:00",
+   "model": "gemini-flash-lite-latest",
+   "v": 2
+  },
+  "401915300": {
+   "text": "Galatasaray가 Aston Villa를 상대로 1-0 승리를 거뒀다. 후반 77'에 Deniz Gül이 헤더로 결승골을 터뜨렸다. 슈팅 9-4, 유효 슈팅 2-0으로 기록된 경기에서 Galatasaray가 우세한 내용을 보였다. 패배한 Aston Villa는 Matty Cash가 결장한 가운데 6경기 무승을 기록하며 12위에 머물렀다.",
+   "date": "2026-11-24",
+   "home": "Galatasaray",
+   "away": "Aston Villa",
+   "at": "2026-11-24T20:50:56+00:00",
+   "model": "gemini-flash-lite-latest",
+   "v": 2
+  },
+  "6106317": {
+   "text": "챔피언스리그에서 Bodø/Glimt가 LASK를 상대로 1-0 승리를 거두었다. 승부의 균형은 90'+2'에 나온 Melayro Bogarde의 자책골로 깨지며 Bodø/Glimt가 결승골을 가져갔다. 경기 내내 Bodø/Glimt는 66%의 점유율과 9개의 슈팅을 기록하며 LASK를 압도했고, LASK는 Andrés Andrade와 George Bello가 결장한 가운데 패배를 기록했다.",
+   "date": "2026-11-24",
+   "home": "Bodø/Glimt",
+   "away": "LASK",
+   "at": "2026-11-24T20:51:03+00:00",
+   "model": "gemini-3.1-flash-lite",
+   "v": 2
+  },
+  "6106339": {
+   "text": "Galatasaray가 Aston Villa를 상대로 거둔 1-0 승리는 8연승과 1위 행진을 이어가는 흐름 속에서 이루어졌다. 후반 77'에 Wilfried Singo의 도움을 받아 Deniz Gül이 헤더로 결승골을 터뜨렸다. 경기 통계에서 슈팅 9-4, 유효 슈팅 2-0으로 Galatasaray가 우세한 내용을 보였다. Victor Osimhen과 Roland Sallai가 결장한 가운데 Galatasaray는 홈에서 승리를 거뒀다.",
+   "date": "2026-11-24",
+   "home": "Galatasaray",
+   "away": "Aston Villa",
+   "at": "2026-11-24T20:51:09+00:00",
    "model": "gemini-flash-lite-latest",
    "v": 2
   }
