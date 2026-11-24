@@ -8,15 +8,16 @@ fotmob_id,player,squad,team_fm,rating,minutes,matches,nat,league,season
 737857,Dušan Vlahović,Beşiktaş,Beşiktaş,7.72,814,10,,SuperLig,2026_2027
 318615,Leandro Trossard,Beşiktaş,Beşiktaş,7.66,918,11,,SuperLig,2026_2027
 1374500,Franculino,Trabzonspor,Trabzonspor,7.66,375,6,,SuperLig,2026_2027
+1106569,Alexandros Kyziridis,Çorum FK,Çorum FK,7.65,821,10,,SuperLig,2026_2027
 1368557,Gift Orban,Amed Sportif,Amed Sportif,7.65,929,12,,SuperLig,2026_2027
 603477,Cengiz Ünder,Çorum FK,Çorum FK,7.64,647,9,,SuperLig,2026_2027
 950473,Mason Greenwood,Fenerbahçe,Fenerbahçe,7.63,806,11,,SuperLig,2026_2027
 935409,Orkun Kökçü,Beşiktaş,Beşiktaş,7.6,655,8,,SuperLig,2026_2027
 845991,Yunus Akgün,Galatasaray,Galatasaray,7.59,913,12,,SuperLig,2026_2027
 1162410,Berkan Kutlu,Kocaelispor,Kocaelispor,7.58,1008,12,,SuperLig,2026_2027
-1106569,Alexandros Kyziridis,Çorum FK,Çorum FK,7.58,736,9,,SuperLig,2026_2027
 613262,Qazim Laçi,Rizespor,Rizespor,7.57,966,12,,SuperLig,2026_2027
 363364,Ederson,Fenerbahçe,Fenerbahçe,7.56,990,11,,SuperLig,2026_2027
+619513,Eldor Shomurodov,Başakşehir,Başakşehir,7.54,1019,12,,SuperLig,2026_2027
 1435397,Chibuike Nwaiwu,Trabzonspor,Trabzonspor,7.53,983,11,,SuperLig,2026_2027
 316544,İrfan Kahveci,Fenerbahçe,Fenerbahçe,7.51,721,11,,SuperLig,2026_2027
 592909,Lucas Torreira,Galatasaray,Galatasaray,7.5,867,11,,SuperLig,2026_2027
@@ -33,7 +34,6 @@ fotmob_id,player,squad,team_fm,rating,minutes,matches,nat,league,season
 1315511,Ermal Krasniqi,Amed Sportif,Amed Sportif,7.37,973,12,,SuperLig,2026_2027
 848844,Rafael Leão,Galatasaray,Galatasaray,7.35,447,8,,SuperLig,2026_2027
 1126769,Aral Şimşir,Trabzonspor,Trabzonspor,7.34,580,9,,SuperLig,2026_2027
-619513,Eldor Shomurodov,Başakşehir,Başakşehir,7.33,929,11,,SuperLig,2026_2027
 331540,Kerem Demirbay,Kasımpaşa,Kasımpaşa,7.33,941,11,,SuperLig,2026_2027
 1067805,Lumbardh Dellova,Amed Sportif,Amed Sportif,7.33,777,9,,SuperLig,2026_2027
 1097796,Samuel Ballet,Amed Sportif,Amed Sportif,7.32,780,10,,SuperLig,2026_2027
@@ -45,6 +45,7 @@ fotmob_id,player,squad,team_fm,rating,minutes,matches,nat,league,season
 1209961,Emir Ortakaya,Kocaelispor,Kocaelispor,7.28,650,10,,SuperLig,2026_2027
 1080172,Levent Mercan,Fenerbahçe,Fenerbahçe,7.27,525,9,,SuperLig,2026_2027
 1042086,Ibrahim Olawoyin,Rizespor,Rizespor,7.26,919,12,,SuperLig,2026_2027
+861932,Andreas Skov Olsen,Başakşehir,Başakşehir,7.24,901,12,,SuperLig,2026_2027
 864556,Alexis Antunes,Göztepe,Göztepe,7.24,654,10,,SuperLig,2026_2027
 1114979,Emmanuel Agbadou,Beşiktaş,Beşiktaş,7.24,997,12,,SuperLig,2026_2027
 1183742,Mithat Pala,Rizespor,Rizespor,7.23,1080,12,,SuperLig,2026_2027
@@ -62,7 +63,6 @@ fotmob_id,player,squad,team_fm,rating,minutes,matches,nat,league,season
 1183589,İsmail Yüksek,Fenerbahçe,Fenerbahçe,7.15,420,9,,SuperLig,2026_2027
 390642,Furkan Soyalp,Amed Sportif,Amed Sportif,7.15,647,11,,SuperLig,2026_2027
 1904467,Ousmane Diabate,Gençlerbirliği,Gençlerbirliği,7.14,859,11,,SuperLig,2026_2027
-861932,Andreas Skov Olsen,Başakşehir,Başakşehir,7.14,838,11,,SuperLig,2026_2027
 1185467,Rhaldney,Göztepe,Göztepe,7.13,879,12,,SuperLig,2026_2027
 1211804,Adedire Awokoya Mebude,Rizespor,Rizespor,7.12,561,9,,SuperLig,2026_2027
 1481576,Gonçalo Sousa,Kocaelispor,Kocaelispor,7.12,801,11,,SuperLig,2026_2027
@@ -73,11 +73,13 @@ fotmob_id,player,squad,team_fm,rating,minutes,matches,nat,league,season
 1793475,Noah Saviolo,Trabzonspor,Trabzonspor,7.1,481,10,,SuperLig,2026_2027
 352023,Deniz Türüç,Konyaspor,Konyaspor,7.1,870,11,,SuperLig,2026_2027
 643533,Davinson Sánchez,Galatasaray,Galatasaray,7.1,950,11,,SuperLig,2026_2027
+1186010,Ivan Brnić,Başakşehir,Başakşehir,7.1,568,10,,SuperLig,2026_2027
 319300,N'Golo Kanté,Fenerbahçe,Fenerbahçe,7.09,807,12,,SuperLig,2026_2027
 553759,Guram Giorbelidze,Erzurumspor FK,Erzurumspor FK,7.09,886,10,,SuperLig,2026_2027
 850311,Rigoberto Rivas,Kocaelispor,Kocaelispor,7.09,479,7,,SuperLig,2026_2027
 863118,Attila Mocsi,Rizespor,Rizespor,7.09,803,9,,SuperLig,2026_2027
 866358,Tiago Djaló,Beşiktaş,Beşiktaş,7.09,432,7,,SuperLig,2026_2027
+1075457,Jesús Ramírez,Çorum FK,Çorum FK,7.09,985,12,,SuperLig,2026_2027
 178899,Ertuğrul Taşkıran,Erzurumspor FK,Erzurumspor FK,7.08,900,10,,SuperLig,2026_2027
 380858,Andreas Gianniotis,Kasımpaşa,Kasımpaşa,7.08,1080,12,,SuperLig,2026_2027
 1117570,Kerem Aktürkoglu,Fenerbahçe,Fenerbahçe,7.08,524,11,,SuperLig,2026_2027
@@ -95,17 +97,18 @@ fotmob_id,player,squad,team_fm,rating,minutes,matches,nat,league,season
 800609,Mattéo Guendouzi,Fenerbahçe,Fenerbahçe,7.0,1017,12,,SuperLig,2026_2027
 358936,Ozan Tufan,Trabzonspor,Trabzonspor,7.0,519,12,,SuperLig,2026_2027
 387670,Orhan Ovacıklı,Erzurumspor FK,Erzurumspor FK,7.0,999,12,,SuperLig,2026_2027
-1075457,Jesús Ramírez,Çorum FK,Çorum FK,6.99,900,11,,SuperLig,2026_2027
 1113704,Archie Brown,Fenerbahçe,Fenerbahçe,6.99,611,8,,SuperLig,2026_2027
 623540,Václav Černý,Beşiktaş,Beşiktaş,6.99,656,11,,SuperLig,2026_2027
 421786,Mario Lemina,Galatasaray,Galatasaray,6.99,537,9,,SuperLig,2026_2027
 1427366,Richard Akonnor,Göztepe,Göztepe,6.99,872,11,,SuperLig,2026_2027
+1065940,Michał Karbownik,Başakşehir,Başakşehir,6.98,702,10,,SuperLig,2026_2027
 1403468,Ayberk Karapo,Kasımpaşa,Kasımpaşa,6.98,800,12,,SuperLig,2026_2027
 291399,Abdülkerim Bardakci,Galatasaray,Galatasaray,6.98,791,10,,SuperLig,2026_2027
 1264368,Junior Olaïtan,Beşiktaş,Beşiktaş,6.96,746,11,,SuperLig,2026_2027
 547710,Adama Traoré,Gençlerbirliği,Gençlerbirliği,6.96,739,10,,SuperLig,2026_2027
 1595606,Elson Mendes,Kasımpaşa,Kasımpaşa,6.96,811,11,,SuperLig,2026_2027
 1051411,Kacper Kozłowski,Gaziantep FK,Gaziantep FK,6.96,983,12,,SuperLig,2026_2027
+1131992,Jakub Kałuziński,Başakşehir,Başakşehir,6.95,643,11,,SuperLig,2026_2027
 908589,Celil Yüksel,Samsunspor,Samsunspor,6.94,577,8,,SuperLig,2026_2027
 171914,Paulo Victor,Alanyaspor,Alanyaspor,6.93,1080,12,,SuperLig,2026_2027
 959435,Elliot Watt,Samsunspor,Samsunspor,6.93,739,9,,SuperLig,2026_2027
@@ -121,8 +124,11 @@ fotmob_id,player,squad,team_fm,rating,minutes,matches,nat,league,season
 1051047,Franco Tongya,Gençlerbirliği,Gençlerbirliği,6.9,1019,12,,SuperLig,2026_2027
 1333449,Mahamadou Susoho,Kocaelispor,Kocaelispor,6.9,824,11,,SuperLig,2026_2027
 470834,Nélson Semedo,Fenerbahçe,Fenerbahçe,6.89,872,12,,SuperLig,2026_2027
+814153,Muhammed Şengezer,Başakşehir,Başakşehir,6.89,810,9,,SuperLig,2026_2027
 150185,Mustafa Yumlu,Erzurumspor FK,Erzurumspor FK,6.89,660,9,,SuperLig,2026_2027
+1064272,Mohamed Diomandé,Çorum FK,Çorum FK,6.89,862,12,,SuperLig,2026_2027
 783806,Deian Sorescu,Gaziantep FK,Gaziantep FK,6.89,972,12,,SuperLig,2026_2027
+501568,Davie Selke,Başakşehir,Başakşehir,6.89,348,8,,SuperLig,2026_2027
 298923,Alexandru Maxim,Gaziantep FK,Gaziantep FK,6.88,831,12,,SuperLig,2026_2027
 1559202,Zakaria Ariss,Rizespor,Rizespor,6.88,906,11,,SuperLig,2026_2027
 712070,Fatih Aksoy,Alanyaspor,Alanyaspor,6.88,510,6,,SuperLig,2026_2027
@@ -130,12 +136,10 @@ fotmob_id,player,squad,team_fm,rating,minutes,matches,nat,league,season
 1041660,Eren Elmalı,Galatasaray,Galatasaray,6.87,522,12,,SuperLig,2026_2027
 862718,Makana Baku,Kocaelispor,Kocaelispor,6.87,627,12,,SuperLig,2026_2027
 1072913,Tanguy Coulibaly,Samsunspor,Samsunspor,6.86,515,7,,SuperLig,2026_2027
+1336714,Andrei Borza,Çorum FK,Çorum FK,6.86,907,11,,SuperLig,2026_2027
 1258137,Malcom Bokélé,Göztepe,Göztepe,6.85,990,11,,SuperLig,2026_2027
 1197741,Matei Cristian Ilie,Kasımpaşa,Kasımpaşa,6.85,1079,12,,SuperLig,2026_2027
-1064272,Mohamed Diomandé,Çorum FK,Çorum FK,6.85,772,11,,SuperLig,2026_2027
 523380,Myenty Abena,Gaziantep FK,Gaziantep FK,6.85,932,11,,SuperLig,2026_2027
-1186010,Ivan Brnić,Başakşehir,Başakşehir,6.84,478,9,,SuperLig,2026_2027
-814153,Muhammed Şengezer,Başakşehir,Başakşehir,6.84,720,8,,SuperLig,2026_2027
 305198,Eren Tozlu,Erzurumspor FK,Erzurumspor FK,6.84,811,12,,SuperLig,2026_2027
 1054011,Collins Sor,Amed Sportif,Amed Sportif,6.83,356,6,,SuperLig,2026_2027
 45376,Fredy,Çorum FK,Çorum FK,6.83,374,6,,SuperLig,2026_2027
@@ -147,8 +151,8 @@ fotmob_id,player,squad,team_fm,rating,minutes,matches,nat,league,season
 1459652,André,Göztepe,Göztepe,6.81,693,12,,SuperLig,2026_2027
 1315351,Taha Altıkardeş,Göztepe,Göztepe,6.81,1080,12,,SuperLig,2026_2027
 751842,Mehmet Yeşil,Amed Sportif,Amed Sportif,6.8,480,11,,SuperLig,2026_2027
-1131992,Jakub Kałuziński,Başakşehir,Başakşehir,6.8,574,10,,SuperLig,2026_2027
 707668,Umut Meraş,Amed Sportif,Amed Sportif,6.8,946,12,,SuperLig,2026_2027
+625164,Olivier Kemen,Başakşehir,Başakşehir,6.8,1014,12,,SuperLig,2026_2027
 1441786,Sidny Cabral,Trabzonspor,Trabzonspor,6.79,586,12,,SuperLig,2026_2027
 873566,Yahia Fofana,Rizespor,Rizespor,6.79,810,9,,SuperLig,2026_2027
 1112763,Rayyan Baniya,Konyaspor,Konyaspor,6.78,729,10,,SuperLig,2026_2027
@@ -157,14 +161,11 @@ fotmob_id,player,squad,team_fm,rating,minutes,matches,nat,league,season
 891373,Mohamed Bayo,Samsunspor,Samsunspor,6.76,634,8,,SuperLig,2026_2027
 554534,Alexander Nübel,Beşiktaş,Beşiktaş,6.76,1080,12,,SuperLig,2026_2027
 412357,Paul Onuachu,Trabzonspor,Trabzonspor,6.76,687,10,,SuperLig,2026_2027
-1336714,Andrei Borza,Çorum FK,Çorum FK,6.76,829,10,,SuperLig,2026_2027
-602261,Çağlar Söyüncü,Çorum FK,Çorum FK,6.75,440,6,,SuperLig,2026_2027
 673749,Miguel Cardoso,Erzurumspor FK,Erzurumspor FK,6.75,571,11,,SuperLig,2026_2027
+1528815,Ermin Mahmić,Çorum FK,Çorum FK,6.74,341,10,,SuperLig,2026_2027
 844473,Umut Güneş,Başakşehir,Başakşehir,6.73,533,7,,SuperLig,2026_2027
 1079065,Arda Kızıldağ,Gaziantep FK,Gaziantep FK,6.73,475,7,,SuperLig,2026_2027
 418137,Arthur Masuaku,Konyaspor,Konyaspor,6.73,830,11,,SuperLig,2026_2027
-501568,Davie Selke,Başakşehir,Başakşehir,6.72,279,7,,SuperLig,2026_2027
-1065940,Michał Karbownik,Başakşehir,Başakşehir,6.72,612,9,,SuperLig,2026_2027
 951054,Brandon Baiye,Erzurumspor FK,Erzurumspor FK,6.71,1069,12,,SuperLig,2026_2027
 1410083,Emrecan Bulut,Rizespor,Rizespor,6.71,474,12,,SuperLig,2026_2027
 660314,Florian Ayé,Kocaelispor,Kocaelispor,6.71,575,10,,SuperLig,2026_2027
@@ -177,17 +178,16 @@ fotmob_id,player,squad,team_fm,rating,minutes,matches,nat,league,season
 463591,Marko Jevtović,Konyaspor,Konyaspor,6.69,772,11,,SuperLig,2026_2027
 1044299,Oh Hyeon-Gyu,Beşiktaş,Beşiktaş,6.69,275,10,,SuperLig,2026_2027
 613260,Jean-Luc Dompé,Konyaspor,Konyaspor,6.69,400,8,,SuperLig,2026_2027
+1077685,Hrvoje Smolčić,Çorum FK,Çorum FK,6.68,1058,12,,SuperLig,2026_2027
 1359613,Abakar Sylla,Gaziantep FK,Gaziantep FK,6.68,434,7,,SuperLig,2026_2027
-1077685,Hrvoje Smolčić,Çorum FK,Çorum FK,6.67,968,11,,SuperLig,2026_2027
-625164,Olivier Kemen,Başakşehir,Başakşehir,6.67,924,11,,SuperLig,2026_2027
+762028,Ylber Ramadani,Çorum FK,Çorum FK,6.68,830,11,,SuperLig,2026_2027
 1282423,Nuno Lima,Alanyaspor,Alanyaspor,6.67,1079,12,,SuperLig,2026_2027
 692810,Yhoan Andzouana,Konyaspor,Konyaspor,6.67,678,10,,SuperLig,2026_2027
-762028,Ylber Ramadani,Çorum FK,Çorum FK,6.65,740,10,,SuperLig,2026_2027
+1658140,Saba Kharebashvili,Başakşehir,Başakşehir,6.66,495,7,,SuperLig,2026_2027
 660010,Pedro Pereira,Gençlerbirliği,Gençlerbirliği,6.65,567,7,,SuperLig,2026_2027
 1642084,İlhan Fakılı,Beşiktaş,Beşiktaş,6.65,373,10,,SuperLig,2026_2027
 1284496,Josafat Mendes,Samsunspor,Samsunspor,6.65,1062,12,,SuperLig,2026_2027
 521203,Fidan Aliti,Alanyaspor,Alanyaspor,6.64,1080,12,,SuperLig,2026_2027
-1528815,Ermin Mahmić,Çorum FK,Çorum FK,6.63,306,9,,SuperLig,2026_2027
 282615,Dimitrios Goutas,Gençlerbirliği,Gençlerbirliği,6.63,750,9,,SuperLig,2026_2027
 1463351,Janderson,Göztepe,Göztepe,6.63,557,12,,SuperLig,2026_2027
 955596,Berat Özdemir,Çorum FK,Çorum FK,6.63,403,8,,SuperLig,2026_2027
@@ -197,6 +197,7 @@ fotmob_id,player,squad,team_fm,rating,minutes,matches,nat,league,season
 718867,Melih Kabasakal,Trabzonspor,Trabzonspor,6.62,497,10,,SuperLig,2026_2027
 530859,Leroy Sané,Galatasaray,Galatasaray,6.62,474,12,,SuperLig,2026_2027
 1415502,Moussa Diakité,Rizespor,Rizespor,6.61,221,8,,SuperLig,2026_2027
+602261,Çağlar Söyüncü,Çorum FK,Çorum FK,6.61,530,7,,SuperLig,2026_2027
 1194358,Kacper Tobiasz,Gaziantep FK,Gaziantep FK,6.6,900,10,,SuperLig,2026_2027
 967759,Drissa Camara,Gaziantep FK,Gaziantep FK,6.6,688,11,,SuperLig,2026_2027
 1603757,Siaka Bakayoko,Rizespor,Rizespor,6.59,468,7,,SuperLig,2026_2027
@@ -204,13 +205,14 @@ fotmob_id,player,squad,team_fm,rating,minutes,matches,nat,league,season
 1697928,Mohamed Khalil,Amed Sportif,Amed Sportif,6.57,265,7,,SuperLig,2026_2027
 1526822,Rafael Luís,Gençlerbirliği,Gençlerbirliği,6.57,490,9,,SuperLig,2026_2027
 1104401,Ibrahim Diabate,Erzurumspor FK,Erzurumspor FK,6.56,348,10,,SuperLig,2026_2027
-1658140,Saba Kharebashvili,Başakşehir,Başakşehir,6.55,405,6,,SuperLig,2026_2027
-1114123,Emin Bayram,Başakşehir,Başakşehir,6.55,956,11,,SuperLig,2026_2027
+1114123,Emin Bayram,Başakşehir,Başakşehir,6.56,974,12,,SuperLig,2026_2027
 698273,Alban Lafont,Amed Sportif,Amed Sportif,6.55,1080,12,,SuperLig,2026_2027
 181276,Romelu Lukaku,Fenerbahçe,Fenerbahçe,6.55,528,11,,SuperLig,2026_2027
+1282765,Bertuğ Yıldırım,Başakşehir,Başakşehir,6.55,366,10,,SuperLig,2026_2027
 1398327,Baran Gezek,Alanyaspor,Alanyaspor,6.53,836,12,,SuperLig,2026_2027
 766957,Luis Pérez,Gaziantep FK,Gaziantep FK,6.53,921,11,,SuperLig,2026_2027
 690411,Sékou Koïta,Gençlerbirliği,Gençlerbirliği,6.53,395,10,,SuperLig,2026_2027
+791915,Umut Bozok,Başakşehir,Başakşehir,6.53,242,7,,SuperLig,2026_2027
 576118,Diogo Gonçalves,Konyaspor,Konyaspor,6.53,669,11,,SuperLig,2026_2027
 983199,Tino Anjorin,Göztepe,Göztepe,6.53,177,9,,SuperLig,2026_2027
 627223,Daniel Agyei,Kocaelispor,Kocaelispor,6.52,759,12,,SuperLig,2026_2027
@@ -228,13 +230,13 @@ fotmob_id,player,squad,team_fm,rating,minutes,matches,nat,league,season
 1666481,Anto Sekongo,Samsunspor,Samsunspor,6.44,602,12,,SuperLig,2026_2027
 769644,Abdelhamid Sabiri,Eyüpspor,Eyüpspor,6.44,229,6,,SuperLig,2026_2027
 645107,Ianis Hagi,Alanyaspor,Alanyaspor,6.43,329,9,,SuperLig,2026_2027
+842682,Markus Seehusen Karlsbakk,Çorum FK,Çorum FK,6.43,274,8,,SuperLig,2026_2027
 815997,Thalisson,Gençlerbirliği,Gençlerbirliği,6.43,652,8,,SuperLig,2026_2027
 798736,Jawad El Yamiq,Eyüpspor,Eyüpspor,6.42,765,9,,SuperLig,2026_2027
 303187,Ömer Ali Şahiner,Başakşehir,Başakşehir,6.42,528,8,,SuperLig,2026_2027
 938521,Halil Dervişoğlu,Gaziantep FK,Gaziantep FK,6.42,386,9,,SuperLig,2026_2027
 996894,Ebrima Colley,Konyaspor,Konyaspor,6.41,337,10,,SuperLig,2026_2027
 1679800,Arda Usluoğlu,Alanyaspor,Alanyaspor,6.41,494,9,,SuperLig,2026_2027
-842682,Markus Seehusen Karlsbakk,Çorum FK,Çorum FK,6.41,219,7,,SuperLig,2026_2027
 872726,Mete Kaan Demir,Eyüpspor,Eyüpspor,6.4,343,7,,SuperLig,2026_2027
 704664,Adil Demirbağ,Konyaspor,Konyaspor,6.4,563,7,,SuperLig,2026_2027
 1562891,Rajmund Tóth,Konyaspor,Konyaspor,6.39,668,11,,SuperLig,2026_2027
@@ -249,24 +251,24 @@ fotmob_id,player,squad,team_fm,rating,minutes,matches,nat,league,season
 433677,Hwang Ui-Jo,Alanyaspor,Alanyaspor,6.35,543,10,,SuperLig,2026_2027
 1505429,Marcus Rafferty,Kasımpaşa,Kasımpaşa,6.35,310,11,,SuperLig,2026_2027
 694060,Meschack Elia,Alanyaspor,Alanyaspor,6.34,298,8,,SuperLig,2026_2027
+867223,Onur Ergün,Başakşehir,Başakşehir,6.33,151,7,,SuperLig,2026_2027
 1060654,Festy Ebosele,Erzurumspor FK,Erzurumspor FK,6.33,176,8,,SuperLig,2026_2027
 1302409,Enes Keskin,Alanyaspor,Alanyaspor,6.33,138,7,,SuperLig,2026_2027
 1804781,Mustafa Fettahoğlu,Erzurumspor FK,Erzurumspor FK,6.3,375,10,,SuperLig,2026_2027
 1322849,Iván Cédric,Alanyaspor,Alanyaspor,6.3,302,6,,SuperLig,2026_2027
-1186780,Alexandre Penetra,Çorum FK,Çorum FK,6.29,630,9,,SuperLig,2026_2027
 1677029,Omar Ben Ali,Alanyaspor,Alanyaspor,6.29,226,10,,SuperLig,2026_2027
 975117,Metehan Altunbaş,Kocaelispor,Kocaelispor,6.29,366,12,,SuperLig,2026_2027
+873227,Jerome Opoku,Başakşehir,Başakşehir,6.28,544,7,,SuperLig,2026_2027
 1393739,Ali Turap Bülbül,Amed Sportif,Amed Sportif,6.28,198,7,,SuperLig,2026_2027
 1346625,Simone Giordano,Eyüpspor,Eyüpspor,6.27,632,8,,SuperLig,2026_2027
 317267,Serdar Dursun,Gaziantep FK,Gaziantep FK,6.27,282,9,,SuperLig,2026_2027
 305148,Okan Kocuk,Samsunspor,Samsunspor,6.26,720,8,,SuperLig,2026_2027
 1122595,Strahinja Eraković,Samsunspor,Samsunspor,6.25,562,8,,SuperLig,2026_2027
-867223,Onur Ergün,Başakşehir,Başakşehir,6.25,124,6,,SuperLig,2026_2027
 952440,Sefa Akgün,Erzurumspor FK,Erzurumspor FK,6.25,183,9,,SuperLig,2026_2027
 512734,Mbaye Diagne,Amed Sportif,Amed Sportif,6.25,299,9,,SuperLig,2026_2027
 1393698,Talha Ülvan,Eyüpspor,Eyüpspor,6.23,712,10,,SuperLig,2026_2027
-1282765,Bertuğ Yıldırım,Başakşehir,Başakşehir,6.22,345,9,,SuperLig,2026_2027
 890266,Valentin Mihăilă,Rizespor,Rizespor,6.21,211,6,,SuperLig,2026_2027
+1186780,Alexandre Penetra,Çorum FK,Çorum FK,6.21,720,10,,SuperLig,2026_2027
 848349,Firatcan Üzüm,Gençlerbirliği,Gençlerbirliği,6.2,312,9,,SuperLig,2026_2027
 1717397,Karamba Gassama,Gaziantep FK,Gaziantep FK,6.19,151,6,,SuperLig,2026_2027
 891469,Uğurcan Yazğılı,Konyaspor,Konyaspor,6.18,644,10,,SuperLig,2026_2027
@@ -277,7 +279,6 @@ fotmob_id,player,squad,team_fm,rating,minutes,matches,nat,league,season
 1125999,Yusuf Barası,Eyüpspor,Eyüpspor,6.15,478,12,,SuperLig,2026_2027
 1665499,Ege Yıldırım,Göztepe,Göztepe,6.13,459,8,,SuperLig,2026_2027
 889626,Lenny Pintor,Eyüpspor,Eyüpspor,6.13,432,10,,SuperLig,2026_2027
-873227,Jerome Opoku,Başakşehir,Başakşehir,6.12,454,6,,SuperLig,2026_2027
 1396086,Gabriele Guarino,Samsunspor,Samsunspor,6.1,671,9,,SuperLig,2026_2027
 605858,Bilal Boutobba,Eyüpspor,Eyüpspor,6.07,524,11,,SuperLig,2026_2027
 815981,Konrad Michalak,Eyüpspor,Eyüpspor,6.06,661,11,,SuperLig,2026_2027

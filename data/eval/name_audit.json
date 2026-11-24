@@ -312,8 +312,8 @@
    "orphans": []
   },
   "fotmob_ratings": {
-   "total": 315,
-   "exact": 308,
+   "total": 316,
+   "exact": 309,
    "rule": 6,
    "ambiguous": 0,
    "orphan": 0,
@@ -1236,13 +1236,13 @@
    "orphans": []
   },
   "fotmob_ratings": {
-   "total": 320,
-   "exact": 319,
+   "total": 321,
+   "exact": 320,
    "rule": 1,
    "ambiguous": 0,
    "orphan": 0,
    "orphans": [],
-   "minutes": 6
+   "minutes": 7
   },
   "s365_ratings": {
    "total": 493,
@@ -1742,8 +1742,8 @@
    "minutes": 12
   },
   "s365_ratings": {
-   "total": 442,
-   "exact": 435,
+   "total": 443,
+   "exact": 436,
    "rule": 4,
    "ambiguous": 2,
    "orphan": 0,
@@ -1959,8 +1959,8 @@
   },
   "fotmob_ratings": {
    "total": 295,
-   "exact": 290,
-   "rule": 2,
+   "exact": 289,
+   "rule": 3,
    "ambiguous": 0,
    "orphan": 0,
    "orphans": [],
@@ -2207,9 +2207,9 @@
    "minutes": 5
   },
   "s365_ratings": {
-   "total": 434,
+   "total": 436,
    "exact": 383,
-   "rule": 2,
+   "rule": 4,
    "ambiguous": 1,
    "orphan": 0,
    "orphans": [],
@@ -2218,19 +2218,19 @@
  },
  "Championship 2026_2027": {
   "wiki_squads": {
-   "total": 904,
-   "exact": 667,
-   "rule": 5,
+   "total": 903,
+   "exact": 671,
+   "rule": 4,
    "ambiguous": 0,
    "orphan": 0,
    "orphans": []
   },
   "espn_lineups": {
    "total": 718,
-   "exact": 653,
+   "exact": 657,
    "rule": 6,
    "ambiguous": 0,
-   "orphan": 59,
+   "orphan": 55,
    "orphans": [
     {
      "squad": "Derby County",
@@ -2288,11 +2288,6 @@
      "starts": 0
     },
     {
-     "squad": "Stoke City",
-     "name": "Freddie Anderson",
-     "starts": 0
-    },
-    {
      "squad": "Birmingham City",
      "name": "Kanya Fujimoto",
      "starts": 0
@@ -2343,11 +2338,6 @@
      "starts": 0
     },
     {
-     "squad": "Southampton",
-     "name": "Princewill Ehibhatiomhan",
-     "starts": 0
-    },
-    {
      "squad": "Stoke City",
      "name": "Laurence Giani",
      "starts": 0
@@ -2355,6 +2345,16 @@
     {
      "squad": "Stoke City",
      "name": "Gabriel Kelly",
+     "starts": 0
+    },
+    {
+     "squad": "Blackburn Rovers",
+     "name": "James Edmondson",
+     "starts": 0
+    },
+    {
+     "squad": "Wolves",
+     "name": "Santiago Bueno",
      "starts": 0
     }
    ]
@@ -2520,8 +2520,8 @@
   },
   "s365_ratings": {
    "total": 589,
-   "exact": 551,
-   "rule": 16,
+   "exact": 552,
+   "rule": 15,
    "ambiguous": 0,
    "orphan": 0,
    "orphans": [],
@@ -2742,8 +2742,8 @@
    "orphans": []
   },
   "fotmob_ratings": {
-   "total": 283,
-   "exact": 283,
+   "total": 284,
+   "exact": 284,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -3190,10 +3190,10 @@
   },
   "espn_lineups": {
    "total": 359,
-   "exact": 347,
+   "exact": 346,
    "rule": 4,
    "ambiguous": 0,
-   "orphan": 8,
+   "orphan": 9,
    "orphans": [
     {
      "squad": "Lausanne",
@@ -3233,6 +3233,11 @@
     {
      "squad": "Servette",
      "name": "Damiel Mbimbo",
+     "starts": 0
+    },
+    {
+     "squad": "Grasshopper",
+     "name": "Lionel Thuring",
      "starts": 0
     }
    ]
@@ -3484,8 +3489,8 @@
    "orphans": []
   },
   "fotmob_ratings": {
-   "total": 427,
-   "exact": 427,
+   "total": 428,
+   "exact": 428,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -3493,13 +3498,13 @@
    "minutes": 0
   },
   "s365_ratings": {
-   "total": 859,
+   "total": 863,
    "exact": 806,
-   "rule": 21,
+   "rule": 25,
    "ambiguous": 0,
    "orphan": 0,
    "orphans": [],
-   "minutes": 8
+   "minutes": 9
   }
  },
  "EPL 2025_2026": {

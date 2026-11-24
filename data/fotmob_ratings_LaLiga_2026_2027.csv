@@ -34,6 +34,7 @@ fotmob_id,player,squad,team_fm,rating,minutes,matches,nat,league,season
 1359911,Miguel Román,Celta Vigo,Celta de Vigo,7.32,579,7,ESP,LaLiga,2026_2027
 760712,Trent Alexander-Arnold,Real Madrid,Real Madrid,7.32,413,8,ENG,LaLiga,2026_2027
 1191407,Aitor Paredes,Athletic Club,Athletic Club,7.32,513,8,ESP,LaLiga,2026_2027
+1337914,Roy Revivo,Elche,Elche,7.32,784,10,ISR,LaLiga,2026_2027
 251269,Ante Budimir,Osasuna,Osasuna,7.31,1016,13,CRO,LaLiga,2026_2027
 1367619,Dean Huijsen,Real Madrid,Real Madrid,7.31,952,11,ESP,LaLiga,2026_2027
 1598982,Gerard Martín,Barcelona,Barcelona,7.29,849,12,ESP,LaLiga,2026_2027
@@ -46,7 +47,6 @@ fotmob_id,player,squad,team_fm,rating,minutes,matches,nat,league,season
 1797904,Miguel Sierra,Sevilla,Sevilla,7.26,564,8,ESP,LaLiga,2026_2027
 150565,Pierre-Emerick Aubameyang,Deportivo A Coruña,Deportivo A Coruña,7.25,716,10,GAB,LaLiga,2026_2027
 1202110,Nico Williams,Athletic Club,Athletic Club,7.24,706,11,ESP,LaLiga,2026_2027
-1337914,Roy Revivo,Elche,Elche,7.23,703,9,ISR,LaLiga,2026_2027
 846033,Vinícius Júnior,Real Madrid,Real Madrid,7.22,618,9,BRA,LaLiga,2026_2027
 659490,Gabriel Suazo,Sevilla,Sevilla,7.22,1167,13,CHI,LaLiga,2026_2027
 940976,Kang-In Lee,Atlético Madrid,Atlético Madrid,7.22,803,13,KOR,LaLiga,2026_2027
@@ -84,12 +84,12 @@ fotmob_id,player,squad,team_fm,rating,minutes,matches,nat,league,season
 586768,Guido Rodríguez,Valencia,Valencia CF,7.1,819,10,ARG,LaLiga,2026_2027
 820140,Ibrahima Konaté,Real Madrid,Real Madrid,7.1,1080,12,FRA,LaLiga,2026_2027
 574629,Alex Berenguer,Athletic Club,Athletic Club,7.1,844,13,ESP,LaLiga,2026_2027
-468931,Thomas Lemar,Elche,Elche,7.09,413,8,FRA,LaLiga,2026_2027
-1286471,Roger Brugué,Levante,Levante,7.09,921,11,ESP,LaLiga,2026_2027
 1523234,Jon Martín,Real Sociedad,Real Sociedad,7.08,906,11,ESP,LaLiga,2026_2027
 1393669,Quilindschy Hartman,Espanyol,Espanyol,7.08,494,7,NED,LaLiga,2026_2027
 1249284,Jon Aramburu,Real Sociedad,Real Sociedad,7.08,797,11,VEN,LaLiga,2026_2027
+1286471,Roger Brugué,Levante,Levante,7.07,1011,12,ESP,LaLiga,2026_2027
 1563022,Ángel Pérez,Alavés,Deportivo Alavés,7.07,845,12,ESP,LaLiga,2026_2027
+1277343,Federico Redondo,Elche,Elche,7.06,742,10,ARG,LaLiga,2026_2027
 1323897,Marc Pubill,Atlético Madrid,Atlético Madrid,7.06,763,10,ESP,LaLiga,2026_2027
 660625,Unai Simón,Athletic Club,Athletic Club,7.05,1105,13,ESP,LaLiga,2026_2027
 1173678,Johnny Cardoso,Atlético Madrid,Atlético Madrid,7.05,378,8,USA,LaLiga,2026_2027
@@ -108,21 +108,21 @@ fotmob_id,player,squad,team_fm,rating,minutes,matches,nat,league,season
 1167220,Joan García,Barcelona,Barcelona,7.01,1035,12,ESP,LaLiga,2026_2027
 1252373,Roberto Fernández,Espanyol,Espanyol,7.01,1137,13,ESP,LaLiga,2026_2027
 1011117,Robert Navarro,Athletic Club,Athletic Club,7.01,682,11,ESP,LaLiga,2026_2027
+468931,Thomas Lemar,Elche,Elche,7.0,457,9,FRA,LaLiga,2026_2027
 1059657,Sergi Cardona,Villarreal,Villarreal,7.0,536,8,ESP,LaLiga,2026_2027
-1277343,Federico Redondo,Elche,Elche,7.0,652,9,ARG,LaLiga,2026_2027
+1102708,Germán Valera,Elche,Elche,7.0,1069,13,ESP,LaLiga,2026_2027
 750028,Fran García,Real Betis,Real Betis,7.0,931,11,ESP,LaLiga,2026_2027
 1668274,Carlos Puga,Málaga,Málaga,7.0,625,11,ESP,LaLiga,2026_2027
 923298,Pablo Martínez,Málaga,Málaga,6.99,563,9,ESP,LaLiga,2026_2027
 449232,Andreas Christensen,Barcelona,Barcelona,6.99,432,7,DEN,LaLiga,2026_2027
 169586,Leandro Cabrera,Espanyol,Espanyol,6.99,900,10,URU,LaLiga,2026_2027
+1481503,Dani Requena,Levante,Levante,6.98,645,10,ESP,LaLiga,2026_2027
 852071,Juan Hernández,Real Betis,Real Betis,6.98,589,9,COL,LaLiga,2026_2027
 1026135,Tajon Buchanan,Villarreal,Villarreal,6.98,711,11,CAN,LaLiga,2026_2027
 575735,Nicolas Pépé,Villarreal,Villarreal,6.97,523,9,CIV,LaLiga,2026_2027
-185644,Mathew Ryan,Levante,Levante,6.97,1080,12,AUS,LaLiga,2026_2027
 150649,Sergio Canales,Racing Santander,Racing de Santander,6.97,972,13,ESP,LaLiga,2026_2027
 1430406,Andrés García,Getafe,Getafe,6.97,883,12,ESP,LaLiga,2026_2027
 536455,Gonçalo Guedes,Real Sociedad,Real Sociedad,6.96,644,12,POR,LaLiga,2026_2027
-1102708,Germán Valera,Elche,Elche,6.96,979,12,ESP,LaLiga,2026_2027
 1204447,Luismi Cruz,Deportivo A Coruña,Deportivo A Coruña,6.95,730,13,ESP,LaLiga,2026_2027
 1407468,Santiago Mouriño,Villarreal,Villarreal,6.95,585,10,URU,LaLiga,2026_2027
 967871,Iván Martín,Racing Santander,Racing de Santander,6.95,879,11,ESP,LaLiga,2026_2027
@@ -133,18 +133,18 @@ fotmob_id,player,squad,team_fm,rating,minutes,matches,nat,league,season
 1226783,Hugo González,Celta Vigo,Celta de Vigo,6.93,350,7,ESP,LaLiga,2026_2027
 1209421,Carlos Dotor,Málaga,Málaga,6.93,898,12,ESP,LaLiga,2026_2027
 1396089,Matteo Prati,Racing Santander,Racing de Santander,6.93,774,10,ITA,LaLiga,2026_2027
-881773,Gonzalo Villar,Elche,Elche,6.92,869,11,ESP,LaLiga,2026_2027
+1127224,Fer Niño,Elche,Elche,6.92,876,13,ESP,LaLiga,2026_2027
 1323827,Jon Gorrotxategi,Real Sociedad,Real Sociedad,6.92,491,10,ESP,LaLiga,2026_2027
+185644,Mathew Ryan,Levante,Levante,6.92,1170,13,AUS,LaLiga,2026_2027
 531629,Dani Ceballos,Real Betis,Real Betis,6.91,258,8,ESP,LaLiga,2026_2027
 1202587,Ramón Terrats,Getafe,Getafe,6.91,897,12,ESP,LaLiga,2026_2027
 1280020,Julen Agirrezabala,Racing Santander,Racing de Santander,6.91,1170,13,ESP,LaLiga,2026_2027
 474673,Johan Mojica,Getafe,Getafe,6.9,901,11,COL,LaLiga,2026_2027
-1127224,Fer Niño,Elche,Elche,6.9,786,12,ESP,LaLiga,2026_2027
-1732412,Javi Morcillo,Elche,Elche,6.89,745,10,ESP,LaLiga,2026_2027
 1118199,Zaid Abner Romero,Getafe,Getafe,6.89,644,8,ARG,LaLiga,2026_2027
-1280756,Lucas Cepeda,Elche,Elche,6.88,520,12,CHI,LaLiga,2026_2027
 474658,Álvaro García,Rayo Vallecano,Rayo Vallecano,6.88,790,12,ESP,LaLiga,2026_2027
+881773,Gonzalo Villar,Elche,Elche,6.88,935,12,ESP,LaLiga,2026_2027
 609516,Robin Le Normand,Atlético Madrid,Atlético Madrid,6.88,468,8,ESP,LaLiga,2026_2027
+1732412,Javi Morcillo,Elche,Elche,6.88,835,11,ESP,LaLiga,2026_2027
 1427819,Hugo Rincón,Athletic Club,Athletic Club,6.88,616,8,ESP,LaLiga,2026_2027
 1315711,Nelson Deossa,Real Betis,Real Betis,6.88,466,13,COL,LaLiga,2026_2027
 1343750,Renato Veiga,Villarreal,Villarreal,6.88,1080,12,POR,LaLiga,2026_2027
@@ -152,12 +152,14 @@ fotmob_id,player,squad,team_fm,rating,minutes,matches,nat,league,season
 899195,Andrés Martín,Racing Santander,Racing de Santander,6.88,380,6,ESP,LaLiga,2026_2027
 384413,Rubén García,Osasuna,Osasuna,6.87,772,13,ESP,LaLiga,2026_2027
 1279557,Clemens Riedel,Espanyol,Espanyol,6.87,633,9,GER,LaLiga,2026_2027
+1209441,Iván Romero,Levante,Levante,6.87,906,13,ESP,LaLiga,2026_2027
+1192393,Víctor Chust,Elche,Elche,6.86,1170,13,ESP,LaLiga,2026_2027
 1002618,Ander Barrenetxea,Real Sociedad,Real Sociedad,6.86,626,11,ESP,LaLiga,2026_2027
 391058,José Gayà,Valencia,Valencia CF,6.86,794,10,ESP,LaLiga,2026_2027
 1717331,Rafita,Málaga,Málaga,6.86,946,12,ESP,LaLiga,2026_2027
+952528,Adrián De La Fuente,Levante,Levante,6.86,855,11,ESP,LaLiga,2026_2027
 1117069,Georges Mikautadze,Villarreal,Villarreal,6.85,750,13,GEO,LaLiga,2026_2027
 1578176,Yoel Lago,Celta Vigo,Celta de Vigo,6.85,1035,12,ESP,LaLiga,2026_2027
-1209441,Iván Romero,Levante,Levante,6.85,828,12,ESP,LaLiga,2026_2027
 593118,Denzel Dumfries,Real Madrid,Real Madrid,6.85,447,8,NED,LaLiga,2026_2027
 1072200,Rodrigo Riquelme,Real Betis,Real Betis,6.85,490,12,ESP,LaLiga,2026_2027
 1319204,Yeremay Hernández,Deportivo A Coruña,Deportivo A Coruña,6.84,622,12,ESP,LaLiga,2026_2027
@@ -166,21 +168,21 @@ fotmob_id,player,squad,team_fm,rating,minutes,matches,nat,league,season
 950545,Oihan Sancet,Athletic Club,Athletic Club,6.83,626,9,ESP,LaLiga,2026_2027
 488139,Bernardo Silva,Real Madrid,Real Madrid,6.83,601,11,POR,LaLiga,2026_2027
 1427828,Javi Hernández,Espanyol,Espanyol,6.83,907,13,ESP,LaLiga,2026_2027
-1481503,Dani Requena,Levante,Levante,6.83,555,9,ESP,LaLiga,2026_2027
+1131957,Jon Olasagasti,Levante,Levante,6.83,1065,13,ESP,LaLiga,2026_2027
 698653,Igor Zubeldia,Real Sociedad,Real Sociedad,6.83,623,9,ESP,LaLiga,2026_2027
 927646,Adrià Pedrosa,Rayo Vallecano,Rayo Vallecano,6.83,742,11,ESP,LaLiga,2026_2027
 673689,Pepelu,Valencia,Valencia CF,6.83,1108,13,ESP,LaLiga,2026_2027
 1435439,Javi Rodríguez,Celta Vigo,Celta de Vigo,6.82,636,9,ESP,LaLiga,2026_2027
 411617,Aymeric Laporte,Athletic Club,Athletic Club,6.82,909,11,ESP,LaLiga,2026_2027
-952528,Adrián De La Fuente,Levante,Levante,6.82,765,10,ESP,LaLiga,2026_2027
+1280756,Lucas Cepeda,Elche,Elche,6.82,601,13,CHI,LaLiga,2026_2027
 1311985,César Tárrega,Valencia,Valencia CF,6.82,780,10,ESP,LaLiga,2026_2027
 953958,Giorgi Kochorashvili,Sevilla,Sevilla,6.82,307,8,GEO,LaLiga,2026_2027
 805352,Unai Núñez,Espanyol,Espanyol,6.81,455,8,ESP,LaLiga,2026_2027
+1460063,Thiago Fernández,Levante,Levante,6.81,795,11,ARG,LaLiga,2026_2027
 1330035,Rubén Sánchez,Elche,Elche,6.81,298,7,ESP,LaLiga,2026_2027
 1256478,Adrià Altimira,Deportivo A Coruña,Deportivo A Coruña,6.81,571,9,ESP,LaLiga,2026_2027
 282462,Iñigo Ruiz de Galarreta,Athletic Club,Athletic Club,6.8,528,11,ESP,LaLiga,2026_2027
 1311915,Ilias Akhomach,Villarreal,Villarreal,6.8,388,9,MAR,LaLiga,2026_2027
-1192393,Víctor Chust,Elche,Elche,6.8,1080,12,ESP,LaLiga,2026_2027
 1334767,Andrés López,Sevilla,Sevilla,6.8,946,12,ESP,LaLiga,2026_2027
 715069,Pedro Díaz,Rayo Vallecano,Rayo Vallecano,6.8,646,12,ESP,LaLiga,2026_2027
 246438,Gerard Moreno,Villarreal,Villarreal,6.8,434,10,ESP,LaLiga,2026_2027
@@ -190,8 +192,7 @@ fotmob_id,player,squad,team_fm,rating,minutes,matches,nat,league,season
 1414777,Sebastián Boselli,Getafe,Getafe,6.79,335,9,URU,LaLiga,2026_2027
 479020,Ayoze Pérez,Villarreal,Villarreal,6.79,663,13,ESP,LaLiga,2026_2027
 1109046,Ilaix Moriba,Celta Vigo,Celta de Vigo,6.79,987,13,GUI,LaLiga,2026_2027
-1131957,Jon Olasagasti,Levante,Levante,6.78,975,12,ESP,LaLiga,2026_2027
-1460063,Thiago Fernández,Levante,Levante,6.78,705,10,ARG,LaLiga,2026_2027
+210683,Aïssa Mandi,Levante,Levante,6.78,963,11,ALG,LaLiga,2026_2027
 1187702,Leo Román,Deportivo A Coruña,Deportivo A Coruña,6.78,1170,13,ESP,LaLiga,2026_2027
 988178,Diego Villares,Deportivo A Coruña,Deportivo A Coruña,6.78,364,7,ESP,LaLiga,2026_2027
 1586390,Iker Luque,Racing Santander,Racing de Santander,6.77,428,7,ESP,LaLiga,2026_2027
@@ -209,7 +210,6 @@ fotmob_id,player,squad,team_fm,rating,minutes,matches,nat,league,season
 673356,Pablo Maffeo,Valencia,Valencia CF,6.74,797,12,ARG,LaLiga,2026_2027
 1108863,David Larrubia,Málaga,Málaga,6.74,1031,13,ESP,LaLiga,2026_2027
 474589,José Giménez,Deportivo A Coruña,Deportivo A Coruña,6.74,859,12,URU,LaLiga,2026_2027
-210683,Aïssa Mandi,Levante,Levante,6.74,873,10,ALG,LaLiga,2026_2027
 942365,Troy Parrott,Real Betis,Real Betis,6.73,415,10,IRL,LaLiga,2026_2027
 602845,Emil Audero,Rayo Vallecano,Rayo Vallecano,6.73,745,9,IDN,LaLiga,2026_2027
 260659,Ximo Navarro,Deportivo A Coruña,Deportivo A Coruña,6.73,698,10,ESP,LaLiga,2026_2027
@@ -226,19 +226,20 @@ fotmob_id,player,squad,team_fm,rating,minutes,matches,nat,league,season
 939427,Mujaid Sadick,Rayo Vallecano,Rayo Vallecano,6.71,610,9,ESP,LaLiga,2026_2027
 1197039,Martín Satriano,Getafe,Getafe,6.71,974,13,URU,LaLiga,2026_2027
 860314,Nahuel Tenaglia,Alavés,Deportivo Alavés,6.71,1125,13,ARG,LaLiga,2026_2027
-1800611,Nacho Pérez,Levante,Levante,6.7,627,11,ESP,LaLiga,2026_2027
 1015185,Eduardo Camavinga,Real Madrid,Real Madrid,6.7,373,12,FRA,LaLiga,2026_2027
-1052330,Manuel Sánchez,Levante,Levante,6.7,881,10,ESP,LaLiga,2026_2027
-592412,Matías Dituro,Elche,Elche,6.7,1080,12,ARG,LaLiga,2026_2027
+1800611,Nacho Pérez,Levante,Levante,6.7,695,12,ESP,LaLiga,2026_2027
 1727689,Roger Hinojo,Espanyol,Espanyol,6.69,760,11,ESP,LaLiga,2026_2027
+1052330,Manuel Sánchez,Levante,Levante,6.69,937,11,ESP,LaLiga,2026_2027
 1327006,Johaneko Louis-Jean,Athletic Club,Athletic Club,6.69,281,9,FRA,LaLiga,2026_2027
 174472,Iago Aspas,Celta Vigo,Celta de Vigo,6.69,381,11,ESP,LaLiga,2026_2027
+592412,Matías Dituro,Elche,Elche,6.68,1170,13,ARG,LaLiga,2026_2027
 969711,Justin De Haas,Valencia,Valencia CF,6.68,503,7,NED,LaLiga,2026_2027
 1690831,Bil Nsongo,Deportivo A Coruña,Deportivo A Coruña,6.68,869,13,CMR,LaLiga,2026_2027
 1407741,Marcos Fernández,Espanyol,Espanyol,6.67,244,10,ESP,LaLiga,2026_2027
 1322858,Pablo Durán,Celta Vigo,Celta de Vigo,6.67,587,10,ESP,LaLiga,2026_2027
 848289,Takefusa Kubo,Real Sociedad,Real Sociedad,6.67,393,9,JPN,LaLiga,2026_2027
 213471,Aitor Fernández,Osasuna,Osasuna,6.66,540,6,ESP,LaLiga,2026_2027
+1583872,Buba Sangaré,Elche,Elche,6.66,871,11,ESP,LaLiga,2026_2027
 750031,Pol Lozano,Espanyol,Espanyol,6.66,513,9,ESP,LaLiga,2026_2027
 1889232,Gnangoro Bouare,Rayo Vallecano,Rayo Vallecano,6.66,250,9,ESP,LaLiga,2026_2027
 1711969,Bright Ede,Deportivo A Coruña,Deportivo A Coruña,6.65,461,6,POL,LaLiga,2026_2027
@@ -260,7 +261,7 @@ fotmob_id,player,squad,team_fm,rating,minutes,matches,nat,league,season
 690516,Ademola Lookman,Atlético Madrid,Atlético Madrid,6.61,609,11,NGA,LaLiga,2026_2027
 1336566,Facundo Buonanotte,Elche,Elche,6.61,354,8,ARG,LaLiga,2026_2027
 1082957,Ramón Enríquez,Málaga,Málaga,6.61,408,12,ESP,LaLiga,2026_2027
-801213,Tete Morente,Elche,Elche,6.61,543,12,ESP,LaLiga,2026_2027
+801213,Tete Morente,Elche,Elche,6.61,552,13,ESP,LaLiga,2026_2027
 427438,Héctor Bellerín,Real Betis,Real Betis,6.61,937,12,ESP,LaLiga,2026_2027
 516803,Einar Galilea,Málaga,Málaga,6.6,720,9,ESP,LaLiga,2026_2027
 421365,Djené,Getafe,Getafe,6.59,984,12,TOG,LaLiga,2026_2027
@@ -270,7 +271,6 @@ fotmob_id,player,squad,team_fm,rating,minutes,matches,nat,league,season
 921825,Jon Moncayola,Osasuna,Osasuna,6.58,972,13,ESP,LaLiga,2026_2027
 1308414,Hugo Álvarez,Celta Vigo,Celta de Vigo,6.57,662,11,ESP,LaLiga,2026_2027
 1609364,Rafel Bauzà,Espanyol,Espanyol,6.57,233,6,ESP,LaLiga,2026_2027
-1583872,Buba Sangaré,Elche,Elche,6.56,781,10,ESP,LaLiga,2026_2027
 1187478,José Salinas,Málaga,Málaga,6.56,536,10,ESP,LaLiga,2026_2027
 704151,Arnaut Danjuma,Valencia,Valencia CF,6.56,929,12,NED,LaLiga,2026_2027
 616538,Alfonso Herrero,Málaga,Málaga,6.55,1170,13,ESP,LaLiga,2026_2027
@@ -290,7 +290,7 @@ fotmob_id,player,squad,team_fm,rating,minutes,matches,nat,league,season
 777028,André Almeida,Racing Santander,Racing de Santander,6.48,265,9,POR,LaLiga,2026_2027
 574624,Enrique Barja,Osasuna,Osasuna,6.47,324,10,ESP,LaLiga,2026_2027
 1187734,Flavien Boyomo,Osasuna,Osasuna,6.47,651,8,CMR,LaLiga,2026_2027
-914401,Oriol Rey,Levante,Levante,6.46,692,11,ESP,LaLiga,2026_2027
+914401,Oriol Rey,Levante,Levante,6.46,770,12,ESP,LaLiga,2026_2027
 970566,Riki Rodríguez,Deportivo A Coruña,Deportivo A Coruña,6.46,418,10,ESP,LaLiga,2026_2027
 1184693,Couhaib Driouech,Celta Vigo,Celta de Vigo,6.46,266,8,MAR,LaLiga,2026_2027
 939061,Giorgi Tsitaishvili,Rayo Vallecano,Rayo Vallecano,6.45,467,9,GEO,LaLiga,2026_2027
@@ -298,37 +298,37 @@ fotmob_id,player,squad,team_fm,rating,minutes,matches,nat,league,season
 860752,Rubén Vargas,Sevilla,Sevilla,6.44,241,6,SUI,LaLiga,2026_2027
 1434474,Rafa Rodríguez,Málaga,Málaga,6.44,335,9,ESP,LaLiga,2026_2027
 1102732,Ferrán Jutglà,Celta Vigo,Celta de Vigo,6.44,688,12,ESP,LaLiga,2026_2027
+1226189,Martim Neto,Elche,Elche,6.43,337,9,POR,LaLiga,2026_2027
 590494,Umar Sadiq,Valencia,Valencia CF,6.42,329,6,NGA,LaLiga,2026_2027
 638010,Isi Palazón,Rayo Vallecano,Rayo Vallecano,6.42,280,7,ESP,LaLiga,2026_2027
 1368655,David Mella,Deportivo A Coruña,Deportivo A Coruña,6.42,375,7,ESP,LaLiga,2026_2027
 1272740,Williot Swedberg,Celta Vigo,Celta de Vigo,6.42,516,12,SWE,LaLiga,2026_2027
 640123,Toni Martínez,Alavés,Deportivo Alavés,6.41,694,12,ESP,LaLiga,2026_2027
 671686,Aleix Febas,Celta Vigo,Celta de Vigo,6.39,489,7,ESP,LaLiga,2026_2027
-1226189,Martim Neto,Elche,Elche,6.39,313,8,POR,LaLiga,2026_2027
 1183650,Francho Serrano,Getafe,Getafe,6.37,652,11,ESP,LaLiga,2026_2027
 1621150,Jonathan Asp,Deportivo A Coruña,Deportivo A Coruña,6.36,282,9,DEN,LaLiga,2026_2027
 1669622,Chupe,Málaga,Málaga,6.36,890,13,ESP,LaLiga,2026_2027
 1399218,Robbie Ure,Sevilla,Sevilla,6.36,603,13,SCO,LaLiga,2026_2027
 799914,Carlos Protesoni,Alavés,Deportivo Alavés,6.36,240,6,URU,LaLiga,2026_2027
-1302821,Petar Ratkov,Levante,Levante,6.36,273,7,SRB,LaLiga,2026_2027
 1403692,Youssef Enríquez,Alavés,Deportivo Alavés,6.35,381,10,MAR,LaLiga,2026_2027
 1553099,Mikel Jauregizar,Athletic Club,Athletic Club,6.35,302,7,ESP,LaLiga,2026_2027
 1094778,Raúl García,Osasuna,Osasuna,6.35,490,13,ESP,LaLiga,2026_2027
 1242139,Jonathan Dubasin,Osasuna,Osasuna,6.34,499,12,BEL,LaLiga,2026_2027
 951739,Joaquín Muñoz,Málaga,Málaga,6.33,541,11,ESP,LaLiga,2026_2027
+1302821,Petar Ratkov,Levante,Levante,6.33,285,8,SRB,LaLiga,2026_2027
 940608,Juan Cruz,Málaga,Málaga,6.31,249,8,ESP,LaLiga,2026_2027
 1531887,Pau Navarro,Villarreal,Villarreal,6.3,522,7,ESP,LaLiga,2026_2027
 493647,Adama Traoré,Deportivo A Coruña,Deportivo A Coruña,6.3,313,10,ESP,LaLiga,2026_2027
 1669619,Izan Merino,Málaga,Málaga,6.29,482,8,ESP,LaLiga,2026_2027
 1169596,Raúl Moro,Osasuna,Osasuna,6.29,374,10,ESP,LaLiga,2026_2027
 1187767,Urko González,Espanyol,Espanyol,6.28,480,9,ESP,LaLiga,2026_2027
-1392779,Etta Eyong,Levante,Levante,6.26,226,7,CMR,LaLiga,2026_2027
 929838,Hugo Duro,Valencia,Valencia CF,6.26,422,11,ESP,LaLiga,2026_2027
 1614872,Iñigo Arguibide,Osasuna,Osasuna,6.26,666,11,ESP,LaLiga,2026_2027
-443966,Jeremy Toljan,Levante,Levante,6.25,611,11,GER,LaLiga,2026_2027
+1392779,Etta Eyong,Levante,Levante,6.24,238,8,CMR,LaLiga,2026_2027
+443966,Jeremy Toljan,Levante,Levante,6.24,633,12,GER,LaLiga,2026_2027
 977618,Víctor García,Levante,Levante,6.23,396,11,ESP,LaLiga,2026_2027
 561198,Mouctar Diakhaby,Valencia,Valencia CF,6.22,351,7,GUI,LaLiga,2026_2027
-1343195,Abiel Osorio,Elche,Elche,6.22,343,9,ARG,LaLiga,2026_2027
+1343195,Abiel Osorio,Elche,Elche,6.21,388,10,ARG,LaLiga,2026_2027
 1194892,Arnau Martínez,Valencia,Valencia CF,6.19,473,9,ESP,LaLiga,2026_2027
 963964,Harvey Elliott,Valencia,Valencia CF,6.14,152,6,ENG,LaLiga,2026_2027
 175311,Kiko,Getafe,Getafe,6.11,377,9,ESP,LaLiga,2026_2027
