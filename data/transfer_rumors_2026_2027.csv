@@ -1,10 +1,10 @@
 target_club,player,pos_detail,age,current_club,market_value_eur,probability,date
-Arsenal,Jamal Musiala,Attacking Midfield,23,FC Bayern Munich,80000000.0,20,23/11/2026
+Arsenal,Kevin Schade,Left Winger,24,Brentford FC,50000000.0,,25/11/2026
+Arsenal,Antonio Nusa,Left Winger,21,RB Leipzig,45000000.0,68,25/11/2026
+Arsenal,Jamal Musiala,Attacking Midfield,23,FC Bayern Munich,80000000.0,30,23/11/2026
 Arsenal,Finn Jeltsch,Centre-Back,20,VfB Stuttgart,35000000.0,,20/11/2026
-Arsenal,Kevin Schade,Left Winger,24,Brentford FC,50000000.0,,18/11/2026
 Arsenal,Gabriel Rajković,Left Winger,15,Vålerenga Fotball Elite,,,17/11/2026
 Arsenal,Leonard Prescott,Goalkeeper,17,FC Bayern Munich II,,,16/11/2026
-Arsenal,Antonio Nusa,Left Winger,21,RB Leipzig,45000000.0,68,10/11/2026
 Arsenal,Marcus Tavernier,Attacking Midfield,27,AFC Bournemouth,30000000.0,,06/11/2026
 Arsenal,Endrick,Centre-Forward,20,Real Madrid,40000000.0,,01/11/2026
 Arsenal,Aleksey Batrakov,Attacking Midfield,21,Galatasaray,28000000.0,,01/11/2026
@@ -61,10 +61,9 @@ Brighton,Estéban Lepaul,Centre-Forward,26,Stade Rennais FC,45000000.0,,12/10/20
 Brighton,Bartosz Mazurek,Central Midfield,19,Red Bull Salzburg,10000000.0,,09/10/2026
 Brighton,Luca Weinhandl,Central Midfield,17,SK Sturm Graz,15000000.0,,16/09/2026
 Brighton,Mauro Coronel,Centre-Back,18,Club Nacional Asunción,400000.0,,12/09/2026
-Chelsea,Luca Williams-Barnett,Attacking Midfield,18,Tottenham Hotspur U21,4000000.0,,24/11/2026
 Chelsea,Jaedon Donkor,Right Winger,17,Heart of Midlothian FC U18,,,20/11/2026
 Chelsea,Leonard Prescott,Goalkeeper,17,FC Bayern Munich II,,,16/11/2026
-Chelsea,Kerim Alajbegovic,Left Winger,19,Juventus FC,32000000.0,,16/11/2026
+Chelsea,Kerim Alajbegović,Left Winger,19,Juventus FC,32000000.0,,16/11/2026
 Chelsea,El Hadji Malick Diouf,Left-Back,21,Brentford FC,35000000.0,,05/11/2026
 Chelsea,Aleksey Batrakov,Attacking Midfield,21,Galatasaray,28000000.0,,02/11/2026
 Chelsea,Trent Alexander-Arnold,Right-Back,28,Real Madrid,60000000.0,,30/10/2026
@@ -86,9 +85,10 @@ Chelsea,Conrad Harder,Centre-Forward,21,RC Strasbourg Alsace,17000000.0,,21/09/2
 Chelsea,Nico Guillén,Central Midfield,18,Sevilla Atlético,2000000.0,,16/09/2026
 Chelsea,Iago Machado,Centre-Back,17,Sport Club Corinthians Paulista,3000000.0,,16/09/2026
 Chelsea,Renato Sanches,Central Midfield,29,Without ClubWithout Club,1500000.0,,07/09/2026
+Chelsea,Vinny Garcia,Central Midfield,16,Ventura County FC,,,04/09/2026
 Coventry City,Rodrigo Riquelme,Left Winger,26,Real Betis Balompié,4000000.0,,11/11/2026
 Coventry City,Kristian Strømland Lien,Centre-Forward,25,Djurgårdens IF,3500000.0,,04/10/2026
-Crystal Palace,Ivan Toney,Centre-Forward,30,Al-Ahli SFC,20000000.0,,21/11/2026
+Crystal Palace,Ivan Toney,Centre-Forward,30,Al-Ahli SFC,20000000.0,,25/11/2026
 Crystal Palace,Bartosz Mazurek,Central Midfield,19,Red Bull Salzburg,10000000.0,,09/11/2026
 Crystal Palace,Conor Gallagher,Central Midfield,26,Tottenham Hotspur,32000000.0,,08/11/2026
 Crystal Palace,Otávio,Goalkeeper,20,Cruzeiro Esporte Clube,10000000.0,,31/10/2026
@@ -173,6 +173,9 @@ Manchester City,Jules Koundé,Right-Back,28,FC Barcelona,55000000.0,,06/10/2026
 Manchester City,Niko Ilicevic,Attacking Midfield,16,Eintracht Frankfurt II,5000000.0,,06/10/2026
 Manchester City,JJ Gabriel,Attacking Midfield,16,Manchester United U21,,,16/09/2026
 Manchester City,Cody Gakpo,Left Winger,27,Liverpool FC,75000000.0,,31/08/2026
+Manchester Utd,Victor Osimhen,Centre-Forward,27,Galatasaray,65000000.0,,25/11/2026
+Manchester Utd,Jarrad Branthwaite,Centre-Back,24,Everton FC,45000000.0,,25/11/2026
+Manchester Utd,Calvin Bassey,Centre-Back,26,Fulham FC,28000000.0,,25/11/2026
 Manchester Utd,Mathis Albert,Left Winger,17,Borussia Dortmund,5000000.0,,23/11/2026
 Manchester Utd,Gabriel Rajković,Left Winger,15,Vålerenga Fotball Elite,,,17/11/2026
 Manchester Utd,Malick Thiaw,Centre-Back,25,Newcastle United,50000000.0,,16/11/2026
@@ -180,7 +183,6 @@ Manchester Utd,Weston McKennie,Central Midfield,28,Juventus FC,30000000.0,,16/11
 Manchester Utd,Omar El Hilali,Right-Back,23,RCD Espanyol Barcelona,15000000.0,,15/11/2026
 Manchester Utd,Nico Paz,Attacking Midfield,22,Como 1907,80000000.0,42,14/11/2026
 Manchester Utd,Malo Gusto,Right-Back,23,Chelsea FC,35000000.0,,13/11/2026
-Manchester Utd,Calvin Bassey,Centre-Back,26,Fulham FC,28000000.0,,11/11/2026
 Manchester Utd,Andrea Cambiaso,Left-Back,26,Juventus FC,15000000.0,,10/11/2026
 Manchester Utd,Mahamadou Nagida,Left-Back,21,Stade Rennais FC,10000000.0,,08/11/2026
 Manchester Utd,Marcus Tavernier,Attacking Midfield,27,AFC Bournemouth,30000000.0,,06/11/2026
@@ -196,8 +198,6 @@ Manchester Utd,Lennart Karl,Attacking Midfield,18,FC Bayern Munich,60000000.0,,2
 Manchester Utd,Tarik Muharemović,Centre-Back,23,Leeds United,40000000.0,,25/10/2026
 Manchester Utd,Diego Gómez,Central Midfield,23,Brighton & Hove Albion,30000000.0,,23/10/2026
 Manchester Utd,Daniel Banjaqui,Right-Back,18,SL Benfica,10000000.0,,22/10/2026
-Manchester Utd,Ruud Nijstad,Centre-Back,18,FC Twente Enschede,18000000.0,,22/10/2026
-Manchester Utd,Felix Nmecha,Central Midfield,26,Borussia Dortmund,65000000.0,,20/10/2026
 Newcastle United,Dies Janse,Centre-Back,20,Ajax Amsterdam,6500000.0,,24/11/2026
 Newcastle United,Kenneth Taylor,Central Midfield,24,SS Lazio,25000000.0,,22/11/2026
 Newcastle United,Jaedon Donkor,Right Winger,17,Heart of Midlothian FC U18,,,20/11/2026
@@ -232,7 +232,6 @@ Nottingham Forest,Giorgi Mamardashvili,Goalkeeper,26,Liverpool FC,28000000.0,,30
 Nottingham Forest,Harrison Armstrong,Central Midfield,19,Everton FC,30000000.0,,29/08/2026
 Nottingham Forest,André,Central Midfield,20,Sport Club Corinthians Paulista,16000000.0,,25/08/2026
 Nottingham Forest,Luis Suárez,Centre-Forward,28,Sporting CP,30000000.0,,25/08/2026
-Nottingham Forest,Jacob Murphy,Right Winger,31,Newcastle United,10000000.0,,24/08/2026
 Sunderland,Sydie Peck,Central Midfield,22,Sheffield United,16000000.0,,13/11/2026
 Sunderland,Dion Beljo,Centre-Forward,24,GNK Dinamo Zagreb,15000000.0,,11/11/2026
 Sunderland,Kevin Viveros,Centre-Forward,26,Club Athletico Paranaense,20000000.0,,29/09/2026
@@ -255,4 +254,3 @@ Tottenham Hotspur,Vangelis Pavlidis,Centre-Forward,28,SL Benfica,35000000.0,,12/
 Tottenham Hotspur,Min-jae Kim,Centre-Back,30,FC Bayern Munich,20000000.0,,30/09/2026
 Tottenham Hotspur,Ibrahim Maza,Attacking Midfield,21,Bayer 04 Leverkusen,50000000.0,,27/09/2026
 Tottenham Hotspur,Mauro Icardi,Centre-Forward,33,Without ClubWithout Club,3000000.0,,17/09/2026
-Tottenham Hotspur,Cody Gakpo,Left Winger,27,Liverpool FC,75000000.0,,24/08/2026
