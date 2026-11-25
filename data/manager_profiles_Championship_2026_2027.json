@@ -250,38 +250,6 @@
   "appointed_date": "2024-02-04",
   "appointed_source": "fotmob"
  },
- "Bristol City": {
-  "appointed": "Jun 2026",
-  "style": "",
-  "formation": "",
-  "focus": "",
-  "bio_ko": "마이클 앨버트 스쿠발라는 잉글랜드 출신의 프로 축구 감독으로, 현재 EFL 챔피언십 소속 클럽인 브리스톨 시티의 감독을 맡고 있다.",
-  "wiki_title": "Michael Skubala",
-  "name": "Michael Skubala",
-  "nationality": "England",
-  "photo_url": "https://images.fotmob.com/image_resources/playerimages/1437592.png",
-  "fotmob_id": 1437592,
-  "source": "fotmob",
-  "bio_source": "en-wiki-translated",
-  "appointed_date": "2026-06-09",
-  "appointed_source": "fotmob"
- },
- "Cardiff City": {
-  "appointed": "Jun 2025",
-  "style": "",
-  "formation": "",
-  "focus": "",
-  "bio_ko": "브라이언 배리-머피는 아일랜드 출신의 프로 축구 감독이자 전 선수로, 현재 EFL 챔피언십 클럽 카디프 시티의 감독을 맡고 있다.",
-  "wiki_title": "Brian Barry-Murphy",
-  "name": "Brian Barry-Murphy",
-  "nationality": "Republic of Ireland",
-  "photo_url": "https://images.fotmob.com/image_resources/playerimages/24074.png",
-  "fotmob_id": 24074,
-  "source": "fotmob",
-  "bio_source": "en-wiki-translated",
-  "appointed_date": "2025-06-16",
-  "appointed_source": "fotmob"
- },
  "Millwall": {
   "appointed": "Dec 2024",
   "style": "",
@@ -314,20 +282,36 @@
   "appointed_date": "2025-01-30",
   "appointed_source": "fotmob"
  },
- "Watford": {
+ "Bristol City": {
   "appointed": "Jun 2026",
   "style": "",
   "formation": "",
   "focus": "",
-  "bio_ko": "알레시오 디오니시는 이탈리아 출신의 프로 축구 감독이자 전 선수로, 현재 EFL 챔피언십 클럽 왓포드의 감독을 맡고 있다.",
-  "wiki_title": "Alessio Dionisi",
-  "name": "Alessio Dionisi",
-  "nationality": "Italy",
-  "photo_url": "https://images.fotmob.com/image_resources/playerimages/300231.png",
-  "fotmob_id": 300231,
+  "bio_ko": "마이클 앨버트 스쿠발라는 잉글랜드 출신의 프로 축구 감독으로, 현재 EFL 챔피언십 소속 클럽인 브리스톨 시티의 감독을 맡고 있다.",
+  "wiki_title": "Michael Skubala",
+  "name": "Michael Skubala",
+  "nationality": "England",
+  "photo_url": "https://images.fotmob.com/image_resources/playerimages/1437592.png",
+  "fotmob_id": 1437592,
   "source": "fotmob",
   "bio_source": "en-wiki-translated",
-  "appointed_date": "2026-06-15",
+  "appointed_date": "2026-06-09",
+  "appointed_source": "fotmob"
+ },
+ "Cardiff City": {
+  "appointed": "Jun 2025",
+  "style": "",
+  "formation": "",
+  "focus": "",
+  "bio_ko": "브라이언 배리-머피는 아일랜드 출신의 프로 축구 감독이자 전 선수로, 현재 EFL 챔피언십 클럽 카디프 시티의 감독을 맡고 있다.",
+  "wiki_title": "Brian Barry-Murphy",
+  "name": "Brian Barry-Murphy",
+  "nationality": "Republic of Ireland",
+  "photo_url": "https://images.fotmob.com/image_resources/playerimages/24074.png",
+  "fotmob_id": 24074,
+  "source": "fotmob",
+  "bio_source": "en-wiki-translated",
+  "appointed_date": "2025-06-16",
   "appointed_source": "fotmob"
  },
  "Lincoln City": {
@@ -395,5 +379,12 @@
   "bio_source": "en-wiki-translated",
   "appointed_date": "2025-02-13",
   "appointed_source": "fotmob"
+ },
+ "Watford": {
+  "name": "",
+  "vacant": true,
+  "previous_name": "Alessio Dionisi",
+  "source": "fotmob",
+  "vacant_since": "2026-11-25"
  }
 }
