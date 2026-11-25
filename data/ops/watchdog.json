@@ -1,5 +1,5 @@
 {
- "checked": "2026-11-24T19:09:04+00:00",
+ "checked": "2026-11-25T18:14:30+00:00",
  "results": {
   "ovr": [],
   "season": [],
@@ -18,13 +18,15 @@
   ],
   "names": [],
   "xg": [],
-  "agents": [],
+  "agents": [
+   "SERVING · Ask Scout 답 평가 — 마지막 성공 198시간 전(허용 192시간, kg_reload)"
+  ],
   "expectations": [],
   "screen": [
    "season_log Seattle Sounders FC: Andrew Thomas 헤더 3150′ 0G 0A ≠ SEASON LOG 3060′ 0G 0A",
    "season_log Columbus Crew: Sean Zawadzki 헤더 3150′ 1G 1A ≠ SEASON LOG 3060′ 1G 1A",
-   "season_log St. Louis City: Timo Baumgartl 헤더 3150′ 1G 0A ≠ SEASON LOG 3060′ 1G 0A",
-   "season_log Portland Timbers: James Pantemis 헤더 3150′ 0G 0A ≠ SEASON LOG 3060′ 0G 0A"
+   "season_log Columbus Crew: Patrick Schulte 헤더 3150′ 0G 0A ≠ SEASON LOG 3060′ 0G 0A",
+   "season_log St. Louis City: Timo Baumgartl 헤더 3150′ 1G 0A ≠ SEASON LOG 3060′ 1G 0A"
   ],
   "squads": [],
   "identity": [],
@@ -32,7 +34,10 @@
   "progress": [
    "SerieA StatBunker 팀 통계(statbunker_team_stats) 늦음: 팀당 7경기분 · 일정 12경기(가운데 값 5경기 늦음)"
   ],
-  "digest": [],
+  "digest": [
+   "AI 주간 서술 낡음 1개 리그: AustrianBundesliga(2026-11-21) — src/ai_notes.py run_digest 검증·예산 확인"
+  ],
   "scout_answers": []
- }
+ },
+ "ai_cause": "- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(workflows) (추정)\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(ratings) (추정)\n- `match_refresh` 러너의 `understat_live` 단계에서 코드 75 실패가 반복 발생하여 서빙 평가에 지장이 생긴 것으로 보임(agents)\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(screen) (추정)\n- `match_refresh` 러너의 `understat_live` 단계에서 코드 75 실패가 반복 발생하여 통계 수집이 늦어진 것으로 보임(progress)\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(digest) (추정)"
 }
