@@ -46,6 +46,40 @@ def news_mtime() -> float:
     return _mtime(db_path("news_articles"))
 
 
+def news_articles(where: str = "", params=(), order: str = "", limit: int | None = None,
+                  cols: str = "*") -> pd.DataFrame | None:
+    """기사 표에서 필요한 줄만 SQL 로(뉴스 화면용 — 결과는 각 API 의 _memo 가 캐시). 표가 없으면 None.
+    read_table('news_articles') 는 최근 60일 기사 전체(7만 행·약 80MB)를 캐시에 올리고 부를 때마다 사본을 하나 더 만들어,
+    운영 서버(512MB)에서 뉴스 화면 한 번에 +160MB 였다(2026-11-26 메모리 초과 재시작 점검).
+    where 에 '{vals}' 를 쓰면 params(링크 등 긴 목록)를 900개씩 나눠 IN 으로 읽어 붙인다 — 이때 정렬·자르기는 호출부가."""
+    path = db_path("news_articles")
+    if not path.exists():
+        return None
+    try:
+        conn = sqlite3.connect(f"file:{path}?mode=ro", uri=True)
+    except sqlite3.Error:
+        return None
+    try:
+        if not _table_exists(conn, "news_articles"):
+            return None
+        tail = (f" ORDER BY {order}" if order else "") + (f" LIMIT {int(limit)}" if limit else "")
+        base = f"SELECT {cols} FROM news_articles"
+        if "{vals}" in where:          # 조각을 합친 뒤 표 순서(rowid)로 — 전체를 읽던 때와 같은 순서(동점 정렬이 같게)
+            vals = [str(x) for x in params]
+            rid = f"SELECT rowid AS _rowid_, {cols} FROM news_articles WHERE "
+            parts = [pd.read_sql(rid + where.format(vals=",".join("?" * len(ch))), conn, params=ch)
+                     for ch in (vals[i:i + 900] for i in range(0, len(vals), 900))]
+            if not parts:
+                return pd.read_sql(base + " WHERE 0", conn)
+            return (pd.concat(parts, ignore_index=True).drop_duplicates("_rowid_").sort_values("_rowid_")
+                    .drop(columns="_rowid_").reset_index(drop=True))
+        return pd.read_sql(base + (f" WHERE {where}" if where else "") + tail, conn, params=list(params))
+    except (sqlite3.Error, pd.errors.DatabaseError):
+        return None
+    finally:
+        conn.close()
+
+
 def forget(tables) -> int:
     """이 표들의 읽기 캐시를 버린다 — 실행 중 뉴스를 갈아 끼운 뒤 옛 사본(수십 MB)이 LRU 로 밀려날 때까지 남지 않게."""
     tables = set(tables)
