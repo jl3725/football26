@@ -1,7 +1,7 @@
 {
- "date": "2026-11-24",
+ "date": "2026-11-25",
  "model": "v3.18",
- "players": 6966,
+ "players": 6967,
  "golden": [],
  "scout": [
   {
@@ -97,10 +97,11 @@
  ],
  "audit": {
   "rise": {
-   "n": 7,
+   "n": 8,
    "limit": 25,
    "desc": "지난 시즌(1,500분+) 대비 +6 이상인데 이번 시즌 평점(7.2+·450분+)이 받쳐 주지 않는 급등",
    "examples": [
+    "Luis Milla(Como, 32) 78 ← 72",
     "Nobel Mendy(Hull City, 22) 74 ← 68",
     "Tibe De Vlieger(Gent, 21) 70 ← 62",
     "Aske Adelgaard(Twente, 23) 65 ← 56",

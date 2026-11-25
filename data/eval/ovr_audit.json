@@ -1,12 +1,12 @@
 {
- "date": "2026-11-25",
+ "date": "2026-11-26",
  "model": "v3.18",
- "checked": 53111,
+ "checked": 53125,
  "mismatches": [],
  "leagues": {
   "EPL": {
    "teams": 20,
-   "checked": 3676,
+   "checked": 3677,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -30,7 +30,7 @@
   },
   "Bundesliga": {
    "teams": 18,
-   "checked": 3349,
+   "checked": 3350,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -38,7 +38,7 @@
   },
   "Championship": {
    "teams": 24,
-   "checked": 5097,
+   "checked": 5112,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -62,7 +62,7 @@
   },
   "LaLiga": {
    "teams": 20,
-   "checked": 3868,
+   "checked": 3867,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -77,11 +77,11 @@
    "changes_top": [
     {
      "team": "Santa Clara",
-     "player": "Frederico Silva",
-     "from": 52,
-     "to": 50,
-     "d": -2,
-     "since": "2026-11-25",
+     "player": "Henrique Silva",
+     "from": 50,
+     "to": 52,
+     "d": 2,
+     "since": "2026-11-26",
      "model_change": false
     }
    ]
@@ -104,7 +104,7 @@
   },
   "SerieA": {
    "teams": 20,
-   "checked": 3883,
+   "checked": 3878,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
@@ -112,7 +112,7 @@
   },
   "SuperLig": {
    "teams": 18,
-   "checked": 3708,
+   "checked": 3711,
    "mismatches": 0,
    "changed": 0,
    "model_changed": 0,
