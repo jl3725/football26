@@ -3499,10 +3499,9 @@ def transfers(team: str, league: str = ACTIVE_LEAGUE, window: str = "current"):
 @app.get("/api/news/{team}")
 @_memo(ttl=21600, news=True)
 def news(team: str, league: str = ACTIVE_LEAGUE):
-    na = ds.read_table("news_articles", league=league)
-    if na is None:
+    ta = ds.news_articles("team = ?", (team,))           # 이 팀 기사만 SQL 로(전체 7만 행을 올리지 않게, 2026-11-26)
+    if ta is None:
         return {"team": team, "color": tm.team_color(team), "articles": []}
-    ta = na[na["team"] == team].copy()
     if "published" in ta.columns:
         ta = ta.sort_values("published", ascending=False)
     today = str(datetime.date.today())
@@ -3628,14 +3627,17 @@ def _news_tags_any_league(links: list[str]) -> dict:
 @_memo(ttl=3600, news=True)
 def news_player(player: str, club: str = "", league: str = ACTIVE_LEAGUE, limit: int = 8):
     """선수가 나온 최근 기사(news.db 선수 태그 — 이름 전체, 또는 성 + 같은 기사 속 클럽 이름)."""
-    tags, na = ds.read_table("news_players", league=league), ds.read_table("news_articles", league=league)
-    if tags is None or na is None or tags.empty:
+    tags = ds.read_table("news_players", league=league)
+    if tags is None or tags.empty:
         return {"player": player, "articles": []}
     t = tags[(tags["player"] == player) & ((tags["squad"] == club) if club else True)]
     if t.empty:
         return {"player": player, "articles": []}
     how = dict(zip(t["link"].astype(str), t["how"].astype(str)))
-    a = na[na["link"].astype(str).isin(how)].sort_values(["published", "first_seen"], ascending=False)
+    na = ds.news_articles("link IN ({vals})", list(how))   # 태그 붙은 기사만(SQL)
+    if na is None:
+        return {"player": player, "articles": []}
+    a = na.sort_values(["published", "first_seen"], ascending=False)
     a = a.drop_duplicates("link").head(max(1, min(limit, 20)))
     out = [{"headline": str(r.get("headline_ko") or r.get("headline") or ""), "headline_en": str(r.get("headline") or ""),
             "source": str(r.get("source") or ""), "published": str(r.get("published") or ""), "link": str(r.get("link") or ""),
@@ -6516,15 +6518,14 @@ def home(league: str = ACTIVE_LEAGUE):
                 })
     changes.sort(key=lambda x: x["changed_at"], reverse=True)
 
-    na = ds.read_table("news_articles", league=league)
+    # news_articles 는 전 리그 통합 테이블 → 이 리그 소속 팀 기사만 (EPL/LaLiga 혼입 방지) — 최근 것부터 SQL 로 몇백 건만
+    _stn = ds.read_table("standings", league=league)
+    lg_teams = sorted(set(_stn["squad"].astype(str))) if _stn is not None and "squad" in _stn.columns else []
+    na = ds.news_articles(f"team IN ({','.join('?' * len(lg_teams))})" if lg_teams else "", lg_teams,
+                          order="published DESC, rowid", limit=500)
     news_out, seen = [], set()
     if na is not None:
-        # news_articles 는 전 리그 통합 테이블 → 이 리그 소속 팀 기사만 (EPL/LaLiga 혼입 방지)
-        _stn = ds.read_table("standings", league=league)
-        lg_teams = set(_stn["squad"].astype(str)) if _stn is not None and "squad" in _stn.columns else set()
-        if lg_teams and "team" in na.columns:
-            na = na[na["team"].astype(str).isin(lg_teams)]
-        nn = na.sort_values("published", ascending=False) if "published" in na.columns else na
+        nn = na.sort_values("published", ascending=False, kind="stable") if "published" in na.columns else na
         for _, r in nn.iterrows():
             h = str(r.get("headline_ko") or r.get("headline") or "")
             if not h or h in seen:
@@ -7886,10 +7887,10 @@ def digest(league: str = ACTIVE_LEAGUE, days: int = 7):
                        "n_new": len(new_inj), "n_back": len(back)}
 
     # 3) 뉴스 언급 — 이번 주 기사(처음 수집일 기준)에 가장 많이 나온 선수(뉴스 선수 태그)
-    tags, na = ds.read_table("news_players", league=league), ds.read_table("news_articles", league=league)
+    tags, na = ds.read_table("news_players", league=league), ds.news_articles("first_seen >= ?", (since,), cols="link")
     buzz = []
     if tags is not None and na is not None and not tags.empty:
-        recent = set(na.loc[na["first_seen"].astype(str) >= since, "link"].astype(str))
+        recent = set(na["link"].astype(str))
         t = tags[tags["link"].astype(str).isin(recent)].drop_duplicates(["link", "player", "squad"])
         for (pl, sq), n in t.groupby(["player", "squad"]).size().sort_values(ascending=False).head(6).items():
             buzz.append({"player": pl, "squad": sq, "articles": int(n), "ovr": ovr.get((str(sq), ps.norm_name(pl)))})
