@@ -1,61 +1,5 @@
 {
  "reports": {
-  "401885414": {
-   "text": "Benfica가 Santa Clara를 상대로 2-1 역전승을 거두며 승점 3점을 획득했다. 전반 32' Fernando가 페널티킥으로 선제골을 넣었으나, 후반 62' Vangelis Pavlidis의 동점골과 68' Gianluca Prestianni의 역전골이 터지며 경기가 뒤집혔고 후반 90'+6'에는 Benfica의 Jhon Durán이 퇴장당했다. 점유율은 Benfica가 61.1%로 우세했으나 유효 슈팅은 Santa Clara가 6개로 Benfica의 3개보다 많았다. 경기 전 팬 투표와 모델, Elo 예측 모두 Benfica의 승리를 점쳤으며 결과적으로 이 예측들은 적중했다.",
-   "date": "2026-10-26",
-   "home": "Santa Clara",
-   "away": "Benfica",
-   "at": "2026-10-26T21:16:31+00:00",
-   "model": "gemini-3.1-flash-lite"
-  },
-  "5904782": {
-   "text": "Galatasaray가 Fenerbahçe를 상대로 2-1 승리를 거두며 경기를 마무리했다. 결정적 장면으로는 Galatasaray의 Victor Osimhen이 29'과 44'에 연속 골을 터뜨렸고, Fenerbahçe는 62'에 Irfan Can Kahveci가 득점했다. 경기 내용에서는 점유율 61.7%-38.3%, 슈팅 23-4, 유효 슈팅 8-3으로 Galatasaray가 앞섰다. 사전에 모델과 Elo가 예측했던 Galatasaray 승리가 적중했다.",
-   "date": "2026-10-26",
-   "home": "Galatasaray",
-   "away": "Fenerbahçe",
-   "at": "2026-10-26T21:16:39+00:00",
-   "model": "gemini-flash-lite-latest"
-  },
-  "5739530": {
-   "text": "FC København과 OB의 경기는 1대1 무승부로 끝났다. 전반 34분 OB의 Noah Ganaus가 득점했으나, 후반 77분 FC København의 Birger Meling이 동점골을 넣었다. 경기에서 FC København은 점유율 68대 32, 슈팅 22대 7로 경기를 주도했으나 승리를 거두지 못했다. 사전에 FC København의 승리를 예상했던 모델과 Elo의 예측은 빗나갔다.",
-   "date": "2026-10-26",
-   "home": "FC København",
-   "away": "OB",
-   "at": "2026-10-26T21:16:46+00:00",
-   "model": "gemini-flash-lite-latest"
-  },
-  "5904783": {
-   "text": "Beşiktaş가 Başakşehir를 상대로 2-0 승리를 거뒀다. 76'에 Oh Hyeon-Gyu의 결승골이 터졌고, 89'에는 Junior Olaitan이 득점을 추가했다. 점유율 65.2% 대 34.8%, 슈팅 17-9 등 Beşiktaş가 경기 내용을 압도했다. 모델과 Elo의 Beşiktaş 승리 예측은 적중했다.",
-   "date": "2026-10-26",
-   "home": "Beşiktaş",
-   "away": "Başakşehir",
-   "at": "2026-10-26T21:16:54+00:00",
-   "model": "gemini-flash-lite-latest"
-  },
-  "5904779": {
-   "text": "Trabzonspor가 Rizespor와의 경기에서 4-3으로 역전승을 거뒀다. 전반전을 Rizespor가 2-0으로 앞섰으나, Trabzonspor는 49' Melih Kabasakal, 51' Aral Simsir, 57' Franculino Djú의 연속골로 경기를 뒤집은 뒤 68' Qazim Laçi에게 실점했으나 83' Franculino Djú의 결승골로 승리했다. 슈팅 수 14-9, 유효 슈팅 7-6, 패스 성공률 90% 대 80%로 Trabzonspor가 기록 면에서도 우위를 보였다. 경기 전 Trabzonspor의 승리를 점쳤던 모델과 Elo의 예측은 적중했다.",
-   "date": "2026-10-26",
-   "home": "Rizespor",
-   "away": "Trabzonspor",
-   "at": "2026-10-26T21:17:03+00:00",
-   "model": "gemini-flash-lite-latest"
-  },
-  "401876422": {
-   "text": "PSG가 Lyon을 상대로 2-0 승리를 거뒀다. 후반 72분 Mika Godts의 도움을 받은 Senny Mayulu의 결승골과 84분 Quentin Ndjantou의 도움으로 기록된 Mika Godts의 추가골이 터졌다. 점유율 68.3대 31.7, 슈팅 17대 8, 유효 슈팅 10대 5로 나타났듯이 PSG가 기록 비교에서 경기를 압도했다. 팬 투표와 모델, Elo의 사전 예측 모두 PSG 승리를 정확히 맞췄다.",
-   "date": "2026-10-26",
-   "home": "PSG",
-   "away": "Lyon",
-   "at": "2026-10-26T22:08:12+00:00",
-   "model": "gemini-flash-lite-latest"
-  },
-  "401882828": {
-   "text": "Sevilla가 Osasuna를 상대로 2-0 승리를 거뒀다. 전반 24'에 Youssouf Fofana의 도움을 받은 Isaac Romero가 결승골을 넣었고, 82'에는 Felix Correia가 Youssouf Fofana의 도움으로 추가골을 기록했다. 경기 기록 비교에서 슈팅 17-10, 유효 슈팅 7-2로 Sevilla가 앞섰으며 점유율은 Osasuna가 55.3%로 높았다. 팬 투표, 모델, Elo의 사전 예측은 모두 Sevilla 승리로 적중했다.",
-   "date": "2026-10-26",
-   "home": "Sevilla",
-   "away": "Osasuna",
-   "at": "2026-10-26T22:34:10+00:00",
-   "model": "gemini-flash-lite-latest"
-  },
   "401917028": {
    "text": "Augsburg가 DFB-포칼 경기에서 SG SONNENHOF GROßASPACH SONNENHOF GROßASPACH를 4-2로 꺾고 승리를 거뒀다. 전반 13'와 21'에 터진 Rodrigo Ribeiro의 멀티 골로 앞서 나간 Augsburg는 Luca Molinari와 Volkan Celiktas에게 실점하며 동점을 허용했으나, 69' Arijon Ibrahimovic의 결승 골과 74' Anton Kade의 추가 골로 승부를 결정지었다. Augsburg는 점유율 60%와 슈팅 19개, 유효 슈팅 9개를 기록하며 경기 내용 면에서 SG SONNENHOF GROßASPACH SONNENHOF GROßASPACH를 압도했다.",
    "date": "2026-10-27",
@@ -4354,6 +4298,24 @@
    "home": "San Jose Earthquakes",
    "away": "Houston Dynamo FC",
    "at": "2026-11-25T05:48:05+00:00",
+   "model": "gemini-flash-lite-latest",
+   "v": 2
+  },
+  "401915378": {
+   "text": "Barcelona가 Sabah FK를 상대로 4-1 승리를 거두며 5연승과 함께 1위를 유지했다. 결정적 장면에선 Barcelona의 Anthony Gordon이 31'와 51'에 골을 넣었고, 55'에 Karim Adeyemi가 Alejandro Balde의 도움으로 득점했으며, 60'에는 Gabriel Jesus가 골을 더했다. Sabah FK는 63'에 Christian Nwachukwu의 도움을 받아 Joy-Lance Mickels가 득점했다. 경기 내용 면에서는 Barcelona가 점유율 71.6% 대 28.4%, 슈팅 25-8, 유효 슈팅 14-3으로 압도했다. Barcelona는 Lamine Yamal, Rodri, Fermin López가 결장했다.",
+   "date": "2026-11-25",
+   "home": "Sabah FK",
+   "away": "Barcelona",
+   "at": "2026-11-25T20:24:34+00:00",
+   "model": "gemini-flash-lite-latest",
+   "v": 2
+  },
+  "401915293": {
+   "text": "Villarreal이 챔피언스리그 경기에서 Slavia Prague를 상대로 1-0 승리를 거뒀다. 62'에 Ayoze Pérez의 도움을 받아 Tajon Buchanan이 결승골을 터뜨렸다. Slavia Prague가 점유율 51.9% 대 48.1%, 슈팅 13대 7로 앞섰으나 유효 슈팅은 1대 5로 Villarreal이 우세했다. Villarreal에서는 Nicolas Pépé와 Juan Foyth가 결장했다.",
+   "date": "2026-11-25",
+   "home": "Slavia Prague",
+   "away": "Villarreal",
+   "at": "2026-11-25T20:24:45+00:00",
    "model": "gemini-flash-lite-latest",
    "v": 2
   }
