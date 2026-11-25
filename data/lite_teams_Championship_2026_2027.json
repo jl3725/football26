@@ -11,14 +11,6 @@
    "tm_slug": "fc-middlesbrough",
    "tm_name": "Middlesbrough"
   },
-  "Wolves": {
-   "fotmob_id": 8602,
-   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8602.png",
-   "color": "#e89700",
-   "tm_vid": 543,
-   "tm_slug": "wolverhampton-wanderers",
-   "tm_name": "Wolves"
-  },
   "Stoke City": {
    "fotmob_id": 10194,
    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/10194.png",
@@ -26,6 +18,14 @@
    "tm_vid": 512,
    "tm_slug": "stoke-city",
    "tm_name": "Stoke City"
+  },
+  "Wolves": {
+   "fotmob_id": 8602,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8602.png",
+   "color": "#e89700",
+   "tm_vid": 543,
+   "tm_slug": "wolverhampton-wanderers",
+   "tm_name": "Wolves"
   },
   "Birmingham City": {
    "fotmob_id": 8658,
@@ -91,14 +91,6 @@
    "tm_slug": "norwich-city",
    "tm_name": "Norwich City"
   },
-  "West Ham United": {
-   "fotmob_id": 8654,
-   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8654.png",
-   "color": "#7B2B3A",
-   "tm_vid": 379,
-   "tm_slug": "west-ham-united",
-   "tm_name": "West Ham United"
-  },
   "Blackburn Rovers": {
    "fotmob_id": 8655,
    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8655.png",
@@ -106,6 +98,14 @@
    "tm_vid": 164,
    "tm_slug": "blackburn-rovers",
    "tm_name": "Blackburn Rovers"
+  },
+  "West Ham United": {
+   "fotmob_id": 8654,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8654.png",
+   "color": "#7B2B3A",
+   "tm_vid": 379,
+   "tm_slug": "west-ham-united",
+   "tm_name": "West Ham United"
   },
   "Wrexham": {
    "fotmob_id": 9841,
@@ -123,22 +123,6 @@
    "tm_slug": "charlton-athletic",
    "tm_name": "Charlton Athletic"
   },
-  "Millwall": {
-   "fotmob_id": 10004,
-   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/10004.png",
-   "color": "#003078",
-   "tm_vid": 1028,
-   "tm_slug": "fc-millwall",
-   "tm_name": "Millwall"
-  },
-  "Bolton Wanderers": {
-   "fotmob_id": 8559,
-   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8559.png",
-   "color": "#313453",
-   "tm_vid": 355,
-   "tm_slug": "bolton-wanderers",
-   "tm_name": "Bolton Wanderers"
-  },
   "Bristol City": {
    "fotmob_id": 8427,
    "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8427.png",
@@ -154,6 +138,22 @@
    "tm_vid": 603,
    "tm_slug": "cardiff-city",
    "tm_name": "Cardiff City"
+  },
+  "Millwall": {
+   "fotmob_id": 10004,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/10004.png",
+   "color": "#003078",
+   "tm_vid": 1028,
+   "tm_slug": "fc-millwall",
+   "tm_name": "Millwall"
+  },
+  "Bolton Wanderers": {
+   "fotmob_id": 8559,
+   "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8559.png",
+   "color": "#313453",
+   "tm_vid": 355,
+   "tm_slug": "bolton-wanderers",
+   "tm_name": "Bolton Wanderers"
   },
   "Watford": {
    "fotmob_id": 9817,
