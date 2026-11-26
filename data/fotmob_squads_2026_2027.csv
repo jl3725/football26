@@ -12,8 +12,8 @@ Arsenal,Ezri Konsa,710159,defenders,CB,Centre-Back,DF,29,1997-10-23,15.0,ENG,Fal
 Arsenal,Riccardo Calafiori,1105912,defenders,"LB,CB",Left-Back,DF,24,2002-05-19,33.0,ITA,False,,2026-11-26
 Arsenal,Martin Ødegaard,534670,midfielders,"CM,CAM",Central Midfield,MF,27,1998-12-17,8.0,NOR,False,,2026-11-26
 Arsenal,Eberechi Eze,818975,midfielders,"CAM,LW,CM,CDM",Attacking Midfield,MF,28,1998-06-29,10.0,ENG,False,,2026-11-26
-Arsenal,Mikel Merino,574645,midfielders,"CM,ST,CDM,CAM",Central Midfield,MF,30,1996-06-22,23.0,ESP,False,,2026-11-26
-Arsenal,Martín Zubimendi,1031325,midfielders,"CDM,CM,RB",Defensive Midfield,MF,27,1999-02-02,36.0,ESP,True,Early December 2026,2026-11-26
+Arsenal,Mikel Merino,574645,midfielders,"CM,ST,CAM,CDM",Central Midfield,MF,30,1996-06-22,23.0,ESP,False,,2026-11-26
+Arsenal,Martín Zubimendi,1031325,midfielders,"CM,CDM,RB",Central Midfield,MF,27,1999-02-02,36.0,ESP,True,Early December 2026,2026-11-26
 Arsenal,Bruno Guimarães,850354,midfielders,"CM,CDM,CAM",Central Midfield,MF,29,1997-11-16,39.0,BRA,False,,2026-11-26
 Arsenal,Declan Rice,654096,midfielders,"CDM,CM",Defensive Midfield,MF,27,1999-01-14,41.0,ENG,False,,2026-11-26
 Arsenal,Myles Lewis-Skelly,1406436,midfielders,"CDM,LB,CM",Defensive Midfield,MF,20,2006-09-26,49.0,ENG,False,,2026-11-26
@@ -63,7 +63,7 @@ Manchester City,Joško Gvardiol,1070712,defenders,"LB,CB",Left-Back,DF,24,2002-0
 Manchester City,Matheus Nunes,955529,defenders,RB,Right-Back,DF,28,1998-08-27,27.0,POR,False,,2026-11-26
 Manchester City,Nico O'Reilly,1300526,defenders,"LB,CDM,LW,CAM",Left-Back,DF,21,2005-03-21,33.0,ENG,False,,2026-11-26
 Manchester City,Abdukodir Khusanov,1362998,defenders,"CB,RB",Centre-Back,DF,22,2004-02-29,45.0,UZB,False,,2026-11-26
-Manchester City,Rico Lewis,1288450,defenders,"RB,CM",Right-Back,DF,22,2004-11-21,82.0,ENG,False,,2026-11-26
+Manchester City,Rico Lewis,1288450,defenders,RB,Right-Back,DF,22,2004-11-21,82.0,ENG,False,,2026-11-26
 Manchester City,Josh Wilson-Esbrand,1187225,defenders,LB,Left-Back,DF,23,2002-12-26,97.0,ENG,False,,2026-11-26
 Manchester City,Elliot Anderson,1089691,midfielders,"CDM,CM",Defensive Midfield,MF,24,2002-11-06,5.0,ENG,False,,2026-11-26
 Manchester City,Mateo Kovačić,239219,midfielders,"CDM,CAM",Defensive Midfield,MF,32,1994-05-06,8.0,CRO,False,,2026-11-26
@@ -208,7 +208,7 @@ Chelsea,Morgan Rogers,883080,midfielders,"CAM,LW,RW,ST",Attacking Midfield,MF,24
 Chelsea,Reece James,807729,midfielders,"CDM,RB",Defensive Midfield,MF,26,1999-12-08,24.0,ENG,True,Mid January 2027,2026-11-26
 Chelsea,Moisés Caicedo,1137668,midfielders,"CDM,CM",Defensive Midfield,MF,25,2001-11-02,25.0,ECU,True,Early December 2026,2026-11-26
 Chelsea,Roméo Lavia,1190867,midfielders,"CDM,CM",Defensive Midfield,MF,22,2004-01-06,45.0,BEL,False,,2026-11-26
-Chelsea,Pedro Neto,843040,attackers,"RW,LW,RWB,ST,CAM,RM",Right Winger,FW,26,2000-03-09,7.0,POR,False,,2026-11-26
+Chelsea,Pedro Neto,843040,attackers,"RW,LW,RWB,CAM,RM,ST",Right Winger,FW,26,2000-03-09,7.0,POR,False,,2026-11-26
 Chelsea,João Pedro,1021382,attackers,"ST,CAM",Centre-Forward,FW,25,2001-09-26,9.0,BRA,True,Late November 2026,2026-11-26
 Chelsea,Jamie Gittens,1113692,attackers,"LW,RW,LM",Left Winger,FW,22,2004-08-08,11.0,ENG,True,Back in training,2026-11-26
 Chelsea,Danny Welbeck,113836,attackers,ST,Centre-Forward,FW,36,1990-11-26,18.0,ENG,False,,2026-11-26
@@ -284,7 +284,7 @@ Hull City,Jens Hjertø-Dahl,1377949,midfielders,"CM,CAM",Central Midfield,MF,21,
 Hull City,Brooke Norton-Cuffy,1214915,midfielders,"RM,LWB,RWB",Right Midfield,MF,22,2004-01-12,18.0,ENG,False,,2026-11-26
 Hull City,Óscar Zambrano,1356264,midfielders,CDM,Defensive Midfield,MF,22,2004-04-20,20.0,ECU,False,,2026-11-26
 Hull City,Elliot Stroud,1272349,midfielders,"LM,LW,LWB,LB",Left Midfield,MF,24,2002-06-22,21.0,SWE,False,,2026-11-26
-Hull City,Darko Gyabi,1125874,midfielders,"CAM,CM,CDM",Attacking Midfield,MF,22,2004-02-18,24.0,ENG,False,,2026-11-26
+Hull City,Darko Gyabi,1125874,midfielders,"CM,CDM,CAM",Central Midfield,MF,22,2004-02-18,24.0,ENG,False,,2026-11-26
 Hull City,Matt Crooks,280507,midfielders,"CDM,CM,CAM,ST",Defensive Midfield,MF,32,1994-01-20,25.0,ENG,False,,2026-11-26
 Hull City,Kieran Dowell,605262,midfielders,CAM,Attacking Midfield,MF,29,1997-10-10,26.0,ENG,False,,2026-11-26
 Hull City,Regan Slater,807930,midfielders,"CDM,CM",Defensive Midfield,MF,27,1999-09-11,27.0,ENG,False,,2026-11-26

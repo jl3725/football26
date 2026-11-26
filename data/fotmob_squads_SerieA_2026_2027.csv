@@ -104,7 +104,7 @@ Milan,Luka Modrić,31097,midfielders,"CM,CDM",Central Midfield,MF,41,1985-09-09,
 Milan,Samuel Chukwueze,688300,midfielders,"LW,RWB,RM,RW",Left Winger,MF,27,1999-05-22,21.0,NGA,True,Mid January 2027,2026-11-26
 Milan,Christian Comotto,1787535,midfielders,"CM,CDM",Central Midfield,MF,18,2008-04-25,28.0,ITA,False,,2026-11-26
 Milan,Ardon Jashari,1163219,midfielders,"CM,CDM",Central Midfield,MF,24,2002-07-30,30.0,SUI,False,,2026-11-26
-Milan,Davide Bartesaghi,1385856,midfielders,"LM,LWB,LB,CB",Left Midfield,MF,20,2005-12-29,33.0,ITA,True,Early December 2026,2026-11-26
+Milan,Davide Bartesaghi,1385856,midfielders,"LM,LWB,LB,CB",Left Midfield,MF,20,2005-12-29,33.0,ITA,True,Doubtful,2026-11-26
 Milan,Luca Menon,2412013,midfielders,,Central Midfield,MF,17,2009-03-07,49.0,ITA,False,,2026-11-26
 Milan,Alexis Saelemaekers,921341,midfielders,"RM,RW,CAM",Right Midfield,MF,27,1999-06-27,56.0,BEL,True,Mid January 2027,2026-11-26
 Milan,Alphadjo Cissè,1445650,midfielders,"CAM,CM,ST",Attacking Midfield,MF,20,2006-10-22,70.0,ITA,False,,2026-11-26
@@ -115,7 +115,7 @@ Milan,Christian Pulisic,688295,attackers,"ST,LW,CAM",Centre-Forward,FW,28,1998-0
 Milan,Omari Hutchinson,1215652,attackers,"RW,RM,CAM,LW",Right Winger,FW,23,2003-10-30,20.0,ENG,False,,2026-11-26
 Milan,Diego Moreira,1342754,attackers,"RW,RWB,LM,RM,LWB",Right Winger,FW,22,2004-08-06,22.0,BEL,False,,2026-11-26
 Milan,Cheveyo Mul-Balentien,1794177,attackers,,Centre-Forward,FW,19,2006-12-18,25.0,SUR,False,,2026-11-26
-Milan,Francesco Camarda,1554575,attackers,ST,Centre-Forward,FW,18,2008-03-10,73.0,ITA,True,About 1-2 weeks,2026-11-26
+Milan,Francesco Camarda,1554575,attackers,ST,Centre-Forward,FW,18,2008-03-10,73.0,ITA,True,Doubtful,2026-11-26
 Como,Jean Butez,560939,keepers,GK,Goalkeeper,GK,31,1995-06-08,1.0,FRA,False,,2026-11-26
 Como,Lorenzo Luigi Ginelli,2209768,keepers,,Goalkeeper,GK,17,2009-08-20,12.0,ITA,False,,2026-11-26
 Como,Mauro Vigorito,111741,keepers,GK,Goalkeeper,GK,36,1990-05-22,22.0,ITA,False,,2026-11-26
@@ -246,7 +246,7 @@ Bologna,Torbjørn Heggem,935550,defenders,CB,Centre-Back,DF,27,1999-01-12,14.0,N
 Bologna,Nicolò Casale,814398,defenders,CB,Centre-Back,DF,28,1998-02-14,16.0,ITA,False,,2026-11-26
 Bologna,Nadir Zortea,1080669,defenders,"RB,RM,RWB",Right-Back,DF,27,1999-06-19,20.0,ITA,False,,2026-11-26
 Bologna,Rahim Alhassane,1333066,defenders,LB,Left-Back,DF,24,2002-01-01,23.0,NIG,False,,2026-11-26
-Bologna,Lorenzo De Silvestri,25587,defenders,RB,Right-Back,DF,38,1988-05-23,29.0,ITA,False,,2026-11-26
+Bologna,Lorenzo De Silvestri,25587,defenders,RB,Right-Back,DF,38,1988-05-23,29.0,ITA,True,About 1-2 weeks,2026-11-26
 Bologna,Juan Miranda,873956,defenders,"LB,LM,LWB",Left-Back,DF,26,2000-01-19,33.0,ESP,True,Doubtful,2026-11-26
 Bologna,Matteo Darmian,46820,defenders,"CB,RM",Centre-Back,DF,36,1989-12-02,36.0,ITA,False,,2026-11-26
 Bologna,Martin Vitík,1198712,defenders,CB,Centre-Back,DF,23,2003-01-21,41.0,CZE,False,,2026-11-26
@@ -262,7 +262,7 @@ Bologna,Riccardo Orsolini,661761,attackers,RW,Right Winger,FW,29,1997-01-24,7.0,
 Bologna,Artem Dovbyk,655696,attackers,ST,Centre-Forward,FW,29,1997-06-21,9.0,UKR,False,,2026-11-26
 Bologna,Federico Bernardeschi,414245,attackers,"RW,LW,CAM",Right Winger,FW,32,1994-02-16,10.0,ITA,False,,2026-11-26
 Bologna,Jay Enem,1344246,attackers,ST,Centre-Forward,FW,23,2003-03-11,22.0,NED,True,Doubtful,2026-11-26
-Bologna,Nicolò Cambiaghi,1044029,attackers,"LW,CAM",Left Winger,FW,25,2000-12-28,28.0,ITA,False,,2026-11-26
+Bologna,Nicolò Cambiaghi,1044029,attackers,"LW,CAM,LM",Left Winger,FW,25,2000-12-28,28.0,ITA,False,,2026-11-26
 Bologna,Simone Negri,1896939,attackers,,Centre-Forward,FW,18,2007-12-05,74.0,ITA,False,,2026-11-26
 Bologna,Roberto Piccoli,1017401,attackers,ST,Centre-Forward,FW,25,2001-01-27,91.0,ITA,False,,2026-11-26
 Genoa,Justin Bijlow,721533,keepers,GK,Goalkeeper,GK,28,1998-01-22,1.0,NED,False,,2026-11-26
@@ -414,7 +414,7 @@ Monza,Mathis Mout,1879542,midfielders,"CM,CDM",Central Midfield,MF,19,2007-08-06
 Monza,Michael Folorunsho,822440,midfielders,"CDM,CM,ST",Defensive Midfield,MF,28,1998-02-07,90.0,ITA,True,Early December 2026,2026-11-26
 Monza,Gustavo Varela,1585676,attackers,ST,Centre-Forward,FW,21,2005-01-30,9.0,POR,False,,2026-11-26
 Monza,Patrick Cutrone,639671,attackers,"ST,CAM",Centre-Forward,FW,28,1998-01-03,10.0,ITA,False,,2026-11-26
-Monza,Cyril Ngonge,994403,attackers,"RM,ST,RW,CAM",Right Midfield,FW,26,2000-05-26,16.0,BEL,True,Doubtful,2026-11-26
+Monza,Cyril Ngonge,994403,attackers,"RW,ST,CAM",Right Winger,FW,26,2000-05-26,16.0,BEL,True,Doubtful,2026-11-26
 Monza,Exequiel Zeballos,1110044,attackers,"LW,LM,CAM",Left Winger,FW,24,2002-04-24,22.0,ARG,False,,2026-11-26
 Monza,Dany Mota,737339,attackers,"ST,CAM",Centre-Forward,FW,28,1998-05-02,47.0,POR,False,,2026-11-26
 Monza,Kevin Martins,1682864,attackers,RWB,Right-Back,FW,21,2005-01-31,70.0,ITA,False,,2026-11-26
@@ -593,7 +593,7 @@ Venezia,Ale Gomes,1842921,defenders,"RB,CB",Right-Back,DF,18,2008-02-14,95.0,ESP
 Venezia,Ridgeciano Haps,414232,midfielders,"LM,CB",Left Midfield,MF,33,1993-06-12,5.0,SUR,False,,2026-11-26
 Venezia,Gianluca Busio,924431,midfielders,CM,Central Midfield,MF,24,2002-05-28,6.0,USA,False,,2026-11-26
 Venezia,Lamine Fanne,1460862,midfielders,"CDM,CAM,CM",Defensive Midfield,MF,22,2004-01-30,8.0,ESP,False,,2026-11-26
-Venezia,Antoine Hainaut,1290968,midfielders,RM,Right Midfield,MF,24,2002-02-18,18.0,FRA,False,,2026-11-26
+Venezia,Antoine Hainaut,1290968,midfielders,"RM,LM",Right Midfield,MF,24,2002-02-18,18.0,FRA,False,,2026-11-26
 Venezia,Simon Sohm,975242,midfielders,"CM,CAM,CDM",Central Midfield,MF,25,2001-04-11,19.0,SUI,False,,2026-11-26
 Venezia,Richie Sagrado,1388039,midfielders,LM,Left Midfield,MF,22,2004-01-30,20.0,BEL,False,,2026-11-26
 Venezia,Thórir Helgason,939593,midfielders,CM,Central Midfield,MF,26,2000-09-28,21.0,ISL,False,,2026-11-26
