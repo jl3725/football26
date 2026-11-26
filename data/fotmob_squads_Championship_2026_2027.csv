@@ -28,7 +28,7 @@ Middlesbrough,Kyle Joseph,1184465,attackers,"ST,RW,LW,CAM",Centre-Forward,FW,25,
 Stoke City,Viktor Johansson,546252,keepers,GK,Goalkeeper,GK,28,1998-09-14,1.0,SWE,False,,2026-11-26
 Stoke City,Joshua Griffiths,969252,keepers,GK,Goalkeeper,GK,25,2001-09-05,24.0,ENG,False,,2026-11-26
 Stoke City,Frank Fielding,95323,keepers,GK,Goalkeeper,GK,38,1988-04-04,34.0,ENG,False,,2026-11-26
-Stoke City,Aaron Cresswell,155782,defenders,"LB,CB",Left-Back,DF,36,1989-12-15,3.0,ENG,True,Doubtful,2026-11-26
+Stoke City,Aaron Cresswell,155782,defenders,"LB,CB",Left-Back,DF,36,1989-12-15,3.0,ENG,False,,2026-11-26
 Stoke City,Luke Graham,1410414,defenders,CB,Centre-Back,DF,22,2004-02-11,5.0,SCO,False,,2026-11-26
 Stoke City,Ben Wilmot,798603,defenders,"CB,RB",Centre-Back,DF,27,1999-11-04,16.0,ENG,False,,2026-11-26
 Stoke City,Eric Bocat,1123949,defenders,"LB,LM,LWB",Left-Back,DF,27,1999-07-16,17.0,FRA,False,,2026-11-26
@@ -48,7 +48,7 @@ Stoke City,Tomás Rigo,1152435,midfielders,"CDM,CAM,CM",Defensive Midfield,MF,24
 Stoke City,Djibril Soumaré,1518436,midfielders,"CM,CDM",Central Midfield,MF,23,2003-01-07,27.0,SEN,True,About 1-2 weeks,2026-11-26
 Stoke City,Róbert Bozeník,922622,attackers,ST,Centre-Forward,FW,27,1999-11-18,9.0,SVK,False,,2026-11-26
 Stoke City,Lamine Cissé,1252072,attackers,"ST,RW,LW",Centre-Forward,FW,23,2003-02-15,11.0,FRA,True,Doubtful,2026-11-26
-Stoke City,George Hirst,750033,attackers,ST,Centre-Forward,FW,27,1999-02-15,15.0,SCO,True,About 1-2 weeks,2026-11-26
+Stoke City,George Hirst,750033,attackers,ST,Centre-Forward,FW,27,1999-02-15,15.0,SCO,False,,2026-11-26
 Stoke City,Sam Gallagher,502421,attackers,"ST,CAM,RW",Centre-Forward,FW,31,1995-09-15,20.0,ENG,False,,2026-11-26
 Stoke City,Million Manhoef,1183512,attackers,"RW,CAM",Right Winger,FW,24,2002-01-03,42.0,NED,False,,2026-11-26
 Wolves,José Sá,416175,keepers,GK,Goalkeeper,GK,33,1993-01-17,1.0,POR,False,,2026-11-26
@@ -89,7 +89,7 @@ Birmingham City,Kristoffer Lund Hansen,1235086,defenders,"LB,LWB",Left-Back,DF,2
 Birmingham City,Bright Osayi-Samuel,618718,defenders,RB,Right-Back,DF,28,1997-12-31,26.0,NGA,False,,2026-11-26
 Birmingham City,Paik Seung-Ho,848102,midfielders,"CDM,CAM",Defensive Midfield,MF,29,1997-03-17,8.0,KOR,False,,2026-11-26
 Birmingham City,Marc Leonard,1109757,midfielders,"CDM,CM",Defensive Midfield,MF,24,2001-12-19,12.0,SCO,False,,2026-11-26
-Birmingham City,Jhon Solís,1433032,midfielders,CDM,Defensive Midfield,MF,22,2004-10-03,14.0,COL,True,Doubtful,2026-11-26
+Birmingham City,Jhon Solís,1433032,midfielders,CDM,Defensive Midfield,MF,22,2004-10-03,14.0,COL,False,,2026-11-26
 Birmingham City,Max Bird,881558,midfielders,"CDM,CAM,LW",Defensive Midfield,MF,26,2000-09-18,18.0,ENG,False,,2026-11-26
 Birmingham City,Taylor Gardner-Hickman,982361,midfielders,"CDM,RWB",Defensive Midfield,MF,24,2001-12-30,19.0,ENG,False,,2026-11-26
 Birmingham City,Tomoki Iwata,648393,midfielders,"CDM,RB,CM",Defensive Midfield,MF,29,1997-04-07,24.0,JPN,False,,2026-11-26
@@ -122,7 +122,7 @@ West Bromwich Albion,Barney Stewart,1705068,attackers,ST,Centre-Forward,FW,22,20
 West Bromwich Albion,Michael Johnston,766622,attackers,"RW,CAM,LW,RM",Right Winger,FW,27,1999-04-19,10.0,IRL,True,Doubtful,2026-11-26
 West Bromwich Albion,Aune Selland Heggebø,935502,attackers,ST,Centre-Forward,FW,25,2001-07-29,19.0,NOR,False,,2026-11-26
 West Bromwich Albion,Tammer Bany,1214556,attackers,RW,Right Winger,FW,23,2003-10-19,23.0,JOR,False,,2026-11-26
-West Bromwich Albion,Kareem Tunde,1875615,attackers,"RW,LW,RM",Right Winger,FW,21,2005-08-19,26.0,ESP,True,Doubtful,2026-11-26
+West Bromwich Albion,Kareem Tunde,1875615,attackers,"RW,LW,RM",Right Winger,FW,21,2005-08-19,26.0,ESP,False,,2026-11-26
 Southampton,Jamie Jones,133089,keepers,GK,Goalkeeper,GK,37,1989-02-18,,ENG,False,,2026-11-26
 Southampton,Daniel Peretz,949321,keepers,GK,Goalkeeper,GK,26,2000-07-10,1.0,ISR,False,,2026-11-26
 Southampton,Mads Roerslev,803343,defenders,RB,Right-Back,DF,27,1999-06-24,2.0,DEN,False,,2026-11-26
@@ -464,11 +464,11 @@ Millwall,Daniel Kelly,1586395,midfielders,CDM,Defensive Midfield,MF,21,2005-10-0
 Millwall,Mark Sykes,552569,midfielders,"RW,RWB,RM,RB",Right Winger,MF,29,1997-08-04,17.0,IRL,False,,2026-11-26
 Millwall,Massimo Luongo,305219,midfielders,CDM,Defensive Midfield,MF,34,1992-09-25,21.0,AUS,False,,2026-11-26
 Millwall,Casper de Norre,688991,midfielders,"CDM,CM",Defensive Midfield,MF,29,1997-02-07,24.0,BEL,False,,2026-11-26
-Millwall,Luke Cundle,968944,midfielders,CAM,Attacking Midfield,MF,24,2002-04-26,25.0,ENG,True,Doubtful,2026-11-26
+Millwall,Luke Cundle,968944,midfielders,CAM,Attacking Midfield,MF,24,2002-04-26,25.0,ENG,False,,2026-11-26
 Millwall,Derek Mazou-Sacko,1285497,midfielders,CDM,Defensive Midfield,MF,22,2004-10-06,49.0,FRA,False,,2026-11-26
 Millwall,Taïryk Arconte,1234653,attackers,"ST,CAM,RW",Centre-Forward,FW,23,2003-11-12,7.0,GLP,False,,2026-11-26
 Millwall,Mihailo Ivanović,1439831,attackers,ST,Centre-Forward,FW,21,2004-11-29,9.0,SRB,False,,2026-11-26
-Millwall,Romain Esse,1428401,attackers,"RW,LW",Right Winger,FW,21,2005-05-13,11.0,ENG,True,Doubtful,2026-11-26
+Millwall,Romain Esse,1428401,attackers,"RW,LW",Right Winger,FW,21,2005-05-13,11.0,ENG,False,,2026-11-26
 Millwall,Lyndon Dykes,768635,attackers,"ST,CAM",Centre-Forward,FW,31,1995-10-07,13.0,SCO,False,,2026-11-26
 Millwall,Josh Coburn,1113907,attackers,ST,Centre-Forward,FW,23,2002-12-06,19.0,ENG,True,Doubtful,2026-11-26
 Millwall,Kyrell Lisbie,1469332,attackers,"LW,RW",Left Winger,FW,22,2003-12-01,22.0,ENG,False,,2026-11-26
