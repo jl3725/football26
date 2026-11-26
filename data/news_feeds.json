@@ -15,7 +15,7 @@
    "country": "England",
    "via": "seed",
    "added": "2026-10-21",
-   "fail": 38,
+   "fail": 39,
    "ok": "2026-11-23",
    "items": 64,
    "match_rate": 0.34
@@ -28,7 +28,7 @@
    "fail": 0,
    "ok": "2026-11-26",
    "items": 100,
-   "match_rate": 0.34
+   "match_rate": 0.35
   },
   "https://football365.com/rss": {
    "outlet": "Football365",
@@ -37,8 +37,8 @@
    "added": "2026-10-21",
    "fail": 0,
    "ok": "2026-11-26",
-   "items": 53,
-   "match_rate": 0.81
+   "items": 48,
+   "match_rate": 0.77
   },
   "https://www.90min.com/feed": {
    "outlet": "90min",
@@ -58,7 +58,7 @@
    "fail": 0,
    "ok": "2026-11-26",
    "items": 10,
-   "match_rate": 0.8
+   "match_rate": 0.7
   },
   "https://teamtalk.com/rss": {
    "outlet": "TEAMtalk",
@@ -68,7 +68,7 @@
    "fail": 0,
    "ok": "2026-11-26",
    "items": 31,
-   "match_rate": 0.81
+   "match_rate": 0.87
   },
   "https://www.independent.co.uk/sport/football/rss": {
    "outlet": "The Independent",
@@ -78,7 +78,7 @@
    "fail": 0,
    "ok": "2026-11-26",
    "items": 21,
-   "match_rate": 0.76
+   "match_rate": 0.71
   },
   "https://www.standard.co.uk/sport/football/rss": {
    "outlet": "Evening Standard",
@@ -87,7 +87,7 @@
    "added": "2026-10-21",
    "fail": 0,
    "ok": "2026-11-26",
-   "items": 25,
+   "items": 24,
    "match_rate": 0.92
   },
   "https://www.tuttomercatoweb.com/rss/": {
@@ -118,7 +118,7 @@
    "fail": 0,
    "ok": "2026-11-26",
    "items": 30,
-   "match_rate": 0.53
+   "match_rate": 0.37
   },
   "https://football-italia.net/feed/": {
    "outlet": "Football Italia",
@@ -128,7 +128,7 @@
    "fail": 0,
    "ok": "2026-11-26",
    "items": 20,
-   "match_rate": 0.9
+   "match_rate": 0.85
   },
   "https://www.mundodeportivo.com/feed/rss/home/": {
    "outlet": "Mundo Deportivo",
@@ -137,8 +137,8 @@
    "added": "2026-10-21",
    "fail": 0,
    "ok": "2026-11-26",
-   "items": 149,
-   "match_rate": 0.34
+   "items": 141,
+   "match_rate": 0.33
   },
   "https://www.estadiodeportivo.com/sitemaps/rss.xml": {
    "outlet": "Estadio Deportivo",
@@ -148,7 +148,7 @@
    "fail": 0,
    "ok": "2026-11-26",
    "items": 50,
-   "match_rate": 0.74
+   "match_rate": 0.82
   },
   "https://www.bild.de/feed/sport.xml": {
    "outlet": "BILD",
@@ -158,7 +158,7 @@
    "fail": 0,
    "ok": "2026-11-26",
    "items": 100,
-   "match_rate": 0.61
+   "match_rate": 0.55
   },
   "https://le10sport.com/fr/rss/": {
    "outlet": "le10sport",
@@ -177,7 +177,7 @@
    "added": "2026-10-21",
    "fail": 0,
    "ok": "2026-11-26",
-   "items": 319,
+   "items": 325,
    "match_rate": 0.48
   },
   "https://maisfutebol.iol.pt/rss.xml": {
@@ -199,7 +199,7 @@
    "fail": 0,
    "ok": "2026-11-26",
    "items": 24,
-   "match_rate": 0.88
+   "match_rate": 0.92
   },
   "https://feeds.footballco.com/vz/feed/ce3iomiqfw9iej21": {
    "outlet": "Voetbalzone",
@@ -249,7 +249,7 @@
    "fail": 0,
    "ok": "2026-11-26",
    "items": 50,
-   "match_rate": 0.46
+   "match_rate": 0.34
   },
   "https://www.walfoot.be/rss": {
    "outlet": "Walfoot",
@@ -259,7 +259,7 @@
    "fail": 0,
    "ok": "2026-11-26",
    "items": 180,
-   "match_rate": 0.71
+   "match_rate": 0.73
   },
   "https://www.dhnet.be/arc/outboundfeeds/rss/section/sports?outputType=xml": {
    "outlet": "DH Les Sports+",
@@ -269,14 +269,14 @@
    "fail": 0,
    "ok": "2026-11-26",
    "items": 100,
-   "match_rate": 0.52
+   "match_rate": 0.55
   },
   "https://sports.yahoo.com/rss/": {
    "outlet": "Yahoo Sports",
    "country": "England",
    "via": "discover",
    "added": "2026-10-21",
-   "match_rate": 0.42,
+   "match_rate": 0.16,
    "fail": 0,
    "ok": "2026-11-26",
    "items": 50
@@ -296,10 +296,10 @@
    "country": "England",
    "via": "discover",
    "added": "2026-11-04",
-   "match_rate": 0.89,
+   "match_rate": 0.9,
    "fail": 0,
    "ok": "2026-11-26",
-   "items": 133
+   "items": 136
   },
   "https://portofrotterdam.com/rss.xml": {
    "outlet": "Port of Rotterdam",
@@ -316,7 +316,7 @@
    "country": "England",
    "via": "discover",
    "added": "2026-11-04",
-   "match_rate": 0.7,
+   "match_rate": 0.9,
    "fail": 0,
    "ok": "2026-11-26",
    "items": 10
@@ -336,7 +336,7 @@
    "country": "England",
    "via": "discover",
    "added": "2026-11-11",
-   "match_rate": 0.6,
+   "match_rate": 0.8,
    "fail": 0,
    "ok": "2026-11-26",
    "items": 10
@@ -356,7 +356,7 @@
    "country": "Netherlands",
    "via": "discover",
    "added": "2026-11-18",
-   "match_rate": 0.33,
+   "match_rate": 0.25,
    "fail": 0,
    "ok": "2026-11-26",
    "items": 12
@@ -410,19 +410,19 @@
   "football365.com": {
    "outlet": "Football365",
    "country": "England",
-   "n": 1128,
+   "n": 1132,
    "last": "2026-11-26"
   },
   "metro.co.uk": {
    "outlet": "Metro.co.uk",
    "country": "England",
-   "n": 636,
+   "n": 638,
    "last": "2026-11-26"
   },
   "thefalse9.com": {
    "outlet": "The False 9",
    "country": "England",
-   "n": 979,
+   "n": 982,
    "last": "2026-11-26"
   },
   "business-standard.com": {
@@ -434,43 +434,43 @@
   "nytimes.com": {
    "outlet": "The New York Times",
    "country": "England",
-   "n": 3166,
+   "n": 3181,
    "last": "2026-11-26"
   },
   "football.london": {
    "outlet": "Football London",
    "country": "England",
-   "n": 1078,
+   "n": 1082,
    "last": "2026-11-26"
   },
   "footballtransfers.com": {
    "outlet": "FootballTransfers.com",
    "country": "England",
-   "n": 3943,
+   "n": 3964,
    "last": "2026-11-26"
   },
   "footballinsider247.com": {
    "outlet": "Football Insider",
    "country": "England",
-   "n": 4147,
+   "n": 4161,
    "last": "2026-11-26"
   },
   "mirror.co.uk": {
    "outlet": "The Mirror",
    "country": "England",
-   "n": 458,
+   "n": 459,
    "last": "2026-11-26"
   },
   "express.co.uk": {
    "outlet": "Daily Express",
    "country": "England",
-   "n": 200,
+   "n": 202,
    "last": "2026-11-26"
   },
   "sportsmole.co.uk": {
    "outlet": "Sports Mole",
    "country": "England",
-   "n": 9009,
+   "n": 9050,
    "last": "2026-11-26"
   },
   "footballtransfertavern.com": {
@@ -482,19 +482,19 @@
   "livescore.com": {
    "outlet": "LiveScore",
    "country": "England",
-   "n": 11156,
+   "n": 11195,
    "last": "2026-11-26"
   },
   "skysports.com": {
    "outlet": "Sky Sports",
    "country": "England",
-   "n": 4670,
+   "n": 4690,
    "last": "2026-11-26"
   },
   "tod.tv": {
    "outlet": "TOD",
    "country": "England",
-   "n": 5116,
+   "n": 5128,
    "last": "2026-11-26"
   },
   "esteemedkompany.com": {
@@ -506,31 +506,31 @@
   "aol.com": {
    "outlet": "AOL.com",
    "country": "England",
-   "n": 391,
+   "n": 392,
    "last": "2026-11-26"
   },
   "ua.news": {
    "outlet": "UA.NEWS",
    "country": "England",
-   "n": 172,
+   "n": 173,
    "last": "2026-11-26"
   },
   "thesun.co.uk": {
    "outlet": "The Sun",
    "country": "England",
-   "n": 523,
-   "last": "2026-11-25"
+   "n": 525,
+   "last": "2026-11-26"
   },
   "sportwitness.co.uk": {
    "outlet": "Sport Witness",
    "country": "England",
-   "n": 3970,
+   "n": 3990,
    "last": "2026-11-26"
   },
   "fourfourtwo.com": {
    "outlet": "FourFourTwo",
    "country": "England",
-   "n": 439,
+   "n": 445,
    "last": "2026-11-26"
   },
   "soccernews.com": {
@@ -542,43 +542,43 @@
   "thehardtackle.com": {
    "outlet": "TheHardTackle.com",
    "country": "England",
-   "n": 2041,
+   "n": 2049,
    "last": "2026-11-26"
   },
   "birminghammail.co.uk": {
    "outlet": "Birmingham Live",
    "country": "England",
-   "n": 1765,
+   "n": 1772,
    "last": "2026-11-26"
   },
   "bbc.co.uk": {
    "outlet": "BBC",
    "country": "England",
-   "n": 5339,
+   "n": 5361,
    "last": "2026-11-26"
   },
   "blog.ke.sportpesa.com": {
    "outlet": "SportPesa Blog",
    "country": "England",
-   "n": 12,
-   "last": "2026-11-25"
+   "n": 13,
+   "last": "2026-11-26"
   },
   "goal.com": {
    "outlet": "Goal.com",
    "country": "England",
-   "n": 11652,
+   "n": 11676,
    "last": "2026-11-26"
   },
   "squawka.com": {
    "outlet": "Squawka",
    "country": "England",
-   "n": 640,
+   "n": 642,
    "last": "2026-11-26"
   },
   "vitalfootball.co.uk": {
    "outlet": "Vital Football",
    "country": "England",
-   "n": 870,
+   "n": 873,
    "last": "2026-11-26"
   },
   "news.bbc.co.uk": {
@@ -590,7 +590,7 @@
   "football-italia.net": {
    "outlet": "Football Italia",
    "country": "England",
-   "n": 1377,
+   "n": 1379,
    "last": "2026-11-26"
   },
   "uco.es": {
@@ -602,7 +602,7 @@
   "brentfordfc.com": {
    "outlet": "Brentford FC",
    "country": "England",
-   "n": 325,
+   "n": 327,
    "last": "2026-11-26"
   },
   "indiatimes.com": {
@@ -614,7 +614,7 @@
   "aol.co.uk": {
    "outlet": "AOL.co.uk",
    "country": "England",
-   "n": 328,
+   "n": 329,
    "last": "2026-11-26"
   },
   "koorabreak.com": {
@@ -626,31 +626,31 @@
   "bbc.com": {
    "outlet": "BBC",
    "country": "England",
-   "n": 4252,
+   "n": 4264,
    "last": "2026-11-26"
   },
   "hulldailymail.co.uk": {
    "outlet": "Hull Live",
    "country": "England",
-   "n": 1241,
+   "n": 1246,
    "last": "2026-11-26"
   },
   "tribuna.com": {
    "outlet": "Tribuna.com",
    "country": "England",
-   "n": 7435,
+   "n": 7461,
    "last": "2026-11-26"
   },
   "standard.co.uk": {
    "outlet": "London Evening Standard",
    "country": "England",
-   "n": 1454,
+   "n": 1461,
    "last": "2026-11-26"
   },
   "liverpoolecho.co.uk": {
    "outlet": "Liverpool Echo",
    "country": "England",
-   "n": 583,
+   "n": 587,
    "last": "2026-11-26"
   },
   "brightonandhoveindependent.co.uk": {
@@ -668,13 +668,13 @@
   "m.dongqiudi.com": {
    "outlet": "懂球帝",
    "country": "England",
-   "n": 2363,
+   "n": 2382,
    "last": "2026-11-26"
   },
   "footballleagueworld.co.uk": {
    "outlet": "Football League World",
    "country": "England",
-   "n": 9900,
+   "n": 9938,
    "last": "2026-11-26"
   },
   "clitheroeadvertiser.co.uk": {
@@ -686,31 +686,31 @@
   "burnleyexpress.net": {
    "outlet": "Burnley Express",
    "country": "England",
-   "n": 505,
+   "n": 507,
    "last": "2026-11-26"
   },
   "sports.yahoo.com": {
    "outlet": "Yahoo Sports",
    "country": "England",
-   "n": 14784,
+   "n": 14836,
    "last": "2026-11-26"
   },
   "cafc.co.uk": {
    "outlet": "Charlton Athletic Football Club",
    "country": "England",
-   "n": 1079,
+   "n": 1082,
    "last": "2026-11-26"
   },
   "uk.sports.yahoo.com": {
    "outlet": "Yahoo",
    "country": "England",
-   "n": 12610,
+   "n": 12630,
    "last": "2026-11-26"
   },
   "lancashiretelegraph.co.uk": {
    "outlet": "Lancashire Telegraph",
    "country": "England",
-   "n": 882,
+   "n": 886,
    "last": "2026-11-26"
   },
   "burnleyfootballclub.com": {
@@ -722,7 +722,7 @@
   "bavarianfootballworks.com": {
    "outlet": "Bavarian Football Works",
    "country": "England",
-   "n": 2164,
+   "n": 2173,
    "last": "2026-11-26"
   },
   "media.unisba.ac.id": {
@@ -740,55 +740,55 @@
   "onefootball.com": {
    "outlet": "OneFootball",
    "country": "England",
-   "n": 6109,
+   "n": 6136,
    "last": "2026-11-26"
   },
   "fotmob.com": {
    "outlet": "FotMob",
    "country": "England",
-   "n": 2055,
+   "n": 2056,
    "last": "2026-11-26"
   },
   "espn.com": {
    "outlet": "ESPN",
    "country": "England",
-   "n": 1320,
+   "n": 1323,
    "last": "2026-11-26"
   },
   "sundayguardianlive.com": {
    "outlet": "The Sunday Guardian",
    "country": "England",
-   "n": 323,
+   "n": 324,
    "last": "2026-11-26"
   },
   "news.bet365.com": {
    "outlet": "news.bet365.com",
    "country": "England",
-   "n": 1131,
+   "n": 1136,
    "last": "2026-11-26"
   },
   "3addedminutes.com": {
    "outlet": "3 Added Minutes",
    "country": "England",
-   "n": 419,
+   "n": 421,
    "last": "2026-11-26"
   },
   "dailymail.com": {
    "outlet": "Daily Mail",
    "country": "England",
-   "n": 230,
+   "n": 231,
    "last": "2026-11-26"
   },
   "theguardian.com": {
    "outlet": "The Guardian",
    "country": "England",
-   "n": 897,
+   "n": 899,
    "last": "2026-11-26"
   },
   "goodisonnews.com": {
    "outlet": "Goodison News",
    "country": "England",
-   "n": 1893,
+   "n": 1897,
    "last": "2026-11-26"
   },
   "readeverton.com": {
@@ -800,19 +800,19 @@
   "flashscore.com": {
    "outlet": "Flashscore.com",
    "country": "England",
-   "n": 4767,
+   "n": 4779,
    "last": "2026-11-26"
   },
   "thestatszone.com": {
    "outlet": "The Stats Zone",
    "country": "England",
-   "n": 581,
+   "n": 586,
    "last": "2026-11-26"
   },
   "dave.sport": {
    "outlet": "Dave.Sport",
    "country": "England",
-   "n": 2243,
+   "n": 2261,
    "last": "2026-11-26"
   },
   "flashscore.co.uk": {
@@ -824,13 +824,13 @@
   "footballfancast.com": {
    "outlet": "Football FanCast",
    "country": "England",
-   "n": 1804,
+   "n": 1809,
    "last": "2026-11-26"
   },
   "yorkshirepost.co.uk": {
    "outlet": "Yorkshire Post",
    "country": "England",
-   "n": 1271,
+   "n": 1272,
    "last": "2026-11-26"
   },
   "yorkshireeveningpost.co.uk": {
@@ -848,19 +848,19 @@
   "leeds-live.co.uk": {
    "outlet": "Leeds Live",
    "country": "England",
-   "n": 259,
+   "n": 260,
    "last": "2026-11-26"
   },
   "leedsallover.com": {
    "outlet": "LeedsAllOver",
    "country": "England",
-   "n": 601,
+   "n": 604,
    "last": "2026-11-26"
   },
   "insidefutbol.com": {
    "outlet": "Inside Futbol",
    "country": "England",
-   "n": 1575,
+   "n": 1579,
    "last": "2026-11-26"
   },
   "footballtoday.com": {
@@ -872,13 +872,13 @@
   "sports.ndtv.com": {
    "outlet": "NDTV Sports",
    "country": "England",
-   "n": 140,
+   "n": 141,
    "last": "2026-11-26"
   },
   "talksport.com": {
    "outlet": "talkSPORT",
    "country": "England",
-   "n": 593,
+   "n": 597,
    "last": "2026-11-26"
   },
   "sharjah24.ae": {
@@ -902,19 +902,19 @@
   "pasionfutbol.com": {
    "outlet": "Pasión Fútbol",
    "country": "England",
-   "n": 1509,
+   "n": 1511,
    "last": "2026-11-26"
   },
   "fichajes.net": {
    "outlet": "Fichajes.net",
    "country": "England",
-   "n": 368,
+   "n": 370,
    "last": "2026-11-26"
   },
   "cityxtra.co.uk": {
    "outlet": "City Xtra",
    "country": "England",
-   "n": 428,
+   "n": 429,
    "last": "2026-11-26"
   },
   "mountakhab.net": {
@@ -926,7 +926,7 @@
   "en.yenisafak.com": {
    "outlet": "Yeni Şafak English",
    "country": "England",
-   "n": 741,
+   "n": 744,
    "last": "2026-11-26"
   },
   "tvcnews.tv": {
@@ -944,7 +944,7 @@
   "dazn.com": {
    "outlet": "DAZN",
    "country": "England",
-   "n": 2399,
+   "n": 2410,
    "last": "2026-11-26"
   },
   "newcastleworld.com": {
@@ -956,19 +956,19 @@
   "getfootballnewsitaly.com": {
    "outlet": "Get Italian Football News",
    "country": "England",
-   "n": 397,
+   "n": 399,
    "last": "2026-11-26"
   },
   "centredevils.co.uk": {
    "outlet": "centredevils",
    "country": "England",
-   "n": 565,
+   "n": 569,
    "last": "2026-11-26"
   },
   "ca.sports.yahoo.com": {
    "outlet": "Yahoo",
    "country": "England",
-   "n": 434,
+   "n": 440,
    "last": "2026-11-26"
   },
   "themag.co.uk": {
@@ -980,49 +980,49 @@
   "nufcblog.co.uk": {
    "outlet": "NUFC Blog",
    "country": "England",
-   "n": 66,
+   "n": 67,
    "last": "2026-11-26"
   },
   "chroniclelive.co.uk": {
    "outlet": "Chronicle Live",
    "country": "England",
-   "n": 1134,
+   "n": 1138,
    "last": "2026-11-26"
   },
   "sunderlandecho.com": {
    "outlet": "Sunderland Echo",
    "country": "England",
-   "n": 947,
+   "n": 948,
    "last": "2026-11-26"
   },
   "shieldsgazette.com": {
    "outlet": "Shields Gazette",
    "country": "England",
-   "n": 389,
+   "n": 390,
    "last": "2026-11-26"
   },
   "nottinghamforest.news": {
    "outlet": "Nottingham Forest News",
    "country": "England",
-   "n": 952,
+   "n": 956,
    "last": "2026-11-26"
   },
   "en.as.com": {
    "outlet": "Diario AS",
    "country": "England",
-   "n": 473,
+   "n": 479,
    "last": "2026-11-26"
   },
   "nottinghampost.com": {
    "outlet": "Nottingham Post",
    "country": "England",
-   "n": 751,
+   "n": 754,
    "last": "2026-11-26"
   },
   "footballgroundguide.com": {
    "outlet": "Football Ground Guide",
    "country": "England",
-   "n": 489,
+   "n": 492,
    "last": "2026-11-26"
   },
   "glasgowworld.com": {
@@ -1040,31 +1040,31 @@
   "tottenhamhotspurnews.com": {
    "outlet": "www.tottenhamhotspurnews.com",
    "country": "England",
-   "n": 293,
+   "n": 295,
    "last": "2026-11-26"
   },
   "chelseafc.com": {
    "outlet": "Chelsea Football Club",
    "country": "England",
-   "n": 208,
+   "n": 209,
    "last": "2026-11-26"
   },
   "nbcsports.com": {
    "outlet": "NBC Sports",
    "country": "England",
-   "n": 129,
+   "n": 130,
    "last": "2026-11-26"
   },
   "teamtalk.com": {
    "outlet": "TEAMtalk",
    "country": "England",
-   "n": 1254,
+   "n": 1259,
    "last": "2026-11-26"
   },
   "tothelaneandback.com": {
    "outlet": "To The Lane And Back",
    "country": "England",
-   "n": 1065,
+   "n": 1068,
    "last": "2026-11-26"
   },
   "thickaccent.com": {
@@ -1076,25 +1076,25 @@
   "westhamzone.com": {
    "outlet": "West Ham Zone",
    "country": "England",
-   "n": 1164,
+   "n": 1172,
    "last": "2026-11-26"
   },
   "hammers.news": {
    "outlet": "Hammers News",
    "country": "England",
-   "n": 1134,
+   "n": 1136,
    "last": "2026-11-26"
   },
   "the72.co.uk": {
    "outlet": "The72",
    "country": "England",
-   "n": 7232,
+   "n": 7262,
    "last": "2026-11-26"
   },
   "the4thofficial.net": {
    "outlet": "The 4th Official",
    "country": "England",
-   "n": 146,
+   "n": 147,
    "last": "2026-11-26"
   },
   "sweetwaternow.com": {
@@ -1112,7 +1112,7 @@
   "espn.co.uk": {
    "outlet": "ESPN",
    "country": "England",
-   "n": 2292,
+   "n": 2295,
    "last": "2026-11-26"
   },
   "footballpredictions.net": {
@@ -1130,7 +1130,7 @@
   "expressandstar.com": {
    "outlet": "Express and Star",
    "country": "England",
-   "n": 1573,
+   "n": 1579,
    "last": "2026-11-26"
   },
   "lastwordonsports.com": {
@@ -1142,49 +1142,49 @@
   "bleacherreport.com": {
    "outlet": "Bleacher Report",
    "country": "England",
-   "n": 919,
+   "n": 920,
    "last": "2026-11-26"
   },
   "portsmouth.co.uk": {
    "outlet": "Portsmouth News",
    "country": "England",
-   "n": 1241,
+   "n": 1247,
    "last": "2026-11-26"
   },
   "noticiasdealava.eus": {
    "outlet": "Diario de Noticias de Álava",
    "country": "Spain",
-   "n": 431,
+   "n": 434,
    "last": "2026-11-26"
   },
   "elpais.com": {
    "outlet": "EL PAÍS",
    "country": "Spain",
-   "n": 439,
+   "n": 443,
    "last": "2026-11-26"
   },
   "elcorreo.com": {
    "outlet": "El Correo",
    "country": "Spain",
-   "n": 121,
-   "last": "2026-11-25"
+   "n": 122,
+   "last": "2026-11-26"
   },
   "meridiano.net": {
    "outlet": "Meridiano.net",
    "country": "Spain",
-   "n": 173,
+   "n": 174,
    "last": "2026-11-26"
   },
   "muydefutbol.com": {
    "outlet": "Muy de Fútbol",
    "country": "Spain",
-   "n": 43,
+   "n": 44,
    "last": "2026-11-26"
   },
   "mundodeportivo.com": {
    "outlet": "Mundo Deportivo",
    "country": "Spain",
-   "n": 3430,
+   "n": 3443,
    "last": "2026-11-26"
   },
   "xeva.com.mx": {
@@ -1208,7 +1208,7 @@
   "elperiodicodeceuta.es": {
    "outlet": "El Periódico de Ceuta",
    "country": "Spain",
-   "n": 215,
+   "n": 216,
    "last": "2026-11-26"
   },
   "football-addict.com": {
@@ -1220,7 +1220,7 @@
   "tudn.com": {
    "outlet": "TUDN",
    "country": "Spain",
-   "n": 159,
+   "n": 160,
    "last": "2026-11-26"
   },
   "ommcomnews.com": {
@@ -1232,13 +1232,13 @@
   "vietnam.vn": {
    "outlet": "Vietnam.vn",
    "country": "Spain",
-   "n": 343,
+   "n": 344,
    "last": "2026-11-26"
   },
   "eldesmarque.com": {
    "outlet": "El Desmarque",
    "country": "Spain",
-   "n": 1252,
+   "n": 1259,
    "last": "2026-11-26"
   },
   "fomoera.com": {
@@ -1256,37 +1256,37 @@
   "infobae.com": {
    "outlet": "Infobae",
    "country": "Spain",
-   "n": 310,
+   "n": 311,
    "last": "2026-11-26"
   },
   "directvsports.com": {
    "outlet": "DSports",
    "country": "Spain",
-   "n": 581,
+   "n": 582,
    "last": "2026-11-26"
   },
   "marca.com": {
    "outlet": "MARCA",
    "country": "Spain",
-   "n": 1455,
+   "n": 1461,
    "last": "2026-11-26"
   },
   "football-espana.net": {
    "outlet": "Football Espana",
    "country": "Spain",
-   "n": 170,
+   "n": 171,
    "last": "2026-11-26"
   },
   "en.africatopsports.com": {
    "outlet": "Africa Top Sports",
    "country": "Spain",
-   "n": 294,
+   "n": 298,
    "last": "2026-11-26"
   },
   "si.com": {
    "outlet": "Sports Illustrated",
    "country": "Spain",
-   "n": 545,
+   "n": 547,
    "last": "2026-11-26"
   },
   "atlantico.net": {
@@ -1310,31 +1310,31 @@
   "as.com": {
    "outlet": "Diario AS",
    "country": "Spain",
-   "n": 1678,
+   "n": 1684,
    "last": "2026-11-26"
   },
   "okdiario.com": {
    "outlet": "OkDiario",
    "country": "Spain",
-   "n": 345,
+   "n": 346,
    "last": "2026-11-26"
   },
   "transfermarkt.com": {
    "outlet": "Transfermarkt",
    "country": "Spain",
-   "n": 2579,
+   "n": 2590,
    "last": "2026-11-26"
   },
   "getfootballnewsspain.com": {
    "outlet": "Get Spanish Football News",
    "country": "Spain",
-   "n": 1300,
+   "n": 1303,
    "last": "2026-11-26"
   },
   "caughtoffside.com": {
    "outlet": "CaughtOffside",
    "country": "Spain",
-   "n": 491,
+   "n": 495,
    "last": "2026-11-26"
   },
   "lavozdegalicia.es": {
@@ -1352,7 +1352,7 @@
   "rcdm.es": {
    "outlet": "rcdm.es",
    "country": "Spain",
-   "n": 159,
+   "n": 160,
    "last": "2026-11-26"
   },
   "rccelta.es": {
@@ -1382,7 +1382,7 @@
   "beinsports.com": {
    "outlet": "beIN SPORTS",
    "country": "Spain",
-   "n": 2159,
+   "n": 2177,
    "last": "2026-11-26"
   },
   "informacion.es": {
@@ -1400,7 +1400,7 @@
   "el1900.com": {
    "outlet": "El 1900",
    "country": "Spain",
-   "n": 162,
+   "n": 163,
    "last": "2026-11-26"
   },
   "flashscore.pe": {
@@ -1412,7 +1412,7 @@
   "larazon.es": {
    "outlet": "La Razón",
    "country": "Spain",
-   "n": 339,
+   "n": 340,
    "last": "2026-11-26"
   },
   "bono.ec": {
@@ -1424,7 +1424,7 @@
   "foot-africa.com": {
    "outlet": "Foot-Africa.com",
    "country": "Spain",
-   "n": 516,
+   "n": 518,
    "last": "2026-11-26"
   },
   "sportscapemagazine.com": {
@@ -1436,13 +1436,13 @@
   "footballwhispers.com": {
    "outlet": "Football Whispers",
    "country": "Spain",
-   "n": 541,
+   "n": 544,
    "last": "2026-11-26"
   },
   "ghanasoccernet.com": {
    "outlet": "GhanaSoccernet",
    "country": "Spain",
-   "n": 1318,
+   "n": 1326,
    "last": "2026-11-26"
   },
   "ole.com.ar": {
@@ -1466,13 +1466,13 @@
   "vavel.com": {
    "outlet": "VAVEL.com",
    "country": "Spain",
-   "n": 1510,
+   "n": 1513,
    "last": "2026-11-26"
   },
   "levanteud.com": {
    "outlet": "Levante UD | Web Oficial",
    "country": "Spain",
-   "n": 811,
+   "n": 817,
    "last": "2026-11-26"
   },
   "lasfutbolistas.com": {
@@ -1520,7 +1520,7 @@
   "comuniate.com": {
    "outlet": "Comuniate",
    "country": "Spain",
-   "n": 245,
+   "n": 247,
    "last": "2026-11-26"
   },
   "naiz.eus": {
@@ -1532,7 +1532,7 @@
   "cadenaser.com": {
    "outlet": "Cadena SER",
    "country": "Spain",
-   "n": 1276,
+   "n": 1278,
    "last": "2026-11-26"
   },
   "diariodenavarra.es": {
@@ -1580,7 +1580,7 @@
   "operativmm.az": {
    "outlet": "Operativ Məlumat Mərkəzi",
    "country": "Spain",
-   "n": 1202,
+   "n": 1204,
    "last": "2026-11-26"
   },
   "rayovallecano.es": {
@@ -1622,19 +1622,19 @@
   "dailysports.net": {
    "outlet": "Dailysports",
    "country": "Spain",
-   "n": 1748,
+   "n": 1759,
    "last": "2026-11-26"
   },
   "muchodeporte.com": {
    "outlet": "Muchodeporte",
    "country": "Spain",
-   "n": 174,
+   "n": 179,
    "last": "2026-11-26"
   },
   "news.ssbcrack.com": {
    "outlet": "SSBCrack",
    "country": "Spain",
-   "n": 365,
+   "n": 366,
    "last": "2026-11-26"
   },
   "irishmirror.ie": {
@@ -1664,7 +1664,7 @@
   "fichajes.com": {
    "outlet": "Fichajes.com",
    "country": "Spain",
-   "n": 260,
+   "n": 261,
    "last": "2026-11-26"
   },
   "channelstv.com": {
@@ -1676,19 +1676,19 @@
   "gazetaexpress.com": {
    "outlet": "Gazeta Express",
    "country": "Spain",
-   "n": 288,
+   "n": 289,
    "last": "2026-11-26"
   },
   "diariovasco.com": {
    "outlet": "El Diario Vasco",
    "country": "Spain",
-   "n": 249,
+   "n": 250,
    "last": "2026-11-26"
   },
   "athleticclubinfo.com": {
    "outlet": "Athletic Club Info",
    "country": "Spain",
-   "n": 319,
+   "n": 320,
    "last": "2026-11-26"
   },
   "elsevillista.es": {
@@ -1706,7 +1706,7 @@
   "estadiodeportivo.com": {
    "outlet": "Estadio Deportivo",
    "country": "Spain",
-   "n": 571,
+   "n": 572,
    "last": "2026-11-26"
   },
   "tycsports.com": {
@@ -1718,7 +1718,7 @@
   "deportevalenciano.com": {
    "outlet": "Deportevalenciano",
    "country": "Spain",
-   "n": 40,
+   "n": 41,
    "last": "2026-11-26"
   },
   "ecuavisa.com": {
@@ -1730,7 +1730,7 @@
   "soyfutbol.com": {
    "outlet": "Soy Futbol",
    "country": "Spain",
-   "n": 709,
+   "n": 712,
    "last": "2026-11-26"
   },
   "eldigitaldealbacete.com": {
@@ -1742,7 +1742,7 @@
   "bolavip.com": {
    "outlet": "Bolavip",
    "country": "Spain",
-   "n": 220,
+   "n": 221,
    "last": "2026-11-26"
   },
   "cominghomenewcastle.sbnation.com": {
@@ -1760,7 +1760,7 @@
   "thesun.ie": {
    "outlet": "The Irish Sun",
    "country": "Spain",
-   "n": 332,
+   "n": 334,
    "last": "2026-11-26"
   },
   "abc.com.py": {
@@ -1784,7 +1784,7 @@
   "tntsports.co.uk": {
    "outlet": "TNT Sports",
    "country": "Spain",
-   "n": 1368,
+   "n": 1376,
    "last": "2026-11-26"
   },
   "linterista.it": {
@@ -1802,31 +1802,31 @@
   "libero.it": {
    "outlet": "Libero",
    "country": "Italy",
-   "n": 47,
+   "n": 48,
    "last": "2026-11-26"
   },
   "ilsussidiario.net": {
    "outlet": "IlSussidiario.net",
    "country": "Italy",
-   "n": 133,
+   "n": 134,
    "last": "2026-11-26"
   },
   "tuttonapoli.net": {
    "outlet": "Tutto Napoli",
    "country": "Italy",
-   "n": 45,
+   "n": 46,
    "last": "2026-11-26"
   },
   "eurosport.it": {
    "outlet": "Eurosport.it",
    "country": "Italy",
-   "n": 1158,
+   "n": 1160,
    "last": "2026-11-26"
   },
   "diretta.it": {
    "outlet": "Diretta",
    "country": "Italy",
-   "n": 626,
+   "n": 628,
    "last": "2026-11-26"
   },
   "golssip.it": {
@@ -1838,7 +1838,7 @@
   "ysscores.com": {
    "outlet": "YSscores",
    "country": "Italy",
-   "n": 2646,
+   "n": 2651,
    "last": "2026-11-26"
   },
   "milanosportiva.com": {
@@ -1850,13 +1850,13 @@
   "milanreports.com": {
    "outlet": "Milanreports.com",
    "country": "Italy",
-   "n": 571,
+   "n": 575,
    "last": "2026-11-26"
   },
   "gazzetta.it": {
    "outlet": "La Gazzetta dello Sport",
    "country": "Italy",
-   "n": 3357,
+   "n": 3364,
    "last": "2026-11-26"
   },
   "zazoom.it": {
@@ -1868,7 +1868,7 @@
   "sportmediaset.mediaset.it": {
    "outlet": "Sportmediaset",
    "country": "Italy",
-   "n": 959,
+   "n": 962,
    "last": "2026-11-26"
   },
   "calciostyle.it": {
@@ -1910,7 +1910,7 @@
   "napolicalcionews.it": {
    "outlet": "NapoliCalcioNews.it",
    "country": "Italy",
-   "n": 1650,
+   "n": 1655,
    "last": "2026-11-26"
   },
   "tuttonapolicalcio.it": {
@@ -1934,19 +1934,19 @@
   "ilnapolista.it": {
    "outlet": "ilNapolista",
    "country": "Italy",
-   "n": 30,
+   "n": 31,
    "last": "2026-11-26"
   },
   "dailyrecord.co.uk": {
    "outlet": "Daily Record",
    "country": "Italy",
-   "n": 414,
+   "n": 417,
    "last": "2026-11-26"
   },
   "suaragarut.id": {
    "outlet": "SuaraGarut.ID",
    "country": "Italy",
-   "n": 518,
+   "n": 522,
    "last": "2026-11-26"
   },
   "since1900.it": {
@@ -1958,19 +1958,19 @@
   "frenchfootballweekly.com": {
    "outlet": "French Football Weekly",
    "country": "Italy",
-   "n": 223,
+   "n": 224,
    "last": "2026-11-26"
   },
   "gulfnews.com": {
    "outlet": "Gulf News",
    "country": "Italy",
-   "n": 106,
+   "n": 108,
    "last": "2026-11-26"
   },
   "calcionapoli1926.it": {
    "outlet": "Calcio Napoli 1926",
    "country": "Italy",
-   "n": 1769,
+   "n": 1776,
    "last": "2026-11-26"
   },
   "tuttoasroma.it": {
@@ -2000,7 +2000,7 @@
   "football-talk.co.uk": {
    "outlet": "Football-Talk",
    "country": "Italy",
-   "n": 1576,
+   "n": 1578,
    "last": "2026-11-26"
   },
   "strettynews.com": {
@@ -2012,19 +2012,19 @@
   "tuttocampo.it": {
    "outlet": "Tuttocampo",
    "country": "Italy",
-   "n": 2136,
+   "n": 2146,
    "last": "2026-11-26"
   },
   "rainews.it": {
    "outlet": "RaiNews",
    "country": "Italy",
-   "n": 405,
-   "last": "2026-11-24"
+   "n": 406,
+   "last": "2026-11-26"
   },
   "ansa.it": {
    "outlet": "ANSA",
    "country": "Italy",
-   "n": 1758,
+   "n": 1761,
    "last": "2026-11-26"
   },
   "lapresse.it": {
@@ -2036,19 +2036,19 @@
   "settecalcio.it": {
    "outlet": "SetteCalcio",
    "country": "Italy",
-   "n": 180,
+   "n": 181,
    "last": "2026-11-26"
   },
   "calcioatalanta.it": {
    "outlet": "Atalanta news, calciomercato, classifica e risultati | CalcioAtalanta",
    "country": "Italy",
-   "n": 480,
-   "last": "2026-11-25"
+   "n": 481,
+   "last": "2026-11-26"
   },
   "calcionapoli24.it": {
    "outlet": "CalcioNapoli24",
    "country": "Italy",
-   "n": 180,
+   "n": 181,
    "last": "2026-11-26"
   },
   "atalantaoggi.it": {
@@ -2066,7 +2066,7 @@
   "corrieredellosport.it": {
    "outlet": "Corriere dello Sport",
    "country": "Italy",
-   "n": 474,
+   "n": 477,
    "last": "2026-11-26"
   },
   "fiorentinanews.com": {
@@ -2102,7 +2102,7 @@
   "cagliaricalcio-news.it": {
    "outlet": "https://www.cagliaricalcio-news.it/",
    "country": "Italy",
-   "n": 1038,
+   "n": 1042,
    "last": "2026-11-26"
   },
   "cagliaricalcio.com": {
@@ -2114,31 +2114,31 @@
   "sportparma.com": {
    "outlet": "SportParma",
    "country": "Italy",
-   "n": 641,
-   "last": "2026-11-25"
+   "n": 642,
+   "last": "2026-11-26"
   },
   "calcioa5anteprima.com": {
    "outlet": "Calcio a 5 Anteprima",
    "country": "Italy",
-   "n": 46,
+   "n": 48,
    "last": "2026-11-26"
   },
   "zerosette.it": {
    "outlet": "Zerosette free press",
    "country": "Italy",
-   "n": 31,
+   "n": 32,
    "last": "2026-11-26"
   },
   "cbssports.com": {
    "outlet": "CBS Sports",
    "country": "Italy",
-   "n": 285,
+   "n": 287,
    "last": "2026-11-26"
   },
   "tuttoudinese.it": {
    "outlet": "Tutto Udinese",
    "country": "Italy",
-   "n": 425,
+   "n": 427,
    "last": "2026-11-26"
   },
   "milanistichannel.com": {
@@ -2156,7 +2156,7 @@
   "calciolecce.it": {
    "outlet": "Calcio Lecce",
    "country": "Italy",
-   "n": 1305,
+   "n": 1308,
    "last": "2026-11-26"
   },
   "gonfialarete.com": {
@@ -2192,7 +2192,7 @@
   "genoaoggi.it": {
    "outlet": "Genoa Oggi",
    "country": "Italy",
-   "n": 114,
+   "n": 115,
    "last": "2026-11-26"
   },
   "calciogenoa.it": {
@@ -2204,7 +2204,7 @@
   "cagliarinews24.com": {
    "outlet": "Cagliari News 24",
    "country": "Italy",
-   "n": 561,
+   "n": 563,
    "last": "2026-11-26"
   },
   "bolognafc.it": {
@@ -2252,7 +2252,7 @@
   "amp.sportsmole.co.uk": {
    "outlet": "Sports Mole",
    "country": "Italy",
-   "n": 128,
+   "n": 130,
    "last": "2026-11-26"
   },
   "gazzettadimantova.it": {
@@ -2264,7 +2264,7 @@
   "corriere.it": {
    "outlet": "Corriere della Sera",
    "country": "Italy",
-   "n": 263,
+   "n": 265,
    "last": "2026-11-26"
   },
   "cremonasera.it": {
@@ -2336,7 +2336,7 @@
   "gazzettadiparma.it": {
    "outlet": "Gazzetta di Parma",
    "country": "Italy",
-   "n": 170,
+   "n": 171,
    "last": "2026-11-26"
   },
   "independent.com.mt": {
@@ -2384,13 +2384,13 @@
   "sport.quotidiano.net": {
    "outlet": "Quotidiano Sportivo",
    "country": "Italy",
-   "n": 1303,
+   "n": 1308,
    "last": "2026-11-26"
   },
   "tuttomercatoweb.com": {
    "outlet": "TUTTOmercatoWEB",
    "country": "Italy",
-   "n": 319,
+   "n": 320,
    "last": "2026-11-26"
   },
   "edinburghnews.scotsman.com": {
@@ -2402,7 +2402,7 @@
   "sportbild.bild.de": {
    "outlet": "Sport Bild",
    "country": "Germany",
-   "n": 409,
+   "n": 410,
    "last": "2026-11-26"
   },
   "fcbayern.com": {
@@ -2426,7 +2426,7 @@
   "kicker.de": {
    "outlet": "Kicker",
    "country": "Germany",
-   "n": 1143,
+   "n": 1151,
    "last": "2026-11-26"
   },
   "de.nachrichten.yahoo.com": {
@@ -2438,19 +2438,19 @@
   "nowarsenal.com": {
    "outlet": "now.arsenal",
    "country": "Germany",
-   "n": 308,
+   "n": 312,
    "last": "2026-11-26"
   },
   "fussballnationalmannschaft.net": {
    "outlet": "www.fussballnationalmannschaft.net",
    "country": "Germany",
-   "n": 1406,
+   "n": 1415,
    "last": "2026-11-26"
   },
   "n-tv.de": {
    "outlet": "n-tv.de",
    "country": "Germany",
-   "n": 568,
+   "n": 569,
    "last": "2026-11-26"
   },
   "faz.net": {
@@ -2468,19 +2468,19 @@
   "bulinews.com": {
    "outlet": "Bulinews",
    "country": "Germany",
-   "n": 2077,
+   "n": 2095,
    "last": "2026-11-26"
   },
   "arsenal.com": {
    "outlet": "Arsenal.com",
    "country": "Germany",
-   "n": 263,
+   "n": 265,
    "last": "2026-11-26"
   },
   "absolutfussball.com": {
    "outlet": "Absolut Fussball",
    "country": "Germany",
-   "n": 439,
+   "n": 441,
    "last": "2026-11-26"
   },
   "zdfheute.de": {
@@ -2504,25 +2504,25 @@
   "bild.de": {
    "outlet": "BILD",
    "country": "Germany",
-   "n": 1593,
+   "n": 1594,
    "last": "2026-11-26"
   },
   "lvz.de": {
    "outlet": "LVZ - Leipziger Volkszeitung",
    "country": "Germany",
-   "n": 326,
+   "n": 327,
    "last": "2026-11-26"
   },
   "fussballtransfers.com": {
    "outlet": "FussballTransfers.com",
    "country": "Germany",
-   "n": 709,
+   "n": 712,
    "last": "2026-11-26"
   },
   "wettfreunde.net": {
    "outlet": "Wettfreunde",
    "country": "Germany",
-   "n": 255,
+   "n": 256,
    "last": "2026-11-26"
   },
   "realtotal.de": {
@@ -2534,49 +2534,49 @@
   "t.co": {
    "outlet": "Howl.link",
    "country": "Germany",
-   "n": 335,
+   "n": 338,
    "last": "2026-11-26"
   },
   "roundtable.io": {
    "outlet": "roundtable.io",
    "country": "Germany",
-   "n": 2698,
+   "n": 2709,
    "last": "2026-11-26"
   },
   "swr.de": {
    "outlet": "SWR",
    "country": "Germany",
-   "n": 829,
+   "n": 830,
    "last": "2026-11-26"
   },
   "ran.joyn.de": {
    "outlet": "Joyn",
    "country": "Germany",
-   "n": 116,
+   "n": 118,
    "last": "2026-11-26"
   },
   "wochenblatt-reporter.de": {
    "outlet": "Wochenblatt Reporter",
    "country": "Germany",
-   "n": 3088,
+   "n": 3097,
    "last": "2026-11-26"
   },
   "footballinnigeria.com.ng": {
    "outlet": "Football In Nigeria",
    "country": "Germany",
-   "n": 636,
+   "n": 637,
    "last": "2026-11-26"
   },
   "sportschau.de": {
    "outlet": "sportschau.de",
    "country": "Germany",
-   "n": 1897,
+   "n": 1899,
    "last": "2026-11-26"
   },
   "sport.sky.de": {
    "outlet": "Sky.de",
    "country": "Germany",
-   "n": 2150,
+   "n": 2152,
    "last": "2026-11-26"
   },
   "focus.de": {
@@ -2588,7 +2588,7 @@
   "hessenschau.de": {
    "outlet": "hessenschau.de",
    "country": "Germany",
-   "n": 517,
+   "n": 518,
    "last": "2026-11-26"
   },
   "eurosport.de": {
@@ -2612,37 +2612,37 @@
   "merkur.de": {
    "outlet": "Merkur",
    "country": "Germany",
-   "n": 56,
+   "n": 59,
    "last": "2026-11-26"
   },
   "transfermarkt.co.uk": {
    "outlet": "Transfermarkt",
    "country": "Germany",
-   "n": 186,
+   "n": 188,
    "last": "2026-11-26"
   },
   "motleedsnews.com": {
    "outlet": "MOT Leeds News",
    "country": "Germany",
-   "n": 969,
+   "n": 974,
    "last": "2026-11-26"
   },
   "bluewin.ch": {
    "outlet": "blue News",
    "country": "Germany",
-   "n": 1600,
+   "n": 1604,
    "last": "2026-11-26"
   },
   "welt.de": {
    "outlet": "WELT",
    "country": "Germany",
-   "n": 857,
+   "n": 860,
    "last": "2026-11-26"
   },
   "rtl.de": {
    "outlet": "RTL.de",
    "country": "Germany",
-   "n": 128,
+   "n": 129,
    "last": "2026-11-26"
   },
   "neuepresse.de": {
@@ -2654,7 +2654,7 @@
   "sport.de": {
    "outlet": "sport.de",
    "country": "Germany",
-   "n": 3526,
+   "n": 3543,
    "last": "2026-11-26"
   },
   "plus.rtl.de": {
@@ -2672,13 +2672,13 @@
   "werder.de": {
    "outlet": "Werder Bremen",
    "country": "Germany",
-   "n": 222,
+   "n": 223,
    "last": "2026-11-26"
   },
   "blick.ch": {
    "outlet": "Blick",
    "country": "Germany",
-   "n": 3415,
+   "n": 3425,
    "last": "2026-11-26"
   },
   "ligainsider.de": {
@@ -2690,7 +2690,7 @@
   "90min.de": {
    "outlet": "90min.de",
    "country": "Germany",
-   "n": 289,
+   "n": 292,
    "last": "2026-11-26"
   },
   "fehmarn24.de": {
@@ -2702,13 +2702,13 @@
   "derwesten.de": {
    "outlet": "DerWesten",
    "country": "Germany",
-   "n": 604,
+   "n": 607,
    "last": "2026-11-26"
   },
   "espn.ph": {
    "outlet": "ESPN Philippines",
    "country": "Germany",
-   "n": 401,
+   "n": 402,
    "last": "2026-11-26"
   },
   "radio-in.de": {
@@ -2720,7 +2720,7 @@
   "365scores.com": {
    "outlet": "365Scores",
    "country": "Germany",
-   "n": 231,
+   "n": 233,
    "last": "2026-11-26"
   },
   "sport1.de": {
@@ -2738,7 +2738,7 @@
   "allgemeine-zeitung.de": {
    "outlet": "Allgemeine Zeitung",
    "country": "Germany",
-   "n": 698,
+   "n": 699,
    "last": "2026-11-26"
   },
   "rheinpfalz.de": {
@@ -2750,25 +2750,25 @@
   "bundesliga.com": {
    "outlet": "Bundesliga | official website",
    "country": "Germany",
-   "n": 477,
+   "n": 480,
    "last": "2026-11-26"
   },
   "augsburger-allgemeine.de": {
    "outlet": "Augsburger Allgemeine",
    "country": "Germany",
-   "n": 340,
+   "n": 342,
    "last": "2026-11-26"
   },
   "fussballeuropa.com": {
    "outlet": "Fussball Europa",
    "country": "Germany",
-   "n": 319,
+   "n": 320,
    "last": "2026-11-26"
   },
   "m.sport.bild.de": {
    "outlet": "BILD",
    "country": "Germany",
-   "n": 203,
+   "n": 204,
    "last": "2026-11-26"
   },
   "rp-online.de": {
@@ -2828,13 +2828,13 @@
   "sport.bild.de": {
    "outlet": "BILD",
    "country": "Germany",
-   "n": 172,
+   "n": 174,
    "last": "2026-11-26"
   },
   "karlobag.eu": {
    "outlet": "KarloBag.eu",
    "country": "Germany",
-   "n": 383,
+   "n": 387,
    "last": "2026-11-26"
   },
   "zweiteliga.org": {
@@ -2876,13 +2876,13 @@
   "lequipe.fr": {
    "outlet": "L'Équipe",
    "country": "France",
-   "n": 3630,
+   "n": 3641,
    "last": "2026-11-26"
   },
   "ouest-france.fr": {
    "outlet": "Ouest-France",
    "country": "France",
-   "n": 3353,
+   "n": 3365,
    "last": "2026-11-26"
   },
   "lemonde.fr": {
@@ -2894,7 +2894,7 @@
   "rmcsport.bfmtv.com": {
    "outlet": "RMC Sport",
    "country": "France",
-   "n": 1561,
+   "n": 1565,
    "last": "2026-11-26"
   },
   "kdhnews.com": {
@@ -2912,13 +2912,13 @@
   "lentedesportiva.com": {
    "outlet": "Lente Desportiva",
    "country": "France",
-   "n": 1260,
+   "n": 1265,
    "last": "2026-11-26"
   },
   "sport.fr": {
    "outlet": "Sport.fr",
    "country": "France",
-   "n": 2666,
+   "n": 2671,
    "last": "2026-11-26"
   },
   "foot-sur7.fr": {
@@ -2930,31 +2930,31 @@
   "foot01.com": {
    "outlet": "Foot01",
    "country": "France",
-   "n": 86,
+   "n": 87,
    "last": "2026-11-26"
   },
   "butfootballclub.fr": {
    "outlet": "But! Football Club",
    "country": "France",
-   "n": 1768,
+   "n": 1772,
    "last": "2026-11-26"
   },
   "canalplus.com": {
    "outlet": "Canal+",
    "country": "France",
-   "n": 3822,
+   "n": 3830,
    "last": "2026-11-26"
   },
   "afrik-foot.com": {
    "outlet": "Afrik-Foot",
    "country": "France",
-   "n": 1210,
+   "n": 1221,
    "last": "2026-11-26"
   },
   "tribalfootball.com": {
    "outlet": "TribalFootball",
    "country": "France",
-   "n": 2980,
+   "n": 2992,
    "last": "2026-11-26"
   },
   "live-mercato.com": {
@@ -2966,7 +2966,7 @@
   "livefoot.fr": {
    "outlet": "LiveFoot",
    "country": "France",
-   "n": 354,
+   "n": 356,
    "last": "2026-11-26"
   },
   "sportbusiness.club": {
@@ -2978,13 +2978,13 @@
   "jds.fr": {
    "outlet": "jds.fr",
    "country": "France",
-   "n": 826,
+   "n": 831,
    "last": "2026-11-26"
   },
   "sports.fr": {
    "outlet": "Sports.fr",
    "country": "France",
-   "n": 338,
+   "n": 340,
    "last": "2026-11-26"
   },
   "ledauphine.com": {
@@ -3002,14 +3002,14 @@
   "africafootunited.com": {
    "outlet": "AfricaFootUnited",
    "country": "France",
-   "n": 565,
+   "n": 568,
    "last": "2026-11-26"
   },
   "scorenigeria.com.ng": {
    "outlet": "Score Nigeria",
    "country": "France",
-   "n": 117,
-   "last": "2026-11-24"
+   "n": 118,
+   "last": "2026-11-26"
   },
   "gdnonline.com": {
    "outlet": "Gulf Daily News (Bahrain)",
@@ -3020,7 +3020,7 @@
   "nicematin.com": {
    "outlet": "Nice-Matin",
    "country": "France",
-   "n": 615,
+   "n": 621,
    "last": "2026-11-26"
   },
   "ici.fr": {
@@ -3044,19 +3044,19 @@
   "morning-foot.com": {
    "outlet": "Morning Foot",
    "country": "France",
-   "n": 488,
+   "n": 493,
    "last": "2026-11-26"
   },
   "mediasportif.fr": {
    "outlet": "Mediasportif",
    "country": "France",
-   "n": 228,
+   "n": 229,
    "last": "2026-11-26"
   },
   "dhnet.be": {
    "outlet": "DHnet",
    "country": "France",
-   "n": 2601,
+   "n": 2608,
    "last": "2026-11-26"
   },
   "charentelibre.fr": {
@@ -3068,38 +3068,38 @@
   "rtbf.be": {
    "outlet": "RTBF",
    "country": "France",
-   "n": 1032,
+   "n": 1035,
    "last": "2026-11-26"
   },
   "news.maxifoot.fr": {
    "outlet": "Maxifoot",
    "country": "France",
-   "n": 1107,
+   "n": 1114,
    "last": "2026-11-26"
   },
   "hommedumatch.fr": {
    "outlet": "Homme Du Match",
    "country": "France",
-   "n": 136,
+   "n": 137,
    "last": "2026-11-26"
   },
   "footmercato.net": {
    "outlet": "Foot Mercato",
    "country": "France",
-   "n": 712,
+   "n": 715,
    "last": "2026-11-26"
   },
   "sports.orange.fr": {
    "outlet": "Sports - Orange",
    "country": "France",
-   "n": 805,
+   "n": 806,
    "last": "2026-11-26"
   },
   "topmercato.com": {
    "outlet": "TOP Mercato",
    "country": "France",
-   "n": 89,
-   "last": "2026-11-25"
+   "n": 90,
+   "last": "2026-11-26"
   },
   "africafoot.com": {
    "outlet": "AfricaFoot",
@@ -3116,13 +3116,13 @@
   "dna.fr": {
    "outlet": "dna.fr",
    "country": "France",
-   "n": 248,
+   "n": 250,
    "last": "2026-11-26"
   },
   "alsasports.fr": {
    "outlet": "Alsa'Sports",
    "country": "France",
-   "n": 618,
+   "n": 620,
    "last": "2026-11-26"
   },
   "peuple-vert.fr": {
@@ -3152,31 +3152,31 @@
   "ladepeche.fr": {
    "outlet": "ladepeche.fr",
    "country": "France",
-   "n": 428,
+   "n": 431,
    "last": "2026-11-26"
   },
   "les-transferts.com": {
    "outlet": "Les Transferts",
    "country": "France",
-   "n": 40,
+   "n": 41,
    "last": "2026-11-26"
   },
   "actu.orange.fr": {
    "outlet": "Orange Actualités",
    "country": "France",
-   "n": 69,
+   "n": 70,
    "last": "2026-11-26"
   },
   "letelegramme.fr": {
    "outlet": "Le Télégramme",
    "country": "France",
-   "n": 427,
+   "n": 429,
    "last": "2026-11-26"
   },
   "foot-national.com": {
    "outlet": "Foot National",
    "country": "France",
-   "n": 198,
+   "n": 199,
    "last": "2026-11-26"
   },
   "eurosport.fr": {
@@ -3188,13 +3188,13 @@
   "lyonne.fr": {
    "outlet": "L'Yonne Républicaine",
    "country": "France",
-   "n": 214,
+   "n": 217,
    "last": "2026-11-26"
   },
   "tv-programme.com": {
    "outlet": "TV-Programme.com",
    "country": "France",
-   "n": 380,
+   "n": 382,
    "last": "2026-11-26"
   },
   "letribunaldunet.fr": {
@@ -3206,7 +3206,7 @@
   "lecourriercauchois.fr": {
    "outlet": "lecourriercauchois.fr",
    "country": "France",
-   "n": 78,
+   "n": 79,
    "last": "2026-11-26"
   },
   "leparisien.fr": {
@@ -3260,19 +3260,19 @@
   "lephoceen.fr": {
    "outlet": "Le Phocéen",
    "country": "France",
-   "n": 155,
+   "n": 156,
    "last": "2026-11-26"
   },
   "news.footeo.com": {
    "outlet": "Footeo News",
    "country": "France",
-   "n": 72,
+   "n": 74,
    "last": "2026-11-26"
   },
   "diadejogo.pt": {
    "outlet": "diadejogo.pt",
    "country": "Portugal",
-   "n": 2485,
+   "n": 2492,
    "last": "2026-11-26"
   },
   "jn.pt": {
@@ -3284,7 +3284,7 @@
   "mag.sapo.pt": {
    "outlet": "SAPO",
    "country": "Portugal",
-   "n": 218,
+   "n": 219,
    "last": "2026-11-26"
   },
   "academicodeviseu.pt": {
@@ -3302,13 +3302,13 @@
   "maisfutebol.iol.pt": {
    "outlet": "Maisfutebol",
    "country": "Portugal",
-   "n": 192,
+   "n": 193,
    "last": "2026-11-26"
   },
   "sempremilan.com": {
    "outlet": "SempreMilan",
    "country": "Portugal",
-   "n": 304,
+   "n": 305,
    "last": "2026-11-26"
   },
   "lance.com.br": {
@@ -3320,25 +3320,25 @@
   "cmjornal.pt": {
    "outlet": "Correio da Manhã",
    "country": "Portugal",
-   "n": 493,
+   "n": 494,
    "last": "2026-11-26"
   },
   "superportistas.pt": {
    "outlet": "Sou Portista",
    "country": "Portugal",
-   "n": 485,
+   "n": 488,
    "last": "2026-11-26"
   },
   "sapo.pt": {
    "outlet": "SAPO",
    "country": "Portugal",
-   "n": 1360,
+   "n": 1363,
    "last": "2026-11-26"
   },
   "ojogo.pt": {
    "outlet": "O Jogo",
    "country": "Portugal",
-   "n": 1671,
+   "n": 1676,
    "last": "2026-11-26"
   },
   "e24.pt": {
@@ -3356,25 +3356,25 @@
   "bolanarede.pt": {
    "outlet": "Bola na Rede",
    "country": "Portugal",
-   "n": 869,
+   "n": 870,
    "last": "2026-11-26"
   },
   "glorioso1904.pt": {
    "outlet": "Glorioso 1904",
    "country": "Portugal",
-   "n": 1085,
+   "n": 1091,
    "last": "2026-11-26"
   },
   "slbenfica.pt": {
    "outlet": "Site Oficial do Sport Lisboa e Benfica",
    "country": "Portugal",
-   "n": 459,
+   "n": 464,
    "last": "2026-11-26"
   },
   "abola.pt": {
    "outlet": "A Bola",
    "country": "Portugal",
-   "n": 3523,
+   "n": 3540,
    "last": "2026-11-26"
   },
   "observador.pt": {
@@ -3392,19 +3392,19 @@
   "record.pt": {
    "outlet": "Record",
    "country": "Portugal",
-   "n": 4857,
+   "n": 4877,
    "last": "2026-11-26"
   },
   "golo.fm": {
    "outlet": "Golo FM",
    "country": "Portugal",
-   "n": 199,
+   "n": 202,
    "last": "2026-11-26"
   },
   "dominiodebola.com": {
    "outlet": "dominiodebola",
    "country": "Portugal",
-   "n": 278,
+   "n": 279,
    "last": "2026-11-26"
   },
   "tribuna.expresso.pt": {
@@ -3416,13 +3416,13 @@
   "flashscore.pt": {
    "outlet": "Flashscore.pt",
    "country": "Portugal",
-   "n": 541,
+   "n": 543,
    "last": "2026-11-26"
   },
   "famaradio.tv": {
    "outlet": "Fama Rádio e Televisão",
    "country": "Portugal",
-   "n": 175,
+   "n": 176,
    "last": "2026-11-26"
   },
   "vitoriasc.pt": {
@@ -3440,7 +3440,7 @@
   "maisguimaraes.pt": {
    "outlet": "Mais Guimarães",
    "country": "Portugal",
-   "n": 156,
+   "n": 157,
    "last": "2026-11-26"
   },
   "radiobarcelos.pt": {
@@ -3470,25 +3470,25 @@
   "zerozero.pt": {
    "outlet": "zerozero.pt",
    "country": "Portugal",
-   "n": 1078,
+   "n": 1085,
    "last": "2026-11-26"
   },
   "noticiasaominuto.com": {
    "outlet": "Notícias ao Minuto",
    "country": "Portugal",
-   "n": 439,
+   "n": 441,
    "last": "2026-11-26"
   },
   "estorilpraia.pt": {
    "outlet": "Estoril Praia",
    "country": "Portugal",
-   "n": 75,
+   "n": 76,
    "last": "2026-11-26"
   },
   "tvi.iol.pt": {
    "outlet": "TVI",
    "country": "Portugal",
-   "n": 156,
+   "n": 157,
    "last": "2026-11-26"
   },
   "fpf.pt": {
@@ -3536,7 +3536,7 @@
   "hoodline.com": {
    "outlet": "Hoodline",
    "country": "Portugal",
-   "n": 275,
+   "n": 276,
    "last": "2026-11-26"
   },
   "grupoahora.net.br": {
@@ -3548,7 +3548,7 @@
   "ge.globo.com": {
    "outlet": "ge",
    "country": "Portugal",
-   "n": 214,
+   "n": 215,
    "last": "2026-11-26"
   },
   "caririesporte.com.br": {
@@ -3572,7 +3572,7 @@
   "sportytrader.pt": {
    "outlet": "SportyTrader Portugal",
    "country": "Portugal",
-   "n": 211,
+   "n": 212,
    "last": "2026-11-26"
   },
   "ogol.com.br": {
@@ -3590,7 +3590,7 @@
   "lusa.pt": {
    "outlet": "LUSA",
    "country": "Portugal",
-   "n": 627,
+   "n": 629,
    "last": "2026-11-26"
   },
   "afatv.pt": {
@@ -3626,7 +3626,7 @@
   "rtp.pt": {
    "outlet": "RTP",
    "country": "Portugal",
-   "n": 624,
+   "n": 626,
    "last": "2026-11-26"
   },
   "espn.com.sg": {
@@ -3650,7 +3650,7 @@
   "soesporte.com.br": {
    "outlet": "SóEsporte",
    "country": "Portugal",
-   "n": 24,
+   "n": 25,
    "last": "2026-11-26"
   },
   "funchalnoticias.net": {
@@ -3662,25 +3662,25 @@
   "telegraaf.nl": {
    "outlet": "De Telegraaf",
    "country": "Netherlands",
-   "n": 2328,
+   "n": 2339,
    "last": "2026-11-26"
   },
   "ad.nl": {
    "outlet": "AD.nl",
    "country": "Netherlands",
-   "n": 2104,
+   "n": 2114,
    "last": "2026-11-26"
   },
   "nu.nl": {
    "outlet": "NU",
    "country": "Netherlands",
-   "n": 912,
+   "n": 913,
    "last": "2026-11-26"
   },
   "voetbalprimeur.be": {
    "outlet": "VoetbalPrimeur.be",
    "country": "Netherlands",
-   "n": 4147,
+   "n": 4164,
    "last": "2026-11-26"
   },
   "ajaxshowtime.com": {
@@ -3692,13 +3692,13 @@
   "voetbal.headliner.nl": {
    "outlet": "Headliner.nl",
    "country": "Netherlands",
-   "n": 670,
+   "n": 671,
    "last": "2026-11-26"
   },
   "voetbalprimeur.nl": {
    "outlet": "VoetbalPrimeur",
    "country": "Netherlands",
-   "n": 1343,
+   "n": 1346,
    "last": "2026-11-26"
   },
   "footboom1.com": {
@@ -3710,7 +3710,7 @@
   "allnigeriasoccer.com": {
    "outlet": "AllNigeriaSoccer",
    "country": "Netherlands",
-   "n": 495,
+   "n": 496,
    "last": "2026-11-26"
   },
   "fr12.nl": {
@@ -3728,25 +3728,25 @@
   "sportnieuws.nl": {
    "outlet": "Sportnieuws.nl",
    "country": "Netherlands",
-   "n": 856,
+   "n": 860,
    "last": "2026-11-26"
   },
   "sportytrader.com": {
    "outlet": "SportyTrader",
    "country": "Netherlands",
-   "n": 422,
+   "n": 423,
    "last": "2026-11-26"
   },
   "espn.nl": {
    "outlet": "ESPN.nl",
    "country": "Netherlands",
-   "n": 1134,
+   "n": 1135,
    "last": "2026-11-26"
   },
   "gelderlander.nl": {
    "outlet": "De Gelderlander",
    "country": "Netherlands",
-   "n": 584,
+   "n": 585,
    "last": "2026-11-26"
   },
   "limburger.nl": {
@@ -3764,7 +3764,7 @@
   "drimble.nl": {
    "outlet": "Drimble",
    "country": "Netherlands",
-   "n": 4320,
+   "n": 4330,
    "last": "2026-11-26"
   },
   "rtvutrecht.nl": {
@@ -3776,19 +3776,19 @@
   "bd.nl": {
    "outlet": "Brabants Dagblad",
    "country": "Netherlands",
-   "n": 280,
+   "n": 281,
    "last": "2026-11-26"
   },
   "voetbalnieuws.nl": {
    "outlet": "VoetbalNieuws.nl",
    "country": "Netherlands",
-   "n": 194,
+   "n": 195,
    "last": "2026-11-26"
   },
   "haaglandenvoetbal.nl": {
    "outlet": "Haaglanden Voetbal",
    "country": "Netherlands",
-   "n": 441,
+   "n": 443,
    "last": "2026-11-26"
   },
   "twenteinsite.nl": {
@@ -3806,7 +3806,7 @@
   "getfootballnewsbene.com": {
    "outlet": "Get Belgian & Dutch Football News",
    "country": "Netherlands",
-   "n": 341,
+   "n": 342,
    "last": "2026-11-26"
   },
   "grootheerenveen.nl": {
@@ -3818,13 +3818,13 @@
   "feanonline.nl": {
    "outlet": "FeanOnline",
    "country": "Netherlands",
-   "n": 422,
+   "n": 424,
    "last": "2026-11-26"
   },
   "fcgroningen.headliner.nl": {
    "outlet": "Headliner.nl",
    "country": "Netherlands",
-   "n": 94,
+   "n": 95,
    "last": "2026-11-26"
   },
   "vandaaginside.nl": {
@@ -3836,13 +3836,13 @@
   "dvhn.nl": {
    "outlet": "DVHN",
    "country": "Netherlands",
-   "n": 65,
+   "n": 68,
    "last": "2026-11-26"
   },
   "waterwegsport.nl": {
    "outlet": "Waterwegsport",
    "country": "Netherlands",
-   "n": 215,
+   "n": 216,
    "last": "2026-11-26"
   },
   "ajax1.nl": {
@@ -3866,19 +3866,19 @@
   "sparta-rotterdam.nl": {
    "outlet": "Sparta Rotterdam",
    "country": "Netherlands",
-   "n": 116,
+   "n": 118,
    "last": "2026-11-26"
   },
   "fcupdate.nl": {
    "outlet": "FCUpdate.nl",
    "country": "Netherlands",
-   "n": 192,
+   "n": 193,
    "last": "2026-11-26"
   },
   "tvgids.nl": {
    "outlet": "TVgids.nl",
    "country": "Netherlands",
-   "n": 150,
+   "n": 152,
    "last": "2026-11-26"
   },
   "dagjeweg.nl": {
@@ -3890,20 +3890,20 @@
   "mijnstreekvandaag.nl": {
    "outlet": "Mijnstreek Vandaag",
    "country": "Netherlands",
-   "n": 41,
+   "n": 42,
    "last": "2026-11-26"
   },
   "thescore.com": {
    "outlet": "theScore",
    "country": "Netherlands",
-   "n": 547,
+   "n": 549,
    "last": "2026-11-26"
   },
   "l1nieuws.nl": {
    "outlet": "L1 Nieuws",
    "country": "Netherlands",
-   "n": 20,
-   "last": "2026-11-19"
+   "n": 21,
+   "last": "2026-11-26"
   },
   "destentor.nl": {
    "outlet": "de Stentor",
@@ -3944,7 +3944,7 @@
   "zeelandnet.nl": {
    "outlet": "ZeelandNet, startpagina van Zeeland",
    "country": "Netherlands",
-   "n": 799,
+   "n": 800,
    "last": "2026-11-26"
   },
   "voetbal4u.com": {
@@ -3962,31 +3962,31 @@
   "nieuwsblad.be": {
    "outlet": "Nieuwsblad",
    "country": "Belgium",
-   "n": 2639,
+   "n": 2645,
    "last": "2026-11-26"
   },
   "voetbalnieuws.be": {
    "outlet": "VoetbalNieuws.be",
    "country": "Belgium",
-   "n": 1950,
+   "n": 1961,
    "last": "2026-11-26"
   },
   "voetbalfocus.be": {
    "outlet": "VoetbalFocus",
    "country": "Belgium",
-   "n": 4027,
+   "n": 4042,
    "last": "2026-11-26"
   },
   "voetbalkrant.com": {
    "outlet": "Voetbalkrant.com",
    "country": "Belgium",
-   "n": 1472,
+   "n": 1477,
    "last": "2026-11-26"
   },
   "hln.be": {
    "outlet": "HLN",
    "country": "Belgium",
-   "n": 3330,
+   "n": 3335,
    "last": "2026-11-26"
   },
   "starsporttv.be": {
@@ -4004,13 +4004,13 @@
   "arsenalnews.co.uk": {
    "outlet": "ArsenalNews.co.uk",
    "country": "Belgium",
-   "n": 144,
+   "n": 146,
    "last": "2026-11-26"
   },
   "flashscore.fr": {
    "outlet": "Flashscore.fr",
    "country": "Belgium",
-   "n": 565,
+   "n": 566,
    "last": "2026-11-26"
   },
   "arsenalstation.com": {
@@ -4022,37 +4022,37 @@
   "voetbalbelgie.be": {
    "outlet": "VoetbalBelgie",
    "country": "Belgium",
-   "n": 1008,
+   "n": 1012,
    "last": "2026-11-26"
   },
   "voetbal24.be": {
    "outlet": "Voetbal24.be",
    "country": "Belgium",
-   "n": 468,
+   "n": 470,
    "last": "2026-11-26"
   },
   "circusdaily.com": {
    "outlet": "Circus Daily",
    "country": "Belgium",
-   "n": 1122,
+   "n": 1128,
    "last": "2026-11-26"
   },
   "hbvl.be": {
    "outlet": "HBVL",
    "country": "Belgium",
-   "n": 1237,
+   "n": 1238,
    "last": "2026-11-26"
   },
   "walfoot.be": {
    "outlet": "Walfoot.be",
    "country": "Belgium",
-   "n": 1725,
+   "n": 1731,
    "last": "2026-11-26"
   },
   "sudinfo.be": {
    "outlet": "Sudinfo",
    "country": "Belgium",
-   "n": 2373,
+   "n": 2381,
    "last": "2026-11-26"
   },
   "rtl.be": {
@@ -4064,13 +4064,13 @@
   "fr.besoccer.com": {
    "outlet": "BeSoccer Livescore",
    "country": "Belgium",
-   "n": 1351,
+   "n": 1354,
    "last": "2026-11-26"
   },
   "footnews.be": {
    "outlet": "FootNews.BE",
    "country": "Belgium",
-   "n": 1053,
+   "n": 1054,
    "last": "2026-11-26"
   },
   "twtd.co.uk": {
@@ -4088,13 +4088,13 @@
   "ibroxnews.com": {
    "outlet": "Ibrox News",
    "country": "Belgium",
-   "n": 95,
+   "n": 96,
    "last": "2026-11-26"
   },
   "pzc.nl": {
    "outlet": "pzc.nl",
    "country": "Belgium",
-   "n": 436,
+   "n": 437,
    "last": "2026-11-26"
   },
   "cityam.com": {
@@ -4112,31 +4112,31 @@
   "standard.be": {
    "outlet": "Standard de Liège",
    "country": "Belgium",
-   "n": 102,
+   "n": 103,
    "last": "2026-11-26"
   },
   "plus.lesoir.be": {
    "outlet": "Le Soir",
    "country": "Belgium",
-   "n": 176,
+   "n": 177,
    "last": "2026-11-26"
   },
   "cerclebrugge.be": {
    "outlet": "Cercle Brugge",
    "country": "Belgium",
-   "n": 252,
+   "n": 253,
    "last": "2026-11-26"
   },
   "robtv.be": {
    "outlet": "ROBtv",
    "country": "Belgium",
-   "n": 257,
+   "n": 258,
    "last": "2026-11-26"
   },
   "67hailhail.com": {
    "outlet": "67 Hail Hail",
    "country": "Belgium",
-   "n": 197,
+   "n": 198,
    "last": "2026-11-26"
   },
   "kw.be": {
@@ -4190,13 +4190,13 @@
   "thefootballfaithful.com": {
    "outlet": "The Football Faithful",
    "country": "England",
-   "n": 398,
+   "n": 403,
    "last": "2026-11-26"
   },
   "chelseafconline.com": {
    "outlet": "Chelsea FC Online",
    "country": "England",
-   "n": 81,
+   "n": 83,
    "last": "2026-11-26"
   },
   "balls.ie": {
@@ -4208,7 +4208,7 @@
   "sussexexpress.co.uk": {
    "outlet": "SussexWorld",
    "country": "England",
-   "n": 234,
+   "n": 236,
    "last": "2026-11-26"
   },
   "chichester.co.uk": {
@@ -4220,13 +4220,13 @@
   "maxpreps.com": {
    "outlet": "MaxPreps",
    "country": "England",
-   "n": 85,
+   "n": 86,
    "last": "2026-11-26"
   },
   "weareimps.com": {
    "outlet": "Lincoln City Football Club",
    "country": "England",
-   "n": 169,
+   "n": 170,
    "last": "2026-11-26"
   },
   "thestar.com.my": {
@@ -4262,7 +4262,7 @@
   "dailysabah.com": {
    "outlet": "Daily Sabah",
    "country": "England",
-   "n": 164,
+   "n": 165,
    "last": "2026-11-26"
   },
   "wearebrighton.com": {
@@ -4292,8 +4292,8 @@
   "leedsunited.com": {
    "outlet": "Leeds United | Official Website",
    "country": "England",
-   "n": 165,
-   "last": "2026-11-25"
+   "n": 167,
+   "last": "2026-11-26"
   },
   "horsforthtoday.co.uk": {
    "outlet": "Yorkshire Evening Post",
@@ -4310,19 +4310,19 @@
   "theleedspress.com": {
    "outlet": "The Leeds Press",
    "country": "England",
-   "n": 102,
+   "n": 103,
    "last": "2026-11-26"
   },
   "planetfootball.com": {
    "outlet": "Planet Football",
    "country": "England",
-   "n": 89,
+   "n": 91,
    "last": "2026-11-26"
   },
   "empireofthekop.com": {
    "outlet": "The Empire of The Kop",
    "country": "England",
-   "n": 31,
+   "n": 33,
    "last": "2026-11-26"
   },
   "insidersport.com": {
@@ -4346,7 +4346,7 @@
   "streamlinefeed.co.ke": {
    "outlet": "streamlinefeed.co.ke",
    "country": "England",
-   "n": 143,
+   "n": 144,
    "last": "2026-11-26"
   },
   "inkorr.com": {
@@ -4358,7 +4358,7 @@
   "leadership.ng": {
    "outlet": "LEADERSHIP Newspapers",
    "country": "England",
-   "n": 160,
+   "n": 161,
    "last": "2026-11-26"
   },
   "secretmanchester.com": {
@@ -4388,8 +4388,8 @@
   "inews.co.uk": {
    "outlet": "The i Paper",
    "country": "England",
-   "n": 83,
-   "last": "2026-11-25"
+   "n": 84,
+   "last": "2026-11-26"
   },
   "sportstalkflorida.com": {
    "outlet": "Sports Talk Florida",
@@ -4400,7 +4400,7 @@
   "greenstreethammers.com": {
    "outlet": "Green Street Hammers",
    "country": "England",
-   "n": 163,
+   "n": 165,
    "last": "2026-11-26"
   },
   "globenewswire.com": {
@@ -4412,7 +4412,7 @@
   "whufc.com": {
    "outlet": "West Ham United",
    "country": "England",
-   "n": 523,
+   "n": 527,
    "last": "2026-11-26"
   },
   "westhamworld.co.uk": {
@@ -4424,13 +4424,13 @@
   "finance.yahoo.com": {
    "outlet": "Yahoo Finance",
    "country": "England",
-   "n": 202,
+   "n": 203,
    "last": "2026-11-26"
   },
   "theportsmouthnews.com": {
    "outlet": "Pompey News",
    "country": "England",
-   "n": 383,
+   "n": 384,
    "last": "2026-11-26"
   },
   "blog.betway.com": {
@@ -4460,7 +4460,7 @@
   "sportaragon.com": {
    "outlet": "Sport Aragón",
    "country": "Spain",
-   "n": 326,
+   "n": 330,
    "last": "2026-11-26"
   },
   "jornadaperfecta.com": {
@@ -4490,13 +4490,13 @@
   "efe.com": {
    "outlet": "EFE - Agencia de noticias",
    "country": "Spain",
-   "n": 6,
-   "last": "2026-11-25"
+   "n": 8,
+   "last": "2026-11-26"
   },
   "abc.es": {
    "outlet": "ABC",
    "country": "Spain",
-   "n": 206,
+   "n": 207,
    "last": "2026-11-26"
   },
   "besoccer.es": {
@@ -4562,7 +4562,7 @@
   "africa.espn.com": {
    "outlet": "ESPN",
    "country": "Spain",
-   "n": 969,
+   "n": 971,
    "last": "2026-11-26"
   },
   "acb.com": {
@@ -4610,13 +4610,13 @@
   "futbolfantasy.com": {
    "outlet": "FútbolFantasy",
    "country": "Spain",
-   "n": 271,
+   "n": 275,
    "last": "2026-11-26"
   },
   "navarra.okdiario.com": {
    "outlet": "Navarra.com",
    "country": "Spain",
-   "n": 250,
+   "n": 252,
    "last": "2026-11-26"
   },
   "elcorreoweb.es": {
@@ -4628,7 +4628,7 @@
   "robinhood.com": {
    "outlet": "Robinhood",
    "country": "Spain",
-   "n": 907,
+   "n": 913,
    "last": "2026-11-26"
   },
   "lavozdealmeria.com": {
@@ -4646,13 +4646,13 @@
   "eleconomista.es": {
    "outlet": "El Economista",
    "country": "Spain",
-   "n": 14,
-   "last": "2026-11-22"
+   "n": 15,
+   "last": "2026-11-26"
   },
   "uruguayaldia.com.uy": {
    "outlet": "Uruguay Al Día",
    "country": "Spain",
-   "n": 76,
+   "n": 77,
    "last": "2026-11-26"
   },
   "realoviedo.es": {
@@ -4670,19 +4670,19 @@
   "anecdotarios.com": {
    "outlet": "Anecdotarios",
    "country": "Spain",
-   "n": 120,
-   "last": "2026-11-25"
+   "n": 121,
+   "last": "2026-11-26"
   },
   "alicanteplaza.es": {
    "outlet": "Alicante Plaza",
    "country": "Spain",
-   "n": 131,
-   "last": "2026-11-24"
+   "n": 132,
+   "last": "2026-11-26"
   },
   "unionrayo.es": {
    "outlet": "Unión Rayo",
    "country": "Spain",
-   "n": 346,
+   "n": 347,
    "last": "2026-11-26"
   },
   "actualidadvalencia.com": {
@@ -4700,7 +4700,7 @@
   "newsbreak.com": {
    "outlet": "NewsBreak: Local News & Alerts",
    "country": "Spain",
-   "n": 119,
+   "n": 123,
    "last": "2026-11-26"
   },
   "puranoticia.pnt.cl": {
@@ -4736,19 +4736,19 @@
   "espndeportes.espn.com": {
    "outlet": "ESPN Deportes",
    "country": "Spain",
-   "n": 229,
+   "n": 230,
    "last": "2026-11-26"
   },
   "moroccoworldnews.com": {
    "outlet": "Morocco World News",
    "country": "Spain",
-   "n": 240,
-   "last": "2026-11-25"
+   "n": 241,
+   "last": "2026-11-26"
   },
   "dorsal16.com": {
    "outlet": "dorsal16",
    "country": "Spain",
-   "n": 238,
+   "n": 239,
    "last": "2026-11-26"
   },
   "canariasenpleno.com": {
@@ -4790,7 +4790,7 @@
   "sabcsport.com": {
    "outlet": "SABC Sport",
    "country": "Italy",
-   "n": 28,
+   "n": 30,
    "last": "2026-11-26"
   },
   "khelnow.com": {
@@ -4808,7 +4808,7 @@
   "calcioefinanza.it": {
    "outlet": "Calcio e Finanza",
    "country": "Italy",
-   "n": 352,
+   "n": 353,
    "last": "2026-11-26"
   },
   "adnkronos.com": {
@@ -4820,26 +4820,26 @@
   "taorminanews24.com": {
    "outlet": "TaorminaNews24",
    "country": "Italy",
-   "n": 205,
+   "n": 206,
    "last": "2026-11-26"
   },
   "sport.sky.it": {
    "outlet": "Sky Sport",
    "country": "Italy",
-   "n": 816,
+   "n": 817,
    "last": "2026-11-26"
   },
   "today.it": {
    "outlet": "Today",
    "country": "Italy",
-   "n": 25,
+   "n": 26,
    "last": "2026-11-26"
   },
   "europacalcio.it": {
    "outlet": "Europacalcio",
    "country": "Italy",
-   "n": 122,
-   "last": "2026-11-24"
+   "n": 123,
+   "last": "2026-11-26"
   },
   "askanews.it": {
    "outlet": "Askanews",
@@ -4856,7 +4856,7 @@
   "romatoday.it": {
    "outlet": "RomaToday",
    "country": "Italy",
-   "n": 265,
+   "n": 266,
    "last": "2026-11-26"
   },
   "assopoker.com": {
@@ -4880,7 +4880,7 @@
   "calciocomo.it": {
    "outlet": "www.calciocomo.it",
    "country": "Italy",
-   "n": 109,
+   "n": 111,
    "last": "2026-11-26"
   },
   "labaroviola.com": {
@@ -4892,7 +4892,7 @@
   "calcionews24.com": {
    "outlet": "Calcio News 24",
    "country": "Italy",
-   "n": 602,
+   "n": 604,
    "last": "2026-11-26"
   },
   "informat.ro": {
@@ -4904,20 +4904,20 @@
   "calciobologna.it": {
    "outlet": "www.calciobologna.it",
    "country": "Italy",
-   "n": 690,
+   "n": 695,
    "last": "2026-11-26"
   },
   "1000cuorirossoblu.it": {
    "outlet": "1000 Cuori Rossoblu",
    "country": "Italy",
-   "n": 98,
+   "n": 99,
    "last": "2026-11-26"
   },
   "acmonza.com": {
    "outlet": "Associazione Calcio Monza S.p.A. *",
    "country": "Italy",
-   "n": 409,
-   "last": "2026-11-25"
+   "n": 411,
+   "last": "2026-11-26"
   },
   "monzatoday.it": {
    "outlet": "MonzaToday",
@@ -4946,7 +4946,7 @@
   "cagliaripad.it": {
    "outlet": "Cagliaripad.it",
    "country": "Italy",
-   "n": 52,
+   "n": 53,
    "last": "2026-11-26"
   },
   "ilgiornale.it": {
@@ -4958,7 +4958,7 @@
   "laprovinciadicomo.it": {
    "outlet": "La Provincia di Como",
    "country": "Italy",
-   "n": 58,
+   "n": 59,
    "last": "2026-11-26"
   },
   "comofootball.com": {
@@ -5006,7 +5006,7 @@
   "sassuolocalcio.it": {
    "outlet": "U.S. Sassuolo Calcio",
    "country": "Italy",
-   "n": 281,
+   "n": 283,
    "last": "2026-11-26"
   },
   "gazzettadimodena.it": {
@@ -5024,25 +5024,25 @@
   "transfermarkt.at": {
    "outlet": "Transfermarkt",
    "country": "Germany",
-   "n": 267,
+   "n": 268,
    "last": "2026-11-26"
   },
   "laola1.at": {
    "outlet": "LAOLA1",
    "country": "Germany",
-   "n": 2477,
+   "n": 2496,
    "last": "2026-11-26"
   },
   "justarsenal.com": {
    "outlet": "Just Arsenal News",
    "country": "Germany",
-   "n": 78,
+   "n": 79,
    "last": "2026-11-26"
   },
   "fussballdaten.de": {
    "outlet": "fussballdaten.de",
    "country": "Germany",
-   "n": 590,
+   "n": 594,
    "last": "2026-11-26"
   },
   "therealchamps.com": {
@@ -5054,19 +5054,19 @@
   "dailybeirut.com": {
    "outlet": "Daily Beirut",
    "country": "Germany",
-   "n": 57,
+   "n": 58,
    "last": "2026-11-26"
   },
   "getfootballnewsgermany.com": {
    "outlet": "Get German Football News",
    "country": "Germany",
-   "n": 350,
+   "n": 351,
    "last": "2026-11-26"
   },
   "fr.de": {
    "outlet": "Frankfurter Rundschau",
    "country": "Germany",
-   "n": 311,
+   "n": 315,
    "last": "2026-11-26"
   },
   "wc.sportwetten24.com": {
@@ -5096,7 +5096,7 @@
   "fupa.net": {
    "outlet": "FuPa ⚽️",
    "country": "Germany",
-   "n": 328,
+   "n": 330,
    "last": "2026-11-26"
   },
   "lequotidien.lu": {
@@ -5120,7 +5120,7 @@
   "hac.football": {
    "outlet": "Havre Athletic Club",
    "country": "France",
-   "n": 77,
+   "n": 79,
    "last": "2026-11-26"
   },
   "laurafoot.fff.fr": {
@@ -5144,7 +5144,7 @@
   "getfootballnewsfrance.com": {
    "outlet": "Get French Football News",
    "country": "France",
-   "n": 2309,
+   "n": 2317,
    "last": "2026-11-26"
   },
   "lyonfoot.com": {
@@ -5156,19 +5156,19 @@
   "7sur7.be": {
    "outlet": "7sur7.be",
    "country": "France",
-   "n": 440,
+   "n": 441,
    "last": "2026-11-26"
   },
   "maxifoot.fr": {
    "outlet": "Maxifoot",
    "country": "France",
-   "n": 578,
+   "n": 581,
    "last": "2026-11-26"
   },
   "score.fr": {
    "outlet": "Score.fr",
    "country": "France",
-   "n": 378,
+   "n": 379,
    "last": "2026-11-26"
   },
   "talkchelsea.net": {
@@ -5192,7 +5192,7 @@
   "actu.fr": {
    "outlet": "Actu.fr",
    "country": "France",
-   "n": 472,
+   "n": 474,
    "last": "2026-11-26"
   },
   "maliactu.net": {
@@ -5210,7 +5210,7 @@
   "paris-normandie.fr": {
    "outlet": "Paris Normandie",
    "country": "France",
-   "n": 318,
+   "n": 319,
    "last": "2026-11-26"
   },
   "footmarseille.com": {
@@ -5234,19 +5234,19 @@
   "cnnportugal.iol.pt": {
    "outlet": "CNN Portugal",
    "country": "Portugal",
-   "n": 145,
+   "n": 146,
    "last": "2026-11-26"
   },
   "scbraga.pt": {
    "outlet": "SC Braga",
    "country": "Portugal",
-   "n": 207,
+   "n": 208,
    "last": "2026-11-26"
   },
   "guimaraesdigital.pt": {
    "outlet": "Guimarães Digital",
    "country": "Portugal",
-   "n": 179,
+   "n": 180,
    "last": "2026-11-26"
   },
   "fcporto.pt": {
@@ -5258,8 +5258,8 @@
   "agoranovale.com.br": {
    "outlet": "Agora No Vale",
    "country": "Portugal",
-   "n": 35,
-   "last": "2026-11-18"
+   "n": 36,
+   "last": "2026-11-26"
   },
   "archdaily.com": {
    "outlet": "ArchDaily",
@@ -5276,8 +5276,8 @@
   "localnoticias.pt": {
    "outlet": "localnoticias.pt",
    "country": "Portugal",
-   "n": 13,
-   "last": "2026-11-24"
+   "n": 14,
+   "last": "2026-11-26"
   },
   "mktesportivo.com": {
    "outlet": "MKT Esportivo",
@@ -5300,13 +5300,13 @@
   "rodi.nl": {
    "outlet": "www.rodi.nl",
    "country": "Netherlands",
-   "n": 85,
+   "n": 86,
    "last": "2026-11-26"
   },
   "voetbalrotterdam.nl": {
    "outlet": "VoetbalRotterdam",
    "country": "Netherlands",
-   "n": 132,
+   "n": 133,
    "last": "2026-11-26"
   },
   "almelo1.nl": {
@@ -5336,19 +5336,19 @@
   "gva.be": {
    "outlet": "GVA",
    "country": "Belgium",
-   "n": 504,
+   "n": 505,
    "last": "2026-11-26"
   },
   "lesoir.be": {
    "outlet": "Le Soir",
    "country": "Belgium",
-   "n": 554,
+   "n": 555,
    "last": "2026-11-26"
   },
   "redactie24.be": {
    "outlet": "Redactie24",
    "country": "Belgium",
-   "n": 374,
+   "n": 375,
    "last": "2026-11-26"
   },
   "telesambre.be": {
@@ -5396,7 +5396,7 @@
   "sixsports.in": {
    "outlet": "Six Sports",
    "country": "England",
-   "n": 420,
+   "n": 422,
    "last": "2026-11-26"
   },
   "thedailystar.net": {
@@ -5408,8 +5408,8 @@
   "starsportsbet.co.uk": {
    "outlet": "Star Sports",
    "country": "England",
-   "n": 31,
-   "last": "2026-11-24"
+   "n": 32,
+   "last": "2026-11-26"
   },
   "uk.news.yahoo.com": {
    "outlet": "Yahoo News UK",
@@ -5432,7 +5432,7 @@
   "sportstar.thehindu.com": {
    "outlet": "Sportstar",
    "country": "England",
-   "n": 107,
+   "n": 108,
    "last": "2026-11-26"
   },
   "channelnewsasia.com": {
@@ -5450,7 +5450,7 @@
   "coventrytelegraph.net": {
    "outlet": "Coventry Telegraph",
    "country": "England",
-   "n": 1030,
+   "n": 1034,
    "last": "2026-11-26"
   },
   "ladbrokes.com": {
@@ -5474,7 +5474,7 @@
   "forzafootball.com": {
    "outlet": "Forza Football",
    "country": "England",
-   "n": 759,
+   "n": 760,
    "last": "2026-11-26"
   },
   "twaslnews1.twaslnews.com": {
@@ -5486,7 +5486,7 @@
   "liverpoolfc.com": {
    "outlet": "Liverpool FC",
    "country": "England",
-   "n": 783,
+   "n": 784,
    "last": "2026-11-26"
   },
   "themanc.com": {
@@ -5498,7 +5498,7 @@
   "eplindex.com": {
    "outlet": "EPL Index",
    "country": "England",
-   "n": 503,
+   "n": 504,
    "last": "2026-11-26"
   },
   "fxnewsgroup.com": {
@@ -5540,7 +5540,7 @@
   "athletic-club.eus": {
    "outlet": "Athletic Club",
    "country": "Spain",
-   "n": 166,
+   "n": 169,
    "last": "2026-11-26"
   },
   "xpectrofm.com": {
@@ -5570,7 +5570,7 @@
   "laprensa.hn": {
    "outlet": "www.laprensa.hn",
    "country": "Spain",
-   "n": 188,
+   "n": 189,
    "last": "2026-11-26"
   },
   "fuentesinformadas.com": {
@@ -5612,7 +5612,7 @@
   "celticshorts.com": {
    "outlet": "Celtic Shorts",
    "country": "Spain",
-   "n": 151,
+   "n": 152,
    "last": "2026-11-26"
   },
   "celtsarehere.com": {
@@ -5624,19 +5624,19 @@
   "nekodeportes.com": {
    "outlet": "NEKO Deportes",
    "country": "Spain",
-   "n": 164,
+   "n": 165,
    "last": "2026-11-26"
   },
   "besoccer.com": {
    "outlet": "BeSoccer Livescore",
    "country": "Spain",
-   "n": 1450,
+   "n": 1473,
    "last": "2026-11-26"
   },
   "businessupturn.com": {
    "outlet": "Business Upturn",
    "country": "Spain",
-   "n": 119,
+   "n": 120,
    "last": "2026-11-26"
   },
   "flashscore.cl": {
@@ -5660,7 +5660,7 @@
   "merchanendirecto.es": {
    "outlet": "Radio Marca Málaga",
    "country": "Spain",
-   "n": 738,
+   "n": 740,
    "last": "2026-11-26"
   },
   "es.mlssoccer.com": {
@@ -5702,25 +5702,25 @@
   "diarioavanza.es": {
    "outlet": "Diario Avanza",
    "country": "Spain",
-   "n": 1,
-   "last": "2026-10-21"
+   "n": 2,
+   "last": "2026-11-26"
   },
   "elcomercio.com": {
    "outlet": "El Comercio",
    "country": "Spain",
-   "n": 22,
-   "last": "2026-11-23"
+   "n": 23,
+   "last": "2026-11-26"
   },
   "castellonbase.com": {
    "outlet": "Castellón Base",
    "country": "Spain",
-   "n": 139,
+   "n": 140,
    "last": "2026-11-26"
   },
   "liverpool.com": {
    "outlet": "Liverpool.com",
    "country": "Spain",
-   "n": 274,
+   "n": 275,
    "last": "2026-11-26"
   },
   "barcauniversal.com": {
@@ -5732,7 +5732,7 @@
   "news.laodong.vn": {
    "outlet": "Laodong.vn",
    "country": "Spain",
-   "n": 94,
+   "n": 95,
    "last": "2026-11-26"
   },
   "fcinternews.it": {
@@ -5744,7 +5744,7 @@
   "soccernet.ng": {
    "outlet": "Soccernet.ng",
    "country": "Italy",
-   "n": 323,
+   "n": 324,
    "last": "2026-11-26"
   },
   "milanotoday.it": {
@@ -5804,7 +5804,7 @@
   "calciocasteddu.it": {
    "outlet": "Calcio Casteddu",
    "country": "Italy",
-   "n": 551,
+   "n": 552,
    "last": "2026-11-26"
   },
   "cultofcalcio.com": {
@@ -5828,7 +5828,7 @@
   "rsca.be": {
    "outlet": "Anderlecht",
    "country": "Italy",
-   "n": 237,
+   "n": 238,
    "last": "2026-11-26"
   },
   "tuttoavellino.it": {
@@ -5888,25 +5888,25 @@
   "zeit.de": {
    "outlet": "DIE ZEIT",
    "country": "Germany",
-   "n": 342,
+   "n": 343,
    "last": "2026-11-26"
   },
   "sueddeutsche.de": {
    "outlet": "SZ.de",
    "country": "Germany",
-   "n": 375,
+   "n": 376,
    "last": "2026-11-26"
   },
   "spurs-web.com": {
    "outlet": "Spurs Web",
    "country": "Germany",
-   "n": 1046,
+   "n": 1048,
    "last": "2026-11-26"
   },
   "berliner-zeitung.de": {
    "outlet": "Berliner Zeitung",
    "country": "Germany",
-   "n": 186,
+   "n": 187,
    "last": "2026-11-26"
   },
   "bz-berlin.de": {
@@ -5918,14 +5918,14 @@
   "weser-kurier.de": {
    "outlet": "Weser Kurier",
    "country": "Germany",
-   "n": 45,
+   "n": 46,
    "last": "2026-11-26"
   },
   "reviersport.de": {
    "outlet": "RevierSport online",
    "country": "Germany",
-   "n": 294,
-   "last": "2026-11-25"
+   "n": 295,
+   "last": "2026-11-26"
   },
   "wiesbadener-kurier.de": {
    "outlet": "Wiesbadener Kurier",
@@ -5936,8 +5936,8 @@
   "ndr.de": {
    "outlet": "NDR.de",
    "country": "Germany",
-   "n": 160,
-   "last": "2026-11-24"
+   "n": 161,
+   "last": "2026-11-26"
   },
   "hamburg.t-online.de": {
    "outlet": "t-online – Hamburg",
@@ -5954,7 +5954,7 @@
   "lefigaro.fr": {
    "outlet": "Le Figaro",
    "country": "France",
-   "n": 298,
+   "n": 301,
    "last": "2026-11-26"
   },
   "canal-supporters.com": {
@@ -6020,7 +6020,7 @@
   "africasoccer.com": {
    "outlet": "AfricaSoccer.com",
    "country": "France",
-   "n": 611,
+   "n": 618,
    "last": "2026-11-26"
   },
   "nicepremium.fr": {
@@ -6104,7 +6104,7 @@
   "publico.pt": {
    "outlet": "Público",
    "country": "Portugal",
-   "n": 221,
+   "n": 222,
    "last": "2026-11-26"
   },
   "csmaritimo.pt": {
@@ -6134,7 +6134,7 @@
   "mercurynews.com": {
    "outlet": "The Mercury News",
    "country": "Portugal",
-   "n": 147,
+   "n": 148,
    "last": "2026-11-26"
   },
   "nossoflu.com.br": {
@@ -6176,7 +6176,7 @@
   "twentefans.nl": {
    "outlet": "Twentefans.nl",
    "country": "Netherlands",
-   "n": 106,
+   "n": 107,
    "last": "2026-11-26"
   },
   "haagsetopsport.nl": {
@@ -6200,7 +6200,7 @@
   "avfc.co.uk": {
    "outlet": "Aston Villa",
    "country": "England",
-   "n": 132,
+   "n": 133,
    "last": "2026-11-26"
   },
   "morningstaronline.co.uk": {
@@ -6212,7 +6212,7 @@
   "nine.com.au": {
    "outlet": "Nine.com.au",
    "country": "England",
-   "n": 118,
+   "n": 119,
    "last": "2026-11-26"
   },
   "hayters.com": {
@@ -6248,13 +6248,13 @@
   "thenorthernecho.co.uk": {
    "outlet": "The Northern Echo",
    "country": "England",
-   "n": 275,
+   "n": 277,
    "last": "2026-11-26"
   },
   "anfieldwatch.co.uk": {
    "outlet": "AnfieldWatch",
    "country": "England",
-   "n": 93,
+   "n": 94,
    "last": "2026-11-26"
   },
   "rte.ie": {
@@ -6398,13 +6398,13 @@
   "sofascore.com": {
    "outlet": "Sofascore",
    "country": "Spain",
-   "n": 480,
+   "n": 482,
    "last": "2026-11-26"
   },
   "eurosport.es": {
    "outlet": "Eurosport",
    "country": "Spain",
-   "n": 236,
+   "n": 238,
    "last": "2026-11-26"
   },
   "theobjective.com": {
@@ -6416,7 +6416,7 @@
   "diariodesevilla.es": {
    "outlet": "Diario de Sevilla",
    "country": "Spain",
-   "n": 214,
+   "n": 215,
    "last": "2026-11-26"
   },
   "latestly.com": {
@@ -6434,7 +6434,7 @@
   "shmag.it": {
    "outlet": "S&H Magazine",
    "country": "Italy",
-   "n": 160,
+   "n": 162,
    "last": "2026-11-26"
   },
   "tg24.sky.it": {
@@ -6446,14 +6446,14 @@
   "it.blastingnews.com": {
    "outlet": "Blasting News",
    "country": "Italy",
-   "n": 149,
+   "n": 150,
    "last": "2026-11-26"
   },
   "derbyderbyderby.it": {
    "outlet": "DerbyDerbyDerby",
    "country": "Italy",
-   "n": 386,
-   "last": "2026-11-25"
+   "n": 387,
+   "last": "2026-11-26"
   },
   "ilmattino.it": {
    "outlet": "Il Mattino",
@@ -6488,7 +6488,7 @@
   "calciowebpuglia.it": {
    "outlet": "calciowebpuglia",
    "country": "Italy",
-   "n": 100,
+   "n": 101,
    "last": "2026-11-26"
   },
   "notizie.it": {
@@ -6524,7 +6524,7 @@
   "skysportaustria.at": {
    "outlet": "Sky Sport Austria",
    "country": "Germany",
-   "n": 1009,
+   "n": 1011,
    "last": "2026-11-26"
   },
   "tagesspiegel.de": {
@@ -6536,8 +6536,8 @@
   "transfermarkt.com.tr": {
    "outlet": "Transfermarkt",
    "country": "Germany",
-   "n": 39,
-   "last": "2026-11-24"
+   "n": 40,
+   "last": "2026-11-26"
   },
   "franceinfo.fr": {
    "outlet": "franceinfo",
@@ -6548,7 +6548,7 @@
   "legit.ng": {
    "outlet": "Legit News",
    "country": "France",
-   "n": 247,
+   "n": 248,
    "last": "2026-11-26"
   },
   "victorybellrings.com": {
@@ -6572,7 +6572,7 @@
   "footballclubdemarseille.fr": {
    "outlet": "Football Club de Marseille",
    "country": "France",
-   "n": 439,
+   "n": 442,
    "last": "2026-11-26"
   },
   "bfmtv.com": {
@@ -6716,13 +6716,13 @@
   "elbotola.com": {
    "outlet": "Elbotola",
    "country": "Belgium",
-   "n": 133,
+   "n": 134,
    "last": "2026-11-26"
   },
   "bet-experts.nl": {
    "outlet": "Bet Experts",
    "country": "Belgium",
-   "n": 71,
+   "n": 73,
    "last": "2026-11-26"
   },
   "aljazeera.com": {
@@ -6734,7 +6734,7 @@
   "espn.com.au": {
    "outlet": "ESPN",
    "country": "England",
-   "n": 1468,
+   "n": 1474,
    "last": "2026-11-26"
   },
   "malaymail.com": {
@@ -6776,7 +6776,7 @@
   "foxsports.com": {
    "outlet": "FOX Sports",
    "country": "England",
-   "n": 1184,
+   "n": 1187,
    "last": "2026-11-26"
   },
   "koptalk.com": {
@@ -6812,7 +6812,7 @@
   "footyheadlines.com": {
    "outlet": "Footy Headlines",
    "country": "England",
-   "n": 138,
+   "n": 140,
    "last": "2026-11-26"
   },
   "usanetwork.com": {
@@ -6896,7 +6896,7 @@
   "alessandriaoggi.info": {
    "outlet": "Alessandria Oggi",
    "country": "Italy",
-   "n": 153,
+   "n": 154,
    "last": "2026-11-26"
   },
   "oasport.it": {
@@ -6908,7 +6908,7 @@
   "gianlucadimarzio.com": {
    "outlet": "Gianluca Di Marzio",
    "country": "Italy",
-   "n": 732,
+   "n": 733,
    "last": "2026-11-26"
   },
   "dialessandria.it": {
@@ -7010,19 +7010,19 @@
   "ligaportugal.pt": {
    "outlet": "Liga Portugal",
    "country": "Portugal",
-   "n": 836,
+   "n": 843,
    "last": "2026-11-26"
   },
   "playmakerstats.com": {
    "outlet": "Playmakerstats",
    "country": "Portugal",
-   "n": 394,
+   "n": 396,
    "last": "2026-11-26"
   },
   "ed.nl": {
    "outlet": "Eindhovens Dagblad",
    "country": "Netherlands",
-   "n": 207,
+   "n": 208,
    "last": "2026-11-26"
   },
   "eurosport.nl": {
@@ -7046,7 +7046,7 @@
   "lavenir.net": {
    "outlet": "L'Avenir",
    "country": "Belgium",
-   "n": 537,
+   "n": 538,
    "last": "2026-11-26"
   },
   "firstpost.com": {
@@ -7058,8 +7058,8 @@
   "straitstimes.com": {
    "outlet": "The Straits Times",
    "country": "England",
-   "n": 246,
-   "last": "2026-11-25"
+   "n": 248,
+   "last": "2026-11-26"
   },
   "telegraph.co.uk": {
    "outlet": "The Telegraph",
@@ -7100,7 +7100,7 @@
   "theargus.co.uk": {
    "outlet": "The Argus",
    "country": "England",
-   "n": 139,
+   "n": 140,
    "last": "2026-11-26"
   },
   "royalbluemersey.sbnation.com": {
@@ -7124,7 +7124,7 @@
   "kingsofanglia.com": {
    "outlet": "https://www.kingsofanglia.com/",
    "country": "England",
-   "n": 319,
+   "n": 322,
    "last": "2026-11-26"
   },
   "durhamwfc.co.uk": {
@@ -7142,19 +7142,19 @@
   "swanseabaynews.com": {
    "outlet": "Swansea Bay News",
    "country": "England",
-   "n": 219,
+   "n": 221,
    "last": "2026-11-26"
   },
   "dailypost.ng": {
    "outlet": "Daily Post Nigeria",
    "country": "England",
-   "n": 270,
+   "n": 271,
    "last": "2026-11-26"
   },
   "turkish-football.com": {
    "outlet": "turkish football",
    "country": "England",
-   "n": 947,
+   "n": 949,
    "last": "2026-11-26"
   },
   "housingdigital.co.uk": {
@@ -7184,7 +7184,7 @@
   "walesonline.co.uk": {
    "outlet": "Wales Online",
    "country": "England",
-   "n": 1874,
+   "n": 1886,
    "last": "2026-11-26"
   },
   "ccfc.co.uk": {
@@ -7196,7 +7196,7 @@
   "herald.wales": {
    "outlet": "Herald.Wales",
    "country": "England",
-   "n": 617,
+   "n": 618,
    "last": "2026-11-26"
   },
   "fansnetwork.co.uk": {
@@ -7214,13 +7214,13 @@
   "gazettelive.co.uk": {
    "outlet": "Teesside Live",
    "country": "England",
-   "n": 1755,
+   "n": 1758,
    "last": "2026-11-26"
   },
   "cardiffcityfc.co.uk": {
    "outlet": "Cardiff City",
    "country": "England",
-   "n": 255,
+   "n": 257,
    "last": "2026-11-26"
   },
   "birmingham-now.co.uk": {
@@ -7238,7 +7238,7 @@
   "westbromnews.co.uk": {
    "outlet": "www.westbromnews.co.uk",
    "country": "England",
-   "n": 472,
+   "n": 476,
    "last": "2026-11-26"
   },
   "shropshirestar.com": {
@@ -7250,13 +7250,13 @@
   "stokesentinel.co.uk": {
    "outlet": "The Sentinel",
    "country": "England",
-   "n": 1451,
+   "n": 1453,
    "last": "2026-11-26"
   },
   "thecourier.co.uk": {
    "outlet": "The Courier",
    "country": "England",
-   "n": 27,
+   "n": 28,
    "last": "2026-11-26"
   },
   "attackingfootball.com": {
@@ -7268,13 +7268,13 @@
   "swanseacity.com": {
    "outlet": "Swansea City",
    "country": "England",
-   "n": 706,
+   "n": 708,
    "last": "2026-11-26"
   },
   "staceywest.net": {
    "outlet": "The Stacey West",
    "country": "England",
-   "n": 2386,
+   "n": 2399,
    "last": "2026-11-26"
   },
   "burnleycitizen.co.uk": {
@@ -7304,25 +7304,25 @@
   "sheffunitedway.co.uk": {
    "outlet": "Sheff United Way",
    "country": "England",
-   "n": 165,
+   "n": 166,
    "last": "2026-11-26"
   },
   "footballlowdown.com": {
    "outlet": "Football Lowdown",
    "country": "England",
-   "n": 805,
+   "n": 808,
    "last": "2026-11-26"
   },
   "thestar.co.uk": {
    "outlet": "The Star",
    "country": "England",
-   "n": 746,
+   "n": 748,
    "last": "2026-11-26"
   },
   "southwarknews.co.uk": {
    "outlet": "Southwark News",
    "country": "England",
-   "n": 1070,
+   "n": 1073,
    "last": "2026-11-26"
   },
   "expressfm.com": {
@@ -7334,7 +7334,7 @@
   "dailyecho.co.uk": {
    "outlet": "Daily Echo",
    "country": "England",
-   "n": 405,
+   "n": 407,
    "last": "2026-11-26"
   },
   "seacoastonline.com": {
@@ -7352,7 +7352,7 @@
   "leaderlive.co.uk": {
    "outlet": "Wrexham and Flintshire News, Sport, Events | The Leader",
    "country": "England",
-   "n": 645,
+   "n": 646,
    "last": "2026-11-26"
   },
   "countytimes.co.uk": {
@@ -7376,7 +7376,7 @@
   "theboltonnews.co.uk": {
    "outlet": "The Bolton News",
    "country": "England",
-   "n": 717,
+   "n": 723,
    "last": "2026-11-26"
   },
   "bristolrovers.co.uk": {
@@ -7388,7 +7388,7 @@
   "bristolpost.co.uk": {
    "outlet": "Bristol Live",
    "country": "England",
-   "n": 1112,
+   "n": 1115,
    "last": "2026-11-26"
   },
   "southern-football-league.co.uk": {
@@ -7412,7 +7412,7 @@
   "thelinc.co.uk": {
    "outlet": "The Linc",
    "country": "England",
-   "n": 245,
+   "n": 246,
    "last": "2026-11-26"
   },
   "magzter.com": {
@@ -7436,25 +7436,25 @@
   "watfordobserver.co.uk": {
    "outlet": "Watford Observer",
    "country": "England",
-   "n": 474,
+   "n": 476,
    "last": "2026-11-26"
   },
   "eveningnews24.co.uk": {
    "outlet": "Norwich Evening News",
    "country": "England",
-   "n": 161,
+   "n": 162,
    "last": "2026-11-26"
   },
   "canaries.co.uk": {
    "outlet": "Norwich City Football Club",
    "country": "England",
-   "n": 534,
+   "n": 535,
    "last": "2026-11-26"
   },
   "edp24.co.uk": {
    "outlet": "EDP24",
    "country": "England",
-   "n": 426,
+   "n": 427,
    "last": "2026-11-26"
   },
   "patch.com": {
@@ -7478,25 +7478,25 @@
   "derbytelegraph.co.uk": {
    "outlet": "Derbyshire Live",
    "country": "England",
-   "n": 1042,
+   "n": 1045,
    "last": "2026-11-26"
   },
   "lep.co.uk": {
    "outlet": "Lancashire Evening Post",
    "country": "England",
-   "n": 697,
+   "n": 700,
    "last": "2026-11-26"
   },
   "wba.co.uk": {
    "outlet": "West Bromwich Albion",
    "country": "England",
-   "n": 195,
+   "n": 196,
    "last": "2026-11-26"
   },
   "pinkun.com": {
    "outlet": "The Pink Un",
    "country": "England",
-   "n": 479,
+   "n": 480,
    "last": "2026-11-26"
   },
   "roams.es": {
@@ -7520,13 +7520,13 @@
   "relevo.com": {
    "outlet": "Relevo Deportes",
    "country": "Spain",
-   "n": 30,
+   "n": 31,
    "last": "2026-11-26"
   },
   "elperiodico.com": {
    "outlet": "El Periódico",
    "country": "Spain",
-   "n": 68,
+   "n": 69,
    "last": "2026-11-26"
   },
   "mundobetis.com": {
@@ -7544,25 +7544,25 @@
   "elmira.es": {
    "outlet": "El MIRA",
    "country": "Spain",
-   "n": 79,
-   "last": "2026-11-25"
+   "n": 80,
+   "last": "2026-11-26"
   },
   "lanacion.com.ar": {
    "outlet": "La Nación",
    "country": "Spain",
-   "n": 288,
+   "n": 289,
    "last": "2026-11-26"
   },
   "flashscore.es": {
    "outlet": "Flashscore.es",
    "country": "Spain",
-   "n": 1619,
+   "n": 1624,
    "last": "2026-11-26"
   },
   "elchecf.es": {
    "outlet": "Elche CF",
    "country": "Spain",
-   "n": 318,
+   "n": 320,
    "last": "2026-11-26"
   },
   "salamanca24horas.com": {
@@ -7592,8 +7592,8 @@
   "nostresport.com": {
    "outlet": "Nostresport",
    "country": "Spain",
-   "n": 60,
-   "last": "2026-11-25"
+   "n": 61,
+   "last": "2026-11-26"
   },
   "alcabodelacalle.es": {
    "outlet": "Periodico Al Cabo de la Calle",
@@ -7658,7 +7658,7 @@
   "sportbible.com": {
    "outlet": "SPORTbible",
    "country": "Germany",
-   "n": 139,
+   "n": 140,
    "last": "2026-11-26"
   },
   "wormser-zeitung.de": {
@@ -7706,7 +7706,7 @@
   "baernerbaer.ch": {
    "outlet": "BärnerBär",
    "country": "Germany",
-   "n": 129,
+   "n": 130,
    "last": "2026-11-26"
   },
   "frankfurter.online": {
@@ -7730,7 +7730,7 @@
   "plattformj.ch": {
    "outlet": "Plattform J",
    "country": "Germany",
-   "n": 74,
+   "n": 75,
    "last": "2026-11-26"
   },
   "video.corriere.it": {
@@ -7754,8 +7754,8 @@
   "ilnapolionline.com": {
    "outlet": "Il Napoli Online",
    "country": "Italy",
-   "n": 207,
-   "last": "2026-11-25"
+   "n": 210,
+   "last": "2026-11-26"
   },
   "interno.gov.it": {
    "outlet": "Ministero dell‘Interno",
@@ -7766,7 +7766,7 @@
   "quicomo.it": {
    "outlet": "QuiComo",
    "country": "Italy",
-   "n": 55,
+   "n": 56,
    "last": "2026-11-26"
   },
   "tio.ch": {
@@ -7784,13 +7784,13 @@
   "frosinonetoday.it": {
    "outlet": "FrosinoneToday",
    "country": "Italy",
-   "n": 77,
-   "last": "2026-11-21"
+   "n": 78,
+   "last": "2026-11-26"
   },
   "frosinonenews.eu": {
    "outlet": "Frosinone News",
    "country": "Italy",
-   "n": 202,
+   "n": 203,
    "last": "2026-11-26"
   },
   "tuttocagliari.net": {
@@ -7832,13 +7832,13 @@
   "punchng.com": {
    "outlet": "Punch Newspapers",
    "country": "Italy",
-   "n": 198,
+   "n": 200,
    "last": "2026-11-26"
   },
   "messaggeroveneto.it": {
    "outlet": "Messaggero Veneto",
    "country": "Italy",
-   "n": 147,
+   "n": 149,
    "last": "2026-11-26"
   },
   "lottomatica.sport": {
@@ -7910,7 +7910,7 @@
   "facebook.com": {
    "outlet": "Facebook",
    "country": "France",
-   "n": 372,
+   "n": 374,
    "last": "2026-11-26"
   },
   "olympique-et-lyonnais.com": {
@@ -7952,7 +7952,7 @@
   "my-angers.info": {
    "outlet": "Angers Info",
    "country": "France",
-   "n": 165,
+   "n": 166,
    "last": "2026-11-26"
   },
   "newsdanciennes.com": {
@@ -7970,7 +7970,7 @@
   "tendanceouest.com": {
    "outlet": "tendanceouest.com",
    "country": "France",
-   "n": 124,
+   "n": 126,
    "last": "2026-11-26"
   },
   "ocp.news": {
@@ -7994,8 +7994,8 @@
   "instagram.com": {
    "outlet": "Instagram",
    "country": "Portugal",
-   "n": 47,
-   "last": "2026-11-23"
+   "n": 48,
+   "last": "2026-11-26"
   },
   "radiohertz.pt": {
    "outlet": "Rádio Hertz",
@@ -8030,19 +8030,19 @@
   "eredivisie.nl": {
    "outlet": "VriendenLoterij Eredivisie",
    "country": "Netherlands",
-   "n": 126,
+   "n": 127,
    "last": "2026-11-26"
   },
   "thepeoplesperson.com": {
    "outlet": "The Peoples Person",
    "country": "Netherlands",
-   "n": 603,
+   "n": 605,
    "last": "2026-11-26"
   },
   "fcgroningen.nl": {
    "outlet": "FC Groningen",
    "country": "Netherlands",
-   "n": 72,
+   "n": 73,
    "last": "2026-11-26"
   },
   "regio-voetbal.nl": {
@@ -8060,7 +8060,7 @@
   "adodenhaag.nl": {
    "outlet": "ADO Den Haag",
    "country": "Netherlands",
-   "n": 67,
+   "n": 68,
    "last": "2026-11-26"
   },
   "tilbo.com": {
@@ -8078,19 +8078,19 @@
   "focus-wtv.be": {
    "outlet": "Focus en WTV",
    "country": "Belgium",
-   "n": 18,
-   "last": "2026-11-22"
+   "n": 19,
+   "last": "2026-11-26"
   },
   "voetbalflitsen.be": {
    "outlet": "www.voetbalflitsen.be",
    "country": "Belgium",
-   "n": 619,
+   "n": 621,
    "last": "2026-11-26"
   },
   "madeinfoot.ouest-france.fr": {
    "outlet": "MadeInFOOT",
    "country": "Belgium",
-   "n": 360,
+   "n": 362,
    "last": "2026-11-26"
   },
   "fr.uefa.com": {
@@ -8120,7 +8120,7 @@
   "sabah.com.tr": {
    "outlet": "Sabah",
    "country": "Türkiye",
-   "n": 1502,
+   "n": 1504,
    "last": "2026-11-26"
   },
   "fenerbahce.org": {
@@ -8132,25 +8132,25 @@
   "cnnturk.com": {
    "outlet": "CNN Türk",
    "country": "Türkiye",
-   "n": 581,
+   "n": 583,
    "last": "2026-11-26"
   },
   "yenisafak.com": {
    "outlet": "Yeni Şafak",
    "country": "Türkiye",
-   "n": 2144,
+   "n": 2153,
    "last": "2026-11-26"
   },
   "ntvspor.net": {
    "outlet": "NTVSpor",
    "country": "Türkiye",
-   "n": 470,
+   "n": 471,
    "last": "2026-11-26"
   },
   "sondakika.com": {
    "outlet": "Son Dakika",
    "country": "Türkiye",
-   "n": 1529,
+   "n": 1532,
    "last": "2026-11-26"
   },
   "haberton.com": {
@@ -8168,7 +8168,7 @@
   "gazetearena.com": {
    "outlet": "Gazete Arena",
    "country": "Türkiye",
-   "n": 68,
+   "n": 70,
    "last": "2026-11-26"
   },
   "haberexpres.com.tr": {
@@ -8180,7 +8180,7 @@
   "havadis.com": {
    "outlet": "Havadis",
    "country": "Türkiye",
-   "n": 113,
+   "n": 115,
    "last": "2026-11-26"
   },
   "haberxr.com": {
@@ -8192,13 +8192,13 @@
   "milliyet.com.tr": {
    "outlet": "Milliyet",
    "country": "Türkiye",
-   "n": 509,
+   "n": 511,
    "last": "2026-11-26"
   },
   "fanatik.com.tr": {
    "outlet": "Fanatik",
    "country": "Türkiye",
-   "n": 844,
+   "n": 847,
    "last": "2026-11-26"
   },
   "passo.com.tr": {
@@ -8228,13 +8228,13 @@
   "mrfixitstips.co.uk": {
    "outlet": "MrFixitsTips",
    "country": "Türkiye",
-   "n": 222,
+   "n": 225,
    "last": "2026-11-26"
   },
   "duhuliye.com": {
    "outlet": "Duhuliye",
    "country": "Türkiye",
-   "n": 1064,
+   "n": 1069,
    "last": "2026-11-26"
   },
   "alanyapostasi.com.tr": {
@@ -8246,25 +8246,25 @@
   "en.haberler.com": {
    "outlet": "Haberler.com",
    "country": "Türkiye",
-   "n": 1453,
+   "n": 1455,
    "last": "2026-11-26"
   },
   "yaylahaber.com.tr": {
    "outlet": "Yayla Haber",
    "country": "Türkiye",
-   "n": 150,
+   "n": 151,
    "last": "2026-11-26"
   },
   "corumhakimiyet.net": {
    "outlet": "Çorum Hakimiyet",
    "country": "Türkiye",
-   "n": 109,
-   "last": "2026-11-25"
+   "n": 110,
+   "last": "2026-11-26"
   },
   "hurriyet.com.tr": {
    "outlet": "Hürriyet",
    "country": "Türkiye",
-   "n": 1109,
+   "n": 1114,
    "last": "2026-11-26"
   },
   "fotomac.com.tr": {
@@ -8282,8 +8282,8 @@
   "yenialanya.com": {
    "outlet": "Yeni Alanya",
    "country": "Türkiye",
-   "n": 261,
-   "last": "2026-11-25"
+   "n": 263,
+   "last": "2026-11-26"
   },
   "ozgunkocaeli.com.tr": {
    "outlet": "Özgün Kocaeli",
@@ -8306,7 +8306,7 @@
   "cagdaskocaeli.com.tr": {
    "outlet": "Çağdaş Kocaeli Gazetesi",
    "country": "Türkiye",
-   "n": 120,
+   "n": 121,
    "last": "2026-11-26"
   },
   "mavikocaeli.com.tr": {
@@ -8318,19 +8318,19 @@
   "bugunkocaeli.com.tr": {
    "outlet": "Bugün Kocaeli Gazetesi",
    "country": "Türkiye",
-   "n": 44,
+   "n": 46,
    "last": "2026-11-26"
   },
   "mynet.com": {
    "outlet": "Mynet",
    "country": "Türkiye",
-   "n": 310,
+   "n": 312,
    "last": "2026-11-26"
   },
   "gzt.com": {
    "outlet": "GZT",
    "country": "Türkiye",
-   "n": 1608,
+   "n": 1609,
    "last": "2026-11-26"
   },
   "kocaelidenge.com": {
@@ -8360,7 +8360,7 @@
   "beinsports.com.tr": {
    "outlet": "beinsports.com.tr",
    "country": "Türkiye",
-   "n": 126,
+   "n": 127,
    "last": "2026-11-26"
   },
   "yenicaggazetesi.com": {
@@ -8372,8 +8372,8 @@
   "saraymedya.com": {
    "outlet": "Saray Medya",
    "country": "Türkiye",
-   "n": 202,
-   "last": "2026-11-25"
+   "n": 207,
+   "last": "2026-11-26"
   },
   "reformhaber.com": {
    "outlet": "Gaziantep Reform Haber",
@@ -8390,7 +8390,7 @@
   "gazetepusula.net": {
    "outlet": "Erzurum Pusula Gazetesi",
    "country": "Türkiye",
-   "n": 137,
+   "n": 140,
    "last": "2026-11-26"
   },
   "gaziantepdogus.com": {
@@ -8402,20 +8402,20 @@
   "gazeteguncel.com": {
    "outlet": "Gazete Güncel",
    "country": "Türkiye",
-   "n": 190,
+   "n": 193,
    "last": "2026-11-26"
   },
   "karadenizgazete.com.tr": {
    "outlet": "Karadeniz Gazetesi",
    "country": "Türkiye",
-   "n": 115,
-   "last": "2026-11-25"
+   "n": 118,
+   "last": "2026-11-26"
   },
   "haber61.net": {
    "outlet": "Haber61",
    "country": "Türkiye",
-   "n": 129,
-   "last": "2026-11-22"
+   "n": 130,
+   "last": "2026-11-26"
   },
   "2mart.com.tr": {
    "outlet": "2 Mart Gazetesi",
@@ -8444,7 +8444,7 @@
   "sonmuhur.com": {
    "outlet": "Son Mühür",
    "country": "Türkiye",
-   "n": 79,
+   "n": 81,
    "last": "2026-11-26"
   },
   "corumhaber.net": {
@@ -8468,7 +8468,7 @@
   "telgraf.net": {
    "outlet": "Telgraf Gazetesi",
    "country": "Türkiye",
-   "n": 223,
+   "n": 224,
    "last": "2026-11-26"
   },
   "kenthaber27.com": {
@@ -8498,14 +8498,14 @@
   "turkinform.com.tr": {
    "outlet": "Türkinform",
    "country": "Türkiye",
-   "n": 32,
+   "n": 33,
    "last": "2026-11-26"
   },
   "pusulahaber.com.tr": {
    "outlet": "Pusula Haber",
    "country": "Türkiye",
-   "n": 44,
-   "last": "2026-11-20"
+   "n": 46,
+   "last": "2026-11-26"
   },
   "yenimeram.com.tr": {
    "outlet": "Yeni Meram",
@@ -8546,8 +8546,8 @@
   "haberdairesi.com": {
    "outlet": "Haber Dairesi",
    "country": "Türkiye",
-   "n": 71,
-   "last": "2026-11-25"
+   "n": 72,
+   "last": "2026-11-26"
   },
   "gencgazete.net": {
    "outlet": "Genç Gazete",
@@ -8576,7 +8576,7 @@
   "kanal362.com.tr": {
    "outlet": "Kanal 362",
    "country": "Türkiye",
-   "n": 697,
+   "n": 702,
    "last": "2026-11-26"
   },
   "tff.org": {
@@ -8588,13 +8588,13 @@
   "guneydoguguncel.com": {
    "outlet": "Güneydoğu Güncel",
    "country": "Türkiye",
-   "n": 35,
+   "n": 36,
    "last": "2026-11-26"
   },
   "haberler.com": {
    "outlet": "Haberler",
    "country": "Türkiye",
-   "n": 928,
+   "n": 930,
    "last": "2026-11-26"
   },
   "sechzger.de": {
@@ -8606,7 +8606,7 @@
   "kicker.at": {
    "outlet": "kicker",
    "country": "Austria",
-   "n": 991,
+   "n": 996,
    "last": "2026-11-26"
   },
   "noen.at": {
@@ -8630,13 +8630,13 @@
   "derstandard.at": {
    "outlet": "Der Standard",
    "country": "Austria",
-   "n": 429,
+   "n": 431,
    "last": "2026-11-26"
   },
   "kurier.at": {
    "outlet": "Kurier",
    "country": "Austria",
-   "n": 295,
+   "n": 296,
    "last": "2026-11-26"
   },
   "diepresse.com": {
@@ -8654,19 +8654,19 @@
   "meinbezirk.at": {
    "outlet": "MeinBezirk.at",
    "country": "Austria",
-   "n": 280,
+   "n": 282,
    "last": "2026-11-26"
   },
   "nachrichten.at": {
    "outlet": "Oberösterreichische Nachrichten",
    "country": "Austria",
-   "n": 640,
+   "n": 641,
    "last": "2026-11-26"
   },
   "wettbasis.com": {
    "outlet": "Wettbasis",
    "country": "Austria",
-   "n": 343,
+   "n": 347,
    "last": "2026-11-26"
   },
   "abseits.at": {
@@ -8684,19 +8684,19 @@
   "austria.com": {
    "outlet": "austria.com",
    "country": "Austria",
-   "n": 640,
+   "n": 642,
    "last": "2026-11-26"
   },
   "krone.at": {
    "outlet": "Kronen Zeitung",
    "country": "Austria",
-   "n": 803,
+   "n": 807,
    "last": "2026-11-26"
   },
   "salzburg24.at": {
    "outlet": "salzburg24",
    "country": "Austria",
-   "n": 53,
+   "n": 54,
    "last": "2026-11-26"
   },
   "austria-lustenau.at": {
@@ -8714,7 +8714,7 @@
   "livetipsportal.com": {
    "outlet": "Livetipsportal.com",
    "country": "Austria",
-   "n": 89,
+   "n": 90,
    "last": "2026-11-26"
   },
   "scra.at": {
@@ -8726,25 +8726,25 @@
   "ligaportal.at": {
    "outlet": "Ligaportal",
    "country": "Austria",
-   "n": 1243,
+   "n": 1246,
    "last": "2026-11-26"
   },
   "vol.at": {
    "outlet": "VOL.AT",
    "country": "Austria",
-   "n": 856,
+   "n": 860,
    "last": "2026-11-26"
   },
   "srf.ch": {
    "outlet": "SRF",
    "country": "Switzerland",
-   "n": 887,
+   "n": 891,
    "last": "2026-11-26"
   },
   "rts.ch": {
    "outlet": "rts.ch",
    "country": "Switzerland",
-   "n": 1089,
+   "n": 1094,
    "last": "2026-11-26"
   },
   "fussball-wm.pro": {
@@ -8756,7 +8756,7 @@
   "tagblatt.ch": {
    "outlet": "St. Galler Tagblatt",
    "country": "Switzerland",
-   "n": 313,
+   "n": 314,
    "last": "2026-11-26"
   },
   "luzernerzeitung.ch": {
@@ -8768,7 +8768,7 @@
   "lenouvelliste.ch": {
    "outlet": "Le Nouvelliste",
    "country": "Switzerland",
-   "n": 358,
+   "n": 360,
    "last": "2026-11-26"
   },
   "lausanne-sport.ch": {
@@ -8780,7 +8780,7 @@
   "rhonefm.ch": {
    "outlet": "Rhône FM",
    "country": "Switzerland",
-   "n": 393,
+   "n": 395,
    "last": "2026-11-26"
   },
   "coliseum-online.com": {
@@ -8846,19 +8846,19 @@
   "bazonline.ch": {
    "outlet": "Basler Zeitung",
    "country": "Switzerland",
-   "n": 143,
+   "n": 144,
    "last": "2026-11-26"
   },
   "kicker.ch": {
    "outlet": "https://www.kicker.ch/",
    "country": "Switzerland",
-   "n": 1260,
+   "n": 1262,
    "last": "2026-11-26"
   },
   "nau.ch": {
    "outlet": "Nau.ch",
    "country": "Switzerland",
-   "n": 1708,
+   "n": 1713,
    "last": "2026-11-26"
   },
   "vogue.fr": {
@@ -8918,7 +8918,7 @@
   "hooligan-soccer.com": {
    "outlet": "Hooligan Soccer",
    "country": "England",
-   "n": 385,
+   "n": 386,
    "last": "2026-11-26"
   },
   "worthingherald.co.uk": {
@@ -8936,7 +8936,7 @@
   "leedsunited.news": {
    "outlet": "www.leedsunited.news",
    "country": "England",
-   "n": 95,
+   "n": 96,
    "last": "2026-11-26"
   },
   "everton.news": {
@@ -8978,7 +8978,7 @@
   "independent.ie": {
    "outlet": "Irish Independent",
    "country": "England",
-   "n": 31,
+   "n": 32,
    "last": "2026-11-26"
   },
   "transferhub.substack.com": {
@@ -9038,7 +9038,7 @@
   "bwfc.co.uk": {
    "outlet": "Bolton Wanderers FC",
    "country": "England",
-   "n": 69,
+   "n": 70,
    "last": "2026-11-26"
   },
   "culturednortheast.co.uk": {
@@ -9068,7 +9068,7 @@
   "bcfc.co.uk": {
    "outlet": "Bristol City FC",
    "country": "England",
-   "n": 147,
+   "n": 148,
    "last": "2026-11-26"
   },
   "chorleycitizen.co.uk": {
@@ -9206,7 +9206,7 @@
   "realbetisbalompie.es": {
    "outlet": "Real Betis Balompié",
    "country": "Spain",
-   "n": 92,
+   "n": 93,
    "last": "2026-11-26"
   },
   "es.themirror.com": {
@@ -9224,7 +9224,7 @@
   "sevillafc.es": {
    "outlet": "Sevilla FC",
    "country": "Spain",
-   "n": 126,
+   "n": 127,
    "last": "2026-11-26"
   },
   "rpp.pe": {
@@ -9272,7 +9272,7 @@
   "news.de": {
    "outlet": "News.de",
    "country": "Germany",
-   "n": 732,
+   "n": 734,
    "last": "2026-11-26"
   },
   "presseportal.de": {
@@ -9308,7 +9308,7 @@
   "echo-online.de": {
    "outlet": "Echo Online",
    "country": "Germany",
-   "n": 11,
+   "n": 12,
    "last": "2026-11-26"
   },
   "mittelhessen.de": {
@@ -9344,7 +9344,7 @@
   "www1.wdr.de": {
    "outlet": "WDR",
    "country": "Germany",
-   "n": 132,
+   "n": 134,
    "last": "2026-11-26"
   },
   "calciovicenza.it": {
@@ -9386,13 +9386,13 @@
   "sanmarinortv.sm": {
    "outlet": "San Marino Rtv",
    "country": "Italy",
-   "n": 2,
-   "last": "2026-10-23"
+   "n": 3,
+   "last": "2026-11-26"
   },
   "mbnews.it": {
    "outlet": "MBNews",
    "country": "Italy",
-   "n": 74,
+   "n": 75,
    "last": "2026-11-26"
   },
   "ilgiorno.it": {
@@ -9410,7 +9410,7 @@
   "mondoudinese.it": {
    "outlet": "Mondo Udinese",
    "country": "Italy",
-   "n": 36,
+   "n": 37,
    "last": "2026-11-26"
   },
   "chiamarsibomber.com": {
@@ -9434,7 +9434,7 @@
   "watson.ch": {
    "outlet": "Watson",
    "country": "France",
-   "n": 774,
+   "n": 776,
    "last": "2026-11-26"
   },
   "pa-sport.fr": {
@@ -9464,7 +9464,7 @@
   "lesviolets.com": {
    "outlet": "LesViolets.Com",
    "country": "France",
-   "n": 225,
+   "n": 226,
    "last": "2026-11-26"
   },
   "lopinion.com": {
@@ -9536,7 +9536,7 @@
   "pressnet.pt": {
    "outlet": "pressnet.pt",
    "country": "Portugal",
-   "n": 208,
+   "n": 209,
    "last": "2026-11-26"
   },
   "jornaldeguimaraes.pt": {
@@ -9620,7 +9620,7 @@
   "sporx.com": {
    "outlet": "Sporx.com",
    "country": "Türkiye",
-   "n": 431,
+   "n": 434,
    "last": "2026-11-26"
   },
   "haberolsun.com": {
@@ -9668,13 +9668,13 @@
   "damla.nl": {
    "outlet": "www.damla.nl",
    "country": "Türkiye",
-   "n": 49,
+   "n": 50,
    "last": "2026-11-26"
   },
   "kocaeligundem.com": {
    "outlet": "Kocaeli Gündem",
    "country": "Türkiye",
-   "n": 87,
+   "n": 88,
    "last": "2026-11-26"
   },
   "kocaelitv.com.tr": {
@@ -9692,7 +9692,7 @@
   "kocaelikoz.com": {
    "outlet": "Kocaeli Koz",
    "country": "Türkiye",
-   "n": 20,
+   "n": 21,
    "last": "2026-11-26"
   },
   "alanyagazetesi.com.tr": {
@@ -9728,7 +9728,7 @@
   "haberturk.com": {
    "outlet": "Habertürk",
    "country": "Türkiye",
-   "n": 620,
+   "n": 622,
    "last": "2026-11-26"
   },
   "gazeterize.com": {
@@ -9752,7 +9752,7 @@
   "aksam.com.tr": {
    "outlet": "AKŞAM",
    "country": "Türkiye",
-   "n": 409,
+   "n": 410,
    "last": "2026-11-26"
   },
   "gazianteppostasi.com": {
@@ -9782,8 +9782,8 @@
   "konyayenigun.com": {
    "outlet": "Konya Yenigün",
    "country": "Türkiye",
-   "n": 19,
-   "last": "2026-11-18"
+   "n": 20,
+   "last": "2026-11-26"
   },
   "samsunilkhaber.com.tr": {
    "outlet": "Samsun İlk Haber",
@@ -9800,7 +9800,7 @@
   "fr.news.yahoo.com": {
    "outlet": "Yahoo Actualités",
    "country": "Switzerland",
-   "n": 82,
+   "n": 83,
    "last": "2026-11-26"
   },
   "sbsun.com": {
@@ -9848,7 +9848,7 @@
   "telecomasia.net": {
    "outlet": "Telecom Asia Sport",
    "country": "England",
-   "n": 185,
+   "n": 187,
    "last": "2026-11-26"
   },
   "news.az": {
@@ -9872,7 +9872,7 @@
   "hotspurhq.com": {
    "outlet": "Hotspur HQ",
    "country": "England",
-   "n": 257,
+   "n": 258,
    "last": "2026-11-26"
   },
   "borehamwoodfootballclub.co.uk": {
@@ -9896,7 +9896,7 @@
   "readwestham.com": {
    "outlet": "Read West Ham",
    "country": "England",
-   "n": 154,
+   "n": 155,
    "last": "2026-11-26"
   },
   "al.com": {
@@ -9968,7 +9968,7 @@
   "elimparcial.es": {
    "outlet": "El Imparcial - Diario liberal e independiente",
    "country": "Spain",
-   "n": 54,
+   "n": 55,
    "last": "2026-11-26"
   },
   "encancha.cl": {
@@ -10016,8 +10016,8 @@
   "elgoldigital.com": {
    "outlet": "ElGOLdigital",
    "country": "Spain",
-   "n": 102,
-   "last": "2026-11-25"
+   "n": 103,
+   "last": "2026-11-26"
   },
   "fcbarcelona.es": {
    "outlet": "FC Barcelona",
@@ -10052,7 +10052,7 @@
   "recklinghaeuser-zeitung.de": {
    "outlet": "Recklinghäuser Zeitung",
    "country": "Germany",
-   "n": 255,
+   "n": 257,
    "last": "2026-11-26"
   },
   "live.vodafone.de": {
@@ -10064,20 +10064,20 @@
   "gladbachlive.de": {
    "outlet": "GladbachLIVE",
    "country": "Germany",
-   "n": 21,
-   "last": "2026-11-25"
+   "n": 22,
+   "last": "2026-11-26"
   },
   "fanpage.it": {
    "outlet": "Fanpage",
    "country": "Italy",
-   "n": 53,
+   "n": 55,
    "last": "2026-11-26"
   },
   "radiolina.it": {
    "outlet": "Radiolina",
    "country": "Italy",
-   "n": 5,
-   "last": "2026-11-20"
+   "n": 6,
+   "last": "2026-11-26"
   },
   "juvelive.it": {
    "outlet": "JuveLive",
@@ -10184,7 +10184,7 @@
   "placar.com.br": {
    "outlet": "Revista PLACAR",
    "country": "Portugal",
-   "n": 108,
+   "n": 109,
    "last": "2026-11-26"
   },
   "sobralonline.com.br": {
@@ -10256,7 +10256,7 @@
   "m.sabah.com.tr": {
    "outlet": "Sabah",
    "country": "Türkiye",
-   "n": 844,
+   "n": 848,
    "last": "2026-11-26"
   },
   "egedesonsoz.com": {
@@ -10268,7 +10268,7 @@
   "sporekrani.com": {
    "outlet": "Spor Ekranı",
    "country": "Türkiye",
-   "n": 343,
+   "n": 344,
    "last": "2026-11-26"
   },
   "futbolsayfasi.net": {
@@ -10298,13 +10298,13 @@
   "gazianteptime.com.tr": {
    "outlet": "Gaziantep Time",
    "country": "Türkiye",
-   "n": 12,
+   "n": 13,
    "last": "2026-11-26"
   },
   "turkgun.com": {
    "outlet": "Türkgün",
    "country": "Türkiye",
-   "n": 408,
+   "n": 410,
    "last": "2026-11-26"
   },
   "pembepusula.org": {
@@ -10328,7 +10328,7 @@
   "anadoludabugun.com.tr": {
    "outlet": "Anadolu'da Bugün",
    "country": "Türkiye",
-   "n": 84,
+   "n": 86,
    "last": "2026-11-26"
   },
   "beyazgaste.com": {
@@ -10370,13 +10370,13 @@
   "nacionale.com": {
    "outlet": "Nacionale",
    "country": "England",
-   "n": 78,
-   "last": "2026-11-25"
+   "n": 79,
+   "last": "2026-11-26"
   },
   "thedailybriefing.io": {
    "outlet": "the Daily Briefing | Substack",
    "country": "England",
-   "n": 24,
+   "n": 25,
    "last": "2026-11-26"
   },
   "yeovilexpress.co.uk": {
@@ -10478,7 +10478,7 @@
   "blog.codere.es": {
    "outlet": "Blog Codere España",
    "country": "Spain",
-   "n": 21,
+   "n": 22,
    "last": "2026-11-26"
   },
   "espn.com.co": {
@@ -10520,7 +10520,7 @@
   "schwarzwaelder-bote.de": {
    "outlet": "Schwarzwälder Bote",
    "country": "Germany",
-   "n": 101,
+   "n": 102,
    "last": "2026-11-26"
   },
   "derstandard.de": {
@@ -10598,7 +10598,7 @@
   "psvfans.nl": {
    "outlet": "PSVFans",
    "country": "Netherlands",
-   "n": 66,
+   "n": 67,
    "last": "2026-11-26"
   },
   "volkskrant.nl": {
@@ -10622,7 +10622,7 @@
   "yerel-haberler.haberturk.com": {
    "outlet": "Habertürk",
    "country": "Türkiye",
-   "n": 243,
+   "n": 244,
    "last": "2026-11-26"
   },
   "fotospor.com.tr": {
@@ -10640,7 +10640,7 @@
   "ajansspor.com": {
    "outlet": "Ajansspor",
    "country": "Türkiye",
-   "n": 101,
+   "n": 102,
    "last": "2026-11-26"
   },
   "trabzonspor.org.tr": {
@@ -10754,7 +10754,7 @@
   "lincolnchronicle.org": {
    "outlet": "Lincoln Chronicle",
    "country": "England",
-   "n": 13,
+   "n": 14,
    "last": "2026-11-26"
   },
   "abridged.org": {
@@ -10910,7 +10910,7 @@
   "ecovicentino.it": {
    "outlet": "L'Eco Vicentino",
    "country": "Italy",
-   "n": 39,
+   "n": 42,
    "last": "2026-11-26"
   },
   "siamolaroma.it": {
@@ -10952,7 +10952,7 @@
   "lemans.maville.com": {
    "outlet": "maville.com",
    "country": "France",
-   "n": 129,
+   "n": 130,
    "last": "2026-11-26"
   },
   "rondoniadinamica.com": {
@@ -10988,7 +10988,7 @@
   "vrt.be": {
    "outlet": "VRT",
    "country": "Belgium",
-   "n": 77,
+   "n": 78,
    "last": "2026-11-26"
   },
   "internetgazet.be": {
@@ -11030,13 +11030,13 @@
   "aa.com.tr": {
    "outlet": "Anadolu Ajansı",
    "country": "Türkiye",
-   "n": 270,
+   "n": 273,
    "last": "2026-11-26"
   },
   "transfermarkt.us": {
    "outlet": "www.transfermarkt.us",
    "country": "Türkiye",
-   "n": 291,
+   "n": 292,
    "last": "2026-11-26"
   },
   "cumhuriyet.com.tr": {
@@ -11054,7 +11054,7 @@
   "ozdiyarbakirgazetesi.com": {
    "outlet": "Öz Diyarbakır Gazetesi",
    "country": "Türkiye",
-   "n": 25,
+   "n": 26,
    "last": "2026-11-26"
   },
   "yenihaberden.com": {
@@ -11108,8 +11108,8 @@
   "freetips.com": {
    "outlet": "FreeTips",
    "country": "England",
-   "n": 41,
-   "last": "2026-11-25"
+   "n": 42,
+   "last": "2026-11-26"
   },
   "inboundsa.com": {
    "outlet": "InBound SA",
@@ -11120,7 +11120,7 @@
   "vsports.pt": {
    "outlet": "VSPORTS Web Stories",
    "country": "England",
-   "n": 383,
+   "n": 384,
    "last": "2026-11-26"
   },
   "lbc.co.uk": {
@@ -11306,7 +11306,7 @@
   "weekend.at": {
    "outlet": "weekend.at",
    "country": "Germany",
-   "n": 60,
+   "n": 62,
    "last": "2026-11-26"
   },
   "anfieldindex.com": {
@@ -11348,7 +11348,7 @@
   "joyn.de": {
    "outlet": "Joyn",
    "country": "Germany",
-   "n": 212,
+   "n": 214,
    "last": "2026-11-26"
   },
   "hamburg1.de": {
@@ -11378,7 +11378,7 @@
   "magazinepragma.com": {
    "outlet": "Magazine Pragma",
    "country": "Italy",
-   "n": 18,
+   "n": 19,
    "last": "2026-11-26"
   },
   "lecceprima.it": {
@@ -11414,8 +11414,8 @@
   "parmacalcio1913.com": {
    "outlet": "Parma Calcio 1913",
    "country": "Italy",
-   "n": 246,
-   "last": "2026-11-25"
+   "n": 248,
+   "last": "2026-11-26"
   },
   "thenational.scot": {
    "outlet": "The National Scot",
@@ -11426,7 +11426,7 @@
   "ng.headtopics.com": {
    "outlet": "Head Topics",
    "country": "Italy",
-   "n": 70,
+   "n": 72,
    "last": "2026-11-26"
   },
   "parismatch.com": {
@@ -11444,7 +11444,7 @@
   "parisfc.fr": {
    "outlet": "Paris FC - Site officiel",
    "country": "France",
-   "n": 210,
+   "n": 211,
    "last": "2026-11-26"
   },
   "africaradio.com": {
@@ -11522,7 +11522,7 @@
   "gilvicentefc.pt": {
    "outlet": "Gil Vicente",
    "country": "Portugal",
-   "n": 43,
+   "n": 44,
    "last": "2026-11-26"
   },
   "thescottishsun.co.uk": {
@@ -11564,13 +11564,13 @@
   "noordhollandsdagblad.nl": {
    "outlet": "Noordhollands Dagblad",
    "country": "Netherlands",
-   "n": 231,
+   "n": 234,
    "last": "2026-11-26"
   },
   "willem-ii.nl": {
    "outlet": "Willem II",
    "country": "Netherlands",
-   "n": 166,
+   "n": 167,
    "last": "2026-11-26"
   },
   "dzfoot.com": {
@@ -11624,7 +11624,7 @@
   "kocaelibarisgazetesi.com": {
    "outlet": "Kocaeli Barış Gazetesi",
    "country": "Türkiye",
-   "n": 30,
+   "n": 32,
    "last": "2026-11-26"
   },
   "haberkocaeli.com": {
@@ -11654,8 +11654,8 @@
   "erzurumgazetesi.com.tr": {
    "outlet": "Erzurum Gazetesi",
    "country": "Türkiye",
-   "n": 71,
-   "last": "2026-11-24"
+   "n": 72,
+   "last": "2026-11-26"
   },
   "izmirdesondakika.com.tr": {
    "outlet": "İzmir’de Son Dakika",
@@ -11684,7 +11684,7 @@
   "kocaelikentgazetesi.com": {
    "outlet": "Kocaeli Kent Gazetesi",
    "country": "Türkiye",
-   "n": 25,
+   "n": 26,
    "last": "2026-11-26"
   },
   "numedya24.tv": {
@@ -11762,7 +11762,7 @@
   "espn.in": {
    "outlet": "ESPN India",
    "country": "England",
-   "n": 597,
+   "n": 598,
    "last": "2026-11-26"
   },
   "sporf.com": {
@@ -11786,19 +11786,19 @@
   "bizjournals.com": {
    "outlet": "The Business Journals",
    "country": "England",
-   "n": 175,
+   "n": 176,
    "last": "2026-11-26"
   },
   "thebusinessdesk.com": {
    "outlet": "TheBusinessDesk.com",
    "country": "England",
-   "n": 99,
+   "n": 100,
    "last": "2026-11-26"
   },
   "birminghamworld.uk": {
    "outlet": "BirminghamWorld",
    "country": "England",
-   "n": 210,
+   "n": 211,
    "last": "2026-11-26"
   },
   "jackarmy.net": {
@@ -11870,13 +11870,13 @@
   "dxtcampeon.elidealgallego.com": {
    "outlet": "DXT Campeón",
    "country": "Spain",
-   "n": 12,
+   "n": 13,
    "last": "2026-11-26"
   },
   "newtelegraphng.com": {
    "outlet": "New Telegraph",
    "country": "Spain",
-   "n": 125,
+   "n": 126,
    "last": "2026-11-26"
   },
   "infonerja.com": {
@@ -11936,7 +11936,7 @@
   "madridactual.es": {
    "outlet": "Madrid Actual",
    "country": "Spain",
-   "n": 17,
+   "n": 18,
    "last": "2026-11-26"
   },
   "eldiariodemadrid.es": {
@@ -11948,7 +11948,7 @@
   "estrelladigital.es": {
    "outlet": "Estrella Digital",
    "country": "Spain",
-   "n": 12,
+   "n": 13,
    "last": "2026-11-26"
   },
   "oem.com.mx": {
@@ -11978,8 +11978,8 @@
   "rblive.de": {
    "outlet": "RBLive",
    "country": "Germany",
-   "n": 190,
-   "last": "2026-11-25"
+   "n": 192,
+   "last": "2026-11-26"
   },
   "derbund.ch": {
    "outlet": "Der Bund",
@@ -12032,7 +12032,7 @@
   "panafricafootball.com": {
    "outlet": "Pan Africa Football",
    "country": "Italy",
-   "n": 314,
+   "n": 317,
    "last": "2026-11-26"
   },
   "ilcittadinomb.it": {
@@ -12062,7 +12062,7 @@
   "parmalive.com": {
    "outlet": "Parma Live",
    "country": "Italy",
-   "n": 180,
+   "n": 184,
    "last": "2026-11-26"
   },
   "latorre1905.it": {
@@ -12116,8 +12116,8 @@
   "magazine-hd.com": {
    "outlet": "Magazine.HD",
    "country": "Portugal",
-   "n": 225,
-   "last": "2026-11-25"
+   "n": 226,
+   "last": "2026-11-26"
   },
   "maissemanario.pt": {
    "outlet": "maissemanario",
@@ -12170,7 +12170,7 @@
   "nl.headtopics.com": {
    "outlet": "Head Topics",
    "country": "Netherlands",
-   "n": 3778,
+   "n": 3799,
    "last": "2026-11-26"
   },
   "elfvoetbal.nl": {
@@ -12266,8 +12266,8 @@
   "haberaktuel.com": {
    "outlet": "Haber Aktüel",
    "country": "Türkiye",
-   "n": 55,
-   "last": "2026-11-25"
+   "n": 56,
+   "last": "2026-11-26"
   },
   "m.star.com.tr": {
    "outlet": "STAR - Haberler",
@@ -12356,7 +12356,7 @@
   "hakimiyet.com": {
    "outlet": "Konya Hakimiyet Gazetesi",
    "country": "Türkiye",
-   "n": 34,
+   "n": 35,
    "last": "2026-11-26"
   },
   "yuksekovahaber.com.tr": {
@@ -12374,7 +12374,7 @@
   "on.orf.at": {
    "outlet": "ORF ON",
    "country": "Austria",
-   "n": 483,
+   "n": 485,
    "last": "2026-11-26"
   },
   "oe24.at": {
@@ -12476,7 +12476,7 @@
   "apwin.com": {
    "outlet": "APWin",
    "country": "England",
-   "n": 132,
+   "n": 137,
    "last": "2026-11-26"
   },
   "auwolves.com": {
@@ -12524,7 +12524,7 @@
   "arsenalcore.com": {
    "outlet": "ArsenalCore",
    "country": "Spain",
-   "n": 215,
+   "n": 216,
    "last": "2026-11-26"
   },
   "betisweb.com": {
@@ -12620,7 +12620,7 @@
   "cuoretoro.it": {
    "outlet": "Cuore Toro",
    "country": "Italy",
-   "n": 35,
+   "n": 36,
    "last": "2026-11-26"
   },
   "violanews.com": {
@@ -12632,7 +12632,7 @@
   "rangersreview.co.uk": {
    "outlet": "The Rangers Review",
    "country": "Italy",
-   "n": 74,
+   "n": 75,
    "last": "2026-11-26"
   },
   "lunion.fr": {
@@ -12650,8 +12650,8 @@
   "madeinparisiens.ouest-france.fr": {
    "outlet": "MadeInParisiens",
    "country": "France",
-   "n": 25,
-   "last": "2026-11-25"
+   "n": 26,
+   "last": "2026-11-26"
   },
   "beninwebtv.com": {
    "outlet": "BENIN WEB TV",
@@ -12758,13 +12758,13 @@
   "mandelnieuws.be": {
    "outlet": "| Mandelnieuws",
    "country": "Belgium",
-   "n": 37,
+   "n": 38,
    "last": "2026-11-26"
   },
   "sozcu.com.tr": {
    "outlet": "Sözcü Gazetesi",
    "country": "Türkiye",
-   "n": 662,
+   "n": 663,
    "last": "2026-11-26"
   },
   "t24.com.tr": {
@@ -12806,7 +12806,7 @@
   "eyupsultanhaber.com": {
    "outlet": "Eyüpsultan Haber",
    "country": "Türkiye",
-   "n": 33,
+   "n": 34,
    "last": "2026-11-26"
   },
   "kahtahaberpostasi.com": {
@@ -12824,7 +12824,7 @@
   "referansgazetesi.com.tr": {
    "outlet": "Referans Gazetesi",
    "country": "Türkiye",
-   "n": 156,
+   "n": 157,
    "last": "2026-11-26"
   },
   "konyabakis.com": {
@@ -12944,7 +12944,7 @@
   "sudouest.fr": {
    "outlet": "Sud Ouest",
    "country": "France",
-   "n": 47,
+   "n": 48,
    "last": "2026-11-26"
   },
   "parisdepeches.fr": {
@@ -13034,7 +13034,7 @@
   "sportsmintmedia.com": {
    "outlet": "SportsMint Media",
    "country": "England",
-   "n": 26,
+   "n": 27,
    "last": "2026-11-26"
   },
   "berwick-advertiser.co.uk": {
@@ -13052,7 +13052,7 @@
   "nufcblog.com": {
    "outlet": "The Newcastle United Blog",
    "country": "England",
-   "n": 49,
+   "n": 50,
    "last": "2026-11-26"
   },
   "thenationonlineng.net": {
@@ -13124,7 +13124,7 @@
   "koha.net": {
    "outlet": "KOHA.net",
    "country": "Germany",
-   "n": 384,
+   "n": 386,
    "last": "2026-11-26"
   },
   "sportbuzzer.de": {
@@ -13136,7 +13136,7 @@
   "premierleaguenewsnow.com": {
    "outlet": "premierleaguenewsnow.com",
    "country": "Germany",
-   "n": 99,
+   "n": 100,
    "last": "2026-11-26"
   },
   "fc-union-berlin.de": {
@@ -13262,7 +13262,7 @@
   "footeuses.com": {
    "outlet": "Footeuses",
    "country": "France",
-   "n": 37,
+   "n": 38,
    "last": "2026-11-26"
   },
   "scfreiburg.com": {
@@ -13322,7 +13322,7 @@
   "bragatv.pt": {
    "outlet": "Braga TV",
    "country": "Portugal",
-   "n": 247,
+   "n": 248,
    "last": "2026-11-26"
   },
   "voetbalinhaarlem.nl": {
@@ -13406,13 +13406,13 @@
   "gazetevatan.com": {
    "outlet": "Gazete Vatan",
    "country": "Türkiye",
-   "n": 143,
+   "n": 144,
    "last": "2026-11-26"
   },
   "yeniasir.com.tr": {
    "outlet": "Yeni Asır",
    "country": "Türkiye",
-   "n": 12,
+   "n": 13,
    "last": "2026-11-26"
   },
   "dunya.com": {
@@ -13574,7 +13574,7 @@
   "malagahoy.es": {
    "outlet": "Málaga Hoy",
    "country": "Spain",
-   "n": 117,
+   "n": 118,
    "last": "2026-11-26"
   },
   "honnef-heute.de": {
@@ -13670,7 +13670,7 @@
   "rugbyrama.fr": {
    "outlet": "Rugbyrama",
    "country": "France",
-   "n": 59,
+   "n": 60,
    "last": "2026-11-26"
   },
   "m.maxifoot.fr": {
@@ -13682,8 +13682,8 @@
   "france3-regions.franceinfo.fr": {
    "outlet": "France 3 Régions",
    "country": "France",
-   "n": 109,
-   "last": "2026-11-25"
+   "n": 110,
+   "last": "2026-11-26"
   },
   "sol.iol.pt": {
    "outlet": "Jornal SOL",
@@ -13976,7 +13976,7 @@
   "espaciodiario.com": {
    "outlet": "Espacio Diario",
    "country": "Spain",
-   "n": 30,
+   "n": 32,
    "last": "2026-11-26"
   },
   "nd-aktuell.de": {
@@ -14000,7 +14000,7 @@
   "firenzeviolasupersportlive.it": {
    "outlet": "FirenzeViolaSuperSport Live",
    "country": "Italy",
-   "n": 86,
+   "n": 87,
    "last": "2026-11-26"
   },
   "sprintesport.it": {
@@ -14030,7 +14030,7 @@
   "lifestyleblog.it": {
    "outlet": "Lifestyleblog.it",
    "country": "Italy",
-   "n": 189,
+   "n": 190,
    "last": "2026-11-26"
   },
   "castedduonline.it": {
@@ -14150,8 +14150,8 @@
   "amedtv.com": {
    "outlet": "Amed TV",
    "country": "Türkiye",
-   "n": 17,
-   "last": "2026-11-24"
+   "n": 18,
+   "last": "2026-11-26"
   },
   "ajansturkhaber.com": {
    "outlet": "https://www.ajansturkhaber.com/",
@@ -14246,7 +14246,7 @@
   "vanguardngr.com": {
    "outlet": "Vanguard News",
    "country": "England",
-   "n": 17,
+   "n": 18,
    "last": "2026-11-26"
   },
   "mexico.as.com": {
@@ -14438,7 +14438,7 @@
   "webaslan.com": {
    "outlet": "Webaslan",
    "country": "Türkiye",
-   "n": 131,
+   "n": 134,
    "last": "2026-11-26"
   },
   "superhaber.com": {
@@ -14528,7 +14528,7 @@
   "theanalyst.com": {
    "outlet": "Opta Analyst",
    "country": "England",
-   "n": 45,
+   "n": 46,
    "last": "2026-11-26"
   },
   "geordiebootboys.com": {
@@ -14612,8 +14612,8 @@
   "officialpress.es": {
    "outlet": "Official Press",
    "country": "Spain",
-   "n": 14,
-   "last": "2026-11-20"
+   "n": 15,
+   "last": "2026-11-26"
   },
   "huelvahoy.com": {
    "outlet": "HuelvaHoy",
@@ -14756,7 +14756,7 @@
   "fulhamish.co.uk": {
    "outlet": "Fulhamish",
    "country": "England",
-   "n": 17,
+   "n": 18,
    "last": "2026-11-26"
   },
   "kait8.com": {
@@ -14876,7 +14876,7 @@
   "ariase.com": {
    "outlet": "Ariase",
    "country": "France",
-   "n": 7,
+   "n": 8,
    "last": "2026-11-26"
   },
   "melty.fr": {
@@ -14888,7 +14888,7 @@
   "fennecfootball.com": {
    "outlet": "Fennec Football",
    "country": "France",
-   "n": 13,
+   "n": 14,
    "last": "2026-11-26"
   },
   "tf1.fr": {
@@ -14978,8 +14978,8 @@
   "gazetenizolsun.com": {
    "outlet": "Gazeteniz Olsun",
    "country": "Türkiye",
-   "n": 49,
-   "last": "2026-11-25"
+   "n": 50,
+   "last": "2026-11-26"
   },
   "tribune.com.pk": {
    "outlet": "The Express Tribune",
@@ -14996,8 +14996,8 @@
   "rhyljournal.co.uk": {
    "outlet": "Rhyl Journal",
    "country": "England",
-   "n": 9,
-   "last": "2026-11-24"
+   "n": 10,
+   "last": "2026-11-26"
   },
   "blogpreston.co.uk": {
    "outlet": "Blog Preston",
@@ -15128,7 +15128,7 @@
   "lepoint.fr": {
    "outlet": "Le Point",
    "country": "France",
-   "n": 24,
+   "n": 25,
    "last": "2026-11-26"
   },
   "calciomio.fr": {
@@ -15212,7 +15212,7 @@
   "samsunekiphaber.com": {
    "outlet": "Samsun Ekip Haber",
    "country": "Türkiye",
-   "n": 33,
+   "n": 34,
    "last": "2026-11-26"
   },
   "insaatyatirim.com": {
@@ -15434,7 +15434,7 @@
   "fakti.bg": {
    "outlet": "Fakti.bg",
    "country": "Türkiye",
-   "n": 216,
+   "n": 217,
    "last": "2026-11-26"
   },
   "kocaelihalkgazetesi.com": {
@@ -15572,13 +15572,13 @@
   "virgilio.it": {
    "outlet": "Virgilio",
    "country": "Italy",
-   "n": 369,
+   "n": 371,
    "last": "2026-11-26"
   },
   "presseagence.fr": {
    "outlet": "Presse Agence",
    "country": "France",
-   "n": 24,
+   "n": 25,
    "last": "2026-11-26"
   },
   "mondialsport.ci": {
@@ -15608,7 +15608,7 @@
   "ozgurkocaeli.com.tr": {
    "outlet": "Özgür Kocaeli",
    "country": "Türkiye",
-   "n": 131,
+   "n": 133,
    "last": "2026-11-26"
   },
   "nhaberizmir.com": {
@@ -15680,8 +15680,8 @@
   "stretfordpaddock.co.uk": {
    "outlet": "https://www.stretfordpaddocknews.com/",
    "country": "England",
-   "n": 12,
-   "last": "2026-11-24"
+   "n": 13,
+   "last": "2026-11-26"
   },
   "portnews.com.au": {
    "outlet": "Port Macquarie News",
@@ -15704,7 +15704,7 @@
   "northwaleschronicle.co.uk": {
    "outlet": "North Wales Chronicle",
    "country": "England",
-   "n": 134,
+   "n": 135,
    "last": "2026-11-26"
   },
   "pnefc.net": {
@@ -15836,7 +15836,7 @@
   "tele.at": {
    "outlet": "tele.at",
    "country": "Austria",
-   "n": 680,
+   "n": 683,
    "last": "2026-11-26"
   },
   "der-grilli.at": {
@@ -15878,7 +15878,7 @@
   "ndtvprofit.com": {
    "outlet": "NDTV Profit",
    "country": "England",
-   "n": 24,
+   "n": 25,
    "last": "2026-11-26"
   },
   "wyomingnews.com": {
@@ -15914,8 +15914,8 @@
   "vamosmisevillafc.com": {
    "outlet": "Vamos Mi Sevilla",
    "country": "Spain",
-   "n": 53,
-   "last": "2026-11-24"
+   "n": 54,
+   "last": "2026-11-26"
   },
   "tectonica.archi": {
    "outlet": "Tectónica",
@@ -16124,7 +16124,7 @@
   "supver-psv.nl": {
    "outlet": "Supportersvereniging PSV",
    "country": "Netherlands",
-   "n": 20,
+   "n": 21,
    "last": "2026-11-26"
   },
   "bx1.be": {
@@ -16190,8 +16190,8 @@
   "dengegazetesi.com.tr": {
    "outlet": "denge gazetesi",
    "country": "Türkiye",
-   "n": 2,
-   "last": "2026-10-26"
+   "n": 3,
+   "last": "2026-11-26"
   },
   "weltfussball.at": {
    "outlet": "weltfussball.at",
@@ -16304,7 +16304,7 @@
   "ticketnews.com": {
    "outlet": "TicketNews",
    "country": "England",
-   "n": 456,
+   "n": 459,
    "last": "2026-11-26"
   },
   "elnuevoherald.com": {
@@ -16454,7 +16454,7 @@
   "schalketotal.de": {
    "outlet": "SchalkeTOTAL",
    "country": "Germany",
-   "n": 286,
+   "n": 287,
    "last": "2026-11-26"
   },
   "rbb-online.de": {
@@ -16706,7 +16706,7 @@
   "fanbanter.co.uk": {
    "outlet": "Fan Banter",
    "country": "England",
-   "n": 404,
+   "n": 411,
    "last": "2026-11-26"
   },
   "mediotiempo.com": {
@@ -16886,8 +16886,8 @@
   "bournemouthecho.co.uk": {
    "outlet": "Bournemouth Echo",
    "country": "England",
-   "n": 94,
-   "last": "2026-11-25"
+   "n": 95,
+   "last": "2026-11-26"
   },
   "kompas.id": {
    "outlet": "Kompas.id",
@@ -17012,13 +17012,13 @@
   "news.sbs.co.kr": {
    "outlet": "news.sbs.co.kr",
    "country": "Denmark",
-   "n": 64,
+   "n": 65,
    "last": "2026-11-26"
   },
   "canadiansoccerdaily.com": {
    "outlet": "Canadian Soccer Daily -",
    "country": "Denmark",
-   "n": 352,
+   "n": 354,
    "last": "2026-11-26"
   },
   "regiosport.ch": {
@@ -17030,8 +17030,8 @@
   "insideworldfootball.com": {
    "outlet": "Inside World Football",
    "country": "England",
-   "n": 57,
-   "last": "2026-11-23"
+   "n": 59,
+   "last": "2026-11-26"
   },
   "campaignlive.co.uk": {
    "outlet": "Campaign UK",
@@ -17072,7 +17072,7 @@
   "football.com": {
    "outlet": "Football.com",
    "country": "England",
-   "n": 744,
+   "n": 746,
    "last": "2026-11-26"
   },
   "novibet.gr": {
@@ -17216,7 +17216,7 @@
   "calciodangolo.com": {
    "outlet": "Calciodangolo",
    "country": "Italy",
-   "n": 413,
+   "n": 419,
    "last": "2026-11-26"
   },
   "siamoilnapoli.it": {
@@ -17318,7 +17318,7 @@
   "goonerdaily.com": {
    "outlet": "Gooner Daily",
    "country": "Belgium",
-   "n": 224,
+   "n": 227,
    "last": "2026-11-26"
   },
   "ortacizgi.com": {
@@ -17360,14 +17360,14 @@
   "gazeteilksayfa.com": {
    "outlet": "Gazete İlk Sayfa",
    "country": "Türkiye",
-   "n": 21,
+   "n": 22,
    "last": "2026-11-26"
   },
   "diyarbakir.net": {
    "outlet": "Diyarbakir.Net",
    "country": "Türkiye",
-   "n": 24,
-   "last": "2026-11-24"
+   "n": 25,
+   "last": "2026-11-26"
   },
   "fcz.ch": {
    "outlet": "FC Zürich",
@@ -17408,7 +17408,7 @@
   "readastonvilla.com": {
    "outlet": "Read Aston Villa",
    "country": "England",
-   "n": 406,
+   "n": 407,
    "last": "2026-11-26"
   },
   "newscord.org": {
@@ -17534,7 +17534,7 @@
   "imticker.ch": {
    "outlet": "imTicker",
    "country": "Germany",
-   "n": 276,
+   "n": 278,
    "last": "2026-11-26"
   },
   "wa.de": {
@@ -17672,7 +17672,7 @@
   "lc.nl": {
    "outlet": "Leeuwarder Courant",
    "country": "Netherlands",
-   "n": 112,
+   "n": 114,
    "last": "2026-11-26"
   },
   "noord-holland.headliner.nl": {
@@ -17702,7 +17702,7 @@
   "skbeveren.be": {
    "outlet": "SK Beveren",
    "country": "Belgium",
-   "n": 51,
+   "n": 52,
    "last": "2026-11-26"
   },
   "lecho.be": {
@@ -17906,7 +17906,7 @@
   "brest.maville.com": {
    "outlet": "maville.com",
    "country": "France",
-   "n": 197,
+   "n": 198,
    "last": "2026-11-26"
   },
   "paris-supporters.fr": {
@@ -17996,8 +17996,8 @@
   "leblebi.tv": {
    "outlet": "LEBLEBİ TV",
    "country": "Türkiye",
-   "n": 76,
-   "last": "2026-11-25"
+   "n": 77,
+   "last": "2026-11-26"
   },
   "m.aksam.com.tr": {
    "outlet": "AKŞAM",
@@ -18026,7 +18026,7 @@
   "tips.at": {
    "outlet": "Tips.at",
    "country": "Austria",
-   "n": 15,
+   "n": 16,
    "last": "2026-11-26"
   },
   "limmattalerzeitung.ch": {
@@ -18080,7 +18080,7 @@
   "bvmsports.com": {
    "outlet": "BVM Sports",
    "country": "England",
-   "n": 91,
+   "n": 96,
    "last": "2026-11-26"
   },
   "montgomeryadvertiser.com": {
@@ -18266,7 +18266,7 @@
   "insidermedia.com": {
    "outlet": "Insider Media Ltd",
    "country": "England",
-   "n": 34,
+   "n": 35,
    "last": "2026-11-26"
   },
   "clickliverpool.com": {
@@ -18338,7 +18338,7 @@
   "pulse.com.gh": {
    "outlet": "Pulse Ghana",
    "country": "Spain",
-   "n": 158,
+   "n": 161,
    "last": "2026-11-26"
   },
   "gasteizhoy.com": {
@@ -18446,7 +18446,7 @@
   "news.superscommesse.it": {
    "outlet": "Superscommesse",
    "country": "Italy",
-   "n": 15,
+   "n": 17,
    "last": "2026-11-26"
   },
   "corrieredelveneto.corriere.it": {
@@ -18560,7 +18560,7 @@
   "unitedinfocus.com": {
    "outlet": "United In Focus",
    "country": "Switzerland",
-   "n": 27,
+   "n": 29,
    "last": "2026-11-26"
   },
   "vantage-dc.com": {
@@ -18572,7 +18572,7 @@
   "101greatgoals.com": {
    "outlet": "101 Great Goals",
    "country": "England",
-   "n": 88,
+   "n": 89,
    "last": "2026-11-26"
   },
   "hullisthis.news": {
@@ -18716,7 +18716,7 @@
   "moz.de": {
    "outlet": "MOZ.de",
    "country": "Germany",
-   "n": 35,
+   "n": 36,
    "last": "2026-11-26"
   },
   "lazionews.eu": {
@@ -18830,7 +18830,7 @@
   "radiovizela.pt": {
    "outlet": "Rádio Vizela",
    "country": "Portugal",
-   "n": 58,
+   "n": 60,
    "last": "2026-11-26"
   },
   "jc.uol.com.br": {
@@ -18860,7 +18860,7 @@
   "mavimarmaragazetesi.com": {
    "outlet": "Mavi Marmara Gazetesi",
    "country": "Türkiye",
-   "n": 15,
+   "n": 16,
    "last": "2026-11-26"
   },
   "kulis.tv": {
@@ -18908,7 +18908,7 @@
   "sportsbusiness.at": {
    "outlet": "sportsbusiness.at",
    "country": "Switzerland",
-   "n": 47,
+   "n": 48,
    "last": "2026-11-26"
   },
   "stuff.co.nz": {
@@ -18956,7 +18956,7 @@
   "ratingbet.com": {
    "outlet": "RatingBet",
    "country": "England",
-   "n": 95,
+   "n": 96,
    "last": "2026-11-26"
   },
   "sacbee.com": {
@@ -19136,7 +19136,7 @@
   "citisportsonline.com": {
    "outlet": "Citi Sports Online",
    "country": "England",
-   "n": 21,
+   "n": 22,
    "last": "2026-11-26"
   },
   "theedgemalaysia.com": {
@@ -19292,7 +19292,7 @@
   "readnewcastle.com": {
    "outlet": "Read Newcastle",
    "country": "England",
-   "n": 294,
+   "n": 295,
    "last": "2026-11-26"
   },
   "premierleague.com": {
@@ -19532,7 +19532,7 @@
   "suffolknews.co.uk": {
    "outlet": "Suffolk News",
    "country": "England",
-   "n": 17,
+   "n": 18,
    "last": "2026-11-26"
   },
   "highlandradio.com": {
@@ -19862,7 +19862,7 @@
   "musicletter.it": {
    "outlet": "musicletter",
    "country": "Italy",
-   "n": 132,
+   "n": 136,
    "last": "2026-11-26"
   },
   "larena.it": {
@@ -19940,8 +19940,8 @@
   "alanyaturk.com": {
    "outlet": "Alanya Türk",
    "country": "Türkiye",
-   "n": 71,
-   "last": "2026-11-22"
+   "n": 73,
+   "last": "2026-11-26"
   },
   "antalyahurses.com": {
    "outlet": "Antalya Hürses",
@@ -19982,7 +19982,7 @@
   "theblazingmusket.com": {
    "outlet": "The Blazing Musket",
    "country": "England",
-   "n": 213,
+   "n": 214,
    "last": "2026-11-26"
   },
   "indiatvnews.com": {
@@ -20138,8 +20138,8 @@
   "rhein-zeitung.de": {
    "outlet": "Rhein-Zeitung",
    "country": "Germany",
-   "n": 32,
-   "last": "2026-11-19"
+   "n": 33,
+   "last": "2026-11-26"
   },
   "rundschau-online.de": {
    "outlet": "Kölnische Rundschau",
@@ -20312,7 +20312,7 @@
   "unn.ua": {
    "outlet": "Українські Національні Новини (УНН)",
    "country": "England",
-   "n": 16,
+   "n": 17,
    "last": "2026-11-26"
   },
   "fintechmagazine.com": {
@@ -20438,7 +20438,7 @@
   "heraldnews.com": {
    "outlet": "Fall River Herald News",
    "country": "Portugal",
-   "n": 52,
+   "n": 53,
    "last": "2026-11-26"
   },
   "metrocptm.com.br": {
@@ -20522,8 +20522,8 @@
   "architectsjournal.co.uk": {
    "outlet": "The Architects’ Journal",
    "country": "England",
-   "n": 21,
-   "last": "2026-11-18"
+   "n": 22,
+   "last": "2026-11-26"
   },
   "bescotbanter.net": {
    "outlet": "Bescot Banter",
@@ -20720,7 +20720,7 @@
   "leccesette.it": {
    "outlet": "Leccesette",
    "country": "Italy",
-   "n": 50,
+   "n": 51,
    "last": "2026-11-26"
   },
   "leberry.fr": {
@@ -20900,7 +20900,7 @@
   "sportingtribune.com": {
    "outlet": "Sporting Tribune",
    "country": "Türkiye",
-   "n": 26,
+   "n": 27,
    "last": "2026-11-26"
   },
   "mansethaber.com": {
@@ -21326,7 +21326,7 @@
   "ontapsportsnet.com": {
    "outlet": "On Tap Sports Net",
    "country": "Portugal",
-   "n": 348,
+   "n": 349,
    "last": "2026-11-26"
   },
   "dezondag.be": {
@@ -21398,7 +21398,7 @@
   "diariocordoba.com": {
    "outlet": "Diario Córdoba",
    "country": "Spain",
-   "n": 10,
+   "n": 12,
    "last": "2026-11-26"
   },
   "aragondigital.es": {
@@ -21506,7 +21506,7 @@
   "quotidianodipuglia.it": {
    "outlet": "Quotidiano Di Puglia",
    "country": "Italy",
-   "n": 23,
+   "n": 24,
    "last": "2026-11-26"
   },
   "picenotime.it": {
@@ -21854,7 +21854,7 @@
   "katu.com": {
    "outlet": "KATU",
    "country": "England",
-   "n": 43,
+   "n": 45,
    "last": "2026-11-26"
   },
   "itsoncardiff.co.uk": {
@@ -21986,7 +21986,7 @@
   "webgirondins.com": {
    "outlet": "WebGirondins",
    "country": "France",
-   "n": 5,
+   "n": 6,
    "last": "2026-11-26"
   },
   "radiofrance.fr": {
@@ -22004,7 +22004,7 @@
   "senego.com": {
    "outlet": "Senego.com",
    "country": "France",
-   "n": 25,
+   "n": 26,
    "last": "2026-11-26"
   },
   "hoqueipt.com": {
@@ -22094,7 +22094,7 @@
   "dosyahaber.com": {
    "outlet": "Dosya Haber",
    "country": "Türkiye",
-   "n": 1101,
+   "n": 1107,
    "last": "2026-11-26"
   },
   "afyonyerelhaber.com": {
@@ -22334,7 +22334,7 @@
   "goduquesne.com": {
    "outlet": "Duquesne University Athletics",
    "country": "Netherlands",
-   "n": 169,
+   "n": 171,
    "last": "2026-11-26"
   },
   "metronieuws.nl": {
@@ -22562,7 +22562,7 @@
   "buli-tipphilfe.de": {
    "outlet": "BuLi-Tipphilfe",
    "country": "Germany",
-   "n": 111,
+   "n": 120,
    "last": "2026-11-26"
   },
   "fnp.de": {
@@ -22784,7 +22784,7 @@
   "jpost.com": {
    "outlet": "The Jerusalem Post",
    "country": "England",
-   "n": 7,
+   "n": 8,
    "last": "2026-11-26"
   },
   "sdna.gr": {
@@ -22928,7 +22928,7 @@
   "thestar.com": {
    "outlet": "Toronto Star",
    "country": "France",
-   "n": 167,
+   "n": 170,
    "last": "2026-11-26"
   },
   "tribunadosertao.com.br": {
@@ -23210,13 +23210,13 @@
   "greenocktelegraph.co.uk": {
    "outlet": "Greenock Telegraph",
    "country": "England",
-   "n": 11,
+   "n": 12,
    "last": "2026-11-26"
   },
   "journalarta.com": {
    "outlet": "JournalArta",
    "country": "England",
-   "n": 200,
+   "n": 201,
    "last": "2026-11-26"
   },
   "huffingtonpost.es": {
@@ -23348,8 +23348,8 @@
   "voetbalgokken.nl": {
    "outlet": "VoetbalGokken.nl",
    "country": "Netherlands",
-   "n": 4,
-   "last": "2026-11-05"
+   "n": 5,
+   "last": "2026-11-26"
   },
   "balkanweb.com": {
    "outlet": "Balkanweb.com",
@@ -23372,8 +23372,8 @@
   "dogubayazitgazetesi.com": {
    "outlet": "Doğubayazıt Gazetesi",
    "country": "Türkiye",
-   "n": 5,
-   "last": "2026-11-20"
+   "n": 6,
+   "last": "2026-11-26"
   },
   "bianlikhaber.com": {
    "outlet": "bianlikhaber.com",
@@ -23468,7 +23468,7 @@
   "magazin.comunio.de": {
    "outlet": "ComunioMagazin",
    "country": "Germany",
-   "n": 129,
+   "n": 138,
    "last": "2026-11-26"
   },
   "dire.it": {
@@ -23516,7 +23516,7 @@
   "angers.maville.com": {
    "outlet": "maville.com",
    "country": "France",
-   "n": 25,
+   "n": 27,
    "last": "2026-11-26"
   },
   "mypanhandle.com": {
@@ -23726,7 +23726,7 @@
   "dailycannon.com": {
    "outlet": "Daily Cannon",
    "country": "England",
-   "n": 116,
+   "n": 118,
    "last": "2026-11-26"
   },
   "hortweek.com": {
@@ -23966,7 +23966,7 @@
   "sportsbusinessjournal.com": {
    "outlet": "Sports Business Journal",
    "country": "England",
-   "n": 156,
+   "n": 158,
    "last": "2026-11-26"
   },
   "thetraveler.org": {
@@ -24296,7 +24296,7 @@
   "news.sky.com": {
    "outlet": "Sky News",
    "country": "England",
-   "n": 22,
+   "n": 23,
    "last": "2026-11-26"
   },
   "gambling.com": {
@@ -24542,7 +24542,7 @@
   "trcgiornale.it": {
    "outlet": "TRC Giornale",
    "country": "Italy",
-   "n": 70,
+   "n": 71,
    "last": "2026-11-26"
   },
   "bignotizie.it": {
@@ -24650,7 +24650,7 @@
   "italpress.com": {
    "outlet": "Italpress",
    "country": "England",
-   "n": 36,
+   "n": 37,
    "last": "2026-11-26"
   },
   "cnet.com": {
@@ -24884,7 +24884,7 @@
   "eastleighvoice.co.ke": {
    "outlet": "The Eastleigh Voice",
    "country": "Netherlands",
-   "n": 35,
+   "n": 36,
    "last": "2026-11-26"
   },
   "oyungunlugu.com": {
@@ -25052,7 +25052,7 @@
   "dimsumdaily.hk": {
    "outlet": "Dimsum Daily",
    "country": "England",
-   "n": 5,
+   "n": 6,
    "last": "2026-11-26"
   },
   "dewsburyreporter.co.uk": {
@@ -25064,7 +25064,7 @@
   "solihullobserver.co.uk": {
    "outlet": "The Solihull Observer",
    "country": "England",
-   "n": 2,
+   "n": 3,
    "last": "2026-11-26"
   },
   "ulmwarhawks.com": {
@@ -25568,7 +25568,7 @@
   "fccincinnati.com": {
    "outlet": "FC Cincinnati",
    "country": "United States",
-   "n": 258,
+   "n": 264,
    "last": "2026-11-26"
   },
   "fox17.com": {
@@ -25622,7 +25622,7 @@
   "mlssoccer.com": {
    "outlet": "MLSsoccer.com",
    "country": "United States",
-   "n": 3500,
+   "n": 3524,
    "last": "2026-11-26"
   },
   "reviewjournal.com": {
@@ -25646,13 +25646,13 @@
   "intermiamicf.com": {
    "outlet": "Inter Miami CF",
    "country": "United States",
-   "n": 140,
+   "n": 141,
    "last": "2026-11-26"
   },
   "revolutionsoccer.net": {
    "outlet": "revolutionsoccer.net",
    "country": "United States",
-   "n": 198,
+   "n": 199,
    "last": "2026-11-26"
   },
   "aroundosceola.com": {
@@ -25670,19 +25670,19 @@
   "themaneland.com": {
    "outlet": "The Mane Land",
    "country": "United States",
-   "n": 262,
+   "n": 264,
    "last": "2026-11-26"
   },
   "timbers.com": {
    "outlet": "Portland Timbers",
    "country": "United States",
-   "n": 174,
+   "n": 175,
    "last": "2026-11-26"
   },
   "3rddegree.net": {
    "outlet": "3rd Degree",
    "country": "United States",
-   "n": 129,
+   "n": 130,
    "last": "2026-11-26"
   },
   "d210.tv": {
@@ -25694,19 +25694,19 @@
   "bigdsoccer.com": {
    "outlet": "Big D Soccer",
    "country": "United States",
-   "n": 960,
+   "n": 966,
    "last": "2026-11-26"
   },
   "charlottefootballclub.com": {
    "outlet": "Charlotte FC",
    "country": "United States",
-   "n": 370,
+   "n": 373,
    "last": "2026-11-26"
   },
   "chicagofirefc.com": {
    "outlet": "Chicago Fire FC",
    "country": "United States",
-   "n": 114,
+   "n": 116,
    "last": "2026-11-26"
   },
   "meninred97.com": {
@@ -25730,7 +25730,7 @@
   "qcnews.com": {
    "outlet": "Queen City News",
    "country": "United States",
-   "n": 103,
+   "n": 104,
    "last": "2026-11-26"
   },
   "globelynews.com": {
@@ -25742,7 +25742,7 @@
   "firstalert4.com": {
    "outlet": "KMOV",
    "country": "United States",
-   "n": 215,
+   "n": 216,
    "last": "2026-11-26"
   },
   "stlcitysc.com": {
@@ -25766,13 +25766,13 @@
   "houstonchronicle.com": {
    "outlet": "Houston Chronicle",
    "country": "United States",
-   "n": 117,
+   "n": 118,
    "last": "2026-11-26"
   },
   "sjearthquakes.com": {
    "outlet": "San Jose Earthquakes",
    "country": "United States",
-   "n": 77,
+   "n": 78,
    "last": "2026-11-26"
   },
   "houstondynamofc.com": {
@@ -25790,7 +25790,7 @@
   "fubo.tv": {
    "outlet": "Fubo",
    "country": "United States",
-   "n": 814,
+   "n": 817,
    "last": "2026-11-26"
   },
   "times-standard.com": {
@@ -25826,19 +25826,19 @@
   "torontofc.ca": {
    "outlet": "Toronto FC",
    "country": "United States",
-   "n": 43,
+   "n": 44,
    "last": "2026-11-26"
   },
   "philadelphiaunion.com": {
    "outlet": "Philadelphia Union",
    "country": "United States",
-   "n": 165,
+   "n": 167,
    "last": "2026-11-26"
   },
   "sportsnet.ca": {
    "outlet": "Sportsnet.ca",
    "country": "United States",
-   "n": 181,
+   "n": 183,
    "last": "2026-11-26"
   },
   "columbuscrew.com": {
@@ -25880,7 +25880,7 @@
   "orlandocitysc.com": {
    "outlet": "Orlando City",
    "country": "United States",
-   "n": 311,
+   "n": 312,
    "last": "2026-11-26"
   },
   "clickorlando.com": {
@@ -25892,7 +25892,7 @@
   "orlandosentinel.com": {
    "outlet": "Orlando Sentinel",
    "country": "United States",
-   "n": 167,
+   "n": 169,
    "last": "2026-11-26"
   },
   "sounderatheart.com": {
@@ -25970,7 +25970,7 @@
   "burgundywave.com": {
    "outlet": "Burgundy Wave",
    "country": "United States",
-   "n": 148,
+   "n": 150,
    "last": "2026-11-26"
   },
   "dalsportsnation.com": {
@@ -25982,19 +25982,19 @@
   "scarvesandspikes.com": {
    "outlet": "Scarves and Spikes",
    "country": "United States",
-   "n": 185,
+   "n": 186,
    "last": "2026-11-26"
   },
   "newyorkredbulls.com": {
    "outlet": "Red Bull New York",
    "country": "United States",
-   "n": 122,
+   "n": 123,
    "last": "2026-11-26"
   },
   "atlutd.com": {
    "outlet": "Atlanta United FC",
    "country": "United States",
-   "n": 54,
+   "n": 56,
    "last": "2026-11-26"
   },
   "chatsports.com": {
@@ -26030,7 +26030,7 @@
   "wakingthered.com": {
    "outlet": "Waking The Red",
    "country": "United States",
-   "n": 579,
+   "n": 582,
    "last": "2026-11-26"
   },
   "idahostatejournal.com": {
@@ -26042,7 +26042,7 @@
   "inquirer.com": {
    "outlet": "Inquirer.com",
    "country": "United States",
-   "n": 35,
+   "n": 36,
    "last": "2026-11-26"
   },
   "eastvillagetimes.com": {
@@ -26072,7 +26072,7 @@
   "austinfc.com": {
    "outlet": "Austin FC",
    "country": "United States",
-   "n": 94,
+   "n": 96,
    "last": "2026-11-26"
   },
   "nysportsday.com": {
@@ -26210,7 +26210,7 @@
   "en.vijesti.me": {
    "outlet": "vijesti.me",
    "country": "Italy",
-   "n": 138,
+   "n": 140,
    "last": "2026-11-26"
   },
   "french.ahram.org.eg": {
@@ -26312,7 +26312,7 @@
   "fox2now.com": {
    "outlet": "FOX 2",
    "country": "United States",
-   "n": 394,
+   "n": 395,
    "last": "2026-11-26"
   },
   "sun-sentinel.com": {
@@ -26330,7 +26330,7 @@
   "minneapolimedia.town.news": {
    "outlet": "MinneapoliMedia",
    "country": "United States",
-   "n": 157,
+   "n": 158,
    "last": "2026-11-26"
   },
   "thenewstribune.com": {
@@ -26390,7 +26390,7 @@
   "kshb.com": {
    "outlet": "KSHB 41 Kansas City",
    "country": "United States",
-   "n": 45,
+   "n": 46,
    "last": "2026-11-26"
   },
   "kelownadailycourier.ca": {
@@ -26522,7 +26522,7 @@
   "fox4news.com": {
    "outlet": "FOX 4 News Dallas-Fort Worth",
    "country": "United States",
-   "n": 20,
+   "n": 21,
    "last": "2026-11-26"
   },
   "onechicagocenter.com": {
@@ -26576,7 +26576,7 @@
   "coloradorapids.com": {
    "outlet": "Colorado Rapids",
    "country": "United States",
-   "n": 56,
+   "n": 57,
    "last": "2026-11-26"
   },
   "wtop.com": {
@@ -26774,7 +26774,7 @@
   "demokratis.co.id": {
    "outlet": "Demokratis.co.id",
    "country": "Portugal",
-   "n": 921,
+   "n": 930,
    "last": "2026-11-26"
   },
   "nation.africa": {
@@ -26828,7 +26828,7 @@
   "newschannel5.com": {
    "outlet": "News Channel 5 Nashville",
    "country": "United States",
-   "n": 80,
+   "n": 82,
    "last": "2026-11-26"
   },
   "wbir.com": {
@@ -26840,7 +26840,7 @@
   "ksdk.com": {
    "outlet": "KSDK",
    "country": "United States",
-   "n": 138,
+   "n": 139,
    "last": "2026-11-26"
   },
   "pan.am": {
@@ -26924,7 +26924,7 @@
   "molineux.news": {
    "outlet": "Molineux News",
    "country": "England",
-   "n": 40,
+   "n": 41,
    "last": "2026-11-26"
   },
   "umlconnector.com": {
@@ -26966,8 +26966,8 @@
   "laziotv.it": {
    "outlet": "Lazio TV",
    "country": "Italy",
-   "n": 3,
-   "last": "2026-11-11"
+   "n": 4,
+   "last": "2026-11-26"
   },
   "agenziavista.it": {
    "outlet": "Vista Agenzia Televisiva Nazionale",
@@ -27092,7 +27092,7 @@
   "northerntribune.ca": {
    "outlet": "Northern Tribune",
    "country": "United States",
-   "n": 117,
+   "n": 119,
    "last": "2026-11-26"
   },
   "cp24.com": {
@@ -27116,7 +27116,7 @@
   "atlantanewsfirst.com": {
    "outlet": "Atlanta News First",
    "country": "United States",
-   "n": 171,
+   "n": 172,
    "last": "2026-11-26"
   },
   "montreal.citynews.ca": {
@@ -27128,7 +27128,7 @@
   "spotrac.com": {
    "outlet": "Spotrac",
    "country": "United States",
-   "n": 270,
+   "n": 278,
    "last": "2026-11-26"
   },
   "theconcordian.com": {
@@ -27284,7 +27284,7 @@
   "milanvibes.it": {
    "outlet": "Milan Vibes",
    "country": "Italy",
-   "n": 7,
+   "n": 8,
    "last": "2026-11-26"
   },
   "coretv.it": {
@@ -27356,13 +27356,13 @@
   "safariindia.com": {
    "outlet": "https://safariindia.com/",
    "country": "United States",
-   "n": 31,
+   "n": 32,
    "last": "2026-11-26"
   },
   "lafc.com": {
    "outlet": "LAFC",
    "country": "United States",
-   "n": 80,
+   "n": 81,
    "last": "2026-11-26"
   },
   "cbsnews.com": {
@@ -27560,7 +27560,7 @@
   "ajaxlife.nl": {
    "outlet": "AjaxLife",
    "country": "Netherlands",
-   "n": 30,
+   "n": 31,
    "last": "2026-11-26"
   },
   "motocrossplanet.com": {
@@ -27710,7 +27710,7 @@
   "elfutbolero.us": {
    "outlet": "El Futbolero US",
    "country": "Belgium",
-   "n": 47,
+   "n": 48,
    "last": "2026-11-26"
   },
   "sivasirade.com": {
@@ -28070,7 +28070,7 @@
   "medyaradar.net": {
    "outlet": "Medyaradar",
    "country": "Türkiye",
-   "n": 7,
+   "n": 8,
    "last": "2026-11-26"
   },
   "kcsoccerjournal.com": {
@@ -28262,7 +28262,7 @@
   "bolgegazetesivan.com": {
    "outlet": "Van Bölge Gazetesi",
    "country": "Türkiye",
-   "n": 51,
+   "n": 52,
    "last": "2026-11-26"
   },
   "financemagnates.com": {
@@ -28322,13 +28322,13 @@
   "lanotiziasportiva.com": {
    "outlet": "La notizia sportiva",
    "country": "Italy",
-   "n": 9,
+   "n": 10,
    "last": "2026-11-26"
   },
   "tunews24.it": {
    "outlet": "Tu News 24",
    "country": "Italy",
-   "n": 31,
+   "n": 32,
    "last": "2026-11-26"
   },
   "juventusnews24.com": {
@@ -28424,7 +28424,7 @@
   "wcnc.com": {
    "outlet": "WCNC",
    "country": "United States",
-   "n": 67,
+   "n": 69,
    "last": "2026-11-26"
   },
   "equalizersoccer.com": {
@@ -28808,7 +28808,7 @@
   "tvmangualde.sapo.pt": {
    "outlet": "TV Mangualde",
    "country": "Portugal",
-   "n": 43,
+   "n": 46,
    "last": "2026-11-26"
   },
   "thegrocer.co.uk": {
@@ -28940,7 +28940,7 @@
   "twincities.com": {
    "outlet": "Pioneer Press",
    "country": "England",
-   "n": 64,
+   "n": 65,
    "last": "2026-11-26"
   },
   "diginomica.com": {
@@ -29264,7 +29264,7 @@
   "mynews13.com": {
    "outlet": "Spectrum News 13",
    "country": "United States",
-   "n": 63,
+   "n": 64,
    "last": "2026-11-26"
   },
   "thelinknewspaper.ca": {
@@ -29810,7 +29810,7 @@
   "radioscoop.com": {
    "outlet": "Radio SCOOP",
    "country": "France",
-   "n": 58,
+   "n": 59,
    "last": "2026-11-26"
   },
   "umuarama.portaldacidade.com": {
@@ -29870,8 +29870,8 @@
   "leuvenactueel.be": {
    "outlet": "Leuven Actueel",
    "country": "Belgium",
-   "n": 18,
-   "last": "2026-11-22"
+   "n": 19,
+   "last": "2026-11-26"
   },
   "lidergazete.com": {
    "outlet": "Lider Gazete",
@@ -29894,7 +29894,7 @@
   "socceramerica.com": {
    "outlet": "Soccer America",
    "country": "United States",
-   "n": 48,
+   "n": 49,
    "last": "2026-11-26"
   },
   "nbcbayarea.com": {
@@ -30368,13 +30368,13 @@
   "stlpr.org": {
    "outlet": "STLPR",
    "country": "United States",
-   "n": 97,
+   "n": 98,
    "last": "2026-11-26"
   },
   "abc7news.com": {
    "outlet": "ABC7 Bay Area",
    "country": "United States",
-   "n": 27,
+   "n": 28,
    "last": "2026-11-26"
   },
   "otowns11.com": {
@@ -30584,8 +30584,8 @@
   "ondacapital.es": {
    "outlet": "Onda Capital",
    "country": "Spain",
-   "n": 19,
-   "last": "2026-11-24"
+   "n": 20,
+   "last": "2026-11-26"
   },
   "bizkaiagaur.com": {
    "outlet": "BizkaiaGaur",
@@ -30806,7 +30806,7 @@
   "valleumbrasport.it": {
    "outlet": "ValleUmbraSport",
    "country": "Italy",
-   "n": 17,
+   "n": 19,
    "last": "2026-11-26"
   },
   "binews.it": {
@@ -30998,7 +30998,7 @@
   "modernghana.com": {
    "outlet": "Modern Ghana",
    "country": "England",
-   "n": 71,
+   "n": 73,
    "last": "2026-11-26"
   },
   "elche7tv.es": {
@@ -31088,7 +31088,7 @@
   "soundersfc.com": {
    "outlet": "Seattle Sounders FC",
    "country": "United States",
-   "n": 59,
+   "n": 60,
    "last": "2026-11-26"
   },
   "newsradioklbj.com": {
@@ -31610,7 +31610,7 @@
   "nnc.mx": {
    "outlet": "NNC.MX",
    "country": "Spain",
-   "n": 36,
+   "n": 37,
    "last": "2026-11-26"
   },
   "cocemfe.es": {
@@ -31634,7 +31634,7 @@
   "wesh.com": {
    "outlet": "WESH",
    "country": "United States",
-   "n": 58,
+   "n": 60,
    "last": "2026-11-26"
   },
   "411mania.com": {
@@ -31664,7 +31664,7 @@
   "prostinternational.com": {
    "outlet": "Prost International [PINT]",
    "country": "United States",
-   "n": 88,
+   "n": 89,
    "last": "2026-11-26"
   },
   "markets.businessinsider.com": {
@@ -31928,8 +31928,8 @@
   "m.webaslan.com": {
    "outlet": "Webaslan",
    "country": "Türkiye",
-   "n": 3,
-   "last": "2026-11-23"
+   "n": 4,
+   "last": "2026-11-26"
   },
   "netgaste.com": {
    "outlet": "NetGaste",
@@ -31946,8 +31946,8 @@
   "oskaloosa.com": {
    "outlet": "Oskaloosa Herald",
    "country": "United States",
-   "n": 35,
-   "last": "2026-11-25"
+   "n": 36,
+   "last": "2026-11-26"
   },
   "constructionnews.co.uk": {
    "outlet": "Construction News",
@@ -31982,7 +31982,7 @@
   "m.yeniakit.com.tr": {
    "outlet": "Yeni Akit Gazetesi",
    "country": "Türkiye",
-   "n": 13,
+   "n": 14,
    "last": "2026-11-26"
   },
   "kanalben.com": {
@@ -32222,7 +32222,7 @@
   "tifojuventus.it": {
    "outlet": "Tifo Juventus",
    "country": "Italy",
-   "n": 47,
+   "n": 48,
    "last": "2026-11-26"
   },
   "finestresullarte.info": {
@@ -32258,7 +32258,7 @@
   "bsinews.id": {
    "outlet": "bsinews.id",
    "country": "England",
-   "n": 130,
+   "n": 133,
    "last": "2026-11-26"
   },
   "flipr.com.ar": {
@@ -32324,7 +32324,7 @@
   "cwibc.co.id": {
    "outlet": "cwibc.co.id",
    "country": "England",
-   "n": 1152,
+   "n": 1156,
    "last": "2026-11-26"
   },
   "oncenoticias.hn": {
@@ -32438,7 +32438,7 @@
   "limapagi.id": {
    "outlet": "Limapagi",
    "country": "Spain",
-   "n": 305,
+   "n": 311,
    "last": "2026-11-26"
   },
   "gcdiario.com": {
@@ -32642,8 +32642,8 @@
   "cequepensentleshommes.fr": {
    "outlet": "cequepensentleshommes.fr",
    "country": "France",
-   "n": 4,
-   "last": "2026-11-19"
+   "n": 5,
+   "last": "2026-11-26"
   },
   "dimers.com": {
    "outlet": "Dimers",
@@ -32768,7 +32768,7 @@
   "alphens.nl": {
    "outlet": "Alphens.nl",
    "country": "Netherlands",
-   "n": 38,
+   "n": 39,
    "last": "2026-11-26"
   },
   "ngscsports.com": {
@@ -32780,8 +32780,8 @@
   "mlq.ai": {
    "outlet": "MLQ.ai",
    "country": "England",
-   "n": 3,
-   "last": "2026-11-19"
+   "n": 4,
+   "last": "2026-11-26"
   },
   "gurufocus.com": {
    "outlet": "GuruFocus",
@@ -32936,7 +32936,7 @@
   "allfootballapp.com": {
    "outlet": "AllFootball",
    "country": "England",
-   "n": 1199,
+   "n": 1208,
    "last": "2026-11-26"
   },
   "eastbayri.com": {
@@ -32984,7 +32984,7 @@
   "basketball.realgm.com": {
    "outlet": "RealGM",
    "country": "United States",
-   "n": 44,
+   "n": 49,
    "last": "2026-11-26"
   },
   "diariodopeixe.com.br": {
@@ -33002,13 +33002,13 @@
   "m.allfootballapp.com": {
    "outlet": "AllFootball",
    "country": "England",
-   "n": 168,
+   "n": 169,
    "last": "2026-11-26"
   },
   "greekcitytimes.com": {
    "outlet": "Greek City Times",
    "country": "England",
-   "n": 36,
+   "n": 37,
    "last": "2026-11-26"
   },
   "pressboxpr.co.uk": {
@@ -33026,13 +33026,13 @@
   "tufutbolero.com": {
    "outlet": "Tu Futbolero",
    "country": "Spain",
-   "n": 817,
+   "n": 829,
    "last": "2026-11-26"
   },
   "betsuites.com": {
    "outlet": "Betsuites",
    "country": "Spain",
-   "n": 100,
+   "n": 101,
    "last": "2026-11-26"
   },
   "tvn.cl": {
@@ -33062,7 +33062,7 @@
   "wisevoter.com": {
    "outlet": "Wisevoter",
    "country": "United States",
-   "n": 537,
+   "n": 550,
    "last": "2026-11-26"
   },
   "nationwideradiojm.com": {
@@ -33140,7 +33140,7 @@
   "chronicleonline.com": {
    "outlet": "chronicleonline.com",
    "country": "United States",
-   "n": 25,
+   "n": 27,
    "last": "2026-11-26"
   },
   "peradaban.id": {
@@ -33254,7 +33254,7 @@
   "wsoctv.com": {
    "outlet": "WSOC TV",
    "country": "United States",
-   "n": 29,
+   "n": 30,
    "last": "2026-11-26"
   },
   "sports.mynorthwest.com": {
@@ -33380,7 +33380,7 @@
   "az.nl": {
    "outlet": "AZ.nl",
    "country": "Netherlands",
-   "n": 37,
+   "n": 38,
    "last": "2026-11-26"
   },
   "anadolugazetesi.com": {
@@ -33506,7 +33506,7 @@
   "sportoggi.com": {
    "outlet": "https://www.sportoggi.com/",
    "country": "Italy",
-   "n": 17,
+   "n": 18,
    "last": "2026-11-26"
   },
   "en.yabiladi.com": {
@@ -33536,7 +33536,7 @@
   "tdn.com": {
    "outlet": "Longview Daily News",
    "country": "United States",
-   "n": 50,
+   "n": 51,
    "last": "2026-11-26"
   },
   "kutv.com": {
@@ -33548,7 +33548,7 @@
   "en.cfmontreal.com": {
    "outlet": "CF Montréal",
    "country": "United States",
-   "n": 90,
+   "n": 92,
    "last": "2026-11-26"
   },
   "cyprus-mail.com": {
@@ -33614,7 +33614,7 @@
   "thecharlotteledger.com": {
    "outlet": "https://www.thecharlotteledger.com/",
    "country": "United States",
-   "n": 59,
+   "n": 60,
    "last": "2026-11-26"
   },
   "sltrib.com": {
@@ -33746,7 +33746,7 @@
   "digg.com": {
    "outlet": "Digg",
    "country": "England",
-   "n": 63,
+   "n": 64,
    "last": "2026-11-26"
   },
   "trmtv.it": {
@@ -33770,7 +33770,7 @@
   "desmoinesregister.com": {
    "outlet": "The Des Moines Register",
    "country": "United States",
-   "n": 6,
+   "n": 7,
    "last": "2026-11-26"
   },
   "celebritynetworth.com": {
@@ -33836,7 +33836,7 @@
   "voz.us": {
    "outlet": "voz.us",
    "country": "United States",
-   "n": 28,
+   "n": 29,
    "last": "2026-11-26"
   },
   "news.cgtn.com": {
@@ -33848,7 +33848,7 @@
   "madridistahoy.com": {
    "outlet": "madridistahoy.com",
    "country": "Spain",
-   "n": 9,
+   "n": 10,
    "last": "2026-11-26"
   },
   "massa-critica.it": {
@@ -33890,7 +33890,7 @@
   "saint-lo.maville.com": {
    "outlet": "maville.com",
    "country": "France",
-   "n": 14,
+   "n": 15,
    "last": "2026-11-26"
   },
   "radio-covilha.pt": {
@@ -34472,7 +34472,7 @@
   "90maat.com": {
    "outlet": "90 Minutes At A Time",
    "country": "England",
-   "n": 138,
+   "n": 141,
    "last": "2026-11-26"
   },
   "middleeasy.com": {
@@ -35042,7 +35042,7 @@
   "alsaudinews.com": {
    "outlet": "السعودية نيوز",
    "country": "England",
-   "n": 4,
+   "n": 5,
    "last": "2026-11-26"
   },
   "nz.news.yahoo.com": {
@@ -35150,7 +35150,7 @@
   "grantspasstribune.com": {
    "outlet": "Grants Pass Tribune",
    "country": "United States",
-   "n": 40,
+   "n": 41,
    "last": "2026-11-26"
   },
   "highxtar.com": {
@@ -35390,7 +35390,7 @@
   "morning-times.com": {
    "outlet": "morning-times.com",
    "country": "United States",
-   "n": 2,
+   "n": 3,
    "last": "2026-11-26"
   },
   "spectrumnews1.com": {
@@ -35402,7 +35402,7 @@
   "fox5sandiego.com": {
    "outlet": "FOX 5 San Diego & KUSI News",
    "country": "United States",
-   "n": 34,
+   "n": 35,
    "last": "2026-11-26"
   },
   "ireland-live.ie": {
@@ -35444,7 +35444,7 @@
   "thestadiumbusiness.com": {
    "outlet": "The Stadium Business",
    "country": "Portugal",
-   "n": 33,
+   "n": 34,
    "last": "2026-11-26"
   },
   "itatiaia.com.br": {
@@ -35498,7 +35498,7 @@
   "nashvillescene.com": {
    "outlet": "Nashville Scene",
    "country": "United States",
-   "n": 32,
+   "n": 33,
    "last": "2026-11-26"
   },
   "islingtongazette.co.uk": {
@@ -35558,7 +35558,7 @@
   "gegenpressingpodcast.com": {
    "outlet": "gegenpressingpodcast.com",
    "country": "Germany",
-   "n": 26,
+   "n": 27,
    "last": "2026-11-26"
   },
   "businesstimes-bd.com": {
@@ -35588,7 +35588,7 @@
   "suaralandak.co.id": {
    "outlet": "www.suaralandak.co.id",
    "country": "United States",
-   "n": 76,
+   "n": 80,
    "last": "2026-11-26"
   },
   "fresnobee.com": {
@@ -35612,7 +35612,7 @@
   "onnj.com": {
    "outlet": "On New Jersey",
    "country": "Germany",
-   "n": 16,
+   "n": 17,
    "last": "2026-11-26"
   },
   "medyamidas.com": {
@@ -35696,7 +35696,7 @@
   "jsonline.com": {
    "outlet": "Milwaukee Journal Sentinel",
    "country": "Spain",
-   "n": 26,
+   "n": 27,
    "last": "2026-11-26"
   },
   "gmx.net": {
@@ -35738,7 +35738,7 @@
   "dubawa.org": {
    "outlet": "Dubawa",
    "country": "United States",
-   "n": 52,
+   "n": 54,
    "last": "2026-11-26"
   },
   "amp.foxsports.com": {
@@ -35804,7 +35804,7 @@
   "perspectify.com": {
    "outlet": "Perspectify",
    "country": "Germany",
-   "n": 17,
+   "n": 18,
    "last": "2026-11-26"
   },
   "saywhomedia.com": {
@@ -35846,7 +35846,7 @@
   "readrangers.com": {
    "outlet": "Read Rangers",
    "country": "England",
-   "n": 19,
+   "n": 20,
    "last": "2026-11-26"
   },
   "westhamtillidie.com": {
@@ -35924,7 +35924,7 @@
   "nationalaccordnewspaper.com": {
    "outlet": "National Accord Newspaper",
    "country": "Spain",
-   "n": 40,
+   "n": 41,
    "last": "2026-11-26"
   },
   "elvacanudo.cl": {
@@ -36194,7 +36194,7 @@
   "trtworld.com": {
    "outlet": "TRT World",
    "country": "England",
-   "n": 9,
+   "n": 10,
    "last": "2026-11-26"
   },
   "falmouthpacket.co.uk": {
@@ -36248,7 +36248,7 @@
   "kayosports.com.au": {
    "outlet": "Kayo Sports",
    "country": "England",
-   "n": 46,
+   "n": 49,
    "last": "2026-11-26"
   },
   "mundoazulgrana.com.ar": {
@@ -36266,7 +36266,7 @@
   "orlandoweekly.com": {
    "outlet": "Orlando Weekly",
    "country": "United States",
-   "n": 17,
+   "n": 18,
    "last": "2026-11-26"
   },
   "telanganatoday.com": {
@@ -36290,7 +36290,7 @@
   "iwacu-burundi.org": {
    "outlet": "IWACU",
    "country": "Switzerland",
-   "n": 16,
+   "n": 17,
    "last": "2026-11-26"
   },
   "dailyfinland.fi": {
@@ -36314,7 +36314,7 @@
   "modernetdigital.cat": {
    "outlet": "Modernet Digital",
    "country": "Spain",
-   "n": 25,
+   "n": 26,
    "last": "2026-11-26"
   },
   "sportfair.it": {
@@ -36380,7 +36380,7 @@
   "richmond.nub.news": {
    "outlet": "Richmond Nub News",
    "country": "England",
-   "n": 12,
+   "n": 13,
    "last": "2026-11-26"
   },
   "romania-insider.com": {
@@ -36428,13 +36428,13 @@
   "nrj.be": {
    "outlet": "NRJ Belgique",
    "country": "Belgium",
-   "n": 12,
+   "n": 13,
    "last": "2026-11-26"
   },
   "news.liga.net": {
    "outlet": "LIGA.net",
    "country": "Türkiye",
-   "n": 12,
+   "n": 13,
    "last": "2026-11-26"
   },
   "news.joyn.at": {
@@ -36512,13 +36512,13 @@
   "footpack.fr": {
    "outlet": "footpack.",
    "country": "France",
-   "n": 2,
+   "n": 3,
    "last": "2026-11-26"
   },
   "nottheoldfirm.com": {
    "outlet": "Not The Old Firm",
    "country": "France",
-   "n": 11,
+   "n": 12,
    "last": "2026-11-26"
   },
   "multifamilyaffordablehousing.com": {
@@ -36530,7 +36530,7 @@
   "afcasc.nl": {
    "outlet": "De AFCA Supportersclub",
    "country": "Netherlands",
-   "n": 11,
+   "n": 12,
    "last": "2026-11-26"
   },
   "karar.com": {
@@ -36548,7 +36548,7 @@
   "v1019.com": {
    "outlet": "V 101.9 Charlotte",
    "country": "United States",
-   "n": 17,
+   "n": 18,
    "last": "2026-11-26"
   },
   "wbtv.com": {
@@ -36608,19 +36608,19 @@
   "canoticias.pt": {
    "outlet": "CA Notícias",
    "country": "Portugal",
-   "n": 4,
-   "last": "2026-11-25"
+   "n": 5,
+   "last": "2026-11-26"
   },
   "azfanpage.nl": {
    "outlet": "AZFanpage.nl",
    "country": "Netherlands",
-   "n": 10,
+   "n": 11,
    "last": "2026-11-26"
   },
   "bolunabiz.com": {
    "outlet": "Bolu Nabız",
    "country": "Türkiye",
-   "n": 5,
+   "n": 6,
    "last": "2026-11-26"
   },
   "grenzecho.net": {
@@ -36638,7 +36638,7 @@
   "deepdaledigest.com": {
    "outlet": "Deepdale Digest",
    "country": "England",
-   "n": 12,
+   "n": 14,
    "last": "2026-11-26"
   },
   "nosolocine.net": {
@@ -36668,7 +36668,7 @@
   "voetbaltrainer.nl": {
    "outlet": "De VoetbalTrainer",
    "country": "Netherlands",
-   "n": 5,
+   "n": 6,
    "last": "2026-11-26"
   },
   "yeniistiklal.com": {
@@ -36686,7 +36686,7 @@
   "commercialappeal.com": {
    "outlet": "The Commercial Appeal",
    "country": "Switzerland",
-   "n": 9,
+   "n": 10,
    "last": "2026-11-26"
   },
   "travelinglifestyle.net": {
@@ -36728,7 +36728,7 @@
   "radiocatedraljf.com.br": {
    "outlet": "www.radiocatedraljf.com.br",
    "country": "Portugal",
-   "n": 8,
+   "n": 9,
    "last": "2026-11-26"
   },
   "urfagaste.com": {
@@ -36752,43 +36752,43 @@
   "versiliatoday.it": {
    "outlet": "Versiliatoday",
    "country": "Italy",
-   "n": 7,
+   "n": 8,
    "last": "2026-11-26"
   },
   "lattaquant.com": {
    "outlet": "L'Attaquant",
    "country": "France",
-   "n": 7,
+   "n": 8,
    "last": "2026-11-26"
   },
   "brasil247.com": {
    "outlet": "Brasil 247",
    "country": "Portugal",
-   "n": 7,
+   "n": 8,
    "last": "2026-11-26"
   },
   "echt-susteren.nieuws.nl": {
    "outlet": "Nieuws.nl",
    "country": "Netherlands",
-   "n": 7,
+   "n": 8,
    "last": "2026-11-26"
   },
   "asahi.com": {
    "outlet": "朝日新聞",
    "country": "Belgium",
-   "n": 5,
+   "n": 6,
    "last": "2026-11-26"
   },
   "centpourcent-vosges.fr": {
    "outlet": "100% Vosges",
    "country": "Belgium",
-   "n": 7,
+   "n": 8,
    "last": "2026-11-26"
   },
   "delcotimes.com": {
    "outlet": "Delco Times",
    "country": "United States",
-   "n": 7,
+   "n": 8,
    "last": "2026-11-26"
   },
   "madaboutepl.net": {
@@ -36806,7 +36806,7 @@
   "todayinliege.be": {
    "outlet": "TodayInLiege",
    "country": "Belgium",
-   "n": 6,
+   "n": 7,
    "last": "2026-11-26"
   },
   "demokrathaber.org": {
@@ -36818,7 +36818,7 @@
   "whdh.com": {
    "outlet": "WHDH",
    "country": "England",
-   "n": 2,
+   "n": 3,
    "last": "2026-11-26"
   },
   "nbcboston.com": {
@@ -36872,7 +36872,7 @@
   "b105country.com": {
    "outlet": "Duluth Country Radio",
    "country": "United States",
-   "n": 4,
+   "n": 5,
    "last": "2026-11-26"
   },
   "fox4kc.com": {
@@ -36890,7 +36890,7 @@
   "thewestonmercury.co.uk": {
    "outlet": "Weston Mercury",
    "country": "England",
-   "n": 3,
+   "n": 4,
    "last": "2026-11-26"
   },
   "newsdigitales.com": {
@@ -36914,7 +36914,7 @@
   "footiecentral.com": {
    "outlet": "Footie Central",
    "country": "United States",
-   "n": 3,
+   "n": 4,
    "last": "2026-11-26"
   },
   "financialcontent.com": {
@@ -36950,7 +36950,7 @@
   "chimpreports.com": {
    "outlet": "ChimpReports",
    "country": "Netherlands",
-   "n": 2,
+   "n": 3,
    "last": "2026-11-26"
   },
   "samanyoluhaber.com": {
@@ -36968,13 +36968,13 @@
   "nevermanagealone.com": {
    "outlet": "Never Manage Alone",
    "country": "England",
-   "n": 3,
+   "n": 4,
    "last": "2026-11-26"
   },
   "insurancebusinessmag.com": {
    "outlet": "Insurance Business",
    "country": "England",
-   "n": 1,
+   "n": 2,
    "last": "2026-11-26"
   },
   "agbi.com": {
@@ -36986,13 +36986,13 @@
   "tonicradio.fr": {
    "outlet": "Tonic Radio",
    "country": "France",
-   "n": 1,
+   "n": 2,
    "last": "2026-11-26"
   },
   "largus.fr": {
    "outlet": "L'argus",
    "country": "France",
-   "n": 1,
+   "n": 2,
    "last": "2026-11-26"
   },
   "w3sh.com": {
@@ -37010,11 +37010,89 @@
   "arts-in-the-city.com": {
    "outlet": "Arts in the City",
    "country": "France",
-   "n": 1,
+   "n": 2,
    "last": "2026-11-26"
   },
   "medyascope.tv": {
    "outlet": "Medyascope",
+   "country": "Türkiye",
+   "n": 1,
+   "last": "2026-11-26"
+  },
+  "companionlife.co.uk": {
+   "outlet": "Companion Life",
+   "country": "England",
+   "n": 1,
+   "last": "2026-11-26"
+  },
+  "southwestfarmer.co.uk": {
+   "outlet": "South West Farmer",
+   "country": "England",
+   "n": 1,
+   "last": "2026-11-26"
+  },
+  "amp.lasexta.com": {
+   "outlet": "LaSexta",
+   "country": "Spain",
+   "n": 1,
+   "last": "2026-11-26"
+  },
+  "radio.guijuelo.es": {
+   "outlet": "Radio Guijuelo",
+   "country": "Spain",
+   "n": 1,
+   "last": "2026-11-26"
+  },
+  "humanite.fr": {
+   "outlet": "L'Humanité",
+   "country": "France",
+   "n": 1,
+   "last": "2026-11-26"
+  },
+  "automobile-magazine.fr": {
+   "outlet": "L'Automobile Magazine",
+   "country": "France",
+   "n": 1,
+   "last": "2026-11-26"
+  },
+  "strasinfo.fr": {
+   "outlet": "StrasInfo.fr",
+   "country": "France",
+   "n": 1,
+   "last": "2026-11-26"
+  },
+  "imortaisdofutebol.com": {
+   "outlet": "Imortais do Futebol",
+   "country": "Portugal",
+   "n": 1,
+   "last": "2026-11-26"
+  },
+  "helden.media": {
+   "outlet": "Helden Magazine",
+   "country": "Netherlands",
+   "n": 2,
+   "last": "2026-11-26"
+  },
+  "nieuwskoerier.nl": {
+   "outlet": "Nieuwskoerier.nl",
+   "country": "Netherlands",
+   "n": 1,
+   "last": "2026-11-26"
+  },
+  "citizen.co.za": {
+   "outlet": "The Citizen",
+   "country": "Belgium",
+   "n": 1,
+   "last": "2026-11-26"
+  },
+  "belg.be": {
+   "outlet": "Belg.be",
+   "country": "Belgium",
+   "n": 1,
+   "last": "2026-11-26"
+  },
+  "diyarbakirolay.com.tr": {
+   "outlet": "Diyarbakır Olay Gazetesi",
    "country": "Türkiye",
    "n": 1,
    "last": "2026-11-26"
