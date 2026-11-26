@@ -143,8 +143,8 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 550,
-   "exact": 508,
+   "total": 551,
+   "exact": 509,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 42,
@@ -285,8 +285,8 @@
    "orphans": []
   },
   "espn_subs_cups": {
-   "total": 363,
-   "exact": 360,
+   "total": 367,
+   "exact": 364,
    "rule": 1,
    "ambiguous": 0,
    "orphan": 2,
@@ -474,11 +474,11 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 495,
-   "exact": 471,
+   "total": 498,
+   "exact": 473,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 24,
+   "orphan": 25,
    "orphans": [
     {
      "squad": "Celta Vigo",
@@ -498,6 +498,11 @@
     {
      "squad": "Barcelona",
      "name": "Òscar Gistau",
+     "starts": 0
+    },
+    {
+     "squad": "Getafe",
+     "name": "Marcos Pachón Sánchez",
      "starts": 0
     },
     {
@@ -627,8 +632,8 @@
    ]
   },
   "espn_subs_cups": {
-   "total": 277,
-   "exact": 264,
+   "total": 279,
+   "exact": 266,
    "rule": 12,
    "ambiguous": 0,
    "orphan": 1,
@@ -801,8 +806,8 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 478,
-   "exact": 458,
+   "total": 479,
+   "exact": 459,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 20,
@@ -918,8 +923,8 @@
    "orphans": []
   },
   "espn_subs_cups": {
-   "total": 130,
-   "exact": 130,
+   "total": 131,
+   "exact": 131,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1096,8 +1101,8 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 540,
-   "exact": 518,
+   "total": 541,
+   "exact": 519,
    "rule": 1,
    "ambiguous": 0,
    "orphan": 21,
@@ -1234,8 +1239,8 @@
    ]
   },
   "espn_subs_cups": {
-   "total": 316,
-   "exact": 314,
+   "total": 317,
+   "exact": 315,
    "rule": 1,
    "ambiguous": 0,
    "orphan": 1,
@@ -1418,11 +1423,11 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 189,
-   "exact": 178,
+   "total": 195,
+   "exact": 180,
    "rule": 2,
    "ambiguous": 0,
-   "orphan": 9,
+   "orphan": 13,
    "orphans": [
     {
      "squad": "Lille",
@@ -1468,6 +1473,26 @@
      "squad": "Lyon",
      "name": "Tiago Manuel Gonçalves Silva",
      "starts": 0
+    },
+    {
+     "squad": "Marseille",
+     "name": "Ugo El Kadmiri",
+     "starts": 0
+    },
+    {
+     "squad": "Marseille",
+     "name": "Mohamed Lamine Baradji",
+     "starts": 0
+    },
+    {
+     "squad": "Monaco",
+     "name": "Loïc Tiamuna Lubaki",
+     "starts": 0
+    },
+    {
+     "squad": "Monaco",
+     "name": "Melvin Gomes Da Veiga",
+     "starts": 0
     }
    ]
   },
@@ -1486,8 +1511,8 @@
    ]
   },
   "espn_subs_cups": {
-   "total": 129,
-   "exact": 129,
+   "total": 131,
+   "exact": 131,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1767,8 +1792,8 @@
    "minutes": 12
   },
   "s365_ratings": {
-   "total": 443,
-   "exact": 436,
+   "total": 442,
+   "exact": 435,
    "rule": 4,
    "ambiguous": 2,
    "orphan": 0,
@@ -1920,15 +1945,20 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 425,
-   "exact": 419,
+   "total": 427,
+   "exact": 420,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 6,
+   "orphan": 7,
    "orphans": [
     {
      "squad": "Ajax",
      "name": "Aymean El Hani",
+     "starts": 0
+    },
+    {
+     "squad": "Ajax",
+     "name": "Jano Monserrate",
      "starts": 0
     },
     {
@@ -1967,16 +1997,16 @@
    "orphans": []
   },
   "espn_subs_cups": {
-   "total": 106,
-   "exact": 106,
+   "total": 110,
+   "exact": 110,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
    "orphans": []
   },
   "match_events": {
-   "total": 328,
-   "exact": 328,
+   "total": 329,
+   "exact": 329,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -2145,8 +2175,8 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 417,
-   "exact": 402,
+   "total": 416,
+   "exact": 401,
    "rule": 6,
    "ambiguous": 1,
    "orphan": 9,
@@ -2207,8 +2237,8 @@
    "orphans": []
   },
   "espn_subs_cups": {
-   "total": 97,
-   "exact": 97,
+   "total": 98,
+   "exact": 98,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -2232,9 +2262,9 @@
    "minutes": 5
   },
   "s365_ratings": {
-   "total": 436,
+   "total": 434,
    "exact": 383,
-   "rule": 4,
+   "rule": 2,
    "ambiguous": 1,
    "orphan": 0,
    "orphans": [],
@@ -3036,8 +3066,8 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 356,
-   "exact": 328,
+   "total": 358,
+   "exact": 330,
    "rule": 1,
    "ambiguous": 0,
    "orphan": 27,
@@ -3178,8 +3208,8 @@
    "orphans": []
   },
   "espn_subs_cups": {
-   "total": 150,
-   "exact": 150,
+   "total": 152,
+   "exact": 152,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -3320,8 +3350,8 @@
    "orphans": []
   },
   "espn_subs_cups": {
-   "total": 99,
-   "exact": 99,
+   "total": 100,
+   "exact": 100,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -3523,13 +3553,13 @@
    "minutes": 0
   },
   "s365_ratings": {
-   "total": 863,
+   "total": 859,
    "exact": 806,
-   "rule": 25,
+   "rule": 21,
    "ambiguous": 0,
    "orphan": 0,
    "orphans": [],
-   "minutes": 9
+   "minutes": 8
   }
  },
  "EPL 2025_2026": {
