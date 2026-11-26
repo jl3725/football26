@@ -143,11 +143,11 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 551,
+   "total": 553,
    "exact": 509,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 42,
+   "orphan": 44,
    "orphans": [
     {
      "squad": "Arsenal",
@@ -265,13 +265,13 @@
      "starts": 0
     },
     {
-     "squad": "Brighton",
-     "name": "Shane Nti",
+     "squad": "Crystal Palace",
+     "name": "Charlie Walker-Smith",
      "starts": 0
     },
     {
-     "squad": "Brighton",
-     "name": "Steven Hall",
+     "squad": "Sunderland",
+     "name": "Joseph Cowan",
      "starts": 0
     }
    ]
@@ -285,8 +285,8 @@
    "orphans": []
   },
   "espn_subs_cups": {
-   "total": 367,
-   "exact": 364,
+   "total": 368,
+   "exact": 365,
    "rule": 1,
    "ambiguous": 0,
    "orphan": 2,
@@ -474,11 +474,11 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 498,
+   "total": 499,
    "exact": 473,
    "rule": 0,
    "ambiguous": 0,
-   "orphan": 25,
+   "orphan": 26,
    "orphans": [
     {
      "squad": "Celta Vigo",
@@ -498,6 +498,11 @@
     {
      "squad": "Barcelona",
      "name": "Òscar Gistau",
+     "starts": 0
+    },
+    {
+     "squad": "Real Sociedad",
+     "name": "Daniel Díaz",
      "starts": 0
     },
     {
@@ -599,11 +604,6 @@
      "squad": "Celta Vigo",
      "name": "Vladimir Silva",
      "starts": 0
-    },
-    {
-     "squad": "Celta Vigo",
-     "name": "Marcos González",
-     "starts": 0
     }
    ]
   },
@@ -632,8 +632,8 @@
    ]
   },
   "espn_subs_cups": {
-   "total": 279,
-   "exact": 266,
+   "total": 282,
+   "exact": 269,
    "rule": 12,
    "ambiguous": 0,
    "orphan": 1,
@@ -646,8 +646,8 @@
    ]
   },
   "match_events": {
-   "total": 405,
-   "exact": 405,
+   "total": 406,
+   "exact": 406,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -923,16 +923,16 @@
    "orphans": []
   },
   "espn_subs_cups": {
-   "total": 131,
-   "exact": 131,
+   "total": 132,
+   "exact": 132,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
    "orphans": []
   },
   "match_events": {
-   "total": 322,
-   "exact": 322,
+   "total": 323,
+   "exact": 323,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1101,11 +1101,11 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 541,
-   "exact": 519,
+   "total": 545,
+   "exact": 521,
    "rule": 1,
    "ambiguous": 0,
-   "orphan": 21,
+   "orphan": 23,
    "orphans": [
     {
      "squad": "Parma",
@@ -1148,6 +1148,11 @@
      "starts": 0
     },
     {
+     "squad": "Juventus",
+     "name": "Stefano Turco",
+     "starts": 0
+    },
+    {
      "squad": "Atalanta",
      "name": "Andrea Bonanomi",
      "starts": 0
@@ -1165,6 +1170,11 @@
     {
      "squad": "Atalanta",
      "name": "Albert Navarro",
+     "starts": 0
+    },
+    {
+     "squad": "Atalanta",
+     "name": "Piotr Pardel",
      "starts": 0
     },
     {
@@ -1239,8 +1249,8 @@
    ]
   },
   "espn_subs_cups": {
-   "total": 317,
-   "exact": 315,
+   "total": 319,
+   "exact": 317,
    "rule": 1,
    "ambiguous": 0,
    "orphan": 1,
@@ -1253,8 +1263,8 @@
    ]
   },
   "match_events": {
-   "total": 367,
-   "exact": 367,
+   "total": 369,
+   "exact": 369,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1511,16 +1521,16 @@
    ]
   },
   "espn_subs_cups": {
-   "total": 131,
-   "exact": 131,
+   "total": 134,
+   "exact": 134,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
    "orphans": []
   },
   "match_events": {
-   "total": 310,
-   "exact": 310,
+   "total": 311,
+   "exact": 311,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1767,16 +1777,16 @@
    ]
   },
   "espn_subs_cups": {
-   "total": 79,
-   "exact": 79,
+   "total": 80,
+   "exact": 80,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
    "orphans": []
   },
   "match_events": {
-   "total": 315,
-   "exact": 315,
+   "total": 317,
+   "exact": 317,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1945,8 +1955,8 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 427,
-   "exact": 420,
+   "total": 431,
+   "exact": 424,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 7,
@@ -1997,16 +2007,16 @@
    "orphans": []
   },
   "espn_subs_cups": {
-   "total": 110,
-   "exact": 110,
+   "total": 113,
+   "exact": 113,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
    "orphans": []
   },
   "match_events": {
-   "total": 329,
-   "exact": 329,
+   "total": 330,
+   "exact": 330,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -2175,11 +2185,11 @@
    ]
   },
   "espn_lineups_cups": {
-   "total": 416,
-   "exact": 401,
+   "total": 419,
+   "exact": 402,
    "rule": 6,
    "ambiguous": 1,
-   "orphan": 9,
+   "orphan": 11,
    "orphans": [
     {
      "squad": "Beveren",
@@ -2225,6 +2235,16 @@
      "squad": "Gent",
      "name": "Noa Vandenabeele",
      "starts": 0
+    },
+    {
+     "squad": "Gent",
+     "name": "Gyano Vanderdonck",
+     "starts": 0
+    },
+    {
+     "squad": "Gent",
+     "name": "Ali Donny Sylla",
+     "starts": 0
     }
    ]
   },
@@ -2237,16 +2257,16 @@
    "orphans": []
   },
   "espn_subs_cups": {
-   "total": 98,
-   "exact": 98,
+   "total": 103,
+   "exact": 103,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
    "orphans": []
   },
   "match_events": {
-   "total": 297,
-   "exact": 297,
+   "total": 298,
+   "exact": 298,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -2789,8 +2809,8 @@
    "orphans": []
   },
   "espn_subs_cups": {
-   "total": 106,
-   "exact": 106,
+   "total": 107,
+   "exact": 107,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
