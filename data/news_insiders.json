@@ -28,6 +28,13 @@
    "via": "name",
    "checked": "2026-11-13"
   },
+  "jaydmharris.bsky.social": {
+   "name": "Jay Harris",
+   "followers": 7245,
+   "official": true,
+   "via": "name",
+   "checked": "2026-11-27"
+  },
   "jacobsben.bsky.social": {
    "name": "Ben Jacobs",
    "followers": 6983,
@@ -272,13 +279,6 @@
    "official": true,
    "via": "follows:jeffrueter.bsky.social",
    "checked": "2026-10-30"
-  },
-  "bytimgraham.bsky.social": {
-   "name": "Tim Graham",
-   "followers": 17321,
-   "official": true,
-   "via": "follows:schultzreport.bsky.social",
-   "checked": "2026-11-15"
   }
  },
  "names": {
@@ -420,6 +420,10 @@
   },
   "Gary Neville": {
    "handle": null,
+   "checked": "2026-11-27"
+  },
+  "Jay Harris": {
+   "handle": "jaydmharris.bsky.social",
    "checked": "2026-11-27"
   }
  },
