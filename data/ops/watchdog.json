@@ -1,5 +1,5 @@
 {
- "checked": "2026-11-26T17:55:56+00:00",
+ "checked": "2026-11-27T17:41:28+00:00",
  "results": {
   "ovr": [],
   "season": [],
@@ -19,14 +19,14 @@
   "names": [],
   "xg": [],
   "agents": [
-   "SERVING · Ask Scout 답 평가 — 마지막 성공 222시간 전(허용 192시간, kg_reload)"
+   "SERVING · Ask Scout 답 평가 — 마지막 성공 245시간 전(허용 192시간, kg_reload)"
   ],
   "expectations": [],
   "screen": [
-   "season_log New England Revolution: Matt Turner 헤더 3150′ 0G 0A ≠ SEASON LOG 3060′ 0G 0A",
-   "season_log Portland Timbers: James Pantemis 헤더 3150′ 0G 0A ≠ SEASON LOG 3060′ 0G 0A",
-   "season_log Real Salt Lake: Rafael Cabral 헤더 3150′ 0G 0A ≠ SEASON LOG 2970′ 0G 0A",
-   "season_log Columbus Crew: Sean Zawadzki 헤더 3150′ 1G 1A ≠ SEASON LOG 3060′ 1G 1A"
+   "season_log Seattle Sounders FC: Andrew Thomas 헤더 3150′ 0G 0A ≠ SEASON LOG 3060′ 0G 0A",
+   "season_log Columbus Crew: Sean Zawadzki 헤더 3150′ 1G 1A ≠ SEASON LOG 3060′ 1G 1A",
+   "season_log Columbus Crew: Patrick Schulte 헤더 3150′ 0G 0A ≠ SEASON LOG 3060′ 0G 0A",
+   "season_log St. Louis City: Timo Baumgartl 헤더 3150′ 1G 0A ≠ SEASON LOG 3060′ 1G 0A"
   ],
   "squads": [],
   "identity": [],
@@ -34,10 +34,10 @@
   "progress": [
    "SerieA StatBunker 팀 통계(statbunker_team_stats) 늦음: 팀당 7경기분 · 일정 12경기(가운데 값 5경기 늦음)"
   ],
-  "digest": [
-   "AI 주간 서술 낡음 1개 리그: SwissSuperLeague(2026-11-22) — src/ai_notes.py run_digest 검증·예산 확인"
-  ],
-  "scout_answers": []
+  "digest": [],
+  "scout_answers": [
+   "Ask Scout 답 평가 마지막 2026-11-17 — kg_reload 확인"
+  ]
  },
- "ai_cause": "**workflows**\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인)\n**ratings**\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인)\n**agents**\n- 외부 데이터 소스인 understat_live 단계에서 지속적인 코드 75 에러가 발생하여 데이터 갱신이 지연되고 있습니다. (match_refresh: understat_live)\n- 해당 단계의 네트워크 연결 상태나 API 응답 제한 여부를 먼저 확인해야 합니다. (match_refresh: understat_live 추정)\n**screen**\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인)\n**progress**\n- understat_live 단계에서 코드 75 에러가 반복되어 팀 통계 데이터가 최신화되지 못하고 있습니다. (match_refresh: understat_live)\n- 데이터 수집 단계의 에러를 해결하여 통계 반영 지연을 해소해야 합니다. (match_refresh: understat_live 추정)\n**digest**\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인)"
+ "ai_cause": "**workflows**\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인)\n**ratings**\n- 원장에 관련 실패 없음 — 데이터 업데이트 지연으로 인한 기준치 초과 가능성(추정)\n**agents**\n- `understat_live` 단계에서 코드 75번 오류가 반복 발생하여 데이터 수집이 중단됨(match_refresh: understat_live)\n- 외부 데이터 소스 연결 상태나 API 응답 오류를 먼저 확인해야 함(match_refresh: understat_live)\n**screen**\n- 원장에 관련 실패 없음 — 데이터 정합성 문제로 인한 기록 불일치 가능성(추정)\n**progress**\n- `understat_live` 단계의 코드 75번 오류로 인해 통계 데이터 업데이트가 지연되고 있음(match_refresh: understat_live)\n- 데이터 수집 프로세스의 오류를 해결하여 최신 경기 통계 반영이 필요함(match_refresh: understat_live)\n**scout_answers**\n- 원장에 관련 실패 없음 — 예약 실행이 늦거나 안 돌았을 가능성(Actions 실행 기록 확인)"
 }
