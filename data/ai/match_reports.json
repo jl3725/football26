@@ -1,165 +1,5 @@
 {
  "reports": {
-  "401917036": {
-   "text": "Freiburg가 DFB-포칼에서 Wolfsburg를 상대로 3-2 역전승을 거두며 다음 라운드에 진출했다. 경기 초반 Igor Matanovic의 선제골 이후 Kento Shiogai에게 연달아 실점하며 전반을 1-2로 마쳤으나, 후반 75분과 90'+2'에 Keisuke Goto가 연속 득점에 성공하며 경기를 뒤집었다. Freiburg는 점유율 60.8%와 슈팅 17개를 기록하며 Wolfsburg를 압도했고, 66%의 확률로 Freiburg의 승리를 점쳤던 Elo의 경기 전 예측은 적중했다.",
-   "date": "2026-10-28",
-   "home": "Freiburg",
-   "away": "Wolfsburg",
-   "at": "2026-10-28T19:35:03+00:00",
-   "model": "gemini-3.1-flash-lite"
-  },
-  "401917032": {
-   "text": "Stuttgart가 DFB-포칼 경기에서 SC Paderborn을 상대로 1-0 승리를 거두며 다음 라운드에 진출했다. 37'에 SC Paderborn의 Laurin Curda가 퇴장당하며 수적 열세에 놓였고, 90'에 Stuttgart의 Deniz Undav가 결승골을 기록했다. 경기 점유율은 Stuttgart가 63.3%로 우세했으며, 슈팅 수는 SC Paderborn 17개, Stuttgart 19개로 팽팽했다. 이번 결과는 Stuttgart의 승리를 점쳤던 모델과 Elo의 예측과 일치했다.",
-   "date": "2026-10-28",
-   "home": "SC Paderborn",
-   "away": "Stuttgart",
-   "at": "2026-10-28T19:35:39+00:00",
-   "model": "gemini-3.1-flash-lite"
-  },
-  "401916921": {
-   "text": "Dynamo Dresden이 DFB-포칼에서 Schalke 04를 2-0으로 꺾으며 승리를 거뒀다. 53' Patrice Covic의 선제골로 리드를 잡은 Dynamo Dresden은 88' Christoph Daferner가 추가골을 기록하며 승부에 쐐기를 박았다. 경기 점유율은 52.5% 대 47.5%로 Dynamo Dresden이 근소하게 앞섰으며, Elo의 Dynamo Dresden 승리 예측이 적중했다.",
-   "date": "2026-10-28",
-   "home": "Dynamo Dresden",
-   "away": "Schalke 04",
-   "at": "2026-10-28T19:35:41+00:00",
-   "model": "gemini-3.1-flash-lite"
-  },
-  "401925233": {
-   "text": "Excelsior가 KNVB Beker 경기에서 MVV Maastricht를 3-0으로 완파하며 승리를 거뒀다. 전반 15분 Irakli Yegoian의 선제골을 시작으로 60분 페널티킥 득점과 89분 Aymen Sliti의 추가골이 터지며 승부가 결정되었다. MVV Maastricht는 점유율 59.3%와 슈팅 16개를 기록하며 경기를 주도했으나, 유효 슈팅 6-6으로 대등한 효율을 보인 Excelsior의 골문을 열지 못했다.",
-   "date": "2026-10-28",
-   "home": "MVV Maastricht",
-   "away": "Excelsior",
-   "at": "2026-10-28T21:06:07+00:00",
-   "model": "gemini-3.1-flash-lite"
-  },
-  "401925176": {
-   "text": "KNVB Beker 경기에서 TOP Oss가 Zwolle을 1-2로 꺾고 승리했다. 18' Lars Mol의 자책골로 Zwolle이 앞서갔으나, 34' Delano Vianello와 50' Mauresmo Hinoke가 연속 득점하며 TOP Oss가 역전에 성공했다. Zwolle은 점유율 72.3%와 슈팅 14개를 기록하며 경기를 주도했으나, TOP Oss가 6개의 선방을 기록하며 효율적인 수비로 승리를 지켜냈다. 이 결과로 Zwolle 승리를 점쳤던 Elo의 예측은 빗나갔다.",
-   "date": "2026-10-28",
-   "home": "Zwolle",
-   "away": "TOP Oss",
-   "at": "2026-10-28T21:06:22+00:00",
-   "model": "gemini-3.1-flash-lite"
-  },
-  "401925177": {
-   "text": "Sparta R.와 Fortuna Sittard의 KNVB Beker 경기는 2-2 무승부로 종료되었다. 15'에 Milan Zonneveld가 선제골을 넣었으나, 62' Kristoffer Peterson과 67' Lequincio Zeefuik의 연속 득점으로 Fortuna Sittard가 역전했고, 다시 90'에 Milan Zonneveld가 동점골을 기록하며 승부를 원점으로 돌렸다. Sparta R.는 점유율 59.5%와 슈팅 19개를 기록하며 경기를 주도했으나 Fortuna Sittard 승리를 점쳤던 모델과 Elo의 예측은 빗나갔다.",
-   "date": "2026-10-28",
-   "home": "Sparta R.",
-   "away": "Fortuna Sittard",
-   "at": "2026-10-28T21:07:05+00:00",
-   "model": "gemini-3.1-flash-lite"
-  },
-  "401874993": {
-   "text": "Bologna가 Milan을 상대로 4-2 역전승을 거두며 원정에서 귀중한 승점 3점을 획득했다. 경기 초반 8' Samuel Mbangula의 선제골 이후 Milan이 Alphadjo Cissè의 14'와 27' 연속골로 경기를 뒤집었으나, 60' Davide Bartesaghi의 자책골과 62' 및 86'에 터진 Samuel Mbangula의 추가골로 Bologna가 승리를 가져갔다. Milan은 66.4%의 점유율과 90%의 패스 성공률을 기록하며 경기를 주도했으나, 유효 슈팅 5개를 기록한 Bologna의 효율적인 공격에 밀려 패배했다. 이번 결과는 Milan의 승리를 점쳤던 팬 투표와 모델, Elo 예측을 모두 빗나가게 했다.",
-   "date": "2026-10-28",
-   "home": "Milan",
-   "away": "Bologna",
-   "at": "2026-10-28T21:07:15+00:00",
-   "model": "gemini-3.1-flash-lite"
-  },
-  "401874773": {
-   "text": "Inter가 Venezia를 상대로 2-0 승리를 거두며 리그 경기에서 승점 3점을 획득했다. 승부의 균형은 후반 79' Matías Moreno의 자책골과 82' Redouane Halhal의 자책골로 인해 순식간에 Inter 쪽으로 기울었다. 경기 점유율은 Inter가 65.2%로 Venezia보다 높았으나, 유효 슈팅은 Venezia가 4개로 Inter의 2개보다 많았다. 이번 결과는 Inter의 승리를 점쳤던 팬 투표, 모델, Elo 예측과 일치했다.",
-   "date": "2026-10-28",
-   "home": "Venezia",
-   "away": "Inter",
-   "at": "2026-10-28T21:07:18+00:00",
-   "model": "gemini-3.1-flash-lite"
-  },
-  "401874965": {
-   "text": "Parma와 Udinese는 Ennio Tardini에서 열린 리그 경기에서 0-0 무승부를 기록하며 승점 1점씩을 나눠 가졌다. 69'에 Parma의 Adrián Bernabé가 페널티킥을 시도했으나 상대 선방에 막히며 결정적인 득점 기회를 놓쳤다. Udinese는 점유율 58.2%와 슈팅 20개를 기록하며 Parma보다 경기를 주도했으나 끝내 득점하지 못했다. 경기 전 팬 투표와 모델, Elo가 예측한 승패 결과는 모두 빗나갔다.",
-   "date": "2026-10-28",
-   "home": "Parma",
-   "away": "Udinese",
-   "at": "2026-10-28T21:07:26+00:00",
-   "model": "gemini-3.1-flash-lite"
-  },
-  "401921840": {
-   "text": "Bournemouth가 Vitality Stadium에서 열린 EFL컵 경기에서 Aston Villa를 3-0으로 완파하며 승리를 거뒀다. 전반 7' Amine Adli의 선제골로 앞서 나간 Bournemouth는 후반 51' Lewis Cook과 69' Álvaro Rodríguez의 추가 골이 터지며 승기를 굳혔다. 양 팀은 슈팅 수 19대 17, 점유율 49.1% 대 50.9%로 대등한 경기를 펼쳤으나, Bournemouth가 유효 슈팅 7개를 기록하며 효율적인 공격력을 선보였다. 이 경기는 Bournemouth의 승리를 점쳤던 모델과 Elo의 예측이 적중한 결과가 되었다.",
-   "date": "2026-10-28",
-   "home": "Bournemouth",
-   "away": "Aston Villa",
-   "at": "2026-10-28T22:11:50+00:00",
-   "model": "gemini-3.1-flash-lite"
-  },
-  "401921843": {
-   "text": "Sunderland가 EFL컵에서 Brentford를 3-2로 꺾고 승리를 거뒀다. 전반 26' Chemsdine Talbi의 선제골을 시작으로 29' Tymur Tutierov, 39' Malick Fofana가 연달아 득점하며 전반을 3-1로 마쳤고, Brentford는 42' Callum Wilson과 90'+4' Igor Thiago가 추격골을 넣었으나 승부를 뒤집지 못했다. 경기 내내 Brentford가 점유율 66.6%와 슈팅 16개를 기록하며 Sunderland를 압도했으나, Sunderland는 적은 기회를 효율적으로 살리며 승리했다. 이 결과로 Brentford 승리를 점쳤던 모델과 Elo의 경기 전 예측은 모두 빗나갔다.",
-   "date": "2026-10-28",
-   "home": "Sunderland",
-   "away": "Brentford",
-   "at": "2026-10-28T22:11:53+00:00",
-   "model": "gemini-3.1-flash-lite"
-  },
-  "401921841": {
-   "text": "EFL컵 경기에서 Crystal Palace가 Fulham을 1-0으로 꺾고 승리했다. 37'에 Óscar Mingueza의 도움을 받은 Eddie Nketiah가 결승골을 기록하며 승부를 결정지었다. Fulham은 74.4%의 점유율과 14개의 슈팅을 기록하며 경기를 주도했으나, 유효 슈팅 4개에 그치며 득점에 실패했다. Fulham의 승리를 점쳤던 모델과 Elo의 경기 전 예측은 빗나갔다.",
-   "date": "2026-10-28",
-   "home": "Fulham",
-   "away": "Crystal Palace",
-   "at": "2026-10-28T22:11:56+00:00",
-   "model": "gemini-3.1-flash-lite"
-  },
-  "401917035": {
-   "text": "Bayern Munich가 DFB-포칼에서 1. FC Magdeburg를 6-1로 대파하며 승리를 거뒀다. 10' Michael Olise의 선제골 이후 15' Mateusz Zukowski에게 실점했으나, 21' Ismael Saibari의 득점과 50' Michael Olise의 페널티킥, 이후 터진 세 골을 묶어 대승을 완성했다. Bayern Munich는 점유율 63.3%와 슈팅 수 19-9를 기록하며 경기 내용 면에서도 상대를 압도했다. 이번 결과는 Bayern Munich의 승리를 점쳤던 Elo의 예측과 일치했다.",
-   "date": "2026-10-28",
-   "home": "Bayern Munich",
-   "away": "1. FC Magdeburg",
-   "at": "2026-10-28T22:12:06+00:00",
-   "model": "gemini-3.1-flash-lite"
-  },
-  "401917033": {
-   "text": "DFB-포칼에서 Leverkusen이 1. FC Nürnberg를 상대로 5-2 역전승을 거두며 다음 라운드에 진출했다. 1. FC Nürnberg는 13' Rafael Lubach와 30' Sigurd Haugen의 득점으로 앞서갔으나, Leverkusen은 41'와 49'에 터진 Edmond Tapsoba의 멀티골을 시작으로 70' Patrik Schick의 페널티킥, 78' Jonas Hofmann, 89' Lucas Vázquez의 연속골로 경기를 뒤집었다. Leverkusen은 점유율 59.8%와 슈팅 25개를 기록하며 슈팅 5개에 그친 1. FC Nürnberg를 상대로 경기 내용 면에서 압도적인 모습을 보였다.",
-   "date": "2026-10-28",
-   "home": "Leverkusen",
-   "away": "1. FC Nürnberg",
-   "at": "2026-10-28T22:12:14+00:00",
-   "model": "gemini-3.1-flash-lite"
-  },
-  "401874988": {
-   "text": "Genoa가 Stadio Luigi Ferraris에서 Juventus를 2-0으로 꺾으며 승리를 거뒀다. 경기는 12' Kingsley Ehizibue의 선제골과 28' Tommaso Baldanzi의 추가골로 전반에 이미 승부가 갈렸다. Juventus는 점유율 63.4%와 슈팅 17개를 기록하며 경기를 주도했으나, Genoa는 적은 기회를 효율적으로 살리며 4개의 선방을 기록한 수비진의 활약 속에 승리를 지켰다. 팬 투표와 모델, Elo 예측 모두 Juventus의 승리를 점쳤으나 결과는 빗나갔다.",
-   "date": "2026-10-28",
-   "home": "Genoa",
-   "away": "Juventus",
-   "at": "2026-10-28T22:12:23+00:00",
-   "model": "gemini-3.1-flash-lite"
-  },
-  "401874799": {
-   "text": "Napoli가 U-Power Stadium에서 Monza를 4-1로 대파하며 승리를 거뒀다. 전반 10' Rasmus Højlund의 선제골 이후 43' Gustavo Varela가 동점골을 넣었으나, 후반 들어 Matteo Politano, Rafa Marín, Kevin De Bruyne이 연달아 득점하며 Napoli가 승기를 잡았다. Napoli는 65.2%의 점유율과 90%의 패스 성공률을 기록하며 경기 주도권을 쥐었고, 이는 Napoli의 승리를 예상했던 팬 투표와 모델의 예측 결과와 일치했다.",
-   "date": "2026-10-28",
-   "home": "Monza",
-   "away": "Napoli",
-   "at": "2026-10-28T22:12:28+00:00",
-   "model": "gemini-3.1-flash-lite"
-  },
-  "401921834": {
-   "text": "EFL컵 경기에서 Manchester City와 Brighton이 2-2로 비기며 승부차기로 이어졌다. 전반 30분 Malick Yalcouyé의 선제골 이후 40분 Mateo Kovacic이 동점골을 넣었고, 후반 47분 Georginio Rutter의 득점과 72분 Vitor Reis의 득점이 이어지며 치열한 공방전이 펼쳐졌다. 경기 기록상 Manchester City가 56.6%의 점유율과 90%의 패스 성공률을 기록했으나, 슈팅 수에서는 13 대 17로 Brighton이 앞섰다. Manchester City의 승리를 점쳤던 모델과 Elo의 예측은 이번 경기 결과로 빗나갔다.",
-   "date": "2026-10-28",
-   "home": "Manchester City",
-   "away": "Brighton",
-   "at": "2026-10-28T22:12:32+00:00",
-   "model": "gemini-3.1-flash-lite"
-  },
-  "401921842": {
-   "text": "EFL컵에서 Liverpool과 Chelsea가 1-1로 비기며 승부차기로 이어졌다. 40' Morgan Rogers가 페널티킥으로 선제골을 넣었으나, 43' Cody Gakpo가 곧바로 페널티킥으로 동점골을 기록했다. 양 팀은 점유율 51.7% 대 48.3%, 유효 슈팅 4개씩을 주고받으며 팽팽한 경기를 펼쳤고, Liverpool 승리를 예상했던 모델과 Elo의 예측은 빗나갔다.",
-   "date": "2026-10-28",
-   "home": "Liverpool",
-   "away": "Chelsea",
-   "at": "2026-10-28T22:53:39+00:00",
-   "model": "gemini-3.1-flash-lite"
-  },
-  "401925223": {
-   "text": "Heerenveen이 KNVB Beker 경기에서 Excelsior를 2-0으로 꺾고 승리를 거두었다. 팽팽하던 경기는 63' Dylan Vente의 선제골과 75' Jacob Trenskow의 추가골이 터지며 Heerenveen 쪽으로 기울었다. Heerenveen은 점유율 73.4%와 유효 슈팅 7개를 기록하며 Excelsior를 압도했고, Elo의 Heerenveen 승리 예측도 적중했다.",
-   "date": "2026-10-28",
-   "home": "Excelsior",
-   "away": "Heerenveen",
-   "at": "2026-10-28T22:53:44+00:00",
-   "model": "gemini-3.1-flash-lite"
-  },
-  "401917034": {
-   "text": "DFB-포칼에서 Holstein Kiel과 Hoffenheim이 1-1로 비기며 승부차기로 이어졌다. 전반 11'에 Hoffenheim의 Adam Hlozek이 선제골을 넣었으나, 23'에 Holstein Kiel의 Adrian Kapralik이 동점골을 기록하며 균형을 맞췄다. 경기 기록상 점유율은 Hoffenheim이 55.7%로 앞섰지만, 슈팅 수는 Holstein Kiel이 16개로 더 많았다. 이번 경기는 Hoffenheim의 승리를 점쳤던 Elo의 예측과 다른 결과가 나왔다.",
-   "date": "2026-10-28",
-   "home": "Holstein Kiel",
-   "away": "Hoffenheim",
-   "at": "2026-10-28T22:53:48+00:00",
-   "model": "gemini-3.1-flash-lite"
-  },
   "401928496": {
    "text": "Osasuna가 Atlético Calatayud를 상대로 6-0 대승을 거두며 코파델레이 다음 라운드에 진출했다. Raúl García는 13', 39', 59'에 득점하며 해트트릭을 기록했고, Enrique Barja, Jonathan Dubasin, Asier Bonel Aicua가 각각 28', 52', 82'에 골을 보탰다. Osasuna는 점유율 62.8%와 슈팅 26개를 기록하며 슈팅 4개에 그친 Atlético Calatayud를 경기 내용 면에서 완전히 압도했다.",
    "date": "2026-10-29",
@@ -4538,10 +4378,54 @@
    "at": "2026-11-26T22:33:55+00:00",
    "model": "gemini-3.1-flash-lite",
    "v": 2
+  },
+  "401875536": {
+   "text": "Groningen과 Willem II의 경기는 1-1 무승부로 종료되었다. 전반 38' Calvin Twigt의 선제골로 Willem II가 앞서갔으나, 후반 90'+3' Thom Van Bergen이 동점골을 터뜨리며 Groningen이 극적으로 승점 1점을 챙겼다. Groningen은 점유율 63.7%와 슈팅 31개, xG 2.95를 기록하며 경기를 주도했으나 Willem II의 골키퍼 선방 8개에 막혀 승리하지 못했다. 이번 결과로 Groningen은 7경기 무승으로 리그 10위에 머물렀고, 4경기 무승을 기록 중인 Willem II는 리그 18위에 위치했으며 Nathan Tjoe-A-On이 결장했다. 경기 최고 평점은 8.8점을 받은 Groningen의 Thom van Bergen이 차지했다.",
+   "date": "2026-11-27",
+   "home": "Groningen",
+   "away": "Willem II",
+   "at": "2026-11-27T21:36:20+00:00",
+   "model": "gemini-3.1-flash-lite",
+   "v": 2
+  },
+  "5846031": {
+   "text": "Altach가 Merkur Arena에서 Grazer AK를 3-2로 꺾으며 승리를 거뒀다. 전반 27' Rodney Elongo-Yombo와 44' Yann Litawumba의 득점으로 앞서간 Altach는 51' Jacob Italiano에게 실점했으나, 86' Ousmane Diawara의 결승골에 힘입어 90'+2' Alexander Hofleitner가 한 골을 만회한 Grazer AK를 상대로 승점 3점을 챙겼다. Grazer AK는 xG 2.02로 Altach의 1.61보다 높은 수치를 기록하며 경기 내용 면에서 우세했으나 패배를 면치 못했다. 이번 결과로 Grazer AK는 5연패의 늪에 빠지며 리그 11위에 머물렀고, 경기 평점 1위는 8.9점을 기록한 Altach의 Yann Massombo가 차지했다. Grazer AK는 Beres Owusu가, Altach는 Vesel Demaku가 결장했다.",
+   "date": "2026-11-27",
+   "home": "Grazer AK",
+   "away": "Altach",
+   "at": "2026-11-27T21:36:24+00:00",
+   "model": "gemini-3.1-flash-lite",
+   "v": 2
+  },
+  "5739555": {
+   "text": "Sønderjyske와 Brøndby IF의 경기는 1-1 무승부로 종료되었다. 12'에 Jordi Vanlerberghe의 자책골로 Sønderjyske가 앞서갔으나, 75'에 Patrick Mortensen이 득점하며 Brøndby IF가 균형을 맞췄다. Brøndby IF는 점유율 68.2%, 슈팅 22개, xG 1.95를 기록하며 경기를 주도했으나 승리를 거두지 못했다. Luis Binks가 결장한 Brøndby IF에서는 Bartosz Slisz가 평점 8.3으로 가장 높은 평가를 받았고, 5경기 무승을 기록 중인 Sønderjyske는 리그 12위에 머물렀다.",
+   "date": "2026-11-27",
+   "home": "Sønderjyske",
+   "away": "Brøndby IF",
+   "at": "2026-11-27T21:36:29+00:00",
+   "model": "gemini-3.1-flash-lite",
+   "v": 2
+  },
+  "5904814": {
+   "text": "Konyaspor가 선제골을 내주고도 역전승을 거두며 Alanyaspor에 승리했다. 결정적 장면에선 15' Ianis Hagi의 득점으로 Alanyaspor가 앞서갔으나, 23' Jackson Muleka의 득점과 90'+7' Mostafa Mohamed의 페널티킥 득점으로 Konyaspor가 경기를 뒤집었다. 경기 내용에서는 점유율 50대 50, 슈팅 12대 12로 팽팽했으나 xG에서 Konyaspor가 1.72로 Alanyaspor의 0.47보다 우세했다. 흐름 측면에서 Alanyaspor는 4연패와 함께 리그 14위에 위치했고, Alanyaspor는 Fidan Aliti와 Fatih Aksoy가, Konyaspor는 Adil Demirbağ와 Chidozie Awaziem이 결장했으며, Konyaspor의 Jean-Luc Dompé가 FotMob 기준 평점 8.1로 1위를 기록했다.",
+   "date": "2026-11-27",
+   "home": "Alanyaspor",
+   "away": "Konyaspor",
+   "at": "2026-11-27T21:36:47+00:00",
+   "model": "gemini-flash-lite-latest",
+   "v": 2
+  },
+  "5904815": {
+   "text": "Rizespor가 Kasımpaşa를 상대로 3-2 역전승을 거두며 리그 3연승을 달성했다. 경기는 22' Qazim Laçi의 선제골 이후 32' Cláudio Winck와 47' Elson Mendes Da Silva에게 연속 실점하며 끌려갔으나, 81' Emrecan Bulut의 동점골과 90'+1' Gennaro Borrelli의 결승골로 뒤집혔다. Rizespor는 xG 2.31 대 1.24, 슈팅 수 17 대 13으로 경기 주도권을 잡았으며, Yahia Fofana가 결장한 가운데 평점 8.7을 기록한 Qazim Laçi가 팀의 9위 도약을 이끌었다. Kasımpaşa는 Ayberk Karapo가 결장한 채 경기를 치렀다.",
+   "date": "2026-11-27",
+   "home": "Rizespor",
+   "away": "Kasımpaşa",
+   "at": "2026-11-27T21:36:57+00:00",
+   "model": "gemini-3.1-flash-lite",
+   "v": 2
   }
  },
  "fails": {
-  "401915379": 1,
   "6106336": 1
  }
 }
