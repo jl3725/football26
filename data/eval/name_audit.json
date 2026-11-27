@@ -931,8 +931,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 323,
-   "exact": 323,
+   "total": 324,
+   "exact": 324,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -967,8 +967,8 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 677,
-   "exact": 570,
+   "total": 678,
+   "exact": 571,
    "rule": 17,
    "ambiguous": 0,
    "orphan": 90,
@@ -1263,8 +1263,8 @@
    ]
   },
   "match_events": {
-   "total": 369,
-   "exact": 369,
+   "total": 370,
+   "exact": 370,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -1529,8 +1529,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 311,
-   "exact": 311,
+   "total": 313,
+   "exact": 313,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -2968,19 +2968,14 @@
   },
   "espn_lineups": {
    "total": 377,
-   "exact": 344,
+   "exact": 345,
    "rule": 11,
    "ambiguous": 0,
-   "orphan": 22,
+   "orphan": 21,
    "orphans": [
     {
      "squad": "Viborg",
      "name": "Andreas Soendergaard",
-     "starts": 0
-    },
-    {
-     "squad": "Sønderjyske",
-     "name": "Elias Hjort-Pedersen",
      "starts": 0
     },
     {
