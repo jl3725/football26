@@ -304,8 +304,8 @@
    ]
   },
   "match_events": {
-   "total": 395,
-   "exact": 395,
+   "total": 396,
+   "exact": 396,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
@@ -608,9 +608,9 @@
    ]
   },
   "espn_subs": {
-   "total": 453,
-   "exact": 447,
-   "rule": 3,
+   "total": 455,
+   "exact": 448,
+   "rule": 4,
    "ambiguous": 1,
    "orphan": 3,
    "orphans": [
@@ -633,8 +633,8 @@
   },
   "espn_subs_cups": {
    "total": 282,
-   "exact": 269,
-   "rule": 12,
+   "exact": 270,
+   "rule": 11,
    "ambiguous": 0,
    "orphan": 1,
    "orphans": [
@@ -1565,20 +1565,20 @@
    "orphans": []
   },
   "espn_lineups": {
-   "total": 565,
-   "exact": 499,
+   "total": 566,
+   "exact": 500,
    "rule": 24,
    "ambiguous": 2,
    "orphan": 42,
    "orphans": [
     {
-     "squad": "Gil Vicente FC",
-     "name": "Joelson Mendes",
-     "starts": 5
-    },
-    {
      "squad": "Nacional",
      "name": "Song Min-Kyu",
+     "starts": 6
+    },
+    {
+     "squad": "Gil Vicente FC",
+     "name": "Joelson Mendes",
      "starts": 5
     },
     {
@@ -1753,8 +1753,8 @@
    ]
   },
   "espn_subs": {
-   "total": 419,
-   "exact": 411,
+   "total": 420,
+   "exact": 412,
    "rule": 5,
    "ambiguous": 0,
    "orphan": 3,
@@ -1785,8 +1785,8 @@
    "orphans": []
   },
   "match_events": {
-   "total": 317,
-   "exact": 317,
+   "total": 320,
+   "exact": 320,
    "rule": 0,
    "ambiguous": 0,
    "orphan": 0,
