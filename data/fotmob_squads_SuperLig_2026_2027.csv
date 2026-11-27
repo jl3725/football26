@@ -17,7 +17,7 @@ Galatasaray,Eyüp Aydın,1300864,midfielders,CAM,Attacking Midfield,MF,22,2004-0
 Galatasaray,Gabriel Sara,902710,midfielders,"CDM,CAM",Defensive Midfield,MF,27,1999-06-26,8.0,BRA,False,,2026-11-27
 Galatasaray,Yunus Akgün,845991,midfielders,"CAM,RW,LW",Attacking Midfield,MF,26,2000-07-07,11.0,TUR,False,,2026-11-27
 Galatasaray,Lesley Ugochukwu,1200631,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,22,2004-03-26,18.0,FRA,False,,2026-11-27
-Galatasaray,İlkay Gündoğan,178818,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,36,1990-10-24,20.0,GER,False,,2026-11-27
+Galatasaray,İlkay Gündoğan,178818,midfielders,"CDM,CAM,CM",Defensive Midfield,MF,36,1990-10-24,20.0,GER,False,,2026-11-27
 Galatasaray,Lucas Torreira,592909,midfielders,"CDM,CM",Defensive Midfield,MF,30,1996-02-11,34.0,URU,True,About 1-2 weeks,2026-11-27
 Galatasaray,Renato Nhaga,1741323,midfielders,"CDM,CM,CAM",Defensive Midfield,MF,19,2007-03-27,74.0,GNB,False,,2026-11-27
 Galatasaray,Aleksey Batrakov,1504343,midfielders,"CAM,CM",Attacking Midfield,MF,21,2005-06-09,83.0,RUS,False,,2026-11-27
@@ -101,6 +101,7 @@ Amed Sportif,Cem Üstündağ,1385176,midfielders,"CDM,CM,CAM",Defensive Midfield
 Amed Sportif,Furkan Soyalp,390642,midfielders,"CDM,CAM,CM",Defensive Midfield,MF,31,1995-06-12,8.0,TUR,False,,2026-11-27
 Amed Sportif,Rayan Raveloson,591529,midfielders,"CDM,CM",Defensive Midfield,MF,29,1997-01-16,22.0,MAD,False,,2026-11-27
 Amed Sportif,Dia Saba,289473,midfielders,"CAM,ST",Attacking Midfield,MF,34,1992-11-18,91.0,ISR,False,,2026-11-27
+Amed Sportif,Berk Kızıldemir,1841823,midfielders,RM,Right Midfield,MF,19,2006-12-11,97.0,TUR,False,,2026-11-27
 Amed Sportif,Ermal Krasniqi,1315511,attackers,"RB,RW,RM,LW,RWB",Right-Back,FW,28,1998-09-07,7.0,KVX,False,,2026-11-27
 Amed Sportif,Samuel Ballet,1097796,attackers,"RW,CAM,ST,LW",Right Winger,FW,25,2001-03-12,10.0,SUI,False,,2026-11-27
 Amed Sportif,Collins Sor,1054011,attackers,"LW,LM",Left Winger,FW,26,2000-07-24,11.0,NGA,False,,2026-11-27
@@ -109,7 +110,6 @@ Amed Sportif,Mbaye Diagne,512734,attackers,ST,Centre-Forward,FW,35,1991-10-28,45
 Amed Sportif,Mohamed Khalil,1697928,attackers,LW,Left Winger,FW,26,2000-11-08,74.0,SYR,False,,2026-11-27
 Amed Sportif,Dilhan Demir,1698687,attackers,RW,Right Winger,FW,23,2003-06-28,77.0,GER,True,Back in training,2026-11-27
 Amed Sportif,Rayan Lutin,1514624,attackers,"ST,RW,CAM",Centre-Forward,FW,23,2003-01-16,93.0,COM,False,,2026-11-27
-Amed Sportif,Berk Kızıldemir,1841823,attackers,RW,Right Winger,FW,19,2006-12-11,97.0,TUR,False,,2026-11-27
 Amed Sportif,Gift Orban,1368557,attackers,"ST,LW",Centre-Forward,FW,24,2002-07-17,99.0,NGA,False,,2026-11-27
 Kasımpaşa,Andreas Gianniotis,380858,keepers,GK,Goalkeeper,GK,33,1992-12-18,1.0,GRE,False,,2026-11-27
 Kasımpaşa,Ali Yanar,820085,keepers,GK,Goalkeeper,GK,28,1998-05-15,25.0,TUR,False,,2026-11-27
@@ -118,7 +118,7 @@ Kasımpaşa,Adem Arous,1797902,defenders,"CB,RB",Centre-Back,DF,22,2004-07-17,4.
 Kasımpaşa,Jakob Vestergaard Jessen,1437464,defenders,LB,Left-Back,DF,22,2004-03-05,5.0,DEN,False,,2026-11-27
 Kasımpaşa,Kevin Mouanga,978112,defenders,CB,Centre-Back,DF,26,2000-07-24,14.0,CGO,True,Doubtful,2026-11-27
 Kasımpaşa,Ömer Bayram,178749,defenders,LB,Left-Back,DF,35,1991-07-27,18.0,TUR,False,,2026-11-27
-Kasımpaşa,Kamil Çörekçi,239626,defenders,"LB,RB,CDM",Left-Back,DF,34,1992-02-01,22.0,TUR,True,Doubtful,2026-11-27
+Kasımpaşa,Kamil Çörekçi,239626,defenders,"LB,RB,CDM",Left-Back,DF,34,1992-02-01,22.0,TUR,True,Early December 2026,2026-11-27
 Kasımpaşa,Matei Cristian Ilie,1197741,defenders,CB,Centre-Back,DF,23,2002-12-11,27.0,ROU,False,,2026-11-27
 Kasımpaşa,Ahmet Taha Dagbasi,1901439,defenders,CB,Centre-Back,DF,21,2005-04-01,30.0,TUR,False,,2026-11-27
 Kasımpaşa,Ayberk Karapo,1403468,defenders,"RB,LB",Right-Back,DF,22,2004-07-21,45.0,TUR,False,,2026-11-27
@@ -132,7 +132,7 @@ Kasımpaşa,Emirhan Boz,2029203,midfielders,CM,Central Midfield,MF,20,2006-02-12
 Kasımpaşa,Ali Kol,997497,attackers,LW,Left Winger,FW,25,2001-01-29,7.0,TUR,False,,2026-11-27
 Kasımpaşa,Adrian Benedyczak,920861,attackers,"ST,LW,CAM,RW",Centre-Forward,FW,26,2000-11-24,9.0,POL,False,,2026-11-27
 Kasımpaşa,Thiemoko Diarra,1540435,attackers,"RW,LW,RM",Right Winger,FW,23,2003-04-19,11.0,MLI,False,,2026-11-27
-Kasımpaşa,Mortadha Ben Ouanes,712132,attackers,"LW,CAM,RW,LM",Left Winger,FW,32,1994-07-02,12.0,TUN,True,Doubtful,2026-11-27
+Kasımpaşa,Mortadha Ben Ouanes,712132,attackers,"LW,CAM,RW,LM",Left Winger,FW,32,1994-07-02,12.0,TUN,True,Early December 2026,2026-11-27
 Kasımpaşa,Jesurun Rak-Sakyi,1226789,attackers,"RW,LW,CAM",Right Winger,FW,24,2002-10-05,17.0,GHA,False,,2026-11-27
 Kasımpaşa,Marcus Rafferty,1505429,attackers,"ST,LM,CAM,LW",Centre-Forward,FW,22,2004-10-01,19.0,SWE,False,,2026-11-27
 Kasımpaşa,Sinan Alkaş,1524055,attackers,ST,Centre-Forward,FW,20,2006-11-07,23.0,TUR,False,,2026-11-27
@@ -161,7 +161,7 @@ Fenerbahçe,N'Golo Kanté,319300,midfielders,"CDM,CM",Defensive Midfield,MF,35,1
 Fenerbahçe,Kerem Aktürkoglu,1117570,attackers,"LW,ST",Left Winger,FW,28,1998-10-21,7.0,TUR,False,,2026-11-27
 Fenerbahçe,Romelu Lukaku,181276,attackers,ST,Centre-Forward,FW,33,1993-05-13,9.0,BEL,False,,2026-11-27
 Fenerbahçe,Mason Greenwood,950473,attackers,"RW,CAM,ST",Right Winger,FW,25,2001-10-01,11.0,ENG,False,,2026-11-27
-Fenerbahçe,İrfan Kahveci,316544,attackers,"RW,CAM,CDM,LW",Right Winger,FW,31,1995-07-15,17.0,TUR,False,,2026-11-27
+Fenerbahçe,İrfan Kahveci,316544,attackers,"RW,CAM,CDM",Right Winger,FW,31,1995-07-15,17.0,TUR,False,,2026-11-27
 Fenerbahçe,Vedat Muriqi,517052,attackers,ST,Centre-Forward,FW,32,1994-04-24,19.0,KVX,False,,2026-11-27
 Fenerbahçe,Dorgeles Nene,1230287,attackers,"RW,LW",Right Winger,FW,23,2002-12-23,45.0,MLI,False,,2026-11-27
 Fenerbahçe,Oğuz Aydın,1092015,attackers,"LW,RW,RWB,RM,RB",Left Winger,FW,26,2000-10-27,70.0,TUR,False,,2026-11-27
@@ -258,7 +258,7 @@ Rizespor,Dal Varešanović,1078853,midfielders,CAM,Attacking Midfield,MF,25,2001
 Rizespor,Ibrahim Olawoyin,1042086,midfielders,"CAM,CM,CDM,RW",Attacking Midfield,MF,28,1997-12-01,10.0,NGA,False,,2026-11-27
 Rizespor,Taylan Antalyalı,449999,midfielders,"CDM,CM",Defensive Midfield,MF,31,1995-01-08,14.0,TUR,False,,2026-11-27
 Rizespor,Qazim Laçi,613262,midfielders,"CAM,CM,CDM",Attacking Midfield,MF,30,1996-01-19,20.0,ALB,False,,2026-11-27
-Rizespor,Can Bozdoğan,940086,midfielders,"CDM,CM",Defensive Midfield,MF,25,2001-04-05,70.0,GER,True,About 1-2 weeks,2026-11-27
+Rizespor,Can Bozdoğan,940086,midfielders,"CDM,CM",Defensive Midfield,MF,25,2001-04-05,70.0,GER,True,Mid December 2026,2026-11-27
 Rizespor,Valentin Mihăilă,890266,attackers,LW,Left Winger,FW,26,2000-02-02,7.0,ROU,True,Doubtful,2026-11-27
 Rizespor,Ali Sowe,447367,attackers,ST,Centre-Forward,FW,32,1994-06-14,9.0,GAM,False,,2026-11-27
 Rizespor,Adedire Awokoya Mebude,1211804,attackers,RW,Right Winger,FW,22,2004-05-28,11.0,SCO,False,,2026-11-27
@@ -352,7 +352,7 @@ Alanyaspor,Paulo Victor,171914,keepers,GK,Goalkeeper,GK,39,1987-01-12,48.0,BRA,F
 Alanyaspor,Nuno Lima,1282423,defenders,CB,Centre-Back,DF,25,2001-03-16,3.0,POR,False,,2026-11-27
 Alanyaspor,Bedirhan Özyurt,1347411,defenders,CB,Centre-Back,DF,23,2003-03-25,4.0,TUR,False,,2026-11-27
 Alanyaspor,Fidan Aliti,521203,defenders,CB,Centre-Back,DF,33,1993-10-03,5.0,KVX,False,,2026-11-27
-Alanyaspor,Fatih Aksoy,712070,defenders,"CB,CM,CDM",Centre-Back,DF,29,1997-11-06,20.0,TUR,False,,2026-11-27
+Alanyaspor,Fatih Aksoy,712070,defenders,"CB,CM,CDM",Centre-Back,DF,29,1997-11-06,20.0,TUR,True,Doubtful,2026-11-27
 Alanyaspor,Şahin Dik,1364337,defenders,,Centre-Back,DF,22,2004-02-07,28.0,TUR,False,,2026-11-27
 Alanyaspor,Bilal Demirag,2132117,defenders,,Centre-Back,DF,17,2009-04-27,44.0,TUR,False,,2026-11-27
 Alanyaspor,Yusuf Özdemir,1213283,defenders,LB,Left-Back,DF,25,2001-01-10,88.0,TUR,False,,2026-11-27
@@ -360,7 +360,7 @@ Alanyaspor,Enes Keskin,1302409,midfielders,"LWB,LM",Left-Back,MF,25,2001-06-04,8
 Alanyaspor,Ianis Hagi,645107,midfielders,"CAM,LW",Attacking Midfield,MF,28,1998-10-22,10.0,ROU,False,,2026-11-27
 Alanyaspor,Ruan,1402068,midfielders,"LM,LWB,LW",Left Midfield,MF,21,2005-05-03,11.0,BRA,False,,2026-11-27
 Alanyaspor,Emre Demir,839023,midfielders,"RW,RM,CAM",Right Winger,MF,22,2004-01-15,14.0,TUR,False,,2026-11-27
-Alanyaspor,Paolo Fernandes,760745,midfielders,"RM,CAM,LM,RW,LW",Right Midfield,MF,28,1998-08-09,22.0,ESP,False,,2026-11-27
+Alanyaspor,Paolo Fernandes,760745,midfielders,"RM,CAM,LM,RW,LW",Right Midfield,MF,28,1998-08-09,22.0,ESP,True,Doubtful,2026-11-27
 Alanyaspor,Izzet Celik,1388695,midfielders,CM,Central Midfield,MF,22,2004-06-20,26.0,TUR,False,,2026-11-27
 Alanyaspor,Gaïus Makouta,773062,midfielders,"CDM,CM",Defensive Midfield,MF,29,1997-07-25,42.0,CGO,False,,2026-11-27
 Alanyaspor,Baran Gezek,1398327,midfielders,"CM,CDM,CAM,CB",Central Midfield,MF,21,2005-08-26,55.0,TUR,False,,2026-11-27
@@ -475,4 +475,4 @@ Eyüpspor,Lenny Pintor,889626,attackers,"LW,LM",Left Winger,FW,26,2000-08-05,11.
 Eyüpspor,Abdou Sy,1904235,attackers,ST,Centre-Forward,FW,18,2007-12-15,25.0,SEN,False,,2026-11-27
 Eyüpspor,Ahmed Abdullahi,1439393,attackers,ST,Centre-Forward,FW,22,2004-06-19,29.0,NGA,False,,2026-11-27
 Eyüpspor,Konrad Michalak,815981,attackers,"LW,RW,RWB",Left Winger,FW,29,1997-09-19,77.0,POL,False,,2026-11-27
-Eyüpspor,Bilal Boutobba,605858,attackers,"RW,RM,ST,CM",Right Winger,FW,28,1998-08-29,98.0,FRA,True,Doubtful,2026-11-27
+Eyüpspor,Bilal Boutobba,605858,attackers,"RW,RM,ST,CM",Right Winger,FW,28,1998-08-29,98.0,FRA,False,,2026-11-27

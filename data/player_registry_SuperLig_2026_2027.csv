@@ -38,7 +38,7 @@ Amed Sportif,tm221285,Furkan Soyalp,221285,Furkan Soyalp,players_full,100
 Amed Sportif,tm381689,Mehmet Yeşil,381689,Mehmet Yeşil,players_full,100
 Amed Sportif,pf:Amed Sportif:collins sor,Collins Sor,673382,Collins Sor,players_full,100
 Amed Sportif,tm269171,Gökhan Gül,269171,Gökhan Gül,players_full,100
-Amed Sportif,tm271966,Mbaye Diagne,271966,Mbaye Diagne,players_full,100
+Amed Sportif,pf:Amed Sportif:mbaye diagne,Mbaye Diagne,,Mbaye Diagne,players_full,100
 Amed Sportif,tm954090,Rayan Lutin,954090,Rayan Lutin,players_full,100
 Amed Sportif,tm453987,Mohamed Khalil,453987,Mohamed Khalil,players_full,100
 Amed Sportif,tm1189317,Amadou Cissé,1189317,Amadou Cissé,players_full,100
@@ -546,7 +546,6 @@ Göztepe,tm1024605,André,1024605,André Henrique,transfermarkt_contracts,99
 Göztepe,tm500972,Bekir Böke,500972,Bekir Turaç Böke,transfermarkt_contracts,99
 Çorum FK,tm920118,Arif Simsir,920118,Arif Şimşir,transfermarkt_contracts,99
 Çorum FK,tm320141,Çağlar Söyüncü,320141,Caglar Söyüncü,transfermarkt_contracts,99
-Çorum FK,tm571299,Hrvoje Smolčić,571299,Hrvoje Smolcic,transfermarkt_contracts,99
 Çorum FK,tm655899,Serdar Saatçi,655899,Serdar Saatçı,transfermarkt_contracts,99
 Çorum FK,tm257785,Gökhan Sazdagi,257785,Gökhan Sazdağı,transfermarkt_contracts,99
 Çorum FK,tm519882,Markus Seehusen Karlsbakk,519882,Markus Karlsbakk,transfermarkt_contracts,99
@@ -599,13 +598,6 @@ Konyaspor,tm1347138,Emir Gündoğdu,1347138,Emir Gündoğdu,transfermarkt_contra
 Konyaspor,tm1223318,Ata Yanık,1223318,Ata Yanık,transfermarkt_contracts,100
 Konyaspor,tm724050,Mücahit İbrahimoğlu,724050,Mücahit Ibrahimoglu,transfermarkt_contracts,99
 Konyaspor,tm1304052,Ömer Çobanoğlu,1304052,Ömer Çobanoğlu,transfermarkt_contracts,100
-Amed Sportif,tm587726,Mustafa Burak Bozan,587726,Burak Bozan,transfermarkt_contracts,99
-Amed Sportif,tm338055,Veysel Sapan,338055,Veysel Sapan,transfermarkt_contracts,100
-Amed Sportif,tm1485581,Yakup Girişen,1485581,Yakup Girişen,transfermarkt_contracts,100
-Amed Sportif,tm1506930,Berat Perçin,1506930,Berat Perçin,transfermarkt_contracts,100
-Amed Sportif,tm445623,Cem Üstündağ,445623,Cem Üstündag,transfermarkt_contracts,99
-Amed Sportif,pf:Amed Sportif:collins sor,Collins Sor,673382,Yira Sor,transfermarkt_contracts,100
-Amed Sportif,tm1047511,Hasan Yıldırım,1047511,Hasan Yıldırım,transfermarkt_contracts,100
 Gaziantep FK,tm1197999,Cemilhan Aslan,1197999,Cemilhan Aslan,transfermarkt_contracts,100
 Gaziantep FK,tm1181959,İbrahim Alkış,1181959,İbrahim Kağan Alkış,transfermarkt_contracts,99
 Gaziantep FK,tm554284,Kacper Kozłowski,554284,Kacper Kozlowski,transfermarkt_contracts,99
@@ -613,6 +605,13 @@ Gaziantep FK,tm952093,Burak Enes Yıkıcı,952093,Burak Enes Yıkıcı,transferm
 Gaziantep FK,tm1261143,Ali Osman Kalın,1261143,Ali Osman Kalın,transfermarkt_contracts,100
 Gaziantep FK,tm672052,Enver Kulašin,672052,Enver Kulasin,transfermarkt_contracts,99
 Gaziantep FK,tm1581187,Kadir Gümüş,1581187,Kadir Gümüş,transfermarkt_contracts,100
+Amed Sportif,tm587726,Mustafa Burak Bozan,587726,Burak Bozan,transfermarkt_contracts,99
+Amed Sportif,tm338055,Veysel Sapan,338055,Veysel Sapan,transfermarkt_contracts,100
+Amed Sportif,tm1485581,Yakup Girişen,1485581,Yakup Girişen,transfermarkt_contracts,100
+Amed Sportif,tm1506930,Berat Perçin,1506930,Berat Perçin,transfermarkt_contracts,100
+Amed Sportif,tm445623,Cem Üstündağ,445623,Cem Üstündag,transfermarkt_contracts,99
+Amed Sportif,pf:Amed Sportif:collins sor,Collins Sor,673382,Yira Sor,transfermarkt_contracts,100
+Amed Sportif,tm1047511,Hasan Yıldırım,1047511,Hasan Yıldırım,transfermarkt_contracts,100
 Gençlerbirliği,tm322873,İrfan Eğribayat,322873,İrfan Can Eğribayat,transfermarkt_contracts,99
 Gençlerbirliği,tm1438145,Hasan Oğul,1438145,Hasan Oğul,transfermarkt_contracts,100
 Gençlerbirliği,tm1078111,Arda Çelik,1078111,Arda Çağan Çelik,transfermarkt_contracts,99
@@ -694,6 +693,7 @@ Beşiktaş,tm357498,Dušan Vlahović,357498,Dusan Vlahovic,espn_lineups,100
 Beşiktaş,tm1047101,İlhan Fakılı,1047101,Ilhan Fakili,espn_lineups,100
 Beşiktaş,tm576033,Doğan Alemdar,576033,Dogan Alemdar,espn_lineups,100
 Beşiktaş,tm461951,Kartal Yılmaz,461951,Kartal Yilmaz,espn_lineups,100
+Çorum FK,tm571299,Hrvoje Smolčić,571299,Hrvoje Smolcic,espn_lineups,100
 Çorum FK,tm803049,Ermin Mahmić,803049,Ermin Mahmic,espn_lineups,100
 Çorum FK,tm226169,Ahmed Ildız,226169,Ahmed Ildiz,espn_lineups,100
 Başakşehir,tm330871,Muhammed Şengezer,330871,Muhammed Sengezer,espn_lineups,100
