@@ -1,0 +1,82 @@
+{
+ "asof": "2026-11-09",
+ "train": "2025_2026",
+ "test": "2026_2027",
+ "n_train": 2356,
+ "n_test": 573,
+ "gain_min": 0.002,
+ "models": {
+  "elo": {
+   "betas": {},
+   "train_ll": 1.017,
+   "test_ll": 0.9618,
+   "gain_vs_xi": 0.0,
+   "verdict": "효과 없음"
+  },
+  "elo+xi_loss": {
+   "betas": {
+    "xi_loss": 20.0
+   },
+   "train_ll": 1.011,
+   "test_ll": 0.9649,
+   "gain_vs_xi": 0.0,
+   "verdict": "효과 없음"
+  },
+  "+cont": {
+   "betas": {
+    "xi_loss": 20.0,
+    "cont": -4.0
+   },
+   "train_ll": 1.0107,
+   "test_ll": 0.9645,
+   "gain_vs_xi": 0.0004,
+   "verdict": "효과 없음"
+  },
+  "+core": {
+   "betas": {
+    "xi_loss": 20.0,
+    "core": -4.0
+   },
+   "train_ll": 1.0105,
+   "test_ll": 0.9671,
+   "gain_vs_xi": -0.0022,
+   "verdict": "효과 없음"
+  },
+  "+vets": {
+   "betas": {
+    "xi_loss": 20.0,
+    "vets": 4.0
+   },
+   "train_ll": 1.0107,
+   "test_ll": 0.9657,
+   "gain_vs_xi": -0.0008,
+   "verdict": "효과 없음"
+  },
+  "+cap_out(26/27 앞→뒤)": {
+   "betas": {
+    "xi_loss": 20.0,
+    "cap_out": -20.0
+   },
+   "train_ll": 0.9707,
+   "test_ll": 0.9577,
+   "ref_test_ll": 0.9588,
+   "n_cap_any": 45,
+   "gain_vs_xi": 0.0011,
+   "verdict": "효과 없음"
+  }
+ },
+ "cap_resid": {
+  "-1.0": {
+   "n": 44,
+   "home_pts_minus_exp": 0.124
+  },
+  "0.0": {
+   "n": 382,
+   "home_pts_minus_exp": -0.037
+  },
+  "1.0": {
+   "n": 45,
+   "home_pts_minus_exp": 0.268
+  }
+ }
+}

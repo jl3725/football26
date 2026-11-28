@@ -1,0 +1,34 @@
+{
+ "date": "2026-11-27",
+ "checked": {
+  "season_log": 56,
+  "team_xg": 56,
+  "transfers": 56,
+  "opponents": 157,
+  "leaders": 168,
+  "heatmap_side": 101,
+  "injury_return": 270
+ },
+ "issues": [
+  {
+   "kind": "season_log",
+   "team": "Seattle Sounders FC",
+   "detail": "Andrew Thomas 헤더 3150′ 0G 0A ≠ SEASON LOG 3060′ 0G 0A"
+  },
+  {
+   "kind": "season_log",
+   "team": "Columbus Crew",
+   "detail": "Sean Zawadzki 헤더 3150′ 1G 1A ≠ SEASON LOG 3060′ 1G 1A"
+  },
+  {
+   "kind": "season_log",
+   "team": "Columbus Crew",
+   "detail": "Patrick Schulte 헤더 3150′ 0G 0A ≠ SEASON LOG 3060′ 0G 0A"
+  },
+  {
+   "kind": "season_log",
+   "team": "St. Louis City",
+   "detail": "Timo Baumgartl 헤더 3150′ 1G 0A ≠ SEASON LOG 3060′ 1G 0A"
+  }
+ ]
+}

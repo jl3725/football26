@@ -1,0 +1,581 @@
+{
+ "accounts": {
+  "fabriziorom.bsky.social": {
+   "name": "Fabrizio Romano",
+   "followers": 76978,
+   "official": true,
+   "via": "name",
+   "checked": "2026-11-20"
+  },
+  "23carra.bsky.social": {
+   "name": "Jamie Carragher",
+   "followers": 23007,
+   "official": true,
+   "via": "name",
+   "checked": "2026-11-14"
+  },
+  "romain-molina.bsky.social": {
+   "name": "Romain Molina",
+   "followers": 8606,
+   "official": true,
+   "via": "name",
+   "checked": "2026-11-16"
+  },
+  "schultzreport.bsky.social": {
+   "name": "Jordan Schultz",
+   "followers": 7493,
+   "official": true,
+   "via": "name",
+   "checked": "2026-11-28"
+  },
+  "jaydmharris.bsky.social": {
+   "name": "Jay Harris",
+   "followers": 7245,
+   "official": true,
+   "via": "name",
+   "checked": "2026-11-27"
+  },
+  "jacobsben.bsky.social": {
+   "name": "Ben Jacobs",
+   "followers": 6983,
+   "official": true,
+   "via": "name",
+   "checked": "2026-11-27"
+  },
+  "taylortwellman.bsky.social": {
+   "name": "Taylor Twellman",
+   "followers": 2101,
+   "official": true,
+   "via": "name",
+   "checked": "2026-11-14"
+  },
+  "david-ornstein.bsky.social": {
+   "name": "David Ornstein",
+   "followers": 140245,
+   "official": true,
+   "via": "follows:jacobsteinberg1.bsky.social",
+   "checked": "2026-10-30"
+  },
+  "dannybkelly.bsky.social": {
+   "name": "Danny Kelly",
+   "followers": 138260,
+   "official": true,
+   "via": "follows:schultzreport.bsky.social",
+   "checked": "2026-11-15"
+  },
+  "dannyheifetz.bsky.social": {
+   "name": "Danny Heifetz",
+   "followers": 128899,
+   "official": true,
+   "via": "follows:schultzreport.bsky.social",
+   "checked": "2026-11-15"
+  },
+  "jourdanrodrigue.bsky.social": {
+   "name": "Jourdan Rodrigue",
+   "followers": 109030,
+   "official": true,
+   "via": "follows:schultzreport.bsky.social",
+   "checked": "2026-11-15"
+  },
+  "tombogert.bsky.social": {
+   "name": "Tom Bogert",
+   "followers": 95378,
+   "official": true,
+   "via": "follows:jacobsben.bsky.social",
+   "checked": "2026-11-15"
+  },
+  "theathleticfc.bsky.social": {
+   "name": "The Athletic",
+   "followers": 86002,
+   "official": true,
+   "via": "follows:jacobsteinberg1.bsky.social",
+   "checked": "2026-10-30"
+  },
+  "footballcliches.bsky.social": {
+   "name": "Adam Hurrey",
+   "followers": 85204,
+   "official": true,
+   "via": "follows:jonawils.bsky.social",
+   "checked": "2026-10-30"
+  },
+  "cdeccleshare.bsky.social": {
+   "name": "Charlie Eccleshare",
+   "followers": 80456,
+   "official": true,
+   "via": "follows:jonawils.bsky.social",
+   "checked": "2026-10-30"
+  },
+  "nfldraftscout.bsky.social": {
+   "name": "Matt Miller",
+   "followers": 69391,
+   "official": true,
+   "via": "follows:schultzreport.bsky.social",
+   "checked": "2026-11-15"
+  },
+  "aaronschatz.com": {
+   "name": "Aaron Schatz",
+   "followers": 64310,
+   "official": true,
+   "via": "follows:schultzreport.bsky.social",
+   "checked": "2026-11-15"
+  },
+  "nateatkins.bsky.social": {
+   "name": "Nate Atkins",
+   "followers": 59326,
+   "official": true,
+   "via": "follows:schultzreport.bsky.social",
+   "checked": "2026-11-15"
+  },
+  "miketanier.bsky.social": {
+   "name": "Mike Tanier",
+   "followers": 45235,
+   "official": true,
+   "via": "follows:schultzreport.bsky.social",
+   "checked": "2026-11-15"
+  },
+  "mikevorkunov.bsky.social": {
+   "name": "Mike Vorkunov",
+   "followers": 43064,
+   "official": true,
+   "via": "follows:schultzreport.bsky.social",
+   "checked": "2026-11-15"
+  },
+  "migueldelaney.bsky.social": {
+   "name": "Miguel Delaney",
+   "followers": 39369,
+   "official": true,
+   "via": "follows:the-independent.com",
+   "checked": "2026-10-22"
+  },
+  "jonkrawczynski.bsky.social": {
+   "name": "Jon Krawczynski",
+   "followers": 35707,
+   "official": true,
+   "via": "follows:schultzreport.bsky.social",
+   "checked": "2026-11-15"
+  },
+  "espnbillc.bsky.social": {
+   "name": "Bill Connelly",
+   "followers": 35456,
+   "official": true,
+   "via": "follows:jeffrueter.bsky.social",
+   "checked": "2026-10-30"
+  },
+  "mikesilver.bsky.social": {
+   "name": "Mike Silver",
+   "followers": 35131,
+   "official": true,
+   "via": "follows:schultzreport.bsky.social",
+   "checked": "2026-11-15"
+  },
+  "oliverkay.bsky.social": {
+   "name": "Oliver Kay",
+   "followers": 32326,
+   "official": true,
+   "via": "follows:jonawils.bsky.social",
+   "checked": "2026-10-30"
+  },
+  "mattharmon.bsky.social": {
+   "name": "Matt Harmon",
+   "followers": 31443,
+   "official": true,
+   "via": "follows:schultzreport.bsky.social",
+   "checked": "2026-11-15"
+  },
+  "meninblazers.bsky.social": {
+   "name": "Men in Blazers Media Network",
+   "followers": 30760,
+   "official": true,
+   "via": "follows:migueldelaney.bsky.social",
+   "checked": "2026-10-30"
+  },
+  "nickbaumgardner.bsky.social": {
+   "name": "Nick Baumgardner",
+   "followers": 27864,
+   "official": true,
+   "via": "follows:schultzreport.bsky.social",
+   "checked": "2026-11-15"
+  },
+  "brucefeldmancfb.bsky.social": {
+   "name": "Bruce Feldman",
+   "followers": 27620,
+   "official": true,
+   "via": "follows:schultzreport.bsky.social",
+   "checked": "2026-11-15"
+  },
+  "danielstorey85.bsky.social": {
+   "name": "Daniel Storey",
+   "followers": 23375,
+   "official": true,
+   "via": "follows:jonawils.bsky.social",
+   "checked": "2026-10-30"
+  },
+  "tariqpanja.bsky.social": {
+   "name": "Tariq Panja",
+   "followers": 21783,
+   "official": true,
+   "via": "follows:jonawils.bsky.social",
+   "checked": "2026-10-30"
+  },
+  "thefrankiedlc.news": {
+   "name": "Frankie de la Cretaz",
+   "followers": 21510,
+   "official": true,
+   "via": "follows:jeffrueter.bsky.social",
+   "checked": "2026-10-30"
+  },
+  "jonawils.bsky.social": {
+   "name": "Jonathan Wilson",
+   "followers": 20445,
+   "official": true,
+   "via": "follows:theguardian.com",
+   "checked": "2026-10-22"
+  },
+  "sebsb.bsky.social": {
+   "name": "Seb Stafford-Bloor",
+   "followers": 19700,
+   "official": true,
+   "via": "follows:jonawils.bsky.social",
+   "checked": "2026-10-30"
+  },
+  "transfercentre.bsky.social": {
+   "name": "Football Transfer News",
+   "followers": 19278,
+   "official": true,
+   "via": "follows:jacobsteinberg1.bsky.social",
+   "checked": "2026-10-30"
+  },
+  "jeffrueter.bsky.social": {
+   "name": "Jeff Rueter",
+   "followers": 18322,
+   "official": true,
+   "via": "follows:theguardian.com",
+   "checked": "2026-10-22"
+  },
+  "derekbodner.bsky.social": {
+   "name": "Derek Bodner",
+   "followers": 18095,
+   "official": true,
+   "via": "follows:schultzreport.bsky.social",
+   "checked": "2026-11-15"
+  },
+  "jamesbenge.bsky.social": {
+   "name": "James Benge",
+   "followers": 18071,
+   "official": true,
+   "via": "follows:jacobsteinberg1.bsky.social",
+   "checked": "2026-10-30"
+  },
+  "davidlynchlfc.co.uk": {
+   "name": "David Lynch",
+   "followers": 17958,
+   "official": false,
+   "via": "follows:23carra.bsky.social",
+   "checked": "2026-11-07"
+  },
+  "optaanalyst.optajoe.com": {
+   "name": "Opta Analyst",
+   "followers": 17953,
+   "official": true,
+   "via": "follows:jeffrueter.bsky.social",
+   "checked": "2026-10-30"
+  }
+ },
+ "names": {
+  "Fabrizio Romano": {
+   "handle": "fabriziorom.bsky.social",
+   "checked": "2026-11-20"
+  },
+  "Mike Verweij": {
+   "handle": null,
+   "checked": "2026-11-26"
+  },
+  "El Nacional": {
+   "handle": null,
+   "checked": "2026-11-14"
+  },
+  "Jamie Carragher": {
+   "handle": "23carra.bsky.social",
+   "checked": "2026-11-14"
+  },
+  "Taylor Twellman": {
+   "handle": "taylortwellman.bsky.social",
+   "checked": "2026-11-14"
+  },
+  "Sacha Tavolieri": {
+   "handle": null,
+   "checked": "2026-11-19"
+  },
+  "Noah Friedmann": {
+   "handle": null,
+   "checked": "2026-11-22"
+  },
+  "Tom Kühner": {
+   "handle": null,
+   "checked": "2026-11-22"
+  },
+  "Ahmet Çakar": {
+   "handle": null,
+   "checked": "2026-11-23"
+  },
+  "Christian Falk": {
+   "handle": null,
+   "checked": "2026-11-27"
+  },
+  "Het Eindhovens Dagblad": {
+   "handle": null,
+   "checked": "2026-11-27"
+  },
+  "Mounir Boualin": {
+   "handle": null,
+   "checked": "2026-11-27"
+  },
+  "Ben Jacobs": {
+   "handle": "jacobsben.bsky.social",
+   "checked": "2026-11-27"
+  },
+  "Il Roma": {
+   "handle": null,
+   "checked": "2026-11-27"
+  },
+  "Marc Degryse": {
+   "handle": null,
+   "checked": "2026-11-28"
+  },
+  "Jordan Schultz": {
+   "handle": "schultzreport.bsky.social",
+   "checked": "2026-11-28"
+  },
+  "Pampa Sosa": {
+   "handle": null,
+   "checked": "2026-11-28"
+  },
+  "Edwin Pindi": {
+   "handle": null,
+   "checked": "2026-11-28"
+  },
+  "Aad de Mos": {
+   "handle": null,
+   "checked": "2026-11-14"
+  },
+  "Juan Ignacio Navarro": {
+   "handle": null,
+   "checked": "2026-11-15"
+  },
+  "David Pleat": {
+   "handle": null,
+   "checked": "2026-11-16"
+  },
+  "Keith Wyness": {
+   "handle": null,
+   "checked": "2026-11-16"
+  },
+  "Romain Molina": {
+   "handle": "romain-molina.bsky.social",
+   "checked": "2026-11-16"
+  },
+  "Matteo Moretto": {
+   "handle": null,
+   "checked": "2026-11-17"
+  },
+  "Tonda Eckert": {
+   "handle": null,
+   "checked": "2026-11-17"
+  },
+  "Josep Pedrerol": {
+   "handle": null,
+   "checked": "2026-11-18"
+  },
+  "Darren Bent": {
+   "handle": null,
+   "checked": "2026-11-18"
+  },
+  "Jimmy Floyd Hasselbaink": {
+   "handle": null,
+   "checked": "2026-11-19"
+  },
+  "Philippe Albert": {
+   "handle": null,
+   "checked": "2026-11-21"
+  },
+  "Vincent Schildkamp": {
+   "handle": null,
+   "checked": "2026-11-21"
+  },
+  "Sander Westerveld": {
+   "handle": null,
+   "checked": "2026-11-22"
+  },
+  "Diego Placente": {
+   "handle": null,
+   "checked": "2026-11-23"
+  },
+  "Henning Feindt": {
+   "handle": null,
+   "checked": "2026-11-23"
+  },
+  "Franco Ordine": {
+   "handle": null,
+   "checked": "2026-11-25"
+  },
+  "Gary Neville": {
+   "handle": null,
+   "checked": "2026-11-27"
+  },
+  "Jay Harris": {
+   "handle": "jaydmharris.bsky.social",
+   "checked": "2026-11-27"
+  }
+ },
+ "expanded_at": "2026-11-23",
+ "outlets": {
+  "90min": {
+   "handle": null,
+   "checked": "2026-11-22"
+  },
+  "A Bola": {
+   "handle": null,
+   "checked": "2026-11-22"
+  },
+  "AD": {
+   "handle": null,
+   "checked": "2026-11-22"
+  },
+  "BBC Sport": {
+   "handle": null,
+   "checked": "2026-11-22"
+  },
+  "BILD": {
+   "handle": null,
+   "checked": "2026-11-22"
+  },
+  "Calciomercato.com": {
+   "handle": null,
+   "checked": "2026-11-22"
+  },
+  "Corriere dello Sport": {
+   "handle": null,
+   "checked": "2026-11-22"
+  },
+  "DH Les Sports+": {
+   "handle": null,
+   "checked": "2026-11-22"
+  },
+  "De Telegraaf": {
+   "handle": null,
+   "checked": "2026-11-22"
+  },
+  "Estadio Deportivo": {
+   "handle": null,
+   "checked": "2026-11-22"
+  },
+  "Evening Standard": {
+   "handle": null,
+   "checked": "2026-11-22"
+  },
+  "Football Italia": {
+   "handle": null,
+   "checked": "2026-11-22"
+  },
+  "Football365": {
+   "handle": null,
+   "checked": "2026-11-22"
+  },
+  "GiveMeSport": {
+   "handle": null,
+   "checked": "2026-11-22"
+  },
+  "HLN": {
+   "handle": null,
+   "checked": "2026-11-22"
+  },
+  "Het Nieuwsblad": {
+   "handle": null,
+   "checked": "2026-11-22"
+  },
+  "Maisfutebol": {
+   "handle": null,
+   "checked": "2026-10-22"
+  },
+  "Mundo Deportivo": {
+   "handle": null,
+   "checked": "2026-11-22"
+  },
+  "TEAMtalk": {
+   "handle": null,
+   "checked": "2026-11-22"
+  },
+  "The Guardian": {
+   "handle": "theguardian.com",
+   "checked": "2026-11-22"
+  },
+  "The Independent": {
+   "handle": "the-independent.com",
+   "checked": "2026-11-22"
+  },
+  "TuttoMercatoWeb": {
+   "handle": null,
+   "checked": "2026-11-22"
+  },
+  "Voetbal International": {
+   "handle": null,
+   "checked": "2026-11-22"
+  },
+  "VoetbalFocus": {
+   "handle": null,
+   "checked": "2026-11-22"
+  },
+  "Voetbalzone": {
+   "handle": null,
+   "checked": "2026-11-22"
+  },
+  "Walfoot": {
+   "handle": null,
+   "checked": "2026-11-22"
+  },
+  "Yahoo Sports": {
+   "handle": null,
+   "checked": "2026-11-22"
+  },
+  "le10sport": {
+   "handle": null,
+   "checked": "2026-11-22"
+  },
+  "talkSPORT": {
+   "handle": null,
+   "checked": "2026-11-22"
+  },
+  "Football League World": {
+   "handle": null,
+   "checked": "2026-11-04"
+  },
+  "Port of Rotterdam": {
+   "handle": null,
+   "checked": "2026-11-04"
+  },
+  "Sports Mole": {
+   "handle": null,
+   "checked": "2026-11-04"
+  },
+  "The72": {
+   "handle": null,
+   "checked": "2026-11-11"
+  },
+  "VoetbalPrimeur.be": {
+   "handle": null,
+   "checked": "2026-11-11"
+  },
+  "FootballTransfers.com": {
+   "handle": null,
+   "checked": "2026-11-18"
+  },
+  "Head Topics": {
+   "handle": null,
+   "checked": "2026-11-18"
+  },
+  "Sport Witness": {
+   "handle": null,
+   "checked": "2026-11-18"
+  }
+ }
+}
